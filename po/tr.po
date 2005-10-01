@@ -1,0 +1,5643 @@
+# Turkish translation of aptitude.
+# This file is distributed under the same license as the aptitude package.
+# İsmail ASLAN <ismail@iaslan.com>, 2004
+# Erçin EKER <ercin.eker@linux.org.tr>, 2004,2005
+# Enver ALTIN <skyblue@skyblue.gen.tr>, 2004
+#
+#: src/view_changelog.cc:222
+msgid ""
+msgstr ""
+"Project-Id-Version: aptitude\n"
+"Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
+"POT-Creation-Date: 2005-09-30 20:03-0700\n"
+"PO-Revision-Date: 2005-08-07 16:40+0300\n"
+"Last-Translator: Erçin EKER <ercin.eker@linux.org.tr>\n"
+"Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=1; plural=0;\n"
+
+#: src/apt_options.cc:109
+msgid "Display some available commands at the top of the screen"
+msgstr "Bazı komutları ekranın üst kısmında göster"
+
+#: src/apt_options.cc:111
+msgid "Hide the menubar when it is not being used"
+msgstr "Kullanılmadığı zaman menü çubuğunu gizle"
+
+#: src/apt_options.cc:113
+msgid "Use a minibuffer-style prompt when possible"
+msgstr "Mümkün olduğunda minik bir alanda komut istemi kullan"
+
+#: src/apt_options.cc:115
+msgid "Show partial search results (incremental search)"
+msgstr "Parçalı arama sonuçlarını göster (anında arama)"
+
+#: src/apt_options.cc:117
+msgid "Closing the last view exits the program"
+msgstr "Son ekranın kapatılması ile uygulamadan çıkılır"
+
+#: src/apt_options.cc:119
+msgid "Prompt for confirmation at exit"
+msgstr "Çıkışta sor"
+
+#: src/apt_options.cc:121
+msgid "Pause after downloading files"
+msgstr "Dosyalar indirildikten sonra bekle"
+
+#: src/apt_options.cc:123
+msgid "Never"
+msgstr "Asla"
+
+#: src/apt_options.cc:124
+msgid "When an error occurs"
+msgstr "Bir hata oluştuğunda"
+
+#: src/apt_options.cc:125
+msgid "Always"
+msgstr "Her zaman"
+
+#: src/apt_options.cc:127
+msgid "Use a 'status-line' download indicator for all downloads"
+msgstr "İndirme işleminin tamamı için 'durum-çubuğu' indirme göstergesi kullan"
+
+#: src/apt_options.cc:129
+msgid "Display the extended description area by default"
+msgstr "Öntanımlı olarak geniş açıklama bölümünü göster"
+
+#: src/apt_options.cc:131
+msgid "Advance to the next item after changing the state of a package"
+msgstr "Paket durumu değiştirilince bir sonraki öğeye geç"
+
+#: src/apt_options.cc:133
+msgid "Automatically show why packages are broken"
+msgstr "Paketlerin neden bozulduğunu otomatik olarak göster"
+
+#: src/apt_options.cc:135
+msgid "The default grouping method for package views"
+msgstr "Paket görüntüleme için varsayılan gruplama yöntemi"
+
+#: src/apt_options.cc:137
+msgid "The default display-limit for package views"
+msgstr "Paket görüntüleme için varsayılan gösterme sınırı"
+
+#: src/apt_options.cc:139
+msgid "The display format for package views"
+msgstr "Paket görüntüleme için varsayılan gösterim biçimi"
+
+#: src/apt_options.cc:142
+msgid "The display format for the status line"
+msgstr "Durum-çubuğu için gösterim biçimi"
+
+#: src/apt_options.cc:145
+msgid "The display format for the header line"
+msgstr "Başlık çubuğu için gösterim biçimi"
+
+#: src/apt_options.cc:154
+msgid "Automatically upgrade installed packages"
+msgstr "Kurulu paketleri otomatik olarak yükselt"
+
+#: src/apt_options.cc:156
+msgid "Remove obsolete package files after downloading new package lists"
+msgstr "Yeni paket listeleri indirildikten sonra eskimiş paket dosyalarını sil"
+
+#: src/apt_options.cc:158
+msgid "URL to use to download changelogs"
+msgstr "Değişim günlüklerini indirmek için kullanılacak URL(adres)"
+
+#: src/apt_options.cc:161
+msgid "Display a preview of what will be done before doing it"
+msgstr "Herhangi bir işlemden önce neler yapılacağına dair bir özet göster"
+
+#: src/apt_options.cc:164
+msgid ""
+"Forget which packages are \"new\" whenever the package lists are updated"
+msgstr ""
+"Paket listeleri güncellendiğinde hangi paketlerin \"yeni\" olduğunu unut"
+
+#: src/apt_options.cc:167
+msgid ""
+"Forget which packages are \"new\" whenever packages are installed or removed"
+msgstr ""
+"Paket kurulumu ya da kaldırmadan sonra hangi paketlerin \"yeni\" olduğunu "
+"unut"
+
+#: src/apt_options.cc:170
+msgid ""
+"Do not display a warning when the first change is made in read-only mode."
+msgstr ""
+
+#: src/apt_options.cc:173
+msgid "Warn when attempting to perform a privileged action as a non-root user"
+msgstr ""
+"Root olmayan bir kullanıcı, yetki gerektiren bir işlem yapmaya çalıştığında "
+"uyar"
+
+#: src/apt_options.cc:176
+msgid "File to log actions into"
+msgstr "Günlüğün tutulacağı dosya"
+
+#: src/apt_options.cc:183
+msgid "Automatically resolve dependencies of a package when it is selected"
+msgstr "Bir paket seçildiğinde bağımlılıkları otomatik olarak çözümle"
+
+#: src/apt_options.cc:185
+msgid "Automatically fix broken packages before installing or removing"
+msgstr ""
+"Kurma ya da kaldırma işlemlerinden önce bozuk paketleri otomatik düzelt"
+
+#: src/apt_options.cc:187
+msgid "Install Recommended packages automatically"
+msgstr "Önerilen paketleri otomatik olarak kur"
+
+#: src/apt_options.cc:189
+msgid "Remove unused packages automatically"
+msgstr "Kullanılmayan paketleri otomatik olarak kaldır"
+
+#: src/apt_options.cc:191
+msgid "Automatically remove unused packages matching this filter"
+msgstr "Kullanılmayan paketleri bu filtreye uyarak otomatik olarak kaldır"
+
+#: src/apt_options.cc:247 src/mine/cmine.cc:302 src/mine/cmine.cc:367
+#: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:81
+#: src/vscreen/vs_util.cc:94 src/vscreen/vs_util.cc:275
+#: src/vscreen/vs_util.cc:312
+msgid "Ok"
+msgstr "Tamam"
+
+#: src/apt_options.cc:248 src/download_list.cc:88 src/mine/cmine.cc:303
+#: src/mine/cmine.cc:368 src/vscreen/vs_util.cc:313
+msgid "Cancel"
+msgstr "İptal"
+
+#: src/broken_indicator.cc:118
+#, c-format
+msgid "%s: Examine"
+msgstr "%s: Sına"
+
+#: src/broken_indicator.cc:126
+#, c-format
+msgid "%s: Apply"
+msgstr "%s: Uygula"
+
+#: src/broken_indicator.cc:129
+#, c-format
+msgid "%s: Next"
+msgstr "%s: Sonraki"
+
+#: src/broken_indicator.cc:134
+#, c-format
+msgid "%s: Previous"
+msgstr "%s: Önceki"
+
+#: src/broken_indicator.cc:226
+msgid "Unable to resolve dependencies."
+msgstr "Bağımlılıklar çözülemiytor."
+
+#: src/broken_indicator.cc:240
+#, fuzzy, c-format
+msgid "[%d(%d)/...] Resolving dependencies"
+msgstr "Bağımlılıklar çözülemiytor."
+
+#: src/broken_indicator.cc:273 src/solution_dialog.cc:142
+#: src/solution_screen.cc:513
+msgid "Internal error: unexpected null solution."
+msgstr "Dahili Hata: beklenmeyen boş çözüm."
+
+#: src/broken_indicator.cc:326
+msgid "Suggest "
+msgstr "Teklif edilenler "
+
+#: src/broken_indicator.cc:331
+#, c-format
+msgid "%d installs"
+msgstr "%d kurulum"
+
+#: src/broken_indicator.cc:334
+msgid "1 install"
+msgstr "1 kurulacak"
+
+#: src/broken_indicator.cc:337
+#, c-format
+msgid "%d removals"
+msgstr "%d kaldırılacak"
+
+#: src/broken_indicator.cc:340
+msgid "1 removal"
+msgstr "1 kaldırılacak"
+
+#: src/broken_indicator.cc:343
+#, c-format
+msgid "%d keeps"
+msgstr "%d tutulacak"
+
+#: src/broken_indicator.cc:346
+msgid "1 keep"
+msgstr "1 tutulacak"
+
+#: src/broken_indicator.cc:349
+#, c-format
+msgid "%d upgrades"
+msgstr "%d güncellenecek"
+
+#: src/broken_indicator.cc:351
+msgid "1 upgrade"
+msgstr "1 güncelleme"
+
+#: src/broken_indicator.cc:354
+#, c-format
+msgid "%d downgrades"
+msgstr "%d eski sürümü kurulacak"
+
+#: src/broken_indicator.cc:356
+msgid "1 downgrade"
+msgstr "1 eski sürümü kurulacak"
+
+#: src/cmdline/cmdline_action.cc:37
+#, c-format
+msgid ""
+"Note: \"%s\", providing the virtual package\n"
+"      \"%s\", is already installed.\n"
+msgstr ""
+"Not: \"%s\", Sanal paket sağlıyor\n"
+"      \"%s\", zaten kurulu.\n"
+
+#: src/cmdline/cmdline_action.cc:44
+#, c-format
+msgid ""
+"Note: \"%s\", providing the virtual package\n"
+"      \"%s\", is already going to be installed.\n"
+msgstr ""
+"Not: \"%s\", Sanal paket sağlıyor\n"
+"      \"%s\", zaten kurulacak.\n"
+
+#: src/cmdline/cmdline_action.cc:62
+#, c-format
+msgid ""
+"\"%s\" exists in the package database, but it is not a\n"
+"real package and no package provides it.\n"
+msgstr ""
+"\"%s\" paket veritabanında var, fakat gerçek bir\n"
+"paket değil ve hiç bir paket tarafından sağlanmıyor.\n"
+
+#: src/cmdline/cmdline_action.cc:68
+#, c-format
+msgid "\"%s\" is a virtual package provided by:\n"
+msgstr "%s bir sanal paket, ve şu paket tarafından sağlanıyor:\n"
+
+#: src/cmdline/cmdline_action.cc:71
+#, c-format
+msgid "You must choose one to install.\n"
+msgstr "Kurmak için birini seçmelisiniz.\n"
+
+#: src/cmdline/cmdline_action.cc:76
+#, c-format
+msgid ""
+"Note: selecting \"%s\" instead of the\n"
+"      virtual package \"%s\"\n"
+msgstr ""
+"Not: \"%2$s\" sanal paketi yerine\n"
+"      \"%1$s\" seçiliyor\n"
+
+#: src/cmdline/cmdline_action.cc:94
+#, c-format
+msgid "%s is already installed at the requested version (%s)\n"
+msgstr "%s paketinin istenen sürümü zaten kurulu (%s)\n"
+
+#: src/cmdline/cmdline_action.cc:100
+#, c-format
+msgid "%s is not currently installed, so it will not be reinstalled.\n"
+msgstr "%s şu anda kurulu değil, bu nedenle yeniden yüklenmeyecek.\n"
+
+#: src/cmdline/cmdline_action.cc:107 src/cmdline/cmdline_action.cc:113
+#, c-format
+msgid "Package %s is not installed, so it will not be removed\n"
+msgstr "%s paketi kurulu değil, bu nedenle kaldırılmayacak\n"
+
+#: src/cmdline/cmdline_action.cc:131
+#, c-format
+msgid "Package %s is not installed, cannot forbid an upgrade\n"
+msgstr "%s paketi kurulu değil, bu nedenle yükseltilmesi engellenemez\n"
+
+#: src/cmdline/cmdline_action.cc:133
+#, c-format
+msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
+msgstr "%s paketi yükseltilemez, bu nedenle yükseltilmesi engellenemez\n"
+
+#: src/cmdline/cmdline_action.cc:214
+#, c-format
+msgid "Note: selecting the task \"%s: %s\" for installation\n"
+msgstr "Not: \"%s: %s\" görevi kurulum için seçildi\n"
+
+#: src/cmdline/cmdline_action.cc:241
+#, c-format
+msgid "You can only specify a package version with an 'install' command.\n"
+msgstr "'kur' komutu için yalnızca sürüm belirtebilirsiniz\n"
+
+#: src/cmdline/cmdline_action.cc:247
+#, c-format
+msgid "You can only specify a package archive with an 'install' command.\n"
+msgstr "'kur' komutu için yalnızca bir paket arşivi belirtebilirsiniz\n"
+
+#: src/cmdline/cmdline_action.cc:281
+#, c-format
+msgid ""
+"Couldn't find package \"%s\", and more than 40\n"
+"packages contain \"%s\" in their name.\n"
+msgstr ""
+"\"%s\" paketi bulunamadı, ve 40'tan fazla\n"
+"paketin isminde \"%s\" bulunmakta.\n"
+
+#: src/cmdline/cmdline_action.cc:284
+#, c-format
+msgid ""
+"Couldn't find package \"%s\".  However, the following\n"
+"packages contain \"%s\" in their name:\n"
+msgstr ""
+"\"%s\" paketi bulunamadı.  Bununla beraber aşağıdaki\n"
+"paketlerin isimlerinde \"%s\" bulunmakta:\n"
+
+#: src/cmdline/cmdline_action.cc:308
+#, c-format
+msgid "Couldn't find any package whose name or description matched \"%s\"\n"
+msgstr "Adında ya da tanımında \"%s\" içeren hiçbir paket bulunamadı\n"
+
+#: src/cmdline/cmdline_action.cc:310
+#, c-format
+msgid ""
+"Couldn't find any package matching \"%s\", and more than 40\n"
+"packages contain \"%s\" in their description.\n"
+msgstr ""
+"\"%s\" paketi bulunamadı, ve 40'tan fazla\n"
+"paketin açıklamasında \"%s\" bulunmakta.\n"
+
+#: src/cmdline/cmdline_action.cc:313
+#, c-format
+msgid ""
+"Couldn't find any package matching \"%s\".  However, the following\n"
+"packages contain \"%s\" in their description:\n"
+msgstr ""
+"\"%s\" için uygun paket bulunamadı, Bununla beraber,\n"
+"aşağıdaki paketlerin açıklamalarında \"%s\" geçmekte:\n"
+
+#: src/cmdline/cmdline_action.cc:440
+#, c-format
+msgid "Bad action character '%c'\n"
+msgstr "Kötü eylem karakteri '%c'\n"
+
+#: src/cmdline/cmdline_changelog.cc:195
+msgid "Can't execute sensible-pager, is this a working Debian system?"
+msgstr "Sensible-pager çalıştırılamıyor, bu çalışan bir Debian sistemi mi?"
+
+#: src/cmdline/cmdline_changelog.cc:237
+#, c-format
+msgid "%s is not an official Debian package, cannot display its changelog."
+msgstr "%s resmi bir Debian paketi değil, değişiklik güncesi gösterilemiyor."
+
+#: src/cmdline/cmdline_changelog.cc:308
+#, c-format
+msgid "Couldn't find a changelog for %s"
+msgstr "%s için değişiklik güncesi bulunamıyor"
+
+#: src/cmdline/cmdline_clean.cc:52
+#, c-format
+msgid "Del %s* %spartial/*\n"
+msgstr "Silinsin mi?  %s* %spartial/*\n"
+
+#: src/cmdline/cmdline_clean.cc:80
+#, c-format
+msgid "Del %s %s [%sB]\n"
+msgstr "%s %s [%sB] sil\n"
+
+#: src/cmdline/cmdline_clean.cc:136
+#, c-format
+msgid "Would free %sB of disk space\n"
+msgstr "%sB'lık alan boşaltılacak\n"
+
+#: src/cmdline/cmdline_clean.cc:139
+#, c-format
+msgid "Freed %sB of disk space\n"
+msgstr "%sB'lık alan boşaltıldı\n"
+
+#: src/cmdline/cmdline_do_action.cc:73
+#, c-format
+msgid "Invalid operation %s"
+msgstr "Geçersiz işlem %s"
+
+#: src/cmdline/cmdline_do_action.cc:143
+msgid "Unexpected pattern argument following \"keep-all\""
+msgstr "\"keep-all\"dan sonra beklenmeyen desen değişkeni"
+
+#: src/cmdline/cmdline_do_action.cc:233 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:476
+#, c-format
+msgid "Abort.\n"
+msgstr "İptal.\n"
+
+#: src/cmdline/cmdline_download.cc:30
+#, c-format
+msgid "download: you must specify at least one package to download\n"
+msgstr "indirme: indirmek için en az bir paket belirtmelisiniz\n"
+
+#: src/cmdline/cmdline_download.cc:42
+#: src/generic/apt/download_install_manager.cc:78
+#: src/generic/apt/download_install_manager.cc:165
+msgid "Couldn't read source list"
+msgstr "Kaynak listesi okunamıyor"
+
+#: src/cmdline/cmdline_download.cc:63
+#, c-format
+msgid "Can't find a package named \"%s\""
+msgstr "\"%s\" adında bir paket bulunamıyor"
+
+#: src/cmdline/cmdline_download.cc:73
+#, c-format
+msgid ""
+"No downloadable files for %s version %s; perhaps it is a local or obsolete "
+"package?"
+msgstr ""
+"%s için %s sürümü paket indirilemiyor; belki yerel olarak kurulu ya da artık "
+"kullanılmayan bir paket?"
+
+#: src/cmdline/cmdline_forget_new.cc:44
+#, c-format
+msgid "Would forget what packages are new\n"
+msgstr "Hangi paketlerin yeni olduğu unutulsun mu\n"
+
+#: src/cmdline/cmdline_moo.cc:16
+#, c-format
+msgid "There are no Easter Eggs in this program.\n"
+msgstr "Bu uygulamada Sürpriz Yumurta yok.\n"
+
+#: src/cmdline/cmdline_moo.cc:19
+#, c-format
+msgid "There really are no Easter Eggs in this program.\n"
+msgstr "Bu uygulamada gerçekten Sürpriz Yumurta yok.\n"
+
+#: src/cmdline/cmdline_moo.cc:22
+#, c-format
+msgid ""
+"Didn't I already tell you that there are no Easter Eggs in this program?\n"
+msgstr "Sana bu uygulamada Sürpriz Yumurta olmadığını söylememiş miydim?\n"
+
+#: src/cmdline/cmdline_moo.cc:25
+#, c-format
+msgid "Stop it!\n"
+msgstr "Kes şunu!\n"
+
+#: src/cmdline/cmdline_moo.cc:28
+#, c-format
+msgid "Okay, okay, if I give you an Easter Egg, will you go away?\n"
+msgstr "Tamam, tamam, sana bir Sürpriz Yumurta verirsem gidecek misin?\n"
+
+#: src/cmdline/cmdline_moo.cc:31
+#, c-format
+msgid "All right, you win.\n"
+msgstr "Tamam, sen kazandın.\n"
+
+#: src/cmdline/cmdline_moo.cc:42
+#, c-format
+msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
+msgstr "Bu da ne? Yılan tarafından yenen bir fil tabii ki.\n"
+
+#: src/cmdline/cmdline_prompt.cc:33
+msgid "Unexpected end-of-file on standard input"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:52
+msgid "Couldn't read list of sources"
+msgstr "Kaynak listesi okunamıyor"
+
+#: src/cmdline/cmdline_prompt.cc:227 src/cmdline/cmdline_show_broken.cc:73
+#, c-format
+msgid "but %s is to be installed."
+msgstr "fakat %s kurulacak."
+
+#: src/cmdline/cmdline_prompt.cc:230 src/cmdline/cmdline_show_broken.cc:76
+#, c-format
+msgid "but %s is installed and it is kept back."
+msgstr "fakat %s kurulu ve tutulacak."
+
+#: src/cmdline/cmdline_prompt.cc:233 src/cmdline/cmdline_show_broken.cc:79
+#, c-format
+msgid "but %s is installed."
+msgstr "fakat %s kurulu."
+
+#: src/cmdline/cmdline_prompt.cc:237 src/cmdline/cmdline_show_broken.cc:83
+#, c-format
+msgid "but it is not installable"
+msgstr "fakat kurulabilir değil"
+
+#: src/cmdline/cmdline_prompt.cc:241 src/cmdline/cmdline_show_broken.cc:87
+#, c-format
+msgid " which is a virtual package."
+msgstr " sanal bir paket."
+
+#: src/cmdline/cmdline_prompt.cc:244 src/cmdline/cmdline_show_broken.cc:90
+#, c-format
+msgid " or"
+msgstr " ya da"
+
+#: src/cmdline/cmdline_prompt.cc:256
+msgid "The following packages are BROKEN:"
+msgstr "Aşağıdaki paketler BOZUK:"
+
+#: src/cmdline/cmdline_prompt.cc:257
+msgid "The following packages are unused and will be REMOVED:"
+msgstr "Aşağıdaki paketler kullanılmıyor ve KALDIRILACAK:"
+
+#: src/cmdline/cmdline_prompt.cc:258
+msgid "The following packages have been automatically kept back:"
+msgstr "Aşağıdaki paketler otomatik olarak korunacak:"
+
+#: src/cmdline/cmdline_prompt.cc:259
+msgid "The following NEW packages will be automatically installed:"
+msgstr "Aşağıdaki YENİ paketler otomatik olarak kurulacak:"
+
+#: src/cmdline/cmdline_prompt.cc:260
+msgid "The following packages will be automatically REMOVED:"
+msgstr "Aşağıdaki paketler otomatik olarak KALDIRILACAK:"
+
+#: src/cmdline/cmdline_prompt.cc:261
+msgid "The following packages will be DOWNGRADED:"
+msgstr "Aşağıdaki paketlerin ÖNCEKİ SÜRÜMLERİ yüklenecek:  "
+
+#: src/cmdline/cmdline_prompt.cc:262
+msgid "The following packages have been kept back:"
+msgstr "Aşağıdaki paketler otomatik olarak korundu:"
+
+#: src/cmdline/cmdline_prompt.cc:263
+msgid "The following packages will be REINSTALLED:"
+msgstr "Aşağıdaki paketler otomatik olarak YENİDEN KURULDU:"
+
+#: src/cmdline/cmdline_prompt.cc:264
+msgid "The following NEW packages will be installed:"
+msgstr "Aşağıdaki YENİ paketler otomatik olarak kurulacak:"
+
+#: src/cmdline/cmdline_prompt.cc:265
+msgid "The following packages will be REMOVED:"
+msgstr "Aşağıdaki paketler KALDIRILACAK:"
+
+#: src/cmdline/cmdline_prompt.cc:266
+msgid "The following packages will be upgraded:"
+msgstr "Aşağıdaki paketler yükseltilecek:"
+
+#: src/cmdline/cmdline_prompt.cc:321
+#, c-format
+msgid "The following ESSENTIAL packages will be REMOVED!\n"
+msgstr "Aşağıdaki TEMEL paketler KALDIRILACAK!\n"
+
+#: src/cmdline/cmdline_prompt.cc:330
+#, c-format
+msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
+msgstr "Bu işlem aşağıdaki TEMEL paketleri BOZACAK:\n"
+
+#: src/cmdline/cmdline_prompt.cc:340
+#, c-format
+msgid ""
+"WARNING: Performing this action will probably cause your system to break!\n"
+"         Do NOT continue unless you know EXACTLY what you are doing!\n"
+msgstr ""
+"UYARI: Bu işlemi gerçekleştirmek sisteminize zarar verebilir!\n"
+"       TAM OLARAK ne yaptığınızdan emin olmadan DEVAM ETMEYİN!\n"
+
+#: src/cmdline/cmdline_prompt.cc:342
+msgid "I am aware that this is a very bad idea"
+msgstr "Bunun kötü bir fikir olduğunun farkındayım"
+
+#: src/cmdline/cmdline_prompt.cc:345
+#, c-format
+msgid "To continue, type the phrase \"%s\":\n"
+msgstr "Devam etmek için, \"%s\" ifadesini girin :\n"
+
+#: src/cmdline/cmdline_prompt.cc:387
+#, c-format
+msgid ""
+"WARNING: untrusted versions of the following packages will be installed!\n"
+"\n"
+"Untrusted packages could compromise your system's security.\n"
+"You should only proceed with the installation if you are certain that\n"
+"this is what you want to do.\n"
+"\n"
+msgstr ""
+"UYARI: aşağıdaki paketlerin güvenilir olmayan sürümleri kurulacak!\n"
+"\n"
+"Kökeni belirsiz paketler sisteminizin güvenliğini zedeleyebilir.\n"
+"Yapmak istediğiniz şeyin bu olduğuna kesinlikle eminseniz\n"
+"devam etmelisiniz.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:398
+#, c-format
+msgid ""
+"*** WARNING ***   Ignoring these trust violations because\n"
+"                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:403 src/vscreen/vs_util.cc:169
+#: src/vscreen/vs_util.cc:207
+msgid "Yes"
+msgstr "Evet"
+
+#: src/cmdline/cmdline_prompt.cc:403 src/vscreen/vs_util.cc:170
+#: src/vscreen/vs_util.cc:208
+msgid "No"
+msgstr "Hayır"
+
+#: src/cmdline/cmdline_prompt.cc:407
+#, c-format
+msgid "Do you want to ignore this warning and proceed anyway?\n"
+msgstr "Bu uyarıyı göz ardı ederek yine de devam etmek ister misiniz?\n"
+
+#: src/cmdline/cmdline_prompt.cc:408
+#, c-format
+msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
+msgstr "Devam etmek için \"%s\"; çıkmak için \"%s\" girin: "
+
+#: src/cmdline/cmdline_prompt.cc:422
+#, c-format
+msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
+msgstr "Tanınmayan girdi.  Ya \"%s\" ya da \"%s\" girin.\n"
+
+#: src/cmdline/cmdline_prompt.cc:521
+#, c-format
+msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
+msgstr "Aşağıdaki paketlerin kurulması ÖNERİLDİ, fakat KURULMAYACAK:\n"
+
+#: src/cmdline/cmdline_prompt.cc:527
+#, c-format
+msgid "The following packages are SUGGESTED but will NOT be installed:\n"
+msgstr "Aşağıdaki paketlerin kurulması TEKLİF EDİLDİ, fakat kurulmayacak:\n"
+
+#: src/cmdline/cmdline_prompt.cc:532
+#, c-format
+msgid "No packages will be installed, upgraded, or removed.\n"
+msgstr "Hiçbir paket kurulmayacak, yükseltilmeyecek ya da kaldırılmayacak.\n"
+
+#: src/cmdline/cmdline_prompt.cc:534
+#, c-format
+msgid "%lu packages upgraded, %lu newly installed, "
+msgstr "%lu paket yükseltildi, %lu yeni kuruldu, "
+
+#: src/cmdline/cmdline_prompt.cc:538
+#, c-format
+msgid "%lu reinstalled, "
+msgstr "%lu yeniden kuruldu, "
+
+#: src/cmdline/cmdline_prompt.cc:540
+#, c-format
+msgid "%lu downgraded, "
+msgstr "%lu eski sürümü yüklendi,"
+
+#: src/cmdline/cmdline_prompt.cc:542
+#, c-format
+msgid "%lu to remove and %lu not upgraded.\n"
+msgstr "%lu kaldırıldı, %lu yükseltilmedi.\n"
+
+#: src/cmdline/cmdline_prompt.cc:549
+#, c-format
+msgid "Need to get %sB/%sB of archives. "
+msgstr "Arşivden %sB/%sB alınacak."
+
+#: src/cmdline/cmdline_prompt.cc:552
+#, c-format
+msgid "Need to get %sB of archives. "
+msgstr "Arşivlerden %sB veri alınacak."
+
+#: src/cmdline/cmdline_prompt.cc:559
+#, c-format
+msgid "After unpacking %sB will be used.\n"
+msgstr "Paketler açıldıktan sonra %sB yer kullanılacak.\n"
+
+#: src/cmdline/cmdline_prompt.cc:562
+#, c-format
+msgid "After unpacking %sB will be freed.\n"
+msgstr "Paketler açıldıktan sonra %sB serbest kalacak.\n"
+
+#: src/cmdline/cmdline_prompt.cc:600
+#, c-format
+msgid "No packages to show -- enter the package names on the line after 'i'.\n"
+msgstr ""
+"Gösterilecek paket yok -- 'i'ye bastıktan sonra çıkan satıra paket "
+"isimlerini girin.\n"
+
+#: src/cmdline/cmdline_prompt.cc:602
+msgid "Press Return to continue."
+msgstr "Devam etmek için Enter tuşuna basın."
+
+#: src/cmdline/cmdline_prompt.cc:628
+#, c-format
+msgid "No packages found -- enter the package names on the line after 'c'.\n"
+msgstr ""
+"Paket bulunamadı -- 'c'ye bastıktan sonra çıkan satıra paket isimlerini "
+"girin.\n"
+
+#: src/cmdline/cmdline_prompt.cc:632
+msgid "Press Return to continue"
+msgstr "Devam etmek için Enter tuşuna basın."
+
+#: src/cmdline/cmdline_prompt.cc:643
+#, c-format
+msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
+msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
+
+#: src/cmdline/cmdline_prompt.cc:663
+msgid "continue with the installation"
+msgstr "kurulum ile devam et"
+
+#: src/cmdline/cmdline_prompt.cc:665
+msgid "abort and quit"
+msgstr "iptal et ve çık"
+
+#: src/cmdline/cmdline_prompt.cc:667
+msgid ""
+"show information about one or more packages; the package names should follow "
+"the 'i'"
+msgstr ""
+"bir ya da daha çok paket hakkında bilgi göster; paket isimleri 'i'yi takip "
+"etmeli"
+
+#: src/cmdline/cmdline_prompt.cc:669
+msgid ""
+"show the Debian changelogs of one or more packages; the package names should "
+"follow the 'c'"
+msgstr ""
+"bir ya da daha çok paketin Debian değişiklik güncesini göster; paket "
+"isimleri 'c'yi takip etmeli"
+
+#: src/cmdline/cmdline_prompt.cc:671
+msgid "toggle the display of dependency information"
+msgstr "bağımlılık bilgisi görünümünü değiştir"
+
+#: src/cmdline/cmdline_prompt.cc:673
+msgid "toggle the display of changes in package sizes"
+msgstr "paket boyutundaki değişim görünümünü değiştir"
+
+#: src/cmdline/cmdline_prompt.cc:675
+msgid "toggle the display of version numbers"
+msgstr "sürüm numaraları görünümünü değiştir"
+
+#: src/cmdline/cmdline_prompt.cc:677
+msgid "enter the full visual interface"
+msgstr "tam görsel arayüze geç"
+
+#: src/cmdline/cmdline_prompt.cc:678
+msgid ""
+"You may also specify modification to the actions which will be taken.  To do "
+"so, type an action character followed by one or more package names (or "
+"patterns).  The action will be applied to all the packages that you list.  "
+"The following actions are available:"
+msgstr ""
+"Gerçekleştirilecek eylem için değişiklik yapılmalı. Bunun için, bir ya da "
+"daha fazla paket isminden (veya parçası) sonra bir eylem karakteri girin. "
+"Eylem belirttiğiniz paketler üstünde işleme sokulacaktır. Mevcut eylemler: "
+
+#: src/cmdline/cmdline_prompt.cc:683 src/cmdline/cmdline_resolver.cc:167
+msgid "'+' to install packages"
+msgstr "Paket kurmak için '+'"
+
+#: src/cmdline/cmdline_prompt.cc:685 src/cmdline/cmdline_resolver.cc:169
+msgid ""
+"'+M' to install packages and immediately flag them as automatically installed"
+msgstr ""
+"Paketleri kurmak ve hemen otomatik kuruldu olarak işaretlemek için '+M'"
+
+#: src/cmdline/cmdline_prompt.cc:687 src/cmdline/cmdline_resolver.cc:171
+msgid "'-' to remove packages"
+msgstr "Paket kaldırmak için '-'"
+
+#: src/cmdline/cmdline_prompt.cc:689 src/cmdline/cmdline_resolver.cc:173
+msgid "'_' to purge packages"
+msgstr "Paketi temizlemek için '_'"
+
+#: src/cmdline/cmdline_prompt.cc:691 src/cmdline/cmdline_resolver.cc:175
+msgid "'=' to place packages on hold"
+msgstr "Paketi tutmak için '='"
+
+#: src/cmdline/cmdline_prompt.cc:693 src/cmdline/cmdline_resolver.cc:177
+msgid ""
+"':' to keep packages in their current state without placing them on hold"
+msgstr "paketleri mevcut duruma sabitlemek için ':'"
+
+#: src/cmdline/cmdline_prompt.cc:695 src/cmdline/cmdline_resolver.cc:179
+msgid "'&M' to mark packages as automatically installed"
+msgstr "Paketi otomatik kurulmuş olarak işaretlemek için'&M'"
+
+#: src/cmdline/cmdline_prompt.cc:697 src/cmdline/cmdline_resolver.cc:181
+msgid "'&m' to mark packages as manually installed"
+msgstr "Paketleri elle kurulmuş olarak işaretlemek için '&m'"
+
+#: src/cmdline/cmdline_prompt.cc:699
+msgid "Commands:"
+msgstr "Komutlar:"
+
+#: src/cmdline/cmdline_prompt.cc:754
+msgid "Do you want to continue? [Y/n/?] "
+msgstr "Devam etmek istiyor musunuz? [Y/n/?]"
+
+#: src/cmdline/cmdline_prompt.cc:779
+#, c-format
+msgid ""
+"\n"
+"Dependency information will be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Bağımlılık bilgisi gösterilecek.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:781
+#, c-format
+msgid ""
+"\n"
+"Dependency information will not be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Bağımlılık bilgisi gösterilmeyecek.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:787
+#, c-format
+msgid ""
+"\n"
+"Versions will be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Sürümler gösterilecek.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:789
+#, c-format
+msgid ""
+"\n"
+"Versions will not be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Sürümler gösterilmeyecek.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:794
+#, c-format
+msgid ""
+"\n"
+"Size changes will be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Boyut değişiklikleri gösterilecek.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:796
+#, c-format
+msgid ""
+"\n"
+"Size changes will not be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Boyut değişiklikleri gösterilmeyecek.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:819
+#, c-format
+msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
+msgstr ""
+"Geçersiz cevap.  Lütfen geçerli bir komut girin ya da yardım için '?'.\n"
+
+#: src/cmdline/cmdline_resolver.cc:128
+#, fuzzy, c-format
+msgid ""
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
+"n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
+msgstr "y: %Fn: %Fq: %F,: %F.: %F<EYLEM> pkg... : %F%n%F%F%F%F%F%F%F%F"
+
+#: src/cmdline/cmdline_resolver.cc:147
+msgid "accept the proposed changes"
+msgstr "önerilen değişikliği kabul et"
+
+#: src/cmdline/cmdline_resolver.cc:149
+msgid "reject the proposed changes and search for another solution"
+msgstr "önerilen değişiliği reddet ve başka bir çözüm bul"
+
+#: src/cmdline/cmdline_resolver.cc:151
+msgid "give up and quit the program"
+msgstr "vazgeç ve uygulamadan çık"
+
+#: src/cmdline/cmdline_resolver.cc:153
+msgid "move to the next solution"
+msgstr "sonraki çözüme taşı"
+
+#: src/cmdline/cmdline_resolver.cc:155
+msgid "move to the previous solution"
+msgstr "önceki çözüme taşı"
+
+#: src/cmdline/cmdline_resolver.cc:157
+msgid "view an explanation of the changes in the solution"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:159
+#, fuzzy
+msgid "examine the solution in the visual user interface"
+msgstr "Kullanıcı arayüzünü etkileyen ayarları değiştirir"
+
+#: src/cmdline/cmdline_resolver.cc:161
+msgid ""
+"reject the given package versions; don't display any solutions in which they "
+"occur."
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:163
+msgid ""
+"accept the given package versions; display only solutions in which they "
+"occur."
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:165
+msgid "adjust the state of the listed packages, where ACTION is one of:"
+msgstr "listelenen paketlerin durumunu ayarla, EYLEM:"
+
+#: src/cmdline/cmdline_resolver.cc:183
+msgid ""
+"Adjustments will cause the current solution to be discarded and recalculated "
+"as necessary."
+msgstr ""
+"Ayarlamalar şu an ki çözümün göz ardı edilmesine neden olacak ve gerekli "
+"olursa yeniden hesaplanacak."
+
+#: src/cmdline/cmdline_resolver.cc:197
+#, c-format
+msgid "The version %s is available in the following archives:"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:205
+#, fuzzy, c-format
+msgid "Select the version of %s that should be used: "
+msgstr "Çözücü durumunun kaydedileceği dosya:"
+
+#: src/cmdline/cmdline_resolver.cc:212
+#, fuzzy, c-format
+msgid "Invalid response.  Please enter an integer between 1 and %d."
+msgstr "Geçersiz yanıt. lütfen 'e' veya 'h' girin."
+
+#: src/cmdline/cmdline_resolver.cc:227
+#, c-format
+msgid "Expected at least one package/version pair following '%c'"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:241
+#, fuzzy, c-format
+msgid "Expected a version after \"%s\""
+msgstr "\"%ls\"den sonra paket gösterimi kod dönüşümü yapılamıyor"
+
+#: src/cmdline/cmdline_resolver.cc:251
+#, fuzzy, c-format
+msgid "No such package \"%s\""
+msgstr "Kaynak paketi: "
+
+#: src/cmdline/cmdline_resolver.cc:267
+#, c-format
+msgid "%s has no version named \"%s\""
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:284
+#, c-format
+msgid "Allowing the removal of %s"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:287
+#, c-format
+msgid "Allowing the installation of %s version %s (%s)"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:297
+#, c-format
+msgid "Rejecting the removal of %s"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:300
+#, c-format
+msgid "Rejecting the installation of %s version %s (%s)"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:313
+#, c-format
+msgid "No longer requiring the removal of %s"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:316
+#, c-format
+msgid "No longer requiring the installation of %s version %s (%s)"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:325
+#, c-format
+msgid "Requiring the removal of %s"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:328
+#, c-format
+msgid "Requiring the installation of %s version %s (%s)"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:447 src/solution_screen.cc:486
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:493
+msgid "The following actions will resolve these dependencies:"
+msgstr "Aşağıdaki paketler bu bağımlılıkları karşılayacak:"
+
+#: src/cmdline/cmdline_resolver.cc:508
+msgid "Accept this solution? [Y/n/q/?] "
+msgstr "Çözümü kabul et? [E/h/i/?]"
+
+#: src/cmdline/cmdline_resolver.cc:535 src/cmdline/cmdline_resolver.cc:627
+msgid "Abandoning all efforts to resolve these dependencies."
+msgstr "Bağımlılıkları çözmek için yapılan işlemler iptal ediliyor."
+
+#: src/cmdline/cmdline_resolver.cc:562
+msgid "The following commands are available:"
+msgstr "Şu komutlar mevcut:"
+
+#: src/cmdline/cmdline_resolver.cc:577
+msgid "File to write resolver state to: "
+msgstr "Çözümleyici durumunu dosyaya yaz:"
+
+#: src/cmdline/cmdline_resolver.cc:580 src/generic/apt/apt.cc:171
+#, c-format
+msgid "Unable to open %s for writing"
+msgstr "%s yazmak için açılamıyor"
+
+#: src/cmdline/cmdline_resolver.cc:585
+#, c-format
+msgid "Error writing resolver state to %s"
+msgstr "%s'e çözümleyici durumu yazmadan hata"
+
+#: src/cmdline/cmdline_resolver.cc:587
+msgid "Resolver state successfully written!"
+msgstr "Çözümleyici durumu başarıyla yazıldı!"
+
+#: src/cmdline/cmdline_resolver.cc:592
+msgid "Invalid response; please enter one of the following commands:"
+msgstr "Geçersiz yanıt. Lütfen şu komutları kullanın: "
+
+#: src/cmdline/cmdline_resolver.cc:602
+msgid "No solution found within the allotted time.  Try harder? [Y/n]"
+msgstr "Belirlenmiş sürede çözüm bulunamadı. Denemeye devam et? [E/h]"
+
+#: src/cmdline/cmdline_resolver.cc:630
+msgid "Invalid response; please enter 'y' or 'n'."
+msgstr "Geçersiz yanıt. lütfen 'e' veya 'h' girin."
+
+#: src/cmdline/cmdline_resolver.cc:639
+msgid "Unable to resolve dependencies!  Giving up..."
+msgstr "Başımlılık çözülemiyor! Vazgeçiliyor..."
+
+#: src/cmdline/cmdline_resolver.cc:644 src/ui.cc:1583
+msgid "No more solutions."
+msgstr "Başka çözüm yok."
+
+#: src/cmdline/cmdline_search.cc:100
+#, c-format
+msgid "iconv of %s failed.\n"
+msgstr "%s için iconv hatalı.\n"
+
+#: src/cmdline/cmdline_search.cc:116
+#, c-format
+msgid "search: You must provide at least one search term\n"
+msgstr "Arama: En az bir arama terimi girmelisiniz\n"
+
+#: src/cmdline/cmdline_show_broken.cc:113
+#, c-format
+msgid "The following packages have unmet dependencies:\n"
+msgstr "Aşağıdaki paketler bağımlılıkları karşılamıyor:\n"
+
+#: src/cmdline/cmdline_show.cc:120 src/cmdline/cmdline_show.cc:306
+#: src/solution_fragment.cc:56
+msgid "<NULL>"
+msgstr "<BOŞ>"
+
+#: src/cmdline/cmdline_show.cc:139
+msgid "not installed"
+msgstr "kurulmadı"
+
+#: src/cmdline/cmdline_show.cc:141 src/pkg_columnizer.cc:233
+#: src/pkg_ver_item.cc:227
+msgid "unpacked"
+msgstr "paketlenmemiş"
+
+#: src/cmdline/cmdline_show.cc:143
+msgid "partially configured"
+msgstr "tam yapılandırılmamış"
+
+#: src/cmdline/cmdline_show.cc:145
+msgid "partially installed"
+msgstr "kısmen kuruldu"
+
+#: src/cmdline/cmdline_show.cc:147
+msgid "not installed (configuration files remain)"
+msgstr "kurulu değil (yapılandırma dosyaları kalmış)"
+
+#: src/cmdline/cmdline_show.cc:149 src/pkg_columnizer.cc:241
+#: src/pkg_ver_item.cc:235
+msgid "installed"
+msgstr "kuruldu"
+
+#: src/cmdline/cmdline_show.cc:158
+msgid "not a real package"
+msgstr "gerçek bir paket değil"
+
+#: src/cmdline/cmdline_show.cc:171
+msgid " [held]"
+msgstr " [tut]"
+
+#: src/cmdline/cmdline_show.cc:180
+#, c-format
+msgid "%s; version %s will be installed"
+msgstr "%s; %s sürümü kurulacak."
+
+#: src/cmdline/cmdline_show.cc:184
+#, c-format
+msgid "%s; version %s will be installed automatically"
+msgstr "%s; %s sürümü otomatik olarak kurulacak"
+
+#: src/cmdline/cmdline_show.cc:190 src/cmdline/cmdline_show.cc:205
+#, c-format
+msgid "%s; will be purged"
+msgstr "%s; temizlenecek"
+
+#: src/cmdline/cmdline_show.cc:203
+#, c-format
+msgid "%s; will be purged because nothing depends on it"
+msgstr ""
+"%s; paketi ihtiyaç duyulmadığından yapılandırması ile beraber silinecek"
+
+#: src/cmdline/cmdline_show.cc:210
+#, c-format
+msgid "%s; will be removed because nothing depends on it"
+msgstr "%s; paketi başka paketlerce ihtiyaç duyulmadığından kaldırılacak"
+
+#: src/cmdline/cmdline_show.cc:212
+#, c-format
+msgid "%s; will be removed"
+msgstr "%s; kaldırılacak"
+
+#: src/cmdline/cmdline_show.cc:226
+#, c-format
+msgid "%s%s; will be downgraded [%s -> %s]"
+msgstr "%s%s; daha eski sürümü kurulacak [%s -> %s]"
+
+#: src/cmdline/cmdline_show.cc:229
+#, c-format
+msgid "%s%s; will be upgraded [%s -> %s]"
+msgstr "%s%s; yükseltilecek [%s -> %s]"
+
+#: src/cmdline/cmdline_show.cc:241 src/cmdline/cmdline_show.cc:262
+msgid "Package: "
+msgstr "Paket:"
+
+#: src/cmdline/cmdline_show.cc:242 src/cmdline/cmdline_show.cc:270
+#: src/pkg_columnizer.cc:89
+msgid "State"
+msgstr "Durum"
+
+#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:326
+#: src/generic/apt/matchers.cc:1371
+msgid "Provided by"
+msgstr "Sağlayıcı"
+
+#: src/cmdline/cmdline_show.cc:264 src/pkg_info_screen.cc:107
+msgid "Essential: "
+msgstr "Önemli: "
+
+#: src/cmdline/cmdline_show.cc:264 src/cmdline/cmdline_show.cc:268
+#: src/cmdline/cmdline_show.cc:279 src/pkg_info_screen.cc:107
+msgid "yes"
+msgstr "evet"
+
+#: src/cmdline/cmdline_show.cc:268
+msgid "New"
+msgstr "Yeni"
+
+#: src/cmdline/cmdline_show.cc:273
+msgid "Forbidden version"
+msgstr "Engellenen sürüm"
+
+#: src/cmdline/cmdline_show.cc:277
+msgid "Automatically installed"
+msgstr "Otomatik olarak kuruldu"
+
+#: src/cmdline/cmdline_show.cc:279
+msgid "no"
+msgstr "hayır"
+
+#: src/cmdline/cmdline_show.cc:281
+msgid "Version: "
+msgstr "Sürüm:"
+
+#: src/cmdline/cmdline_show.cc:282 src/pkg_info_screen.cc:115
+msgid "Priority: "
+msgstr "Öncelik: "
+
+#: src/cmdline/cmdline_show.cc:283 src/cmdline/cmdline_show.cc:285
+#: src/cmdline/cmdline_show.cc:294
+msgid "N/A"
+msgstr "N/A"
+
+#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:116
+msgid "Section: "
+msgstr "Bölüm: "
+
+#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:117
+msgid "Maintainer: "
+msgstr "Sağlayıcı: "
+
+#: src/cmdline/cmdline_show.cc:289
+msgid "Uncompressed Size: "
+msgstr "Açılmış Boyutu: "
+
+#: src/cmdline/cmdline_show.cc:293
+msgid "Architecture: "
+msgstr "Mimari: "
+
+#: src/cmdline/cmdline_show.cc:295
+msgid "Compressed Size: "
+msgstr "Sıkıştırılmış Boyutu: "
+
+#: src/cmdline/cmdline_show.cc:297
+msgid "Filename: "
+msgstr "Dosyaadı: "
+
+#: src/cmdline/cmdline_show.cc:299
+msgid "MD5sum: "
+msgstr "MD5sum: "
+
+#: src/cmdline/cmdline_show.cc:303 src/cmdline/cmdline_show.cc:306
+msgid "Archive"
+msgstr "Arşiv"
+
+#: src/cmdline/cmdline_show.cc:311
+msgid "Depends"
+msgstr "bağımlılıklar"
+
+#: src/cmdline/cmdline_show.cc:313
+msgid "PreDepends"
+msgstr "ÖnBağımlılıklar"
+
+#: src/cmdline/cmdline_show.cc:315
+msgid "Recommends"
+msgstr "Önerilenler"
+
+#: src/cmdline/cmdline_show.cc:317
+msgid "Suggests"
+msgstr "Teklif edilenler"
+
+#: src/cmdline/cmdline_show.cc:319
+msgid "Conflicts"
+msgstr "Çakışmalar"
+
+#: src/cmdline/cmdline_show.cc:321
+msgid "Replaces"
+msgstr "Değiştirilenler"
+
+#: src/cmdline/cmdline_show.cc:323
+msgid "Obsoletes"
+msgstr "Eskiyenler"
+
+#: src/cmdline/cmdline_show.cc:325 src/generic/apt/matchers.cc:1325
+msgid "Provides"
+msgstr "Sağladığı"
+
+#: src/cmdline/cmdline_show.cc:329 src/pkg_info_screen.cc:95
+msgid "Description: "
+msgstr "Tanım: "
+
+#: src/cmdline/cmdline_show.cc:377
+#, fuzzy, c-format
+msgid "Unable to locate package %s"
+msgstr "%ls açılamıyor"
+
+#: src/cmdline/cmdline_show.cc:399
+#, fuzzy, c-format
+msgid "Unable to parse pattern %s"
+msgstr "%ls açılamıyor"
+
+#: src/cmdline/cmdline_simulate.cc:37
+#, c-format
+msgid "Would download/install/remove packages.\n"
+msgstr "Paketleri indir/kur/kaldır.\n"
+
+#: src/cmdline/cmdline_simulate.cc:48
+msgid "Internal Error, Ordering didn't finish"
+msgstr "İç hata, istek bitirilemedi"
+
+#: src/cmdline/cmdline_update.cc:33
+#, c-format
+msgid "Deleting obsolete downloaded files\n"
+msgstr "İndirilen eskimiş dosyalar siliniyor\n"
+
+#: src/cmdline/cmdline_update.cc:42
+#, c-format
+msgid "E: The update command takes no arguments\n"
+msgstr "E: Güncelle komutu argüman kabul etmez\n"
+
+#: src/cmdline/cmdline_util.cc:87
+#, c-format
+msgid "No candidate version found for %s\n"
+msgstr "%s için kullanılabilir bir sürüm bulunamadı\n"
+
+#: src/cmdline/cmdline_util.cc:101
+#, c-format
+msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
+msgstr "\"%2$s\" paketi için \"%1$s\" arşivi bulunamıyor\n"
+
+#: src/cmdline/cmdline_util.cc:111
+#, c-format
+msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
+msgstr "\"%2$s\" paketi için sürüm \"%1$s\" bulunamıyor\n"
+
+#: src/cmdline/cmdline_util.cc:117
+#, c-format
+msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
+msgstr "İç hata: \"cmdline_find_ver\"e hatalı değer '%i' geçildi!\n"
+
+#: src/cmdline/cmdline_util.cc:147
+#, c-format
+msgid "You cannot specify both an archive and a version for a package\n"
+msgstr "Bir paket için bir arşiv ve bir sürümü birlikte belirtemezsiniz\n"
+
+#: src/dep_item.cc:139
+msgid "UNSATISFIED"
+msgstr " KARŞILANAMAZ"
+
+#: src/dep_item.cc:139 src/reason_fragment.cc:244
+msgid "UNAVAILABLE"
+msgstr "MEVCUT DEĞİL"
+
+#: src/desc_parse.cc:267
+#, fuzzy
+msgid "Tags"
+msgstr "Etiket"
+
+#: src/download_bar.cc:49 src/download_list.cc:335 src/download_screen.cc:56
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Lütfen \"%2$s\" sürücüsüne \"%1$s\" diskini yerleştirin"
+
+#: src/download_bar.cc:66 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "İsabet "
+
+#: src/download_bar.cc:77
+msgid "Downloading "
+msgstr "İndiriliyor "
+
+#: src/download_bar.cc:88
+msgid "Got "
+msgstr "Alındı "
+
+#: src/download_bar.cc:138
+msgid "Downloading..."
+msgstr "İndiriliyor..."
+
+#: src/download_item.cc:72 src/download_item.cc:76 src/download_item.cc:98
+#: src/generic/apt/acqprogress.cc:248
+#, c-format
+msgid " [Working]"
+msgstr "[Çalışılıyor]"
+
+#: src/download_item.cc:102 src/download_list.cc:356
+msgid "[Hit]"
+msgstr "[İsabet]"
+
+#: src/download_item.cc:102 src/download_list.cc:378
+msgid "[Downloaded]"
+msgstr "[İndirilmiş]"
+
+#: src/download_list.cc:70
+#, c-format
+msgid "Downloaded %sB in %s (%sB/s)."
+msgstr "%sB %s de indirildi (%sB/s)."
+
+#: src/download_list.cc:76
+#, c-format
+msgid "%n%nSome files were not downloaded successfully."
+msgstr "%n%nBazı dosyalar indirilemedi."
+
+#: src/download_list.cc:86 src/download_list.cc:340 src/download_screen.cc:64
+msgid "Continue"
+msgstr "Devam"
+
+#: src/download_list.cc:203 src/download_screen.cc:203
+msgid "Total Progress: "
+msgstr "Toplam İlerleme: "
+
+#: src/download_list.cc:231 src/download_screen.cc:218
+#, c-format
+msgid " [ %i%% ] (%sB/s, %s remaining)"
+msgstr " [ %i%% ] (%sB/s, %s kaldı)"
+
+#: src/download_list.cc:233
+#, c-format
+msgid " [ %i%% ] (stalled)"
+msgstr " [ %i%% ] (askıda)"
+
+#: src/download_list.cc:235 src/download_list.cc:264
+#, c-format
+msgid " [ %i%% ]"
+msgstr " [ %i%% ]"
+
+#: src/download_list.cc:342 src/download_screen.cc:67
+msgid "Abort"
+msgstr "İptal"
+
+#: src/download_list.cc:400
+msgid "[IGNORED]"
+msgstr "[YOK SAYILDI]"
+
+#: src/download_list.cc:406
+msgid "[ERROR]"
+msgstr "[HATA]"
+
+#: src/download_screen.cc:182
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "İndirildi: %2$ss'de %1$sB (%3$sB/s)."
+
+#: src/edit_pkg_hier.cc:184
+msgid "No hierarchy information to edit"
+msgstr "Düzenlemek için hiyerarşi bilgisi bulunamadı"
+
+#: src/edit_pkg_hier.cc:286
+msgid "Couldn't open for writing"
+msgstr "Yazmak için açılamıyor"
+
+#: src/edit_pkg_hier.cc:331
+msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
+msgstr ""
+
+#: src/generic/apt/acqprogress.cc:89
+msgid "Get:"
+msgstr "Alınıyor:"
+
+#: src/generic/apt/acqprogress.cc:120
+msgid "Ign "
+msgstr "Gze"
+
+#: src/generic/apt/acqprogress.cc:124
+msgid "Err "
+msgstr "Hat"
+
+#: src/generic/apt/acqprogress.cc:148
+#, c-format
+msgid "Fetched %sB in %s (%sB/s)\n"
+msgstr "%2$s'de  %1$sB alındı (%3$sB/s)\n"
+
+#: src/generic/apt/acqprogress.cc:296
+#, c-format
+msgid ""
+"Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
+"press enter\n"
+msgstr ""
+"Disk Değişikliği: Lütfen '%s' diskini '%s' sürücüsüne yerleştirin ve enter "
+"tuşuna basın\n"
+
+#: src/generic/apt/aptcache.cc:259
+msgid "Can't open Aptitude extended state file"
+msgstr "Aptitude geniş durum dosyası açılamıyor"
+
+#: src/generic/apt/aptcache.cc:266 src/generic/apt/aptcache.cc:319
+#: src/generic/apt/aptcache.cc:321
+msgid "Reading extended state information"
+msgstr "Geniş durum bilgisi okunuyor"
+
+#: src/generic/apt/aptcache.cc:327 src/generic/apt/aptcache.cc:398
+#: src/generic/apt/aptcache.cc:401
+msgid "Initializing package states"
+msgstr "Paketlerin durumu güncelleniyor"
+
+#: src/generic/apt/aptcache.cc:525
+msgid "Cannot open Aptitude state file"
+msgstr "Aptitude durum dosyası açılamıyor"
+
+#: src/generic/apt/aptcache.cc:529 src/generic/apt/aptcache.cc:584
+#: src/generic/apt/aptcache.cc:587
+msgid "Writing extended state information"
+msgstr "Geniş durum bilgisi yazılıyor"
+
+#: src/generic/apt/aptcache.cc:566
+#, c-format
+msgid "Internal buffer overflow on package \"%s\" while writing state file"
+msgstr "\"%s\" paketinde durum dosyası yazılırken iç tampon taşması"
+
+#: src/generic/apt/aptcache.cc:575
+msgid "Couldn't write state file"
+msgstr "Durum dosyası yazılamıyor"
+
+#: src/generic/apt/aptcache.cc:592
+msgid "Error writing state file"
+msgstr "Durum dosyası yazma hatası"
+
+#: src/generic/apt/aptcache.cc:610
+#, fuzzy, c-format
+msgid "failed to remove %s"
+msgstr "%ls açılamıyor"
+
+#: src/generic/apt/aptcache.cc:617
+#, c-format
+msgid "failed to rename %s to %s"
+msgstr ""
+
+#: src/generic/apt/aptcache.cc:625
+#, fuzzy, c-format
+msgid "couldn't replace %s with %s"
+msgstr "Eski durum dosyası değiştirilemiyor"
+
+#: src/generic/apt/aptcache.cc:1117
+msgid "Unable to correct dependencies, some packages cannot be installed"
+msgstr "Bağımlılıklar sağlanamıyor, bazı paketler kurulamıyor"
+
+#: src/generic/apt/aptcache.cc:1518
+msgid "The list of sources could not be read."
+msgstr "Kaynak listesi okunamıyor"
+
+#: src/generic/apt/aptcache.cc:1525
+msgid "The package lists or status file could not be parsed or opened."
+msgstr "Paket listesi ya da durum dosyası anlaşılamadı ya da açılamadı"
+
+#: src/generic/apt/aptcache.cc:1528
+msgid "You may want to update the package lists to correct these missing files"
+msgstr "Bu kayıp dosyalar için paket listesini güncellemek istemelisiniz"
+
+#: src/generic/apt/apt.cc:181
+#, c-format
+msgid "Unable to replace %s with new configuration file"
+msgstr "%s yeni yapılandırma dosyası ile değiştirilemiyor"
+
+#: src/generic/apt/apt.cc:265
+msgid ""
+"Could not lock the cache file.  Opening in read-only mode; any changes you "
+"make to the states of packages will NOT be preserved!"
+msgstr ""
+"Tampon dosyası kilitlenemiyor. Salt-okunur halde açılıyor; bu durumda paket "
+"durumlarında yaptığınız değişiklikler SAKLANMAYACAKTIR!"
+
+#: src/generic/apt/download_install_manager.cc:53
+#, fuzzy
+msgid ""
+"The package cache is not available; unable to download and install packages."
+msgstr "Paket tamponu mevcut değil."
+
+#: src/generic/apt/download_install_manager.cc:69
+#: src/generic/apt/download_update_manager.cc:79
+msgid "Couldn't lock list directory..are you root?"
+msgstr "Liste dizini kilitlenemiyor.. root kullanıcısı mısınız?"
+
+#: src/generic/apt/download_install_manager.cc:88
+msgid "Internal error: couldn't generate list of packages to download"
+msgstr "İç hata: indirilecek paketlerin listesi oluşturulamıyor"
+
+#: src/generic/apt/download_install_manager.cc:123
+msgid "Unable to correct for unavailable packages"
+msgstr "Mevcut olmayan paketler için düzeltme yapılamıyor"
+
+#: src/generic/apt/download_install_manager.cc:143
+#, fuzzy
+msgid "A package failed to install.  Trying to recover:"
+msgstr ""
+"Bilgi:  Paketler kurulurken bazı şeyler yolunda gitmedi.  Geri almaya "
+"çalışılıyor:"
+
+#: src/generic/apt/download_install_manager.cc:176
+msgid ""
+"Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
+msgstr ""
+"Sistem kilidi ele geçirilemiyor!  (Belki başka bir apt ya da dpkg çalışıyor?)"
+
+#: src/generic/apt/download_update_manager.cc:68
+msgid "Couldn't read list of package sources"
+msgstr "Paket kaynakları listesi okunamıyor"
+
+#: src/generic/apt/download_update_manager.cc:113
+msgid "Couldn't clean out list directories"
+msgstr "Liste dizinleri temizlenemiyor"
+
+#: src/generic/apt/log.cc:52
+#, c-format
+msgid "Unable to open %s to log actions"
+msgstr "Günlük eylemleri için %s açılamıyor"
+
+#: src/generic/apt/log.cc:64
+#, fuzzy, c-format
+msgid "Error generating local time (%s)"
+msgstr "%s'e çözümleyici durumu yazmadan hata"
+
+#: src/generic/apt/log.cc:68
+msgid "log report"
+msgstr "günlük raporu"
+
+#: src/generic/apt/log.cc:69
+#, c-format
+msgid ""
+"IMPORTANT: this log only lists intended actions; actions which fail due to\n"
+"dpkg problems may not be completed.\n"
+"\n"
+msgstr ""
+"ÖNEMLİ: Bu günlük sadece denenmiş eylemleri içerir; yani dpkg sorunlarından\n"
+"dolayı yerine getirilmemiş eylemler.\n"
+
+#: src/generic/apt/log.cc:70
+#, c-format
+msgid "Will install %li packages, and remove %li packages.\n"
+msgstr "%li paket kurulacak, ve %li paket kaldırılacak.\n"
+
+#: src/generic/apt/log.cc:74
+#, c-format
+msgid "%sB of disk space will be used\n"
+msgstr "%sB disk alanı kullanılacak\n"
+
+#: src/generic/apt/log.cc:77
+#, c-format
+msgid "%sB of disk space will be freed\n"
+msgstr "%sB disk alanı boşaltılacak\n"
+
+#: src/generic/apt/log.cc:87
+#, c-format
+msgid "[UPGRADE] %s %s -> %s\n"
+msgstr "[YÜKSELTME] %s %s -> %s\n"
+
+#: src/generic/apt/log.cc:91
+#, c-format
+msgid "[DOWNGRADE] %s %s -> %s\n"
+msgstr "[İNDİRGEME] %s %s -> %s\n"
+
+#: src/generic/apt/log.cc:101
+msgid "REMOVE"
+msgstr "KALDIR"
+
+#: src/generic/apt/log.cc:107
+msgid "INSTALL"
+msgstr "KUR"
+
+#: src/generic/apt/log.cc:110
+msgid "REINSTALL"
+msgstr "YENİDEN KUR"
+
+#: src/generic/apt/log.cc:113
+msgid "HOLD"
+msgstr "TUT"
+
+#: src/generic/apt/log.cc:116
+msgid "BROKEN"
+msgstr "KIRIK"
+
+#: src/generic/apt/log.cc:119
+msgid "REMOVE, NOT USED"
+msgstr "KALDIR, KULLANILMAYAN"
+
+#: src/generic/apt/log.cc:122
+msgid "REMOVE, DEPENDENCIES"
+msgstr "KALDIR, BAĞIMLILIKLAR"
+
+#: src/generic/apt/log.cc:125
+msgid "INSTALL, DEPENDENCIES"
+msgstr "KUR, BAĞIMLILIKLAR"
+
+#: src/generic/apt/log.cc:128
+msgid "HOLD, DEPENDENCIES"
+msgstr "TUT, BAĞIMLILIKLAR"
+
+#: src/generic/apt/log.cc:130
+msgid "????????"
+msgstr "????????"
+
+#: src/generic/apt/log.cc:134
+#, c-format
+msgid "[%s] %s\n"
+msgstr "[%s] %s\n"
+
+#: src/generic/apt/log.cc:137
+#, c-format
+msgid ""
+"===============================================================================\n"
+"\n"
+"Log complete.\n"
+msgstr ""
+"===============================================================================\n"
+"\n"
+"Günlük tamamlandı.\n"
+
+#: src/generic/apt/matchers.cc:589
+#, fuzzy
+msgid "Automatically Installed"
+msgstr "Otomatik olarak kuruldu"
+
+#: src/generic/apt/matchers.cc:611 src/generic/apt/matchers.cc:798
+#, fuzzy
+msgid "Broken"
+msgstr "#Kırık"
+
+#: src/generic/apt/matchers.cc:796
+#, fuzzy
+msgid "Unchanged"
+msgstr "%s değişiklikleri"
+
+#: src/generic/apt/matchers.cc:800
+msgid "Remove [unused]"
+msgstr ""
+
+#: src/generic/apt/matchers.cc:802
+msgid "Hold [auto]"
+msgstr ""
+
+#: src/generic/apt/matchers.cc:804
+#, fuzzy
+msgid "Install [auto]"
+msgstr "^Kur"
+
+#: src/generic/apt/matchers.cc:806
+#, fuzzy
+msgid "Remove [auto]"
+msgstr "^Kaldır"
+
+#: src/generic/apt/matchers.cc:808
+#, fuzzy
+msgid "Downgrade"
+msgstr "eski sürümü kurulursa"
+
+#: src/generic/apt/matchers.cc:810
+#, fuzzy
+msgid "Hold"
+msgstr "^Tut"
+
+#: src/generic/apt/matchers.cc:812
+#, fuzzy
+msgid "Reinstall"
+msgstr "tekrarkur"
+
+#: src/generic/apt/matchers.cc:814
+#, fuzzy
+msgid "Install"
+msgstr "^Kur"
+
+#: src/generic/apt/matchers.cc:816
+#, fuzzy
+msgid "Remove"
+msgstr "^Kaldır"
+
+#: src/generic/apt/matchers.cc:818
+#, fuzzy
+msgid "Upgrade"
+msgstr "güncelle"
+
+#: src/generic/apt/matchers.cc:838
+#, fuzzy
+msgid "Keep"
+msgstr "^Koru"
+
+#: src/generic/apt/matchers.cc:860
+#, fuzzy
+msgid "Virtual"
+msgstr "sanal"
+
+#: src/generic/apt/matchers.cc:881
+#, fuzzy
+msgid "Installed"
+msgstr "kuruldu"
+
+#: src/generic/apt/matchers.cc:903
+#, fuzzy
+msgid "Essential"
+msgstr "Önemli: "
+
+#: src/generic/apt/matchers.cc:922
+msgid "Config Files Remain"
+msgstr ""
+
+#: src/generic/apt/matchers.cc:1139
+msgid "Garbage"
+msgstr ""
+
+#: src/generic/apt/matchers.cc:1420
+#, fuzzy
+msgid "No reverse dependencies"
+msgstr "Bağımlılıklar çözülemiytor."
+
+#: src/generic/apt/matchers.cc:1486
+#, fuzzy
+msgid "New Package"
+msgstr "Yeni paket gö^rünümü"
+
+#: src/generic/apt/matchers.cc:1505
+#, fuzzy
+msgid "Upgradable"
+msgstr "^Güncellenebilir işaretle"
+
+#: src/generic/apt/matchers.cc:1629
+#, fuzzy, c-format
+msgid "Unterminated literal string after %s"
+msgstr "\"%ls\"den sonra çoklu bayt dizgisi çözülemiyor"
+
+#: src/generic/apt/matchers.cc:1689
+msgid "Unmatched '('"
+msgstr "Eşleşmeyen '('"
+
+#: src/generic/apt/matchers.cc:1799 src/generic/apt/matchers.cc:1869
+#, c-format
+msgid "Unknown dependency type: %s"
+msgstr "Bilinmeyen bağımlılık tipi: %s"
+
+#: src/generic/apt/matchers.cc:1857
+#, c-format
+msgid "Unknown action type: %s"
+msgstr "Bilinmeyen eylem tipi: %s"
+
+#: src/generic/apt/matchers.cc:1911
+#, c-format
+msgid "Unknown priority %s"
+msgstr "Bilinmeyen öncelik: %s"
+
+#: src/generic/apt/matchers.cc:1925
+#, c-format
+msgid "Unknown pattern type: %c"
+msgstr "Bilinmeyen desen tipi: %c"
+
+#: src/generic/apt/matchers.cc:1948
+#, fuzzy
+msgid "Can't search for \"\""
+msgstr "Ara: "
+
+#: src/generic/apt/matchers.cc:1976
+msgid "Unexpected empty expression"
+msgstr "Beklenmeyen boş ifade"
+
+#: src/generic/apt/matchers.cc:2003
+msgid "Badly formed expression"
+msgstr "Kötü biçimli ifade"
+
+#: src/generic/apt/matchers.cc:2038
+msgid "Unexpected ')'"
+msgstr "Beklenmeyen ')'"
+
+#: src/generic/apt/pkg_acqfile.cc:86
+#, c-format
+msgid ""
+"I wasn't able to locate a file for the %s package. This might mean you need "
+"to manually fix this package. (due to missing arch)"
+msgstr ""
+"%s paketi için bir dosyayı bulamadım.  Bu sizin bu paketi elle düzeltmeniz "
+"anlamına gelebilir."
+
+#: src/generic/apt/pkg_acqfile.cc:134
+#, c-format
+msgid ""
+"The package index files are corrupted. No Filename: field for package %s."
+msgstr ""
+"Paket indeks dosyaları bozulmuş. %s paketi için hiç bir \"Filename:\" alanı "
+"bulunamadı"
+
+#: src/generic/apt/pkg_changelog.cc:146 src/view_changelog.cc:148
+#, c-format
+msgid "ChangeLog of %s"
+msgstr "%s için değişim günlüğü"
+
+#: src/generic/apt/pkg_hier.cc:29 src/generic/apt/pkg_hier.cc:50
+#, c-format
+msgid "Warning: group %s is involved in a cycle"
+msgstr "Dikkat: %s grubu kısır döngüde"
+
+#: src/generic/apt/pkg_hier.cc:144
+#, c-format
+msgid "Cannot open package hierarchy file %s"
+msgstr "%s paket hiyerarşi dosyası açılamadı"
+
+#: src/generic/apt/pkg_hier.cc:165
+msgid "Global block encountered after first record, ignoring"
+msgstr "İlk kayıttan sonra global blok algılandı, yok sayılıyor"
+
+#: src/generic/apt/pkg_hier.cc:178
+msgid "Bad record encountered (no Package or Group entry), skipping"
+msgstr "Kötü kayıtla karşılaşıldı (Paket ya da Grup girişi yok), geçiliyor"
+
+#: src/generic/apt/pkg_hier.cc:180
+#, c-format
+msgid "Bad record encountered (Package=%s, Group=%s), skipping"
+msgstr "Kötü kayıtla karşılaşıldı (Paket=%s, Grup=%s), geçiliyor"
+
+#: src/generic/apt/pkg_hier.cc:243
+#, c-format
+msgid "Multiple descriptions found for group %s, ignoring one"
+msgstr "%s için birden fazla tanım bulundu, biri yok sayılıyor"
+
+#: src/generic/apt/tags.cc:213 src/generic/apt/tags.cc:220
+msgid "Building tag database"
+msgstr ""
+
+#: src/generic/apt/tasks.cc:283
+msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
+msgstr "/usr/share/tasksel/debian-tasks.desc açılamıyor"
+
+#: src/generic/apt/tasks.cc:290 src/generic/apt/tasks.cc:332
+#: src/generic/apt/tasks.cc:334
+msgid "Reading task descriptions"
+msgstr "Görev açıklamaları okunuyor"
+
+#: src/generic/util/temp.cc:63 src/generic/util/temp.cc:128
+#: src/generic/util/temp.cc:142
+#, c-format
+msgid "Unable to create temporary directory from template \"%s\": %s"
+msgstr ""
+
+#: src/generic/util/temp.cc:137
+#, fuzzy
+msgid "Unknown error"
+msgstr "bilinmeyen"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr ""
+
+#: src/load_config.cc:46
+#, c-format
+msgid "Unrecognized color name \"%s\""
+msgstr "Bilinmeyen renk ismi \"%s\""
+
+#: src/load_config.cc:73
+#, c-format
+msgid "Unrecognized attribute name \"%s\""
+msgstr "Bilinmeyen seçenek \"%s\""
+
+#: src/load_config.cc:111
+#, c-format
+msgid "Invalid entry in style definition group: \"%s\""
+msgstr "Stil tanımında geçersiz girdi grubu: \"%s\""
+
+#: src/load_config.cc:113
+#, c-format
+msgid "Invalid tagless entry in style definition group: \"%s\""
+msgstr "Stil tanımında hatalı etiketsiz girdi grubu: \"%s\""
+
+#: src/load_config.cc:125
+msgid "The default color may only be used as a background."
+msgstr ""
+
+#: src/load_config.cc:142
+#, c-format
+msgid "Unknown style attribute %s"
+msgstr "Bilinmeyen stil seçeneği: %s"
+
+#: src/load_config.cc:165 src/load_config.cc:167
+#, c-format
+msgid "Invalid entry in keybinding group: \"%s\""
+msgstr "tuşeşleme grubunda hatalı giriş: \"%s\""
+
+#: src/load_config.cc:182
+#, c-format
+msgid "Ignoring invalid keybinding \"%s\" -> \"%s\""
+msgstr "Geçersiz tuş eşlemi yok sayılıyor \"%s\" -> \"%s\""
+
+#: src/load_grouppolicy.cc:258
+#, c-format
+msgid "Expected policy identifier, got '%c'"
+msgstr ""
+
+#: src/load_grouppolicy.cc:270
+#, c-format
+msgid "Expected ',' or '(', got '%c'"
+msgstr ""
+
+#: src/load_grouppolicy.cc:277
+#, fuzzy, c-format
+msgid "Unknown grouping policy \"%s\""
+msgstr "Bilinmeyen öncelik: %s"
+
+#: src/load_grouppolicy.cc:284
+#, c-format
+msgid "Terminal policy \"%s\" should be the last policy in the list"
+msgstr ""
+
+#: src/load_grouppolicy.cc:367
+#, c-format
+msgid "Bad section name '%s' (use 'none', 'topdir', or 'subdir')"
+msgstr "Hatalı bölüm ismi '%s' ('none', 'topdir' ya da 'subdir' kullan)"
+
+#: src/load_grouppolicy.cc:377
+#, c-format
+msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
+msgstr ""
+"Kötü düzgeçiş ayarı '%s' ('passthrough' ya da 'nopassthrough' kullanın)"
+
+#: src/load_grouppolicy.cc:382
+msgid "Too many arguments to by-section grouping policy"
+msgstr "Bölüme göre gruplama kuralı için çok fazla argüman"
+
+#: src/load_grouppolicy.cc:395
+msgid "By-status grouping policies take no arguments"
+msgstr "Duruma göre gruplama kuralı argüman almaz"
+
+#: src/load_grouppolicy.cc:444
+#, fuzzy, c-format
+msgid "Unable to parse pattern at '%s'"
+msgstr "%ls açılamıyor"
+
+#: src/load_grouppolicy.cc:449
+#, fuzzy
+msgid "Exactly one filter must be provided as an argument to a filter policy"
+msgstr "Filtreleme için sadece bir filtre adı sağlanmalı"
+
+#: src/load_grouppolicy.cc:468
+msgid "By-mode grouping policies take no arguments"
+msgstr "Kip gruplama kuralı argüman almaz"
+
+#: src/load_grouppolicy.cc:479
+msgid "First-character grouping policies take no arguments"
+msgstr "İlk karakter gruplama kuralı argüman almaz"
+
+#: src/load_grouppolicy.cc:491
+msgid "Version-generating grouping policies take no arguments"
+msgstr "Sürüm-üretme gruplama kuralları argüman almaz"
+
+#: src/load_grouppolicy.cc:502
+msgid "Dep-generating grouping policies take no arguments"
+msgstr "Bağımlılık-üretme gruplama kuralları argüman almaz"
+
+#: src/load_grouppolicy.cc:513
+msgid "By-priority grouping policies take no arguments"
+msgstr "Öncelikli gruplama kuralları argüman almaz"
+
+#: src/load_grouppolicy.cc:544
+msgid "Task grouping policies take no arguments"
+msgstr "Görev gruplama kuralları argüman almaz"
+
+#: src/load_grouppolicy.cc:557
+#, fuzzy
+msgid "Expected no more than one argument to a tag grouping policy"
+msgstr "Bölüme göre gruplama kuralı için çok fazla argüman"
+
+#: src/load_grouppolicy.cc:572
+msgid "Expected '(' after 'pattern'"
+msgstr ""
+
+#: src/load_grouppolicy.cc:580
+msgid "Missing arguments to 'pattern'"
+msgstr ""
+
+#: src/load_grouppolicy.cc:601
+#, fuzzy, c-format
+msgid "Unable to parse pattern after \"%s\""
+msgstr "\"%ls\"den sonra paket gösterimi kod dönüşümü yapılamıyor"
+
+#: src/load_grouppolicy.cc:623
+#, c-format
+msgid "Unexpectedly empty tree title after \"%s\""
+msgstr ""
+
+#: src/load_grouppolicy.cc:634
+#, fuzzy
+msgid "Unmatched '(' in pattern grouping policy"
+msgstr "Eşleştirilemedi '(' gruplama kuralı tanımında"
+
+#: src/load_pkgview.cc:58
+msgid "Couldn't parse layout: No column format specified for static item"
+msgstr "Düzen ayrıştırılamadı: Statik öğe için kolon formatı belirtilmemiş"
+
+#: src/load_pkgview.cc:91
+msgid "Couldn't parse layout: encoding error in column descriptor"
+msgstr "Düzen ayrıştırılamadı: sütun tanımlayıcıda kodlama hatası"
+
+#: src/load_pkgview.cc:112
+#, c-format
+msgid "Couldn't parse layout: unknown view item type \"%s\""
+msgstr "Düzen ayrıştırılamadı: bilinmeyen görünüm öğe tipi \"%s\""
+
+#: src/load_pkgview.cc:119 src/load_pkgview.cc:127
+msgid "Couldn't parse layout: no row number specified"
+msgstr "Düzen ayrıştırılamadı: satır numarası belirtilmemiş"
+
+#: src/load_pkgview.cc:135
+msgid "Couldn't parse layout: no width specified"
+msgstr "Düzen ayrıştırılamadı: genişlik belirtilmemiş"
+
+#: src/load_pkgview.cc:143
+msgid "Couldn't parse layout: no height specified"
+msgstr "Düzen ayrıştırılamadı: yükseklik belirtilmemiş"
+
+#: src/load_pkgview.cc:174 src/load_pkgview.cc:192
+#, c-format
+msgid "Unknown alignment type '%s'"
+msgstr "Bilinmeyen hizalama tipi '%s'"
+
+#: src/load_sortpolicy.cc:36
+msgid "By-name sorting policies take no arguments"
+msgstr "İsme göre sıralama kuralı argüman almaz"
+
+#: src/load_sortpolicy.cc:49
+msgid "By-installed size sorting policies take no arguments"
+msgstr "Kurulu boyuta göre sıralama kuralı argüman almaz"
+
+#: src/load_sortpolicy.cc:62
+msgid "By-priority sorting policies take no arguments"
+msgstr "Önceliğe göre sıralama kuralı argüman almaz"
+
+#: src/load_sortpolicy.cc:119
+msgid "Invalid zero-length sorting policy name"
+msgstr "Geçersiz sıfır uzunluklu kural adı"
+
+#: src/load_sortpolicy.cc:137
+msgid "Unmatched '(' in sorting policy description"
+msgstr "Eşleştirilemedi '(' sıralama kural tanımında"
+
+#: src/load_sortpolicy.cc:164
+#, c-format
+msgid "Invalid sorting policy type '%s'"
+msgstr "Geçersiz sıralama kural tipi '%s'"
+
+#: src/main.cc:82
+#, c-format
+msgid "Can't decode multibyte string after \"%ls\""
+msgstr "\"%ls\"den sonra çoklu bayt dizgisi çözülemiyor"
+
+#: src/main.cc:91
+#, c-format
+msgid "Can't decode wide-character string after \"%s\""
+msgstr "\"%s\"den sonra geniş karakter dizgisi çözüleniyor"
+
+#: src/main.cc:99
+#, c-format
+msgid "%s %s compiled at %s %s\n"
+msgstr "%s %s derlendi %s %s\n"
+
+#: src/main.cc:102
+#, c-format
+msgid "Compiler: g++ %s\n"
+msgstr "Derleyici: g++ %s\n"
+
+#: src/main.cc:105
+#, c-format
+msgid ""
+"\n"
+"NCurses version: %s\n"
+msgstr ""
+"\n"
+"NCurses sürümü: %s\n"
+
+#: src/main.cc:107
+#, c-format
+msgid ""
+"\n"
+"Curses version: %s\n"
+msgstr ""
+"\n"
+"Curses sürümü: %s\n"
+
+#: src/main.cc:109
+#, c-format
+msgid "libsigc++ version: %s\n"
+msgstr "libsigc++ sürümü: %s\n"
+
+#: src/main.cc:115
+#, c-format
+msgid "Usage: aptitude [-S fname] [-u|-i]"
+msgstr "Kullanım: aptitude [-S dosyaadı [-u|-i]"
+
+#: src/main.cc:117
+#, c-format
+msgid "       aptitude [options] <action> ..."
+msgstr "       aptitude [seçenekler] <eylem> ..."
+
+#: src/main.cc:119
+#, c-format
+msgid ""
+"  Actions (if none is specified, aptitude will enter interactive mode):\n"
+"\n"
+msgstr ""
+"  Eylemler (eğer seçilmemişse, aptitude etkileşimli kipe girer):\n"
+"\n"
+
+#: src/main.cc:120
+#, c-format
+msgid " install      - Install/upgrade packages\n"
+msgstr "install      - Paketleri kur/güncelle\n"
+
+#: src/main.cc:121
+#, c-format
+msgid " remove       - Remove packages\n"
+msgstr " remove       - Paketleri kaldır\n"
+
+#: src/main.cc:122
+#, c-format
+msgid " purge        - Remove packages and their configuration files\n"
+msgstr " purge        - Paketleri ve onlara ait ayar dosyalarını kaldır\n"
+
+#: src/main.cc:123
+#, c-format
+msgid " hold         - Place packages on hold\n"
+msgstr " hold         - Paketleri tut\n"
+
+#: src/main.cc:124
+#, c-format
+msgid " unhold       - Cancel a hold command for a package\n"
+msgstr " unhold         - Bir paket için hold(tut) komutunu iptal et\n"
+
+#: src/main.cc:125
+#, c-format
+msgid " markauto     - Mark packages as having been automatically installed\n"
+msgstr ""
+"markauto     - Paketler otomatik olarak kurulacak şekilde işaretlenir\n"
+
+#: src/main.cc:126
+#, c-format
+msgid " unmarkauto   - Mark packages as having been manually installed\n"
+msgstr " unmarkauto     - Paketler elle kurulacak şekilde işaretlenir\n"
+
+#: src/main.cc:131
+#, c-format
+msgid ""
+" forbid-version - Forbid aptitude from upgrading to a specific package "
+"version.\n"
+msgstr ""
+" forbid-version - Aptitude'un belirli bir paket sürümüne yükseltmesini "
+"engelle.\n"
+
+#: src/main.cc:132
+#, c-format
+msgid " update       - Download lists of new/upgradable packages\n"
+msgstr " update     - Yeni/güncellenebilir paketlerin listesini indir\n"
+
+#: src/main.cc:133
+#, c-format
+msgid " upgrade      - Perform a safe upgrade\n"
+msgstr " upgrade     - Güvenli bir güncelleme uygula\n"
+
+#: src/main.cc:134
+#, c-format
+msgid ""
+" dist-upgrade - Perform an upgrade, possibly installing and removing "
+"packages\n"
+msgstr ""
+" dist-upgrade    Güncelleme uygula, mümkün olduğunca paketleri kur ve "
+"kaldır\n"
+
+#: src/main.cc:135
+#, c-format
+msgid " forget-new   - Forget what packages are \"new\"\n"
+msgstr "forget-new       Hangi paketlerin \"yeni\" olduğunu unut\n"
+
+#: src/main.cc:136
+#, c-format
+msgid " search       - Search for a package by name and/or expression\n"
+msgstr " search       - Paketleri ismine ve/veya tanımlara göre ara\n"
+
+#: src/main.cc:137
+#, c-format
+msgid " show         - Display detailed information about a package\n"
+msgstr " show         - Bir paket hakkında detaylı bilgi göster\n"
+
+#: src/main.cc:138
+#, c-format
+msgid " clean        - Erase downloaded package files\n"
+msgstr " clean         - İndirilmiş paket dosyalarını sil\n"
+
+#: src/main.cc:139
+#, c-format
+msgid " autoclean    - Erase old downloaded package files\n"
+msgstr " autoclean    - Eski indirilmiş paket dosyalarını sil\n"
+
+#: src/main.cc:140
+#, c-format
+msgid " changelog    - View a package's changelog\n"
+msgstr " changelog    - Paketin değişiklik güncesini göster\n"
+
+#: src/main.cc:141
+#, c-format
+msgid " download     - Download the .deb file for a package\n"
+msgstr " download    - Bir paket için .deb dosyasını indir\n"
+
+#: src/main.cc:143
+#, c-format
+msgid "  Options:\n"
+msgstr "  Seçenekler:\n"
+
+#: src/main.cc:144
+#, c-format
+msgid " -h             This help text\n"
+msgstr " -h             Bu yardım metni\n"
+
+#: src/main.cc:145
+#, c-format
+msgid " -s             Simulate actions, but do not actually perform them.\n"
+msgstr " -s             Eylemi simule et, fakat işlemi gerçekleştirme.\n"
+
+#: src/main.cc:146
+#, c-format
+msgid ""
+" -d             Only download packages, do not install or remove anything.\n"
+msgstr ""
+" -d             Sadece paketleri indir, hiç bir şey kurma ya da kaldırma\n"
+
+#: src/main.cc:147
+#, c-format
+msgid " -P             Always prompt for confirmation or actions\n"
+msgstr " -p             Her zaman onay için ya da eylem için sor\n"
+
+#: src/main.cc:148
+#, c-format
+msgid ""
+" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+msgstr ""
+" -y             Sadece evet/hayır şeklindeki sorulara onaya gerek kalmadan "
+"'evet' de\n"
+
+#: src/main.cc:149
+#, c-format
+msgid ""
+" -F format      Specify a format for displaying search results; see the "
+"manual\n"
+msgstr ""
+" -F format      Arama sonuçlarını göstermek için bir biçem belirle; kılavuza "
+"bakın\n"
+
+#: src/main.cc:150
+#, c-format
+msgid ""
+" -O order       Specify how search results should be sorted; see the manual\n"
+msgstr ""
+" -O düzen       Arama sonuçlarının nasıl sıralanacağını belirt; kılavuza "
+"bakın\n"
+
+#: src/main.cc:151
+#, c-format
+msgid ""
+" -w width       Specify the display width for formatting search results\n"
+msgstr " -w genişlik       Arama sonuçları için gösterme genişliği belirt\n"
+
+#: src/main.cc:152
+#, c-format
+msgid " -f             Aggressively try to fix broken packages.\n"
+msgstr " -f             Kırık paketleri zorla düzeltmeye çalış.\n"
+
+#: src/main.cc:153
+#, c-format
+msgid " -V             Show which versions of packages are to be installed.\n"
+msgstr " -V             Paketlerin hangi sürümlerinin kurulacağını göster.\n"
+
+#: src/main.cc:154
+#, c-format
+msgid ""
+" -D             Show the dependencies of automatically changed packages.\n"
+msgstr ""
+" -D             Otomatik olarak değişecek bağımlılık dosyalarını göster.\n"
+
+#: src/main.cc:155
+#, c-format
+msgid " -Z\t\t    Show the change in installed size of each package.\n"
+msgstr ""
+" -Z\t\t     Her bir paketin kurulduktan sonraki büyüklük değişikliğini "
+"göster.\n"
+
+#: src/main.cc:156
+#, c-format
+msgid ""
+" -v             Display extra information. (may be supplied multiple times)\n"
+msgstr " -v             Ekstra bilgi göster. (birden fazla desteklenebilir)\n"
+
+#: src/main.cc:157
+#, c-format
+msgid ""
+" -t [release]   Set the release from which packages should be installed\n"
+msgstr " -t [sürüm]   Paketlerin kurulacağı sürümü ayarla\n"
+
+#: src/main.cc:158
+#, c-format
+msgid ""
+" -q             In command-line mode, suppress the incremental progress "
+"indicators."
+msgstr ""
+
+#: src/main.cc:159
+#, c-format
+msgid " -o key=val     Directly set the configuration option named 'key'\n"
+msgstr " -o key=değ     'key' yapılandırma seçeneğini doğrudan değiştir\n"
+
+#: src/main.cc:160
+#, c-format
+msgid ""
+" --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
+"                strong dependencies\n"
+msgstr ""
+" --with(out)-recommends\tÖnerilenlerin (recommends) önemli bağımlılık "
+"olarak\n"
+"                var sayılıp sayılmayacağını belirler.\n"
+
+#: src/main.cc:161
+#, c-format
+msgid " -S fname: Read the aptitude extended status info from fname.\n"
+msgstr " -S dosyaadi: aptitude gelişmiş durum bilgisini dosyaadi'ndan oku.\n"
+
+#: src/main.cc:162
+#, c-format
+msgid " -u      : Download new package lists on startup.\n"
+msgstr " -u      : Başlangıçta yeni paket listelerini indir.\n"
+
+#: src/main.cc:163
+#, c-format
+msgid " -i      : Perform an install run on startup.\n"
+msgstr " -i      : Bir kurulum yap ve başlangıçta çalıştır.\n"
+
+#: src/main.cc:165
+#, c-format
+msgid "                  This aptitude does not have Super Cow Powers.\n"
+msgstr "                  Bu yetenek Süper İnek Güçlerine sahip değil.\n"
+
+#: src/main.cc:296
+#, c-format
+msgid "-o requires an argument of the form key=value, got %s"
+msgstr "-o key=değer şeklinde bir seçenek gerekiyor, %s elde edildi"
+
+#: src/main.cc:338 src/main.cc:347
+msgid "WEIRDNESS: unknown option code received\n"
+msgstr "TUHAFLIK: bilinmeyen seçenek kodu alındı\n"
+
+#: src/main.cc:364
+msgid "Only one of -u and -i may be specified\n"
+msgstr "Yalnızca -u ve -i den biri belirtilmeli\n"
+
+#: src/main.cc:372
+msgid ""
+"-u and -i may not be specified in command-line mode (eg, with 'install')"
+msgstr "-u ve -i komut satırı kipinde belirtilemez (ör. 'install' ile)"
+
+#: src/main.cc:393
+msgid "-u and -i may not be specified with a command"
+msgstr "-u ve -i bir komutla birlikte kullanılamaz"
+
+#: src/main.cc:469
+#, c-format
+msgid "Unknown command \"%s\"\n"
+msgstr "Bilinmeyen komut \"%s\"\n"
+
+#: src/main.cc:481 src/main.cc:522
+#, c-format
+msgid "Uncaught exception: %s\n"
+msgstr ""
+
+#: src/main.cc:485 src/main.cc:526
+#, c-format
+msgid ""
+"Backtrace:\n"
+"%s"
+msgstr ""
+
+#: src/menu_text_layout.cc:36 src/ui.cc:239 src/view_changelog.cc:55
+msgid "Search for:"
+msgstr "Ara:"
+
+#: src/menu_text_layout.cc:68 src/view_changelog.cc:67
+#, fuzzy
+msgid "Search backwards for:"
+msgstr "Ara: "
+
+#: src/menu_tree.cc:204
+msgid "Search for: "
+msgstr "Ara: "
+
+#: src/menu_tree.cc:221
+#, fuzzy
+msgid "Search backwards for: "
+msgstr "Ara: "
+
+#: src/mine/cmine.cc:106 src/mine/cmine.cc:148 src/ui.cc:1396
+msgid "Minesweeper"
+msgstr "Mayın tarlası"
+
+#: src/mine/cmine.cc:112
+#, c-format
+msgid "%i/%i mines  %d %s"
+msgstr "%i/%i mayın  %d %s"
+
+#: src/mine/cmine.cc:116 src/mine/cmine.cc:123
+msgid "second"
+msgstr "saniye"
+
+#: src/mine/cmine.cc:116 src/mine/cmine.cc:123
+msgid "seconds"
+msgstr "saniye"
+
+#: src/mine/cmine.cc:120
+#, c-format
+msgid "    %s in %d %s"
+msgstr "    %2$d %3$s içinde %1$s"
+
+#: src/mine/cmine.cc:121
+msgid "Won"
+msgstr "Kazandın"
+
+#: src/mine/cmine.cc:121
+msgid "Lost"
+msgstr "Kaybettin"
+
+#: src/mine/cmine.cc:165 src/mine/cmine.cc:209
+#, c-format
+msgid "Could not open file \"%s\""
+msgstr "Dosya açılamıyor: \"%s\""
+
+#: src/mine/cmine.cc:180
+#, c-format
+msgid "Could not load game from %s"
+msgstr "%s dosyasından oyun yüklenemiyor"
+
+#: src/mine/cmine.cc:247
+msgid "The board height must be a positive integer"
+msgstr "Alan yüksekliği pozitif bir tam sayı olmalı"
+
+#: src/mine/cmine.cc:259
+msgid "The board width must be a positive integer"
+msgstr "Alan genişliği pozitif bir tam sayı olmalı"
+
+#: src/mine/cmine.cc:271
+msgid "Invalid mine count; please enter a positive integer"
+msgstr "Geçersiz mayın sayısı; lütfen pozitif bir tam sayı girin"
+
+#: src/mine/cmine.cc:291
+msgid "Setup custom game"
+msgstr "Özel oyun ayarları"
+
+#: src/mine/cmine.cc:293
+msgid "Height of board: "
+msgstr "Alan yüksekliği: "
+
+#: src/mine/cmine.cc:296
+msgid "Width of board: "
+msgstr "Alan genişliği: "
+
+#: src/mine/cmine.cc:299
+msgid "Number of mines: "
+msgstr "Mayın adedi: "
+
+#: src/mine/cmine.cc:360
+msgid "Choose difficulty level"
+msgstr "Zorluk derecesini seç"
+
+#: src/mine/cmine.cc:362
+msgid "Easy"
+msgstr "Kolay"
+
+#: src/mine/cmine.cc:363
+msgid "Medium"
+msgstr "Orta"
+
+#: src/mine/cmine.cc:364
+msgid "Hard"
+msgstr "Zor"
+
+#: src/mine/cmine.cc:365
+msgid "Custom"
+msgstr "Özel"
+
+#: src/mine/cmine.cc:457
+msgid "You have won."
+msgstr "Kazandınız."
+
+#: src/mine/cmine.cc:460
+msgid "You lose!"
+msgstr "Kaybettiniz!"
+
+#: src/mine/cmine.cc:465
+msgid "You die...  --More--"
+msgstr "Öldünüz...  --Daha--"
+
+#: src/mine/cmine.cc:478
+msgid "The spikes were poisoned!  The poison was deadly..  --More--"
+msgstr "Çiviler zehirliydi!  Zehir ölümcül..  --Daha--"
+
+#: src/mine/cmine.cc:481
+msgid "You land on a set of sharp iron spikes!  --More--"
+msgstr "Sivri çivilerin üstüne düştün!  --Daha--"
+
+#: src/mine/cmine.cc:484
+msgid "You fall into a pit!  --More--"
+msgstr "Bir çukurun içine düştün!  --Daha--"
+
+#: src/mine/cmine.cc:487
+msgid "KABOOM!  You step on a land mine.  --More--"
+msgstr "BOOOM!  Bir kara mayınına bastın.  --More--"
+
+#: src/mine/cmine.cc:492
+msgid "The dart was poisoned!  The poison was deadly...  --More--"
+msgstr "Ok zehirliydi!  Zehir ölümcül...  --Daha--"
+
+#: src/mine/cmine.cc:494
+msgid ""
+"A little dart shoots out at you!  You are hit by a little dart!  --More--"
+msgstr "Sana doğru küçük bir ok atıldı!  Bu ok sana isabet etti!  --Daha--"
+
+#: src/mine/cmine.cc:498
+msgid "You turn to stone... --More--"
+msgstr "Kayaya dönün...  --Daha--"
+
+#: src/mine/cmine.cc:500
+msgid "Touching the cockatrice corpse was a fatal mistake.  --More--"
+msgstr "Ölü yılana dokunmak ölümcül bir hataydı.  --Daha--"
+
+#: src/mine/cmine.cc:502
+msgid "You feel here a cockatrice corpse.  --More--"
+msgstr "Ölü bir yılan fark ettiniz.  --Daha--"
+
+#: src/mine/cmine.cc:506
+msgid ""
+"Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --"
+"More--"
+msgstr "Tık!  Bir tuzağa yakalandınız!  Bir kafa size çarptı!  --Daha--"
+
+#: src/mine/cmine.cc:516
+msgid "sleep"
+msgstr "uyu"
+
+#: src/mine/cmine.cc:519
+msgid "striking"
+msgstr "vurma"
+
+#: src/mine/cmine.cc:522
+msgid "death"
+msgstr "ölüm"
+
+#: src/mine/cmine.cc:525
+msgid "polymorph"
+msgstr "polimorf"
+
+#: src/mine/cmine.cc:528
+msgid "magic missile"
+msgstr "sihirli mermi"
+
+#: src/mine/cmine.cc:531
+msgid "secret door detection"
+msgstr "gizli kapı bulma"
+
+#: src/mine/cmine.cc:534
+msgid "invisibility"
+msgstr "görünmezlik"
+
+#: src/mine/cmine.cc:537
+msgid "cold"
+msgstr "soğuk"
+
+#: src/mine/cmine.cc:543
+#, c-format
+msgid "Your wand of %s breaks apart and explodes!  --More--"
+msgstr "%s âsânız kırıldı ve infilak etti!  --Daha--"
+
+#: src/mine/cmine.cc:549
+msgid "You are jolted by a surge of electricity!  --More--"
+msgstr "Güçlü bir elektrik çarpmasıyla sarsıldınız!  --Daha--"
+
+#: src/mine/cmine.cc:653
+msgid "Enter the filename to load: "
+msgstr "Yüklenecek dosya adını giriniz:"
+
+#: src/mine/cmine.cc:660
+msgid "Enter the filename to save: "
+msgstr "Kaydedilecek dosya adını giriniz:"
+
+#: src/mine/cmine.cc:670
+msgid "mine-help.txt"
+msgstr "mine-help.txt"
+
+#: src/mine/cmine.cc:672
+msgid "Encoding of mine-help.txt|UTF-8"
+msgstr "UTF-8"
+
+#: src/pkg_columnizer.cc:83
+msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
+msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
+
+#: src/pkg_columnizer.cc:86 src/ui.cc:2252
+msgid "Package"
+msgstr "Paket"
+
+#: src/pkg_columnizer.cc:87
+msgid "InstSz"
+msgstr "KurBoyu"
+
+#: src/pkg_columnizer.cc:88
+msgid "DebSz"
+msgstr "DebBoyu"
+
+#: src/pkg_columnizer.cc:90
+msgid "Action"
+msgstr "Eylem"
+
+#: src/pkg_columnizer.cc:91
+msgid "Description"
+msgstr "Açıklama"
+
+#: src/pkg_columnizer.cc:92
+msgid "InstVer"
+msgstr "KurSür"
+
+#: src/pkg_columnizer.cc:93
+msgid "CandVer"
+msgstr "AdaySür"
+
+#: src/pkg_columnizer.cc:94
+msgid "LongState"
+msgstr "UzunDurum"
+
+#: src/pkg_columnizer.cc:95
+msgid "LongAction"
+msgstr "Uzunİşlem"
+
+#: src/pkg_columnizer.cc:96
+msgid "Maintainer"
+msgstr "Geliştirici"
+
+#: src/pkg_columnizer.cc:97
+msgid "Priority"
+msgstr "Öncelik"
+
+#: src/pkg_columnizer.cc:98
+msgid "Section"
+msgstr "Bölüm"
+
+#: src/pkg_columnizer.cc:99
+msgid "RC"
+msgstr "RC"
+
+#: src/pkg_columnizer.cc:100
+msgid "Auto"
+msgstr "Oto"
+
+#: src/pkg_columnizer.cc:101
+msgid "Tag"
+msgstr "Etiket"
+
+#: src/pkg_columnizer.cc:104
+msgid "ProgName"
+msgstr "UygAdı"
+
+#: src/pkg_columnizer.cc:105
+msgid "ProgVer"
+msgstr "UygSür"
+
+#: src/pkg_columnizer.cc:106
+msgid "#Broken"
+msgstr "#Kırık"
+
+#: src/pkg_columnizer.cc:107
+msgid "DiskUsage"
+msgstr "DiskKull"
+
+#: src/pkg_columnizer.cc:108
+msgid "DownloadSize"
+msgstr "İndirmeBoyutu"
+
+#: src/pkg_columnizer.cc:128 src/pkg_columnizer.cc:140 src/pkg_ver_item.cc:105
+#: src/pkg_ver_item.cc:170
+msgid "<N/A>"
+msgstr "<yok>"
+
+#: src/pkg_columnizer.cc:170 src/pkg_columnizer.cc:181
+msgid "<none>"
+msgstr "<yok>"
+
+#: src/pkg_columnizer.cc:221 src/pkg_grouppolicy.cc:233
+msgid "virtual"
+msgstr "sanal"
+
+#: src/pkg_columnizer.cc:228 src/pkg_ver_item.cc:214 src/pkg_ver_item.cc:222
+msgid "purged"
+msgstr "temizlendi"
+
+#: src/pkg_columnizer.cc:235 src/pkg_ver_item.cc:229
+msgid "half-config"
+msgstr "yarım-ayarlı"
+
+#: src/pkg_columnizer.cc:237 src/pkg_ver_item.cc:231
+msgid "half-install"
+msgstr "yarım-kurulu"
+
+#: src/pkg_columnizer.cc:239 src/pkg_ver_item.cc:233
+msgid "config-files"
+msgstr "ayar dosyaları"
+
+#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:528 src/pkg_ver_item.cc:237
+msgid "ERROR"
+msgstr "HATA"
+
+#: src/pkg_columnizer.cc:290 src/pkg_ver_item.cc:295
+msgid "hold"
+msgstr "tut"
+
+#: src/pkg_columnizer.cc:293
+msgid "forbidden upgrade"
+msgstr "yasaklanmış yükseltme"
+
+#: src/pkg_columnizer.cc:295
+msgid "purge"
+msgstr "temizle"
+
+#: src/pkg_columnizer.cc:295 src/pkg_ver_item.cc:319
+msgid "delete"
+msgstr "sil"
+
+#: src/pkg_columnizer.cc:297 src/pkg_ver_item.cc:217 src/pkg_ver_item.cc:301
+msgid "broken"
+msgstr "kırık"
+
+#: src/pkg_columnizer.cc:299 src/pkg_ver_item.cc:305 src/pkg_ver_item.cc:312
+#: src/pkg_ver_item.cc:321
+msgid "install"
+msgstr "kur"
+
+#: src/pkg_columnizer.cc:301
+msgid "reinstall"
+msgstr "tekrarkur"
+
+#: src/pkg_columnizer.cc:303
+msgid "upgrade"
+msgstr "güncelle"
+
+#: src/pkg_columnizer.cc:305 src/pkg_columnizer.cc:307 src/pkg_ver_item.cc:307
+#: src/pkg_ver_item.cc:314 src/pkg_ver_item.cc:323 src/pkg_ver_item.cc:326
+msgid "none"
+msgstr "yok"
+
+#: src/pkg_columnizer.cc:335 src/pkg_columnizer.cc:356
+#: src/pkg_columnizer.cc:363 src/pkg_grouppolicy.cc:227
+#: src/pkg_info_screen.cc:115 src/pkg_info_screen.cc:116
+#: src/pkg_ver_item.cc:347 src/pkg_ver_item.cc:381
+msgid "Unknown"
+msgstr "bilinmeyen"
+
+#: src/pkg_columnizer.cc:343 src/pkg_ver_item.cc:356
+msgid "Imp"
+msgstr "Yük"
+
+#: src/pkg_columnizer.cc:345 src/pkg_ver_item.cc:359
+msgid "Req"
+msgstr "Ger"
+
+#: src/pkg_columnizer.cc:347 src/pkg_ver_item.cc:362
+msgid "Std"
+msgstr "Std"
+
+#: src/pkg_columnizer.cc:349 src/pkg_ver_item.cc:365
+msgid "Opt"
+msgstr "Ter"
+
+#: src/pkg_columnizer.cc:351 src/pkg_ver_item.cc:368
+msgid "Xtr"
+msgstr "Ek"
+
+#: src/pkg_columnizer.cc:353 src/pkg_ver_item.cc:370
+msgid "ERR"
+msgstr "HATA"
+
+#: src/pkg_columnizer.cc:375
+#, c-format
+msgid "#Broken: %ld"
+msgstr "#Kırık: %ld"
+
+#: src/pkg_columnizer.cc:390
+#, c-format
+msgid "Will use %sB of disk space"
+msgstr "%sB'lık alan kullanılacak"
+
+#: src/pkg_columnizer.cc:398
+#, c-format
+msgid "Will free %sB of disk space"
+msgstr "%sB'lık alan boşaltılacak"
+
+#: src/pkg_columnizer.cc:412
+#, c-format
+msgid "DL Size: %sB"
+msgstr "İndirme: %sB"
+
+#: src/pkg_columnizer.cc:483
+msgid "HN too long"
+msgstr "HN çok uzun"
+
+#: src/pkg_columnizer.cc:652 src/pkg_columnizer.cc:661
+#, c-format
+msgid "Unable to transcode package display format after \"%ls\""
+msgstr "\"%ls\"den sonra paket gösterimi kod dönüşümü yapılamıyor"
+
+#: src/pkg_columnizer.cc:668
+msgid "Internal error: Default column string is unparsable"
+msgstr "İç hata: Varsayılan kolon dizgisi ayrıştırılamaz"
+
+#: src/pkg_grouppolicy.cc:161
+msgid ""
+"Packages which set up your computer to perform a particular task\n"
+" Packages in the 'Tasks' section contain no files; they merely depend upon "
+"other packages. These packages provide an easy way to select a predefined "
+"set of packages for a specialized task."
+msgstr ""
+"Bilgisayarınızda belirli bir işi yerine getiren paketler\n"
+" 'Görevler' bölümündeki paketler dosya içermez: Bu paketler sadece diğer "
+"paketlere bağımlıdır. Bu paketler ön tanımlı bir paket kümesinin kolayca "
+"seçilmesini sağlar"
+
+#: src/pkg_grouppolicy.cc:163
+msgid ""
+"Packages with no declared section\n"
+" No section is given for these packages. Perhaps there is an error in the "
+"Packages file?"
+msgstr ""
+"Bölüm belirtilmemiş paketler\n"
+" Bu paketler için bölüm belirtilmemiş. Belki paket dosyalarında bir hata "
+"vardır?"
+
+#: src/pkg_grouppolicy.cc:165
+msgid ""
+"Administrative utilities (install software, manage users, etc)\n"
+" Packages in the 'admin' section allow you to perform administrative tasks "
+"such as installing software, managing users, configuring and monitoring your "
+"system, examining network traffic, and so on."
+msgstr ""
+"Yönetim araçları (yazılım kur, kullanıcıları düzenle, vb.)\n"
+" 'yönetim' bölümündeki paketler yazılım kurmak, kullanıcıları düzenlemek, "
+"sisteminizin ayarları ve gözlemlenmesi, ağ trafiğinin sınanması gibi "
+"yönetimsel işleri yapmanızı sağlar."
+
+#: src/pkg_grouppolicy.cc:167
+msgid ""
+"Packages converted from foreign formats (rpm, tgz, etc)\n"
+" Packages in the 'alien' section were created by the 'alien' program from a "
+"non-Debian package format such as RPM"
+msgstr ""
+"Yabancı biçimlerden çevrilmiş paketler (rpm, tgz, vb)\n"
+" 'alien' bölümündeki paketler 'alien' uygulamasıyla RPM gibi diğer "
+"biçimlerden çevrilmiş paketlerden oluşur"
+
+#: src/pkg_grouppolicy.cc:168
+msgid ""
+"The Debian base system\n"
+" Packages in the 'base' section are part of the initial system installation."
+msgstr ""
+"Debian temem sistem\n"
+"'temel' bölümünde başlangıçtaki sistem kurulumunun bir parçasıdır."
+
+#: src/pkg_grouppolicy.cc:169
+msgid ""
+"Programs for faxmodems and other communications devices\n"
+" Packages in the 'comm' section are used to control modems and other "
+"hardware communications devices. This includes software to control faxmodems "
+"(for instance, PPP for dial-up internet connections and programs originally "
+"written for that purpose, such as zmodem/kermit), as well as software to "
+"control cellular phones, interface with FidoNet, and run a BBS."
+msgstr ""
+"faxmodem ve diğer haberleşme cihazları için uygulamalar\n"
+" 'comm' bölümündeki paketler modem ve diğer haberleşme cihazlarının "
+"denetiminde kullanılır. Bunlar faxmodemi denetleyen yazılımlar (örneğin, "
+"internete bağlanmak için PPP ve bu iş için yazılmış zmodem/kermit "
+"gibiuygulamalar), cep telefonları için uygulamalar, FidoNet için arayüz, ve "
+"BBS uygulamaları."
+
+#: src/pkg_grouppolicy.cc:170
+msgid ""
+"Utilities and programs for software development\n"
+" Packages in the 'devel' section are used to write new software and work on "
+"existing software. Non-programmers who do not compile their own software "
+"probably do not need much software from this section.\n"
+" .\n"
+" It includes compilers, debugging tools, programmer's editors, source "
+"processing tools, and other things related to software development."
+msgstr ""
+"Yazılım geliştirme uygulamaları ve araçları\n"
+"'devel' bölümündeki paketler yeni uygulama yazmak için ya da varolanlar "
+"üzerinde çalışmak için kullanılır. Geliştirici olmayanlar, kendi "
+"yazılımlarını derlemeyenler genellikle bu bölümdeki yazılımlara ihtiyaç "
+"duymazlar.\n"
+" .\n"
+"Burada derleyiciler, hata ayıklama araçları, geliştiriciler için editörler, "
+"kaynak işleme araçları, ve diğer yazılım geliştirmeyle ilgili şeyler bulunur."
+
+#: src/pkg_grouppolicy.cc:171
+msgid ""
+"Documentation and specialized programs for viewing documentation\n"
+" Packages in the 'doc' section document parts of the Debian system, or are "
+"viewers for documentation formats."
+msgstr ""
+"Belgeleme ve belge görüntüleme için uygulamalar\n"
+" 'doc' bölümündeki paketler Debian sistemin parçaları, ya da belge "
+"biçimleriiçin görüntüleme araçlarıdır."
+
+#: src/pkg_grouppolicy.cc:172
+msgid ""
+"Text editors and word processors\n"
+" Packages in the 'editors' section allow you to edit plain ASCII text. These "
+"are not necessarily word processors, although some word processors may be "
+"found in this section."
+msgstr ""
+"Metin editörleri ve kelime işlemciler\n"
+"'editors' bölümündeki paketler düz metin belgeleri düzenlemenizi sağlar. "
+"Bunlar gerekli kelime işlemciler değildir, ayrıca bu başlık altında bazı "
+"kelime işlemcilerdebulabilirsiniz."
+
+#: src/pkg_grouppolicy.cc:173
+msgid ""
+"Programs for working with circuits and electronics\n"
+" Packages in the 'electronics' section include circuit design tools, "
+"simulators and assemblers for microcontrollers, and other related software."
+msgstr ""
+"Devreler ve elektronik için gerekli paketler\n"
+" 'elektronics' bölümündeki paketler; devre tasarım araçları, benzeticiler ve "
+"mikro denetleyiciler için gerekli yazılımları kapsar."
+
+#: src/pkg_grouppolicy.cc:174
+msgid ""
+"Programs for embedded systems\n"
+" Packages in the 'embedded' section are meant to run on embedded devices. "
+"Embedded devices are specialized hardware devices with much less power than "
+"a typical desktop system: for instance, a PDA, a cell phone, or a Tivo."
+msgstr ""
+"Gömülü sistemler için uygulamalar\n"
+" 'embedded' bölümünde ki paketler gömülü sistemlerde kullanılmalıdır. Gömülü "
+"sistemler alışılmış masaüstü bilgisayarlardan çok daha basit sistemlerdir. "
+"Örnek: PDA, cep telefonu ve Tivo'lar."
+
+#: src/pkg_grouppolicy.cc:175
+msgid ""
+"The GNOME Desktop System\n"
+" GNOME is a collection of software which provides an easy-to-use desktop "
+"environment for Linux.  Packages in the 'gnome' section are part of the "
+"GNOME environment or closely integrated into it."
+msgstr ""
+"GNOME Masaüstü Sistemi\n"
+" GNOME, Linux için kullanımı kolay bir masaüstü ortamı oluşturan yazılımlar "
+"bütünüdür. 'gnome' bölümdeki paketler GNOME masaüstü ortamının bir parçası "
+"ya da bu ortamla bütünleşik çalışan üçüncü parti yazılımlardır."
+
+#: src/pkg_grouppolicy.cc:176
+msgid ""
+"Games, toys, and fun programs\n"
+" Packages in the 'games' section are meant primarily for entertainment."
+msgstr ""
+"Oyun, ve eğlence uygulamaları\n"
+"'games' bölümündeki paketler eğlence amaçlı uygulamaları kapsar."
+
+#: src/pkg_grouppolicy.cc:177
+msgid ""
+"Utilities to create, view, and edit graphics files\n"
+" Packages in the 'graphics' section include viewers for image files, image "
+"processing and manipulation software, software to interact with graphics "
+"hardware (such as video cards, scanners, and digital cameras), and "
+"programming tools for handling graphics."
+msgstr ""
+"Grafik dosyaları yaratmak, görüntülemek ve değiştirmek için araçlar\n"
+"'graphics' bölümündeki paketler görüntü dosyaları için görüntüleyiciler, "
+"görüntü işlemeyazılımları, grafik donanımıyla etkileşim yazılımları (video "
+"kartları, tarayıcılar, dijital kameralar) ve grafikleri işlemek için "
+"uygulamalama araçlardan oluşur."
+
+#: src/pkg_grouppolicy.cc:178
+msgid ""
+"Software for ham radio operators\n"
+" Packages in the 'hamradio' section are meant primarily for ham radio "
+"operators."
+msgstr ""
+"Amatör radyo yazılımları\n"
+" 'hamradio' bölümündeki uygulamalar amatör radyo operatörlerinin ihtiyaç "
+"duyacağı yazılımları içerir."
+
+#: src/pkg_grouppolicy.cc:179
+msgid ""
+"Interpreters for interpreted languages\n"
+" Packages in the 'interpreters' section include interpreters for languages "
+"like Python, Perl, and Ruby, and libraries for these same languages."
+msgstr ""
+"Yorumlayıcılar ve yordamsal diller\n"
+"'interpreters' bölümündeki paketler Python, Perl, ve Ruby gibi diller için "
+"yorumlayıcılar ve bu diller için kütüphaneleri içerir."
+
+#: src/pkg_grouppolicy.cc:180
+msgid ""
+"The KDE Desktop System\n"
+" KDE is a collection of software which provides an easy-to-use desktop "
+"environment for Linux.  Packages in the 'kde' section are part of the KDE "
+"environment or closely integrated into it."
+msgstr ""
+"KDE Masaüstü Sistemi\n"
+" KDE, Linux için kullanımı kolay bir masaüstü ortamı oluşturan yazılımlar "
+"bütünüdür. 'kde' bölümüdeki paketler KDE masaüstü ortamının bir parçası ya "
+"da bu ortamla bütünleşik çalışan üçüncü parti yazılımlardır."
+
+#: src/pkg_grouppolicy.cc:181
+msgid ""
+"Development files for libraries\n"
+" Packages in the 'libdevel' section contain files required for building "
+"programs that use libraries in the 'libs' section.  You don't need packages "
+"from this section unless you want to compile software yourself."
+msgstr ""
+"Geliştirme ve kütüphaneler\n"
+" 'libdevel' bölümündeki paketler 'libs' bölümündeki kitaplıkları kullanan "
+"uygulamaları inşa etmek için gereklidir.  Yazılım derlemeyecekseniz bu "
+"bölümdeki paketlere ihtiyacınız olmaz."
+
+#: src/pkg_grouppolicy.cc:182
+msgid ""
+"Collections of software routines\n"
+" Packages in the 'libs' section provide necessary functionality for other "
+"software on the computer. With very few exceptions, you should not need to "
+"explicitly install a package from this section; the package system will "
+"install them as required to fulfill dependencies."
+msgstr ""
+"Yazılım rutinleri kolleksiyonu\n"
+" 'libs' bölümündeki paketler diğer yazılımların ihtiyaç duyduğu işlevleri "
+"sağlar. Birkaç küçük istisna dışında bu bölümden ayrıca paket kurmanız "
+"gerekmez; paket sistemi bağımlılıkların bütünlüğünü sağlamak için "
+"gerektiğinde bu paketleri kuracaktır."
+
+#: src/pkg_grouppolicy.cc:183
+msgid ""
+"Perl interpreter and libraries\n"
+" Packages in the 'perl' section provide the Perl programming language and "
+"many third-party libraries for it. Unless you are a Perl programmer, you "
+"don't need to install packages from this section explicitly; the package "
+"system will install them if they are required."
+msgstr ""
+"Perl yorumlayıcı ve kütüphaneleri\n"
+" 'perl' bölümündeki paketler Perl uygulama geliştirme dilini ve bir çok "
+"üçüncü parti kütüphaneleri içerir. Perl geliştiricisi olmadığınız sürece bu "
+"bölümdeki paketleri kurmanız gerekmemektedir; paket yönetim sistemi "
+"bütünlüğü sağlamak için gerektiğinde bu paketleri kuracaktır."
+
+#: src/pkg_grouppolicy.cc:184
+msgid ""
+"Python interpreter and libraries\n"
+" Packages in the 'python' section provide the Python programming language "
+"and many third-party libraries for it. Unless you are a Python programmer, "
+"you don't need to install packages from this section explicitly; the package "
+"system will install them if they are required."
+msgstr ""
+"Python yorumlayıcı ve kütüphaneleri\n"
+" 'python' bölümündeki paketler Python uygulama geliştirme dilini ve bir çok "
+"üçüncü parti kütüphaneleri içerir. Python geliştiricisi olmadığınız sürece "
+"bu bölümdeki paketleri kurmanız gerekmemektedir; paket yönetim sistemi "
+"bütünlüğü sağlamak için gerektiğinde bu paketleri kuracaktır."
+
+#: src/pkg_grouppolicy.cc:185
+msgid ""
+"Programs to write, send, and route email messages\n"
+" Packages in the 'mail' section include mail readers, mail transport "
+"daemons, mailing list software, and spam filters, as well as various other "
+"software related to electronic mail."
+msgstr ""
+"eposta yazmak, göndermek, almak için uygulamalar\n"
+"'mail' bölümündeki paketler mail okuma, mail taşıma servisleri, mail liste "
+"yazılımları, spam filtreleri, ve çeşitli elektronik posta yazılımları "
+"bulunur."
+
+#: src/pkg_grouppolicy.cc:186
+msgid ""
+"Numeric analysis and other mathematics-related software\n"
+" Packages in the 'math' section include calculators, languages for "
+"mathematical computation (similar to Mathematica), symbolic algebra "
+"packages, and programs to visualize mathematical objects."
+msgstr ""
+"Sayısal çözümleme ve matematikle ilgili diğer yazılımlar\n"
+"'math' bölümündeki yazılımlar, hesap makineleri, matematik hesaplama dilleri "
+"(Matematica benzeri), Simgesel cebir paketleri, ve matematik nesnelerinin "
+"görsel gösterimi için uygulamalar."
+
+#: src/pkg_grouppolicy.cc:187
+msgid ""
+"Miscellaneous software\n"
+" Packages in the 'misc' section have too unusual a function to be classified."
+msgstr ""
+"Çeşitli yazılımlar\n"
+"'misc' bölümündeki paketler çok kullanılmayan sınıflandırılamamış "
+"yazılımları içerir."
+
+#: src/pkg_grouppolicy.cc:188
+msgid ""
+"Programs to connect to and provide various services\n"
+" Packages in the 'net' section include clients and servers for many "
+"protocols, tools to manipulate and debug low-level network protocols, IM "
+"systems, and other network-related software."
+msgstr ""
+"Çeşitli servis ve servislere bağlantı uygulamaları\n"
+" 'net' bölümündeki paketler birçok protokol için istemci ve sunucular,ağ "
+"protokolleri için hata ayıklama ve yönlendirme araçları, IM sistemleri,ve "
+"diğer ağla ilgili yazılımları içerir."
+
+#: src/pkg_grouppolicy.cc:189
+msgid ""
+"Usenet clients and servers\n"
+" Packages in the 'news' section are related to the Usenet distributed news "
+"system.  They include news readers and news servers."
+msgstr ""
+"Usenet istemci ve sunucular\n"
+" 'news' bölümünde Usenet dağıtık haber sistemi ile ilgili paketler bulunur.  "
+"Bunlar haber okuma ve haber sunucu uygulamaları dahildir."
+
+#: src/pkg_grouppolicy.cc:190
+msgid ""
+"Obsolete libraries\n"
+" Packages in the 'oldlibs' section are obsolete and should not be used by "
+"new software.  They are provided for compatibility reasons, or because "
+"software distributed by Debian still requires them.\n"
+" .\n"
+" With very few exceptions, you should not need to explicitly install a "
+"package from this section; the package system will install them as required "
+"to fulfill dependencies."
+msgstr ""
+"Eski kütüphaneler\n"
+" 'oldlibs' bölümündeki paketler eskidir ve yeni yazılımlar tarafından "
+"kullanılmamalıdırlar.  Uyumluluk nedenlerinden veya Debian tarafından "
+"dağıtılan bazı yazılımlar gerek duyduğundan sağlanmışlardır.\n"
+" \n"
+" Birkaç istisna dışında, bu bölümdeki paketleri kurmanız gerekmez, paket "
+"sistemi gerektiğinde bağımlılıkları karşılamak amacıyla bu paketleri sizin "
+"adınıza kuracaktır."
+
+#: src/pkg_grouppolicy.cc:191
+msgid ""
+"Emulators and software to read foreign filesystems\n"
+" Packages in the 'otherosfs' section emulate hardware and operating systems "
+"and provide tools for transferring data between different operating systems "
+"and hardware platforms. (for instance, utilities to read DOS floppies, and "
+"utilities to communicate with Palm Pilots)\n"
+" .\n"
+" It is worth noting that CD burning software is included in THIS section."
+msgstr ""
+"Öykünücüler ve yabancı dosya sistemlerini okumak için yazılımlar\n"
+" 'otherosfs' bölümündeki paketler donanımlara ve işletim sistemlerine "
+"öykünür, ve farklı işletim sistemleri arasında veri aktarmak için araçlar "
+"sağlar. (halihazırda DOS disketlerini okuyacak ve Palm Pilot gibi cihazlarla "
+"iletişim kuracak araçlardan ibarettir)\n"
+" \n"
+" Ayrıca CD yazmak için gerekli yazılımlar da bu bölümdedir."
+
+#: src/pkg_grouppolicy.cc:192
+msgid ""
+"Software for scientific work\n"
+" Packages in the 'science' section include tools for astronomy, biology, and "
+"chemistry, as well as other science-related software."
+msgstr ""
+"Bilimsel çalışmalar için yazılımlar\n"
+" 'science' bölümündeki yazılımlar astronomi, biyoloji ve kimya için "
+"araçların yanı sıra diğer bilimle ilgili yazılımları da içerir."
+
+#: src/pkg_grouppolicy.cc:193
+msgid ""
+"Command shells and alternative console environments\n"
+" Packages in the 'shells' section include programs providing a command-line "
+"interface."
+msgstr ""
+"Komut kabukları ve diğer alternatif konsol ortamları\n"
+" 'shells' bölümündeki paketler komut satırı arayüzü sağlayan uygulamalar "
+"içerir."
+
+#: src/pkg_grouppolicy.cc:194
+msgid ""
+"Utilities to play and record sound\n"
+" Packages in the 'sound' section include sound players, recorders, and "
+"encoders for many formats, mixers and volume controls, MIDI sequencers and "
+"programs to generate musical notation, drivers for sound hardware, and sound "
+"processing software."
+msgstr ""
+"Ses kaydetme ve çalma araçları\n"
+" 'sound' bölümündeki paketler ses çalma, kaydetme yazılımlarının yanı sıra "
+"çeşitli biçemlerde dosya kaydediciler, karıştırıcılar ve ses ayarlayıcılar, "
+"MIDI sıralayıcılar ve müzik notasyonu oluşturmaya yarayan uygulamalar, ses "
+"donanımı sürücüleri ile ses işleyici yazılımları içerir."
+
+#: src/pkg_grouppolicy.cc:195
+msgid ""
+"The TeX typesetting system\n"
+" Packages in the 'tex' section are related to TeX, a system for producing "
+"high-quality typeset output.  They include TeX itself, TeX packages, editors "
+"designed for TeX, utilities to convert TeX and TeX output files to various "
+"formats, TeX fonts, and other software related to TeX."
+msgstr ""
+"TeX typesetting sistemi\n"
+" 'tex' bölümü içerisindeki paketler, yüksek kaliteli typeset çıktısı "
+"üretebilen TeX sistemi ile ilgilidir. TeX'in kendisini, TeX paketlerini, TeX "
+"için tasarlanmış düzenleyicileri, TeX ve TeX çıktı dosyalarını çeşitli "
+"biçemlere dönüştürecek araçları ve TeX ile ilgili diğer yazılımları "
+"içerirler."
+
+#: src/pkg_grouppolicy.cc:196
+msgid ""
+"Text processing utilities\n"
+" Packages in the 'text' section include text filters and processors, "
+"spelling checkers, dictionary programs, utilities to convert between "
+"character encodings and text file formats (eg, Unix and DOS), text "
+"formatters and pretty-printers, and other software which operates on plain "
+"text."
+msgstr ""
+"Metin işleme araçları\n"
+" 'text' bölümündeki paketler metin filtre ve işlemcileri, yazım "
+"denetimcileri, sözlük uygulamaları, karakter kodlama ve dosya biçimleri "
+"dönüştürücülerini (Unix ve DOS gibi), metin biçemleyicilerini, düzgün-"
+"göstericileri ve diğer düz metin işleyebilen yazılımları içerir."
+
+#: src/pkg_grouppolicy.cc:197
+msgid ""
+"Various system utilities\n"
+" Packages in the 'utils' section are utilities whose purpose is too unique "
+"to be classified."
+msgstr ""
+"Muhtelif sistem araçları\n"
+" 'utils' bölümündeki paketler sınıflandırılabilmek için fazla eşsiz amaçlara "
+"sahip araçlardır."
+
+#: src/pkg_grouppolicy.cc:198
+msgid ""
+"Web browsers, servers, proxies, and other tools\n"
+" Packages in the 'web' section include Web browsers, Web servers and "
+"proxies, software to write CGI scripts or Web-based programs, pre-written "
+"Web-based programs, and other software related to the World Wide Web."
+msgstr ""
+"Web tarayıcıları, sunucular, vekiller ve diğer araçlar\n"
+" 'web' bölümündeki paketler Web tarayıcıları, Web sunucuları ve vekilleri, "
+"CGI betikleri veya Web-tabanlı uygulamaları geliştirmek için yazılımları, "
+"önceden-yazılmış Web-tabanlı uygulamaları ve Web ile ilişkisi olan diğer "
+"yazılımları içerir."
+
+#: src/pkg_grouppolicy.cc:199
+msgid ""
+"The X window system and related software\n"
+" Packages in the 'x11' section include the core packages for the X window "
+"system, window managers, utility programs for X, and miscellaneous programs "
+"with an X GUI which were placed here because they didn't fit anywhere else."
+msgstr ""
+"X Pencere Sistemi ve ilgili yazılımlar\n"
+" 'x11' bölümündeki yazılımlar X Pencere Sistemi için çekirdek paketleri, "
+"pencere yöneticilerini, X için yardımcı araçları ve daha uygun bir yer "
+"bulunamadığı için buraya yerleştirilen X arayüzüne sahip uygulamaları içerir."
+
+#: src/pkg_grouppolicy.cc:201
+msgid ""
+"Programs which depend on software not in Debian\n"
+" Packages in the 'contrib' section are not part of Debian.\n"
+" .\n"
+" These packages are Free Software, but they depend on software which is not "
+"part of Debian.  This may be because it is not Free Software, but is "
+"packaged in the non-free section of the archive, because Debian cannot "
+"distribute it at all, or (in rare cases) because no-one has packaged it "
+"yet.\n"
+" .\n"
+" For more information about what Debian considers to be Free Software, see "
+"http://www.debian.org/social_contract#guidelines"
+msgstr ""
+"Debian içerisinde bulunmayan yazılımlara bağımlı uygulamalar\n"
+" 'contrib' bölümü içerisindeki paketler Debian kapsamında değildir.\n"
+" .\n"
+" Bu paketler Özgür Yazılım'dır, fakat Debian Debian kapsamında olmayan bazı "
+"paketere bağımlıdırlar.  Bunun nedeni bağımlı oldukları yazılımların non-"
+"free içerisinde paketlenmiş ancak Özgür Yazılım olmayan bir paket oluşu, "
+"Debian'ın bu paketi asla dağıtamayacak olması veya (çok nadiren) kimsenin "
+"henüz paketini hazırlamamış olması olabilir.\n"
+" .\n"
+" Debian tarafından neyin Özgür Yazılım olarak değerlendirildiği hakkındadaha "
+"fazla bilgi için http://www.debian.org/social_contract#guidelines adresine "
+"bakabilirsiniz."
+
+#: src/pkg_grouppolicy.cc:202
+msgid ""
+"The main Debian archive\n"
+" The Debian distribution consists of packages from the 'main' section. Every "
+"package in 'main' is Free Software.\n"
+" .\n"
+" For more information about what Debian considers to be Free Software, see "
+"http://www.debian.org/social_contract#guidelines"
+msgstr ""
+"Ana Debian arşivi\n"
+" Debian dağıtımı, 'main' bölümündeki paketlerden oluşur. 'main' içerisindeki "
+"her paket Özgür Yazılım'dır.\n"
+" .\n"
+" Debian tarafından neyin Özgür Yazılım olarak değerlendirildiği hakkında "
+"daha fazla bilgi için http://www.debian.org/social_contract#guidelines "
+"adresine bakabilirsiniz."
+
+#: src/pkg_grouppolicy.cc:203
+msgid ""
+"Programs stored outside the US due to export controls\n"
+" Packages in 'non-US' likely contain cryptography; a few implement patented "
+"algorithms. Because of this, they cannot be exported from the United States, "
+"and hence are stored on a server in the \"free world\".\n"
+" .\n"
+" Note: the Debian Project is currently merging cryptographic software into "
+"the US-based archives after consulting with legal experts about recent "
+"changes in export policies. Most packages which were formerly found in this "
+"section, therefore, are now in 'main'."
+msgstr ""
+"İhraç denetimleri nedeniyle ABD dışında tutulan yazılımlar\n"
+" 'non-US' bölümündeki paketler büyük olasılıkla patentli kriptografi "
+"algoritmalarını uyguladıklarından Amerika Birleşik Devletleri'nden ihraç "
+"edilemiyorlar ve bu nedenle de \"özgür dünya\"daki bir sunucu üzerinde "
+"arşivleniyorlar.\n"
+" .\n"
+" Not: Debian projesi, ilgili kanundaki son değişikliklerle ilgili olarak "
+"uzmanlara danıştıktan sonra şifreleme yazılımları 'main' arşivi ile "
+"birleştiriyor. Dolayısıyla daha önceden bu bölümde yer alamn paketler şimdi "
+"'main' arşivi içerisinde yer alıyor."
+
+#: src/pkg_grouppolicy.cc:204
+msgid ""
+"Programs which are not free software\n"
+" Packages in the 'non-free' section are not part of Debian.\n"
+" .\n"
+" These packages fail to meet one or more of the requirements of the Debian "
+"Free Software Guidelines (see below). You should read the license of "
+"programs in this section to be sure that you are allowed to use them in the "
+"way you intend.\n"
+" .\n"
+" For more information about what Debian considers to be Free Software, see "
+"http://www.debian.org/social_contract#guidelines"
+msgstr ""
+"Özgür Yazılım olmayan uygulamalar\n"
+" 'non-free' arşivi içerisindeki paketler Debian kapsamında değildir.\n"
+" .\n"
+" Bu paketler Debian Özgür Yazılım Yönergeleri'nin bir veya daha fazla "
+"şartını karşılayamıyor. Bu bölümdeki yazılımları kullanmadan önce "
+"lisanslarını okumalı ve amacınıza uygun kullanma izniniz olduğundan emin "
+"olmalısınız.\n"
+" .\n"
+" Debian tarafından neyin Özgür Yazılım olarak değerlendirildiği hakkında "
+"daha fazla bilgi için http://www.debian.org/social_contract#guidelines "
+"adresine bakabilirsiniz."
+
+#: src/pkg_grouppolicy.cc:206
+msgid ""
+"Virtual packages\n"
+" These packages do not exist; they are names other packages use to require "
+"or provide some functionality."
+msgstr ""
+"Sanal paketler\n"
+" Bu paketler gerçekte yoktur, yalnızca diğer paketlerin bağımlılıkları "
+"tamamlamak için kullandıkları veya bazı işlevler sağlamak için kullanılan "
+"isimlerdir."
+
+#: src/pkg_grouppolicy.cc:221
+msgid "Tasks/Tasks"
+msgstr "Görevler/Görevler"
+
+#: src/pkg_grouppolicy.cc:221 src/pkg_grouppolicy.cc:956
+msgid "Tasks"
+msgstr "Görevler"
+
+#: src/pkg_grouppolicy.cc:227
+msgid "Unknown/Unknown"
+msgstr "Bilinmeyen/Bilinmeyen"
+
+#: src/pkg_grouppolicy.cc:233
+msgid "virtual/virtual"
+msgstr "sanal/sanal"
+
+#: src/pkg_grouppolicy.cc:244
+msgid "main"
+msgstr "main"
+
+#: src/pkg_grouppolicy.cc:329
+msgid ""
+"Security Updates\n"
+" Security updates for these packages are available from security.debian.org."
+msgstr ""
+"Güvenlik Güncellemeleri\n"
+"Bu paketler için güvenlik güncellemeleri security.debian.org adresindedir."
+
+#: src/pkg_grouppolicy.cc:330
+msgid ""
+"Upgradable Packages\n"
+" A newer version of these packages is available."
+msgstr ""
+"Yükseltilebilir paketler\n"
+" Bu paketlerin daha güncel sürümleri mevcut."
+
+#: src/pkg_grouppolicy.cc:331
+msgid ""
+"New Packages\n"
+" These packages have been added to Debian since the last time you cleared "
+"the list of \"new\" packages (choose \"Forget new packages\" from the "
+"Actions menu to empty this list)."
+msgstr ""
+"Yeni Paketler\n"
+" Bu paketler siz \"yeni\" paket listesini son temizlediğinizden beri "
+"Debian'a eklenmiş paketlerdir. (Listeyi temizlemek için Eylemler menüsündeki "
+"\"Yeni paketleri unut\" seçeneğini kullanın)"
+
+#: src/pkg_grouppolicy.cc:332
+msgid ""
+"Installed Packages\n"
+" These packages are currently installed on your computer."
+msgstr ""
+"Kurulmuş Paketler\n"
+" Bu paketler şu anda bilgisayarınızda kurulmuş durumdadır."
+
+#: src/pkg_grouppolicy.cc:333
+msgid ""
+"Not Installed Packages\n"
+" These packages are not installed on your computer."
+msgstr ""
+"Kurulmamış Paketler\n"
+" Bu paketler bilgisayarınıza henüz kurulmamıştır."
+
+#: src/pkg_grouppolicy.cc:334
+msgid ""
+"Obsolete and Locally Created Packages\n"
+" These packages are currently installed on your computer, but they are not "
+"available from any apt source.  They may be obsolete and removed from the "
+"archive, or you may have built a private version of them yourself."
+msgstr ""
+"Eski ve Yerel Olarak Oluşturulmuş Paketler\n"
+" Bu paketler bilgisayarınızda kurulmuş durumda, fakat herhangi bir apt "
+"kaynağından edinilebilir değiller.  Eskimiş, arşivden çıkarılmış olabilirler "
+"veya kendiniz için özel bir sürüm hazırlamış olabilirsiniz."
+
+#: src/pkg_grouppolicy.cc:335
+msgid ""
+"Virtual Packages\n"
+" These packages do not exist; they are names other packages use to require "
+"or provide some functionality."
+msgstr ""
+"Sanal paketler\n"
+" Bu paketler gerçekte yoktur, yalnızca diğer paketlerin bağımlılıkları "
+"tamamlamak için kullandıkları veya bazı işlevler sağlamak için kullanılan "
+"isimlerdir."
+
+#: src/pkg_grouppolicy.cc:487
+msgid ""
+"Packages which are recommended by other packages\n"
+" These packages are not strictly required, but they may be necessary to "
+"provide full functionality in some other programs that you are installing or "
+"upgrading."
+msgstr ""
+"Diğer paketler tarafından önerilen paketler\n"
+" Bu paketler sisteminizin düzgün işlemesi için gerekli değildir, fakat "
+"kurmakta ya da yükseltmekte olduğunuz bazı uygulamaların tüm işlevselliğinin "
+"sağlanması için gereklidir."
+
+#: src/pkg_grouppolicy.cc:507
+msgid ""
+"Packages which are suggested by other packages\n"
+" These packages are not required in order to make your system function "
+"properly, but they may provide enhanced functionality for some programs that "
+"you are currently installing."
+msgstr ""
+"Diğer paketler tarafından teklif edilen paketler\n"
+" Bu paketler sisteminizin düzgün işlemesi için gerekli değildir, fakat "
+"kurmakta olduğunuz bazı uygulamalar için gelişkin işlevler sağlayabilirler."
+
+#: src/pkg_grouppolicy.cc:534
+msgid ""
+"Packages with unsatisfied dependencies\n"
+" The dependency requirements of these packages will be unmet after the "
+"install is complete.\n"
+" .\n"
+" The presence of this tree probably indicates that something is broken, "
+"either on your system or in the Debian archive."
+msgstr ""
+"Karşılanmamış bağımlılıkları olan paketler\n"
+" Bu paketlerin bağımlılık gereksinimleri kurulum tamamlandıktan sonra "
+"karşılanmamış olacak.\" .\n"
+" Bu bölümün varlığı büyük olasılıkla sisteminizde veya Debian arşivinde "
+"birşeylerin bozuk olduğuna işarettir."
+
+#: src/pkg_grouppolicy.cc:535
+msgid ""
+"Packages being removed because they are no longer used\n"
+" These packages are being deleted because they were automatically installed "
+"to fulfill dependencies, and the planned action will result in no installed "
+"package declaring an 'important' dependency on them.\n"
+msgstr ""
+"Kullanımda olmadığı için kaldırılacak paketler\n"
+" Bu paketler sisteminizden silinecek çünkü bağımlılıkları tamamlamak için "
+"otomatik olarak kurulmuşlardı ve tasarladığınız eylemler bu paketler "
+"üzerinde önemli bir bağımlılık kalmamasına neden olacak.\n"
+
+#: src/pkg_grouppolicy.cc:536
+msgid ""
+"Packages being automatically held in their current state\n"
+" These packages could be upgraded, but they have been kept in their current "
+"state to avoid breaking dependencies."
+msgstr ""
+"Şu andaki durumlarında otomatik olarak tutulacak olan paketler\n"
+" Bu paketler yükseltilebilirdi, fakat bağımlılıkların bozulmasını engellemek "
+"için şu andaki durumlarında tutuluyorlar."
+
+#: src/pkg_grouppolicy.cc:537
+msgid ""
+"Packages being automatically installed to satisfy dependencies\n"
+" These packages are being installed because they are required by another "
+"package you have chosen for installation."
+msgstr ""
+"Bağımlılıkları karşılamak için otomatik olarak kurulacak paketler\n"
+" Bu paketler kurmak için seçtiğiniz bir başka paket tarafından gereksinim "
+"duyuldukları için kurulacaklar."
+
+#: src/pkg_grouppolicy.cc:538
+msgid ""
+"Packages being deleted due to unsatisfied dependencies\n"
+" These packages are being deleted because one or more of their dependencies "
+"is no longer available, or because another package conflicts with them."
+msgstr ""
+"Karşılanmamış bağımlılıklardan dolayı silinecek paketler\n"
+" Bu paketler bağımlı oldukları paketler artık kullanılamaz durumda "
+"olduklarından veya bir başka paket bağımlı oldukları paketlerle "
+"çakıştığından silinecek."
+
+#: src/pkg_grouppolicy.cc:539
+msgid ""
+"Packages to be downgraded\n"
+" An older version of these packages than is currently installed will be "
+"installed."
+msgstr ""
+"Eski sürümü kurulacak olan paketler\n"
+" Bu paketlerin şu anda kurulmuş olan sürümlerinden daha eski birer sürümleri "
+"kurulacak."
+
+#: src/pkg_grouppolicy.cc:540
+msgid ""
+"Packages being held back\n"
+" These packages could be upgraded, but you have asked for them to be held at "
+"their current version."
+msgstr ""
+"Geride tutulacak paketler\n"
+" Bu paketler güncellenebilirdi, fakat şu andaki sürümlerinde tutulmalarını "
+"istediniz."
+
+#: src/pkg_grouppolicy.cc:541
+msgid ""
+"Packages to be reinstalled\n"
+" These packages will be reinstalled."
+msgstr ""
+"Yeniden kurulacak paketler\n"
+" Bu paketler yeniden kurulacak."
+
+#: src/pkg_grouppolicy.cc:542
+msgid ""
+"Packages to be installed\n"
+" These packages have been manually selected for installation on your "
+"computer."
+msgstr ""
+"Kurulacak paketler\n"
+" Bu paketleri sisteminize kurmak üzere seçtiniz."
+
+#: src/pkg_grouppolicy.cc:543
+msgid ""
+"Packages to be removed\n"
+" These packages have been manually selected for removal."
+msgstr ""
+"Kaldırılacak paketler\n"
+" Bu paketleri sisteminizden kaldırılmak üzere seçtiniz."
+
+#: src/pkg_grouppolicy.cc:544
+msgid ""
+"Packages to be upgraded\n"
+" These packages will be upgraded to a newer version."
+msgstr ""
+"Yükseltilecek paketler\n"
+" Bu paketler daha güncel sürümlerine yükseltilecek."
+
+#: src/pkg_grouppolicy.cc:659
+msgid "unknown"
+msgstr "bilinmeyen"
+
+#: src/pkg_grouppolicy.cc:670
+#, c-format
+msgid "Priority %s"
+msgstr "Öncelik %s"
+
+#: src/pkg_grouppolicy.cc:780
+msgid "UNCATEGORIZED"
+msgstr "SINIFLANDIRILMAMIŞ"
+
+#: src/pkg_grouppolicy.cc:899
+msgid "End-user"
+msgstr "Son-kullanıcı"
+
+#: src/pkg_grouppolicy.cc:900
+msgid "Servers"
+msgstr "Sunucular"
+
+#: src/pkg_grouppolicy.cc:901
+msgid "Development"
+msgstr "Geliştirme"
+
+#: src/pkg_grouppolicy.cc:902
+msgid "Localization"
+msgstr "Yerelleştirme"
+
+#: src/pkg_grouppolicy.cc:903
+msgid "Hardware Support"
+msgstr "Donanım Desteği"
+
+#: src/pkg_grouppolicy.cc:904
+msgid "Miscellaneous"
+msgstr "Çeşitli"
+
+#: src/pkg_grouppolicy.cc:905
+msgid "Unrecognized tasks"
+msgstr "Tanınmayan Görevler"
+
+#: src/pkg_grouppolicy.cc:957
+msgid ""
+"\n"
+" Tasks are groups of packages which provide an easy way to select a "
+"predefined set of packages for a particular purpose."
+msgstr ""
+"\n"
+" Görevler, belirli bir amaç için önceden tanımlanmış paket gruplarını "
+"topluca seçmek için kolay bir yol sağlar."
+
+#: src/pkg_grouppolicy.cc:1080
+#, fuzzy, c-format
+msgid "Bad number in format string: %ls"
+msgstr "Biçim dizgisinde hatalı sayı: '%ls'"
+
+#: src/pkg_grouppolicy.cc:1089
+#, c-format
+msgid "Match indices must be 1 or greater, not \"%s\""
+msgstr ""
+
+#: src/pkg_grouppolicy.cc:1107
+#, c-format
+msgid "Match index %ls is too large; available groups are (%s)"
+msgstr ""
+
+#: src/pkg_grouppolicy.cc:1321
+msgid "TAGLESS PACKAGES"
+msgstr ""
+
+#: src/pkg_grouppolicy.cc:1322
+msgid ""
+"\n"
+" These packages have not yet been classified in debtags."
+msgstr ""
+
+#: src/pkg_grouppolicy.cc:1347
+msgid "MISSING TAG"
+msgstr ""
+
+#: src/pkg_info_screen.cc:118
+msgid "Compressed size: "
+msgstr "Sıkıştırılmış boyut: "
+
+#: src/pkg_info_screen.cc:119
+msgid "Uncompressed size: "
+msgstr "Sıkıştırılmamış boyut: "
+
+#: src/pkg_info_screen.cc:120
+msgid "Source Package: "
+msgstr "Kaynak paketi: "
+
+#: src/pkg_info_screen.cc:130
+#, c-format
+msgid "Package names provided by %s"
+msgstr "%s tarafından sağlanan paketlerin isimleri"
+
+#: src/pkg_info_screen.cc:140
+#, c-format
+msgid "Packages which depend on %s"
+msgstr "%s paketine bağımlı paketler"
+
+#: src/pkg_info_screen.cc:145
+msgid "Versions"
+msgstr "Sürümler"
+
+#: src/pkg_item.cc:55
+msgid "Yes, I am aware this is a very bad idea"
+msgstr "Evet, bunun çok kötü bir fikir olduğunun bilincindeyim"
+
+#: src/pkg_item.cc:80
+#, c-format
+msgid ""
+"%s is an essential package!%n%nAre you sure you want to remove it?%nType '%"
+"s' if you are."
+msgstr ""
+"%s temel bir pakettir!%n%nBu paketi kaldırmak istediğinizden emin misiniz?%"
+"nEğer eminseniz '%s' yazın."
+
+#: src/pkg_item.cc:220 src/pkg_ver_item.cc:641 src/solution_item.cc:282
+#, c-format
+msgid "Information about %s"
+msgstr "%s hakkında bilgi"
+
+#: src/pkg_item.cc:222 src/pkg_ver_item.cc:643 src/solution_item.cc:280
+#, c-format
+msgid "%s info"
+msgstr "%s bilgisi"
+
+#: src/pkg_item.cc:316
+#, c-format
+msgid "Available versions of %s"
+msgstr "%s'in mevcut sürümleri"
+
+#: src/pkg_item.cc:319
+#, c-format
+msgid "%s versions"
+msgstr "%s sürümleri"
+
+#: src/pkg_item.cc:331 src/pkg_ver_item.cc:671
+#, c-format
+msgid "Dependencies of %s"
+msgstr "%s paketinin bağımlılıkları"
+
+#: src/pkg_item.cc:333 src/pkg_ver_item.cc:673
+#, c-format
+msgid "%s deps"
+msgstr "%s bağımlılıkları"
+
+#: src/pkg_item.cc:344 src/pkg_ver_item.cc:683
+#, c-format
+msgid "Packages depending on %s"
+msgstr "%s paketine bağımlı paketler"
+
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:685
+#, c-format
+msgid "%s reverse deps"
+msgstr "%s ters bağımlılıkları"
+
+#: src/pkg_item.cc:396 src/pkg_ver_item.cc:734
+#, c-format
+msgid "Reporting a bug in %s:\n"
+msgstr "%s ile ilgili hata bildirimi:\n"
+
+#: src/pkg_item.cc:416
+msgid ""
+"You are not root and I cannot find any way to become root.  To reconfigure "
+"this package, install the menu package, the login package, or run aptitude "
+"as root."
+msgstr ""
+"Root yetkisine sahip değilsiniz ve size bu yetkiyi sağlayabilmek için bir "
+"yol bulunamadı. Bu paketi yeniden yapılandırmak için menu veya login "
+"paketlerini kurabilir ya da aptitude uygulamasını root yetkisiyle "
+"çalıştırabilirsiniz."
+
+#: src/pkg_item.cc:424
+#, c-format
+msgid "Reconfiguring %s\n"
+msgstr "%s paketi yeniden yapılandırılıyor\n"
+
+#: src/pkg_item.cc:434 src/ui.cc:1017
+msgid "Press return to continue.\n"
+msgstr "Devam etmek için enter tuşuna basın.\n"
+
+#: src/pkg_item.cc:451
+msgid "Hierarchy editor"
+msgstr "Hiyerarşi düzenleyici"
+
+#: src/pkg_item.cc:451
+msgid "Hierarchy Editor"
+msgstr "Hiyerarşi Düzenleyici"
+
+#: src/pkg_tree.cc:166
+msgid "All Packages"
+msgstr "Tüm Paketler"
+
+#: src/pkg_tree.cc:179 src/pkg_tree.cc:194
+msgid "Building view"
+msgstr "Görüntü oluşturuluyor"
+
+#: src/pkg_tree.cc:237
+#, c-format
+msgid "No packages matched the pattern \"%ls\"."
+msgstr "\"%ls\" kalıbına uygun paket yok."
+
+#: src/pkg_tree.cc:259
+msgid "Enter the new package tree limit: "
+msgstr "Yeni paket ağacı sınırını girin: "
+
+#: src/pkg_tree.cc:293
+msgid "Enter the new package grouping mechanism for this display: "
+msgstr "Bu ekran için yeni paket gruplama mekanizmasını girin: "
+
+#: src/pkg_tree.cc:301
+msgid "Enter the new package sorting mechanism for this display: "
+msgstr "Bu ekran için yeni paket sıralama mekanizmasını girin: "
+
+#: src/pkg_view.cc:149
+msgid "Couldn't transcode column definition"
+msgstr "Sütun tanımı kod dönüşümü yapılamıyor"
+
+#: src/pkg_view.cc:156
+msgid "Couldn't parse column definition"
+msgstr "Sütun tanımlaması ayrıştırılamıyor"
+
+#: src/pkg_view.cc:185
+msgid "Encoding error in long description."
+msgstr "Günlük açıklamasında kodlama hatası."
+
+#: src/pkg_view.cc:415
+msgid "make_package_view: error in arguments -- two main widgets??"
+msgstr "make_package_view: ifadelerde hata -- iki ana pencere mi olacak??"
+
+#: src/pkg_view.cc:421
+msgid ""
+"make_package_view: error in arguments -- bad column list for static item"
+msgstr ""
+"make_package_view: ifadelerde hata -- kalıcı öğe için yanlış kolon listesi"
+
+#: src/pkg_view.cc:517
+msgid "make_package_view: bad argument!"
+msgstr "make_package_view: hatalı ifade!"
+
+#: src/pkg_view.cc:569
+msgid "make_package_view: no main widget found"
+msgstr "make_package_view: Ana nesne bulunamadı"
+
+#: src/reason_fragment.cc:30
+msgid "depends on"
+msgstr "bağımlı"
+
+#: src/reason_fragment.cc:32
+msgid "pre-depends on"
+msgstr "ön-bağımlı ise"
+
+#: src/reason_fragment.cc:34
+msgid "suggests"
+msgstr "teklif ederse"
+
+#: src/reason_fragment.cc:35
+msgid "recommends"
+msgstr "tavsiye ederse"
+
+#: src/reason_fragment.cc:37
+msgid "conflicts with"
+msgstr "çakışırsa"
+
+#: src/reason_fragment.cc:39
+msgid "replaces"
+msgstr "yerini alırsa"
+
+#: src/reason_fragment.cc:40
+msgid "obsoletes"
+msgstr "eskitirse"
+
+#: src/reason_fragment.cc:166
+#, c-format
+msgid " (provided by %F)"
+msgstr " (%F tarafından sağlanan)"
+
+#: src/reason_fragment.cc:275
+#, c-format
+msgid "%F%s %F %F"
+msgstr "%F%s %F %F"
+
+#: src/reason_fragment.cc:324
+msgid ""
+"If you select a package, an explanation of its current state will appear in "
+"this space."
+msgstr ""
+"Bir paket seçerseniz, şu andaki durumu ile ilgili bir açıklama burada "
+"görünecek."
+
+#: src/reason_fragment.cc:358
+msgid ""
+"%B%s%b was installed automatically;  it is being removed because all of the "
+"packages which depend upon it are being removed:"
+msgstr ""
+"%B%s%b paketi otomatik olarak kurulmuştu,  şimdi kaldırılacak çünkü bu "
+"pakete bağımlı olan paketler kaldırılıyor:"
+
+#: src/reason_fragment.cc:362
+msgid "%B%s%b will be automatically removed because of dependency errors:"
+msgstr ""
+"Bağımlılık hatalarından dolayı %B%s%b paketi otomatik olarak kaldırılacak:"
+
+#: src/reason_fragment.cc:366
+msgid ""
+"%B%s%b will be automatically installed to satisfy the following dependencies:"
+msgstr ""
+"%B%s%b paketi bağımlılıkları karşılamak için otomatik olarak kurulacak:"
+
+#: src/reason_fragment.cc:372 src/reason_fragment.cc:384
+msgid ""
+"%B%s%b cannot be upgraded now, but if it could be, it would still be held at "
+"version %B%s%b."
+msgstr ""
+"%B%s%b şu anda yükseltilemiyor fakat yükseltilebilecek olsaydı bile %B%s%b "
+"sürümünde tutulacaktı."
+
+#: src/reason_fragment.cc:375
+msgid ""
+"%B%s%b will not be upgraded to version %B%s%b, to avoid breaking the "
+"following dependencies:"
+msgstr ""
+"%B%s%b paketi bazı bağımlılıkları bozmamak için %B%s%b sürümüne "
+"yükseltilmeyecek:"
+
+#: src/reason_fragment.cc:387
+msgid "%B%s%b is currently installed."
+msgstr "%B%s%b şu anda kurulmuş durumda."
+
+#: src/reason_fragment.cc:393
+msgid "%B%s%b is not currently installed."
+msgstr "%B%s%b şu anda kurulu değil."
+
+#: src/reason_fragment.cc:401
+msgid "Some dependencies of %B%s%b are not satisfied:"
+msgstr "%B%s%b paketinin bazı bağımlılıkları karşılanamadı:"
+
+#: src/reason_fragment.cc:405
+msgid "%B%s%b will be downgraded."
+msgstr "%B%s%b paketinin eski sürümü kurulacak."
+
+#: src/reason_fragment.cc:412
+msgid "%B%s%b will not be upgraded to the forbidden version %B%s%b."
+msgstr "%B%s%b paketi, kurulumu engellenen %B%s%b sürümüne yükseltilmeyecek."
+
+#: src/reason_fragment.cc:416
+msgid ""
+"%B%s%b could be upgraded to version %B%s%b, but it is being held at version %"
+"B%s%b."
+msgstr ""
+"%B%s%b paketi %B%s%b sürümüne güncellenebilirdi, fakat %B%s%b sürümünde "
+"kalacak."
+
+#: src/reason_fragment.cc:423
+msgid "%B%s%b will be re-installed."
+msgstr "%B%s%b yeniden kurulacak."
+
+#: src/reason_fragment.cc:427
+msgid "%B%s%b will be installed."
+msgstr "%B%s%b kurulacak."
+
+#: src/reason_fragment.cc:431
+msgid "%B%s%b will be removed."
+msgstr "%B%s%b kaldırılacak."
+
+#: src/reason_fragment.cc:436
+msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
+msgstr "%B%s%b paketi %B%s%b sürümünden %B%s%b sürümüne yükseltilecek."
+
+#: src/reason_fragment.cc:472
+msgid ""
+"The following packages depend on %B%s%b and will be broken by its removal:"
+msgstr ""
+"Bu paketler %B%s%b paketine bağımlı ve bu paket kaldırılırsa bozulacaklar:"
+
+#: src/reason_fragment.cc:475
+msgid "The following packages depend on %B%s%b and are broken:"
+msgstr "Bu paketler %B%s%b paketine bağımlıydı ve kırık bağımlılıkları var:"
+
+#: src/reason_fragment.cc:482
+msgid ""
+"The following packages conflict with %B%s%b and will be broken by its "
+"installation:"
+msgstr "Bu paketler %B%s%b ile çakışıyorlar ve kurulursa bozuk olacaklar:"
+
+#: src/reason_fragment.cc:515
+msgid ""
+"The following packages depend on a version of %B%s%b other than the "
+"currently installed version of %B%s%b, or conflict with the currently "
+"installed version:"
+msgstr ""
+"Belirilen paketler %B%s%b paketinin şu anda kurulmuş olan %B%s%b sürümü "
+"dışında bir sürüme bağımlılar veya şu anda kurulmuş olan sürümle "
+"çakışıyorlar:"
+
+#: src/reason_fragment.cc:519
+msgid ""
+"The following packages conflict with %B%s%b, or depend on a version of it "
+"which is not going to be installed."
+msgstr ""
+"Bu paketler %B%s%b paketi ile çakışıyorlar veya kurulmayacak olan bir "
+"sürümüne bağımlılar:"
+
+#: src/reason_fragment.cc:523
+msgid "The following packages conflict with %B%s%b:"
+msgstr "Bu paketler %B%s%b ile çakışıyorlar:"
+
+#: src/reason_fragment.cc:528
+msgid ""
+"The following packages depend on a version of %B%s%b other than the "
+"currently installed version of %B%s%b:"
+msgstr ""
+"Bu paketler %B%s%b paketinin kurulmuş olan %B%s%b sürümünden farklı bir "
+"sürümüne bağımlı:"
+
+#: src/reason_fragment.cc:532
+msgid ""
+"The following packages depend on a version of %B%s%b which is not going to "
+"be installed."
+msgstr ""
+"Bu paketler kurulmayacak olan %B%s%b paketinin bir sürümüne bağımlılar."
+
+#: src/reason_fragment.cc:538
+msgid "upgraded"
+msgstr "güncellenirse"
+
+#: src/reason_fragment.cc:538
+msgid "downgraded"
+msgstr "eski sürümü kurulursa"
+
+#: src/reason_fragment.cc:544
+msgid ""
+"The following packages depend on the currently installed version of %B%s%b (%"
+"B%s%b), or conflict with the version it will be %s to (%B%s%b), and will be "
+"broken if it is %s."
+msgstr ""
+"Bu paketler kurulmuş durumda olan %B%s%b paketinin (%B%s%b) sürümüne "
+"bağımlılar veya (%B%s%b) olacak sürümü ile çakışıyorlar ve %s bozuk "
+"olacaklar."
+
+#: src/reason_fragment.cc:551
+msgid ""
+"The following packages conflict with version %B%s%b of %B%s%b, and will be "
+"broken if it is %s."
+msgstr ""
+"Bu paketler %B%s%b sürümündeki %B%s%b paketi ile çakışıyorlar ve eğer bu "
+"paket %s kırık bağımlılıkları olacak."
+
+#: src/reason_fragment.cc:556
+msgid ""
+"The following packages depend on version %B%s%b of %B%s%b, and will be "
+"broken if it is %s."
+msgstr ""
+"Bu paketler %B%s%b sürümündeki %B%s%b paketine ihtiyaç duyuyorlar, ve bu "
+"paket %s kırık bağımlılıkları olacak."
+
+#: src/solution_dialog.cc:107 src/solution_screen.cc:457
+msgid "The package cache is not available."
+msgstr "Paket tamponu mevcut değil."
+
+#: src/solution_dialog.cc:115
+msgid "No packages are broken."
+msgstr "Bozuk paket bulunmuyor."
+
+#: src/solution_dialog.cc:124 src/solution_screen.cc:479
+msgid "No resolution found."
+msgstr "Çözüm bulunamadı."
+
+#: src/solution_dialog.cc:130 src/solution_screen.cc:490
+#, fuzzy
+msgid "Resolving dependencies..."
+msgstr "Bağımlılıklar çözülemiytor."
+
+#: src/solution_dialog.cc:185
+msgid "Previous"
+msgstr "Önceki"
+
+#: src/solution_dialog.cc:186
+msgid "Next"
+msgstr "Sonraki"
+
+#: src/solution_dialog.cc:187
+msgid "Apply"
+msgstr "Uygula"
+
+#: src/solution_dialog.cc:188
+msgid "Close"
+msgstr "Kapat"
+
+#: src/solution_fragment.cc:104
+#, fuzzy, c-format
+msgid "%s depends upon %s"
+msgstr "bağımlı"
+
+#: src/solution_fragment.cc:107
+#, fuzzy, c-format
+msgid "%s pre-depends upon %s"
+msgstr "ön-bağımlı ise"
+
+#: src/solution_fragment.cc:110
+#, fuzzy, c-format
+msgid "%s suggests %s"
+msgstr "teklif ederse"
+
+#: src/solution_fragment.cc:113 src/solution_item.cc:581
+#, fuzzy, c-format
+msgid "%s recommends %s"
+msgstr "tavsiye ederse"
+
+#: src/solution_fragment.cc:116
+#, fuzzy, c-format
+msgid "%s conflicts with %s"
+msgstr "çakışırsa"
+
+#: src/solution_fragment.cc:119
+#, fuzzy, c-format
+msgid "%s replaces %s"
+msgstr "yerini alırsa"
+
+#: src/solution_fragment.cc:122
+#, fuzzy, c-format
+msgid "%s obsoletes %s"
+msgstr "eskitirse"
+
+#: src/solution_fragment.cc:135
+#, fuzzy, c-format
+msgid "%s conflicts with %s [provided by %s %s]"
+msgstr "çakışırsa"
+
+#: src/solution_fragment.cc:145
+#, fuzzy, c-format
+msgid "Removing %s"
+msgstr "%s paketi yeniden yapılandırılıyor\n"
+
+#: src/solution_fragment.cc:147
+#, c-format
+msgid "Installing %s %s (%s)"
+msgstr ""
+
+#: src/solution_fragment.cc:216
+msgid "%BRemove%b the following packages:%n"
+msgstr "Aşağıdaki paketleri %Bkaldır%b:%n"
+
+#: src/solution_fragment.cc:226
+msgid "%BInstall%b the following packages:%n"
+msgstr "Aşağıdaki paketleri %Bkur%b:%n"
+
+#: src/solution_fragment.cc:239
+msgid "%BKeep%b the following packages at their current version:%n"
+msgstr "Aşağıdaki paketleri mevcut sürümlerinde %BTut%b:%n"
+
+#: src/solution_fragment.cc:246
+msgid "Not Installed"
+msgstr "Kurulmadı"
+
+#: src/solution_fragment.cc:259
+msgid "%BUpgrade%b the following packages:%n"
+msgstr "Aşağıdaki paketleri %Byükselt%b:%n"
+
+#: src/solution_fragment.cc:274
+msgid "%BDowngrade%b the following packages:%n"
+msgstr "Aşağıdaki paketlerin %Beski sürümünü kur%b:%n"
+
+#: src/solution_fragment.cc:291
+#, fuzzy, c-format
+msgid "Leave the following dependencies unresolved:%n"
+msgstr "Aşağıdaki paketleri %Bkaldır%b:%n"
+
+#: src/solution_fragment.cc:299
+#, c-format
+msgid "Score is %d"
+msgstr "Skor %d"
+
+#: src/solution_item.cc:91
+#, c-format
+msgid "Remove %F [%s (%s)]"
+msgstr ""
+
+#: src/solution_item.cc:98
+#, c-format
+msgid "Install %F [%s (%s)]"
+msgstr ""
+
+#: src/solution_item.cc:106
+#, fuzzy, c-format
+msgid "Cancel the installation of %F"
+msgstr "kurulum ile devam et"
+
+#: src/solution_item.cc:109
+#, c-format
+msgid "Cancel the removal of %F"
+msgstr ""
+
+#: src/solution_item.cc:112
+#, c-format
+msgid "Keep %F at version %s (%s)"
+msgstr ""
+
+#: src/solution_item.cc:120
+#, c-format
+msgid "Upgrade %F [%s (%s) -> %s (%s)]"
+msgstr ""
+
+#: src/solution_item.cc:129
+#, fuzzy, c-format
+msgid "Downgrade %F [%s (%s) -> %s (%s)]"
+msgstr "%sB %s de indirildi (%sB/s)."
+
+#: src/solution_item.cc:585
+#, fuzzy, c-format
+msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
+msgstr "Aşağıdaki paketleri %Bkaldır%b:%n"
+
+#: src/solution_screen.cc:149
+#, fuzzy
+msgid "The following actions will resolve this dependency:"
+msgstr "Aşağıdaki paketler bu bağımlılıkları karşılayacak:"
+
+#: src/solution_screen.cc:235
+#, fuzzy
+msgid "Remove the following packages:"
+msgstr "Aşağıdaki paketleri %Bkaldır%b:%n"
+
+#: src/solution_screen.cc:246
+#, fuzzy
+msgid "Keep the following packages at their current version:"
+msgstr "Aşağıdaki paketleri mevcut sürümlerinde %BTut%b:%n"
+
+#: src/solution_screen.cc:257
+#, fuzzy
+msgid "Install the following packages:"
+msgstr "Aşağıdaki paketleri %Bkur%b:%n"
+
+#: src/solution_screen.cc:268
+#, fuzzy
+msgid "Upgrade the following packages:"
+msgstr "Aşağıdaki paketleri %Byükselt%b:%n"
+
+#: src/solution_screen.cc:279
+#, fuzzy
+msgid "Downgrade the following packages:"
+msgstr "Aşağıdaki paketlerin %Beski sürümünü kur%b:%n"
+
+#: src/solution_screen.cc:292
+#, fuzzy
+msgid "Leave the following recommendations unresolved:"
+msgstr "Aşağıdaki paketleri %Bkaldır%b:%n"
+
+#: src/solution_screen.cc:463
+#, fuzzy
+msgid "No broken packages."
+msgstr "Paket kaldırmak için '-'"
+
+#: src/trust.cc:17 src/trust.cc:19
+msgid "WARNING"
+msgstr "UYARI"
+
+#: src/trust.cc:18
+msgid ""
+"%F: This version of %s is from an %Buntrusted source%b!  Installing this "
+"package could allow a malicious individual to damage or take control of your "
+"system."
+msgstr ""
+"%F: %s paketinin bu sürümü %Bgüvenilir olmayan%b bir kaynaktan geliyor!  Bu "
+"paketi kurmanız halinde kötü niyetli birisi sisteminize zarar verebilir veya "
+"sistemin denetimini ele geçirebilir."
+
+#: src/ui.cc:217
+msgid "Er, there aren't any errors, this shouldn't have happened.."
+msgstr "Herhangi bir hata yok, bu gerçekleşmemeliydi..."
+
+#: src/ui.cc:223
+msgid "E:"
+msgstr "H:"
+
+#: src/ui.cc:225
+msgid "W:"
+msgstr "U:"
+
+#: src/ui.cc:316
+msgid ""
+"WARNING: the package cache is opened in read-only mode!  This change and all "
+"subsequent changes will not be saved unless you stop all other running apt-"
+"based programs and select \"Become root\" from the Actions menu."
+msgstr ""
+
+#: src/ui.cc:322
+msgid "Never display this message again."
+msgstr ""
+
+#: src/ui.cc:368
+msgid ""
+"You may not modify the state of any package while a download is underway."
+msgstr ""
+
+#: src/ui.cc:399
+msgid "You already are root!"
+msgstr "Zaten root yetkiniz var!"
+
+#: src/ui.cc:462
+msgid ""
+"Subprocess exited with an error -- did you type your password correctly?"
+msgstr "Altsüreç bir hata ile sonlandı -- parolanızı doğru girdiniz mi?"
+
+#: src/ui.cc:501
+msgid "Loading cache"
+msgstr "Önbellek yükleniyor"
+
+#: src/ui.cc:523
+msgid "Really quit Aptitude?"
+msgstr "Aptitude'dan çıkılsın mı?"
+
+#: src/ui.cc:597
+msgid "Really discard your personal settings and reload the defaults?"
+msgstr "Kişisel tercihleriniz unutulup öntanımlı ayarlar yüklensin mi?"
+
+#: src/ui.cc:701 src/ui.cc:703 src/ui.cc:727 src/ui.cc:729 src/ui.cc:748
+#: src/ui.cc:750 src/ui.cc:771 src/ui.cc:773
+msgid "Packages"
+msgstr "Paketler"
+
+#: src/ui.cc:702 src/ui.cc:728 src/ui.cc:749 src/ui.cc:772
+msgid "View available packages and choose actions to perform"
+msgstr "Kullanılabilir paketleri gösterir ve bir eylem seçmenizi sağlar"
+
+#: src/ui.cc:814
+msgid ""
+"Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with %"
+"BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
+"is free software, and you are welcome to redistribute it under certain "
+"conditions; see 'license' for details."
+msgstr ""
+"Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%n aptitude kesinlikle %"
+"BHERHANGİ BİR GARANTİ%b içermez; detaylar için Yardım menüsündeki 'Lisans' "
+"seçeneğine bakabilirsiniz. Bu bir Özgür Yazılım'dır, ve belirli koşullar "
+"altında dağıtılabilir."
+
+#: src/ui.cc:837
+msgid "help.txt"
+msgstr "yardım.txt"
+
+#: src/ui.cc:839
+msgid "Encoding of help.txt|UTF-8"
+msgstr "UTF-8"
+
+#: src/ui.cc:860
+msgid "README"
+msgstr "BENİOKU"
+
+#: src/ui.cc:862
+msgid "Encoding of README|UTF-8"
+msgstr "UTF-8"
+
+#: src/ui.cc:888
+#, fuzzy
+msgid "User's Manual"
+msgstr "Kulla^nıcı Elkitabı"
+
+#: src/ui.cc:888
+msgid "Read the full user's manual of aptitude"
+msgstr ""
+
+#: src/ui.cc:888
+#, fuzzy
+msgid "Manual"
+msgstr "Elle ^İşaretle"
+
+#: src/ui.cc:922
+#, fuzzy, c-format
+msgid "Unable to stat \"%s\""
+msgstr "\"%ls\"den sonra paket gösterimi kod dönüşümü yapılamıyor"
+
+#: src/ui.cc:928
+#, fuzzy, c-format
+msgid "Unable to remove \"%s\""
+msgstr "%ls açılamıyor"
+
+#: src/ui.cc:938
+#, fuzzy, c-format
+msgid "Unable to list files in \"%s\""
+msgstr "%ls açılamıyor"
+
+#: src/ui.cc:951
+#, c-format
+msgid "Failure closing directory \"%s\""
+msgstr ""
+
+#: src/ui.cc:957
+#, fuzzy, c-format
+msgid "Unable to remove directory \"%s\""
+msgstr "\"%ls\"den sonra paket gösterimi kod dönüşümü yapılamıyor"
+
+#: src/ui.cc:967
+#, c-format
+msgid ""
+"Unable to remove the old temporary directory; you should remove %s by hand."
+msgstr ""
+
+#: src/ui.cc:972
+#, c-format
+msgid ""
+"Will not remove %s; you should examine the files in it and remove them by "
+"hand."
+msgstr ""
+
+#: src/ui.cc:998
+#, c-format
+msgid ""
+"It appears that a previous version of aptitude left files behind in %s.  "
+"These files are probably useless and safe to delete.%n%nDo you want to "
+"remove this directory and all its contents?  If you select \"No\", you will "
+"not see this message again."
+msgstr ""
+
+#: src/ui.cc:1040
+msgid "Downloading packages"
+msgstr "Paketler indiriliyor"
+
+#: src/ui.cc:1041
+msgid "View the progress of the package download"
+msgstr "Paket indirme işlemi için ilerleme durumunu göster"
+
+#: src/ui.cc:1042
+msgid "Package Download"
+msgstr "Paket İndirme"
+
+#: src/ui.cc:1075
+msgid ""
+"%BWARNING%b: untrusted versions of the following packages will be installed!%"
+"n%nUntrusted packages could %Bcompromise your system's security%b.  You "
+"should only proceed with the installation if you are certain that this is "
+"what you want to do.%n%n"
+msgstr ""
+"%BUYARI%b: aşağıdaki paketlerin güvenilir olmayan sürümleri kurulacak!%n%"
+"nKökeni belirsiz paketler sisteminizin güvenliğini zedeleyebilir%b.  Sadece "
+"yapmak istediğiniz şeyin bu olduğuna kesin eminseniz kuruluma devam "
+"etmelisiniz.%n%n"
+
+#: src/ui.cc:1081
+msgid "  %S*%N %s [version %s]%n"
+msgstr "  %S*%N %s [sürüm %s]%n"
+
+#: src/ui.cc:1087
+msgid "Really Continue"
+msgstr "Gerçekten Devam et"
+
+#: src/ui.cc:1089
+msgid "Abort Installation"
+msgstr "Kurulumdan Çık"
+
+#: src/ui.cc:1151
+msgid "Preview of package installation"
+msgstr "Paket kurulumu önizlemesi"
+
+#: src/ui.cc:1152
+msgid "View and/or adjust the actions that will be performed"
+msgstr "Yapılacak değişiklikleri görüntüle ve/veya değiştir"
+
+#: src/ui.cc:1153
+msgid "Preview"
+msgstr "Önizleme"
+
+#: src/ui.cc:1194
+msgid "Some packages were broken and have been fixed:"
+msgstr "Bazı paketler bozuktu ve düzeltildi:"
+
+#: src/ui.cc:1200
+msgid "No solution to these dependency problems exists!"
+msgstr "Bu bağımlılık sorunları için bir çözüm bulunmuyor!"
+
+#: src/ui.cc:1206
+#, c-format
+msgid ""
+"Ran out of time while trying to resolve dependencies (press \"%s\" to try "
+"harder)"
+msgstr ""
+"Bağımlılıkları çözmeye çalışırken zaman doldu (denemeye devam etmek için \"%s"
+"\"e basın)"
+
+#: src/ui.cc:1252
+msgid ""
+"Installing/removing packages requires administrative privileges, which you "
+"currently do not have.  Would you like to change to the root account?"
+msgstr ""
+"Paket kurma/kaldırma işlemi şu anda sahip olmadığınız yönetici yetkilerini "
+"gerektirir.  Root kullanıcı hesabına geçmek ister misiniz?"
+
+#: src/ui.cc:1255 src/ui.cc:1384
+msgid "Become root"
+msgstr "Root ol"
+
+#: src/ui.cc:1257 src/ui.cc:1386
+msgid "Don't become root"
+msgstr "Root olma"
+
+#: src/ui.cc:1262 src/ui.cc:1391
+msgid "A package-list update or install run is already taking place."
+msgstr "Paket listesi güncellemesi veya kurulum işlemi zaten sürüyor."
+
+#: src/ui.cc:1289
+msgid "No packages are scheduled to be installed, removed, or upgraded."
+msgstr "Hiçbir paket kurulmayacak, yükseltilmeyecek ya da kaldırılmayacak."
+
+#: src/ui.cc:1295
+msgid ""
+"No packages will be installed, removed or upgraded.  Some packages could be "
+"upgraded, but you have not chosen to upgrade them.  Type \"U\" to prepare an "
+"upgrade."
+msgstr ""
+"Hiç bir paket kurulum, kaldırma ya da yükseltme işlemi yapılmayacak.Bazı "
+"paketler yükseltilebilir, ama onları yükseltmeyi seçmediniz.Yükseltme için "
+"\"U\" tuşuna basın."
+
+#: src/ui.cc:1353 src/ui.cc:1466
+msgid "Deleting obsolete downloaded files"
+msgstr "İndirilen eskimiş dosyalar siliniyor"
+
+#: src/ui.cc:1368
+msgid "Updating package lists"
+msgstr "Paket listeleri güncelleniyor"
+
+#: src/ui.cc:1369
+msgid "View the progress of the package list update"
+msgstr "Paket listesi güncelleme durum bilgisi göster"
+
+#: src/ui.cc:1370
+msgid "List Update"
+msgstr "Liste Güncelleme"
+
+#: src/ui.cc:1381
+msgid ""
+"Updating the package lists requires administrative privileges, which you "
+"currently do not have.  Would you like to change to the root account?"
+msgstr ""
+"Paket listesi güncelleme işlemi şu anda sahip olmadığınız "
+"yöneticiyetkilerini gerektirir.  Root kullanıcı hesabına geçmek ister "
+"misiniz?"
+
+#: src/ui.cc:1396 src/ui.cc:1891
+msgid "Waste time trying to find mines"
+msgstr "Mayınları bulmaya çalışırken zamanı boşa harcayın"
+
+#: src/ui.cc:1403 src/ui.cc:1463
+msgid "Cleaning while a download is in progress is not allowed"
+msgstr "İndirme işlemi sürerken temizlemeye izin verilmez."
+
+#: src/ui.cc:1406
+msgid "Deleting downloaded files"
+msgstr "İndirilmiş dosyalar siliniyor"
+
+#: src/ui.cc:1420
+msgid "Downloaded package files have been deleted"
+msgstr "İndirilmiş paketler silindi."
+
+#: src/ui.cc:1460
+#, fuzzy
+msgid "The apt cache file is not available; cannot auto-clean."
+msgstr "Paket tamponu mevcut değil."
+
+#: src/ui.cc:1486
+#, c-format
+msgid ""
+"Obsolete downloaded package files have been deleted, freeing %sB of disk "
+"space."
+msgstr "İndirilmiş eski paketler temizleniyor, %sB disk alanı boşaltılacak."
+
+#: src/ui.cc:1759
+msgid "Unable to find a solution to apply."
+msgstr "Uygulanabilir bir çözüm bulunamadı."
+
+#: src/ui.cc:1765
+msgid "Ran out of time while trying to find a solution."
+msgstr "Çözüm bulmaya çalışırken fazla zaman harcandı."
+
+#: src/ui.cc:1808 src/ui.cc:1810
+#, fuzzy
+msgid "Resolve Dependencies"
+msgstr "Bağımlılıklar çözülemiytor."
+
+#: src/ui.cc:1809
+#, fuzzy
+msgid "Search for solutions to unsatisfied dependencies"
+msgstr "Paket bağımlılığı karşılanamayan sonraki paketi bul"
+
+#: src/ui.cc:1821
+#, c-format
+msgid "Unable to open %ls"
+msgstr "%ls açılamıyor"
+
+#: src/ui.cc:1827
+msgid "Error while dumping resolver state"
+msgstr "Çözücü durumu kaydedilirken hata"
+
+#: src/ui.cc:1837
+msgid "File to which the resolver state should be dumped:"
+msgstr "Çözücü durumunun kaydedileceği dosya:"
+
+#: src/ui.cc:1867
+msgid "^Install/remove packages"
+msgstr "^Paketleri kur/kaldır"
+
+#: src/ui.cc:1868
+msgid "Perform all pending installs and removals"
+msgstr "Bekleyen tüm kurulum ve kaldırma işlemlerini gerçekleştirir"
+
+#: src/ui.cc:1870
+msgid "^Update package list"
+msgstr "Paket listesini ^güncelle"
+
+#: src/ui.cc:1871
+msgid "Check for new versions of packages"
+msgstr "Paketleri yeni sürümleri için denetler"
+
+#: src/ui.cc:1874
+msgid "^Forget new packages"
+msgstr "Yeni paketleri ^unut"
+
+#: src/ui.cc:1875
+msgid "Forget which packages are \"new\""
+msgstr "Yeni paketleri unutur"
+
+#: src/ui.cc:1878
+msgid "^Clean package cache"
+msgstr "Paket ön^belleğini temizle"
+
+#: src/ui.cc:1879
+msgid "Delete package files which were previously downloaded"
+msgstr "Daha önce indirilmiş paket dosyalarını siler"
+
+#: src/ui.cc:1882
+msgid "Clean ^obsolete files"
+msgstr "Eski d^osyaları temizle"
+
+#: src/ui.cc:1883
+msgid "Delete package files which can no longer be downloaded"
+msgstr "Artık indirilemeyecek olan (eski) paket dosyalarını siler"
+
+#: src/ui.cc:1886
+msgid "Mark ^Upgradable"
+msgstr "^Güncellenebilir işaretle"
+
+#: src/ui.cc:1887
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr ""
+"Güncellenmemek üzere tutulan paketler dışındaki tüm paketleri güncellemek "
+"için işaretler"
+
+#: src/ui.cc:1890
+msgid "^Play Minesweeper"
+msgstr "Mayın tarlası ^oyna"
+
+#: src/ui.cc:1893
+msgid "^Become root"
+msgstr "Root o^l"
+
+#: src/ui.cc:1894
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"Root olmak için 'su' komutunu çalıştır; bu işlem uygulamayı yeniden "
+"başlatır, ama ayarlarınız korunacaktır"
+
+#: src/ui.cc:1897
+msgid "^Reload package cache"
+msgstr "Paket arabelleğini ^yenile"
+
+#: src/ui.cc:1898
+msgid "Reload the package cache"
+msgstr "Paket önbelleğini yeniden yükle"
+
+#: src/ui.cc:1904
+msgid "^Quit"
+msgstr "Çı^k"
+
+#: src/ui.cc:1905
+msgid "Exit the program"
+msgstr "Uygulamadan çıkar"
+
+#: src/ui.cc:1911 src/ui.cc:2251
+msgid "Undo"
+msgstr "Geri al"
+
+#: src/ui.cc:1912
+msgid "Undo the last package operation or group of operations"
+msgstr "Son yapılan paket işlemini veya işlem grubunu geri alır"
+
+#: src/ui.cc:1920
+msgid "^Install"
+msgstr "^Kur"
+
+#: src/ui.cc:1921
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "Şu an seçili paketi kurma ya da yükseltme işlemi için işaretle"
+
+#: src/ui.cc:1924
+msgid "^Remove"
+msgstr "^Kaldır"
+
+#: src/ui.cc:1925
+msgid "Flag the currently selected package for removal"
+msgstr "Şu an seçili paketi kaldırma işlemi için işaretle"
+
+#: src/ui.cc:1928
+msgid "^Purge"
+msgstr "^Temizle"
+
+#: src/ui.cc:1929
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr ""
+"Seçili olan paketi ve yapılandırma dosyalarını kaldırma işlemi için işaretle"
+
+#: src/ui.cc:1932
+msgid "^Keep"
+msgstr "^Koru"
+
+#: src/ui.cc:1933
+msgid "Cancel any action on the selected package"
+msgstr "Seçili paket üzerindeki işlemleri iptal et"
+
+#: src/ui.cc:1936
+msgid "^Hold"
+msgstr "^Tut"
+
+#: src/ui.cc:1937
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr ""
+"Seçili paket üzerindeki işlemleri iptal et ve daha sonra yapılacak "
+"yükseltmelerden koru"
+
+#: src/ui.cc:1940
+msgid "Mark ^Auto"
+msgstr "^Otom. İşaretle"
+
+#: src/ui.cc:1941
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"Seçili paketi otomatik kurulmuş olarak işaretle; eğer bu pakete bağımlı bir "
+"paket kalmazsa otomatik olarak kaldırılır"
+
+#: src/ui.cc:1944
+msgid "Mark ^Manual"
+msgstr "Elle ^İşaretle"
+
+#: src/ui.cc:1945
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+"Seçili paketi el ile kurulmuş olarak işaretle; siz silmek istemediğiniz "
+"sürece kurulu kalacaktır"
+
+#: src/ui.cc:1948
+msgid "^Forbid Version"
+msgstr "Sürümü ^Engelle"
+
+#: src/ui.cc:1949
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"Şu an seçili paketin kurulacak sürümünün kurulmasını engelle; paketin daha "
+"yeni sürümleri alışıldık şekilde kurulacaktır"
+
+#: src/ui.cc:1953
+msgid "I^nformation"
+msgstr "^Bilgi"
+
+#: src/ui.cc:1954
+msgid "Display more information about the selected package"
+msgstr "Seçilen paket hakkında daha ayrıntılı bilgi göster"
+
+#: src/ui.cc:1957
+msgid "^Changelog"
+msgstr "^Changelog"
+
+#: src/ui.cc:1958
+msgid "Display the Debian changelog of the selected package"
+msgstr "Seçili paketin Debian değişiklik güncesini göster"
+
+#: src/ui.cc:1965
+msgid "^Examine Solution"
+msgstr ""
+
+#: src/ui.cc:1966
+#, fuzzy
+msgid "Examine the currently selected solution to the dependency problems."
+msgstr "Bu bağımlılık sorunları için bir çözüm bulunmuyor!"
+
+#: src/ui.cc:1969
+msgid "Apply ^Solution"
+msgstr ""
+
+#: src/ui.cc:1970
+msgid "Perform the actions contained in the currently selected solution."
+msgstr ""
+
+#: src/ui.cc:1973
+#, fuzzy
+msgid "^Next Solution"
+msgstr "Başka çözüm yok."
+
+#: src/ui.cc:1974
+#, fuzzy
+msgid "Select the next solution to the dependency problems."
+msgstr "Bu bağımlılık sorunları için bir çözüm bulunmuyor!"
+
+#: src/ui.cc:1977
+#, fuzzy
+msgid "^Previous Solution"
+msgstr "önceki çözüme taşı"
+
+#: src/ui.cc:1978
+#, fuzzy
+msgid "Select the previous solution to the dependency problems."
+msgstr "Bu bağımlılık sorunları için bir çözüm bulunmuyor!"
+
+#: src/ui.cc:1981
+#, fuzzy
+msgid "^First Solution"
+msgstr "Başka çözüm yok."
+
+#: src/ui.cc:1982
+#, fuzzy
+msgid "Select the first solution to the dependency problems."
+msgstr "Bu bağımlılık sorunları için bir çözüm bulunmuyor!"
+
+#: src/ui.cc:1985
+#, fuzzy
+msgid "^Last Solution"
+msgstr "Başka çözüm yok."
+
+#: src/ui.cc:1986
+#, fuzzy
+msgid ""
+"Select the last solution to the dependency problems that has been generated "
+"so far."
+msgstr "Bu bağımlılık sorunları için bir çözüm bulunmuyor!"
+
+#: src/ui.cc:1992
+msgid "Toggle ^Rejected"
+msgstr ""
+
+#: src/ui.cc:1993
+msgid "Toggle whether the currently selected action is rejected."
+msgstr ""
+
+#: src/ui.cc:1997
+msgid "Toggle ^Approved"
+msgstr ""
+
+#: src/ui.cc:1998
+#, fuzzy
+msgid "Toggle whether the currently selected action is approved."
+msgstr "Şu an seçili paketi kaldırma işlemi için işaretle"
+
+#: src/ui.cc:2002
+msgid "^View Target"
+msgstr ""
+
+#: src/ui.cc:2003
+msgid "View the package which will be affected by the selected action"
+msgstr ""
+
+#: src/ui.cc:2011
+msgid "^Find"
+msgstr "^Bul"
+
+#: src/ui.cc:2012
+#, fuzzy
+msgid "Search forwards"
+msgstr "Ara:"
+
+#: src/ui.cc:2015
+msgid "^Find Backwards"
+msgstr ""
+
+#: src/ui.cc:2016
+#, fuzzy
+msgid "Search backwards"
+msgstr "Ara: "
+
+#: src/ui.cc:2019
+msgid "Find ^Again"
+msgstr "^Tekrar Bul"
+
+#: src/ui.cc:2020
+msgid "Repeat the last search"
+msgstr "Son aramayı tekrarla"
+
+#: src/ui.cc:2024
+msgid "^Limit Display"
+msgstr "Görünümü ^Kısıtla"
+
+#: src/ui.cc:2025
+msgid "Apply a filter to the package list"
+msgstr "Paket listesini filtrele"
+
+#: src/ui.cc:2028
+msgid "^Un-Limit Display"
+msgstr "Görünümü Kısıtla^ma"
+
+#: src/ui.cc:2029
+msgid "Remove the filter from the package list"
+msgstr "Paket listesine uygulanan filtreyi kaldır"
+
+#: src/ui.cc:2033
+msgid "Find ^Broken"
+msgstr "^Bozukları Bul"
+
+#: src/ui.cc:2034
+msgid "Find the next package with unsatisfied dependencies"
+msgstr "Paket bağımlılığı karşılanamayan sonraki paketi bul"
+
+#: src/ui.cc:2041
+msgid "^UI options"
+msgstr "^Arayüz seçenekleri"
+
+#: src/ui.cc:2042
+msgid "Change the settings which affect the user interface"
+msgstr "Kullanıcı arayüzünü etkileyen ayarları değiştirir"
+
+#: src/ui.cc:2045
+msgid "^Dependency handling"
+msgstr "^Bağımlılık işleme"
+
+#: src/ui.cc:2046
+msgid "Change the settings which affect how package dependencies are handled"
+msgstr "Paket bağımlılıklarının işlenmesini etkileyen ayarları değiştirir"
+
+#: src/ui.cc:2049
+msgid "^Miscellaneous"
+msgstr "^Çeşitli"
+
+#: src/ui.cc:2050
+msgid "Change miscellaneous program settings"
+msgstr "Uygulamanın çeşitli ayarlarını değiştirir"
+
+#: src/ui.cc:2055
+msgid "^Revert options"
+msgstr "^Seçenekleri sıfırla"
+
+#: src/ui.cc:2056
+msgid "Reset all settings to the system defaults"
+msgstr "Tüm ayarları sistem öntanımlı biçimlerine getirir"
+
+#: src/ui.cc:2067
+msgid "^Next"
+msgstr "^Sonraki"
+
+#: src/ui.cc:2068
+msgid "View next display"
+msgstr "Sonraki ekranı görüntüle"
+
+#: src/ui.cc:2071
+msgid "^Prev"
+msgstr "Ön^ceki"
+
+#: src/ui.cc:2072
+msgid "View previous display"
+msgstr "Önceki ekranı görüntüle"
+
+#: src/ui.cc:2075
+msgid "^Close"
+msgstr "^Kapat"
+
+#: src/ui.cc:2076
+msgid "Close this display"
+msgstr "Bu ekranı kapat"
+
+#: src/ui.cc:2081
+msgid "New Package ^View"
+msgstr "Yeni paket gö^rünümü"
+
+#: src/ui.cc:2082
+msgid "Create a new default package view"
+msgstr "Yeni bir öntanımlı paket görünümü oluştur"
+
+#: src/ui.cc:2085
+#, fuzzy
+msgid "New ^Flat Package List"
+msgstr "Yeni paket gö^rünümü"
+
+#: src/ui.cc:2086
+msgid "View all the packages on the system in a single uncategorized list"
+msgstr ""
+
+#: src/ui.cc:2089
+#, fuzzy
+msgid "New ^Debtags Browser"
+msgstr "Yeni Sınıf Ge^zgini"
+
+#: src/ui.cc:2091
+#, fuzzy
+msgid "Browse packages using Debtags data"
+msgstr "Paketlere sınıflara göre gözat"
+
+#: src/ui.cc:2094
+msgid "New Categorical ^Browser"
+msgstr "Yeni Sınıf Ge^zgini"
+
+#: src/ui.cc:2096
+msgid "Browse packages by category"
+msgstr "Paketlere sınıflara göre gözat"
+
+#: src/ui.cc:2104
+msgid "^About"
+msgstr "^Hakkında"
+
+#: src/ui.cc:2105
+msgid "View information about this program"
+msgstr "Bu uygulama hakkındaki bilgileri görüntüle"
+
+#: src/ui.cc:2108
+msgid "^Help"
+msgstr "^Yardım"
+
+#: src/ui.cc:2109
+msgid "View the on-line help"
+msgstr "Çevrimiçi yardımı görüntüle"
+
+#: src/ui.cc:2111
+msgid "User's ^Manual"
+msgstr "Kulla^nıcı Elkitabı"
+
+#: src/ui.cc:2112
+msgid "View the detailed program manual"
+msgstr "Uygulamanın ayrıntılı elkitabını görüntüler"
+
+#: src/ui.cc:2115
+msgid "^FAQ"
+msgstr "^SSS"
+
+#: src/ui.cc:2116
+msgid "View a list of frequently asked questions"
+msgstr "Sık sorulan soruların bir listesini görüntüle"
+
+#: src/ui.cc:2119
+msgid "^NEWS"
+msgstr "^HABERLER"
+
+#: src/ui.cc:2120
+msgid "View the important changes made in each version of "
+msgstr "Her sürümünde yapılmış önemli değişiklikleri görüntüle"
+
+#: src/ui.cc:2123
+msgid "^License"
+msgstr "^Lisans"
+
+#: src/ui.cc:2124
+msgid "View the terms under which you may copy the program"
+msgstr "Uygulamayı kopyalayabileceğiniz koşulları görüntüler"
+
+#: src/ui.cc:2250
+msgid "Actions"
+msgstr "Eylemler"
+
+#: src/ui.cc:2253
+#, fuzzy
+msgid "Resolver"
+msgstr "^Kaldır"
+
+#: src/ui.cc:2254
+msgid "Search"
+msgstr "Ara"
+
+#: src/ui.cc:2255
+msgid "Options"
+msgstr "Seçenekler"
+
+#: src/ui.cc:2256
+msgid "Views"
+msgstr "Görünümler"
+
+#: src/ui.cc:2257
+msgid "Help"
+msgstr "Yardım"
+
+#: src/ui.cc:2322
+#, c-format
+msgid ""
+"%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
+"Pkgs"
+msgstr ""
+"%ls: Menü  %ls: Yardım  %ls: Çık  %ls: Güncelle  %ls: Paketleri İndir/Kur/"
+"Kaldır"
+
+#: src/ui.cc:2663 src/vscreen/vscreen.cc:723
+msgid "yes_key"
+msgstr "evet_key"
+
+#: src/ui.cc:2664 src/vscreen/vscreen.cc:724
+msgid "no_key"
+msgstr "hayır_key"
+
+#: src/view_changelog.cc:149
+#, c-format
+msgid "%s changes"
+msgstr "%s değişiklikleri"
+
+#: src/view_changelog.cc:150
+#, fuzzy
+msgid "View the list of changes made to this Debian package."
+msgstr "Her sürümünde yapılmış önemli değişiklikleri görüntüle"
+
+#: src/view_changelog.cc:211
+msgid "You can only view changelogs of official Debian packages."
+msgstr ""
+"Sadece resmi Debian paketlerinin değişiklik güncelerini görebilirsiniz."
+
+#: src/view_changelog.cc:221
+msgid "Downloading Changelog"
+msgstr "Changelog İndiriliyor"
+
+#: src/view_changelog.cc:223
+msgid "Download Changelog"
+msgstr "Changelog'u İndir"
+
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "Biçim işaretleyicisinden sonra biçim kodu unutulmuş"
+
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Biçim dizgisinde hatalı sayı: '%ls'"
+
+#: src/vscreen/config/column_definition.cc:160
+#, fuzzy
+msgid "Missing parameter number in format string"
+msgstr "Biçim dizgisinde hatalı sayı: '%ls'"
+
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr ""
+
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Bilinmeyen biçim kodu: '%lc'"
+
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr ""
+
+#: src/vscreen/config/keybindings.cc:314
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Anahtar tanımlayıcı ayrıştırılamıyor: %ls"
+
+#: src/vscreen/config/keybindings.cc:324
+msgid "Invalid null keybinding"
+msgstr "Geçersiz boş tuş eşlemi"
+
+#: src/vscreen/config/keybindings.cc:332
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+"Üzgünüm, denetim değiştiricileri yazdırılamaz karakterler ile kullanılamaz"
+
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Annee! Sırtımdan SIGTERM'lendim, ölüyorum...\n"
+
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Annee! Sırtımdan SIGSEGV'lendim, ölüyorum...\n"
+
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Annee! Sırtımdan SIGABRT'lendim, ölüyorum...\n"
+
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Annee! Sırtımdan SIGQUIT'lendim, ölüyorum..\n"
+
+#: src/vscreen/vs_pager.cc:435
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr "Dosya ismi yüklenemiyor: %ls dizgisi çoklu bayt gösterimi içermiyor."
+
+#: src/vscreen/vs_tree.cc:930
+msgid "TOP LEVEL"
+msgstr "EN ÜST SEVİYE"
+
+#~ msgid "Happy?"
+#~ msgstr "Şimdi mutlu musun?"
+
+#~ msgid "Can't get value of $HOME, using TMPDIR (insecure)"
+#~ msgstr "$HOME değeri alınamadı, TMPDIR kullanılıyor (güvensiz)"
+
+#~ msgid "Internal error: uncaught 'out of solutions' exception.\n"
+#~ msgstr "Dahili hata: belirlenemeyen 'çözüm dışı' durum.\n"
+
+#~ msgid "Internal error: uncaught 'out of time' exception.\n"
+#~ msgstr "Dahili hata: belirlenemeyen 'gecikme' durumu.\n"
+
+#~ msgid "Warning: the visual interface will ignore -s/Cmdline::Simulate\n"
+#~ msgstr ""
+#~ "Uyarı: görsel arayüz -s/Cmdline::Simulate seçeneğini göz ardı edecek\n"
+
+#, fuzzy
+#~ msgid "Create a new flat package list"
+#~ msgstr "Yeni bir öntanımlı paket görünümü oluştur"
+
+#~ msgid "Search for a package"
+#~ msgstr "Paket ara"
+
+#, fuzzy
+#~ msgid "Search backwards for a package"
+#~ msgstr "Paket ara"
+
+#~ msgid "Solution search failed.  %s: try harder"
+#~ msgstr "Çözüm bulma başarısız. %s: denemeye devam et"
+
+#~ msgid ""
+#~ "Time exhausted while searching for a solution (you can select \"Next "
+#~ "Solution\" or press %s to try harder)."
+#~ msgstr ""
+#~ "Çözüm ararken zaman tükendi (\"Sonraki Çözüm\"ü seçebilir ya da %s'e "
+#~ "basarak denemeye devam edebilirsiniz)"
+
+#~ msgid "All solutions exhausted."
+#~ msgstr "Tüm çözümler tükendi."
+
+#~ msgid "Bad filter type '%s' (valid types are: 'missing')"
+#~ msgstr "Hatalı filtre tipi '%s' ( geçerli tip: 'kayıp')"
+
+#~ msgid "Version-generating grouping policies must be the tail of a chain"
+#~ msgstr "Sürüm-üretme gruplama kuralları zincirin sonu olmalı"
+
+#~ msgid "Dep-generating grouping policies must be the tail of a chain"
+#~ msgstr "Bağımlılık-üretme gruplama kuralları zincirin sonu olmalı"
+
+#~ msgid "Invalid zero-length grouping policy name"
+#~ msgstr "Geçersiz sıfır uzunluklu gruplama kural adı"
+
+#~ msgid "Invalid grouping policy type '%s'"
+#~ msgstr "Geçersiz gruplama kural tipi '%s'"
+
+#~ msgid "&lt;NULL&gt;"
+#~ msgstr "&lt;BOŞ&gt;"
+
+#~ msgid "&lt;N/A&gt;"
+#~ msgstr "&lt;yok&gt;"
+
+#~ msgid "&lt;none&gt;"
+#~ msgstr "&lt;yok&gt;"
+
+#~ msgid "%sB bytes of disk space will be freed\n"
+#~ msgstr "%sB disk alanı serbest kalacak\n"
+
+#~ msgid "Warning: could not lock the cache file.  Opening in read-only mode"
+#~ msgstr "Uyarı: geçici dosya kilitlenemedi.  Salt okuma kipinde açılıyor"
+
+#~ msgid "The number of mines must be a number"
+#~ msgstr "Mayın adedi bir sayı olmalı"
+
+#~ msgid ""
+#~ "Commands:\n"
+#~ "  y: continue with the installation\n"
+#~ "  n: abort and quit\n"
+#~ "  i: show information about one or more packages;\n"
+#~ "     the package names should follow 'i'\n"
+#~ "  c: show the Debian changelogs of one or more packages;\n"
+#~ "     the package names should follow 'c'\n"
+#~ "  d: toggle display of dependency information\n"
+#~ "  s: toggle display of changes in package sizes\n"
+#~ "  v: toggle display of versions\n"
+#~ "  e: enter the full visual interface\n"
+#~ "\n"
+#~ "  You may also specify modifications to the set of package actions.\n"
+#~ "  To do so, type an action character followed by one or more package "
+#~ "names\n"
+#~ "or patterns.  The action will be applied to all packages. (you may "
+#~ "specify\n"
+#~ "additional actions; each will be applied to all packages that follow it)\n"
+#~ "\n"
+#~ "Actions:\n"
+#~ "  + : Install\n"
+#~ "  - : Remove\n"
+#~ "  _ : Purge\n"
+#~ "  = : Hold\n"
+#~ msgstr ""
+#~ "Komutlar:\n"
+#~ "  y: Kuruluma devam et\n"
+#~ "  n: iptal et ve çık\n"
+#~ "  i: paketler hakkında bilgi göster;\n"
+#~ "     'i'den sonra paket ismi girilmeli\n"
+#~ "  c: bir ya da daha çok paket için Debian değişiklik\n"
+#~ "     güncesini göster; 'c'den sonra paket isimleri girilmeli\n"
+#~ "  d: bağımlılık bilgisini göster/gösterme\n"
+#~ "  s: paket büyüklüğündeki değişiklikleri göster/gösterme\n"
+#~ "  v: versiyonları göster/gösterme\n"
+#~ "  e: tam görsel ekrana geç\n"
+#~ "\n"
+#~ "  Paket eylemleri kümesi için değişiklikleri de belirtebilirsiniz.\n"
+#~ "  Şöyle yapın: bir eylem karakteri yazın ardından bir ya da birden fazla "
+#~ "paket adı\n"
+#~ "ya da desen girin. (Ek eylemler belirtebilirsiniz; her biri takip eden "
+#~ "her pakete\n"
+#~ "uygulanır)\n"
+#~ "\n"
+#~ "Eylemler:\n"
+#~ "  + : Kur\n"
+#~ "  - : Kaldır\n"
+#~ "  _ : Temizle\n"
+#~ "  = : Tut\n"
+
+#~ msgid ""
+#~ "Some packages had unmet dependencies.  This may mean that you have\n"
+#~ "requested an impossible situation or if you are using the unstable\n"
+#~ "distribution that some required packages have not yet been created\n"
+#~ "or been moved out of Incoming.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Bazı paketler bağımlılıkları karşılamıyor.  Bu şu anlama gelebilir\n"
+#~ "Ya mümkün olmayan birşey için istekte bulundunuz ya da kararsız\n"
+#~ "(unstable) dağıtımı kullanıyorsanız bazı gerekli paketler henüz\n"
+#~ "arşivdeki yerini almamış.\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Please insert the following disc into the drive \"%s\":\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Lütfen aşağıdaki CD'yi sürücüye yerleştirin \"%s\":\n"
+#~ "%s"
+
+#~ msgid "Need exactly two colors in color definition \"%s\""
+#~ msgstr "Tam olarak iki renk tanımına ihtiyaç var \"%s\""
+
+#~ msgid "Can't parse foreground \"%s\"of color \"%s\""
+#~ msgstr "\"%s\" ön plan rengi \"%s\"den ayrıştırılamıyor"
+
+#~ msgid "Can't parse background \"%s\" of color \"%s\""
+#~ msgstr "\"%s\" arka plan rengi \"%s\"den ayrıştırılamıyor"
+
+#~ msgid "Invalid option for interactive mode: -s\n"
+#~ msgstr "Etkileşimli kip için geçersiz seçenek: -s\n"
+
+#~ msgid ""
+#~ "Programs for faxmodems and other communications devices\n"
+#~ " Packages in the 'comm' section are used to control modems and other "
+#~ "hardware communications devices. This includes software to control "
+#~ "faxmodems (for instance, PPP for dial-up internet connections and "
+#~ "programs originally written for that purpose (zmodem/kermit), as well as "
+#~ "software to control cellular phones, interface with FidoNet, and run a "
+#~ "BBS."
+#~ msgstr ""
+#~ "faxmodem ve diğer haberleşme cihazları için uygulamalar\n"
+#~ " 'comm' bölümündeki paketler modem ve diğer haberleşme cihazlarının "
+#~ "denetiminde kullanılır. Bunlar faxmodemi denetleyen yazılımlar (örneğin, "
+#~ "internete bağlanmak için PPP ve bu iş için yazılmış zmodem/kermit gibi "
+#~ "uygulamalar), cep telefonları için uygulamalar, FidoNet için arayüz, ve "
+#~ "BBS uygulamaları."
+
+#~ msgid ""
+#~ "Programs which are not free software\n"
+#~ " Packages in the 'non-free' section are not part of Debian.\n"
+#~ " .\n"
+#~ " These packages fail to meet one or more of the requirements of the "
+#~ "Debian Free Software Guidelines (see below) You should read the license "
+#~ "of programs in this section to be sure that you are allowed to use them "
+#~ "in the way you intend.\n"
+#~ " .\n"
+#~ " For more information about what Debian considers to be Free Software, "
+#~ "see http://www.debian.org/social_contract#guidelines"
+#~ msgstr ""
+#~ "Özgür Yazılım olmayan uygulamalar\n"
+#~ " 'non-free' arşivi içerisindeki paketler Debian kapsamında değildir.\n"
+#~ " .\n"
+#~ " Bu paketler Debian Özgür Yazılım Yönergeleri'nin bir veya daha fazla "
+#~ "şartını karşılayamıyor. Bu bölümdeki yazılımları kullanmadan önce "
+#~ "lisanslarını okumalı ve amacınıza uygun kullanma izniniz olduğundan emin "
+#~ "olmalısınız.\n"
+#~ " .\n"
+#~ " Debian tarafından neyin Özgür Yazılım olarak değerlendirildiği hakkında "
+#~ "daha fazla bilgi için http://www.debian.org/social_contract#guidelines "
+#~ "adresine bakabilirsiniz."
+
+#~ msgid ""
+#~ "New Packages\n"
+#~ " These packages have been added to Debian since the last time you cleared "
+#~ "the list of \"new\" packages. (choose \"Forget new packages\" from the "
+#~ "Actions menu to empty this list)"
+#~ msgstr ""
+#~ "Yeni Paketler\n"
+#~ " Bu paketler siz \"yeni\" paket listesini son temizlediğinizden beri "
+#~ "Debian'a eklenmiş paketlerdir. (Listeyi temizlemek için Eylemler "
+#~ "menüsündeki \"Yeni paketleri unut\" seçeneğini kullanın)"
+
+#~ msgid ""
+#~ "%s is an essential package!\n"
+#~ "\n"
+#~ "Are you sure you want to remove it?\n"
+#~ "Type '%s' if you are."
+#~ msgstr ""
+#~ "%s temel bir pakettir!\n"
+#~ "\n"
+#~ "Bu paketi kaldırmak istediğinizden emin misiniz?\n"
+#~ "Eğer eminseniz '%s' yazın."
+
+#~ msgid "Available versions of "
+#~ msgstr "Mevcut sürümleri"
+
+#~ msgid ""
+#~ "You are not root and I cannot find any way\n"
+#~ "to become root.  To reconfigure this package,\n"
+#~ "install the menu package, the login package,\n"
+#~ "or run aptitude as root."
+#~ msgstr ""
+#~ "Root yetkisine sahip değilsiniz ve bu yetki\n"
+#~ "sağlanamıyor. Bu paketi yeniden yapılandırmak\n"
+#~ "için menu veya login paketlerini kurabilir ya\n"
+#~ "da aptitude uygulamasını root yetkisiyle\n"
+#~ "çalıştırabilirsiniz."
+
+#~ msgid "Information about "
+#~ msgstr "Hakkında bilgi"
+
+#~ msgid ""
+#~ "Aptitude %s\n"
+#~ "\n"
+#~ "Copyright 2000 Daniel Burrows.\n"
+#~ "\n"
+#~ "aptitude comes with ABSOLUTELY NO WARRANTY; for details see 'license' in "
+#~ "the\n"
+#~ "Help menu.  This is free software, and you are welcome to redistribute "
+#~ "it\n"
+#~ "under certain conditions; see 'license' for details."
+#~ msgstr ""
+#~ "Aptitude %s\n"
+#~ "\n"
+#~ "Copyright 2000-2005 Daniel Burrows.\n"
+#~ "\n"
+#~ "aptitude kesinlikle HERHANGİ BİR GARANTİ içermez; detaylar için Yardım\n"
+#~ "menüsünden 'Lisans' bölümüne bakabilirsiniz. Bu bir Özgür Yazılım'dır,\n"
+#~ "ve belirli koşullar altında dağıtılabilir."
+
+#~ msgid "Some packages were broken and have been fixed"
+#~ msgstr "Bazı paketler bozuktu ve düzeltildi"
+
+#~ msgid "Some broken packages could not be fixed!"
+#~ msgstr "Bazı kırık paket bağımlılıkları düzeltilemedi!"
+
+#~ msgid "Some packages are broken.  Try to fix them?"
+#~ msgstr "Bazı paketler bozuk. Düzeltmeye çalışılsın mı?"
+
+#~ msgid ""
+#~ "Installing/removing packages requires administrative privileges, which\n"
+#~ "you currently do not have.  Would you like to change to the root "
+#~ "account?\n"
+#~ msgstr ""
+#~ "Paket kurma/kaldırma işlemi şu anda sahip olmadığınız yönetici "
+#~ "yetkilerini\n"
+#~ "gerektirir.  Root kullanıcı hesabına geçmek ister misiniz?\n"
+
+#~ msgid ""
+#~ "No packages will be installed, removed or upgraded.\n"
+#~ "\n"
+#~ "Some packages could be upgraded, but you have not chosen to upgrade "
+#~ "them.\n"
+#~ "Type \"U\" to prepare an upgrade."
+#~ msgstr ""
+#~ "Hiç bir paket kurulum, kaldırma ya da yükseltme işlemi yapılmayacak.\n"
+#~ "\n"
+#~ "Bazı paketler yükseltilebilir, ama onları yükseltmeyi seçmediniz."
+#~ "Yükseltme\n"
+#~ "için \"U\" tuşuna basın."
+
+#~ msgid ""
+#~ "Updating the package lists requires administrative privileges, which\n"
+#~ "you currently do not have.  Would you like to change to the root "
+#~ "account?\n"
+#~ msgstr ""
+#~ "Paket listesi güncelleme işlemi şu anda sahip olmadığınız yönetici\n"
+#~ "yetkilerini gerektirir.  Root kullanıcı hesabına geçmek ister misiniz?\n"
+
+#~ msgid "Obsolete downloaded package files have been deleted"
+#~ msgstr "Kullanılmayan indirilmiş paket dosyaları silindi."
+
+#~ msgid ""
+#~ "Run 'su' to become root; this will restart the program, but your\n"
+#~ "settings will be preserved"
+#~ msgstr ""
+#~ "Root olmak için 'su' komutunu çalıştır; bu işlem uygulamayı yeniden\n"
+#~ "başlatır, ama ayarlarınız korunacaktır"
+
+#~ msgid ""
+#~ "Mark the selected package as having been automatically installed;\n"
+#~ "it will automatically be removed if no other packages depend on it"
+#~ msgstr ""
+#~ "Seçili paketi otomatik kurulmuş olarak işaretle; eğer bu pakete\n"
+#~ "bağımlı bir paket kalmazsa otomatik olarak kaldırılır"
+
+#~ msgid ""
+#~ "Mark the selected package as having been manually installed;\n"
+#~ "it will not be removed unless you manually remove it"
+#~ msgstr ""
+#~ "Seçili paketi el ile kurulmuş olarak işaretle; siz silmek\n"
+#~ "istemediğiniz sürece kurulu kalacaktır"
+
+#~ msgid ""
+#~ "Forbid the candidate version of the selected package from being "
+#~ "installed;\n"
+#~ "newer versions of the package will be installed as usual"
+#~ msgstr ""
+#~ "Şu an seçili paketin kurulacak sürümünün kurulmasını engelle; paketin "
+#~ "daha\n"
+#~ "yeni sürümleri alışıldık şekilde kurulacaktır"
+
+#~ msgid "^ChangeLog"
+#~ msgstr "^ChangeLog"
+
+#~ msgid "View the important changes made in each version of the program"
+#~ msgstr "Uygulamanın her sürümünde yapılmış önemli değişiklikleri görüntüle"
+
+#~ msgid "Install Suggested packages automatically"
+#~ msgstr "Teklif edilen paketleri otomatik olarak kur"
+
+#~ msgid "Go away, I'm trying to think.\n"
+#~ msgstr "Git başımdan, düşünmeye çalışıyorum.\n"
+
+#~ msgid "  This will use %sB of disk space."
+#~ msgstr "  Bu işlem %sB disk alanı kullanacak."
+
+#~ msgid "  This will free %sB of disk space."
+#~ msgstr "  Bu işlem %sB disk alanı boşaltacak."

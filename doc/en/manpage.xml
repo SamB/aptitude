@@ -1,0 +1,992 @@
+<refentry>
+  <refentryinfo>
+    <author>
+      <personname>
+	<firstname>Daniel</firstname>
+	<surname>Burrows</surname>
+      </personname>
+      <email>dburrows@debian.org</email>
+    </author>
+
+    <legalnotice>
+      <para>
+	This manual page is free software; you can redistribute it
+	and/or modify it under the terms of the GNU General Public
+	License as published by the Free Software Foundation;
+	either version 2 of the License, or (at your option) any
+	later version.
+      </para>
+
+      <para>
+	This manual page is distributed in the hope that it will
+	be useful, but WITHOUT ANY WARRANTY; without even the
+	implied warranty of MERCHANTABILITY or FITNESS FOR A
+	PARTICULAR PURPOSE.  See the GNU General Public License
+	for more details.
+      </para>
+
+      <para>
+	You should have received a copy of the GNU General Public
+	License along with this manual page; if not, write to the
+	Free Software Foundation, Inc., 59 Temple Place, Suite
+	330, Boston, MA 02111-1307 USA
+      </para>
+    </legalnotice>
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>&aptitude;</refentrytitle>
+    <manvolnum>8</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>&aptitude;</refname>
+    <refpurpose>high-level interface to the package manager</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>aptitude</command>
+
+      <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
+
+      <group choice='req'>
+	<arg choice='plain'>autoclean</arg>
+	<arg choice='plain'>clean</arg>
+	<arg choice='plain'>forget-new</arg>
+	<arg choice='plain'>keep-all</arg>
+	<arg choice='plain'>update</arg>
+	<arg choice='plain'>upgrade</arg>
+      </group>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+      <command>aptitude</command>
+
+      <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
+
+      <group choice='req'>
+	<arg choice='plain'>changelog</arg>
+	<arg choice='plain'>dist-upgrade</arg>
+	<arg choice='plain'>download</arg>
+	<arg choice='plain'>forbid-version</arg>
+	<arg choice='plain'>hold</arg>
+	<arg choice='plain'>keep-all</arg>
+	<arg choice='plain'>markauto</arg>
+	<arg choice='plain'>purge</arg>
+	<arg choice='plain'>reinstall</arg>
+	<arg choice='plain'>remove</arg>
+	<arg choice='plain'>show</arg>
+	<arg choice='plain'>unmarkauto</arg>
+      </group>
+
+      <arg choice='plain' rep='repeat'>packages</arg>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+      <command>aptitude</command>
+
+      <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
+
+      <arg choice='plain'>search</arg>
+
+      <arg choice='plain' rep='repeat'>patterns</arg>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+      <command>aptitude</command>
+      <arg choice='opt'>-S <replaceable>fname</replaceable></arg>
+      <group choice='opt'><arg choice='plain'>-u</arg> <arg
+      choice='plain'>-i</arg></group>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+      <command>aptitude</command>
+      <arg choice='plain'>help</arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1>
+    <title>Description</title>
+
+    <para>
+      &aptitude; is a text-based interface to the Debian GNU/Linux
+      package system.
+    </para>
+
+    <para>
+      It allows the user to view the list of packages and to
+      perform package management tasks such as installing,
+      upgrading, and removing packages.  Actions may be performed
+      from a visual interface or from the command-line.
+    </para>
+  </refsect1>
+
+  <refsect1>
+    <title>Command-Line Actions</title>
+
+    <para>
+      The first argument which does not begin with a hyphen (<quote><literal>-</literal></quote>)
+      is considered to be an action that the program should
+      perform.  If an action is not specified on the command-line,
+      &aptitude; will start up in visual mode.
+    </para>
+
+    <para>
+      The following actions are available:
+    </para>
+
+    <variablelist>
+      <varlistentry id='cmdlineInstall'>
+	<term><literal>install</literal></term>
+
+	<listitem>
+	  <para>
+	    Install one or more packages.  The packages should be
+	    listed after the <quote>install</quote> command; if a
+	    package name contains a tilde character
+	    (<quote><literal>~</literal></quote>), it will be
+	    treated as a search pattern and every package matching
+	    the pattern will be installed (see the section <link
+	    linkend='secSearchPatterns'><quote>Search
+	    Patterns</quote></link> in the &aptitude; reference
+	    manual).
+	  </para>
+
+	  <para>
+	    To select a particular version of the package, append <quote><literal>=<replaceable>version</replaceable></literal></quote>
+	    to the package name: for instance, <quote><literal>aptitude install
+	    apt=0.3.1</literal></quote>.  Similarly, to select a
+	    package from a particular archive, append <quote><literal>/<replaceable>archive</replaceable></literal></quote>
+	    to the package name: for instance, <quote><literal>aptitude install
+	    apt/experimental</literal></quote>.
+	  </para>
+
+	  <para id='parOverrideSpecifiers'>
+	    Not every package listed on the command line has to be
+	    installed; you can tell &aptitude; to do something
+	    different with a package by appending an <quote>override
+	    specifier</quote> to the name of the package.  For
+	    example, <literal>aptitude remove wesnoth+</literal> will
+	    install <literal>wesnoth</literal>, not remove it.  The
+	    following override specifiers are available:
+	  </para>
+
+	  <variablelist>
+	    <varlistentry>
+	      <term><replaceable>package</replaceable><literal>+</literal></term>
+	      <listitem>
+		<para>
+		  Install <replaceable>package</replaceable>.
+		</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><replaceable>package</replaceable><literal>+M</literal></term>
+	      <listitem>
+		<para>
+		  Install <replaceable>package</replaceable> and
+		  immediately mark it as <link
+		  linkend='secAutoInstall'>automatically
+		  installed</link> (note that if nothing depends on
+		  <replaceable>package</replaceable>, this will cause
+		  it to be immediately removed).
+		</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><replaceable>package</replaceable><literal>-</literal></term>
+	      <listitem>
+		<para>
+		  Remove <replaceable>package</replaceable>.
+		</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><replaceable>package</replaceable><literal>_</literal></term>
+	      <listitem>
+		<para>
+		  Purge <replaceable>package</replaceable>: remove it
+		  and all its associated configuration and data files.
+		</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><replaceable>package</replaceable><literal>=</literal></term>
+	      <listitem>
+		<para>
+		  Place <replaceable>package</replaceable> on hold:
+		  cancel any active installation, upgrade, or removal,
+		  and prevent this package from being automatically
+		  upgraded in the future.
+		</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><replaceable>package</replaceable><literal>:</literal></term>
+	      <listitem>
+		<para>
+		  Keep <replaceable>package</replaceable> at its
+		  current version: cancel any installation, removal,
+		  or upgrade.  Unlike <quote>hold</quote> (above) this
+		  does not prevent automatic upgrades in the future.
+		</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><replaceable>package</replaceable><literal>&amp;M</literal></term>
+	      <listitem>
+		<para>
+		  Mark <replaceable>package</replaceable> as having
+		  been <link linkend='secAutoInstall'>automatically installed</link>.
+		</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><replaceable>package</replaceable><literal>&amp;m</literal></term>
+	      <listitem>
+		<para>
+		  Mark <replaceable>package</replaceable> as having
+		  been <link linkend='secAutoInstall'>manually installed</link>.
+		</para>
+	      </listitem>
+	    </varlistentry>
+	  </variablelist>
+
+	  <para>
+	    As a special case, <quote><literal>install</literal></quote> with no
+	    arguments will act on any stored/pending actions.
+	  </para>
+
+	  <note>
+	    <para>
+	      Once you enter <userinput>Y</userinput> at the final
+	      confirmation prompt, the
+	      <quote><literal>install</literal></quote> command will
+	      modify &aptitude;'s stored information about what
+	      actions to perform.  Therefore, if you issue (e.g.) the
+	      command <quote><literal>aptitude install foo
+	      bar</literal></quote> and then abort the installation
+	      once &aptitude; has started downloading and installing
+	      packages, you will need to run <quote><literal>aptitude
+	      remove foo bar</literal></quote> to cancel that order.
+	    </para>
+	  </note>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>remove</literal>, <literal>purge</literal>, <literal>hold</literal>, <literal>keep</literal>, <literal>reinstall</literal></term>
+
+	<listitem>
+	  <para>
+	    These commands are the same as
+	    <quote><literal>install</literal></quote>, but apply the
+	    named action to all packages given on the command line for
+	    which it is not <link
+	    linkend='parOverrideSpecifiers'>overridden</link>.  The
+	    difference between <literal>hold</literal> and
+	    <literal>keep</literal> is that <literal>hold</literal>
+	    will cause a package to be ignored by future
+	    <literal>upgrade</literal> commands, while
+	    <literal>keep</literal> merely cancels any scheduled
+	    actions on the package.
+	  </para>
+
+	  <para>
+	    For instance, <quote><literal>aptitude remove
+	    '~ndeity'</literal></quote> will remove all packages
+	    whose name contains <quote><literal>deity</literal></quote>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>markauto</literal>, <literal>unmarkauto</literal></term>
+
+	<listitem>
+	  <para>
+	    Mark packages as automatically installed or manually
+	    installed, respectively.  Packages are specified in
+	    exactly the same way as for the <quote><literal>install</literal></quote> command.
+	    For instance, <quote><literal>aptitude markauto
+	    '~slibs'</literal></quote> will mark all packages in
+	    the <quote><literal>libs</literal></quote> section as
+	    having been automatically installed.
+	  </para>
+
+	  <para>
+	    For more information on automatically installed
+	    packages, see the section <quote><link
+	    linkend='secAutoInstall'>Managing Automatically
+	    Installed Packages</link></quote> in the &aptitude;
+	    reference manual.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>forbid-version</literal></term>
+
+	<listitem>
+	  <para>
+	    Forbid a package from being upgraded to a particular
+	    version.  This will prevent aptitude from
+	    automatically upgrading to this version, but will
+	    allow automatic upgrades to future versions.  By
+	    default, aptitude will select the version to which the
+	    package would normally be upgraded; you may override
+	    this selection by appending <quote><literal>=<replaceable>version</replaceable></literal></quote>
+	    to the package name: for instance, <quote><literal>aptitude forbid-version
+	    vim=1.2.3.broken-4</literal></quote>.
+	  </para>
+
+	  <para>
+	    This command is useful for avoiding broken versions of
+	    packages without having to set and clear manual holds.
+	    If you decide you really want the forbidden version
+	    after all, the <quote><literal>install</literal></quote> command will
+	    remove the ban.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>update</literal></term>
+
+	<listitem>
+	  <para>
+	    Updates the list of available packages from the &apt;
+	    sources (this is equivalent to <quote><literal>apt-get
+	    update</literal></quote>)
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>upgrade</literal></term>
+
+	<listitem>
+	  <para>
+	    Upgrades installed packages to their most recent
+	    version.  Installed packages will not be removed
+	    unless they are unused (see the section <quote><link
+	    linkend='secAutoInstall'>Managing Automatically
+	    Installed Packages</link></quote> in the &aptitude;
+	    reference manual); packages which are not currently
+	    installed will not be installed.
+	  </para>
+
+	  <para>
+	    If a package cannot be upgraded without violating these
+	    constraints, it will be kept at its current version.  Use
+	    the <link
+	    linkend='manpageDistUpgrade'><literal>dist-upgrade</literal></link>
+	    command to upgrade these packages as well.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry id='manpageDistUpgrade'>
+	<term><literal>dist-upgrade</literal></term>
+
+	<listitem>
+	  <para>
+	    Upgrades installed packages to their most recent version,
+	    removing or installing packages as necessary.  This
+	    command is less conservative than
+	    <literal>upgrade</literal> and thus more likely to perform
+	    unwanted actions.  Users are advised to either use
+	    <literal>upgrade</literal> instead or to carefully inspect
+	    the list of packages to be installed and removed.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry id='manpageKeepAll'>
+	<term><literal>keep-all</literal></term>
+
+	<listitem>
+	  <para>
+	    Cancels all scheduled actions on all packages; any
+	    packages whose sticky state indicates an installation,
+	    removal, or upgrade will have this sticky state cleared.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>forget-new</literal></term>
+
+	<listitem>
+	  <para>
+	    Forgets all internal information about what packages
+	    are <quote>new</quote> (equivalent to pressing <quote><keycap>f</keycap></quote> when in visual
+	    mode).
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>search</literal></term>
+
+	<listitem>
+	  <para>
+	    Searches for packages matching one of the patterns
+	    supplied on the command line.  All packages which
+	    match any of the given patterns will be displayed; for
+	    instance, <quote><literal>aptitude search
+	    '~N'</literal></quote> will list all <quote>new</quote> packages.  For more information on
+	    search patterns, see the section <quote><link
+	    linkend='secSearchPatterns'>Search
+	    Patterns</link></quote> in the &aptitude; reference
+	    manual.
+	  </para>
+
+	  <para>
+	    Unless you pass the <link
+	    linkend='cmdlineOptionFormat'><arg
+	    choice='plain'>-F</arg></link> option, the output of
+	    <literal>aptitude search</literal> will look something
+	    like this:
+	  </para>
+
+	  <screen>i   apt                             - Advanced front-end for dpkg              
+pi  apt-build                       - frontend to apt to build, optimize and in
+cp  apt-file                        - APT package searching utility -- command-
+ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
+
+          <para>
+	    Each search result is listed on a separate line.  The
+	    first character of each line indicates the current state
+	    of the package: the most common states are
+	    <literal>p</literal>, meaning that no trace of the package
+	    exists on the system, <literal>c</literal>, meaning that
+	    the package was deleted but its configuration files remain
+	    on the system, <literal>i</literal>, meaning that the
+	    package is installed, and <literal>v</literal>, meaning
+	    that the package is virtual.  The second character
+	    indicates the stored action (if any; otherwise a blank
+	    space is displayed) to be performed on the package, with
+	    the most common actions being <literal>i</literal>,
+	    meaning that the package will be installed,
+	    <literal>d</literal>, meaning that the package will be
+	    deleted, and <literal>p</literal>, meaning that the
+	    package and its configuration files will be removed.  If
+	    the third character is <literal>A</literal>, the package
+	    was automatically installed.
+	  </para>
+
+	  <para>
+	    For a complete list of the possible state and action
+	    flags, see the section <quote><link
+	    linkend='secAccessingPackageInformation'>Accessing Package
+	    Information</link></quote> in the &aptitude; reference
+	    guide.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>show</literal></term>
+
+	<listitem>
+	  <para>
+	    Displays detailed information about one or more
+	    packages, listed following the search command.  If a
+	    package name contains a tilde character
+	    (<quote><literal>~</literal></quote>), it will be
+	    treated as a search pattern and all matching packages
+	    will be displayed (see the section <quote><link
+	    linkend='secSearchPatterns'>Search
+	    Patterns</link></quote> in the &aptitude; reference
+	    manual).
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>clean</literal></term>
+
+	<listitem>
+	  <para>
+	    Removes all previously downloaded <literal>.deb</literal> files from the package cache
+	    directory (usually <filename>/var/cache/apt/archives</filename>).
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>autoclean</literal></term>
+
+	<listitem>
+	  <para>
+	    Removes any cached packages which can no longer be
+	    downloaded.  This allows you to prevent a cache from
+	    growing out of control over time without completely
+	    emptying it.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>changelog</literal></term>
+
+	<listitem>
+	  <para>
+	    Downloads and displays the Debian changelog for each of
+	    the given source or binary packages.
+	  </para>
+
+	  <para>
+	    By default, the changelog for the version which would be
+	    installed with <quote><literal>aptitude
+	    install</literal></quote> is downloaded.  You can select a
+	    particular version of a package by appending <literal>=<replaceable>version</replaceable></literal> to
+	    the package name; you can select the version from a
+	    particular archive by appending <literal>/<replaceable>archive</replaceable></literal> to
+	    the package name.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>download</literal></term>
+
+	<listitem>
+	  <para>
+	    Downloads the <literal>.deb</literal> file for the given
+	    package to the current directory.
+	  </para>
+
+	  <para>
+	    By default, the version which would be installed with
+	    <quote><literal>aptitude install</literal></quote> is
+	    downloaded.  You can select a particular version of a
+	    package by appending <literal>=<replaceable>version</replaceable></literal> to
+	    the package name; you can select the version from a
+	    particular archive by appending <literal>/<replaceable>archive</replaceable></literal> to
+	    the package name.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>help</literal></term>
+
+	<listitem>
+	  <para>
+	    Displays a brief summary of the available commands and
+	    options.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+
+  <refsect1>
+    <title>Options</title>
+
+    <para>
+      The following options may be used to modify the behavior of
+      the actions described above.  Note that while all options
+      will be accepted for all commands, some options don't apply
+      to particular commands and will be ignored by those
+      commands.
+    </para>
+
+    <variablelist>
+      <varlistentry>
+	<term><literal>-D</literal>, <literal>--show-deps</literal></term>
+
+	<listitem>
+	  <para>
+	    For commands that will install or remove packages
+	    (<literal>install</literal>, <literal>upgrade</literal>,
+	    etc), show brief explanations of automatic installations
+	    and removals.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Show-Deps'>Aptitude::CmdLine::Show-Deps</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-d</literal>, <literal>--download-only</literal></term>
+
+	<listitem>
+	  <para>
+	    Download packages to the package cache as necessary, but
+	    do not install or remove anything.  By default, the
+	    package cache is stored in
+	    <filename>/var/cache/apt/archives</filename>.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link
+	    linkend='configCmdLine-Download-Only'>Aptitude::CmdLine::Download-Only</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry id='cmdlineOptionFormat'>
+	<term>
+	  <literal>-F</literal> <replaceable>format</replaceable>, <literal>--display-format</literal> <replaceable>format</replaceable>
+	</term>
+
+	<listitem>
+	  <para>
+	    Specify the format which should be used to display
+	    output from the <literal>search</literal> command.
+	    For instance, passing <quote><literal>%p %V %v</literal></quote>
+	    for <replaceable>format</replaceable> will display a package's name,
+	    followed by its currently installed version and its
+	    available version (see the section <quote><link linkend='secDisplayFormat'>Customizing how packages are displayed</link></quote> in the &aptitude; reference manual for more information).
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Package-Display-Format'>Aptitude::CmdLine::Package-Display-Format</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-f</literal></term>
+
+	<listitem>
+	  <para>
+	    Try hard to fix the dependencies of broken packages, even
+	    if it means ignoring the actions requested on the command
+	    line.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration item <literal><link linkend='configCmdLine-Fix-Broken'>Aptitude::CmdLine::Fix-Broken</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>
+	  <literal>-h</literal>, <literal>--help</literal>
+	</term>
+
+	<listitem>
+	  <para>
+	    Display a brief help message.  Identical to the <literal>help</literal> action.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-P</literal>, <literal>--prompt</literal></term>
+
+	<listitem>
+	  <para>
+	    Always display a prompt, even when no actions other
+	    than those explicitly requested will be performed.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link
+	    linkend='configCmdLine-Always-Prompt'>Aptitude::CmdLine::Always-Prompt</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-R</literal>, <literal>--without-recommends</literal></term>
+
+	<listitem>
+	  <para>
+	    Do <emphasis>not</emphasis> treat recommendations as
+	    dependencies when installing new packages (this overrides settings in <filename>/etc/apt/apt.conf</filename> and <filename>~/.aptitude/config</filename>).
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link linkend='configRecommends-Important'>Aptitude::Recommends-Important</link></literal>
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-r</literal>, <literal>--with-recommends</literal></term>
+
+	<listitem>
+	  <para>
+	    Treat recommendations as dependencies when installing
+	    new packages (this overrides settings in <filename>/etc/apt/apt.conf</filename> and <filename>~/.aptitude/config</filename>).
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link linkend='configRecommends-Important'>Aptitude::Recommends-Important</link></literal>
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-s</literal>, <literal>--simulate</literal></term>
+
+	<listitem>
+	  <para>
+	    In command-line mode, print the actions that would
+	    normally be performed, but don't actually perform them.
+	    This does not require &root; privileges.  In the visual
+	    interface, always open the cache in read-only mode
+	    regardless of whether you are &root;.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link
+	    linkend='configSimulate'>Aptitude::Simulate</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--schedule-only</literal></term>
+
+	<listitem>
+	  <para>
+	    For commands that modify package states, schedule
+	    operations to be performed in the future, but don't
+	    perform them.  You can execute scheduled actions by
+	    running <literal>aptitude install</literal> with no
+	    arguments.  This is equivalent to making the corresponding
+	    selections in <link linkend='secUsingVisual'>visual
+	    mode</link>, then exiting the program normally.
+	  </para>
+
+	  <para>
+	    For instance, <literal>aptitude --schedule-only install
+	    evolution</literal> will schedule the
+	    <literal>evolution</literal> package for later
+	    installation.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-t</literal> <replaceable>release</replaceable>, <literal>--target-release</literal> <replaceable>release</replaceable></term>
+
+	<listitem>
+	  <para>
+	    Set the release from which packages should be
+	    installed.  For instance, <quote><literal>aptitude -t
+	    experimental ...</literal></quote> will install
+	    packages from the experimental distribution unless you
+	    specify otherwise.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration item <literal>APT::Default-Release</literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-O</literal> <replaceable>order</replaceable>, <literal>--sort</literal> <replaceable>order</replaceable></term>
+
+	<listitem>
+	  <para>
+	    Specify the order in which output from the <literal>search</literal>
+	    command should be displayed.  For instance, passing <quote><literal>installsize</literal></quote>
+	    for <replaceable>order</replaceable> will list packages in
+	    order according to their size when installed (see the section <quote><link linkend='secSortingPolicy'>Customizing how packages are sorted</link></quote> in the &aptitude; reference manual for more information).
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-o</literal> <replaceable>key</replaceable><literal>=</literal><replaceable>value</replaceable></term>
+
+	<listitem>
+	  <para>
+	    Set a configuration file option directly; for
+	    instance, use <literal>-o
+	    Aptitude::Log=/tmp/my-log</literal> to log &aptitude;'s
+	    actions to <filename>/tmp/my-log</filename>.  For more
+	    information on configuration file options, see the
+	    section <quote><link
+	    linkend='secConfigFile'>Configuration file
+	    reference</link></quote> in the &aptitude; reference manual.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-q</literal>, <literal>--quiet</literal></term>
+
+	<listitem>
+	  Suppress all incremental progress indicators, thus making
+	  the output loggable.  This may be supplied multiple times to
+	  make the program quieter, but unlike &apt-get;, &aptitude;
+	  does not enable <literal>-y</literal> when
+	  <literal>-q</literal> is supplied more than once.
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-V</literal>, <literal>--show-versions</literal></term>
+
+	<listitem>
+	  <para>
+	    Show which versions of packages will be installed.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Show-Versions'>Aptitude::CmdLine::Show-Versions</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-v</literal>, <literal>--verbose</literal></term>
+
+	<listitem>
+	  <para>
+	    Causes some commands (for instance, <literal>show</literal>) to display extra information.  This may be supplied multiple times to get more and more information.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Verbose'>Aptitude::CmdLine::Verbose</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--version</literal></term>
+
+	<listitem>
+	  <para>
+	    Display the version of &aptitude; and some information
+	    about how it was compiled.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--visual-preview</literal></term>
+
+	<listitem>
+	  <para>
+	    When installing or removing packages from the command
+	    line, instead of displaying the usual prompt, start up the
+	    visual interface and display its preview screen.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-w</literal> <replaceable>width</replaceable>, <literal>--width</literal> <replaceable>width</replaceable></term>
+
+	<listitem>
+	  <para>
+	    Specify the display width which should be used for
+	    output from the <literal>search</literal> command (by
+	    default, the terminal width is used).
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Package-Display-Width'>Aptitude::CmdLine::Package-Display-Width</link></literal>
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-y</literal>, <literal>--assume-yes</literal></term>
+
+	<listitem>
+	  <para>
+	    When a yes/no prompt would be presented, assume that
+	    the user entered <quote>yes</quote>.  In particular,
+	    suppresses the prompt that appears when installing,
+	    upgrading, or removing packages.  Prompts for <quote>dangerous</quote> actions, such as removing
+	    essential packages, will still be displayed.  This
+	    option overrides <literal>-P</literal>.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Assume-Yes'>Aptitude::CmdLine::Assume-Yes</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-Z</literal></term>
+
+	<listitem>
+	  <para>
+	    Show how much disk space will be used or freed by the
+	    individual packages being installed, upgraded, or
+	    removed.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Show-Size-Changes'>Aptitude::CmdLine::Show-Size-Changes</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>
+      The following options apply to the visual mode of the
+      program, but are primarily for internal use; you generally
+      won't need to use them yourself.
+    </para>
+
+    <variablelist>
+      <varlistentry>
+	<term><literal>-S</literal> <replaceable>fname</replaceable></term>
+
+	<listitem>
+	  <para>
+	    Loads the extended state information from <replaceable>fname</replaceable> instead of the
+	    standard state file.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-u</literal></term>
+
+	<listitem>
+	  <para>
+	    Begins updating the package lists as soon as the
+	    program starts.  You cannot use this option and <literal>-i</literal> at the same time.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-i</literal></term>
+
+	<listitem>
+	  <para>
+	    Displays a download preview when the program starts
+	    (equivalent to starting the program and immediately
+	    pressing <quote><keycap>g</keycap></quote>).  You
+	    cannot use this option and <quote><literal>-u</literal></quote> at the same time.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+
+  <refsect1>
+    <title>See Also</title>
+
+    <para>
+      <citerefentry><refentrytitle>apt-get</refentrytitle><manvolnum>8</manvolnum></citerefentry>, <citerefentry><refentrytitle>apt</refentrytitle><manvolnum>8</manvolnum></citerefentry>, <filename>/usr/share/doc/aptitude/<replaceable>lang</replaceable>/html/index.html</filename> from the package aptitude-doc-<replaceable>lang</replaceable>
+    </para>
+  </refsect1>
+</refentry>

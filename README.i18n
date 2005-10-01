@@ -1,0 +1,60 @@
+aptitude: information for translators
+
+Aptitude uses the standard gettext mechanism for translations.  However,
+there are a few twists that you should be aware of.
+
+  * External data files.
+
+    There are several external data files that you can choose to
+    translate: help.txt (online help), help-mine.txt (online help for
+    Minesweeper), and aptitude.xml (user's manual/online manual).
+    aptitude.xml is a large file, but help.txt and help-mine.txt are
+    quite tractable and it is recommended that you translate
+    them. (especially help.txt)
+
+    aptitude applies gettext to the file names before loading them, so
+    to tell it that you've translated (eg) help.txt to help-de.txt,
+    you should add a translation "help.txt" -> "help-de.txt".
+
+    In addition, each translated file name has a corresponding
+    described translation (see below) indicating its encoding.  You
+    should translate this as necessary if you write an alternate file.
+
+  * Manpage.
+
+    aptitude has a manpage, and it can be translated; if you choose to
+    translate it, your translation should be named aptitude.XX.1
+    (replace XX with the language code)
+
+  * fragf
+
+    aptitude uses an internal function called fragf to format text
+    with display attributes.  This function works somewhat like
+    printf, but most escape codes have different meanings.  For
+    instance, %B enables the "bold" character attribute, while %b
+    disables it.  See src/vscreen/fragment.h for a full description of
+    all escape codes.  You can use parameter numbers (eg, %1$F) if
+    your language needs to reorder the arguments.
+
+  * key translations
+
+    Where it makes sense, aptitude allows the default keybinding
+    assigned to a command to be translated.  This is done by creating
+    a dummy translated string ending in "_key"; the first character of
+    the string is the default binding of the key.  For instance, the
+    string "yes_key" is used to set the default binding for buttons
+    labelled "Yes".  To bind "j" to this command, you could translate
+    "yes_key" to "ja_key", "ja", or even just "j".
+
+  * Described translations
+
+    Some translations have descriptions or disambiguating text to the
+    left of the input and output string.  In these cases, everything
+    up to and including the first pipe character will be removed
+    before the string is used.  If no pipe character is present in the
+    string, the string will be used without modifications.
+
+    For instance, the string "help.txt encoding|UTF-8" can be
+    translated to either "help.txt encoding|ISO-8859-1",
+    "|ISO-8859-1", or "ISO-8859-1", and will have the same effect in
+    each case.

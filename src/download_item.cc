@@ -1,0 +1,115 @@
+// download_item.cc
+//
+//  Copyright 1999, 2004-2005 Daniel Burrows
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; see the file COPYING.  If not, write to
+//  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+//  Boston, MA 02111-1307, USA.
+
+#include "aptitude.h"
+
+#include "download_item.h"
+
+#include <apt-pkg/acquire-worker.h>
+#include <apt-pkg/strutl.h>
+
+#include <vscreen/transcode.h>
+#include <vscreen/vs_tree.h>
+
+style download_item::get_normal_style()
+{
+  switch(item.Owner->Status)
+    {
+    case pkgAcquire::Item::StatIdle:
+      return vs_treeitem::get_normal_style()+style_attrs_on(A_DIM);
+    case pkgAcquire::Item::StatFetching:
+      return vs_treeitem::get_normal_style();
+    case pkgAcquire::Item::StatDone:
+      if(!hit)
+	return vs_treeitem::get_normal_style()+get_style("Progress");
+      else
+	return vs_treeitem::get_normal_style()+get_style("DownloadHit");
+    case pkgAcquire::Item::StatError:
+      return vs_treeitem::get_normal_style()+get_style("Error");
+    case pkgAcquire::Item::StatAuthError:
+      return vs_treeitem::get_normal_style()+get_style("Error");
+    default:
+      assert(0);
+    }
+}
+
+void download_item::paint(vs_tree *win, int y, bool hierarchical,
+			  const style &st)
+  // A little confusing -- basically, there are two branches: either we display
+  // a progress bar, or we don't.  If we don't, I can just display it as usual
+  // (note, though, that I don't yet indent it according to the depth..); if we
+  // do, a rather specialized set of code is called and then returns. (that's
+  // the confusing bit :) )
+{
+  string output=((item.Owner->Status==pkgAcquire::Item::StatFetching)?item.ShortDesc:item.Description)+": ";
+  int width,height;
+
+  win->getmaxyx(height,width);
+
+  const style progress_style=st+get_style("DownloadProgress");
+  const style normal_style=st+get_normal_style();
+  int barsize=width;
+
+  switch(item.Owner->Status)
+    {
+    case pkgAcquire::Item::StatIdle:
+      output+=_(" [Working]");
+      break;
+    case pkgAcquire::Item::StatFetching:
+      if(worker==NULL)
+	output+=_(" [Working]");
+      else
+	{
+	  assert(worker->CurrentItem->Owner==item.Owner);
+
+	  if(worker->TotalSize>0)
+	    {
+	      char intbuf[50]; // Waay more than enough.
+	      barsize=(width*worker->CurrentSize)/worker->TotalSize;
+	      win->apply_style(progress_style);
+
+	      if(barsize>width)
+		barsize=width;
+
+	      win->apply_style(get_normal_style());
+	      sprintf(intbuf,
+		      "%sB/%sB",
+		      SizeToStr(worker->CurrentSize).c_str(),
+		      SizeToStr(worker->TotalSize).c_str());
+	      output+=string(" [ ")+intbuf+" ]";
+	    }
+	  else
+	    output+=_(" [Working]");
+	}
+      break;
+    case pkgAcquire::Item::StatDone:
+      output+=hit?_("[Hit]"):_("[Downloaded]");
+      break;
+    case pkgAcquire::Item::StatError:
+      output+=item.Owner->ErrorText;
+      break;
+    case pkgAcquire::Item::StatAuthError:
+      output+=item.Owner->ErrorText;
+      break;
+    }
+
+  win->show_string_as_progbar(0, y, transcode(output),
+			      progress_style, normal_style,
+			      barsize, width);
+}

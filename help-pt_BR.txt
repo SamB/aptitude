@@ -1,0 +1,75 @@
+                             Ajuda On-Line do Aptitude
+
+  Use as teclas de direção e as teclas PageUp/PageDown para visualizar
+esta ajuda. Tecle Return ou Enter para sair da ajuda.
+
+  As seguintes teclas estão disponíveis por padrão nas telas de
+informação do aptitude. Outras teclas estão disponíveis; consulte o
+arquivo README para obter uma listagem das mesmas.
+
+  "q":          Sair
+  "?":          Exibe esta tela
+
+  "f":          Limpar a lista de "novos" pacotes ('f' para "esquecer")
+
+  Up ou "k":    Move a seleção para cima
+  Down ou "j":  Move a seleção para baixo
+  "^":          Move a seleção para o pai do item atual
+  Enter:        Expande ou retrai um grupo de pacotes
+  "[":          Expande um grupo de pacotes e todos seus subgrupos
+  "]":          Retrai um grupo de paoctes e todos seus subgrupos
+
+  Enter ou "i": Visualiza informações sobre um pacote
+  "+":          Instala ou atualiza um pacote, ou remove seu estado de
+                "mantido"
+  "-":          Remove um pacote
+  "=":          Mantém um pacote em sua versão atual para evitar
+                atualizações
+  "_":          Solicita que um pacote e todos os seus arquivos de
+                configuração sejam removidos
+  "L":          Solicita que um pacote seja reinstalado
+  "M":		      Marca um pacote como tendo sido automaticamente instalando.
+		            Pacotes automaticamente instalados são removidos caso nenhum
+                pacote instalado manualmente necessitem dos mesmos.
+  "m":          Marca um pacote como tendo sido manualmente instalado.
+
+  "u":          Atualiza a lista de pacotes disponíveis
+  "g":          Executa todas as instalações, remoções e atualizações
+                pendentes
+
+  Control-u:    Desfaz a última ação ou conjunto de ações
+  "/":          Executa uma busca. (por nome de pacote por padrão; consulte
+                o README/Manual do Usuário para maiores informações)
+  "\":          Repete a última busca
+
+  "D":          Exibe ou oculta a àrea de descrição estendida.
+  "v":          Exibe as versões disponíveis de um pacote
+  "d":          Exibe as dependências de um pacote
+  "r":          Exibe os pacotes dependendo de um dado pacote
+
+  "a":          Rola a descrição estendida para cima
+  "z":          Rola a descrição estendida para baixo
+
+  A flag "estado" exibida para um pacote possui os seguintes possíveis
+  valores :
+
+   v - virtual
+   B - quebrado
+   u - "desempacotado"
+   C - parcialmente-configurado
+   H - parcialmente-instalado
+   c - removido, mas arquivos de configuração ainda presentes (ou seja,
+       não expurgado)
+   i - instalado
+   E - erro interno (não deveria acontecer)
+
+  A flag "ação" exibida para um pacote possui os seguintes possíveis
+  valores :
+
+   h - manter
+   p - expurgar
+   d - deletar (remover)
+   B - quebrado
+   i - instalar
+   r - reinstalar
+   u - atualizar

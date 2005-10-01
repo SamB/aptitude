@@ -1,0 +1,67 @@
+  The basic threading philosophy followed in aptitude can be
+summarized thus: "if you aren't sure it's safe, do it in the main
+thread".  The mechanism for doing so is vscreen_post_event
+(vscreen.cc), which places a callback object into the global event
+queue and wakes the main thread (if necessary).  You can also take a
+global lock to get the same effect...but it's really recommended that
+you use the event queue.
+
+  The actual threading constructs used are the pthread wrappers in
+src/generic/threads.h (and also src/generic/event_queue.h).
+
+  Background threads are spawned to do long-running operations, but they
+generally only access data that is "owned" by the thread.  More
+details on the currently existing background threads below.
+
+  These threads generally take some sort of "continuation" object
+that's invoked when the background process is finished; it's expected
+that this object will probably post some sort of event to the main
+thread.
+
+  Things that you might thank are threadsafe but aren't include:
+
+  * sigc++ objects.  Not only do you have to watch out for manual
+    additions and deletions to connection lists during invocation, you
+    also have to watch out for automatic invalidation of slots at any
+    time.  Best practice here is to confine sigc++ access to the main
+    thread.
+
+  * Smart pointers.  Most smart pointers that aptitude uses are NOT
+    threadsafe.  This means that *EVEN READ-ONLY ACCESS* from another
+    thread will cause horrible ghastly problems that you don't even
+    want to think about.  At the moment it's almost never necessary to
+    pass these between threads, so it's not a big deal; the exception
+    is the problem resolver's solution objects (and the shared trees
+    contained inside them), which are dealt with by doing a deep copy
+    of the object. (see resolver_manager::do_get_solution)
+
+    The reason this is the case is basically that the pthread
+    abstraction doesn't give you a fast lock for low-contention
+    situations -- adding locking around the reference counts of set
+    tree nodes made the overall resolver take 50% longer to run in
+    single-threaded mode!  I'm not eager to add nonportable threading
+    constructs, so I decided to see whether it was possible to just be
+    very careful about handling reference-counted objects.
+
+Existing background threads:
+
+  * The vscreen library creates threads to handle keyboard input,
+    certain asynchronous signals, and timed events.  You generally
+    don't need to worry about these.
+
+  * Downloads are performed by a background thread.  In keeping with
+    the overall philosophy, only the actual download is handled in
+    this way -- the setup of the download and any actions taken once
+    it completes are handled by the main thread.  The gatekeeper for
+    downloads is in download_thread.cc; it provides the basic thread
+    harness, as well as a convenience class that forwards the various
+    download messages to a foreground progress meter.  (these are
+    basically inter-thread RPC calls, and they block the download
+    thread until the progress meter's method call returns a value)
+
+  * The problem resolver runs in a background thread.  This thread
+    always exists, even when there is no resolver (in which case it
+    will just sleep); the foreground thread can post jobs to it, and
+    will also stop the resolver whenever its state needs to be
+    modified (for instance, if the rejected set is changed).  The
+    interface for this is in src/generic/resolver_manager.cc.

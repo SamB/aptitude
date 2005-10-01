@@ -1,0 +1,143 @@
+  Smart pointers in aptitude
+
+
+
+  aptitude uses smart pointers in a number of ways internally.  These
+techniques generally simplify the code and make it easy to program
+safely, but C++ being what it is, you should be aware of how they work
+and what the caveats are.
+
+  * threading
+
+  As of this writing, none of the smart pointers lock their reference
+  counts (implementing locks in the imm::wtree class caused the
+  problem resolver's running time to increase by 50%!).  Some of the
+  less-commonly-used ones may get locking in the future, but for the
+  time being you should handle objects that are given to another
+  thread carefully -- do deep copies of anything that's
+  reference-counted.  (this is only the imm::* stuff at the moment, so
+  the problem is managable) For more information on threading, see
+  README.THREADS.
+
+  * reference-counted immutable values
+
+  aptitude employs reference-counting of immutable objects in several
+  places.  For the most part this is invisible to clients; the typical
+  implementation looks like this:
+
+      class foo
+      {
+	class foo_impl
+	{
+	  ...
+	public:
+	  void m1();
+	  void m2(int);
+	  ...
+	};
+      public:
+	void m1();
+	void m2(int);
+	...
+      };
+
+  When you create a new "foo" object, a corresponding foo_impl is
+  created with reference-count 1.  Reference counts are managed
+  in all the ways you expect, and the object is deleted when you're
+  done with it.
+
+  This use of reference-counting can be viewed as a performance hack:
+  since the objects are immutable, pass-by-value is indistinguishable
+  from pass-by-reference; if we can prove that no strong cycles will
+  be created, it's always safe to reference-count objects like this.
+
+
+  * auto_ptr for temporary return values
+
+  When building up a temporary return value, several routines use
+  auto_ptrs to store intermediates:
+
+      auto_ptr<T> v1 = parse_T_from_string(str1);
+      auto_ptr<T> v2 = parse_T_from_string(str2);
+
+  The advantage here is that you can freely throw exceptions and/or
+  break out of the function with an early "return" without worrying
+  about which of {v1,v2} have to be deleted.  To actually return them,
+  you'd do something like this:
+
+      return pair<T*,T*>(v1.release(), v2.release());
+
+  The "release" calls tell v1 and v2 that they no longer "own" their
+  respective pointers.
+
+
+
+  * reference-counting of display widgets
+
+  Display widgets are also reference-counted.  This is a
+  generalization of the idea that "the enclosing widget owns this
+  one"; it provides more support for extending the lifetime of a
+  widget if, for instance, you want to extract values from it after
+  its parent is done with it.  Unfortunately, this reference counting
+  is NOT fully transparent, and you should be aware of some basic
+  principles:
+
+    - As with any reference counting scheme, it is up to you to
+      avoid creating strong cycles.  By default, the only
+      non-transient strong references are references from a parent to
+      a child; your best bet is to ensure that all additional strong
+      references either have stack lifetime or do not close cycles.
+
+      If you must create a cycle, make sure it gets explicitly broken
+      before all external references to it are lost.
+
+    - Reference-counting is done via the generic ref_ptr class
+      (ref_ptr.h).  This is a templated class, like auto_ptr, and
+      generally works as you expect.  To enforce the use of ref_ptr,
+      all widget constructors are protected; static ::create methods
+      are provided to actually allocate a new widget.  Because the
+      vscreen_widget class initializes its reference count to 1, the
+      ::create method should explicitly decref() its return value; see
+      the existing ::create routines for examples.
+
+      To make code a bit more readable, adopt the convention of
+      creating typedefs for ref_ptr wrappers around new classes.  For
+      instance, if you have just created the class vs_moo, add the
+      following line to its header file:
+
+          typedef ref_ptr<vs_moo> vs_moo_ref;
+
+    - Watch out for deletion of "this".  If you aren't sure whether
+      "this" will be deleted in a method, I recommend creating a
+      method-scoped strong reference to it:
+
+          ref_ptr<this_type> thisref = this;
+
+      Doing so will prevent "this" from being deleted until the
+      current method terminates and is probably good practice in
+      general.
+
+    - Beware sigc::bind.  sigc::bind is an easy way to create bad
+      circularities; moreover, it's actually unsafe to bind a ref_ptr
+      as a slot argument.  The solution adopted in vscreen/ is to
+      exploit sigc++ weak references.  If w is a ref_ptr, then rather
+      than closing w, you should close over w.weak_ref().
+
+      Unfortunately, w.weak_ref() will appear to the callee as a C++
+      reference, not a ref_ptr: if w has type T, you need a slot that
+      accepts a T&, not a ref_ptr<T>.  To solve this problem, it is
+      conventional for widgets defining public interfaces that accept
+      a ref_ptr<T> to define a corresponding _bare method that accepts
+      a T&; the _bare method should simply instantiate a ref_ptr and
+      call the main interface.  For instance,
+
+          void add_widget(const ref_ptr<vscreen_widget> &w);
+	  void add_widget_bare(vscreen_widget &w)
+	  {
+	    add_widget(ref_ptr<vscreen_widget>(&w));
+	  }
+
+      Obviously this is less than ideal, but it will work.  Be aware,
+      though, that the bound argument is a *weak* reference: if there
+      are no strong references to a bound widget, the signal
+      connection will simply disappear.

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" 
+"file:///usr/share/xml/docbook/schema/dtd/4.2/docbookx.dtd" [
+  <!ENTITY aptitude "<command>aptitude</command>">
+  <!ENTITY apt '<systemitem class="library">apt</systemitem>'>
+  <!ENTITY dselect '<command>dselect</command>'>
+  <!ENTITY apt-get '<command>apt-get</command>'>
+  <!ENTITY root '<systemitem class="username">root</systemitem>'>
+  <!ENTITY VERSION '0.2.15.9'>
+
+  <!-- Shortcuts for menu commands: -->
+
+  <!ENTITY actions-install "<menuchoice><shortcut><keycap>g</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Install/remove packages</guimenuitem></menuchoice>">
+  <!ENTITY actions-update "<menuchoice><shortcut><keycap>u</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Update package list</guimenuitem></menuchoice>">
+  <!ENTITY actions-forget "<menuchoice><shortcut><keycap>f</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Forget new packages</guimenuitem></menuchoice>">
+  <!ENTITY actions-clean "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Clean package cache</guimenuitem></menuchoice>">
+  <!ENTITY actions-clean-obs "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Clean obsolete files</guimenuitem></menuchoice>">
+  <!ENTITY actions-upgrade "<menuchoice><shortcut><keycap>U</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Mark Upgradable</guimenuitem></menuchoice>">
+  <!ENTITY actions-mine "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Play Minesweeper</guimenuitem></menuchoice>">
+  <!ENTITY actions-su "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Become root</guimenuitem></menuchoice>">
+  <!ENTITY actions-quit "<menuchoice><shortcut><keycap>Q</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Quit</guimenuitem></menuchoice>">
+
+  <!ENTITY undo-undo "<menuchoice><shortcut><keycombo action='simul'><keycap>Control</keycap><keycap>u</keycap></keycombo></shortcut><guimenu>Undo</guimenu><guimenuitem>Undo</guimenuitem></menuchoice>">
+
+  <!ENTITY package-install "<menuchoice><shortcut><keycap>+</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Install</guimenuitem></menuchoice>">
+  <!ENTITY package-remove "<menuchoice><shortcut><keycap>-</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Remove</guimenuitem></menuchoice>">
+  <!ENTITY package-purge "<menuchoice><shortcut><keycap>_</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Purge</guimenuitem></menuchoice>">
+  <!ENTITY package-keep "<menuchoice><shortcut><keycap>:</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Keep</guimenuitem></menuchoice>">
+  <!ENTITY package-hold "<menuchoice><shortcut><keycap>=</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Hold</guimenuitem></menuchoice>">
+  <!ENTITY package-markauto "<menuchoice><shortcut><keycap>M</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Mark Auto</guimenuitem></menuchoice>">
+  <!ENTITY package-markmanual "<menuchoice><shortcut><keycap>m</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Mark Manual</guimenuitem></menuchoice>">
+  <!ENTITY package-forbid "<menuchoice><shortcut><keycap>F</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Forbid Version</guimenuitem></menuchoice>">
+  <!ENTITY package-information "<menuchoice><shortcut><keycap>enter</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Information</guimenuitem></menuchoice>">
+  <!ENTITY package-changelog "<menuchoice><shortcut><keycap>C</keycap></shortcut><guimenu>package</guimenu><guimenuitem>Changelog</guimenuitem></menuchoice>">
+
+  <!ENTITY search-find "<menuchoice><shortcut><keycap>/</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find</guimenuitem></menuchoice>">
+  <!ENTITY search-refind "<menuchoice><shortcut><keycap>\</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find Again</guimenuitem></menuchoice>">
+  <!ENTITY search-limit "<menuchoice><shortcut><keycap>l</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Limit Display</guimenuitem></menuchoice>">
+  <!ENTITY search-unlimit "<menuchoice><shortcut><keycap>l</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Un-Limit Display</guimenuitem></menuchoice>">
+  <!ENTITY search-find-broken "<menuchoice><shortcut><keycap>b</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find Broken</guimenuitem></menuchoice>">
+
+  <!ENTITY options-ui "<menuchoice><guimenu>Options</guimenu><guimenuitem>UI options</guimenuitem></menuchoice>">
+  <!ENTITY options-dep "<menuchoice><guimenu>Options</guimenu><guimenuitem>Dependency handling</guimenuitem></menuchoice>">
+  <!ENTITY options-misc "<menuchoice><guimenu>Options</guimenu><guimenuitem>Miscellaneous</guimenuitem></menuchoice>">
+  <!ENTITY options-revert "<menuchoice><guimenu>Options</guimenu><guimenuitem>Revert options</guimenuitem></menuchoice>">
+
+  <!ENTITY views-next "<menuchoice><shortcut><keycap>F6</keycap></shortcut><guimenu>Views</guimenu><guimenuitem>Next</guimenuitem></menuchoice>">
+  <!ENTITY views-prev "<menuchoice><shortcut><keycap>F7</keycap></shortcut><guimenu>Views</guimenu><guimenuitem>Prev</guimenuitem></menuchoice>">
+  <!ENTITY views-close "<menuchoice><shortcut><keycap>q</keycap></shortcut><guimenu>Views</guimenu><guimenuitem>Close</guimenuitem></menuchoice>">
+
+  <!ENTITY views-new "<menuchoice><guimenu>Views</guimenu><guimenuitem>New Package View</guimenuitem></menuchoice>">
+  <!ENTITY views-browse "<menuchoice><guimenu>Views</guimenu><guimenuitem>New Categorical Browser</guimenuitem></menuchoice>">
+
+  <!ENTITY help-about "<menuchoice><guimenu>Help</guimenu><guimenuitem>About</guimenuitem></menuchoice>">
+  <!ENTITY help-help "<menuchoice><shortcut><keycap>?</keycap></shortcut><guimenu>Help</guimenu><guimenuitem>Help</guimenuitem></menuchoice>">
+  <!ENTITY help-manual "<menuchoice><guimenu>Help</guimenu><guimenuitem>User's Manual</guimenuitem></menuchoice>">
+  <!ENTITY help-faq "<menuchoice><guimenu>Help</guimenu><guimenuitem>FAQ</guimenuitem></menuchoice>">
+  <!ENTITY help-changelog "<menuchoice><guimenu>Help</guimenu><menuitem>ChangeLog</menuitem></menuchoice>">
+  <!ENTITY help-license "<menuchoice><guimenu>Help</guimenu><menuitem>License</menuitem></menuchoice>">
+
+
+  <!ENTITY manpage SYSTEM "manpage.xml">
+]>
+
+  <reference id='secReference'>
+    <title>&aptitude; command-line reference</title>
+
+    &manpage;
+  </reference>

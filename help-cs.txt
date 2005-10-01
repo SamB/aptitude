@@ -1,0 +1,77 @@
+                             Nápověda Aptitude
+
+  Pro procházení nápovědou použijte kurzorové šipky a klávesy PageUp,
+PageDown. Nápovědu opustíte klávesou Enter nebo Return.
+
+  V Aptitude jsou standardně k dispozici následující klávesy. Seznam
+všech kláves naleznete v souboru README.
+
+  "q":          Ukončí program.
+  "?":          Zobrazí tuto obrazovku.
+
+  "f":		Vyčistí seznam "nových" balíků.
+
+  Nahoru, "k":  Posune kurzor o řádek nahoru.
+  Dolů, "j":    Posune kurzor o řádek dolů.
+  "^":          Posune kurzor na rodiče aktuální položky.
+  Enter:        Rozbalí nebo sbalí skupinu balíků.
+  "[":          Rozbalí skupinu balíků a všechny její podskupiny.
+  "]":          Sbalí skupinu balíků a všechny její podskupiny.
+
+  Enter:        Zobrazí informace o balíku.
+  "C":          Zobrazí seznam změn balíku (changelog).
+  "+":          Instaluje nebo aktualizuje balík, také zruší podržení.
+  "-":          Odstraní balík.
+  "=":          Podrží balík v aktuální verzi (zabrání aktualizaci).
+  ":":          Ponechá balík v aktuální verzi. Na rozdíl od podržení
+                nezabrání budoucím autualizacím.
+  "_":          Odstraní balík i s jeho konfiguračními soubory.
+  "L":          Vyžádá, aby byl balík přeinstalován.
+  "M":		Označí balík jako instalovaný automaticky.
+		Pokud je jiný balík nevyžaduje, jsou automaticky
+                instalované balíky odstraněny.
+  "m":		Označí balík jako instalovaný ručně.
+  "F":		Zamezí automatické aktualizaci balíku na konkrétní
+		verzi; novější verze balíku budou opět instalovány
+		automaticky.
+
+  "u":          Aktualizuje seznamy dostupných balíků.
+  "U":          Označí všechny aktualizovatelné balíky pro aktualizaci.
+  "g":          Provede všechny naplánované (od)instalace a aktualizace.
+
+  Control-u:    Vrátí zpět poslední akci (nebo množinu akcí).
+  "/":          Spustí hledání. (Standardně podle jmen balíků. Více 
+	        informací naleznete v README/uživatelském manuálu).
+  "\":          Zopakuje poslední hledání.
+  "b":          Hledá další porušený balík.
+
+  "v":          Zobrazí dostupné verze balíku
+  "d":          Zobrazí závislosti balíku
+  "r":          Zobrazí balíky závisející na daném balíku
+
+  "D":          Zobrazí nebo skryje rozšířenou oblast s popisem
+  "a":		Posune popis v rozšířené oblasti nahoru
+  "z":		Posune popis v rozšířené oblasti dolů
+  "i":          Cykluje různými informacemi o balíku
+
+  "Stavový" příznak balíku může nabývat následujících hodnot:
+
+   v - virtuální
+   B - poškozený
+   u - rozbalený
+   C - napůl zkonfigurovaný
+   H - napůl instalovaný
+   c - odstraněný, ale konfigurační soubory jsou stále přítomny
+   i - instalovaný
+   E - interní chyba (nemělo by se stávat)
+
+  "Akční" příznak balíku může nabývat následujících hodnot:
+
+   h - podržet
+   p - odstranit i s konfiguračními soubory
+   d - odstranit
+   B - poškozený
+   i - instalovat
+   r - reinstalovat
+   u - aktualizovat
+   F - možná aktualizace byla zakázána klávesou "F"

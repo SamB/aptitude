@@ -1,0 +1,77 @@
+                             Aptitude On-Line Help
+
+  Use the arrow keys and PageUp/PageDown to view this help; type Return or
+Enter to leave it.
+
+  The following keys are available by default in the aptitude information
+screens.  Other keys are available; consult the README for a list of these.
+
+  "q":          Quit.
+  "?":          Display this screen.
+
+  "f":		Clear the list of "new" packages ('f' for "forget").
+
+  Up or "k":    Move the selection up.
+  Down or "j":  Move the selection down.
+  "^":          Move the selection to the parent of the current item.
+  Enter:        Expand or collapse a group of packages.
+  "[":          Expand a group of packages and all its subgroups.
+  "]":          Collapse a group of packages and all its subgroups.
+
+  Enter:        View information about a package.
+  "C":          View a package's changelog.
+  "+":          Install or upgrade a package, or remove its held state.
+  "-":          Remove a package.
+  "=":          Hold a package in its current version to prevent upgrades.
+  ":":          Keep a package at its current version.  Unlike hold, this
+                will not prevent future upgrades.
+  "_":          Request that a package and all its conffiles be removed.
+  "L":          Request that a package be reinstalled.
+  "M":		Mark a package as being automatically installed.
+		Automatically installed packages are removed if no
+		manually installed package requires them.
+  "m":		Mark a package as being manually installed.
+  "F":		Forbid a package from being automatically upgraded to
+		a particular version; newer versions will be automatically
+		installed.
+
+  "u":          Update the lists of available packages.
+  "U":		Mark all upgradable packages to be upgraded.
+  "g":          Perform all pending installations, removals, and upgrades.
+
+  Control-u:    Undo the last action or set of actions.
+  "/":          Perform a search.  (on the name of the package by default;
+	        see the README/User's Manual for more information).
+  "\":          Repeat the last search.
+  "b":          Search for the next broken package.
+
+  "v":          Show the available versions of a package.
+  "d":          Show the dependencies of a package.
+  "r":          Show the packages depending on a given package.
+
+  "D":          Display or hide the package information area.
+  "a":		Scroll the package information area up.
+  "z":		Scroll the package information area down.
+  "i":          Cycle through the package information views.
+
+  The "state" flag displayed for a package has the following possible values:
+
+   v - virtual
+   B - broken
+   u - "unpacked"
+   C - half-configured
+   H - half-installed
+   c - removed, but config-files still present (ie, not purged)
+   i - installed
+   E - internal error (should not happen)
+
+  The "action" flag displayed for a package has the following possible values:
+
+   h - hold
+   p - purge
+   d - delete (remove)
+   B - broken
+   i - install
+   r - reinstall
+   u - upgrade
+   F - the available upgrade has been forbidden via "F"

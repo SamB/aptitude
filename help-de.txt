@@ -1,0 +1,82 @@
+                        Die Aptitude-Online-Hilfe
+
+Benutzen Sie die Pfeiltasten oder BildAuf/BildAb, um diese Hilfe zu lesen;
+drücken Sie die Eingabetaste bzw. Enter, um sie zu verlassen.
+
+Die folgenden Tasten sind in den Aptitude-Bildschirmen belegt.  Weitere Tasten
+sind verfügbar und in der README-Datei dokumentiert.  (Siehe "Benutzer-
+anleitung" im Aptitude-Hilfemenü.)
+
+   Q            Beenden von Aptitude.
+   q            Schließen der aktuellen Ansicht.
+   ?            Diese Hilfe anzeigen.
+
+   f            Vergessen, welche Pakete »neu« sind ('f' für »forget«).
+
+   Pfeiltasten  Bewegen der Auswahl.
+   k            Bewegen der Auswahl nach oben.
+   j            Bewegen der Auswahl nach unten.
+   ^            Die Auswahl eine Ebene höher bewegen.
+   Enter        Eine Gruppe von Paketen aus-/einklappen.
+   [            Eine Gruppe von Paketen und alle Untergruppen ausklappen.
+   ]            Eine Gruppe von Paketen und alle Untergruppen einklappen.
+
+   Enter        Informationen über ein Paket anzeigen.
+   C            Das Änderungsprotokoll (Changelog) eines Pakets anzeigen.
+   +            Ein Paket installieren oder aktualisieren bzw. nicht mehr
+                zurückhalten.
+   -            Ein Paket entfernen.
+   =            Ein Paket auf der inst. Version halten, nicht aktualisieren.
+   :            Ein Paket auf der inst. Version halten.  Anders als '='
+                verhindert dies zukünftige Upgrades nicht.
+   _            Ein Paket und seine Konfigurationsdateien entfernen.
+   L            Ein Paket neuinstallieren.
+   M            Ein Paket als automatisch installiert markieren.
+                Solche Pakete werden gelöscht, sobald kein manuell
+                installiertes Paket mehr von ihnen abhängt.
+   m            Ein Paket als manuell installiert markieren.
+   F            Verbieten, ein Paket automatisch auf eine bestimmte Version
+                zu aktualisieren;  neuere Versionen werden jedoch weiter-
+                hin automatisch installiert.  ('F' für »forbid«.)
+
+   u            Die Liste der verfügbaren Pakete aktualisieren.
+   U            Alle veralteten Pakete zum Aktualisieren markieren.
+   g            Die anstehenden (De-)Installationen und Upgrades ausführen.
+
+   Strg-u       Die letzte Aktion rückgängig machen (Undo).
+   /            Suchen.  (Normalerweise nach dem Namen eines Pakets;
+                siehe README bzw. Benutzeranleitung).
+   n oder \     Die letzte Suche wiederholen.
+   b            Das nächste kaputte Paket suchen (»broken«)
+
+   v            Die verfügbaren Versionen eines Pakets anzeigen.
+   d            Die Abhängigkeiten eines Pakets anzeigen.
+   r            Die von diesem Paket abhängenden Pakete anzeigen.
+
+   D            Den Informationsbereich anzeigen/verstecken.
+   a            Im Infobereich nach oben scrollen.
+   z            Im Infobereich nach unten scrollen.
+   i            Durch die verschiedenen Informationsseiten schalten.
+
+Die Zustandsspalte eines Pakets hat die folgenden möglichen Werte:
+
+   v - virtuell
+   B - kaputt (broken)
+   u - entpackt (unpacked)
+   C - halb konfiguriert
+   H - halb installiert
+   c - entfernt, aber Konfig.dateien sind noch vorhanden (nicht »purged«)
+   i - installiert
+   E - interner Fehler (sollte nicht vorkommen)
+
+Die Aktionsspalte eines Pakets hat die folgenden möglichen Werte:
+
+   h - zurückhalten
+   d - Paket löschen
+   p - Paket und Konfiguration löschen (purge)
+   B - kaputt (broken)
+   i - installieren
+   r - neuinstallieren
+   u - aktualisieren (upgrade)
+   F - das verfügbare Upgrade wurde mit 'F' untersagt
+

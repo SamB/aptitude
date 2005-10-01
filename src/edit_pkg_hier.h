@@ -1,0 +1,83 @@
+// edit_pkg_hier.h           -*-c++-*-
+//
+//  Copyright 2001, 2005 Daniel Burrows
+//
+//
+//   This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License as
+//   published by the Free Software Foundation; either version 2 of
+//   the License, or (at your option) any later version.
+//
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//   General Public License for more details.
+//
+//   You should have received a copy of the GNU General Public License
+//   along with this program; see the file COPYING.  If not, write to
+//   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+//   Boston, MA 02111-1307, USA.
+//
+// This provides a convenient way to tweak the package hierarchy.  It lets
+// the user select which 'groups' a package appears in, then allows them to
+// save the changes to a file.
+//
+// Changes to the hierarchy are stored in GLOBAL VARIABLES.  Specifically,
+// the user_pkg_hier global variable.
+
+#ifndef EDIT_PKG_HIER
+#define EDIT_PKG_HIER
+
+#include <generic/apt/pkg_hier.h>
+
+#include <apt-pkg/pkgcache.h>
+
+#include <vscreen/vs_tree.h>
+
+class vs_hier_editor:public vs_tree
+{
+  class vs_hier_item;
+
+  // Ugh..track all the children we created..
+  std::vector<vs_hier_item *> items;
+
+  pkg_hier::item *item;
+
+  // Used for the "lazily load package hierarchies" behavior -- if we
+  // get a "set package" command and this widget is invisible, it gets
+  // deferred until the widget is shown.  This connection is used to
+  // avoid connecting this command more than once.
+  sigc::connection shown_conn;
+
+  void save_hier(std::string file);
+
+  void handle_reload();
+protected:
+  virtual bool handle_key(const key &k);
+
+  void paint(const style &st);
+
+  vs_hier_editor();
+public:
+  static ref_ptr<vs_hier_editor> create()
+  {
+    ref_ptr<vs_hier_editor> rval(new vs_hier_editor);
+    rval->decref();
+    return rval;
+  }
+
+  bool get_cursorvisible();
+
+  void set_package(const pkgCache::PkgIterator &pkg);
+
+  void set_package(const pkgCache::PkgIterator &pkg,
+		   const pkgCache::VerIterator &ver);
+
+  void set_package(std::string name);
+
+  sigc::signal0<void> commit_changes;
+};
+
+typedef ref_ptr<vs_hier_editor> vs_hier_editor_ref;
+
+#endif

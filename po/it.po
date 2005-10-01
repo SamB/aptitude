@@ -1,0 +1,5833 @@
+# Italian translations for aptitude package.
+# Copyright © 2004 Daniel Burrows
+# This file is distributed under the same license as the aptitude package.
+# Danilo Piazzalunga <danilopiazza@libero.it>, 2004-2005.
+#
+# Convenzioni usate, per rendere più semplice la loro individuazione ed
+# eventuale sostituzione (cfr. traduzioni di dpkg e apt):
+#
+# “broken”............: «difettoso» (dpkg)
+#       Peggiore di «errato», ma migliore di «rotto» (apt).
+# “cache file”........: «file cache»
+# “candidate version”.: «versione candidata»
+# “Debian changelog”..: «changelog Debian»
+# “Conflicts:”........: «È/va in conflitto» (dpkg, apt)
+# “downgrade”.........: «retrocedere (downgrade)» (apt)
+#       Unica soluzione sensata per rendere il concetto.
+# “extended state”....: «stato esteso»
+# “fix”...............: «correggere»
+# “forbidden version”.: «versione proibita»
+# “new”...............: «nuovo (new)» (apt)
+#       Riferito a pacchetti che prima non erano installati.
+# “obsolete”..........: «vecchio»
+#       Riferito a (file di) pacchetti sostituiti da versioni più recenti.
+# “obsolete”..........: «obsoleto»
+#       Riferito a librerie che esistono solo per compatibilità o a pacchetti
+#       che non esistono più.
+# “Obsoletes:”........: «Rende obsoleto:» (apt)
+# “package lists”.....: «elenco dei pacchetti»
+# “Provides:”.........: «Fornisce:» (dpkg, apt)
+# “Replaces:”.........: «Sostituisce:» (apt)
+# “source list”.......: «elenco delle sorgenti»
+# “Suggests:”.........: «Consiglia:» (apt)
+#       Migliore di «suggerisce» (dpkg).
+# “task”:.............: «task» (tasksel)
+# “unpack/unpacked”...: «estrarre/estratto» (apt)
+#       Migliore di «spacchettato» (dpkg).
+#
+# Molti messaggi sono stati tradotti in modo da essere visualizzati
+# correttamentestare in un terminale a 80 colonne.
+#
+#: src/view_changelog.cc:222
+msgid ""
+msgstr ""
+"Project-Id-Version: aptitude 0.2.15.9\n"
+"Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
+"POT-Creation-Date: 2005-09-30 20:03-0700\n"
+"PO-Revision-Date: 2005-04-12 22:24+0200\n"
+"Last-Translator: Danilo Piazzalunga <danilopiazza@libero.it>\n"
+"Language-Team: Italian <tp@lists.linux.it>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: src/apt_options.cc:109
+msgid "Display some available commands at the top of the screen"
+msgstr "Mostrare alcuni comandi disponibili in cima allo schermo"
+
+#: src/apt_options.cc:111
+msgid "Hide the menubar when it is not being used"
+msgstr "Nascondere la barra dei menu quando è inutilizzata"
+
+#: src/apt_options.cc:113
+msgid "Use a minibuffer-style prompt when possible"
+msgstr "Usare un prompt a minibuffer quando è possibile"
+
+#: src/apt_options.cc:115
+msgid "Show partial search results (incremental search)"
+msgstr "Mostrare i risultati di ricerca parziali (ricerca incrementale)"
+
+#: src/apt_options.cc:117
+msgid "Closing the last view exits the program"
+msgstr "Uscire dal programma quando viene chiusa l'ultima vista"
+
+#: src/apt_options.cc:119
+msgid "Prompt for confirmation at exit"
+msgstr "Chiedere conferma all'uscita"
+
+#: src/apt_options.cc:121
+msgid "Pause after downloading files"
+msgstr "Fare una pausa dopo aver scaricato i file"
+
+#: src/apt_options.cc:123
+#, fuzzy
+msgid "Never"
+msgstr "Server"
+
+#: src/apt_options.cc:124
+msgid "When an error occurs"
+msgstr ""
+
+#: src/apt_options.cc:125
+msgid "Always"
+msgstr ""
+
+#: src/apt_options.cc:127
+msgid "Use a 'status-line' download indicator for all downloads"
+msgstr "Usare un indicatore nella barra di stato per tutti gli scaricamenti"
+
+#: src/apt_options.cc:129
+msgid "Display the extended description area by default"
+msgstr "Mostrare in modo predefinito l'area della descrizione estesa"
+
+#: src/apt_options.cc:131
+msgid "Advance to the next item after changing the state of a package"
+msgstr ""
+"Passare al prossimo elemento dopo aver cambiato lo stato di un pacchetto"
+
+#: src/apt_options.cc:133
+msgid "Automatically show why packages are broken"
+msgstr "Mostrare automaticamente perché i pacchetti sono difettosi"
+
+#: src/apt_options.cc:135
+msgid "The default grouping method for package views"
+msgstr "Metodo di raggruppamento delle viste dei pacchetti"
+
+#: src/apt_options.cc:137
+msgid "The default display-limit for package views"
+msgstr "Limite di visualizzazione delle viste dei pacchetti"
+
+#: src/apt_options.cc:139
+msgid "The display format for package views"
+msgstr "Formato delle viste dei pacchetti"
+
+#: src/apt_options.cc:142
+msgid "The display format for the status line"
+msgstr "Formato della barra di stato"
+
+#: src/apt_options.cc:145
+msgid "The display format for the header line"
+msgstr "Formato dell'intestazione"
+
+#: src/apt_options.cc:154
+msgid "Automatically upgrade installed packages"
+msgstr "Aggiornare automaticamente i pacchetti installati"
+
+#: src/apt_options.cc:156
+msgid "Remove obsolete package files after downloading new package lists"
+msgstr ""
+"Rimuovere i file dei vecchi pacchetti dopo aver scaricato il nuovo elenco"
+
+#: src/apt_options.cc:158
+msgid "URL to use to download changelogs"
+msgstr "URL da usare per scaricare i changelog"
+
+#: src/apt_options.cc:161
+msgid "Display a preview of what will be done before doing it"
+msgstr "Mostrare un'anteprima prima di compiere l'azione vera e propria"
+
+#: src/apt_options.cc:164
+msgid ""
+"Forget which packages are \"new\" whenever the package lists are updated"
+msgstr "Dimenticare quali pacchetti sono «nuovi» quando si aggiorna l'elenco"
+
+#: src/apt_options.cc:167
+msgid ""
+"Forget which packages are \"new\" whenever packages are installed or removed"
+msgstr "Dimenticare quali pacchetti sono «nuovi» quando si installa/rimuove"
+
+#: src/apt_options.cc:170
+msgid ""
+"Do not display a warning when the first change is made in read-only mode."
+msgstr ""
+
+#: src/apt_options.cc:173
+msgid "Warn when attempting to perform a privileged action as a non-root user"
+msgstr ""
+"Avvisare se si cerca di eseguire un'azione privilegiata senza essere root"
+
+#: src/apt_options.cc:176
+msgid "File to log actions into"
+msgstr "File da usare come log per le azioni"
+
+#: src/apt_options.cc:183
+msgid "Automatically resolve dependencies of a package when it is selected"
+msgstr "Risolvere le dipendenze quando un pacchetto viene selezionato"
+
+#: src/apt_options.cc:185
+msgid "Automatically fix broken packages before installing or removing"
+msgstr "Correggere i pacchetti difettosi prima di installare o rimuovere"
+
+#: src/apt_options.cc:187
+msgid "Install Recommended packages automatically"
+msgstr "Installare automaticamente i pacchetti Raccomandati"
+
+#: src/apt_options.cc:189
+msgid "Remove unused packages automatically"
+msgstr "Rimuovere automaticamente i pacchetti inutilizzati"
+
+#: src/apt_options.cc:191
+msgid "Automatically remove unused packages matching this filter"
+msgstr "Filtro per i pacchetti inutilizzati"
+
+#: src/apt_options.cc:247 src/mine/cmine.cc:302 src/mine/cmine.cc:367
+#: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:81
+#: src/vscreen/vs_util.cc:94 src/vscreen/vs_util.cc:275
+#: src/vscreen/vs_util.cc:312
+msgid "Ok"
+msgstr "Ok"
+
+#: src/apt_options.cc:248 src/download_list.cc:88 src/mine/cmine.cc:303
+#: src/mine/cmine.cc:368 src/vscreen/vs_util.cc:313
+msgid "Cancel"
+msgstr "Annulla"
+
+#: src/broken_indicator.cc:118
+#, c-format
+msgid "%s: Examine"
+msgstr ""
+
+#: src/broken_indicator.cc:126
+#, c-format
+msgid "%s: Apply"
+msgstr ""
+
+#: src/broken_indicator.cc:129
+#, fuzzy, c-format
+msgid "%s: Next"
+msgstr "^Successivo"
+
+#: src/broken_indicator.cc:134
+#, c-format
+msgid "%s: Previous"
+msgstr ""
+
+#: src/broken_indicator.cc:226
+#, fuzzy
+msgid "Unable to resolve dependencies."
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/broken_indicator.cc:240
+#, fuzzy, c-format
+msgid "[%d(%d)/...] Resolving dependencies"
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/broken_indicator.cc:273 src/solution_dialog.cc:142
+#: src/solution_screen.cc:513
+msgid "Internal error: unexpected null solution."
+msgstr ""
+
+#: src/broken_indicator.cc:326
+#, fuzzy
+msgid "Suggest "
+msgstr "Consiglia"
+
+#: src/broken_indicator.cc:331
+#, fuzzy, c-format
+msgid "%d installs"
+msgstr "installa"
+
+#: src/broken_indicator.cc:334
+#, fuzzy
+msgid "1 install"
+msgstr "installa"
+
+#: src/broken_indicator.cc:337
+#, c-format
+msgid "%d removals"
+msgstr ""
+
+#: src/broken_indicator.cc:340
+msgid "1 removal"
+msgstr ""
+
+#: src/broken_indicator.cc:343
+#, c-format
+msgid "%d keeps"
+msgstr ""
+
+#: src/broken_indicator.cc:346
+msgid "1 keep"
+msgstr ""
+
+#: src/broken_indicator.cc:349
+#, fuzzy, c-format
+msgid "%d upgrades"
+msgstr "aggiorna"
+
+#: src/broken_indicator.cc:351
+#, fuzzy
+msgid "1 upgrade"
+msgstr "aggiorna"
+
+#: src/broken_indicator.cc:354
+#, fuzzy, c-format
+msgid "%d downgrades"
+msgstr "retrocesso (downgraded)"
+
+#: src/broken_indicator.cc:356
+#, fuzzy
+msgid "1 downgrade"
+msgstr "retrocesso (downgraded)"
+
+#: src/cmdline/cmdline_action.cc:37
+#, c-format
+msgid ""
+"Note: \"%s\", providing the virtual package\n"
+"      \"%s\", is already installed.\n"
+msgstr ""
+"Nota: «%s», che fornisce il pacchetto virtuale\n"
+"      «%s», è già installato.\n"
+
+#: src/cmdline/cmdline_action.cc:44
+#, c-format
+msgid ""
+"Note: \"%s\", providing the virtual package\n"
+"      \"%s\", is already going to be installed.\n"
+msgstr ""
+"Nota: «%s», che fornisce il pacchetto virtuale\n"
+"      «%s», sta già per essere installato.\n"
+
+#: src/cmdline/cmdline_action.cc:62
+#, c-format
+msgid ""
+"\"%s\" exists in the package database, but it is not a\n"
+"real package and no package provides it.\n"
+msgstr ""
+"«%s» esiste nel database dei pacchetti ma non è un pacchetto\n"
+"reale e non è fornito da nessun pacchetto.\n"
+
+#: src/cmdline/cmdline_action.cc:68
+#, c-format
+msgid "\"%s\" is a virtual package provided by:\n"
+msgstr "«%s» è un pacchetto virtuale fornito da:\n"
+
+#: src/cmdline/cmdline_action.cc:71
+#, c-format
+msgid "You must choose one to install.\n"
+msgstr "Bisogna sceglierne uno da installare.\n"
+
+#: src/cmdline/cmdline_action.cc:76
+#, c-format
+msgid ""
+"Note: selecting \"%s\" instead of the\n"
+"      virtual package \"%s\"\n"
+msgstr ""
+"Nota: si sta selezionando «%s» al posto del\n"
+"      pacchetto virtuale «%s»\n"
+
+#: src/cmdline/cmdline_action.cc:94
+#, c-format
+msgid "%s is already installed at the requested version (%s)\n"
+msgstr "%s è già installato e si trova alla versione richiesta (%s)\n"
+
+#: src/cmdline/cmdline_action.cc:100
+#, c-format
+msgid "%s is not currently installed, so it will not be reinstalled.\n"
+msgstr "%s non è attualmente installato e non verrà quindi reinstallato.\n"
+
+#: src/cmdline/cmdline_action.cc:107 src/cmdline/cmdline_action.cc:113
+#, c-format
+msgid "Package %s is not installed, so it will not be removed\n"
+msgstr "Il pacchetto %s non è installato e non verrà quindi rimosso\n"
+
+#: src/cmdline/cmdline_action.cc:131
+#, c-format
+msgid "Package %s is not installed, cannot forbid an upgrade\n"
+msgstr ""
+"Il pacchetto %s non è installato: impossibile proibirne l'aggiornamento\n"
+
+#: src/cmdline/cmdline_action.cc:133
+#, c-format
+msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
+msgstr ""
+"Il pacchetto %s non è aggiornabile: impossibile proibirne l'aggiornamento\n"
+
+#: src/cmdline/cmdline_action.cc:214
+#, c-format
+msgid "Note: selecting the task \"%s: %s\" for installation\n"
+msgstr "Nota: si sta selezionando il task «%s: %s» per l'installazione\n"
+
+#: src/cmdline/cmdline_action.cc:241
+#, c-format
+msgid "You can only specify a package version with an 'install' command.\n"
+msgstr "È possibile specificare solo la versione con il comando «install».\n"
+
+#: src/cmdline/cmdline_action.cc:247
+#, c-format
+msgid "You can only specify a package archive with an 'install' command.\n"
+msgstr "È possibile specificare solo l'archivio con il comando «install».\n"
+
+#: src/cmdline/cmdline_action.cc:281
+#, c-format
+msgid ""
+"Couldn't find package \"%s\", and more than 40\n"
+"packages contain \"%s\" in their name.\n"
+msgstr ""
+"Impossibile trovare il pacchetto «%s» e più di 40\n"
+"pacchetti hanno un nome che contiene «%s».\n"
+
+#: src/cmdline/cmdline_action.cc:284
+#, c-format
+msgid ""
+"Couldn't find package \"%s\".  However, the following\n"
+"packages contain \"%s\" in their name:\n"
+msgstr ""
+"Impossibile trovare il pacchetto «%s». Ad ogni modo, i seguenti\n"
+"pacchetti hanno un nome che contiene «%s»:\n"
+
+#: src/cmdline/cmdline_action.cc:308
+#, c-format
+msgid "Couldn't find any package whose name or description matched \"%s\"\n"
+msgstr ""
+"Impossibile trovare un pacchetto il cui nome o descrizione corrispondano a «%"
+"s»\n"
+
+#: src/cmdline/cmdline_action.cc:310
+#, c-format
+msgid ""
+"Couldn't find any package matching \"%s\", and more than 40\n"
+"packages contain \"%s\" in their description.\n"
+msgstr ""
+"Impossibile trovare un pacchetto che corrisponda a «%s» e più di 40\n"
+"pacchetti hanno un nome o una descrizione che contiene «%s».\n"
+
+#: src/cmdline/cmdline_action.cc:313
+#, c-format
+msgid ""
+"Couldn't find any package matching \"%s\".  However, the following\n"
+"packages contain \"%s\" in their description:\n"
+msgstr ""
+"Impossibile trovare un pacchetto che corrisponda a «%s». Ad ogni modo,\n"
+"i seguenti pacchetti hanno una descrizione che contiene «%s»:\n"
+
+#: src/cmdline/cmdline_action.cc:440
+#, c-format
+msgid "Bad action character '%c'\n"
+msgstr "Il carattere «%c» non descrive un'azione ammessa\n"
+
+#: src/cmdline/cmdline_changelog.cc:195
+msgid "Can't execute sensible-pager, is this a working Debian system?"
+msgstr ""
+"Impossibile eseguire sensible-pager. Questo è un sistema Debian funzionante?"
+
+#: src/cmdline/cmdline_changelog.cc:237
+#, c-format
+msgid "%s is not an official Debian package, cannot display its changelog."
+msgstr ""
+"%s non è un pacchetto Debian ufficiale: impossibile mostrarne il changelog."
+
+#: src/cmdline/cmdline_changelog.cc:308
+#, c-format
+msgid "Couldn't find a changelog for %s"
+msgstr "Impossibile trovare il changelog di «%s»"
+
+#: src/cmdline/cmdline_clean.cc:52
+#, c-format
+msgid "Del %s* %spartial/*\n"
+msgstr "Canc %s* %spartial/*\n"
+
+#: src/cmdline/cmdline_clean.cc:80
+#, c-format
+msgid "Del %s %s [%sB]\n"
+msgstr ""
+
+#: src/cmdline/cmdline_clean.cc:136
+#, fuzzy, c-format
+msgid "Would free %sB of disk space\n"
+msgstr "Libererà %sB su disco"
+
+#: src/cmdline/cmdline_clean.cc:139
+#, fuzzy, c-format
+msgid "Freed %sB of disk space\n"
+msgstr "Libererà %sB su disco"
+
+#: src/cmdline/cmdline_do_action.cc:73
+#, c-format
+msgid "Invalid operation %s"
+msgstr "Operazione «%s» non ammessa"
+
+#: src/cmdline/cmdline_do_action.cc:143
+msgid "Unexpected pattern argument following \"keep-all\""
+msgstr ""
+
+#: src/cmdline/cmdline_do_action.cc:233 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:476
+#, c-format
+msgid "Abort.\n"
+msgstr "Uscita.\n"
+
+#: src/cmdline/cmdline_download.cc:30
+#, c-format
+msgid "download: you must specify at least one package to download\n"
+msgstr "download: si deve specificare almeno un pacchetto da scaricare\n"
+
+#: src/cmdline/cmdline_download.cc:42
+#: src/generic/apt/download_install_manager.cc:78
+#: src/generic/apt/download_install_manager.cc:165
+msgid "Couldn't read source list"
+msgstr "Impossibile leggere l'elenco delle sorgenti"
+
+#: src/cmdline/cmdline_download.cc:63
+#, c-format
+msgid "Can't find a package named \"%s\""
+msgstr "Impossibile trovare il pacchetto di nome «%s»"
+
+#: src/cmdline/cmdline_download.cc:73
+#, c-format
+msgid ""
+"No downloadable files for %s version %s; perhaps it is a local or obsolete "
+"package?"
+msgstr ""
+"Nessun file scaricabile per %s, versione %s; forse si tratta di un pacchetto "
+"obsoleto o locale."
+
+#: src/cmdline/cmdline_forget_new.cc:44
+#, c-format
+msgid "Would forget what packages are new\n"
+msgstr "Sarebbero dimenticati quali pacchetti sono «nuovi»\n"
+
+#: src/cmdline/cmdline_moo.cc:16
+#, c-format
+msgid "There are no Easter Eggs in this program.\n"
+msgstr "Non ci sono sorprese nascoste in questo programma.\n"
+
+#: src/cmdline/cmdline_moo.cc:19
+#, c-format
+msgid "There really are no Easter Eggs in this program.\n"
+msgstr "No, non ci sono proprio sorprese nascoste in questo programma.\n"
+
+#: src/cmdline/cmdline_moo.cc:22
+#, c-format
+msgid ""
+"Didn't I already tell you that there are no Easter Eggs in this program?\n"
+msgstr ""
+"Non ti ho già detto che non ci sono sorprese nascoste in questo programma?\n"
+
+#: src/cmdline/cmdline_moo.cc:25
+#, c-format
+msgid "Stop it!\n"
+msgstr "Smettila!\n"
+
+#: src/cmdline/cmdline_moo.cc:28
+#, c-format
+msgid "Okay, okay, if I give you an Easter Egg, will you go away?\n"
+msgstr "Va bene, va bene. Se ti mostro una sorpresa, poi te ne vai?\n"
+
+#: src/cmdline/cmdline_moo.cc:31
+#, c-format
+msgid "All right, you win.\n"
+msgstr "D'accordo, hai vinto.\n"
+
+#: src/cmdline/cmdline_moo.cc:42
+#, c-format
+msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
+msgstr "Che cos'è? È un elefante che viene mangiato da un boa, naturalmente.\n"
+
+#: src/cmdline/cmdline_prompt.cc:33
+msgid "Unexpected end-of-file on standard input"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:52
+msgid "Couldn't read list of sources"
+msgstr "Impossibile leggere l'elenco delle sorgenti"
+
+#: src/cmdline/cmdline_prompt.cc:227 src/cmdline/cmdline_show_broken.cc:73
+#, c-format
+msgid "but %s is to be installed."
+msgstr "ma %s sta per essere installato."
+
+#: src/cmdline/cmdline_prompt.cc:230 src/cmdline/cmdline_show_broken.cc:76
+#, c-format
+msgid "but %s is installed and it is kept back."
+msgstr "ma %s è installato e viene mantenuto alla versione precedente."
+
+#: src/cmdline/cmdline_prompt.cc:233 src/cmdline/cmdline_show_broken.cc:79
+#, c-format
+msgid "but %s is installed."
+msgstr "ma %s è installato."
+
+#: src/cmdline/cmdline_prompt.cc:237 src/cmdline/cmdline_show_broken.cc:83
+#, c-format
+msgid "but it is not installable"
+msgstr "ma non è installabile"
+
+#: src/cmdline/cmdline_prompt.cc:241 src/cmdline/cmdline_show_broken.cc:87
+#, c-format
+msgid " which is a virtual package."
+msgstr " che è un pacchetto virtuale."
+
+#: src/cmdline/cmdline_prompt.cc:244 src/cmdline/cmdline_show_broken.cc:90
+#, c-format
+msgid " or"
+msgstr " o "
+
+#: src/cmdline/cmdline_prompt.cc:256
+msgid "The following packages are BROKEN:"
+msgstr "I seguenti pacchetti sono DIFETTOSI:"
+
+#: src/cmdline/cmdline_prompt.cc:257
+msgid "The following packages are unused and will be REMOVED:"
+msgstr "I seguenti pacchetti sono inutilizzati e saranno RIMOSSI:"
+
+#: src/cmdline/cmdline_prompt.cc:258
+msgid "The following packages have been automatically kept back:"
+msgstr "I seguenti pacchetti sono stati mantenuti alla versione precedente:"
+
+#: src/cmdline/cmdline_prompt.cc:259
+msgid "The following NEW packages will be automatically installed:"
+msgstr "I seguenti pacchetti NUOVI (NEW) saranno automaticamente installati:"
+
+#: src/cmdline/cmdline_prompt.cc:260
+msgid "The following packages will be automatically REMOVED:"
+msgstr "I seguenti pacchetti saranno automaticamente RIMOSSI:"
+
+#: src/cmdline/cmdline_prompt.cc:261
+msgid "The following packages will be DOWNGRADED:"
+msgstr "I seguenti pacchetti saranno RETROCESSI (DOWNGRADED):"
+
+#: src/cmdline/cmdline_prompt.cc:262
+msgid "The following packages have been kept back:"
+msgstr "I seguenti pacchetti sono stati bloccati:"
+
+#: src/cmdline/cmdline_prompt.cc:263
+msgid "The following packages will be REINSTALLED:"
+msgstr "I seguenti pacchetti saranno REINSTALLATI:"
+
+#: src/cmdline/cmdline_prompt.cc:264
+msgid "The following NEW packages will be installed:"
+msgstr "I seguenti pacchetti NUOVI (NEW) saranno installati:"
+
+#: src/cmdline/cmdline_prompt.cc:265
+msgid "The following packages will be REMOVED:"
+msgstr "I seguenti pacchetti saranno RIMOSSI:"
+
+#: src/cmdline/cmdline_prompt.cc:266
+msgid "The following packages will be upgraded:"
+msgstr "I seguenti pacchetti saranno aggiornati:"
+
+#: src/cmdline/cmdline_prompt.cc:321
+#, c-format
+msgid "The following ESSENTIAL packages will be REMOVED!\n"
+msgstr "I seguenti pacchetti ESSENZIALI saranno RIMOSSI.\n"
+
+#: src/cmdline/cmdline_prompt.cc:330
+#, c-format
+msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
+msgstr ""
+"I seguenti pacchetti ESSENZIALI saranno DIFETTOSI dopo questa azione:\n"
+
+#: src/cmdline/cmdline_prompt.cc:340
+#, c-format
+msgid ""
+"WARNING: Performing this action will probably cause your system to break!\n"
+"         Do NOT continue unless you know EXACTLY what you are doing!\n"
+msgstr ""
+"ATTENZIONE: Questa azione potrebbe provocare un malfunzionamento del "
+"sistema!\n"
+"            NON proseguire a meno che non si sappia ESATTAMENTE ciò che si\n"
+"            sta per fare.\n"
+
+#: src/cmdline/cmdline_prompt.cc:342
+msgid "I am aware that this is a very bad idea"
+msgstr "So che si tratta di una pessima idea"
+
+#: src/cmdline/cmdline_prompt.cc:345
+#, c-format
+msgid "To continue, type the phrase \"%s\":\n"
+msgstr "Per continuare, inserire la frase «%s»:\n"
+
+#: src/cmdline/cmdline_prompt.cc:387
+#, c-format
+msgid ""
+"WARNING: untrusted versions of the following packages will be installed!\n"
+"\n"
+"Untrusted packages could compromise your system's security.\n"
+"You should only proceed with the installation if you are certain that\n"
+"this is what you want to do.\n"
+"\n"
+msgstr ""
+"ATTENZIONE: verranno installate versioni non sicure dei seguenti pacchetti.\n"
+"\n"
+"Pacchetti non sicuri potrebbero compromettere la sicurezza del sistema.\n"
+"Si dovrebbe procedere con l'installazione solo se si è sicuri di quello che\n"
+"si sta facendo.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:398
+#, c-format
+msgid ""
+"*** WARNING ***   Ignoring these trust violations because\n"
+"                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:403 src/vscreen/vs_util.cc:169
+#: src/vscreen/vs_util.cc:207
+msgid "Yes"
+msgstr "Sì"
+
+#: src/cmdline/cmdline_prompt.cc:403 src/vscreen/vs_util.cc:170
+#: src/vscreen/vs_util.cc:208
+msgid "No"
+msgstr "No"
+
+#: src/cmdline/cmdline_prompt.cc:407
+#, c-format
+msgid "Do you want to ignore this warning and proceed anyway?\n"
+msgstr "Ignorare questo avviso e procedere comunque?\n"
+
+#: src/cmdline/cmdline_prompt.cc:408
+#, c-format
+msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
+msgstr "Per continuare, inserire «%s»; per annullare, inserire «%s»: "
+
+#: src/cmdline/cmdline_prompt.cc:422
+#, c-format
+msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
+msgstr "Input non riconosciuto. Inserire «%s» oppure «%s».\n"
+
+#: src/cmdline/cmdline_prompt.cc:521
+#, c-format
+msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
+msgstr "I seguenti pacchetti sono RACCOMANDATI ma NON verranno installati:\n"
+
+#: src/cmdline/cmdline_prompt.cc:527
+#, c-format
+msgid "The following packages are SUGGESTED but will NOT be installed:\n"
+msgstr "I seguenti pacchetti sono CONSIGLIATI ma NON verranno installati:\n"
+
+#: src/cmdline/cmdline_prompt.cc:532
+#, c-format
+msgid "No packages will be installed, upgraded, or removed.\n"
+msgstr "Nessun pacchetto verrà installato, aggiornato o rimosso.\n"
+
+#: src/cmdline/cmdline_prompt.cc:534
+#, c-format
+msgid "%lu packages upgraded, %lu newly installed, "
+msgstr "%lu pacchetti aggiornati, %lu installati, "
+
+#: src/cmdline/cmdline_prompt.cc:538
+#, c-format
+msgid "%lu reinstalled, "
+msgstr "%lu reinstallati, "
+
+#: src/cmdline/cmdline_prompt.cc:540
+#, c-format
+msgid "%lu downgraded, "
+msgstr "%lu retrocessi (downgraded), "
+
+#: src/cmdline/cmdline_prompt.cc:542
+#, c-format
+msgid "%lu to remove and %lu not upgraded.\n"
+msgstr "%lu da rimuovere e %lu non aggiornati.\n"
+
+#: src/cmdline/cmdline_prompt.cc:549
+#, c-format
+msgid "Need to get %sB/%sB of archives. "
+msgstr "È necessario prelevare %sB/%sB di archivi. "
+
+#: src/cmdline/cmdline_prompt.cc:552
+#, c-format
+msgid "Need to get %sB of archives. "
+msgstr "È necessario prelevare %sB di archivi. "
+
+#: src/cmdline/cmdline_prompt.cc:559
+#, c-format
+msgid "After unpacking %sB will be used.\n"
+msgstr "Dopo l'estrazione, verranno occupati %sB.\n"
+
+#: src/cmdline/cmdline_prompt.cc:562
+#, c-format
+msgid "After unpacking %sB will be freed.\n"
+msgstr "Dopo l'estrazione, verranno liberati %sB.\n"
+
+#: src/cmdline/cmdline_prompt.cc:600
+#, c-format
+msgid "No packages to show -- enter the package names on the line after 'i'.\n"
+msgstr ""
+"Nessun pacchetto da mostrare; specificare i nomi dei pacchetti dopo «i».\n"
+
+#: src/cmdline/cmdline_prompt.cc:602
+msgid "Press Return to continue."
+msgstr "Premere Invio per continuare."
+
+#: src/cmdline/cmdline_prompt.cc:628
+#, c-format
+msgid "No packages found -- enter the package names on the line after 'c'.\n"
+msgstr ""
+"Nessun pacchetto da mostrare; specificare i nomi dei pacchetti dopo «c».\n"
+
+#: src/cmdline/cmdline_prompt.cc:632
+#, fuzzy
+msgid "Press Return to continue"
+msgstr "Premere Invio per continuare."
+
+#: src/cmdline/cmdline_prompt.cc:643
+#, c-format
+msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:663
+msgid "continue with the installation"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:665
+msgid "abort and quit"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:667
+msgid ""
+"show information about one or more packages; the package names should follow "
+"the 'i'"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:669
+msgid ""
+"show the Debian changelogs of one or more packages; the package names should "
+"follow the 'c'"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:671
+msgid "toggle the display of dependency information"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:673
+#, fuzzy
+msgid "toggle the display of changes in package sizes"
+msgstr "Formato delle viste dei pacchetti"
+
+#: src/cmdline/cmdline_prompt.cc:675
+msgid "toggle the display of version numbers"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:677
+msgid "enter the full visual interface"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:678
+msgid ""
+"You may also specify modification to the actions which will be taken.  To do "
+"so, type an action character followed by one or more package names (or "
+"patterns).  The action will be applied to all the packages that you list.  "
+"The following actions are available:"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:683 src/cmdline/cmdline_resolver.cc:167
+#, fuzzy
+msgid "'+' to install packages"
+msgstr "^Installa/rimuovi pacchetti"
+
+#: src/cmdline/cmdline_prompt.cc:685 src/cmdline/cmdline_resolver.cc:169
+#, fuzzy
+msgid ""
+"'+M' to install packages and immediately flag them as automatically installed"
+msgstr "I seguenti pacchetti NUOVI (NEW) saranno automaticamente installati:"
+
+#: src/cmdline/cmdline_prompt.cc:687 src/cmdline/cmdline_resolver.cc:171
+#, fuzzy
+msgid "'-' to remove packages"
+msgstr "^Installa/rimuovi pacchetti"
+
+#: src/cmdline/cmdline_prompt.cc:689 src/cmdline/cmdline_resolver.cc:173
+#, fuzzy
+msgid "'_' to purge packages"
+msgstr "^Dimentica i nuovi pacchetti"
+
+#: src/cmdline/cmdline_prompt.cc:691 src/cmdline/cmdline_resolver.cc:175
+#, fuzzy
+msgid "'=' to place packages on hold"
+msgstr " hold         - Imposta i pacchetti come bloccati\n"
+
+#: src/cmdline/cmdline_prompt.cc:693 src/cmdline/cmdline_resolver.cc:177
+msgid ""
+"':' to keep packages in their current state without placing them on hold"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:695 src/cmdline/cmdline_resolver.cc:179
+#, fuzzy
+msgid "'&M' to mark packages as automatically installed"
+msgstr " markauto     - Segna i pacchetti come installati automaticamente\n"
+
+#: src/cmdline/cmdline_prompt.cc:697 src/cmdline/cmdline_resolver.cc:181
+#, fuzzy
+msgid "'&m' to mark packages as manually installed"
+msgstr " unmarkauto   - Segna i pacchetti come installati manualmente\n"
+
+#: src/cmdline/cmdline_prompt.cc:699
+#, fuzzy
+msgid "Commands:"
+msgstr "raccomanda"
+
+#: src/cmdline/cmdline_prompt.cc:754
+msgid "Do you want to continue? [Y/n/?] "
+msgstr "Continuare? [Y/n/?] "
+
+#: src/cmdline/cmdline_prompt.cc:779
+#, c-format
+msgid ""
+"\n"
+"Dependency information will be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Le informazioni sulle dipendenze vengono mostrate.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:781
+#, c-format
+msgid ""
+"\n"
+"Dependency information will not be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Le informazioni sulle dipendenze non vengono mostrate.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:787
+#, c-format
+msgid ""
+"\n"
+"Versions will be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Le versioni vengono mostrate.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:789
+#, c-format
+msgid ""
+"\n"
+"Versions will not be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Le versioni non vengono mostrate.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:794
+#, c-format
+msgid ""
+"\n"
+"Size changes will be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Le variazioni dello spazio occupato vengono mostrate.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:796
+#, c-format
+msgid ""
+"\n"
+"Size changes will not be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Le variazioni dello spazio occupato non vengono mostrate.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:819
+#, c-format
+msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
+msgstr "Risposta non ammessa. Immettere un comando valido o «?» per l'aiuto.\n"
+
+#: src/cmdline/cmdline_resolver.cc:128
+#, c-format
+msgid ""
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
+"n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:147
+msgid "accept the proposed changes"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:149
+msgid "reject the proposed changes and search for another solution"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:151
+#, fuzzy
+msgid "give up and quit the program"
+msgstr "Esce dal programma"
+
+#: src/cmdline/cmdline_resolver.cc:153
+msgid "move to the next solution"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:155
+msgid "move to the previous solution"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:157
+msgid "view an explanation of the changes in the solution"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:159
+#, fuzzy
+msgid "examine the solution in the visual user interface"
+msgstr "Cambia le impostazioni che riguardano l'interfaccia utente"
+
+#: src/cmdline/cmdline_resolver.cc:161
+msgid ""
+"reject the given package versions; don't display any solutions in which they "
+"occur."
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:163
+msgid ""
+"accept the given package versions; display only solutions in which they "
+"occur."
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:165
+msgid "adjust the state of the listed packages, where ACTION is one of:"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:183
+msgid ""
+"Adjustments will cause the current solution to be discarded and recalculated "
+"as necessary."
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:197
+#, c-format
+msgid "The version %s is available in the following archives:"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:205
+#, c-format
+msgid "Select the version of %s that should be used: "
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:212
+#, fuzzy, c-format
+msgid "Invalid response.  Please enter an integer between 1 and %d."
+msgstr "Risposta non ammessa. Immettere un comando valido o «?» per l'aiuto.\n"
+
+#: src/cmdline/cmdline_resolver.cc:227
+#, c-format
+msgid "Expected at least one package/version pair following '%c'"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:241
+#, fuzzy, c-format
+msgid "Expected a version after \"%s\""
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/cmdline/cmdline_resolver.cc:251
+#, fuzzy, c-format
+msgid "No such package \"%s\""
+msgstr "Pacchetto sorgente: "
+
+#: src/cmdline/cmdline_resolver.cc:267
+#, c-format
+msgid "%s has no version named \"%s\""
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:284
+#, c-format
+msgid "Allowing the removal of %s"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:287
+#, c-format
+msgid "Allowing the installation of %s version %s (%s)"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:297
+#, c-format
+msgid "Rejecting the removal of %s"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:300
+#, c-format
+msgid "Rejecting the installation of %s version %s (%s)"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:313
+#, c-format
+msgid "No longer requiring the removal of %s"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:316
+#, c-format
+msgid "No longer requiring the installation of %s version %s (%s)"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:325
+#, c-format
+msgid "Requiring the removal of %s"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:328
+#, c-format
+msgid "Requiring the installation of %s version %s (%s)"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:447 src/solution_screen.cc:486
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:493
+#, fuzzy
+msgid "The following actions will resolve these dependencies:"
+msgstr "I seguenti pacchetti hanno dipendenze non soddisfatte:\n"
+
+#: src/cmdline/cmdline_resolver.cc:508
+msgid "Accept this solution? [Y/n/q/?] "
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:535 src/cmdline/cmdline_resolver.cc:627
+msgid "Abandoning all efforts to resolve these dependencies."
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:562
+#, fuzzy
+msgid "The following commands are available:"
+msgstr "I seguenti pacchetti sono DIFETTOSI:"
+
+#: src/cmdline/cmdline_resolver.cc:577
+msgid "File to write resolver state to: "
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:580 src/generic/apt/apt.cc:171
+#, c-format
+msgid "Unable to open %s for writing"
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/cmdline/cmdline_resolver.cc:585
+#, fuzzy, c-format
+msgid "Error writing resolver state to %s"
+msgstr "Errore nella scrittura del file di stato"
+
+#: src/cmdline/cmdline_resolver.cc:587
+msgid "Resolver state successfully written!"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:592
+#, fuzzy
+msgid "Invalid response; please enter one of the following commands:"
+msgstr "Risposta non ammessa. Immettere un comando valido o «?» per l'aiuto.\n"
+
+#: src/cmdline/cmdline_resolver.cc:602
+msgid "No solution found within the allotted time.  Try harder? [Y/n]"
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:630
+#, fuzzy
+msgid "Invalid response; please enter 'y' or 'n'."
+msgstr "Risposta non ammessa. Immettere un comando valido o «?» per l'aiuto.\n"
+
+#: src/cmdline/cmdline_resolver.cc:639
+msgid "Unable to resolve dependencies!  Giving up..."
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:644 src/ui.cc:1583
+msgid "No more solutions."
+msgstr ""
+
+#: src/cmdline/cmdline_search.cc:100
+#, c-format
+msgid "iconv of %s failed.\n"
+msgstr ""
+
+#: src/cmdline/cmdline_search.cc:116
+#, c-format
+msgid "search: You must provide at least one search term\n"
+msgstr "search: si deve specificare almeno un'espressione di ricerca\n"
+
+#: src/cmdline/cmdline_show_broken.cc:113
+#, c-format
+msgid "The following packages have unmet dependencies:\n"
+msgstr "I seguenti pacchetti hanno dipendenze non soddisfatte:\n"
+
+#: src/cmdline/cmdline_show.cc:120 src/cmdline/cmdline_show.cc:306
+#: src/solution_fragment.cc:56
+msgid "<NULL>"
+msgstr ""
+
+#: src/cmdline/cmdline_show.cc:139
+msgid "not installed"
+msgstr "non installato"
+
+#: src/cmdline/cmdline_show.cc:141 src/pkg_columnizer.cc:233
+#: src/pkg_ver_item.cc:227
+msgid "unpacked"
+msgstr "estratto"
+
+#: src/cmdline/cmdline_show.cc:143
+msgid "partially configured"
+msgstr "parzialmente configurato"
+
+#: src/cmdline/cmdline_show.cc:145
+msgid "partially installed"
+msgstr "parzialmente installato"
+
+#: src/cmdline/cmdline_show.cc:147
+msgid "not installed (configuration files remain)"
+msgstr "non installato (file di configurazione presenti)"
+
+#: src/cmdline/cmdline_show.cc:149 src/pkg_columnizer.cc:241
+#: src/pkg_ver_item.cc:235
+msgid "installed"
+msgstr "installato"
+
+#: src/cmdline/cmdline_show.cc:158
+msgid "not a real package"
+msgstr "non è un vero pacchetto"
+
+#: src/cmdline/cmdline_show.cc:171
+msgid " [held]"
+msgstr " [bloccato]"
+
+#: src/cmdline/cmdline_show.cc:180
+#, c-format
+msgid "%s; version %s will be installed"
+msgstr "%s; verrà installata la versione %s"
+
+#: src/cmdline/cmdline_show.cc:184
+#, c-format
+msgid "%s; version %s will be installed automatically"
+msgstr "%s; verrà installata automaticamente la versione %s"
+
+#: src/cmdline/cmdline_show.cc:190 src/cmdline/cmdline_show.cc:205
+#, c-format
+msgid "%s; will be purged"
+msgstr "%s; verrà eliminato"
+
+#: src/cmdline/cmdline_show.cc:203
+#, c-format
+msgid "%s; will be purged because nothing depends on it"
+msgstr "%s; verrà eliminato perché nessun pacchetto dipende da esso"
+
+#: src/cmdline/cmdline_show.cc:210
+#, c-format
+msgid "%s; will be removed because nothing depends on it"
+msgstr "%s; verrà rimosso perché nessun pacchetto dipende da esso"
+
+#: src/cmdline/cmdline_show.cc:212
+#, c-format
+msgid "%s; will be removed"
+msgstr "%s; verrà rimosso"
+
+#: src/cmdline/cmdline_show.cc:226
+#, c-format
+msgid "%s%s; will be downgraded [%s -> %s]"
+msgstr "%s%s; verrà retrocesso (downgraded) [%s -> %s]"
+
+#: src/cmdline/cmdline_show.cc:229
+#, c-format
+msgid "%s%s; will be upgraded [%s -> %s]"
+msgstr "%s%s; verrà aggiornato [%s -> %s]"
+
+#: src/cmdline/cmdline_show.cc:241 src/cmdline/cmdline_show.cc:262
+msgid "Package: "
+msgstr "Pacchetto: "
+
+#: src/cmdline/cmdline_show.cc:242 src/cmdline/cmdline_show.cc:270
+#: src/pkg_columnizer.cc:89
+msgid "State"
+msgstr "Stato"
+
+#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:326
+#: src/generic/apt/matchers.cc:1371
+msgid "Provided by"
+msgstr "Fornito da"
+
+#: src/cmdline/cmdline_show.cc:264 src/pkg_info_screen.cc:107
+msgid "Essential: "
+msgstr "Essenziale: "
+
+#: src/cmdline/cmdline_show.cc:264 src/cmdline/cmdline_show.cc:268
+#: src/cmdline/cmdline_show.cc:279 src/pkg_info_screen.cc:107
+msgid "yes"
+msgstr "sì"
+
+#: src/cmdline/cmdline_show.cc:268
+msgid "New"
+msgstr "Nuovo"
+
+#: src/cmdline/cmdline_show.cc:273
+msgid "Forbidden version"
+msgstr "Versione proibita"
+
+#: src/cmdline/cmdline_show.cc:277
+msgid "Automatically installed"
+msgstr "Installato automaticamente"
+
+#: src/cmdline/cmdline_show.cc:279
+msgid "no"
+msgstr "no"
+
+#: src/cmdline/cmdline_show.cc:281
+msgid "Version: "
+msgstr "Versione: "
+
+#: src/cmdline/cmdline_show.cc:282 src/pkg_info_screen.cc:115
+msgid "Priority: "
+msgstr "Priorità: "
+
+#: src/cmdline/cmdline_show.cc:283 src/cmdline/cmdline_show.cc:285
+#: src/cmdline/cmdline_show.cc:294
+msgid "N/A"
+msgstr "N/D"
+
+#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:116
+msgid "Section: "
+msgstr "Sezione: "
+
+#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:117
+msgid "Maintainer: "
+msgstr "Responsabile: "
+
+#: src/cmdline/cmdline_show.cc:289
+msgid "Uncompressed Size: "
+msgstr "Dimensione pacchetto installato: "
+
+#: src/cmdline/cmdline_show.cc:293
+msgid "Architecture: "
+msgstr "Architettura: "
+
+#: src/cmdline/cmdline_show.cc:295
+msgid "Compressed Size: "
+msgstr "Dimensione pacchetto compresso: "
+
+#: src/cmdline/cmdline_show.cc:297
+msgid "Filename: "
+msgstr "Nome del file: "
+
+#: src/cmdline/cmdline_show.cc:299
+msgid "MD5sum: "
+msgstr "MD5sum: "
+
+#: src/cmdline/cmdline_show.cc:303 src/cmdline/cmdline_show.cc:306
+msgid "Archive"
+msgstr "Archivio"
+
+#: src/cmdline/cmdline_show.cc:311
+msgid "Depends"
+msgstr "Dipende"
+
+#: src/cmdline/cmdline_show.cc:313
+msgid "PreDepends"
+msgstr "Pre-dipende"
+
+#: src/cmdline/cmdline_show.cc:315
+msgid "Recommends"
+msgstr "Raccomanda"
+
+#: src/cmdline/cmdline_show.cc:317
+msgid "Suggests"
+msgstr "Consiglia"
+
+#: src/cmdline/cmdline_show.cc:319
+msgid "Conflicts"
+msgstr "Va in conflitto"
+
+#: src/cmdline/cmdline_show.cc:321
+msgid "Replaces"
+msgstr "Sostituisce"
+
+#: src/cmdline/cmdline_show.cc:323
+msgid "Obsoletes"
+msgstr "Rende obsoleto"
+
+#: src/cmdline/cmdline_show.cc:325 src/generic/apt/matchers.cc:1325
+msgid "Provides"
+msgstr "Fornisce"
+
+#: src/cmdline/cmdline_show.cc:329 src/pkg_info_screen.cc:95
+msgid "Description: "
+msgstr "Descrizione: "
+
+#: src/cmdline/cmdline_show.cc:377
+#, fuzzy, c-format
+msgid "Unable to locate package %s"
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/cmdline/cmdline_show.cc:399
+#, fuzzy, c-format
+msgid "Unable to parse pattern %s"
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/cmdline/cmdline_simulate.cc:37
+#, c-format
+msgid "Would download/install/remove packages.\n"
+msgstr "Sarebbero stati scaricati/installati/rimossi pacchetti.\n"
+
+#: src/cmdline/cmdline_simulate.cc:48
+msgid "Internal Error, Ordering didn't finish"
+msgstr "Errore interno: l'ordinamento non è terminato"
+
+#: src/cmdline/cmdline_update.cc:33
+#, c-format
+msgid "Deleting obsolete downloaded files\n"
+msgstr "Cancellazione dei vecchi file scaricati\n"
+
+#: src/cmdline/cmdline_update.cc:42
+#, c-format
+msgid "E: The update command takes no arguments\n"
+msgstr "E: Il comando update non accetta argomenti\n"
+
+#: src/cmdline/cmdline_util.cc:87
+#, c-format
+msgid "No candidate version found for %s\n"
+msgstr "Impossibile trovare una versione candidata di %s\n"
+
+# NdT: Messaggio mostrato se viene specificato un archivio (stable, testing, ...)
+# che non esiste in sources.list o in cui il pacchetto non è presente.
+#: src/cmdline/cmdline_util.cc:101
+#, c-format
+msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
+msgstr "Impossibile trovare l'archivio «%s» per il pacchetto «%s»\n"
+
+#: src/cmdline/cmdline_util.cc:111
+#, c-format
+msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
+msgstr "Impossibile trovare la versione «%s» del pacchetto «%s»\n"
+
+#: src/cmdline/cmdline_util.cc:117
+#, c-format
+msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
+msgstr "Errore interno: valore non ammesso %i fornito a cmdline_find_ver.\n"
+
+#: src/cmdline/cmdline_util.cc:147
+#, c-format
+msgid "You cannot specify both an archive and a version for a package\n"
+msgstr ""
+"Non è possibile specificare sia l'archivio che la versione di un pacchetto\n"
+
+#: src/dep_item.cc:139
+msgid "UNSATISFIED"
+msgstr "NON SODDISFATTA"
+
+#: src/dep_item.cc:139 src/reason_fragment.cc:244
+msgid "UNAVAILABLE"
+msgstr "NON DISPONIBILE"
+
+#: src/desc_parse.cc:267
+#, fuzzy
+msgid "Tags"
+msgstr "Tag"
+
+#: src/download_bar.cc:49 src/download_list.cc:335 src/download_screen.cc:56
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Inserire il disco chiamato «%s» nell'unità «%s»"
+
+# NdT: Si può tradurre?
+#: src/download_bar.cc:66 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Hit "
+
+#: src/download_bar.cc:77
+msgid "Downloading "
+msgstr "Scaricamento "
+
+# NdT: Si può tradurre?
+#: src/download_bar.cc:88
+msgid "Got "
+msgstr "Got "
+
+#: src/download_bar.cc:138
+msgid "Downloading..."
+msgstr "Scaricamento..."
+
+#: src/download_item.cc:72 src/download_item.cc:76 src/download_item.cc:98
+#: src/generic/apt/acqprogress.cc:248
+#, c-format
+msgid " [Working]"
+msgstr " [In corso]"
+
+# NdT: Indica che il file (Packages, Release, Sources) è già stato scaricato
+# e se ne possiede la copia aggiornata. Lo lascerei non tradotto perché è una
+# sorta di «cache hit».
+# NdT: Si può tradurre?
+#: src/download_item.cc:102 src/download_list.cc:356
+msgid "[Hit]"
+msgstr "[Hit]"
+
+#: src/download_item.cc:102 src/download_list.cc:378
+msgid "[Downloaded]"
+msgstr "[Scaricato]"
+
+#: src/download_list.cc:70
+#, c-format
+msgid "Downloaded %sB in %s (%sB/s)."
+msgstr "Scaricato %sB in %s (%sB/s)."
+
+#: src/download_list.cc:76
+#, c-format
+msgid "%n%nSome files were not downloaded successfully."
+msgstr ""
+
+#: src/download_list.cc:86 src/download_list.cc:340 src/download_screen.cc:64
+msgid "Continue"
+msgstr "Continua"
+
+#: src/download_list.cc:203 src/download_screen.cc:203
+msgid "Total Progress: "
+msgstr "Avanzamento totale: "
+
+#: src/download_list.cc:231 src/download_screen.cc:218
+#, c-format
+msgid " [ %i%% ] (%sB/s, %s remaining)"
+msgstr " [ %i%% ] (%sB/s, %s alla fine)"
+
+#: src/download_list.cc:233
+#, c-format
+msgid " [ %i%% ] (stalled)"
+msgstr " [ %i%% ] (fermo)"
+
+#: src/download_list.cc:235 src/download_list.cc:264
+#, c-format
+msgid " [ %i%% ]"
+msgstr " [ %i%% ]"
+
+#: src/download_list.cc:342 src/download_screen.cc:67
+#, fuzzy
+msgid "Abort"
+msgstr "Uscita.\n"
+
+#: src/download_list.cc:400
+msgid "[IGNORED]"
+msgstr "[IGNORATO]"
+
+#: src/download_list.cc:406
+msgid "[ERROR]"
+msgstr "[ERRORE]"
+
+#: src/download_screen.cc:182
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "Scaricato %sB in %ss (%sB/s)."
+
+#: src/edit_pkg_hier.cc:184
+msgid "No hierarchy information to edit"
+msgstr "Non ci sono informazioni sulla gerarchia da modificare"
+
+#: src/edit_pkg_hier.cc:286
+msgid "Couldn't open for writing"
+msgstr "Impossibile aprire il file in scrittura"
+
+#: src/edit_pkg_hier.cc:331
+msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
+msgstr ""
+
+#: src/generic/apt/acqprogress.cc:89
+msgid "Get:"
+msgstr "Get:"
+
+#: src/generic/apt/acqprogress.cc:120
+msgid "Ign "
+msgstr "Ign "
+
+#: src/generic/apt/acqprogress.cc:124
+msgid "Err "
+msgstr "Err "
+
+#: src/generic/apt/acqprogress.cc:148
+#, c-format
+msgid "Fetched %sB in %s (%sB/s)\n"
+msgstr "Scaricato %sB in %s (%sB/s)\n"
+
+#: src/generic/apt/acqprogress.cc:296
+#, c-format
+msgid ""
+"Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
+"press enter\n"
+msgstr ""
+"Cambio disco: inserire il disco chiamato «%s» nell'unità «%s» e premere "
+"Invio\n"
+
+#: src/generic/apt/aptcache.cc:259
+msgid "Can't open Aptitude extended state file"
+msgstr "Impossibile aprire il file di stato esteso di Aptitude"
+
+#: src/generic/apt/aptcache.cc:266 src/generic/apt/aptcache.cc:319
+#: src/generic/apt/aptcache.cc:321
+msgid "Reading extended state information"
+msgstr "Lettura delle informazioni sullo stato esteso"
+
+#: src/generic/apt/aptcache.cc:327 src/generic/apt/aptcache.cc:398
+#: src/generic/apt/aptcache.cc:401
+msgid "Initializing package states"
+msgstr "Inizializzazione dello stato dei pacchetti"
+
+#: src/generic/apt/aptcache.cc:525
+msgid "Cannot open Aptitude state file"
+msgstr "Impossibile aprire il file di stato di Aptitude"
+
+#: src/generic/apt/aptcache.cc:529 src/generic/apt/aptcache.cc:584
+#: src/generic/apt/aptcache.cc:587
+msgid "Writing extended state information"
+msgstr "Scrittura delle informazioni sullo stato esteso"
+
+#: src/generic/apt/aptcache.cc:566
+#, c-format
+msgid "Internal buffer overflow on package \"%s\" while writing state file"
+msgstr ""
+"Overflow di un buffer interno nel pacchetto «%s» durante la scrittura del "
+"file di stato"
+
+#: src/generic/apt/aptcache.cc:575
+msgid "Couldn't write state file"
+msgstr "Impossibile scrivere il file di stato"
+
+#: src/generic/apt/aptcache.cc:592
+msgid "Error writing state file"
+msgstr "Errore nella scrittura del file di stato"
+
+#: src/generic/apt/aptcache.cc:610
+#, fuzzy, c-format
+msgid "failed to remove %s"
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/generic/apt/aptcache.cc:617
+#, c-format
+msgid "failed to rename %s to %s"
+msgstr ""
+
+#: src/generic/apt/aptcache.cc:625
+#, fuzzy, c-format
+msgid "couldn't replace %s with %s"
+msgstr "Impossibile sostituire il vecchio file di stato"
+
+#: src/generic/apt/aptcache.cc:1117
+msgid "Unable to correct dependencies, some packages cannot be installed"
+msgstr ""
+"Impossibile correggere le dipendenze; alcuni pacchetti non saranno installati"
+
+#: src/generic/apt/aptcache.cc:1518
+msgid "The list of sources could not be read."
+msgstr "Impossibile leggere l'elenco delle sorgenti."
+
+#: src/generic/apt/aptcache.cc:1525
+msgid "The package lists or status file could not be parsed or opened."
+msgstr ""
+"Impossibile analizzare o aprire l'elenco dei pacchetti o il file di stato."
+
+#: src/generic/apt/aptcache.cc:1528
+msgid "You may want to update the package lists to correct these missing files"
+msgstr "Aggiornare l'elenco dei pacchetti per correggere questi file mancanti."
+
+#: src/generic/apt/apt.cc:181
+#, c-format
+msgid "Unable to replace %s with new configuration file"
+msgstr "Impossibile sostituire %s con il nuovo file di configurazione"
+
+#: src/generic/apt/apt.cc:265
+msgid ""
+"Could not lock the cache file.  Opening in read-only mode; any changes you "
+"make to the states of packages will NOT be preserved!"
+msgstr ""
+
+#: src/generic/apt/download_install_manager.cc:53
+msgid ""
+"The package cache is not available; unable to download and install packages."
+msgstr ""
+
+#: src/generic/apt/download_install_manager.cc:69
+#: src/generic/apt/download_update_manager.cc:79
+msgid "Couldn't lock list directory..are you root?"
+msgstr ""
+"Impossibile creare un lock sulla directory dell'elenco. Si possiedono i "
+"permessi di root?"
+
+#: src/generic/apt/download_install_manager.cc:88
+msgid "Internal error: couldn't generate list of packages to download"
+msgstr ""
+"Errore interno: impossibile generare l'elenco dei pacchetti da scaricare"
+
+#: src/generic/apt/download_install_manager.cc:123
+msgid "Unable to correct for unavailable packages"
+msgstr "Impossibile correggere a causa di pacchetti non disponibili"
+
+#: src/generic/apt/download_install_manager.cc:143
+#, fuzzy
+msgid "A package failed to install.  Trying to recover:"
+msgstr ""
+"Ahi! C'è stato un errore durante l'installazione. Tentativo di ripristino:"
+
+#: src/generic/apt/download_install_manager.cc:176
+msgid ""
+"Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
+msgstr ""
+"Impossibile recuperare il lock di sistema! Forse un altro apt o dpkg è in "
+"esecuzione."
+
+#: src/generic/apt/download_update_manager.cc:68
+msgid "Couldn't read list of package sources"
+msgstr "Impossibile leggere l'elenco delle sorgenti dei pacchetti"
+
+#: src/generic/apt/download_update_manager.cc:113
+msgid "Couldn't clean out list directories"
+msgstr "Impossibile ripulire le directory dell'elenco"
+
+#: src/generic/apt/log.cc:52
+#, c-format
+msgid "Unable to open %s to log actions"
+msgstr "Impossibile aprire %s come file di log per le azioni"
+
+#: src/generic/apt/log.cc:64
+#, fuzzy, c-format
+msgid "Error generating local time (%s)"
+msgstr "Errore nella scrittura del file di stato"
+
+#: src/generic/apt/log.cc:68
+msgid "log report"
+msgstr "resoconto di log"
+
+#: src/generic/apt/log.cc:69
+#, c-format
+msgid ""
+"IMPORTANT: this log only lists intended actions; actions which fail due to\n"
+"dpkg problems may not be completed.\n"
+"\n"
+msgstr ""
+"IMPORTANTE: questo log mostra soltanto le azioni richieste; azioni non\n"
+"riuscite in seguito a problemi con dpkg potrebbero non venire completate.\n"
+"\n"
+
+#: src/generic/apt/log.cc:70
+#, c-format
+msgid "Will install %li packages, and remove %li packages.\n"
+msgstr "Saranno installati %li pacchetti e rimossi %li pacchetti.\n"
+
+#: src/generic/apt/log.cc:74
+#, c-format
+msgid "%sB of disk space will be used\n"
+msgstr "Verranno occupati %sB di spazio su disco\n"
+
+#: src/generic/apt/log.cc:77
+#, fuzzy, c-format
+msgid "%sB of disk space will be freed\n"
+msgstr "Verranno occupati %sB di spazio su disco\n"
+
+#: src/generic/apt/log.cc:87
+#, c-format
+msgid "[UPGRADE] %s %s -> %s\n"
+msgstr "[AGGIORNA] %s %s -> %s\n"
+
+#: src/generic/apt/log.cc:91
+#, c-format
+msgid "[DOWNGRADE] %s %s -> %s\n"
+msgstr "[RETROCEDI (DOWNGRADE)] %s %s -> %s\n"
+
+#: src/generic/apt/log.cc:101
+msgid "REMOVE"
+msgstr "RIMUOVI"
+
+#: src/generic/apt/log.cc:107
+msgid "INSTALL"
+msgstr "INSTALLA"
+
+#: src/generic/apt/log.cc:110
+msgid "REINSTALL"
+msgstr "REINSTALLA"
+
+#: src/generic/apt/log.cc:113
+msgid "HOLD"
+msgstr "BLOCCATO"
+
+#: src/generic/apt/log.cc:116
+msgid "BROKEN"
+msgstr "DIFETTOSO"
+
+#: src/generic/apt/log.cc:119
+msgid "REMOVE, NOT USED"
+msgstr "RIMUOVI, NON USATO"
+
+#: src/generic/apt/log.cc:122
+msgid "REMOVE, DEPENDENCIES"
+msgstr "RIMUOVI, DIPENDENZA"
+
+#: src/generic/apt/log.cc:125
+msgid "INSTALL, DEPENDENCIES"
+msgstr "INSTALLA, DIPENDENZA"
+
+#: src/generic/apt/log.cc:128
+msgid "HOLD, DEPENDENCIES"
+msgstr "BLOCCATO, DIPENDENZA"
+
+#: src/generic/apt/log.cc:130
+msgid "????????"
+msgstr "????????"
+
+#: src/generic/apt/log.cc:134
+#, c-format
+msgid "[%s] %s\n"
+msgstr "[%s] %s\n"
+
+#: src/generic/apt/log.cc:137
+#, c-format
+msgid ""
+"===============================================================================\n"
+"\n"
+"Log complete.\n"
+msgstr ""
+"===============================================================================\n"
+"\n"
+"Log completato.\n"
+
+#: src/generic/apt/matchers.cc:589
+#, fuzzy
+msgid "Automatically Installed"
+msgstr "Installato automaticamente"
+
+#: src/generic/apt/matchers.cc:611 src/generic/apt/matchers.cc:798
+#, fuzzy
+msgid "Broken"
+msgstr "#Difett"
+
+#: src/generic/apt/matchers.cc:796
+msgid "Unchanged"
+msgstr ""
+
+#: src/generic/apt/matchers.cc:800
+msgid "Remove [unused]"
+msgstr ""
+
+#: src/generic/apt/matchers.cc:802
+msgid "Hold [auto]"
+msgstr ""
+
+#: src/generic/apt/matchers.cc:804
+#, fuzzy
+msgid "Install [auto]"
+msgstr "^Installa"
+
+#: src/generic/apt/matchers.cc:806
+#, fuzzy
+msgid "Remove [auto]"
+msgstr "^Rimuovi"
+
+#: src/generic/apt/matchers.cc:808
+#, fuzzy
+msgid "Downgrade"
+msgstr "retrocesso (downgraded)"
+
+#: src/generic/apt/matchers.cc:810
+#, fuzzy
+msgid "Hold"
+msgstr "^Blocca"
+
+#: src/generic/apt/matchers.cc:812
+#, fuzzy
+msgid "Reinstall"
+msgstr "reinstalla"
+
+#: src/generic/apt/matchers.cc:814
+#, fuzzy
+msgid "Install"
+msgstr "^Installa"
+
+#: src/generic/apt/matchers.cc:816
+#, fuzzy
+msgid "Remove"
+msgstr "^Rimuovi"
+
+#: src/generic/apt/matchers.cc:818
+#, fuzzy
+msgid "Upgrade"
+msgstr "aggiorna"
+
+#: src/generic/apt/matchers.cc:838
+#, fuzzy
+msgid "Keep"
+msgstr "Man^tieni"
+
+#: src/generic/apt/matchers.cc:860
+#, fuzzy
+msgid "Virtual"
+msgstr "virtuali"
+
+#: src/generic/apt/matchers.cc:881
+#, fuzzy
+msgid "Installed"
+msgstr "installato"
+
+#: src/generic/apt/matchers.cc:903
+#, fuzzy
+msgid "Essential"
+msgstr "Essenziale: "
+
+#: src/generic/apt/matchers.cc:922
+msgid "Config Files Remain"
+msgstr ""
+
+#: src/generic/apt/matchers.cc:1139
+msgid "Garbage"
+msgstr ""
+
+#: src/generic/apt/matchers.cc:1420
+#, fuzzy
+msgid "No reverse dependencies"
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/generic/apt/matchers.cc:1486
+#, fuzzy
+msgid "New Package"
+msgstr "Nuova ^vista dei pacchetti"
+
+# NdT: La traduzione non è fedele ma è una voce di menu e deve essere breve
+# Il significato letterale è: "Segna (= Mark) [tutti i pacchetti che è
+# possibile aggiornare] come aggiornabili (= Upgradable)"
+#: src/generic/apt/matchers.cc:1505
+#, fuzzy
+msgid "Upgradable"
+msgstr "Aggiorna ^tutti i pacchetti"
+
+#: src/generic/apt/matchers.cc:1629
+#, c-format
+msgid "Unterminated literal string after %s"
+msgstr ""
+
+#: src/generic/apt/matchers.cc:1689
+msgid "Unmatched '('"
+msgstr "\"(\" solitaria"
+
+#: src/generic/apt/matchers.cc:1799 src/generic/apt/matchers.cc:1869
+#, c-format
+msgid "Unknown dependency type: %s"
+msgstr "Dipendenza «%s» sconosciuta"
+
+#: src/generic/apt/matchers.cc:1857
+#, c-format
+msgid "Unknown action type: %s"
+msgstr "Azione «%s» sconosciuta"
+
+#: src/generic/apt/matchers.cc:1911
+#, c-format
+msgid "Unknown priority %s"
+msgstr "Priorità «%s» sconosciuta"
+
+#: src/generic/apt/matchers.cc:1925
+#, c-format
+msgid "Unknown pattern type: %c"
+msgstr "Modello «%c» sconosciuto"
+
+#: src/generic/apt/matchers.cc:1948
+#, fuzzy
+msgid "Can't search for \"\""
+msgstr "Cerca: "
+
+#: src/generic/apt/matchers.cc:1976
+msgid "Unexpected empty expression"
+msgstr "Espressione vuota non prevista"
+
+#: src/generic/apt/matchers.cc:2003
+msgid "Badly formed expression"
+msgstr "Espressione non corretta"
+
+#: src/generic/apt/matchers.cc:2038
+msgid "Unexpected ')'"
+msgstr "\")\" non prevista"
+
+#: src/generic/apt/pkg_acqfile.cc:86
+#, c-format
+msgid ""
+"I wasn't able to locate a file for the %s package. This might mean you need "
+"to manually fix this package. (due to missing arch)"
+msgstr ""
+"Impossibile trovare un file del pacchetto %s. Potrebbe essere necessario "
+"correggere manualmente questo pacchetto (a causa di un'architettura "
+"mancante)."
+
+#: src/generic/apt/pkg_acqfile.cc:134
+#, c-format
+msgid ""
+"The package index files are corrupted. No Filename: field for package %s."
+msgstr ""
+"I file dell'indice dei pacchetti sono danneggiati: manca il campo "
+"«Filename:» per il pacchetto %s."
+
+#: src/generic/apt/pkg_changelog.cc:146 src/view_changelog.cc:148
+#, c-format
+msgid "ChangeLog of %s"
+msgstr "ChangeLog di %s"
+
+#: src/generic/apt/pkg_hier.cc:29 src/generic/apt/pkg_hier.cc:50
+#, c-format
+msgid "Warning: group %s is involved in a cycle"
+msgstr "Attenzione: il gruppo %s è coinvolto in un ciclo"
+
+#: src/generic/apt/pkg_hier.cc:144
+#, c-format
+msgid "Cannot open package hierarchy file %s"
+msgstr "Impossibile leggere la gerarchia dei pacchetti dal file %s"
+
+#: src/generic/apt/pkg_hier.cc:165
+msgid "Global block encountered after first record, ignoring"
+msgstr "È stato ignorato un blocco globale incontrato dopo il primo record"
+
+#: src/generic/apt/pkg_hier.cc:178
+msgid "Bad record encountered (no Package or Group entry), skipping"
+msgstr ""
+"È stato saltato un record non valido (privo della voce Package o Group)"
+
+#: src/generic/apt/pkg_hier.cc:180
+#, c-format
+msgid "Bad record encountered (Package=%s, Group=%s), skipping"
+msgstr "È stato saltato un record non valido (Package=%s, Group=%s)"
+
+#: src/generic/apt/pkg_hier.cc:243
+#, c-format
+msgid "Multiple descriptions found for group %s, ignoring one"
+msgstr ""
+"È stata trovata più di una descrizione per il gruppo %s, una verrà ignorata"
+
+#: src/generic/apt/tags.cc:213 src/generic/apt/tags.cc:220
+msgid "Building tag database"
+msgstr ""
+
+#: src/generic/apt/tasks.cc:283
+msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
+msgstr "Impossibile aprire /usr/share/tasksel/debian-tasks.desc"
+
+#: src/generic/apt/tasks.cc:290 src/generic/apt/tasks.cc:332
+#: src/generic/apt/tasks.cc:334
+msgid "Reading task descriptions"
+msgstr "Lettura delle descrizioni dei task"
+
+#: src/generic/util/temp.cc:63 src/generic/util/temp.cc:128
+#: src/generic/util/temp.cc:142
+#, c-format
+msgid "Unable to create temporary directory from template \"%s\": %s"
+msgstr ""
+
+#: src/generic/util/temp.cc:137
+#, fuzzy
+msgid "Unknown error"
+msgstr "Sconosciuto"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr ""
+
+#: src/load_config.cc:46
+#, fuzzy, c-format
+msgid "Unrecognized color name \"%s\""
+msgstr "Task non riconosciuti"
+
+#: src/load_config.cc:73
+#, fuzzy, c-format
+msgid "Unrecognized attribute name \"%s\""
+msgstr "Task non riconosciuti"
+
+#: src/load_config.cc:111
+#, fuzzy, c-format
+msgid "Invalid entry in style definition group: \"%s\""
+msgstr "Voce non ammessa nel gruppo di definizione dei colori: «%s»"
+
+#: src/load_config.cc:113
+#, fuzzy, c-format
+msgid "Invalid tagless entry in style definition group: \"%s\""
+msgstr "Voce senza tag non ammessa nel gruppo di definizione dei colori: «%s»"
+
+#: src/load_config.cc:125
+msgid "The default color may only be used as a background."
+msgstr ""
+
+#: src/load_config.cc:142
+#, fuzzy, c-format
+msgid "Unknown style attribute %s"
+msgstr "Azione «%s» sconosciuta"
+
+#: src/load_config.cc:165 src/load_config.cc:167
+#, c-format
+msgid "Invalid entry in keybinding group: \"%s\""
+msgstr "Voce non ammessa nel gruppo di assegnazione tasti: «%s»"
+
+#: src/load_config.cc:182
+#, c-format
+msgid "Ignoring invalid keybinding \"%s\" -> \"%s\""
+msgstr "È stata ignorata l'assegnazione di tasti non ammessa «%s» -> «%s»"
+
+#: src/load_grouppolicy.cc:258
+#, c-format
+msgid "Expected policy identifier, got '%c'"
+msgstr ""
+
+#: src/load_grouppolicy.cc:270
+#, c-format
+msgid "Expected ',' or '(', got '%c'"
+msgstr ""
+
+#: src/load_grouppolicy.cc:277
+#, fuzzy, c-format
+msgid "Unknown grouping policy \"%s\""
+msgstr "Priorità «%s» sconosciuta"
+
+#: src/load_grouppolicy.cc:284
+#, c-format
+msgid "Terminal policy \"%s\" should be the last policy in the list"
+msgstr ""
+
+#: src/load_grouppolicy.cc:367
+#, c-format
+msgid "Bad section name '%s' (use 'none', 'topdir', or 'subdir')"
+msgstr ""
+"Nome di sezione non corretto: «%s» (usare «none», «topdir», o «subdir»)"
+
+#: src/load_grouppolicy.cc:377
+#, c-format
+msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
+msgstr ""
+"Impostazione di passthrough non corretta: «%s» (usare «passthrough» o "
+"«nopassthrough»)"
+
+#: src/load_grouppolicy.cc:382
+msgid "Too many arguments to by-section grouping policy"
+msgstr "Troppi argomenti per il criterio di raggruppamento per sezione"
+
+#: src/load_grouppolicy.cc:395
+msgid "By-status grouping policies take no arguments"
+msgstr "I criteri di raggruppamento per status non accettano argomenti"
+
+#: src/load_grouppolicy.cc:444
+#, fuzzy, c-format
+msgid "Unable to parse pattern at '%s'"
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/load_grouppolicy.cc:449
+#, fuzzy
+msgid "Exactly one filter must be provided as an argument to a filter policy"
+msgstr ""
+"Come argomento ad un criterio di filtraggio deve essere specificato "
+"esattamente un nome di filtro."
+
+#: src/load_grouppolicy.cc:468
+msgid "By-mode grouping policies take no arguments"
+msgstr "I criteri di raggruppamento per modo non accettano argomenti"
+
+#: src/load_grouppolicy.cc:479
+msgid "First-character grouping policies take no arguments"
+msgstr ""
+"I criteri di raggruppamento in base alla prima lettera non accettano "
+"argomenti"
+
+#: src/load_grouppolicy.cc:491
+msgid "Version-generating grouping policies take no arguments"
+msgstr ""
+"I criteri di raggruppamento che generano versioni non accettano argomenti"
+
+#: src/load_grouppolicy.cc:502
+msgid "Dep-generating grouping policies take no arguments"
+msgstr ""
+"I criteri di raggruppamento che generano dipendenze non accettano argomenti"
+
+#: src/load_grouppolicy.cc:513
+msgid "By-priority grouping policies take no arguments"
+msgstr "I criteri di raggruppamento per priorità non accettano argomenti"
+
+#: src/load_grouppolicy.cc:544
+msgid "Task grouping policies take no arguments"
+msgstr "I criteri di raggruppamento per task non accettano argomenti"
+
+#: src/load_grouppolicy.cc:557
+#, fuzzy
+msgid "Expected no more than one argument to a tag grouping policy"
+msgstr "Troppi argomenti per il criterio di raggruppamento per sezione"
+
+#: src/load_grouppolicy.cc:572
+msgid "Expected '(' after 'pattern'"
+msgstr ""
+
+#: src/load_grouppolicy.cc:580
+msgid "Missing arguments to 'pattern'"
+msgstr ""
+
+#: src/load_grouppolicy.cc:601
+#, fuzzy, c-format
+msgid "Unable to parse pattern after \"%s\""
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/load_grouppolicy.cc:623
+#, c-format
+msgid "Unexpectedly empty tree title after \"%s\""
+msgstr ""
+
+#: src/load_grouppolicy.cc:634
+#, fuzzy
+msgid "Unmatched '(' in pattern grouping policy"
+msgstr "\"(\" solitaria nella descrizione del criterio di raggruppamento"
+
+#: src/load_pkgview.cc:58
+msgid "Couldn't parse layout: No column format specified for static item"
+msgstr ""
+"Impossibile analizzare il layout: nessun formato di colonna specificato per "
+"un elemento statico"
+
+#: src/load_pkgview.cc:91
+#, fuzzy
+msgid "Couldn't parse layout: encoding error in column descriptor"
+msgstr "Impossibile analizzare il layout: numero di righe non specificato"
+
+#: src/load_pkgview.cc:112
+#, c-format
+msgid "Couldn't parse layout: unknown view item type \"%s\""
+msgstr ""
+"Impossibile analizzare il layout: tipo di elemento di vista sconosciuto «%s»"
+
+#: src/load_pkgview.cc:119 src/load_pkgview.cc:127
+msgid "Couldn't parse layout: no row number specified"
+msgstr "Impossibile analizzare il layout: numero di righe non specificato"
+
+#: src/load_pkgview.cc:135
+msgid "Couldn't parse layout: no width specified"
+msgstr "Impossibile analizzare il layout: larghezza non specificata"
+
+#: src/load_pkgview.cc:143
+msgid "Couldn't parse layout: no height specified"
+msgstr "Impossibile analizzare il layout: altezza non specificata"
+
+#: src/load_pkgview.cc:174 src/load_pkgview.cc:192
+#, c-format
+msgid "Unknown alignment type '%s'"
+msgstr "Tipo di allineamento sconosciuto: «%s»"
+
+#: src/load_sortpolicy.cc:36
+msgid "By-name sorting policies take no arguments"
+msgstr "I criteri di ordinamento per nome non accettano argomenti"
+
+#: src/load_sortpolicy.cc:49
+msgid "By-installed size sorting policies take no arguments"
+msgstr "I criteri di ordinamento per dimensione non accettano argomenti"
+
+#: src/load_sortpolicy.cc:62
+msgid "By-priority sorting policies take no arguments"
+msgstr "I criteri di ordinamento per priorità non accettano argomenti"
+
+#: src/load_sortpolicy.cc:119
+msgid "Invalid zero-length sorting policy name"
+msgstr "Nome del criterio di ordinamento non ammesso (lunghezza nulla)"
+
+#: src/load_sortpolicy.cc:137
+msgid "Unmatched '(' in sorting policy description"
+msgstr "\"(\" solitaria nella descrizione del criterio di ordinamento"
+
+#: src/load_sortpolicy.cc:164
+#, c-format
+msgid "Invalid sorting policy type '%s'"
+msgstr "Tipo di criterio di ordinamento «%s» non ammesso"
+
+#: src/main.cc:82
+#, c-format
+msgid "Can't decode multibyte string after \"%ls\""
+msgstr ""
+
+#: src/main.cc:91
+#, c-format
+msgid "Can't decode wide-character string after \"%s\""
+msgstr ""
+
+#: src/main.cc:99
+#, c-format
+msgid "%s %s compiled at %s %s\n"
+msgstr "%s %s compilato il %s %s\n"
+
+#: src/main.cc:102
+#, c-format
+msgid "Compiler: g++ %s\n"
+msgstr "Compilatore: g++ %s\n"
+
+#: src/main.cc:105
+#, c-format
+msgid ""
+"\n"
+"NCurses version: %s\n"
+msgstr ""
+"\n"
+"Versione di NCurses: %s\n"
+
+#: src/main.cc:107
+#, c-format
+msgid ""
+"\n"
+"Curses version: %s\n"
+msgstr ""
+"\n"
+"Versione di Curses: %s\n"
+
+#: src/main.cc:109
+#, c-format
+msgid "libsigc++ version: %s\n"
+msgstr "Versione di libsigc++: %s\n"
+
+#: src/main.cc:115
+#, c-format
+msgid "Usage: aptitude [-S fname] [-u|-i]"
+msgstr "Uso: aptitude [-S nomefile] [-u|-i]"
+
+#: src/main.cc:117
+#, c-format
+msgid "       aptitude [options] <action> ..."
+msgstr "       aptitude [opzioni] <azione> ..."
+
+#: src/main.cc:119
+#, c-format
+msgid ""
+"  Actions (if none is specified, aptitude will enter interactive mode):\n"
+"\n"
+msgstr ""
+"  Azioni (se omesse, Aptitude entrerà nella modalità interattiva):\n"
+"\n"
+
+#: src/main.cc:120
+#, c-format
+msgid " install      - Install/upgrade packages\n"
+msgstr " install      - Installa/aggiorna pacchetti\n"
+
+#: src/main.cc:121
+#, c-format
+msgid " remove       - Remove packages\n"
+msgstr " remove       - Rimuove pacchetti\n"
+
+#: src/main.cc:122
+#, c-format
+msgid " purge        - Remove packages and their configuration files\n"
+msgstr " purge        - Elimina i pacchetti e i loro file di configurazione\n"
+
+#: src/main.cc:123
+#, c-format
+msgid " hold         - Place packages on hold\n"
+msgstr " hold         - Imposta i pacchetti come bloccati\n"
+
+#: src/main.cc:124
+#, c-format
+msgid " unhold       - Cancel a hold command for a package\n"
+msgstr " unhold       - Rimuove il blocco ad un pacchetto bloccato\n"
+
+#: src/main.cc:125
+#, c-format
+msgid " markauto     - Mark packages as having been automatically installed\n"
+msgstr " markauto     - Segna i pacchetti come installati automaticamente\n"
+
+#: src/main.cc:126
+#, c-format
+msgid " unmarkauto   - Mark packages as having been manually installed\n"
+msgstr " unmarkauto   - Segna i pacchetti come installati manualmente\n"
+
+#: src/main.cc:131
+#, c-format
+msgid ""
+" forbid-version - Forbid aptitude from upgrading to a specific package "
+"version.\n"
+msgstr ""
+" forbid-version - Impedisce di aggiornare un pacchetto ad una determinata "
+"versione.\n"
+
+#: src/main.cc:132
+#, c-format
+msgid " update       - Download lists of new/upgradable packages\n"
+msgstr " update       - Scarica l'elenco dei pacchetti nuovi/da aggiornare\n"
+
+#: src/main.cc:133
+#, c-format
+msgid " upgrade      - Perform a safe upgrade\n"
+msgstr " upgrade      - Esegue un aggiornamento sicuro\n"
+
+#: src/main.cc:134
+#, c-format
+msgid ""
+" dist-upgrade - Perform an upgrade, possibly installing and removing "
+"packages\n"
+msgstr ""
+" dist-upgrade - Esegue un aggiornamento, eventualmente installando e\n"
+"                rimuovendo pacchetti\n"
+
+#: src/main.cc:135
+#, c-format
+msgid " forget-new   - Forget what packages are \"new\"\n"
+msgstr " forget-new   - Dimentica quali pacchetti sono «nuovi»\n"
+
+#: src/main.cc:136
+#, c-format
+msgid " search       - Search for a package by name and/or expression\n"
+msgstr " search       - Cerca un pacchetto per nome o espressione\n"
+
+#: src/main.cc:137
+#, c-format
+msgid " show         - Display detailed information about a package\n"
+msgstr " show         - Mostra informazioni dettagliate su un pacchetto\n"
+
+#: src/main.cc:138
+#, c-format
+msgid " clean        - Erase downloaded package files\n"
+msgstr " clean        - Cancella i file dei pacchetti scaricati\n"
+
+#: src/main.cc:139
+#, c-format
+msgid " autoclean    - Erase old downloaded package files\n"
+msgstr " autoclean    - Cancella i file dei vecchi pacchetti scaricati\n"
+
+#: src/main.cc:140
+#, c-format
+msgid " changelog    - View a package's changelog\n"
+msgstr " changelog    - Mostra il changelog di un pacchetto\n"
+
+#: src/main.cc:141
+#, c-format
+msgid " download     - Download the .deb file for a package\n"
+msgstr " download     - Scarica il file .deb di un pacchetto\n"
+
+#: src/main.cc:143
+#, c-format
+msgid "  Options:\n"
+msgstr "  Opzioni:\n"
+
+#: src/main.cc:144
+#, c-format
+msgid " -h             This help text\n"
+msgstr " -h             Questo help\n"
+
+#: src/main.cc:145
+#, c-format
+msgid " -s             Simulate actions, but do not actually perform them.\n"
+msgstr " -s             Simula le azioni, senza eseguirle realmente\n"
+
+#: src/main.cc:146
+#, c-format
+msgid ""
+" -d             Only download packages, do not install or remove anything.\n"
+msgstr ""
+" -d             Scarica i pacchetti e basta, senza installare o rimuovere "
+"nulla\n"
+
+#: src/main.cc:147
+#, c-format
+msgid " -P             Always prompt for confirmation or actions\n"
+msgstr " -P             Chiede sempre conferma prima di un'azione\n"
+
+#: src/main.cc:148
+#, c-format
+msgid ""
+" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+msgstr ""
+" -y             Suppone che la risposta a semplici domande sì/no sia «sì»\n"
+
+#: src/main.cc:149
+#, c-format
+msgid ""
+" -F format      Specify a format for displaying search results; see the "
+"manual\n"
+msgstr ""
+" -F formato     Specifica un formato per mostrare i risultati di una "
+"ricerca;\n"
+"                vedere anche il manuale\n"
+
+#: src/main.cc:150
+#, c-format
+msgid ""
+" -O order       Specify how search results should be sorted; see the manual\n"
+msgstr ""
+" -O ordine      Specifica come ordinare i risultati di una ricerca; vedere\n"
+"                anche il manuale\n"
+
+#: src/main.cc:151
+#, c-format
+msgid ""
+" -w width       Specify the display width for formatting search results\n"
+msgstr ""
+" -w larghezza   Specifica la larghezza per mostrare i risultati di una "
+"ricerca\n"
+
+#: src/main.cc:152
+#, c-format
+msgid " -f             Aggressively try to fix broken packages.\n"
+msgstr ""
+" -f             Prova in tutti i modi a correggere i pacchetti difettosi\n"
+
+#: src/main.cc:153
+#, c-format
+msgid " -V             Show which versions of packages are to be installed.\n"
+msgstr ""
+" -V             Mostra quali versioni dei pacchetti si sta per installare\n"
+
+#: src/main.cc:154
+#, c-format
+msgid ""
+" -D             Show the dependencies of automatically changed packages.\n"
+msgstr ""
+" -D             Mostra le dipendenze dei pacchetti cambiati automaticamente\n"
+
+#: src/main.cc:155
+#, c-format
+msgid " -Z\t\t    Show the change in installed size of each package.\n"
+msgstr ""
+" -Z             Mostra i cambiamenti nella dimensione occupata da ogni "
+"pacchetto\n"
+
+#: src/main.cc:156
+#, c-format
+msgid ""
+" -v             Display extra information. (may be supplied multiple times)\n"
+msgstr ""
+" -v             Mostra informazioni extra (può essere fornita più volte)\n"
+
+#: src/main.cc:157
+#, c-format
+msgid ""
+" -t [release]   Set the release from which packages should be installed\n"
+msgstr " -t [release]   Imposta la release da cui installare i pacchetti\n"
+
+#: src/main.cc:158
+#, c-format
+msgid ""
+" -q             In command-line mode, suppress the incremental progress "
+"indicators."
+msgstr ""
+
+#: src/main.cc:159
+#, c-format
+msgid " -o key=val     Directly set the configuration option named 'key'\n"
+msgstr " -o chiave=val  Imposta l'opzione di configurazione di nome «chiave»\n"
+
+#: src/main.cc:160
+#, c-format
+msgid ""
+" --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
+"                strong dependencies\n"
+msgstr ""
+" --with(out)-recommends\tSpecifica se trattare Raccomanda come\n"
+"                una dipendenza forte\n"
+
+#: src/main.cc:161
+#, c-format
+msgid " -S fname: Read the aptitude extended status info from fname.\n"
+msgstr " -S nomefile: Legge lo stato esteso di Aptitude da nomefile\n"
+
+#: src/main.cc:162
+#, c-format
+msgid " -u      : Download new package lists on startup.\n"
+msgstr " -u         : Scarica il nuovo elenco dei pacchetti all'avvio\n"
+
+#: src/main.cc:163
+#, c-format
+msgid " -i      : Perform an install run on startup.\n"
+msgstr " -i         : Esegue un'installazione all'avvio\n"
+
+#: src/main.cc:165
+#, c-format
+msgid "                  This aptitude does not have Super Cow Powers.\n"
+msgstr "                  Questo Aptitude non ha i Poteri della Super Mucca.\n"
+
+#: src/main.cc:296
+#, c-format
+msgid "-o requires an argument of the form key=value, got %s"
+msgstr "-o richiede un argomento nel formato chiave=valore, invece di «%s»"
+
+#: src/main.cc:338 src/main.cc:347
+msgid "WEIRDNESS: unknown option code received\n"
+msgstr "STRANEZZA: ricevuto un codice di opzione sconosciuto\n"
+
+#: src/main.cc:364
+msgid "Only one of -u and -i may be specified\n"
+msgstr "-u e -i non possono essere specificate contemporaneamente\n"
+
+#: src/main.cc:372
+msgid ""
+"-u and -i may not be specified in command-line mode (eg, with 'install')"
+msgstr ""
+"-u e -i non sono ammesse in modalità riga di comando (es. con «install»)"
+
+#: src/main.cc:393
+msgid "-u and -i may not be specified with a command"
+msgstr "-u e -i non possono essere specificate insieme a un comando"
+
+#: src/main.cc:469
+#, c-format
+msgid "Unknown command \"%s\"\n"
+msgstr "Comando sconosciuto: «%s»\n"
+
+#: src/main.cc:481 src/main.cc:522
+#, c-format
+msgid "Uncaught exception: %s\n"
+msgstr ""
+
+#: src/main.cc:485 src/main.cc:526
+#, c-format
+msgid ""
+"Backtrace:\n"
+"%s"
+msgstr ""
+
+#: src/menu_text_layout.cc:36 src/ui.cc:239 src/view_changelog.cc:55
+msgid "Search for:"
+msgstr "Cerca:"
+
+#: src/menu_text_layout.cc:68 src/view_changelog.cc:67
+#, fuzzy
+msgid "Search backwards for:"
+msgstr "Cerca: "
+
+#: src/menu_tree.cc:204
+msgid "Search for: "
+msgstr "Cerca: "
+
+#: src/menu_tree.cc:221
+#, fuzzy
+msgid "Search backwards for: "
+msgstr "Cerca: "
+
+#: src/mine/cmine.cc:106 src/mine/cmine.cc:148 src/ui.cc:1396
+msgid "Minesweeper"
+msgstr "Campo minato"
+
+#: src/mine/cmine.cc:112
+#, c-format
+msgid "%i/%i mines  %d %s"
+msgstr "%i/%i mine  %d %s"
+
+#: src/mine/cmine.cc:116 src/mine/cmine.cc:123
+msgid "second"
+msgstr "secondo"
+
+#: src/mine/cmine.cc:116 src/mine/cmine.cc:123
+msgid "seconds"
+msgstr "secondi"
+
+#: src/mine/cmine.cc:120
+#, fuzzy, c-format
+msgid "    %s in %d %s"
+msgstr "Campo minato    %s in %d %s"
+
+#: src/mine/cmine.cc:121
+msgid "Won"
+msgstr "Vinto"
+
+#: src/mine/cmine.cc:121
+msgid "Lost"
+msgstr "Perso"
+
+#: src/mine/cmine.cc:165 src/mine/cmine.cc:209
+#, c-format
+msgid "Could not open file \"%s\""
+msgstr "Impossibile aprire il file «%s»"
+
+#: src/mine/cmine.cc:180
+#, c-format
+msgid "Could not load game from %s"
+msgstr "Impossibile caricare il gioco da %s"
+
+#: src/mine/cmine.cc:247
+#, fuzzy
+msgid "The board height must be a positive integer"
+msgstr "L'altezza dell'area di gioco deve essere un numero"
+
+#: src/mine/cmine.cc:259
+#, fuzzy
+msgid "The board width must be a positive integer"
+msgstr "La larghezza dell'area di gioco deve essere un numero"
+
+#: src/mine/cmine.cc:271
+#, fuzzy
+msgid "Invalid mine count; please enter a positive integer"
+msgstr "Risposta non ammessa. Immettere un comando valido o «?» per l'aiuto.\n"
+
+#: src/mine/cmine.cc:291
+msgid "Setup custom game"
+msgstr "Imposta un gioco personalizzato"
+
+#: src/mine/cmine.cc:293
+msgid "Height of board: "
+msgstr "Altezza dell'area di gioco: "
+
+#: src/mine/cmine.cc:296
+msgid "Width of board: "
+msgstr "Larghezza dell'area di gioco: "
+
+#: src/mine/cmine.cc:299
+msgid "Number of mines: "
+msgstr "Numero di mine: "
+
+#: src/mine/cmine.cc:360
+msgid "Choose difficulty level"
+msgstr "Scegliere il livello di difficoltà"
+
+#: src/mine/cmine.cc:362
+msgid "Easy"
+msgstr "Facile"
+
+#: src/mine/cmine.cc:363
+msgid "Medium"
+msgstr "Intermedio"
+
+#: src/mine/cmine.cc:364
+msgid "Hard"
+msgstr "Difficile"
+
+#: src/mine/cmine.cc:365
+msgid "Custom"
+msgstr "Personalizzato"
+
+#: src/mine/cmine.cc:457
+msgid "You have won."
+msgstr "Hai vinto."
+
+#: src/mine/cmine.cc:460
+msgid "You lose!"
+msgstr "Hai perso!"
+
+#: src/mine/cmine.cc:465
+msgid "You die...  --More--"
+msgstr "Sei morto...  --Ancora--"
+
+#: src/mine/cmine.cc:478
+msgid "The spikes were poisoned!  The poison was deadly..  --More--"
+msgstr "Gli spuntoni erano avvelenati! Il veleno era letale...  --Ancora--"
+
+#: src/mine/cmine.cc:481
+msgid "You land on a set of sharp iron spikes!  --More--"
+msgstr "Atterri su un mucchio di spuntoni taglienti!  --Ancora"
+
+#: src/mine/cmine.cc:484
+msgid "You fall into a pit!  --More--"
+msgstr "Cadi in una buca!  --Ancora--"
+
+#: src/mine/cmine.cc:487
+msgid "KABOOM!  You step on a land mine.  --More--"
+msgstr "BOOM! Calpesti una mina di terra.  --Ancora--"
+
+#: src/mine/cmine.cc:492
+msgid "The dart was poisoned!  The poison was deadly...  --More--"
+msgstr "Il dardo era avvelenato! Il veleno era letale...  --Ancora--"
+
+#: src/mine/cmine.cc:494
+msgid ""
+"A little dart shoots out at you!  You are hit by a little dart!  --More--"
+msgstr ""
+"Un piccolo dardo ti viene sparato addosso! Sei colpito da un piccolo dardo!  "
+"--Ancora--"
+
+#: src/mine/cmine.cc:498
+msgid "You turn to stone... --More--"
+msgstr "Ti trasformi in pietra...  --Ancora--"
+
+#: src/mine/cmine.cc:500
+msgid "Touching the cockatrice corpse was a fatal mistake.  --More--"
+msgstr ""
+"Toccare il cadavere del basilisco è stato un errore fatale.  --Ancora--"
+
+#: src/mine/cmine.cc:502
+msgid "You feel here a cockatrice corpse.  --More--"
+msgstr "Senti il cadavere di un basilisco.  --Ancora--"
+
+#: src/mine/cmine.cc:506
+msgid ""
+"Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --"
+"More--"
+msgstr ""
+"Click! Fai partire un masso rotante! Sei colpito da un masso!  --Ancora--"
+
+#: src/mine/cmine.cc:516
+msgid "sleep"
+msgstr "addormenta"
+
+#: src/mine/cmine.cc:519
+msgid "striking"
+msgstr "colpisci"
+
+#: src/mine/cmine.cc:522
+msgid "death"
+msgstr "raggio mortale"
+
+#: src/mine/cmine.cc:525
+msgid "polymorph"
+msgstr "trasforma"
+
+#: src/mine/cmine.cc:528
+msgid "magic missile"
+msgstr "missile magico"
+
+#: src/mine/cmine.cc:531
+msgid "secret door detection"
+msgstr "rileva porte segrete"
+
+#: src/mine/cmine.cc:534
+msgid "invisibility"
+msgstr "invisibilità"
+
+#: src/mine/cmine.cc:537
+msgid "cold"
+msgstr "raggio gelato"
+
+#: src/mine/cmine.cc:543
+#, c-format
+msgid "Your wand of %s breaks apart and explodes!  --More--"
+msgstr "La tua bacchetta di «%s» si rompe ed esplode!  --Ancora--"
+
+#: src/mine/cmine.cc:549
+msgid "You are jolted by a surge of electricity!  --More--"
+msgstr "Sei colpito da una scarica di elettricità!  --Ancora--"
+
+#: src/mine/cmine.cc:653
+msgid "Enter the filename to load: "
+msgstr "Inserire il nome del file da aprire: "
+
+#: src/mine/cmine.cc:660
+msgid "Enter the filename to save: "
+msgstr "Inserire il nome del file da salvare: "
+
+#: src/mine/cmine.cc:670
+msgid "mine-help.txt"
+msgstr "mine-help-it.txt"
+
+#: src/mine/cmine.cc:672
+msgid "Encoding of mine-help.txt|UTF-8"
+msgstr ""
+
+#: src/pkg_columnizer.cc:83
+msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
+msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
+
+#: src/pkg_columnizer.cc:86 src/ui.cc:2252
+msgid "Package"
+msgstr "Pacchetto"
+
+#: src/pkg_columnizer.cc:87
+msgid "InstSz"
+msgstr "DimInst"
+
+#: src/pkg_columnizer.cc:88
+msgid "DebSz"
+msgstr "DimDeb"
+
+#: src/pkg_columnizer.cc:90
+msgid "Action"
+msgstr "Azione"
+
+#: src/pkg_columnizer.cc:91
+msgid "Description"
+msgstr "Descrizione"
+
+#: src/pkg_columnizer.cc:92
+msgid "InstVer"
+msgstr "VersInst"
+
+#: src/pkg_columnizer.cc:93
+msgid "CandVer"
+msgstr "VersCand"
+
+#: src/pkg_columnizer.cc:94
+msgid "LongState"
+msgstr "StEsteso"
+
+#: src/pkg_columnizer.cc:95
+msgid "LongAction"
+msgstr "AzEstesa"
+
+#: src/pkg_columnizer.cc:96
+msgid "Maintainer"
+msgstr "Responsabile"
+
+#: src/pkg_columnizer.cc:97
+msgid "Priority"
+msgstr "Priorità"
+
+#: src/pkg_columnizer.cc:98
+msgid "Section"
+msgstr "Sezione"
+
+#: src/pkg_columnizer.cc:99
+msgid "RC"
+msgstr "RC"
+
+#: src/pkg_columnizer.cc:100
+msgid "Auto"
+msgstr "Auto"
+
+#: src/pkg_columnizer.cc:101
+msgid "Tag"
+msgstr "Tag"
+
+#: src/pkg_columnizer.cc:104
+msgid "ProgName"
+msgstr "NomeProg"
+
+#: src/pkg_columnizer.cc:105
+msgid "ProgVer"
+msgstr "VersProg"
+
+#: src/pkg_columnizer.cc:106
+msgid "#Broken"
+msgstr "#Difett"
+
+#: src/pkg_columnizer.cc:107
+msgid "DiskUsage"
+msgstr "UsoDisco"
+
+#: src/pkg_columnizer.cc:108
+msgid "DownloadSize"
+msgstr "DimScaricamento"
+
+#: src/pkg_columnizer.cc:128 src/pkg_columnizer.cc:140 src/pkg_ver_item.cc:105
+#: src/pkg_ver_item.cc:170
+msgid "<N/A>"
+msgstr "<N/D>"
+
+#: src/pkg_columnizer.cc:170 src/pkg_columnizer.cc:181
+msgid "<none>"
+msgstr "<nessuna>"
+
+#: src/pkg_columnizer.cc:221 src/pkg_grouppolicy.cc:233
+msgid "virtual"
+msgstr "virtuali"
+
+#: src/pkg_columnizer.cc:228 src/pkg_ver_item.cc:214 src/pkg_ver_item.cc:222
+msgid "purged"
+msgstr "eliminati"
+
+#: src/pkg_columnizer.cc:235 src/pkg_ver_item.cc:229
+msgid "half-config"
+msgstr "semi-configurati"
+
+#: src/pkg_columnizer.cc:237 src/pkg_ver_item.cc:231
+msgid "half-install"
+msgstr "semi-installati"
+
+#: src/pkg_columnizer.cc:239 src/pkg_ver_item.cc:233
+msgid "config-files"
+msgstr "file-configurazione"
+
+#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:528 src/pkg_ver_item.cc:237
+msgid "ERROR"
+msgstr "ERRORE"
+
+# NdT: Queste sono le descrizioni delle azioni richieste o altro?
+#: src/pkg_columnizer.cc:290 src/pkg_ver_item.cc:295
+msgid "hold"
+msgstr "blocca"
+
+#: src/pkg_columnizer.cc:293
+#, fuzzy
+msgid "forbidden upgrade"
+msgstr "aggiorna"
+
+#: src/pkg_columnizer.cc:295
+msgid "purge"
+msgstr "elimina"
+
+#: src/pkg_columnizer.cc:295 src/pkg_ver_item.cc:319
+msgid "delete"
+msgstr "rimuove"
+
+#: src/pkg_columnizer.cc:297 src/pkg_ver_item.cc:217 src/pkg_ver_item.cc:301
+msgid "broken"
+msgstr "difettoso"
+
+#: src/pkg_columnizer.cc:299 src/pkg_ver_item.cc:305 src/pkg_ver_item.cc:312
+#: src/pkg_ver_item.cc:321
+msgid "install"
+msgstr "installa"
+
+#: src/pkg_columnizer.cc:301
+msgid "reinstall"
+msgstr "reinstalla"
+
+#: src/pkg_columnizer.cc:303
+msgid "upgrade"
+msgstr "aggiorna"
+
+#: src/pkg_columnizer.cc:305 src/pkg_columnizer.cc:307 src/pkg_ver_item.cc:307
+#: src/pkg_ver_item.cc:314 src/pkg_ver_item.cc:323 src/pkg_ver_item.cc:326
+msgid "none"
+msgstr "nessuna"
+
+#: src/pkg_columnizer.cc:335 src/pkg_columnizer.cc:356
+#: src/pkg_columnizer.cc:363 src/pkg_grouppolicy.cc:227
+#: src/pkg_info_screen.cc:115 src/pkg_info_screen.cc:116
+#: src/pkg_ver_item.cc:347 src/pkg_ver_item.cc:381
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+#: src/pkg_columnizer.cc:343 src/pkg_ver_item.cc:356
+msgid "Imp"
+msgstr "Imp"
+
+#: src/pkg_columnizer.cc:345 src/pkg_ver_item.cc:359
+msgid "Req"
+msgstr "Req"
+
+#: src/pkg_columnizer.cc:347 src/pkg_ver_item.cc:362
+msgid "Std"
+msgstr "Std"
+
+#: src/pkg_columnizer.cc:349 src/pkg_ver_item.cc:365
+msgid "Opt"
+msgstr "Opt"
+
+#: src/pkg_columnizer.cc:351 src/pkg_ver_item.cc:368
+msgid "Xtr"
+msgstr "Xtr"
+
+#: src/pkg_columnizer.cc:353 src/pkg_ver_item.cc:370
+msgid "ERR"
+msgstr "ERR"
+
+#: src/pkg_columnizer.cc:375
+#, c-format
+msgid "#Broken: %ld"
+msgstr "#Errati: %ld"
+
+#: src/pkg_columnizer.cc:390
+#, c-format
+msgid "Will use %sB of disk space"
+msgstr "Occuperà %sB su disco"
+
+#: src/pkg_columnizer.cc:398
+#, c-format
+msgid "Will free %sB of disk space"
+msgstr "Libererà %sB su disco"
+
+#: src/pkg_columnizer.cc:412
+#, c-format
+msgid "DL Size: %sB"
+msgstr "Scarica: %sB"
+
+# NdT: HN = hostname.
+# L'autore avrà le sue ragioni per accorciare a tal punto i messaggi.
+#: src/pkg_columnizer.cc:483
+msgid "HN too long"
+msgstr "HN troppo lungo"
+
+#: src/pkg_columnizer.cc:652 src/pkg_columnizer.cc:661
+#, c-format
+msgid "Unable to transcode package display format after \"%ls\""
+msgstr ""
+
+#: src/pkg_columnizer.cc:668
+msgid "Internal error: Default column string is unparsable"
+msgstr ""
+"Errore interno: impossibile leggere la stringa delle colonne predefinite"
+
+#: src/pkg_grouppolicy.cc:161
+msgid ""
+"Packages which set up your computer to perform a particular task\n"
+" Packages in the 'Tasks' section contain no files; they merely depend upon "
+"other packages. These packages provide an easy way to select a predefined "
+"set of packages for a specialized task."
+msgstr ""
+"Pacchetti che permettono al proprio computer di svolgere un determinato "
+"compito\n"
+" I pacchetti nella sezione «Task» non contengono file; semplicemente "
+"dipendono da altri pacchetti. Questi pacchetti permettono una rapida "
+"selezione di un insieme predefinito di pacchetti per realizzare uno "
+"specifico compito."
+
+#: src/pkg_grouppolicy.cc:163
+msgid ""
+"Packages with no declared section\n"
+" No section is given for these packages. Perhaps there is an error in the "
+"Packages file?"
+msgstr ""
+"Pacchetti che non sono in nessuna sezione\n"
+" Non è specificata alcuna sezione per questi pacchetti: potrebbe esserci un "
+"errore nel file «Packages»."
+
+# NdT: Il testo breve della descrizione è stato accorciato perché troppo lungo.
+#: src/pkg_grouppolicy.cc:165
+msgid ""
+"Administrative utilities (install software, manage users, etc)\n"
+" Packages in the 'admin' section allow you to perform administrative tasks "
+"such as installing software, managing users, configuring and monitoring your "
+"system, examining network traffic, and so on."
+msgstr ""
+"Strumenti di amministrazione e di gestione del sistema\n"
+" I pacchetti nella sezione «admin» permettono di svolgere mansioni "
+"amministrative quali installare software, gestire gli utenti, configurare e "
+"sorvegliare il proprio sistema, esaminare il traffico di rete e così via."
+
+#: src/pkg_grouppolicy.cc:167
+msgid ""
+"Packages converted from foreign formats (rpm, tgz, etc)\n"
+" Packages in the 'alien' section were created by the 'alien' program from a "
+"non-Debian package format such as RPM"
+msgstr ""
+"Pacchetti convertiti da altri formati (rpm, tgz, etc.)\n"
+" I pacchetti nella sezione «alien» sono stati creati dal programma «alien» a "
+"partire da un pacchetto in formato non Debian, ad esempio RPM"
+
+#: src/pkg_grouppolicy.cc:168
+msgid ""
+"The Debian base system\n"
+" Packages in the 'base' section are part of the initial system installation."
+msgstr ""
+"Il sistema base Debian\n"
+" I pacchetti nella sezione «base» fanno parte dell'installazione iniziale "
+"del sistema."
+
+#: src/pkg_grouppolicy.cc:169
+#, fuzzy
+msgid ""
+"Programs for faxmodems and other communications devices\n"
+" Packages in the 'comm' section are used to control modems and other "
+"hardware communications devices. This includes software to control faxmodems "
+"(for instance, PPP for dial-up internet connections and programs originally "
+"written for that purpose, such as zmodem/kermit), as well as software to "
+"control cellular phones, interface with FidoNet, and run a BBS."
+msgstr ""
+"Programmi per faxmodem e altri dispositivi di comunicazione\n"
+" I pacchetti nella sezione «comm» servono a controllare modem e altri "
+"dispositivi hardware di comunicazione. È incluso software per controllare i "
+"faxmodem come, ad esempio, PPP per connessioni internet dialup e programmi "
+"originariamente scritti a tale scopo (zmodem/kermit), così come software per "
+"controllare telefoni cellulari, interfacciarsi con FidoNet e gestire una BBS."
+
+#: src/pkg_grouppolicy.cc:170
+msgid ""
+"Utilities and programs for software development\n"
+" Packages in the 'devel' section are used to write new software and work on "
+"existing software. Non-programmers who do not compile their own software "
+"probably do not need much software from this section.\n"
+" .\n"
+" It includes compilers, debugging tools, programmer's editors, source "
+"processing tools, and other things related to software development."
+msgstr ""
+"Strumenti e programmi per lo sviluppo di software\n"
+" I pacchetti nella sezione «devel» servono a scrivere nuovo software e a "
+"lavorare su quello esistente. Chi non è programmatore e non compila il "
+"proprio software non ha probabilmente bisogno di programmi di questa "
+"sezione.\n"
+" .\n"
+" Sono inclusi compilatori, strumenti per il debugging, editor per "
+"programmatori, strumenti per l'elaborazione del codice sorgente e altre cose "
+"che hanno a che fare con lo sviluppo di software."
+
+#: src/pkg_grouppolicy.cc:171
+msgid ""
+"Documentation and specialized programs for viewing documentation\n"
+" Packages in the 'doc' section document parts of the Debian system, or are "
+"viewers for documentation formats."
+msgstr ""
+"Documentazione e programmi specifici per leggerla\n"
+" I pacchetti nella sezione «doc» documentano componenti del sistema Debian, "
+"oppure servono a visualizzare formati di documento."
+
+#: src/pkg_grouppolicy.cc:172
+msgid ""
+"Text editors and word processors\n"
+" Packages in the 'editors' section allow you to edit plain ASCII text. These "
+"are not necessarily word processors, although some word processors may be "
+"found in this section."
+msgstr ""
+"Editor di testo e programmi di videoscrittura\n"
+" I pacchetti nella sezione «editors» permettono di modificare semplici file "
+"di testo ASCII. Non sono necessariamente programmi di videoscrittura, anche "
+"se alcuni di essi si trovano in questa sezione."
+
+#: src/pkg_grouppolicy.cc:173
+msgid ""
+"Programs for working with circuits and electronics\n"
+" Packages in the 'electronics' section include circuit design tools, "
+"simulators and assemblers for microcontrollers, and other related software."
+msgstr ""
+"Programmi per l'elettronica e per lavorare con i circuiti\n"
+" I pacchetti nella sezione «electronics» includono strumenti di "
+"progettazione dei circuiti, simulatori e assembler per microcontrollori e "
+"altro software simile."
+
+#: src/pkg_grouppolicy.cc:174
+msgid ""
+"Programs for embedded systems\n"
+" Packages in the 'embedded' section are meant to run on embedded devices. "
+"Embedded devices are specialized hardware devices with much less power than "
+"a typical desktop system: for instance, a PDA, a cell phone, or a Tivo."
+msgstr ""
+"Programmi per sistemi embedded\n"
+" I pacchetti nella sezione «embedded» sono pensati per funzionare su sistemi "
+"embedded: dispositivi hardware dedicati, molto meno potenti dei tipici "
+"sistemi desktop. Un PDA, un telefono cellulare o un Tivo sono esempi di tali "
+"sistemi."
+
+#: src/pkg_grouppolicy.cc:175
+msgid ""
+"The GNOME Desktop System\n"
+" GNOME is a collection of software which provides an easy-to-use desktop "
+"environment for Linux.  Packages in the 'gnome' section are part of the "
+"GNOME environment or closely integrated into it."
+msgstr ""
+"Il Desktop GNOME\n"
+" GNOME è un insieme di programmi che formano un ambiente desktop per Linux "
+"facile da usare. I pacchetti nella sezione «gnome» fanno parte del Desktop "
+"GNOME o sono fortemente integrati al suo interno."
+
+#: src/pkg_grouppolicy.cc:176
+msgid ""
+"Games, toys, and fun programs\n"
+" Packages in the 'games' section are meant primarily for entertainment."
+msgstr ""
+"Giochi, giochini e altri programmi divertenti\n"
+" I pacchetti nella sezione «games» servono principalmente a divertirsi."
+
+#: src/pkg_grouppolicy.cc:177
+msgid ""
+"Utilities to create, view, and edit graphics files\n"
+" Packages in the 'graphics' section include viewers for image files, image "
+"processing and manipulation software, software to interact with graphics "
+"hardware (such as video cards, scanners, and digital cameras), and "
+"programming tools for handling graphics."
+msgstr ""
+"Strumenti per creare, visualizzare e modificare file grafici\n"
+" I pacchetti nella sezione «graphics» comprendono visualizzatori per file di "
+"immagini, software per l'elaborazione e la manipolazione di immagini, "
+"software che interagisce con l'hardware dedicato (schede video, scanner, "
+"fotocamere digitali) e strumenti per la gestione della grafica."
+
+#: src/pkg_grouppolicy.cc:178
+msgid ""
+"Software for ham radio operators\n"
+" Packages in the 'hamradio' section are meant primarily for ham radio "
+"operators."
+msgstr ""
+"Programmi per radioamatori\n"
+" I pacchetti nella sezione «hamradio» sono rivolti principalmente ai "
+"radioamatori."
+
+#: src/pkg_grouppolicy.cc:179
+msgid ""
+"Interpreters for interpreted languages\n"
+" Packages in the 'interpreters' section include interpreters for languages "
+"like Python, Perl, and Ruby, and libraries for these same languages."
+msgstr ""
+"Interpreti per linguaggi interpretati\n"
+" I pacchetti nella sezione «interpreters» includono interpreti per linguaggi "
+"quali Python, Perl e Ruby e librerie per questi stessi linguaggi."
+
+#: src/pkg_grouppolicy.cc:180
+msgid ""
+"The KDE Desktop System\n"
+" KDE is a collection of software which provides an easy-to-use desktop "
+"environment for Linux.  Packages in the 'kde' section are part of the KDE "
+"environment or closely integrated into it."
+msgstr ""
+"L'Ambiente Desktop KDE\n"
+" KDE è un insieme di programmi che formano un ambiente desktop per Linux "
+"facile da usare. I pacchetti nella sezione «kde» fanno parte dell'Ambiente "
+"Desktop KDE o sono fortemente integrati al suo interno."
+
+#: src/pkg_grouppolicy.cc:181
+msgid ""
+"Development files for libraries\n"
+" Packages in the 'libdevel' section contain files required for building "
+"programs that use libraries in the 'libs' section.  You don't need packages "
+"from this section unless you want to compile software yourself."
+msgstr ""
+"File di sviluppo delle librerie\n"
+" I pacchetti nella sezione «libdevel» contengono file necessari per "
+"compilare programmi che fanno uso delle librerie incluse nella sezione "
+"«libs». Non serve installarli, a meno che non si desideri compilare del "
+"software."
+
+#: src/pkg_grouppolicy.cc:182
+msgid ""
+"Collections of software routines\n"
+" Packages in the 'libs' section provide necessary functionality for other "
+"software on the computer. With very few exceptions, you should not need to "
+"explicitly install a package from this section; the package system will "
+"install them as required to fulfill dependencies."
+msgstr ""
+"Raccolte di routine software\n"
+" I pacchetti nella sezione «libs» forniscono le funzionalità necessarie ad "
+"altro software nel computer. Salvo pochissime eccezioni, non c'è bisogno di "
+"installare esplicitamente un pacchetto da questa sezione; il sistema di "
+"gestione pacchetti li installerà in base a quanto richiesto per soddisfare "
+"le dipendenze."
+
+#: src/pkg_grouppolicy.cc:183
+msgid ""
+"Perl interpreter and libraries\n"
+" Packages in the 'perl' section provide the Perl programming language and "
+"many third-party libraries for it. Unless you are a Perl programmer, you "
+"don't need to install packages from this section explicitly; the package "
+"system will install them if they are required."
+msgstr ""
+"Interprete Perl e relative librerie\n"
+" I pacchetti nella sezione «perl» comprendono il linguaggio di "
+"programmazione Perl e svariate librerie fornite da terze parti. Se non si "
+"programma in Perl, non c'è bisogno di installare esplicitamente un pacchetto "
+"da questa sezione; il sistema di gestione pacchetti li installerà in base a "
+"quanto richiesto per soddisfare le dipendenze."
+
+#: src/pkg_grouppolicy.cc:184
+msgid ""
+"Python interpreter and libraries\n"
+" Packages in the 'python' section provide the Python programming language "
+"and many third-party libraries for it. Unless you are a Python programmer, "
+"you don't need to install packages from this section explicitly; the package "
+"system will install them if they are required."
+msgstr ""
+"Interprete Python e relative librerie\n"
+" I pacchetti nella sezione «python» comprendono il linguaggio di "
+"programmazione Python e svariate librerie fornite da terze parti. Se non si "
+"programma in Python, non c'è bisogno di installare esplicitamente un "
+"pacchetto da questa sezione; il sistema di gestione pacchetti li installerà "
+"in base a quanto richiesto per soddisfare le dipendenze."
+
+#: src/pkg_grouppolicy.cc:185
+msgid ""
+"Programs to write, send, and route email messages\n"
+" Packages in the 'mail' section include mail readers, mail transport "
+"daemons, mailing list software, and spam filters, as well as various other "
+"software related to electronic mail."
+msgstr ""
+"Programmi per scrivere, inviare e trasferire messaggi di posta\n"
+" I pacchetti nella sezione «mail» comprendono client di posta, server per il "
+"trasporto della posta, software per mailing list e filtri antispam, come "
+"pure diversi altri programmi relativi alla posta elettronica."
+
+#: src/pkg_grouppolicy.cc:186
+msgid ""
+"Numeric analysis and other mathematics-related software\n"
+" Packages in the 'math' section include calculators, languages for "
+"mathematical computation (similar to Mathematica), symbolic algebra "
+"packages, and programs to visualize mathematical objects."
+msgstr ""
+"Analisi numerica e altro software relativo alla matematica\n"
+" I pacchetti nella sezione «math» comprendono calcolatrici, linguaggi per il "
+"calcolo matematico (simili a Mathematica), pacchetti per il calcolo "
+"simbolico e programmi per visualizzare oggetti matematici."
+
+#: src/pkg_grouppolicy.cc:187
+msgid ""
+"Miscellaneous software\n"
+" Packages in the 'misc' section have too unusual a function to be classified."
+msgstr ""
+"Altro software\n"
+" I pacchetti nella sezione «misc» hanno una funzione troppo poco comune per "
+"essere classificati."
+
+#: src/pkg_grouppolicy.cc:188
+msgid ""
+"Programs to connect to and provide various services\n"
+" Packages in the 'net' section include clients and servers for many "
+"protocols, tools to manipulate and debug low-level network protocols, IM "
+"systems, and other network-related software."
+msgstr ""
+"Programmi per la connettività e per fornire diversi servizi\n"
+" I pacchetti nella sezione «net» comprendono client e server per molti "
+"protocolli, strumenti per manipolare ed effettuare il debugging di "
+"protocolli di rete di basso livello, sistemi di messaggistica istantanea e "
+"altro software relativo alle reti."
+
+#: src/pkg_grouppolicy.cc:189
+msgid ""
+"Usenet clients and servers\n"
+" Packages in the 'news' section are related to the Usenet distributed news "
+"system.  They include news readers and news servers."
+msgstr ""
+"Client e server Usenet\n"
+" I pacchetti nella sezione «news» sono relativi al sistema distribuito di "
+"news Usenet. Sono inclusi newsreader e server news."
+
+#: src/pkg_grouppolicy.cc:190
+msgid ""
+"Obsolete libraries\n"
+" Packages in the 'oldlibs' section are obsolete and should not be used by "
+"new software.  They are provided for compatibility reasons, or because "
+"software distributed by Debian still requires them.\n"
+" .\n"
+" With very few exceptions, you should not need to explicitly install a "
+"package from this section; the package system will install them as required "
+"to fulfill dependencies."
+msgstr ""
+"Librerie obsolete\n"
+" I pacchetti nella sezione «oldlibs» sono obsoleti e non si dovrebbero usare "
+"nel software nuovo. Sono forniti per motivi di compatibilità o perché del "
+"software distribuito con Debian ne ha ancora bisogno.\n"
+" .\n"
+"Salvo pochissime eccezioni, non c'è bisogno di installare esplicitamente un "
+"pacchetto da questa sezione; il sistema di gestione pacchetti li installerà "
+"in base a quanto richiesto per soddisfare le dipendenze."
+
+#: src/pkg_grouppolicy.cc:191
+msgid ""
+"Emulators and software to read foreign filesystems\n"
+" Packages in the 'otherosfs' section emulate hardware and operating systems "
+"and provide tools for transferring data between different operating systems "
+"and hardware platforms. (for instance, utilities to read DOS floppies, and "
+"utilities to communicate with Palm Pilots)\n"
+" .\n"
+" It is worth noting that CD burning software is included in THIS section."
+msgstr ""
+"Emulatori e software per leggere altri file system\n"
+" I pacchetti nella sezione «otherosfs» sono emulatori di hardware e sistemi "
+"operativi e forniscono strumenti per trasferire dati tra diversi sistemi "
+"operativi e piattaforme hardware (ad esempio, programmi per leggere i "
+"dischetti DOS e per comunicare con i Palm Pilot)\n"
+" .\n"
+" È opportuno osservare che il software per masterizzare i CD è incluso in "
+"QUESTA sezione."
+
+#: src/pkg_grouppolicy.cc:192
+msgid ""
+"Software for scientific work\n"
+" Packages in the 'science' section include tools for astronomy, biology, and "
+"chemistry, as well as other science-related software."
+msgstr ""
+"Programmi per lavoro scientifico\n"
+" I pacchetti nella sezione «science» comprendono strumenti per l'astronomia, "
+"la biologia e la chimica, come pure altro software scientifico."
+
+#: src/pkg_grouppolicy.cc:193
+msgid ""
+"Command shells and alternative console environments\n"
+" Packages in the 'shells' section include programs providing a command-line "
+"interface."
+msgstr ""
+"Shell dei comandi e ambienti console alternativi\n"
+" I pacchetti nella sezione «shells» comprendono programmi che forniscono "
+"un'interfaccia a riga di comando."
+
+#: src/pkg_grouppolicy.cc:194
+msgid ""
+"Utilities to play and record sound\n"
+" Packages in the 'sound' section include sound players, recorders, and "
+"encoders for many formats, mixers and volume controls, MIDI sequencers and "
+"programs to generate musical notation, drivers for sound hardware, and sound "
+"processing software."
+msgstr ""
+"Strumenti per riprodurre e registrare suoni\n"
+" I pacchetti nella sezione «sound» comprendono lettori audio, registratori "
+"ed encoder per vari formati, mixer e controlli volume, sequencer MIDI e "
+"programmi per generare notazione musicale, driver per hardware audio e "
+"software di elaborazione audio."
+
+#: src/pkg_grouppolicy.cc:195
+msgid ""
+"The TeX typesetting system\n"
+" Packages in the 'tex' section are related to TeX, a system for producing "
+"high-quality typeset output.  They include TeX itself, TeX packages, editors "
+"designed for TeX, utilities to convert TeX and TeX output files to various "
+"formats, TeX fonts, and other software related to TeX."
+msgstr ""
+"Il sistema di impaginazione TeX\n"
+" I pacchetti nella sezione «tex» sono relativi a TeX, un sistema per "
+"produrre documenti con impaginazione di alta qualità. È incluso TeX stesso, "
+"i pacchetti TeX, editor progettati per TeX, strumenti per convertire TeX e "
+"file di output di TeX in diversi formati, caratteri TeX e altro software "
+"relativo a TeX."
+
+#: src/pkg_grouppolicy.cc:196
+msgid ""
+"Text processing utilities\n"
+" Packages in the 'text' section include text filters and processors, "
+"spelling checkers, dictionary programs, utilities to convert between "
+"character encodings and text file formats (eg, Unix and DOS), text "
+"formatters and pretty-printers, and other software which operates on plain "
+"text."
+msgstr ""
+"Strumenti per la manipolazione di testo\n"
+" I pacchetti nella sezione «text» comprendono filtri ed elaboratori di "
+"testo, controllori ortografici, dizionari, strumenti per convertire le "
+"codifiche dei caratteri e i formati dei file (es. Unix e DOS), programmi per "
+"formattare ed abbellire l'impaginazione e altro software che lavora su testo "
+"semplice."
+
+#: src/pkg_grouppolicy.cc:197
+msgid ""
+"Various system utilities\n"
+" Packages in the 'utils' section are utilities whose purpose is too unique "
+"to be classified."
+msgstr ""
+"Vari accessori di sistema\n"
+" I pacchetti nella sezione «utils» comprendono strumenti il cui scopo è "
+"talmente peculiare da impedirne la classificazione."
+
+#: src/pkg_grouppolicy.cc:198
+msgid ""
+"Web browsers, servers, proxies, and other tools\n"
+" Packages in the 'web' section include Web browsers, Web servers and "
+"proxies, software to write CGI scripts or Web-based programs, pre-written "
+"Web-based programs, and other software related to the World Wide Web."
+msgstr ""
+"Browser Web, server, proxy e altri strumenti\n"
+" I pacchetti nella sezione «web» comprendono browser Web, server Web e "
+"proxy, software per scrivere script CGI o programmi basati su Web, "
+"applicazioni Web già scritte e altro software relativo al World Wide Web."
+
+#: src/pkg_grouppolicy.cc:199
+msgid ""
+"The X window system and related software\n"
+" Packages in the 'x11' section include the core packages for the X window "
+"system, window managers, utility programs for X, and miscellaneous programs "
+"with an X GUI which were placed here because they didn't fit anywhere else."
+msgstr ""
+"Il sistema X Window e software relativo\n"
+" I pacchetti nella sezione «x11» comprendono i pacchetti base per il sistema "
+"X Window, window manager, strumenti per X ed altri programmi con una GUI X "
+"che sono stati posti in questa sezione perché non si adattavano a "
+"nessun'altra."
+
+#: src/pkg_grouppolicy.cc:201
+msgid ""
+"Programs which depend on software not in Debian\n"
+" Packages in the 'contrib' section are not part of Debian.\n"
+" .\n"
+" These packages are Free Software, but they depend on software which is not "
+"part of Debian.  This may be because it is not Free Software, but is "
+"packaged in the non-free section of the archive, because Debian cannot "
+"distribute it at all, or (in rare cases) because no-one has packaged it "
+"yet.\n"
+" .\n"
+" For more information about what Debian considers to be Free Software, see "
+"http://www.debian.org/social_contract#guidelines"
+msgstr ""
+"Pacchetti che dipendono da software che non fa parte di Debian\n"
+" I pacchetti nella sezione «contrib» non sono parte di Debian.\n"
+" .\n"
+" Questi pacchetti sono Software Libero, ma dipendono da software che non fa "
+"parte di Debian, perché non è Software Libero ma è distribuito nella sezione "
+"non-free degli archivi, perché Debian non può distribuirlo affatto, oppure "
+"(in casi rari) perché ancora nessuno ne ha creato un pacchetto per Debian.\n"
+".\n"
+" Per maggiori informazioni riguardo a cosa Debian considera Software Libero, "
+"vedere anche http://www.debian.org/social_contract#guidelines"
+
+#: src/pkg_grouppolicy.cc:202
+msgid ""
+"The main Debian archive\n"
+" The Debian distribution consists of packages from the 'main' section. Every "
+"package in 'main' is Free Software.\n"
+" .\n"
+" For more information about what Debian considers to be Free Software, see "
+"http://www.debian.org/social_contract#guidelines"
+msgstr ""
+"L'archivio Debian principale\n"
+" La distribuzione Debian consiste dei pacchetti della sezione «main». Ogni "
+"pacchetto in «main» è Software Libero.\n"
+" .\n"
+" Per maggiori informazioni riguardo a cosa Debian considera Software Libero, "
+"vedere anche http://www.debian.org/social_contract#guidelines"
+
+#: src/pkg_grouppolicy.cc:203
+msgid ""
+"Programs stored outside the US due to export controls\n"
+" Packages in 'non-US' likely contain cryptography; a few implement patented "
+"algorithms. Because of this, they cannot be exported from the United States, "
+"and hence are stored on a server in the \"free world\".\n"
+" .\n"
+" Note: the Debian Project is currently merging cryptographic software into "
+"the US-based archives after consulting with legal experts about recent "
+"changes in export policies. Most packages which were formerly found in this "
+"section, therefore, are now in 'main'."
+msgstr ""
+"Programmi archiviati fuori dagli USA a causa dei controlli sulle "
+"esportazioni\n"
+" I pacchetti nella sezione «non-US» molto probabilmente fanno uso di "
+"crittografia; alcuni implementano algoritmi brevettati. Per questo motivo, "
+"non possono essere esportati al di fuori degli Stati Uniti e di conseguenza "
+"sono raccolti in un server nel «mondo libero».\n"
+" .\n"
+" Nota: il Progetto Debian sta attualmente spostando il software "
+"crittografico negli archivi negli USA dopo aver consultato esperti in "
+"materia legale riguardo alle recenti modifiche sulle politiche di "
+"esportazione. Di conseguenza, gran parte dei pacchetti che prima si "
+"trovavano in questa sezione ora sono in «main»."
+
+#: src/pkg_grouppolicy.cc:204
+#, fuzzy
+msgid ""
+"Programs which are not free software\n"
+" Packages in the 'non-free' section are not part of Debian.\n"
+" .\n"
+" These packages fail to meet one or more of the requirements of the Debian "
+"Free Software Guidelines (see below). You should read the license of "
+"programs in this section to be sure that you are allowed to use them in the "
+"way you intend.\n"
+" .\n"
+" For more information about what Debian considers to be Free Software, see "
+"http://www.debian.org/social_contract#guidelines"
+msgstr ""
+"Programmi che non sono Software Libero\n"
+" I pacchetti nella sezione «non-free» non fanno parte di Debian.\n"
+" .\n"
+" Questi pacchetti non soddisfano uno o più requisiti delle Linee Guida "
+"Debian per il Software Libero (vedere sotto). Si dovrebbero leggere le "
+"licenze dei programmi in questa sezione per accertarsi di avere il permesso "
+"di usarli nel modo desiderato.\n"
+" .\n"
+" Per maggiori informazioni riguardo a cosa Debian considera Software Libero, "
+"vedere anche http://www.debian.org/social_contract#guidelines"
+
+#: src/pkg_grouppolicy.cc:206
+msgid ""
+"Virtual packages\n"
+" These packages do not exist; they are names other packages use to require "
+"or provide some functionality."
+msgstr ""
+"Pacchetti Virtuali\n"
+" Questi pacchetti non esistono; sono i nomi usati da altri pacchetti per "
+"richiedere o fornire delle funzionalità."
+
+#: src/pkg_grouppolicy.cc:221
+msgid "Tasks/Tasks"
+msgstr "Task/Task"
+
+#: src/pkg_grouppolicy.cc:221 src/pkg_grouppolicy.cc:956
+msgid "Tasks"
+msgstr "Task"
+
+#: src/pkg_grouppolicy.cc:227
+msgid "Unknown/Unknown"
+msgstr "Sconosciuto/Sconosciuto"
+
+#: src/pkg_grouppolicy.cc:233
+msgid "virtual/virtual"
+msgstr "virtuale/virtuale"
+
+#: src/pkg_grouppolicy.cc:244
+msgid "main"
+msgstr "main"
+
+#: src/pkg_grouppolicy.cc:329
+msgid ""
+"Security Updates\n"
+" Security updates for these packages are available from security.debian.org."
+msgstr ""
+"Aggiornamenti di sicurezza\n"
+" Aggiornamenti di sicurezza per questi pacchetti sono disponibili presso "
+"security.debian.org."
+
+#: src/pkg_grouppolicy.cc:330
+msgid ""
+"Upgradable Packages\n"
+" A newer version of these packages is available."
+msgstr ""
+"Pacchetti aggiornabili\n"
+" È disponibile una nuova versione di questi pacchetti."
+
+#: src/pkg_grouppolicy.cc:331
+#, fuzzy
+msgid ""
+"New Packages\n"
+" These packages have been added to Debian since the last time you cleared "
+"the list of \"new\" packages (choose \"Forget new packages\" from the "
+"Actions menu to empty this list)."
+msgstr ""
+"Pacchetti nuovi\n"
+" Questi pacchetti sono stati aggiunti a Debian dopo l'ultima cancellazione "
+"dell'elenco dei pacchetti «nuovi»; scegliere «Dimentica i nuovi pacchetti» "
+"dal menu Azioni per svuotare questo elenco."
+
+#: src/pkg_grouppolicy.cc:332
+msgid ""
+"Installed Packages\n"
+" These packages are currently installed on your computer."
+msgstr ""
+"Pacchetti installati\n"
+" Questi pacchetti sono attualmente installati sul computer."
+
+#: src/pkg_grouppolicy.cc:333
+msgid ""
+"Not Installed Packages\n"
+" These packages are not installed on your computer."
+msgstr ""
+"Pacchetti non installati\n"
+" Questi pacchetti non sono installati sul computer."
+
+#: src/pkg_grouppolicy.cc:334
+msgid ""
+"Obsolete and Locally Created Packages\n"
+" These packages are currently installed on your computer, but they are not "
+"available from any apt source.  They may be obsolete and removed from the "
+"archive, or you may have built a private version of them yourself."
+msgstr ""
+"Pacchetti obsoleti e creati localmente\n"
+" Questi pacchetti sono attualmente installati sul computer, ma non fanno "
+"parte di nessuna sorgente apt. Potrebbero essere stati rimossi dall'archivio "
+"perché obsoleti, oppure è stata compilata una versione per se stessi."
+
+#: src/pkg_grouppolicy.cc:335
+msgid ""
+"Virtual Packages\n"
+" These packages do not exist; they are names other packages use to require "
+"or provide some functionality."
+msgstr ""
+"Pacchetti virtuali\n"
+" Questi pacchetti non esistono; sono i nomi usati da altri pacchetti per "
+"richiedere o fornire delle funzionalità."
+
+#: src/pkg_grouppolicy.cc:487
+msgid ""
+"Packages which are recommended by other packages\n"
+" These packages are not strictly required, but they may be necessary to "
+"provide full functionality in some other programs that you are installing or "
+"upgrading."
+msgstr ""
+"Pacchetti raccomandati da altri pacchetti\n"
+" Questi pacchetti non sono strettamente necessari, ma forniscono piena "
+"funzionalità ad alcuni dei programmi che si sta per installare o aggiornare."
+
+#: src/pkg_grouppolicy.cc:507
+msgid ""
+"Packages which are suggested by other packages\n"
+" These packages are not required in order to make your system function "
+"properly, but they may provide enhanced functionality for some programs that "
+"you are currently installing."
+msgstr ""
+"Pacchetti consigliati da altri pacchetti\n"
+" Questi pacchetti non sono strettamente necessari per il buon funzionamento "
+"del sistema, ma forniscono delle funzionalità aggiuntive ad alcuni dei "
+"programmi che si sta per installare."
+
+#: src/pkg_grouppolicy.cc:534
+msgid ""
+"Packages with unsatisfied dependencies\n"
+" The dependency requirements of these packages will be unmet after the "
+"install is complete.\n"
+" .\n"
+" The presence of this tree probably indicates that something is broken, "
+"either on your system or in the Debian archive."
+msgstr ""
+"Pacchetti con dipendenze mancanti\n"
+" I requisiti sulle dipendenze di questi pacchetti non saranno soddisfatti "
+"dopo il completamento dell'installazione.\n"
+" .\n"
+" La presenza di questo albero probabilmente indica che qualcosa non va nel "
+"proprio sistema o negli archivi Debian."
+
+#: src/pkg_grouppolicy.cc:535
+msgid ""
+"Packages being removed because they are no longer used\n"
+" These packages are being deleted because they were automatically installed "
+"to fulfill dependencies, and the planned action will result in no installed "
+"package declaring an 'important' dependency on them.\n"
+msgstr ""
+"Pacchetti da rimuovere perché non più utilizzati\n"
+" Questi pacchetti verranno rimossi poiché erano stati installati "
+"automaticamente a causa di qualche dipendenza, ma l'azione pianificata non "
+"prevede alcun pacchetto installato che dichiari una dipendenza «importante» "
+"su di essi.\n"
+
+#: src/pkg_grouppolicy.cc:536
+msgid ""
+"Packages being automatically held in their current state\n"
+" These packages could be upgraded, but they have been kept in their current "
+"state to avoid breaking dependencies."
+msgstr ""
+"Pacchetti automaticamente bloccati al loro stato attuale\n"
+" Questi pacchetti potrebbero venire aggiornati, ma sono stati mantenuti nel "
+"loro stato attuale per evitare di rompere le dipendenze."
+
+#: src/pkg_grouppolicy.cc:537
+msgid ""
+"Packages being automatically installed to satisfy dependencies\n"
+" These packages are being installed because they are required by another "
+"package you have chosen for installation."
+msgstr ""
+"Pacchetti da installare automaticamente per soddisfare le dipendenze\n"
+" Questi pacchetti verranno installati perché sono richiesti da un altro "
+"pacchetto selezionato per l'installazione."
+
+#: src/pkg_grouppolicy.cc:538
+msgid ""
+"Packages being deleted due to unsatisfied dependencies\n"
+" These packages are being deleted because one or more of their dependencies "
+"is no longer available, or because another package conflicts with them."
+msgstr ""
+"Pacchetti da rimuovere a causa di dipendenze non soddisfatte\n"
+" Questi pacchetti verranno rimossi perché una o più delle loro dipendenze "
+"non è più disponibile, oppure perché in conflitto con un altro pacchetto."
+
+#: src/pkg_grouppolicy.cc:539
+msgid ""
+"Packages to be downgraded\n"
+" An older version of these packages than is currently installed will be "
+"installed."
+msgstr ""
+"Pacchetti da retrocedere (downgrade)\n"
+" Verrà installata una versione più vecchia di questi pacchetti rispetto a "
+"quella attualmente installata."
+
+#: src/pkg_grouppolicy.cc:540
+msgid ""
+"Packages being held back\n"
+" These packages could be upgraded, but you have asked for them to be held at "
+"their current version."
+msgstr ""
+"Pacchetti bloccati\n"
+" Questi pacchetti potrebbero venire aggiornati, ma sono stati bloccati alla "
+"versione attualmente installata."
+
+#: src/pkg_grouppolicy.cc:541
+msgid ""
+"Packages to be reinstalled\n"
+" These packages will be reinstalled."
+msgstr ""
+"Pacchetti da reinstallare\n"
+" Questi pacchetti verranno reinstallati."
+
+#: src/pkg_grouppolicy.cc:542
+msgid ""
+"Packages to be installed\n"
+" These packages have been manually selected for installation on your "
+"computer."
+msgstr ""
+"Pacchetti da installare\n"
+" Questi pacchetti sono stati selezionati manualmente per essere installati "
+"sul computer."
+
+#: src/pkg_grouppolicy.cc:543
+msgid ""
+"Packages to be removed\n"
+" These packages have been manually selected for removal."
+msgstr ""
+"Pacchetti da rimuovere\n"
+" Questi pacchetti sono stati selezionati manualmente per essere rimossi."
+
+#: src/pkg_grouppolicy.cc:544
+msgid ""
+"Packages to be upgraded\n"
+" These packages will be upgraded to a newer version."
+msgstr ""
+"Pacchetti da aggiornare\n"
+" Questi pacchetti verranno aggiornati ad una nuova versione."
+
+#: src/pkg_grouppolicy.cc:659
+msgid "unknown"
+msgstr "sconosciuta"
+
+#: src/pkg_grouppolicy.cc:670
+#, c-format
+msgid "Priority %s"
+msgstr "Priorità %s"
+
+#: src/pkg_grouppolicy.cc:780
+msgid "UNCATEGORIZED"
+msgstr ""
+
+#: src/pkg_grouppolicy.cc:899
+msgid "End-user"
+msgstr "Utente finale"
+
+#: src/pkg_grouppolicy.cc:900
+msgid "Servers"
+msgstr "Server"
+
+#: src/pkg_grouppolicy.cc:901
+msgid "Development"
+msgstr "Sviluppo"
+
+#: src/pkg_grouppolicy.cc:902
+msgid "Localization"
+msgstr "Localizzazione"
+
+#: src/pkg_grouppolicy.cc:903
+msgid "Hardware Support"
+msgstr "Supporto hardware"
+
+#: src/pkg_grouppolicy.cc:904
+msgid "Miscellaneous"
+msgstr "Varie"
+
+#: src/pkg_grouppolicy.cc:905
+msgid "Unrecognized tasks"
+msgstr "Task non riconosciuti"
+
+#: src/pkg_grouppolicy.cc:957
+msgid ""
+"\n"
+" Tasks are groups of packages which provide an easy way to select a "
+"predefined set of packages for a particular purpose."
+msgstr ""
+"\n"
+" I task sono gruppi di pacchetti che permettono una rapida selezione di un "
+"insieme predefinito di pacchetti per realizzare un certo compito."
+
+#: src/pkg_grouppolicy.cc:1080
+#, c-format
+msgid "Bad number in format string: %ls"
+msgstr ""
+
+#: src/pkg_grouppolicy.cc:1089
+#, c-format
+msgid "Match indices must be 1 or greater, not \"%s\""
+msgstr ""
+
+#: src/pkg_grouppolicy.cc:1107
+#, c-format
+msgid "Match index %ls is too large; available groups are (%s)"
+msgstr ""
+
+#: src/pkg_grouppolicy.cc:1321
+msgid "TAGLESS PACKAGES"
+msgstr ""
+
+#: src/pkg_grouppolicy.cc:1322
+msgid ""
+"\n"
+" These packages have not yet been classified in debtags."
+msgstr ""
+
+#: src/pkg_grouppolicy.cc:1347
+msgid "MISSING TAG"
+msgstr ""
+
+#: src/pkg_info_screen.cc:118
+msgid "Compressed size: "
+msgstr "Dimensione pacchetto compresso: "
+
+#: src/pkg_info_screen.cc:119
+msgid "Uncompressed size: "
+msgstr "Dimensione pacchetto installato: "
+
+#: src/pkg_info_screen.cc:120
+msgid "Source Package: "
+msgstr "Pacchetto sorgente: "
+
+#: src/pkg_info_screen.cc:130
+#, c-format
+msgid "Package names provided by %s"
+msgstr "Nomi di pacchetti forniti da %s"
+
+#: src/pkg_info_screen.cc:140
+#, c-format
+msgid "Packages which depend on %s"
+msgstr "Pacchetti che dipendono da %s"
+
+#: src/pkg_info_screen.cc:145
+msgid "Versions"
+msgstr "Versioni"
+
+#: src/pkg_item.cc:55
+msgid "Yes, I am aware this is a very bad idea"
+msgstr "So che si tratta di una pessima idea"
+
+#: src/pkg_item.cc:80
+#, fuzzy, c-format
+msgid ""
+"%s is an essential package!%n%nAre you sure you want to remove it?%nType '%"
+"s' if you are."
+msgstr ""
+"%s è un pacchetto essenziale!\n"
+"\n"
+"Se si è certi di volerlo rimuovere, inserire\n"
+"«%s»."
+
+#: src/pkg_item.cc:220 src/pkg_ver_item.cc:641 src/solution_item.cc:282
+#, c-format
+msgid "Information about %s"
+msgstr "Informazioni su %s"
+
+#: src/pkg_item.cc:222 src/pkg_ver_item.cc:643 src/solution_item.cc:280
+#, c-format
+msgid "%s info"
+msgstr ""
+
+#: src/pkg_item.cc:316
+#, fuzzy, c-format
+msgid "Available versions of %s"
+msgstr "Versioni disponibili di "
+
+#: src/pkg_item.cc:319
+#, fuzzy, c-format
+msgid "%s versions"
+msgstr "Versioni"
+
+#: src/pkg_item.cc:331 src/pkg_ver_item.cc:671
+#, c-format
+msgid "Dependencies of %s"
+msgstr "Dipendenze di %s"
+
+#: src/pkg_item.cc:333 src/pkg_ver_item.cc:673
+#, c-format
+msgid "%s deps"
+msgstr ""
+
+#: src/pkg_item.cc:344 src/pkg_ver_item.cc:683
+#, c-format
+msgid "Packages depending on %s"
+msgstr "Pacchetti che dipendono da %s"
+
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:685
+#, c-format
+msgid "%s reverse deps"
+msgstr ""
+
+#: src/pkg_item.cc:396 src/pkg_ver_item.cc:734
+#, c-format
+msgid "Reporting a bug in %s:\n"
+msgstr "Segnalazione di un bug in %s:\n"
+
+#: src/pkg_item.cc:416
+#, fuzzy
+msgid ""
+"You are not root and I cannot find any way to become root.  To reconfigure "
+"this package, install the menu package, the login package, or run aptitude "
+"as root."
+msgstr ""
+"Non si possiedono i permessi di root e non è stato\n"
+"possibile trovare alcun modo per diventare root.\n"
+"Per riconfigurare questo pacchetto, installare il pacchetto\n"
+"«menu», il pacchetto «login», oppure eseguire Aptitude come root."
+
+#: src/pkg_item.cc:424
+#, c-format
+msgid "Reconfiguring %s\n"
+msgstr "Riconfigurazione di %s\n"
+
+#: src/pkg_item.cc:434 src/ui.cc:1017
+msgid "Press return to continue.\n"
+msgstr "Premere Invio per continuare.\n"
+
+#: src/pkg_item.cc:451
+msgid "Hierarchy editor"
+msgstr "Editor della gerarchia"
+
+#: src/pkg_item.cc:451
+#, fuzzy
+msgid "Hierarchy Editor"
+msgstr "Editor della gerarchia"
+
+#: src/pkg_tree.cc:166
+msgid "All Packages"
+msgstr "Tutti i pacchetti"
+
+#: src/pkg_tree.cc:179 src/pkg_tree.cc:194
+msgid "Building view"
+msgstr "Costruzione della vista"
+
+#: src/pkg_tree.cc:237
+#, fuzzy, c-format
+msgid "No packages matched the pattern \"%ls\"."
+msgstr "Nessun pacchetto corrisponde al modello «%s»."
+
+#: src/pkg_tree.cc:259
+msgid "Enter the new package tree limit: "
+msgstr "Inserire il nuovo limite dell'albero dei pacchetti: "
+
+#: src/pkg_tree.cc:293
+msgid "Enter the new package grouping mechanism for this display: "
+msgstr "Nuovo meccanismo di raggruppamento dei pacchetti per questa vista: "
+
+#: src/pkg_tree.cc:301
+msgid "Enter the new package sorting mechanism for this display: "
+msgstr "Nuovo meccanismo di ordinamento dei pacchetti per questa vista: "
+
+#: src/pkg_view.cc:149
+msgid "Couldn't transcode column definition"
+msgstr ""
+
+#: src/pkg_view.cc:156
+#, fuzzy
+msgid "Couldn't parse column definition"
+msgstr "Impossibile aprire il file in scrittura"
+
+#: src/pkg_view.cc:185
+#, fuzzy
+msgid "Encoding error in long description."
+msgstr "\"(\" solitaria nella descrizione del criterio di ordinamento"
+
+#: src/pkg_view.cc:415
+msgid "make_package_view: error in arguments -- two main widgets??"
+msgstr "make_package_view: errore negli argomenti (due widget principali)"
+
+#: src/pkg_view.cc:421
+msgid ""
+"make_package_view: error in arguments -- bad column list for static item"
+msgstr ""
+"make_package_view: errore negli argomenti (elenco delle colonne non ammesso "
+"per un elemento statico)"
+
+#: src/pkg_view.cc:517
+msgid "make_package_view: bad argument!"
+msgstr "make_package_view: argomento non ammesso"
+
+#: src/pkg_view.cc:569
+msgid "make_package_view: no main widget found"
+msgstr "make_package_view: manca il widget principale"
+
+#: src/reason_fragment.cc:30
+msgid "depends on"
+msgstr "dipende da"
+
+#: src/reason_fragment.cc:32
+msgid "pre-depends on"
+msgstr "pre-dipende da"
+
+#: src/reason_fragment.cc:34
+msgid "suggests"
+msgstr "consiglia"
+
+#: src/reason_fragment.cc:35
+msgid "recommends"
+msgstr "raccomanda"
+
+#: src/reason_fragment.cc:37
+msgid "conflicts with"
+msgstr "è in conflitto con"
+
+#: src/reason_fragment.cc:39
+msgid "replaces"
+msgstr "sostituisce"
+
+#: src/reason_fragment.cc:40
+msgid "obsoletes"
+msgstr "rende obsoleto"
+
+#: src/reason_fragment.cc:166
+#, c-format
+msgid " (provided by %F)"
+msgstr " (fornito da %F)"
+
+#: src/reason_fragment.cc:275
+#, c-format
+msgid "%F%s %F %F"
+msgstr "%F%s %F %F"
+
+#: src/reason_fragment.cc:324
+msgid ""
+"If you select a package, an explanation of its current state will appear in "
+"this space."
+msgstr ""
+"Selezionando un pacchetto, una spiegazione del suo stato attuale appare in "
+"questo spazio."
+
+#: src/reason_fragment.cc:358
+msgid ""
+"%B%s%b was installed automatically;  it is being removed because all of the "
+"packages which depend upon it are being removed:"
+msgstr ""
+"%B%s%b è stato installato automaticamente; viene rimosso perché tutti i "
+"pacchetti che dipendono da esso stanno per essere rimossi:"
+
+#: src/reason_fragment.cc:362
+msgid "%B%s%b will be automatically removed because of dependency errors:"
+msgstr ""
+"%B%s%b verrà rimosso automaticamente a causa di problemi con le dipendenze:"
+
+#: src/reason_fragment.cc:366
+msgid ""
+"%B%s%b will be automatically installed to satisfy the following dependencies:"
+msgstr ""
+"%B%s%b verrà installato automaticamente per soddisfare le seguenti "
+"dipendenze:"
+
+#: src/reason_fragment.cc:372 src/reason_fragment.cc:384
+msgid ""
+"%B%s%b cannot be upgraded now, but if it could be, it would still be held at "
+"version %B%s%b."
+msgstr ""
+"%B%s%b non può essere aggiornato ora ma, anche se fosse, sarebbe comunque "
+"mantenuto alla versione %B%s%b."
+
+#: src/reason_fragment.cc:375
+msgid ""
+"%B%s%b will not be upgraded to version %B%s%b, to avoid breaking the "
+"following dependencies:"
+msgstr ""
+"%B%s%b non verrà aggiornato alla versione %B%s%b, per evitare di rompere le "
+"seguenti dipendenze:"
+
+#: src/reason_fragment.cc:387
+msgid "%B%s%b is currently installed."
+msgstr "%B%s%b è attualmente installato."
+
+#: src/reason_fragment.cc:393
+msgid "%B%s%b is not currently installed."
+msgstr "%B%s%b non è attualmente installato."
+
+#: src/reason_fragment.cc:401
+msgid "Some dependencies of %B%s%b are not satisfied:"
+msgstr "Alcune dipendenze di %B%s%b non sono soddisfatte:"
+
+#: src/reason_fragment.cc:405
+msgid "%B%s%b will be downgraded."
+msgstr "%B%s%b saranno retrocessi (downgraded)."
+
+#: src/reason_fragment.cc:412
+msgid "%B%s%b will not be upgraded to the forbidden version %B%s%b."
+msgstr "%B%s%b non verrà aggiornato alla versione proibita %B%s%b."
+
+#: src/reason_fragment.cc:416
+msgid ""
+"%B%s%b could be upgraded to version %B%s%b, but it is being held at version %"
+"B%s%b."
+msgstr ""
+"%B%s%b potrebbe essere aggiornato alla versione %B%s%b ma viene mantenuto "
+"alla versione %B%s%b."
+
+#: src/reason_fragment.cc:423
+msgid "%B%s%b will be re-installed."
+msgstr "%B%s%b sarà reinstallato."
+
+#: src/reason_fragment.cc:427
+msgid "%B%s%b will be installed."
+msgstr "%B%s%b verrà installato."
+
+#: src/reason_fragment.cc:431
+msgid "%B%s%b will be removed."
+msgstr "%B%s%b verrà rimosso."
+
+#: src/reason_fragment.cc:436
+msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
+msgstr "%B%s%b verrà aggiornato dalla versione %B%s%b alla versione %B%s%b."
+
+#: src/reason_fragment.cc:472
+msgid ""
+"The following packages depend on %B%s%b and will be broken by its removal:"
+msgstr ""
+"I seguenti pacchetti dipendono da %B%s%b e saranno difettosi dopo la sua "
+"rimozione:"
+
+#: src/reason_fragment.cc:475
+msgid "The following packages depend on %B%s%b and are broken:"
+msgstr "I seguenti pacchetti dipendono da %B%s%b e sono difettosi:"
+
+#: src/reason_fragment.cc:482
+msgid ""
+"The following packages conflict with %B%s%b and will be broken by its "
+"installation:"
+msgstr ""
+"I seguenti pacchetti sono in conflitto con %B%s%b e saranno difettosi dopo "
+"la sua installazione:"
+
+#: src/reason_fragment.cc:515
+msgid ""
+"The following packages depend on a version of %B%s%b other than the "
+"currently installed version of %B%s%b, or conflict with the currently "
+"installed version:"
+msgstr ""
+"I seguenti pacchetti dipendono da una versione di %B%s%b diversa da quella "
+"attualmente installata (%B%s%b), oppure sono in conflitto con la versione "
+"attualmente installata:"
+
+#: src/reason_fragment.cc:519
+msgid ""
+"The following packages conflict with %B%s%b, or depend on a version of it "
+"which is not going to be installed."
+msgstr ""
+"I seguenti pacchetti sono in conflitto con %B%s%b, oppure dipendono da una "
+"versione che non sta per essere installata."
+
+#: src/reason_fragment.cc:523
+msgid "The following packages conflict with %B%s%b:"
+msgstr "I seguenti pacchetti sono in conflitto con %B%s%b:"
+
+# NdT: Le %s significano: nome del pacchetto, versione attualmente installata.
+#: src/reason_fragment.cc:528
+msgid ""
+"The following packages depend on a version of %B%s%b other than the "
+"currently installed version of %B%s%b:"
+msgstr ""
+"I seguenti pacchetti dipendono da una versione di %B%s%b diversa da quella "
+"attualmente installata (%B%s%b):"
+
+# NdT: Le %s significano: nome del pacchetto, versione attualmente installata.
+#: src/reason_fragment.cc:532
+msgid ""
+"The following packages depend on a version of %B%s%b which is not going to "
+"be installed."
+msgstr ""
+"I seguenti pacchetti dipendono da una versione di %B%s%b che non sta per "
+"essere installata."
+
+#: src/reason_fragment.cc:538
+msgid "upgraded"
+msgstr "aggiornato"
+
+#: src/reason_fragment.cc:538
+msgid "downgraded"
+msgstr "retrocesso (downgraded)"
+
+# NdT: Le %s significano: nome del pacchetto, versione attualmente installata,
+# "aggiornato", versione candidata, "aggiornato".
+#: src/reason_fragment.cc:544
+msgid ""
+"The following packages depend on the currently installed version of %B%s%b (%"
+"B%s%b), or conflict with the version it will be %s to (%B%s%b), and will be "
+"broken if it is %s."
+msgstr ""
+"I seguenti pacchetti dipendono dalla versione attualmente installata di %B%s%"
+"b (%B%s%b), oppure sono in conflitto con la versione alla quale verrà %s (%B%"
+"s%b); saranno quindi difettosi se verrà %s."
+
+#: src/reason_fragment.cc:551
+msgid ""
+"The following packages conflict with version %B%s%b of %B%s%b, and will be "
+"broken if it is %s."
+msgstr ""
+"I seguenti pacchetti sono in conflitto con la versione %B%s%b di %B%s%b e, "
+"se verrà %s, saranno difettosi."
+
+#: src/reason_fragment.cc:556
+msgid ""
+"The following packages depend on version %B%s%b of %B%s%b, and will be "
+"broken if it is %s."
+msgstr ""
+"I seguenti pacchetti dipendono dalla versione %B%s%b di %B%s%b e, se verrà %"
+"s, saranno difettosi."
+
+#: src/solution_dialog.cc:107 src/solution_screen.cc:457
+msgid "The package cache is not available."
+msgstr ""
+
+#: src/solution_dialog.cc:115
+#, fuzzy
+msgid "No packages are broken."
+msgstr "Alcuni pacchetti sono difettosi. Provare a correggerli?"
+
+#: src/solution_dialog.cc:124 src/solution_screen.cc:479
+msgid "No resolution found."
+msgstr ""
+
+#: src/solution_dialog.cc:130 src/solution_screen.cc:490
+#, fuzzy
+msgid "Resolving dependencies..."
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/solution_dialog.cc:185
+#, fuzzy
+msgid "Previous"
+msgstr "Fornisce"
+
+#: src/solution_dialog.cc:186
+#, fuzzy
+msgid "Next"
+msgstr "^Successivo"
+
+#: src/solution_dialog.cc:187
+msgid "Apply"
+msgstr ""
+
+#: src/solution_dialog.cc:188
+#, fuzzy
+msgid "Close"
+msgstr "^Chiudi"
+
+#: src/solution_fragment.cc:104
+#, fuzzy, c-format
+msgid "%s depends upon %s"
+msgstr "dipende da"
+
+#: src/solution_fragment.cc:107
+#, fuzzy, c-format
+msgid "%s pre-depends upon %s"
+msgstr "pre-dipende da"
+
+#: src/solution_fragment.cc:110
+#, fuzzy, c-format
+msgid "%s suggests %s"
+msgstr "consiglia"
+
+#: src/solution_fragment.cc:113 src/solution_item.cc:581
+#, fuzzy, c-format
+msgid "%s recommends %s"
+msgstr "raccomanda"
+
+#: src/solution_fragment.cc:116
+#, fuzzy, c-format
+msgid "%s conflicts with %s"
+msgstr "è in conflitto con"
+
+#: src/solution_fragment.cc:119
+#, fuzzy, c-format
+msgid "%s replaces %s"
+msgstr "sostituisce"
+
+#: src/solution_fragment.cc:122
+#, fuzzy, c-format
+msgid "%s obsoletes %s"
+msgstr "rende obsoleto"
+
+#: src/solution_fragment.cc:135
+#, fuzzy, c-format
+msgid "%s conflicts with %s [provided by %s %s]"
+msgstr "è in conflitto con"
+
+#: src/solution_fragment.cc:145
+#, fuzzy, c-format
+msgid "Removing %s"
+msgstr "Riconfigurazione di %s\n"
+
+#: src/solution_fragment.cc:147
+#, c-format
+msgid "Installing %s %s (%s)"
+msgstr ""
+
+#: src/solution_fragment.cc:216
+#, fuzzy
+msgid "%BRemove%b the following packages:%n"
+msgstr "I seguenti pacchetti sono DIFETTOSI:"
+
+#: src/solution_fragment.cc:226
+#, fuzzy
+msgid "%BInstall%b the following packages:%n"
+msgstr "I seguenti pacchetti sono DIFETTOSI:"
+
+#: src/solution_fragment.cc:239
+msgid "%BKeep%b the following packages at their current version:%n"
+msgstr ""
+
+#: src/solution_fragment.cc:246
+#, fuzzy
+msgid "Not Installed"
+msgstr "non installato"
+
+#: src/solution_fragment.cc:259
+#, fuzzy
+msgid "%BUpgrade%b the following packages:%n"
+msgstr "I seguenti pacchetti sono DIFETTOSI:"
+
+#: src/solution_fragment.cc:274
+#, fuzzy
+msgid "%BDowngrade%b the following packages:%n"
+msgstr "Scaricamento dei pacchetti"
+
+#: src/solution_fragment.cc:291
+#, fuzzy, c-format
+msgid "Leave the following dependencies unresolved:%n"
+msgstr "I seguenti pacchetti sono DIFETTOSI:"
+
+#: src/solution_fragment.cc:299
+#, c-format
+msgid "Score is %d"
+msgstr ""
+
+#: src/solution_item.cc:91
+#, c-format
+msgid "Remove %F [%s (%s)]"
+msgstr ""
+
+#: src/solution_item.cc:98
+#, c-format
+msgid "Install %F [%s (%s)]"
+msgstr ""
+
+#: src/solution_item.cc:106
+#, c-format
+msgid "Cancel the installation of %F"
+msgstr ""
+
+#: src/solution_item.cc:109
+#, c-format
+msgid "Cancel the removal of %F"
+msgstr ""
+
+#: src/solution_item.cc:112
+#, c-format
+msgid "Keep %F at version %s (%s)"
+msgstr ""
+
+#: src/solution_item.cc:120
+#, c-format
+msgid "Upgrade %F [%s (%s) -> %s (%s)]"
+msgstr ""
+
+#: src/solution_item.cc:129
+#, fuzzy, c-format
+msgid "Downgrade %F [%s (%s) -> %s (%s)]"
+msgstr "Scaricato %sB in %s (%sB/s)."
+
+#: src/solution_item.cc:585
+#, fuzzy, c-format
+msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
+msgstr "I seguenti pacchetti sono DIFETTOSI:"
+
+#: src/solution_screen.cc:149
+#, fuzzy
+msgid "The following actions will resolve this dependency:"
+msgstr "I seguenti pacchetti hanno dipendenze non soddisfatte:\n"
+
+#: src/solution_screen.cc:235
+#, fuzzy
+msgid "Remove the following packages:"
+msgstr "I seguenti pacchetti sono DIFETTOSI:"
+
+#: src/solution_screen.cc:246
+#, fuzzy
+msgid "Keep the following packages at their current version:"
+msgstr "I seguenti pacchetti hanno dipendenze non soddisfatte:\n"
+
+#: src/solution_screen.cc:257
+#, fuzzy
+msgid "Install the following packages:"
+msgstr "I seguenti pacchetti sono DIFETTOSI:"
+
+#: src/solution_screen.cc:268
+#, fuzzy
+msgid "Upgrade the following packages:"
+msgstr "I seguenti pacchetti sono DIFETTOSI:"
+
+#: src/solution_screen.cc:279
+#, fuzzy
+msgid "Downgrade the following packages:"
+msgstr "Scaricamento dei pacchetti"
+
+#: src/solution_screen.cc:292
+#, fuzzy
+msgid "Leave the following recommendations unresolved:"
+msgstr "I seguenti pacchetti sono DIFETTOSI:"
+
+#: src/solution_screen.cc:463
+#, fuzzy
+msgid "No broken packages."
+msgstr "^Installa/rimuovi pacchetti"
+
+#: src/trust.cc:17 src/trust.cc:19
+msgid "WARNING"
+msgstr "ATTENZIONE"
+
+#: src/trust.cc:18
+msgid ""
+"%F: This version of %s is from an %Buntrusted source%b!  Installing this "
+"package could allow a malicious individual to damage or take control of your "
+"system."
+msgstr ""
+"%F: Questa versione di %s proviene da una %Bfonte non sicura%b. Installare "
+"questo pacchetto potrebbe consentire a un individuo malintenzionato di "
+"causare danno o assumere il controllo del sistema."
+
+#: src/ui.cc:217
+msgid "Er, there aren't any errors, this shouldn't have happened.."
+msgstr "Ehm, non c'è alcun errore, questo non avrebbe dovuto verificarsi..."
+
+#: src/ui.cc:223
+msgid "E:"
+msgstr ""
+
+#: src/ui.cc:225
+msgid "W:"
+msgstr ""
+
+#: src/ui.cc:316
+msgid ""
+"WARNING: the package cache is opened in read-only mode!  This change and all "
+"subsequent changes will not be saved unless you stop all other running apt-"
+"based programs and select \"Become root\" from the Actions menu."
+msgstr ""
+
+#: src/ui.cc:322
+msgid "Never display this message again."
+msgstr ""
+
+#: src/ui.cc:368
+msgid ""
+"You may not modify the state of any package while a download is underway."
+msgstr ""
+
+#: src/ui.cc:399
+msgid "You already are root!"
+msgstr "Si è già root."
+
+#: src/ui.cc:462
+msgid ""
+"Subprocess exited with an error -- did you type your password correctly?"
+msgstr ""
+"Il sottoprocesso ha restituito un errore: forse la password non è corretta."
+
+#: src/ui.cc:501
+msgid "Loading cache"
+msgstr "Caricamento della cache"
+
+#: src/ui.cc:523
+msgid "Really quit Aptitude?"
+msgstr "Uscire da Aptitude?"
+
+#: src/ui.cc:597
+msgid "Really discard your personal settings and reload the defaults?"
+msgstr "Abbandonare le impostazioni personali e tornare a quelle predefinite?"
+
+#: src/ui.cc:701 src/ui.cc:703 src/ui.cc:727 src/ui.cc:729 src/ui.cc:748
+#: src/ui.cc:750 src/ui.cc:771 src/ui.cc:773
+msgid "Packages"
+msgstr "Pacchetti"
+
+#: src/ui.cc:702 src/ui.cc:728 src/ui.cc:749 src/ui.cc:772
+msgid "View available packages and choose actions to perform"
+msgstr "Mostra i pacchetti disponibili e sceglie le azioni da eseguire"
+
+#: src/ui.cc:814
+#, fuzzy
+msgid ""
+"Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with %"
+"BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
+"is free software, and you are welcome to redistribute it under certain "
+"conditions; see 'license' for details."
+msgstr ""
+"Aptitude %s\n"
+"\n"
+"Copyright © 2000 Daniel Burrows.\n"
+"\n"
+"Aptitude è fornito SENZA ALCUNA GARANZIA; per maggiori dettagli vedere la\n"
+"voce «licenza» nel menu Aiuto. Questo è Software Libero ed è possibile la\n"
+"ridistribuzione sotto determinate condizioni; fare riferimento a «licenza»\n"
+"per maggiori dettagli."
+
+#: src/ui.cc:837
+msgid "help.txt"
+msgstr "help-it.txt"
+
+#: src/ui.cc:839
+msgid "Encoding of help.txt|UTF-8"
+msgstr ""
+
+#: src/ui.cc:860
+msgid "README"
+msgstr "README"
+
+#: src/ui.cc:862
+msgid "Encoding of README|UTF-8"
+msgstr ""
+
+#: src/ui.cc:888
+#, fuzzy
+msgid "User's Manual"
+msgstr "^Manuale dell'utente"
+
+#: src/ui.cc:888
+msgid "Read the full user's manual of aptitude"
+msgstr ""
+
+#: src/ui.cc:888
+#, fuzzy
+msgid "Manual"
+msgstr "Installato ^manualmente"
+
+#: src/ui.cc:922
+#, fuzzy, c-format
+msgid "Unable to stat \"%s\""
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/ui.cc:928
+#, fuzzy, c-format
+msgid "Unable to remove \"%s\""
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/ui.cc:938
+#, fuzzy, c-format
+msgid "Unable to list files in \"%s\""
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/ui.cc:951
+#, c-format
+msgid "Failure closing directory \"%s\""
+msgstr ""
+
+#: src/ui.cc:957
+#, fuzzy, c-format
+msgid "Unable to remove directory \"%s\""
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/ui.cc:967
+#, c-format
+msgid ""
+"Unable to remove the old temporary directory; you should remove %s by hand."
+msgstr ""
+
+#: src/ui.cc:972
+#, c-format
+msgid ""
+"Will not remove %s; you should examine the files in it and remove them by "
+"hand."
+msgstr ""
+
+#: src/ui.cc:998
+#, c-format
+msgid ""
+"It appears that a previous version of aptitude left files behind in %s.  "
+"These files are probably useless and safe to delete.%n%nDo you want to "
+"remove this directory and all its contents?  If you select \"No\", you will "
+"not see this message again."
+msgstr ""
+
+#: src/ui.cc:1040
+msgid "Downloading packages"
+msgstr "Scaricamento dei pacchetti"
+
+#: src/ui.cc:1041
+msgid "View the progress of the package download"
+msgstr "Mostra l'avanzamento dello scaricamento dei pacchetti"
+
+#: src/ui.cc:1042
+#, fuzzy
+msgid "Package Download"
+msgstr "Pacchetto: "
+
+#: src/ui.cc:1075
+msgid ""
+"%BWARNING%b: untrusted versions of the following packages will be installed!%"
+"n%nUntrusted packages could %Bcompromise your system's security%b.  You "
+"should only proceed with the installation if you are certain that this is "
+"what you want to do.%n%n"
+msgstr ""
+"%BATTENZIONE%b: verranno installate versioni non sicure dei seguenti "
+"pacchetti.%n%nPacchetti non sicuri potrebbero %Bcompromettere la sicurezza "
+"del sistema%b. Si dovrebbe procedere con l'installazione solo se si è sicuri "
+"di quello che si sta facendo.%n%n"
+
+#: src/ui.cc:1081
+#, fuzzy
+msgid "  %S*%N %s [version %s]%n"
+msgstr "Versioni"
+
+#: src/ui.cc:1087
+msgid "Really Continue"
+msgstr "Continua comunque"
+
+#: src/ui.cc:1089
+msgid "Abort Installation"
+msgstr "Annulla l'installazione"
+
+#: src/ui.cc:1151
+msgid "Preview of package installation"
+msgstr "Anteprima dell'installazione dei pacchetti"
+
+#: src/ui.cc:1152
+msgid "View and/or adjust the actions that will be performed"
+msgstr "Mostra e modifica le azioni da compiere"
+
+#: src/ui.cc:1153
+#, fuzzy
+msgid "Preview"
+msgstr "^Precedente"
+
+#: src/ui.cc:1194
+#, fuzzy
+msgid "Some packages were broken and have been fixed:"
+msgstr "Alcuni pacchetti erano difettosi e sono stati corretti"
+
+#: src/ui.cc:1200
+msgid "No solution to these dependency problems exists!"
+msgstr ""
+
+#: src/ui.cc:1206
+#, fuzzy, c-format
+msgid ""
+"Ran out of time while trying to resolve dependencies (press \"%s\" to try "
+"harder)"
+msgstr "Perdi tempo cercando di scovare le mine"
+
+#: src/ui.cc:1252
+#, fuzzy
+msgid ""
+"Installing/removing packages requires administrative privileges, which you "
+"currently do not have.  Would you like to change to the root account?"
+msgstr ""
+"Per installare e rimuovere pacchetti servono i privilegi di amministratore,\n"
+"dei quali al momento si è privi. Passare all'account di root?\n"
+
+#: src/ui.cc:1255 src/ui.cc:1384
+msgid "Become root"
+msgstr "Diventa root"
+
+#: src/ui.cc:1257 src/ui.cc:1386
+msgid "Don't become root"
+msgstr "Non diventare root"
+
+#: src/ui.cc:1262 src/ui.cc:1391
+msgid "A package-list update or install run is already taking place."
+msgstr ""
+"Un aggiornamento dell'elenco dei pacchetti o un'installazione è già in corso."
+
+#: src/ui.cc:1289
+msgid "No packages are scheduled to be installed, removed, or upgraded."
+msgstr "Non ci sono pacchetti da installare, rimuovere o aggiornare."
+
+#: src/ui.cc:1295
+#, fuzzy
+msgid ""
+"No packages will be installed, removed or upgraded.  Some packages could be "
+"upgraded, but you have not chosen to upgrade them.  Type \"U\" to prepare an "
+"upgrade."
+msgstr ""
+"Nessun pacchetto verrà installato, rimosso o aggiornato.\n"
+"\n"
+"Alcuni pacchetti potrebbero venire aggiornati ma si è scelto di non farlo.\n"
+"Premere «U» per preparare un aggiornamento."
+
+#: src/ui.cc:1353 src/ui.cc:1466
+msgid "Deleting obsolete downloaded files"
+msgstr "Cancellazione dei vecchi file scaricati"
+
+#: src/ui.cc:1368
+msgid "Updating package lists"
+msgstr "Aggiornamento dell'elenco dei pacchetti"
+
+#: src/ui.cc:1369
+msgid "View the progress of the package list update"
+msgstr "Mostra l'avanzamento dell'aggiornamento dell'elenco dei pacchetti"
+
+#: src/ui.cc:1370
+msgid "List Update"
+msgstr ""
+
+#: src/ui.cc:1381
+#, fuzzy
+msgid ""
+"Updating the package lists requires administrative privileges, which you "
+"currently do not have.  Would you like to change to the root account?"
+msgstr ""
+"Per aggiornare l'elenco dei pacchetti servono i privilegi di "
+"amministratore,\n"
+"dei quali attualmente si è privi. Passare all'account di root?\n"
+
+#: src/ui.cc:1396 src/ui.cc:1891
+msgid "Waste time trying to find mines"
+msgstr "Perdi tempo cercando di scovare le mine"
+
+#: src/ui.cc:1403 src/ui.cc:1463
+msgid "Cleaning while a download is in progress is not allowed"
+msgstr "Pulire mentre è in corso uno scaricamento non è permesso"
+
+#: src/ui.cc:1406
+msgid "Deleting downloaded files"
+msgstr "Cancellazione dei file scaricati"
+
+#: src/ui.cc:1420
+msgid "Downloaded package files have been deleted"
+msgstr "I file dei pacchetti scaricati sono stati cancellati"
+
+#: src/ui.cc:1460
+msgid "The apt cache file is not available; cannot auto-clean."
+msgstr ""
+
+#: src/ui.cc:1486
+#, fuzzy, c-format
+msgid ""
+"Obsolete downloaded package files have been deleted, freeing %sB of disk "
+"space."
+msgstr "I file dei vecchi pacchetti scaricati sono stati cancellati"
+
+#: src/ui.cc:1759
+msgid "Unable to find a solution to apply."
+msgstr ""
+
+#: src/ui.cc:1765
+#, fuzzy
+msgid "Ran out of time while trying to find a solution."
+msgstr "Perdi tempo cercando di scovare le mine"
+
+#: src/ui.cc:1808 src/ui.cc:1810
+#, fuzzy
+msgid "Resolve Dependencies"
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/ui.cc:1809
+#, fuzzy
+msgid "Search for solutions to unsatisfied dependencies"
+msgstr "Trova il prossimo pacchetto con dipendenze non soddisfatte"
+
+#: src/ui.cc:1821
+#, fuzzy, c-format
+msgid "Unable to open %ls"
+msgstr "Impossibile aprire %s in scrittura"
+
+#: src/ui.cc:1827
+msgid "Error while dumping resolver state"
+msgstr ""
+
+#: src/ui.cc:1837
+msgid "File to which the resolver state should be dumped:"
+msgstr ""
+
+#: src/ui.cc:1867
+msgid "^Install/remove packages"
+msgstr "^Installa/rimuovi pacchetti"
+
+#: src/ui.cc:1868
+msgid "Perform all pending installs and removals"
+msgstr "Procede ad installare e rimuovere i pacchetti"
+
+#: src/ui.cc:1870
+msgid "^Update package list"
+msgstr "^Aggiorna l'elenco dei pacchetti"
+
+#: src/ui.cc:1871
+msgid "Check for new versions of packages"
+msgstr "Cerca nuove versioni dei pacchetti"
+
+#: src/ui.cc:1874
+msgid "^Forget new packages"
+msgstr "^Dimentica i nuovi pacchetti"
+
+#: src/ui.cc:1875
+msgid "Forget which packages are \"new\""
+msgstr "Dimentica quali pacchetti sono «nuovi»"
+
+#: src/ui.cc:1878
+msgid "^Clean package cache"
+msgstr "^Pulisci la cache dei pacchetti"
+
+#: src/ui.cc:1879
+msgid "Delete package files which were previously downloaded"
+msgstr "Cancella i file dei pacchetti scaricati precedentemente"
+
+#: src/ui.cc:1882
+msgid "Clean ^obsolete files"
+msgstr "^Cancella i file vecchi"
+
+#: src/ui.cc:1883
+msgid "Delete package files which can no longer be downloaded"
+msgstr "Cancella i file dei pacchetti che non si possono più scaricare"
+
+# NdT: La traduzione non è fedele ma è una voce di menu e deve essere breve
+# Il significato letterale è: "Segna (= Mark) [tutti i pacchetti che è
+# possibile aggiornare] come aggiornabili (= Upgradable)"
+#: src/ui.cc:1886
+msgid "Mark ^Upgradable"
+msgstr "Aggiorna ^tutti i pacchetti"
+
+#: src/ui.cc:1887
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr ""
+"Richiede l'aggiornamento di tutti i pacchetti aggiornabili non bloccati"
+
+#: src/ui.cc:1890
+msgid "^Play Minesweeper"
+msgstr "^Gioca a campo minato"
+
+#: src/ui.cc:1893
+msgid "^Become root"
+msgstr "Diventa ^root"
+
+#: src/ui.cc:1894
+#, fuzzy
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"Esegue «su» per diventare root; questo farà ripartire il programma,\n"
+"mantenendo però le impostazioni attuali"
+
+#: src/ui.cc:1897
+msgid "^Reload package cache"
+msgstr "Ricarica ^la cache dei pacchetti"
+
+#: src/ui.cc:1898
+msgid "Reload the package cache"
+msgstr "Ricarica la cache dei pacchetti"
+
+#: src/ui.cc:1904
+msgid "^Quit"
+msgstr "^Esci"
+
+#: src/ui.cc:1905
+msgid "Exit the program"
+msgstr "Esce dal programma"
+
+#: src/ui.cc:1911 src/ui.cc:2251
+msgid "Undo"
+msgstr "Annulla"
+
+#: src/ui.cc:1912
+msgid "Undo the last package operation or group of operations"
+msgstr ""
+"Annulla l'ultima operazione o gruppo di operazioni effettuate sui pacchetti"
+
+#: src/ui.cc:1920
+msgid "^Install"
+msgstr "^Installa"
+
+#: src/ui.cc:1921
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "Richiede l'installazione e l'aggiornamento del pacchetto selezionato"
+
+#: src/ui.cc:1924
+msgid "^Remove"
+msgstr "^Rimuovi"
+
+#: src/ui.cc:1925
+msgid "Flag the currently selected package for removal"
+msgstr "Richiede la rimozione del pacchetto selezionato"
+
+#: src/ui.cc:1928
+msgid "^Purge"
+msgstr "^Elimina"
+
+#: src/ui.cc:1929
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr "Richiede la rimozione del pacchetto e dei suoi file di configurazione"
+
+#: src/ui.cc:1932
+msgid "^Keep"
+msgstr "Man^tieni"
+
+#: src/ui.cc:1933
+msgid "Cancel any action on the selected package"
+msgstr "Annulla ogni azione sul pacchetto selezionato"
+
+#: src/ui.cc:1936
+msgid "^Hold"
+msgstr "^Blocca"
+
+#: src/ui.cc:1937
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr ""
+"Annulla ogni azione sul pacchetto selezionato, impedendo aggiornamenti futuri"
+
+#: src/ui.cc:1940
+msgid "Mark ^Auto"
+msgstr "Installato ^automaticamente"
+
+#: src/ui.cc:1941
+#, fuzzy
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"Segna il pacchetto selezionato come installato automaticamente;\n"
+"verrà rimosso automaticamente se nessun altro pacchetto dipende da esso"
+
+#: src/ui.cc:1944
+msgid "Mark ^Manual"
+msgstr "Installato ^manualmente"
+
+#: src/ui.cc:1945
+#, fuzzy
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+"Segna il pacchetto selezionato come installato manualmente;\n"
+"non verrà rimosso, a meno che non si intervenga manualmente"
+
+#: src/ui.cc:1948
+msgid "^Forbid Version"
+msgstr "^Proibisci versione"
+
+#: src/ui.cc:1949
+#, fuzzy
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"Impedisce che venga installata la versione candidata del pacchetto "
+"selezionato;\n"
+"le versioni successive verranno installate normalmente"
+
+#: src/ui.cc:1953
+msgid "I^nformation"
+msgstr "I^nformazioni"
+
+#: src/ui.cc:1954
+msgid "Display more information about the selected package"
+msgstr "Mostra informazioni dettagliate sul pacchetto selezionato"
+
+#: src/ui.cc:1957
+msgid "^Changelog"
+msgstr "^Changelog"
+
+#: src/ui.cc:1958
+msgid "Display the Debian changelog of the selected package"
+msgstr "Mostra il changelog Debian del pacchetto selezionato"
+
+#: src/ui.cc:1965
+msgid "^Examine Solution"
+msgstr ""
+
+#: src/ui.cc:1966
+msgid "Examine the currently selected solution to the dependency problems."
+msgstr ""
+
+#: src/ui.cc:1969
+msgid "Apply ^Solution"
+msgstr ""
+
+#: src/ui.cc:1970
+msgid "Perform the actions contained in the currently selected solution."
+msgstr ""
+
+#: src/ui.cc:1973
+#, fuzzy
+msgid "^Next Solution"
+msgstr "^Reimposta le opzioni"
+
+#: src/ui.cc:1974
+#, fuzzy
+msgid "Select the next solution to the dependency problems."
+msgstr "Trova il prossimo pacchetto con dipendenze non soddisfatte"
+
+#: src/ui.cc:1977
+#, fuzzy
+msgid "^Previous Solution"
+msgstr "Fornisce"
+
+#: src/ui.cc:1978
+#, fuzzy
+msgid "Select the previous solution to the dependency problems."
+msgstr "Trova il prossimo pacchetto con dipendenze non soddisfatte"
+
+#: src/ui.cc:1981
+#, fuzzy
+msgid "^First Solution"
+msgstr "^Reimposta le opzioni"
+
+#: src/ui.cc:1982
+#, fuzzy
+msgid "Select the first solution to the dependency problems."
+msgstr "Trova il prossimo pacchetto con dipendenze non soddisfatte"
+
+#: src/ui.cc:1985
+#, fuzzy
+msgid "^Last Solution"
+msgstr "^Reimposta le opzioni"
+
+#: src/ui.cc:1986
+#, fuzzy
+msgid ""
+"Select the last solution to the dependency problems that has been generated "
+"so far."
+msgstr "Trova il prossimo pacchetto con dipendenze non soddisfatte"
+
+#: src/ui.cc:1992
+msgid "Toggle ^Rejected"
+msgstr ""
+
+#: src/ui.cc:1993
+msgid "Toggle whether the currently selected action is rejected."
+msgstr ""
+
+#: src/ui.cc:1997
+msgid "Toggle ^Approved"
+msgstr ""
+
+#: src/ui.cc:1998
+#, fuzzy
+msgid "Toggle whether the currently selected action is approved."
+msgstr "Richiede la rimozione del pacchetto selezionato"
+
+#: src/ui.cc:2002
+msgid "^View Target"
+msgstr ""
+
+#: src/ui.cc:2003
+msgid "View the package which will be affected by the selected action"
+msgstr ""
+
+#: src/ui.cc:2011
+msgid "^Find"
+msgstr "^Trova"
+
+#: src/ui.cc:2012
+#, fuzzy
+msgid "Search forwards"
+msgstr "Cerca:"
+
+#: src/ui.cc:2015
+msgid "^Find Backwards"
+msgstr ""
+
+#: src/ui.cc:2016
+#, fuzzy
+msgid "Search backwards"
+msgstr "Cerca: "
+
+#: src/ui.cc:2019
+msgid "Find ^Again"
+msgstr "Trova ^successivo"
+
+#: src/ui.cc:2020
+msgid "Repeat the last search"
+msgstr "Ripete l'ultima ricerca"
+
+#: src/ui.cc:2024
+msgid "^Limit Display"
+msgstr "^Applica filtro"
+
+#: src/ui.cc:2025
+msgid "Apply a filter to the package list"
+msgstr "Applica un filtro all'elenco dei pacchetti"
+
+#: src/ui.cc:2028
+msgid "^Un-Limit Display"
+msgstr "^Rimuovi filtro"
+
+#: src/ui.cc:2029
+msgid "Remove the filter from the package list"
+msgstr "Rimuove il filtro dall'elenco dei pacchetti"
+
+#: src/ui.cc:2033
+msgid "Find ^Broken"
+msgstr "Trova ^difettosi"
+
+#: src/ui.cc:2034
+msgid "Find the next package with unsatisfied dependencies"
+msgstr "Trova il prossimo pacchetto con dipendenze non soddisfatte"
+
+#: src/ui.cc:2041
+msgid "^UI options"
+msgstr "Opzioni dell'interfaccia ^utente"
+
+#: src/ui.cc:2042
+msgid "Change the settings which affect the user interface"
+msgstr "Cambia le impostazioni che riguardano l'interfaccia utente"
+
+#: src/ui.cc:2045
+msgid "^Dependency handling"
+msgstr "Gestione delle ^dipendenze"
+
+#: src/ui.cc:2046
+msgid "Change the settings which affect how package dependencies are handled"
+msgstr ""
+"Cambia le impostazioni riguardo alla gestione delle dipendenze tra i "
+"pacchetti"
+
+#: src/ui.cc:2049
+msgid "^Miscellaneous"
+msgstr "^Varie"
+
+#: src/ui.cc:2050
+msgid "Change miscellaneous program settings"
+msgstr "Cambia altre impostazioni del programma"
+
+#: src/ui.cc:2055
+msgid "^Revert options"
+msgstr "^Reimposta le opzioni"
+
+#: src/ui.cc:2056
+msgid "Reset all settings to the system defaults"
+msgstr "Riporta tutte le impostazioni ai valori predefiniti"
+
+#: src/ui.cc:2067
+msgid "^Next"
+msgstr "^Successivo"
+
+#: src/ui.cc:2068
+msgid "View next display"
+msgstr "Mostra la vista successiva"
+
+#: src/ui.cc:2071
+msgid "^Prev"
+msgstr "^Precedente"
+
+#: src/ui.cc:2072
+msgid "View previous display"
+msgstr "Mostra la vista precedente"
+
+#: src/ui.cc:2075
+msgid "^Close"
+msgstr "^Chiudi"
+
+#: src/ui.cc:2076
+msgid "Close this display"
+msgstr "Chiude questa vista"
+
+#: src/ui.cc:2081
+msgid "New Package ^View"
+msgstr "Nuova ^vista dei pacchetti"
+
+#: src/ui.cc:2082
+msgid "Create a new default package view"
+msgstr "Crea una nuova vista dei pacchetti"
+
+#: src/ui.cc:2085
+#, fuzzy
+msgid "New ^Flat Package List"
+msgstr "Nuova ^vista dei pacchetti"
+
+#: src/ui.cc:2086
+msgid "View all the packages on the system in a single uncategorized list"
+msgstr ""
+
+#: src/ui.cc:2089
+#, fuzzy
+msgid "New ^Debtags Browser"
+msgstr "Nuova vista per ^categorie"
+
+#: src/ui.cc:2091
+#, fuzzy
+msgid "Browse packages using Debtags data"
+msgstr "Sfoglia i pacchetti per categoria"
+
+#: src/ui.cc:2094
+msgid "New Categorical ^Browser"
+msgstr "Nuova vista per ^categorie"
+
+#: src/ui.cc:2096
+msgid "Browse packages by category"
+msgstr "Sfoglia i pacchetti per categoria"
+
+#: src/ui.cc:2104
+msgid "^About"
+msgstr "^Informazioni su"
+
+#: src/ui.cc:2105
+msgid "View information about this program"
+msgstr "Mostra le informazioni su questo programma"
+
+#: src/ui.cc:2108
+msgid "^Help"
+msgstr "^Aiuto"
+
+#: src/ui.cc:2109
+msgid "View the on-line help"
+msgstr "Mostra una breve guida online"
+
+#: src/ui.cc:2111
+msgid "User's ^Manual"
+msgstr "^Manuale dell'utente"
+
+#: src/ui.cc:2112
+msgid "View the detailed program manual"
+msgstr "Mostra il manuale dettagliato del programma"
+
+#: src/ui.cc:2115
+msgid "^FAQ"
+msgstr "^FAQ"
+
+#: src/ui.cc:2116
+msgid "View a list of frequently asked questions"
+msgstr "Visualizza un elenco delle domande più frequenti"
+
+#: src/ui.cc:2119
+msgid "^NEWS"
+msgstr ""
+
+#: src/ui.cc:2120
+#, fuzzy
+msgid "View the important changes made in each version of "
+msgstr ""
+"Mostra i cambiamenti più importanti effettuati in ogni versione del programma"
+
+#: src/ui.cc:2123
+msgid "^License"
+msgstr "^Licenza"
+
+#: src/ui.cc:2124
+msgid "View the terms under which you may copy the program"
+msgstr ""
+"Mostra le condizioni in base alle quali è permessa la copia del programma"
+
+#: src/ui.cc:2250
+msgid "Actions"
+msgstr "Azioni"
+
+#: src/ui.cc:2253
+#, fuzzy
+msgid "Resolver"
+msgstr "^Rimuovi"
+
+#: src/ui.cc:2254
+msgid "Search"
+msgstr "Cerca"
+
+#: src/ui.cc:2255
+msgid "Options"
+msgstr "Opzioni"
+
+#: src/ui.cc:2256
+msgid "Views"
+msgstr "Viste"
+
+#: src/ui.cc:2257
+msgid "Help"
+msgstr "Aiuto"
+
+#: src/ui.cc:2322
+#, fuzzy, c-format
+msgid ""
+"%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
+"Pkgs"
+msgstr ""
+"%s: menu  %s: Aiuto  %s: Esci  %s: Aggiorna  %s: Scarica/Installa/Rimuovi"
+
+# Put the appropriate key for Y/N choices here (lower case)
+#: src/ui.cc:2663 src/vscreen/vscreen.cc:723
+msgid "yes_key"
+msgstr "s"
+
+# Put the appropriate key for Y/N choices here (lower case)
+#: src/ui.cc:2664 src/vscreen/vscreen.cc:724
+msgid "no_key"
+msgstr "n"
+
+#: src/view_changelog.cc:149
+#, c-format
+msgid "%s changes"
+msgstr ""
+
+#: src/view_changelog.cc:150
+#, fuzzy
+msgid "View the list of changes made to this Debian package."
+msgstr ""
+"Mostra i cambiamenti più importanti effettuati in ogni versione del programma"
+
+#: src/view_changelog.cc:211
+msgid "You can only view changelogs of official Debian packages."
+msgstr "È possibile vedere i changelog solo dei pacchetti Debian ufficiali."
+
+#: src/view_changelog.cc:221
+msgid "Downloading Changelog"
+msgstr "Scaricamento del Changelog"
+
+#: src/view_changelog.cc:223
+#, fuzzy
+msgid "Download Changelog"
+msgstr "Scaricamento del Changelog"
+
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr ""
+
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr ""
+
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr ""
+
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr ""
+
+#: src/vscreen/config/column_definition.cc:211
+#, fuzzy, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Modello «%c» sconosciuto"
+
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr ""
+
+#: src/vscreen/config/keybindings.cc:314
+#, fuzzy, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Lettura delle descrizioni dei task"
+
+#: src/vscreen/config/keybindings.cc:324
+#, fuzzy
+msgid "Invalid null keybinding"
+msgstr "Voce non ammessa nel gruppo di assegnazione tasti: «%s»"
+
+#: src/vscreen/config/keybindings.cc:332
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Ricevuto il segnale SIGTERM. Uscita immediata.\n"
+
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Ricevuto il segnale SIGSEGV. Uscita immediata.\n"
+
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Ricevuto il segnale SIGABRT. Uscita immediata.\n"
+
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Ricevuto il segnale SIGQUIT. Uscita immediata.\n"
+
+#: src/vscreen/vs_pager.cc:435
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+
+#: src/vscreen/vs_tree.cc:930
+msgid "TOP LEVEL"
+msgstr ""
+
+#~ msgid "Happy?"
+#~ msgstr "Contento ora?"
+
+#~ msgid "Can't get value of $HOME, using TMPDIR (insecure)"
+#~ msgstr ""
+#~ "Impossibile leggere il valore di $HOME, sarà usata TMPDIR (non sicura)"
+
+#, fuzzy
+#~ msgid "Create a new flat package list"
+#~ msgstr "Crea una nuova vista dei pacchetti"
+
+#~ msgid "Search for a package"
+#~ msgstr "Cerca un pacchetto"
+
+#, fuzzy
+#~ msgid "Search backwards for a package"
+#~ msgstr "Cerca un pacchetto"
+
+#~ msgid "Bad filter type '%s' (valid types are: 'missing')"
+#~ msgstr "Tipo di filtro «%s» non ammesso (usare «missing»)"
+
+#~ msgid "Version-generating grouping policies must be the tail of a chain"
+#~ msgstr ""
+#~ "I criteri di raggruppamento che generano versioni devono stare in fondo "
+#~ "alla catena"
+
+#~ msgid "Dep-generating grouping policies must be the tail of a chain"
+#~ msgstr ""
+#~ "I criteri di raggruppamento che generano dipendenze devono stare in fondo "
+#~ "alla catena"
+
+#~ msgid "Invalid zero-length grouping policy name"
+#~ msgstr "Nome del criterio di raggruppamento non ammesso (lunghezza nulla)"
+
+#~ msgid "Invalid grouping policy type '%s'"
+#~ msgstr "Tipo di criterio di raggruppamento «%s» non ammesso"
+
+#~ msgid "%sB bytes of disk space will be freed\n"
+#~ msgstr "Verranno liberati %sB di spazio su disco\n"
+
+#~ msgid "Warning: could not lock the cache file.  Opening in read-only mode"
+#~ msgstr ""
+#~ "Impossibile creare un lock sul file di cache: apertura in sola lettura."
+
+#~ msgid "The number of mines must be a number"
+#~ msgstr "Il numero di mine deve essere un numero"
+
+#~ msgid ""
+#~ "Commands:\n"
+#~ "  y: continue with the installation\n"
+#~ "  n: abort and quit\n"
+#~ "  i: show information about one or more packages;\n"
+#~ "     the package names should follow 'i'\n"
+#~ "  c: show the Debian changelogs of one or more packages;\n"
+#~ "     the package names should follow 'c'\n"
+#~ "  d: toggle display of dependency information\n"
+#~ "  s: toggle display of changes in package sizes\n"
+#~ "  v: toggle display of versions\n"
+#~ "  e: enter the full visual interface\n"
+#~ "\n"
+#~ "  You may also specify modifications to the set of package actions.\n"
+#~ "  To do so, type an action character followed by one or more package "
+#~ "names\n"
+#~ "or patterns.  The action will be applied to all packages. (you may "
+#~ "specify\n"
+#~ "additional actions; each will be applied to all packages that follow it)\n"
+#~ "\n"
+#~ "Actions:\n"
+#~ "  + : Install\n"
+#~ "  - : Remove\n"
+#~ "  _ : Purge\n"
+#~ "  = : Hold\n"
+#~ msgstr ""
+#~ "Comandi:\n"
+#~ "  y: continua l'installazione\n"
+#~ "  n: abbandona ed esci\n"
+#~ "  i: mostra informazioni su uno o più pacchetti,\n"
+#~ "     elencati dopo «i»\n"
+#~ "  c: mostra i changelog Debian di uno o più pacchetti,\n"
+#~ "     elencati dopo «c»\n"
+#~ "  d: mostra/nascondi le informazioni sulle dipendenze\n"
+#~ "  s: mostra/nascondi le variazioni dello spazio occupato\n"
+#~ "  v: mostra/nascondi le versioni\n"
+#~ "  e: entra nell'interfaccia visuale\n"
+#~ "\n"
+#~ "  Si possono anche specificare modifiche nelle azioni da compiere.\n"
+#~ "  Per farlo, inserire un carattere indicante un'azione seguito da uno o "
+#~ "più\n"
+#~ "nomi di pacchetti o modelli. L'azione sarà applicata a tutti i "
+#~ "pacchetti.\n"
+#~ "  È possibile specificare ulteriori azioni, ognuna delle quali verrà "
+#~ "applicata\n"
+#~ "a tutti i pacchetti che la seguono.\n"
+#~ "\n"
+#~ "Azioni:\n"
+#~ "  + : Installa\n"
+#~ "  - : Rimuovi\n"
+#~ "  _ : Elimina\n"
+#~ "  = : Blocca\n"
+
+#~ msgid ""
+#~ "Some packages had unmet dependencies.  This may mean that you have\n"
+#~ "requested an impossible situation or if you are using the unstable\n"
+#~ "distribution that some required packages have not yet been created\n"
+#~ "or been moved out of Incoming.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Alcuni pacchetti hanno dipendenze non soddisfatte. Questo può voler\n"
+#~ "dire che è stata richiesta una situazione impossibile oppure, se\n"
+#~ "si sta usando la distribuzione «unstable», che alcuni pacchetti\n"
+#~ "richiesti non sono ancora stati creati o spostati da «incoming».\n"
+
+#~ msgid ""
+#~ "Please insert the following disc into the drive \"%s\":\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Inserire il seguente disco nell'unità «%s»:\n"
+#~ "%s"
+
+#~ msgid "Need exactly two colors in color definition \"%s\""
+#~ msgstr "Servono esattamente due colori nella definizione dei colori «%s»"
+
+#~ msgid "Can't parse foreground \"%s\"of color \"%s\""
+#~ msgstr "Impossibile analizzare il primo piano «%s» del colore «%s»"
+
+#~ msgid "Can't parse background \"%s\" of color \"%s\""
+#~ msgstr "Impossibile analizzare lo sfondo «%s» del colore «%s»"
+
+#~ msgid "Invalid option for interactive mode: -s\n"
+#~ msgstr "Opzione non ammessa nella modalità interattiva: -s\n"
+
+#~ msgid ""
+#~ "Programs for faxmodems and other communications devices\n"
+#~ " Packages in the 'comm' section are used to control modems and other "
+#~ "hardware communications devices. This includes software to control "
+#~ "faxmodems (for instance, PPP for dial-up internet connections and "
+#~ "programs originally written for that purpose (zmodem/kermit), as well as "
+#~ "software to control cellular phones, interface with FidoNet, and run a "
+#~ "BBS."
+#~ msgstr ""
+#~ "Programmi per faxmodem e altri dispositivi di comunicazione\n"
+#~ " I pacchetti nella sezione «comm» servono a controllare modem e altri "
+#~ "dispositivi hardware di comunicazione. È incluso software per controllare "
+#~ "i faxmodem come, ad esempio, PPP per connessioni internet dialup e "
+#~ "programmi originariamente scritti a tale scopo (zmodem/kermit), così come "
+#~ "software per controllare telefoni cellulari, interfacciarsi con FidoNet e "
+#~ "gestire una BBS."
+
+#~ msgid ""
+#~ "Programs which are not free software\n"
+#~ " Packages in the 'non-free' section are not part of Debian.\n"
+#~ " .\n"
+#~ " These packages fail to meet one or more of the requirements of the "
+#~ "Debian Free Software Guidelines (see below) You should read the license "
+#~ "of programs in this section to be sure that you are allowed to use them "
+#~ "in the way you intend.\n"
+#~ " .\n"
+#~ " For more information about what Debian considers to be Free Software, "
+#~ "see http://www.debian.org/social_contract#guidelines"
+#~ msgstr ""
+#~ "Programmi che non sono Software Libero\n"
+#~ " I pacchetti nella sezione «non-free» non fanno parte di Debian.\n"
+#~ " .\n"
+#~ " Questi pacchetti non soddisfano uno o più requisiti delle Linee Guida "
+#~ "Debian per il Software Libero (vedere sotto). Si dovrebbero leggere le "
+#~ "licenze dei programmi in questa sezione per accertarsi di avere il "
+#~ "permesso di usarli nel modo desiderato.\n"
+#~ " .\n"
+#~ " Per maggiori informazioni riguardo a cosa Debian considera Software "
+#~ "Libero, vedere anche http://www.debian.org/social_contract#guidelines"
+
+#~ msgid ""
+#~ "New Packages\n"
+#~ " These packages have been added to Debian since the last time you cleared "
+#~ "the list of \"new\" packages. (choose \"Forget new packages\" from the "
+#~ "Actions menu to empty this list)"
+#~ msgstr ""
+#~ "Pacchetti nuovi\n"
+#~ " Questi pacchetti sono stati aggiunti a Debian dopo l'ultima "
+#~ "cancellazione dell'elenco dei pacchetti «nuovi»; scegliere «Dimentica i "
+#~ "nuovi pacchetti» dal menu Azioni per svuotare questo elenco."
+
+#~ msgid ""
+#~ "%s is an essential package!\n"
+#~ "\n"
+#~ "Are you sure you want to remove it?\n"
+#~ "Type '%s' if you are."
+#~ msgstr ""
+#~ "%s è un pacchetto essenziale!\n"
+#~ "\n"
+#~ "Se si è certi di volerlo rimuovere, inserire\n"
+#~ "«%s»."
+
+#~ msgid "Available versions of "
+#~ msgstr "Versioni disponibili di "
+
+#~ msgid ""
+#~ "You are not root and I cannot find any way\n"
+#~ "to become root.  To reconfigure this package,\n"
+#~ "install the menu package, the login package,\n"
+#~ "or run aptitude as root."
+#~ msgstr ""
+#~ "Non si possiedono i permessi di root e non è stato\n"
+#~ "possibile trovare alcun modo per diventare root.\n"
+#~ "Per riconfigurare questo pacchetto, installare il pacchetto\n"
+#~ "«menu», il pacchetto «login», oppure eseguire Aptitude come root."
+
+#~ msgid "Information about "
+#~ msgstr "Informazioni su "
+
+#~ msgid ""
+#~ "Aptitude %s\n"
+#~ "\n"
+#~ "Copyright 2000 Daniel Burrows.\n"
+#~ "\n"
+#~ "aptitude comes with ABSOLUTELY NO WARRANTY; for details see 'license' in "
+#~ "the\n"
+#~ "Help menu.  This is free software, and you are welcome to redistribute "
+#~ "it\n"
+#~ "under certain conditions; see 'license' for details."
+#~ msgstr ""
+#~ "Aptitude %s\n"
+#~ "\n"
+#~ "Copyright © 2000 Daniel Burrows.\n"
+#~ "\n"
+#~ "Aptitude è fornito SENZA ALCUNA GARANZIA; per maggiori dettagli vedere "
+#~ "la\n"
+#~ "voce «licenza» nel menu Aiuto. Questo è Software Libero ed è possibile "
+#~ "la\n"
+#~ "ridistribuzione sotto determinate condizioni; fare riferimento a "
+#~ "«licenza»\n"
+#~ "per maggiori dettagli."
+
+#~ msgid "Some packages were broken and have been fixed"
+#~ msgstr "Alcuni pacchetti erano difettosi e sono stati corretti"
+
+#~ msgid "Some broken packages could not be fixed!"
+#~ msgstr "Non è stato possibile correggere alcuni pacchetti difettosi."
+
+#~ msgid "Some packages are broken.  Try to fix them?"
+#~ msgstr "Alcuni pacchetti sono difettosi. Provare a correggerli?"
+
+#~ msgid ""
+#~ "Installing/removing packages requires administrative privileges, which\n"
+#~ "you currently do not have.  Would you like to change to the root "
+#~ "account?\n"
+#~ msgstr ""
+#~ "Per installare e rimuovere pacchetti servono i privilegi di "
+#~ "amministratore,\n"
+#~ "dei quali al momento si è privi. Passare all'account di root?\n"
+
+#~ msgid ""
+#~ "No packages will be installed, removed or upgraded.\n"
+#~ "\n"
+#~ "Some packages could be upgraded, but you have not chosen to upgrade "
+#~ "them.\n"
+#~ "Type \"U\" to prepare an upgrade."
+#~ msgstr ""
+#~ "Nessun pacchetto verrà installato, rimosso o aggiornato.\n"
+#~ "\n"
+#~ "Alcuni pacchetti potrebbero venire aggiornati ma si è scelto di non "
+#~ "farlo.\n"
+#~ "Premere «U» per preparare un aggiornamento."
+
+#~ msgid ""
+#~ "Updating the package lists requires administrative privileges, which\n"
+#~ "you currently do not have.  Would you like to change to the root "
+#~ "account?\n"
+#~ msgstr ""
+#~ "Per aggiornare l'elenco dei pacchetti servono i privilegi di "
+#~ "amministratore,\n"
+#~ "dei quali attualmente si è privi. Passare all'account di root?\n"
+
+#~ msgid "Obsolete downloaded package files have been deleted"
+#~ msgstr "I file dei vecchi pacchetti scaricati sono stati cancellati"
+
+#~ msgid ""
+#~ "Run 'su' to become root; this will restart the program, but your\n"
+#~ "settings will be preserved"
+#~ msgstr ""
+#~ "Esegue «su» per diventare root; questo farà ripartire il programma,\n"
+#~ "mantenendo però le impostazioni attuali"
+
+#~ msgid ""
+#~ "Mark the selected package as having been automatically installed;\n"
+#~ "it will automatically be removed if no other packages depend on it"
+#~ msgstr ""
+#~ "Segna il pacchetto selezionato come installato automaticamente;\n"
+#~ "verrà rimosso automaticamente se nessun altro pacchetto dipende da esso"
+
+#~ msgid ""
+#~ "Mark the selected package as having been manually installed;\n"
+#~ "it will not be removed unless you manually remove it"
+#~ msgstr ""
+#~ "Segna il pacchetto selezionato come installato manualmente;\n"
+#~ "non verrà rimosso, a meno che non si intervenga manualmente"
+
+#~ msgid ""
+#~ "Forbid the candidate version of the selected package from being "
+#~ "installed;\n"
+#~ "newer versions of the package will be installed as usual"
+#~ msgstr ""
+#~ "Impedisce che venga installata la versione candidata del pacchetto "
+#~ "selezionato;\n"
+#~ "le versioni successive verranno installate normalmente"
+
+#~ msgid "^ChangeLog"
+#~ msgstr "^ChangeLog"
+
+#~ msgid "View the important changes made in each version of the program"
+#~ msgstr ""
+#~ "Mostra i cambiamenti più importanti effettuati in ogni versione del "
+#~ "programma"
+
+#~ msgid "Go away, I'm trying to think.\n"
+#~ msgstr "Deixeu-me tranquil, estic intentant pensar.\n"
+
+#, fuzzy
+#~ msgid "  This will use %sB of disk space."
+#~ msgstr "Occuperà %sB su disco"
+
+#, fuzzy
+#~ msgid "  This will free %sB of disk space."
+#~ msgstr "Libererà %sB su disco"
+
+#~ msgid "Use new (idempotent) package command behavior"
+#~ msgstr "Utilitza el nou comportament (idempotent) d'ordres per a paquets"
+
+#, fuzzy
+#~ msgid "Install Suggested packages automatically"
+#~ msgstr "Installare automaticamente i pacchetti Raccomandati"
+
+#, fuzzy
+#~ msgid ""
+#~ "Packages with unsatisfied dependencies\n"
+#~ " The dependency requirements of these packages will be after the install "
+#~ "is complete.\n"
+#~ " .\n"
+#~ " The presence of this tree probably indicates that something is broken, "
+#~ "either on your system or in the Debian archive."
+#~ msgstr ""
+#~ "Pacchetti con dipendenze mancanti\n"
+#~ " I requisiti sulle dipendenze di questi pacchetti non saranno soddisfatti "
+#~ "dopo il completamento dell'installazione.\n"
+#~ " .\n"
+#~ " La presenza di questo albero probabilmente indica che qualcosa non va "
+#~ "nel proprio sistema o negli archivi Debian."
+
+#, fuzzy
+#~ msgid "Description of %s"
+#~ msgstr "Descrizione: "
+
+#, fuzzy
+#~ msgid "Description of "
+#~ msgstr "Descrizione: "
+
+#, fuzzy
+#~ msgid " -S fname: read the aptitude extended status info from fname.\n"
+#~ msgstr " -S nomefile: Legge lo stato esteso di Aptitude da nomefile\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "Could not regain the system lock!  (Perhaps another apt or dpkg is "
+#~ "running?"
+#~ msgstr ""
+#~ "Impossibile recuperare il lock di sistema! Forse un altro apt o dpkg è in "
+#~ "esecuzione."
+
+#, fuzzy
+#~ msgid "Bad section name '%s' (use 'none', 'topdir', or 'subdir'"
+#~ msgstr ""
+#~ "Nome di sezione non corretto: «%s» (usare «none», «topdir», o «subdir»)"

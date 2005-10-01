@@ -1,0 +1,66 @@
+                             Pomoc do aptitude
+
+  Do przeglądania pomocy można używać klawiszy strzałek oraz PageUp/PageDown.
+Wciśnięcie klawisza Enter lub Return pozwala ją opuścić.
+
+  Następujące klawisze są dostępne domyślnie na ekranach informacyjnych
+aptitude. Ta lista nie jest kompletna. Informacje o innych dostępnych
+klawiszach znajdują się w pliku README.
+
+  "q":           Kończy zapisując zmiany
+  "?":           Wyświetla ten tekst
+
+  "f":	 	 Czyści listę ,,nowych'' pakietów
+  
+  Góra lub "k":  Przesuwa kursor w górę
+  Dół lub "j":   Przesuwa kursor w dół
+  "^":           Przesuwa kursor do elementu nadrzędnego
+  Enter:         Zwija lub rozwija grupę pakietów
+  "[":           Rozwija grupę pakietów i wszystkie jej podgrupy
+  "]":           Zwija grupę pakietów i wszystkie jej podgrupy
+
+  Enter lub "i": Wyświetla informacje o pakiecie
+  "+":           Zaznacza pakiet do instalacji lub uaktualnienia
+                 albo przywraca możliwość uaktualnienia wstrzymanego pakietu
+  "-":           Zaznacza pakiet do usunięcia
+  "=":           Wstrzymuje uaktualnienia pakietu
+  "_":           Zaznacza pakiet do usunięcia wraz z plikami konfiguracyjnymi
+  "L":           Zaznacza pakiet do reinstalacji
+
+  "u":           Uaktualnia listę dostępnych pakietów
+  "g":           Wykonuje wszystkie instalacje, uaktualnienia i usunięcia
+                 pakietów
+
+  Control-u:     Cofa ostatnią akcję lub grupę akcji
+  "/":           Wyszukuje pakiety (domyślnie według nazwy; więcej informacji
+                 w pliku README/podręczniku użytkownika)
+  "\":           Powtarza ostatnie wyszukiwanie
+
+  "D":           Wyświetla/ukrywa dodatkowy obszar informacyjny
+  "v":           Wyświetla dostępne wersje pakietu
+  "d":           Wyświetla zależności pakietu
+  "r":           Wyświetla pakiety zależące od danego pakietu
+  
+  "a":           Przewija rozszerzony opis w górę
+  "z":           Przewija rozszerzony opis w dół
+
+  Możliwe wartości flagi stanu pakietu:
+
+   v - wirtualny
+   B - niespełnione zależności
+   u - rozpakowany
+   C - niedokonfigurowany
+   H - niedoinstalowany
+   c - usunięty, nie wyczyszczony (pozostały pliki konfiguracyjne)
+   i - zainstalowany
+   E - błąd wewnętrzny (nie powinno wystąpić)
+
+  Możliwe wartości flagi akcji dla pakietu:
+
+   h - zatrzymaj
+   p - wyczyść
+   d - skasuj
+   B - niespełnione zależności
+   i - instaluj
+   r - reinstaluj
+   u - uaktualnij
