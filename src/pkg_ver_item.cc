@@ -469,7 +469,12 @@ pkg_grouppolicy *pkg_grouppolicy_ver_factory::instantiate(pkg_signal *sig,
 
 style pkg_ver_item::get_normal_style()
 {
-  return vs_treeitem::get_normal_style()+ver_style(version);
+  return vs_treeitem::get_normal_style() + ver_style(version, false);
+}
+
+style pkg_ver_item::get_highlighted_style()
+{
+  return vs_treeitem::get_normal_style() + ver_style(version, true);
 }
 
 pkg_ver_item::pkg_ver_item(const pkgCache::VerIterator &_version, pkg_signal *_sig,
@@ -479,7 +484,10 @@ pkg_ver_item::pkg_ver_item(const pkgCache::VerIterator &_version, pkg_signal *_s
 {
 }
 
-style pkg_ver_item::ver_style(pkgCache::VerIterator version)
+#define MAYBE_HIGHLIGHTED(x) (highlighted ? (x "Highlighted") : (x))
+
+style pkg_ver_item::ver_style(pkgCache::VerIterator version,
+			      bool highlighted)
 {
   pkgCache::PkgIterator pkg=version.ParentPkg();
   pkgDepCache::StateCache &state=(*apt_cache_file)[pkg];
@@ -489,26 +497,26 @@ style pkg_ver_item::ver_style(pkgCache::VerIterator version)
       (state.Install() &&
        !state.InstBroken() &&
        state.InstVerIter(*apt_cache_file)!=version)))
-    return get_style("PkgToRemove");
+    return get_style(MAYBE_HIGHLIGHTED("PkgToRemove"));
 
   else if(((state.NewInstall() || state.Install()) &&
 	   !state.InstBroken() &&
 	   state.InstVerIter(*apt_cache_file)==version) ||
 	  (version==version.ParentPkg().CurrentVer() &&
 	   state.iFlags&pkgDepCache::ReInstall))
-    return get_style("PkgToInstall");
+    return get_style(MAYBE_HIGHLIGHTED("PkgToInstall"));
 
   else if(state.InstBroken() && state.InstVerIter(*apt_cache_file)==version)
-    return get_style("PkgBroken");
+    return get_style(MAYBE_HIGHLIGHTED("PkgBroken"));
 
   else if(pkg.CurrentVer()!=version)
-    return style();
+    return get_style(MAYBE_HIGHLIGHTED("PkgNotInstalled"));
 
   else if(state.NowBroken())
-    return get_style("PkgBroken");
+    return get_style(MAYBE_HIGHLIGHTED("PkgBroken"));
 
   else
-    return style_attrs_on(A_BOLD);
+    return get_style(MAYBE_HIGHLIGHTED("PkgIsInstalled"));
 }
 
 void pkg_ver_item::paint(vs_tree *win, int y, bool hierarchical,

@@ -145,7 +145,7 @@ fragment *prvfrag(pkgCache::PkgIterator pkg,
 	  fragments.push_back(style_fragment(fragf("%s %s",
 						   P->Name(),
 						   pv.VerStr()),
-					     pkg_ver_item::ver_style(pv)));
+					     pkg_ver_item::ver_style(pv, false)));
 	}
       else
 	// Bail and print EVERYTHING IN SIGHT...not very efficiently, either.
@@ -156,7 +156,7 @@ fragment *prvfrag(pkgCache::PkgIterator pkg,
 	      fragments.push_back(style_fragment(fragf("%s %s",
 						       P->Name(),
 						       i->VerStr()),
-						 pkg_ver_item::ver_style(*i)));
+						 pkg_ver_item::ver_style(*i, false)));
 	}
     }
 

@@ -55,6 +55,7 @@ public:
   const pkgCache::VerIterator &get_version() const {return version;}
 
   virtual style get_normal_style();
+  virtual style get_highlighted_style();
   virtual void paint(vs_tree *win, int y, bool hierarchical,
 		     const style &st);
 
@@ -80,7 +81,8 @@ public:
 
   pkg_ver_item *get_sig();
 
-  static style ver_style(pkgCache::VerIterator version);
+  static style ver_style(pkgCache::VerIterator version,
+			 bool highlighted);
 
 
   // Menu redirections:
