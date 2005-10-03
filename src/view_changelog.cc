@@ -151,7 +151,7 @@ static void do_view_changelog(temp::name n,
 
   pkgCache::VerIterator curver = ver.ParentPkg().CurrentVer();
   string curverstr;
-  if(curver.VerStr() != NULL)
+  if(!curver.end() && curver.VerStr() != NULL)
     curverstr = curver.VerStr();
   fragment *f = make_changelog_fragment(n, curverstr);
 
