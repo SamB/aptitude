@@ -349,7 +349,7 @@ int main(int argc, char *argv[])
 	}
     }
 
-  if(!isatty(1))
+  if(quiet == 0 && !isatty(1))
     aptcfg->SetNoUser("quiet", 1);
   else if(seen_quiet)
     aptcfg->SetNoUser("quiet", quiet);
