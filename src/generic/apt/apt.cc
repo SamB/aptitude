@@ -704,16 +704,20 @@ static bool or_group_subsumes(const pkgCache::DepIterator &d1,
 static bool internal_is_interesting_dep(const pkgCache::DepIterator &d,
 					pkgDepCache *cache)
 {
-  if(const_cast<pkgCache::DepIterator &>(d).IsCritical())
+  pkgCache::PkgIterator parpkg = const_cast<pkgCache::DepIterator &>(d).ParentPkg();
+  pkgCache::VerIterator currver = parpkg.CurrentVer();
+  pkgCache::VerIterator parver = const_cast<pkgCache::DepIterator &>(d).ParentVer();
+
+  if(!parver.Downloadable() &&
+     (parver != currver || parpkg->CurrentState == pkgCache::State::ConfigFiles))
+    return false;
+  else if(const_cast<pkgCache::DepIterator &>(d).IsCritical())
     return true;
   else if(d->Type != pkgCache::Dep::Recommends ||
 	  !aptcfg->FindB(PACKAGE "::Recommends-Important", true))
     return false;
   else
     {
-      pkgCache::VerIterator currver = const_cast<pkgCache::DepIterator &>(d).ParentPkg().CurrentVer();
-      pkgCache::VerIterator parver = const_cast<pkgCache::DepIterator &>(d).ParentVer();
-
       // Soft deps attached to the current version are interesting iff
       // they are currently satisfied.
       if(currver == parver)

@@ -169,8 +169,14 @@ public:
 
 inline aptitude_resolver_version aptitude_resolver_package::current_version() const
 {
-  return aptitude_resolver_version(pkg, (*cache)[pkg].InstVerIter(*cache),
-				   cache);
+  // Transmute removed-with-config-files packages into not-installed
+  // packages.
+  if((*cache)[pkg].Keep() &&
+     pkg->CurrentState == pkgCache::State::ConfigFiles)
+    return aptitude_resolver_version(pkg, pkgCache::VerIterator(*cache, 0), cache);
+  else
+    return aptitude_resolver_version(pkg, (*cache)[pkg].InstVerIter(*cache),
+				     cache);
 }
 
 class aptitude_resolver_dep
@@ -289,6 +295,15 @@ class aptitude_resolver_package::version_iterator
   pkgDepCache *cache;
   pkgCache::PkgIterator pkg;
   pkgCache::VerIterator ver;
+
+  void normalize()
+  {
+    // This loop should only trigger once.
+    while(!ver.end() &&
+	  !ver.Downloadable() &&
+	  (ver != pkg.CurrentVer() || pkg->CurrentState == pkgCache::State::ConfigFiles))
+    ++ver;
+  }
 public:
   version_iterator()
     :cache(0)
@@ -324,7 +339,10 @@ public:
   version_iterator &operator++()
   {
     if(!ver.end())
-      ++ver;
+      {
+	++ver;
+	normalize();
+      }
     else
       pkg=pkgCache::PkgIterator();
     return *this;

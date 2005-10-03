@@ -8,6 +8,16 @@
 
 using namespace std;
 
+static inline
+bool ver_disappeared(const pkgCache::VerIterator ver)
+{
+  return
+    !ver.Downloadable() &&
+    (ver != ver.ParentPkg().CurrentVer() ||
+     ver.ParentPkg()->CurrentState == pkgCache::State::ConfigFiles);
+}
+
+
 string aptitude_resolver_version::get_name() const
 {
   if(!ver.end())
@@ -143,7 +153,14 @@ void aptitude_resolver_dep::solver_iterator::normalize()
 	{
 	  while(!ver_lst.end())
 	    {
-	      bool ver_matches=(!dep_lst.TargetVer()) || _system->VS->CheckDep(ver_lst.VerStr(), dep_lst->CompareOp, dep_lst.TargetVer());
+	      bool ver_matches =
+		!dep_lst.TargetVer() ||
+		_system->VS->CheckDep(ver_lst.VerStr(),
+				      dep_lst->CompareOp,
+				      dep_lst.TargetVer());
+
+	      if(ver_matches && ver_disappeared(ver_lst))
+		ver_matches = false;
 
 	      if(ver_matches)
 		// Found the next entry; drop out.
@@ -161,7 +178,8 @@ void aptitude_resolver_dep::solver_iterator::normalize()
 				       dep_lst->CompareOp,
 				       dep_lst.TargetVer()));
 
-	      if(prv_matches)
+	      if(prv_matches &&
+		 !ver_disappeared(prv_lst.OwnerVer()))
 		return;
 	      else
 		++prv_lst;
@@ -203,7 +221,8 @@ void aptitude_resolver_dep::solver_iterator::normalize()
 	{
 	  while(!ver_lst.end())
 	    {
-	      if(ver_lst != prv_lst.OwnerVer())
+	      if(ver_lst != prv_lst.OwnerVer() &&
+		 !ver_disappeared(ver_lst))
 		return;
 
 	      ++ver_lst;
@@ -223,7 +242,7 @@ void aptitude_resolver_dep::solver_iterator::normalize()
 				       dep_lst->CompareOp,
 				       dep_lst.TargetVer()));
 
-	      if(!ver_matches)
+	      if(!ver_matches && !ver_disappeared(ver_lst))
 		// This version resolves the conflict.
 		return;
 	      else
@@ -465,6 +484,7 @@ void aptitude_universe::broken_dep_iterator::normalize()
 	      pkgCache::VerIterator ver=(*cache)[the_dep.TargetPkg()].InstVerIter(*cache);
 
 	      if(!ver.end() &&
+		 !ver_disappeared(ver) &&
 		 (!the_dep.TargetVer() ||
 		  (ver.VerStr() &&
 		   _system->VS->CheckDep(ver.VerStr(),
@@ -493,11 +513,17 @@ void aptitude_universe::broken_dep_iterator::normalize()
 	      if((*cache)[prv.OwnerPkg()].InstVerIter(*cache) == prv.OwnerVer())
 		{
 		  // Ok, does it match the version string?
-		  if(!the_dep.TargetVer() ||
-		     (prv.ProvideVersion() &&
-		      _system->VS->CheckDep(prv.ProvideVersion(),
-					    the_dep->CompareOp,
-					    the_dep.TargetVer())))
+		  bool matches =
+		    !the_dep.TargetVer() ||
+		    (prv.ProvideVersion() &&
+		     _system->VS->CheckDep(prv.ProvideVersion(),
+					   the_dep->CompareOp,
+					   the_dep.TargetVer()));
+
+		  if(ver_disappeared(prv.OwnerVer()))
+		    matches = false;
+
+		  if(matches)
 		    return;
 		}
 	    }
