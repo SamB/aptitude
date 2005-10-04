@@ -824,14 +824,26 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
       </varlistentry>
 
       <varlistentry>
-	<term><literal>-q</literal>, <literal>--quiet</literal></term>
+	<term><literal>-q<arg choice='opt'>=<replaceable>n</replaceable></arg></literal>, <literal>--quiet<arg choice='opt'>=<replaceable>n</replaceable></arg></literal></term>
 
 	<listitem>
-	  Suppress all incremental progress indicators, thus making
-	  the output loggable.  This may be supplied multiple times to
-	  make the program quieter, but unlike &apt-get;, &aptitude;
-	  does not enable <literal>-y</literal> when
-	  <literal>-q</literal> is supplied more than once.
+	  <para>
+	    Suppress all incremental progress indicators, thus making
+	    the output loggable.  This may be supplied multiple times
+	    to make the program quieter, but unlike &apt-get;,
+	    &aptitude; does not enable <literal>-y</literal> when <literal>-q</literal>
+	    is supplied more than once.
+	  </para>
+
+
+	  <para>
+	    The optional <literal>=<replaceable>n</replaceable></literal>
+	    may be used to directly set the amount of quietness (for
+	    instance, to override a setting in <filename>/etc/apt/apt.conf</filename>);
+	    it causes the program to behave as if <literal>-q</literal>
+	    had been passed exactly <replaceable>n</replaceable>
+	    times.
+	  </para>
 	</listitem>
       </varlistentry>
 

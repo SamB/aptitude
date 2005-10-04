@@ -173,7 +173,7 @@ option opts[]={
   {"help", 0, NULL, 'h'},
   {"version", 0, &getopt_result, OPTION_VERSION},
   {"display-format", 1, NULL, 'F'},
-  {"quiet", 0, NULL, 'q'},
+  {"quiet", 2, NULL, 'q'},
   {"width", 1, NULL, 'w'},
   {"simulate", 0, NULL, 's'},
   {"with-recommends", 0, NULL, 'r'},
@@ -237,7 +237,7 @@ int main(int argc, char *argv[])
   argv0=argv[0];
 
   // Read the arguments:
-  while((curopt=getopt_long(argc, argv, "DVZvhS:uiF:w:sO:fdyPt:qRro:", opts, NULL))!=-1)
+  while((curopt=getopt_long(argc, argv, "DVZvhS:uiF:w:sO:fdyPt:q::Rro:", opts, NULL))!=-1)
     {
       switch(curopt)
 	{
@@ -275,7 +275,29 @@ int main(int argc, char *argv[])
 	  assume_yes=true;
 	  break;
 	case 'q':
-	  ++quiet;
+	  if(optarg == 0)
+	    ++quiet;
+	  else
+	    {
+	      if(*optarg == '=')
+		++optarg;
+
+	      if(*optarg == 0)
+		{
+		  fprintf(stderr, _("Expected a number after -q=\n"));
+		  return -1;
+		}
+
+	      char *tmp;
+	      quiet = strtol(optarg, &tmp, 0);
+
+	      if(*tmp != '\0')
+		{
+		  fprintf(stderr, _("Expected a number after -q=, got %s\n"),
+			  optarg);
+		  return -1;
+		}
+	    }
 	  seen_quiet = true;
 	  break;
 	case 'r':
