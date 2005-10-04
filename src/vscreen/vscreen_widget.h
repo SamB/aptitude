@@ -179,6 +179,8 @@ protected:
 public:
   void incref()
   {
+    assert(refcount > 0);
+
     ++refcount;
   }
 
