@@ -641,7 +641,10 @@ bool cmdline_resolve_deps(pkgset &to_install,
 	      }
 	    else
 	      {
-		cout << _("No more solutions.") << endl;
+		cout << endl
+		     << _("*** No more solutions available ***")
+		     << endl
+		     << endl;
 		// Force it to re-print the last solution.
 		resman->select_previous_solution();
 		lastsol.nullify();
