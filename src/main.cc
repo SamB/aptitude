@@ -173,6 +173,7 @@ option opts[]={
   {"help", 0, NULL, 'h'},
   {"version", 0, &getopt_result, OPTION_VERSION},
   {"display-format", 1, NULL, 'F'},
+  {"quiet", 0, NULL, 'q'},
   {"width", 1, NULL, 'w'},
   {"simulate", 0, NULL, 's'},
   {"with-recommends", 0, NULL, 'r'},
