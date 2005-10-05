@@ -16,6 +16,7 @@
 #include <config/keybindings.h>
 
 #include <sigc++/adaptors/bind.h>
+#include <sigc++/adaptors/hide.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include <aptitude.h>
@@ -286,12 +287,6 @@ vs_widget_ref vs_dialog_fileview(const string &fn,
 			    encoding);
 }
 
-static void do_dialog_string(wstring s,
-			     sigc::slot0<void> realslot)
-{
-  realslot();
-}
-
 static void also_do_dialog_string(vs_editline &e,
 				  sigc::slot1<void, wstring> thestrslot)
 {
@@ -325,8 +320,7 @@ vs_widget_ref vs_dialog_string(const vs_widget_ref &msg,
 		     vs_table::ALIGN_CENTER|vs_table::SHRINK,
 		     vs_table::ALIGN_CENTER);
 
-  e->entered.connect(sigc::bind(sigc::ptr_fun(do_dialog_string),
-				bok->pressed.make_slot()));
+  e->entered.connect(sigc::hide(bok->pressed.make_slot()));
   if(changed_slot)
     e->text_changed.connect(*changed_slot);
 
