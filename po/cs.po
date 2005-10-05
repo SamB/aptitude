@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
 "POT-Creation-Date: 2005-09-30 20:03-0700\n"
-"PO-Revision-Date: 2005-09-24 17:21+0200\n"
+"PO-Revision-Date: 2005-10-02 11:20+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -122,7 +122,7 @@ msgstr "Zapomenout seznam \"nových\" balíků při každé (od)instalaci balík
 #: src/apt_options.cc:170
 msgid ""
 "Do not display a warning when the first change is made in read-only mode."
-msgstr ""
+msgstr "Nezobrazovat varování při první změně v režimu pouze pro čtení."
 
 #: src/apt_options.cc:173
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -498,7 +498,7 @@ msgstr "Co to je? Co by to bylo! Přece had žeroucí slona.\n"
 
 #: src/cmdline/cmdline_prompt.cc:33
 msgid "Unexpected end-of-file on standard input"
-msgstr ""
+msgstr "Neočekávaný konec souboru na standardním vstupu"
 
 #: src/cmdline/cmdline_prompt.cc:52
 msgid "Couldn't read list of sources"
@@ -1310,14 +1310,14 @@ msgid "Description: "
 msgstr "Popis: "
 
 #: src/cmdline/cmdline_show.cc:377
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to locate package %s"
-msgstr "Nemohu otevřít %ls"
+msgstr "Nemohu nalézt balík %s"
 
 #: src/cmdline/cmdline_show.cc:399
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern %s"
-msgstr "Nemohu zpracovat vzor na '%s'"
+msgstr "Nemohu zpracovat vzor %s"
 
 #: src/cmdline/cmdline_simulate.cc:37
 #, c-format
@@ -1470,7 +1470,7 @@ msgstr "Nemohu otevřít pro zápis"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
-msgstr ""
+msgstr "Nemohu najít váš domovský adresář, ukládám do /tmp/function_pkgs!"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -1534,19 +1534,19 @@ msgid "Error writing state file"
 msgstr "Chyba při zápisu stavového souboru"
 
 #: src/generic/apt/aptcache.cc:610
-#, fuzzy, c-format
+#, c-format
 msgid "failed to remove %s"
-msgstr "Nemohu otevřít %ls"
+msgstr "selhalo odstranění %s"
 
 #: src/generic/apt/aptcache.cc:617
 #, c-format
 msgid "failed to rename %s to %s"
-msgstr ""
+msgstr "selhalo přejmenování %s na %s"
 
 #: src/generic/apt/aptcache.cc:625
-#, fuzzy, c-format
+#, c-format
 msgid "couldn't replace %s with %s"
-msgstr "nemohu nahradit starý stavový soubor"
+msgstr "nemohu nahradit %s za %s"
 
 #: src/generic/apt/aptcache.cc:1117
 msgid "Unable to correct dependencies, some packages cannot be installed"
@@ -1578,10 +1578,11 @@ msgstr ""
 "které provedete se stavem balíků, NEBUDOU uloženy!"
 
 #: src/generic/apt/download_install_manager.cc:53
-#, fuzzy
 msgid ""
 "The package cache is not available; unable to download and install packages."
-msgstr "Vyrovnávací paměť balíků není není dostupná."
+msgstr ""
+"Vyrovnávací paměť balíků není není dostupná, nemohu tedy balíky stahovat ani "
+"instalovat."
 
 #: src/generic/apt/download_install_manager.cc:69
 #: src/generic/apt/download_update_manager.cc:79
@@ -1619,9 +1620,9 @@ msgid "Unable to open %s to log actions"
 msgstr "Nemohu otevřít %s pro záznam akcí"
 
 #: src/generic/apt/log.cc:64
-#, fuzzy, c-format
+#, c-format
 msgid "Error generating local time (%s)"
-msgstr "Chyba při zápisu duševního stavu řešitele do %s"
+msgstr "Chyba při vytváření místního času (%s)"
 
 #: src/generic/apt/log.cc:68
 msgid "log report"
@@ -1918,12 +1919,11 @@ msgstr "Načítám popisy úloh"
 #: src/generic/util/temp.cc:142
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
-msgstr ""
+msgstr "Nemohu vytvořit dočasný adresář dle šablony \"%s\": %s"
 
 #: src/generic/util/temp.cc:137
-#, fuzzy
 msgid "Unknown error"
-msgstr "Neznámé"
+msgstr "Neznámá chyba"
 
 #: src/generic/util/threads.cc:32
 msgid "Not enough resources to create thread"
@@ -1951,7 +1951,7 @@ msgstr "Chybný neoznačený záznam v definicích stylu: \"%s\""
 
 #: src/load_config.cc:125
 msgid "The default color may only be used as a background."
-msgstr ""
+msgstr "Výchozí barva může být použita jen jako pozadí."
 
 #: src/load_config.cc:142
 #, c-format
@@ -2376,6 +2376,7 @@ msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators."
 msgstr ""
+" -q             V příkazovém režimu potlačí postupné zobrazování postupu."
 
 #: src/main.cc:159
 #, c-format
@@ -2441,7 +2442,7 @@ msgstr "Neznámý příkaz \"%s\"\n"
 #: src/main.cc:481 src/main.cc:522
 #, c-format
 msgid "Uncaught exception: %s\n"
-msgstr ""
+msgstr "Neodchycená výjimka: %s\n"
 
 #: src/main.cc:485 src/main.cc:526
 #, c-format
@@ -2449,6 +2450,8 @@ msgid ""
 "Backtrace:\n"
 "%s"
 msgstr ""
+"Výpis:\n"
+"%s"
 
 #: src/menu_text_layout.cc:36 src/ui.cc:239 src/view_changelog.cc:55
 msgid "Search for:"
@@ -4306,15 +4309,18 @@ msgid ""
 "subsequent changes will not be saved unless you stop all other running apt-"
 "based programs and select \"Become root\" from the Actions menu."
 msgstr ""
+"VAROVÁNÍ: cache balíčků je otevřena v režimu pouze pro čtení! Tato a "
+"všechny následující změny nebudou uloženy dokud neukončíte všechny ostatní "
+"programy založené na APT a z menu Akce nevyberete položku \"Stát se rootem\"."
 
 #: src/ui.cc:322
 msgid "Never display this message again."
-msgstr ""
+msgstr "Tuto hlášku již příště nezobrazovat."
 
 #: src/ui.cc:368
 msgid ""
 "You may not modify the state of any package while a download is underway."
-msgstr ""
+msgstr "Během stahování nemůžete měnit stav žádného balíčku."
 
 #: src/ui.cc:399
 msgid "You already are root!"
@@ -4387,35 +4393,35 @@ msgid "Manual"
 msgstr "Manuál"
 
 #: src/ui.cc:922
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to stat \"%s\""
-msgstr "Nemohu zpracovat vzor za \"%s\""
+msgstr "Nemohu zavolat stat na \"%s\""
 
 #: src/ui.cc:928
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to remove \"%s\""
-msgstr "Nemohu otevřít %ls"
+msgstr "Nemohu odebrat \"%s\""
 
 #: src/ui.cc:938
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to list files in \"%s\""
-msgstr "Nemohu otevřít %ls"
+msgstr "Nemohu vypsat soubory v \"%s\""
 
 #: src/ui.cc:951
 #, c-format
 msgid "Failure closing directory \"%s\""
-msgstr ""
+msgstr "Chyba při zavírání adresáře \"%s\""
 
 #: src/ui.cc:957
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to remove directory \"%s\""
-msgstr "Nemohu zpracovat vzor za \"%s\""
+msgstr "Nemohu odstranit adresář \"%s\""
 
 #: src/ui.cc:967
 #, c-format
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
-msgstr ""
+msgstr "Nemohu odstranit starý dočasný adresář; %s byste měli odstranit ručně."
 
 #: src/ui.cc:972
 #, c-format
@@ -4423,6 +4429,8 @@ msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
 "hand."
 msgstr ""
+"Neodstraním adresář %s; měli byste se podívat na soubory v něm obsažené a "
+"případně je odstranit ručně."
 
 #: src/ui.cc:998
 #, c-format
@@ -4432,6 +4440,10 @@ msgid ""
 "remove this directory and all its contents?  If you select \"No\", you will "
 "not see this message again."
 msgstr ""
+"Zdá se, že předchozí verze aptitude ponechala v adresáři %s nějaké soubory. "
+"Tyto soubory jsou pravděpodobně zbytečné a je bezpečné je smazat."
+"%n%nPřejete si tento adresář odstranit včetně jeho obsahu? Zvolíte-li "
+"\"Ne\", již tuto hlášku neuvidíte."
 
 #: src/ui.cc:1040
 msgid "Downloading packages"
@@ -4573,9 +4585,9 @@ msgid "Downloaded package files have been deleted"
 msgstr "Stažené balíky byly smazány"
 
 #: src/ui.cc:1460
-#, fuzzy
 msgid "The apt cache file is not available; cannot auto-clean."
-msgstr "Vyrovnávací paměť balíků není není dostupná."
+msgstr ""
+"Vyrovnávací paměť balíků není není dostupná; nemohu automaticky čistit."
 
 #: src/ui.cc:1486
 #, c-format
@@ -4793,7 +4805,7 @@ msgstr "Pro vybraný balík zobrazí další informace"
 
 #: src/ui.cc:1957
 msgid "^Changelog"
-msgstr "^Changelog"
+msgstr "Seznam změn"
 
 #: src/ui.cc:1958
 msgid "Display the Debian changelog of the selected package"
@@ -4832,26 +4844,22 @@ msgid "Select the previous solution to the dependency problems."
 msgstr "Vybere předchozí řešení závislostních problémů."
 
 #: src/ui.cc:1981
-#, fuzzy
 msgid "^First Solution"
-msgstr "Další řeše^ní"
+msgstr "První řešení"
 
 #: src/ui.cc:1982
-#, fuzzy
 msgid "Select the first solution to the dependency problems."
-msgstr "Vybere další řešení závislostních problémů."
+msgstr "Vybere první řešení závislostních problémů."
 
 #: src/ui.cc:1985
-#, fuzzy
 msgid "^Last Solution"
-msgstr "Další řeše^ní"
+msgstr "Pos^lední řešení"
 
 #: src/ui.cc:1986
-#, fuzzy
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
-msgstr "Vybere další řešení závislostních problémů."
+msgstr "Vybere zatím poslední vytvořené řešení závislostních problémů."
 
 #: src/ui.cc:1992
 msgid "Toggle ^Rejected"
@@ -4995,7 +5003,7 @@ msgstr "Nový plochý seznam balíky"
 
 #: src/ui.cc:2086
 msgid "View all the packages on the system in a single uncategorized list"
-msgstr ""
+msgstr "Zobrazí všechny balíky v systému v jediném neroztříděném seznamu"
 
 #: src/ui.cc:2089
 msgid "New ^Debtags Browser"
@@ -5105,7 +5113,7 @@ msgstr "ne_key"
 #: src/view_changelog.cc:149
 #, c-format
 msgid "%s changes"
-msgstr "změny %s"
+msgstr "Změny v %s"
 
 #: src/view_changelog.cc:150
 msgid "View the list of changes made to this Debian package."
