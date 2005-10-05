@@ -23,6 +23,16 @@
 
 using namespace std;
 
+static void do_slot0_dialog(vscreen_widget &ownerBare,
+			    slot0arg okslot)
+{
+  vs_widget_ref owner(&ownerBare);
+
+  owner->destroy();
+  if(okslot)
+    (*okslot)();
+}
+
 vs_widget_ref vs_dialog_ok(const vs_widget_ref &w,
 			   slot0arg okslot,
 			   const wstring &label,
@@ -34,9 +44,8 @@ vs_widget_ref vs_dialog_ok(const vs_widget_ref &w,
 
   vs_button_ref okbutton = vs_button::create(label);
 
-  okbutton->pressed.connect(sigc::mem_fun(*center.unsafe_get_ref(), &vscreen_widget::destroy));
-  if(okslot)
-    okbutton->pressed.connect(*okslot);
+  okbutton->pressed.connect(sigc::bind(sigc::ptr_fun(&do_slot0_dialog),
+				       center.weak_ref(), okslot));
 
   table->add_widget(w, 0, 0, 1, 1, true, true);
   table->add_widget(vs_center::create(okbutton), 1, 0, 1, 1, false, false);
@@ -100,6 +109,7 @@ vs_widget_ref vs_dialog_ok(const wstring &msg, slot0arg okslot)
   return vs_dialog_ok(msg, okslot, style_attrs_flip(A_REVERSE));
 }
 
+
 vs_widget_ref vs_dialog_yesno(const vs_widget_ref &widget,
 			      slot0arg yesslot,
 			      const wstring &yeslabel,
@@ -115,8 +125,10 @@ vs_widget_ref vs_dialog_yesno(const vs_widget_ref &widget,
   vs_button_ref yesbutton = vs_button::create(yeslabel);
   vs_button_ref nobutton = vs_button::create(nolabel);
 
-  yesbutton->pressed.connect(sigc::mem_fun(*center.unsafe_get_ref(), &vscreen_widget::destroy));
-  nobutton->pressed.connect(sigc::mem_fun(*center.unsafe_get_ref(), &vscreen_widget::destroy));
+  yesbutton->pressed.connect(sigc::bind(sigc::ptr_fun(&do_slot0_dialog),
+					center.weak_ref(), yesslot));
+  nobutton->pressed.connect(sigc::bind(sigc::ptr_fun(&do_slot0_dialog),
+				       center.weak_ref(), noslot));
 
   if(yesslot)
     yesbutton->pressed.connect(*yesslot);
@@ -334,14 +346,11 @@ vs_widget_ref vs_dialog_string(const vs_widget_ref &msg,
   t->connect_key_post("Cancel", &global_bindings,
 		      bcancel->pressed.make_slot());
 
-  bok->pressed.connect(sigc::mem_fun(*c.unsafe_get_ref(), &vscreen_widget::destroy));
-  if(slot)
-    bok->pressed.connect(sigc::bind(sigc::ptr_fun(also_do_dialog_string),
-				    e.weak_ref(), *slot));
+  bok->pressed.connect(sigc::bind(sigc::ptr_fun(do_dialog_string),
+				  e.weak_ref(), c.weak_ref(), slot));
 
-  bcancel->pressed.connect(sigc::mem_fun(*c.unsafe_get_ref(), &vscreen_widget::destroy));
-  if(cancel_slot)
-    bcancel->pressed.connect(*cancel_slot);
+  bcancel->pressed.connect(sigc::bind(sigc::ptr_fun(&do_slot0_dialog),
+				      c.weak_ref(), cancel_slot));
 
   return c;
 }
