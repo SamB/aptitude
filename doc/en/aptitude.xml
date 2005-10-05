@@ -419,34 +419,35 @@
       </section>
 
       <section>
-	<title>Getting &aptitude; from Subversion</title>
+	<title>Getting &aptitude; from darcs</title>
 
 	<para>
 	  If you want to test the latest bleeding-edge source code or
 	  to otherwise help &aptitude; development, you can download
-	  unreleased &aptitude; source code using Subversion.  Install
-	  Subversion (available from <ulink
-	  url='http://subversion.tigris.org'></ulink>) and execute the
-	  command <command>svn checkout
-	  svn://svn.debian.org/aptitude/trunk/aptitude</command> to
-	  retrieve the most recent source code.  Once the source code
-	  is available on your computer, you can <command>cd</command>
-	  into it and type <command>svn update</command> to update it
-	  with any changes made to the central repository.
+	  unreleased &aptitude; source code using darcs.  Install
+	  darcs (available from <ulink
+	  url='http://www.darcs.net'></ulink>) and execute the command
+	  <command>darcs get
+	  http://people.debian.org/~dburrows/darcs/aptitude</command>
+	  to retrieve the most recent source code.  Once the source
+	  code is available on your computer, you can
+	  <command>cd</command> into it and type <command>darcs
+	  pull</command> to update it with any changes made to the
+	  main repository.
 	</para>
 
 	<para>
-	  To build aptitude from the Subversion repository, you must
+	  To build aptitude from the darcs repository, you must
 	  have the programs <systemitem>autoconf</systemitem> and
 	  <systemitem>automake</systemitem> installed.  Type
-	  <command>./autogen.sh</command> to generate the files needed
+	  <command>sh ./autogen.sh</command> to generate the files needed
 	  to compile &aptitude;, then execute <command>make</command>
 	  and <command>make install</command>.
 	</para>
 
 	<warning>
 	  <para>
-	    The &aptitude; Subversion repository is an active
+	    The &aptitude; darcs repository is an active
 	    development tree; it will change as bugs are fixed and
 	    features are added, and there is absolutely no guarantee
 	    that it will even compile, let alone run properly!  Bug
