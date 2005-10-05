@@ -287,11 +287,18 @@ vs_widget_ref vs_dialog_fileview(const string &fn,
 			    encoding);
 }
 
-static void also_do_dialog_string(vs_editline &e,
-				  sigc::slot1<void, wstring> thestrslot)
+static void do_dialog_string(vs_editline &eBare,
+			     vscreen_widget &dialogBare,
+			     slotarg<sigc::slot1<void, wstring> > thestrslot)
 {
-  e.add_to_history(e.get_text());
-  thestrslot(e.get_text());
+  vs_editline_ref e(&eBare);
+  vs_widget_ref   dialog(&dialogBare);
+
+  dialog->destroy();
+
+  e->add_to_history(e->get_text());
+  if(thestrslot)
+    (*thestrslot)(e->get_text());
 }
 
 vs_widget_ref vs_dialog_string(const vs_widget_ref &msg,
