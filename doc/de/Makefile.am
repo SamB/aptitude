@@ -42,7 +42,7 @@ $(MANPAGE): $(XMLSOURCES) ../aptitude-man.xsl
 	-rm -fr output-man $(MANPAGE)
 	xsltproc -o output-man/aptitude.8 $(srcdir)/../aptitude-man.xsl $(srcdir)/aptitude.xml
 	mv output-man/aptitude.8 $(MANPAGE)
-	$(srcdir)/fixquotes
+	/bin/bash $(srcdir)/fixquotes
 
 $(README): $(XMLSOURCES)  $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-txt.style
 	-rm -fr output-txt

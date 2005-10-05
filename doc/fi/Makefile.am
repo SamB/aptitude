@@ -41,7 +41,7 @@ $(MANPAGE): aptitude.xml manpage.xml $(srcdir)/../aptitude-man.xsl
 	-rm -fr output-man
 	xsltproc -o output-man/aptitude.8 $(srcdir)/../aptitude-man.xsl $(srcdir)/aptitude.xml
 	mv output-man/aptitude.8 $(MANPAGE)
-	$(srcdir)/fixman
+	/bin/bash $(srcdir)/fixman
 
 $(README): aptitude.xml manpage.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
 	-rm -fr output-txt/
