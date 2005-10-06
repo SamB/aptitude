@@ -592,7 +592,7 @@ void solution_unresolved_item::paint(vs_tree *win, int y, bool hierarchical, con
 
   while(loc != text.end() && x < width)
     {
-      win->addch(*loc);
+      win->add_wch(*loc);
       x += wcwidth(*loc);
       ++loc;
     }
