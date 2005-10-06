@@ -245,7 +245,7 @@ static void init_vocabulary()
   facet_descriptions = new facet_description_map;
   tag_descriptions = new tag_description_map;
 
-  FileFd F(aptcfg->FindFile("DebTags::Vocabulary", "/usr/share/debtags/vocabulary"),
+  FileFd F(aptcfg->FindFile("DebTags::Vocabulary", "/var/lib/debtags/vocabulary"),
 	   FileFd::ReadOnly);
 
   if(!F.IsOpen())
