@@ -269,7 +269,9 @@ static vs_widget_ref realize_options_dialog(option_item *items)
 						   items->option_name,
 						   items->b_default);
 
-	    table->add_widget(w->cb, row, 0, 1, 2, true, false);
+	    table->add_widget_opts(w->cb, row, 0, 1, 2,
+				   vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+				   vs_table::EXPAND);
 
 	    manager->add_widget(w);
 	  }
@@ -282,8 +284,12 @@ static vs_widget_ref realize_options_dialog(option_item *items)
 
 	    l=vs_label::create(_(items->description));
 
-	    table->add_widget(l, row, 0, 1, 1, false, false);
-	    table->add_widget(w->w, row, 1, 1, 1, true, false);
+	    table->add_widget_opts(l, row, 0, 1, 1,
+			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+			      vs_table::EXPAND);
+	    table->add_widget_opts(w->w, row, 1, 1, 1,
+				   vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+				   vs_table::EXPAND);
 
 	    manager->add_widget(w);
 	  }
@@ -312,7 +318,9 @@ static vs_widget_ref realize_options_dialog(option_item *items)
 		vs_togglebutton_ref b=vs_radiobutton::create(_(description.c_str()),
 							     choice == curr);
 
-		table->add_widget(b, row+i, 1, 1, 1, false, false);
+		table->add_widget(b, row+i, 1, 1, 1,
+				  vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+				  vs_table::EXPAND);
 
 		w->rg.add_button(b, i);
 	      }
@@ -350,7 +358,7 @@ static vs_widget_ref realize_options_dialog(option_item *items)
 		      vs_table::ALIGN_CENTER | vs_table::EXPAND,
 		      vs_table::ALIGN_CENTER);
   table->add_widget_opts(bt, row, 0, 1, 2,
-			 vs_table::ALIGN_CENTER | vs_table::EXPAND | vs_table::FILL,
+			 vs_table::ALIGN_CENTER | vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
 			 vs_table::ALIGN_CENTER);
   
   vs_frame_ref frame=vs_frame::create(table);
