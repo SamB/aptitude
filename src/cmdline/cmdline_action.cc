@@ -236,13 +236,18 @@ bool cmdline_applyaction(string s,
     return false;
 
   // This is harmless for other commands, but it won't make sense.
-  if(source==cmdline_version_version && action!=cmdline_install && action!=cmdline_forbid_version)
+  if(source == cmdline_version_version &&
+     action != cmdline_install &&
+     action != cmdline_forbid_version &&
+     action != cmdline_installauto)
     {
       printf(_("You can only specify a package version with an 'install' command.\n"));
       return false;
     }
 
-  if(source==cmdline_version_archive && action!=cmdline_install)
+  if(source == cmdline_version_archive &&
+     action != cmdline_install &&
+     action != cmdline_installauto)
     {
       printf(_("You can only specify a package archive with an 'install' command.\n"));
       return false;
