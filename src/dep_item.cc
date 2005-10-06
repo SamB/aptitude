@@ -260,7 +260,7 @@ void setup_package_deps(const pkgCache::PkgIterator &pkg,
       tree_map::iterator found=subtrees.find(D.DepType());
       if(found==subtrees.end())
 	{
-	  subtree=new pkg_subtree(transcode(D.DepType(), "ASCII"),
+	  subtree=new pkg_subtree(transcode(D.DepType()),
 				  true);
 	  subtrees[D.DepType()]=subtree;
 	  tree->add_child(subtree);
@@ -290,8 +290,7 @@ void setup_package_deps(const pkgCache::PkgIterator &pkg,
 		tree_map::iterator found=subtrees.find(D.DepType());
 		if(found==subtrees.end())
 		  {
-		    subtree=new pkg_subtree(transcode(D.DepType(),
-						      "ASCII"),
+		    subtree=new pkg_subtree(transcode(D.DepType()),
 					    true);
 		    subtrees[D.DepType()]=subtree;
 		    tree->add_child(subtree);
