@@ -57,25 +57,9 @@ class solution_dialog:public vs_text_layout
     update();
   }
 
-  struct update_event : public vscreen_event
-  {
-    solution_dialog *dlg;
-
-  public:
-    update_event(solution_dialog *_dlg)
-      :dlg(_dlg)
-    {
-    }
-
-    void dispatch()
-    {
-      dlg->update();
-    }
-  };
-
   void post_update()
   {
-    vscreen_post_event(new update_event(this));
+    vscreen_post_event(new slot_event(sigc::mem_fun(this, &solution_dialog::update)));
   }
 
 protected:
