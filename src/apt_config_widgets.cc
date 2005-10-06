@@ -25,6 +25,7 @@
 #include <vscreen/config/colors.h>
 #include <vscreen/fragment.h>
 #include <vscreen/transcode.h>
+#include <vscreen/vs_size_box.h>
 
 using namespace std;
 
@@ -54,7 +55,8 @@ void apt_bool_widget::commit()
 apt_string_widget::apt_string_widget(const string &_item,
 				     const string &_default)
   :item(_item), my_default(_default),
-   el(vs_editline::create("", aptcfg->Find(_item, _default.c_str())))
+   el(vs_editline::create("", aptcfg->Find(_item, _default.c_str()))),
+   w(vs_size_box::create(size(5, 1), el))
 {
 }
 

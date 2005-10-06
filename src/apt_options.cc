@@ -283,7 +283,7 @@ static vs_widget_ref realize_options_dialog(option_item *items)
 	    l=vs_label::create(_(items->description));
 
 	    table->add_widget(l, row, 0, 1, 1, false, false);
-	    table->add_widget(w->el, row, 1, 1, 1, true, false);
+	    table->add_widget(w->w, row, 1, 1, 1, true, false);
 
 	    manager->add_widget(w);
 	  }

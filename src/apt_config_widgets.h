@@ -68,12 +68,15 @@ class apt_string_widget : public apt_config_widget
   std::string item; // the config-item we're associated with.
 
   std::string my_default;
+
+  /** The underlying object. */
+  vs_editline_ref el;
 public:
   apt_string_widget(const std::string &_item,
 		    const std::string &_default);
 
-  /** The underlying object. */
-  vs_editline_ref el;
+  /** The enclosing size box. */
+  vs_widget_ref w;
 
   void commit();
 };
