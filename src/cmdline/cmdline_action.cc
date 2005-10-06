@@ -241,7 +241,7 @@ bool cmdline_applyaction(string s,
      action != cmdline_forbid_version &&
      action != cmdline_installauto)
     {
-      printf(_("You can only specify a package version with an 'install' command.\n"));
+      printf(_("You can only specify a package version with an 'install' command or a 'forbid-version' command.\n"));
       return false;
     }
 
