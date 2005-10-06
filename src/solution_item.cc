@@ -135,6 +135,8 @@ static fragment *action_description(const aptitude_resolver_version &ver)
       // Impossible.
       abort();
     }
+
+  abort();
 }
 
 
