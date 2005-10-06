@@ -9,6 +9,7 @@
 
 #include "aptitude.h"
 
+#include <vscreen/fragment.h>
 #include <vscreen/vs_button.h>
 #include <vscreen/vs_center.h>
 #include <vscreen/vs_frame.h>
@@ -282,7 +283,7 @@ static vs_widget_ref realize_options_dialog(option_item *items)
 	    apt_string_widget *w=new apt_string_widget(items->option_name,
 						       items->s_default);
 
-	    l=vs_label::create(_(items->description));
+	    l = vs_label::create(flowbox(text_fragment(_(items->description))));
 
 	    table->add_widget_opts(l, row, 0, 1, 1,
 			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
@@ -308,7 +309,7 @@ static vs_widget_ref realize_options_dialog(option_item *items)
 	    string curr=aptcfg->Find(items->option_name,
 				     items->s_default);
 
-	    l=vs_label::create(_(items->description));
+	    l = vs_label::create(flowbox(text_fragment(_(items->description))));
 
 	    for(vector<string>::size_type i=0; i<items->choices.size(); ++i)
 	      {
