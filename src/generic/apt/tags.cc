@@ -33,6 +33,7 @@
 
 #include <sigc++/functors/mem_fun.h>
 
+#include <apt-pkg/error.h>
 #include <apt-pkg/pkgrecords.h>
 #include <apt-pkg/tagfile.h>
 
@@ -248,8 +249,11 @@ static void init_vocabulary()
 	   FileFd::ReadOnly);
 
   if(!F.IsOpen())
-    // Fail silently; debtags need not be installed.
-    return;
+    {
+      _error->Warning(_("Unable to load debtags vocabulary, perhaps debtags is not installed?"));
+      // Fail silently; debtags need not be installed.
+      return;
+    }
 
   pkgTagFile tagfile(&F);
 
