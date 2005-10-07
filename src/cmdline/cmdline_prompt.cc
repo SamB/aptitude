@@ -106,7 +106,8 @@ static string reason_string_list(set<reason> &reasons)
 static void cmdline_show_instinfo(pkgvector &items,
 				  bool showvers,
 				  bool showdeps,
-				  bool showsize)
+				  bool showsize,
+				  bool showpurge)
 {
   sort(items.begin(), items.end(), pkg_byname_compare);
   strvector output;
@@ -118,6 +119,12 @@ static void cmdline_show_instinfo(pkgvector &items,
       pkgDepCache::StateCache &state=(*apt_cache_file)[*i];
       //aptitudeDepCache::aptitude_state &extstate=(*apt_cache_file)->get_ext_state(*i);
       pkgCache::VerIterator instver=state.InstVerIter(*apt_cache_file);
+
+      if(showpurge)
+	{
+	  if(state.Delete() && state.iFlags&pkgDepCache::Purge)
+	    s += "{p}";
+	}
 
       // Display version numbers.
       if(showvers)
@@ -509,23 +516,26 @@ static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 	  if(i==pkg_auto_install || i==pkg_auto_remove || i==pkg_unused_remove ||
 	     i==pkg_auto_hold || i==pkg_broken)
 	    cmdline_show_instinfo(lists[i],
-				  showvers, showdeps, showsize);
+				  showvers, showdeps, showsize,
+				  (i == pkg_auto_remove ||
+				   i == pkg_unused_remove));
 	  else
 	    cmdline_show_instinfo(lists[i],
-				  showvers, false, showsize);
+				  showvers, false, showsize,
+				  i == pkg_remove);
 	}
     }
 
   if(!recommended.empty())
     {
       printf(_("The following packages are RECOMMENDED but will NOT be installed:\n"));
-      cmdline_show_instinfo(recommended, showvers, showdeps, showsize);
+      cmdline_show_instinfo(recommended, showvers, showdeps, showsize, false);
     }
 
   if(verbose>0 && !suggested.empty())
     {
       printf(_("The following packages are SUGGESTED but will NOT be installed:\n"));
-      cmdline_show_instinfo(suggested, showvers, showdeps, showsize);
+      cmdline_show_instinfo(suggested, showvers, showdeps, showsize, false);
     }
 
   if(all_empty)
