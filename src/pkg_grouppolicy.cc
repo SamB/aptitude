@@ -418,7 +418,10 @@ public:
   {
     for(pkgCache::VerIterator ver = pkg.VersionList(); !ver.end(); ++ver)
       if(filter->matches(pkg, ver))
-	chain->add_package(pkg, root);
+	{
+	  chain->add_package(pkg, root);
+	  break;
+	}
   }
 
   virtual ~pkg_grouppolicy_filter() {delete chain;}
