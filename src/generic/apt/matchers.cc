@@ -262,7 +262,7 @@ public:
   }
 };
 
-typedef pair<bool, const char *> match_target;
+typedef pair<bool, std::string> match_target;
 
 class pkg_trivial_string_matcher : public pkg_string_matcher
 {
@@ -284,7 +284,7 @@ public:
     if(!v.first)
       return false;
     else
-      return string_matches(v.second);
+      return string_matches(v.second.c_str());
   }
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
@@ -295,7 +295,7 @@ public:
     if(!v.first)
       return NULL;
     else
-      return get_string_match(v.second);
+      return get_string_match(v.second.c_str());
   }
 };
 
