@@ -408,6 +408,11 @@ public:
     static const string missing = "missing";
     bool is_missing = true;
 
+    if(begin != end && *begin != '(')
+      throw GroupParseException(_("Expected '(' after 'filter'"));
+
+    ++begin;
+
     string::const_iterator begin2 = begin;
     while(isspace(*begin2))
       ++begin2;
