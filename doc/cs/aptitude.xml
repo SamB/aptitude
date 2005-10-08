@@ -34,6 +34,16 @@
   <!ENTITY package-information "<menuchoice><shortcut><keycap>enter</keycap></shortcut><guimenu>Balík</guimenu><guimenuitem>Informace</guimenuitem></menuchoice>">
   <!ENTITY package-changelog "<menuchoice><shortcut><keycap>C</keycap></shortcut><guimenu>Balík</guimenu><guimenuitem>Changelog</guimenuitem></menuchoice>">
 
+  <!ENTITY resolver-examine "<menuchoice><shortcut><keycap>e</keycap></shortcut><guimenu>Øe¹itel</guimenu><guimenuitem>Prozkoumat øe¹ení</guimenuitem></menuchoice>">
+  <!ENTITY resolver-apply "<menuchoice><shortcut><keycap>!</keycap></shortcut><guimenu>Øe¹itel</guimenu><guimenuitem>Pou¾ít øe¹ení</guimenuitem></menuchoice>">
+  <!ENTITY resolver-next "<menuchoice><shortcut><keycap>.</keycap></shortcut><guimenu>Øe¹itel</guimenu><guimenuitem>Dal¹í øe¹ení</guimenuitem></menuchoice>">
+  <!ENTITY resolver-previous "<menuchoice><shortcut><keycap>,</keycap></shortcut><guimenu>Øe¹itel</guimenu><guimenuitem>Pøedchozí øe¹ení</guimenuitem></menuchoice>">
+  <!ENTITY resolver-first "<menuchoice><shortcut><keycap>&lt;</keycap></shortcut><guimenu>Øe¹itel</guimenu><guimenuitem>První øe¹ení</guimenuitem></menuchoice>">
+  <!ENTITY resolver-last "<menuchoice><shortcut><keycap>&gt;</keycap></shortcut><guimenu>Øe¹itel</guimenu><guimenuitem>Poslední øe¹ení</guimenuitem></menuchoice>">
+  <!ENTITY resolver-reject "<menuchoice><shortcut><keycap>r</keycap></shortcut><guimenu>Øe¹itel</guimenu><guimenuitem>Pøepnout zamítnutí</guimenuitem></menuchoice>">
+  <!ENTITY resolver-approve "<menuchoice><shortcut><keycap>a</keycap></shortcut><guimenu>Øe¹itel</guimenu><guimenuitem>Pøepnout povolení</guimenuitem></menuchoice>">
+  <!ENTITY resolver-view-target "<menuchoice><shortcut><keycap>Enter</keycap></shortcut><guimenu>Øe¹itel</guimenu><guimenuitem>Zobrazit cíl</guimenuitem></menuchoice>">
+
   <!ENTITY search-find "<menuchoice><shortcut><keycap>/</keycap></shortcut><guimenu>Hledat</guimenu><guimenuitem>Hledat</guimenuitem></menuchoice>">
   <!ENTITY search-find-back "<menuchoice><shortcut><keycap>\</keycap></shortcut><guimenu>Hledat</guimenu><guimenuitem>Hledat pøedchozí</guimenuitem></menuchoice>">
   <!ENTITY search-refind
@@ -399,31 +409,31 @@ install</command>. Nyní mù¾ete &aptitude; spustit pøíkazem
   </section>
 
   <section>
-    <title>Získání &aptitude; ze Subversion</title>
+    <title>Získání &aptitude; ze systému darcs</title>
 <para>
 
 Jestli¾e si chcete vyzkou¹et nejèerstvìj¹í novinky, nebo byste rádi
 pøispìli k vývoji &aptitude;, mù¾ete si stáhnout dosud aktuální
-zdrojové kódy pomocí programu
-<application>Subversion</application>. Po instalaci Subversion
-(dostupného z <ulink url="http://subversion.tigris.org"></ulink>) si
-mù¾ete stáhnout nejnovìj¹í verzi zdrojových textù pøíkazem <command>svn
-checkout svn://svn.debian.org/aptitude/trunk/aptitude</command>.  Svou
-kopii poté mù¾ete kdykoliv aktualizovat pøíkazem <command>svn update
-aptitude</command>.
+zdrojové kódy pomocí programu <application>darcs</application>. Po
+instalaci darcs (dostupného z <ulink
+url="http://www.darcs.net"></ulink>) si mù¾ete stáhnout nejnovìj¹í
+verzi zdrojových textù pøíkazem <command>darcs get
+http://people.debian.org/~dburrows/darcs/aptitude</command>. Svou kopii
+poté mù¾ete kdykoliv aktualizovat pøíkazem <command>darcs
+pull</command> spu¹tìném v adresáøi aptitude.
 
 </para><para>
 
-Pro sestavení &aptitude; ze Subversion musíte mít nainstalovány
+Pro sestavení &aptitude; ze systému darcs musíte mít nainstalovány
 programy <systemitem>autoconf</systemitem>
 a <systemitem>automake</systemitem>. Nejprve se pøíkazem
-<command>./autogen.sh</command> vygenerují soubory potøebné pro
+<command>sh ./autogen.sh</command> vygenerují soubory potøebné pro
 sestavení &aptitude; a poté se program sestaví a nainstaluje obvyklým
 <command>make</command> a <command>make install</command>.
 
 </para><warning><para>
 
-&aptitude; se v Subversion aktivnì vyvíjí a tudí¾ není garantováno, ¾e
+&aptitude; se v darcs aktivnì vyvíjí a tudí¾ není garantováno, ¾e
 se tyto zdrojové kódy povede sestavit (o bezproblémovém bìhu ani
 nemluvì)! Vdìènì vítáme jakékoliv hlá¹ení o chybách, ale pamatujte, ¾e
 vývojovou verzi pou¾íváte na vlastní nebezpeèí<footnote>
@@ -533,7 +543,7 @@ Jak mù¾ete vidìt, hlavní obrazovka &aptitude; je rozdìlena do nìkolika
 oblastí. Modrý øádek nahoøe na obrazovce se nazývá menu. Pod ním
 jsou informaèní øádky popisující dùle¾ité pøíkazy. Následující èerné
 místo je seznam v¹ech dostupných balíkù rozdìlený do nìkolika
-kategorií. Aktuálnì vybraná kategorie (<quote>Aktualizovatelné
+kategorií. Aktuálnì vybraná kategorie (<quote>Instalované
 balíky</quote>) je oznaèená a její popis se zobrazuje ve spodním
 èerném prostoru.
 
@@ -1058,7 +1068,7 @@ Nìkdy se stane, ¾e zmìna stavu balíku zpùsobí, ¾e se poru¹í nìkteré
 vztahy mezi balíky. Balíky s nesplnìnými závislostmi se nazývají
 <firstterm>po¹kozené</firstterm>.  Pokud taková situace nastane,
 &aptitude; vás o ní bude okam¾itì informovat. Pøíklad, co se stane,
-kdy¾ jsem se pokusíl odstranit <systemitem>sound-juicer</systemitem>:
+kdy¾ jsem se pokusil odstranit <systemitem>sound-juicer</systemitem>:
 
 </para>
 
@@ -1069,18 +1079,18 @@ kdy¾ jsem se pokusíl odstranit <systemitem>sound-juicer</systemitem>:
     </imageobject>
 
     <textobject role="text">
-<screen> Akce  Zpìt  Balík  Hledat  Volby  Pohledy  Nápovìda
+<screen> Akce  Zpìt  Balík  Øe¹itel  Hledat  Volby  Pohledy  Nápovìda
 f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
-aptitude 0.3.3       #Poru¹ené: 1   Na disku se uvolní 13335kB
-  --- admin - Nástroje pro správu (instalace softwaru, správa u¾ivatelù, atd.)
-  --- base - Základní systém Debianu
-  --- devel - Nástroje pro vývoj softwaru
-  --- doc - Dokumentace a programy pro její prohlí¾ení
-  --- games - Hry, hraèky a zábavné programy
-  --\ gnome - Desktopové prostøedí GNOME
-    --\ hlavní - Hlavní archiv Debianu
-i     grip                                                 3.3.1-2    3.3.1-4
-ipA   sound-juicer                                 -1245kB 2.10.1-2   2.10.1-3
+aptitude 0.3.3       #Poru¹ené: 1   Na disku se uvolní 48.6MB
+i A   nautilus                                             2.10.1-4   2.10.1-4
+i     nautilus-cd-burner                                   2.10.2-1.1 2.10.2-1.1
+i A   nautilus-data                                        2.10.1-4   2.10.1-4
+i     netspeed                                             0.12.1-1   0.12.1-1
+i A   oaf                                                  0.6.10-3   0.6.10-3
+i     pybliographer                                        1.2.6.2-1  1.2.6.2-1
+i     rhythmbox                                            0.8.8-13   0.8.8-13
+i     shermans-aquarium                                    3.0.1-1    3.0.1-1
+idA   sound-juicer                                 -1733kB 2.10.1-3   2.10.1-3
 GNOME 2 CD Ripper
 sound-juicer bude odstranìn.
 
@@ -1089,9 +1099,9 @@ Následující balíky závisí na sound-juicer a budou jeho odstranìním
 poru¹eny:
 
 
-  * gnome-desktop-environment závisí na sound-juicer (>= 2.10.1)
+  * gnome-desktop-environment závisí na sound-juicer
 
-[1/...] Návrh ponechat 2
+[1(1)/...] Návrh ponechat 2
 e: Prozkoumat  !: Pou¾ít  .: Dal¹í  ,: Pøedchozí</screen>
     </textobject>
   </mediaobject>
@@ -1108,7 +1118,17 @@ s návrhem, jak problém vyøe¹it. Poru¹ené balíky mù¾ete v seznamu najít
 rychle tak, ¾e budete hledat vzor <literal>~b</literal>, nebo
 je¹tì jednodu¹eji pou¾ijete klávesu <keycap>b</keycap>.
 
-</para><para>
+</para><note><para>
+
+Text <literal>[1(1)/...]</literal> indikuje postup øe¹itele
+závislostí. První èíslo je momentálnì vybrané øe¹ení, druhé pak poèet
+øe¹ení, které ji¾ &aptitude; vymyslela. Tøi teèky
+<quote><literal>...</literal></quote> naznaèují, ¾e mohou existovat
+je¹tì dal¹í øe¹ení. Pokud by si &aptitude; byla jistá, ¾e ji¾ ¾ádné
+dal¹í øe¹ení neexistuje, text by zmìnil podobu na
+<literal>[1/1]</literal>.
+
+</para></note><para>
 
 Chcete-li se o nabízeném øe¹ení dozvìdìt více, stisknìte klávesu
 <keycap>e</keycap>. Objeví se obrazovka podobná této:
@@ -1122,11 +1142,11 @@ Chcete-li se o nabízeném øe¹ení dozvìdìt více, stisknìte klávesu
     </imageobject>
 
     <textobject role="text">
-<screen> Akce  Zpìt  Balík  Hledat  Volby  Pohledy  Nápovìda
+<screen> Akce  Zpìt  Balík  Øe¹itel  Hledat  Volby  Pohledy  Nápovìda
 f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
                 Balíèky                           Øe¹ení závislostí
   --\ Ponechat následující balíky v jejich aktuální verzi:
-    gstreamer0.8-cdparanoia                           [0.8.10-1 (unstable, now)]
+    gstreamer0.8-cdparanoia                           [0.8.11-1 (unstable, now)]
     sound-juicer                                                [2.10.1-2 (now)]
 
 
@@ -1144,7 +1164,7 @@ f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
 
 
 
-[1/...] Návrh ponechat 2
+[1(1)/...] Návrh ponechat 2
 e: Prozkoumat  !: Pou¾ít  .: Dal¹í  ,: Pøedchozí</screen>
     </textobject>
   </mediaobject>
@@ -1174,13 +1194,13 @@ rozhodl pou¾ít klávesu <keycap>.</keycap> a prozkoumat dal¹í øe¹ení:
     </imageobject>
 
     <textobject role="text">
-<screen> Akce  Zpìt  Balík  Hledat  Volby  Pohledy  Nápovìda
+<screen> Akce  Zpìt  Balík  Øe¹itel  Hledat  Volby  Pohledy  Nápovìda
 f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
                 Balíèky                           Øe¹ení závislostí
   --\ Ponechat následující balíky v jejich aktuální verzi:
-    sound-juicer                                                [2.10.1-2 (now)]
+    sound-juicer                                      [2.10.1-3 (unstable, now)]
   --\ Degradovat následující balíky:
-    gstreamer0.8-cdparanoia          [0.8.10-1 unstable, now -> 0.8.8-3 testing]
+    gstreamer0.8-cdparanoia          [0.8.11-1 unstable, now -> 0.8.8-3 testing]
 
 
 
@@ -1196,7 +1216,7 @@ f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
 
 
 
-[2/...] Návrh ponechat 1, degradovat 1
+[2(2)/...] Návrh ponechat 1, degradovat 1
 e: Prozkoumat  !: Pou¾ít  .: Dal¹í  ,: Pøedchozí</screen>
     </textobject>
   </mediaobject>
@@ -1221,29 +1241,29 @@ vám nenabízela øe¹ení, ve kterých by do¹lo k ponechání tohoto balíku.
     </imageobject>
 
     <textobject role="text">
-<screen> Akce  Zpìt  Balík  Hledat  Volby  Pohledy  Nápovìda
+<screen> Akce  Zpìt  Balík  Øe¹itel  Hledat  Volby  Pohledy  Nápovìda
 f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
                 Balíèky                           Øe¹ení závislostí
   --\ Ponechat následující balíky v jejich aktuální verzi:
-    gstreamer0.8-cdparanoia                           [0.8.10-1 (unstable, now)]
-R   sound-juicer                                                [2.10.1-2 (now)]
+    gstreamer0.8-cdparanoia                           [0.8.11-1 (unstable, now)]
+R   sound-juicer                                      [2.10.1-3 (unstable, now)]
 
 
 
 
 
 
+GNOME 2 CD Ripper
+gnome-desktop-environment závisí na sound-juicer
+--\ Následující akce vyøe¹í tuto závislost:
+  -> Odstranìní gnome-desktop-environment [1:2.10.2.3 (unstable, testing, now)]
+R -> Zru¹ení odstranìní sound-juicer
+  -> Degradace sound-juicer [2.10.1-3 (unstable, now) -> 0.6.1-2 (testing)]
 
 
 
 
-
-
-
-
-
-
-[1/...] Návrh ponechat 2
+[1/(1)...] Návrh ponechat 2
 e: Prozkoumat  !: Pou¾ít  .: Dal¹í  ,: Pøedchozí</screen>
     </textobject>
   </mediaobject>
@@ -1259,7 +1279,17 @@ vytvoøíte (tj. ta, která jste je¹tì nevidìli), nebudou tuto akci
 obsahovat. Daná akce se v¹ak stále mù¾e vyskytovat v øe¹eních, která
 jste vytvoøili pøed tímto zákazem.
 
-</para><para>
+</para><note><para>
+
+Na pøedchozím obrázku je uprostøed obrazovky zobrazen krátký popis
+balíku <systemitem>sound-juicer</systemitem>. Pod ním je vidìt
+závislost, která zpùsobila podr¾ení balíku
+<systemitem>sound-juicer</systemitem> v aktuální verzi
+(<quote>gnome-desktop-environment závisí na
+sound-juicer</quote>). Dále pak následuje seznam mo¾ností, jak tuto
+závislost vyøe¹it.
+
+</para></note><para>
 
 Napøíklad kdybychom toto zamítnutí pou¾ili hned po oznaèení balíèku
 <systemitem>sound-juicer</systemitem> pro odinstalování a stisku
@@ -1278,11 +1308,12 @@ nabídl následující:
       <imagedata fileref="images/solution-screen-snapshot4.png" format="PNG"/>
     </imageobject>
 
-<textobject><screen> Akce  Zpìt  Balík  Hledat  Volby  Pohledy  Nápovìda
+    <textobject role="text">
+<screen> Akce  Zpìt  Balík  Øe¹itel  Hledat  Volby  Pohledy  Nápovìda
 f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
                 Balíèky                           Øe¹ení závislostí
   --\ Odstranit následující balíky:
-    gnome-desktop-environment                       [1:2.10.1.1 (unstable, now)]
+    gnome-desktop-environment              [1:2.10.2.3 (unstable, testing, now)]
 
 
 
@@ -1300,7 +1331,7 @@ f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
 
 
 
-[2/...] Návrh odstranit 1
+[2(2)/...] Návrh odstranit 1
 e: Prozkoumat  !: Pou¾ít  .: Dal¹í  ,: Pøedchozí</screen>
     </textobject>
   </mediaobject>
@@ -1313,7 +1344,60 @@ Zamítnutí dané akce mù¾ete kdykoliv zru¹it tak, ¾e se pøesunete na
 <keycap>r</keycap>. Novì vytvoøená øe¹ení pak mohou tuto akci zase
 obsahovat.
 
-</para><important><para>
+</para><para>
+
+Opakem zamítnutí je schválení akce. Pro schválení akce ji jednodu¹e
+vyberte a stisknìte klávesu <keycap>a</keycap>. Tím pøinutíte
+øe¹itele, aby tuto akci pou¾il kdykoliv to jen bude
+mo¾né.<footnote><para>
+
+Schválení akce není stejné jako vy¾adování, aby tuto akci obsahovalo
+ka¾dé øe¹ení. To znamená, ¾e kdy¾ má øe¹itel na výbìr mezi schválenou
+a jinou akcí, v¾dy pou¾ije tu schválenou. Pokud existuje více
+schválených akcí, bude se je sna¾it pou¾ít v¹echny.
+
+</para></footnote>. Schválené akce poznáte podle zelené barvy a podle
+písmena <quote>A</quote> na zaèátku øádku, jak je vidìt
+z následujícího obrázku:
+
+</para>
+
+<screenshot>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/solution-screen-snapshot5.png" format="PNG"/>
+    </imageobject>
+
+    <textobject role="text">
+<screen> Akce  Zpìt  Balík  Øe¹itel  Hledat  Volby  Pohledy  Nápovìda
+f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
+                Balíèky                           Øe¹ení závislostí
+  --\ Odstranit následující balíky:
+A   gnome-desktop-environment              [1:2.10.2.3 (unstable, testing, now)]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[2(2)/...] Návrh odstranit 1
+e: Prozkoumat  !: Pou¾ít  .: Dal¹í  ,: Pøedchozí</screen>
+    </textobject>
+  </mediaobject>
+</screenshot>
+
+<important><para>
 
 Jestli¾e se vám vzniklá situace nepodaøí vyøe¹it vlastními silami,
 &aptitude; se pokusí vìci spravit pøi zaznamenání provedených zmìn
@@ -1323,6 +1407,7 @@ Automatické øe¹ení závislostí je pomìrnì tì¾ké a mù¾e se stát,
 problémy pøed zaznamenáním zmìn.
 
 </para></important>
+  </section>
  </section>
 
  <section>
@@ -1679,7 +1764,6 @@ se podívejte do kapitoly <xref linkend="secReference"/>.
 
 </para>
  </section>
- </section>
 </chapter>
 
 <!-- ================================================================ -->
@@ -1981,7 +2065,8 @@ linkend="pkgCmdPurge">vyèi¹tìní</link>.
     <entry>
 
 U vybraného balíku <link linkend="pkgCmdKeep">zru¹í</link> naplánované
-akce jako instalaci, aktualizaci nebo odstranìní.
+akce jako instalaci, aktualizaci nebo odstranìní. Zru¹í se také
+podr¾ení v aktuální verzi.
 
     </entry>
   </row>
@@ -2045,6 +2130,118 @@ balíky na nich¾ závisí, balíky na nìm závislé...)
 Zobrazí seznam zmìn vybraného balíku. Chcete-li vidìt seznam zmìn
 konkrétní verze, musíte pøed spu¹tìním tohoto pøíkazu vybrat
 pøíslu¹nou verzi.
+
+    </entry>
+  </row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+    </section>
+
+    <section>
+      <title>Menu Øe¹itel</title>
+
+<figure>
+  <title>Commands available in the Resolver menu</title>
+
+<informaltable>
+<tgroup cols="2">
+<thead>
+  <row>
+    <entry>Pøíkaz</entry>
+    <entry>Popis</entry>
+  </row>
+</thead>
+
+<tbody>
+  <row>
+    <entry>&resolver-examine;</entry>
+    <entry>
+
+Zobrazí podrobný popis aktuálního návrhu na vyøe¹ení závislostí
+(viz <xref linkend="secResolver"/>).
+
+    </entry>
+  </row>
+
+  <row>
+    <entry>&resolver-apply;</entry>
+    <entry>
+
+Provede akce, které momentálnì navrhuje øe¹itel závislostních
+problémù.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry>&resolver-next;</entry>
+    <entry>
+
+Vybere dal¹í návrh øe¹itele závislostí.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry>&resolver-previous;</entry>
+    <entry>
+
+Vybere pøedchozí návrh øe¹itele závislostí.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry>&resolver-first;</entry>
+    <entry>
+
+Vybere první návrh øe¹itele závislostí.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry>&resolver-last;</entry>
+    <entry>
+
+Vybere poslední dosud vytvoøený návrh øe¹itele závislostí (viz
+<xref linkend="secResolver"/>).
+
+    </entry>
+  </row>
+
+  <row>
+    <entry>&resolver-reject;</entry>
+    <entry>
+
+Pøi zkoumání øe¹ení pøepne, zda se má momentálnì vybraná akce
+zamítnout a posune se na dal¹í akci (viz <xref
+linkend="secResolver"/>). Pokud je akce momentálnì povolená, její
+povolení bude zru¹eno.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry>&resolver-approve;</entry>
+    <entry>
+
+Pøi zkoumání øe¹ení pøepne, zda se má momentálnì vybraná akce
+povolit a posune se na dal¹í akci (viz <xref
+linkend="secResolver"/>). Pokud je akce momentálnì zamítnutá, její
+zamítnutí bude zru¹eno.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry>&resolver-view-target;</entry>
+    <entry>
+
+Pøi zkoumání øe¹ení zobrazí podrobné informace o balíèku, který je
+ovlivnìn momentálnì vybranou akcí (viz <xref linkend="secResolver"/>).
 
     </entry>
   </row>
@@ -3011,7 +3208,7 @@ U vybraného balíku nastaví, ¾e má zùstat v aktuální verzi.
 </para><para>
 
 Ve¹keré pøedchozí naplánované akce - instalace, odstranìní nebo
-aktualizace - budou zru¹eny.
+aktualizace - budou zru¹eny. Zru¹í se i podr¾ení v aktuálním stavu.
 
 </para>
   </entry>
@@ -3136,18 +3333,18 @@ mohla situaci vyøe¹it ponecháním dvou balíèkù ve stávajících verzích.
     </imageobject>
 
     <textobject role="text">
-<screen> Akce  Zpìt  Balík  Hledat  Volby  Pohledy  Nápovìda
+<screen> Akce  Zpìt  Balík  Øe¹itel  Hledat  Volby  Pohledy  Nápovìda
 f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
-aptitude 0.3.3       #Poru¹ené: 1   Na disku se uvolní 13335kB
-  --- admin - Nástroje pro správu (instalace softwaru, správa u¾ivatelù, atd.)
-  --- base - Základní systém Debianu
-  --- devel - Nástroje pro vývoj softwaru
-  --- doc - Dokumentace a programy pro její prohlí¾ení
-  --- games - Hry, hraèky a zábavné programy
-  --\ gnome - Desktopové prostøedí GNOME
-    --\ hlavní - Hlavní archiv Debianu
-i     grip                                                 3.3.1-2    3.3.1-4
-ipA   sound-juicer                                 -1245kB 2.10.1-2   2.10.1-3
+aptitude 0.3.3       #Poru¹ené: 1   Na disku se uvolní 48.6MB
+i A   nautilus                                             2.10.1-4   2.10.1-4
+i     nautilus-cd-burner                                   2.10.2-1.1 2.10.2-1.1
+i A   nautilus-data                                        2.10.1-4   2.10.1-4
+i     netspeed                                             0.12.1-1   0.12.1-1
+i A   oaf                                                  0.6.10-3   0.6.10-3
+i     pybliographer                                        1.2.6.2-1  1.2.6.2-1
+i     rhythmbox                                            0.8.8-13   0.8.8-13
+i     shermans-aquarium                                    3.0.1-1    3.0.1-1
+idA   sound-juicer                                 -1733kB 2.10.1-3   2.10.1-3
 GNOME 2 CD Ripper
 sound-juicer bude odstranìn.
 
@@ -3156,9 +3353,9 @@ Následující balíky závisí na sound-juicer a budou jeho odstranìním
 poru¹eny:
 
 
-  * gnome-desktop-environment závisí na sound-juicer (>= 2.10.1)
+  * gnome-desktop-environment závisí na sound-juicer
 
-[1/...] Návrh ponechat 2
+[1(1)/...] Návrh ponechat 2
 e: Prozkoumat  !: Pou¾ít  .: Dal¹í  ,: Pøedchozí</screen>
     </textobject>
   </mediaobject>
@@ -3181,7 +3378,7 @@ podobnou této:
     </imageobject>
 
     <textobject role="text">
-<screen> Akce  Zpìt  Balík  Hledat  Volby  Pohledy  Nápovìda
+<screen> Akce  Zpìt  Balík  Øe¹itel  Hledat  Volby  Pohledy  Nápovìda
 f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
                 Balíèky                           Øe¹ení závislostí
   --\ Ponechat následující balíky v jejich aktuální verzi:
@@ -3203,7 +3400,7 @@ f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
 
 
 
-[1/...] Návrh ponechat 2
+[1(1)/...] Návrh ponechat 2
 e: Prozkoumat  !: Pou¾ít  .: Dal¹í  ,: Pøedchozí</screen>
     </textobject>
   </mediaobject>
@@ -3211,10 +3408,151 @@ e: Prozkoumat  !: Pou¾ít  .: Dal¹í  ,: Pøedchozí</screen>
 
 <para>
 
+Informace o balíèku ovlivnìném akcí získáte jednodu¹e pøesunutím
+kurzoru na jméno balíèku a stisknutím klávesy <keycap>Enter</keycap>.
 Chcete-li získat podrobnìj¹í vysvìtlení proè se &aptitude; rozhodla
-jak se rozhodla, stisknìte klávesu <keycap>o</keycap>. Tím se
-pøeskládá seznam podle jednotlivých závislostí a pøehlednì tak
-zobrazí, které závislosti zpùsobily které akce s balíèky.
+jak se rozhodla, staèí se posunout na nìjaký prvek seznamu. Tím se ve
+spodní èásti obrazovky nejprve zobrazí závislost, která byla touto
+volbou vyøe¹ena, a poté následují v¹echny mo¾nosti, jak se dala tato
+závislost vyøe¹it.
+
+</para>
+
+<screenshot>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/solution-explanation-snapshot.png" format="PNG"/>
+    </imageobject>
+
+    <textobject role="text">
+<screen> Akce  Zpìt  Balík  Øe¹itel  Hledat  Volby  Pohledy  Nápovìda
+f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
+                Balíèky                           Øe¹ení závislostí
+  --\ Ponechat následující balíky v jejich aktuální verzi:
+    gstreamer0.8-cdparanoia                           [0.8.10-1 (unstable, now)]
+    sound-juicer                                                [2.10.1-2 (now)]
+
+
+
+
+
+
+cdparanoia plugin for GStreamer
+sound-juicer závisí na gstreamer0.8-cdparanoia
+--\ Následující akce vyøe¹í tuto závislost:
+  -> Degradace sound-juicer [2.10.1-3 (unstable, now) -> 0.6.1-2 (testing)]
+  -> Odstranìní sound-juicer [2.10.1-3 (unstable, now)]
+  -> Zru¹ení odstranìní gstreamer0.8-cdparanoia
+  -> Degradace gstreamer0.8-cdparanoia [0.8.11-1 (unstable, now) -> 0.8.8-3 (tes
+
+
+
+[1(1)/...] Návrh ponechat 2
+e: Prozkoumat  !: Pou¾ít  .: Dal¹í  ,: Pøedchozí</screen>
+    </textobject>
+  </mediaobject>
+</screenshot>
+
+<para>
+
+Øe¹itele závislostí mù¾ete navigovat k po¾adovanému výsledku pomocí
+<firstterm>schvalování</firstterm> nebo
+<firstterm>zamítání</firstterm> jednotlivých akcí daného øe¹ení.
+<firstterm>Schválením</firstterm> nìjaké akce sdìlíte øe¹iteli, ¾e má
+tuto akci pou¾ít kdekoliv to jen bude mo¾né a tím pádem automaticky
+ignorovat její alternativy. Pokud existuje nìkolik schválených
+mo¾ností, budou vybrány v¹echny. Opaènì funguje
+<firstterm>zamítnutí</firstterm> akce, co¾ znamená, ¾e by se jí mìl
+øe¹itel v navrhovaných øe¹eních vyhýbat.
+
+</para><para>
+
+Pro zamítnutí akce oznaète pøíslu¹ný øádek a stisknìte klávesu
+<keycap>r</keycap>. Opakovaným stiskem klávesy <keycap>r</keycap>
+zamítnutí opìt zru¹íte. Podobnì funguje i klávesa <keycap>a</keycap>,
+která v¹ak slou¾í pro schvalování akcí. Schválení i zamítnutí mù¾ete
+vrátit zpìt také pøíkazem &undo-undo; (pouze na obrazovce
+øe¹itele). Zru¹íte-li zamítnutí nebo schválení, budou dosud ignorované
+akce pøístupné v novì vytvoøených øe¹eních.
+
+</para><para>
+
+Zamítnutou akci poznáte podle toho, ¾e je zbarvená èervenì a na
+zaèátku øádku má písmeno <quote>R</quote>. Schválené akce jsou
+vybarveny zelenì a oznaèeny písmenem <quote>A</quote>. V¹e je pìknì
+vidìt na následujícím obrázku, kde byla akce <quote>ponechat
+<systemitem>gstreamer0.8-cdparanoia</systemitem> v aktuální
+verzi</quote> zamítnuta a akce <quote>ponechat
+<systemitem>sound-juicer</systemitem> v aktuální verzi</quote>
+schválena.
+
+</para>
+
+<screenshot>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/solution-reject-and-approve-snapshot.png" format="PNG"/>
+    </imageobject>
+
+    <textobject role="text">
+<screen> Akce  Zpìt  Balík  Øe¹itel  Hledat  Volby  Pohledy  Nápovìda
+f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
+                Balíèky                           Øe¹ení závislostí
+  --\ Ponechat následující balíky v jejich aktuální verzi:
+R   gstreamer0.8-cdparanoia                           [0.8.10-1 (unstable, now)]
+A   sound-juicer                                      [2.10.1-2 (unstable, now)]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1(1)/...] Návrh ponechat 2
+e: Prozkoumat  !: Pou¾ít  .: Dal¹í  ,: Pøedchozí</screen>
+    </textobject>
+  </mediaobject>
+</screenshot>
+
+<para>
+
+Zamítnutí a schválení se týkají pouze <emphasis>novì
+vytvoøených</emphasis> øe¹ení. To, kdy bude vytvoøeno nové øe¹ení,
+zjistíte v levém dolním rohu obrazovky: Pokud se tam nachází èíslo
+v kulatých závorkách, znamená to poèet dosud vytvoøených
+øe¹ení. Jestli¾e je èíslo pøed závorkou shodné s èíslem v závorce
+(jako na pøedchozím obrázku), stisk klávesy <keycap>.</keycap>
+(<quote>dal¹í</quote>) vytvoøí nové øe¹ení. Pokud se tam ¾ádné èíslo
+v kulatých závorkách nenachází, napø. <literal>[1/5]</literal>,
+znamená to, ¾e ji¾ byla vytvoøena v¹echna mo¾ná øe¹ení. Mezi prvním
+a posledním doposud vytvoøeným øe¹ením mù¾ete pøeskakovat pomocí
+kláves <keycap>&gt;</keycap> a <keycap>&lt;</keycap>.
+
+</para><important><para>
+
+Stav øe¹itele se vynuluje pøi ka¾dé zmìnì stavu libovolného balíku. To
+znamená, ¾e kdy¾ oznaèíte balík pro instalaci, aktualizaci,
+odstranìní, apod., øe¹itel zapomene v¹echna vytvoøená øe¹ení a také
+v¹echna schválení a zamítnutí.
+
+</para></important><para>
+
+Akce nemusíte vybírat pouze ze seznamu nahoøe na obrazovce, ale mù¾ete
+pou¾ít i seznam ve spodní èásti, kam se dostanete stiskem klávesy
+<keycap>Tab</keycap>, nebo kliknutím my¹i.  Koneènì poslední zajímavou
+klávesou v øe¹iteli závislostí je klávesa <keycap>o</keycap>, která
+pøeskládá zobrazení podle vyøe¹ených závislostí, pod kterými následuje
+akce, je¾ vedla k vyøe¹ení dané závislosti. Více prozradí následující
+obrázek:
 
 </para>
 
@@ -3237,12 +3575,12 @@ f10: Menu  ?: Nápovìda  q: Konec  u: Aktualizace  g: Sta¾ení/Instalace
 
 
 
-
-
-
-
-
-
+GNOME 2 CD Ripper
+gnome-desktop-environment závisí na sound-juicer
+--\ Následující akce vyøe¹í tuto závislost:
+  -> Odstranìní gnome-desktop-environment [1:2.10.2.3 (unstable, testing, now)]
+  -> Zru¹ení odstranìní sound-juicer
+  -> Degradace sound-juicer [2.10.1-3 (unstable, now) -> 0.6.1-2 (testing)]
 
 
 
@@ -3255,49 +3593,10 @@ e: Prozkoumat  !: Pou¾ít  .: Dal¹í  ,: Pøedchozí</screen>
 
 <para>
 
-Abyste rychle a efektivnì nalezli øe¹ení, které vám bude vyhovovat,
-mù¾ete &aptitude; øíci, aby zobrazovala pouze øe¹ení, která splòují
-podmínky, je¾ zadáte.
+Zpìt k pøedchozímu zobrazení se dostanete opìtovným stiskem klávesy
+<keycap>o</keycap>.
 
 </para>
-
-<itemizedlist>
-  <listitem><para>
-
-Chcete-li &aptitude; donutit, aby ignorovala øe¹ení obsahující
-konkrétní akci, mù¾ete danou akci oznaèit kurzorem a stisknout klávesu
-<keycap>r</keycap>, co¾ akci <quote>zamítne</quote>. Poté budou
-v¹echna novì vytvoøená øe¹ení (tj. ta, která jste dosud nevidìli),
-ji¾ nebudou tuto akci obsahovat.
-
-  </para><para>
-
-Zamítnutí mù¾ete také zru¹it. Staèí znovu vybrat danou akci
-a stisknout <keycap>r</keycap>.
-
-  </para></listitem>
-  <listitem><para>
-
-Chcete-li &aptitude; donutit, aby vytváøela pouze øe¹ení obsahující
-konkrétní akci, staèí danou akci oznaèit kurzorem a stisknout klávesu
-<keycap>a</keycap>, co¾ akci <quote>akceptuje</quote>. Po akceptování
-budou v¹echna novì vytvoøená øe¹ení (tj. ta, která jste dosud
-nevidìli) tuto akci obsahovat.
-
-  </para><para>
-
-Akceptování akce mù¾ete také zru¹it. Staèí znovu vybrat danou akci
-a stisknout <keycap>a</keycap>.
-
-  </para><note><para>
-
-Zamítnutí a akceptování akcí není symetrické, proto¾e zamítnutí akce
-neovlivní zamítnutí jiných akcí, zatímco akceptování akce automaticky
-zamítne v¹echny alternativy této akce, i kdyby byly tyto akce pùvodnì
-nezamítnuté nebo dokonce akceptované.
-
-  </para></note></listitem>
-</itemizedlist>
   </section>
 
   <section id="secInstallRun">
@@ -3721,7 +4020,15 @@ nabývat hodnot <quote><literal>install</literal></quote>,
 v aktuální verzi) nebo <quote><literal>keep</literal></quote>
 (testuje, zda se stav balíku nezmìní).
 
-<!-- Should I document more extensively what each option does? -->
+  </para><para>
+
+Poznamenejme, tento test zji¹»uje pouze akce, které jsou na balíku
+skuteènì naplánovány a nebere ohled na to, zda
+<emphasis>mohou</emphasis> být provedeny. Napøíklad
+<literal>~aupgrade</literal> se shoduje právì s tìmi balíky, které
+jste se rozhodli aktualizovat, ne s balíky, které by se
+<emphasis>daly</emphasis> aktualizovat (pro to pou¾ijte
+<literal>~U</literal>).
 
   </para></listitem>
 </varlistentry>
@@ -5298,6 +5605,17 @@ V hierarchickém seznamu rozbalí vybraný strom.
   </row>
 
   <row>
+    <entry><literal>FirstSolution</literal></entry>
+    <entry><literal>&lt;</literal></entry>
+    <entry>
+
+Jestli¾e jsou nìjaké balíky poru¹eny, pøejde na první navrhované
+øe¹ení.
+
+    </entry>
+  </row>
+
+  <row>
     <entry><literal>ForbidUpgrade</literal></entry>
     <entry>F</entry>
     <entry>
@@ -5387,7 +5705,18 @@ ponechány v aktuální verzi.
     <entry>
 
 U vybraného balíku <link linkend="pkgCmdKeep">zru¹í</link> naplánované
-akce jako instalaci, aktualizaci nebo odstranìní.
+akce jako instalaci, aktualizaci, odstranìní nebo podr¾ení.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry><literal>LastSolution</literal></entry>
+    <entry><literal>&gt;</literal></entry>
+    <entry>
+
+Jestli¾e jsou nìjaké balíky poru¹eny, pøejde na poslední doposud
+navrhnuté øe¹ení.
 
     </entry>
   </row>
@@ -5405,7 +5734,7 @@ vlevo, nebo pøi editaci textu posune kurzor o znak doleva.
 
   <row>
     <entry><literal>LevelDown</literal></entry>
-    <entry><literal>K</literal></entry>
+    <entry><literal>J</literal></entry>
     <entry>
 
 V hierarchickém seznamu vybere dal¹ího sourozence vybrané polo¾ky
@@ -5416,7 +5745,7 @@ V hierarchickém seznamu vybere dal¹ího sourozence vybrané polo¾ky
 
   <row>
     <entry><literal>LevelUp</literal></entry>
-    <entry><literal>J</literal></entry>
+    <entry><literal>K</literal></entry>
     <entry>
 
 V hierarchickém seznamu vybere pøedchozího sourozence vybrané polo¾ky
@@ -5516,8 +5845,8 @@ Posune zobrazení o stranu vpøed.
     <entry><literal>.</literal></entry>
     <entry>
 
-Jestli¾e jsou nìjaké balíky poru¹eny a aktuálnì vybrané øe¹ení není
-poslední, pøesune se na dal¹í navrhované øe¹ení.
+Jestli¾e jsou nìjaké balíky poru¹eny, pøesune se na dal¹í navrhované
+øe¹ení.
 
     </entry>
   </row>
@@ -5559,8 +5888,8 @@ Posune zobrazení o stranu zpìt.
     <entry><literal>,</literal></entry>
     <entry>
 
-Jestli¾e jsou nìjaké balíky poru¹eny a aktuálnì vybrané øe¹ení není
-první, pøesune se na pøedchozí navrhované øe¹ení.
+Jestli¾e jsou nìjaké balíky poru¹eny, pøesune se na pøedchozí
+navrhované øe¹ení.
 
     </entry>
   </row>
@@ -5732,13 +6061,13 @@ V seznamu balíkù zapne/vypne zobrazení informaèní oblasti.
   </row>
 
   <row>
-    <entry><literal>SolutionActionAccept</literal></entry>
+    <entry><literal>SolutionActionApprove</literal></entry>
     <entry><literal>a</literal></entry>
     <entry>
 
 Pøi prohlí¾ení øe¹ení oznaèí aktuálnì vybranou akci jako
-<quote>akceptovanou</quote> (tj. budou generována pouze øe¹ení
-obsahující tuto akci).
+<quote>schválenou</quote> (tj. pøednostnì budou generována pouze
+øe¹ení obsahující tuto akci).
 
     </entry>
   </row>
@@ -5749,8 +6078,8 @@ obsahující tuto akci).
     <entry>
 
 Pøi prohlí¾ení øe¹ení oznaèí aktuálnì vybranou akci jako
-<quote>odmítnutou</quote> (tj. budou generována pouze øe¹ení
-neobsahující tuto akci).
+<quote>odmítnutou</quote> (tj. pøednostnì budou generována pouze
+øe¹ení neobsahující tuto akci).
 
     </entry>
   </row>
@@ -6481,6 +6810,19 @@ Styl pro zobrazení odrá¾ek v seznamech.
     </entry>
   </row>
 
+  <row>
+    <entry>ChangelogNewerVersion</entry>
+    <entry><literal>set bold;</literal></entry>
+    <entry>
+
+Styl pro zobrazení novìj¹ích záznamù v seznamu zmìn
+balíèku. Poznamenejme, ¾e &aptitude; bude zvýrazòovat záznamy pouze
+v pøípadì, ¾e máte nainstalován balíèek
+<systemitem>libparse-debianchangelog-perl</systemitem>.
+
+    </entry>
+  </row>
+
   <row id="colorDefaultWidgetBackground">
     <entry><literal>Default</literal></entry>
     <entry><literal>fg white; bg black;</literal></entry>
@@ -6691,7 +7033,7 @@ Styl pro zobrazení aktuálnì vybrané <quote>zálo¾ky</quote>.
 
   <row>
     <entry><literal>PkgBroken</literal></entry>
-    <entry><literal>fg black; bg red;</literal></entry>
+    <entry><literal>fg red; flip reverse;</literal></entry>
     <entry>
 
 Styl pro zobrazení balíkù, které mají nesplnìné závislosti.
@@ -6700,8 +7042,62 @@ Styl pro zobrazení balíkù, které mají nesplnìné závislosti.
   </row>
 
   <row>
+    <entry><literal>PkgBrokenHighlighted</literal></entry>
+    <entry><literal>fg red;</literal></entry>
+    <entry>
+
+Styl pro zobrazení vybraného balíku s nesplnìnými závislostmi.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry><literal>PkgNotInstalled</literal></entry>
+    <entry></entry>
+    <entry>
+
+Styl pro zobrazení balíkù, které momentálnì nejsou instalovány
+a nebudou instalovány.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry><literal>PkgNotInstalledHighlighted</literal></entry>
+    <entry></entry>
+    <entry>
+
+Styl pro zobrazení vybraného balíku, který momentálnì není instalován
+a nebude instalován.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry><literal>PkgIsInstalled</literal></entry>
+    <entry><literal>set bold;</literal></entry>
+    <entry>
+
+Styl pro zobrazení balíkù, které jsou momentálnì instalovány a pro
+které není naplánovaná ¾ádná akce.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry><literal>PkgIsInstalledHighlighted</literal></entry>
+    <entry><literal>set bold; flip reverse;</literal></entry>
+    <entry>
+
+Styl pro zobrazení vybraného balíku, který je momentálnì instalován
+a pro který není naplánovaná ¾ádná akce.
+
+    </entry>
+  </row>
+
+  <row>
     <entry><literal>PkgToHold</literal></entry>
-    <entry><literal>fg black; bg white;</literal></entry>
+    <entry><literal>fg white; flip reverse;</literal></entry>
     <entry>
 
 Styl pro zobrazení balíkù, které jsou <link
@@ -6711,8 +7107,19 @@ linkend="pkgCmdHold">podr¾eny</link> v aktuální verzi.
   </row>
 
   <row>
+    <entry><literal>PkgToHoldHighlighted</literal></entry>
+    <entry><literal>fg white;</literal></entry>
+    <entry>
+
+Styl pro zobrazení vybraného balíku <link
+linkend="pkgCmdHold">podr¾eného</link> v aktuální verzi.
+
+    </entry>
+  </row>
+
+  <row>
     <entry><literal>PkgToInstall</literal></entry>
-    <entry><literal>fg black; bg green;</literal></entry>
+    <entry><literal>fg green; flip reverse;</literal></entry>
     <entry>
 
 Styl pro zobrazení balíkù, které budou <link
@@ -6723,8 +7130,20 @@ linkend="pkgCmdInstall">instalovány</link> (ne aktualizovány) nebo
   </row>
 
   <row>
+    <entry><literal>PkgToInstallHighlighted</literal></entry>
+    <entry><literal>fg green;</literal></entry>
+    <entry>
+
+Styl pro zobrazení vybraného balíku, který bude <link
+linkend="pkgCmdInstall">instalován</link> (ne aktualizován) nebo <link
+linkend="pkgCmdReinstall">reinstalován</link>.
+
+    </entry>
+  </row>
+
+  <row>
     <entry><literal>PkgToRemove</literal></entry>
-    <entry><literal>fg black; bg magenta;</literal></entry>
+    <entry><literal>fg magenta; flip reverse;</literal></entry>
     <entry>
 
 Styl pro zobrazení balíkù, které budou <link
@@ -6735,11 +7154,33 @@ linkend="pkgCmdPurge">vyèi¹tìny</link>.
   </row>
 
   <row>
+    <entry><literal>PkgToRemoveHighlighted</literal></entry>
+    <entry><literal>fg magenta;</literal></entry>
+    <entry>
+
+Styl pro zobrazení vybraného balíku, který bude <link
+linkend="pkgCmdRemove">odstranìn</link> nebo <link
+linkend="pkgCmdPurge">vyèi¹tìn</link>.
+
+    </entry>
+  </row>
+
+  <row>
     <entry><literal>PkgToUpgrade</literal></entry>
-    <entry><literal>fg black; bg cyan;</literal></entry>
+    <entry><literal>fg cyan; flip reverse;</literal></entry>
     <entry>
 
 Styl pro zobrazení balíkù, které budou aktualizovány.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry><literal>PkgToUpgradeHighlighted</literal></entry>
+    <entry><literal>fg cyan;</literal></entry>
+    <entry>
+
+Styl pro zobrazení vybraného balíku, který bude aktualizován.
 
     </entry>
   </row>
@@ -6756,18 +7197,18 @@ pøi naèítání vyrovnávací pamìti.
   </row>
 
   <row>
-    <entry><literal>SolutionActionAccepted</literal></entry>
-    <entry><literal>fg white; bg green;</literal></entry>
+    <entry><literal>SolutionActionApproved</literal></entry>
+    <entry><literal>bg green;</literal></entry>
     <entry>
 
-Styl pro zobrazení akceptovaných akcí v navrhovaném øe¹ení.
+Styl pro zobrazení schválených akcí v navrhovaném øe¹ení.
 
     </entry>
   </row>
 
   <row>
     <entry><literal>SolutionActionRejected</literal></entry>
-    <entry><literal>fg white; bg red;</literal></entry>
+    <entry><literal>bg red;</literal></entry>
     <entry>
 
 Styl pro zobrazení zamítnutých akcí v navrhovaném øe¹ení.
@@ -7559,6 +8000,17 @@ pøíkazovém øádku.
       </seg>
     </seglistitem>
 
+    <seglistitem id="configCmdLine-Ignore-Trust-Violations">
+      <seg><literal>Aptitude::CmdLine::Ignore-Trust-Violations</literal></seg>
+      <seg><literal>false</literal></seg>
+      <seg>
+
+Zpùsobí, ¾e &aptitude; bude v pøíkazovém re¾imu ignorovat instalaci
+<link linkend="secTrust">nedùvìryhodných balíèkù</link>.
+
+      </seg>
+    </seglistitem>
+
     <seglistitem id="configCmdLine-Resolver-Debug">
       <seg><literal>Aptitude::CmdLine::Resolver-Debug</literal></seg>
       <seg><literal>false</literal></seg>
@@ -7574,7 +8026,7 @@ vývojáøe, kteøí chtìjí pomoci s ladìním øe¹itele závislostí.
 
     <seglistitem id="configCmdLine-Request-Strictness">
       <seg><literal>Aptitude::CmdLine::Request-Strictness</literal></seg>
-      <seg><literal>1000</literal></seg>
+      <seg><literal>0</literal></seg>
       <seg>
 
 Pokud se v pøíkazovém re¾imu vyskytnou problémy se závislostmi,
@@ -7677,9 +8129,13 @@ odpovídá argumentu <literal>-Z</literal> na pøíkazovém øádku.
       <seg><literal>false</literal></seg>
       <seg>
 
+<emphasis>Tato volba je zastaralá, pou¾ijte místo ní <literal><link
+linkend="configSimulate">Aptitude::Simulate</link></literal>.</emphasis>
+
 V pøíkazovém re¾imu zpùsobí, ¾e se pouze naznaèí akce, které by se
-normálnì provedly. To odpovídá argumentu <literal>-s</literal> na
-pøíkazovém øádku.
+normálnì provedly. V celoobrazovkovém re¾imu spustí program v re¾imu
+pouze pro ètení bez ohledu na to, zda máte &root;ovská oprávnìní. To
+odpovídá argumentu <literal>-s</literal> na pøíkazovém øádku.
 
       </seg>
     </seglistitem>
@@ -7770,6 +8226,24 @@ nové (jako kdybyste ruènì spustili pøíkaz &actions-forget;.
       </seg>
     </seglistitem>
 
+    <seglistitem id="configIgnore-Old-Tmp">
+      <seg><literal>Aptitude::Ignore-Old-Tmp</literal></seg>
+      <seg><literal>false</literal></seg>
+      <seg>
+
+Star¹í verze &aptitude; vytváøely adresáø
+<filename>~/.aptitude/.tmp</filename>, který ji¾ není potøeba. Pokud
+adresáø existuje a <literal>Aptitude::Ignore-Old-Tmp</literal> má
+hodnotu <literal>true</literal>, &aptitude; se zeptá, zda má tento
+adresáø odstranit. Po va¹í odpovìdi je tato volba automaticky
+nastavena na hodnotu <literal>true</literal>. Na druhou stranu, pokud
+adresáø neexistuje, nastaví se hodnota na <literal>false</literal>,
+co¾ zajistí, ¾e budete varováni okam¾itì, kdy¾ by se tento adresáø
+objevil.
+
+      </seg>
+    </seglistitem>
+
     <seglistitem id="configKeep-Suggests">
       <seg><literal>Aptitude::Keep-Suggests</literal></seg>
       <seg><literal>false</literal></seg>
@@ -7814,6 +8288,28 @@ naleznete v <xref linkend="secSearchPatterns"/>.
       </seg>
     </seglistitem>
 
+    <seglistitem id="configPreview-Limit">
+      <seg><literal>Aptitude::Preview-Limit</literal></seg>
+      <seg></seg>
+      <seg>
+
+Implicitní filtr aplikovaný na souhrn pøed instalací. Podrobnosti
+o formátu filtru se dozvíte v <xref linkend="secSearchPatterns"/>.
+
+      </seg>
+    </seglistitem>
+
+    <seglistitem id="configProblemResolver-BreakHoldScore">
+      <seg><literal>Aptitude::ProblemResolver::BreakHoldScore</literal></seg>
+      <seg><literal>-300</literal></seg>
+      <seg>
+
+Jak moc odmìnit nebo potrestat navrhovaná øe¹ení, která zmìní stav
+podr¾eného balíku.
+
+      </seg>
+    </seglistitem>
+
     <seglistitem id="configProblemResolver-BrokenScore">
       <seg><literal>Aptitude::ProblemResolver::BrokenScore</literal></seg>
       <seg><literal>-100</literal></seg>
@@ -7826,9 +8322,20 @@ pøiète tato hodnota. Obvykle by to mìlo být záporné èíslo.
       </seg>
     </seglistitem>
 
+    <seglistitem id="configProblemResolver-EssentialRemoveScore">
+      <seg><literal>Aptitude::ProblemResolver::EssentialRemoveScore</literal></seg>
+      <seg><literal>-100000</literal></seg>
+      <seg>
+
+Jak moc odmìnit nebo potrestat navrhovaná øe¹ení, která odstraní
+Nezbytný balík.
+
+      </seg>
+    </seglistitem>
+
     <seglistitem id="configProblemResolver-ExtraScore">
       <seg><literal>Aptitude::ProblemResolver::ExtraScore</literal></seg>
-      <seg><literal>5</literal></seg>
+      <seg><literal>-1</literal></seg>
       <seg>
 
 Ka¾dé verzi balíku s prioritou <quote>extra</quote> se k celkovému
@@ -7873,7 +8380,7 @@ doposud nebyl vybrán pro instalaci.
 
     <seglistitem id="configProblemResolver-KeepScore">
       <seg><literal>Aptitude::ProblemResolver::KeepScore</literal></seg>
-      <seg><literal>-50</literal></seg>
+      <seg><literal>0</literal></seg>
       <seg>
 
 Jakou váhu má øe¹itel závislostí pøikládat ponechání balíku v aktuálním
@@ -7912,7 +8419,7 @@ nebo kandidátská.)
 
     <seglistitem id="configProblemResolver-OptionalScore">
       <seg><literal>Aptitude::ProblemResolver::OptionalScore</literal></seg>
-      <seg><literal>5</literal></seg>
+      <seg><literal>1</literal></seg>
       <seg>
 
 Ka¾dé verzi balíku s prioritou <quote>volitelné</quote> se k celkovému
@@ -7935,7 +8442,7 @@ instalací nebo odstranìní.
 
     <seglistitem id="configProblemResolver-PreserveManualScore">
       <seg><literal>Aptitude::Problem-Resolver::PreserveManualScore</literal></seg>
-      <seg><literal>40</literal></seg>
+      <seg><literal>60</literal></seg>
       <seg>
 
 Jakou váhu má øe¹itel závislostí pøikládat zachování akcí vy¾ádaných
@@ -8000,14 +8507,15 @@ mu dovolíte hledat dùkladnìji, co¾ spotøebuje více procesorového èasu
 a operaèní pamìti. Výchozí hodnota je dostateènì velká pro to, aby
 uspokojivì øe¹ila nejbì¾nìj¹í problémy a pøitom
 <quote>neshodila</quote> program, pokud se objeví extrémnì obtí¾ný
-problém.
+problém. (Poznámka: týká se pouze pøíkazové øádky. V celoobrazovkovém
+re¾imu bude øe¹itel hledat tak dlouho, dokud nenalezne øe¹ení.)
 
       </seg>
     </seglistitem>
 
     <seglistitem id="configProblemResolver-StepScore">
       <seg><literal>Aptitude::ProblemResolver::StepScore</literal></seg>
-      <seg><literal>-10</literal></seg>
+      <seg><literal>10</literal></seg>
       <seg>
 
 Jak moc odmìnit nebo potrestat navrhovaná øe¹ení na základì jejich
@@ -8017,9 +8525,23 @@ hodnota. Obvykle by to mìlo být záporné èíslo.
       </seg>
     </seglistitem>
 
+    <seglistitem id="configProblemResolver-UnfixedSoftScore">
+      <seg><literal>Aptitude::ProblemResolver::UnfixedSoftScore</literal></seg>
+      <seg><literal>-200</literal></seg>
+      <seg>
+
+Jak moc odmìnit nebo potrestat navrhovaná øe¹ení, která ponechají
+nevyøe¹enu závislost typu Doporuèuje. Tato hodnota by obvykle mìla být
+ni¾¹í ne¾ <literal>RemoveScore</literal>, proto¾e jinak by &aptitude;
+balík radìji odstranila, ne¾ aby jej ponechala bez splnìného
+Doporuèení. Podrobnosti naleznete v <xref linkend="secResolver"/>.
+
+      </seg>
+    </seglistitem>
+
     <seglistitem id="configProblemResolver-UpgradeScore">
       <seg><literal>Aptitude::ProblemResolver::UpgradeScore</literal></seg>
-      <seg><literal>-15</literal></seg>
+      <seg><literal>0</literal></seg>
       <seg>
 
 Jakou váhu má øe¹itel závislostí pøikládat aktualizaci (nebo
@@ -8037,6 +8559,51 @@ Pokud mají tato volba a volba
 <literal>Aptitude::Auto-Install</literal> zároveò hodnotu
 <literal>true</literal>, pak instalací balíku se automaticky
 nainstalují i balíky, které doporuèuje.
+
+      </seg>
+    </seglistitem>
+
+    <seglistitem id="configProblemResolver-WaitSteps">
+      <seg><literal>Aptitude::ProblemResolver::WaitSteps</literal></seg>
+      <seg><literal>50</literal></seg>
+      <seg>
+
+Poèet krokù, které mù¾e øe¹itel vykonat na popøedí, ne¾ se pøesune do
+vlákna bì¾ícího na pozadí. Bìhem výpoètù na popøedí nebude &aptitude;
+odpovídat na u¾ivatelské podnìty. Sní¾ením této hodnoty se stane
+program interaktivnìj¹í, av¹ak zase se mù¾e zbyteènì zobrazit
+indikátor postupu.
+
+      </seg>
+    </seglistitem>
+
+    <seglistitem id="configPurge-Unused">
+      <seg><literal>Aptitude::Purge-Unused</literal></seg>
+      <seg><literal>false</literal></seg>
+      <seg>
+
+Pokud mají tato volba a volba <literal><link
+linkend="configDelete-Unused">Aptitude::Delete-Unused</link></literal>
+zároveò hodnotu <literal>true</literal>, budou nepou¾ívané balíèky ze
+systému automaticky <emphasis>vyèi¹tìny</emphasis>, co¾ odstraní
+jejich konfiguraèní soubory a mo¾ná také dùle¾itá data. O tom, které
+balíèky jsou pova¾ovány za <quote>nepou¾ívané</quote>, se dozvíte
+v <xref linkend="secAutoInstall"/>. <emphasis>TATO VOLBA MÙ®E ZPÙSOBIT
+ZTRÁTU DAT! POKUD PØESNÌ NEVÍTE, CO DÌLÁTE, NEZAPÍNEJTE JI!</emphasis>
+
+      </seg>
+    </seglistitem>
+
+    <seglistitem id="configSimulate">
+      <seg><literal>Aptitude::Simulate</literal></seg>
+      <seg><literal>false</literal></seg>
+      <seg>
+
+V pøíkazovém re¾imu zpùsobí, ¾e &aptitude; pouze zobrazí akce, které
+by se provedly, ale ve skuteènosti je neprovede. V celoobrazovkovém
+re¾imu zpùsobí nastartování do re¾imu pouze pro ètení bez ohledu na
+fakt, zda máte &root;ovská oprávnìní. To odpovídá parametru
+<literal>-s</literal> na pøíkazovém øádku.
 
       </seg>
     </seglistitem>
@@ -8062,6 +8629,17 @@ linkend="configKeep-Suggests">Aptitude::Keep-Suggests</link></literal>.
 
 Téma, které má &aptitude; pou¾ít. Více viz <xref
 linkend="secThemes"/>.
+
+      </seg>
+    </seglistitem>
+
+    <seglistitem id="configSpin-Interval">
+      <seg><literal>Aptitude::Spin-Interval</literal></seg>
+      <seg><literal>500</literal></seg>
+      <seg>
+
+Poèet milisekund mezi aktualizacemi <quote>tøpytky</quote>, která se
+zobrazuje zatímco øe¹itel pøemý¹lí.
 
       </seg>
     </seglistitem>
@@ -8125,6 +8703,17 @@ linkend="secGroupingPolicy"/>.
 Nastaví implicitní shlukovací pravidla pro pøehledy.  Informace
 o shlukovacích pravidlech naleznete v kapitole <xref
 linkend="secGroupingPolicy"/>.
+
+      </seg>
+    </seglistitem>
+
+    <seglistitem id="configDefault-Sorting">
+      <seg><literal>Aptitude::UI::Default-Sorting</literal></seg>
+      <seg><literal>name</literal></seg>
+      <seg>
+
+Nastaví implicitní tøídící pravidla pro seznamy balíkù. Více informací
+naleznete v <xref linkend="secSortingPolicy"/>.
 
       </seg>
     </seglistitem>
@@ -8286,7 +8875,7 @@ linkend="secDisplayFormat"/>.
 
     <seglistitem id="configPackage-Header-Format">
       <seg><literal>Aptitude::UI::Package-Header-Format</literal></seg>
-      <seg><literal>%d</literal></seg>
+      <seg><literal>%N %n #%B %u %o</literal></seg>
       <seg>
 
 Tato volba urèuje formát øetìzce, který se zobrazí v záhlaví seznamu
@@ -8325,6 +8914,17 @@ balíkù pøejde rovnou na následující obrazovku.
       </seg>
     </seglistitem>
 
+    <seglistitem id="configPrompt-On-Exit">
+      <seg><literal>Aptitude::UI::Prompt-On-Exit</literal></seg>
+      <seg><literal>true</literal></seg>
+      <seg>
+
+Má-li volba hodnotu <literal>true</literal>, &aptitude; se pøed
+ukonèením zeptá, zda chcete program opravdu ukonèit.
+
+      </seg>
+    </seglistitem>
+
     <seglistitem id="configStyles">
       <seg><literal>Aptitude::UI::Styles</literal></seg>
       <seg></seg>
@@ -8337,24 +8937,14 @@ balíkù pøejde rovnou na následující obrazovku.
       </seg>
     </seglistitem>
 
-    <seglistitem id="configPreview-Limit">
-      <seg><literal>Aptitude::Preview-Limit</literal></seg>
-      <seg></seg>
+    <seglistitem id="suppressReadOnlyWarning">
+      <seg><literal>Aptitude::Suppress-Read-Only-Warning</literal></seg>
+      <seg><literal>false</literal></seg>
       <seg>
 
-Implicitní filtr aplikovaný na souhrn pøed instalací. Podrobnosti
-o formátu filtru se dozvíte v <xref linkend="secSearchPatterns"/>.
-
-      </seg>
-    </seglistitem>
-
-    <seglistitem id="configPrompt-On-Exit">
-      <seg><literal>Aptitude::UI::Prompt-On-Exit</literal></seg>
-      <seg><literal>true</literal></seg>
-      <seg>
-
-Má-li volba hodnotu <literal>true</literal>, &aptitude; se pøed
-ukonèením zeptá, zda chcete program opravdu ukonèit.
+Má-li volba hodnotu <literal>false</literal> a vy se pokusíte zmìnit
+stav balíèkù zatímco se program nachází v re¾imu pouze pro ètení, tak
+&aptitude; zobrazí varování.
 
       </seg>
     </seglistitem>
@@ -8369,6 +8959,28 @@ zda pro danou akci nepotøebujete práva u¾ivatele &root; a pokud ano,
 zeptá se, zda se chcete na tento úèet pøepnout. Pokud ji¾ práva
 &root;a máte, &aptitude; se samozøejmì na nic ptát nebude. Pro více
 informací viz èást <xref linkend="secBecomingRoot"/>.
+
+      </seg>
+    </seglistitem>
+
+    <seglistitem id="configDebTags-Vocabulary">
+      <seg><literal>DebTags::Vocabulary</literal></seg>
+      <seg><literal>/usr/share/debtags/vocabulary</literal></seg>
+      <seg>
+
+Umístìní slovníku <literal>debtags</literal>, ve kterém jsou ulo¾ena
+metadata znaèek.
+
+      </seg>
+    </seglistitem>
+
+    <seglistitem id="configQuiet">
+      <seg><literal>Quiet</literal></seg>
+      <seg><literal>0</literal></seg>
+      <seg>
+
+Tato hodnota urèuje míru mlèenlivosti pøíkazového re¾imu. Nastavením
+vy¹¹í hodnoty zaká¾ete více výstupu (obzvlá¹tì indikátory postupu).
 
       </seg>
     </seglistitem>
@@ -9764,13 +10376,15 @@ linkend="configRecommends-Important">Aptitude::Recommends-Important</link></lite
 
     <listitem><para>
 
-Simuluje akce, které by se provedly, ale reálnì je neprovede. Nevy¾aduje
-&root;ovská práva.
+V pøíkazovém re¾imu simuluje akce, které by se provedly, ale reálnì je
+neprovede. Nevy¾aduje &root;ovská práva. V celoobrazovkovém re¾imu
+otevøe cache pouze pro ètení bez ohledu na to, zda máte &root;ovská
+oprávnìní.
 
     </para><para>
 
 Konfiguraèní polo¾ka <literal><link
-linkend="configCmdLine-Simulate">Aptitude::CmdLine::Simulate</link></literal>.
+linkend="configSimulate">Aptitude::Simulate</link></literal>.
 
     </para></listitem>
   </varlistentry>
@@ -9853,6 +10467,29 @@ soubor</link></quote>.
     </para></listitem>
   </varlistentry>
 
+  <varlistentry>
+    <term>
+      <literal>-q<arg choice="opt">=<replaceable>n</replaceable></arg></literal>,
+      <literal>--quiet<arg choice="opt">=<replaceable>n</replaceable></arg></literal>
+    </term>
+
+    <listitem><para>
+
+Potlaèí v¹echny ukazatele postupu, co¾ umo¾ní ukládat výstup programu
+do souboru pro pozdìj¹í kontrolu. Tuto volbu mù¾ete nìkolikrát
+zopakovat, co¾ bude program dále zti¹ovat. &aptitude; v¹ak na rozdíl
+od &apt-get; pøi násobném pou¾ití nezapne volbu <literal>-y</literal>.
+
+    </para><para>
+
+Abyste parametr <literal>-q</literal> nemuseli zadávat nìkolikrát,
+mù¾ete pou¾ít i variantu s volitelným
+<literal>=<replaceable>n</replaceable></literal>, kde místo
+<replaceable>n</replaceable> zadáte míru tichosti odpovídající
+<replaceable>n</replaceable> písmenùm <literal>q</literal>.
+
+    </para></listitem>
+  </varlistentry>
 
   <varlistentry>
     <term><literal>-V</literal>, <literal>--show-versions</literal></term>
@@ -9873,7 +10510,6 @@ linkend="configCmdLine-Show-Versions">Aptitude::CmdLine::Show-Versions</link></l
     <term><literal>-v</literal>, <literal>--verbose</literal></term>
 
     <listitem><para>
-
 
 Zobrazí dal¹í informace (mù¾e být pou¾ito vícekrát).
 
@@ -10014,9 +10650,11 @@ volbu nemù¾ete pou¾ít zároveò s <quote><literal>-u</literal></quote>.
 
 <citerefentry>
   <refentrytitle>apt</refentrytitle> <manvolnum>8</manvolnum>
-</citerefentry>,
+</citerefentry>
 
-<filename>/usr/share /doc/aptitude/html/index.html</filename>
+a
+<filename>/usr/share/doc/aptitude/<replaceable>jazyk</replaceable>/html/index.html</filename>
+z balíèku aptitude-doc-<replaceable>jazyk</replaceable>
 
 </para>
 </refsect1>
