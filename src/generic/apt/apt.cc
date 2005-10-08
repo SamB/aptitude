@@ -210,8 +210,7 @@ void apt_init(OpProgress *progress_bar, bool do_initselections,
     apt_reload_cache(progress_bar, do_initselections, status_fname);
 }
 
-void apt_reload_cache(OpProgress *progress_bar, bool do_initselections,
-		      const char * status_fname)
+void apt_close_cache()
 {
   cache_closed();
 
@@ -240,6 +239,12 @@ void apt_reload_cache(OpProgress *progress_bar, bool do_initselections,
       delete resman;
       resman = NULL;
     }
+}
+
+void apt_reload_cache(OpProgress *progress_bar, bool do_initselections,
+		      const char * status_fname)
+{
+  apt_close_cache();
 
   aptitudeCacheFile *new_file=new aptitudeCacheFile;
 

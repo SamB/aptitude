@@ -68,6 +68,10 @@ void apt_init(OpProgress *progess_bar,
 // from that (eg, config data) may be needed before apt_init itself is called.
 // This routine loads in the cache, source lists, etc.
 
+
+/** Close the cache file and destroy the associated data structures. */
+void apt_close_cache();
+
 void apt_reload_cache(OpProgress *progress_bar,
 		      bool do_initselections, const char * status_fname=NULL);
 //  Forces the cache to be reloaded.
