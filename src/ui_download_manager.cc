@@ -73,6 +73,8 @@ void ui_download_manager::done(download_thread *, pkgAcquire::RunResult res)
 
   download_manager::result run_res = manager->finish(res, *p.unsafe_get_ref());
 
+  apt_load_cache(p.unsafe_get_ref(), true);
+
   p->destroy();
 
   delete t;
