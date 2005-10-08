@@ -185,17 +185,21 @@ download_manager::result download_install_manager::finish(pkgAcquire::RunResult 
 {
   result run_res = execute_install_run(res, progress);
 
+  apt_close_cache();
+
   if(run_res != do_again)
     {
       if(log != NULL)
 	log->Complete();
-      apt_reload_cache(&progress, true);
 
-      if(apt_cache_file != NULL &&
-	 aptcfg->FindB(PACKAGE "::Forget-New-On-Install", false))
+      if(aptcfg->FindB(PACKAGE "::Forget-New-On-Install", false))
 	{
-	  (*apt_cache_file)->forget_new(NULL);
-	  post_forget_new_hook();
+	  apt_load_cache(&progress, true);
+	  if(apt_cache_file != NULL)
+	    {
+	      (*apt_cache_file)->forget_new(NULL);
+	      post_forget_new_hook();
+	    }
 	}
     }
 
