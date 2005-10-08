@@ -72,6 +72,19 @@ void apt_init(OpProgress *progess_bar,
 /** Close the cache file and destroy the associated data structures. */
 void apt_close_cache();
 
+/** If the cache is closed, open it; otherwise do nothing.
+ *
+ *  \param progress_bar a progress bar with which to display the
+ *                      status of loading the cache.
+ *  \param do_initselections if \b true, the selection status
+ *                           of packages will be set from aptitude's
+ *                           sticky database.
+ *  \param status_fname if not \b NULL, a filename to use in lieu
+ *                      of /var/lib/aptitude/pkgstates.
+ */
+void apt_load_cache(OpProgress *progress_bar,
+		    bool do_initselections, const char *status_fname = NULL);
+
 void apt_reload_cache(OpProgress *progress_bar,
 		      bool do_initselections, const char * status_fname=NULL);
 //  Forces the cache to be reloaded.

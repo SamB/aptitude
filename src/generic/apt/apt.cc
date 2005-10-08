@@ -241,10 +241,11 @@ void apt_close_cache()
     }
 }
 
-void apt_reload_cache(OpProgress *progress_bar, bool do_initselections,
-		      const char * status_fname)
+void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
+		    const char * status_fname)
 {
-  apt_close_cache();
+  if(apt_cache_file != NULL)
+    return;
 
   aptitudeCacheFile *new_file=new aptitudeCacheFile;
 
@@ -303,6 +304,13 @@ void apt_reload_cache(OpProgress *progress_bar, bool do_initselections,
   resman = new resolver_manager(*new_file);
 
   cache_reloaded();
+}
+
+void apt_reload_cache(OpProgress *progress_bar, bool do_initselections,
+		      const char * status_fname)
+{
+  apt_close_cache();
+  apt_load_cache(progress_bar, do_initselections, status_fname);
 }
 
 pkg_hier *get_user_pkg_hier()
