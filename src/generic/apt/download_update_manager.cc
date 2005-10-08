@@ -23,6 +23,7 @@
 #include "config_signal.h"
 #include "download_signal_log.h"
 
+#include <apt-pkg/cachefile.h>
 #include <apt-pkg/clean.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/sourcelist.h>
@@ -100,11 +101,10 @@ download_update_manager::finish(pkgAcquire::RunResult res,
   if(log != NULL)
     log->Complete();
 
+  apt_close_cache();
+
   if(res != pkgAcquire::Continue)
-    {
-      apt_reload_cache(&progress, true);
-      return failure;
-    }
+    return failure;
 
   // Clean old stuff out
   if(fetcher->Clean(aptcfg->FindDir("Dir::State::lists")) == false ||
@@ -114,17 +114,35 @@ download_update_manager::finish(pkgAcquire::RunResult res,
       return failure;
     }
 
-  apt_reload_cache(&progress, true);
+  // Rebuild the apt caches as done in apt-get.  cachefile is scoped
+  // so it dies before we possibly-reload the cache.  This will do a
+  // little redundant work in visual mode, but avoids lots of
+  // redundant work at the command-line.
+  {
+    pkgCacheFile cachefile;
+    if(!cachefile.BuildCaches(progress, true))
+      {
+	_error->Error(_("Couldn't rebuild package cache"));
+	return failure;
+      }
+  }
 
-  if(apt_cache_file != NULL &&
-     aptcfg->FindB(PACKAGE "::Forget-New-On-Update", false))
+  bool need_forget_new = 
+    aptcfg->FindB(PACKAGE "::Forget-New-On-Update", false);
+
+  bool need_autoclean =
+    aptcfg->FindB(PACKAGE "::AutoClean-After-Update", false);
+
+  if(need_forget_new || need_autoclean)
+    apt_load_cache(&progress, true);
+
+  if(apt_cache_file != NULL && need_forget_new)
     {
       (*apt_cache_file)->forget_new(NULL);
       post_forget_new_hook();
     }
 
-  if(apt_cache_file != NULL &&
-     aptcfg->FindB(PACKAGE "::AutoClean-After-Update", false))
+  if(apt_cache_file != NULL && need_autoclean)
     {
       pre_autoclean_hook();
 
