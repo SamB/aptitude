@@ -995,6 +995,23 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
   </refsect1>
 
   <refsect1>
+    <title>Environment</title>
+
+    <varlistentry>
+      <term><literal>HOME</literal></term>
+
+      <listitem>
+	<para>
+	  If $HOME/.aptitude exists, aptitude will store its
+	  configuration file in $HOME/.aptitude/config.  Otherwise, it
+	  will look up the current user's home directory using <citerefentry><refentrytitle>getpwuid</refentrytitle><manvolnum>(2)</manvolnum></citerefentry>
+	  and place its configuration file there.
+	</para>
+      </listitem>
+    </varlistentry>
+  </refsect1>
+
+  <refsect1>
     <title>See Also</title>
 
     <para>
