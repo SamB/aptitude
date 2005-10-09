@@ -402,9 +402,12 @@ static bool prompt_trust()
 
 
       if(aptcfg->FindB(PACKAGE "::CmdLine::Ignore-Trust-Violations", false))
-	printf(_("*** WARNING ***   Ignoring these trust violations because\n"
-		 "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"),
-	       PACKAGE);
+	{
+	  printf(_("*** WARNING ***   Ignoring these trust violations because\n"
+		   "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"),
+		 PACKAGE);
+	  return true;
+	}
 
 
       const string okstr=_("Yes"), abortstr=_("No");
