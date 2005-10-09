@@ -120,17 +120,24 @@ void apt_preinit()
   pkgInitSystem(*_config, _system);
 
   // Allow a user-specific customization file.
-  string cfgloc(get_homedir());
-  if(!cfgloc.empty())
-    {
-      cfgloc+="/.aptitude/config";
+  const char *HOME = getenv("HOME");
 
-      // This attempts to test whether the file is available
-      if(access(cfgloc.c_str(), R_OK)==0)
-	{
-	  ReadConfigFile(*user_config, cfgloc);
-	  ReadConfigFile(*_config, cfgloc);
-	}
+  string cfgloc;
+
+  if(HOME != NULL && *HOME != '\0' &&
+     access((string(HOME) + "/.aptitude").c_str(), R_OK | X_OK) == 0)
+    cfgloc = string(HOME) + "/.aptitude/config";
+  else
+    {
+      cfgloc = get_homedir();
+      if(!cfgloc.empty())
+	cfgloc += "/.aptitude/config";
+    }
+
+  if(!cfgloc.empty() && access(cfgloc.c_str(), R_OK) == 0)
+    {
+      ReadConfigFile(*user_config, cfgloc);
+      ReadConfigFile(*_config, cfgloc);
     }
 
   aptcfg=new signalling_config(user_config, _config, theme_config);
@@ -149,20 +156,41 @@ void apt_preinit()
 
 void apt_dumpcfg(const char *root)
 {
-  string cfgloc(get_homedir());
+  string cfgloc;
 
-  if(cfgloc.empty())
-    return;
-
-  cfgloc+="/.aptitude";
-
-  if(mkdir(cfgloc.c_str(), 0700)<0 && errno!=EEXIST)
+  const char *HOME = getenv("HOME");
+  if(HOME != NULL && *HOME != '\0')
     {
-      _error->Errno("mkdir", "%s", cfgloc.c_str());
-      return;
+      string tmp(HOME);
+      tmp += "/.aptitude";
+      if(access(tmp.c_str(), W_OK) == 0)
+	cfgloc = tmp + "/config";
+      else if(access(tmp.c_str(), R_OK | X_OK) == 0)
+	{
+	  // The squashed-root case.
+	  _error->Error(_("%s is readable but not writable; unable to write configuration file."),
+			tmp.c_str());
+	  return;
+	}
     }
 
-  cfgloc+="/config";
+  if(cfgloc.empty())
+    {
+      cfgloc = get_homedir();
+
+      if(cfgloc.empty())
+	return;
+
+      cfgloc += "/.aptitude";
+
+      if(mkdir(cfgloc.c_str(), 0700)<0 && errno != EEXIST)
+	{
+	  _error->Errno("mkdir", "%s", cfgloc.c_str());
+	  return;
+	}
+
+      cfgloc += "/config";
+    }
 
   ofstream f((cfgloc+".new").c_str());
 
