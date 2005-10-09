@@ -142,17 +142,14 @@ typedef ref_ptr<pkg_changelog_screen> pkg_changelog_screen_ref;
 
 
 static void do_view_changelog(temp::name n,
-			      pkgCache::VerIterator ver)
+			      string pkgname,
+			      string curverstr)
 {
   string menulabel =
-    ssprintf(_("ChangeLog of %s"), ver.ParentPkg().Name());
-  string tablabel = ssprintf(_("%s changes"), ver.ParentPkg().Name());
+    ssprintf(_("ChangeLog of %s"), pkgname.c_str());
+  string tablabel = ssprintf(_("%s changes"), pkgname.c_str());
   string desclabel = _("View the list of changes made to this Debian package.");
 
-  pkgCache::VerIterator curver = ver.ParentPkg().CurrentVer();
-  string curverstr;
-  if(!curver.end() && curver.VerStr() != NULL)
-    curverstr = curver.VerStr();
   fragment *f = make_changelog_fragment(n, curverstr);
 
   vs_table_ref           t = vs_table::create();
@@ -199,6 +196,13 @@ void view_changelog(pkgCache::VerIterator ver)
 {
   bool in_debian=false;
 
+  string pkgname = ver.ParentPkg().Name();
+
+  pkgCache::VerIterator curver = ver.ParentPkg().CurrentVer();
+  string curverstr;
+  if(!curver.end() && curver.VerStr() != NULL)
+    curverstr = curver.VerStr();
+
   // TODO: add a configurable association between origins and changelog URLs.
   for(pkgCache::VerFileIterator vf=ver.FileList();
       !vf.end() && !in_debian; ++vf)
@@ -214,7 +218,7 @@ void view_changelog(pkgCache::VerIterator ver)
     }
 
   download_manager *manager = get_changelog(ver,
-					    sigc::bind(sigc::ptr_fun(&do_view_changelog), ver));
+					    sigc::bind(sigc::ptr_fun(&do_view_changelog), pkgname, curverstr));
 
   if(manager != NULL)
     (new ui_download_manager(manager, true, false,
