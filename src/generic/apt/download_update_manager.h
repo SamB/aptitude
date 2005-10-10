@@ -22,6 +22,8 @@
 
 #include "download_manager.h"
 
+#include <apt-pkg/sourcelist.h>
+
 #include <sigc++/signal.h>
 
 class download_signal_log;
@@ -31,6 +33,8 @@ class download_update_manager : public download_manager
 {
   /** A signal log object upon which Complete() should be called. */
   download_signal_log *log;
+
+  pkgSourceList src_list;
 
 public:
   /** Create a new manager.  Note that acqlog and signallog may or may

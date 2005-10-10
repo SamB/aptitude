@@ -71,8 +71,6 @@ bool download_install_manager::prepare(OpProgress &progress,
 	}
     }
 
-  // Get source lists.
-  pkgSourceList src_list;
   if(!src_list.ReadMainList())
     {
       _error->Error(_("Couldn't read source list"));
@@ -157,15 +155,6 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
   post_install_hook(pmres);
 
   fetcher->Shutdown();
-
-  // Get source lists.
-  pkgSourceList src_list;
-  if(!src_list.ReadMainList())
-    {
-      _error->Error(_("Couldn't read source list"));
-
-      return failure;
-    }
 
   if(!pm->GetArchives(fetcher, &src_list, apt_package_records))
     return failure;

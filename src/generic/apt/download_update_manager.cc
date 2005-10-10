@@ -26,7 +26,6 @@
 #include <apt-pkg/cachefile.h>
 #include <apt-pkg/clean.h>
 #include <apt-pkg/error.h>
-#include <apt-pkg/sourcelist.h>
 
 class my_cleaner:public pkgArchiveCleaner
 {
@@ -54,8 +53,6 @@ bool download_update_manager::prepare(OpProgress &progress,
 				      download_signal_log *signallog)
 {
   log = signallog;
-
-  pkgSourceList src_list;
 
   if(apt_cache_file != NULL &&
      !(*apt_cache_file)->save_selection_list(progress))

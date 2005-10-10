@@ -26,6 +26,7 @@
 
 #include <apt-pkg/packagemanager.h> // For OrderResult
 #include <apt-pkg/pkgcache.h>       // For logging
+#include <apt-pkg/sourcelist.h>
 
 #include <sigc++/signal.h>
 
@@ -43,6 +44,9 @@ class download_install_manager : public download_manager
 
   /** The package manager object used when installing packages */
   pkgPackageManager *pm;
+
+  /** The list of sources from which to download. */
+  pkgSourceList src_list;
 
   /** Actually perform the installation/removal of packages and tell
    *  the caller what happened.
