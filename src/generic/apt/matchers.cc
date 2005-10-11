@@ -667,6 +667,8 @@ pkg_match_result *dep_match(const pkgCache::DepIterator &dep)
 	  realization += start.TargetVer();
 	  realization += ")";
 	}
+
+      ++start;
     }
 
   // erm...
