@@ -1251,6 +1251,61 @@ public:
   }
 };
 
+/** Narrow the search to versions that match a pattern. */
+class pkg_select_matcher : public pkg_matcher
+{
+  pkg_matcher *filter;
+  pkg_matcher *pattern;
+public:
+  pkg_select_matcher(pkg_matcher *_filter,
+		     pkg_matcher *_pattern)
+    : filter(_filter), pattern(_pattern)
+  {
+  }
+
+  ~pkg_select_matcher()
+  {
+    delete filter;
+    delete pattern;
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver)
+  {
+    return filter->matches(pkg, ver) && pattern->matches(pkg, ver);
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg)
+  {
+    for(pkgCache::VerIterator ver = pkg.VersionList();
+	!ver.end(); ++ver)
+      if(matches(pkg, ver))
+	return true;
+
+    return false;
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver)
+  {
+    if(filter->matches(pkg, ver))
+      return pattern->get_match(pkg, ver);
+    else
+      return NULL;
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg)
+  {
+    pkg_match_result *rval = NULL;
+
+    for(pkgCache::VerIterator ver = pkg.VersionList();
+	rval == NULL && !ver.end(); ++ver)
+      rval = get_match(pkg, ver);
+
+    return rval;
+  }
+};
+
 // Matches packages that were garbage-collected.
 class pkg_garbage_matcher:public pkg_matcher
 {
@@ -1946,6 +2001,20 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		      case 'W':
 			return new pkg_widen_matcher(m.release());
 		      }
+		  }
+		case 'S':
+		  {
+		    auto_ptr<pkg_matcher> filter(parse_atom(start,
+							    end,
+							    terminators,
+							    search_descriptions));
+
+		    auto_ptr<pkg_matcher> pattern(parse_atom(start,
+							     end,
+							     terminators,
+							     search_descriptions));
+
+		    return new pkg_select_matcher(filter.release(), pattern.release());
 		  }
 		case 'D':
 		case 'R':
