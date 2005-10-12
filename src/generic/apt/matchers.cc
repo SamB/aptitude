@@ -94,7 +94,10 @@ bool pkg_matcher::matches(const pkgCache::PkgIterator &pkg)
     if(matches(pkg, v))
       return true;
 
-  return false;
+  if(pkg.VersionList().end())
+    return matches(pkg, pkgCache::VerIterator(*apt_cache_file, 0));
+  else
+    return false;
 }
 
 pkg_match_result *pkg_matcher::get_match(const pkgCache::PkgIterator &pkg)
@@ -104,6 +107,9 @@ pkg_match_result *pkg_matcher::get_match(const pkgCache::PkgIterator &pkg)
   for(pkgCache::VerIterator v = pkg.VersionList();
       rval == NULL && !v.end(); ++v)
     rval = get_match(pkg, v);
+
+  if(pkg.VersionList().end())
+    rval = get_match(pkg, pkgCache::VerIterator(*apt_cache_file, 0));
 
   return rval;
 }
