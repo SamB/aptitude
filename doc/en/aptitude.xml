@@ -4422,6 +4422,24 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	<varlistentry>
 	  <term>
+	    <literal>~S <replaceable>filter</replaceable> <replaceable>term</replaceable></literal>
+	  </term>
+
+	  <listitem>
+	    <para>
+	      This term <quote>narrows</quote> the search to package
+	      versions matching <replaceable>filter</replaceable>.  In
+	      particular, it matches any package version which matches
+	      both <replaceable>filter</replaceable> and
+	      <replaceable>term</replaceable>.  The string value of
+	      the match is the string value of
+	      <replaceable>term</replaceable>.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>
 	    <literal>~s<replaceable>section</replaceable></literal>
 	  </term>
 
