@@ -557,14 +557,13 @@ public:
     if(ver.end() || ver.FileList().end())
       return false;
 
-    for(pkgCache::VerIterator v=pkg.VersionList(); !v.end(); ++v)
-      for(pkgCache::VerFileIterator f=v.FileList(); !f.end(); ++f)
-	{
-	  pkgCache::PkgFileIterator cur=f.File();
+    for(pkgCache::VerFileIterator f = ver.FileList(); !f.end(); ++f)
+      {
+	pkgCache::PkgFileIterator cur = f.File();
 
-	  if(!cur.end() && cur.Archive() && string_matches(cur.Archive()))
-	    return true;
-	}
+	if(!cur.end() && cur.Archive() && string_matches(cur.Archive()))
+	  return true;
+      }
 
     return false;
   }
@@ -575,19 +574,18 @@ public:
     if(ver.end() || ver.FileList().end())
       return NULL;
 
-    for(pkgCache::VerIterator v=pkg.VersionList(); !v.end(); ++v)
-      for(pkgCache::VerFileIterator f=v.FileList(); !f.end(); ++f)
-	{
-	  pkgCache::PkgFileIterator cur=f.File();
+    for(pkgCache::VerFileIterator f = ver.FileList(); !f.end(); ++f)
+      {
+	pkgCache::PkgFileIterator cur = f.File();
 
-	  if(!cur.end() && cur.Archive())
-	    {
-	      pkg_match_result *r=get_string_match(cur.Archive());
+	if(!cur.end() && cur.Archive())
+	  {
+	    pkg_match_result *r = get_string_match(cur.Archive());
 
-	      if(r != NULL)
-		return r;
-	    }
-	}
+	    if(r != NULL)
+	      return r;
+	  }
+      }
 
     return NULL;
   }
