@@ -713,6 +713,29 @@ static void do_new_package_view_with_new_bar()
   p->destroy();
 }
 
+static void do_new_recommendations_view()
+{
+  vs_progress_ref p = gen_progress_bar();
+
+  pkg_grouppolicy_factory *grp = new pkg_grouppolicy_end_factory();
+  std::string grpstr="section(subdir, passthrough)";
+
+  pkg_tree_ref tree=pkg_tree::create(grpstr.c_str(), grp,
+				     L"!~v!~i~RBrecommends:~i");
+
+  add_main_widget(make_default_view(tree,
+				    &tree->selected_signal,
+				    &tree->selected_desc_signal,
+				    true,
+				    true),
+		  _("Recommended Packages"),
+		  _("View packages that it is recommended that you install"),
+		  _("Recommendations"));
+
+  tree->build_tree(*p.unsafe_get_ref());
+  p->destroy();
+}
+
 static void do_new_flat_view_with_new_bar()
 {
   vs_progress_ref p = gen_progress_bar();
@@ -2081,6 +2104,10 @@ vs_menu_info views_menu_info[]={
   vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("New Package ^View"), NULL,
 	       N_("Create a new default package view"),
 	       sigc::ptr_fun(do_new_package_view_with_new_bar)),
+
+  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("Audit ^Recommendations"), NULL,
+	       N_("View packages which it is recommended that you install, but which are not currently installed."),
+	       sigc::ptr_fun(do_new_recommendations_view)),
 
   vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("New ^Flat Package List"), NULL,
 	       N_("View all the packages on the system in a single uncategorized list"),
