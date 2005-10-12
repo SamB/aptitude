@@ -4499,6 +4499,26 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    </para>
 	  </listitem>
 	</varlistentry>
+
+	<varlistentry>
+	  <term>
+	    <literal>~W<replaceable>term</replaceable></literal> 
+	  </term>
+
+	  <listitem>
+	    <para>
+	      <quote>Widens</quote> the match: if the versions to
+	      match against have been limited by an enclosing matcher
+	      (such as <link
+	      linkend='searchDep'><literal>~D</literal></link>), these
+	      limits are dropped.  Thus,
+	      <literal>~W<replaceable>term</replaceable></literal>
+	      matches a package version if
+	      <replaceable>term</replaceable> matches
+	      <emphasis>any</emphasis> version of that package.
+	    </para>
+	  </listitem>
+	</varlistentry>
       </variablelist>
     </section>
 
