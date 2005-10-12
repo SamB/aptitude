@@ -50,7 +50,7 @@ public:
     // EWW
     const pkg_item *pitem=dynamic_cast<const pkg_item *>(&item);
     if(pitem)
-      return matcher->matches(pitem->get_package(), pitem->visible_version());
+      return matcher->matches(pitem->get_package());
     else {
       const pkg_ver_item *pvitem=dynamic_cast<const pkg_ver_item *>(&item);
 
