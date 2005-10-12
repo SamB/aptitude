@@ -182,7 +182,7 @@ bool pkg_tree::build_tree(OpProgress &progress)
 	  if(i.VersionList().end() && i.ProvidesList().end())
 	    continue;
 
-	  if((!limit) || limit->matches(i, pkg_item::visible_version(i)))
+	  if((!limit) || limit->matches(i))
 	    {
 	      empty=false;
 	      grouper->add_package(i, mytree);
