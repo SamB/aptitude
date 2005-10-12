@@ -20,6 +20,9 @@
 #include "pkg_sortpolicy.h"
 #include "pkg_item.h"
 
+#include <apt-pkg/pkgsystem.h>
+#include <apt-pkg/version.h>
+
 #include <vscreen/vs_subtree.h>
 
 // Blah, this is the easiest way to define trivial subclasses:
@@ -101,3 +104,13 @@ PKG_SORTPOLICY_SUBCLASS(pkg_sortpolicy_priority,
 			return 0;
 			  else // if(pri1>pri2)
 			return 1;);
+
+// Sort by version number
+PKG_SORTPOLICY_SUBCLASS(pkg_sortpolicy_ver,
+			if(ver1.end())
+			  return -1;
+			else if(ver2.end())
+			  return 1;
+			else
+			  return _system->VS->CmpVersion(ver1.VerStr(),
+							 ver2.VerStr()););

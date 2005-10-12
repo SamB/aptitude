@@ -55,6 +55,7 @@ public:
 // Each of these instantiates a corresponding class and returns an instance of
 // it.
 pkg_sortpolicy *pkg_sortpolicy_name(pkg_sortpolicy *chain, bool reversed);
+pkg_sortpolicy *pkg_sortpolicy_ver(pkg_sortpolicy *chain, bool reversed);
 pkg_sortpolicy *pkg_sortpolicy_installed_size(pkg_sortpolicy *chain, bool reversed);
 pkg_sortpolicy *pkg_sortpolicy_priority(pkg_sortpolicy *chain, bool reversed);
 
