@@ -3941,6 +3941,18 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
       </para>
 
       <para>
+	By default, patterns are checked against all versions of the
+	package.  However, some patterns will restrict which versions
+	are tested.  For instance, the <literal>~D</literal> pattern
+	takes another pattern as an argument, and matches any package
+	that depends on another package matching that pattern.  In
+	this case, only package versions that satisfy the dependency
+	will be tested against.  Changes in which versions are being
+	inspected only occur in match terms that have a subterm (like
+	<literal>~D</literal>).
+      </para>
+
+      <para>
 	Most textual searches (for package names, descriptions, etc)
 	are performed using case-insensitive <ulink
 	url='http://sitescooper.org/tao_regexps.html'>regular
@@ -4194,8 +4206,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <replaceable>term</replaceable> (the equivalent of
 	      <literal>~P</literal>).  Otherwise, matches packages
 	      which declare a dependency of type
-	      <literal>type</literal> upon a package which matches
-	      <replaceable>term</replaceable>.
+	      <literal>type</literal> upon a package version which
+	      matches <replaceable>term</replaceable>.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -4274,7 +4286,12 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	  <listitem>
 	    <para>
-	      Matches packages which are currently installed.
+	      Matches package versions which are currently installed.
+	    </para>
+
+	    <para>
+	      Since all versions are tested by default, this normally
+	      matches packages which are currently installed.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -4346,8 +4363,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	  <listitem>
 	    <para>
-	      Matches packages which provide a package that matches
-	      the <replaceable>name</replaceable>.  For instance,
+	      Matches package versions which provide a package that
+	      matches the <replaceable>name</replaceable>.  For
+	      instance,
 	      <quote><literal>~Pmail-transport-agent</literal></quote>
 	      will match all the packages that provide
 	      <quote><literal>mail-transport-agent</literal></quote>.
@@ -4392,9 +4410,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      If <replaceable>type</replaceable> is
 	      <quote><literal>provides</literal></quote>, matches
-	      packages whose name is provided by a package matching
-	      <replaceable>term</replaceable>.  Otherwise, matches
-	      packages which a package matching
+	      packages whose name is provided by a package version
+	      matching <replaceable>term</replaceable>.  Otherwise,
+	      matches packages which a package version matching
 	      <replaceable>term</replaceable> declares a dependency of
 	      type <replaceable>type</replaceable> upon.
 	    </para>
