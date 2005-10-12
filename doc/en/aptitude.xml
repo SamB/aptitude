@@ -61,6 +61,9 @@
   <!ENTITY views-close "<menuchoice><shortcut><keycap>q</keycap></shortcut><guimenu>Views</guimenu><guimenuitem>Close</guimenuitem></menuchoice>">
 
   <!ENTITY views-new "<menuchoice><guimenu>Views</guimenu><guimenuitem>New Package View</guimenuitem></menuchoice>">
+  <!ENTITY views-audit "<menuchoice><guimenu>Views</guimenu><guimenuitem>Audit Recommendations</guimenuitem></menuchoice>">
+  <!ENTITY views-flat "<menuchoice><guimenu>Views</guimenu><guimenuitem>New Flat Package List</guimenuitem></menuchoice>">
+  <!ENTITY views-debtags "<menuchoice><guimenu>Views</guimenu><guimenuitem>New Debtags Browser</guimenuitem></menuchoice>">
   <!ENTITY views-browse "<menuchoice><guimenu>Views</guimenu><guimenuitem>New Categorical Browser</guimenuitem></menuchoice>">
 
   <!ENTITY help-about "<menuchoice><guimenu>Help</guimenu><guimenuitem>About</guimenuitem></menuchoice>">
@@ -2471,6 +2474,35 @@ Abort.</screen>
 
 		    <entry>
 		      Create a new view of the package list.
+		    </entry>
+		  </row>
+
+		  <row>
+		    <entry>&views-audit;</entry>
+
+		    <entry>
+		      Create a view that displays packages which are
+		      not installed, and which a package installed on
+		      your system Recommends.
+		    </entry>
+		  </row>
+
+		  <row>
+		    <entry>&views-flat;</entry>
+
+		    <entry>
+		      Create a new view of the package list in which
+		      packages are not categorized.
+		    </entry>
+		  </row>
+
+		  <row>
+		    <entry>&views-debtags;</entry>
+
+		    <entry>
+		      Create a new view of the package list in which
+		      packages are categorized according to their
+		      debtags entries.
 		    </entry>
 		  </row>
 
