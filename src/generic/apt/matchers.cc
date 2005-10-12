@@ -1367,6 +1367,15 @@ public:
     // Check direct dependencies.
     for(pkgCache::DepIterator d=pkg.RevDependsList(); !d.end(); ++d)
       {
+	if(broken)
+	  {
+	    pkgCache::DepIterator d2(*apt_cache_file, &*d);
+	    while(d2->CompareOp & pkgCache::Dep::Or)
+	      ++d2;
+	    if((*apt_cache_file)[d2] & pkgDepCache::DepGInstall)
+	      continue;
+	  }
+
 	if((d->Type==type ||
 	    (type==pkgCache::Dep::Depends && d->Type==pkgCache::Dep::PreDepends)) &&
 	   (!d.TargetVer() || (!ver.end() &&
@@ -1391,6 +1400,15 @@ public:
 	      // Only unversioned dependencies can match here.
 	      if(d->Type==type && !d.TargetVer())
 		{
+		  if(broken)
+		    {
+		      pkgCache::DepIterator d2(*apt_cache_file, &*d);
+		      while(d2->CompareOp & pkgCache::Dep::Or)
+			++d2;
+		      if((*apt_cache_file)[d2] & pkgDepCache::DepGInstall)
+			continue;
+		    }
+
 		  pkg_match_result *r = pattern->get_match(d.ParentPkg(),
 							   d.ParentVer());
 		  if(r != NULL)
