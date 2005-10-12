@@ -158,7 +158,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
       for(vector<pkg_matcher *>::iterator m=matchers.begin();
 	  m!=matchers.end(); ++m)
 	{
-	  pkg_match_result *r=(*m)->get_match(pkg, (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file));
+	  pkg_match_result *r=(*m)->get_match(pkg);
 
 	  if(r != NULL)
 	    output.push_back(pair<pkgCache::PkgIterator, pkg_match_result *>(pkg, r));
