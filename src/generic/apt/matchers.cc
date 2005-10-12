@@ -934,10 +934,14 @@ private:
   pkg_matcher *pattern;
   pkgCache::Dep::DepType type;
 
+  /** If \b true, only broken dependencies will be matched. */
+  bool broken;
+
 public:
   pkg_dep_matcher(pkgCache::Dep::DepType _type,
-		  pkg_matcher *_pattern)
-    :pattern(_pattern), type(_type)
+		  pkg_matcher *_pattern,
+		  bool _broken)
+    :pattern(_pattern), type(_type), broken(_broken)
   {
   }
   ~pkg_dep_matcher() {delete pattern;}
@@ -951,6 +955,15 @@ public:
 
     for(pkgCache::DepIterator dep=ver.DependsList(); !dep.end(); ++dep)
       {
+	if(broken)
+	  {
+	    pkgCache::DepIterator d2(*apt_cache_file, &*dep);
+	    while(d2->CompareOp & pkgCache::Dep::Or)
+	      ++d2;
+	    if((*apt_cache_file)[d2] & pkgDepCache::DepGInstall)
+	      continue;
+	  }
+
 	if( (type == dep->Type) ||
 	    (type == pkgCache::Dep::Depends &&
 	     dep->Type == pkgCache::Dep::PreDepends))
@@ -1188,10 +1201,17 @@ class pkg_revdep_matcher:public pkg_matcher
 {
   pkgCache::Dep::DepType type;
   pkg_matcher *pattern;
+
+  /** If \b true, only install-broken dependencies will cause a
+   *  match.
+   */
+  bool broken;
+
 public:
   pkg_revdep_matcher(pkgCache::Dep::DepType _type,
-		     pkg_matcher *_pattern)
-    :type(_type), pattern(_pattern)
+		     pkg_matcher *_pattern,
+		     bool _broken)
+    :type(_type), pattern(_pattern), broken(_broken)
   {
   }
 
@@ -1206,6 +1226,15 @@ public:
     // Check direct dependencies.
     for(pkgCache::DepIterator d=pkg.RevDependsList(); !d.end(); ++d)
       {
+	if(broken)
+	  {
+	    pkgCache::DepIterator d2(*apt_cache_file, &*d);
+	    while(d2->CompareOp & pkgCache::Dep::Or)
+	      ++d2;
+	    if((*apt_cache_file)[d2] & pkgDepCache::DepGInstall)
+	      continue;
+	  }
+
 	if((d->Type==type ||
 	    (type==pkgCache::Dep::Depends && d->Type==pkgCache::Dep::PreDepends)) &&
 	   (!d.TargetVer() || (!ver.end() &&
@@ -1222,6 +1251,15 @@ public:
 	  for(pkgCache::DepIterator d=p.ParentPkg().RevDependsList();
 	      !d.end(); ++d)
 	    {
+	      if(broken)
+		{
+		  pkgCache::DepIterator d2(*apt_cache_file, &*d);
+		  while(d2->CompareOp & pkgCache::Dep::Or)
+		    ++d2;
+		  if((*apt_cache_file)[d2] & pkgDepCache::DepGInstall)
+		    continue;
+		}
+
 	      // Only unversioned dependencies can match here.
 	      if(d->Type==type && !d.TargetVer() &&
 		 pattern->matches(d.ParentPkg(), d.ParentVer()))
@@ -1762,7 +1800,7 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		    switch(search_flag)
 		      {
 		      case 'C':
-			return new pkg_dep_matcher(pkgCache::Dep::Conflicts, m.release());
+			return new pkg_dep_matcher(pkgCache::Dep::Conflicts, m.release(), false);
 		      case 'P':
 			return new pkg_provides_matcher(m.release());
 		      }
@@ -1770,11 +1808,17 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		case 'D':
 		case 'R':
 		  {
-		    bool do_provides=false;
+		    bool do_provides = false;
+		    bool broken = false;
 		    pkgCache::Dep::DepType type=pkgCache::Dep::Depends;
 
-		    string::const_iterator nextstart = start;
+		    if(start != end && *start == 'B')
+		      {
+			broken = true;
+			++start;
+		      }
 
+		    string::const_iterator nextstart = start;
 
 		    while(nextstart != end && isalpha(*nextstart) &&
 			  !terminate(nextstart, end, terminators))
@@ -1803,6 +1847,9 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 			  }
 		      }
 
+		    if(do_provides && broken)
+		      throw CompilationException(_("Provides: cannot be broken"));
+
 		    auto_ptr<pkg_matcher> m(parse_atom(start, end, terminators,
 						       search_descriptions));
 
@@ -1812,12 +1859,12 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 			if(do_provides)
 			  return new pkg_provides_matcher(m.release());
 			else
-			  return new pkg_dep_matcher(type, m.release());
+			  return new pkg_dep_matcher(type, m.release(), broken);
 		      case 'R':
 			if(do_provides)
 			  return new pkg_revprv_matcher(m.release());
 			else
-			  return new pkg_revdep_matcher(type, m.release());
+			  return new pkg_revdep_matcher(type, m.release(), broken);
 		      }
 		  }
 		default:
