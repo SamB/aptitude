@@ -57,6 +57,19 @@ public:
    */
   virtual pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 				      const pkgCache::VerIterator &ver)=0;
+
+  /** See whether this matches a versionless package.  This applies
+   *  the matcher to every version of the package and returns \b true
+   *  if any version is matched.
+   */
+  virtual bool matches(const pkgCache::PkgIterator &pkg);
+
+  /** Get a match result for a versionless package.  This applies the
+   *  matcher to each version of the package, returning \b NULL if
+   *  none matches or the first match found otherwise.
+   */
+  virtual pkg_match_result *get_match(const pkgCache::PkgIterator &pkg);
+
   virtual ~pkg_matcher();
 };
 

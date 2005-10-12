@@ -87,6 +87,27 @@ pkg_match_result::~pkg_match_result()
 {
 }
 
+bool pkg_matcher::matches(const pkgCache::PkgIterator &pkg)
+{
+  for(pkgCache::VerIterator v = pkg.VersionList();
+      !v.end(); ++v)
+    if(matches(pkg, v))
+      return true;
+
+  return false;
+}
+
+pkg_match_result *pkg_matcher::get_match(const pkgCache::PkgIterator &pkg)
+{
+  pkg_match_result *rval = NULL;
+
+  for(pkgCache::VerIterator v = pkg.VersionList();
+      rval == NULL && !v.end(); ++v)
+    rval = get_match(pkg, v);
+
+  return rval;
+}
+
 pkg_matcher::~pkg_matcher()
 {
 }
