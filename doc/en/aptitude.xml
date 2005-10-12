@@ -3948,9 +3948,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	another pattern as an argument, and matches any package that
 	depends on another package matching that pattern.  In this
 	case, only package versions that satisfy the dependency will
-	be tested against.  Changes in which versions are being
-	inspected only occur in match terms that have a subterm (like
-	<link linkend='searchDep'><literal>~D</literal></link>).
+	be tested against.  The versions that are used to test for a
+	match will only change in match terms that have a subterm
+	(like <link linkend='searchDep'><literal>~D</literal></link>).
       </para>
 
       <para>
