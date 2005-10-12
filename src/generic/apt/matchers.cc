@@ -1106,6 +1106,11 @@ public:
     return left->matches(pkg, ver) && right->matches(pkg, ver);
   }
 
+  bool matches(const pkgCache::PkgIterator &pkg)
+  {
+    return left->matches(pkg) && right->matches(pkg);
+  }
+
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver)
   {
@@ -1115,6 +1120,24 @@ public:
       return NULL;
 
     pkg_match_result *r2 = right->get_match(pkg, ver);
+
+    if(r2 == NULL)
+      {
+	delete r1;
+	return NULL;
+      }
+
+    return new result_pair(r1, r2);
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg)
+  {
+    pkg_match_result *r1 = left->get_match(pkg);
+
+    if(r1 == NULL)
+      return NULL;
+
+    pkg_match_result *r2 = right->get_match(pkg);
 
     if(r2 == NULL)
       {
