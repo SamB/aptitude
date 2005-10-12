@@ -3943,13 +3943,14 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
       <para>
 	By default, patterns are checked against all versions of the
 	package.  However, some patterns will restrict which versions
-	are tested.  For instance, the <literal>~D</literal> pattern
-	takes another pattern as an argument, and matches any package
-	that depends on another package matching that pattern.  In
-	this case, only package versions that satisfy the dependency
-	will be tested against.  Changes in which versions are being
+	are tested.  For instance, the <link
+	linkend='searchDep'><literal>~D</literal></link> pattern takes
+	another pattern as an argument, and matches any package that
+	depends on another package matching that pattern.  In this
+	case, only package versions that satisfy the dependency will
+	be tested against.  Changes in which versions are being
 	inspected only occur in match terms that have a subterm (like
-	<literal>~D</literal>).
+	<link linkend='searchDep'><literal>~D</literal></link>).
       </para>
 
       <para>
