@@ -25,8 +25,6 @@
 
 #include <vscreen/vs_tree.h>
 
-#include "pkg_sortpolicy.h"
-
 void pkg_subtree::paint(vs_tree *win, int y, bool hierarchical,
 			const style &st)
 {
