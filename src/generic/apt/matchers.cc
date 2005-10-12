@@ -884,21 +884,21 @@ public:
   }
 };
 
+/** Matches the currently installed version of a package.
+ */
 class pkg_installed_matcher:public pkg_matcher
-// Matches packages which are installed..slightly quirky in that it matches
-// *any* version of an installed package.
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver)
   {
-    return !pkg.CurrentVer().end();
+    return !pkg.CurrentVer().end() && ver == pkg.CurrentVer();
   }
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver)
   {
-    if(pkg.CurrentVer().end())
+    if(pkg.CurrentVer().end() || ver != pkg.CurrentVer())
       return NULL;
     else
       return new unitary_result(_("Installed"));
