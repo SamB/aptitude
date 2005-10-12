@@ -1216,6 +1216,43 @@ public:
   ~pkg_not_matcher() {delete child;}
 };
 
+/** Widen the search to include all versions of every package. */
+class pkg_widen_matcher : public pkg_matcher
+{
+  pkg_matcher *pattern;
+public:
+  pkg_widen_matcher(pkg_matcher *_pattern)
+    : pattern(_pattern)
+  {
+  }
+
+  ~pkg_widen_matcher()
+  {
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver)
+  {
+    return pattern->matches(pkg);
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg)
+  {
+    return pattern->matches(pkg);
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver)
+  {
+    return pattern->get_match(pkg);
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg)
+  {
+    return pattern->get_match(pkg);
+  }
+};
+
 // Matches packages that were garbage-collected.
 class pkg_garbage_matcher:public pkg_matcher
 {
@@ -1895,6 +1932,7 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		  return new pkg_upgradable_matcher;
 		case 'P':
 		case 'C':
+		case 'W':
 		  {
 		    auto_ptr<pkg_matcher> m(parse_atom(start,
 						       end,
@@ -1907,6 +1945,8 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 			return new pkg_dep_matcher(pkgCache::Dep::Conflicts, m.release(), false);
 		      case 'P':
 			return new pkg_provides_matcher(m.release());
+		      case 'W':
+			return new pkg_widen_matcher(m.release());
 		      }
 		  }
 		case 'D':
