@@ -1279,16 +1279,6 @@ public:
     return filter->matches(pkg, ver) && pattern->matches(pkg, ver);
   }
 
-  bool matches(const pkgCache::PkgIterator &pkg)
-  {
-    for(pkgCache::VerIterator ver = pkg.VersionList();
-	!ver.end(); ++ver)
-      if(matches(pkg, ver))
-	return true;
-
-    return false;
-  }
-
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver)
   {
@@ -1296,17 +1286,6 @@ public:
       return pattern->get_match(pkg, ver);
     else
       return NULL;
-  }
-
-  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg)
-  {
-    pkg_match_result *rval = NULL;
-
-    for(pkgCache::VerIterator ver = pkg.VersionList();
-	rval == NULL && !ver.end(); ++ver)
-      rval = get_match(pkg, ver);
-
-    return rval;
   }
 };
 
