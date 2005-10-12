@@ -511,14 +511,16 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver)
   {
-    for(pkgCache::VerIterator v=pkg.VersionList(); !v.end(); ++v)
-      for(pkgCache::VerFileIterator f=v.FileList(); !f.end(); ++f)
-	{
-	  pkgCache::PkgFileIterator cur=f.File();
+    if(ver.end())
+      return false;
 
-	  if(!cur.end() && cur.Origin() && string_matches(cur.Origin()))
-	    return true;
-	}
+    for(pkgCache::VerFileIterator f = ver.FileList(); !f.end(); ++f)
+      {
+	pkgCache::PkgFileIterator cur = f.File();
+
+	if(!cur.end() && cur.Origin() && string_matches(cur.Origin()))
+	  return true;
+      }
 
     return false;
   }
@@ -526,19 +528,21 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver)
   {
-    for(pkgCache::VerIterator v=pkg.VersionList(); !v.end(); ++v)
-      for(pkgCache::VerFileIterator f=v.FileList(); !f.end(); ++f)
-	{
-	  pkgCache::PkgFileIterator cur=f.File();
+    if(ver.end())
+      return NULL;
 
-	  if(!cur.end() && cur.Origin())
-	    {
-	      pkg_match_result *r = get_string_match(cur.Origin());
+    for(pkgCache::VerFileIterator f = ver.FileList(); !f.end(); ++f)
+      {
+	pkgCache::PkgFileIterator cur = f.File();
 
-	      if(r != NULL)
-		return r;
-	    }
-	}
+	if(!cur.end() && cur.Origin())
+	  {
+	    pkg_match_result *r = get_string_match(cur.Origin());
+
+	    if(r != NULL)
+	      return r;
+	  }
+      }
 
     return NULL;
   }
