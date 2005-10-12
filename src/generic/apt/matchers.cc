@@ -862,20 +862,24 @@ class pkg_keep_matcher:public pkg_matcher
   }
 };
 
+/** Matches package versions that are not associated with a 'real'
+ *  package.  Applied to a whole package, this matches virtual
+ *  packages; it also matches package versions corresponding to
+ *  removing a package.
+ */
 class pkg_virtual_matcher:public pkg_matcher
-// Matches *pure* virtual packages -- ie, those that /have/ no versions.
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver)
   {
-    return pkg.VersionList().end();
+    return ver.end();
   }
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver)
   {
-    if(!pkg.VersionList().end())
+    if(!ver.end())
       return NULL;
     else
       return new unitary_result(_("Virtual"));
