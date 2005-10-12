@@ -1170,12 +1170,30 @@ public:
     return !child->matches(pkg, ver);
   }
 
+  bool matches(const pkgCache::PkgIterator &pkg)
+  {
+    return !child->matches(pkg);
+  }
+
   // Eh, there isn't really a good choice about what to return here...
   // just return an empty result if the child doesn't match.
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver)
   {
     pkg_match_result *child_match = child->get_match(pkg, ver);
+
+    if(child_match == NULL)
+      return new empty_match_result;
+    else
+      {
+	delete child_match;
+	return NULL;
+      }
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg)
+  {
+    pkg_match_result *child_match = child->get_match(pkg);
 
     if(child_match == NULL)
       return new empty_match_result;
