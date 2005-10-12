@@ -1421,7 +1421,7 @@ public:
     for(pkgCache::PrvIterator p=ver.ProvidesList(); !p.end(); ++p)
       {
 	// Assumes no provided version.
-	if(pattern->matches(p.ParentPkg(), pkgCache::VerIterator(*apt_cache_file)))
+	if(pattern->matches(p.ParentPkg()))
 	  return true;
       }
 
