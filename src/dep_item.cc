@@ -24,6 +24,7 @@
 #include "aptitude.h"
 
 #include "dep_item.h"
+#include "pkg_sortpolicy.h"
 #include "pkg_subtree.h"
 #include "pkg_ver_item.h"
 
@@ -302,6 +303,13 @@ void setup_package_deps(const pkgCache::PkgIterator &pkg,
 	      }
 	  }
       }
+
+  pkg_sortpolicy *policy = pkg_sortpolicy_ver(pkg_sortpolicy_name(NULL, false), false);
+  pkg_sortpolicy_wrapper sorter(policy);
+  for(tree_map::const_iterator i = subtrees.begin();
+      i != subtrees.end(); ++i)
+    i->second->sort(sorter);
+  delete policy;
 }
 
 template void setup_package_deps<pkg_subtree>(const pkgCache::PkgIterator &pkg,
