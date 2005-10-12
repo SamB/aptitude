@@ -1058,6 +1058,11 @@ public:
     return left->matches(pkg, ver) || right->matches(pkg, ver);
   }
 
+  bool matches(const pkgCache::PkgIterator &pkg)
+  {
+    return left->matches(pkg) || right->matches(pkg);
+  }
+
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver)
   {
@@ -1067,6 +1072,16 @@ public:
       return lr;
     else
       return right->get_match(pkg, ver);
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg)
+  {
+    pkg_match_result *lr = left->get_match(pkg);
+
+    if(lr != NULL)
+      return lr;
+    else
+      return right->get_match(pkg);
   }
 
   ~pkg_or_matcher()
