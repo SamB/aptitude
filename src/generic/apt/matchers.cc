@@ -976,19 +976,19 @@ public:
 
     for(pkgCache::DepIterator dep=ver.DependsList(); !dep.end(); ++dep)
       {
-	if(broken)
-	  {
-	    pkgCache::DepIterator d2(*apt_cache_file, &*dep);
-	    while(d2->CompareOp & pkgCache::Dep::Or)
-	      ++d2;
-	    if((*apt_cache_file)[d2] & pkgDepCache::DepGInstall)
-	      continue;
-	  }
-
 	if( (type == dep->Type) ||
 	    (type == pkgCache::Dep::Depends &&
 	     dep->Type == pkgCache::Dep::PreDepends))
 	  {
+	    if(broken)
+	      {
+		pkgCache::DepIterator d2(*apt_cache_file, &*dep);
+		while(d2->CompareOp & pkgCache::Dep::Or)
+		  ++d2;
+		if((*apt_cache_file)[d2] & pkgDepCache::DepGInstall)
+		  continue;
+	      }
+
 	    // See if a versionless match works,.
 	    if(dep.TargetPkg().VersionList().end() &&
 	       pattern->matches(dep.TargetPkg(), dep.TargetPkg().VersionList()))
