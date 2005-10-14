@@ -1009,6 +1009,47 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 	</para>
       </listitem>
     </varlistentry>
+
+    <varlistentry>
+      <term><literal>PAGER</literal></term>
+
+      <listitem>
+	<para>
+	  If this environment variable is set, &aptitude; will use it
+	  to display changelogs when <quote><literal>aptitude
+	  changelog</literal></quote> is invoked.  If not set, it
+	  defaults to <literal>more</literal>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><literal>TMP</literal></term>
+
+      <listitem>
+	<para>
+	  If <literal>TMPDIR</literal> is unset, &aptitude; will store
+	  its temporary files in <literal>TMP</literal> if that
+	  variable is set.  Otherwise, it will store them in
+	  <filename>/tmp</filename>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><literal>TMPDIR</literal></term>
+
+      <listitem>
+	<para>
+	  &aptitude; will store its temporary files in the directory
+	  indicated by this environment variable.  If
+	  <literal>TMPDIR</literal> is not set, then
+	  <literal>TMP</literal> will be used; if
+	  <literal>TMP</literal> is also unset, then &aptitude; will
+	  use <filename>/tmp</filename>.
+	</para>
+      </listitem>
+    </varlistentry>
   </refsect1>
 
   <refsect1>
