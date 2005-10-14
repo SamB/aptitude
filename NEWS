@@ -1,3 +1,111 @@
+[10/13/2005]
+Version 0.3.5                           "Yoink"
+
+   Upstream aptitude development is now stored in darcs.  See the
+   documentation for additional details.
+
+- New features:
+
+  * Redesigned how versions are handled in the pattern matching
+    language.  The set of versions matched against is more uniform
+    (typically all the versions of a package).  This set is narrowed
+    at appropriate times; for instance, reverse dependency matchers
+    will only pass those versions that assert a dependency into their
+    subexpression.  You can manually narrow the set by selecting
+    versions with ~S, and manually widen it by using ~W.
+
+  * Forward and reverse dependency matchers can be restricted to only
+    broken dependencies.
+
+  * The version matcher (~V) has support for matching the current,
+    target, or candidate version of a package (in addition to matching
+    a regexp against the version number).
+
+  * Add a canned package view that only displays packages which are
+    targets of unsatisfied Recommends.
+
+  * Sort reverse and forward dependencies by package name and version
+    number.
+
+  * In the command-line preview, display {p} next to packages that are
+    being purged.
+
+  * More command-line compatibility with apt-get for -q and
+    --quiet. (Closes: #217477)
+
+  * Only override $HOME with getpwuid if $HOME/.aptitude does not
+    exist.  NOTE: this doesn't work right now with the auto-su-to-root
+    behavior, because that resets $HOME.  You have been warned.
+
+  * Add a sorting policy that sorts packages by version number.
+
+- Bug fixes:
+
+  * The problem resolver will no longer try to install versions of
+    packages that don't actually exist.  In particular, it won't try
+    to install packages that were removed but not purged, so their
+    configuration files and metadata stayed on the system.
+
+  * Eliminated a reference-to-freed-memory segfault caused by passing
+    unsafe references to widgets around. (Closes: #331400)
+
+  * Don't crash when the user asks to see the changelog of a
+    non-installed package.  (Closes: #331245)
+
+  * Don't crash when the cache is closed while a changelog is being
+    downloaded (for instance, if a changelog is downloaded while
+    packages are being installed).
+
+  * Encode match results as std::strings instead of const char *s, as
+    some of the buffers are destroyed before the get_match routine
+    exits.
+
+  * Don't reopen the cache after a download unless it's necessary.
+    (Closes: #332708)
+
+  * Version items are now styled in the same way as package items.
+
+  * Explicitly keep the search dialog alive while its Ok handler is
+    executing, so that the "actually search" signal isn't disconnected
+    too soon and searching by clicking Ok works.  (Closes: #332179)
+    Similar fixes to other stock dialogs.
+
+  * Use the right encoding when converting the name of a dependency
+    type to a wide character string.  (Closes: #331199)
+
+  * Write out the descriptions of solution elements using
+    wide-character functions.
+
+  * Ensure that string inputs in the configuration dialogs are always
+    visible. (Closes: #331200)
+
+  * Read the debtags vocabulary file from /var/lib instead of
+    /usr/share, and hint that the user should install debtags to make
+    the error go away. (Closes: #331408)
+
+  * Fix the parser of the backwards-compatibility filter grouping
+    policy. (Closes: #331404)
+
+  * Really bypass the authentication prompt if Ignore-Trust-Violations
+    is true. (Closes: #332883)
+
+  * Don't duplicate packages in the filter policy.
+
+  * Accept archive or version specifiers with installauto (+M) as well
+    as install.
+
+  * Document ~t.
+
+- Translation updates:
+
+  * Basque (Closes: #275704)
+
+  * Czech
+
+  * French
+
+  * Swedish (Closes: #333267)
+
 [9/30/2005]
 Version 0.3.4                           "Up The Airy Mountain"
 
