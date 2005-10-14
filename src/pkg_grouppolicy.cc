@@ -416,12 +416,8 @@ public:
 
   virtual void add_package(const pkgCache::PkgIterator &pkg, pkg_subtree *root)
   {
-    for(pkgCache::VerIterator ver = pkg.VersionList(); !ver.end(); ++ver)
-      if(filter->matches(pkg, ver))
-	{
-	  chain->add_package(pkg, root);
-	  break;
-	}
+    if(filter->matches(pkg))
+      chain->add_package(pkg, root);
   }
 
   virtual ~pkg_grouppolicy_filter() {delete chain;}
