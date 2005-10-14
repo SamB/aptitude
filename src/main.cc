@@ -139,6 +139,7 @@ static void usage()
   printf(_(" autoclean    - Erase old downloaded package files\n"));
   printf(_(" changelog    - View a package's changelog\n"));
   printf(_(" download     - Download the .deb file for a package\n"));
+  printf(_(" reinstall    - Download and (possibly) reinstall a currently installed package\n"));
   printf("\n");
   printf(_("  Options:\n"));
   printf(_(" -h             This help text\n"));
