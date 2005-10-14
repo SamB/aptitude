@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3.2\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-10-14 10:20-0700\n"
+"POT-Creation-Date: 2005-10-14 14:06-0700\n"
 "PO-Revision-Date: 2005-06-29 12:59+0300\n"
 "Last-Translator: Jaakko Kangasharju <ashar@iki.fi>\n"
 "Language-Team: Jaakko Kangasharju <ashar@iki.fi>\n"
@@ -434,7 +434,7 @@ msgid "Unexpected pattern argument following \"keep-all\""
 msgstr ""
 
 #: src/cmdline/cmdline_do_action.cc:233 src/cmdline/cmdline_simulate.cc:31
-#: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:510
+#: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:511
 #, c-format
 msgid "Abort.\n"
 msgstr "Keskeytys.\n"
@@ -2346,108 +2346,115 @@ msgstr " muutosloki   - Näytä paketin muutosloki\n"
 msgid " download     - Download the .deb file for a package\n"
 msgstr " download     - Nouda pakettitiedosto\n"
 
-#: src/main.cc:143
+#: src/main.cc:142
+#, c-format
+msgid ""
+" reinstall    - Download and (possibly) reinstall a currently installed "
+"package\n"
+msgstr ""
+
+#: src/main.cc:144
 #, c-format
 msgid "  Options:\n"
 msgstr "  Valitsimet:\n"
 
-#: src/main.cc:144
+#: src/main.cc:145
 #, c-format
 msgid " -h             This help text\n"
 msgstr " -h             Tämä avustusteksti\n"
 
-#: src/main.cc:145
+#: src/main.cc:146
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr ""
 " -s             Tulosta suoritettavat toiminnot, mutta älä suorita niitä.\n"
 
-#: src/main.cc:146
+#: src/main.cc:147
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
 " -d             Älä asenna tai poista paketteja, ainoastaan nouda ne.\n"
 
-#: src/main.cc:147
+#: src/main.cc:148
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr " -P             Kysy aina varmistusta tai toimintoa\n"
 
-#: src/main.cc:148
+#: src/main.cc:149
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr " -y             Vastaa yksinkertaisiin kyllä/ei-kysymyksiin kyllä.\n"
 
-#: src/main.cc:149
+#: src/main.cc:150
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual\n"
 msgstr " -F muotoilu    Määritä hakutulosten näyttömuoto; katso käyttöopasta\n"
 
-#: src/main.cc:150
+#: src/main.cc:151
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr " -O järjestys   Määritä hakutulosten järjestys; katso käyttöopasta\n"
 
-#: src/main.cc:151
+#: src/main.cc:152
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr " -w leveys      Määritä näytön leveys hakutuloksia varten\n"
 
-#: src/main.cc:152
+#: src/main.cc:153
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr ""
 " -f             Yritä tosissaan korjata rikkinäisten pakettien "
 "riippuvuuksia.\n"
 
-#: src/main.cc:153
+#: src/main.cc:154
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             Näytä asennettavien pakettien versiot.\n"
 
-#: src/main.cc:154
+#: src/main.cc:155
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr ""
 " -D             Näytä automaattisesti muutettujen pakettien riippuvuudet.\n"
 
-#: src/main.cc:155
+#: src/main.cc:156
 #, c-format
 msgid " -Z\t\t    Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    Näytä asennetun koon muutos jokaisesta paketista.\n"
 
-#: src/main.cc:156
+#: src/main.cc:157
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr " -v             Näytä lisätietoa (voidaan käyttää useita kertoja)\n"
 
-#: src/main.cc:157
+#: src/main.cc:158
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
 msgstr " -t [julkaisu]   Aseta julkaisu, josta paketit asennetaan\n"
 
-#: src/main.cc:158
+#: src/main.cc:159
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
 msgstr ""
 
-#: src/main.cc:159
+#: src/main.cc:160
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr " -o avain=arvo  Anna suoraan asetuksen 'avain' arvo\n"
 
-#: src/main.cc:160
+#: src/main.cc:161
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -2456,69 +2463,69 @@ msgstr ""
 " --with(out)-recommends\tMääritä, käsitelläänkö suosituksia\n"
 "                riippuvuuksina\n"
 
-#: src/main.cc:161
+#: src/main.cc:162
 #, c-format
 msgid " -S fname: Read the aptitude extended status info from fname.\n"
 msgstr " -S tnimi: Lue aptituden laajennetut tilatiedot tiedostosta tnimi.\n"
 
-#: src/main.cc:162
+#: src/main.cc:163
 #, c-format
 msgid " -u      : Download new package lists on startup.\n"
 msgstr " -u      : Aloita pakettiluettelon päivitys käynnistettäessä.\n"
 
-#: src/main.cc:163
+#: src/main.cc:164
 #, c-format
 msgid " -i      : Perform an install run on startup.\n"
 msgstr " -i      : Näytä toimenpideruutu käynnistettäessä.\n"
 
-#: src/main.cc:165
+#: src/main.cc:166
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                      Tällä aptitudella ei ole Lehmävoimia.\n"
 
-#: src/main.cc:298
+#: src/main.cc:299
 #, fuzzy, c-format
 msgid "Expected a number after -q=\n"
 msgstr "En pysty kirjoittamaan tiedostoon %s"
 
-#: src/main.cc:307
+#: src/main.cc:308
 #, fuzzy, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "En pysty kirjoittamaan tiedostoon %s"
 
-#: src/main.cc:330
+#: src/main.cc:331
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s"
 msgstr "-o:n argumentin on oltava muotoa avain=arvo; se oli %s"
 
-#: src/main.cc:372 src/main.cc:381
+#: src/main.cc:373 src/main.cc:382
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "OUTOA: tuntematon valitsin\n"
 
-#: src/main.cc:398
+#: src/main.cc:399
 msgid "Only one of -u and -i may be specified\n"
 msgstr "Valitsimia -u ja -i ei voi käyttää yhdessä\n"
 
-#: src/main.cc:406
+#: src/main.cc:407
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr "Valitsimia -u ja -i ei voi käyttää komentorivitoiminnoissa"
 
-#: src/main.cc:427
+#: src/main.cc:428
 msgid "-u and -i may not be specified with a command"
 msgstr "Valitsimia -u ja -i ei voi käyttää komennon kanssa"
 
-#: src/main.cc:503
+#: src/main.cc:504
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Tuntematon komento \"%s\"\n"
 
-#: src/main.cc:515 src/main.cc:556
+#: src/main.cc:516 src/main.cc:557
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr ""
 
-#: src/main.cc:519 src/main.cc:560
+#: src/main.cc:520 src/main.cc:561
 #, c-format
 msgid ""
 "Backtrace:\n"

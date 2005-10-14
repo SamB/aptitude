@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-10-14 10:20-0700\n"
+"POT-Creation-Date: 2005-10-14 14:06-0700\n"
 "PO-Revision-Date: 2005-03-30 16:02+0800\n"
 "Last-Translator: Ryan Escarez <rescarez@gmail.com>\n"
 "Language-Team: Tagalog <debian-tl@banwa.upm.edu.ph>\n"
@@ -453,7 +453,7 @@ msgid "Unexpected pattern argument following \"keep-all\""
 msgstr ""
 
 #: src/cmdline/cmdline_do_action.cc:233 src/cmdline/cmdline_simulate.cc:31
-#: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:510
+#: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:511
 #, c-format
 msgid "Abort.\n"
 msgstr "Hintuin.\n"
@@ -2394,24 +2394,31 @@ msgstr " changelog    - Tingnan ang changelog ng pakete\n"
 msgid " download     - Download the .deb file for a package\n"
 msgstr " download     - Kuhain ang .deb file para sa pakete\n"
 
-#: src/main.cc:143
+#: src/main.cc:142
+#, c-format
+msgid ""
+" reinstall    - Download and (possibly) reinstall a currently installed "
+"package\n"
+msgstr ""
+
+#: src/main.cc:144
 #, c-format
 msgid "  Options:\n"
 msgstr "  Options:\n"
 
-#: src/main.cc:144
+#: src/main.cc:145
 #, c-format
 msgid " -h             This help text\n"
 msgstr " -h             Ang tulong na ito\n"
 
-#: src/main.cc:145
+#: src/main.cc:146
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr ""
 " -s             Magsagawa ng kunwaring aksyon, pero wag gawin ng toto ang "
 "pagsagawa sa kanila.\n"
 
-#: src/main.cc:146
+#: src/main.cc:147
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
@@ -2419,12 +2426,12 @@ msgstr ""
 " -d             Kunin ang pakete lamang, wag i-instal o tanggalin ang kahit "
 "na ano.\n"
 
-#: src/main.cc:147
+#: src/main.cc:148
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr " -P             Laging mag prompt para sa compermasyon o aksyon\n"
 
-#: src/main.cc:148
+#: src/main.cc:149
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
@@ -2432,7 +2439,7 @@ msgstr ""
 " -y             Mag panggap na ang sagot sa simpleng tanong na oo/hindi ay "
 "'oo\n"
 
-#: src/main.cc:149
+#: src/main.cc:150
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
@@ -2441,7 +2448,7 @@ msgstr ""
 " -F format      ilagay ang format para i-display ang nahanap na resulta; "
 "tingnan ang manual\n"
 
-#: src/main.cc:150
+#: src/main.cc:151
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
@@ -2449,7 +2456,7 @@ msgstr ""
 " -O order       ilagay kung paano ang nahanap na resulta ayon sa pag-uri-"
 "uri; tingnan ang manual\n"
 
-#: src/main.cc:151
+#: src/main.cc:152
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
@@ -2457,18 +2464,18 @@ msgstr ""
 " -w width       ilagay ang lapad ng display para sa formatting ng nahanap na "
 "resulta\n"
 
-#: src/main.cc:152
+#: src/main.cc:153
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr ""
 " -f             Agresibong sinusubukan na ayusin ang nabasag na mga pakete.\n"
 
-#: src/main.cc:153
+#: src/main.cc:154
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             Pakita kung anong bersyon ng pakete ang e i-instal.\n"
 
-#: src/main.cc:154
+#: src/main.cc:155
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
@@ -2476,13 +2483,13 @@ msgstr ""
 " -D             Pakita ang dependencies ng otomatikaling nabagong mga "
 "pakete.\n"
 
-#: src/main.cc:155
+#: src/main.cc:156
 #, c-format
 msgid " -Z\t\t    Show the change in installed size of each package.\n"
 msgstr ""
 " -Z\t\t    Ipakita ang pagbabago sa installed na sukat ng bawat pakete.\n"
 
-#: src/main.cc:156
+#: src/main.cc:157
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
@@ -2490,28 +2497,28 @@ msgstr ""
 " -v             Pakita ang karagdagang impormasyon. (siguro supplied ng "
 "maraming ulit)\n"
 
-#: src/main.cc:157
+#: src/main.cc:158
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
 msgstr ""
 " -t [release]   Itakda ang paglaya kung saan ang pakete ay i-installed\n"
 
-#: src/main.cc:158
+#: src/main.cc:159
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
 msgstr ""
 
-#: src/main.cc:159
+#: src/main.cc:160
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr ""
 " -o key=val     Diretstong ilagay ang pangalan ng configuration option "
 "'key'\n"
 
-#: src/main.cc:160
+#: src/main.cc:161
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -2520,73 +2527,73 @@ msgstr ""
 " --with(out)-recommends\tSpecify kahit na maukol ng rekomenda \n"
 "                matibay na dependencies\n"
 
-#: src/main.cc:161
+#: src/main.cc:162
 #, c-format
 msgid " -S fname: Read the aptitude extended status info from fname.\n"
 msgstr " -S fname: Basahin ang aptitude extended status info mula sa fname.\n"
 
-#: src/main.cc:162
+#: src/main.cc:163
 #, c-format
 msgid " -u      : Download new package lists on startup.\n"
 msgstr " -u      : Kuhain ang bagong pakete sa simula.\n"
 
-#: src/main.cc:163
+#: src/main.cc:164
 #, c-format
 msgid " -i      : Perform an install run on startup.\n"
 msgstr " -i      : Magsagawa ng install run sa simula.\n"
 
-#: src/main.cc:165
+#: src/main.cc:166
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr ""
 "                  Ang aptitude na ito ay walang kapanyarihang Super "
 "Kalabaw.\n"
 
-#: src/main.cc:298
+#: src/main.cc:299
 #, fuzzy, c-format
 msgid "Expected a number after -q=\n"
 msgstr "Hindi ma-buksan ang %s para sulatan"
 
-#: src/main.cc:307
+#: src/main.cc:308
 #, fuzzy, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "Hindi ma-buksan ang %s para sulatan"
 
-#: src/main.cc:330
+#: src/main.cc:331
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s"
 msgstr "-o kailangan ng argumento sa hubog na key=value, nakuha %s"
 
-#: src/main.cc:372 src/main.cc:381
+#: src/main.cc:373 src/main.cc:382
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "KAKAIBA: di-kilala na option code natanggap\n"
 
-#: src/main.cc:398
+#: src/main.cc:399
 msgid "Only one of -u and -i may be specified\n"
 msgstr "Tanging isa sa -u at -i ang maaaring specified\n"
 
-#: src/main.cc:406
+#: src/main.cc:407
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
 "-u at -i ay maaring hindi specified sa command-line na pamamaraan (eg, with "
 "'install')"
 
-#: src/main.cc:427
+#: src/main.cc:428
 msgid "-u and -i may not be specified with a command"
 msgstr "-u at -i hindi siguro na specified na merong command"
 
-#: src/main.cc:503
+#: src/main.cc:504
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Hindi kilalang command \"%s\"\n"
 
-#: src/main.cc:515 src/main.cc:556
+#: src/main.cc:516 src/main.cc:557
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr ""
 
-#: src/main.cc:519 src/main.cc:560
+#: src/main.cc:520 src/main.cc:561
 #, c-format
 msgid ""
 "Backtrace:\n"
