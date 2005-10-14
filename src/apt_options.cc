@@ -189,8 +189,8 @@ option_item dependency_options[]={
 	      PACKAGE "::Recommends-Important", true),
   option_item(N_("Remove unused packages automatically"),
 	      PACKAGE "::Delete-Unused", true),
-  option_item(N_("Automatically remove unused packages matching this filter"),
-	      PACKAGE "::Delete-Unused-Pattern", ""),
+  option_item(N_("Don't automatically remove unused packages matching this filter"),
+	      PACKAGE "::Keep-Unused-Pattern", ""),
   option_item()
 };
 
