@@ -342,15 +342,7 @@ bool cmdline_applyaction(string s,
 	{
 	  pkgCache::VerIterator testver;
 
-	  if(action==cmdline_install || action==cmdline_hold ||
-	     action==cmdline_forbid_version)
-	    testver=(*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
-	  else if(action==cmdline_remove || action==cmdline_purge)
-	    testver=pkg.CurrentVer();
-	  else
-	    testver=(*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
-
-	  if(m->matches(pkg, testver))
+	  if(m->matches(pkg))
 	    rval=cmdline_applyaction(action, pkg,
 				     to_install, to_hold, to_remove, to_purge,
 				     verbose, source,
