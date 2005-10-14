@@ -8225,13 +8225,13 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg><literal>Aptitude::Delete-Unused-Pattern</literal></seg>
 	      <seg></seg>
 	      <seg>
-		If <literal><link
-		linkend='configDelete-Unused'>Aptitude::Delete-Unused</link></literal>
-		is <literal>true</literal>, only unused packages which
-		do <emphasis>not</emphasis> match this pattern (see
-		<xref linkend='secSearchPatterns'/>) will be removed.
-		If this option is set to an empty string (the
-		default), all unused packages will be removed.
+		Deprecated alias for <literal><link
+		linkend='configKeep-Unused-Pattern'>Aptitude::Keep-Unused-Pattern</link></literal>.
+		If <literal>Aptitude::Keep-Unused-Pattern</literal> is
+		unset or set to an empty string, the value of this
+		configuration option will override it.  Otherwise,
+		<literal>Aptitude::Delete-Unused-Pattern</literal> is
+		ignored.
 	      </seg>
 	    </seglistitem>
 
@@ -8304,6 +8304,20 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		system as long as any installed package suggests them.
 		For more information, see <xref
 		linkend='secAutoInstall'/>.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configKeep-Unused-Pattern'>
+	      <seg><literal>Aptitude::Keep-Unused-Pattern</literal></seg>
+	      <seg></seg>
+	      <seg>
+		If <literal><link
+		linkend='configDelete-Unused'>Aptitude::Delete-Unused</link></literal>
+		is <literal>true</literal>, only unused packages which
+		do not match this pattern (see
+		<xref linkend='secSearchPatterns'/>) will be removed.
+		If this option is set to an empty string (the
+		default), all unused packages will be removed.
 	      </seg>
 	    </seglistitem>
 
