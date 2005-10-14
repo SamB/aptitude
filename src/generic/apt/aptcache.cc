@@ -1395,9 +1395,9 @@ void aptitudeDepCache::mark_and_sweep(undo_group *undo)
 	 (p->Flags & pkgCache::Flag::Essential) ||
 	 (matcher && ((PkgState[p->ID].Keep() &&
 		       !p.CurrentVer().end() &&
-		       matcher->matches(p, p.CurrentVer())) ||
+		       matcher->matches(p)) ||
 		      (PkgState[p->ID].Install() &&
-		       matcher->matches(p, PkgState[p->ID].InstVerIter(GetCache()))))))
+		       matcher->matches(p)))))
 	{
 	  if(PkgState[p->ID].Keep() && !p.CurrentVer().end())
 	    mark_package(p, p.CurrentVer(),
