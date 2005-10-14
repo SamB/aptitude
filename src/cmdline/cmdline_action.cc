@@ -273,7 +273,7 @@ bool cmdline_applyaction(string s,
 	  for(pkgCache::PkgIterator j=(*apt_cache_file)->PkgBegin();
 	      !j.end(); ++j)
 	    {
-	      if(!(j.VersionList().end() && j.ProvidesList().end()) && m->matches(j, j.CurrentVer()))
+	      if(!(j.VersionList().end() && j.ProvidesList().end()) && m->matches(j))
 		possible.push_back(j);
 	    }
 
@@ -303,7 +303,7 @@ bool cmdline_applyaction(string s,
 	      for(pkgCache::PkgIterator j=(*apt_cache_file)->PkgBegin();
 		  !j.end(); ++j)
 		{
-		  if(m->matches(j, (*apt_cache_file)[j].CandidateVerIter(*apt_cache_file)))
+		  if(m->matches(j))
 		    possible.push_back(j);
 		}
 
