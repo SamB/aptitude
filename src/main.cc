@@ -236,6 +236,17 @@ int main(int argc, char *argv[])
   //      rocker.
   argv0=argv[0];
 
+  // Backwards bug-compatibility; old versions used a misleading name
+  // for this option.
+  if(aptcfg->Find(PACKAGE "::Keep-Unused-Pattern", "") == "")
+    {
+      aptcfg->Set(PACKAGE "::Keep-Unused-Pattern",
+		  aptcfg->Find(PACKAGE "::Delete-Unused-Pattern", ""));
+      aptcfg->Set(PACKAGE "::Delete-Unused-Pattern", "");
+    }
+  else
+    aptcfg->Set(PACKAGE "::Delete-Unused-Pattern", "");
+
   // Read the arguments:
   while((curopt=getopt_long(argc, argv, "DVZvhS:uiF:w:sO:fdyPt:q::Rro:", opts, NULL))!=-1)
     {
