@@ -24,23 +24,47 @@
 
 void vs_staticitem::paint(vs_tree *win, int y, bool hierarchical, const style &st)
 {
-  int basex=hierarchical?2*get_depth():0;
-  int width,height;
+  int width, height;
+  int basex = hierarchical ? 2*get_depth() : 0;
   win->getmaxyx(height,width);
 
-  win->attron(A_BOLD);
   win->move(y,0);
-  for(int i=0; i<basex && i<width; i++)
-    win->addch(' ');
-  if(basex >= width)
+  int x = 0;
+
+  while(x < basex && x < width)
+    {
+      win->add_wch(L' ');
+      x += wcwidth(L' ');
+    }
+
+  if(x >= width)
     return;
 
-  win->addnstr(name.c_str(), width - basex);
-  if((basex + name.size()) >= (unsigned) (width - basex))
-    return;
+  win->apply_style(st + style_attrs_on(A_BOLD));
+  size_t i = 0;
+  while(i < name.size() && x < width)
+    {
+      wchar_t ch = name[i];
 
-  win->attroff(A_BOLD);
-  win->addnstr(value.c_str(), width - basex - name.size());
-  for(int newx = basex + name.size() + value.size(); newx < width; newx++)
-    win->addch(' ');
+      win->add_wch(ch);
+      x += wcwidth(ch);
+      ++i;
+    }
+
+  i = 0;
+  while(i < value.size() && x < width)
+    {
+      wchar_t ch = name[i];
+
+      win->add_wch(ch);
+      x += wcwidth(ch);
+      ++i;
+    }
+  win->apply_style(st);
+
+  while(x<width)
+    {
+      win->add_wch(L' ');
+      x += wcwidth(L' ');
+    }
 }
