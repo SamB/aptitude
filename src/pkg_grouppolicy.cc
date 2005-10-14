@@ -1137,10 +1137,8 @@ public:
   {
     for(vector<match_pair>::const_iterator i = subgroups.begin();
 	i != subgroups.end(); ++i)
-      for(pkgCache::VerIterator ver = pkg.VersionList(); !ver.end();
-	  ++ver)
 	{
-	  pkg_match_result *res = i->matcher->get_match(pkg, ver);
+	  pkg_match_result *res = i->matcher->get_match(pkg);
 	  if(res != NULL)
 	    {
 	      wstring title = substitute(i->tree_name, res);
@@ -1162,9 +1160,6 @@ public:
 
 		  policy->add_package(pkg, tree);
 		}
-
-	      // Don't match any more.
-	      break;
 	    }
 	}
   }
