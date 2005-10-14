@@ -414,6 +414,70 @@ public:
   }
 };
 
+// NOTE: pkg_current_version_matcher, pkg_inst_version_matcher, and
+// pkg_cand_version_matcher are all a bit inefficient since they loop
+// over all versions when they only match one; if they become a
+// performance problem (unlikely), you could (carefully!!) implement
+// the version-agnostic match variants to speed things up.
+class pkg_curr_version_matcher : public pkg_matcher
+{
+public:
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver)
+  {
+    return !ver.end() && ver == pkg.CurrentVer();
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver)
+  {
+    if(matches(pkg, ver))
+      return new unitary_result(ver.VerStr());
+    else
+      return NULL;
+  }
+};
+
+class pkg_cand_version_matcher : public pkg_matcher
+{
+public:
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver)
+  {
+    return !ver.end() &&
+      ver == (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver)
+  {
+    if(matches(pkg, ver))
+      return new unitary_result(ver.VerStr());
+    else
+      return NULL;
+  }
+};
+
+class pkg_inst_version_matcher : public pkg_matcher
+{
+public:
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver)
+  {
+    return !ver.end() &&
+      ver == (*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver)
+  {
+    if(matches(pkg, ver))
+      return new unitary_result(ver.VerStr());
+    else
+      return NULL;
+  }
+};
+
 class pkg_task_matcher : public pkg_string_matcher
 {
 public:
@@ -2173,7 +2237,14 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		    case 'T':
 		      return new pkg_true_matcher;
 		    case 'V':
-		      return new pkg_version_matcher(substr);
+		      if(substr == "CURRENT")
+			return new pkg_curr_version_matcher;
+		      else if(substr == "TARGET")
+			return new pkg_inst_version_matcher;
+		      else if(substr == "CANDIDATE")
+			return new pkg_cand_version_matcher;
+		      else
+			return new pkg_version_matcher(substr);
 		    default:
 		      throw CompilationException(_("Unknown pattern type: %c"), search_flag);
 		    }
