@@ -33,7 +33,7 @@ void vs_treeitem::paint(vs_tree *win, int y, bool hierarchical,
     return;
 
   size_t i=0;
-  while(i<str.size())
+  while(i < str.size() && x < width)
     {
       wchar_t ch=str[i];
 
