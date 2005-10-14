@@ -4500,20 +4500,50 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	  <listitem>
 	    <para>
-	      Matches any package whose version matches the regular
-	      expression <replaceable>version</replaceable>.  For
-	      instance, <quote><literal>~Vdebian</literal></quote> matches packages
-	      whose version contains <quote><literal>debian</literal></quote>.
+	      Matches any package version whose version number matches
+	      the regular expression
+	      <replaceable>version</replaceable>, with the exceptions
+	      noted below.  For instance,
+	      <quote><literal>~Vdebian</literal></quote> matches
+	      packages whose version contains
+	      <quote><literal>debian</literal></quote>.
 	    </para>
 
-	    <note>
-	      <para>
-		If several versions of the package are available,
-		which version is considered depends on context;
-		however, it is usually either the current version or
-		the candidate version.
-	      </para>
-	    </note>
+	    <para>
+	      The following values of
+	      <replaceable>version</replaceable> are treated
+	      specially.  To search for version numbers containing
+	      these values, preface the value with a backslash; for
+	      instance, to find packages whose version number contains
+	      <literal>CURRENT</literal>, search for
+	      <literal>\CURRENT</literal>.
+
+	      <itemizedlist>
+		<listitem>
+		  <para>
+		    <literal>CURRENT</literal> matches the currently
+		    installed version of a package, if any.
+		  </para>
+		</listitem>
+
+		<listitem>
+		  <para>
+		    <literal>CANDIDATE</literal> matches the version,
+		    if any, of the package that will be installed if
+		    you press <keycap>+</keycap> on the package or run
+		    <literal>aptitude install</literal> on it.
+		  </para>
+		</listitem>
+
+		<listitem>
+		  <para>
+		    <literal>TARGET</literal> matches the version of a
+		    package that is currently targeted for
+		    installation, if any.
+		  </para>
+		</listitem>
+	      </itemizedlist>
+	    </para>
 	  </listitem>
 	</varlistentry>
 
