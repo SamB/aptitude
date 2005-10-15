@@ -62,11 +62,6 @@ public:
     /** The current action stored on the package. */
     pkgCache::State::PkgSelectedState selection_state;
 
-    /** The action that dselect wanted to perform, the last time that
-     *  we checked.
-     */
-    pkgCache::State::PkgSelectedState dselect_state;
-
     /** Stores the version, if any, that the user explicitly selected.
      *  This is not written to the global state file, although it is
      *  used to pass information to the child during the "su-to-root"

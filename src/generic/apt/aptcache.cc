@@ -218,7 +218,6 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
   for(unsigned int i=0; i<Head().PackageCount; i++)
     {
       package_states[i].new_package=true;
-      package_states[i].selection_state=package_states[i].dselect_state=pkgCache::State::Unknown;
       package_states[i].reinstall=false;
       package_states[i].install_reason=manual;
       package_states[i].remove_reason=manual;
@@ -303,15 +302,16 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 	      candver=section.FindS("Version");
 
 	      pkg_state.selection_state=(pkgCache::State::PkgSelectedState) section.FindI("State", pkgCache::State::Unknown);
-	      pkg_state.dselect_state=(pkgCache::State::PkgSelectedState) section.FindI("Dselect-State", pkg->SelectedState);
+	      pkgCache::State::PkgSelectedState last_dselect_state
+		= (pkgCache::State::PkgSelectedState)
+		    section.FindI("Dselect-State", pkg->SelectedState);
 	      pkg_state.candver=candver;
 	      pkg_state.forbidver=section.FindS("ForbidVer");
 
-	      if(do_dselect && pkg->SelectedState!=pkg_state.dselect_state &&
+	      if(do_dselect && pkg->SelectedState != last_dselect_state &&
 		 do_initselections)
 		{
 		  MarkFromDselect(pkg);
-		  pkg_state.dselect_state=(pkgCache::State::PkgSelectedState) pkg->SelectedState;
 		  dirty=true;
 		}
 	    }
