@@ -691,7 +691,7 @@ void vs_menubar::paint(const style &st)
 
       if(startloc > 0)
 	mvadd_wch(0, 0, WACS_LARROW);
-      if(i < items.size() || pos >= maxx)
+      if(i < items.size() || pos > maxx)
 	mvadd_wch(0, maxx-1, WACS_RARROW);
     }
 }
