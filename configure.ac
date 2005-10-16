@@ -36,7 +36,7 @@ PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 
 CXXFLAGS="$CXXFLAGS $SIGC_CFLAGS"
 LIBS="$LIBS $SIGC_LIBS"
-AC_DEFINE_UNQUOTED(SIGC_VERSION, "$sigc_version", [The version of libsigc++ with which the program was compiled])
+AC_DEFINE_UNQUOTED(SIGC_VERSION, ["$(pkg-config --modversion sigc++-2.0)"], [The version of libsigc++ with which the program was compiled])
 
 dnl Checks for header files.
 AC_HEADER_STDC
