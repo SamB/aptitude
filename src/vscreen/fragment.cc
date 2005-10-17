@@ -71,7 +71,45 @@ private:
   wstring s;
 };
 
-fragment *text_fragment(const wstring &s) { return new _text_fragment(s); }
+fragment *text_fragment(const wstring &s)
+{
+  std::vector<fragment *> fragments;
+
+  wstring tmp;
+
+  for(size_t i = 0; i < s.size(); ++i)
+    {
+      if(s[i] == L'\t')
+	tmp.append(8, L' ');
+      else if(s[i] == L'\n' || !iswprint(s[i]))
+	{
+	  fragments.push_back(new _text_fragment(tmp));
+
+	  if(s[i] == L'\n')
+	    fragments.push_back(newline_fragment());
+	  else
+	    fragments.push_back(style_fragment(new _text_fragment(L"?"),
+					       get_style("ERROR")));
+
+	  tmp.clear();
+	}
+      else
+	tmp += s[i];
+    }
+
+  if(fragments.size() == 0)
+    return new _text_fragment(tmp);
+  else
+    {
+      if(!tmp.empty())
+	fragments.push_back(new _text_fragment(tmp));
+
+      return sequence_fragment(fragments);
+    }
+}
+
+
+
 fragment *text_fragment(const wstring &s,
 			const style &st)
 {

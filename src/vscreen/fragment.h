@@ -89,8 +89,8 @@ public:
 // Factory methods to avoid cluttering the .h file:
 
 /** Create a fragment from a string of text.  The text will simply be
- *  formatted as a single line without clipping.  The text should not
- *  contain a newline (\n).
+ *  formatted as is, with line breaks at newlines and tabs replaced by
+ *  eight spaces.
  *
  *  \param s the text to use
  *
