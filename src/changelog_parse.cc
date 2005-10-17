@@ -63,7 +63,29 @@ fragment *change_text_fragment(const std::string &s)
       else
 	this_line.assign(s, start, std::string::npos);
 
-      lines.push_back(hardwrapbox(fragf("%s%n", this_line.c_str())));
+      size_t first_nonspace = 0;
+      while(first_nonspace < this_line.size() && isspace(this_line[first_nonspace]))
+	++first_nonspace;
+
+      bool has_bullet = false;
+      if(first_nonspace < this_line.size())
+	switch(this_line[first_nonspace])
+	  {
+	  case '*':
+	  case '+':
+	  case '-':
+	    has_bullet = true;
+	    break;
+	  }
+
+      if(has_bullet)
+	lines.push_back(hardwrapbox(fragf("%s%F%s%n",
+					  std::string(this_line, 0, first_nonspace).c_str(),
+					  text_fragment(std::string(this_line, first_nonspace, 1).c_str(),
+							get_style("Bullet")),
+					  std::string(this_line, first_nonspace + 1).c_str())));
+      else
+	lines.push_back(hardwrapbox(fragf("%s%n", this_line.c_str())));
 
       start = next_nl + 1;
     } while(next_nl != std::string::npos);
