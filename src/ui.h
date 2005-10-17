@@ -295,8 +295,11 @@ void show_message(const std::string &msg,
 /** Call this when a download starts; it sets the flag associated with
  *  the existence of a download, destroys the active preview (if any),
  *  and maeks the apt cache read-only.
+ *
+ *  \param hide_preview if \b true, the preview screen will be hidden
+ *  prior to starting the download.
  */
-void ui_start_download();
+void ui_start_download(bool hide_preview = true);
 
 /** Call this when a download finishes; it clears the flag associated
  *  with the existence of a download and puts the cache back into

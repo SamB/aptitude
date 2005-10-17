@@ -190,14 +190,14 @@ const char *default_pkgstatusdisplay="%d";
 const char *default_pkgheaderdisplay="%N %n #%B %u %o";
 const char *default_grpstr="task,status,section(subdir,passthrough),section(topdir)";
 
-void ui_start_download()
+void ui_start_download(bool hide_preview)
 {
   active_download = true;
 
   if(apt_cache_file != NULL)
     (*apt_cache_file)->set_read_only(true);
 
-  if(active_preview.valid())
+  if(hide_preview && active_preview.valid())
     active_preview->destroy();
 }
 
