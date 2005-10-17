@@ -221,7 +221,7 @@ void view_changelog(pkgCache::VerIterator ver)
 					    sigc::bind(sigc::ptr_fun(&do_view_changelog), pkgname, curverstr));
 
   if(manager != NULL)
-    (new ui_download_manager(manager, true, false,
+    (new ui_download_manager(manager, true, false, false,
 			     _("Downloading Changelog"),
 			     _(""),
 			     _("Download Changelog")))->start();

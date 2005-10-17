@@ -82,6 +82,7 @@ public:
   ui_download_manager(download_manager *_manager,
 		      bool force_noninvasive,
 		      bool list_update,
+		      bool hide_preview,
 		      const std::string &title,
 		      const std::string &longtitle,
 		      const std::string &tablabel);

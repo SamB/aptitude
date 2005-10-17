@@ -34,6 +34,7 @@
 ui_download_manager::ui_download_manager(download_manager *_manager,
 					 bool force_noninvasive,
 					 bool list_update,
+					 bool hide_preview,
 					 const std::string &title,
 					 const std::string &longtitle,
 					 const std::string &tablabel)
@@ -50,7 +51,7 @@ ui_download_manager::ui_download_manager(download_manager *_manager,
   download_status = progpair.second;
   st              = new background_status(log);
 
-  ui_start_download();
+  ui_start_download(hide_preview);
 }
 
 ui_download_manager::~ui_download_manager()

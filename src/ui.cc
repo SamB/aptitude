@@ -1059,7 +1059,7 @@ void install_or_remove_packages()
   m->post_install_hook.connect(sigc::ptr_fun(&finish_install_run));
   m->post_forget_new_hook.connect(package_states_changed.make_slot());
 
-  (new ui_download_manager(m, false, false,
+  (new ui_download_manager(m, false, false, true,
 			   _("Downloading packages"),
 			   _("View the progress of the package download"),
 			   _("Package Download")))->start();
@@ -1387,7 +1387,7 @@ void really_do_update_lists()
   m->pre_autoclean_hook.connect(sigc::bind(sigc::ptr_fun(lists_autoclean_msg),
 					   m));
   m->post_forget_new_hook.connect(package_states_changed.make_slot());
-  (new ui_download_manager(m, false, true,
+  (new ui_download_manager(m, false, true, false,
 			   _("Updating package lists"),
 			   _("View the progress of the package list update"),
 			   _("List Update")))->start();
