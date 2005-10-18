@@ -23,7 +23,7 @@ AC_CHECK_LIB(pthread, main,
 	HAVE_LIBPTHREAD=1
 	, [AC_MSG_ERROR([Can't find the POSIX thread libraries])])
 
-ALL_LINGUAS="ar bs ca cs da de el es eu fi fr gl it ja lt nb nl nn pl pt pt_BR ro ru sk tl tr vi zh_CN zh_TW"
+ALL_LINGUAS="ar bs ca cs da de el es eu fi fr gl it ja lt nb nl nn pl pt pt_BR ro ru sk sv tl tr vi zh_CN zh_TW"
 AM_GNU_GETTEXT([external])
 
 dnl Old sigc:
