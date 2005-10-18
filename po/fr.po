@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.3.4\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
 "POT-Creation-Date: 2005-10-14 14:06-0700\n"
-"PO-Revision-Date: 2005-10-09 12:29+0200\n"
+"PO-Revision-Date: 2005-10-15 00:02+0200\n"
 "Last-Translator: Jean-Luc Coulon <jean-luc.coulon@wanadoo.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -152,9 +152,8 @@ msgid "Remove unused packages automatically"
 msgstr "Supprimer automatiquement les paquets inutilisés"
 
 #: src/apt_options.cc:192
-#, fuzzy
 msgid "Don't automatically remove unused packages matching this filter"
-msgstr "Supprimer les paquets inutilisés correspondant à ce filtre"
+msgstr "Ne pas supprimer les paquets inutilisés correspondant à ce filtre"
 
 #: src/apt_options.cc:248 src/mine/cmine.cc:302 src/mine/cmine.cc:367
 #: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:91
@@ -332,13 +331,13 @@ msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Note : sélection de la tâche « %s : %s » pour installation\n"
 
 #: src/cmdline/cmdline_action.cc:244
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
 msgstr ""
 "Vous ne pouvez préciser une version de paquet qu'avec une commande "
-"« install ».\n"
+"« install » ou « forbid-version ».\n"
 
 #: src/cmdline/cmdline_action.cc:252
 #, c-format
@@ -1624,9 +1623,11 @@ msgstr ""
 "manquants."
 
 #: src/generic/apt/apt.cc:171
-#, fuzzy, c-format
+#, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
-msgstr "Impossible de remplacer %s avec le nouveau fichier de configuration"
+msgstr ""
+"%s est accessible en lecture mais pas en écriture ; impossible d'écrire le "
+"fichier de configuration"
 
 #: src/generic/apt/apt.cc:209
 #, c-format
@@ -1683,9 +1684,8 @@ msgid "Couldn't clean out list directories"
 msgstr "Impossible de nettoyer l'index des listes"
 
 #: src/generic/apt/download_update_manager.cc:122
-#, fuzzy
 msgid "Couldn't rebuild package cache"
-msgstr "Impossible de lire les sources de listes de paquets"
+msgstr "Impossible de reconstruire le cache des paquets"
 
 #: src/generic/apt/log.cc:52
 #, c-format
@@ -1898,7 +1898,7 @@ msgstr "Type de dépendance inconnu : %s"
 
 #: src/generic/apt/matchers.cc:2119
 msgid "Provides: cannot be broken"
-msgstr ""
+msgstr "Provides: ne peut être cassé"
 
 #: src/generic/apt/matchers.cc:2174
 #, c-format
@@ -1994,6 +1994,8 @@ msgstr "Construction de la base de données des étiquettes"
 #: src/generic/apt/tags.cc:253
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgstr ""
+"Impossible de charger le vocabulaire de debtags, le paquet debtags est-il "
+"installé ?"
 
 #: src/generic/apt/tasks.cc:283
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -2102,9 +2104,8 @@ msgid "By-status grouping policies take no arguments"
 msgstr "Les règles de regroupement par état ne prennent aucun paramètre"
 
 #: src/load_grouppolicy.cc:412
-#, fuzzy
 msgid "Expected '(' after 'filter'"
-msgstr "« ( » est attendu après « pattern »"
+msgstr "« ( » est attendu après « filtre »"
 
 #: src/load_grouppolicy.cc:449
 #, c-format
@@ -2207,9 +2208,8 @@ msgid "By-name sorting policies take no arguments"
 msgstr "Les règles de tri par nom ne prennent pas de paramètre"
 
 #: src/load_sortpolicy.cc:64
-#, fuzzy
 msgid "By-version sorting policies take no arguments"
-msgstr "Les règles de tri par priorité ne prennent pas de paramètre"
+msgstr "Les règles de tri par version ne prennent pas de paramètre"
 
 #: src/load_sortpolicy.cc:77
 msgid "By-installed size sorting policies take no arguments"
@@ -2406,11 +2406,13 @@ msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
 msgstr ""
+" reinstall    - Télécharger et (éventuellement) réinstaller un paquet déjà\n"
+"                installé\n"
 
 #: src/main.cc:144
 #, c-format
 msgid "  Options:\n"
-msgstr "Options :\n"
+msgstr "  Options :\n"
 
 #: src/main.cc:145
 #, c-format
@@ -2499,8 +2501,9 @@ msgstr ""
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr ""
-" -v             Afficher des informations supplémentaires (peut être\n"
-"                indiquée plusieurs fois).\n"
+" -v             Afficher des informations supplémentaires (peut être "
+"indiquée\n"
+"                plusieurs fois).\n"
 
 #: src/main.cc:158
 #, c-format
@@ -2511,20 +2514,20 @@ msgstr ""
 "                installé\n"
 
 #: src/main.cc:159
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
 msgstr ""
 " -q             en mode ligne de commande, supprimer l'indicateur "
-"d'avancement."
+"d'avancement.\n"
 
 #: src/main.cc:160
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr ""
-" -o clé=valeur  Établir directement l'option de configuration appelée\n"
-"                « clé »\n"
+" -o clé=valeur  Établir directement l'option de configuration appelée "
+"« clé »\n"
 
 #: src/main.cc:161
 #, c-format
@@ -4603,18 +4606,16 @@ msgid "View available packages and choose actions to perform"
 msgstr "Afficher les paquets disponibles et choisir les actions à effectuer"
 
 #: src/ui.cc:731
-#, fuzzy
 msgid "Recommended Packages"
-msgstr "Recommande"
+msgstr "Paquets recommandés"
 
 #: src/ui.cc:732
 msgid "View packages that it is recommended that you install"
-msgstr ""
+msgstr "Afficher les paquets qu'il est recommandé d'installer"
 
 #: src/ui.cc:733
-#, fuzzy
 msgid "Recommendations"
-msgstr "Recommande"
+msgstr "Recommandations"
 
 #: src/ui.cc:837
 msgid ""
@@ -5283,15 +5284,16 @@ msgid "Create a new default package view"
 msgstr "Créer une nouvelle vue par défaut des paquets"
 
 #: src/ui.cc:2108
-#, fuzzy
 msgid "Audit ^Recommendations"
-msgstr "Recommande"
+msgstr "^Recommandations"
 
 #: src/ui.cc:2109
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
 msgstr ""
+"Afficher les paquets qu'il vous est recommandé d'installer, mais qui ne sont "
+"pas actuellement installés."
 
 #: src/ui.cc:2112
 msgid "New ^Flat Package List"
