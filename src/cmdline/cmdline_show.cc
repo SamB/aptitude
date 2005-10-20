@@ -369,9 +369,10 @@ static
 bool do_cmdline_show_target(const pkgCache::PkgIterator &pkg,
 			    cmdline_version_source source,
 			    const string &sourcestr,
-			    int verbose)
+			    int verbose,
+			    bool has_explicit_source)
 {
-  if(verbose == 0)
+  if(verbose == 0 || has_explicit_source)
     {
       pkgCache::VerIterator ver = cmdline_find_ver(pkg, source, sourcestr);
 
@@ -397,9 +398,12 @@ bool do_cmdline_show(string s, int verbose)
   cmdline_version_source source;
   string name, sourcestr;
   string default_release = aptcfg->Find("APT::Default-Release");
+  bool has_explicit_source = false;
 
   if(!cmdline_parse_source(s, source, name, sourcestr))
     return false;
+
+  has_explicit_source = (source != cmdline_version_cand);
 
   if(source == cmdline_version_cand && !default_release.empty())
     {
@@ -422,7 +426,7 @@ bool do_cmdline_show(string s, int verbose)
     }
 
   if(!is_pattern && !pkg.end())
-    return do_cmdline_show_target(pkg, source, sourcestr, verbose);
+    return do_cmdline_show_target(pkg, source, sourcestr, verbose, has_explicit_source);
   else if(is_pattern)
     {
       pkg_matcher *m=parse_pattern(name);
@@ -436,7 +440,7 @@ bool do_cmdline_show(string s, int verbose)
       for(pkgCache::PkgIterator P=(*apt_cache_file)->PkgBegin();
 	  !P.end(); ++P)
 	if(m->matches(P))
-	  return do_cmdline_show_target(P, source, sourcestr, verbose);
+	  return do_cmdline_show_target(P, source, sourcestr, verbose, has_explicit_source);
 
       delete m;
     }
