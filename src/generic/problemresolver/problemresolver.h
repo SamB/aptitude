@@ -2239,9 +2239,17 @@ public:
 	  }
       }
     else
-      // TODO: drop conflicts of which this is a subset.  Needs work
-      // at the setset level.
-      conflicts.insert(conflict);
+      {
+	if(debug)
+	  {
+	    std::cout << "Inserting conflict ";
+	    dump_conflict(std::cout, conflict);
+	    std::cout << std::endl;
+	  }
+	// TODO: drop conflicts of which this is a subset.  Needs work
+	// at the setset level.
+	conflicts.insert(conflict);
+      }
   }
 
   /** Cancel any find_next_solution call that is executing in the
