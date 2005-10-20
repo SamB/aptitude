@@ -46,6 +46,7 @@ int cmdline_download(int argc, char *argv[])
     }
   pkgAcquire fetcher(gen_cmdline_download_progress());
   string filenames[(*apt_cache_file)->Head().PackageCount];
+  string default_release = aptcfg->Find("APT::Default-Release");
 
   for(int i=1; i<argc; ++i)
     // FIXME: use the same logic as pkgaction here.
@@ -56,6 +57,12 @@ int cmdline_download(int argc, char *argv[])
 
 	if(!cmdline_parse_source(argv[i], source, name, sourcestr))
 	  continue;
+
+	if(source == cmdline_version_cand && !default_release.empty())
+	  {
+	    source = cmdline_version_archive;
+	    sourcestr = default_release;
+	  }
 
 	pkgCache::PkgIterator pkg=(*apt_cache_file)->FindPkg(name);
 	if(pkg.end())
