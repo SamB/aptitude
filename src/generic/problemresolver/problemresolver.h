@@ -545,33 +545,6 @@ private:
     return rval;
   }
 
-  /** Add the given conflict to the set of conflicts.  Tests if the
-   *  conflict is matched by an existing conflict (in which case it's
-   *  redundant and will be dropped), then tests whether any existing
-   *  conflicts will be made redundant by this conflict.
-   */
-  void add_conflict(const imm::map<package, action> &conflict)
-  {
-    typename conflictset::const_iterator
-      found = find_matching_conflict(conflict);
-
-    if(found != conflicts.end())
-      {
-	if(debug)
-	  {
-	    std::cout << "Dropping conflict ";
-	    dump_conflict(std::cout, conflict);
-	    std::cout << " because it is redundant with ";
-	    dump_conflict(std::cout, *found);
-	    std::cout << std::endl;
-	  }
-      }
-    else
-      // TODO: drop conflicts of which this is a subset.  Needs work
-      // at the setset level.
-      conflicts.insert(conflict);
-  }
-
 #if 0
   /** Test whether the given solution contains a conflict when the
    *  given action is taken.
@@ -2240,6 +2213,35 @@ public:
 
 	deferred_dirty = true;
       }
+  }
+
+  /** Add a set of actions on packages to the set of 'conflicts'.  No
+   *  solution containing these actions will be generated or
+   *  contemplated.  This routine is public primarily to allow the
+   *  frontend to discard the 'do-nothing' solution (eg, the aptitude
+   *  resolver will ignore solutions that cancel all pending user
+   *  actions).
+   */
+  void add_conflict(const imm::map<package, action> &conflict)
+  {
+    typename conflictset::const_iterator
+      found = find_matching_conflict(conflict);
+
+    if(found != conflicts.end())
+      {
+	if(debug)
+	  {
+	    std::cout << "Dropping conflict ";
+	    dump_conflict(std::cout, conflict);
+	    std::cout << " because it is redundant with ";
+	    dump_conflict(std::cout, *found);
+	    std::cout << std::endl;
+	  }
+      }
+    else
+      // TODO: drop conflicts of which this is a subset.  Needs work
+      // at the setset level.
+      conflicts.insert(conflict);
   }
 
   /** Cancel any find_next_solution call that is executing in the
