@@ -8,8 +8,10 @@
 #include <desc_parse.h>
 
 #include "cmdline_common.h"
+#include "cmdline_util.h"
 
 #include <generic/apt/apt.h>
+#include <generic/apt/config_signal.h>
 #include <generic/apt/matchers.h>
 
 #include <vscreen/fragment.h>
@@ -363,14 +365,54 @@ static void show_version(pkgCache::VerIterator ver, int verbose)
     }
 }
 
+static
+bool do_cmdline_show_target(const pkgCache::PkgIterator &pkg,
+			    cmdline_version_source source,
+			    const string &sourcestr,
+			    int verbose)
+{
+  if(verbose == 0)
+    {
+      pkgCache::VerIterator ver = cmdline_find_ver(pkg, source, sourcestr);
+
+      if(ver.end())
+	ver = pkg.VersionList();
+
+      if(!ver.end())
+	show_version(ver, verbose);
+      else
+	show_package(pkg, verbose);
+    }
+  else if(!pkg.VersionList().end())
+    for(pkgCache::VerIterator ver=pkg.VersionList(); !ver.end(); ++ver)
+      show_version(ver, verbose);
+  else
+    show_package(pkg, verbose);
+
+  return true;
+}
+
 bool do_cmdline_show(string s, int verbose)
 {
-  bool is_pattern=(s.find('~')!=s.npos);
+  cmdline_version_source source;
+  string name, sourcestr;
+  string default_release = aptcfg->Find("APT::Default-Release");
+
+  if(!cmdline_parse_source(s, source, name, sourcestr))
+    return false;
+
+  if(source == cmdline_version_cand && !default_release.empty())
+    {
+      source    = cmdline_version_archive;
+      sourcestr = default_release;
+    }
+
+  bool is_pattern=(name.find('~')!=name.npos);
   pkgCache::PkgIterator pkg;
 
   if(!is_pattern)
     {
-      pkg=(*apt_cache_file)->FindPkg(s);
+      pkg=(*apt_cache_file)->FindPkg(name);
 
       if(pkg.end())
 	{
@@ -378,39 +420,23 @@ bool do_cmdline_show(string s, int verbose)
 	  return false;
 	}
     }
+
   if(!is_pattern && !pkg.end())
-    {
-      if(!pkg.VersionList().end())
-	for(pkgCache::VerIterator V=pkg.VersionList(); !V.end(); ++V)
-	  {
-	    show_version(V, verbose);
-	    if(verbose==0)
-	      break;
-	  }
-      else
-	show_package(pkg, verbose);
-    }
+    return do_cmdline_show_target(pkg, source, sourcestr, verbose);
   else if(is_pattern)
     {
-      pkg_matcher *m=parse_pattern(s);
+      pkg_matcher *m=parse_pattern(name);
 
       if(!m)
 	{
-	  _error->Error(_("Unable to parse pattern %s"), s.c_str());
+	  _error->Error(_("Unable to parse pattern %s"), name.c_str());
 	  return false;
 	}
 
       for(pkgCache::PkgIterator P=(*apt_cache_file)->PkgBegin();
 	  !P.end(); ++P)
-	{
-	  for(pkgCache::VerIterator V=P.VersionList(); !V.end(); ++V)
-	    if(m->matches(P, V))
-	      {
-		show_version(V, verbose);
-		if(verbose==0)
-		  break;
-	      }
-	}
+	if(m->matches(P))
+	  return do_cmdline_show_target(P, source, sourcestr, verbose);
 
       delete m;
     }
