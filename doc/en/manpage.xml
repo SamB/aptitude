@@ -509,6 +509,35 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 	    Patterns</link></quote> in the &aptitude; reference
 	    manual).
 	  </para>
+
+	  <para>
+	    If the verbosity level is 1 or greater (i.e., at least one <literal>-v</literal>
+	    is present on the command-line), information about all
+	    versions of the package is displayed.  Otherwise, information about
+	    the <quote>candidate version</quote> (the version
+	    that <quote><literal>aptitude install</literal></quote>
+	    would download) is displayed.
+	  </para>
+
+	  <para>
+	    You can display information about a different version of
+	    the package by appending
+	    <literal>=<replaceable>version</replaceable></literal> to
+	    the package name; you can display the version from a
+	    particular archive by appending
+	    <literal>/<replaceable>archive</replaceable></literal> to
+	    the package name.  If either of these is present, then
+	    only the version you request will be displayed, regardless
+	    of the verbosity level.
+	  </para>
+
+	  <para>
+	    If the verbosity level is 1 or greater, the package's
+	    architecture, compressed size, filename, and md5sum fields
+	    will be displayed.  If the verbosity level is 2 or
+	    greater, the select version or versions will be displayed
+	    once for each archive in which they are found.
+	  </para>
 	</listitem>
       </varlistentry>
 
