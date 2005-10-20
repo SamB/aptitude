@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-10-14 14:06-0700\n"
+"POT-Creation-Date: 2005-10-20 14:39-0700\n"
 "PO-Revision-Date: 2005-05-18 11:23-0300\n"
 "Last-Translator: André Luís Lopes <andrelop@debian.org>\n"
 "Language-Team: Debian-BR Project <debian-l10n-portuguese@lists.debian.org>\n"
@@ -404,20 +404,20 @@ msgstr ""
 msgid "Bad action character '%c'\n"
 msgstr "Caracter de ação ruim '%c'\n"
 
-#: src/cmdline/cmdline_changelog.cc:195
+#: src/cmdline/cmdline_changelog.cc:196
 msgid "Can't execute sensible-pager, is this a working Debian system?"
 msgstr ""
 "Não foi possível executar o sensible-pager. Este é um sistema Debian "
 "funcional ?"
 
-#: src/cmdline/cmdline_changelog.cc:237
+#: src/cmdline/cmdline_changelog.cc:246
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr ""
 "%s não é um pacote Debian oficial, não foi possível exibir seu log de "
 "mudanças."
 
-#: src/cmdline/cmdline_changelog.cc:308
+#: src/cmdline/cmdline_changelog.cc:317
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Não foi possível encontrar um log de mudanças para %s"
@@ -467,12 +467,12 @@ msgstr "download : você deve especificar pelo menos um pacote para download\n"
 msgid "Couldn't read source list"
 msgstr "Não foi possível ler a lista de fontes"
 
-#: src/cmdline/cmdline_download.cc:63
+#: src/cmdline/cmdline_download.cc:70
 #, c-format
 msgid "Can't find a package named \"%s\""
 msgstr "Não foi possível encontrar um pacote de nome \"%s\""
 
-#: src/cmdline/cmdline_download.cc:73
+#: src/cmdline/cmdline_download.cc:80
 #, c-format
 msgid ""
 "No downloadable files for %s version %s; perhaps it is a local or obsolete "
@@ -1149,211 +1149,211 @@ msgstr "busca : Você deve fornecer pelo menos um termo para busca\n"
 msgid "The following packages have unmet dependencies:\n"
 msgstr "Os pacotes a seguir possuem dependências não satisfeitas :\n"
 
-#: src/cmdline/cmdline_show.cc:120 src/cmdline/cmdline_show.cc:306
+#: src/cmdline/cmdline_show.cc:122 src/cmdline/cmdline_show.cc:308
 #: src/solution_fragment.cc:56
 msgid "<NULL>"
 msgstr ""
 
-#: src/cmdline/cmdline_show.cc:139
+#: src/cmdline/cmdline_show.cc:141
 msgid "not installed"
 msgstr "não instalado"
 
-#: src/cmdline/cmdline_show.cc:141 src/pkg_columnizer.cc:233
+#: src/cmdline/cmdline_show.cc:143 src/pkg_columnizer.cc:233
 #: src/pkg_ver_item.cc:227
 msgid "unpacked"
 msgstr "desempacotado"
 
-#: src/cmdline/cmdline_show.cc:143
+#: src/cmdline/cmdline_show.cc:145
 msgid "partially configured"
 msgstr "parcialmente configurado"
 
-#: src/cmdline/cmdline_show.cc:145
+#: src/cmdline/cmdline_show.cc:147
 msgid "partially installed"
 msgstr "parcialmente instalado"
 
-#: src/cmdline/cmdline_show.cc:147
+#: src/cmdline/cmdline_show.cc:149
 msgid "not installed (configuration files remain)"
 msgstr "não instalado (arquivos de configuração permanecem)"
 
-#: src/cmdline/cmdline_show.cc:149 src/pkg_columnizer.cc:241
+#: src/cmdline/cmdline_show.cc:151 src/pkg_columnizer.cc:241
 #: src/pkg_ver_item.cc:235
 msgid "installed"
 msgstr "instalado"
 
-#: src/cmdline/cmdline_show.cc:158
+#: src/cmdline/cmdline_show.cc:160
 msgid "not a real package"
 msgstr "não é um pacote real"
 
-#: src/cmdline/cmdline_show.cc:171
+#: src/cmdline/cmdline_show.cc:173
 msgid " [held]"
 msgstr " [mantido]"
 
-#: src/cmdline/cmdline_show.cc:180
+#: src/cmdline/cmdline_show.cc:182
 #, c-format
 msgid "%s; version %s will be installed"
 msgstr "%s; versão %s será instalado"
 
-#: src/cmdline/cmdline_show.cc:184
+#: src/cmdline/cmdline_show.cc:186
 #, c-format
 msgid "%s; version %s will be installed automatically"
 msgstr "%s; versão %s será instalado automaticamente"
 
-#: src/cmdline/cmdline_show.cc:190 src/cmdline/cmdline_show.cc:205
+#: src/cmdline/cmdline_show.cc:192 src/cmdline/cmdline_show.cc:207
 #, c-format
 msgid "%s; will be purged"
 msgstr "%s; será expurgado"
 
-#: src/cmdline/cmdline_show.cc:203
+#: src/cmdline/cmdline_show.cc:205
 #, c-format
 msgid "%s; will be purged because nothing depends on it"
 msgstr "%s; será expurgado devido a nenhum pacote depender dele"
 
-#: src/cmdline/cmdline_show.cc:210
+#: src/cmdline/cmdline_show.cc:212
 #, c-format
 msgid "%s; will be removed because nothing depends on it"
 msgstr "%s; será removido devido a nenhum pacote depende dele"
 
-#: src/cmdline/cmdline_show.cc:212
+#: src/cmdline/cmdline_show.cc:214
 #, c-format
 msgid "%s; will be removed"
 msgstr "%s; será removido"
 
-#: src/cmdline/cmdline_show.cc:226
+#: src/cmdline/cmdline_show.cc:228
 #, c-format
 msgid "%s%s; will be downgraded [%s -> %s]"
 msgstr "%s%s; será rebaixado [%s -> %s ]"
 
-#: src/cmdline/cmdline_show.cc:229
+#: src/cmdline/cmdline_show.cc:231
 #, c-format
 msgid "%s%s; will be upgraded [%s -> %s]"
 msgstr "%s%s; será atualizado [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:241 src/cmdline/cmdline_show.cc:262
+#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:264
 msgid "Package: "
 msgstr "Pacote: "
 
-#: src/cmdline/cmdline_show.cc:242 src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:244 src/cmdline/cmdline_show.cc:272
 #: src/pkg_columnizer.cc:89
 msgid "State"
 msgstr "Estado"
 
-#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:326
+#: src/cmdline/cmdline_show.cc:245 src/cmdline/cmdline_show.cc:328
 #: src/generic/apt/matchers.cc:1662
 msgid "Provided by"
 msgstr "Fornecido por"
 
-#: src/cmdline/cmdline_show.cc:264 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:266 src/pkg_info_screen.cc:107
 msgid "Essential: "
 msgstr "Essencial: "
 
-#: src/cmdline/cmdline_show.cc:264 src/cmdline/cmdline_show.cc:268
-#: src/cmdline/cmdline_show.cc:279 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:266 src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:281 src/pkg_info_screen.cc:107
 msgid "yes"
 msgstr "sim"
 
-#: src/cmdline/cmdline_show.cc:268
+#: src/cmdline/cmdline_show.cc:270
 msgid "New"
 msgstr "Novo"
 
-#: src/cmdline/cmdline_show.cc:273
+#: src/cmdline/cmdline_show.cc:275
 msgid "Forbidden version"
 msgstr "Versão proibida"
 
-#: src/cmdline/cmdline_show.cc:277
+#: src/cmdline/cmdline_show.cc:279
 msgid "Automatically installed"
 msgstr "Automaticamente instalado"
 
-#: src/cmdline/cmdline_show.cc:279
+#: src/cmdline/cmdline_show.cc:281
 msgid "no"
 msgstr "não"
 
-#: src/cmdline/cmdline_show.cc:281
+#: src/cmdline/cmdline_show.cc:283
 msgid "Version: "
 msgstr "Versão: "
 
-#: src/cmdline/cmdline_show.cc:282 src/pkg_info_screen.cc:115
+#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:115
 msgid "Priority: "
 msgstr "Prioridade: "
 
-#: src/cmdline/cmdline_show.cc:283 src/cmdline/cmdline_show.cc:285
-#: src/cmdline/cmdline_show.cc:294
+#: src/cmdline/cmdline_show.cc:285 src/cmdline/cmdline_show.cc:287
+#: src/cmdline/cmdline_show.cc:296
 msgid "N/A"
 msgstr "N/A"
 
-#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:116
+#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:116
 msgid "Section: "
 msgstr "Seção: "
 
-#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:117
+#: src/cmdline/cmdline_show.cc:288 src/pkg_info_screen.cc:117
 msgid "Maintainer: "
 msgstr "Mantenedor: "
 
-#: src/cmdline/cmdline_show.cc:289
+#: src/cmdline/cmdline_show.cc:291
 msgid "Uncompressed Size: "
 msgstr "Tamanho Descompactado: "
 
-#: src/cmdline/cmdline_show.cc:293
+#: src/cmdline/cmdline_show.cc:295
 msgid "Architecture: "
 msgstr "Arquitetuta: "
 
-#: src/cmdline/cmdline_show.cc:295
+#: src/cmdline/cmdline_show.cc:297
 msgid "Compressed Size: "
 msgstr "Tamanho Compactado: "
 
-#: src/cmdline/cmdline_show.cc:297
+#: src/cmdline/cmdline_show.cc:299
 msgid "Filename: "
 msgstr "Nome do Arquivo: "
 
-#: src/cmdline/cmdline_show.cc:299
+#: src/cmdline/cmdline_show.cc:301
 msgid "MD5sum: "
 msgstr "MD5sum: "
 
-#: src/cmdline/cmdline_show.cc:303 src/cmdline/cmdline_show.cc:306
+#: src/cmdline/cmdline_show.cc:305 src/cmdline/cmdline_show.cc:308
 msgid "Archive"
 msgstr "Repositório"
 
-#: src/cmdline/cmdline_show.cc:311
+#: src/cmdline/cmdline_show.cc:313
 msgid "Depends"
 msgstr "Depende de"
 
-#: src/cmdline/cmdline_show.cc:313
+#: src/cmdline/cmdline_show.cc:315
 msgid "PreDepends"
 msgstr "Pré-Depende de"
 
-#: src/cmdline/cmdline_show.cc:315
+#: src/cmdline/cmdline_show.cc:317
 msgid "Recommends"
 msgstr "Recomenda"
 
-#: src/cmdline/cmdline_show.cc:317
+#: src/cmdline/cmdline_show.cc:319
 msgid "Suggests"
 msgstr "Sugere"
 
-#: src/cmdline/cmdline_show.cc:319
+#: src/cmdline/cmdline_show.cc:321
 msgid "Conflicts"
 msgstr "Conflita com"
 
-#: src/cmdline/cmdline_show.cc:321
+#: src/cmdline/cmdline_show.cc:323
 msgid "Replaces"
 msgstr "Substitui"
 
-#: src/cmdline/cmdline_show.cc:323
+#: src/cmdline/cmdline_show.cc:325
 msgid "Obsoletes"
 msgstr "Torna obsoleto"
 
-#: src/cmdline/cmdline_show.cc:325 src/generic/apt/matchers.cc:1616
+#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1616
 msgid "Provides"
 msgstr "Fornece"
 
-#: src/cmdline/cmdline_show.cc:329 src/pkg_info_screen.cc:95
+#: src/cmdline/cmdline_show.cc:331 src/pkg_info_screen.cc:95
 msgid "Description: "
 msgstr "Descrição: "
 
-#: src/cmdline/cmdline_show.cc:377
+#: src/cmdline/cmdline_show.cc:423
 #, fuzzy, c-format
 msgid "Unable to locate package %s"
 msgstr "Não foi possível abrir %s para gravação"
 
-#: src/cmdline/cmdline_show.cc:399
+#: src/cmdline/cmdline_show.cc:436
 #, fuzzy, c-format
 msgid "Unable to parse pattern %s"
 msgstr "Não foi possível abrir %s para gravação"
@@ -1541,11 +1541,11 @@ msgstr ""
 "Mudança de mídia: Por favor, insira o disco nomeado '%s' no drive '%s' e "
 "pressione Enter\n"
 
-#: src/generic/apt/aptcache.cc:259
+#: src/generic/apt/aptcache.cc:258
 msgid "Can't open Aptitude extended state file"
 msgstr "Não foi possível abrir o arquivo de estado extendido do Aptitude"
 
-#: src/generic/apt/aptcache.cc:266 src/generic/apt/aptcache.cc:319
+#: src/generic/apt/aptcache.cc:265 src/generic/apt/aptcache.cc:319
 #: src/generic/apt/aptcache.cc:321
 msgid "Reading extended state information"
 msgstr "Lendo informações extendidas de estado"

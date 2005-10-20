@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3.2\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-10-14 14:06-0700\n"
+"POT-Creation-Date: 2005-10-20 14:39-0700\n"
 "PO-Revision-Date: 2005-06-22 15:19+0200\n"
 "Last-Translator: Micha³ Politowski <l10n@mp.pl.eu.org>\n"
 "Language-Team: Polish\n"
@@ -383,18 +383,18 @@ msgstr ""
 msgid "Bad action character '%c'\n"
 msgstr "Nieznana akcja \"%c\"\n"
 
-#: src/cmdline/cmdline_changelog.cc:195
+#: src/cmdline/cmdline_changelog.cc:196
 msgid "Can't execute sensible-pager, is this a working Debian system?"
 msgstr "Nie mo¿na uruchomiæ programu sensible-pager. Czy¿by to nie by³ Debian?"
 
-#: src/cmdline/cmdline_changelog.cc:237
+#: src/cmdline/cmdline_changelog.cc:246
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr ""
 "%s nie jest oficjalnym pakietem Debiana. Nie mo¿na wy¶wietliæ dziennika "
 "zmian."
 
-#: src/cmdline/cmdline_changelog.cc:308
+#: src/cmdline/cmdline_changelog.cc:317
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Nie znaleziono dziennika zmian pakietu %s"
@@ -444,12 +444,12 @@ msgstr "download: nale¿y podaæ przynajmniej jeden pakiet do pobrania\n"
 msgid "Couldn't read source list"
 msgstr "Nie mo¿na odczytaæ listy ¼róde³"
 
-#: src/cmdline/cmdline_download.cc:63
+#: src/cmdline/cmdline_download.cc:70
 #, c-format
 msgid "Can't find a package named \"%s\""
 msgstr "Nie znaleziono pakietu \"%s\""
 
-#: src/cmdline/cmdline_download.cc:73
+#: src/cmdline/cmdline_download.cc:80
 #, c-format
 msgid ""
 "No downloadable files for %s version %s; perhaps it is a local or obsolete "
@@ -1114,211 +1114,211 @@ msgstr "search: Nale¿y podaæ przynajmniej jedno wyra¿enie do wyszukania\n"
 msgid "The following packages have unmet dependencies:\n"
 msgstr "Nastêpuj±ce pakiety maj± niespe³nione zale¿no¶ci:\n"
 
-#: src/cmdline/cmdline_show.cc:120 src/cmdline/cmdline_show.cc:306
+#: src/cmdline/cmdline_show.cc:122 src/cmdline/cmdline_show.cc:308
 #: src/solution_fragment.cc:56
 msgid "<NULL>"
 msgstr "<NULL>"
 
-#: src/cmdline/cmdline_show.cc:139
+#: src/cmdline/cmdline_show.cc:141
 msgid "not installed"
 msgstr "niezainstalowany"
 
-#: src/cmdline/cmdline_show.cc:141 src/pkg_columnizer.cc:233
+#: src/cmdline/cmdline_show.cc:143 src/pkg_columnizer.cc:233
 #: src/pkg_ver_item.cc:227
 msgid "unpacked"
 msgstr "rozpakowany"
 
-#: src/cmdline/cmdline_show.cc:143
+#: src/cmdline/cmdline_show.cc:145
 msgid "partially configured"
 msgstr "czê¶ciowo skonfigurowany"
 
-#: src/cmdline/cmdline_show.cc:145
+#: src/cmdline/cmdline_show.cc:147
 msgid "partially installed"
 msgstr "czê¶ciowo zainstalowany"
 
-#: src/cmdline/cmdline_show.cc:147
+#: src/cmdline/cmdline_show.cc:149
 msgid "not installed (configuration files remain)"
 msgstr "niezainstalowany (pozostawione pliki konfiguracyjne)"
 
-#: src/cmdline/cmdline_show.cc:149 src/pkg_columnizer.cc:241
+#: src/cmdline/cmdline_show.cc:151 src/pkg_columnizer.cc:241
 #: src/pkg_ver_item.cc:235
 msgid "installed"
 msgstr "zainstalowany"
 
-#: src/cmdline/cmdline_show.cc:158
+#: src/cmdline/cmdline_show.cc:160
 msgid "not a real package"
 msgstr "nie jest prawdziwym pakietem"
 
-#: src/cmdline/cmdline_show.cc:171
+#: src/cmdline/cmdline_show.cc:173
 msgid " [held]"
 msgstr " [zatrzymany]"
 
-#: src/cmdline/cmdline_show.cc:180
+#: src/cmdline/cmdline_show.cc:182
 #, c-format
 msgid "%s; version %s will be installed"
 msgstr "%s, zostanie zainstalowana wersja %s"
 
-#: src/cmdline/cmdline_show.cc:184
+#: src/cmdline/cmdline_show.cc:186
 #, c-format
 msgid "%s; version %s will be installed automatically"
 msgstr "%s, wersja %s zostanie zainstalowana automatycznie"
 
-#: src/cmdline/cmdline_show.cc:190 src/cmdline/cmdline_show.cc:205
+#: src/cmdline/cmdline_show.cc:192 src/cmdline/cmdline_show.cc:207
 #, c-format
 msgid "%s; will be purged"
 msgstr "%s, zostanie wyczyszczony"
 
-#: src/cmdline/cmdline_show.cc:203
+#: src/cmdline/cmdline_show.cc:205
 #, c-format
 msgid "%s; will be purged because nothing depends on it"
 msgstr "%s, zostanie wyczyszczony, poniewa¿ nie jest przez nic wymagany"
 
-#: src/cmdline/cmdline_show.cc:210
+#: src/cmdline/cmdline_show.cc:212
 #, c-format
 msgid "%s; will be removed because nothing depends on it"
 msgstr "%s, zostanie usuniêty, poniewa¿ nie jest przez nic wymagany"
 
-#: src/cmdline/cmdline_show.cc:212
+#: src/cmdline/cmdline_show.cc:214
 #, c-format
 msgid "%s; will be removed"
 msgstr "%s, zostanie usuniety"
 
-#: src/cmdline/cmdline_show.cc:226
+#: src/cmdline/cmdline_show.cc:228
 #, c-format
 msgid "%s%s; will be downgraded [%s -> %s]"
 msgstr "%s%s, zostanie cofniêty [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:229
+#: src/cmdline/cmdline_show.cc:231
 #, c-format
 msgid "%s%s; will be upgraded [%s -> %s]"
 msgstr "%s%s, zostanie uaktualniony [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:241 src/cmdline/cmdline_show.cc:262
+#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:264
 msgid "Package: "
 msgstr "Pakiet: "
 
-#: src/cmdline/cmdline_show.cc:242 src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:244 src/cmdline/cmdline_show.cc:272
 #: src/pkg_columnizer.cc:89
 msgid "State"
 msgstr "Stan"
 
-#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:326
+#: src/cmdline/cmdline_show.cc:245 src/cmdline/cmdline_show.cc:328
 #: src/generic/apt/matchers.cc:1662
 msgid "Provided by"
 msgstr "Udostêpniany przez"
 
-#: src/cmdline/cmdline_show.cc:264 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:266 src/pkg_info_screen.cc:107
 msgid "Essential: "
 msgstr "Istotny: "
 
-#: src/cmdline/cmdline_show.cc:264 src/cmdline/cmdline_show.cc:268
-#: src/cmdline/cmdline_show.cc:279 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:266 src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:281 src/pkg_info_screen.cc:107
 msgid "yes"
 msgstr "tak"
 
-#: src/cmdline/cmdline_show.cc:268
+#: src/cmdline/cmdline_show.cc:270
 msgid "New"
 msgstr "Nowy"
 
-#: src/cmdline/cmdline_show.cc:273
+#: src/cmdline/cmdline_show.cc:275
 msgid "Forbidden version"
 msgstr "Zablokowana wersja"
 
-#: src/cmdline/cmdline_show.cc:277
+#: src/cmdline/cmdline_show.cc:279
 msgid "Automatically installed"
 msgstr "Zainstalowany automatycznie"
 
-#: src/cmdline/cmdline_show.cc:279
+#: src/cmdline/cmdline_show.cc:281
 msgid "no"
 msgstr "nie"
 
-#: src/cmdline/cmdline_show.cc:281
+#: src/cmdline/cmdline_show.cc:283
 msgid "Version: "
 msgstr "Wersja: "
 
-#: src/cmdline/cmdline_show.cc:282 src/pkg_info_screen.cc:115
+#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:115
 msgid "Priority: "
 msgstr "Priorytet: "
 
-#: src/cmdline/cmdline_show.cc:283 src/cmdline/cmdline_show.cc:285
-#: src/cmdline/cmdline_show.cc:294
+#: src/cmdline/cmdline_show.cc:285 src/cmdline/cmdline_show.cc:287
+#: src/cmdline/cmdline_show.cc:296
 msgid "N/A"
 msgstr "N/D"
 
-#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:116
+#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:116
 msgid "Section: "
 msgstr "Sekcja: "
 
-#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:117
+#: src/cmdline/cmdline_show.cc:288 src/pkg_info_screen.cc:117
 msgid "Maintainer: "
 msgstr "Opiekun: "
 
-#: src/cmdline/cmdline_show.cc:289
+#: src/cmdline/cmdline_show.cc:291
 msgid "Uncompressed Size: "
 msgstr "Rozmiar rozpakowanego: "
 
-#: src/cmdline/cmdline_show.cc:293
+#: src/cmdline/cmdline_show.cc:295
 msgid "Architecture: "
 msgstr "Architektura: "
 
-#: src/cmdline/cmdline_show.cc:295
+#: src/cmdline/cmdline_show.cc:297
 msgid "Compressed Size: "
 msgstr "Rozmiar pakietu: "
 
-#: src/cmdline/cmdline_show.cc:297
+#: src/cmdline/cmdline_show.cc:299
 msgid "Filename: "
 msgstr "Plik: "
 
-#: src/cmdline/cmdline_show.cc:299
+#: src/cmdline/cmdline_show.cc:301
 msgid "MD5sum: "
 msgstr "Suma MD5: "
 
-#: src/cmdline/cmdline_show.cc:303 src/cmdline/cmdline_show.cc:306
+#: src/cmdline/cmdline_show.cc:305 src/cmdline/cmdline_show.cc:308
 msgid "Archive"
 msgstr "Archiwum"
 
-#: src/cmdline/cmdline_show.cc:311
+#: src/cmdline/cmdline_show.cc:313
 msgid "Depends"
 msgstr "Wymaga"
 
-#: src/cmdline/cmdline_show.cc:313
+#: src/cmdline/cmdline_show.cc:315
 msgid "PreDepends"
 msgstr "Wymaga wstêpnie"
 
-#: src/cmdline/cmdline_show.cc:315
+#: src/cmdline/cmdline_show.cc:317
 msgid "Recommends"
 msgstr "Poleca"
 
-#: src/cmdline/cmdline_show.cc:317
+#: src/cmdline/cmdline_show.cc:319
 msgid "Suggests"
 msgstr "Sugeruje"
 
-#: src/cmdline/cmdline_show.cc:319
+#: src/cmdline/cmdline_show.cc:321
 msgid "Conflicts"
 msgstr "Jest w konflikcie z"
 
-#: src/cmdline/cmdline_show.cc:321
+#: src/cmdline/cmdline_show.cc:323
 msgid "Replaces"
 msgstr "Zastêpuje"
 
-#: src/cmdline/cmdline_show.cc:323
+#: src/cmdline/cmdline_show.cc:325
 msgid "Obsoletes"
 msgstr "Dezaktualizuje"
 
-#: src/cmdline/cmdline_show.cc:325 src/generic/apt/matchers.cc:1616
+#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1616
 msgid "Provides"
 msgstr "Udostêpnia"
 
-#: src/cmdline/cmdline_show.cc:329 src/pkg_info_screen.cc:95
+#: src/cmdline/cmdline_show.cc:331 src/pkg_info_screen.cc:95
 msgid "Description: "
 msgstr "Opis: "
 
-#: src/cmdline/cmdline_show.cc:377
+#: src/cmdline/cmdline_show.cc:423
 #, fuzzy, c-format
 msgid "Unable to locate package %s"
 msgstr "Nie mo¿na otworzyæ %s"
 
-#: src/cmdline/cmdline_show.cc:399
+#: src/cmdline/cmdline_show.cc:436
 #, fuzzy, c-format
 msgid "Unable to parse pattern %s"
 msgstr "Nie mo¿na otworzyæ %s"
@@ -1506,11 +1506,11 @@ msgstr ""
 "Wymiana no¶nika: Proszê w³o¿yæ dysk oznaczony \"%s\" do napêdu \"%s\" i "
 "nacisn±æ enter\n"
 
-#: src/generic/apt/aptcache.cc:259
+#: src/generic/apt/aptcache.cc:258
 msgid "Can't open Aptitude extended state file"
 msgstr "Nie mo¿na otworzyæ dodatkowych informacji o stanie"
 
-#: src/generic/apt/aptcache.cc:266 src/generic/apt/aptcache.cc:319
+#: src/generic/apt/aptcache.cc:265 src/generic/apt/aptcache.cc:319
 #: src/generic/apt/aptcache.cc:321
 msgid "Reading extended state information"
 msgstr "Odczyt dodatkowych informacji o stanie"

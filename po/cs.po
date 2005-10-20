@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-10-14 14:06-0700\n"
+"POT-Creation-Date: 2005-10-20 14:39-0700\n"
 "PO-Revision-Date: 2005-10-02 11:20+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -383,16 +383,16 @@ msgstr ""
 msgid "Bad action character '%c'\n"
 msgstr "Chybná akce '%c'\n"
 
-#: src/cmdline/cmdline_changelog.cc:195
+#: src/cmdline/cmdline_changelog.cc:196
 msgid "Can't execute sensible-pager, is this a working Debian system?"
 msgstr "Nemohu spustit sensible-pager - je tento Debian vůbec funkční?"
 
-#: src/cmdline/cmdline_changelog.cc:237
+#: src/cmdline/cmdline_changelog.cc:246
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr "%s není oficiální debianí balík, nemohu zobrazit jeho seznam změn."
 
-#: src/cmdline/cmdline_changelog.cc:308
+#: src/cmdline/cmdline_changelog.cc:317
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Nemohu nalézt seznam změn balíku %s"
@@ -442,12 +442,12 @@ msgstr "download: musíte zadat alespoň jeden balík ke stažení\n"
 msgid "Couldn't read source list"
 msgstr "Nemohu číst seznam zdrojů"
 
-#: src/cmdline/cmdline_download.cc:63
+#: src/cmdline/cmdline_download.cc:70
 #, c-format
 msgid "Can't find a package named \"%s\""
 msgstr "Nemohu najít balík nazvaný \"%s\""
 
-#: src/cmdline/cmdline_download.cc:73
+#: src/cmdline/cmdline_download.cc:80
 #, c-format
 msgid ""
 "No downloadable files for %s version %s; perhaps it is a local or obsolete "
@@ -1113,211 +1113,211 @@ msgstr "hledání: Musíte zadat alespoň jeden hledaný term\n"
 msgid "The following packages have unmet dependencies:\n"
 msgstr "Následující balíky mají nesplněné závislosti:\n"
 
-#: src/cmdline/cmdline_show.cc:120 src/cmdline/cmdline_show.cc:306
+#: src/cmdline/cmdline_show.cc:122 src/cmdline/cmdline_show.cc:308
 #: src/solution_fragment.cc:56
 msgid "<NULL>"
 msgstr "<NULL>"
 
-#: src/cmdline/cmdline_show.cc:139
+#: src/cmdline/cmdline_show.cc:141
 msgid "not installed"
 msgstr "nenainstalovaný"
 
-#: src/cmdline/cmdline_show.cc:141 src/pkg_columnizer.cc:233
+#: src/cmdline/cmdline_show.cc:143 src/pkg_columnizer.cc:233
 #: src/pkg_ver_item.cc:227
 msgid "unpacked"
 msgstr "rozbalený"
 
-#: src/cmdline/cmdline_show.cc:143
+#: src/cmdline/cmdline_show.cc:145
 msgid "partially configured"
 msgstr "částečně zkonfigurovaný"
 
-#: src/cmdline/cmdline_show.cc:145
+#: src/cmdline/cmdline_show.cc:147
 msgid "partially installed"
 msgstr "částečně nainstalovaný"
 
-#: src/cmdline/cmdline_show.cc:147
+#: src/cmdline/cmdline_show.cc:149
 msgid "not installed (configuration files remain)"
 msgstr "nenainstalovaný (ponechány konfigurační soubory)"
 
-#: src/cmdline/cmdline_show.cc:149 src/pkg_columnizer.cc:241
+#: src/cmdline/cmdline_show.cc:151 src/pkg_columnizer.cc:241
 #: src/pkg_ver_item.cc:235
 msgid "installed"
 msgstr "nainstalovaný"
 
-#: src/cmdline/cmdline_show.cc:158
+#: src/cmdline/cmdline_show.cc:160
 msgid "not a real package"
 msgstr "není skutečný balík"
 
-#: src/cmdline/cmdline_show.cc:171
+#: src/cmdline/cmdline_show.cc:173
 msgid " [held]"
 msgstr " [podržen]"
 
-#: src/cmdline/cmdline_show.cc:180
+#: src/cmdline/cmdline_show.cc:182
 #, c-format
 msgid "%s; version %s will be installed"
 msgstr "%s; bude instalována verze %s"
 
-#: src/cmdline/cmdline_show.cc:184
+#: src/cmdline/cmdline_show.cc:186
 #, c-format
 msgid "%s; version %s will be installed automatically"
 msgstr "%s; automaticky bude instalována verze %s"
 
-#: src/cmdline/cmdline_show.cc:190 src/cmdline/cmdline_show.cc:205
+#: src/cmdline/cmdline_show.cc:192 src/cmdline/cmdline_show.cc:207
 #, c-format
 msgid "%s; will be purged"
 msgstr "%s; bude vyčištěn"
 
-#: src/cmdline/cmdline_show.cc:203
+#: src/cmdline/cmdline_show.cc:205
 #, c-format
 msgid "%s; will be purged because nothing depends on it"
 msgstr "%s; bude vyčištěn, protože na něm nic nezávisí"
 
-#: src/cmdline/cmdline_show.cc:210
+#: src/cmdline/cmdline_show.cc:212
 #, c-format
 msgid "%s; will be removed because nothing depends on it"
 msgstr "%s; bude odstraněn, protože na něm nic nezávisí"
 
-#: src/cmdline/cmdline_show.cc:212
+#: src/cmdline/cmdline_show.cc:214
 #, c-format
 msgid "%s; will be removed"
 msgstr "%s; bude odstraněn"
 
-#: src/cmdline/cmdline_show.cc:226
+#: src/cmdline/cmdline_show.cc:228
 #, c-format
 msgid "%s%s; will be downgraded [%s -> %s]"
 msgstr "%s%s; bude degradován [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:229
+#: src/cmdline/cmdline_show.cc:231
 #, c-format
 msgid "%s%s; will be upgraded [%s -> %s]"
 msgstr "%s%s; bude aktualizován [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:241 src/cmdline/cmdline_show.cc:262
+#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:264
 msgid "Package: "
 msgstr "Balík: "
 
-#: src/cmdline/cmdline_show.cc:242 src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:244 src/cmdline/cmdline_show.cc:272
 #: src/pkg_columnizer.cc:89
 msgid "State"
 msgstr "Stav"
 
-#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:326
+#: src/cmdline/cmdline_show.cc:245 src/cmdline/cmdline_show.cc:328
 #: src/generic/apt/matchers.cc:1662
 msgid "Provided by"
 msgstr "Poskytován"
 
-#: src/cmdline/cmdline_show.cc:264 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:266 src/pkg_info_screen.cc:107
 msgid "Essential: "
 msgstr "Nezbytný: "
 
-#: src/cmdline/cmdline_show.cc:264 src/cmdline/cmdline_show.cc:268
-#: src/cmdline/cmdline_show.cc:279 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:266 src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:281 src/pkg_info_screen.cc:107
 msgid "yes"
 msgstr "ano"
 
-#: src/cmdline/cmdline_show.cc:268
+#: src/cmdline/cmdline_show.cc:270
 msgid "New"
 msgstr "Nový"
 
-#: src/cmdline/cmdline_show.cc:273
+#: src/cmdline/cmdline_show.cc:275
 msgid "Forbidden version"
 msgstr "Zakázaná verze"
 
-#: src/cmdline/cmdline_show.cc:277
+#: src/cmdline/cmdline_show.cc:279
 msgid "Automatically installed"
 msgstr "Automaticky instalovaný"
 
-#: src/cmdline/cmdline_show.cc:279
+#: src/cmdline/cmdline_show.cc:281
 msgid "no"
 msgstr "ne"
 
-#: src/cmdline/cmdline_show.cc:281
+#: src/cmdline/cmdline_show.cc:283
 msgid "Version: "
 msgstr "Verze: "
 
-#: src/cmdline/cmdline_show.cc:282 src/pkg_info_screen.cc:115
+#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:115
 msgid "Priority: "
 msgstr "Priorita: "
 
-#: src/cmdline/cmdline_show.cc:283 src/cmdline/cmdline_show.cc:285
-#: src/cmdline/cmdline_show.cc:294
+#: src/cmdline/cmdline_show.cc:285 src/cmdline/cmdline_show.cc:287
+#: src/cmdline/cmdline_show.cc:296
 msgid "N/A"
 msgstr "N/A"
 
-#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:116
+#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:116
 msgid "Section: "
 msgstr "Sekce: "
 
-#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:117
+#: src/cmdline/cmdline_show.cc:288 src/pkg_info_screen.cc:117
 msgid "Maintainer: "
 msgstr "Správce: "
 
-#: src/cmdline/cmdline_show.cc:289
+#: src/cmdline/cmdline_show.cc:291
 msgid "Uncompressed Size: "
 msgstr "Velikost po rozbalení: "
 
-#: src/cmdline/cmdline_show.cc:293
+#: src/cmdline/cmdline_show.cc:295
 msgid "Architecture: "
 msgstr "Architektura: "
 
-#: src/cmdline/cmdline_show.cc:295
+#: src/cmdline/cmdline_show.cc:297
 msgid "Compressed Size: "
 msgstr "Komprimovaná velikost: "
 
-#: src/cmdline/cmdline_show.cc:297
+#: src/cmdline/cmdline_show.cc:299
 msgid "Filename: "
 msgstr "Název souboru: "
 
-#: src/cmdline/cmdline_show.cc:299
+#: src/cmdline/cmdline_show.cc:301
 msgid "MD5sum: "
 msgstr "MD5 součet: "
 
-#: src/cmdline/cmdline_show.cc:303 src/cmdline/cmdline_show.cc:306
+#: src/cmdline/cmdline_show.cc:305 src/cmdline/cmdline_show.cc:308
 msgid "Archive"
 msgstr "Archiv"
 
-#: src/cmdline/cmdline_show.cc:311
+#: src/cmdline/cmdline_show.cc:313
 msgid "Depends"
 msgstr "Závisí na"
 
-#: src/cmdline/cmdline_show.cc:313
+#: src/cmdline/cmdline_show.cc:315
 msgid "PreDepends"
 msgstr "Předzávisí na"
 
-#: src/cmdline/cmdline_show.cc:315
+#: src/cmdline/cmdline_show.cc:317
 msgid "Recommends"
 msgstr "Doporučuje"
 
-#: src/cmdline/cmdline_show.cc:317
+#: src/cmdline/cmdline_show.cc:319
 msgid "Suggests"
 msgstr "Navrhuje"
 
-#: src/cmdline/cmdline_show.cc:319
+#: src/cmdline/cmdline_show.cc:321
 msgid "Conflicts"
 msgstr "Koliduje s"
 
-#: src/cmdline/cmdline_show.cc:321
+#: src/cmdline/cmdline_show.cc:323
 msgid "Replaces"
 msgstr "Nahrazuje"
 
-#: src/cmdline/cmdline_show.cc:323
+#: src/cmdline/cmdline_show.cc:325
 msgid "Obsoletes"
 msgstr "Zastarává"
 
-#: src/cmdline/cmdline_show.cc:325 src/generic/apt/matchers.cc:1616
+#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1616
 msgid "Provides"
 msgstr "Poskytuje"
 
-#: src/cmdline/cmdline_show.cc:329 src/pkg_info_screen.cc:95
+#: src/cmdline/cmdline_show.cc:331 src/pkg_info_screen.cc:95
 msgid "Description: "
 msgstr "Popis: "
 
-#: src/cmdline/cmdline_show.cc:377
+#: src/cmdline/cmdline_show.cc:423
 #, c-format
 msgid "Unable to locate package %s"
 msgstr "Nemohu nalézt balík %s"
 
-#: src/cmdline/cmdline_show.cc:399
+#: src/cmdline/cmdline_show.cc:436
 #, c-format
 msgid "Unable to parse pattern %s"
 msgstr "Nemohu zpracovat vzor %s"
@@ -1500,11 +1500,11 @@ msgid ""
 msgstr ""
 "Výměna média: Do mechaniky '%s' vložte disk nazvaný '%s' a stiskněte enter\n"
 
-#: src/generic/apt/aptcache.cc:259
+#: src/generic/apt/aptcache.cc:258
 msgid "Can't open Aptitude extended state file"
 msgstr "Nemohu otevřít rozšířený stavový soubor programu Aptitude"
 
-#: src/generic/apt/aptcache.cc:266 src/generic/apt/aptcache.cc:319
+#: src/generic/apt/aptcache.cc:265 src/generic/apt/aptcache.cc:319
 #: src/generic/apt/aptcache.cc:321
 msgid "Reading extended state information"
 msgstr "Čtu rozšířené stavové informace"

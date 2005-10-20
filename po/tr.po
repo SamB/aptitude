@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-10-14 14:06-0700\n"
+"POT-Creation-Date: 2005-10-20 14:39-0700\n"
 "PO-Revision-Date: 2005-08-07 16:40+0300\n"
 "Last-Translator: Erçin EKER <ercin.eker@linux.org.tr>\n"
 "Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -389,16 +389,16 @@ msgstr ""
 msgid "Bad action character '%c'\n"
 msgstr "Kötü eylem karakteri '%c'\n"
 
-#: src/cmdline/cmdline_changelog.cc:195
+#: src/cmdline/cmdline_changelog.cc:196
 msgid "Can't execute sensible-pager, is this a working Debian system?"
 msgstr "Sensible-pager çalıştırılamıyor, bu çalışan bir Debian sistemi mi?"
 
-#: src/cmdline/cmdline_changelog.cc:237
+#: src/cmdline/cmdline_changelog.cc:246
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr "%s resmi bir Debian paketi değil, değişiklik güncesi gösterilemiyor."
 
-#: src/cmdline/cmdline_changelog.cc:308
+#: src/cmdline/cmdline_changelog.cc:317
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "%s için değişiklik güncesi bulunamıyor"
@@ -448,12 +448,12 @@ msgstr "indirme: indirmek için en az bir paket belirtmelisiniz\n"
 msgid "Couldn't read source list"
 msgstr "Kaynak listesi okunamıyor"
 
-#: src/cmdline/cmdline_download.cc:63
+#: src/cmdline/cmdline_download.cc:70
 #, c-format
 msgid "Can't find a package named \"%s\""
 msgstr "\"%s\" adında bir paket bulunamıyor"
 
-#: src/cmdline/cmdline_download.cc:73
+#: src/cmdline/cmdline_download.cc:80
 #, c-format
 msgid ""
 "No downloadable files for %s version %s; perhaps it is a local or obsolete "
@@ -1120,212 +1120,212 @@ msgstr "Arama: En az bir arama terimi girmelisiniz\n"
 msgid "The following packages have unmet dependencies:\n"
 msgstr "Aşağıdaki paketler bağımlılıkları karşılamıyor:\n"
 
-#: src/cmdline/cmdline_show.cc:120 src/cmdline/cmdline_show.cc:306
+#: src/cmdline/cmdline_show.cc:122 src/cmdline/cmdline_show.cc:308
 #: src/solution_fragment.cc:56
 msgid "<NULL>"
 msgstr "<BOŞ>"
 
-#: src/cmdline/cmdline_show.cc:139
+#: src/cmdline/cmdline_show.cc:141
 msgid "not installed"
 msgstr "kurulmadı"
 
-#: src/cmdline/cmdline_show.cc:141 src/pkg_columnizer.cc:233
+#: src/cmdline/cmdline_show.cc:143 src/pkg_columnizer.cc:233
 #: src/pkg_ver_item.cc:227
 msgid "unpacked"
 msgstr "paketlenmemiş"
 
-#: src/cmdline/cmdline_show.cc:143
+#: src/cmdline/cmdline_show.cc:145
 msgid "partially configured"
 msgstr "tam yapılandırılmamış"
 
-#: src/cmdline/cmdline_show.cc:145
+#: src/cmdline/cmdline_show.cc:147
 msgid "partially installed"
 msgstr "kısmen kuruldu"
 
-#: src/cmdline/cmdline_show.cc:147
+#: src/cmdline/cmdline_show.cc:149
 msgid "not installed (configuration files remain)"
 msgstr "kurulu değil (yapılandırma dosyaları kalmış)"
 
-#: src/cmdline/cmdline_show.cc:149 src/pkg_columnizer.cc:241
+#: src/cmdline/cmdline_show.cc:151 src/pkg_columnizer.cc:241
 #: src/pkg_ver_item.cc:235
 msgid "installed"
 msgstr "kuruldu"
 
-#: src/cmdline/cmdline_show.cc:158
+#: src/cmdline/cmdline_show.cc:160
 msgid "not a real package"
 msgstr "gerçek bir paket değil"
 
-#: src/cmdline/cmdline_show.cc:171
+#: src/cmdline/cmdline_show.cc:173
 msgid " [held]"
 msgstr " [tut]"
 
-#: src/cmdline/cmdline_show.cc:180
+#: src/cmdline/cmdline_show.cc:182
 #, c-format
 msgid "%s; version %s will be installed"
 msgstr "%s; %s sürümü kurulacak."
 
-#: src/cmdline/cmdline_show.cc:184
+#: src/cmdline/cmdline_show.cc:186
 #, c-format
 msgid "%s; version %s will be installed automatically"
 msgstr "%s; %s sürümü otomatik olarak kurulacak"
 
-#: src/cmdline/cmdline_show.cc:190 src/cmdline/cmdline_show.cc:205
+#: src/cmdline/cmdline_show.cc:192 src/cmdline/cmdline_show.cc:207
 #, c-format
 msgid "%s; will be purged"
 msgstr "%s; temizlenecek"
 
-#: src/cmdline/cmdline_show.cc:203
+#: src/cmdline/cmdline_show.cc:205
 #, c-format
 msgid "%s; will be purged because nothing depends on it"
 msgstr ""
 "%s; paketi ihtiyaç duyulmadığından yapılandırması ile beraber silinecek"
 
-#: src/cmdline/cmdline_show.cc:210
+#: src/cmdline/cmdline_show.cc:212
 #, c-format
 msgid "%s; will be removed because nothing depends on it"
 msgstr "%s; paketi başka paketlerce ihtiyaç duyulmadığından kaldırılacak"
 
-#: src/cmdline/cmdline_show.cc:212
+#: src/cmdline/cmdline_show.cc:214
 #, c-format
 msgid "%s; will be removed"
 msgstr "%s; kaldırılacak"
 
-#: src/cmdline/cmdline_show.cc:226
+#: src/cmdline/cmdline_show.cc:228
 #, c-format
 msgid "%s%s; will be downgraded [%s -> %s]"
 msgstr "%s%s; daha eski sürümü kurulacak [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:229
+#: src/cmdline/cmdline_show.cc:231
 #, c-format
 msgid "%s%s; will be upgraded [%s -> %s]"
 msgstr "%s%s; yükseltilecek [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:241 src/cmdline/cmdline_show.cc:262
+#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:264
 msgid "Package: "
 msgstr "Paket:"
 
-#: src/cmdline/cmdline_show.cc:242 src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:244 src/cmdline/cmdline_show.cc:272
 #: src/pkg_columnizer.cc:89
 msgid "State"
 msgstr "Durum"
 
-#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:326
+#: src/cmdline/cmdline_show.cc:245 src/cmdline/cmdline_show.cc:328
 #: src/generic/apt/matchers.cc:1662
 msgid "Provided by"
 msgstr "Sağlayıcı"
 
-#: src/cmdline/cmdline_show.cc:264 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:266 src/pkg_info_screen.cc:107
 msgid "Essential: "
 msgstr "Önemli: "
 
-#: src/cmdline/cmdline_show.cc:264 src/cmdline/cmdline_show.cc:268
-#: src/cmdline/cmdline_show.cc:279 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:266 src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:281 src/pkg_info_screen.cc:107
 msgid "yes"
 msgstr "evet"
 
-#: src/cmdline/cmdline_show.cc:268
+#: src/cmdline/cmdline_show.cc:270
 msgid "New"
 msgstr "Yeni"
 
-#: src/cmdline/cmdline_show.cc:273
+#: src/cmdline/cmdline_show.cc:275
 msgid "Forbidden version"
 msgstr "Engellenen sürüm"
 
-#: src/cmdline/cmdline_show.cc:277
+#: src/cmdline/cmdline_show.cc:279
 msgid "Automatically installed"
 msgstr "Otomatik olarak kuruldu"
 
-#: src/cmdline/cmdline_show.cc:279
+#: src/cmdline/cmdline_show.cc:281
 msgid "no"
 msgstr "hayır"
 
-#: src/cmdline/cmdline_show.cc:281
+#: src/cmdline/cmdline_show.cc:283
 msgid "Version: "
 msgstr "Sürüm:"
 
-#: src/cmdline/cmdline_show.cc:282 src/pkg_info_screen.cc:115
+#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:115
 msgid "Priority: "
 msgstr "Öncelik: "
 
-#: src/cmdline/cmdline_show.cc:283 src/cmdline/cmdline_show.cc:285
-#: src/cmdline/cmdline_show.cc:294
+#: src/cmdline/cmdline_show.cc:285 src/cmdline/cmdline_show.cc:287
+#: src/cmdline/cmdline_show.cc:296
 msgid "N/A"
 msgstr "N/A"
 
-#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:116
+#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:116
 msgid "Section: "
 msgstr "Bölüm: "
 
-#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:117
+#: src/cmdline/cmdline_show.cc:288 src/pkg_info_screen.cc:117
 msgid "Maintainer: "
 msgstr "Sağlayıcı: "
 
-#: src/cmdline/cmdline_show.cc:289
+#: src/cmdline/cmdline_show.cc:291
 msgid "Uncompressed Size: "
 msgstr "Açılmış Boyutu: "
 
-#: src/cmdline/cmdline_show.cc:293
+#: src/cmdline/cmdline_show.cc:295
 msgid "Architecture: "
 msgstr "Mimari: "
 
-#: src/cmdline/cmdline_show.cc:295
+#: src/cmdline/cmdline_show.cc:297
 msgid "Compressed Size: "
 msgstr "Sıkıştırılmış Boyutu: "
 
-#: src/cmdline/cmdline_show.cc:297
+#: src/cmdline/cmdline_show.cc:299
 msgid "Filename: "
 msgstr "Dosyaadı: "
 
-#: src/cmdline/cmdline_show.cc:299
+#: src/cmdline/cmdline_show.cc:301
 msgid "MD5sum: "
 msgstr "MD5sum: "
 
-#: src/cmdline/cmdline_show.cc:303 src/cmdline/cmdline_show.cc:306
+#: src/cmdline/cmdline_show.cc:305 src/cmdline/cmdline_show.cc:308
 msgid "Archive"
 msgstr "Arşiv"
 
-#: src/cmdline/cmdline_show.cc:311
+#: src/cmdline/cmdline_show.cc:313
 msgid "Depends"
 msgstr "bağımlılıklar"
 
-#: src/cmdline/cmdline_show.cc:313
+#: src/cmdline/cmdline_show.cc:315
 msgid "PreDepends"
 msgstr "ÖnBağımlılıklar"
 
-#: src/cmdline/cmdline_show.cc:315
+#: src/cmdline/cmdline_show.cc:317
 msgid "Recommends"
 msgstr "Önerilenler"
 
-#: src/cmdline/cmdline_show.cc:317
+#: src/cmdline/cmdline_show.cc:319
 msgid "Suggests"
 msgstr "Teklif edilenler"
 
-#: src/cmdline/cmdline_show.cc:319
+#: src/cmdline/cmdline_show.cc:321
 msgid "Conflicts"
 msgstr "Çakışmalar"
 
-#: src/cmdline/cmdline_show.cc:321
+#: src/cmdline/cmdline_show.cc:323
 msgid "Replaces"
 msgstr "Değiştirilenler"
 
-#: src/cmdline/cmdline_show.cc:323
+#: src/cmdline/cmdline_show.cc:325
 msgid "Obsoletes"
 msgstr "Eskiyenler"
 
-#: src/cmdline/cmdline_show.cc:325 src/generic/apt/matchers.cc:1616
+#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1616
 msgid "Provides"
 msgstr "Sağladığı"
 
-#: src/cmdline/cmdline_show.cc:329 src/pkg_info_screen.cc:95
+#: src/cmdline/cmdline_show.cc:331 src/pkg_info_screen.cc:95
 msgid "Description: "
 msgstr "Tanım: "
 
-#: src/cmdline/cmdline_show.cc:377
+#: src/cmdline/cmdline_show.cc:423
 #, fuzzy, c-format
 msgid "Unable to locate package %s"
 msgstr "%ls açılamıyor"
 
-#: src/cmdline/cmdline_show.cc:399
+#: src/cmdline/cmdline_show.cc:436
 #, fuzzy, c-format
 msgid "Unable to parse pattern %s"
 msgstr "%ls açılamıyor"
@@ -1510,11 +1510,11 @@ msgstr ""
 "Disk Değişikliği: Lütfen '%s' diskini '%s' sürücüsüne yerleştirin ve enter "
 "tuşuna basın\n"
 
-#: src/generic/apt/aptcache.cc:259
+#: src/generic/apt/aptcache.cc:258
 msgid "Can't open Aptitude extended state file"
 msgstr "Aptitude geniş durum dosyası açılamıyor"
 
-#: src/generic/apt/aptcache.cc:266 src/generic/apt/aptcache.cc:319
+#: src/generic/apt/aptcache.cc:265 src/generic/apt/aptcache.cc:319
 #: src/generic/apt/aptcache.cc:321
 msgid "Reading extended state information"
 msgstr "Geniş durum bilgisi okunuyor"

@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude-ru\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-10-14 14:06-0700\n"
+"POT-Creation-Date: 2005-10-20 14:39-0700\n"
 "PO-Revision-Date: 2005-06-14 21:04+0400\n"
 "Last-Translator: Yuri Kozlov <yuray@id.ru>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
@@ -397,18 +397,18 @@ msgstr ""
 msgid "Bad action character '%c'\n"
 msgstr "Неверный символ '%c' для выбора действия\n"
 
-#: src/cmdline/cmdline_changelog.cc:195
+#: src/cmdline/cmdline_changelog.cc:196
 msgid "Can't execute sensible-pager, is this a working Debian system?"
 msgstr ""
 "Не удалось запустить соответствующую программу просмотра, это работающий "
 "Debian?"
 
-#: src/cmdline/cmdline_changelog.cc:237
+#: src/cmdline/cmdline_changelog.cc:246
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr "%s не официальный пакет Debian, невозможно отобразить его changelog."
 
-#: src/cmdline/cmdline_changelog.cc:308
+#: src/cmdline/cmdline_changelog.cc:317
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Не удалось найти changelog для %s"
@@ -458,12 +458,12 @@ msgstr "загрузка: вы должны указать хотя бы оди�
 msgid "Couldn't read source list"
 msgstr "Не удалось прочитать файл sources.list"
 
-#: src/cmdline/cmdline_download.cc:63
+#: src/cmdline/cmdline_download.cc:70
 #, c-format
 msgid "Can't find a package named \"%s\""
 msgstr "Не удалось найти пакет, с именем \"%s\""
 
-#: src/cmdline/cmdline_download.cc:73
+#: src/cmdline/cmdline_download.cc:80
 #, c-format
 msgid ""
 "No downloadable files for %s version %s; perhaps it is a local or obsolete "
@@ -1130,211 +1130,211 @@ msgstr "поиск: Вы должны ввести хотя бы одно сло
 msgid "The following packages have unmet dependencies:\n"
 msgstr "Следующие пакеты имеют неудовлетворённые зависимости:\n"
 
-#: src/cmdline/cmdline_show.cc:120 src/cmdline/cmdline_show.cc:306
+#: src/cmdline/cmdline_show.cc:122 src/cmdline/cmdline_show.cc:308
 #: src/solution_fragment.cc:56
 msgid "<NULL>"
 msgstr "<NULL>"
 
-#: src/cmdline/cmdline_show.cc:139
+#: src/cmdline/cmdline_show.cc:141
 msgid "not installed"
 msgstr "не установлен"
 
-#: src/cmdline/cmdline_show.cc:141 src/pkg_columnizer.cc:233
+#: src/cmdline/cmdline_show.cc:143 src/pkg_columnizer.cc:233
 #: src/pkg_ver_item.cc:227
 msgid "unpacked"
 msgstr "распакован"
 
-#: src/cmdline/cmdline_show.cc:143
+#: src/cmdline/cmdline_show.cc:145
 msgid "partially configured"
 msgstr "частично настроен"
 
-#: src/cmdline/cmdline_show.cc:145
+#: src/cmdline/cmdline_show.cc:147
 msgid "partially installed"
 msgstr "частично установлен"
 
-#: src/cmdline/cmdline_show.cc:147
+#: src/cmdline/cmdline_show.cc:149
 msgid "not installed (configuration files remain)"
 msgstr "не установлен (файлы настроек сохранены)"
 
-#: src/cmdline/cmdline_show.cc:149 src/pkg_columnizer.cc:241
+#: src/cmdline/cmdline_show.cc:151 src/pkg_columnizer.cc:241
 #: src/pkg_ver_item.cc:235
 msgid "installed"
 msgstr "установлен"
 
-#: src/cmdline/cmdline_show.cc:158
+#: src/cmdline/cmdline_show.cc:160
 msgid "not a real package"
 msgstr "не реальный пакет"
 
-#: src/cmdline/cmdline_show.cc:171
+#: src/cmdline/cmdline_show.cc:173
 msgid " [held]"
 msgstr " [зафиксирован]"
 
-#: src/cmdline/cmdline_show.cc:180
+#: src/cmdline/cmdline_show.cc:182
 #, c-format
 msgid "%s; version %s will be installed"
 msgstr "%s; версия %s будет установлен"
 
-#: src/cmdline/cmdline_show.cc:184
+#: src/cmdline/cmdline_show.cc:186
 #, c-format
 msgid "%s; version %s will be installed automatically"
 msgstr "%s; версия %s будет установлен автоматически"
 
-#: src/cmdline/cmdline_show.cc:190 src/cmdline/cmdline_show.cc:205
+#: src/cmdline/cmdline_show.cc:192 src/cmdline/cmdline_show.cc:207
 #, c-format
 msgid "%s; will be purged"
 msgstr "%s; будет вычищен"
 
-#: src/cmdline/cmdline_show.cc:203
+#: src/cmdline/cmdline_show.cc:205
 #, c-format
 msgid "%s; will be purged because nothing depends on it"
 msgstr "%s; будет вычищен, так как от него ничто не зависит"
 
-#: src/cmdline/cmdline_show.cc:210
+#: src/cmdline/cmdline_show.cc:212
 #, c-format
 msgid "%s; will be removed because nothing depends on it"
 msgstr "%s; будет удалены, так как от него ничто не зависит"
 
-#: src/cmdline/cmdline_show.cc:212
+#: src/cmdline/cmdline_show.cc:214
 #, c-format
 msgid "%s; will be removed"
 msgstr "%s; будет удалён"
 
-#: src/cmdline/cmdline_show.cc:226
+#: src/cmdline/cmdline_show.cc:228
 #, c-format
 msgid "%s%s; will be downgraded [%s -> %s]"
 msgstr "%s%s; будет заменён на более старую версию [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:229
+#: src/cmdline/cmdline_show.cc:231
 #, c-format
 msgid "%s%s; will be upgraded [%s -> %s]"
 msgstr "%s%s; будет обновлён [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:241 src/cmdline/cmdline_show.cc:262
+#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:264
 msgid "Package: "
 msgstr "Пакет: "
 
-#: src/cmdline/cmdline_show.cc:242 src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:244 src/cmdline/cmdline_show.cc:272
 #: src/pkg_columnizer.cc:89
 msgid "State"
 msgstr "Состояние"
 
-#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:326
+#: src/cmdline/cmdline_show.cc:245 src/cmdline/cmdline_show.cc:328
 #: src/generic/apt/matchers.cc:1662
 msgid "Provided by"
 msgstr "Предоставляется"
 
-#: src/cmdline/cmdline_show.cc:264 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:266 src/pkg_info_screen.cc:107
 msgid "Essential: "
 msgstr "Пакеты первой необходимости: "
 
-#: src/cmdline/cmdline_show.cc:264 src/cmdline/cmdline_show.cc:268
-#: src/cmdline/cmdline_show.cc:279 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:266 src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:281 src/pkg_info_screen.cc:107
 msgid "yes"
 msgstr "да"
 
-#: src/cmdline/cmdline_show.cc:268
+#: src/cmdline/cmdline_show.cc:270
 msgid "New"
 msgstr "Новый"
 
-#: src/cmdline/cmdline_show.cc:273
+#: src/cmdline/cmdline_show.cc:275
 msgid "Forbidden version"
 msgstr "Запрещённая версия"
 
-#: src/cmdline/cmdline_show.cc:277
+#: src/cmdline/cmdline_show.cc:279
 msgid "Automatically installed"
 msgstr "Автоматически установлен"
 
-#: src/cmdline/cmdline_show.cc:279
+#: src/cmdline/cmdline_show.cc:281
 msgid "no"
 msgstr "нет"
 
-#: src/cmdline/cmdline_show.cc:281
+#: src/cmdline/cmdline_show.cc:283
 msgid "Version: "
 msgstr "Версия: "
 
-#: src/cmdline/cmdline_show.cc:282 src/pkg_info_screen.cc:115
+#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:115
 msgid "Priority: "
 msgstr "Приоритет: "
 
-#: src/cmdline/cmdline_show.cc:283 src/cmdline/cmdline_show.cc:285
-#: src/cmdline/cmdline_show.cc:294
+#: src/cmdline/cmdline_show.cc:285 src/cmdline/cmdline_show.cc:287
+#: src/cmdline/cmdline_show.cc:296
 msgid "N/A"
 msgstr "Н/Д"
 
-#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:116
+#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:116
 msgid "Section: "
 msgstr "Раздел: "
 
-#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:117
+#: src/cmdline/cmdline_show.cc:288 src/pkg_info_screen.cc:117
 msgid "Maintainer: "
 msgstr "Сопровождающий: "
 
-#: src/cmdline/cmdline_show.cc:289
+#: src/cmdline/cmdline_show.cc:291
 msgid "Uncompressed Size: "
 msgstr "Размер в распакованном виде: "
 
-#: src/cmdline/cmdline_show.cc:293
+#: src/cmdline/cmdline_show.cc:295
 msgid "Architecture: "
 msgstr "Архитектура: "
 
-#: src/cmdline/cmdline_show.cc:295
+#: src/cmdline/cmdline_show.cc:297
 msgid "Compressed Size: "
 msgstr "Размер в сжатом виде: "
 
-#: src/cmdline/cmdline_show.cc:297
+#: src/cmdline/cmdline_show.cc:299
 msgid "Filename: "
 msgstr "Имя файла: "
 
-#: src/cmdline/cmdline_show.cc:299
+#: src/cmdline/cmdline_show.cc:301
 msgid "MD5sum: "
 msgstr "MD5sum: "
 
-#: src/cmdline/cmdline_show.cc:303 src/cmdline/cmdline_show.cc:306
+#: src/cmdline/cmdline_show.cc:305 src/cmdline/cmdline_show.cc:308
 msgid "Archive"
 msgstr "Архив"
 
-#: src/cmdline/cmdline_show.cc:311
+#: src/cmdline/cmdline_show.cc:313
 msgid "Depends"
 msgstr "Зависимости"
 
-#: src/cmdline/cmdline_show.cc:313
+#: src/cmdline/cmdline_show.cc:315
 msgid "PreDepends"
 msgstr "Предварительные зависимости"
 
-#: src/cmdline/cmdline_show.cc:315
+#: src/cmdline/cmdline_show.cc:317
 msgid "Recommends"
 msgstr "Рекомендуются"
 
-#: src/cmdline/cmdline_show.cc:317
+#: src/cmdline/cmdline_show.cc:319
 msgid "Suggests"
 msgstr "Предлагаются"
 
-#: src/cmdline/cmdline_show.cc:319
+#: src/cmdline/cmdline_show.cc:321
 msgid "Conflicts"
 msgstr "Конфликтуют"
 
-#: src/cmdline/cmdline_show.cc:321
+#: src/cmdline/cmdline_show.cc:323
 msgid "Replaces"
 msgstr "Заменяют"
 
-#: src/cmdline/cmdline_show.cc:323
+#: src/cmdline/cmdline_show.cc:325
 msgid "Obsoletes"
 msgstr "Устаревшие"
 
-#: src/cmdline/cmdline_show.cc:325 src/generic/apt/matchers.cc:1616
+#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1616
 msgid "Provides"
 msgstr "Предоставляют"
 
-#: src/cmdline/cmdline_show.cc:329 src/pkg_info_screen.cc:95
+#: src/cmdline/cmdline_show.cc:331 src/pkg_info_screen.cc:95
 msgid "Description: "
 msgstr "Описание: "
 
-#: src/cmdline/cmdline_show.cc:377
+#: src/cmdline/cmdline_show.cc:423
 #, fuzzy, c-format
 msgid "Unable to locate package %s"
 msgstr "Не удалось открыть %s"
 
-#: src/cmdline/cmdline_show.cc:399
+#: src/cmdline/cmdline_show.cc:436
 #, fuzzy, c-format
 msgid "Unable to parse pattern %s"
 msgstr "Не удалось открыть %s"
@@ -1520,11 +1520,11 @@ msgstr ""
 "Смена носителя: вставьте диск, помеченный как '%s' в привод '%s' и нажмите "
 "ввод\n"
 
-#: src/generic/apt/aptcache.cc:259
+#: src/generic/apt/aptcache.cc:258
 msgid "Can't open Aptitude extended state file"
 msgstr "Не удаётся открыть файл расширенных состояний Aptitude"
 
-#: src/generic/apt/aptcache.cc:266 src/generic/apt/aptcache.cc:319
+#: src/generic/apt/aptcache.cc:265 src/generic/apt/aptcache.cc:319
 #: src/generic/apt/aptcache.cc:321
 msgid "Reading extended state information"
 msgstr "Чтение информации о расширенных состояниях"
