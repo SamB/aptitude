@@ -375,7 +375,7 @@ bool do_cmdline_show(string s, int verbose)
       if(pkg.end())
 	{
 	  _error->Error(_("Unable to locate package %s"), s.c_str());
-	  return true;
+	  return false;
 	}
     }
   if(!is_pattern && !pkg.end())
