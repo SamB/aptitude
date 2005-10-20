@@ -11,6 +11,7 @@
 #include <aptitude.h>
 
 #include <generic/apt/apt.h>
+#include <generic/apt/config_signal.h>
 #include <generic/apt/pkg_changelog.h>
 
 #include <apt-pkg/error.h>
@@ -200,6 +201,8 @@ bool do_cmdline_changelog(const vector<string> &packages)
 	pager="more";
     }
 
+  string default_release = aptcfg->Find("APT::Default-Release");
+
   for(vector<string>::const_iterator i=packages.begin(); i!=packages.end(); ++i)
     {
       string input=*i;
@@ -209,6 +212,12 @@ bool do_cmdline_changelog(const vector<string> &packages)
 
       if(!cmdline_parse_source(input, source, package, sourcestr))
 	continue;
+
+      if(source == cmdline_version_cand && !default_release.empty())
+	{
+	  source    = cmdline_version_archive;
+	  sourcestr = default_release;
+	}
 
       pkgCache::PkgIterator pkg=(*apt_cache_file)->FindPkg(package);
 
