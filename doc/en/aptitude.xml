@@ -8388,6 +8388,16 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configProblemResolver-DiscardNullSolution'>
+	      <seg><literal>Aptitude::ProblemResolver::Discard-Null-Solution</literal></seg>
+	      <seg><literal>true</literal></seg>
+	      <seg>
+		If this option is <literal>true</literal>, &aptitude;
+		will never suggest cancelling all of your proposed
+		actions in order to resolve a dependency problem.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configProblemResolver-EssentialRemoveScore'>
 	      <seg><literal>Aptitude::ProblemResolver::EssentialRemoveScore</literal></seg>
 	      <seg><literal>-100000</literal></seg>
