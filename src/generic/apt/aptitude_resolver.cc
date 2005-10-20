@@ -31,6 +31,24 @@ aptitude_resolver::aptitude_resolver(int step_score,
   :generic_problem_resolver<aptitude_universe>(step_score, broken_score, unfixed_soft_score, infinity, max_successors, resolution_score, aptitude_universe(cache))
 {
   set_remove_stupid(aptcfg->FindB(PACKAGE "::ProblemResolver::Remove-Stupid-Pairs", true));
+
+  if(aptcfg->FindB(PACKAGE "::ProblemResolver::Discard-Null-Solution", true))
+    {
+      imm::map<package, action> null_solution;
+
+      for(pkgCache::PkgIterator i = cache->PkgBegin(); !i.end(); ++i)
+	{
+	  pkgDepCache::StateCache &s((*cache)[i]);
+
+	  if(!s.Keep())
+	    null_solution.put(package(i, cache),
+			      action(version(i, i.CurrentVer(), cache),
+				     dep(), false, 0));
+	}
+
+      if(!null_solution.empty())
+	add_conflict(null_solution);
+    }
 }
 
 void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
