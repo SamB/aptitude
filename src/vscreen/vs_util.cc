@@ -130,11 +130,6 @@ vs_widget_ref vs_dialog_yesno(const vs_widget_ref &widget,
   nobutton->pressed.connect(sigc::bind(sigc::ptr_fun(&do_slot0_dialog),
 				       center.weak_ref(), noslot));
 
-  if(yesslot)
-    yesbutton->pressed.connect(*yesslot);
-  if(noslot)
-    nobutton->pressed.connect(*noslot);
-
   table->connect_key("Yes", &global_bindings, yesbutton->pressed.make_slot());
   table->connect_key("No", &global_bindings, nobutton->pressed.make_slot());
   table->connect_key("Cancel", &global_bindings, nobutton->pressed.make_slot());
