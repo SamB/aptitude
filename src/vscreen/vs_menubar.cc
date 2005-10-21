@@ -717,11 +717,11 @@ void vs_menubar::dispatch_mouse(short id, int x, int y, int z, mmask_t bmask)
 
 	  if(items.size()>0)
 	    {
-	      loc+=items[0].title.size();
+	      loc += wcswidth(items[0].title.c_str(), items[0].title.size());
 
 	      while(i<items.size()-1 && loc<=x)
 		{
-		  loc+=items[i+1].title.size();
+		  loc += wcswidth(items[i+1].title.c_str(), items[i+1].title.size());
 
 		  ++i;
 		}
