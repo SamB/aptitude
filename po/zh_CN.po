@@ -1,25 +1,26 @@
 # Copyright (C) Year Free Software Foundation, Inc.
 # Yongtao Yang <yongtao.yang@telia.com>, 2004
-# Carlos Z.F. Liu <carlos_liu@yahoo.com>, 2004
+# Carlos Z.F. Liu <carlos_liu@yahoo.com>, 2005
+# Ming Hua <minghua@rice.edu>, 2005
+# Haifeng Chen <optical.dlz@gmail.com>, 2005
 #
 #: src/view_changelog.cc:226
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude 0.2.13\n"
+"Project-Id-Version: aptitude 0.3+SVN\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
 "POT-Creation-Date: 2005-10-20 14:39-0700\n"
-"PO-Revision-Date: 2005-06-15 20:48+0200\n"
-"Last-Translator: Yongtao Yang <yongtao.yang@telia.com>\n"
-"Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
+"PO-Revision-Date: 2005-10-22 18:38-0500\n"
+"Last-Translator: Haifeng Chen <optical.dlz@gmail.com>\n"
+"Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3.1\n"
-"Plural-Forms: Plural-Forms: nplurals=2; plural=n>1;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
-msgstr "将所有可用的命令显示在屏幕顶端"
+msgstr "将某些可用的命令显示在屏幕顶端"
 
 #: src/apt_options.cc:112
 msgid "Hide the menubar when it is not being used"
@@ -122,7 +123,7 @@ msgstr "安装或者卸载软件包后忘记哪些包是“新”的"
 #: src/apt_options.cc:171
 msgid ""
 "Do not display a warning when the first change is made in read-only mode."
-msgstr ""
+msgstr "当第一个改动是在只读模式下进行时不显示警告。"
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -149,9 +150,8 @@ msgid "Remove unused packages automatically"
 msgstr "自动卸载未用软件包"
 
 #: src/apt_options.cc:192
-#, fuzzy
 msgid "Don't automatically remove unused packages matching this filter"
-msgstr "自动卸载匹配该过滤器的未用软件包"
+msgstr "不自动卸载匹配该过滤器的未用软件包"
 
 #: src/apt_options.cc:248 src/mine/cmine.cc:302 src/mine/cmine.cc:367
 #: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:91
@@ -190,9 +190,9 @@ msgid "Unable to resolve dependencies."
 msgstr "无法解决依赖关系。"
 
 #: src/broken_indicator.cc:240
-#, fuzzy, c-format
+#, c-format
 msgid "[%d(%d)/...] Resolving dependencies"
-msgstr "无法解决依赖关系。"
+msgstr "[%d(%d)/...] 正在解决依赖关系"
 
 #: src/broken_indicator.cc:273 src/solution_dialog.cc:126
 #: src/solution_screen.cc:513
@@ -320,14 +320,14 @@ msgstr "软件包 %s 是不可升级的，不能设为禁止升级\n"
 #: src/cmdline/cmdline_action.cc:214
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
-msgstr "注意：选择任务“%s：%s”安装\n"
+msgstr "注意：选择软件集“%s：%s”安装\n"
 
 #: src/cmdline/cmdline_action.cc:244
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
-msgstr "在“安装”命令中您只能指定一个软件包的存档\n"
+msgstr "您只能在“install”或“forbid-version”命令中指定一个软件包的版本。\n"
 
 #: src/cmdline/cmdline_action.cc:252
 #, c-format
@@ -378,11 +378,11 @@ msgstr ""
 #: src/cmdline/cmdline_action.cc:437
 #, c-format
 msgid "Bad action character '%c'\n"
-msgstr "非法的动作字符‘%c’\n"
+msgstr "非法的动作字符“%c”\n"
 
 #: src/cmdline/cmdline_changelog.cc:196
 msgid "Can't execute sensible-pager, is this a working Debian system?"
-msgstr "无法执行 sensible-pager，这是一个正常运行的 Debain 系统吗？"
+msgstr "无法执行 sensible-pager，这是一个正常运行的 Debian 系统吗？"
 
 #: src/cmdline/cmdline_changelog.cc:246
 #, c-format
@@ -421,7 +421,7 @@ msgstr "无效的操作 %s"
 
 #: src/cmdline/cmdline_do_action.cc:143
 msgid "Unexpected pattern argument following \"keep-all\""
-msgstr ""
+msgstr "在参数“keep-all”之后有意料之外的模式"
 
 #: src/cmdline/cmdline_do_action.cc:233 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:511
@@ -494,7 +494,7 @@ msgstr "这是什么？ 这当然是一只大象被一条蛇吞吃了。\n"
 
 #: src/cmdline/cmdline_prompt.cc:33
 msgid "Unexpected end-of-file on standard input"
-msgstr ""
+msgstr "标准输入中遇到意料之外的文件结束标志"
 
 #: src/cmdline/cmdline_prompt.cc:52
 msgid "Couldn't read list of sources"
@@ -508,12 +508,12 @@ msgstr "但是 %s 将被安装。"
 #: src/cmdline/cmdline_prompt.cc:237 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
-msgstr "但是 %s 已被安装并且被"
+msgstr "但是 %s 已被安装并且被保持不升级。"
 
 #: src/cmdline/cmdline_prompt.cc:240 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
-msgstr "但是 %s 已安装"
+msgstr "但是 %s 已安装。"
 
 #: src/cmdline/cmdline_prompt.cc:244 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
@@ -624,6 +624,8 @@ msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 msgstr ""
+"*** 警告 ***  忽略这些信任违背，因为\n"
+"                 %s::CmdLine::Ignore-Trust-Violations 的值为“真”！\n"
 
 #: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:182
 #: src/vscreen/vs_util.cc:220
@@ -648,7 +650,7 @@ msgstr "要继续，请键入“%s”；要中止，请键入“%s”："
 #: src/cmdline/cmdline_prompt.cc:432
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
-msgstr "未被识别的输入。请键入 \"%s\" 或 \"%s\"。\n"
+msgstr "未被识别的输入。请键入“%s”或“%s”。\n"
 
 #: src/cmdline/cmdline_prompt.cc:534
 #, c-format
@@ -668,7 +670,7 @@ msgstr "将不会安装，升级或者删除任何软件包。\n"
 #: src/cmdline/cmdline_prompt.cc:547
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
-msgstr "%lu 个软件包被升级，新安装%lu 个，"
+msgstr "%lu 个软件包被升级，新安装 %lu 个，"
 
 #: src/cmdline/cmdline_prompt.cc:551
 #, c-format
@@ -708,7 +710,7 @@ msgstr "解包后将释放 %sB。\n"
 #: src/cmdline/cmdline_prompt.cc:613
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
-msgstr "无可显示的软件包 -- 请在 ‘i’ 之后的那一行输入软件包名称。\n"
+msgstr "无可显示的软件包 -- 请在“i”之后的那一行输入软件包名称。\n"
 
 #: src/cmdline/cmdline_prompt.cc:615
 msgid "Press Return to continue."
@@ -717,7 +719,7 @@ msgstr "按回车继续。"
 #: src/cmdline/cmdline_prompt.cc:641
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
-msgstr "未发现软件包 -- 请在 ‘c’ 之后的那一行输入软件包名称。\n"
+msgstr "未发现软件包 -- 请在“c”之后的那一行输入软件包名称。\n"
 
 #: src/cmdline/cmdline_prompt.cc:645
 msgid "Press Return to continue"
@@ -726,7 +728,7 @@ msgstr "按回车继续"
 #: src/cmdline/cmdline_prompt.cc:656
 #, c-format
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
-msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
+msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:676
 msgid "continue with the installation"
@@ -740,13 +742,13 @@ msgstr "放弃并退出"
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
-msgstr "显示一个或者多个软件包的信息；软件包的名字将在字符 'i' 之后。"
+msgstr "显示一个或者多个软件包的信息；软件包的名字将在字符“i”之后。"
 
 #: src/cmdline/cmdline_prompt.cc:682
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
-msgstr "显示一个或者多个软件包的变更记录；软件包的名字将在字符 'c'之后。"
+msgstr "显示一个或者多个软件包的变更记录；软件包的名字将在字符“c”之后。"
 
 #: src/cmdline/cmdline_prompt.cc:684
 msgid "toggle the display of dependency information"
@@ -847,7 +849,7 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"将不显示依赖关系信息。\n"
+"将显示版本号。\n"
 "\n"
 
 #: src/cmdline/cmdline_prompt.cc:802
@@ -886,14 +888,14 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:832
 #, c-format
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
-msgstr "非法响应。请输入一个合法命令或者‘?’请求帮助。\n"
+msgstr "非法响应。请输入一个合法命令或者“?”请求帮助。\n"
 
 #: src/cmdline/cmdline_resolver.cc:128
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
-msgstr "y: %Fn: %Fq: %F,: %F.: %F<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
+msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:147
 msgid "accept the proposed changes"
@@ -917,24 +919,23 @@ msgstr "到上一个解决方案"
 
 #: src/cmdline/cmdline_resolver.cc:157
 msgid "view an explanation of the changes in the solution"
-msgstr ""
+msgstr "查看关于解决方案中做的修改的说明"
 
 #: src/cmdline/cmdline_resolver.cc:159
-#, fuzzy
 msgid "examine the solution in the visual user interface"
-msgstr "修改影响用户界面的设置"
+msgstr "检查用户可视界面中的设置方案"
 
 #: src/cmdline/cmdline_resolver.cc:161
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur."
-msgstr ""
+msgstr "拒绝给定的软件包版本；在它们出现的时候不显示任何解决方案。"
 
 #: src/cmdline/cmdline_resolver.cc:163
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur."
-msgstr ""
+msgstr "接受给定的软件包版本；在它们出现的时候仅显示解决方案。"
 
 #: src/cmdline/cmdline_resolver.cc:165
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -949,82 +950,82 @@ msgstr "修改将导致当前解决方案被放弃或者必须重新计算。"
 #: src/cmdline/cmdline_resolver.cc:197
 #, c-format
 msgid "The version %s is available in the following archives:"
-msgstr ""
+msgstr "在下列存档中版本 %s 已经可用了:"
 
 #: src/cmdline/cmdline_resolver.cc:205
-#, fuzzy, c-format
+#, c-format
 msgid "Select the version of %s that should be used: "
-msgstr "存储依赖关系解决状态的文件："
+msgstr "选择要被使用的 %s 的版本号："
 
 #: src/cmdline/cmdline_resolver.cc:212
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
-msgstr "非法响应；请输入 'y' 或者 'n'。"
+msgstr "无效响应。请输入 1 到 %d 之间的一个整数。"
 
 #: src/cmdline/cmdline_resolver.cc:227
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
-msgstr ""
+msgstr "在“%c”后需要至少一个软件包/版本对"
 
 #: src/cmdline/cmdline_resolver.cc:241
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a version after \"%s\""
-msgstr "无法打开 %s"
+msgstr "在“%s”之后的一个预料中的版本"
 
 #: src/cmdline/cmdline_resolver.cc:251
-#, fuzzy, c-format
+#, c-format
 msgid "No such package \"%s\""
-msgstr "源码软件包："
+msgstr "没有这个软件包“%s”"
 
 #: src/cmdline/cmdline_resolver.cc:267
 #, c-format
 msgid "%s has no version named \"%s\""
-msgstr ""
+msgstr "%s 没有“%s”这样一个版本"
 
 #: src/cmdline/cmdline_resolver.cc:284
 #, c-format
 msgid "Allowing the removal of %s"
-msgstr ""
+msgstr "同意删除 %s"
 
 #: src/cmdline/cmdline_resolver.cc:287
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
-msgstr ""
+msgstr "同意安装 %s 的 %s 版本(%s)"
 
 #: src/cmdline/cmdline_resolver.cc:297
 #, c-format
 msgid "Rejecting the removal of %s"
-msgstr ""
+msgstr "放弃删除 %s"
 
 #: src/cmdline/cmdline_resolver.cc:300
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
-msgstr ""
+msgstr "放弃安装 %s 的 %s 版本(%s)"
 
 #: src/cmdline/cmdline_resolver.cc:313
 #, c-format
 msgid "No longer requiring the removal of %s"
-msgstr ""
+msgstr "不再要求删除 %s"
 
 #: src/cmdline/cmdline_resolver.cc:316
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
-msgstr ""
+msgstr "不再要求安装 %s 的 %s 版本(%s)"
 
 #: src/cmdline/cmdline_resolver.cc:325
 #, c-format
 msgid "Requiring the removal of %s"
-msgstr ""
+msgstr "要求删除 %s"
 
 #: src/cmdline/cmdline_resolver.cc:328
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
-msgstr ""
+msgstr "要求安装 %s 的 %s 版本(%s)"
 
 #: src/cmdline/cmdline_resolver.cc:447 src/solution_screen.cc:486
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
-msgstr ""
+msgstr "打开：%d；关闭；%d；defer: %d; 冲突；%d"
 
 #: src/cmdline/cmdline_resolver.cc:493
 msgid "The following actions will resolve these dependencies:"
@@ -1058,7 +1059,7 @@ msgstr "将依赖关系解决状态写入文件 %s 时发生错误"
 
 #: src/cmdline/cmdline_resolver.cc:587
 msgid "Resolver state successfully written!"
-msgstr ""
+msgstr "成功写入依赖关系解决状态！"
 
 #: src/cmdline/cmdline_resolver.cc:592
 msgid "Invalid response; please enter one of the following commands:"
@@ -1070,21 +1071,20 @@ msgstr "在分配的时间内未找到解决方案。加把劲再试试？[Y/n]"
 
 #: src/cmdline/cmdline_resolver.cc:630
 msgid "Invalid response; please enter 'y' or 'n'."
-msgstr "非法响应；请输入 'y' 或者 'n'。"
+msgstr "非法响应；请输入“y”或者“n”。"
 
 #: src/cmdline/cmdline_resolver.cc:639
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "未能解决依赖关系！放弃..."
 
 #: src/cmdline/cmdline_resolver.cc:645
-#, fuzzy
 msgid "*** No more solutions available ***"
-msgstr "没有更多的解决方案了。"
+msgstr "*** 没有更多的解决方案了 ***"
 
 #: src/cmdline/cmdline_search.cc:100
 #, c-format
 msgid "iconv of %s failed.\n"
-msgstr ""
+msgstr "用 iconv 转换 %s 失败。\n"
 
 #: src/cmdline/cmdline_search.cc:116
 #, c-format
@@ -1120,7 +1120,7 @@ msgstr "部分安装"
 
 #: src/cmdline/cmdline_show.cc:149
 msgid "not installed (configuration files remain)"
-msgstr "未安装 (配置文件保留)"
+msgstr "未安装(配置文件保留)"
 
 #: src/cmdline/cmdline_show.cc:151 src/pkg_columnizer.cc:241
 #: src/pkg_ver_item.cc:235
@@ -1296,14 +1296,14 @@ msgid "Description: "
 msgstr "描述："
 
 #: src/cmdline/cmdline_show.cc:423
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to locate package %s"
-msgstr "无法打开 %s"
+msgstr "无法定位软件包 %s"
 
 #: src/cmdline/cmdline_show.cc:436
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern %s"
-msgstr "无法打开 %s"
+msgstr "无法分析模式 %s"
 
 #: src/cmdline/cmdline_simulate.cc:37
 #, c-format
@@ -1358,7 +1358,6 @@ msgid "UNAVAILABLE"
 msgstr "不可用"
 
 #: src/desc_parse.cc:267
-#, fuzzy
 msgid "Tags"
 msgstr "标签"
 
@@ -1431,9 +1430,8 @@ msgid " [ %i%% ]"
 msgstr " [ %i%% ]"
 
 #: src/download_list.cc:342 src/download_screen.cc:67
-#, fuzzy
 msgid "Abort"
-msgstr "放弃。\n"
+msgstr "放弃"
 
 #: src/download_list.cc:400
 msgid "[IGNORED]"
@@ -1458,7 +1456,7 @@ msgstr "无法打开文件以写入"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
-msgstr ""
+msgstr "无法查阅您的主目录，保存到 /tmp/function_pkgs！"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -1521,19 +1519,19 @@ msgid "Error writing state file"
 msgstr "写入状态文件时发生错误"
 
 #: src/generic/apt/aptcache.cc:610
-#, fuzzy, c-format
+#, c-format
 msgid "failed to remove %s"
-msgstr "无法打开 %s"
+msgstr "无法删除 %s"
 
 #: src/generic/apt/aptcache.cc:617
 #, c-format
 msgid "failed to rename %s to %s"
-msgstr ""
+msgstr "无法将 %s 改名为 %s"
 
 #: src/generic/apt/aptcache.cc:625
-#, fuzzy, c-format
+#, c-format
 msgid "couldn't replace %s with %s"
-msgstr "无法替代旧的状态文件"
+msgstr "无法用 %s 代替 %s"
 
 #: src/generic/apt/aptcache.cc:1117
 msgid "Unable to correct dependencies, some packages cannot be installed"
@@ -1552,9 +1550,9 @@ msgid "You may want to update the package lists to correct these missing files"
 msgstr "您可能需要更新软件包列表来解决缺少这些文件的问题"
 
 #: src/generic/apt/apt.cc:171
-#, fuzzy, c-format
+#, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
-msgstr "无法用新的配置文件代替 %s"
+msgstr "%s 可读但不可写；无法写入配置文件。"
 
 #: src/generic/apt/apt.cc:209
 #, c-format
@@ -1566,12 +1564,13 @@ msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
 msgstr ""
+"无法锁定缓存文件。正在以只读方式打开；您对软件包状态所作的任何改变都不会被保"
+"存！"
 
 #: src/generic/apt/download_install_manager.cc:53
-#, fuzzy
 msgid ""
 "The package cache is not available; unable to download and install packages."
-msgstr "软件包 cache 不可用。"
+msgstr "软件包 cache 不可用；无法下载并安装软件包。"
 
 #: src/generic/apt/download_install_manager.cc:69
 #: src/generic/apt/download_update_manager.cc:77
@@ -1587,9 +1586,8 @@ msgid "Unable to correct for unavailable packages"
 msgstr "无法修正不可用的软件包"
 
 #: src/generic/apt/download_install_manager.cc:141
-#, fuzzy
 msgid "A package failed to install.  Trying to recover:"
-msgstr "啊！安装软件包时出现某些坏情况。正在试图恢复："
+msgstr "软件包安装失败。正在试图恢复："
 
 #: src/generic/apt/download_install_manager.cc:165
 msgid ""
@@ -1605,9 +1603,8 @@ msgid "Couldn't clean out list directories"
 msgstr "无法清空列表目录"
 
 #: src/generic/apt/download_update_manager.cc:122
-#, fuzzy
 msgid "Couldn't rebuild package cache"
-msgstr "无法读取软件包源列表"
+msgstr "无法重建软件包缓存"
 
 #: src/generic/apt/log.cc:52
 #, c-format
@@ -1615,9 +1612,9 @@ msgid "Unable to open %s to log actions"
 msgstr "无法打开 %s 来记录动作"
 
 #: src/generic/apt/log.cc:64
-#, fuzzy, c-format
+#, c-format
 msgid "Error generating local time (%s)"
-msgstr "将依赖关系解决状态写入文件 %s 时发生错误"
+msgstr "生成本地时间(%s)时错误"
 
 #: src/generic/apt/log.cc:68
 msgid "log report"
@@ -1644,9 +1641,9 @@ msgid "%sB of disk space will be used\n"
 msgstr "将要占用 %sB 的磁盘空间\n"
 
 #: src/generic/apt/log.cc:77
-#, fuzzy, c-format
+#, c-format
 msgid "%sB of disk space will be freed\n"
-msgstr "将要占用 %sB 的磁盘空间\n"
+msgstr "将要释放 %sB 的磁盘空间\n"
 
 #: src/generic/apt/log.cc:87
 #, c-format
@@ -1715,119 +1712,101 @@ msgstr ""
 "日志完成。\n"
 
 #: src/generic/apt/matchers.cc:682
-#, fuzzy
 msgid "Automatically Installed"
-msgstr "自动安装"
+msgstr "已自动安装"
 
 #: src/generic/apt/matchers.cc:704 src/generic/apt/matchers.cc:893
-#, fuzzy
 msgid "Broken"
-msgstr "#损坏"
+msgstr "损坏"
 
 #: src/generic/apt/matchers.cc:891
-#, fuzzy
 msgid "Unchanged"
-msgstr "%s 个包已改变"
+msgstr "没有改变"
 
 #: src/generic/apt/matchers.cc:895
 msgid "Remove [unused]"
-msgstr ""
+msgstr "删除[无用的]"
 
 #: src/generic/apt/matchers.cc:897
 msgid "Hold [auto]"
-msgstr ""
+msgstr "保持[自动]"
 
 #: src/generic/apt/matchers.cc:899
-#, fuzzy
 msgid "Install [auto]"
-msgstr "安装(^I)"
+msgstr "安装 [自动]"
 
 #: src/generic/apt/matchers.cc:901
-#, fuzzy
 msgid "Remove [auto]"
-msgstr "删除(^R)"
+msgstr "删除 [自动]"
 
 #: src/generic/apt/matchers.cc:903
-#, fuzzy
 msgid "Downgrade"
-msgstr "已下载"
+msgstr "降级"
 
 #: src/generic/apt/matchers.cc:905
-#, fuzzy
 msgid "Hold"
-msgstr "保持(^H)"
+msgstr "保持"
 
 #: src/generic/apt/matchers.cc:907
-#, fuzzy
 msgid "Reinstall"
 msgstr "重新安装"
 
 #: src/generic/apt/matchers.cc:909
-#, fuzzy
 msgid "Install"
-msgstr "安装(^I)"
+msgstr "安装"
 
 #: src/generic/apt/matchers.cc:911
-#, fuzzy
 msgid "Remove"
-msgstr "删除(^R)"
+msgstr "删除"
 
 #: src/generic/apt/matchers.cc:913
-#, fuzzy
 msgid "Upgrade"
 msgstr "升级"
 
 #: src/generic/apt/matchers.cc:933
-#, fuzzy
 msgid "Keep"
-msgstr "保持(^K)"
+msgstr "保持"
 
 #: src/generic/apt/matchers.cc:959
-#, fuzzy
 msgid "Virtual"
 msgstr "虚拟"
 
 #: src/generic/apt/matchers.cc:980
-#, fuzzy
 msgid "Installed"
 msgstr "已安装"
 
 #: src/generic/apt/matchers.cc:1002
-#, fuzzy
 msgid "Essential"
-msgstr "核心的："
+msgstr "核心的"
 
 #: src/generic/apt/matchers.cc:1021
 msgid "Config Files Remain"
-msgstr ""
+msgstr "配置文件保留"
 
 #: src/generic/apt/matchers.cc:1387
 msgid "Garbage"
-msgstr ""
+msgstr "垃圾"
 
 #: src/generic/apt/matchers.cc:1711
-#, fuzzy
 msgid "No reverse dependencies"
-msgstr "无法解决依赖关系。"
+msgstr "无反向依赖关系"
 
 #: src/generic/apt/matchers.cc:1777
-#, fuzzy
 msgid "New Package"
-msgstr "新建软件包视图(^V)"
+msgstr "新软件包"
 
 #: src/generic/apt/matchers.cc:1796
-#, fuzzy
 msgid "Upgradable"
-msgstr "标记可升级的(^U)"
+msgstr "可升级"
 
 #: src/generic/apt/matchers.cc:1920
 #, c-format
 msgid "Unterminated literal string after %s"
-msgstr ""
+msgstr "无法对 %s 之后的未结束的文字字符串"
 
 #: src/generic/apt/matchers.cc:1980
 msgid "Unmatched '('"
-msgstr "不匹配“(”"
+msgstr "不匹配的“(”"
 
 #: src/generic/apt/matchers.cc:2113 src/generic/apt/matchers.cc:2186
 #, c-format
@@ -1854,9 +1833,8 @@ msgid "Unknown pattern type: %c"
 msgstr "未知的模式类型：%c"
 
 #: src/generic/apt/matchers.cc:2272
-#, fuzzy
 msgid "Can't search for \"\""
-msgstr "搜索："
+msgstr "无法搜索“”"
 
 #: src/generic/apt/matchers.cc:2300
 msgid "Unexpected empty expression"
@@ -1920,11 +1898,11 @@ msgstr "发现组 %s 的多个描述，忽略其中一个"
 
 #: src/generic/apt/tags.cc:214 src/generic/apt/tags.cc:221
 msgid "Building tag database"
-msgstr ""
+msgstr "创建标签数据库"
 
 #: src/generic/apt/tags.cc:253
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
+msgstr "无法读取 debtags 关键词表，可能没有安装 debtags？"
 
 #: src/generic/apt/tasks.cc:283
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -1933,27 +1911,26 @@ msgstr "无法打开 /usr/share/tasksel/debian-tasks.desc"
 #: src/generic/apt/tasks.cc:290 src/generic/apt/tasks.cc:332
 #: src/generic/apt/tasks.cc:334
 msgid "Reading task descriptions"
-msgstr "正在读取任务描述"
+msgstr "正在读取软件集说明档"
 
 #: src/generic/util/temp.cc:63 src/generic/util/temp.cc:128
 #: src/generic/util/temp.cc:142
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
-msgstr ""
+msgstr "无法为模板“%s”创建临时文件夹：%s"
 
 #: src/generic/util/temp.cc:137
-#, fuzzy
 msgid "Unknown error"
-msgstr "未知"
+msgstr "未知错误"
 
 #: src/generic/util/threads.cc:32
 msgid "Not enough resources to create thread"
-msgstr ""
+msgstr "没有足够的资源来创建线程"
 
 #: src/load_config.cc:46
 #, c-format
 msgid "Unrecognized color name \"%s\""
-msgstr "无法识别的颜色名 “%s”"
+msgstr "无法识别的颜色名“%s”"
 
 #: src/load_config.cc:73
 #, c-format
@@ -1972,7 +1949,7 @@ msgstr "风格定义组中无效的无标签条目：“%s”"
 
 #: src/load_config.cc:125
 msgid "The default color may only be used as a background."
-msgstr ""
+msgstr "默认的颜色可以只被用做背景。"
 
 #: src/load_config.cc:142
 #, c-format
@@ -1992,22 +1969,22 @@ msgstr "忽略无效快捷键绑定“%s”->“%s”"
 #: src/load_grouppolicy.cc:258
 #, c-format
 msgid "Expected policy identifier, got '%c'"
-msgstr ""
+msgstr "需要策略标识符，却得到“%c”"
 
 #: src/load_grouppolicy.cc:270
 #, c-format
 msgid "Expected ',' or '(', got '%c'"
-msgstr ""
+msgstr "需要“,”或“(”，却得到“%c”"
 
 #: src/load_grouppolicy.cc:277
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown grouping policy \"%s\""
-msgstr "未知的优先级：%s"
+msgstr "未知的分组策略“%s”"
 
 #: src/load_grouppolicy.cc:284
 #, c-format
 msgid "Terminal policy \"%s\" should be the last policy in the list"
-msgstr ""
+msgstr "终极策略“%s”应该是列表中的最后一个策略"
 
 #: src/load_grouppolicy.cc:367
 #, c-format
@@ -2028,17 +2005,15 @@ msgid "By-status grouping policies take no arguments"
 msgstr "按状态分组策略不需要参数"
 
 #: src/load_grouppolicy.cc:412
-#, fuzzy
 msgid "Expected '(' after 'filter'"
-msgstr "无法打开 %s"
+msgstr "“过滤器”之后要有“(”"
 
 #: src/load_grouppolicy.cc:449
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern at '%s'"
-msgstr "无法打开 %s"
+msgstr "无法在“%s”中分析模式"
 
 #: src/load_grouppolicy.cc:454
-#, fuzzy
 msgid "Exactly one filter must be provided as an argument to a filter policy"
 msgstr "必须提供恰好一个过滤器名称作为过滤器策略的参数"
 
@@ -2064,44 +2039,41 @@ msgstr "按优先级分组策略不需要参数"
 
 #: src/load_grouppolicy.cc:549
 msgid "Task grouping policies take no arguments"
-msgstr "按任务分组策略不需要参数"
+msgstr "按软件集分组策略不需要参数"
 
 #: src/load_grouppolicy.cc:562
-#, fuzzy
 msgid "Expected no more than one argument to a tag grouping policy"
-msgstr "提供给按部分分组策略的参数太多了"
+msgstr "预料的标签分组策略的参数不超过一个"
 
 #: src/load_grouppolicy.cc:577
 msgid "Expected '(' after 'pattern'"
-msgstr ""
+msgstr "“模式”之后要有“(”"
 
 #: src/load_grouppolicy.cc:585
 msgid "Missing arguments to 'pattern'"
-msgstr ""
+msgstr "缺少关于“模式”的参数"
 
 #: src/load_grouppolicy.cc:606
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern after \"%s\""
-msgstr "无法打开 %s"
+msgstr "无法在“%s”后分析模式"
 
 #: src/load_grouppolicy.cc:628
 #, c-format
 msgid "Unexpectedly empty tree title after \"%s\""
-msgstr ""
+msgstr "“%s”之后出现意外的空白的树型标题"
 
 #: src/load_grouppolicy.cc:639
-#, fuzzy
 msgid "Unmatched '(' in pattern grouping policy"
-msgstr "分组策略描述中不匹配的“(”"
+msgstr "模式分组策略中不匹配的“(”"
 
 #: src/load_pkgview.cc:58
 msgid "Couldn't parse layout: No column format specified for static item"
 msgstr "无法分析布局：静态项的列宽度未指定"
 
 #: src/load_pkgview.cc:91
-#, fuzzy
 msgid "Couldn't parse layout: encoding error in column descriptor"
-msgstr "无法分析布局：未指定行数"
+msgstr "无法分析布局：列标识符编码错误"
 
 #: src/load_pkgview.cc:112
 #, c-format
@@ -2123,16 +2095,15 @@ msgstr "无法分析布局：未指定高度"
 #: src/load_pkgview.cc:174 src/load_pkgview.cc:192
 #, c-format
 msgid "Unknown alignment type '%s'"
-msgstr "未知的对齐类型‘%s’"
+msgstr "未知的对齐类型“%s”"
 
 #: src/load_sortpolicy.cc:51
 msgid "By-name sorting policies take no arguments"
 msgstr "按名称排序的策略不需要参数"
 
 #: src/load_sortpolicy.cc:64
-#, fuzzy
 msgid "By-version sorting policies take no arguments"
-msgstr "按优先级排序的策略不需要参数"
+msgstr "按版本排序的策略不需要参数"
 
 #: src/load_sortpolicy.cc:77
 msgid "By-installed size sorting policies take no arguments"
@@ -2158,12 +2129,12 @@ msgstr "无效的排序策略类型“%s”"
 #: src/main.cc:82
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
-msgstr ""
+msgstr "无法对“%ls”之后的多字节字符串进行解码"
 
 #: src/main.cc:91
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
-msgstr ""
+msgstr "无法对“%s”之后的宽字符串进行解码"
 
 #: src/main.cc:99
 #, c-format
@@ -2201,7 +2172,7 @@ msgstr "libsigc++ 版本：%s\n"
 #: src/main.cc:115
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
-msgstr "用法： aptitude [-s 文件名] [-u|-i]"
+msgstr "用法： aptitude [-S 文件名] [-u|-i]"
 
 #: src/main.cc:117
 #, c-format
@@ -2316,7 +2287,7 @@ msgstr " download     - 下载软件包的 .deb 文件\n"
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
-msgstr ""
+msgstr " reinstall    - 下载并(可能)重新安装一个现在已经安装了的软件包\n"
 
 #: src/main.cc:144
 #, c-format
@@ -2407,7 +2378,7 @@ msgstr " -t [release]   设置将要安装的软件包的发布版本\n"
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
-msgstr ""
+msgstr " -q            在命令行状态下，不显示进度条。\n"
 
 #: src/main.cc:160
 #, c-format
@@ -2444,14 +2415,14 @@ msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  这个 aptitude 没有超级牛力。\n"
 
 #: src/main.cc:299
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a number after -q=\n"
-msgstr "无法打开 %s"
+msgstr "在 -q= 之后需要一个数字\n"
 
 #: src/main.cc:308
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a number after -q=, got %s\n"
-msgstr "无法打开 %s"
+msgstr "在 -q= 之后需要一个数字，但却得到 %s\n"
 
 #: src/main.cc:331
 #, c-format
@@ -2483,7 +2454,7 @@ msgstr "未知的命令“%s”\n"
 #: src/main.cc:516 src/main.cc:557
 #, c-format
 msgid "Uncaught exception: %s\n"
-msgstr ""
+msgstr "未知的例外：%s\n"
 
 #: src/main.cc:520 src/main.cc:561
 #, c-format
@@ -2491,24 +2462,24 @@ msgid ""
 "Backtrace:\n"
 "%s"
 msgstr ""
+"回溯：\n"
+"%s"
 
 #: src/menu_text_layout.cc:36 src/ui.cc:239 src/view_changelog.cc:55
 msgid "Search for:"
 msgstr "搜索："
 
 #: src/menu_text_layout.cc:68 src/view_changelog.cc:67
-#, fuzzy
 msgid "Search backwards for:"
-msgstr "搜索："
+msgstr "向后搜索："
 
 #: src/menu_tree.cc:204
 msgid "Search for: "
 msgstr "搜索："
 
 #: src/menu_tree.cc:221
-#, fuzzy
 msgid "Search backwards for: "
-msgstr "搜索："
+msgstr "向前搜索："
 
 #: src/mine/cmine.cc:106 src/mine/cmine.cc:148 src/ui.cc:1419
 msgid "Minesweeper"
@@ -2528,9 +2499,9 @@ msgid "seconds"
 msgstr "秒"
 
 #: src/mine/cmine.cc:120
-#, fuzzy, c-format
+#, c-format
 msgid "    %s in %d %s"
-msgstr "扫雷者    %s 在 %d %s"
+msgstr "    %s 在 %d %s"
 
 #: src/mine/cmine.cc:121
 msgid "Won"
@@ -2551,19 +2522,16 @@ msgid "Could not load game from %s"
 msgstr "无法从 %s 中载入游戏"
 
 #: src/mine/cmine.cc:247
-#, fuzzy
 msgid "The board height must be a positive integer"
-msgstr "棋盘高度必须是数字"
+msgstr "棋盘高度必须是正整数"
 
 #: src/mine/cmine.cc:259
-#, fuzzy
 msgid "The board width must be a positive integer"
-msgstr "棋盘宽度必须是数字"
+msgstr "棋盘宽度必须是正整数"
 
 #: src/mine/cmine.cc:271
-#, fuzzy
 msgid "Invalid mine count; please enter a positive integer"
-msgstr "非法响应；请输入 'y' 或者 'n'。"
+msgstr "不合法的地雷数；请输入一个正整数"
 
 #: src/mine/cmine.cc:291
 msgid "Setup custom game"
@@ -2711,7 +2679,7 @@ msgstr "mine-help.txt"
 
 #: src/mine/cmine.cc:672
 msgid "Encoding of mine-help.txt|UTF-8"
-msgstr ""
+msgstr "mine-help.txt 的编码|UTF-8"
 
 #: src/pkg_columnizer.cc:83
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
@@ -2835,9 +2803,8 @@ msgid "hold"
 msgstr "保持"
 
 #: src/pkg_columnizer.cc:293
-#, fuzzy
 msgid "forbidden upgrade"
-msgstr "升级 %d 个包"
+msgstr "被禁止的升级"
 
 #: src/pkg_columnizer.cc:295
 msgid "purge"
@@ -2927,7 +2894,7 @@ msgstr "HN 太长"
 #: src/pkg_columnizer.cc:652 src/pkg_columnizer.cc:661
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
-msgstr ""
+msgstr "在“%ls”之后无法解析软件包显示格式"
 
 #: src/pkg_columnizer.cc:668
 msgid "Internal error: Default column string is unparsable"
@@ -2940,9 +2907,9 @@ msgid ""
 "other packages. These packages provide an easy way to select a predefined "
 "set of packages for a specialized task."
 msgstr ""
-"设置您的计算机以完成特定任务的一组软件包\n"
-" “任务”部分的软件包不含任何文件；它们仅仅依赖于其它的软件包。这些软件包提供了"
-"一种简单的方法来选择一组完成特定任务的预定义软件包。"
+"设置您的计算机以完成特定软件集的一组软件包\n"
+" “软件集”部分的软件包不含任何文件；它们仅仅依赖于其它的软件包。这些软件包提供"
+"了一种简单的方法来选择一组完成特定任务的预定义软件包。"
 
 #: src/pkg_grouppolicy.cc:163
 msgid ""
@@ -3147,8 +3114,8 @@ msgid ""
 msgstr ""
 "Perl 解释器以及库\n"
 " “perl”部分的软件包提供 Perl 编程语言和许多基于该语言的第三方软件库。除非您是"
-"一个 Perl 程序员，您不需要显式地从该部分选择安装软件包；软件包系统将在需要的"
-"时候自动安装它们。"
+"一个 Perl 程序员，您不需要特地从该部分选择安装软件包；软件包系统将在需要的时"
+"候自动安装它们。"
 
 #: src/pkg_grouppolicy.cc:184
 msgid ""
@@ -3302,9 +3269,9 @@ msgid ""
 "text."
 msgstr ""
 "文本处理工具\n"
-" “文本”部分的软件包包括文本管理器和处理器，拼写检查器，字典程序，转换不同字符"
-"编码和文本文件格式(如 Unix 和 Dos)的工具，文本故事器和美化打印程序，以及其它"
-"和纯文本有关的软件。"
+" “文本”部分的软件包包括文本过滤器和处理器，拼写检查器，字典程序，转换不同字符"
+"编码和文本文件格式(如 Unix 和 Dos)的工具，文本格式处理程序和美化打印程序，以"
+"及其它和纯文本有关的软件。"
 
 #: src/pkg_grouppolicy.cc:197
 msgid ""
@@ -3428,11 +3395,11 @@ msgstr ""
 
 #: src/pkg_grouppolicy.cc:221
 msgid "Tasks/Tasks"
-msgstr "任务/任务"
+msgstr "软件集/软件集"
 
 #: src/pkg_grouppolicy.cc:221 src/pkg_grouppolicy.cc:955
 msgid "Tasks"
-msgstr "任务"
+msgstr "软件集"
 
 #: src/pkg_grouppolicy.cc:227
 msgid "Unknown/Unknown"
@@ -3646,7 +3613,7 @@ msgstr "优先级：%s"
 
 #: src/pkg_grouppolicy.cc:779
 msgid "UNCATEGORIZED"
-msgstr ""
+msgstr "未分类"
 
 #: src/pkg_grouppolicy.cc:898
 msgid "End-user"
@@ -3674,7 +3641,7 @@ msgstr "杂项"
 
 #: src/pkg_grouppolicy.cc:904
 msgid "Unrecognized tasks"
-msgstr "无法识别的任务"
+msgstr "无法识别的软件集"
 
 #: src/pkg_grouppolicy.cc:956
 msgid ""
@@ -3683,37 +3650,39 @@ msgid ""
 "predefined set of packages for a particular purpose."
 msgstr ""
 "\n"
-" 任务是一组软件包，它们提供了一种简单的方法来选择一组预定义的完成特定任务的软"
-"件包。"
+" 软件集是一组软件包，它们提供了一种简单的方法来选择一组预定义的完成特定任务的"
+"软件包。"
 
 #: src/pkg_grouppolicy.cc:1079
 #, c-format
 msgid "Bad number in format string: %ls"
-msgstr ""
+msgstr "格式字符串里有错误的号码：%ls"
 
 #: src/pkg_grouppolicy.cc:1088
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
-msgstr ""
+msgstr "匹配索引必须大于等于 1，而不是“%s”"
 
 #: src/pkg_grouppolicy.cc:1106
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
-msgstr ""
+msgstr "匹配索引 %ls 太大了；可用的组为 (%s)"
 
 #: src/pkg_grouppolicy.cc:1315
 msgid "TAGLESS PACKAGES"
-msgstr ""
+msgstr "没有标签的软件包"
 
 #: src/pkg_grouppolicy.cc:1316
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags."
 msgstr ""
+"\n"
+"这些软件包还没有用 debtags 分类。"
 
 #: src/pkg_grouppolicy.cc:1341
 msgid "MISSING TAG"
-msgstr ""
+msgstr "标签缺失"
 
 #: src/pkg_info_screen.cc:118
 msgid "Compressed size: "
@@ -3833,9 +3802,9 @@ msgid "Building view"
 msgstr "编译视图"
 
 #: src/pkg_tree.cc:237
-#, fuzzy, c-format
+#, c-format
 msgid "No packages matched the pattern \"%ls\"."
-msgstr "没有软件包匹配模式“%s”。"
+msgstr "没有软件包匹配模式“%ls”。"
 
 #: src/pkg_tree.cc:259
 msgid "Enter the new package tree limit: "
@@ -3851,17 +3820,15 @@ msgstr "为此显示输入新的软件包排序机制："
 
 #: src/pkg_view.cc:149
 msgid "Couldn't transcode column definition"
-msgstr ""
+msgstr "无法给列定义转码"
 
 #: src/pkg_view.cc:156
-#, fuzzy
 msgid "Couldn't parse column definition"
-msgstr "无法打开文件以写入"
+msgstr "无法解析列定义"
 
 #: src/pkg_view.cc:185
-#, fuzzy
 msgid "Encoding error in long description."
-msgstr "排序策略描述中不匹配的“(”"
+msgstr "详细描述中有编码错误。"
 
 #: src/pkg_view.cc:415
 msgid "make_package_view: error in arguments -- two main widgets??"
@@ -4082,9 +4049,8 @@ msgid "No resolution found."
 msgstr "未发现任何解决方案。"
 
 #: src/solution_dialog.cc:114 src/solution_screen.cc:490
-#, fuzzy
 msgid "Resolving dependencies..."
-msgstr "无法解决依赖关系。"
+msgstr "依赖关系分析中..."
 
 #: src/solution_dialog.cc:169
 msgid "Previous"
@@ -4103,54 +4069,54 @@ msgid "Close"
 msgstr "关闭"
 
 #: src/solution_fragment.cc:104
-#, fuzzy, c-format
+#, c-format
 msgid "%s depends upon %s"
-msgstr "依赖于"
+msgstr "%s 依赖于 %s"
 
 #: src/solution_fragment.cc:107
-#, fuzzy, c-format
+#, c-format
 msgid "%s pre-depends upon %s"
-msgstr "预依赖于"
+msgstr "%s 预依赖于 %s"
 
 #: src/solution_fragment.cc:110
-#, fuzzy, c-format
+#, c-format
 msgid "%s suggests %s"
-msgstr "建议"
+msgstr "%s 建议 %s"
 
 #: src/solution_fragment.cc:113 src/solution_item.cc:583
-#, fuzzy, c-format
+#, c-format
 msgid "%s recommends %s"
-msgstr "推荐"
+msgstr "%s 推荐 %s"
 
 #: src/solution_fragment.cc:116
-#, fuzzy, c-format
+#, c-format
 msgid "%s conflicts with %s"
-msgstr "冲突"
+msgstr "%s 冲突 %s"
 
 #: src/solution_fragment.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "%s replaces %s"
-msgstr "替代"
+msgstr "%s 替代 %s"
 
 #: src/solution_fragment.cc:122
-#, fuzzy, c-format
+#, c-format
 msgid "%s obsoletes %s"
-msgstr "过期"
+msgstr "%s 过期 %s"
 
 #: src/solution_fragment.cc:135
-#, fuzzy, c-format
+#, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
-msgstr "冲突"
+msgstr "%s 和 %s 冲突 [由 %s %s 提供]"
 
 #: src/solution_fragment.cc:145
-#, fuzzy, c-format
+#, c-format
 msgid "Removing %s"
-msgstr "重新配置 %s \n"
+msgstr "%s 删除中"
 
 #: src/solution_fragment.cc:147
 #, c-format
 msgid "Installing %s %s (%s)"
-msgstr ""
+msgstr "正在安装 %s %s (%s)"
 
 #: src/solution_fragment.cc:216
 msgid "%BRemove%b the following packages:%n"
@@ -4174,12 +4140,12 @@ msgstr "%B升级%b 下列软件包：%n"
 
 #: src/solution_fragment.cc:274
 msgid "%BDowngrade%b the following packages:%n"
-msgstr "%B将级%b 下列软件包：%n"
+msgstr "%B降级%b 下列软件包：%n"
 
 #: src/solution_fragment.cc:291
-#, fuzzy, c-format
+#, c-format
 msgid "Leave the following dependencies unresolved:%n"
-msgstr "%B删除%b 下列软件包：%n"
+msgstr "保留下列未解决的依赖关系：%n"
 
 #: src/solution_fragment.cc:299
 #, c-format
@@ -4189,82 +4155,74 @@ msgstr "分数是 %d"
 #: src/solution_item.cc:91
 #, c-format
 msgid "Remove %F [%s (%s)]"
-msgstr ""
+msgstr "删除 %F [%s (%s)]"
 
 #: src/solution_item.cc:98
 #, c-format
 msgid "Install %F [%s (%s)]"
-msgstr ""
+msgstr "安装 %F [%s (%s)]"
 
 #: src/solution_item.cc:106
-#, fuzzy, c-format
+#, c-format
 msgid "Cancel the installation of %F"
-msgstr "继续安装"
+msgstr "取消 %F 的安装"
 
 #: src/solution_item.cc:109
 #, c-format
 msgid "Cancel the removal of %F"
-msgstr ""
+msgstr "取消删除 %F"
 
 #: src/solution_item.cc:112
 #, c-format
 msgid "Keep %F at version %s (%s)"
-msgstr ""
+msgstr "保持 %F 在版本 %s (%s)"
 
 #: src/solution_item.cc:120
 #, c-format
 msgid "Upgrade %F [%s (%s) -> %s (%s)]"
-msgstr ""
+msgstr "升级 %F [%s (%s) -> %s (%s)]"
 
 #: src/solution_item.cc:129
-#, fuzzy, c-format
+#, c-format
 msgid "Downgrade %F [%s (%s) -> %s (%s)]"
-msgstr "已下载 %sB，耗时 %s (%sB/s)。"
+msgstr "降级 %F [%s (%s) -> %s (%s)]"
 
 #: src/solution_item.cc:587
-#, fuzzy, c-format
+#, c-format
 msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
-msgstr "%B删除%b 下列软件包：%n"
+msgstr "-> 不处理“%s 推荐 %s”中的依赖关系。"
 
 #: src/solution_screen.cc:149
-#, fuzzy
 msgid "The following actions will resolve this dependency:"
-msgstr "下列动作将解决这些依赖关系："
+msgstr "下列动作将解决这一依赖关系："
 
 #: src/solution_screen.cc:235
-#, fuzzy
 msgid "Remove the following packages:"
-msgstr "%B删除%b 下列软件包：%n"
+msgstr "删除下列软件包："
 
 #: src/solution_screen.cc:246
-#, fuzzy
 msgid "Keep the following packages at their current version:"
-msgstr "%B保持%b 下列软件包于其当前版本：%n"
+msgstr "保持下列软件包于其当前版本："
 
 #: src/solution_screen.cc:257
-#, fuzzy
 msgid "Install the following packages:"
-msgstr "%B安装%b 下列软件包：%n"
+msgstr "安装下列软件包："
 
 #: src/solution_screen.cc:268
-#, fuzzy
 msgid "Upgrade the following packages:"
-msgstr "%B升级%b 下列软件包：%n"
+msgstr "升级下列软件包："
 
 #: src/solution_screen.cc:279
-#, fuzzy
 msgid "Downgrade the following packages:"
-msgstr "%B将级%b 下列软件包：%n"
+msgstr "降级下列软件包："
 
 #: src/solution_screen.cc:292
-#, fuzzy
 msgid "Leave the following recommendations unresolved:"
-msgstr "%B删除%b 下列软件包：%n"
+msgstr " 不解决下列推荐的软件包："
 
 #: src/solution_screen.cc:463
-#, fuzzy
 msgid "No broken packages."
-msgstr "按'-'卸载软件包"
+msgstr "无破损的软件包。"
 
 #: src/trust.cc:17 src/trust.cc:19
 msgid "WARNING"
@@ -4281,7 +4239,7 @@ msgstr ""
 
 #: src/ui.cc:217
 msgid "Er, there aren't any errors, this shouldn't have happened.."
-msgstr "恩，没有任何错误，这不应该发生.."
+msgstr "嗯，没有任何错误，这不应该发生.."
 
 #: src/ui.cc:223
 msgid "E:"
@@ -4297,15 +4255,17 @@ msgid ""
 "subsequent changes will not be saved unless you stop all other running apt-"
 "based programs and select \"Become root\" from the Actions menu."
 msgstr ""
+"注意：软件包缓存是用只读模式打开！本次更改和其他更改将不会被保留，除非你暂停"
+"其他给予 apt 的程序，并且在动作菜单中选择 \"变为 root\"。"
 
 #: src/ui.cc:322
 msgid "Never display this message again."
-msgstr ""
+msgstr "不要再显示此信息。"
 
 #: src/ui.cc:368
 msgid ""
 "You may not modify the state of any package while a download is underway."
-msgstr ""
+msgstr "在下载还在继续的时候，您不能修改任何软件包的状态。"
 
 #: src/ui.cc:399
 msgid "You already are root!"
@@ -4338,16 +4298,14 @@ msgid "View available packages and choose actions to perform"
 msgstr "查看可选软件包以及选择要执行的动作"
 
 #: src/ui.cc:731
-#, fuzzy
 msgid "Recommended Packages"
-msgstr "推荐"
+msgstr "推荐的软件包"
 
 #: src/ui.cc:732
 msgid "View packages that it is recommended that you install"
-msgstr ""
+msgstr "查看推荐您安装的软件包"
 
 #: src/ui.cc:733
-#, fuzzy
 msgid "Recommendations"
 msgstr "推荐"
 
@@ -4368,7 +4326,7 @@ msgstr "help-zh_CN.txt"
 
 #: src/ui.cc:862
 msgid "Encoding of help.txt|UTF-8"
-msgstr ""
+msgstr "help.txt 的编码|UTF-8"
 
 #: src/ui.cc:883
 msgid "README"
@@ -4376,59 +4334,57 @@ msgstr "README"
 
 #: src/ui.cc:885
 msgid "Encoding of README|UTF-8"
-msgstr ""
+msgstr "README 的编码|UTF-8"
 
 #: src/ui.cc:911
-#, fuzzy
 msgid "User's Manual"
-msgstr "用户手册(^M)"
+msgstr "用户手册"
 
 #: src/ui.cc:911
 msgid "Read the full user's manual of aptitude"
-msgstr ""
+msgstr "阅读 aptitude 的完整的用户手册"
 
 #: src/ui.cc:911
-#, fuzzy
 msgid "Manual"
-msgstr "标记为手动安装(^M)"
+msgstr "手册"
 
 #: src/ui.cc:945
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to stat \"%s\""
-msgstr "无法打开 %s"
+msgstr "无法获得“%s”的信息"
 
 #: src/ui.cc:951
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to remove \"%s\""
-msgstr "无法打开 %s"
+msgstr "无法删除“%s”"
 
 #: src/ui.cc:961
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to list files in \"%s\""
-msgstr "无法打开 %s"
+msgstr "无法列出“%s”中的文件"
 
 #: src/ui.cc:974
 #, c-format
 msgid "Failure closing directory \"%s\""
-msgstr ""
+msgstr "无法关闭文件夹“%s”"
 
 #: src/ui.cc:980
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to remove directory \"%s\""
-msgstr "无法打开 %s"
+msgstr "无法删除目录“%s”"
 
 #: src/ui.cc:990
 #, c-format
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
-msgstr ""
+msgstr "无法删除旧的临时文件夹；你需要手动删除 %s。"
 
 #: src/ui.cc:995
 #, c-format
 msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
 "hand."
-msgstr ""
+msgstr "不会删除 %s；你需要坚持该文件夹内的文件，然后手动删除。"
 
 #: src/ui.cc:1021
 #, c-format
@@ -4438,6 +4394,9 @@ msgid ""
 "remove this directory and all its contents?  If you select \"No\", you will "
 "not see this message again."
 msgstr ""
+"好像上一个版本的 aptitude 在 %s 中留了一些文件。这些文件基本上没什么用处了，"
+"可以安装的删除。%n%n你要删除这些目录和里面的内容吗？如果你选择“不”，你将不会"
+"再看到这条信息。"
 
 #: src/ui.cc:1063
 msgid "Downloading packages"
@@ -4464,7 +4423,7 @@ msgstr ""
 
 #: src/ui.cc:1104
 msgid "  %S*%N %s [version %s]%n"
-msgstr " %S*%n %s [版本号 %s]%n"
+msgstr " %S*%N %s [版本号 %s]%n"
 
 #: src/ui.cc:1110
 msgid "Really Continue"
@@ -4558,7 +4517,7 @@ msgstr ""
 
 #: src/ui.cc:1419 src/ui.cc:1914
 msgid "Waste time trying to find mines"
-msgstr "通过找地雷来消磨时间"
+msgstr "通过扫雷来消磨时间"
 
 #: src/ui.cc:1426 src/ui.cc:1486
 msgid "Cleaning while a download is in progress is not allowed"
@@ -4573,9 +4532,8 @@ msgid "Downloaded package files have been deleted"
 msgstr "下载的文件已经被删除"
 
 #: src/ui.cc:1483
-#, fuzzy
 msgid "The apt cache file is not available; cannot auto-clean."
-msgstr "软件包 cache 不可用。"
+msgstr "软件包 cache 不可用：无法 auto-clean 。"
 
 #: src/ui.cc:1509
 #, c-format
@@ -4597,19 +4555,17 @@ msgid "Ran out of time while trying to find a solution."
 msgstr "寻找解决方案时用时已尽。"
 
 #: src/ui.cc:1831 src/ui.cc:1833
-#, fuzzy
 msgid "Resolve Dependencies"
-msgstr "无法解决依赖关系。"
+msgstr "解决依赖关系"
 
 #: src/ui.cc:1832
-#, fuzzy
 msgid "Search for solutions to unsatisfied dependencies"
-msgstr "下列软件包存在未满足的依赖关系："
+msgstr "为未满足的依赖关系寻找解决方案"
 
 #: src/ui.cc:1844
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open %ls"
-msgstr "无法打开 %s"
+msgstr "无法打开 %ls"
 
 #: src/ui.cc:1850
 msgid "Error while dumping resolver state"
@@ -4673,7 +4629,7 @@ msgstr "玩扫雷游戏(^P)"
 
 #: src/ui.cc:1916
 msgid "^Become root"
-msgstr "变成 root(^B)"
+msgstr "变成 root (^B)"
 
 #: src/ui.cc:1917
 msgid ""
@@ -4798,105 +4754,93 @@ msgstr "显示选定软件包上的变更日志"
 
 #: src/ui.cc:1988
 msgid "^Examine Solution"
-msgstr ""
+msgstr "检查解决方案(^E)"
 
 #: src/ui.cc:1989
-#, fuzzy
 msgid "Examine the currently selected solution to the dependency problems."
-msgstr "这些依赖关系没有解决方案！"
+msgstr "检查当前选择的处理依赖问题的解决方案"
 
 #: src/ui.cc:1992
 msgid "Apply ^Solution"
-msgstr ""
+msgstr "应用解决方案(^S)"
 
 #: src/ui.cc:1993
 msgid "Perform the actions contained in the currently selected solution."
-msgstr ""
+msgstr "确认当前选择的解决方案中包含的动作。"
 
 #: src/ui.cc:1996
-#, fuzzy
 msgid "^Next Solution"
-msgstr "没有更多的解决方案了。"
+msgstr "下一个解决方案(^N)"
 
 #: src/ui.cc:1997
-#, fuzzy
 msgid "Select the next solution to the dependency problems."
-msgstr "这些依赖关系没有解决方案！"
+msgstr "选择解决此依赖问题的下一个方案。"
 
 #: src/ui.cc:2000
-#, fuzzy
 msgid "^Previous Solution"
-msgstr "到上一个解决方案"
+msgstr "前一个解决方案(^P)"
 
 #: src/ui.cc:2001
-#, fuzzy
 msgid "Select the previous solution to the dependency problems."
-msgstr "这些依赖关系没有解决方案！"
+msgstr "选择解决此依赖问题的前一个方案。"
 
 #: src/ui.cc:2004
-#, fuzzy
 msgid "^First Solution"
-msgstr "没有更多的解决方案了。"
+msgstr "第一个解决方案(^F)"
 
 #: src/ui.cc:2005
-#, fuzzy
 msgid "Select the first solution to the dependency problems."
-msgstr "这些依赖关系没有解决方案！"
+msgstr "选择解决此依赖问题的第一个方案。"
 
 #: src/ui.cc:2008
-#, fuzzy
 msgid "^Last Solution"
-msgstr "没有更多的解决方案了。"
+msgstr "最后一个解决方案(^L)"
 
 #: src/ui.cc:2009
-#, fuzzy
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
-msgstr "这些依赖关系没有解决方案！"
+msgstr "选择当前已经生成的解决此依赖问题的最后一个方案。"
 
 #: src/ui.cc:2015
 msgid "Toggle ^Rejected"
-msgstr ""
+msgstr "放弃(^R)"
 
 #: src/ui.cc:2016
 msgid "Toggle whether the currently selected action is rejected."
-msgstr ""
+msgstr "切换是否放弃当前选择的动作。"
 
 #: src/ui.cc:2020
 msgid "Toggle ^Approved"
-msgstr ""
+msgstr "确认(^A)"
 
 #: src/ui.cc:2021
-#, fuzzy
 msgid "Toggle whether the currently selected action is approved."
-msgstr "标记当前选择的软件包以删除"
+msgstr "切换当前选择的动作是否被允许。"
 
 #: src/ui.cc:2025
 msgid "^View Target"
-msgstr ""
+msgstr "查看目标(^V)"
 
 #: src/ui.cc:2026
 msgid "View the package which will be affected by the selected action"
-msgstr ""
+msgstr "查看会被所选的动作影响的软件包"
 
 #: src/ui.cc:2034
 msgid "^Find"
 msgstr "查找(^F)"
 
 #: src/ui.cc:2035
-#, fuzzy
 msgid "Search forwards"
-msgstr "搜索："
+msgstr "向前搜索"
 
 #: src/ui.cc:2038
 msgid "^Find Backwards"
-msgstr ""
+msgstr "向后查找(^F)"
 
 #: src/ui.cc:2039
-#, fuzzy
 msgid "Search backwards"
-msgstr "搜索："
+msgstr "向后搜索"
 
 #: src/ui.cc:2042
 msgid "Find ^Again"
@@ -4995,34 +4939,30 @@ msgid "Create a new default package view"
 msgstr "创建新的默认软件包视图"
 
 #: src/ui.cc:2108
-#, fuzzy
 msgid "Audit ^Recommendations"
-msgstr "推荐"
+msgstr "检查推荐结果(^R)"
 
 #: src/ui.cc:2109
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
-msgstr ""
+msgstr "查看推荐您安装，但是现在尚未安装的软件包。"
 
 #: src/ui.cc:2112
-#, fuzzy
 msgid "New ^Flat Package List"
-msgstr "新建软件包视图(^V)"
+msgstr "新建平面软件包列表(^F)"
 
 #: src/ui.cc:2113
 msgid "View all the packages on the system in a single uncategorized list"
-msgstr ""
+msgstr "在一个未分类的列表中查看系统中的所有的软件包"
 
 #: src/ui.cc:2116
-#, fuzzy
 msgid "New ^Debtags Browser"
-msgstr "新建分类浏览器(^B)"
+msgstr "新建 Debtags 浏览器(^D)"
 
 #: src/ui.cc:2118
-#, fuzzy
 msgid "Browse packages using Debtags data"
-msgstr "分类浏览软件包"
+msgstr "用 Debtags 的信息来浏览软件包"
 
 #: src/ui.cc:2121
 msgid "New Categorical ^Browser"
@@ -5085,9 +5025,8 @@ msgid "Actions"
 msgstr "动作"
 
 #: src/ui.cc:2280
-#, fuzzy
 msgid "Resolver"
-msgstr "删除(^R)"
+msgstr "解释器"
 
 #: src/ui.cc:2281
 msgid "Search"
@@ -5106,19 +5045,19 @@ msgid "Help"
 msgstr "帮助"
 
 #: src/ui.cc:2349
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
 "Pkgs"
-msgstr "%s：菜单  %s：帮助  %s：退出  %s：更新  %s：下载/安装包"
+msgstr "%ls：菜单  %ls：帮助  %ls：退出  %ls：更新  %ls：下载/安装/删除软件包"
 
 #: src/ui.cc:2690 src/vscreen/vscreen.cc:723
 msgid "yes_key"
-msgstr "是_按键"
+msgstr "y"
 
 #: src/ui.cc:2691 src/vscreen/vscreen.cc:724
 msgid "no_key"
-msgstr "否_按键"
+msgstr "n"
 
 #: src/view_changelog.cc:150
 #, c-format
@@ -5126,9 +5065,8 @@ msgid "%s changes"
 msgstr "%s 个包已改变"
 
 #: src/view_changelog.cc:151
-#, fuzzy
 msgid "View the list of changes made to this Debian package."
-msgstr "查看该程序每一版本中所做的重大修改"
+msgstr "查看这个 Debian 软件包的修订列表"
 
 #: src/view_changelog.cc:215
 msgid "You can only view changelogs of official Debian packages."
@@ -5136,54 +5074,53 @@ msgstr "您只能查看官方 Debian 软件包的变更日志。"
 
 #: src/view_changelog.cc:225
 msgid "Downloading Changelog"
-msgstr "正在下载 "
+msgstr "正在下载变更日志"
 
 #: src/view_changelog.cc:227
 msgid "Download Changelog"
-msgstr "下载变更日志 "
+msgstr "下载变更日志"
 
 #: src/vscreen/config/column_definition.cc:105
 #: src/vscreen/config/column_definition.cc:123
 msgid "Formatting marker with missing format code"
-msgstr ""
+msgstr "格式化装置缺少格式化代码"
 
 #: src/vscreen/config/column_definition.cc:132
 #: src/vscreen/config/column_definition.cc:178
 #, c-format
 msgid "Bad number in format string: '%ls'"
-msgstr ""
+msgstr "格式字符串里有错误的数字：%ls"
 
 #: src/vscreen/config/column_definition.cc:160
 msgid "Missing parameter number in format string"
-msgstr ""
+msgstr "格式化字串中缺少参数号码"
 
 #: src/vscreen/config/column_definition.cc:185
 #, c-format
 msgid "Parameter numbers must be 1 or greater, not %ld"
-msgstr ""
+msgstr "参数号码必须为 1 或更大，而不是 %ld"
 
 #: src/vscreen/config/column_definition.cc:211
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown formatting code '%lc'"
-msgstr "未知的模式类型：%c"
+msgstr "未知的格式代码：%lc"
 
 #: src/vscreen/config/column_definition.cc:261
 msgid "Bad format parameter"
-msgstr ""
+msgstr "错误的格式参数"
 
 #: src/vscreen/config/keybindings.cc:314
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse key description: %ls"
-msgstr "正在读取任务描述"
+msgstr "无法解析键位说明：%ls"
 
 #: src/vscreen/config/keybindings.cc:324
-#, fuzzy
 msgid "Invalid null keybinding"
-msgstr "快捷键绑定中的无效条目：“%s”"
+msgstr "无效的空快捷键绑定"
 
 #: src/vscreen/config/keybindings.cc:332
 msgid "Sorry, control modifiers may not be used with unprintable characters"
-msgstr ""
+msgstr "对不起，控制编辑器可能不能使用不可打印的字符"
 
 #: src/vscreen/vscreen.cc:125
 #, c-format
@@ -5209,11 +5146,14 @@ msgstr "啊！接收到 SIGQUIT 信号，正在退出..\n"
 #, c-format
 msgid ""
 "Unable to load filename: the string %ls has no multibyte representation."
-msgstr ""
+msgstr "无法读取文件名：字符串“%ls”无法用多字节字符表示。"
 
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
-msgstr ""
+msgstr "顶层"
+
+#~ msgid "Solution search failed.  %s: try harder"
+#~ msgstr "未找到解决方案。%s：加把劲儿再试试"
 
 #~ msgid "Happy?"
 #~ msgstr "高兴了？"
@@ -5230,20 +5170,6 @@ msgstr ""
 #~ msgid "Warning: the visual interface will ignore -s/Cmdline::Simulate\n"
 #~ msgstr "警告：可视化界面将忽略 -s/Cmdline::Simulate\n"
 
-#, fuzzy
-#~ msgid "Create a new flat package list"
-#~ msgstr "创建新的默认软件包视图"
-
-#~ msgid "Search for a package"
-#~ msgstr "搜索一个软件包"
-
-#, fuzzy
-#~ msgid "Search backwards for a package"
-#~ msgstr "搜索一个软件包"
-
-#~ msgid "Solution search failed.  %s: try harder"
-#~ msgstr "未找到解决方案。%s：加把劲儿再试试"
-
 #~ msgid ""
 #~ "Time exhausted while searching for a solution (you can select \"Next "
 #~ "Solution\" or press %s to try harder)."
@@ -5253,6 +5179,10 @@ msgstr ""
 
 #~ msgid "All solutions exhausted."
 #~ msgstr "所有的解决方案都试过了。"
+
+#, fuzzy
+#~ msgid "Create a new flat package list"
+#~ msgstr "创建新的默认软件包视图"
 
 #~ msgid "Bad filter type '%s' (valid types are: 'missing')"
 #~ msgstr "坏的过滤器类型“%s”(有效类型是“missing”)"
