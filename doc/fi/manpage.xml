@@ -63,6 +63,7 @@
 	<arg choice='plain'>autoclean</arg>
 	<arg choice='plain'>clean</arg>
 	<arg choice='plain'>forget-new</arg>
+	<arg choice='plain'>keep-all</arg>
 	<arg choice='plain'>update</arg>
 	<arg choice='plain'>upgrade</arg>
       </group>
@@ -79,6 +80,7 @@
 	<arg choice='plain'>download</arg>
 	<arg choice='plain'>forbid-version</arg>
 	<arg choice='plain'>hold</arg>
+	<arg choice='plain'>keep-all</arg>
 	<arg choice='plain'>markauto</arg>
 	<arg choice='plain'>purge</arg>
 	<arg choice='plain'>reinstall</arg>
@@ -293,16 +295,19 @@
       </varlistentry>
 
       <varlistentry>
-	<term><literal>remove</literal>, <literal>purge</literal>, <literal>hold</literal>, <literal>reinstall</literal></term>
+	<term><literal>remove</literal>, <literal>purge</literal>, <literal>hold</literal>, <literal>keep</literal>, <literal>reinstall</literal></term>
 
 	<listitem>
 	  <para>
             Nämä komennot toimivat kuten
             <quote><literal>install</literal></quote>, mutta
-            oletustoiminto on vastaavasti poisto, siivous, jäädytys
-            tai uudelleenasennus.  <link
+            oletustoiminto on vastaavasti poisto, siivous, jäädytys,
+            säilytys tai uudelleenasennus.  <link
             linkend="parOverrideSpecifiers">Toimintomerkkien</link>
-            käyttö toimii myös samoin.
+            käyttö toimii myös samoin.  Ero jäädytyksen ja säilytyksen
+            välillä on, että jäädytys estää myös tulevat päivitykset,
+            mutta säilytys vain peruuttaa nyt määritellyt
+            toimenpiteet.
 	  </para>
 
 	  <para>
@@ -415,6 +420,17 @@
 	</listitem>
       </varlistentry>
 
+      <varlistentry id='manpageKeepAll'>
+	<term><literal>keep-all</literal></term>
+
+	<listitem>
+	  <para>
+	    Peruuta kaikki paketeille määritetyt toimenpiteet.  Kaikki
+	    määritetyt asennukset, poistot ja päivitykset peruutetaan.
+	  </para>
+	</listitem>
+      </varlistentry>
+
       <varlistentry>
 	<term><literal>forget-new</literal></term>
 
@@ -495,6 +511,34 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
             (lisätietoa &aptitude;n käyttöoppaan luvussa <quote><link
             linkend='secSearchPatterns'>Hakuehdot</link></quote>).
 	  </para>
+
+	  <para>
+	    Jos ylimääräisiä tietoja annetaan vähintään tasolla 1
+	    (komentorivillä on annettu ainakin yksi
+	    <literal>-v</literal>-valitsin), tiedot näytetään paketin
+	    kaikista versioista.  Muussa tapauksessa tiedot näytetään
+	    <quote>saatavilla olevasta versiosta</quote> (versiosta,
+	    jonka <quote><literal>aptitude install</literal></quote>
+	    noutaisi).
+	  </para>
+
+	  <para>
+	    Voit näyttää jonkin muun version tiedot lisäämällä
+	    <literal>=<replaceable>versio</replaceable></literal>
+	    paketin nimeen.  Voit näyttää tietystä arkistosta
+	    saatavilla olevan version tiedot lisäämällä
+	    <literal>/<replaceable>arkisto</replaceable></literal>
+	    paketin nimeen.  Jos käytät kumpaa tahansa näistä, vain
+	    valitun version tiedot näytetään riippumatta lisätietojen
+	    näyttötasosta.
+	  </para>
+
+	  <para>
+	    Jos lisätietojen näyttötaso on vähintään 1, näytetään myös
+	    paketin arkkitehtuuri, pakattu koko, tiedostonimi ja
+	    MD5-summa.  Jos näyttötaso on vähintään 2, valitut versiot
+	    näytetään kustakin arkistosta, josta ne löytyvät.
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -528,7 +572,8 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 
 	<listitem>
 	  <para>
-            Nouda ja näytä kunkin annetun paketin Debian-muutosloki.
+            Nouda ja näytä kunkin annetun paketin tai
+            lähdekoodipaketin Debian-muutosloki.
 	  </para>
 
 	  <para>
@@ -736,13 +781,38 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 
 	<listitem>
 	  <para>
-            Tulosta suoritettavat toiminnot ruudulle, mutta älä
-            suorita niitä.  Tätä voi käyttää ilman &root;-oikeuksia.
+            Komentoriviltä suoritettaessa tulosta suoritettavat
+            toiminnot ruudulle, mutta älä suorita niitä.  Tätä voi
+            käyttää ilman &root;-oikeuksia.  Kokoruudun tilassa avaa
+            varasto vain luettavaksi riippumatta siitä oletko &root;.
 	  </para>
 
 	  <para>
             Tätä vastaa asetustiedoston asetus <literal><link
-	    linkend='configCmdLine-Simulate'>Aptitude::CmdLine::Simulate</link></literal>.
+	    linkend='configCmdLine-Simulate'>Aptitude::Simulate</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--schedule-only</literal></term>
+
+	<listitem>
+	  <para>
+	    Jos käytetty komento muokkaa pakettien tiloja, merkitse
+	    komento suoritettavaksi, mutta älä vielä suorita sitä.
+	    Tällaiset siirretyt toiminnot voit suorittaa myöhemmin
+	    komennolla <literal>aptitude install</literal> (ilman
+	    muita argumentteja).  Tämä vastaa sitä, että <link
+	    linkend='secUsingVisual'>kokoruudun tilassa</link>
+	    merkitsisi samat toimenpiteet ja poistuisi.
+	  </para>
+
+	  <para>
+	    Esimerkiksi <literal>aptitude --schedule-only install
+	    evolution</literal> merkitsee
+	    <literal>evolution</literal>-paketin asennettavaksi
+	    myöhemmin.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -757,6 +827,14 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
             ...</literal></quote> valitsee asennettavat paketit
             experimental-julkaisusta, ellei yksittäiselle paketille
             ole määritetty muuta (esimerkiksi tietyn version asennus).
+            Komentorivikomennoille <quote>changelog</quote>,
+            <quote>download</quote> ja <quote>show</quote> tämä on
+            sama kuin lisäisi
+            <literal>/<replaceable>julkaisu</replaceable></literal>
+            jokaisen paketin nimen perään; muilla komennoilla tämä
+            vaikuttaa oletuksena saatavilla olevaan versioon kuten
+            <citerefentry><refentrytitle>apt_preferences</refentrytitle><manvolnum>5</manvolnum></citerefentry>
+            kuvaa.
 	  </para>
 
 	  <para>
@@ -794,6 +872,31 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
             <filename>/tmp/loki</filename>.  Asetukset on selitetty
             &aptitude;n käyttöoppaan luvussa <quote><link
             linkend='secConfigFile'>Asetustiedosto</link></quote>
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-q<arg choice='opt'>=<replaceable>n</replaceable></arg></literal>, <literal>--quiet<arg choice='opt'>=<replaceable>n</replaceable></arg></literal></term>
+
+	<listitem>
+	  <para>
+	    Älä näytä tietoja edistymisestä, mikä tekee tulostuksesta
+	    lokitettavaa.  Tämän valitsimen voi antaa useita kertoja,
+	    mikä tekee tulostuksesta vielä vähäisempää, mutta toisin
+	    kuin &apt-get;, &aptitude; ei oleta
+	    <literal>-y</literal>-valitsinta kun <literal>-q</literal>
+	    on annettu useammin kuin kerran.
+	  </para>
+
+	  <para>
+	    Valinnainen
+	    <literal>=<replaceable>n</replaceable></literal> asettaa
+	    suoraan hiljaisuustason (esimerkiksi ohittamaan
+	    tiedostossa <filename>/etc/apt/apt.conf</filename> olevan
+	    asetuksen).  Tämä saa ohjelman käyttäytymään ikäänkuin
+	    <literal>-q</literal> olisi annettu täsmälleen
+	    <replaceable>n</replaceable> kertaa.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -952,6 +1055,67 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 	</listitem>
       </varlistentry>
     </variablelist>
+  </refsect1>
+
+  <refsect1>
+    <title>Environment</title>
+
+    <varlistentry>
+      <term><literal>HOME</literal></term>
+
+      <listitem>
+	<para>
+	  Jos $HOME/.aptitude on olemassa, aptitude tallettaa
+	  asetuksensa tiedostoon $HOME/.aptitude/config.  Muuten se
+	  hakee käyttäjän kotihakemiston
+	  <citerefentry><refentrytitle>getpwuid</refentrytitle><manvolnum>2</manvolnum></citerefentry>-kutsulla
+	  ja tallettaa asetustiedostonsa sinne.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><literal>PAGER</literal></term>
+
+      <listitem>
+	<para>
+	  Jos tämä ympäristömuuttuja on asetettu,
+	  <quote><literal>aptitude changelog</literal></quote>-komento
+	  käyttää sitä muutoslokien näyttöön.  Jos sitä ei ole
+	  asetettu, &aptitude; käyttää oletuksena ohjelmaa
+	  <literal>more</literal>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><literal>TMP</literal></term>
+
+      <listitem>
+	<para>
+	  Jos ympäristömuuttujaa <literal>TMPDIR</literal> ei ole
+	  asetettu, &aptitude; tallettaa tilapäistiedostonsa
+	  hakemistoon <literal>TMP</literal>, jos se on asetettu.
+	  Muuten nämä talletetaan hakemistoon
+	  <filename>/tmp</filename>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><literal>TMPDIR</literal></term>
+
+      <listitem>
+	<para>
+	  &aptitude; tallettaa tilapäistiedostonsa tämän
+	  ympäristömuuttujan nimeämään hakemistoon.  Jos
+	  <literal>TMPDIR</literal> ei ole asetettu, &aptitude;
+	  käyttää <literal>TMP</literal>:ä.  Jos myös
+	  <literal>TMP</literal> on asettamaton, &aptitude; käyttää
+	  hakemistoa <filename>/tmp</filename>.
+	</para>
+      </listitem>
+    </varlistentry>
   </refsect1>
 
   <refsect1>
