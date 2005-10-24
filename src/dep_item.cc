@@ -304,7 +304,7 @@ void setup_package_deps(const pkgCache::PkgIterator &pkg,
 	  }
       }
 
-  pkg_sortpolicy *policy = pkg_sortpolicy_ver(pkg_sortpolicy_name(NULL, false), false);
+  pkg_sortpolicy *policy = pkg_sortpolicy_name(pkg_sortpolicy_ver(NULL, false), false);
   pkg_sortpolicy_wrapper sorter(policy);
   for(tree_map::const_iterator i = subtrees.begin();
       i != subtrees.end(); ++i)
