@@ -19,6 +19,7 @@
 
 #include "pkg_sortpolicy.h"
 #include "pkg_item.h"
+#include "pkg_ver_item.h"
 
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
@@ -58,19 +59,57 @@ pkg_sortpolicy *name(pkg_sortpolicy *chain, bool reversed)	\
   return new name##_impl(chain, reversed);	\
 }						\
 
+/** Convert the given tree item to a package/version pair using
+ *  dynamic_cast to either pkg_item or pkg_ver_item.
+ *
+ *  \param item the item to convert
+ *  \param[out] pkg the package of this item
+ *  \param[out] ver the version of this item
+ *
+ *  \return \b true if the conversion was successful.
+ */
+static
+bool find_package_and_ver(vs_treeitem *item,
+			  pkgCache::PkgIterator &pkg,
+			  pkgCache::VerIterator &ver)
+{
+  const pkg_item *pitem = dynamic_cast<const pkg_item *>(item);
+  if(pitem != NULL)
+    {
+      pkg = pitem->get_package();
+      ver = pitem->visible_version();
+      return true;
+    }
+
+  const pkg_ver_item *vitem = dynamic_cast<const pkg_ver_item *>(item);
+  if(vitem != NULL)
+    {
+      pkg = vitem->get_package();
+      ver = vitem->get_version();
+      return true;
+    }
+
+  return false;
+}
 
 int pkg_sortpolicy_wrapper::compare(vs_treeitem *item1,
 				    vs_treeitem *item2) const
 {
-  // erk.  RTTI is nasty.  Is there any way around it here?
-  const pkg_item *pitem1=dynamic_cast<const pkg_item *>(item1);
-  const pkg_item *pitem2=dynamic_cast<const pkg_item *>(item2);
+  pkgCache::PkgIterator pkg1, pkg2;
+  pkgCache::VerIterator ver1, ver2;
 
-  if(!pitem1 || !pitem2)
-    return wcscmp(item1->tag(), item2->tag());
+  // To ensure that the sort is sane, sort non-package stuff above all package stuff.
+  if(!find_package_and_ver(item1, pkg1, ver1))
+    {
+      if(!find_package_and_ver(item2, pkg2, ver2))
+	return wcscmp(item1->tag(), item2->tag());
+      else
+	return -1;
+    }
+  else if(!find_package_and_ver(item2, pkg2, ver2))
+    return 1;
   else if(chain)
-    return chain->compare(pitem1->get_package(), pitem1->visible_version(),
-			  pitem2->get_package(), pitem2->visible_version());
+    return chain->compare(pkg1, ver1, pkg2, ver2);
   else
     return 0; // punt!
 }
