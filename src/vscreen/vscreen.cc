@@ -671,7 +671,7 @@ void vscreen_init()
   helpkey.push_back(KEY_CTRL(L'h'));
   helpkey.push_back(key(KEY_F(1), true));
 
-  menutogglekey.push_back(KEY_CTRL(L'.'));
+  menutogglekey.push_back(KEY_CTRL(L't'));
   menutogglekey.push_back(key(KEY_F(10), true));
   menutogglekey.push_back(KEY_CTRL(L' '));
 
