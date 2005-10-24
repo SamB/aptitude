@@ -27,6 +27,7 @@
 #include "pkg_item.h"
 #include "pkg_subtree.h"
 #include "pkg_ver_item.h"
+#include "pkg_sortpolicy.h"
 #include "ui.h"
 #include "view_changelog.h"
 #include "vs_progress.h"
@@ -440,6 +441,10 @@ void setup_package_versions(const pkgCache::PkgIterator &pkg, pkg_vertree *tree,
 
   for(pkgCache::PrvIterator i=pkg.ProvidesList(); !i.end(); i++)
     tree->add_child(new pkg_ver_item(i.OwnerVer(), sig, true));
+
+  std::auto_ptr<pkg_sortpolicy> sorter(pkg_sortpolicy_ver(0, false));
+  pkg_sortpolicy_wrapper wrap(sorter.get());
+  tree->sort(wrap);
 }
 
 void setup_package_versions(const pkgCache::PkgIterator &pkg, pkg_vertree_generic *tree, pkg_signal *sig)
@@ -449,6 +454,10 @@ void setup_package_versions(const pkgCache::PkgIterator &pkg, pkg_vertree_generi
 
   for(pkgCache::PrvIterator i=pkg.ProvidesList(); !i.end(); i++)
     tree->add_child(new pkg_ver_item(i.OwnerVer(), sig, true));
+
+  std::auto_ptr<pkg_sortpolicy> sorter(pkg_sortpolicy_ver(0, false));
+  pkg_sortpolicy_wrapper wrap(sorter.get());
+  tree->sort(wrap);
 }
 
 void pkg_grouppolicy_ver::add_package(const pkgCache::PkgIterator &pkg,
