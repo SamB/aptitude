@@ -552,7 +552,7 @@ void vs_tree::page_up()
 	selected=top;
 
       if(selected!=end)
-	(*selected).unhighlighted(this);
+	(*selected).highlighted(this);
       vscreen_update();
     }
 }
