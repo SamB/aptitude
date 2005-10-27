@@ -7,10 +7,10 @@
 #: src/view_changelog.cc:226
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude 0.3.2\n"
+"Project-Id-Version: aptitude 0.3.5\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
 "POT-Creation-Date: 2005-10-22 22:52-0700\n"
-"PO-Revision-Date: 2005-07-11 22:18+0200\n"
+"PO-Revision-Date: 2005-10-26 15:11+0200\n"
 "Last-Translator: Morten Bo Johansen <mojo@mbjnet.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -129,6 +129,8 @@ msgstr ""
 msgid ""
 "Do not display a warning when the first change is made in read-only mode."
 msgstr ""
+"Vis ikke en advarsel når den første ændring er lavet i skrivebeskyttet "
+"tilstand."
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -155,9 +157,8 @@ msgid "Remove unused packages automatically"
 msgstr "Afinstallér ubrugte pakker automatisk"
 
 #: src/apt_options.cc:192
-#, fuzzy
 msgid "Don't automatically remove unused packages matching this filter"
-msgstr "Afinstallér ubrugte pakker automatisk som matcher dette filter"
+msgstr "Afinstallér ikke automatisk ubrugte pakker som matcher dette filter"
 
 #: src/apt_options.cc:248 src/mine/cmine.cc:302 src/mine/cmine.cc:367
 #: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:91
@@ -196,9 +197,9 @@ msgid "Unable to resolve dependencies."
 msgstr "Kunne ikke udrede afhængigheder."
 
 #: src/broken_indicator.cc:240
-#, fuzzy, c-format
+#, c-format
 msgid "[%d(%d)/...] Resolving dependencies"
-msgstr "Kunne ikke udrede afhængigheder."
+msgstr "[%d(%d)/...] Udreder afhængigheder"
 
 #: src/broken_indicator.cc:273 src/solution_dialog.cc:126
 #: src/solution_screen.cc:513
@@ -332,11 +333,13 @@ msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Bemærk: vælger opgavepakken \"%s: %s\" til installering\n"
 
 #: src/cmdline/cmdline_action.cc:244
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
-msgstr "Man kan kun angive en pakkeversion med kommandoen \"install\".\n"
+msgstr ""
+"Man kan kun angive en pakkeversion med kommandoerne \"install\" eller "
+"\"forbid-version\"\n"
 
 #: src/cmdline/cmdline_action.cc:252
 #, c-format
@@ -431,7 +434,7 @@ msgstr "Ugyldig operation %s"
 
 #: src/cmdline/cmdline_do_action.cc:143
 msgid "Unexpected pattern argument following \"keep-all\""
-msgstr ""
+msgstr "Uventet argument til mønster efter \"keep-all\""
 
 #: src/cmdline/cmdline_do_action.cc:233 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:511
@@ -508,7 +511,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:33
 msgid "Unexpected end-of-file on standard input"
-msgstr ""
+msgstr "Uventet filafslutning på standardinddata"
 
 #: src/cmdline/cmdline_prompt.cc:52
 msgid "Couldn't read list of sources"
@@ -641,6 +644,8 @@ msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 msgstr ""
+"*** ADVARSEL ***  Ignorerer disse tillidskrænkelser fordi\n"
+"                  %s::CmdLine::Ignore-Trust-Violations er \"true\"!\n"
 
 #: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:177
 #: src/vscreen/vs_util.cc:215
@@ -685,7 +690,7 @@ msgstr "Ingen pakker vil blive installeret, opgraderet eller afinstalleret.\n"
 #: src/cmdline/cmdline_prompt.cc:547
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
-msgstr "%lu pakker opgraderet, %lu nyinstalleret,  "
+msgstr "%lu pakker opgraderet, %lu nyinstalleret, "
 
 #: src/cmdline/cmdline_prompt.cc:551
 #, c-format
@@ -784,7 +789,6 @@ msgid "enter the full visual interface"
 msgstr "start den visuelle brugerflade"
 
 #: src/cmdline/cmdline_prompt.cc:691
-#, fuzzy
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -913,11 +917,13 @@ msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "Ugyldigt svar. Anfør en gyldig kommando eller \"?\" for hjælp.\n"
 
 #: src/cmdline/cmdline_resolver.cc:128
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
-msgstr "y: %Fn: %Fq: %F,: %F.: %F<HANDLING> pakke... : %F%n%F%F%F%F%F%F%F%F"
+msgstr ""
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pakke ver ...: %F%na pakke ver ...: %F%"
+"n<HANDLING> pakke... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:147
 msgid "accept the proposed changes"
@@ -941,24 +947,25 @@ msgstr "flyt til den forrige løsning"
 
 #: src/cmdline/cmdline_resolver.cc:157
 msgid "view an explanation of the changes in the solution"
-msgstr ""
+msgstr "se en forklaring på ændringerne i løsningen"
 
 #: src/cmdline/cmdline_resolver.cc:159
-#, fuzzy
 msgid "examine the solution in the visual user interface"
-msgstr "Skift indstillinger som påvirker brugergrænsefladen"
+msgstr "gennemgå løsningen i den interaktive brugerflade"
 
 #: src/cmdline/cmdline_resolver.cc:161
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur."
 msgstr ""
+"afvis de anførte pakkeversioner; vis ikke løsninger hvori de forekommer."
 
 #: src/cmdline/cmdline_resolver.cc:163
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur."
 msgstr ""
+"godkend de anførte pakkeversioner; vis kun løsninger hvori de forekommer."
 
 #: src/cmdline/cmdline_resolver.cc:165
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -975,82 +982,83 @@ msgstr ""
 #: src/cmdline/cmdline_resolver.cc:197
 #, c-format
 msgid "The version %s is available in the following archives:"
-msgstr ""
+msgstr "Versionen %s er tilgængelig i de følgende arkiver:"
 
 #: src/cmdline/cmdline_resolver.cc:205
-#, fuzzy, c-format
+#, c-format
 msgid "Select the version of %s that should be used: "
-msgstr "Fil som status ved løsningsforslag skal skrives til:"
+msgstr "Vælg versionen af %s som skal bruges: "
 
 #: src/cmdline/cmdline_resolver.cc:212
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
-msgstr "Ugyldigt svar; anfør venligst 'y' eller 'n'."
+msgstr "Ugyldigt svar. Anfør venligst et heltal mellem 1 og %d."
 
 #: src/cmdline/cmdline_resolver.cc:227
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
-msgstr ""
+msgstr "Forventede mindst én angivelse af pakke og version efter \"%c\""
 
 #: src/cmdline/cmdline_resolver.cc:241
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a version after \"%s\""
-msgstr "Kunne ikke åbne %s"
+msgstr "Forventede et versionsnummer efter \"%s\""
 
 #: src/cmdline/cmdline_resolver.cc:251
-#, fuzzy, c-format
+#, c-format
 msgid "No such package \"%s\""
-msgstr "Kildepakke: "
+msgstr "Ingen sådan pakke \"%s\""
 
 #: src/cmdline/cmdline_resolver.cc:267
 #, c-format
 msgid "%s has no version named \"%s\""
-msgstr ""
+msgstr "%s har ingen version ved navn \"%s"
 
 #: src/cmdline/cmdline_resolver.cc:284
 #, c-format
 msgid "Allowing the removal of %s"
-msgstr ""
+msgstr "Tillader afinstallering af %s"
 
 #: src/cmdline/cmdline_resolver.cc:287
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
-msgstr ""
+msgstr "Tillader installeringen af %s version %s (%s)"
 
 #: src/cmdline/cmdline_resolver.cc:297
 #, c-format
 msgid "Rejecting the removal of %s"
-msgstr ""
+msgstr "Afviser afinstallering af %s"
 
 #: src/cmdline/cmdline_resolver.cc:300
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
-msgstr ""
+msgstr "Afviser installeringen af %s version %s (%s)"
 
 #: src/cmdline/cmdline_resolver.cc:313
 #, c-format
 msgid "No longer requiring the removal of %s"
-msgstr ""
+msgstr "Kræver ikke længere %s afinstalleret"
 
 #: src/cmdline/cmdline_resolver.cc:316
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
-msgstr ""
+msgstr "Kræver ikke længere %s version %s (%s) installeret"
 
 #: src/cmdline/cmdline_resolver.cc:325
 #, c-format
 msgid "Requiring the removal of %s"
-msgstr ""
+msgstr "Kræver %s afinstalleret"
 
 #: src/cmdline/cmdline_resolver.cc:328
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
-msgstr ""
+msgstr "Kræver installering af %s version %s (%s)"
 
+# Er i tvivl om "defer" -MBJ
 #: src/cmdline/cmdline_resolver.cc:447 src/solution_screen.cc:486
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
-msgstr ""
+msgstr "åbne: %d; lukkede: %d; afviste: %d; konflikter: %d"
 
 #: src/cmdline/cmdline_resolver.cc:493
 msgid "The following actions will resolve these dependencies:"
@@ -1084,7 +1092,7 @@ msgstr "Kunne ikke skrive status ved løsningsforslag til %s"
 
 #: src/cmdline/cmdline_resolver.cc:587
 msgid "Resolver state successfully written!"
-msgstr ""
+msgstr "Status for løsningsforslag gemt!"
 
 #: src/cmdline/cmdline_resolver.cc:592
 msgid "Invalid response; please enter one of the following commands:"
@@ -1104,14 +1112,13 @@ msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Kunne ikke udrede afhængigheder! Opgiver ..."
 
 #: src/cmdline/cmdline_resolver.cc:645
-#, fuzzy
 msgid "*** No more solutions available ***"
-msgstr "Ikke flere løsninger."
+msgstr "*** Ikke flere tilgængelige løsninger ***"
 
 #: src/cmdline/cmdline_search.cc:100
 #, c-format
 msgid "iconv of %s failed.\n"
-msgstr ""
+msgstr "iconv på %s fejlede..\n"
 
 #: src/cmdline/cmdline_search.cc:116
 #, c-format
@@ -1323,14 +1330,14 @@ msgid "Description: "
 msgstr "Beskrivelse: "
 
 #: src/cmdline/cmdline_show.cc:423
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to locate package %s"
-msgstr "Kunne ikke åbne %s"
+msgstr "Kunne ikke finde pakke %s"
 
 #: src/cmdline/cmdline_show.cc:436
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern %s"
-msgstr "Kunne ikke åbne %s"
+msgstr "Kunne ikke fortolke mønster %s"
 
 #: src/cmdline/cmdline_simulate.cc:37
 #, c-format
@@ -1385,14 +1392,13 @@ msgid "UNAVAILABLE"
 msgstr "UTILGÆNGELIG"
 
 #: src/desc_parse.cc:267
-#, fuzzy
 msgid "Tags"
-msgstr "Markér"
+msgstr "Mærkater"
 
 #: src/download_bar.cc:49 src/download_list.cc:335 src/download_screen.cc:56
 #, c-format
 msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Indsæt disken navngivet \"%s\" ind i drev \"%s\""
+msgstr "Indsæt cdrommen med navnet \"%s\" i drev \"%s"
 
 #: src/download_bar.cc:66 src/generic/apt/acqprogress.cc:65
 msgid "Hit "
@@ -1458,9 +1464,8 @@ msgid " [ %i%% ]"
 msgstr " [ %i%% ]"
 
 #: src/download_list.cc:342 src/download_screen.cc:67
-#, fuzzy
 msgid "Abort"
-msgstr "Afbryd.\n"
+msgstr "Afbryd"
 
 #: src/download_list.cc:400
 msgid "[IGNORED]"
@@ -1485,7 +1490,7 @@ msgstr "Kunne ikke åbne til skrivning"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
-msgstr ""
+msgstr "Kunne ikke finde dit hjemmekatalog, gemmer i /tmp/function_pkgs!"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -1550,19 +1555,19 @@ msgid "Error writing state file"
 msgstr "Fejl ved skrivning til statusfil"
 
 #: src/generic/apt/aptcache.cc:610
-#, fuzzy, c-format
+#, c-format
 msgid "failed to remove %s"
-msgstr "Kunne ikke åbne %s"
+msgstr "kunne ikke afinstallere %s"
 
 #: src/generic/apt/aptcache.cc:617
 #, c-format
 msgid "failed to rename %s to %s"
-msgstr ""
+msgstr "kunne ikke omdøbe %s til %s"
 
 #: src/generic/apt/aptcache.cc:625
-#, fuzzy, c-format
+#, c-format
 msgid "couldn't replace %s with %s"
-msgstr "kunne ikke erstatte gammel statusfil"
+msgstr "kunne ikke erstatte %s med %s"
 
 #: src/generic/apt/aptcache.cc:1117
 msgid "Unable to correct dependencies, some packages cannot be installed"
@@ -1581,9 +1586,9 @@ msgid "You may want to update the package lists to correct these missing files"
 msgstr "En opdatering af pakkelisterne vil måske korrigere for manglende filer"
 
 #: src/generic/apt/apt.cc:171
-#, fuzzy, c-format
+#, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
-msgstr "Kunne ikke erstatte %s med ny opsætningsfil"
+msgstr "%s kan læses, men ikke skrives til; kunne ikke skrive opsætningsfil."
 
 #: src/generic/apt/apt.cc:209
 #, c-format
@@ -1595,12 +1600,14 @@ msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
 msgstr ""
+"Kunne ikke låse cachefilen. Åbner den i skrivebeskyttet tilstand. Enhver "
+"ændring som du fortager i pakkernes status vil IKKE blive gemt!"
 
 #: src/generic/apt/download_install_manager.cc:53
-#, fuzzy
 msgid ""
 "The package cache is not available; unable to download and install packages."
-msgstr "Pakkecachen er ikke tilgængelig."
+msgstr ""
+"Pakkecachen er ikke tilgængelig; kunne ikke hente og installere pakker."
 
 #: src/generic/apt/download_install_manager.cc:69
 #: src/generic/apt/download_update_manager.cc:77
@@ -1616,10 +1623,8 @@ msgid "Unable to correct for unavailable packages"
 msgstr "Kan ikke korrigere for utilgængelige pakker"
 
 #: src/generic/apt/download_install_manager.cc:141
-#, fuzzy
 msgid "A package failed to install.  Trying to recover:"
-msgstr ""
-"Uff! Der skete noget slemt ved installering af pakker. Prøver at genskabe:"
+msgstr "En pakke lod sig ikke installere. Prøver at overvinde problemet:"
 
 #: src/generic/apt/download_install_manager.cc:165
 msgid ""
@@ -1636,9 +1641,8 @@ msgid "Couldn't clean out list directories"
 msgstr "Kunne ikke tømme kataloger med lister"
 
 #: src/generic/apt/download_update_manager.cc:122
-#, fuzzy
 msgid "Couldn't rebuild package cache"
-msgstr "Kunne ikke læse liste over pakkekilder"
+msgstr "Kunne ikke genopbygge pakkecachen"
 
 #: src/generic/apt/log.cc:52
 #, c-format
@@ -1646,9 +1650,9 @@ msgid "Unable to open %s to log actions"
 msgstr "Kunne ikke åbne %s til at logge handlinger"
 
 #: src/generic/apt/log.cc:64
-#, fuzzy, c-format
+#, c-format
 msgid "Error generating local time (%s)"
-msgstr "Kunne ikke skrive status ved løsningsforslag til %s"
+msgstr "Fejl ved generering af lokaltid (%s)"
 
 #: src/generic/apt/log.cc:68
 msgid "log report"
@@ -1675,9 +1679,9 @@ msgid "%sB of disk space will be used\n"
 msgstr "%sB diskplads vil blive brugt\n"
 
 #: src/generic/apt/log.cc:77
-#, fuzzy, c-format
+#, c-format
 msgid "%sB of disk space will be freed\n"
-msgstr "%sB diskplads vil blive brugt\n"
+msgstr "%sB diskplads vil blive frigjort\n"
 
 #: src/generic/apt/log.cc:87
 #, c-format
@@ -1746,115 +1750,97 @@ msgstr ""
 "Log færdig.\n"
 
 #: src/generic/apt/matchers.cc:682
-#, fuzzy
 msgid "Automatically Installed"
 msgstr "Automatisk installeret"
 
 #: src/generic/apt/matchers.cc:704 src/generic/apt/matchers.cc:893
-#, fuzzy
 msgid "Broken"
-msgstr "#Brudte"
+msgstr "Brudte"
 
 #: src/generic/apt/matchers.cc:891
-#, fuzzy
 msgid "Unchanged"
-msgstr "%s ændringer"
+msgstr "Uændret"
 
 #: src/generic/apt/matchers.cc:895
 msgid "Remove [unused]"
-msgstr ""
+msgstr "Afinstallér [ubrugte]"
 
 #: src/generic/apt/matchers.cc:897
 msgid "Hold [auto]"
-msgstr ""
+msgstr "Tilbagehold [auto]"
 
 #: src/generic/apt/matchers.cc:899
-#, fuzzy
 msgid "Install [auto]"
-msgstr "^Installér"
+msgstr "Installér [auto]"
 
 #: src/generic/apt/matchers.cc:901
-#, fuzzy
 msgid "Remove [auto]"
-msgstr "^Afinstallér"
+msgstr "Afinstallér [auto]"
 
 #: src/generic/apt/matchers.cc:903
-#, fuzzy
 msgid "Downgrade"
-msgstr "nedgraderet"
+msgstr "Nedgradèr"
 
 #: src/generic/apt/matchers.cc:905
-#, fuzzy
 msgid "Hold"
-msgstr "^Tilbagehold"
+msgstr "Tilbagehold"
 
 #: src/generic/apt/matchers.cc:907
-#, fuzzy
 msgid "Reinstall"
-msgstr "geninstallér"
+msgstr "Geninstallér"
 
 #: src/generic/apt/matchers.cc:909
-#, fuzzy
 msgid "Install"
-msgstr "^Installér"
+msgstr "Installér"
 
 #: src/generic/apt/matchers.cc:911
-#, fuzzy
 msgid "Remove"
-msgstr "^Afinstallér"
+msgstr "Afinstallér"
 
 #: src/generic/apt/matchers.cc:913
-#, fuzzy
 msgid "Upgrade"
-msgstr "opgradér"
+msgstr "Opgradér"
 
 #: src/generic/apt/matchers.cc:933
-#, fuzzy
 msgid "Keep"
-msgstr "^Behold"
+msgstr "Behold"
 
 #: src/generic/apt/matchers.cc:959
-#, fuzzy
 msgid "Virtual"
-msgstr "virtuel"
+msgstr "Virtuel"
 
 #: src/generic/apt/matchers.cc:980
-#, fuzzy
 msgid "Installed"
-msgstr "installeret"
+msgstr "Installeret"
 
 #: src/generic/apt/matchers.cc:1002
-#, fuzzy
 msgid "Essential"
-msgstr "Essentiel: "
+msgstr "Essentiel"
 
 #: src/generic/apt/matchers.cc:1021
 msgid "Config Files Remain"
-msgstr ""
+msgstr "Efterladte opsætningsfiler"
 
 #: src/generic/apt/matchers.cc:1387
 msgid "Garbage"
-msgstr ""
+msgstr "Spild"
 
 #: src/generic/apt/matchers.cc:1711
-#, fuzzy
 msgid "No reverse dependencies"
-msgstr "Kunne ikke udrede afhængigheder."
+msgstr "Ingen omvendte afhængigheder"
 
 #: src/generic/apt/matchers.cc:1777
-#, fuzzy
 msgid "New Package"
-msgstr "Ny pakke^oversigt"
+msgstr "Ny pakke"
 
 #: src/generic/apt/matchers.cc:1796
-#, fuzzy
 msgid "Upgradable"
-msgstr "^Markér til opgradering"
+msgstr "Kan opgraderes"
 
 #: src/generic/apt/matchers.cc:1920
 #, c-format
 msgid "Unterminated literal string after %s"
-msgstr ""
+msgstr "Ubestemt tekststreng efter %s"
 
 #: src/generic/apt/matchers.cc:1980
 msgid "Unmatched '('"
@@ -1867,7 +1853,7 @@ msgstr "Ukendt afhængighedstype: %s"
 
 #: src/generic/apt/matchers.cc:2119
 msgid "Provides: cannot be broken"
-msgstr ""
+msgstr "Giver: kan ikke være brudt"
 
 #: src/generic/apt/matchers.cc:2174
 #, c-format
@@ -1885,9 +1871,8 @@ msgid "Unknown pattern type: %c"
 msgstr "Ukendt mønstertype: %c"
 
 #: src/generic/apt/matchers.cc:2272
-#, fuzzy
 msgid "Can't search for \"\""
-msgstr "Søg efter: "
+msgstr "Kan ikke søge efter \"\""
 
 #: src/generic/apt/matchers.cc:2300
 msgid "Unexpected empty expression"
@@ -1951,11 +1936,12 @@ msgstr "Flere beskrivelser fundet for gruppe %s, ignorerer en"
 
 #: src/generic/apt/tags.cc:214 src/generic/apt/tags.cc:221
 msgid "Building tag database"
-msgstr ""
+msgstr "Opbygger database over mærkater"
 
 #: src/generic/apt/tags.cc:253
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgstr ""
+"Kunne ikke indlæse debtags-ordliste, måske er debtags ikke installeret?"
 
 #: src/generic/apt/tasks.cc:283
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -1970,16 +1956,15 @@ msgstr "Læser beskrivelser af opgavepakker"
 #: src/generic/util/temp.cc:142
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
-msgstr ""
+msgstr "Kan ikke oprette midlertidigt katalog fra skabelon \"%s\": %s"
 
 #: src/generic/util/temp.cc:137
-#, fuzzy
 msgid "Unknown error"
-msgstr "Ukendt"
+msgstr "Ukendt fejl"
 
 #: src/generic/util/threads.cc:32
 msgid "Not enough resources to create thread"
-msgstr ""
+msgstr "Ikke nok systemressourcer til at oprette tråd"
 
 #: src/load_config.cc:46
 #, c-format
@@ -2003,7 +1988,7 @@ msgstr "Ugyldigt element uden mærkat i gruppe der definerer stil: \"%s\""
 
 #: src/load_config.cc:125
 msgid "The default color may only be used as a background."
-msgstr ""
+msgstr "Standardfarven (default color) må kun bruges som baggrund."
 
 #: src/load_config.cc:142
 #, c-format
@@ -2023,22 +2008,22 @@ msgstr "Ignorerer ugyldig tastebinding \"%s\" -> \"%s\""
 #: src/load_grouppolicy.cc:258
 #, c-format
 msgid "Expected policy identifier, got '%c'"
-msgstr ""
+msgstr "Forventede metode-identifikator, fik \"%c\""
 
 #: src/load_grouppolicy.cc:270
 #, c-format
 msgid "Expected ',' or '(', got '%c'"
-msgstr ""
+msgstr "Forventede ',' eller '(', fik '%c'"
 
 #: src/load_grouppolicy.cc:277
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown grouping policy \"%s\""
-msgstr "Ukendt prioritetstype: %s"
+msgstr "Ukendt grupperingsmetode \"%s\""
 
 #: src/load_grouppolicy.cc:284
 #, c-format
 msgid "Terminal policy \"%s\" should be the last policy in the list"
-msgstr ""
+msgstr "Terminal-metode \"%s\" bør være den sidste metode i listen"
 
 #: src/load_grouppolicy.cc:367
 #, c-format
@@ -2060,19 +2045,17 @@ msgid "By-status grouping policies take no arguments"
 msgstr "Grupperingsmetode efter status tager ingen parametre"
 
 #: src/load_grouppolicy.cc:412
-#, fuzzy
 msgid "Expected '(' after 'filter'"
-msgstr "Kunne ikke åbne %s"
+msgstr "Forventede \"(\" efter \"filter\""
 
 #: src/load_grouppolicy.cc:449
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern at '%s'"
-msgstr "Kunne ikke åbne %s"
+msgstr "Kunne ikke fortolke mønster ved \"%s\""
 
 #: src/load_grouppolicy.cc:454
-#, fuzzy
 msgid "Exactly one filter must be provided as an argument to a filter policy"
-msgstr "Præcis ét filternavn skal gives som parameter til en filtermetode"
+msgstr "Præcis ét filter skal gives som parameter til en filtermetode"
 
 #: src/load_grouppolicy.cc:473
 msgid "By-mode grouping policies take no arguments"
@@ -2099,32 +2082,30 @@ msgid "Task grouping policies take no arguments"
 msgstr "Grupperingsmetode for opgavepakker tager ingen parametre"
 
 #: src/load_grouppolicy.cc:562
-#, fuzzy
 msgid "Expected no more than one argument to a tag grouping policy"
-msgstr "For mange parametre til grupperingsmetode efter afsnit"
+msgstr "Forventede kun ét argument til grupperingsmetode for mærkater"
 
 #: src/load_grouppolicy.cc:577
 msgid "Expected '(' after 'pattern'"
-msgstr ""
+msgstr "Forventede \"(\" efter \"mønster\""
 
 #: src/load_grouppolicy.cc:585
 msgid "Missing arguments to 'pattern'"
-msgstr ""
+msgstr "Manglende argumenter til \"mønster"
 
 #: src/load_grouppolicy.cc:606
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern after \"%s\""
-msgstr "Kunne ikke åbne %s"
+msgstr "Kunne ikke fortolke mønster efter \"%s\""
 
 #: src/load_grouppolicy.cc:628
 #, c-format
 msgid "Unexpectedly empty tree title after \"%s\""
-msgstr ""
+msgstr "Uventet tom titel på træstruktur efter \"%s\""
 
 #: src/load_grouppolicy.cc:639
-#, fuzzy
 msgid "Unmatched '(' in pattern grouping policy"
-msgstr "Ubalanceret '(' i beskrivelse af grupperingsmetode"
+msgstr "Ubalanceret '(' i grupperingsmetode for mønster"
 
 #: src/load_pkgview.cc:58
 msgid "Couldn't parse layout: No column format specified for static item"
@@ -2132,9 +2113,8 @@ msgstr ""
 "Kunne ikke fortolke layout: Intet kolonneformat angivet for statisk punkt"
 
 #: src/load_pkgview.cc:91
-#, fuzzy
 msgid "Couldn't parse layout: encoding error in column descriptor"
-msgstr "Kunne ikke fortolke layout: intet rækkenummer angivet"
+msgstr "Kunne ikke fortolke layout: indkodningsfejl i kolonne-deskriptor"
 
 #: src/load_pkgview.cc:112
 #, c-format
@@ -2163,9 +2143,8 @@ msgid "By-name sorting policies take no arguments"
 msgstr "Sorteringsmetode efter navn tager ingen parametre"
 
 #: src/load_sortpolicy.cc:64
-#, fuzzy
 msgid "By-version sorting policies take no arguments"
-msgstr "Sorteringsmetode efter prioritet tager ingen parametre"
+msgstr "Sorteringsmetode efter version tager ingen parametre"
 
 #: src/load_sortpolicy.cc:77
 msgid "By-installed size sorting policies take no arguments"
@@ -2191,12 +2170,12 @@ msgstr "Ugyldig type '%s' på sorteringsmetode"
 #: src/main.cc:82
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
-msgstr ""
+msgstr "Kan ikke afkode multibyte-streng efter \"%ls\""
 
 #: src/main.cc:91
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
-msgstr ""
+msgstr "Kan ikke afkode tekststreng med unicode-tegn efter \"%s\""
 
 #: src/main.cc:99
 #, c-format
@@ -2353,7 +2332,7 @@ msgstr " download     - Hent en pakkes .deb-fil\n"
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
-msgstr ""
+msgstr " geninstallér    - Hent og geninstallér en aktuelt installeret pakke\n"
 
 #: src/main.cc:144
 #, c-format
@@ -2453,6 +2432,8 @@ msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
 msgstr ""
+" -q             Vis ikke de fortløbende fremgangsindikatorer i kommandolinje-"
+"tilstand\n"
 
 #: src/main.cc:160
 #, c-format
@@ -2490,14 +2471,14 @@ msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  Denne aptitude har ikke \"Super Cow Powers\".\n"
 
 #: src/main.cc:299
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a number after -q=\n"
-msgstr "Kunne ikke åbne %s"
+msgstr "Forventede et tal efter -q=\n"
 
 #: src/main.cc:308
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a number after -q=, got %s\n"
-msgstr "Kunne ikke åbne %s"
+msgstr "Forventede et tal efter -q=, fik %s\n"
 
 #: src/main.cc:331
 #, c-format
@@ -2516,7 +2497,7 @@ msgstr "Kun -u eller -i må angives\n"
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
-"-u og -i må ikke angives i kommandolinjetilstand (f.eks. med 'install')"
+"-u og -i må ikke angives i kommandolinje-tilstand (f.eks. med \"install\")"
 
 #: src/main.cc:428
 msgid "-u and -i may not be specified with a command"
@@ -2527,10 +2508,11 @@ msgstr "-u og -i må ikke angives i en kommando"
 msgid "Unknown command \"%s\"\n"
 msgstr "Ukendt kommando \"%s\"\n"
 
+# Uncaught? -MBJ
 #: src/main.cc:516 src/main.cc:557
 #, c-format
 msgid "Uncaught exception: %s\n"
-msgstr ""
+msgstr "Uncaught exception: %s\n"
 
 #: src/main.cc:520 src/main.cc:561
 #, c-format
@@ -2538,24 +2520,24 @@ msgid ""
 "Backtrace:\n"
 "%s"
 msgstr ""
+"Backtrace:\n"
+"%s"
 
 #: src/menu_text_layout.cc:36 src/ui.cc:239 src/view_changelog.cc:55
 msgid "Search for:"
 msgstr "Søg efter:"
 
 #: src/menu_text_layout.cc:68 src/view_changelog.cc:67
-#, fuzzy
 msgid "Search backwards for:"
-msgstr "Søg efter: "
+msgstr "Søg baglæns efter:"
 
 #: src/menu_tree.cc:204
 msgid "Search for: "
 msgstr "Søg efter: "
 
 #: src/menu_tree.cc:221
-#, fuzzy
 msgid "Search backwards for: "
-msgstr "Søg efter: "
+msgstr "Søg baglæns efter: "
 
 #: src/mine/cmine.cc:106 src/mine/cmine.cc:148 src/ui.cc:1419
 msgid "Minesweeper"
@@ -2575,9 +2557,9 @@ msgid "seconds"
 msgstr "sekunder"
 
 #: src/mine/cmine.cc:120
-#, fuzzy, c-format
+#, c-format
 msgid "    %s in %d %s"
-msgstr "Minestryger    %s på %d %s"
+msgstr "    %s i %d %s"
 
 #: src/mine/cmine.cc:121
 msgid "Won"
@@ -2598,19 +2580,16 @@ msgid "Could not load game from %s"
 msgstr "Kunne ikke indlæse spil fra %s"
 
 #: src/mine/cmine.cc:247
-#, fuzzy
 msgid "The board height must be a positive integer"
-msgstr "Bræthøjden skal være et tal"
+msgstr "Bræthøjden skal være et positivt heltal"
 
 #: src/mine/cmine.cc:259
-#, fuzzy
 msgid "The board width must be a positive integer"
-msgstr "Brætbredden skal være et tal"
+msgstr "Brætbredden skal være et positivt heltal"
 
 #: src/mine/cmine.cc:271
-#, fuzzy
 msgid "Invalid mine count; please enter a positive integer"
-msgstr "Ugyldigt svar; anfør venligst 'y' eller 'n'."
+msgstr "Ugyldigt antal miner; anfør venligst et positivt heltal"
 
 #: src/mine/cmine.cc:291
 msgid "Setup custom game"
@@ -2761,7 +2740,7 @@ msgstr "mine-help.txt"
 
 #: src/mine/cmine.cc:672
 msgid "Encoding of mine-help.txt|UTF-8"
-msgstr ""
+msgstr "Indkodning af mine-help.txt|UTF-8"
 
 #: src/pkg_columnizer.cc:83
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
@@ -2885,9 +2864,8 @@ msgid "hold"
 msgstr "tilbagehold"
 
 #: src/pkg_columnizer.cc:293
-#, fuzzy
 msgid "forbidden upgrade"
-msgstr "%d til opgradering"
+msgstr "ikke-tilladt opgradering"
 
 #: src/pkg_columnizer.cc:295
 msgid "purge"
@@ -2977,7 +2955,7 @@ msgstr "HN for lang"
 #: src/pkg_columnizer.cc:652 src/pkg_columnizer.cc:661
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
-msgstr ""
+msgstr "Kan ikke omkode format på pakkeoversigt efter \"%ls\""
 
 #: src/pkg_columnizer.cc:668
 msgid "Internal error: Default column string is unparsable"
@@ -3757,7 +3735,7 @@ msgstr "Prioritet %s"
 
 #: src/pkg_grouppolicy.cc:779
 msgid "UNCATEGORIZED"
-msgstr ""
+msgstr "UKATEGORISERET"
 
 #: src/pkg_grouppolicy.cc:898
 msgid "End-user"
@@ -3800,31 +3778,33 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:1079
 #, c-format
 msgid "Bad number in format string: %ls"
-msgstr ""
+msgstr "Forkert tal i styrekode: %ls"
 
 #: src/pkg_grouppolicy.cc:1088
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
-msgstr ""
+msgstr "Match-indeks skal være 1 eller højere, ikke \"%s\""
 
 #: src/pkg_grouppolicy.cc:1106
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
-msgstr ""
+msgstr "Match-indeks %ls er for stort; tilgængelige grupper er (%s)"
 
 #: src/pkg_grouppolicy.cc:1315
 msgid "TAGLESS PACKAGES"
-msgstr ""
+msgstr "PAKKER UDEN MÆRKATER"
 
 #: src/pkg_grouppolicy.cc:1316
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags."
 msgstr ""
+"\n"
+"Disse pakker har endnu ikke nogen debtags-mærkater."
 
 #: src/pkg_grouppolicy.cc:1341
 msgid "MISSING TAG"
-msgstr ""
+msgstr "MANGLENDE MÆRKAT"
 
 #: src/pkg_info_screen.cc:118
 msgid "Compressed size: "
@@ -3946,9 +3926,9 @@ msgid "Building view"
 msgstr "Danner skærmbillede"
 
 #: src/pkg_tree.cc:237
-#, fuzzy, c-format
+#, c-format
 msgid "No packages matched the pattern \"%ls\"."
-msgstr "Ingen pakker passer med mønstret \"%s\"."
+msgstr "Ingen pakker passer med mønstret \"%ls\"."
 
 #: src/pkg_tree.cc:259
 msgid "Enter the new package tree limit: "
@@ -3964,17 +3944,15 @@ msgstr "Indtast en ny sorteringsmetode for pakker i dette skærmbillede: "
 
 #: src/pkg_view.cc:149
 msgid "Couldn't transcode column definition"
-msgstr ""
+msgstr "Kunne ikke omkode kolonne-definition"
 
 #: src/pkg_view.cc:156
-#, fuzzy
 msgid "Couldn't parse column definition"
-msgstr "Kunne ikke åbne til skrivning"
+msgstr "Kunne ikke fortolke kolonne-definition"
 
 #: src/pkg_view.cc:185
-#, fuzzy
 msgid "Encoding error in long description."
-msgstr "Ubalanceret '(' i beskrivelse af sorteringsmetode"
+msgstr "Indkodningsfejl i lang beskrivelse."
 
 #: src/pkg_view.cc:415
 msgid "make_package_view: error in arguments -- two main widgets??"
@@ -4222,9 +4200,8 @@ msgid "No resolution found."
 msgstr "Ingen løsning fundet."
 
 #: src/solution_dialog.cc:114 src/solution_screen.cc:490
-#, fuzzy
 msgid "Resolving dependencies..."
-msgstr "Kunne ikke udrede afhængigheder."
+msgstr "Udreder afhængigheder ..."
 
 #: src/solution_dialog.cc:169
 msgid "Previous"
@@ -4243,54 +4220,54 @@ msgid "Close"
 msgstr "Luk"
 
 #: src/solution_fragment.cc:104
-#, fuzzy, c-format
+#, c-format
 msgid "%s depends upon %s"
-msgstr "afhænger af"
+msgstr "%s afhænger af %s"
 
 #: src/solution_fragment.cc:107
-#, fuzzy, c-format
+#, c-format
 msgid "%s pre-depends upon %s"
-msgstr "forhåndsafhænger af"
+msgstr "%s forhåndsafhænger af %s"
 
 #: src/solution_fragment.cc:110
-#, fuzzy, c-format
+#, c-format
 msgid "%s suggests %s"
-msgstr "foreslår"
+msgstr "%s foreslår %s"
 
 #: src/solution_fragment.cc:113 src/solution_item.cc:583
-#, fuzzy, c-format
+#, c-format
 msgid "%s recommends %s"
-msgstr "anbefaler"
+msgstr "%s anbefaler %s"
 
 #: src/solution_fragment.cc:116
-#, fuzzy, c-format
+#, c-format
 msgid "%s conflicts with %s"
-msgstr "konflikter med"
+msgstr "%s konflikter med %s"
 
 #: src/solution_fragment.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "%s replaces %s"
-msgstr "erstatter"
+msgstr "%s erstatter %s"
 
 #: src/solution_fragment.cc:122
-#, fuzzy, c-format
+#, c-format
 msgid "%s obsoletes %s"
-msgstr "forælder"
+msgstr "%s gør %s forældet"
 
 #: src/solution_fragment.cc:135
-#, fuzzy, c-format
+#, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
-msgstr "konflikter med"
+msgstr "%s konflikter med %s [givet af %s %s]"
 
 #: src/solution_fragment.cc:145
-#, fuzzy, c-format
+#, c-format
 msgid "Removing %s"
-msgstr "Genopsætter %s\n"
+msgstr "Afinstallerer %s"
 
 #: src/solution_fragment.cc:147
 #, c-format
 msgid "Installing %s %s (%s)"
-msgstr ""
+msgstr "Installerer %s %s (%s)"
 
 #: src/solution_fragment.cc:216
 msgid "%BRemove%b the following packages:%n"
@@ -4317,9 +4294,9 @@ msgid "%BDowngrade%b the following packages:%n"
 msgstr "%BNedgradér%b de følgende pakker:%n"
 
 #: src/solution_fragment.cc:291
-#, fuzzy, c-format
+#, c-format
 msgid "Leave the following dependencies unresolved:%n"
-msgstr "%BAfinstallér%b de følgende pakker:%n"
+msgstr "Efterlad de følgende afhængigheder uafklaret:%n"
 
 #: src/solution_fragment.cc:299
 #, c-format
@@ -4329,82 +4306,74 @@ msgstr "Score er %d"
 #: src/solution_item.cc:91
 #, c-format
 msgid "Remove %F [%s (%s)]"
-msgstr ""
+msgstr "Afinstallér %F [%s (%s)]"
 
 #: src/solution_item.cc:98
 #, c-format
 msgid "Install %F [%s (%s)]"
-msgstr ""
+msgstr "Installér %F [%s (%s)]"
 
 #: src/solution_item.cc:106
-#, fuzzy, c-format
+#, c-format
 msgid "Cancel the installation of %F"
-msgstr "fortsæt med installeringen"
+msgstr "Forkast installeringen af %F"
 
 #: src/solution_item.cc:109
 #, c-format
 msgid "Cancel the removal of %F"
-msgstr ""
+msgstr "Forkast afinstalleringen af %F"
 
 #: src/solution_item.cc:112
 #, c-format
 msgid "Keep %F at version %s (%s)"
-msgstr ""
+msgstr "Behold %F i version %s (%s)"
 
 #: src/solution_item.cc:120
 #, c-format
 msgid "Upgrade %F [%s (%s) -> %s (%s)]"
-msgstr ""
+msgstr "Opgradér %F [%s (%s) -> %s (%s)]"
 
 #: src/solution_item.cc:129
-#, fuzzy, c-format
+#, c-format
 msgid "Downgrade %F [%s (%s) -> %s (%s)]"
-msgstr "Hentede %sB på %s (%sB/s)."
+msgstr "Nedgradér %F [%s (%s) -> %s (%s)]"
 
 #: src/solution_item.cc:587
-#, fuzzy, c-format
+#, c-format
 msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
-msgstr "%BAfinstallér%b de følgende pakker:%n"
+msgstr "-> Lad afhængigheden \"%s anbefaler %s\" være uafklaret."
 
 #: src/solution_screen.cc:149
-#, fuzzy
 msgid "The following actions will resolve this dependency:"
-msgstr "De følgende handlinger vil udrede disse afhængigheder:"
+msgstr "De følgende handlinger vil udrede denne afhængighed:"
 
 #: src/solution_screen.cc:235
-#, fuzzy
 msgid "Remove the following packages:"
-msgstr "%BAfinstallér%b de følgende pakker:%n"
+msgstr "Afinstallér de følgende pakker:"
 
 #: src/solution_screen.cc:246
-#, fuzzy
 msgid "Keep the following packages at their current version:"
-msgstr "%BBehold%b de følgende pakker i deres nuværende version:%n"
+msgstr "Behold de følgende pakker i deres nuværende version:"
 
 #: src/solution_screen.cc:257
-#, fuzzy
 msgid "Install the following packages:"
-msgstr "%BInstallér%b de følgende pakker:%n"
+msgstr "Installér de følgende pakker:"
 
 #: src/solution_screen.cc:268
-#, fuzzy
 msgid "Upgrade the following packages:"
-msgstr "%BOpgradér%b de følgende pakker:%n"
+msgstr "Opgradér de følgende pakker:"
 
 #: src/solution_screen.cc:279
-#, fuzzy
 msgid "Downgrade the following packages:"
-msgstr "%BNedgradér%b de følgende pakker:%n"
+msgstr "Nedgradér de følgende pakker:"
 
 #: src/solution_screen.cc:292
-#, fuzzy
 msgid "Leave the following recommendations unresolved:"
-msgstr "%BAfinstallér%b de følgende pakker:%n"
+msgstr "Afinstallér de følgende pakker:"
 
 #: src/solution_screen.cc:463
-#, fuzzy
 msgid "No broken packages."
-msgstr "'-' for at afinstallere pakker"
+msgstr "Ingen brudte pakker."
 
 #: src/trust.cc:17 src/trust.cc:19
 msgid "WARNING"
@@ -4438,15 +4407,19 @@ msgid ""
 "subsequent changes will not be saved unless you stop all other running apt-"
 "based programs and select \"Become root\" from the Actions menu."
 msgstr ""
+"ADVARSEL: pakkecachen bliver åbnet i skrivebeskyttet tilstand! Denne ændring "
+"og alle efterfølgende ændringer vil ikke blive gemt medmindre du standser "
+"alle øvrige apt-baserede programmer og vælger \"Bliv root\" fra menupunktet "
+"\"Handlinger\"."
 
 #: src/ui.cc:322
 msgid "Never display this message again."
-msgstr ""
+msgstr "Vis aldrig denne besked igen."
 
 #: src/ui.cc:368
 msgid ""
 "You may not modify the state of any package while a download is underway."
-msgstr ""
+msgstr "Du må ikke ændre nogen pakkes tilstand, mens der hentes pakker."
 
 #: src/ui.cc:399
 msgid "You already are root!"
@@ -4480,18 +4453,16 @@ msgid "View available packages and choose actions to perform"
 msgstr "Se tilgængelige pakker og vælg hvilke handlinger der skal udføres"
 
 #: src/ui.cc:731
-#, fuzzy
 msgid "Recommended Packages"
-msgstr "Anbefaler"
+msgstr "Anbefalede pakker"
 
 #: src/ui.cc:732
 msgid "View packages that it is recommended that you install"
-msgstr ""
+msgstr "Vis pakker som anbefales installeret"
 
 #: src/ui.cc:733
-#, fuzzy
 msgid "Recommendations"
-msgstr "Anbefaler"
+msgstr "Anbefalinger"
 
 #: src/ui.cc:837
 msgid ""
@@ -4511,7 +4482,7 @@ msgstr "help.txt"
 
 #: src/ui.cc:862
 msgid "Encoding of help.txt|UTF-8"
-msgstr ""
+msgstr "Indkodning af help.txt|UTF-8"
 
 #: src/ui.cc:883
 msgid "README"
@@ -4519,52 +4490,51 @@ msgstr "README"
 
 #: src/ui.cc:885
 msgid "Encoding of README|UTF-8"
-msgstr ""
+msgstr "Indkodning af README|UTF-8"
 
 #: src/ui.cc:911
-#, fuzzy
 msgid "User's Manual"
-msgstr "^Brugervejledning"
+msgstr "Brugervejledning"
 
 #: src/ui.cc:911
 msgid "Read the full user's manual of aptitude"
-msgstr ""
+msgstr "Læs den fulde brugervejledning til aptitude"
 
 #: src/ui.cc:911
-#, fuzzy
 msgid "Manual"
-msgstr "Markér ^manuel"
+msgstr "Manuel"
 
 #: src/ui.cc:945
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to stat \"%s\""
-msgstr "Kunne ikke åbne %s"
+msgstr "Kunne ikke finde \"%s\""
 
 #: src/ui.cc:951
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to remove \"%s\""
-msgstr "Kunne ikke åbne %s"
+msgstr "Kunne ikke afinstallere \"%s\""
 
 #: src/ui.cc:961
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to list files in \"%s\""
-msgstr "Kunne ikke åbne %s"
+msgstr "Kunne ikke opliste filer i \"%s\""
 
 #: src/ui.cc:974
 #, c-format
 msgid "Failure closing directory \"%s\""
-msgstr ""
+msgstr "Fejl ved lukning af katalog \"%s\""
 
 #: src/ui.cc:980
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to remove directory \"%s\""
-msgstr "Kunne ikke åbne %s"
+msgstr "Kunne ikke fjerne katalog \"%s\""
 
 #: src/ui.cc:990
 #, c-format
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr ""
+"Kan ikke fjerne gammelt, midlertidigt katalog; du bør fjerne %s manuelt."
 
 #: src/ui.cc:995
 #, c-format
@@ -4572,6 +4542,7 @@ msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
 "hand."
 msgstr ""
+"Vil ikke fjerne %s; du bør gennemgå filerne heri og fjerne dem manuelt."
 
 #: src/ui.cc:1021
 #, c-format
@@ -4581,6 +4552,10 @@ msgid ""
 "remove this directory and all its contents?  If you select \"No\", you will "
 "not see this message again."
 msgstr ""
+"Det ser ud til at en tidligere version af aptitude har efterladt filer i %s. "
+"Disse filer er sandsynligvis ubrugelige og kan uden problemer slettes.%n%"
+"nVil du fjerne dette katalog og alle filer heri? Hvis du vælger \"Nej\", vil "
+"du ikke se denne meddelelse igen."
 
 #: src/ui.cc:1063
 msgid "Downloading packages"
@@ -4722,9 +4697,8 @@ msgid "Downloaded package files have been deleted"
 msgstr "Hentede pakkefiler er blevet slettet"
 
 #: src/ui.cc:1483
-#, fuzzy
 msgid "The apt cache file is not available; cannot auto-clean."
-msgstr "Pakkecachen er ikke tilgængelig."
+msgstr "Apt's cachefil er ikke tilgængelig.; kan ikke køre auto-clean."
 
 #: src/ui.cc:1509
 #, c-format
@@ -4747,19 +4721,17 @@ msgid "Ran out of time while trying to find a solution."
 msgstr "Tid udløbet under forsøg på at finde en løsning."
 
 #: src/ui.cc:1831 src/ui.cc:1833
-#, fuzzy
 msgid "Resolve Dependencies"
-msgstr "Kunne ikke udrede afhængigheder."
+msgstr "Udred afhængigheder"
 
 #: src/ui.cc:1832
-#, fuzzy
 msgid "Search for solutions to unsatisfied dependencies"
-msgstr "Find næste pakke med uopfyldte afhængigheder"
+msgstr "Søg efter løsninger på uopfyldte afhængigheder"
 
 #: src/ui.cc:1844
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open %ls"
-msgstr "Kunne ikke åbne %s"
+msgstr "Kunne ikke åbne %ls"
 
 #: src/ui.cc:1850
 msgid "Error while dumping resolver state"
@@ -4783,7 +4755,7 @@ msgstr "^Opdatér pakkeliste"
 
 #: src/ui.cc:1894
 msgid "Check for new versions of packages"
-msgstr "Check efter nye versioner af pakker"
+msgstr "Se efter nye versioner af pakker"
 
 #: src/ui.cc:1897
 msgid "^Forget new packages"
@@ -4957,105 +4929,96 @@ msgstr "Vis Debians logfil over programændringer for den valgte pakke"
 
 #: src/ui.cc:1988
 msgid "^Examine Solution"
-msgstr ""
+msgstr "^Gennemgå løsning"
 
 #: src/ui.cc:1989
-#, fuzzy
 msgid "Examine the currently selected solution to the dependency problems."
-msgstr "Der findes ingen løsning på problemerne med disse pakkeafhængigheder!"
+msgstr ""
+"Gennemgå den aktuelt valgte løsning på problemerne med pakkeafhængigheder."
 
 #: src/ui.cc:1992
 msgid "Apply ^Solution"
-msgstr ""
+msgstr "^Anvend løsning"
 
 #: src/ui.cc:1993
 msgid "Perform the actions contained in the currently selected solution."
-msgstr ""
+msgstr "Udfør handlingerne i den aktuelt valgte løsning."
 
 #: src/ui.cc:1996
-#, fuzzy
 msgid "^Next Solution"
-msgstr "Ikke flere løsninger."
+msgstr "^Næste løsning"
 
 #: src/ui.cc:1997
-#, fuzzy
 msgid "Select the next solution to the dependency problems."
-msgstr "Der findes ingen løsning på problemerne med disse pakkeafhængigheder!"
+msgstr "Vælg den næste løsning på problemerne med pakkeafhængigheder."
 
 #: src/ui.cc:2000
-#, fuzzy
 msgid "^Previous Solution"
-msgstr "flyt til den forrige løsning"
+msgstr "^Forrige løsning"
 
 #: src/ui.cc:2001
-#, fuzzy
 msgid "Select the previous solution to the dependency problems."
-msgstr "Der findes ingen løsning på problemerne med disse pakkeafhængigheder!"
+msgstr "Vælg den forrige løsning på problemerne med pakkeafhængigheder."
 
 #: src/ui.cc:2004
-#, fuzzy
 msgid "^First Solution"
-msgstr "Ikke flere løsninger."
+msgstr "Førs^te løsning"
 
 #: src/ui.cc:2005
-#, fuzzy
 msgid "Select the first solution to the dependency problems."
-msgstr "Der findes ingen løsning på problemerne med disse pakkeafhængigheder!"
+msgstr "Vælg den første løsning på problemerne med pakkeafhængigheder."
 
 #: src/ui.cc:2008
-#, fuzzy
 msgid "^Last Solution"
-msgstr "Ikke flere løsninger."
+msgstr "^Sidste løsning"
 
 #: src/ui.cc:2009
-#, fuzzy
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
-msgstr "Der findes ingen løsning på problemerne med disse pakkeafhængigheder!"
+msgstr ""
+"Vælg den indtil nu sidst beregnede løsning på problemerne med "
+"pakkeafhængigheder."
 
 #: src/ui.cc:2015
 msgid "Toggle ^Rejected"
-msgstr ""
+msgstr "Skift af^vist"
 
 #: src/ui.cc:2016
 msgid "Toggle whether the currently selected action is rejected."
-msgstr ""
+msgstr "Skift mellem om den aktuelt valgte handling er afvist eller ej."
 
 #: src/ui.cc:2020
 msgid "Toggle ^Approved"
-msgstr ""
+msgstr "Skift g^odkendt"
 
 #: src/ui.cc:2021
-#, fuzzy
 msgid "Toggle whether the currently selected action is approved."
-msgstr "Markér den aktuelt valgte pakke til afinstallering"
+msgstr "Skift mellem om den aktuelt valgte handling er godkendt eller ej."
 
 #: src/ui.cc:2025
 msgid "^View Target"
-msgstr ""
+msgstr "Vis ^målpakke"
 
 #: src/ui.cc:2026
 msgid "View the package which will be affected by the selected action"
-msgstr ""
+msgstr "Vis pakke som vil blive påvirket af den valgte handling"
 
 #: src/ui.cc:2034
 msgid "^Find"
 msgstr "^Find"
 
 #: src/ui.cc:2035
-#, fuzzy
 msgid "Search forwards"
-msgstr "Søg efter:"
+msgstr "Søg fremad:"
 
 #: src/ui.cc:2038
 msgid "^Find Backwards"
-msgstr ""
+msgstr "Find ^baglæns"
 
 #: src/ui.cc:2039
-#, fuzzy
 msgid "Search backwards"
-msgstr "Søg efter: "
+msgstr "Søg baglæns"
 
 #: src/ui.cc:2042
 msgid "Find ^Again"
@@ -5075,7 +5038,7 @@ msgstr "Anvend et filter på pakkelisten"
 
 #: src/ui.cc:2051
 msgid "^Un-Limit Display"
-msgstr "^Ingen afgrænsning i oversigt"
+msgstr "F^jern afgrænsning"
 
 #: src/ui.cc:2052
 msgid "Remove the filter from the package list"
@@ -5154,34 +5117,30 @@ msgid "Create a new default package view"
 msgstr "Lav en ny standard for pakkeoversigt"
 
 #: src/ui.cc:2108
-#, fuzzy
 msgid "Audit ^Recommendations"
-msgstr "Anbefaler"
+msgstr "Se ^anbefalinger"
 
 #: src/ui.cc:2109
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
-msgstr ""
+msgstr "Vis pakker som anbefales installeret, men som du ikke har installeret."
 
 #: src/ui.cc:2112
-#, fuzzy
 msgid "New ^Flat Package List"
-msgstr "Ny pakke^oversigt"
+msgstr "Ny ^total pakkeoversigt"
 
 #: src/ui.cc:2113
 msgid "View all the packages on the system in a single uncategorized list"
-msgstr ""
+msgstr "Vis alle pakker på systemet i en enkelt, ukategoriseret oversigt"
 
 #: src/ui.cc:2116
-#, fuzzy
 msgid "New ^Debtags Browser"
-msgstr "Ny ^kategori-oversigt"
+msgstr "Ny Debtags-oversigt"
 
 #: src/ui.cc:2118
-#, fuzzy
 msgid "Browse packages using Debtags data"
-msgstr "Vis pakker efter kategori"
+msgstr "Brug debtags-mærkater ved visning af pakker"
 
 #: src/ui.cc:2121
 msgid "New Categorical ^Browser"
@@ -5243,10 +5202,11 @@ msgstr "Læs betingelserne for kopiering af dette program"
 msgid "Actions"
 msgstr "Handlinger"
 
+# Dette er et menupunkt og skal være kort, og "løsninger" dækker
+# betydningen af resolver meget godt. -MBJ
 #: src/ui.cc:2280
-#, fuzzy
 msgid "Resolver"
-msgstr "^Afinstallér"
+msgstr "Løsninger"
 
 #: src/ui.cc:2281
 msgid "Search"
@@ -5265,12 +5225,13 @@ msgid "Help"
 msgstr "Hjælp"
 
 #: src/ui.cc:2349
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
 "Pkgs"
 msgstr ""
-"%s: Menu  %s: Hjælp  %s: Afslut  %s: Opdatér  %s: Hent/Installér/Afinstallér"
+"%ls: Menu  %ls: Hjælp  %ls: Afslut  %ls: Opdatér  %ls: Hent/(af)installér "
+"pakker"
 
 #: src/ui.cc:2690 src/vscreen/vscreen.cc:724
 msgid "yes_key"
@@ -5286,9 +5247,8 @@ msgid "%s changes"
 msgstr "%s ændringer"
 
 #: src/view_changelog.cc:151
-#, fuzzy
 msgid "View the list of changes made to this Debian package."
-msgstr "Vis vigtige ændringer lavet i hver version af "
+msgstr "Vis listen over ændringer i denne Debian-pakke."
 
 #: src/view_changelog.cc:215
 msgid "You can only view changelogs of official Debian packages."
@@ -5305,45 +5265,45 @@ msgstr "Hent ændringslog"
 #: src/vscreen/config/column_definition.cc:105
 #: src/vscreen/config/column_definition.cc:123
 msgid "Formatting marker with missing format code"
-msgstr ""
+msgstr "Styrekode-indikator som mangler styrekode"
 
 #: src/vscreen/config/column_definition.cc:132
 #: src/vscreen/config/column_definition.cc:178
 #, c-format
 msgid "Bad number in format string: '%ls'"
-msgstr ""
+msgstr "Forkert nummer i styrekoden: '%ls'"
 
 #: src/vscreen/config/column_definition.cc:160
 msgid "Missing parameter number in format string"
-msgstr ""
+msgstr "Manglende nummer til parameter i styrekode"
 
 #: src/vscreen/config/column_definition.cc:185
 #, c-format
 msgid "Parameter numbers must be 1 or greater, not %ld"
-msgstr ""
+msgstr "Parametertal skal være 1 eller større, ikke %ld"
 
 #: src/vscreen/config/column_definition.cc:211
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown formatting code '%lc'"
-msgstr "Ukendt mønstertype: %c"
+msgstr "Ukendt styrekode \"%lc\""
 
 #: src/vscreen/config/column_definition.cc:261
 msgid "Bad format parameter"
-msgstr ""
+msgstr "Parameter i forkert format"
 
 #: src/vscreen/config/keybindings.cc:314
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse key description: %ls"
-msgstr "Læser beskrivelser af opgavepakker"
+msgstr "Kan ikke fortolke beskrivelse af taste: %ls"
 
 #: src/vscreen/config/keybindings.cc:324
-#, fuzzy
 msgid "Invalid null keybinding"
-msgstr "Ugyldig post i gruppen med tastebindinger: \"%s\""
+msgstr "Ugyldig tom tastebinding"
 
 #: src/vscreen/config/keybindings.cc:332
 msgid "Sorry, control modifiers may not be used with unprintable characters"
 msgstr ""
+"Beklager, styrekoder kan ikke bruges sammen med tegn der ikke kan udskrives"
 
 #: src/vscreen/vscreen.cc:125
 #, c-format
@@ -5370,71 +5330,8 @@ msgstr "Av! Modtog SIGQUIT, dør ..\n"
 msgid ""
 "Unable to load filename: the string %ls has no multibyte representation."
 msgstr ""
+"Kan ikke indlæse filnavn: strengen %ls er ikke repræsenteret i multibyte."
 
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
-msgstr ""
-
-#~ msgid "Happy?"
-#~ msgstr "Glad nu?"
-
-#~ msgid "Can't get value of $HOME, using TMPDIR (insecure)"
-#~ msgstr "Kan ikke finde værdi på $HOME, bruger TMPDIR (utrygt)"
-
-#~ msgid "Internal error: uncaught 'out of solutions' exception.\n"
-#~ msgstr "Intern fejl: fangede ikke undtagelse ved \"løsninger udtømt\".\n"
-
-#~ msgid "Internal error: uncaught 'out of time' exception.\n"
-#~ msgstr "Intern fejl: fangede ikke undtagelse ved \"tid udløbet\".\n"
-
-#~ msgid "Warning: the visual interface will ignore -s/Cmdline::Simulate\n"
-#~ msgstr ""
-#~ "Advarsel: den visuelle brugerflade vil ignorere -s/Cmdline::Simulate\n"
-
-#, fuzzy
-#~ msgid "Create a new flat package list"
-#~ msgstr "Lav en ny standard for pakkeoversigt"
-
-#~ msgid "Search for a package"
-#~ msgstr "Søg efter en pakke"
-
-#, fuzzy
-#~ msgid "Search backwards for a package"
-#~ msgstr "Søg efter en pakke"
-
-#~ msgid "Solution search failed.  %s: try harder"
-#~ msgstr "Søgning efter en løsning slog fejl. %s: forsøg mere ihærdigt"
-
-#~ msgid ""
-#~ "Time exhausted while searching for a solution (you can select \"Next "
-#~ "Solution\" or press %s to try harder)."
-#~ msgstr ""
-#~ "Tid udløbet ved søgning efter en løsning (du kan vælge \"Næste\" eller du "
-#~ "kan taste %s for at prøve mere ihærdigt)."
-
-#~ msgid "All solutions exhausted."
-#~ msgstr "Alle løsningsmuligheder udtømt."
-
-#~ msgid "Bad filter type '%s' (valid types are: 'missing')"
-#~ msgstr "Ugyldig filtertype '%s' (mulige typer er: 'missing')"
-
-#~ msgid "Version-generating grouping policies must be the tail of a chain"
-#~ msgstr "Versionsgenererende grupperingsmetoder skal afslutte kæden"
-
-#~ msgid "Dep-generating grouping policies must be the tail of a chain"
-#~ msgstr "Afhængighedsgenererende grupperingsmetoder skal afslutte kæden"
-
-#~ msgid "Invalid zero-length grouping policy name"
-#~ msgstr "Ugyldigt nullængde-navn på grupperingsmetode"
-
-#~ msgid "Invalid grouping policy type '%s'"
-#~ msgstr "Ugyldig type '%s' for grupperingsmetode"
-
-#~ msgid "%sB bytes of disk space will be freed\n"
-#~ msgstr "%sB diskplads vil blive frigjort\n"
-
-#~ msgid "Warning: could not lock the cache file.  Opening in read-only mode"
-#~ msgstr "Advarsel: kunne ikke låse cachefil. Åbner skrivebeskyttet"
-
-#~ msgid "The number of mines must be a number"
-#~ msgstr "Antallet af miner skal være et tal"
+msgstr "ØVERSTE NIVEAU"
