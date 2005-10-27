@@ -6,10 +6,10 @@
 #: src/view_changelog.cc:226
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude_po_ro2\n"
+"Project-Id-Version: ro\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
 "POT-Creation-Date: 2005-10-22 22:52-0700\n"
-"PO-Revision-Date: 2005-09-30 11:26+0300\n"
+"PO-Revision-Date: 2005-10-24 17:16+0300\n"
 "Last-Translator: Sorin Batariuc <sorin@bonbon.net>\n"
 "Language-Team: Romanian <debian-l10-romanian@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -133,6 +133,8 @@ msgstr ""
 msgid ""
 "Do not display a warning when the first change is made in read-only mode."
 msgstr ""
+"Nu afişează avertisment când prima schimbare este făcută în modul doar-"
+"citire."
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -161,9 +163,8 @@ msgid "Remove unused packages automatically"
 msgstr "Şterge automat pachetele nefolosite"
 
 #: src/apt_options.cc:192
-#, fuzzy
 msgid "Don't automatically remove unused packages matching this filter"
-msgstr "Automat şterge pachetele nefolosite care se potrivesc cu acest filtru"
+msgstr "Nu şterge automat pachetele nefolosite care corespund acestui filtru"
 
 #: src/apt_options.cc:248 src/mine/cmine.cc:302 src/mine/cmine.cc:367
 #: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:91
@@ -338,11 +339,13 @@ msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Notă: alegerea sarcinii \"%s: %s\" pentru instalare\n"
 
 #: src/cmdline/cmdline_action.cc:244
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
-msgstr "Puteţi specifica o versiune de pachet doar cu comanda 'install'.\n"
+msgstr ""
+"Puteţi specifica o versiune de pachet doar cu comanda 'install' sau cu "
+"'forbid-version'.\n"
 
 #: src/cmdline/cmdline_action.cc:252
 #, c-format
@@ -516,7 +519,7 @@ msgstr "Ce este? Este un elefant mâncat de un şarpe, bineînţeles.\n"
 
 #: src/cmdline/cmdline_prompt.cc:33
 msgid "Unexpected end-of-file on standard input"
-msgstr ""
+msgstr "Sfârşit de fişier neaşteptat la intrarea standard"
 
 #: src/cmdline/cmdline_prompt.cc:52
 msgid "Couldn't read list of sources"
@@ -1132,9 +1135,8 @@ msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Nu pot rezolva dependenţele!  Renunţ..."
 
 #: src/cmdline/cmdline_resolver.cc:645
-#, fuzzy
 msgid "*** No more solutions available ***"
-msgstr "Nu mai sunt soluţii."
+msgstr "*** Nu mai sunt soluţii disponibile ***"
 
 #: src/cmdline/cmdline_search.cc:100
 #, c-format
@@ -1351,14 +1353,14 @@ msgid "Description: "
 msgstr "Descriere: "
 
 #: src/cmdline/cmdline_show.cc:423
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to locate package %s"
-msgstr "Nu pot deschide %ls"
+msgstr "Nu pot localiza pachetul %s"
 
 #: src/cmdline/cmdline_show.cc:436
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern %s"
-msgstr "Nu pot analiza modelul la '%s'"
+msgstr "Nu pot analiza modelul %s"
 
 #: src/cmdline/cmdline_simulate.cc:37
 #, c-format
@@ -1512,6 +1514,7 @@ msgstr "Nu pot deschide pentru scriere"
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
+"Nu pot căuta directorul dvs. personal, se salvează în /tmp/function_pkgs!"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -1578,19 +1581,19 @@ msgid "Error writing state file"
 msgstr "Eroare în timpul scrierii fişierului de stare"
 
 #: src/generic/apt/aptcache.cc:610
-#, fuzzy, c-format
+#, c-format
 msgid "failed to remove %s"
-msgstr "Nu pot deschide %ls"
+msgstr "eşuare în ştergerea %s"
 
 #: src/generic/apt/aptcache.cc:617
 #, c-format
 msgid "failed to rename %s to %s"
-msgstr ""
+msgstr "eşuare în redenumirea lui %s în %s"
 
 #: src/generic/apt/aptcache.cc:625
-#, fuzzy, c-format
+#, c-format
 msgid "couldn't replace %s with %s"
-msgstr "nu pot înlocui vechiul fişier de stare"
+msgstr "nu pot înlocui %s cu %s"
 
 #: src/generic/apt/aptcache.cc:1117
 msgid "Unable to correct dependencies, some packages cannot be installed"
@@ -1612,9 +1615,9 @@ msgstr ""
 "fişiere lipsă"
 
 #: src/generic/apt/apt.cc:171
-#, fuzzy, c-format
+#, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
-msgstr "Nu pot înlocui %s cu noul fişier de configurare"
+msgstr "%s se poate citi, nu şi scrie; nu pot scrie fişierul de configurare."
 
 #: src/generic/apt/apt.cc:209
 #, c-format
@@ -1630,10 +1633,10 @@ msgstr ""
 "modificări pe care le faceţi stării pachetelor NU vor fi păstrate!"
 
 #: src/generic/apt/download_install_manager.cc:53
-#, fuzzy
 msgid ""
 "The package cache is not available; unable to download and install packages."
-msgstr "Cache-le pachetului nu este disponibil."
+msgstr ""
+"Cache-ul pachetului nu este disponibil; nu pot descărca şi instala pachetele."
 
 #: src/generic/apt/download_install_manager.cc:69
 #: src/generic/apt/download_update_manager.cc:77
@@ -1668,9 +1671,8 @@ msgid "Couldn't clean out list directories"
 msgstr "Nu pot curăţa directoarele listă"
 
 #: src/generic/apt/download_update_manager.cc:122
-#, fuzzy
 msgid "Couldn't rebuild package cache"
-msgstr "Nu pot citi lista cu sursele pachetelor"
+msgstr "Nu am putut reconstrui cache-ul pachetelor"
 
 #: src/generic/apt/log.cc:52
 #, c-format
@@ -1678,9 +1680,9 @@ msgid "Unable to open %s to log actions"
 msgstr "Nu pot să deschid %s pentru înregistrarea acţiunilor"
 
 #: src/generic/apt/log.cc:64
-#, fuzzy, c-format
+#, c-format
 msgid "Error generating local time (%s)"
-msgstr "Eroare în timpul scrierii fişierului de stare resolver în %s"
+msgstr "Eroare în timpul generării orei locale (%s)"
 
 #: src/generic/apt/log.cc:68
 msgid "log report"
@@ -1883,7 +1885,7 @@ msgstr "Tip de dependenţă necunoscut: %s"
 
 #: src/generic/apt/matchers.cc:2119
 msgid "Provides: cannot be broken"
-msgstr ""
+msgstr "Furnizează: nu poate fi deteriorat"
 
 #: src/generic/apt/matchers.cc:2174
 #, c-format
@@ -1975,6 +1977,8 @@ msgstr "Se construieşte baza de date cu etichete"
 #: src/generic/apt/tags.cc:253
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgstr ""
+"Nu se poate încărca vocabularul cu etichete deb (debtags), poate debtags nu "
+"este instalat?"
 
 #: src/generic/apt/tasks.cc:283
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -1989,12 +1993,11 @@ msgstr "Citesc descrierile sarcinilor"
 #: src/generic/util/temp.cc:142
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
-msgstr ""
+msgstr "Nu se poate crea directorul temporar din şablonul \"%s\": %s"
 
 #: src/generic/util/temp.cc:137
-#, fuzzy
 msgid "Unknown error"
-msgstr "Necunoscut"
+msgstr "Eroare necunoscută"
 
 #: src/generic/util/threads.cc:32
 msgid "Not enough resources to create thread"
@@ -2022,7 +2025,7 @@ msgstr "Intrare nevalidă fără etichetă în definiţia stilului grupului:\"%s
 
 #: src/load_config.cc:125
 msgid "The default color may only be used as a background."
-msgstr ""
+msgstr "Culoarea implicită poate fi utilizată doar ca fundal."
 
 #: src/load_config.cc:142
 #, c-format
@@ -2081,9 +2084,8 @@ msgid "By-status grouping policies take no arguments"
 msgstr "Politicile de grupare 'după stare' n-au argumente"
 
 #: src/load_grouppolicy.cc:412
-#, fuzzy
 msgid "Expected '(' after 'filter'"
-msgstr "Aşteptat '(' după 'pattern'"
+msgstr "Aşteptat '(' după 'filter'"
 
 #: src/load_grouppolicy.cc:449
 #, c-format
@@ -2184,9 +2186,8 @@ msgid "By-name sorting policies take no arguments"
 msgstr "Politicile de sortate 'după nume' n-au argumente"
 
 #: src/load_sortpolicy.cc:64
-#, fuzzy
 msgid "By-version sorting policies take no arguments"
-msgstr "Politicile de sortare 'după prioritate' n-au argumente"
+msgstr "Politicile de sortare 'după versiune' n-au argumente"
 
 #: src/load_sortpolicy.cc:77
 msgid "By-installed size sorting policies take no arguments"
@@ -2374,6 +2375,8 @@ msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
 msgstr ""
+" reinstall    - Descarcă şi reinstalează (pe cât posibil) un pachet instalat "
+"curent\n"
 
 #: src/main.cc:144
 #, c-format
@@ -2479,6 +2482,8 @@ msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
 msgstr ""
+" -q             În modul linie de comandă, inhibaţi indicatoarele de "
+"evoluţie incrementală.\n"
 
 #: src/main.cc:160
 #, c-format
@@ -2519,14 +2524,14 @@ msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                   Acest aptitude n-are puterile unei Super Vaci.\n"
 
 #: src/main.cc:299
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a number after -q=\n"
-msgstr "Se aşteaptă o versiune după \"%s\""
+msgstr "Se aşteaptă un număr după -q=\n"
 
 #: src/main.cc:308
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a number after -q=, got %s\n"
-msgstr "Se aşteaptă o versiune după \"%s\""
+msgstr "Aşteptat un număr după -q=, primit %s\n"
 
 #: src/main.cc:331
 #, c-format
@@ -2560,7 +2565,7 @@ msgstr "Comandă necunoscută \"%s\"\n"
 #: src/main.cc:516 src/main.cc:557
 #, c-format
 msgid "Uncaught exception: %s\n"
-msgstr ""
+msgstr "Excepţie nedetectată: %s\n"
 
 #: src/main.cc:520 src/main.cc:561
 #, c-format
@@ -2568,6 +2573,8 @@ msgid ""
 "Backtrace:\n"
 "%s"
 msgstr ""
+"Stiva de apeluri:\n"
+"%s"
 
 #: src/menu_text_layout.cc:36 src/ui.cc:239 src/view_changelog.cc:55
 msgid "Search for:"
@@ -4463,15 +4470,21 @@ msgid ""
 "subsequent changes will not be saved unless you stop all other running apt-"
 "based programs and select \"Become root\" from the Actions menu."
 msgstr ""
+"AVERTISMENT: cache-ul pachetului este deschis în modul doar-citire!  Această "
+"modificare, cât şi toate modificările ulterioare nu vor fi salvate decât "
+"dacă opriţi toate celelalte programe bazate pe apt şi selectaţi "
+"\"Autentificare superutilizator\" din meniul Acţiuni."
 
 #: src/ui.cc:322
 msgid "Never display this message again."
-msgstr ""
+msgstr "Nu mai afişa niciodată acest mesaj."
 
 #: src/ui.cc:368
 msgid ""
 "You may not modify the state of any package while a download is underway."
 msgstr ""
+"Nu puteţi modifica starea niciunui pachet în timp ce se efectuează o "
+"descărcare."
 
 #: src/ui.cc:399
 msgid "You already are root!"
@@ -4504,18 +4517,16 @@ msgid "View available packages and choose actions to perform"
 msgstr "Vizualizaţi pachetele disponibile şi alegeţi acţiunile de executat"
 
 #: src/ui.cc:731
-#, fuzzy
 msgid "Recommended Packages"
-msgstr "Recomandă"
+msgstr "Pachete Recomandate"
 
 #: src/ui.cc:732
 msgid "View packages that it is recommended that you install"
-msgstr ""
+msgstr "Vizualizaţi pachetele recomandate să le instalaţi"
 
 #: src/ui.cc:733
-#, fuzzy
 msgid "Recommendations"
-msgstr "Recomandă"
+msgstr "Recomandări"
 
 #: src/ui.cc:837
 msgid ""
@@ -4558,35 +4569,36 @@ msgid "Manual"
 msgstr "Manual"
 
 #: src/ui.cc:945
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to stat \"%s\""
-msgstr "Nu pot analiza modelul după \"%s\""
+msgstr "Nu pot declara \"%s\""
 
 #: src/ui.cc:951
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to remove \"%s\""
-msgstr "Nu pot deschide %ls"
+msgstr "Nu pot şterge \"%s\""
 
 #: src/ui.cc:961
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to list files in \"%s\""
-msgstr "Nu pot deschide %ls"
+msgstr "Nu pot lista fişierele în \"%s\""
 
 #: src/ui.cc:974
 #, c-format
 msgid "Failure closing directory \"%s\""
-msgstr ""
+msgstr "Eşuare la închiderea directorului \"%s\""
 
 #: src/ui.cc:980
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to remove directory \"%s\""
-msgstr "Nu pot analiza modelul după \"%s\""
+msgstr "Nu pot şterge directorul \"%s\""
 
 #: src/ui.cc:990
 #, c-format
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr ""
+"Nu pot şterge vechiul director temporar; ar trebui să ştergeţi manual %s."
 
 #: src/ui.cc:995
 #, c-format
@@ -4594,6 +4606,8 @@ msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
 "hand."
 msgstr ""
+"Nu se va şterge %s; ar trebui să examinaţi fişierele din el şi să-l ştergeţi "
+"manual."
 
 #: src/ui.cc:1021
 #, c-format
@@ -4603,6 +4617,10 @@ msgid ""
 "remove this directory and all its contents?  If you select \"No\", you will "
 "not see this message again."
 msgstr ""
+"Se pare că o versiune precedentă a lui aptitude a lăsat fişiere în urma %s.  "
+"Aceste fişiere sunt probabil fără importanţă, şi pot fi şterse fără grijă.%n%"
+"nVreţi să ştergeţi acest director şi tot conţinutul său?  Dacă alegeţi \"Nu"
+"\", nu veţi mai vedea acest mesaj."
 
 #: src/ui.cc:1063
 msgid "Downloading packages"
@@ -4745,9 +4763,9 @@ msgid "Downloaded package files have been deleted"
 msgstr "Fişierele pachetelor descărcate au fost şterse"
 
 #: src/ui.cc:1483
-#, fuzzy
 msgid "The apt cache file is not available; cannot auto-clean."
-msgstr "Cache-le pachetului nu este disponibil."
+msgstr ""
+"Fişierul apt cache nu este disponibil; nu se poate face auto-curăţarea."
 
 #: src/ui.cc:1509
 #, c-format
@@ -5013,26 +5031,23 @@ msgid "Select the previous solution to the dependency problems."
 msgstr "Selectaţi soluţia precedentă pentru problemele de dependenţe."
 
 #: src/ui.cc:2004
-#, fuzzy
 msgid "^First Solution"
-msgstr "Următoarea Soluţie ^N"
+msgstr "Prima Soluţie ^F"
 
 #: src/ui.cc:2005
-#, fuzzy
 msgid "Select the first solution to the dependency problems."
-msgstr "Selectaţi următoarea soluţie pentru problemele de dependenţe."
+msgstr "Selectaţi prima soluţie pentru problemele de dependenţe."
 
 #: src/ui.cc:2008
-#, fuzzy
 msgid "^Last Solution"
-msgstr "Următoarea Soluţie ^N"
+msgstr "Ultima So^luţie"
 
 #: src/ui.cc:2009
-#, fuzzy
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
-msgstr "Selectaţi următoarea soluţie pentru problemele de dependenţe."
+msgstr ""
+"Selectaţi ultima soluţie pentru problemele de dependenţe generate până acum."
 
 #: src/ui.cc:2015
 msgid "Toggle ^Rejected"
@@ -5172,15 +5187,16 @@ msgid "Create a new default package view"
 msgstr "Crearea unei noi vizualizări de pachet implicite"
 
 #: src/ui.cc:2108
-#, fuzzy
 msgid "Audit ^Recommendations"
-msgstr "Recomandă"
+msgstr "^Recomandările reviziei"
 
 #: src/ui.cc:2109
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
 msgstr ""
+"Vizualizaţi pachetele recomandate să le instalaţi, dar care nu sunt curent "
+"instalate."
 
 #: src/ui.cc:2112
 msgid "New ^Flat Package List"
@@ -5189,6 +5205,7 @@ msgstr "Listă Nouă de Pachete ^F"
 #: src/ui.cc:2113
 msgid "View all the packages on the system in a single uncategorized list"
 msgstr ""
+"Vizualizaţi toate pachetele din sistem într-o singură listă, necategorisită"
 
 #: src/ui.cc:2116
 msgid "New ^Debtags Browser"
@@ -5391,22 +5408,3 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "NIVELUL DE SUS"
-
-#~ msgid "Happy?"
-#~ msgstr "Fericit?"
-
-#~ msgid "Can't get value of $HOME, using TMPDIR (insecure)"
-#~ msgstr "Nu pot obţine valoarea lui $HOME, folosesc TMPDIR (nesigur)"
-
-#~ msgid "Internal error: uncaught 'out of solutions' exception.\n"
-#~ msgstr ""
-#~ "Eroare internă: excepţie neinterceptată de tip 'soluţii epuizate'.\n"
-
-#~ msgid "Internal error: uncaught 'out of time' exception.\n"
-#~ msgstr "Eroare internă: excepţie neinterceptată de tip 'expirare'.\n"
-
-#~ msgid "Warning: the visual interface will ignore -s/Cmdline::Simulate\n"
-#~ msgstr "Avertisment: interfaţa vizuală va ignora -s/Cmdline::Simulate\n"
-
-#~ msgid "Create a new flat package list"
-#~ msgstr "Crearea unei noi liste de pachete"
