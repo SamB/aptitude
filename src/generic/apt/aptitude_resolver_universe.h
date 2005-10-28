@@ -774,11 +774,10 @@ public:
 
   public:
     // Start from the given package (typically Head() or End()).
-    dep_iterator(const pkgCache::PkgIterator &_pkg,
-		 pkgDepCache *_cache)
+    dep_iterator(pkgDepCache *_cache)
       :cache(_cache),
-       pkg(_pkg),
-       ver(_pkg.VersionList()),
+       pkg(_cache->PkgBegin()),
+       ver(),
        dep(_cache)
     {
       if(!pkg.end())
@@ -892,7 +891,7 @@ public:
 
   dep_iterator deps_begin() const
   {
-    return dep_iterator(cache->PkgBegin(), cache);
+    return dep_iterator(cache);
   }
 
   broken_dep_iterator broken_begin() const
