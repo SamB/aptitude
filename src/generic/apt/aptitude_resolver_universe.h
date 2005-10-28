@@ -872,7 +872,7 @@ public:
     }
 #endif
 
-    // Start from the given package (typically Head() or End()).
+    /** \brief Create a broken_dep_iterator for the given package cache. */
     broken_dep_iterator(pkgDepCache *_cache)
       :cache(_cache),
        pkg(_cache->PkgBegin()), prv(*_cache, 0, (pkgCache::Package *) 0),
@@ -889,13 +889,19 @@ public:
       normalize();
     }
 
+    /** \return the dependency at which this iterator currently points. */
     aptitude_universe::dep operator*() const
     {
       return aptitude_universe::dep(the_dep, prv, cache);
     }
 
+    /** \brief Advance to the next broken dependency.
+     *
+     *  \return a reference to this iterator.
+     */
     broken_dep_iterator &operator++();
 
+    /** \brief Test whether this is an end iterator. */
     bool end() const
     {
       return pkg.end();
