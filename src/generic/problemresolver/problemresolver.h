@@ -82,89 +82,309 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
 
 /** \defgroup problemresolver Aptitude's problem resolver
  *
- *  This is a replacement for the generic apt problem resolver.  It
+ *  \section Overview
+ *
+ *  This is a replacement for the standard apt problem resolver.  It
  *  uses a different algorithm which, while it is less efficient,
  *  allows the program to have more direct control over the results,
  *  allows the user to pick and choose from multiple solutions, and
- *  can (eventually) spit out explanations of its actions in a
- *  user-friendly way.
+ *  can produce a more user-friendly explanation of its actions.
  *
  *  The problem resolver class is templated on abstract packages.
- *  Normally this will be apt packages, but for the purpose of testing
- *  the algorithm a simpler package system is used.  Each package has
- *  an associated "score" which indicates, essentially, how hard the
- *  problem resolver will try to keep it on the system (or, for
- *  negative scores, to remove it from the system).  The sum of all
- *  installed package's scores is used as a heuristic in a directed
- *  search of the solution space (see generic_problem_resolver's
- *  documentation for the interface and its documentation for the gory
- *  details).
+ *  Normally this will be the system of apt packages described by
+ *  aptitude_universe, but for the purpose of testing the algorithm a
+ *  simpler package system, the dummy_universe, is used.
+ *
+ *  Each package version has an associated "score" which indicates,
+ *  essentially, how hard the problem resolver will try to keep it on
+ *  the system (or, for negative scores, to remove it from the
+ *  system).  The sum of all installed package's scores is used as a
+ *  heuristic in a directed search of the solution space.
+ *
+ *  \sa \subpage abstract_universe, generic_problem_resolver
+ *
+ *  \page abstract_universe The abstract package universe interface
+ *
+ *  The package universe interface consists of the following
+ *  interrelated Concepts (see the <A
+ *  HREF="http://www.sgi.com/tech/stl/stl_introduction.html">STL
+ *  documentation</A> for a definition of what a Concept is):
+ *
+ *  - \subpage universe_universe
+ *  - \subpage universe_package
+ *  - \subpage universe_version
+ *  - \subpage universe_dep
+ *  - \subpage universe_installation
+ *
+ *  Note that in order to allow APT structures to be wrapped with
+ *  minimal overhead, all iterators in this section are "APT-style"
+ *  iterators: instead of calculating container bounds by invoking an
+ *  "end" method on the container, each iterator has a predicate
+ *  method end() which returns \b true if the iterator is an "end"
+ *  iterator.
+ *
+ *  \sa \ref problemresolver
+ *
+ *  \page universe_universe Universe concept
+ *
+ *  The package universe is the base type representing a domain of
+ *  package relationships.  It contains classes representing the
+ *  various objects in the domain, along with methods to retrieve
+ *  information about the number of entities in the universe and to
+ *  iterate over global lists of entities.
+ *
+ *  aptitude_universe and dummy_universe are models of the generic
+ *  universe concept.
+ *
+ *  \sa \ref universe_package, \ref universe_version, \ref universe_dep
+ *
+ *  A class modelling the Universe concept should provide the
+ *  following members:
+ *
+ *  - <b>package</b>: a model of \ref universe_package "the Package concept".
+ *
+ *  - <b>version</b>: a model of \ref universe_version "the Version concept".
+ *
+ *  - <b>dep</b>: a model of \ref universe_dep "the Dependency concept".
+ *
+ *  - <b>package_iterator</b>: an iterator over the list of all the
+ *  \ref universe_package "package"s in this universe.
+ *
+ *  - <b>dep_iterator</b>: an iterator over the list of all the \ref
+ *  universe_dep "dependencies" in this universe.
+ *
+ *  - <b>broken_dep_iterator</b>: an iterator over the list of all
+ *  "currently broken" \ref universe_dep "dependencies" in this
+ *  universe (i.e., all dependencies that are broken if the "current"
+ *  \ref universe_version "version" of each \ref universe_package
+ *  "package", as given by \ref universe_package "package"::\ref
+ *  universe_package_current_version "current_version()", is
+ *  installed).
+ *
+ *  - <b>get_package_count()</b>: returns the number of \ref
+ *  universe_package "package"s in the universe.
+ *
+ *  - <b>get_version_count()</b>: returns the number of \ref
+ *  universe_version "version"s in the universe.
+ *
+ *  - <b>packages_begin()</b>: returns a <b>package_iterator</b>
+ *  pointing at the first \ref universe_package "package" (in an
+ *  arbitrary ordering) in the universe.
+ *
+ *  - <b>deps_begin()</b>: returns a \b dep_iterator pointing at the
+ *  first \ref universe_dep "dependency" (in an arbitrary ordering) in
+ *  the universe.
+ *
+ *  - <b>broken_begin()</b>: returns a \b broken_dep_iterator pointing
+ *  at the first broken \ref universe_dep "dependency" (in an
+ *  arbitrary ordering) in the universe.
+ *
+ *  \page universe_package Package concept
+ *
+ *  A package is simply a unique collection of \ref universe_version
+ *  "versions".  No two packages in the same universe may share
+ *  versions, and \e exactly one version of a package is installed at
+ *  any given time.  A package has a "currently installed version",
+ *  which is the version that should be included in the starting point
+ *  of a solution search.
+ *
+ *  \sa \ref universe_universe, \ref universe_version, \ref universe_dep
+ *
+ *  A class modelling the Package concept should provide the following
+ *  members:
+ *
+ *  - <b>version_iterator</b>: an iterator over the list of \ref
+ *  universe_version "versions" of a package.
+ *
+ *  - <b>get_name()</b>: returns a string that uniquely names this
+ *  package.  This may be used for debugging output or when dumping a
+ *  portable representation of a dependency problem.
+ *
+ *  - <b>get_id()</b>: returns an integer between 0 and
+ *  U.get_package_count()-1 (where U is the \ref universe_universe
+ *  "universe" to which the package belongs) that uniquely identifies
+ *  this package in U.
+ *
+ *  - <b>bool operator==(package)</b>, <b>operator!=(package)</b>:
+ *  compare packages by identity.  Two package objects compare equal
+ *  if and only if they represent the same package.
+ *
+ *  - <b>bool operator<(package)</b>: an arbitrary total ordering on
+ *  packages.  This should be appropriate for, eg, placing packages
+ *  into a balanced tree structure.
+ *
+ *  - \anchor universe_package_current_version
+ *  <b>current_version()</b>: returns the "currently installed \ref
+ *  universe_version "version"" of the package.  For instance, the
+ *  apt_universe class considers the InstVersion of a package to be
+ *  its "current version".
+ *
+ *  - <b>versions_begin()</b>: returns a version_iterator pointing to
+ *  the head of the list of versions of this package, provided in an
+ *  arbitrary order.
+ *
+ *  \page universe_version Version concept
+ *
+ *  A version is simply a particular variant of a package that may be
+ *  installed.  When the abstract package system is modelling a
+ *  concrete universe (such as the APT universe), versions typically
+ *  correspond either to a real version of the package, or to the
+ *  package's removal.
+ *
+ *  Each version contains a link to its parent package, as well as
+ *  lists of forward and reverse dependencies.
+ *
+ *  \sa \ref universe_universe, \ref universe_package, \ref universe_dep
+ *
+ *  A class modelling the Version concept should provide the following
+ *  members:
+ *
+ *  - <b>dep_iterator</b>: an iterator class for forward dependencies.
+ *
+ *  - <b>revdep_iterator</b>: an iterator class for reverse dependencies.
+ *
+ *  - <b>get_name()</b>: returns a string that uniquely identifies
+ *  this version among all the versions of the same package.
+ *
+ *  - <b>get_id()</b>: returns a number between 0 and
+ *  U.get_version_count()-1 (where U is the \ref universe_universe
+ *  "universe" to which this version belongs) uniquely identifying
+ *  this version.
+ *
+ *  - <b>package get_package()</b>: returns the \ref universe_package
+ *  "package" of which this is a version.
+ *
+ *  - <b>dep_iterator deps_begin()</b>: returns a \b dep_iterator
+ *  pointing to the first \ref universe_dep "dependency" in the list
+ *  of forward dependencies.
+ *
+ *  - <b>revdep_iterator revdeps_begin()</b>: returns a \b
+ *  revdep_iterator pointing to the first \ref universe_dep
+ *  "dependency" in the list of reverse dependencies.
+ *
+ *    \note Although it would be straightforward to define the reverse
+ *    dependencies of a version as the set of dependencies that
+ *    impinge on that version, they are \e not defined in this manner.
+ *    For technical reasons and in order to keep the wrapper to the
+ *    APT package system thin, the reverse dependencies are only
+ *    required to obey the following rule: if \e v1 and \e v2 are
+ *    versions of the same \ref universe_package "package", then for
+ *    any \ref universe_dep "dependency" \e d such that \e v1 is a
+ *    target of \e d and \e v2 is not, or vice versa, \e d appears in
+ *    \e either the reverse dependency list of \e v1 or the reverse
+ *    dependency list of \e v2.
+ *
+ *  - <b>operator==(version)</b>, <b>operator!=(version)</b>:
+ *  compare versions by identity.  Two version objects compare equal
+ *  if and only if they represent the same version of the same
+ *  package.
+ *
+ *  - <b>operator<(version)</b>: an arbitrary total ordering on
+ *  versions.  This should be appropriate for, eg, placing versions
+ *  into a balanced tree structure.
+ *
+ *  \page universe_dep Dependency concept
+ *
+ *  A dependency indicates that if a particular \ref universe_version
+ *  "version" is installed, at least one member of a set of \ref
+ *  universe_version "version"s must also be installed.  The first
+ *  \ref universe_version "version" is the "source" of the dependency,
+ *  while the remaining versions are "solvers" of the dependency.  A
+ *  dependency may be "soft", indicating that it is legal (but
+ *  undesirable) for the dependency to remain broken at the end of a
+ *  solution search.
+ *
+ *  \todo "solvers" should be renamed to "targets", as a dependency
+ *  can also be resolved by removing its source.
+ *
+ *  \sa \ref universe_universe, \ref universe_package, \ref
+ *  universe_version, \ref universe_installation
+ *
+ *  A class modelling the Dependency concept should provide the
+ *  following members:
+ *
+ *  - <b>solver_iterator</b>: an iterator over the versions that are
+ *  targets of this dependency.
+ *
+ *  - <b>version get_source()</b>: returns the source \ref
+ *  universe_version "version" of this dependency.
+ *
+ *  - <b>solver_iterator solvers_begin()</b>: returns a
+ *  solver_iterator pointing to the first target of this dependency.
+ *
+ *  - <b>bool is_soft()</b>: returns \b true if the dependency is "soft".
+ *  For instance, in the Debian package system, a Recommends
+ *  relationship is considered to be a soft dependency.
+ *
+ *  - <b>bool solved_by(version)</b>: return \b true if the given \ref
+ *  universe_version "version" solves this dependency, either by
+ *  removing the source of the dependency or by installing one of its
+ *  targets.
+ *
+ *  - <b>template &lt;typename Installation&gt; bool broken_under(Installation)</b>: return \b true if this dependency
+ *  is broken by the given \ref universe_installation "installation";
+ *  a solution breaks a dependency if and only if it installs the
+ *  dependency's source and none of its targets.
+ *
+ *  - <b>operator==(dependency)</b>, <b>operator!=(dependency)</b>:
+ *  compare dependencies by identity.  Two dependency objects compare
+ *  equal if and only if they represent the same dependency.
+ *  Duplicated dependencies may compare as distinct entities.
+ *
+ *  - <b>operator<(dependency)</b>: an arbitrary total ordering on
+ *  dependencies.  This should be appropriate for, eg, placing
+ *  dependencies into a balanced tree structure.
+ *
+ *  \page universe_installation Installation concept
+ *
+ *  An Installation represents a potential state of an abstract
+ *  dependency system; that is, a set of installed versions (or
+ *  rather, a total function from packages to versions).
+ *
+ *  The generic_solution class is a model of the Installation concept.
+ *
+ *  \sa \ref abstract_universe
+ *
+ *  A class modelling the Installation concept should provide the
+ *  following members:
+ *
+ *  - <b>version version_of(package)</b>: look up the currently
+ *  installed \ref universe_version "version" of the given \ref
+ *  universe_package "package" according to this installation.
  */
 
-/** A generic package problem resolver.  The class PackageUniverse
- *  contains information on how to access packages, package versions,
- *  dependencies (in the specialized form this needs), etc.  It should
- *  export classes that are suitable for use as immediate values (eg,
- *  thin wrappers around pointers/PkgIterators).
+/** \brief A generic package problem resolver.
  *
- *  The problem resolver views the world in terms of packages,
- *  versions of packages, and dependencies.  A dependency states that
- *  a version of a particular package requires one or more other
- *  packages/versions.  The resolver works by repeatedly fixing single
- *  dependencies; its work queue is priority-ordered according to the
- *  relative "goodness" of the solutions.  The "goodness" of a
- *  solution is affected by:
+ *  \param PackageUniverse A model of the \ref universe_universe
+ *  Universe concept.
  *
- *    - the penalty/bonus applied to each package version, which
- *      indicates (roughly) how hard aptitude will try to fix the
- *      problem.
+ *  Searches from the starting node on a best-first basis; i.e., it
+ *  repeatedly pulls the "best" node off its work queue, returns it if
+ *  it is a solution, and enqueues its successors if not.  The
+ *  successor nodes to a given search node are generated by selecting
+ *  a single dependency that is broken at that node and enqueuing all
+ *  possibly ways of fixing it.  The score of a node is affected by:
  *
- *    - a penalty is applied as the length of a solution (the number
- *      of packages to be installed/removed) grows.  The idea is to
- *      prioritize simpler solutions first.
+ *  - A penalty/bonus applied to each package version.
  *
- *    - a penalty is applied for broken (strong) dependencies.
- *      This aims at directing the search towards "less broken"
- *      situations.
+ *  - A bonus for each step of the solution (used to discourage the
+ *  resolver from "backing up" unnecessarily).
  *
- *  PackageUniverse::package is the representation of a package; the
- *  main interesting thing about packages is that they have lists of
- *  versions.  Packages can be compared with == and <, they have
- *  unique numerical IDs (retrieved via p.get_id()), and
- *  PackageUniverse::package::version_iterator lets you iterate from
- *  p.versions_begin() to p.versions_end(); dereferencing the iterator
- *  results in a PackageUniverse::version.
+ *  - A penalty is added for each broken dependency that has not yet
+ *  been processed.  This aims at directing the search towards "less
+ *  broken" situations.
  *
- *  A PackageUniverse::version is the object upon which dependencies
- *  operate.  Given a PackageUniverse::version, you can compare it
- *  with == and <, retrieve its corresponding package, or get a
- *  PU::version::revdep_iterator to iterate from v.revdeps_begin() to
- *  v.revdeps_end().  Dereferencing this iterator gives you a PU::dep.
+ *  - A penalty for soft dependencies (i.e., Recommends) which were
+ *  processed and left broken.
  *
- *  A PU::dep is a dependency of the form "A -> B | C | ...".  Given a
- *  dep, you can compare it with ==, retrieve A with
- *  d.get_source(), and retrieve a PU::dep::solvers_iterator
- *  with d.solvers_begin()/d.solvers_end().  \todo add a function to
- *  efficiently test whether a dep is satisfied using information
- *  available at the concrete package system level.
+ *  - A bonus for nodes that have no unprocessed broken dependencies.
  *
- *  A PU::dep::solvers_iterator iterates over the list B,C,... above.
- *  Dereferencing it returns a ver_iterator.
+ *  Note that these are simply the default biases set by aptitude; any
+ *  of these scores may be changed at will (including changing a
+ *  penalty to a bonus or vice versa!).
  *
- *  \note revdeps need not iterate over \b all reverse dependencies of
- *  a version; it is sufficient that for versions v1,v2, if a
- *  dependency is satisfied by one and not the other, it appears in
- *  the revdeps list of at least one of the versions.  (this allows
- *  apt's conflicts to be handled efficiently)
- *
- *  The client can request that particular package versions not appear
- *  in generated solutions, or cancel such requests, by using the
- *  "reject_version" and "unreject_version" methods.  Solutions that
- *  are held up by a "reject_version" invocation will be returned to
- *  the search queue when a corresponding "unreject_version" is
- *  issued.
+ *  \sa \ref problemresolver, \ref universe_universe
  */
-
 template<class PackageUniverse>
 class generic_problem_resolver
 {
