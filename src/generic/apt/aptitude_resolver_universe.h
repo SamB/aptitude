@@ -909,6 +909,7 @@ public:
   }
 };
 
+/** \brief Write an aptitude_resolver_dep to the given stream. */
 std::ostream &operator<<(ostream &out, aptitude_resolver_dep d);
 
 #endif
