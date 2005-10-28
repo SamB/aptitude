@@ -854,10 +854,9 @@ public:
 #endif
 
     // Start from the given package (typically Head() or End()).
-    broken_dep_iterator(const pkgCache::PkgIterator &_pkg,
-			pkgDepCache *_cache)
+    broken_dep_iterator(pkgDepCache *_cache)
       :cache(_cache),
-       pkg(_pkg), prv(*_cache, 0, (pkgCache::Package *) 0),
+       pkg(_cache->PkgBegin()), prv(*_cache, 0, (pkgCache::Package *) 0),
        prv_open(false)
     {
       if(!pkg.end())
@@ -896,7 +895,7 @@ public:
 
   broken_dep_iterator broken_begin() const
   {
-    return broken_dep_iterator(cache->PkgBegin(), cache);
+    return broken_dep_iterator(cache);
   }
 
   unsigned long get_version_count() const
