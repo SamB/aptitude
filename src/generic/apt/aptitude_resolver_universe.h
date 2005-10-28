@@ -812,7 +812,10 @@ public:
     }
   };
 
-  /** A bit like dep_iterator, but skips non-broken packages and deps.
+  /** \brief Iterate over the broken interesting dependencies in an
+   *  apt cache.
+   *
+   *  A bit like dep_iterator, but skips non-broken packages and deps.
    *  Since the "exposed version" of a package is its InstVersion, we
    *  need to test at most one version per package, so no need to keep
    *  a version iterator here.
