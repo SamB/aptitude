@@ -765,7 +765,9 @@ public:
     }
   };
 
-  // ew
+  /** \brief Iterate over all the interesting dependencies in the apt
+   *  cache.
+   */
   class dep_iterator
   {
     pkgDepCache *cache;
@@ -774,11 +776,17 @@ public:
     pkgCache::VerIterator ver;
     aptitude_resolver_version::dep_iterator dep;
 
-    // Advance to the next valid dep (inclusive of dep).
+    /** \brief Advance to the earliest interesting dependency that is
+     *  no earlier than the current dependency.
+     */
     void normalize();
 
   public:
-    // Start from the given package (typically Head() or End()).
+    /** \brief Create a dep_iterator for the given cache.
+     *
+     *  \param _cache The package cache whose dependencies should be
+     *  iterated over.
+     */
     dep_iterator(pkgDepCache *_cache)
       :cache(_cache),
        pkg(_cache->PkgBegin()),
@@ -794,11 +802,16 @@ public:
       normalize();
     }
 
+    /** \return the dependency at which this iterator currently points. */
     aptitude_universe::dep operator*() const
     {
       return *dep;
     }
 
+    /** \brief Advance to the next dependency in the cache.
+     *
+     *  \return a reference to this iterator.
+     */
     dep_iterator &operator++()
     {
       assert(!dep.end());
@@ -810,6 +823,7 @@ public:
       return *this;
     }
 
+    /** \brief Test whether this is an end iterator. */
     bool end() const
     {
       return pkg.end();
