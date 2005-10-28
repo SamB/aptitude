@@ -281,7 +281,13 @@ public:
   bool broken() const;
 };
 
-/** Represents the world of all packages and dependencies. */
+/** \brief Represents the world of all packages and dependencies.
+ *
+ *  This implements the abstract universe interface as described in
+ *  \ref abstract_universe.
+ *
+ *  \sa universe_universe
+ */
 class dummy_universe
 {
 public:
