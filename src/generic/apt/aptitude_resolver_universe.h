@@ -694,6 +694,11 @@ bool aptitude_resolver_dep::broken_under(const SolutionType &S) const
     }
 }
 
+/** \brief This class translates an APT package system into the
+ *  abstract package system as described in \ref abstract_universe.
+ *
+ *  \sa \ref universe_universe
+ */
 class aptitude_universe
 {
   aptitudeDepCache *cache;
