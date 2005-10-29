@@ -344,6 +344,10 @@ public:
   solver_iterator solvers_begin() const;
 };
 
+/** \brief Iterate over the versions of a package.
+ *
+ *  \sa aptitude_resolver_package, aptitude_resolver_version
+ */
 class aptitude_resolver_package::version_iterator
 {
   pkgDepCache *cache;
@@ -359,36 +363,51 @@ class aptitude_resolver_package::version_iterator
     ++ver;
   }
 public:
+  /** \brief Create an invalid version_iterator. */
   version_iterator()
     :cache(0)
   {
   }
 
+  /** \brief Create a version_iterator pointing at the first version of the given package.
+   */
   version_iterator(pkgCache::PkgIterator _pkg,
 		   pkgDepCache *_cache)
     :cache(_cache), pkg(_pkg), ver(_pkg.VersionList())
   {
   }
 
-  // For aptitude-specific code:
+  /** \return The APT package corresponding to this abstract package. */
   pkgCache::PkgIterator get_pkg() {return pkg;}
+
+  /** \return The APT version corresponding to this abstract version.
+   *  If this is an end iterator, then this version corresponds to
+   *  removing the package.
+   */
   pkgCache::VerIterator get_ver() {return ver;}
 
+  /** \return \b true if this iterator is identical to other. */
   bool operator==(const version_iterator &other) const
   {
     return pkg == other.pkg && ver == other.ver;
   }
 
+  /** \return \b true if this iterator differs from other. */
   bool operator!=(const version_iterator &other) const
   {
     return pkg != other.pkg || ver != other.ver;
   }
 
+  /** \return The version at which this iterator currently points. */
   aptitude_resolver_version operator *() const
   {
     return aptitude_resolver_version(pkg, ver, cache);
   }
 
+  /** \brief Advance to the next version in the list.
+   *
+   *  \return A reference to this iterator.
+   */
   version_iterator &operator++()
   {
     if(!ver.end())
@@ -401,6 +420,7 @@ public:
     return *this;
   }
 
+  /** \return \b true if this is an end iterator. */
   bool end() const
   {
     return pkg.end();
