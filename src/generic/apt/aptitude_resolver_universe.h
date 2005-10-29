@@ -85,18 +85,38 @@ public:
   version_iterator versions_begin() const;
 };
 
-/** Wraps a package/version pair for the resolver. */
+/** \brief Translates a version of an apt package into the abstract
+ *  realm.
+ *
+ *  This class is a model of the \ref universe_version "Version concept".
+ *
+ *  The version in question may be either a real version of the
+ *  package, or the "not-installed" version, which indicates that the
+ *  package is removed.
+ *
+ *  \sa \ref universe_version
+ */
 class aptitude_resolver_version
 {
   pkgDepCache *cache;
   pkgCache::PkgIterator pkg;
   pkgCache::VerIterator ver;
 public:
+  /** \brief Create an invalid version object. */
   aptitude_resolver_version()
     :cache(0)
   {
   }
 
+  /** \brief Create a version wrapper for the given version of the
+   *  given package.
+   *
+   *  \param _pkg The package of which this is a version.  Must not be
+   *  an end iterator.
+   *
+   *  \param _ver The version to be wrapped.  If an end iterator, the
+   *  new object will represent the removal of _pkg.
+   */
   aptitude_resolver_version(const pkgCache::PkgIterator &_pkg,
 			    const pkgCache::VerIterator &_ver,
 			    pkgDepCache *_cache)
@@ -107,16 +127,26 @@ public:
     assert(ver.Cache()!=0);
   }
 
+  /** \return The APT package of which this is a version.
+   *
+   *  \sa get_package()
+   */
   pkgCache::PkgIterator get_pkg() const
   {
     return pkg;
   }
 
+  /** \return The APT version wrapped by this object, or an end
+   *  iterator if this is a "removal version".
+   */
   pkgCache::VerIterator get_ver() const
   {
     return ver;
   }
 
+  /** \return The APT ID of this version if it is a real version,
+   *  or a fake ID if it is a "removal version".
+   */
   unsigned int get_id() const
   {
     if(!ver.end())
@@ -131,23 +161,34 @@ public:
       return cache->Head().VersionCount+pkg->ID;
   }
 
+  /** \return The version string of this version, mangled if multiple
+   *  distinct APT versions exist with identical version strings.
+   */
   std::string get_name() const;
 
+  /** \return An abstract wrapper of the package with which this
+   *  version is associated.
+   *
+   *  \sa get_pkg()
+   */
   aptitude_resolver_package get_package() const
   {
     return aptitude_resolver_package(pkg, cache);
   }
 
+  /** \return \b true if this is the same version as other. */
   bool operator==(const aptitude_resolver_version &other) const
   {
     return pkg == other.pkg && ver == other.ver;
   }
 
+  /** \return \b true if this is not the same version as other. */
   bool operator!=(const aptitude_resolver_version &other) const
   {
     return pkg != other.pkg || ver != other.ver;
   }
 
+  /** \brief Order versions according to their memory location. */
   bool operator<(const aptitude_resolver_version &other) const
   {
     if(((const pkgCache::Package *) pkg) < ((const pkgCache::Package *) other.pkg))
@@ -163,7 +204,14 @@ public:
   class revdep_iterator;
   class dep_iterator;
 
+  /** \brief Return the first entry in the list of reverse
+   *  dependencies for this version.
+   */
   revdep_iterator revdeps_begin() const;
+
+  /** \brief Return the first entry in the list of forward
+   *  dependencies for this version.
+   */
   dep_iterator deps_begin() const;
 };
 
