@@ -544,6 +544,14 @@ class aptitude_resolver_dep::solver_iterator
   void normalize();
 
 public:
+  /** \brief Initialize a solution iterator for a dependency that is
+   *  not a Conflicts.
+   *
+   *  \param start The dependency whose targets should be enumerated.
+   *
+   *  \param _cache The package cache in which this dependency is
+   *  located.
+   */
   solver_iterator(const pkgCache::DepIterator &start,
 		  pkgDepCache *_cache)
     :cache(_cache),
@@ -562,7 +570,16 @@ public:
     normalize();
   }
 
-  /** Initialize a Conflicts solution iterator. */
+  /** \brief Initialize a solution iterator for a Conflicts.
+   *
+   *  \param d The conflict that we should iterate over solutions to.
+   *
+   *  \param p The Provides through which the Conflicts is being
+   *  projected, or an end iterator if we are handling a straight
+   *  Conflicts.
+   *
+   *  \param _cache The package cache in which to work.
+   */
   solver_iterator(const pkgCache::DepIterator &d,
 		  const pkgCache::PrvIterator &p,
 		  pkgDepCache *_cache)
@@ -591,6 +608,7 @@ public:
   }
 #endif
 
+  /** \brief Compare two solver iterators for equality. */
   bool operator==(const solver_iterator &other) const
   {
     return dep_lst == other.dep_lst &&
@@ -599,6 +617,7 @@ public:
       finished == other.finished;
   }
 
+  /** \brief Compare two solver iterators for equality. */
   bool operator!=(const solver_iterator &other) const
   {
     return dep_lst != other.dep_lst ||
@@ -607,10 +626,16 @@ public:
       finished != other.finished;
   }
 
+  /** \brief Advance to the next solution.
+   *
+   *  \return a reference to this iterator.
+   */
   solver_iterator &operator++();
 
+  /** \return The version at which this iterator currently points. */
   aptitude_resolver_version operator*() const;
 
+  /** \brief Test whether this is an end iterator. */
   bool end() const
   {
     return finished;
