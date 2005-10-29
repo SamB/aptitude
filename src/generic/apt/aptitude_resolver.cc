@@ -59,7 +59,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 {
   // Should I stick with APT iterators instead?  This is a bit more
   // convenient, though..
-  for(aptitude_universe::package_iterator pi=aptitude_universe::package_iterator(get_universe().get_cache()->PkgBegin(), get_universe().get_cache());
+  for(aptitude_universe::package_iterator pi = get_universe().packages_begin();
       !pi.end(); ++pi)
     {
       const aptitude_universe::package &p=*pi;
@@ -137,7 +137,7 @@ void aptitude_resolver::add_priority_scores(int important,
 					    int optional,
 					    int extra)
 {
-  for(aptitude_universe::package_iterator pi=aptitude_universe::package_iterator(get_universe().get_cache()->PkgBegin(), get_universe().get_cache());
+  for(aptitude_universe::package_iterator pi = get_universe().packages_begin();
       !pi.end(); ++pi)
     for(aptitude_universe::package::version_iterator vi=(*pi).versions_begin(); !vi.end(); ++vi)
       {

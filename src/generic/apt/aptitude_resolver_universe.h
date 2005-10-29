@@ -751,9 +751,8 @@ public:
     {
     }
 
-    package_iterator(pkgCache::PkgIterator _realiter,
-		     pkgDepCache *_cache)
-      :cache(_cache), realiter(_realiter)
+    package_iterator(pkgDepCache *_cache)
+      :cache(_cache), realiter(_cache->PkgBegin())
     {
     }
 
@@ -935,7 +934,7 @@ public:
 
   package_iterator packages_begin() const
   {
-    return package_iterator(cache->PkgBegin(), cache);
+    return package_iterator(cache);
   }
 
   dep_iterator deps_begin() const
