@@ -445,9 +445,9 @@ public:
   }
 };
 
-/** Iterates over the distinct dependencies of a version.  These
- *  include its direct/indirect dependencies (separated into OR
- *  groups) and its direct/indirect conflicts (one apiece).
+/** \brief Iterates over the distinct dependencies of a version.
+ *
+ *  \sa aptitude_resolver_version, aptitude_resolver_dep
  */
 class aptitude_resolver_version::dep_iterator
 {
@@ -462,6 +462,10 @@ class aptitude_resolver_version::dep_iterator
   void normalize();
 
 public:
+  /** \brief Create an invalid dep iterator for the given cache.
+   *
+   *  \param cache The cache in which to create a dep iterator.
+   */
   dep_iterator(pkgDepCache *_cache)
     :cache(_cache),
      prv(*_cache, 0, (pkgCache::Package *) 0),
@@ -469,7 +473,12 @@ public:
   {
   }
 
-
+  /** \brief Create an iterator for the given version's dependencies in the given cache.
+   *
+   *  \param ver The version whose dependencies should be iterated over.
+   *
+   *  \param _cache The cache in which to operate.
+   */
   dep_iterator(const pkgCache::VerIterator &ver,
 	       pkgDepCache *_cache)
     :cache(_cache),
@@ -480,6 +489,7 @@ public:
     normalize();
   }
 
+  /** \brief Assignment operator. */
   dep_iterator &operator=(const dep_iterator &other)
   {
     cache=other.cache;
@@ -490,16 +500,22 @@ public:
     return *this;
   }
 
+  /** \return The dependency at which this iterator currently points. */
   aptitude_resolver_dep operator*() const
   {
     return aptitude_resolver_dep(dep, prv, cache);
   }
 
+  /** \brief Test whether this is an end iterator. */
   bool end() const
   {
     return dep.end();
   }
 
+  /** \brief Advance to the next dependency of this version.
+   *
+   *  \return A reference to this iterator.
+   */
   dep_iterator &operator++();
 };
 
