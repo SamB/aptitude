@@ -516,14 +516,9 @@ inline aptitude_resolver_version::dep_iterator aptitude_resolver_version::deps_b
     return dep_iterator(ver.DependsList(), cache);
 }
 
-/** This class uses a technique similar to rev_dep_lst.  It assumes
- *  that the dependency is critical (noncritical deps are weeded out
- *  by the universe's broken_dep_iterator and hidden from the
- *  resolver).
+/** \brief Iterates over the targets of a dependency.
  *
- *  For Conflicts, at most one Provides is followed.
- *
- *  Ugh, too many members :(.
+ *  \sa aptitude_resolver_dep
  */
 class aptitude_resolver_dep::solver_iterator
 {
