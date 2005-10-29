@@ -741,48 +741,63 @@ public:
 
   aptitudeDepCache *get_cache() const {return cache;}
 
+  /** \brief Iterate over all the packages in the universe. */
   class package_iterator
   {
     pkgDepCache *cache;
     pkgCache::PkgIterator realiter;
   public:
+    /** \brief Create an invalid package iterator. */
     package_iterator()
       :cache(0)
     {
     }
 
+    /** \brief Create an iterator pointing at the first package in the
+     *  cache.
+     *
+     *  \param _cache The package cache to iterate over.
+     */
     package_iterator(pkgDepCache *_cache)
       :cache(_cache), realiter(_cache->PkgBegin())
     {
     }
 
+    /** \brief Compare two package iterators for equality. */
     bool operator==(const package_iterator &other) const
     {
       return realiter==other.realiter;
     }
 
+    /** \brief Compare two package iterators for equality. */
     bool operator!=(const package_iterator &other) const
     {
       return realiter!=other.realiter;
     }
 
-    // Override for aptitude-specific code.
+    /** \brief Retrieve the underlying apt iterator. */
     pkgCache::PkgIterator get_pkg() const
     {
       return realiter;
     }
 
+    /** \brief Extract the package at which this iterator currently points. */
     package operator*() const
     {
       return package(realiter, cache);
     }
 
+    /** \brief Advance to the next package.
+     *
+     *  \return A reference to this iterator.
+     */
     package_iterator &operator++()
     {
       ++realiter;
       return *this;
     }
 
+    /** \brief Test whether this is an end iterator. */
     bool end() const
     {
       return realiter.end();
