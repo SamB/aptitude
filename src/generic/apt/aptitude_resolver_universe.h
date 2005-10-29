@@ -29,17 +29,29 @@
 
 class aptitude_resolver_version;
 
-/** Wraps a PkgIterator for the resolver. */
+/** \brief Translates an APT package into the abstract realm.
+ *
+ *  This class is a model of the \ref universe_package "Package concept".
+ *
+ *  \sa \ref universe_package
+ */
 class aptitude_resolver_package
 {
   pkgDepCache *cache;
   pkgCache::PkgIterator pkg;
 public:
+  /** \brief Create an invalid package object. */
   aptitude_resolver_package()
     :cache(0)
   {
   }
 
+  /** \brief Create a package object corresponding to the given APT
+   *  package.
+   *
+   *  \param _pkg The package to be represented by the new object.
+   *  \param _cache The cache with which the new object is to be associated.
+   */
   aptitude_resolver_package(const pkgCache::PkgIterator &_pkg,
 			    pkgDepCache *_cache)
     :cache(_cache), pkg(_pkg)
@@ -48,40 +60,51 @@ public:
     assert(pkg.Cache()!=0);
   }
 
+  /** \brief Generate a unique ID for this package.
+   *
+   *  \return The APT ID of the package.
+   */
   unsigned int get_id() const
   {
     return pkg->ID;
   }
 
+  /** \return The name of the package. */
   const char *get_name() const
   {
     return pkg.Name();
   }
 
+  /** \return The underlying APT package wrapped by this object. */
   pkgCache::PkgIterator get_pkg() const
   {
     return pkg;
   }
 
+  /** \return \b true if other is the same package as this. */
   bool operator==(const aptitude_resolver_package &other) const
   {
     return pkg==other.pkg;
   }
 
+  /** \return \b true if other is not the same package as this. */
   bool operator!=(const aptitude_resolver_package &other) const
   {
     return pkg!=other.pkg;
   }
 
+  /** \brief Order packages by their memory location. */
   bool operator<(const aptitude_resolver_package &other) const
   {
     return ((const pkgCache::Package *) pkg) < ((const pkgCache::Package *) other.pkg);
   }
 
+  /** \return The to-be-installed version of this package. */
   aptitude_resolver_version current_version() const;
 
   class version_iterator;
 
+  /** \return The first entry in the list of versions of this package. */
   version_iterator versions_begin() const;
 };
 
