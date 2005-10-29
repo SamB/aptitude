@@ -407,8 +407,7 @@ void aptitude_universe::dep_iterator::normalize()
 	{
 	  ++ver;
 	  if(!ver.end())
-	    dep=aptitude_resolver_version::dep_iterator(ver.DependsList(),
-							cache);
+	    dep=aptitude_resolver_version::dep_iterator(ver, cache);
 	}
 
       if(dep.end())
@@ -418,8 +417,7 @@ void aptitude_universe::dep_iterator::normalize()
 	    {
 	      ver=pkg.VersionList();
 	      if(!ver.end())
-		dep=aptitude_resolver_version::dep_iterator(ver.DependsList(),
-							    cache);
+		dep=aptitude_resolver_version::dep_iterator(ver, cache);
 	    }
 	}
     }

@@ -470,10 +470,10 @@ public:
   }
 
 
-  dep_iterator(const pkgCache::DepIterator &start,
+  dep_iterator(const pkgCache::VerIterator &ver,
 	       pkgDepCache *_cache)
     :cache(_cache),
-     dep(start),
+     dep(ver.DependsList()),
      prv(*_cache, 0, (pkgCache::Package *) 0),
      prv_open(false)
   {
@@ -513,7 +513,7 @@ inline aptitude_resolver_version::dep_iterator aptitude_resolver_version::deps_b
   if(ver.end())
     return dep_iterator(cache);
   else
-    return dep_iterator(ver.DependsList(), cache);
+    return dep_iterator(ver, cache);
 }
 
 /** \brief Iterates over the targets of a dependency.
@@ -830,8 +830,7 @@ public:
       if(!pkg.end())
 	ver=pkg.VersionList();
       if(!ver.end())
-	dep=aptitude_resolver_version::dep_iterator(ver.DependsList(),
-						    _cache);
+	dep=aptitude_resolver_version::dep_iterator(ver, _cache);
 
       normalize();
     }
