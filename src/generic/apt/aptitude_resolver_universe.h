@@ -179,6 +179,27 @@ inline aptitude_resolver_version aptitude_resolver_package::current_version() co
 				     cache);
 }
 
+/** \brief Translates an apt dependency into the abstract realm.
+ *
+ *  This class is a model of the \ref universe_dep "Dependency concept".
+ *
+ *  Dependency relationships other than Conflicts are translated in a
+ *  very straightforward manner: unversioned dependencies collect all
+ *  the versions of the target package and are pushed backwards
+ *  through Provides, while versioned dependencies collect all
+ *  matching versions.  ORed dependencies collect all the versions
+ *  targeted by their subcomponents.
+ *
+ *  Conflicts relationships are handled by generating one abstract
+ *  dependency for the immediate conflict, and then a separate one for
+ *  \e each provider of the conflicted name (if the conflict is
+ *  unversioned, of course).  The solvers of these conflicts are the
+ *  non-conflicted versions of the conflicted package (including the
+ *  non-installed version), or the versions of the providing package
+ *  other than the immediate provider, respectively.
+ *
+ *  \sa \ref universe_dep
+ */
 class aptitude_resolver_dep
 {
   pkgDepCache *cache;
@@ -195,14 +216,28 @@ class aptitude_resolver_dep
    */
   pkgCache::PrvIterator prv;
 public:
-  /** \todo this is a dreadful hack, but it's needed to avoid crashing
-   *        until PrvIterators get a sensible default constructor.
+  /** \brief Generate an invalid dependency object.
+   *
+   *  \todo how prv is instantiated is a dreadful hack, but it's
+   *  needed to avoid crashing until PrvIterators get a sensible
+   *  default constructor.
    */
   aptitude_resolver_dep()
     :cache(0), prv(*apt_cache_file, (pkgCache::Provides *) 1, (pkgCache::Package *) 0)
   {
   }
 
+  /** \brief Generate a new dependency.
+   *
+   *  \param dep The APT dependency to represent.
+   *
+   *  \param _prv If dep is a Conflicts, then this is either an end
+   *  iterator (indicating that this object represents the conflict on
+   *  the real target package), or the Provides through which the
+   *  conflict should be projected.
+   *
+   *  \param _cache The package cache in which this dependency exists.
+   */
   aptitude_resolver_dep(const pkgCache::DepIterator dep,
 			const pkgCache::PrvIterator _prv,
 			pkgDepCache *_cache)
@@ -226,23 +261,31 @@ public:
       start=dep;
   }
 
+  /** \brief Test whether the encapsulated dependency is a
+   *   Recommends.
+   */
   bool is_soft() const
   {
     return start->Type == pkgCache::Dep::Recommends;
   }
 
+  /** \brief Compare two dependencies for equality. */
   bool operator==(const aptitude_resolver_dep &other) const
   {
     return start == other.start &&
       (start->Type != pkgCache::Dep::Conflicts || prv == other.prv);
   }
 
+  /** \brief Compare two dependencies for equality. */
   bool operator!=(const aptitude_resolver_dep &other) const
   {
     return start != other.start ||
       (start->Type == pkgCache::Dep::Conflicts && prv != other.prv);
   }
 
+  /** \brief Orders dependencies according to their memory
+   *  location.
+   */
   bool operator<(const aptitude_resolver_dep &other) const
   {
     if(((const pkgCache::Dependency *) start) < ((const pkgCache::Dependency *) other.start))
@@ -257,25 +300,35 @@ public:
       return false;
   }
 
-  /** SolutionType is a class defining the method ST.version_of(pkg),
-   *  which returns the installed version of pkg according to ST.
+  /** \brief Test whether a given solution breaks this dependency.
+   *
+   *  \param InstallationType A model of \ref universe_installation Installation.
+   *
+   *  \param I An installation to test against.
+   *
+   *  \return \b true if this dependency is not satisfied by I.
    */
   template<typename InstallationType>
   bool broken_under(const InstallationType &I) const;
 
+  /** \return The APT dependency associated with this abstract dependency. */
   pkgCache::DepIterator get_dep() const
   {
     return start;
   }
 
+  /** \return The APT Provides relationship associated with this
+   *  abstract dependency.
+   */
   pkgCache::PrvIterator get_prv() const
   {
     return prv;
   }
 
-  /** Return \b true if the given version will resolve this dependency. */
+  /** \return \b true if the given version will resolve this dependency. */
   bool solved_by(const aptitude_resolver_version &v) const;
 
+  /** \return The source version of this dependency. */
   aptitude_resolver_version get_source() const
   {
     assert(!start.end());
@@ -287,6 +340,7 @@ public:
 
   class solver_iterator;
 
+  /** \return The head of the target list for this dependency. */
   solver_iterator solvers_begin() const;
 };
 
