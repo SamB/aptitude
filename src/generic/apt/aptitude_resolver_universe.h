@@ -365,9 +365,8 @@ public:
   }
 
   version_iterator(pkgCache::PkgIterator _pkg,
-		   pkgCache::VerIterator _ver,
 		   pkgDepCache *_cache)
-    :cache(_cache), pkg(_pkg), ver(_ver)
+    :cache(_cache), pkg(_pkg), ver(_pkg.VersionList())
   {
   }
 
@@ -410,7 +409,7 @@ public:
 
 inline aptitude_resolver_package::version_iterator aptitude_resolver_package::versions_begin() const
 {
-  return version_iterator(pkg, pkg.VersionList(), cache);
+  return version_iterator(pkg, cache);
 }
 
 /** \brief Iterates over the reverse dependencies of a version.
