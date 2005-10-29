@@ -260,7 +260,7 @@ public:
   /** SolutionType is a class defining the method ST.version_of(pkg),
    *  which returns the installed version of pkg according to ST.
    */
-  template<class InstallationType>
+  template<typename InstallationType>
   bool broken_under(const InstallationType &I) const;
 
   pkgCache::DepIterator get_dep() const
@@ -650,7 +650,7 @@ inline aptitude_resolver_dep::solver_iterator aptitude_resolver_dep::solvers_beg
     return solver_iterator(start, prv, cache);
 }
 
-template<class InstallationType>
+template<typename InstallationType>
 bool aptitude_resolver_dep::broken_under(const InstallationType &I) const
 {
   // First, check that the solution actually installs the source.
