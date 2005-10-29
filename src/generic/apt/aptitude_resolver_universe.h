@@ -359,11 +359,13 @@ inline aptitude_resolver_package::version_iterator aptitude_resolver_package::ve
   return version_iterator(pkg, pkg.VersionList(), cache);
 }
 
-/** \note For our purposes, conflicts are revdeps of the conflicted
- *  package version(s): this is much easier to calculate than the
- *  alternative and it is sufficient (since we only need to make sure
- *  that newly broken deps due to p:v1->p:v2 show up in either v1's
- *  revdep list or v2's revdep list).
+/** \brief Iterates over the reverse dependencies of a version.
+ *
+ *  As explained in the definition of the \ref universe_version
+ *  "Version concept", this is not necessarily the set of dependencies
+ *  that impinge on the version.
+ *
+ *  \sa aptitude_resolver_version, aptitude_resolver_dep
  */
 class aptitude_resolver_version::revdep_iterator
 {
@@ -394,8 +396,14 @@ public:
   }
 #endif
 
-  /** Generate a revdep_iterator to cover the reverse deps of
-   *  the given version. (note that v may be an end iterator..)
+  /** \brief Generate a revdep_iterator to cover the reverse deps of
+   *  the given version.
+   *
+   *  \param v The version whose reverse dependencies are to be
+   *  enumerated.  If this is an end iterator, the resulting list will
+   *  be empty.
+   *
+   *  \param _cache The cache in which to operate.
    */
   revdep_iterator(const pkgCache::VerIterator &v,
 		  pkgDepCache *_cache)
@@ -426,16 +434,24 @@ public:
 //     return dep != other.dep || ver != other.ver;
 //   }
 
+  /** \brief Test whether this is an end iterator. */
   bool end() const
   {
     return dep_lst.end();
   }
 
+  /** \return The dependency at which this iterator currently
+   *  points.
+   */
   aptitude_resolver_dep operator*() const
   {
     return aptitude_resolver_dep(dep_lst, prv_lst, cache);
   }
 
+  /** \brief Advance to the next entry in the list.
+   *
+   *  \return A reference to this iterator.
+   */
   revdep_iterator &operator++()
   {
     ++dep_lst;
