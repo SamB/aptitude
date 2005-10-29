@@ -260,8 +260,8 @@ public:
   /** SolutionType is a class defining the method ST.version_of(pkg),
    *  which returns the installed version of pkg according to ST.
    */
-  template<class SolutionType>
-  bool broken_under(const SolutionType &S) const;
+  template<class InstallationType>
+  bool broken_under(const InstallationType &I) const;
 
   pkgCache::DepIterator get_dep() const
   {
@@ -625,11 +625,11 @@ inline aptitude_resolver_dep::solver_iterator aptitude_resolver_dep::solvers_beg
     return solver_iterator(start, prv, cache);
 }
 
-template<class SolutionType>
-bool aptitude_resolver_dep::broken_under(const SolutionType &S) const
+template<class InstallationType>
+bool aptitude_resolver_dep::broken_under(const InstallationType &I) const
 {
   // First, check that the solution actually installs the source.
-  if(const_cast<pkgCache::DepIterator &>(start).ParentVer() != S.version_of(aptitude_resolver_package(const_cast<pkgCache::DepIterator &>(start).ParentPkg(), cache)).get_ver())
+  if(const_cast<pkgCache::DepIterator &>(start).ParentVer() != I.version_of(aptitude_resolver_package(const_cast<pkgCache::DepIterator &>(start).ParentPkg(), cache)).get_ver())
     return false;
 
   if(start->Type != pkgCache::Dep::Conflicts)
@@ -638,7 +638,7 @@ bool aptitude_resolver_dep::broken_under(const SolutionType &S) const
 
       while(!dep.end())
 	{
-	  pkgCache::VerIterator direct_ver=S.version_of(aptitude_resolver_package(dep.TargetPkg(), cache)).get_ver();
+	  pkgCache::VerIterator direct_ver=I.version_of(aptitude_resolver_package(dep.TargetPkg(), cache)).get_ver();
 	  if(!direct_ver.end() &&
 	     _system->VS->CheckDep(direct_ver.VerStr(),
 				   dep->CompareOp,
@@ -649,7 +649,7 @@ bool aptitude_resolver_dep::broken_under(const SolutionType &S) const
 	    {
 	      for(pkgCache::PrvIterator prv=dep.TargetPkg().ProvidesList();
 		  !prv.end(); ++prv)
-		if(prv.OwnerVer() == S.version_of(aptitude_resolver_package(prv.OwnerPkg(), cache)).get_ver())
+		if(prv.OwnerVer() == I.version_of(aptitude_resolver_package(prv.OwnerPkg(), cache)).get_ver())
 		  return false;
 	    }
 
@@ -671,7 +671,7 @@ bool aptitude_resolver_dep::broken_under(const SolutionType &S) const
 	  if(const_cast<pkgCache::DepIterator &>(start).TargetPkg() == const_cast<pkgCache::DepIterator &>(start).ParentPkg())
 	    return false;
 
-	  pkgCache::VerIterator direct_ver=S.version_of(aptitude_resolver_package(const_cast<pkgCache::DepIterator &>(start).TargetPkg(), cache)).get_ver();
+	  pkgCache::VerIterator direct_ver=I.version_of(aptitude_resolver_package(const_cast<pkgCache::DepIterator &>(start).TargetPkg(), cache)).get_ver();
 
 	  if(!direct_ver.end() &&
 	     _system->VS->CheckDep(direct_ver.VerStr(),
@@ -689,7 +689,7 @@ bool aptitude_resolver_dep::broken_under(const SolutionType &S) const
 	  if(start.TargetVer())
 	    return false;
 
-	  return S.version_of(aptitude_resolver_package(const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg(), cache)).get_ver()==const_cast<pkgCache::PrvIterator &>(prv).OwnerVer();
+	  return I.version_of(aptitude_resolver_package(const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg(), cache)).get_ver()==const_cast<pkgCache::PrvIterator &>(prv).OwnerVer();
 	}
     }
 }
