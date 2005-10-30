@@ -188,6 +188,9 @@ private:
   /** If \b true, the background thread should abort its execution. */
   bool background_thread_killed;
 
+  /** If \b true, the background thread is currently running. */
+  bool background_thread_running;
+
   /** If \b true, the resolver is \b NULL.  (this is used rather than
    *  checking the variable directly in order to make it painfully
    *  clear what the proper locking protocol is)
@@ -264,6 +267,10 @@ private:
    *  parameters.  Waits until the thread has terminated to return.
    *
    *  If no thread exists, do nothing.
+   *
+   *  \warning This routine must only be invoked by the
+   *  resolver_manager destructor; the resolver thread should survive
+   *  until the resolver manager is destroyed.
    */
   void kill_background_thread();
 

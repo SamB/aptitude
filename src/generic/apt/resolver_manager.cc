@@ -40,6 +40,7 @@ resolver_manager::resolver_manager(aptitudeDepCache *_cache)
    undos(new undo_list),
    selected_solution(0),
    background_thread_killed(false),
+   background_thread_running(false),
    resolver_null(true),
    background_thread_suspend_count(0),
    background_thread_in_resolver(false),
@@ -60,6 +61,8 @@ resolver_manager::resolver_manager(aptitudeDepCache *_cache)
 
 resolver_manager::~resolver_manager()
 {
+  assert(!background_thread_running);
+
   discard_resolver();
 
   kill_background_thread();
@@ -102,6 +105,32 @@ public:
   }
 };
 
+/** A class that assigns a value to an object when it is destroyed.
+ */
+template<typename T>
+class set_when_destroyed
+{
+  T &target;
+  T val;
+
+public:
+  /** Create a set_when_destroyed.
+   *
+   *  \param _target The object to be set.
+   *  \param _val The value to assign to _target.
+   */
+  set_when_destroyed(T &_target, const T &_val)
+    : target(_target), val(_val)
+  {
+  }
+
+  /** Assign val to target. */
+  ~set_when_destroyed()
+  {
+    target = val;
+  }
+};
+
 // This assumes that background_resolver_active is empty when it
 // starts (see restart_background_resolver)
 //
@@ -111,6 +140,7 @@ public:
 void resolver_manager::background_thread_execution()
 {
   threads::mutex::lock l(background_control_mutex);
+  set_when_destroyed<bool> cancel_set_running(background_thread_running, false);
 
   while(1)
     {
@@ -203,7 +233,10 @@ void resolver_manager::start_background_thread()
   threads::mutex::lock l(mutex);
 
   if(resolver_thread == NULL)
-    resolver_thread = new threads::thread(background_thread_bootstrap(*this));
+    {
+      background_thread_running = true;
+      resolver_thread = new threads::thread(background_thread_bootstrap(*this));
+    }
 }
 
 void resolver_manager::kill_background_thread()
