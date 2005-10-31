@@ -651,7 +651,14 @@ private:
    */
   std::set<dep> user_approved_broken;
 
-  /** Stores generated solutions: */
+  /** Stores solutions that were already generated and that have
+   *  broken soft dependencies.
+   *
+   *  \todo Merge this with conflicts so we can accumulate information
+   *  about it?  Crazy idea: can we model breaking a soft dependency
+   *  as a special package version with a very low weight in the
+   *  model, and use that to unify the two?  Think about that.
+   */
   std::vector<solution> generated_solutions;
 
 
@@ -2656,7 +2663,17 @@ public:
 	    else
 	      {
 		closed.insert(minimized);
-		generated_solutions.push_back(minimized);
+		// In the cases where the solution can be completely
+		// represented by a conflict, add one (so we get the
+		// benefits of conflict tracking).
+		//
+		// \todo extend conflicts so they can represent
+		// everything or extend everything so a conflict can
+		// represent it.
+		if(minimized.get_unresolved_soft_deps().empty())
+		  add_conflict(minimized.get_actions());
+		else
+		  generated_solutions.push_back(minimized);
 
 		if(debug)
 		  {
