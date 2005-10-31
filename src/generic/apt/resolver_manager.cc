@@ -61,7 +61,7 @@ resolver_manager::resolver_manager(aptitudeDepCache *_cache)
 
 resolver_manager::~resolver_manager()
 {
-  assert(!background_thread_running);
+  assert(background_thread_running);
 
   discard_resolver();
 
