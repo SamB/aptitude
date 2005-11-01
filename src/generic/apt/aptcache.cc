@@ -176,6 +176,11 @@ aptitudeDepCache::aptitudeDepCache(pkgCache *Cache, Policy *Plcy)
 					   &aptitudeDepCache::mark_and_sweep),
 			     (undo_group *) NULL));
 
+  aptcfg->connect(PACKAGE "::Keep-Recommends",
+		  sigc::bind(sigc::mem_fun(*this,
+					   &aptitudeDepCache::mark_and_sweep),
+			     (undo_group *) NULL));
+
   // sim.
   aptcfg->connect(PACKAGE "::Keep-Suggests",
 		  sigc::bind(sigc::mem_fun(*this,
@@ -1385,7 +1390,8 @@ void aptitudeDepCache::mark_and_sweep(undo_group *undo)
       package_states[p->ID].garbage=false;
     }
 
-  bool follow_recommends=aptcfg->FindB(PACKAGE "::Recommends-Important", true);
+  bool follow_recommends=aptcfg->FindB(PACKAGE "::Recommends-Important", true) ||
+    aptcfg->FindB(PACKAGE "::Keep-Recommends", false);
   bool follow_suggests=aptcfg->FindB(PACKAGE "::Keep-Suggests", false) ||
     aptcfg->FindB(PACKAGE "::Suggests-Important", false);
 
