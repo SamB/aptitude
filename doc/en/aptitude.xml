@@ -8361,9 +8361,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg>
 		If this option is <literal>true</literal> and
 		<literal>Aptitude::Auto-Install</literal> is
-		<literal>true</literal>, installing a new
-		package will also install any packages that it
-		recommends.
+		<literal>true</literal>, installing a new package will
+		also install any packages that it recommends.
+		Furthermore, if this option is
+		<literal>true</literal>, then packages will be kept on
+		the system if an installed package recommends them.
 	      </seg>
 	    </seglistitem>
 
