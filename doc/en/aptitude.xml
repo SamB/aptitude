@@ -8293,6 +8293,21 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configKeepRecommends'>
+	      <seg><literal>Aptitude::Keep-Recommends</literal></seg>
+
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		If this option is <literal>true</literal>, then
+		packages will be kept on the system as long as any
+		installed package recommends them, even if
+		<literal><link
+		linkend='configRecommends-Important'>Aptitude::Recommends-Important</link></literal>
+		is <literal>false</literal>.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configKeepSuggests'>
 	      <seg><literal>Aptitude::Keep-Suggests</literal></seg>
 
