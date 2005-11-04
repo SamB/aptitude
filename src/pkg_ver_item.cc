@@ -736,11 +736,10 @@ bool pkg_ver_item::dispatch_key(const key &k, vs_tree *owner)
 
       struct sigaction oldact;
       struct sigaction act;
+
+      memset(&act,0,sizeof(act));
       act.sa_handler = SIG_DFL;
-      act.sa_sigaction = 0;
       sigemptyset(&act.sa_mask);
-      act.sa_flags = 0;
-      act.sa_restorer = 0;
 
       sigaction(SIGCONT, &act, &oldact);
 

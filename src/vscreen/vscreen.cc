@@ -966,11 +966,10 @@ void vscreen_suspend()
   suspended_with_signals = true;
 
   struct sigaction act;
+
+  memset(&act,0,sizeof(act));
   act.sa_handler = SIG_IGN;
-  act.sa_sigaction = 0;
   sigemptyset(&act.sa_mask);
-  act.sa_flags = 0;
-  act.sa_restorer = 0;
 
   sigaction(SIGCONT, &act, &oldsigcont);
   sigaction(SIGTSTP, &act, &oldsigtstp);
