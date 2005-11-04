@@ -1,3 +1,91 @@
+[11/4/2005]
+Version 0.4.0                           "Aptitude Below Zero"
+
+- New features:
+
+  * The primary binding of the menu toggle command is now Control-t
+    instead of f10.  All old bindings still work, but this means that
+    the binding displayed at the top of the screen will work on all
+    terminals. (Closes: #147862, #335034)
+
+  * By default, the solution that reverts all user actions is
+    discarded entirely.
+
+  * The "changelog", "download", and "show" command-line actions
+    recognize "-t <archive>" and handle it by acting as if
+    "/<archive>" had been appended to each argument of the
+    command. (Closes: #334096)
+
+  * When "show" cannot locate a package by name, it now exits with an
+    error instead of exiting with status 0.
+
+  * When the user requests a particular version of a package, "show"
+    will display only that version, even if the verbosity level would
+    normally cause all versions to be displayed.
+
+  * Highlight stuff that looks like bullets when viewing a changelog
+    file.
+
+  * Doxyfile.in is distributed, so the doxygen documentation should be
+    buildable from the distributed tarball.
+
+  * Added a Keep-Recommends option that is analogous to Keep-Suggests:
+    it doesn't cause recommendations to be automatically installed,
+    but it does cause them to be held on the system by the garbage
+    collector if they were automatically installed.
+
+- Bug fixes:
+
+  * Forward and reverse dependency lists are sorted by name and
+    version.
+
+  * Made page-up in a list of packages properly trigger the update of
+    all connected information.
+
+  * "search" now completely ignores fake packages (Closes: #337407).
+
+  * The code to parse a bullet list in a description now knows how to
+    handle any number of spaces following a bullet (including
+    zero). (Closes: #337344)
+
+  * Don't hide the preview screen when downloading stuff other than
+    packages. (Closes: #334343)
+
+  * Deal sanely with changelogs and other formatted text that
+    contains newlines or tabs.
+
+  * More real and potential UTF-8 display problems fixed.
+    (Closes: #317119)
+
+  * Fix some anomalies in the display of the menu bar's left/right
+    arrows.
+
+  * Corrected how the sigc++ version against which the program was
+    compiled is reported.
+
+  * Added "install" to the manpage synopsis. (Closes: #336584)
+
+  * Cleaned up some parts of the resolver interface and wrote
+    top-level API documentation for it.
+
+- Translation updates:
+
+  * sv is now included in ALL_LINGUAS.
+
+  * Translation updates:
+
+    - Chinese (Simplified) (Closes: #335290)
+
+    - Danish (Closes: #335880)
+
+    - Finnish
+
+    - French (Closes: #336261)
+
+    - Romanian (Closes: #335680, #325749)
+
+    - Russian (Closes: #336261, #336420)
+
 [10/14/2005]
 Version 0.3.5.1                         "Slantwise Cacophany"
 
