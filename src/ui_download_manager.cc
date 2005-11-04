@@ -57,6 +57,7 @@ ui_download_manager::ui_download_manager(download_manager *_manager,
 ui_download_manager::~ui_download_manager()
 {
   log->Complete();
+
   delete manager;
 
   ui_stop_download();
@@ -72,7 +73,10 @@ void ui_download_manager::done(download_thread *, pkgAcquire::RunResult res)
 {
   vs_progress_ref p = gen_progress_bar();
 
-  download_manager::result run_res = manager->finish(res, *p.unsafe_get_ref());
+  download_manager::result run_res = download_manager::failure;
+
+  if(!abort_state.get_aborted())
+    run_res = manager->finish(res, *p.unsafe_get_ref());
 
   apt_load_cache(p.unsafe_get_ref(), true);
 
