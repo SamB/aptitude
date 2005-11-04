@@ -155,6 +155,10 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
   for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin();
       !pkg.end(); ++pkg)
     {
+      // Ignore packages that exist only due to dependencies.
+      if(pkg.VersionList().end() && pkg.ProvidesList().end())
+	continue;
+
       for(vector<pkg_matcher *>::iterator m=matchers.begin();
 	  m!=matchers.end(); ++m)
 	{
