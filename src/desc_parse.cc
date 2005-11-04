@@ -127,11 +127,18 @@ static fragment *make_level_fragment(const wstring &desc,
 		wstring bullet;
 		bullet+=(L"*+-"[level%3]);
 
-		start=loc2+2;
+		start = loc2+1;
+		int indent_beyond_bullet = 0;
+
+		while(start < desc.size() && desc[start] == L' ')
+		  {
+		    ++start;
+		    ++indent_beyond_bullet;
+		  }
 
 		fragment *item_contents=make_level_fragment(desc,
 							    level+1,
-							    nspaces2+2,
+							    nspaces2 + 1 + indent_beyond_bullet,
 							    start);
 
 		fragments.push_back(style_fragment(text_fragment(bullet),
