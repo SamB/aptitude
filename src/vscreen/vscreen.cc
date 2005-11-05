@@ -979,7 +979,8 @@ void vscreen_suspend()
 
 void vscreen_shutdown()
 {
-  toplevel->destroy();
+  if(toplevel.valid())
+    toplevel->destroy();
   toplevel = NULL;
 
   vscreen_suspend();
