@@ -299,7 +299,11 @@ void AcqTextStatus::MediaChange(string Media, string Drive,
 
    char C = 0;
    while (C != '\n' && C != '\r')
-      read(STDIN_FILENO,&C,1);
+     if(read(STDIN_FILENO,&C,1) == -1)
+       {
+	 k(false);
+	 return;
+       }
    
    manager.set_update(true);
    k(true);
