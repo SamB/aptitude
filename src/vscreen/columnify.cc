@@ -41,7 +41,7 @@ wstring columnify(const layout &format, int width)
       i!=format.end();
       ++i, ++colnum)
     {
-      assert(colnum<format.size());
+      eassert(colnum<format.size());
 
       final_info.push_back(column(i->info, i->width, i->expand, i->shrink));
     }

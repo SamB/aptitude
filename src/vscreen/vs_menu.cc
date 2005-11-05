@@ -112,7 +112,7 @@ vs_menu::vs_menu(int x, int y, int w, vs_menu_info *inf)
       switch(inf->item_type)
 	{
 	case vs_menu_info::VS_MENU_ITEM:
-	  assert(inf->item_name!=NULL);
+	  eassert(inf->item_name!=NULL);
 
 	  {
 	    vs_menu_item *newitem=new vs_menu_item(transcode(inf->item_name),
@@ -129,7 +129,7 @@ vs_menu::vs_menu(int x, int y, int w, vs_menu_info *inf)
 	  }
 	  break;
 	case vs_menu_info::VS_MENU_SEPARATOR:
-	  assert(inf->item_name==NULL);
+	  eassert(inf->item_name==NULL);
 
 	  append_item(NULL);
 	  break;
@@ -168,7 +168,7 @@ void vs_menu::remove_item(vs_menu_item *item)
   while(idx<items.size() && items[idx]!=item)
     ++idx;
 
-  assert(idx<items.size());
+  eassert(idx<items.size());
 
   for(itemlist::size_type newidx=idx; newidx<items.size()-1; ++newidx)
     items[newidx]=items[newidx+1];

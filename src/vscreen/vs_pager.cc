@@ -317,7 +317,7 @@ void vs_pager::paint(const style &st)
 	      wchar_t ch=s[curr];
 	      // No nonprintables other than \t should appear
 	      // (set_text screens them out)
-	      assert(iswprint(ch));
+	      eassert(iswprint(ch));
 
 	      if(x>=first_column)
 		{

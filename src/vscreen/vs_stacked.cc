@@ -14,7 +14,7 @@ vs_stacked::vs_stacked(int w, int h)
 
 vs_stacked::~vs_stacked()
 {
-  assert(children.empty());
+  eassert(children.empty());
 }
 
 void vs_stacked::destroy()

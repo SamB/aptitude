@@ -30,7 +30,7 @@
 #include "curses++.h"
 #include "vs_passthrough.h"
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 #include <list>
 #include <string>

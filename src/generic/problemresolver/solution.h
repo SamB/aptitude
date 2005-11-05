@@ -181,7 +181,7 @@ private:
 
   public:
     void incref() const {++refcount;}
-    void decref() const {assert(refcount>0); if(--refcount==0) delete this;}
+    void decref() const {eassert(refcount>0); if(--refcount==0) delete this;}
 
     /** Construct a new solution_rep directly. */
     solution_rep(const imm::map<package, action> &_actions,
@@ -347,7 +347,7 @@ public:
       {
 	const dep &d = *ui;
 
-	assert(broken_deps.contains(d));
+	eassert(broken_deps.contains(d));
 	broken_deps.erase(d);
 	unresolved_soft_deps.insert(d);
       }
@@ -355,8 +355,8 @@ public:
     for(a_iter ai = abegin; ai != aend; ++ai)
       {
 	const action &a = *ai;
-	assert(!actions.domain_contains(a.ver.get_package()));
-	assert(a.ver != a.ver.get_package().current_version());
+	eassert(!actions.domain_contains(a.ver.get_package()));
+	eassert(a.ver != a.ver.get_package().current_version());
 
 	actions.put(a.ver.get_package(), a);
 

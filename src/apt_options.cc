@@ -298,9 +298,9 @@ static vs_widget_ref realize_options_dialog(option_item *items)
 	  break;
 	case option_item::OPTION_RADIO:
 	  {
-	    assert(items->choices.size()==items->choice_descriptions.size());
+	    eassert(items->choices.size()==items->choice_descriptions.size());
 
-	    assert(items->choices.size()>0);
+	    eassert(items->choices.size()>0);
 
 	    apt_radio_widget *w=new apt_radio_widget(items->option_name,
 						     items->choices,
@@ -345,7 +345,7 @@ static vs_widget_ref realize_options_dialog(option_item *items)
 	  break;
 
 	default:
-	  assert(0);  // Someone probably goofed in setting the tables up
+	  eassert(0);  // Someone probably goofed in setting the tables up
 	}
 
       items++;

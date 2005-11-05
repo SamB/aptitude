@@ -287,7 +287,7 @@ public:
 	pkgCache::VerIterator newver=i->second.ver.get_ver();
 
 	// If not, we have a problem.
-	assert(instver!=newver);
+	eassert(instver!=newver);
 
 	if(newver == curver)
 	  ++keep_count;
@@ -302,7 +302,7 @@ public:
 
 	    // The versions shouldn't be equal -- otherwise
 	    // something is majorly wrong.
-	    // assert(cmp!=0);
+	    // eassert(cmp!=0);
 	    //
 	    // The above is not true: consider, eg, the case of a
 	    // locally compiled package and a standard package.

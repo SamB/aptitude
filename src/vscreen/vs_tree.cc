@@ -256,7 +256,7 @@ void vs_tree::set_selection(vs_treeiterator to)
 
       while(l < 1)
 	{
-	  assert(top != end);
+	  eassert(top != end);
 
 	  if(hierarchical)
 	    --top;
@@ -268,7 +268,7 @@ void vs_tree::set_selection(vs_treeiterator to)
 
       while(l > height)
 	{
-	  assert(top != end);
+	  eassert(top != end);
 
 	  if(hierarchical)
 	    ++top;

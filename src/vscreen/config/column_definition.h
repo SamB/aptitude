@@ -41,7 +41,7 @@
 #include <list>
 #include <string>
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 #include <vscreen/columnify.h>
 
@@ -107,7 +107,7 @@ struct column_definition
     :type(_type), ival(_ival), width(_width),
      expand(_expand), shrink(_shrink), dynamic_size(_dynamic_size)
   {
-    assert(_width>=0);
+    eassert(_width>=0);
   }
 };
 

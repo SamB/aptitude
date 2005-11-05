@@ -237,9 +237,9 @@ void resize()
 	{
 	  resize_term(w.ws_row,w.ws_col);
 	  rootwin=newwin(w.ws_row, w.ws_col, 0, 0);
-	  assert(rootwin);
-	  //assert(rootwin.getmaxy()==w.ws_row);
-	  //assert(rootwin.getmaxx()==w.ws_col);
+	  eassert(rootwin);
+	  //eassert(rootwin.getmaxy()==w.ws_row);
+	  //eassert(rootwin.getmaxx()==w.ws_col);
 	  return;
 	}
       else

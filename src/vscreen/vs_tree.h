@@ -38,7 +38,7 @@
 #include "vs_treeitem.h"
 
 #include <list>
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 class keybindings;
 

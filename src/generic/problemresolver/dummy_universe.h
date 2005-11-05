@@ -29,6 +29,7 @@
 #include <string>
 #include <vector>
 
+#include <generic/util/eassert.h>
 #include <generic/util/exception.h>
 
 // An error type that's thrown when a name lookup fails.
@@ -503,7 +504,7 @@ public:
 
     const dep operator*() const
     {
-      assert(realiter!=realend);
+      eassert(realiter!=realend);
       return *realiter;
     }
 

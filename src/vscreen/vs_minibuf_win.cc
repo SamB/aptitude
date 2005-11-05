@@ -55,13 +55,13 @@ void vs_minibuf_win::destroy()
 
   if(main_widget.valid())
     main_widget->destroy();
-  assert(!main_widget.valid());
+  eassert(!main_widget.valid());
 
   header->destroy();
   status->destroy();
 
-  assert(!header.valid());
-  assert(!status.valid());
+  eassert(!header.valid());
+  eassert(!status.valid());
 
   vs_container::destroy();
 }
@@ -177,7 +177,7 @@ void vs_minibuf_win::rem_widget(const vs_widget_ref &widget)
 {
   vs_widget_ref tmpref(this);
 
-  assert(widget.valid());
+  eassert(widget.valid());
 
   if(widget == header)
     {

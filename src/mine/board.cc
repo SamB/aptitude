@@ -43,7 +43,7 @@ void mine_board::init_board(int _width, int _height, int _mines)
     }
 
   starttime=time(0);
-  assert(mines==_mines);
+  eassert(mines==_mines);
 }
 
 void mine_board::seed_square(int x, int y)
@@ -53,7 +53,7 @@ void mine_board::seed_square(int x, int y)
   // Anyway, I don't think this will be a speed bottleneck, so a sloppy version
   // is probably fine
 {
-  assert(!get_entry(x, y).contains_mine);
+  eassert(!get_entry(x, y).contains_mine);
   for(int i=x-1; i<=x+1; i++)
     if(i>=0 && i<width)
       for(int j=y-1; j<=y+1; j++)

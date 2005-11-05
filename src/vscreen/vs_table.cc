@@ -61,7 +61,7 @@ vs_table::vs_table()
 
 vs_table::~vs_table()
 {
-  assert(children.empty());
+  eassert(children.empty());
 }
 
 void vs_table::destroy()
@@ -299,7 +299,7 @@ void vs_table::rem_widget(const vs_widget_ref &wBare)
 
 	    if(focus != children.end())
 	      {
-		assert(focus != i);
+		eassert(focus != i);
 
 		if(get_isfocussed())
 		  focus->w->focussed();
@@ -331,7 +331,7 @@ void vs_table::focus_widget(const vs_widget_ref &w)
       {
 	if(i!=focus)
 	  {
-	    assert(i->w->get_visible() && i->w->focus_me());
+	    eassert(i->w->get_visible() && i->w->focus_me());
 
 	    if(focus!=children.end() && get_isfocussed())
 	      focus->w->unfocussed();
@@ -537,9 +537,9 @@ vs_table::childlist::iterator vs_table::find_best_focus(childlist::iterator star
 							int dx,
 							int dy)
 {
-  assert(start!=children.end());
-  assert(dx==0 || dy==0);
-  assert(!(dx==dy));
+  eassert(start!=children.end());
+  eassert(dx==0 || dy==0);
+  eassert(!(dx==dy));
 
   list<childlist::iterator> sorted_children;
 
@@ -974,7 +974,7 @@ void vs_table::shrink_widths(vector<int> &col_sizes, int target_w)
 	  overflow-=amt;
 	}
 
-      assert(overflow==0);
+      eassert(overflow==0);
     }
 
 #ifdef DEBUG_TABLES
@@ -1273,7 +1273,7 @@ void vs_table::shrink_heights(vector<int> &row_sizes, int target_h)
 	  overflow-=amt;
 	}
 
-      assert(overflow==0);
+      eassert(overflow==0);
     }
 
 #ifdef DEBUG_TABLES
@@ -1331,8 +1331,8 @@ void vs_table::alloc_child_sizes(const vector<int> &col_sizes,
 	for(int j=0; j<i->row_span; ++j)
 	  height+=row_sizes[j+i->row_start];
 
-	assert(x+width<=getmaxx());
-	assert(y+height<=getmaxy());
+	eassert(x+width<=getmaxx());
+	eassert(y+height<=getmaxy());
 
 	// If the widget can't be filled and it was allocated too much
 	// space, make sure it's aligned in the space:

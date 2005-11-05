@@ -29,7 +29,7 @@
 #define VS_STATUSCHOICE_H
 
 #include <string>
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 #include "vscreen_widget.h"
 
@@ -48,7 +48,7 @@ protected:
   vs_statuschoice(const std::wstring &_prompt, const std::wstring &_choices)
     :vscreen_widget(), prompt(_prompt), choices(_choices)
   {
-    assert(choices.size()>0);
+    eassert(choices.size()>0);
   }
 
 public:

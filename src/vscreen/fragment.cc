@@ -620,7 +620,7 @@ public:
     // As far as I know, this is valid everywhere...but it would be
     // rather tricky to write this algorithm without making this
     // assumption.
-    assert(wcwidth(L' ')==1);
+    eassert(wcwidth(L' ')==1);
 
     if(restw==0)
       return fragment_contents();
@@ -1054,7 +1054,7 @@ public:
 
   fragment_contents layout(size_t firstw, size_t restw, const style &st)
   {
-    assert(firstw == restw);
+    eassert(firstw == restw);
 
     vector<size_t> widths(columns.size());
     update_widths(widths, restw);
@@ -1120,7 +1120,7 @@ public:
 
   size_t calc_max_width(size_t first_indent, size_t rest_indent) const
   {
-    assert(first_indent == rest_indent);
+    eassert(first_indent == rest_indent);
 
     size_t rval = 0;
 
@@ -1151,7 +1151,7 @@ public:
 
   size_t calc_trailing_width(size_t first_indent, size_t rest_indent) const
   {
-    assert(first_indent == rest_indent);
+    eassert(first_indent == rest_indent);
 
     return rest_indent;
   }
@@ -1464,7 +1464,7 @@ fragment *fragf(const char *format, ...)
 	  break;
 	case 'F':
 	  // should have been verified above.
-	  assert(arguments[argcount].format=='F');
+	  eassert(arguments[argcount].format=='F');
 
 	  if(!curstr.empty())
 	    {
@@ -1476,7 +1476,7 @@ fragment *fragf(const char *format, ...)
 	  break;
 	case 's':
 	  // should have been verified above.
-	  assert(arguments[argcount].format=='s');
+	  eassert(arguments[argcount].format=='s');
 
 	  if(islong)
 	    curstr+=transcode(arguments[argcount].ls);
@@ -1485,7 +1485,7 @@ fragment *fragf(const char *format, ...)
 	  ++argcount;
 	  break;
 	case 'S':
-	  assert(arguments[argcount].format=='S');
+	  eassert(arguments[argcount].format=='S');
 
 	  if(!curstr.empty())
 	    {
@@ -1511,7 +1511,7 @@ fragment *fragf(const char *format, ...)
 
 	    int pos=strtol(nextpercent+1, &endptr, 10)-1;
 
-	    assert(arguments[pos].format==*(endptr+1));
+	    eassert(arguments[pos].format==*(endptr+1));
 
 	    switch(*(endptr+1))
 	      {

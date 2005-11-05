@@ -28,7 +28,7 @@ int vs_radiogroup::get_selected()
 
 void vs_radiogroup::button_pressed(itemlist::size_type index)
 {
-  assert(index<items.size());
+  eassert(index<items.size());
 
   if(selected!=items.max_size())
     items[selected].b->set_checked(false);
@@ -43,10 +43,10 @@ void vs_radiogroup::button_pressed(itemlist::size_type index)
 
 void vs_radiogroup::add_button(const vs_togglebutton_ref &b, int id)
 {
-  assert(id>=0);
+  eassert(id>=0);
 
   for(itemlist::iterator i=items.begin(); i!=items.end(); i++)
-    assert(i->b!=b);
+    eassert(i->b!=b);
 
   items.push_back(item(b, id,
 		       b->destroyed.connect(sigc::bind(sigc::mem_fun(*this, &vs_radiogroup::rem_button_bare), b.weak_ref())),
@@ -70,7 +70,7 @@ void vs_radiogroup::rem_button(const vs_togglebutton_ref &b)
 	    else if(i+1<items.size())
 	      button_pressed(i+1);
 	    else
-	      assert(items.size() == 1);
+	      eassert(items.size() == 1);
 	  }
 
 	if(i==items.size()-1)

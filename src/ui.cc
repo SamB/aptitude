@@ -363,7 +363,7 @@ static bool do_read_only_permission()
 
 static void do_read_only_fail()
 {
-  assert(active_download);
+  eassert(active_download);
 
   show_message(_("You may not modify the state of any package while a download is underway."));
 }
@@ -1133,7 +1133,7 @@ static void do_show_preview()
 {
   if(!active_preview_tree.valid())
     {
-      assert(!active_preview.valid());
+      eassert(!active_preview.valid());
 
       pkg_grouppolicy_factory *grp=NULL;
       std::string grpstr;
@@ -1181,7 +1181,7 @@ static void do_show_preview()
     }
   else
     {
-      assert(active_preview.valid());
+      eassert(active_preview.valid());
       active_preview->show();
     }
 }
@@ -1207,8 +1207,8 @@ static void auto_fix_broken()
 
   try
     {
-      assert(resman != NULL);
-      assert(resman->resolver_exists());
+      eassert(resman != NULL);
+      eassert(resman->resolver_exists());
 
       aptitude_solution sol = resman->get_solution(resman->get_selected_solution(), 0);
 

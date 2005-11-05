@@ -37,6 +37,8 @@
 #include <apt-pkg/pkgrecords.h>
 #include <apt-pkg/tagfile.h>
 
+#include <generic/util/eassert.h>
+
 using namespace std;
 
 tag::tag(std::string::const_iterator start,
@@ -153,8 +155,8 @@ static void insert_tags(const pkgCache::VerIterator &ver,
   const char *tagstart, *tagend;
   pkgTagSection sec;
 
-  assert(apt_package_records);
-  assert(tagDB);
+  eassert(apt_package_records);
+  eassert(tagDB);
 
   apt_package_records->Lookup(vf).GetRec(recstart, recend);
   if(!recstart || !recend)
@@ -188,7 +190,7 @@ const set<tag> *get_tags(const pkgCache::PkgIterator &pkg)
 bool initialized_reset_signal;
 void load_tags(OpProgress &progress)
 {
-  assert(apt_cache_file && apt_package_records);
+  eassert(apt_cache_file && apt_package_records);
 
   if(!initialized_reset_signal)
     {
@@ -238,7 +240,7 @@ static void init_vocabulary()
 {
   if(facet_descriptions != NULL)
     {
-      assert(tag_descriptions != NULL);
+      eassert(tag_descriptions != NULL);
       return;
     }
 

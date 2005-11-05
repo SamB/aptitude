@@ -189,7 +189,7 @@ static void resolver_help(ostream &out)
 // Given several versions with the same VerStr, choose one to output.
 static pkgCache::VerIterator choose_version(const vector<pkgCache::VerIterator> &choices)
 {
-  assert(!choices.empty());
+  eassert(!choices.empty());
 
   if(choices.size() == 1)
     return choices.front();
@@ -272,8 +272,8 @@ static void reject_or_mandate_version(const string &s,
 	  ver = aptitude_universe::version(pkg, choose_version(found),
 					   *apt_cache_file);
 
-	  assert(!ver.get_ver().end());
-	  assert(ver.get_pkg() == ver.get_ver().ParentPkg());
+	  eassert(!ver.get_ver().end());
+	  eassert(ver.get_pkg() == ver.get_ver().ParentPkg());
 	}
 
       if(is_reject)

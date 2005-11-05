@@ -45,7 +45,7 @@ style download_item::get_normal_style()
     case pkgAcquire::Item::StatAuthError:
       return vs_treeitem::get_normal_style()+get_style("Error");
     default:
-      assert(0);
+      eassert(0);
     }
 }
 
@@ -76,7 +76,7 @@ void download_item::paint(vs_tree *win, int y, bool hierarchical,
 	output+=_(" [Working]");
       else
 	{
-	  assert(worker->CurrentItem->Owner==item.Owner);
+	  eassert(worker->CurrentItem->Owner==item.Owner);
 
 	  if(worker->TotalSize>0)
 	    {

@@ -10,7 +10,7 @@
 
 #include <string>
 #include <iostream>
-#include <assert.h>
+#include <generic/util/eassert.h>
 #include <time.h>
 
 class mine_board
@@ -136,8 +136,8 @@ public:
   int get_width() {return width;}
   int get_height() {return height;}
   game_state get_state() {return state;}
-  int get_minex() {assert(state==lost); return minex;}
-  int get_miney() {assert(state==lost); return miney;}
+  int get_minex() {eassert(state==lost); return minex;}
+  int get_miney() {eassert(state==lost); return miney;}
   double get_duration()
   {
     if(state==playing)

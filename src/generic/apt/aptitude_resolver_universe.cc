@@ -41,7 +41,7 @@ string aptitude_resolver_version::get_name() const
 
       // if not, we have a "version" of this package that's not in
       // its list of versions!
-      assert(idx>=0);
+      eassert(idx>=0);
 
       if(count>1)
 	{
@@ -82,7 +82,7 @@ void aptitude_resolver_version::revdep_iterator::normalize()
 
   if(dep_lst.end() && !provides_open)
     {
-      assert(prv_lst.end());
+      eassert(prv_lst.end());
       prv_lst=ver.ProvidesList();
       provides_open=true;
       if(!prv_lst.end())
@@ -96,12 +96,12 @@ void aptitude_resolver_version::revdep_iterator::normalize()
   // When we've run out of provides, give up..
   while(dep_lst.end() && !prv_lst.end())
     {
-      assert(provides_open);
+      eassert(provides_open);
       ++prv_lst;
 
       if(!prv_lst.end())
 	{
-	  assert(!prv_lst.ParentPkg().end());
+	  eassert(!prv_lst.ParentPkg().end());
 	  dep_lst=prv_lst.ParentPkg().RevDependsList();
 
 	  while(!dep_lst.end() && !applicable())
@@ -114,8 +114,8 @@ void aptitude_resolver_version::dep_iterator::normalize()
 {
   if(prv_open)
     {
-      assert(!dep.end());
-      assert(dep->Type == pkgCache::Dep::Conflicts);
+      eassert(!dep.end());
+      eassert(dep->Type == pkgCache::Dep::Conflicts);
 
       while(!prv.end() && prv.OwnerPkg()==dep.ParentPkg())
 	++prv;
@@ -129,7 +129,7 @@ void aptitude_resolver_version::dep_iterator::normalize()
 	return;
     }
 
-  assert(!prv_open);
+  eassert(!prv_open);
 
 
   // Skip non-critical and self dependencies.  Need to do this here
@@ -196,7 +196,7 @@ void aptitude_resolver_dep::solver_iterator::normalize()
 	      ++dep_lst;
 	      // Since we aren't finished, dep_lst should still be
 	      // valid.
-	      assert(!dep_lst.end());
+	      eassert(!dep_lst.end());
 	      ver_lst=dep_lst.TargetPkg().VersionList();
 
 	      // Only set the prv_lst to non-end if there is no target
@@ -318,7 +318,7 @@ bool aptitude_resolver_dep::solved_by(const aptitude_resolver_version &v) const
 
 aptitude_resolver_dep::solver_iterator &aptitude_resolver_dep::solver_iterator::operator++()
 {
-  assert(!end());
+  eassert(!end());
 
   // Advance whatever needs to be advanced next in the
   // sub-list.
@@ -340,7 +340,7 @@ aptitude_resolver_dep::solver_iterator &aptitude_resolver_dep::solver_iterator::
 
 aptitude_resolver_version::dep_iterator &aptitude_resolver_version::dep_iterator::operator++()
 {
-  assert(!dep.end());
+  eassert(!dep.end());
 
   // If the Provides list is nonempty, advance it.
   if(!prv.end())
@@ -379,7 +379,7 @@ aptitude_resolver_version::dep_iterator &aptitude_resolver_version::dep_iterator
 
 aptitude_resolver_version aptitude_resolver_dep::solver_iterator::operator*() const
 {
-  assert(!end());
+  eassert(!end());
 
   if(!ver_lst.end())
     return aptitude_resolver_version(ver_lst.ParentPkg(),ver_lst,cache);
@@ -388,7 +388,7 @@ aptitude_resolver_version aptitude_resolver_dep::solver_iterator::operator*() co
       if(dep_lst->Type != pkgCache::Dep::Conflicts)
 	{
 	  // Assume this because otherwise end() should be true.
-	  assert(!prv_lst.end());
+	  eassert(!prv_lst.end());
 
 	  return aptitude_resolver_version(const_cast<pkgCache::PrvIterator &>(prv_lst).OwnerPkg(),const_cast<pkgCache::PrvIterator &>(prv_lst).OwnerVer(),cache);
 	}
@@ -465,7 +465,7 @@ void aptitude_universe::broken_dep_iterator::normalize()
 	}
     }
 
-  assert(the_dep.end() || is_interesting_dep(the_dep, cache));
+  eassert(the_dep.end() || is_interesting_dep(the_dep, cache));
 
   // Now dep is a broken critical dep or an end dep.  If it is a
   // conflicts, we might need to push down into Provides...
@@ -543,9 +543,9 @@ void aptitude_universe::broken_dep_iterator::normalize()
 
 aptitude_universe::broken_dep_iterator &aptitude_universe::broken_dep_iterator::operator++()
 {
-  assert(!pkg.end());
+  eassert(!pkg.end());
   // If the_dep.end() we have pkg.end().
-  assert(!the_dep.end());
+  eassert(!the_dep.end());
 
   if(!prv_open && the_dep->Type == pkgCache::Dep::Conflicts)
     {

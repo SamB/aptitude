@@ -9,7 +9,7 @@
 
 #include <sigc++/reference_wrapper.h>
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 template<class T>
 class ref_ptr
@@ -65,7 +65,7 @@ public:
 
   const sigc::reference_wrapper<T> weak_ref() const
   {
-    assert(ref != 0);
+    eassert(ref != 0);
 
     return sigc::ref(*ref);
   }

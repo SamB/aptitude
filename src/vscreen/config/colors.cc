@@ -56,7 +56,7 @@ int get_color_pair(short fg, short bg)
     return 0;
   else
     {
-      assert(fg >= 0 && bg >= -1 && fg < COLORS && bg < COLORS);
+      eassert(fg >= 0 && bg >= -1 && fg < COLORS && bg < COLORS);
 
       if(bg == -1)
 	return fg * COLORS + fg;

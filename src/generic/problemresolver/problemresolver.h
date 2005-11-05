@@ -39,7 +39,7 @@
 #ifndef PROBLEMRESOLVER_H
 #define PROBLEMRESOLVER_H
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 #include <algorithm>
 #include <map>
@@ -508,7 +508,7 @@ private:
     ~instance_tracker()
     {
       threads::mutex::lock l(r.execution_mutex);
-      assert(r.solver_executing);
+      eassert(r.solver_executing);
 
       r.solver_executing = false;
       r.solver_cancelled = false;
@@ -1024,7 +1024,7 @@ private:
 
     void install(const package &p, const version &v)
     {
-      assert(installations.find(p) == installations.end());
+      eassert(installations.find(p) == installations.end());
 
       installations[p]=v;
     }
@@ -1252,7 +1252,7 @@ private:
 
     while(!broken_deps.empty())
       {
-	assert(!avail_versions.empty());
+	eassert(!avail_versions.empty());
 
 	// Pick an "arbitrary" broken dependency.
 	dep d = *broken_deps.begin();
@@ -1283,9 +1283,9 @@ private:
 
 	// I have a proof that a solver should exist, but that doesn't
 	// mean it does ;-)
-	assert(found_one);
-	assert(output_actions.find(solver.get_package()) == output_actions.end());
-	assert(solver != solver.get_package().current_version());
+	eassert(found_one);
+	eassert(output_actions.find(solver.get_package()) == output_actions.end());
+	eassert(solver != solver.get_package().current_version());
 
 	if(debug)
 	  std::cout << "Filter: resolving " << d << " with "
@@ -1334,7 +1334,7 @@ private:
    */
   solution eliminate_stupid(const solution &s)
   {
-    assert(s.get_broken().empty());
+    eassert(s.get_broken().empty());
 
     stupid_table stupid_pairs;
 
@@ -1397,7 +1397,7 @@ private:
 			<< first_broken << std::endl;
 
 	    typename std::map<package, action>::const_iterator found = rval.get_actions().find(victim.first.get_package());
-	    assert(found != rval.get_actions().end());
+	    eassert(found != rval.get_actions().end());
 
 	    action repl_action(victim.first, first_broken,
 			       found->second.id);
@@ -1469,7 +1469,7 @@ private:
 	  }
       }
 
-    assert(rval.get_broken().empty());
+    eassert(rval.get_broken().empty());
 
     return rval;
   }
@@ -1763,7 +1763,7 @@ private:
       }
     else
       {
-	assert(v != cur);
+	eassert(v != cur);
 
 	typename imm::map<version, dep>::node found
 	  = s.get_forbidden_versions().lookup(v);
@@ -1807,11 +1807,11 @@ private:
 
 	action a2 = act;
 
-	assert(found_act.ver == act.ver);
+	eassert(found_act.ver == act.ver);
 	if(a2.from_dep_source)
 	  {
 	    if(found_act.from_dep_source)
-	      assert(a2.d == found_act.d);
+	      eassert(a2.d == found_act.d);
 
 	    else
 	      a2.from_dep_source = false;
@@ -1959,7 +1959,7 @@ private:
 		if(ci->first != v.get_package())
 		  insert_conflictor(conflict, ci->second);
 		else
-		  assert(ci->second.ver == v);
+		  eassert(ci->second.ver == v);
 	      }
 	  }
       }
@@ -1990,7 +1990,7 @@ private:
       insert_conflictor(conflict, action(source, d, false, -1));
     else
       {
-	assert(source == source.get_package().current_version());
+	eassert(source == source.get_package().current_version());
 
 	for(typename package::version_iterator vi = source.get_package().versions_begin();
 	    !vi.end(); ++vi)
@@ -2019,7 +2019,7 @@ private:
     // forcings are performed ASAP.
     solution curr = s;
 
-    assert(!s.get_broken().empty());
+    eassert(!s.get_broken().empty());
 
     // This loop attempts to generate all the successors of a
     // solution.  However, if a "forced" dependency arises, it
@@ -2111,7 +2111,7 @@ private:
 		generate_successors(curr, *bi, conflict,
 				    real_generator(v));
 
-		assert(v.size() == 1);
+		eassert(v.size() == 1);
 
 		curr = v.back();
 		done = false;
@@ -2273,7 +2273,7 @@ public:
    */
   void set_version_score(const version &ver, int score)
   {
-    assert(ver.get_id()<universe.get_version_count());
+    eassert(ver.get_id()<universe.get_version_count());
     weights.version_scores[ver.get_id()]=score;
   }
 
@@ -2282,14 +2282,14 @@ public:
    */
   void add_version_score(const version &ver, int score)
   {
-    assert(ver.get_id()<universe.get_version_count());
+    eassert(ver.get_id()<universe.get_version_count());
     weights.version_scores[ver.get_id()]+=score;
   }
 
   /** \return the score of the version ver. */
   int get_version_score(const version &ver)
   {
-    assert(ver.get_id()<universe.get_version_count());
+    eassert(ver.get_id()<universe.get_version_count());
     return weights.version_scores[ver.get_id()];
   }
 
@@ -2375,7 +2375,7 @@ public:
   /** Harden the given dependency. */
   void harden(const dep &d, undo_group *undo = NULL)
   {
-    assert(d.is_soft());
+    eassert(d.is_soft());
 
     std::pair<typename std::set<dep>::const_iterator, bool>
       insert_result = user_hardened.insert(d);
@@ -2706,7 +2706,7 @@ public:
     if(max_steps==0)
       throw NoMoreTime();
 
-    assert(open.empty());
+    eassert(open.empty());
 
     finished=true;
 

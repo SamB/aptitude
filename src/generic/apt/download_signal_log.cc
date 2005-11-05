@@ -64,7 +64,7 @@ bool download_signal_log::MediaChange(string Media, string Drive)
   // Sanity-check against broken slots.  Something ought to have
   // called this.
   if(!MediaChange_sig.empty())
-    assert(rval != -1);
+    eassert(rval != -1);
   return rval != 0;
 }
 
@@ -103,7 +103,7 @@ bool download_signal_log::Pulse(pkgAcquire *Owner)
   Pulse(Owner, sigc::bind(sigc::ptr_fun(set_bool), &rval));
 
   if(!Pulse_sig.empty())
-    assert(rval != -1);
+    eassert(rval != -1);
   return rval != 0;
 }
 

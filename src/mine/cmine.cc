@@ -134,7 +134,7 @@ void cmine::paint_header(const style &st)
       unsigned int loc=0;
       while(headerw < width)
 	{
-	  assert(buf[loc]!=0);
+	  eassert(buf[loc]!=0);
 
 	  wchar_t wch=buf[loc];
 	  header+=buf;
@@ -694,8 +694,8 @@ void cmine::paint_square(int x, int y, const style &st)
   int width,height;
   getmaxyx(height, width);
 
-  assert(x>=0 && x<board->get_width());
-  assert(y>=0 && y<board->get_height());
+  eassert(x>=0 && x<board->get_width());
+  eassert(y>=0 && y<board->get_height());
 
   int screenx=basex+1+x,screeny=(basey+1)+1+y;
 

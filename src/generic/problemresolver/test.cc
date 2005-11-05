@@ -30,7 +30,7 @@
 #include <map>
 #include <vector>
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 using namespace std;
 

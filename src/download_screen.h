@@ -89,7 +89,7 @@ class download_screen:public vs_tree, public pkgAcquireStatus
   download_item *get_itm(pkgAcquire::ItemDesc &itmdesc)
   {
     downloadmap::iterator found=active_items.find(itmdesc.Owner);
-    assert(found!=active_items.end());
+    eassert(found!=active_items.end());
 
     return found->second;
   }

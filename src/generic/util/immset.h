@@ -28,7 +28,7 @@
 #ifndef IMMSET_H
 #define IMMSET_H
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 #include <iostream>
 
 #include <vector>
@@ -99,14 +99,14 @@ namespace imm
 
       void incref() const
       {
-	assert(refcount>0);
+	eassert(refcount>0);
 
 	++refcount;
       }
 
       void decref() const
       {
-	assert(refcount>0);
+	eassert(refcount>0);
 	--refcount;
 
 	if(refcount == 0)
@@ -442,7 +442,7 @@ namespace imm
 
       const_iterator &operator++()
       {
-	assert(!path.empty());
+	eassert(!path.empty());
 
 	if(!path.back().first)
 	  {

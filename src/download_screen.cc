@@ -25,7 +25,7 @@
 #include "download_item.h"
 #include "ui.h"
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 #include <signal.h>
 
 #include <apt-pkg/strutl.h>

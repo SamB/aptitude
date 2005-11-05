@@ -54,7 +54,7 @@ protected:
     {
     }
 
-    vs_treeitem *get_item() {assert(realitem!=parent_list->end()); return *realitem;}
+    vs_treeitem *get_item() {eassert(realitem!=parent_list->end()); return *realitem;}
     virtual void advance_next() {++realitem;}
     virtual void return_prev() {--realitem;}
     bool is_begin() {return realitem==parent_list->begin();}

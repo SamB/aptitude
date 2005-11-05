@@ -28,7 +28,7 @@
 
 #include "colors.h"
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 /** A "style" is a setting to be applied to a display element (widget,
  *  text, etc).  This means color (foreground and background) and

@@ -63,7 +63,7 @@ void vs_bin::destroy()
 
   if(subwidget.valid())
     subwidget->destroy();
-  assert(!subwidget.valid());
+  eassert(!subwidget.valid());
 
   vs_container::destroy();
 }
@@ -72,8 +72,8 @@ void vs_bin::add_widget(const vs_widget_ref &w)
 {
   vs_widget_ref tmpref(this);
 
-  assert(!subwidget.valid());
-  assert(w.valid());
+  eassert(!subwidget.valid());
+  eassert(w.valid());
 
   set_subwidget(w);
 
@@ -89,7 +89,7 @@ void vs_bin::rem_widget(const vs_widget_ref &w)
 {
   vs_widget_ref tmpref(this);
 
-  assert(w == subwidget);
+  eassert(w == subwidget);
   set_subwidget(NULL);
 
   if(get_visible())
@@ -113,7 +113,7 @@ void vs_bin::show_widget(const vs_widget_ref &w)
 {
   vs_widget_ref tmpref(this);
 
-  assert(w==subwidget);
+  eassert(w==subwidget);
 
   show();
 }
@@ -129,7 +129,7 @@ void vs_bin::hide_widget(const vs_widget_ref &w)
 {
   vs_widget_ref tmpref(this);
 
-  assert(w==subwidget);
+  eassert(w==subwidget);
   hide();
 }
 

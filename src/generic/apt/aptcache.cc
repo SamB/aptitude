@@ -45,7 +45,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/mem_fun.h>
@@ -1246,7 +1246,7 @@ void aptitudeDepCache::begin_action_group()
 
 void aptitudeDepCache::end_action_group(undo_group *undo)
 {
-  assert(group_level>0);
+  eassert(group_level>0);
 
   if(group_level==1)
     {

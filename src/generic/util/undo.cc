@@ -6,7 +6,7 @@
 
 #include "undo.h"
 
-#include <assert.h>
+#include <eassert.h>
 
 using namespace std;
 
@@ -34,15 +34,15 @@ void undo_list::clear_items()
 
   floors.push_back(0);
 
-  assert(items.size()==0);
-  assert(floors.size()==1);
+  eassert(items.size()==0);
+  eassert(floors.size()==1);
 }
 
 void undo_list::collapse_to(unsigned int prev_size)
 {
   if(items.size()>prev_size && prev_size>=0)
     {
-      assert(prev_size>=floors.back());
+      eassert(prev_size>=floors.back());
 
       undo_group *new_item=new undo_group;
 
@@ -60,7 +60,7 @@ void undo_list::revert_to(unsigned int prev_size)
 {
   if(prev_size>=0)
     {
-      assert(prev_size>=floors.back());
+      eassert(prev_size>=floors.back());
 
       while(items.size()>prev_size)
 	undo();
@@ -69,7 +69,7 @@ void undo_list::revert_to(unsigned int prev_size)
 
 void undo_list::push_floor(unsigned int floor)
 {
-  assert(floor<=items.size());
+  eassert(floor<=items.size());
   floors.push_back(floor);
 }
 

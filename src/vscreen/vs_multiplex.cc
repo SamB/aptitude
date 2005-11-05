@@ -25,7 +25,7 @@
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/mem_fun.h>
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 using namespace std;
 
@@ -40,7 +40,7 @@ vs_multiplex::vs_multiplex(bool _show_tabs)
 
 vs_multiplex::~vs_multiplex()
 {
-  assert(children.empty());
+  eassert(children.empty());
 }
 
 void vs_multiplex::destroy()
@@ -132,7 +132,7 @@ void vs_multiplex::paint(const style &st)
 	if(i->w->get_visible())
 	  ++visible_children;
 
-      assert(visible_children>0);
+      eassert(visible_children>0);
 
       int remaining_w=getmaxx();
       move(0, 0);
@@ -181,7 +181,7 @@ void vs_multiplex::paint(const style &st)
 		thisw-=wcwidth(L' ');
 	      }
 	  }
-      assert(visible_children == 0);
+      eassert(visible_children == 0);
     }
 
   if(visible_child!=children.end())
@@ -204,7 +204,7 @@ void vs_multiplex::dispatch_mouse(short id, int x, int y, int z,
 	if(i->w->get_visible())
 	  ++visible_children;
 
-      assert(visible_children>0);
+      eassert(visible_children>0);
 
       int startx=0;
       int remaining_w=getmaxx();
@@ -227,8 +227,8 @@ void vs_multiplex::dispatch_mouse(short id, int x, int y, int z,
 	    startx+=thisw;
 	  }
 
-      assert(x<0 || x>=getmaxx());
-      assert(visible_children == 0);
+      eassert(x<0 || x>=getmaxx());
+      eassert(visible_children == 0);
     }
   else if(visible_child!=children.end())
     visible_child->w->dispatch_mouse(id,
@@ -267,7 +267,7 @@ void vs_multiplex::show_widget(const vs_widget_ref &w)
 {
   vs_widget_ref tmpref(this);
 
-  assert(!children.empty());
+  eassert(!children.empty());
 
   list<child_info>::iterator new_visible=visible_child;
 
@@ -307,7 +307,7 @@ void vs_multiplex::hide_widget(const vs_widget_ref &w)
 {
   vs_widget_ref tmpref(this);
 
-  assert(!children.empty());
+  eassert(!children.empty());
 
   if(visible_child!=children.end() && visible_child->w==w)
     {
@@ -350,7 +350,7 @@ void vs_multiplex::hide_widget(const vs_widget_ref &w)
 
       // Since we just hid the previously-visible child, this MUST be
       // the case.
-      assert(visible_child != old_visible);
+      eassert(visible_child != old_visible);
 
       cycled();
       vscreen_queuelayout();
@@ -383,7 +383,7 @@ void vs_multiplex::rem_widget(const vs_widget_ref &w)
     {
       if(i->w==w)
 	{
-	  assert(w->get_owner().unsafe_get_ref() == this);
+	  eassert(w->get_owner().unsafe_get_ref() == this);
 
 	  w->set_owner(NULL);
 

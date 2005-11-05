@@ -35,7 +35,7 @@
 
 #include <list>
 #include <string>
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 struct column_disposition
 {
@@ -59,7 +59,7 @@ struct column
   column(const column_disposition &_info, int _width, bool _expand, bool _shrink)
     :info(_info), width(_width), expand(_expand), shrink(_shrink)
   {
-    assert(_width>=0);
+    eassert(_width>=0);
   }
 };
 

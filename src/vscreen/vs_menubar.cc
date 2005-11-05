@@ -43,9 +43,9 @@ vs_menubar::vs_menubar(bool _always_visible)
 
 vs_menubar::~vs_menubar()
 {
-  assert(!subwidget.valid());
-  assert(items.empty());
-  assert(active_menus.empty());
+  eassert(!subwidget.valid());
+  eassert(items.empty());
+  eassert(active_menus.empty());
 }
 
 vs_widget_ref vs_menubar::get_active_widget()
@@ -59,7 +59,7 @@ void vs_menubar::destroy()
 
   if(subwidget.valid())
     subwidget->destroy();
-  assert(!subwidget.valid());
+  eassert(!subwidget.valid());
 
   // ew.  You see, we need to individually destroy the subwidgets, but
   // doing so will cause them to be removed, so we can't iterate over
@@ -70,8 +70,8 @@ void vs_menubar::destroy()
       i != curr_items.end(); ++i)
     i->menu->destroy();
 
-  assert(items.empty());
-  assert(active_menus.empty());
+  eassert(items.empty());
+  eassert(active_menus.empty());
 
   vs_container::destroy();
 }
@@ -254,7 +254,7 @@ void vs_menubar::add_widget(const vs_widget_ref &w)
 {
   vs_widget_ref tmpref(this);
 
-  assert(!subwidget.valid());
+  eassert(!subwidget.valid());
 
   set_subwidget(w);
 }
@@ -267,7 +267,7 @@ void vs_menubar::rem_widget(const vs_widget_ref &w)
     set_subwidget(NULL);
   else
     {
-      assert(w->get_owner().unsafe_get_ref() == this);
+      eassert(w->get_owner().unsafe_get_ref() == this);
 
       bool found = false;
 
@@ -286,7 +286,7 @@ void vs_menubar::rem_widget(const vs_widget_ref &w)
 	    }
 	}
 
-      assert(found);
+      eassert(found);
 
       active_menus.remove(w2);
 
@@ -431,7 +431,7 @@ void vs_menubar::show_menu(const vs_menu_ref &w)
       for(activemenulist::iterator i=active_menus.begin();
 	  i!=active_menus.end();
 	  i++)
-	assert(w != *i);
+	eassert(w != *i);
 
       if(old_focus.valid())
 	old_focus->unfocussed();

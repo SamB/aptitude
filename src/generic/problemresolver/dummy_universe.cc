@@ -109,7 +109,7 @@ void dummy_universe::add_package(const string &name,
 				 vector<string> the_versions,
 				 const string &curname)
 {
-  assert(!the_versions.empty());
+  eassert(!the_versions.empty());
 
   packages.push_back(new dummy_package(name, packages.size()));
 

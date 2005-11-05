@@ -250,7 +250,7 @@ wstring column_generator::layout_columns(unsigned int width,
 	}
       else
 	{
-	  assert(j->type == column_definition::COLUMN_GENERATED ||
+	  eassert(j->type == column_definition::COLUMN_GENERATED ||
 		 j->type == column_definition::COLUMN_PARAM);
 
 	  if(j->type == column_definition::COLUMN_GENERATED)

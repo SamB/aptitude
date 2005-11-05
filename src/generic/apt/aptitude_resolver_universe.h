@@ -24,6 +24,8 @@
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
 
+#include <generic/util/eassert.h>
+
 #include "apt.h"
 #include "aptcache.h"
 
@@ -56,8 +58,8 @@ public:
 			    pkgDepCache *_cache)
     :cache(_cache), pkg(_pkg)
   {
-    assert(cache!=0);
-    assert(pkg.Cache()!=0);
+    eassert(cache!=0);
+    eassert(pkg.Cache()!=0);
   }
 
   /** \brief Generate a unique ID for this package.
@@ -145,9 +147,9 @@ public:
 			    pkgDepCache *_cache)
     :cache(_cache), pkg(_pkg), ver(_ver)
   {
-    assert(cache!=0);
-    assert(pkg.Cache()!=0);
-    assert(ver.Cache()!=0);
+    eassert(cache!=0);
+    eassert(pkg.Cache()!=0);
+    eassert(ver.Cache()!=0);
   }
 
   /** \return The APT package of which this is a version.
@@ -314,10 +316,10 @@ public:
 			pkgDepCache *_cache)
     :cache(_cache), prv(_prv)
   {
-    assert(cache!=0);
-    assert(const_cast<pkgCache::DepIterator &>(dep).Cache()!=0);
-    assert(prv.Cache()!=0);
-    assert(!dep.end());
+    eassert(cache!=0);
+    eassert(const_cast<pkgCache::DepIterator &>(dep).Cache()!=0);
+    eassert(prv.Cache()!=0);
+    eassert(!dep.end());
     if(dep->Type != pkgCache::Dep::Conflicts)
       {
 	// Throw away the end, since it's not necessary.
@@ -402,8 +404,8 @@ public:
   /** \return The source version of this dependency. */
   aptitude_resolver_version get_source() const
   {
-    assert(!start.end());
-    assert(!const_cast<pkgCache::DepIterator &>(start).ParentPkg().end());
+    eassert(!start.end());
+    eassert(!const_cast<pkgCache::DepIterator &>(start).ParentPkg().end());
     return aptitude_resolver_version(const_cast<pkgCache::DepIterator &>(start).ParentPkg(),
 				     const_cast<pkgCache::DepIterator &>(start).ParentVer(),
 				     cache);
@@ -732,7 +734,7 @@ public:
   {
     if(!dep_lst.end())
       {
-	assert(dep_lst->Type != pkgCache::Dep::Conflicts);
+	eassert(dep_lst->Type != pkgCache::Dep::Conflicts);
 
 	ver_lst=const_cast<pkgCache::DepIterator &>(start).TargetPkg().VersionList();
 	prv_lst=const_cast<pkgCache::DepIterator &>(start).TargetPkg().ProvidesList();
@@ -758,7 +760,7 @@ public:
   {
     if(!dep_lst.end())
       {
-	assert(d->Type == pkgCache::Dep::Conflicts);
+	eassert(d->Type == pkgCache::Dep::Conflicts);
 	// Either we're looking at all versions of the named dep, or
 	// at all versions of the providing package.
 	if(prv_lst.end())
@@ -1023,7 +1025,7 @@ public:
      */
     dep_iterator &operator++()
     {
-      assert(!dep.end());
+      eassert(!dep.end());
 
       ++dep;
 

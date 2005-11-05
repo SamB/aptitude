@@ -50,7 +50,7 @@
 
 #include <signal.h>
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 #include <sys/time.h>
 
 #include <map>

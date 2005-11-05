@@ -49,7 +49,7 @@
 #include "config/style.h"
 #include "ref_ptr.h"
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 class vs_container;
 class key;
@@ -179,14 +179,14 @@ protected:
 public:
   void incref()
   {
-    assert(refcount > 0);
+    eassert(refcount > 0);
 
     ++refcount;
   }
 
   void decref()
   {
-    assert(refcount > 0);
+    eassert(refcount > 0);
 
     --refcount;
     if(refcount == 0)

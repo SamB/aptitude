@@ -74,7 +74,7 @@ static void try_delete_essential(wstring s,
 static void confirm_delete_essential(const pkgCache::PkgIterator &pkg,
 				     bool purge)
 {
-  assert((pkg->Flags&pkgCache::Flag::Essential)==pkgCache::Flag::Essential ||
+  eassert((pkg->Flags&pkgCache::Flag::Essential)==pkgCache::Flag::Essential ||
 	 (pkg->Flags&pkgCache::Flag::Important)==pkgCache::Flag::Important);
 
   fragment *f=wrapbox(fragf(_("%s is an essential package!%n%nAre you sure you want to remove it?%nType '%s' if you are."), pkg.Name(), _(confirm_str)));

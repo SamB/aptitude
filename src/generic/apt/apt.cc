@@ -44,7 +44,7 @@
 
 #include <fstream>
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 #include <signal.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -456,7 +456,7 @@ static void surrounding_or_internal(const pkgCache::DepIterator &dep,
     }
 
   // If not, something is wrong with apt's cache.
-  assert(found);
+  eassert(found);
 }
 
 void surrounding_or(pkgCache::DepIterator dep,

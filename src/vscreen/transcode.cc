@@ -19,7 +19,7 @@
 
 #include "transcode.h"
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 #include <errno.h>
 #include <iconv.h>
 
@@ -130,7 +130,7 @@ static bool transcode_buffer(iconv_t &state,
 
 	      while(result == (size_t)(-1))
 		{
-		  assert(errno == E2BIG);
+		  eassert(errno == E2BIG);
 
 		  size_t idx = outbufcur-outbuf;
 		  outremaining += outbufsize;
@@ -177,13 +177,13 @@ static bool transcode_buffer(iconv_t &state,
 				 &errbufsize, &outbufcur, &outremaining);
 		}
 
-	      assert(errbufsize == 0);
+	      eassert(errbufsize == 0);
 
 	      // Return again to initial shift state
 	      result = iconv(state2, NULL, NULL, &outbufcur, &outremaining);
 	      while(result == (size_t)(-1))
 		{
-		  assert(errno == E2BIG);
+		  eassert(errno == E2BIG);
 
 		  size_t idx = outbufcur-outbuf;
 		  outremaining += outbufsize;
@@ -213,7 +213,7 @@ static bool transcode_buffer(iconv_t &state,
 	// if this fails, my understanding of iconv is wrong: the
 	// iconv docs say that if it doesn't fail, then the whole
 	// input sequence was converted.
-	assert(inremaining == 0);
+	eassert(inremaining == 0);
     }
 
   decoded=outbufsize-outremaining;

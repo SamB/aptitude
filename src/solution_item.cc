@@ -65,7 +65,7 @@ action_type analyze_action(const aptitude_universe::version &ver)
 
       // The versions shouldn't be equal -- otherwise
       // something is majorly wrong.
-      // assert(cmp!=0);
+      // eassert(cmp!=0);
       //
       // The above is not true: consider, eg, the case of a
       // locally compiled package and a standard package.
@@ -208,14 +208,14 @@ bool solution_item::resolver_toggle_rejected_enabled()
 
 bool solution_act_item::is_rejected()
 {
-  assert(resman->resolver_exists());
+  eassert(resman->resolver_exists());
 
   return resman->is_rejected(ver);
 }
 
 bool solution_act_item::is_mandatory()
 {
-  assert(resman->resolver_exists());
+  eassert(resman->resolver_exists());
 
   return resman->is_mandatory(ver);
 }
@@ -349,7 +349,7 @@ void solution_act_item::paint(vs_tree *win, int y, bool hierarchical, const styl
   fragment_contents c = f->layout(width-x, width-x, st);
   delete f;
 
-  assert(c.size() < 2);
+  eassert(c.size() < 2);
   if(c.size() > 0)
     {
       const fragment_line &l = c.front();

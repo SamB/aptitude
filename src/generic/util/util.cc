@@ -28,6 +28,8 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "eassert.h"
+
 using namespace std;
 
 void stripws(string &s)
@@ -72,7 +74,7 @@ string vssprintf(const char *format, va_list ap)
 
       int amt2 = vsnprintf(buf2, initbufsize, format, ap);
 
-      assert(amt2 < amt+1);
+      eassert(amt2 < amt+1);
 
       string rval(buf2, amt2);
 
@@ -106,7 +108,7 @@ wstring vswsprintf(const wchar_t *format, va_list ap)
 
       int amt2 = vswprintf(buf2, initbufsize, format, ap);
 
-      assert(amt2 < amt+1);
+      eassert(amt2 < amt+1);
 
       wstring rval(buf2, amt2);
 

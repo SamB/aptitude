@@ -573,7 +573,7 @@ public:
 
   void add_package(const pkgCache::PkgIterator &pkg, pkg_subtree *root)
   {
-    assert(pkg.Name());
+    eassert(pkg.Name());
 
     char firstchar=toupper(pkg.Name()[0]);
 
@@ -926,7 +926,7 @@ void pkg_grouppolicy_task::add_package(const pkgCache::PkgIterator &pkg,
 {
   list<string> *tasks=get_tasks(pkg);
 
-  assert(tasks);
+  eassert(tasks);
 
   chain->add_package(pkg, root);
 
@@ -1310,7 +1310,7 @@ public:
       {
 	if(untagged_tree == NULL)
 	  {
-	    assert(untagged_policy == NULL);
+	    eassert(untagged_policy == NULL);
 
 	    untagged_tree = new pkg_subtree(transcode(_("TAGLESS PACKAGES")),
 					    transcode(_("\n These packages have not yet been classified in debtags.")),
@@ -1328,7 +1328,7 @@ public:
       {
 	tag::const_iterator j = ti->begin();
 
-	assert(j != ti->end());
+	eassert(j != ti->end());
 
 	string thisfacet = *j;
 

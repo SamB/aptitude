@@ -402,7 +402,7 @@ vs_widget_ref make_package_view(list<package_view_item> &format,
 
   vs_table_ref rval=vs_table::create();
 
-  assert(mainwidget.valid());
+  eassert(mainwidget.valid());
 
   for(list<package_view_item>::iterator i=format.begin();
       i!=format.end();

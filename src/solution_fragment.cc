@@ -65,7 +65,7 @@ string dep_targets(const pkgCache::DepIterator &start)
 
   bool is_first = true;
 
-  assert(!start.end());
+  eassert(!start.end());
 
   for(pkgCache::DepIterator d = start; !d.end(); ++d)
     {
@@ -185,7 +185,7 @@ fragment *solution_fragment(const aptitude_solution &sol)
 
 	  // The versions shouldn't be equal -- otherwise
 	  // something is majorly wrong.
-	  // assert(cmp!=0);
+	  // eassert(cmp!=0);
 	  //
 	  // The above is not true: consider, eg, the case of a
 	  // locally compiled package and a standard package.

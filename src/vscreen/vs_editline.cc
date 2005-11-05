@@ -417,7 +417,7 @@ void vs_editline::dispatch_mouse(short id, int x, int y, int z, mmask_t bstate)
 void vs_editline::add_to_history(std::wstring s,
 				 history_list *lst)
 {
-  assert(lst);
+  eassert(lst);
 
   if(lst->empty() || lst->back()!=s)
     lst->push_back(s);

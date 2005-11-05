@@ -25,6 +25,7 @@
 
 #include <string>
 
+#include "eassert.h"
 #include "exception.h"
 #include "threads.h"
 
@@ -172,7 +173,7 @@ namespace temp
     {
       threads::mutex::lock l(m);
 
-      assert(refcount > 0);
+      eassert(refcount > 0);
       --refcount;
 
       if(refcount == 0)
@@ -323,7 +324,7 @@ namespace temp
     {
       threads::mutex::lock l(m);
 
-      assert(refcount > 0);
+      eassert(refcount > 0);
       --refcount;
 
       if(refcount == 0)

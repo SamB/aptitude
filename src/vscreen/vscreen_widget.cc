@@ -14,7 +14,7 @@
 #include <config/colors.h>
 #include <config/keybindings.h>
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -42,8 +42,8 @@ vscreen_widget::vscreen_widget()
 
 vscreen_widget::~vscreen_widget()
 {
-  assert(!owner);
-  assert(is_destroyed);
+  eassert(!owner);
+  eassert(is_destroyed);
 }
 
 void vscreen_widget::set_bg_style(const style &new_style)
@@ -77,7 +77,7 @@ void vscreen_widget::set_owner_window(cwindow _win, int x, int y, int w, int h)
 	win=NULL;
       else
 	{
-	  assert(!is_destroyed);
+	  eassert(!is_destroyed);
 
 	  win=_win.derwin(geom.h,
 			  geom.w,
@@ -118,13 +118,13 @@ int vscreen_widget::timeout(int msecs)
 
 void vscreen_widget::cleanup()
 {
-  assert(is_destroyed);
+  eassert(is_destroyed);
   delete this;
 }
 
 void vscreen_widget::destroy()
 {
-  assert(refcount > 0);
+  eassert(refcount > 0);
 
   if(is_destroyed)
     return;
@@ -137,7 +137,7 @@ void vscreen_widget::destroy()
   if(owner)
     {
       owner->rem_widget(this);
-      assert(!win);
+      eassert(!win);
     }
 
   // This must be done after hide() and rem_widget(), because

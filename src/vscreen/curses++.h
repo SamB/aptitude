@@ -25,7 +25,7 @@
 #include <string>
 #include <ncursesw/curses.h>
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 
 // For isspace
 #include <ctype.h>
@@ -374,7 +374,7 @@ class cwindow
 
     ~cwindow_master()
     {
-      assert(refs==0);
+      eassert(refs==0);
 
       if(win)
 	delwin(win);

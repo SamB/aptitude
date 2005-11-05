@@ -61,7 +61,7 @@ resolver_manager::resolver_manager(aptitudeDepCache *_cache)
 
 resolver_manager::~resolver_manager()
 {
-  assert(background_thread_running);
+  eassert(background_thread_running);
 
   discard_resolver();
 
@@ -301,7 +301,7 @@ void resolver_manager::unsuspend_background_thread()
 
   threads::mutex::lock control_lock(background_control_mutex);
 
-  assert(background_thread_suspend_count > 0);
+  eassert(background_thread_suspend_count > 0);
   --background_thread_suspend_count;
   background_control_cond.wake_all();
 }
@@ -357,7 +357,7 @@ void resolver_manager::discard_resolver()
 void resolver_manager::create_resolver()
 {
   threads::mutex::lock l(mutex);
-  assert(resolver == NULL);
+  eassert(resolver == NULL);
 
   // NOTE: the performance of the resolver is highly sensitive to
   // these settings; choosing bad ones can result in hitting
@@ -409,7 +409,7 @@ void resolver_manager::set_debug(bool activate)
   threads::mutex::lock l(mutex);
   background_suspender bs(*this);
 
-  assert(resolver_exists());
+  eassert(resolver_exists());
 
   resolver->set_debug(activate);
 }
@@ -579,7 +579,7 @@ const aptitude_resolver::solution &resolver_manager::get_solution(unsigned int s
 {
   threads::mutex::lock l(mutex);
 
-  assert(resolver);
+  eassert(resolver);
 
   {
     threads::mutex::lock l2(solutions_mutex);
@@ -620,7 +620,7 @@ void resolver_manager::get_solution_background(unsigned int solution_num,
   // decreasing the maximum number of steps to search.
   background_suspender bs(*this);
 
-  assert(resolver_exists());
+  eassert(resolver_exists());
 
   threads::mutex::lock sol_l(solutions_mutex);
   if(solution_num < solutions.size())
@@ -757,7 +757,7 @@ void resolver_manager::unreject_version(const aptitude_resolver_version &ver)
 bool resolver_manager::is_rejected(const aptitude_resolver_version &ver)
 {
   threads::mutex::lock l(mutex);
-  assert(resolver);
+  eassert(resolver);
 
   return resolver->is_rejected(ver);
 }
@@ -775,7 +775,7 @@ void resolver_manager::unmandate_version(const aptitude_resolver_version &ver)
 bool resolver_manager::is_mandatory(const aptitude_resolver_version &ver)
 {
   threads::mutex::lock l(mutex);
-  assert(resolver);
+  eassert(resolver);
 
   return resolver->is_mandatory(ver);
 }
@@ -793,7 +793,7 @@ void resolver_manager::unharden_dep(const aptitude_resolver_dep &dep)
 bool resolver_manager::is_hardened(const aptitude_resolver_dep &dep)
 {
   threads::mutex::lock l(mutex);
-  assert(resolver);
+  eassert(resolver);
 
   return resolver->is_hardened(dep);
 }
@@ -811,7 +811,7 @@ void resolver_manager::unapprove_broken_dep(const aptitude_resolver_dep &dep)
 bool resolver_manager::is_approved_broken(const aptitude_resolver_dep &dep)
 {
   threads::mutex::lock l(mutex);
-  assert(resolver != NULL);
+  eassert(resolver != NULL);
 
   return resolver->is_approved_broken(dep);
 }
@@ -890,8 +890,8 @@ void resolver_manager::tweak_score(const pkgCache::PkgIterator &pkg,
   threads::mutex::lock l(mutex);
   background_suspender bs(*this);
 
-  assert(resolver_exists());
-  assert(resolver->fresh());
+  eassert(resolver_exists());
+  eassert(resolver->fresh());
 
   resolver->add_version_score(aptitude_resolver_version(pkg, ver, cache),
 			      score);

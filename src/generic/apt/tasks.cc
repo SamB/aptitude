@@ -11,7 +11,7 @@
 #include <apt-pkg/pkgrecords.h>
 #include <apt-pkg/tagfile.h>
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 #include <errno.h>
 
 #include <ctype.h>
@@ -46,7 +46,7 @@ static void update_tasks(const pkgCache::PkgIterator &pkg,
 {
   // This should never be called before load_tasks has initialized the
   // tasks structure.
-  assert(tasks_by_package);
+  eassert(tasks_by_package);
 
   list<string> &lst=tasks_by_package[pkg->ID];
 

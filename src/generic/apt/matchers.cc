@@ -50,7 +50,7 @@
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
 
-#include <assert.h>
+#include <generic/util/eassert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <regex.h>
@@ -1046,7 +1046,7 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver)
   {
-    assert(!pkg.end());
+    eassert(!pkg.end());
     if(ver.end())
       return false;
 
@@ -1085,7 +1085,7 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver)
   {
-    assert(!pkg.end());
+    eassert(!pkg.end());
     if(ver.end())
       return NULL;
 
@@ -1919,7 +1919,7 @@ std::string parse_substr(string::const_iterator &start,
 	  if(start == end)
 	    throw CompilationException(_("Unterminated literal string after %s"), rval.c_str());
 
-	  assert(*start == '"');
+	  eassert(*start == '"');
 	  ++start;
 	}
 

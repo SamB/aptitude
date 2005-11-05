@@ -297,7 +297,7 @@ public:
     else if(!rval->terminal())
       rval = auto_ptr<group_policy_parse_node>(new group_policy_pair_node(rval.release(), new group_policy_end_node));
 
-    assert(rval->terminal());
+    eassert(rval->terminal());
     return rval.release();
   }
 };
@@ -450,7 +450,7 @@ public:
 				    string(begin, end).c_str());
 	else if(begin != end && *begin != ')')
 	  {
-	    assert(*begin == ',');
+	    eassert(*begin == ',');
 	    throw GroupParseException(_("Exactly one filter must be provided as an argument to a filter policy"));
 	  }
 	else
@@ -610,7 +610,7 @@ class pattern_policy_parser : public group_policy_parser
 	      {
 		++begin;
 
-		assert(begin != end && *begin == '>');
+		eassert(begin != end && *begin == '>');
 
 		++begin;
 
@@ -639,7 +639,7 @@ class pattern_policy_parser : public group_policy_parser
 	  throw GroupParseException(_("Unmatched '(' in pattern grouping policy"));
 	else
 	  {
-	    assert(*begin == ')');
+	    eassert(*begin == ')');
 	    ++begin;
 	  }
 
@@ -694,7 +694,7 @@ pkg_grouppolicy_factory *parse_grouppolicy(string s)
     {
       auto_ptr<group_policy_parse_node> node(list_policy_parser(parse_types).parse(begin, s.end()));
 
-      assert(begin == s.end());
+      eassert(begin == s.end());
 
       pkg_grouppolicy_factory *rval = node->instantiate(NULL);
 
