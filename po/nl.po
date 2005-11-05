@@ -1,16 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Luk Claes <luk@debian.org>, 2005.
 #
 #: src/view_changelog.cc:226
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude 0.2.15.9-1\n"
+"Project-Id-Version: aptitude 0.4.0-2\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
 "POT-Creation-Date: 2005-11-04 12:18-0500\n"
-"PO-Revision-Date: 2005-06-22 15:19+0200\n"
-"Last-Translator: Luk Claes <luk.claes@ugent.be>\n"
+"PO-Revision-Date: 2005-11-05 13:26+0100\n"
+"Last-Translator: Luk Claes <luk@debian.org>\n"
 "Language-Team: Debian l10n Dutch <debian-l10n-dutch@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -128,6 +128,8 @@ msgstr ""
 msgid ""
 "Do not display a warning when the first change is made in read-only mode."
 msgstr ""
+"Toon geen waarschuwing wanneer de eerste wijziging wordt gemaakt in alleen-"
+"lezen modus."
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -159,10 +161,9 @@ msgid "Remove unused packages automatically"
 msgstr "Verwijder automatisch ongebruikte pakketten"
 
 #: src/apt_options.cc:192
-#, fuzzy
 msgid "Don't automatically remove unused packages matching this filter"
 msgstr ""
-"Verwijder automatisch ongebruikte pakketten die voldoen aan deze filter"
+"Verwijder niet automatisch ongebruikte pakketten die voldoen aan deze filter"
 
 #: src/apt_options.cc:248 src/mine/cmine.cc:302 src/mine/cmine.cc:367
 #: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:91
@@ -201,9 +202,9 @@ msgid "Unable to resolve dependencies."
 msgstr "Kan afhankelijkheden niet oplossen."
 
 #: src/broken_indicator.cc:240
-#, fuzzy, c-format
+#, c-format
 msgid "[%d(%d)/...] Resolving dependencies"
-msgstr "Kan afhankelijkheden niet oplossen."
+msgstr "[%d(%d)/...] Afhankelijkheden aan het oplossen."
 
 #: src/broken_indicator.cc:273 src/solution_dialog.cc:126
 #: src/solution_screen.cc:513
@@ -339,11 +340,13 @@ msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Opmerking: de taak \"%s: %s\" geselecteerd voor installatie\n"
 
 #: src/cmdline/cmdline_action.cc:244
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
-msgstr "U kunt enkel een pakketversie aangeven met een 'install'-commando\n"
+msgstr ""
+"U kunt enkel een pakketversie aangeven met een 'install'-commando of een "
+"'forbid-version'-commando.\n"
 
 #: src/cmdline/cmdline_action.cc:252
 #, c-format
@@ -440,7 +443,7 @@ msgstr "Ongeldige operatie %s"
 
 #: src/cmdline/cmdline_do_action.cc:143
 msgid "Unexpected pattern argument following \"keep-all\""
-msgstr ""
+msgstr "Onverwacht pattroonargument na \"keep-all\""
 
 #: src/cmdline/cmdline_do_action.cc:233 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:511
@@ -518,7 +521,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:33
 msgid "Unexpected end-of-file on standard input"
-msgstr ""
+msgstr "Onverwacht bestandseinde in standaardinvoer"
 
 #: src/cmdline/cmdline_prompt.cc:52
 msgid "Couldn't read list of sources"
@@ -653,6 +656,8 @@ msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 msgstr ""
+"*** WAARSCHUWING *** Deze vertrouwensschendingen worden genegeerd omdat\n"
+"                    %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 
 #: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:177
 #: src/vscreen/vs_util.cc:215
@@ -935,11 +940,13 @@ msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "Ongeldig antwoord. Geef een geldig commando of '?' voor hulp.\n"
 
 #: src/cmdline/cmdline_resolver.cc:128
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
-msgstr "y: %Fn: %Fq: %F,: %F.: %F<ACTIE> pakket... : %F%n%F%F%F%F%F%F%F%F"
+msgstr ""
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
+"n<ACTIE> pkg... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:147
 msgid "accept the proposed changes"
@@ -963,24 +970,26 @@ msgstr "ga naar de vorige oplossing"
 
 #: src/cmdline/cmdline_resolver.cc:157
 msgid "view an explanation of the changes in the solution"
-msgstr ""
+msgstr "bekijk een verklaring van de wijzigingen in de oplossing"
 
 #: src/cmdline/cmdline_resolver.cc:159
-#, fuzzy
 msgid "examine the solution in the visual user interface"
-msgstr "Wijzig de instellingen die de gebruikersinterface aangaan"
+msgstr "onderzoek de oplossing in de visuele gebruikersinterface"
 
 #: src/cmdline/cmdline_resolver.cc:161
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur."
 msgstr ""
+"verwerp de gegeven pakketversies; toon geen oplossingen waarin ze voorkomen."
 
 #: src/cmdline/cmdline_resolver.cc:163
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur."
 msgstr ""
+"aanvaard de gegeven pakketversies; toon enkel oplossingen waarin ze "
+"voorkomen."
 
 #: src/cmdline/cmdline_resolver.cc:165
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -997,82 +1006,82 @@ msgstr ""
 #: src/cmdline/cmdline_resolver.cc:197
 #, c-format
 msgid "The version %s is available in the following archives:"
-msgstr ""
+msgstr "De versie %s is aanwezig in de volgende archieven:"
 
 #: src/cmdline/cmdline_resolver.cc:205
-#, fuzzy, c-format
+#, c-format
 msgid "Select the version of %s that should be used: "
-msgstr "Bestand waarin de resolver-toestand moet worden gearchiveerd:"
+msgstr "Selecteer de versie van %s die moet gebruikt worden:"
 
 #: src/cmdline/cmdline_resolver.cc:212
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
-msgstr "Ongeldig antwoord; geef 'y' of 'n' in."
+msgstr "Ongeldig antwoord. Geen een geheel getal tussen 1 en %d in."
 
 #: src/cmdline/cmdline_resolver.cc:227
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
-msgstr ""
+msgstr "Verwachtte tenminste één pakket/versie-paar na '%c'"
 
 #: src/cmdline/cmdline_resolver.cc:241
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a version after \"%s\""
-msgstr "Kan %s niet openen"
+msgstr "Verwachtte een versie na \"%s\""
 
 #: src/cmdline/cmdline_resolver.cc:251
-#, fuzzy, c-format
+#, c-format
 msgid "No such package \"%s\""
-msgstr "Bronpakket: "
+msgstr "Geen pakket \"%s\""
 
 #: src/cmdline/cmdline_resolver.cc:267
 #, c-format
 msgid "%s has no version named \"%s\""
-msgstr ""
+msgstr "%s heeft geen versie \"%s\""
 
 #: src/cmdline/cmdline_resolver.cc:284
 #, c-format
 msgid "Allowing the removal of %s"
-msgstr ""
+msgstr "Staat het verwijderen van %s toe"
 
 #: src/cmdline/cmdline_resolver.cc:287
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
-msgstr ""
+msgstr "Staat de installatie van %s versie %s (%s) toe"
 
 #: src/cmdline/cmdline_resolver.cc:297
 #, c-format
 msgid "Rejecting the removal of %s"
-msgstr ""
+msgstr "Weigert het verwijderen van %s"
 
 #: src/cmdline/cmdline_resolver.cc:300
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
-msgstr ""
+msgstr "Weigert de installatie van %s versie %s (%s)"
 
 #: src/cmdline/cmdline_resolver.cc:313
 #, c-format
 msgid "No longer requiring the removal of %s"
-msgstr ""
+msgstr "Vereist het verwijderen van %s niet langer"
 
 #: src/cmdline/cmdline_resolver.cc:316
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
-msgstr ""
+msgstr "Vereist niet langer de installatie van %s versie %s (%s)"
 
 #: src/cmdline/cmdline_resolver.cc:325
 #, c-format
 msgid "Requiring the removal of %s"
-msgstr ""
+msgstr "Vereist het verwijderen van %s"
 
 #: src/cmdline/cmdline_resolver.cc:328
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
-msgstr ""
+msgstr "Vereist de installatie van %s versie %s (%s)"
 
 #: src/cmdline/cmdline_resolver.cc:447 src/solution_screen.cc:486
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
-msgstr ""
+msgstr "open: %d; gesloten: %d; uitgesteld: %d; conflicten: %d"
 
 #: src/cmdline/cmdline_resolver.cc:493
 msgid "The following actions will resolve these dependencies:"
@@ -1106,7 +1115,7 @@ msgstr "Fout bij het schrijven van de resolver-toestand naar %s"
 
 #: src/cmdline/cmdline_resolver.cc:587
 msgid "Resolver state successfully written!"
-msgstr ""
+msgstr "Oplosser-toestand werd met succes weggeschreven!"
 
 #: src/cmdline/cmdline_resolver.cc:592
 msgid "Invalid response; please enter one of the following commands:"
@@ -1125,14 +1134,13 @@ msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Niet gelukt om de afhankelijkheden op te lossen! Gestopt..."
 
 #: src/cmdline/cmdline_resolver.cc:645
-#, fuzzy
 msgid "*** No more solutions available ***"
-msgstr "Geen oplossingen meer."
+msgstr "*** Geen oplossingen meer beschikbaar ***"
 
 #: src/cmdline/cmdline_search.cc:100
 #, c-format
 msgid "iconv of %s failed.\n"
-msgstr ""
+msgstr "iconv van %s is mislukt.\n"
 
 #: src/cmdline/cmdline_search.cc:116
 #, c-format
@@ -1344,14 +1352,14 @@ msgid "Description: "
 msgstr "Beschrijving: "
 
 #: src/cmdline/cmdline_show.cc:423
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to locate package %s"
-msgstr "Kan %s niet openen"
+msgstr "Kan pakket %s niet localiseren"
 
 #: src/cmdline/cmdline_show.cc:436
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern %s"
-msgstr "Kan %s niet openen"
+msgstr "Kan pattroon %s niet ontleden"
 
 #: src/cmdline/cmdline_simulate.cc:37
 #, c-format
@@ -1406,9 +1414,8 @@ msgid "UNAVAILABLE"
 msgstr "NIET AANWEZIG"
 
 #: src/desc_parse.cc:274
-#, fuzzy
 msgid "Tags"
-msgstr "Tag"
+msgstr "Tags"
 
 #: src/download_bar.cc:49 src/download_list.cc:335 src/download_screen.cc:56
 #, c-format
@@ -1479,9 +1486,8 @@ msgid " [ %i%% ]"
 msgstr "[ %i%% ]"
 
 #: src/download_list.cc:342 src/download_screen.cc:67
-#, fuzzy
 msgid "Abort"
-msgstr "Breek af.\n"
+msgstr "Breek af"
 
 #: src/download_list.cc:400
 msgid "[IGNORED]"
@@ -1506,7 +1512,7 @@ msgstr "Kon niet openen om te schrijven"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
-msgstr ""
+msgstr "Onmogelijk om uw thuismap op te zoeken, bewaren in /tmp/function_pkgs!"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -1572,19 +1578,19 @@ msgid "Error writing state file"
 msgstr "Fout bij schrijven naar statusbestand"
 
 #: src/generic/apt/aptcache.cc:615
-#, fuzzy, c-format
+#, c-format
 msgid "failed to remove %s"
-msgstr "Kan %s niet openen"
+msgstr "kon %s niet verwijderen"
 
 #: src/generic/apt/aptcache.cc:622
 #, c-format
 msgid "failed to rename %s to %s"
-msgstr ""
+msgstr "kon %s niet naar %s hernoemen"
 
 #: src/generic/apt/aptcache.cc:630
-#, fuzzy, c-format
+#, c-format
 msgid "couldn't replace %s with %s"
-msgstr "kon oud statusbestand niet vervangen"
+msgstr "kon %s niet vervangen met %s"
 
 #: src/generic/apt/aptcache.cc:1122
 msgid "Unable to correct dependencies, some packages cannot be installed"
@@ -1608,9 +1614,11 @@ msgstr ""
 "corrigeren."
 
 #: src/generic/apt/apt.cc:171
-#, fuzzy, c-format
+#, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
-msgstr "Kan %s niet vervangen door nieuw configuratiebestand"
+msgstr ""
+"%s is leesbaar, maar niet schrijfbaar; onmogelijk om configuratiebestand te "
+"schrijven."
 
 #: src/generic/apt/apt.cc:209
 #, c-format
@@ -1622,12 +1630,16 @@ msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
 msgstr ""
+"Kon het cachebestand niet locken. Wordt geopend in alleen-lezen modus; elke "
+"wijziging die u maakt aan de toestand van de pakketten zal NIET worden "
+"bewaard!"
 
 #: src/generic/apt/download_install_manager.cc:53
-#, fuzzy
 msgid ""
 "The package cache is not available; unable to download and install packages."
-msgstr "De pakketcache is niet beschikbaar."
+msgstr ""
+"De pakketcache is niet beschikbaar; onmogelijk om pakketten af te halen en "
+"te installeren."
 
 #: src/generic/apt/download_install_manager.cc:69
 #: src/generic/apt/download_update_manager.cc:77
@@ -1643,11 +1655,10 @@ msgid "Unable to correct for unavailable packages"
 msgstr "Onmogelijk om niet aanwezige pakketten te corrigeren"
 
 #: src/generic/apt/download_install_manager.cc:141
-#, fuzzy
 msgid "A package failed to install.  Trying to recover:"
 msgstr ""
-"Bevestigd! Er is iets ergs gebeurd bij het installeren van pakketten. "
-"Erwordt geprobeerd van te herstellen:"
+"Een pakket kon niet geïnstalleerd worden. Er wordt geprobeerd om te "
+"herstellen:"
 
 #: src/generic/apt/download_install_manager.cc:165
 msgid ""
@@ -1665,9 +1676,8 @@ msgid "Couldn't clean out list directories"
 msgstr "Kon lijstmappen niet opkuisen"
 
 #: src/generic/apt/download_update_manager.cc:122
-#, fuzzy
 msgid "Couldn't rebuild package cache"
-msgstr "Kon lijst van pakketbronnen niet lezen"
+msgstr "Kon pakketcache niet heropbouwen"
 
 #: src/generic/apt/log.cc:52
 #, c-format
@@ -1675,9 +1685,9 @@ msgid "Unable to open %s to log actions"
 msgstr "Onmogelijk om %s te openen om acties bij te houden"
 
 #: src/generic/apt/log.cc:64
-#, fuzzy, c-format
+#, c-format
 msgid "Error generating local time (%s)"
-msgstr "Fout bij het schrijven van de resolver-toestand naar %s"
+msgstr "Fout bij het genereren van de lokale tijd (%s)"
 
 #: src/generic/apt/log.cc:68
 msgid "log report"
@@ -1706,9 +1716,9 @@ msgid "%sB of disk space will be used\n"
 msgstr "%sB schijfruimte zal worden gebruikt\n"
 
 #: src/generic/apt/log.cc:77
-#, fuzzy, c-format
+#, c-format
 msgid "%sB of disk space will be freed\n"
-msgstr "%sB schijfruimte zal worden gebruikt\n"
+msgstr "%sB schijfruimte zal worden verwijderd\n"
 
 #: src/generic/apt/log.cc:87
 #, c-format
@@ -1777,115 +1787,97 @@ msgstr ""
 "Logboek volledig.\n"
 
 #: src/generic/apt/matchers.cc:682
-#, fuzzy
 msgid "Automatically Installed"
 msgstr "Automatisch geïnstalleerd"
 
 #: src/generic/apt/matchers.cc:704 src/generic/apt/matchers.cc:893
-#, fuzzy
 msgid "Broken"
-msgstr "#Beschadigd"
+msgstr "Beschadigd"
 
 #: src/generic/apt/matchers.cc:891
-#, fuzzy
 msgid "Unchanged"
-msgstr "%s wijzigingen"
+msgstr "Ongewijzigd"
 
 #: src/generic/apt/matchers.cc:895
 msgid "Remove [unused]"
-msgstr ""
+msgstr "[niet-gebruikte] verwijderen"
 
 #: src/generic/apt/matchers.cc:897
 msgid "Hold [auto]"
-msgstr ""
+msgstr "[auto] behouden"
 
 #: src/generic/apt/matchers.cc:899
-#, fuzzy
 msgid "Install [auto]"
-msgstr "^Installeren"
+msgstr "[auto] installeren"
 
 #: src/generic/apt/matchers.cc:901
-#, fuzzy
 msgid "Remove [auto]"
-msgstr "^Verwijderen"
+msgstr "[auto] verwijderen"
 
 #: src/generic/apt/matchers.cc:903
-#, fuzzy
 msgid "Downgrade"
-msgstr "gedegradeerd"
+msgstr "Degraderen"
 
 #: src/generic/apt/matchers.cc:905
-#, fuzzy
 msgid "Hold"
-msgstr "^Bevriezen"
+msgstr "Bevriezen"
 
 #: src/generic/apt/matchers.cc:907
-#, fuzzy
 msgid "Reinstall"
-msgstr "herinstalleren"
+msgstr "Herinstalleren"
 
 #: src/generic/apt/matchers.cc:909
-#, fuzzy
 msgid "Install"
-msgstr "^Installeren"
+msgstr "Installeren"
 
 #: src/generic/apt/matchers.cc:911
-#, fuzzy
 msgid "Remove"
-msgstr "^Verwijderen"
+msgstr "Verwijderen"
 
 #: src/generic/apt/matchers.cc:913
-#, fuzzy
 msgid "Upgrade"
-msgstr "opwaarderen"
+msgstr "Opwaarderen"
 
 #: src/generic/apt/matchers.cc:933
-#, fuzzy
 msgid "Keep"
-msgstr "Be^houden"
+msgstr "Behouden"
 
 #: src/generic/apt/matchers.cc:959
-#, fuzzy
 msgid "Virtual"
-msgstr "virtueel"
+msgstr "Virtueel"
 
 #: src/generic/apt/matchers.cc:980
-#, fuzzy
 msgid "Installed"
-msgstr "geïnstalleerd"
+msgstr "Geïnstalleerd"
 
 #: src/generic/apt/matchers.cc:1002
-#, fuzzy
 msgid "Essential"
-msgstr "Essentieel:"
+msgstr "Essentieel"
 
 #: src/generic/apt/matchers.cc:1021
 msgid "Config Files Remain"
-msgstr ""
+msgstr "Configuratiebestanden Blijven"
 
 #: src/generic/apt/matchers.cc:1387
 msgid "Garbage"
-msgstr ""
+msgstr "Rommel"
 
 #: src/generic/apt/matchers.cc:1711
-#, fuzzy
 msgid "No reverse dependencies"
-msgstr "Kan afhankelijkheden niet oplossen."
+msgstr "Geen omgekeerde afhankelijkheden"
 
 #: src/generic/apt/matchers.cc:1777
-#, fuzzy
 msgid "New Package"
-msgstr "Nieuwe ^Pakket-View"
+msgstr "Nieuwe Pakket"
 
 #: src/generic/apt/matchers.cc:1796
-#, fuzzy
 msgid "Upgradable"
-msgstr "^Markeer opwaardeerbaar"
+msgstr "Opwaardeerbaar"
 
 #: src/generic/apt/matchers.cc:1920
 #, c-format
 msgid "Unterminated literal string after %s"
-msgstr ""
+msgstr "Niet-afgesloten letterlijke string na %s"
 
 #: src/generic/apt/matchers.cc:1980
 msgid "Unmatched '('"
@@ -1898,7 +1890,7 @@ msgstr "Onbekend afhankelijkheidstype: %s"
 
 #: src/generic/apt/matchers.cc:2119
 msgid "Provides: cannot be broken"
-msgstr ""
+msgstr "Provides: kan niet worden gebroken"
 
 #: src/generic/apt/matchers.cc:2174
 #, c-format
@@ -1916,9 +1908,8 @@ msgid "Unknown pattern type: %c"
 msgstr "Onbekend patroontype: %c"
 
 #: src/generic/apt/matchers.cc:2272
-#, fuzzy
 msgid "Can't search for \"\""
-msgstr "Zoek naar: "
+msgstr "Kan niet zoeken naar \"\""
 
 #: src/generic/apt/matchers.cc:2300
 msgid "Unexpected empty expression"
@@ -1984,11 +1975,13 @@ msgstr "Meerdere beschrijvingen gevonden voor groep %s, één wordt genegeerd"
 
 #: src/generic/apt/tags.cc:214 src/generic/apt/tags.cc:221
 msgid "Building tag database"
-msgstr ""
+msgstr "Opbouwen van tagdatabase"
 
 #: src/generic/apt/tags.cc:253
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgstr ""
+"Onmogelijk om debtags-woordenschat te laden, misschien is debtags niet "
+"geïnstalleerd?"
 
 #: src/generic/apt/tasks.cc:283
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -2003,16 +1996,15 @@ msgstr "Lezen van taakbeschrijvingen"
 #: src/generic/util/temp.cc:142
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
-msgstr ""
+msgstr "Onmogelijk om tijdelijke map aan te maken van sjabloon \"%s\": %s"
 
 #: src/generic/util/temp.cc:137
-#, fuzzy
 msgid "Unknown error"
-msgstr "Onbekend"
+msgstr "Onbekende fout"
 
 #: src/generic/util/threads.cc:32
 msgid "Not enough resources to create thread"
-msgstr ""
+msgstr "Niet genoeg bronnen om thread aan te maken"
 
 #: src/load_config.cc:46
 #, c-format
@@ -2036,7 +2028,7 @@ msgstr "Ongeldige ingave zonder tags in stijldefinitiegroep: \"%s\""
 
 #: src/load_config.cc:125
 msgid "The default color may only be used as a background."
-msgstr ""
+msgstr "De standaardkleur kan enkel als achtergrond worden gebruikt."
 
 #: src/load_config.cc:142
 #, c-format
@@ -2056,22 +2048,22 @@ msgstr "Negeren van ongeldige toetsenbinding \"%s\" -> \"%s\""
 #: src/load_grouppolicy.cc:258
 #, c-format
 msgid "Expected policy identifier, got '%c'"
-msgstr ""
+msgstr "Verwachtte beleid, kreeg '%c'"
 
 #: src/load_grouppolicy.cc:270
 #, c-format
 msgid "Expected ',' or '(', got '%c'"
-msgstr ""
+msgstr "Verwachtte ',' of '(', kreeg '%c'"
 
 #: src/load_grouppolicy.cc:277
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown grouping policy \"%s\""
-msgstr "Onbekende prioriteit %s"
+msgstr "Onbekend groepeerbeleid \"%s\""
 
 #: src/load_grouppolicy.cc:284
 #, c-format
 msgid "Terminal policy \"%s\" should be the last policy in the list"
-msgstr ""
+msgstr "Terminaal beleid \"%s\" moet het laatste beleid zijn in de lijst"
 
 #: src/load_grouppolicy.cc:367
 #, c-format
@@ -2087,81 +2079,75 @@ msgstr ""
 
 #: src/load_grouppolicy.cc:382
 msgid "Too many arguments to by-section grouping policy"
-msgstr "Teveel argumenten bij sectiegroepeerpolitiek"
+msgstr "Teveel argumenten bij by-section groeperbeleid"
 
 #: src/load_grouppolicy.cc:395
 msgid "By-status grouping policies take no arguments"
-msgstr "Statusgroepeerpolitiek neemt geen argumenten"
+msgstr "By-status groepeerbeleid neemt geen argumenten"
 
 #: src/load_grouppolicy.cc:412
-#, fuzzy
 msgid "Expected '(' after 'filter'"
-msgstr "Kan %s niet openen"
+msgstr "Verwachtte '(' na 'filter'"
 
 #: src/load_grouppolicy.cc:449
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern at '%s'"
-msgstr "Kan %s niet openen"
+msgstr "Kan pattroon bij '%s' niet ontleden"
 
 #: src/load_grouppolicy.cc:454
-#, fuzzy
 msgid "Exactly one filter must be provided as an argument to a filter policy"
 msgstr ""
-"Exact één filternaam moet worden opgegeven als een argument voor een "
-"filterpolitiek"
+"Exact één filter moet worden opgegeven als een argument voor een filterbeleid"
 
 #: src/load_grouppolicy.cc:473
 msgid "By-mode grouping policies take no arguments"
-msgstr "Modusgroepeerpolitieken aanvaarden geen argumenten"
+msgstr "By-mode groepeerbeleid neemt geen argumenten"
 
 #: src/load_grouppolicy.cc:484
 msgid "First-character grouping policies take no arguments"
-msgstr "Eerstekaraktergroeperingpolitieken aanvaarden geen argumenten"
+msgstr "First-character groepeerbeleid neemt geen argumenten"
 
 #: src/load_grouppolicy.cc:496
 msgid "Version-generating grouping policies take no arguments"
-msgstr "Versiegenererende groepeerpolitieken aanvaarden geen argumenten"
+msgstr "Version-generating groepeerbeleid neemt geen argumenten"
 
 #: src/load_grouppolicy.cc:507
 msgid "Dep-generating grouping policies take no arguments"
-msgstr ""
-"Afhankelijkheidsgenererende groepeerpolitieken aanvaarden geen argumenten"
+msgstr "Dep-generating groepeerbeleid neemt geen argumenten"
 
 #: src/load_grouppolicy.cc:518
 msgid "By-priority grouping policies take no arguments"
-msgstr "Prioriteitsgroepeerpolitieken aanvaarden geen argumenten"
+msgstr "By-priority groepeerbeleid neemt geen argumenten"
 
 #: src/load_grouppolicy.cc:549
 msgid "Task grouping policies take no arguments"
-msgstr "Taakgroepeerpolitieken aanvaarden geen argumenten"
+msgstr "Taakgroepeerbeleid neemt geen argumenten"
 
 #: src/load_grouppolicy.cc:562
-#, fuzzy
 msgid "Expected no more than one argument to a tag grouping policy"
-msgstr "Teveel argumenten bij sectiegroepeerpolitiek"
+msgstr "Verwachtte niet meer dan één argument bij een taggroepeerbeleid"
 
 #: src/load_grouppolicy.cc:577
 msgid "Expected '(' after 'pattern'"
-msgstr ""
+msgstr "Verwachtte '(' na 'pattern'"
 
 #: src/load_grouppolicy.cc:585
 msgid "Missing arguments to 'pattern'"
-msgstr ""
+msgstr "Ontbrekende argumenten bij 'pattern'"
 
 #: src/load_grouppolicy.cc:606
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern after \"%s\""
-msgstr "Kan %s niet openen"
+msgstr "Kan pattroon na \"%s\" niet ontleden"
 
 #: src/load_grouppolicy.cc:628
 #, c-format
 msgid "Unexpectedly empty tree title after \"%s\""
-msgstr ""
+msgstr "Onverwacht lege boomtitel na \"%s\""
 
 #: src/load_grouppolicy.cc:639
-#, fuzzy
 msgid "Unmatched '(' in pattern grouping policy"
-msgstr "Ongebalanceerd '(' in groepeerpolitiekbeschrijving"
+msgstr "Ongebalanceerd '(' in pattroongroepeerbeleid"
 
 #: src/load_pkgview.cc:58
 msgid "Couldn't parse layout: No column format specified for static item"
@@ -2169,9 +2155,8 @@ msgstr ""
 "Kan layout niet ontleden: geen kolomindeling aangegeven voor statisch item"
 
 #: src/load_pkgview.cc:91
-#, fuzzy
 msgid "Couldn't parse layout: encoding error in column descriptor"
-msgstr "Kan layout niet ontleden: geen rijnummer opgegeven"
+msgstr "Kan layout niet ontleden: codeerfout in kolombeschrijver"
 
 #: src/load_pkgview.cc:112
 #, c-format
@@ -2197,43 +2182,42 @@ msgstr "Onbekend aliniëringstype '%s'"
 
 #: src/load_sortpolicy.cc:51
 msgid "By-name sorting policies take no arguments"
-msgstr "Naamsorteringspolitieken nemen geen argumenten"
+msgstr "By-name sorteerbeleid neemt geen argumenten"
 
 #: src/load_sortpolicy.cc:64
-#, fuzzy
 msgid "By-version sorting policies take no arguments"
-msgstr "Prioriteitssorteerpolitieken nemen geen argumenten"
+msgstr "By-version sorteerbeleid neemt geen argumenten"
 
 #: src/load_sortpolicy.cc:77
 msgid "By-installed size sorting policies take no arguments"
-msgstr "Geïnstalleerde-groottesorteerpolitieken nemen geen argumenten"
+msgstr "By-installed size sorteerbeleid neemt geen argumenten"
 
 #: src/load_sortpolicy.cc:90
 msgid "By-priority sorting policies take no arguments"
-msgstr "Prioriteitssorteerpolitieken nemen geen argumenten"
+msgstr "By-priority sorteerbeleid neemt geen argumenten"
 
 #: src/load_sortpolicy.cc:148
 msgid "Invalid zero-length sorting policy name"
-msgstr "Ongeldige-nulgroottesorteerpolitieknaam"
+msgstr "Ongeldige zero-length sorteerbeleid"
 
 #: src/load_sortpolicy.cc:166
 msgid "Unmatched '(' in sorting policy description"
-msgstr "Ongebalanceerd '(' in sorteerpolitiekbeschrijving"
+msgstr "Ongebalanceerd '(' in sorteerbeleidbeschrijving"
 
 #: src/load_sortpolicy.cc:193
 #, c-format
 msgid "Invalid sorting policy type '%s'"
-msgstr "Ongeldig sorteerpolitiektype '%s'"
+msgstr "Ongeldig sorteerbeleid type '%s'"
 
 #: src/main.cc:82
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
-msgstr ""
+msgstr "Kan multibyte string na \"%ls\" niet ontcijferen"
 
 #: src/main.cc:91
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
-msgstr ""
+msgstr "Kan wide-character string na \"%s\" niet ontcijferen"
 
 #: src/main.cc:99
 #, c-format
@@ -2392,6 +2376,8 @@ msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
 msgstr ""
+" reinstall    - Download en herinstalleer (mogelijk) een momenteel "
+"geïnstalleerd pakket\n"
 
 #: src/main.cc:144
 #, c-format
@@ -2498,6 +2484,8 @@ msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
 msgstr ""
+" -q             Onderdruk de incrementele voortgangsindicators in "
+"commandoregelmodus.\n"
 
 #: src/main.cc:160
 #, c-format
@@ -2535,14 +2523,14 @@ msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  Deze aptitude heeft geen Super Koekrachten.\n"
 
 #: src/main.cc:299
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a number after -q=\n"
-msgstr "Kan %s niet openen"
+msgstr "Verwachtte een getal na -q=\n"
 
 #: src/main.cc:308
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a number after -q=, got %s\n"
-msgstr "Kan %s niet openen"
+msgstr "Verwachtte een getal na -q=, got %s\n"
 
 #: src/main.cc:331
 #, c-format
@@ -2576,7 +2564,7 @@ msgstr "Onbekend commando \"%s\"\n"
 #: src/main.cc:516 src/main.cc:557
 #, c-format
 msgid "Uncaught exception: %s\n"
-msgstr ""
+msgstr "Niet opgevangen uitzondering: %s\n"
 
 #: src/main.cc:520 src/main.cc:561
 #, c-format
@@ -2584,24 +2572,24 @@ msgid ""
 "Backtrace:\n"
 "%s"
 msgstr ""
+"Backtrace:\n"
+"%s"
 
 #: src/menu_text_layout.cc:36 src/ui.cc:239 src/view_changelog.cc:55
 msgid "Search for:"
 msgstr "Zoek naar:"
 
 #: src/menu_text_layout.cc:68 src/view_changelog.cc:67
-#, fuzzy
 msgid "Search backwards for:"
-msgstr "Zoek naar: "
+msgstr "Zoek achterwaarts naar: "
 
 #: src/menu_tree.cc:204
 msgid "Search for: "
 msgstr "Zoek naar: "
 
 #: src/menu_tree.cc:221
-#, fuzzy
 msgid "Search backwards for: "
-msgstr "Zoek naar: "
+msgstr "Zoek achterwaarts naar: "
 
 #: src/mine/cmine.cc:106 src/mine/cmine.cc:148 src/ui.cc:1419
 msgid "Minesweeper"
@@ -2621,9 +2609,9 @@ msgid "seconds"
 msgstr "seconden"
 
 #: src/mine/cmine.cc:120
-#, fuzzy, c-format
+#, c-format
 msgid "    %s in %d %s"
-msgstr "Mijnenveger  %s in %d %s"
+msgstr "    %s in %d %s"
 
 #: src/mine/cmine.cc:121
 msgid "Won"
@@ -2644,19 +2632,16 @@ msgid "Could not load game from %s"
 msgstr "Kan spel niet laden van %s"
 
 #: src/mine/cmine.cc:247
-#, fuzzy
 msgid "The board height must be a positive integer"
-msgstr "De bordhoogte moet een getal zijn"
+msgstr "De bordhoogte moet een positief geheel getal zijn"
 
 #: src/mine/cmine.cc:259
-#, fuzzy
 msgid "The board width must be a positive integer"
-msgstr "De bordbreedte moet een getal zijn"
+msgstr "De bordbreedte moet een positief geheel getal zijn"
 
 #: src/mine/cmine.cc:271
-#, fuzzy
 msgid "Invalid mine count; please enter a positive integer"
-msgstr "Ongeldig antwoord; geef 'y' of 'n' in."
+msgstr "Ongeldig mijnenaantal; geef een positief geheel getal in"
 
 #: src/mine/cmine.cc:291
 msgid "Setup custom game"
@@ -2808,7 +2793,7 @@ msgstr "mine-help.txt"
 
 #: src/mine/cmine.cc:672
 msgid "Encoding of mine-help.txt|UTF-8"
-msgstr ""
+msgstr "Codering van mine-help.txt|UTF-8"
 
 #: src/pkg_columnizer.cc:83
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
@@ -2932,9 +2917,8 @@ msgid "hold"
 msgstr "behouden"
 
 #: src/pkg_columnizer.cc:293
-#, fuzzy
 msgid "forbidden upgrade"
-msgstr "%d opwaarderingen"
+msgstr "verboden opwaardering"
 
 #: src/pkg_columnizer.cc:295
 msgid "purge"
@@ -3024,7 +3008,7 @@ msgstr "HN te lang"
 #: src/pkg_columnizer.cc:652 src/pkg_columnizer.cc:661
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
-msgstr ""
+msgstr "Onmogelijk om pakketweergaveopmaak na \"%ls\" te vertalen"
 
 #: src/pkg_columnizer.cc:668
 msgid "Internal error: Default column string is unparsable"
@@ -3540,7 +3524,7 @@ msgstr ""
 " .\n"
 " Opmerking: het Debian Project is momenteel cryptografische software aan het "
 "samenbrengen in VS-gebaseerde archieven na consultatie met rechtspecialisten "
-"over recente wijzigingen in uitvoerpolitieken. De meeste pakketten die in "
+"over recente wijzigingen in het uitvoerbeleid. De meeste pakketten die in "
 "deze sectie gevonden konden worden, zijn daarom nu in 'main'."
 
 #: src/pkg_grouppolicy.cc:204
@@ -3812,7 +3796,7 @@ msgstr "Prioriteit %s"
 
 #: src/pkg_grouppolicy.cc:779
 msgid "UNCATEGORIZED"
-msgstr ""
+msgstr "NIET-GECATEGORISEERD"
 
 #: src/pkg_grouppolicy.cc:898
 msgid "End-user"
@@ -3856,31 +3840,33 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:1079
 #, c-format
 msgid "Bad number in format string: %ls"
-msgstr ""
+msgstr "Slecht getal in formaatstring: %ls"
 
 #: src/pkg_grouppolicy.cc:1088
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
-msgstr ""
+msgstr "Overeenkomstindicators moeten groter of gelijk zijn aan 1, niet \"%s\""
 
 #: src/pkg_grouppolicy.cc:1106
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
-msgstr ""
+msgstr "Overeenkomstindicator %ls is te groot; aanwezige groepen zijn (%s)"
 
 #: src/pkg_grouppolicy.cc:1315
 msgid "TAGLESS PACKAGES"
-msgstr ""
+msgstr "PAKKETTEN ZONDER TAGS"
 
 #: src/pkg_grouppolicy.cc:1316
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags."
 msgstr ""
+"\n"
+" Deze pakketten zijn niet geklassificeerd in debtags."
 
 #: src/pkg_grouppolicy.cc:1341
 msgid "MISSING TAG"
-msgstr ""
+msgstr "ONTBREKENDE TAG"
 
 #: src/pkg_info_screen.cc:118
 msgid "Compressed size: "
@@ -4002,9 +3988,9 @@ msgid "Building view"
 msgstr "Beeld opbouwen"
 
 #: src/pkg_tree.cc:237
-#, fuzzy, c-format
+#, c-format
 msgid "No packages matched the pattern \"%ls\"."
-msgstr "Er zijn geen pakketten die overeenkomen met het patroon \"%s\"."
+msgstr "Er zijn geen pakketten die overeenkomen met het patroon \"%ls\"."
 
 #: src/pkg_tree.cc:259
 msgid "Enter the new package tree limit: "
@@ -4020,17 +4006,15 @@ msgstr "Geef het nieuwe pakketsorteermechanisme voor deze weergave: "
 
 #: src/pkg_view.cc:149
 msgid "Couldn't transcode column definition"
-msgstr ""
+msgstr "Kon kolomdefinitie niet vertalen"
 
 #: src/pkg_view.cc:156
-#, fuzzy
 msgid "Couldn't parse column definition"
-msgstr "Kon niet openen om te schrijven"
+msgstr "Kon kolomdefinitie niet ontleden"
 
 #: src/pkg_view.cc:185
-#, fuzzy
 msgid "Encoding error in long description."
-msgstr "Ongebalanceerd '(' in sorteerpolitiekbeschrijving"
+msgstr "Codeerfout in lange beschrijving."
 
 #: src/pkg_view.cc:415
 msgid "make_package_view: error in arguments -- two main widgets??"
@@ -4279,9 +4263,8 @@ msgid "No resolution found."
 msgstr "Geen oplossing gevonden."
 
 #: src/solution_dialog.cc:114 src/solution_screen.cc:490
-#, fuzzy
 msgid "Resolving dependencies..."
-msgstr "Kan afhankelijkheden niet oplossen."
+msgstr "Afhankelijkheden aan het oplossen..."
 
 #: src/solution_dialog.cc:169
 msgid "Previous"
@@ -4300,54 +4283,54 @@ msgid "Close"
 msgstr "Sluiten"
 
 #: src/solution_fragment.cc:104
-#, fuzzy, c-format
+#, c-format
 msgid "%s depends upon %s"
-msgstr "hangt af van"
+msgstr "%s hangt af van %s"
 
 #: src/solution_fragment.cc:107
-#, fuzzy, c-format
+#, c-format
 msgid "%s pre-depends upon %s"
-msgstr "hangt volledig af van"
+msgstr "%s hangt volledig af van %s"
 
 #: src/solution_fragment.cc:110
-#, fuzzy, c-format
+#, c-format
 msgid "%s suggests %s"
-msgstr "suggereert"
+msgstr "%s suggereert %s "
 
 #: src/solution_fragment.cc:113 src/solution_item.cc:583
-#, fuzzy, c-format
+#, c-format
 msgid "%s recommends %s"
-msgstr "beveelt aan"
+msgstr "%s beveelt %s aan"
 
 #: src/solution_fragment.cc:116
-#, fuzzy, c-format
+#, c-format
 msgid "%s conflicts with %s"
-msgstr "conflicteert met"
+msgstr "%s conflicteert met %s"
 
 #: src/solution_fragment.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "%s replaces %s"
-msgstr "vervangt"
+msgstr "%s vervangt %s"
 
 #: src/solution_fragment.cc:122
-#, fuzzy, c-format
+#, c-format
 msgid "%s obsoletes %s"
-msgstr "veroudert"
+msgstr "%s veroudert %s"
 
 #: src/solution_fragment.cc:135
-#, fuzzy, c-format
+#, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
-msgstr "conflicteert met"
+msgstr "%s conflicteert met %s [aangeboden door %s %s]"
 
 #: src/solution_fragment.cc:145
-#, fuzzy, c-format
+#, c-format
 msgid "Removing %s"
-msgstr "Herconfigureren van %s\n"
+msgstr "Verwijderen van %s"
 
 #: src/solution_fragment.cc:147
 #, c-format
 msgid "Installing %s %s (%s)"
-msgstr ""
+msgstr "Installeren %s %s (%s)"
 
 #: src/solution_fragment.cc:216
 msgid "%BRemove%b the following packages:%n"
@@ -4374,9 +4357,9 @@ msgid "%BDowngrade%b the following packages:%n"
 msgstr " %BDegradeer%b de volgende pakketten:%n"
 
 #: src/solution_fragment.cc:291
-#, fuzzy, c-format
+#, c-format
 msgid "Leave the following dependencies unresolved:%n"
-msgstr "%BVerwijder%b de volgende pakketten:%n"
+msgstr "Laat de volgende afhankelijkheden onopgelost:%n"
 
 #: src/solution_fragment.cc:299
 #, c-format
@@ -4386,82 +4369,74 @@ msgstr " Score is %d"
 #: src/solution_item.cc:91
 #, c-format
 msgid "Remove %F [%s (%s)]"
-msgstr ""
+msgstr "Verwijder %F [%s (%s)]"
 
 #: src/solution_item.cc:98
 #, c-format
 msgid "Install %F [%s (%s)]"
-msgstr ""
+msgstr "Installeer %F [%s (%s)]"
 
 #: src/solution_item.cc:106
-#, fuzzy, c-format
+#, c-format
 msgid "Cancel the installation of %F"
-msgstr "ga verder met de installatie"
+msgstr "Breek de installatie van %F af"
 
 #: src/solution_item.cc:109
 #, c-format
 msgid "Cancel the removal of %F"
-msgstr ""
+msgstr "Annuleer de verwijdering van %F"
 
 #: src/solution_item.cc:112
 #, c-format
 msgid "Keep %F at version %s (%s)"
-msgstr ""
+msgstr "Behoud %F op versie %s (%s)"
 
 #: src/solution_item.cc:120
 #, c-format
 msgid "Upgrade %F [%s (%s) -> %s (%s)]"
-msgstr ""
+msgstr "Opwaarderen van %F [%s (%s) -> %s (%s)]"
 
 #: src/solution_item.cc:129
-#, fuzzy, c-format
+#, c-format
 msgid "Downgrade %F [%s (%s) -> %s (%s)]"
-msgstr "%sB opgehaald in %s (%sB/s)."
+msgstr "Degradeer %F [%s (%s) -> %s (%s)]"
 
 #: src/solution_item.cc:587
-#, fuzzy, c-format
+#, c-format
 msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
-msgstr "%BVerwijder%b de volgende pakketten:%n"
+msgstr "-> Laat de afhankelijkheid \"%s beveelt %s aan\" onopgelost."
 
 #: src/solution_screen.cc:149
-#, fuzzy
 msgid "The following actions will resolve this dependency:"
-msgstr "De volgende acties zullen deze afhankelijkheden oplossen:"
+msgstr "De volgende acties zullen deze afhankelijkheid oplossen:"
 
 #: src/solution_screen.cc:235
-#, fuzzy
 msgid "Remove the following packages:"
-msgstr "%BVerwijder%b de volgende pakketten:%n"
+msgstr "Verwijder de volgende pakketten:"
 
 #: src/solution_screen.cc:246
-#, fuzzy
 msgid "Keep the following packages at their current version:"
-msgstr "%BBehoud%b de volgende pakketten in hun huidige versie:%n"
+msgstr "Behoud de volgende pakketten in hun huidige versie:"
 
 #: src/solution_screen.cc:257
-#, fuzzy
 msgid "Install the following packages:"
-msgstr "%BInstalleer%b de volgende pakketten:%n"
+msgstr "Installeer de volgende pakketten:"
 
 #: src/solution_screen.cc:268
-#, fuzzy
 msgid "Upgrade the following packages:"
-msgstr "%BOpwaarderen%b van volgende pakketten:%n"
+msgstr "Waardeer volgende pakketten op:"
 
 #: src/solution_screen.cc:279
-#, fuzzy
 msgid "Downgrade the following packages:"
-msgstr " %BDegradeer%b de volgende pakketten:%n"
+msgstr " Degradeer de volgende pakketten:"
 
 #: src/solution_screen.cc:292
-#, fuzzy
 msgid "Leave the following recommendations unresolved:"
-msgstr "%BVerwijder%b de volgende pakketten:%n"
+msgstr "Laat de volgende aanbevelingen onopgelost:"
 
 #: src/solution_screen.cc:463
-#, fuzzy
 msgid "No broken packages."
-msgstr "'-' om pakketten te verwijderen"
+msgstr "Geen beschadigde pakketten."
 
 #: src/trust.cc:17 src/trust.cc:19
 msgid "WARNING"
@@ -4495,15 +4470,21 @@ msgid ""
 "subsequent changes will not be saved unless you stop all other running apt-"
 "based programs and select \"Become root\" from the Actions menu."
 msgstr ""
+"WAARSCHUWING: de pakketcache is geopend in alleen-lezen modus! Deze "
+"wijziging en alle volgende wijzigingen zullen niet bewaard worden tenzij u "
+"alle andere uitvoerende apt-gebaseerde programma's stopt en \"Wordt root\" "
+"selecteert uit het Actie-menu"
 
 #: src/ui.cc:322
 msgid "Never display this message again."
-msgstr ""
+msgstr "Toon deze boodschap nooit meer."
 
 #: src/ui.cc:368
 msgid ""
 "You may not modify the state of any package while a download is underway."
 msgstr ""
+"U kunt de toestand van een pakket niet wijzigen terwijl er een download "
+"bezig is."
 
 #: src/ui.cc:399
 msgid "You already are root!"
@@ -4538,18 +4519,16 @@ msgid "View available packages and choose actions to perform"
 msgstr "Bekijk beschikbare pakketten en kies uit te voeren acties"
 
 #: src/ui.cc:731
-#, fuzzy
 msgid "Recommended Packages"
-msgstr "Beveelt aan"
+msgstr "Aanbevolen Pakketten"
 
 #: src/ui.cc:732
 msgid "View packages that it is recommended that you install"
-msgstr ""
+msgstr "Bekijk pakketten die worden aanbevolen om te installeren"
 
 #: src/ui.cc:733
-#, fuzzy
 msgid "Recommendations"
-msgstr "Beveelt aan"
+msgstr "Aanbevelingen"
 
 #: src/ui.cc:837
 msgid ""
@@ -4569,7 +4548,7 @@ msgstr "help.txt"
 
 #: src/ui.cc:862
 msgid "Encoding of help.txt|UTF-8"
-msgstr ""
+msgstr "Codering van help.txt|UTF-8"
 
 #: src/ui.cc:883
 msgid "README"
@@ -4577,52 +4556,52 @@ msgstr "README"
 
 #: src/ui.cc:885
 msgid "Encoding of README|UTF-8"
-msgstr ""
+msgstr "Codering van README|UTF-8"
 
 #: src/ui.cc:911
-#, fuzzy
 msgid "User's Manual"
-msgstr "^Gebruikershandleiding"
+msgstr "Gebruikershandleiding"
 
 #: src/ui.cc:911
 msgid "Read the full user's manual of aptitude"
-msgstr ""
+msgstr "Lees de volledige gebruikershandleiding van aptitude"
 
 #: src/ui.cc:911
-#, fuzzy
 msgid "Manual"
-msgstr "^Markeer handmatig"
+msgstr "Handmatig"
 
 #: src/ui.cc:945
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to stat \"%s\""
-msgstr "Kan %s niet openen"
+msgstr "Kan \"%s\" niet bereiken"
 
 #: src/ui.cc:951
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to remove \"%s\""
-msgstr "Kan %s niet openen"
+msgstr "Kan \"%s\" niet verwijderen"
 
 #: src/ui.cc:961
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to list files in \"%s\""
-msgstr "Kan %s niet openen"
+msgstr "Kan lijst bestanden in \"%s\" niet weergeven"
 
 #: src/ui.cc:974
 #, c-format
 msgid "Failure closing directory \"%s\""
-msgstr ""
+msgstr "Fout bij het sluiten van map \"%s\""
 
 #: src/ui.cc:980
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to remove directory \"%s\""
-msgstr "Kan %s niet openen"
+msgstr "Kan map \"%s\" niet verwijderen"
 
 #: src/ui.cc:990
 #, c-format
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr ""
+"Onmogelijk om de oude tijdelijke map te verwijderen; u moet %s handmatig "
+"verwijderen."
 
 #: src/ui.cc:995
 #, c-format
@@ -4630,6 +4609,8 @@ msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
 "hand."
 msgstr ""
+"%s zal niet verwijderd worden; u moet de bestanden daarin nakijken en ze "
+"handmatig verwijderen."
 
 #: src/ui.cc:1021
 #, c-format
@@ -4639,6 +4620,10 @@ msgid ""
 "remove this directory and all its contents?  If you select \"No\", you will "
 "not see this message again."
 msgstr ""
+"Het lijkt erop dat een vorige versie van aptitue bestanden achterliet in %s. "
+"Deze bestanden zijn waarschijnlijk nutteloos en veilig om te verwijderen. %n%"
+"nWilt u deze map en heel de inhoud verwijderen? Als u \"Nee\" selecteert, "
+"dan zult u deze boodschap niet meer zien."
 
 #: src/ui.cc:1063
 msgid "Downloading packages"
@@ -4784,9 +4769,8 @@ msgid "Downloaded package files have been deleted"
 msgstr "Opgehaalde pakketbestanden zijn verwijderd"
 
 #: src/ui.cc:1483
-#, fuzzy
 msgid "The apt cache file is not available; cannot auto-clean."
-msgstr "De pakketcache is niet beschikbaar."
+msgstr "De apt-cache is niet beschikbaar; kan auto-clean niet uitvoeren."
 
 #: src/ui.cc:1509
 #, c-format
@@ -4810,19 +4794,17 @@ msgid "Ran out of time while trying to find a solution."
 msgstr "Teveel tijd nodig om een oplossing te vinden."
 
 #: src/ui.cc:1831 src/ui.cc:1833
-#, fuzzy
 msgid "Resolve Dependencies"
-msgstr "Kan afhankelijkheden niet oplossen."
+msgstr "Afhankelijkheden Oplossen"
 
 #: src/ui.cc:1832
-#, fuzzy
 msgid "Search for solutions to unsatisfied dependencies"
-msgstr "Zoek het volgende pakket met niet-voldane afhankelijkheden"
+msgstr "Zoek oplossingen voor niet nagekomen afhankelijkheden"
 
 #: src/ui.cc:1844
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open %ls"
-msgstr "Kan %s niet openen"
+msgstr "Kan %ls niet openen"
 
 #: src/ui.cc:1850
 msgid "Error while dumping resolver state"
@@ -5025,105 +5007,96 @@ msgstr "Toon de Debian-changelog van het geselecteerde pakket"
 
 #: src/ui.cc:1988
 msgid "^Examine Solution"
-msgstr ""
+msgstr "Oplossing ^Bestuderen"
 
 #: src/ui.cc:1989
-#, fuzzy
 msgid "Examine the currently selected solution to the dependency problems."
-msgstr "Er bestaat geen oplossing voor deze afhankelijkheidsproblemen!"
+msgstr ""
+"Bestudeer de momenteel geselecteerde oplossing voor de "
+"afhankelijkheidsproblemen."
 
 #: src/ui.cc:1992
 msgid "Apply ^Solution"
-msgstr ""
+msgstr "Oplossing ^Toepassen"
 
 #: src/ui.cc:1993
 msgid "Perform the actions contained in the currently selected solution."
-msgstr ""
+msgstr "Voer de acties van de momenteel geselecteerde oplossing uit."
 
 #: src/ui.cc:1996
-#, fuzzy
 msgid "^Next Solution"
-msgstr "Geen oplossingen meer."
+msgstr "^Volgende Oplossing"
 
 #: src/ui.cc:1997
-#, fuzzy
 msgid "Select the next solution to the dependency problems."
-msgstr "Er bestaat geen oplossing voor deze afhankelijkheidsproblemen!"
+msgstr "Selecteer de volgende oplossing voor de afhankelijkheidsproblemen."
 
 #: src/ui.cc:2000
-#, fuzzy
 msgid "^Previous Solution"
-msgstr "ga naar de vorige oplossing"
+msgstr "Vorige ^Oplossing"
 
 #: src/ui.cc:2001
-#, fuzzy
 msgid "Select the previous solution to the dependency problems."
-msgstr "Er bestaat geen oplossing voor deze afhankelijkheidsproblemen!"
+msgstr "Selecteer de vorige oplossing voor de afhankelijkheidsproblemen."
 
 #: src/ui.cc:2004
-#, fuzzy
 msgid "^First Solution"
-msgstr "Geen oplossingen meer."
+msgstr "^Eerste Oplossing"
 
 #: src/ui.cc:2005
-#, fuzzy
 msgid "Select the first solution to the dependency problems."
-msgstr "Er bestaat geen oplossing voor deze afhankelijkheidsproblemen!"
+msgstr "Selecteer de eerste oplossing voor de afhankelijkheidsproblemen."
 
 #: src/ui.cc:2008
-#, fuzzy
 msgid "^Last Solution"
-msgstr "Geen oplossingen meer."
+msgstr "^Laatste Oplossing"
 
 #: src/ui.cc:2009
-#, fuzzy
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
-msgstr "Er bestaat geen oplossing voor deze afhankelijkheidsproblemen!"
+msgstr ""
+"Selecteer de voorlopig laatste oplossing voor de afhankelijkheidsproblemen."
 
 #: src/ui.cc:2015
 msgid "Toggle ^Rejected"
-msgstr ""
+msgstr "^Schakel Verworpen"
 
 #: src/ui.cc:2016
 msgid "Toggle whether the currently selected action is rejected."
-msgstr ""
+msgstr "Schakel het verwerpen van de momenteel geselecteerde actie."
 
 #: src/ui.cc:2020
 msgid "Toggle ^Approved"
-msgstr ""
+msgstr "Schakel ^Aanvaard"
 
 #: src/ui.cc:2021
-#, fuzzy
 msgid "Toggle whether the currently selected action is approved."
-msgstr "Duid het momenteel geselecteerde pakket aan voor verwijdering"
+msgstr "Schakel het aanvaarden van de momenteel geselecteerde actie."
 
 #: src/ui.cc:2025
 msgid "^View Target"
-msgstr ""
+msgstr "^Bekijk Bestemming"
 
 #: src/ui.cc:2026
 msgid "View the package which will be affected by the selected action"
-msgstr ""
+msgstr "Bekijk het pakket dat zal worden aangetast door de geselecteerde actie"
 
 #: src/ui.cc:2034
 msgid "^Find"
 msgstr "^Zoek"
 
 #: src/ui.cc:2035
-#, fuzzy
 msgid "Search forwards"
-msgstr "Zoek naar:"
+msgstr "Zoek voorwaarts"
 
 #: src/ui.cc:2038
 msgid "^Find Backwards"
-msgstr ""
+msgstr "Achterwaarts ^Zoeken"
 
 #: src/ui.cc:2039
-#, fuzzy
 msgid "Search backwards"
-msgstr "Zoek naar: "
+msgstr "Zoek achterwaarts"
 
 #: src/ui.cc:2042
 msgid "Find ^Again"
@@ -5224,34 +5197,32 @@ msgid "Create a new default package view"
 msgstr "Maak een nieuwe standaard pakketview"
 
 #: src/ui.cc:2108
-#, fuzzy
 msgid "Audit ^Recommendations"
-msgstr "Beveelt aan"
+msgstr "Onde^rzoek Aanbevelingen"
 
 #: src/ui.cc:2109
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
 msgstr ""
+"Bekijk de pakketten die aanbevolen worden om te installeren, maar die "
+"momenteel niet geïnstalleerd zijn."
 
 #: src/ui.cc:2112
-#, fuzzy
 msgid "New ^Flat Package List"
-msgstr "Nieuwe ^Pakket-View"
+msgstr "^Nieuwe Vlakke Pakketlijst"
 
 #: src/ui.cc:2113
 msgid "View all the packages on the system in a single uncategorized list"
-msgstr ""
+msgstr "Bekijk alle pakketten op het systeem in één lijst zonder categorieën"
 
 #: src/ui.cc:2116
-#, fuzzy
 msgid "New ^Debtags Browser"
-msgstr "Nieuwe ^Categorische Bladeraar"
+msgstr "Nieuwe ^Debtags-bladeraar"
 
 #: src/ui.cc:2118
-#, fuzzy
 msgid "Browse packages using Debtags data"
-msgstr "Doorblader pakketten per categorie"
+msgstr "Doorblader pakketten gebruikmakend van Debtags-data"
 
 #: src/ui.cc:2121
 msgid "New Categorical ^Browser"
@@ -5314,9 +5285,8 @@ msgid "Actions"
 msgstr "Acties"
 
 #: src/ui.cc:2280
-#, fuzzy
 msgid "Resolver"
-msgstr "^Verwijderen"
+msgstr "Oplosser"
 
 #: src/ui.cc:2281
 msgid "Search"
@@ -5335,13 +5305,13 @@ msgid "Help"
 msgstr "Help"
 
 #: src/ui.cc:2349
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
 "Pkgs"
 msgstr ""
-"%s: Menu  %s: Help  %s: Afsluiten  %s: Bijwerken  %s: Ophalen/Inst./Verw. "
-"Pakketten"
+"%ls: Menu  %ls: Help  %ls: Afsluiten  %ls: Bijwerken  %ls: Ophalen/Inst./"
+"Verw. Pakketten"
 
 #: src/ui.cc:2690 src/vscreen/vscreen.cc:724
 msgid "yes_key"
@@ -5357,9 +5327,8 @@ msgid "%s changes"
 msgstr "%s wijzigingen"
 
 #: src/view_changelog.cc:151
-#, fuzzy
 msgid "View the list of changes made to this Debian package."
-msgstr "Bekijk de belangrijke gemaakte wijzigingen in elke versie van"
+msgstr "Bekijk de gemaakte wijzigingen in dit Debian-pakket."
 
 #: src/view_changelog.cc:215
 msgid "You can only view changelogs of official Debian packages."
@@ -5376,45 +5345,46 @@ msgstr "Changelog Ophalen"
 #: src/vscreen/config/column_definition.cc:105
 #: src/vscreen/config/column_definition.cc:123
 msgid "Formatting marker with missing format code"
-msgstr ""
+msgstr "Opmaakaanduider zonder opmaakcode"
 
 #: src/vscreen/config/column_definition.cc:132
 #: src/vscreen/config/column_definition.cc:178
 #, c-format
 msgid "Bad number in format string: '%ls'"
-msgstr ""
+msgstr "Slecht getal in formaatstring: '%ls'"
 
 #: src/vscreen/config/column_definition.cc:160
 msgid "Missing parameter number in format string"
-msgstr ""
+msgstr "Ontbrekend parametergetal in formaatstring"
 
 #: src/vscreen/config/column_definition.cc:185
 #, c-format
 msgid "Parameter numbers must be 1 or greater, not %ld"
-msgstr ""
+msgstr "Parametergetallen moeten groter of gelijk zijn aan 1, niet %ld"
 
 #: src/vscreen/config/column_definition.cc:211
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown formatting code '%lc'"
-msgstr "Onbekend patroontype: %c"
+msgstr "Onbekende opmaakcode '%lc'"
 
 #: src/vscreen/config/column_definition.cc:261
 msgid "Bad format parameter"
-msgstr ""
+msgstr "Slechte opmaakparameter"
 
 #: src/vscreen/config/keybindings.cc:314
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse key description: %ls"
-msgstr "Lezen van taakbeschrijvingen"
+msgstr "Kan sleutelbeschrijving %ls niet ontleden"
 
 #: src/vscreen/config/keybindings.cc:324
-#, fuzzy
 msgid "Invalid null keybinding"
-msgstr "Ongeldige ingave in toetsenbindingsgroep:\"%s\""
+msgstr "Ongeldige null sleutelbinding"
 
 #: src/vscreen/config/keybindings.cc:332
 msgid "Sorry, control modifiers may not be used with unprintable characters"
 msgstr ""
+"Sorry, controlemodificatoren mogen niet gebruikt worden met niet-printbare "
+"karakters"
 
 #: src/vscreen/vscreen.cc:125
 #, c-format
@@ -5441,10 +5411,12 @@ msgstr "Kuch! Kreeg SIGQUIT, stervend..\n"
 msgid ""
 "Unable to load filename: the string %ls has no multibyte representation."
 msgstr ""
+"Onmogelijk om bestandsnaam te laden; de string %ls heeft geen multibyte-"
+"voorstelling."
 
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
-msgstr ""
+msgstr "TOP NIVEAU"
 
 #~ msgid "Happy?"
 #~ msgstr "Tevreden?"
