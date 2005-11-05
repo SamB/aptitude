@@ -554,6 +554,8 @@ int main(int argc, char *argv[])
     }
   catch(const Exception &e)
     {
+      vscreen_shutdown();
+
       fprintf(stderr, _("Uncaught exception: %s\n"), e.errmsg().c_str());
 
       std::string backtrace = e.get_backtrace();
