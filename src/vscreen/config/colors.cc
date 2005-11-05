@@ -21,24 +21,32 @@
 
 #include <vscreen/curses++.h>
 
+#include <math.h>
+
 static bool colors_avail=false;
 static bool default_colors_avail = false;
+static int colors = 0;
 
 // Simplistic allocation scheme for colors: (fg,bg) => fg*COLORS+bg
 
 void init_colors()
 {
-  if(COLORS == 0 || COLOR_PAIRS < COLORS * COLORS)
+  if(COLOR_PAIRS < COLORS * COLORS)
+    colors = (int) floor(sqrt(COLOR_PAIRS));
+  else
+    colors = COLORS;
+
+  if(colors < 8)
     return;
 
   colors_avail=true;
   default_colors_avail = (use_default_colors() != ERR);
 
-  for(short fg=0; fg<COLORS; ++fg)
-    for(short bg=0; bg<COLORS; ++bg)
+  for(short fg = 0; fg < colors; ++fg)
+    for(short bg = 0; bg < colors; ++bg)
       {
 	if(default_colors_avail && fg == bg)
-	  init_pair(fg * COLORS + bg, fg, -1);
+	  init_pair(fg * colors + bg, fg, -1);
 	else if(fg == 0 && bg == 0)
 	  // do nothing; on some terminals, doing this causes the
 	  // cursor to become INVISIBLE, and black-on-black text is a
@@ -46,7 +54,7 @@ void init_colors()
 	  ;
 	  /*assume_default_colors(0, 0);*/
 	else
-	  init_pair(fg*COLORS+bg, fg, bg);
+	  init_pair(fg * colors + bg, fg, bg);
       }
 }
 
@@ -56,21 +64,21 @@ int get_color_pair(short fg, short bg)
     return 0;
   else
     {
-      eassert(fg >= 0 && bg >= -1 && fg < COLORS && bg < COLORS);
+      eassert(fg >= 0 && bg >= -1 && fg < colors && bg < colors);
 
       if(bg == -1)
-	return fg * COLORS + fg;
+	return fg * colors + fg;
       else if(fg == bg && default_colors_avail)
 	// Pick an arbitrary distinct foreground color to match with
 	// the background.
 	{
 	  if(bg == COLOR_WHITE)
-	    return COLOR_BLACK * COLORS + COLOR_WHITE;
+	    return COLOR_BLACK * colors + COLOR_WHITE;
 	  else
-	    return COLOR_WHITE * COLORS + bg;
+	    return COLOR_WHITE * colors + bg;
 	}
       else
-	return fg * COLORS + bg;
+	return fg * colors + bg;
     }
 }
 
@@ -82,8 +90,8 @@ int mix_color(short color, short fg, short bg)
     return color & A_COLOR;
   else
     {
-      short old_fg = PAIR_NUMBER(color) / COLORS;
-      short old_bg = PAIR_NUMBER(color) % COLORS;
+      short old_fg = PAIR_NUMBER(color) / colors;
+      short old_bg = PAIR_NUMBER(color) % colors;
 
       if(old_fg == old_bg && default_colors_avail)
 	old_bg = -1;
