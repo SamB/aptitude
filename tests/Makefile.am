@@ -19,6 +19,7 @@ interactive_set_test_SOURCES = interactive_set_test.cc
 test_SOURCES = \
 	main.cc \
 	test_dense_setset.cc \
+	test_eassert.cc \
 	test_misc.cc \
 	test_resolver.cc \
 	test_setset.cc \
