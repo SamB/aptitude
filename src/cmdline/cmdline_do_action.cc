@@ -218,7 +218,10 @@ int cmdline_do_action(int argc, char *argv[],
   else if(queue_only)
     {
       if(!(*apt_cache_file)->save_selection_list(progress))
-	return -1;
+	{
+	  _error->DumpErrors();
+	  return -1;
+	}
       else
 	return 0;
     }
