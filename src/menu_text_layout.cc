@@ -33,7 +33,7 @@ bool menu_text_layout::find_search_enabled()
 
 bool menu_text_layout::find_search()
 {
-  prompt_string(_("Search for:"),
+  prompt_string(_("Search for: "),
 		"",
 		arg(sigc::mem_fun(this, &menu_text_layout::do_find_search)),
 		NULL,
@@ -65,7 +65,7 @@ bool menu_text_layout::find_search_back_enabled()
 
 bool menu_text_layout::find_search_back()
 {
-  prompt_string(_("Search backwards for:"),
+  prompt_string(_("Search backwards for: "),
 		"",
 		arg(sigc::mem_fun(this, &menu_text_layout::do_find_search_back)),
 		NULL,
