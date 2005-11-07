@@ -617,7 +617,7 @@ bool aptitudeDepCache::save_selection_list(OpProgress &prog,
 	      return false;
 	    }
 
-	  if(link(statefile.c_str(), oldstr.c_str()) != 0)
+	  if(link(statefile.c_str(), oldstr.c_str()) != 0 && errno != ENOENT)
 	    {
 	      _error->Errno("save_selection_list", _("failed to rename %s to %s"),
 			    statefile.c_str(), (statefile + ".old").c_str());
