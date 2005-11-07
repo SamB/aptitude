@@ -52,7 +52,7 @@ class pkg_changelog_screen : public vs_file_pager, public menu_redirect
   {
     last_search_forwards = true;
 
-    prompt_string(transcode(_("Search for:")),
+    prompt_string(transcode(_("Search for: ")),
 		  L"",
 		  arg(sigc::mem_fun(*this, &vs_pager::search_for)),
 		  NULL,
@@ -64,7 +64,7 @@ class pkg_changelog_screen : public vs_file_pager, public menu_redirect
   {
     last_search_forwards = false;
 
-    prompt_string(transcode(_("Search backwards for:")),
+    prompt_string(transcode(_("Search backwards for: ")),
 		  L"",
 		  arg(sigc::mem_fun(*this, &vs_pager::search_back_for)),
 		  NULL,
