@@ -64,6 +64,14 @@ int get_color_pair(short fg, short bg)
     return 0;
   else
     {
+      // Fall back to the default color if the user asked for too
+      // much.
+      if(fg >= colors)
+	fg = 0;
+
+      if(bg >= colors)
+	bg = 0;
+
       eassert(fg >= 0 && bg >= -1 && fg < colors && bg < colors);
 
       if(bg == -1)
