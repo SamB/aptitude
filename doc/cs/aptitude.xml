@@ -7,7 +7,7 @@
   <!ENTITY dselect '<command>dselect</command>'>
   <!ENTITY apt-get '<command>apt-get</command>'>
   <!ENTITY root '<systemitem class="username">root</systemitem>'>
-  <!ENTITY VERSION '0.3.3'>
+  <!ENTITY VERSION '0.4.0'>
 
   <!-- Shortcuts for menu commands: -->
 
@@ -65,6 +65,10 @@
   <!ENTITY views-close "<menuchoice><shortcut><keycap>q</keycap></shortcut><guimenu>Pohledy</guimenu><guimenuitem>Zavøít</guimenuitem></menuchoice>">
 
   <!ENTITY views-new "<menuchoice><guimenu>Pohledy</guimenu><guimenuitem>Nový pohled na balíky</guimenuitem></menuchoice>">
+  <!ENTITY views-audit "<menuchoice><guimenu>Pohledy</guimenu><guimenuitem>Provìøit doporuèení</guimenuitem></menuchoice>">
+  <!ENTITY views-flat "<menuchoice><guimenu>Pohledy</guimenu><guimenuitem>Nový plochý seznam balíkù</guimenuitem></menuchoice>">
+  <!ENTITY views-debtags
+  "<menuchoice><guimenu>Pohledy</guimenu><guimenuitem>Nový prohlí¾eè Debtags</guimenuitem></menuchoice>">
   <!ENTITY views-browse "<menuchoice><guimenu>Pohledy</guimenu><guimenuitem>Nový prohlí¾eè kategorií</guimenuitem></menuchoice>">
 
   <!ENTITY help-about "<menuchoice><guimenu>Nápovìda</guimenu><guimenuitem>O programu</guimenuitem></menuchoice>">
@@ -550,7 +554,8 @@ balíky</quote>) je oznaèená a její popis se zobrazuje ve spodním
 </para><para>
 
 Jak vám radí horní øádek, pro vstup do menu mù¾ete pou¾ít klávesu
-<keycap>F10</keycap>. Menu lze také vyvolat kliknutím my¹i do dané
+<keycombo action="simul"> <keycap>Control</keycap> <keycap>t</keycap>
+</keycombo>. Menu lze také vyvolat kliknutím my¹i do dané
 oblasti. Implicitnì se otevøe menu <guimenuitem>Akce</guimenuitem>.
 
 </para>
@@ -595,7 +600,8 @@ Provede v¹echny nevyøízené instalace a odstraòování</screen>
 V menu se mù¾ete pohybovat pomocí ¹ipek, výbìr provedete klávesou
 <keycap>Enter</keycap> (podporuje-li to vá¹ systém, mù¾ete pou¾ít
 i kliknutí my¹i). Pokud nyní nechcete z menu nic vybírat, stisknìte
-znovu <keycap>F10</keycap> a vrátíte se zpìt do výbìru balíkù.
+znovu <keycombo action="simul"> <keycap>Control</keycap>
+<keycap>t</keycap> </keycombo> a vrátíte se zpìt do výbìru balíkù.
 Aktuálnì vybraná polo¾ka menu je popsána dole na obrazovce.
 
 </para><para>
@@ -1835,9 +1841,10 @@ balíkù</link>.
 <para>
 
 Menu na nejhornìj¹ím øádku obrazovky obsahuje nejdùle¾itìj¹í pøíkazy
-dostupné v &aptitude;. Pro vstup do menu slou¾í klávesa
-<keycap>F10</keycap>, pohyb po menu zaji¹»ují ¹ipky a výbìr polo¾ky se
-provádí klávesou <keycap>Enter</keycap>.
+dostupné v &aptitude;. Pro vstup do menu slou¾í klávesa <keycombo
+action="simul"><keycap>Control</keycap><keycap>t</keycap></keycombo>,
+pohyb po menu zaji¹»ují ¹ipky a výbìr polo¾ky se provádí klávesou
+<keycap>Enter</keycap>.
 
 </para><para>
 
@@ -2456,10 +2463,39 @@ Vytvoøí nový pohled na seznam balíkù.
   </row>
 
   <row>
+    <entry>&views-audit;</entry>
+    <entry>
+
+Vytvoøí nový pohled, který obsahuje balíèky, je¾ nejsou instalovány,
+ale které jsou doporuèeny nìkterým z nainstalovaných balíkù.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry>&views-flat;</entry>
+    <entry>
+
+Vytvoøí nový pohled, ve kterém nejsou balíèky nijak roztøídìny.
+
+    </entry>
+  </row>
+
+  <row>
+    <entry>&views-debtags;</entry>
+    <entry>
+
+Vytvoøí nový pohled, ve kterém jsou balíèky setøízeny podle jejich
+znaèek (debtags).
+
+    </entry>
+  </row>
+
+  <row>
     <entry>&views-browse;</entry>
     <entry>
 
-Zobrazí rozdìlení balíkù do kategorií (viz <xref linkend="secHier"/>).
+Zobrazí rozdìlení balíkù do kategorií.
 
     </entry>
   </row>
@@ -3862,13 +3898,30 @@ zobrazení, se nazývá <quote>vyhledávací vzor</quote>.  Pøesto¾e
 vìt¹ina hledání pou¾ívá pouze hledání podle jména, &aptitude; vám
 nebrání ve vytváøení komplexnìj¹ích dotazù.
 
-</para><para>
+</para><note><para>
+
+Vyhledávací vzory nemusíte pou¾ívat pouze v celoobrazovkovém re¾imu,
+ale také u nìkterých øádkových pøíkazù. Podrobnosti naleznete
+v kapitole <xref linkend="secReference"/>.
+
+</para></note><para>
 
 Vyhledávací vzor se skládá z jedné nebo více podmínek (nìkdy
 nazývaných <quote>termy</quote>). Balíky se shodují se vzorem, pokud
 se shodují se v¹emi jeho termy. Termy obvykle zaèínají vlnkou
 (<quote>~</quote>), za kterou následuje znak urèující typ termu a za
 ním je pøípadný øetìzec znakù.
+
+</para><para>
+
+Implicitnì se vzory porovnávají vùèi v¹em dostupným verzím balíku, ale
+pro nìkteré vzory existují výjimky. Napøíklad vzor <link
+linkend="searchDep"><literal>~D</literal></link> akceptuje jako
+parametr jiný vzor a shoduje se s balíky, které závisí na balících
+splòující tento vzor. V tomto pøípadì se budou testovat pouze balíky,
+které splní pøíslu¹nou závislost. Verze pro porovnání se mìní pouze
+v termech, které mají podterm (jako zmínìný <link
+linkend="searchDep"><literal>~D</literal></link>).
 
 </para><para>
 
@@ -3996,7 +4049,7 @@ s libovolnými balíky, které závisí na balíku jeho¾ název obsahuje buï
 
   <listitem><para>
 
-Shoduje se s balíky, které jsou dostupné z archivu, jeho¾ název se
+Shoduje se s verzemi balíkù, které jsou dostupné z archivu, jeho¾ název se
 shoduje s regulárním výrazem <replaceable>archiv</replaceable>.
 Tj. <quote><literal>~Atesting</literal></quote> se shoduje
 s libovolným balíkem v <literal>testovací</literal> distribuci.
@@ -4088,8 +4141,8 @@ vyèi¹tìny).
   </para></listitem>
 </varlistentry>
 
-<varlistentry>
-  <term><literal>~D<optional><replaceable>typ</replaceable>:</optional><replaceable>term</replaceable></literal></term>
+<varlistentry id="searchDep">
+  <term><literal>~D<optional>B</optional><optional><replaceable>typ</replaceable>:</optional><replaceable>term</replaceable></literal></term>
 
   <listitem><para>
 
@@ -4097,7 +4150,9 @@ vyèi¹tìny).
 <quote><literal>provides</literal></quote>, nebo jedna ze závislostí
 popsaných v <link linkend="searchBrokenType">dokumentaci
 k ~B</link>. Pokud <replaceable>typ</replaceable> není pøítomen,
-pou¾ije se implicitní <literal>depends</literal>.
+pou¾ije se implicitní <literal>depends</literal>. Volitelný parametr
+<literal>B</literal> znamená, ¾e se budou uva¾ovat pouze poru¹ené
+závislosti.
 
   </para><para>
 
@@ -4105,8 +4160,8 @@ Pokud má <replaceable>typ</replaceable> hodnotu
 <quote><literal>provides</literal></quote>, shoduje se s balíky, které
 poskytují balík odpovídající
 <replaceable>term</replaceable>u. V opaèném pøípadì se shoduje
-s balíky, které mají závislost typu <literal>typ</literal> na balíku,
-je¾ odpovídá <replaceable>term</replaceable>u.
+s balíky, které mají závislost typu <literal>typ</literal> na verzi
+balíku, je¾ odpovídá <replaceable>term</replaceable>u.
 
   </para></listitem>
 </varlistentry>
@@ -4184,7 +4239,12 @@ Debtags</ulink>.
 
   <listitem><para>
 
-Shoduje se s aktuálnì nainstalovanými balíky.
+Shoduje se s verzemi aktuálnì nainstalovaných balíkù.
+
+</para><para>
+
+Jeliko¾ se standardnì testují v¹echny verze, znamená to, ¾e se shoduje
+s aktuálnì nainstalovanými balíky.
 
   </para></listitem>
 </varlistentry>
@@ -4240,8 +4300,8 @@ nejrùznìj¹í knihovny.
 
   <listitem><para>
 
-Shoduje se s balíky, jejich¾ pùvod se shoduje s regulárním výrazem
-<replaceable>pùvod</replaceable>. Napøíklad
+Shoduje se s verzemi balíkù, jejich¾ pùvod se shoduje s regulárním
+výrazem <replaceable>pùvod</replaceable>. Napøíklad
 výrazem <quote><literal>!~Odebian</literal></quote> mù¾ete ve svém
 systému nalézt v¹echny neoficiální balíky (tj. balíky nepocházející
 z archivu Debianu).
@@ -4254,7 +4314,7 @@ z archivu Debianu).
 
   <listitem><para>
 
-Shoduje se s balíky, které poskytují balík, je¾ odpovídá
+Shoduje se s verzemi balíkù, které poskytují balík, je¾ odpovídá
 <replaceable>term</replaceable>u.  Napøíklad
 <quote><literal>~Pmail-transport-agent</literal></quote> vyhledá
 v¹echny balíky, které poskytují balík
@@ -4286,7 +4346,7 @@ s prioritou <quote><literal>vy¾adovaný</literal></quote>
 </varlistentry>
 
 <varlistentry>
-  <term><literal>~R<optional><replaceable>typ</replaceable></optional>:<replaceable>term</replaceable></literal></term>
+  <term><literal>~R<optional>B</optional><optional><replaceable>typ</replaceable></optional>:<replaceable>term</replaceable></literal></term>
 
   <listitem><para>
 
@@ -4294,17 +4354,35 @@ s prioritou <quote><literal>vy¾adovaný</literal></quote>
 <quote><literal>provides</literal></quote>, nebo jeden z typù
 závislostí zmínìných v <link linkend="searchBrokenType">dokumentaci
 termu ~B</link>.  Pokud nezadáte <replaceable>typ</replaceable>,
-pou¾ije se implicitní <literal>depends</literal>.
+pou¾ije se implicitní <literal>depends</literal>. Volitelný parametr
+<literal>B</literal> znamená, ¾e se budou uva¾ovat pouze poru¹ené
+závislosti.
 
   </para><para>
 
 Pokud má <replaceable>typ</replaceable> hodnotu
 <quote><literal>provides</literal></quote>, shoduje se s balíky,
-jejich¾ název je poskytován balíkem, který odpovídá
+jejich¾ název je poskytován verzí balíku, která odpovídá
 <replaceable>term</replaceable>u.  V ostatních pøípadech se shoduje
 s balíky, na kterých závisí balíky (typem závislosti
 <replaceable>typ</replaceable>) odpovídající
 <replaceable>term</replaceable>u.
+
+  </para></listitem>
+</varlistentry>
+
+<varlistentry>
+  <term>
+    <literal>~S <replaceable>filtr</replaceable> <replaceable>term</replaceable></literal>
+  </term>
+
+  <listitem><para>
+
+Tento term <quote>zú¾í</quote> hledání na verze balíkù, které splòují
+daný <replaceable>filtr</replaceable>. Konkrétnì se shoduje s balíky,
+je¾ splòují jak <replaceable>filtr</replaceable>, tak
+<replaceable>term</replaceable>. Øetìzcová hodnota porovnání je
+øetìzcová hodnota <replaceable>term</replaceable>u.
 
   </para></listitem>
 </varlistentry>
@@ -4334,6 +4412,17 @@ balíky, které jsou poskytovány libovolným balíkem.
   </para></listitem>
 </varlistentry>
 
+<varlistentry id="searchTask">
+  <term><literal>~t<replaceable>úloha</replaceable></literal></term>
+
+  <listitem><para>
+
+Shoduje se s balíèky, které jsou souèástí úlohy, její¾ jméno
+odpovídá regulárnímu výrazu <replaceable>úloha</replaceable>.
+
+  </para></listitem>
+</varlistentry>
+
 <varlistentry>
   <term><literal>~U</literal></term>
 
@@ -4351,18 +4440,41 @@ Term se shoduje s libovolným balíkem, který mù¾e být aktualizován.
 
   <listitem><para>
 
-Shoduje se s libovolným balíkem, jeho¾ verze odpovídá regulárnímu
+Shoduje se s libovolnou verzí balíku, která odpovídá regulárnímu
 výrazu <replaceable>verze</replaceable>. Napøíklad
 <quote><literal>~Vdebian</literal></quote> vyhledá balíky, jejich¾
 èíslo verze obsahuje øetìzec <quote><literal>debian</literal></quote>.
 
-  </para><note><para>
+  </para><para>
 
-Je-li k dispozici více verzí daného balíku, vìt¹inou se vybere buï
-aktuální nebo kandidátská verze - pøesný algoritmus se skryt hluboko
-ve zdrojových kódech &aptitude;
+Jistou výjimkou jsou následující hodnoty
+<replaceable>verze</replaceable>, na které je tøeba brát zvlá¹tní
+ohled a zadávat je s úvodním lomítkem. Napøíklad pro vyhledání balíkù,
+jejich¾ verze obsahuje virtuální øetìzec <literal>CURRENT</literal>,
+musíte zadat <literal>\CURRENT</literal>.
 
-  </para></note></listitem>
+    <itemizedlist>
+      <listitem><para>
+
+<literal>CURRENT</literal> se shoduje s aktuálnì nainstalovanou verzí
+balíku.
+
+      </para></listitem>
+      <listitem><para>
+
+<literal>CANDIDATE</literal> se shoduje s verzí balíku, která by se
+nainstalovala, pokud byste na balíèku stiskli <keycap>+</keycap>, nebo
+pokud byste na nìj spustili pøíkaz <literal>aptitude install</literal>.
+
+      </para></listitem>
+      <listitem><para>
+
+<literal>TARGET</literal> se shoduje s verzí balíku, která je
+momentálnì naplánována pro instalaci.
+
+      </para></listitem>
+    </itemizedlist>
+  </para></listitem>
 </varlistentry>
 
 <varlistentry>
@@ -4376,6 +4488,22 @@ v závislostech, ale ¾ádný balík toho jména neexistuje.  Napøíklad
 <quote><literal>~v!~P~T</literal></quote> se shoduje s virtuálními
 balíky, které nejsou poskytovány ¾ádným balíkem, jinými slovy
 s balíky, na kterých <quote>nìco</quote> závisí, ale které neexistují.
+
+  </para></listitem>
+</varlistentry>
+
+<varlistentry>
+  <term><literal>~W<replaceable>term</replaceable></literal></term>
+
+  <listitem><para>
+
+<quote>Roz¹íøí</quote> shodu: pokud jsou omezeny verze balíku, vùèi
+kterým se má porovnávat vnìj¹í term (jako <link
+linkend="searchDep"><literal>~D</literal></link>), nebere se na tato
+omezení ohled. Tedy
+<literal>~W<replaceable>term</replaceable></literal> se shoduje
+s verzí balíku, pokud se <replaceable>term</replaceable> shoduje
+s <emphasis>libovolnou</emphasis> verzí daného balíku.
 
   </para></listitem>
 </varlistentry>
@@ -5193,6 +5321,16 @@ Setøídí balíky podle jména.
   <listitem><para>
 
 Setøídí balíky podle priority.
+
+  </para></listitem>
+</varlistentry>
+
+<varlistentry>
+  <term><literal>version</literal></term>
+
+  <listitem><para>
+
+Setøídí balíky podle verze.
 
   </para></listitem>
 </varlistentry>
@@ -6096,7 +6234,7 @@ V hierarchickém seznamu rozbalí nebo sbalí vybraný strom.
 
   <row>
     <entry><literal>ToggleMenuActive</literal></entry>
-    <entry>f10,C-space</entry>
+    <entry>C-t,f10,C-space</entry>
     <entry>
 
 Vstoupí do (vystoupí z) hlavního menu.
@@ -8157,8 +8295,8 @@ pøehled pøed instalací ve vizuálním re¾imu.
       <seg>
 
 Tímto øídíte, jak upovídaný je pøíkazový re¾im &aptitude;. Ka¾dý
-výskyt pøíkazového parametru <literal>-v</literal> pøidá k této
-promìnné hodnotu 1.
+výskyt argumentu <literal>-v</literal> na pøíkazovém øádku pøidá
+k této promìnné hodnotu 1.
 
       </seg>
     </seglistitem>
@@ -8181,12 +8319,12 @@ linkend="secAutoInstall"/>.
       <seg></seg>
       <seg>
 
-Má-li volba <literal><link
-linkend="configDelete-Unused">Aptitude::Delete-Unused</link></literal>
-hodnotu <literal>true</literal>, budou odstranìny pouze balíky
-neodpovídající tomuto vzoru (viz <xref linkend="secSearchPatterns"/>).
-Pokud zde ponecháte prázdný øetìzec, budou odstranìny v¹echny
-nevyu¾ité balíky.
+Zastaralý alias pro <literal><link
+linkend="configKeep-Unused-Pattern">Aptitude::Keep-Unused-Pattern</link></literal>.
+Kvùli zpìtné kompatibilitì se tato volba pou¾ije v pøípadech, kdy není
+volba <literal>Aptitude::Keep-Unused-Pattern</literal> nastavena, nebo
+kdy má prázdnou hodnotu. Jinak je volba
+<literal>Aptitude::Delete-Unused-Pattern</literal> ignorována.
 
       </seg>
     </seglistitem>
@@ -8244,6 +8382,20 @@ objevil.
       </seg>
     </seglistitem>
 
+    <seglistitem id="configKeepRecommends">
+      <seg><literal>Aptitude::Keep-Recommends</literal></seg>
+      <seg><literal>false</literal></seg>
+      <seg>
+
+Má-li volba hodnotu <literal>true</literal>, budou balíèky ponechány
+v systému tak dlouho, dokud je bude doporuèovat nìkterý
+z instalovaných balíkù. A to i v pøípadì, ¾e má volba <literal><link
+linkend="configRecommends-Important">Aptitude::Recommends-Important</link></literal>
+hodnotu <literal>false</literal>.
+
+      </seg>
+    </seglistitem>
+
     <seglistitem id="configKeep-Suggests">
       <seg><literal>Aptitude::Keep-Suggests</literal></seg>
       <seg><literal>false</literal></seg>
@@ -8257,6 +8409,20 @@ dozvíte v èásti <xref linkend="secAutoInstall"/>.
       </seg>
     </seglistitem>
 
+    <seglistitem id="configKeep-Unused-Pattern">
+      <seg><literal>Aptitude::Keep-Unused-Pattern</literal></seg>
+      <seg></seg>
+      <seg>
+
+Má-li volba <literal><link
+linkend="configDelete-Unused">Aptitude::Delete-Unused</link></literal>
+hodnotu <literal>true</literal>, budou odstranìny pouze balíky
+neodpovídající tomuto vzoru (viz <xref linkend="secSearchPatterns"/>).
+Pokud zde ponecháte prázdný øetìzec, budou odstranìny v¹echny
+nevyu¾ité balíky.
+
+      </seg>
+    </seglistitem>
 
     <seglistitem id="configLog">
       <seg><literal>Aptitude::Log</literal></seg>
@@ -8318,6 +8484,19 @@ podr¾eného balíku.
 Jak moc odmìnit nebo potrestat navrhovaná øe¹ení za poèet závislostí,
 které poru¹í. Za ka¾dou poru¹enou závislost se k celkovému skóre
 pøiète tato hodnota. Obvykle by to mìlo být záporné èíslo.
+
+      </seg>
+    </seglistitem>
+
+    <seglistitem id="configProblemResolver-DiscardNullSolution">
+      <seg><literal>Aptitude::ProblemResolver::Discard-Null-Solution</literal></seg>
+      <seg><literal>true</literal></seg>
+      <seg>
+
+Má-li volba hodnotu <literal>true</literal>, &aptitude; se nikdy nebude
+sna¾it vyøe¹it problémy se závislostmi tak, ¾e by navrhla zru¹ení
+v¹ech va¹ich navrhovaných akcí. (Co¾ je obvykle první vìc, kterou
+navrhne.)
 
       </seg>
     </seglistitem>
@@ -8558,7 +8737,9 @@ degradaci) balíku, který doposud nebyl oznaèen pro aktualizaci.
 Pokud mají tato volba a volba
 <literal>Aptitude::Auto-Install</literal> zároveò hodnotu
 <literal>true</literal>, pak instalací balíku se automaticky
-nainstalují i balíky, které doporuèuje.
+nainstalují i balíky, které instalovaný balík doporuèuje. Hodnota
+<literal>true</literal> dále zajistí, ¾e balíèky budou nainstalovány
+po celou dobu, kdy je doporuèuje nìkterý z instalovaných balíkù.
 
       </seg>
     </seglistitem>
@@ -9727,6 +9908,7 @@ Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
     <arg choice="plain">download</arg>
     <arg choice="plain">forbid-version</arg>
     <arg choice="plain">hold</arg>
+    <arg choice="plain">install</arg>
     <arg choice="plain">keep-all</arg>
     <arg choice="plain">markauto</arg>
     <arg choice="plain">purge</arg>
@@ -9808,7 +9990,7 @@ vzory</quote></link> v referenèní pøíruèce &aptitude;)
     </para><para>
 
 Pro výbìr konkrétní verze balíku pøidejte ke jménu balíku
-<quote><literal>=<replaceable>verze></replaceable></literal></quote>,
+<quote><literal>=<replaceable>verze</replaceable></literal></quote>,
 napøíklad <quote><literal>aptitude install
 apt=0.3.1</literal></quote>. Chcete-li vybrat balík z urèitého
 archivu, pøidejte za název balíku
@@ -10142,7 +10324,32 @@ Zobrazí detailní informace o zadaných balících. Pokud jméno balíku
 obsahuje znak <quote><literal>~</literal></quote>, bude se brát jako
 vzor pro hledání a budou instalovány v¹echny balíky vyhovující tomuto
 vzoru. (Viz <link linkend="secSearchPatterns"><quote>Vyhledávací
-vzory</quote></link> v referenèní pøíruèce &aptitude;)
+vzory</quote></link> v referenèní pøíruèce &aptitude;.)
+
+    </para><para>
+
+Pokud je míra upovídanosti 1 nebo vìt¹í (tj. je na pøíkazové øádce
+zadáno alespoò jedno <literal>-v</literal>), zobrazí se informace
+o v¹ech verzích balíku. V opaèném pøípadì se zobrazí pouze informace
+o <quote>kandidátské verzi</quote> (co¾ je verze, kterou by stáhl
+pøíkaz <quote><literal>aptitude install</literal></quote>.)
+
+    </para><para>
+
+Informace o jiné ne¾ kandidátské verzi balíku mù¾ete získat tak, ¾e za
+název balíku pøidáte
+<literal>=<replaceable>verze</replaceable></literal>. Chcete-li
+zobrazit verzi z konkrétního archivu, staèí za název balíku pøidat
+<literal>/<replaceable>archiv</replaceable></literal>. Jestli¾e
+pou¾ijete nìkterou z tìchto dvou syntaxí, zobrazí se pouze jediná
+verze bez ohledu na míru upovídanosti.
+
+    </para><para>
+
+S mírou upovídanosti 1 nebo vìt¹í se navíc zobrazí pole architektura,
+komprimovaná velikost, jméno souboru a md5 souèet. Pøesáhne-li
+upovídanost úroveò 2, zobrazí se vybraná verze tolikrát, v kolika
+archivech je nalezena.
 
     </para></listitem>
   </varlistentry>
@@ -10422,7 +10629,14 @@ pozdìj¹í instalaci.
 
 Nastaví distribuci, ze které se budou balíky instalovat. Napøíklad
 <quote><literal>aptitude -t unstable ...</literal></quote> bude pøi
-stahování balíkù upøednostòovat nestabilní distribuci.
+stahování balíkù upøednostòovat nestabilní distribuci.  Pro pøíkazy
+<quote>changelog</quote>, <quote>download</quote>
+a <quote>show</quote> to je ekvivalentní pøidání
+<literal>/<replaceable>distribuce</replaceable></literal> za název
+ka¾dého balíku na pøíkazové øádce. U ostatních pøíkazù to ovlivní
+výchozí kandidátskou verzi balíkù podle pravidel popsaných
+v <citerefentry> <refentrytitle>apt_preferences</refentrytitle>
+<manvolnum>5</manvolnum> </citerefentry>.
 
     </para><para>
 
@@ -10632,6 +10846,68 @@ pou¾ít zároveò s <literal>-i</literal>.
 Pøi startu programu zobrazí obrazovku pro stahování (ekvivalentní
 stisku klávesy <quote><keycap>g</keycap></quote> hned po startu). Tuto
 volbu nemù¾ete pou¾ít zároveò s <quote><literal>-u</literal></quote>.
+
+    </para></listitem>
+  </varlistentry>
+</variablelist>
+</refsect1>
+
+
+<refsect1>
+  <title>Prostøedí</title>
+
+<variablelist>
+  <varlistentry>
+    <term><literal>HOME</literal></term>
+
+    <listitem><para>
+
+Pokud existuje adresáø <filename>$HOME/.aptitude</filename>,
+&aptitude; si zde ulo¾í konfiguraèní soubor jako
+<filename>$HOME/.aptitude/config</filename>. V opaèném pøípadì si
+vyhledá domovský adresáø u¾ivatele pomocí <citerefentry>
+<refentrytitle>getpwuid</refentrytitle> <manvolnum>2</manvolnum>
+</citerefentry> a konfiguraèní soubor ulo¾í tam.
+
+    </para></listitem>
+  </varlistentry>
+
+  <varlistentry>
+    <term><literal>PAGER</literal></term>
+
+    <listitem><para>
+
+Je-li nastavena tato promìnná prostøedí, &aptitude; ji vyu¾ije pro
+zobrazení seznamu zmìn pøíkazu <quote><literal>aptitude
+changelog</literal></quote>. V opaèném pøípadì se pou¾ije výchozí
+<literal>more</literal>.
+
+    </para></listitem>
+  </varlistentry>
+
+  <varlistentry>
+    <term><literal>TMP</literal></term>
+
+    <listitem><para>
+
+Pokud není nastavena promìnná <literal>TMPDIR</literal>, ale
+<literal>TMP</literal> ano, &aptitude; si zde bude ukládat své doèasné
+soubory. Pokud není nastavena ani jedna z tìctto promìnných, pou¾ije
+se adresáø <filename>/tmp</filename>.
+
+    </para></listitem>
+  </varlistentry>
+
+  <varlistentry>
+    <term><literal>TMPDIR</literal></term>
+
+    <listitem><para>
+
+&aptitude; bude ukládat své doèasné soubory do adresáøe urèeného touto
+promìnnou prostøedí. Pokud promìnná <literal>TMPDIR</literal> není
+nastavena, pou¾ije se promìnná <literal>TMP</literal>. Jestli¾e není
+nastavena ani ta, pou¾ije se výchozí adresáø
+<filename>/tmp</filename>.
 
     </para></listitem>
   </varlistentry>
