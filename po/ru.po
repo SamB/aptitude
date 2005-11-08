@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_ru\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-11-05 13:28-0500\n"
+"POT-Creation-Date: 2005-11-07 15:22-0800\n"
 "PO-Revision-Date: 2005-10-24 19:38+0400\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
@@ -440,7 +440,7 @@ msgstr "Неверная операция %s"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Неожидаемый шаблонный аргумент после \"keep-all\""
 
-#: src/cmdline/cmdline_do_action.cc:233 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:511
 #, c-format
 msgid "Abort.\n"
@@ -1951,11 +1951,11 @@ msgstr "Встретилась плохая запись (Package=%s, Group=%s),
 msgid "Multiple descriptions found for group %s, ignoring one"
 msgstr "Найдено несколько описаний для группы %s, одно игнорируется"
 
-#: src/generic/apt/tags.cc:214 src/generic/apt/tags.cc:221
+#: src/generic/apt/tags.cc:216 src/generic/apt/tags.cc:223
 msgid "Building tag database"
 msgstr "Построение базы данных тегов"
 
-#: src/generic/apt/tags.cc:253
+#: src/generic/apt/tags.cc:255
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgstr "Не удалось загрузить словарь debtags, возможно debtags не установлен?"
 
@@ -2532,12 +2532,12 @@ msgstr "-u и -i не могут быть заданы с командой"
 msgid "Unknown command \"%s\"\n"
 msgstr "Неизвестная команда \"%s\"\n"
 
-#: src/main.cc:516 src/main.cc:557
+#: src/main.cc:516 src/main.cc:559
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Необработанное исключение: %s\n"
 
-#: src/main.cc:520 src/main.cc:561
+#: src/main.cc:520 src/main.cc:563
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -2546,19 +2546,11 @@ msgstr ""
 "Трассировка:\n"
 "%s"
 
-#: src/menu_text_layout.cc:36 src/ui.cc:239 src/view_changelog.cc:55
-msgid "Search for:"
-msgstr "Поиск:"
-
-#: src/menu_text_layout.cc:68 src/view_changelog.cc:67
-msgid "Search backwards for:"
-msgstr "Поиск в обратную сторону:"
-
-#: src/menu_tree.cc:204
+#: src/menu_text_layout.cc:36 src/menu_tree.cc:204 src/view_changelog.cc:55
 msgid "Search for: "
 msgstr "Поиск: "
 
-#: src/menu_tree.cc:221
+#: src/menu_text_layout.cc:68 src/menu_tree.cc:221 src/view_changelog.cc:67
 msgid "Search backwards for: "
 msgstr "Поиск в обратную сторону: "
 
@@ -4417,6 +4409,10 @@ msgstr "E:"
 msgid "W:"
 msgstr "W:"
 
+#: src/ui.cc:239
+msgid "Search for:"
+msgstr "Поиск:"
+
 #: src/ui.cc:316
 msgid ""
 "WARNING: the package cache is opened in read-only mode!  This change and all "
@@ -5345,6 +5341,9 @@ msgstr "Не удалось загрузить имя файла: строка %
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "САМЫЙ ВЕРХНИЙ УРОВЕНЬ"
+
+#~ msgid "Search backwards for:"
+#~ msgstr "Поиск в обратную сторону:"
 
 #~ msgid "Happy?"
 #~ msgstr "Счастливы?"

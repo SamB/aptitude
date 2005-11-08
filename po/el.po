@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_el\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-11-05 13:28-0500\n"
+"POT-Creation-Date: 2005-11-07 15:22-0800\n"
 "PO-Revision-Date: 2005-04-03 14:02EEST\n"
 "Last-Translator: Greek Translation Team <debian-l10n-greek@lists.debian."
 "org>\n"
@@ -463,7 +463,7 @@ msgstr "Ακυρη λειτουργία %s"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr ""
 
-#: src/cmdline/cmdline_do_action.cc:233 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:511
 #, c-format
 msgid "Abort.\n"
@@ -2000,11 +2000,11 @@ msgstr "Βρέθηκε λανθασμένη εγγραφή (Πακέτο=%s, Ο�
 msgid "Multiple descriptions found for group %s, ignoring one"
 msgstr "Βρέθηκαν πολλαπλές περιγραφές για την ομάδα %s, παραλείπεται μία"
 
-#: src/generic/apt/tags.cc:214 src/generic/apt/tags.cc:221
+#: src/generic/apt/tags.cc:216 src/generic/apt/tags.cc:223
 msgid "Building tag database"
 msgstr ""
 
-#: src/generic/apt/tags.cc:253
+#: src/generic/apt/tags.cc:255
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgstr ""
 
@@ -2595,32 +2595,23 @@ msgstr "το -u και -i δεν μπορούν να οριστούν στην �
 msgid "Unknown command \"%s\"\n"
 msgstr "Αγνωστη εντολή \"%s\"\n"
 
-#: src/main.cc:516 src/main.cc:557
+#: src/main.cc:516 src/main.cc:559
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr ""
 
-#: src/main.cc:520 src/main.cc:561
+#: src/main.cc:520 src/main.cc:563
 #, c-format
 msgid ""
 "Backtrace:\n"
 "%s"
 msgstr ""
 
-#: src/menu_text_layout.cc:36 src/ui.cc:239 src/view_changelog.cc:55
-msgid "Search for:"
-msgstr "Αναζήτηση του:"
-
-#: src/menu_text_layout.cc:68 src/view_changelog.cc:67
-#, fuzzy
-msgid "Search backwards for:"
-msgstr "Αναζήτηση του: "
-
-#: src/menu_tree.cc:204
+#: src/menu_text_layout.cc:36 src/menu_tree.cc:204 src/view_changelog.cc:55
 msgid "Search for: "
 msgstr "Αναζήτηση του: "
 
-#: src/menu_tree.cc:221
+#: src/menu_text_layout.cc:68 src/menu_tree.cc:221 src/view_changelog.cc:67
 #, fuzzy
 msgid "Search backwards for: "
 msgstr "Αναζήτηση του: "
@@ -4539,6 +4530,10 @@ msgstr ""
 msgid "W:"
 msgstr ""
 
+#: src/ui.cc:239
+msgid "Search for:"
+msgstr "Αναζήτηση του:"
+
 #: src/ui.cc:316
 msgid ""
 "WARNING: the package cache is opened in read-only mode!  This change and all "
@@ -5502,6 +5497,10 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Search backwards for:"
+#~ msgstr "Αναζήτηση του: "
 
 #~ msgid "Happy?"
 #~ msgstr "Ευχαριστημένοι;"

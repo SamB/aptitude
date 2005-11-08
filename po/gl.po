@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-11-05 13:28-0500\n"
+"POT-Creation-Date: 2005-11-07 15:22-0800\n"
 "PO-Revision-Date: 2005-11-05 16:48+0100\n"
 "Last-Translator: Jacobo Tarrío <jtarrio@debian.org>\n"
 "Language-Team: Galician <trasno@ceu.fi.udc.es>\n"
@@ -437,7 +437,7 @@ msgstr "Operación %s non válida"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Non se esperaba un argumento de patrón despois de \"keep-all\""
 
-#: src/cmdline/cmdline_do_action.cc:233 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:511
 #, c-format
 msgid "Abort.\n"
@@ -1951,11 +1951,11 @@ msgstr "Atopouse un rexistro incorrecto (Package=%s, Group=%s), omítese"
 msgid "Multiple descriptions found for group %s, ignoring one"
 msgstr "Atopáronse varias descricións para o grupo %s, ignórase unha"
 
-#: src/generic/apt/tags.cc:214 src/generic/apt/tags.cc:221
+#: src/generic/apt/tags.cc:216 src/generic/apt/tags.cc:223
 msgid "Building tag database"
 msgstr "A construír a base de datos de etiquetas"
 
-#: src/generic/apt/tags.cc:253
+#: src/generic/apt/tags.cc:255
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgstr "Non se puido cargar o vocabulario de debtags, ¿está instalado debtags?"
 
@@ -2546,12 +2546,12 @@ msgstr "Non se poden indicar -u e -i cunha orde"
 msgid "Unknown command \"%s\"\n"
 msgstr "Orde \"%s\" descoñecida\n"
 
-#: src/main.cc:516 src/main.cc:557
+#: src/main.cc:516 src/main.cc:559
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Excepción sen capturar: %s\n"
 
-#: src/main.cc:520 src/main.cc:561
+#: src/main.cc:520 src/main.cc:563
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -2560,19 +2560,11 @@ msgstr ""
 "Trazado:\n"
 "%s"
 
-#: src/menu_text_layout.cc:36 src/ui.cc:239 src/view_changelog.cc:55
-msgid "Search for:"
-msgstr "Buscar:"
-
-#: src/menu_text_layout.cc:68 src/view_changelog.cc:67
-msgid "Search backwards for:"
-msgstr "Buscar cara a atrás:"
-
-#: src/menu_tree.cc:204
+#: src/menu_text_layout.cc:36 src/menu_tree.cc:204 src/view_changelog.cc:55
 msgid "Search for: "
 msgstr "Buscar: "
 
-#: src/menu_tree.cc:221
+#: src/menu_text_layout.cc:68 src/menu_tree.cc:221 src/view_changelog.cc:67
 msgid "Search backwards for: "
 msgstr "Buscar cara a atrás: "
 
@@ -4450,6 +4442,10 @@ msgstr "E:"
 msgid "W:"
 msgstr "A:"
 
+#: src/ui.cc:239
+msgid "Search for:"
+msgstr "Buscar:"
+
 #: src/ui.cc:316
 msgid ""
 "WARNING: the package cache is opened in read-only mode!  This change and all "
@@ -5395,3 +5391,6 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "NIVEL SUPERIOR"
+
+#~ msgid "Search backwards for:"
+#~ msgstr "Buscar cara a atrás:"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3.5\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-11-05 13:28-0500\n"
+"POT-Creation-Date: 2005-11-07 15:22-0800\n"
 "PO-Revision-Date: 2005-10-26 15:11+0200\n"
 "Last-Translator: Morten Bo Johansen <mojo@mbjnet.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -436,7 +436,7 @@ msgstr "Ugyldig operation %s"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Uventet argument til mønster efter \"keep-all\""
 
-#: src/cmdline/cmdline_do_action.cc:233 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:511
 #, c-format
 msgid "Abort.\n"
@@ -1934,11 +1934,11 @@ msgstr "Forkert post fundet (Package=%s, Group=%s), springer over"
 msgid "Multiple descriptions found for group %s, ignoring one"
 msgstr "Flere beskrivelser fundet for gruppe %s, ignorerer en"
 
-#: src/generic/apt/tags.cc:214 src/generic/apt/tags.cc:221
+#: src/generic/apt/tags.cc:216 src/generic/apt/tags.cc:223
 msgid "Building tag database"
 msgstr "Opbygger database over mærkater"
 
-#: src/generic/apt/tags.cc:253
+#: src/generic/apt/tags.cc:255
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgstr ""
 "Kunne ikke indlæse debtags-ordliste, måske er debtags ikke installeret?"
@@ -2509,12 +2509,12 @@ msgid "Unknown command \"%s\"\n"
 msgstr "Ukendt kommando \"%s\"\n"
 
 # Uncaught? -MBJ
-#: src/main.cc:516 src/main.cc:557
+#: src/main.cc:516 src/main.cc:559
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Uncaught exception: %s\n"
 
-#: src/main.cc:520 src/main.cc:561
+#: src/main.cc:520 src/main.cc:563
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -2523,19 +2523,11 @@ msgstr ""
 "Backtrace:\n"
 "%s"
 
-#: src/menu_text_layout.cc:36 src/ui.cc:239 src/view_changelog.cc:55
-msgid "Search for:"
-msgstr "Søg efter:"
-
-#: src/menu_text_layout.cc:68 src/view_changelog.cc:67
-msgid "Search backwards for:"
-msgstr "Søg baglæns efter:"
-
-#: src/menu_tree.cc:204
+#: src/menu_text_layout.cc:36 src/menu_tree.cc:204 src/view_changelog.cc:55
 msgid "Search for: "
 msgstr "Søg efter: "
 
-#: src/menu_tree.cc:221
+#: src/menu_text_layout.cc:68 src/menu_tree.cc:221 src/view_changelog.cc:67
 msgid "Search backwards for: "
 msgstr "Søg baglæns efter: "
 
@@ -4401,6 +4393,10 @@ msgstr "E:"
 msgid "W:"
 msgstr "W:"
 
+#: src/ui.cc:239
+msgid "Search for:"
+msgstr "Søg efter:"
+
 #: src/ui.cc:316
 msgid ""
 "WARNING: the package cache is opened in read-only mode!  This change and all "
@@ -5335,3 +5331,6 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "ØVERSTE NIVEAU"
+
+#~ msgid "Search backwards for:"
+#~ msgstr "Søg baglæns efter:"
