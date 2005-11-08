@@ -601,11 +601,15 @@ bool package_trusted(const pkgCache::VerIterator &ver)
     {
       pkgIndexFile *index;
 
-      if(apt_source_list->FindIndex(i.File(), index) && !index->IsTrusted())
-	return false;
+      if(!apt_source_list->FindIndex(i.File(), index))
+	// Corresponds to the currently installed package, which is
+	// always "trusted".
+	return true;
+      else if(index->IsTrusted())
+	return true;
     }
 
-  return true;
+  return false;
 }
 
 /** \return \b true if d1 subsumes d2; that is, if one of the
