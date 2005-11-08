@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
 "POT-Creation-Date: 2005-11-07 15:22-0800\n"
-"PO-Revision-Date: 2005-10-02 11:20+0200\n"
+"PO-Revision-Date: 2005-10-16 10:29+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -150,9 +150,8 @@ msgid "Remove unused packages automatically"
 msgstr "Automaticky odstranit nepoužívané balíky"
 
 #: src/apt_options.cc:192
-#, fuzzy
 msgid "Don't automatically remove unused packages matching this filter"
-msgstr "Automaticky odstranit nepoužívané balíky splňující filtr"
+msgstr "Automaticky neodstraňovat nepoužívané balíky splňující filtr"
 
 #: src/apt_options.cc:248 src/mine/cmine.cc:302 src/mine/cmine.cc:367
 #: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:91
@@ -326,11 +325,12 @@ msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Pozn: vybírám pro instalaci úlohu \"%s: %s\"\n"
 
 #: src/cmdline/cmdline_action.cc:244
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
-msgstr "Verzi balíku můžete zadat jen s příkazem 'install'.\n"
+msgstr ""
+"Verzi balíku můžete zadat jen s příkazem 'install' nebo 'forbid-version'.\n"
 
 #: src/cmdline/cmdline_action.cc:252
 #, c-format
@@ -1094,9 +1094,8 @@ msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Nemohu vyřešit závislosti! Vzdávám se..."
 
 #: src/cmdline/cmdline_resolver.cc:645
-#, fuzzy
 msgid "*** No more solutions available ***"
-msgstr "Žádná další řešení."
+msgstr "*** Žádná další řešení nejsou dostupná ***"
 
 #: src/cmdline/cmdline_search.cc:100
 #, c-format
@@ -1568,9 +1567,9 @@ msgid "You may want to update the package lists to correct these missing files"
 msgstr "Pro opravení chybějících souborů zkuste aktualizovat seznamy balíků"
 
 #: src/generic/apt/apt.cc:171
-#, fuzzy, c-format
+#, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
-msgstr "Nemohu nahradit %s novým konfiguračním souborem"
+msgstr "%s se dá číst, ale ne zapisovat; nemohu zapsat konfigurační soubor."
 
 #: src/generic/apt/apt.cc:209
 #, c-format
@@ -1623,9 +1622,8 @@ msgid "Couldn't clean out list directories"
 msgstr "Nemohu vyčistit adresáře seznamů"
 
 #: src/generic/apt/download_update_manager.cc:122
-#, fuzzy
 msgid "Couldn't rebuild package cache"
-msgstr "Nemohu číst seznam se zdroji balíků"
+msgstr "Nemohu vytvořit vyrovnávací paměť pro balíky"
 
 #: src/generic/apt/log.cc:52
 #, c-format
@@ -1837,7 +1835,7 @@ msgstr "Neznámá závislost: %s"
 
 #: src/generic/apt/matchers.cc:2119
 msgid "Provides: cannot be broken"
-msgstr ""
+msgstr "Poskytuje: nemůže být porušený"
 
 #: src/generic/apt/matchers.cc:2174
 #, c-format
@@ -1925,7 +1923,7 @@ msgstr "Vytvářím databázi značek"
 
 #: src/generic/apt/tags.cc:255
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
+msgstr "Nemohu načíst slovník debtags - možná nejsou debtags nainstalovány?"
 
 #: src/generic/apt/tasks.cc:283
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -2030,9 +2028,8 @@ msgid "By-status grouping policies take no arguments"
 msgstr "Seskupování podle statutu nepoužívá žádné argumenty"
 
 #: src/load_grouppolicy.cc:412
-#, fuzzy
 msgid "Expected '(' after 'filter'"
-msgstr "Za 'pattern' se očekává '('"
+msgstr "Za 'filter' se očekává '('"
 
 #: src/load_grouppolicy.cc:449
 #, c-format
@@ -2128,9 +2125,8 @@ msgid "By-name sorting policies take no arguments"
 msgstr "Třídění podle jména nepoužívá žádné argumenty"
 
 #: src/load_sortpolicy.cc:64
-#, fuzzy
 msgid "By-version sorting policies take no arguments"
-msgstr "Třídění podle priority nepoužívá žádné argumenty"
+msgstr "Třídění podle verze nepoužívá žádné argumenty"
 
 #: src/load_sortpolicy.cc:77
 msgid "By-installed size sorting policies take no arguments"
@@ -2317,7 +2313,7 @@ msgstr " download     - Stáhne .deb soubor balíku\n"
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
-msgstr ""
+msgstr " reinstall    - Stáhne a (možná) přeinstaluje již instalovaný balík\n"
 
 #: src/main.cc:144
 #, c-format
@@ -2409,12 +2405,12 @@ msgstr ""
 " -t [verze]     Vybere verzi Debianu, ze které se mají balíky instalovat\n"
 
 #: src/main.cc:159
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
 msgstr ""
-" -q             V příkazovém režimu potlačí postupné zobrazování postupu."
+" -q             V příkazovém režimu potlačí indikátory postupu.\n"
 
 #: src/main.cc:160
 #, c-format
@@ -2451,14 +2447,14 @@ msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  Tato aptitude nemá schopnosti svaté krávy.\n"
 
 #: src/main.cc:299
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a number after -q=\n"
-msgstr "Za \"%s\" je očekávána verze"
+msgstr "Za -q= je očekáváno číslo\n"
 
 #: src/main.cc:308
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a number after -q=, got %s\n"
-msgstr "Za \"%s\" je očekávána verze"
+msgstr "Za -q= je očekáváno číslo, zadáno %s\n"
 
 #: src/main.cc:331
 #, c-format
@@ -4397,18 +4393,16 @@ msgid "View available packages and choose actions to perform"
 msgstr "Zobrazí dostupné balíky a akce, které s nimi můžete provádět"
 
 #: src/ui.cc:731
-#, fuzzy
 msgid "Recommended Packages"
-msgstr "Doporučuje"
+msgstr "Doporučené balíky"
 
 #: src/ui.cc:732
 msgid "View packages that it is recommended that you install"
-msgstr ""
+msgstr "Zobrazí balíky, které jsou doporučeny k instalaci"
 
 #: src/ui.cc:733
-#, fuzzy
 msgid "Recommendations"
-msgstr "Doporučuje"
+msgstr "Doporučení"
 
 #: src/ui.cc:837
 msgid ""
@@ -4513,7 +4507,7 @@ msgstr "Zobrazí průběh stahování balíků"
 
 #: src/ui.cc:1065
 msgid "Package Download"
-msgstr "Stažení Balíku"
+msgstr "Stažení Balíků"
 
 #: src/ui.cc:1098
 msgid ""
@@ -5060,19 +5054,20 @@ msgid "Create a new default package view"
 msgstr "Vytvoří nový standardní pohled na balíky"
 
 #: src/ui.cc:2108
-#, fuzzy
 msgid "Audit ^Recommendations"
-msgstr "Doporučuje"
+msgstr "Prověřit dopo^ručení"
 
 #: src/ui.cc:2109
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
 msgstr ""
+"Zobrazí balíky, které jsou doporučeny k instalaci, ale které momentálně "
+"nejsou nainstalované."
 
 #: src/ui.cc:2112
 msgid "New ^Flat Package List"
-msgstr "Nový plochý seznam balíky"
+msgstr "Nový plochý seznam balíků"
 
 #: src/ui.cc:2113
 msgid "View all the packages on the system in a single uncategorized list"
