@@ -203,6 +203,12 @@ void resolver_manager::background_thread_execution()
 
 	  job.k->no_more_time();
 	}
+      catch(Exception &e)
+	{
+	  std::cerr << "*** Uncaught exception in resolver thread:" << std::endl;
+	  std::cerr << e.errmsg() << std::endl;
+	  abort();
+	}
 
       l.acquire();
       delete job.k;
