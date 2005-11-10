@@ -1312,7 +1312,9 @@ void aptitudeDepCache::restore_apt_state(const apt_state_snapshot *snapshot)
 void aptitudeDepCache::mark_package(const PkgIterator &pkg,
 				    const VerIterator &ver,
 				    bool follow_recommends,
-				    bool follow_suggests)
+				    bool follow_suggests,
+				    bool debug,
+				    int level)
 {
   pkgDepCache::StateCache &state=(*this)[pkg];
   aptitude_state &estate=get_ext_state(pkg);
@@ -1325,19 +1327,61 @@ void aptitudeDepCache::mark_package(const PkgIterator &pkg,
   if(state.Delete() && estate.remove_reason==unused)
     {
       if(ver==candver)
-	mark_install(pkg, false, false, NULL);
+	{
+	  if(debug)
+	    std::cout << string(level*2, ' ')
+		      << "Cancelling the deletion of "
+		      << pkg.Name() << " and installing its candidate version." << std::endl;
+
+	  mark_install(pkg, false, false, NULL);
+	}
       else if(ver==pkg.CurrentVer())
-	MarkKeep(pkg);
+	{
+	  if(debug)
+	    std::cout << string(level*2, ' ')
+		      << "Reverting to the currently installed version of "
+		      << pkg.Name() << std::endl;
+
+	  MarkKeep(pkg);
+	}
 
       instver=state.InstVerIter(*this);
     }
 
   if(!(ver==instver && !instver.end()))
-    return;
+    {
+      if(debug)
+	{
+	  std::cout << string(level*2, ' ')
+		    << "Not marking " << pkg.Name()
+		    << " " << (ver.end() ? "[UNINST]" : ver.VerStr())
+		    << ": ";
+
+	  if(ver == instver)
+	    std::cout << "it is the UNINST version";
+	  else
+	    std::cout << "it is not the version to be installed ("
+		      << (instver.end() ? "[UNINST]" : instver.VerStr())
+		      << ")" << std::endl;
+	}
+      return;
+    }
 
   if(estate.marked)
-    return;
+    {
+      if(debug)
+	std::cout << string(level*2, ' ')
+		  << "Not marking " << pkg.Name()
+		  << " " << (ver.end() ? "[UNINST]" : ver.VerStr())
+		  << ": it is already marked." << std::endl;
+      return;
+    }
 
+  if(debug)
+    std::cout << string(level*2, ' ')
+	      << "Marking " << pkg.Name() << " "
+	      << (ver.end() ? "[UNINST]" : ver.VerStr())
+	      << std::endl;
   estate.marked=true;
 
   if(!ver.end())
@@ -1351,17 +1395,35 @@ void aptitudeDepCache::mark_package(const PkgIterator &pkg,
 	     (follow_suggests &&
 	      d->Type==pkgCache::Dep::Suggests))
 	    {
+	      if(debug)
+		{
+		  std::cout << string(level*2, ' ')
+			    << "Following dependency "
+			    << d.ParentPkg().Name()
+			    << " "
+			    << d.DepType()
+			    << " "
+			    << d.TargetPkg().Name();
+		  if(d.TargetVer() != NULL)
+		    std::cout << " ("
+			      << d.CompType()
+			      << " "
+			      << d.TargetVer()
+			      << ")";
+		  std::cout << std::endl;
+		}
+
 	      // Try all versions of this package.
 	      for(VerIterator V=d.TargetPkg().VersionList(); !V.end(); ++V)
 		if(_system->VS->CheckDep(V.VerStr(), d->CompareOp, d.TargetVer()))
 		  mark_package(V.ParentPkg(), V,
-			       follow_recommends, follow_suggests);
+			       follow_recommends, follow_suggests, debug, level + 1);
 
 	      // Now try virtual packages
 	      for(PrvIterator prv=d.TargetPkg().ProvidesList(); !prv.end(); ++prv)
 		if(_system->VS->CheckDep(prv.ProvideVersion(), d->CompareOp, d.TargetVer()))
 		  mark_package(prv.OwnerPkg(), prv.OwnerVer(),
-			       follow_recommends, follow_suggests);
+			       follow_recommends, follow_suggests, debug, level + 1);
 	    }
 	}
     }
@@ -1394,6 +1456,10 @@ void aptitudeDepCache::mark_and_sweep(undo_group *undo)
     aptcfg->FindB(PACKAGE "::Keep-Recommends", false);
   bool follow_suggests=aptcfg->FindB(PACKAGE "::Keep-Suggests", false) ||
     aptcfg->FindB(PACKAGE "::Suggests-Important", false);
+  bool debug = aptcfg->FindB(PACKAGE "::GC-Debug", false);
+
+  if(debug)
+    std::cout << "*** BEGIN MARK AND SWEEP ***" << std::endl;
 
   for(pkgCache::PkgIterator p=PkgBegin(); !p.end(); ++p)
     {
@@ -1407,10 +1473,10 @@ void aptitudeDepCache::mark_and_sweep(undo_group *undo)
 	{
 	  if(PkgState[p->ID].Keep() && !p.CurrentVer().end())
 	    mark_package(p, p.CurrentVer(),
-			 follow_recommends, follow_suggests);
+			 follow_recommends, follow_suggests, debug, 0);
 	  else if(PkgState[p->ID].Install())
 	    mark_package(p, PkgState[p->ID].InstVerIter(GetCache()),
-			 follow_recommends, follow_suggests);
+			 follow_recommends, follow_suggests, debug, 0);
 	}
     }
 
@@ -1443,6 +1509,9 @@ void aptitudeDepCache::mark_and_sweep(undo_group *undo)
   mark_and_sweep_in_progress=false;
 
   delete matcher;
+
+  if(debug)
+    std::cout << "*** END MARK AND SWEEP ***" << std::endl;
 
   // end_action_group is written carefully so it works here:
   end_action_group(undo);

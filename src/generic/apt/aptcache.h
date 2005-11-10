@@ -240,7 +240,9 @@ private:
   void mark_package(const PkgIterator &pkg,
 		    const VerIterator &ver,
 		    bool follow_recommends,
-		    bool follow_suggests);
+		    bool follow_suggests,
+		    bool debug,
+		    int level);
   void mark_and_sweep(undo_group *undo);
 
   // The following three methods exist so that undos function sensibly.
