@@ -290,13 +290,9 @@ class aptitude_resolver_dep
   pkgCache::PrvIterator prv;
 public:
   /** \brief Generate an invalid dependency object.
-   *
-   *  \todo how prv is instantiated is a dreadful hack, but it's
-   *  needed to avoid crashing until PrvIterators get a sensible
-   *  default constructor.
    */
   aptitude_resolver_dep()
-    :cache(0), prv(*apt_cache_file, (pkgCache::Provides *) 1, (pkgCache::Package *) 0)
+    :cache(0), prv()
   {
   }
 
