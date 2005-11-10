@@ -448,6 +448,14 @@ public:
     return rval;
   }
 
+  void paint(const style &st)
+  {
+    if(apt_cache_file == NULL)
+      update();
+
+    vs_multiplex::paint(st);
+  }
+
   void update()
   {
     ref_ptr<solution_examiner> tmpref(this);
