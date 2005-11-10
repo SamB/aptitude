@@ -333,6 +333,8 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 
   new_package_count=0;
 
+  pre_package_state_changed();
+
   // Act on them
   for(pkgCache::PkgIterator i=PkgBegin(); !i.end(); i++)
     {
@@ -491,6 +493,7 @@ void aptitudeDepCache::mark_all_upgradable(bool with_autoinst,
 
 	  if(do_upgrade)
 	    {
+	      pre_package_state_changed();
 	      dirty = true;
 
 	      MarkInstall(i, do_autoinstall);
@@ -1145,6 +1148,7 @@ bool aptitudeDepCache::try_fix_broken(undo_group *undo)
     }
 
   pkgProblemResolver fixer(this);
+  pre_package_state_changed();
   for(pkgCache::PkgIterator i=PkgBegin(); !i.end(); i++)
     {
       fixer.Clear(i);
@@ -1342,6 +1346,7 @@ void aptitudeDepCache::mark_package(const PkgIterator &pkg,
 		      << "Reverting to the currently installed version of "
 		      << pkg.Name() << std::endl;
 
+	  pre_package_state_changed();
 	  MarkKeep(pkg);
 	}
 
