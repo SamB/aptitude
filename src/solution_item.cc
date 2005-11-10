@@ -242,6 +242,13 @@ void solution_act_item::unmandate()
 
 void solution_act_item::highlighted(vs_tree *win)
 {
+  if(apt_cache_file == NULL)
+    {
+      set_short_description(fragf(""));
+      set_active_dep(aptitude_resolver_dep());
+      return;
+    }
+
   pkgCache::VerIterator real_ver = ver.get_ver();
 
   if(real_ver.end())
@@ -517,7 +524,10 @@ bool solution_unresolved_item::is_mandatory()
 
 void solution_unresolved_item::highlighted(vs_tree *win)
 {
-  set_active_dep(d);
+  if(apt_cache_file == NULL)
+    set_active_dep(aptitude_resolver_dep());
+  else
+    set_active_dep(d);
 }
 
 void solution_unresolved_item::unhighlighted(vs_tree *win)
