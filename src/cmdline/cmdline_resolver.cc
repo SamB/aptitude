@@ -115,6 +115,23 @@ static void setup_resolver(pkgset &to_install,
 	    }
 	}
     }
+
+  string dumpfile = aptcfg->Find(PACKAGE "::CmdLine::Resolver-Dump", "");
+  if(!dumpfile.empty())
+    {
+      ofstream f(dumpfile.c_str());
+      if(!f)
+	_error->Errno("dump_resolver", _("Unable to open %s for writing"), dumpfile.c_str());
+      else
+	{
+	  resman->dump(f);
+
+	  if(!f)
+	    _error->Errno("dump_resolver", _("Error writing resolver state to %s"), dumpfile.c_str());
+	  else
+	    cout << _("Resolver state successfully written!");
+	}
+    }
 }
 
 static inline fragment *flowindentbox(int i1, int irest, fragment *f)
