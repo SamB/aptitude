@@ -463,6 +463,7 @@ public:
     if(!apt_cache_file)
       {
 	set_static_root(transcode(_("The package cache is not available.")));
+	set_active_dep(aptitude_resolver_dep());
 	return;
       }
 
