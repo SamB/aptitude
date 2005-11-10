@@ -48,6 +48,7 @@
 #include <vector>
 
 #include <iostream>
+#include <sstream>
 
 #include "dump_universe.h"
 #include "exceptions.h"
@@ -2054,24 +2055,26 @@ private:
 	    // something is broken elsewhere).
 	    if(starting_solution == curr && !(*bi).broken_under(curr))
 	      {
-		std::cerr << "Unexpectedly non-broken dependency "
-			  << *bi << "!" << std::endl;
+		std::ostringstream msg;
+
+		msg << "Unexpectedly non-broken dependency "
+		    << *bi << "!" << std::endl;
 
 		version source = (*bi).get_source();
 
 		if(curr.version_of(source.get_package()) != source)
-		  std::cerr << "  (" << source.get_package().get_name()
-			    << " " << source.get_name()
-			    << " is not installed)" << std::endl;
+		  msg << "  (" << source.get_package().get_name()
+		      << " " << source.get_name()
+		      << " is not installed)" << std::endl;
 
 		for(typename dep::solver_iterator si = (*bi).solvers_begin();
 		    !si.end(); ++si)
 		  if(curr.version_of((*si).get_package()) == *si)
-		    std::cerr << "  (" << (*si).get_package().get_name()
-			      << " " << (*si).get_name()
-			      << " is installed)" << std::endl;
+		    msg << "  (" << (*si).get_package().get_name()
+			<< " " << (*si).get_name()
+			<< " is installed)" << std::endl;
 
-		abort();
+		throw ResolverInternalErrorException(msg.str());
 	      }
 
 	    imm::map<package, action> conflict;
