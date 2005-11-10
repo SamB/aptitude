@@ -2067,9 +2067,9 @@ private:
 		for(typename dep::solver_iterator si = (*bi).solvers_begin();
 		    !si.end(); ++si)
 		  if(curr.version_of((*si).get_package()) == *si)
-		    std::cerr << "  (" << source.get_package().get_name()
-			      << " " << source.get_name()
-			      << " is not installed)" << std::endl;
+		    std::cerr << "  (" << (*si).get_package().get_name()
+			      << " " << (*si).get_name()
+			      << " is installed)" << std::endl;
 
 		abort();
 	      }
