@@ -54,6 +54,21 @@ class InterruptedException : public ProblemResolverError {
   }
 };
 
+/** An exception indicating that an internal error occurred. */
+class ResolverInternalErrorException : public ProblemResolverError {
+  std::string msg;
+public:
+  ResolverInternalErrorException(const std::string &_msg)
+    : msg(_msg)
+  {
+  }
+
+  std::string errmsg() const
+  {
+    return msg;
+  }
+};
+
 /** An exception indicating that two threads tried to run the resolver
  *  at once.
  */
