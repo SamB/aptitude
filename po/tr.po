@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-11-07 15:22-0800\n"
+"POT-Creation-Date: 2005-11-13 10:12-0800\n"
 "PO-Revision-Date: 2005-08-07 16:40+0300\n"
 "Last-Translator: Erçin EKER <ercin.eker@linux.org.tr>\n"
 "Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -202,7 +202,7 @@ msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "Bağımlılıklar çözülemiytor."
 
 #: src/broken_indicator.cc:273 src/solution_dialog.cc:126
-#: src/solution_screen.cc:513
+#: src/solution_screen.cc:522
 msgid "Internal error: unexpected null solution."
 msgstr "Dahili Hata: beklenmeyen boş çözüm."
 
@@ -795,38 +795,38 @@ msgstr ""
 "daha fazla paket isminden (veya parçası) sonra bir eylem karakteri girin. "
 "Eylem belirttiğiniz paketler üstünde işleme sokulacaktır. Mevcut eylemler: "
 
-#: src/cmdline/cmdline_prompt.cc:696 src/cmdline/cmdline_resolver.cc:167
+#: src/cmdline/cmdline_prompt.cc:696 src/cmdline/cmdline_resolver.cc:184
 msgid "'+' to install packages"
 msgstr "Paket kurmak için '+'"
 
-#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:169
+#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:186
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "Paketleri kurmak ve hemen otomatik kuruldu olarak işaretlemek için '+M'"
 
-#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:171
+#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:188
 msgid "'-' to remove packages"
 msgstr "Paket kaldırmak için '-'"
 
-#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:173
+#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:190
 msgid "'_' to purge packages"
 msgstr "Paketi temizlemek için '_'"
 
-#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:175
+#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:192
 msgid "'=' to place packages on hold"
 msgstr "Paketi tutmak için '='"
 
-#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:177
+#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:194
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "paketleri mevcut duruma sabitlemek için ':'"
 
-#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:179
+#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
 msgstr "Paketi otomatik kurulmuş olarak işaretlemek için'&M'"
 
-#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:181
+#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:198
 msgid "'&m' to mark packages as manually installed"
 msgstr "Paketleri elle kurulmuş olarak işaretlemek için '&m'"
 
@@ -910,59 +910,74 @@ msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Geçersiz cevap.  Lütfen geçerli bir komut girin ya da yardım için '?'.\n"
 
-#: src/cmdline/cmdline_resolver.cc:128
+#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
+#: src/generic/apt/apt.cc:199
+#, c-format
+msgid "Unable to open %s for writing"
+msgstr "%s yazmak için açılamıyor"
+
+#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:602
+#, c-format
+msgid "Error writing resolver state to %s"
+msgstr "%s'e çözümleyici durumu yazmadan hata"
+
+#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:604
+msgid "Resolver state successfully written!"
+msgstr "Çözümleyici durumu başarıyla yazıldı!"
+
+#: src/cmdline/cmdline_resolver.cc:145
 #, fuzzy, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr "y: %Fn: %Fq: %F,: %F.: %F<EYLEM> pkg... : %F%n%F%F%F%F%F%F%F%F"
 
-#: src/cmdline/cmdline_resolver.cc:147
+#: src/cmdline/cmdline_resolver.cc:164
 msgid "accept the proposed changes"
 msgstr "önerilen değişikliği kabul et"
 
-#: src/cmdline/cmdline_resolver.cc:149
+#: src/cmdline/cmdline_resolver.cc:166
 msgid "reject the proposed changes and search for another solution"
 msgstr "önerilen değişiliği reddet ve başka bir çözüm bul"
 
-#: src/cmdline/cmdline_resolver.cc:151
+#: src/cmdline/cmdline_resolver.cc:168
 msgid "give up and quit the program"
 msgstr "vazgeç ve uygulamadan çık"
 
-#: src/cmdline/cmdline_resolver.cc:153
+#: src/cmdline/cmdline_resolver.cc:170
 msgid "move to the next solution"
 msgstr "sonraki çözüme taşı"
 
-#: src/cmdline/cmdline_resolver.cc:155
+#: src/cmdline/cmdline_resolver.cc:172
 msgid "move to the previous solution"
 msgstr "önceki çözüme taşı"
 
-#: src/cmdline/cmdline_resolver.cc:157
+#: src/cmdline/cmdline_resolver.cc:174
 msgid "view an explanation of the changes in the solution"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:159
+#: src/cmdline/cmdline_resolver.cc:176
 #, fuzzy
 msgid "examine the solution in the visual user interface"
 msgstr "Kullanıcı arayüzünü etkileyen ayarları değiştirir"
 
-#: src/cmdline/cmdline_resolver.cc:161
+#: src/cmdline/cmdline_resolver.cc:178
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:163
+#: src/cmdline/cmdline_resolver.cc:180
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:165
+#: src/cmdline/cmdline_resolver.cc:182
 msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr "listelenen paketlerin durumunu ayarla, EYLEM:"
 
-#: src/cmdline/cmdline_resolver.cc:183
+#: src/cmdline/cmdline_resolver.cc:200
 msgid ""
 "Adjustments will cause the current solution to be discarded and recalculated "
 "as necessary."
@@ -970,137 +985,123 @@ msgstr ""
 "Ayarlamalar şu an ki çözümün göz ardı edilmesine neden olacak ve gerekli "
 "olursa yeniden hesaplanacak."
 
-#: src/cmdline/cmdline_resolver.cc:197
+#: src/cmdline/cmdline_resolver.cc:214
 #, c-format
 msgid "The version %s is available in the following archives:"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:205
+#: src/cmdline/cmdline_resolver.cc:222
 #, fuzzy, c-format
 msgid "Select the version of %s that should be used: "
 msgstr "Çözücü durumunun kaydedileceği dosya:"
 
-#: src/cmdline/cmdline_resolver.cc:212
+#: src/cmdline/cmdline_resolver.cc:229
 #, fuzzy, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
 msgstr "Geçersiz yanıt. lütfen 'e' veya 'h' girin."
 
-#: src/cmdline/cmdline_resolver.cc:227
+#: src/cmdline/cmdline_resolver.cc:244
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:241
+#: src/cmdline/cmdline_resolver.cc:258
 #, fuzzy, c-format
 msgid "Expected a version after \"%s\""
 msgstr "\"%ls\"den sonra paket gösterimi kod dönüşümü yapılamıyor"
 
-#: src/cmdline/cmdline_resolver.cc:251
+#: src/cmdline/cmdline_resolver.cc:268
 #, fuzzy, c-format
 msgid "No such package \"%s\""
 msgstr "Kaynak paketi: "
 
-#: src/cmdline/cmdline_resolver.cc:267
+#: src/cmdline/cmdline_resolver.cc:284
 #, c-format
 msgid "%s has no version named \"%s\""
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:284
+#: src/cmdline/cmdline_resolver.cc:301
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:287
+#: src/cmdline/cmdline_resolver.cc:304
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:297
+#: src/cmdline/cmdline_resolver.cc:314
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:300
+#: src/cmdline/cmdline_resolver.cc:317
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:313
+#: src/cmdline/cmdline_resolver.cc:330
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:316
+#: src/cmdline/cmdline_resolver.cc:333
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:325
+#: src/cmdline/cmdline_resolver.cc:342
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:328
+#: src/cmdline/cmdline_resolver.cc:345
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:447 src/solution_screen.cc:486
+#: src/cmdline/cmdline_resolver.cc:464 src/solution_screen.cc:495
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:493
+#: src/cmdline/cmdline_resolver.cc:510
 msgid "The following actions will resolve these dependencies:"
 msgstr "Aşağıdaki paketler bu bağımlılıkları karşılayacak:"
 
-#: src/cmdline/cmdline_resolver.cc:508
+#: src/cmdline/cmdline_resolver.cc:525
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Çözümü kabul et? [E/h/i/?]"
 
-#: src/cmdline/cmdline_resolver.cc:535 src/cmdline/cmdline_resolver.cc:627
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:644
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Bağımlılıkları çözmek için yapılan işlemler iptal ediliyor."
 
-#: src/cmdline/cmdline_resolver.cc:562
+#: src/cmdline/cmdline_resolver.cc:579
 msgid "The following commands are available:"
 msgstr "Şu komutlar mevcut:"
 
-#: src/cmdline/cmdline_resolver.cc:577
+#: src/cmdline/cmdline_resolver.cc:594
 msgid "File to write resolver state to: "
 msgstr "Çözümleyici durumunu dosyaya yaz:"
 
-#: src/cmdline/cmdline_resolver.cc:580 src/generic/apt/apt.cc:199
-#, c-format
-msgid "Unable to open %s for writing"
-msgstr "%s yazmak için açılamıyor"
-
-#: src/cmdline/cmdline_resolver.cc:585
-#, c-format
-msgid "Error writing resolver state to %s"
-msgstr "%s'e çözümleyici durumu yazmadan hata"
-
-#: src/cmdline/cmdline_resolver.cc:587
-msgid "Resolver state successfully written!"
-msgstr "Çözümleyici durumu başarıyla yazıldı!"
-
-#: src/cmdline/cmdline_resolver.cc:592
+#: src/cmdline/cmdline_resolver.cc:609
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Geçersiz yanıt. Lütfen şu komutları kullanın: "
 
-#: src/cmdline/cmdline_resolver.cc:602
+#: src/cmdline/cmdline_resolver.cc:619
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "Belirlenmiş sürede çözüm bulunamadı. Denemeye devam et? [E/h]"
 
-#: src/cmdline/cmdline_resolver.cc:630
+#: src/cmdline/cmdline_resolver.cc:647
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Geçersiz yanıt. lütfen 'e' veya 'h' girin."
 
-#: src/cmdline/cmdline_resolver.cc:639
+#: src/cmdline/cmdline_resolver.cc:656
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Başımlılık çözülemiyor! Vazgeçiliyor..."
 
-#: src/cmdline/cmdline_resolver.cc:645
+#: src/cmdline/cmdline_resolver.cc:662
 #, fuzzy
 msgid "*** No more solutions available ***"
 msgstr "Başka çözüm yok."
@@ -1519,61 +1520,61 @@ msgstr "Aptitude geniş durum dosyası açılamıyor"
 msgid "Reading extended state information"
 msgstr "Geniş durum bilgisi okunuyor"
 
-#: src/generic/apt/aptcache.cc:332 src/generic/apt/aptcache.cc:403
-#: src/generic/apt/aptcache.cc:406
+#: src/generic/apt/aptcache.cc:332 src/generic/apt/aptcache.cc:405
+#: src/generic/apt/aptcache.cc:408
 msgid "Initializing package states"
 msgstr "Paketlerin durumu güncelleniyor"
 
-#: src/generic/apt/aptcache.cc:530
+#: src/generic/apt/aptcache.cc:533
 msgid "Cannot open Aptitude state file"
 msgstr "Aptitude durum dosyası açılamıyor"
 
-#: src/generic/apt/aptcache.cc:534 src/generic/apt/aptcache.cc:589
-#: src/generic/apt/aptcache.cc:592
+#: src/generic/apt/aptcache.cc:537 src/generic/apt/aptcache.cc:592
+#: src/generic/apt/aptcache.cc:595
 msgid "Writing extended state information"
 msgstr "Geniş durum bilgisi yazılıyor"
 
-#: src/generic/apt/aptcache.cc:571
+#: src/generic/apt/aptcache.cc:574
 #, c-format
 msgid "Internal buffer overflow on package \"%s\" while writing state file"
 msgstr "\"%s\" paketinde durum dosyası yazılırken iç tampon taşması"
 
-#: src/generic/apt/aptcache.cc:580
+#: src/generic/apt/aptcache.cc:583
 msgid "Couldn't write state file"
 msgstr "Durum dosyası yazılamıyor"
 
-#: src/generic/apt/aptcache.cc:597
+#: src/generic/apt/aptcache.cc:600
 msgid "Error writing state file"
 msgstr "Durum dosyası yazma hatası"
 
-#: src/generic/apt/aptcache.cc:615
+#: src/generic/apt/aptcache.cc:618
 #, fuzzy, c-format
 msgid "failed to remove %s"
 msgstr "%ls açılamıyor"
 
-#: src/generic/apt/aptcache.cc:622
+#: src/generic/apt/aptcache.cc:625
 #, c-format
 msgid "failed to rename %s to %s"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:630
+#: src/generic/apt/aptcache.cc:633
 #, fuzzy, c-format
 msgid "couldn't replace %s with %s"
 msgstr "Eski durum dosyası değiştirilemiyor"
 
-#: src/generic/apt/aptcache.cc:1122
+#: src/generic/apt/aptcache.cc:1125
 msgid "Unable to correct dependencies, some packages cannot be installed"
 msgstr "Bağımlılıklar sağlanamıyor, bazı paketler kurulamıyor"
 
-#: src/generic/apt/aptcache.cc:1526
+#: src/generic/apt/aptcache.cc:1600
 msgid "The list of sources could not be read."
 msgstr "Kaynak listesi okunamıyor"
 
-#: src/generic/apt/aptcache.cc:1533
+#: src/generic/apt/aptcache.cc:1607
 msgid "The package lists or status file could not be parsed or opened."
 msgstr "Paket listesi ya da durum dosyası anlaşılamadı ya da açılamadı"
 
-#: src/generic/apt/aptcache.cc:1536
+#: src/generic/apt/aptcache.cc:1610
 msgid "You may want to update the package lists to correct these missing files"
 msgstr "Bu kayıp dosyalar için paket listesini güncellemek istemelisiniz"
 
@@ -3855,12 +3856,12 @@ msgstr ""
 "%s temel bir pakettir!%n%nBu paketi kaldırmak istediğinizden emin misiniz?%"
 "nEğer eminseniz '%s' yazın."
 
-#: src/pkg_item.cc:220 src/pkg_ver_item.cc:658 src/solution_item.cc:284
+#: src/pkg_item.cc:220 src/pkg_ver_item.cc:658 src/solution_item.cc:291
 #, c-format
 msgid "Information about %s"
 msgstr "%s hakkında bilgi"
 
-#: src/pkg_item.cc:222 src/pkg_ver_item.cc:660 src/solution_item.cc:282
+#: src/pkg_item.cc:222 src/pkg_ver_item.cc:660 src/solution_item.cc:289
 #, c-format
 msgid "%s info"
 msgstr "%s bilgisi"
@@ -4195,7 +4196,7 @@ msgstr ""
 "Bu paketler %B%s%b sürümündeki %B%s%b paketine ihtiyaç duyuyorlar, ve bu "
 "paket %s kırık bağımlılıkları olacak."
 
-#: src/solution_dialog.cc:91 src/solution_screen.cc:457
+#: src/solution_dialog.cc:91 src/solution_screen.cc:465
 msgid "The package cache is not available."
 msgstr "Paket tamponu mevcut değil."
 
@@ -4203,11 +4204,11 @@ msgstr "Paket tamponu mevcut değil."
 msgid "No packages are broken."
 msgstr "Bozuk paket bulunmuyor."
 
-#: src/solution_dialog.cc:108 src/solution_screen.cc:479
+#: src/solution_dialog.cc:108 src/solution_screen.cc:488
 msgid "No resolution found."
 msgstr "Çözüm bulunamadı."
 
-#: src/solution_dialog.cc:114 src/solution_screen.cc:490
+#: src/solution_dialog.cc:114 src/solution_screen.cc:499
 #, fuzzy
 msgid "Resolving dependencies..."
 msgstr "Bağımlılıklar çözülemiytor."
@@ -4243,7 +4244,7 @@ msgstr "ön-bağımlı ise"
 msgid "%s suggests %s"
 msgstr "teklif ederse"
 
-#: src/solution_fragment.cc:113 src/solution_item.cc:583
+#: src/solution_fragment.cc:113 src/solution_item.cc:593
 #, fuzzy, c-format
 msgid "%s recommends %s"
 msgstr "tavsiye ederse"
@@ -4347,7 +4348,7 @@ msgstr ""
 msgid "Downgrade %F [%s (%s) -> %s (%s)]"
 msgstr "%sB %s de indirildi (%sB/s)."
 
-#: src/solution_item.cc:587
+#: src/solution_item.cc:597
 #, fuzzy, c-format
 msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
 msgstr "Aşağıdaki paketleri %Bkaldır%b:%n"
@@ -4387,7 +4388,7 @@ msgstr "Aşağıdaki paketlerin %Beski sürümünü kur%b:%n"
 msgid "Leave the following recommendations unresolved:"
 msgstr "Aşağıdaki paketleri %Bkaldır%b:%n"
 
-#: src/solution_screen.cc:463
+#: src/solution_screen.cc:472
 #, fuzzy
 msgid "No broken packages."
 msgstr "Paket kaldırmak için '-'"
