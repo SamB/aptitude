@@ -718,6 +718,19 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
       </varlistentry>
 
       <varlistentry>
+	<term><literal>--purge-unused</literal></term>
+
+	<listitem>
+	  <para>
+	    Purge packages that are no longer required by any
+	    installed package.  This is equivalent to passing
+	    <quote><literal>-o <link linkend='configPurge-Unused'>Aptitude::Purge-Unused=true</link></literal></quote>
+	    as a command-line argument.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
 	<term><literal>-P</literal>, <literal>--prompt</literal></term>
 
 	<listitem>
