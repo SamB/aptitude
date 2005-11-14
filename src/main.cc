@@ -167,7 +167,12 @@ static void usage()
 }
 
 // This handles options with no single-character equivalent
-enum {OPTION_VERSION=1, OPTION_VISUAL_PREVIEW, OPTION_QUEUE_ONLY};
+enum {
+  OPTION_VERSION = 1,
+  OPTION_VISUAL_PREVIEW,
+  OPTION_QUEUE_ONLY,
+  OPTION_PURGE_UNUSED,
+};
 int getopt_result;
 
 option opts[]={
@@ -189,6 +194,7 @@ option opts[]={
   {"target-release", 1, NULL, 't'},
   {"visual-preview", 0, &getopt_result, OPTION_VISUAL_PREVIEW},
   {"schedule-only", 0, &getopt_result, OPTION_QUEUE_ONLY},
+  {"purge-unused", 0, &getopt_result, OPTION_PURGE_UNUSED},
   {0,0,0,0}
 };
 
@@ -367,6 +373,9 @@ int main(int argc, char *argv[])
 	      break;
 	    case OPTION_QUEUE_ONLY:
 	      queue_only=true;
+	      break;
+	    case OPTION_PURGE_UNUSED:
+	      aptcfg->Set(PACKAGE "::Purge-Unused", "true");
 	      break;
 	    default:
 	      fprintf(stderr, "%s",
