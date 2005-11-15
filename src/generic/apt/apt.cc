@@ -856,9 +856,23 @@ std::wstring get_short_description(const pkgCache::VerIterator &ver)
   if(ver.end() || ver.FileList().end() || apt_package_records == NULL)
     return std::wstring();
 
+#if APT_PKG_RELEASE == 0 && ((APT_PKG_MAJOR < 3) || (APT_PKG_MAJOR == 3 && APT_PKG_MINOR < 11))
+
   pkgCache::VerFileIterator vf = ver.FileList();
 
   if(vf.end())
+    return std::wstring();
+  else
+    return transcode(apt_package_records->Lookup(vf).ShortDesc(), "UTF-8");
+#else
+  pkgCache::DescIterator d = ver.TranslatedDescription();
+
+  if(d.end())
+    return std::wstring();
+
+  pkgCache::DescFileIterator df = d.FileList();
+
+  if(df.end())
     return std::wstring();
   else
     // Since Packages files don't have a bundled description and it
@@ -866,7 +880,8 @@ std::wstring get_short_description(const pkgCache::VerIterator &ver)
     // encoding, I just force a sane encoding on it here.  Really,
     // though, Packages files should have an encapsulated encoding
     // somewhere.
-    return transcode(apt_package_records->Lookup(vf).ShortDesc(), "UTF-8");
+    return transcode(apt_package_records->Lookup(df).ShortDesc(), "UTF-8");
+#endif
 }
 
 std::wstring get_long_description(const pkgCache::VerIterator &ver)
@@ -874,10 +889,24 @@ std::wstring get_long_description(const pkgCache::VerIterator &ver)
   if(ver.end() || ver.FileList().end() || apt_package_records == NULL)
     return std::wstring();
 
+#if APT_PKG_RELEASE == 0 && ((APT_PKG_MAJOR < 3) || (APT_PKG_MAJOR == 3 && APT_PKG_MINOR < 11))
   pkgCache::VerFileIterator vf = ver.FileList();
 
   if(vf.end())
     return std::wstring();
   else
     return transcode(apt_package_records->Lookup(vf).LongDesc(), "UTF-8");
+#else
+  pkgCache::DescIterator d = ver.TranslatedDescription();
+
+  if(d.end())
+    return std::wstring();
+
+  pkgCache::DescFileIterator df = d.FileList();
+
+  if(df.end())
+    return std::wstring();
+  else
+    return transcode(apt_package_records->Lookup(df).LongDesc(), "UTF-8");
+#endif
 }
