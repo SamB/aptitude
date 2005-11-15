@@ -342,7 +342,8 @@ key parse_key(wstring keystr)
 	return KEY_CTRL(ch);
       if(afound)
 	return KEY_ALT(ch);
-      return rval;
+
+      return key(ch, false);
     }
   else
     {
