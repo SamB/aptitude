@@ -2200,7 +2200,15 @@ public:
     // Find all the broken deps.
     for(typename PackageUniverse::broken_dep_iterator bi=universe.broken_begin();
 	!bi.end(); ++bi)
-      initial_broken.insert(*bi);
+      {
+	dep bd(*bi);
+
+	eassert(bd.broken_under(solution::root_node(initial_broken,
+						    universe,
+						    weights)));
+
+	initial_broken.insert(bd);
+      }
   }
 
   ~generic_problem_resolver()
