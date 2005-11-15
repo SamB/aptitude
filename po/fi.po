@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3.5.1\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-11-14 20:46-0800\n"
+"POT-Creation-Date: 2005-11-15 14:55-0800\n"
 "PO-Revision-Date: 2005-10-23 21:17+0300\n"
 "Last-Translator: Jaakko Kangasharju <ashar@iki.fi>\n"
 "Language-Team: Jaakko Kangasharju <ashar@iki.fi>\n"
@@ -913,7 +913,7 @@ msgstr ""
 "Virheellinen komento.  Anna hyväksytty komento tai '?' saadaksesi apua.\n"
 
 #: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
-#: src/generic/apt/apt.cc:199
+#: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "En pysty kirjoittamaan tiedostoon %s"
@@ -1217,7 +1217,7 @@ msgid "State"
 msgstr "Tila"
 
 #: src/cmdline/cmdline_show.cc:245 src/cmdline/cmdline_show.cc:328
-#: src/generic/apt/matchers.cc:1662
+#: src/generic/apt/matchers.cc:1663
 msgid "Provided by"
 msgstr "Kattavat"
 
@@ -1319,7 +1319,7 @@ msgstr "Korvaavuudet"
 msgid "Obsoletes"
 msgstr "Täydet korvaavuudet"
 
-#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1616
+#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1617
 msgid "Provides"
 msgstr "Katetut"
 
@@ -1327,12 +1327,12 @@ msgstr "Katetut"
 msgid "Description: "
 msgstr "Kuvaus: "
 
-#: src/cmdline/cmdline_show.cc:423
+#: src/cmdline/cmdline_show.cc:424
 #, c-format
 msgid "Unable to locate package %s"
 msgstr "En löytänyt pakettia %s"
 
-#: src/cmdline/cmdline_show.cc:436
+#: src/cmdline/cmdline_show.cc:437
 #, c-format
 msgid "Unable to parse pattern %s"
 msgstr "En ymmärrä kaavaa %s"
@@ -1582,19 +1582,19 @@ msgid "You may want to update the package lists to correct these missing files"
 msgstr ""
 "Haluat ehkä päivittää pakettiluettelon korjataksesi nämä puuttuvat tiedostot"
 
-#: src/generic/apt/apt.cc:171
+#: src/generic/apt/apt.cc:172
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr ""
 "%s on luettavissa, mutta ei kirjoitettavissa; asetustiedostoa ei voi "
 "kirjoittaa."
 
-#: src/generic/apt/apt.cc:209
+#: src/generic/apt/apt.cc:210
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "En pysty korvaamaan %s:a uudella asetustiedostolla"
 
-#: src/generic/apt/apt.cc:299
+#: src/generic/apt/apt.cc:300
 msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
@@ -1749,140 +1749,140 @@ msgstr ""
 "\n"
 "Loki kirjoitettu.\n"
 
-#: src/generic/apt/matchers.cc:682
+#: src/generic/apt/matchers.cc:683
 msgid "Automatically Installed"
 msgstr "Automaattisesti asennettu"
 
-#: src/generic/apt/matchers.cc:704 src/generic/apt/matchers.cc:893
+#: src/generic/apt/matchers.cc:705 src/generic/apt/matchers.cc:894
 msgid "Broken"
 msgstr "Rikki"
 
-#: src/generic/apt/matchers.cc:891
+#: src/generic/apt/matchers.cc:892
 msgid "Unchanged"
 msgstr "Muuttamaton"
 
-#: src/generic/apt/matchers.cc:895
+#: src/generic/apt/matchers.cc:896
 msgid "Remove [unused]"
 msgstr "Poisto [käyttämätön]"
 
-#: src/generic/apt/matchers.cc:897
+#: src/generic/apt/matchers.cc:898
 msgid "Hold [auto]"
 msgstr "Pito [autom]"
 
-#: src/generic/apt/matchers.cc:899
+#: src/generic/apt/matchers.cc:900
 msgid "Install [auto]"
 msgstr "Asennus [autom]"
 
-#: src/generic/apt/matchers.cc:901
+#: src/generic/apt/matchers.cc:902
 msgid "Remove [auto]"
 msgstr "Poisto [autom]"
 
-#: src/generic/apt/matchers.cc:903
+#: src/generic/apt/matchers.cc:904
 msgid "Downgrade"
 msgstr "Vanhennus"
 
-#: src/generic/apt/matchers.cc:905
+#: src/generic/apt/matchers.cc:906
 msgid "Hold"
 msgstr "Jäädytys"
 
-#: src/generic/apt/matchers.cc:907
+#: src/generic/apt/matchers.cc:908
 msgid "Reinstall"
 msgstr "Uudelleenasennus"
 
-#: src/generic/apt/matchers.cc:909
+#: src/generic/apt/matchers.cc:910
 msgid "Install"
 msgstr "Asennus"
 
-#: src/generic/apt/matchers.cc:911
+#: src/generic/apt/matchers.cc:912
 msgid "Remove"
 msgstr "Poisto"
 
-#: src/generic/apt/matchers.cc:913
+#: src/generic/apt/matchers.cc:914
 msgid "Upgrade"
 msgstr "Päivitys"
 
-#: src/generic/apt/matchers.cc:933
+#: src/generic/apt/matchers.cc:934
 msgid "Keep"
 msgstr "Säilytys"
 
-#: src/generic/apt/matchers.cc:959
+#: src/generic/apt/matchers.cc:960
 msgid "Virtual"
 msgstr "Näennäinen"
 
-#: src/generic/apt/matchers.cc:980
+#: src/generic/apt/matchers.cc:981
 msgid "Installed"
 msgstr "Asennettu"
 
-#: src/generic/apt/matchers.cc:1002
+#: src/generic/apt/matchers.cc:1003
 msgid "Essential"
 msgstr "Välttämätön"
 
-#: src/generic/apt/matchers.cc:1021
+#: src/generic/apt/matchers.cc:1022
 msgid "Config Files Remain"
 msgstr "Asetustiedostot jäljellä"
 
-#: src/generic/apt/matchers.cc:1387
+#: src/generic/apt/matchers.cc:1388
 msgid "Garbage"
 msgstr "Kerätty"
 
-#: src/generic/apt/matchers.cc:1711
+#: src/generic/apt/matchers.cc:1712
 msgid "No reverse dependencies"
 msgstr "Ei käänteisriippuvuuksia"
 
-#: src/generic/apt/matchers.cc:1777
+#: src/generic/apt/matchers.cc:1778
 msgid "New Package"
 msgstr "Uusi paketti"
 
-#: src/generic/apt/matchers.cc:1796
+#: src/generic/apt/matchers.cc:1797
 msgid "Upgradable"
 msgstr "Päivitettävissä"
 
-#: src/generic/apt/matchers.cc:1920
+#: src/generic/apt/matchers.cc:1921
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "Loppumerkitön merkkijono %s:n jäljessä"
 
-#: src/generic/apt/matchers.cc:1980
+#: src/generic/apt/matchers.cc:1981
 msgid "Unmatched '('"
 msgstr "Pariton '('"
 
-#: src/generic/apt/matchers.cc:2113 src/generic/apt/matchers.cc:2186
+#: src/generic/apt/matchers.cc:2114 src/generic/apt/matchers.cc:2187
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Tuntematon riippuvuuslaji: %s"
 
-#: src/generic/apt/matchers.cc:2119
+#: src/generic/apt/matchers.cc:2120
 msgid "Provides: cannot be broken"
 msgstr "Katettu ei voi olla rikki"
 
-#: src/generic/apt/matchers.cc:2174
+#: src/generic/apt/matchers.cc:2175
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Tuntematon toimi: %s"
 
-#: src/generic/apt/matchers.cc:2228
+#: src/generic/apt/matchers.cc:2229
 #, c-format
 msgid "Unknown priority %s"
 msgstr "Tuntematon tärkeys %s"
 
-#: src/generic/apt/matchers.cc:2249
+#: src/generic/apt/matchers.cc:2250
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Tuntematon kaavatyyppi: %c"
 
-#: src/generic/apt/matchers.cc:2272
+#: src/generic/apt/matchers.cc:2273
 msgid "Can't search for \"\""
 msgstr "Ei voi etsiä ehdolla \"\""
 
-#: src/generic/apt/matchers.cc:2300
+#: src/generic/apt/matchers.cc:2301
 msgid "Unexpected empty expression"
 msgstr "Virheellisesti tyhjä lauseke"
 
-#: src/generic/apt/matchers.cc:2327
+#: src/generic/apt/matchers.cc:2328
 msgid "Badly formed expression"
 msgstr "Virheellinen lauseke"
 
-#: src/generic/apt/matchers.cc:2362
+#: src/generic/apt/matchers.cc:2363
 msgid "Unexpected ')'"
 msgstr "Pariton ')'"
 
@@ -2841,7 +2841,7 @@ msgstr "asennus kesken"
 msgid "config-files"
 msgstr "asetustiedostot"
 
-#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:528 src/pkg_ver_item.cc:238
+#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:523 src/pkg_ver_item.cc:238
 msgid "ERROR"
 msgstr "VIRHE"
 
@@ -2883,67 +2883,67 @@ msgstr "päivitä"
 msgid "none"
 msgstr "ei mitään"
 
-#: src/pkg_columnizer.cc:335 src/pkg_columnizer.cc:356
-#: src/pkg_columnizer.cc:363 src/pkg_grouppolicy.cc:227
+#: src/pkg_columnizer.cc:330 src/pkg_columnizer.cc:351
+#: src/pkg_columnizer.cc:358 src/pkg_grouppolicy.cc:227
 #: src/pkg_info_screen.cc:115 src/pkg_info_screen.cc:116
-#: src/pkg_ver_item.cc:348 src/pkg_ver_item.cc:382
+#: src/pkg_ver_item.cc:345 src/pkg_ver_item.cc:379
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: src/pkg_columnizer.cc:343 src/pkg_ver_item.cc:357
+#: src/pkg_columnizer.cc:338 src/pkg_ver_item.cc:354
 msgid "Imp"
 msgstr "Tär"
 
-#: src/pkg_columnizer.cc:345 src/pkg_ver_item.cc:360
+#: src/pkg_columnizer.cc:340 src/pkg_ver_item.cc:357
 msgid "Req"
 msgstr "Pak"
 
-#: src/pkg_columnizer.cc:347 src/pkg_ver_item.cc:363
+#: src/pkg_columnizer.cc:342 src/pkg_ver_item.cc:360
 msgid "Std"
 msgstr "Vak"
 
-#: src/pkg_columnizer.cc:349 src/pkg_ver_item.cc:366
+#: src/pkg_columnizer.cc:344 src/pkg_ver_item.cc:363
 msgid "Opt"
 msgstr "Val"
 
-#: src/pkg_columnizer.cc:351 src/pkg_ver_item.cc:369
+#: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:366
 msgid "Xtr"
 msgstr "Lis"
 
-#: src/pkg_columnizer.cc:353 src/pkg_ver_item.cc:371
+#: src/pkg_columnizer.cc:348 src/pkg_ver_item.cc:368
 msgid "ERR"
 msgstr "VRH"
 
-#: src/pkg_columnizer.cc:375
+#: src/pkg_columnizer.cc:370
 #, c-format
 msgid "#Broken: %ld"
 msgstr "#Rikki: %ld"
 
-#: src/pkg_columnizer.cc:390
+#: src/pkg_columnizer.cc:385
 #, c-format
 msgid "Will use %sB of disk space"
 msgstr "Vaatii %sB levytilaa"
 
-#: src/pkg_columnizer.cc:398
+#: src/pkg_columnizer.cc:393
 #, c-format
 msgid "Will free %sB of disk space"
 msgstr "Vapauttaa %sB levytilaa"
 
-#: src/pkg_columnizer.cc:412
+#: src/pkg_columnizer.cc:407
 #, c-format
 msgid "DL Size: %sB"
 msgstr "Haun koko: %sB"
 
-#: src/pkg_columnizer.cc:483
+#: src/pkg_columnizer.cc:478
 msgid "HN too long"
 msgstr "Nimi liian pitkä"
 
-#: src/pkg_columnizer.cc:652 src/pkg_columnizer.cc:661
+#: src/pkg_columnizer.cc:647 src/pkg_columnizer.cc:656
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr "Näyttömuotoilun purku \"%ls\":n jäljestä epäonnistui"
 
-#: src/pkg_columnizer.cc:668
+#: src/pkg_columnizer.cc:663
 msgid "Internal error: Default column string is unparsable"
 msgstr "Sisäinen virhe: Sarakejonoa ei voi jäsentää"
 
@@ -3822,12 +3822,12 @@ msgstr ""
 "%s on välttämätön paketti!%n%nOletko aivan varma, että haluat poistaa sen?%"
 "nKirjoita '%s' jos olet."
 
-#: src/pkg_item.cc:220 src/pkg_ver_item.cc:658 src/solution_item.cc:291
+#: src/pkg_item.cc:220 src/pkg_ver_item.cc:655 src/solution_item.cc:291
 #, c-format
 msgid "Information about %s"
 msgstr "%s:n tiedot"
 
-#: src/pkg_item.cc:222 src/pkg_ver_item.cc:660 src/solution_item.cc:289
+#: src/pkg_item.cc:222 src/pkg_ver_item.cc:657 src/solution_item.cc:289
 #, c-format
 msgid "%s info"
 msgstr "%s: tiedot"
@@ -3842,27 +3842,27 @@ msgstr "Paketin %s saatavilla olevat versiot"
 msgid "%s versions"
 msgstr "%s: versiot"
 
-#: src/pkg_item.cc:331 src/pkg_ver_item.cc:688
+#: src/pkg_item.cc:331 src/pkg_ver_item.cc:685
 #, c-format
 msgid "Dependencies of %s"
 msgstr "%s:n riippuvuudet"
 
-#: src/pkg_item.cc:333 src/pkg_ver_item.cc:690
+#: src/pkg_item.cc:333 src/pkg_ver_item.cc:687
 #, c-format
 msgid "%s deps"
 msgstr "%s: riippuvuudet"
 
-#: src/pkg_item.cc:344 src/pkg_ver_item.cc:700
+#: src/pkg_item.cc:344 src/pkg_ver_item.cc:697
 #, c-format
 msgid "Packages depending on %s"
 msgstr "%s:sta riippuvat paketit"
 
-#: src/pkg_item.cc:346 src/pkg_ver_item.cc:702
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:699
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s: käänteisriippuvuudet"
 
-#: src/pkg_item.cc:396 src/pkg_ver_item.cc:750
+#: src/pkg_item.cc:396 src/pkg_ver_item.cc:747
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "Ilmoitetaan viasta paketissa %s:\n"
@@ -3926,26 +3926,22 @@ msgstr "Sarakemäärittelyn purku epäonnistui"
 msgid "Couldn't parse column definition"
 msgstr "En ymmärtänyt sarakkeen määrittelyä"
 
-#: src/pkg_view.cc:185
-msgid "Encoding error in long description."
-msgstr "Koodausvirhe pitkässä kuvauksessa"
-
-#: src/pkg_view.cc:415
+#: src/pkg_view.cc:406
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: virhe argumenteissa -- kaksi päähärpätintä??"
 
-#: src/pkg_view.cc:421
+#: src/pkg_view.cc:412
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: virhe argumenteissa -- väärä sarakelista kiinteälle "
 "alkiolle"
 
-#: src/pkg_view.cc:517
+#: src/pkg_view.cc:508
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: tuhma argumentti!"
 
-#: src/pkg_view.cc:569
+#: src/pkg_view.cc:560
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: päähärpätintä ei löydy"
 
@@ -5314,6 +5310,9 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "YLIN TASO"
+
+#~ msgid "Encoding error in long description."
+#~ msgstr "Koodausvirhe pitkässä kuvauksessa"
 
 #~ msgid "Search backwards for:"
 #~ msgstr "Etsi taaksepäin:"

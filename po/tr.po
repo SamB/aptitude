@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-11-14 20:46-0800\n"
+"POT-Creation-Date: 2005-11-15 14:55-0800\n"
 "PO-Revision-Date: 2005-08-07 16:40+0300\n"
 "Last-Translator: Erçin EKER <ercin.eker@linux.org.tr>\n"
 "Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -911,7 +911,7 @@ msgstr ""
 "Geçersiz cevap.  Lütfen geçerli bir komut girin ya da yardım için '?'.\n"
 
 #: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
-#: src/generic/apt/apt.cc:199
+#: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "%s yazmak için açılamıyor"
@@ -1211,7 +1211,7 @@ msgid "State"
 msgstr "Durum"
 
 #: src/cmdline/cmdline_show.cc:245 src/cmdline/cmdline_show.cc:328
-#: src/generic/apt/matchers.cc:1662
+#: src/generic/apt/matchers.cc:1663
 msgid "Provided by"
 msgstr "Sağlayıcı"
 
@@ -1313,7 +1313,7 @@ msgstr "Değiştirilenler"
 msgid "Obsoletes"
 msgstr "Eskiyenler"
 
-#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1616
+#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1617
 msgid "Provides"
 msgstr "Sağladığı"
 
@@ -1321,12 +1321,12 @@ msgstr "Sağladığı"
 msgid "Description: "
 msgstr "Tanım: "
 
-#: src/cmdline/cmdline_show.cc:423
+#: src/cmdline/cmdline_show.cc:424
 #, fuzzy, c-format
 msgid "Unable to locate package %s"
 msgstr "%ls açılamıyor"
 
-#: src/cmdline/cmdline_show.cc:436
+#: src/cmdline/cmdline_show.cc:437
 #, fuzzy, c-format
 msgid "Unable to parse pattern %s"
 msgstr "%ls açılamıyor"
@@ -1578,17 +1578,17 @@ msgstr "Paket listesi ya da durum dosyası anlaşılamadı ya da açılamadı"
 msgid "You may want to update the package lists to correct these missing files"
 msgstr "Bu kayıp dosyalar için paket listesini güncellemek istemelisiniz"
 
-#: src/generic/apt/apt.cc:171
+#: src/generic/apt/apt.cc:172
 #, fuzzy, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "%s yeni yapılandırma dosyası ile değiştirilemiyor"
 
-#: src/generic/apt/apt.cc:209
+#: src/generic/apt/apt.cc:210
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "%s yeni yapılandırma dosyası ile değiştirilemiyor"
 
-#: src/generic/apt/apt.cc:299
+#: src/generic/apt/apt.cc:300
 msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
@@ -1746,159 +1746,159 @@ msgstr ""
 "\n"
 "Günlük tamamlandı.\n"
 
-#: src/generic/apt/matchers.cc:682
+#: src/generic/apt/matchers.cc:683
 #, fuzzy
 msgid "Automatically Installed"
 msgstr "Otomatik olarak kuruldu"
 
-#: src/generic/apt/matchers.cc:704 src/generic/apt/matchers.cc:893
+#: src/generic/apt/matchers.cc:705 src/generic/apt/matchers.cc:894
 #, fuzzy
 msgid "Broken"
 msgstr "#Kırık"
 
-#: src/generic/apt/matchers.cc:891
+#: src/generic/apt/matchers.cc:892
 #, fuzzy
 msgid "Unchanged"
 msgstr "%s değişiklikleri"
 
-#: src/generic/apt/matchers.cc:895
+#: src/generic/apt/matchers.cc:896
 msgid "Remove [unused]"
 msgstr ""
 
-#: src/generic/apt/matchers.cc:897
+#: src/generic/apt/matchers.cc:898
 msgid "Hold [auto]"
 msgstr ""
 
-#: src/generic/apt/matchers.cc:899
+#: src/generic/apt/matchers.cc:900
 #, fuzzy
 msgid "Install [auto]"
 msgstr "^Kur"
 
-#: src/generic/apt/matchers.cc:901
+#: src/generic/apt/matchers.cc:902
 #, fuzzy
 msgid "Remove [auto]"
 msgstr "^Kaldır"
 
-#: src/generic/apt/matchers.cc:903
+#: src/generic/apt/matchers.cc:904
 #, fuzzy
 msgid "Downgrade"
 msgstr "eski sürümü kurulursa"
 
-#: src/generic/apt/matchers.cc:905
+#: src/generic/apt/matchers.cc:906
 #, fuzzy
 msgid "Hold"
 msgstr "^Tut"
 
-#: src/generic/apt/matchers.cc:907
+#: src/generic/apt/matchers.cc:908
 #, fuzzy
 msgid "Reinstall"
 msgstr "tekrarkur"
 
-#: src/generic/apt/matchers.cc:909
+#: src/generic/apt/matchers.cc:910
 #, fuzzy
 msgid "Install"
 msgstr "^Kur"
 
-#: src/generic/apt/matchers.cc:911
+#: src/generic/apt/matchers.cc:912
 #, fuzzy
 msgid "Remove"
 msgstr "^Kaldır"
 
-#: src/generic/apt/matchers.cc:913
+#: src/generic/apt/matchers.cc:914
 #, fuzzy
 msgid "Upgrade"
 msgstr "güncelle"
 
-#: src/generic/apt/matchers.cc:933
+#: src/generic/apt/matchers.cc:934
 #, fuzzy
 msgid "Keep"
 msgstr "^Koru"
 
-#: src/generic/apt/matchers.cc:959
+#: src/generic/apt/matchers.cc:960
 #, fuzzy
 msgid "Virtual"
 msgstr "sanal"
 
-#: src/generic/apt/matchers.cc:980
+#: src/generic/apt/matchers.cc:981
 #, fuzzy
 msgid "Installed"
 msgstr "kuruldu"
 
-#: src/generic/apt/matchers.cc:1002
+#: src/generic/apt/matchers.cc:1003
 #, fuzzy
 msgid "Essential"
 msgstr "Önemli: "
 
-#: src/generic/apt/matchers.cc:1021
+#: src/generic/apt/matchers.cc:1022
 msgid "Config Files Remain"
 msgstr ""
 
-#: src/generic/apt/matchers.cc:1387
+#: src/generic/apt/matchers.cc:1388
 msgid "Garbage"
 msgstr ""
 
-#: src/generic/apt/matchers.cc:1711
+#: src/generic/apt/matchers.cc:1712
 #, fuzzy
 msgid "No reverse dependencies"
 msgstr "Bağımlılıklar çözülemiytor."
 
-#: src/generic/apt/matchers.cc:1777
+#: src/generic/apt/matchers.cc:1778
 #, fuzzy
 msgid "New Package"
 msgstr "Yeni paket gö^rünümü"
 
-#: src/generic/apt/matchers.cc:1796
+#: src/generic/apt/matchers.cc:1797
 #, fuzzy
 msgid "Upgradable"
 msgstr "^Güncellenebilir işaretle"
 
-#: src/generic/apt/matchers.cc:1920
+#: src/generic/apt/matchers.cc:1921
 #, fuzzy, c-format
 msgid "Unterminated literal string after %s"
 msgstr "\"%ls\"den sonra çoklu bayt dizgisi çözülemiyor"
 
-#: src/generic/apt/matchers.cc:1980
+#: src/generic/apt/matchers.cc:1981
 msgid "Unmatched '('"
 msgstr "Eşleşmeyen '('"
 
-#: src/generic/apt/matchers.cc:2113 src/generic/apt/matchers.cc:2186
+#: src/generic/apt/matchers.cc:2114 src/generic/apt/matchers.cc:2187
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Bilinmeyen bağımlılık tipi: %s"
 
-#: src/generic/apt/matchers.cc:2119
+#: src/generic/apt/matchers.cc:2120
 msgid "Provides: cannot be broken"
 msgstr ""
 
-#: src/generic/apt/matchers.cc:2174
+#: src/generic/apt/matchers.cc:2175
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Bilinmeyen eylem tipi: %s"
 
-#: src/generic/apt/matchers.cc:2228
+#: src/generic/apt/matchers.cc:2229
 #, c-format
 msgid "Unknown priority %s"
 msgstr "Bilinmeyen öncelik: %s"
 
-#: src/generic/apt/matchers.cc:2249
+#: src/generic/apt/matchers.cc:2250
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Bilinmeyen desen tipi: %c"
 
-#: src/generic/apt/matchers.cc:2272
+#: src/generic/apt/matchers.cc:2273
 #, fuzzy
 msgid "Can't search for \"\""
 msgstr "Ara: "
 
-#: src/generic/apt/matchers.cc:2300
+#: src/generic/apt/matchers.cc:2301
 msgid "Unexpected empty expression"
 msgstr "Beklenmeyen boş ifade"
 
-#: src/generic/apt/matchers.cc:2327
+#: src/generic/apt/matchers.cc:2328
 msgid "Badly formed expression"
 msgstr "Kötü biçimli ifade"
 
-#: src/generic/apt/matchers.cc:2362
+#: src/generic/apt/matchers.cc:2363
 msgid "Unexpected ')'"
 msgstr "Beklenmeyen ')'"
 
@@ -2864,7 +2864,7 @@ msgstr "yarım-kurulu"
 msgid "config-files"
 msgstr "ayar dosyaları"
 
-#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:528 src/pkg_ver_item.cc:238
+#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:523 src/pkg_ver_item.cc:238
 msgid "ERROR"
 msgstr "HATA"
 
@@ -2906,67 +2906,67 @@ msgstr "güncelle"
 msgid "none"
 msgstr "yok"
 
-#: src/pkg_columnizer.cc:335 src/pkg_columnizer.cc:356
-#: src/pkg_columnizer.cc:363 src/pkg_grouppolicy.cc:227
+#: src/pkg_columnizer.cc:330 src/pkg_columnizer.cc:351
+#: src/pkg_columnizer.cc:358 src/pkg_grouppolicy.cc:227
 #: src/pkg_info_screen.cc:115 src/pkg_info_screen.cc:116
-#: src/pkg_ver_item.cc:348 src/pkg_ver_item.cc:382
+#: src/pkg_ver_item.cc:345 src/pkg_ver_item.cc:379
 msgid "Unknown"
 msgstr "bilinmeyen"
 
-#: src/pkg_columnizer.cc:343 src/pkg_ver_item.cc:357
+#: src/pkg_columnizer.cc:338 src/pkg_ver_item.cc:354
 msgid "Imp"
 msgstr "Yük"
 
-#: src/pkg_columnizer.cc:345 src/pkg_ver_item.cc:360
+#: src/pkg_columnizer.cc:340 src/pkg_ver_item.cc:357
 msgid "Req"
 msgstr "Ger"
 
-#: src/pkg_columnizer.cc:347 src/pkg_ver_item.cc:363
+#: src/pkg_columnizer.cc:342 src/pkg_ver_item.cc:360
 msgid "Std"
 msgstr "Std"
 
-#: src/pkg_columnizer.cc:349 src/pkg_ver_item.cc:366
+#: src/pkg_columnizer.cc:344 src/pkg_ver_item.cc:363
 msgid "Opt"
 msgstr "Ter"
 
-#: src/pkg_columnizer.cc:351 src/pkg_ver_item.cc:369
+#: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:366
 msgid "Xtr"
 msgstr "Ek"
 
-#: src/pkg_columnizer.cc:353 src/pkg_ver_item.cc:371
+#: src/pkg_columnizer.cc:348 src/pkg_ver_item.cc:368
 msgid "ERR"
 msgstr "HATA"
 
-#: src/pkg_columnizer.cc:375
+#: src/pkg_columnizer.cc:370
 #, c-format
 msgid "#Broken: %ld"
 msgstr "#Kırık: %ld"
 
-#: src/pkg_columnizer.cc:390
+#: src/pkg_columnizer.cc:385
 #, c-format
 msgid "Will use %sB of disk space"
 msgstr "%sB'lık alan kullanılacak"
 
-#: src/pkg_columnizer.cc:398
+#: src/pkg_columnizer.cc:393
 #, c-format
 msgid "Will free %sB of disk space"
 msgstr "%sB'lık alan boşaltılacak"
 
-#: src/pkg_columnizer.cc:412
+#: src/pkg_columnizer.cc:407
 #, c-format
 msgid "DL Size: %sB"
 msgstr "İndirme: %sB"
 
-#: src/pkg_columnizer.cc:483
+#: src/pkg_columnizer.cc:478
 msgid "HN too long"
 msgstr "HN çok uzun"
 
-#: src/pkg_columnizer.cc:652 src/pkg_columnizer.cc:661
+#: src/pkg_columnizer.cc:647 src/pkg_columnizer.cc:656
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr "\"%ls\"den sonra paket gösterimi kod dönüşümü yapılamıyor"
 
-#: src/pkg_columnizer.cc:668
+#: src/pkg_columnizer.cc:663
 msgid "Internal error: Default column string is unparsable"
 msgstr "İç hata: Varsayılan kolon dizgisi ayrıştırılamaz"
 
@@ -3856,12 +3856,12 @@ msgstr ""
 "%s temel bir pakettir!%n%nBu paketi kaldırmak istediğinizden emin misiniz?%"
 "nEğer eminseniz '%s' yazın."
 
-#: src/pkg_item.cc:220 src/pkg_ver_item.cc:658 src/solution_item.cc:291
+#: src/pkg_item.cc:220 src/pkg_ver_item.cc:655 src/solution_item.cc:291
 #, c-format
 msgid "Information about %s"
 msgstr "%s hakkında bilgi"
 
-#: src/pkg_item.cc:222 src/pkg_ver_item.cc:660 src/solution_item.cc:289
+#: src/pkg_item.cc:222 src/pkg_ver_item.cc:657 src/solution_item.cc:289
 #, c-format
 msgid "%s info"
 msgstr "%s bilgisi"
@@ -3876,27 +3876,27 @@ msgstr "%s'in mevcut sürümleri"
 msgid "%s versions"
 msgstr "%s sürümleri"
 
-#: src/pkg_item.cc:331 src/pkg_ver_item.cc:688
+#: src/pkg_item.cc:331 src/pkg_ver_item.cc:685
 #, c-format
 msgid "Dependencies of %s"
 msgstr "%s paketinin bağımlılıkları"
 
-#: src/pkg_item.cc:333 src/pkg_ver_item.cc:690
+#: src/pkg_item.cc:333 src/pkg_ver_item.cc:687
 #, c-format
 msgid "%s deps"
 msgstr "%s bağımlılıkları"
 
-#: src/pkg_item.cc:344 src/pkg_ver_item.cc:700
+#: src/pkg_item.cc:344 src/pkg_ver_item.cc:697
 #, c-format
 msgid "Packages depending on %s"
 msgstr "%s paketine bağımlı paketler"
 
-#: src/pkg_item.cc:346 src/pkg_ver_item.cc:702
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:699
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s ters bağımlılıkları"
 
-#: src/pkg_item.cc:396 src/pkg_ver_item.cc:750
+#: src/pkg_item.cc:396 src/pkg_ver_item.cc:747
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "%s ile ilgili hata bildirimi:\n"
@@ -3962,25 +3962,21 @@ msgstr "Sütun tanımı kod dönüşümü yapılamıyor"
 msgid "Couldn't parse column definition"
 msgstr "Sütun tanımlaması ayrıştırılamıyor"
 
-#: src/pkg_view.cc:185
-msgid "Encoding error in long description."
-msgstr "Günlük açıklamasında kodlama hatası."
-
-#: src/pkg_view.cc:415
+#: src/pkg_view.cc:406
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: ifadelerde hata -- iki ana pencere mi olacak??"
 
-#: src/pkg_view.cc:421
+#: src/pkg_view.cc:412
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: ifadelerde hata -- kalıcı öğe için yanlış kolon listesi"
 
-#: src/pkg_view.cc:517
+#: src/pkg_view.cc:508
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: hatalı ifade!"
 
-#: src/pkg_view.cc:569
+#: src/pkg_view.cc:560
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: Ana nesne bulunamadı"
 
@@ -5369,6 +5365,9 @@ msgstr "Dosya ismi yüklenemiyor: %ls dizgisi çoklu bayt gösterimi içermiyor.
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "EN ÜST SEVİYE"
+
+#~ msgid "Encoding error in long description."
+#~ msgstr "Günlük açıklamasında kodlama hatası."
 
 #, fuzzy
 #~ msgid "Search backwards for:"

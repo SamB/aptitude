@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3+SVN\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-11-14 20:46-0800\n"
+"POT-Creation-Date: 2005-11-15 14:55-0800\n"
 "PO-Revision-Date: 2005-11-14 23:51-0600\n"
 "Last-Translator: Ming Hua <minghua@rice.edu>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
@@ -891,7 +891,7 @@ msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "非法响应。请输入一个合法命令或者“?”请求帮助。\n"
 
 #: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
-#: src/generic/apt/apt.cc:199
+#: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "无法打开 %s 以写入"
@@ -1188,7 +1188,7 @@ msgid "State"
 msgstr "状态"
 
 #: src/cmdline/cmdline_show.cc:245 src/cmdline/cmdline_show.cc:328
-#: src/generic/apt/matchers.cc:1662
+#: src/generic/apt/matchers.cc:1663
 msgid "Provided by"
 msgstr "提供者："
 
@@ -1290,7 +1290,7 @@ msgstr "代替"
 msgid "Obsoletes"
 msgstr "过期"
 
-#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1616
+#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1617
 msgid "Provides"
 msgstr "提供"
 
@@ -1298,12 +1298,12 @@ msgstr "提供"
 msgid "Description: "
 msgstr "描述："
 
-#: src/cmdline/cmdline_show.cc:423
+#: src/cmdline/cmdline_show.cc:424
 #, c-format
 msgid "Unable to locate package %s"
 msgstr "无法定位软件包 %s"
 
-#: src/cmdline/cmdline_show.cc:436
+#: src/cmdline/cmdline_show.cc:437
 #, c-format
 msgid "Unable to parse pattern %s"
 msgstr "无法分析模式 %s"
@@ -1552,17 +1552,17 @@ msgstr "无法解析或打开软件包列表文件或状态文件。"
 msgid "You may want to update the package lists to correct these missing files"
 msgstr "您可能需要更新软件包列表来解决缺少这些文件的问题"
 
-#: src/generic/apt/apt.cc:171
+#: src/generic/apt/apt.cc:172
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "%s 可读但不可写；无法写入配置文件。"
 
-#: src/generic/apt/apt.cc:209
+#: src/generic/apt/apt.cc:210
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "无法用新的配置文件代替 %s"
 
-#: src/generic/apt/apt.cc:299
+#: src/generic/apt/apt.cc:300
 msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
@@ -1714,140 +1714,140 @@ msgstr ""
 "\n"
 "日志完成。\n"
 
-#: src/generic/apt/matchers.cc:682
+#: src/generic/apt/matchers.cc:683
 msgid "Automatically Installed"
 msgstr "已自动安装"
 
-#: src/generic/apt/matchers.cc:704 src/generic/apt/matchers.cc:893
+#: src/generic/apt/matchers.cc:705 src/generic/apt/matchers.cc:894
 msgid "Broken"
 msgstr "损坏"
 
-#: src/generic/apt/matchers.cc:891
+#: src/generic/apt/matchers.cc:892
 msgid "Unchanged"
 msgstr "没有改变"
 
-#: src/generic/apt/matchers.cc:895
+#: src/generic/apt/matchers.cc:896
 msgid "Remove [unused]"
 msgstr "删除[无用的]"
 
-#: src/generic/apt/matchers.cc:897
+#: src/generic/apt/matchers.cc:898
 msgid "Hold [auto]"
 msgstr "保持[自动]"
 
-#: src/generic/apt/matchers.cc:899
+#: src/generic/apt/matchers.cc:900
 msgid "Install [auto]"
 msgstr "安装 [自动]"
 
-#: src/generic/apt/matchers.cc:901
+#: src/generic/apt/matchers.cc:902
 msgid "Remove [auto]"
 msgstr "删除 [自动]"
 
-#: src/generic/apt/matchers.cc:903
+#: src/generic/apt/matchers.cc:904
 msgid "Downgrade"
 msgstr "降级"
 
-#: src/generic/apt/matchers.cc:905
+#: src/generic/apt/matchers.cc:906
 msgid "Hold"
 msgstr "保持"
 
-#: src/generic/apt/matchers.cc:907
+#: src/generic/apt/matchers.cc:908
 msgid "Reinstall"
 msgstr "重新安装"
 
-#: src/generic/apt/matchers.cc:909
+#: src/generic/apt/matchers.cc:910
 msgid "Install"
 msgstr "安装"
 
-#: src/generic/apt/matchers.cc:911
+#: src/generic/apt/matchers.cc:912
 msgid "Remove"
 msgstr "删除"
 
-#: src/generic/apt/matchers.cc:913
+#: src/generic/apt/matchers.cc:914
 msgid "Upgrade"
 msgstr "升级"
 
-#: src/generic/apt/matchers.cc:933
+#: src/generic/apt/matchers.cc:934
 msgid "Keep"
 msgstr "保持"
 
-#: src/generic/apt/matchers.cc:959
+#: src/generic/apt/matchers.cc:960
 msgid "Virtual"
 msgstr "虚拟"
 
-#: src/generic/apt/matchers.cc:980
+#: src/generic/apt/matchers.cc:981
 msgid "Installed"
 msgstr "已安装"
 
-#: src/generic/apt/matchers.cc:1002
+#: src/generic/apt/matchers.cc:1003
 msgid "Essential"
 msgstr "核心的"
 
-#: src/generic/apt/matchers.cc:1021
+#: src/generic/apt/matchers.cc:1022
 msgid "Config Files Remain"
 msgstr "配置文件保留"
 
-#: src/generic/apt/matchers.cc:1387
+#: src/generic/apt/matchers.cc:1388
 msgid "Garbage"
 msgstr "垃圾"
 
-#: src/generic/apt/matchers.cc:1711
+#: src/generic/apt/matchers.cc:1712
 msgid "No reverse dependencies"
 msgstr "无反向依赖关系"
 
-#: src/generic/apt/matchers.cc:1777
+#: src/generic/apt/matchers.cc:1778
 msgid "New Package"
 msgstr "新软件包"
 
-#: src/generic/apt/matchers.cc:1796
+#: src/generic/apt/matchers.cc:1797
 msgid "Upgradable"
 msgstr "可升级"
 
-#: src/generic/apt/matchers.cc:1920
+#: src/generic/apt/matchers.cc:1921
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "无法对 %s 之后的未结束的文字字符串"
 
-#: src/generic/apt/matchers.cc:1980
+#: src/generic/apt/matchers.cc:1981
 msgid "Unmatched '('"
 msgstr "不匹配的“(”"
 
-#: src/generic/apt/matchers.cc:2113 src/generic/apt/matchers.cc:2186
+#: src/generic/apt/matchers.cc:2114 src/generic/apt/matchers.cc:2187
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "未知依赖类型：%s"
 
-#: src/generic/apt/matchers.cc:2119
+#: src/generic/apt/matchers.cc:2120
 msgid "Provides: cannot be broken"
 msgstr "“提供”类型不可能损坏"
 
-#: src/generic/apt/matchers.cc:2174
+#: src/generic/apt/matchers.cc:2175
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "未知的操作类型：%s"
 
-#: src/generic/apt/matchers.cc:2228
+#: src/generic/apt/matchers.cc:2229
 #, c-format
 msgid "Unknown priority %s"
 msgstr "未知的优先级：%s"
 
-#: src/generic/apt/matchers.cc:2249
+#: src/generic/apt/matchers.cc:2250
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "未知的模式类型：%c"
 
-#: src/generic/apt/matchers.cc:2272
+#: src/generic/apt/matchers.cc:2273
 msgid "Can't search for \"\""
 msgstr "无法搜索“”"
 
-#: src/generic/apt/matchers.cc:2300
+#: src/generic/apt/matchers.cc:2301
 msgid "Unexpected empty expression"
 msgstr "意外的空表达式"
 
-#: src/generic/apt/matchers.cc:2327
+#: src/generic/apt/matchers.cc:2328
 msgid "Badly formed expression"
 msgstr "错误格式的表达式"
 
-#: src/generic/apt/matchers.cc:2362
+#: src/generic/apt/matchers.cc:2363
 msgid "Unexpected ')'"
 msgstr "意外的“)”"
 
@@ -2789,7 +2789,7 @@ msgstr "安装完成一半"
 msgid "config-files"
 msgstr "配置文件"
 
-#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:528 src/pkg_ver_item.cc:238
+#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:523 src/pkg_ver_item.cc:238
 msgid "ERROR"
 msgstr "错误"
 
@@ -2831,67 +2831,67 @@ msgstr "升级"
 msgid "none"
 msgstr "无"
 
-#: src/pkg_columnizer.cc:335 src/pkg_columnizer.cc:356
-#: src/pkg_columnizer.cc:363 src/pkg_grouppolicy.cc:227
+#: src/pkg_columnizer.cc:330 src/pkg_columnizer.cc:351
+#: src/pkg_columnizer.cc:358 src/pkg_grouppolicy.cc:227
 #: src/pkg_info_screen.cc:115 src/pkg_info_screen.cc:116
-#: src/pkg_ver_item.cc:348 src/pkg_ver_item.cc:382
+#: src/pkg_ver_item.cc:345 src/pkg_ver_item.cc:379
 msgid "Unknown"
 msgstr "未知"
 
-#: src/pkg_columnizer.cc:343 src/pkg_ver_item.cc:357
+#: src/pkg_columnizer.cc:338 src/pkg_ver_item.cc:354
 msgid "Imp"
 msgstr "导入"
 
-#: src/pkg_columnizer.cc:345 src/pkg_ver_item.cc:360
+#: src/pkg_columnizer.cc:340 src/pkg_ver_item.cc:357
 msgid "Req"
 msgstr "要求"
 
-#: src/pkg_columnizer.cc:347 src/pkg_ver_item.cc:363
+#: src/pkg_columnizer.cc:342 src/pkg_ver_item.cc:360
 msgid "Std"
 msgstr "标准"
 
-#: src/pkg_columnizer.cc:349 src/pkg_ver_item.cc:366
+#: src/pkg_columnizer.cc:344 src/pkg_ver_item.cc:363
 msgid "Opt"
 msgstr "可选"
 
-#: src/pkg_columnizer.cc:351 src/pkg_ver_item.cc:369
+#: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:366
 msgid "Xtr"
 msgstr "额外"
 
-#: src/pkg_columnizer.cc:353 src/pkg_ver_item.cc:371
+#: src/pkg_columnizer.cc:348 src/pkg_ver_item.cc:368
 msgid "ERR"
 msgstr "错误"
 
-#: src/pkg_columnizer.cc:375
+#: src/pkg_columnizer.cc:370
 #, c-format
 msgid "#Broken: %ld"
 msgstr "#损坏：%ld"
 
-#: src/pkg_columnizer.cc:390
+#: src/pkg_columnizer.cc:385
 #, c-format
 msgid "Will use %sB of disk space"
 msgstr "将使用 %sB 磁盘空间"
 
-#: src/pkg_columnizer.cc:398
+#: src/pkg_columnizer.cc:393
 #, c-format
 msgid "Will free %sB of disk space"
 msgstr "将释放 %sB 磁盘空间"
 
-#: src/pkg_columnizer.cc:412
+#: src/pkg_columnizer.cc:407
 #, c-format
 msgid "DL Size: %sB"
 msgstr "需下载：%sB"
 
-#: src/pkg_columnizer.cc:483
+#: src/pkg_columnizer.cc:478
 msgid "HN too long"
 msgstr "HN 太长"
 
-#: src/pkg_columnizer.cc:652 src/pkg_columnizer.cc:661
+#: src/pkg_columnizer.cc:647 src/pkg_columnizer.cc:656
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr "在“%ls”之后无法解析软件包显示格式"
 
-#: src/pkg_columnizer.cc:668
+#: src/pkg_columnizer.cc:663
 msgid "Internal error: Default column string is unparsable"
 msgstr "内部错误：默认栏字符串无法解析"
 
@@ -3717,12 +3717,12 @@ msgid ""
 msgstr ""
 "%s 是一个核心软件包！%n%n 您确定您要卸载它吗？%n 如果您确定的话输入“%s”。"
 
-#: src/pkg_item.cc:220 src/pkg_ver_item.cc:658 src/solution_item.cc:291
+#: src/pkg_item.cc:220 src/pkg_ver_item.cc:655 src/solution_item.cc:291
 #, c-format
 msgid "Information about %s"
 msgstr "关于 %s 的信息"
 
-#: src/pkg_item.cc:222 src/pkg_ver_item.cc:660 src/solution_item.cc:289
+#: src/pkg_item.cc:222 src/pkg_ver_item.cc:657 src/solution_item.cc:289
 #, c-format
 msgid "%s info"
 msgstr "%s 信息"
@@ -3737,27 +3737,27 @@ msgstr "%s 的可用版本"
 msgid "%s versions"
 msgstr "%s 版本号"
 
-#: src/pkg_item.cc:331 src/pkg_ver_item.cc:688
+#: src/pkg_item.cc:331 src/pkg_ver_item.cc:685
 #, c-format
 msgid "Dependencies of %s"
 msgstr "%s 的依赖关系"
 
-#: src/pkg_item.cc:333 src/pkg_ver_item.cc:690
+#: src/pkg_item.cc:333 src/pkg_ver_item.cc:687
 #, c-format
 msgid "%s deps"
 msgstr "%s 依赖"
 
-#: src/pkg_item.cc:344 src/pkg_ver_item.cc:700
+#: src/pkg_item.cc:344 src/pkg_ver_item.cc:697
 #, c-format
 msgid "Packages depending on %s"
 msgstr "依赖于 %s 的软件包"
 
-#: src/pkg_item.cc:346 src/pkg_ver_item.cc:702
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:699
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s 反向依赖"
 
-#: src/pkg_item.cc:396 src/pkg_ver_item.cc:750
+#: src/pkg_item.cc:396 src/pkg_ver_item.cc:747
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "报告 %s 中的错误\n"
@@ -3821,24 +3821,20 @@ msgstr "无法给列定义转码"
 msgid "Couldn't parse column definition"
 msgstr "无法解析列定义"
 
-#: src/pkg_view.cc:185
-msgid "Encoding error in long description."
-msgstr "详细描述中有编码错误。"
-
-#: src/pkg_view.cc:415
+#: src/pkg_view.cc:406
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: 参数错误 -- 两个主要部件？ "
 
-#: src/pkg_view.cc:421
+#: src/pkg_view.cc:412
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr "make_package_view: 参数错误 -- 静态项目的栏列表错误"
 
-#: src/pkg_view.cc:517
+#: src/pkg_view.cc:508
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: 参数错误！"
 
-#: src/pkg_view.cc:569
+#: src/pkg_view.cc:560
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: 未发现主要部件"
 
@@ -5150,6 +5146,9 @@ msgstr "无法读取文件名：字符串“%ls”无法用多字节字符表示
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "顶层"
+
+#~ msgid "Encoding error in long description."
+#~ msgstr "详细描述中有编码错误。"
 
 #~ msgid "Search backwards for:"
 #~ msgstr "向后搜索："

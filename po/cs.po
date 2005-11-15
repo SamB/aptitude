@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-11-14 20:46-0800\n"
+"POT-Creation-Date: 2005-11-15 14:55-0800\n"
 "PO-Revision-Date: 2005-10-16 10:29+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -902,7 +902,7 @@ msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "Chybná odpověď. Zadejte platný příkaz nebo '?' pro nápovědu.\n"
 
 #: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
-#: src/generic/apt/apt.cc:199
+#: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Nemohu otevřít %s pro zápis"
@@ -1202,7 +1202,7 @@ msgid "State"
 msgstr "Stav"
 
 #: src/cmdline/cmdline_show.cc:245 src/cmdline/cmdline_show.cc:328
-#: src/generic/apt/matchers.cc:1662
+#: src/generic/apt/matchers.cc:1663
 msgid "Provided by"
 msgstr "Poskytován"
 
@@ -1304,7 +1304,7 @@ msgstr "Nahrazuje"
 msgid "Obsoletes"
 msgstr "Zastarává"
 
-#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1616
+#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1617
 msgid "Provides"
 msgstr "Poskytuje"
 
@@ -1312,12 +1312,12 @@ msgstr "Poskytuje"
 msgid "Description: "
 msgstr "Popis: "
 
-#: src/cmdline/cmdline_show.cc:423
+#: src/cmdline/cmdline_show.cc:424
 #, c-format
 msgid "Unable to locate package %s"
 msgstr "Nemohu nalézt balík %s"
 
-#: src/cmdline/cmdline_show.cc:436
+#: src/cmdline/cmdline_show.cc:437
 #, c-format
 msgid "Unable to parse pattern %s"
 msgstr "Nemohu zpracovat vzor %s"
@@ -1567,17 +1567,17 @@ msgstr "Seznamy balíků nebo stavový soubor nelze otevřít nebo zpracovat."
 msgid "You may want to update the package lists to correct these missing files"
 msgstr "Pro opravení chybějících souborů zkuste aktualizovat seznamy balíků"
 
-#: src/generic/apt/apt.cc:171
+#: src/generic/apt/apt.cc:172
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "%s se dá číst, ale ne zapisovat; nemohu zapsat konfigurační soubor."
 
-#: src/generic/apt/apt.cc:209
+#: src/generic/apt/apt.cc:210
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Nemohu nahradit %s novým konfiguračním souborem"
 
-#: src/generic/apt/apt.cc:299
+#: src/generic/apt/apt.cc:300
 msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
@@ -1732,140 +1732,140 @@ msgstr ""
 "\n"
 "Záznam kompletní.\n"
 
-#: src/generic/apt/matchers.cc:682
+#: src/generic/apt/matchers.cc:683
 msgid "Automatically Installed"
 msgstr "Instalovaný automaticky"
 
-#: src/generic/apt/matchers.cc:704 src/generic/apt/matchers.cc:893
+#: src/generic/apt/matchers.cc:705 src/generic/apt/matchers.cc:894
 msgid "Broken"
 msgstr "Porušený"
 
-#: src/generic/apt/matchers.cc:891
+#: src/generic/apt/matchers.cc:892
 msgid "Unchanged"
 msgstr "Nezměněný"
 
-#: src/generic/apt/matchers.cc:895
+#: src/generic/apt/matchers.cc:896
 msgid "Remove [unused]"
 msgstr "Odstranit [nepoužívaný]"
 
-#: src/generic/apt/matchers.cc:897
+#: src/generic/apt/matchers.cc:898
 msgid "Hold [auto]"
 msgstr "Podržet [auto]"
 
-#: src/generic/apt/matchers.cc:899
+#: src/generic/apt/matchers.cc:900
 msgid "Install [auto]"
 msgstr "Instalovat [auto]"
 
-#: src/generic/apt/matchers.cc:901
+#: src/generic/apt/matchers.cc:902
 msgid "Remove [auto]"
 msgstr "Odstranit [auto]"
 
-#: src/generic/apt/matchers.cc:903
+#: src/generic/apt/matchers.cc:904
 msgid "Downgrade"
 msgstr "Degradovat"
 
-#: src/generic/apt/matchers.cc:905
+#: src/generic/apt/matchers.cc:906
 msgid "Hold"
 msgstr "Podržet"
 
-#: src/generic/apt/matchers.cc:907
+#: src/generic/apt/matchers.cc:908
 msgid "Reinstall"
 msgstr "Přeinstalovat"
 
-#: src/generic/apt/matchers.cc:909
+#: src/generic/apt/matchers.cc:910
 msgid "Install"
 msgstr "Instalovat"
 
-#: src/generic/apt/matchers.cc:911
+#: src/generic/apt/matchers.cc:912
 msgid "Remove"
 msgstr "Odstranit"
 
-#: src/generic/apt/matchers.cc:913
+#: src/generic/apt/matchers.cc:914
 msgid "Upgrade"
 msgstr "Aktualizovat"
 
-#: src/generic/apt/matchers.cc:933
+#: src/generic/apt/matchers.cc:934
 msgid "Keep"
 msgstr "Ponechat"
 
-#: src/generic/apt/matchers.cc:959
+#: src/generic/apt/matchers.cc:960
 msgid "Virtual"
 msgstr "Virtuální"
 
-#: src/generic/apt/matchers.cc:980
+#: src/generic/apt/matchers.cc:981
 msgid "Installed"
 msgstr "Nainstalovaný"
 
-#: src/generic/apt/matchers.cc:1002
+#: src/generic/apt/matchers.cc:1003
 msgid "Essential"
 msgstr "Nezbytný"
 
-#: src/generic/apt/matchers.cc:1021
+#: src/generic/apt/matchers.cc:1022
 msgid "Config Files Remain"
 msgstr "Zbývají konfigurační soubory"
 
-#: src/generic/apt/matchers.cc:1387
+#: src/generic/apt/matchers.cc:1388
 msgid "Garbage"
 msgstr "Brak"
 
-#: src/generic/apt/matchers.cc:1711
+#: src/generic/apt/matchers.cc:1712
 msgid "No reverse dependencies"
 msgstr "Bez reverzních závislostí"
 
-#: src/generic/apt/matchers.cc:1777
+#: src/generic/apt/matchers.cc:1778
 msgid "New Package"
 msgstr "Nový balík"
 
-#: src/generic/apt/matchers.cc:1796
+#: src/generic/apt/matchers.cc:1797
 msgid "Upgradable"
 msgstr "Aktualizovatelný"
 
-#: src/generic/apt/matchers.cc:1920
+#: src/generic/apt/matchers.cc:1921
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "Neukončený řetězec za %s"
 
-#: src/generic/apt/matchers.cc:1980
+#: src/generic/apt/matchers.cc:1981
 msgid "Unmatched '('"
 msgstr "Nepárová '('"
 
-#: src/generic/apt/matchers.cc:2113 src/generic/apt/matchers.cc:2186
+#: src/generic/apt/matchers.cc:2114 src/generic/apt/matchers.cc:2187
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Neznámá závislost: %s"
 
-#: src/generic/apt/matchers.cc:2119
+#: src/generic/apt/matchers.cc:2120
 msgid "Provides: cannot be broken"
 msgstr "Poskytuje: nemůže být porušený"
 
-#: src/generic/apt/matchers.cc:2174
+#: src/generic/apt/matchers.cc:2175
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Neznámá akce: %s"
 
-#: src/generic/apt/matchers.cc:2228
+#: src/generic/apt/matchers.cc:2229
 #, c-format
 msgid "Unknown priority %s"
 msgstr "Neznámá priorita: %s"
 
-#: src/generic/apt/matchers.cc:2249
+#: src/generic/apt/matchers.cc:2250
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Neznámý vzor: %c"
 
-#: src/generic/apt/matchers.cc:2272
+#: src/generic/apt/matchers.cc:2273
 msgid "Can't search for \"\""
 msgstr "Nemohu hledat \"\""
 
-#: src/generic/apt/matchers.cc:2300
+#: src/generic/apt/matchers.cc:2301
 msgid "Unexpected empty expression"
 msgstr "Neočekávaný prázdný výraz"
 
-#: src/generic/apt/matchers.cc:2327
+#: src/generic/apt/matchers.cc:2328
 msgid "Badly formed expression"
 msgstr "Špatně zformulovaný výraz"
 
-#: src/generic/apt/matchers.cc:2362
+#: src/generic/apt/matchers.cc:2363
 msgid "Unexpected ')'"
 msgstr "Neočekávaná ')'"
 
@@ -2820,7 +2820,7 @@ msgstr "napůl instalovaný"
 msgid "config-files"
 msgstr "konfigurační soubory"
 
-#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:528 src/pkg_ver_item.cc:238
+#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:523 src/pkg_ver_item.cc:238
 msgid "ERROR"
 msgstr "CHYBA"
 
@@ -2862,67 +2862,67 @@ msgstr "aktualizovat"
 msgid "none"
 msgstr "nic"
 
-#: src/pkg_columnizer.cc:335 src/pkg_columnizer.cc:356
-#: src/pkg_columnizer.cc:363 src/pkg_grouppolicy.cc:227
+#: src/pkg_columnizer.cc:330 src/pkg_columnizer.cc:351
+#: src/pkg_columnizer.cc:358 src/pkg_grouppolicy.cc:227
 #: src/pkg_info_screen.cc:115 src/pkg_info_screen.cc:116
-#: src/pkg_ver_item.cc:348 src/pkg_ver_item.cc:382
+#: src/pkg_ver_item.cc:345 src/pkg_ver_item.cc:379
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: src/pkg_columnizer.cc:343 src/pkg_ver_item.cc:357
+#: src/pkg_columnizer.cc:338 src/pkg_ver_item.cc:354
 msgid "Imp"
 msgstr "Důl"
 
-#: src/pkg_columnizer.cc:345 src/pkg_ver_item.cc:360
+#: src/pkg_columnizer.cc:340 src/pkg_ver_item.cc:357
 msgid "Req"
 msgstr "Vyž"
 
-#: src/pkg_columnizer.cc:347 src/pkg_ver_item.cc:363
+#: src/pkg_columnizer.cc:342 src/pkg_ver_item.cc:360
 msgid "Std"
 msgstr "Std"
 
-#: src/pkg_columnizer.cc:349 src/pkg_ver_item.cc:366
+#: src/pkg_columnizer.cc:344 src/pkg_ver_item.cc:363
 msgid "Opt"
 msgstr "Vol"
 
-#: src/pkg_columnizer.cc:351 src/pkg_ver_item.cc:369
+#: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:366
 msgid "Xtr"
 msgstr "Xtr"
 
-#: src/pkg_columnizer.cc:353 src/pkg_ver_item.cc:371
+#: src/pkg_columnizer.cc:348 src/pkg_ver_item.cc:368
 msgid "ERR"
 msgstr "ERR"
 
-#: src/pkg_columnizer.cc:375
+#: src/pkg_columnizer.cc:370
 #, c-format
 msgid "#Broken: %ld"
 msgstr "Porušené: %ld"
 
-#: src/pkg_columnizer.cc:390
+#: src/pkg_columnizer.cc:385
 #, c-format
 msgid "Will use %sB of disk space"
 msgstr "Na disku se použije %sB"
 
-#: src/pkg_columnizer.cc:398
+#: src/pkg_columnizer.cc:393
 #, c-format
 msgid "Will free %sB of disk space"
 msgstr "Na disku se uvolní %sB"
 
-#: src/pkg_columnizer.cc:412
+#: src/pkg_columnizer.cc:407
 #, c-format
 msgid "DL Size: %sB"
 msgstr "Stáhnu: %sB"
 
-#: src/pkg_columnizer.cc:483
+#: src/pkg_columnizer.cc:478
 msgid "HN too long"
 msgstr "Příliš dlouhé jméno"
 
-#: src/pkg_columnizer.cc:652 src/pkg_columnizer.cc:661
+#: src/pkg_columnizer.cc:647 src/pkg_columnizer.cc:656
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr "Nemohu překódovat formát zobrazení balíků po \"%ls\""
 
-#: src/pkg_columnizer.cc:668
+#: src/pkg_columnizer.cc:663
 msgid "Internal error: Default column string is unparsable"
 msgstr "Vnitřní chyba: Standardní řetězec sloupce je nezpracovatelný"
 
@@ -3792,12 +3792,12 @@ msgstr ""
 "%s je nezbytný balík!%n%nJste si jisti, že jej chcete odstranit?%nPokud ano, "
 "napište '%s'."
 
-#: src/pkg_item.cc:220 src/pkg_ver_item.cc:658 src/solution_item.cc:291
+#: src/pkg_item.cc:220 src/pkg_ver_item.cc:655 src/solution_item.cc:291
 #, c-format
 msgid "Information about %s"
 msgstr "Informace o %s"
 
-#: src/pkg_item.cc:222 src/pkg_ver_item.cc:660 src/solution_item.cc:289
+#: src/pkg_item.cc:222 src/pkg_ver_item.cc:657 src/solution_item.cc:289
 #, c-format
 msgid "%s info"
 msgstr "informace o %s"
@@ -3812,27 +3812,27 @@ msgstr "Dostupné verze %s"
 msgid "%s versions"
 msgstr "verze %s"
 
-#: src/pkg_item.cc:331 src/pkg_ver_item.cc:688
+#: src/pkg_item.cc:331 src/pkg_ver_item.cc:685
 #, c-format
 msgid "Dependencies of %s"
 msgstr "Závislosti %s"
 
-#: src/pkg_item.cc:333 src/pkg_ver_item.cc:690
+#: src/pkg_item.cc:333 src/pkg_ver_item.cc:687
 #, c-format
 msgid "%s deps"
 msgstr "závislosti %s"
 
-#: src/pkg_item.cc:344 src/pkg_ver_item.cc:700
+#: src/pkg_item.cc:344 src/pkg_ver_item.cc:697
 #, c-format
 msgid "Packages depending on %s"
 msgstr "Balíky závisející na %s"
 
-#: src/pkg_item.cc:346 src/pkg_ver_item.cc:702
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:699
 #, c-format
 msgid "%s reverse deps"
 msgstr "reverzní závislosti %s"
 
-#: src/pkg_item.cc:396 src/pkg_ver_item.cc:750
+#: src/pkg_item.cc:396 src/pkg_ver_item.cc:747
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "Hlásím chybu v %s:\n"
@@ -3896,24 +3896,20 @@ msgstr "Nemohu překódovat definici sloupce"
 msgid "Couldn't parse column definition"
 msgstr "Nemohu zpracovat definici sloupce"
 
-#: src/pkg_view.cc:185
-msgid "Encoding error in long description."
-msgstr "Chyba kódování v dlouhém popisu."
-
-#: src/pkg_view.cc:415
+#: src/pkg_view.cc:406
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: chyba v argumentech -- dva hlavní widgety??"
 
-#: src/pkg_view.cc:421
+#: src/pkg_view.cc:412
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr "make_package_view: chyba v argumentech -- chybný seznam sloupců"
 
-#: src/pkg_view.cc:517
+#: src/pkg_view.cc:508
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: chybný argument!"
 
-#: src/pkg_view.cc:569
+#: src/pkg_view.cc:560
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: nebyl nalezen hlavní widget"
 
@@ -5270,6 +5266,9 @@ msgstr "Nemohu načíst soubor: řetězec %ls nemá vícebajtovou reprezentaci."
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "NEJVYŠŠÍ ÚROVEŇ"
+
+#~ msgid "Encoding error in long description."
+#~ msgstr "Chyba kódování v dlouhém popisu."
 
 #~ msgid "Search backwards for:"
 #~ msgstr "Hledat předchozí:"

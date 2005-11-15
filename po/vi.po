@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-11-14 20:46-0800\n"
+"POT-Creation-Date: 2005-11-15 14:55-0800\n"
 "PO-Revision-Date: 2005-09-03 22:52+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -914,7 +914,7 @@ msgstr ""
 "Cách trả lời không hợp lệ. Hãy gõ lệnh hợp lệ hay lệnh «?» để xem trợ giúp.\n"
 
 #: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
-#: src/generic/apt/apt.cc:199
+#: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Không thể mở %s để ghi."
@@ -1222,7 +1222,7 @@ msgid "State"
 msgstr "Tính trạng"
 
 #: src/cmdline/cmdline_show.cc:245 src/cmdline/cmdline_show.cc:328
-#: src/generic/apt/matchers.cc:1662
+#: src/generic/apt/matchers.cc:1663
 msgid "Provided by"
 msgstr "Cung cấp bởi"
 
@@ -1325,7 +1325,7 @@ msgstr "Thay thế"
 msgid "Obsoletes"
 msgstr "Làm cho cũ"
 
-#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1616
+#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1617
 msgid "Provides"
 msgstr "Cung cấp"
 
@@ -1333,12 +1333,12 @@ msgstr "Cung cấp"
 msgid "Description: "
 msgstr "Mô tả:"
 
-#: src/cmdline/cmdline_show.cc:423
+#: src/cmdline/cmdline_show.cc:424
 #, fuzzy, c-format
 msgid "Unable to locate package %s"
 msgstr "Không mở được «%ls»."
 
-#: src/cmdline/cmdline_show.cc:436
+#: src/cmdline/cmdline_show.cc:437
 #, fuzzy, c-format
 msgid "Unable to parse pattern %s"
 msgstr "Không thể phân tách mẫu tại « %s »."
@@ -1595,17 +1595,17 @@ msgstr ""
 "Có lẽ bạn muốn cập nhật danh sách gói để sửa trường hợp có những tập tin này "
 "còn thiếu."
 
-#: src/generic/apt/apt.cc:171
+#: src/generic/apt/apt.cc:172
 #, fuzzy, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "Không thể thay thế %s bằng tập tin cấu hình mới."
 
-#: src/generic/apt/apt.cc:209
+#: src/generic/apt/apt.cc:210
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Không thể thay thế %s bằng tập tin cấu hình mới."
 
-#: src/generic/apt/apt.cc:299
+#: src/generic/apt/apt.cc:300
 msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
@@ -1765,140 +1765,140 @@ msgstr ""
 "\n"
 "Bản ghi hoàn tất.\n"
 
-#: src/generic/apt/matchers.cc:682
+#: src/generic/apt/matchers.cc:683
 msgid "Automatically Installed"
 msgstr "Tự động cài đặt"
 
-#: src/generic/apt/matchers.cc:704 src/generic/apt/matchers.cc:893
+#: src/generic/apt/matchers.cc:705 src/generic/apt/matchers.cc:894
 msgid "Broken"
 msgstr "Bị ngắt"
 
-#: src/generic/apt/matchers.cc:891
+#: src/generic/apt/matchers.cc:892
 msgid "Unchanged"
 msgstr "Chưa đổi"
 
-#: src/generic/apt/matchers.cc:895
+#: src/generic/apt/matchers.cc:896
 msgid "Remove [unused]"
 msgstr "Bỏ (chưa dùng)"
 
-#: src/generic/apt/matchers.cc:897
+#: src/generic/apt/matchers.cc:898
 msgid "Hold [auto]"
 msgstr "Giữ lại (tự động)"
 
-#: src/generic/apt/matchers.cc:899
+#: src/generic/apt/matchers.cc:900
 msgid "Install [auto]"
 msgstr "Cài (tự động)"
 
-#: src/generic/apt/matchers.cc:901
+#: src/generic/apt/matchers.cc:902
 msgid "Remove [auto]"
 msgstr "Bỏ (tự động)"
 
-#: src/generic/apt/matchers.cc:903
+#: src/generic/apt/matchers.cc:904
 msgid "Downgrade"
 msgstr "Hạ cấp"
 
-#: src/generic/apt/matchers.cc:905
+#: src/generic/apt/matchers.cc:906
 msgid "Hold"
 msgstr "Giữ lại"
 
-#: src/generic/apt/matchers.cc:907
+#: src/generic/apt/matchers.cc:908
 msgid "Reinstall"
 msgstr "Cài lại"
 
-#: src/generic/apt/matchers.cc:909
+#: src/generic/apt/matchers.cc:910
 msgid "Install"
 msgstr "Cài"
 
-#: src/generic/apt/matchers.cc:911
+#: src/generic/apt/matchers.cc:912
 msgid "Remove"
 msgstr "Bỏ"
 
-#: src/generic/apt/matchers.cc:913
+#: src/generic/apt/matchers.cc:914
 msgid "Upgrade"
 msgstr "Nâng cấp"
 
-#: src/generic/apt/matchers.cc:933
+#: src/generic/apt/matchers.cc:934
 msgid "Keep"
 msgstr "Giữ"
 
-#: src/generic/apt/matchers.cc:959
+#: src/generic/apt/matchers.cc:960
 msgid "Virtual"
 msgstr "Ảo"
 
-#: src/generic/apt/matchers.cc:980
+#: src/generic/apt/matchers.cc:981
 msgid "Installed"
 msgstr "Cài rồi"
 
-#: src/generic/apt/matchers.cc:1002
+#: src/generic/apt/matchers.cc:1003
 msgid "Essential"
 msgstr "Chủ yếu"
 
-#: src/generic/apt/matchers.cc:1021
+#: src/generic/apt/matchers.cc:1022
 msgid "Config Files Remain"
 msgstr "Tập tin cấu hình còn lại"
 
-#: src/generic/apt/matchers.cc:1387
+#: src/generic/apt/matchers.cc:1388
 msgid "Garbage"
 msgstr "Rác"
 
-#: src/generic/apt/matchers.cc:1711
+#: src/generic/apt/matchers.cc:1712
 msgid "No reverse dependencies"
 msgstr "Không có cách phụ thuộc ngược."
 
-#: src/generic/apt/matchers.cc:1777
+#: src/generic/apt/matchers.cc:1778
 msgid "New Package"
 msgstr "Gói mới"
 
-#: src/generic/apt/matchers.cc:1796
+#: src/generic/apt/matchers.cc:1797
 msgid "Upgradable"
 msgstr "Có thể nâng cấp"
 
-#: src/generic/apt/matchers.cc:1920
+#: src/generic/apt/matchers.cc:1921
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "Có chuỗi nghĩa chữ chưa kết thức sau « %s »."
 
-#: src/generic/apt/matchers.cc:1980
+#: src/generic/apt/matchers.cc:1981
 msgid "Unmatched '('"
 msgstr "Chưa khớp ký tự « ( »."
 
-#: src/generic/apt/matchers.cc:2113 src/generic/apt/matchers.cc:2186
+#: src/generic/apt/matchers.cc:2114 src/generic/apt/matchers.cc:2187
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Không biết kiểu cách phụ thuộc: %s"
 
-#: src/generic/apt/matchers.cc:2119
+#: src/generic/apt/matchers.cc:2120
 msgid "Provides: cannot be broken"
 msgstr ""
 
-#: src/generic/apt/matchers.cc:2174
+#: src/generic/apt/matchers.cc:2175
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Không biểu kiểu hành động: %s"
 
-#: src/generic/apt/matchers.cc:2228
+#: src/generic/apt/matchers.cc:2229
 #, c-format
 msgid "Unknown priority %s"
 msgstr "Không biết ưu tiên %s"
 
-#: src/generic/apt/matchers.cc:2249
+#: src/generic/apt/matchers.cc:2250
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Không biết kiểu mẫu: %c"
 
-#: src/generic/apt/matchers.cc:2272
+#: src/generic/apt/matchers.cc:2273
 msgid "Can't search for \"\""
 msgstr "Không thể tìm kiếm «  »."
 
-#: src/generic/apt/matchers.cc:2300
+#: src/generic/apt/matchers.cc:2301
 msgid "Unexpected empty expression"
 msgstr "Biểu thức rỗng bất ngờ"
 
-#: src/generic/apt/matchers.cc:2327
+#: src/generic/apt/matchers.cc:2328
 msgid "Badly formed expression"
 msgstr "Biểu thức dạng sai"
 
-#: src/generic/apt/matchers.cc:2362
+#: src/generic/apt/matchers.cc:2363
 msgid "Unexpected ')'"
 msgstr "Ký tự « ) » bất ngờ"
 
@@ -2873,7 +2873,7 @@ msgstr "nửa cài"
 msgid "config-files"
 msgstr "tệp cấu hình"
 
-#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:528 src/pkg_ver_item.cc:238
+#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:523 src/pkg_ver_item.cc:238
 msgid "ERROR"
 msgstr "LỖI"
 
@@ -2915,67 +2915,67 @@ msgstr "cập nhật"
 msgid "none"
 msgstr "k0 có"
 
-#: src/pkg_columnizer.cc:335 src/pkg_columnizer.cc:356
-#: src/pkg_columnizer.cc:363 src/pkg_grouppolicy.cc:227
+#: src/pkg_columnizer.cc:330 src/pkg_columnizer.cc:351
+#: src/pkg_columnizer.cc:358 src/pkg_grouppolicy.cc:227
 #: src/pkg_info_screen.cc:115 src/pkg_info_screen.cc:116
-#: src/pkg_ver_item.cc:348 src/pkg_ver_item.cc:382
+#: src/pkg_ver_item.cc:345 src/pkg_ver_item.cc:379
 msgid "Unknown"
 msgstr "Chưa biết"
 
-#: src/pkg_columnizer.cc:343 src/pkg_ver_item.cc:357
+#: src/pkg_columnizer.cc:338 src/pkg_ver_item.cc:354
 msgid "Imp"
 msgstr "Phải"
 
-#: src/pkg_columnizer.cc:345 src/pkg_ver_item.cc:360
+#: src/pkg_columnizer.cc:340 src/pkg_ver_item.cc:357
 msgid "Req"
 msgstr "Cần"
 
-#: src/pkg_columnizer.cc:347 src/pkg_ver_item.cc:363
+#: src/pkg_columnizer.cc:342 src/pkg_ver_item.cc:360
 msgid "Std"
 msgstr "Thg"
 
-#: src/pkg_columnizer.cc:349 src/pkg_ver_item.cc:366
+#: src/pkg_columnizer.cc:344 src/pkg_ver_item.cc:363
 msgid "Opt"
 msgstr "TCh"
 
-#: src/pkg_columnizer.cc:351 src/pkg_ver_item.cc:369
+#: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:366
 msgid "Xtr"
 msgstr "Nữa"
 
-#: src/pkg_columnizer.cc:353 src/pkg_ver_item.cc:371
+#: src/pkg_columnizer.cc:348 src/pkg_ver_item.cc:368
 msgid "ERR"
 msgstr "LỖI"
 
-#: src/pkg_columnizer.cc:375
+#: src/pkg_columnizer.cc:370
 #, c-format
 msgid "#Broken: %ld"
 msgstr "#bị hỏng: %ld"
 
-#: src/pkg_columnizer.cc:390
+#: src/pkg_columnizer.cc:385
 #, c-format
 msgid "Will use %sB of disk space"
 msgstr "Sẽ dùng %sB chỗ trên đĩa"
 
-#: src/pkg_columnizer.cc:398
+#: src/pkg_columnizer.cc:393
 #, c-format
 msgid "Will free %sB of disk space"
 msgstr "Sẽ giải phóng %sB thêm chỗ trên đĩa"
 
-#: src/pkg_columnizer.cc:412
+#: src/pkg_columnizer.cc:407
 #, c-format
 msgid "DL Size: %sB"
 msgstr "Cỡ tải về: %sB"
 
-#: src/pkg_columnizer.cc:483
+#: src/pkg_columnizer.cc:478
 msgid "HN too long"
 msgstr "Tên máy quá dài"
 
-#: src/pkg_columnizer.cc:652 src/pkg_columnizer.cc:661
+#: src/pkg_columnizer.cc:647 src/pkg_columnizer.cc:656
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr "Không thể chuyển đổi bộ ký tự trong định dạng trình bày gói sau «%ls»."
 
-#: src/pkg_columnizer.cc:668
+#: src/pkg_columnizer.cc:663
 msgid "Internal error: Default column string is unparsable"
 msgstr "Gặp lỗi nội bộ: không thể phân tách chuỗi cột mặc định."
 
@@ -3859,12 +3859,12 @@ msgstr ""
 "• « %s » là một gói cần yếu. •%n%nBạn có chắc muốn loại bỏ nó không?%nHãy gõ "
 "« %s » nếu có."
 
-#: src/pkg_item.cc:220 src/pkg_ver_item.cc:658 src/solution_item.cc:291
+#: src/pkg_item.cc:220 src/pkg_ver_item.cc:655 src/solution_item.cc:291
 #, c-format
 msgid "Information about %s"
 msgstr "Thông tin về « %s »"
 
-#: src/pkg_item.cc:222 src/pkg_ver_item.cc:660 src/solution_item.cc:289
+#: src/pkg_item.cc:222 src/pkg_ver_item.cc:657 src/solution_item.cc:289
 #, c-format
 msgid "%s info"
 msgstr "%s thông tin"
@@ -3879,27 +3879,27 @@ msgstr "Các phiên bản công bố của « %s »"
 msgid "%s versions"
 msgstr "Phiên bản « %s »"
 
-#: src/pkg_item.cc:331 src/pkg_ver_item.cc:688
+#: src/pkg_item.cc:331 src/pkg_ver_item.cc:685
 #, c-format
 msgid "Dependencies of %s"
 msgstr "Cách phụ thuộc của « %s »"
 
-#: src/pkg_item.cc:333 src/pkg_ver_item.cc:690
+#: src/pkg_item.cc:333 src/pkg_ver_item.cc:687
 #, c-format
 msgid "%s deps"
 msgstr "%s phụ"
 
-#: src/pkg_item.cc:344 src/pkg_ver_item.cc:700
+#: src/pkg_item.cc:344 src/pkg_ver_item.cc:697
 #, c-format
 msgid "Packages depending on %s"
 msgstr "Các gói khác phụ thuộc vào %s"
 
-#: src/pkg_item.cc:346 src/pkg_ver_item.cc:702
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:699
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s phụ đảo"
 
-#: src/pkg_item.cc:396 src/pkg_ver_item.cc:750
+#: src/pkg_item.cc:396 src/pkg_ver_item.cc:747
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "Thông báo lỗi trong %s:\n"
@@ -3965,28 +3965,24 @@ msgstr "Không thể dịch mã hóa lời định nghĩa cột."
 msgid "Couldn't parse column definition"
 msgstr "Không thể phân tách lời định nghĩa cột."
 
-#: src/pkg_view.cc:185
-msgid "Encoding error in long description."
-msgstr "Gặp lỗi biên mã trong mô tả dài."
-
-#: src/pkg_view.cc:415
+#: src/pkg_view.cc:406
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr ""
 "make_package_view: (tạo khung xem gói) gặp lỗi trong đối số — hai ô điều "
 "khiển chính?"
 
-#: src/pkg_view.cc:421
+#: src/pkg_view.cc:412
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: (tạo khung xem gói) gặp lỗi trong đối số -- danh sách cột "
 "sai cho mục tĩnh."
 
-#: src/pkg_view.cc:517
+#: src/pkg_view.cc:508
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: (tạo khung xem gói) đối số sai."
 
-#: src/pkg_view.cc:569
+#: src/pkg_view.cc:560
 msgid "make_package_view: no main widget found"
 msgstr ""
 "make_package_view: (tạo khung xem gói) không tìm thấy ô điều khiển chính nào."
@@ -5366,6 +5362,9 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "CẤP ĐẦU"
+
+#~ msgid "Encoding error in long description."
+#~ msgstr "Gặp lỗi biên mã trong mô tả dài."
 
 #, fuzzy
 #~ msgid "Search backwards for:"
