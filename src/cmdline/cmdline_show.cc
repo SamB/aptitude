@@ -327,9 +327,10 @@ static fragment *version_file_fragment(pkgCache::VerIterator ver,
   fragments.push_back(prv_lst_frag(ver.ProvidesList(), false, _("Provides")));
   fragments.push_back(prv_lst_frag(ver.ParentPkg().ProvidesList(), true, _("Provided by")));
 
-  fragments.push_back(fragf("%s%s%n",
-			    _("Description: "), rec.ShortDesc().c_str()));
-  fragments.push_back(indentbox(1, 1, make_desc_fragment(transcode(rec.LongDesc()))));
+  fragments.push_back(fragf("%s%ls%n",
+			    _("Description: "),
+			    get_short_description(ver).c_str()));
+  fragments.push_back(indentbox(1, 1, make_desc_fragment(get_long_description(ver))));
 
   fragment *tags = make_tags_fragment(pkg);
   if(tags)

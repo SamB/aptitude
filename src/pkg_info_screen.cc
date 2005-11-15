@@ -78,8 +78,8 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
     {
       pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
 
-      string desc=apt_package_records->Lookup(ver.FileList()).LongDesc();
-      string shortdesc=string(desc, 0, desc.find('\n'));
+      std::wstring desc(get_long_description(ver));
+      std::wstring shortdesc(desc, 0, desc.find(L'\n'));
 
       vector<fragment*> frags;
 
@@ -91,9 +91,9 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
 	}
 
       // Avoid creating new strings to translate.
-      frags.push_back(clipbox(fragf("%B%s%b%s%n",
+      frags.push_back(clipbox(fragf("%B%s%b%ls%n",
 				    _("Description: "), shortdesc.c_str())));
-      frags.push_back(indentbox(2, 2, make_desc_fragment(transcode(desc))));
+      frags.push_back(indentbox(2, 2, make_desc_fragment(desc)));
 
       fragment *tags = make_tags_fragment(pkg);
       if(tags != NULL)

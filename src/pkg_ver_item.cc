@@ -329,10 +329,7 @@ column_disposition pkg_ver_columnizer::setup_column(int type)
 
       break;
     case description:
-      if(ver.end())
-	return column_disposition("", 0);
-
-      return column_disposition(apt_package_records->Lookup(ver.FileList()).ShortDesc(), 0);
+      return column_disposition(get_short_description(ver), 0);
     case maintainer:
       if(ver.end())
 	return column_disposition("", 0);

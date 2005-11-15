@@ -261,7 +261,7 @@ void solution_act_item::highlighted(vs_tree *win)
      apt_package_records == NULL)
     set_short_description(fragf(""));
   else
-    set_short_description(text_fragment(apt_package_records->Lookup(real_ver.FileList()).ShortDesc()));
+    set_short_description(text_fragment(get_short_description(real_ver)));
 
   set_active_dep(d);
 }

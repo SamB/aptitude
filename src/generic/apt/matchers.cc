@@ -39,6 +39,7 @@
 #include <aptitude.h>
 
 #include <generic/util/util.h>
+#include <vscreen/transcode.h>
 
 #include <set>
 
@@ -349,7 +350,7 @@ public:
     if(ver.end())
       return match_target(false, "");
     else
-      return match_target(true, apt_package_records->Lookup(ver.FileList()).LongDesc().c_str());
+      return match_target(true, transcode(get_long_description(ver).c_str()));
   }
 };
 

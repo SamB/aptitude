@@ -176,16 +176,7 @@ public:
   void set_package(const pkgCache::PkgIterator &pkg,
 		   const pkgCache::VerIterator &ver)
   {
-    wstring newdesc;
-
-    if(!pkg.end() && !ver.end())
-      {
-	if(!transcode(apt_package_records->Lookup(ver.FileList()).LongDesc(), newdesc))
-	  {
-	    if(!transcode(_("Encoding error in long description."), newdesc))
-	      newdesc=L"Encoding error in long description.";
-	  }
-      }
+    wstring newdesc(get_long_description(ver));
 
     fragment *frag=make_desc_fragment(newdesc);
 
