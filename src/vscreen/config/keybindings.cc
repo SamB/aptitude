@@ -34,6 +34,7 @@
 
 #include <ctype.h>
 
+#include <algorithm>
 #include <map>
 
 using namespace std;
@@ -256,13 +257,30 @@ void init_key_tables()
   rev_keynames[key(KEY_SUNDO, true)]=L"undo";
 }
 
+// Needed because C++ doesn't understand that &toupper
+// can be used with the signature (char -> char).
+struct toupper_struct
+{
+public:
+  char operator()(char c) const
+  {
+    return toupper(c);
+  }
+};
+
 void keybindings::set(string tag, keybinding strokes)
 {
+  transform(tag.begin(), tag.end(),
+	    tag.begin(), toupper_struct());
+
   keymap[tag]=strokes;
 }
 
 bool keybindings::key_matches(const key &k, string tag)
 {
+  transform(tag.begin(), tag.end(),
+	    tag.begin(), toupper_struct());
+
   hash_map<string, keybinding>::iterator found=keymap.find(tag);
   if(found==keymap.end())
     return parent?parent->key_matches(k, tag):false;
