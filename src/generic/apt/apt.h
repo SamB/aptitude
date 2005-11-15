@@ -162,6 +162,16 @@ void surrounding_or(pkgCache::DepIterator dep,
 		    pkgCache *cache = NULL);
 
 
+/** \return a short description string corresponding to the given
+ *  version.
+ */
+std::wstring get_short_description(const pkgCache::VerIterator &ver);
+
+/** \return a long description string corresponding to the given
+ *  version.
+ */
+std::wstring get_long_description(const pkgCache::VerIterator &ver);
+
 /** \return true if pkg is suggested by another package which will be
  *  installed.
  */

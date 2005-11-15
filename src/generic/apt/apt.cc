@@ -33,6 +33,7 @@
 
 #include <generic/util/undo.h>
 #include <generic/util/util.h>
+#include <vscreen/transcode.h>
 
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/depcache.h>
@@ -848,4 +849,35 @@ bool is_interesting_dep(const pkgCache::DepIterator &d,
     default:
       abort();
     }
+}
+
+std::wstring get_short_description(const pkgCache::VerIterator &ver)
+{
+  if(ver.end() || ver.FileList().end() || apt_package_records == NULL)
+    return std::wstring();
+
+  pkgCache::VerFileIterator vf = ver.FileList();
+
+  if(vf.end())
+    return std::wstring();
+  else
+    // Since Packages files don't have a bundled description and it
+    // just feels icky for the data in Packages to depend on the
+    // encoding, I just force a sane encoding on it here.  Really,
+    // though, Packages files should have an encapsulated encoding
+    // somewhere.
+    return transcode(apt_package_records->Lookup(vf).ShortDesc(), "UTF-8");
+}
+
+std::wstring get_long_description(const pkgCache::VerIterator &ver)
+{
+  if(ver.end() || ver.FileList().end() || apt_package_records == NULL)
+    return std::wstring();
+
+  pkgCache::VerFileIterator vf = ver.FileList();
+
+  if(vf.end())
+    return std::wstring();
+  else
+    return transcode(apt_package_records->Lookup(vf).LongDesc(), "UTF-8");
 }
