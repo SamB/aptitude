@@ -2022,6 +2022,9 @@ private:
 
     eassert(!s.get_broken().empty());
 
+    // Set to \b true if this search node is untenable.
+    bool dead_end = false;
+
     // This loop attempts to generate all the successors of a
     // solution.  However, if a "forced" dependency arises, it
     // re-verifies all the dependencies of the solution.
@@ -2100,7 +2103,7 @@ private:
 
 		add_conflict(conflict);
 
-		return;
+		dead_end = true;
 	      }
 	    else if(num_successors == 1)
 	      {
@@ -2121,6 +2124,11 @@ private:
 	      }
 	  }
       }
+
+    // Discard this node if there is no solution to at least one
+    // dependency.
+    if(dead_end)
+      return;
 
     // In the course of forcing dependencies, we might have actually
     // arrived at a solution, in which case we should just enqueue it
