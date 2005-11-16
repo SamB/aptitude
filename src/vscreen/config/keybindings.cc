@@ -424,7 +424,11 @@ wstring readable_keyname(const key &k)
 // Doesn't return all available bindings as that gets way too long.
 wstring keybindings::keyname(const string &tag)
 {
-  hash_map<string, keybinding>::iterator found=keymap.find(tag);
+  string realtag(tag);
+  transform(realtag.begin(), realtag.end(),
+	    realtag.begin(), toupper_struct());
+
+  hash_map<string, keybinding>::iterator found=keymap.find(realtag);
 
   if(found!=keymap.end())
     return ::keyname(found->second.front());
@@ -434,7 +438,11 @@ wstring keybindings::keyname(const string &tag)
 
 wstring keybindings::readable_keyname(const string &tag)
 {
-  hash_map<string, keybinding>::iterator found=keymap.find(tag);
+  string realtag(tag);
+  transform(realtag.begin(), realtag.end(),
+	    realtag.begin(), toupper_struct());
+
+  hash_map<string, keybinding>::iterator found=keymap.find(realtag);
 
   if(found != keymap.end())
     return ::readable_keyname(found->second.front());
