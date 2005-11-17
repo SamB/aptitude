@@ -176,7 +176,9 @@ public:
   void set_package(const pkgCache::PkgIterator &pkg,
 		   const pkgCache::VerIterator &ver)
   {
-    wstring newdesc(get_long_description(ver));
+    // Check against pkg.end() to hack around #339533; if ver is a
+    // default iterator, pkg.end() is true.
+    wstring newdesc(pkg.end() ? L"" : get_long_description(ver));
 
     fragment *frag=make_desc_fragment(newdesc);
 
