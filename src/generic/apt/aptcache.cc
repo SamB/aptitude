@@ -1335,7 +1335,8 @@ void aptitudeDepCache::mark_package(const PkgIterator &pkg,
 	  if(debug)
 	    std::cout << string(level*2, ' ')
 		      << "Cancelling the deletion of "
-		      << pkg.Name() << " and installing its candidate version." << std::endl;
+		      << pkg.Name() << " and installing its candidate version ("
+		      << ver.VerStr() << ")" << std::endl;
 
 	  mark_install(pkg, false, false, NULL);
 	}
@@ -1343,8 +1344,9 @@ void aptitudeDepCache::mark_package(const PkgIterator &pkg,
 	{
 	  if(debug)
 	    std::cout << string(level*2, ' ')
-		      << "Reverting to the currently installed version of "
-		      << pkg.Name() << std::endl;
+		      << "Cancelling the deletion of "
+		      << pkg.Name() << " and reverting to its currently installed version ("
+		      << ver.VerStr() << ")" << std::endl;
 
 	  pre_package_state_changed();
 	  MarkKeep(pkg);
@@ -1501,6 +1503,9 @@ void aptitudeDepCache::mark_and_sweep(undo_group *undo)
 	     !state.Delete())
 	    {
 	      bool do_delete=true;
+
+	      if(debug)
+		std::cout << "*** Removing unused package " << p.Name() << std::endl;
 
 	      if(do_delete)
 		mark_delete(p,
