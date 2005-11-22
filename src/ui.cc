@@ -1642,6 +1642,7 @@ static void start_solution_calculation()
 
   if(state.resolver_exists &&
      state.selected_solution == state.generated_solutions &&
+     !state.solutions_exhausted &&
      !state.background_thread_active)
     resman->get_solution_background_blocking(resman->get_selected_solution(),
 					     aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000),
