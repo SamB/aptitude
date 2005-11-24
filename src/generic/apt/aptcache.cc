@@ -934,7 +934,10 @@ void aptitudeDepCache::set_candidate_version(const VerIterator &ver,
 
   dirty=true;
 
-  if(!ver.end())
+  if(!ver.end() &&
+     (ver.Downloadable() ||
+      (ver == ver.ParentPkg().CurrentVer() &&
+       ver.ParentPkg()->CurrentState != pkgCache::State::ConfigFiles)))
     {
       pre_package_state_changed();
       // Use the InstVerIter instead of GetCandidateVersion, since
