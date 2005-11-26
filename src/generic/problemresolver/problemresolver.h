@@ -2498,6 +2498,23 @@ public:
       }
   }
 
+  /** Remove all dependency-related information from a set of actions;
+   *  used to insert conflicts that shouldn't have dependency tags.
+   */
+  static imm::map<package, action>
+  strip_dep_info(const imm::map<package, action> &actmap)
+  {
+    imm::map<package, action> rval;
+
+    for(typename imm::map<package, action>::const_iterator i = actmap.begin();
+	i != actmap.end(); ++i)
+      rval.put(i->first, action(i->second.ver,
+				dep(), false,
+				i->second.id));
+
+    return rval;
+  }
+
   /** Cancel any find_next_solution call that is executing in the
    *  background.  If no such call is executing, then the next call
    *  will immediately be cancelled.
@@ -2690,7 +2707,7 @@ public:
 		// everything or extend everything so a conflict can
 		// represent it.
 		if(minimized.get_unresolved_soft_deps().empty())
-		  add_conflict(minimized.get_actions());
+		  add_conflict(strip_dep_info(minimized.get_actions()));
 		else
 		  generated_solutions.push_back(minimized);
 
