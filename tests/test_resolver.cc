@@ -43,6 +43,16 @@ UNIVERSE [ \
   DEP a v3 -> < > \
 ]";
 
+const char *dummy_universe_2 = "\
+UNIVERSE [ \
+  PACKAGE a < v1 v2 > v1 \
+  PACKAGE b < v1 v2 > v1 \
+  PACKAGE c < v1 v2 > v1 \
+\
+  DEP a v1 -> < b v2 > \
+  DEP a v1 -> < c v2 > \
+]";
+
 // Done this way so meaningful line numbers are generated.
 #define assertEqEquivalent(x1, x2) \
 do { \
@@ -83,6 +93,7 @@ class ResolverTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testActionCompare);
   CPPUNIT_TEST(testSolutionCompare);
   CPPUNIT_TEST(testRejections);
+  CPPUNIT_TEST(testDropSolutionSupersets);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -297,6 +308,53 @@ private:
       {
 	CPPUNIT_FAIL("Expected at least one solution, got none.");
       }
+  }
+
+  // Test that the resolver ignores already-generated solutions when
+  // generating successors.  Also tests that the resolver generates
+  // solutions in the expected order in a simple situation.
+  void testDropSolutionSupersets()
+  {
+    dummy_universe_ref u = parseUniverse(dummy_universe_2);
+    dummy_resolver r(10, -300, -100, 100000, 0, 50000, u);
+
+    dummy_universe::package a = u.find_package("a");
+    dummy_universe::version av1 = a.version_from_name("v1");
+    dummy_universe::version av2 = a.version_from_name("v2");
+
+    r.add_version_score(av2, 100);
+
+    dummy_solution s;
+
+    try
+      {
+	s = r.find_next_solution(100);
+      }
+    catch(NoMoreSolutions)
+      {
+	CPPUNIT_FAIL("Expected at least one solution, got none.");
+      }
+
+    CPPUNIT_ASSERT(s.version_of(a) == av2);
+    CPPUNIT_ASSERT_EQUAL(s.get_actions().size(), 1U);
+
+    try
+      {
+	s = r.find_next_solution(100);
+      }
+    catch(NoMoreSolutions)
+      {
+	CPPUNIT_FAIL("Expected at least two solutions, got only one.");
+      }
+
+    // Note that the only solutions to this problem are (a) install
+    // a:v2 and do anything else, or (b) leave a:v1 installed and
+    // install b:v2 and c:v2.  The search algorithm will "see" the
+    // option of installing a:v2 to resolve the second dep of a:v1
+    // after seeing the solution <a:=v2>.  If the bug we're testing
+    // for is present, it'll try to install a:v2 again; otherwise
+    // it'll reject that solution as containing a conflict.
+    CPPUNIT_ASSERT(s.version_of(a) != av2);
   }
 };
 
