@@ -870,7 +870,8 @@ static void do_help_help()
 
   vs_widget_ref w=vs_dialog_fileview(buf, NULL,
 				     arg(sigc::ptr_fun(pager_search)),
-				     arg(sigc::ptr_fun(pager_repeat_search)));
+				     arg(sigc::ptr_fun(pager_repeat_search)),
+				     encoding);
   w->show_all();
 
   popup_widget(w);
