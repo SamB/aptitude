@@ -363,7 +363,10 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 	  if(!estate.candver.empty() && estate.upgrade)
 	    {
 	      for(pkgCache::VerIterator ver=i.VersionList(); !ver.end(); ++ver)
-		if(ver.VerStr()==estate.candver)
+		if(ver.VerStr()==estate.candver &&
+		   (ver.Downloadable() ||
+		    (ver == ver.ParentPkg().CurrentVer() &&
+		     ver.ParentPkg()->CurrentState != pkgCache::State::ConfigFiles)))
 		  SetCandidateVersion(ver);
 
 	      MarkInstall(i, false);
