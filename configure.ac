@@ -73,6 +73,14 @@ AC_CHECK_HEADER(hash_set,
 				 HASH_CLS="hash_set"
 				 AC_DEFINE(HAVE_EXT_HASH_SET,  , [Define if the g++ extension ext/hash_set is available])])])
 
+AC_MSG_CHECKING([whether apt supports ddtp])
+
+AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[#include <apt-pkg/pkgcache.h>]],
+				  [[pkgCache::DescIterator d;]]),
+		  AC_MSG_RESULT([yes])
+		  AC_DEFINE([HAVE_DDTP], [], [Set to true if apt is DDTP-enabled]),
+		  AC_MSG_RESULT([no]))
+
 # Try to guess what namespace the hash stuff is in (maybe I should just
 # use rbltrees instead in most places?)
 if test x$HASH_INC != x
