@@ -327,33 +327,35 @@ public:
 
     vector<fragment *> suggestions;
 
-    if(install_count>1)
-      suggestions.push_back(text_fragment(ssprintf(_("%d installs"),
+    if(install_count>0)
+      suggestions.push_back(text_fragment(ssprintf(ngettext("%d install",
+							    "%d installs",
+							    install_count),
 						   install_count)));
-    else if(install_count == 1)
-      suggestions.push_back(text_fragment(_("1 install")));
 
-    if(remove_count>1)
-      suggestions.push_back(text_fragment(ssprintf(_("%d removals"),
+    if(remove_count>0)
+      suggestions.push_back(text_fragment(ssprintf(ngettext("%d removal",
+							    "%d removals",
+							    remove_count),
 						   remove_count)));
-    else if(remove_count == 1)
-      suggestions.push_back(text_fragment(_("1 removal")));
 
-    if(keep_count>1)
-      suggestions.push_back(text_fragment(ssprintf(_("%d keeps"),
+    if(keep_count>0)
+      suggestions.push_back(text_fragment(ssprintf(ngettext("%d keep",
+							    "%d keeps",
+							    keep_count),
 						   keep_count)));
-    else if(keep_count == 1)
-      suggestions.push_back(text_fragment(_("1 keep")));
 
-    if(upgrade_count>1)
-      suggestions.push_back(text_fragment(ssprintf(_("%d upgrades"), upgrade_count)));
-    else if(upgrade_count == 1)
-      suggestions.push_back(text_fragment(_("1 upgrade")));
+    if(upgrade_count>0)
+      suggestions.push_back(text_fragment(ssprintf(ngettext("%d upgrade",
+							    "%d upgrades",
+							    upgrade_count),
+						   upgrade_count)));
 
-    if(downgrade_count>1)
-      suggestions.push_back(text_fragment(ssprintf(_("%d downgrades"), downgrade_count)));
-    else if(downgrade_count == 1)
-      suggestions.push_back(text_fragment(_("1 downgrade")));
+    if(downgrade_count>0)
+      suggestions.push_back(text_fragment(ssprintf(ngettext("%d downgrade",
+							    "%d downgrades",
+							    downgrade_count),
+						   downgrade_count)));
 
     fragments.push_back(join_fragments(suggestions,
 				       L","));
