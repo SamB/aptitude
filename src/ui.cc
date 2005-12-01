@@ -1214,10 +1214,13 @@ static void auto_fix_broken()
       aptitude_solution sol = resman->get_solution(resman->get_selected_solution(), 0);
 
       (*apt_cache_file)->apply_solution(sol, undo);
-      show_message(fragf("%s%n%n%F",
-			 _("Some packages were broken and have been fixed:"),
-			 solution_fragment(sol)),
-		   NULL);
+
+      vs_widget_ref d = vs_dialog_ok(fragf("%s%n%n%F",
+					   _("Some packages were broken and have been fixed:"),
+					   solution_fragment(sol)),
+				     NULL);
+
+      popup_widget(d, true);
     }
   catch(NoMoreSolutions)
     {
