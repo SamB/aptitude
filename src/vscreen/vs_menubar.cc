@@ -700,7 +700,7 @@ void vs_menubar::dispatch_mouse(short id, int x, int y, int z, mmask_t bmask)
 {
   vs_widget_ref tmpref(this);
 
-  if(y==0)
+  if(y==0 && (active || always_visible))
     {
       if(bmask & (BUTTON1_CLICKED | BUTTON2_CLICKED |
 		  BUTTON3_CLICKED | BUTTON4_CLICKED |
