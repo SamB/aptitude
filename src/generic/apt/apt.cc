@@ -856,7 +856,7 @@ std::wstring get_short_description(const pkgCache::VerIterator &ver)
   if(ver.end() || ver.FileList().end() || apt_package_records == NULL)
     return std::wstring();
 
-#ifdef HAVE_DDTP
+#ifndef HAVE_DDTP
   pkgCache::VerFileIterator vf = ver.FileList();
 
   if(vf.end())
@@ -888,7 +888,7 @@ std::wstring get_long_description(const pkgCache::VerIterator &ver)
   if(ver.end() || ver.FileList().end() || apt_package_records == NULL)
     return std::wstring();
 
-#ifdef HAVE_DDTP
+#ifndef HAVE_DDTP
   pkgCache::VerFileIterator vf = ver.FileList();
 
   if(vf.end())
