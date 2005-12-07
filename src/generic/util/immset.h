@@ -539,7 +539,12 @@ namespace imm
       return node(tmp.second, l, tmp.first);
     }
 
-    /** \return \b true if n1 and n2 share an element. */
+    /** \return \b true if there exist elements x1 and x2 in n1 and n2
+     *  respectively such that x1 and x2 are equivalent and f(x1, x2)
+     *  holds.  If f is \b lambda x1 x2 . \b true, then this routine
+     *  simply tests whether the sets represented by n1 and n2
+     *  intersect.
+     */
     template<typename F>
     bool nodes_intersect(const node &n1, const node &n2, const F &f) const
     {
