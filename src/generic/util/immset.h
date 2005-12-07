@@ -35,7 +35,7 @@
 
 namespace imm
 {
-  /** A generic node in a weighted tree a described in "Implementing
+  /** A generic node in a weighted tree as described in "Implementing
    *  Sets Efficiently In A Functional Language".  The tree invariant
    *  is that the tree is not "too unbalanced"; in this case, that no
    *  subtree is more than 4 times larger than its sibling.  (note
