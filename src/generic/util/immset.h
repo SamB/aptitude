@@ -43,8 +43,7 @@ namespace imm
    *
    *  A brief note on choice of algorithm: while a rbtree is more
    *  common and may be slightly more efficient, it is a much trickier
-   *  data structure to implement, and some operations (like set-union
-   *  and set-intersection) may be difficult to implement efficiently.
+   *  data structure to implement.
    *
    *  The weighted-tree data structure is reasonably efficient and
    *  much more straightforward to implement correctly.
