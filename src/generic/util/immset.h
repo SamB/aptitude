@@ -575,7 +575,11 @@ namespace imm
           nodes_intersect(n1.getRight(), n2.getRight(), f);
     }
 
-    /** \return \b true if n1 contains n2 under f. */
+    /** \return \b true if n1 contains n2 under f; i.e., if for each
+     *  element x2 of n2 there exists an element x1 of n1 such that x1
+     *  is equivalent to x2 and f(x1, x2) holds.  If f is
+     *  \b lambda x1 x2 . \b true, then this is simply set containment.
+     */
     template<typename F>
     bool node_contains(const node &n1, const node &n2, const F &f) const
     {
