@@ -668,7 +668,7 @@ namespace imm
       return set(old.add(old.root, x), old.value_compare);
     }
 
-    /** Like insert, but updates existing equivalent elements. */
+    /** Like add, but updates existing equivalent elements. */
     static set addUpdate(const set &old, const Val &x)
     {
       return set(old.addUpdate(old.root, x), old.value_compare);
