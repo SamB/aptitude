@@ -635,6 +635,7 @@ namespace imm
     {
     }
 
+    /** The binary predicate \b lambda x1 x2 . \b true */
     template<typename T>
     struct universal_relation
     {
