@@ -649,9 +649,9 @@ namespace imm
     }
 
     /** Insert an element into a tree, returning a new tree.  This is
-     *  not a member function, to stress that it does NOT modify the
-     *  old tree; instead, it returns a new tree containing the
-     *  element in addition to the elements of the old tree.
+     *  a static function to stress that it does NOT modify the old
+     *  tree; instead, it returns a new tree containing the element in
+     *  addition to the elements of the old tree.
      */
     static set add(const set &old, const Val &x)
     {
