@@ -343,8 +343,6 @@ fragment *fragment_columns(const std::vector<fragment_column_entry> &columns);
  *  Note: if you use a parameter index multiple times, you are virtually
  *  GUARANTEED to segfault!
  *
- *  Note 2: as usual, format should not contain literal newlines.
- *
  *  \param format the format string
  *  \return the formatted fragment, or NULL if there is an error in the format.
  */
