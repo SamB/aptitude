@@ -1567,7 +1567,7 @@ static void do_reload_cache()
 }
 #endif
 
-static void start_solution_calculation();
+static void start_solution_calculation(bool blocking = true);
 
 class interactive_continuation : public resolver_manager::background_continuation
 {
@@ -1630,7 +1630,7 @@ public:
 
   void no_more_time()
   {
-    start_solution_calculation();
+    start_solution_calculation(false);
   }
 
   void interrupted()
@@ -1639,8 +1639,12 @@ public:
 };
 
 // If the current solution pointer is past the end of the solution
-// list, queue up a calculation for it in the background thread.
-static void start_solution_calculation()
+// list, queue up a calculation for it in the background thread.  If
+// "blocking" is true, then the calling thread will wait for the
+// background resolver thread to finish its calculation before
+// returning from this function.  IF THE CALLING THREAD IS THE
+// BACKGROUND THREAD THIS WILL DEADLOCK IF BLOCKING IS TRUE! (see above for such a case)
+static void start_solution_calculation(bool blocking)
 {
   resolver_manager::state state = resman->state_snapshot();
 
@@ -1648,15 +1652,22 @@ static void start_solution_calculation()
      state.selected_solution == state.generated_solutions &&
      !state.solutions_exhausted &&
      !state.background_thread_active)
-    resman->get_solution_background_blocking(resman->get_selected_solution(),
-					     aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000),
-					     aptcfg->FindI(PACKAGE "::ProblemResolver::WaitSteps", 50),
-					     new interactive_continuation(resman));
+    {
+      const int selected = state.selected_solution;
+      const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
+      const int wait_steps = aptcfg->FindI(PACKAGE "::ProblemResolver::WaitSteps", 50);
+      interactive_continuation * const k = new interactive_continuation(resman);
+
+      if(blocking)
+	resman->get_solution_background_blocking(selected, limit, wait_steps, k);
+      else
+	resman->get_solution_background(selected, limit, k);
+    }
 }
 
 static void do_connect_resolver_callback()
 {
-  resman->state_changed.connect(sigc::ptr_fun(&start_solution_calculation));
+  resman->state_changed.connect(sigc::bind(sigc::ptr_fun(&start_solution_calculation), true));
   // We may have missed a signal before making the connection:
   start_solution_calculation();
   resman->state_changed.connect(sigc::ptr_fun(&vscreen_update));
