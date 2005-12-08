@@ -616,7 +616,10 @@ bool cmdline_resolve_deps(pkgset &to_install,
 		bool done=false;
 		while(!done)
 		  {
-		    string response=prompt_string(_("No solution found within the allotted time.  Try harder? [Y/n]"));
+		    string response;
+
+		    if(!assume_yes)
+		      response = prompt_string(_("No solution found within the allotted time.  Try harder? [Y/n]"));
 
 		    string::size_type loc=0;
 		    while(loc<response.size() && isspace(response[loc]))
