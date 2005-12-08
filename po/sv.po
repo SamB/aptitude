@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-01 13:58-0800\n"
+"POT-Creation-Date: 2005-12-07 20:53-0800\n"
 "PO-Revision-Date: 2005-11-19 02:16+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -2750,7 +2750,7 @@ msgstr "Kodning för mine-help-sv.txt|UTF-8\""
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 
-#: src/pkg_columnizer.cc:86 src/ui.cc:2284
+#: src/pkg_columnizer.cc:86 src/ui.cc:2295
 msgid "Package"
 msgstr "Paket"
 
@@ -4693,7 +4693,7 @@ msgstr ""
 "Uppdatering av paketlistan kräver att du har administrativa rättigheter "
 "vilket du inte har för tillfället. Vill du byta till root-kontot?"
 
-#: src/ui.cc:1423 src/ui.cc:1919
+#: src/ui.cc:1423 src/ui.cc:1930
 msgid "Waste time trying to find mines"
 msgstr "Slösa bort tid med att leta minor"
 
@@ -4725,93 +4725,93 @@ msgstr ""
 msgid "No more solutions."
 msgstr "Inga fler lösningar."
 
-#: src/ui.cc:1787
+#: src/ui.cc:1798
 msgid "Unable to find a solution to apply."
 msgstr "Kunde inte hitta en lösning av verkställa."
 
-#: src/ui.cc:1793
+#: src/ui.cc:1804
 msgid "Ran out of time while trying to find a solution."
 msgstr "Fick slut på tid under försöket att hitta en lösning."
 
-#: src/ui.cc:1836 src/ui.cc:1838
+#: src/ui.cc:1847 src/ui.cc:1849
 msgid "Resolve Dependencies"
 msgstr "Lös beroenden"
 
-#: src/ui.cc:1837
+#: src/ui.cc:1848
 msgid "Search for solutions to unsatisfied dependencies"
 msgstr "Sök efter lösningar för otillfredsställda beroenden"
 
-#: src/ui.cc:1849
+#: src/ui.cc:1860
 #, c-format
 msgid "Unable to open %ls"
 msgstr "Kunde inte öppna %ls"
 
-#: src/ui.cc:1855
+#: src/ui.cc:1866
 msgid "Error while dumping resolver state"
 msgstr "Fel vid dumpning av problemlösarens status"
 
-#: src/ui.cc:1865
+#: src/ui.cc:1876
 msgid "File to which the resolver state should be dumped:"
 msgstr "Fil i vilken problemlösaren ska dumpa status:"
 
-#: src/ui.cc:1895
+#: src/ui.cc:1906
 msgid "^Install/remove packages"
 msgstr "^Installera/ta bort paket"
 
-#: src/ui.cc:1896
+#: src/ui.cc:1907
 msgid "Perform all pending installs and removals"
 msgstr "Gör alla väntade installationer och borttagningar"
 
-#: src/ui.cc:1898
+#: src/ui.cc:1909
 msgid "^Update package list"
 msgstr "^Uppdatera paketlista"
 
-#: src/ui.cc:1899
+#: src/ui.cc:1910
 msgid "Check for new versions of packages"
 msgstr "Leta efter nya versioner av paket"
 
-#: src/ui.cc:1902
+#: src/ui.cc:1913
 msgid "^Forget new packages"
 msgstr "Glöm nya paket"
 
-#: src/ui.cc:1903
+#: src/ui.cc:1914
 msgid "Forget which packages are \"new\""
 msgstr "Glöm vilka paket som är \"nya\""
 
-#: src/ui.cc:1906
+#: src/ui.cc:1917
 msgid "^Clean package cache"
 msgstr "Rensa paketcachen"
 
-#: src/ui.cc:1907
+#: src/ui.cc:1918
 msgid "Delete package files which were previously downloaded"
 msgstr "Ta bort paketfiler som laddades ner tidigare"
 
-#: src/ui.cc:1910
+#: src/ui.cc:1921
 msgid "Clean ^obsolete files"
 msgstr "Rensa föråldrade filer"
 
-#: src/ui.cc:1911
+#: src/ui.cc:1922
 msgid "Delete package files which can no longer be downloaded"
 msgstr "Radera paketfiler som inte längre kan laddas ner"
 
-#: src/ui.cc:1914
+#: src/ui.cc:1925
 msgid "Mark ^Upgradable"
 msgstr "Markera ^uppgraderingsbar"
 
-#: src/ui.cc:1915
+#: src/ui.cc:1926
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr ""
 "Markera alla uppgraderingsbara paket som inte hålls kvar för uppgradering"
 
-#: src/ui.cc:1918
+#: src/ui.cc:1929
 msgid "^Play Minesweeper"
 msgstr "^Spela Minröj"
 
-#: src/ui.cc:1921
+#: src/ui.cc:1932
 msgid "^Become root"
 msgstr "^Bli root"
 
-#: src/ui.cc:1922
+#: src/ui.cc:1933
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
@@ -4819,68 +4819,68 @@ msgstr ""
 "Kör 'su' för att bli root, detta kommer att starta om programmet men dina "
 "inställningar kommer att bevaras"
 
-#: src/ui.cc:1925
+#: src/ui.cc:1936
 msgid "^Reload package cache"
 msgstr "^Ladda om paketcache"
 
-#: src/ui.cc:1926
+#: src/ui.cc:1937
 msgid "Reload the package cache"
 msgstr "Ladda om paketcachen"
 
-#: src/ui.cc:1932
+#: src/ui.cc:1943
 msgid "^Quit"
 msgstr "Avsluta"
 
-#: src/ui.cc:1933
+#: src/ui.cc:1944
 msgid "Exit the program"
 msgstr "Avsluta programmet"
 
-#: src/ui.cc:1939 src/ui.cc:2283
+#: src/ui.cc:1950 src/ui.cc:2294
 msgid "Undo"
 msgstr "Ångra"
 
-#: src/ui.cc:1940
+#: src/ui.cc:1951
 msgid "Undo the last package operation or group of operations"
 msgstr "Ångra den senaste paketoperationen eller grupp av operationer"
 
-#: src/ui.cc:1948
+#: src/ui.cc:1959
 msgid "^Install"
 msgstr "^Installera"
 
-#: src/ui.cc:1949
+#: src/ui.cc:1960
 msgid "Flag the currently selected package for installation or upgrade"
 msgstr "Flagga det valda paketet för installation eller uppgradering"
 
-#: src/ui.cc:1952
+#: src/ui.cc:1963
 msgid "^Remove"
 msgstr "^Ta bort"
 
-#: src/ui.cc:1953
+#: src/ui.cc:1964
 msgid "Flag the currently selected package for removal"
 msgstr "Flagga det valda paketet för borttagning"
 
-#: src/ui.cc:1956
+#: src/ui.cc:1967
 msgid "^Purge"
 msgstr "^Rensa"
 
-#: src/ui.cc:1957
+#: src/ui.cc:1968
 msgid ""
 "Flag the currently selected package and its configuration files for removal"
 msgstr "Flagga det valda paketet och dess konfigurationsfiler för borttagning"
 
-#: src/ui.cc:1960
+#: src/ui.cc:1971
 msgid "^Keep"
 msgstr "^Behåll"
 
-#: src/ui.cc:1961
+#: src/ui.cc:1972
 msgid "Cancel any action on the selected package"
 msgstr "Avbryt alla åtgärder för det valda paketet"
 
-#: src/ui.cc:1964
+#: src/ui.cc:1975
 msgid "^Hold"
 msgstr "^Håll kvar"
 
-#: src/ui.cc:1965
+#: src/ui.cc:1976
 msgid ""
 "Cancel any action on the selected package, and protect it from future "
 "upgrades"
@@ -4888,11 +4888,11 @@ msgstr ""
 "Avbryta alla åtgärder för det valda paketet och skydda det från framtida "
 "uppgraderingar"
 
-#: src/ui.cc:1968
+#: src/ui.cc:1979
 msgid "Mark ^Auto"
 msgstr "Markera ^Auto"
 
-#: src/ui.cc:1969
+#: src/ui.cc:1980
 msgid ""
 "Mark the selected package as having been automatically installed; it will "
 "automatically be removed if no other packages depend on it"
@@ -4900,11 +4900,11 @@ msgstr ""
 "Markera det valda paketet att det har installerats automatiskt, det kommer "
 "automatiskt tas bort om inga andra paket är beroende av det"
 
-#: src/ui.cc:1972
+#: src/ui.cc:1983
 msgid "Mark ^Manual"
 msgstr "Markera ^Manuell"
 
-#: src/ui.cc:1973
+#: src/ui.cc:1984
 msgid ""
 "Mark the selected package as having been manually installed; it will not be "
 "removed unless you manually remove it"
@@ -4912,11 +4912,11 @@ msgstr ""
 "Markera det valda paketet som om det blivit manuellt installerat, det kommer "
 "inte att tas bort om inte du manuellt tar bort det"
 
-#: src/ui.cc:1976
+#: src/ui.cc:1987
 msgid "^Forbid Version"
 msgstr "^Förbjud version"
 
-#: src/ui.cc:1977
+#: src/ui.cc:1988
 msgid ""
 "Forbid the candidate version of the selected package from being installed; "
 "newer versions of the package will be installed as usual"
@@ -4924,67 +4924,67 @@ msgstr ""
 "Förbjud den kandiderande versionen av det valda paketet från att bli "
 "installerad, nyare versioner av paketet kommer att installeras som vanligt"
 
-#: src/ui.cc:1981
+#: src/ui.cc:1992
 msgid "I^nformation"
 msgstr "I^nformation"
 
-#: src/ui.cc:1982
+#: src/ui.cc:1993
 msgid "Display more information about the selected package"
 msgstr "Visa mer information om det valda paketet"
 
-#: src/ui.cc:1985
+#: src/ui.cc:1996
 msgid "^Changelog"
 msgstr "^Ändringslogg"
 
-#: src/ui.cc:1986
+#: src/ui.cc:1997
 msgid "Display the Debian changelog of the selected package"
 msgstr "Visa Debian's ändringslogg för det valda paketet"
 
-#: src/ui.cc:1993
+#: src/ui.cc:2004
 msgid "^Examine Solution"
 msgstr "Und^ersök lösning"
 
-#: src/ui.cc:1994
+#: src/ui.cc:2005
 msgid "Examine the currently selected solution to the dependency problems."
 msgstr "Undersök den nuvarande valda lösningen till beroendeproblemen."
 
-#: src/ui.cc:1997
+#: src/ui.cc:2008
 msgid "Apply ^Solution"
 msgstr "Genomför lö^sning"
 
-#: src/ui.cc:1998
+#: src/ui.cc:2009
 msgid "Perform the actions contained in the currently selected solution."
 msgstr "Genomför åtgärderna som nuvarande lösning innebär."
 
-#: src/ui.cc:2001
+#: src/ui.cc:2012
 msgid "^Next Solution"
 msgstr "^Nästa lösning"
 
-#: src/ui.cc:2002
+#: src/ui.cc:2013
 msgid "Select the next solution to the dependency problems."
 msgstr "Välj nästa lösning till beroendeproblemen."
 
-#: src/ui.cc:2005
+#: src/ui.cc:2016
 msgid "^Previous Solution"
 msgstr "Föregående lösning"
 
-#: src/ui.cc:2006
+#: src/ui.cc:2017
 msgid "Select the previous solution to the dependency problems."
 msgstr "Välj föregående lösning till beroendeproblemen."
 
-#: src/ui.cc:2009
+#: src/ui.cc:2020
 msgid "^First Solution"
 msgstr "^Första lösningen"
 
-#: src/ui.cc:2010
+#: src/ui.cc:2021
 msgid "Select the first solution to the dependency problems."
 msgstr "Välj den första lösningen för beroendeproblemen."
 
-#: src/ui.cc:2013
+#: src/ui.cc:2024
 msgid "^Last Solution"
 msgstr "Sista ^lösningen"
 
-#: src/ui.cc:2014
+#: src/ui.cc:2025
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
@@ -4992,147 +4992,147 @@ msgstr ""
 "Välj den sista lösningen för beroendeproblemen som än så länge har "
 "genererats."
 
-#: src/ui.cc:2020
+#: src/ui.cc:2031
 msgid "Toggle ^Rejected"
 msgstr "Växla väg^rade"
 
-#: src/ui.cc:2021
+#: src/ui.cc:2032
 msgid "Toggle whether the currently selected action is rejected."
 msgstr "Växla om den nuvarande valda åtgärden är icke godkänd."
 
-#: src/ui.cc:2025
+#: src/ui.cc:2036
 msgid "Toggle ^Approved"
 msgstr "Växl^a godkända"
 
-#: src/ui.cc:2026
+#: src/ui.cc:2037
 msgid "Toggle whether the currently selected action is approved."
 msgstr "Växla om den nuvarande valda åtgärden är godkänd."
 
-#: src/ui.cc:2030
+#: src/ui.cc:2041
 msgid "^View Target"
 msgstr "^Visa mål"
 
-#: src/ui.cc:2031
+#: src/ui.cc:2042
 msgid "View the package which will be affected by the selected action"
 msgstr "Visa de paket som kommer att påverkas av den valda åtgärden"
 
-#: src/ui.cc:2039
+#: src/ui.cc:2050
 msgid "^Find"
 msgstr "^Sök"
 
-#: src/ui.cc:2040
+#: src/ui.cc:2051
 msgid "Search forwards"
 msgstr "Söker framåt"
 
-#: src/ui.cc:2043
+#: src/ui.cc:2054
 msgid "^Find Backwards"
 msgstr "Sök baklänges"
 
-#: src/ui.cc:2044
+#: src/ui.cc:2055
 msgid "Search backwards"
 msgstr "Söker bakåt"
 
-#: src/ui.cc:2047
+#: src/ui.cc:2058
 msgid "Find ^Again"
 msgstr "Sök ^Igen"
 
-#: src/ui.cc:2048
+#: src/ui.cc:2059
 msgid "Repeat the last search"
 msgstr "Upprepa senaste sökningen"
 
-#: src/ui.cc:2052
+#: src/ui.cc:2063
 msgid "^Limit Display"
 msgstr "^Begränsa visning"
 
-#: src/ui.cc:2053
+#: src/ui.cc:2064
 msgid "Apply a filter to the package list"
 msgstr "Aktivera ett filter för paketlistan"
 
-#: src/ui.cc:2056
+#: src/ui.cc:2067
 msgid "^Un-Limit Display"
 msgstr "^Ta bort begränsning"
 
-#: src/ui.cc:2057
+#: src/ui.cc:2068
 msgid "Remove the filter from the package list"
 msgstr "Ta bort filtret från paketlistan"
 
-#: src/ui.cc:2061
+#: src/ui.cc:2072
 msgid "Find ^Broken"
 msgstr "Sök Trasiga"
 
-#: src/ui.cc:2062
+#: src/ui.cc:2073
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "Hitta nästa paket med otillfredsställda beroenden"
 
-#: src/ui.cc:2069
+#: src/ui.cc:2080
 msgid "^UI options"
 msgstr "^Gränssnitt"
 
-#: src/ui.cc:2070
+#: src/ui.cc:2081
 msgid "Change the settings which affect the user interface"
 msgstr "Ändra inställningar som påverkar användergränssnittet"
 
-#: src/ui.cc:2073
+#: src/ui.cc:2084
 msgid "^Dependency handling"
 msgstr "^Beroendehantering"
 
-#: src/ui.cc:2074
+#: src/ui.cc:2085
 msgid "Change the settings which affect how package dependencies are handled"
 msgstr "Ändra inställningar som påverkar hur paketberoenden hanteras"
 
-#: src/ui.cc:2077
+#: src/ui.cc:2088
 msgid "^Miscellaneous"
 msgstr "^Allmänt"
 
-#: src/ui.cc:2078
+#: src/ui.cc:2089
 msgid "Change miscellaneous program settings"
 msgstr "Ändra allmänna programinställningar"
 
-#: src/ui.cc:2083
+#: src/ui.cc:2094
 msgid "^Revert options"
 msgstr "^Återställ"
 
-#: src/ui.cc:2084
+#: src/ui.cc:2095
 msgid "Reset all settings to the system defaults"
 msgstr "Återställ alla inställningar till systemets standard"
 
-#: src/ui.cc:2095
+#: src/ui.cc:2106
 msgid "^Next"
 msgstr "^Nästa"
 
-#: src/ui.cc:2096
+#: src/ui.cc:2107
 msgid "View next display"
 msgstr "Visa nästa vy"
 
-#: src/ui.cc:2099
+#: src/ui.cc:2110
 msgid "^Prev"
 msgstr "^Föregående"
 
-#: src/ui.cc:2100
+#: src/ui.cc:2111
 msgid "View previous display"
 msgstr "Visa föregående vy"
 
-#: src/ui.cc:2103
+#: src/ui.cc:2114
 msgid "^Close"
 msgstr "^Stäng"
 
-#: src/ui.cc:2104
+#: src/ui.cc:2115
 msgid "Close this display"
 msgstr "Stäng denna vy"
 
-#: src/ui.cc:2109
+#: src/ui.cc:2120
 msgid "New Package ^View"
 msgstr "^Vy för nya paket"
 
-#: src/ui.cc:2110
+#: src/ui.cc:2121
 msgid "Create a new default package view"
 msgstr "Skapa en ny standard paketvy"
 
-#: src/ui.cc:2113
+#: src/ui.cc:2124
 msgid "Audit ^Recommendations"
 msgstr "Granska ^rekommendationer"
 
-#: src/ui.cc:2114
+#: src/ui.cc:2125
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
@@ -5140,103 +5140,103 @@ msgstr ""
 "Visa paket som rekommenderas att du installerar men som för närvarande inte "
 "är installerade."
 
-#: src/ui.cc:2117
+#: src/ui.cc:2128
 msgid "New ^Flat Package List"
 msgstr "Ny ^flat paketlista"
 
-#: src/ui.cc:2118
+#: src/ui.cc:2129
 msgid "View all the packages on the system in a single uncategorized list"
 msgstr "Visa alla paket på systemet i en okategoriserad lista"
 
-#: src/ui.cc:2121
+#: src/ui.cc:2132
 msgid "New ^Debtags Browser"
 msgstr "Ny ^Debmärkesbläddrare"
 
-#: src/ui.cc:2123
+#: src/ui.cc:2134
 msgid "Browse packages using Debtags data"
 msgstr "Bläddra bland paket med Debtags data"
 
-#: src/ui.cc:2126
+#: src/ui.cc:2137
 msgid "New Categorical ^Browser"
 msgstr "^Bläddra bland nya kategorier"
 
-#: src/ui.cc:2128
+#: src/ui.cc:2139
 msgid "Browse packages by category"
 msgstr "Bläddra bland paket i en kategori"
 
-#: src/ui.cc:2136
+#: src/ui.cc:2147
 msgid "^About"
 msgstr "^Om"
 
-#: src/ui.cc:2137
+#: src/ui.cc:2148
 msgid "View information about this program"
 msgstr "Visa information om detta program"
 
-#: src/ui.cc:2140
+#: src/ui.cc:2151
 msgid "^Help"
 msgstr "^Hjälp"
 
-#: src/ui.cc:2141
+#: src/ui.cc:2152
 msgid "View the on-line help"
 msgstr "Visa hjälp online"
 
-#: src/ui.cc:2143
+#: src/ui.cc:2154
 msgid "User's ^Manual"
 msgstr "Användar^manual"
 
-#: src/ui.cc:2144
+#: src/ui.cc:2155
 msgid "View the detailed program manual"
 msgstr "Visa den detaljerade programmanualen"
 
-#: src/ui.cc:2147
+#: src/ui.cc:2158
 msgid "^FAQ"
 msgstr "^Vanliga frågor"
 
-#: src/ui.cc:2148
+#: src/ui.cc:2159
 msgid "View a list of frequently asked questions"
 msgstr "Visa en lista av vanliga frågor"
 
-#: src/ui.cc:2151
+#: src/ui.cc:2162
 msgid "^NEWS"
 msgstr "^NYHETER"
 
-#: src/ui.cc:2152
+#: src/ui.cc:2163
 msgid "View the important changes made in each version of "
 msgstr "Visa de viktigt ändringar gjorde i varje version av "
 
-#: src/ui.cc:2155
+#: src/ui.cc:2166
 msgid "^License"
 msgstr "^Licens"
 
-#: src/ui.cc:2156
+#: src/ui.cc:2167
 msgid "View the terms under which you may copy the program"
 msgstr "Visa villkoren som gäller för kopiering av programmet"
 
-#: src/ui.cc:2282
+#: src/ui.cc:2293
 msgid "Actions"
 msgstr "Åtgärder"
 
-#: src/ui.cc:2285
+#: src/ui.cc:2296
 msgid "Resolver"
 msgstr "Problemlösaren"
 
-#: src/ui.cc:2286
+#: src/ui.cc:2297
 msgid "Search"
 msgstr "Sök"
 
-#: src/ui.cc:2287
+#: src/ui.cc:2298
 msgid "Options"
 msgstr "Inställningar"
 
-#: src/ui.cc:2288
+#: src/ui.cc:2299
 msgid "Views"
 msgstr "Vyer"
 
-#: src/ui.cc:2289
+#: src/ui.cc:2300
 msgid "Help"
 msgstr "Hjälp"
 
-#: src/ui.cc:2354
+#: src/ui.cc:2365
 #, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
@@ -5245,11 +5245,11 @@ msgstr ""
 "%ls: Meny  %ls: Hjälp  %ls: Avsluta  %ls: Uppdatera  %ls: Ladda ner/"
 "Installera/Ta bort"
 
-#: src/ui.cc:2695 src/vscreen/vscreen.cc:724
+#: src/ui.cc:2706 src/vscreen/vscreen.cc:724
 msgid "yes_key"
 msgstr "ja_key"
 
-#: src/ui.cc:2696 src/vscreen/vscreen.cc:725
+#: src/ui.cc:2707 src/vscreen/vscreen.cc:725
 msgid "no_key"
 msgstr "nej_key"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3+SVN\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-01 13:58-0800\n"
+"POT-Creation-Date: 2005-12-07 20:53-0800\n"
 "PO-Revision-Date: 2005-11-14 23:51-0600\n"
 "Last-Translator: Ming Hua <minghua@rice.edu>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
@@ -2680,7 +2680,7 @@ msgstr "mine-help.txt 的编码|UTF-8"
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 
-#: src/pkg_columnizer.cc:86 src/ui.cc:2284
+#: src/pkg_columnizer.cc:86 src/ui.cc:2295
 msgid "Package"
 msgstr "软件包"
 
@@ -4510,7 +4510,7 @@ msgid ""
 msgstr ""
 "更新软件包列表需要管理员权限，而您现在没有这种权限。您想要进入 root 帐号吗？"
 
-#: src/ui.cc:1423 src/ui.cc:1919
+#: src/ui.cc:1423 src/ui.cc:1930
 msgid "Waste time trying to find mines"
 msgstr "通过扫雷来消磨时间"
 
@@ -4541,516 +4541,516 @@ msgstr "过期的下载文件已经被删除，正在释放 %sB 的磁盘空间�
 msgid "No more solutions."
 msgstr "没有更多的解决方案了。"
 
-#: src/ui.cc:1787
+#: src/ui.cc:1798
 msgid "Unable to find a solution to apply."
 msgstr "未能找到一个可以应用的解决方案。"
 
-#: src/ui.cc:1793
+#: src/ui.cc:1804
 msgid "Ran out of time while trying to find a solution."
 msgstr "寻找解决方案时用时已尽。"
 
-#: src/ui.cc:1836 src/ui.cc:1838
+#: src/ui.cc:1847 src/ui.cc:1849
 msgid "Resolve Dependencies"
 msgstr "解决依赖关系"
 
-#: src/ui.cc:1837
+#: src/ui.cc:1848
 msgid "Search for solutions to unsatisfied dependencies"
 msgstr "为未满足的依赖关系寻找解决方案"
 
-#: src/ui.cc:1849
+#: src/ui.cc:1860
 #, c-format
 msgid "Unable to open %ls"
 msgstr "无法打开 %ls"
 
-#: src/ui.cc:1855
+#: src/ui.cc:1866
 msgid "Error while dumping resolver state"
 msgstr "存储依赖关系解决状态时出错"
 
-#: src/ui.cc:1865
+#: src/ui.cc:1876
 msgid "File to which the resolver state should be dumped:"
 msgstr "存储依赖关系解决状态的文件："
 
-#: src/ui.cc:1895
+#: src/ui.cc:1906
 msgid "^Install/remove packages"
 msgstr "安装/卸载软件包(^I)"
 
-#: src/ui.cc:1896
+#: src/ui.cc:1907
 msgid "Perform all pending installs and removals"
 msgstr "执行所有等待执行的安装和卸载任务"
 
-#: src/ui.cc:1898
+#: src/ui.cc:1909
 msgid "^Update package list"
 msgstr "更新软件包列表(^U)"
 
-#: src/ui.cc:1899
+#: src/ui.cc:1910
 msgid "Check for new versions of packages"
 msgstr "正在检查新版本的软件包"
 
-#: src/ui.cc:1902
+#: src/ui.cc:1913
 msgid "^Forget new packages"
 msgstr "忘记新软件包(^F)"
 
-#: src/ui.cc:1903
+#: src/ui.cc:1914
 msgid "Forget which packages are \"new\""
 msgstr "忘记哪些软件包是“新”的"
 
-#: src/ui.cc:1906
+#: src/ui.cc:1917
 msgid "^Clean package cache"
 msgstr "清除软件包缓存(^C)"
 
-#: src/ui.cc:1907
+#: src/ui.cc:1918
 msgid "Delete package files which were previously downloaded"
 msgstr "删除以前下载的软件包文件"
 
-#: src/ui.cc:1910
+#: src/ui.cc:1921
 msgid "Clean ^obsolete files"
 msgstr "关闭过期文件(^O)"
 
-#: src/ui.cc:1911
+#: src/ui.cc:1922
 msgid "Delete package files which can no longer be downloaded"
 msgstr "删除无法再下载的软件包文件"
 
-#: src/ui.cc:1914
+#: src/ui.cc:1925
 msgid "Mark ^Upgradable"
 msgstr "标记可升级的(^U)"
 
-#: src/ui.cc:1915
+#: src/ui.cc:1926
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr "为所有未被保持现状的软件包加上升级标记"
 
-#: src/ui.cc:1918
+#: src/ui.cc:1929
 msgid "^Play Minesweeper"
 msgstr "玩扫雷游戏(^P)"
 
-#: src/ui.cc:1921
+#: src/ui.cc:1932
 msgid "^Become root"
 msgstr "变成 root (^B)"
 
-#: src/ui.cc:1922
+#: src/ui.cc:1933
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
 msgstr "运行“su”成为 root。这将重新启动程序，但是您的设置将会被保存下来。"
 
-#: src/ui.cc:1925
+#: src/ui.cc:1936
 msgid "^Reload package cache"
 msgstr "重新载入软件包缓存(^R)"
 
-#: src/ui.cc:1926
+#: src/ui.cc:1937
 msgid "Reload the package cache"
 msgstr "重新载入软件包缓存"
 
-#: src/ui.cc:1932
+#: src/ui.cc:1943
 msgid "^Quit"
 msgstr "退出(^Q)"
 
-#: src/ui.cc:1933
+#: src/ui.cc:1944
 msgid "Exit the program"
 msgstr "退出此程序"
 
-#: src/ui.cc:1939 src/ui.cc:2283
+#: src/ui.cc:1950 src/ui.cc:2294
 msgid "Undo"
 msgstr "撤消"
 
-#: src/ui.cc:1940
+#: src/ui.cc:1951
 msgid "Undo the last package operation or group of operations"
 msgstr "撤销最近一次或者一组软件包操作"
 
-#: src/ui.cc:1948
+#: src/ui.cc:1959
 msgid "^Install"
 msgstr "安装(^I)"
 
-#: src/ui.cc:1949
+#: src/ui.cc:1960
 msgid "Flag the currently selected package for installation or upgrade"
 msgstr "标记当前选择的软件包以安装或者升级"
 
-#: src/ui.cc:1952
+#: src/ui.cc:1963
 msgid "^Remove"
 msgstr "删除(^R)"
 
-#: src/ui.cc:1953
+#: src/ui.cc:1964
 msgid "Flag the currently selected package for removal"
 msgstr "标记当前选择的软件包以删除"
 
-#: src/ui.cc:1956
+#: src/ui.cc:1967
 msgid "^Purge"
 msgstr "清除(^P)"
 
-#: src/ui.cc:1957
+#: src/ui.cc:1968
 msgid ""
 "Flag the currently selected package and its configuration files for removal"
 msgstr "标记当前选择的软件包和它的配置文件以删除"
 
-#: src/ui.cc:1960
+#: src/ui.cc:1971
 msgid "^Keep"
 msgstr "保持(^K)"
 
-#: src/ui.cc:1961
+#: src/ui.cc:1972
 msgid "Cancel any action on the selected package"
 msgstr "取消选定软件包上的任何动作"
 
-#: src/ui.cc:1964
+#: src/ui.cc:1975
 msgid "^Hold"
 msgstr "保持(^H)"
 
-#: src/ui.cc:1965
+#: src/ui.cc:1976
 msgid ""
 "Cancel any action on the selected package, and protect it from future "
 "upgrades"
 msgstr "取消选定软件包上的任何动作，并且保护它免于以后被升级"
 
-#: src/ui.cc:1968
+#: src/ui.cc:1979
 msgid "Mark ^Auto"
 msgstr "标记为自动安装(^A)"
 
-#: src/ui.cc:1969
+#: src/ui.cc:1980
 msgid ""
 "Mark the selected package as having been automatically installed; it will "
 "automatically be removed if no other packages depend on it"
 msgstr ""
 "将所选定的软件包标记为自动安装；如果没有其它软件包依赖于它，它将会被自动删除"
 
-#: src/ui.cc:1972
+#: src/ui.cc:1983
 msgid "Mark ^Manual"
 msgstr "标记为手动安装(^M)"
 
-#: src/ui.cc:1973
+#: src/ui.cc:1984
 msgid ""
 "Mark the selected package as having been manually installed; it will not be "
 "removed unless you manually remove it"
 msgstr ""
 "将所选定的软件包标记为手动安装；除非您手动删除该软件包，否则它将不会被删除"
 
-#: src/ui.cc:1976
+#: src/ui.cc:1987
 msgid "^Forbid Version"
 msgstr "禁止版本(^F)"
 
-#: src/ui.cc:1977
+#: src/ui.cc:1988
 msgid ""
 "Forbid the candidate version of the selected package from being installed; "
 "newer versions of the package will be installed as usual"
 msgstr "禁止安装选定软件包的候选版本；该软件包的新版本将可以正常安装"
 
-#: src/ui.cc:1981
+#: src/ui.cc:1992
 msgid "I^nformation"
 msgstr "信息(^N)"
 
-#: src/ui.cc:1982
+#: src/ui.cc:1993
 msgid "Display more information about the selected package"
 msgstr "显示关于选定软件包上的更多信息"
 
-#: src/ui.cc:1985
+#: src/ui.cc:1996
 msgid "^Changelog"
 msgstr "变更日志(^C)"
 
-#: src/ui.cc:1986
+#: src/ui.cc:1997
 msgid "Display the Debian changelog of the selected package"
 msgstr "显示选定软件包上的变更日志"
 
-#: src/ui.cc:1993
+#: src/ui.cc:2004
 msgid "^Examine Solution"
 msgstr "检查解决方案(^E)"
 
-#: src/ui.cc:1994
+#: src/ui.cc:2005
 msgid "Examine the currently selected solution to the dependency problems."
 msgstr "检查当前选择的处理依赖问题的解决方案"
 
-#: src/ui.cc:1997
+#: src/ui.cc:2008
 msgid "Apply ^Solution"
 msgstr "应用解决方案(^S)"
 
-#: src/ui.cc:1998
+#: src/ui.cc:2009
 msgid "Perform the actions contained in the currently selected solution."
 msgstr "确认当前选择的解决方案中包含的动作。"
 
-#: src/ui.cc:2001
+#: src/ui.cc:2012
 msgid "^Next Solution"
 msgstr "下一个解决方案(^N)"
 
-#: src/ui.cc:2002
+#: src/ui.cc:2013
 msgid "Select the next solution to the dependency problems."
 msgstr "选择解决此依赖问题的下一个方案。"
 
-#: src/ui.cc:2005
+#: src/ui.cc:2016
 msgid "^Previous Solution"
 msgstr "前一个解决方案(^P)"
 
-#: src/ui.cc:2006
+#: src/ui.cc:2017
 msgid "Select the previous solution to the dependency problems."
 msgstr "选择解决此依赖问题的前一个方案。"
 
-#: src/ui.cc:2009
+#: src/ui.cc:2020
 msgid "^First Solution"
 msgstr "第一个解决方案(^F)"
 
-#: src/ui.cc:2010
+#: src/ui.cc:2021
 msgid "Select the first solution to the dependency problems."
 msgstr "选择解决此依赖问题的第一个方案。"
 
-#: src/ui.cc:2013
+#: src/ui.cc:2024
 msgid "^Last Solution"
 msgstr "最后一个解决方案(^L)"
 
-#: src/ui.cc:2014
+#: src/ui.cc:2025
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
 msgstr "选择当前已经生成的解决此依赖问题的最后一个方案。"
 
-#: src/ui.cc:2020
+#: src/ui.cc:2031
 msgid "Toggle ^Rejected"
 msgstr "放弃(^R)"
 
-#: src/ui.cc:2021
+#: src/ui.cc:2032
 msgid "Toggle whether the currently selected action is rejected."
 msgstr "切换是否放弃当前选择的动作。"
 
-#: src/ui.cc:2025
+#: src/ui.cc:2036
 msgid "Toggle ^Approved"
 msgstr "确认(^A)"
 
-#: src/ui.cc:2026
+#: src/ui.cc:2037
 msgid "Toggle whether the currently selected action is approved."
 msgstr "切换当前选择的动作是否被允许。"
 
-#: src/ui.cc:2030
+#: src/ui.cc:2041
 msgid "^View Target"
 msgstr "查看目标(^V)"
 
-#: src/ui.cc:2031
+#: src/ui.cc:2042
 msgid "View the package which will be affected by the selected action"
 msgstr "查看会被所选的动作影响的软件包"
 
-#: src/ui.cc:2039
+#: src/ui.cc:2050
 msgid "^Find"
 msgstr "查找(^F)"
 
-#: src/ui.cc:2040
+#: src/ui.cc:2051
 msgid "Search forwards"
 msgstr "向前搜索"
 
-#: src/ui.cc:2043
+#: src/ui.cc:2054
 msgid "^Find Backwards"
 msgstr "向后查找(^F)"
 
-#: src/ui.cc:2044
+#: src/ui.cc:2055
 msgid "Search backwards"
 msgstr "向后搜索"
 
-#: src/ui.cc:2047
+#: src/ui.cc:2058
 msgid "Find ^Again"
 msgstr "继续查找(^A)"
 
-#: src/ui.cc:2048
+#: src/ui.cc:2059
 msgid "Repeat the last search"
 msgstr "重复上一次查找"
 
-#: src/ui.cc:2052
+#: src/ui.cc:2063
 msgid "^Limit Display"
 msgstr "限制显示(^L)"
 
-#: src/ui.cc:2053
+#: src/ui.cc:2064
 msgid "Apply a filter to the package list"
 msgstr "使用过滤器过滤软件包列表"
 
-#: src/ui.cc:2056
+#: src/ui.cc:2067
 msgid "^Un-Limit Display"
 msgstr "取消显示限制(^U)"
 
-#: src/ui.cc:2057
+#: src/ui.cc:2068
 msgid "Remove the filter from the package list"
 msgstr "取消软件包列表中过滤器的效果"
 
-#: src/ui.cc:2061
+#: src/ui.cc:2072
 msgid "Find ^Broken"
 msgstr "搜寻损坏(^F)"
 
-#: src/ui.cc:2062
+#: src/ui.cc:2073
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "下列软件包存在未满足的依赖关系："
 
-#: src/ui.cc:2069
+#: src/ui.cc:2080
 msgid "^UI options"
 msgstr "用户界面选项(^U)"
 
-#: src/ui.cc:2070
+#: src/ui.cc:2081
 msgid "Change the settings which affect the user interface"
 msgstr "修改影响用户界面的设置"
 
-#: src/ui.cc:2073
+#: src/ui.cc:2084
 msgid "^Dependency handling"
 msgstr "处理依赖关系(^D)"
 
-#: src/ui.cc:2074
+#: src/ui.cc:2085
 msgid "Change the settings which affect how package dependencies are handled"
 msgstr "改变影响处理依赖关系的设置"
 
-#: src/ui.cc:2077
+#: src/ui.cc:2088
 msgid "^Miscellaneous"
 msgstr "杂项(^M)"
 
-#: src/ui.cc:2078
+#: src/ui.cc:2089
 msgid "Change miscellaneous program settings"
 msgstr "改变程序的杂项设置"
 
-#: src/ui.cc:2083
+#: src/ui.cc:2094
 msgid "^Revert options"
 msgstr "还原选项(^R)"
 
-#: src/ui.cc:2084
+#: src/ui.cc:2095
 msgid "Reset all settings to the system defaults"
 msgstr "把所有项目重设为它们的默认值"
 
-#: src/ui.cc:2095
+#: src/ui.cc:2106
 msgid "^Next"
 msgstr "下一个(^N)"
 
-#: src/ui.cc:2096
+#: src/ui.cc:2107
 msgid "View next display"
 msgstr "查看下一个画面"
 
-#: src/ui.cc:2099
+#: src/ui.cc:2110
 msgid "^Prev"
 msgstr "上一个(^P)"
 
-#: src/ui.cc:2100
+#: src/ui.cc:2111
 msgid "View previous display"
 msgstr "查看上一画面"
 
-#: src/ui.cc:2103
+#: src/ui.cc:2114
 msgid "^Close"
 msgstr "关闭(^C)"
 
-#: src/ui.cc:2104
+#: src/ui.cc:2115
 msgid "Close this display"
 msgstr "关闭此画面"
 
-#: src/ui.cc:2109
+#: src/ui.cc:2120
 msgid "New Package ^View"
 msgstr "新建软件包视图(^V)"
 
-#: src/ui.cc:2110
+#: src/ui.cc:2121
 msgid "Create a new default package view"
 msgstr "创建新的默认软件包视图"
 
-#: src/ui.cc:2113
+#: src/ui.cc:2124
 msgid "Audit ^Recommendations"
 msgstr "检查推荐结果(^R)"
 
-#: src/ui.cc:2114
+#: src/ui.cc:2125
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
 msgstr "查看推荐您安装，但是现在尚未安装的软件包。"
 
-#: src/ui.cc:2117
+#: src/ui.cc:2128
 msgid "New ^Flat Package List"
 msgstr "新建平面软件包列表(^F)"
 
-#: src/ui.cc:2118
+#: src/ui.cc:2129
 msgid "View all the packages on the system in a single uncategorized list"
 msgstr "在一个未分类的列表中查看系统中的所有的软件包"
 
-#: src/ui.cc:2121
+#: src/ui.cc:2132
 msgid "New ^Debtags Browser"
 msgstr "新建 Debtags 浏览器(^D)"
 
-#: src/ui.cc:2123
+#: src/ui.cc:2134
 msgid "Browse packages using Debtags data"
 msgstr "用 Debtags 的信息来浏览软件包"
 
-#: src/ui.cc:2126
+#: src/ui.cc:2137
 msgid "New Categorical ^Browser"
 msgstr "新建分类浏览器(^B)"
 
-#: src/ui.cc:2128
+#: src/ui.cc:2139
 msgid "Browse packages by category"
 msgstr "分类浏览软件包"
 
-#: src/ui.cc:2136
+#: src/ui.cc:2147
 msgid "^About"
 msgstr "关于(^A)"
 
-#: src/ui.cc:2137
+#: src/ui.cc:2148
 msgid "View information about this program"
 msgstr "查看关于此程序的信息"
 
-#: src/ui.cc:2140
+#: src/ui.cc:2151
 msgid "^Help"
 msgstr "帮助(^H)"
 
-#: src/ui.cc:2141
+#: src/ui.cc:2152
 msgid "View the on-line help"
 msgstr "查看在线帮助"
 
-#: src/ui.cc:2143
+#: src/ui.cc:2154
 msgid "User's ^Manual"
 msgstr "用户手册(^M)"
 
-#: src/ui.cc:2144
+#: src/ui.cc:2155
 msgid "View the detailed program manual"
 msgstr "查看详细的程序使用手册"
 
-#: src/ui.cc:2147
+#: src/ui.cc:2158
 msgid "^FAQ"
 msgstr "常见问题回答(^F)"
 
-#: src/ui.cc:2148
+#: src/ui.cc:2159
 msgid "View a list of frequently asked questions"
 msgstr "查看常见问题列表"
 
-#: src/ui.cc:2151
+#: src/ui.cc:2162
 msgid "^NEWS"
 msgstr "新闻(^N)"
 
-#: src/ui.cc:2152
+#: src/ui.cc:2163
 msgid "View the important changes made in each version of "
 msgstr "查看该程序每一版本中所做的重大修改"
 
-#: src/ui.cc:2155
+#: src/ui.cc:2166
 msgid "^License"
 msgstr "许可证(^L)"
 
-#: src/ui.cc:2156
+#: src/ui.cc:2167
 msgid "View the terms under which you may copy the program"
 msgstr "查看您可以在何种条款下拷贝该程序"
 
-#: src/ui.cc:2282
+#: src/ui.cc:2293
 msgid "Actions"
 msgstr "动作"
 
-#: src/ui.cc:2285
+#: src/ui.cc:2296
 msgid "Resolver"
 msgstr "解释器"
 
-#: src/ui.cc:2286
+#: src/ui.cc:2297
 msgid "Search"
 msgstr "搜索"
 
-#: src/ui.cc:2287
+#: src/ui.cc:2298
 msgid "Options"
 msgstr "选项"
 
-#: src/ui.cc:2288
+#: src/ui.cc:2299
 msgid "Views"
 msgstr "查看"
 
-#: src/ui.cc:2289
+#: src/ui.cc:2300
 msgid "Help"
 msgstr "帮助"
 
-#: src/ui.cc:2354
+#: src/ui.cc:2365
 #, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
 "Pkgs"
 msgstr "%ls：菜单  %ls：帮助  %ls：退出  %ls：更新  %ls：下载/安装/删除软件包"
 
-#: src/ui.cc:2695 src/vscreen/vscreen.cc:724
+#: src/ui.cc:2706 src/vscreen/vscreen.cc:724
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2696 src/vscreen/vscreen.cc:725
+#: src/ui.cc:2707 src/vscreen/vscreen.cc:725
 msgid "no_key"
 msgstr "n"
 
