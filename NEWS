@@ -1,3 +1,112 @@
+[12/8/2005]
+Version 0.4.1                           "Divers Alarums"
+- New features:
+
+  * Assertion failures should print the failing assertion after
+    shutting down curses rather than before.
+
+  * The --purge-unused option is now provided as a synonym for
+    -o Aptitude::Purge-Unused=true.
+
+  * aptitude will now support ddtp if it is compiled against a version
+    of apt that supports ddtp.
+
+  * Setting the Aptitude::Cmdline::Resolver-Dump option to a filename
+    will cause the command-line mode of the program to dump a snapshot
+    of the resolver state to that file before attempting to resolve
+    dependencies.
+
+  * Setting the Aptitude::GC-Debug option will cause the garbage
+    collector to print voluminous debugging information as it searches
+    for unused packages.
+
+- Bug fixes:
+
+  * Eliminate two deadlocks caused by the background resolver thread
+    trying to wait for itself. (Closes: #340067, #342319)
+
+  * Never select a version that was removed but not purged and is no
+    longer available as a candidate version. (Closes: #340385)
+
+  * Eliminate a corner case where the resolver could produce solutions
+    that were supersets of previous solutions.
+
+  * If an EOF is encountered while waiting for a media-change from the
+    command-line, signal media change failure instead of aborting.
+
+  * Don't ever use the minibuffer to display the list of packages
+    adjusted by the resolver (Closes: #341292).
+
+  * If the menu bar is auto-hidden, don't automatically unhide it when
+    the user clicks in the first row of the display; instead, pass the
+    clicks to the sub-widget. (Closes: #341475)
+
+  * Enable colors on terminals where COLOR_PAIRS < COLORS*COLORS but
+    COLOR_PAIRS >= 64.
+
+  * Honor -y when the resolver runs out of time at the command-line.
+
+  * Make "cancel" at the "download complete" dialog actually cancel.
+
+  * Fix a portability bug due to cross-platform variation in the
+    members of sigaction (Closes: #337536)
+
+  * Fix how keybindings are parsed: keybinding names are now
+    case-insensitive and single-character keybindings are parsed
+    correctly. (Closes: #339131)
+
+  * Add spaces after various minibuffer prompts.
+
+  * Add a link from the search patterns documentation to the
+    command-line reference.
+
+  * When saving the package states, properly handle the case in which
+    the state file didn't previously exist. (Closes: #337869)
+
+  * Don't segfault when the user updates the package lists while a
+    solution examiner is open. (Closes: #338441)
+
+  * Trust any package version for which at least one source is trusted
+    (Closes: #337982).
+
+  * Work around apt bug #339533 to avoid an aptitude
+    segfault. (Closes: #339648)
+
+  * Fixed the assertion failure message printed when an inconsistency
+    is detected because a supposedly broken dependency isn't broken (it was incorrect).
+
+  * If a --schedule-only operation fails, print any errors that
+    occurred before exiting.
+
+  * Document the new backslash behavior in help.txt. (Closes: #337810)
+
+  * Document that "default" can be used as a background color.
+
+  * Correct the names of the problem-resolver control knobs in the
+    documentation.
+
+- Translation updates:
+
+  * Chinese (Simplified) (Closes: #339140)
+
+  * Dutch (Closes: #337629)
+
+  * Italian
+
+  * Galacian (Closes: #337656)
+
+  * Lithuanian (Closes: #341051)
+
+  * Portuguese (Closes: #339828)
+
+  * Slovak (Closes: #338527)
+
+  * Swedish (Closes: #334520, #337725, #339820)
+
+  * Turkish (Closes: #339943)
+
+  * Vietnamese (Closes: #341924)
+
 [11/4/2005]
 Version 0.4.0                           "Aptitude Below Zero"
 
