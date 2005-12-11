@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-07 20:59-0800\n"
+"POT-Creation-Date: 2005-12-10 21:06-0800\n"
 "PO-Revision-Date: 2005-10-16 10:29+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -204,49 +204,39 @@ msgid "Suggest "
 msgstr "Návrh "
 
 #: src/broken_indicator.cc:331
-#, c-format
-msgid "%d installs"
-msgstr "instalovat %d"
-
-#: src/broken_indicator.cc:334
-msgid "1 install"
-msgstr "instalovat 1"
+#, fuzzy, c-format
+msgid "%d install"
+msgid_plural "%d installs"
+msgstr[0] "instalovat %d"
+msgstr[1] "instalovat %d"
 
 #: src/broken_indicator.cc:337
-#, c-format
-msgid "%d removals"
-msgstr "odstranit %d"
-
-#: src/broken_indicator.cc:340
-msgid "1 removal"
-msgstr "odstranit 1"
+#, fuzzy, c-format
+msgid "%d removal"
+msgid_plural "%d removals"
+msgstr[0] "odstranit %d"
+msgstr[1] "odstranit %d"
 
 #: src/broken_indicator.cc:343
-#, c-format
-msgid "%d keeps"
-msgstr "ponechat %d"
-
-#: src/broken_indicator.cc:346
-msgid "1 keep"
-msgstr "ponechat 1"
+#, fuzzy, c-format
+msgid "%d keep"
+msgid_plural "%d keeps"
+msgstr[0] "ponechat %d"
+msgstr[1] "ponechat %d"
 
 #: src/broken_indicator.cc:349
-#, c-format
-msgid "%d upgrades"
-msgstr "aktualizovat %d"
+#, fuzzy, c-format
+msgid "%d upgrade"
+msgid_plural "%d upgrades"
+msgstr[0] "aktualizovat %d"
+msgstr[1] "aktualizovat %d"
 
-#: src/broken_indicator.cc:351
-msgid "1 upgrade"
-msgstr "aktualizovat 1"
-
-#: src/broken_indicator.cc:354
-#, c-format
-msgid "%d downgrades"
-msgstr "degradovat %d"
-
-#: src/broken_indicator.cc:356
-msgid "1 downgrade"
-msgstr "degradovat 1"
+#: src/broken_indicator.cc:355
+#, fuzzy, c-format
+msgid "%d downgrade"
+msgid_plural "%d downgrades"
+msgstr[0] "degradovat %d"
+msgstr[1] "degradovat %d"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -5266,6 +5256,21 @@ msgstr "Nemohu načíst soubor: řetězec %ls nemá vícebajtovou reprezentaci."
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "NEJVYŠŠÍ ÚROVEŇ"
+
+#~ msgid "1 install"
+#~ msgstr "instalovat 1"
+
+#~ msgid "1 removal"
+#~ msgstr "odstranit 1"
+
+#~ msgid "1 keep"
+#~ msgstr "ponechat 1"
+
+#~ msgid "1 upgrade"
+#~ msgstr "aktualizovat 1"
+
+#~ msgid "1 downgrade"
+#~ msgstr "degradovat 1"
 
 #~ msgid "Encoding error in long description."
 #~ msgstr "Chyba kódování v dlouhém popisu."

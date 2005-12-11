@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-07 20:59-0800\n"
+"POT-Creation-Date: 2005-12-10 21:06-0800\n"
 "PO-Revision-Date: 2005-06-13 21:20+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@powertech.no>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
@@ -213,49 +213,39 @@ msgid "Suggest "
 msgstr "Foreslå "
 
 #: src/broken_indicator.cc:331
-#, c-format
-msgid "%d installs"
-msgstr "%d installert"
-
-#: src/broken_indicator.cc:334
-msgid "1 install"
-msgstr "1 installert"
+#, fuzzy, c-format
+msgid "%d install"
+msgid_plural "%d installs"
+msgstr[0] "%d installert"
+msgstr[1] "%d installert"
 
 #: src/broken_indicator.cc:337
-#, c-format
-msgid "%d removals"
-msgstr "%d fjernet"
-
-#: src/broken_indicator.cc:340
-msgid "1 removal"
-msgstr "1 fjernet"
+#, fuzzy, c-format
+msgid "%d removal"
+msgid_plural "%d removals"
+msgstr[0] "%d fjernet"
+msgstr[1] "%d fjernet"
 
 #: src/broken_indicator.cc:343
-#, c-format
-msgid "%d keeps"
-msgstr "%d beholdt"
-
-#: src/broken_indicator.cc:346
-msgid "1 keep"
-msgstr "1 beholdt"
+#, fuzzy, c-format
+msgid "%d keep"
+msgid_plural "%d keeps"
+msgstr[0] "%d beholdt"
+msgstr[1] "%d beholdt"
 
 #: src/broken_indicator.cc:349
-#, c-format
-msgid "%d upgrades"
-msgstr "%d oppgraderte"
+#, fuzzy, c-format
+msgid "%d upgrade"
+msgid_plural "%d upgrades"
+msgstr[0] "%d oppgraderte"
+msgstr[1] "%d oppgraderte"
 
-#: src/broken_indicator.cc:351
-msgid "1 upgrade"
-msgstr "1 oppgradert"
-
-#: src/broken_indicator.cc:354
-#, c-format
-msgid "%d downgrades"
-msgstr "%d nedgradert"
-
-#: src/broken_indicator.cc:356
-msgid "1 downgrade"
-msgstr "1 nedgradert"
+#: src/broken_indicator.cc:355
+#, fuzzy, c-format
+msgid "%d downgrade"
+msgid_plural "%d downgrades"
+msgstr[0] "%d nedgradert"
+msgstr[1] "%d nedgradert"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -5378,6 +5368,21 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr ""
+
+#~ msgid "1 install"
+#~ msgstr "1 installert"
+
+#~ msgid "1 removal"
+#~ msgstr "1 fjernet"
+
+#~ msgid "1 keep"
+#~ msgstr "1 beholdt"
+
+#~ msgid "1 upgrade"
+#~ msgstr "1 oppgradert"
+
+#~ msgid "1 downgrade"
+#~ msgstr "1 nedgradert"
 
 #, fuzzy
 #~ msgid "Encoding error in long description."

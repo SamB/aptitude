@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-07 20:59-0800\n"
+"POT-Creation-Date: 2005-12-10 21:06-0800\n"
 "PO-Revision-Date: 2005-09-14 00:20+0300\n"
 "Last-Translator: Ossama M. Khayat <okhayat@yahoo.com>\n"
 "Language-Team: Arabic <support@arabeyes.org>\n"
@@ -205,49 +205,39 @@ msgid "Suggest "
 msgstr "اقتراح"
 
 #: src/broken_indicator.cc:331
-#, c-format
-msgid "%d installs"
-msgstr "%dيثبت"
-
-#: src/broken_indicator.cc:334
-msgid "1 install"
-msgstr "1 تثبيت"
+#, fuzzy, c-format
+msgid "%d install"
+msgid_plural "%d installs"
+msgstr[0] "%dيثبت"
+msgstr[1] "%dيثبت"
 
 #: src/broken_indicator.cc:337
-#, c-format
-msgid "%d removals"
-msgstr "%d إزالة"
-
-#: src/broken_indicator.cc:340
-msgid "1 removal"
-msgstr "إزالة واحدة"
+#, fuzzy, c-format
+msgid "%d removal"
+msgid_plural "%d removals"
+msgstr[0] "%d إزالة"
+msgstr[1] "%d إزالة"
 
 #: src/broken_indicator.cc:343
-#, c-format
-msgid "%d keeps"
-msgstr "%d إبقاء"
-
-#: src/broken_indicator.cc:346
-msgid "1 keep"
-msgstr "إبقاء واحد"
+#, fuzzy, c-format
+msgid "%d keep"
+msgid_plural "%d keeps"
+msgstr[0] "%d إبقاء"
+msgstr[1] "%d إبقاء"
 
 #: src/broken_indicator.cc:349
-#, c-format
-msgid "%d upgrades"
-msgstr "%d يرقّي"
+#, fuzzy, c-format
+msgid "%d upgrade"
+msgid_plural "%d upgrades"
+msgstr[0] "%d يرقّي"
+msgstr[1] "%d يرقّي"
 
-#: src/broken_indicator.cc:351
-msgid "1 upgrade"
-msgstr "1 ترقية "
-
-#: src/broken_indicator.cc:354
-#, c-format
-msgid "%d downgrades"
-msgstr "%d تثبيط"
-
-#: src/broken_indicator.cc:356
-msgid "1 downgrade"
-msgstr "تثبيط واحد"
+#: src/broken_indicator.cc:355
+#, fuzzy, c-format
+msgid "%d downgrade"
+msgid_plural "%d downgrades"
+msgstr[0] "%d تثبيط"
+msgstr[1] "%d تثبيط"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -5111,6 +5101,21 @@ msgstr "تعذر تحميل اسم الملف: السلسلة %ls لا تملك 
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "المستوى الأعلى"
+
+#~ msgid "1 install"
+#~ msgstr "1 تثبيت"
+
+#~ msgid "1 removal"
+#~ msgstr "إزالة واحدة"
+
+#~ msgid "1 keep"
+#~ msgstr "إبقاء واحد"
+
+#~ msgid "1 upgrade"
+#~ msgstr "1 ترقية "
+
+#~ msgid "1 downgrade"
+#~ msgstr "تثبيط واحد"
 
 #, fuzzy
 #~ msgid "Search backwards for:"

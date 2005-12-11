@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3.3\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-07 20:59-0800\n"
+"POT-Creation-Date: 2005-12-10 21:06-0800\n"
 "PO-Revision-Date: 2005-11-15 12:45+0100\n"
 "Last-Translator: Micha³ Politowski <l10n@mp.pl.eu.org>\n"
 "Language-Team: Polish\n"
@@ -204,49 +204,39 @@ msgid "Suggest "
 msgstr "Sugerowane: "
 
 #: src/broken_indicator.cc:331
-#, c-format
-msgid "%d installs"
-msgstr "instalacje: %d"
-
-#: src/broken_indicator.cc:334
-msgid "1 install"
-msgstr "instalacje: 1"
+#, fuzzy, c-format
+msgid "%d install"
+msgid_plural "%d installs"
+msgstr[0] "instalacje: %d"
+msgstr[1] "instalacje: %d"
 
 #: src/broken_indicator.cc:337
-#, c-format
-msgid "%d removals"
-msgstr "usuniêcia: %d"
-
-#: src/broken_indicator.cc:340
-msgid "1 removal"
-msgstr "usuniêcia: 1"
+#, fuzzy, c-format
+msgid "%d removal"
+msgid_plural "%d removals"
+msgstr[0] "usuniêcia: %d"
+msgstr[1] "usuniêcia: %d"
 
 #: src/broken_indicator.cc:343
-#, c-format
-msgid "%d keeps"
-msgstr "zatrzymania: %d"
-
-#: src/broken_indicator.cc:346
-msgid "1 keep"
-msgstr "zatrzymania: 1"
+#, fuzzy, c-format
+msgid "%d keep"
+msgid_plural "%d keeps"
+msgstr[0] "zatrzymania: %d"
+msgstr[1] "zatrzymania: %d"
 
 #: src/broken_indicator.cc:349
-#, c-format
-msgid "%d upgrades"
-msgstr "uaktualnienia: %d"
+#, fuzzy, c-format
+msgid "%d upgrade"
+msgid_plural "%d upgrades"
+msgstr[0] "uaktualnienia: %d"
+msgstr[1] "uaktualnienia: %d"
 
-#: src/broken_indicator.cc:351
-msgid "1 upgrade"
-msgstr "uaktualnienia: 1"
-
-#: src/broken_indicator.cc:354
-#, c-format
-msgid "%d downgrades"
-msgstr "cofniêcia: %d"
-
-#: src/broken_indicator.cc:356
-msgid "1 downgrade"
-msgstr "cofniêcia: 1"
+#: src/broken_indicator.cc:355
+#, fuzzy, c-format
+msgid "%d downgrade"
+msgid_plural "%d downgrades"
+msgstr[0] "cofniêcia: %d"
+msgstr[1] "cofniêcia: %d"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -5332,6 +5322,21 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "NAJWY¯SZY POZIOM"
+
+#~ msgid "1 install"
+#~ msgstr "instalacje: 1"
+
+#~ msgid "1 removal"
+#~ msgstr "usuniêcia: 1"
+
+#~ msgid "1 keep"
+#~ msgstr "zatrzymania: 1"
+
+#~ msgid "1 upgrade"
+#~ msgstr "uaktualnienia: 1"
+
+#~ msgid "1 downgrade"
+#~ msgstr "cofniêcia: 1"
 
 #~ msgid "Encoding error in long description."
 #~ msgstr "Niepoprawne kodowanie opisu."

@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_el\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-07 20:59-0800\n"
+"POT-Creation-Date: 2005-12-10 21:06-0800\n"
 "PO-Revision-Date: 2005-04-03 14:02EEST\n"
 "Last-Translator: Greek Translation Team <debian-l10n-greek@lists.debian."
 "org>\n"
@@ -233,51 +233,38 @@ msgstr "Προτείνει"
 
 #: src/broken_indicator.cc:331
 #, fuzzy, c-format
-msgid "%d installs"
-msgstr "εγκατάσταση"
-
-#: src/broken_indicator.cc:334
-#, fuzzy
-msgid "1 install"
-msgstr "εγκατάσταση"
+msgid "%d install"
+msgid_plural "%d installs"
+msgstr[0] "εγκατάσταση"
+msgstr[1] "εγκατάσταση"
 
 #: src/broken_indicator.cc:337
 #, c-format
-msgid "%d removals"
-msgstr ""
-
-#: src/broken_indicator.cc:340
-msgid "1 removal"
-msgstr ""
+msgid "%d removal"
+msgid_plural "%d removals"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/broken_indicator.cc:343
 #, c-format
-msgid "%d keeps"
-msgstr ""
-
-#: src/broken_indicator.cc:346
-msgid "1 keep"
-msgstr ""
+msgid "%d keep"
+msgid_plural "%d keeps"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/broken_indicator.cc:349
 #, fuzzy, c-format
-msgid "%d upgrades"
-msgstr "αναβάθμιση"
+msgid "%d upgrade"
+msgid_plural "%d upgrades"
+msgstr[0] "αναβάθμιση"
+msgstr[1] "αναβάθμιση"
 
-#: src/broken_indicator.cc:351
-#, fuzzy
-msgid "1 upgrade"
-msgstr "αναβάθμιση"
-
-#: src/broken_indicator.cc:354
+#: src/broken_indicator.cc:355
 #, fuzzy, c-format
-msgid "%d downgrades"
-msgstr "υποβαθμίζονται"
-
-#: src/broken_indicator.cc:356
-#, fuzzy
-msgid "1 downgrade"
-msgstr "υποβαθμίζονται"
+msgid "%d downgrade"
+msgid_plural "%d downgrades"
+msgstr[0] "υποβαθμίζονται"
+msgstr[1] "υποβαθμίζονται"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -5493,6 +5480,18 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr ""
+
+#, fuzzy
+#~ msgid "1 install"
+#~ msgstr "εγκατάσταση"
+
+#, fuzzy
+#~ msgid "1 upgrade"
+#~ msgstr "αναβάθμιση"
+
+#, fuzzy
+#~ msgid "1 downgrade"
+#~ msgstr "υποβαθμίζονται"
 
 #, fuzzy
 #~ msgid "Encoding error in long description."

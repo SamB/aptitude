@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_ru\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-07 20:59-0800\n"
+"POT-Creation-Date: 2005-12-10 21:06-0800\n"
 "PO-Revision-Date: 2005-10-24 19:38+0400\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
@@ -214,49 +214,44 @@ msgid "Suggest "
 msgstr "Предлагаются"
 
 #: src/broken_indicator.cc:331
-#, c-format
-msgid "%d installs"
-msgstr "%d установлено"
-
-#: src/broken_indicator.cc:334
-msgid "1 install"
-msgstr "1 установлен"
+#, fuzzy, c-format
+msgid "%d install"
+msgid_plural "%d installs"
+msgstr[0] "%d установлено"
+msgstr[1] "%d установлено"
+msgstr[2] "%d установлено"
 
 #: src/broken_indicator.cc:337
-#, c-format
-msgid "%d removals"
-msgstr "%d удалено"
-
-#: src/broken_indicator.cc:340
-msgid "1 removal"
-msgstr "1 удалён"
+#, fuzzy, c-format
+msgid "%d removal"
+msgid_plural "%d removals"
+msgstr[0] "%d удалено"
+msgstr[1] "%d удалено"
+msgstr[2] "%d удалено"
 
 #: src/broken_indicator.cc:343
-#, c-format
-msgid "%d keeps"
-msgstr "%d оставлено"
-
-#: src/broken_indicator.cc:346
-msgid "1 keep"
-msgstr "1 оставлен"
+#, fuzzy, c-format
+msgid "%d keep"
+msgid_plural "%d keeps"
+msgstr[0] "%d оставлено"
+msgstr[1] "%d оставлено"
+msgstr[2] "%d оставлено"
 
 #: src/broken_indicator.cc:349
-#, c-format
-msgid "%d upgrades"
-msgstr "%d обновлено"
+#, fuzzy, c-format
+msgid "%d upgrade"
+msgid_plural "%d upgrades"
+msgstr[0] "%d обновлено"
+msgstr[1] "%d обновлено"
+msgstr[2] "%d обновлено"
 
-#: src/broken_indicator.cc:351
-msgid "1 upgrade"
-msgstr "1 обновлён"
-
-#: src/broken_indicator.cc:354
-#, c-format
-msgid "%d downgrades"
-msgstr "%d заменено на более старые"
-
-#: src/broken_indicator.cc:356
-msgid "1 downgrade"
-msgstr "1 заменён на более старый"
+#: src/broken_indicator.cc:355
+#, fuzzy, c-format
+msgid "%d downgrade"
+msgid_plural "%d downgrades"
+msgstr[0] "%d заменено на более старые"
+msgstr[1] "%d заменено на более старые"
+msgstr[2] "%d заменено на более старые"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -5338,6 +5333,21 @@ msgstr "Не удалось загрузить имя файла: строка %
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "САМЫЙ ВЕРХНИЙ УРОВЕНЬ"
+
+#~ msgid "1 install"
+#~ msgstr "1 установлен"
+
+#~ msgid "1 removal"
+#~ msgstr "1 удалён"
+
+#~ msgid "1 keep"
+#~ msgstr "1 оставлен"
+
+#~ msgid "1 upgrade"
+#~ msgstr "1 обновлён"
+
+#~ msgid "1 downgrade"
+#~ msgstr "1 заменён на более старый"
 
 #~ msgid "Encoding error in long description."
 #~ msgstr "Ошибка кодирования в длине описания."

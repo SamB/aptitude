@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude.eu3\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-07 20:59-0800\n"
+"POT-Creation-Date: 2005-12-10 21:06-0800\n"
 "PO-Revision-Date: 2005-09-25 15:41+0200\n"
 "Last-Translator: Iñaki Larrañaga <dooteo@euskalgnu.org>\n"
 "Language-Team:  <itzulpena@euskalgnu.org>\n"
@@ -213,49 +213,39 @@ msgid "Suggest "
 msgstr "Iradokizuna "
 
 #: src/broken_indicator.cc:331
-#, c-format
-msgid "%d installs"
-msgstr "%d instalatu"
-
-#: src/broken_indicator.cc:334
-msgid "1 install"
-msgstr "1 instalatu"
+#, fuzzy, c-format
+msgid "%d install"
+msgid_plural "%d installs"
+msgstr[0] "%d instalatu"
+msgstr[1] "%d instalatu"
 
 #: src/broken_indicator.cc:337
-#, c-format
-msgid "%d removals"
-msgstr "%d kendu"
-
-#: src/broken_indicator.cc:340
-msgid "1 removal"
-msgstr "1 kendu"
+#, fuzzy, c-format
+msgid "%d removal"
+msgid_plural "%d removals"
+msgstr[0] "%d kendu"
+msgstr[1] "%d kendu"
 
 #: src/broken_indicator.cc:343
-#, c-format
-msgid "%d keeps"
-msgstr "%d mantendu"
-
-#: src/broken_indicator.cc:346
-msgid "1 keep"
-msgstr "1 mantendu"
+#, fuzzy, c-format
+msgid "%d keep"
+msgid_plural "%d keeps"
+msgstr[0] "%d mantendu"
+msgstr[1] "%d mantendu"
 
 #: src/broken_indicator.cc:349
-#, c-format
-msgid "%d upgrades"
-msgstr "%d eguneratu"
+#, fuzzy, c-format
+msgid "%d upgrade"
+msgid_plural "%d upgrades"
+msgstr[0] "%d eguneratu"
+msgstr[1] "%d eguneratu"
 
-#: src/broken_indicator.cc:351
-msgid "1 upgrade"
-msgstr "1 eguneratu"
-
-#: src/broken_indicator.cc:354
-#, c-format
-msgid "%d downgrades"
-msgstr "%d aurreko bertsiora itzuli"
-
-#: src/broken_indicator.cc:356
-msgid "1 downgrade"
-msgstr "1 aurreko bertsiora itzuli"
+#: src/broken_indicator.cc:355
+#, fuzzy, c-format
+msgid "%d downgrade"
+msgid_plural "%d downgrades"
+msgstr[0] "%d aurreko bertsiora itzuli"
+msgstr[1] "%d aurreko bertsiora itzuli"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -5378,6 +5368,21 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "MAILA GORENA"
+
+#~ msgid "1 install"
+#~ msgstr "1 instalatu"
+
+#~ msgid "1 removal"
+#~ msgstr "1 kendu"
+
+#~ msgid "1 keep"
+#~ msgstr "1 mantendu"
+
+#~ msgid "1 upgrade"
+#~ msgstr "1 eguneratu"
+
+#~ msgid "1 downgrade"
+#~ msgstr "1 aurreko bertsiora itzuli"
 
 #~ msgid "Encoding error in long description."
 #~ msgstr "Kodetze-errorea azalpen luzean."

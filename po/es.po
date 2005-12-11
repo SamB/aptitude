@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3.2-4\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-07 20:59-0800\n"
+"POT-Creation-Date: 2005-12-10 21:06-0800\n"
 "PO-Revision-Date: 2005-09-24 10:57+0200\n"
 "Last-Translator: Rubén Porras Campo <nahoo@inicia.es>\n"
 "Language-Team: Debian-l10n-Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -212,49 +212,39 @@ msgid "Suggest "
 msgstr "Sugiere "
 
 #: src/broken_indicator.cc:331
-#, c-format
-msgid "%d installs"
-msgstr "%d instalaciones"
-
-#: src/broken_indicator.cc:334
-msgid "1 install"
-msgstr "1 instalación"
+#, fuzzy, c-format
+msgid "%d install"
+msgid_plural "%d installs"
+msgstr[0] "%d instalaciones"
+msgstr[1] "%d instalaciones"
 
 #: src/broken_indicator.cc:337
-#, c-format
-msgid "%d removals"
-msgstr "%d eliminaciones"
-
-#: src/broken_indicator.cc:340
-msgid "1 removal"
-msgstr "1 eliminación"
+#, fuzzy, c-format
+msgid "%d removal"
+msgid_plural "%d removals"
+msgstr[0] "%d eliminaciones"
+msgstr[1] "%d eliminaciones"
 
 #: src/broken_indicator.cc:343
-#, c-format
-msgid "%d keeps"
-msgstr "%d mantenidos"
-
-#: src/broken_indicator.cc:346
-msgid "1 keep"
-msgstr "1 mantenido"
+#, fuzzy, c-format
+msgid "%d keep"
+msgid_plural "%d keeps"
+msgstr[0] "%d mantenidos"
+msgstr[1] "%d mantenidos"
 
 #: src/broken_indicator.cc:349
-#, c-format
-msgid "%d upgrades"
-msgstr "%d actualizaciones"
+#, fuzzy, c-format
+msgid "%d upgrade"
+msgid_plural "%d upgrades"
+msgstr[0] "%d actualizaciones"
+msgstr[1] "%d actualizaciones"
 
-#: src/broken_indicator.cc:351
-msgid "1 upgrade"
-msgstr "1 actualización"
-
-#: src/broken_indicator.cc:354
-#, c-format
-msgid "%d downgrades"
-msgstr "%d desactualizaciones"
-
-#: src/broken_indicator.cc:356
-msgid "1 downgrade"
-msgstr "1 desactualizado"
+#: src/broken_indicator.cc:355
+#, fuzzy, c-format
+msgid "%d downgrade"
+msgid_plural "%d downgrades"
+msgstr[0] "%d desactualizaciones"
+msgstr[1] "%d desactualizaciones"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -5431,6 +5421,21 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "NIVEL SUPERIOR"
+
+#~ msgid "1 install"
+#~ msgstr "1 instalación"
+
+#~ msgid "1 removal"
+#~ msgstr "1 eliminación"
+
+#~ msgid "1 keep"
+#~ msgstr "1 mantenido"
+
+#~ msgid "1 upgrade"
+#~ msgstr "1 actualización"
+
+#~ msgid "1 downgrade"
+#~ msgstr "1 desactualizado"
 
 #~ msgid "Encoding error in long description."
 #~ msgstr "Error de codificación en la descripción larga."

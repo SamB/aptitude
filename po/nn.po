@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_nn\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-07 20:59-0800\n"
+"POT-Creation-Date: 2005-12-10 21:06-0800\n"
 "PO-Revision-Date: 2005-06-27 21:26+0200\n"
 "Last-Translator: Håvard Korsvoll <korsvoll@skulelinux.no>\n"
 "Language-Team: Norwegian nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -213,49 +213,39 @@ msgid "Suggest "
 msgstr "Foreslår "
 
 #: src/broken_indicator.cc:331
-#, c-format
-msgid "%d installs"
-msgstr "%d installeringar"
-
-#: src/broken_indicator.cc:334
-msgid "1 install"
-msgstr "1 installering"
+#, fuzzy, c-format
+msgid "%d install"
+msgid_plural "%d installs"
+msgstr[0] "%d installeringar"
+msgstr[1] "%d installeringar"
 
 #: src/broken_indicator.cc:337
-#, c-format
-msgid "%d removals"
-msgstr "%d fjerningar"
-
-#: src/broken_indicator.cc:340
-msgid "1 removal"
-msgstr "1 fjerning"
+#, fuzzy, c-format
+msgid "%d removal"
+msgid_plural "%d removals"
+msgstr[0] "%d fjerningar"
+msgstr[1] "%d fjerningar"
 
 #: src/broken_indicator.cc:343
-#, c-format
-msgid "%d keeps"
-msgstr "%d haldt tilbake"
-
-#: src/broken_indicator.cc:346
-msgid "1 keep"
-msgstr "1 haldt tilbake"
+#, fuzzy, c-format
+msgid "%d keep"
+msgid_plural "%d keeps"
+msgstr[0] "%d haldt tilbake"
+msgstr[1] "%d haldt tilbake"
 
 #: src/broken_indicator.cc:349
-#, c-format
-msgid "%d upgrades"
-msgstr "%d oppgraderingar"
+#, fuzzy, c-format
+msgid "%d upgrade"
+msgid_plural "%d upgrades"
+msgstr[0] "%d oppgraderingar"
+msgstr[1] "%d oppgraderingar"
 
-#: src/broken_indicator.cc:351
-msgid "1 upgrade"
-msgstr "1 oppgradering"
-
-#: src/broken_indicator.cc:354
-#, c-format
-msgid "%d downgrades"
-msgstr "%d nedgraderingar"
-
-#: src/broken_indicator.cc:356
-msgid "1 downgrade"
-msgstr "1 nedgradering"
+#: src/broken_indicator.cc:355
+#, fuzzy, c-format
+msgid "%d downgrade"
+msgid_plural "%d downgrades"
+msgstr[0] "%d nedgraderingar"
+msgstr[1] "%d nedgraderingar"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -5375,6 +5365,21 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr ""
+
+#~ msgid "1 install"
+#~ msgstr "1 installering"
+
+#~ msgid "1 removal"
+#~ msgstr "1 fjerning"
+
+#~ msgid "1 keep"
+#~ msgstr "1 haldt tilbake"
+
+#~ msgid "1 upgrade"
+#~ msgstr "1 oppgradering"
+
+#~ msgid "1 downgrade"
+#~ msgstr "1 nedgradering"
 
 #, fuzzy
 #~ msgid "Encoding error in long description."

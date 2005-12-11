@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_0.2.13-2\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-07 20:59-0800\n"
+"POT-Creation-Date: 2005-12-10 21:06-0800\n"
 "PO-Revision-Date: 2004-07-22 17:53+0100\n"
 "Last-Translator: Aleix Badia i Bosch <a.badia@callusdigital.org>\n"
 "Language-Team: Catalan <debian-l10n-catalan@lists.debian.org>\n"
@@ -223,51 +223,38 @@ msgstr "Suggereix"
 
 #: src/broken_indicator.cc:331
 #, fuzzy, c-format
-msgid "%d installs"
-msgstr "instal·la"
-
-#: src/broken_indicator.cc:334
-#, fuzzy
-msgid "1 install"
-msgstr "instal·la"
+msgid "%d install"
+msgid_plural "%d installs"
+msgstr[0] "instal·la"
+msgstr[1] "instal·la"
 
 #: src/broken_indicator.cc:337
 #, c-format
-msgid "%d removals"
-msgstr ""
-
-#: src/broken_indicator.cc:340
-msgid "1 removal"
-msgstr ""
+msgid "%d removal"
+msgid_plural "%d removals"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/broken_indicator.cc:343
 #, c-format
-msgid "%d keeps"
-msgstr ""
-
-#: src/broken_indicator.cc:346
-msgid "1 keep"
-msgstr ""
+msgid "%d keep"
+msgid_plural "%d keeps"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/broken_indicator.cc:349
 #, fuzzy, c-format
-msgid "%d upgrades"
-msgstr "actualitza"
+msgid "%d upgrade"
+msgid_plural "%d upgrades"
+msgstr[0] "actualitza"
+msgstr[1] "actualitza"
 
-#: src/broken_indicator.cc:351
-#, fuzzy
-msgid "1 upgrade"
-msgstr "actualitza"
-
-#: src/broken_indicator.cc:354
+#: src/broken_indicator.cc:355
 #, fuzzy, c-format
-msgid "%d downgrades"
-msgstr "desactualitzat"
-
-#: src/broken_indicator.cc:356
-#, fuzzy
-msgid "1 downgrade"
-msgstr "desactualitzat"
+msgid "%d downgrade"
+msgid_plural "%d downgrades"
+msgstr[0] "desactualitzat"
+msgstr[1] "desactualitzat"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -5485,6 +5472,18 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr ""
+
+#, fuzzy
+#~ msgid "1 install"
+#~ msgstr "instal·la"
+
+#, fuzzy
+#~ msgid "1 upgrade"
+#~ msgstr "actualitza"
+
+#, fuzzy
+#~ msgid "1 downgrade"
+#~ msgstr "desactualitzat"
 
 #, fuzzy
 #~ msgid "Encoding error in long description."

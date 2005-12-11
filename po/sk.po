@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-07 20:59-0800\n"
+"POT-Creation-Date: 2005-12-10 21:06-0800\n"
 "PO-Revision-Date: 2005-11-16 22:30+0100\n"
 "Last-Translator: Stanislav Valášek <valasek@fastmail.fm>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -207,49 +207,39 @@ msgid "Suggest "
 msgstr "Navrhuje"
 
 #: src/broken_indicator.cc:331
-#, c-format
-msgid "%d installs"
-msgstr "%d inštalovaných"
-
-#: src/broken_indicator.cc:334
-msgid "1 install"
-msgstr "1 iinštalovaný"
+#, fuzzy, c-format
+msgid "%d install"
+msgid_plural "%d installs"
+msgstr[0] "%d inštalovaných"
+msgstr[1] "%d inštalovaných"
 
 #: src/broken_indicator.cc:337
-#, c-format
-msgid "%d removals"
-msgstr "%d odstránení"
-
-#: src/broken_indicator.cc:340
-msgid "1 removal"
-msgstr "1 odstránenie"
+#, fuzzy, c-format
+msgid "%d removal"
+msgid_plural "%d removals"
+msgstr[0] "%d odstránení"
+msgstr[1] "%d odstránení"
 
 #: src/broken_indicator.cc:343
-#, c-format
-msgid "%d keeps"
-msgstr "%d ponechaní"
-
-#: src/broken_indicator.cc:346
-msgid "1 keep"
-msgstr "1 ponechanie"
+#, fuzzy, c-format
+msgid "%d keep"
+msgid_plural "%d keeps"
+msgstr[0] "%d ponechaní"
+msgstr[1] "%d ponechaní"
 
 #: src/broken_indicator.cc:349
-#, c-format
-msgid "%d upgrades"
-msgstr "%d aktualizácií"
+#, fuzzy, c-format
+msgid "%d upgrade"
+msgid_plural "%d upgrades"
+msgstr[0] "%d aktualizácií"
+msgstr[1] "%d aktualizácií"
 
-#: src/broken_indicator.cc:351
-msgid "1 upgrade"
-msgstr "1 aktualizácia"
-
-#: src/broken_indicator.cc:354
-#, c-format
-msgid "%d downgrades"
-msgstr "%d degradovaných"
-
-#: src/broken_indicator.cc:356
-msgid "1 downgrade"
-msgstr "1 degradovaný"
+#: src/broken_indicator.cc:355
+#, fuzzy, c-format
+msgid "%d downgrade"
+msgid_plural "%d downgrades"
+msgstr[0] "%d degradovaných"
+msgstr[1] "%d degradovaných"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -5299,6 +5289,21 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:930
 msgid "TOP LEVEL"
 msgstr "NAJVYŠŠIA ÚROVEŃ"
+
+#~ msgid "1 install"
+#~ msgstr "1 iinštalovaný"
+
+#~ msgid "1 removal"
+#~ msgstr "1 odstránenie"
+
+#~ msgid "1 keep"
+#~ msgstr "1 ponechanie"
+
+#~ msgid "1 upgrade"
+#~ msgstr "1 aktualizácia"
+
+#~ msgid "1 downgrade"
+#~ msgstr "1 degradovaný"
 
 #~ msgid "Search backwards for:"
 #~ msgstr "Spätne hľadaj:"
