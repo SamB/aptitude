@@ -105,28 +105,37 @@ temp::name changelog_by_version(const std::string &pkg,
   // "section" has a first component.
 
   temp::name rval;
-  download_manager::result res;
+  download_manager::result res = download_manager::failure;
 
   download_manager *m = get_changelog_from_source(pkg, ver, "", pkg,
 						  sigc::bind(sigc::ptr_fun(set_name),
 							     &rval));
-  res = cmdline_do_download(m);
-  delete m;
-
-  if(res != download_manager::success || !rval.valid())
+  if(m != NULL)
     {
-      m = get_changelog_from_source(pkg, ver, "contrib/foo", pkg,
-				    sigc::bind(sigc::ptr_fun(set_name), &rval));
       res = cmdline_do_download(m);
       delete m;
     }
 
   if(res != download_manager::success || !rval.valid())
     {
+      m = get_changelog_from_source(pkg, ver, "contrib/foo", pkg,
+				    sigc::bind(sigc::ptr_fun(set_name), &rval));
+      if(m != NULL)
+	{
+	  res = cmdline_do_download(m);
+	  delete m;
+	}
+    }
+
+  if(res != download_manager::success || !rval.valid())
+    {
       m = get_changelog_from_source(pkg, ver, "non-free/foo", pkg,
 				    sigc::bind(sigc::ptr_fun(set_name), &rval));
-      res = cmdline_do_download(m);
-      delete m;
+      if(m != NULL)
+	{
+	  res = cmdline_do_download(m);
+	  delete m;
+	}
     }
 
   if(res != download_manager::success)
@@ -254,8 +263,11 @@ bool do_cmdline_changelog(const vector<string> &packages)
 	    {
 	      download_manager *m = get_changelog(ver,
 						  sigc::bind(sigc::ptr_fun(&set_name), &filename));
-	      cmdline_do_download(m);
-	      delete m;
+	      if(m != NULL)
+		{
+		  cmdline_do_download(m);
+		  delete m;
+		}
 	    }
 	}
       else
@@ -307,9 +319,12 @@ bool do_cmdline_changelog(const vector<string> &packages)
 					    ent.pkg,
 					    sigc::bind(sigc::ptr_fun(&set_name), &filename));
 
-	      cmdline_do_download(m);
+	      if(m != NULL)
+		{
+		  cmdline_do_download(m);
 
-	      delete m;
+		  delete m;
+		}
 	    }
 	}
 
