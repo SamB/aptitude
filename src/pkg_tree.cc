@@ -230,7 +230,7 @@ void pkg_tree::set_limit(const std::wstring &_limit)
       limit=new_limit;
       limitstr=_limit;
 
-      if(!build_tree())
+      if(!build_tree() && !aptcfg->FindB(PACKAGE "::UI::Allow-Unmatched-Limit", false))
 	{
 	  wchar_t buf[512];
 
