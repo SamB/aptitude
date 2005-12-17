@@ -432,6 +432,18 @@ void vs_tree::line_up()
   bool moved = false;
   int scrollcount = 0;
 
+  // Guard against the selected entry being unexpectedly invalid (most
+  // likely indicates that the tree is empty).
+  if(selected == end)
+    {
+      selected = top;
+      if(selected == end)
+	selected = begin;
+
+      if(selected == end)
+	return;
+    }
+
   while(selected != begin &&
 	scrollcount < 1 &&
 	(!moved || !selected->get_selectable()))
