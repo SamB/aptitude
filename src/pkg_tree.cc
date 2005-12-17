@@ -178,6 +178,8 @@ bool pkg_tree::build_tree(OpProgress &progress)
 
 	  progress.OverallProgress(num, total, 1, _("Building view"));
 
+	  ++num;
+
 	  // Filter useless packages up-front.
 	  if(i.VersionList().end() && i.ProvidesList().end())
 	    continue;
@@ -187,8 +189,6 @@ bool pkg_tree::build_tree(OpProgress &progress)
 	      empty=false;
 	      grouper->add_package(i, mytree);
 	    }
-
-	  ++num;
 	}
 
       progress.OverallProgress(total, total, 1, _("Building view"));
