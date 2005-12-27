@@ -13,6 +13,7 @@
 
   <!ENTITY actions-install "<menuchoice><shortcut><keycap>g</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Install/remove packages</guimenuitem></menuchoice>">
   <!ENTITY actions-update "<menuchoice><shortcut><keycap>u</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Update package list</guimenuitem></menuchoice>">
+  <!ENTITY actions-cancel "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Cancel pending actions</guimenuitem></menuchoice>">
   <!ENTITY actions-forget "<menuchoice><shortcut><keycap>f</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Forget new packages</guimenuitem></menuchoice>">
   <!ENTITY actions-clean "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Clean package cache</guimenuitem></menuchoice>">
   <!ENTITY actions-clean-obs "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Clean obsolete files</guimenuitem></menuchoice>">
@@ -1952,6 +1953,18 @@ Abort.</screen>
 		    <entry>
 		      Discard all information about what packages are
 		      <quote>new</quote> (empty the <quote>New Packages</quote> tree).
+		    </entry>
+		  </row>
+
+		  <row>
+		    <entry>&actions-cancel;</entry>
+
+		    <entry>
+		      Cancel all pending installations, removals,
+		      upgrades, and holds.  This is equivalent to
+		      executing the <link
+		      linkend='pkgCmdKeep'>Keep</link> command on
+		      every package in the package database.
 		    </entry>
 		  </row>
 
