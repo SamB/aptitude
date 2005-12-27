@@ -1909,6 +1909,12 @@ vs_menu_info actions_menu[]={
   vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^Update package list"), "UpdatePackageList",
 	       N_("Check for new versions of packages"), sigc::ptr_fun(do_update_lists), sigc::ptr_fun(can_start_download)),
 
+  VS_MENU_SEPARATOR,
+
+  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("Mark ^Upgradable"), "MarkUpgradable",
+	       N_("Mark all upgradable packages which are not held for upgrade"),
+	       sigc::ptr_fun(do_mark_upgradable), sigc::ptr_fun(do_mark_upgradable_enabled)),
+
   // FIXME: this is a bad name for the menu item.
   vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^Forget new packages"), "ForgetNewPackages",
 	       N_("Forget which packages are \"new\""),
@@ -1922,15 +1928,7 @@ vs_menu_info actions_menu[]={
 	       N_("Delete package files which can no longer be downloaded"),
 	       sigc::ptr_fun(do_autoclean), sigc::ptr_fun(do_autoclean_enabled)),
 
-  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("Mark ^Upgradable"), "MarkUpgradable",
-	       N_("Mark all upgradable packages which are not held for upgrade"),
-	       sigc::ptr_fun(do_mark_upgradable), sigc::ptr_fun(do_mark_upgradable_enabled)),
-
-  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^Play Minesweeper"), NULL,
-	       N_("Waste time trying to find mines"), sigc::ptr_fun(do_sweep)),
-
-  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^Become root"), NULL,
-	       N_("Run 'su' to become root; this will restart the program, but your settings will be preserved"), sigc::bind(sigc::ptr_fun(do_su_to_root), ""), sigc::ptr_fun(su_to_root_enabled)),
+  VS_MENU_SEPARATOR,
 
 #ifdef WITH_RELOAD_CACHE
   vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^Reload package cache"), NULL,
@@ -1938,7 +1936,13 @@ vs_menu_info actions_menu[]={
 	       sigc::ptr_fun(do_reload_cache)),
 #endif
 
+  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^Play Minesweeper"), NULL,
+	       N_("Waste time trying to find mines"), sigc::ptr_fun(do_sweep)),
+
   VS_MENU_SEPARATOR,
+
+  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^Become root"), NULL,
+	       N_("Run 'su' to become root; this will restart the program, but your settings will be preserved"), sigc::bind(sigc::ptr_fun(do_su_to_root), ""), sigc::ptr_fun(su_to_root_enabled)),
 
   vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^Quit"), "QuitProgram",
 	       N_("Exit the program"), sigc::ptr_fun(do_quit)),
