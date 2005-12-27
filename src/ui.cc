@@ -1187,6 +1187,22 @@ static void do_show_preview()
     }
 }
 
+static void do_keep_all()
+{
+  auto_ptr<undo_group> undo(new apt_undo_group);
+
+  (*apt_cache_file)->begin_action_group();
+
+  for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin();
+      !i.end(); ++i)
+    (*apt_cache_file)->mark_keep(i, true, false, undo.get());
+
+  (*apt_cache_file)->end_action_group(undo.get());
+
+  if(!undo.get()->empty())
+    apt_undos->add_item(undo.release());
+}
+
 static void fixer_dialog_done()
 {
   if(active_preview_tree.valid())
@@ -1919,6 +1935,10 @@ vs_menu_info actions_menu[]={
   vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^Forget new packages"), "ForgetNewPackages",
 	       N_("Forget which packages are \"new\""),
 	       sigc::ptr_fun(do_forget_new), sigc::ptr_fun(forget_new_enabled)),
+
+  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("Canc^el pending actions"), NULL,
+	       N_("Cancel all pending installations, removals, holds, and upgrades."),
+	       sigc::ptr_fun(do_keep_all)),
 
   vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^Clean package cache"), NULL,
 	       N_("Delete package files which were previously downloaded"),
