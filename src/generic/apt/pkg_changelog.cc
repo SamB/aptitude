@@ -61,14 +61,19 @@ class download_changelog_manager : public download_manager
 
 
   /** HACK: This just overrides the failure method to catch 404s. */
-  class AcqWithFail:public pkgAcqFileSane
+  class AcqWithFail:public pkgAcqFile
   {
     bool &failed;
   public:
-    AcqWithFail(pkgAcquire *Owner, string URI,
-		string Description, string ShortDesc, string filename,
+    AcqWithFail(pkgAcquire *Owner,
+		const string &URI,
+		const string &MD5,
+		unsigned long Size,
+		const string &Description,
+		const string &ShortDesc,
+		const string &filename,
 		bool &_failed):
-      pkgAcqFileSane(Owner, URI, Description, ShortDesc, filename),
+      pkgAcqFile(Owner, URI, MD5, Size, Description, ShortDesc, "", filename),
       failed(_failed)
     {
       failed=false;
@@ -148,6 +153,8 @@ public:
     failed = false;
     new AcqWithFail(fetcher,
 		    uri,
+		    "",
+		    0,
 		    title,
 		    title,
 		    tempname.get_name().c_str(),
