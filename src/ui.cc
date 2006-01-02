@@ -1,6 +1,6 @@
 // ui.cc
 //
-//   Copyright 2000-2005 Daniel Burrows <dburrows@debian.org>
+//   Copyright 2000-2006 Daniel Burrows <dburrows@debian.org>
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -2263,10 +2263,18 @@ static vs_menu_ref add_menu(vs_menu_info *info, const std::string &name,
 // argh
 class help_bar:public vs_label
 {
-public:
+protected:
   help_bar(const wstring &txt, const style &st):vs_label(txt, st)
   {
     set_visibility();
+  }
+public:
+  static
+  ref_ptr<help_bar> create(const wstring &txt, const style &st)
+  {
+    ref_ptr<help_bar> rval(new help_bar(txt, st));
+    rval->decref();
+    return rval;
   }
 
   inline void set_visibility()
@@ -2274,6 +2282,7 @@ public:
     set_visible(aptcfg->FindB(PACKAGE "::UI::HelpBar", true));
   }
 };
+typedef ref_ptr<help_bar> help_bar_ref;
 
 void ui_init()
 {
@@ -2393,12 +2402,12 @@ void ui_init()
 			update_key.c_str(),
 			install_key.c_str());
 
-  help_bar *help_label=new help_bar(helptext, get_style("Header"));
+  help_bar_ref help_label(help_bar::create(helptext, get_style("Header")));
   main_table->add_widget_opts(help_label, 0, 0, 1, 1,
 			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
 			      vs_table::ALIGN_CENTER);
   aptcfg->connect(string(PACKAGE "::UI::HelpBar"),
-		  sigc::mem_fun(*help_label, &help_bar::set_visibility));
+		  sigc::mem_fun(help_label.unsafe_get_ref(), &help_bar::set_visibility));
 
   main_multiplex=vs_multiplex::create(true);
   main_table->add_widget_opts(main_multiplex, 1, 0, 1, 1,
