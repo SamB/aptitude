@@ -2260,6 +2260,11 @@ static vs_menu_ref add_menu(vs_menu_info *info, const std::string &name,
   return menu;
 }
 
+static void do_update_show_tabs(vs_multiplex &mp)
+{
+  mp.set_show_tabs(aptcfg->FindB(PACKAGE "::UI::ViewTabs", true));
+}
+
 // argh
 class help_bar:public vs_label
 {
@@ -2409,7 +2414,9 @@ void ui_init()
   aptcfg->connect(string(PACKAGE "::UI::HelpBar"),
 		  sigc::mem_fun(help_label.unsafe_get_ref(), &help_bar::set_visibility));
 
-  main_multiplex=vs_multiplex::create(true);
+  main_multiplex=vs_multiplex::create(aptcfg->FindB(PACKAGE "::UI::ViewTabs", true));
+  aptcfg->connect(string(PACKAGE "::UI::ViewTabs"),
+		  sigc::bind(sigc::ptr_fun(&do_update_show_tabs), main_multiplex.weak_ref()));
   main_table->add_widget_opts(main_multiplex, 1, 0, 1, 1,
 			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
 			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
