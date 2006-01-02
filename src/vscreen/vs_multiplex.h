@@ -1,5 +1,5 @@
 // vs_multiplex.h                       (This is -*-c++-*-)
-// Copyright 1999-2005 Daniel Burrows
+// Copyright 1999-2006 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -111,6 +111,8 @@ public:
   void dispatch_mouse(short id, int x, int y, int z, mmask_t bstate);
 
   void show_all();
+
+  void set_show_tabs(bool shown);
 
   /** Add a title-less widget.  Provided to implement a required
    *  function and for backwards compatibility; use of this routine is

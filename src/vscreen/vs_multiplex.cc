@@ -1,6 +1,6 @@
 // vs_multiplex.cc
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2006 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -72,6 +72,12 @@ bool vs_multiplex::tabs_visible() const
       }
 
   return false;
+}
+
+void vs_multiplex::set_show_tabs(bool shown)
+{
+  show_tabs = shown;
+  vscreen_queuelayout();
 }
 
 int vs_multiplex::width_request()
