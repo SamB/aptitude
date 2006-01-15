@@ -1,6 +1,6 @@
 // vs_text_layout.cc
 //
-//   Copyright (C) 2004-2005 Daniel Burrows
+//   Copyright (C) 2004-2006 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -126,6 +126,11 @@ void vs_text_layout::layout_me()
   // If the width has changed, we need to recalculate the layout.
   if(getmaxx()!=lastw)
     stale=true;
+
+  // We should always signal regardless of whether the width has
+  // changed: it is possible that the scrollbar bounds are different
+  // now. (e.g., if we just resized vertically)
+  do_signal();
 }
 
 bool vs_text_layout::get_cursorvisible()
