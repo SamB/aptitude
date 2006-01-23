@@ -9,13 +9,14 @@ msgstr ""
 "Project-Id-Version: aptitude.eu3\n"
 "Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
 "POT-Creation-Date: 2005-12-15 09:01-0800\n"
-"PO-Revision-Date: 2005-09-25 15:41+0200\n"
-"Last-Translator: Iñaki Larrañaga <dooteo@euskalgnu.org>\n"
-"Language-Team:  <itzulpena@euskalgnu.org>\n"
+"PO-Revision-Date: 2006-01-23 13:27+0100\n"
+"Last-Translator: Piarres Beobide <pi@beobide.net>\n"
+"Language-Team: <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.9.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: Pootle 0.6.3.20060116\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
@@ -158,9 +159,8 @@ msgid "Remove unused packages automatically"
 msgstr "Automatikoki kendu erabili gabeko paketeak"
 
 #: src/apt_options.cc:192
-#, fuzzy
 msgid "Don't automatically remove unused packages matching this filter"
-msgstr "Automatikoki kendu iragazki honekin bat datozen pakete erabili gabeak"
+msgstr "Automatikoki ez kendu iragazki honekin bat datozen pakete erabili gabeak"
 
 #: src/apt_options.cc:248 src/mine/cmine.cc:302 src/mine/cmine.cc:367
 #: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:91
@@ -213,35 +213,35 @@ msgid "Suggest "
 msgstr "Iradokizuna "
 
 #: src/broken_indicator.cc:331
-#, fuzzy, c-format
+#, , c-format
 msgid "%d install"
 msgid_plural "%d installs"
 msgstr[0] "%d instalatu"
 msgstr[1] "%d instalatu"
 
 #: src/broken_indicator.cc:337
-#, fuzzy, c-format
+#, , c-format
 msgid "%d removal"
 msgid_plural "%d removals"
 msgstr[0] "%d kendu"
 msgstr[1] "%d kendu"
 
 #: src/broken_indicator.cc:343
-#, fuzzy, c-format
+#, , c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
 msgstr[0] "%d mantendu"
 msgstr[1] "%d mantendu"
 
 #: src/broken_indicator.cc:349
-#, fuzzy, c-format
+#, , c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
 msgstr[0] "%d eguneratu"
 msgstr[1] "%d eguneratu"
 
 #: src/broken_indicator.cc:355
-#, fuzzy, c-format
+#, , c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
 msgstr[0] "%d aurreko bertsiora itzuli"
@@ -326,11 +326,12 @@ msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Oharra: \"%s: %s\" ataza hautatzen instalatzeko\n"
 
 #: src/cmdline/cmdline_action.cc:244
-#, fuzzy, c-format
+#, , c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
-msgstr "'install' komando batekin bakarrik zehatz daiteke pakete-bertsioa.\n"
+msgstr "'install' edo 'forbid-version' komando batekin "
+"bakarrik zehatz daiteke pakete-bertsioa.\n"
 
 #: src/cmdline/cmdline_action.cc:252
 #, c-format
@@ -428,7 +429,7 @@ msgstr "Eragiketa baliogabea: %s"
 
 #: src/cmdline/cmdline_do_action.cc:143
 msgid "Unexpected pattern argument following \"keep-all\""
-msgstr "Ustegabeko eredu-argumentua \"keep-all\"en ondoren "
+msgstr "Ustegabeko eredu-argumentua \"keep-all\"en ondoren"
 
 #: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:520
@@ -655,7 +656,7 @@ msgstr "Ez ikusi egin abisuari eta jarraitu hala ere?\n"
 #: src/cmdline/cmdline_prompt.cc:418
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
-msgstr "Jarraitzeko, sartu \"%s\"; bertan behera uzteko sartu \"%s\":n"
+msgstr "Jarraitzeko, sartu \"%s\"; bertan behera uzteko sartu \"%s\":"
 
 #: src/cmdline/cmdline_prompt.cc:432
 #, c-format
@@ -1087,7 +1088,7 @@ msgstr "Honako komandoak eskuragarri daude:"
 
 #: src/cmdline/cmdline_resolver.cc:594
 msgid "File to write resolver state to: "
-msgstr "Fitxategia ebazpen-egoera idazteko:"
+msgstr "Ebazpen-egoera idazteko fitxategia:"
 
 #: src/cmdline/cmdline_resolver.cc:609
 msgid "Invalid response; please enter one of the following commands:"
@@ -1106,9 +1107,8 @@ msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Ezin da mendekotasunak ebatzi. Bertan behera uzten..."
 
 #: src/cmdline/cmdline_resolver.cc:665
-#, fuzzy
 msgid "*** No more solutions available ***"
-msgstr "Ez dago irtenbide gehiagorik."
+msgstr "*** Ez dago irtenbide gehiagorik. ***"
 
 #: src/cmdline/cmdline_search.cc:100
 #, c-format
@@ -1485,7 +1485,7 @@ msgstr "Ezin izan da idazteko ireki"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
-msgstr "Ezin da etxeko direktorioa aurkitu, '/tmp/function_pkgs'-en gordetzen "
+msgstr "Ezin da etxeko direktorioa aurkitu, '/tmp/function_pkgs'-en gordetzen!"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -1584,9 +1584,9 @@ msgstr ""
 "zuzentzeko"
 
 #: src/generic/apt/apt.cc:172
-#, fuzzy, c-format
+#, , c-format
 msgid "%s is readable but not writable; unable to write configuration file."
-msgstr "Ezin da %s konfigurazio-fitxategi berriarekin ordeztu"
+msgstr "%s irakurgarria da baina ez idazgarria; ezin da konfigurazio fitxategia idatzi."
 
 #: src/generic/apt/apt.cc:210
 #, c-format
@@ -1642,9 +1642,8 @@ msgid "Couldn't clean out list directories"
 msgstr "Ezin izan dira zerrenda-direktorioak garbitu"
 
 #: src/generic/apt/download_update_manager.cc:122
-#, fuzzy
 msgid "Couldn't rebuild package cache"
-msgstr "Ezin izan da pakete-iturburuen zerrenda irakurri"
+msgstr "Ezin izan da pakete katxea birsortu"
 
 #: src/generic/apt/log.cc:52
 #, c-format
@@ -1802,7 +1801,7 @@ msgstr "Kendu"
 
 #: src/generic/apt/matchers.cc:914
 msgid "Upgrade"
-msgstr " Bertsio-berritu"
+msgstr "Bertsio-berritu"
 
 #: src/generic/apt/matchers.cc:934
 msgid "Keep"
@@ -1856,7 +1855,7 @@ msgstr "Mendekotasun-mota ezezaguna: %s"
 
 #: src/generic/apt/matchers.cc:2120
 msgid "Provides: cannot be broken"
-msgstr ""
+msgstr "Hornitzea: ezin da hondaturik egon"
 
 #: src/generic/apt/matchers.cc:2175
 #, c-format
@@ -1951,7 +1950,7 @@ msgstr "Etiketen datu-basea eraikitzen"
 
 #: src/generic/apt/tags.cc:255
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
+msgstr "Ezin da debtags hiztegia eskuratu, agian debtags ez dago instalaturik?"
 
 #: src/generic/apt/tasks.cc:283
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -2057,9 +2056,8 @@ msgid "By-status grouping policies take no arguments"
 msgstr "Egoeraren arabera taldekatzeko arauek ez dute argumenturik hartzen"
 
 #: src/load_grouppolicy.cc:412
-#, fuzzy
 msgid "Expected '(' after 'filter'"
-msgstr "'(' espero zen 'pattern' ondoren"
+msgstr "'(' espero zen 'filter' ondoren"
 
 #: src/load_grouppolicy.cc:449
 #, c-format
@@ -2161,9 +2159,8 @@ msgid "By-name sorting policies take no arguments"
 msgstr "Izenaren arabera ordenatzeko arauek ez dute argumenturik hartzen"
 
 #: src/load_sortpolicy.cc:64
-#, fuzzy
 msgid "By-version sorting policies take no arguments"
-msgstr "Lehentasunaren arabera ordenatzeko arauek ez dute argumenturik hartzen"
+msgstr "Bertsio arabera ordenatzeko arauek ez dute argumenturik hartzen"
 
 #: src/load_sortpolicy.cc:77
 msgid "By-installed size sorting policies take no arguments"
@@ -2246,9 +2243,9 @@ msgstr "       aptitude [aukerak] <ekintza> ..."
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
 "\n"
-msgstr ""
-"  Ekintzak (bat ere ez bada zehazten, aptitude modu interaktiboan sartuko "
+msgstr "  Ekintzak (bat ere ez bada zehazten, aptitude modu interaktiboan sartuko "
 "da):\n"
+"\n"
 
 #: src/main.cc:120
 #, c-format
@@ -2356,7 +2353,7 @@ msgstr " download     - Deskargatu pakete baten .deb fitxategia\n"
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
-msgstr ""
+msgstr "berrinstalatu - Instalaturik dagoen paketea deskargatu eta (posibleki) berrinstalatu\n"
 
 #: src/main.cc:144
 #, c-format
@@ -2453,13 +2450,12 @@ msgid ""
 msgstr " -t [release]   Ezarri zein banaketatatik instalatuko diren paketeak\n"
 
 #: src/main.cc:159
-#, fuzzy, c-format
+#, , c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
-msgstr ""
-" -q             Komando-lerro moduan, progresio-gehikuntzaren adierazlea "
-"kentzen du."
+msgstr " -q             Komando-lerro moduan, progresio-gehikuntzaren adierazlea "
+"kentzen du.\n"
 
 #: src/main.cc:160
 #, c-format
@@ -2498,14 +2494,14 @@ msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  Aptitude honek ez dauka Superbehiaren ahalmenik.\n"
 
 #: src/main.cc:305
-#, fuzzy, c-format
+#, , c-format
 msgid "Expected a number after -q=\n"
-msgstr "\"%s\"(r)en ondoren bertsioa espero da"
+msgstr "-q= -ren ondoren zenbaki bat espero da\n"
 
 #: src/main.cc:314
-#, fuzzy, c-format
+#, , c-format
 msgid "Expected a number after -q=, got %s\n"
-msgstr "\"%s\"(r)en ondoren bertsioa espero da"
+msgstr "q= -ren ondoren zenbaki bat espero zen, %s eskuratu da\n"
 
 #: src/main.cc:337
 #, c-format
@@ -3507,15 +3503,15 @@ msgid ""
 " .\n"
 " For more information about what Debian considers to be Free Software, see "
 "http://www.debian.org/social_contract#guidelines"
-msgstr ""
-"Software librea ez diren Programak\n"
+msgstr "Software librea ez diren Programak\n"
 " 'non-free' ataleko paketeak ez dira Debianen parte.\n"
 " .\n"
-" Paketea hauek Debian Software Libre Gidaliburuak (beherago ikusi) ez "
+"Pakete hauek Debian Software Libre Gidaliburuak (beherago ikusi) ez "
 "dituzte betetzen. Atal honetako programen lizentziak irakurri beharko "
 "zenituzke erabili nahi dituzun bezala erabili ditzakezula jakiteko.\n"
+".\n"
 "Debianek zerri deitzen dion Software libre jakiteko eta hantzeko gauzetarako "
-"joan:http://www.debian.org/social_contract"
+"joan:http://www.debian.org/social_contract#guidelines"
 
 #: src/pkg_grouppolicy.cc:206
 msgid ""
@@ -4481,18 +4477,16 @@ msgid "View available packages and choose actions to perform"
 msgstr "Ikusi pakete erabilgarriak, eta aukeratu egin nahi dituzun ekintzak"
 
 #: src/ui.cc:731
-#, fuzzy
 msgid "Recommended Packages"
-msgstr "Gomendioa:"
+msgstr "Gomendaturiko paketeak:"
 
 #: src/ui.cc:732
 msgid "View packages that it is recommended that you install"
-msgstr ""
+msgstr "Instalatzea gomendatzen diren paketeak bistarazi"
 
 #: src/ui.cc:733
-#, fuzzy
 msgid "Recommendations"
-msgstr "Gomendioa:"
+msgstr "Gomendioak:"
 
 #: src/ui.cc:837
 msgid ""
@@ -4943,8 +4937,7 @@ msgstr "^Debekatutako bertsioa"
 msgid ""
 "Forbid the candidate version of the selected package from being installed; "
 "newer versions of the package will be installed as usual"
-msgstr ""
-"Debekatu hautatutako paketearen bertsioa instalatzea;\n"
+msgstr "Debekatu hautatutako paketearen bertsioa instalatzea;"
 "bertsio berriagoak era arruntean kudeatuko dira"
 
 #: src/ui.cc:1992
@@ -5151,15 +5144,14 @@ msgid "Create a new default package view"
 msgstr "Pakete-ikuspegi lehenetsi berri bat sortu"
 
 #: src/ui.cc:2124
-#, fuzzy
 msgid "Audit ^Recommendations"
-msgstr "Gomendioa:"
+msgstr "^Gomendioak Auditatu:"
 
 #: src/ui.cc:2125
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
-msgstr ""
+msgstr "Instalatzea gomendatzen diren baina instalaturik ez dauden paketeak bistarazi."
 
 #: src/ui.cc:2128
 msgid "New ^Flat Package List"
@@ -5389,3 +5381,4 @@ msgstr "MAILA GORENA"
 
 #~ msgid "Search backwards for:"
 #~ msgstr "Bilatu atzerantz: "
+
