@@ -1,6 +1,6 @@
 // apt.cc
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2006 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -197,7 +197,7 @@ void apt_dumpcfg(const char *root)
 
   if(!f)
     {
-      _error->Errno(_("Unable to open %s for writing"), cfgloc.c_str());
+      _error->Errno("apt_init", _("Unable to open %s for writing"), cfgloc.c_str());
       return;
     }
 
@@ -207,7 +207,7 @@ void apt_dumpcfg(const char *root)
 
   if(rename((cfgloc+".new").c_str(), cfgloc.c_str())!=0)
     {
-      _error->Errno(_("Unable to replace %s with new configuration file"), cfgloc.c_str());
+      _error->Errno("apt_init", _("Unable to replace %s with new configuration file"), cfgloc.c_str());
       return;
     }
 }

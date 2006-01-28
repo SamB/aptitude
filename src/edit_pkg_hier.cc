@@ -1,6 +1,6 @@
 // edit_pkg_hier.cc
 //
-//   Copyright (C) 2000-2001, 2004-2005 Daniel Burrows
+//   Copyright (C) 2000-2001, 2004-2006 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -283,7 +283,7 @@ void vs_hier_editor::save_hier(string file)
 
   if(!f)
     {
-      _error->Errno(_("Couldn't open for writing"), file.c_str());
+      _error->Errno("save_hier", _("Couldn't open \"%s\" for writing"), file.c_str());
       return;
     }
 
