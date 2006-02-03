@@ -1,8 +1,15 @@
 # Copyright (C) 2000 Conectiva S.A. <info@connectiva.com>
 # Originally created by Jorge Carrasquilla Soares <jorge@conectiva.com.br>
 # Further updated by
-#   - Javier Fernandez-Sanguino
+#   - Javier Fernández-Sanguino
 #   - Rubén Porras Campo
+#
+# Reviewed by
+#   - Javier Fernández-Sanguino, January 2006
+# Glosario de términos
+#  * cache, se debe traducir por almacén (caché no es lo mismo)
+#
+#
 #: src/view_changelog.cc:226
 msgid ""
 msgstr ""
@@ -127,9 +134,7 @@ msgstr "Olvidar qué paquetes son «nuevos» al instalar o eliminar paquetes"
 #: src/apt_options.cc:171
 msgid ""
 "Do not display a warning when the first change is made in read-only mode."
-msgstr ""
-"No mostrar ningún aviso cuando el primer cambio se hace en modo de solo "
-"lectura."
+msgstr "No mostrar un aviso cuando el primer cambio se hace en modo sólo lectura."
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -160,7 +165,7 @@ msgstr "Eliminar paquetes no usados automáticamente"
 
 #: src/apt_options.cc:192
 msgid "Don't automatically remove unused packages matching this filter"
-msgstr "No eliminar automáticamente paquetes sin usar que cumplan este filtro"
+msgstr "No eliminar automáticamente paquetes no utilizados que cumplan este filtro"
 
 #: src/apt_options.cc:248 src/mine/cmine.cc:302 src/mine/cmine.cc:367
 #: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:91
@@ -1083,7 +1088,7 @@ msgstr "Se necesita la instalación de %s versión %s (%s)"
 #: src/cmdline/cmdline_resolver.cc:464 src/solution_screen.cc:495
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
-msgstr "abierto: %d; cerrado: %d; defer: %d; conflicto: %d"
+msgstr "abierto: %d; cerrado: %d; diferido: %d; conflicto: %d"
 
 #: src/cmdline/cmdline_resolver.cc:510
 msgid "The following actions will resolve these dependencies:"
@@ -1126,7 +1131,7 @@ msgstr "¡Incapaz de resolver las dependencias! Desistiendo..."
 
 #: src/cmdline/cmdline_resolver.cc:665
 msgid "*** No more solutions available ***"
-msgstr "*** No hay más soluciones ***"
+msgstr "*** No hay más soluciones disponibles ***"
 
 #: src/cmdline/cmdline_search.cc:100
 #, c-format
@@ -1350,7 +1355,7 @@ msgstr "No se pudo localizar el paquete %s"
 #: src/cmdline/cmdline_show.cc:437
 #, c-format
 msgid "Unable to parse pattern %s"
-msgstr "No se pudo interpretar el patrón en %s"
+msgstr "No se pudo interpretar el patrón %s"
 
 #: src/cmdline/cmdline_simulate.cc:37
 #, c-format
@@ -1508,8 +1513,8 @@ msgstr "No se pudo abrir para escribir"
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
-"No se pudo encontrar su directorio personal, ¡guardando en /tmp/"
-"function_pkgs!"
+"No se pudo encontrar su directorio personal, ¡guardando en «/tmp/"
+"function_pkgs»!"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -1584,7 +1589,7 @@ msgstr "No se pudo eliminar %s"
 #: src/generic/apt/aptcache.cc:628
 #, c-format
 msgid "failed to rename %s to %s"
-msgstr "No se pudo renombrar %s a %s"
+msgstr "Se produjo un fallo al renombrar %s a %s"
 
 #: src/generic/apt/aptcache.cc:636
 #, c-format
@@ -1616,7 +1621,7 @@ msgstr ""
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr ""
-"no se puede escribir %s, sólo leerlo. No se pudo escribir el fichero de "
+"Se puede leer %s, pero no escribirlo. No se pudo escribir el fichero de "
 "configuración"
 
 #: src/generic/apt/apt.cc:210
@@ -1628,15 +1633,14 @@ msgstr "Imposible reemplazar %s con el nuevo fichero de configuración"
 msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
-msgstr ""
-"No se pudo bloquear el fichero de caché. Se abre en modo de solo lectura, "
-"¡se PERDERÁN todos los cambios que realice al estado de los paquetes!"
+msgstr "No se pudo bloquear el fichero de almacén. Se abre en modo de sólo "
+"lectura, ¡se PERDERÁN todos los cambios que realice al estado de los paquetes!"
 
 #: src/generic/apt/download_install_manager.cc:53
 msgid ""
 "The package cache is not available; unable to download and install packages."
 msgstr ""
-"No está disponible la caché de paquetes. No se pudieron descargar e instalar "
+"No está disponible la almacén de paquetes. No se pudieron descargar e instalar "
 "los paquetes."
 
 #: src/generic/apt/download_install_manager.cc:69
@@ -1673,7 +1677,7 @@ msgstr "No se pudo borrar los directorios de lista"
 
 #: src/generic/apt/download_update_manager.cc:122
 msgid "Couldn't rebuild package cache"
-msgstr "No se pudo reconstruir la caché de paquetes"
+msgstr "No se pudo reconstruir el almacén de paquetes"
 
 #: src/generic/apt/log.cc:52
 #, c-format
@@ -1683,7 +1687,7 @@ msgstr "Imposible abrir %s para registrar las acciones"
 #: src/generic/apt/log.cc:64
 #, c-format
 msgid "Error generating local time (%s)"
-msgstr "Error generando el tiempo local (%s)"
+msgstr "Error al generar la hora local (%s)"
 
 #: src/generic/apt/log.cc:68
 msgid "log report"
@@ -1885,7 +1889,7 @@ msgstr "Tipo de dependencia desconocida: %s"
 
 #: src/generic/apt/matchers.cc:2120
 msgid "Provides: cannot be broken"
-msgstr "Provides: no puede estar estropeado"
+msgstr "Provee: no puede romperse"
 
 #: src/generic/apt/matchers.cc:2175
 #, c-format
@@ -1976,7 +1980,7 @@ msgstr "Construir la base de datos de etiquetas"
 
 #: src/generic/apt/tags.cc:255
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr "Incapaz de cargar el vocabulario de debtags, ¿está debtags instalado?"
+msgstr "No se pudo cargar el vocabulario de debtags. ¿Quizás se deba a que debtags no está instalado?"
 
 #: src/generic/apt/tasks.cc:283
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -1991,7 +1995,7 @@ msgstr "Leyendo las descripciones de las tareas"
 #: src/generic/util/temp.cc:142
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
-msgstr "Incapaz de crear el directorio temporal desde la plantilla «%s»: %s"
+msgstr "No se pudo crear el directorio temporal en base a la plantilla «%s»: %s"
 
 #: src/generic/util/temp.cc:137
 msgid "Unknown error"
@@ -2023,7 +2027,7 @@ msgstr "Entrada sin etiqueta inválida en grupo de definición de stilo: \"%s\""
 
 #: src/load_config.cc:125
 msgid "The default color may only be used as a background."
-msgstr "El color predeterminado debería usarse solo como fondo."
+msgstr "El color predeterminado debería usarse sólo como fondo."
 
 #: src/load_config.cc:142
 #, c-format
@@ -2082,7 +2086,7 @@ msgstr "La normas de agrupación por estado no toman argumentos"
 
 #: src/load_grouppolicy.cc:412
 msgid "Expected '(' after 'filter'"
-msgstr "Se esperaba «(» después de «filter»"
+msgstr "Se esperaba «(» después de «patrón»"
 
 #: src/load_grouppolicy.cc:449
 #, c-format
@@ -2486,9 +2490,7 @@ msgstr ""
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
-msgstr ""
-" -q             En modo línea de órdenes, elimina los indicadores de "
-"progreso.\n"
+msgstr " -q         No muestra los indicadores de progreso incrementales en el modo de línea de órdenes.\n"
 
 #: src/main.cc:160
 #, c-format
@@ -2535,7 +2537,7 @@ msgstr "Se esperaba una número después de -q=\n"
 #: src/main.cc:314
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
-msgstr "Se esperaba un número después de -q, se obtuvo %s"
+msgstr "Se esperaba un número después de -q=, se obtuvo %s\n"
 
 #: src/main.cc:337
 #, c-format
@@ -2569,7 +2571,7 @@ msgstr "Orden desconocida \"%s\"\n"
 #: src/main.cc:525 src/main.cc:568
 #, c-format
 msgid "Uncaught exception: %s\n"
-msgstr "Excepció sin manejar: %s\n"
+msgstr "Excepción no gestionada: %s\n"
 
 #: src/main.cc:529 src/main.cc:572
 #, c-format
@@ -3857,13 +3859,12 @@ msgstr "Número incorrecto en la cadena de formato: %ls"
 #: src/pkg_grouppolicy.cc:1088
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
-msgstr "Los índices «match» deben ser igual o mayor que 1, no «%s»"
+msgstr "Los índices de coincidencia deben ser igual o mayor que 1, no «%s»"
 
 #: src/pkg_grouppolicy.cc:1106
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
-msgstr ""
-"El índice «match» %ls es demasiado largo; los grupos disponibles son (%s)"
+msgstr "El índice de coincidencia %ls es demasiado largo; los grupos disponibles son (%s)"
 
 #: src/pkg_grouppolicy.cc:1315
 msgid "TAGLESS PACKAGES"
@@ -4264,7 +4265,7 @@ msgstr ""
 
 #: src/solution_dialog.cc:91 src/solution_screen.cc:465
 msgid "The package cache is not available."
-msgstr "No está disponible la caché de paquetes."
+msgstr "No está disponible el almacén de paquetes."
 
 #: src/solution_dialog.cc:99
 msgid "No packages are broken."
@@ -4485,22 +4486,20 @@ msgid ""
 "WARNING: the package cache is opened in read-only mode!  This change and all "
 "subsequent changes will not be saved unless you stop all other running apt-"
 "based programs and select \"Become root\" from the Actions menu."
-msgstr ""
-"AVISO: ¡la caché de paquetes está abierta en modo de solo lectura! Este y "
-"los siguientes cambios no serán guardados a menos que pare el resto de los "
-"procesos basados en apt y seleccione «Convertirse en superusuario» desde el "
-"menú de acciones."
+msgstr "AVISO: ¡el almacén de paquetes está abierta en modo sólo lectura! No "
+"se guardará ni este cambio ni los cambios que haga posteriormente a no ser "
+"que pare todos los demás programas en ejecución basados en apt y seleccione "
+"«Convertirse en administrador» del menú de acciones."
 
 #: src/ui.cc:322
 msgid "Never display this message again."
-msgstr "No volver a mostrar nunca este mensaje."
+msgstr "No volver a mostrar este mensaje."
 
 #: src/ui.cc:368
 msgid ""
 "You may not modify the state of any package while a download is underway."
-msgstr ""
-"No debería modificar el estado de ningún paquete mientras se realizan "
-"descargas."
+msgstr "No debería modificar el estado de cualquier paquete mientras se está "
+"llevando a cabo una descarga."
 
 #: src/ui.cc:399
 msgid "You already are root!"
@@ -4513,7 +4512,7 @@ msgstr "El subproceso salió con error, ¿escribió su contraseña correctamente
 
 #: src/ui.cc:501
 msgid "Loading cache"
-msgstr "Cargando caché"
+msgstr "Cargando almacén"
 
 #: src/ui.cc:523
 msgid "Really quit Aptitude?"
@@ -4540,7 +4539,7 @@ msgstr "Paquetes recomendados"
 
 #: src/ui.cc:732
 msgid "View packages that it is recommended that you install"
-msgstr "Ver los paquetes recomendados para la instalación"
+msgstr "Ver los paquetes que se le recomienda instalar"
 
 #: src/ui.cc:733
 msgid "Recommendations"
@@ -4599,12 +4598,12 @@ msgstr "No se pudo eliminar «%s»"
 #: src/ui.cc:962
 #, c-format
 msgid "Unable to list files in \"%s\""
-msgstr "No se pudo listar los fichero en «%s»"
+msgstr "No se pudieron listar los ficheros en «%s»"
 
 #: src/ui.cc:975
 #, c-format
 msgid "Failure closing directory \"%s\""
-msgstr "Fallo cerrando el directorio «%s»"
+msgstr "Se produjo un fallo al cerrar el directorio «%s»"
 
 #: src/ui.cc:981
 #, c-format
@@ -4616,7 +4615,7 @@ msgstr "No se pudo eliminar el directorio «%s»"
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr ""
-"No se pudo eliminar el directorio temporal previo, debe eliminar %s a mano."
+"No se pudo eliminar el directorio temporal previo, debería eliminar %s a mano."
 
 #: src/ui.cc:996
 #, c-format
@@ -4624,7 +4623,7 @@ msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
 "hand."
 msgstr ""
-"No se eliminará %s, debe examinar los ficheros que contiene y eliminarlos "
+"No se eliminará %s. Debe examinar los ficheros que contiene y eliminarlos "
 "manualmente."
 
 #: src/ui.cc:1022
@@ -4636,8 +4635,9 @@ msgid ""
 "not see this message again."
 msgstr ""
 "Parece que una versión previa de aptitude dejó ficheros en %s. Probablemente "
-"no sean de utilidad y los pueda borrar.%n%n¿Quiere eliminar este directorio "
-"y todos sus contenidos? Si elige \"No\" no volverá a ver este mensaje."
+"sean inútiles y puedan borrarse sin causar problemas.%n%n¿Desea que se "
+"eliminen este directorio y todos sus contenidos? No verá este mensaje de "
+"nuevo si elige «No»."
 
 #: src/ui.cc:1064
 msgid "Downloading packages"
@@ -4786,9 +4786,8 @@ msgstr "Se han borrado los ficheros de paquetes descargados"
 
 #: src/ui.cc:1487
 msgid "The apt cache file is not available; cannot auto-clean."
-msgstr ""
-"No está disponible la caché de paquetes de apt, no se puede realizar el "
-"«auto-clean»."
+msgstr "El almacén de paquetes de apt no está disponible, no se podrá limpiar "
+"automáticamente."
 
 #: src/ui.cc:1513
 #, c-format
@@ -4858,7 +4857,7 @@ msgstr "Olvidar que paquetes son «nuevos»"
 
 #: src/ui.cc:1917
 msgid "^Clean package cache"
-msgstr "^Limpiar la caché de paquetes"
+msgstr "^Limpiar el almacén de paquetes"
 
 #: src/ui.cc:1918
 msgid "Delete package files which were previously downloaded"
@@ -4900,11 +4899,11 @@ msgstr ""
 
 #: src/ui.cc:1936
 msgid "^Reload package cache"
-msgstr "^Recargar la caché de paquetes"
+msgstr "^Recargar el almacén de paquetes"
 
 #: src/ui.cc:1937
 msgid "Reload the package cache"
-msgstr "Recarga la caché de paquetes"
+msgstr "Recarga el almacén de paquetes"
 
 #: src/ui.cc:1943
 msgid "^Quit"
@@ -5063,29 +5062,30 @@ msgstr "Seleccionar la primera solución a los problemas de dependencias."
 
 #: src/ui.cc:2024
 msgid "^Last Solution"
-msgstr "^Última solución"
+msgstr "^Ultima solución"
 
 #: src/ui.cc:2025
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
-msgstr "Seleccionar la última solución a los problemas de dependencias."
+msgstr "Seleccionar la última solución a los problemas de dependencias que se "
+"han generado hasta ahora."
 
 #: src/ui.cc:2031
 msgid "Toggle ^Rejected"
-msgstr "Cambiar ^Rechazo"
+msgstr "Conmutar ^Rechazados"
 
 #: src/ui.cc:2032
 msgid "Toggle whether the currently selected action is rejected."
-msgstr "Cambiar el estado de rechazo de la acción seleccionada."
+msgstr "Conmutar entre rechazar o no la acción seleccionada."
 
 #: src/ui.cc:2036
 msgid "Toggle ^Approved"
-msgstr "Cambiar ^Aceptación"
+msgstr "Conmutar ^Aceptada"
 
 #: src/ui.cc:2037
 msgid "Toggle whether the currently selected action is approved."
-msgstr "Cambiar el estado de aceptación de la solución seleccionada."
+msgstr "Conmutar entre aceptar o no la acción seleccionada."
 
 #: src/ui.cc:2041
 msgid "^View Target"
@@ -5217,8 +5217,7 @@ msgstr "Auditar ^Recomendaciones"
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
-msgstr ""
-"Ver los paquetes que se le recomienda instalar, pero que no están instalados."
+msgstr "Mostrar los paquetes que se recomienda instalar pero que no estén instalados."
 
 #: src/ui.cc:2128
 msgid "New ^Flat Package List"
@@ -5226,7 +5225,7 @@ msgstr "Nueva ^vista de paquetes plana"
 
 #: src/ui.cc:2129
 msgid "View all the packages on the system in a single uncategorized list"
-msgstr "Ver todos los paquetes del sistema en una sola lista incategorizada"
+msgstr "Mostrar los paquetes del sistema en una única lista sin categorías"
 
 #: src/ui.cc:2132
 msgid "New ^Debtags Browser"
@@ -5518,9 +5517,7 @@ msgstr "NIVEL SUPERIOR"
 #~ msgstr "Se liberarán %sB bytes de espacio en disco\n"
 
 #~ msgid "Warning: could not lock the cache file.  Opening in read-only mode"
-#~ msgstr ""
-#~ "Aviso: no se pudo bloquear el fichero de caché. Abriendo en modo de sólo "
-#~ "lectura."
+#~ msgstr "Aviso: no se pudo bloquear el fichero del almacén. Abriendo en modo de sólo lectura."
 
 #~ msgid "The number of mines must be a number"
 #~ msgstr "El número de minas debe ser un número"
