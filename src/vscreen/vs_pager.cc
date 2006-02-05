@@ -83,13 +83,22 @@ void vs_pager::set_text(const wstring &s)
 	  wchar_t ch=s[loc];
 	  bool printable=iswprint(ch);
 
+	  // Strip out tabs, as it's easier to figure out how many
+	  // spaces they correspond to here rather than waiting until
+	  // we're in the throes of rendering.
 	  if(ch==L'\t')
-	    cur_width+=8;
-	  else if(printable)
-	    cur_width+=wcwidth(ch);
+	    {
+	      const unsigned int amt
+		= 8 - cur_width + 8;
 
-	  if(printable)
-	    curline+=ch;
+	      cur_width += amt;
+	      curline.append(amt, L' ');
+	    }
+	  else if(printable)
+	    {
+	      cur_width += wcwidth(ch);
+	      curline   += ch;
+	    }
 
 	  ++loc;
 	}
@@ -310,24 +319,19 @@ void vs_pager::paint(const style &st)
 
       while(curr<s.size() && x<first_column+width)
 	{
-	  if(s[curr]=='\t')
-	    x+=8;
-	  else
+	  wchar_t ch = s[curr];
+	  // No nonprintables should appear (set_text screens them
+	  // out)
+	  eassert(iswprint(ch));
+
+	  if(x >= first_column)
 	    {
-	      wchar_t ch=s[curr];
-	      // No nonprintables other than \t should appear
-	      // (set_text screens them out)
-	      eassert(iswprint(ch));
 
-	      if(x>=first_column)
-		{
-
-		  mvadd_wch(y, x-first_column, ch);
-		  x+=wcwidth(ch);
-		}
-	      else
-		x+=wcwidth(ch);
+	      mvadd_wch(y, x-first_column, ch);
+	      x += wcwidth(ch);
 	    }
+	  else
+	    x += wcwidth(ch);
 
 	  ++curr;
 	}
