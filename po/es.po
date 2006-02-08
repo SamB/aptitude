@@ -517,7 +517,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:33
 msgid "Unexpected end-of-file on standard input"
-msgstr "Final de fichero inesperado en la entrada estándar"
+msgstr "No se esperaba un final de fichero en la entrada estándar"
 
 #: src/cmdline/cmdline_prompt.cc:52
 msgid "Couldn't read list of sources"
@@ -1640,7 +1640,7 @@ msgstr "No se pudo bloquear el fichero de almacén. Se abre en modo de sólo "
 msgid ""
 "The package cache is not available; unable to download and install packages."
 msgstr ""
-"No está disponible la almacén de paquetes. No se pudieron descargar e instalar "
+"No está disponible el almacén de paquetes. No se puede descargar e instalar "
 "los paquetes."
 
 #: src/generic/apt/download_install_manager.cc:69
@@ -2579,7 +2579,7 @@ msgid ""
 "Backtrace:\n"
 "%s"
 msgstr ""
-"Traza inversa:\n"
+"Volcado:\n"
 "%s"
 
 #: src/menu_text_layout.cc:36 src/menu_tree.cc:204 src/view_changelog.cc:55
@@ -4498,8 +4498,8 @@ msgstr "No volver a mostrar este mensaje."
 #: src/ui.cc:368
 msgid ""
 "You may not modify the state of any package while a download is underway."
-msgstr "No debería modificar el estado de cualquier paquete mientras se está "
-"llevando a cabo una descarga."
+msgstr "No modifique el estado de cualquier paquete mientras se está llevando "
+"a cabo una descarga."
 
 #: src/ui.cc:399
 msgid "You already are root!"
@@ -4588,7 +4588,7 @@ msgstr "Manual"
 #: src/ui.cc:946
 #, c-format
 msgid "Unable to stat \"%s\""
-msgstr "No se pudo «stat» sobre «%s»"
+msgstr "No se pudo ejecutar «stat» sobre «%s»"
 
 #: src/ui.cc:952
 #, c-format
@@ -4598,7 +4598,7 @@ msgstr "No se pudo eliminar «%s»"
 #: src/ui.cc:962
 #, c-format
 msgid "Unable to list files in \"%s\""
-msgstr "No se pudieron listar los ficheros en «%s»"
+msgstr "No se pudieron listar los ficheros de «%s»"
 
 #: src/ui.cc:975
 #, c-format
@@ -4615,7 +4615,8 @@ msgstr "No se pudo eliminar el directorio «%s»"
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr ""
-"No se pudo eliminar el directorio temporal previo, debería eliminar %s a mano."
+"No se pudo eliminar el directorio temporal anterior, debería eliminar %s a "
+"mano."
 
 #: src/ui.cc:996
 #, c-format
