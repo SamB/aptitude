@@ -223,6 +223,6 @@ void view_changelog(pkgCache::VerIterator ver)
   if(manager != NULL)
     (new ui_download_manager(manager, true, false, false,
 			     _("Downloading Changelog"),
-			     _(""),
+			     "",
 			     _("Download Changelog")))->start();
 }

@@ -2183,7 +2183,7 @@ vs_menu_info help_menu_info[]={
 	       N_("View a list of frequently asked questions"),
 	       sigc::ptr_fun(do_help_faq)),
 
-  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^NEWS"), NULL,
+  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^News"), NULL,
 	       N_("View the important changes made in each version of " PACKAGE),
 	       sigc::ptr_fun(do_help_news)),
 

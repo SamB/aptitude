@@ -168,7 +168,7 @@ option_item misc_options[]={
   option_item(N_("Forget which packages are \"new\" whenever packages are installed or removed"),
 	      PACKAGE "::Forget-New-On-Install",
 	      false),
-  option_item(N_("Do not display a warning when the first change is made in read-only mode."),
+  option_item(N_("Do not display a warning when the first change is made in read-only mode"),
 	      PACKAGE "::Suppress-Read-Only-Warning",
 	      false),
   option_item(N_("Warn when attempting to perform a privileged action as a non-root user"),

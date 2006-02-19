@@ -475,7 +475,7 @@ void cmine::checkend()
 	      if(rand()<(RAND_MAX/3))
 		{
 		  if(rand()<(RAND_MAX/2))
-		    add_status_widget(vs_label::create(_("The spikes were poisoned!  The poison was deadly..  --More--"),
+		    add_status_widget(vs_label::create(_("The spikes were poisoned!  The poison was deadly...  --More--"),
 						       retr_status_color()));
 
 		  add_status_widget(vs_label::create(_("You land on a set of sharp iron spikes!  --More--"),

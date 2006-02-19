@@ -617,7 +617,7 @@ bool cmdline_resolve_deps(pkgset &to_install,
 		while(!done)
 		  {
 		    string response;
-
+// FIXME: translate Y, N
 		    if(!assume_yes)
 		      response = prompt_string(_("No solution found within the allotted time.  Try harder? [Y/n]"));
 

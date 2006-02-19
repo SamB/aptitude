@@ -10,12 +10,11 @@
 # Itong tipunan ay inaalagaan ni Eric Pareja <xenos@upm.edu.ph>
 # 
 #
-#: src/view_changelog.cc:226
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
-"Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2005-12-15 09:01-0800\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-02-19 22:13+0100\n"
 "PO-Revision-Date: 2005-03-30 16:02+0800\n"
 "Last-Translator: Ryan Escarez <rescarez@gmail.com>\n"
 "Language-Team: Tagalog <debian-tl@banwa.upm.edu.ph>\n"
@@ -133,7 +132,7 @@ msgstr ""
 
 #: src/apt_options.cc:171
 msgid ""
-"Do not display a warning when the first change is made in read-only mode."
+"Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 
 #: src/apt_options.cc:174
@@ -1495,7 +1494,8 @@ msgid "No hierarchy information to edit"
 msgstr "Walang impormasyon hierarchy para ma-edit"
 
 #: src/edit_pkg_hier.cc:286
-msgid "Couldn't open for writing"
+#, fuzzy, c-format
+msgid "Couldn't open \"%s\" for writing"
 msgstr "Hindi mabuksan para masulatan"
 
 #: src/edit_pkg_hier.cc:331
@@ -1922,7 +1922,7 @@ msgstr "Badly formed expression"
 msgid "Unexpected ')'"
 msgstr "Hindi inaasahan ')'"
 
-#: src/generic/apt/pkg_acqfile.cc:86
+#: src/generic/apt/pkg_acqfile.cc:50
 #, c-format
 msgid ""
 "I wasn't able to locate a file for the %s package. This might mean you need "
@@ -1931,14 +1931,14 @@ msgstr ""
 "Hindi ko makita ang file na para sa %s pakete. Itoy siguro kailangan mag "
 "manual fix sa pakete. (dahil sa nawawalang arkibo)"
 
-#: src/generic/apt/pkg_acqfile.cc:134
+#: src/generic/apt/pkg_acqfile.cc:99
 #, c-format
 msgid ""
 "The package index files are corrupted. No Filename: field for package %s."
 msgstr ""
 "Ang pakete index files ay sira. Walang Filename: field para sa pakete %s."
 
-#: src/generic/apt/pkg_changelog.cc:146 src/view_changelog.cc:149
+#: src/generic/apt/pkg_changelog.cc:151 src/view_changelog.cc:149
 #, c-format
 msgid "ChangeLog of %s"
 msgstr "ChangeLog ng %s"
@@ -2597,7 +2597,7 @@ msgstr "Hanapin ang: "
 msgid "Search backwards for: "
 msgstr "Hanapin ang: "
 
-#: src/mine/cmine.cc:106 src/mine/cmine.cc:148 src/ui.cc:1423
+#: src/mine/cmine.cc:106 src/mine/cmine.cc:148 src/ui.cc:1439
 msgid "Minesweeper"
 msgstr "Taga-walis ng ginto"
 
@@ -2702,7 +2702,8 @@ msgid "You die...  --More--"
 msgstr "Namatay ka...  --Marami--"
 
 #: src/mine/cmine.cc:478
-msgid "The spikes were poisoned!  The poison was deadly..  --More--"
+#, fuzzy
+msgid "The spikes were poisoned!  The poison was deadly...  --More--"
 msgstr "Ang spikes ay nalason!  Ang lason ay nakamamatay..  --Higit--"
 
 #: src/mine/cmine.cc:481
@@ -2809,7 +2810,7 @@ msgstr ""
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 
-#: src/pkg_columnizer.cc:86 src/ui.cc:2295
+#: src/pkg_columnizer.cc:86 src/ui.cc:2333
 msgid "Package"
 msgstr "Pakete"
 
@@ -2968,22 +2969,27 @@ msgstr "wala"
 msgid "Unknown"
 msgstr "Hindi kilala"
 
+#. ForTranslators: Imp = Important
 #: src/pkg_columnizer.cc:338 src/pkg_ver_item.cc:354
 msgid "Imp"
 msgstr "Imp"
 
+#. ForTranslators: Req = Required
 #: src/pkg_columnizer.cc:340 src/pkg_ver_item.cc:357
 msgid "Req"
 msgstr "Req"
 
+#. ForTranslators: Std = Standard
 #: src/pkg_columnizer.cc:342 src/pkg_ver_item.cc:360
 msgid "Std"
 msgstr "Std"
 
+#. ForTranslators: Opt = Optional
 #: src/pkg_columnizer.cc:344 src/pkg_ver_item.cc:363
 msgid "Opt"
 msgstr "Opt"
 
+#. ForTranslators: Xtr = Extra
 #: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:366
 msgid "Xtr"
 msgstr "Xtr"
@@ -3012,6 +3018,7 @@ msgstr "Maka libre ng %sB ang disk space"
 msgid "DL Size: %sB"
 msgstr "DL Sukat: %sB"
 
+#. ForTranslators: Hostname
 #: src/pkg_columnizer.cc:478
 msgid "HN too long"
 msgstr "HN sobrang tagal"
@@ -3082,7 +3089,7 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:169
 #, fuzzy
 msgid ""
-"Programs for faxmodems and other communications devices\n"
+"Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
 "hardware communications devices. This includes software to control faxmodems "
 "(for instance, PPP for dial-up internet connections and programs originally "
@@ -4717,23 +4724,23 @@ msgstr "Tignan at/o ibagay ang aksyon na isasagawa"
 msgid "Preview"
 msgstr "^Nakaraan"
 
-#: src/ui.cc:1219
+#: src/ui.cc:1235
 #, fuzzy
 msgid "Some packages were broken and have been fixed:"
 msgstr "Ang ibang pakete ay basag at iniayos"
 
-#: src/ui.cc:1227
+#: src/ui.cc:1243
 msgid "No solution to these dependency problems exists!"
 msgstr ""
 
-#: src/ui.cc:1233
+#: src/ui.cc:1249
 #, fuzzy, c-format
 msgid ""
 "Ran out of time while trying to resolve dependencies (press \"%s\" to try "
 "harder)"
 msgstr "Magsayang ng oras sa pag-hahanap ng mga mina"
 
-#: src/ui.cc:1279
+#: src/ui.cc:1295
 #, fuzzy
 msgid ""
 "Installing/removing packages requires administrative privileges, which you "
@@ -4743,23 +4750,23 @@ msgstr ""
 "pribilhiyo, na\n"
 "sa iyo kasalukuyan ay wala.  Gusto mo bang magbago sa root account?\n"
 
-#: src/ui.cc:1282 src/ui.cc:1411
+#: src/ui.cc:1298 src/ui.cc:1427
 msgid "Become root"
 msgstr "Maging root"
 
-#: src/ui.cc:1284 src/ui.cc:1413
+#: src/ui.cc:1300 src/ui.cc:1429
 msgid "Don't become root"
 msgstr "Huwag maging root"
 
-#: src/ui.cc:1289 src/ui.cc:1418
+#: src/ui.cc:1305 src/ui.cc:1434
 msgid "A package-list update or install run is already taking place."
 msgstr "Ang package-list update o install run ay kasalukuyan nasa pwesto."
 
-#: src/ui.cc:1316
+#: src/ui.cc:1332
 msgid "No packages are scheduled to be installed, removed, or upgraded."
 msgstr "Walang pakete ang nakatakda na iluklok, tanggalin, o i-upgrade."
 
-#: src/ui.cc:1322
+#: src/ui.cc:1338
 #, fuzzy
 msgid ""
 "No packages will be installed, removed or upgraded.  Some packages could be "
@@ -4772,23 +4779,23 @@ msgstr ""
 "iapgreyd\n"
 "ang mga ito. Pindutin ang \"U\" upang maghanda ng pag-apgreyd."
 
-#: src/ui.cc:1380 src/ui.cc:1493
+#: src/ui.cc:1396 src/ui.cc:1509
 msgid "Deleting obsolete downloaded files"
 msgstr "Binubura ang matagal ng nakuhang mga files"
 
-#: src/ui.cc:1395
+#: src/ui.cc:1411
 msgid "Updating package lists"
 msgstr "Ina-update ang listahan ng mga pakete"
 
-#: src/ui.cc:1396
+#: src/ui.cc:1412
 msgid "View the progress of the package list update"
 msgstr "Tingnan ang update na progreso ng mga pakete sa listahan"
 
-#: src/ui.cc:1397
+#: src/ui.cc:1413
 msgid "List Update"
 msgstr ""
 
-#: src/ui.cc:1408
+#: src/ui.cc:1424
 #, fuzzy
 msgid ""
 "Updating the package lists requires administrative privileges, which you "
@@ -4798,128 +4805,146 @@ msgstr ""
 "na\n"
 "sa iyo kasalukuyan ay wala.  Gusto mo bang magbago sa root account?\n"
 
-#: src/ui.cc:1423 src/ui.cc:1930
+#: src/ui.cc:1439 src/ui.cc:1960
 msgid "Waste time trying to find mines"
 msgstr "Magsayang ng oras sa pag-hahanap ng mga mina"
 
-#: src/ui.cc:1430 src/ui.cc:1490
+#: src/ui.cc:1446 src/ui.cc:1506
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr ""
 "Paglilinis habang ang pagkuha ay nasa progreso ay hindi pina hi-hintulutan"
 
-#: src/ui.cc:1433
+#: src/ui.cc:1449
 msgid "Deleting downloaded files"
 msgstr "Binubura ang mga na-download na files"
 
-#: src/ui.cc:1447
+#: src/ui.cc:1463
 msgid "Downloaded package files have been deleted"
 msgstr "Nakuhang pakete files ay nabura na"
 
-#: src/ui.cc:1487
+#: src/ui.cc:1503
 msgid "The apt cache file is not available; cannot auto-clean."
 msgstr ""
 
-#: src/ui.cc:1513
+#: src/ui.cc:1529
 #, fuzzy, c-format
 msgid ""
 "Obsolete downloaded package files have been deleted, freeing %sB of disk "
 "space."
 msgstr "Laos na talaksang pakete ay nabura na"
 
-#: src/ui.cc:1610
+#: src/ui.cc:1626
 msgid "No more solutions."
 msgstr ""
 
-#: src/ui.cc:1798
+#: src/ui.cc:1814
 msgid "Unable to find a solution to apply."
 msgstr ""
 
-#: src/ui.cc:1804
+#: src/ui.cc:1820
 #, fuzzy
 msgid "Ran out of time while trying to find a solution."
 msgstr "Magsayang ng oras sa pag-hahanap ng mga mina"
 
-#: src/ui.cc:1847 src/ui.cc:1849
+#: src/ui.cc:1863 src/ui.cc:1865
 #, fuzzy
 msgid "Resolve Dependencies"
 msgstr "Hindi ma-buksan ang %s para sulatan"
 
-#: src/ui.cc:1848
+#: src/ui.cc:1864
 #, fuzzy
 msgid "Search for solutions to unsatisfied dependencies"
 msgstr "Hanapin ang sumunod na pakete na may hindi masiya na dependencies"
 
-#: src/ui.cc:1860
+#: src/ui.cc:1876
 #, fuzzy, c-format
 msgid "Unable to open %ls"
 msgstr "Hindi ma-buksan ang %s para sulatan"
 
-#: src/ui.cc:1866
+#: src/ui.cc:1882
 msgid "Error while dumping resolver state"
 msgstr ""
 
-#: src/ui.cc:1876
+#: src/ui.cc:1892
 msgid "File to which the resolver state should be dumped:"
 msgstr ""
 
-#: src/ui.cc:1906
+#: src/ui.cc:1922
 msgid "^Install/remove packages"
 msgstr "^Iluklok/tanggalin ang mga pakete"
 
-#: src/ui.cc:1907
+#: src/ui.cc:1923
 msgid "Perform all pending installs and removals"
 msgstr "Gawin ang lahat ng naka-binbin na instal at mga tatanggalin"
 
-#: src/ui.cc:1909
+#: src/ui.cc:1925
 msgid "^Update package list"
 msgstr "^Update ang pakete list"
 
-#: src/ui.cc:1910
+#: src/ui.cc:1926
 msgid "Check for new versions of packages"
 msgstr "Suriin para sa mga bagong bersyon ng mga pakete"
 
-#: src/ui.cc:1913
-msgid "^Forget new packages"
-msgstr "^Kalimutan ang mga bagong pakete"
-
-#: src/ui.cc:1914
-msgid "Forget which packages are \"new\""
-msgstr "Kalimutan kung ano amg mga pakete na \"bago\""
-
-#: src/ui.cc:1917
-msgid "^Clean package cache"
-msgstr "^Linisin ang mga cache ng pakete"
-
-#: src/ui.cc:1918
-msgid "Delete package files which were previously downloaded"
-msgstr "Burahin ang pakete files na na-download ng nakaraan"
-
-#: src/ui.cc:1921
-msgid "Clean ^obsolete files"
-msgstr "Linisin ang  ^obsolete files"
-
-#: src/ui.cc:1922
-msgid "Delete package files which can no longer be downloaded"
-msgstr "Alisin ang pakete files na hindi na ma-download"
-
-#: src/ui.cc:1925
+#: src/ui.cc:1930
 msgid "Mark ^Upgradable"
 msgstr "Markahan ng ^Upgradable"
 
-#: src/ui.cc:1926
+#: src/ui.cc:1931
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr ""
 "Markahan ang lahat ng hindi upgradable na pakete na hindi kasama sa upgrade"
 
-#: src/ui.cc:1929
+#: src/ui.cc:1935
+msgid "^Forget new packages"
+msgstr "^Kalimutan ang mga bagong pakete"
+
+#: src/ui.cc:1936
+msgid "Forget which packages are \"new\""
+msgstr "Kalimutan kung ano amg mga pakete na \"bago\""
+
+#: src/ui.cc:1939
+#, fuzzy
+msgid "Canc^el pending actions"
+msgstr "Pakete na umaasa sa %s"
+
+#: src/ui.cc:1940
+#, fuzzy
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr "Gawin ang lahat ng naka-binbin na instal at mga tatanggalin"
+
+#: src/ui.cc:1943
+msgid "^Clean package cache"
+msgstr "^Linisin ang mga cache ng pakete"
+
+#: src/ui.cc:1944
+msgid "Delete package files which were previously downloaded"
+msgstr "Burahin ang pakete files na na-download ng nakaraan"
+
+#: src/ui.cc:1947
+msgid "Clean ^obsolete files"
+msgstr "Linisin ang  ^obsolete files"
+
+#: src/ui.cc:1948
+msgid "Delete package files which can no longer be downloaded"
+msgstr "Alisin ang pakete files na hindi na ma-download"
+
+#: src/ui.cc:1954
+msgid "^Reload package cache"
+msgstr "^Reload ang pakete cache"
+
+#: src/ui.cc:1955
+msgid "Reload the package cache"
+msgstr "Reload ang pakete cache"
+
+#: src/ui.cc:1959
 msgid "^Play Minesweeper"
 msgstr "^Maglaro ng Minesweeper"
 
-#: src/ui.cc:1932
+#: src/ui.cc:1964
 msgid "^Become root"
 msgstr "^Maging root"
 
-#: src/ui.cc:1933
+#: src/ui.cc:1965
 #, fuzzy
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
@@ -4929,71 +4954,63 @@ msgstr ""
 "iyong\n"
 "settings ay hindi magagalaw"
 
-#: src/ui.cc:1936
-msgid "^Reload package cache"
-msgstr "^Reload ang pakete cache"
-
-#: src/ui.cc:1937
-msgid "Reload the package cache"
-msgstr "Reload ang pakete cache"
-
-#: src/ui.cc:1943
+#: src/ui.cc:1967
 msgid "^Quit"
 msgstr "^Umalis"
 
-#: src/ui.cc:1944
+#: src/ui.cc:1968
 msgid "Exit the program"
 msgstr "Lumabas sa programa"
 
-#: src/ui.cc:1950 src/ui.cc:2294
+#: src/ui.cc:1974 src/ui.cc:2332
 msgid "Undo"
 msgstr "Ibalik"
 
-#: src/ui.cc:1951
+#: src/ui.cc:1975
 msgid "Undo the last package operation or group of operations"
 msgstr "Ulitin ang huling pakete operation o grupo ng operations"
 
-#: src/ui.cc:1959
+#: src/ui.cc:1983
 msgid "^Install"
 msgstr "^Instal"
 
-#: src/ui.cc:1960
+#: src/ui.cc:1984
 msgid "Flag the currently selected package for installation or upgrade"
 msgstr ""
 "Bandilaan ang kasalukuyan ay napiling pakete para sa installation o upgrade"
 
-#: src/ui.cc:1963
+#: src/ui.cc:1987
 msgid "^Remove"
 msgstr "^Tanggalin"
 
-#: src/ui.cc:1964
+#: src/ui.cc:1988
 msgid "Flag the currently selected package for removal"
 msgstr "Bandilaan ang kasalukuyan ay napiling pakete para sa pagalis"
 
-#: src/ui.cc:1967
+#: src/ui.cc:1991
 msgid "^Purge"
 msgstr "^Purge"
 
-#: src/ui.cc:1968
+#: src/ui.cc:1992
 msgid ""
 "Flag the currently selected package and its configuration files for removal"
 msgstr ""
 "Bandilaan ang kasalukuyan ay napiling pakete at ang configuration files para "
 "sa pagtanggal"
 
-#: src/ui.cc:1971
+#: src/ui.cc:1995
 msgid "^Keep"
 msgstr "^Itago"
 
-#: src/ui.cc:1972
+#: src/ui.cc:1996
 msgid "Cancel any action on the selected package"
 msgstr "Kansel ang anumang aksyon sa napiling pakete"
 
-#: src/ui.cc:1975
+#: src/ui.cc:1999
 msgid "^Hold"
 msgstr "^Pigilin"
 
-#: src/ui.cc:1976
+#: src/ui.cc:2000
 msgid ""
 "Cancel any action on the selected package, and protect it from future "
 "upgrades"
@@ -5001,11 +5018,11 @@ msgstr ""
 "Kansel ang anumang aksyon sa napiling pakete, at protektahan sa balang araw "
 "na upgrades"
 
-#: src/ui.cc:1979
+#: src/ui.cc:2003
 msgid "Mark ^Auto"
 msgstr "Markahang ^Auto"
 
-#: src/ui.cc:1980
+#: src/ui.cc:2004
 #, fuzzy
 msgid ""
 "Mark the selected package as having been automatically installed; it will "
@@ -5014,11 +5031,11 @@ msgstr ""
 "Markahan ang napiling pakete bilang otomatikong na instal;\n"
 "itoy otomatikong ma-tatanggal pag walang anomang paketeng naka-depende dito"
 
-#: src/ui.cc:1983
+#: src/ui.cc:2007
 msgid "Mark ^Manual"
 msgstr "Markahang ^Manual"
 
-#: src/ui.cc:1984
+#: src/ui.cc:2008
 #, fuzzy
 msgid ""
 "Mark the selected package as having been manually installed; it will not be "
@@ -5027,11 +5044,11 @@ msgstr ""
 "Markahan ang napiling pakete bilang manually na na-instal;\n"
 "itoy hindi ma-tatanggal ngunit kung itoy iyong manually na tatanggalin"
 
-#: src/ui.cc:1987
+#: src/ui.cc:2011
 msgid "^Forbid Version"
 msgstr "^Forbid Na Salin"
 
-#: src/ui.cc:1988
+#: src/ui.cc:2012
 #, fuzzy
 msgid ""
 "Forbid the candidate version of the selected package from being installed; "
@@ -5040,334 +5057,335 @@ msgstr ""
 "Ipagbawal ang kandidato na salin ng piniling pakete na ma-installed;\n"
 "bagong salin ng pakete ay ma-installed syempre"
 
-#: src/ui.cc:1992
+#: src/ui.cc:2016
 msgid "I^nformation"
 msgstr "I^mpormasyon"
 
-#: src/ui.cc:1993
+#: src/ui.cc:2017
 msgid "Display more information about the selected package"
 msgstr "Pakita ang higit na impormasyon tungkol sa piniling pakete"
 
-#: src/ui.cc:1996
+#: src/ui.cc:2020
 msgid "^Changelog"
 msgstr "^Changelog"
 
-#: src/ui.cc:1997
+#: src/ui.cc:2021
 msgid "Display the Debian changelog of the selected package"
 msgstr "Ipakita ang Debian changelog ng napiling pakete"
 
-#: src/ui.cc:2004
+#: src/ui.cc:2028
 msgid "^Examine Solution"
 msgstr ""
 
-#: src/ui.cc:2005
+#: src/ui.cc:2029
 msgid "Examine the currently selected solution to the dependency problems."
 msgstr ""
 
-#: src/ui.cc:2008
+#: src/ui.cc:2032
 msgid "Apply ^Solution"
 msgstr ""
 
-#: src/ui.cc:2009
+#: src/ui.cc:2033
 msgid "Perform the actions contained in the currently selected solution."
 msgstr ""
 
-#: src/ui.cc:2012
+#: src/ui.cc:2036
 #, fuzzy
 msgid "^Next Solution"
 msgstr "^Mabalik ang options"
 
-#: src/ui.cc:2013
+#: src/ui.cc:2037
 #, fuzzy
 msgid "Select the next solution to the dependency problems."
 msgstr "Hanapin ang sumunod na pakete na may hindi masiya na dependencies"
 
-#: src/ui.cc:2016
+#: src/ui.cc:2040
 #, fuzzy
 msgid "^Previous Solution"
 msgstr "Provides"
 
-#: src/ui.cc:2017
+#: src/ui.cc:2041
 #, fuzzy
 msgid "Select the previous solution to the dependency problems."
 msgstr "Hanapin ang sumunod na pakete na may hindi masiya na dependencies"
 
-#: src/ui.cc:2020
+#: src/ui.cc:2044
 #, fuzzy
 msgid "^First Solution"
 msgstr "^Mabalik ang options"
 
-#: src/ui.cc:2021
+#: src/ui.cc:2045
 #, fuzzy
 msgid "Select the first solution to the dependency problems."
 msgstr "Hanapin ang sumunod na pakete na may hindi masiya na dependencies"
 
-#: src/ui.cc:2024
+#: src/ui.cc:2048
 #, fuzzy
 msgid "^Last Solution"
 msgstr "^Mabalik ang options"
 
-#: src/ui.cc:2025
+#: src/ui.cc:2049
 #, fuzzy
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
 msgstr "Hanapin ang sumunod na pakete na may hindi masiya na dependencies"
 
-#: src/ui.cc:2031
+#: src/ui.cc:2055
 msgid "Toggle ^Rejected"
 msgstr ""
 
-#: src/ui.cc:2032
+#: src/ui.cc:2056
 msgid "Toggle whether the currently selected action is rejected."
 msgstr ""
 
-#: src/ui.cc:2036
+#: src/ui.cc:2060
 msgid "Toggle ^Approved"
 msgstr ""
 
-#: src/ui.cc:2037
+#: src/ui.cc:2061
 #, fuzzy
 msgid "Toggle whether the currently selected action is approved."
 msgstr "Bandilaan ang kasalukuyan ay napiling pakete para sa pagalis"
 
-#: src/ui.cc:2041
+#: src/ui.cc:2065
 msgid "^View Target"
 msgstr ""
 
-#: src/ui.cc:2042
+#: src/ui.cc:2066
 msgid "View the package which will be affected by the selected action"
 msgstr ""
 
-#: src/ui.cc:2050
+#: src/ui.cc:2074
 msgid "^Find"
 msgstr "^Hanap"
 
-#: src/ui.cc:2051
+#: src/ui.cc:2075
 #, fuzzy
 msgid "Search forwards"
 msgstr "Maghanap ng:"
 
-#: src/ui.cc:2054
+#: src/ui.cc:2078
 msgid "^Find Backwards"
 msgstr ""
 
-#: src/ui.cc:2055
+#: src/ui.cc:2079
 #, fuzzy
 msgid "Search backwards"
 msgstr "Hanapin ang: "
 
-#: src/ui.cc:2058
+#: src/ui.cc:2082
 msgid "Find ^Again"
 msgstr "Humanap ^Ulit"
 
-#: src/ui.cc:2059
+#: src/ui.cc:2083
 msgid "Repeat the last search"
 msgstr "Ulitin ang huling pag-hahanap"
 
-#: src/ui.cc:2063
+#: src/ui.cc:2087
 msgid "^Limit Display"
 msgstr "^Limitahan ang pag-papakita"
 
-#: src/ui.cc:2064
+#: src/ui.cc:2088
 msgid "Apply a filter to the package list"
 msgstr "Apply ang filter sa listahan ng mga pakete"
 
-#: src/ui.cc:2067
+#: src/ui.cc:2091
 msgid "^Un-Limit Display"
 msgstr "^Un-Limit Display"
 
-#: src/ui.cc:2068
+#: src/ui.cc:2092
 msgid "Remove the filter from the package list"
 msgstr "Alisin ang filter sa mga listahan ng pakete"
 
-#: src/ui.cc:2072
+#: src/ui.cc:2096
 msgid "Find ^Broken"
 msgstr "Hanapin ang ^Basag"
 
-#: src/ui.cc:2073
+#: src/ui.cc:2097
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "Hanapin ang sumunod na pakete na may hindi masiya na dependencies"
 
-#: src/ui.cc:2080
+#: src/ui.cc:2104
 msgid "^UI options"
 msgstr "^UI options"
 
-#: src/ui.cc:2081
+#: src/ui.cc:2105
 msgid "Change the settings which affect the user interface"
 msgstr "Baguhin ang settings na maapektuhan ang user interface"
 
-#: src/ui.cc:2084
+#: src/ui.cc:2108
 msgid "^Dependency handling"
 msgstr "^Dependency na pag-tagan"
 
-#: src/ui.cc:2085
+#: src/ui.cc:2109
 msgid "Change the settings which affect how package dependencies are handled"
 msgstr ""
 "Palitan ang settings na makaka apekto kung paano ang pakete dependencies ay "
 "hawakan"
 
-#: src/ui.cc:2088
+#: src/ui.cc:2112
 msgid "^Miscellaneous"
 msgstr "^Miscellaneous"
 
-#: src/ui.cc:2089
+#: src/ui.cc:2113
 msgid "Change miscellaneous program settings"
 msgstr "Palitan ang samut-samot na programa settings"
 
-#: src/ui.cc:2094
+#: src/ui.cc:2118
 msgid "^Revert options"
 msgstr "^Mabalik ang options"
 
-#: src/ui.cc:2095
+#: src/ui.cc:2119
 msgid "Reset all settings to the system defaults"
 msgstr "Ibalik ang lahat ng settings sa system default"
 
-#: src/ui.cc:2106
+#: src/ui.cc:2130
 msgid "^Next"
 msgstr "^Susunod"
 
-#: src/ui.cc:2107
+#: src/ui.cc:2131
 msgid "View next display"
 msgstr "Pakita ang susunod na display"
 
-#: src/ui.cc:2110
+#: src/ui.cc:2134
 msgid "^Prev"
 msgstr "^Nakaraan"
 
-#: src/ui.cc:2111
+#: src/ui.cc:2135
 msgid "View previous display"
 msgstr "Pakita ang nakaraang display"
 
-#: src/ui.cc:2114
+#: src/ui.cc:2138
 msgid "^Close"
 msgstr "^Isara"
 
-#: src/ui.cc:2115
+#: src/ui.cc:2139
 msgid "Close this display"
 msgstr "Isara ang display"
 
-#: src/ui.cc:2120
+#: src/ui.cc:2144
 msgid "New Package ^View"
 msgstr "^Tanaw ng Bagong mga Pakete"
 
-#: src/ui.cc:2121
+#: src/ui.cc:2145
 msgid "Create a new default package view"
 msgstr "Gumawa ng bagong default pakete view"
 
-#: src/ui.cc:2124
+#: src/ui.cc:2148
 #, fuzzy
 msgid "Audit ^Recommendations"
 msgstr "Rekomendasyon"
 
-#: src/ui.cc:2125
+#: src/ui.cc:2149
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
 msgstr ""
 
-#: src/ui.cc:2128
+#: src/ui.cc:2152
 #, fuzzy
 msgid "New ^Flat Package List"
 msgstr "^Tanaw ng Bagong mga Pakete"
 
-#: src/ui.cc:2129
+#: src/ui.cc:2153
 msgid "View all the packages on the system in a single uncategorized list"
 msgstr ""
 
-#: src/ui.cc:2132
+#: src/ui.cc:2156
 #, fuzzy
 msgid "New ^Debtags Browser"
 msgstr "Bagong Kategoryang ^Browser"
 
-#: src/ui.cc:2134
+#: src/ui.cc:2158
 #, fuzzy
 msgid "Browse packages using Debtags data"
 msgstr "Silipin ang pakete ayon sa kategorya"
 
-#: src/ui.cc:2137
+#: src/ui.cc:2161
 msgid "New Categorical ^Browser"
 msgstr "Bagong Kategoryang ^Browser"
 
-#: src/ui.cc:2139
+#: src/ui.cc:2163
 msgid "Browse packages by category"
 msgstr "Silipin ang pakete ayon sa kategorya"
 
-#: src/ui.cc:2147
+#: src/ui.cc:2171
 msgid "^About"
 msgstr "^Tungkol"
 
-#: src/ui.cc:2148
+#: src/ui.cc:2172
 msgid "View information about this program"
 msgstr "Basahin ang impormasyon tungkol sa programang ito"
 
-#: src/ui.cc:2151
+#: src/ui.cc:2175
 msgid "^Help"
 msgstr "^Tulong"
 
-#: src/ui.cc:2152
+#: src/ui.cc:2176
 msgid "View the on-line help"
 msgstr "Basahin ang tulong na on-line"
 
-#: src/ui.cc:2154
+#: src/ui.cc:2178
 msgid "User's ^Manual"
 msgstr "^Manwal ng Pag-gamit"
 
-#: src/ui.cc:2155
+#: src/ui.cc:2179
 msgid "View the detailed program manual"
 msgstr "Basahin ang detalyadong manwal ng programa"
 
-#: src/ui.cc:2158
+#: src/ui.cc:2182
 msgid "^FAQ"
 msgstr "^FAQ"
 
-#: src/ui.cc:2159
+#: src/ui.cc:2183
 msgid "View a list of frequently asked questions"
 msgstr "Basahin ang talaan ng madalas na tanungin"
 
-#: src/ui.cc:2162
-msgid "^NEWS"
-msgstr ""
+#: src/ui.cc:2186
+#, fuzzy
+msgid "^News"
+msgstr "Bago"
 
-#: src/ui.cc:2163
+#: src/ui.cc:2187
 #, fuzzy
 msgid "View the important changes made in each version of "
 msgstr "Tignan ang mga mahalagang pagbabago sa bawat bersyon ng programa"
 
-#: src/ui.cc:2166
+#: src/ui.cc:2190
 msgid "^License"
 msgstr "^Lisensiya"
 
-#: src/ui.cc:2167
+#: src/ui.cc:2191
 msgid "View the terms under which you may copy the program"
 msgstr "Basahin ang mga tadhana kung paano makokopya ang programa"
 
-#: src/ui.cc:2293
+#: src/ui.cc:2331
 msgid "Actions"
 msgstr "Mga Gagawin"
 
-#: src/ui.cc:2296
+#: src/ui.cc:2334
 #, fuzzy
 msgid "Resolver"
 msgstr "^Tanggalin"
 
-#: src/ui.cc:2297
+#: src/ui.cc:2335
 msgid "Search"
 msgstr "Paghahanap"
 
-#: src/ui.cc:2298
+#: src/ui.cc:2336
 msgid "Options"
 msgstr "Mga Pagpipilian"
 
-#: src/ui.cc:2299
+#: src/ui.cc:2337
 msgid "Views"
 msgstr "Mga Pananaw"
 
-#: src/ui.cc:2300
+#: src/ui.cc:2338
 msgid "Help"
 msgstr "Tulong"
 
-#: src/ui.cc:2365
+#: src/ui.cc:2403
 #, fuzzy, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
@@ -5375,11 +5393,11 @@ msgid ""
 msgstr ""
 "%s: Menu  %s: Tulong %s: Quit %s: Apdeyt  %s: Kumuha/Instol/Tanggal ng Pkt"
 
-#: src/ui.cc:2706 src/vscreen/vscreen.cc:724
+#: src/ui.cc:2746 src/vscreen/vscreen.cc:724
 msgid "yes_key"
 msgstr "o"
 
-#: src/ui.cc:2707 src/vscreen/vscreen.cc:725
+#: src/ui.cc:2747 src/vscreen/vscreen.cc:725
 msgid "no_key"
 msgstr "h"
 
@@ -5435,17 +5453,17 @@ msgstr "Di-kilalang anyo ng pattern: %c"
 msgid "Bad format parameter"
 msgstr ""
 
-#: src/vscreen/config/keybindings.cc:332
+#: src/vscreen/config/keybindings.cc:333
 #, fuzzy, c-format
 msgid "Cannot parse key description: %ls"
 msgstr "Binabasa ang deskripsyon na gagawin"
 
-#: src/vscreen/config/keybindings.cc:342
+#: src/vscreen/config/keybindings.cc:343
 #, fuzzy
 msgid "Invalid null keybinding"
 msgstr "Hindi-valid entry sa grupo ng keybinding: \"%s\""
 
-#: src/vscreen/config/keybindings.cc:350
+#: src/vscreen/config/keybindings.cc:351
 msgid "Sorry, control modifiers may not be used with unprintable characters"
 msgstr ""
 
@@ -5469,13 +5487,13 @@ msgstr "Aray!  Nakatanggap ng SIGABRT, namamatay..\n"
 msgid "Ouch!  Got SIGQUIT, dying..\n"
 msgstr "Aray!  Nakatanggap ng SIGQUIT, namamatay..\n"
 
-#: src/vscreen/vs_pager.cc:435
+#: src/vscreen/vs_pager.cc:439
 #, c-format
 msgid ""
 "Unable to load filename: the string %ls has no multibyte representation."
 msgstr ""
 
-#: src/vscreen/vs_tree.cc:930
+#: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr ""
 

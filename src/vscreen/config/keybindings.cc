@@ -48,6 +48,7 @@ map<wstring, key> s_keynames;
 // lowercase; however, the routines to parse keys take this into account and
 // convert the input to lowercase before checking it.
 // FIXME: Function keys (F0-Fx) really ought to be handled specially
+// FIXME: Translate keys such as "enter" in menu
 map<key, wstring> rev_keynames;
 
 bool key_tables_initialized=false;
