@@ -7,12 +7,13 @@
   <!ENTITY dselect '<command>dselect</command>'>
   <!ENTITY apt-get '<command>apt-get</command>'>
   <!ENTITY root '<systemitem class="username">root</systemitem>'>
-  <!ENTITY VERSION '0.4.0'>
+  <!ENTITY VERSION '0.4.1'>
 
   <!-- Shortcuts for menu commands: -->
 
   <!ENTITY actions-install "<menuchoice><shortcut><keycap>g</keycap></shortcut><guimenu>Akce</guimenu><guimenuitem>Instalovat/odstranit balíky</guimenuitem></menuchoice>">
   <!ENTITY actions-update "<menuchoice><shortcut><keycap>u</keycap></shortcut><guimenu>Akce</guimenu><guimenuitem>Aktualizovat seznam balíkù</guimenuitem></menuchoice>">
+  <!ENTITY actions-cancel "<menuchoice><guimenu>Akce</guimenu><guimenuitem>Zru¹it naplánované akce</guimenuitem></menuchoice>">
   <!ENTITY actions-forget "<menuchoice><shortcut><keycap>f</keycap></shortcut><guimenu>Akce</guimenu><guimenuitem>Zapomenout nové balíky</guimenuitem></menuchoice>">
   <!ENTITY actions-clean "<menuchoice><guimenu>Akce</guimenu><guimenuitem>Vyèistit cache s balíky</guimenuitem></menuchoice>">
   <!ENTITY actions-clean-obs "<menuchoice><guimenu>Akce</guimenu><guimenuitem>Vyèistit staré soubory</guimenuitem></menuchoice>">
@@ -1926,6 +1927,17 @@ které mají aktualizaci zakázánu.
 
 Zapomene, které balíky jsou <quote>nové</quote> (vyprázdní strom
 <quote>Nové balíky</quote>).
+
+    </entry>
+  </row>
+
+  <row>
+    <entry>&actions-cancel;</entry>
+    <entry>
+
+Zru¹í v¹echny naplánované instalace, odstranìní, aktualizace
+a podr¾ení. Je to vlastnì ekvivalent spu¹tìní pøíkazu <link
+linkend="pkgCmdKeep">Keep</link> na ka¾dý balík v databázi.
 
     </entry>
   </row>
@@ -6841,7 +6853,10 @@ dostupných atributù naleznete ní¾e.
 <literal>magenta</literal> (fuchsiová), <literal>red</literal>
 (èervená), <literal>white</literal> (bílá) a <literal>yellow</literal>
 (¾lutá)<footnote> <para> Která ov¹em na nìkterých terminálech vypadá
-v roli pozadí jako hnìdá. </para> </footnote>. Ze stylù mù¾ete pou¾ít:
+v roli pozadí jako hnìdá. </para> </footnote>. Místo konkrétní barvy
+pozadí mù¾ete zadat i <literal>default</literal> (výchozí), co¾
+pou¾ije momentální barvu pozadí nastavenou v terminálu (tzn. to mù¾e
+být barva, obrázek nebo i prùhlednost). Ze stylù mù¾ete pou¾ít:
 
 </para>
 
@@ -8162,6 +8177,18 @@ vývojáøe, kteøí chtìjí pomoci s ladìním øe¹itele závislostí.
       </seg>
     </seglistitem>
 
+    <seglistitem id="configCmdLine-Resolver-Dump">
+      <seg><literal>Aptitude::CmdLine::Resolver-Dump</literal></seg>
+      <seg></seg>
+      <seg>
+
+Pokud je v pøíkazovém re¾imu nutné vyøe¹it poru¹ené závislosti a je-li
+v této volbì nastaveno jméno zapisovatelného souboru, &aptitude; do
+nìj zapí¹e stav øe¹itele pøed zapoèetím v¹ech výpoètù.
+
+      </seg>
+    </seglistitem>
+
     <seglistitem id="configCmdLine-Request-Strictness">
       <seg><literal>Aptitude::CmdLine::Request-Strictness</literal></seg>
       <seg><literal>0</literal></seg>
@@ -8585,7 +8612,7 @@ mít vy¹¹í skóre, ale na druhou stranu to znamená, ¾e ka¾dý
     </seglistitem>
 
     <seglistitem id="configProblemResolver-NonDefaultScore">
-      <seg><literal>Aptitude::Problem-Resolver::NonDefaultScore</literal></seg>
+      <seg><literal>Aptitude::ProblemResolver::NonDefaultScore</literal></seg>
       <seg><literal>-40</literal></seg>
       <seg>
 
@@ -8608,7 +8635,7 @@ skóre pøiète tato hodnota.
     </seglistitem>
 
     <seglistitem id="configProblemResolver-PreserveAutoScore">
-      <seg><literal>Aptitude::Problem-Resolver::PreserveAutoScore</literal></seg>
+      <seg><literal>Aptitude::ProblemResolver::PreserveAutoScore</literal></seg>
       <seg><literal>0</literal></seg>
       <seg>
 
@@ -8620,7 +8647,7 @@ instalací nebo odstranìní.
     </seglistitem>
 
     <seglistitem id="configProblemResolver-PreserveManualScore">
-      <seg><literal>Aptitude::Problem-Resolver::PreserveManualScore</literal></seg>
+      <seg><literal>Aptitude::ProblemResolver::PreserveManualScore</literal></seg>
       <seg><literal>60</literal></seg>
       <seg>
 
@@ -8631,7 +8658,7 @@ u¾ivatelem.
     </seglistitem>
 
     <seglistitem id="configProblemResolver-ResolutionScore">
-      <seg><literal>Aptitude::Problem-Resolver::ResolutionScore</literal></seg>
+      <seg><literal>Aptitude::ProblemResolver::ResolutionScore</literal></seg>
       <seg><literal>50</literal></seg>
       <seg>
 
@@ -8642,7 +8669,7 @@ odmìnìna v¹echna øe¹ení, která vyøe¹í v¹echny nesplnìné závislosti.
     </seglistitem>
 
     <seglistitem id="configProblemResolver-RemoveScore">
-      <seg><literal>Aptitude::Problem-Resolver::RemoveScore</literal></seg>
+      <seg><literal>Aptitude::ProblemResolver::RemoveScore</literal></seg>
       <seg><literal>-300</literal></seg>
       <seg>
 
@@ -9114,6 +9141,17 @@ ukonèením zeptá, zda chcete program opravdu ukonèit.
 Èleny této skupiny definují textové styly (mj. barevné schéma), které
 &aptitude; pou¾ívá pro zobrazení informací. Více se dozvíte v kapitole
 <xref linkend="secStyle"/>.
+
+      </seg>
+    </seglistitem>
+
+    <seglistitem id="viewTabs">
+      <seg><literal>Aptitude::UI::ViewTabs</literal></seg>
+      <seg><literal>true</literal></seg>
+      <seg>
+
+Má-li volba hodnotu <literal>false</literal>, &aptitude; nezobrazí
+v horní èásti obrazovky pruh se seznamem aktuálnì otevøených oken.
 
       </seg>
     </seglistitem>
@@ -10529,6 +10567,18 @@ Zobrazí krátkou nápovìdu. (Shodné s akcí <literal>help</literal>.)
   </varlistentry>
 
   <varlistentry>
+    <term><literal>--purge-unused</literal></term>
+
+    <listitem><para>
+
+Vyèistí balíky, které ji¾ nejsou vy¾adovány ¾ádným instalovaným
+balíkem. To je ekvivalentní parametru <quote><literal>-o <link
+linkend="configPurge-Unused">Aptitude::Purge-Unused=true</link></literal></quote>.
+
+    </para></listitem>
+  </varlistentry>
+
+  <varlistentry>
     <term><literal>-P</literal>, <literal>--prompt</literal></term>
 
     <listitem><para>
@@ -10892,7 +10942,7 @@ changelog</literal></quote>. V opaèném pøípadì se pou¾ije výchozí
 
 Pokud není nastavena promìnná <literal>TMPDIR</literal>, ale
 <literal>TMP</literal> ano, &aptitude; si zde bude ukládat své doèasné
-soubory. Pokud není nastavena ani jedna z tìctto promìnných, pou¾ije
+soubory. Pokud není nastavena ani jedna z tìchto promìnných, pou¾ije
 se adresáø <filename>/tmp</filename>.
 
     </para></listitem>
