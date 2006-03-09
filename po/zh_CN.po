@@ -1,16 +1,16 @@
-# Copyright (C) Year Free Software Foundation, Inc.
+# Copyright (C) 2005 - 2006 Free Software Foundation, Inc.
 # Yongtao Yang <yongtao.yang@telia.com>, 2004
-# Carlos Z.F. Liu <carlos_liu@yahoo.com>, 2005
-# Ming Hua <minghua@rice.edu>, 2005,2006
 # Haifeng Chen <optical.dlz@gmail.com>, 2005
+# Ming Hua <minghua@rice.edu>, 2005,2006
+# Carlos Z.F. Liu <carlosliu@users.sourceforge.net>, 2005,2006
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3+SVN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-19 22:13+0100\n"
-"PO-Revision-Date: 2006-01-09 18:18-0600\n"
-"Last-Translator: Ming Hua <minghua@rice.edu>\n"
+"PO-Revision-Date: 2006-03-07 23:35+1300\n"
+"Last-Translator: Carlos Z.F. Liu <carlosliu@users.sourceforge.net>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -120,7 +120,6 @@ msgid ""
 msgstr "安装或者卸载软件包后忘记哪些包是“新”的"
 
 #: src/apt_options.cc:171
-#, fuzzy
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr "当第一个改动是在只读模式下进行时不显示警告。"
@@ -1439,9 +1438,9 @@ msgid "No hierarchy information to edit"
 msgstr "没有层次信息可编辑"
 
 #: src/edit_pkg_hier.cc:286
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "无法打开文件以写入"
+msgstr "无法打开“%s”以写入"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
@@ -2563,9 +2562,8 @@ msgid "You die...  --More--"
 msgstr "您死了...  --更多--"
 
 #: src/mine/cmine.cc:478
-#, fuzzy
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
-msgstr "桩子有毒！毒药是致命的..  --更多－－"
+msgstr "桩子有毒！毒药是致命的..  --更多--"
 
 #: src/mine/cmine.cc:481
 msgid "You land on a set of sharp iron spikes!  --More--"
@@ -2937,7 +2935,6 @@ msgstr ""
 " “基本”部分的软件包是初始系统安装的一部分。"
 
 #: src/pkg_grouppolicy.cc:169
-#, fuzzy
 msgid ""
 "Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
@@ -2949,7 +2946,7 @@ msgstr ""
 "用于传真调制解调器和其它通讯设备的程序\n"
 " “通讯”部分的软件包用于控制调制解调器和其它硬件通讯设备。包括控制传真调制解调"
 "器的软件(例如，用于拨号网络连接的 PPP 以及最初为该用途所编写的程序如 zmodem/"
-"kermit，还有用于控制蜂窝式移动电话，与 FidoNet 的接口，以及运行 BBS 的软件"
+"kermit)，还有用于控制蜂窝式移动电话，与 FidoNet 的接口，以及运行 BBS 的软件。"
 
 #: src/pkg_grouppolicy.cc:170
 msgid ""
@@ -4597,14 +4594,12 @@ msgid "Forget which packages are \"new\""
 msgstr "忘记哪些软件包是“新”的"
 
 #: src/ui.cc:1939
-#, fuzzy
 msgid "Canc^el pending actions"
-msgstr "依赖于 %s 的软件包"
+msgstr "取消待执行的动作(^E)"
 
 #: src/ui.cc:1940
-#, fuzzy
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "执行所有等待执行的安装和卸载任务"
+msgstr "执行所有等待执行的安装、卸载、保持和升级任务"
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"
@@ -5004,9 +4999,8 @@ msgid "View a list of frequently asked questions"
 msgstr "查看常见问题列表"
 
 #: src/ui.cc:2186
-#, fuzzy
 msgid "^News"
-msgstr "新"
+msgstr "新闻(^N)"
 
 #: src/ui.cc:2187
 msgid "View the important changes made in each version of "
