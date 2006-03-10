@@ -1,21 +1,21 @@
 # Vietnamese translation for Aptitude.
-# Copyright © 2005 Daniel Burrows <dburrows@debian.org>
+# Copyright © 2006 Daniel Burrows <dburrows@debian.org>
 # This file is distributed under the same license as the aptitude package.
-# Clytie Siddall <clytie@riverland.net.au>, 2005..
+# Clytie Siddall <clytie@riverland.net.au>, 2005-2006.
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-19 22:13+0100\n"
-"PO-Revision-Date: 2005-12-18 18:28+1030\n"
+"PO-Revision-Date: 2006-03-10 17:50+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: LocFactoryEditor 1.5.1b\n"
+"X-Generator: LocFactoryEditor 1.6b36\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
@@ -120,7 +120,6 @@ msgid ""
 msgstr "Quên gói nào là « mới » mọi khi cài đặt hay gỡ bỏ gói."
 
 #: src/apt_options.cc:171
-#, fuzzy
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
@@ -1490,9 +1489,9 @@ msgid "No hierarchy information to edit"
 msgstr "Không có thông tin cây nào cần sửa đổi"
 
 #: src/edit_pkg_hier.cc:286
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "Không thể mở để ghi"
+msgstr "Không thể mở « %s » để ghi"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
@@ -2655,7 +2654,6 @@ msgid "You die...  --More--"
 msgstr "Bạn chết... —Thêm—"
 
 #: src/mine/cmine.cc:478
-#, fuzzy
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
 msgstr "Gai độc! Thuốc độc chết người...  —Thêm—"
 
@@ -3035,7 +3033,6 @@ msgstr ""
 "đầu."
 
 #: src/pkg_grouppolicy.cc:169
-#, fuzzy
 msgid ""
 "Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
@@ -3046,12 +3043,12 @@ msgid ""
 msgstr ""
 "Chương trình cho bộ điều giải điện thư (fax modem) và thiết bị truyền thông "
 "khác.\n"
-"Gói trong phần « liên lạc » (comm.) thì được dùng để điều khiển bộ điều giải "
-"và những thiết bị truyền thông phần cứng khác. Các gói loại này bao gồm phần "
+"Gói trong phần « liên lạc » (comm.) được dùng để điều khiển bộ điều giải và "
+"những thiết bị truyền thông phần cứng khác. Các gói kiểu này bao gồm phần "
 "mềm điều khiển bộ điều giải điện thư (v.d. phần mềm PPP để kết nối bằng quay "
-"số, chương trình dành cho sự kết nối [zmodem, kermit v.v.]), và phần mềm "
-"điều khiển điện thoại di động, giáo diện với FidoNet, và chạy hệ thộng bảng "
-"công báo (BBS)."
+"số, chương trình được viết gốc dành cho sự kết nối [zmodem, kermit v.v.]), "
+"và phần mềm điều khiển điện thoại di động, giáo diện với FidoNet, và chạy hệ "
+"thộng bảng công báo (BBS)."
 
 #: src/pkg_grouppolicy.cc:170
 msgid ""
@@ -4800,14 +4797,12 @@ msgid "Forget which packages are \"new\""
 msgstr "Quên gói nào là « Mới »"
 
 #: src/ui.cc:1939
-#, fuzzy
 msgid "Canc^el pending actions"
-msgstr "Các gói phụ thuộc vào %s"
+msgstr "Th^ôi các hành động bị hoãn"
 
 #: src/ui.cc:1940
-#, fuzzy
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Thực hiện mọi việc cài đặt và gỡ bỏ sắp"
+msgstr "Thôi các việc cài đặt, gỡ bỏ, giữ lại và nâng cấp bị hoãn."
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"
@@ -5216,9 +5211,8 @@ msgid "View a list of frequently asked questions"
 msgstr "Xem danh sách câu thường hỏi"
 
 #: src/ui.cc:2186
-#, fuzzy
 msgid "^News"
-msgstr "Mới"
+msgstr "Ti^n tức"
 
 #: src/ui.cc:2187
 msgid "View the important changes made in each version of "
