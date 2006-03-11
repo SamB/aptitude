@@ -195,6 +195,16 @@ AC_ARG_ENABLE(package-state-loc,
 	fi,
 	STATEDIR="/var/lib/aptitude")
 
+AC_ARG_ENABLE(lock-loc,
+	AS_HELP_STRING([--with-lock-loc], [use the given location for storing state (default /var/lock/aptitude)]),
+	if test x$enableval = xyes
+	then
+	  [AC_MSG_ERROR([--with-lock-loc needs an argument])]
+	else
+	  LOCKFILE="$enableval"
+	fi,
+	LOCKFILE="/var/lock/aptitude")
+
 AC_ARG_ENABLE(aptitude,
 	AS_HELP_STRING([--disable-aptitude], [don't compile the program itself]),
 	if test x$enableval=xno
@@ -219,6 +229,7 @@ AC_SUBST(SRCDIRS)
 AC_SUBST(DOCDIRS)
 
 AC_DEFINE_UNQUOTED(STATEDIR, "$STATEDIR", [The location of aptitude's state files])
+AC_DEFINE_UNQUOTED(LOCKFILE, "$LOCKFILE", [The location of the lock to prevent simultaneous aptitude instances])
 AC_SUBST(STATEDIR)
 AC_SUBST(WERROR)
 

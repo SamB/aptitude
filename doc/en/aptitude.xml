@@ -8367,6 +8367,26 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configLockFile'>
+	      <seg><literal>Aptitude::LockFile</literal></seg>
+
+	      <seg><literal>/var/lock/aptitude</literal></seg>
+
+	      <seg>
+		A file that will be fcntl-locked to ensure that at
+		most one &aptitude; process can modify the cache at
+		once.  In normal circumstances, you should never need
+		to modify this; it may be useful for debugging.
+		<emphasis>Note</emphasis>: if &aptitude; complains
+		that it cannot acquire a lock, this is
+		<emphasis>not</emphasis> because the lock file needs
+		to be deleted.  fcntl locks are managed by the kernel
+		and will be destroyed when the program terminates;
+		failure to acquire the lock means that another running
+		program is using it!
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configLog'>
 	      <seg><literal>Aptitude::Log</literal></seg>
 
