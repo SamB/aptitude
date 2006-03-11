@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-19 22:13+0100\n"
-"PO-Revision-Date: 2006-02-18 16:42+0100\n"
+"PO-Revision-Date: 2006-03-11 19:41+0100\n"
 "Last-Translator: Peter Mann <Peter.Mann@tuke.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -123,11 +123,10 @@ msgid ""
 msgstr "Zabudnúť zoznam \"nových\" balíkov pri každej (od)inštalácií balíkov"
 
 #: src/apt_options.cc:171
-#, fuzzy
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
-"Nezobrazovať varovanie, ak je prvá zmena vykonaná v režime iba na čítanie."
+"Nezobrazovať varovanie, ak je prvá zmena vykonaná v režime iba na čítanie"
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -1479,9 +1478,9 @@ msgid "No hierarchy information to edit"
 msgstr "Neexistujú žiadne informácie o hierarchii"
 
 #: src/edit_pkg_hier.cc:286
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "Nemôžem otvoriť na zápis"
+msgstr "\"%s\" sa nedá otvoriť na zápis"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
@@ -2629,9 +2628,8 @@ msgid "You die...  --More--"
 msgstr "Umieraš...  --Viac--"
 
 #: src/mine/cmine.cc:478
-#, fuzzy
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
-msgstr "Bodce sú otrávené! Otrava je smrteľná...  --Viac--"
+msgstr "Bodce boli otrávené!  Otrava bola smrteľná...  --Viac--"
 
 #: src/mine/cmine.cc:481
 msgid "You land on a set of sharp iron spikes!  --More--"
@@ -3009,7 +3007,6 @@ msgstr ""
 " Balíky zo sekcie 'base' sú súčasťou minimálnej inštalácie systému."
 
 #: src/pkg_grouppolicy.cc:169
-#, fuzzy
 msgid ""
 "Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
@@ -3019,10 +3016,10 @@ msgid ""
 "control cellular phones, interface with FidoNet, and run a BBS."
 msgstr ""
 "Programy na faxmodemy a iné komunikačné zariadenia\n"
-" Balíčky zo sekcie 'comm' sa používajú k ovládaniu modemov a ďalších "
+" Balíky zo sekcie 'comm' sa používajú na ovládanie modemov a ďalších "
 "komunikačných zariadení. To zahŕňa softvér na ovládanie faxmodemov "
-"(napríkad, PPP na vytáčané pripojenie k Internetu a programy pôvodne "
-"napísané pre ten účel, ako napr. zmodem/kermit), taktiž ako programy na "
+"(napr. PPP na vytáčané pripojenie k Internetu a programy pôvodne "
+"napísané pre ten účel, ako napr. zmodem/kermit), a taktiež aj programy na "
 "ovládanie mobilných telefónov, rozhranie k FidoNetu, alebo prevádzkovanie "
 "BBS."
 
@@ -4746,14 +4743,12 @@ msgid "Forget which packages are \"new\""
 msgstr "Zabudne, ktoré balíky sú \"nové\""
 
 #: src/ui.cc:1939
-#, fuzzy
 msgid "Canc^el pending actions"
-msgstr "Balíky závisiace na %s"
+msgstr "Zrušiť čakajúce akcie"
 
 #: src/ui.cc:1940
-#, fuzzy
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Vykoná všetky nevykonané inštalácie a odstraňovania"
+msgstr "Zruší všetky čakajúce inštalácie, odstránenia, podržania a aktualizácie."
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"
@@ -5166,9 +5161,8 @@ msgid "View a list of frequently asked questions"
 msgstr "Zobrazí zoznam často kladených otázok"
 
 #: src/ui.cc:2186
-#, fuzzy
 msgid "^News"
-msgstr "Nový"
+msgstr "^Novinky"
 
 #: src/ui.cc:2187
 msgid "View the important changes made in each version of "
