@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-19 22:13+0100\n"
-"PO-Revision-Date: 2005-12-22 18:53+0100\n"
+"PO-Revision-Date: 2006-03-15 15:26+0100\n"
 "Last-Translator: Jean-Luc Coulon <jean-luc.coulon@wanadoo.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -119,12 +119,11 @@ msgid ""
 msgstr "Oublier quels paquets sont nouveaux à l'installation ou la suppression"
 
 #: src/apt_options.cc:171
-#, fuzzy
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
-"Ne pas afficher de message d'avertissement lorsque la modification est faite "
-"en mode lecture seule."
+"Ne pas afficher de message d'avertissement lorsque la première modification "
+"est faite en mode lecture seule."
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -946,8 +945,8 @@ msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
-"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkt ver ...: %F%na pkt ver ...: %F%"
-"n<ACTION> pkt... : %F%n%F%F%F%F%F%F%F%F"
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pqt ver ...: %F%na pqt ver ...: %F%"
+"n<ACTION> pqt... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:164
 msgid "accept the proposed changes"
@@ -1168,7 +1167,7 @@ msgstr "partiellement installé"
 
 #: src/cmdline/cmdline_show.cc:149
 msgid "not installed (configuration files remain)"
-msgstr "non installé (restent les fichiers de configuration)"
+msgstr "non installé (il reste les fichiers de configuration)"
 
 #: src/cmdline/cmdline_show.cc:151 src/pkg_columnizer.cc:241
 #: src/pkg_ver_item.cc:236
@@ -1503,9 +1502,9 @@ msgid "No hierarchy information to edit"
 msgstr "Aucune information de hiérarchie à éditer"
 
 #: src/edit_pkg_hier.cc:286
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "Ouverture en écriture impossible"
+msgstr "Ouverture en écriture de « %s » impossible"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
@@ -2232,7 +2231,7 @@ msgstr "Impossible de décoder la chaîne multi-octets après « %ls »"
 #: src/main.cc:91
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
-msgstr "Impossible de décoder une grande chaîne de caractère après « %s »"
+msgstr "Impossible de décoder une grande chaîne de caractères après « %s »"
 
 #: src/main.cc:99
 #, c-format
@@ -2582,12 +2581,12 @@ msgstr "Les options -u et -i ne peuvent être indiquées simultanément\n"
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
-"-u et -i ne peuvent pas être indiqués dans le mode ligne de commande (par "
+"-u et -i ne peuvent pas être indiquées dans le mode ligne de commande (par "
 "exemple avec « install »)"
 
 #: src/main.cc:437
 msgid "-u and -i may not be specified with a command"
-msgstr "-u et -i ne peuvent pas être indiqués avec une commande"
+msgstr "-u et -i ne peuvent pas être indiquées avec une commande"
 
 #: src/main.cc:513
 #, c-format
@@ -2717,7 +2716,6 @@ msgid "You die...  --More--"
 msgstr "Vous êtes mort... --Recommencer--"
 
 #: src/mine/cmine.cc:478
-#, fuzzy
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
 msgstr ""
 "Les pointes étaient empoisonnées ! Le poison était mortel...--Recommencer--"
@@ -3097,7 +3095,7 @@ msgid ""
 " Packages in the 'alien' section were created by the 'alien' program from a "
 "non-Debian package format such as RPM"
 msgstr ""
-"Paquet convertis à partir d'autres formats (rpm, tgz, etc.)\n"
+"Paquets convertis à partir d'autres formats (rpm, tgz, etc.)\n"
 " Les paquets dans la section « alien » ont été créés par le programme "
 "« alien » à partir de formats de paquet non Debian tel que RPM"
 
@@ -3111,7 +3109,6 @@ msgstr ""
 "du système."
 
 #: src/pkg_grouppolicy.cc:169
-#, fuzzy
 msgid ""
 "Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
@@ -3124,9 +3121,10 @@ msgstr ""
 " Les paquets dans la section « comm » sont utilisés pour piloter des modems "
 "et d'autres appareils de communication. Ceci inclut les logiciels de "
 "commande pour les modem-fax (par exemple : PPP pour les liaisons internet "
-"par le réseau téléphonique commuté, des programmes initialement prévus dans "
-"ce but tels que zmodem/kermit) ainsi que des programmes pour contrôler les "
-"téléphones cellulaires, l'interface avec FidoNet et faire tourner une BBS."
+"par le réseau téléphonique commuté et des programmes initialement prévus "
+"dans ce but tels que zmodem/kermit) ainsi que des programmes pour contrôler "
+"les téléphones cellulaires, l'interface avec FidoNet et faire tourner une "
+"BBS."
 
 #: src/pkg_grouppolicy.cc:170
 msgid ""
@@ -3796,7 +3794,7 @@ msgstr ""
 "Paquets qui vont être effacés parce qu'ils ont des dépendances non "
 "satisfaites\n"
 " Ces paquets vont être effacés parce qu'une ou plusieurs de leurs "
-"dépendances n'est plus disponible ou parce qu'ils sont en conflit avec un "
+"dépendances ne sont plus disponible ou parce qu'ils sont en conflit avec un "
 "autre paquet."
 
 #: src/pkg_grouppolicy.cc:538
@@ -4088,15 +4086,15 @@ msgstr "Analyse de la définition de colonne impossible"
 #: src/pkg_view.cc:408
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr ""
-"make_package_view : erreur dans les paramètres -- deux éléments graphiques "
+"make_package_view : erreur dans les paramètres - deux éléments graphiques "
 "principaux ? "
 
 #: src/pkg_view.cc:414
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
-"make_package_view : erreur dans les paramètres -- liste « column » "
-"incorrecte pour une entrée statique"
+"make_package_view : erreur dans les paramètres - liste « column » incorrecte "
+"pour une entrée statique"
 
 #: src/pkg_view.cc:510
 msgid "make_package_view: bad argument!"
@@ -4571,7 +4569,7 @@ msgstr "Vous êtes déjà administrateur."
 msgid ""
 "Subprocess exited with an error -- did you type your password correctly?"
 msgstr ""
-"Le sous-processus s'est terminé avec une erreur -- avez-vous entré votre mot "
+"Le sous-processus s'est terminé avec une erreur - avez-vous entré votre mot "
 "de passe correctement ?"
 
 #: src/ui.cc:501
@@ -4700,11 +4698,11 @@ msgid ""
 "remove this directory and all its contents?  If you select \"No\", you will "
 "not see this message again."
 msgstr ""
-"Il semble que la version précédente d'aptitude a laissé traîner des fichiers "
-"dans %s. Ces fichiers sont sans doute inutiles et vous pouvez probablement "
-"les effacer sans risque.%n%n. Voulez-vous supprimer ce répertoire et tout ce "
-"qu'il contient ? Si vous répondez par la négative, cette question ne vous "
-"sera plus posée à l'avenir."
+"Il semble que la version précédente d'aptitude ait laissé traîner des "
+"fichiers dans %s. Ces fichiers sont sans doute inutiles et vous pouvez "
+"probablement les effacer sans risque.%n%n. Voulez-vous supprimer ce "
+"répertoire et tout ce qu'il contient ? Si vous répondez par la négative, "
+"cette question ne vous sera plus posée à l'avenir."
 
 #: src/ui.cc:1064
 msgid "Downloading packages"
@@ -4933,15 +4931,14 @@ msgid "Forget which packages are \"new\""
 msgstr "Oublier quels paquets sont « nouveaux »"
 
 #: src/ui.cc:1939
-#, fuzzy
 msgid "Canc^el pending actions"
-msgstr "Paquets dépendants de %s"
+msgstr "Annu^ler les actions en attente"
 
 #: src/ui.cc:1940
-#, fuzzy
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr ""
-"Effectuer toutes les actions d'installation ou de suppression demandées"
+"Abandonner toutes les installations, suppressions, gels de paquets et mises "
+"à jour en attente"
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"
@@ -5326,7 +5323,7 @@ msgstr "Parcourir les paquets par catégorie"
 
 #: src/ui.cc:2171
 msgid "^About"
-msgstr "A ^propos"
+msgstr "À ^propos"
 
 #: src/ui.cc:2172
 msgid "View information about this program"
@@ -5357,9 +5354,8 @@ msgid "View a list of frequently asked questions"
 msgstr "Afficher la liste des questions souvent posées"
 
 #: src/ui.cc:2186
-#, fuzzy
 msgid "^News"
-msgstr "Nouveau"
+msgstr "^Nouvelles"
 
 #: src/ui.cc:2187
 msgid "View the important changes made in each version of "
@@ -5512,27 +5508,3 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "NIVEAU SUPÉRIEUR"
-
-#~ msgid "^NEWS"
-#~ msgstr "^Nouveau"
-
-#~ msgid "1 install"
-#~ msgstr " 1 à installer"
-
-#~ msgid "1 removal"
-#~ msgstr " 1 à supprimer"
-
-#~ msgid "1 keep"
-#~ msgstr " 1 à conserver"
-
-#~ msgid "1 upgrade"
-#~ msgstr " 1 à mettre à jour"
-
-#~ msgid "1 downgrade"
-#~ msgstr " 1 vers version antérieure"
-
-#~ msgid "Encoding error in long description."
-#~ msgstr "Erreur d'encodage dans la description longue."
-
-#~ msgid "Search backwards for:"
-#~ msgstr "Recherche arrière de :"
