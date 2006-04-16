@@ -881,15 +881,15 @@ static void do_help_readme()
 {
   char buf[512];
 
-  snprintf(buf, 512, HELPDIR "/%s", _("README")); // README can be translated..
+  snprintf(buf, 512, HELPDIR "/%s", _("README")); // README can be translated...
 
-  const char *encoding=P_("Encoding of README|UTF-8");
+  const char *encoding=P_("Encoding of README|ISO_8859-1");
 
   // Deal with missing localized docs.
   if(access(buf, R_OK)!=0)
     {
       strncpy(buf, HELPDIR "/README", 512);
-      encoding="UTF-8";
+      encoding="ISO_8859-1";
     }
 
   vs_table_ref t      = vs_table::create();
