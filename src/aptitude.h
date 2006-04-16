@@ -29,8 +29,8 @@ inline void setlocale(int, const char *)
 # define _(Text) gettext (Text)
 # define N_(Text) Text
 
-/** Strips everything up to and includeing the first pipe character
- *  from the string.  Strings without a pipe character are unchanged.
+/** Strips everything up to and including the first pipe character
+ *  from the translated string.  Translations without a pipe character are unchanged.
  */
 #ifdef __GNUG__
 __attribute__ ((format_arg(1)))
@@ -41,7 +41,7 @@ inline const char *P_(const char *Text)
   const char * const stripto = strchr(translation, '|');
 
   if(stripto == NULL)
-    return Text;
+    return translation;
   else
     return stripto+1;
 }
@@ -53,7 +53,11 @@ inline const char *P_(const char *Text)
 # define textdomain(Domain) /* empty */
 # define _(Text) Text
 # define N_(Text) Text
-# define P_(Text) Text
+inline const char *P_(const char *Text)
+{
+  const char * const stripto = strchr(Text, '|');
+  return stripto+1;
+}
 # define gettext(Text) Text
 # define dgettext(Domain, Text) Text
 #endif
