@@ -629,6 +629,7 @@ bool cmdline_resolve_deps(pkgset &to_install,
 			loc=0;
 			response='Y';
 		      }
+// FIXME: translate Y, N
 		    switch(toupper(response[loc]))
 		      {
 		      case 'Y':
