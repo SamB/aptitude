@@ -323,7 +323,6 @@ public:
 		 state.generated_solutions);
     fragments.push_back(fragf("%s ", countstr.c_str()));
 
-    fragments.push_back(fragf(_("Suggest ")));
 
     vector<fragment *> suggestions;
 
@@ -357,8 +356,10 @@ public:
 							    downgrade_count),
 						   downgrade_count)));
 
-    fragments.push_back(join_fragments(suggestions,
-				       L","));
+    /* ForTranslators: %F is replaced with a comma separated list such as
+       "n1 installs, n2 removals", ...
+     */
+    fragments.push_back(fragf(_("Suggest %F"), join_fragments(suggestions, L", ")));
 
     if(state.background_thread_active)
       {
