@@ -1,8 +1,9 @@
 # translation of aptitude.eu.po to  Basque
 # This file is distributed under the same license as the PACKAGE package.
 # Inaki Larranaga Murgotio <dooteo@euskalgnu.org>, 2005.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER, 2005.
+# Piarres Beobide <pi@beobide.net>, 2006.
 #
+
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude.eu3\n"
@@ -125,11 +126,10 @@ msgstr ""
 "direnean"
 
 #: src/apt_options.cc:171
-#, fuzzy
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
-"Ez erakutsi abisua irakurtzseko soilik moduan aurreneko aldaketa egitean."
+"Ez erakutsi abisua aurreneko aldaketa irakurtzeko soilik moduan egitean."
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -1482,9 +1482,9 @@ msgid "No hierarchy information to edit"
 msgstr "Hierarkia-informaziorik ez editatzeko"
 
 #: src/edit_pkg_hier.cc:286
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "Ezin izan da idazteko ireki"
+msgstr "Ezin izan da \"%s\" idazteko ireki"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
@@ -2663,9 +2663,8 @@ msgid "You die...  --More--"
 msgstr "Hil egin zara...  --Gehiago--"
 
 #: src/mine/cmine.cc:478
-#, fuzzy
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
-msgstr "Iltzeak pozoituta zeuden!  Pozoia hilgarria zen..  -Gehiago--"
+msgstr "Iltzeak pozoituta zeuden!  Pozoia hilgarria zen...  -Gehiago--"
 
 #: src/mine/cmine.cc:481
 msgid "You land on a set of sharp iron spikes!  --More--"
@@ -3043,7 +3042,6 @@ msgstr ""
 " 'Base' sekzioko paketeak hasierako sistema-instalazioari dagokio."
 
 #: src/pkg_grouppolicy.cc:169
-#, fuzzy
 msgid ""
 "Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
@@ -4820,14 +4818,12 @@ msgid "Forget which packages are \"new\""
 msgstr "Ahaztu zein diren pakete \"berriak\""
 
 #: src/ui.cc:1939
-#, fuzzy
 msgid "Canc^el pending actions"
-msgstr "Honen mendeko paketeak: %s"
+msgstr "Egiteko dauden ekintzak utzi"
 
 #: src/ui.cc:1940
-#, fuzzy
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Instalatzeko/kentzeko dauden pakete guztiak instalatu/kendu"
+msgstr "Instalatzeko, kentzeko, hizozteko edo bertsio berritzeko  dauden pakete guztiak utzi."
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"
@@ -5186,7 +5182,7 @@ msgstr ""
 
 #: src/ui.cc:2152
 msgid "New ^Flat Package List"
-msgstr "Pakete-zerrenda ^laua berria"
+msgstr "Pakete-zerrenda ^lau berria"
 
 #: src/ui.cc:2153
 msgid "View all the packages on the system in a single uncategorized list"
@@ -5241,9 +5237,8 @@ msgid "View a list of frequently asked questions"
 msgstr "Maiz egiten diren galderen zerrenda bat ikusi"
 
 #: src/ui.cc:2186
-#, fuzzy
 msgid "^News"
-msgstr "Berria"
+msgstr "^Berriak"
 
 #: src/ui.cc:2187
 msgid "View the important changes made in each version of "
