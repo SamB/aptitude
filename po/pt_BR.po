@@ -5,12 +5,13 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-19 22:13+0100\n"
-"PO-Revision-Date: 2006-04-20 10:23-0300\n"
+"PO-Revision-Date: 2006-04-20 11:41-0300\n"
 "Last-Translator: André Luís Lopes <andrelop@debian.org>\n"
 "Language-Team: l10n portuguese <debian-l10n-portuguese@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
@@ -122,12 +123,11 @@ msgstr ""
 "removidos"
 
 #: src/apt_options.cc:171
-#, fuzzy
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 "Não exibir um aviso quando a primeira mudança é feita em modo somente-"
-"leitura."
+"leitura"
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -213,39 +213,39 @@ msgid "Suggest "
 msgstr "Sugere "
 
 #: src/broken_indicator.cc:331
-#, fuzzy, c-format
+#, c-format
 msgid "%d install"
 msgid_plural "%d installs"
 msgstr[0] "%d instalações"
 msgstr[1] "%d instalações"
 
 #: src/broken_indicator.cc:337
-#, fuzzy, c-format
+#, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
 msgstr[0] "%d remoções"
 msgstr[1] "%d remoções"
 
 #: src/broken_indicator.cc:343
-#, fuzzy, c-format
+#, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
 msgstr[0] "%d mantidos"
 msgstr[1] "%d mantidos"
 
 #: src/broken_indicator.cc:349
-#, fuzzy, c-format
+#, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
 msgstr[0] "%d atualizações"
 msgstr[1] "%d atualizações"
 
 #: src/broken_indicator.cc:355
-#, fuzzy, c-format
+#, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
-msgstr[0] "%d rebaixamentos"
-msgstr[1] "%d rebaixamentos"
+msgstr[0] "%d reversões"
+msgstr[1] "%d reversões"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1491,9 +1491,9 @@ msgid "No hierarchy information to edit"
 msgstr "Nenhuma informação de hierarquia a ser editada"
 
 #: src/edit_pkg_hier.cc:286
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "Não foi possível abrir para gravação"
+msgstr "Não foi possível abrir \"%s\" para gravação"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
@@ -2683,7 +2683,6 @@ msgid "You die...  --More--"
 msgstr "Você morreu...  --Mais--"
 
 #: src/mine/cmine.cc:478
-#, fuzzy
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
 msgstr "As estacas estavam envenenadas! O veneno foi mortal..  --Mais--"
 
@@ -3065,7 +3064,6 @@ msgstr ""
 " Pacotes na seção 'base' fazem parte da instalação inicial do sistema."
 
 #: src/pkg_grouppolicy.cc:169
-#, fuzzy
 msgid ""
 "Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
@@ -4841,14 +4839,13 @@ msgid "Forget which packages are \"new\""
 msgstr "Esquecer quais pacotes são \"novos\""
 
 #: src/ui.cc:1939
-#, fuzzy
 msgid "Canc^el pending actions"
-msgstr "Pacotes que dependem de %s"
+msgstr "Canc^elar ações pendentes"
 
 #: src/ui.cc:1940
-#, fuzzy
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Executar todas as instalações e remoções pendentes"
+msgstr ""
+"Cancelar todas as instalações, remoções, holds e atualizações pendentes."
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"
@@ -5266,9 +5263,8 @@ msgid "View a list of frequently asked questions"
 msgstr "Visualizar uma lista de perguntas feitas freqüentemente"
 
 #: src/ui.cc:2186
-#, fuzzy
 msgid "^News"
-msgstr "Novo"
+msgstr "Notícias"
 
 #: src/ui.cc:2187
 msgid "View the important changes made in each version of "
