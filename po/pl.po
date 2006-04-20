@@ -1,18 +1,20 @@
 # Polish translation for Aptitude.
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # Micha³ Politowski <l10n@mp.pl.eu.org>, 2001.
-#
+# Bartosz Feñski <fenio@debian.org>, 2006
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-19 22:13+0100\n"
-"PO-Revision-Date: 2005-11-15 12:45+0100\n"
+"PO-Revision-Date: 2006-04-20 08:46+0200\n"
 "Last-Translator: Micha³ Politowski <l10n@mp.pl.eu.org>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3;  plural=n==1 ? 0 :  n%10>=2 && n%10<=4 && (n%"
+"100<10 || n%100>=20) ? 1 : 2;\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
@@ -117,7 +119,6 @@ msgid ""
 msgstr "Usuwanie informacji o nowo¶ciach przy instalacji/usuwaniu pakietów"
 
 #: src/apt_options.cc:171
-#, fuzzy
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr "Pominiêcie ostrze¿enia po pierwszej zmianie w trybie tylko do odczytu"
@@ -201,42 +202,47 @@ msgstr "B³±d wewnêtrzny: niespodziewane puste rozwi±zanie."
 
 #: src/broken_indicator.cc:326
 msgid "Suggest "
-msgstr "Sugerowane: "
+msgstr "Sugerowane "
 
 #: src/broken_indicator.cc:331
-#, fuzzy, c-format
+#, c-format
 msgid "%d install"
 msgid_plural "%d installs"
-msgstr[0] "instalacje: %d"
-msgstr[1] "instalacje: %d"
+msgstr[0] "%d instalacja"
+msgstr[1] "%d instalacje"
+msgstr[2] "%d instalacji"
 
 #: src/broken_indicator.cc:337
-#, fuzzy, c-format
+#, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
-msgstr[0] "usuniêcia: %d"
-msgstr[1] "usuniêcia: %d"
+msgstr[0] "%d usuniêcie"
+msgstr[1] "%d usuniêcia"
+msgstr[2] "%d usuniêæ"
 
 #: src/broken_indicator.cc:343
-#, fuzzy, c-format
+#, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
-msgstr[0] "zatrzymania: %d"
-msgstr[1] "zatrzymania: %d"
+msgstr[0] "%d zatrzymanie"
+msgstr[1] "%d zatrzymania"
+msgstr[2] "%d zatrzymañ"
 
 #: src/broken_indicator.cc:349
-#, fuzzy, c-format
+#, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
-msgstr[0] "uaktualnienia: %d"
-msgstr[1] "uaktualnienia: %d"
+msgstr[0] "%d uaktualnienie"
+msgstr[1] "%d uaktualnienia"
+msgstr[2] "%d uaktualnieñ"
 
 #: src/broken_indicator.cc:355
-#, fuzzy, c-format
+#, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
-msgstr[0] "cofniêcia: %d"
-msgstr[1] "cofniêcia: %d"
+msgstr[0] "%d cofniêcie"
+msgstr[1] "%d cofniêcia"
+msgstr[2] "%d cofniêæ"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1467,9 +1473,9 @@ msgid "No hierarchy information to edit"
 msgstr "Nie ma informacji o hierarchii do edycji"
 
 #: src/edit_pkg_hier.cc:286
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "Nie mo¿na otworzyæ do zapisu"
+msgstr "Nie mo¿na otworzyæ \"%s\" do zapisu"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
@@ -2629,9 +2635,8 @@ msgid "You die...  --More--"
 msgstr "Giniesz...  --Dalej--"
 
 #: src/mine/cmine.cc:478
-#, fuzzy
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
-msgstr "Kolce by³y zatrute! Zabójcz± trucizn±...  --Dalej--"
+msgstr "Kolce by³y zatrute!  Trucizna by³a ¶miertelna...  --Dalej--"
 
 #: src/mine/cmine.cc:481
 msgid "You land on a set of sharp iron spikes!  --More--"
@@ -3007,7 +3012,6 @@ msgstr ""
 " Pakiety w sekcji \"base\" s± czê¶ci± podstawowej instalacji systemu."
 
 #: src/pkg_grouppolicy.cc:169
-#, fuzzy
 msgid ""
 "Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
@@ -4773,14 +4777,14 @@ msgid "Forget which packages are \"new\""
 msgstr "Usuwa informacje, które pakiety s± nowe"
 
 #: src/ui.cc:1939
-#, fuzzy
 msgid "Canc^el pending actions"
-msgstr "Pakiety zale¿ne od %s"
+msgstr "Anuluj z^aplanowane zadania"
 
 #: src/ui.cc:1940
-#, fuzzy
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Przeprowadza zaplanowane instalacje/usuniêcia"
+msgstr ""
+"Anuluje wszystkie zaplanowane instalacje, usuniêcia, wstrzymania i "
+"uaktualnienia."
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"
@@ -5191,13 +5195,12 @@ msgid "View a list of frequently asked questions"
 msgstr "Wy¶wietla najczê¶ciej zadawane pytania na temat Aptitude"
 
 #: src/ui.cc:2186
-#, fuzzy
 msgid "^News"
-msgstr "Nowy"
+msgstr "^Nowo¶ci"
 
 #: src/ui.cc:2187
 msgid "View the important changes made in each version of "
-msgstr "Wy¶wietla najwa¿niejsze zmiany w kolejnych wersjach programu"
+msgstr "Wy¶wietla najwa¿niejsze zmiany w kolejnych wersjach "
 
 #: src/ui.cc:2190
 msgid "^License"
