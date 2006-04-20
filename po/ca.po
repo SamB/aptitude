@@ -1,6 +1,6 @@
 # aptitude translation to Catalan.
-# Copyright (C) 2005 Free Software Foundation, Inc.
-# Aleix Badia i Bosch <a.badia@callusdigital.org>, 2005.
+# Copyright (C) 2006 Free Software Foundation, Inc.
+# Aleix Badia i Bosch <a.badia@callusdigital.org>, 2005,2006.
 # Josep Monés i Teixidor <jmones@puntbarra.com>, 2004.
 # Jordi Mallach <jordi@debian.org>, 2004.
 msgid ""
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude_0.2.13-2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-19 22:13+0100\n"
-"PO-Revision-Date: 2005-12-30 17:26+0100\n"
+"PO-Revision-Date: 2006-04-20 08:19+0200\n"
 "Last-Translator: Aleix Badia i Bosch <a.badia@callusdigital.org>\n"
 "Language-Team: Catalan <debian-l10n-catalan@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -130,12 +130,9 @@ msgstr ""
 "paquets"
 
 #: src/apt_options.cc:171
-#, fuzzy
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
-msgstr ""
-"No mostris un avís en produir-se la primera modificació en el mode només-"
-"lectura."
+msgstr "No mostris un avís en produir-se la primera modificació en el mode només-lectura."
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -1499,9 +1496,9 @@ msgid "No hierarchy information to edit"
 msgstr "No hi ha informació de la jerarquia a editar"
 
 #: src/edit_pkg_hier.cc:286
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "No s'ha pogut obrir per a l'escriptura"
+msgstr "No s'ha pogut obrir \"%s\" per a l'escriptura"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
@@ -2696,7 +2693,6 @@ msgid "You die...  --More--"
 msgstr "Us heu mort... --Més--"
 
 #: src/mine/cmine.cc:478
-#, fuzzy
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
 msgstr "Les punxes eren verinoses!  El verí era mortal..  --Més--"
 
@@ -3083,7 +3079,6 @@ msgstr ""
 "inicial."
 
 #: src/pkg_grouppolicy.cc:169
-#, fuzzy
 msgid ""
 "Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
@@ -3093,12 +3088,7 @@ msgid ""
 "control cellular phones, interface with FidoNet, and run a BBS."
 msgstr ""
 "Programes per a faxmòdems i d'altres dispositius de comunicació\n"
-" Els paquets de la secció 'comm' s'utilitzen per al control dels mòdems i "
-"d'altres dispositius de comunicació. S'inclou el control dels faxmòdems (per "
-"exemple, PPP per a les connexions a internet de marcatge directe i programes "
-"desenvolupats inicialment amb aquest propòsit (zmodem/kermit), com també "
-"programari per controlar telèfons mòbils, interfícies del FidoNet i per "
-"executar una BBS."
+" Els paquets de la secció 'comm' s'utilitzen per al control dels mòdems i d'altres dispositius de comunicació. S'inclou el control dels faxmòdems (per exemple, PPP per a les connexions a internet de marcatge directe i programes desenvolupats inicialment amb aquest propòsit (zmodem/kermit), com també programari per controlar telèfons mòbils, interfícies del FidoNet i per executar una BBS."
 
 #: src/pkg_grouppolicy.cc:170
 msgid ""
@@ -4876,14 +4866,12 @@ msgid "Forget which packages are \"new\""
 msgstr "Oblida quins paquets són \"nous\""
 
 #: src/ui.cc:1939
-#, fuzzy
 msgid "Canc^el pending actions"
-msgstr "Paquets que depenen de %s"
+msgstr "Canc^el·la pes accions pendents"
 
 #: src/ui.cc:1940
-#, fuzzy
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Realitza totes les instal·lacions i supressions pendents"
+msgstr "Cancel·la totes les instal·lacions, supressions, congelacions i actualitzacions pendents."
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"
@@ -5303,9 +5291,8 @@ msgid "View a list of frequently asked questions"
 msgstr "Mostra una llista de les preguntes més freqüents"
 
 #: src/ui.cc:2186
-#, fuzzy
 msgid "^News"
-msgstr "Nou"
+msgstr "^Notícies"
 
 #: src/ui.cc:2187
 msgid "View the important changes made in each version of "
