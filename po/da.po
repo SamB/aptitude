@@ -6,15 +6,16 @@
 # Claus Hindsgaul <claus_h@image.dk>, 2004.
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude 0.3.5\n"
+"Project-Id-Version: aptitude-0.4.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-19 22:13+0100\n"
-"PO-Revision-Date: 2005-10-26 15:11+0200\n"
+"PO-Revision-Date: 2006-04-27 17:38+0200\n"
 "Last-Translator: Morten Bo Johansen <mojo@mbjnet.dk>\n"
-"Language-Team: Danish <dansk@klid.dk>\n"
+"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
@@ -125,12 +126,11 @@ msgstr ""
 "Glem hvilke pakker der er \"nye\", når pakker installeres eller afinstalleres"
 
 #: src/apt_options.cc:171
-#, fuzzy
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 "Vis ikke en advarsel når den første ændring er lavet i skrivebeskyttet "
-"tilstand."
+"tilstand"
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -211,35 +211,35 @@ msgid "Suggest "
 msgstr "Foreslår "
 
 #: src/broken_indicator.cc:331
-#, fuzzy, c-format
+#, c-format
 msgid "%d install"
 msgid_plural "%d installs"
 msgstr[0] "%d til installering"
 msgstr[1] "%d til installering"
 
 #: src/broken_indicator.cc:337
-#, fuzzy, c-format
+#, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
 msgstr[0] "%d til afinstallering"
 msgstr[1] "%d til afinstallering"
 
 #: src/broken_indicator.cc:343
-#, fuzzy, c-format
+#, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
 msgstr[0] "%d beholdes"
 msgstr[1] "%d beholdes"
 
 #: src/broken_indicator.cc:349
-#, fuzzy, c-format
+#, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
 msgstr[0] "%d til opgradering"
 msgstr[1] "%d til opgradering"
 
 #: src/broken_indicator.cc:355
-#, fuzzy, c-format
+#, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
 msgstr[0] "%d nedgraderinger"
@@ -1476,9 +1476,9 @@ msgid "No hierarchy information to edit"
 msgstr "ingen oplysning om hierarki at redigere"
 
 #: src/edit_pkg_hier.cc:286
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "Kunne ikke åbne til skrivning"
+msgstr "Kunne ikke åbne \"%s\" til skrivning"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
@@ -2624,9 +2624,8 @@ msgid "You die...  --More--"
 msgstr "Du dør...  --Mere--"
 
 #: src/mine/cmine.cc:478
-#, fuzzy
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
-msgstr "Sylene var forgiftede! Giften var dødelig..  --Mere--"
+msgstr "Sylene var forgiftede! Giften var dødelig ...  --Mere--"
 
 #: src/mine/cmine.cc:481
 msgid "You land on a set of sharp iron spikes!  --More--"
@@ -3005,7 +3004,6 @@ msgstr ""
 " Pakker i afsnittet \"base\" bruges ved den første systeminstallering."
 
 #: src/pkg_grouppolicy.cc:169
-#, fuzzy
 msgid ""
 "Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
@@ -4766,14 +4764,14 @@ msgid "Forget which packages are \"new\""
 msgstr "Glem hvilke pakker der er \"nye\""
 
 #: src/ui.cc:1939
-#, fuzzy
 msgid "Canc^el pending actions"
-msgstr "Pakker der afhænger af %s"
+msgstr "Fortr^yd alle afventende handlinger"
 
 #: src/ui.cc:1940
-#, fuzzy
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Udfør alle afventende installeringer og afinstalleringer"
+msgstr ""
+"Fortryd alle afventende installeringer, afinstalleringer, tilbageholdelser "
+"og opgraderinger."
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"
@@ -5185,9 +5183,8 @@ msgid "View a list of frequently asked questions"
 msgstr "Vis en liste over ofte stillede spørgsmål"
 
 #: src/ui.cc:2186
-#, fuzzy
 msgid "^News"
-msgstr "Nye"
+msgstr "^Nye"
 
 #: src/ui.cc:2187
 msgid "View the important changes made in each version of "
@@ -5338,27 +5335,3 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "ØVERSTE NIVEAU"
-
-#~ msgid "^NEWS"
-#~ msgstr "^NYHEDER"
-
-#~ msgid "1 install"
-#~ msgstr "1 til installering"
-
-#~ msgid "1 removal"
-#~ msgstr "1 til afinstallering"
-
-#~ msgid "1 keep"
-#~ msgstr "1 beholdes"
-
-#~ msgid "1 upgrade"
-#~ msgstr "1 til opgradering"
-
-#~ msgid "1 downgrade"
-#~ msgstr "1 til nedgradering"
-
-#~ msgid "Encoding error in long description."
-#~ msgstr "Indkodningsfejl i lang beskrivelse."
-
-#~ msgid "Search backwards for:"
-#~ msgstr "Søg baglæns efter:"
