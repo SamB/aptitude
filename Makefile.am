@@ -18,7 +18,7 @@ EXTRA_DIST = config.rpath  ChangeLog.SVN Doxyfile.in FAQ README.i18n README.SMAR
 
 pkgdatadir=$(datadir)/$(PACKAGE)
 
-pkgdata_DATA = $(TLHELPTXTS) COPYING NEWS \
+pkgdata_DATA = $(TLHELPTXTS) COPYING NEWS FAQ \
 	function_groups function_pkgs aptitude-defaults
 
 install-data-local:
