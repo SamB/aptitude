@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.2.15.5\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-19 22:13+0100\n"
-"PO-Revision-Date: 2006-04-12 22:44+0200\n"
+"Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
+"POT-Creation-Date: 2006-05-21 01:08+0200\n"
+"PO-Revision-Date: 2006-05-21 01:59+0200\n"
 "Last-Translator: Jens Seidel <jensseidel@users.sf.net>\n"
 "Language-Team: Debian German <debian-l10n-german@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -206,45 +206,44 @@ msgstr "[%d(%d)/...] Löse Abhängigkeiten auf"
 msgid "Internal error: unexpected null solution."
 msgstr "Interner Fehler: unerwartete Null-Lösung."
 
-#: src/broken_indicator.cc:326
-msgid "Suggest "
-msgstr "Schlage vor "
-
-#: src/broken_indicator.cc:331
+#: src/broken_indicator.cc:330
 #, c-format
 msgid "%d install"
 msgid_plural "%d installs"
 msgstr[0] "%d Installation"
 msgstr[1] "%d Installationen"
 
-#: src/broken_indicator.cc:337
+#: src/broken_indicator.cc:336
 #, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
 msgstr[0] "%d Entfernung"
 msgstr[1] "%d Entfernungen"
 
-#: src/broken_indicator.cc:343
+#: src/broken_indicator.cc:342
 #, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
 msgstr[0] "%d Beibehaltung"
 msgstr[1] "%d Beibehaltungen"
 
-#: src/broken_indicator.cc:349
+#: src/broken_indicator.cc:348
 #, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
 msgstr[0] "%d Aktualisierung"
 msgstr[1] "%d Aktualisierungen"
 
-#: src/broken_indicator.cc:355
+#: src/broken_indicator.cc:354
 #, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
 msgstr[0] "%d Deaktualisierung"
 msgstr[1] "%d Deaktualisierungen"
 
+#. ForTranslators: %F is replaced with a comma separated list such as
+#. "n1 installs, n2 removals", ...
+#.
 #: src/broken_indicator.cc:362
 #, c-format
 msgid "Suggest %F"
@@ -256,8 +255,8 @@ msgid ""
 "Note: \"%s\", providing the virtual package\n"
 "      \"%s\", is already installed.\n"
 msgstr ""
-"Hinweis: »%s«, stellt das virtuelle Paket\n"
-"      »%s« bereit, und ist bereits installiert.\n"
+"Hinweis: »%s« stellt das virtuelle Paket\n"
+"      »%s« bereit und ist bereits installiert.\n"
 
 #: src/cmdline/cmdline_action.cc:44
 #, c-format
@@ -265,8 +264,8 @@ msgid ""
 "Note: \"%s\", providing the virtual package\n"
 "      \"%s\", is already going to be installed.\n"
 msgstr ""
-"Hinweis: »%s«, stellt das virtuelle Paket\n"
-"      »%s« bereit, und wird ohnehin installiert.\n"
+"Hinweis: »%s« stellt das virtuelle Paket\n"
+"      »%s« bereit und wird ohnehin installiert.\n"
 
 #: src/cmdline/cmdline_action.cc:62
 #, c-format
@@ -350,7 +349,7 @@ msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
 "packages contain \"%s\" in their name.\n"
 msgstr ""
-"Konnte Paket »%s« nicht finden, und mehr als 40 Pakete\n"
+"Konnte Paket »%s« nicht finden und mehr als 40 Pakete\n"
 "enthalten »%s« in ihrem Namen:\n"
 
 #: src/cmdline/cmdline_action.cc:289
@@ -1107,7 +1106,7 @@ msgstr "Die folgenden Aktionen werden diese Abhängigkeiten auflösen:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Diese Lösung akzeptieren? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:647
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Alle Anstrengungen diese Abhängigkeiten aufzulösen aufgegeben."
 
@@ -1129,15 +1128,15 @@ msgstr ""
 "Es wurde in der zugewiesenen Zeit keine Lösung gefunden. Stärker suchen? [Y/"
 "n]"
 
-#: src/cmdline/cmdline_resolver.cc:650
+#: src/cmdline/cmdline_resolver.cc:651
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Ungültige Antwort. Bitte geben Sie »y« oder »n« ein."
 
-#: src/cmdline/cmdline_resolver.cc:659
+#: src/cmdline/cmdline_resolver.cc:660
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Abhängigkeiten können nicht aufgelöst werden! Gebe auf ..."
 
-#: src/cmdline/cmdline_resolver.cc:665
+#: src/cmdline/cmdline_resolver.cc:666
 msgid "*** No more solutions available ***"
 msgstr "*** Keine weiteren Lösungen vorhanden ***"
 
@@ -2739,7 +2738,7 @@ msgid ""
 "Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --"
 "More--"
 msgstr ""
-"Klick! Sie lösen eine rollende Felsbrocken-Falle aus! Sie wurden von einem "
+"Klick! Sie lösen eine rollende Felsbrockenfalle aus! Sie wurden von einem "
 "Felsen getroffen! --Mehr--"
 
 # auskommentiert
@@ -2791,7 +2790,7 @@ msgstr "Ihre Wand aus %s bricht auseinander und explodiert! --Mehr--"
 # auskommentiert
 #: src/mine/cmine.cc:549
 msgid "You are jolted by a surge of electricity!  --More--"
-msgstr "Sie werden durch ein elektrischen Stromschlag aufgeschreckt! --Mehr--"
+msgstr "Sie werden durch einen elektrischen Stromschlag aufgeschreckt! --Mehr--"
 
 # (Verb for "enter" in computer contexts appears to be "eingeben", which makes
 #  some sense..)
@@ -3269,9 +3268,9 @@ msgid ""
 msgstr ""
 "Bibliotheken\n"
 " Pakete im Bereich »libs« stellen notwendige Programmroutinen für andere "
-"Software auf dem Rechner zur Verfügung. Bis auf wenige Ausnahmefälle "
-"sollten Sie nichts aus diesem Bereich manuell installieren müssen. Das "
-"Paketsystem wird diese Pakete nach Bedarf installieren."
+"Software auf dem Rechner zur Verfügung. Bis auf wenige Ausnahmefälle sollten "
+"Sie nichts aus diesem Bereich manuell installieren müssen. Das Paketsystem "
+"wird diese Pakete nach Bedarf installieren."
 
 #: src/pkg_grouppolicy.cc:183
 msgid ""
@@ -3544,12 +3543,12 @@ msgstr ""
 "Programme, die US-Exportbeschränkungen unterliegen\n"
 " Pakete im Abschnitt »non-us« enthalten oft Verschlüsselungstechnik; einige "
 "implementieren patentierte Algorithmen. Deswegen können diese Pakete nicht "
-"aus den Vereinigten Staaten exportiert werden, und werden auf Servern in der "
+"aus den Vereinigten Staaten exportiert werden und werden auf Servern in der "
 "»freien Welt« vorgehalten.\n"
 " .\n"
 " Hinweis: Nach der Lockerung der Exportbeschränkungen übernimmt das Debian-"
-"Projekt derzeit Kryptographie-Software in den »main«-Baum. Viele Pakete, "
-"die früher in »non-us« beheimatet waren, sind jetzt »main«."
+"Projekt derzeit Kryptographie-Software in den »main«-Baum. Viele Pakete, die "
+"früher in »non-us« beheimatet waren, sind jetzt »main«."
 
 #: src/pkg_grouppolicy.cc:204
 msgid ""
@@ -3658,9 +3657,9 @@ msgid ""
 msgstr ""
 "Veraltete und selbst erstellte Pakete\n"
 " Diese Pakete sind im Moment auf Ihrem Rechner installiert, können aber von "
-"keiner bekannten APT-Quelle heruntergeladen werden. Es handelt sich "
-"entweder um veraltete Pakete, die aus dem Debian-Archiv entfernt wurden, "
-"oder um Pakete, die Sie selbst erstellt haben."
+"keiner bekannten APT-Quelle heruntergeladen werden. Es handelt sich entweder "
+"um veraltete Pakete, die aus dem Debian-Archiv entfernt wurden, oder um "
+"Pakete, die Sie selbst erstellt haben."
 
 #: src/pkg_grouppolicy.cc:335
 msgid ""
@@ -3751,7 +3750,7 @@ msgid ""
 msgstr ""
 "Pakete, die aufgrund nicht erfüllter Abhängigkeiten gelöscht werden\n"
 " Diese Pakete werden entfernt, weil eine oder mehrere ihrer Abhängigkeiten "
-"nicht mehr verfügbar sind, oder weil ein Konflikt mit einem anderen Paket "
+"nicht mehr verfügbar sind oder weil ein Konflikt mit einem anderen Paket "
 "besteht."
 
 #: src/pkg_grouppolicy.cc:538
@@ -4216,7 +4215,7 @@ msgid ""
 "installed version:"
 msgstr ""
 "Die folgenden Pakete hängen von einer anderen Version von %B%s%b als der "
-"momentan installierten (%B%s%b) ab, oder kollidieren mit der momentan "
+"momentan installierten (%B%s%b) ab oder kollidieren mit der momentan "
 "installierten:"
 
 #: src/reason_fragment.cc:519
@@ -4577,7 +4576,7 @@ msgid ""
 msgstr ""
 "Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%nFür Aptitude gibt es %"
 "BKEINE GEWÄHR ODER GARANTIE%b; Details dazu finden Sie im Punkt »Lizenz« im "
-"Hilfe-Menü. Dieses Programm ist Freie Software, und Sie sind eingeladen, es "
+"Hilfe-Menü. Dieses Programm ist Freie Software und Sie sind eingeladen, es "
 "unter bestimmten Bedingungen weiterzuvertreiben; Details dazu finden Sie "
 "ebenfalls unter »Lizenz«."
 
@@ -4594,7 +4593,7 @@ msgid "README"
 msgstr "README"
 
 #: src/ui.cc:886
-msgid "Encoding of README|UTF-8"
+msgid "Encoding of README|ISO_8859-1"
 msgstr "ISO_8859-1"
 
 #: src/ui.cc:912
