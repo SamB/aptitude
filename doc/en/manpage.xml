@@ -453,8 +453,7 @@
 
 	  <para>
 	    Unless you pass the <link
-	    linkend='cmdlineOptionFormat'><arg
-	    choice='plain'>-F</arg></link> option, the output of
+	    linkend='cmdlineOptionFormat'><option>-F</option></link> option, the output of
 	    <literal>aptitude search</literal> will look something
 	    like this:
 	  </para>
@@ -871,7 +870,7 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
       </varlistentry>
 
       <varlistentry>
-	<term><literal>-q<arg choice='opt'>=<replaceable>n</replaceable></arg></literal>, <literal>--quiet<arg choice='opt'>=<replaceable>n</replaceable></arg></literal></term>
+	<term><literal>-q<optional>=<replaceable>n</replaceable></optional></literal>, <literal>--quiet<optional>=<replaceable>n</replaceable></optional></literal></term>
 
 	<listitem>
 	  <para>
@@ -1044,6 +1043,7 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
   <refsect1>
     <title>Environment</title>
 
+    <variablelist>
     <varlistentry>
       <term><literal>HOME</literal></term>
 
@@ -1097,6 +1097,7 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 	</para>
       </listitem>
     </varlistentry>
+    </variablelist>
   </refsect1>
 
   <refsect1>
