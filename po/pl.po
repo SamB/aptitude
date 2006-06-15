@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3.3\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-19 22:13+0100\n"
+"Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
+"POT-Creation-Date: 2006-06-14 20:19-0700\n"
 "PO-Revision-Date: 2006-04-20 08:46+0200\n"
 "Last-Translator: Micha³ Politowski <l10n@mp.pl.eu.org>\n"
 "Language-Team: Polish\n"
@@ -200,11 +200,7 @@ msgstr "[%d(%d)/...] Rozwi±zywanie problemów"
 msgid "Internal error: unexpected null solution."
 msgstr "B³±d wewnêtrzny: niespodziewane puste rozwi±zanie."
 
-#: src/broken_indicator.cc:326
-msgid "Suggest "
-msgstr "Sugerowane "
-
-#: src/broken_indicator.cc:331
+#: src/broken_indicator.cc:330
 #, c-format
 msgid "%d install"
 msgid_plural "%d installs"
@@ -212,7 +208,7 @@ msgstr[0] "%d instalacja"
 msgstr[1] "%d instalacje"
 msgstr[2] "%d instalacji"
 
-#: src/broken_indicator.cc:337
+#: src/broken_indicator.cc:336
 #, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
@@ -220,7 +216,7 @@ msgstr[0] "%d usuniêcie"
 msgstr[1] "%d usuniêcia"
 msgstr[2] "%d usuniêæ"
 
-#: src/broken_indicator.cc:343
+#: src/broken_indicator.cc:342
 #, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
@@ -228,7 +224,7 @@ msgstr[0] "%d zatrzymanie"
 msgstr[1] "%d zatrzymania"
 msgstr[2] "%d zatrzymañ"
 
-#: src/broken_indicator.cc:349
+#: src/broken_indicator.cc:348
 #, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
@@ -236,13 +232,21 @@ msgstr[0] "%d uaktualnienie"
 msgstr[1] "%d uaktualnienia"
 msgstr[2] "%d uaktualnieñ"
 
-#: src/broken_indicator.cc:355
+#: src/broken_indicator.cc:354
 #, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
 msgstr[0] "%d cofniêcie"
 msgstr[1] "%d cofniêcia"
 msgstr[2] "%d cofniêæ"
+
+#. ForTranslators: %F is replaced with a comma separated list such as
+#. "n1 installs, n2 removals", ...
+#.
+#: src/broken_indicator.cc:362
+#, fuzzy, c-format
+msgid "Suggest %F"
+msgstr "Sugerowane "
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1068,7 +1072,7 @@ msgstr "Nastêpuj±ce dzia³ania rozwi±¿± problemy z zale¿no¶ciami:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Zaakceptowaæ rozwi±zanie? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:647
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Porzucono próby rozwi±zania problemów z zale¿no¶ciami."
 
@@ -1089,15 +1093,15 @@ msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Nie znaleziono rozwi±zañ przed up³ywem limitu czasu. Próbowaæ dalej? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:650
+#: src/cmdline/cmdline_resolver.cc:651
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Nieprawid³owa odpowied¼. Proszê wpisaæ \"y\" lub \"n\"."
 
-#: src/cmdline/cmdline_resolver.cc:659
+#: src/cmdline/cmdline_resolver.cc:660
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Nie mo¿na rozwi±zaæ problemów z zale¿no¶ciami!"
 
-#: src/cmdline/cmdline_resolver.cc:665
+#: src/cmdline/cmdline_resolver.cc:666
 msgid "*** No more solutions available ***"
 msgstr "*** Nie ma wiêcej rozwi±zañ ***"
 
@@ -4489,7 +4493,8 @@ msgid "README"
 msgstr "README"
 
 #: src/ui.cc:886
-msgid "Encoding of README|UTF-8"
+#, fuzzy
+msgid "Encoding of README|ISO_8859-1"
 msgstr "Encoding of README|UTF-8"
 
 #: src/ui.cc:912

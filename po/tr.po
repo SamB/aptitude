@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-19 22:13+0100\n"
+"Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
+"POT-Creation-Date: 2006-06-14 20:19-0700\n"
 "PO-Revision-Date: 2005-11-19 23:00+0200\n"
 "Last-Translator: Erçin EKER <ercin.eker@linux.org.tr>\n"
 "Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -206,39 +206,43 @@ msgstr "[%d(%d)/...] Bağımlılıklar çözümleniyor"
 msgid "Internal error: unexpected null solution."
 msgstr "Dahili Hata: beklenmeyen boş çözüm."
 
-#: src/broken_indicator.cc:326
-msgid "Suggest "
-msgstr "Teklif edilenler "
-
-#: src/broken_indicator.cc:331
+#: src/broken_indicator.cc:330
 #, fuzzy, c-format
 msgid "%d install"
 msgid_plural "%d installs"
 msgstr[0] "%d kurulum"
 
-#: src/broken_indicator.cc:337
+#: src/broken_indicator.cc:336
 #, fuzzy, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
 msgstr[0] "%d kaldırılacak"
 
-#: src/broken_indicator.cc:343
+#: src/broken_indicator.cc:342
 #, fuzzy, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
 msgstr[0] "%d tutulacak"
 
-#: src/broken_indicator.cc:349
+#: src/broken_indicator.cc:348
 #, fuzzy, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
 msgstr[0] "%d güncellenecek"
 
-#: src/broken_indicator.cc:355
+#: src/broken_indicator.cc:354
 #, fuzzy, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
 msgstr[0] "%d eski sürümü kurulacak"
+
+#. ForTranslators: %F is replaced with a comma separated list such as
+#. "n1 installs, n2 removals", ...
+#.
+#: src/broken_indicator.cc:362
+#, fuzzy, c-format
+msgid "Suggest %F"
+msgstr "Teklif edilenler "
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1062,7 +1066,7 @@ msgstr "Aşağıdaki paketler bu bağımlılıkları karşılayacak:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Çözümü kabul et? [E/h/i/?]"
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:647
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Bağımlılıkları çözmek için yapılan işlemler iptal ediliyor."
 
@@ -1082,15 +1086,15 @@ msgstr "Geçersiz yanıt. Lütfen şu komutları kullanın: "
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "Belirlenmiş sürede çözüm bulunamadı. Denemeye devam et? [E/h]"
 
-#: src/cmdline/cmdline_resolver.cc:650
+#: src/cmdline/cmdline_resolver.cc:651
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Geçersiz yanıt. lütfen 'e' veya 'h' girin."
 
-#: src/cmdline/cmdline_resolver.cc:659
+#: src/cmdline/cmdline_resolver.cc:660
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Başımlılık çözülemiyor! Vazgeçiliyor..."
 
-#: src/cmdline/cmdline_resolver.cc:665
+#: src/cmdline/cmdline_resolver.cc:666
 #, fuzzy
 msgid "*** No more solutions available ***"
 msgstr "Başka çözüm yok."
@@ -4473,7 +4477,8 @@ msgid "README"
 msgstr "BENİOKU"
 
 #: src/ui.cc:886
-msgid "Encoding of README|UTF-8"
+#, fuzzy
+msgid "Encoding of README|ISO_8859-1"
 msgstr "UTF-8"
 
 #: src/ui.cc:912

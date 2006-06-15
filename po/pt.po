@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-19 22:13+0100\n"
+"Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
+"POT-Creation-Date: 2006-06-14 20:19-0700\n"
 "PO-Revision-Date: 2005-12-18 15:49+0000\n"
 "Last-Translator: Miguel Figueiredo <elmig@debianPT.org>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
@@ -211,44 +211,48 @@ msgstr "[%d(%d)/...] Resolver dependências"
 msgid "Internal error: unexpected null solution."
 msgstr "Erro interno: solução nula não esperada."
 
-#: src/broken_indicator.cc:326
-msgid "Suggest "
-msgstr "Sugere "
-
-#: src/broken_indicator.cc:331
+#: src/broken_indicator.cc:330
 #, c-format
 msgid "%d install"
 msgid_plural "%d installs"
 msgstr[0] "%d instalação"
 msgstr[1] "%d instalações"
 
-#: src/broken_indicator.cc:337
+#: src/broken_indicator.cc:336
 #, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
 msgstr[0] "%d remoção"
 msgstr[1] "%d remoções"
 
-#: src/broken_indicator.cc:343
+#: src/broken_indicator.cc:342
 #, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
 msgstr[0] "%d mantido"
 msgstr[1] "%d mantidos"
 
-#: src/broken_indicator.cc:349
+#: src/broken_indicator.cc:348
 #, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
 msgstr[0] "%d actualização"
 msgstr[1] "%d actualizações"
 
-#: src/broken_indicator.cc:355
+#: src/broken_indicator.cc:354
 #, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
 msgstr[0] "%d downgrade"
 msgstr[1] "%d downgrades"
+
+#. ForTranslators: %F is replaced with a comma separated list such as
+#. "n1 installs, n2 removals", ...
+#.
+#: src/broken_indicator.cc:362
+#, fuzzy, c-format
+msgid "Suggest %F"
+msgstr "Sugere "
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1088,7 +1092,7 @@ msgstr "As seguintes acções irão resolver estas dependências:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Aceitar esta solução? [Y/n/q?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:647
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Abandonar todos os esforços para resolver estas dependências."
 
@@ -1108,15 +1112,15 @@ msgstr "Resposta inválida; por favor introduza um dos seguintes comandos:"
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "Sem solução encontrada dentro do tempo alocado.  Tentar melhor? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:650
+#: src/cmdline/cmdline_resolver.cc:651
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Resposta inválida; por favor introduza 'y' ou 'n'."
 
-#: src/cmdline/cmdline_resolver.cc:659
+#: src/cmdline/cmdline_resolver.cc:660
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Não foi possível resolver dependências!  A desistir..."
 
-#: src/cmdline/cmdline_resolver.cc:665
+#: src/cmdline/cmdline_resolver.cc:666
 msgid "*** No more solutions available ***"
 msgstr "*** Sem mais soluções disponíveis***"
 
@@ -3084,11 +3088,11 @@ msgid ""
 msgstr ""
 "Programas para faxmodems e outros dispositivos de comunicação\n"
 " Pacotes na secção 'comm' são usados para controlar modems e outros "
-"dispositivos de hardware de comunicação. Isto inclui software para "
-"controlar faxmodems (por exemplo, ligações PPP ou ligações internet de "
-"acesso telefónico e programas originalmente escritos para este propósito, "
-"tal como o zmodem/kermit), bem como software para controlar telemóveis, "
-"interfaces com a FidoNet e correr uma BBS."
+"dispositivos de hardware de comunicação. Isto inclui software para controlar "
+"faxmodems (por exemplo, ligações PPP ou ligações internet de acesso "
+"telefónico e programas originalmente escritos para este propósito, tal como "
+"o zmodem/kermit), bem como software para controlar telemóveis, interfaces "
+"com a FidoNet e correr uma BBS."
 
 #: src/pkg_grouppolicy.cc:170
 msgid ""
@@ -4562,7 +4566,8 @@ msgid "README"
 msgstr "README"
 
 #: src/ui.cc:886
-msgid "Encoding of README|UTF-8"
+#, fuzzy
+msgid "Encoding of README|ISO_8859-1"
 msgstr "Codificação de README|UTF-8"
 
 #: src/ui.cc:912
@@ -4861,7 +4866,9 @@ msgstr "Canc^elar acções pendentes"
 
 #: src/ui.cc:1940
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Cancelar todas as instalações pendentes, remoções, suspensos (hold) e upgrades."
+msgstr ""
+"Cancelar todas as instalações pendentes, remoções, suspensos (hold) e "
+"upgrades."
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"

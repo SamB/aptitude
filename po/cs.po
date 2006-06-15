@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the Aptitude package.
 # Miroslav Kure <kurem@debian.cz>, 2004-2006.
 #
-#: src/view_changelog.cc:226
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
-"Report-Msgid-Bugs-To: submit@bugs.debian.org\n"
-"POT-Creation-Date: 2006-02-22 19:56+0100\n"
+"Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
+"POT-Creation-Date: 2006-06-14 20:19-0700\n"
 "PO-Revision-Date: 2006-02-22 20:05+0100\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -122,8 +121,9 @@ msgid ""
 msgstr "Zapomenout seznam \"nových\" balíků při každé (od)instalaci balíků"
 
 #: src/apt_options.cc:171
+#, fuzzy
 msgid ""
-"Do not display a warning when the first change is made in read-only mode."
+"Do not display a warning when the first change is made in read-only mode"
 msgstr "Nezobrazovat varování při první změně v režimu pouze pro čtení."
 
 #: src/apt_options.cc:174
@@ -201,11 +201,7 @@ msgstr "[%d(%d)/...] Řeším závislosti"
 msgid "Internal error: unexpected null solution."
 msgstr "Vnitřní chyba: neočekávané prázdné řešení."
 
-#: src/broken_indicator.cc:326
-msgid "Suggest "
-msgstr "Návrh "
-
-#: src/broken_indicator.cc:331
+#: src/broken_indicator.cc:330
 #, c-format
 msgid "%d install"
 msgid_plural "%d installs"
@@ -213,7 +209,7 @@ msgstr[0] "%d instalace"
 msgstr[1] "%d instalace"
 msgstr[2] "%d instalací"
 
-#: src/broken_indicator.cc:337
+#: src/broken_indicator.cc:336
 #, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
@@ -221,7 +217,7 @@ msgstr[0] "%d odstranění"
 msgstr[1] "%d odstranění"
 msgstr[2] "%d odstranění"
 
-#: src/broken_indicator.cc:343
+#: src/broken_indicator.cc:342
 #, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
@@ -229,7 +225,7 @@ msgstr[0] "%d ponechání"
 msgstr[1] "%d ponechání"
 msgstr[2] "%d ponechání"
 
-#: src/broken_indicator.cc:349
+#: src/broken_indicator.cc:348
 #, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
@@ -237,13 +233,21 @@ msgstr[0] "%d aktualizace"
 msgstr[1] "%d aktualizace"
 msgstr[2] "%d aktualizací"
 
-#: src/broken_indicator.cc:355
+#: src/broken_indicator.cc:354
 #, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
 msgstr[0] "%d degradace"
 msgstr[1] "%d degradace"
 msgstr[2] "%d degradací"
+
+#. ForTranslators: %F is replaced with a comma separated list such as
+#. "n1 installs, n2 removals", ...
+#.
+#: src/broken_indicator.cc:362
+#, fuzzy, c-format
+msgid "Suggest %F"
+msgstr "Návrh "
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1063,7 +1067,7 @@ msgstr "Následující akce vyřeší tyto závislosti:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Přijmout toto řešení? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:647
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Končím všechny snahy na vyřešení těchto závislostí."
 
@@ -1083,15 +1087,15 @@ msgstr "Chybná odpověď; zadejte některý z následujících příkazů:"
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "V přiděleném čase nebylo nalezeno řešení. Zkusit důkladněji? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:650
+#: src/cmdline/cmdline_resolver.cc:651
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Chybná odpověď; zadejte 'y' nebo 'n'."
 
-#: src/cmdline/cmdline_resolver.cc:659
+#: src/cmdline/cmdline_resolver.cc:660
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Nemohu vyřešit závislosti! Vzdávám se..."
 
-#: src/cmdline/cmdline_resolver.cc:665
+#: src/cmdline/cmdline_resolver.cc:666
 msgid "*** No more solutions available ***"
 msgstr "*** Žádná další řešení nejsou dostupná ***"
 
@@ -2604,7 +2608,8 @@ msgid "You die...  --More--"
 msgstr "Umíráš...  --Více--"
 
 #: src/mine/cmine.cc:478
-msgid "The spikes were poisoned!  The poison was deadly..  --More--"
+#, fuzzy
+msgid "The spikes were poisoned!  The poison was deadly...  --More--"
 msgstr "Bodce jsou otrávené! Otrava je smrtelná...  --Více--"
 
 #: src/mine/cmine.cc:481
@@ -2867,22 +2872,27 @@ msgstr "nic"
 msgid "Unknown"
 msgstr "Neznámé"
 
+#. ForTranslators: Imp = Important
 #: src/pkg_columnizer.cc:338 src/pkg_ver_item.cc:354
 msgid "Imp"
 msgstr "Důl"
 
+#. ForTranslators: Req = Required
 #: src/pkg_columnizer.cc:340 src/pkg_ver_item.cc:357
 msgid "Req"
 msgstr "Vyž"
 
+#. ForTranslators: Std = Standard
 #: src/pkg_columnizer.cc:342 src/pkg_ver_item.cc:360
 msgid "Std"
 msgstr "Std"
 
+#. ForTranslators: Opt = Optional
 #: src/pkg_columnizer.cc:344 src/pkg_ver_item.cc:363
 msgid "Opt"
 msgstr "Vol"
 
+#. ForTranslators: Xtr = Extra
 #: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:366
 msgid "Xtr"
 msgstr "Xtr"
@@ -2911,6 +2921,7 @@ msgstr "Na disku se uvolní %sB"
 msgid "DL Size: %sB"
 msgstr "Stáhnu: %sB"
 
+#. ForTranslators: Hostname
 #: src/pkg_columnizer.cc:478
 msgid "HN too long"
 msgstr "Příliš dlouhé jméno"
@@ -2977,8 +2988,9 @@ msgstr ""
 " Balíky ze sekce 'base' jsou součástí minimální instalace systému."
 
 #: src/pkg_grouppolicy.cc:169
+#, fuzzy
 msgid ""
-"Programs for faxmodems and other communications devices\n"
+"Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
 "hardware communications devices. This includes software to control faxmodems "
 "(for instance, PPP for dial-up internet connections and programs originally "
@@ -4423,7 +4435,8 @@ msgid "README"
 msgstr "README.cs"
 
 #: src/ui.cc:886
-msgid "Encoding of README|UTF-8"
+#, fuzzy
+msgid "Encoding of README|ISO_8859-1"
 msgstr "Encoding of README|UTF-8"
 
 #: src/ui.cc:912
@@ -5125,8 +5138,9 @@ msgid "View a list of frequently asked questions"
 msgstr "Zobrazí seznam často kladených otázek"
 
 #: src/ui.cc:2186
-msgid "^NEWS"
-msgstr "^Novinky"
+#, fuzzy
+msgid "^News"
+msgstr "Nový"
 
 #: src/ui.cc:2187
 msgid "View the important changes made in each version of "
@@ -5231,16 +5245,16 @@ msgstr "Neznámý formátovací vzor: '%lc'"
 msgid "Bad format parameter"
 msgstr "Chybný formátovací parametr"
 
-#: src/vscreen/config/keybindings.cc:332
+#: src/vscreen/config/keybindings.cc:333
 #, c-format
 msgid "Cannot parse key description: %ls"
 msgstr "Nemohu zpracovat popis klávesy: %ls"
 
-#: src/vscreen/config/keybindings.cc:342
+#: src/vscreen/config/keybindings.cc:343
 msgid "Invalid null keybinding"
 msgstr "Neplatná prázdná klávesová zkratka"
 
-#: src/vscreen/config/keybindings.cc:350
+#: src/vscreen/config/keybindings.cc:351
 msgid "Sorry, control modifiers may not be used with unprintable characters"
 msgstr "Lituji, modifikátory nemohou být použity s netisknutelnými znaky"
 
@@ -5273,6 +5287,9 @@ msgstr "Nemohu načíst soubor: řetězec %ls nemá vícebajtovou reprezentaci."
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "NEJVYŠŠÍ ÚROVEŇ"
+
+#~ msgid "^NEWS"
+#~ msgstr "^Novinky"
 
 #~ msgid "1 install"
 #~ msgstr "instalovat 1"

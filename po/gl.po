@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-19 22:13+0100\n"
+"Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
+"POT-Creation-Date: 2006-06-14 20:19-0700\n"
 "PO-Revision-Date: 2006-03-06 16:49+0100\n"
 "Last-Translator: Jacobo Tarrío <jtarrio@debian.org>\n"
 "Language-Team: Galician <trasno@ceu.fi.udc.es>\n"
@@ -204,44 +204,48 @@ msgstr "[%d(%d)/...] A resolver as dependencias"
 msgid "Internal error: unexpected null solution."
 msgstr "Erro interno: non se esperaba unha solución nula."
 
-#: src/broken_indicator.cc:326
-msgid "Suggest "
-msgstr "Suxírese "
-
-#: src/broken_indicator.cc:331
+#: src/broken_indicator.cc:330
 #, c-format
 msgid "%d install"
 msgid_plural "%d installs"
 msgstr[0] "%d instalación"
 msgstr[1] "%d instalacións"
 
-#: src/broken_indicator.cc:337
+#: src/broken_indicator.cc:336
 #, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
 msgstr[0] "%d eliminación"
 msgstr[1] "%d eliminacións"
 
-#: src/broken_indicator.cc:343
+#: src/broken_indicator.cc:342
 #, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
 msgstr[0] "%d conservado"
 msgstr[1] "%d conservados"
 
-#: src/broken_indicator.cc:349
+#: src/broken_indicator.cc:348
 #, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
 msgstr[0] "%d actualización"
 msgstr[1] "%d actualizacións"
 
-#: src/broken_indicator.cc:355
+#: src/broken_indicator.cc:354
 #, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
 msgstr[0] "%d desactualización"
 msgstr[1] "%d desactualizacións"
+
+#. ForTranslators: %F is replaced with a comma separated list such as
+#. "n1 installs, n2 removals", ...
+#.
+#: src/broken_indicator.cc:362
+#, fuzzy, c-format
+msgid "Suggest %F"
+msgstr "Suxírese "
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1075,7 +1079,7 @@ msgstr "As seguintes accións han resolver estas dependencias:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "¿Aceptar esta solución? [S/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:647
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Abandónanse tódolos esforzos por resolver estas dependencias."
 
@@ -1095,15 +1099,15 @@ msgstr "Resposta non válida; introdza unha das seguintes ordes:"
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "Non se atopou unha solución no tempo asignado. ¿Seguir probando? [S/n]"
 
-#: src/cmdline/cmdline_resolver.cc:650
+#: src/cmdline/cmdline_resolver.cc:651
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Resposta non válida; introduza \"s\" ou \"n\"."
 
-#: src/cmdline/cmdline_resolver.cc:659
+#: src/cmdline/cmdline_resolver.cc:660
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "¡Non se puideron resolver as dependencias! A desistir..."
 
-#: src/cmdline/cmdline_resolver.cc:665
+#: src/cmdline/cmdline_resolver.cc:666
 msgid "*** No more solutions available ***"
 msgstr "*** Non hai máis solucións ***"
 
@@ -4531,7 +4535,8 @@ msgid "README"
 msgstr "README"
 
 #: src/ui.cc:886
-msgid "Encoding of README|UTF-8"
+#, fuzzy
+msgid "Encoding of README|ISO_8859-1"
 msgstr "Codificación de README|UTF-8"
 
 #: src/ui.cc:912

@@ -3,12 +3,11 @@
 # Inaki Larranaga Murgotio <dooteo@euskalgnu.org>, 2005.
 # Piarres Beobide <pi@beobide.net>, 2006.
 #
-
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude.eu3\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-19 22:13+0100\n"
+"Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
+"POT-Creation-Date: 2006-06-14 20:19-0700\n"
 "PO-Revision-Date: 2006-01-23 13:27+0100\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: <itzulpena@euskalgnu.org>\n"
@@ -209,44 +208,48 @@ msgstr "[%d(%d)/...] Mendekotasunak ebaztea"
 msgid "Internal error: unexpected null solution."
 msgstr "Barne-errorea: ustegabeko 'null' emaitza."
 
-#: src/broken_indicator.cc:326
-msgid "Suggest "
-msgstr "Iradokizuna "
-
-#: src/broken_indicator.cc:331
+#: src/broken_indicator.cc:330
 #, c-format
 msgid "%d install"
 msgid_plural "%d installs"
 msgstr[0] "%d instalatu"
 msgstr[1] "%d instalatu"
 
-#: src/broken_indicator.cc:337
+#: src/broken_indicator.cc:336
 #, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
 msgstr[0] "%d kendu"
 msgstr[1] "%d kendu"
 
-#: src/broken_indicator.cc:343
+#: src/broken_indicator.cc:342
 #, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
 msgstr[0] "%d mantendu"
 msgstr[1] "%d mantendu"
 
-#: src/broken_indicator.cc:349
+#: src/broken_indicator.cc:348
 #, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
 msgstr[0] "%d eguneratu"
 msgstr[1] "%d eguneratu"
 
-#: src/broken_indicator.cc:355
+#: src/broken_indicator.cc:354
 #, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
 msgstr[0] "%d aurreko bertsiora itzuli"
 msgstr[1] "%d aurreko bertsiora itzuli"
+
+#. ForTranslators: %F is replaced with a comma separated list such as
+#. "n1 installs, n2 removals", ...
+#.
+#: src/broken_indicator.cc:362
+#, fuzzy, c-format
+msgid "Suggest %F"
+msgstr "Iradokizuna "
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1080,7 +1083,7 @@ msgstr "Honako ekintzek mendekotasun hauek konponduko dituzte:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Onartu irtenbide hau? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:647
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Mendekotasun hauek ebazteko ahalegin guztiak bertan behera uzten."
 
@@ -1100,15 +1103,15 @@ msgstr "Erantzun baliogabea. Sartu hurrengo komendoetariko bat:"
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "Ez da irtenbiderik aurkitu emandako denboran. Sakonago saiatu? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:650
+#: src/cmdline/cmdline_resolver.cc:651
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Erantzun baliogabea. Sakatu 'y' edo 'n'."
 
-#: src/cmdline/cmdline_resolver.cc:659
+#: src/cmdline/cmdline_resolver.cc:660
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Ezin da mendekotasunak ebatzi. Bertan behera uzten..."
 
-#: src/cmdline/cmdline_resolver.cc:665
+#: src/cmdline/cmdline_resolver.cc:666
 msgid "*** No more solutions available ***"
 msgstr "*** Ez dago irtenbide gehiagorik. ***"
 
@@ -4529,7 +4532,8 @@ msgid "README"
 msgstr "README"
 
 #: src/ui.cc:886
-msgid "Encoding of README|UTF-8"
+#, fuzzy
+msgid "Encoding of README|ISO_8859-1"
 msgstr "READMEren kodeketa|UTF-8"
 
 #: src/ui.cc:912
@@ -4823,7 +4827,9 @@ msgstr "Egiteko dauden ekintzak utzi"
 
 #: src/ui.cc:1940
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Instalatzeko, kentzeko, hizozteko edo bertsio berritzeko  dauden pakete guztiak utzi."
+msgstr ""
+"Instalatzeko, kentzeko, hizozteko edo bertsio berritzeko  dauden pakete "
+"guztiak utzi."
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"

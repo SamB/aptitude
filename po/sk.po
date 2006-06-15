@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-19 22:13+0100\n"
+"Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
+"POT-Creation-Date: 2006-06-14 20:19-0700\n"
 "PO-Revision-Date: 2006-03-11 19:41+0100\n"
 "Last-Translator: Peter Mann <Peter.Mann@tuke.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -204,11 +204,7 @@ msgstr "[%d(%d)/...] Riešenie závislostí"
 msgid "Internal error: unexpected null solution."
 msgstr "Interná chyba: neočakávané prázdne riešenie."
 
-#: src/broken_indicator.cc:326
-msgid "Suggest "
-msgstr "Navrhuje"
-
-#: src/broken_indicator.cc:331
+#: src/broken_indicator.cc:330
 #, c-format
 msgid "%d install"
 msgid_plural "%d installs"
@@ -216,7 +212,7 @@ msgstr[0] "%d inštalovaný"
 msgstr[1] "%d inštalované"
 msgstr[2] "%d inštalovaných"
 
-#: src/broken_indicator.cc:337
+#: src/broken_indicator.cc:336
 #, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
@@ -224,7 +220,7 @@ msgstr[0] "%d odstránenie"
 msgstr[1] "%d odstránenia"
 msgstr[2] "%d odstránení"
 
-#: src/broken_indicator.cc:343
+#: src/broken_indicator.cc:342
 #, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
@@ -232,7 +228,7 @@ msgstr[0] "%d ponechanie"
 msgstr[1] "%d ponechania"
 msgstr[2] "%d ponechaní"
 
-#: src/broken_indicator.cc:349
+#: src/broken_indicator.cc:348
 #, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
@@ -240,13 +236,21 @@ msgstr[0] "%d aktualizácia"
 msgstr[1] "%d aktualizácie"
 msgstr[2] "%d aktualizácií"
 
-#: src/broken_indicator.cc:355
+#: src/broken_indicator.cc:354
 #, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
 msgstr[0] "%d degradovaný"
 msgstr[1] "%d degradované"
 msgstr[2] "%d degradovaných"
+
+#. ForTranslators: %F is replaced with a comma separated list such as
+#. "n1 installs, n2 removals", ...
+#.
+#: src/broken_indicator.cc:362
+#, fuzzy, c-format
+msgid "Suggest %F"
+msgstr "Navrhuje"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1075,7 +1079,7 @@ msgstr "Nasledujúce akcie vyriešia tieto závislosti:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Schváliť toto riešenie? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:647
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Ukončovanie všetkého úsilia na vyriešenie týchto závislostí."
 
@@ -1096,15 +1100,15 @@ msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Počas prideleného času sa nenašlo žiadne riešenie. Skúsiť dôkladnejšie? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:650
+#: src/cmdline/cmdline_resolver.cc:651
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Chybná odpoveď; prosím zadajte 'y' alebo 'n'."
 
-#: src/cmdline/cmdline_resolver.cc:659
+#: src/cmdline/cmdline_resolver.cc:660
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Nemožnosť vyriešenia závislostí! Vzdávam sa..."
 
-#: src/cmdline/cmdline_resolver.cc:665
+#: src/cmdline/cmdline_resolver.cc:666
 msgid "*** No more solutions available ***"
 msgstr "*** Žiadne ďalšie riešenia ***"
 
@@ -3017,11 +3021,10 @@ msgid ""
 msgstr ""
 "Programy na faxmodemy a iné komunikačné zariadenia\n"
 " Balíky zo sekcie 'comm' sa používajú na ovládanie modemov a ďalších "
-"komunikačných zariadení. To zahŕňa softvér na ovládanie faxmodemov "
-"(napr. PPP na vytáčané pripojenie k Internetu a programy pôvodne "
-"napísané pre ten účel, ako napr. zmodem/kermit), a taktiež aj programy na "
-"ovládanie mobilných telefónov, rozhranie k FidoNetu, alebo prevádzkovanie "
-"BBS."
+"komunikačných zariadení. To zahŕňa softvér na ovládanie faxmodemov (napr. "
+"PPP na vytáčané pripojenie k Internetu a programy pôvodne napísané pre ten "
+"účel, ako napr. zmodem/kermit), a taktiež aj programy na ovládanie mobilných "
+"telefónov, rozhranie k FidoNetu, alebo prevádzkovanie BBS."
 
 #: src/pkg_grouppolicy.cc:170
 msgid ""
@@ -4456,7 +4459,8 @@ msgid "README"
 msgstr "README.sk"
 
 #: src/ui.cc:886
-msgid "Encoding of README|UTF-8"
+#, fuzzy
+msgid "Encoding of README|ISO_8859-1"
 msgstr "Kódovanie README|UTF-8"
 
 #: src/ui.cc:912
@@ -4748,7 +4752,8 @@ msgstr "Zrušiť čakajúce akcie"
 
 #: src/ui.cc:1940
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Zruší všetky čakajúce inštalácie, odstránenia, podržania a aktualizácie."
+msgstr ""
+"Zruší všetky čakajúce inštalácie, odstránenia, podržania a aktualizácie."
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"
