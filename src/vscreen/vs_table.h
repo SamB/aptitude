@@ -123,15 +123,15 @@ private:
    */
   void get_col_contents(std::vector<std::vector<child_info *> > col_contents);
 
-  void vs_table::alloc_ideal_widths(std::vector<int> &col_sizes);
-  void vs_table::expand_widths(std::vector<int> &col_sizes, int target_w);
-  void vs_table::shrink_widths(std::vector<int> &col_sizes, int target_w);
-  void vs_table::alloc_ideal_heights(std::vector<int> &row_sizes,
+  void alloc_ideal_widths(std::vector<int> &col_sizes);
+  void expand_widths(std::vector<int> &col_sizes, int target_w);
+  void shrink_widths(std::vector<int> &col_sizes, int target_w);
+  void alloc_ideal_heights(std::vector<int> &row_sizes,
 				     const std::vector<int> &col_sizes);
-  void vs_table::expand_heights(std::vector<int> &row_sizes, int target_h);
-  void vs_table::shrink_heights(std::vector<int> &row_sizes, int target_h);
-  void vs_table::alloc_child_sizes(const std::vector<int> &col_sizes,
-				   const std::vector<int> &row_sizes);
+  void expand_heights(std::vector<int> &row_sizes, int target_h);
+  void shrink_heights(std::vector<int> &row_sizes, int target_h);
+  void alloc_child_sizes(const std::vector<int> &col_sizes,
+			 const std::vector<int> &row_sizes);
 
 
 

@@ -75,7 +75,7 @@ public:
 
   void dispatch_mouse(short id, int x, int y, int z, mmask_t bstate);
 
-  vs_widget_ref vs_stacked::get_focus();
+  vs_widget_ref get_focus();
 
   void show_all();
 

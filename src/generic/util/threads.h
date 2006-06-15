@@ -1,6 +1,6 @@
 // threads.h                                              -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005-2006 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -586,7 +586,7 @@ namespace threads
      *  performed.
      */
     template<typename Mutator>
-    void box::update(const Mutator &m);
+    void update(const Mutator &m);
   };
 
   /** A box specialized for 'void'; may make it easier to write
@@ -621,7 +621,7 @@ namespace threads
     bool timed_put(const timespec &until);
 
     template<typename Mutator>
-    void box::update(const Mutator &m)
+    void update(const Mutator &m)
     {
       take();
       try

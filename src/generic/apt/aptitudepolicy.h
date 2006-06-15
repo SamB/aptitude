@@ -17,7 +17,7 @@
 class aptitudePolicy:public pkgPolicy
 {
 public:
-  aptitudePolicy::aptitudePolicy(pkgCache *Owner)
+  aptitudePolicy(pkgCache *Owner)
     :pkgPolicy(Owner) {}
 
   bool IsImportantDep(pkgCache::DepIterator dep);
