@@ -2,7 +2,7 @@
 
 SUBDIRS=images
 
-EXTRA_DIST=aptitude.xml manpage.xml fixman
+EXTRA_DIST=fixman
 LANGCODE=fr
 MANPAGE=aptitude.$(LANGCODE).8
 
@@ -14,7 +14,11 @@ docdir=$(datadir)/doc/$(PACKAGE)
 # Automake automagically distributes README without asking..
 README=README.$(LANGCODE)
 
+if USE_PO4A
 all-local: doc-stamp
+else
+all-local:
+endif
 
 clean-local:
 	-rm -fr output-html/ output-txt/ output-man/
@@ -32,6 +36,12 @@ install-data-hook:
 
 doc-stamp: doc-html-stamp doc-css-stamp $(README) $(MANPAGE)
 	touch doc-stamp
+
+aptitude.xml: $(srcdir)/../en/aptitude.xml $(srcdir)/../po4a/po/$(LANGCODE).po $(srcdir)/../po4a/add_$(LANGCODE)/addendum.1.$(LANGCODE)
+	po4a-translate -M utf-8 -f docbook -m $(srcdir)/../en/aptitude.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l aptitude.xml
+
+manpage.xml: $(srcdir)/../en/manpage.xml $(srcdir)/../po4a/po/$(LANGCODE).po $(srcdir)/../po4a/add_$(LANGCODE)/addendum.1.$(LANGCODE)
+	po4a-translate -M utf-8 -f docbook -m $(srcdir)/../en/manpage.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l manpage.xml
 
 $(MANPAGE): aptitude.xml manpage.xml $(srcdir)/../aptitude-man.xsl
 	-rm -fr output-man

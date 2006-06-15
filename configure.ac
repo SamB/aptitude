@@ -10,6 +10,13 @@ AC_LANG([C++])
 dnl Checks for programs.
 AC_PROG_CXX
 AC_PROG_RANLIB
+dnl Checks for programs.
+AC_PATH_PROG(PO4A, po4a)
+if test "x$PO4A" = "x" ; then
+  AM_CONDITIONAL(USE_PO4A, false)
+else
+  AM_CONDITIONAL(USE_PO4A, true)
+fi
 
 dnl C++ has const and inline!!!
 ac_cv_c_const=yes
@@ -257,6 +264,9 @@ AC_CONFIG_FILES([
 	doc/fi/images/Makefile
 	doc/fr/Makefile
 	doc/fr/images/Makefile
+	doc/po4a/Makefile
+	doc/po4a/po/Makefile
+	doc/po4a/add_fr/Makefile
 	m4/Makefile
 	po/Makefile.in
 	src/Makefile
