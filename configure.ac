@@ -264,6 +264,8 @@ AC_CONFIG_FILES([
 	doc/fi/images/Makefile
 	doc/fr/Makefile
 	doc/fr/images/Makefile
+	doc/ja/Makefile
+	doc/ja/images/Makefile
 	doc/po4a/Makefile
 	doc/po4a/po/Makefile
 	doc/po4a/add_fr/Makefile
