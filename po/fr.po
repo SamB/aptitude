@@ -1,20 +1,22 @@
+# translation of fr-new.po to French
 # French translation of aptitude messages
-# Copyright (C) 2001, 2004, 2005 Free Software Foundation, Inc.
-# Martin Quinson <mquinson@ens-lyon.fr>, 2001.
-# Christian Perrier <bubulle@debian.org>, 2004.
+# Copyright (C) 2001, 2004, 2005, 2006 Free Software Foundation, Inc.
 #
+# Martin Quinson <mquinson@ens-lyon.fr>, 2001.
+# Christian Perrier <bubulle@debian.org>, 2004, 2006.
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude 0.4.1\n"
+"Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-06-14 20:19-0700\n"
-"PO-Revision-Date: 2006-03-15 15:26+0100\n"
+"PO-Revision-Date: 2006-06-16 06:50+0200\n"
 "Last-Translator: Jean-Luc Coulon <jean-luc.coulon@wanadoo.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Generator: KBabel 1.11.2\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
@@ -109,26 +111,22 @@ msgid "Display a preview of what will be done before doing it"
 msgstr "Afficher une prévisualisation de ce qui sera fait avant de le faire"
 
 #: src/apt_options.cc:165
-msgid ""
-"Forget which packages are \"new\" whenever the package lists are updated"
+msgid "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr "Oublier quels paquets sont nouveaux lors des mises à jour des listes"
 
 #: src/apt_options.cc:168
-msgid ""
-"Forget which packages are \"new\" whenever packages are installed or removed"
+msgid "Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr "Oublier quels paquets sont nouveaux à l'installation ou la suppression"
 
 #: src/apt_options.cc:171
-msgid ""
-"Do not display a warning when the first change is made in read-only mode"
+msgid "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 "Ne pas afficher de message d'avertissement lorsque la première modification "
 "est faite en mode lecture seule."
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
-msgstr ""
-"Avertir de l'utilisation d'un compte non root pour une action privilégiée"
+msgstr "Avertir de l'utilisation d'un compte non root pour une action privilégiée"
 
 #: src/apt_options.cc:177
 msgid "File to log actions into"
@@ -239,9 +237,9 @@ msgstr[1] " %d vers version antérieure"
 #. "n1 installs, n2 removals", ...
 #.
 #: src/broken_indicator.cc:362
-#, fuzzy, c-format
+#, c-format
 msgid "Suggest %F"
-msgstr "Suggère : "
+msgstr "Suggère %F"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -481,8 +479,7 @@ msgstr "Il n'y a vraiment pas d'oeufs de Pâques dans ce programme.\n"
 
 #: src/cmdline/cmdline_moo.cc:22
 #, c-format
-msgid ""
-"Didn't I already tell you that there are no Easter Eggs in this program?\n"
+msgid "Didn't I already tell you that there are no Easter Eggs in this program?\n"
 msgstr ""
 "Ne vous ai-je pas déjà dit qu'il n'y avait pas d'oeufs de Pâques dans ce "
 "programme ?\n"
@@ -495,8 +492,7 @@ msgstr "Arrêtez donc !\n"
 #: src/cmdline/cmdline_moo.cc:28
 #, c-format
 msgid "Okay, okay, if I give you an Easter Egg, will you go away?\n"
-msgstr ""
-"D'accord, d'accord, si je vous donne un oeuf de Pâques, vous en irez-vous ?\n"
+msgstr "D'accord, d'accord, si je vous donne un oeuf de Pâques, vous en irez-vous ?\n"
 
 #: src/cmdline/cmdline_moo.cc:31
 #, c-format
@@ -734,8 +730,7 @@ msgstr "Après dépaquetage, %so seront libérés.\n"
 #: src/cmdline/cmdline_prompt.cc:613
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
-msgstr ""
-"Aucun paquet à afficher - indiquez les noms de paquets à la suite de « i ».\n"
+msgstr "Aucun paquet à afficher - indiquez les noms de paquets à la suite de « i ».\n"
 
 #: src/cmdline/cmdline_prompt.cc:615
 msgid "Press Return to continue."
@@ -744,8 +739,7 @@ msgstr "Appuyez sur Entrée pour continuer."
 #: src/cmdline/cmdline_prompt.cc:641
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
-msgstr ""
-"Aucun paquet trouvé - indiquez les noms de paquets à la suite de « c ».\n"
+msgstr "Aucun paquet trouvé - indiquez les noms de paquets à la suite de « c ».\n"
 
 #: src/cmdline/cmdline_prompt.cc:645
 msgid "Press Return to continue"
@@ -813,8 +807,7 @@ msgid "'+' to install packages"
 msgstr "« + » pour installer des paquets"
 
 #: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:186
-msgid ""
-"'+M' to install packages and immediately flag them as automatically installed"
+msgid "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "« +M » pour installer des paquets et les marquer aussitôt comme ayant été "
 "installés automatiquement."
@@ -832,16 +825,14 @@ msgid "'=' to place packages on hold"
 msgstr "« = » pour conserver des paquets"
 
 #: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:194
-msgid ""
-"':' to keep packages in their current state without placing them on hold"
+msgid "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 "« : » pour conserver les paquets dans leur état actuel sans les mettre dans "
 "l'état conservé (« hold »)"
 
 #: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
-msgstr ""
-"« &M » pour marquer des paquets comme ayant été installés automatiquement"
+msgstr "« &M » pour marquer des paquets comme ayant été installés automatiquement"
 
 #: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:198
 msgid "'&m' to mark packages as manually installed"
@@ -998,8 +989,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:182
 msgid "adjust the state of the listed packages, where ACTION is one of:"
-msgstr ""
-"ajuster l'état des paquets affichés, où ACTION est l'une des suivantes :"
+msgstr "ajuster l'état des paquets affichés, où ACTION est l'une des suivantes :"
 
 #: src/cmdline/cmdline_resolver.cc:200
 msgid ""
@@ -1099,8 +1089,7 @@ msgstr "Accepter cette solution ? [Y/n/q/?] "
 
 #: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
 msgid "Abandoning all efforts to resolve these dependencies."
-msgstr ""
-"Abandon de tous les efforts pour rechercher une solution à ces dépendances."
+msgstr "Abandon de tous les efforts pour rechercher une solution à ces dépendances."
 
 #: src/cmdline/cmdline_resolver.cc:579
 msgid "The following commands are available:"
@@ -1393,8 +1382,7 @@ msgstr "Impossible de trouver la version « %s » du paquet « %s »\n"
 #: src/cmdline/cmdline_util.cc:117
 #, c-format
 msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
-msgstr ""
-"Erreur interne : la valeur incorrecte %i a été passée à cmdline_find_ver !\n"
+msgstr "Erreur interne : la valeur incorrecte %i a été passée à cmdline_find_ver !\n"
 
 #: src/cmdline/cmdline_util.cc:147
 #, c-format
@@ -1418,8 +1406,7 @@ msgstr "Marqueurs"
 #: src/download_bar.cc:49 src/download_list.cc:335 src/download_screen.cc:56
 #, c-format
 msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr ""
-"Veuillez insérer le disque dont le nom est « %s » dans le lecteur « %s »"
+msgstr "Veuillez insérer le disque dont le nom est « %s » dans le lecteur « %s »"
 
 #: src/download_bar.cc:66 src/generic/apt/acqprogress.cc:65
 msgid "Hit "
@@ -1639,8 +1626,7 @@ msgstr ""
 "faire ne sera conservée."
 
 #: src/generic/apt/download_install_manager.cc:53
-msgid ""
-"The package cache is not available; unable to download and install packages."
+msgid "The package cache is not available; unable to download and install packages."
 msgstr ""
 "Le cache des paquets n'est pas disponible ; impossible de télécharger et "
 "d'installer des paquets."
@@ -1652,8 +1638,7 @@ msgstr "Impossible de bloquer le répertoire des listes... Êtes-vous root ? "
 
 #: src/generic/apt/download_install_manager.cc:86
 msgid "Internal error: couldn't generate list of packages to download"
-msgstr ""
-"Erreur interne : impossible de créer la liste des paquets à télécharger"
+msgstr "Erreur interne : impossible de créer la liste des paquets à télécharger"
 
 #: src/generic/apt/download_install_manager.cc:121
 msgid "Unable to correct for unavailable packages"
@@ -1664,8 +1649,7 @@ msgid "A package failed to install.  Trying to recover:"
 msgstr "Échec de l'installation d'un paquet. Tentative de réparation : "
 
 #: src/generic/apt/download_install_manager.cc:165
-msgid ""
-"Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
+msgid "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr ""
 "Impossible de récupérer le verrou système ! (il est possible qu'un autre "
 "processus apt ou dpkg soit en cours)"
@@ -1937,8 +1921,7 @@ msgstr ""
 
 #: src/generic/apt/pkg_acqfile.cc:99
 #, c-format
-msgid ""
-"The package index files are corrupted. No Filename: field for package %s."
+msgid "The package index files are corrupted. No Filename: field for package %s."
 msgstr ""
 "Les fichiers d'index des paquets sont corrompus. Pas de champ « Filename » "
 "pour le paquet %s "
@@ -2005,8 +1988,7 @@ msgstr "Lecture des descriptions de tâches"
 #: src/generic/util/temp.cc:142
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
-msgstr ""
-"Création impossible du répertoire temporaire à partir du modèle « %s » : %s"
+msgstr "Création impossible du répertoire temporaire à partir du modèle « %s » : %s"
 
 #: src/generic/util/temp.cc:137
 msgid "Unknown error"
@@ -2080,8 +2062,7 @@ msgstr "La règle terminale %s devrait être la dernière règle de la liste"
 #: src/load_grouppolicy.cc:367
 #, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', or 'subdir')"
-msgstr ""
-"Mauvais nom de section « %s » (utilisez « none », « topdir » ou « subdir »)"
+msgstr "Mauvais nom de section « %s » (utilisez « none », « topdir » ou « subdir »)"
 
 #: src/load_grouppolicy.cc:377
 #, c-format
@@ -2119,8 +2100,7 @@ msgstr "Les règles de regroupement par mode ne prennent aucun paramètre"
 
 #: src/load_grouppolicy.cc:484
 msgid "First-character grouping policies take no arguments"
-msgstr ""
-"La règle de regroupement selon le premier caractère ne prend aucun paramètre"
+msgstr "La règle de regroupement selon le premier caractère ne prend aucun paramètre"
 
 #: src/load_grouppolicy.cc:496
 msgid "Version-generating grouping policies take no arguments"
@@ -2140,8 +2120,7 @@ msgstr "La règle de regroupement par tâche ne prend pas de paramètre"
 
 #: src/load_grouppolicy.cc:562
 msgid "Expected no more than one argument to a tag grouping policy"
-msgstr ""
-"Un seul paramètre est attendu dans une règle de regroupement par étiquette"
+msgstr "Un seul paramètre est attendu dans une règle de regroupement par étiquette"
 
 #: src/load_grouppolicy.cc:577
 msgid "Expected '(' after 'pattern'"
@@ -2302,8 +2281,7 @@ msgstr " remove       - Supprimer des paquets\n"
 #: src/main.cc:122
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
-msgstr ""
-" purge        - Supprimer des paquets et leurs fichiers de configuration\n"
+msgstr " purge        - Supprimer des paquets et leurs fichiers de configuration\n"
 
 #: src/main.cc:123
 #, c-format
@@ -2325,8 +2303,7 @@ msgstr ""
 #: src/main.cc:126
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
-msgstr ""
-" unmarkauto   - Marquer les paquets comme ayant été manuellement installés\n"
+msgstr " unmarkauto   - Marquer les paquets comme ayant été manuellement installés\n"
 
 #: src/main.cc:131
 #, c-format
@@ -2340,8 +2317,7 @@ msgstr ""
 #: src/main.cc:132
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
-msgstr ""
-" update       - Télécharger les listes de paquets nouveaux/à mettre à jour\n"
+msgstr " update       - Télécharger les listes de paquets nouveaux/à mettre à jour\n"
 
 #: src/main.cc:133
 #, c-format
@@ -2372,8 +2348,7 @@ msgstr ""
 #: src/main.cc:137
 #, c-format
 msgid " show         - Display detailed information about a package\n"
-msgstr ""
-" show         - Afficher les informations détaillées concernant un paquet\n"
+msgstr " show         - Afficher les informations détaillées concernant un paquet\n"
 
 #: src/main.cc:138
 #, c-format
@@ -2421,8 +2396,7 @@ msgstr " -s             Simuler les actions, sans les effectuer réellement\n"
 
 #: src/main.cc:147
 #, c-format
-msgid ""
-" -d             Only download packages, do not install or remove anything.\n"
+msgid " -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
 " -d             Effectuer uniquement le téléchargement d'un paquet, sans\n"
 "                installer ou enlever quoi que ce soit.\n"
@@ -2434,10 +2408,8 @@ msgstr " -P             Toujours demander confirmation pour les actions\n"
 
 #: src/main.cc:149
 #, c-format
-msgid ""
-" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
-msgstr ""
-" -y             Supposer que la réponse à des questions oui/non est « oui »\n"
+msgid " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+msgstr " -y             Supposer que la réponse à des questions oui/non est « oui »\n"
 
 #: src/main.cc:150
 #, c-format
@@ -2450,16 +2422,14 @@ msgstr ""
 
 #: src/main.cc:151
 #, c-format
-msgid ""
-" -O order       Specify how search results should be sorted; see the manual\n"
+msgid " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr ""
 " -O ordre       Indiquer comment les résultats d'une recherche doivent être\n"
 "                ordonnés ; voir le manuel\n"
 
 #: src/main.cc:152
 #, c-format
-msgid ""
-" -w width       Specify the display width for formatting search results\n"
+msgid " -w width       Specify the display width for formatting search results\n"
 msgstr ""
 " -w largeur     Indiquer la largeur de l'affichage pour le formatage des\n"
 "                résultats d'une recherche\n"
@@ -2467,19 +2437,16 @@ msgstr ""
 #: src/main.cc:153
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
-msgstr ""
-" -f             Tenter de corriger de manière agressive les paquets cassés.\n"
+msgstr " -f             Tenter de corriger de manière agressive les paquets cassés.\n"
 
 #: src/main.cc:154
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
-msgstr ""
-" -V             Afficher quelles versions des paquets vont être installées.\n"
+msgstr " -V             Afficher quelles versions des paquets vont être installées.\n"
 
 #: src/main.cc:155
 #, c-format
-msgid ""
-" -D             Show the dependencies of automatically changed packages.\n"
+msgid " -D             Show the dependencies of automatically changed packages.\n"
 msgstr ""
 " -D             Afficher les dépendances des paquets qui ont été modifiés\n"
 "                automatiquement.\n"
@@ -2493,8 +2460,7 @@ msgstr ""
 
 #: src/main.cc:157
 #, c-format
-msgid ""
-" -v             Display extra information. (may be supplied multiple times)\n"
+msgid " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr ""
 " -v             Afficher des informations supplémentaires (peut être "
 "indiquée\n"
@@ -2502,8 +2468,7 @@ msgstr ""
 
 #: src/main.cc:158
 #, c-format
-msgid ""
-" -t [release]   Set the release from which packages should be installed\n"
+msgid " -t [release]   Set the release from which packages should be installed\n"
 msgstr ""
 " -t [dist]      Indiquer la distribution pour laquelle le paquet doit être\n"
 "                installé\n"
@@ -2544,14 +2509,12 @@ msgstr ""
 #: src/main.cc:163
 #, c-format
 msgid " -u      : Download new package lists on startup.\n"
-msgstr ""
-" -u             Télécharger les nouvelles listes de paquets au démarrage.\n"
+msgstr " -u             Télécharger les nouvelles listes de paquets au démarrage.\n"
 
 #: src/main.cc:164
 #, c-format
 msgid " -i      : Perform an install run on startup.\n"
-msgstr ""
-" -i             Effectuer une opération d'installation lors du démarrage.\n"
+msgstr " -i             Effectuer une opération d'installation lors du démarrage.\n"
 
 #: src/main.cc:166
 #, c-format
@@ -2582,8 +2545,7 @@ msgid "Only one of -u and -i may be specified\n"
 msgstr "Les options -u et -i ne peuvent être indiquées simultanément\n"
 
 #: src/main.cc:416
-msgid ""
-"-u and -i may not be specified in command-line mode (eg, with 'install')"
+msgid "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
 "-u et -i ne peuvent pas être indiquées dans le mode ligne de commande (par "
 "exemple avec « install »)"
@@ -2721,8 +2683,7 @@ msgstr "Vous êtes mort... --Recommencer--"
 
 #: src/mine/cmine.cc:478
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
-msgstr ""
-"Les pointes étaient empoisonnées ! Le poison était mortel...--Recommencer--"
+msgstr "Les pointes étaient empoisonnées ! Le poison était mortel...--Recommencer--"
 
 #: src/mine/cmine.cc:481
 msgid "You land on a set of sharp iron spikes!  --More--"
@@ -2740,12 +2701,10 @@ msgstr "Badaboum ! Vous avez marché sur une mine. --Recommencer--"
 
 #: src/mine/cmine.cc:492
 msgid "The dart was poisoned!  The poison was deadly...  --More--"
-msgstr ""
-"La pointe était empoisonnée ! Le poison était mortel... --Recommencer--"
+msgstr "La pointe était empoisonnée ! Le poison était mortel... --Recommencer--"
 
 #: src/mine/cmine.cc:494
-msgid ""
-"A little dart shoots out at you!  You are hit by a little dart!  --More--"
+msgid "A little dart shoots out at you!  You are hit by a little dart!  --More--"
 msgstr ""
 "On vous a lancé une fléchette ! Vous avez été touché par une fléchette ! --"
 "Recommencer--"
@@ -2756,8 +2715,7 @@ msgstr "Vous vous êtes changé en roc... --Recommencer--"
 
 #: src/mine/cmine.cc:500
 msgid "Touching the cockatrice corpse was a fatal mistake.  --More--"
-msgstr ""
-"Toucher le cadavre du cockatrice était une erreur fatale. --Recommencer--"
+msgstr "Toucher le cadavre du cockatrice était une erreur fatale. --Recommencer--"
 
 #: src/mine/cmine.cc:502
 msgid "You feel here a cockatrice corpse.  --More--"
@@ -2806,8 +2764,7 @@ msgstr "froid"
 #: src/mine/cmine.cc:543
 #, c-format
 msgid "Your wand of %s breaks apart and explodes!  --More--"
-msgstr ""
-"Votre baguette magique de %s s'est brisée et a explosé ! --Recommencer--"
+msgstr "Votre baguette magique de %s s'est brisée et a explosé ! --Recommencer--"
 
 #: src/mine/cmine.cc:549
 msgid "You are jolted by a surge of electricity!  --More--"
@@ -3048,13 +3005,11 @@ msgstr "HN trop long"
 #: src/pkg_columnizer.cc:647 src/pkg_columnizer.cc:656
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
-msgstr ""
-"Impossible de transcoder le format de l'affichage du paquet après « %ls »"
+msgstr "Impossible de transcoder le format de l'affichage du paquet après « %ls »"
 
 #: src/pkg_columnizer.cc:663
 msgid "Internal error: Default column string is unparsable"
-msgstr ""
-"Erreur interne : la chaîne dans la colonne par défaut est incompréhensible"
+msgstr "Erreur interne : la chaîne dans la colonne par défaut est incompréhensible"
 
 #: src/pkg_grouppolicy.cc:161
 msgid ""
@@ -4072,8 +4027,7 @@ msgstr "Entrer la profondeur de l'arborescence des nouveaux paquets : "
 
 #: src/pkg_tree.cc:293
 msgid "Enter the new package grouping mechanism for this display: "
-msgstr ""
-"Entrez le nouveau mécanisme de regroupement des paquets pour cet affichage : "
+msgstr "Entrez le nouveau mécanisme de regroupement des paquets pour cet affichage : "
 
 #: src/pkg_tree.cc:301
 msgid "Enter the new package sorting mechanism for this display: "
@@ -4094,8 +4048,7 @@ msgstr ""
 "principaux ? "
 
 #: src/pkg_view.cc:414
-msgid ""
-"make_package_view: error in arguments -- bad column list for static item"
+msgid "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view : erreur dans les paramètres - liste « column » incorrecte "
 "pour une entrée statique"
@@ -4164,12 +4117,10 @@ msgstr ""
 
 #: src/reason_fragment.cc:362
 msgid "%B%s%b will be automatically removed because of dependency errors:"
-msgstr ""
-"%B%s%b sera automatiquement enlevé en raison d'erreurs de dépendances : "
+msgstr "%B%s%b sera automatiquement enlevé en raison d'erreurs de dépendances : "
 
 #: src/reason_fragment.cc:366
-msgid ""
-"%B%s%b will be automatically installed to satisfy the following dependencies:"
+msgid "%B%s%b will be automatically installed to satisfy the following dependencies:"
 msgstr ""
 "%B%s%b sera automatiquement installé pour satisfaire les dépendances "
 "suivantes : "
@@ -4235,8 +4186,7 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b sera mis à jour de la version %B%s%b vers la version %B%s%b."
 
 #: src/reason_fragment.cc:472
-msgid ""
-"The following packages depend on %B%s%b and will be broken by its removal:"
+msgid "The following packages depend on %B%s%b and will be broken by its removal:"
 msgstr ""
 "Les paquets suivants dépendent de %B%s%b et seront cassés par sa "
 "suppression :"
@@ -4559,8 +4509,7 @@ msgid "Never display this message again."
 msgstr "ne plus afficher ce message à l'avenir."
 
 #: src/ui.cc:368
-msgid ""
-"You may not modify the state of any package while a download is underway."
+msgid "You may not modify the state of any package while a download is underway."
 msgstr ""
 "Vous ne devez pas modifier l'état d'un paquet quelconque alors qu'un "
 "téléchargement est en cours."
@@ -4570,8 +4519,7 @@ msgid "You already are root!"
 msgstr "Vous êtes déjà administrateur."
 
 #: src/ui.cc:462
-msgid ""
-"Subprocess exited with an error -- did you type your password correctly?"
+msgid "Subprocess exited with an error -- did you type your password correctly?"
 msgstr ""
 "Le sous-processus s'est terminé avec une erreur - avez-vous entré votre mot "
 "de passe correctement ?"
@@ -4637,9 +4585,8 @@ msgid "README"
 msgstr "README.fr"
 
 #: src/ui.cc:886
-#, fuzzy
 msgid "Encoding of README|ISO_8859-1"
-msgstr "Encodage de README.fr|ISO-8859-15"
+msgstr "Encodage de README|ISO-8859-15"
 
 #: src/ui.cc:912
 msgid "User's Manual"
@@ -4680,8 +4627,7 @@ msgstr "Impossible de supprimer le répertoire « %s »"
 
 #: src/ui.cc:991
 #, c-format
-msgid ""
-"Unable to remove the old temporary directory; you should remove %s by hand."
+msgid "Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr ""
 "Impossible de supprimer l'ancien répertoire temporaire ; vous devrez "
 "supprimer %s vous-même."
@@ -4855,8 +4801,7 @@ msgstr " Les fichiers téléchargés ont été effacés "
 
 #: src/ui.cc:1503
 msgid "The apt cache file is not available; cannot auto-clean."
-msgstr ""
-"Le cache des paquets n'est pas disponible ; nettoyage automatique impossible."
+msgstr "Le cache des paquets n'est pas disponible ; nettoyage automatique impossible."
 
 #: src/ui.cc:1529
 #, c-format
@@ -4906,8 +4851,7 @@ msgstr "^Installer/enlever des paquets"
 
 #: src/ui.cc:1923
 msgid "Perform all pending installs and removals"
-msgstr ""
-"Effectuer toutes les actions d'installation ou de suppression demandées"
+msgstr "Effectuer toutes les actions d'installation ou de suppression demandées"
 
 #: src/ui.cc:1925
 msgid "^Update package list"
@@ -5022,8 +4966,7 @@ msgid "^Purge"
 msgstr "^Purger"
 
 #: src/ui.cc:1992
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
+msgid "Flag the currently selected package and its configuration files for removal"
 msgstr ""
 "Marquer le paquet sélectionné et ses fichiers de configuration pour "
 "suppression"
@@ -5098,8 +5041,7 @@ msgstr "Liste des ^modifications"
 
 #: src/ui.cc:2021
 msgid "Display the Debian changelog of the selected package"
-msgstr ""
-"Afficher la liste des modifications (« changelog ») du paquet sélectionné"
+msgstr "Afficher la liste des modifications (« changelog ») du paquet sélectionné"
 
 #: src/ui.cc:2028
 msgid "^Examine Solution"
@@ -5107,8 +5049,7 @@ msgstr "^Examiner la solution"
 
 #: src/ui.cc:2029
 msgid "Examine the currently selected solution to the dependency problems."
-msgstr ""
-"Examiner la solution actuellement proposée pour le problème de dépendances."
+msgstr "Examiner la solution actuellement proposée pour le problème de dépendances."
 
 #: src/ui.cc:2032
 msgid "Apply ^Solution"
@@ -5504,8 +5445,7 @@ msgstr "Signal SIGQUIT reçu, arrêt du programme...\n"
 
 #: src/vscreen/vs_pager.cc:439
 #, c-format
-msgid ""
-"Unable to load filename: the string %ls has no multibyte representation."
+msgid "Unable to load filename: the string %ls has no multibyte representation."
 msgstr ""
 "Chargement de fichier impossible : la chaîne %ls n'a pas de représentation "
 "multi-octets"
@@ -5513,3 +5453,4 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "NIVEAU SUPÉRIEUR"
+
