@@ -45,9 +45,9 @@ $(MANPAGE): $(XMLSOURCES) aptitude-man-$(LANGCODE).xsl $(srcdir)/../aptitude-man
 	xsltproc -o output-man/aptitude.8 aptitude-man-$(LANGCODE).xsl $(srcdir)/aptitude.xml
 	mv output-man/aptitude.8 $(MANPAGE)
 
-$(README): $(XMLSOURCES) aptitude-txt-$(LANGCODE).xsl $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
+$(README): $(XMLSOURCES) $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
 	-rm -fr output-txt/
-	xsltproc -o output-txt/index.html aptitude-txt-$(LANGCODE).xsl $(srcdir)/aptitude.xml
+	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl $(srcdir)/aptitude.xml
 	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | sed 's/&#8212/--/g' > $(README)
 
 doc-db2latex-stamp: $(XMLSOURCES) $(srcdir)/../aptitude-db2latex.xsl $(srcdir)/../aptitude-common.xsl $(IMAGES)
