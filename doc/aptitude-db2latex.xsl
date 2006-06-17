@@ -9,6 +9,10 @@
 
 <xsl:import href="aptitude-common.xsl"/>
 
+<xsl:variable name="insert.xref.page.number">1</xsl:variable>
+
+<xsl:variable name='latex.use.ltxtable'>1</xsl:variable>
+
 <xsl:variable name="admon.graphics.path">/usr/share/xml/docbook/stylesheet/db2latex/latex/figures</xsl:variable>
 
 </xsl:stylesheet>
