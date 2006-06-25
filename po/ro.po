@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: aptitude_po_ro\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-06-14 20:19-0700\n"
-"PO-Revision-Date: 2006-04-16 17:00+0300\n"
+"PO-Revision-Date: 2006-06-25 12:40+0300\n"
 "Last-Translator: Sorin Batariuc <sorin@bonbon.net>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.9.1\n"
+"X-Generator: KBabel 1.10.2\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: src/apt_options.cc:110
@@ -111,28 +111,23 @@ msgstr "URL de folosit la descărcarea jurnalelor de modificări"
 
 #: src/apt_options.cc:162
 msgid "Display a preview of what will be done before doing it"
-msgstr ""
-"Afişează o previzualizare a ceea ce va fi făcut inainte de a fi executat"
+msgstr "Afişează o previzualizare a ceea ce va fi făcut inainte de a fi executat"
 
 #: src/apt_options.cc:165
-msgid ""
-"Forget which packages are \"new\" whenever the package lists are updated"
+msgid "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr ""
 "Uită care pachete sunt \"noi\" de câte ori listele cu pachete sunt "
 "actualizate"
 
 #: src/apt_options.cc:168
-msgid ""
-"Forget which packages are \"new\" whenever packages are installed or removed"
+msgid "Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr ""
 "Uită care pachete sunt \"noi\" de câte ori pachetele sunt instalate sau "
 "şterse"
 
 #: src/apt_options.cc:171
-msgid ""
-"Do not display a warning when the first change is made in read-only mode"
-msgstr ""
-"Nu afişează avertisment când prima schimbare este făcută în modul doar-citire"
+msgid "Do not display a warning when the first change is made in read-only mode"
+msgstr "Nu afişează avertisment când prima schimbare este făcută în modul doar-citire"
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -249,9 +244,9 @@ msgstr[1] "%d retrogradări"
 #. "n1 installs, n2 removals", ...
 #.
 #: src/broken_indicator.cc:362
-#, fuzzy, c-format
+#, c-format
 msgid "Suggest %F"
-msgstr "Sugerează "
+msgstr "Sugerează %F"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -307,8 +302,7 @@ msgstr "%s este deja instalat cu versiunea cerută (%s)\n"
 #: src/cmdline/cmdline_action.cc:100
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
-msgstr ""
-"%s nu este instalat în momentul de faţă, astfel încât nu va fi reinstalat.\n"
+msgstr "%s nu este instalat în momentul de faţă, astfel încât nu va fi reinstalat.\n"
 
 #: src/cmdline/cmdline_action.cc:107 src/cmdline/cmdline_action.cc:113
 #, c-format
@@ -401,8 +395,7 @@ msgstr "Nu pot executa sensible-pager, este ăsta un sistem Debian funcţional?"
 #: src/cmdline/cmdline_changelog.cc:255
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
-msgstr ""
-"%s nu este un pachet Debian oficial, nu pot afişa jurnalul său de modificări."
+msgstr "%s nu este un pachet Debian oficial, nu pot afişa jurnalul său de modificări."
 
 #: src/cmdline/cmdline_changelog.cc:332
 #, c-format
@@ -485,8 +478,7 @@ msgstr "Dar chiar nu există ouă de Paşte în acest program.\n"
 
 #: src/cmdline/cmdline_moo.cc:22
 #, c-format
-msgid ""
-"Didn't I already tell you that there are no Easter Eggs in this program?\n"
+msgid "Didn't I already tell you that there are no Easter Eggs in this program?\n"
 msgstr "Nu v-am spus deja că nu există ouă de Paşte în acest program?\n"
 
 #: src/cmdline/cmdline_moo.cc:25
@@ -599,8 +591,7 @@ msgstr "Următoarele pachete ESENŢIALE vor fi ŞTERSE!\n"
 #: src/cmdline/cmdline_prompt.cc:337
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
-msgstr ""
-"Următoarele pachete ESENŢIALE se vor DETERIORA de către această acţiune:\n"
+msgstr "Următoarele pachete ESENŢIALE se vor DETERIORA de către această acţiune:\n"
 
 #: src/cmdline/cmdline_prompt.cc:347
 #, c-format
@@ -668,8 +659,7 @@ msgstr "Vreţi să ignoraţi acest avertisment şi să continuaţi oricum?\n"
 #: src/cmdline/cmdline_prompt.cc:418
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
-msgstr ""
-"Pentru a continua, introduceţi \"%s\"; pentru a renunţa, introduceţi \"%s\": "
+msgstr "Pentru a continua, introduceţi \"%s\"; pentru a renunţa, introduceţi \"%s\": "
 
 #: src/cmdline/cmdline_prompt.cc:432
 #, c-format
@@ -745,8 +735,7 @@ msgstr "Apăsaţi Enter pentru a continua."
 #: src/cmdline/cmdline_prompt.cc:641
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
-msgstr ""
-"Nici un pachet găsit -- introduceţi numele pachetului pe o linie după 'c'.\n"
+msgstr "Nici un pachet găsit -- introduceţi numele pachetului pe o linie după 'c'.\n"
 
 #: src/cmdline/cmdline_prompt.cc:645
 msgid "Press Return to continue"
@@ -814,8 +803,7 @@ msgid "'+' to install packages"
 msgstr "'+' pentru a instala pachete"
 
 #: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:186
-msgid ""
-"'+M' to install packages and immediately flag them as automatically installed"
+msgid "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' pentru a instala pachetele şi a le marca imediat ca fiind instalate "
 "automat"
@@ -833,8 +821,7 @@ msgid "'=' to place packages on hold"
 msgstr "'=' pentru a pune pachetele în aşteptare"
 
 #: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:194
-msgid ""
-"':' to keep packages in their current state without placing them on hold"
+msgid "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 "':' pentru a ţine pachetele în starea lor curentă fără a le marca în "
 "aşteptare"
@@ -958,8 +945,7 @@ msgstr "acceptare a modificărilor propuse"
 
 #: src/cmdline/cmdline_resolver.cc:166
 msgid "reject the proposed changes and search for another solution"
-msgstr ""
-"respingere a modificărilor propuse şi căutare pentru soluţie alternativă"
+msgstr "respingere a modificărilor propuse şi căutare pentru soluţie alternativă"
 
 #: src/cmdline/cmdline_resolver.cc:168
 msgid "give up and quit the program"
@@ -1027,8 +1013,7 @@ msgstr "Răspuns nevalid.  Vă rog introduceţi un număr întreg între 1 şi %
 #: src/cmdline/cmdline_resolver.cc:244
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
-msgstr ""
-"Se aşteaptă cel puţin o pereche pachet/versiune care să urmeze după '%c'"
+msgstr "Se aşteaptă cel puţin o pereche pachet/versiune care să urmeze după '%c'"
 
 #: src/cmdline/cmdline_resolver.cc:258
 #, c-format
@@ -1116,8 +1101,7 @@ msgstr "Răspuns nevalabil; vă rog introduceţi una din următoarele comenzi:"
 
 #: src/cmdline/cmdline_resolver.cc:622
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
-msgstr ""
-"Nu s-a găsit nici o soluţie în timpul acordat. Încerc mai hotărât? [Y/n]"
+msgstr "Nu s-a găsit nici o soluţie în timpul acordat. Încerc mai hotărât? [Y/n]"
 
 #: src/cmdline/cmdline_resolver.cc:651
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -1507,8 +1491,7 @@ msgstr "Nu pot deschide \"%s\" pentru scriere"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
-msgstr ""
-"Nu pot căuta directorul dvs. personal, se salvează în /tmp/function_pkgs!"
+msgstr "Nu pot căuta directorul dvs. personal, se salvează în /tmp/function_pkgs!"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -1599,8 +1582,7 @@ msgstr "Lista cu sursele nu poate fi citită."
 
 #: src/generic/apt/aptcache.cc:1618
 msgid "The package lists or status file could not be parsed or opened."
-msgstr ""
-"Listele cu pachete sau fişierul de stări nu pot fi analizate sau deschise."
+msgstr "Listele cu pachete sau fişierul de stări nu pot fi analizate sau deschise."
 
 #: src/generic/apt/aptcache.cc:1621
 msgid "You may want to update the package lists to correct these missing files"
@@ -1627,10 +1609,8 @@ msgstr ""
 "modificări pe care le faceţi stării pachetelor NU vor fi păstrate!"
 
 #: src/generic/apt/download_install_manager.cc:53
-msgid ""
-"The package cache is not available; unable to download and install packages."
-msgstr ""
-"Cache-ul pachetului nu este disponibil; nu pot descărca şi instala pachetele."
+msgid "The package cache is not available; unable to download and install packages."
+msgstr "Cache-ul pachetului nu este disponibil; nu pot descărca şi instala pachetele."
 
 #: src/generic/apt/download_install_manager.cc:69
 #: src/generic/apt/download_update_manager.cc:77
@@ -1650,8 +1630,7 @@ msgid "A package failed to install.  Trying to recover:"
 msgstr "Un pachet a eşuat la instalare.  Încercare de recuperare:"
 
 #: src/generic/apt/download_install_manager.cc:165
-msgid ""
-"Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
+msgid "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr ""
 "Nu pot recâştiga închiderea sistemului!  (Poate altă instanţă apt sau dpkg "
 "este activă?)"
@@ -1924,8 +1903,7 @@ msgstr ""
 
 #: src/generic/apt/pkg_acqfile.cc:99
 #, c-format
-msgid ""
-"The package index files are corrupted. No Filename: field for package %s."
+msgid "The package index files are corrupted. No Filename: field for package %s."
 msgstr ""
 "Fişierul cu indexarea pachetelor este deteriorat. Fără câmpul 'Nume fişier' "
 "pentru pachetul %s."
@@ -1951,8 +1929,7 @@ msgstr "Bloc global întâlnit după prima înregistrare, se ignoră"
 
 #: src/generic/apt/pkg_hier.cc:178
 msgid "Bad record encountered (no Package or Group entry), skipping"
-msgstr ""
-"Înregistrare nevalidă întâlnită (nici o intrare Pachet sau Grup), sar peste"
+msgstr "Înregistrare nevalidă întâlnită (nici o intrare Pachet sau Grup), sar peste"
 
 #: src/generic/apt/pkg_hier.cc:180
 #, c-format
@@ -2059,8 +2036,7 @@ msgstr "Politica de terminal \"%s\" ar trebui să fie ultima din listă"
 #: src/load_grouppolicy.cc:367
 #, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', or 'subdir')"
-msgstr ""
-"Nume de secţiune nevalid '%s' (folosiţi 'none', 'topdir', sau 'subdir')"
+msgstr "Nume de secţiune nevalid '%s' (folosiţi 'none', 'topdir', sau 'subdir')"
 
 #: src/load_grouppolicy.cc:377
 #, c-format
@@ -2150,8 +2126,7 @@ msgstr ""
 
 #: src/load_pkgview.cc:91
 msgid "Couldn't parse layout: encoding error in column descriptor"
-msgstr ""
-"Nu s-a putut analiza formatul: eroare de codare în descriptorul coloanei"
+msgstr "Nu s-a putut analiza formatul: eroare de codare în descriptorul coloanei"
 
 #: src/load_pkgview.cc:112
 #, c-format
@@ -2389,10 +2364,8 @@ msgstr " -s               Simulează acţiunea, dar n-o executa în realitate.\n
 
 #: src/main.cc:147
 #, c-format
-msgid ""
-" -d             Only download packages, do not install or remove anything.\n"
-msgstr ""
-" -d                Doar descarcă pachetele, nu instala sau şterge nimic.\n"
+msgid " -d             Only download packages, do not install or remove anything.\n"
+msgstr " -d                Doar descarcă pachetele, nu instala sau şterge nimic.\n"
 
 #: src/main.cc:148
 #, c-format
@@ -2401,8 +2374,7 @@ msgstr " -P               Întodeauna cere confirmare pentru acţiuni\n"
 
 #: src/main.cc:149
 #, c-format
-msgid ""
-" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+msgid " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr ""
 " -y              Presupune că răspunsul la întrebările simple da/nu este "
 "'da'\n"
@@ -2418,16 +2390,14 @@ msgstr ""
 
 #: src/main.cc:151
 #, c-format
-msgid ""
-" -O order       Specify how search results should be sorted; see the manual\n"
+msgid " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr ""
 " -O ordine        Specifică modul în care rezultatele căutării să fie "
 "sortate; vezi manual\n"
 
 #: src/main.cc:152
 #, c-format
-msgid ""
-" -w width       Specify the display width for formatting search results\n"
+msgid " -w width       Specify the display width for formatting search results\n"
 msgstr ""
 " -w lăţime         Specifică lăţimea afişării pentru formatarea rezultatului "
 "de căutare\n"
@@ -2435,8 +2405,7 @@ msgstr ""
 #: src/main.cc:153
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
-msgstr ""
-" -f             Încerc în mod agresiv să repar pachetele deteriorate.\n"
+msgstr " -f             Încerc în mod agresiv să repar pachetele deteriorate.\n"
 
 #: src/main.cc:154
 #, c-format
@@ -2445,30 +2414,25 @@ msgstr " -V             Arată ce versiuni de pachete sunt instalate.\n"
 
 #: src/main.cc:155
 #, c-format
-msgid ""
-" -D             Show the dependencies of automatically changed packages.\n"
+msgid " -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D             Arată dependenţele pachetelor schimbate automat.\n"
 
 #: src/main.cc:156
 #, c-format
 msgid " -Z\t\t    Show the change in installed size of each package.\n"
-msgstr ""
-" -Z\t\t    Arată modificarea în dimensiune a fiecărui pachet instalat.\n"
+msgstr " -Z\t\t    Arată modificarea în dimensiune a fiecărui pachet instalat.\n"
 
 #: src/main.cc:157
 #, c-format
-msgid ""
-" -v             Display extra information. (may be supplied multiple times)\n"
+msgid " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr ""
 " -v             Afişează informaţii suplimentare (poate fi folosită de mai "
 "multe ori)\n"
 
 #: src/main.cc:158
 #, c-format
-msgid ""
-" -t [release]   Set the release from which packages should be installed\n"
-msgstr ""
-" -t [producţie]   Impune producţia din care pachetele ar trebui instalate\n"
+msgid " -t [release]   Set the release from which packages should be installed\n"
+msgstr " -t [producţie]   Impune producţia din care pachetele ar trebui instalate\n"
 
 #: src/main.cc:159
 #, c-format
@@ -2482,8 +2446,7 @@ msgstr ""
 #: src/main.cc:160
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
-msgstr ""
-" -o key=val     Ajustează direct opţiunea de configurare numită 'key'\n"
+msgstr " -o key=val     Ajustează direct opţiunea de configurare numită 'key'\n"
 
 #: src/main.cc:161
 #, c-format
@@ -2541,8 +2504,7 @@ msgid "Only one of -u and -i may be specified\n"
 msgstr "Doar unul din -u şi -i poate fi specificat\n"
 
 #: src/main.cc:416
-msgid ""
-"-u and -i may not be specified in command-line mode (eg, with 'install')"
+msgid "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
 "-u şi -i pot să nu fie specificaţi în modul linie de comandă (ex., cu "
 "'install')"
@@ -2699,8 +2661,7 @@ msgid "The dart was poisoned!  The poison was deadly...  --More--"
 msgstr "Săgeata a fost otrăvită! Otrava a fost mortală...  --Încă odată--"
 
 #: src/mine/cmine.cc:494
-msgid ""
-"A little dart shoots out at you!  You are hit by a little dart!  --More--"
+msgid "A little dart shoots out at you!  You are hit by a little dart!  --More--"
 msgstr "O săgeţică v-a străpuns! V-a lovit o biată săgeţică!  --Încă odată--"
 
 #: src/mine/cmine.cc:498
@@ -2709,8 +2670,7 @@ msgstr "V-aţi transformat în piatră...  --Încă odată--"
 
 #: src/mine/cmine.cc:500
 msgid "Touching the cockatrice corpse was a fatal mistake.  --More--"
-msgstr ""
-"Atingerea cadavrului în putrefacţie a fost o greşeală fatală.  --Încă odată--"
+msgstr "Atingerea cadavrului în putrefacţie a fost o greşeală fatală.  --Încă odată--"
 
 #: src/mine/cmine.cc:502
 msgid "You feel here a cockatrice corpse.  --More--"
@@ -3842,8 +3802,7 @@ msgstr "Indicii de potrivire trebuie să fie 1 sau mai mare, nu \"%s\""
 #: src/pkg_grouppolicy.cc:1106
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
-msgstr ""
-"Indexul de potrivire %ls este prea mare; grupurile disponibile sunt (%s)"
+msgstr "Indexul de potrivire %ls este prea mare; grupurile disponibile sunt (%s)"
 
 #: src/pkg_grouppolicy.cc:1315
 msgid "TAGLESS PACKAGES"
@@ -4010,8 +3969,7 @@ msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: eroare în argumente -- două widget-uri principale??"
 
 #: src/pkg_view.cc:414
-msgid ""
-"make_package_view: error in arguments -- bad column list for static item"
+msgid "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: eroare în argumente -- coloană nevalidă de listă pentru "
 "articol static"
@@ -4083,10 +4041,8 @@ msgid "%B%s%b will be automatically removed because of dependency errors:"
 msgstr "%B%s%b va fi automat şters datorită erorilor de dependenţe:"
 
 #: src/reason_fragment.cc:366
-msgid ""
-"%B%s%b will be automatically installed to satisfy the following dependencies:"
-msgstr ""
-"%B%s%b va fi automat instalat pentru a satisface următoarele dependenţe:"
+msgid "%B%s%b will be automatically installed to satisfy the following dependencies:"
+msgstr "%B%s%b va fi automat instalat pentru a satisface următoarele dependenţe:"
 
 #: src/reason_fragment.cc:372 src/reason_fragment.cc:384
 msgid ""
@@ -4149,10 +4105,8 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b va fi înnoit de la versiunea %B%s%b la versiunea %B%s%b."
 
 #: src/reason_fragment.cc:472
-msgid ""
-"The following packages depend on %B%s%b and will be broken by its removal:"
-msgstr ""
-"Următoarele pachete depind de %B%s%b şi vor fi deteriorate prin ştergerea sa:"
+msgid "The following packages depend on %B%s%b and will be broken by its removal:"
+msgstr "Următoarele pachete depind de %B%s%b şi vor fi deteriorate prin ştergerea sa:"
 
 #: src/reason_fragment.cc:475
 msgid "The following packages depend on %B%s%b and are broken:"
@@ -4472,8 +4426,7 @@ msgid "Never display this message again."
 msgstr "Nu mai afişa niciodată acest mesaj."
 
 #: src/ui.cc:368
-msgid ""
-"You may not modify the state of any package while a download is underway."
+msgid "You may not modify the state of any package while a download is underway."
 msgstr ""
 "Nu puteţi modifica starea niciunui pachet în timp ce se efectuează o "
 "descărcare."
@@ -4483,8 +4436,7 @@ msgid "You already are root!"
 msgstr "Sunteţi deja root!"
 
 #: src/ui.cc:462
-msgid ""
-"Subprocess exited with an error -- did you type your password correctly?"
+msgid "Subprocess exited with an error -- did you type your password correctly?"
 msgstr "Subproces terminat cu eroare -- aţi tastat corect parola?"
 
 #: src/ui.cc:501
@@ -4545,9 +4497,8 @@ msgid "README"
 msgstr "CITEŞTE-MĂ"
 
 #: src/ui.cc:886
-#, fuzzy
 msgid "Encoding of README|ISO_8859-1"
-msgstr "Codarea lui README|UTF-8"
+msgstr "Codarea lui README|ISO_8859-1"
 
 #: src/ui.cc:912
 msgid "User's Manual"
@@ -4588,10 +4539,8 @@ msgstr "Nu pot şterge directorul \"%s\""
 
 #: src/ui.cc:991
 #, c-format
-msgid ""
-"Unable to remove the old temporary directory; you should remove %s by hand."
-msgstr ""
-"Nu pot şterge vechiul director temporar; ar trebui să ştergeţi manual %s."
+msgid "Unable to remove the old temporary directory; you should remove %s by hand."
+msgstr "Nu pot şterge vechiul director temporar; ar trebui să ştergeţi manual %s."
 
 #: src/ui.cc:996
 #, c-format
@@ -4757,8 +4706,7 @@ msgstr "Fişierele pachetelor descărcate au fost şterse"
 
 #: src/ui.cc:1503
 msgid "The apt cache file is not available; cannot auto-clean."
-msgstr ""
-"Fişierul apt cache nu este disponibil; nu se poate face auto-curăţarea."
+msgstr "Fişierul apt cache nu este disponibil; nu se poate face auto-curăţarea."
 
 #: src/ui.cc:1529
 #, c-format
@@ -4842,8 +4790,7 @@ msgstr "Anular^ea acţiunilor în desfăşurare"
 
 #: src/ui.cc:1940
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr ""
-"Anulează toate instalările, ştergerile, reţinerile şi înoirile în curs."
+msgstr "Anulează toate instalările, ştergerile, reţinerile şi înoirile în curs."
 
 #: src/ui.cc:1943
 msgid "^Clean package cache"
@@ -4922,8 +4869,7 @@ msgid "^Purge"
 msgstr "Curăţă"
 
 #: src/ui.cc:1992
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
+msgid "Flag the currently selected package and its configuration files for removal"
 msgstr ""
 "Semnalizează pachetul curent selectat şi fişierele sale de configurare "
 "pentru ştergere"
@@ -5048,8 +4994,7 @@ msgstr "Ultima So^luţie"
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
-msgstr ""
-"Selectaţi ultima soluţie pentru problemele de dependenţe generate până acum."
+msgstr "Selectaţi ultima soluţie pentru problemele de dependenţe generate până acum."
 
 #: src/ui.cc:2055
 msgid "Toggle ^Rejected"
@@ -5137,8 +5082,7 @@ msgstr "Manevrarea ^dependenţelor"
 
 #: src/ui.cc:2109
 msgid "Change the settings which affect how package dependencies are handled"
-msgstr ""
-"Schimbă ajustările ce afectează modul în care sunt manevrate dependenţele"
+msgstr "Schimbă ajustările ce afectează modul în care sunt manevrate dependenţele"
 
 #: src/ui.cc:2112
 msgid "^Miscellaneous"
@@ -5206,8 +5150,7 @@ msgstr "Listă Nouă de Pachete ^F"
 
 #: src/ui.cc:2153
 msgid "View all the packages on the system in a single uncategorized list"
-msgstr ""
-"Vizualizaţi toate pachetele din sistem într-o singură listă, necategorisită"
+msgstr "Vizualizaţi toate pachetele din sistem într-o singură listă, necategorisită"
 
 #: src/ui.cc:2156
 msgid "New ^Debtags Browser"
@@ -5325,8 +5268,7 @@ msgstr "Vedeţi lista schimbărilor făcute în acest pachet Debian."
 
 #: src/view_changelog.cc:215
 msgid "You can only view changelogs of official Debian packages."
-msgstr ""
-"Puteţi doar să vedeţi registrele de schimbări ale pachetelor Debian oficiale."
+msgstr "Puteţi doar să vedeţi registrele de schimbări ale pachetelor Debian oficiale."
 
 #: src/view_changelog.cc:225
 msgid "Downloading Changelog"
@@ -5402,11 +5344,10 @@ msgstr "Aoleeu!  Am primit SIGHQUIT, mooooor...\n"
 
 #: src/vscreen/vs_pager.cc:439
 #, c-format
-msgid ""
-"Unable to load filename: the string %ls has no multibyte representation."
-msgstr ""
-"Nu pot încărca numele fişierului: şirul %ls nu are reprezentare multioctet."
+msgid "Unable to load filename: the string %ls has no multibyte representation."
+msgstr "Nu pot încărca numele fişierului: şirul %ls nu are reprezentare multioctet."
 
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "NIVELUL DE SUS"
+
