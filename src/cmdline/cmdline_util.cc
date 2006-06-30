@@ -79,12 +79,21 @@ pkgCache::VerIterator cmdline_find_ver(pkgCache::PkgIterator pkg,
 {
   switch(source)
     {
+    case cmdline_version_curr_or_cand:
+      if(!pkg.CurrentVer().end())
+	return pkg.CurrentVer();
+      // Fall-through.
     case cmdline_version_cand:
       {
 	pkgCache::VerIterator candver=(*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
 
 	if(candver.end())
-	  printf(_("No candidate version found for %s\n"), pkg.Name());
+	  {
+	    if(source == cmdline_version_cand)
+	      printf(_("No candidate version found for %s\n"), pkg.Name());
+	    else
+	      printf(_("No current or candidate version found for %s\n"), pkg.Name());
+	  }
 
 	return candver;
       }

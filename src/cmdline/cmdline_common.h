@@ -28,6 +28,10 @@ enum cmdline_pkgaction_type
    cmdline_keep};
 
 enum cmdline_version_source {cmdline_version_cand,
+			     /** \brief The current version, if any;
+			      *  otherwise the candidate version.
+			      */
+			     cmdline_version_curr_or_cand,
 			     cmdline_version_archive,
 			     cmdline_version_version};
 
