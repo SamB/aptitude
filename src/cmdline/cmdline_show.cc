@@ -133,8 +133,11 @@ static fragment *archive_lst_frag(pkgCache::VerFileIterator vf,
 			   flowbox(join_fragments(fragments, L", "))));
 }
 
-static const char *current_state_string(pkgCache::PkgIterator pkg)
+static const char *current_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
 {
+  if(!ver.end() && ver != pkg.CurrentVer())
+    return _("not installed");
+
   switch(pkg->CurrentState)
     {
     case pkgCache::State::NotInstalled:
@@ -154,7 +157,60 @@ static const char *current_state_string(pkgCache::PkgIterator pkg)
     }
 }
 
-static fragment *state_fragment(pkgCache::PkgIterator pkg)
+/** \brief Return a fragment describing the reason that the package
+ *  with the given state is being deleted.
+ *
+ *  statestr is passed to avoid screwing up translations (otherwise I'd
+ *  have to break the format string into two pieces).
+ */
+static fragment *deletion_fragment(const char *statestr,
+				   const pkgDepCache::StateCache &state,
+				   const aptitudeDepCache::aptitude_state &estate)
+{
+  bool unused_delete=(estate.remove_reason!=aptitudeDepCache::manual);
+
+  if(!state.Delete())
+    return fragf("Internal error: no InstVer for a non-deleted package");
+  else if(state.iFlags&pkgDepCache::Purge)
+    {
+      if(unused_delete)
+	return fragf(_("%s; will be purged because nothing depends on it"), statestr);
+      else
+	return fragf(_("%s; will be purged"));
+    }
+  else
+    {
+      if(unused_delete)
+	return fragf(_("%s; will be removed because nothing depends on it"), statestr);
+      else
+	return fragf(_("%s; will be removed"));
+    }
+}
+
+static fragment *version_change_fragment(const char *statestr,
+					 const char *holdstr,
+					 pkgCache::VerIterator curver,
+					 pkgCache::VerIterator instver)
+{
+  const char *curverstr=curver.VerStr();
+  const char *instverstr=instver.VerStr();
+
+  int vercmp=_system->VS->DoCmpVersion(curverstr,
+				       curverstr+strlen(curverstr),
+				       instverstr,
+				       instverstr+strlen(instverstr));
+
+  if(vercmp>0)
+    return fragf(_("%s%s; will be downgraded [%s -> %s]"),
+		 statestr, holdstr, curverstr, instverstr);
+  else if(vercmp<0)
+    return fragf(_("%s%s; will be upgraded [%s -> %s]"),
+		 statestr, holdstr, curverstr, instverstr);
+  else
+    return fragf("%s%s", statestr, holdstr);
+}
+
+static fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
 {
   if(pkg.end() || pkg.VersionList().end())
     return fragf(_("not a real package"));
@@ -165,14 +221,41 @@ static fragment *state_fragment(pkgCache::PkgIterator pkg)
   pkgDepCache::StateCache &state=(*apt_cache_file)[pkg];
   aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
 
-  const char *statestr=current_state_string(pkg);
+  const char *statestr=current_state_string(pkg, ver);
 
   const char *holdstr="";
 
-  if(estate.selection_state==pkgCache::State::Hold)
+  if(ver == curver && estate.selection_state==pkgCache::State::Hold)
     holdstr=_(" [held]");
 
-  if(curver.end())
+  if(!ver.end())
+    {
+      if(instver != ver && curver != ver)
+	return fragf("%s", statestr);
+      else if(instver == ver)
+	{
+	  if(curver != instver)
+	    {
+	      if(pkg->CurrentState == pkgCache::State::NotInstalled ||
+		 pkg->CurrentState == pkgCache::State::ConfigFiles)
+		{
+		  if(estate.install_reason == aptitudeDepCache::manual)
+		    return fragf(_("%s; will be installed"), statestr);
+		  else
+		    return fragf(_("%s; will be installed automatically"), statestr);
+		}
+	      else
+		return version_change_fragment(statestr, holdstr, curver, instver);
+	    }
+	  else
+	    return fragf("%s", statestr);
+	}
+      else if(instver.end()) // Now curver is ver.
+	return deletion_fragment(statestr, state, estate);
+      else
+	return version_change_fragment(statestr, holdstr, curver, instver);
+    }
+  else if(curver.end())
     {
       if(state.Install() &&
 	 (pkg->CurrentState==pkgCache::State::NotInstalled ||
@@ -195,53 +278,21 @@ static fragment *state_fragment(pkgCache::PkgIterator pkg)
     }
   else if(instver.end())
     {
-      bool unused_delete=(estate.remove_reason!=aptitudeDepCache::manual);
-
-      if(!state.Delete())
-	return fragf("Internal error: no InstVer for a non-deleted package");
-      else if(state.iFlags&pkgDepCache::Purge)
-	{
-	  if(unused_delete)
-	    return fragf(_("%s; will be purged because nothing depends on it"), statestr);
-	  else
-	    return fragf(_("%s; will be purged"));
-	}
-      else
-	{
-	  if(unused_delete)
-	    return fragf(_("%s; will be removed because nothing depends on it"), statestr);
-	  else
-	    return fragf(_("%s; will be removed"));
-	}
+      return deletion_fragment(statestr, state, estate);
     }
   else
     {
-      const char *curverstr=curver.VerStr();
-      const char *instverstr=instver.VerStr();
-
-      int vercmp=_system->VS->DoCmpVersion(curverstr,
-					   curverstr+strlen(curverstr),
-					   instverstr,
-					   instverstr+strlen(instverstr));
-
-      if(vercmp>0)
-	return fragf(_("%s%s; will be downgraded [%s -> %s]"),
-		     statestr, holdstr, curverstr, instverstr);
-      else if(vercmp<0)
-	return fragf(_("%s%s; will be upgraded [%s -> %s]"),
-		     statestr, holdstr, curverstr, instverstr);
-      else
-	return fragf("%s%s", statestr, holdstr);
+      return version_change_fragment(statestr, holdstr, curver, instver);
     }
 }
 
-// Shows only information about a package
+/** \brief Shows information about a package. */
 static void show_package(pkgCache::PkgIterator pkg, int verbose)
 {
   vector<fragment *> fragments;
 
   fragments.push_back(fragf("%s%s%n", _("Package: "), pkg.Name()));
-  fragments.push_back(fragf("%s: %F%n", _("State"), state_fragment(pkg)));
+  fragments.push_back(fragf("%s: %F%n", _("State"), state_fragment(pkg, pkgCache::VerIterator())));
   fragments.push_back(prv_lst_frag(pkg.ProvidesList(), true, _("Provided by")));
 
   fragment *f=sequence_fragment(fragments);
@@ -269,7 +320,7 @@ static fragment *version_file_fragment(pkgCache::VerIterator ver,
     fragments.push_back(fragf("%s: %s%n",
 			      _("New"), _("yes")));
 
-  fragments.push_back(fragf("%s: %F%n", _("State"), state_fragment(pkg)));
+  fragments.push_back(fragf("%s: %F%n", _("State"), state_fragment(pkg, ver)));
   if(!estate.forbidver.empty())
     fragments.push_back(fragf("%s: %s%n",
 			      _("Forbidden version"),
@@ -375,6 +426,10 @@ bool do_cmdline_show_target(const pkgCache::PkgIterator &pkg,
 {
   if(verbose == 0 || has_explicit_source)
     {
+      // HACK: default to current-or-candidate behavior.  This should be
+      // done in a more up-front way :-(.
+      if(source == cmdline_version_cand)
+	source = cmdline_version_curr_or_cand;
       pkgCache::VerIterator ver = cmdline_find_ver(pkg, source, sourcestr);
 
       if(ver.end())
