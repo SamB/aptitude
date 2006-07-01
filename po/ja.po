@@ -48,6 +48,7 @@
 # half-config             設定未完了
 # half-install            インストール未完了
 # information             情報
+# maintainer              メンテナ
 # new                     新規
 # package                 パッケージ
 # partially configured    設定未完了
@@ -153,8 +154,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2006-04-24 21:54+0900\n"
-"PO-Revision-Date: 2006-04-24 22:38+0900\n"
+"POT-Creation-Date: 2006-07-01 17:29+0900\n"
+"PO-Revision-Date: 2006-07-01 18:10+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -162,124 +163,100 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
 msgstr "利用可能なコマンドをいくつか画面の上部に表示します"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/apt_options.cc:112
 msgid "Hide the menubar when it is not being used"
 msgstr "使用時以外はメニューバーを隠します"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/apt_options.cc:114
 msgid "Use a minibuffer-style prompt when possible"
 msgstr "可能な場合はミニバッファ形式のプロンプトを使います"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/apt_options.cc:116
 msgid "Show partial search results (incremental search)"
 msgstr "部分検索結果を表示します (インクリメンタルサーチ)"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/apt_options.cc:118
 msgid "Closing the last view exits the program"
 msgstr "最後の表示画面を閉じたときにプログラムを終了します"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/apt_options.cc:120
 msgid "Prompt for confirmation at exit"
 msgstr "終了時にプロンプトで確認をおこないます"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/apt_options.cc:122
 msgid "Pause after downloading files"
 msgstr "ファイルのダウンロード後に一時停止を"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/apt_options.cc:124
 msgid "Never"
 msgstr "行いません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/apt_options.cc:125
 msgid "When an error occurs"
 msgstr "エラー時のみ行います"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/apt_options.cc:126
 msgid "Always"
 msgstr "常に行います"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/apt_options.cc:128
 msgid "Use a 'status-line' download indicator for all downloads"
 msgstr "すべてのダウンロードの進行状況をステータスラインに表示します"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/apt_options.cc:130
 msgid "Display the extended description area by default"
 msgstr "拡張説明欄をデフォルトで表示する"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/apt_options.cc:132
 msgid "Advance to the next item after changing the state of a package"
 msgstr "パッケージのステータスの変更後に次の項目に進みます"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/apt_options.cc:134
 msgid "Automatically show why packages are broken"
 msgstr "パッケージの依存関係が壊れている理由を自動的に表示します"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/apt_options.cc:136
 msgid "The default grouping method for package views"
 msgstr "パッケージ一覧用のデフォルトの分類方法"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/apt_options.cc:138
 msgid "The default display-limit for package views"
 msgstr "パッケージ一覧のデフォルトの最大表示数"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/apt_options.cc:140
 msgid "The display format for package views"
 msgstr "パッケージ一覧の表示フォーマット"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/apt_options.cc:143
 msgid "The display format for the status line"
 msgstr "ステータスラインの表示フォーマット"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/apt_options.cc:146
 msgid "The display format for the header line"
 msgstr "ヘッダラインの表示フォーマット"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/apt_options.cc:155
 msgid "Automatically upgrade installed packages"
 msgstr "インストール済みのパッケージを自動的に更新します"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/apt_options.cc:157
 msgid "Remove obsolete package files after downloading new package lists"
 msgstr ""
 "新しいパッケージ一覧のダウンロード後に、廃止されたパッケージファイルを削除し"
 "ます"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/apt_options.cc:159
 msgid "URL to use to download changelogs"
 msgstr "変更履歴のダウンロードに用いる URL"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/apt_options.cc:162
 msgid "Display a preview of what will be done before doing it"
 msgstr "行おうとしていることのプレビューを事前に表示します"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/apt_options.cc:165
 msgid ""
 "Forget which packages are \"new\" whenever the package lists are updated"
@@ -287,7 +264,6 @@ msgstr ""
 "パッケージ一覧を更新したときには常に、どのパッケージが「新規」かの情報を消去"
 "します"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/apt_options.cc:168
 msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
@@ -295,50 +271,41 @@ msgstr ""
 "パッケージのインストールまたは削除をおこなったときには常に、どのパッケージが"
 "「新規」かの情報を消去します"
 
-# * Translation checked by noritada on 2006-04-21.
 #: src/apt_options.cc:171
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr "読み取り専用モードで最初に変更がなされたときに警告を表示します"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
 msgstr ""
 "root 以外のユーザが特権の必要なアクションを行おうとしたときに警告します"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/apt_options.cc:177
 msgid "File to log actions into"
 msgstr "アクション記録用のファイル"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/apt_options.cc:184
 msgid "Automatically resolve dependencies of a package when it is selected"
 msgstr "パッケージ選択時に自動的に依存関係を解決します"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/apt_options.cc:186
 msgid "Automatically fix broken packages before installing or removing"
 msgstr ""
 "インストールや削除の前に、依存関係の壊れたパッケージを自動的に修復します"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/apt_options.cc:188
 msgid "Install Recommended packages automatically"
 msgstr "推奨パッケージを自動的にインストールします"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/apt_options.cc:190
 msgid "Remove unused packages automatically"
 msgstr "使われていないパッケージを自動的に削除します"
 
-# * Translation checked by noritada on 2006-03-07.
 #: src/apt_options.cc:192
 msgid "Don't automatically remove unused packages matching this filter"
 msgstr "このフィルタにマッチした未使用のパッケージを自動的には削除しません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/apt_options.cc:248 src/mine/cmine.cc:302 src/mine/cmine.cc:367
 #: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:91
 #: src/vscreen/vs_util.cc:104 src/vscreen/vs_util.cc:283
@@ -346,54 +313,45 @@ msgstr "このフィルタにマッチした未使用のパッケージを自動
 msgid "Ok"
 msgstr "OK"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/apt_options.cc:249 src/download_list.cc:88 src/mine/cmine.cc:303
 #: src/mine/cmine.cc:368 src/vscreen/vs_util.cc:322
 msgid "Cancel"
 msgstr "キャンセル"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/broken_indicator.cc:118
 #, c-format
 msgid "%s: Examine"
 msgstr "%s: 検討"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/broken_indicator.cc:126
 #, c-format
 msgid "%s: Apply"
 msgstr "%s: 適用"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/broken_indicator.cc:129
 #, c-format
 msgid "%s: Next"
 msgstr "%s: 次"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/broken_indicator.cc:134
 #, c-format
 msgid "%s: Previous"
 msgstr "%s: 前"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/broken_indicator.cc:226
 msgid "Unable to resolve dependencies."
 msgstr "依存関係を解決できませんでした。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/broken_indicator.cc:240
 #, c-format
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] 依存関係を解決しています"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/broken_indicator.cc:273 src/solution_dialog.cc:126
 #: src/solution_screen.cc:522
 msgid "Internal error: unexpected null solution."
 msgstr "内部エラー: 想定外の null 解決策です"
 
-# * Translation checked by noritada on 2006-04-24.
 #: src/broken_indicator.cc:330
 #, c-format
 msgid "%d install"
@@ -401,7 +359,6 @@ msgid_plural "%d installs"
 msgstr[0] "%d 個のインストール"
 msgstr[1] "%d 個のインストール"
 
-# * Translation checked by noritada on 2006-04-24.
 #: src/broken_indicator.cc:336
 #, c-format
 msgid "%d removal"
@@ -409,7 +366,6 @@ msgid_plural "%d removals"
 msgstr[0] "%d 個の削除"
 msgstr[1] "%d 個の削除"
 
-# * Translation checked by noritada on 2006-04-24.
 #: src/broken_indicator.cc:342
 #, c-format
 msgid "%d keep"
@@ -417,7 +373,6 @@ msgid_plural "%d keeps"
 msgstr[0] "%d 個の一時固定"
 msgstr[1] "%d 個の一時固定"
 
-# * Translation checked by noritada on 2006-04-24.
 #: src/broken_indicator.cc:348
 #, c-format
 msgid "%d upgrade"
@@ -425,7 +380,6 @@ msgid_plural "%d upgrades"
 msgstr[0] "%d 個の更新"
 msgstr[1] "%d 個の更新"
 
-# * Translation checked by noritada on 2006-04-24.
 #: src/broken_indicator.cc:354
 #, c-format
 msgid "%d downgrade"
@@ -433,7 +387,6 @@ msgid_plural "%d downgrades"
 msgstr[0] "%d 個のダウングレード"
 msgstr[1] "%d 個のダウングレード"
 
-# * Translation checked by noritada on 2006-04-24.
 #. ForTranslators: %F is replaced with a comma separated list such as
 #. "n1 installs, n2 removals", ...
 #.
@@ -442,7 +395,6 @@ msgstr[1] "%d 個のダウングレード"
 msgid "Suggest %F"
 msgstr "%Fを提案します"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
 msgid ""
@@ -452,7 +404,6 @@ msgstr ""
 "注意: 仮想パッケージ \"%2$s\" を提供する\n"
 "      \"%1$s\" はすでにインストールされています。\n"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_action.cc:44
 #, c-format
 msgid ""
@@ -463,7 +414,6 @@ msgstr ""
 "      \"%1$s\" はすでにインストール予定です。\n"
 "\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:62
 #, c-format
 msgid ""
@@ -473,19 +423,16 @@ msgstr ""
 "\"%s\" はパッケージデータベースには存在します。\n"
 "しかし実在するパッケージではなく、どのパッケージからも提供されていません。\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:68
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" は、以下のパッケージから提供されている仮想パッケージです:\n"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/cmdline/cmdline_action.cc:71
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "インストールするものを一つ選んでください。\n"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/cmdline/cmdline_action.cc:76
 #, c-format
 msgid ""
@@ -495,43 +442,36 @@ msgstr ""
 "注意: 仮想パッケージ \"%2$s\" の代わりに\n"
 "      \"%1$s\" を選択します\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:94
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s は、要求されたバージョン (%s) で既にインストールされています\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:100
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s は現在インストールされていないので再インストールされません。\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:107 src/cmdline/cmdline_action.cc:113
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "%s パッケージはインストールされていないので削除されません\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:131
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "%s パッケージはインストールされていないので更新を禁止できません\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:133
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "%s パッケージは更新可能ではないので更新を禁止できません\n"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_action.cc:214
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "注意: タスク \"%s: %s\" をインストールするよう選択します\n"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_action.cc:244
 #, c-format
 msgid ""
@@ -541,13 +481,11 @@ msgstr ""
 "'install' コマンドや 'forbid-version' コマンドで指定できるのはパッケージの"
 "バージョンだけです。\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:252
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "'install' コマンドで指定できるのはパッケージのアーカイブだけです。\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:286
 #, c-format
 msgid ""
@@ -557,7 +495,6 @@ msgstr ""
 "\"%s\" パッケージは見つかりませんでした。\n"
 "パッケージ名に \"%s\" を含むものは 40 以上あります。\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:289
 #, c-format
 msgid ""
@@ -567,13 +504,11 @@ msgstr ""
 "\"%s\" パッケージは見つかりませんでした。\n"
 "しかし、以下のパッケージ名に \"%s\" が含まれています:\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr "名前か説明文が \"%s\" にマッチするパッケージは見つかりませんでした\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:315
 #, c-format
 msgid ""
@@ -583,7 +518,6 @@ msgstr ""
 "\"%s\" にマッチするパッケージは見つかりませんでした。\n"
 "パッケージの説明文に  \"%s\" を含むものは 40 以上あります。\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_action.cc:318
 #, c-format
 msgid ""
@@ -593,93 +527,78 @@ msgstr ""
 "\"%s\" にマッチするパッケージは見つかりませんでした。\n"
 "しかし、以下のパッケージの説明文に \"%s\" が含まれています:\n"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_action.cc:437
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "不正なアクション文字です: '%c'\n"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/cmdline/cmdline_changelog.cc:205
 msgid "Can't execute sensible-pager, is this a working Debian system?"
 msgstr ""
 "sensible-pager が実行できません。これは正常に機能している Debian システムです"
 "か?"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_changelog.cc:255
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr "%s は公式の Debian パッケージではないので、変更履歴を表示できません。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_changelog.cc:332
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "%s の変更履歴が見つかりません"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/cmdline/cmdline_clean.cc:52
 #, c-format
 msgid "Del %s* %spartial/*\n"
 msgstr "削除 %s* %spartial/*\n"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/cmdline/cmdline_clean.cc:80
 #, c-format
 msgid "Del %s %s [%sB]\n"
 msgstr "削除 %s %s [%sB]\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_clean.cc:136
 #, c-format
 msgid "Would free %sB of disk space\n"
 msgstr "%sB のディスク領域を解放します\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_clean.cc:139
 #, c-format
 msgid "Freed %sB of disk space\n"
 msgstr "%sB のディスク領域を解放しました\n"
 
 #  Should never happen.
-# * Translation checked by noritada on 2006-02-26.
 #: src/cmdline/cmdline_do_action.cc:73
 #, c-format
 msgid "Invalid operation %s"
 msgstr "不正な操作です: %s"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/cmdline/cmdline_do_action.cc:143
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "\"keep-all\" の後に想定外のパターン引数があります"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:520
 #, c-format
 msgid "Abort.\n"
 msgstr "中断。\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_download.cc:30
 #, c-format
 msgid "download: you must specify at least one package to download\n"
 msgstr "download: ダウンロードするパッケージを少なくとも一つ指定してください\n"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/cmdline/cmdline_download.cc:42
 #: src/generic/apt/download_install_manager.cc:76
 msgid "Couldn't read source list"
 msgstr "パッケージ入手先一覧を読み込めませんでした"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_download.cc:70
 #, c-format
 msgid "Can't find a package named \"%s\""
 msgstr "\"%s\" という名前のパッケージは見つかりません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_download.cc:80
 #, c-format
 msgid ""
@@ -689,38 +608,32 @@ msgstr ""
 "%s バージョン %s にダウンロード可能なファイルはありません。ローカルのパッケー"
 "ジか、もしくは廃止されたパッケージではありませんか?"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_forget_new.cc:44
 #, c-format
 msgid "Would forget what packages are new\n"
 msgstr "どのパッケージが新規かの情報を消去します\n"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_moo.cc:16
 #, c-format
 msgid "There are no Easter Eggs in this program.\n"
 msgstr "このプログラムにはイースターエッグ (隠し機能) はありません。\n"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_moo.cc:19
 #, c-format
 msgid "There really are no Easter Eggs in this program.\n"
 msgstr "このプログラムには本当にイースターエッグはありませんよ。\n"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_moo.cc:22
 #, c-format
 msgid ""
 "Didn't I already tell you that there are no Easter Eggs in this program?\n"
 msgstr "このプログラムにイースターエッグはないって言わなかったかい?\n"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_moo.cc:25
 #, c-format
 msgid "Stop it!\n"
 msgstr "やめてくれ!\n"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_moo.cc:28
 #, c-format
 msgid "Okay, okay, if I give you an Easter Egg, will you go away?\n"
@@ -728,133 +641,109 @@ msgstr ""
 "わかった、わかった。あんたにイースターエッグをあげればどっか行ってくれるか"
 "い?\n"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_moo.cc:31
 #, c-format
 msgid "All right, you win.\n"
 msgstr "わかったよ。あんたの勝ちだ。\n"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_moo.cc:42
 #, c-format
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr "これが何なのか? もちろんウワバミに食べられた象だよ。\n"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_prompt.cc:33
 msgid "Unexpected end-of-file on standard input"
 msgstr "標準入力中に想定外のファイル終端記号が含まれています"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_prompt.cc:52
 msgid "Couldn't read list of sources"
 msgstr "パッケージ入手先一覧を読み込めませんでした"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_prompt.cc:234 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "しかし %s はインストール予定です。"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_prompt.cc:237 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "しかし %s はインストールされており固定されています。"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_prompt.cc:240 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "しかし %s はインストールされています。"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_prompt.cc:244 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "しかしそれはインストールできません"
 
 #  FIXME: do something sensible here!
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_prompt.cc:248 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr "これは仮想パッケージです。"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_prompt.cc:251 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr "または"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/cmdline/cmdline_prompt.cc:263
 msgid "The following packages are BROKEN:"
 msgstr "以下のパッケージは依存関係が壊れています:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:264
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "以下のパッケージが使われていないので削除されます:"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_prompt.cc:265
 msgid "The following packages have been automatically kept back:"
 msgstr "以下のパッケージが自動的に一時固定されています:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:266
 msgid "The following NEW packages will be automatically installed:"
 msgstr "以下の新規パッケージが自動的にインストールされます:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:267
 msgid "The following packages will be automatically REMOVED:"
 msgstr "以下のパッケージが自動的に削除されます:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:268
 msgid "The following packages will be DOWNGRADED:"
 msgstr "以下のパッケージがダウングレードされます:"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_prompt.cc:269
 msgid "The following packages have been kept back:"
 msgstr "以下のパッケージが一時固定されています:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:270
 msgid "The following packages will be REINSTALLED:"
 msgstr "以下のパッケージが再インストールされます:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:271
 msgid "The following NEW packages will be installed:"
 msgstr "以下の新規パッケージがインストールされます:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:272
 msgid "The following packages will be REMOVED:"
 msgstr "以下のパッケージが削除されます:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:273
 msgid "The following packages will be upgraded:"
 msgstr "以下のパッケージが更新されます:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:328
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "以下の必須パッケージが削除されます!\n"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/cmdline/cmdline_prompt.cc:337
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "このアクションによって以下の必須パッケージの依存関係が壊れます:\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:347
 #, c-format
 msgid ""
@@ -865,18 +754,15 @@ msgstr ""
 "      何をしようとしているか本当に理解していない場合は先に進んではいけませ"
 "ん!\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:349
 msgid "I am aware that this is a very bad idea"
 msgstr "これが非常にまずい考えだとわかっています"
 
-# * Translation checked by noritada on 2006-01-21.
 #: src/cmdline/cmdline_prompt.cc:352
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "続行するには '%s' というフレーズを入力してください:\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:394
 #, c-format
 msgid ""
@@ -896,7 +782,6 @@ msgstr ""
 "てください。\n"
 "\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:406
 #, c-format
 msgid ""
@@ -906,103 +791,86 @@ msgstr ""
 "*** 警告***   %s::Cmdline::Ignore-Trust-Violations が 'true' と\n"
 "              なっているので、これらの信頼侵害を無視しています!\n"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:177
 #: src/vscreen/vs_util.cc:215
 msgid "Yes"
 msgstr "Yes"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:178
 #: src/vscreen/vs_util.cc:216
 msgid "No"
 msgstr "No"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:417
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "この警告を無視して意地でも先に進みますか?\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:418
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "続行する場合は \"%s\" を、中断する場合は \"%s\" を、入力してください:"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_prompt.cc:432
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "入力を認識できません。\"%s\" か \"%s\" を入力してください。\n"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:534
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "以下のパッケージが推奨されていますがインストールされません:\n"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:540
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "以下のパッケージが提案されていますがインストールされません:\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:545
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "インストール・削除・更新されるパッケージがありません。\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:547
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "更新: %lu 個、新規インストール: %lu 個、"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:551
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "再インストール: %lu 個、"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:553
 #, c-format
 msgid "%lu downgraded, "
 msgstr "ダウングレード: %lu 個、"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:555
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "削除: %lu 個、保留: %lu 個。\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:562
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "アーカイブ %2$sB 中 %1$sB を取得する必要があります。"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_prompt.cc:565
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "%sB のアーカイブを取得する必要があります。"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:572
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "展開後に %sB のディスクスペースが新たに消費されます。\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:575
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "展開後に %sB のディスクスペースが解放されます。\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:613
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
@@ -1010,43 +878,36 @@ msgstr ""
 "表示するパッケージがありません -- 'i' に続けてパッケージ名を入力してくださ"
 "い。\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:615
 msgid "Press Return to continue."
 msgstr "続けるには Return を押してください。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:641
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr ""
 "パッケージが見つかりません -- 'c' に続けてパッケージ名を入力してください。\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:645
 msgid "Press Return to continue"
 msgstr "続けるには Return を押してください"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:656
 #, c-format
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 
 # * Description of a command.
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:676
 msgid "continue with the installation"
 msgstr "インストールを続行します"
 
 # * Description of a command.
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:678
 msgid "abort and quit"
 msgstr "中断して終了します"
 
 # * Description of a command.
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:680
 msgid ""
 "show information about one or more packages; the package names should follow "
@@ -1056,7 +917,6 @@ msgstr ""
 "してください"
 
 # * Description of a command.
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:682
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
@@ -1066,30 +926,25 @@ msgstr ""
 "ケージ名を入力してください"
 
 # * Description of a command.
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:684
 msgid "toggle the display of dependency information"
 msgstr "依存関係情報の表示を切り替えます"
 
 # * Description of a command.
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:686
 msgid "toggle the display of changes in package sizes"
 msgstr "パッケージサイズ変更の表示を切り替えます"
 
 # * Description of a command.
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:688
 msgid "toggle the display of version numbers"
 msgstr "バージョン番号表示を切り替えます"
 
 # * Description of a command.
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:690
 msgid "enter the full visual interface"
 msgstr "ビジュアルインタフェースに移行します"
 
-# * Translation checked by noritada on 2006-01-21.
 #: src/cmdline/cmdline_prompt.cc:691
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
@@ -1102,12 +957,10 @@ msgstr ""
 "さい。そのアクションが、引数に指定したパッケージすべてに適用されます。以下の"
 "アクションが利用可能です:"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/cmdline/cmdline_prompt.cc:696 src/cmdline/cmdline_resolver.cc:184
 msgid "'+' to install packages"
 msgstr "'+': パッケージをインストール"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:186
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
@@ -1115,48 +968,39 @@ msgstr ""
 "'+M': パッケージをインストールし、「自動的にインストールされた」フラグを直ち"
 "に添付"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:188
 msgid "'-' to remove packages"
 msgstr "'-': パッケージを削除"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:190
 msgid "'_' to purge packages"
 msgstr "'_': パッケージを完全削除"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:192
 msgid "'=' to place packages on hold"
 msgstr "'=': パッケージを固定"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:194
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "':' パッケージを完全に固定することなく現在の状態に一時的に固定"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M': 自動的にインストールされたという印をパッケージに添付"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:198
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m': 手動でインストールされたという印をパッケージに添付"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:712
 msgid "Commands:"
 msgstr "コマンド:"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:767
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "続けますか? [Y/n/?] "
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:792
 #, c-format
 msgid ""
@@ -1168,7 +1012,6 @@ msgstr ""
 "依存関係の情報を表示します。\n"
 "\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:794
 #, c-format
 msgid ""
@@ -1180,7 +1023,6 @@ msgstr ""
 "依存関係の情報を表示しません。\n"
 "\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:800
 #, c-format
 msgid ""
@@ -1192,7 +1034,6 @@ msgstr ""
 "バージョンを表示します。\n"
 "\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:802
 #, c-format
 msgid ""
@@ -1204,7 +1045,6 @@ msgstr ""
 "バージョンを表示しません。\n"
 "\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:807
 #, c-format
 msgid ""
@@ -1216,7 +1056,6 @@ msgstr ""
 "サイズの変更を表示します。\n"
 "\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_prompt.cc:809
 #, c-format
 msgid ""
@@ -1228,32 +1067,27 @@ msgstr ""
 "サイズの変更を表示しません。\n"
 "\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_prompt.cc:832
 #, c-format
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "応答が不正です。有効なコマンドを入力するか '?' でヘルプを参照してください。\n"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
 #: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "%s を書き込み可能な状態で開けません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:602
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "リゾルバの状態を %s に書き込む際にエラーが生じました"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:604
 msgid "Resolver state successfully written!"
 msgstr "リゾルバの状態の書き込みに成功しました!"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:145
 #, c-format
 msgid ""
@@ -1264,49 +1098,41 @@ msgstr ""
 "ン ...: %F%n<アクション> パケジ... : %F%n%F%F%F%F%F%F%F%F"
 
 # * Case: 'y'
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:164
 msgid "accept the proposed changes"
 msgstr "提示された変更を受け入れます"
 
 # * Case: 'n'
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:166
 msgid "reject the proposed changes and search for another solution"
 msgstr "提示された変更を拒否して他の解決策を探します"
 
 # * Case: 'q'
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:168
 msgid "give up and quit the program"
 msgstr "諦めてプログラムを終了します"
 
 # * Case: ','
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:170
 msgid "move to the next solution"
 msgstr "次の解決策に移動します"
 
 # * Case: '.'
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:172
 msgid "move to the previous solution"
 msgstr "前の解決策に移動します"
 
 # * Case: 'o'
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:174
 msgid "view an explanation of the changes in the solution"
 msgstr "解決策の変更点についての説明を表示します"
 
 # * Case: 'e'
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:176
 msgid "examine the solution in the visual user interface"
 msgstr "視覚的なユーザインターフェースで解決策を試します"
 
 # * Case: 'r'
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:178
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
@@ -1316,7 +1142,6 @@ msgstr ""
 "ん。"
 
 # * Case: 'a'
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:180
 msgid ""
 "accept the given package versions; display only solutions in which they "
@@ -1326,650 +1151,549 @@ msgstr ""
 "す。"
 
 # * Case: '<ACTION>'
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:182
 msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr "一連のパッケージの状態を調整します。アクションは以下のいずれかです:"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:200
 msgid ""
 "Adjustments will cause the current solution to be discarded and recalculated "
 "as necessary."
 msgstr "調整では、必要に応じて現在の解決策の廃棄や再計算がおこなわれます。"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:214
 #, c-format
 msgid "The version %s is available in the following archives:"
 msgstr "バージョン %s は以下のアーカイブで利用可能です:"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:222
 #, c-format
 msgid "Select the version of %s that should be used: "
 msgstr "利用する %s のバージョンを選んでください:"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:229
 #, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
 msgstr "応答が不正です。1 から %d までの整数を入力してください。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_resolver.cc:244
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
 msgstr ""
 "'%c' に続けて少なくとも 1 つのパッケージあるいはバージョンを入力してください"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_resolver.cc:258
 #, c-format
 msgid "Expected a version after \"%s\""
 msgstr "\"%s\" 以降のバージョンを入力してください"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/cmdline/cmdline_resolver.cc:268
 #, c-format
 msgid "No such package \"%s\""
 msgstr "そのようなパッケージはありません: \"%s\""
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_resolver.cc:284
 #, c-format
 msgid "%s has no version named \"%s\""
 msgstr "%s には \"%s\" というバージョンはありません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:301
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr "%s の削除を許可しています"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:304
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr "%s バージョン %s (%s) のインストールを許可しています"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:314
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr "%s の削除を拒否しています"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:317
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr "%s バージョン %s (%s) のインストールを拒否しています"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:330
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr "%s の削除はもはや必須ではありません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:333
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr "%s バージョン %s (%s) のインストールはもはや必須ではありません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:342
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr "%s の削除を必須としています"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:345
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "%s バージョン %s (%s) のインストールを必須としています"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:464 src/solution_screen.cc:495
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgstr "未解決: %d; 解決済み: %d; 保留: %d; 競合: %d"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:510
 msgid "The following actions will resolve these dependencies:"
 msgstr "以下のアクションでこれらの依存関係の問題は解決されます:"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_resolver.cc:525
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "この解決策を受け入れますか? [Y/n/q/?]"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "これらの依存関係の問題を解決するための努力をすべて放棄します。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_resolver.cc:579
 msgid "The following commands are available:"
 msgstr "以下のコマンドが利用可能です:"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_resolver.cc:594
 msgid "File to write resolver state to: "
 msgstr "リゾルバの状態を書き込む出力ファイル: "
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:609
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "応答が不正です。以下のコマンドから一つを選択して入力してください:"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_resolver.cc:622
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "与えられた時間内に解決策が見つかりませんでした。再挑戦しますか? [Y/n]"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_resolver.cc:651
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "応答が不正です。'y' か 'n' を入力してください。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_resolver.cc:660
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "依存関係を解決できません! 諦めています..."
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/cmdline/cmdline_resolver.cc:666
 msgid "*** No more solutions available ***"
 msgstr "*** 利用可能な解決策がこれ以上ありません。 ***"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_search.cc:100
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr "%s の iconv に失敗しました。\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/cmdline/cmdline_search.cc:116
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr "search: 検索語を少なくとも一つ与えなければなりません\n"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/cmdline/cmdline_show_broken.cc:113
 #, c-format
 msgid "The following packages have unmet dependencies:\n"
 msgstr "以下のパッケージには満たされていない依存関係があります:\n"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:122 src/cmdline/cmdline_show.cc:308
+#: src/cmdline/cmdline_show.cc:122 src/cmdline/cmdline_show.cc:359
 #: src/solution_fragment.cc:56
 msgid "<NULL>"
 msgstr "<NULL>"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:141
+#: src/cmdline/cmdline_show.cc:139 src/cmdline/cmdline_show.cc:144
 msgid "not installed"
 msgstr "インストールされていません"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:143 src/pkg_columnizer.cc:233
+#: src/cmdline/cmdline_show.cc:146 src/pkg_columnizer.cc:233
 #: src/pkg_ver_item.cc:228
 msgid "unpacked"
 msgstr "展開済み"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:145
+#: src/cmdline/cmdline_show.cc:148
 msgid "partially configured"
 msgstr "設定未完了"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:147
+#: src/cmdline/cmdline_show.cc:150
 msgid "partially installed"
 msgstr "インストール未完了"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:149
+#: src/cmdline/cmdline_show.cc:152
 msgid "not installed (configuration files remain)"
 msgstr "インストールされていません (設定ファイルは残っています)"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:151 src/pkg_columnizer.cc:241
+#: src/cmdline/cmdline_show.cc:154 src/pkg_columnizer.cc:241
 #: src/pkg_ver_item.cc:236
 msgid "installed"
 msgstr "インストール済み"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:160
-msgid "not a real package"
-msgstr "本当のパッケージではありません"
-
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:173
-msgid " [held]"
-msgstr "[固定中]"
-
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:182
-#, c-format
-msgid "%s; version %s will be installed"
-msgstr "%s バージョン %s がインストールされます"
-
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:186
-#, c-format
-msgid "%s; version %s will be installed automatically"
-msgstr "%s バージョン %s が自動的にインストールされます"
-
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:192 src/cmdline/cmdline_show.cc:207
-#, c-format
-msgid "%s; will be purged"
-msgstr "%s 完全削除されます"
-
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:205
+#: src/cmdline/cmdline_show.cc:177
 #, c-format
 msgid "%s; will be purged because nothing depends on it"
 msgstr "%s 何からも依存されていないため完全削除されます"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:212
+#: src/cmdline/cmdline_show.cc:179 src/cmdline/cmdline_show.cc:275
+#, c-format
+msgid "%s; will be purged"
+msgstr "%s 完全削除されます"
+
+#: src/cmdline/cmdline_show.cc:184
 #, c-format
 msgid "%s; will be removed because nothing depends on it"
 msgstr "%s 何からも依存されていないため削除されます"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:214
+#: src/cmdline/cmdline_show.cc:186
 #, c-format
 msgid "%s; will be removed"
 msgstr "%s 削除されます"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:228
+#: src/cmdline/cmdline_show.cc:204
 #, c-format
 msgid "%s%s; will be downgraded [%s -> %s]"
 msgstr "%s%s ダウングレードされます [%s -> %s]"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_show.cc:231
+#: src/cmdline/cmdline_show.cc:207
 #, c-format
 msgid "%s%s; will be upgraded [%s -> %s]"
 msgstr "%s%s 更新されます [%s -> %s]"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:243 src/cmdline/cmdline_show.cc:264
+#: src/cmdline/cmdline_show.cc:216
+msgid "not a real package"
+msgstr "本当のパッケージではありません"
+
+#: src/cmdline/cmdline_show.cc:229
+msgid " [held]"
+msgstr "[固定中]"
+
+#: src/cmdline/cmdline_show.cc:243
+#, c-format
+msgid "%s; will be installed"
+msgstr "%s インストールされます。"
+
+#: src/cmdline/cmdline_show.cc:245
+#, c-format
+msgid "%s; will be installed automatically"
+msgstr "%s 自動的にインストールされます"
+
+#: src/cmdline/cmdline_show.cc:265
+#, c-format
+msgid "%s; version %s will be installed"
+msgstr "%s バージョン %s がインストールされます"
+
+#: src/cmdline/cmdline_show.cc:269
+#, c-format
+msgid "%s; version %s will be installed automatically"
+msgstr "%s バージョン %s が自動的にインストールされます"
+
+#: src/cmdline/cmdline_show.cc:294 src/cmdline/cmdline_show.cc:315
 msgid "Package: "
 msgstr "パッケージ: "
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:244 src/cmdline/cmdline_show.cc:272
+#: src/cmdline/cmdline_show.cc:295 src/cmdline/cmdline_show.cc:323
 #: src/pkg_columnizer.cc:89
 msgid "State"
 msgstr "状態"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:245 src/cmdline/cmdline_show.cc:328
+#: src/cmdline/cmdline_show.cc:296 src/cmdline/cmdline_show.cc:379
 #: src/generic/apt/matchers.cc:1663
 msgid "Provided by"
 msgstr "提供元"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:266 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:317 src/pkg_info_screen.cc:107
 msgid "Essential: "
 msgstr "必須: "
 
-# * Translation checked by noritada on 2006-02-25.
-#: src/cmdline/cmdline_show.cc:266 src/cmdline/cmdline_show.cc:270
-#: src/cmdline/cmdline_show.cc:281 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:317 src/cmdline/cmdline_show.cc:321
+#: src/cmdline/cmdline_show.cc:332 src/pkg_info_screen.cc:107
 msgid "yes"
 msgstr "yes"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:321
 msgid "New"
 msgstr "新規"
 
-# * Translation checked by noritada on 2006-02-25.
-#: src/cmdline/cmdline_show.cc:275
+#: src/cmdline/cmdline_show.cc:326
 msgid "Forbidden version"
 msgstr "禁止バージョン"
 
-# * Translation checked by noritada on 2006-01-22.
-#: src/cmdline/cmdline_show.cc:279
+#: src/cmdline/cmdline_show.cc:330
 msgid "Automatically installed"
 msgstr "自動的にインストールされた"
 
-# * Translation checked by noritada on 2006-02-25.
-#: src/cmdline/cmdline_show.cc:281
+#: src/cmdline/cmdline_show.cc:332
 msgid "no"
 msgstr "no"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:283
+#: src/cmdline/cmdline_show.cc:334
 msgid "Version: "
 msgstr "バージョン: "
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:284 src/pkg_info_screen.cc:115
+#: src/cmdline/cmdline_show.cc:335 src/pkg_info_screen.cc:115
 msgid "Priority: "
 msgstr "優先度: "
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:285 src/cmdline/cmdline_show.cc:287
-#: src/cmdline/cmdline_show.cc:296
+#: src/cmdline/cmdline_show.cc:336 src/cmdline/cmdline_show.cc:338
+#: src/cmdline/cmdline_show.cc:347
 msgid "N/A"
 msgstr "入手不可"
 
-# * Translation checked by noritada on 2006-01-22.
-#: src/cmdline/cmdline_show.cc:286 src/pkg_info_screen.cc:116
+#: src/cmdline/cmdline_show.cc:337 src/pkg_info_screen.cc:116
 msgid "Section: "
 msgstr "セクション: "
 
-#: src/cmdline/cmdline_show.cc:288 src/pkg_info_screen.cc:117
+#: src/cmdline/cmdline_show.cc:339 src/pkg_info_screen.cc:117
 msgid "Maintainer: "
-msgstr "保守担当者: "
+msgstr "メンテナ: "
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:291
+#: src/cmdline/cmdline_show.cc:342
 msgid "Uncompressed Size: "
 msgstr "展開サイズ: "
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:295
+#: src/cmdline/cmdline_show.cc:346
 msgid "Architecture: "
 msgstr "アーキテクチャ: "
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:297
+#: src/cmdline/cmdline_show.cc:348
 msgid "Compressed Size: "
 msgstr "圧縮サイズ: "
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:299
+#: src/cmdline/cmdline_show.cc:350
 msgid "Filename: "
 msgstr "ファイル名: "
 
-# * Translation checked by noritada on 2006-03-07.
-#: src/cmdline/cmdline_show.cc:301
+#: src/cmdline/cmdline_show.cc:352
 msgid "MD5sum: "
 msgstr "MD5sum: "
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:305 src/cmdline/cmdline_show.cc:308
+#: src/cmdline/cmdline_show.cc:356 src/cmdline/cmdline_show.cc:359
 msgid "Archive"
 msgstr "アーカイブ"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:313
+#: src/cmdline/cmdline_show.cc:364
 msgid "Depends"
 msgstr "依存"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:315
+#: src/cmdline/cmdline_show.cc:366
 msgid "PreDepends"
 msgstr "事前依存"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:317
+#: src/cmdline/cmdline_show.cc:368
 msgid "Recommends"
 msgstr "推奨"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:319
+#: src/cmdline/cmdline_show.cc:370
 msgid "Suggests"
 msgstr "提案"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:321
+#: src/cmdline/cmdline_show.cc:372
 msgid "Conflicts"
 msgstr "競合"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:323
+#: src/cmdline/cmdline_show.cc:374
 msgid "Replaces"
 msgstr "置換"
 
-# * Translation checked by noritada on 2005-10-24.
-#: src/cmdline/cmdline_show.cc:325
+#: src/cmdline/cmdline_show.cc:376
 msgid "Obsoletes"
 msgstr "廃止"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:327 src/generic/apt/matchers.cc:1617
+#: src/cmdline/cmdline_show.cc:378 src/generic/apt/matchers.cc:1617
 msgid "Provides"
 msgstr "提供"
 
-# * Translation checked by noritada on 2005-10-24.
-#: src/cmdline/cmdline_show.cc:331 src/pkg_info_screen.cc:95
+#: src/cmdline/cmdline_show.cc:382 src/pkg_info_screen.cc:95
 msgid "Description: "
 msgstr "説明文: "
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:424
+#: src/cmdline/cmdline_show.cc:479
 #, c-format
 msgid "Unable to locate package %s"
 msgstr "パッケージの場所が見つかりません: %s"
 
-# * Translation checked by noritada on 2005-10-20.
-#: src/cmdline/cmdline_show.cc:437
+#: src/cmdline/cmdline_show.cc:492
 #, c-format
 msgid "Unable to parse pattern %s"
 msgstr "パターンをパースできません: %s"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_simulate.cc:37
 #, c-format
 msgid "Would download/install/remove packages.\n"
 msgstr "パッケージのダウンロード・インストール・削除をおこないます。\n"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_simulate.cc:48
 msgid "Internal Error, Ordering didn't finish"
 msgstr "内部エラーです。並び換えが終わりませんでした"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/cmdline/cmdline_update.cc:33
 #, c-format
 msgid "Deleting obsolete downloaded files\n"
 msgstr "以前ダウンロードされた、廃止されたファイルを削除しています\n"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/cmdline/cmdline_update.cc:42
 #, c-format
 msgid "E: The update command takes no arguments\n"
 msgstr "エラー: update コマンドは引数をとりません\n"
 
-# * Translation checked by noritada on 2006-02-25.
-#: src/cmdline/cmdline_util.cc:87
+#: src/cmdline/cmdline_util.cc:93
 #, c-format
 msgid "No candidate version found for %s\n"
-msgstr "%s のバージョンの候補が見つかりません\n"
+msgstr "%s のインストール候補のバージョンが見つかりません\n"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_util.cc:101
+#: src/cmdline/cmdline_util.cc:95
+#, c-format
+msgid "No current or candidate version found for %s\n"
+msgstr ""
+"%s は、現在のバージョンもインストール候補のバージョンも見つかりません\n"
+
+#: src/cmdline/cmdline_util.cc:110
 #, c-format
 msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
 msgstr " \"%2$s\" パッケージのアーカイブ \"%1$s\" が見つかりません\n"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_util.cc:111
+#: src/cmdline/cmdline_util.cc:120
 #, c-format
 msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
 msgstr "パッケージ \"%2$s\" のバージョン \"%1$s\" が見つかりません\n"
 
-# * Translation checked by noritada on 2006-03-01.
-#: src/cmdline/cmdline_util.cc:117
+#: src/cmdline/cmdline_util.cc:126
 #, c-format
 msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
 msgstr "内部エラー: 不正な値 %i が cmdline_find_ver に渡されました!\n"
 
-# * Translation checked by noritada on 2006-02-25.
-#: src/cmdline/cmdline_util.cc:147
+#: src/cmdline/cmdline_util.cc:156
 #, c-format
 msgid "You cannot specify both an archive and a version for a package\n"
 msgstr "パッケージのアーカイブとバージョンを同時には指定できません\n"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/dep_item.cc:140
 msgid "UNSATISFIED"
 msgstr "依存関係未解決"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/dep_item.cc:140 src/reason_fragment.cc:244
 msgid "UNAVAILABLE"
 msgstr "入手不可能"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/desc_parse.cc:274
 msgid "Tags"
 msgstr "タグ"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_bar.cc:49 src/download_list.cc:335 src/download_screen.cc:56
 #, c-format
 msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
 msgstr "\"%s\" というラベルのディスクを \"%s\" ドライブに入れてください"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_bar.cc:66 src/generic/apt/acqprogress.cc:65
 msgid "Hit "
 msgstr "発見 "
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_bar.cc:77
 msgid "Downloading "
 msgstr "ダウンロード中 "
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_bar.cc:88
 msgid "Got "
 msgstr "取得 "
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_bar.cc:138
 msgid "Downloading..."
 msgstr "ダウンロード中..."
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/download_item.cc:72 src/download_item.cc:76 src/download_item.cc:98
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
 msgid " [Working]"
 msgstr " [作業中]"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_item.cc:102 src/download_list.cc:356
 msgid "[Hit]"
 msgstr "[発見]"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_item.cc:102 src/download_list.cc:378
 msgid "[Downloaded]"
 msgstr "[ダウンロード済み]"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_list.cc:70
 #, c-format
 msgid "Downloaded %sB in %s (%sB/s)."
 msgstr "%sB を %s 秒でダウンロードしました (%sB/s)。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_list.cc:76
 #, c-format
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nいくつかのファイルはダウンロードできませんでした。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/download_list.cc:86 src/download_list.cc:340 src/download_screen.cc:64
 msgid "Continue"
 msgstr "続行"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/download_list.cc:203 src/download_screen.cc:203
 msgid "Total Progress: "
 msgstr "全体の進行状況: "
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_list.cc:231 src/download_screen.cc:218
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/秒, 残り %s 秒)"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/download_list.cc:233
 #, c-format
 msgid " [ %i%% ] (stalled)"
 msgstr " [ %i%% ] (膠着状態)"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_list.cc:235 src/download_list.cc:264
 #, c-format
 msgid " [ %i%% ]"
 msgstr " [ %i%% ]"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_list.cc:342 src/download_screen.cc:67
 msgid "Abort"
 msgstr "中断"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_list.cc:400
 msgid "[IGNORED]"
 msgstr "[無視]"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_list.cc:406
 msgid "[ERROR]"
 msgstr "[エラー]"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/download_screen.cc:182
 #, c-format
 msgid "Downloaded %sB in %ss (%sB/s)."
 msgstr "%sB を %s 秒でダウンロードしました (%sB/s)。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/edit_pkg_hier.cc:184
 msgid "No hierarchy information to edit"
 msgstr "編集する階層情報がありません"
 
-# * Translation checked by noritada on 2006-04-21.
 #: src/edit_pkg_hier.cc:286
 #, c-format
 msgid "Couldn't open \"%s\" for writing"
 msgstr "\"%s\" を書き込み可能な状態で開けませんでした"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "ホームディレクトリが調べられないので、/tmp/function_pkgs に保存しています!"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
 msgstr "取得:"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/generic/apt/acqprogress.cc:120
 msgid "Ign "
 msgstr "無視 "
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/generic/apt/acqprogress.cc:124
 msgid "Err "
 msgstr "エラー "
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/generic/apt/acqprogress.cc:148
 #, c-format
 msgid "Fetched %sB in %s (%sB/s)\n"
 msgstr "%sB を %s 秒でダウンロードしました (%sB/s)\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/generic/apt/acqprogress.cc:296
 #, c-format
 msgid ""
@@ -1979,35 +1703,29 @@ msgstr ""
 "メディアの交換: '%s' というラベルのディスクを '%s' ドライブに入れ、Enter を押"
 "してください\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/aptcache.cc:263
 msgid "Can't open Aptitude extended state file"
 msgstr "Aptitude の拡張状態情報を開けません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/aptcache.cc:270 src/generic/apt/aptcache.cc:324
 #: src/generic/apt/aptcache.cc:326
 msgid "Reading extended state information"
 msgstr "拡張状態情報を読み込んでいます"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/aptcache.cc:332 src/generic/apt/aptcache.cc:408
 #: src/generic/apt/aptcache.cc:411
 msgid "Initializing package states"
 msgstr "パッケージの状態を初期化しています"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/aptcache.cc:536
 msgid "Cannot open Aptitude state file"
 msgstr "Aptitude の状態ファイルを開けません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/aptcache.cc:540 src/generic/apt/aptcache.cc:595
 #: src/generic/apt/aptcache.cc:598
 msgid "Writing extended state information"
 msgstr "拡張状態情報を書き込んでいます"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/aptcache.cc:577
 #, c-format
 msgid "Internal buffer overflow on package \"%s\" while writing state file"
@@ -2015,60 +1733,50 @@ msgstr ""
 "状態ファイルに書き込み中に \"%s\" パッケージについて内部バッファオーバフロー"
 "が生じました"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/aptcache.cc:586
 msgid "Couldn't write state file"
 msgstr "状態ファイルに書き込めませんでした"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/aptcache.cc:603
 msgid "Error writing state file"
 msgstr "状態ファイルの書き込み時にエラーが生じました"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/aptcache.cc:621
 #, c-format
 msgid "failed to remove %s"
 msgstr "%s を削除できませんでした"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/generic/apt/aptcache.cc:628
 #, c-format
 msgid "failed to rename %s to %s"
 msgstr "%s から %s に名前を変更できませんでした"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/generic/apt/aptcache.cc:636
 #, c-format
 msgid "couldn't replace %s with %s"
 msgstr "%s を %s で置換できませんでした"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/aptcache.cc:1131
 msgid "Unable to correct dependencies, some packages cannot be installed"
 msgstr ""
 "依存関係を解決できないため、いくつかのパッケージをインストールできません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/aptcache.cc:1611
 msgid "The list of sources could not be read."
 msgstr "パッケージ入手先一覧を読み込めませんでした。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/aptcache.cc:1618
 msgid "The package lists or status file could not be parsed or opened."
 msgstr ""
 "パッケージ一覧または状態ファイルをパースできませんでした、または開けませんで"
 "した。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/aptcache.cc:1621
 msgid "You may want to update the package lists to correct these missing files"
 msgstr ""
 "これらの行方不明のファイルを修正するためにパッケージ一覧を更新したほうがよい"
 "でしょう"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/generic/apt/apt.cc:172
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
@@ -2076,13 +1784,11 @@ msgstr ""
 "%s は読み取り可能ですが書き込み可能ではありません。設定ファイルに書き込めませ"
 "ん。"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/apt.cc:210
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "%s を新しい設定ファイルと入れ替えることができません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/apt.cc:300
 msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
@@ -2091,7 +1797,6 @@ msgstr ""
 "キャッシュファイルにロックをかけられません。読み取り専用モードで開いていま"
 "す。パッケージの状態を変更してもそれは保存されません!"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/download_install_manager.cc:53
 msgid ""
 "The package cache is not available; unable to download and install packages."
@@ -2099,28 +1804,23 @@ msgstr ""
 "パッケージのキャッシュが利用不可能です。パッケージのダウンロードやインストー"
 "ルができません。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/download_install_manager.cc:69
 #: src/generic/apt/download_update_manager.cc:77
 msgid "Couldn't lock list directory..are you root?"
 msgstr "一覧ディレクトリがロックできません…… root になっていますか?"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/download_install_manager.cc:86
 msgid "Internal error: couldn't generate list of packages to download"
 msgstr "内部エラー: ダウンロードするパッケージの一覧を作成できません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/download_install_manager.cc:121
 msgid "Unable to correct for unavailable packages"
 msgstr "入手不可能なパッケージは修正できません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/download_install_manager.cc:141
 msgid "A package failed to install.  Trying to recover:"
 msgstr "パッケージをインストールできませんでした。復旧を試みています:"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/download_install_manager.cc:165
 msgid ""
 "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
@@ -2128,41 +1828,34 @@ msgstr ""
 "システムロックを取り戻せません!  (おそらく他に apt や dpkg が動いているのでは"
 "ありませんか?)"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/download_update_manager.cc:66
 msgid "Couldn't read list of package sources"
 msgstr "パッケージ入手先一覧を読み込めませんでした。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/download_update_manager.cc:110
 msgid "Couldn't clean out list directories"
 msgstr "一覧ディレクトリを空にできませんでした"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/generic/apt/download_update_manager.cc:122
 msgid "Couldn't rebuild package cache"
 msgstr "パッケージキャッシュを再構築できませんでした"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/log.cc:52
 #, c-format
 msgid "Unable to open %s to log actions"
 msgstr "アクション記録用に %s を開けません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/log.cc:64
 #, c-format
 msgid "Error generating local time (%s)"
 msgstr "現地時間 (%s) を生成する際にエラーが生じました"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:68
 msgid "log report"
 msgstr "ログ報告"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/log.cc:69
 #, c-format
 msgid ""
@@ -2178,109 +1871,92 @@ msgstr ""
 "\n"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:70
 #, c-format
 msgid "Will install %li packages, and remove %li packages.\n"
 msgstr "%li 個のパッケージをインストールし、%li 個のパッケージを削除します。\n"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:74
 #, c-format
 msgid "%sB of disk space will be used\n"
 msgstr "%sB のディスク領域を使用します\n"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:77
 #, c-format
 msgid "%sB of disk space will be freed\n"
 msgstr "%sB のディスク領域を使用します\n"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:87
 #, c-format
 msgid "[UPGRADE] %s %s -> %s\n"
 msgstr "[更新] %s %s -> %s\n"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:91
 #, c-format
 msgid "[DOWNGRADE] %s %s -> %s\n"
 msgstr "[ダウングレード] %s %s -> %s\n"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:101
 msgid "REMOVE"
 msgstr "削除"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:107
 msgid "INSTALL"
 msgstr "インストール"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:110
 msgid "REINSTALL"
 msgstr "再インストール"
 
 # * Log message.
-# * Translation checked by noritada on 2006-03-01.
 #: src/generic/apt/log.cc:113
 msgid "HOLD"
 msgstr "固定"
 
 # * Log message.
-# * Translation checked by noritada on 2006-01-22.
 #: src/generic/apt/log.cc:116
 msgid "BROKEN"
 msgstr "依存関係破損"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:119
 msgid "REMOVE, NOT USED"
 msgstr "使われていないため削除"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:122
 msgid "REMOVE, DEPENDENCIES"
 msgstr "依存関係により削除"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:125
 msgid "INSTALL, DEPENDENCIES"
 msgstr "依存関係によりインストール"
 
 # * Log message.
-# * Translation checked by noritada on 2006-03-01.
 #: src/generic/apt/log.cc:128
 msgid "HOLD, DEPENDENCIES"
 msgstr "依存関係により固定"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:130
 msgid "????????"
 msgstr "????????"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:134
 #, c-format
 msgid "[%s] %s\n"
 msgstr "[%s] %s\n"
 
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/log.cc:137
 #, c-format
 msgid ""
@@ -2292,177 +1968,143 @@ msgstr ""
 "\n"
 "ログ完了。\n"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/generic/apt/matchers.cc:683
 msgid "Automatically Installed"
 msgstr "自動的にインストールされた"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/generic/apt/matchers.cc:705 src/generic/apt/matchers.cc:894
 msgid "Broken"
 msgstr "依存関係破損"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/matchers.cc:892
 msgid "Unchanged"
 msgstr "変更なし"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/generic/apt/matchers.cc:896
 msgid "Remove [unused]"
 msgstr "削除 [不使用]"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/generic/apt/matchers.cc:898
 msgid "Hold [auto]"
 msgstr "固定 [自動]"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:900
 msgid "Install [auto]"
 msgstr "インストール [自動]"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:902
 msgid "Remove [auto]"
 msgstr "削除 [自動]"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:904
 msgid "Downgrade"
 msgstr "ダウングレード"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/generic/apt/matchers.cc:906
 msgid "Hold"
 msgstr "固定"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:908
 msgid "Reinstall"
 msgstr "再インストール"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:910
 msgid "Install"
 msgstr "インストール"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:912
 msgid "Remove"
 msgstr "削除"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:914
 msgid "Upgrade"
 msgstr "更新"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/generic/apt/matchers.cc:934
 msgid "Keep"
 msgstr "一時固定"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:960
 msgid "Virtual"
 msgstr "仮想"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:981
 msgid "Installed"
 msgstr "インストール済み"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:1003
 msgid "Essential"
 msgstr "必須"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:1022
 msgid "Config Files Remain"
 msgstr "設定ファイル残存"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:1388
 msgid "Garbage"
 msgstr "ゴミ"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/generic/apt/matchers.cc:1712
 msgid "No reverse dependencies"
 msgstr "逆依存はありません"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:1778
 msgid "New Package"
 msgstr "新規パッケージ"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:1797
 msgid "Upgradable"
 msgstr "更新可能"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/matchers.cc:1921
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "%s の後に終端文字のないリテラル文字列があります"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/generic/apt/matchers.cc:1981
 msgid "Unmatched '('"
 msgstr "対応する '(' がありません"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/generic/apt/matchers.cc:2114 src/generic/apt/matchers.cc:2187
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "依存関係の形式が不明です: %s"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/generic/apt/matchers.cc:2120
 msgid "Provides: cannot be broken"
 msgstr "Provides: は破損することはありません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/matchers.cc:2175
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "アクションの形式が不明です: %s"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/generic/apt/matchers.cc:2229
 #, c-format
 msgid "Unknown priority %s"
 msgstr "優先度が不明です: %s"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/generic/apt/matchers.cc:2250
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "パターンの形式が不明です: %c"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/apt/matchers.cc:2273
 msgid "Can't search for \"\""
 msgstr "\"\" は検索できません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/matchers.cc:2301
 msgid "Unexpected empty expression"
 msgstr "想定外の空の式です"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/matchers.cc:2328
 msgid "Badly formed expression"
 msgstr "不正な書式です"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/matchers.cc:2363
 msgid "Unexpected ')'"
 msgstr "想定外の ')' です"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/pkg_acqfile.cc:50
 #, c-format
 msgid ""
@@ -2472,7 +2114,6 @@ msgstr ""
 "%s パッケージのファイルが見つかりませんでした。つまり (アーキテクチャが行方不"
 "明のため) このパッケージを手動で補う必要があります。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/pkg_acqfile.cc:99
 #, c-format
 msgid ""
@@ -2481,159 +2122,132 @@ msgstr ""
 "パッケージインデックスファイルが壊されています。%s パッケージにファイル名 "
 "(Filename:) フィールドがありません。"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/generic/apt/pkg_changelog.cc:151 src/view_changelog.cc:149
 #, c-format
 msgid "ChangeLog of %s"
 msgstr "%s の変更履歴"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/pkg_hier.cc:29 src/generic/apt/pkg_hier.cc:50
 #, c-format
 msgid "Warning: group %s is involved in a cycle"
 msgstr "警告: グループ %s が循環参照になっています"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/pkg_hier.cc:144
 #, c-format
 msgid "Cannot open package hierarchy file %s"
 msgstr "パッケージ階層ファイル %s を開けません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/pkg_hier.cc:165
 msgid "Global block encountered after first record, ignoring"
 msgstr "最初のレコードの後にグローバルブロックがありました。無視します"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/pkg_hier.cc:178
 msgid "Bad record encountered (no Package or Group entry), skipping"
 msgstr ""
 "不正なレコードがありました (Package や Group のエントリなし)。無視します"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/pkg_hier.cc:180
 #, c-format
 msgid "Bad record encountered (Package=%s, Group=%s), skipping"
 msgstr "不正なレコードがありました (Package=%s, Group=%s)。無視します"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/pkg_hier.cc:243
 #, c-format
 msgid "Multiple descriptions found for group %s, ignoring one"
 msgstr "分類 %s に対する説明文が複数見つかりました。一つを無視します"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/generic/apt/tags.cc:216 src/generic/apt/tags.cc:223
 msgid "Building tag database"
 msgstr "タグのデータベースを構築しています"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/generic/apt/tags.cc:255
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgstr ""
 "debtags 定義集をロードできません。debtags がインストールされていないのではな"
 "いでしょうか?"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/generic/apt/tasks.cc:283
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "/usr/share/tasksel/debian-tasks.desc が開けません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/generic/apt/tasks.cc:290 src/generic/apt/tasks.cc:332
 #: src/generic/apt/tasks.cc:334
 msgid "Reading task descriptions"
 msgstr "タスク説明文を読み込んでいます"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/generic/util/temp.cc:63 src/generic/util/temp.cc:128
 #: src/generic/util/temp.cc:142
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "テンプレート \"%s\" から一時ディレクトリを作成できません: %s"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/util/temp.cc:137
 msgid "Unknown error"
 msgstr "不明なエラーです"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/generic/util/threads.cc:32
 msgid "Not enough resources to create thread"
 msgstr "スレッドを作成するのに十分なリソースがありません"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/load_config.cc:46
 #, c-format
 msgid "Unrecognized color name \"%s\""
 msgstr "色名を認識できません: \"%s\""
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/load_config.cc:73
 #, c-format
 msgid "Unrecognized attribute name \"%s\""
 msgstr "属性名を認識できません: \"%s\""
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_config.cc:111
 #, c-format
 msgid "Invalid entry in style definition group: \"%s\""
 msgstr "スタイル定義グループ中に無効なエントリがあります: \"%s\""
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_config.cc:113
 #, c-format
 msgid "Invalid tagless entry in style definition group: \"%s\""
 msgstr "スタイル定義グループ中にタグのない無効なエントリがあります: \"%s\""
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_config.cc:125
 msgid "The default color may only be used as a background."
 msgstr "デフォルトの色は背景にのみ使用できます。"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/load_config.cc:142
 #, c-format
 msgid "Unknown style attribute %s"
 msgstr "未知のスタイル属性です: %s"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_config.cc:165 src/load_config.cc:167
 #, c-format
 msgid "Invalid entry in keybinding group: \"%s\""
 msgstr "キーバインドグループに無効なエントリがあります: \"%s\""
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_config.cc:182
 #, c-format
 msgid "Ignoring invalid keybinding \"%s\" -> \"%s\""
 msgstr "無効なキーバインド \"%s\" -> \"%s\" を無視しています"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_grouppolicy.cc:258
 #, c-format
 msgid "Expected policy identifier, got '%c'"
 msgstr "規則の ID を期待しましたが '%c' が与えられました"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_grouppolicy.cc:270
 #, c-format
 msgid "Expected ',' or '(', got '%c'"
 msgstr "',' か '(' を期待しましたが '%c' が与えられました"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_grouppolicy.cc:277
 #, c-format
 msgid "Unknown grouping policy \"%s\""
 msgstr "\"%s\" は不明な分類規則です"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_grouppolicy.cc:284
 #, c-format
 msgid "Terminal policy \"%s\" should be the last policy in the list"
 msgstr "末端ポリシー \"%s\" はリストの最後のポリシーにしてください"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_grouppolicy.cc:367
 #, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', or 'subdir')"
@@ -2641,7 +2255,6 @@ msgstr ""
 "セクション名が不正です: '%s' ('none'、'topdir' もしくは 'subdir' を用いてくだ"
 "さい)"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_grouppolicy.cc:377
 #, c-format
 msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
@@ -2649,196 +2262,160 @@ msgstr ""
 "貫通の設定が不正です: '%s' ('passthrough' か 'nopassthrough' を用いてくださ"
 "い)"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_grouppolicy.cc:382
 msgid "Too many arguments to by-section grouping policy"
 msgstr "セクションを用いた分類規則に渡す引数が多すぎます"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_grouppolicy.cc:395
 msgid "By-status grouping policies take no arguments"
 msgstr "ステータスを用いた分類規則に引数は要りません"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/load_grouppolicy.cc:412
 msgid "Expected '(' after 'filter'"
 msgstr "'filter' の後に '(' が期待されます"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/load_grouppolicy.cc:449
 #, c-format
 msgid "Unable to parse pattern at '%s'"
 msgstr "'%s' のパターンをパースできません"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_grouppolicy.cc:454
 msgid "Exactly one filter must be provided as an argument to a filter policy"
 msgstr "フィルタ規則にはフィルタを一つだけ引数として与えなければなりません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_grouppolicy.cc:473
 msgid "By-mode grouping policies take no arguments"
 msgstr "モードを用いた分類規則に引数は要りません"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_grouppolicy.cc:484
 msgid "First-character grouping policies take no arguments"
 msgstr "頭文字を用いた分類規則に引数は要りません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_grouppolicy.cc:496
 msgid "Version-generating grouping policies take no arguments"
 msgstr "バージョンから生成された分類規則に引数は要りません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_grouppolicy.cc:507
 msgid "Dep-generating grouping policies take no arguments"
 msgstr "依存関係から生成された分類規則に引数は要りません"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_grouppolicy.cc:518
 msgid "By-priority grouping policies take no arguments"
 msgstr "優先度を用いた分類規則に引数は要りません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_grouppolicy.cc:549
 msgid "Task grouping policies take no arguments"
 msgstr "タスク分類規則に引数は要りません"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_grouppolicy.cc:562
 msgid "Expected no more than one argument to a tag grouping policy"
 msgstr "タグ分類規則には一つ以上の引数を与えてください"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/load_grouppolicy.cc:577
 msgid "Expected '(' after 'pattern'"
 msgstr "'pattern' の後に '(' が期待されます"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/load_grouppolicy.cc:585
 msgid "Missing arguments to 'pattern'"
 msgstr "'pattern' への引数がありません"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/load_grouppolicy.cc:606
 #, c-format
 msgid "Unable to parse pattern after \"%s\""
 msgstr "\"%s\" の後のパターンをパースできません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_grouppolicy.cc:628
 #, c-format
 msgid "Unexpectedly empty tree title after \"%s\""
 msgstr "想定外の、空のツリータイトルが \"%s\" の後にあります"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_grouppolicy.cc:639
 msgid "Unmatched '(' in pattern grouping policy"
 msgstr "分類規則内で '(' が対応していません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_pkgview.cc:58
 msgid "Couldn't parse layout: No column format specified for static item"
 msgstr ""
 "レイアウトをパースできませんでした: 静的な項目に対して行のフォーマットが指定"
 "されていません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_pkgview.cc:91
 msgid "Couldn't parse layout: encoding error in column descriptor"
 msgstr ""
 "レイアウトをパースできませんでした: 行記述子でエンコーディングエラーが生じま"
 "した"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_pkgview.cc:112
 #, c-format
 msgid "Couldn't parse layout: unknown view item type \"%s\""
 msgstr "レイアウトをパースできませんでした: \"%s\" は未知の表示項目形式です"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/load_pkgview.cc:119 src/load_pkgview.cc:127
 msgid "Couldn't parse layout: no row number specified"
 msgstr "レイアウトをパースできませんでした: 列の数が指定されていません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/load_pkgview.cc:135
 msgid "Couldn't parse layout: no width specified"
 msgstr "レイアウトをパースできませんでした: 幅が指定されていません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/load_pkgview.cc:143
 msgid "Couldn't parse layout: no height specified"
 msgstr "レイアウトをパースできませんでした: 高さが指定されていません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_pkgview.cc:174 src/load_pkgview.cc:192
 #, c-format
 msgid "Unknown alignment type '%s'"
 msgstr "未知の整列形式です: '%s'"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_sortpolicy.cc:51
 msgid "By-name sorting policies take no arguments"
 msgstr "名前を用いた並べ替え規則に引数は要りません"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/load_sortpolicy.cc:64
 msgid "By-version sorting policies take no arguments"
 msgstr "バージョンを用いた並び替え規則に引数は要りません"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_sortpolicy.cc:77
 msgid "By-installed size sorting policies take no arguments"
 msgstr "インストールサイズを用いた並び替え規則に引数は要りません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_sortpolicy.cc:90
 msgid "By-priority sorting policies take no arguments"
 msgstr "優先度を用いた並び替え規則に引数は要りません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/load_sortpolicy.cc:148
 msgid "Invalid zero-length sorting policy name"
 msgstr "長さがゼロの文字列は並び替え規則の名前として無効です"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/load_sortpolicy.cc:166
 msgid "Unmatched '(' in sorting policy description"
 msgstr "並び替え規則の記述内で '(' が対応していません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/load_sortpolicy.cc:193
 #, c-format
 msgid "Invalid sorting policy type '%s'"
 msgstr "並び替え規則の形式が不正です: '%s'"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:82
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr "\"%ls\" の後のマルチバイト文字列をデコードできません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:91
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr "\"%s\" の後のワイドキャラクタをデコードできません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/main.cc:99
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr "%s %s (コンパイル日時: %s %s)\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:102
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr "コンパイラ: g++ %s\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:105
 #, c-format
 msgid ""
@@ -2848,7 +2425,6 @@ msgstr ""
 "\n"
 "NCurses バージョン: %s\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:107
 #, c-format
 msgid ""
@@ -2858,28 +2434,24 @@ msgstr ""
 "\n"
 "Curses バージョン: %s\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:109
 #, c-format
 msgid "libsigc++ version: %s\n"
 msgstr "libsigc++ バージョン : %s\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:115
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "使用方法: aptitude [-S ファイル名] [-u|-i]"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:117
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "       aptitude [オプション]<アクション> ..."
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:119
 #, c-format
 msgid ""
@@ -2891,42 +2463,36 @@ msgstr ""
 "\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-23.
 #: src/main.cc:120
 #, c-format
 msgid " install      - Install/upgrade packages\n"
 msgstr " install      - パッケージをインストール・更新します\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-20.
 #: src/main.cc:121
 #, c-format
 msgid " remove       - Remove packages\n"
 msgstr " remove       - パッケージを削除します\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-01-23.
 #: src/main.cc:122
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr " purge        - パッケージと設定ファイルを削除します\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-03-01.
 #: src/main.cc:123
 #, c-format
 msgid " hold         - Place packages on hold\n"
 msgstr " hold         - パッケージを固定します\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-03-01.
 #: src/main.cc:124
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
 msgstr " unhold       - パッケージの固定を解除します\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-01-22.
 #: src/main.cc:125
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
@@ -2934,7 +2500,6 @@ msgstr ""
 " markauto     - 自動的にインストールされたという印をパッケージにつけます\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-01-22.
 #: src/main.cc:126
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
@@ -2942,7 +2507,6 @@ msgstr ""
 " unmarkauto   - 手動でインストールされたという印をパッケージにつけます\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-01-22.
 #: src/main.cc:131
 #, c-format
 msgid ""
@@ -2953,7 +2517,6 @@ msgstr ""
 "す。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-20.
 #: src/main.cc:132
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
@@ -2961,14 +2524,12 @@ msgstr ""
 " update       - 新規および更新可能なパッケージの一覧をダウンロードします\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-20.
 #: src/main.cc:133
 #, c-format
 msgid " upgrade      - Perform a safe upgrade\n"
 msgstr " upgrade      - 安全な更新をおこないます\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-20.
 #: src/main.cc:134
 #, c-format
 msgid ""
@@ -2978,35 +2539,30 @@ msgstr ""
 " dist-upgrade - パッケージのインストールや削除を伴う更新をおこないます\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:135
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr " forget-new   - どのパッケージが「新規」かの情報を消去します\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:136
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr " search       - 名前や正規表現でパッケージを検索します\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:137
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr " show         - パッケージについての詳細な情報を表示します\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:138
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr " clean        - ダウンロード済みのパッケージファイルを消去します\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:139
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
@@ -3014,21 +2570,18 @@ msgstr ""
 " autoclean    - 古い、ダウンロード済みのパッケージファイルを消去します\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:140
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr "changelog     - パッケージの変更履歴を表示します\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:141
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr " download     - パッケージ用の .deb ファイルをダウンロードします\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-03-01.
 #: src/main.cc:142
 #, c-format
 msgid ""
@@ -3039,21 +2592,18 @@ msgstr ""
 "よっては) 再インストールします\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:144
 #, c-format
 msgid "  Options:\n"
 msgstr "  オプション: \n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:145
 #, c-format
 msgid " -h             This help text\n"
 msgstr " -h                このヘルプの文章です。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:146
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
@@ -3061,7 +2611,6 @@ msgstr ""
 " -s                アクションのシミュレートのみ行い、実際には実行しません。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:147
 #, c-format
 msgid ""
@@ -3072,7 +2621,6 @@ msgstr ""
 "                   ません。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:148
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
@@ -3080,7 +2628,6 @@ msgstr ""
 " -P                確認やアクションのために常にプロンプトを出します。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:149
 #, c-format
 msgid ""
@@ -3090,7 +2637,6 @@ msgstr ""
 "す。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:150
 #, c-format
 msgid ""
@@ -3102,7 +2648,6 @@ msgstr ""
 "                   てください。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:151
 #, c-format
 msgid ""
@@ -3113,7 +2658,6 @@ msgstr ""
 "                   い。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:152
 #, c-format
 msgid ""
@@ -3121,7 +2665,6 @@ msgid ""
 msgstr " -w <幅>           検索結果の表示フォーマットの幅を指定します。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:153
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
@@ -3129,7 +2672,6 @@ msgstr ""
 " -f                依存関係が壊れたパッケージを積極的に修復しようとします。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:154
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
@@ -3139,7 +2681,6 @@ msgstr ""
 "                   す。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:155
 #, c-format
 msgid ""
@@ -3148,7 +2689,6 @@ msgstr ""
 " -D                自動的に変更されたパッケージの依存関係を表示します。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:156
 #, c-format
 msgid " -Z\t\t    Show the change in installed size of each package.\n"
@@ -3156,7 +2696,6 @@ msgstr ""
 " -Z                各パッケージのインストールサイズの変更を表示します。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:157
 #, c-format
 msgid ""
@@ -3165,7 +2704,6 @@ msgstr ""
 " -v                付加的な情報を表示します (何倍もの情報が提供されます)。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:158
 #, c-format
 msgid ""
@@ -3174,7 +2712,6 @@ msgstr ""
 " -t [<リリース>]   インストールするパッケージが基づくリリースを設定します。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-03-01.
 #: src/main.cc:159
 #, c-format
 msgid ""
@@ -3184,7 +2721,6 @@ msgstr ""
 " -q                コマンドラインモードで進行状況を逐一表示しません。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:160
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
@@ -3192,7 +2728,6 @@ msgstr ""
 " -o <キー>=<値>    名前「<キー>」をもつ設定オプションを直接設定します。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:161
 #, c-format
 msgid ""
@@ -3204,7 +2739,6 @@ msgstr ""
 "                   す。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:162
 #, c-format
 msgid " -S fname: Read the aptitude extended status info from fname.\n"
@@ -3213,7 +2747,6 @@ msgstr ""
 "す。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:163
 #, c-format
 msgid " -u      : Download new package lists on startup.\n"
@@ -3221,49 +2754,41 @@ msgstr ""
 " -u              : 起動時に新しいパッケージ一覧をダウンロードします。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:164
 #, c-format
 msgid " -i      : Perform an install run on startup.\n"
 msgstr " -i             : 起動時にインストールを行います。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:166
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr ""
 "                  この aptitude にはスーパー牛さんパワーなどはありません。\n"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/main.cc:305
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "-q= の後に番号が期待されます\n"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/main.cc:314
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "-q= の後に番号が期待されますが、%s が与えられました\n"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:337
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s"
 msgstr "-o には <キー>=<値> の形式の引き数が必要ですが、%s が与えられました"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:382 src/main.cc:391
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "不可思議: 未知のオプションコードを受け取りました\n"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:408
 msgid "Only one of -u and -i may be specified\n"
 msgstr "-u と -i は一方のみ指定できます\n"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/main.cc:416
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
@@ -3271,24 +2796,20 @@ msgstr ""
 "-u と -i はコマンドラインモードで指定しては (例: 'install' とともに用いては) "
 "いけません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/main.cc:437
 msgid "-u and -i may not be specified with a command"
 msgstr "-u と -i はコマンドとともに指定してはいけません"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/main.cc:513
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "不明なコマンド \"%s\"\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/main.cc:525 src/main.cc:568
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "捕捉できなかった例外: %s\n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/main.cc:529 src/main.cc:572
 #, c-format
 msgid ""
@@ -3298,168 +2819,136 @@ msgstr ""
 "バックトレース:\n"
 "%s"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/menu_text_layout.cc:36 src/menu_tree.cc:204 src/view_changelog.cc:55
 msgid "Search for: "
 msgstr "検索: "
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/menu_text_layout.cc:68 src/menu_tree.cc:221 src/view_changelog.cc:67
 msgid "Search backwards for: "
 msgstr "後方を検索: "
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/mine/cmine.cc:106 src/mine/cmine.cc:148 src/ui.cc:1439
 msgid "Minesweeper"
 msgstr "マインスイーパ"
 
 # * Example: '12/30 mines  50 seconds'
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:112
 #, c-format
 msgid "%i/%i mines  %d %s"
 msgstr "地雷 %i 個/%i 個  %d %s"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/mine/cmine.cc:116 src/mine/cmine.cc:123
 msgid "second"
 msgstr "秒"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/mine/cmine.cc:116 src/mine/cmine.cc:123
 msgid "seconds"
 msgstr "秒"
 
 # * Example: 'Won in 120 seconds'
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:120
 #, c-format
 msgid "    %s in %d %s"
 msgstr "    %2$d %3$sで%1$s"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/mine/cmine.cc:121
 msgid "Won"
 msgstr "勝利"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/mine/cmine.cc:121
 msgid "Lost"
 msgstr "敗北"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/mine/cmine.cc:165 src/mine/cmine.cc:209
 #, c-format
 msgid "Could not open file \"%s\""
 msgstr "ファイル \"%s\" が開けません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/mine/cmine.cc:180
 #, c-format
 msgid "Could not load game from %s"
 msgstr "%s からゲームをロードできません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/mine/cmine.cc:247
 msgid "The board height must be a positive integer"
 msgstr "ボードの高さは正の整数でなければいけません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/mine/cmine.cc:259
 msgid "The board width must be a positive integer"
 msgstr "ボードの幅は正の整数でなければいけません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/mine/cmine.cc:271
 msgid "Invalid mine count; please enter a positive integer"
 msgstr "地雷の数が不正です。正の整数を入力してください"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:291
 msgid "Setup custom game"
 msgstr "カスタムゲームを設定"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/mine/cmine.cc:293
 msgid "Height of board: "
 msgstr "ボードの高さ: "
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/mine/cmine.cc:296
 msgid "Width of board: "
 msgstr "ボードの幅: "
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/mine/cmine.cc:299
 msgid "Number of mines: "
 msgstr "地雷の数: "
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/mine/cmine.cc:360
 msgid "Choose difficulty level"
 msgstr "レベルを選択"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/mine/cmine.cc:362
 msgid "Easy"
 msgstr "簡単"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/mine/cmine.cc:363
 msgid "Medium"
 msgstr "普通"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/mine/cmine.cc:364
 msgid "Hard"
 msgstr "難しい"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:365
 msgid "Custom"
 msgstr "カスタム"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/mine/cmine.cc:457
 msgid "You have won."
 msgstr "あなたの勝ちです。"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/mine/cmine.cc:460
 msgid "You lose!"
 msgstr "あなたの負け!"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/mine/cmine.cc:465
 msgid "You die...  --More--"
 msgstr "あなたは死にました……。--More--"
 
-# * Translation checked by noritada on 2006-04-21.
 #: src/mine/cmine.cc:478
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
 msgstr "くぎには毒が塗られていました! 致死量でした……。--More--"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:481
 msgid "You land on a set of sharp iron spikes!  --More--"
 msgstr "鉄のくぎの上に着地しました! --More--"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/mine/cmine.cc:484
 msgid "You fall into a pit!  --More--"
 msgstr "落とし穴に落ちました! --More--"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/mine/cmine.cc:487
 msgid "KABOOM!  You step on a land mine.  --More--"
 msgstr "ドッカーン! 地雷を踏みました。--More--"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/mine/cmine.cc:492
 msgid "The dart was poisoned!  The poison was deadly...  --More--"
 msgstr "投げ矢には毒が塗られていました! 致死量でした……。--More--"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/mine/cmine.cc:494
 msgid ""
 "A little dart shoots out at you!  You are hit by a little dart!  --More--"
@@ -3467,22 +2956,18 @@ msgstr ""
 "あなためがけて小さな投げ矢が飛んできました! 小さな投げ矢はあなたに命中しまし"
 "た! --More--"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/mine/cmine.cc:498
 msgid "You turn to stone... --More--"
 msgstr "あなたは石になってしまいました……。--More--"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/mine/cmine.cc:500
 msgid "Touching the cockatrice corpse was a fatal mistake.  --More--"
 msgstr "コカトリスの死骸に触ったのは致命的なミスでした。--More--"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/mine/cmine.cc:502
 msgid "You feel here a cockatrice corpse.  --More--"
 msgstr "コカトリスの死骸に触った気がしました。--More--"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/mine/cmine.cc:506
 msgid ""
 "Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --"
@@ -3491,271 +2976,218 @@ msgstr ""
 "カチッ! 転がる岩の罠のスイッチを押してしまいました! 岩があなたに当たりまし"
 "た! --More--"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:516
 msgid "sleep"
 msgstr "眠り"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:519
 msgid "striking"
 msgstr "打撃"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:522
 msgid "death"
 msgstr "死亡"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:525
 msgid "polymorph"
 msgstr "変異"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:528
 msgid "magic missile"
 msgstr "魔法のミサイル"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:531
 msgid "secret door detection"
 msgstr "秘密の扉の発見"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:534
 msgid "invisibility"
 msgstr "盲目"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:537
 msgid "cold"
 msgstr "冷気"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:543
 #, c-format
 msgid "Your wand of %s breaks apart and explodes!  --More--"
 msgstr "あなたの%sの杖はバラバラに砕け散った! --More--"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/mine/cmine.cc:549
 msgid "You are jolted by a surge of electricity!  --More--"
 msgstr "電流による衝撃があなたの体に走った! --More--"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/mine/cmine.cc:653
 msgid "Enter the filename to load: "
 msgstr "読み込むファイル名を入力してください: "
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/mine/cmine.cc:660
 msgid "Enter the filename to save: "
 msgstr "保存するファイル名を入力してください: "
 
-# * Translation checked by noritada on 2006-02-28.
 #: src/mine/cmine.cc:670
 msgid "mine-help.txt"
 msgstr "mine-help-ja.txt"
 
-# * Translation checked by noritada on 2006-02-28.
 #: src/mine/cmine.cc:672
 msgid "Encoding of mine-help.txt|UTF-8"
 msgstr "Encoding of mine-help-ja.txt|UTF-8"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:83
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:86 src/ui.cc:2333
 msgid "Package"
 msgstr "パッケージ"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:87
 msgid "InstSz"
 msgstr "インストサイズ"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:88
 msgid "DebSz"
 msgstr "Debサイズ"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:90
 msgid "Action"
 msgstr "アクション"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/pkg_columnizer.cc:91
 msgid "Description"
 msgstr "説明文"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:92
 msgid "InstVer"
 msgstr "現在版"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:93
 msgid "CandVer"
 msgstr "候補版"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:94
 msgid "LongState"
 msgstr "状態"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:95
 msgid "LongAction"
 msgstr "アクション"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:96
 msgid "Maintainer"
 msgstr "メンテナ"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_columnizer.cc:97
 msgid "Priority"
 msgstr "優先度"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_columnizer.cc:98
 msgid "Section"
 msgstr "セクション"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:99
 msgid "RC"
 msgstr "RC"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:100
 msgid "Auto"
 msgstr "自動"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/pkg_columnizer.cc:101
 msgid "Tag"
 msgstr "タグ"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:104
 msgid "ProgName"
 msgstr "名前"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:105
 msgid "ProgVer"
 msgstr "バージョン"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_columnizer.cc:106
 msgid "#Broken"
 msgstr "#依存関係破損"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:107
 msgid "DiskUsage"
 msgstr "ディスク使用量"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:108
 msgid "DownloadSize"
 msgstr "ダウンロードサイズ"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:128 src/pkg_columnizer.cc:140 src/pkg_ver_item.cc:106
 #: src/pkg_ver_item.cc:171
 msgid "<N/A>"
 msgstr "<N/A>"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_columnizer.cc:170 src/pkg_columnizer.cc:181
 msgid "<none>"
 msgstr "<なし>"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:221 src/pkg_grouppolicy.cc:233
 msgid "virtual"
 msgstr "仮想"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:228 src/pkg_ver_item.cc:215 src/pkg_ver_item.cc:223
 msgid "purged"
 msgstr "完全削除"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/pkg_columnizer.cc:235 src/pkg_ver_item.cc:230
 msgid "half-config"
 msgstr "設定未完了"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/pkg_columnizer.cc:237 src/pkg_ver_item.cc:232
 msgid "half-install"
 msgstr "インストール未完了"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:239 src/pkg_ver_item.cc:234
 msgid "config-files"
 msgstr "設定ファイル"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:523 src/pkg_ver_item.cc:238
 msgid "ERROR"
 msgstr "エラー"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/pkg_columnizer.cc:290 src/pkg_ver_item.cc:296
 msgid "hold"
 msgstr "固定"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/pkg_columnizer.cc:293
 msgid "forbidden upgrade"
 msgstr "更新禁止"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_columnizer.cc:295
 msgid "purge"
 msgstr "完全削除"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_columnizer.cc:295 src/pkg_ver_item.cc:320
 msgid "delete"
 msgstr "削除"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_columnizer.cc:297 src/pkg_ver_item.cc:218 src/pkg_ver_item.cc:302
 msgid "broken"
 msgstr "依存関係破損"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_columnizer.cc:299 src/pkg_ver_item.cc:306 src/pkg_ver_item.cc:313
 #: src/pkg_ver_item.cc:322
 msgid "install"
 msgstr "インストール"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_columnizer.cc:301
 msgid "reinstall"
 msgstr "再インストール"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_columnizer.cc:303
 msgid "upgrade"
 msgstr "更新"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_columnizer.cc:305 src/pkg_columnizer.cc:307 src/pkg_ver_item.cc:308
 #: src/pkg_ver_item.cc:315 src/pkg_ver_item.cc:324 src/pkg_ver_item.cc:327
 msgid "none"
 msgstr "なし"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_columnizer.cc:330 src/pkg_columnizer.cc:351
 #: src/pkg_columnizer.cc:358 src/pkg_grouppolicy.cc:227
 #: src/pkg_info_screen.cc:115 src/pkg_info_screen.cc:116
@@ -3763,83 +3195,69 @@ msgstr "なし"
 msgid "Unknown"
 msgstr "不明"
 
-# * Translation checked by noritada on 2006-02-26.
 #. ForTranslators: Imp = Important
 #: src/pkg_columnizer.cc:338 src/pkg_ver_item.cc:354
 msgid "Imp"
 msgstr "重"
 
-# * Translation checked by noritada on 2006-02-26.
 #. ForTranslators: Req = Required
 #: src/pkg_columnizer.cc:340 src/pkg_ver_item.cc:357
 msgid "Req"
 msgstr "必"
 
-# * Translation checked by noritada on 2006-02-26.
 #. ForTranslators: Std = Standard
 #: src/pkg_columnizer.cc:342 src/pkg_ver_item.cc:360
 msgid "Std"
 msgstr "標"
 
-# * Translation checked by noritada on 2006-02-26.
 #. ForTranslators: Opt = Optional
 #: src/pkg_columnizer.cc:344 src/pkg_ver_item.cc:363
 msgid "Opt"
 msgstr "任"
 
-# * Translation checked by noritada on 2006-02-26.
 #. ForTranslators: Xtr = Extra
 #: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:366
 msgid "Xtr"
 msgstr "特"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:348 src/pkg_ver_item.cc:368
 msgid "ERR"
 msgstr "エ"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_columnizer.cc:370
 #, c-format
 msgid "#Broken: %ld"
 msgstr "#依存関係破損: %ld "
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/pkg_columnizer.cc:385
 #, c-format
 msgid "Will use %sB of disk space"
 msgstr "%sB のディスク領域を新たに使用します"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/pkg_columnizer.cc:393
 #, c-format
 msgid "Will free %sB of disk space"
 msgstr "%sB のディスク領域を解放します"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:407
 #, c-format
 msgid "DL Size: %sB"
 msgstr "DL サイズ: %sB"
 
-# * Translation checked by noritada on 2006-02-26.
 #. ForTranslators: Hostname
 #: src/pkg_columnizer.cc:478
 msgid "HN too long"
 msgstr "HN が長すぎます"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:647 src/pkg_columnizer.cc:656
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr "\"%ls\" の後のパッケージ表示フォーマットをコード変換できません"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_columnizer.cc:663
 msgid "Internal error: Default column string is unparsable"
 msgstr "内部エラー: デフォルトの行文字列がパース不可能です"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:161
 msgid ""
 "Packages which set up your computer to perform a particular task\n"
@@ -3852,7 +3270,6 @@ msgstr ""
 "ケージに依存しているだけです。これらのパッケージを用いると、特定のタスクのた"
 "めにあらかじめ定義したパッケージセットを容易に選択できるようになります。"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_grouppolicy.cc:163
 msgid ""
 "Packages with no declared section\n"
@@ -3863,7 +3280,6 @@ msgstr ""
 " これらのパッケージにはセクションが与えられていません。Packages ファイルに間"
 "違いがあるのではないでしょうか?"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/pkg_grouppolicy.cc:165
 msgid ""
 "Administrative utilities (install software, manage users, etc)\n"
@@ -3876,7 +3292,6 @@ msgstr ""
 "理・システムの設定や監視・ネットワーク流量の調査などといった管理作業をおこな"
 "えます。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/pkg_grouppolicy.cc:167
 msgid ""
 "Packages converted from foreign formats (rpm, tgz, etc)\n"
@@ -3887,7 +3302,6 @@ msgstr ""
 " 'alien' セクションのパッケージは、RPM などの Debian 以外のパッケージ形式か"
 "ら 'alien' プログラムによって作成されたものです。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/pkg_grouppolicy.cc:168
 msgid ""
 "The Debian base system\n"
@@ -3896,7 +3310,6 @@ msgstr ""
 "Debian ベースシステム \n"
 " 'base' セクションのパッケージは、最初のシステムインストールを担います。"
 
-# * Translation checked by noritada on 2006-04-21.
 #: src/pkg_grouppolicy.cc:169
 msgid ""
 "Programs for faxmodems and other communication devices\n"
@@ -3913,7 +3326,6 @@ msgstr ""
 "インターネット接続用の PPP や、元々その用途のために書かれた zmodem/kermit の"
 "ようなプログラム) も含まれています。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/pkg_grouppolicy.cc:170
 msgid ""
 "Utilities and programs for software development\n"
@@ -3932,7 +3344,6 @@ msgstr ""
 " このセクションには、コンパイラ・デバッグツール・プログラマー向けのエディタ・"
 "ソース処理ツール・そのほかソフトウェア開発関連のものが含まれています。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/pkg_grouppolicy.cc:171
 msgid ""
 "Documentation and specialized programs for viewing documentation\n"
@@ -3943,7 +3354,6 @@ msgstr ""
 " 'doc' セクションのパッケージは、Debian システムの一部を記述したドキュメン"
 "ト、またはドキュメントフォーマットのビューアです。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/pkg_grouppolicy.cc:172
 msgid ""
 "Text editors and word processors\n"
@@ -3956,7 +3366,6 @@ msgstr ""
 "す。これらは必ずしもワードプロセッサではありませんが、このセクションにはいく"
 "つかのワードプロセッサも含まれています。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/pkg_grouppolicy.cc:173
 msgid ""
 "Programs for working with circuits and electronics\n"
@@ -3967,7 +3376,6 @@ msgstr ""
 " 'electronics' セクションのパッケージには、回路設計ツールやシミュレータ、マイ"
 "クロコントローラ用のアセンブラ、その他の関連ソフトウェアが含まれています。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/pkg_grouppolicy.cc:174
 msgid ""
 "Programs for embedded systems\n"
@@ -3980,7 +3388,6 @@ msgstr ""
 "す。組み込みデバイスとは、典型的なデスクトップシステムよりも遥かに非力な特別"
 "なハードウェアデバイスで、例えば PDA や携帯電話や Tivo を指します。"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_grouppolicy.cc:175
 msgid ""
 "The GNOME Desktop System\n"
@@ -3993,7 +3400,6 @@ msgstr ""
 "です。'gnome' セクションのパッケージは、GNOME 環境の一部、または GNOME と密接"
 "に結び付けられたパッケージです。"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_grouppolicy.cc:176
 msgid ""
 "Games, toys, and fun programs\n"
@@ -4002,7 +3408,6 @@ msgstr ""
 "ゲーム・おもちゃ・楽しいプログラム\n"
 " 'game' セクションのパッケージは主に娯楽用です。"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_grouppolicy.cc:177
 msgid ""
 "Utilities to create, view, and edit graphics files\n"
@@ -4017,7 +3422,6 @@ msgstr ""
 "ジタルカメラなど) とやりとりするためのソフトウェア、画像を扱うプログラミング"
 "ツールが含まれています。"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_grouppolicy.cc:178
 msgid ""
 "Software for ham radio operators\n"
@@ -4027,7 +3431,6 @@ msgstr ""
 "アマチュア無線のためのソフトウェア\n"
 " 'hamradio' セクションのパッケージは主にアマチュア無線家用です。"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_grouppolicy.cc:179
 msgid ""
 "Interpreters for interpreted languages\n"
@@ -4038,7 +3441,6 @@ msgstr ""
 " 'interpreters' セクションのパッケージには、Python や Perl、Ruby のような言語"
 "のためのインタープリタや、それらの言語向けのライブラリが含まれています。"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_grouppolicy.cc:180
 msgid ""
 "The KDE Desktop System\n"
@@ -4051,7 +3453,6 @@ msgstr ""
 "す。'kde' セクションのパッケージは、KDE 環境の一部、または KDE と密接に結び付"
 "けられたパッケージです。"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_grouppolicy.cc:181
 msgid ""
 "Development files for libraries\n"
@@ -4064,7 +3465,6 @@ msgstr ""
 "プログラムのビルドに必要なファイルが含まれています。自分でソフトウェアをコン"
 "パイルしたい場合以外はこのセクションのパッケージは必要ないでしょう。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:182
 msgid ""
 "Collections of software routines\n"
@@ -4079,7 +3479,6 @@ msgstr ""
 "的にインストールする必要はないでしょう。依存関係の解決に必要になったときに"
 "パッケージシステムがインストールするからです。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:183
 msgid ""
 "Perl interpreter and libraries\n"
@@ -4094,7 +3493,6 @@ msgstr ""
 "ンからパッケージを明示的にインストールする必要はないでしょう。依存関係の解決"
 "に必要になったときにパッケージシステムがインストールするからです。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:184
 msgid ""
 "Python interpreter and libraries\n"
@@ -4109,7 +3507,6 @@ msgstr ""
 "クションからパッケージを明示的にインストールする必要はないでしょう。依存関係"
 "の解決に必要になったときにパッケージシステムがインストールするからです。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:185
 msgid ""
 "Programs to write, send, and route email messages\n"
@@ -4122,7 +3519,6 @@ msgstr ""
 "ングリストソフトウェア・スパムフィルタや、電子メールに関連するその他のソフト"
 "ウェアが含まれています。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:186
 msgid ""
 "Numeric analysis and other mathematics-related software\n"
@@ -4134,7 +3530,6 @@ msgstr ""
 " 'math' セクションのパッケージには、電卓・(Mathematica 類似の) 数学的演算用言"
 "語・記号代数パッケージ・数学的オブジェクト可視化プログラムが含まれています。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:187
 msgid ""
 "Miscellaneous software\n"
@@ -4144,7 +3539,6 @@ msgstr ""
 " 'misc' セクションのパッケージは、あまりにも機能が風変わりで分類できないもの"
 "です。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:188
 msgid ""
 "Programs to connect to and provide various services\n"
@@ -4157,7 +3551,6 @@ msgstr ""
 "バ・低レベルネットワークプロトコルの操作やデバッグのためのツール・IM システ"
 "ム・その他のネットワーク関連ソフトウェアが含まれています。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:189
 msgid ""
 "Usenet clients and servers\n"
@@ -4168,7 +3561,6 @@ msgstr ""
 " 'news' セクションのパッケージは、Usenet 分散型ニュースシステムに関連していま"
 "す。それらにはニュースリーダやニュースサーバが含まれます。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:190
 msgid ""
 "Obsolete libraries\n"
@@ -4189,7 +3581,6 @@ msgstr ""
 "する必要はないでしょう。依存関係の解決に必要になったときにパッケージシステム"
 "がインストールするからです。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:191
 msgid ""
 "Emulators and software to read foreign filesystems\n"
@@ -4208,7 +3599,6 @@ msgstr ""
 " .\n"
 " CD を焼くソフトウェアもこのセクションに含まれることに注意してください。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:192
 msgid ""
 "Software for scientific work\n"
@@ -4219,7 +3609,6 @@ msgstr ""
 " 'science' セクションのパッケージには、天文学・生物学・化学・その他の科学関連"
 "のソフトウェアが含まれています。"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_grouppolicy.cc:193
 msgid ""
 "Command shells and alternative console environments\n"
@@ -4230,7 +3619,6 @@ msgstr ""
 " 'shells' セクションのパッケージには、コマンドラインインタフェースを提供する"
 "プログラムが含まれます。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:194
 msgid ""
 "Utilities to play and record sound\n"
@@ -4245,7 +3633,6 @@ msgstr ""
 "成プログラム・音声ハードウェア用ドライバ・音声処理ソフトウェアが含まれていま"
 "す。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:195
 msgid ""
 "The TeX typesetting system\n"
@@ -4260,7 +3647,6 @@ msgstr ""
 "ディタ・TeX および TeX の出力を様々なフォーマットに変換するユーティリティ・"
 "TeX のフォント・その他の TeX 関連のソフトウェアが含まれています。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:196
 msgid ""
 "Text processing utilities\n"
@@ -4277,7 +3663,6 @@ msgstr ""
 "な印刷のためのソフトウェア・その他のプレーンテキスト操作用のソフトウェアが含"
 "まれています。"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_grouppolicy.cc:197
 msgid ""
 "Various system utilities\n"
@@ -4288,7 +3673,6 @@ msgstr ""
 " 'utils' セクションのパッケージは、用途があまりにも独特で、分類できないユー"
 "ティリティです。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:198
 msgid ""
 "Web browsers, servers, proxies, and other tools\n"
@@ -4302,7 +3686,6 @@ msgstr ""
 "ブベースプログラム・World Wide Web 関連のその他のソフトウェアが含まれていま"
 "す。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:199
 msgid ""
 "The X window system and related software\n"
@@ -4316,7 +3699,6 @@ msgstr ""
 "プログラムのうち、他のどのセクションにも分類されなかったためにここに入れられ"
 "たものが含まれています。"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:201
 msgid ""
 "Programs which depend on software not in Debian\n"
@@ -4343,7 +3725,6 @@ msgstr ""
 " フリーソフトウェアに対する Debian の考え方の詳細については、以下の URL を参"
 "照してください。http://www.debian.org/social_contract.ja.html#guidelines"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:202
 msgid ""
 "The main Debian archive\n"
@@ -4360,7 +3741,6 @@ msgstr ""
 " フリーソフトウェアに対する Debian の考え方の詳細については、以下の URL を参"
 "照してください。http://www.debian.org/social_contract.ja.html#guidelines"
 
-# * Translation checked by noritada on 2006-02-28.
 #: src/pkg_grouppolicy.cc:203
 msgid ""
 "Programs stored outside the US due to export controls\n"
@@ -4383,7 +3763,6 @@ msgstr ""
 "れています。したがって、以前このセクションにあったパッケージの多くは、今では "
 "'main' に移っています。"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:204
 msgid ""
 "Programs which are not free software\n"
@@ -4407,7 +3786,6 @@ msgstr ""
 " フリーソフトウェアに対する Debian の考え方の詳細については、以下の URL を参"
 "照してください。http://www.debian.org/social_contract.ja.html#guidelines"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:206
 msgid ""
 "Virtual packages\n"
@@ -4418,32 +3796,26 @@ msgstr ""
 " これらのパッケージには実体がありません。これらは、他のパッケージに何らかの機"
 "能を必要とさせたり提供させたりするのに用いられる名前です。"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:221
 msgid "Tasks/Tasks"
 msgstr "タスク/タスク"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:221 src/pkg_grouppolicy.cc:955
 msgid "Tasks"
 msgstr "タスク"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:227
 msgid "Unknown/Unknown"
 msgstr "不明/不明"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:233
 msgid "virtual/virtual"
 msgstr "仮想/仮想"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_grouppolicy.cc:244
 msgid "main"
 msgstr "メイン"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:329
 msgid ""
 "Security Updates\n"
@@ -4453,7 +3825,6 @@ msgstr ""
 " これらのパッケージのセキュリティアップデートが security.debian.org から入手"
 "可能です。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/pkg_grouppolicy.cc:330
 msgid ""
 "Upgradable Packages\n"
@@ -4462,7 +3833,6 @@ msgstr ""
 "更新可能なパッケージ\n"
 " これらのパッケージは新しいバージョンが利用可能です。"
 
-# * Translation checked by noritada on 2006-02-28.
 #: src/pkg_grouppolicy.cc:331
 msgid ""
 "New Packages\n"
@@ -4475,7 +3845,6 @@ msgstr ""
 "されました (この一覧を空にするには、「新規パッケージ一覧を消去」をアクション"
 "メニューから選んでください)。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/pkg_grouppolicy.cc:332
 msgid ""
 "Installed Packages\n"
@@ -4484,7 +3853,6 @@ msgstr ""
 "インストール済みのパッケージ\n"
 " これらのパッケージは現在コンピュータにインストールされています。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/pkg_grouppolicy.cc:333
 msgid ""
 "Not Installed Packages\n"
@@ -4493,7 +3861,6 @@ msgstr ""
 "インストールされていないパッケージ\n"
 " これらのパッケージはコンピュータにインストールされていません。"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/pkg_grouppolicy.cc:334
 msgid ""
 "Obsolete and Locally Created Packages\n"
@@ -4506,7 +3873,6 @@ msgstr ""
 "入手先からも入手できません。おそらくそれらは、古いためにアーカイブから削除さ"
 "れたか、または自分でビルドした独自バージョンなのでしょう。"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:335
 msgid ""
 "Virtual Packages\n"
@@ -4517,7 +3883,6 @@ msgstr ""
 " これらのパッケージには実体がありません。これらは、他のパッケージに何らかの機"
 "能を必要とさせたり提供させたりするのに用いられる名前です。"
 
-# * Translation checked by noritada on 2006-02-28.
 #: src/pkg_grouppolicy.cc:486
 msgid ""
 "Packages which are recommended by other packages\n"
@@ -4530,7 +3895,6 @@ msgstr ""
 "更新をしようとしている他のプログラムに完全な機能を提供するために必要となるで"
 "しょう。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/pkg_grouppolicy.cc:506
 msgid ""
 "Packages which are suggested by other packages\n"
@@ -4543,7 +3907,6 @@ msgstr ""
 "が、現在インストールしようとしているいくつかのプログラムの機能を強化してくれ"
 "るでしょう。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_grouppolicy.cc:533
 msgid ""
 "Packages with unsatisfied dependencies\n"
@@ -4560,7 +3923,6 @@ msgstr ""
 " このツリーの存在は、システムと Debian アーカイブのどちらかがどこかで壊れてい"
 "ることを示します。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_grouppolicy.cc:534
 msgid ""
 "Packages being removed because they are no longer used\n"
@@ -4573,7 +3935,6 @@ msgstr ""
 "が、これから行われるアクションでインストールされるどのパッケージからも「重要"
 "な」依存関係があると明示されていません。\n"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/pkg_grouppolicy.cc:535
 msgid ""
 "Packages being automatically held in their current state\n"
@@ -4584,7 +3945,6 @@ msgstr ""
 " これらのパッケージは更新可能ですが、依存関係が壊れるのを防ぐために現在の状態"
 "に一時的に固定されます。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_grouppolicy.cc:536
 msgid ""
 "Packages being automatically installed to satisfy dependencies\n"
@@ -4595,7 +3955,6 @@ msgstr ""
 " これらのパッケージは、インストール対象として選択されている他のパッケージから"
 "必要とされているため、インストールされます。"
 
-# * Translation checked by noritada on 2006-02-28.
 #: src/pkg_grouppolicy.cc:537
 msgid ""
 "Packages being deleted due to unsatisfied dependencies\n"
@@ -4606,7 +3965,6 @@ msgstr ""
 " これらのパッケージは削除予定です。それは、依存パッケージのうち一つ以上がもは"
 "や利用できないため、またはこれらと他のパッケージが衝突しているためです。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/pkg_grouppolicy.cc:538
 msgid ""
 "Packages to be downgraded\n"
@@ -4617,7 +3975,6 @@ msgstr ""
 " これらのパッケージは、現在インストールされているバージョンよりも古いものがイ"
 "ンストールされます。"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/pkg_grouppolicy.cc:539
 msgid ""
 "Packages being held back\n"
@@ -4628,7 +3985,6 @@ msgstr ""
 " これらのパッケージは更新可能ですが、あなたの要求で現在のバージョンに固定され"
 "ます。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/pkg_grouppolicy.cc:540
 msgid ""
 "Packages to be reinstalled\n"
@@ -4637,7 +3993,6 @@ msgstr ""
 "再インストールされるパッケージ\n"
 " これらのパッケージは再インストールされます。"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:541
 msgid ""
 "Packages to be installed\n"
@@ -4648,7 +4003,6 @@ msgstr ""
 " これらのパッケージは、コンピュータにインストールする対象として手動で選択され"
 "ました。"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:542
 msgid ""
 "Packages to be removed\n"
@@ -4657,7 +4011,6 @@ msgstr ""
 "削除されるパッケージ\n"
 " これらのパッケージは、削除対象として手動で選択されました。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/pkg_grouppolicy.cc:543
 msgid ""
 "Packages to be upgraded\n"
@@ -4666,58 +4019,47 @@ msgstr ""
 "更新されるパッケージ\n"
 " これらのパッケージは新しいバージョンに更新されます。"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_grouppolicy.cc:658
 msgid "unknown"
 msgstr "不明"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_grouppolicy.cc:669
 #, c-format
 msgid "Priority %s"
 msgstr "優先度 %s"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:779
 msgid "UNCATEGORIZED"
 msgstr "カテゴリ分けされていません"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_grouppolicy.cc:898
 msgid "End-user"
 msgstr "エンドユーザ"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_grouppolicy.cc:899
 msgid "Servers"
 msgstr "サーバ"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_grouppolicy.cc:900
 msgid "Development"
 msgstr "開発用"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_grouppolicy.cc:901
 msgid "Localization"
 msgstr "地域化"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_grouppolicy.cc:902
 msgid "Hardware Support"
 msgstr "ハードウェアサポート"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_grouppolicy.cc:903
 msgid "Miscellaneous"
 msgstr "その他"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:904
 msgid "Unrecognized tasks"
 msgstr "認識できないタスク"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:956
 msgid ""
 "\n"
@@ -4728,30 +4070,25 @@ msgstr ""
 " タスクはパッケージのグループで、これを用いると、特定の目的のためにあらかじめ"
 "定義したパッケージセットを容易に選択できるようになります。"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/pkg_grouppolicy.cc:1079
 #, c-format
 msgid "Bad number in format string: %ls"
 msgstr "フォーマット文字列中に不正な数字があります: %ls"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:1088
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
 msgstr "match の添字は 1 以上でなくてはいけないので、\"%s\" ではいけません"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:1106
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
 msgstr "match の添字 %ls は大きすぎます。利用可能なグループは (%s) です"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/pkg_grouppolicy.cc:1315
 msgid "TAGLESS PACKAGES"
 msgstr "タグのないパッケージ"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_grouppolicy.cc:1316
 msgid ""
 "\n"
@@ -4760,49 +4097,40 @@ msgstr ""
 "\n"
 "これらのパッケージはまだ debtags で分類されていません。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/pkg_grouppolicy.cc:1341
 msgid "MISSING TAG"
 msgstr "タグがありません"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_info_screen.cc:118
 msgid "Compressed size: "
 msgstr "圧縮サイズ: "
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_info_screen.cc:119
 msgid "Uncompressed size: "
 msgstr "展開サイズ: "
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/pkg_info_screen.cc:120
 msgid "Source Package: "
 msgstr "ソースパッケージ: "
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_info_screen.cc:130
 #, c-format
 msgid "Package names provided by %s"
 msgstr "パッケージ名は %s で提供されています"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_info_screen.cc:140
 #, c-format
 msgid "Packages which depend on %s"
 msgstr "%s に依存しているパッケージ"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_info_screen.cc:145
 msgid "Versions"
 msgstr "バージョン"
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_item.cc:55
 msgid "Yes, I am aware this is a very bad idea"
 msgstr "はい、これが非常にまずい考えだとわかっています"
 
-# * Translation checked by noritada on 2006-01-21.
 #: src/pkg_item.cc:80
 #, c-format
 msgid ""
@@ -4812,61 +4140,51 @@ msgstr ""
 "%sは必須パッケージです!%n%n本当に削除したいのですか?%n削除したい場合は '%s' "
 "と入力してください。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:220 src/pkg_ver_item.cc:655 src/solution_item.cc:291
 #, c-format
 msgid "Information about %s"
 msgstr "%s に関する情報"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:222 src/pkg_ver_item.cc:657 src/solution_item.cc:289
 #, c-format
 msgid "%s info"
 msgstr "%s 情報"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:316
 #, c-format
 msgid "Available versions of %s"
 msgstr "%s の利用可能なバージョン"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:319
 #, c-format
 msgid "%s versions"
 msgstr "%s バージョン"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:331 src/pkg_ver_item.cc:685
 #, c-format
 msgid "Dependencies of %s"
 msgstr "%s の依存関係"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:333 src/pkg_ver_item.cc:687
 #, c-format
 msgid "%s deps"
 msgstr "%s 依存"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:344 src/pkg_ver_item.cc:697
 #, c-format
 msgid "Packages depending on %s"
 msgstr "%s に依存しているパッケージ"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:346 src/pkg_ver_item.cc:699
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s 逆依存"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:396 src/pkg_ver_item.cc:747
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "%s の以下のバグを報告しています:\n"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:416
 msgid ""
 "You are not root and I cannot find any way to become root.  To reconfigure "
@@ -4877,76 +4195,62 @@ msgstr ""
 "定し直すには、menu パッケージや login パッケージをインストールするか、"
 "aptitude を root で起動してください。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:424
 #, c-format
 msgid "Reconfiguring %s\n"
 msgstr "%s を再設定しています\n"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:434 src/ui.cc:1041
 msgid "Press return to continue.\n"
 msgstr "続けるには Return を押してください。\n"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:451
 msgid "Hierarchy editor"
 msgstr "階層エディタ"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_item.cc:451
 msgid "Hierarchy Editor"
 msgstr "階層エディタ"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_tree.cc:166
 msgid "All Packages"
 msgstr "すべてのパッケージ"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_tree.cc:179 src/pkg_tree.cc:194
 msgid "Building view"
 msgstr "表示画面を構築しています"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_tree.cc:237
 #, c-format
 msgid "No packages matched the pattern \"%ls\"."
 msgstr "\"%ls\" にマッチするパッケージがありません。"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/pkg_tree.cc:259
 msgid "Enter the new package tree limit: "
 msgstr "パッケージツリーの新しい制限値を入力してください: "
 
-# * Translation checked by noritada on 2006-01-23.
 #: src/pkg_tree.cc:293
 msgid "Enter the new package grouping mechanism for this display: "
 msgstr "この画面のための新しいパッケージ分類規則を入力してください: "
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/pkg_tree.cc:301
 msgid "Enter the new package sorting mechanism for this display: "
 msgstr "この画面のための新しいパッケージ並び替え規則を入力してください: "
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_view.cc:149
 msgid "Couldn't transcode column definition"
 msgstr "行の定義をコード変換できませんでした"
 
-# * Translation checked by noritada on 2006-02-26.
 #: src/pkg_view.cc:156
 msgid "Couldn't parse column definition"
 msgstr "行の定義をパースできませんでした"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/pkg_view.cc:408
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr ""
 "make_package_view: 引数にエラーがあります -- メインウィジェットが 2 つです"
 "か??"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/pkg_view.cc:414
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
@@ -4954,65 +4258,53 @@ msgstr ""
 "make_package_view: 引数にエラーがあります -- 静的なアイテムに対する行リストが"
 "不正です"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/pkg_view.cc:510
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: 引数が不正です!"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/pkg_view.cc:562
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: メインウィジェットが見つかりません"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:30
 msgid "depends on"
 msgstr "に依存"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:32
 msgid "pre-depends on"
 msgstr "に事前依存"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:34
 msgid "suggests"
 msgstr "を提案"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:35
 msgid "recommends"
 msgstr "を推奨"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:37
 msgid "conflicts with"
 msgstr "と競合"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:39
 msgid "replaces"
 msgstr "を置換"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:40
 msgid "obsoletes"
 msgstr "を廃止"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:166
 #, c-format
 msgid " (provided by %F)"
 msgstr " (%F で提供)"
 
 # * Example: '%F%s depends on %F'
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:275
 #, c-format
 msgid "%F%s %F %F"
 msgstr "%1$F%2$s %4$F %3$F"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:324
 msgid ""
 "If you select a package, an explanation of its current state will appear in "
@@ -5020,7 +4312,6 @@ msgid ""
 msgstr ""
 "パッケージ選択時に、現在の状態に関する説明がこのスペースに表示されます。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:358
 msgid ""
 "%B%s%b was installed automatically;  it is being removed because all of the "
@@ -5030,19 +4321,16 @@ msgstr ""
 "パッケージがすべて削除予定とされているため、このパッケージも削除が予定されて"
 "います:"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:362
 msgid "%B%s%b will be automatically removed because of dependency errors:"
 msgstr "%B%s%b は、依存関係の間違いのため自動的に削除される予定です:"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:366
 msgid ""
 "%B%s%b will be automatically installed to satisfy the following dependencies:"
 msgstr ""
 "%B%s%b は、以下の依存関係を満たすために自動的にインストールされる予定です:"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:372 src/reason_fragment.cc:384
 msgid ""
 "%B%s%b cannot be upgraded now, but if it could be, it would still be held at "
@@ -5051,7 +4339,6 @@ msgstr ""
 "%B%s%b は現在更新できません。たとえできたとしても、バージョン %B%s%b で固定さ"
 "れるでしょう。"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:375
 msgid ""
 "%B%s%b will not be upgraded to version %B%s%b, to avoid breaking the "
@@ -5060,32 +4347,26 @@ msgstr ""
 "%B%s%b はバージョン %B%s%b に更新されません。以下の依存関係を壊すのを防ぐため"
 "です:"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:387
 msgid "%B%s%b is currently installed."
 msgstr "%B%s%b は現在インストールされています。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:393
 msgid "%B%s%b is not currently installed."
 msgstr "%B%s%b は現在インストールされていません。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:401
 msgid "Some dependencies of %B%s%b are not satisfied:"
 msgstr "%B%s%b の依存関係のいくつかが満たされていません:"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:405
 msgid "%B%s%b will be downgraded."
 msgstr "%B%s%b がダウングレードされます。"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:412
 msgid "%B%s%b will not be upgraded to the forbidden version %B%s%b."
 msgstr "%B%s%b は、禁止されているバージョン %B%s%b には更新されません。"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:416
 msgid ""
 "%B%s%b could be upgraded to version %B%s%b, but it is being held at version %"
@@ -5094,27 +4375,22 @@ msgstr ""
 "%B%s%b はバージョン %B%s%b に更新可能ですが、バージョン %B%s%b で固定されてい"
 "ます。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:423
 msgid "%B%s%b will be re-installed."
 msgstr "%B%s%b が再インストールされます。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:427
 msgid "%B%s%b will be installed."
 msgstr "%B%s%b がインストールされます。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:431
 msgid "%B%s%b will be removed."
 msgstr "%B%s%b が削除されます。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:436
 msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b がバージョン %B%s%b からバージョン %B%s%b に更新されます。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:472
 msgid ""
 "The following packages depend on %B%s%b and will be broken by its removal:"
@@ -5122,12 +4398,10 @@ msgstr ""
 "以下のパッケージが %B%s%b に依存しているため、それを削除すると依存関係が壊れ"
 "ます:"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:475
 msgid "The following packages depend on %B%s%b and are broken:"
 msgstr "以下のパッケージが %B%s%b に依存しており、依存関係が壊れています:"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:482
 msgid ""
 "The following packages conflict with %B%s%b and will be broken by its "
@@ -5136,7 +4410,6 @@ msgstr ""
 "以下のパッケージが %B%s%b と競合しているため、それをインストールすると依存関"
 "係が壊れるでしょう:"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:515
 msgid ""
 "The following packages depend on a version of %B%s%b other than the "
@@ -5147,7 +4420,6 @@ msgstr ""
 "外のものに依存しているか、または現在インストールされているバージョンと競合し"
 "ています:"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:519
 msgid ""
 "The following packages conflict with %B%s%b, or depend on a version of it "
@@ -5156,12 +4428,10 @@ msgstr ""
 "以下のパッケージは %B%s%b と競合するか、またはその、インストール予定にない"
 "バージョンに依存しています"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/reason_fragment.cc:523
 msgid "The following packages conflict with %B%s%b:"
 msgstr "以下のパッケージが %B%s%b と競合しています:"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:528
 msgid ""
 "The following packages depend on a version of %B%s%b other than the "
@@ -5170,7 +4440,6 @@ msgstr ""
 "以下のパッケージは、%B%s%b の、現在インストールされているバージョン %B%s%b 以"
 "外のものに依存しています:"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:532
 msgid ""
 "The following packages depend on a version of %B%s%b which is not going to "
@@ -5179,12 +4448,10 @@ msgstr ""
 "以下のパッケージは、%B%s%b の、インストール予定にないバージョンに依存していま"
 "す。"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:538
 msgid "upgraded"
 msgstr "更新される"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:538
 msgid "downgraded"
 msgstr "ダウングレードされる"
@@ -5193,7 +4460,6 @@ msgstr "ダウングレードされる"
 #  factoring out upgraded/downgraded in its two senses
 #  would be a royal pain even if gettext supported it.
 # * 'upgraded' and 'downgraded' are inserted to non-bold %s-s.
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:544
 msgid ""
 "The following packages depend on the currently installed version of %B%s%b (%"
@@ -5205,7 +4471,6 @@ msgstr ""
 "係が壊れます。"
 
 # * 'upgraded' and 'downgraded' are inserted to an non-bold %s.
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:551
 msgid ""
 "The following packages conflict with version %B%s%b of %B%s%b, and will be "
@@ -5215,7 +4480,6 @@ msgstr ""
 "存関係が壊れます。"
 
 # * 'upgraded' and 'downgraded' are inserted to an non-bold %s.
-# * Translation checked by noritada on 2006-03-01.
 #: src/reason_fragment.cc:556
 msgid ""
 "The following packages depend on version %B%s%b of %B%s%b, and will be "
@@ -5224,242 +4488,198 @@ msgstr ""
 "以下のパッケージは %B%2$s%b のバージョン %B%1$s%b に依存しているため、%sと依"
 "存関係が壊れます。"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/solution_dialog.cc:91 src/solution_screen.cc:465
 msgid "The package cache is not available."
 msgstr "パッケージキャッシュが利用不可能です。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/solution_dialog.cc:99
 msgid "No packages are broken."
 msgstr "依存関係が壊れているパッケージはありません。"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/solution_dialog.cc:108 src/solution_screen.cc:488
 msgid "No resolution found."
 msgstr "解決策がありません。"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/solution_dialog.cc:114 src/solution_screen.cc:499
 msgid "Resolving dependencies..."
 msgstr "依存関係を解決しています..."
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/solution_dialog.cc:169
 msgid "Previous"
 msgstr "前"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/solution_dialog.cc:170
 msgid "Next"
 msgstr "次"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/solution_dialog.cc:171
 msgid "Apply"
 msgstr "適用"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/solution_dialog.cc:172
 msgid "Close"
 msgstr "閉じる"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/solution_fragment.cc:104
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%s が %s に依存"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/solution_fragment.cc:107
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s が %s に事前依存"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/solution_fragment.cc:110
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s が %s を提案"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/solution_fragment.cc:113 src/solution_item.cc:593
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s が %s を推奨"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/solution_fragment.cc:116
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s が %s と競合"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/solution_fragment.cc:119
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s が %s を置換"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/solution_fragment.cc:122
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s が %s を廃止"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/solution_fragment.cc:135
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
 msgstr "%s が %s (%s %s が提供) と競合"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/solution_fragment.cc:145
 #, c-format
 msgid "Removing %s"
 msgstr "%s を削除しています"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/solution_fragment.cc:147
 #, c-format
 msgid "Installing %s %s (%s)"
 msgstr "%s %s (%s) をインストールしています"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/solution_fragment.cc:216
 msgid "%BRemove%b the following packages:%n"
 msgstr "以下のパッケージを%B削除%bします:%n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/solution_fragment.cc:226
 msgid "%BInstall%b the following packages:%n"
 msgstr "以下のパッケージを%Bインストール%bします:%n"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/solution_fragment.cc:239
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr "以下のパッケージを現在のバージョンに%B一時固定%bします:%n"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/solution_fragment.cc:246
 msgid "Not Installed"
 msgstr "インストールされていません"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/solution_fragment.cc:259
 msgid "%BUpgrade%b the following packages:%n"
 msgstr "以下のパッケージを%B更新%bします:%n"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/solution_fragment.cc:274
 msgid "%BDowngrade%b the following packages:%n"
 msgstr "以下のパッケージを%Bダウングレード%bします:%n"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/solution_fragment.cc:291
 #, c-format
 msgid "Leave the following dependencies unresolved:%n"
 msgstr "以下の依存関係を未解決のままにします:%n"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/solution_fragment.cc:299
 #, c-format
 msgid "Score is %d"
 msgstr "スコアは %d です"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/solution_item.cc:91
 #, c-format
 msgid "Remove %F [%s (%s)]"
 msgstr "%F %s (%s) を削除する"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/solution_item.cc:98
 #, c-format
 msgid "Install %F [%s (%s)]"
 msgstr "%F %s (%s) をインストールする"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/solution_item.cc:106
 #, c-format
 msgid "Cancel the installation of %F"
 msgstr "%F のインストールを取り消す"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/solution_item.cc:109
 #, c-format
 msgid "Cancel the removal of %F"
 msgstr "%F の削除を取り消す"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/solution_item.cc:112
 #, c-format
 msgid "Keep %F at version %s (%s)"
 msgstr "%F をバージョン %s (%s) に一時固定する"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/solution_item.cc:120
 #, c-format
 msgid "Upgrade %F [%s (%s) -> %s (%s)]"
 msgstr "%F を更新する [%s (%s) -> %s (%s)]"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/solution_item.cc:129
 #, c-format
 msgid "Downgrade %F [%s (%s) -> %s (%s)]"
 msgstr "%F をダウングレードする [%s (%s) -> %s (%s)]"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/solution_item.cc:597
 #, c-format
 msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
 msgstr "→ 依存関係「%s が %s を推奨」を未解決のままにします。"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/solution_screen.cc:149
 msgid "The following actions will resolve this dependency:"
 msgstr "この依存関係の問題は以下のアクションによって解決されます:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/solution_screen.cc:235
 msgid "Remove the following packages:"
 msgstr "以下のパッケージを削除する:"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/solution_screen.cc:246
 msgid "Keep the following packages at their current version:"
 msgstr "以下のパッケージを現在のバージョンに一時固定する:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/solution_screen.cc:257
 msgid "Install the following packages:"
 msgstr "以下のパッケージをインストールする:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/solution_screen.cc:268
 msgid "Upgrade the following packages:"
 msgstr "以下のパッケージを更新する:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/solution_screen.cc:279
 msgid "Downgrade the following packages:"
 msgstr "以下のパッケージをダウングレードする:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/solution_screen.cc:292
 msgid "Leave the following recommendations unresolved:"
 msgstr "以下の推奨パッケージは入れずにおく:"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/solution_screen.cc:472
 msgid "No broken packages."
 msgstr "依存関係が壊れているパッケージはありません。"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/trust.cc:17 src/trust.cc:19
 msgid "WARNING"
 msgstr "警告"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/trust.cc:18
 msgid ""
 "%F: This version of %s is from an %Buntrusted source%b!  Installing this "
@@ -5470,28 +4690,23 @@ msgstr ""
 "ケージをインストールすると、あなたのシステムが悪意のある人間に破壊されたり掌"
 "握されたりする可能性があります。"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:217
 msgid "Er, there aren't any errors, this shouldn't have happened.."
 msgstr ""
 "おっと、予期せぬエラーです。こういうことは起きて欲しくなかったのですが……"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/ui.cc:223
 msgid "E:"
 msgstr "エラー:"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/ui.cc:225
 msgid "W:"
 msgstr "警告:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:239
 msgid "Search for:"
 msgstr "検索:"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/ui.cc:316
 msgid ""
 "WARNING: the package cache is opened in read-only mode!  This change and all "
@@ -5503,12 +4718,10 @@ msgstr ""
 "になる」を選択しない限り、この変更やこれからおこなう変更はすべて保存されませ"
 "ん。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:322
 msgid "Never display this message again."
 msgstr "このメッセージを二度と表示しない。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:368
 msgid ""
 "You may not modify the state of any package while a download is underway."
@@ -5516,62 +4729,51 @@ msgstr ""
 "ダウンロードが行われているときはどのパッケージの状態も変更しないほうがよいで"
 "しょう。"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:399
 msgid "You already are root!"
 msgstr "既に root になっています!"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:462
 msgid ""
 "Subprocess exited with an error -- did you type your password correctly?"
 msgstr "サブプロセスはエラーで終了しました。入力したパスワードは正しいですか?"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:501
 msgid "Loading cache"
 msgstr "キャッシュを読み込んでいます"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:523
 msgid "Really quit Aptitude?"
 msgstr "本当に Aptitude を終了しますか?"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/ui.cc:597
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr "本当に個人設定を破棄してデフォルトの設定を読み込みなおしますか?"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:701 src/ui.cc:703 src/ui.cc:750 src/ui.cc:752 src/ui.cc:771
 #: src/ui.cc:773 src/ui.cc:794 src/ui.cc:796
 msgid "Packages"
 msgstr "パッケージ"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/ui.cc:702 src/ui.cc:751 src/ui.cc:772 src/ui.cc:795
 msgid "View available packages and choose actions to perform"
 msgstr "利用可能なパッケージを表示し、実行するアクションを選択します"
 
 # * Message used as 'menuref' for the add_main_widget.
-# * Translation checked by noritada on 2006-03-01.
 #: src/ui.cc:731
 msgid "Recommended Packages"
 msgstr "推奨パッケージ"
 
 # * Message used as 'menudesc' for the add_main_widget.
-# * Translation checked by noritada on 2006-03-01.
 #: src/ui.cc:732
 msgid "View packages that it is recommended that you install"
 msgstr "インストールするよう推奨されているパッケージを表示します"
 
 # * Message used as 'tabdesc' for the add_main_widget.
-# * Translation checked by noritada on 2006-03-01.
 #: src/ui.cc:733
 msgid "Recommendations"
 msgstr "推奨"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:837
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with %"
@@ -5584,81 +4786,67 @@ msgstr ""
 "トはフリーソフトウェアで、ライセンスに従って再配布してかまいません。詳しくは"
 "「ライセンス」を参照してください"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/ui.cc:860
 msgid "help.txt"
 msgstr "help-ja.txt"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/ui.cc:862
 msgid "Encoding of help.txt|UTF-8"
 msgstr "Encoding of help-ja.txt|UTF-8"
 
-# * Translation checked by noritada on 2006-03-01.
 # * README is translatable!!
 #: src/ui.cc:884
 msgid "README"
 msgstr "README"
 
-# * Translation checked by noritada on 2006-04-24.
 # * README is translatable!!
 #: src/ui.cc:886
 msgid "Encoding of README|ISO_8859-1"
 msgstr "Encoding of README|ISO_8859-1"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:912
 msgid "User's Manual"
 msgstr "ユーザマニュアル"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:912
 msgid "Read the full user's manual of aptitude"
 msgstr "aptitude の完全なユーザマニュアルを読む"
 
-# * Translation checked by noritada on 2006-02-28.
 #: src/ui.cc:912
 msgid "Manual"
 msgstr "マニュアル"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:946
 #, c-format
 msgid "Unable to stat \"%s\""
 msgstr "\"%s\" の状態が分かりません"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:952
 #, c-format
 msgid "Unable to remove \"%s\""
 msgstr "\"%s\" を削除できません"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:962
 #, c-format
 msgid "Unable to list files in \"%s\""
 msgstr "\"%s\" 内のファイルの一覧を取得できません"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:975
 #, c-format
 msgid "Failure closing directory \"%s\""
 msgstr "ディレクトリを閉じられませんでした: \"%s\""
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:981
 #, c-format
 msgid "Unable to remove directory \"%s\""
 msgstr "ディレクトリを削除できません: \"%s\""
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:991
 #, c-format
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr "古い一時ディレクトリを削除できません。%s を手動で削除してください。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:996
 #, c-format
 msgid ""
@@ -5666,7 +4854,6 @@ msgid ""
 "hand."
 msgstr "%s を削除しません。その中のファイルを調べて手動で削除してください。"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:1022
 #, c-format
 msgid ""
@@ -5680,24 +4867,20 @@ msgstr ""
 "いですか? \"No\" を選んだ場合にはこのメッセージは二度と表示されなくなります。"
 
 # * Message used as 'title' for the ui_download_manager.
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:1064
 msgid "Downloading packages"
 msgstr "パッケージをダウンロード中"
 
 # * Message used as 'longtitle' for the ui_download_manager.
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1065
 msgid "View the progress of the package download"
 msgstr "パッケージダウンロードの進行状況を表示します"
 
 # * Message used as 'tablabel' for the ui_download_manager.
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:1066
 msgid "Package Download"
 msgstr "パッケージのダウンロード"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/ui.cc:1099
 msgid ""
 "%BWARNING%b: untrusted versions of the following packages will be installed!%"
@@ -5710,47 +4893,38 @@ msgstr ""
 "す。それが自分がしようとしていることだとわかっている場合にのみ、インストール"
 "を続けるべきでしょう。%n%n"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1105
 msgid "  %S*%N %s [version %s]%n"
 msgstr "  %S*%N %s [バージョン %s]%n"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/ui.cc:1111
 msgid "Really Continue"
 msgstr "続行"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1113
 msgid "Abort Installation"
 msgstr "インストールを破棄する"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/ui.cc:1175
 msgid "Preview of package installation"
 msgstr "インストールするパッケージをプレビューします"
 
-# * Translation checked by noritada on 2006-02-27.
 #: src/ui.cc:1176
 msgid "View and/or adjust the actions that will be performed"
 msgstr "実行するアクションの表示・調整をおこないます"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1177
 msgid "Preview"
 msgstr "プレビューする"
 
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:1235
 msgid "Some packages were broken and have been fixed:"
 msgstr "一部のパッケージは依存関係が壊れていたので修復されました:"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1243
 msgid "No solution to these dependency problems exists!"
 msgstr "これらの依存関係の問題を解決する方法は存在しません!"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1249
 #, c-format
 msgid ""
@@ -5760,7 +4934,6 @@ msgstr ""
 "依存関係の解決を試みましたがタイムアウトになりました (再挑戦するには \"%s\" "
 "と入力してください)"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/ui.cc:1295
 msgid ""
 "Installing/removing packages requires administrative privileges, which you "
@@ -5769,27 +4942,22 @@ msgstr ""
 "パッケージのインストールや削除に必要な管理者権限が現在ありません。root になり"
 "ますか?"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1298 src/ui.cc:1427
 msgid "Become root"
 msgstr "root になる"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1300 src/ui.cc:1429
 msgid "Don't become root"
 msgstr "root にならない"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1305 src/ui.cc:1434
 msgid "A package-list update or install run is already taking place."
 msgstr "パッケージ一覧の更新またはインストールの実行が現在おこなわれています。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1332
 msgid "No packages are scheduled to be installed, removed, or upgraded."
 msgstr "インストール・削除・更新予定のパッケージがありません。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1338
 msgid ""
 "No packages will be installed, removed or upgraded.  Some packages could be "
@@ -5800,30 +4968,25 @@ msgstr ""
 "るかもしれませんが、それらを更新するような選択がなされていません。\"U\" と入"
 "力して更新の準備をしてください。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1396 src/ui.cc:1509
 msgid "Deleting obsolete downloaded files"
 msgstr "ダウンロードされた廃止済みのファイルを削除しています"
 
 # * Message used as 'title' for the ui_download_manager.
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:1411
 msgid "Updating package lists"
 msgstr "パッケージ一覧を更新中"
 
 # * Message used as 'longtitle' for the ui_download_manager.
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1412
 msgid "View the progress of the package list update"
 msgstr "パッケージ一覧更新の進行状況を表示します"
 
 # * Message used as 'tablabel' for the ui_download_manager.
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:1413
 msgid "List Update"
 msgstr "一覧の更新"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/ui.cc:1424
 msgid ""
 "Updating the package lists requires administrative privileges, which you "
@@ -5832,32 +4995,26 @@ msgstr ""
 "パッケージ一覧の更新に必要な管理者権限が現在ありません。root になりますか?"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1439 src/ui.cc:1960
 msgid "Waste time trying to find mines"
 msgstr "地雷探しにかまけます"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1446 src/ui.cc:1506
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "ダウンロードが進行している間は廃止されたファイルの消去はできません"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1449
 msgid "Deleting downloaded files"
 msgstr "ダウンロードしたファイルを削除しています"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1463
 msgid "Downloaded package files have been deleted"
 msgstr "ダウンロードしたパッケージファイルは既に削除されています"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1503
 msgid "The apt cache file is not available; cannot auto-clean."
 msgstr "apt のキャッシュファイルが入手不可能です。autoclean できません。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1529
 #, c-format
 msgid ""
@@ -5867,156 +5024,129 @@ msgstr ""
 "ダウンロードされた廃止済みのパッケージファイルを削除し、%sB のディスク領域を"
 "解放しました。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/ui.cc:1626
 msgid "No more solutions."
 msgstr "これ以上解決策はありません。"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1814
 msgid "Unable to find a solution to apply."
 msgstr "適用する解決策が見つかりません。"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1820
 msgid "Ran out of time while trying to find a solution."
 msgstr "解決策を探そうとしましたがタイムアウトになりました。"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1863 src/ui.cc:1865
 msgid "Resolve Dependencies"
 msgstr "依存関係を解決する"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1864
 msgid "Search for solutions to unsatisfied dependencies"
 msgstr "解決されていない依存関係の解決策を探す"
 
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1876
 #, c-format
 msgid "Unable to open %ls"
 msgstr "%ls を開けません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1882
 msgid "Error while dumping resolver state"
 msgstr "リゾルバの状態のダンプ中にエラーが生じました"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1892
 msgid "File to which the resolver state should be dumped:"
 msgstr "リゾルバの状態をダンプする出力ファイル:"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1922
 msgid "^Install/remove packages"
 msgstr "パッケージのインストール・削除 (^I)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1923
 msgid "Perform all pending installs and removals"
 msgstr "実行されていないインストールや削除を実行します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1925
 msgid "^Update package list"
 msgstr "パッケージ一覧の更新 (^U)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1926
 msgid "Check for new versions of packages"
 msgstr "パッケージの新しいバージョンがないか確認します"
 
 # * Item.
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:1930
 msgid "Mark ^Upgradable"
 msgstr "更新可能パッケージという印を添付 (^U)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2006-03-01.
 #: src/ui.cc:1931
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr "更新時に固定されない更新可能パッケージすべてに印をつけます"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1935
 msgid "^Forget new packages"
 msgstr "新規パッケージ一覧の消去 (^F)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1936
 msgid "Forget which packages are \"new\""
 msgstr "どのパッケージが「新規」かの情報を消去します"
 
-# * Translation checked by noritada on 2006-04-21.
 #: src/ui.cc:1939
 msgid "Canc^el pending actions"
 msgstr "未実行アクションの取り消し (^e)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2006-04-21.
 #: src/ui.cc:1940
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr "実行されていないインストール・削除・固定・更新を取り消します。"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1943
 msgid "^Clean package cache"
 msgstr "パッケージのキャッシュの消去 (^C)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1944
 msgid "Delete package files which were previously downloaded"
 msgstr "以前ダウンロードしたパッケージファイルを削除します"
 
 # * Item.
-# * Translation checked by noritada on 2006-04-21.
 #: src/ui.cc:1947
 msgid "Clean ^obsolete files"
 msgstr "廃止されたファイルを一掃する (^o)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:1948
 msgid "Delete package files which can no longer be downloaded"
 msgstr "もはやダウンロードできないパッケージファイルを削除する"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1954
 msgid "^Reload package cache"
 msgstr "パッケージのキャッシュの再読み込み (^R)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1955
 msgid "Reload the package cache"
 msgstr "パッケージのキャッシュを再度読み込みます"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1959
 msgid "^Play Minesweeper"
 msgstr "マインスイーパで遊ぶ (^P)"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1964
 msgid "^Become root"
 msgstr "root になる (^B)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1965
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
@@ -6026,87 +5156,73 @@ msgstr ""
 "が、現在の設定は保持されます"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1967
 msgid "^Quit"
 msgstr "終了 (^Q)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1968
 msgid "Exit the program"
 msgstr "プログラムを終了します"
 
 # * Menu item on the first line.
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1974 src/ui.cc:2332
 msgid "Undo"
 msgstr "取り消し"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1975
 msgid "Undo the last package operation or group of operations"
 msgstr "最後におこなったパッケージ管理操作、または一連の操作を取り消します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1983
 msgid "^Install"
 msgstr "インストール (^I)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1984
 msgid "Flag the currently selected package for installation or upgrade"
 msgstr "現在選択中のパッケージに、インストールまたは更新用の印をつけます"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1987
 msgid "^Remove"
 msgstr "削除 (^R)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1988
 msgid "Flag the currently selected package for removal"
 msgstr "現在選択中のパッケージに削除用の印をつけます"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1991
 msgid "^Purge"
 msgstr "完全削除 (^P)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1992
 msgid ""
 "Flag the currently selected package and its configuration files for removal"
 msgstr "現在選択中のパッケージとその設定ファイルに、削除用の印をつけます"
 
 # * Item.
-# * Translation checked by noritada on 2006-03-01.
 #: src/ui.cc:1995
 msgid "^Keep"
 msgstr "一時固定 (^K)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:1996
 msgid "Cancel any action on the selected package"
 msgstr "選択中のパッケージへのあらゆるアクションを取り消します"
 
 # * Item.
-# * Translation checked by noritada on 2006-03-01.
 #: src/ui.cc:1999
 msgid "^Hold"
 msgstr "固定 (^H)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2000
 msgid ""
 "Cancel any action on the selected package, and protect it from future "
@@ -6115,13 +5231,11 @@ msgstr ""
 "選択中のパッケージへのあらゆるアクションを取り消し、今後の更新からも防ぎます"
 
 # * Item.
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:2003
 msgid "Mark ^Auto"
 msgstr "自動的にインストールされたという印を添付 (^A)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2004
 msgid ""
 "Mark the selected package as having been automatically installed; it will "
@@ -6132,13 +5246,11 @@ msgstr ""
 "なります"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2007
 msgid "Mark ^Manual"
 msgstr "手動でインストールしたという印を添付 (^M)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2008
 msgid ""
 "Mark the selected package as having been manually installed; it will not be "
@@ -6148,13 +5260,11 @@ msgstr ""
 "動で削除しない限りパッケージは削除されないようになります"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2011
 msgid "^Forbid Version"
 msgstr "バージョンの禁止 (^F)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2012
 msgid ""
 "Forbid the candidate version of the selected package from being installed; "
@@ -6165,97 +5275,81 @@ msgstr ""
 "ストールされます"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2016
 msgid "I^nformation"
 msgstr "情報 (^N)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2017
 msgid "Display more information about the selected package"
 msgstr "選択中のパッケージに関する、より詳細な情報を表示します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2020
 msgid "^Changelog"
 msgstr "変更履歴 (^C)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2021
 msgid "Display the Debian changelog of the selected package"
 msgstr "選択中のパッケージの更新履歴を表示します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2028
 msgid "^Examine Solution"
 msgstr "解決策の検討 (^E)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2029
 msgid "Examine the currently selected solution to the dependency problems."
 msgstr "依存関係の問題に対して、現在選択している解決策を試します。"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2032
 msgid "Apply ^Solution"
 msgstr "解決策の適用 (^S)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2033
 msgid "Perform the actions contained in the currently selected solution."
 msgstr "現在選択中の解決策に含まれるアクションを実行します。"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2036
 msgid "^Next Solution"
 msgstr "次の解決策 (^N)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2037
 msgid "Select the next solution to the dependency problems."
 msgstr "依存関係の問題に対して、次の解決策を選択します。"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2040
 msgid "^Previous Solution"
 msgstr "前の解決策 (^P)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2041
 msgid "Select the previous solution to the dependency problems."
 msgstr "依存関係の問題に対して、前の解決策を選択します。"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2044
 msgid "^First Solution"
 msgstr "最初の解決策 (^F)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2045
 msgid "Select the first solution to the dependency problems."
 msgstr "依存関係の問題に対して、最初の解決策を選択します。"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2048
 msgid "^Last Solution"
 msgstr "最後の解決策 (^L)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2049
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
@@ -6264,217 +5358,181 @@ msgstr ""
 "発生した依存関係の問題に対して、今のところ最後となる解決策を選択します。"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2055
 msgid "Toggle ^Rejected"
 msgstr "拒否を切り替え (^R)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2056
 msgid "Toggle whether the currently selected action is rejected."
 msgstr "現在選択中のアクションを拒否する・しないを切り替えます。"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2060
 msgid "Toggle ^Approved"
 msgstr "承認を切り替え (^A)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2061
 msgid "Toggle whether the currently selected action is approved."
 msgstr "現在選択中のアクションを承認する・しないを切り替えます。"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2065
 msgid "^View Target"
 msgstr "対象を表示 (^V)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2066
 msgid "View the package which will be affected by the selected action"
 msgstr "選択中のアクションによって影響を受けるパッケージを表示します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2074
 msgid "^Find"
 msgstr "検索 (^F)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2075
 msgid "Search forwards"
 msgstr "前方を検索します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2078
 msgid "^Find Backwards"
 msgstr "後方を検索 (^F)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2079
 msgid "Search backwards"
 msgstr "後方を検索します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2082
 msgid "Find ^Again"
 msgstr "再検索 (^A)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2083
 msgid "Repeat the last search"
 msgstr "最後におこなった検索を繰り返します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2087
 msgid "^Limit Display"
 msgstr "表示制限 (^L)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2088
 msgid "Apply a filter to the package list"
 msgstr "パッケージ一覧にフィルタをかけます"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2091
 msgid "^Un-Limit Display"
 msgstr "表示制限の解除 (^U)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2092
 msgid "Remove the filter from the package list"
 msgstr "パッケージ一覧のフィルタを解除します"
 
 # * Item.
-# * Translation checked by noritada on 2006-01-22.
 #: src/ui.cc:2096
 msgid "Find ^Broken"
 msgstr "依存関係の破損を探す (^B)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2097
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "解決できない依存関係がある、次のパッケージを探します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2104
 msgid "^UI options"
 msgstr "UI オプション (^U)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2105
 msgid "Change the settings which affect the user interface"
 msgstr "ユーザインターフェースに影響する設定を変更します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2108
 msgid "^Dependency handling"
 msgstr "依存関係の処理 (^D)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2109
 msgid "Change the settings which affect how package dependencies are handled"
 msgstr "パッケージ依存関係の処理方法に関する設定を変更します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2112
 msgid "^Miscellaneous"
 msgstr "その他 (^M)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2113
 msgid "Change miscellaneous program settings"
 msgstr "その他の設定を変更します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2118
 msgid "^Revert options"
 msgstr "オプションを元に戻す (^R)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2119
 msgid "Reset all settings to the system defaults"
 msgstr "すべての設定をシステムのデフォルトに戻します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2130
 msgid "^Next"
 msgstr "次 (^N)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2131
 msgid "View next display"
 msgstr "次の画面を表示します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2134
 msgid "^Prev"
 msgstr "前 (^P)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2135
 msgid "View previous display"
 msgstr "前の画面を表示します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2138
 msgid "^Close"
 msgstr "閉じる (^C)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2139
 msgid "Close this display"
 msgstr "この画面を閉じます"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2144
 msgid "New Package ^View"
 msgstr "パッケージを新規に表示 (^V)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2145
 msgid "Create a new default package view"
 msgstr "デフォルトのパッケージ一覧を新規に作成します"
 
 # * Item
-# * Translation checked by noritada on 2006-03-01.
 #: src/ui.cc:2148
 msgid "Audit ^Recommendations"
 msgstr "推奨を監査 (^R)"
 
 # * Description of an item
-# * Translation checked by noritada on 2006-03-01.
 #: src/ui.cc:2149
 msgid ""
 "View packages which it is recommended that you install, but which are not "
@@ -6484,150 +5542,125 @@ msgstr ""
 "を表示します。"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2152
 msgid "New ^Flat Package List"
 msgstr "平坦なパッケージ新規一覧 (^F)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2153
 msgid "View all the packages on the system in a single uncategorized list"
 msgstr "システムの全パッケージをカテゴリ分けせず、単一の一覧表で表示します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2156
 msgid "New ^Debtags Browser"
 msgstr "Debtags で新規に表示 (^D)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2158
 msgid "Browse packages using Debtags data"
 msgstr "Debtags のデータを用いてパッケージを表示します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2161
 msgid "New Categorical ^Browser"
 msgstr "カテゴリーで新規に表示 (^B)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2163
 msgid "Browse packages by category"
 msgstr "カテゴリ別にパッケージを表示します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2171
 msgid "^About"
 msgstr "このプログラムについて (^A)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2172
 msgid "View information about this program"
 msgstr "このプログラムについての情報を表示します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2175
 msgid "^Help"
 msgstr "ヘルプ (^H)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2176
 msgid "View the on-line help"
 msgstr "オンラインヘルプを表示します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2178
 msgid "User's ^Manual"
 msgstr "ユーザマニュアル (^M)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2179
 msgid "View the detailed program manual"
 msgstr "プログラムの詳細なマニュアルを表示します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2182
 msgid "^FAQ"
 msgstr "FAQ (^F)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2183
 msgid "View a list of frequently asked questions"
 msgstr "よくある質問の一覧を表示します"
 
-# * Translation checked by noritada on 2006-04-21.
 #: src/ui.cc:2186
 msgid "^News"
 msgstr "お知らせ (^N)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2187
 msgid "View the important changes made in each version of "
 msgstr "それぞれのバージョンでの重要な変更点を表示します"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2190
 msgid "^License"
 msgstr "ライセンス (^L)"
 
 # * Description of an item.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2191
 msgid "View the terms under which you may copy the program"
 msgstr "プログラムをコピーする際などの条件を表示します"
 
 # * Menu item on the first line.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2331
 msgid "Actions"
 msgstr "アクション"
 
 # * Menu item on the first line.
-# * Translation checked by noritada on 2006-02-25.
 #: src/ui.cc:2334
 msgid "Resolver"
 msgstr "リゾルバ"
 
 # * Menu item on the first line.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2335
 msgid "Search"
 msgstr "検索"
 
 # * Menu item on the first line.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2336
 msgid "Options"
 msgstr "オプション"
 
 # * Menu item on the first line.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2337
 msgid "Views"
 msgstr "表示"
 
 # * Menu item on the first line.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2338
 msgid "Help"
 msgstr "ヘルプ"
 
 # * Menu item on the second line.
-# * Translation checked by noritada on 2005-10-20.
 #: src/ui.cc:2403
 #, c-format
 msgid ""
@@ -6637,118 +5670,97 @@ msgstr ""
 "%ls: メニュー  %ls: ヘルプ  %ls: 終了  %ls: 更新  %ls: パッケージの 取得/導"
 "入/削除 "
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/ui.cc:2746 src/vscreen/vscreen.cc:724
 msgid "yes_key"
 msgstr "yes_keu"
 
-# * Translation checked by noritada on 2006-03-01.
 #: src/ui.cc:2747 src/vscreen/vscreen.cc:725
 msgid "no_key"
 msgstr "no_key"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/view_changelog.cc:150
 #, c-format
 msgid "%s changes"
 msgstr "%s の変更"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/view_changelog.cc:151
 msgid "View the list of changes made to this Debian package."
 msgstr "この Debian パッケージに加えられた変更点を一覧表示します。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/view_changelog.cc:215
 msgid "You can only view changelogs of official Debian packages."
 msgstr "公式の Debian パッケージのみ変更履歴を閲覧できます。"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/view_changelog.cc:225
 msgid "Downloading Changelog"
 msgstr "変更履歴をダウンロードしています"
 
-# * Translation checked by noritada on 2005-10-23.
 #: src/view_changelog.cc:227
 msgid "Download Changelog"
 msgstr "変更履歴をダウンロードしました"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/vscreen/config/column_definition.cc:105
 #: src/vscreen/config/column_definition.cc:123
 msgid "Formatting marker with missing format code"
 msgstr "フォーマット記号にフォーマットコードが入っていません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/vscreen/config/column_definition.cc:132
 #: src/vscreen/config/column_definition.cc:178
 #, c-format
 msgid "Bad number in format string: '%ls'"
 msgstr "フォーマット文字列中に不正な数字があります: '%ls'"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/vscreen/config/column_definition.cc:160
 msgid "Missing parameter number in format string"
 msgstr "フォーマット文字列中にパラメタ番号がありません"
 
-# * Translation checked by noritada on 2005-10-24.
 #: src/vscreen/config/column_definition.cc:185
 #, c-format
 msgid "Parameter numbers must be 1 or greater, not %ld"
 msgstr "パラメタ番号は 1 以上でなければいけません。%ld は不適です"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/vscreen/config/column_definition.cc:211
 #, c-format
 msgid "Unknown formatting code '%lc'"
 msgstr "フォーマットコードが不明です: '%lc'"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/vscreen/config/column_definition.cc:261
 msgid "Bad format parameter"
 msgstr "不正なフォーマットパラメタです"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/vscreen/config/keybindings.cc:333
 #, c-format
 msgid "Cannot parse key description: %ls"
 msgstr "キーの記述をパースできません: %ls"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/vscreen/config/keybindings.cc:343
 msgid "Invalid null keybinding"
 msgstr "不正な null キーバインドです"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/vscreen/config/keybindings.cc:351
 msgid "Sorry, control modifiers may not be used with unprintable characters"
 msgstr "すみません。コントロール修飾子は印字不能文字と一緒には使えません"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/vscreen/vscreen.cc:125
 #, c-format
 msgid "Ouch!  Got SIGTERM, dying..\n"
 msgstr "痛い! SIGTERM を受け取りました。死亡……\n"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/vscreen/vscreen.cc:128
 #, c-format
 msgid "Ouch!  Got SIGSEGV, dying..\n"
 msgstr "痛い! SIGSEGV を受け取りました。死亡……\n"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/vscreen/vscreen.cc:131
 #, c-format
 msgid "Ouch!  Got SIGABRT, dying..\n"
 msgstr "痛い! SIGABRT を受け取りました。死亡……\n"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/vscreen/vscreen.cc:134
 #, c-format
 msgid "Ouch!  Got SIGQUIT, dying..\n"
 msgstr "痛い! SIGQUIT を受け取りました。死亡……\n"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/vscreen/vs_pager.cc:439
 #, c-format
 msgid ""
@@ -6756,65 +5768,50 @@ msgid ""
 msgstr ""
 "ファイル名をロードできません。文字列 %ls にはマルチバイトの表現がありません。"
 
-# * Translation checked by noritada on 2006-02-25.
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "トップレベル"
 
-# * Translation checked by noritada on 2006-01-23.
 #~ msgid ""
 #~ "Do not display a warning when the first change is made in read-only mode."
 #~ msgstr "読み取り専用モードで最初に変更がなされたときに警告を表示します。"
 
-# * Translation checked by noritada on 2005-10-23.
 #~ msgid "%d installs"
 #~ msgstr "%d 個 インストール"
 
-# * Translation checked by noritada on 2005-10-23.
 #~ msgid "1 install"
 #~ msgstr "1 個 インストール"
 
-# * Translation checked by noritada on 2005-10-23.
 #~ msgid "%d removals"
 #~ msgstr "%d 個 削除"
 
-# * Translation checked by noritada on 2005-10-23.
 #~ msgid "1 removal"
 #~ msgstr "1 個 削除"
 
-# * Translation checked by noritada on 2006-03-01.
 #~ msgid "%d keeps"
 #~ msgstr "%d 個 一時固定"
 
-# * Translation checked by noritada on 2006-03-01.
 #~ msgid "1 keep"
 #~ msgstr "1 個 一時固定"
 
-# * Translation checked by noritada on 2005-10-23.
 #~ msgid "%d upgrades"
 #~ msgstr "%d 個 更新"
 
-# * Translation checked by noritada on 2005-10-23.
 #~ msgid "1 upgrade"
 #~ msgstr "1 個 更新"
 
-# * Translation checked by noritada on 2005-10-23.
 #~ msgid "%d downgrades"
 #~ msgstr "%d 個 ダウングレード"
 
-# * Translation checked by noritada on 2005-10-23.
 #~ msgid "1 downgrade"
 #~ msgstr "1 個 ダウングレード"
 
-# * Translation checked by noritada on 2006-01-23.
 #~ msgid "Couldn't open for writing"
 #~ msgstr "書き込み可能な状態で開けませんでした"
 
-# * Translation checked by noritada on 2006-01-23.
 #~ msgid "The spikes were poisoned!  The poison was deadly..  --More--"
 #~ msgstr "くぎには毒が塗られていました! 致死量でした……。--More--"
 
-# * Translation checked by noritada on 2006-02-25.
 #~ msgid ""
 #~ "Programs for faxmodems and other communications devices\n"
 #~ " Packages in the 'comm' section are used to control modems and other "
@@ -6832,82 +5829,65 @@ msgstr "トップレベル"
 #~ "kermit のようなプログラム) も含まれています。"
 
 # * Item.
-# * Translation checked by noritada on 2005-10-20.
 #~ msgid "^NEWS"
 #~ msgstr "お知らせ (^N)"
 
-# * Translation checked by noritada on 2005-10-20.
 #~ msgid "Search backwards for:"
 #~ msgstr "後方を検索:"
 
-# * Translation checked by noritada on 2006-01-22.
 #~ msgid "Encoding error in long description."
 #~ msgstr "長いパッケージ説明文中でエンコーディングエラーが生じました。"
 
-# * Translation checked by noritada on 2006-03-01.
 #~ msgid "Solution search failed.  %s: try harder"
 #~ msgstr "解決策の検索に失敗しました。%s: 再挑戦しますか"
 
-# * Translation checked by noritada on 2006-02-25.
 #~ msgid "Happy?"
 #~ msgstr "幸せかい?"
 
 # * FIXME: 'B byte' in the original message is wrong!!
 # * Log message.
-# * Translation checked by noritada on 2005-10-20.
 #~ msgid "%sB bytes of disk space will be freed\n"
 #~ msgstr "%sB のディスク領域を解放します\n"
 
-# * Translation checked by noritada on 2006-03-01.
 #~ msgid "Can't get value of $HOME, using TMPDIR (insecure)"
 #~ msgstr ""
 #~ "$HOME の値を取得できません。TMPDIR (安全ではありません。) を使用します。"
 
-# * Translation checked by noritada on 2006-03-01.
 #~ msgid "Bad filter type '%s' (valid types are: 'missing')"
 #~ msgstr "不正なフィルタ形式です: '%s' (有効な形式: 'missing')"
 
-# * Translation checked by noritada on 2006-03-01.
 #~ msgid "Version-generating grouping policies must be the tail of a chain"
 #~ msgstr ""
 #~ "バージョンから生成された分類規則はチェーンの最後におかなければいけません"
 
-# * Translation checked by noritada on 2006-03-01.
 #~ msgid "Dep-generating grouping policies must be the tail of a chain"
 #~ msgstr ""
 #~ "依存関係から生成された分類規則はチェーンの最後におかなければいけません"
 
-# * Translation checked by noritada on 2006-03-01.
 #~ msgid "Invalid zero-length grouping policy name"
 #~ msgstr "長さがゼロの文字列は分類規則の名前として無効です"
 
-# * Translation checked by noritada on 2006-03-01.
 #~ msgid "Invalid grouping policy type '%s'"
 #~ msgstr "不正な分類規則の形式です: '%s'"
 
-# * Translation checked by noritada on 2006-03-01.
 #~ msgid "Automatically remove unused packages matching this filter"
 #~ msgstr ""
 #~ "使われていなくこのフィルタにマッチするパッケージを自動的に削除します"
 
-# * Translation checked by noritada on 2005-10-24.
 #~ msgid "You can only specify a package version with an 'install' command.\n"
 #~ msgstr ""
 #~ "'install' コマンドで指定できるのはパッケージのバージョンだけです。\n"
 
 # * Description of action in the commandline help.
-# * Translation checked by noritada on 2006-02-26.
 #~ msgid ""
 #~ " -q             In command-line mode, suppress the incremental progress "
 #~ "indicators."
 #~ msgstr ""
 #~ " -q                コマンドラインモードで進行状況を逐一表示しません。"
 
-# * Translation checked by noritada on 2005-10-20.
 #~ msgid "Suggest "
 #~ msgstr "提案 "
 
-# * Translation checked by noritada on 2006-03-01.
 # * README is translatable!!
 #~ msgid "Encoding of README|UTF-8"
 #~ msgstr "Encoding of README|UTF-8"
