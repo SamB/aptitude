@@ -24,6 +24,8 @@
 #include "aptitude.h"
 #include "ui.h"
 
+#include <generic/apt/apt.h>
+#include <generic/apt/config_signal.h>
 #include <generic/apt/tags.h>
 
 #include <vscreen/fragment.h>
@@ -69,7 +71,8 @@ using namespace std;
 static fragment *make_level_fragment(const wstring &desc,
 				     unsigned int level,
 				     wstring::size_type indent,
-				     wstring::size_type &start)
+				     wstring::size_type &start,
+				     bool recognize_bullets)
 {
   vector<fragment*> fragments;
   bool first=true;
@@ -117,7 +120,8 @@ static fragment *make_level_fragment(const wstring &desc,
 		++nspaces2;
 	      }
 
-	    if(loc2 + 1 < desc.size() &&
+	    if(recognize_bullets &&
+	       loc2 + 1 < desc.size() &&
 	       (desc[loc2] == L'+' ||
 		desc[loc2] == L'-' ||
 		desc[loc2] == L'*') &&
@@ -133,7 +137,8 @@ static fragment *make_level_fragment(const wstring &desc,
 		fragment *item_contents=make_level_fragment(desc,
 							    level+1,
 							    nspaces2 + 2,
-							    start);
+							    start,
+							    recognize_bullets);
 
 		fragments.push_back(style_fragment(text_fragment(bullet),
 						   get_style("Bullet")));
@@ -248,7 +253,9 @@ fragment *make_desc_fragment(const wstring &desc)
     ++loc;
 
   // Note that the starting amount of indentation is 1...
-  return make_level_fragment(desc, 0, 1, loc);
+  return make_level_fragment(desc, 0, 1, loc,
+			     aptcfg->FindB(PACKAGE "::Parse-Description-Bullets",
+					   false));
 }
 
 

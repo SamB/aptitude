@@ -8409,6 +8409,24 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configParseDescriptionBullets'>
+	      <seg><literal>Aptitude::Parse-Description-Bullets</literal></seg>
+
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		If this option is enabled, &aptitude; will attempt
+		to automatically detect bulleted lists in package
+		descriptions. <!-- TODO: add an appendix describing
+		the grammar? -->  This will generally improve how
+		descriptions are displayed, but it is not entirely
+		backwards-compatible; some descriptions might be
+		formatted less attractively when this option is
+		<literal>true</literal> than when it is
+		<literal>false</literal>.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configPkg-Display-Limit'>
 	      <seg><literal>Aptitude::Pkg-Display-Limit</literal></seg>
 
