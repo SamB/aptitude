@@ -243,6 +243,18 @@ void apt_close_cache()
 {
   cache_closed();
 
+  //   DANGER WILL ROBINSON!
+  //
+  // This must be done *** BEFORE BEFORE BEFORE *** we delete the
+  // current cache file, since until the resolver manager is deleted,
+  // there might actually be an active resolver thread trying to use
+  // the cache!
+  if(resman)
+    {
+      delete resman;
+      resman = NULL;
+    }
+
   reset_tasks();
 
   if(apt_package_records)
@@ -261,12 +273,6 @@ void apt_close_cache()
     {
       delete apt_source_list;
       apt_source_list=NULL;
-    }
-
-  if(resman)
-    {
-      delete resman;
-      resman = NULL;
     }
 }
 
