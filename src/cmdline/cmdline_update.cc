@@ -1,6 +1,6 @@
 // cmdline_update.cc
 //
-//   Copyright (C) 2004-2005 Daniel Burrows
+//   Copyright (C) 2004-2006 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -44,8 +44,6 @@ int cmdline_update(int argc, char *argv[])
     }
 
   OpTextProgress progress(aptcfg->FindI("Quiet", 0));
-
-  apt_init(&progress, false);
 
   if(_error->PendingError())
     {
