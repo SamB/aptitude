@@ -1,6 +1,6 @@
 // main.cc  (neé testscr.cc)
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2006 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -536,7 +536,13 @@ int main(int argc, char *argv[])
   try
     {
       vs_progress_ref p=gen_progress_bar();
-      apt_init(p.unsafe_get_ref(), true, status_fname);
+      // We can avoid reading in the package lists in the case that
+      // we're about to update them (since they'd be closed and
+      // reloaded anyway).  Obviously we still need them for installs,
+      // since we have to get information about what to install from
+      // somewhere...
+      if(!update_only)
+	apt_init(p.unsafe_get_ref(), true, status_fname);
       if(status_fname)
 	free(status_fname);
       check_apt_errors();
