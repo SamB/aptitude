@@ -900,6 +900,11 @@ static void do_help_readme()
   s->scrollbar_interaction.connect(sigc::mem_fun(p.unsafe_get_ref(), &vs_pager::scroll_page));
   p->scroll_top(); // Force a scrollbar update.
 
+  p->connect_key("Search", &global_bindings,
+		 sigc::bind(sigc::ptr_fun(&pager_search), p.weak_ref()));
+  p->connect_key("ReSearch", &global_bindings,
+		 sigc::bind(sigc::ptr_fun(&pager_repeat_search), p.weak_ref()));
+
   t->add_widget_opts(p, 0, 0, 1, 1,
 		     vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
 		     vs_table::EXPAND | vs_table::FILL);
