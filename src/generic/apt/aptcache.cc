@@ -360,7 +360,7 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 
 	  // FIXME: should I check this for "unknown" packages as well?
 	  // Does that even make sense??
-	  if(!estate.candver.empty() && estate.upgrade)
+	  if(!estate.candver.empty())
 	    {
 	      for(pkgCache::VerIterator ver=i.VersionList(); !ver.end(); ++ver)
 		if(ver.VerStr()==estate.candver &&
