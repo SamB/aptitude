@@ -45,7 +45,7 @@ resolver_manager::resolver_manager(aptitudeDepCache *_cache)
    background_thread_suspend_count(0),
    background_thread_in_resolver(false),
    resolver_thread(NULL),
-   mutex(threads::mutex::attr(PTHREAD_MUTEX_RECURSIVE_NP))
+   mutex(threads::mutex::attr(PTHREAD_MUTEX_RECURSIVE))
 {
   cache->pre_package_state_changed.connect(sigc::mem_fun(this, &resolver_manager::discard_resolver));
   cache->package_state_changed.connect(sigc::mem_fun(this, &resolver_manager::maybe_create_resolver));
