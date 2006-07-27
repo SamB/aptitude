@@ -145,8 +145,10 @@ temp::name changelog_by_version(const std::string &pkg,
 }
 
 /** Find a source record in the given set of source records
- *  corresponding to the given package and archive.  Expects no
- *  pending errors when it starts.
+ *  corresponding to the given package and archive.
+ *
+ *  IMPORTANT: You should dump errors before starting this routine; it
+ *  assumes that there are no pending errors.
  *
  *  \param records the source records object
  *  \param pkg the package name to match on
@@ -214,6 +216,12 @@ bool do_cmdline_changelog(const vector<string> &packages)
 
   for(vector<string>::const_iterator i=packages.begin(); i!=packages.end(); ++i)
     {
+      // We need to do this because some code (see above) checks
+      // PendingError to see whether everything is OK.  In addition,
+      // dumping errors means we get sensible error message output
+      // (this will be true even if the PendingError check is removed
+      // ... which it arguably should be).
+      _error->DumpErrors();
       string input=*i;
 
       cmdline_version_source source;
@@ -295,6 +303,7 @@ bool do_cmdline_changelog(const vector<string> &packages)
 	      break;
 
 	    case cmdline_version_archive:
+	      _error->DumpErrors();
 	      ent = find_src_archive(*apt_source_list,
 				     package, sourcestr);
 
@@ -334,6 +343,8 @@ bool do_cmdline_changelog(const vector<string> &packages)
 	// Run the user's pager.
 	system((string(pager) + " " + filename.get_name()).c_str());
     }
+
+  _error->DumpErrors();
 }
 
 // TODO: fetch them all in one go.
