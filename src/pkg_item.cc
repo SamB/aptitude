@@ -404,7 +404,7 @@ bool pkg_item::dispatch_key(const key &k, vs_tree *owner)
     // need to touch the package lists in the subprocess.
     {
       // Try to do *something*.
-      char *sucmd=NULL;
+      const char *sucmd=NULL;
 
       if(getuid()==0)
 	sucmd="dpkg-reconfigure '%s'";
