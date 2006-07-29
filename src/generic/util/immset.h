@@ -1,6 +1,6 @@
 // immset.h                                     -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005-2006 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -404,6 +404,12 @@ namespace imm
 
       std::vector<path_entry> path;
     public:
+      typedef std::input_iterator_tag iterator_category;
+      typedef Val value_type;
+      typedef int difference_type;
+      typedef const Val* pointer;
+      typedef const Val& reference;
+
       const_iterator()
       {
       }
