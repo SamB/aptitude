@@ -174,10 +174,10 @@ download_manager::result download_install_manager::finish(pkgAcquire::RunResult 
 {
   result run_res = execute_install_run(res, progress);
 
-  apt_close_cache();
-
   if(run_res != do_again)
     {
+      apt_close_cache();
+
       if(log != NULL)
 	log->Complete();
 
