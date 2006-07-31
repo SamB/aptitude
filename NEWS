@@ -1,3 +1,149 @@
+[7/31/2006]
+Version 0.4.2                           "Rock on, Monkeyverse"
+- New features:
+
+  * Added a command to cancel all pending actions from the full-screen
+    UI (an analogue of "keep-all" at the command line).
+
+  * Added an option "Aptitude::UI::ViewTabs" that controls whether the
+    "tabs" at the top of the screen are displayed. (Closes: #344569)
+
+  * Make the lockfile default to /var/lock/aptitude as per
+    FHS. (Closes: #160418)
+
+  * Add support for searching in the on-line user's manual.
+    (Closes: #364306)
+
+- Bug fixes:
+
+  * Fix compilation errors with gcc 4.1. (Closes: #357557)
+
+  * Fix compilation errors with gcc 4.2. (Closes: #369382)
+
+  * Fix crashes that occurred during update (and perhaps install)
+    operations if a problem resolver was active.
+    (Closes: #346380, #348541, #348481, #376573)
+
+  * Don't crash when trying to install packages off multiple
+    CDs. (Closes: #349869)
+
+  * Handle NULLs being returned from get_changelog_from_source
+    (Closes: #343488).
+
+  * Don't crash when moving the selection up if the current selection
+    is invalid (Closes: #343676).
+
+  * Disable bullet-detection by default, since it is
+    backwards-incompatible in a bad way that cannot be easily solved.
+    (Closes: #373888)
+
+  * Make bullet-detection better defined by requiring exactly one
+    space after the bullet (subsequent spaces cause lines to be
+    literally formatted; without this, literal lines in bulleted
+    paragraphs aren't possible).
+
+  * Make the behavior of "aptitude show" more intuitive: state
+    information corresponds to the Version displayed, and the current
+    version is selected by default if the package is
+    currently installed. (Closes: #375393, #372796)
+
+  * Use PTHREAD_MUTEX_RECURSIVE instead of PTHREAD_MUTEX_RECURSIVE_NP
+    so we compile on the Hurd (Closes: #361439).
+
+  * Fix saving/restoring states when a non-default version is being
+    freshly installed.
+
+  * Correct how the progress indicator is updated when rebuilding the
+    cache.
+
+  * Don't read the package lists on startup when they're about to be
+    discarded to download new ones. (Closes: #366884)
+
+  * Fix incorrect behavior in the command-line changelog routine,
+    triggered by pending errors that weren't being dumped.
+    (Closes: #379903)
+
+  * Fix several places where error reporting via Errno was broken.
+    (Closes: #350264)
+
+  * Correctly handle scrollbar updates after resizing text layouts.
+    (Closes: #347445)
+
+  * Fix how the internal pager renders tabs. (Closes: #351323)
+
+  * Remove the pkgAcqFileSane class; the functionality it provides is
+    now available in libapt -- and better implemented, so this
+    (Closes: #299127).
+
+  * Use correct xml in the manual.
+
+  * Add a (non-default) target to build printable documentation.
+
+  * Use UTF-8 to output the manpage.
+
+- Translation updates:
+
+  * Add some plural form support.
+
+  * Fix the P_() localization macro.
+
+  * Use po4a for the manual. (Closes: #351643)
+
+  * Basque (Closes: #349500, #275704, #349500)
+
+  * Brazillian (Closes: #363905)
+
+  * Catalan (Closes: #345226, #363648)
+
+  * Chinese (Simplified) (Closes: #347311, 355689)
+
+  * Czech (Closes: #345345, #349427)
+
+  * Danish
+
+  * Dutch (Closes: #350118, #364471)
+
+  * Dzongkha
+
+  * Finnish
+
+  * French (Closes: #344078, 343748)
+
+  * Galacian (Closes: #344380, #355586, #373893)
+
+  * German (Closes: #330226, #351557)
+
+  * Greek (Closes: #344630)
+
+  * Hungarian (Closes: #354844)
+
+  * Italian
+
+  * Japanese (Closes: #364621)
+
+  * Nepali (Closes: #372861)
+
+  * Norwegian
+
+  * Polish (Closes: #338989)
+
+  * Portuguese (Closes: #364186)
+
+  * Romanian (Closes: #362927, #375327)
+
+  * Russian (Closes: #349161, #366523, #376340)
+
+    + Increased the field width for download size/disk usage to avoid
+      clipping.
+
+  * Slovak (Closes: #351839, #353449, #356396)
+
+  * Spanish
+
+  * Swedish (Closes: #345372, #363660, #374207)
+
+  * Vietnamese (Closes: #341924, #343850, #375089)
+
 [12/8/2005]
 Version 0.4.1                           "Divers Alarums"
 - New features:
