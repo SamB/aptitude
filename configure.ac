@@ -245,11 +245,13 @@ AC_TYPE_SIZE_T
 dnl Checks for library functions.
 AC_CHECK_FUNCS(strdup)
 
-FC_EXPAND_DIR(HELPDIR, "$datadir/aptitude")
-AC_DEFINE_UNQUOTED(HELPDIR, "$HELPDIR", [The location in which the online help data is placed])
+CPPFLAGS="$CPPFLAGS -DHELPDIR=\\\"\$(datadir)/aptitude\\\""
+CPPFLAGS="$CPPFLAGS -DPKGDATADIR=\\\"\$(datadir)/aptitude\\\""
+dnl FC_EXPAND_DIR(HELPDIR, [$datadir/aptitude])
+dnl AC_DEFINE_UNQUOTED(HELPDIR, "$HELPDIR", [The location in which the online help data is placed])
 
-FC_EXPAND_DIR(PKGDATADIR, "$datadir/aptitude")
-AC_DEFINE_UNQUOTED(PKGDATADIR, "$PKGDATADIR", [The location in which the program data is placed])
+dnl FC_EXPAND_DIR(PKGDATADIR, [$datadir/aptitude])
+dnl AC_DEFINE_UNQUOTED(PKGDATADIR, "$PKGDATADIR", [The location in which the program data is placed])
 
 AC_CONFIG_FILES([
 	Doxyfile
