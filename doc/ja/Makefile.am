@@ -1,7 +1,7 @@
 # automake doesn't play nicely with DocBook :(
 
 SUBDIRS=images
-EXTRA_DIST=aptitude.xml manpage.xml aptitude-html-ja.xsl
+EXTRA_DIST=aptitude.xml manpage.xml aptitude-html-ja.xsl aptitude-man-ja.xsl
 
 LANGCODE=ja
 MANPAGE=aptitude.$(LANGCODE).8
