@@ -1,8 +1,6 @@
 # automake doesn't play nicely with DocBook :(
 
-# Full manual not yet available.
-SUBDIRS=
-# SUBDIRS=images
+SUBDIRS=images
 EXTRA_DIST=aptitude.xml manpage.xml
 
 LANGCODE=ja
