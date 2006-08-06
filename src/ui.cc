@@ -1932,7 +1932,7 @@ vs_menu_info actions_menu[]={
 
   VS_MENU_SEPARATOR,
 
-  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("Mark ^Upgradable"), "MarkUpgradable",
+  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("Mark Up^gradable"), "MarkUpgradable",
 	       N_("Mark all upgradable packages which are not held for upgrade"),
 	       sigc::ptr_fun(do_mark_upgradable), sigc::ptr_fun(do_mark_upgradable_enabled)),
 
