@@ -108,6 +108,8 @@ public:
 
     int dummy;
 
+    // Test that timing out trying to take values from an empty box works:
+
     CPPUNIT_ASSERT(!b.timed_take(dummy, timeout));
 
     timeval now2;
@@ -116,6 +118,7 @@ public:
     CPPUNIT_ASSERT(now2.tv_sec >= now.tv_sec + 2);
     CPPUNIT_ASSERT(now2.tv_sec > now.tv_sec + 2 || now2.tv_usec >= now.tv_usec);
 
+    // Test that we can retrieve a value from a full box:
 
     timeout.tv_sec = now2.tv_sec + 2;
     timeout.tv_nsec = now2.tv_usec * 1000;
