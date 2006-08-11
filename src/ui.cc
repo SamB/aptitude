@@ -440,8 +440,10 @@ static void do_su_to_root(string args)
       int status;
       OpProgress foo; // Need a generic non-outputting progress bar
 
-      // Save the selection list.
-      (*apt_cache_file)->save_selection_list(foo, statusname.get_name().c_str());
+      // Save the selection list.  Check first if it's NULL to handle the
+      // case of a closed cache.
+      if(apt_cache_file != NULL)
+	(*apt_cache_file)->save_selection_list(foo, statusname.get_name().c_str());
 
       // Shut curses down.
       vscreen_suspend();
