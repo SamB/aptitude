@@ -557,7 +557,8 @@ bool aptitudeDepCache::save_selection_list(OpProgress &prog,
 
 	    if(state.Install() &&
 	       !estate.candver.empty() &&
-	       GetCandidateVer(i).VerStr() != estate.candver)
+	       (GetCandidateVer(i).end() ||
+		GetCandidateVer(i).VerStr() != estate.candver))
 	      tailstr = "Version: " + estate.candver + "\n";
 
 	    len=snprintf(buf,
