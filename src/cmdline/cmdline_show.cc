@@ -89,17 +89,56 @@ static fragment *dep_lst_frag(pkgCache::DepIterator dep,
 			   flowbox(join_fragments(fragments, L", "))));
 }
 
+typedef std::pair<std::string, std::string> pkgverpair;
+struct package_version_pair_cmp
+{
+  bool operator()(const pkgverpair &x, const pkgverpair &y) const
+  {
+    return x.first < y.first
+      || _system->VS->CmpVersion(x.second, y.second) < 0;
+  }
+};
+
 static fragment *prv_lst_frag(pkgCache::PrvIterator prv,
 			      bool reverse,
+			      int verbose,
 			      const std::string &title)
 {
   vector<fragment *> fragments;
 
-  for( ; !prv.end(); ++prv)
+  if(reverse && verbose >= 1)
     {
-      string name=reverse?prv.OwnerPkg().Name():prv.ParentPkg().Name();
+      std::set<pkgverpair, package_version_pair_cmp> packagevers;
 
-      fragments.push_back(text_fragment(name));
+      for( ; !prv.end(); ++prv)
+	{
+	  string name         = prv.OwnerPkg().Name();
+	  const char *version = prv.OwnerVer().VerStr();
+
+	  if(version != NULL)
+	    packagevers.insert(pkgverpair(name, version));
+	  else
+	    packagevers.insert(pkgverpair(name, ""));
+	}
+
+      for(std::set<pkgverpair>::const_iterator it = packagevers.begin();
+	  it != packagevers.end(); ++it)
+	fragments.push_back(fragf("%s (%s)", it->first.c_str(), it->second.c_str()));
+    }
+  else
+    {
+      std::set<std::string> packages;
+
+      for( ; !prv.end(); ++prv)
+	{
+	  string name = reverse ? prv.OwnerPkg().Name() : prv.ParentPkg().Name();
+
+	  packages.insert(name);
+	}
+
+      for(std::set<std::string>::const_iterator it = packages.begin();
+	  it != packages.end(); ++it)
+	fragments.push_back(text_fragment(*it));
     }
 
   if(fragments.size()==0)
@@ -293,7 +332,7 @@ static void show_package(pkgCache::PkgIterator pkg, int verbose)
 
   fragments.push_back(fragf("%s%s%n", _("Package: "), pkg.Name()));
   fragments.push_back(fragf("%s: %F%n", _("State"), state_fragment(pkg, pkgCache::VerIterator())));
-  fragments.push_back(prv_lst_frag(pkg.ProvidesList(), true, _("Provided by")));
+  fragments.push_back(prv_lst_frag(pkg.ProvidesList(), true, verbose, _("Provided by")));
 
   fragment *f=sequence_fragment(fragments);
 
@@ -375,8 +414,8 @@ static fragment *version_file_fragment(pkgCache::VerIterator ver,
   fragments.push_back(dep_lst_frag(ver.DependsList(),
 				   _("Obsoletes"), pkgCache::Dep::Obsoletes));
 
-  fragments.push_back(prv_lst_frag(ver.ProvidesList(), false, _("Provides")));
-  fragments.push_back(prv_lst_frag(ver.ParentPkg().ProvidesList(), true, _("Provided by")));
+  fragments.push_back(prv_lst_frag(ver.ProvidesList(), false, verbose, _("Provides")));
+  fragments.push_back(prv_lst_frag(ver.ParentPkg().ProvidesList(), true, verbose, _("Provided by")));
 
   fragments.push_back(fragf("%s%ls%n",
 			    _("Description: "),
