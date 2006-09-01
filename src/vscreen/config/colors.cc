@@ -45,6 +45,8 @@ void init_colors()
   for(short fg = 0; fg < colors; ++fg)
     for(short bg = 0; bg < colors; ++bg)
       {
+	eassert(fg * colors + bg < COLOR_PAIRS);
+
 	if(default_colors_avail && fg == bg)
 	  init_pair(fg * colors + bg, fg, -1);
 	else if(fg == 0 && bg == 0)
