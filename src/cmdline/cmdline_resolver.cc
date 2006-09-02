@@ -1,6 +1,6 @@
 // cmdline_resolver.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005-2006 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -91,7 +91,7 @@ static void setup_resolver(pkgset &to_install,
   if(force_no_change && resman->resolver_exists())
     {
       pkgset *sets[4]={&to_install, &to_hold, &to_remove, &to_purge};
-      int tweak_amt=aptcfg->FindI(PACKAGE "::CmdLine::Request-Strictness", 0);
+      int tweak_amt=aptcfg->FindI(PACKAGE "::CmdLine::Request-Strictness", 10000);
 
       for(int i=0; i<4; ++i)
 	{
