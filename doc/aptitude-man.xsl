@@ -13,7 +13,7 @@
 <xsl:output method="text" encoding="UTF-8" indent="no"/>
 
 <xsl:template match='replaceable'>
-  <xsl:text>\fI&lt;</xsl:text><xsl:apply-templates/><xsl:text>&gt;\fR</xsl:text>
+  <xsl:text>&lt;</xsl:text><xsl:apply-imports/><xsl:text>&gt;</xsl:text>
 </xsl:template>
 
 
