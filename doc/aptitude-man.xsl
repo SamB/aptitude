@@ -9,6 +9,7 @@
 
 <xsl:param name="chunker.output.method" select="'text'"/>
 <xsl:param name="chunker.output.encoding" select="'UTF-8'"/>
+<xsl:param name="man.charmap.use.subset" select="0"/>
 
 <xsl:output method="text" encoding="UTF-8" indent="no"/>
 
