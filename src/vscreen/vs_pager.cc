@@ -89,7 +89,7 @@ void vs_pager::set_text(const wstring &s)
 	  if(ch==L'\t')
 	    {
 	      const unsigned int amt
-		= 8 - cur_width + 8;
+		= 8 - cur_width % 8;
 
 	      cur_width += amt;
 	      curline.append(amt, L' ');
