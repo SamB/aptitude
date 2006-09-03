@@ -1,3 +1,61 @@
+[9/3/2006]
+Version 0.4.3                           "Everyone loves kittens"
+- New features:
+
+  * Request-Strictness is now set to 10000 by default.  This should
+    cause the internal problem resolver to produce more sensible
+    solutions when run from the command-line. (Closes: #385453)
+
+- Bug fixes:
+
+  * Don't crash when trying to display text in the internal pager in
+    which a tab character appears in a column that is not a multiple
+    of 8. (Closes: #383488, #383549)
+
+  * Don't crash after su-ing to root. (Closes: #382090)
+
+  * Don't crash when saving the state while a non-default version of a
+    package that has no default version at all (e.g., exists only in
+    experimental) is selected for installation. (Closes: #383767, #384136)
+
+  * Eliminate duplicate entries from the "provided by" list displayed
+    by "aptitude show". (Closes: #384001)
+
+  * Grotesquely hack around ugly behavior in 256-color terms by
+    limiting the maximum number of foreground/background colors to 8.
+    (Closes: #384699)
+
+  * Fix the incorrect claim in the documentation that "l" is the
+    shortcut to remove the limit from the display.
+
+  * Make the in-menu hotkey for "mark upgradable" not conflict with
+    "update package list".
+
+  * Use groff escapes for extended characters when generating manpages
+    so that they look better in non-English locales. (Closes: #383463)
+
+  * Use the built-in Docbook XSLT templates to italicise <replacable>
+    tags in manpages.  This is asserted to produce more correct
+    output.
+
+- Translation updates:
+
+  * Dzongkha (Closes: #382606)
+
+  * French
+
+  * Galician (Closes: #381989)
+
+  * German
+
+  * Hungarian (Closes: #383584)
+
+  * Khmer (Closes: #374919)
+
+  * Swedish (Closes: #382992, #383630)
+
+  * Vietnamese (Closes: #382333, #383586)
+
 [7/31/2006]
 Version 0.4.2                           "Rock on, Monkeyverse"
 - New features:
