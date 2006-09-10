@@ -535,7 +535,10 @@ bool do_cmdline_show(string s, int verbose)
       for(pkgCache::PkgIterator P=(*apt_cache_file)->PkgBegin();
 	  !P.end(); ++P)
 	if(m->matches(P))
-	  return do_cmdline_show_target(P, source, sourcestr, verbose, has_explicit_source);
+	  {
+	    if(!do_cmdline_show_target(P, source, sourcestr, verbose, has_explicit_source))
+	      return false;
+	  }
 
       delete m;
     }
