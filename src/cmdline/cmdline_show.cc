@@ -524,9 +524,9 @@ bool do_cmdline_show(string s, int verbose)
     return do_cmdline_show_target(pkg, source, sourcestr, verbose, has_explicit_source);
   else if(is_pattern)
     {
-      pkg_matcher *m=parse_pattern(name);
+      std::auto_ptr<pkg_matcher> m(parse_pattern(name));
 
-      if(!m)
+      if(m.get() == NULL)
 	{
 	  _error->Error(_("Unable to parse pattern %s"), name.c_str());
 	  return false;
