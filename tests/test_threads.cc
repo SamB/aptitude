@@ -1,6 +1,6 @@
 // test_threads.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005-2006 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -115,8 +115,12 @@ public:
     timeval now2;
     gettimeofday(&now2, NULL);
 
-    CPPUNIT_ASSERT(now2.tv_sec >= now.tv_sec + 2);
-    CPPUNIT_ASSERT(now2.tv_sec > now.tv_sec + 2 || now2.tv_usec >= now.tv_usec);
+    //  pthread_cond_timedwait is allowed to return before the timeout
+    //  expires, according to Bastian Blank <waldi@debian.org>, so this
+    //  invariant is not an invariant at all.
+    //
+    //CPPUNIT_ASSERT(now2.tv_sec >= now.tv_sec + 2);
+    //CPPUNIT_ASSERT(now2.tv_sec > now.tv_sec + 2 || now2.tv_usec >= now.tv_usec);
 
     // Test that we can retrieve a value from a full box:
 
