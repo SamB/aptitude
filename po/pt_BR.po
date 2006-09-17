@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-03 09:36-0700\n"
-"PO-Revision-Date: 2006-04-20 11:41-0300\n"
+"PO-Revision-Date: 2006-09-07 16:00-0300\n"
 "Last-Translator: André Luís Lopes <andrelop@debian.org>\n"
 "Language-Team: l10n portuguese <debian-l10n-portuguese@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -246,9 +246,9 @@ msgstr[1] "%d reversões"
 #. "n1 installs, n2 removals", ...
 #.
 #: src/broken_indicator.cc:362
-#, fuzzy, c-format
+#, c-format
 msgid "Suggest %F"
-msgstr "Sugere "
+msgstr "Sugere %F"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -846,7 +846,7 @@ msgstr "Comandos :"
 
 #: src/cmdline/cmdline_prompt.cc:767
 msgid "Do you want to continue? [Y/n/?] "
-msgstr "Você deseja continuar? S/n/?] "
+msgstr "Você deseja continuar? [Y/n/?] "
 
 #: src/cmdline/cmdline_prompt.cc:792
 #, c-format
@@ -1086,7 +1086,7 @@ msgstr "As seguintes ações resolverão essas dependências :"
 
 #: src/cmdline/cmdline_resolver.cc:525
 msgid "Accept this solution? [Y/n/q/?] "
-msgstr "Aceitar esta solução ? [S/n/q/?]"
+msgstr "Aceitar esta solução ? [Y/n/q/?]"
 
 #: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
 msgid "Abandoning all efforts to resolve these dependencies."
@@ -1108,7 +1108,7 @@ msgstr "Resposta inválida. Por favor informe um dos seguintes comandos :"
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Nenhuma solução encontrada dentro do tempo alocado. Tentar mais "
-"agressivamente ? [S/n]"
+"agressivamente ? [Y/n]"
 
 #: src/cmdline/cmdline_resolver.cc:651
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -1207,14 +1207,14 @@ msgid " [held]"
 msgstr " [mantido]"
 
 #: src/cmdline/cmdline_show.cc:282
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed"
-msgstr "%B%s%b será instalado."
+msgstr "%s; serão instalados."
 
 #: src/cmdline/cmdline_show.cc:284
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed automatically"
-msgstr "%s; versão %s será instalado automaticamente"
+msgstr "%s; serão instalados automaticamente"
 
 #: src/cmdline/cmdline_show.cc:304
 #, c-format
@@ -1381,9 +1381,9 @@ msgid "No candidate version found for %s\n"
 msgstr "Nenhuma versão candidata para %s\n"
 
 #: src/cmdline/cmdline_util.cc:95
-#, fuzzy, c-format
+#, c-format
 msgid "No current or candidate version found for %s\n"
-msgstr "Nenhuma versão candidata para %s\n"
+msgstr "Nenhuma versão atual ou candidata encontrada para %s\n"
 
 #: src/cmdline/cmdline_util.cc:110
 #, c-format
@@ -4566,9 +4566,8 @@ msgid "README"
 msgstr "LEIAME"
 
 #: src/ui.cc:888
-#, fuzzy
 msgid "Encoding of README|ISO_8859-1"
-msgstr "Codificação de LEIAME|UTF-8"
+msgstr "Codificação de LEIAME|ISO_8859-1"
 
 #: src/ui.cc:919
 msgid "User's Manual"
@@ -4840,9 +4839,8 @@ msgid "Check for new versions of packages"
 msgstr "Checar por novas versões de pacotes"
 
 #: src/ui.cc:1937
-#, fuzzy
 msgid "Mark Up^gradable"
-msgstr "^U Marcar Atualizáveis"
+msgstr "^g Marcar Atualizáveis"
 
 #: src/ui.cc:1938
 msgid "Mark all upgradable packages which are not held for upgrade"
