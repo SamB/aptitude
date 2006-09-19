@@ -164,11 +164,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
       (*apt_cache_file)->mark_keep(pkg, false, false, NULL);
       break;
     case cmdline_unhold:
-      if(pkg->CurrentState==pkgCache::State::Installed)
-	(*apt_cache_file)->mark_install(pkg, allow_auto && aptcfg->FindB(PACKAGE "::Auto-Install", true),
-					false, NULL);
-      else
-	(*apt_cache_file)->mark_keep(pkg, false, false, NULL);
+      (*apt_cache_file)->get_ext_state(pkg).selection_state = pkgCache::State::Install;
       break;
     case cmdline_markauto:
       (*apt_cache_file)->mark_auto_installed(pkg, true, NULL);
