@@ -1455,7 +1455,7 @@ void aptitudeDepCache::mark_and_sweep(undo_group *undo)
 
   mark_and_sweep_in_progress=true;
 
-  std::string matchterm = aptcfg->Find(PACKAGE "::Keep-Unused-Pattern", "");
+  std::string matchterm = aptcfg->Find(PACKAGE "::Keep-Unused-Pattern", "~nlinux-image-.*");
   if(matchterm.empty()) // Bug-compatibility with old versions.
     matchterm = aptcfg->Find(PACKAGE "::Delete-Unused-Pattern", "");
   pkg_matcher *matcher=matchterm.empty()?NULL:parse_pattern(matchterm);
