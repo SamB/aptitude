@@ -10,6 +10,10 @@
 /// \todo The command-line state should probably be encapsulated
 /// as an object.
 
+/// \todo allow_auto in cmdline_applyaction() is a hack.  We should
+/// use action-groups to suppress auto-installation (not currently
+/// done but makes sense) and tidy up afterwards?
+
 /** \brief Apply the given command-line action to the given package,
  *  updating the command-line state appropriately.
  *
@@ -40,6 +44,9 @@
  *
  *  \param sourcestr The string associated with the version source, or
  *  "" if there is no associated string.
+ *
+ *  \param allow_auto If \b false, auto-installation of dependencies
+ *  will be disabled regardless of the value of Auto-Install.
  */
 bool cmdline_applyaction(cmdline_pkgaction_type action,
 			 pkgCache::PkgIterator pkg,
@@ -47,7 +54,8 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 			 pkgset &to_remove, pkgset &to_purge,
 			 int verbose,
 			 cmdline_version_source source,
-			 const string &sourcestr);
+			 const string &sourcestr,
+			 bool allow_auto);
 
 /** \brief Apply the given command-line action to the given package,
  *  updating the command-line state appropriately.
@@ -74,12 +82,15 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
  *
  *  \param verbose The verbosity level at which this command should
  *  operate.
+ *
+ *  \param allow_auto If \b false, auto-installation of dependencies
+ *  will be disabled regardless of the value of Auto-Install.
  */
 bool cmdline_applyaction(string s,
 			 cmdline_pkgaction_type action,
 			 pkgset &to_install, pkgset &to_hold,
 			 pkgset &to_remove, pkgset &to_purge,
-			 int verbose);
+			 int verbose, bool allow_auto);
 
 /** \brief Parses a list of actions and executes them.
  *
@@ -106,10 +117,13 @@ bool cmdline_applyaction(string s,
  *
  *  \param verbose The verbosity level at which this command should
  *  operate.
+ *
+ *  \param allow_auto If \b false, auto-installation of dependencies
+ *  will be disabled regardless of the value of Auto-Install.
  */
 void cmdline_parse_action(string s,
 			  pkgset &to_install, pkgset &to_hold,
 			  pkgset &to_remove, pkgset &to_purge,
-			  int verbose);
+			  int verbose, bool allow_auto);
 
 #endif // CMDLINE_ACTION_H

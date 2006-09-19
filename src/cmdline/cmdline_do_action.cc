@@ -201,8 +201,13 @@ int cmdline_do_action(int argc, char *argv[],
 
 	cmdline_applyaction(argv[i], action,
 			    to_install, to_hold, to_remove, to_purge,
-			    verbose);
+			    verbose, false);
       }
+  if(aptcfg->FindB(PACKAGE "::Auto-Install", true))
+    {
+      for(pkgset::const_iterator i = to_install.begin(); i != to_install.end(); ++i)
+	(*apt_cache_file)->mark_install(*i, true, (*apt_cache_file)->get_ext_state(*i).reinstall, NULL);
+    }
   (*apt_cache_file)->end_action_group(NULL);
 
   if(visual_preview)

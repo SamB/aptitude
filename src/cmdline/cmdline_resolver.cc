@@ -584,8 +584,10 @@ bool cmdline_resolve_deps(pkgset &to_install,
 		  case '=':
 		  case '_':
 		  case ':':
+		    /// \todo Maybe only do auto-installation of dependencies
+		    /// after the parse?
 		    cmdline_parse_action(response, to_install, to_hold,
-					 to_remove, to_purge, verbose);
+					 to_remove, to_purge, verbose, false);
 		    modified_pkgs=true;
 		    break;
 		    // Undocumented debug feature:
