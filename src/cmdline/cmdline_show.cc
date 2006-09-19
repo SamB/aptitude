@@ -539,8 +539,6 @@ bool do_cmdline_show(string s, int verbose)
 	    if(!do_cmdline_show_target(P, source, sourcestr, verbose, has_explicit_source))
 	      return false;
 	  }
-
-      delete m;
     }
   else
     ; // TODO: print an error message -- Christian will kill me if I
