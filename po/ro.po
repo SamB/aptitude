@@ -1,20 +1,20 @@
-# translation of aptitude_po.po to Romanian
+# translation of aptitude_po_ro.po to Romanian
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
-# Sorin Batariuc <sorin@bonbon.net>, 2004, 2005, 2006.
 #
+# Sorin Batariuc <sorin@bonbon.net>, 2004, 2005, 2006.
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_ro\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-03 09:36-0700\n"
-"PO-Revision-Date: 2006-06-25 12:40+0300\n"
+"PO-Revision-Date: 2006-09-19 01:33+0300\n"
 "Last-Translator: Sorin Batariuc <sorin@bonbon.net>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10.2\n"
+"X-Generator: KBabel 1.11.2\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: src/apt_options.cc:110
@@ -1216,14 +1216,14 @@ msgid " [held]"
 msgstr " [reţinut]"
 
 #: src/cmdline/cmdline_show.cc:282
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed"
-msgstr "%B%s%b va fi instalat."
+msgstr "%s; va fi instalat"
 
 #: src/cmdline/cmdline_show.cc:284
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed automatically"
-msgstr "%s; versiunea %s va fi instalată automat"
+msgstr "%s; va fi instalată automat"
 
 #: src/cmdline/cmdline_show.cc:304
 #, c-format
@@ -1390,9 +1390,9 @@ msgid "No candidate version found for %s\n"
 msgstr "Nu s-a gasit nici o versiune candidat pentru %s\n"
 
 #: src/cmdline/cmdline_util.cc:95
-#, fuzzy, c-format
+#, c-format
 msgid "No current or candidate version found for %s\n"
-msgstr "Nu s-a gasit nici o versiune candidat pentru %s\n"
+msgstr "Nu s-a gasit nici o versiune candidat sau curentă pentru %s\n"
 
 #: src/cmdline/cmdline_util.cc:110
 #, c-format
@@ -2290,17 +2290,17 @@ msgstr " install      - Instalează/înnoieşte pachetele\n"
 #: src/main.cc:121
 #, c-format
 msgid " remove       - Remove packages\n"
-msgstr " remove      - Şterge pachetele\n"
+msgstr " remove       - Şterge pachetele\n"
 
 #: src/main.cc:122
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
-msgstr " purge       - Curăţă pachetele şi fişierele lor de configurare\n"
+msgstr " purge        - Curăţă pachetele şi fişierele lor de configurare\n"
 
 #: src/main.cc:123
 #, c-format
 msgid " hold         - Place packages on hold\n"
-msgstr " hold       - Pune pachetele în aşteptare\n"
+msgstr " hold         - Pune pachetele în aşteptare\n"
 
 #: src/main.cc:124
 #, c-format
@@ -2351,17 +2351,17 @@ msgstr " forget-new   - Uită de pachetele ce sunt \"noi\"\n"
 #: src/main.cc:136
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
-msgstr " search      - Caută un pachet după nume şi/sau expresie\n"
+msgstr " search       - Caută un pachet după nume şi/sau expresie\n"
 
 #: src/main.cc:137
 #, c-format
 msgid " show         - Display detailed information about a package\n"
-msgstr " show       - Afişează informaţii detaliate despre un pachet\n"
+msgstr " show         - Afişează informaţii detaliate despre un pachet\n"
 
 #: src/main.cc:138
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
-msgstr " clean      - Şterge fişierele pachetelor descărcate\n"
+msgstr " clean        - Şterge fişierele pachetelor descărcate\n"
 
 #: src/main.cc:139
 #, c-format
@@ -2376,7 +2376,7 @@ msgstr " changelog    - Vizualizarea jurnalului de modificări al unui pachet\n"
 #: src/main.cc:141
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
-msgstr "download     - Descarcă fişierul .deb pentru un pachet\n"
+msgstr " download      - Descarcă fişierul .deb pentru un pachet\n"
 
 #: src/main.cc:142
 #, c-format
@@ -2400,26 +2400,26 @@ msgstr " -h             Acest text de ajutor\n"
 #: src/main.cc:146
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
-msgstr " -s               Simulează acţiunea, dar n-o executa în realitate.\n"
+msgstr " -s             Simulează acţiunea, dar n-o executa în realitate.\n"
 
 #: src/main.cc:147
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
-" -d                Doar descarcă pachetele, nu instala sau şterge nimic.\n"
+" -d             Doar descarcă pachetele, nu instala sau şterge nimic.\n"
 
 #: src/main.cc:148
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
-msgstr " -P               Întodeauna cere confirmare pentru acţiuni\n"
+msgstr " -P             Întodeauna cere confirmare pentru acţiuni\n"
 
 #: src/main.cc:149
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr ""
-" -y              Presupune că răspunsul la întrebările simple da/nu este "
+" -y             Presupune că răspunsul la întrebările simple da/nu este "
 "'da'\n"
 
 #: src/main.cc:150
@@ -2428,7 +2428,7 @@ msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual\n"
 msgstr ""
-" -F format       Specifică un format pentru afişarea rezultatelor căutării; "
+" -F format      Specifică un format pentru afişarea rezultatelor căutării; "
 "vezi manualul\n"
 
 #: src/main.cc:151
@@ -2436,16 +2436,16 @@ msgstr ""
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr ""
-" -O ordine        Specifică modul în care rezultatele căutării să fie "
-"sortate; vezi manual\n"
+" -O ordine      Specifică modul în care rezultatele căutării să fie sortate; "
+"vezi manual\n"
 
 #: src/main.cc:152
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr ""
-" -w lăţime         Specifică lăţimea afişării pentru formatarea rezultatului "
-"de căutare\n"
+" -w lăţime      Specifică lăţimea afişării pentru formatarea rezultatului de "
+"căutare\n"
 
 #: src/main.cc:153
 #, c-format
@@ -2467,8 +2467,7 @@ msgstr " -D             Arată dependenţele pachetelor schimbate automat.\n"
 #: src/main.cc:156
 #, c-format
 msgid " -Z\t\t    Show the change in installed size of each package.\n"
-msgstr ""
-" -Z\t\t    Arată modificarea în dimensiune a fiecărui pachet instalat.\n"
+msgstr " -Z\t\tArată modificarea în dimensiune a fiecărui pachet instalat.\n"
 
 #: src/main.cc:157
 #, c-format
@@ -2483,7 +2482,7 @@ msgstr ""
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
 msgstr ""
-" -t [producţie]   Impune producţia din care pachetele ar trebui instalate\n"
+" -t [producţie] Impune producţia din care pachetele ar trebui instalate\n"
 
 #: src/main.cc:159
 #, c-format
@@ -2508,24 +2507,24 @@ msgid ""
 msgstr ""
 " --with(out)-recommends\t Specifică dacă recomandările să fie tratate ca "
 "dependenţe\n"
-".......................puternice sau nu\n"
+"               puternice sau nu\n"
 
 #: src/main.cc:162
 #, c-format
 msgid " -S fname: Read the aptitude extended status info from fname.\n"
 msgstr ""
-" -S fnume: Citeşte informaţiile de stare extinsă aptitude din fişierul "
+" -S fnume     : Citeşte informaţiile de stare extinsă aptitude din fişierul "
 "fnume.\n"
 
 #: src/main.cc:163
 #, c-format
 msgid " -u      : Download new package lists on startup.\n"
-msgstr " -u      : Descarcă listele cu pachetele noi la pornire.\n"
+msgstr " -u           : Descarcă listele cu pachetele noi la pornire.\n"
 
 #: src/main.cc:164
 #, c-format
 msgid " -i      : Perform an install run on startup.\n"
-msgstr " -i      : Execută comanda de instalare la pornire\n"
+msgstr " -i           : Execută comanda de instalare la pornire\n"
 
 #: src/main.cc:166
 #, c-format
