@@ -113,7 +113,7 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
 	continue;
 
       failed=true;
-      _error->Error("Failed to fetch %s: %s", (*i)->DescURI().c_str(), (*i)->ErrorText.c_str());
+      _error->Error(_("Failed to fetch %s: %s"), (*i)->DescURI().c_str(), (*i)->ErrorText.c_str());
       break;
     }
 
