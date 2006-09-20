@@ -1,6 +1,6 @@
 // download_install_manager.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005-2006 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -113,6 +113,7 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
 	continue;
 
       failed=true;
+      _error->Error("Failed to fetch %s: %s", (*i)->DescURI().c_str(), (*i)->ErrorText.c_str());
       break;
     }
 
