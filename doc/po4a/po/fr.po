@@ -1,12 +1,12 @@
 # translation of aptitude's user manual & manpage to French
 #
-# Sylvain Cherrier, 2004.
+# Sylvain Cherrier, 2004 (manpage).
 # Olivier Trichet <nive@nivalis.org>, 2004-2006.
 msgid ""
 msgstr ""
-"Project-Id-Version: fr\n"
+"Project-Id-Version: aptitude users manual & manpage\n"
 "POT-Creation-Date: 2006-07-31 18:04-0700\n"
-"PO-Revision-Date: 2006-06-28 20:26+0200\n"
+"PO-Revision-Date: 2006-09-16 09:50+0200\n"
 "Last-Translator: Olivier Trichet <nive@nivalis.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -42,9 +42,8 @@ msgstr "<systemitem class=\"username\">root</systemitem>"
 
 # type: Content of the VERSION entity
 #: en/aptitude.xml:10
-#, fuzzy
 msgid "0.4.2"
-msgstr "0.4.1"
+msgstr "0.4.2"
 
 # type: Content of the actions-install entity
 #: en/aptitude.xml:14
@@ -10788,6 +10787,16 @@ msgid ""
 "terminates; failure to acquire the lock means that another running program "
 "is using it!"
 msgstr ""
+"Un fichier qui sera verrouillé pour assurer qu'au plus une seule instance "
+"d'&aptitude; ne modifie le cache à la fois. Normalement, vous ne devriez "
+"jamais modifier cette option&nbsp;; ce n'est utile que pour le débogage. "
+"<emphasis>Note</emphasis>&nbsp;: si &aptitude; affiche un avertissement "
+"disant qu'il ne peut obtenir le verrou, ce <emphasis>n'</emphasis>est "
+"<emphasis>pas</emphasis> parce que le fichier verrou a besoin d'être "
+"supprimé. Le type de verrou utilisé (<quote>fcntl</quote>) est géré par le "
+"noyau et est retiré un fois que le programme s'arrête. L'impossibilité "
+"d'obtenir le verrou signifie donc qu'un autre programme est en cours de "
+"fonctionnement."
 
 # type: Content of: <book><chapter><section><section><section><segmentedlist><seglistitem><seg>
 #: en/aptitude.xml:8398
@@ -10820,6 +10829,11 @@ msgid ""
 "some descriptions might be formatted less attractively when this option is "
 "<literal>true</literal> than when it is <literal>false</literal>."
 msgstr ""
+"Si cette option est activée, &aptitude; essaiera de détecter automatiquement "
+"les items d'une liste dans les descriptions de paquets. Cela améliore "
+"généralement l'affichage des descriptions, mais le formatage des "
+"descriptions d'anciens paquets pourrait être moins bon quand cette option "
+"est à <literal>true</literal> plutôt qu'à <literal>false</literal>."
 
 # type: Content of: <book><chapter><section><section><section><segmentedlist><seglistitem><seg>
 #: en/aptitude.xml:8436
@@ -12493,11 +12507,14 @@ msgstr ""
 
 # type: Content of: <refentry><refsynopsisdiv><cmdsynopsis>
 #: en/manpage.xml:84
+#, fuzzy
 msgid "<arg choice='plain' rep='repeat'>packages</arg>"
-msgstr "<arg choice='plain' rep='repeat'>paquets</arg>"
+msgstr ""
+"<arg choice='plain' rep='repeat'><replaceable>paquets</replaceable></arg>"
 
 # type: Content of: <refentry><refsynopsisdiv><cmdsynopsis>
 #: en/manpage.xml:88
+#, fuzzy
 msgid ""
 "<command>aptitude</command> <arg choice='opt' "
 "rep='repeat'><replaceable>options</replaceable></arg> <arg "
@@ -12505,7 +12522,8 @@ msgid ""
 msgstr ""
 "<command>aptitude</command> <arg choice='opt' "
 "rep='repeat'><replaceable>options</replaceable></arg> <arg "
-"choice='plain'>search</arg> <arg choice='plain' rep='repeat'>motifs</arg>"
+"choice='plain'>search</arg> <arg choice='plain' "
+"rep='repeat'><replaceable>motifs</replaceable></arg>"
 
 # type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
 #: en/manpage.xml:98
@@ -12966,24 +12984,21 @@ msgstr ""
 #: en/manpage.xml:455
 msgid "Unless you pass the <link linkend='cmdlineOptionFormat'>"
 msgstr ""
+"À moins que vous ne passiez l'option <link linkend='cmdlineOptionFormat'>"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry>
 #: en/manpage.xml:456
-#, fuzzy
 msgid "-F"
-msgstr "F"
+msgstr "-F"
 
 # type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
 #: en/manpage.xml:456
-#, fuzzy
 msgid ""
 "</link> option, the output of <literal>aptitude search</literal> will look "
 "something like this:"
 msgstr ""
-"À moins que vous ne passiez l'option <link "
-"linkend='cmdlineOptionFormat'><arg choice='plain'>-F</arg></link>, la sortie "
-"de la commande <literal>aptitude search</literal> ressemblera à quelque "
-"chose comme ceci&nbsp;:"
+"</link>, la sortie de la commande <literal>aptitude search</literal> "
+"ressemblera à quelque chose comme ceci&nbsp;:"
 
 # type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><screen>
 #: en/manpage.xml:461
@@ -13566,14 +13581,12 @@ msgstr ""
 
 # type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
 #: en/manpage.xml:873
-#, fuzzy
 msgid ""
 "<literal>-q<optional>=<replaceable>n</replaceable></optional></literal>, "
 "<literal>--quiet<optional>=<replaceable>n</replaceable></optional></literal>"
 msgstr ""
-"<literal>-q<arg choice='opt'>=<replaceable>n</replaceable></arg></literal>, "
-"<literal>--quiet<arg choice='opt'>=<replaceable>n</replaceable></arg></"
-"literal>"
+"<literal>-q<optional>=<replaceable>n</replaceable></optional></literal>, "
+"<literal>--quiet<optional>=<replaceable>n</replaceable></optional></literal>"
 
 # type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
 #: en/manpage.xml:877
@@ -13871,3 +13884,19 @@ msgstr ""
 "refentrytitle><manvolnum>8</manvolnum></citerefentry>, <filename>/usr/share/"
 "doc/aptitude/<replaceable>lang</replaceable>/html/index.html</filename> du "
 "paquet aptitude-doc-<replaceable>lang</replaceable>"
+
+# type: Content of the help-license entity
+#~ msgid ""
+#~ "<menuchoice><guimenu>Search</guimenu><guimenuitem>Un-Limit Display</"
+#~ "guimenuitem></menuchoice>"
+#~ msgstr ""
+#~ "<menuchoice><guimenu>Rechercher</guimenu><guimenuitem>Affichage complet</"
+#~ "guimenuitem></menuchoice>"
+
+# type: Content of: <book><chapter><variablelist><varlistentry><term>
+#~ msgid "Swedish translation"
+#~ msgstr "Traduction suédoise"
+
+# type: Content of: <book><chapter><variablelist><varlistentry><listitem><para>
+#~ msgid "Daniel Nylander"
+#~ msgstr "Daniel Nylander"
