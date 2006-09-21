@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-03 09:36-0700\n"
-"PO-Revision-Date: 2006-08-18 16:26+0930\n"
+"PO-Revision-Date: 2006-09-21 17:03+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -190,12 +190,12 @@ msgstr "%s: Trước"
 
 #: src/broken_indicator.cc:226
 msgid "Unable to resolve dependencies."
-msgstr "Không thể tháo gỡ cách phụ thuộc."
+msgstr "Không thể tháo gỡ điều kiện phụ thuộc."
 
 #: src/broken_indicator.cc:240
 #, c-format
 msgid "[%d(%d)/...] Resolving dependencies"
-msgstr "[%d(%d)/...] Đang tháo gỡ cách phụ thuộc"
+msgstr "[%d(%d)/...] Đang tháo gỡ điều kiện phụ thuộc"
 
 #: src/broken_indicator.cc:273 src/solution_dialog.cc:126
 #: src/solution_screen.cc:522
@@ -771,7 +771,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:684
 msgid "toggle the display of dependency information"
-msgstr "bật/tắt hiển thị thông tin về cách phụ thuộc"
+msgstr "bật/tắt hiển thị thông tin về điều kiện phụ thuộc"
 
 #: src/cmdline/cmdline_prompt.cc:686
 msgid "toggle the display of changes in package sizes"
@@ -828,11 +828,11 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
-msgstr "« &M » để đánh dấu mỗi gói đã được cài đặt tự động"
+msgstr "« &M » để nhãn mỗi gói đã được cài đặt tự động"
 
 #: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:198
 msgid "'&m' to mark packages as manually installed"
-msgstr "« &m » để đánh dấu mỗi gói đã được cài đặt thủ công"
+msgstr "« &m » để nhãn mỗi gói đã được cài đặt thủ công"
 
 #: src/cmdline/cmdline_prompt.cc:712
 msgid "Commands:"
@@ -850,7 +850,7 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"Sẽ hiển thị thông tin về cách phụ thuộc.\n"
+"Sẽ hiển thị thông tin về điều kiện phụ thuộc.\n"
 "\n"
 
 #: src/cmdline/cmdline_prompt.cc:794
@@ -861,7 +861,7 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"Sẽ không hiển thị thông tin về cách phụ thuộc.\n"
+"Sẽ không hiển thị thông tin về điều kiện phụ thuộc.\n"
 "\n"
 
 #: src/cmdline/cmdline_prompt.cc:800
@@ -1078,7 +1078,7 @@ msgstr "mở: %d; tắt: %d; hoãn: %d; xung đột: %d"
 
 #: src/cmdline/cmdline_resolver.cc:510
 msgid "The following actions will resolve these dependencies:"
-msgstr "Theo đây có một số hành động sẽ tháo gỡ những cách phụ thuộc này:"
+msgstr "Theo đây có một số hành động sẽ tháo gỡ những điều kiện phụ thuộc này:"
 
 #: src/cmdline/cmdline_resolver.cc:525
 msgid "Accept this solution? [Y/n/q/?] "
@@ -1087,7 +1087,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
 msgid "Abandoning all efforts to resolve these dependencies."
-msgstr "Đang hủy bỏ cố tháo gỡ những cách phụ thuộc này."
+msgstr "Đang hủy bỏ cố tháo gỡ những điều kiện phụ thuộc này."
 
 #: src/cmdline/cmdline_resolver.cc:579
 msgid "The following commands are available:"
@@ -1113,7 +1113,7 @@ msgstr "Đáp ứng không hợp lệ: hãy gõ « y » (có) hay « n » (khôn
 
 #: src/cmdline/cmdline_resolver.cc:660
 msgid "Unable to resolve dependencies!  Giving up..."
-msgstr "Không thể tháo gỡ cách phụ thuộc. Đang hủy bỏ..."
+msgstr "Không thể tháo gỡ điều kiện phụ thuộc. Đang hủy bỏ..."
 
 #: src/cmdline/cmdline_resolver.cc:666
 msgid "*** No more solutions available ***"
@@ -1597,7 +1597,7 @@ msgstr "không thể thay thế %s bằng %s"
 
 #: src/generic/apt/aptcache.cc:1132
 msgid "Unable to correct dependencies, some packages cannot be installed"
-msgstr "Không thể sửa cách phụ thuộc vì không thể cài một số gói"
+msgstr "Không thể sửa điều kiện phụ thuộc vì không thể cài một số gói"
 
 #: src/generic/apt/aptcache.cc:1612
 msgid "The list of sources could not be read."
@@ -1861,7 +1861,7 @@ msgstr "Rác"
 
 #: src/generic/apt/matchers.cc:1712
 msgid "No reverse dependencies"
-msgstr "Không có cách phụ thuộc ngược"
+msgstr "Không có điều kiện phụ thuộc ngược"
 
 #: src/generic/apt/matchers.cc:1778
 msgid "New Package"
@@ -1883,7 +1883,7 @@ msgstr "Chưa khớp ký tự « ( »"
 #: src/generic/apt/matchers.cc:2114 src/generic/apt/matchers.cc:2187
 #, c-format
 msgid "Unknown dependency type: %s"
-msgstr "Không biết kiểu cách phụ thuộc: %s"
+msgstr "Không biết kiểu điều kiện phụ thuộc: %s"
 
 #: src/generic/apt/matchers.cc:2120
 msgid "Provides: cannot be broken"
@@ -2109,7 +2109,8 @@ msgstr "Chính sách nhóm lại mà tạo ra phiên bản không chấp nhận 
 
 #: src/load_grouppolicy.cc:507
 msgid "Dep-generating grouping policies take no arguments"
-msgstr "Chính sách nhóm lại mà tạo ra cách phụ thuộc không chấp nhận đối số"
+msgstr ""
+"Chính sách nhóm lại mà tạo ra điều kiện phụ thuộc không chấp nhận đối số"
 
 #: src/load_grouppolicy.cc:518
 msgid "By-priority grouping policies take no arguments"
@@ -2486,7 +2487,7 @@ msgid ""
 "                strong dependencies\n"
 msgstr ""
 " --with(out)-recommends\tGhi rõ có nên theo gói khuyên (recommend) như là "
-"cách phụ thuộc quan trọng hay không (_[không] khuyên_).\n"
+"điều kiện phụ thuộc quan trọng hay không (_[không] khuyên_).\n"
 
 #: src/main.cc:162
 #, c-format
@@ -3675,8 +3676,8 @@ msgid ""
 msgstr ""
 "Gói sẽ được gỡ bỏ vì không còn có ích lại\n"
 "Những gói này sẽ được gỡ bỏ vì chúng đã được cài đặt tự động để thỏa tiêu "
-"chuẩn cách phụ thuộc, nhưng mà hành động đã định sẽ có kết quả là không có "
-"gói nào được cài đặt có phụ thược vào chúng một cách « quan trọng ».\n"
+"chuẩn điều kiện phụ thuộc, nhưng mà hành động đã định sẽ có kết quả là không "
+"có gói nào được cài đặt có phụ thược vào chúng một cách « quan trọng ».\n"
 
 #: src/pkg_grouppolicy.cc:535
 msgid ""
@@ -3694,7 +3695,7 @@ msgid ""
 " These packages are being installed because they are required by another "
 "package you have chosen for installation."
 msgstr ""
-"Gói sẽ được cài đặt tự động để thỏa tiêu chuẩn cách phụ thuộc\n"
+"Gói sẽ được cài đặt tự động để thỏa tiêu chuẩn điều kiện phụ thuộc\n"
 "Những gói này sẽ được cài đặt vì chúng cần thiết bởi một gói khác mà bạn đã "
 "chọn cài."
 
@@ -3704,9 +3705,9 @@ msgid ""
 " These packages are being deleted because one or more of their dependencies "
 "is no longer available, or because another package conflicts with them."
 msgstr ""
-"Gói sẽ được xóa bỏ vì cách phụ thuộc chưa thỏa\n"
-"Gói trong phần này sẽ được xóa bỏ vì một hay nhiều cách phụ thuộc của nó "
-"không còn công bố, hoặc vì một gói khác xung đột với nó."
+"Gói sẽ được xóa bỏ vì điều kiện phụ thuộc chưa thỏa\n"
+"Gói trong phần này sẽ được xóa bỏ vì một hay nhiều điều kiện phụ thuộc của "
+"nó không còn công bố, hoặc vì một gói khác xung đột với nó."
 
 #: src/pkg_grouppolicy.cc:538
 msgid ""
@@ -3905,7 +3906,7 @@ msgstr "Phiên bản « %s »"
 #: src/pkg_item.cc:331 src/pkg_ver_item.cc:685
 #, c-format
 msgid "Dependencies of %s"
-msgstr "Cách phụ thuộc của « %s »"
+msgstr "Phụ thuộc của « %s »"
 
 #: src/pkg_item.cc:333 src/pkg_ver_item.cc:687
 #, c-format
@@ -4067,14 +4068,14 @@ msgstr ""
 
 #: src/reason_fragment.cc:362
 msgid "%B%s%b will be automatically removed because of dependency errors:"
-msgstr "%B%s%b sẽ được gỡ bỏ tự đông vì gặp lỗi cách phụ thuộc:"
+msgstr "%B%s%b sẽ được gỡ bỏ tự đông vì gặp lỗi điều kiện phụ thuộc:"
 
 #: src/reason_fragment.cc:366
 msgid ""
 "%B%s%b will be automatically installed to satisfy the following dependencies:"
 msgstr ""
-"%B%s%b sẽ được cài đặt tự động để thỏa những tiêu chuẩn cách phụ thuộc theo "
-"đây:"
+"%B%s%b sẽ được cài đặt tự động để thỏa những tiêu chuẩn điều kiện phụ thuộc "
+"theo đây:"
 
 #: src/reason_fragment.cc:372 src/reason_fragment.cc:384
 msgid ""
@@ -4102,7 +4103,7 @@ msgstr "%B%s%b hiện thời không được cài đặt."
 
 #: src/reason_fragment.cc:401
 msgid "Some dependencies of %B%s%b are not satisfied:"
-msgstr "Chưa thỏa một số tiêu chuẩn cách phụ thuộc của %B%s%b."
+msgstr "Chưa thỏa một số tiêu chuẩn điều kiện phụ thuộc của %B%s%b."
 
 #: src/reason_fragment.cc:405
 msgid "%B%s%b will be downgraded."
@@ -4238,7 +4239,7 @@ msgstr "Chưa tìm giải pháp."
 
 #: src/solution_dialog.cc:114 src/solution_screen.cc:499
 msgid "Resolving dependencies..."
-msgstr "Đang tháo gỡ cách phụ thuộc..."
+msgstr "Đang tháo gỡ điều kiện phụ thuộc..."
 
 #: src/solution_dialog.cc:169
 msgid "Previous"
@@ -4333,7 +4334,7 @@ msgstr "%BHạ cấp%b những gói theo đây:%n"
 #: src/solution_fragment.cc:291
 #, c-format
 msgid "Leave the following dependencies unresolved:%n"
-msgstr "Để những cách phụ thuộc theo đây chưa được tháo gỡ:%n"
+msgstr "Để những điều kiện phụ thuộc theo đây chưa được tháo gỡ:%n"
 
 #: src/solution_fragment.cc:299
 #, c-format
@@ -4378,11 +4379,11 @@ msgstr "Hạ cấp %F [%s (%s) → %s (%s)]"
 #: src/solution_item.cc:597
 #, c-format
 msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
-msgstr "→ Để cách phụ thuộc « %s khuyên %s » chưa được tháo gỡ."
+msgstr "→ Để điều kiện phụ thuộc « %s khuyên %s » chưa được tháo gỡ."
 
 #: src/solution_screen.cc:149
 msgid "The following actions will resolve this dependency:"
-msgstr "Theo đây có một số hành động sẽ tháo gỡ cách phụ thuộc này:"
+msgstr "Theo đây có một số hành động sẽ tháo gỡ điều kiện phụ thuộc này:"
 
 #: src/solution_screen.cc:235
 msgid "Remove the following packages:"
@@ -4406,7 +4407,7 @@ msgstr "Hạ cấp những gói theo đây:"
 
 #: src/solution_screen.cc:292
 msgid "Leave the following recommendations unresolved:"
-msgstr "Để những cách phụ thuộc theo đây chưa được tháo gỡ:"
+msgstr "Để những điều kiện phụ thuộc theo đây chưa được tháo gỡ:"
 
 #: src/solution_screen.cc:472
 msgid "No broken packages."
@@ -4651,7 +4652,7 @@ msgstr "Một số gói bị hỏng thì đã sửa hết:"
 
 #: src/ui.cc:1250
 msgid "No solution to these dependency problems exists!"
-msgstr "Không có giải pháp nào cho những vấn đề cách phụ thuộc này."
+msgstr "Không có giải pháp nào cho những vấn đề điều kiện phụ thuộc này."
 
 #: src/ui.cc:1256
 #, c-format
@@ -4659,8 +4660,8 @@ msgid ""
 "Ran out of time while trying to resolve dependencies (press \"%s\" to try "
 "harder)"
 msgstr ""
-"Hết thời gian khi cố gắng tháo gỡ cách phụ thuộc (hãy bấm « %s » để cố tích "
-"cực hơn)."
+"Hết thời gian khi cố gắng tháo gỡ điều kiện phụ thuộc (hãy bấm « %s » để cố "
+"tích cực hơn)."
 
 #: src/ui.cc:1302
 msgid ""
@@ -4764,11 +4765,11 @@ msgstr "Hết thời gian khi cố gắng tìm giải pháp."
 
 #: src/ui.cc:1870 src/ui.cc:1872
 msgid "Resolve Dependencies"
-msgstr "Tháo gỡ cách phụ thuộc"
+msgstr "Tháo gỡ điều kiện phụ thuộc"
 
 #: src/ui.cc:1871
 msgid "Search for solutions to unsatisfied dependencies"
-msgstr "Tìm kiếm phép giải cách phụ thuộc chưa thỏa"
+msgstr "Tìm kiếm phép giải điều kiện phụ thuộc chưa thỏa"
 
 #: src/ui.cc:1883
 #, c-format
@@ -4785,7 +4786,7 @@ msgstr "Đổ tính trạng bộ tháo gỡ vào tập tin này:"
 
 #: src/ui.cc:1929
 msgid "^Install/remove packages"
-msgstr "^Cài / Bỏ gói"
+msgstr "Cà^i/Bỏ gói"
 
 #: src/ui.cc:1930
 msgid "Perform all pending installs and removals"
@@ -4793,16 +4794,15 @@ msgstr "Thực hiện mọi việc cài đặt và gỡ bỏ sắp"
 
 #: src/ui.cc:1932
 msgid "^Update package list"
-msgstr "Cập nhật ^danh sách gói"
+msgstr "^Cập nhật danh sách gói"
 
 #: src/ui.cc:1933
 msgid "Check for new versions of packages"
 msgstr "Kiểm tra có phiên bản gói mới"
 
 #: src/ui.cc:1937
-#, fuzzy
 msgid "Mark Up^gradable"
-msgstr "Đánh dấu ^Nâng cấp được"
+msgstr "Nhãn Nân^g cấp được"
 
 #: src/ui.cc:1938
 msgid "Mark all upgradable packages which are not held for upgrade"
@@ -4810,15 +4810,15 @@ msgstr "Đánh dấu mọi gói nâng cấp được mà không được giữ l
 
 #: src/ui.cc:1942
 msgid "^Forget new packages"
-msgstr "^Quên gói mới"
+msgstr "^Quên các gói mới"
 
 #: src/ui.cc:1943
 msgid "Forget which packages are \"new\""
-msgstr "Quên gói nào là « Mới »"
+msgstr "Quên những gói nào là « Mới »"
 
 #: src/ui.cc:1946
 msgid "Canc^el pending actions"
-msgstr "Th^ôi các hành động bị hoãn"
+msgstr "^Thôi các hành động bị hoãn"
 
 #: src/ui.cc:1947
 msgid "Cancel all pending installations, removals, holds, and upgrades."
@@ -4834,7 +4834,7 @@ msgstr "Xóa bỏ các tập tin gói đã tải về trước"
 
 #: src/ui.cc:1954
 msgid "Clean ^obsolete files"
-msgstr "Xóa tập tin ^cũ"
+msgstr "Xóa các tập tin ^cũ"
 
 #: src/ui.cc:1955
 msgid "Delete package files which can no longer be downloaded"
@@ -4842,7 +4842,7 @@ msgstr "Xóa bỏ các tập tin gói không còn tải về được"
 
 #: src/ui.cc:1961
 msgid "^Reload package cache"
-msgstr "Tải ^Lại bộ nhớ tạm gói"
+msgstr "Tải ^lại bộ nhớ tạm gói"
 
 #: src/ui.cc:1962
 msgid "Reload the package cache"
@@ -4866,7 +4866,7 @@ msgstr ""
 
 #: src/ui.cc:1974
 msgid "^Quit"
-msgstr "^Thoát"
+msgstr "T^hoát"
 
 #: src/ui.cc:1975
 msgid "Exit the program"
@@ -4882,7 +4882,7 @@ msgstr "Hồi lại thao tác (hay nhóm thao tác) gói cuối cùng"
 
 #: src/ui.cc:1990
 msgid "^Install"
-msgstr "^Cài"
+msgstr "Cà^i"
 
 #: src/ui.cc:1991
 msgid "Flag the currently selected package for installation or upgrade"
@@ -4915,7 +4915,7 @@ msgstr "Thôi hành động nào với gói được chọn"
 
 #: src/ui.cc:2006
 msgid "^Hold"
-msgstr "Giữ ^Lại"
+msgstr "Giữ ^lại"
 
 #: src/ui.cc:2007
 msgid ""
@@ -4927,7 +4927,7 @@ msgstr ""
 
 #: src/ui.cc:2010
 msgid "Mark ^Auto"
-msgstr "Đánh dấu Tự ^Động"
+msgstr "Nhãn ^Tự Động"
 
 #: src/ui.cc:2011
 msgid ""
@@ -4939,7 +4939,7 @@ msgstr ""
 
 #: src/ui.cc:2014
 msgid "Mark ^Manual"
-msgstr "Đánh dấu Thủ ^Công"
+msgstr "Nhãn Tự là^m"
 
 #: src/ui.cc:2015
 msgid ""
@@ -4951,7 +4951,7 @@ msgstr ""
 
 #: src/ui.cc:2018
 msgid "^Forbid Version"
-msgstr "Cấm ^Phiên bản"
+msgstr "Cấm ^phiên bản"
 
 #: src/ui.cc:2019
 msgid ""
@@ -4971,7 +4971,7 @@ msgstr "Hiển thị thông tin thêm về gói đã chọn"
 
 #: src/ui.cc:2027
 msgid "^Changelog"
-msgstr "Bản ghi ^Đổi"
+msgstr "^Bản ghi đổi"
 
 #: src/ui.cc:2028
 msgid "Display the Debian changelog of the selected package"
@@ -4979,7 +4979,7 @@ msgstr "Hiển thị bản ghi các thay đổi (ChangeLog) cho gói đa chọn.
 
 #: src/ui.cc:2035
 msgid "^Examine Solution"
-msgstr "^Xem giải pháp"
+msgstr "X^em giải pháp"
 
 #: src/ui.cc:2036
 msgid "Examine the currently selected solution to the dependency problems."
@@ -4987,7 +4987,7 @@ msgstr "Kiểm tra giải pháp vấn đề phụ thuộc hiện thời được
 
 #: src/ui.cc:2039
 msgid "Apply ^Solution"
-msgstr "Áp dụng ^Giải pháp"
+msgstr "Áp dụng ^giải pháp"
 
 #: src/ui.cc:2040
 msgid "Perform the actions contained in the currently selected solution."
@@ -4995,7 +4995,7 @@ msgstr "Thực hiện những hành động của giải pháp hiện thời đ�
 
 #: src/ui.cc:2043
 msgid "^Next Solution"
-msgstr "Giải pháp ^Kế."
+msgstr "Giải pháp ^kế."
 
 #: src/ui.cc:2044
 msgid "Select the next solution to the dependency problems."
@@ -5003,7 +5003,7 @@ msgstr "Chọn giải pháp vấn đề phụ thuộc kế tiếp."
 
 #: src/ui.cc:2047
 msgid "^Previous Solution"
-msgstr "Giải pháp ^Trước"
+msgstr "Giải ^pháp trước"
 
 #: src/ui.cc:2048
 msgid "Select the previous solution to the dependency problems."
@@ -5011,7 +5011,7 @@ msgstr "Chọn giải pháp vấn đề phụ thuộc trước đó."
 
 #: src/ui.cc:2051
 msgid "^First Solution"
-msgstr "Giải pháp ^Đầu"
+msgstr "Giải pháp đầ^u"
 
 #: src/ui.cc:2052
 msgid "Select the first solution to the dependency problems."
@@ -5019,7 +5019,7 @@ msgstr "Chọn giải pháp vấn đề phụ thuộc thứ nhất."
 
 #: src/ui.cc:2055
 msgid "^Last Solution"
-msgstr "Giải pháp ^Cuối"
+msgstr "Giải pháp ^cuối"
 
 #: src/ui.cc:2056
 msgid ""
@@ -5030,7 +5030,7 @@ msgstr ""
 
 #: src/ui.cc:2062
 msgid "Toggle ^Rejected"
-msgstr "Bật tắt ^Bác bỏ"
+msgstr "Bật tắt Bỏ ^ra"
 
 #: src/ui.cc:2063
 msgid "Toggle whether the currently selected action is rejected."
@@ -5046,7 +5046,7 @@ msgstr "Bật tắt chấp nhận hành động hiện thời được chọn."
 
 #: src/ui.cc:2072
 msgid "^View Target"
-msgstr "^Xem Đích"
+msgstr "^Xem đích"
 
 #: src/ui.cc:2073
 msgid "View the package which will be affected by the selected action"
@@ -5058,11 +5058,11 @@ msgstr "^Tìm"
 
 #: src/ui.cc:2082
 msgid "Search forwards"
-msgstr "Tìm kiếm tiến"
+msgstr "Tìm kiếm tiếp"
 
 #: src/ui.cc:2085
 msgid "^Find Backwards"
-msgstr "Tìm ^Ngược"
+msgstr "Tìm ^ngược"
 
 #: src/ui.cc:2086
 msgid "Search backwards"
@@ -5070,7 +5070,7 @@ msgstr "Tìm kiếm ngược"
 
 #: src/ui.cc:2089
 msgid "Find ^Again"
-msgstr "Tìm ^Lại"
+msgstr "Tìm ^lại"
 
 #: src/ui.cc:2090
 msgid "Repeat the last search"
@@ -5090,15 +5090,15 @@ msgstr "^Bỏ hạn hiện thị"
 
 #: src/ui.cc:2099
 msgid "Remove the filter from the package list"
-msgstr "Bỏ bộ lọc ra danh sách gói"
+msgstr "Gỡ bỏ bộ lọc khỏi danh sách gói"
 
 #: src/ui.cc:2103
 msgid "Find ^Broken"
-msgstr "Tìm bị ^Ngắt"
+msgstr "Tìm ^Bị ngắt"
 
 #: src/ui.cc:2104
 msgid "Find the next package with unsatisfied dependencies"
-msgstr "Tìm gói kế tiếp có cách phụ thuộc chưa được thỏa"
+msgstr "Tìm gói kế tiếp có điều kiện phụ thuộc chưa được thỏa"
 
 #: src/ui.cc:2111
 msgid "^UI options"
@@ -5110,11 +5110,12 @@ msgstr "Thay đổi thiết lập làm ảnh hưởng đến giao diện ngườ
 
 #: src/ui.cc:2115
 msgid "^Dependency handling"
-msgstr "^Quản lý cách phụ thuộc"
+msgstr "^Quản lý điều kiện phụ thuộc"
 
 #: src/ui.cc:2116
 msgid "Change the settings which affect how package dependencies are handled"
-msgstr "Thay đổi thiết lập làm ảnh hưởng đến quản lý cách phụ thuộc thế nào."
+msgstr ""
+"Thay đổi thiết lập làm ảnh hưởng đến quản lý điều kiện phụ thuộc thế nào."
 
 #: src/ui.cc:2119
 msgid "^Miscellaneous"
@@ -5142,7 +5143,7 @@ msgstr "Xem bộ trình bày kế tiếp"
 
 #: src/ui.cc:2141
 msgid "^Prev"
-msgstr "^Trước"
+msgstr "T^rước"
 
 #: src/ui.cc:2142
 msgid "View previous display"
@@ -5150,7 +5151,7 @@ msgstr "Xem bộ trình bày trước đó"
 
 #: src/ui.cc:2145
 msgid "^Close"
-msgstr "^Đóng"
+msgstr "Đón^g"
 
 #: src/ui.cc:2146
 msgid "Close this display"
@@ -5158,7 +5159,7 @@ msgstr "Đóng bộ trình bày này"
 
 #: src/ui.cc:2151
 msgid "New Package ^View"
-msgstr "Khung ^Xem gói mới"
+msgstr "Ô ^xem gói mới"
 
 #: src/ui.cc:2152
 msgid "Create a new default package view"
@@ -5176,7 +5177,7 @@ msgstr "Xem các gói đã khuyên bạn cài đặt, mà hiện thời không �
 
 #: src/ui.cc:2159
 msgid "New ^Flat Package List"
-msgstr "Danh sách gói ^Phẳng mới"
+msgstr "Danh sách gói ^phẳng mới"
 
 #: src/ui.cc:2160
 msgid "View all the packages on the system in a single uncategorized list"
@@ -5188,11 +5189,11 @@ msgstr "Bộ duyệt ^Debtags mới"
 
 #: src/ui.cc:2165
 msgid "Browse packages using Debtags data"
-msgstr "Duyệt các gói bằng dữ liệu Debtags"
+msgstr "Duyệt qua các gói bằng dữ liệu Debtags"
 
 #: src/ui.cc:2168
 msgid "New Categorical ^Browser"
-msgstr "Bộ duyệt ^Phân loại mới"
+msgstr "^Bộ duyệt phân loại mới"
 
 #: src/ui.cc:2170
 msgid "Browse packages by category"
@@ -5208,7 +5209,7 @@ msgstr "Xem thông tin về chương trình này"
 
 #: src/ui.cc:2182
 msgid "^Help"
-msgstr "Trợ ^Giúp"
+msgstr "Trợ g^iúp"
 
 #: src/ui.cc:2183
 msgid "View the on-line help"
@@ -5216,7 +5217,7 @@ msgstr "Xem trợ giúp có sẵn"
 
 #: src/ui.cc:2185
 msgid "User's ^Manual"
-msgstr "^Hướng dẫn người dùng"
+msgstr "^Sổ tay người dùng"
 
 #: src/ui.cc:2186
 msgid "View the detailed program manual"
