@@ -1,6 +1,6 @@
 // desc_parse.cc
 //
-//  Copyright 2004-2005 Daniel Burrows
+//  Copyright 2004-2006 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -41,9 +41,15 @@ using namespace std;
 // list.  Every succeeding line that begins with N+1 or more spaces,
 // where N is the number of spaces preceding the bullet, is considered
 // to be part of the same bulleted list, and is processed as if N+1
-// spaces had been stripped from its left margin, with the exception
-// that if the N+2nd character is not a space, the line is formatted
-// as if a leading space were present.  (see below)
+// spaces had been stripped from its left margin, with two exceptions:
+//
+//   * if the N+2nd character is not a space, the line is formatted as
+//     if a leading space were present.  (see below)
+//   * lines containing a space followed by a full stop terminate a
+//     paragraph but do NOT break the list.
+//   * Full stops at the beginning of a line of the list are ignored
+//     (even though shifting them left would put them at the front
+//     of a line).
 //
 //   Bullet characters are (maybe) "-", "+", and "*"; the
 // frontend may render them literally or modify their appearence as it
@@ -92,13 +98,38 @@ static fragment *make_level_fragment(const wstring &desc,
 	      ++nspaces;
 	    }
 
-	  if(nspaces<indent)
+	  // This handles the case of " .\n" breaking list paragraphs.
+	  // I arbitrarily put the paragraph break inside the indented
+	  // text even when it actually terminates the list.
+	  if(nspaces == 1 && loc < desc.size() && desc[loc] == L'.')
+	    ; // Handled uniformly below for both this case and the
+	      // case of a leading blank line.
+	  else if(nspaces < indent) // Anything but a " .\n" that has
+				    // the wrong indent will break the
+				    // list.
 	    break;
 	}
       else
 	{
 	  nspaces=indent;
 	  first=false;
+	}
+
+      // Only insert blank lines for full stops that have exactly one
+      // space; other full stops are treated as part of a paragraph.
+      if(nspaces == 1 && desc[loc] == '.')
+	{
+	  fragments.push_back(newline_fragment());
+
+	  while(loc < desc.size() && desc[loc] != L'\n')
+	    ++loc;
+
+	  if(loc < desc.size())
+	    ++loc;
+
+	  start=loc;
+
+	  continue; // Skip the switch statement below.
 	}
 
       switch(desc[loc])
@@ -165,20 +196,6 @@ static fragment *make_level_fragment(const wstring &desc,
 	  }
 
 	  break;
-	case L'.':
-	  // Add a blank line (ignore the rest of the line)
-	  {
-	    fragments.push_back(newline_fragment());
-
-	    while(loc<desc.size() && desc[loc]!=L'\n')
-	      ++loc;
-
-	    if(loc<desc.size())
-	      ++loc;
-
-	    start=loc;
-	    break;
-	  }
 	default:
 	  // It's a paragraph.
 	  {
@@ -224,7 +241,7 @@ static fragment *make_level_fragment(const wstring &desc,
 		cont=false;
 	      else if(loc>=desc.size())
 		cont=false;
-	      else if(desc[loc]=='.')
+	      else if(nspaces == 1 && desc[loc] == '.')
 		cont=false;
 	    } while(cont);
 
