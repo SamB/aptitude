@@ -272,7 +272,7 @@ fragment *make_desc_fragment(const wstring &desc)
   // Note that the starting amount of indentation is 1...
   return make_level_fragment(desc, 0, 1, loc,
 			     aptcfg->FindB(PACKAGE "::Parse-Description-Bullets",
-					   false));
+					   true));
 }
 
 
