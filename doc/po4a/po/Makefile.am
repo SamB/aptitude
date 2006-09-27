@@ -1,4 +1,4 @@
-EXTRA_DIST=fr.po
+EXTRA_DIST=fr.po ja.po
 
 clean-generic:
 	rm -f *~
