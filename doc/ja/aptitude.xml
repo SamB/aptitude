@@ -7,79 +7,79 @@
   <!ENTITY dselect '<command>dselect</command>'>
   <!ENTITY apt-get '<command>apt-get</command>'>
   <!ENTITY root '<systemitem class="username">root</systemitem>'>
-  <!ENTITY VERSION '0.4.1'>
+  <!ENTITY VERSION '0.4.3'>
 
   <!-- Shortcuts for menu commands: -->
 
-  <!ENTITY actions-install "<menuchoice><shortcut><keycap>g</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Install/remove packages</guimenuitem></menuchoice>">
-  <!ENTITY actions-update "<menuchoice><shortcut><keycap>u</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Update package list</guimenuitem></menuchoice>">
+  <!ENTITY actions-install "<menuchoice><shortcut><keycap>g</keycap></shortcut><guimenu>アクション</guimenu><guimenuitem>パッケージのインストール・削除</guimenuitem></menuchoice>">
+  <!ENTITY actions-update "<menuchoice><shortcut><keycap>u</keycap></shortcut><guimenu>アクション</guimenu><guimenuitem>パッケージ一覧の更新</guimenuitem></menuchoice>">
   <!ENTITY actions-cancel "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Cancel pending actions</guimenuitem></menuchoice>">
   <!ENTITY actions-forget "<menuchoice><shortcut><keycap>f</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Forget new packages</guimenuitem></menuchoice>">
-  <!ENTITY actions-clean "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Clean package cache</guimenuitem></menuchoice>">
-  <!ENTITY actions-clean-obs "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Clean obsolete files</guimenuitem></menuchoice>">
+  <!ENTITY actions-clean "<menuchoice><guimenu>アクション</guimenu><guimenuitem>パッケージのキャッシュの消去</guimenuitem></menuchoice>">
+  <!ENTITY actions-clean-obs "<menuchoice><guimenu>アクション</guimenu><guimenuitem>廃止されたファイルを一掃する</guimenuitem></menuchoice>">
   <!ENTITY actions-upgrade "<menuchoice><shortcut><keycap>U</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Mark Upgradable</guimenuitem></menuchoice>">
   <!ENTITY actions-mine "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Play Minesweeper</guimenuitem></menuchoice>">
-  <!ENTITY actions-su "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Become root</guimenuitem></menuchoice>">
+  <!ENTITY actions-su "<menuchoice><guimenu>アクション</guimenu><guimenuitem>root になる</guimenuitem></menuchoice>">
   <!ENTITY actions-quit "<menuchoice><shortcut><keycap>Q</keycap></shortcut><guimenu>Actions</guimenu><guimenuitem>Quit</guimenuitem></menuchoice>">
 
-  <!ENTITY undo-undo "<menuchoice><shortcut><keycombo action='simul'><keycap>Control</keycap><keycap>u</keycap></keycombo></shortcut><guimenu>Undo</guimenu><guimenuitem>Undo</guimenuitem></menuchoice>">
+  <!ENTITY undo-undo "<menuchoice><shortcut><keycombo action='simul'><keycap>Control</keycap><keycap>u</keycap></keycombo></shortcut><guimenu>取り消し</guimenu><guimenuitem>取り消し</guimenuitem></menuchoice>">
 
-  <!ENTITY package-install "<menuchoice><shortcut><keycap>+</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Install</guimenuitem></menuchoice>">
-  <!ENTITY package-remove "<menuchoice><shortcut><keycap>-</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Remove</guimenuitem></menuchoice>">
-  <!ENTITY package-purge "<menuchoice><shortcut><keycap>_</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Purge</guimenuitem></menuchoice>">
-  <!ENTITY package-keep "<menuchoice><shortcut><keycap>:</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Keep</guimenuitem></menuchoice>">
-  <!ENTITY package-hold "<menuchoice><shortcut><keycap>=</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Hold</guimenuitem></menuchoice>">
-  <!ENTITY package-markauto "<menuchoice><shortcut><keycap>M</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Mark Auto</guimenuitem></menuchoice>">
-  <!ENTITY package-markmanual "<menuchoice><shortcut><keycap>m</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Mark Manual</guimenuitem></menuchoice>">
-  <!ENTITY package-forbid "<menuchoice><shortcut><keycap>F</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Forbid Version</guimenuitem></menuchoice>">
-  <!ENTITY package-information "<menuchoice><shortcut><keycap>enter</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Information</guimenuitem></menuchoice>">
-  <!ENTITY package-changelog "<menuchoice><shortcut><keycap>C</keycap></shortcut><guimenu>package</guimenu><guimenuitem>Changelog</guimenuitem></menuchoice>">
+  <!ENTITY package-install "<menuchoice><shortcut><keycap>+</keycap></shortcut><guimenu>パッケージ</guimenu><guimenuitem>インストール</guimenuitem></menuchoice>">
+  <!ENTITY package-remove "<menuchoice><shortcut><keycap>-</keycap></shortcut><guimenu>パッケージ</guimenu><guimenuitem>削除</guimenuitem></menuchoice>">
+  <!ENTITY package-purge "<menuchoice><shortcut><keycap>_</keycap></shortcut><guimenu>パッケージ</guimenu><guimenuitem>完全削除</guimenuitem></menuchoice>">
+  <!ENTITY package-keep "<menuchoice><shortcut><keycap>:</keycap></shortcut><guimenu>パッケージ</guimenu><guimenuitem>一時固定</guimenuitem></menuchoice>">
+  <!ENTITY package-hold "<menuchoice><shortcut><keycap>=</keycap></shortcut><guimenu>パッケージ</guimenu><guimenuitem>固定</guimenuitem></menuchoice>">
+  <!ENTITY package-markauto "<menuchoice><shortcut><keycap>M</keycap></shortcut><guimenu>パッケージ</guimenu><guimenuitem>自動的にインストールされたという印を添付</guimenuitem></menuchoice>">
+  <!ENTITY package-markmanual "<menuchoice><shortcut><keycap>m</keycap></shortcut><guimenu>パッケージ</guimenu><guimenuitem>手動でインストールしたという印を添付</guimenuitem></menuchoice>">
+  <!ENTITY package-forbid "<menuchoice><shortcut><keycap>F</keycap></shortcut><guimenu>パッケージ</guimenu><guimenuitem>バージョンの禁止</guimenuitem></menuchoice>">
+  <!ENTITY package-information "<menuchoice><shortcut><keycap>enter</keycap></shortcut><guimenu>パッケージ</guimenu><guimenuitem>情報</guimenuitem></menuchoice>">
+  <!ENTITY package-changelog "<menuchoice><shortcut><keycap>C</keycap></shortcut><guimenu>パッケージ</guimenu><guimenuitem>変更履歴</guimenuitem></menuchoice>">
 
-  <!ENTITY resolver-examine "<menuchoice><shortcut><keycap>e</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>Examine Solution</guimenuitem></menuchoice>">
-  <!ENTITY resolver-apply "<menuchoice><shortcut><keycap>!</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>Apply Solution</guimenuitem></menuchoice>">
-  <!ENTITY resolver-next "<menuchoice><shortcut><keycap>.</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>Next Solution</guimenuitem></menuchoice>">
-  <!ENTITY resolver-previous "<menuchoice><shortcut><keycap>,</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>Previous Solution</guimenuitem></menuchoice>">
-  <!ENTITY resolver-first "<menuchoice><shortcut><keycap>&lt;</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>First Solution</guimenuitem></menuchoice>">
-  <!ENTITY resolver-last "<menuchoice><shortcut><keycap>&gt;</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>Last Solution</guimenuitem></menuchoice>">
-  <!ENTITY resolver-reject "<menuchoice><shortcut><keycap>r</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>Toggle Rejected</guimenuitem></menuchoice>">
-  <!ENTITY resolver-approve "<menuchoice><shortcut><keycap>a</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>Toggle Approved</guimenuitem></menuchoice>">
-  <!ENTITY resolver-view-target "<menuchoice><shortcut><keycap>Enter</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>View Target</guimenuitem></menuchoice>">
+  <!ENTITY resolver-examine "<menuchoice><shortcut><keycap>e</keycap></shortcut><guimenu>問題解決</guimenu><guimenuitem>解決方法の検討</guimenuitem></menuchoice>">
+  <!ENTITY resolver-apply "<menuchoice><shortcut><keycap>!</keycap></shortcut><guimenu>問題解決</guimenu><guimenuitem>解決方法の適用</guimenuitem></menuchoice>">
+  <!ENTITY resolver-next "<menuchoice><shortcut><keycap>.</keycap></shortcut><guimenu>問題解決</guimenu><guimenuitem>次の解決方法</guimenuitem></menuchoice>">
+  <!ENTITY resolver-previous "<menuchoice><shortcut><keycap>,</keycap></shortcut><guimenu>問題解決</guimenu><guimenuitem>前の解決方法</guimenuitem></menuchoice>">
+  <!ENTITY resolver-first "<menuchoice><shortcut><keycap>&lt;</keycap></shortcut><guimenu>問題解決</guimenu><guimenuitem>最初の解決方法</guimenuitem></menuchoice>">
+  <!ENTITY resolver-last "<menuchoice><shortcut><keycap>&gt;</keycap></shortcut><guimenu>問題解決</guimenu><guimenuitem>最後の解決方法</guimenuitem></menuchoice>">
+  <!ENTITY resolver-reject "<menuchoice><shortcut><keycap>r</keycap></shortcut><guimenu>問題解決</guimenu><guimenuitem>拒否を切り替え</guimenuitem></menuchoice>">
+  <!ENTITY resolver-approve "<menuchoice><shortcut><keycap>a</keycap></shortcut><guimenu>問題解決</guimenu><guimenuitem>承認を切り替え</guimenuitem></menuchoice>">
+  <!ENTITY resolver-view-target "<menuchoice><shortcut><keycap>Enter</keycap></shortcut><guimenu>問題解決</guimenu><guimenuitem>対象を表示</guimenuitem></menuchoice>">
 
-  <!ENTITY search-find "<menuchoice><shortcut><keycap>/</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find</guimenuitem></menuchoice>">
-  <!ENTITY search-find-back "<menuchoice><shortcut><keycap>\</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find Backwards</guimenuitem></menuchoice>">
-  <!ENTITY search-refind "<menuchoice><shortcut><keycap>n</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find Again</guimenuitem></menuchoice>">
-  <!ENTITY search-limit "<menuchoice><shortcut><keycap>l</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Limit Display</guimenuitem></menuchoice>">
-  <!ENTITY search-unlimit "<menuchoice><shortcut><keycap>l</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Un-Limit Display</guimenuitem></menuchoice>">
-  <!ENTITY search-find-broken "<menuchoice><shortcut><keycap>b</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find Broken</guimenuitem></menuchoice>">
+  <!ENTITY search-find "<menuchoice><shortcut><keycap>/</keycap></shortcut><guimenu>検索</guimenu><guimenuitem>下を検索</guimenuitem></menuchoice>">
+  <!ENTITY search-find-back "<menuchoice><shortcut><keycap>\</keycap></shortcut><guimenu>検索</guimenu><guimenuitem>上を検索</guimenuitem></menuchoice>">
+  <!ENTITY search-refind "<menuchoice><shortcut><keycap>n</keycap></shortcut><guimenu>検索</guimenu><guimenuitem>前の検索を繰り返す</guimenuitem></menuchoice>">
+  <!ENTITY search-limit "<menuchoice><shortcut><keycap>l</keycap></shortcut><guimenu>検索</guimenu><guimenuitem>表示を制限</guimenuitem></menuchoice>">
+  <!ENTITY search-unlimit "<menuchoice><guimenu>検索</guimenu><guimenuitem>表示制限を解除</guimenuitem></menuchoice>">
+  <!ENTITY search-find-broken "<menuchoice><shortcut><keycap>b</keycap></shortcut><guimenu>検索</guimenu><guimenuitem>壊れた依存関係を検索</guimenuitem></menuchoice>">
 
-  <!ENTITY options-ui "<menuchoice><guimenu>Options</guimenu><guimenuitem>UI options</guimenuitem></menuchoice>">
-  <!ENTITY options-dep "<menuchoice><guimenu>Options</guimenu><guimenuitem>Dependency handling</guimenuitem></menuchoice>">
-  <!ENTITY options-misc "<menuchoice><guimenu>Options</guimenu><guimenuitem>Miscellaneous</guimenuitem></menuchoice>">
-  <!ENTITY options-revert "<menuchoice><guimenu>Options</guimenu><guimenuitem>Revert options</guimenuitem></menuchoice>">
+  <!ENTITY options-ui "<menuchoice><guimenu>オプション</guimenu><guimenuitem>UI オプション</guimenuitem></menuchoice>">
+  <!ENTITY options-dep "<menuchoice><guimenu>オプション</guimenu><guimenuitem>依存関係の処理</guimenuitem></menuchoice>">
+  <!ENTITY options-misc "<menuchoice><guimenu>オプション</guimenu><guimenuitem>その他</guimenuitem></menuchoice>">
+  <!ENTITY options-revert "<menuchoice><guimenu>オプション</guimenu><guimenuitem>オプションを元に戻す</guimenuitem></menuchoice>">
 
-  <!ENTITY views-next "<menuchoice><shortcut><keycap>F6</keycap></shortcut><guimenu>Views</guimenu><guimenuitem>Next</guimenuitem></menuchoice>">
-  <!ENTITY views-prev "<menuchoice><shortcut><keycap>F7</keycap></shortcut><guimenu>Views</guimenu><guimenuitem>Prev</guimenuitem></menuchoice>">
-  <!ENTITY views-close "<menuchoice><shortcut><keycap>q</keycap></shortcut><guimenu>Views</guimenu><guimenuitem>Close</guimenuitem></menuchoice>">
+  <!ENTITY views-next "<menuchoice><shortcut><keycap>F6</keycap></shortcut><guimenu>表示</guimenu><guimenuitem>次</guimenuitem></menuchoice>">
+  <!ENTITY views-prev "<menuchoice><shortcut><keycap>F7</keycap></shortcut><guimenu>表示</guimenu><guimenuitem>前</guimenuitem></menuchoice>">
+  <!ENTITY views-close "<menuchoice><shortcut><keycap>q</keycap></shortcut><guimenu>表示</guimenu><guimenuitem>閉じる</guimenuitem></menuchoice>">
 
-  <!ENTITY views-new "<menuchoice><guimenu>Views</guimenu><guimenuitem>New Package View</guimenuitem></menuchoice>">
-  <!ENTITY views-audit "<menuchoice><guimenu>Views</guimenu><guimenuitem>Audit Recommendations</guimenuitem></menuchoice>">
-  <!ENTITY views-flat "<menuchoice><guimenu>Views</guimenu><guimenuitem>New Flat Package List</guimenuitem></menuchoice>">
-  <!ENTITY views-debtags "<menuchoice><guimenu>Views</guimenu><guimenuitem>New Debtags Browser</guimenuitem></menuchoice>">
-  <!ENTITY views-browse "<menuchoice><guimenu>Views</guimenu><guimenuitem>New Categorical Browser</guimenuitem></menuchoice>">
+  <!ENTITY views-new "<menuchoice><guimenu>表示</guimenu><guimenuitem>パッケージ画面を新規に作成</guimenuitem></menuchoice>">
+  <!ENTITY views-audit "<menuchoice><guimenu>表示</guimenu><guimenuitem>推奨を監査</guimenuitem></menuchoice>">
+  <!ENTITY views-flat "<menuchoice><guimenu>表示</guimenu><guimenuitem>平坦なパッケージ一覧を新規に作成</guimenuitem></menuchoice>">
+  <!ENTITY views-debtags "<menuchoice><guimenu>表示</guimenu><guimenuitem>Debtags 表示を新規に作成</guimenuitem></menuchoice>">
+  <!ENTITY views-browse "<menuchoice><guimenu>表示</guimenu><guimenuitem>カテゴリ別表示を新規に作成</guimenuitem></menuchoice>">
 
-  <!ENTITY help-about "<menuchoice><guimenu>Help</guimenu><guimenuitem>About</guimenuitem></menuchoice>">
-  <!ENTITY help-help "<menuchoice><shortcut><keycap>?</keycap></shortcut><guimenu>Help</guimenu><guimenuitem>Help</guimenuitem></menuchoice>">
-  <!ENTITY help-manual "<menuchoice><guimenu>Help</guimenu><guimenuitem>User's Manual</guimenuitem></menuchoice>">
-  <!ENTITY help-faq "<menuchoice><guimenu>Help</guimenu><guimenuitem>FAQ</guimenuitem></menuchoice>">
-  <!ENTITY help-changelog "<menuchoice><guimenu>Help</guimenu><guimenuitem>ChangeLog</guimenuitem></menuchoice>">
-  <!ENTITY help-license "<menuchoice><guimenu>Help</guimenu><guimenuitem>License</guimenuitem></menuchoice>">
+  <!ENTITY help-about "<menuchoice><guimenu>ヘルプ</guimenu><guimenuitem>このプログラムについて</guimenuitem></menuchoice>">
+  <!ENTITY help-help "<menuchoice><shortcut><keycap>?</keycap></shortcut><guimenu>ヘルプ</guimenu><guimenuitem>ヘルプ</guimenuitem></menuchoice>">
+  <!ENTITY help-manual "<menuchoice><guimenu>ヘルプ</guimenu><guimenuitem>ユーザマニュアル</guimenuitem></menuchoice>">
+  <!ENTITY help-faq "<menuchoice><guimenu>ヘルプ</guimenu><guimenuitem>FAQ</guimenuitem></menuchoice>">
+  <!ENTITY help-changelog "<menuchoice><guimenu>ヘルプ</guimenu><guimenuitem>変更履歴</guimenuitem></menuchoice>">
+  <!ENTITY help-license "<menuchoice><guimenu>ヘルプ</guimenu><guimenuitem>ライセンス</guimenuitem></menuchoice>">
 
 
   <!ENTITY manpage SYSTEM "manpage.xml">
 ]>
 
-<book lang="en"> <bookinfo> <title>&aptitude; user's manual</title>
-<subtitle>Version &VERSION;</subtitle>
+<book lang="ja"> <bookinfo> <title>&aptitude; ユーザマニュアル</title>
+<subtitle>バージョン &VERSION;</subtitle>
 
 <author><personname><firstname>Daniel</firstname><surname>Burrows</surname></personname><email>dburrows@debian.org</email></author>
 
@@ -112,6 +112,8 @@
 </legalnotice>
 
 </bookinfo>
+
+<toc/>
 
 <preface>
 
@@ -146,7 +148,7 @@
 
   <section>
 
-    <title>とにかくこの aptitude というものは何なのか?</title>
+    <title>この aptitude ってものはつまり何なんだい?</title>
 
     <para>
       &aptitude; は、名高い &apt;
@@ -262,7 +264,7 @@
     </section>
 
     <section>
-      <title>&apt; システムとは何か?</title>
+      <title>&apt; システムって何なんだ?</title>
 
       <para>
 	パッケージのインストールや削除ができるのは素晴らしいことですが、
@@ -322,7 +324,7 @@
 
     <section>
       <title>
-	どうすれば &aptitude; を入手できるか?
+	&aptitude; はどうすれば入手できるんだ?
       </title>
 
       <para>
@@ -334,8 +336,8 @@
       </para>
 
       <section id='secBinaryPackages'>
-	<title>&aptitude; のビルド済みパッケージ、つまり <quote>99%
-	のユーザがすべきこと</quote></title>
+	<title>&aptitude; のビルド済みパッケージ、つまり <quote>ユーザの 99%
+	がすべきこと</quote></title>
 
 	<para>
 	  ビルド済み、つまり <quote>バイナリ</quote> のパッケージは、&aptitude;
@@ -531,7 +533,7 @@
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/start-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/start-snapshot.png' format='PNG' scalefit='1' width='100%'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -570,14 +572,14 @@ These packages are currently installed on your computer.
 	  ターミナル最上部の青色の 1 行はメニューバーで、
           その下の数行分の青色部分は、
 	  いくつかの重要なコマンドを説明する情報メッセージです。
-	  その下に広がる黒い領域は利用可能なパッケージ全ての一覧表で、
+	  その下に広がる黒い領域は利用可能なパッケージ全ての一覧で、
 	  そこにはパッケージのいくつかのグループが表示されています。
 	  選択中のグループ (<quote>Installed Packages</quote>)
 	  がハイライトされており、その説明が下側の黒い領域に表示されています。
 	</para>
 
 	<para>
-	  画面最上部の行が示すように、aptitude のメニューには <keycombo
+	  スクリーン最上部の行が示すように、aptitude のメニューには <keycombo
 	  action='simul'><keycap>Control</keycap><keycap>t</keycap></keycombo>
 	  を押すとアクセスできます。または、システムがサポートしている場合は、
 	  メニューのタイトルをマウスでクリックしてもよいでしょう。
@@ -587,7 +589,7 @@ These packages are currently installed on your computer.
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/menu-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/menu-snapshot.png' format='PNG' scalefit='1' width='100%'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -627,7 +629,7 @@ Perform all pending installs and removals</screen>
 	  <keycombo><keycap>Control</keycap><keycap>t</keycap></keycombo>
 	  を押してください。
 	  メニューで現在ハイライトされている項目については、
-	  画面の底部に説明が表示されます。
+	  スクリーン最下部に説明が表示されます。
 	  キーボードショートカットを用いてメニューの項目を実行できる場合は、
 	  メニューにそのショートカットが表示されます。
 	  例えば、コマンド <quote>Update package list</quote>
@@ -652,7 +654,7 @@ Perform all pending installs and removals</screen>
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/start-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/start-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -706,7 +708,7 @@ These packages are currently installed on your computer.
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/expand-once-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/expand-once-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -751,7 +753,7 @@ These packages are currently installed on your computer.
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/expand-twice-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/expand-twice-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -802,7 +804,7 @@ examining network traffic, and so on.
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/expand-thrice-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/expand-thrice-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -863,7 +865,7 @@ http://www.debian.org/social_contract#guidelines
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/search-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/search-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -921,7 +923,7 @@ URL: http://www.frozen-bubble.org/
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/limit-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/limit-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -965,7 +967,7 @@ Th+--------------------------------------------------------------------------+ a
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/limit-result-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/limit-result-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -1053,7 +1055,7 @@ These packages are currently installed on your computer.
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/install-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/install-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -1118,7 +1120,7 @@ including kdesdk, qt3-designer, and all core KDE -dev packages.
 	  <screenshot>
 	    <mediaobject>
 	      <imageobject>
-		<imagedata fileref='images/broken-snapshot.png' format='PNG'/>
+		<imagedata fileref='images/broken-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	      </imageobject>
 
 	      <textobject role='text'>
@@ -1186,7 +1188,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  <screenshot>
 	    <mediaobject>
 	      <imageobject>
-		<imagedata fileref='images/solution-screen-snapshot.png' format='PNG'/>
+		<imagedata fileref='images/solution-screen-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	      </imageobject>
 
 	      <textobject role='text'>
@@ -1231,7 +1233,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  <screenshot id='solutionScreenSnapshot2'>
 	    <mediaobject>
 	      <imageobject>
-		<imagedata fileref='images/solution-screen-snapshot2.png' format='PNG'/>
+		<imagedata fileref='images/solution-screen-snapshot2.png' format='PNG' width='100%' scalefit='1'/>
 	      </imageobject>
 
 	      <textobject role='text'>
@@ -1279,7 +1281,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  <screenshot>
 	    <mediaobject>
 	      <imageobject>
-		<imagedata fileref='images/solution-screen-snapshot3.png' format='PNG'/>
+		<imagedata fileref='images/solution-screen-snapshot3.png' format='PNG' width='100%' scalefit='1'/>
 	      </imageobject>
 
 	      <textobject role='text'>
@@ -1346,7 +1348,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  <screenshot>
 	    <mediaobject>
 	      <imageobject>
-		<imagedata fileref='images/solution-screen-snapshot4.png' format='PNG'/>
+		<imagedata fileref='images/solution-screen-snapshot4.png' format='PNG' width='100%' scalefit='1'/>
 	      </imageobject>
 
 	      <textobject role='text'>
@@ -1412,7 +1414,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  <screenshot>
 	    <mediaobject>
 	      <imageobject>
-		<imagedata fileref='images/solution-screen-snapshot5.png' format='PNG'/>
+		<imagedata fileref='images/solution-screen-snapshot5.png' format='PNG' width='100%' scalefit='1'/>
 	      </imageobject>
 
 	      <textobject role='text'>
@@ -1486,7 +1488,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/preview-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/preview-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -1882,40 +1884,42 @@ Abort.</screen>
       </para>
 
       <section>
-	<title>Using the menus</title>
+	<title>メニューの利用</title>
 
 	<para>
-	  The menu bar at the top of the screen lists the most
-	  important commands in &aptitude;.  To activate the menu bar,
-	  press <keycombo><keycap>Control</keycap><keycap>t</keycap></keycombo>; you can then navigate it using
-	  the arrow keys and select a menu item using
-	  <keycap>Enter</keycap>.
+	  スクリーン最上部のメニューバーには &aptitude;
+	  の最も重要なコマンドが並んでいます。
+	  <keycombo><keycap>Control</keycap><keycap>t</keycap></keycombo>
+	  を押してメニューバーをアクティブにしてください。
+	  すると、矢印キーを用いた操作や、<keycap>Enter</keycap>
+	  を用いたメニューの項目の選択が可能になります。
 	</para>
 
 	<para>
-	  Some menu items also have <quote>hotkeys</quote>: letters or numbers
-	  that can be used to select the item while the menu is
-	  active.  These hotkeys are displayed in a brighter shade
-	  of white than the rest of the menu.
+	  メニューの項目の一部には <quote>ホットキー</quote>
+	  が与えられています。それらは、
+	  そのメニューがアクティブになっている間、
+	  その項目を選択するのに使える文字や数字です。
+	  これらのホットキーは、
+	  メニューの他の文字よりも明るい陰影をもった白で表示されます。
 	</para>
 
 	<para>
-	  In addition, some menu items have <quote>shortcuts</quote>:
-	  keystrokes that perform the same action as the menu item
-	  while the menu is <emphasis>not</emphasis> active.
-	  These keystrokes are listed on the right-hand side of
-	  the menu.
+	  さらに、メニューの項目の一部には <quote>ショートカット</quote>
+	  が与えられています。それらは、
+	  そのメニューがアクティブになって<emphasis>いない</emphasis>間、
+	  そのメニューの項目と同じアクションを実行するキーストークです。
+	  これらのキーストークはメニューの右端に表示されます。
 	</para>
 
 	<para>
-	  In the remainder of the manual, menu commands will be
-	  written like this:
-	  <menuchoice><shortcut><keycap><replaceable>key</replaceable></keycap></shortcut><guimenu><replaceable>Menu</replaceable></guimenu><guimenuitem><replaceable>Item</replaceable></guimenuitem></menuchoice>.
-	  This indicates that you should choose
-	  <replaceable>Item</replaceable> from the
-	  <replaceable>Menu</replaceable> menu, and that
-	  <replaceable>key</replaceable> is the shortcut for this
-	  command.
+	  マニュアルの以降の部分では、メニューのコマンドは、
+	  <menuchoice><shortcut><keycap><replaceable>キー</replaceable></keycap></shortcut><guimenu><replaceable>メニュー</replaceable></guimenu><guimenuitem><replaceable>項目</replaceable></guimenuitem></menuchoice>
+	  のように記述されます。これは、
+	  「<replaceable>メニュー</replaceable> メニューから
+	  <replaceable>項目</replaceable> を選択しなさい、
+	  <replaceable>キー</replaceable> がそのコマンドのショートカットです」
+	  という意味です。
 	</para>
       </section>
 
@@ -1932,8 +1936,8 @@ Abort.</screen>
 	      <tgroup cols='2'>
 		<thead>
 		  <row>
-		    <entry>Command</entry>
-		    <entry>Description</entry>
+		    <entry>コマンド</entry>
+		    <entry>説明</entry>
 		  </row>
 		</thead>
 
@@ -2040,17 +2044,17 @@ Abort.</screen>
 	</section>
   
 	<section>
-	  <title>The Undo Menu</title>
+	  <title>「取り消し」メニュー</title>
 
 	  <figure>
-	    <title>Commands available in the Undo menu</title>
+	    <title>「取り消し」メニューで利用可能なコマンド</title>
 
 	    <informaltable>
 	      <tgroup cols='2'>
 		<thead>
 		  <row>
-		    <entry>Command</entry>
-		    <entry>Description</entry>
+		    <entry>コマンド</entry>
+		    <entry>説明</entry>
 		  </row>
 		</thead>
 
@@ -2058,10 +2062,10 @@ Abort.</screen>
 		  <row>
 		    <entry>&undo-undo;</entry>
 		    <entry>
-		      Cancel the effect of the last change to a
-		      package's state, up to the last time the program
-		      was started, the package list was updated, or an
-		      install run was performed.
+		      パッケージの状態に対して最後に加えられた変更の影響を取り消します。
+		      最大で、最後にプログラムが起動したとき、
+		      最後にパッケージ一覧が更新されたとき、
+		      最後にインストールの実行が行われたときのいずれかの状態にまで戻せます。
 		    </entry>
 		  </row>
 		</tbody>
@@ -2071,17 +2075,17 @@ Abort.</screen>
 	</section>
 
 	<section id='secPackageMenu'>
-	  <title>The Package Menu</title>
+	  <title>「パッケージ」メニュー</title>
 
 	  <figure>
-	    <title>Commands available in the Package menu</title>
+	    <title>「パッケージ」メニューで利用可能なコマンド</title>
 
 	    <informaltable>
 	      <tgroup cols='2'>
 		<thead>
 		  <row>
-		    <entry>Command</entry>
-		    <entry>Description</entry>
+		    <entry>コマンド</entry>
+		    <entry>説明</entry>
 		  </row>
 		</thead>
 
@@ -2090,8 +2094,8 @@ Abort.</screen>
 		    <entry>&package-install;</entry>
 
 		    <entry>
-		      Flag the currently selected package for <link
-		      linkend='pkgCmdInstall'>installation</link>.
+		      現在選択中のパッケージに<link
+		      linkend='pkgCmdInstall'>インストール</link>用のフラグを立てます。
 		    </entry>
 		  </row>
 
@@ -2099,8 +2103,8 @@ Abort.</screen>
 		    <entry>&package-remove;</entry>
 
 		    <entry>
-		      Flag the currently selected package for <link
-		      linkend='pkgCmdRemove'>removal</link>.
+		      現在選択中のパッケージに<link
+		      linkend='pkgCmdRemove'>削除</link>用のフラグを立てます。
 		    </entry>
 		  </row>
 
@@ -2108,8 +2112,8 @@ Abort.</screen>
 		    <entry>&package-purge;</entry>
 
 		    <entry>
-		      Flag the currently selected package to be <link
-		      linkend='pkgCmdPurge'>purged</link>.
+		      現在選択中のパッケージに<link
+		      linkend='pkgCmdPurge'>完全削除</link>用のフラグを立てます。
 		    </entry>
 		  </row>
 
@@ -2117,40 +2121,38 @@ Abort.</screen>
 		    <entry>&package-keep;</entry>
 
 		    <entry>
-		      <link linkend='pkgCmdKeep'>Cancel</link> any
-		      pending installation, upgrade, or removal of the
-		      currently selected package, and remove any hold
-		      that was set on the package.
+		      現在選択中のパッケージに設定された、
+		      実行されていないインストール・更新・削除をすべて<link
+		      linkend='pkgCmdKeep'>取り消し</link>、
+		      設定された固定状態を解除します。
 		    </entry>
 		  </row>
 
 		  <row>
 		    <entry>&package-hold;</entry>
 		    <entry>
-		      <link linkend='pkgCmdHold'>Hold</link> the
-		      currently selected package back.
+		      現在選択中のパッケージを<link
+		      linkend='pkgCmdHold'>更新から防ぎます</link>。
 		    </entry>
 		  </row>
 
 		  <row>
 		    <entry>&package-markauto;</entry>
 		    <entry>
-		      Mark the currently selected package as an
-		      <quote>automatically installed</quote> package.
-		      For more information on manually and
-		      automatically installed packages, see <xref
-		      linkend='secAutoInstall'/>.
+		      現在選択中のパッケージに、
+		      <quote>自動的にインストールされた</quote>パッケージという印をつけます。
+		      手動でインストールされたパッケージおよび自動的にインストールされたパッケージに関してさらに詳しく知りたければ、<xref
+		      linkend='secAutoInstall'/>を参照してください。
 		    </entry>
 		  </row>
 
 		  <row>
 		    <entry>&package-markmanual;</entry>
 		    <entry>
-		      Mark the currently selected package as a
-		      <quote>manually installed</quote> package.  For
-		      more information on manually and automatically
-		      installed packages, see <xref
-		      linkend='secAutoInstall'/>.
+		      現在選択中のパッケージに、
+		      <quote>手動でインストールされた</quote>パッケージという印をつけます。
+		      手動でインストールされたパッケージおよび自動的にインストールされたパッケージに関してさらに詳しく知りたければ、<xref 
+		      linkend='secAutoInstall'/>を参照してください。
 		    </entry>
 		  </row>
 
@@ -2158,12 +2160,11 @@ Abort.</screen>
 		    <entry>&package-forbid;</entry>
 
 		    <entry>
-		      If a package that can be upgraded is selected,
-		      <link linkend='pkgCmdForbid'>forbid</link> it
-		      from being upgraded to the currently available
-		      version.  If a version of a package is selected,
-		      forbid the package from being upgraded to that
-		      version.
+		      更新可能なパッケージを選択している場合、
+		      それを現在利用可能なバージョンに更新するのを<link
+		      linkend='pkgCmdForbid'>禁止します</link>。
+		      パッケージの特定のバージョンを選択している場合、
+		      パッケージをそのバージョンに更新するのを禁止します。
 		    </entry>
 		  </row>
 
@@ -2171,10 +2172,8 @@ Abort.</screen>
 		    <entry>&package-information;</entry>
 
 		    <entry>
-		      Display a screen containing information about
-		      the currently selected package, such as the
-		      packages it depends upon, the packages which
-		      depend upon it, and its available versions.
+		      現在選択中のパッケージに関する情報 (パッケージが依存するパッケージ・依存されているパッケージ・利用可能なバージョンなど)
+		      を含むスクリーンを表示します。
 		    </entry>
 		  </row>
 
@@ -2182,10 +2181,10 @@ Abort.</screen>
 		    <entry>&package-changelog;</entry>
 
 		    <entry>
-		      Display the currently selected package's Debian
-		      changelog.  To see the changelog of a particular
-		      version, select that version and execute this
-		      command.
+		      現在選択中のパッケージの Debian
+		      での変更履歴を表示します。
+		      特定バージョンの変更履歴だけ見るには、
+		      そのバージョンを選択してからこのコマンドを実行してください。
 		    </entry>
 		  </row>
 		</tbody>
@@ -2195,17 +2194,17 @@ Abort.</screen>
 	</section>
 
 	<section>
-	  <title>The Resolver Menu</title>
+	  <title>「問題解決」メニュー</title>
 
 	  <figure>
-	    <title>Commands available in the Resolver menu</title>
+	    <title>「問題解決」メニューで利用可能なコマンド</title>
 
 	    <informaltable>
 	      <tgroup cols='2'>
 		<thead>
 		  <row>
-		    <entry>Command</entry>
-		    <entry>Description</entry>
+		    <entry>コマンド</entry>
+		    <entry>説明</entry>
 		  </row>
 		</thead>
 
@@ -2214,9 +2213,8 @@ Abort.</screen>
 		    <entry>&resolver-examine;</entry>
 
 		    <entry>
-		      Display a detailed description of the problem
-		      resolver's current suggestion (see <xref
-		      linkend='secResolver'/>).
+		      問題解決のために提案されている現在選択中の方法の詳細な説明を表示します (<xref
+		      linkend='secResolver'/>を参照してください)。
 		    </entry>
 		  </row>
 
@@ -2224,8 +2222,7 @@ Abort.</screen>
 		    <entry>&resolver-apply;</entry>
 
 		    <entry>
-		      Carry out the actions that the problem resolver
-		      is currently suggesting.
+		      問題解決のために提案されている現在選択中のアクションを実行します。
 		    </entry>
 		  </row>
 
@@ -2233,7 +2230,7 @@ Abort.</screen>
 		    <entry>&resolver-next;</entry>
 
 		    <entry>
-		      Select the problem resolver's next suggestion.
+		      問題解決のために提案されている次の方法を選択します。
 		    </entry>
 		  </row>
 
@@ -2241,7 +2238,7 @@ Abort.</screen>
 		    <entry>&resolver-previous;</entry>
 
 		    <entry>
-		      Select the problem resolver's previous suggestion.
+		      問題解決のために提案されている前の方法を選択します。
 		    </entry>
 		  </row>
 
@@ -2249,7 +2246,7 @@ Abort.</screen>
 		    <entry>&resolver-first;</entry>
 
 		    <entry>
-		      Select the problem resolver's first suggestion.
+		      問題解決のために提案されている最初の方法を選択します。
 		    </entry>
 		  </row>
 
@@ -2257,9 +2254,8 @@ Abort.</screen>
 		    <entry>&resolver-last;</entry>
 
 		    <entry>
-		      Select the problem resolver's most recently
-		      generated solution (see <xref
-		      linkend='secResolver'/>).
+		      問題解決のために現在生成されている中で最新の解決方法を選択します (<xref
+		      linkend='secResolver'/>を参照してください)。
 		    </entry>
 		  </row>
 
@@ -2267,12 +2263,11 @@ Abort.</screen>
 		    <entry>&resolver-reject;</entry>
 
 		    <entry>
-		      When examining a solution, toggle whether the
-		      currently selected action is rejected and move
-		      to the next action (see <xref
-		      linkend='secResolver'/>).  If the action is
-		      currently approved, its approval will be
-		      cancelled.
+		      解決方法を検討する際に、
+		      現在選択中のアクションを拒否する・しないを切り替えてから次のアクションに移動します (<xref
+		      linkend='secResolver'/>を参照してください)。
+		      アクションが現在承認されている場合、
+		      その承認が取り消されます。
 		    </entry>
 		  </row>
 
@@ -2280,12 +2275,11 @@ Abort.</screen>
 		    <entry>&resolver-approve;</entry>
 
 		    <entry>
-		      When examining a solution, toggle whether the
-		      currently selected action is approved and move
-		      to the next action (see <xref
-		      linkend='secResolver'/>).  If the action is
-		      currently rejected, its rejection will be
-		      cancelled.
+		      解決方法を検討する際に、
+		      現在選択中のアクションを承認する・しないを切り替えてから次のアクションに移動します (<xref
+		      linkend='secResolver'/>を参照してください)。
+		      アクションが現在拒否されている場合、
+		      その拒否が取り消されます。
 		    </entry>
 		  </row>
 
@@ -2293,10 +2287,9 @@ Abort.</screen>
 		    <entry>&resolver-view-target;</entry>
 
 		    <entry>
-		      When examining a solution, view detailed
-		      information about the package which is affected
-		      by the currently selected action (see <xref
-		      linkend='secResolver'/>).
+		      解決方法を検討する際に、
+		      現在選択中のアクションによってそのパッケージが受ける影響に関する詳細な情報を表示します (<xref
+		      linkend='secResolver'/>を参照してください)。
 		    </entry>
 		  </row>
 		</tbody>
@@ -2306,17 +2299,17 @@ Abort.</screen>
 	</section>
 
 	<section>
-	  <title>The Search Menu</title>
+	  <title>「検索」メニュー</title>
 
 	  <figure>
-	    <title>Commands available in the Search menu</title>
+	    <title>「検索」メニューで利用可能なコマンド</title>
 
 	    <informaltable>
 	      <tgroup cols='2'>
 		<thead>
 		  <row>
-		    <entry>Command</entry>
-		    <entry>Description</entry>
+		    <entry>コマンド</entry>
+		    <entry>説明</entry>
 		  </row>
 		</thead>
 
@@ -2325,9 +2318,9 @@ Abort.</screen>
 		    <entry>&search-find;</entry>
 
 		    <entry>
-		      Find the next package in the package list that
-		      matches a search pattern (see <xref
-		      linkend='secSearchPatterns'/>).
+		      パッケージ一覧から、
+		      検索パターンにマッチするパッケージを下方へと検索します (<xref
+		      linkend='secSearchPatterns'/> を参照してください)。
 		    </entry>
 		  </row>
 
@@ -2335,9 +2328,9 @@ Abort.</screen>
 		    <entry>&search-find-back;</entry>
 
 		    <entry>
-		      Find the previous package in the package list
-		      that matches a search pattern (see <xref
-		      linkend='secSearchPatterns'/>).
+		      パッケージ一覧から、
+		      検索パターンにマッチするパッケージを上方へと検索します (<xref
+		      linkend='secSearchPatterns'/> を参照してください)。
 		    </entry>
 		  </row>
 
@@ -2345,7 +2338,7 @@ Abort.</screen>
 		   <entry>&search-refind;</entry>
 
 		   <entry>
-		     Repeat the last Find command.
+		     最後に実行した検索コマンドをもう一度、実行します。
 		   </entry>
 		  </row>
 
@@ -2353,9 +2346,9 @@ Abort.</screen>
 		    <entry>&search-limit;</entry>
 
 		    <entry>
-		      Filter the current package list by removing any
-		      packages which do not match a search pattern
-		      (see <xref linkend='secSearchPatterns'/>).
+		      検索パターンにマッチしないパッケージを取り除くことで、
+		      現在のパッケージ一覧にフィルタをかけます (<xref
+		      linkend='secSearchPatterns'/> を参照してください)。
 		    </entry>
 		  </row>
 
@@ -2363,8 +2356,7 @@ Abort.</screen>
 		    <entry>&search-unlimit;</entry>
 
 		    <entry>
-		      Un-filter the current package list (all packages
-		      will be shown).
+		      現在のパッケージ一覧のフィルタを解除します (すべてのパッケージが表示されます)。
 		    </entry>
 		  </row>
 
@@ -2372,9 +2364,8 @@ Abort.</screen>
 		    <entry>&search-find-broken;</entry>
 
 		    <entry>
-		      Find the next broken package.  This is
-		      equivalent to searching for
-		      <literal>~b</literal>.
+		      依存関係の壊れたパッケージを検索します。
+		      これは、<literal>~b</literal> を検索するのと同じです。
 		    </entry>
 		  </row>
 		</tbody>
@@ -2384,17 +2375,17 @@ Abort.</screen>
 	</section>
 
 	<section id="secOptionsMenu">
-	  <title>The Options Menu</title>
+	  <title>「オプション」メニュー</title>
 
 	  <figure>
-	    <title>Commands available in the Options menu</title>
+	    <title>「オプション」メニューで利用可能なコマンド</title>
 
 	    <informaltable>
 	      <tgroup cols='2'>
 		<thead>
 		  <row>
-		    <entry>Command</entry>
-		    <entry>Description</entry>
+		    <entry>コマンド</entry>
+		    <entry>説明</entry>
 		  </row>
 		</thead>
 
@@ -2403,11 +2394,10 @@ Abort.</screen>
 		    <entry>&options-ui;</entry>
 
 		    <entry>
-		      Display a dialog box in which you can set
-		      options pertaining to the interface (how
-		      messages are displayed, how packages are
-		      organized, etc).<!--  TODO: See <xref
-		      linkend='secOptionsUI'/>. -->
+		      インタフェース関連のオプション (例えば、
+		      「メッセージをどのように表示するか」や「パッケージをどのようにまとめるか」など)
+		      を設定できるダイアログボックスを表示します。
+		      <!--  TODO: See <xref linkend='secOptionsUI'/>. -->
 		    </entry>
 		  </row>
 
@@ -2415,12 +2405,10 @@ Abort.</screen>
 		    <entry>&options-dep;</entry>
 
 		    <entry>
-		      Display a dialog box in which you can set
-		      options pertaining to how dependencies are
-		      treated: for instance, whether to automatically
-		      installed packages which are recommended by
-		      other packages.  <!-- TODO: See <xref
-		      linkend='secOptionsDep'/>. -->
+		      依存関係の取り扱い方に関連したオプション (例えば、
+		      「他のパッケージから「推奨」されたパッケージを自動的にインストールするか否か」)
+		      を設定できるダイアログボックスを表示します。
+		      <!-- TODO: See <xref linkend='secOptionsDep'/>. -->
 		    </entry>
 		  </row>
 
@@ -2428,12 +2416,11 @@ Abort.</screen>
 		    <entry>&options-misc;</entry>
 
 		    <entry>
-		      Display a dialog box in which you can set
-		      options that don't fit into the previous two
-		      categories: for instance, whether packages
-		      should be automatically flagged for upgrade when
-		      &aptitude; starts. <!-- TODO:  See <xref
-		      linkend='secOptionsMisc'/>. -->
+		      上の 2 つのカテゴリに入らないオプション (例えば、
+		      「&aptitude;
+		      起動時にパッケージに更新対象の印を自動的につけるか否か」)
+		      を設定できるダイアログボックスを表示します。
+		      <!-- TODO:  See <xref linkend='secOptionsMisc'/>. -->
 		    </entry>
 		  </row>
 
@@ -2441,7 +2428,7 @@ Abort.</screen>
 		    <entry>&options-revert;</entry>
 
 		    <entry>
-		      Reset all options to their default values.
+		      すべてのオプションをデフォルトの値にリセットします。
 		    </entry>
 		  </row>
 		</tbody>
@@ -2451,24 +2438,24 @@ Abort.</screen>
 	</section>
 
 	<section>
-	  <title>The Views Menu</title>
+	  <title>「表示」メニュー</title>
 
 	  <note>
 	    <para>
-	      For an overview of how views work, see <xref
-	      linkend='secViews'/>.
+	      画面がどのような機能をもつかに関する大まかな説明については、<xref
+	      linkend='secViews'/> を参照してください。
 	    </para>
 	  </note>
 
 	  <figure>
-	    <title>Commands available in the Views menu</title>
+	    <title>「表示」メニューで利用可能なコマンド</title>
 
 	    <informaltable>
 	      <tgroup cols='2'>
 		<thead>
 		  <row>
-		    <entry>Command</entry>
-		    <entry>Description</entry>
+		    <entry>コマンド</entry>
+		    <entry>説明</entry>
 		  </row>
 		</thead>
 
@@ -2477,7 +2464,7 @@ Abort.</screen>
 		    <entry>&views-next;</entry>
 
 		    <entry>
-		      Change to the next active view.
+		      次のアクティブな画面に切り換えます。
 		    </entry>
 		  </row>
 
@@ -2485,7 +2472,7 @@ Abort.</screen>
 		    <entry>&views-prev;</entry>
 
 		    <entry>
-		      Change to the previous active view.
+		      前のアクティブな画面に切り換えます。
 		    </entry>
 		  </row>
 
@@ -2493,7 +2480,7 @@ Abort.</screen>
 		    <entry>&views-close;</entry>
 
 		    <entry>
-		      Close the current view.
+		      現在の画面を閉じます。
 		    </entry>
 		  </row>
 
@@ -2501,7 +2488,7 @@ Abort.</screen>
 		    <entry>&views-new;</entry>
 
 		    <entry>
-		      Create a new view of the package list.
+		      パッケージ一覧の画面を新規に作成します。
 		    </entry>
 		  </row>
 
@@ -2509,9 +2496,8 @@ Abort.</screen>
 		    <entry>&views-audit;</entry>
 
 		    <entry>
-		      Create a view that displays packages which are
-		      not installed, and which a package installed on
-		      your system Recommends.
+		      インストールされていなく、
+		      システムにインストールされているパッケージから「推奨」されているパッケージを表示する画面を作成します。
 		    </entry>
 		  </row>
 
@@ -2519,8 +2505,7 @@ Abort.</screen>
 		    <entry>&views-flat;</entry>
 
 		    <entry>
-		      Create a new view of the package list in which
-		      packages are not categorized.
+		      パッケージをカテゴリ分けせずに一覧表示する画面を新規に作成します。
 		    </entry>
 		  </row>
 
@@ -2528,9 +2513,7 @@ Abort.</screen>
 		    <entry>&views-debtags;</entry>
 
 		    <entry>
-		      Create a new view of the package list in which
-		      packages are categorized according to their
-		      debtags entries.
+		      debtags のエントリによってパッケージを分類したパッケージ一覧の画面を新規に作成します。
 		    </entry>
 		  </row>
 
@@ -2538,19 +2521,19 @@ Abort.</screen>
 		    <entry>&views-browse;</entry>
 
 		    <entry>
-		      View the package list, arranged by category.
+		      カテゴリ別に並べたパッケージ一覧を表示します。
 		      <!-- TODO: (see <xref linkend='secHier'/>). -->
 		    </entry>
 		  </row>
 
 		  <row>
-		    <entry>Additional items</entry>
+		    <entry>追加項目</entry>
 
 		    <entry>
-		      A number of additional menu items appear; these
-		      correspond to the currently active views.  To
-		      switch directly to a view, select it from the
-		      menu.
+		      多数の追加項目が表示されます。
+		      それらは、現在アクティブな画面に対応しています。
+		      直接、ある画面に切り換えるには、
+		      それをメニューから選択してください。
 		    </entry>
 		  </row>
 		</tbody>
@@ -2560,17 +2543,17 @@ Abort.</screen>
 	</section>
 
 	<section>
-	  <title>The Help Menu</title>
+	  <title>「ヘルプ」メニュー</title>
 
 	  <figure>
-	    <title>Commands available in the Help menu</title>
+	    <title>「ヘルプ」メニューで利用可能なコマンド</title>
 
 	    <informaltable>
 	      <tgroup cols='2'>
 		<thead>
 		  <row>
-		    <entry>Command</entry>
-		    <entry>Description</entry>
+		    <entry>コマンド</entry>
+		    <entry>説明</entry>
 		  </row>
 		</thead>
 
@@ -2579,7 +2562,7 @@ Abort.</screen>
 		    <entry>&help-about;</entry>
 
 		    <entry>
-		      Display some copyright information.
+		      著作権情報をいくらか表示します。
 		    </entry>
 		  </row>
 
@@ -2587,7 +2570,7 @@ Abort.</screen>
 		    <entry>&help-help;</entry>
 
 		    <entry>
-		      Display the on-line help page.
+		      オンラインヘルプページを表示します。
 		    </entry>
 		  </row>
 
@@ -2595,7 +2578,7 @@ Abort.</screen>
 		    <entry>&help-manual;</entry>
 
 		    <entry>
-		      Display the User's Manual (this document).
+		      ユーザマニュアル (このドキュメント) を表示します。
 		    </entry>
 		  </row>
 
@@ -2603,8 +2586,8 @@ Abort.</screen>
 		    <entry>&help-faq;</entry>
 
 		    <entry>
-		      Display the <link linkend='chapFAQ'>&aptitude;
-		      FAQ</link>.
+		      <link linkend='chapFAQ'>&aptitude;
+		      FAQ</link> を表示します。
 		    </entry>
 		  </row>
 
@@ -2612,8 +2595,7 @@ Abort.</screen>
 		    <entry>&help-changelog;</entry>
 
 		    <entry>
-		      Display a history of the major changes made to
-		      &aptitude;.
+		      &aptitude; に加えられた主な変更の履歴を表示します。
 		    </entry>
 		  </row>
 
@@ -2621,8 +2603,7 @@ Abort.</screen>
 		    <entry>&help-license;</entry>
 
 		    <entry>
-		      Display the terms under which you may copy,
-		      modify, and distribute &aptitude;.
+		      &aptitude; のコピー・修正・配布をおこなう場合に基づくべき条項を表示します。
 		    </entry>
 		  </row>
 		</tbody>
@@ -2633,29 +2614,29 @@ Abort.</screen>
       </section>
 
       <section id='secViews'>
-	<title>Working with multiple views</title>
+	<title>複数の画面を用いた作業</title>
 
 	<para>
-	  &aptitude; allows you to work with several <quote>views</quote> at once.
-	  A <quote>view</quote> (sometimes called a <quote>screen</quote>) is simply something
-	  that can appear in the area of the screen below the menu
-	  bar.  The most common view is the package list, but download
-	  views are also common.
+	  &aptitude; を用いると、
+	  同時に複数の <quote>画面</quote> で作業できます。
+	  <quote>画面</quote> (<quote>スクリーン</quote> と呼ばれることもあります。) は、
+	  単に、メニューバーの下の画面領域に表示できるものです。
+	  最もよく用いられる画面はパッケージ一覧ですが、
+	  ダウンロード画面もよく用いられます。
 	</para>
 
 	<para>
-	  When several views are open at once, a bar listing all the
-	  active views will appear at the top of the screen.  For
-	  instance, if I examine <systemitem>apt</systemitem> by
-	  pressing <keycap>Enter</keycap>, then examine
-	  <systemitem>libc6</systemitem>, the screen will look
-	  something like this:
+	  複数の画面を同時に開いているときには、
+	  アクティブな画面をすべて一覧表示するバーがスクリーンの最上部に現れます。
+	  例えば、<keycap>Enter</keycap> を押して <systemitem>apt</systemitem>
+	  を検査し、その後 <systemitem>libc6</systemitem> を検査すると、
+	  スクリーンはこのような感じになるでしょう。
 	</para>
 
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/views-tab-bar.png' format='PNG'/>
+	      <imagedata fileref='images/views-tab-bar.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -2687,35 +2668,35 @@ GNU C Library: Shared libraries and Timezone data</screen>
 	</screenshot>
 
 	<para>
-	  You can close the current view using &views-close;.  To
-	  switch to the next or previous view, use &views-next; and
-	  &views-prev;, or click on the view's name at the top of the
-	  screen; you can also find a list of all active views in the
-	  Views menu.
+	  現在の画面は &views-close; で閉じることができます。
+	  次の画面や前の画面に切り替えるには &views-next; と &views-prev;
+	  を用いるか、
+	  スクリーン最上部の画面の名前の上でクリックしてください。
+	  アクティブな画面すべての一覧は「表示」メニューでも表示できます。
 	</para>
 
 	<para>
-	  As shown above, some commands (for instance, viewing
-	  information about a package) will create new views
-	  automatically; you can also explicitly create a new view
-	  using &views-new; or &views-browse;.
+	  上に示したとおり、
+	  一部のコマンド (例えばパッケージに関する情報を表示するコマンド) は、
+	  新しい画面を自動的に作成します。&views-new; や &views-browse;
+	  を用いて新しい画面を明示的に作成することも可能です。
 	</para>
       </section>
 
       <section id='secBecomingRoot'>
-	<title>Becoming &root;</title>
+	<title>&root; になる</title>
 
 	<para>
-	  Some actions, such as updating the package lists, can only
-	  be performed as &root;.  If you are not &root; and you try
-	  to update the package lists, &aptitude; will ask if you want
-	  to become &root;:
+	  パッケージ一覧の更新など一部のアクションは &root;
+	  でしか実行できません。&root;
+	  でない状態でパッケージ一覧を更新しようとした場合、&aptitude;
+	  は &root; になりたいか尋ねます。
 	</para>
 
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/become-root-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/become-root-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -2748,18 +2729,18 @@ Th+-------------------------------------------------------------------------+
 	</screenshot>
 
 	<para>
-	  If you select <quote>Become root</quote>, &aptitude; will prompt you for
-	  &root;'s password; when you have correctly entered it,
-	  &aptitude; will perform the action that required &root;
-	  privileges.  You will still be &root; after the action
-	  completes.
+	  <quote>root になる</quote> を選択すると、&aptitude;
+	  はプロンプトを出して &root; のパスワードを求めます。
+	  パスワードを正しく入力し終えると、&aptitude; は、その &root;
+	  権限の必要なアクションを実行します。
+	  アクションが完了した後もまだあなたは &root; になっています。
 	</para>
 
 	<para>
-	  You can switch to the &root; account at any time using the
-	  command &actions-su;.  Any changes you have made to package
-	  states will be preserved (but will not be saved until you
-	  quit &aptitude;).
+	  &actions-su; コマンドを用いるといつでも &root;
+	  アカウントに切り換えることが可能です。
+	  パッケージ状態に対しておこなった変更はすべて保存されます (しかし &aptitude;
+	  を終了するまで保存されるわけではありません)。
 	</para>
       </section>
     </section>
@@ -2774,12 +2755,12 @@ Th+-------------------------------------------------------------------------+
       </para>
 
       <section>
-	<title>Managing the package list</title>
+	<title>パッケージ一覧の操作</title>
 
 	<para>
-	  To keep the list of packages up-to-date, it is recommended
-	  that you periodically update it.  You can do this using the
-	  &actions-update; command.
+	  パッケージ一覧は、最新状態に保つために、
+	  定期的に更新することをお勧めします。更新は、&actions-update;
+	  コマンドを用いておこなえます。
 	</para>
       </section>
 
@@ -3099,7 +3080,7 @@ Th+-------------------------------------------------------------------------+
 	  <screenshot>
 	    <mediaobject>
 	      <imageobject>
-		<imagedata fileref='images/info-snapshot.png' format='PNG'/>
+		<imagedata fileref='images/info-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	      </imageobject>
 
 	      <textobject role='text'>
@@ -3209,8 +3190,8 @@ i A 0.5.25
 	  <tgroup cols='2'>
 	    <thead>
 	      <row>
-		<entry>Command</entry>
-		<entry>Description</entry>
+		<entry>コマンド</entry>
+		<entry>説明</entry>
 	      </row>
 	    </thead>
 
@@ -3397,19 +3378,21 @@ i A 0.5.25
 	<title>Solving Dependency Problems</title>
 
 	<para>
-	  If a dependency problem arises, &aptitude; can assist you in
-	  resolving it.  As soon as a problem occurs, a red bar will
-	  appear at the bottom of the screen with a summary of
-	  &aptitude;'s suggestion about how to fix it.  For instance,
-	  in the following screenshot, &aptitude; is indicating that
-	  it can resolve the situation by keeping two packages at
-	  their current versions.
+	  <!-- FIXME: ja.po の方の訳語と統一し、必要であれば改良する!! -->
+	  依存関係の問題が生じた場合、その解決に &aptitude;
+	  の助けを借りることができます。
+	  問題が生じるとすぐにスクリーンの最下部に赤いバーが現れ、そこに、
+	  その問題の解決方法に関する &aptitude;
+	  の提案を要約したものが表示されます。
+	  例えば、次のスクリーンショットにおいて &aptitude; は、2
+	  つのパッケージを現在のバージョンに一時固定すると問題の状況を解決できる、
+	  と示唆しています。
 	</para>
 
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/broken-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/broken-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -3442,19 +3425,17 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	</screenshot>
 
 	<para>
-	  As indicated at the bottom of the screen, you can view
-	  additional solutions by pressing <keycap>.</keycap> and
-	  <keycap>,</keycap>, apply the current solution by pressing
-	  <keycap>!</keycap>, and examine the solution in more detail
-	  by pressing <keycap>e</keycap>.  When you examine the
-	  current solution, a screen similar to the following will
-	  appear:
+	  スクリーン最下部に示されているように、<keycap>.</keycap>
+	  や <keycap>,</keycap> を押すと別の解決方法を表示できます。
+	  また、<keycap>!</keycap> を押すと現在の解決方法を適用でき、
+	  <keycap>e</keycap> を押すとその解決方法をさらに詳しく検討できます。
+	  現在選択中の解決方法を検討すると次のようなスクリーンが現れます。
 	</para>
 
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/solution-screen-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/solution-screen-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -3500,7 +3481,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/solution-explanation-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/solution-explanation-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -3569,7 +3550,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/solution-reject-and-approve-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/solution-reject-and-approve-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -3643,7 +3624,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	<screenshot>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/solution-story-snapshot.png' format='PNG'/>
+	      <imagedata fileref='images/solution-story-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	    </imageobject>
 
 	    <textobject role='text'>
@@ -3682,46 +3663,45 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
       </section>
 
       <section id='secInstallRun'>
-	<title>Downloading, installing, and removing packages</title>
+	<title>パッケージのダウンロード・インストール・削除</title>
 
 	<para>
-	  Changing package states as described in the previous section
-	  does not actually affect what is installed on your system.
-	  Thus, you can adjust the state of packages without affecting
-	  your system until you are happy with what you see; once you
-	  are, you can <quote>commit</quote> the changes by actually installing and
-	  removing packages.<footnote><para>This is sometimes referred
-	  to as an <quote>install run</quote>, even though you might be upgrading
-	  or removing packages in addition to installing
-	  them.</para></footnote>
+	  前のセクションで説明したようにパッケージ状態に変更を加えても、
+	  実際には、システムにインストールされているものに影響を与えません。
+	  したがって、見えている状態に満足するまで、
+	  システムに影響を与えずにパッケージ状態を調整することが可能です。
+	  満足したら、パッケージのインストールや削除を実際に行い、
+	  変更を <quote>コミット</quote> できます。
+	  <footnote><para>これを <quote>インストールの実行</quote>
+	  という言葉で表すこともあります。しかしそのような場合でも、
+	  パッケージのインストールだけでなく更新や削除をしてかまいません。</para></footnote>
 	</para>
 
 	<para>
-	  To commit your changes, use the &actions-install; command.
-	  Selecting this command will display a preview screen
-	  describing the changes that will be performed.  This screen
-	  is just a package list, and you can manipulate the packages
-	  (for instance, cancelling unwanted removals) in the same way
-	  that you could in the main list.
+	  変更をコミットするには &actions-install; コマンドを使用してください。
+	  このコマンドを選択すると、
+	  実行予定の変更を記述したプレビュースクリーンが表示されます。
+	  このスクリーンは単なる 1 つのパッケージ一覧なので、
+	  メインのパッケージ一覧と同じ方法でパッケージを操作 (例えば、望まないパッケージを削除) できます。
 	</para>
 
 	<para>
-	  When you are done, use &views-close; to cancel the
-	  installation, or use &actions-install; to proceed.
-	  &aptitude; will download any files that need to be
-	  downloaded, then prompt you to continue with the
-	  installation.  When you select <quote>Continue</quote>, the installations
-	  and removals will commence.
+	  プレビュースクリーンでの操作を終えたら、
+	  インストールを取り消すには &views-close; を、
+	  先に進むには &actions-install; を使用してください。&aptitude; は、
+	  ダウンロードが必要なファイルをすべてダウンロードし、
+	  インストールを続行するか尋ねるプロンプトを出します。
+	  <quote>続行</quote> を選択するとインストールや削除が開始します。
 	</para>
 
 	<para>
-	  Packages that are downloaded by &aptitude; are placed in a
-	  cache directory (typically
-	  <filename>/var/cache/apt/archives</filename>).  Normally,
-	  they are just left in this directory ad infinitum.  To
-	  delete all the files in this directory, use &actions-clean;;
-	  to delete only files which cannot be downloaded again (ie,
-	  obsolete packages), use &actions-clean-obs;.
+	  &aptitude; によってダウンロードされたパッケージはキャッシュディレクトリ (通常は <filename>/var/cache/apt/archives</filename>)
+	  に置かれます。通常、
+	  パッケージはこのディレクトリ内に永遠に残されます。
+	  このディレクトリ内のファイルをすべて削除するには &actions-clean;
+	  を使用してください。
+	  再度ダウンロードできない (つまり廃止されたパッケージの)
+	  ファイルだけ削除するには &actions-clean-obs; を使用してください。
 	</para>
       </section>
 
@@ -3825,7 +3805,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  <screenshot>
 	    <mediaobject>
 	      <imageobject>
-		<imagedata fileref='images/trust-snapshot.png' format='PNG'/>
+		<imagedata fileref='images/trust-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	      </imageobject>
 
 	      <textobject role='text'>
@@ -3900,51 +3880,55 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
       </section>
 
       <section id='secAutoInstall'>
-	<title>Managing automatically installed packages</title>
+	<title>自動的にインストールされたパッケージの管理</title>
 
 	<para>
-	  To install one package, it is often necessary to install
-	  several others (to fulfill its dependencies).  For instance,
-	  if you wish to install the
-	  <systemitem>clanbomber</systemitem> package, you must also
-	  install the package <systemitem>libclanlib2</systemitem>.
-	  If you remove <systemitem>clanbomber</systemitem> again, you
-	  probably no longer need the
-	  <systemitem>libclanlib2</systemitem> package; &aptitude;
-	  will attempt to detect this and automatically remove the
-	  <systemitem>libclanlib2</systemitem> package.
+	  1 つのパッケージをインストールするために、
+	  他のパッケージをいくつかインストールする (依存関係を満たす)
+	  必要があることが、しばしばあります。
+	  例えば <systemitem>clanbomber</systemitem>
+	  パッケージをインストールしたい場合、
+	  <systemitem>libclanlib2</systemitem>
+	  パッケージもインストールしなければなりません。
+	  さらに <systemitem>clanbomber</systemitem> を削除する場合、
+	  <systemitem>libclanlib2</systemitem>
+	  パッケージはおそらくもう必要ないでしょう。&aptitude;
+	  は <systemitem>libclanlib2</systemitem> が必要ないことを検出し、
+	  <systemitem>libclanlib2</systemitem> パッケージを自動的に削除します。
 	</para>
 
 	<para>
-	  It works like this: when you install a package, &aptitude;
-	  will automatically install any other packages on which it
-	  depends.  These packages are marked as having been
-	  <quote>automatically installed</quote>; &aptitude; will monitor them and
-	  remove them when they are no longer depended upon by any
-	  manually installed package
+	  このようなパッケージの依存関係の処理は次のような方法で行われます。
+	  パッケージをインストールする際に、&aptitude; は、
+	  そのパッケージが依存する他のパッケージをすべて自動的にインストールします。
+	  これらのパッケージには <quote>自動的にインストールされた</quote>
+	  という印がつけられます。
+	  &aptitude; はそれらを監視し、
+	  手動でインストールされたどのパッケージからももうそれらが依存されていない場合に、
+	  削除します
 	  <footnote>
 	    <para>
-	      More precisely: they will be removed when there is no
-	      path via Depends, PreDepends, or Recommends to them from
-	      a manually installed package.  If <link
+	      より正確には、自動的にインストールされたパッケージは、
+	      手動でインストールされたパッケージから依存 (Depends)・事前依存 (PreDepends)・推奨 (Recommends)
+	      される経路が存在しない場合に削除されます。<link
 	      linkend='configKeepSuggests'>Aptitude::Keep-Suggests</link>
-	      is true, a Suggests relationship is also enough to keep
-	      a package installed.
+	      が true の場合は、提案 (Suggests) の依存関係も、
+	      パッケージをインストール状態に保つのに充分です。
 	    </para>
 	  </footnote>
-	  .  They will appear in the preview as
-	  <quote>packages being removed because they are no longer used.</quote>
+	  。依存されなくなったために削除対象となったパッケージは、
+	  <quote>もはや使われていないので削除されるパッケージ</quote>
+	  としてプレビューに現れます。
 	</para>
 
 	<para>
-	  As with any automatic process, there is a potential for
-	  things to go haywire.  For instance, even if a package was
-	  automatically installed to start with, it might turn out to
-	  be useful in its own right.  You can cancel the <quote>automatic</quote>
-	  flag at any time by pressing <keycap>m</keycap>; if the
-	  package is already being removed, you can use
-	  &package-install; to cancel the removal and clear the
-	  <quote>automatic</quote> flag.
+	  あらゆる自動処理と同様、この処理にも不都合になる可能性があります。
+	  例えば、最初は自動的にインストールされたパッケージであっても、
+	  それ自体で有用になるかもしれません。<keycap>m</keycap> を押すと、
+	  パッケージについた <quote>自動</quote> フラグをいつでも取り消せます。
+	  パッケージが既に削除予定となっている場合、&package-install;
+	  を使用すると、
+	  その削除を取り消して <quote>自動</quote> フラグを取り除けます。
 	</para>
       </section>
     </section>
@@ -4720,21 +4704,21 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </note>
 
 	  <segmentedlist>
-	    <segtitle>Escape</segtitle>
-	    <segtitle>Name</segtitle>
-	    <segtitle>Default size</segtitle>
-	    <segtitle>Expandable</segtitle>
-	    <segtitle>Description</segtitle>
+	    <segtitle>エスケープ表記</segtitle>
+	    <segtitle>名前</segtitle>
+	    <segtitle>デフォルトサイズ</segtitle>
+	    <segtitle>拡張可能か?</segtitle>
+	    <segtitle>説明</segtitle>
 
 	    <seglistitem>
 	      <seg><literal>%%</literal></seg>
-	      <seg>Literal <literal>%</literal></seg>
+	      <seg>リテラル <literal>%</literal></seg>
 	      <seg>1</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		This is not really an escape; it simply inserts a
-		percent sign into the output at the point at which it
-		occurs.
+		これは実際にはエスケープ表記ではありません。
+		出力において、
+		この表記がある場所にパーセント記号を挿入するだけです。
 	      </seg>
 	    </seglistitem>
 
@@ -4742,7 +4726,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg><literal>%#<replaceable>number</replaceable></literal></seg>
 	      <seg>Parameter Replacement</seg>
 	      <seg>Variable</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
 		In some circumstances, a display format string will
 		have <quote>parameters</quote>: for instance, in the
@@ -4756,90 +4740,88 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	    <seglistitem>
 	      <seg><literal>%a</literal></seg>
-	      <seg>Action Flag</seg>
+	      <seg>アクションフラグ</seg>
 	      <seg>1</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		A single-character flag summarizing any action to be
-		performed on the package, as described in
-		<xref linkend='figureActionFlag'/>.
+		パッケージに対して実行予定のあらゆるアクションを簡潔に表す、
+		単一文字のフラグ (<xref
+		linkend='figureActionFlag'/> を参照してください)。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%A</literal></seg>
-	      <seg>Action</seg>
+	      <seg>アクション</seg>
 	      <seg>10</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		A somewhat more verbose description of the action to
-		be performed on the package.
+		パッケージに対して実行予定のアクションについての、
+		いくらか冗長な記述。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%B</literal></seg>
-	      <seg>Broken Count</seg>
+	      <seg>破損の数</seg>
 	      <seg>12</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		If there are no broken packages, produces nothing.
-		Otherwise, produces a string such as
+		破損パッケージがない場合は何も生成しません。
+		存在する場合は、破損パッケージ数を表す
 		<quote><computeroutput>Broken: 10</computeroutput></quote>
-		describing the number of broken packages.
+		のような文字列を生成します。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%c</literal></seg>
-	      <seg>Current State Flag</seg>
+	      <seg>現在の状態のフラグ</seg>
 	      <seg>1</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		A single-character flag summarizing the current state
-		of the package, as described in <xref
-		linkend='figureCurrentFlag'/>.
+		パッケージの現在の状態を簡潔に表す、単一文字のフラグ (<xref
+		linkend='figureCurrentFlag'/> を参照してください)。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%C</literal></seg>
-	      <seg>Current State</seg>
+	      <seg>現在の状態</seg>
 	      <seg>11</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		A more verbose description of the current state of the
-		package.
+		パッケージの現在の状態についての、より冗長な記述。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%d</literal></seg>
-	      <seg>Description</seg>
+	      <seg>説明</seg>
 	      <seg>40</seg>
-	      <seg>Yes</seg>
+	      <seg>はい</seg>
 	      <seg>
-		The package's short description.
+		パッケージ説明・短尺版。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%D</literal></seg>
-	      <seg>Package Size</seg>
+	      <seg>パッケージサイズ</seg>
 	      <seg>6</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		The size of the package file containing the package.
+		パッケージを含むパッケージファイルのサイズ。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%H</literal></seg>
-	      <seg>Hostname</seg>
+	      <seg>ホスト名</seg>
 	      <seg>15</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		The name of the computer on which &aptitude; is running.
+		&aptitude; を実行しているコンピュータの名前。
 	      </seg>
 	    </seglistitem>
 
@@ -4847,7 +4829,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg><literal>%i</literal></seg>
 	      <seg>Pin priority</seg>
 	      <seg>4</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
 		Displays the highest priority assigned to a package
 		version; for packages, displays the priority of the
@@ -4857,213 +4839,208 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	    <seglistitem>
 	      <seg><literal>%I</literal></seg>
-	      <seg>Installed Size</seg>
+	      <seg>インストールサイズ</seg>
 	      <seg>6</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		The (estimated) amount of space the package takes up on disk.
+		パッケージが占有するディスク領域の (推定) 量。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%m</literal></seg>
-	      <seg>Maintainer</seg>
+	      <seg>メンテナ</seg>
 	      <seg>30</seg>
-	      <seg>Yes</seg>
+	      <seg>はい</seg>
 	      <seg>
-		The maintainer of the package.
+		パッケージのメンテナ。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%M</literal></seg>
-	      <seg>Automatic Flag</seg>
+	      <seg>自動フラグ</seg>
 	      <seg>1</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		If the package is automatically installed, outputs
-		<quote><computeroutput>A</computeroutput></quote>; otherwise,
-		outputs nothing.
+		パッケージが自動的にインストールされたものである場合、
+		<quote><computeroutput>A</computeroutput></quote> を出力します。
+		そうでない場合は何も出力しません。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%n</literal></seg>
-	      <seg>Program Version</seg>
-	      <seg>The length of <quote>&VERSION;</quote>.</seg>
-	      <seg>No</seg>
+	      <seg>プログラムバージョン</seg>
+	      <seg><quote>&VERSION;</quote> の長さ。</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		Outputs the version of the program, currently
-		<quote><computeroutput>&VERSION;</computeroutput></quote>.
+		プログラムのバージョンを出力します。現在は
+		<quote><computeroutput>&VERSION;</computeroutput></quote> です。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%N</literal></seg>
-	      <seg>Program Name</seg>
-	      <seg>The length of the program name.</seg>
-	      <seg>No</seg>
+	      <seg>プログラム名</seg>
+	      <seg>プログラム名の長さ。</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		Outputs the program name; usually
-		<quote><computeroutput>aptitude</computeroutput></quote>.
+		プログラムの名前を出力します。通常は
+		<quote><computeroutput>aptitude</computeroutput></quote> です。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%o</literal></seg>
-	      <seg>Download Size</seg>
+	      <seg>ダウンロードサイズ</seg>
 	      <seg>15</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		If no packages are going to be installed, outputs
-		nothing.  Otherwise, outputs a string describing the
-		total size of all the package files which will be
-		installed (an estimate of how much needs to be
-		downloaded); for instance, <quote><computeroutput>DL size:
-		1000B</computeroutput></quote>.
+		インストール予定のパッケージがない場合は何も出力しません。
+		パッケージがある場合は、
+		インストール予定の全パッケージファイルの合計のサイズ (必要なダウンロードの量を示す推定値)
+		を表す文字列 (例えば <quote><computeroutput>DL サイズ:
+		1000B</computeroutput></quote>) を出力します。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%p</literal></seg>
-	      <seg>Package Name</seg>
+	      <seg>パッケージ名</seg>
 	      <seg>30</seg>
-	      <seg>Yes</seg>
+	      <seg>はい</seg>
 	      <seg>
-		Outputs the name of the package.  When a package is
-		displayed in a tree context, the name of the package
-		will be indented, if possible, according to its depth
-		in the tree.
+		パッケージの名前を出力します。
+		パッケージがツリー状の一覧に表示される場合、可能であれば、
+		パッケージの名前はツリー内での深さに応じてインデントされます。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%P</literal></seg>
-	      <seg>Priority</seg>
+	      <seg>優先度</seg>
 	      <seg>9</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		Outputs the priority of the package.
+		パッケージの優先度を出力します。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%r</literal></seg>
-	      <seg>Reverse Depends Count</seg>
+	      <seg>逆依存の数</seg>
 	      <seg>2</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		Outputs the approximate number of installed packages
-		which depend upon the package.
+		パッケージに依存しているインストール済みパッケージのおおよその数を出力します。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%R</literal></seg>
-	      <seg>Abbreviated Priority</seg>
+	      <seg>優先度・簡約版</seg>
 	      <seg>3</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		Outputs an abbreviated description of the package's
-		priority: for instance,
-		<quote><computeroutput>Important</computeroutput></quote> becomes
-		<quote><computeroutput>Imp</computeroutput></quote>.
+		パッケージの優先度の簡潔な表記を出力します。例えば
+		<quote><computeroutput>重要</computeroutput></quote> は
+		<quote><computeroutput>重</computeroutput></quote> となります。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%s</literal></seg>
-	      <seg>Section</seg>
+	      <seg>セクション</seg>
 	      <seg>10</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		Outputs the section of the package.
+		パッケージのセクションを出力します。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%S</literal></seg>
-	      <seg>Trust Status</seg>
+	      <seg>信頼状態</seg>
 	      <seg>1</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		If the package is untrusted, displays the letter "U".
+		パッケージが信頼できないものである場合、"U"
+		の文字を表示します。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%t</literal></seg>
-	      <seg>Archive</seg>
+	      <seg>アーカイブ</seg>
 	      <seg>10</seg>
-	      <seg>Yes</seg>
+	      <seg>はい</seg>
 	      <seg>
-		The archive in which the package is found.
+		パッケージが発見されたアーカイブ。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%T</literal></seg>
-	      <seg>Tagged</seg>
+	      <seg>タグつき</seg>
 	      <seg>1</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		Outputs <quote><computeroutput>*</computeroutput></quote> if the
-		package is tagged, nothing
-		otherwise.<footnote><para>Currently tagging is not
-		supported; this escape is for future
-		use.</para></footnote>
+		パッケージにタグがついている場合は
+		<quote><computeroutput>*</computeroutput></quote> を出力し、
+		そうでない場合は何も出力しません。
+		<footnote><para>タグづけは現在サポートされていません。
+		このエスケープ表記は将来使用するためのものです。</para></footnote>
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%u</literal></seg>
-	      <seg>Disk Usage Change</seg>
+	      <seg>ディスク使用量の変化</seg>
 	      <seg>30</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		If the scheduled actions will alter the amount of
-		space used on the disk, outputs a description of the
-		change in disk space; for instance, <quote><computeroutput>Will use
-		100M of disk space.</computeroutput></quote>
+		予定されているアクションによって、
+		使用されるディスク領域の量が変化する場合は、
+		ディスク領域の変化を記述する文字列 (例えば、
+		<quote><computeroutput>100MB のディスク領域を新たに使用します</computeroutput></quote>)
+		を出力します。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem>
 	      <seg><literal>%v</literal></seg>
-	      <seg>Current Version</seg>
+	      <seg>現在のバージョン</seg>
 	      <seg>10</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		Outputs the currently installed version of the
-		package, or
-		<computeroutput>&lt;none&gt;</computeroutput> if the
-		package is not currently installed.
+		パッケージが現在インストールされている場合はそのバージョンを、
+		現在インストールされていない場合は
+		<computeroutput>&lt;なし&gt;</computeroutput> を、出力します。
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem id='formatCandVer'>
 	      <seg><literal>%V</literal></seg>
-	      <seg>Candidate Version</seg>
+	      <seg>インストール候補のバージョン</seg>
 	      <seg>10</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
 		Outputs the version of the package which would be
 		installed if &package-install; were issued on the
 		package, or
 		<computeroutput>&lt;none&gt;</computeroutput> if the
-		package is not currently installed.
+		package is not currently available.
 	      </seg>
 	    </seglistitem>
 
 	    <seglistitem id='formatSizeChange'>
 	      <seg><literal>%Z</literal></seg>
-	      <seg>Size Change</seg>
+	      <seg>サイズの変化</seg>
 	      <seg>7</seg>
-	      <seg>No</seg>
+	      <seg>いいえ</seg>
 	      <seg>
-		Outputs how much additional space will be used or how
-		much space will be freed by installing, upgrading, or
-		removing a package.
+		パッケージのインストール・更新・削除によって使用または解放されるディスク領域の量を出力します。
 	      </seg>
 	    </seglistitem>
 	  </segmentedlist>
@@ -5483,9 +5460,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <tgroup cols='3'>
 	    <thead>
 	      <row>
-		<entry>Command</entry>
-		<entry>Default</entry>
-		<entry>Description</entry>
+		<entry>コマンド</entry>
+		<entry>デフォルト</entry>
+		<entry>説明</entry>
 	      </row>
 	    </thead>
 
@@ -6077,7 +6054,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		<entry><literal>Quit</literal></entry>
 		<entry><literal>q</literal></entry>
 		<entry>
-		  Close the current view.
+		  現在の画面を閉じます。
 		</entry>
 	      </row>
 
@@ -6298,8 +6275,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <tgroup cols='2'>
 	    <thead>
 	      <row>
-		<entry>Key name</entry>
-		<entry>Description</entry>
+		<entry>キーの名前</entry>
+		<entry>説明</entry>
 	      </row>
 	    </thead>
 
@@ -6607,8 +6584,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <tgroup cols='2'>
 	    <thead>
 	      <row>
-		<entry>Domain</entry>
-		<entry>Description</entry>
+		<entry>ドメイン</entry>
+		<entry>説明</entry>
 	      </row>
 	    </thead>
 
@@ -6915,36 +6892,36 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</para>
 
 	<figure id='figStyles'>
-	  <title>Customizable styles in &aptitude;</title>
+	  <title>&aptitude; においてカスタマイズ可能なスタイル</title>
 
 	  <informaltable>
 	    <tgroup cols='3'>
 	      <thead>
 		<row>
-		  <entry>Style</entry>
-		  <entry>Default</entry>
-		  <entry>Description</entry>
+		  <entry>スタイル</entry>
+		  <entry>デフォルト</entry>
+		  <entry>説明</entry>
 		</row>
 	      </thead>
 
 	      <tbody>
 		<row>
-		  <entry>Bullet</entry>
+		  <entry><literal>Bullet</literal></entry>
 		  <entry><literal>fg yellow; set bold;</literal></entry>
 		  <entry>
-		    The style of the bullets in bulleted lists.
+		    点付きリストの点のスタイル。
 		  </entry>
 		</row>
 
 		<row>
-		  <entry>ChangelogNewerVersion</entry>
+		  <entry><literal>ChangelogNewerVersion</literal></entry>
 		  <entry><literal>set bold;</literal></entry>
 		  <entry>
-		    The style of newer versions of the package in the
-		    changelog view.  Note that &aptitude; will only
-		    highlight newer versions of the package if you
-		    have the package libparse-debianchangelog-perl
-		    installed.
+		    変更履歴表示における、
+		    新しめのバージョンのパッケージのスタイル。
+		    libparse-debianchangelog-perl
+		    パッケージをインストールしている場合、&aptitude;
+		    は新しめのバージョンのパッケージのみをハイライトすることに注意してください。
 		  </entry>
 		</row>
 
@@ -6952,7 +6929,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>Default</literal></entry>
 		  <entry><literal>fg white; bg black;</literal></entry>
 		  <entry>
-		    The basic style of the screen.
+		    スクリーンの基本スタイル。
 		  </entry>
 		</row>
 
@@ -6960,7 +6937,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>DepBroken</literal></entry>
 		  <entry><literal>fg black; bg red;</literal></entry>
 		  <entry>
-		    The style of unfulfilled dependencies.
+		    満たされていない依存関係のスタイル。
 		  </entry>
 		</row>
 
@@ -6968,8 +6945,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>DisabledMenuEntry</literal></entry>
 		  <entry><literal>fg black; bg blue; set dim;</literal></entry>
 		  <entry>
-		    The style of menu entries that are disabled and
-		    cannot be used.
+		    使用不能になっていて使用できないメニューのエントリのスタイル。
 		  </entry>
 		</row>
 
@@ -6977,9 +6953,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>DownloadHit</literal></entry>
 		  <entry><literal>fg black; bg green;</literal></entry>
 		  <entry>
-		    The style used to indicate that a file was
-		    <quote>hit</quote>: i.e., it has not changed since
-		    the last time it was downloaded.
+		    ファイルが過去に<quote>ヒット</quote>された、
+		    つまり最後にダウンロードしたときからファイルが変化していないことを示すのに使用されるスタイル。
 		  </entry>
 		</row>
 
@@ -6987,8 +6962,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>DownloadProgress</literal></entry>
 		  <entry><literal>fg blue; bg yellow;</literal></entry>
 		  <entry>
-		    The style of the progress indicator for a
-		    download.
+		    ダウンロードの進行状況表示のスタイル。
 		  </entry>
 		</row>
 
@@ -6996,15 +6970,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>EditLine</literal></entry>
 		  <entry><literal>fg white; bg black; clear reverse;</literal></entry>
 		  <entry>
-		    The style of line editors (for instance, the entry
-		    in the <quote>Search</quote> dialog).
+		    ラインエディタのスタイル (例えば <quote>検索</quote>
+		    ダイアログ内のエントリ)。
 		  </entry>
 		</row>
 
 		<row>
 		  <entry><literal>Error</literal></entry>
 		  <entry><literal>fg white; bg red; set bold;</literal></entry>
-		  <entry>The style of error messages.</entry>
+		  <entry>エラーメッセージのスタイル。</entry>
 		</row>
 
 
@@ -7012,7 +6986,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>Header</literal></entry>
 		  <entry><literal>fg white; bg blue; set bold;</literal></entry>
 		  <entry>
-		    The style of screen headers.
+		    スクリーンのヘッダのスタイル。
 		  </entry>
 		</row>
 
@@ -7020,8 +6994,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>HighlightedMenuBar</literal></entry>
 		  <entry><literal>fg white; bg blue; set bold,reverse;</literal></entry>
 		  <entry>
-		    The style of the currently selected menu name in
-		    the menu bar.
+		    メニューバーで現在選択中のメニュー名のスタイル。
 		  </entry>
 		</row>
 
@@ -7029,8 +7002,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>HighlightedMenuEntry</literal></entry>
 		  <entry><literal>fg white; bg blue; set bold,reverse;</literal></entry>
 		  <entry>
-		    The style of the currently selected choice in a
-		    menu.
+		    メニューで現在選択中の選択項目のスタイル。
 		  </entry>
 		</row>
 
@@ -7038,8 +7010,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>MediaChange</literal></entry>
 		  <entry><literal>fg yellow; bg red; set bold;</literal></entry>
 		  <entry>
-		    The style of the dialog used to ask the user to
-		    insert a new CD.
+		    新しい CD を挿入するようユーザに要求するのに用いられるダイアログのスタイル。
 		  </entry>
 		</row>
 
@@ -7048,7 +7019,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>fg white; bg blue; set bold;</literal></entry>
 
 		  <entry>
-		    The style of the menu bar.
+		    メニューバーのスタイル。
 		  </entry>
 		</row>
 
@@ -7056,8 +7027,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>MenuBorder</literal></entry>
 		  <entry><literal>fg white; bg blue; set bold;</literal></entry>
 		  <entry>
-		    The style of the borders that surround a drop-down
-		    menu.
+		    ドロップダウンメニューを囲む枠のスタイル。
 		  </entry>
 		</row>
 
@@ -7065,7 +7035,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>MenuEntry</literal></entry>
 		  <entry><literal>fg white; bg blue;</literal></entry>
 		  <entry>
-		    The style of each entry in a drop-down menu.
+		    ドロップダウンメニューの各エントリのスタイル。
 		  </entry>
 		</row>
 
@@ -7073,8 +7043,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>MineBomb</literal></entry>
 		  <entry><literal>fg red; set bold;</literal></entry>
 		  <entry>
-		    The style of bombs in <link
-		    linkend='secMinesweeper'>Minesweeper</link>.
+		    <link
+		    linkend='secMinesweeper'>マインスイーパ</link>の爆弾のスタイル。
 		  </entry>
 		</row>
 
@@ -7082,8 +7052,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>MineBorder</literal></entry>
 		  <entry><literal>set bold;</literal></entry>
 		  <entry>
-		    The style of the border drawn around a <link
-		    linkend='secMinesweeper'>Minesweeper</link> board.
+		    <link
+		    linkend='secMinesweeper'>マインスイーパ</link>のボードの周りに描かれる枠のスタイル。
 		  </entry>
 		</row>
 
@@ -7091,19 +7061,18 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>MineFlag</literal></entry>
 		  <entry><literal>fg red; set bold;</literal></entry>
 		  <entry>
-		    The style of flags in <link
-		    linkend='secMinesweeper'>Minesweeper</link>.
+		    <link
+		    linkend='secMinesweeper'>マインスイーパ</link>のフラグのスタイル。
 		  </entry>
 		</row>
 
 		<row>
 		  <entry><literal>MineNumber</literal><replaceable>N</replaceable></entry>
-		  <entry>Various</entry>
+		  <entry>様々</entry>
 		  <entry>
-		    The style of the number
-		    <replaceable>N</replaceable> in Minesweeper;
-		    <replaceable>N</replaceable> may range from 0 to
-		    8.
+		    マインスイーパにおける数字 <replaceable>N</replaceable>
+		    のスタイル。
+		    <replaceable>N</replaceable> の範囲は 0 から 8 です。
 		  </entry>
 		</row>
 
@@ -7111,8 +7080,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>MultiplexTab</literal></entry>
 		  <entry><literal>fg white; bg blue;</literal></entry>
 		  <entry>
-		    The color used to display <quote>tabs</quote>
-		    other than the currently selected one.
+		    現在選択されていない<quote>タブ</quote>を表示するのに使用される色。
 		  </entry>
 		</row>
 
@@ -7120,8 +7088,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>MultiplexTabHighlighted</literal></entry>
 		  <entry><literal>fg blue; bg white;</literal></entry>
 		  <entry>
-		    The color used to display the currently selected
-		    <quote>tab</quote>.
+		    現在選択中の<quote>タブ</quote>を表示するのに使用される色。
 		  </entry>
 		</row>
 
@@ -7129,8 +7096,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgBroken</literal></entry>
 		  <entry><literal>fg red; flip reverse;</literal></entry>
 		  <entry>
-		    The style of packages in the package list which
-		    have unfulfilled dependencies.
+		    パッケージ一覧において満たされていない依存関係をもつパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7138,8 +7104,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgBrokenHighlighted</literal></entry>
 		  <entry><literal>fg red;</literal></entry>
 		  <entry>
-		    The style of highlighted packages in the package
-		    list which have unfulfilled dependencies.
+		    パッケージ一覧において満たされていない依存関係をもつ、
+		    ハイライトされたパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7147,8 +7113,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgNotInstalled</literal></entry>
 		  <entry></entry>
 		  <entry>
-		    The style of packages which are not currently
-		    installed and will not be installed.
+		    現在インストールされておらずインストール予定でもないパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7156,8 +7121,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgNotInstalledHighlighted</literal></entry>
 		  <entry></entry>
 		  <entry>
-		    The style of highlighted packages which are not
-		    currently installed and will not be installed.
+		    現在インストールされておらずインストール予定でもない、
+		    ハイライトされたパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7165,8 +7130,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgIsInstalled</literal></entry>
 		  <entry><literal>set bold;</literal></entry>
 		  <entry>
-		    The style of packages which are currently
-		    installed and for which no actions are scheduled.
+		    現在インストールされており予定中のアクションがないパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7174,9 +7138,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgIsInstalledHighlighted</literal></entry>
 		  <entry><literal>set bold; flip reverse;</literal></entry>
 		  <entry>
-		    The style of highlighted packages which are
-		    currently installed and for which no actions are
-		    scheduled.
+		    現在インストールされており予定中のアクションがない、
+		    ハイライトされたパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7184,8 +7147,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgToHold</literal></entry>
 		  <entry><literal>fg white; flip reverse;</literal></entry>
 		  <entry>
-		    The style of packages in the package list which
-		    are <link linkend='pkgCmdHold'>on hold</link>.
+		    パッケージ一覧において<link
+		    linkend='pkgCmdHold'>固定状態</link>にあるパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7193,9 +7156,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgToHoldHighlighted</literal></entry>
 		  <entry><literal>fg white;</literal></entry>
 		  <entry>
-		    The style of highlighted packages in the package
-		    list which are <link linkend='pkgCmdHold'>on
-		    hold</link>.
+		    パッケージ一覧において<link
+		    linkend='pkgCmdHold'>固定状態</link>にある、
+		    ハイライトされたパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7203,11 +7166,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgToInstall</literal></entry>
 		  <entry><literal>fg green; flip reverse;</literal></entry>
 		  <entry>
-		    The style of packages in the package list which
-		    are being <link
-		    linkend='pkgCmdInstall'>installed</link> (not
-		    upgraded) or <link
-		    linkend='pkgCmdReinstall'>reinstalled</link>.
+		    パッケージ一覧において (更新以外の) <link
+		    linkend='pkgCmdInstall'>インストール</link>または<link
+		    linkend='pkgCmdReinstall'>再インストール</link>予定となっているパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7215,11 +7176,10 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgToInstallHighlighted</literal></entry>
 		  <entry><literal>fg green;</literal></entry>
 		  <entry>
-		    The style of highlighted packages in the package
-		    list which are being <link
-		    linkend='pkgCmdInstall'>installed</link> (not
-		    upgraded) or <link
-		    linkend='pkgCmdReinstall'>reinstalled</link>.
+		    パッケージ一覧において (更新以外の) <link
+		    linkend='pkgCmdInstall'>インストール</link>または<link
+		    linkend='pkgCmdReinstall'>再インストール</link>予定となっている、
+		    ハイライトされたパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7227,20 +7187,19 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgToRemove</literal></entry>
 		  <entry><literal>fg magenta; flip reverse;</literal></entry>
 		  <entry>
-		    The style of packages in the package list which
-		    will be <link
-		    linkend='pkgCmdRemove'>removed</link> or <link
-		    linkend='pkgCmdPurge'>purged</link>.
+		    パッケージ一覧において<link
+		    linkend='pkgCmdRemove'>削除</link>または<link
+		    linkend='pkgCmdPurge'>完全削除</link>予定となっているパッケージのスタイル。
 		  </entry>
 		</row>
 		<row>
 		  <entry><literal>PkgToRemoveHighlighted</literal></entry>
 		  <entry><literal>fg magenta;</literal></entry>
 		  <entry>
-		    The style of highlighted packages in the package
-		    list which will be <link
-		    linkend='pkgCmdRemove'>removed</link> or <link
-		    linkend='pkgCmdPurge'>purged</link>.
+		    パッケージ一覧において<link
+		    linkend='pkgCmdRemove'>削除</link>または<link
+		    linkend='pkgCmdPurge'>完全削除</link>予定となっている、
+		    ハイライトされたパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7248,8 +7207,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgToUpgrade</literal></entry>
 		  <entry><literal>fg cyan; flip reverse;</literal></entry>
 		  <entry>
-		    The style of packages in the package list which
-		    will be upgraded.
+		    パッケージ一覧において更新予定となっているパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7257,8 +7215,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>PkgToUpgradeHighlighted</literal></entry>
 		  <entry><literal>fg cyan;</literal></entry>
 		  <entry>
-		    The style of packages in the package list which
-		    will be upgraded.
+		    パッケージ一覧において更新予定となっている、
+		    ハイライトされたパッケージのスタイル。
 		  </entry>
 		</row>
 
@@ -7266,9 +7224,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>Progress</literal></entry>
 		  <entry><literal>fg blue; bg yellow;</literal></entry>
 		  <entry>
-		    The style of progress indicators such as the one
-		    that appears while the package cache is being
-		    loaded.
+		    パッケージキャッシュのロード中に現れるような進行状況表示のスタイル。
 		  </entry>
 		</row>
 
@@ -7276,7 +7232,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>SolutionActionApproved</literal></entry>
 		  <entry><literal>bg green;</literal></entry>
 		  <entry>
-		    The style of approved actions in a solution.
+		    解決策において承認されたアクションのスタイル。
 		  </entry>
 		</row>
 
@@ -7284,7 +7240,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>SolutionActionRejected</literal></entry>
 		  <entry><literal>bg red;</literal></entry>
 		  <entry>
-		    The style of rejected actions in a solution.
+		    解決策において拒否されたアクションのスタイル。
 		  </entry>
 		</row>
 
@@ -7292,16 +7248,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>Status</literal></entry>
 		  <entry><literal>fg white; bg blue; set bold;</literal></entry>
 		  <entry>
-		    The style of status lines at the bottom of the
-		    screen.
+		    スクリーン最下部のステータスラインのスタイル。
 		  </entry>
 		</row>
 
 		<row id='colorTreeBackground'>
 		  <entry><literal>TreeBackground</literal></entry>
-		  <entry><literal></literal></entry>
+		  <entry></entry>
 		  <entry>
-		    The basic color of all visual lists and trees.
+		    すべての仮想的なリストおよびツリーの基本色。
 		  </entry>
 		</row>
 
@@ -7309,8 +7264,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <entry><literal>TrustWarning</literal></entry>
 		  <entry><literal>fg red; bg black; set bold;</literal></entry>
 		  <entry>
-		    The color used to display warnings about <link
-		    linkend='secTrust'>package trust</link>.
+		    <link
+		    linkend='secTrust'>パッケージの信頼性</link>に関する警告を表示するのに使用される色。
 		  </entry>
 		</row>
 	      </tbody>
@@ -7865,26 +7820,25 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	<title>Configuration file reference</title>
 
 	<section>
-	  <title>Configuration file format</title>
+	  <title>設定ファイルの書式</title>
 
 	  <para>
-	    In its basic form, &aptitude;'s configuration file is a
-	    list of options and their values.  Each line of the file
-	    should have the form
-	    <quote><replaceable>Option</replaceable>
-	    <replaceable>Value</replaceable><literal>;</literal></quote>:
-	    for instance, the following line in the configuration file
-	    sets the option <literal><link
-	    linkend='configTheme'>Aptitude::Theme</link></literal> to
-	    <quote><literal>Dselect</literal></quote>.
+	    &aptitude; の設定ファイルの基本形は、オプションとその値のリストです。
+	    ファイルの各行は、<quote><replaceable>オプション</replaceable>
+	    <replaceable>値</replaceable><literal>;</literal></quote>
+	    という形式になっているべきです。例えば、
+	    設定ファイルの次の行はオプション <literal><link
+	    linkend='configTheme'>Aptitude::Theme</link></literal>
+	    を <quote><literal>Dselect</literal></quote> と設定します。
 	  </para>
 
 	  <screen>Aptitude::Theme "Dselect";</screen>
 
 	  <para>
-	    An option can <quote>contain</quote> other options if they
-	    are written in curly braces between the option and the
-	    semicolon following it, like this:
+	    オプションに別のオプションを<quote>含める</quote>ことも可能です。
+	    そうするには、次のように、
+	    オプションとその後のセミコロンとの間に中括弧を入れ、
+	    その中に別のオプションを書いてください。
 	  </para>
 
 	  <screen>Aptitude::UI {
@@ -7893,15 +7847,16 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 };</screen>
 
 	  <para>
-	    An option that contains other options is sometimes called
-	    a <firstterm>group</firstterm>.  In fact, the double
-	    colons that appear in option names are actually a
-	    shorthand way of indicating containment: the option
-	    <literal>Aptitude::UI::Default-Grouping</literal> is
-	    contained in the group <literal>Aptitude::UI</literal>,
-	    which itself is contained in the group
-	    <literal>Aptitude</literal>.  Thus, if you wanted to, you
-	    could set this option to <literal>""</literal> as follows:
+	    別のオプションを含んだオプションを<firstterm>グループ</firstterm>と呼ぶことがあります。
+	    実は、オプション名に現れる二重コロンは、
+	    本当はオプションの包含関係の省略表現です。つまり、
+	    オプション <literal>Aptitude::UI::Default-Grouping</literal>
+	    はグループ <literal>Aptitude::UI</literal>
+	    に含まれており、<literal>Aptitude::UI</literal>
+	    自体もグループ <literal>Aptitude</literal> に含まれています。
+	    したがって、もしお望みであれば、
+	    このオプション <literal>Aptitude::UI::Default-Grouping</literal>
+	    は次のようにして <literal>""</literal> に設定できます。
 	  </para>
 
 	  <screen>Aptitude {
@@ -7911,59 +7866,54 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 };</screen>
 
           <para>
-	    For more information on the format of the configuration
-	    file, see the manual page
-	    <citerefentry><refentrytitle>apt.conf</refentrytitle><manvolnum>5</manvolnum></citerefentry>.
+	    設定ファイルの書式についてさらに詳しく知りたければ、マニュアルページ
+	    <citerefentry><refentrytitle>apt.conf</refentrytitle><manvolnum>5</manvolnum></citerefentry>
+	    を参照してください。
 	  </para>
 	</section>
 
 	<section>
-	  <title>Locations of configuration files</title>
+	  <title>設定ファイルの場所</title>
 
 	  <para>
-	    &aptitude;'s configuration is read from the following
-	    sources, in order:
+	    &aptitude; の設定は以下のソースから順に読まれます。
 	  </para>
 
 	  <orderedlist>
 	    <listitem>
 	      <para>
-		The user's configuration file,
-		<filename>~/.aptitude/config</filename>.  This file is
-		overwritten when the user modifies settings in the
-		<link linkend='secOptionsMenu'>Options menu</link>.
+		ユーザの設定ファイル <filename>~/.aptitude/config</filename>。
+		このファイルは、ユーザが<link
+		linkend='secOptionsMenu'>「オプション」メニュー</link>の設定に変更を加えたときに上書きされます。
 	      </para>
 	    </listitem>
 
 	    <listitem>
 	      <para>
-		The system configuration file,
-		<filename>/etc/apt/apt.conf</filename>.
+		システムの設定ファイル <filename>/etc/apt/apt.conf</filename>。
 	      </para>
 	    </listitem>
 
 	    <listitem>
 	      <para>
-		Default values stored in
-		<filename>/usr/share/aptitude/aptitude-defaults</filename>.
+		<filename>/usr/share/aptitude/aptitude-defaults</filename>
+		内に格納されているデフォルト値。
 	      </para>
 	    </listitem>
 
 	    <listitem>
 	      <para>
-		Default values built into the program.
+		プログラムに組み込まれているデフォルト値。
 	      </para>
 	    </listitem>
 	  </orderedlist>
 
 	  <para>
-	    When an option is being checked, these sources are
-	    searched in order, and the first one that provides a value
-	    for the option is used.  For instance, setting an option
-	    in <filename>/etc/apt/apt.conf</filename> will override
-	    &aptitude;'s defaults for that option, but will not
-	    override user settings in
-	    <filename>~/.aptitude/config</filename>.
+	    オプションを調べるときにこれらのソースは順に検索され、
+	    そのオプションに対して値を与えるソースのうち最初に見つかったものが使用されます。
+	    例えば、あるオプションを <filename>/etc/apt/apt.conf</filename>
+	    に設定すると、&aptitude; のそのオプションのデフォルト値は上書きされますが、
+	    <filename>~/.aptitude/config</filename> のユーザ設定は上書きされません。
 	  </para>
 	</section>
 
@@ -7984,9 +7934,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <segmentedlist>
 	    <?dbhtml list-presentation="list"?>
 
-	    <segtitle>Option</segtitle>
-	    <segtitle>Default</segtitle>
-	    <segtitle>Description</segtitle>
+	    <segtitle>オプション</segtitle>
+	    <segtitle>デフォルト</segtitle>
+	    <segtitle>説明</segtitle>
 
 	    <seglistitem id='configDir-Aptitude-State'>
 	      <seg><literal>Dir::Aptitude::state</literal></seg>
@@ -8116,7 +8066,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	    <seglistitem id='configCmdLine-Request-Strictness'>
 	      <seg><literal>Aptitude::CmdLine::Request-Strictness</literal></seg>
-	      <seg><literal>0</literal></seg>
+	      <seg><literal>10000</literal></seg>
 	      <seg>
 		When run in command-line mode, if dependency problems
 		are encountered, &aptitude; will add this value to the
@@ -8419,6 +8369,24 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		root</literal> will cause the log to be emailed to
 		&root;.  To log to multiple files or commands, you may
 		set this option to a list of log targets.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configParseDescriptionBullets'>
+	      <seg><literal>Aptitude::Parse-Description-Bullets</literal></seg>
+
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		If this option is enabled, &aptitude; will attempt
+		to automatically detect bulleted lists in package
+		descriptions. <!-- TODO: add an appendix describing
+		the grammar? -->  This will generally improve how
+		descriptions are displayed, but it is not entirely
+		backwards-compatible; some descriptions might be
+		formatted less attractively when this option is
+		<literal>true</literal> than when it is
+		<literal>false</literal>.
 	      </seg>
 	    </seglistitem>
 
@@ -9198,39 +9166,41 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
       </section>
 
       <section id='secThemes'>
-	<title>Themes</title>
+	<title>テーマ</title>
 
 	<para>
-	  A <firstterm>theme</firstterm> in &aptitude; is simply a
-	  collection of settings that <quote>go together</quote>.
-	  Themes work by overriding the default values of options: if
-	  an option is not set in the system configuration file or in
-	  your personal configuration file, &aptitude; will use the
-	  setting from the current theme, if one is available, before
-	  using the standard default value.
+	  &aptitude; の<firstterm>テーマ</firstterm>は、単に、
+	  <quote>釣り合いのとれた</quote> 設定の集まりです。テーマは、
+	  オプションのデフォルトの値を上書きすることで機能します。つまり、
+	  あるオプションがシステムの設定ファイルや個人用の設定ファイルで設定されていない場合、
+	  &aptitude; は標準のデフォルト値を使用する前に、
+	  利用可能であれば現在のテーマの設定を使用します。
 	</para>
 
 	<para>
-	  A theme is simply a named group under
-	  <literal>Aptitude::Themes</literal>; each configuration
-	  option contained in the group will override the
-	  corresponding option in the global configuration.  For
-	  instance, if the <literal>Dselect</literal> theme is
-	  selected, the option
+	  テーマは単に、<literal>Aptitude::Themes</literal> の下の、
+	  名前のついたグループです。このグループに含まれる各設定オプションは、
+	  グローバルな設定の中の対応するオプションを上書きします。
+	  例えば <literal>Dselect</literal> テーマが選択されている場合、
+	  オプション
 	  <literal>Aptitude::Themes::Dselect::Aptitude::UI::Package-Display-Format</literal>
-	  will override the default value of the option
-	  <literal>Aptitude::UI::Package-Display-Format</literal>.
+	  はオプション
+	  <literal>Aptitude::UI::Package-Display-Format</literal>
+	  のデフォルト値を上書きします。
 	</para>
 
 	<para>
-	  To select a theme, set the configuration option <literal>Aptitude::Theme</literal> to the name of the theme; for instance,
+	  テーマを選択するには、例えば次のように、
+	  設定オプション <literal>Aptitude::Theme</literal>
+	  をテーマの名前に設定してください。
 	</para>
 
 	<screen>Aptitude::Theme Vertical-Split;</screen>
 
 	<para>
-	  The following themes are shipped with &aptitude; in
-	  <filename>/usr/share/aptitude/aptitude-defaults</filename>:
+	  以下のテーマが &aptitude; に付属しており、
+	  <filename>/usr/share/aptitude/aptitude-defaults</filename>
+	  に含まれています。
 	</para>
 
 	<variablelist>
@@ -9239,14 +9209,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	    <listitem>
 	      <para>
-		This theme makes &aptitude; look and behave more like
-		the legacy <literal>dselect</literal> package manager:
+		このテーマを用いると、&aptitude; の外観および振舞いが、
+		長年使われてきた <literal>dselect</literal>
+		パッケージマネージャにさらに似たものになります。
 	      </para>
 
 	      <screenshot>
 		<mediaobject>
 		  <imageobject>
-		    <imagedata fileref='images/dselect-theme.png' format='PNG'/>
+		    <imagedata fileref='images/dselect-theme.png' format='PNG' width='100%' scalefit='1'/>
 		  </imageobject>
 
 		  <textobject role='text'>
@@ -9285,18 +9256,18 @@ others, and the text of several common licenses in use on Debian systems.
 
 	    <listitem>
 	      <para>
-		This theme rearranges the display: instead of the
-		current package's description appearing underneath the
-		package list, it is displayed to the right of the
-		package list.  This theme is useful with very wide
-		terminals, and perhaps also when editing the built-in
-		hierarchy of packages.
+		このテーマは表示を再配置します。
+		現在選択中のパッケージの説明は、
+		パッケージ一覧の下に現れるのではなく右に表示されます。
+		このテーマは非常に横幅の広いターミナルとともに用いると便利です。
+		おそらく、
+		組み込みのパッケージの階層構造を編集するときにも便利でしょう。
 	      </para>
 
 	      <screenshot>
 		<mediaobject>
 		  <imageobject>
-		    <imagedata fileref='images/vertical-split-theme.png' format='PNG'/>
+		    <imagedata fileref='images/vertical-split-theme.png' format='PNG' width='100%' scalefit='1'/>
 		  </imageobject>
 
 		  <textobject role='text'>
@@ -9347,7 +9318,7 @@ Utilities for using ACPI power management</screen>
       <screenshot>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata fileref='images/mine-snapshot.png' format='PNG'/>
+	    <imagedata fileref='images/mine-snapshot.png' format='PNG' width='100%' scalefit='1'/>
 	  </imageobject>
 
 	  <textobject role='text'>
@@ -9399,7 +9370,7 @@ Minesweeper                                              10/10 mines  13 seconds
       <screenshot>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata fileref='images/mine-snapshot2.png' format='PNG'/>
+	    <imagedata fileref='images/mine-snapshot2.png' format='PNG' width='100%' scalefit='1'/>
 	  </imageobject>
 
 	  <textobject role='text'>
@@ -9450,7 +9421,7 @@ Minesweeper                                             10/10 mines  387 seconds
       <screenshot>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata fileref='images/mine-snapshot3.png' format='PNG'/>
+	    <imagedata fileref='images/mine-snapshot3.png' format='PNG' width='100%' scalefit='1'/>
 	  </imageobject>
 
 	  <textobject role='text'>
@@ -9499,7 +9470,7 @@ Minesweeper                                              9/10 mines  961 seconds
       <screenshot>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata fileref='images/mine-snapshot4.png' format='PNG'/>
+	    <imagedata fileref='images/mine-snapshot4.png' format='PNG' width='100%' scalefit='1'/>
 	  </imageobject>
 
 	  <textobject role='text'>
@@ -9540,7 +9511,7 @@ Minesweeper                                              9/10 mines  2290 second
       <screenshot>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata fileref='images/mine-snapshot5.png' format='PNG'/>
+	    <imagedata fileref='images/mine-snapshot5.png' format='PNG' width='100%' scalefit='1'/>
 	  </imageobject>
 
 	  <textobject role='text'>
@@ -9877,6 +9848,16 @@ Minesweeper                                   Minesweeper    Lost in 2388 second
       </varlistentry>
 
       <varlistentry>
+	<term>Swedish translation</term>
+
+	<listitem>
+	  <para>
+	    Daniel Nylander
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
 	<term>Initial i18n patch</term>
 
 	<listitem><para>Masato Taruishi</para></listitem>
@@ -9919,7 +9900,7 @@ Minesweeper                                   Minesweeper    Lost in 2388 second
   </chapter>
 
   <reference id='secReference'>
-    <title>&aptitude; コマンドラインリファレンス</title>
+    <title>コマンドラインリファレンス</title>
 
     &manpage;
   </reference>

@@ -5,5 +5,6 @@
 <xsl:param name="chunker.output.encoding" select="'utf-8'"/>
 <xsl:output method="text"
             encoding="utf-8"
-            indent="no"/>
+	    indent="no"/>
+<xsl:param name="menuchoice.menu.separator" select="' → '"/>
 </xsl:stylesheet>

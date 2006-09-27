@@ -49,7 +49,7 @@
     <cmdsynopsis>
       <command>aptitude</command>
 
-      <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
+      <arg choice='opt' rep='repeat'><replaceable>オプション</replaceable></arg>
 
       <group choice='req'>
 	<arg choice='plain'>autoclean</arg>
@@ -64,7 +64,7 @@
     <cmdsynopsis>
       <command>aptitude</command>
 
-      <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
+      <arg choice='opt' rep='repeat'><replaceable>オプション</replaceable></arg>
 
       <group choice='req'>
 	<arg choice='plain'>changelog</arg>
@@ -79,25 +79,26 @@
 	<arg choice='plain'>reinstall</arg>
 	<arg choice='plain'>remove</arg>
 	<arg choice='plain'>show</arg>
+	<arg choice='plain'>unhold</arg>
 	<arg choice='plain'>unmarkauto</arg>
       </group>
 
-      <arg choice='plain' rep='repeat'>packages</arg>
+      <arg choice='plain' rep='repeat'><replaceable>パッケージ</replaceable></arg>
     </cmdsynopsis>
 
     <cmdsynopsis>
       <command>aptitude</command>
 
-      <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
+      <arg choice='opt' rep='repeat'><replaceable>オプション</replaceable></arg>
 
       <arg choice='plain'>search</arg>
 
-      <arg choice='plain' rep='repeat'>patterns</arg>
+      <arg choice='plain' rep='repeat'><replaceable>パターン</replaceable></arg>
     </cmdsynopsis>
 
     <cmdsynopsis>
       <command>aptitude</command>
-      <arg choice='opt'>-S <replaceable>fname</replaceable></arg>
+      <arg choice='opt'>-S <replaceable>ファイル名</replaceable></arg>
       <group choice='opt'><arg choice='plain'>-u</arg> <arg
       choice='plain'>-i</arg></group>
     </cmdsynopsis>
@@ -294,7 +295,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term><literal>remove</literal>, <literal>purge</literal>, <literal>hold</literal>, <literal>keep</literal>, <literal>reinstall</literal></term>
+	<term><literal>remove</literal>, <literal>purge</literal>, <literal>hold</literal>, <literal>unhold</literal>, <literal>keep</literal>, <literal>reinstall</literal></term>
 
 	<listitem>
 	  <para>
@@ -308,6 +309,10 @@
 	    コマンド実行時にパッケージが無視されるようになるのに対し、
 	    <literal>keep</literal>
 	    を用いるとパッケージに対して設定されたアクションすべてが取り消されるだけです。
+	    <literal>unhold</literal> を用いると、
+	    将来の <literal>upgrade</literal>
+	    コマンド実行時にパッケージが更新されるようになりますが、
+	    パッケージ状態にそれ以外の変化はありません。
 	  </para>
 
 	  <para>
@@ -461,7 +466,7 @@
 	  </para>
 
 	  <para>
-	    <link linkend='cmdlineOptionFormat'><option>-F</option></link>
+	    <link linkend='cmdlineOptionFormat'><literal>-F</literal></link>
             オプションを与えない場合、<literal>aptitude search</literal>
             の出力はこのようになります。
 	  </para>
@@ -1153,7 +1158,7 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
     <title>関連項目</title>
 
     <para>
-      <citerefentry><refentrytitle>apt-get</refentrytitle><manvolnum>8</manvolnum></citerefentry>, <citerefentry><refentrytitle>apt</refentrytitle><manvolnum>8</manvolnum></citerefentry>, aptitude-doc-<replaceable>言語</replaceable> パッケージの <filename>/usr/share/doc/aptitude/<replaceable>言語</replaceable>/html/index.html</filename>
+      <citerefentry><refentrytitle>apt-get</refentrytitle><manvolnum>8</manvolnum></citerefentry>, <citerefentry><refentrytitle>apt</refentrytitle><manvolnum>8</manvolnum></citerefentry>, aptitude-doc-<replaceable>言語</replaceable> パッケージの <filename>/usr/share/doc/aptitude/html/<replaceable>言語</replaceable>/index.html</filename>
     </para>
   </refsect1>
 </refentry>

@@ -48,14 +48,17 @@ $(README): $(XMLSOURCES) $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-com
 	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl $(srcdir)/aptitude.xml
 	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | sed 's/&#8212/--/g' > $(README)
 
-doc-db2latex-stamp: $(XMLSOURCES) $(srcdir)/../aptitude-db2latex.xsl $(srcdir)/../aptitude-common.xsl $(IMAGES)
-	-rm -fr output-db2latex
-	mkdir output-db2latex
+doc-db2latex-stamp: output-db2latex/aptitude.tex $(IMAGES)
 	ln -s ../images output-db2latex/images
-	xsltproc -o output-db2latex/aptitude.tex $(srcdir)/../aptitude-db2latex.xsl $(srcdir)/aptitude.xml
 # Run pdflatex 3 times just to be extra sure that it converges.
 	cd output-db2latex && pdflatex -interaction nonstopmode aptitude.tex && pdflatex -interaction nonstopmode aptitude.tex && pdflatex -interaction nonstopmode aptitude.tex
 	touch doc-db2latex-stamp
+
+output-db2latex/aptitude.tex: $(XMLSOURCES) $(srcdir)/../aptitude-db2latex.xsl $(srcdir)/../aptitude-common.xsl
+	-rm -fr output-db2latex
+	mkdir output-db2latex
+	xsltproc -o output-db2latex/aptitude.tex $(srcdir)/../aptitude-db2latex.xsl $(srcdir)/aptitude.xml
+
 
 doc-css-stamp: doc-html-stamp $(srcdir)/../aptitude.css
 	rm -f output-html/aptitude.css
