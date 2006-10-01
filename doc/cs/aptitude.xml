@@ -7,7 +7,7 @@
   <!ENTITY dselect '<command>dselect</command>'>
   <!ENTITY apt-get '<command>apt-get</command>'>
   <!ENTITY root '<systemitem class="username">root</systemitem>'>
-  <!ENTITY VERSION '0.4.1'>
+  <!ENTITY VERSION '0.4.3'>
 
   <!-- Shortcuts for menu commands: -->
 
@@ -50,7 +50,7 @@
   <!ENTITY search-refind
   "<menuchoice><shortcut><keycap>n</keycap></shortcut><guimenu>Hledat</guimenu><guimenuitem>Hledat znovu</guimenuitem></menuchoice>">
   <!ENTITY search-limit
-  "<menuchoice><shortcut><keycap>l</keycap></shortcut><guimenu>Hledat</guimenu><guimenuitem>Omezit zobrazení</guimenuitem></menuchoice>">
+  "<menuchoice><guimenu>Hledat</guimenu><guimenuitem>Omezit zobrazení</guimenuitem></menuchoice>">
   <!ENTITY search-unlimit
   "<menuchoice><shortcut><keycap>l</keycap></shortcut><guimenu>Hledat</guimenu><guimenuitem>Zru¹it omezení</guimenuitem></menuchoice>">
   <!ENTITY search-find-broken
@@ -99,7 +99,7 @@
 </othercredit>
 
 <copyright>
-  <year>2004</year>
+  <year>2004-2006</year>
   <holder>Daniel Burrows</holder>
 </copyright>
 
@@ -127,6 +127,8 @@ Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 </bookinfo>
 
+<!-- ================================================================ -->
+<toc/>
 <!-- ================================================================ -->
 
 <preface>
@@ -1538,7 +1540,7 @@ Nejdùle¾itìj¹í akce jsou:
   </cmdsynopsis></term>
   <listitem><para>
 
-Pøíkaz aktualizuje seznam balíkù, jako kdyby jste v celoobrazovkovém
+Pøíkaz aktualizuje seznam balíkù, jako kdybyste v celoobrazovkovém
 re¾imu stiskli klávesu <keycap>u</keycap>.
 
   </para></listitem>
@@ -2162,7 +2164,7 @@ pøíslu¹nou verzi.
       <title>Menu Øe¹itel</title>
 
 <figure>
-  <title>Commands available in the Resolver menu</title>
+  <title>Pøíkazy dostupné z menu Øe¹itel</title>
 
 <informaltable>
 <tgroup cols="2">
@@ -4981,8 +4983,8 @@ nainstalovaný, vytiskne	<computeroutput>&lt;¾ádná&gt;</computeroutput>
     <seg>Ne</seg>
     <seg>
 
-Vytiskne verzi balíku, která by se nainstalovala, kdyby jste na balíku
-pou¾ili pøíkaz &package-install;. Pokud balík není nainstalovaný,
+Vytiskne verzi balíku, která by se nainstalovala, kdybyste na balíku
+pou¾ili pøíkaz &package-install;. Pokud balík není dostupný,
 vytiskne <computeroutput>&lt;¾ádná&gt;</computeroutput>.
 
     </seg>
@@ -6943,7 +6945,7 @@ V &aptitude; mù¾e upravit následující styly:
   <title>Upravitelné styly v &aptitude;</title>
 
 <informaltable>
-<tgroup cols="2">
+<tgroup cols="3">
 <thead>
   <row>
     <entry>Styl</entry>
@@ -6954,7 +6956,7 @@ V &aptitude; mù¾e upravit následující styly:
 
 <tbody>
   <row>
-    <entry>Bullet</entry>
+    <entry><literal>Bullet</literal></entry>
     <entry><literal>fg yellow; set bold;</literal></entry>
     <entry>
 
@@ -6964,7 +6966,7 @@ Styl pro zobrazení odrá¾ek v seznamech.
   </row>
 
   <row>
-    <entry>ChangelogNewerVersion</entry>
+    <entry><literal>ChangelogNewerVersion</literal></entry>
     <entry><literal>set bold;</literal></entry>
     <entry>
 
@@ -7381,7 +7383,7 @@ Styl pro zobrazení stavového øádku dole na obrazovce.
 
   <row id="colorTreeBackground">
     <entry><literal>TreeBackground</literal></entry>
-    <entry><literal></literal></entry>
+    <entry></entry>
     <entry>
 
 Základní styl pro v¹echny seznamy a stromy.
@@ -8191,7 +8193,7 @@ nìj zapí¹e stav øe¹itele pøed zapoèetím v¹ech výpoètù.
 
     <seglistitem id="configCmdLine-Request-Strictness">
       <seg><literal>Aptitude::CmdLine::Request-Strictness</literal></seg>
-      <seg><literal>0</literal></seg>
+      <seg><literal>10000</literal></seg>
       <seg>
 
 Pokud se v pøíkazovém re¾imu vyskytnou problémy se závislostmi,
@@ -8451,6 +8453,23 @@ nevyu¾ité balíky.
       </seg>
     </seglistitem>
 
+    <seglistitem id="configLockFile">
+      <seg><literal>Aptitude::LockFile</literal></seg>
+      <seg><literal>/var/lock/aptitude</literal></seg>
+      <seg>
+
+Jméno souboru, který bude uzamèen pomocí fnctl, aby se zajistilo, ¾e
+cache balíkù mù¾e v daný okam¾ik upravovat nejvý¹e jeden proces
+&aptitude;. Za bì¾ných okolností byste nemìli mít potøebu tuto hodnotu
+mìnit; je u¾iteèná pro ladìní. <emphasis>Poznámka</emphasis>: Pokud si
+&aptitude; stì¾uje, ¾e nemù¾e získat zámek, <emphasis>není</emphasis>
+to tím, ¾e je potøeba smazat tento soubor. fnctl zámky jsou spravovány
+jádrem a budou smazány pøi ukonèení programu. To, ¾e &aptitude; nemù¾e
+získat zámek znamená, ¾e jej pou¾ívá jiná bì¾ící instance!
+
+      </seg>
+    </seglistitem>
+
     <seglistitem id="configLog">
       <seg><literal>Aptitude::Log</literal></seg>
       <seg><filename>/var/log/aptitude</filename></seg>
@@ -8466,6 +8485,20 @@ za název programu, kterému se má záznam akcí pøedat. Napøíklad hodnota
 záznamy o instalaci budou zaslány elektronickou po¹tou u¾ivateli
 &root;. Záznamy mù¾ete ukládat i na více míst zároveò, staèí je zadat
 jako seznam cílù.
+
+      </seg>
+    </seglistitem>
+
+    <seglistitem id="configParseDescriptionBullets">
+      <seg><literal>Aptitude::Parse-Description-Bullets</literal></seg>
+      <seg><literal>false</literal></seg>
+      <seg>
+
+Je-li tato promìnná povolena, &aptitude; se pokusí automaticky
+rozpoznat v popisech balíkù odrá¾kové seznamy. To obvykle zlep¹í
+zobrazení popisù, av¹ak není úplnì zpìtnì kompatibilní. Nìkteré
+popisy mohou být zobrazeny lépe, pokud má promìnná hodnotu
+<literal>false</literal>.
 
       </seg>
     </seglistitem>
@@ -9827,6 +9860,11 @@ Sebastian Schaffert, Erich Schubert, Sebastian Kapfe
 </varlistentry>
 
 <varlistentry>
+  <term>©védský pøeklad</term>
+  <listitem><para>Daniel Nylander</para></listitem>
+</varlistentry>
+
+<varlistentry>
   <term>Pùvodní práce na i18n</term>
   <listitem><para>Masato Taruishi</para></listitem>
 </varlistentry>
@@ -9870,7 +9908,7 @@ Sebastian Schaffert, Erich Schubert, Sebastian Kapfe
   -->
 
 <reference id="secReference">
-  <title>&aptitude; - pøehled pøíkazù</title>
+  <title>Pøehled pøíkazù</title>
 
 <refentry>
 <refentryinfo>
@@ -9953,10 +9991,11 @@ Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
     <arg choice="plain">reinstall</arg>
     <arg choice="plain">remove</arg>
     <arg choice="plain">show</arg>
+    <arg choice="plain">unhold</arg>
     <arg choice="plain">unmarkauto</arg>
   </group>
 
-  <arg choice="plain" rep="repeat">balíky</arg>
+  <arg choice="plain" rep="repeat"><replaceable>balíky</replaceable></arg>
 </cmdsynopsis>
 
 <cmdsynopsis>
@@ -9965,7 +10004,7 @@ Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
   <arg choice="plain">search</arg>
 
-  <arg choice="plain" rep="repeat">vzory</arg>
+  <arg choice="plain" rep="repeat"><replaceable>vzory</replaceable></arg>
 </cmdsynopsis>
 
 <cmdsynopsis>
@@ -10150,21 +10189,21 @@ zru¹il pùvodní pøíkaz.
   </varlistentry>
 
   <varlistentry>
-    <term><literal>remove</literal>, <literal>purge</literal>, <literal>hold</literal>, <literal>keep</literal>, <literal>reinstall</literal></term>
+    <term><literal>remove</literal>, <literal>purge</literal>, <literal>hold</literal>, <literal>unhold</literal>, <literal>keep</literal>, <literal>reinstall</literal></term>
 
     <listitem><para>
-
 
 Tyto pøíkazy pracují stejnì jako
 <quote><literal>install</literal></quote>, ale provedou akci podle
 svých názvù, tj. odstranìní, odstranìní s konfiguraèními soubory,
-pøidr¾ení, ponechání a pøeinstalování (pokud ov¹em nejsou <link
+pøidr¾ení, uvolnìní, ponechání a pøeinstalování (pokud ov¹em nejsou <link
 linkend="parOverrideSpecifiers">pøepsány</link> <quote>aktivní
 pøíponou</quote>). Rozdíl mezi ponecháním (<literal>keep</literal>)
 a pøidr¾ením (<literal>hold</literal>) je ten, ¾e pøidr¾ený balík bude
 i pøi pøí¹tích aktualizacích ignorován (tj. ponechán ve stávající
 verzi), zatímco ponechání jednodu¹e na balíku zru¹í v¹echny
-naplánované akce.
+naplánované akce. Uvolnìní znamená, ¾e pøi pøí¹tích aktualizacích bude
+balík svolný k aktualizaci.
 
     </para><para>
 
@@ -10236,7 +10275,7 @@ Znovu nainstaluje aktuální verze zadaných balíkù.
     <listitem><para>
 
 Aktualizuje seznam dostupných balíkù podle zdrojù pro &apt;.  (Tento
-pøíkaz je ekvivalentní k <quote><literal>apt\-get
+pøíkaz je ekvivalentní k <quote><literal>apt-get
 update</literal></quote>).
 
    </para></listitem>
@@ -10316,9 +10355,9 @@ linkend="secSearchPatterns">Vyhledávací vzory</link></quote>
 
     </para><para>
 
-Pokud nezadáte parametr <link linkend="cmdlineOptionFormat"><arg
-choice="plain">-F</arg></link>, bude výstup pøíkazu <literal>aptitude
-search</literal> vypadat nìjak takto:
+Pokud nezadáte parametr <link
+linkend="cmdlineOptionFormat"><literal>-F</literal></link>, bude
+výstup pøíkazu <literal>aptitude search</literal> vypadat nìjak takto:
 
     </para>
 
@@ -10733,8 +10772,8 @@ soubor</link></quote>.
 
   <varlistentry>
     <term>
-      <literal>-q<arg choice="opt">=<replaceable>n</replaceable></arg></literal>,
-      <literal>--quiet<arg choice="opt">=<replaceable>n</replaceable></arg></literal>
+      <literal>-q<optional>=<replaceable>n</replaceable></optional></literal>,
+      <literal>--quiet<optional>=<replaceable>n</replaceable></optional></literal>
     </term>
 
     <listitem><para>
@@ -10979,7 +11018,8 @@ nastavena ani ta, pou¾ije se výchozí adresáø
 </citerefentry>
 
 a
-<filename>/usr/share/doc/aptitude/<replaceable>jazyk</replaceable>/html/index.html</filename>
+
+<filename>/usr/share/doc/aptitude/html/<replaceable>jazyk</replaceable>/index.html</filename>
 z balíèku aptitude-doc-<replaceable>jazyk</replaceable>
 
 </para>
