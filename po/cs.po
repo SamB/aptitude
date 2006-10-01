@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-03 09:36-0700\n"
-"PO-Revision-Date: 2006-02-22 20:05+0100\n"
+"PO-Revision-Date: 2006-10-01 11:07+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -121,10 +121,9 @@ msgid ""
 msgstr "Zapomenout seznam \"nových\" balíků při každé (od)instalaci balíků"
 
 #: src/apt_options.cc:171
-#, fuzzy
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
-msgstr "Nezobrazovat varování při první změně v režimu pouze pro čtení."
+msgstr "Nezobrazovat varování při první změně v režimu pouze pro čtení"
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -245,9 +244,9 @@ msgstr[2] "%d degradací"
 #. "n1 installs, n2 removals", ...
 #.
 #: src/broken_indicator.cc:362
-#, fuzzy, c-format
+#, c-format
 msgid "Suggest %F"
-msgstr "Návrh "
+msgstr "Návrh na %F"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1184,14 +1183,14 @@ msgid " [held]"
 msgstr " [podržen]"
 
 #: src/cmdline/cmdline_show.cc:282
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed"
-msgstr "%B%s%b bude instalován."
+msgstr "%s; bude instalován"
 
 #: src/cmdline/cmdline_show.cc:284
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed automatically"
-msgstr "%s; automaticky bude instalována verze %s"
+msgstr "%s; bude instalován automaticky"
 
 #: src/cmdline/cmdline_show.cc:304
 #, c-format
@@ -1358,9 +1357,9 @@ msgid "No candidate version found for %s\n"
 msgstr "K balíku %s nebyla nalezena kandidátská verze\n"
 
 #: src/cmdline/cmdline_util.cc:95
-#, fuzzy, c-format
+#, c-format
 msgid "No current or candidate version found for %s\n"
-msgstr "K balíku %s nebyla nalezena kandidátská verze\n"
+msgstr "K balíku %s nebyla nalezena aktuální nebo kandidátská verze\n"
 
 #: src/cmdline/cmdline_util.cc:110
 #, c-format
@@ -2623,9 +2622,8 @@ msgid "You die...  --More--"
 msgstr "Umíráš...  --Více--"
 
 #: src/mine/cmine.cc:478
-#, fuzzy
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
-msgstr "Bodce jsou otrávené! Otrava je smrtelná...  --Více--"
+msgstr "Bodce byly otrávené! Otrava byla smrtelná...  --Více--"
 
 #: src/mine/cmine.cc:481
 msgid "You land on a set of sharp iron spikes!  --More--"
@@ -2641,7 +2639,7 @@ msgstr "PRÁSK! Šlápl jsi na minu.  --Více--"
 
 #: src/mine/cmine.cc:492
 msgid "The dart was poisoned!  The poison was deadly...  --More--"
-msgstr "Šipka je otrávená! Otrava je smrtelná... --Více--"
+msgstr "Šipka byla otrávená! Otrava byla smrtelná... --Více--"
 
 #: src/mine/cmine.cc:494
 msgid ""
@@ -3003,7 +3001,6 @@ msgstr ""
 " Balíky ze sekce 'base' jsou součástí minimální instalace systému."
 
 #: src/pkg_grouppolicy.cc:169
-#, fuzzy
 msgid ""
 "Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
@@ -3013,10 +3010,10 @@ msgid ""
 "control cellular phones, interface with FidoNet, and run a BBS."
 msgstr ""
 "Programy pro faxmodemy a jiná komunikační zařízení\n"
-" Balíky ze sekce 'comm' se používají k ovládání modemů a dalších "
-"komunikačních zařízení. To zahrnuje software pro faxmodemy (PPP pro vytáčené "
-"připojení k Internetu a původní software jako zmodem/kermit), mobilní "
-"telefony, rozhraní k FidoNetu, nebo vlastní BBS server."
+" Balíky ze sekce 'comm' se používají k ovládání modemů a dalších hardwarových "
+"komunikačních zařízení. To zahrnuje software pro faxmodemy (např. PPP pro "
+"vytáčené připojení k Internetu a původní software jako zmodem/kermit), "
+"mobilní telefony, rozhraní k FidoNetu, nebo vlastní BBS server."
 
 #: src/pkg_grouppolicy.cc:170
 msgid ""
@@ -4450,9 +4447,8 @@ msgid "README"
 msgstr "README.cs"
 
 #: src/ui.cc:888
-#, fuzzy
 msgid "Encoding of README|ISO_8859-1"
-msgstr "Encoding of README|UTF-8"
+msgstr "Encoding of README|ISO_8859-1"
 
 #: src/ui.cc:919
 msgid "User's Manual"
@@ -4720,7 +4716,6 @@ msgid "Check for new versions of packages"
 msgstr "Zjistí, zda nejsou k dispozici novější verze balíků"
 
 #: src/ui.cc:1937
-#, fuzzy
 msgid "Mark Up^gradable"
 msgstr "Označit aktualizovatelné"
 
@@ -5154,9 +5149,8 @@ msgid "View a list of frequently asked questions"
 msgstr "Zobrazí seznam často kladených otázek"
 
 #: src/ui.cc:2193
-#, fuzzy
 msgid "^News"
-msgstr "Nový"
+msgstr "^Novinky"
 
 #: src/ui.cc:2194
 msgid "View the important changes made in each version of "
