@@ -1,7 +1,7 @@
 # automake doesn't play nicely with DocBook :(
 
 SUBDIRS=images
-EXTRA_DIST=aptitude.xml aptitude-html-ja.xsl aptitude-man-ja.xsl
+EXTRA_DIST=aptitude-html-ja.xsl aptitude-man-ja.xsl
 
 LANGCODE=ja
 MANPAGE=aptitude.$(LANGCODE).8
@@ -40,8 +40,8 @@ install-data-hook:
 doc-stamp: doc-html-stamp doc-css-stamp $(README) $(MANPAGE)
 	touch doc-stamp
 
-#aptitude.xml: $(srcdir)/../en/aptitude.xml $(srcdir)/../po4a/po/$(LANGCODE).po 
-#	po4a-translate -M utf-8 -f docbook -m $(srcdir)/../en/aptitude.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l aptitude.xml
+aptitude.xml: $(srcdir)/../en/aptitude.xml $(srcdir)/../po4a/po/$(LANGCODE).po 
+	po4a-translate -M utf-8 -f docbook -m $(srcdir)/../en/aptitude.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l aptitude.xml -k 50
 
 manpage.xml: $(srcdir)/../en/manpage.xml $(srcdir)/../po4a/po/$(LANGCODE).po
 	po4a-translate -M utf-8 -f docbook -m $(srcdir)/../en/manpage.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l manpage.xml
