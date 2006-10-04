@@ -1,6 +1,6 @@
 // vs_tree.cc
 //
-//  Copyright 1999-2002, 2004-2005 Daniel Burrows
+//  Copyright 1999-2002, 2004-2006 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -218,7 +218,7 @@ bool vs_tree::item_visible(vs_treeiterator pkg)
   return height>0 && i!=end;
 }
 
-void vs_tree::set_selection(vs_treeiterator to)
+void vs_tree::set_selection(vs_treeiterator to, bool force_to_top)
 {
   // Expand all its parents so that it's possible to make it visible.
   vs_treeiterator curr = to;
@@ -266,7 +266,7 @@ void vs_tree::set_selection(vs_treeiterator to)
 	  ++l;
 	}
 
-      while(l > height)
+      while(l > (force_to_top ? 1 : height))
 	{
 	  eassert(top != end);
 
@@ -799,7 +799,7 @@ void vs_tree::search_for(vs_tree_search_func &matches)
     beep();
   else
     {
-      set_selection(curr);
+      set_selection(curr, true);
       vscreen_update();
     }
 }

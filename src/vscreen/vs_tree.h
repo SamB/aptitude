@@ -147,7 +147,16 @@ public:
   virtual void paint(const style &st);
   virtual void dispatch_mouse(short id, int x, int y, int z, mmask_t bstate);
 
-  void set_selection(vs_treeiterator to);
+  /** \brief Directly sets the selection to the given element.
+   *
+   *  \param to The element to select.
+   *  \param force_to_top If true, the element will be placed at the
+   *  top of the list if the list scrolls.
+   *
+   *  If the element's parents are not currently expanded, they will
+   *  be immediately expanded.
+   */
+  void set_selection(vs_treeiterator to, bool force_to_top = false);
   // Directly sets the selection to a given item.  [ the item must be
   // visible -- ie, all its parents must be expanded ]
   // Causes a redraw.
