@@ -5,7 +5,7 @@
 
 <!-- override settings in
      /usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl. -->
-<xsl:param name="chunker.output.encoding" select="'euc-jp'"/>
+<xsl:param name="man.output.encoding" select="'euc-jp'"/>
 <xsl:output method="text"
             encoding="euc-jp"
 	    indent="no"/>
