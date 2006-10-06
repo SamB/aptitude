@@ -151,7 +151,7 @@ void vscreen_shutdown();
  */
 void vscreen_resume();
 
-/** Invoke the given vscreen_event in at least msencs from the current
+/** Invoke the given vscreen_event in at least msecs from the current
  *  time.
  *
  *  \return a numerical identifier of the new event; you can use this
