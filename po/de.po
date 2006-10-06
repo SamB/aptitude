@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.2.15.5\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2006-09-03 09:36-0700\n"
-"PO-Revision-Date: 2006-08-05 21:31+0200\n"
+"POT-Creation-Date: 2006-10-05 23:13+0200\n"
+"PO-Revision-Date: 2006-10-05 23:21+0200\n"
 "Last-Translator: Jens Seidel <jensseidel@users.sf.net>\n"
 "Language-Team: Debian German <debian-l10n-german@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -176,65 +176,67 @@ msgstr "Abbrechen"
 msgid "%s: Examine"
 msgstr "%s: Prüfen"
 
-#: src/broken_indicator.cc:126
+#. ForTranslators: The object which is "applied" is a package dependency solution
+#: src/broken_indicator.cc:127
 #, c-format
 msgid "%s: Apply"
 msgstr "%s: Anwenden"
 
-#: src/broken_indicator.cc:129
+#. ForTranslators: This refers to the next package dependency solution
+#: src/broken_indicator.cc:131
 #, c-format
 msgid "%s: Next"
 msgstr "%s: Nächste"
 
-# FIXME: gender?
-#: src/broken_indicator.cc:134
+#. ForTranslators: This refers to the previous package dependency solution
+#: src/broken_indicator.cc:137
 #, c-format
 msgid "%s: Previous"
 msgstr "%s: Vorhergehende"
 
-#: src/broken_indicator.cc:226
+#: src/broken_indicator.cc:229
 msgid "Unable to resolve dependencies."
 msgstr "Kann Abhängigkeiten nicht auflösen."
 
-#: src/broken_indicator.cc:240
+#: src/broken_indicator.cc:243
 #, c-format
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] Löse Abhängigkeiten auf"
 
-#: src/broken_indicator.cc:273 src/solution_dialog.cc:126
+#: src/broken_indicator.cc:276 src/solution_dialog.cc:126
 #: src/solution_screen.cc:522
 msgid "Internal error: unexpected null solution."
 msgstr "Interner Fehler: unerwartete Null-Lösung."
 
-#: src/broken_indicator.cc:330
+#: src/broken_indicator.cc:333
 #, c-format
 msgid "%d install"
 msgid_plural "%d installs"
 msgstr[0] "%d Installation"
 msgstr[1] "%d Installationen"
 
-#: src/broken_indicator.cc:336
+#: src/broken_indicator.cc:339
 #, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
 msgstr[0] "%d Entfernung"
 msgstr[1] "%d Entfernungen"
 
-#: src/broken_indicator.cc:342
+#: src/broken_indicator.cc:345
 #, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
 msgstr[0] "%d Beibehaltung"
 msgstr[1] "%d Beibehaltungen"
 
-#: src/broken_indicator.cc:348
+#: src/broken_indicator.cc:351
 #, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
 msgstr[0] "%d Aktualisierung"
 msgstr[1] "%d Aktualisierungen"
 
-#: src/broken_indicator.cc:354
+#: src/broken_indicator.cc:357
 #, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
@@ -244,12 +246,12 @@ msgstr[1] "%d Deaktualisierungen"
 #. ForTranslators: %F is replaced with a comma separated list such as
 #. "n1 installs, n2 removals", ...
 #.
-#: src/broken_indicator.cc:362
+#: src/broken_indicator.cc:365
 #, c-format
 msgid "Suggest %F"
 msgstr "Schlage %F vor"
 
-#: src/cmdline/cmdline_action.cc:37
+#: src/cmdline/cmdline_action.cc:38
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -258,7 +260,7 @@ msgstr ""
 "Hinweis: »%s« stellt das virtuelle Paket\n"
 "      »%s« bereit und ist bereits installiert.\n"
 
-#: src/cmdline/cmdline_action.cc:44
+#: src/cmdline/cmdline_action.cc:45
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -267,7 +269,7 @@ msgstr ""
 "Hinweis: »%s« stellt das virtuelle Paket\n"
 "      »%s« bereit und wird ohnehin installiert.\n"
 
-#: src/cmdline/cmdline_action.cc:62
+#: src/cmdline/cmdline_action.cc:63
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -276,17 +278,17 @@ msgstr ""
 "»%s« existiert in der Paketdatenbank, ist aber\n"
 "kein echtes Paket und kein anderes Paket liefert es.\n"
 
-#: src/cmdline/cmdline_action.cc:68
+#: src/cmdline/cmdline_action.cc:69
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "»%s« ist ein virtuelles Paket, das bereitgestellt wird von:\n"
 
-#: src/cmdline/cmdline_action.cc:71
+#: src/cmdline/cmdline_action.cc:72
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Sie müssen eines zum Installieren auswählen.\n"
 
-#: src/cmdline/cmdline_action.cc:76
+#: src/cmdline/cmdline_action.cc:77
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -295,40 +297,40 @@ msgstr ""
 "Hinweis: Wähle »%s« anstelle des\n"
 "      virtuellen Pakets »%s«.\n"
 
-#: src/cmdline/cmdline_action.cc:94
+#: src/cmdline/cmdline_action.cc:95
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "»%s« ist bereits in der angeforderten Version (%s) installiert\n"
 
-#: src/cmdline/cmdline_action.cc:100
+#: src/cmdline/cmdline_action.cc:101
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr ""
 "%s ist momentan nicht installiert und wird folglich nicht erneut "
 "installiert.\n"
 
-#: src/cmdline/cmdline_action.cc:107 src/cmdline/cmdline_action.cc:113
+#: src/cmdline/cmdline_action.cc:108 src/cmdline/cmdline_action.cc:114
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Paket %s ist nicht installiert, wird nicht entfernt\n"
 
-#: src/cmdline/cmdline_action.cc:131
+#: src/cmdline/cmdline_action.cc:132
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "Paket %s ist nicht installiert, kann kein Upgrade verbieten\n"
 
-#: src/cmdline/cmdline_action.cc:133
+#: src/cmdline/cmdline_action.cc:134
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr ""
 "Paket %s kann nicht aktualisiert werden, kann also kein Upgrade verbieten\n"
 
-#: src/cmdline/cmdline_action.cc:214
+#: src/cmdline/cmdline_action.cc:212
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Hinweis: Wähle den Task »%s: %s« zur Installation aus\n"
 
-#: src/cmdline/cmdline_action.cc:244
+#: src/cmdline/cmdline_action.cc:242
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -337,13 +339,13 @@ msgstr ""
 "Sie können die Version eines Pakets nur bei einem »install«- oder »forbid-"
 "version«-Befehl angeben.\n"
 
-#: src/cmdline/cmdline_action.cc:252
+#: src/cmdline/cmdline_action.cc:250
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr ""
 "Sie können das Archiv eines Pakets nur bei einem »install«-Befehl angeben.\n"
 
-#: src/cmdline/cmdline_action.cc:286
+#: src/cmdline/cmdline_action.cc:284
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -352,7 +354,7 @@ msgstr ""
 "Konnte Paket »%s« nicht finden und mehr als 40 Pakete\n"
 "enthalten »%s« in ihrem Namen:\n"
 
-#: src/cmdline/cmdline_action.cc:289
+#: src/cmdline/cmdline_action.cc:287
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -361,13 +363,13 @@ msgstr ""
 "Konnte Paket »%s« nicht finden, aber die folgenden Pakete\n"
 "enthalten »%s« in ihrem Namen:\n"
 
-#: src/cmdline/cmdline_action.cc:313
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "Konnte kein Paket finden, dessen Name oder Beschreibung auf »%s« passt.\n"
 
-#: src/cmdline/cmdline_action.cc:315
+#: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -376,7 +378,7 @@ msgstr ""
 "Konnte kein Paket finden, das auf »%s« passt, und mehr als 40\n"
 "Pakete enthalten »%s« in ihrer Beschreibung.\n"
 
-#: src/cmdline/cmdline_action.cc:318
+#: src/cmdline/cmdline_action.cc:316
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -385,7 +387,7 @@ msgstr ""
 "Konnte kein Paket finden, das auf »%s« passt, allerdings enthalten\n"
 "die folgenden Pakete »%s« in ihrer Beschreibung:\n"
 
-#: src/cmdline/cmdline_action.cc:437
+#: src/cmdline/cmdline_action.cc:436
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Ungültiger Befehlsbuchstabe '%c'\n"
@@ -438,7 +440,7 @@ msgstr "Ungültige Operation: %s"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Unerwartetes Musterargument folgt »keep-all«"
 
-#: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_do_action.cc:241 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:520
 #, c-format
 msgid "Abort.\n"
@@ -853,12 +855,12 @@ msgstr "»&m« zum Markieren von Paketen als manuell installiert"
 msgid "Commands:"
 msgstr "Kommandos:"
 
-# FIXME: "Y" should be translatable
-#: src/cmdline/cmdline_prompt.cc:767
+#. ForTranslators: Y and n are currently not translatable!
+#: src/cmdline/cmdline_prompt.cc:768
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Wollen Sie fortsetzen? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:792
+#: src/cmdline/cmdline_prompt.cc:793
 #, c-format
 msgid ""
 "\n"
@@ -869,7 +871,7 @@ msgstr ""
 "Abhängigkeiten werden angezeigt.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:794
+#: src/cmdline/cmdline_prompt.cc:795
 #, c-format
 msgid ""
 "\n"
@@ -880,7 +882,7 @@ msgstr ""
 "Abhängigkeiten werden nicht angezeigt.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:800
+#: src/cmdline/cmdline_prompt.cc:801
 #, c-format
 msgid ""
 "\n"
@@ -891,7 +893,7 @@ msgstr ""
 "Versionen werden angezeigt.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:802
+#: src/cmdline/cmdline_prompt.cc:803
 #, c-format
 msgid ""
 "\n"
@@ -902,7 +904,7 @@ msgstr ""
 "Versionen werden nicht angezeigt.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:807
+#: src/cmdline/cmdline_prompt.cc:808
 #, c-format
 msgid ""
 "\n"
@@ -913,7 +915,7 @@ msgstr ""
 "Größenveränderungen werden angezeigt.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:809
+#: src/cmdline/cmdline_prompt.cc:810
 #, c-format
 msgid ""
 "\n"
@@ -924,25 +926,25 @@ msgstr ""
 "Größenveränderungen werden nicht angezeigt.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:832
+#: src/cmdline/cmdline_prompt.cc:833
 #, c-format
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Ungültige Antwort. Bitte geben Sie einen gültigen Befehl oder »?« für Hilfe "
 "ein.\n"
 
-#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
+#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:599
 #: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "%s konnte nicht zum Schreiben geöffnet werden"
 
-#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:602
+#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:604
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Fehler beim Schreiben des Auflösungsstatus zu %s"
 
-#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:604
+#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:606
 msgid "Resolver state successfully written!"
 msgstr "Auflösungsstatus wurde erfolgreich geschrieben!"
 
@@ -1104,7 +1106,7 @@ msgstr "Die folgenden Aktionen werden diese Abhängigkeiten auflösen:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Diese Lösung akzeptieren? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:650
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Alle Anstrengungen diese Abhängigkeiten aufzulösen aufgegeben."
 
@@ -1112,29 +1114,29 @@ msgstr "Alle Anstrengungen diese Abhängigkeiten aufzulösen aufgegeben."
 msgid "The following commands are available:"
 msgstr "Die folgenden Kommandos sind verfügbar:"
 
-#: src/cmdline/cmdline_resolver.cc:594
+#: src/cmdline/cmdline_resolver.cc:596
 msgid "File to write resolver state to: "
 msgstr "Datei, in die der Auflösungsstatus geschrieben werden soll: "
 
-#: src/cmdline/cmdline_resolver.cc:609
+#: src/cmdline/cmdline_resolver.cc:611
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Ungültige Antwort. Bitte geben Sie eines der folgenden Kommandos ein:"
 
-#: src/cmdline/cmdline_resolver.cc:622
+#: src/cmdline/cmdline_resolver.cc:624
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Es wurde in der zugewiesenen Zeit keine Lösung gefunden. Stärker suchen? [Y/"
 "n]"
 
-#: src/cmdline/cmdline_resolver.cc:651
+#: src/cmdline/cmdline_resolver.cc:653
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Ungültige Antwort. Bitte geben Sie »y« oder »n« ein."
 
-#: src/cmdline/cmdline_resolver.cc:660
+#: src/cmdline/cmdline_resolver.cc:662
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Abhängigkeiten können nicht aufgelöst werden! Gebe auf ..."
 
-#: src/cmdline/cmdline_resolver.cc:666
+#: src/cmdline/cmdline_resolver.cc:668
 msgid "*** No more solutions available ***"
 msgstr "*** Keine weiteren Lösungen vorhanden ***"
 
@@ -1674,15 +1676,21 @@ msgstr ""
 "Interner Fehler: Liste der herunterzuladenden Pakete konnte nicht erzeugt "
 "werden"
 
-#: src/generic/apt/download_install_manager.cc:121
-msgid "Unable to correct for unavailable packages"
-msgstr "Konnte nicht verfügbare Pakete nicht ersetzen"
+#: src/generic/apt/download_install_manager.cc:116
+#, c-format
+msgid "Failed to fetch %s: %s"
+msgstr "Konnte %s nicht herunterladen: %s"
 
-#: src/generic/apt/download_install_manager.cc:141
+# CHECKME
+#: src/generic/apt/download_install_manager.cc:122
+msgid "Unable to correct for unavailable packages"
+msgstr "Kann dies für nichtverfügbare Pakete nicht korrigieren"
+
+#: src/generic/apt/download_install_manager.cc:142
 msgid "A package failed to install.  Trying to recover:"
 msgstr "Ein Paket konnte nicht installiert werden. Versuche zu lösen:"
 
-#: src/generic/apt/download_install_manager.cc:165
+#: src/generic/apt/download_install_manager.cc:166
 msgid ""
 "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr ""
@@ -4523,7 +4531,7 @@ msgid ""
 msgstr ""
 "WARNUNG: Der Paket-Cache ist im Nur-Lesen-Modus geöffnet! Diese und alle "
 "weiteren Änderungen werden nicht gespeichert, es sei denn, Sie beenden alle "
-"anderen Apt-basierten Programme und wählen »»root« werden« aus dem Aktionen-"
+"anderen Apt-basierten Programme und wählen »Root werden« aus dem Aktionen-"
 "Menü."
 
 #: src/ui.cc:322
@@ -4885,7 +4893,6 @@ msgid "Check for new versions of packages"
 msgstr "Nach neuen oder aktualisierten Paketen suchen"
 
 #: src/ui.cc:1937
-#, fuzzy
 msgid "Mark Up^gradable"
 msgstr "Aktualisierbare ^markieren"
 
