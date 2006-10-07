@@ -11,6 +11,8 @@ IMAGES = $(wildcard images/*.png)
 # Put documentation in /usr/share/doc/aptitude (by default)
 docdir=$(datadir)/doc/$(PACKAGE)
 
+localemandir=$(mandir)/$(LANGCODE)
+
 # Automake automagically distributes README without asking..
 README=README.$(LANGCODE)
 
@@ -25,9 +27,9 @@ clean-local:
 	-rm -f doc-stamp doc-css-stamp doc-html-stamp doc-txt-stamp doc-man-stamp
 	-rm -fr $(MANPAGE) $(README) *.tmp
 
-man_MANS=$(MANPAGE)
-
 install-data-hook:
+	$(mkinstalldirs) $(DESTDIR)$(localemandir)/man8
+	$(INSTALL_DATA) $(MANPAGE) $(DESTDIR)$(localemandir)/man8/aptitude.8
 	$(mkinstalldirs) $(DESTDIR)$(docdir)/html/$(LANGCODE)/images
 	$(INSTALL_DATA) output-html/*.html output-html/*.css $(DESTDIR)$(docdir)/html/$(LANGCODE)
 	$(INSTALL_DATA) output-html/images/* $(DESTDIR)$(docdir)/html/$(LANGCODE)/images

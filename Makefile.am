@@ -8,7 +8,7 @@ DOCDIRS=@DOCDIRS@
 
 SUBDIRS=$(SRCDIRS) $(DOCDIRS) m4 po tests
 
-MANPAGE_LOCALES=fr gl it pl
+MANPAGE_LOCALES=gl it pl
 
 TLMANPAGES = $(wildcard aptitude.??.8)
 TLHELPTXTS = help.txt $(wildcard help-??.txt) $(wildcard help-??_??.txt)

@@ -23,8 +23,6 @@ clean-local:
 	-rm -f doc-stamp doc-css-stamp doc-html-stamp doc-txt-stamp doc-man-stamp
 	-rm -fr $(MANPAGE) $(README) *.tmp
 
-man_MANS=$(MANPAGE)
-
 install-data-hook:
 	$(mkinstalldirs) $(DESTDIR)$(localemandir)/man8
 	$(INSTALL_DATA) $(MANPAGE) $(DESTDIR)$(localemandir)/man8/aptitude.8
