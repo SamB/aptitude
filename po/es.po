@@ -1,8 +1,8 @@
 # Copyright (C) 2000 Conectiva S.A. <info@connectiva.com>
 # Originally created by Jorge Carrasquilla Soares <jorge@conectiva.com.br>
 # Further updated by
-#   - Javier Fernández-Sanguino
-#   - Rubén Porras Campo
+#   - Javier Fernández-Sanguino, 2003, 2004, 2006
+#   - Rubén Porras Campo, 2005-2006
 #
 # Reviewed by
 #   - Javier Fernández-Sanguino, January 2006
@@ -12,11 +12,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude 0.4.1-1\n"
+"Project-Id-Version: aptitude 0.4.3-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-03 09:36-0700\n"
-"PO-Revision-Date: 2006-01-27 10:48+0100\n"
-"Last-Translator: Rubén Porras Campo <nahoo@inicia.es>\n"
+"PO-Revision-Date: 2006-10-08 00:32+0200\n"
+"Last-Translator: Javier Fernandez-Sanguino <jfs@debian.org>\n"
 "Language-Team: Debian-l10n-Spanish <debian-l10n-spanish@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -253,9 +253,9 @@ msgstr[1] "%d desactualizaciones"
 #. "n1 installs, n2 removals", ...
 #.
 #: src/broken_indicator.cc:362
-#, fuzzy, c-format
+#, c-format
 msgid "Suggest %F"
-msgstr "Sugiere "
+msgstr "Sugiere %F"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1223,14 +1223,14 @@ msgid " [held]"
 msgstr " [retenido]"
 
 #: src/cmdline/cmdline_show.cc:282
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed"
-msgstr "Se instalará %B%s%b."
+msgstr "%s; se instalará"
 
 #: src/cmdline/cmdline_show.cc:284
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed automatically"
-msgstr "%s; se instalará la versión %s automáticamente"
+msgstr "%s; se instalará automáticamente"
 
 #: src/cmdline/cmdline_show.cc:304
 #, c-format
@@ -1397,9 +1397,9 @@ msgid "No candidate version found for %s\n"
 msgstr "No se encontró ninguna versión candidata para %s\n"
 
 #: src/cmdline/cmdline_util.cc:95
-#, fuzzy, c-format
+#, c-format
 msgid "No current or candidate version found for %s\n"
-msgstr "No se encontró ninguna versión candidata para %s\n"
+msgstr "No se encontró ninguna versión reciente o candidata para %s\n"
 
 #: src/cmdline/cmdline_util.cc:110
 #, c-format
@@ -4607,9 +4607,8 @@ msgid "README"
 msgstr "LÉAME"
 
 #: src/ui.cc:888
-#, fuzzy
 msgid "Encoding of README|ISO_8859-1"
-msgstr "Codificación de README|UTF-8"
+msgstr "Codificación de README|ISO_8859-1"
 
 #: src/ui.cc:919
 msgid "User's Manual"
@@ -4888,7 +4887,6 @@ msgid "Check for new versions of packages"
 msgstr "Buscar nuevas versiones de los paquetes"
 
 #: src/ui.cc:1937
-#, fuzzy
 msgid "Mark Up^gradable"
 msgstr "Marcar ^actualizable"
 
