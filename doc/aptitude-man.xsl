@@ -8,7 +8,7 @@
 <xsl:import href="/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl"/>
 
 <xsl:param name="chunker.output.method" select="'text'"/>
-<xsl:param name="chunker.output.encoding" select="'UTF-8'"/>
+<xsl:param name="man.output.encoding" select="'UTF-8'"/>
 <xsl:param name="man.charmap.use.subset" select="0"/>
 
 <xsl:output method="text" encoding="UTF-8" indent="no"/>
