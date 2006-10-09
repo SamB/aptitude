@@ -4211,20 +4211,21 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <quote><literal>provides</literal></quote> or one of the
 	      dependency types given in <link
 	      linkend='searchBrokenType'>the documentation of
-	      ~B</link>.  If <replaceable>type</replaceable> is not
-	      present, it defaults to <literal>depends</literal>.  If
+	      <literal>~B</literal></link>.  If
+	      <replaceable>type</replaceable> is not present, it
+	      defaults to <literal>depends</literal>.  If
 	      <literal>B</literal> is present, only broken
 	      dependencies will be considered.
 	    </para>
 
 	    <para>
-	      If <literal>type</literal> is
+	      If <replaceable>type</replaceable> is
 	      <quote><literal>provides</literal></quote>, matches
 	      packages that provide a package matching
 	      <replaceable>term</replaceable> (the equivalent of
 	      <literal>~P</literal>).  Otherwise, matches packages
 	      which declare a dependency of type
-	      <literal>type</literal> upon a package version which
+	      <replaceable>type</replaceable> upon a package version which
 	      matches <replaceable>term</replaceable>.
 	    </para>
 	  </listitem>
@@ -4420,8 +4421,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <quote><literal>provides</literal></quote> or one of the
 	      dependency types given in <link
 	      linkend='searchBrokenType'>the documentation of
-	      ~B</link>.  If <replaceable>type</replaceable> is not
-	      present, it defaults to <literal>depends</literal>.  If
+	      <literal>~B</literal></link>.  If
+	      <replaceable>type</replaceable> is not present, it
+	      defaults to <literal>depends</literal>.  If
 	      <literal>B</literal> is present, only broken
 	      dependencies will be considered.
 	    </para>
@@ -9682,8 +9684,8 @@ Minesweeper                                   Minesweeper    Lost in 2388 second
 	  <para>
 	    When a program running in an xterm is using the mouse, the
 	    xterm disables text selection.  However, you can override
-	    this behavior and perform a selection by holding the Shift
-	    key down.
+	    this behavior and perform a selection by holding the
+	    <keycap>Shift</keycap> key down.
 	  </para>
 	</answer>
       </qandaentry>
