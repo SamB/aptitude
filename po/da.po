@@ -1,21 +1,23 @@
 # Danish translations of the Aptitude message strings
-# Copyright (C) 2004 Free Software Foundation, Inc.
-# Version 2.11 korrekturlæst af Ole Laursen og Byrial Jensen
 # Morten Brix Pedersen <morten@wtf.dk>, 2001-2002.
 # Morten Bo Johansen <mojo@mbjnet.dk>, 2002-.
 # Claus Hindsgaul <claus_h@image.dk>, 2004.
+# Claus Hindsgaul <claus.hindsgaul@gmail.com>, 2006.
+# Copyright (C) 2004, 2006 Free Software Foundation, Inc.
+# Version 2.11 korrekturlæst af Ole Laursen og Byrial Jensen
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude-0.4.2\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-03 09:36-0700\n"
-"PO-Revision-Date: 2006-04-27 17:38+0200\n"
-"Last-Translator: Morten Bo Johansen <mojo@mbjnet.dk>\n"
-"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"PO-Revision-Date: 2006-10-11 20:00+0200\n"
+"Last-Translator: Claus Hindsgaul <claus.hindsgaul@gmail.com>\n"
+"Language-Team: Danish\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
@@ -115,19 +117,15 @@ msgid "Display a preview of what will be done before doing it"
 msgstr "Lav en forhåndsoversigt over hvad der vil blive gjort, før det gøres"
 
 #: src/apt_options.cc:165
-msgid ""
-"Forget which packages are \"new\" whenever the package lists are updated"
+msgid "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr "Glem hvilke pakker der er \"nye\" når pakkelisterne opdateres"
 
 #: src/apt_options.cc:168
-msgid ""
-"Forget which packages are \"new\" whenever packages are installed or removed"
-msgstr ""
-"Glem hvilke pakker der er \"nye\", når pakker installeres eller afinstalleres"
+msgid "Forget which packages are \"new\" whenever packages are installed or removed"
+msgstr "Glem hvilke pakker der er \"nye\", når pakker installeres eller afinstalleres"
 
 #: src/apt_options.cc:171
-msgid ""
-"Do not display a warning when the first change is made in read-only mode"
+msgid "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 "Vis ikke en advarsel når den første ændring er lavet i skrivebeskyttet "
 "tilstand"
@@ -245,9 +243,9 @@ msgstr[1] "%d nedgraderinger"
 #. "n1 installs, n2 removals", ...
 #.
 #: src/broken_indicator.cc:362
-#, fuzzy, c-format
+#, c-format
 msgid "Suggest %F"
-msgstr "Foreslår "
+msgstr "Foreslår %F"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -303,8 +301,7 @@ msgstr "%s er allerede installeret i den ønskede version (%s)\n"
 #: src/cmdline/cmdline_action.cc:100
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
-msgstr ""
-"%s er aktuelt ikke installeret, så den vil ikke blive geninstalleret.\n"
+msgstr "%s er aktuelt ikke installeret, så den vil ikke blive geninstalleret.\n"
 
 #: src/cmdline/cmdline_action.cc:107 src/cmdline/cmdline_action.cc:113
 #, c-format
@@ -361,8 +358,7 @@ msgstr ""
 #: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
-msgstr ""
-"Kunne ikke finde nogen pakke, hvis navn eller beskrivelse passer på \"%s\"\n"
+msgstr "Kunne ikke finde nogen pakke, hvis navn eller beskrivelse passer på \"%s\"\n"
 
 #: src/cmdline/cmdline_action.cc:315
 #, c-format
@@ -477,10 +473,8 @@ msgstr "Der er virkelig ingen påskeæg i dette program.\n"
 
 #: src/cmdline/cmdline_moo.cc:22
 #, c-format
-msgid ""
-"Didn't I already tell you that there are no Easter Eggs in this program?\n"
-msgstr ""
-"Har jeg ikke allerede sagt at der ikke er nogen påskeæg i dette program.\n"
+msgid "Didn't I already tell you that there are no Easter Eggs in this program?\n"
+msgstr "Har jeg ikke allerede sagt at der ikke er nogen påskeæg i dette program.\n"
 
 #: src/cmdline/cmdline_moo.cc:25
 #, c-format
@@ -500,8 +494,7 @@ msgstr "O.k., du vinder.\n"
 #: src/cmdline/cmdline_moo.cc:42
 #, c-format
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
-msgstr ""
-"Hvad det er? Det er en elefant der bliver ædt af en slange, selvfølgelig.\n"
+msgstr "Hvad det er? Det er en elefant der bliver ædt af en slange, selvfølgelig.\n"
 
 #: src/cmdline/cmdline_prompt.cc:33
 msgid "Unexpected end-of-file on standard input"
@@ -799,8 +792,7 @@ msgid "'+' to install packages"
 msgstr "'+' for at installere pakker"
 
 #: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:186
-msgid ""
-"'+M' to install packages and immediately flag them as automatically installed"
+msgid "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' for at installere pakker samtidig med at de markeres automatisk "
 "installeret"
@@ -818,10 +810,8 @@ msgid "'=' to place packages on hold"
 msgstr "'=' for at tilbageholde pakker"
 
 #: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:194
-msgid ""
-"':' to keep packages in their current state without placing them on hold"
-msgstr ""
-"':' for at bevare pakker i deres nuværende tilstand, uden at tilbageholde dem"
+msgid "':' to keep packages in their current state without placing them on hold"
+msgstr "':' for at bevare pakker i deres nuværende tilstand, uden at tilbageholde dem"
 
 #: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
@@ -966,15 +956,13 @@ msgstr "gennemgå løsningen i den interaktive brugerflade"
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur."
-msgstr ""
-"afvis de anførte pakkeversioner; vis ikke løsninger hvori de forekommer."
+msgstr "afvis de anførte pakkeversioner; vis ikke løsninger hvori de forekommer."
 
 #: src/cmdline/cmdline_resolver.cc:180
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur."
-msgstr ""
-"godkend de anførte pakkeversioner; vis kun løsninger hvori de forekommer."
+msgstr "godkend de anførte pakkeversioner; vis kun løsninger hvori de forekommer."
 
 #: src/cmdline/cmdline_resolver.cc:182
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -1095,8 +1083,7 @@ msgstr "Ugyldigt svar. Anfør en af følgende kommandoer:"
 
 #: src/cmdline/cmdline_resolver.cc:622
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
-msgstr ""
-"Ingen løsning fundet indenfor den fastsatte tid. Prøv mere ihærdigt? [Y/n]"
+msgstr "Ingen løsning fundet indenfor den fastsatte tid. Prøv mere ihærdigt? [Y/n]"
 
 #: src/cmdline/cmdline_resolver.cc:651
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -1195,14 +1182,14 @@ msgid " [held]"
 msgstr " [tilbageholdt]"
 
 #: src/cmdline/cmdline_show.cc:282
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed"
-msgstr "%B%s%b vil blive installeret."
+msgstr "%s; vil blive installeret"
 
 #: src/cmdline/cmdline_show.cc:284
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed automatically"
-msgstr "%s; version %s vil blive installeret automatisk"
+msgstr "%s; vil blive installeret automatisk"
 
 #: src/cmdline/cmdline_show.cc:304
 #, c-format
@@ -1369,9 +1356,9 @@ msgid "No candidate version found for %s\n"
 msgstr "Ingen kandidat-version fundet for %s\n"
 
 #: src/cmdline/cmdline_util.cc:95
-#, fuzzy, c-format
+#, c-format
 msgid "No current or candidate version found for %s\n"
-msgstr "Ingen kandidat-version fundet for %s\n"
+msgstr "Ingen aktuel eller kandidat-version fundet for %s\n"
 
 #: src/cmdline/cmdline_util.cc:110
 #, c-format
@@ -1615,10 +1602,8 @@ msgstr ""
 "ændring som du fortager i pakkernes status vil IKKE blive gemt!"
 
 #: src/generic/apt/download_install_manager.cc:53
-msgid ""
-"The package cache is not available; unable to download and install packages."
-msgstr ""
-"Pakkecachen er ikke tilgængelig; kunne ikke hente og installere pakker."
+msgid "The package cache is not available; unable to download and install packages."
+msgstr "Pakkecachen er ikke tilgængelig; kunne ikke hente og installere pakker."
 
 #: src/generic/apt/download_install_manager.cc:69
 #: src/generic/apt/download_update_manager.cc:77
@@ -1638,10 +1623,8 @@ msgid "A package failed to install.  Trying to recover:"
 msgstr "En pakke lod sig ikke installere. Prøver at overvinde problemet:"
 
 #: src/generic/apt/download_install_manager.cc:165
-msgid ""
-"Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
-msgstr ""
-"Kunne ikke gøre krav på systemlåsen! (Måske kører en anden apt eller dpkg?)"
+msgid "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
+msgstr "Kunne ikke gøre krav på systemlåsen! (Måske kører en anden apt eller dpkg?)"
 
 #: src/generic/apt/download_update_manager.cc:66
 msgid "Couldn't read list of package sources"
@@ -1908,8 +1891,7 @@ msgstr ""
 
 #: src/generic/apt/pkg_acqfile.cc:99
 #, c-format
-msgid ""
-"The package index files are corrupted. No Filename: field for package %s."
+msgid "The package index files are corrupted. No Filename: field for package %s."
 msgstr "pakkeindeksfilerne er ødelagt. Ingen Filename:-linje for pakke %s."
 
 #: src/generic/apt/pkg_changelog.cc:151 src/view_changelog.cc:149
@@ -1951,8 +1933,7 @@ msgstr "Opbygger database over mærkater"
 
 #: src/generic/apt/tags.cc:255
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
-"Kunne ikke indlæse debtags-ordliste, måske er debtags ikke installeret?"
+msgstr "Kunne ikke indlæse debtags-ordliste, måske er debtags ikke installeret?"
 
 #: src/generic/apt/tasks.cc:283
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -2044,8 +2025,7 @@ msgstr "Forkert navn på afsnit \"%s\" (brug 'none', 'topdir' eller 'subdir')"
 #: src/load_grouppolicy.cc:377
 #, c-format
 msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
-msgstr ""
-"Fejl i passthrough-indst. \"%s\" (brug \"passthrough\" el. \"nopassthrough\")"
+msgstr "Fejl i passthrough-indst. \"%s\" (brug \"passthrough\" el. \"nopassthrough\")"
 
 #: src/load_grouppolicy.cc:382
 msgid "Too many arguments to by-section grouping policy"
@@ -2120,8 +2100,7 @@ msgstr "Ubalanceret '(' i grupperingsmetode for mønster"
 
 #: src/load_pkgview.cc:58
 msgid "Couldn't parse layout: No column format specified for static item"
-msgstr ""
-"Kunne ikke fortolke layout: Intet kolonneformat angivet for statisk punkt"
+msgstr "Kunne ikke fortolke layout: Intet kolonneformat angivet for statisk punkt"
 
 #: src/load_pkgview.cc:91
 msgid "Couldn't parse layout: encoding error in column descriptor"
@@ -2362,10 +2341,8 @@ msgstr " -s             Simulér handlinger uden faktisk at udføre dem.\n"
 
 #: src/main.cc:147
 #, c-format
-msgid ""
-" -d             Only download packages, do not install or remove anything.\n"
-msgstr ""
-" -d             Hent kun pakker, installér eller afinstallér ikke noget.\n"
+msgid " -d             Only download packages, do not install or remove anything.\n"
+msgstr " -d             Hent kun pakker, installér eller afinstallér ikke noget.\n"
 
 #: src/main.cc:148
 #, c-format
@@ -2374,8 +2351,7 @@ msgstr " -P             Spørg altid om bekræftelse eller handlinger\n"
 
 #: src/main.cc:149
 #, c-format
-msgid ""
-" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+msgid " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr " -y             Antag at svaret til simple ja/nej-spørgsmål er 'ja'\n"
 
 #: src/main.cc:150
@@ -2389,23 +2365,18 @@ msgstr ""
 
 #: src/main.cc:151
 #, c-format
-msgid ""
-" -O order       Specify how search results should be sorted; see the manual\n"
-msgstr ""
-" -O order       Anfør sorteringsorden for søgeresultater; se manualen\n"
+msgid " -O order       Specify how search results should be sorted; see the manual\n"
+msgstr " -O order       Anfør sorteringsorden for søgeresultater; se manualen\n"
 
 #: src/main.cc:152
 #, c-format
-msgid ""
-" -w width       Specify the display width for formatting search results\n"
-msgstr ""
-" -w width       Angiv en skærmbredde til formatering af søgeresultater\n"
+msgid " -w width       Specify the display width for formatting search results\n"
+msgstr " -w width       Angiv en skærmbredde til formatering af søgeresultater\n"
 
 #: src/main.cc:153
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
-msgstr ""
-" -f             Prøv aggressivt at reparere brudte pakkeafhængigheder.\n"
+msgstr " -f             Prøv aggressivt at reparere brudte pakkeafhængigheder.\n"
 
 #: src/main.cc:154
 #, c-format
@@ -2414,27 +2385,22 @@ msgstr " -V             Vis hvilke versioner af pakker der skal installeres.\n"
 
 #: src/main.cc:155
 #, c-format
-msgid ""
-" -D             Show the dependencies of automatically changed packages.\n"
-msgstr ""
-" -D             Vis afhængigheder for pakker der er ændret automatisk.\n"
+msgid " -D             Show the dependencies of automatically changed packages.\n"
+msgstr " -D             Vis afhængigheder for pakker der er ændret automatisk.\n"
 
 #: src/main.cc:156
 #, c-format
 msgid " -Z\t\t    Show the change in installed size of each package.\n"
-msgstr ""
-" -Z             Vis ændring i hver pakkes pladsforbrug efter installering.\n"
+msgstr " -Z             Vis ændring i hver pakkes pladsforbrug efter installering.\n"
 
 #: src/main.cc:157
 #, c-format
-msgid ""
-" -v             Display extra information. (may be supplied multiple times)\n"
+msgid " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr " -v             Vis ekstra information (kan anføres flere gange).\n"
 
 #: src/main.cc:158
 #, c-format
-msgid ""
-" -t [release]   Set the release from which packages should be installed\n"
+msgid " -t [release]   Set the release from which packages should be installed\n"
 msgstr " -t [udgave]   Angiv hvilken udgave pakker skal installeres fra\n"
 
 #: src/main.cc:159
@@ -2449,8 +2415,7 @@ msgstr ""
 #: src/main.cc:160
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
-msgstr ""
-" -o nøgle=værdi     Tildel værdi direkte til opsætningstilvalget \"nøgle\"\n"
+msgstr " -o nøgle=værdi     Tildel værdi direkte til opsætningstilvalget \"nøgle\"\n"
 
 #: src/main.cc:161
 #, c-format
@@ -2505,10 +2470,8 @@ msgid "Only one of -u and -i may be specified\n"
 msgstr "Kun -u eller -i må angives\n"
 
 #: src/main.cc:416
-msgid ""
-"-u and -i may not be specified in command-line mode (eg, with 'install')"
-msgstr ""
-"-u og -i må ikke angives i kommandolinje-tilstand (f.eks. med \"install\")"
+msgid "-u and -i may not be specified in command-line mode (eg, with 'install')"
+msgstr "-u og -i må ikke angives i kommandolinje-tilstand (f.eks. med \"install\")"
 
 #: src/main.cc:437
 msgid "-u and -i may not be specified with a command"
@@ -2663,10 +2626,8 @@ msgid "The dart was poisoned!  The poison was deadly...  --More--"
 msgstr "Pilen var forgiftet! Giften var dødelig...  --Mere--"
 
 #: src/mine/cmine.cc:494
-msgid ""
-"A little dart shoots out at you!  You are hit by a little dart!  --More--"
-msgstr ""
-"En lille pil skydes af mod dig! Du bliver ramt af en lille pil!  --Mere--"
+msgid "A little dart shoots out at you!  You are hit by a little dart!  --More--"
+msgstr "En lille pil skydes af mod dig! Du bliver ramt af en lille pil!  --Mere--"
 
 #: src/mine/cmine.cc:498
 msgid "You turn to stone... --More--"
@@ -3964,8 +3925,7 @@ msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: fejl i parametre - to \"main widgets\"??"
 
 #: src/pkg_view.cc:414
-msgid ""
-"make_package_view: error in arguments -- bad column list for static item"
+msgid "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: fejl i parametre - forkert kolonneliste for statisk "
 "element"
@@ -4037,10 +3997,8 @@ msgid "%B%s%b will be automatically removed because of dependency errors:"
 msgstr "%B%s%b vil blive afinstalleret automatisk p.g.a. afhængighedsfejl:"
 
 #: src/reason_fragment.cc:366
-msgid ""
-"%B%s%b will be automatically installed to satisfy the following dependencies:"
-msgstr ""
-"%B%s%b vil blive installeret automatisk for at opfylde flg. afhængigheder:"
+msgid "%B%s%b will be automatically installed to satisfy the following dependencies:"
+msgstr "%B%s%b vil blive installeret automatisk for at opfylde flg. afhængigheder:"
 
 #: src/reason_fragment.cc:372 src/reason_fragment.cc:384
 msgid ""
@@ -4103,8 +4061,7 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b vil blive opgraderet fra version %B%s%b til version %B%s%b."
 
 #: src/reason_fragment.cc:472
-msgid ""
-"The following packages depend on %B%s%b and will be broken by its removal:"
+msgid "The following packages depend on %B%s%b and will be broken by its removal:"
 msgstr ""
 "Følgende pakker afhænger af %B%s%b og vil blive brudte ved dens "
 "afinstallering:"
@@ -4426,8 +4383,7 @@ msgid "Never display this message again."
 msgstr "Vis aldrig denne besked igen."
 
 #: src/ui.cc:368
-msgid ""
-"You may not modify the state of any package while a download is underway."
+msgid "You may not modify the state of any package while a download is underway."
 msgstr "Du må ikke ændre nogen pakkes tilstand, mens der hentes pakker."
 
 #: src/ui.cc:399
@@ -4435,10 +4391,8 @@ msgid "You already are root!"
 msgstr "Du er allerede root!"
 
 #: src/ui.cc:464
-msgid ""
-"Subprocess exited with an error -- did you type your password correctly?"
-msgstr ""
-"Underprocessen afsluttedes med en fejl - skrev du dit password rigtigt?"
+msgid "Subprocess exited with an error -- did you type your password correctly?"
+msgstr "Underprocessen afsluttedes med en fejl - skrev du dit password rigtigt?"
 
 #: src/ui.cc:503
 msgid "Loading cache"
@@ -4498,9 +4452,8 @@ msgid "README"
 msgstr "README"
 
 #: src/ui.cc:888
-#, fuzzy
 msgid "Encoding of README|ISO_8859-1"
-msgstr "Indkodning af README|UTF-8"
+msgstr "Indkodning af README|ISO_8859-1"
 
 #: src/ui.cc:919
 msgid "User's Manual"
@@ -4541,18 +4494,15 @@ msgstr "Kunne ikke fjerne katalog \"%s\""
 
 #: src/ui.cc:998
 #, c-format
-msgid ""
-"Unable to remove the old temporary directory; you should remove %s by hand."
-msgstr ""
-"Kan ikke fjerne gammelt, midlertidigt katalog; du bør fjerne %s manuelt."
+msgid "Unable to remove the old temporary directory; you should remove %s by hand."
+msgstr "Kan ikke fjerne gammelt, midlertidigt katalog; du bør fjerne %s manuelt."
 
 #: src/ui.cc:1003
 #, c-format
 msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
 "hand."
-msgstr ""
-"Vil ikke fjerne %s; du bør gennemgå filerne heri og fjerne dem manuelt."
+msgstr "Vil ikke fjerne %s; du bør gennemgå filerne heri og fjerne dem manuelt."
 
 #: src/ui.cc:1029
 #, c-format
@@ -4715,8 +4665,7 @@ msgstr "Apt's cachefil er ikke tilgængelig.; kan ikke køre auto-clean."
 msgid ""
 "Obsolete downloaded package files have been deleted, freeing %sB of disk "
 "space."
-msgstr ""
-"Hentede, forældede pakkefiler er blevet slettet. %sB diskplads er frigjort."
+msgstr "Hentede, forældede pakkefiler er blevet slettet. %sB diskplads er frigjort."
 
 #: src/ui.cc:1633
 msgid "No more solutions."
@@ -4768,9 +4717,8 @@ msgid "Check for new versions of packages"
 msgstr "Se efter nye versioner af pakker"
 
 #: src/ui.cc:1937
-#, fuzzy
 msgid "Mark Up^gradable"
-msgstr "^Markér til opgradering"
+msgstr "Markér op^graderbare"
 
 #: src/ui.cc:1938
 msgid "Mark all upgradable packages which are not held for upgrade"
@@ -4871,10 +4819,8 @@ msgid "^Purge"
 msgstr "^Udrens"
 
 #: src/ui.cc:1999
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr ""
-"Markér den aktuelt valgte pakke og dens opsætningsfiler til afinstallering"
+msgid "Flag the currently selected package and its configuration files for removal"
+msgstr "Markér den aktuelt valgte pakke og dens opsætningsfiler til afinstallering"
 
 #: src/ui.cc:2002
 msgid "^Keep"
@@ -4954,8 +4900,7 @@ msgstr "^Gennemgå løsning"
 
 #: src/ui.cc:2036
 msgid "Examine the currently selected solution to the dependency problems."
-msgstr ""
-"Gennemgå den aktuelt valgte løsning på problemerne med pakkeafhængigheder."
+msgstr "Gennemgå den aktuelt valgte løsning på problemerne med pakkeafhængigheder."
 
 #: src/ui.cc:2039
 msgid "Apply ^Solution"
@@ -5323,8 +5268,7 @@ msgstr "Ugyldig tom tastebinding"
 
 #: src/vscreen/config/keybindings.cc:351
 msgid "Sorry, control modifiers may not be used with unprintable characters"
-msgstr ""
-"Beklager, styrekoder kan ikke bruges sammen med tegn der ikke kan udskrives"
+msgstr "Beklager, styrekoder kan ikke bruges sammen med tegn der ikke kan udskrives"
 
 #: src/vscreen/vscreen.cc:125
 #, c-format
@@ -5348,11 +5292,10 @@ msgstr "Av! Modtog SIGQUIT, dør ..\n"
 
 #: src/vscreen/vs_pager.cc:439
 #, c-format
-msgid ""
-"Unable to load filename: the string %ls has no multibyte representation."
-msgstr ""
-"Kan ikke indlæse filnavn: strengen %ls er ikke repræsenteret i multibyte."
+msgid "Unable to load filename: the string %ls has no multibyte representation."
+msgstr "Kan ikke indlæse filnavn: strengen %ls er ikke repræsenteret i multibyte."
 
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "ØVERSTE NIVEAU"
+
