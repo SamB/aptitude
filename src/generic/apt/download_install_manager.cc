@@ -30,6 +30,9 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/sourcelist.h>
 
+#include <pthread.h>
+#include <signal.h>
+
 using namespace std;
 
 download_install_manager::download_install_manager(bool _download_only)
@@ -134,7 +137,14 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
 
   result rval = success;
 
+  sigset_t allsignals;
+  sigset_t oldsignals;
+  sigfillset(&allsignals);
+
+  pthread_sigmask(SIG_UNBLOCK, &allsignals, &oldsignals);
   pkgPackageManager::OrderResult pmres = pm->DoInstall(aptcfg->FindI("APT::Status-Fd", -1));
+  pthread_sigmask(SIG_SETMASK, &oldsignals, NULL);
+
   switch(pmres)
     {
     case pkgPackageManager::Failed:
