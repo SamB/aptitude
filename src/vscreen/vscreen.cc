@@ -777,7 +777,7 @@ void vscreen_init()
   sigset_t signals;
   sigemptyset(&signals);
   sigaddset(&signals, SIGWINCH);
-  sigprocmask(SIG_BLOCK, &signals, NULL);
+  pthread_sigmask(SIG_BLOCK, &signals, NULL);
 
 
 
