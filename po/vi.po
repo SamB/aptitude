@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-03 09:36-0700\n"
-"PO-Revision-Date: 2006-09-21 17:03+0930\n"
+"PO-Revision-Date: 2006-10-14 14:43+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -823,7 +823,7 @@ msgstr "« = » để giữ lại gói"
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
-"« : » để giữ các gói đó tong tính trạng hiện thời, không lập tính rạng Giữ "
+"« : » để giữ các gói đó tong tình trạng hiện thời, không lập tính rạng Giữ "
 "lại"
 
 #: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:196
@@ -924,11 +924,11 @@ msgstr "Không thể mở %s để ghi"
 #: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:602
 #, c-format
 msgid "Error writing resolver state to %s"
-msgstr "Gặp lỗi khi ghi tính trạng bộ tháo gỡ vào %s"
+msgstr "Gặp lỗi khi ghi tình trạng bộ tháo gỡ vào %s"
 
 #: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:604
 msgid "Resolver state successfully written!"
-msgstr "Tính trạng bộ tháo gỡ đã được ghi thành công."
+msgstr "Tình trạng bộ tháo gỡ đã được ghi thành công."
 
 #: src/cmdline/cmdline_resolver.cc:145
 #, c-format
@@ -986,7 +986,7 @@ msgstr ""
 #: src/cmdline/cmdline_resolver.cc:182
 msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr ""
-"điều chỉnh tính trạng của các gói trong danh sách mà HÀNH ĐỘNG là một trong "
+"điều chỉnh tình trạng của các gói trong danh sách mà HÀNH ĐỘNG là một trong "
 "những điều này:"
 
 #: src/cmdline/cmdline_resolver.cc:200
@@ -1095,7 +1095,7 @@ msgstr "Có sẵn những lệnh theo đây:"
 
 #: src/cmdline/cmdline_resolver.cc:594
 msgid "File to write resolver state to: "
-msgstr "Ghi tính trạng tháo gỡ vào tập tin này: "
+msgstr "Ghi tình trạng tháo gỡ vào tập tin này: "
 
 #: src/cmdline/cmdline_resolver.cc:609
 msgid "Invalid response; please enter one of the following commands:"
@@ -1230,7 +1230,7 @@ msgstr "Gói: "
 #: src/cmdline/cmdline_show.cc:334 src/cmdline/cmdline_show.cc:362
 #: src/pkg_columnizer.cc:89
 msgid "State"
-msgstr "Tính trạng"
+msgstr "Tình trạng"
 
 #: src/cmdline/cmdline_show.cc:335 src/cmdline/cmdline_show.cc:418
 #: src/generic/apt/matchers.cc:1663
@@ -1546,39 +1546,39 @@ msgstr ""
 
 #: src/generic/apt/aptcache.cc:263
 msgid "Can't open Aptitude extended state file"
-msgstr "Không thể mở tập tin tính trạng kéo dài Aptitude"
+msgstr "Không thể mở tập tin tình trạng kéo dài Aptitude"
 
 #: src/generic/apt/aptcache.cc:270 src/generic/apt/aptcache.cc:324
 #: src/generic/apt/aptcache.cc:326
 msgid "Reading extended state information"
-msgstr "Đang đọc thông tin tính trạng kéo dài"
+msgstr "Đang đọc thông tin tình trạng kéo dài"
 
 #: src/generic/apt/aptcache.cc:332 src/generic/apt/aptcache.cc:408
 #: src/generic/apt/aptcache.cc:411
 msgid "Initializing package states"
-msgstr "Đang khởi động các tính trạng gói"
+msgstr "Đang khởi động các tình trạng gói"
 
 #: src/generic/apt/aptcache.cc:536
 msgid "Cannot open Aptitude state file"
-msgstr "Không thể mở tập tin tính trạng Aptitude"
+msgstr "Không thể mở tập tin tình trạng Aptitude"
 
 #: src/generic/apt/aptcache.cc:540 src/generic/apt/aptcache.cc:596
 #: src/generic/apt/aptcache.cc:599
 msgid "Writing extended state information"
-msgstr "Đang ghi thông tin tính trạng kéo dài"
+msgstr "Đang ghi thông tin tình trạng kéo dài"
 
 #: src/generic/apt/aptcache.cc:578
 #, c-format
 msgid "Internal buffer overflow on package \"%s\" while writing state file"
-msgstr "Tràn bộ đệm nội bộ trên gói « %s » trong khi ghi tâp tin tính trạng."
+msgstr "Tràn bộ đệm nội bộ trên gói « %s » trong khi ghi tâp tin tình trạng."
 
 #: src/generic/apt/aptcache.cc:587
 msgid "Couldn't write state file"
-msgstr "Không thể ghi tâp tin tính trạng"
+msgstr "Không thể ghi tâp tin tình trạng"
 
 #: src/generic/apt/aptcache.cc:604
 msgid "Error writing state file"
-msgstr "Gặp lỗi khi ghi tâp tin tính trạng"
+msgstr "Gặp lỗi khi ghi tâp tin tình trạng"
 
 #: src/generic/apt/aptcache.cc:622
 #, c-format
@@ -1630,7 +1630,7 @@ msgid ""
 "make to the states of packages will NOT be preserved!"
 msgstr ""
 "Không thể khóa tập tin bộ nhớ tạm. Như thế thì đang mở nó trong chế độ chỉ-"
-"đọc: sẽ KHÔNG lưu thay đổi nào của bạn trong tính trạng gói."
+"đọc: sẽ KHÔNG lưu thay đổi nào của bạn trong tình trạng gói."
 
 #: src/generic/apt/download_install_manager.cc:53
 msgid ""
@@ -3685,7 +3685,7 @@ msgid ""
 " These packages could be upgraded, but they have been kept in their current "
 "state to avoid breaking dependencies."
 msgstr ""
-"Gói đang được giữ lại trong tính trạng hiện thời\n"
+"Gói đang được giữ lại trong tình trạng hiện thời\n"
 "Có thể nâng cấp những gói này, nhưng mà chưa làm như thế để tránh ngắt đường "
 "dẫn phụ thuộc."
 
@@ -4055,7 +4055,7 @@ msgid ""
 "If you select a package, an explanation of its current state will appear in "
 "this space."
 msgstr ""
-"Việc lựa chọn gói nào sẽ hiển thị mô tả của tính trạng hiện thời nó trong "
+"Việc lựa chọn gói nào sẽ hiển thị mô tả của tình trạng hiện thời nó trong "
 "vùng này."
 
 #: src/reason_fragment.cc:358
@@ -4461,7 +4461,7 @@ msgstr "Đừng bao giờ hiển thị thông điệp này."
 #: src/ui.cc:368
 msgid ""
 "You may not modify the state of any package while a download is underway."
-msgstr "Không cho phép bạn sửa đổi tính trạng của gói nào trong khi tải về."
+msgstr "Không cho phép bạn sửa đổi tình trạng của gói nào trong khi tải về."
 
 #: src/ui.cc:399
 msgid "You already are root!"
@@ -4778,11 +4778,11 @@ msgstr "Không thể mở « %ls »"
 
 #: src/ui.cc:1889
 msgid "Error while dumping resolver state"
-msgstr "Gặp lỗi khi đổ tính trạng bộ thái gỡ"
+msgstr "Gặp lỗi khi đổ tình trạng bộ thái gỡ"
 
 #: src/ui.cc:1899
 msgid "File to which the resolver state should be dumped:"
-msgstr "Đổ tính trạng bộ tháo gỡ vào tập tin này:"
+msgstr "Đổ tình trạng bộ tháo gỡ vào tập tin này:"
 
 #: src/ui.cc:1929
 msgid "^Install/remove packages"
