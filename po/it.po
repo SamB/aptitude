@@ -43,7 +43,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.0\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-03 09:36-0700\n"
-"PO-Revision-Date: 2006-02-16 16:33+0100\n"
+"PO-Revision-Date: 2006-10-19 23:41+0200\n"
 "Last-Translator: Danilo Piazzalunga <danilopiazza@gmail.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -156,7 +156,6 @@ msgid ""
 msgstr "Dimenticare quali pacchetti sono «nuovi» quando si installa/rimuove"
 
 #: src/apt_options.cc:171
-#, fuzzy
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr "Non avvertire alla prima modifica fatta in modalità di sola lettura."
@@ -276,9 +275,9 @@ msgstr[1] "%d da retrocedere (downgrade)"
 #. "n1 installs, n2 removals", ...
 #.
 #: src/broken_indicator.cc:362
-#, fuzzy, c-format
+#, c-format
 msgid "Suggest %F"
-msgstr "Consigli: "
+msgstr "Consigli: %F"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1230,14 +1229,14 @@ msgid " [held]"
 msgstr " [bloccato]"
 
 #: src/cmdline/cmdline_show.cc:282
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed"
-msgstr "%B%s%b verrà installato."
+msgstr "%s; verrà installato."
 
 #: src/cmdline/cmdline_show.cc:284
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed automatically"
-msgstr "%s; verrà installata automaticamente la versione %s"
+msgstr "%s; verrà installato automaticamente"
 
 #: src/cmdline/cmdline_show.cc:304
 #, c-format
@@ -1404,9 +1403,10 @@ msgid "No candidate version found for %s\n"
 msgstr "Impossibile trovare una versione candidata di %s\n"
 
 #: src/cmdline/cmdline_util.cc:95
-#, fuzzy, c-format
+#, c-format
 msgid "No current or candidate version found for %s\n"
-msgstr "Impossibile trovare una versione candidata di %s\n"
+msgstr ""
+"Impossibile trovare una versione corrente o una versione candidata per %s\n"
 
 # NdT: Messaggio mostrato se viene specificato un archivio (stable, testing, ...)
 # che non esiste in sources.list o in cui il pacchetto non è presente.
@@ -1537,9 +1537,9 @@ msgid "No hierarchy information to edit"
 msgstr "Non ci sono informazioni sulla gerarchia da modificare"
 
 #: src/edit_pkg_hier.cc:286
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "Impossibile aprire il file in scrittura"
+msgstr "Impossibile aprire %s in scrittura"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
@@ -2728,7 +2728,6 @@ msgid "You die...  --More--"
 msgstr "Sei morto...  --Ancora--"
 
 #: src/mine/cmine.cc:478
-#, fuzzy
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
 msgstr "Gli spuntoni erano avvelenati! Il veleno era letale...  --Ancora--"
 
@@ -3119,7 +3118,6 @@ msgstr ""
 "del sistema."
 
 #: src/pkg_grouppolicy.cc:169
-#, fuzzy
 msgid ""
 "Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
@@ -4618,16 +4616,15 @@ msgstr "help-it.txt"
 
 #: src/ui.cc:864
 msgid "Encoding of help.txt|UTF-8"
-msgstr "Encoding of help.txt|UTF-8"
+msgstr "Encoding di help.txt|UTF-8"
 
 #: src/ui.cc:886
 msgid "README"
 msgstr "README"
 
 #: src/ui.cc:888
-#, fuzzy
 msgid "Encoding of README|ISO_8859-1"
-msgstr "UTF-8"
+msgstr "Encoding di README|ISO_8859-1"
 
 #: src/ui.cc:919
 msgid "User's Manual"
@@ -4901,7 +4898,6 @@ msgstr "Cerca nuove versioni dei pacchetti"
 # Il significato letterale è: "Segna (= Mark) [tutti i pacchetti che è
 # possibile aggiornare] come aggiornabili (= Upgradable)"
 #: src/ui.cc:1937
-#, fuzzy
 msgid "Mark Up^gradable"
 msgstr "Aggiorna ^tutti i pacchetti"
 
@@ -4919,14 +4915,13 @@ msgid "Forget which packages are \"new\""
 msgstr "Dimentica quali pacchetti sono «nuovi»"
 
 #: src/ui.cc:1946
-#, fuzzy
 msgid "Canc^el pending actions"
-msgstr "Pacchetti che dipendono da %s"
+msgstr "Cance^llare azioni pendenti"
 
 #: src/ui.cc:1947
-#, fuzzy
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Procede ad installare e rimuovere i pacchetti"
+msgstr ""
+"Cancella tutte le installazioni, rimozioni, blocchi, aggiornamenti pendenti."
 
 #: src/ui.cc:1950
 msgid "^Clean package cache"
@@ -5339,9 +5334,8 @@ msgid "View a list of frequently asked questions"
 msgstr "Visualizza un elenco delle domande più frequenti"
 
 #: src/ui.cc:2193
-#, fuzzy
 msgid "^News"
-msgstr "Nuovo"
+msgstr "^Nuovo"
 
 #: src/ui.cc:2194
 msgid "View the important changes made in each version of "
@@ -5494,6 +5488,3 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "LIVELLO SUPERIORE"
-
-#~ msgid "^NEWS"
-#~ msgstr "^NEWS"
