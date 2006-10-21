@@ -1,21 +1,20 @@
 # translation of aptitude_po.po to Arabic
-# translation of aptitude_po.po to Arabeyes
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
-# Ossama M. Khayat <okhayat@yahoo.com>, 2004, 2005.
 #
+# Ossama M. Khayat <okhayat@yahoo.com>, 2004, 2005, 2006.
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-03 09:36-0700\n"
-"PO-Revision-Date: 2005-09-14 00:20+0300\n"
+"PO-Revision-Date: 2006-10-20 21:47+0300\n"
 "Last-Translator: Ossama M. Khayat <okhayat@yahoo.com>\n"
 "Language-Team: Arabic <support@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10.2\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
@@ -192,7 +191,7 @@ msgstr "تعذر إرضاء المعتمدات."
 #: src/broken_indicator.cc:240
 #, c-format
 msgid "[%d(%d)/...] Resolving dependencies"
-msgstr ""
+msgstr "[%d(%d)/...] حل المعتمدات"
 
 #: src/broken_indicator.cc:273 src/solution_dialog.cc:126
 #: src/solution_screen.cc:522
@@ -238,9 +237,9 @@ msgstr[1] "%d تثبيط"
 #. "n1 installs, n2 removals", ...
 #.
 #: src/broken_indicator.cc:362
-#, fuzzy, c-format
+#, c-format
 msgid "Suggest %F"
-msgstr "اقتراح"
+msgstr "اقتراح %F"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -902,11 +901,13 @@ msgid "Resolver state successfully written!"
 msgstr "تم تسجيل وضع المحلّل بنجاح!"
 
 #: src/cmdline/cmdline_resolver.cc:145
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
-msgstr "y: %Fn: %Fq: %F,: %F.: %F<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
+msgstr ""
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
+"n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:164
 msgid "accept the proposed changes"
@@ -930,24 +931,23 @@ msgstr "الانتقال إلى الحل السابق"
 
 #: src/cmdline/cmdline_resolver.cc:174
 msgid "view an explanation of the changes in the solution"
-msgstr ""
+msgstr "عرض شرح للتغييرات المقدمة في الحل"
 
 #: src/cmdline/cmdline_resolver.cc:176
-#, fuzzy
 msgid "examine the solution in the visual user interface"
-msgstr "تغيير الإعدادات التي تؤثر على واجهة المستخدم"
+msgstr "معاينة الحل في واجهة المستخدم المرئية"
 
 #: src/cmdline/cmdline_resolver.cc:178
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur."
-msgstr ""
+msgstr "رفض نسخ الحزم المعطاة وعدم عرض أية حلول تظهر فيها."
 
 #: src/cmdline/cmdline_resolver.cc:180
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur."
-msgstr ""
+msgstr "قبول نسخ الحزم المعطاة وعرض الحلول التي تظهر فيها فقط."
 
 #: src/cmdline/cmdline_resolver.cc:182
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -962,17 +962,17 @@ msgstr "ستتسبب التعديلات بتجاهل الحلّ الحالي و�
 #: src/cmdline/cmdline_resolver.cc:214
 #, c-format
 msgid "The version %s is available in the following archives:"
-msgstr ""
+msgstr "النسخة %s متوفرة في الأرشيفات التالية:"
 
 #: src/cmdline/cmdline_resolver.cc:222
 #, c-format
 msgid "Select the version of %s that should be used: "
-msgstr ""
+msgstr "اختيار نسخة %s التي يجب استخدامها:"
 
 #: src/cmdline/cmdline_resolver.cc:229
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
-msgstr "ردّ باطل؛ من فضلك أدخل 'y' أو 'n'."
+msgstr "ردّ غير صالح. الرجاء إدخال رقم صحيح بين 1 و %d."
 
 #: src/cmdline/cmdline_resolver.cc:244
 #, c-format
@@ -985,9 +985,9 @@ msgid "Expected a version after \"%s\""
 msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:268
-#, fuzzy, c-format
+#, c-format
 msgid "No such package \"%s\""
-msgstr "الحزمة المصدرية: "
+msgstr "لا توجد حزمة بالاسم \"%s\""
 
 #: src/cmdline/cmdline_resolver.cc:284
 #, c-format
@@ -1076,9 +1076,8 @@ msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "تعذر إرضاء المعتمدات!  الاستسلام..."
 
 #: src/cmdline/cmdline_resolver.cc:666
-#, fuzzy
 msgid "*** No more solutions available ***"
-msgstr "لا مزيد من الحلول."
+msgstr "*** لا مزيد من الحلول ***"
 
 #: src/cmdline/cmdline_search.cc:100
 #, c-format
@@ -1305,14 +1304,14 @@ msgid "Description: "
 msgstr "الوصف: "
 
 #: src/cmdline/cmdline_show.cc:518
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to locate package %s"
-msgstr "تعذر فتح %ls"
+msgstr "تعذر العثور على الحزمة %s"
 
 #: src/cmdline/cmdline_show.cc:531
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern %s"
-msgstr "تعذر فتح %ls"
+msgstr ""
 
 #: src/cmdline/cmdline_simulate.cc:37
 #, c-format
@@ -1372,9 +1371,8 @@ msgid "UNAVAILABLE"
 msgstr "غير متوفر"
 
 #: src/desc_parse.cc:275
-#, fuzzy
 msgid "Tags"
-msgstr "علامة"
+msgstr "علامات"
 
 #: src/download_bar.cc:49 src/download_list.cc:335 src/download_screen.cc:56
 #, c-format
@@ -1466,9 +1464,9 @@ msgid "No hierarchy information to edit"
 msgstr "لا يوجد معلومات هيكلة لتحريرها"
 
 #: src/edit_pkg_hier.cc:286
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "تعذر الفتح للتسجيل"
+msgstr "تعذر فتح \"%s\" للكتابة"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
@@ -1536,19 +1534,19 @@ msgid "Error writing state file"
 msgstr "خطأ في تسجيل ملف الوضع"
 
 #: src/generic/apt/aptcache.cc:622
-#, fuzzy, c-format
+#, c-format
 msgid "failed to remove %s"
-msgstr "تعذر فتح %ls"
+msgstr "تعذرت إزالة %s"
 
 #: src/generic/apt/aptcache.cc:629
 #, c-format
 msgid "failed to rename %s to %s"
-msgstr ""
+msgstr "فشل تغيير اسم %s إلى %s"
 
 #: src/generic/apt/aptcache.cc:637
-#, fuzzy, c-format
+#, c-format
 msgid "couldn't replace %s with %s"
-msgstr "تعذر استبدال ملف الوضع القديم"
+msgstr "تعذر استبدال %s بـ%s"
 
 #: src/generic/apt/aptcache.cc:1132
 msgid "Unable to correct dependencies, some packages cannot be installed"
@@ -1567,9 +1565,9 @@ msgid "You may want to update the package lists to correct these missing files"
 msgstr "قد ترغب بتحديث لوائح الحزم لتصحيح هذه الملفات المفقودة"
 
 #: src/generic/apt/apt.cc:172
-#, fuzzy, c-format
+#, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
-msgstr "تعذر استبدال %s بملف التهيئة الجديد"
+msgstr ""
 
 #: src/generic/apt/apt.cc:210
 #, c-format
@@ -1601,9 +1599,8 @@ msgid "Unable to correct for unavailable packages"
 msgstr "تعذر التصحيح من أجل الحزم الغير متوفرة"
 
 #: src/generic/apt/download_install_manager.cc:141
-#, fuzzy
 msgid "A package failed to install.  Trying to recover:"
-msgstr "للعلم!  حدث شيء سيء أثناء تثبيت الحزم.  محاولة الاسترجاع:"
+msgstr "فشل تثبيت أحد الحزم.  محاولة كل المشكلة:"
 
 #: src/generic/apt/download_install_manager.cc:165
 msgid ""
@@ -1619,9 +1616,8 @@ msgid "Couldn't clean out list directories"
 msgstr "تعذر تنظيف أدلة اللوائح"
 
 #: src/generic/apt/download_update_manager.cc:122
-#, fuzzy
 msgid "Couldn't rebuild package cache"
-msgstr "تعذرت قراءة لائحة مصادر الحزم"
+msgstr ""
 
 #: src/generic/apt/log.cc:52
 #, c-format
@@ -1629,9 +1625,9 @@ msgid "Unable to open %s to log actions"
 msgstr "تعذر فتح %s لتسجيل الأعمال"
 
 #: src/generic/apt/log.cc:64
-#, fuzzy, c-format
+#, c-format
 msgid "Error generating local time (%s)"
-msgstr "خطأ في تسجيل وضع المُحلّل إلى %s"
+msgstr ""
 
 #: src/generic/apt/log.cc:68
 msgid "log report"
@@ -1730,110 +1726,92 @@ msgstr ""
 "اكتمل التسجيل.\n"
 
 #: src/generic/apt/matchers.cc:683
-#, fuzzy
 msgid "Automatically Installed"
 msgstr "مُثبّتة تلقائياً"
 
 #: src/generic/apt/matchers.cc:705 src/generic/apt/matchers.cc:894
-#, fuzzy
 msgid "Broken"
-msgstr "#معطوب"
+msgstr "معطوب"
 
 #: src/generic/apt/matchers.cc:892
-#, fuzzy
 msgid "Unchanged"
-msgstr "%s تغييرات"
+msgstr "لم يتغير"
 
 #: src/generic/apt/matchers.cc:896
 msgid "Remove [unused]"
-msgstr ""
+msgstr "إزالة [غير مستخدم]"
 
 #: src/generic/apt/matchers.cc:898
 msgid "Hold [auto]"
-msgstr ""
+msgstr "إبقاء [آلياً]"
 
 #: src/generic/apt/matchers.cc:900
-#, fuzzy
 msgid "Install [auto]"
-msgstr "^تثبيت"
+msgstr "تثبيت [آلياً]"
 
 #: src/generic/apt/matchers.cc:902
-#, fuzzy
 msgid "Remove [auto]"
-msgstr "إ^زالة"
+msgstr "إزالة [آلياً]"
 
 #: src/generic/apt/matchers.cc:904
-#, fuzzy
 msgid "Downgrade"
-msgstr "مثبط"
+msgstr "تثبيط"
 
 #: src/generic/apt/matchers.cc:906
-#, fuzzy
 msgid "Hold"
-msgstr "إ^بقاء"
+msgstr "إبقاء"
 
 #: src/generic/apt/matchers.cc:908
-#, fuzzy
 msgid "Reinstall"
-msgstr "إعادة تثبيت"
+msgstr "إعادة التثبيت"
 
 #: src/generic/apt/matchers.cc:910
-#, fuzzy
 msgid "Install"
-msgstr "^تثبيت"
+msgstr "تثبيت"
 
 #: src/generic/apt/matchers.cc:912
-#, fuzzy
 msgid "Remove"
-msgstr "إ^زالة"
+msgstr "إزالة"
 
 #: src/generic/apt/matchers.cc:914
-#, fuzzy
 msgid "Upgrade"
 msgstr "ترقية"
 
 #: src/generic/apt/matchers.cc:934
-#, fuzzy
 msgid "Keep"
-msgstr "^محافظة"
+msgstr "إبقاء"
 
 #: src/generic/apt/matchers.cc:960
-#, fuzzy
 msgid "Virtual"
 msgstr "وهمي"
 
 #: src/generic/apt/matchers.cc:981
-#, fuzzy
 msgid "Installed"
 msgstr "مُثبّتة"
 
 #: src/generic/apt/matchers.cc:1003
-#, fuzzy
 msgid "Essential"
-msgstr "أساسي: "
+msgstr "أساسية"
 
 #: src/generic/apt/matchers.cc:1022
 msgid "Config Files Remain"
-msgstr ""
+msgstr "تبقى ملفات التهيئة"
 
 #: src/generic/apt/matchers.cc:1388
 msgid "Garbage"
-msgstr ""
+msgstr "قمامة"
 
 #: src/generic/apt/matchers.cc:1712
-#, fuzzy
 msgid "No reverse dependencies"
-msgstr "تعذر إرضاء المعتمدات."
+msgstr "لا معتمدات راجعة"
 
 #: src/generic/apt/matchers.cc:1778
-#, fuzzy
 msgid "New Package"
-msgstr "^عرض حزم جديد"
+msgstr "حزمة جديدة"
 
 #: src/generic/apt/matchers.cc:1797
-#, fuzzy
 msgid "Upgradable"
-msgstr "تعليم ال^قابلة للترقية"
+msgstr "قابلة للترقية"
 
 #: src/generic/apt/matchers.cc:1921
 #, c-format
@@ -1869,9 +1847,8 @@ msgid "Unknown pattern type: %c"
 msgstr "نوع صيغة مجهول: %c"
 
 #: src/generic/apt/matchers.cc:2273
-#, fuzzy
 msgid "Can't search for \"\""
-msgstr "البحث عن: "
+msgstr "تعذر البحث عن \"\""
 
 #: src/generic/apt/matchers.cc:2301
 msgid "Unexpected empty expression"
@@ -1957,9 +1934,8 @@ msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr ""
 
 #: src/generic/util/temp.cc:137
-#, fuzzy
 msgid "Unknown error"
-msgstr "مجهول"
+msgstr "خطأ مجهول"
 
 #: src/generic/util/threads.cc:32
 msgid "Not enough resources to create thread"
@@ -2015,9 +1991,9 @@ msgid "Expected ',' or '(', got '%c'"
 msgstr ""
 
 #: src/load_grouppolicy.cc:277
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown grouping policy \"%s\""
-msgstr "أولوية مجهولة %s"
+msgstr ""
 
 #: src/load_grouppolicy.cc:284
 #, c-format
@@ -2047,9 +2023,9 @@ msgid "Expected '(' after 'filter'"
 msgstr ""
 
 #: src/load_grouppolicy.cc:449
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern at '%s'"
-msgstr "تعذر فتح %ls"
+msgstr ""
 
 #: src/load_grouppolicy.cc:454
 msgid "Exactly one filter must be provided as an argument to a filter policy"
@@ -2092,9 +2068,9 @@ msgid "Missing arguments to 'pattern'"
 msgstr ""
 
 #: src/load_grouppolicy.cc:606
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to parse pattern after \"%s\""
-msgstr "تعذر فتح %ls"
+msgstr ""
 
 #: src/load_grouppolicy.cc:628
 #, c-format
@@ -2102,7 +2078,6 @@ msgid "Unexpectedly empty tree title after \"%s\""
 msgstr ""
 
 #: src/load_grouppolicy.cc:639
-#, fuzzy
 msgid "Unmatched '(' in pattern grouping policy"
 msgstr "حرف '(' ليس له مقابل في وصف سياسة التجميع"
 
@@ -2141,7 +2116,6 @@ msgid "By-name sorting policies take no arguments"
 msgstr "سياسات الفرز بحسب الاسم لا تحتاج إلى أية معطيات"
 
 #: src/load_sortpolicy.cc:64
-#, fuzzy
 msgid "By-version sorting policies take no arguments"
 msgstr "سياسات الفرز بحسب الأولوية لا تحتاج إلى أية معطيات"
 
@@ -2509,9 +2483,8 @@ msgid "Search for: "
 msgstr "البحث عن: "
 
 #: src/menu_text_layout.cc:68 src/menu_tree.cc:221 src/view_changelog.cc:67
-#, fuzzy
 msgid "Search backwards for: "
-msgstr "البحث عن: "
+msgstr ""
 
 #: src/mine/cmine.cc:106 src/mine/cmine.cc:148 src/ui.cc:1446
 msgid "Minesweeper"
@@ -2546,29 +2519,28 @@ msgstr "خسرت"
 #: src/mine/cmine.cc:165 src/mine/cmine.cc:209
 #, c-format
 msgid "Could not open file \"%s\""
-msgstr ""
+msgstr "تعذر فتح الملف \"%s\""
 
 #: src/mine/cmine.cc:180
 #, c-format
 msgid "Could not load game from %s"
-msgstr ""
+msgstr "تعذر تحميل اللعبة من %s"
 
 #: src/mine/cmine.cc:247
 msgid "The board height must be a positive integer"
-msgstr ""
+msgstr "يجب أن يكون ارتفاع الرقعة رقماً صحيحاً موجباً"
 
 #: src/mine/cmine.cc:259
 msgid "The board width must be a positive integer"
-msgstr ""
+msgstr "يجب أن يكون عرض الرقعة رقماً صحيحاً موجباً"
 
 #: src/mine/cmine.cc:271
-#, fuzzy
 msgid "Invalid mine count; please enter a positive integer"
-msgstr "ردّ غير صالح.  رجاء أدخل أمراً صالحاً أ '؟' للمساعدة.\n"
+msgstr ""
 
 #: src/mine/cmine.cc:291
 msgid "Setup custom game"
-msgstr ""
+msgstr "إعداد لعبة مخصصة"
 
 #: src/mine/cmine.cc:293
 msgid "Height of board: "
@@ -3536,7 +3508,7 @@ msgstr "الأولوية %s"
 
 #: src/pkg_grouppolicy.cc:779
 msgid "UNCATEGORIZED"
-msgstr ""
+msgstr "غير مصنف"
 
 #: src/pkg_grouppolicy.cc:898
 msgid "End-user"
@@ -3577,9 +3549,9 @@ msgstr ""
 "المعرّفة مسبقاً لعرض معيّن."
 
 #: src/pkg_grouppolicy.cc:1079
-#, fuzzy, c-format
+#, c-format
 msgid "Bad number in format string: %ls"
-msgstr "رقم سيء على صيغى سلسلة: '%ls'"
+msgstr "رقم سيء بنسق سلسلة: '%ls'"
 
 #: src/pkg_grouppolicy.cc:1088
 #, c-format
@@ -3629,22 +3601,20 @@ msgstr "الحزم التي تعتمد على %s"
 
 #: src/pkg_info_screen.cc:145
 msgid "Versions"
-msgstr "النسخ"
+msgstr ""
 
 #: src/pkg_item.cc:55
 msgid "Yes, I am aware this is a very bad idea"
 msgstr "نعم، أنا على علم بأن هذه فكرة سيئة جداً"
 
 #: src/pkg_item.cc:80
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s is an essential package!%n%nAre you sure you want to remove it?%nType '%"
 "s' if you are."
 msgstr ""
-"%s هي حزمة أساسية!\n"
-"\n"
-"هل أنت متأكّد من أنك تريد إزالتها؟\n"
-"اطبع '%s' إن كنت كذلك."
+"%s %n%n هي حزمة أساسية! هل أنت متأكّد من أنك تريد إزالتها؟ اطبع %n '%s' إن "
+"كنت كذلك."
 
 #: src/pkg_item.cc:220 src/pkg_ver_item.cc:655 src/solution_item.cc:291
 #, c-format
@@ -3674,7 +3644,7 @@ msgstr "معتمدات %s"
 #: src/pkg_item.cc:333 src/pkg_ver_item.cc:687
 #, c-format
 msgid "%s deps"
-msgstr ""
+msgstr "%s معتمد"
 
 #: src/pkg_item.cc:344 src/pkg_ver_item.cc:697
 #, c-format
@@ -3684,7 +3654,7 @@ msgstr "الحزم التي تعتمد على %s"
 #: src/pkg_item.cc:346 src/pkg_ver_item.cc:699
 #, c-format
 msgid "%s reverse deps"
-msgstr ""
+msgstr "%s معتمدات راجعة"
 
 #: src/pkg_item.cc:396 src/pkg_ver_item.cc:747
 #, c-format
@@ -3965,7 +3935,7 @@ msgstr "الحزم التالية تعتمد على النسخة %B%s%b من %B%
 
 #: src/solution_dialog.cc:91 src/solution_screen.cc:465
 msgid "The package cache is not available."
-msgstr ""
+msgstr "مخزن الحزم غير متوفر."
 
 #: src/solution_dialog.cc:99
 msgid "No packages are broken."
@@ -3973,7 +3943,7 @@ msgstr "ليس هناك حزم معطوبة."
 
 #: src/solution_dialog.cc:108 src/solution_screen.cc:488
 msgid "No resolution found."
-msgstr ""
+msgstr "لم يعثر على حل."
 
 #: src/solution_dialog.cc:114 src/solution_screen.cc:499
 #, fuzzy
@@ -3997,54 +3967,54 @@ msgid "Close"
 msgstr "إغلاق"
 
 #: src/solution_fragment.cc:104
-#, fuzzy, c-format
+#, c-format
 msgid "%s depends upon %s"
-msgstr "يعتمد على"
+msgstr "%s يعتمد على %s"
 
 #: src/solution_fragment.cc:107
-#, fuzzy, c-format
+#, c-format
 msgid "%s pre-depends upon %s"
-msgstr "تعتمد مسبقاً على"
+msgstr "%s تعتمد مسبقاً على %s"
 
 #: src/solution_fragment.cc:110
-#, fuzzy, c-format
+#, c-format
 msgid "%s suggests %s"
-msgstr "يقترح"
+msgstr "%s يقترح %s"
 
 #: src/solution_fragment.cc:113 src/solution_item.cc:593
-#, fuzzy, c-format
+#, c-format
 msgid "%s recommends %s"
-msgstr "يوصي"
+msgstr "%s يوصي بـ%s"
 
 #: src/solution_fragment.cc:116
-#, fuzzy, c-format
+#, c-format
 msgid "%s conflicts with %s"
-msgstr "يتعارض مع"
+msgstr "%s يتعارض مع %s"
 
 #: src/solution_fragment.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "%s replaces %s"
-msgstr "يستبدل"
+msgstr "%s يحل محل %s"
 
 #: src/solution_fragment.cc:122
-#, fuzzy, c-format
+#, c-format
 msgid "%s obsoletes %s"
-msgstr "يلغي"
+msgstr "%s يلغي %s"
 
 #: src/solution_fragment.cc:135
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
-msgstr ""
+msgstr "%s يتعارض مع %s [الذي توفره %s %s]"
 
 #: src/solution_fragment.cc:145
-#, fuzzy, c-format
+#, c-format
 msgid "Removing %s"
-msgstr "إعادة تهيئة %s\n"
+msgstr "إزالة %s"
 
 #: src/solution_fragment.cc:147
 #, c-format
 msgid "Installing %s %s (%s)"
-msgstr ""
+msgstr "تثبيت %s %s (%s)"
 
 #: src/solution_fragment.cc:216
 msgid "%BRemove%b the following packages:%n"
@@ -4056,7 +4026,7 @@ msgstr "%Bتثبيت%b الحزم التالية:%n"
 
 #: src/solution_fragment.cc:239
 msgid "%BKeep%b the following packages at their current version:%n"
-msgstr ""
+msgstr "%Bإبقاء%b الحزم التالية على نسختها الحالية:%n"
 
 #: src/solution_fragment.cc:246
 msgid "Not Installed"
@@ -4071,9 +4041,9 @@ msgid "%BDowngrade%b the following packages:%n"
 msgstr "%Bتثبيط%b الحزم التالية:%n"
 
 #: src/solution_fragment.cc:291
-#, fuzzy, c-format
+#, c-format
 msgid "Leave the following dependencies unresolved:%n"
-msgstr "%Bإزالة%b الحزم التالية:%n"
+msgstr ""
 
 #: src/solution_fragment.cc:299
 #, c-format
@@ -4083,17 +4053,17 @@ msgstr "النتيجة هي %d"
 #: src/solution_item.cc:91
 #, c-format
 msgid "Remove %F [%s (%s)]"
-msgstr ""
+msgstr "إزالة %F [%s (%s)]"
 
 #: src/solution_item.cc:98
 #, c-format
 msgid "Install %F [%s (%s)]"
-msgstr ""
+msgstr "تثبيت %F [%s (%s)]"
 
 #: src/solution_item.cc:106
-#, fuzzy, c-format
+#, c-format
 msgid "Cancel the installation of %F"
-msgstr "الاستمرار بالتثبيت"
+msgstr ""
 
 #: src/solution_item.cc:109
 #, c-format
@@ -4111,9 +4081,9 @@ msgid "Upgrade %F [%s (%s) -> %s (%s)]"
 msgstr ""
 
 #: src/solution_item.cc:129
-#, fuzzy, c-format
+#, c-format
 msgid "Downgrade %F [%s (%s) -> %s (%s)]"
-msgstr "تم تنزيل %s بايت خلال %s (%s بايت/ثانية)."
+msgstr ""
 
 #: src/solution_item.cc:597
 #, c-format
@@ -4121,44 +4091,36 @@ msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
 msgstr ""
 
 #: src/solution_screen.cc:149
-#, fuzzy
 msgid "The following actions will resolve this dependency:"
 msgstr "العمليات التالية ستحلّ هذه الاعتمادات:"
 
 #: src/solution_screen.cc:235
-#, fuzzy
 msgid "Remove the following packages:"
-msgstr "%Bإزالة%b الحزم التالية:%n"
+msgstr "إزالة الحزم التالية:"
 
 #: src/solution_screen.cc:246
-#, fuzzy
 msgid "Keep the following packages at their current version:"
-msgstr "الحزم التالية لها معتمدات غير متوفرة:\n"
+msgstr ""
 
 #: src/solution_screen.cc:257
-#, fuzzy
 msgid "Install the following packages:"
-msgstr "%Bتثبيت%b الحزم التالية:%n"
+msgstr "تثبيت الحزم التالية:"
 
 #: src/solution_screen.cc:268
-#, fuzzy
 msgid "Upgrade the following packages:"
-msgstr "%Bترقية%b الحزم التالية:%n"
+msgstr "ترقية الحزم التالية:"
 
 #: src/solution_screen.cc:279
-#, fuzzy
 msgid "Downgrade the following packages:"
-msgstr "%Bتثبيط%b الحزم التالية:%n"
+msgstr "تثبيط الحزم التالية:"
 
 #: src/solution_screen.cc:292
-#, fuzzy
 msgid "Leave the following recommendations unresolved:"
-msgstr "الأوامر التالية متوفّرة:"
+msgstr ""
 
 #: src/solution_screen.cc:472
-#, fuzzy
 msgid "No broken packages."
-msgstr "'-' لإزالة الحزم"
+msgstr ""
 
 #: src/trust.cc:17 src/trust.cc:19
 msgid "WARNING"
@@ -4234,18 +4196,16 @@ msgid "View available packages and choose actions to perform"
 msgstr "عرض الحزم المتوفرة واختيار الأعمال للقيام بها"
 
 #: src/ui.cc:733
-#, fuzzy
 msgid "Recommended Packages"
-msgstr "يوصي"
+msgstr "الحزم الموصى بها"
 
 #: src/ui.cc:734
 msgid "View packages that it is recommended that you install"
 msgstr ""
 
 #: src/ui.cc:735
-#, fuzzy
 msgid "Recommendations"
-msgstr "يوصي"
+msgstr "التوصيات"
 
 #: src/ui.cc:839
 #, fuzzy
@@ -4276,9 +4236,8 @@ msgid "README"
 msgstr "اقرأني"
 
 #: src/ui.cc:888
-#, fuzzy
 msgid "Encoding of README|ISO_8859-1"
-msgstr "ترميز README|UTF-8"
+msgstr ""
 
 #: src/ui.cc:919
 #, fuzzy
@@ -5139,53 +5098,3 @@ msgstr "تعذر تحميل اسم الملف: السلسلة %ls لا تملك 
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "المستوى الأعلى"
-
-#~ msgid "^NEWS"
-#~ msgstr "^أخبار"
-
-#~ msgid "1 install"
-#~ msgstr "1 تثبيت"
-
-#~ msgid "1 removal"
-#~ msgstr "إزالة واحدة"
-
-#~ msgid "1 keep"
-#~ msgstr "إبقاء واحد"
-
-#~ msgid "1 upgrade"
-#~ msgstr "1 ترقية "
-
-#~ msgid "1 downgrade"
-#~ msgstr "تثبيط واحد"
-
-#, fuzzy
-#~ msgid "Search backwards for:"
-#~ msgstr "البحث عن:"
-
-#~ msgid "Happy?"
-#~ msgstr "سعيد أنت؟"
-
-#~ msgid "Can't get value of $HOME, using TMPDIR (insecure)"
-#~ msgstr "لا يمكن الحصول على قيمة $HOME، استخدام TMPDIR (غير آمن)"
-
-#~ msgid "Warning: the visual interface will ignore -s/Cmdline::Simulate\n"
-#~ msgstr "تحذير: تتجاهل الواجهة المرئية -s/Cmdline::Simulate\n"
-
-#, fuzzy
-#~ msgid "Create a new flat package list"
-#~ msgstr "إنشاء عرض حزم افتراضي جديد"
-
-#~ msgid "Solution search failed.  %s: try harder"
-#~ msgstr "فشل البحث عن الحلّ.  %s: المحاولة بجهد"
-
-#~ msgid "Bad filter type '%s' (valid types are: 'missing')"
-#~ msgstr "نوع تصفية سيء '%s' (الأنواع الصالحة هي: 'missing')"
-
-#~ msgid "Invalid zero-length grouping policy name"
-#~ msgstr "اسم سياسة التجميع غير صالح"
-
-#~ msgid "Invalid grouping policy type '%s'"
-#~ msgstr "'%s' نوع سياسة تجميع غير صالح"
-
-#~ msgid "All solutions exhausted."
-#~ msgstr "نفذت كل الحلول."
