@@ -254,9 +254,9 @@ msgstr[1] "%d desactualitzats"
 #. "n1 installs, n2 removals", ...
 #.
 #: src/broken_indicator.cc:362
-#, fuzzy, c-format
+#, c-format
 msgid "Suggest %F"
-msgstr "Suggereix"
+msgstr "Suggereix %F"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1215,14 +1215,14 @@ msgid " [held]"
 msgstr " [congela]"
 
 #: src/cmdline/cmdline_show.cc:282
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed"
-msgstr "S'instal·larà el paquet %B%s%b."
+msgstr "%s; s'instal·larà"
 
 #: src/cmdline/cmdline_show.cc:284
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed automatically"
-msgstr "%s; s'instal·larà automàticament la versió %s"
+msgstr "%s; s'instal·larà automàticament"
 
 #: src/cmdline/cmdline_show.cc:304
 #, c-format
@@ -1386,12 +1386,12 @@ msgstr "E: l'ordre d'actualització no necessita cap argument\n"
 #: src/cmdline/cmdline_util.cc:93
 #, c-format
 msgid "No candidate version found for %s\n"
-msgstr "No s'ha trobat cap versió candidata per %s\n"
+msgstr "No s'ha trobat cap versió candidata per a %s\n"
 
 #: src/cmdline/cmdline_util.cc:95
-#, fuzzy, c-format
+#, c-format
 msgid "No current or candidate version found for %s\n"
-msgstr "No s'ha trobat cap versió candidata per %s\n"
+msgstr "No s'ha trobat cap versió actual o candidata per a %s\n"
 
 #: src/cmdline/cmdline_util.cc:110
 #, c-format
@@ -4598,9 +4598,8 @@ msgid "README"
 msgstr "README"
 
 #: src/ui.cc:888
-#, fuzzy
 msgid "Encoding of README|ISO_8859-1"
-msgstr "Codificació del README|UTF-8"
+msgstr "Codificació del README|ISO_8859-1"
 
 #: src/ui.cc:919
 msgid "User's Manual"
@@ -4875,7 +4874,6 @@ msgid "Check for new versions of packages"
 msgstr "Verifica si hi ha noves versions dels paquets"
 
 #: src/ui.cc:1937
-#, fuzzy
 msgid "Mark Up^gradable"
 msgstr "Marca com a ^actualitzable"
 
