@@ -23,6 +23,12 @@ class rev_dep_iterator
    */
   void normalize()
   {
+    while(rev_dep_lst.end() && prv_lst.end() && !ver_lst.end())
+      {
+	prv_lst = ver_lst.ProvidesList();
+	++ver_lst;
+      }
+
     while(rev_dep_lst.end() && !prv_lst.end())
       {
 	rev_dep_lst=prv_lst.ParentPkg().RevDependsList();
