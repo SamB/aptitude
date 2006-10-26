@@ -19,6 +19,7 @@
 
 #include <vscreen/fragment.h>
 #include <vscreen/vscreen.h>
+#include <vscreen/transcode.h>
 
 #include <apt-pkg/algorithms.h>
 #include <apt-pkg/dpkgpm.h>
@@ -83,7 +84,8 @@ static string reason_string_list(set<reason> &reasons)
 	  first=false;
 	}
 
-      s+=const_cast<pkgCache::DepIterator &>(why->dep).DepType()[0];
+      string dep_type = const_cast<pkgCache::DepIterator &>(why->dep).DepType();
+      s += transcode(transcode(dep_type).substr(0, 1));
       s+=": ";
       s+=why->pkg.Name();
     }
