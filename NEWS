@@ -1,3 +1,148 @@
+[10/26/2006]
+Version 0.4.4                           "I shall smite you with my
+                                         Ultimate Power of Cuteness!"
+- New features:
+
+  * "unhold" now just clears the hold flag; it doesn't try to upgrade
+    the package that was just unheld.
+
+  * The grammar used to parse bulleted lists has changed.  Full stops
+    are no longer considered to be paragraph breaks or otherwise
+    significant unless they are indented by exactly one space (i.e.,
+    unless they are significant in the standard grammar).
+
+    A second change introduced by this patch is that a full stop by
+    itself on a line no longer terminates a bullet list; the list will
+    continue as long as the text after the paragraph break is indented
+    at the same level as the rest of the list.
+
+    This fixes some cases where aptitude badly mangled descriptions
+    that used to work, and means I feel safe re-enabling bullets by
+    default. (Closes: #388594)
+
+- Bug fixes:
+
+  * By default, don't remove Linux kernel images that are unused.
+    (Closes: #386307)
+
+  * Generate a more useful error message for corrupted or unverifiable
+    file downloads. (Closes: #387537)
+
+  * Fix minibuffer messages so that they go away when you press a
+    key. (Closes: #395201)
+
+  * Apparently time is allowed to go backwards, so don't assert that
+    it doesn't in the test suite. (Closes: #381481)
+
+  * Document what "unhold" does. (Closes: #387336)
+
+  * Consistently use <literal> instead of <option> to mark up
+    command-line options. (Closes: #388502)
+
+  * Force the package selected by a search to be at the top of the
+    screen, so that it's visible underneath the search dialog.
+    (Closes: #389763)
+
+  * Change the progress indicator to be less visually distracting:
+    instead of flashing yellow and blue, just display the operation
+    name and the current progress. (Closes: #390971)
+
+  * Unblock all signals before running dpkg, and restore the signal
+    mask afterwards.  This should probably be done in libapt, but it
+    isn't. (Closes: #392870)
+
+  * When abbreviating dependency types in the command-line preview
+    (e.g., "Depends" or "Recommends"), use the first *character*, not
+    the first *byte*; this fixes the preview in multibyte
+    locales. (Closes: #395007)
+
+  * Fix iteration over a package's reverse dependencies when it has
+    only indirect dependencies (dependencies through a virtual
+    package).  Among other things, this means that packages which were
+    getting left out of the list of "suggested/recommended packages
+    not being installed" will show up correctly.
+
+  * When "aptitude show" is given a pattern as its argument, show all
+    packages that match the argument, not just the "first" one.
+    Thanks to Martin Dorey for this patch.
+
+  * Delay auto-resolving dependencies when installing packages from
+    the command line, so that unnecessary stuff doesn't get installed
+    when packages listed later are non-default alternatives of a
+    dependency of an earlier package.
+
+  * Correct the default value of Request-Strictness to match the value
+    that it was set to in 0.4.3.
+
+  * Fix the manpage's reference to the HTML documentation to point to
+    the right location.
+
+  * Shorten the manpage's title so that it fits into the fixed-width
+    field that "man" uses.
+
+  * Fixes for a bunch of documentation typos from Kobayashi Noritada
+    (Closes: #389942).
+
+  * Close a very minor memory leak in "aptitude show".
+
+- Translation updates:
+
+  * Arabic
+
+  * Basque (Closes: #389730)
+
+  * Brazilian (Closes: #387734)
+
+  * Catalan
+
+  * Chinese (Simplified) (Closes: #392305)
+
+  * Chinese (Traditional)
+
+  * Czech (Closes: #361050)
+
+  * Danish
+
+  * Dutch (Closes: #393643)
+
+  * Dzongkha (Closes: #388045)
+
+  * Finnish (Closes: #351531)
+
+  * French (Closes: #388552, #351531)
+
+  * Galacian (Closes: #387579)
+
+  * German
+
+  * Hungarian
+
+  * Italian
+
+  * Japanese (Closes: #389581, #389583, #390736, #391061)
+
+  * Khmer (Closes: #374919)
+
+  * Kurdish (Closes: #387803)
+
+  * Norwegian Bokmal (Closes: #391684)
+
+  * Portuguese (Closes: #393070)
+
+  * Romanian (Closes: #388401)
+
+  * Russian (Closes: #392305)
+
+  * Slovak (Closes: #386852, #394696)
+
+  * Spanish (Closes: #391663)
+
+  * Swedish (Closes: #391531)
+
+  * Turkish (Closes: #392305)
+
+  * Vietnamese (Closes: #388552, #392903, #392924)
+
 [9/3/2006]
 Version 0.4.3                           "Everyone loves kittens"
 - New features:

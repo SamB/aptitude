@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(aptitude, 0.4.3)
+AC_INIT(aptitude, 0.4.4)
 AC_CONFIG_SRCDIR([src/main.cc])
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(config.h)
