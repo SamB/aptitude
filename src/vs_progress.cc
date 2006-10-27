@@ -75,7 +75,7 @@ void vs_progress::Done()
   vscreen_update();
   vscreen_updatecursor();
   vscreen_tryupdate();
-  hide();
+  //hide();
 }
 
 int vs_progress::width_request()
