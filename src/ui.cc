@@ -2792,6 +2792,50 @@ void prompt_yesno(const std::string &prompt,
   return prompt_yesno(transcode(prompt), deflt, yesslot, noslot);
 }
 
+class self_destructing_layout : public vs_text_layout
+{
+protected:
+  self_destructing_layout() : vs_text_layout()
+  {
+  }
+
+  self_destructing_layout(fragment *f) : vs_text_layout(f)
+  {
+  }
+
+public:
+  bool handle_key(const key &k)
+  {
+    if(!vs_text_layout::focus_me() ||
+       !vs_text_layout::handle_key(k))
+      destroy();
+
+    return true;
+  }
+
+  /** \brief Unlike vs_text_layouts, self-destructing widgets
+   *  can always grab the focus.
+   */
+  bool focus_me()
+  {
+    return true;
+  }
+
+  static ref_ptr<self_destructing_layout> create()
+  {
+    ref_ptr<self_destructing_layout> rval(new self_destructing_layout());
+    rval->decref();
+    return rval;
+  }
+
+  static ref_ptr<self_destructing_layout> create(fragment *f)
+  {
+    ref_ptr<self_destructing_layout> rval(new self_destructing_layout(f));
+    rval->decref();
+    return rval;
+  }
+};
+
 void show_message(fragment *msg,
 		  slot0arg okslot,
 		  const style &st)
@@ -2799,7 +2843,7 @@ void show_message(fragment *msg,
   msg=wrapbox(msg);
   if(aptcfg->FindB(PACKAGE "::UI::Minibuf-Prompts"))
     {
-      vs_text_layout_ref l=vs_text_layout::create(msg);
+      vs_text_layout_ref l = self_destructing_layout::create(msg);
       l->set_bg_style(get_style("Status")+st);
       if(okslot)
 	l->destroyed.connect(*okslot);
