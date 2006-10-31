@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.4\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-10-02 16:51+0900\n"
-"PO-Revision-Date: 2006-10-03 03:21+0900\n"
+"PO-Revision-Date: 2006-10-06 20:37+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -4366,8 +4366,8 @@ msgid "Values of the <quote>current state</quote> flag"
 msgstr "<quote>現在の状態</quote>フラグの値"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
+# <!-- TRANSLATION-FIXME: Cannot we make po4a ignore these items? -->
 #: en/aptitude.xml:2845 en/aptitude.xml:2924
-#, fuzzy
 msgid "<computeroutput>i</computeroutput>"
 msgstr "<computeroutput>i</computeroutput>"
 
@@ -4388,7 +4388,6 @@ msgstr "パッケージがインストール済みで、その依存関係がす
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2854
-#, fuzzy
 msgid "<computeroutput>c</computeroutput>"
 msgstr "<computeroutput>c</computeroutput>"
 
@@ -4399,7 +4398,6 @@ msgstr "パッケージは削除されましたが、設定ファイルがまだ
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2863 en/aptitude.xml:2946
-#, fuzzy
 msgid "<computeroutput>p</computeroutput>"
 msgstr "<computeroutput>p</computeroutput>"
 
@@ -4414,7 +4412,6 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2873
-#, fuzzy
 msgid "<computeroutput>v</computeroutput>"
 msgstr "<computeroutput>v</computeroutput>"
 
@@ -4425,7 +4422,6 @@ msgstr "パッケージが仮想パッケージです。"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2881 en/aptitude.xml:2982
-#, fuzzy
 msgid "<computeroutput>B</computeroutput>"
 msgstr "<computeroutput>B</computeroutput>"
 
@@ -4436,7 +4432,6 @@ msgstr "パッケージに壊れた依存関係があります。"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2887 en/aptitude.xml:2930
-#, fuzzy
 msgid "<computeroutput>u</computeroutput>"
 msgstr "<computeroutput>u</computeroutput>"
 
@@ -4447,7 +4442,6 @@ msgstr "パッケージは展開済みですが設定が行われていません
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2896
-#, fuzzy
 msgid "<computeroutput>C</computeroutput>"
 msgstr "<computeroutput>C</computeroutput>"
 
@@ -4458,7 +4452,6 @@ msgstr "設定未完了です。つまりパッケージの設定が中断され
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2905
-#, fuzzy
 msgid "<computeroutput>H</computeroutput>"
 msgstr "<computeroutput>H</computeroutput>"
 
@@ -4485,7 +4478,6 @@ msgstr "パッケージは更新予定です。"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2936
-#, fuzzy
 msgid "<computeroutput>d</computeroutput>"
 msgstr "<computeroutput>d</computeroutput>"
 
@@ -4506,7 +4498,6 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2955
-#, fuzzy
 msgid "<computeroutput>h</computeroutput>"
 msgstr "<computeroutput>h</computeroutput>"
 
@@ -4521,7 +4512,6 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2966
-#, fuzzy
 msgid "<computeroutput>F</computeroutput>"
 msgstr "<computeroutput>F</computeroutput>"
 
@@ -4532,7 +4522,6 @@ msgstr "パッケージは更新が禁止されています。"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2974
-#, fuzzy
 msgid "<computeroutput>r</computeroutput>"
 msgstr "<computeroutput>r</computeroutput>"
 
@@ -5870,13 +5859,11 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><title>
 #: en/aptitude.xml:3940
-#, fuzzy
 msgid "Search Patterns"
-msgstr "Search Patterns"
+msgstr "検索パターン"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:3943
-#, fuzzy
 msgid ""
 "When you search for a package or set a display limit in &aptitude;, the "
 "string you enter is known as a <quote>search pattern</quote>.  While the "
@@ -5885,16 +5872,15 @@ msgid ""
 "interface, some command-line operations can use search terms; see <xref "
 "linkend='secReference'/> for details."
 msgstr ""
-"When you search for a package or set a display limit in &aptitude;, the "
-"string you enter is known as a <quote>search pattern</quote>.  While the "
-"most basic usage of search patterns is to match packages by name, &aptitude; "
-"allows you to create much more complex searches.  In addition to the visual "
-"interface, some command-line operations can use search terms; see <xref "
-"linkend='secReference'/> for details."
+"&aptitude; でパッケージの検索や表示制限の設定をおこなうとき、入力された文字列"
+"は<quote>検索パターン</quote>として取り扱われます。検索パターンの最も基本的な"
+"使用方法は名前を用いたパッケージのマッチですが、&aptitude; では、それより遥か"
+"に複雑な検索をおこなうことが可能です。仮想インタフェースだけでなく、コマンド"
+"ラインからの操作の一部でも検索条件を使用できます。詳しくは<xref "
+"linkend='secReference'/>を参照してください。"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:3953
-#, fuzzy
 msgid ""
 "A search pattern consists of one or more conditions (sometimes known as "
 "<quote>terms</quote>); packages match the pattern if they match all of its "
@@ -5902,15 +5888,14 @@ msgid ""
 "followed by a character identifying the type of term, and then any "
 "additional text required by the term."
 msgstr ""
-"A search pattern consists of one or more conditions (sometimes known as "
-"<quote>terms</quote>); packages match the pattern if they match all of its "
-"terms.  Terms generally start with a tilde character (<quote>~</quote>), "
-"followed by a character identifying the type of term, and then any "
-"additional text required by the term."
+"検索パターンは 1 つ以上の<quote>条件</quote>から成ります。パッケージは、パ"
+"ターンの条件すべてにマッチした場合にパターンにマッチしたことになります。条件"
+"は通常、チルダ文字 (<quote>~</quote>) で始め、その次に条件の種類を識別する文"
+"字を置き、さらに条件によって追加のテキストを必要とする条件の場合はそのテキス"
+"トを置きます。"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:3961
-#, fuzzy
 msgid ""
 "By default, patterns are checked against all versions of the package.  "
 "However, some patterns will restrict which versions are tested.  For "
@@ -5921,32 +5906,29 @@ msgid ""
 "that are used to test for a match will only change in match terms that have "
 "a subterm (like <link linkend='searchDep'><literal>~D</literal></link>)."
 msgstr ""
-"By default, patterns are checked against all versions of the package.  "
-"However, some patterns will restrict which versions are tested.  For "
-"instance, the <link linkend='searchDep'><literal>~D</literal></link> pattern "
-"takes another pattern as an argument, and matches any package that depends "
-"on another package matching that pattern.  In this case, only package "
-"versions that satisfy the dependency will be tested against.  The versions "
-"that are used to test for a match will only change in match terms that have "
-"a subterm (like <link linkend='searchDep'><literal>~D</literal></link>)."
+"デフォルトでは、パターンはパッケージの全てのバージョンを対象としてチェックさ"
+"れます。しかし、パターンによってはテスト対象のバージョンを制限するものもあり"
+"ます。例えば、<link linkend='searchDep'><literal>~D</literal></link> パターン"
+"は別のパターンを引数にとり、そのパターンにマッチする別のパッケージに依存する"
+"あらゆるパッケージにマッチします。この場合、その依存関係を満たすバージョンの"
+"パッケージだけがテスト対象となります。マッチのテストに使用されるバージョン"
+"は、部分条件をもったマッチ条件 (<link linkend='searchDep'><literal>~D</"
+"literal></link> など) でのみ変更されます。"
 
 # type: Content of: <book><chapter><section><para><footnote>
 #: en/aptitude.xml:3974
-#, fuzzy
 msgid ""
 "Most textual searches (for package names, descriptions, etc)  are performed "
 "using case-insensitive <ulink url='http://sitescooper.org/tao_regexps."
 "html'>regular expressions</ulink>.  This means that you must backslash-"
 "escape regular expression metacharacters <footnote>"
 msgstr ""
-"Most textual searches (for package names, descriptions, etc)  are performed "
-"using case-insensitive <ulink url='http://sitescooper.org/tao_regexps."
-"html'>regular expressions</ulink>.  This means that you must backslash-"
-"escape regular expression metacharacters <footnote>"
+"テキスト検索 (パッケージの名前や説明などの検索) の多くは、大文字と小文字を区"
+"別しない<ulink url='http://sitescooper.org/tao_regexps.html'>正規表現</ulink>"
+"を用いて実行されます。つまり、正規表現メタ文字<footnote>"
 
 # type: Content of: <book><chapter><section><para><footnote><para>
 #: en/aptitude.xml:3981
-#, fuzzy
 msgid ""
 "Regular expression metacharacters include: <quote>+</quote>, <quote>-</"
 "quote>, <quote>.</quote>, <quote>(</quote>, <quote>)</quote>, <quote>|</"
@@ -5955,26 +5937,25 @@ msgid ""
 "metacharacters, so if you want to type (for instance) a literal <quote>|</"
 "quote>, it must be double-escaped: <quote><literal>\\~|</literal></quote>."
 msgstr ""
-"Regular expression metacharacters include: <quote>+</quote>, <quote>-</"
-"quote>, <quote>.</quote>, <quote>(</quote>, <quote>)</quote>, <quote>|</"
-"quote>, <quote>[</quote>, <quote>]</quote>, <quote>^</quote>, <quote>$</"
-"quote>, and <quote>?</quote>.  Note that some of these are also &aptitude; "
-"metacharacters, so if you want to type (for instance) a literal <quote>|</"
-"quote>, it must be double-escaped: <quote><literal>\\~|</literal></quote>."
+"正規表現メタ文字とは、<quote>+</quote>・<quote>-</quote>・<quote>.</quote>・"
+"<quote>(</quote>・<quote>)</quote>・<quote>|</quote>・<quote>[</quote>・"
+"<quote>]</quote>・<quote>^</quote>・<quote>$</quote>・<quote>?</quote>です。"
+"これらの一部は &aptitude; のメタ文字でもあるので、(例えば) リテラル<quote>|</"
+"quote>を入力したい場合は<quote><literal>\\~|</literal></quote>と二重にエス"
+"ケープしなければいけないことに注意してください。"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:3990
-#, fuzzy
 msgid ""
 "</footnote> in searches (for instance, to find <quote>g++</quote>, you "
 "should use the pattern <quote>g\\+\\+</quote>)."
 msgstr ""
-"</footnote> in searches (for instance, to find <quote>g++</quote>, you "
-"should use the pattern <quote>g\\+\\+</quote>)."
+"</footnote>は検索時にバックスラッシュでエスケープしなければなりません (例え"
+"ば、<quote>g++</quote>を見つけるにはパターン<quote>g\\+\\+</quote>を使用して"
+"ください)。"
 
 # type: Content of: <book><chapter><section><para><footnote>
 #: en/aptitude.xml:3996
-#, fuzzy
 msgid ""
 "Normally, <quote>whitespace</quote> -- that is, space characters, tabs, and "
 "so on -- separates terms but is otherwise ignored by &aptitude;.  To include "
@@ -5987,134 +5968,120 @@ msgid ""
 "literal> will match any package whose description contains a quotation mark "
 "followed immediately by <literal>email</literal>.  <footnote>"
 msgstr ""
-"Normally, <quote>whitespace</quote> -- that is, space characters, tabs, and "
-"so on -- separates terms but is otherwise ignored by &aptitude;.  To include "
-"whitespace (or other special characters) in a term, you can either place a "
-"tilde in front of it (as in <literal>Debian~ Project</literal>) or place "
-"quotation marks around it (as in <literal>\"Debian Project\"</literal> or "
-"even <literal>Debian\" \"Project</literal>).  Inside a quoted string, the "
-"backslash character (<quote>\\</quote>) can be used to cancel the special "
-"meaning of the quotation mark: for instance, <literal>~d\"\\\"email\"</"
-"literal> will match any package whose description contains a quotation mark "
-"followed immediately by <literal>email</literal>.  <footnote>"
+"通常、<quote>空白類文字</quote> (空白文字・タブなど) は条件を区切り、その他の"
+"点では &aptitude; から無視されます。空白類文字 (またはその他の特殊文字) を条"
+"件に含めるには、チルダを前に置く (例: <literal>Debian~ Project</literal>) "
+"か、引用符で囲む (例: <literal>\"Debian Project\"</literal>、または"
+"<literal>Debian\" \"Project</literal> でもかまいません。) かのいずれか一方を"
+"行ってください。引用符で囲まれた文字列の内部では、バックスラッシュ文字 "
+"(<quote>\\</quote>) を用いて引用符の特別な意味を取り消すことが可能です。例え"
+"ば <literal>~d\"\\\"email\"</literal> は、パッケージ説明に引用符が含まれてお"
+"り、その直後に <literal>email</literal> も含まれているあらゆるパッケージに"
+"マッチします。<footnote>"
 
 # type: Content of: <book><chapter><section><para><footnote><para>
 #: en/aptitude.xml:4011
-#, fuzzy
 msgid ""
 "The backslash escapes <literal>\\\\</literal>, <literal>\\n</literal>, and "
 "<literal>\\t</literal> are also available."
 msgstr ""
-"The backslash escapes <literal>\\\\</literal>, <literal>\\n</literal>, and "
-"<literal>\\t</literal> are also available."
+"バックスラッシュエスケープ <literal>\\\\</literal>・<literal>\\n</literal>・"
+"<literal>\\t</literal> も利用可能です。"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:4019
-#, fuzzy
 msgid "The following types of terms are available:"
-msgstr "The following types of terms are available:"
+msgstr "以下の種類の条件が利用可能です。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4024
-#, fuzzy
 msgid "<replaceable>name</replaceable>"
-msgstr "<replaceable>name</replaceable>"
+msgstr "<replaceable>名前</replaceable>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4028
-#, fuzzy
 msgid ""
 "Matches packages whose names match the regular expression <replaceable>name</"
 "replaceable>.  This is the <quote>default</quote> search mode and is used "
 "for patterns that don't start with <literal>~</literal>."
 msgstr ""
-"Matches packages whose names match the regular expression <replaceable>name</"
-"replaceable>.  This is the <quote>default</quote> search mode and is used "
-"for patterns that don't start with <literal>~</literal>."
+"正規表現<replaceable>名前</replaceable>に名前がマッチするパッケージにマッチし"
+"ます。これは<quote>デフォルト</quote>の検索モードで、<literal>~</literal> で"
+"始まらないパターンに使用されます。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><note><para>
 #: en/aptitude.xml:4036
-#, fuzzy
 msgid ""
 "To match packages whose names contain several different substrings, use the "
 "<literal>~n</literal> matcher (described below); for instance, "
 "<quote><literal>~napti~ntude</literal></quote>."
 msgstr ""
-"To match packages whose names contain several different substrings, use the "
-"<literal>~n</literal> matcher (described below); for instance, "
-"<quote><literal>~napti~ntude</literal></quote>."
+"複数の異なる部分文字列を名前に含むパッケージにマッチさせるには、例えば"
+"<quote><literal>~napti~ntude</literal></quote>というように、<literal>~n</"
+"literal> によるマッチ (後述) を使用してください。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4046
-#, fuzzy
 msgid "<literal>!<replaceable>term</replaceable></literal>"
-msgstr "<literal>!<replaceable>term</replaceable></literal>"
+msgstr "<literal>!<replaceable>条件</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4050
-#, fuzzy
 msgid ""
 "Matches packages which do <emphasis>not</emphasis> match the term "
 "<replaceable>term</replaceable>.  For instance, <quote><literal>!~b</"
 "literal></quote> selects packages that are not <quote>broken</quote>."
 msgstr ""
-"Matches packages which do <emphasis>not</emphasis> match the term "
-"<replaceable>term</replaceable>.  For instance, <quote><literal>!~b</"
-"literal></quote> selects packages that are not <quote>broken</quote>."
+"条件<replaceable>条件</replaceable>にマッチ<emphasis>しない</emphasis>パッ"
+"ケージにマッチします。例えば、<quote><literal>!~b</literal></quote>を用いると"
+"<quote>破損</quote>していないパッケージを選択できます。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><note><para>
 #: en/aptitude.xml:4058
-#, fuzzy
 msgid ""
 "To include a <quote>!</quote> in a regular expression, it must be "
 "<quote>escaped</quote> to prevent &aptitude; from considering it part of a "
 "NOT term: <quote><literal>~!</literal></quote>."
 msgstr ""
-"To include a <quote>!</quote> in a regular expression, it must be "
-"<quote>escaped</quote> to prevent &aptitude; from considering it part of a "
-"NOT term: <quote><literal>~!</literal></quote>."
+"正規表現内に<quote>!</quote>の文字を含める場合、この文字を"
+"<quote><literal>~!</literal></quote>と<quote>エスケープ</quote>して "
+"&aptitude; が NOT 条件の一部と解釈しないようにしなければなりません。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4067
-#, fuzzy
 msgid ""
 "<literal><replaceable>term1</replaceable> | <replaceable>term2</"
 "replaceable></literal>"
-msgstr ""
-"<literal><replaceable>term1</replaceable> | <replaceable>term2</"
+msgstr "<literal><replaceable>条件 1</replaceable> | <replaceable>条件 2</"
 "replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4071
-#, fuzzy
 msgid ""
 "Matches packages that match either <replaceable>term1</replaceable> or "
 "<replaceable>term2</replaceable>."
 msgstr ""
-"Matches packages that match either <replaceable>term1</replaceable> or "
-"<replaceable>term2</replaceable>."
+"<replaceable>条件 1</replaceable>と<replaceable>条件 2</replaceable>のどちら"
+"か一方にマッチするパッケージにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><note><para>
 #: en/aptitude.xml:4078
-#, fuzzy
 msgid ""
 "To use the character <quote>|</quote> in a regular expression, it must be "
 "<quote>escaped</quote> to prevent &aptitude; from creating an OR term from "
 "it: <quote><literal>~|</literal></quote>."
 msgstr ""
-"To use the character <quote>|</quote> in a regular expression, it must be "
-"<quote>escaped</quote> to prevent &aptitude; from creating an OR term from "
-"it: <quote><literal>~|</literal></quote>."
+"正規表現内で<quote>|</quote>の文字を使用する場合、この文字を"
+"<quote><literal>~|</literal></quote>と<quote>エスケープ</quote>して "
+"&aptitude; に OR 条件を生成させないようにしなければなりません。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4087
-#, fuzzy
 msgid "<literal>(<replaceable>term</replaceable>)</literal>"
-msgstr "<literal>(<replaceable>term</replaceable>)</literal>"
+msgstr "<literal>(<replaceable>条件</replaceable>)</literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4091
-#, fuzzy
 msgid ""
 "Matches <replaceable>term</replaceable>; this is useful to explicitly select "
 "the grouping of complex expressions.  For instance, <quote><literal>~D(perl|"
@@ -6122,41 +6089,37 @@ msgid ""
 "whose name contains either <literal>perl</literal> or <literal>python</"
 "literal>."
 msgstr ""
-"Matches <replaceable>term</replaceable>; this is useful to explicitly select "
-"the grouping of complex expressions.  For instance, <quote><literal>~D(perl|"
-"python)</literal></quote> matches any package that depends on a package "
-"whose name contains either <literal>perl</literal> or <literal>python</"
-"literal>."
+"<replaceable>条件</replaceable>にマッチします。この記法は、複雑な表現をグルー"
+"プ化して明示的に選択するのに有用です。例えば<quote><literal>~D(perl|python)</"
+"literal></quote>は、<literal>perl</literal> と <literal>python</literal> のい"
+"ずれか一方を名前に含むパッケージに依存する、あらゆるパッケージにマッチしま"
+"す。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4102
-#, fuzzy
 msgid "<literal>~A<replaceable>archive</replaceable></literal>"
-msgstr "<literal>~A<replaceable>archive</replaceable></literal>"
+msgstr "<literal>~A<replaceable>アーカイブ</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4106
-#, fuzzy
 msgid ""
 "Matches package versions which are available from an archive that matches "
 "the regular expression <replaceable>archive</replaceable>.  For instance, "
 "<quote><literal>~Atesting</literal></quote> matches any package available "
 "from the <literal>testing</literal> archive."
 msgstr ""
-"Matches package versions which are available from an archive that matches "
-"the regular expression <replaceable>archive</replaceable>.  For instance, "
-"<quote><literal>~Atesting</literal></quote> matches any package available "
-"from the <literal>testing</literal> archive."
+"正規表現<replaceable>アーカイブ</replaceable>にマッチするアーカイブから入手可"
+"能なパッケージバージョンにマッチします。例えば<quote><literal>~Atesting</"
+"literal></quote>は、<literal>testing</literal> アーカイブから入手可能なあらゆ"
+"るパッケージにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4117
-#, fuzzy
 msgid "<literal>~a<replaceable>action</replaceable></literal>"
-msgstr "<literal>~a<replaceable>action</replaceable></literal>"
+msgstr "<literal>~a<replaceable>アクション</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4121
-#, fuzzy
 msgid ""
 "Matches packages upon which the given <replaceable>action</replaceable> is "
 "going to be performed.  <replaceable>action</replaceable> can be "
@@ -6167,18 +6130,18 @@ msgid ""
 "been placed on hold), or <quote><literal>keep</literal></quote> (tests "
 "whether a package will be unchanged)."
 msgstr ""
-"Matches packages upon which the given <replaceable>action</replaceable> is "
-"going to be performed.  <replaceable>action</replaceable> can be "
-"<quote><literal>install</literal></quote>, <quote><literal>upgrade</"
-"literal></quote>, <quote><literal>downgrade</literal></quote>, "
-"<quote><literal>remove</literal></quote>, <quote><literal>purge</literal></"
-"quote>, <quote><literal>hold</literal></quote> (tests whether a package has "
-"been placed on hold), or <quote><literal>keep</literal></quote> (tests "
-"whether a package will be unchanged)."
+"指定された<replaceable>アクション</replaceable>を実行予定のパッケージにマッチ"
+"します。<replaceable>アクション</replaceable>には、<quote><literal>install</"
+"literal></quote> (インストール)、<quote><literal>upgrade</literal></quote> "
+"(更新)、<quote><literal>downgrade</literal></quote> (ダウングレード)、"
+"<quote><literal>remove</literal></quote> (削除)、<quote><literal>purge</"
+"literal></quote> (完全削除)、<quote><literal>hold</literal></quote> (固定。"
+"パッケージが既に固定されているかをテストします)、<quote><literal>keep</"
+"literal></quote> (一時固定。パッケージが変化しないかをテストします) を指定可"
+"能です。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4138
-#, fuzzy
 msgid ""
 "Note that this only tests whether an action is actually queued up to be "
 "performed on a package, not whether it <emphasis>could</emphasis> be "
@@ -6187,22 +6150,20 @@ msgid ""
 "<emphasis>could</emphasis> be upgraded in the future (for that, use "
 "<literal>~U</literal>)."
 msgstr ""
-"Note that this only tests whether an action is actually queued up to be "
-"performed on a package, not whether it <emphasis>could</emphasis> be "
-"performed.  Thus, for instance, <literal>~aupgrade</literal> matches exactly "
-"those packages that you have already decided to upgrade, not packages which "
-"<emphasis>could</emphasis> be upgraded in the future (for that, use "
-"<literal>~U</literal>)."
+"この条件は、アクションがパッケージに対して実行されるのを実際に待っているかを"
+"テストするだけで、アクションが実行<emphasis>可能</emphasis>かをテストするので"
+"はないことに注意してください。したがって、例えば <literal>~aupgrade</"
+"literal> は、更新すると既に決めたパッケージにちょうどマッチし、将来更新"
+"<emphasis>可能</emphasis>なパッケージにはマッチしません (そのような用途には"
+"<literal>~U</literal> を使用してください)。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4151
-#, fuzzy
 msgid "<literal>~B<replaceable>type</replaceable></literal>"
-msgstr "<literal>~B<replaceable>type</replaceable></literal>"
+msgstr "<literal>~B<replaceable>種類</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4155
-#, fuzzy
 msgid ""
 "Matches packages which have an unfulfilled (<quote>broken</quote>)  "
 "dependency of the given <replaceable>type</replaceable>.  <replaceable>type</"
@@ -6212,67 +6173,64 @@ msgid ""
 "<quote><literal>conflicts</literal></quote>, or <quote><literal>replaces</"
 "literal></quote>."
 msgstr ""
-"Matches packages which have an unfulfilled (<quote>broken</quote>)  "
-"dependency of the given <replaceable>type</replaceable>.  <replaceable>type</"
-"replaceable> can be <quote><literal>depends</literal></quote>, "
-"<quote><literal>predepends</literal></quote>, <quote><literal>recommends</"
-"literal></quote>, <quote><literal>suggests</literal></quote>, "
-"<quote><literal>conflicts</literal></quote>, or <quote><literal>replaces</"
-"literal></quote>."
+"指定された<replaceable>種類</replaceable>の依存関係が満たされていない "
+"(<quote>破損している</quote>) パッケージにマッチします。<replaceable>種類</"
+"replaceable>には、<quote><literal>depends</literal></quote> (依存)、"
+"<quote><literal>predepends</literal></quote> (事前依存)、"
+"<quote><literal>recommends</literal></quote> (推奨)、"
+"<quote><literal>suggests</literal></quote> (提案)、"
+"<quote><literal>conflicts</literal></quote> (衝突)、"
+"<quote><literal>replaces</literal></quote> (置換) を与えることが可能です。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4173
-#, fuzzy
 msgid ""
 "Matches packages that are <quote>broken</quote>: they have an unfulfilled "
 "dependency, predependency, or conflict."
 msgstr ""
-"Matches packages that are <quote>broken</quote>: they have an unfulfilled "
-"dependency, predependency, or conflict."
+"<quote>破損</quote>しているパッケージにマッチします。これらは、依存・事前依存"
+"・衝突のいずれかの関係が満たされていません。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4180
-#, fuzzy
 msgid "<literal>~C<replaceable>term</replaceable></literal>"
-msgstr "<literal>~C<replaceable>term</replaceable></literal>"
+msgstr "<literal>~C<replaceable>条件</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4184
-#, fuzzy
 msgid ""
 "Matches packages which conflict with a package matching the given "
 "<replaceable>term</replaceable>.  For instance, "
 "<quote><literal>~C~mdburrows@debian.org</literal></quote> matches any "
 "package which conflicts with a package I maintain."
 msgstr ""
-"Matches packages which conflict with a package matching the given "
-"<replaceable>term</replaceable>.  For instance, "
-"<quote><literal>~C~mdburrows@debian.org</literal></quote> matches any "
-"package which conflicts with a package I maintain."
+"与えられた<replaceable>条件</replaceable>にマッチするパッケージと衝突するパッ"
+"ケージにマッチします。例えば <quote><literal>~C~mdburrows@debian.org</"
+"literal></quote>は、私が管理しているパッケージと衝突するあらゆるパッケージに"
+"マッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4198
-#, fuzzy
 msgid ""
 "Matches packages which have been removed, but whose configuration files "
 "remain on the system (ie, they were removed but not purged)."
 msgstr ""
-"Matches packages which have been removed, but whose configuration files "
-"remain on the system (ie, they were removed but not purged)."
+"パッケージ自体は削除済みだが設定ファイルがシステム上に残っているパッケージに"
+"マッチします (つまりこれらのパッケージは、削除はされましたが完全削除はされて"
+"いません)。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4206
-#, fuzzy
 msgid ""
 "<literal>~D<optional>B</optional><optional><replaceable>type</replaceable>:</"
 "optional><replaceable>term</replaceable></literal>"
 msgstr ""
-"<literal>~D<optional>B</optional><optional><replaceable>type</replaceable>:</"
-"optional><replaceable>term</replaceable></literal>"
+"<literal>~D<optional>B</optional><optional><replaceable>種類</replaceable>:</"
+"optional><replaceable>条件</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
+# <!-- TRANSLATION-FIXME: Mark "~B" as literal!! -->
 #: en/aptitude.xml:4210 en/aptitude.xml:4419
-#, fuzzy
 msgid ""
 "<replaceable>type</replaceable> may be either <quote><literal>provides</"
 "literal></quote> or one of the dependency types given in <link "
@@ -6281,16 +6239,16 @@ msgid ""
 "<literal>depends</literal>.  If <literal>B</literal> is present, only broken "
 "dependencies will be considered."
 msgstr ""
-"<replaceable>type</replaceable> may be either <quote><literal>provides</"
-"literal></quote> or one of the dependency types given in <link "
-"linkend='searchBrokenType'>the documentation of ~B</link>.  If "
-"<replaceable>type</replaceable> is not present, it defaults to "
-"<literal>depends</literal>.  If <literal>B</literal> is present, only broken "
-"dependencies will be considered."
+"<replaceable>種類</replaceable>には、<quote><literal>provides</literal></"
+"quote> (提供) と <link linkend='searchBrokenType'><literal>~B</literal> の説"
+"明</link>で挙げられている依存関係の種類の 1 つのうち、どちらか一方を指定して"
+"ください。<replaceable>種類</replaceable>を指定しない場合、デフォルトで "
+"<literal>depends</literal> (依存) が指定されます。<literal>B</literal> を指定"
+"すると、破損している依存関係のみが対象となります。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
+# <!-- TRANSLATION-FIXME: Mark types as replaceable, not literal!! -->
 #: en/aptitude.xml:4221
-#, fuzzy
 msgid ""
 "If <literal>type</literal> is <quote><literal>provides</literal></quote>, "
 "matches packages that provide a package matching <replaceable>term</"
@@ -6298,205 +6256,183 @@ msgid ""
 "packages which declare a dependency of type <literal>type</literal> upon a "
 "package version which matches <replaceable>term</replaceable>."
 msgstr ""
-"If <literal>type</literal> is <quote><literal>provides</literal></quote>, "
-"matches packages that provide a package matching <replaceable>term</"
-"replaceable> (the equivalent of <literal>~P</literal>).  Otherwise, matches "
-"packages which declare a dependency of type <literal>type</literal> upon a "
-"package version which matches <replaceable>term</replaceable>."
+"<replaceable>種類</replaceable>が<quote><literal>provides</literal></quote>の"
+"場合、<replaceable>条件</replaceable>にマッチするパッケージを提供するパッケー"
+"ジにマッチします (<literal>~P</literal> と等価です)。それ以外の場合は、"
+"<replaceable>条件</replaceable>にマッチするバージョンのパッケージに対して種類"
+"<replaceable>種類</replaceable>のかたちで依存関係を宣言しているパッケージに"
+"マッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4234
-#, fuzzy
 msgid "<literal>~d<replaceable>description</replaceable></literal>"
-msgstr "<literal>~d<replaceable>description</replaceable></literal>"
+msgstr "<literal>~d<replaceable>説明</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4238
-#, fuzzy
 msgid ""
 "Matches packages whose description matches the regular expression "
 "<replaceable>description</replaceable>."
 msgstr ""
-"Matches packages whose description matches the regular expression "
-"<replaceable>description</replaceable>."
+"正規表現<replaceable>説明</replaceable>にパッケージ説明がマッチするパッケージ"
+"にマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4249
-#, fuzzy
 msgid "Matches Essential packages."
-msgstr "Matches Essential packages."
+msgstr "必須パッケージにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><footnote>
 #: en/aptitude.xml:4259
-#, fuzzy
 msgid ""
 "This term does not match any package (<quote>F</quote> stands for "
 "<quote>false</quote>).  <footnote>"
 msgstr ""
-"This term does not match any package (<quote>F</quote> stands for "
-"<quote>false</quote>).  <footnote>"
+"この条件はどのパッケージにもマッチしません (<quote>F</quote>は<quote>false</"
+"quote>の意味です)。<footnote>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><footnote><para>
 #: en/aptitude.xml:4263
-#, fuzzy
 msgid "This is provided largely for symmetry with <literal>~T</literal>."
-msgstr "This is provided largely for symmetry with <literal>~T</literal>."
+msgstr "これは主に <literal>~T</literal> との対照性のために提供されています。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4276
-#, fuzzy
 msgid ""
 "Matches packages which are not installed, or which were automatically "
 "installed and are not depended upon by any installed package."
 msgstr ""
-"Matches packages which are not installed, or which were automatically "
-"installed and are not depended upon by any installed package."
+"インストールされていないか、または自動的にインストールされたが現在はどのイン"
+"ストール済みのパッケージにも依存されていないパッケージにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4284
-#, fuzzy
 msgid "<literal>~G<replaceable>tag</replaceable></literal>"
-msgstr "<literal>~G<replaceable>tag</replaceable></literal>"
+msgstr "<literal>~G<replaceable>タグ</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4288
-#, fuzzy
 msgid ""
 "Matches packages whose Tag field matches the regular expression "
 "<replaceable>tag</replaceable>.  For instance, the pattern <literal>~Ggame::"
 "strategy</literal> would match strategy games."
 msgstr ""
-"Matches packages whose Tag field matches the regular expression "
-"<replaceable>tag</replaceable>.  For instance, the pattern <literal>~Ggame::"
-"strategy</literal> would match strategy games."
+"正規表現<replaceable>タグ</replaceable>にタグフィールドがマッチするパッケージ"
+"にマッチします。例えば、パターン <literal>~Ggame::strategy</literal> は戦略 "
+"(strategy) ゲームにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4296
-#, fuzzy
 msgid ""
 "For more information on tags and debtags, see <ulink url='http://debtags."
 "alioth.debian.org'/>."
 msgstr ""
-"For more information on tags and debtags, see <ulink url='http://debtags."
-"alioth.debian.org'/>."
+"タグや debtags についてさらに詳しく知りたい場合は、<ulink "
+"url='http://debtags.alioth.debian.org'/> を参照してください。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4307
-#, fuzzy
 msgid "Matches package versions which are currently installed."
-msgstr "Matches package versions which are currently installed."
+msgstr "現在インストールされているパッケージバージョンにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4311
-#, fuzzy
 msgid ""
 "Since all versions are tested by default, this normally matches packages "
 "which are currently installed."
 msgstr ""
-"Since all versions are tested by default, this normally matches packages "
-"which are currently installed."
+"デフォルトでは全てのバージョンがテストされるため、これは通常、現在インストー"
+"ルされているパッケージにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4322
-#, fuzzy
 msgid "Matches packages which were automatically installed."
-msgstr "Matches packages which were automatically installed."
+msgstr "自動的にインストールされたパッケージにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4328
-#, fuzzy
 msgid "<literal>~m<replaceable>maintainer</replaceable></literal>"
-msgstr "<literal>~m<replaceable>maintainer</replaceable></literal>"
+msgstr "<literal>~m<replaceable>メンテナ</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4332
-#, fuzzy
 msgid ""
 "Matches packages whose Maintainer field matches the regular expression "
 "<replaceable>maintainer</replaceable>.  For instance, "
 "<quote><literal>~mjoeyh</literal></quote> will find all packages maintained "
 "by Joey Hess."
 msgstr ""
-"Matches packages whose Maintainer field matches the regular expression "
-"<replaceable>maintainer</replaceable>.  For instance, "
-"<quote><literal>~mjoeyh</literal></quote> will find all packages maintained "
-"by Joey Hess."
+"正規表現<replaceable>メンテナ</replaceable>にメンテナ (Maintainer) フィールド"
+"がマッチするパッケージにマッチします。例えば、<quote><literal>~mjoeyh</"
+"literal></quote>を用いると Joey Hess さんが管理しているパッケージを全て見つけ"
+"ることが可能です。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4346
-#, fuzzy
 msgid "Matches packages which are <quote>new</quote>."
-msgstr "Matches packages which are <quote>new</quote>."
+msgstr "<quote>新規</quote>パッケージにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4352
-#, fuzzy
 msgid "<literal>~n<replaceable>name</replaceable></literal>"
-msgstr "<literal>~n<replaceable>name</replaceable></literal>"
+msgstr "<literal>~n<replaceable>名前</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4356
-#, fuzzy
 msgid ""
 "Matches packages whose name matches the regular expression "
 "<replaceable>name</replaceable>.  For instance, most of the packages that "
 "match <quote><literal>~n^lib</literal></quote> are libraries of one sort or "
 "another."
 msgstr ""
-"Matches packages whose name matches the regular expression "
-"<replaceable>name</replaceable>.  For instance, most of the packages that "
-"match <quote><literal>~n^lib</literal></quote> are libraries of one sort or "
-"another."
+"正規表現<replaceable>名前</replaceable>に名前がマッチするパッケージにマッチし"
+"ます。例えば、<quote><literal>~n^lib</literal></quote>にマッチするパッケージ"
+"の多くは何らかのライブラリです。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4366
-#, fuzzy
 msgid "<literal>~O<replaceable>origin</replaceable></literal>"
-msgstr "<literal>~O<replaceable>origin</replaceable></literal>"
+msgstr "<literal>~O<replaceable>提供元</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4370
-#, fuzzy
 msgid ""
 "Matches package versions whose origin matches the regular expression "
 "<replaceable>origin</replaceable>.  For instance, <quote><literal>!~Odebian</"
 "literal></quote> will find any unofficial packages on your system (packages "
 "not from the Debian archive)."
 msgstr ""
-"Matches package versions whose origin matches the regular expression "
-"<replaceable>origin</replaceable>.  For instance, <quote><literal>!~Odebian</"
-"literal></quote> will find any unofficial packages on your system (packages "
-"not from the Debian archive)."
+"正規表現<replaceable>提供元</replaceable>がパッケージ提供元にマッチするパッ"
+"ケージバージョンにマッチします。例えば、<quote><literal>!~Odebian</literal></"
+"quote>を用いるとシステム上のあらゆる非公式パッケージ (Debian アーカイブ由来で"
+"ないパッケージ) を見つけることが可能です。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
+# <!-- TRANSLATION-FIXME: Not "term", but "name"! -->
 #: en/aptitude.xml:4381
-#, fuzzy
 msgid "<literal>~P<replaceable>term</replaceable></literal>"
-msgstr "<literal>~P<replaceable>term</replaceable></literal>"
+msgstr "<literal>~P<replaceable>名前</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4385
-#, fuzzy
 msgid ""
 "Matches package versions which provide a package that matches the "
 "<replaceable>name</replaceable>.  For instance, <quote><literal>~Pmail-"
 "transport-agent</literal></quote> will match all the packages that provide "
 "<quote><literal>mail-transport-agent</literal></quote>."
 msgstr ""
-"Matches package versions which provide a package that matches the "
-"<replaceable>name</replaceable>.  For instance, <quote><literal>~Pmail-"
-"transport-agent</literal></quote> will match all the packages that provide "
-"<quote><literal>mail-transport-agent</literal></quote>."
+"<replaceable>名前</replaceable>にマッチするパッケージを提供するパッケージバー"
+"ジョンにマッチします。例えば<quote><literal>~Pmail-transport-agent</"
+"literal></quote>は、<quote><literal>mail-transport-agent</literal></quote>を"
+"提供するパッケージ全てにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4396
-#, fuzzy
 msgid "<literal>~p<replaceable>priority</replaceable></literal>"
-msgstr "<literal>~p<replaceable>priority</replaceable></literal>"
+msgstr "<literal>~p<replaceable>優先度</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4400
-#, fuzzy
 msgid ""
 "Matches packages whose priority is <replaceable>priority</replaceable>; "
 "<replaceable>priority</replaceable> must be <literal>extra</literal>, "
@@ -6505,26 +6441,25 @@ msgid ""
 "<quote><literal>~prequired</literal></quote> matches packages whose priority "
 "is <quote><literal>required</literal></quote>."
 msgstr ""
-"Matches packages whose priority is <replaceable>priority</replaceable>; "
-"<replaceable>priority</replaceable> must be <literal>extra</literal>, "
-"<literal>important</literal>, <literal>optional</literal>, "
-"<literal>required</literal>, or <literal>standard</literal>.  For instance, "
-"<quote><literal>~prequired</literal></quote> matches packages whose priority "
-"is <quote><literal>required</literal></quote>."
+"優先度が<replaceable>優先度</replaceable>のパッケージにマッチします。"
+"<replaceable>優先度</replaceable>は、<literal>extra</literal> (特別)、"
+"<literal>important</literal> (重要)、<literal>optional</literal> (任意)、"
+"<literal>required</literal> (必須)、<literal>standard</literal> (標準) のいず"
+"れかでなければなりません。例えば<quote><literal>~prequired</literal></quote>"
+"は、優先度が<quote><literal>required</literal></quote> (必須) のパッケージに"
+"マッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4415
-#, fuzzy
 msgid ""
 "<literal>~R<optional>B</optional><optional><replaceable>type</replaceable>:</"
 "optional><replaceable>term</replaceable></literal>"
 msgstr ""
-"<literal>~R<optional>B</optional><optional><replaceable>type</replaceable>:</"
-"optional><replaceable>term</replaceable></literal>"
+"<literal>~R<optional>B</optional><optional><replaceable>種類</replaceable>:</"
+"optional><replaceable>条件</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4430
-#, fuzzy
 msgid ""
 "If <replaceable>type</replaceable> is <quote><literal>provides</literal></"
 "quote>, matches packages whose name is provided by a package version "
@@ -6532,25 +6467,24 @@ msgid ""
 "a package version matching <replaceable>term</replaceable> declares a "
 "dependency of type <replaceable>type</replaceable> upon."
 msgstr ""
-"If <replaceable>type</replaceable> is <quote><literal>provides</literal></"
-"quote>, matches packages whose name is provided by a package version "
-"matching <replaceable>term</replaceable>.  Otherwise, matches packages which "
-"a package version matching <replaceable>term</replaceable> declares a "
-"dependency of type <replaceable>type</replaceable> upon."
+"<replaceable>種類</replaceable>が<quote><literal>provides</literal></quote>の"
+"場合、<replaceable>条件</replaceable>にマッチするバージョンのパッケージが名前"
+"を提供しているパッケージにマッチします。それ以外の場合は、<replaceable>条件</"
+"replaceable>にマッチするバージョンのパッケージが種類<replaceable>種類</"
+"replaceable>のかたちで依存関係を宣言しているパッケージにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4443
-#, fuzzy
 msgid ""
 "<literal>~S <replaceable>filter</replaceable> <replaceable>term</"
 "replaceable></literal>"
 msgstr ""
-"<literal>~S <replaceable>filter</replaceable> <replaceable>term</"
+"<literal>~S <replaceable>フィルタ</replaceable> <replaceable>条件</"
 "replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
+# <!-- TRANSLATION-FIXME: Not confident. -->
 #: en/aptitude.xml:4448
-#, fuzzy
 msgid ""
 "This term <quote>narrows</quote> the search to package versions matching "
 "<replaceable>filter</replaceable>.  In particular, it matches any package "
@@ -6558,85 +6492,77 @@ msgid ""
 "<replaceable>term</replaceable>.  The string value of the match is the "
 "string value of <replaceable>term</replaceable>."
 msgstr ""
-"This term <quote>narrows</quote> the search to package versions matching "
-"<replaceable>filter</replaceable>.  In particular, it matches any package "
-"version which matches both <replaceable>filter</replaceable> and "
-"<replaceable>term</replaceable>.  The string value of the match is the "
-"string value of <replaceable>term</replaceable>."
+"この条件は、<replaceable>フィルタ</replaceable>にマッチするパッケージバージョ"
+"ンに検索を<quote>狭めます</quote>。特にこの条件は、<replaceable>フィルタ</"
+"replaceable>と<replaceable>条件</replaceable>の両方にマッチするあらゆるパッ"
+"ケージバージョンにマッチします。マッチの文字列の値は<replaceable>条件</"
+"replaceable>の文字列の値です。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4461
-#, fuzzy
 msgid "<literal>~s<replaceable>section</replaceable></literal>"
-msgstr "<literal>~s<replaceable>section</replaceable></literal>"
+msgstr "<literal>~s<replaceable>セクション</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4466
-#, fuzzy
 msgid ""
 "Matches packages whose section matches the regular expression "
 "<replaceable>section</replaceable>."
 msgstr ""
-"Matches packages whose section matches the regular expression "
-"<replaceable>section</replaceable>."
+"正規表現<replaceable>セクション</replaceable>にセクションがマッチするパッケー"
+"ジにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4479
-#, fuzzy
 msgid ""
 "This term matches any package.  For instance, <quote><literal>~i~P~T</"
 "literal></quote> matches installed packages which are provided by any "
 "package."
 msgstr ""
-"This term matches any package.  For instance, <quote><literal>~i~P~T</"
-"literal></quote> matches installed packages which are provided by any "
-"package."
+"この条件はあらゆるパッケージにマッチします。例えば <quote><literal>~i~P~T</"
+"literal></quote>は、あらゆるパッケージによって提供された、インストール済みの"
+"パッケージにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4488
-#, fuzzy
 msgid "<literal>~t<replaceable>task</replaceable></literal>"
-msgstr "<literal>~t<replaceable>task</replaceable></literal>"
+msgstr "<literal>~t<replaceable>タスク</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4493
-#, fuzzy
 msgid ""
 "Matches packages that appear in a task whose name matches the regular "
 "expression <replaceable>task</replaceable>."
 msgstr ""
-"Matches packages that appear in a task whose name matches the regular "
-"expression <replaceable>task</replaceable>."
+"正規表現<replaceable>タスク</replaceable>にマッチする名前のタスクに現れるパッ"
+"ケージにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4507
-#, fuzzy
 msgid "This term matches any installed package which can be upgraded."
-msgstr "This term matches any installed package which can be upgraded."
+msgstr ""
+"この表現は、あらゆる更新可能なインストール済みパッケージにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4515
-#, fuzzy
 msgid "<literal>~V<replaceable>version</replaceable></literal>"
-msgstr "<literal>~V<replaceable>version</replaceable></literal>"
+msgstr "<literal>~V<replaceable>バージョン</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4520
-#, fuzzy
 msgid ""
 "Matches any package version whose version number matches the regular "
 "expression <replaceable>version</replaceable>, with the exceptions noted "
 "below.  For instance, <quote><literal>~Vdebian</literal></quote> matches "
 "packages whose version contains <quote><literal>debian</literal></quote>."
 msgstr ""
-"Matches any package version whose version number matches the regular "
-"expression <replaceable>version</replaceable>, with the exceptions noted "
-"below.  For instance, <quote><literal>~Vdebian</literal></quote> matches "
-"packages whose version contains <quote><literal>debian</literal></quote>."
+"後述する特別表記を除き、正規表現<replaceable>バージョン</replaceable>にバー"
+"ジョン番号がマッチするバージョンのパッケージにマッチします。例えば"
+"<quote><literal>~Vdebian</literal></quote>は、バージョンに"
+"<quote><literal>debian</literal></quote>を含むパッケージにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4530
-#, fuzzy
 msgid ""
 "The following values of <replaceable>version</replaceable> are treated "
 "specially.  To search for version numbers containing these values, preface "
@@ -6644,47 +6570,42 @@ msgid ""
 "number contains <literal>CURRENT</literal>, search for <literal>\\CURRENT</"
 "literal>."
 msgstr ""
-"The following values of <replaceable>version</replaceable> are treated "
-"specially.  To search for version numbers containing these values, preface "
-"the value with a backslash; for instance, to find packages whose version "
-"number contains <literal>CURRENT</literal>, search for <literal>\\CURRENT</"
-"literal>."
+"<replaceable>バージョン</replaceable>が以下の値の場合は特別扱いを受けます。こ"
+"れらの値を含むバージョン番号を検索するには、値の前にバックスラッシュを置いて"
+"ください。例えば、バージョン番号に <literal>CURRENT</literal> を含むパッケー"
+"ジを見つけるには、<literal>\\CURRENT</literal> を用いて検索してください。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><itemizedlist><listitem><para>
 #: en/aptitude.xml:4541
-#, fuzzy
 msgid ""
 "<literal>CURRENT</literal> matches the currently installed version of a "
 "package, if any."
 msgstr ""
-"<literal>CURRENT</literal> matches the currently installed version of a "
-"package, if any."
+"<literal>CURRENT</literal> は、現在インストールされているパッケージのバージョ"
+"ンがあればそれにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><itemizedlist><listitem><para>
 #: en/aptitude.xml:4548
-#, fuzzy
 msgid ""
 "<literal>CANDIDATE</literal> matches the version, if any, of the package "
 "that will be installed if you press <keycap>+</keycap> on the package or run "
 "<literal>aptitude install</literal> on it."
 msgstr ""
-"<literal>CANDIDATE</literal> matches the version, if any, of the package "
-"that will be installed if you press <keycap>+</keycap> on the package or run "
-"<literal>aptitude install</literal> on it."
+"<literal>CANDIDATE</literal> は、パッケージの上で <keycap>+</keycap> を押した"
+"りそれに対して <literal>aptitude install</literal> を実行したりした場合にイン"
+"ストールされるパッケージのバージョンがあれば、それにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><itemizedlist><listitem><para>
 #: en/aptitude.xml:4557
-#, fuzzy
 msgid ""
 "<literal>TARGET</literal> matches the version of a package that is currently "
 "targeted for installation, if any."
 msgstr ""
-"<literal>TARGET</literal> matches the version of a package that is currently "
-"targeted for installation, if any."
+"<literal>TARGET</literal> は、現在インストール対象になっているパッケージの"
+"バージョンがあればそれにマッチします。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:4574
-#, fuzzy
 msgid ""
 "Matches any package which is purely virtual: that is, its name is provided "
 "by a package or mentioned in a dependency, but no package of that name "
@@ -6692,21 +6613,21 @@ msgid ""
 "packages which are virtual and are not provided by any package: ie, packages "
 "which are depended upon but do not exist."
 msgstr ""
-"Matches any package which is purely virtual: that is, its name is provided "
-"by a package or mentioned in a dependency, but no package of that name "
-"exists.  For instance, <quote><literal>~v!~P~T</literal></quote> matches "
-"packages which are virtual and are not provided by any package: ie, packages "
-"which are depended upon but do not exist."
+"完全に仮想的なあらゆるパッケージにマッチします。完全に仮想的なパッケージと"
+"は、何らかのパッケージによって名前が提供されているか何らかの依存関係に名前が"
+"出てくるにも関わらず、そのような名前をもつパッケージが実在しないものです。例"
+"えば<quote><literal>~v!~P~T</literal></quote>は、どのパッケージからも提供され"
+"ていない仮想パッケージ、つまり依存されているが実在しないパッケージにマッチし"
+"ます。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:4586
-#, fuzzy
 msgid "<literal>~W<replaceable>term</replaceable></literal>"
-msgstr "<literal>~W<replaceable>term</replaceable></literal>"
+msgstr "<literal>~W<replaceable>条件</replaceable></literal>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
+# <!-- TRANSLATION-FIXME: Not confident. -->
 #: en/aptitude.xml:4591
-#, fuzzy
 msgid ""
 "<quote>Widens</quote> the match: if the versions to match against have been "
 "limited by an enclosing matcher (such as <link "
@@ -6715,12 +6636,12 @@ msgid ""
 "a package version if <replaceable>term</replaceable> matches <emphasis>any</"
 "emphasis> version of that package."
 msgstr ""
-"<quote>Widens</quote> the match: if the versions to match against have been "
-"limited by an enclosing matcher (such as <link "
-"linkend='searchDep'><literal>~D</literal></link>), these limits are "
-"dropped.  Thus, <literal>~W<replaceable>term</replaceable></literal> matches "
-"a package version if <replaceable>term</replaceable> matches <emphasis>any</"
-"emphasis> version of that package."
+"マッチを<quote>拡大</quote>します。つまり、マッチ対象のバージョンの範囲が囲い"
+"込みマッチ条件 (<link linkend='searchDep'><literal>~D</literal></link> など) "
+"によって制限されている場合、その制限を外します。したがって、"
+"<replaceable>条件</replaceable>があるパッケージの<emphasis>どの</emphasis>"
+"バージョンにマッチしても、<literal>~W<replaceable>条件</replaceable></"
+"literal>はそのパッケージの特定のバージョンにマッチします。"
 
 # type: Content of: <book><chapter><section><title>
 #: en/aptitude.xml:4607
@@ -6729,21 +6650,19 @@ msgstr "&aptitude; のカスタマイズ"
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:4610
-#, fuzzy
 msgid "Customizing the Package List"
-msgstr "Customizing the Package List"
+msgstr "パッケージ一覧のカスタマイズ"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:4613
-#, fuzzy
 msgid ""
 "The package list can be heavily customized: how packages are displayed, how "
 "the package hierarchy is formed, how packages are sorted, and even how the "
 "display is organized are all open to change."
 msgstr ""
-"The package list can be heavily customized: how packages are displayed, how "
-"the package hierarchy is formed, how packages are sorted, and even how the "
-"display is organized are all open to change."
+"パッケージ一覧は大規模にカスタマイズできます。パッケージの表示方法・パッケー"
+"ジ階層構造の形成方法・パッケージの並べ方が、そして表示のまとめ方さえも、自由"
+"に変更可能です。"
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:4620
@@ -7409,13 +7328,11 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:5061
-#, fuzzy
 msgid "Customizing the package hierarchy"
-msgstr "Customizing the package hierarchy"
+msgstr "パッケージ階層構造のカスタマイズ"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:5064
-#, fuzzy
 msgid ""
 "The package hierarchy is generated by a <firstterm>grouping policy</"
 "firstterm>: rules describing how the hierarchy should be built.  The "
@@ -7429,21 +7346,20 @@ msgid ""
 "respectively.  You can set the grouping policy for the <emphasis>current</"
 "emphasis> package list by pressing <keycap>G</keycap>."
 msgstr ""
-"The package hierarchy is generated by a <firstterm>grouping policy</"
-"firstterm>: rules describing how the hierarchy should be built.  The "
-"grouping policy describes a <quote>pipeline</quote> of rules; each rule can "
-"discard packages, create sub-hierarchies in which packages reside, or "
-"otherwise manipulate the tree.  The configuration items <literal><link "
+"パッケージの階層構造は<firstterm>分類規則</firstterm>によって生成されます。分"
+"類規則とは、階層構造の構築方法を記述する一連の規則です。分類規則は規則の"
+"<quote>処理の流れ</quote>を記述し、各規則は一部のパッケージを捨てたり、一部の"
+"パッケージを含む部分階層構造を作成したり、ツリーを操作したりします。設定項目 "
+"<literal><link "
 "linkend='configDefault-Grouping'>Aptitude::UI::Default-Grouping</link></"
-"literal> and <literal><link linkend='configDefault-Preview-"
-"Grouping'>Aptitude::UI::Default-Preview-Grouping</link></literal> set the "
-"grouping policies for newly created package lists and preview screens, "
-"respectively.  You can set the grouping policy for the <emphasis>current</"
-"emphasis> package list by pressing <keycap>G</keycap>."
+"literal> と <literal><link "
+"linkend='configDefault-Preview-Grouping'>Aptitude::UI::Default-Preview-Grouping</"
+"link></literal> が、それぞれ、新規に作成したパッケージ一覧とプレビュースク"
+"リーンに分類規則を設定します。<keycap>G</keycap> を押すと、<emphasis>現在の</"
+"emphasis>パッケージ一覧に分類規則を設定できます。"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:5081
-#, fuzzy
 msgid ""
 "The grouping policy is described by a comma-separated list of rules: "
 "<literal><replaceable>rule1</replaceable>,<replaceable>rule2</replaceable>,"
@@ -7453,17 +7369,15 @@ msgid ""
 "(subdir)</literal>.  Whether arguments are required and how many arguments "
 "are required (or allowed)  depends on the type of rule."
 msgstr ""
-"The grouping policy is described by a comma-separated list of rules: "
-"<literal><replaceable>rule1</replaceable>,<replaceable>rule2</replaceable>,"
-"<replaceable>...</replaceable></literal>.  Each <replaceable>rule</"
-"replaceable> consists of the name of the rule, possibly followed by "
-"arguments: for instance, <literal>versions</literal> or <literal>section"
-"(subdir)</literal>.  Whether arguments are required and how many arguments "
-"are required (or allowed)  depends on the type of rule."
+"分類規則は、<literal><replaceable>規則 1</replaceable>,<replaceable>規則 2</"
+"replaceable>,<replaceable>...</replaceable></literal> というようなコンマ区切"
+"りの規則のリストで記述されます。各<replaceable>規則</replaceable>は、例えば "
+"<literal>versions</literal> や <literal>section(subdir)</literal> というよう"
+"に、必要に応じて引数を後ろにつけた規則名から成ります。引数が必要か否かや、必"
+"要とする (あるいは任意で指定可能な) 引数の数は、規則の種類によります。"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:5093
-#, fuzzy
 msgid ""
 "Rules can be <firstterm>non-terminal</firstterm> or <firstterm>terminal</"
 "firstterm>.  A non-terminal rule will process a package by generating some "
@@ -7474,100 +7388,88 @@ msgid ""
 "use the default rule, which is to create the standard <quote>package items</"
 "quote>."
 msgstr ""
-"Rules can be <firstterm>non-terminal</firstterm> or <firstterm>terminal</"
-"firstterm>.  A non-terminal rule will process a package by generating some "
-"part of the hierarchy, then passing the package on to a later rule.  A "
-"terminal rule, on the other hand, will also generate part of the tree "
-"(typically items corresponding to the package), but does not pass its "
-"package to a later rule.  If no terminal rule is specified, &aptitude; will "
-"use the default rule, which is to create the standard <quote>package items</"
-"quote>."
+"規則は<firstterm>非末端</firstterm>と<firstterm>末端</firstterm>のいずれか一"
+"方です。非末端規則は、階層構造の一部を生成してパッケージを後方の規則に渡す、"
+"という方法でパッケージを処理します。他方で末端規則は、やはりツリーの一部 (通"
+"常はパッケージに相当する項目) を生成しますが、パッケージを後方の規則に渡しま"
+"せん。末端規則が指定されていない場合、&aptitude; はデフォルトの規則を使用しま"
+"す。デフォルトの規則では、標準<quote>パッケージ項目</quote>が作成されます。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5111
-#, fuzzy
 msgid ""
 "Groups packages according to the action scheduled on them; packages that are "
 "not upgradable and will be unchanged are ignored.  This is the grouping that "
 "is used in preview trees."
 msgstr ""
-"Groups packages according to the action scheduled on them; packages that are "
-"not upgradable and will be unchanged are ignored.  This is the grouping that "
-"is used in preview trees."
+"パッケージに対して予定されているアクションに応じてパッケージを分類します。更"
+"新可能ではなく変更もなされないパッケージは無視されます。これは、プレビューツ"
+"リーで使用されている分類方法です。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5124 en/aptitude.xml:5344
-#, fuzzy
 msgid "This is a terminal rule."
-msgstr "This is a terminal rule."
+msgstr "この規則は末端規則です。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5128
-#, fuzzy
 msgid ""
 "Creates standard package items which can be expanded to reveal the "
 "dependencies of the package."
 msgstr ""
-"Creates standard package items which can be expanded to reveal the "
-"dependencies of the package."
+"展開してパッケージの依存関係を見えるようにできる標準パッケージ項目を作成しま"
+"す。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><term><synopsis>
 #: en/aptitude.xml:5135
-#, fuzzy
 msgid "filter(<replaceable>pattern</replaceable>)"
-msgstr "filter(<replaceable>pattern</replaceable>)"
+msgstr "filter(<replaceable>パターン</replaceable>)"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5139
-#, fuzzy
 msgid ""
 "Include only packages for which at least one version matches "
 "<replaceable>pattern</replaceable>."
 msgstr ""
-"Include only packages for which at least one version matches "
-"<replaceable>pattern</replaceable>."
+"1 つ以上のバージョンが<replaceable>パターン</replaceable>にマッチするパッケー"
+"ジのみを含めます。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5144
-#, fuzzy
 msgid ""
 "If <replaceable>pattern</replaceable> is <quote>missing</quote>, no packages "
 "are discarded.  This is a backwards compatibility feature and may be removed "
 "in the future."
 msgstr ""
-"If <replaceable>pattern</replaceable> is <quote>missing</quote>, no packages "
-"are discarded.  This is a backwards compatibility feature and may be removed "
-"in the future."
+"<replaceable>パターン</replaceable>が<quote>与えられていない</quote>場合、捨"
+"てられるパッケージはありません。これは後方互換性のための機能で、将来削除され"
+"るかもしれません。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5157
-#, fuzzy
 msgid "Groups packages based on the first character of their name."
-msgstr "Groups packages based on the first character of their name."
+msgstr "パッケージ名の 1 文字目に基づいてパッケージを分類します。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5168
-#, fuzzy
 msgid ""
 "Groups packages according to an extra data file describing a "
 "<quote>hierarchy</quote> of packages."
 msgstr ""
-"Groups packages according to an extra data file describing a "
-"<quote>hierarchy</quote> of packages."
+"パッケージの<quote>階層構造</quote>を記述した外部データファイルに応じてパッ"
+"ケージを分類します。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><term><synopsis>
 #: en/aptitude.xml:5175
-#, fuzzy
 msgid ""
 "pattern(<replaceable>pattern</replaceable> <optional>=> <replaceable>title</"
 "replaceable></optional><optional>, ...</optional>)"
 msgstr ""
-"pattern(<replaceable>pattern</replaceable> <optional>=> <replaceable>title</"
-"replaceable></optional><optional>, ...</optional>)"
+"pattern(<replaceable>パターン</replaceable> <optional>=> <replaceable>タイト"
+"ル</replaceable></optional><optional>, ...</optional>)"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5179
-#, fuzzy
 msgid ""
 "A customizable grouping policy.  Each version of every package is matched "
 "against the given <replaceable>pattern</replaceable>s.  The first match "
@@ -7578,164 +7480,148 @@ msgid ""
 "<replaceable>title</replaceable> is not present, it is assumed to be "
 "<literal>\\1</literal>."
 msgstr ""
-"A customizable grouping policy.  Each version of every package is matched "
-"against the given <replaceable>pattern</replaceable>s.  The first match "
-"found is used to assign a <replaceable>title</replaceable> to the package; "
-"packages are then grouped by their <replaceable>title</replaceable>.  "
-"Strings of the form <literal>\\N</literal> that occur in <replaceable>title</"
-"replaceable> will be replaced by the Nth result of the match.  If "
-"<replaceable>title</replaceable> is not present, it is assumed to be "
-"<literal>\\1</literal>."
+"カスタマイズ可能な分類規則です。あらゆるパッケージのそれぞれのバージョンは、"
+"指定された各<replaceable>パターン</replaceable>にマッチするかどうかをテストさ"
+"れます。最初にマッチしたものがパッケージの<replaceable>タイトル</replaceable>"
+"として使用され、その上でパッケージは、そのようにして与えられた<replaceable>タ"
+"イトル</replaceable>によって分類されます。<replaceable>タイトル</replaceable>"
+"に指定される <literal>\\N</literal> という書式の文字列は、マッチの N 番目の結"
+"果によって置換されます。<replaceable>タイトル</replaceable>は、指定されない場"
+"合は <literal>\\1</literal> と仮定されます。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5194
-#, fuzzy
 msgid ""
 "For instance, <literal>pattern(~m => \\1)</literal> will group packages "
 "according to their Maintainer field.  The policy <literal>pattern(~m)</"
 "literal> will do the same thing, as the absent <replaceable>title</"
 "replaceable> defaults to <literal>\\1</literal>."
 msgstr ""
-"For instance, <literal>pattern(~m => \\1)</literal> will group packages "
-"according to their Maintainer field.  The policy <literal>pattern(~m)</"
-"literal> will do the same thing, as the absent <replaceable>title</"
-"replaceable> defaults to <literal>\\1</literal>."
+"例えば、<literal>pattern(~m => \\1)</literal> とすると、メンテナ (Maintainer) "
+"フィールドに応じてパッケージを分類します。<replaceable>タイトル</replaceable>"
+"が空の場合はデフォルトで <literal>\\1</literal> になるので、規則 "
+"<literal>pattern(~m)</literal> でも同じです。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
+# <!-- TRANSLATION-FIXME: Delete "the section"!! -->
 #: en/aptitude.xml:5203
-#, fuzzy
 msgid ""
 "See the section <xref linkend='secSearchPatterns'/> for more information on "
 "the format of <replaceable>pattern</replaceable>."
 msgstr ""
-"See the section <xref linkend='secSearchPatterns'/> for more information on "
-"the format of <replaceable>pattern</replaceable>."
+"<replaceable>パターン</replaceable>の書式についてさらに詳しく知りたい場合は、"
+"<xref linkend='secSearchPatterns'/>を参照してください。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5215
-#, fuzzy
 msgid "Groups packages according to their priority."
-msgstr "Groups packages according to their priority."
+msgstr "優先度に応じてパッケージを分類します"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><term><synopsis>
 #: en/aptitude.xml:5221
-#, fuzzy
 msgid ""
 "section<optional>(<replaceable>mode</replaceable><optional>,passthrough</"
 "optional>)</optional>"
 msgstr ""
-"section<optional>(<replaceable>mode</replaceable><optional>,passthrough</"
+"section<optional>(<replaceable>モード</replaceable><optional>,passthrough</"
 "optional>)</optional>"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5225
-#, fuzzy
 msgid "Groups packages according to their Section field."
-msgstr "Groups packages according to their Section field."
+msgstr "セクション (Section) フィールドに応じてパッケージを分類します。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5229
-#, fuzzy
 msgid "<replaceable>mode</replaceable> can be one of the following:"
-msgstr "<replaceable>mode</replaceable> can be one of the following:"
+msgstr "<replaceable>モード</replaceable>には以下のいずれかを指定できます。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5239
-#, fuzzy
 msgid ""
 "Group based on the whole Section field, so categories like <quote>non-free/"
 "games</quote> will be created."
 msgstr ""
-"Group based on the whole Section field, so categories like <quote>non-free/"
-"games</quote> will be created."
+"セクションフィールド全体に基づいたグループ。<quote>non-free/games</quote> の"
+"ようなカテゴリが作成されます。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5251
-#, fuzzy
 msgid ""
 "Group based on the part of the Section field before the <quote><literal>/</"
 "literal></quote>; if there is no <literal>/</literal>, <literal>main</"
 "literal> will be used instead."
 msgstr ""
-"Group based on the part of the Section field before the <quote><literal>/</"
-"literal></quote>; if there is no <literal>/</literal>, <literal>main</"
-"literal> will be used instead."
+"セクションフィールドのうち <quote><literal>/</literal></quote> より前の部分に"
+"基づいたグループ。<literal>/</literal> がない場合は <literal>main</literal> "
+"が代わりに使用されます。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5264
-#, fuzzy
 msgid ""
 "Group based on the part of the Section field after the <quote><literal>/</"
 "literal></quote>; if there is no <literal>/</literal>, the entire field will "
 "be used."
 msgstr ""
-"Group based on the part of the Section field after the <quote><literal>/</"
-"literal></quote>; if there is no <literal>/</literal>, the entire field will "
-"be used."
+"セクションフィールドのうち <quote><literal>/</literal></quote> より後ろの部分"
+"に基づいたグループ。<literal>/</literal> がない場合はフィールド全体が使用され"
+"ます。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5274
-#, fuzzy
 msgid ""
 "If <literal>passthrough</literal> is present, packages which for some reason "
 "lack a true Section (for instance, virtual packages) will be passed directly "
 "to the next level of grouping without first being placed in sub-categories."
 msgstr ""
-"If <literal>passthrough</literal> is present, packages which for some reason "
-"lack a true Section (for instance, virtual packages) will be passed directly "
-"to the next level of grouping without first being placed in sub-categories."
+"<literal>passthrough</literal> が指定されている場合、何らかの理由で実際のセク"
+"ションフィールドがないパッケージ (例えば仮想パッケージ) は、次の分類レベルに"
+"渡される前に下位のカテゴリに入れられることはなく、そのまま渡されます。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5288
-#, fuzzy
 msgid "Groups packages into the following categories:"
-msgstr "Groups packages into the following categories:"
+msgstr "パッケージを以下のカテゴリに分類します"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><itemizedlist><listitem><para>
 #: en/aptitude.xml:5292
-#, fuzzy
 msgid "Installed"
-msgstr "Installed"
+msgstr "インストール済み"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><itemizedlist><listitem><para>
 #: en/aptitude.xml:5293
-#, fuzzy
 msgid "Not Installed"
-msgstr "Not Installed"
+msgstr "インストールされていない"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><itemizedlist><listitem><para>
 #: en/aptitude.xml:5294
-#, fuzzy
 msgid "Security Updates"
-msgstr "Security Updates"
+msgstr "セキュリティアップデート"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><itemizedlist><listitem><para>
 #: en/aptitude.xml:5295
-#, fuzzy
 msgid "Upgradable"
-msgstr "Upgradable"
+msgstr "更新可能"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><itemizedlist><listitem><para>
 #: en/aptitude.xml:5296
-#, fuzzy
 msgid "Obsolete"
-msgstr "Obsolete"
+msgstr "廃止"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><itemizedlist><listitem><para>
 #: en/aptitude.xml:5297
-#, fuzzy
 msgid "Virtual"
-msgstr "Virtual"
+msgstr "仮想"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><term><synopsis>
+# <!-- TRANSLATION-FIXME: Are there no Japanese translations for "facet"? -->
 #: en/aptitude.xml:5303
-#, fuzzy
 msgid "tag<optional>(<replaceable>facet</replaceable>)</optional>"
 msgstr "tag<optional>(<replaceable>facet</replaceable>)</optional>"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
+# <!-- TRANSLATION-FIXME: Not confident about "facet"... -->
 #: en/aptitude.xml:5307
-#, fuzzy
 msgid ""
 "Groups packages according to the Tag information stored in the Debian "
 "package files.  If <replaceable>facet</replaceable> is provided, then only "
@@ -7744,26 +7630,24 @@ msgid ""
 "least once (with tagless packages listed separately from packages that have "
 "tags)."
 msgstr ""
-"Groups packages according to the Tag information stored in the Debian "
-"package files.  If <replaceable>facet</replaceable> is provided, then only "
-"tags corresponding to that facet will be displayed, and packages lacking "
-"this facet will be hidden; otherwise, all packages will be displayed at "
-"least once (with tagless packages listed separately from packages that have "
-"tags)."
+"Debian パッケージファイル内に格納されたタグ情報に応じてパッケージを分類しま"
+"す。<replaceable>facet</replaceable> が指定されている場合、その facet に相当"
+"するタグのみが表示され、その facet がないパッケージは隠されます。"
+"<replaceable>facet</replaceable> が指定されていない場合は、全てのパッケージが"
+"一度以上表示されます (タグのついていないパッケージは、タグのついているパッ"
+"ケージとは別に一覧表示されます)。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5318
-#, fuzzy
 msgid ""
 "For more information on debtags, see <ulink url='http://debtags.alioth."
 "debian.org'/>."
 msgstr ""
-"For more information on debtags, see <ulink url='http://debtags.alioth."
-"debian.org'/>."
+"debtags についてさらに詳しく知りたい場合は、<ulink "
+"url='http://debtags.alioth.debian.org'/> を参照してください。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5329
-#, fuzzy
 msgid ""
 "Creates a tree called <quote>Tasks</quote> which contains the available "
 "tasks (information on tasks is read from <filename>debian-tasks.desc</"
@@ -7771,45 +7655,40 @@ msgid ""
 "following <literal>task</literal> will create its categories as siblings of "
 "Tasks."
 msgstr ""
-"Creates a tree called <quote>Tasks</quote> which contains the available "
-"tasks (information on tasks is read from <filename>debian-tasks.desc</"
-"filename> in the package <systemitem>tasksel</systemitem>).  The rule "
-"following <literal>task</literal> will create its categories as siblings of "
-"Tasks."
+"利用可能なタスクを含む<quote>タスク</quote>と呼ばれるツリーを作成します "
+"(タスクに関する情報は、<systemitem>tasksel</systemitem> パッケージ内の "
+"<filename>debian-tasks.desc</filename> から読み込まれます)。<literal>task</"
+"literal> 以降の規則は、タスクの兄弟ノードとしてカテゴリを作成します。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5348
-#, fuzzy
 msgid ""
 "Creates standard package items which can be expanded to reveal the versions "
 "of the package."
 msgstr ""
-"Creates standard package items which can be expanded to reveal the versions "
-"of the package."
+"展開してパッケージのバージョンを見えるようにできる標準パッケージ項目を作成し"
+"ます。"
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:5357
-#, fuzzy
 msgid "Customizing how packages are sorted"
-msgstr "Customizing how packages are sorted"
+msgstr "パッケージの並べ方のカスタマイズ"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:5360
-#, fuzzy
 msgid ""
 "By default, packages in the package list are sorted by name.  However, it is "
 "often useful to sort them according to different criteria (for instance, "
 "package size), and &aptitude; allows you to do just that by modifying the "
 "<firstterm>sorting policy</firstterm>."
 msgstr ""
-"By default, packages in the package list are sorted by name.  However, it is "
-"often useful to sort them according to different criteria (for instance, "
-"package size), and &aptitude; allows you to do just that by modifying the "
-"<firstterm>sorting policy</firstterm>."
+"パッケージ一覧内のパッケージはデフォルトでは名前順に並べられます。しかし、異"
+"なる基準 (例えばパッケージサイズ) で並べると有益なことがしばしばあるので、"
+"&aptitude; では、<firstterm>並び替え規則</firstterm>を変更するだけで並べる基"
+"準を変更できるようになっています。"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:5368
-#, fuzzy
 msgid ""
 "Like the grouping policy described in <link linkend='secGroupingPolicy'>the "
 "previous section</link>, the sorting policy is a comma-separated list.  Each "
@@ -7821,57 +7700,49 @@ msgid ""
 "packages with the same priority will be placed in reverse order according to "
 "name."
 msgstr ""
-"Like the grouping policy described in <link linkend='secGroupingPolicy'>the "
-"previous section</link>, the sorting policy is a comma-separated list.  Each "
-"item in the list is the name of a sorting rule; if packages are "
-"<quote>equal</quote> according to the first rule, the second rule is used to "
-"sort them, and so on.  Placing a tilde character (<literal>~</literal>) in "
-"front of a rule reverses the usual meaning of that rule.  For instance, "
-"<literal>priority,~name</literal> will sort packages by priority, but "
-"packages with the same priority will be placed in reverse order according to "
-"name."
+"<link linkend='secGroupingPolicy'>前のセクション</link>で説明した分類規則と同"
+"様、並び替え規則はコンマ区切りのリストです。リスト内の各項目は並び替え規則の"
+"名前で、最初の規則で複数のパッケージが<quote>同等</quote>になる場合は 2 番目"
+"の規則が並び替えに使用される、というように処理されます。規則の前にチルダ文字 "
+"(<literal>~</literal>) を置くと、その規則の意味を通常と逆にできます。例えば "
+"<literal>priority,~name</literal> とすると、優先度によってパッケージを並び替"
+"えますが、同じ優先度のパッケージは名前による並び替え結果の逆順で並べられま"
+"す。"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:5382
-#, fuzzy
 msgid ""
 "To change the sorting policy for an active package list, press <keycap>S</"
 "keycap>."
 msgstr ""
-"To change the sorting policy for an active package list, press <keycap>S</"
-"keycap>."
+"アクティブなパッケージ一覧の並び替え規則を変更するには、<keycap>S</keycap> を"
+"押してください。"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:5387
-#, fuzzy
 msgid "The available rules are:"
-msgstr "The available rules are:"
+msgstr "以下の規則が利用可能です。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5396
-#, fuzzy
 msgid ""
 "Sorts packages by the estimated amount of size they require when installed."
-msgstr ""
-"Sorts packages by the estimated amount of size they require when installed."
+msgstr "インストール時に必要となるサイズの推定量でパッケージを並び替えます。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5407
-#, fuzzy
 msgid "Sorts packages by name."
-msgstr "Sorts packages by name."
+msgstr "名前でパッケージを並び替えます。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5417
-#, fuzzy
 msgid "Sorts packages by priority."
-msgstr "Sorts packages by priority."
+msgstr "優先度でパッケージを並び替えます。"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:5427
-#, fuzzy
 msgid "Sorts packages according to their version number."
-msgstr "Sorts packages according to their version number."
+msgstr "バージョン番号でパッケージを並び替えます。"
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:5436
@@ -12034,21 +11905,20 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><title>
 #: en/aptitude.xml:9346
-#, fuzzy
 msgid "Playing Minesweeper"
-msgstr "Playing Minesweeper"
+msgstr "マインスイーパで遊ぶ"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:9349
-#, fuzzy
 msgid ""
 "In case you get tired of installing and removing packages, &aptitude; "
 "includes a version of the classic game <quote>Minesweeper</quote>.  To start "
 "it, select &actions-mine;; the initial Minesweeper board will appear:"
 msgstr ""
-"In case you get tired of installing and removing packages, &aptitude; "
-"includes a version of the classic game <quote>Minesweeper</quote>.  To start "
-"it, select &actions-mine;; the initial Minesweeper board will appear:"
+"パッケージのインストールや削除に飽きた場合のために、&aptitude; には、伝統的な"
+"ゲーム<quote>マインスイーパ</quote>の 1 つのバージョンが含まれています。開始"
+"するには &actions-mine; を選択してください。初期状態のマインスイーパのボード"
+"が現れます。"
 
 # type: Content of: <book><chapter><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:9362
@@ -12094,7 +11964,6 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:9391
-#, fuzzy
 msgid ""
 "Within the rectangle that appears on the screen are hidden ten mines.  Your "
 "goal is to determine, through intuition, logic, and luck, where those mines "
@@ -12104,23 +11973,22 @@ msgid ""
 "Beware, however: uncovering a square that contains a mine will set it off, "
 "ending your game immediately!"
 msgstr ""
-"Within the rectangle that appears on the screen are hidden ten mines.  Your "
-"goal is to determine, through intuition, logic, and luck, where those mines "
-"are, without setting any of them off! To do this, you must uncover all the "
-"squares that <emphasis>do not</emphasis> contain mines; in doing so, you "
-"will learn important information regarding which squares do contain mines.  "
-"Beware, however: uncovering a square that contains a mine will set it off, "
-"ending your game immediately!"
+"スクリーンに現れた長方形の内部には 10 個の地雷が隠されています。あなたの目的"
+"は、これらの地雷を 1 つも爆発させずに、直感・論理・運によってその位置を決定す"
+"ることです! すべての地雷の位置を決定するには、地雷を<emphasis>含まない</"
+"emphasis>桝目をすべて掘り起こさなければいけません。そうすれば、どの桝目に地雷"
+"が含まれているかに関する重要な情報が得られるからです。しかし気をつけてくださ"
+"い。地雷を含む桝目を掘り起こしてその地雷を爆発させた瞬間、ゲームは終了してし"
+"まいます!"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:9402
-#, fuzzy
 msgid ""
 "To uncover a square (and find out whether a mine is hidden there), select "
 "the square with the arrow keys and press <keycap>Enter</keycap>:"
 msgstr ""
-"To uncover a square (and find out whether a mine is hidden there), select "
-"the square with the arrow keys and press <keycap>Enter</keycap>:"
+"桝目を掘り起こす (そしてそこに地雷が隠されているかいないかを調べる) には、矢"
+"印キーでその桝目を選択して <keycap>Enter</keycap> を押してください。"
 
 # type: Content of: <book><chapter><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:9414
@@ -12166,31 +12034,29 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:9443
-#, fuzzy
 msgid ""
 "As you can see, some of the hidden (blank) parts of the board have been "
 "revealed in this screenshot.  The squares containing a <literal>.</literal> "
 "are squares which are not next to any mines; the numbers in the remaining "
 "squares indicate how many mines they are next to."
 msgstr ""
-"As you can see, some of the hidden (blank) parts of the board have been "
-"revealed in this screenshot.  The squares containing a <literal>.</literal> "
-"are squares which are not next to any mines; the numbers in the remaining "
-"squares indicate how many mines they are next to."
+"御覧のとおり、このスクリーンショットでは、ボードの隠された (何も書かれていな"
+"い) 領域の一部が見えるようになりました。<literal>.</literal> と書かれた桝目"
+"は、どの地雷にも隣接していない桝目です。それ以外の桝目に書かれた数字は隣接す"
+"る地雷の数を表します。"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:9451
-#, fuzzy
 msgid ""
 "If you think you know where a mine is, you can place a <quote>flag</quote> "
 "on it.  To do this, select the suspected square and press <keycap>f</"
 "keycap>.  For instance, in the screenshot below, I decided that the square "
 "on the left-hand side of the board looked suspicious..."
 msgstr ""
-"If you think you know where a mine is, you can place a <quote>flag</quote> "
-"on it.  To do this, select the suspected square and press <keycap>f</"
-"keycap>.  For instance, in the screenshot below, I decided that the square "
-"on the left-hand side of the board looked suspicious..."
+"地雷が埋まっている場所がわかっている場合、そこに<quote>旗</quote>を立ててかま"
+"いません。旗を立てるには、埋まっていると思う桝目を選択して <keycap>f</"
+"keycap> を押してください。例えば次のスクリーンショットで私は、ボードの左端の"
+"桝目が怪しそうだと疑うことにしました……。"
 
 # type: Content of: <book><chapter><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:9465
@@ -12235,8 +12101,8 @@ msgstr ""
 "                                   +--------+"
 
 # type: Content of: <book><chapter><section><para>
+# <!-- TRANSLATION-FIXME: Do we need to describe a key pressed is Enter?-->
 #: en/aptitude.xml:9494
-#, fuzzy
 msgid ""
 "As you can see, an <literal>F</literal> appeared in the selected square.  It "
 "is no longer possible to uncover this square, even accidentally, until the "
@@ -12247,14 +12113,13 @@ msgid ""
 "to uncover all the squares next to it (except those containing a flag, of "
 "course).  For instance, sweeping around the <literal>1</literal> above:"
 msgstr ""
-"As you can see, an <literal>F</literal> appeared in the selected square.  It "
-"is no longer possible to uncover this square, even accidentally, until the "
-"flag is removed (by pressing <keycap>f</keycap> again).  Once you have "
-"placed flags on all the mines that are next to a square (for instance, the "
-"squares labelled <literal>1</literal> next to the flag above), you can "
-"<quote>sweep</quote> around the square.  This is just a convenient shortcut "
-"to uncover all the squares next to it (except those containing a flag, of "
-"course).  For instance, sweeping around the <literal>1</literal> above:"
+"御覧のとおり、選択した桝目に <literal>F</literal> が現れました。(もう一度 "
+"<keycap>f</keycap> を押して) 旗を取り除かない限り、この桝目はたとえ偶然にでも"
+"掘り起こすことができません。ある桝目に隣接する地雷すべて (例えば、前述の旗に"
+"隣接する、<literal>1</literal> と書かれた桝目) に旗を立てると、その桝目のまわ"
+"りを<quote>掃除</quote>できます。これは、隣接する桝目すべて (もちろん旗の立て"
+"られているもの以外) を掘り起こすためのショートカットにすぎません。例えば、前"
+"述の <literal>1</literal> のまわりを掃除すると次のようになります。"
 
 # type: Content of: <book><chapter><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:9514
@@ -12300,13 +12165,13 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:9543
-#, fuzzy
 msgid ""
 "Luckily (or was it luck?), my guess about the location of that mine was "
 "correct.  If I had been wrong, I would have lost immediately:"
 msgstr ""
-"Luckily (or was it luck?), my guess about the location of that mine was "
-"correct.  If I had been wrong, I would have lost immediately:"
+"幸運なことに (それは本当に幸運だったためなのでしょうか?)、地雷の位置に関する"
+"私の推測は当たっていました。もし間違えていたら、その瞬間、私はゲームに負けて"
+"いたでしょう。"
 
 # type: Content of: <book><chapter><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:9555
@@ -12352,15 +12217,14 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:9584
-#, fuzzy
 msgid ""
 "When you lose, the locations of all the mines are revealed: unexploded mines "
 "are indicated by a caret symbol (<literal>^</literal>), and the one you "
 "<quote>stepped on</quote> is indicated by an asterisk (<literal>*</literal>)."
 msgstr ""
-"When you lose, the locations of all the mines are revealed: unexploded mines "
-"are indicated by a caret symbol (<literal>^</literal>), and the one you "
-"<quote>stepped on</quote> is indicated by an asterisk (<literal>*</literal>)."
+"ゲームに負けると、すべての地雷の位置が明らかにされます。不発に終わった地雷は"
+"キャレット記号 (<literal>^</literal>) で表され、<quote>踏んでしまった</quote>"
+"地雷はアステリスク (<literal>*</literal>) で表されます。"
 
 # type: Content of: <book><chapter><title>
 #: en/aptitude.xml:9593
@@ -12648,6 +12512,7 @@ msgid "Japanese translation"
 msgstr "日本語訳"
 
 # type: Content of: <book><chapter><variablelist><varlistentry><listitem><para>
+# <!-- TRANSLATION-FIXME: Yasuo + space + eto!! -->
 #: en/aptitude.xml:9832
 msgid "YasuoEto,"
 msgstr "YasuoEto,"

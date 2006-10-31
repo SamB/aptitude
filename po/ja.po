@@ -133,6 +133,7 @@
 # status line             ステータスライン
 # state file              状態ファイル
 # style definition group  スタイル定義グループ
+# terminal policy         末端規則
 #
 # 5. MISCELLANEOUS
 # ----------------
@@ -150,7 +151,7 @@
 # progress                進行状況
 # resource                リソース
 # try harder?             再挑戦しますか?
-# type                    入力する
+# type                    入力する / 種類
 #
 # 6. UNDEFINED
 # ------------
@@ -162,7 +163,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-21 04:53+0900\n"
-"PO-Revision-Date: 2006-09-26 21:48+0900\n"
+"PO-Revision-Date: 2006-10-06 16:16+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -2075,7 +2076,7 @@ msgstr "対応する '(' がありません"
 #: src/generic/apt/matchers.cc:2114 src/generic/apt/matchers.cc:2187
 #, c-format
 msgid "Unknown dependency type: %s"
-msgstr "依存関係の形式が不明です: %s"
+msgstr "依存関係の種類が不明です: %s"
 
 #: src/generic/apt/matchers.cc:2120
 msgid "Provides: cannot be broken"
@@ -2084,7 +2085,7 @@ msgstr "Provides: は破損することはありません"
 #: src/generic/apt/matchers.cc:2175
 #, c-format
 msgid "Unknown action type: %s"
-msgstr "アクションの形式が不明です: %s"
+msgstr "アクションの種類が不明です: %s"
 
 #: src/generic/apt/matchers.cc:2229
 #, c-format
@@ -2094,7 +2095,7 @@ msgstr "優先度が不明です: %s"
 #: src/generic/apt/matchers.cc:2250
 #, c-format
 msgid "Unknown pattern type: %c"
-msgstr "パターンの形式が不明です: %c"
+msgstr "パターンの種類が不明です: %c"
 
 #: src/generic/apt/matchers.cc:2273
 msgid "Can't search for \"\""
@@ -2253,7 +2254,7 @@ msgstr "\"%s\" は不明な分類規則です"
 #: src/load_grouppolicy.cc:284
 #, c-format
 msgid "Terminal policy \"%s\" should be the last policy in the list"
-msgstr "末端ポリシー \"%s\" はリストの最後のポリシーにしてください"
+msgstr "末端規則 \"%s\" はリストの最後の規則にしてください"
 
 #: src/load_grouppolicy.cc:367
 #, c-format
@@ -2355,7 +2356,7 @@ msgstr ""
 #: src/load_pkgview.cc:112
 #, c-format
 msgid "Couldn't parse layout: unknown view item type \"%s\""
-msgstr "レイアウトをパースできませんでした: \"%s\" は未知の画面項目形式です"
+msgstr "レイアウトをパースできませんでした: 画面の項目の種類が不明です: \"%s\""
 
 #: src/load_pkgview.cc:119 src/load_pkgview.cc:127
 msgid "Couldn't parse layout: no row number specified"
@@ -2372,7 +2373,7 @@ msgstr "レイアウトをパースできませんでした: 高さが指定さ�
 #: src/load_pkgview.cc:174 src/load_pkgview.cc:192
 #, c-format
 msgid "Unknown alignment type '%s'"
-msgstr "未知の整列形式です: '%s'"
+msgstr "整列の種類が不明です: '%s'"
 
 #: src/load_sortpolicy.cc:51
 msgid "By-name sorting policies take no arguments"
@@ -2401,7 +2402,7 @@ msgstr "並び替え規則の記述内で '(' が対応していません"
 #: src/load_sortpolicy.cc:193
 #, c-format
 msgid "Invalid sorting policy type '%s'"
-msgstr "並び替え規則の形式が不正です: '%s'"
+msgstr "並び替え規則の種類が不正です: '%s'"
 
 #: src/main.cc:82
 #, c-format
@@ -5861,7 +5862,7 @@ msgstr "トップレベル"
 #~ "$HOME の値を取得できません。TMPDIR (安全ではありません。) を使用します。"
 
 #~ msgid "Bad filter type '%s' (valid types are: 'missing')"
-#~ msgstr "不正なフィルタ形式です: '%s' (有効な形式: 'missing')"
+#~ msgstr "フィルタの種類が不正です: '%s' (有効な種類: 'missing')"
 
 #~ msgid "Version-generating grouping policies must be the tail of a chain"
 #~ msgstr ""
@@ -5875,7 +5876,7 @@ msgstr "トップレベル"
 #~ msgstr "長さがゼロの文字列は分類規則の名前として無効です"
 
 #~ msgid "Invalid grouping policy type '%s'"
-#~ msgstr "不正な分類規則の形式です: '%s'"
+#~ msgstr "分類規則の種類が不正です: '%s'"
 
 #~ msgid "Automatically remove unused packages matching this filter"
 #~ msgstr ""
