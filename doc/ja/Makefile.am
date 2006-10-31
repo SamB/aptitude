@@ -12,7 +12,7 @@ XMLSOURCES=aptitude.xml manpage.xml
 # Put documentation in /usr/share/doc/aptitude (by default)
 docdir=$(datadir)/doc/$(PACKAGE)
 localemandir=$(mandir)/$(LANGCODE)
-htmldir=$(docdir)/html/$(LANGCODE)
+htmldir=$(DESTDIR)$(docdir)/html/$(LANGCODE)
 
 IMAGES = $(wildcard images/*.png)
 
@@ -31,9 +31,9 @@ install-data-hook:
 	$(mkinstalldirs) $(DESTDIR)$(localemandir)/man8
 	$(INSTALL_DATA) $(MANPAGE) $(DESTDIR)$(localemandir)/man8/aptitude.8
 
-#	$(mkinstalldirs) $(htmldir)/images
-#	$(INSTALL_DATA) output-html/*.html output-html/*.css $(htmldir)
-#	$(INSTALL_DATA) output-html/images/* $(htmldir)/images
+	$(mkinstalldirs) $(htmldir)/images
+	$(INSTALL_DATA) output-html/*.html output-html/*.css $(htmldir)
+	$(INSTALL_DATA) output-html/images/* $(htmldir)/images
 
 #	$(INSTALL_DATA) $(README) $(DESTDIR)$(pkgdatadir)/$(README)
 
