@@ -1688,8 +1688,8 @@ space.
 
       <para>
 	The commands that install, upgrade, and remove packages all
-	accept the parameter <quote>-s</quote>, which stands for <quote>simulate</quote>.  When
-	<quote>-s</quote> is passed on the command line, the program performs all
+	accept the parameter <literal>-s</literal>, which stands for <quote>simulate</quote>.  When
+	<literal>-s</literal> is passed on the command line, the program performs all
 	the actions it would normally perform, but does not actually
 	download or install/remove any files.
       </para>
@@ -1710,7 +1710,7 @@ Need to get 3200kB of archives. After unpacking 8413kB will be used.
 	In addition to the obvious options of <quote>Yes</quote> and <quote>No</quote>, a number
 	of commands are available which can be used to change the
 	information displayed at the prompt, or to specify further
-	actions.  For instance, typing <quote>s</quote> will display or hide
+	actions.  For instance, typing <userinput>s</userinput> will display or hide
 	information about how much space each package will use:
       </para>
 
@@ -1727,7 +1727,7 @@ Need to get 3200kB of archives. After unpacking 8413kB will be used.
 <prompt>Do you want to continue? [Y/n/?]</prompt></screen>
 
       <para>
-	Similarly, typing <quote>d</quote> will display information about
+	Similarly, typing <userinput>d</userinput> will display information about
 	automatically installed or removed packages:
       </para>
 
@@ -1742,7 +1742,7 @@ Need to get 3200kB of archives. After unpacking 8413kB will be used.</screen>
 	This shows that <systemitem>space-orbit-common</systemitem> is
 	being installed because <systemitem>space-orbit</systemitem>
 	depends on it.  You can see the entire list of possible
-	entries by entering <quote>?</quote> at the prompt.
+	entries by entering <userinput>?</userinput> at the prompt.
       </para>
 
       <para>
@@ -1764,7 +1764,7 @@ libsdl1.2debian-oss [1.2.7+1.2.8cvs20041007-4.1 (unstable)]
 
 Score is 19
 
-Accept this solution? [Y/n/q/?]</screen>
+<prompt>Accept this solution? [Y/n/q/?]</prompt></screen>
 
       <para>
 	Typing <userinput>y</userinput> (or simply pressing
@@ -1773,7 +1773,7 @@ Accept this solution? [Y/n/q/?]</screen>
 	best</quote> solution:
       </para>
 
-      <screen>Accept this solution? [Y/n/q/?] <userinput>n</userinput>
+      <screen><prompt>Accept this solution? [Y/n/q/?]</prompt> <userinput>n</userinput>
 The following actions will resolve these dependencies:
 
 Install the following packages:
@@ -1781,14 +1781,14 @@ libsdl1.2debian-alsa [1.2.7+1.2.8cvs20041007-4.1 (unstable,now)]
 
 Score is 19
 
-Accept this solution? [Y/n/q/?]</screen>
+<prompt>Accept this solution? [Y/n/q/?]</prompt></screen>
 
       <para>
 	Typing <userinput>q</userinput> will <quote>give up</quote>
 	and quit the program immediately:
       </para>
 
-      <screen>Accept this solution? [Y/n/q/?] q
+      <screen><prompt>Accept this solution? [Y/n/q/?]</prompt> <userinput>q</userinput>
 Abandoning all efforts to resolve these dependencies.
 Abort.</screen>
 
