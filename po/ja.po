@@ -125,7 +125,7 @@
 # package information area  パッケージ情報欄
 # package list            パッケージ一覧
 # package view            パッケージ画面
-# resolver                問題解決
+# resolver                問題解決 / 問題解決ツール
 # screen                  スクリーン
 # solution                解決方法
 # sorting mechanism       並び替え規則
@@ -163,7 +163,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-21 04:53+0900\n"
-"PO-Revision-Date: 2006-10-06 16:16+0900\n"
+"PO-Revision-Date: 2006-11-02 02:18+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -867,12 +867,12 @@ msgstr "%sB のアーカイブを取得する必要があります。"
 #: src/cmdline/cmdline_prompt.cc:572
 #, c-format
 msgid "After unpacking %sB will be used.\n"
-msgstr "展開後に %sB のディスクスペースが新たに消費されます。\n"
+msgstr "展開後に %sB のディスク領域が新たに消費されます。\n"
 
 #: src/cmdline/cmdline_prompt.cc:575
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
-msgstr "展開後に %sB のディスクスペースが解放されます。\n"
+msgstr "展開後に %sB のディスク領域が解放されます。\n"
 
 #: src/cmdline/cmdline_prompt.cc:613
 #, c-format
@@ -1085,11 +1085,11 @@ msgstr "%s を書き込み可能な状態で開けません"
 #: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:604
 #, c-format
 msgid "Error writing resolver state to %s"
-msgstr "問題解決の状態を %s に書き込む際にエラーが生じました"
+msgstr "問題解決ツールの状態を %s に書き込む際にエラーが生じました"
 
 #: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:606
 msgid "Resolver state successfully written!"
-msgstr "問題解決の状態の書き込みに成功しました!"
+msgstr "問題解決ツールの状態の書き込みに成功しました!"
 
 #: src/cmdline/cmdline_resolver.cc:145
 #, c-format
@@ -1263,7 +1263,7 @@ msgstr "以下のコマンドが利用可能です:"
 
 #: src/cmdline/cmdline_resolver.cc:596
 msgid "File to write resolver state to: "
-msgstr "リゾルバの状態を書き込む出力ファイル: "
+msgstr "問題解決ツールの状態を書き込む出力ファイル: "
 
 #: src/cmdline/cmdline_resolver.cc:611
 msgid "Invalid response; please enter one of the following commands:"
@@ -5059,11 +5059,11 @@ msgstr "%ls を開けません"
 
 #: src/ui.cc:1889
 msgid "Error while dumping resolver state"
-msgstr "問題解決の状態のダンプ中にエラーが生じました"
+msgstr "問題解決ツールの状態のダンプ中にエラーが生じました"
 
 #: src/ui.cc:1899
 msgid "File to which the resolver state should be dumped:"
-msgstr "問題解決の状態をダンプする出力ファイル:"
+msgstr "問題解決ツールの状態をダンプする出力ファイル:"
 
 # * Item.
 #: src/ui.cc:1929

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.4\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-10-02 16:51+0900\n"
-"PO-Revision-Date: 2006-10-26 03:16+0900\n"
+"PO-Revision-Date: 2006-11-02 03:27+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -1133,9 +1133,9 @@ msgid ""
 "information on using &aptitude;'s command-line interface, see <xref "
 "linkend='secUsingCmdline'/>."
 msgstr ""
-"このセクションでは、&aptitude; の仮想インタフェースの使い方について説明しま"
-"す。&aptitude; のコマンドラインインタフェースの使い方に関する情報は、<xref "
-"linkend='secUsingCmdline'/>を参照してください。"
+"このセクションでは、&aptitude; のビジュアルインタフェースの使い方について説明"
+"します。&aptitude; のコマンドラインインタフェースの使い方に関する情報は、"
+"<xref linkend='secUsingCmdline'/>を参照してください。"
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:507
@@ -2548,13 +2548,11 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><title>
 #: en/aptitude.xml:1521
-#, fuzzy
 msgid "Using &aptitude; from the command line"
-msgstr "Using &aptitude; from the command line"
+msgstr "コマンドラインからの &aptitude; の使い方"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1524
-#, fuzzy
 msgid ""
 "In addition to its <quote>visual</quote> interface described in the previous "
 "section, &aptitude; can be used to manage packages directly from the command-"
@@ -2562,55 +2560,50 @@ msgid ""
 "most common &aptitude; command-line actions; for more information, see <link "
 "linkend='secReference'>the &aptitude; command-line reference</link>."
 msgstr ""
-"In addition to its <quote>visual</quote> interface described in the previous "
-"section, &aptitude; can be used to manage packages directly from the command-"
-"line in the same way that you would use &apt-get;.  This section covers the "
-"most common &aptitude; command-line actions; for more information, see <link "
-"linkend='secReference'>the &aptitude; command-line reference</link>."
+"前のセクションで説明した<quote>ビジュアル</quote>インタフェースに加え、"
+"&aptitude; を使って、&apt-get; と同様にコマンドラインから直接パッケージを管理"
+"することも可能です。本セクションでは、&aptitude; のコマンドラインアクションの"
+"うち最もよく使用されるものを取り上げます。さらに詳しくは、<link "
+"linkend='secReference'>&aptitude; コマンドラインリファレンス</link>を参照して"
+"ください。"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1533
-#, fuzzy
 msgid ""
 "In general, a command-line invocation of &aptitude; will look like this:"
-msgstr ""
-"In general, a command-line invocation of &aptitude; will look like this:"
+msgstr "一般に、 &aptitude; のコマンドライン呼び出しは次のようになります。"
 
 # type: Content of: <book><chapter><section><cmdsynopsis>
 #: en/aptitude.xml:1538
-#, fuzzy
 msgid ""
 "<command>aptitude</command> <arg choice='plain'><replaceable>action</"
 "replaceable></arg> <arg rep='repeat'><replaceable>arguments</replaceable></"
 "arg>"
 msgstr ""
-"<command>aptitude</command> <arg choice='plain'><replaceable>action</"
-"replaceable></arg> <arg rep='repeat'><replaceable>arguments</replaceable></"
-"arg>"
+"<command>aptitude</command> <arg choice='plain'><replaceable>アクション</"
+"replaceable></arg> <arg rep='repeat'><replaceable>引数</replaceable></arg>"
 
 # type: Content of: <book><chapter><section><para><footnote>
 #: en/aptitude.xml:1544
-#, fuzzy
 msgid ""
 "<replaceable>action</replaceable> tells &aptitude; what action it is to "
 "take; the remaining arguments are used in an option-specific fashion.  "
 "Typically they will consist of package names and command-line "
 "switches<footnote>"
 msgstr ""
-"<replaceable>action</replaceable> tells &aptitude; what action it is to "
-"take; the remaining arguments are used in an option-specific fashion.  "
-"Typically they will consist of package names and command-line "
-"switches<footnote>"
+"<replaceable>アクション</replaceable>はとるべきアクションを &aptitude; に教"
+"え、残りの引数はオプションごとに異なる方法で使用されます。通常、残りの引数は"
+"パッケージ名とコマンドラインスイッチから成ります<footnote>"
 
 # type: Content of: <book><chapter><section><para><footnote><para>
+# <!-- Use literal tags instead of quote tags!! -->
 #: en/aptitude.xml:1547
-#, fuzzy
 msgid ""
 "A <quote>switch</quote> is a letter preceded by a hyphen: for instance, "
 "<quote>-a</quote>, <quote>-v</quote>, etc."
 msgstr ""
-"A <quote>switch</quote> is a letter preceded by a hyphen: for instance, "
-"<quote>-a</quote>, <quote>-v</quote>, etc."
+"<quote>スイッチ</quote>は、1 つのハイフンに続く 1 文字です (例: <literal>-a</"
+"literal> や <literal>-v</literal> など)。"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:1549 en/aptitude.xml:1983
@@ -2619,53 +2612,45 @@ msgstr "</footnote>。"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1553
-#, fuzzy
 msgid "The most important actions are:"
-msgstr "The most important actions are:"
+msgstr "最も重要なアクションを以下に示します。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis>
 #: en/aptitude.xml:1560
-#, fuzzy
 msgid "<command>aptitude</command> <arg choice='plain'>update</arg>"
 msgstr "<command>aptitude</command> <arg choice='plain'>update</arg>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:1567
-#, fuzzy
 msgid ""
 "This command updates the package lists, as if you had entered the visual "
 "interface and pressed <keycap>u</keycap>."
 msgstr ""
-"This command updates the package lists, as if you had entered the visual "
-"interface and pressed <keycap>u</keycap>."
+"このコマンドは、ビジュアルインタフェースに入って <keycap>u</keycap> と押すの"
+"とちょうど同じように、パッケージ一覧を更新します。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis>
 #: en/aptitude.xml:1577
-#, fuzzy
 msgid "<command>aptitude</command> <arg choice='plain'>upgrade</arg>"
 msgstr "<command>aptitude</command> <arg choice='plain'>upgrade</arg>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:1584
-#, fuzzy
 msgid ""
 "This command will upgrade as many packages as possible.  If there are "
 "dependency problems, it will avoid upgrading packages (rather than, for "
 "instance, removing them)."
 msgstr ""
-"This command will upgrade as many packages as possible.  If there are "
-"dependency problems, it will avoid upgrading packages (rather than, for "
-"instance, removing them)."
+"このコマンドはなるべく多くのパッケージを更新します。依存関係に問題がある場合"
+"は、(例えばそれらを削除したりはせずに) パッケージの更新を行いません。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis>
 #: en/aptitude.xml:1595
-#, fuzzy
 msgid "<command>aptitude</command> <arg choice='plain'>dist-upgrade</arg>"
 msgstr "<command>aptitude</command> <arg choice='plain'>dist-upgrade</arg>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:1602
-#, fuzzy
 msgid ""
 "This command will also attempt to upgrade packages, but it is more "
 "aggressive about solving dependency problems: it will install and remove "
@@ -2673,15 +2658,13 @@ msgid ""
 "this command, it is possible that it will do undesirable things, and so you "
 "should be careful when using it."
 msgstr ""
-"This command will also attempt to upgrade packages, but it is more "
-"aggressive about solving dependency problems: it will install and remove "
-"packages until all dependencies are satisfied.  Because of the nature of "
-"this command, it is possible that it will do undesirable things, and so you "
-"should be careful when using it."
+"このコマンドもパッケージを更新しようとしますが、依存関係の問題の解決に関して"
+"はより積極的です。つまり、依存関係がすべて満たされるまでパッケージのインス"
+"トールや削除を行います。その性質上、このコマンドは好ましくないことをする可能"
+"性があるので、使用時には注意してください。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis><group>
 #: en/aptitude.xml:1617
-#, fuzzy
 msgid ""
 "<arg choice='plain'>install</arg> <arg choice='plain'>remove</arg> <arg "
 "choice='plain'>purge</arg>"
@@ -2691,55 +2674,50 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis>
 #: en/aptitude.xml:1622
-#, fuzzy
 msgid ""
 "<arg choice='plain'><replaceable>pkg1</replaceable></arg> <arg "
 "rep='repeat'><replaceable>pkg2</replaceable></arg>"
 msgstr ""
-"<arg choice='plain'><replaceable>pkg1</replaceable></arg> <arg "
-"rep='repeat'><replaceable>pkg2</replaceable></arg>"
+"<arg choice='plain'><replaceable>パッケージ 1</replaceable></arg> <arg "
+"rep='repeat'><replaceable>パッケージ 2</replaceable></arg>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><footnote>
 #: en/aptitude.xml:1629
-#, fuzzy
 msgid "These commands install, remove, or purge<footnote>"
-msgstr "These commands install, remove, or purge<footnote>"
+msgstr ""
+"これらのコマンドは、指定されたパッケージのインストール・削除・完全削除"
+"<footnote>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><footnote><para>
 #: en/aptitude.xml:1630
-#, fuzzy
 msgid ""
 "Purging a package removes the package, as well as all its configuration "
 "files."
 msgstr ""
-"Purging a package removes the package, as well as all its configuration "
-"files."
+"パッケージの完全削除は、パッケージだけでなくその設定ファイルも削除します。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:1632
-#, fuzzy
 msgid ""
 "</footnote> the specified packages.  <quote>Installing</quote> a package "
 "which is already installed but can be upgraded will cause it to be upgraded."
 msgstr ""
-"</footnote> the specified packages.  <quote>Installing</quote> a package "
-"which is already installed but can be upgraded will cause it to be upgraded."
+"</footnote>を行います。既にインストール済みであるが更新可能なパッケージを"
+"<quote>インストール</quote>すると、そのパッケージは更新されます。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis>
 #: en/aptitude.xml:1642
-#, fuzzy
 msgid ""
 "<command>aptitude</command> <arg choice='plain'>search</arg> <arg "
 "choice='plain'><replaceable>pattern1</replaceable></arg> <arg "
 "rep='repeat'><replaceable>pattern2</replaceable></arg>"
 msgstr ""
 "<command>aptitude</command> <arg choice='plain'>search</arg> <arg "
-"choice='plain'><replaceable>pattern1</replaceable></arg> <arg "
-"rep='repeat'><replaceable>pattern2</replaceable></arg>"
+"choice='plain'><replaceable>パターン 1</replaceable></arg> <arg "
+"rep='repeat'><replaceable>パターン 2</replaceable></arg>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><footnote>
 #: en/aptitude.xml:1651
-#, fuzzy
 msgid ""
 "This command searches for packages whose name contains any of the given "
 "<replaceable>pattern</replaceable>s, printing the result to the terminal.  "
@@ -2747,45 +2725,42 @@ msgid ""
 "replaceable> can be a search pattern as described in <xref "
 "linkend='secSearchPatterns'/>.  <footnote>"
 msgstr ""
-"This command searches for packages whose name contains any of the given "
-"<replaceable>pattern</replaceable>s, printing the result to the terminal.  "
-"In addition to just being a string of text, each <replaceable>pattern</"
-"replaceable> can be a search pattern as described in <xref "
-"linkend='secSearchPatterns'/>.  <footnote>"
+"このコマンドは、指定された<replaceable>パターン</replaceable>のいずれかを名前"
+"に含むパッケージを検索し、その結果をターミナルに表示します。各<replaceable>パ"
+"ターン</replaceable>には、単なる一連のテキストだけでなく、<xref "
+"linkend='secSearchPatterns'/>で説明されている検索パターンを指定可能です。"
+"<footnote>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><footnote><para>
 #: en/aptitude.xml:1660
-#, fuzzy
 msgid ""
 "In fact, the same is true of the commands that take packages as arguments, "
 "such as <literal>install</literal> or <literal>show</literal>."
 msgstr ""
-"In fact, the same is true of the commands that take packages as arguments, "
-"such as <literal>install</literal> or <literal>show</literal>."
+"実は同じことが、<literal>install</literal> や <literal>show</literal> など"
+"の、パッケージを引数にとる他のコマンドにも当てはまります。"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis>
 #: en/aptitude.xml:1673
-#, fuzzy
 msgid ""
 "<command>aptitude</command> <arg choice='plain'>show</arg> <arg "
 "choice='plain'><replaceable>pkg1</replaceable></arg> <arg "
 "rep='repeat'><replaceable>pkg2</replaceable></arg>"
 msgstr ""
 "<command>aptitude</command> <arg choice='plain'>show</arg> <arg "
-"choice='plain'><replaceable>pkg1</replaceable></arg> <arg "
-"rep='repeat'><replaceable>pkg2</replaceable></arg>"
+"choice='plain'><replaceable>パッケージ 1</replaceable></arg> <arg "
+"rep='repeat'><replaceable>パッケージ 2</replaceable></arg>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:1682
-#, fuzzy
 msgid ""
 "Prints information about each <replaceable>pkg</replaceable> to the terminal."
 msgstr ""
-"Prints information about each <replaceable>pkg</replaceable> to the terminal."
+"各<replaceable>パッケージ</replaceable>に関する情報をターミナルに表示します。"
 
 # type: Content of: <book><chapter><section><para>
+# <!-- TRANSLATION-FIXME: Use literal tags instead of quote tags!! -->
 #: en/aptitude.xml:1690
-#, fuzzy
 msgid ""
 "The commands that install, upgrade, and remove packages all accept the "
 "parameter <quote>-s</quote>, which stands for <quote>simulate</quote>.  When "
@@ -2793,21 +2768,21 @@ msgid ""
 "the actions it would normally perform, but does not actually download or "
 "install/remove any files."
 msgstr ""
-"The commands that install, upgrade, and remove packages all accept the "
-"parameter <quote>-s</quote>, which stands for <quote>simulate</quote>.  When "
-"<quote>-s</quote> is passed on the command line, the program performs all "
-"the actions it would normally perform, but does not actually download or "
-"install/remove any files."
+"パッケージのインストール・更新・削除を行うコマンドはすべて、パラメタ "
+"<literal>-s</literal> をつけることが可能です。このパラメタは<quote>シミュレー"
+"ト (simulate)</quote>を意味します。コマンドラインに <literal>-s</literal> が"
+"渡されると、プログラムは通常行うアクションをすべて実行しますが、ファイルのダ"
+"ウンロードやインストール・削除は実際には行いません。"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1698
-#, fuzzy
 msgid "&aptitude; will sometimes present a prompt like this:"
-msgstr "&aptitude; will sometimes present a prompt like this:"
+msgstr "&aptitude; は次のようなプロンプトを表示することがあります。"
 
 # type: Content of: <book><chapter><section><screen>
+# <!-- TRANSLATION-FIXME: 最後のプロンプトの前の空行は不要。 -->
 #: en/aptitude.xml:1701
-#, fuzzy, no-wrap
+#, no-wrap
 msgid ""
 "The following NEW packages will be automatically installed:\n"
 "  space-orbit-common \n"
@@ -2818,18 +2793,18 @@ msgid ""
 "\n"
 "<prompt>Do you want to continue? [Y/n/?]</prompt>"
 msgstr ""
-"The following NEW packages will be automatically installed:\n"
+"以下の新規パッケージが自動的にインストールされます:\n"
 "  space-orbit-common \n"
-"The following NEW packages will be installed:\n"
+"以下の新規パッケージがインストールされます:\n"
 "  space-orbit space-orbit-common \n"
-"0 packages upgraded, 2 newly installed, 0 to remove and 0 not upgraded.\n"
-"Need to get 3200kB of archives. After unpacking 8413kB will be used.\n"
-"\n"
-"<prompt>Do you want to continue? [Y/n/?]</prompt>"
+"更新: 0 個、新規インストール: 2 個、削除: 0 個、保留: 0 個。\n"
+"3200kB のアーカイブを取得する必要があります。展開後に 8413kB のディスク領域が"
+"新たに消費されます。\n"
+"<prompt>続けますか? [Y/n/?]</prompt>"
 
 # type: Content of: <book><chapter><section><para>
+# <!-- TRANSLATION-FIXME: Use a userinput tag instead of quote!! -->
 #: en/aptitude.xml:1711
-#, fuzzy
 msgid ""
 "In addition to the obvious options of <quote>Yes</quote> and <quote>No</"
 "quote>, a number of commands are available which can be used to change the "
@@ -2837,15 +2812,15 @@ msgid ""
 "instance, typing <quote>s</quote> will display or hide information about how "
 "much space each package will use:"
 msgstr ""
-"In addition to the obvious options of <quote>Yes</quote> and <quote>No</"
-"quote>, a number of commands are available which can be used to change the "
-"information displayed at the prompt, or to specify further actions.  For "
-"instance, typing <quote>s</quote> will display or hide information about how "
-"much space each package will use:"
+"<quote>はい (Yes)</quote>や<quote>いいえ (No)</quote>という明白な選択肢を利用"
+"できるだけでなく、多数のコマンドを使用してプロンプトに表示される情報を変更し"
+"たり追加アクションを指定したりすることが可能です。例えば <userinput>s</"
+"userinput> と入力すると、各パッケージが使用するディスク領域の大きさに関する情"
+"報を表示させたり隠したりできます。"
 
 # type: Content of: <book><chapter><section><screen>
 #: en/aptitude.xml:1718
-#, fuzzy, no-wrap
+#, no-wrap
 msgid ""
 "<prompt>Do you want to continue? [Y/n/?]</prompt> <userinput>s</userinput>\n"
 "\n"
@@ -2859,31 +2834,32 @@ msgid ""
 "Need to get 3200kB of archives. After unpacking 8413kB will be used.\n"
 "<prompt>Do you want to continue? [Y/n/?]</prompt>"
 msgstr ""
-"<prompt>Do you want to continue? [Y/n/?]</prompt> <userinput>s</userinput>\n"
+"<prompt>続けますか? [Y/n/?]</prompt> <userinput>s</userinput>\n"
 "\n"
-"Size changes will be shown.\n"
+"サイズの変化を表示します。\n"
 "\n"
-"The following NEW packages will be automatically installed:\n"
+"以下の新規パッケージが自動的にインストールされます:\n"
 "  space-orbit-common &lt;+8020kB&gt; \n"
-"The following NEW packages will be installed:\n"
+"以下の新規パッケージがインストールされます:\n"
 "  space-orbit &lt;+393kB&gt; space-orbit-common &lt;+8020kB&gt; \n"
-"0 packages upgraded, 2 newly installed, 0 to remove and 0 not upgraded.\n"
-"Need to get 3200kB of archives. After unpacking 8413kB will be used.\n"
-"<prompt>Do you want to continue? [Y/n/?]</prompt>"
+"更新: 0 個、新規インストール: 2 個、削除: 0 個、保留: 0 個。\n"
+"3200kB のアーカイブを取得する必要があります。展開後に 8413kB のディスク領域が"
+"新たに消費されます。\n"
+"<prompt>続けますか? [Y/n/?]</prompt>"
 
 # type: Content of: <book><chapter><section><para>
+# <!-- TRANSLATION-FIXME: Use a userinput tag instead of quote!! -->
 #: en/aptitude.xml:1731
-#, fuzzy
 msgid ""
 "Similarly, typing <quote>d</quote> will display information about "
 "automatically installed or removed packages:"
 msgstr ""
-"Similarly, typing <quote>d</quote> will display information about "
-"automatically installed or removed packages:"
+"同様に、<userinput>d</userinput> と入力すると自動的にインストール・削除される"
+"パッケージに関する情報を表示します。"
 
 # type: Content of: <book><chapter><section><screen>
 #: en/aptitude.xml:1735
-#, fuzzy, no-wrap
+#, no-wrap
 msgid ""
 "The following NEW packages will be automatically installed:\n"
 "  space-orbit-common (D: space-orbit)\n"
@@ -2892,40 +2868,42 @@ msgid ""
 "0 packages upgraded, 2 newly installed, 0 to remove and 0 not upgraded.\n"
 "Need to get 3200kB of archives. After unpacking 8413kB will be used."
 msgstr ""
-"The following NEW packages will be automatically installed:\n"
-"  space-orbit-common (D: space-orbit)\n"
-"The following NEW packages will be installed:\n"
+"以下の新規パッケージが自動的にインストールされます:\n"
+"  space-orbit-common (依: space-orbit)\n"
+"以下の新規パッケージがインストールされます:\n"
 "  space-orbit space-orbit-common \n"
-"0 packages upgraded, 2 newly installed, 0 to remove and 0 not upgraded.\n"
-"Need to get 3200kB of archives. After unpacking 8413kB will be used."
+"更新: 0 個、新規インストール: 2 個、削除: 0 個、保留: 0 個。\n"
+"3200kB のアーカイブを取得する必要があります。展開後に 8413kB のディスク領域が"
+"新たに消費されます。"
 
 # type: Content of: <book><chapter><section><para>
+# <!-- TRANSLATION-FIXME: Use a userinput tag instead of quote!! -->
 #: en/aptitude.xml:1743
-#, fuzzy
 msgid ""
 "This shows that <systemitem>space-orbit-common</systemitem> is being "
 "installed because <systemitem>space-orbit</systemitem> depends on it.  You "
 "can see the entire list of possible entries by entering <quote>?</quote> at "
 "the prompt."
 msgstr ""
-"This shows that <systemitem>space-orbit-common</systemitem> is being "
-"installed because <systemitem>space-orbit</systemitem> depends on it.  You "
-"can see the entire list of possible entries by entering <quote>?</quote> at "
-"the prompt."
+"これは、<systemitem>space-orbit-common</systemitem> がインストール予定になっ"
+"ているのは <systemitem>space-orbit</systemitem> が "
+"<systemitem>space-orbit-common</systemitem> に依存しているためだ、という意味"
+"です。プロンプトに <userinput>?</userinput> と入力すると、可能な入力の完全な"
+"一覧を参照できます。"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1750
-#, fuzzy
 msgid ""
 "If your request violates dependencies in a way that cannot be trivially "
 "resolved, &aptitude; will ask you what to do:"
 msgstr ""
-"If your request violates dependencies in a way that cannot be trivially "
-"resolved, &aptitude; will ask you what to do:"
+"自明には解決できないような依存関係の問題が要求によって生じる場合、&aptitude; "
+"はどうするか尋ねます。"
 
 # type: Content of: <book><chapter><section><screen>
+# <!-- TRANSLATION-FIXME: Use a prompt tag!! -->
 #: en/aptitude.xml:1754
-#, fuzzy, no-wrap
+#, no-wrap
 msgid ""
 "The following packages are BROKEN:\n"
 "  libsdl1.2debian\n"
@@ -2943,37 +2921,37 @@ msgid ""
 "\n"
 "Accept this solution? [Y/n/q/?]"
 msgstr ""
-"The following packages are BROKEN:\n"
+"以下のパッケージは依存関係が壊れています:\n"
 "  libsdl1.2debian\n"
-"The following packages will be REMOVED:\n"
+"以下のパッケージが削除されます:\n"
 "  libsdl1.2debian-all\n"
 ".\n"
 ".\n"
 ".\n"
-"The following actions will resolve these dependencies:\n"
+"以下のアクションでこれらの依存関係の問題は解決されます:\n"
 "\n"
-"Install the following packages:\n"
+"以下のパッケージをインストールする:\n"
 "libsdl1.2debian-oss [1.2.7+1.2.8cvs20041007-4.1 (unstable)]\n"
 "\n"
-"Score is 19\n"
+"スコアは 19 です\n"
 "\n"
-"Accept this solution? [Y/n/q/?]"
+"<prompt>この解決方法を受け入れますか? [Y/n/q/?]</prompt>"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1771
-#, fuzzy
 msgid ""
 "Typing <userinput>y</userinput> (or simply pressing <keycap>enter</keycap>) "
 "will accept the proposed solution.  Typing <userinput>n</userinput> will "
 "display the <quote>next best</quote> solution:"
 msgstr ""
-"Typing <userinput>y</userinput> (or simply pressing <keycap>enter</keycap>) "
-"will accept the proposed solution.  Typing <userinput>n</userinput> will "
-"display the <quote>next best</quote> solution:"
+"<userinput>y</userinput> と入力する (または単に <keycap>enter</keycap> を押"
+"す) と提案されている解決方法を受け入れます。<userinput>n</userinput> と入力す"
+"ると、<quote>次善の</quote>解決方法を表示します。"
 
 # type: Content of: <book><chapter><section><screen>
+# <!-- TRANSLATION-FIXME: Use prompt tags!! -->
 #: en/aptitude.xml:1777
-#, fuzzy, no-wrap
+#, no-wrap
 msgid ""
 "Accept this solution? [Y/n/q/?] <userinput>n</userinput>\n"
 "The following actions will resolve these dependencies:\n"
@@ -2985,61 +2963,60 @@ msgid ""
 "\n"
 "Accept this solution? [Y/n/q/?]"
 msgstr ""
-"Accept this solution? [Y/n/q/?] <userinput>n</userinput>\n"
-"The following actions will resolve these dependencies:\n"
+"<prompt>この解決方法を受け入れますか? [Y/n/q/?]</prompt> <userinput>n</"
+"userinput>\n"
+"以下のアクションでこれらの依存関係の問題は解決されます:\n"
 "\n"
-"Install the following packages:\n"
+"以下のパッケージをインストールする:\n"
 "libsdl1.2debian-alsa [1.2.7+1.2.8cvs20041007-4.1 (unstable,now)]\n"
 "\n"
-"Score is 19\n"
+"スコアは 19 です\n"
 "\n"
-"Accept this solution? [Y/n/q/?]"
+"<prompt>この解決方法を受け入れますか? [Y/n/q/?]</prompt>"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1788
-#, fuzzy
 msgid ""
 "Typing <userinput>q</userinput> will <quote>give up</quote> and quit the "
 "program immediately:"
 msgstr ""
-"Typing <userinput>q</userinput> will <quote>give up</quote> and quit the "
-"program immediately:"
+"<userinput>q</userinput> と入力すると、<quote>諦めて</quote>すぐにプログラム"
+"を終了します。"
 
 # type: Content of: <book><chapter><section><screen>
+# <!-- TRANSLATION-FIXME: Use prompt and userinput tags!! -->
 #: en/aptitude.xml:1792
-#, fuzzy, no-wrap
+#, no-wrap
 msgid ""
 "Accept this solution? [Y/n/q/?] q\n"
 "Abandoning all efforts to resolve these dependencies.\n"
 "Abort."
 msgstr ""
-"Accept this solution? [Y/n/q/?] q\n"
-"Abandoning all efforts to resolve these dependencies.\n"
-"Abort."
+"<prompt>この解決方法を受け入れますか? [Y/n/q/?]</prompt> <userinput>q</"
+"userinput>\n"
+"これらの依存関係の問題を解決するための努力をすべて放棄します。\n"
+"中断。"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1797
-#, fuzzy
 msgid ""
 "As with the main command-line prompt, you can perform a number of additional "
 "actions, including manually altering the states of packages, from the "
 "dependency resolution prompt.  Type <userinput>?</userinput> to see a "
 "complete list."
 msgstr ""
-"As with the main command-line prompt, you can perform a number of additional "
-"actions, including manually altering the states of packages, from the "
-"dependency resolution prompt.  Type <userinput>?</userinput> to see a "
-"complete list."
+"メインのコマンドラインプロンプトと同様、依存関係問題解決用プロンプトからは、"
+"パッケージ状態の手動での変更など多数の追加アクションを実行できます。完全な一"
+"覧を参照するには <userinput>?</userinput> と入力してください。"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1804
-#, fuzzy
 msgid ""
 "For complete documentation of the command-line features of &aptitude;, see "
 "<xref linkend='secReference'/>."
 msgstr ""
-"For complete documentation of the command-line features of &aptitude;, see "
-"<xref linkend='secReference'/>."
+"&aptitude; のコマンドライン機能の完全な説明は、<xref linkend='secReference'/>"
+"を参照してください。"
 
 # type: Content of: <book><chapter><title>
 #: en/aptitude.xml:1811
@@ -3211,8 +3188,8 @@ msgstr ""
 "<guimenu><replaceable>メニュー</replaceable></"
 "guimenu><guimenuitem><replaceable>項目</replaceable></guimenuitem></"
 "menuchoice> のように記述されます。これは、「<replaceable>メニュー</"
-"replaceable> メニューから <replaceable>項目</replaceable> を選択しなさい、"
-"<replaceable>キー</replaceable> がそのコマンドのショートカットです」という意"
+"replaceable>というメニューから<replaceable>項目</replaceable>を選択しなさい、"
+"<replaceable>キー</replaceable>がそのコマンドのショートカットです」という意"
 "味です。"
 
 # type: Content of: <book><chapter><section><section><title>
@@ -3604,8 +3581,8 @@ msgid ""
 "Display a detailed description of the problem resolver's current suggestion "
 "(see <xref linkend='secResolver'/>)."
 msgstr ""
-"問題解決のために提案されている現在選択中の方法の詳細な説明を表示します "
-"(<xref linkend='secResolver'/>を参照してください)。"
+"問題解決ツールから現在なされている提案の詳細な説明を表示します (<xref "
+"linkend='secResolver'/>を参照してください)。"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2211
@@ -3616,7 +3593,7 @@ msgstr "&resolver-apply;"
 #: en/aptitude.xml:2214
 msgid ""
 "Carry out the actions that the problem resolver is currently suggesting."
-msgstr "問題解決のために提案されている現在選択中のアクションを実行します。"
+msgstr "問題解決ツールが現在提案中のアクションを実行します。"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2220
@@ -3626,7 +3603,7 @@ msgstr "&resolver-next;"
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2223
 msgid "Select the problem resolver's next suggestion."
-msgstr "問題解決のために提案されている方法のうち、次の方法を選択します。"
+msgstr "問題解決ツールの次の提案を選択します。"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2228
@@ -3636,7 +3613,7 @@ msgstr "&resolver-previous;"
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2231
 msgid "Select the problem resolver's previous suggestion."
-msgstr "問題解決のために提案されている方法のうち、前の方法を選択します。"
+msgstr "問題解決ツールの前の提案を選択します。"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2236
@@ -3646,7 +3623,7 @@ msgstr "&resolver-first;"
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2239
 msgid "Select the problem resolver's first suggestion."
-msgstr "問題解決のために提案されている方法のうち、最初の方法を選択します。"
+msgstr "問題解決ツールの最初の提案を選択します。"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2244
@@ -3659,7 +3636,7 @@ msgid ""
 "Select the problem resolver's most recently generated solution (see <xref "
 "linkend='secResolver'/>)."
 msgstr ""
-"問題解決のために提案されている方法のうち、最後の方法を選択します (<xref "
+"問題解決ツールによって最後に生成された提案を選択します (<xref "
 "linkend='secResolver'/>を参照してください)。"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
@@ -5070,9 +5047,8 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:3384
-#, fuzzy
 msgid "Solving Dependency Problems"
-msgstr "Solving Dependency Problems"
+msgstr "依存関係の問題の解決"
 
 # type: Content of: <book><chapter><section><section><para>
 # <!-- TRANSLATION-FIXME: ja.po の方の訳語と統一し、必要であれば改良する!! -->
@@ -5106,8 +5082,9 @@ msgstr ""
 "す。"
 
 # type: Content of: <book><chapter><section><section><para>
+# <!-- TRANSLATION-FIXME: 第 1 文と第 2 文・第 3 文の関係がなくて難解。 -->
+# <!-- TRANSLATION-FIXME: which was resolved → which would be resolved ? -->
 #: en/aptitude.xml:3477
-#, fuzzy
 msgid ""
 "You can access information about the package affected by an action by simply "
 "pressing <keycap>Enter</keycap> while the package is highlighted.  For a "
@@ -5117,13 +5094,12 @@ msgid ""
 "choice, along with every way in which this dependency could have been "
 "resolved."
 msgstr ""
-"You can access information about the package affected by an action by simply "
-"pressing <keycap>Enter</keycap> while the package is highlighted.  For a "
-"more detailed explanation of why &aptitude; made a particular decision, you "
-"can highlight the element in the list.  When you do so, the lower half of "
-"the screen will display the dependency which was resolved by &aptitude;'s "
-"choice, along with every way in which this dependency could have been "
-"resolved."
+"アクションによって影響を受けるパッケージについては、パッケージがハイライトさ"
+"れているときに <keycap>Enter</keycap> を押すだけで、情報にアクセスできます。"
+"&aptitude; が特定の決断を下した理由についてのさらに詳しい説明を参照するには、"
+"リストの項目をハイライトさせてください。ハイライトさせると、&aptitude; の選択"
+"によって解決される依存関係が、他に可能なすべての解決方法とともにスクリーンの"
+"下半分に表示されます。"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:3494
@@ -5181,7 +5157,6 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3523
-#, fuzzy
 msgid ""
 "You can guide the dependency resolver to a solution of which you approve by "
 "<firstterm>approving</firstterm> or <firstterm>rejecting</firstterm> the "
@@ -5191,17 +5166,15 @@ msgid ""
 "On the other hand, if you <firstterm>reject</firstterm> an action, the "
 "resolver will never choose that action."
 msgstr ""
-"You can guide the dependency resolver to a solution of which you approve by "
-"<firstterm>approving</firstterm> or <firstterm>rejecting</firstterm> the "
-"individual actions of a solution.  If you <firstterm>approve</firstterm> an "
-"action, the resolver will choose it whenever possible, ignoring alternatives "
-"(when there are several approved alternatives, all of them will be chosen).  "
-"On the other hand, if you <firstterm>reject</firstterm> an action, the "
-"resolver will never choose that action."
+"解決方法の個々のアクションを<firstterm>承認</firstterm>または<firstterm>拒"
+"否</firstterm>して、最終的に承認する解決方法まで問題解決ツールを導くことが可"
+"能です。アクションを<firstterm>承認</firstterm>すると、解決ツールは、可能であ"
+"ればいつでも他の選択肢を無視してそのアクションを選択します (承認されている選"
+"択肢が複数ある場合はそれらを全て選択します)。他方でアクションを<firstterm>拒"
+"否</firstterm>すると、解決ツールは絶対にそのアクションを選択しません。"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3535
-#, fuzzy
 msgid ""
 "To reject a solution, highlight it and press <keycap>r</keycap>; the "
 "rejection can be cancelled by pressing <keycap>r</keycap> again.  Similarly, "
@@ -5210,16 +5183,15 @@ msgid ""
 "you cancel a rejection or an approval, any solutions that were ignored will "
 "be available the next time that you generate a new solution."
 msgstr ""
-"To reject a solution, highlight it and press <keycap>r</keycap>; the "
-"rejection can be cancelled by pressing <keycap>r</keycap> again.  Similarly, "
-"select an action and press <keycap>a</keycap> to approve it.  You can undo "
-"either action by using &undo-undo; while the resolver screen is active.  If "
-"you cancel a rejection or an approval, any solutions that were ignored will "
-"be available the next time that you generate a new solution."
+"解決方法を拒否するには、それをハイライトさせて <keycap>r</keycap> を押してく"
+"ださい。もう一度 <keycap>r</keycap> を押すと拒否を取り消せます。同様に、アク"
+"ションを選択して <keycap>a</keycap> を押すと承認できます。どちらのアクション"
+"も、解決ツールのスクリーンがアクティブになっている間に &undo-undo; を用いて取"
+"り消せます。拒否や承認を取り消すと、次に新しい解決方法を生成するときに、無視"
+"されていた全ての解決方法が利用可能になります。"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3546
-#, fuzzy
 msgid ""
 "Rejected actions are colored red and marked with an <quote>R</quote>, while "
 "approved actions are colored green and marked with an <quote>A</quote>.  You "
@@ -5228,12 +5200,13 @@ msgid ""
 "quote> has been rejected, and the action <quote>keep <systemitem>sound-"
 "juicer</systemitem> at its current version</quote> has been approved."
 msgstr ""
-"Rejected actions are colored red and marked with an <quote>R</quote>, while "
-"approved actions are colored green and marked with an <quote>A</quote>.  You "
-"can see this in the following screenshot, where the action <quote>keep "
-"<systemitem>gstreamer0.8-cdparanoia</systemitem> at its current version</"
-"quote> has been rejected, and the action <quote>keep <systemitem>sound-"
-"juicer</systemitem> at its current version</quote> has been approved."
+"拒否されたアクションは赤色になり<quote>R</quote>という印がつきます。他方で、"
+"承認されたアクションは緑色になり<quote>A</quote>という印がつきます。これは次"
+"のスクリーンショットを見ればわかるでしょう。このスクリーンショットでは、"
+"<quote><systemitem>gstreamer0.8-cdparanoia</systemitem> を現在のバージョンに"
+"一時固定する</quote>というアクションが拒否され、"
+"<quote><systemitem>sound-juicer</systemitem> を現在のバージョンに一時固定す"
+"る</quote>というアクションが承認されています。"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:3563
@@ -5291,7 +5264,6 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3592
-#, fuzzy
 msgid ""
 "Rejections and approvals only affect <emphasis>newly generated</emphasis> "
 "solutions.  You can tell when a new solution will be generated by examining "
@@ -5305,35 +5277,34 @@ msgid ""
 "pressing <keycap>&gt;</keycap>, and the first generated solution by pressing "
 "<keycap>&lt;</keycap>."
 msgstr ""
-"Rejections and approvals only affect <emphasis>newly generated</emphasis> "
-"solutions.  You can tell when a new solution will be generated by examining "
-"the indicator in the lower left hand corner of the screen: if there is a "
-"number in parentheses, it is the number of solutions that have been "
-"generated.  Thus, when the number outside the parentheses and the number "
-"inside are identical (as above), pressing <keycap>.</keycap> will generated "
-"a new solution.  If there is no number in parentheses (for instance, the "
-"indicator reads <literal>[1/5]</literal>), then there are no more solutions "
-"to generated.  At any time, you can select the last generated solution by "
-"pressing <keycap>&gt;</keycap>, and the first generated solution by pressing "
-"<keycap>&lt;</keycap>."
+"拒否や承認で影響を受けるのは<emphasis>新しく生成された</emphasis>解決方法だけ"
+"です。スクリーンの左下隅の表示を調べると、新しい解決方法が現在生成可能かどう"
+"かがわかります。丸括弧で囲まれた数字がある場合、その数字はこれまでに生成され"
+"た解決方法の数です。したがって、丸括弧の外側の数字と内側の数字が (上の図のよ"
+"うに) 同一である場合、<keycap>.</keycap> を押すと新しい解決方法が生成されま"
+"す。丸括弧で囲まれた数字がない場合 (例えば、表示が <literal>[1/5]</literal> "
+"となっている場合)、生成される解決方法はこれ以上ありません。どんなときでも、"
+"<keycap>&gt;</keycap> を押すと最後に生成された解決方法を選択でき、"
+"<keycap>&lt;</keycap> を押すと最初に生成された解決方法を選択できます。"
 
 # type: Content of: <book><chapter><section><section><important><para>
 #: en/aptitude.xml:3610
-#, fuzzy
 msgid ""
 "The state of the problem resolver is discarded when you modify the state of "
 "any package.  If you mark a package for installation, for upgrade, for "
 "removal, etc, the resolver will forget all of your rejections and approvals, "
 "as well as all the solutions that have been generated so far."
 msgstr ""
-"The state of the problem resolver is discarded when you modify the state of "
-"any package.  If you mark a package for installation, for upgrade, for "
-"removal, etc, the resolver will forget all of your rejections and approvals, "
-"as well as all the solutions that have been generated so far."
+"問題解決ツールの状態は、どのパッケージの状態を変更しても破棄されます。つま"
+"り、パッケージにインストール・更新・削除などの印をつけると、問題解決ツールで"
+"行った拒否や承認の情報は、それまでに生成された解決方法の情報とともにすべて消"
+"去されます。"
 
 # type: Content of: <book><chapter><section><section><para>
+# <!-- TRANSLATION-FIXME: at the top of → in the upper half of ? -->
+# <!-- TRANSLATION-FIXME: Finally の前で切る? -->
+# <!-- TRANSLATION-FIXME: that were resolved → that would be resolved? -->
 #: en/aptitude.xml:3620
-#, fuzzy
 msgid ""
 "In addition to selecting actions in the list at the top of the screen, you "
 "can also select them using the list in the bottom half.  To access this "
@@ -5343,13 +5314,13 @@ msgid ""
 "that were resolved and the action taken to resolve them, as in the following "
 "screenshot."
 msgstr ""
-"In addition to selecting actions in the list at the top of the screen, you "
-"can also select them using the list in the bottom half.  To access this "
-"list, either click in it using the mouse or press <keycap>Tab</keycap>.  "
-"Finally, to see the decisions that the problem resolver took arranged in "
-"order, press <keycap>o</keycap>.  This will give a list of the dependencies "
-"that were resolved and the action taken to resolve them, as in the following "
-"screenshot."
+"スクリーン最上部のリスト内のアクションを選択するだけでなく、スクリーン下半分"
+"のリストを使用してアクションを選択することも可能です。このリストにアクセスす"
+"るには、マウスを用いてその領域をクリックするか、または <keycap>Tab</keycap> "
+"を押してください。最後に、問題解決ツールが下した決断を順を追って眺めるには "
+"<keycap>o</keycap> を押してください。そうすると、次のスクリーンショットにある"
+"ように、解決される依存関係とその解決のために行うアクションのリストが表示され"
+"ます。"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:3637
@@ -5407,9 +5378,9 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3666
-#, fuzzy
 msgid "You can leave this display mode by pressing <keycap>o</keycap> again."
-msgstr "You can leave this display mode by pressing <keycap>o</keycap> again."
+msgstr ""
+"もう一度 <keycap>o</keycap> を押すとこの表示モードから出ることが可能です。"
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:3672
@@ -5488,13 +5459,11 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:3716
-#, fuzzy
 msgid "Understanding and managing package trust"
-msgstr "Understanding and managing package trust"
+msgstr "パッケージの信頼性の意味と管理方法"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3719
-#, fuzzy
 msgid ""
 "&apt;'s ability to access multiple package sources leads to a potential "
 "security vulnerability.  Suppose you add an archive of packages published by "
@@ -5510,23 +5479,22 @@ msgid ""
 "the Debian archives and replace the legitimate software with his doctored "
 "version."
 msgstr ""
-"&apt;'s ability to access multiple package sources leads to a potential "
-"security vulnerability.  Suppose you add an archive of packages published by "
-"Joe Random Hacker to your <filename>sources.list</filename> file in order to "
-"install Joe's <systemitem>gargleblast</systemitem> package.  It is possible, "
-"however, that -- unbeknownst to you -- Joe's archive also contains his own "
-"<quote>customized</quote> versions of packages such as <systemitem>libc6</"
-"systemitem> and <systemitem>ssh</systemitem>...versions that steal your "
-"private information or open backdoors on your system! If these packages have "
-"higher version numbers than the legitimate Debian packages, &apt; will "
-"blithely install them on your system during your next upgrade, allowing Joe "
-"to do his dirty work undetected.  Joe could also break into your mirror of "
-"the Debian archives and replace the legitimate software with his doctored "
-"version."
+"&apt; が複数のパッケージ入手先にアクセスできることはセキュリティ脆弱性に繋が"
+"る可能性があります。Joe Random Hacker の <systemitem>gargleblast</"
+"systemitem> パッケージをインストールするために、Joe が公開しているパッケージ"
+"アーカイブをあなたの <filename>sources.list</filename> ファイルに追加すると仮"
+"定しましょう。しかし Joe のアーカイブには、<systemitem>libc6</systemitem> や "
+"<systemitem>ssh</systemitem> などのパッケージの、彼の<quote>カスタム</quote>"
+"バージョンも――あなたに気付かれずに――含まれている可能性があります。……あ"
+"なたの個人情報を盗んだりシステムにバックドアを開けたりするバージョンです! も"
+"しこれらのパッケージのバージョン番号が正規の Debian パッケージのバージョン番"
+"号よりも大きかったら、&apt; は次の更新時に軽率にもこれらをシステムにインス"
+"トールしてしまい、Joe が汚い仕事を気付かれずに行うのを可能にしてしまうでしょ"
+"う。Joe はまた、あなたの Debian アーカイブのミラーに侵入し、含まれている正規"
+"のソフトウェアを彼が細工したバージョンに置き換えてしまうかもしれません。"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3738
-#, fuzzy
 msgid ""
 "Luckily, newer versions of &apt; and &aptitude;, such as the version "
 "documented in this manual, have built-in safeguards to help defeat this type "
@@ -5538,19 +5506,18 @@ msgid ""
 "or if you attempt to upgrade a package that was installed from a Debian "
 "source to a version that came from a non-Debian source."
 msgstr ""
-"Luckily, newer versions of &apt; and &aptitude;, such as the version "
-"documented in this manual, have built-in safeguards to help defeat this type "
-"of attack.  &apt; uses strong security mechanisms based on the popular "
-"<ulink url='http://www.gnupg.org'>GPG</ulink> encryption software to verify "
-"that the packages being distributed from the official Debian mirrors are the "
-"same packages that were uploaded by the Debian developers.  &aptitude; will "
-"then warn you if you attempt to install a package from a non-Debian source, "
-"or if you attempt to upgrade a package that was installed from a Debian "
-"source to a version that came from a non-Debian source."
+"幸いにも、このマニュアルが対象としているような新しいバージョンの &apt; や "
+"&aptitude; には、このような種類の攻撃を打ち負かす手助けとなる内蔵の防御機能が"
+"備わっています。&apt; は、Debian 公式ミラーで配布されているパッケージが "
+"Debian 開発者がアップロードしたパッケージと同一であることを検証するのに、有名"
+"な暗号化ソフトウェア <ulink url='http://www.gnupg.org'>GPG</ulink> に基づいた"
+"強力なセキュリティ機構を使用しています。その結果 &aptitude; は、Debian 以外の"
+"入手先からパッケージをインストールしようとしたり、Debian の入手先からインス"
+"トールしたパッケージを Debian 以外の入手先に由来するバージョンに更新しようと"
+"したりすると、警告を発します。"
 
 # type: Content of: <book><chapter><section><section><warning><para>
 #: en/aptitude.xml:3754
-#, fuzzy
 msgid ""
 "The security mechanisms in &apt; provide a near-perfect guarantee that the "
 "contents of your archive mirror are identical to the contents of the master "
@@ -5558,33 +5525,29 @@ msgid ""
 "many ways that a tampered package could theoretically find its way into the "
 "master Debian archive."
 msgstr ""
-"The security mechanisms in &apt; provide a near-perfect guarantee that the "
-"contents of your archive mirror are identical to the contents of the master "
-"Debian archive.  However, they are not a panacea: for instance, there are "
-"many ways that a tampered package could theoretically find its way into the "
-"master Debian archive."
+"&apt; のセキュリティ機構によって、アーカイブミラーの内容が Debian のマスター"
+"アーカイブの内容と同一であることについては完璧に近い保証が提供されます。しか"
+"しこの機構は万能薬ではありません。例えば、改竄されたパッケージが Debian のマ"
+"スターアーカイブに紛れ込むことは、理論的には多数の方法で可能です。"
 
 # type: Content of: <book><chapter><section><section><warning><para>
 #: en/aptitude.xml:3763
-#, fuzzy
 msgid ""
 "Ensuring that you only install software from a trusted source will give you "
 "an important degree of protection against malicious packages, but it cannot "
 "eliminate all the risks inherent in installing software."
 msgstr ""
-"Ensuring that you only install software from a trusted source will give you "
-"an important degree of protection against malicious packages, but it cannot "
-"eliminate all the risks inherent in installing software."
+"信頼できる入手先のみからソフトウェアをインストールするようにすることは、悪意"
+"のあるパッケージに対する有力な防御になります。しかし、それでも、ソフトウェア"
+"のインストールにつきものの危険性をすべて取り除けるわけではありません。"
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:3771
-#, fuzzy
 msgid "Understanding trust"
-msgstr "Understanding trust"
+msgstr "信頼性とは"
 
 # type: Content of: <book><chapter><section><section><section><para><footnote>
 #: en/aptitude.xml:3774
-#, fuzzy
 msgid ""
 "&apt; allows the administrator of an archive to provide a "
 "<firstterm>signature</firstterm> of the archive's index.  This signature, "
@@ -5593,40 +5556,36 @@ msgid ""
 "intended to place in the archive: ie, that the contents of the archive have "
 "not been tampered with since it was created.<footnote>"
 msgstr ""
-"&apt; allows the administrator of an archive to provide a "
-"<firstterm>signature</firstterm> of the archive's index.  This signature, "
-"which (for all practical purposes) cannot be forged, indicates that the "
-"package files listed in the index are the same files that the administrator "
-"intended to place in the archive: ie, that the contents of the archive have "
-"not been tampered with since it was created.<footnote>"
+"&apt; では、アーカイブの管理者がアーカイブのインデックスの<firstterm>署名</"
+"firstterm>を提供することが可能です。この署名は (事実上) 偽造できず、インデッ"
+"クスに載っているパッケージファイルが管理者がアーカイブに置こうとしたファイル"
+"と同一であること、つまりアーカイブの内容が作成されてから改竄されていないこと"
+"を意味します<footnote>"
 
 # type: Content of: <book><chapter><section><section><section><para><footnote><para>
 #: en/aptitude.xml:3781
-#, fuzzy
 msgid ""
 "As noted above, it does <emphasis>not</emphasis> indicate that the packages "
 "in the archive are secure, or even non-malicious; it merely shows that they "
 "are genuine."
 msgstr ""
-"As noted above, it does <emphasis>not</emphasis> indicate that the packages "
-"in the archive are secure, or even non-malicious; it merely shows that they "
-"are genuine."
+"上述のとおり、これは、アーカイブ内のパッケージがセキュアであるという意味では"
+"<emphasis>なく</emphasis>、ましてや悪意がないという意味でも<emphasis>ありませ"
+"ん</emphasis>。単にパッケージが本物だということを示すにすぎません。"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3784
-#, fuzzy
 msgid ""
 "</footnote> The signature can be validated by checking that it corresponds "
 "to the administrator's <firstterm>public key</firstterm>.  The public key of "
 "the Debian archive is distributed with &apt;, typically on your Debian CD."
 msgstr ""
-"</footnote> The signature can be validated by checking that it corresponds "
-"to the administrator's <firstterm>public key</firstterm>.  The public key of "
-"the Debian archive is distributed with &apt;, typically on your Debian CD."
+"</footnote>。署名は、管理者の<firstterm>公開鍵</firstterm>と一致するか調べる"
+"ことで検証できます。Debian アーカイブの公開鍵は &apt; とともに、通常 Debian "
+"CD に含めて配布されています。"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3792
-#, fuzzy
 msgid ""
 "When &aptitude; downloads an archive index, it will check whether the index "
 "is properly signed.  If it is unsigned, &aptitude; will not trust package "
@@ -5635,16 +5594,15 @@ msgid ""
 "warning will be printed and &aptitude; will refuse to trust packages from "
 "that archive."
 msgstr ""
-"When &aptitude; downloads an archive index, it will check whether the index "
-"is properly signed.  If it is unsigned, &aptitude; will not trust package "
-"files from that archive. (see below for information on what this means) If "
-"it has a signature but the signature is incorrect or cannot be verified, a "
-"warning will be printed and &aptitude; will refuse to trust packages from "
-"that archive."
+"&aptitude; は、アーカイブのインデックスをダウンロードする際に、インデックスが"
+"適切に署名されているか調べます。署名がなされていない場合、&aptitude; はその"
+"アーカイブから入手するパッケージファイルを信頼しません (その意味については、"
+"以下の情報を参照してください)。インデックスに署名があってもそれが間違っている"
+"か検証できない場合は、&aptitude; は警告を表示し、そのアーカイブから入手する"
+"パッケージを信頼することを拒否します。"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3803
-#, fuzzy
 msgid ""
 "Later, when you perform an <link linkend='secInstallRun'>install run</link>, "
 "&aptitude; will check whether the packages are from trusted sources.  If an "
@@ -5652,11 +5610,11 @@ msgid ""
 "trusted to an untrusted version, a warning will be displayed and you will "
 "have the opportunity to abort the download:"
 msgstr ""
-"Later, when you perform an <link linkend='secInstallRun'>install run</link>, "
-"&aptitude; will check whether the packages are from trusted sources.  If an "
-"untrusted package is being installed, or a package is being upgraded from a "
-"trusted to an untrusted version, a warning will be displayed and you will "
-"have the opportunity to abort the download:"
+"後で<link linkend='secInstallRun'>インストールの実行</link>を行うときに、"
+"&aptitude; はパッケージが信頼できる入手先からのものか調べます。信頼されていな"
+"いパッケージをインストールしようとしている場合、またはパッケージを信頼されて"
+"いるバージョンから信頼されていないバージョンに更新しようとしている場合は、警"
+"告が表示され、ダウンロードを中断する機会が与えられます。"
 
 # type: Content of: <book><chapter><section><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:3819
@@ -5714,13 +5672,11 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:3849
-#, fuzzy
 msgid "Trusting additional keys"
-msgstr "Trusting additional keys"
+msgstr "追加の鍵を信頼させる"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3852
-#, fuzzy
 msgid ""
 "You might find it useful to allow &apt; to trust additional archives, "
 "besides the main Debian archive.  For each archive that you want to trust, "
@@ -5731,18 +5687,17 @@ msgid ""
 "keys are and how to get them, see the <ulink url='http://www.gnupg.org'>GPG "
 "web page</ulink>."
 msgstr ""
-"You might find it useful to allow &apt; to trust additional archives, "
-"besides the main Debian archive.  For each archive that you want to trust, "
-"you will have to acquire the public key that is used to sign the archive's "
-"package index.  This is typically a text file whose name ends in <filename>."
-"asc</filename>; it might be provided by the site administrator or "
-"downloadable from a public keyserver.  For more information on what public "
-"keys are and how to get them, see the <ulink url='http://www.gnupg.org'>GPG "
-"web page</ulink>."
+"Debian のメインアーカイブに加えて追加のアーカイブを &apt; が信頼するようにで"
+"きると便利だと感じるでしょう。追加のアーカイブを &apt; に信頼させるには、信頼"
+"させたい各アーカイブのパッケージインデックスの署名に使用する公開鍵を取得しな"
+"ければなりません。公開鍵は通常、名前が <filename>.asc</filename> で終わるテキ"
+"ストファイルで、おそらくサイトの管理者によって配布されているか、公開鍵サーバ"
+"からダウンロード可能です。公開鍵の意味や取得方法についてさらに詳しく知りたい"
+"場合は、<ulink url='http://www.gnupg.org'>GPG のウェブページ</ulink>を参照し"
+"てください。"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3865
-#, fuzzy
 msgid ""
 "The list of keys that apt will trust is stored in the <firstterm>keyring "
 "file</firstterm> <filename>/etc/apt/trusted.gpg</filename>.  Once you have "
@@ -5752,17 +5707,16 @@ msgid ""
 "any archive that is signed with the key contained in <filename>newkey.asc</"
 "filename>."
 msgstr ""
-"The list of keys that apt will trust is stored in the <firstterm>keyring "
-"file</firstterm> <filename>/etc/apt/trusted.gpg</filename>.  Once you have "
-"the GPG key, you can add it to this file by executing the command "
-"<command>gpg --no-default-keyring --keyring /etc/apt/trusted.gpg --import "
-"<replaceable>newkey.asc</replaceable></command>.  &aptitude; will then trust "
-"any archive that is signed with the key contained in <filename>newkey.asc</"
-"filename>."
+"apt が信頼する鍵の一覧は<firstterm>鍵輪ファイル</firstterm> "
+"<filename>/etc/apt/trusted.gpg</filename> に格納されています。GPG 鍵を取得し"
+"たら、コマンド <command>gpg --no-default-keyring --keyring "
+"/etc/apt/trusted.gpg --import <replaceable>newkey.asc</replaceable></"
+"command> を実行すると鍵をこの鍵輪ファイルに追加できます。すると &aptitude; "
+"は、<filename>newkey.asc</filename> に含まれている鍵で署名されているあらゆる"
+"アーカイブを信頼するようになります。"
 
 # type: Content of: <book><chapter><section><section><section><warning><para>
 #: en/aptitude.xml:3878
-#, fuzzy
 msgid ""
 "Once an archive's key has been added to the APT keyring, it will be trusted "
 "just as much as the main Debian mirrors themselves! You should only do this "
@@ -5770,11 +5724,10 @@ msgid ""
 "<emphasis>and</emphasis> that the person who holds the key is trustworthy "
 "and competent."
 msgstr ""
-"Once an archive's key has been added to the APT keyring, it will be trusted "
-"just as much as the main Debian mirrors themselves! You should only do this "
-"if you are very confident that the key you are adding is correct "
-"<emphasis>and</emphasis> that the person who holds the key is trustworthy "
-"and competent."
+"APT の鍵輪に追加されると、アーカイブの鍵は Debian のメインミラー自体と完全に"
+"同様に信頼されます! 鍵輪への追加は、追加しようとしている鍵が正しく、"
+"<emphasis>かつ</emphasis>鍵を所持する個人が信頼に値する有能な人物であるときち"
+"んと確信している場合にのみ行うべきです。"
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:3890
@@ -5878,8 +5831,8 @@ msgstr ""
 "&aptitude; でパッケージの検索や表示制限の設定を行うとき、入力された文字列は"
 "<quote>検索パターン</quote>として取り扱われます。検索パターンの最も基本的な使"
 "用方法は名前を用いたパッケージのマッチですが、&aptitude; では、それより遥かに"
-"複雑な検索を行うことが可能です。仮想インタフェースだけでなく、コマンドライン"
-"からの操作の一部でも検索条件を使用できます。詳しくは<xref "
+"複雑な検索を行うことが可能です。ビジュアルインタフェースだけでなく、コマンド"
+"ラインからの操作の一部でも検索条件を使用できます。詳しくは<xref "
 "linkend='secReference'/>を参照してください。"
 
 # type: Content of: <book><chapter><section><para>
@@ -9543,7 +9496,7 @@ msgstr "スクリーン最下部のステータスラインのスタイル。"
 # type: Content of: <book><chapter><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:7292
 msgid "The basic color of all visual lists and trees."
-msgstr "すべての仮想的なリストおよびツリーの基本色。"
+msgstr "すべての視覚的なリストおよびツリーの基本色。"
 
 # type: Content of: <book><chapter><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:7300
