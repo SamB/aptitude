@@ -103,7 +103,7 @@
 # Search                  検索
 # Search backwards        後方を検索
 # Quit                    終了
-# Toggle                  切り替え
+# Toggle                  〜する・しないを切り替え
 # Undo                    取り消し
 # View                    表示・画面
 #
@@ -112,6 +112,7 @@
 #
 # action                  アクション
 # action character        アクション文字
+# dependency resolver     依存関係解決ツール
 # extended description area   拡張説明欄
 # extended state information    拡張状態情報
 # grouping mechanism      分類規則
@@ -125,7 +126,8 @@
 # package information area  パッケージ情報欄
 # package list            パッケージ一覧
 # package view            パッケージ画面
-# resolver                問題解決 / 問題解決ツール
+# problem resolver        問題解決ツール
+# resolver                問題解決 / 解決ツール
 # screen                  スクリーン
 # solution                解決方法
 # sorting mechanism       並び替え規則
@@ -163,7 +165,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-21 04:53+0900\n"
-"PO-Revision-Date: 2006-11-02 02:18+0900\n"
+"PO-Revision-Date: 2006-11-04 15:34+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -931,17 +933,17 @@ msgstr ""
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:684
 msgid "toggle the display of dependency information"
-msgstr "依存関係情報の表示を切り替えます"
+msgstr "依存関係情報を表示する・しないを切り替えます"
 
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:686
 msgid "toggle the display of changes in package sizes"
-msgstr "パッケージサイズ変更の表示を切り替えます"
+msgstr "パッケージサイズ変更を表示する・しないを切り替えます"
 
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:688
 msgid "toggle the display of version numbers"
-msgstr "バージョン番号表示を切り替えます"
+msgstr "バージョン番号を表示する・しないを切り替えます"
 
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:690
@@ -1089,7 +1091,7 @@ msgstr "問題解決ツールの状態を %s に書き込む際にエラーが�
 
 #: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:606
 msgid "Resolver state successfully written!"
-msgstr "問題解決ツールの状態の書き込みに成功しました!"
+msgstr "解決ツールの状態の書き込みに成功しました!"
 
 #: src/cmdline/cmdline_resolver.cc:145
 #, c-format
@@ -1263,7 +1265,7 @@ msgstr "以下のコマンドが利用可能です:"
 
 #: src/cmdline/cmdline_resolver.cc:596
 msgid "File to write resolver state to: "
-msgstr "問題解決ツールの状態を書き込む出力ファイル: "
+msgstr "解決ツールの状態を書き込む出力ファイル: "
 
 #: src/cmdline/cmdline_resolver.cc:611
 msgid "Invalid response; please enter one of the following commands:"
@@ -5059,11 +5061,11 @@ msgstr "%ls を開けません"
 
 #: src/ui.cc:1889
 msgid "Error while dumping resolver state"
-msgstr "問題解決ツールの状態のダンプ中にエラーが生じました"
+msgstr "解決ツールの状態のダンプ中にエラーが生じました"
 
 #: src/ui.cc:1899
 msgid "File to which the resolver state should be dumped:"
-msgstr "問題解決ツールの状態をダンプする出力ファイル:"
+msgstr "解決ツールの状態をダンプする出力ファイル:"
 
 # * Item.
 #: src/ui.cc:1929
@@ -5368,7 +5370,7 @@ msgstr ""
 # * Item.
 #: src/ui.cc:2062
 msgid "Toggle ^Rejected"
-msgstr "拒否を切り替え (^R)"
+msgstr "拒否する・しないを切り替え (^R)"
 
 # * Description of an item.
 #: src/ui.cc:2063
@@ -5378,7 +5380,7 @@ msgstr "現在選択中のアクションを拒否する・しないを切り替
 # * Item.
 #: src/ui.cc:2067
 msgid "Toggle ^Approved"
-msgstr "承認を切り替え (^A)"
+msgstr "承認する・しないを切り替え (^A)"
 
 # * Description of an item.
 #: src/ui.cc:2068

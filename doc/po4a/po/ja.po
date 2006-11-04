@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.4\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-10-02 16:51+0900\n"
-"PO-Revision-Date: 2006-11-02 03:27+0900\n"
+"PO-Revision-Date: 2006-11-04 15:30+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -303,7 +303,7 @@ msgid ""
 "guimenu><guimenuitem>Toggle Rejected</guimenuitem></menuchoice>"
 msgstr ""
 "<menuchoice><shortcut><keycap>r</keycap></shortcut><guimenu>問題解決</"
-"guimenu><guimenuitem>拒否を切り替え</guimenuitem></menuchoice>"
+"guimenu><guimenuitem>拒否する・しないを切り替え</guimenuitem></menuchoice>"
 
 # type: Content of the resolver-approve entity
 #: en/aptitude.xml:45
@@ -312,7 +312,7 @@ msgid ""
 "guimenu><guimenuitem>Toggle Approved</guimenuitem></menuchoice>"
 msgstr ""
 "<menuchoice><shortcut><keycap>a</keycap></shortcut><guimenu>問題解決</"
-"guimenu><guimenuitem>承認を切り替え</guimenuitem></menuchoice>"
+"guimenu><guimenuitem>承認する・しないを切り替え</guimenuitem></menuchoice>"
 
 # type: Content of the resolver-view-target entity
 #: en/aptitude.xml:46
@@ -1733,19 +1733,17 @@ msgstr "パッケージ管理"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:992
-#, fuzzy
 msgid ""
 "Now that you can move about the list of packages, it's time to start using "
 "&aptitude; to install and remove packages.  In this section you will learn "
 "how to flag packages for installation, deletion, and upgrade."
 msgstr ""
-"Now that you can move about the list of packages, it's time to start using "
-"&aptitude; to install and remove packages.  In this section you will learn "
-"how to flag packages for installation, deletion, and upgrade."
+"パッケージ一覧の中を動き回れるようになったら、いよいよ &aptitude; を用いて"
+"パッケージのインストールや削除をする時間です。本セクションでは、パッケージに"
+"インストール・削除・更新用のフラグをつける方法を学びます。"
 
 # type: Content of: <book><chapter><section><section><tip><para>
 #: en/aptitude.xml:1000
-#, fuzzy
 msgid ""
 "You can only change your system's setup as the &root; user.  If you want to "
 "experiment with &aptitude;, you can safely run it as any user other than "
@@ -1753,37 +1751,34 @@ msgid ""
 "when you try to do something that only &root; can do, and if you want to "
 "continue, you must type &root;'s password."
 msgstr ""
-"You can only change your system's setup as the &root; user.  If you want to "
-"experiment with &aptitude;, you can safely run it as any user other than "
-"&root; without damaging your system in any way.  &aptitude; will tell you "
-"when you try to do something that only &root; can do, and if you want to "
-"continue, you must type &root;'s password."
+"システムの構成に変更を加えることが可能なのは &root; ユーザだけです。"
+"&aptitude; で実験をしたい場合は、&root; 以外のユーザで &aptitude; を安全に実"
+"行し、どんなかたちであれシステムに損傷を与えることのないようにするとよいで"
+"しょう。&root; のみができることをしようとすると、&aptitude; はそれを通知して"
+"くれます。続行したい場合は &root; のパスワードを入力しなければなりません。"
 
 # type: Content of: <book><chapter><section><section><para><footnote>
 #: en/aptitude.xml:1010
-#, fuzzy
 msgid ""
 "All changes to a package are performed by first highlighting it in the "
 "package list, then pressing a key corresponding to the action which should "
 "be performed.  The basic action keys <footnote>"
 msgstr ""
-"All changes to a package are performed by first highlighting it in the "
-"package list, then pressing a key corresponding to the action which should "
-"be performed.  The basic action keys <footnote>"
+"パッケージへの変更はすべて、まずパッケージ一覧でそのパッケージをハイライトさ"
+"せ、次に実行すべきアクションに相当するキーを押すことで実行できます。基本的な"
+"アクションキー<footnote>"
 
 # type: Content of: <book><chapter><section><section><para><footnote><para>
 #: en/aptitude.xml:1015
-#, fuzzy
 msgid ""
 "You can also change packages using the <guimenu>Package</guimenu> menu; see "
 "<xref linkend='secPackageMenu'/> for details."
 msgstr ""
-"You can also change packages using the <guimenu>Package</guimenu> menu; see "
-"<xref linkend='secPackageMenu'/> for details."
+"<guimenu>パッケージ</guimenu>メニューを用いてパッケージに変更を加えることが可"
+"能です。詳しくは<xref linkend='secPackageMenu'/>を参照してください。"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:1019
-#, fuzzy
 msgid ""
 "</footnote> are <keycap>+</keycap> to install or upgrade a package, <keycap>-"
 "</keycap> to remove a package, and <keycap>=</keycap> to prevent a package "
@@ -1792,16 +1787,14 @@ msgid ""
 "&aptitude; will simply update the package list to show the change that has "
 "been requested."
 msgstr ""
-"</footnote> are <keycap>+</keycap> to install or upgrade a package, <keycap>-"
-"</keycap> to remove a package, and <keycap>=</keycap> to prevent a package "
-"from being automatically upgraded (this is known as <firstterm>holding</"
-"firstterm> the package).  These actions are not performed immediately; "
-"&aptitude; will simply update the package list to show the change that has "
-"been requested."
+"</footnote>は、パッケージのインストールや更新の場合は <keycap>+</keycap>、"
+"パッケージの削除の場合は <keycap>-</keycap>、パッケージを自動的に更新しないよ"
+"うにする (これをパッケージを<firstterm>固定する</firstterm>と言います。) 場合"
+"は <keycap>=</keycap> です。これらのアクションはすぐには実行されません。"
+"&aptitude; は、要求された変更を示すようパッケージ一覧を更新するだけです。"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:1031
-#, fuzzy
 msgid ""
 "For instance, in the screen shot below, the <systemitem>kaffeine</"
 "systemitem> package was selected and <keycap>+</keycap> was pushed.  The "
@@ -1810,12 +1803,11 @@ msgid ""
 "addition, an estimate of the amount of space that the package will use is "
 "displayed."
 msgstr ""
-"For instance, in the screen shot below, the <systemitem>kaffeine</"
-"systemitem> package was selected and <keycap>+</keycap> was pushed.  The "
-"package is now highlighted in green and the letter <quote>i</quote> has "
-"appeared to the left of its name, to indicate that it will be installed; in "
-"addition, an estimate of the amount of space that the package will use is "
-"displayed."
+"例えば次のスクリーンショットは、<systemitem>kaffeine</systemitem> パッケージ"
+"を選択して <keycap>+</keycap> を押したときのものです。<systemitem>kaffeine</"
+"systemitem> パッケージが緑色にハイライトされており、<quote>i</quote> という文"
+"字が名前の左側に現れて、パッケージがインストール予定であると示しています。さ"
+"らに、パッケージが使用する領域の推定量も表示されています。"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:1047
@@ -1856,40 +1848,37 @@ msgstr ""
 "including kdesdk, qt3-designer, and all core KDE -dev packages."
 
 # type: Content of: <book><chapter><section><section><tip><para>
+# <!-- TRANSLATION-FIXME: unforseen → unforeseen -->
 #: en/aptitude.xml:1077
-#, fuzzy
 msgid ""
 "At any time, you can use &undo-undo; to <quote>undo</quote> any change to "
 "one or more packages.  This is very useful if an action has unforseen "
 "consequences and you want to <quote>take it back</quote>."
 msgstr ""
-"At any time, you can use &undo-undo; to <quote>undo</quote> any change to "
-"one or more packages.  This is very useful if an action has unforseen "
-"consequences and you want to <quote>take it back</quote>."
+"いつでも、1 つ以上のパッケージに加えたあらゆる変更を &undo-undo; を用いて"
+"<quote>取り消す</quote>ことが可能です。これは、アクションが予想外の結果をもた"
+"らしてしまい<quote>元に戻し</quote>たくなった場合に有用です。"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:1085
-#, fuzzy
 msgid ""
 "In addition to actions that affect individual packages, another important "
 "action is available: typing <keycap>U</keycap> will attempt to upgrade any "
 "packages that can be upgraded.  You should use this command on a regular "
 "basis to keep your system up-to-date."
 msgstr ""
-"In addition to actions that affect individual packages, another important "
-"action is available: typing <keycap>U</keycap> will attempt to upgrade any "
-"packages that can be upgraded.  You should use this command on a regular "
-"basis to keep your system up-to-date."
+"個々のパッケージに対して行うアクション以外に、もう 1 つ重要なアクションが利用"
+"可能です。<keycap>U</keycap> と入力すると、更新可能なあらゆるパッケージを更新"
+"しようとします。システムを最新状態に保つために、このコマンドを定期的に使用し"
+"てください。"
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:1093
-#, fuzzy
 msgid "Managing Broken Packages"
-msgstr "Managing Broken Packages"
+msgstr "破損パッケージの管理"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1096
-#, fuzzy
 msgid ""
 "Sometimes, changing a package's state will cause dependency relationships to "
 "become unfulfilled; packages with unfulfilled dependencies are said to be "
@@ -1897,11 +1886,11 @@ msgid ""
 "and explain why it occured.  For instance, here is what happens if I attempt "
 "to remove <systemitem>sound-juicer</systemitem>:"
 msgstr ""
-"Sometimes, changing a package's state will cause dependency relationships to "
-"become unfulfilled; packages with unfulfilled dependencies are said to be "
-"<firstterm>broken</firstterm>.  &aptitude; will warn you when this happens, "
-"and explain why it occured.  For instance, here is what happens if I attempt "
-"to remove <systemitem>sound-juicer</systemitem>:"
+"パッケージの状態を変更すると依存関係が満たされなくなることがあります。依存関"
+"係が満たされていないパッケージは<firstterm>破損</firstterm>しているといいま"
+"す。破損パッケージが生じると &aptitude; は警告を発し、その発生原因を説明しま"
+"す。例えば、<systemitem>sound-juicer</systemitem> を削除しようとするとこんな"
+"ことが起こります。"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:1112 en/aptitude.xml:3403
@@ -1959,7 +1948,6 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1141
-#, fuzzy
 msgid ""
 "As you can see, &aptitude; displays three indicators that something has gone "
 "wrong: first, the number of broken packages is displayed in the upper blue "
@@ -1969,17 +1957,15 @@ msgid ""
 "problem.  To quickly find broken packages in the package list, you can press "
 "<keycap>b</keycap> or search for <literal>~b</literal>."
 msgstr ""
-"As you can see, &aptitude; displays three indicators that something has gone "
-"wrong: first, the number of broken packages is displayed in the upper blue "
-"area; second, the lower half of the display changes to describe broken "
-"packages that are related to the currently highlighted package; third, a bar "
-"appears at the bottom of the screen with a suggestion on how to solve the "
-"problem.  To quickly find broken packages in the package list, you can press "
-"<keycap>b</keycap> or search for <literal>~b</literal>."
+"御覧のとおり、&aptitude; は何か問題が起きたことを 3 つの表示で示しています。"
+"まず、破損パッケージの数が上部の青い領域に表示されています。次に、画面の下半"
+"分が、現在ハイライトされているパッケージに関連する破損パッケージの記述に変"
+"わっています。3 番目に、問題を解決する方法に関する提案を含むバーがスクリーン"
+"最下部に現れています。パッケージ一覧から破損パッケージを手早く見つけるには、"
+"<keycap>b</keycap> を押すか、<literal>~b</literal> で検索してください。"
 
 # type: Content of: <book><chapter><section><section><section><note><para>
 #: en/aptitude.xml:1154
-#, fuzzy
 msgid ""
 "The text <literal>[1(1)/...]</literal> indicates the progress of "
 "&aptitude;'s dependency resolver.  The first number is the solution that you "
@@ -1990,26 +1976,24 @@ msgid ""
 "had generated the only possible solution, this indicator would read <literal>"
 "[1/1]</literal>."
 msgstr ""
-"The text <literal>[1(1)/...]</literal> indicates the progress of "
-"&aptitude;'s dependency resolver.  The first number is the solution that you "
-"have currently selected, and the second one is the number of solutions that "
-"&aptitude; has already generated.  The presence of the text "
-"<quote><literal>...</literal></quote> indicates that there may be additional "
-"solutions beyond the ones generated; if &aptitude; knew for certain that it "
-"had generated the only possible solution, this indicator would read <literal>"
-"[1/1]</literal>."
+"<literal>[1(1)/...]</literal> というテキストは、&aptitude; の依存関係解決ツー"
+"ルの進行状況を示しています。最初の数字は現在選択中の解決方法を示し、2 番目の"
+"数字は &aptitude; がこれまでに生成した解決方法の数を示します。"
+"<quote><literal>...</literal></quote>というテキストの存在は、生成された解決方"
+"法の他に追加の解決方法が存在するということを意味します。唯一可能な解決方法を"
+"生成したと &aptitude; が確信している場合は、表示は <literal>[1/1]</literal> "
+"となるでしょう。"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1168
-#, fuzzy
 msgid ""
 "To see more information about how &aptitude; thinks you can solve this "
 "problem, press <keycap>e</keycap>.  A screen similar to the following will "
 "appear:"
 msgstr ""
-"To see more information about how &aptitude; thinks you can solve this "
-"problem, press <keycap>e</keycap>.  A screen similar to the following will "
-"appear:"
+"どうやったらこの問題を解決できるかと &aptitude; が考えているか、さらに詳しく"
+"見るには、<keycap>e</keycap> を押してください。次のようなスクリーンが現れるで"
+"しょう。"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:1180 en/aptitude.xml:3448
@@ -2067,7 +2051,6 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1209
-#, fuzzy
 msgid ""
 "From here, you can see more solutions by pressing <keycap>.</keycap> or "
 "return to solutions that you previously examined by pressing <keycap>,</"
@@ -2076,12 +2059,11 @@ msgid ""
 "the above screen is displayed results in the following solution being "
 "presented:"
 msgstr ""
-"From here, you can see more solutions by pressing <keycap>.</keycap> or "
-"return to solutions that you previously examined by pressing <keycap>,</"
-"keycap>.  To apply the current solution and return to the package list, "
-"press <keycap>!</keycap>.  For instance, pressing <keycap>.</keycap> while "
-"the above screen is displayed results in the following solution being "
-"presented:"
+"この状態から、<keycap>.</keycap> を押すとさらに多くの解決方法を見ることがで"
+"き、<keycap>,</keycap> を押すと前に検討した解決方法に戻ることができます。現在"
+"選択中の解決方法を適用してパッケージ一覧に戻るには、<keycap>!</keycap> を押し"
+"てください。例えば、上のスクリーンの表示中に <keycap>.</keycap> を押すと、次"
+"のような解決方法が提案されます。"
 
 # type: Content of: <book><chapter><section><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:1225
@@ -2138,8 +2120,8 @@ msgstr ""
 "e: Examine  !: Apply  .: Next  ,: Previous"
 
 # type: Content of: <book><chapter><section><section><section><para>
+# <!-- TRANSLATION-FIXME: Mark up sound-juicer!! -->
 #: en/aptitude.xml:1255
-#, fuzzy
 msgid ""
 "In addition to the basic solution navigation commands, you can press "
 "<keycap>r</keycap> to <quote>reject</quote> actions of which you "
@@ -2149,13 +2131,14 @@ msgid ""
 "action, we can tell &aptitude; that it should not cancel the removal of "
 "sound-juicer in this way."
 msgstr ""
-"In addition to the basic solution navigation commands, you can press "
-"<keycap>r</keycap> to <quote>reject</quote> actions of which you "
-"disapprove.  For instance, the first solution will cancel the removal of "
-"<systemitem>sound-juicer</systemitem> -- the very action we were trying to "
-"perform! By pressing <keycap>r</keycap> on the item corresponding to this "
-"action, we can tell &aptitude; that it should not cancel the removal of "
-"sound-juicer in this way."
+"基本的な解決方法操作コマンドによる操作だけでなく、<keycap>r</keycap> を押し"
+"て、同意しないアクションを<quote>拒否</quote>することも可能です。例えば、提案"
+"された最初の解決方法では <systemitem>sound-juicer</systemitem> の削除を取り消"
+"そうとしています ―― <systemitem>sound-juicer</systemitem> の削除は、まさに"
+"私たちが行おうとしていたアクションです! このアクションに対応する項目の上で "
+"<keycap>r</keycap> を押すと、&aptitude; に、このように "
+"<systemitem>sound-juicer</systemitem> の削除を取り消してはいけない、と教える"
+"ことができます。"
 
 # type: Content of: <book><chapter><section><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:1273
@@ -2213,7 +2196,6 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1302
-#, fuzzy
 msgid ""
 "As you can see, the list item corresponding to keeping <systemitem>sound-"
 "juicer</systemitem> at its current version has turned red and been marked "
@@ -2222,16 +2204,16 @@ msgid ""
 "viewed) will not include this action, although solutions that were already "
 "generated and contain this action will be available."
 msgstr ""
-"As you can see, the list item corresponding to keeping <systemitem>sound-"
-"juicer</systemitem> at its current version has turned red and been marked "
-"with an <quote>R</quote>, indicating that it has been rejected.  Solutions "
-"that you generate in the future (that is, any solution that you have not yet "
-"viewed) will not include this action, although solutions that were already "
-"generated and contain this action will be available."
+"御覧のとおり、<systemitem>sound-juicer</systemitem> を現在のバージョンに一時"
+"固定するというアクションに相当するリスト項目が赤色になり<quote>R</quote>とい"
+"う印がつけられて、このアクションが拒否されていることを示すようになりました。"
+"今後生成される解決方法 (すなわち、まだ表示されていないあらゆる解決方法) に"
+"は、このアクションは含まれません。しかし、これまでに生成された、このアクショ"
+"ンを含む解決方法も利用可能です。"
 
 # type: Content of: <book><chapter><section><section><section><note><para>
+# <!-- TRANSLATION-FIXME: Mark up sound-juicer!! -->
 #: en/aptitude.xml:1314
-#, fuzzy
 msgid ""
 "In the above screen image, a description of <systemitem>sound-juicer</"
 "systemitem> is displayed in the middle of the screen; below it, you can see "
@@ -2239,15 +2221,17 @@ msgid ""
 "along with all the ways to resolve this dependency that &aptitude; knows "
 "about."
 msgstr ""
-"In the above screen image, a description of <systemitem>sound-juicer</"
-"systemitem> is displayed in the middle of the screen; below it, you can see "
-"the dependency that caused sound-juicer to be kept at its current version, "
-"along with all the ways to resolve this dependency that &aptitude; knows "
-"about."
+"上のスクリーンショットでは、<systemitem>sound-juicer</systemitem> の説明がス"
+"クリーンの中央に表示されています。御覧のとおり、その下には、"
+"<systemitem>sound-juicer</systemitem> を現在のバージョンに一時固定させる原因"
+"となった依存関係が、&aptitude; が知っているこの依存関係の解決方法すべてととも"
+"に表示されています。"
 
 # type: Content of: <book><chapter><section><section><section><para>
+# <!-- TRANSLATION-FIXME: removing → attempting to remove -->
+# <!-- TRANSLATION-FIXME: Mark up sound-juicer and gstreamer0.8-cdparanoia! -->
+# <!-- TRANSLATION-FIXME: link が働いていない!!! -->
 #: en/aptitude.xml:1324
-#, fuzzy
 msgid ""
 "For instance, if this rejection is imposed immediately after removing "
 "<systemitem>sound-juicer</systemitem>, pressing <keycap>.</keycap> retrieves "
@@ -2255,11 +2239,12 @@ msgid ""
 "linkend='solutionScreenSnapshot2'>solution</link> that cancels the "
 "installation of sound-juicer and downgrades gstreamer0.8-cdparanoia."
 msgstr ""
-"For instance, if this rejection is imposed immediately after removing "
-"<systemitem>sound-juicer</systemitem>, pressing <keycap>.</keycap> retrieves "
-"the following solution, skipping the <link "
-"linkend='solutionScreenSnapshot2'>solution</link> that cancels the "
-"installation of sound-juicer and downgrades gstreamer0.8-cdparanoia."
+"例えば、<systemitem>sound-juicer</systemitem> を削除しようとした直後にこの拒"
+"否を行った場合、<keycap>.</keycap> を押すと、<systemitem>sound-juicer</"
+"systemitem> のインストールを取り消し <systemitem>gstreamer0.8-cdparanoia</"
+"systemitem> をダウングレードするという<link "
+"linkend='solutionScreenSnapshot2'>解決方法</link>を飛ばして次の解決方法が得ら"
+"れます。"
 
 # type: Content of: <book><chapter><section><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:1340
@@ -2317,7 +2302,6 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1369
-#, fuzzy
 msgid ""
 "Rejections are only applied to newly generated solutions: that is, solutions "
 "that are generated when you press <keycap>.</keycap> while viewing the last "
@@ -2327,29 +2311,26 @@ msgid ""
 "solutions containing the action to be generated again, including any "
 "solutions that were previously <quote>skipped</quote>."
 msgstr ""
-"Rejections are only applied to newly generated solutions: that is, solutions "
-"that are generated when you press <keycap>.</keycap> while viewing the last "
-"generated solution.  Previously generated solutions can still contain "
-"rejections.  You can cancel a rejection at any time by once again selecting "
-"the rejected action and pressing <keycap>r</keycap>; this will permit "
-"solutions containing the action to be generated again, including any "
-"solutions that were previously <quote>skipped</quote>."
+"拒否は、新しく生成される解決方法、すなわち最後に生成された解決方法を表示中に "
+"<keycap>.</keycap> を押したときに生成される解決方法のみに適用されます。拒否の"
+"実行前に生成された解決方法には、拒否したアクションが依然として含まれていま"
+"す。拒否はいつでも、拒否したアクションをもう一度選択して <keycap>r</keycap> "
+"を押せば取り消せます。拒否を取り消せば、その前に<quote>飛ばされた</quote>解決"
+"方法など、そのアクションを含む解決方法をもう一度生成できます。"
 
 # type: Content of: <book><chapter><section><section><section><para><footnote>
 #: en/aptitude.xml:1381
-#, fuzzy
 msgid ""
 "The opposite of rejecting an action is approving it.  To approve an action, "
 "just select it and press <keycap>a</keycap>; this forces the problem "
 "resolver to choose the action whenever possible<footnote>"
 msgstr ""
-"The opposite of rejecting an action is approving it.  To approve an action, "
-"just select it and press <keycap>a</keycap>; this forces the problem "
-"resolver to choose the action whenever possible<footnote>"
+"アクションの拒否の逆は承認です。アクションを承認するには、単にそのアクション"
+"を選択して <keycap>a</keycap> を押してください。そうすると問題解決ツールは、"
+"可能なときにはいつでもそのアクションを選択するようになります<footnote>"
 
 # type: Content of: <book><chapter><section><section><section><para><footnote><para>
 #: en/aptitude.xml:1386
-#, fuzzy
 msgid ""
 "Approving an action is slightly different from requiring all solutions to "
 "contain the action; what it means is that given a choice between an approved "
@@ -2357,21 +2338,20 @@ msgid ""
 "action.  If there are several possible approved actions, all of them will be "
 "candidates to be placed into the solution."
 msgstr ""
-"Approving an action is slightly different from requiring all solutions to "
-"contain the action; what it means is that given a choice between an approved "
-"action and a non-approved action, the resolver will always pick the approved "
-"action.  If there are several possible approved actions, all of them will be "
-"candidates to be placed into the solution."
+"アクションの承認は、すべての解決方法にアクションが含まれるように要求すること"
+"とはわずかに異なります。承認とは、承認されたアクションと承認されていないアク"
+"ションの間で選択をしなければならなくなるといつでも、問題解決ツールは承認され"
+"たアクションを選ぶ、ということです。承認された可能なアクションが複数ある場合"
+"は、それらすべてが解決方法に含められる候補となります。"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1394
-#, fuzzy
 msgid ""
 "</footnote>.  Approved actions will turn green and will be marked with "
 "<quote>A</quote>, as in the following screenshot:"
 msgstr ""
-"</footnote>.  Approved actions will turn green and will be marked with "
-"<quote>A</quote>, as in the following screenshot:"
+"</footnote>。承認されたアクションは緑色になり、次のスクリーンショットのように"
+"<quote>A</quote>という印がつきます。"
 
 # type: Content of: <book><chapter><section><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:1406
@@ -2429,7 +2409,6 @@ msgstr ""
 
 # type: Content of: <book><chapter><section><section><section><important><para>
 #: en/aptitude.xml:1436
-#, fuzzy
 msgid ""
 "If you do not resolve any broken dependencies, &aptitude; will automatically "
 "implement its current suggestion when you commit your selections by pressing "
@@ -2438,12 +2417,11 @@ msgid ""
 "better to look at what &aptitude; plans to do <emphasis>before</emphasis> "
 "committing your selections."
 msgstr ""
-"If you do not resolve any broken dependencies, &aptitude; will automatically "
-"implement its current suggestion when you commit your selections by pressing "
-"<keycap>g</keycap>.  However, it is hard to automatically solve dependency "
-"problems, and you may not be happy with the results, so it is generally "
-"better to look at what &aptitude; plans to do <emphasis>before</emphasis> "
-"committing your selections."
+"壊れた依存関係を解決せずに <keycap>g</keycap> を押して選択をコミットすると、"
+"&aptitude; は現在選択中の提案を自動的に実行します。しかし、依存関係の問題を自"
+"動的に解決するのは難しいので、あなたはその結果に満足できない可能性がありま"
+"す。したがって、一般に、選択をコミットする<emphasis>前</emphasis>には "
+"&aptitude; が何を行おうとしているのか確認するとよいでしょう。"
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:1450
@@ -5167,11 +5145,12 @@ msgid ""
 "resolver will never choose that action."
 msgstr ""
 "解決方法の個々のアクションを<firstterm>承認</firstterm>または<firstterm>拒"
-"否</firstterm>して、最終的に承認する解決方法まで問題解決ツールを導くことが可"
-"能です。アクションを<firstterm>承認</firstterm>すると、解決ツールは、可能であ"
-"ればいつでも他の選択肢を無視してそのアクションを選択します (承認されている選"
-"択肢が複数ある場合はそれらを全て選択します)。他方でアクションを<firstterm>拒"
-"否</firstterm>すると、解決ツールは絶対にそのアクションを選択しません。"
+"否</firstterm>して、最終的に承認する解決方法まで依存関係解決ツールを導くこと"
+"が可能です。アクションを<firstterm>承認</firstterm>すると、解決ツールは、可能"
+"であればいつでも他の選択肢を無視してそのアクションを選択します (承認されてい"
+"る選択肢が複数ある場合はそれらを全て選択します)。他方でアクションを"
+"<firstterm>拒否</firstterm>すると、解決ツールは絶対にそのアクションを選択しま"
+"せん。"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3535
