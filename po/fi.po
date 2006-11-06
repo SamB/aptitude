@@ -1,14 +1,14 @@
 # translation of fi.po to Finnish
 # Finnish translation for aptitude
-# Copyright (C) 2001,2002,2004,2005 Jaakko Kangasharju
-# Jaakko Kangasharju <ashar@iki.fi>, 2001, 2002, 2004, 2005.
+# Copyright (C) 2001,2002,2004,2005,2006 Jaakko Kangasharju
+# Jaakko Kangasharju <ashar@iki.fi>, 2001, 2002, 2004, 2005, 2006.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude 0.3.5.1\n"
+"Project-Id-Version: aptitude 0.4.4\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2006-09-03 09:36-0700\n"
-"PO-Revision-Date: 2006-01-29 14:59+0200\n"
+"PO-Revision-Date: 2006-11-05 15:47+0200\n"
 "Last-Translator: Jaakko Kangasharju <ashar@iki.fi>\n"
 "Language-Team: Jaakko Kangasharju <ashar@iki.fi>\n"
 "MIME-Version: 1.0\n"
@@ -123,10 +123,9 @@ msgstr ""
 "Tyhjennä uusien pakettien ryhmä paketteja asennettaessa tai poistettaessa"
 
 #: src/apt_options.cc:171
-#, fuzzy
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
-msgstr "Älä varoita muutoksista, vaikka niiden toteuttaminen ei onnistu."
+msgstr "Älä varoita muutoksista, vaikka niiden toteuttaminen ei onnistu"
 
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -241,9 +240,9 @@ msgstr[1] "%d vanhennusta"
 #. "n1 installs, n2 removals", ...
 #.
 #: src/broken_indicator.cc:362
-#, fuzzy, c-format
+#, c-format
 msgid "Suggest %F"
-msgstr "Ehdotuksena "
+msgstr "Ehdotuksena %F"
 
 #: src/cmdline/cmdline_action.cc:37
 #, c-format
@@ -1192,14 +1191,14 @@ msgid " [held]"
 msgstr " [jäissä]"
 
 #: src/cmdline/cmdline_show.cc:282
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed"
-msgstr "%B%s%b asennetaan."
+msgstr "%s; asennetaan."
 
 #: src/cmdline/cmdline_show.cc:284
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed automatically"
-msgstr "%s; versio %s asennetaan automaattisesti"
+msgstr "%s; asennetaan automaattisesti"
 
 #: src/cmdline/cmdline_show.cc:304
 #, c-format
@@ -1363,12 +1362,12 @@ msgstr "E: Komennolle update ei anneta argumentteja\n"
 #: src/cmdline/cmdline_util.cc:93
 #, c-format
 msgid "No candidate version found for %s\n"
-msgstr "Paketin %s mitään versiota ei löytynyt\n"
+msgstr "Paketista %s ei löytynyt ehdotettavaa versiota\n"
 
 #: src/cmdline/cmdline_util.cc:95
-#, fuzzy, c-format
+#, c-format
 msgid "No current or candidate version found for %s\n"
-msgstr "Paketin %s mitään versiota ei löytynyt\n"
+msgstr "Paketista %s ei löytynyt mitään versiota\n"
 
 #: src/cmdline/cmdline_util.cc:110
 #, c-format
@@ -1492,9 +1491,9 @@ msgid "No hierarchy information to edit"
 msgstr "Muokattavaa hierarkiatietoa ei ole"
 
 #: src/edit_pkg_hier.cc:286
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "En pysty kirjoittamaan tiedostoon"
+msgstr "En pysty kirjoittamaan tiedostoon \"%s\""
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
@@ -2633,9 +2632,8 @@ msgid "You die...  --More--"
 msgstr "Kuoolee...  --Lisää--"
 
 #: src/mine/cmine.cc:478
-#, fuzzy
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
-msgstr "Piikeissä oli myrkkyä!  Myrkky tappaa..  --Lisää--"
+msgstr "Piikeissä oli myrkkyä!  Myrkky tappaa...  --Lisää--"
 
 #: src/mine/cmine.cc:481
 msgid "You land on a set of sharp iron spikes!  --More--"
@@ -3017,7 +3015,6 @@ msgstr ""
 " Base-ryhmän paketit ovat osa alkuperäistä asennusta."
 
 #: src/pkg_grouppolicy.cc:169
-#, fuzzy
 msgid ""
 "Programs for faxmodems and other communication devices\n"
 " Packages in the 'comm' section are used to control modems and other "
@@ -4489,7 +4486,6 @@ msgid "README"
 msgstr "README.fi"
 
 #: src/ui.cc:888
-#, fuzzy
 msgid "Encoding of README|ISO_8859-1"
 msgstr "README-merkistö|ISO-8859-1"
 
@@ -4759,7 +4755,6 @@ msgid "Check for new versions of packages"
 msgstr "Päivitä saatavilla olevien pakettien luettelo"
 
 #: src/ui.cc:1937
-#, fuzzy
 msgid "Mark Up^gradable"
 msgstr "^Merkitse päivitykset"
 
@@ -4777,14 +4772,12 @@ msgid "Forget which packages are \"new\""
 msgstr "Tyhjennä uusien pakettien ryhmä"
 
 #: src/ui.cc:1946
-#, fuzzy
 msgid "Canc^el pending actions"
-msgstr "%s:sta riippuvat paketit"
+msgstr "^Peruuta komennot"
 
 #: src/ui.cc:1947
-#, fuzzy
 msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Suorita kaikki määritetyt asennukset ja poistot"
+msgstr "Peruuta kaikki määritetyt asennukset ja poistot"
 
 #: src/ui.cc:1950
 msgid "^Clean package cache"
@@ -5192,9 +5185,8 @@ msgid "View a list of frequently asked questions"
 msgstr "Näytä usein kysyttyjä kysymyksiä vastauksineen"
 
 #: src/ui.cc:2193
-#, fuzzy
 msgid "^News"
-msgstr "Uusi"
+msgstr "^Uutiset"
 
 #: src/ui.cc:2194
 msgid "View the important changes made in each version of "
@@ -5341,6 +5333,9 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "YLIN TASO"
+
+#~ msgid "Failed to fetch %s: %s"
+#~ msgstr "%s:n nouto epäonnistui: %s"
 
 #~ msgid "^NEWS"
 #~ msgstr "UUTISET"
