@@ -143,7 +143,6 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
 
   pthread_sigmask(SIG_UNBLOCK, &allsignals, &oldsignals);
   pkgPackageManager::OrderResult pmres = pm->DoInstall(aptcfg->FindI("APT::Status-Fd", -1));
-  pthread_sigmask(SIG_SETMASK, &oldsignals, NULL);
 
   switch(pmres)
     {
@@ -163,6 +162,7 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
       break;
     }
 
+  pthread_sigmask(SIG_SETMASK, &oldsignals, NULL);
   post_install_hook(pmres);
 
   fetcher->Shutdown();
