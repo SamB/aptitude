@@ -895,13 +895,13 @@ void pkg_grouppolicy_task::init_section_descriptions()
   if(already_done)
     return;
 
-  task_section_descriptions.push_back(pair<string,wstring>("user", transcode(dgettext("tasksel", "End-user"))));
-  task_section_descriptions.push_back(pair<string,wstring>("server", transcode(dgettext("tasksel", "Servers"))));
-  task_section_descriptions.push_back(pair<string,wstring>("devel", transcode(dgettext("tasksel", "Development"))));
-  task_section_descriptions.push_back(pair<string,wstring>("l10n", transcode(dgettext("tasksel", "Localization"))));
-  task_section_descriptions.push_back(pair<string,wstring>("hware", transcode(dgettext("tasksel", "Hardware Support"))));
-  task_section_descriptions.push_back(pair<string,wstring>("misc", transcode(dgettext("tasksel", "Miscellaneous"))));
-  task_section_descriptions.push_back(pair<string,wstring>("unknown", transcode(dgettext("tasksel", "Unrecognized tasks"))));
+  task_section_descriptions.push_back(pair<string,wstring>("user", transcode(_("End-user"))));
+  task_section_descriptions.push_back(pair<string,wstring>("server", transcode(_("Servers"))));
+  task_section_descriptions.push_back(pair<string,wstring>("devel", transcode(_("Development"))));
+  task_section_descriptions.push_back(pair<string,wstring>("l10n", transcode(_("Localization"))));
+  task_section_descriptions.push_back(pair<string,wstring>("hware", transcode(_("Hardware Support"))));
+  task_section_descriptions.push_back(pair<string,wstring>("misc", transcode(_("Miscellaneous"))));
+  task_section_descriptions.push_back(pair<string,wstring>("unknown", transcode(_("Unrecognized tasks"))));
 }
 
 /** Uses the fact that 0<=Relevance<=10 to encode Relevance as a character. */
