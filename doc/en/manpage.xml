@@ -763,10 +763,12 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 	  <para>
 	    Do <emphasis>not</emphasis> treat recommendations as
 	    dependencies when installing new packages (this overrides settings in <filename>/etc/apt/apt.conf</filename> and <filename>~/.aptitude/config</filename>).
+	    Packages previously installed due to recommendations
+	    will not be removed.
 	  </para>
 
 	  <para>
-	    This corresponds to the configuration option <literal><link linkend='configRecommends-Important'>Aptitude::Recommends-Important</link></literal>
+	    This corresponds to the pair of configuration options <literal><link linkend='configRecommends-Important'>Aptitude::Recommends-Important</link></literal> and <literal><link linkend='comfigKeep-Recommends'>Aptitude::Keep-Recommends</link></literal>.
 	  </para>
 	</listitem>
       </varlistentry>
