@@ -13,10 +13,22 @@ screens.  Other keys are available; consult the README for a list of these.
 
   Up or "k":    Move the selection up.
   Down or "j":  Move the selection down.
+  Page-Up or
+  Control-b:    Move the selection up by a screenful of packages.
+  Page-Down or
+  Control-f:    Move the selection down by a screenful of packages.
+  Home or
+  Control-a:    Move the selection to the first package in the list.
+  End or
+  Control-e:    Move the selection to the last package in the list.
   "^":          Move the selection to the parent of the current item.
   Enter:        Expand or collapse a group of packages.
   "[":          Expand a group of packages and all its subgroups.
   "]":          Collapse a group of packages and all its subgroups.
+
+  Control-t:    Activate or deactivate the menu.
+  "F6":         Move to the next tab of the main display.
+  "F7":         Move to the previous tab of the main display.
 
   Enter:        View information about a package.
   "C":          View a package's changelog.
@@ -54,6 +66,19 @@ screens.  Other keys are available; consult the README for a list of these.
   "a":		Scroll the package information area up.
   "z":		Scroll the package information area down.
   "i":          Cycle through the package information views.
+
+  ",":          View the previous dependency solution.
+  ".":          View the next dependency solution, generating a new solution
+		if necessary.
+  "<":          View the first dependency solution.
+  ">":          View the last dependency solution.
+
+    In the interactive resolver:
+  "a":          Approve an action, causing it to always be chosen over
+		alternatives, or cancel an approval.
+  "r":          Reject an action, causing it to never be chosen, or
+		cancel a rejection.
+
 
   The "state" flag displayed for a package has the following possible values:
 
