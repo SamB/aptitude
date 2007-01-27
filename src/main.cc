@@ -153,15 +153,15 @@ static void usage()
   printf(_(" -f             Aggressively try to fix broken packages.\n"));
   printf(_(" -V             Show which versions of packages are to be installed.\n"));
   printf(_(" -D             Show the dependencies of automatically changed packages.\n"));
-  printf(_(" -Z		    Show the change in installed size of each package.\n"));
+  printf(_(" -Z             Show the change in installed size of each package.\n"));
   printf(_(" -v             Display extra information. (may be supplied multiple times)\n"));
   printf(_(" -t [release]   Set the release from which packages should be installed\n"));
   printf(_(" -q             In command-line mode, suppress the incremental progress indicators.\n"));
   printf(_(" -o key=val     Directly set the configuration option named 'key'\n"));
   printf(_(" --with(out)-recommends	Specify whether or not to treat recommends as\n                strong dependencies\n"));
-  printf(_(" -S fname: Read the aptitude extended status info from fname.\n"));
-  printf(_(" -u      : Download new package lists on startup.\n"));
-  printf(_(" -i      : Perform an install run on startup.\n"));
+  printf(_(" -S fname       Read the aptitude extended status info from fname.\n"));
+  printf(_(" -u             Download new package lists on startup.\n"));
+  printf(_(" -i             Perform an install run on startup.\n"));
   printf("\n");
   printf(_("                  This aptitude does not have Super Cow Powers.\n"));
 }
