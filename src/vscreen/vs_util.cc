@@ -323,6 +323,8 @@ vs_widget_ref vs_dialog_string(const vs_widget_ref &msg,
   vs_frame_ref f = vs_frame::create(t);
   vs_center_ref c = vs_center::create(f);
 
+  e->set_clear_on_first_edit(true);
+
   f->set_bg_style(st);
 
   t->add_widget(msg, 0, 0, 1, 2);
