@@ -1,6 +1,6 @@
 // ui.cc
 //
-//   Copyright 2000-2006 Daniel Burrows <dburrows@debian.org>
+//   Copyright 2000-2007 Daniel Burrows <dburrows@debian.org>
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -2677,6 +2677,7 @@ void prompt_string(const std::wstring &prompt,
   if(aptcfg->FindB(PACKAGE "::UI::Minibuf-Prompts"))
     {
       vs_editline_ref e=vs_editline::create(prompt, text, history);
+      e->set_clear_on_first_edit(true);
       if(slot)
 	e->entered.connect(*slot);
 
