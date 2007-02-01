@@ -37,6 +37,15 @@ private:
   // problems)
   bool using_history;
 
+  /** \brief If \b true and the first user input is a character
+   *  insertion, the edit buffer will be cleared.
+   *
+   *  This is initially \b false.  It may be set to \b true by
+   *  set_clear_on_first_edit, and is set back to \b false after the
+   *  first keypress or mouse click.
+   */
+  bool clear_on_first_edit;
+
   void normalize_cursor();
 
   /** \return the nth char of the visual representation (from either
@@ -97,6 +106,21 @@ public:
     ref_ptr<vs_editline> rval(new vs_editline(maxlength, prompt, text, history));
     rval->decref();
     return rval;
+  }
+
+  /** \return \b true if the contents of this edit-line will be erased
+   *  if the first character pressed is an edit (i.e., not an arrow
+   *  key).
+   */
+  bool get_clear_on_first_edit() const { return clear_on_first_edit; }
+  /** Change whether the contents of this edit-line widget will be
+   *  erased if the first character pressed is an edit.
+   *
+   *  This is initially \b false.
+   */
+  void set_clear_on_first_edit(bool value)
+  {
+    clear_on_first_edit = value;
   }
 
   bool focus_me();

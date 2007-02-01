@@ -19,7 +19,7 @@ vs_editline::vs_editline(const string &_prompt, const string &_text,
 			 history_list *_history)
   :vscreen_widget(), curloc(_text.size()),
    startloc(0), desired_size(-1), history(_history),
-   history_loc(0), using_history(false)
+   history_loc(0), using_history(false), clear_on_first_edit(false)
 {
   // Just spew a partial/null string if errors happen for now.
   transcode(_prompt.c_str(), prompt);
@@ -36,7 +36,7 @@ vs_editline::vs_editline(const wstring &_prompt, const wstring &_text,
 			 history_list *_history)
   :vscreen_widget(), prompt(_prompt), text(_text), curloc(_text.size()),
    startloc(0), desired_size(-1), history(_history),
-   history_loc(0), using_history(false)
+   history_loc(0), using_history(false), clear_on_first_edit(false)
 {
   set_bg_style(get_style("EditLine"));
 
@@ -49,7 +49,7 @@ vs_editline::vs_editline(int maxlength, const string &_prompt,
 			 const string &_text, history_list *_history)
   :vscreen_widget(), curloc(0),
    startloc(0), desired_size(maxlength), history(_history), history_loc(0),
-   using_history(false)
+   using_history(false), clear_on_first_edit(false)
 {
   // As above, ignore errors.
   transcode(_prompt, prompt);
@@ -63,7 +63,7 @@ vs_editline::vs_editline(int maxlength, const wstring &_prompt,
 			 const wstring &_text, history_list *_history)
   :vscreen_widget(), prompt(_prompt), text(_text), curloc(0),
    startloc(0), desired_size(maxlength), history(_history), history_loc(0),
-   using_history(false)
+   using_history(false), clear_on_first_edit(false)
 {
   set_bg_style(get_style("EditLine"));
   do_layout.connect(sigc::mem_fun(*this, &vs_editline::normalize_cursor));
@@ -180,6 +180,9 @@ bool vs_editline::focus_me()
 bool vs_editline::handle_key(const key &k)
 {
   vs_widget_ref tmpref(this);
+
+  bool clear_on_this_edit = clear_on_first_edit;
+  clear_on_first_edit = false;
 
   if(bindings->key_matches(k, "DelBack"))
     {
@@ -350,6 +353,9 @@ bool vs_editline::handle_key(const key &k)
     return false;
   else
     {
+      if(clear_on_this_edit)
+	text.clear();
+
       text.insert(curloc++, 1, k.ch);
       normalize_cursor();
       text_changed(wstring(text));
@@ -386,6 +392,9 @@ void vs_editline::dispatch_mouse(short id, int x, int y, int z, mmask_t bstate)
   vs_widget_ref tmpref(this);
 
   size_t mouseloc=startloc; // The character at which the mouse press occured
+
+  clear_on_first_edit = false;
+
   while(mouseloc<prompt.size()+text.size() && x>0)
     {
       int curwidth=wcwidth(get_char(mouseloc));
