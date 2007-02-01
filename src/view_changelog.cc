@@ -1,6 +1,6 @@
 // view_changelog.cc
 //
-//   Copyright (C) 2004-2005 Daniel Burrows
+//   Copyright (C) 2004-2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -53,7 +53,7 @@ class pkg_changelog_screen : public vs_file_pager, public menu_redirect
     last_search_forwards = true;
 
     prompt_string(transcode(_("Search for: ")),
-		  L"",
+		  get_last_search(),
 		  arg(sigc::mem_fun(*this, &vs_pager::search_for)),
 		  NULL,
 		  NULL,
@@ -65,7 +65,7 @@ class pkg_changelog_screen : public vs_file_pager, public menu_redirect
     last_search_forwards = false;
 
     prompt_string(transcode(_("Search backwards for: ")),
-		  L"",
+		  get_last_search(),
 		  arg(sigc::mem_fun(*this, &vs_pager::search_back_for)),
 		  NULL,
 		  NULL,

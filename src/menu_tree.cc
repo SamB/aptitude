@@ -1,6 +1,6 @@
 // menu_tree.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -201,8 +201,8 @@ bool menu_tree::find_search_enabled()
 
 bool menu_tree::find_search()
 {
-  prompt_string(_("Search for: "),
-		"",
+  prompt_string(transcode(_("Search for: ")),
+		last_search_term,
 		arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_search), false)),
 		arg(sigc::mem_fun(*this, &menu_tree::do_cancel_incsearch)),
 		arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_incsearch), false)),
@@ -218,8 +218,8 @@ bool menu_tree::find_search_back_enabled()
 
 bool menu_tree::find_search_back()
 {
-  prompt_string(_("Search backwards for: "),
-		"",
+  prompt_string(transcode(_("Search backwards for: ")),
+		last_search_term,
 		arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_search), true)),
 		arg(sigc::mem_fun(*this, &menu_tree::do_cancel_incsearch)),
 		arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_incsearch), true)),
