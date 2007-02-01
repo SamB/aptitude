@@ -80,13 +80,13 @@ sigc::signal0<void> consume_errors;
 
 static void reset_interesting_dep_memoization()
 {
-  delete cached_deps_interesting;
+  delete[] cached_deps_interesting;
   cached_deps_interesting = NULL;
 }
 
 static void reset_surrounding_or_memoization()
 {
-  delete cached_surrounding_or;
+  delete[] cached_surrounding_or;
   cached_surrounding_or = NULL;
 }
 
