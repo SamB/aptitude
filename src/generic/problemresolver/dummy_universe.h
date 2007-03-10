@@ -1,6 +1,6 @@
 // dummy_universe.h                               -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -744,6 +744,8 @@ public:
 template<class T>
 class generic_problem_resolver;
 typedef generic_problem_resolver<dummy_universe_ref> dummy_resolver;
+
+std::ostream &operator<<(std::ostream &out, const dummy_universe::version &v);
 
 std::ostream &operator<<(std::ostream &out, const dummy_universe::dep &d);
 
