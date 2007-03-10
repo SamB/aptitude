@@ -1,6 +1,6 @@
 // problemresolver.h                  -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -57,6 +57,101 @@
 
 #include <generic/util/dense_setset.h>
 #include <generic/util/threads.h>
+
+template<typename Obj1, typename Obj2, typename Uni>
+inline void eassert_fail_on_2objs_soln(const std::string &file,
+				       size_t line,
+				       const std::string &func,
+				       const std::string &exp,
+				       const Obj1 &obj1,
+				       const char *obj1name,
+				       const Obj2 &obj2,
+				       const char *obj2name,
+				       const generic_solution<Uni> &soln)
+{
+  std::ostringstream out;
+  out << "In the context ";
+  soln.dump(out, true);
+  out << " with " << obj1name << "=" << obj1;
+  out << " and " << obj2name << "=" << obj2;
+  throw AssertionFailure(file, line, func, exp, out.str());
+}
+
+template<typename Obj1, typename Obj2>
+inline void eassert_fail_on_2objs(const std::string &file,
+				  size_t line,
+				  const std::string &func,
+				  const std::string &exp,
+				  const Obj1 &obj1,
+				  const char *obj1name,
+				  const Obj2 &obj2,
+				  const char *obj2name)
+{
+  std::ostringstream out;
+  out << "With " << obj1name << "=" << obj1;
+  out << " and " << obj2name << "=" << obj2;
+  throw AssertionFailure(file, line, func, exp, out.str());
+}
+
+template<typename Obj, typename Uni>
+inline void eassert_fail_on_soln_obj(const std::string &file,
+				     size_t line,
+				     const std::string &func,
+				     const std::string &exp,
+				     const generic_solution<Uni> &soln,
+				     const char *objtype,
+				     const char *objname,
+				     const Obj &o)
+{
+  std::ostringstream out;
+  out << "In context ";
+  soln.dump(out, true);
+  out << " on " << objtype << " " << objname << "=";
+  out << o;
+  throw AssertionFailure(file, line, func, exp, out.str());
+}
+
+template<typename Uni>
+inline void eassert_fail_on_soln(const std::string &file,
+				 size_t line,
+				 const std::string &func,
+				 const std::string &exp,
+				 const generic_solution<Uni> &soln)
+{
+  std::ostringstream out;
+  out << "In context ";
+  soln.dump(out, true);
+  throw AssertionFailure(file, line, func, exp, out.str());
+}
+
+#define eassert_on_2objs_soln(invariant, obj1, obj2, soln) \
+  do { if(!(invariant)) \
+         eassert_fail_on_2objs_soln(__FILE__, __LINE__, __PRETTY_FUNCTION__, #invariant, obj1, #obj1, obj2, #obj2, soln); \
+     } while(0)
+
+#define eassert_on_2objs(invariant, obj1, obj2) \
+  do { if(!(invariant)) \
+         eassert_fail_on_2objs(__FILE__, __LINE__, __PRETTY_FUNCTION__, #invariant, obj1, #obj1, obj2, #obj2); \
+     } while(0)
+
+#define eassert_on_obj(invariant, soln, objtype, obj) \
+  do { if(!(invariant)) \
+         eassert_fail_on_soln_obj(__FILE__, __LINE__, __PRETTY_FUNCTION__, #invariant, soln, objtype, #obj, obj); \
+     } while(0)
+
+#define eassert_on_dep(invariant, soln, dep) \
+  eassert_on_obj(invariant, soln, "dependency", dep)
+
+#define eassert_on_pkg(invariant, soln, pkg) \
+  eassert_on_obj(invariant, soln, "package", pkg)
+
+#define eassert_on_ver(invariant, soln, ver) \
+  eassert_on_obj(invariant, soln, "version", ver)
+
+#define eassert_on_soln(invariant, soln) \
+  do { if(!(invariant)) \
+         eassert_fail_on_soln(__FILE__, __LINE__, __PRETTY_FUNCTION__, #invariant, soln); \
+     } while(0)
 
 /** A dummy iterator that's always an "end" iterator. */
 template<class V>
@@ -1025,7 +1120,7 @@ private:
 
     void install(const package &p, const version &v)
     {
-      eassert(installations.find(p) == installations.end());
+      eassert_on_pkg(installations.find(p) == installations.end(), p);
 
       installations[p]=v;
     }
@@ -1284,9 +1379,9 @@ private:
 
 	// I have a proof that a solver should exist, but that doesn't
 	// mean it does ;-)
-	eassert(found_one);
-	eassert(output_actions.find(solver.get_package()) == output_actions.end());
-	eassert(solver != solver.get_package().current_version());
+	eassert_on_dep(found_one, d);
+	eassert_on_ver(output_actions.find(solver.get_package()) == output_actions.end(), solver);
+	eassert_on_ver(solver != solver.get_package().current_version(), solver);
 
 	if(debug)
 	  std::cout << "Filter: resolving " << d << " with "
@@ -1335,7 +1430,7 @@ private:
    */
   solution eliminate_stupid(const solution &s)
   {
-    eassert(s.get_broken().empty());
+    eassert_on_soln(s.get_broken().empty(), s);
 
     stupid_table stupid_pairs;
 
@@ -1764,7 +1859,7 @@ private:
       }
     else
       {
-	eassert(v != cur);
+	eassert_on_ver(v != cur, s, v);
 
 	typename imm::map<version, dep>::node found
 	  = s.get_forbidden_versions().lookup(v);
@@ -1808,11 +1903,11 @@ private:
 
 	action a2 = act;
 
-	eassert(found_act.ver == act.ver);
+	eassert_on_2objs(found_act.ver == act.ver, found_act.ver, act.ver);
 	if(a2.from_dep_source)
 	  {
 	    if(found_act.from_dep_source)
-	      eassert(a2.d == found_act.d);
+	      eassert_on_2objs(a2.d == found_act.d, a2.d, found_act.d);
 
 	    else
 	      a2.from_dep_source = false;
@@ -1960,7 +2055,10 @@ private:
 		if(ci->first != v.get_package())
 		  insert_conflictor(conflict, ci->second);
 		else
-		  eassert(ci->second.ver == v);
+		  eassert_on_2objs_soln(ci->second.ver == v,
+					ci->second.ver,
+					v,
+					s);
 	      }
 	  }
       }
@@ -1991,7 +2089,10 @@ private:
       insert_conflictor(conflict, action(source, d, false, -1));
     else
       {
-	eassert(source == source.get_package().current_version());
+	eassert_on_2objs_soln(source == source.get_package().current_version(),
+			      source,
+			      source.get_package().current_version(),
+			      s);
 
 	for(typename package::version_iterator vi = source.get_package().versions_begin();
 	    !vi.end(); ++vi)
@@ -2020,7 +2121,7 @@ private:
     // forcings are performed ASAP.
     solution curr = s;
 
-    eassert(!s.get_broken().empty());
+    eassert_on_soln(!s.get_broken().empty(), s);
 
     // Set to \b true if this search node is untenable.
     bool dead_end = false;
@@ -2117,7 +2218,7 @@ private:
 		generate_successors(curr, *bi, conflict,
 				    real_generator(v));
 
-		eassert(v.size() == 1);
+		eassert_on_dep(v.size() == 1, s, *bi);
 
 		curr = v.back();
 		done = false;
@@ -2211,9 +2312,10 @@ public:
       {
 	dep bd(*bi);
 
-	eassert(bd.broken_under(solution::root_node(initial_broken,
+	solution empty_solution(solution::root_node(initial_broken,
 						    universe,
-						    weights)));
+						    weights));
+	eassert_on_dep(bd.broken_under(empty_solution), empty_solution, bd);
 
 	initial_broken.insert(bd);
       }
