@@ -1,6 +1,6 @@
 // solution.h                                             -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -649,7 +649,7 @@ public:
     }
   };
 
-  void dump(std::ostream &out) const
+  void dump(std::ostream &out, bool show_order = false) const
   {
     std::vector<std::pair<package, action> > actions;
     for(typename imm::map<package, action>::const_iterator i = get_actions().begin();
@@ -665,6 +665,8 @@ public:
 	if(i != actions.begin())
 	  out << ", ";
 	out << i->first.get_name() << ":=" << i->second.ver.get_name();
+	if(show_order)
+	  out << "[#" << i->second.id << "]";
       }
     out << ">;";
 
