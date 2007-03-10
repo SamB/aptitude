@@ -18,6 +18,14 @@ int cmdline_forget_new(int argc, char *argv[],
 {
   _error->DumpErrors();
 
+  // NB: perhaps we should allow forgetting the new state of just
+  // a few packages?
+  if(argc != 1)
+    {
+      fprintf(stderr, _("E: The forget-new command takes no arguments\n"));
+      return -1;
+    }  
+
   OpTextProgress progress(aptcfg->FindI("Quiet", 0));
 
   apt_init(&progress, false, status_fname);

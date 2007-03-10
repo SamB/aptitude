@@ -24,6 +24,12 @@ int cmdline_clean(int argc, char *argv[], bool simulate)
 {
   _error->DumpErrors();
 
+  if(argc != 1)
+    {
+      fprintf(stderr, _("E: The clean command takes no arguments\n"));
+      return -1;
+    }  
+
   OpTextProgress progress(aptcfg->FindI("Quiet", 0));
 
   apt_init(&progress, false);
@@ -99,6 +105,12 @@ public:
 int cmdline_autoclean(int argc, char *argv[], bool simulate)
 {
   _error->DumpErrors();
+
+  if(argc != 1)
+    {
+      fprintf(stderr, _("E: The autoclean command takes no arguments\n"));
+      return -1;
+    }  
 
   OpTextProgress progress(aptcfg->FindI("Quiet", 0));
 

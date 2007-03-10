@@ -33,6 +33,12 @@ int cmdline_upgrade(int argc, char *argv[],
 
   _error->DumpErrors();
 
+  if(argc != 1)
+    {
+      fprintf(stderr, _("E: The upgrade command takes no arguments\n"));
+      return -1;
+    }
+
   OpTextProgress progress(aptcfg->FindI("Quiet", 0));
   apt_init(&progress, false, status_fname);
 
