@@ -1,6 +1,6 @@
 // aptcache.cc
 //
-//  Copyright 1999-2006 Daniel Burrows
+//  Copyright 1999-2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -314,11 +314,30 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 	      pkg_state.candver=candver;
 	      pkg_state.forbidver=section.FindS("ForbidVer");
 
-	      if(do_dselect && pkg->SelectedState != last_dselect_state &&
-		 do_initselections)
+	      if(do_dselect && pkg->SelectedState != last_dselect_state)
 		{
 		  MarkFromDselect(pkg);
+		  // dirty should be set to "true" so that we update
+		  // the on-disk dselect state ASAP, even if no
+		  // package states change as a result.
 		  dirty=true;
+
+		  // We need to update the package state from the
+		  // dselect state regardless of whether we're doing
+		  // initselections.  This is so that, e.g., if the
+		  // user installed a package outside aptitude (so the
+		  // dselect state says to install it), our internal
+		  // state isn't left at "remove".  But if we aren't
+		  // supposed to set up stored installs/removals, we
+		  // should cancel this at the apt-get level (so the
+		  // package doesn't get changed if dselect said to
+		  // install it, but this isn't stored in our database
+		  // for future runs).
+		  //
+		  // In the past, we skipped doing MarkFromDselect in
+		  // this case.  BAD.
+		  if(!do_initselections)
+		    MarkKeep(pkg, false);
 		}
 	    }
 	  amt+=section.size();
