@@ -1,6 +1,6 @@
 // Miscellaneous tests.
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -27,6 +27,7 @@ class MiscTest : public CppUnit::TestFixture
 
   CPPUNIT_TEST(testStripWS);
   CPPUNIT_TEST(testOrderlessLt);
+  CPPUNIT_TEST(test_ssprintf);
 
   CPPUNIT_TEST_SUITE_END();
 private:
@@ -93,6 +94,16 @@ private:
     CPPUNIT_ASSERT(!cmp(c, b));
     CPPUNIT_ASSERT(!cmp(d, c));
     CPPUNIT_ASSERT(!cmp(e, d));
+  }
+
+  void test_ssprintf()
+  {
+    // Test that inserting very long strings via ssprintf actually works.
+    std::string horriblelongthing = "abcdefghijklmnopqrstuvwxyz";
+    while(horriblelongthing.size() < 4096)
+      horriblelongthing += horriblelongthing;
+
+    CPPUNIT_ASSERT_EQUAL(horriblelongthing + " 20", ssprintf("%s %d", horriblelongthing.c_str(), 20));
   }
 };
 
