@@ -1,6 +1,6 @@
 // eassert.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -24,13 +24,18 @@
 AssertionFailure::AssertionFailure(const std::string &_file,
 				   size_t _line,
 				   const std::string &_func,
-				   const std::string &_exp)
-  : file(_file), func(_func), exp(_exp), line(_line)
+				   const std::string &_exp,
+				   const std::string &_msg)
+  : file(_file), func(_func), exp(_exp), msg(_msg), line(_line)
 {
 }
 
 std::string AssertionFailure::errmsg() const
 {
-  return ssprintf("%s:%d: %s: Assertion \"%s\" failed.",
-		  file.c_str(), line, func.c_str(), exp.c_str());
+  if(msg.empty())
+    return ssprintf("%s:%d: %s: Assertion \"%s\" failed.",
+		    file.c_str(), line, func.c_str(), exp.c_str());
+  else
+    return ssprintf("%s:%d: %s: %s: Assertion \"%s\" failed.",
+		    file.c_str(), line, func.c_str(), msg.c_str(), exp.c_str());
 }

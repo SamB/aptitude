@@ -1,6 +1,6 @@
 // eassert.h                          -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -28,12 +28,22 @@ class AssertionFailure : public Exception
   std::string file;
   std::string func;
   std::string exp;
+  std::string msg;
   size_t line;
 public:
+  /** \brief Create a new AssertionFailure.
+   *
+   *  \param file The file in which the failing assertion occurred.
+   *  \param line The line on which the failing assertion occurred.
+   *  \param func The function in which the failing assertion occurred.
+   *  \param exp  The failing assertion.
+   *  \param msg  An extra message to include in the assertion.
+   */
   AssertionFailure(const std::string &file,
 		   size_t line,
 		   const std::string &func,
-		   const std::string &exp);
+		   const std::string &exp,
+		   const std::string &msg);
 
   std::string errmsg() const;
 
@@ -62,14 +72,19 @@ public:
   }
 };
 
+/** \brief Like eassert, but includes the given extra information
+ *  with a failed assertion.
+ */
+#define eassert2(invariant, msg) \
+  do { if(!(invariant)) \
+         throw AssertionFailure(__FILE__, __LINE__, __PRETTY_FUNCTION__, #invariant, msg); \
+     } while(0)
+
 /** Similar to assert, but throws an exception instead of printing to
  *  stderr and aborting.
  *
  *  \todo be portable by only compiling the gcc stuff conditionally?
  */
-#define eassert(invariant) \
-  do { if(!(invariant)) \
-         throw AssertionFailure(__FILE__, __LINE__, __PRETTY_FUNCTION__, #invariant); \
-     } while(0)
+#define eassert(invariant) eassert2(invariant, "")
 
 #endif
