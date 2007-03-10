@@ -411,6 +411,14 @@ static bool prompt_trust()
 	  return true;
 	}
 
+      if(aptcfg->FindB("Apt::Get::AllowUnauthenticated", false))
+	{
+	  printf("%s",
+		 _("*** WARNING ***   Ignoring these trust violations because\n"
+		   "                  Apt::Get::AllowUnauthenticated is 'true'!\n"));
+	  return true;
+	}
+
 
       const string okstr=_("Yes"), abortstr=_("No");
 
