@@ -1,6 +1,6 @@
 // menu_text_layout.h                             -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -77,6 +77,8 @@ public:
   bool find_search_back();
   bool find_research_enabled();
   bool find_research();
+  bool find_repeat_search_back_enabled();
+  bool find_repeat_search_back();
 };
 typedef ref_ptr<menu_text_layout> menu_text_layout_ref;
 

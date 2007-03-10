@@ -1,6 +1,6 @@
 // vscreen.cc
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -709,6 +709,7 @@ void vscreen_init()
   global_bindings.set("Search", key(L'/', false));
   global_bindings.set("SearchBack", key(L'\\', false));
   global_bindings.set("ReSearch", researchkey);
+  global_bindings.set("RepeatSearchBack", key(L'N', false));
   global_bindings.set("DelBack", delbkey);
   global_bindings.set("DelForward", delfkey);
 

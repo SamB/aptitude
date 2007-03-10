@@ -135,11 +135,13 @@ vs_widget_ref vs_dialog_fileview(const std::string &fn,
 				 slot0arg okslot=NULL,
 				 slotarg<sigc::slot1<void, vs_pager &> > search_slot=NULL,
 				 slotarg<sigc::slot1<void, vs_pager &> > repeat_search_slot=NULL,
+				 slotarg<sigc::slot1<void, vs_pager &> > repeat_search_back_slot=NULL,
 				 const char *encoding=NULL);
 vs_widget_ref vs_dialog_fileview(const std::string &fn,
 				 slot0arg okslot,
 				 slotarg<sigc::slot1<void, vs_pager &> > search_slot,
 				 slotarg<sigc::slot1<void, vs_pager &> > repeat_search_slot,
+				 slotarg<sigc::slot1<void, vs_pager &> > repeat_search_back_slot,
 				 const style &st,
 				 const char *encoding=NULL);
 

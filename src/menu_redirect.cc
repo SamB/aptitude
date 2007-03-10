@@ -1,6 +1,6 @@
 // menu_redirect.cc                                   -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -54,6 +54,8 @@ bool menu_redirect::find_search_back_enabled() { return false; }
 bool menu_redirect::find_search_back() { return false; }
 bool menu_redirect::find_research_enabled() { return false; }
 bool menu_redirect::find_research() { return false; }
+bool menu_redirect::find_repeat_search_back_enabled() { return false; }
+bool menu_redirect::find_repeat_search_back() { return false; }
 bool menu_redirect::find_limit_enabled() { return false; }
 bool menu_redirect::find_limit() { return false; }
 bool menu_redirect::find_reset_limit_enabled() { return false; }

@@ -106,6 +106,23 @@ bool menu_text_layout::find_research()
   return true;
 }
 
+
+bool menu_text_layout::find_repeat_search_back_enabled()
+{
+  return !last_search.empty();
+}
+
+bool menu_text_layout::find_repeat_search_back()
+{
+  if(last_search.empty())
+    beep();
+  else
+    search_for(last_search, !last_search_forward);
+
+  return true;
+}
+
+
 bool menu_text_layout::handle_key(const key &k)
 {
   if(global_bindings.key_matches(k, "Search"))
@@ -114,6 +131,8 @@ bool menu_text_layout::handle_key(const key &k)
     find_search_back();
   else if(global_bindings.key_matches(k, "ReSearch"))
     find_research();
+  else if(global_bindings.key_matches(k, "RepeatSearchBack"))
+    find_repeat_search_back();
   else
     return vs_text_layout::handle_key(k);
 

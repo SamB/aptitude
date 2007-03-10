@@ -129,6 +129,9 @@ extern sigc::signal0<bool, accumulate_or> find_search_back_enabled;
 /** Tests whether Search -> Find Again is enabled. */
 extern sigc::signal0<bool, accumulate_or> find_research_enabled;
 
+/** Tests whether Search -> Find Again Reverse is enabled. */
+extern sigc::signal0<bool, accumulate_or> find_repeat_search_back_enabled;
+
 /** Tests whether Search -> Limit is enabled. */
 extern sigc::signal0<bool, accumulate_or> find_limit_enabled;
 
@@ -146,6 +149,9 @@ extern sigc::signal0<bool, accumulate_or> find_search_back;
 
 /** Emitted for Search -> Find Again. */
 extern sigc::signal0<bool, accumulate_or> find_research;
+
+/** Emitted for Search -> Find Again Reverse. */
+extern sigc::signal0<bool, accumulate_or> find_repeat_search_back;
 
 /** Emitted for Search -> Limit. */
 extern sigc::signal0<bool, accumulate_or> find_limit;

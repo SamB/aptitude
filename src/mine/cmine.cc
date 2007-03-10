@@ -677,7 +677,7 @@ bool cmine::handle_key(const key &k)
 	  encoding="UTF-8";
 	}
 
-      vs_widget_ref w=vs_dialog_fileview(buf, NULL, NULL, NULL, encoding);
+      vs_widget_ref w=vs_dialog_fileview(buf, NULL, NULL, NULL, NULL, encoding);
       w->show_all();
 
       popup_widget(w);

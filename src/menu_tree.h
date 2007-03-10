@@ -1,6 +1,6 @@
 // menu_tree.h                                      -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -185,6 +185,12 @@ public:
 
   /** Execute the 're-search' menu command. */
   bool find_research();
+
+  /** \return \b true if there is a "previous search". */
+  bool find_repeat_search_back_enabled();
+
+  /** Execute the 'repeat search in opposite direction' menu command. */
+  bool find_repeat_search_back();
 
   /** \return \b false. */
   bool find_limit_enabled();

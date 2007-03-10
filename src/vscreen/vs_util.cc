@@ -271,6 +271,7 @@ vs_widget_ref vs_dialog_fileview(const string &fn,
 				 slot0arg okslot,
 				 slotarg<sigc::slot1<void, vs_pager &> > search_slot,
 				 slotarg<sigc::slot1<void, vs_pager &> > repeat_search_slot,
+				 slotarg<sigc::slot1<void, vs_pager &> > repeat_search_back_slot,
 				 const style &st,
 				 const char *encoding)
 {
@@ -297,6 +298,9 @@ vs_widget_ref vs_dialog_fileview(const string &fn,
   if(repeat_search_slot)
     p->connect_key("ReSearch", &global_bindings, sigc::bind(*repeat_search_slot, p.weak_ref()));
 
+  if(repeat_search_back_slot)
+    p->connect_key("RepeatSearchBack", &global_bindings, sigc::bind(*repeat_search_back_slot, p.weak_ref()));
+
   return vs_dialog_ok(t, okslot, transcode(_("Ok")), st);
 }
 
@@ -304,9 +308,11 @@ vs_widget_ref vs_dialog_fileview(const string &fn,
 				 slot0arg okslot,
 				 slotarg<sigc::slot1<void, vs_pager &> > search_slot,
 				 slotarg<sigc::slot1<void, vs_pager &> > repeat_search_slot,
+				 slotarg<sigc::slot1<void, vs_pager &> > repeat_search_back_slot,
 				 const char *encoding)
 {
-  return vs_dialog_fileview(fn, okslot, search_slot, repeat_search_slot,
+  return vs_dialog_fileview(fn, okslot, search_slot,
+			    repeat_search_slot, repeat_search_back_slot,
 			    style_attrs_flip(A_REVERSE),
 			    encoding);
 }

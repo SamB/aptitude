@@ -80,6 +80,14 @@ class pkg_changelog_screen : public vs_file_pager, public menu_redirect
       search_back_for(L"");
   }
 
+  void do_repeat_search_back()
+  {
+    if(!last_search_forwards)
+      search_for(L"");
+    else
+      search_back_for(L"");
+  }
+
 protected:
   pkg_changelog_screen(const temp::name &filename,
 		       int x = 0, int y = 0,
@@ -92,6 +100,8 @@ protected:
 		sigc::mem_fun(*this, &pkg_changelog_screen::do_search_back));
     connect_key("ReSearch", &global_bindings,
 		sigc::mem_fun(*this, &pkg_changelog_screen::do_repeat_search));
+    connect_key("RepeatSearchBack", &global_bindings,
+		sigc::mem_fun(*this, &pkg_changelog_screen::do_repeat_search_back));
   }
 
 public:

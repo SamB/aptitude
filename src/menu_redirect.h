@@ -1,6 +1,6 @@
 // menu_redirect.h                                 -*-c++-*-
 //
-//   Copyright (C) 2004-2005 Daniel Burrows
+//   Copyright (C) 2004-2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -122,6 +122,14 @@ public:
 
   /** Execute the 're-search' menu command. */
   virtual bool find_research();
+
+  /** \return \b true if this view knows how to search and there is
+   *  a "previous search".
+   */
+  virtual bool find_repeat_search_back_enabled();
+
+  /** Execute the 'repeat search in the opposite direction' menu command. */
+  virtual bool find_repeat_search_back();
 
   /** \return \b true if this view knows how to set a display limit. */
   virtual bool find_limit_enabled();

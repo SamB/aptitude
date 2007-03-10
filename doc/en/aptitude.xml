@@ -48,6 +48,7 @@
   <!ENTITY search-find "<menuchoice><shortcut><keycap>/</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find</guimenuitem></menuchoice>">
   <!ENTITY search-find-back "<menuchoice><shortcut><keycap>\</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find Backwards</guimenuitem></menuchoice>">
   <!ENTITY search-refind "<menuchoice><shortcut><keycap>n</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find Again</guimenuitem></menuchoice>">
+  <!ENTITY search-repeat-find-back "<menuchoice><shortcut><keycap>N</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find Again Backwards</guimenuitem></menuchoice>">
   <!ENTITY search-limit "<menuchoice><shortcut><keycap>l</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Limit Display</guimenuitem></menuchoice>">
   <!ENTITY search-unlimit "<menuchoice><guimenu>Search</guimenu><guimenuitem>Un-Limit Display</guimenuitem></menuchoice>">
   <!ENTITY search-find-broken "<menuchoice><shortcut><keycap>b</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find Broken</guimenuitem></menuchoice>">
@@ -2332,6 +2333,17 @@ Abort.</screen>
 
 		   <entry>
 		     Repeat the last Find command.
+		   </entry>
+		  </row>
+
+		  <row>
+		   <entry>&search-repeat-find-back;</entry>
+
+		   <entry>
+		     Repeat the last Find command, but in the opposite
+		     direction.  If the last Find command was Find
+		     Backwards, this will perform a forwards search,
+		     and vice versa.
 		   </entry>
 		  </row>
 
@@ -6100,6 +6112,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		<entry>
 		  Flags the currently selected package to be
 		  <link linkend='pkgCmdReinstall'>reinstalled</link>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal>RepeatSearchBack</literal></entry>
+		<entry><literal>N</literal></entry>
+		<entry>
+		  Repeats the last search, but searches in the
+		  opposite direction.
 		</entry>
 	      </row>
 
