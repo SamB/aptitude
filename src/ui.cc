@@ -526,10 +526,34 @@ static void do_hide_reload_message()
     }
 }
 
+/** \brief If this is \b true, there's a "really quit aptitude?"
+ *  prompt displayed.
+ *
+ *  The sole purpose of this variable is to prevent the dialog
+ *  box that asks about quitting from showing up multiple times.
+ */
+static bool really_quit_active = false;
+
+static void do_really_quit_answer(bool should_i_quit)
+{
+  really_quit_active = false;
+
+  if(should_i_quit)
+    file_quit();
+}
+
 static void do_quit()
 {
   if(aptcfg->FindB(PACKAGE "::UI::Prompt-On-Exit", true))
-    prompt_yesno(_("Really quit Aptitude?"), false, arg(file_quit.make_slot()), NULL);
+    {
+      if(!really_quit_active)
+	{
+	  really_quit_active = true;
+	  prompt_yesno(_("Really quit Aptitude?"), false,
+		       arg(sigc::bind(ptr_fun(do_really_quit_answer), true)),
+		       arg(sigc::bind(ptr_fun(do_really_quit_answer), false)));
+	}
+    }
   else
     file_quit();
 }
