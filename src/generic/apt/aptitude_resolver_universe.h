@@ -1,6 +1,6 @@
 // aptitude_resolver_universe.h                     -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -1144,5 +1144,8 @@ public:
 
 /** \brief Write an aptitude_resolver_dep to the given stream. */
 std::ostream &operator<<(ostream &out, aptitude_resolver_dep d);
+
+/** \brief Write an aptitude_resolver_version to the given stream. */
+std::ostream &operator<<(ostream &out, const aptitude_resolver_version &d);
 
 #endif

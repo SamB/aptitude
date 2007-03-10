@@ -561,6 +561,11 @@ aptitude_universe::broken_dep_iterator &aptitude_universe::broken_dep_iterator::
   return *this;
 }
 
+std::ostream &operator<<(ostream &out, const aptitude_resolver_version &v)
+{
+  return out << v.get_package().get_name() << " " << v.get_name();
+}
+
 std::ostream &operator<<(ostream &out, aptitude_resolver_dep d)
 {
   std::vector<aptitude_resolver_version> solvers;
@@ -570,18 +575,14 @@ std::ostream &operator<<(ostream &out, aptitude_resolver_dep d)
   generic_solution<aptitude_universe>::ver_name_lt lt;
   sort(solvers.begin(), solvers.end(), lt);
 
-  out << d.get_source().get_package().get_name()
-      << " "
-      << d.get_source().get_name()
-      << " -> {";
+  out << d.get_source() << " -> {";
 
   for(std::vector<aptitude_resolver_version>::const_iterator i = solvers.begin();
       i != solvers.end(); ++i)
     {
       if(i != solvers.begin())
 	out << " ";
-      out << (*i).get_package().get_name() << " "
-	  << (*i).get_name();
+      out << *i;
     }
   out << "}";
 
