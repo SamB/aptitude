@@ -8359,11 +8359,13 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <seg>
 		If this option is <literal>true</literal>, then
-		packages will be kept on the system as long as any
-		installed package recommends them, even if
+		&aptitude; will not consider packages to be unused
+		(and thus will not automatically remove them) as long
+		as any installed package recommends them, even if
 		<literal><link
 		linkend='configRecommends-Important'>Aptitude::Recommends-Important</link></literal>
-		is <literal>false</literal>.
+		is <literal>false</literal>.  For more information,
+		see <xref linkend='secAutoInstall'/>.
 	      </seg>
 	    </seglistitem>
 
@@ -8373,11 +8375,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg><literal>false</literal></seg>
 
 	      <seg>
-		If this option is <literal>true</literal>, &aptitude;
-		will keep automatically installed packages on the
-		system as long as any installed package suggests them.
-		For more information, see <xref
-		linkend='secAutoInstall'/>.
+		If this option is <literal>true</literal>, then
+		&aptitude; will not consider packages to be unused
+		(and thus will not automatically remove them) as long
+		as any installed package suggests them.  For more
+		information, see <xref linkend='secAutoInstall'/>.
 	      </seg>
 	    </seglistitem>
 
@@ -8473,11 +8475,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg>
 		If this option is <literal>true</literal> and
 		<literal>Aptitude::Auto-Install</literal> is
-		<literal>true</literal>, installing a new package will
-		also install any packages that it recommends.
+		<literal>true</literal>, then whenever you mark a
+		package for installation, &aptitude; will also mark
+		the packages it recommends for installation.
 		Furthermore, if this option is
-		<literal>true</literal>, then packages will be kept on
-		the system if an installed package recommends them.
+		<literal>true</literal>, &aptitude; will not consider
+		packages to be unused (and thus will not automatically
+		remove them) as long as any installed package
+		reommends them.  For more information, see <xref
+		linkend='secAutoInstall'/>.
 	      </seg>
 	    </seglistitem>
 
