@@ -63,6 +63,10 @@ const int initbufsize=512;
 
 string vssprintf(const char *format, va_list ap)
 {
+  // We need to do this because you can't necessarily re-use a
+  // va_list after stepping down it.
+  va_list ap2;
+  va_copy(ap2, ap);
   char buf[initbufsize];
   const int amt = vsnprintf(buf, initbufsize, format, ap);
 
@@ -73,7 +77,7 @@ string vssprintf(const char *format, va_list ap)
       const int buf2size = amt + 1;
       char *buf2 = new char[buf2size];
 
-      const int amt2 = vsnprintf(buf2, buf2size, format, ap);
+      const int amt2 = vsnprintf(buf2, buf2size, format, ap2);
 
       eassert(amt2 < buf2size);
 
