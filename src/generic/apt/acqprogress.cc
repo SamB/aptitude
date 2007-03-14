@@ -294,7 +294,7 @@ void AcqTextStatus::MediaChange(string Media, string Drive,
    if (Quiet <= 0)
       cout << '\r' << BlankLine << '\r';
    ioprintf(cout,_("Media Change: Please insert the disc labeled '%s' in "
-		   "the drive '%s' and press enter\n"),
+		   "the drive '%s' and press [Enter].\n"),
 	    Media.c_str(),Drive.c_str());
 
    char C = 0;
