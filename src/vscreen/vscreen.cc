@@ -626,6 +626,8 @@ timeout_thread timeout_thread::instance;
 
 void vscreen_init()
 {
+  threads::mutex::lock l(vscreen_get_mutex());
+
   keybinding upkey, downkey, leftkey, rightkey, quitkey, homekey, endkey;
   keybinding historynextkey, historyprevkey;
   keybinding delfkey, delbkey, ppagekey, npagekey;
@@ -798,6 +800,8 @@ void vscreen_install_sighandlers()
 
 void vscreen_handleresize()
 {
+  threads::mutex::lock l(vscreen_get_mutex());
+
   toplevel->set_owner_window(NULL, 0, 0, 0, 0);
   resize();
   toplevel->set_owner_window(rootwin, 0, 0, rootwin.getmaxx(), rootwin.getmaxy());
@@ -822,6 +826,8 @@ void vscreen_updatecursor()
 
 void vscreen_updatecursornow()
 {
+  threads::mutex::lock(vscreen_get_mutex());
+
   if(toplevel->get_cursorvisible())
     {
       point p=toplevel->get_cursorloc();
@@ -845,6 +851,8 @@ void vscreen_update()
 
 void vscreen_updatenow()
 {
+  threads::mutex::lock l(vscreen_get_mutex());
+
   if(toplevel.valid())
     {
       toplevel->display(get_style("Default"));
@@ -865,12 +873,16 @@ void vscreen_queuelayout()
 
 void vscreen_layoutnow()
 {
+  threads::mutex::lock l(vscreen_get_mutex());
+
   toplevel->do_layout();
 }
 
 void vscreen_tryupdate()
 {
-  threads::mutex::lock l(pending_updates_mutex);
+  threads::mutex::lock l(vscreen_get_mutex());
+
+  threads::mutex::lock l2(pending_updates_mutex);
 
   update_state needs = pending_updates;
 
@@ -892,6 +904,8 @@ void vscreen_tryupdate()
 
 bool vscreen_poll()
 {
+  threads::mutex::lock l(vscreen_get_mutex());
+
   bool rval=false;
 
   vscreen_event *ev = NULL;
@@ -948,6 +962,8 @@ void vscreen_exitmain()
 
 void vscreen_suspend_without_signals()
 {
+  threads::mutex::lock l(vscreen_get_mutex());
+
   input_thread::stop();
   signal_thread::stop();
   timeout_thread::stop();
@@ -964,6 +980,8 @@ void vscreen_suspend_without_signals()
 
 void vscreen_suspend()
 {
+  threads::mutex::lock l(vscreen_get_mutex());
+
   suspended_with_signals = true;
 
   struct sigaction act;
@@ -980,6 +998,8 @@ void vscreen_suspend()
 
 void vscreen_shutdown()
 {
+  threads::mutex::lock l(vscreen_get_mutex());
+
   if(toplevel.valid())
     toplevel->destroy();
   toplevel = NULL;
@@ -994,6 +1014,8 @@ void vscreen_shutdown()
 
 void vscreen_resume()
 {
+  threads::mutex::lock l(vscreen_get_mutex());
+
   if(suspended_with_signals)
     {
       sigaction(SIGCONT, &oldsigcont, NULL);
@@ -1019,7 +1041,9 @@ void vscreen_resume()
 
 void vscreen_redraw()
 {
-  threads::mutex::lock l(pending_updates_mutex);
+  threads::mutex::lock l(vscreen_get_mutex());
+
+  threads::mutex::lock l2(pending_updates_mutex);
 
   if(toplevel.valid())
     {
