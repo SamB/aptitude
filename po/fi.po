@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.4\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2006-09-03 09:36-0700\n"
+"POT-Creation-Date: 2007-03-04 20:22-0800\n"
 "PO-Revision-Date: 2006-11-05 15:47+0200\n"
 "Last-Translator: Jaakko Kangasharju <ashar@iki.fi>\n"
 "Language-Team: Jaakko Kangasharju <ashar@iki.fi>\n"
@@ -244,7 +244,7 @@ msgstr[1] "%d vanhennusta"
 msgid "Suggest %F"
 msgstr "Ehdotuksena %F"
 
-#: src/cmdline/cmdline_action.cc:37
+#: src/cmdline/cmdline_action.cc:38
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -253,7 +253,7 @@ msgstr ""
 "Huom: \"%s\", joka kattaa näennäispaketin\n"
 "      \"%s\", on jo asennettu.\n"
 
-#: src/cmdline/cmdline_action.cc:44
+#: src/cmdline/cmdline_action.cc:45
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -262,7 +262,7 @@ msgstr ""
 "Huom: \"%s\", joka kattaa näennäispaketin\n"
 "      \"%s\", on jo asennettavana.\n"
 
-#: src/cmdline/cmdline_action.cc:62
+#: src/cmdline/cmdline_action.cc:63
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -271,17 +271,17 @@ msgstr ""
 "\"%s\" löytyy pakettitietokannasta, mutta se ei ole\n"
 "oikea paketti eikä mikään paketti kata sitä.\n"
 
-#: src/cmdline/cmdline_action.cc:68
+#: src/cmdline/cmdline_action.cc:69
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" on näennäispaketti, jonka kattaa\n"
 
-#: src/cmdline/cmdline_action.cc:71
+#: src/cmdline/cmdline_action.cc:72
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Yksi on valittava asennettavaksi.\n"
 
-#: src/cmdline/cmdline_action.cc:76
+#: src/cmdline/cmdline_action.cc:77
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -290,38 +290,38 @@ msgstr ""
 "Huom: valitsen paketin \"%s\" enkä\n"
 "      näennäispakettia \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:94
+#: src/cmdline/cmdline_action.cc:95
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "Paketin %s pyydetty versio %s on jo asennettuna\n"
 
-#: src/cmdline/cmdline_action.cc:100
+#: src/cmdline/cmdline_action.cc:101
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "Pakettia %s ei ole asennettu, joten sitä ei asenneta uudelleen.\n"
 
-#: src/cmdline/cmdline_action.cc:107 src/cmdline/cmdline_action.cc:113
+#: src/cmdline/cmdline_action.cc:108 src/cmdline/cmdline_action.cc:114
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Pakettia %s ei ole asennettu, joten sitä ei poisteta\n"
 
-#: src/cmdline/cmdline_action.cc:131
+#: src/cmdline/cmdline_action.cc:132
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "Pakettia %s ei ole asennettu, joten päivitystä ei ole tarpeen estää\n"
 
-#: src/cmdline/cmdline_action.cc:133
+#: src/cmdline/cmdline_action.cc:134
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr ""
 "Paketti %s ei ole päivitettävissä, joten päivitystä ei ole tarpeen estää\n"
 
-#: src/cmdline/cmdline_action.cc:214
+#: src/cmdline/cmdline_action.cc:212
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Huom: valitsen tehtävän \"%s: %s\" asennettavaksi\n"
 
-#: src/cmdline/cmdline_action.cc:244
+#: src/cmdline/cmdline_action.cc:242
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -330,12 +330,12 @@ msgstr ""
 "Vain 'install'- ja 'forbid-version'-komennoille voi määrittää paketin "
 "version.\n"
 
-#: src/cmdline/cmdline_action.cc:252
+#: src/cmdline/cmdline_action.cc:250
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "Vain 'install'-komennolle voi määrittää paketin arkiston.\n"
 
-#: src/cmdline/cmdline_action.cc:286
+#: src/cmdline/cmdline_action.cc:284
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -344,7 +344,7 @@ msgstr ""
 "En löytänyt pakettia \"%s\" ja yli 40 paketin\n"
 "nimessä on merkkijono \"%s\".\n"
 
-#: src/cmdline/cmdline_action.cc:289
+#: src/cmdline/cmdline_action.cc:287
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -353,13 +353,13 @@ msgstr ""
 "En löytänyt pakettia \"%s\".  Näiden pakettien\n"
 "nimet sisältävät merkkijonon \"%s\":\n"
 
-#: src/cmdline/cmdline_action.cc:313
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "En löytänyt pakettia, jonka nimi tai kuvaus sisältäisi merkkijonon \"%s\".\n"
 
-#: src/cmdline/cmdline_action.cc:315
+#: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -368,7 +368,7 @@ msgstr ""
 "En löytänyt pakettia, jonka nimi sisältäisi merkkijonon \"%s\"\n"
 "ja yli 40 paketin kuvaus sisältää merkkijonon \"%s\".\n"
 
-#: src/cmdline/cmdline_action.cc:318
+#: src/cmdline/cmdline_action.cc:316
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -377,7 +377,7 @@ msgstr ""
 "En löytänyt pakettia, jonka nimi sisältäisi merkkijonon \"%s\".\n"
 "Näiden pakettien kuvaus sisältää merkkijonon \"%s\":\n"
 
-#: src/cmdline/cmdline_action.cc:437
+#: src/cmdline/cmdline_action.cc:436
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Virheellinen komentomerkki '%c'\n"
@@ -427,7 +427,7 @@ msgstr "Virheellinen toiminto %s"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "\"keep-all\":ia ei saa seurata kaava"
 
-#: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_do_action.cc:241 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:520
 #, c-format
 msgid "Abort.\n"
@@ -439,7 +439,7 @@ msgid "download: you must specify at least one package to download\n"
 msgstr "nouto: ainakin yksi noudettava paketti on annettava\n"
 
 #: src/cmdline/cmdline_download.cc:42
-#: src/generic/apt/download_install_manager.cc:76
+#: src/generic/apt/download_install_manager.cc:79
 msgid "Couldn't read source list"
 msgstr "En pystynyt lukemaan pakettivarastoluetteloa"
 
@@ -498,99 +498,99 @@ msgstr "Olkoon menneeksi, sinä voitit.\n"
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr "Mikäkö se on?  Sehän on boa-käärme, joka sulattaa elefanttia.\n"
 
-#: src/cmdline/cmdline_prompt.cc:33
+#: src/cmdline/cmdline_prompt.cc:34
 msgid "Unexpected end-of-file on standard input"
 msgstr "Vakiosyötevirta loppui odottamatta"
 
-#: src/cmdline/cmdline_prompt.cc:52
+#: src/cmdline/cmdline_prompt.cc:53
 msgid "Couldn't read list of sources"
 msgstr "En pystynyt lukemaan pakettivarastoluetteloa"
 
-#: src/cmdline/cmdline_prompt.cc:234 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:236 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "mutta %s on määrätty asennettavaksi."
 
-#: src/cmdline/cmdline_prompt.cc:237 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:239 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "mutta %s on asennettu ja odottaa."
 
-#: src/cmdline/cmdline_prompt.cc:240 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:242 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "mutta %s on asennettu."
 
-#: src/cmdline/cmdline_prompt.cc:244 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:246 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "mutta se ei ole asennettavissa"
 
-#: src/cmdline/cmdline_prompt.cc:248 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:250 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr "joka on näennäispaketti."
 
-#: src/cmdline/cmdline_prompt.cc:251 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:253 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " tai"
 
-#: src/cmdline/cmdline_prompt.cc:263
+#: src/cmdline/cmdline_prompt.cc:265
 msgid "The following packages are BROKEN:"
 msgstr "Nämä paketit ovat RIKKI:"
 
-#: src/cmdline/cmdline_prompt.cc:264
+#: src/cmdline/cmdline_prompt.cc:266
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Nämä paketit ovat käyttämättömiä ja POISTETAAN:"
 
-#: src/cmdline/cmdline_prompt.cc:265
+#: src/cmdline/cmdline_prompt.cc:267
 msgid "The following packages have been automatically kept back:"
 msgstr "Nämä paketit on automaattisesti jätetty odottamaan:"
 
-#: src/cmdline/cmdline_prompt.cc:266
+#: src/cmdline/cmdline_prompt.cc:268
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Nämä UUDET paketit asennetaan automaattisesti:"
 
-#: src/cmdline/cmdline_prompt.cc:267
+#: src/cmdline/cmdline_prompt.cc:269
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Nämä paketit POISTETAAN automaattisesti:"
 
-#: src/cmdline/cmdline_prompt.cc:268
+#: src/cmdline/cmdline_prompt.cc:270
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Nämä paketit VANHENNETAAN:"
 
-#: src/cmdline/cmdline_prompt.cc:269
+#: src/cmdline/cmdline_prompt.cc:271
 msgid "The following packages have been kept back:"
 msgstr "Nämä paketit on jätetty odottamaan:"
 
-#: src/cmdline/cmdline_prompt.cc:270
+#: src/cmdline/cmdline_prompt.cc:272
 msgid "The following packages will be REINSTALLED:"
 msgstr "Nämä paketit ASENNETAAN UUDESTAAN:"
 
-#: src/cmdline/cmdline_prompt.cc:271
+#: src/cmdline/cmdline_prompt.cc:273
 msgid "The following NEW packages will be installed:"
 msgstr "Nämä UUDET paketit asennetaan:"
 
-#: src/cmdline/cmdline_prompt.cc:272
+#: src/cmdline/cmdline_prompt.cc:274
 msgid "The following packages will be REMOVED:"
 msgstr "Nämä paketit POISTETAAN:"
 
-#: src/cmdline/cmdline_prompt.cc:273
+#: src/cmdline/cmdline_prompt.cc:275
 msgid "The following packages will be upgraded:"
 msgstr "Nämä paketit päivitetään:"
 
-#: src/cmdline/cmdline_prompt.cc:328
+#: src/cmdline/cmdline_prompt.cc:330
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Nämä VÄLTTÄMÄTTÖMÄT paketit POISTETAAN!\n"
 
-#: src/cmdline/cmdline_prompt.cc:337
+#: src/cmdline/cmdline_prompt.cc:339
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "Tämä toiminto RIKKOO nämä VÄLTTÄMÄTTÖMÄT paketit:\n"
 
-#: src/cmdline/cmdline_prompt.cc:347
+#: src/cmdline/cmdline_prompt.cc:349
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -599,16 +599,16 @@ msgstr ""
 "VAROITUS: Tämä toiminto luultavasti hajoittaa järjestelmäsi!\n"
 "          ÄLÄ jatka, ellet tiedä VARMASTI, mitä teet!\n"
 
-#: src/cmdline/cmdline_prompt.cc:349
+#: src/cmdline/cmdline_prompt.cc:351
 msgid "I am aware that this is a very bad idea"
 msgstr "Kyllä, tiedän hyvin, että tämä on aivan onnettoman surkea ajatus"
 
-#: src/cmdline/cmdline_prompt.cc:352
+#: src/cmdline/cmdline_prompt.cc:354
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Kirjoita \"%s\" jatkaaksesi:\n"
 
-#: src/cmdline/cmdline_prompt.cc:394
+#: src/cmdline/cmdline_prompt.cc:396
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -625,7 +625,7 @@ msgstr ""
 "ovat kunnollisia.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:406
+#: src/cmdline/cmdline_prompt.cc:408
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -634,119 +634,119 @@ msgstr ""
 "*** VAROITUS ***   Sivuutan luottamuspuutteet koska\n"
 "                   %s::CmdLine::Ignore-Trust-Violations on 'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:177
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:177
 #: src/vscreen/vs_util.cc:215
 msgid "Yes"
 msgstr "Kyllä"
 
-#: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:178
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:178
 #: src/vscreen/vs_util.cc:216
 msgid "No"
 msgstr "Ei"
 
-#: src/cmdline/cmdline_prompt.cc:417
+#: src/cmdline/cmdline_prompt.cc:419
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Haluatko sivuuttaa tämän varoituksen ja jatkaa?\n"
 
-#: src/cmdline/cmdline_prompt.cc:418
+#: src/cmdline/cmdline_prompt.cc:420
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "Kirjoita \"%s\" jatkaaksesi, \"%s\" keskeyttääksesi: "
 
-#: src/cmdline/cmdline_prompt.cc:432
+#: src/cmdline/cmdline_prompt.cc:434
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Virheellinen syöte.  Kirjoita joko \"%s\" tai \"%s\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:534
+#: src/cmdline/cmdline_prompt.cc:536
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Näitä SUOSITELTUJA paketteja EI asenneta:\n"
 
-#: src/cmdline/cmdline_prompt.cc:540
+#: src/cmdline/cmdline_prompt.cc:542
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Näitä EHDOTETTUJA paketteja EI asenneta:\n"
 
-#: src/cmdline/cmdline_prompt.cc:545
+#: src/cmdline/cmdline_prompt.cc:547
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Mitään paketteja ei asenneta, päivitetä tai poisteta.\n"
 
-#: src/cmdline/cmdline_prompt.cc:547
+#: src/cmdline/cmdline_prompt.cc:549
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu päivitettyä pakettia, %lu uutta asennusta, "
 
-#: src/cmdline/cmdline_prompt.cc:551
+#: src/cmdline/cmdline_prompt.cc:553
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu uudelleen asennettua, "
 
-#: src/cmdline/cmdline_prompt.cc:553
+#: src/cmdline/cmdline_prompt.cc:555
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu vanhennettua, "
 
-#: src/cmdline/cmdline_prompt.cc:555
+#: src/cmdline/cmdline_prompt.cc:557
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu poistettavaa ja %lu päivittämätöntä.\n"
 
-#: src/cmdline/cmdline_prompt.cc:562
+#: src/cmdline/cmdline_prompt.cc:564
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Tarvitsee noutaa %sB/%sB arkistoista. "
 
-#: src/cmdline/cmdline_prompt.cc:565
+#: src/cmdline/cmdline_prompt.cc:567
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Tarvitsee noutaa %sB arkistoista. "
 
-#: src/cmdline/cmdline_prompt.cc:572
+#: src/cmdline/cmdline_prompt.cc:574
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Levytilaa kuluu %sB purkamisen jälkeen.\n"
 
-#: src/cmdline/cmdline_prompt.cc:575
+#: src/cmdline/cmdline_prompt.cc:577
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Levytilaa vapautuu %sB purkamisen jälkeen.\n"
 
-#: src/cmdline/cmdline_prompt.cc:613
+#: src/cmdline/cmdline_prompt.cc:615
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "Ei näytettäviä paketteja -- anna pakettien nimet 'i':n jälkeen.\n"
 
-#: src/cmdline/cmdline_prompt.cc:615
+#: src/cmdline/cmdline_prompt.cc:617
 msgid "Press Return to continue."
 msgstr "Paina Return jatkaaksesi."
 
-#: src/cmdline/cmdline_prompt.cc:641
+#: src/cmdline/cmdline_prompt.cc:643
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "Paketteja ei löytynyt -- anna pakettien nimet 'c':n jälkeen.\n"
 
-#: src/cmdline/cmdline_prompt.cc:645
+#: src/cmdline/cmdline_prompt.cc:647
 msgid "Press Return to continue"
 msgstr "Paina Return jatkaaksesi"
 
 # Left as is on purpose - JJK
-#: src/cmdline/cmdline_prompt.cc:656
+#: src/cmdline/cmdline_prompt.cc:658
 #, c-format
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 
-#: src/cmdline/cmdline_prompt.cc:676
+#: src/cmdline/cmdline_prompt.cc:678
 msgid "continue with the installation"
 msgstr "jatka asennusta"
 
-#: src/cmdline/cmdline_prompt.cc:678
+#: src/cmdline/cmdline_prompt.cc:680
 msgid "abort and quit"
 msgstr "keskeytä ja lopeta"
 
-#: src/cmdline/cmdline_prompt.cc:680
+#: src/cmdline/cmdline_prompt.cc:682
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -754,7 +754,7 @@ msgstr ""
 "näytä tiedot yhdestä tai useammasta paketista; kirjoita pakettien nimet 'i':"
 "n jälkeen"
 
-#: src/cmdline/cmdline_prompt.cc:682
+#: src/cmdline/cmdline_prompt.cc:684
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -762,23 +762,23 @@ msgstr ""
 "näytä Debianin muutoslokit yhdestä tai useammasta paketista; kirjoita "
 "pakettien nimet 'c':n jälkeen"
 
-#: src/cmdline/cmdline_prompt.cc:684
+#: src/cmdline/cmdline_prompt.cc:686
 msgid "toggle the display of dependency information"
 msgstr "näytä/älä näytä riippuvuustietoja"
 
-#: src/cmdline/cmdline_prompt.cc:686
+#: src/cmdline/cmdline_prompt.cc:688
 msgid "toggle the display of changes in package sizes"
 msgstr "näytä/älä näytä muutoksia pakettien koissa"
 
-#: src/cmdline/cmdline_prompt.cc:688
+#: src/cmdline/cmdline_prompt.cc:690
 msgid "toggle the display of version numbers"
 msgstr "näytä/älä näytä versionumeroita"
 
-#: src/cmdline/cmdline_prompt.cc:690
+#: src/cmdline/cmdline_prompt.cc:692
 msgid "enter the full visual interface"
 msgstr "siirry kokoruudun käyttötilaan"
 
-#: src/cmdline/cmdline_prompt.cc:691
+#: src/cmdline/cmdline_prompt.cc:693
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -790,50 +790,50 @@ msgstr ""
 "suoritetaan kaikille luettelemillesi paketeille.  Käytössä olevat toiminnot "
 "ovat:"
 
-#: src/cmdline/cmdline_prompt.cc:696 src/cmdline/cmdline_resolver.cc:184
+#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:184
 msgid "'+' to install packages"
 msgstr "'+' asentaaksesi paketteja"
 
-#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:186
+#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:186
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' asentaaksesi paketteja ja merkitäksesi ne automaattisesti asennetuiksi"
 
-#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:188
+#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:188
 msgid "'-' to remove packages"
 msgstr "'-' poistaaksesi paketteja"
 
-#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:190
+#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:190
 msgid "'_' to purge packages"
 msgstr "'_' siivotaksesi paketteja"
 
-#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:192
+#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:192
 msgid "'=' to place packages on hold"
 msgstr "'=' jäädyttääksesi paketteja"
 
-#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:194
+#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:194
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "':' säilyttääksesi paketteja nykyisessä tilassaan jäädyttämättä niitä"
 
-#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:196
+#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' merkitäksesi paketteja automaattisesti asennetuiksi"
 
-#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:198
+#: src/cmdline/cmdline_prompt.cc:712 src/cmdline/cmdline_resolver.cc:198
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' merkitäksesi paketteja käsin asennetuiksi"
 
-#: src/cmdline/cmdline_prompt.cc:712
+#: src/cmdline/cmdline_prompt.cc:714
 msgid "Commands:"
 msgstr "Komennot:"
 
-#: src/cmdline/cmdline_prompt.cc:767
+#: src/cmdline/cmdline_prompt.cc:769
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Haluatko jatkaa? [Kyllä=y/ei=n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:792
+#: src/cmdline/cmdline_prompt.cc:794
 #, c-format
 msgid ""
 "\n"
@@ -844,7 +844,7 @@ msgstr ""
 "Riippuvuustiedot näytetään.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:794
+#: src/cmdline/cmdline_prompt.cc:796
 #, c-format
 msgid ""
 "\n"
@@ -855,7 +855,7 @@ msgstr ""
 "Riippuvuustietoja ei näytetä.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:800
+#: src/cmdline/cmdline_prompt.cc:802
 #, c-format
 msgid ""
 "\n"
@@ -866,7 +866,7 @@ msgstr ""
 "Versiot näytetään.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:802
+#: src/cmdline/cmdline_prompt.cc:804
 #, c-format
 msgid ""
 "\n"
@@ -877,7 +877,7 @@ msgstr ""
 "Versioita ei näytetä.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:807
+#: src/cmdline/cmdline_prompt.cc:809
 #, c-format
 msgid ""
 "\n"
@@ -888,7 +888,7 @@ msgstr ""
 "Kokojen muutokset näytetään.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:809
+#: src/cmdline/cmdline_prompt.cc:811
 #, c-format
 msgid ""
 "\n"
@@ -899,24 +899,24 @@ msgstr ""
 "Kokojen muutoksia ei näytetä.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:832
+#: src/cmdline/cmdline_prompt.cc:834
 #, c-format
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Virheellinen komento.  Anna hyväksytty komento tai '?' saadaksesi apua.\n"
 
-#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
+#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:599
 #: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "En pysty kirjoittamaan tiedostoon %s"
 
-#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:602
+#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:604
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Virhe kirjoitettaessa selvityksen tilatietoja tiedostoon %s"
 
-#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:604
+#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:606
 msgid "Resolver state successfully written!"
 msgstr "Ratkaisimen tila tallennettu!"
 
@@ -1072,7 +1072,7 @@ msgstr "Seuraavat toiminnot selvittävät nämä riippuvuudet:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Hyväksytkö tämän ratkaisun? [Kyllä=y/ei=n/lopeta=q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:650
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Lopetetaan yritykset ratkaista näitä riippuvuuksia."
 
@@ -1080,29 +1080,29 @@ msgstr "Lopetetaan yritykset ratkaista näitä riippuvuuksia."
 msgid "The following commands are available:"
 msgstr "Käytettävissä olevat komennot:"
 
-#: src/cmdline/cmdline_resolver.cc:594
+#: src/cmdline/cmdline_resolver.cc:596
 msgid "File to write resolver state to: "
 msgstr "Mihin tiedostoon selvityksen tila tallennetaan? "
 
-#: src/cmdline/cmdline_resolver.cc:609
+#: src/cmdline/cmdline_resolver.cc:611
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Virheellinen syöte; anna jokin seuraavista komennoista:"
 
-#: src/cmdline/cmdline_resolver.cc:622
+#: src/cmdline/cmdline_resolver.cc:624
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Ratkaisua ei löytynyt annetun ajan sisällä.  Yritetäänkö pitempään? [Kyllä=y/"
 "ei=n]"
 
-#: src/cmdline/cmdline_resolver.cc:651
+#: src/cmdline/cmdline_resolver.cc:653
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Virheellinen syöte; kirjoita joko 'y' (kyllä) tai 'n' (ei)."
 
-#: src/cmdline/cmdline_resolver.cc:660
+#: src/cmdline/cmdline_resolver.cc:662
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Riippuvuuksien selvitys epäonnistui!  Luovutan..."
 
-#: src/cmdline/cmdline_resolver.cc:666
+#: src/cmdline/cmdline_resolver.cc:668
 msgid "*** No more solutions available ***"
 msgstr "*** Ei muita ratkaisuja ***"
 
@@ -1397,7 +1397,7 @@ msgstr "TYYDYTTÄMÄTÖN"
 msgid "UNAVAILABLE"
 msgstr "EI SAATAVILLA"
 
-#: src/desc_parse.cc:275
+#: src/desc_parse.cc:292
 msgid "Tags"
 msgstr "Merkit"
 
@@ -1611,30 +1611,35 @@ msgstr ""
 "Varastotiedoston lukitus epäonnistui.  Pakettien tiloihin tekemäsi muutokset "
 "EIVÄT säily!"
 
-#: src/generic/apt/download_install_manager.cc:53
+#: src/generic/apt/download_install_manager.cc:56
 msgid ""
 "The package cache is not available; unable to download and install packages."
 msgstr "Pakettivarasto ei ole saatavilla; paketteja ei voi noutaa tai asentaa."
 
-#: src/generic/apt/download_install_manager.cc:69
+#: src/generic/apt/download_install_manager.cc:72
 #: src/generic/apt/download_update_manager.cc:77
 msgid "Couldn't lock list directory..are you root?"
 msgstr "En pystynyt lukitsemaan luettelohakemistoa - oletko varmasti root?"
 
-#: src/generic/apt/download_install_manager.cc:86
+#: src/generic/apt/download_install_manager.cc:89
 msgid "Internal error: couldn't generate list of packages to download"
 msgstr ""
 "Sisäinen virhe: en pystynyt muodostamaan luetteloa noudettavista paketeista"
 
-#: src/generic/apt/download_install_manager.cc:121
+#: src/generic/apt/download_install_manager.cc:119
+#, c-format
+msgid "Failed to fetch %s: %s"
+msgstr "%s:n nouto epäonnistui: %s"
+
+#: src/generic/apt/download_install_manager.cc:125
 msgid "Unable to correct for unavailable packages"
 msgstr "En pystynyt toipumaan pakettien saavuttamattomuudesta"
 
-#: src/generic/apt/download_install_manager.cc:141
+#: src/generic/apt/download_install_manager.cc:151
 msgid "A package failed to install.  Trying to recover:"
 msgstr "Jonkin paketin asennus epäonnistui.  Yritän toipua:"
 
-#: src/generic/apt/download_install_manager.cc:165
+#: src/generic/apt/download_install_manager.cc:176
 msgid ""
 "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr ""
@@ -5333,9 +5338,6 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "YLIN TASO"
-
-#~ msgid "Failed to fetch %s: %s"
-#~ msgstr "%s:n nouto epäonnistui: %s"
 
 #~ msgid "^NEWS"
 #~ msgstr "UUTISET"

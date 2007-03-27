@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.3-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2006-09-03 09:36-0700\n"
+"POT-Creation-Date: 2007-03-04 20:22-0800\n"
 "PO-Revision-Date: 2006-10-14 00:22-0500\n"
 "Last-Translator: Ming Hua <minghua@rice.edu>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
@@ -236,7 +236,7 @@ msgstr[0] "降级 %d 个包"
 msgid "Suggest %F"
 msgstr "建议 %F"
 
-#: src/cmdline/cmdline_action.cc:37
+#: src/cmdline/cmdline_action.cc:38
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -245,7 +245,7 @@ msgstr ""
 "注意：提供虚拟软件包“%2$s”\n"
 "      的“%1$s”已经被安装。\n"
 
-#: src/cmdline/cmdline_action.cc:44
+#: src/cmdline/cmdline_action.cc:45
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -254,7 +254,7 @@ msgstr ""
 "注意：提供虚拟软件包“%2$s”\n"
 "      的“%1$s”已经被选择即将安装。\n"
 
-#: src/cmdline/cmdline_action.cc:62
+#: src/cmdline/cmdline_action.cc:63
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -263,66 +263,66 @@ msgstr ""
 "“%s”存在于软件包数据库中，但是它不是一个真实的软件\n"
 "包，而且没有其它软件包提供该软件包。\n"
 
-#: src/cmdline/cmdline_action.cc:68
+#: src/cmdline/cmdline_action.cc:69
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "“%s”是一个虚拟软件包，提供者：\n"
 
-#: src/cmdline/cmdline_action.cc:71
+#: src/cmdline/cmdline_action.cc:72
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "您必须选择一个来安装。\n"
 
-#: src/cmdline/cmdline_action.cc:76
+#: src/cmdline/cmdline_action.cc:77
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
 "      virtual package \"%s\"\n"
 msgstr "注意：选择“%s”而不是虚拟软件包“%s”\n"
 
-#: src/cmdline/cmdline_action.cc:94
+#: src/cmdline/cmdline_action.cc:95
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s 的 (%s) 版本已经按要求安装了\n"
 
-#: src/cmdline/cmdline_action.cc:100
+#: src/cmdline/cmdline_action.cc:101
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s 目前未被安装，所以它不会被重新安装。\n"
 
-#: src/cmdline/cmdline_action.cc:107 src/cmdline/cmdline_action.cc:113
+#: src/cmdline/cmdline_action.cc:108 src/cmdline/cmdline_action.cc:114
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "软件包 %s 并未安装，所以不删除\n"
 
-#: src/cmdline/cmdline_action.cc:131
+#: src/cmdline/cmdline_action.cc:132
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "软件包 %s 并未安装，不能禁止升级\n"
 
-#: src/cmdline/cmdline_action.cc:133
+#: src/cmdline/cmdline_action.cc:134
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "软件包 %s 是不可升级的，不能设为禁止升级\n"
 
-#: src/cmdline/cmdline_action.cc:214
+#: src/cmdline/cmdline_action.cc:212
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "注意：选择软件集“%s：%s”安装\n"
 
-#: src/cmdline/cmdline_action.cc:244
+#: src/cmdline/cmdline_action.cc:242
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
 msgstr "您只能在“install”或“forbid-version”命令中指定一个软件包的版本。\n"
 
-#: src/cmdline/cmdline_action.cc:252
+#: src/cmdline/cmdline_action.cc:250
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "在“安装”命令中您只能指定一个软件包的存档\n"
 
-#: src/cmdline/cmdline_action.cc:286
+#: src/cmdline/cmdline_action.cc:284
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -331,7 +331,7 @@ msgstr ""
 "无法找到软件包“%s”，同时有超过40个软件包名称\n"
 "中包含“%s”。\n"
 
-#: src/cmdline/cmdline_action.cc:289
+#: src/cmdline/cmdline_action.cc:287
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -340,12 +340,12 @@ msgstr ""
 "无法找到软件包“%s”。然而下列软件包名称中\n"
 "包含“%s”。\n"
 
-#: src/cmdline/cmdline_action.cc:313
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr "无法找到任何名称或者描述中匹配“%s”的软件包\n"
 
-#: src/cmdline/cmdline_action.cc:315
+#: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -354,7 +354,7 @@ msgstr ""
 "无法找到任何软件包匹配“%s”，同时有超过40个软件包\n"
 "其描述中包含“%s”。\n"
 
-#: src/cmdline/cmdline_action.cc:318
+#: src/cmdline/cmdline_action.cc:316
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -363,7 +363,7 @@ msgstr ""
 "无法找到任何软件包匹配“%s”。然而下列软件包的描述中\n"
 "包含“%s”：\n"
 
-#: src/cmdline/cmdline_action.cc:437
+#: src/cmdline/cmdline_action.cc:436
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "非法的动作字符“%c”\n"
@@ -411,7 +411,7 @@ msgstr "无效的操作 %s"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "在参数“keep-all”之后有意料之外的模式"
 
-#: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_do_action.cc:241 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:520
 #, c-format
 msgid "Abort.\n"
@@ -423,7 +423,7 @@ msgid "download: you must specify at least one package to download\n"
 msgstr "下载：您必须指定至少一个要下载的软件包\n"
 
 #: src/cmdline/cmdline_download.cc:42
-#: src/generic/apt/download_install_manager.cc:76
+#: src/generic/apt/download_install_manager.cc:79
 msgid "Couldn't read source list"
 msgstr "无法读取源列表文件"
 
@@ -480,99 +480,99 @@ msgstr "好吧，您赢了。\n"
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr "这是什么？ 这当然是一只大象被一条蛇吞吃了。\n"
 
-#: src/cmdline/cmdline_prompt.cc:33
+#: src/cmdline/cmdline_prompt.cc:34
 msgid "Unexpected end-of-file on standard input"
 msgstr "标准输入中遇到意料之外的文件结束标志"
 
-#: src/cmdline/cmdline_prompt.cc:52
+#: src/cmdline/cmdline_prompt.cc:53
 msgid "Couldn't read list of sources"
 msgstr "无法读取软件包源列表"
 
-#: src/cmdline/cmdline_prompt.cc:234 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:236 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "但是 %s 将被安装。"
 
-#: src/cmdline/cmdline_prompt.cc:237 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:239 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "但是 %s 已被安装并且被保持不升级。"
 
-#: src/cmdline/cmdline_prompt.cc:240 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:242 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "但是 %s 已安装。"
 
-#: src/cmdline/cmdline_prompt.cc:244 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:246 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "但是它不是可安装的"
 
-#: src/cmdline/cmdline_prompt.cc:248 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:250 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " 这是一个虚拟软件包。"
 
-#: src/cmdline/cmdline_prompt.cc:251 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:253 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " 或者"
 
-#: src/cmdline/cmdline_prompt.cc:263
+#: src/cmdline/cmdline_prompt.cc:265
 msgid "The following packages are BROKEN:"
 msgstr "下列软件包是“破损”的："
 
-#: src/cmdline/cmdline_prompt.cc:264
+#: src/cmdline/cmdline_prompt.cc:266
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "下列软件包未被使用，将被“删除”："
 
-#: src/cmdline/cmdline_prompt.cc:265
+#: src/cmdline/cmdline_prompt.cc:267
 msgid "The following packages have been automatically kept back:"
 msgstr "下列软件包已经被自动阻止升级："
 
-#: src/cmdline/cmdline_prompt.cc:266
+#: src/cmdline/cmdline_prompt.cc:268
 msgid "The following NEW packages will be automatically installed:"
 msgstr "下列软件包将被自动安装："
 
-#: src/cmdline/cmdline_prompt.cc:267
+#: src/cmdline/cmdline_prompt.cc:269
 msgid "The following packages will be automatically REMOVED:"
 msgstr "下列软件包将被自动“删除”："
 
-#: src/cmdline/cmdline_prompt.cc:268
+#: src/cmdline/cmdline_prompt.cc:270
 msgid "The following packages will be DOWNGRADED:"
 msgstr "下列软件包将被“降级”："
 
-#: src/cmdline/cmdline_prompt.cc:269
+#: src/cmdline/cmdline_prompt.cc:271
 msgid "The following packages have been kept back:"
 msgstr "下列软件包已经被阻止升级："
 
-#: src/cmdline/cmdline_prompt.cc:270
+#: src/cmdline/cmdline_prompt.cc:272
 msgid "The following packages will be REINSTALLED:"
 msgstr "下列软件包将被“重新安装”："
 
-#: src/cmdline/cmdline_prompt.cc:271
+#: src/cmdline/cmdline_prompt.cc:273
 msgid "The following NEW packages will be installed:"
 msgstr "下列“新”软件包将被安装。"
 
-#: src/cmdline/cmdline_prompt.cc:272
+#: src/cmdline/cmdline_prompt.cc:274
 msgid "The following packages will be REMOVED:"
 msgstr "下列软件包将被“删除”："
 
-#: src/cmdline/cmdline_prompt.cc:273
+#: src/cmdline/cmdline_prompt.cc:275
 msgid "The following packages will be upgraded:"
 msgstr "下列软件包将被升级："
 
-#: src/cmdline/cmdline_prompt.cc:328
+#: src/cmdline/cmdline_prompt.cc:330
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "下列“基本”软件包将被“删除”！\n"
 
-#: src/cmdline/cmdline_prompt.cc:337
+#: src/cmdline/cmdline_prompt.cc:339
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "该动作将使下列“基本”软件包“破损”：\n"
 
-#: src/cmdline/cmdline_prompt.cc:347
+#: src/cmdline/cmdline_prompt.cc:349
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -581,16 +581,16 @@ msgstr ""
 "警告：执行该动作有可能导致您的系统损坏！\n"
 "      “不要”继续，除非您“完全”了解您正在做什么！\n"
 
-#: src/cmdline/cmdline_prompt.cc:349
+#: src/cmdline/cmdline_prompt.cc:351
 msgid "I am aware that this is a very bad idea"
 msgstr "我知道这是一个非常糟糕的主意"
 
-#: src/cmdline/cmdline_prompt.cc:352
+#: src/cmdline/cmdline_prompt.cc:354
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "要继续的话，键入词组“%s”：\n"
 
-#: src/cmdline/cmdline_prompt.cc:394
+#: src/cmdline/cmdline_prompt.cc:396
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -606,7 +606,7 @@ msgstr ""
 "只有当您非常清楚地了解这就是您所要执行的操作时，才应该进行安装操作。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:406
+#: src/cmdline/cmdline_prompt.cc:408
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -615,146 +615,146 @@ msgstr ""
 "*** 警告 ***  忽略这些信任违背，因为\n"
 "                 %s::CmdLine::Ignore-Trust-Violations 的值为“真”！\n"
 
-#: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:177
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:177
 #: src/vscreen/vs_util.cc:215
 msgid "Yes"
 msgstr "是"
 
-#: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:178
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:178
 #: src/vscreen/vs_util.cc:216
 msgid "No"
 msgstr "否"
 
-#: src/cmdline/cmdline_prompt.cc:417
+#: src/cmdline/cmdline_prompt.cc:419
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "您想忽略这条警告信息并继续执行吗？\n"
 
-#: src/cmdline/cmdline_prompt.cc:418
+#: src/cmdline/cmdline_prompt.cc:420
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "要继续，请键入“%s”；要中止，请键入“%s”："
 
-#: src/cmdline/cmdline_prompt.cc:432
+#: src/cmdline/cmdline_prompt.cc:434
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "未被识别的输入。请键入“%s”或“%s”。\n"
 
-#: src/cmdline/cmdline_prompt.cc:534
+#: src/cmdline/cmdline_prompt.cc:536
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "下列软件包被“推荐”安装但是将“不会”被安装：\n"
 
-#: src/cmdline/cmdline_prompt.cc:540
+#: src/cmdline/cmdline_prompt.cc:542
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "下列软件包被“建议”安装但是将“不会”被安装：\n"
 
-#: src/cmdline/cmdline_prompt.cc:545
+#: src/cmdline/cmdline_prompt.cc:547
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "将不会安装，升级或者删除任何软件包。\n"
 
-#: src/cmdline/cmdline_prompt.cc:547
+#: src/cmdline/cmdline_prompt.cc:549
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu 个软件包被升级，新安装 %lu 个，"
 
-#: src/cmdline/cmdline_prompt.cc:551
+#: src/cmdline/cmdline_prompt.cc:553
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu 个重新安装，"
 
-#: src/cmdline/cmdline_prompt.cc:553
+#: src/cmdline/cmdline_prompt.cc:555
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu 个被降级，"
 
-#: src/cmdline/cmdline_prompt.cc:555
+#: src/cmdline/cmdline_prompt.cc:557
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu 个将被删除， 同时 %lu 个将不升级。\n"
 
-#: src/cmdline/cmdline_prompt.cc:562
+#: src/cmdline/cmdline_prompt.cc:564
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "需要获取 %sB/%sB 的存档。"
 
-#: src/cmdline/cmdline_prompt.cc:565
+#: src/cmdline/cmdline_prompt.cc:567
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "需要获取 %sB 的存档。"
 
-#: src/cmdline/cmdline_prompt.cc:572
+#: src/cmdline/cmdline_prompt.cc:574
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "解包后将要使用 %sB。\n"
 
-#: src/cmdline/cmdline_prompt.cc:575
+#: src/cmdline/cmdline_prompt.cc:577
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "解包后将释放 %sB。\n"
 
-#: src/cmdline/cmdline_prompt.cc:613
+#: src/cmdline/cmdline_prompt.cc:615
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "无可显示的软件包 -- 请在“i”之后的那一行输入软件包名称。\n"
 
-#: src/cmdline/cmdline_prompt.cc:615
+#: src/cmdline/cmdline_prompt.cc:617
 msgid "Press Return to continue."
 msgstr "按回车继续。"
 
-#: src/cmdline/cmdline_prompt.cc:641
+#: src/cmdline/cmdline_prompt.cc:643
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "未发现软件包 -- 请在“c”之后的那一行输入软件包名称。\n"
 
-#: src/cmdline/cmdline_prompt.cc:645
+#: src/cmdline/cmdline_prompt.cc:647
 msgid "Press Return to continue"
 msgstr "按回车继续"
 
-#: src/cmdline/cmdline_prompt.cc:656
+#: src/cmdline/cmdline_prompt.cc:658
 #, c-format
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 
-#: src/cmdline/cmdline_prompt.cc:676
+#: src/cmdline/cmdline_prompt.cc:678
 msgid "continue with the installation"
 msgstr "继续安装"
 
-#: src/cmdline/cmdline_prompt.cc:678
+#: src/cmdline/cmdline_prompt.cc:680
 msgid "abort and quit"
 msgstr "放弃并退出"
 
-#: src/cmdline/cmdline_prompt.cc:680
+#: src/cmdline/cmdline_prompt.cc:682
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
 msgstr "显示一个或者多个软件包的信息；软件包的名字将在字符“i”之后。"
 
-#: src/cmdline/cmdline_prompt.cc:682
+#: src/cmdline/cmdline_prompt.cc:684
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
 msgstr "显示一个或者多个软件包的变更记录；软件包的名字将在字符“c”之后。"
 
-#: src/cmdline/cmdline_prompt.cc:684
+#: src/cmdline/cmdline_prompt.cc:686
 msgid "toggle the display of dependency information"
 msgstr "切换是否显示依赖关系信息"
 
-#: src/cmdline/cmdline_prompt.cc:686
+#: src/cmdline/cmdline_prompt.cc:688
 msgid "toggle the display of changes in package sizes"
 msgstr "切换是否显示软件包的大小"
 
-#: src/cmdline/cmdline_prompt.cc:688
+#: src/cmdline/cmdline_prompt.cc:690
 msgid "toggle the display of version numbers"
 msgstr "切换是否显示版本号"
 
-#: src/cmdline/cmdline_prompt.cc:690
+#: src/cmdline/cmdline_prompt.cc:692
 msgid "enter the full visual interface"
 msgstr "进入全可视化界面"
 
-#: src/cmdline/cmdline_prompt.cc:691
+#: src/cmdline/cmdline_prompt.cc:693
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -765,49 +765,49 @@ msgstr ""
 "软件包的名称(或者模式)。该动作将被实施到您所选择的全部软件包。下列动作可供选"
 "择："
 
-#: src/cmdline/cmdline_prompt.cc:696 src/cmdline/cmdline_resolver.cc:184
+#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:184
 msgid "'+' to install packages"
 msgstr "按'+'键来安装软件包"
 
-#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:186
+#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:186
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr "按'+M'安装软件包并且立即将它们标记为已安装状态"
 
-#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:188
+#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:188
 msgid "'-' to remove packages"
 msgstr "按'-'卸载软件包"
 
-#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:190
+#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:190
 msgid "'_' to purge packages"
 msgstr "按'_'清除软件包"
 
-#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:192
+#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:192
 msgid "'=' to place packages on hold"
 msgstr "按'='将软件包置于保持状态"
 
-#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:194
+#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:194
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "按':'将维持软件包当前状态但是并不将其置于保持状态"
 
-#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:196
+#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
 msgstr "按'&M'将软件包标记为自动安装"
 
-#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:198
+#: src/cmdline/cmdline_prompt.cc:712 src/cmdline/cmdline_resolver.cc:198
 msgid "'&m' to mark packages as manually installed"
 msgstr "按'm'将软件包标记为手动安装"
 
-#: src/cmdline/cmdline_prompt.cc:712
+#: src/cmdline/cmdline_prompt.cc:714
 msgid "Commands:"
 msgstr "命令："
 
-#: src/cmdline/cmdline_prompt.cc:767
+#: src/cmdline/cmdline_prompt.cc:769
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "您要继续吗？[Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:792
+#: src/cmdline/cmdline_prompt.cc:794
 #, c-format
 msgid ""
 "\n"
@@ -818,7 +818,7 @@ msgstr ""
 "将显示依赖关系信息。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:794
+#: src/cmdline/cmdline_prompt.cc:796
 #, c-format
 msgid ""
 "\n"
@@ -829,7 +829,7 @@ msgstr ""
 "将不显示依赖关系信息。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:800
+#: src/cmdline/cmdline_prompt.cc:802
 #, c-format
 msgid ""
 "\n"
@@ -840,7 +840,7 @@ msgstr ""
 "将显示版本号。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:802
+#: src/cmdline/cmdline_prompt.cc:804
 #, c-format
 msgid ""
 "\n"
@@ -851,7 +851,7 @@ msgstr ""
 "将不显示版本号。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:807
+#: src/cmdline/cmdline_prompt.cc:809
 #, c-format
 msgid ""
 "\n"
@@ -862,7 +862,7 @@ msgstr ""
 "尺寸变化将被显示。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:809
+#: src/cmdline/cmdline_prompt.cc:811
 #, c-format
 msgid ""
 "\n"
@@ -873,23 +873,23 @@ msgstr ""
 "尺寸变化将不被显示。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:832
+#: src/cmdline/cmdline_prompt.cc:834
 #, c-format
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "非法响应。请输入一个合法命令或者“?”请求帮助。\n"
 
-#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
+#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:599
 #: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "无法打开 %s 以写入"
 
-#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:602
+#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:604
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "将依赖关系解决状态写入文件 %s 时发生错误"
 
-#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:604
+#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:606
 msgid "Resolver state successfully written!"
 msgstr "成功写入依赖关系解决状态！"
 
@@ -1040,7 +1040,7 @@ msgstr "下列动作将解决这些依赖关系："
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "是否接受该解决方案？[Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:650
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "放弃解决这些依赖关系的全部努力。"
 
@@ -1048,27 +1048,27 @@ msgstr "放弃解决这些依赖关系的全部努力。"
 msgid "The following commands are available:"
 msgstr "下列命令可选："
 
-#: src/cmdline/cmdline_resolver.cc:594
+#: src/cmdline/cmdline_resolver.cc:596
 msgid "File to write resolver state to: "
 msgstr "将依赖关系解决状态写入文件："
 
-#: src/cmdline/cmdline_resolver.cc:609
+#: src/cmdline/cmdline_resolver.cc:611
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "非法响应；请输入下列命令之一："
 
-#: src/cmdline/cmdline_resolver.cc:622
+#: src/cmdline/cmdline_resolver.cc:624
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "在分配的时间内未找到解决方案。加把劲再试试？[Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:651
+#: src/cmdline/cmdline_resolver.cc:653
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "非法响应；请输入“y”或者“n”。"
 
-#: src/cmdline/cmdline_resolver.cc:660
+#: src/cmdline/cmdline_resolver.cc:662
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "未能解决依赖关系！放弃..."
 
-#: src/cmdline/cmdline_resolver.cc:666
+#: src/cmdline/cmdline_resolver.cc:668
 msgid "*** No more solutions available ***"
 msgstr "*** 没有更多的解决方案了 ***"
 
@@ -1363,7 +1363,7 @@ msgstr "未满足的"
 msgid "UNAVAILABLE"
 msgstr "不可用"
 
-#: src/desc_parse.cc:275
+#: src/desc_parse.cc:292
 msgid "Tags"
 msgstr "标签"
 
@@ -1574,29 +1574,34 @@ msgstr ""
 "无法锁定缓存文件。正在以只读方式打开；您对软件包状态所作的任何改变都不会被保"
 "存！"
 
-#: src/generic/apt/download_install_manager.cc:53
+#: src/generic/apt/download_install_manager.cc:56
 msgid ""
 "The package cache is not available; unable to download and install packages."
 msgstr "软件包 cache 不可用；无法下载并安装软件包。"
 
-#: src/generic/apt/download_install_manager.cc:69
+#: src/generic/apt/download_install_manager.cc:72
 #: src/generic/apt/download_update_manager.cc:77
 msgid "Couldn't lock list directory..are you root?"
 msgstr "无法锁定列表目录..您是 root 吗？"
 
-#: src/generic/apt/download_install_manager.cc:86
+#: src/generic/apt/download_install_manager.cc:89
 msgid "Internal error: couldn't generate list of packages to download"
 msgstr "内部错误：无法生成下载软件包列表"
 
-#: src/generic/apt/download_install_manager.cc:121
+#: src/generic/apt/download_install_manager.cc:119
+#, fuzzy, c-format
+msgid "Failed to fetch %s: %s"
+msgstr "无法将 %s 改名为 %s"
+
+#: src/generic/apt/download_install_manager.cc:125
 msgid "Unable to correct for unavailable packages"
 msgstr "无法修正不可用的软件包"
 
-#: src/generic/apt/download_install_manager.cc:141
+#: src/generic/apt/download_install_manager.cc:151
 msgid "A package failed to install.  Trying to recover:"
 msgstr "软件包安装失败。正在试图恢复："
 
-#: src/generic/apt/download_install_manager.cc:165
+#: src/generic/apt/download_install_manager.cc:176
 msgid ""
 "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr "无法重新获得系统锁！(也许另一个 apt 或 dpkg 正在运行？)"

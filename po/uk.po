@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude-uk\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2006-09-03 09:36-0700\n"
+"POT-Creation-Date: 2007-03-04 20:22-0800\n"
 "PO-Revision-Date: 2007-03-19 18:26+0200\n"
 "Last-Translator: Borys Yanovych <borman@pravex.kiev.ua>\n"
 "Language-Team: Ukrainian\n"
@@ -257,7 +257,7 @@ msgstr[2] "%d замінити на більш давні"
 msgid "Suggest %F"
 msgstr "Пропонується %F"
 
-#: src/cmdline/cmdline_action.cc:37
+#: src/cmdline/cmdline_action.cc:38
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -266,7 +266,7 @@ msgstr ""
 "Нотатка: \"%s\", що забезпечує віртуальний пакунок\n"
 "         \"%s\", вже встановлено.\n"
 
-#: src/cmdline/cmdline_action.cc:44
+#: src/cmdline/cmdline_action.cc:45
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -275,7 +275,7 @@ msgstr ""
 "Нотатка: \"%s\", що забезпечує віртуальний пакунок\n"
 "         \"%s\", вже вибрано для встановлення.\n"
 
-#: src/cmdline/cmdline_action.cc:62
+#: src/cmdline/cmdline_action.cc:63
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -284,17 +284,17 @@ msgstr ""
 "\"%s\" існує в базі даних пакунків, однак не є справжнім\n"
 "пакунком, а жоден інший пакунок не забезпечує його.\n"
 
-#: src/cmdline/cmdline_action.cc:68
+#: src/cmdline/cmdline_action.cc:69
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" є віртуальним пакунком, що забезпечується:\n"
 
-#: src/cmdline/cmdline_action.cc:71
+#: src/cmdline/cmdline_action.cc:72
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Ви повинні обрати один для встановлення\n"
 
-#: src/cmdline/cmdline_action.cc:76
+#: src/cmdline/cmdline_action.cc:77
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -303,37 +303,37 @@ msgstr ""
 "Нотатка: обрано \"%s\" замість\n"
 "         віртуального пакунка \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:94
+#: src/cmdline/cmdline_action.cc:95
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s вже встановлено потрібної версії (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:100
+#: src/cmdline/cmdline_action.cc:101
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s не встановлений, тому його перевстановлення неможливе.\n"
 
-#: src/cmdline/cmdline_action.cc:107 src/cmdline/cmdline_action.cc:113
+#: src/cmdline/cmdline_action.cc:108 src/cmdline/cmdline_action.cc:114
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Пакунок %s не встановлений, тому видалити його неможливо\n"
 
-#: src/cmdline/cmdline_action.cc:131
+#: src/cmdline/cmdline_action.cc:132
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "Пакунок %s не встановлений, тому неможливо заборонити його оновлення\n"
 
-#: src/cmdline/cmdline_action.cc:133
+#: src/cmdline/cmdline_action.cc:134
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "Пакунок %s не оновлюваний, тому неможливо заборонити його оновлення\n"
 
-#: src/cmdline/cmdline_action.cc:214
+#: src/cmdline/cmdline_action.cc:212
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Нотатка: вибрано задачу \"%s: %s\" для встановлення\n"
 
-#: src/cmdline/cmdline_action.cc:244
+#: src/cmdline/cmdline_action.cc:242
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -342,12 +342,12 @@ msgstr ""
 "Ви можете вказувати версію пакунка лише для команд 'install' та 'forbid-"
 "version'.\n"
 
-#: src/cmdline/cmdline_action.cc:252
+#: src/cmdline/cmdline_action.cc:250
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "Ви можете вказувати архів пакунків лише для команди 'install'.\n"
 
-#: src/cmdline/cmdline_action.cc:286
+#: src/cmdline/cmdline_action.cc:284
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -356,7 +356,7 @@ msgstr ""
 "Не вдалося знайти пакунок \"%s\", але \"%s\" міститься\n"
 "в назвах більш ніж 40-ка пакунків\n"
 
-#: src/cmdline/cmdline_action.cc:289
+#: src/cmdline/cmdline_action.cc:287
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -365,13 +365,13 @@ msgstr ""
 "Не вдалося знайти пакунок \"%s\". Проте, \"%s\" міститься\n"
 "в назвах таких пакунків:\n"
 
-#: src/cmdline/cmdline_action.cc:313
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "Не вдалося знайти жодного пакунка, в назві або описі якого міститься \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:315
+#: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -380,7 +380,7 @@ msgstr ""
 "Не вдалося знайти пакунок, в назві якого міститься \"%s\", але\n"
 "\"%s\" знайдено в описах більш ніж 40-ка пакунків.\n"
 
-#: src/cmdline/cmdline_action.cc:318
+#: src/cmdline/cmdline_action.cc:316
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -389,7 +389,7 @@ msgstr ""
 "Не вдалося знайти пакунок, в назві якого міститься \"%s\".\n"
 "Проте \"%s\" знайдено в описах таких пакунків:\n"
 
-#: src/cmdline/cmdline_action.cc:437
+#: src/cmdline/cmdline_action.cc:436
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Невірний символ вибору дії: '%c'\n"
@@ -437,7 +437,7 @@ msgstr "Помилкова дія %s"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Неочікуваний аргумент шаблону після \"keep-all\""
 
-#: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_do_action.cc:241 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:520
 #, c-format
 msgid "Abort.\n"
@@ -451,7 +451,7 @@ msgstr ""
 "пакунка\n"
 
 #: src/cmdline/cmdline_download.cc:42
-#: src/generic/apt/download_install_manager.cc:76
+#: src/generic/apt/download_install_manager.cc:79
 msgid "Couldn't read source list"
 msgstr "Не вдалося прочитати sources.list"
 
@@ -510,99 +510,99 @@ msgstr "Все, ви перемогли.\n"
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr "Що це? Звісно ж це слон, якого проковтнула змія.\n"
 
-#: src/cmdline/cmdline_prompt.cc:33
+#: src/cmdline/cmdline_prompt.cc:34
 msgid "Unexpected end-of-file on standard input"
 msgstr "Неочікуваний кінець файла (EOF) на стандартному вході"
 
-#: src/cmdline/cmdline_prompt.cc:52
+#: src/cmdline/cmdline_prompt.cc:53
 msgid "Couldn't read list of sources"
 msgstr "Не вдалося прочитати список джерел"
 
-#: src/cmdline/cmdline_prompt.cc:234 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:236 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "але має бути встановленим %s."
 
-#: src/cmdline/cmdline_prompt.cc:237 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:239 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "але %s встановлено і утримано."
 
-#: src/cmdline/cmdline_prompt.cc:240 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:242 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "однак встановлено %s "
 
-#: src/cmdline/cmdline_prompt.cc:244 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:246 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "проте його неможливо встановити"
 
-#: src/cmdline/cmdline_prompt.cc:248 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:250 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " котрий є віртуальним пакунком."
 
-#: src/cmdline/cmdline_prompt.cc:251 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:253 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " чи"
 
-#: src/cmdline/cmdline_prompt.cc:263
+#: src/cmdline/cmdline_prompt.cc:265
 msgid "The following packages are BROKEN:"
 msgstr "НЕДІЄЗДАТНІ пакунки:"
 
-#: src/cmdline/cmdline_prompt.cc:264
+#: src/cmdline/cmdline_prompt.cc:266
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Наступні пакунки не використовуються і будуть ВИДАЛЕНІ:"
 
-#: src/cmdline/cmdline_prompt.cc:265
+#: src/cmdline/cmdline_prompt.cc:267
 msgid "The following packages have been automatically kept back:"
 msgstr "Наступні пакунки будуть автоматично зафіксовані:"
 
-#: src/cmdline/cmdline_prompt.cc:266
+#: src/cmdline/cmdline_prompt.cc:268
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Наступні НОВІ пакунки будуть автоматично встановлені:"
 
-#: src/cmdline/cmdline_prompt.cc:267
+#: src/cmdline/cmdline_prompt.cc:269
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Наступні пакунки будуть автоматично ВИДАЛЕНІ:"
 
-#: src/cmdline/cmdline_prompt.cc:268
+#: src/cmdline/cmdline_prompt.cc:270
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Наступні пакунки будуть ЗАМІНЕНІ НА ДАВНІШІ ВЕРСІЇ:"
 
-#: src/cmdline/cmdline_prompt.cc:269
+#: src/cmdline/cmdline_prompt.cc:271
 msgid "The following packages have been kept back:"
 msgstr "Наступні пакунки будуть залишені в зафіксованому стані:"
 
-#: src/cmdline/cmdline_prompt.cc:270
+#: src/cmdline/cmdline_prompt.cc:272
 msgid "The following packages will be REINSTALLED:"
 msgstr "Наступні пакунки будуть ПЕРЕВСТАНОВЛЕНІ:"
 
-#: src/cmdline/cmdline_prompt.cc:271
+#: src/cmdline/cmdline_prompt.cc:273
 msgid "The following NEW packages will be installed:"
 msgstr "Наступні НОВІ пакунки будуть встановлені:"
 
-#: src/cmdline/cmdline_prompt.cc:272
+#: src/cmdline/cmdline_prompt.cc:274
 msgid "The following packages will be REMOVED:"
 msgstr "Наступні пакунки будуть ВИДАЛЕНІ:"
 
-#: src/cmdline/cmdline_prompt.cc:273
+#: src/cmdline/cmdline_prompt.cc:275
 msgid "The following packages will be upgraded:"
 msgstr "Наступні пакунки будуть оновлені:"
 
-#: src/cmdline/cmdline_prompt.cc:328
+#: src/cmdline/cmdline_prompt.cc:330
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Наступні НЕВІДДІЛЬНІ пакунки будуть ВИДАЛЕНІ!\n"
 
-#: src/cmdline/cmdline_prompt.cc:337
+#: src/cmdline/cmdline_prompt.cc:339
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "Внаслідок цієї дії стануть НЕДІЄЗДАТНИМИ такі НЕВІДДІЛЬНІ пакунки:\n"
 
-#: src/cmdline/cmdline_prompt.cc:347
+#: src/cmdline/cmdline_prompt.cc:349
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -611,16 +611,16 @@ msgstr ""
 "ПОПЕРЕДЖЕННЯ: Виконання цієї дії може пошкодити вашу систему!\n"
 "              ЗУПИНІТЬСЯ, якщо ви не знаєте ТОЧНО, що ви робите!\n"
 
-#: src/cmdline/cmdline_prompt.cc:349
+#: src/cmdline/cmdline_prompt.cc:351
 msgid "I am aware that this is a very bad idea"
 msgstr "Я знаю, що це дуже погана ідея"
 
-#: src/cmdline/cmdline_prompt.cc:352
+#: src/cmdline/cmdline_prompt.cc:354
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Щоб продовжити, наберіть фразу \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:394
+#: src/cmdline/cmdline_prompt.cc:396
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -637,7 +637,7 @@ msgstr ""
 "свідомі власних намірів.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:406
+#: src/cmdline/cmdline_prompt.cc:408
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -647,122 +647,122 @@ msgstr ""
 "                       %s::CmdLine::Ignore-Trust-Violations має значення "
 "'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:177
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:177
 #: src/vscreen/vs_util.cc:215
 msgid "Yes"
 msgstr "Так"
 
-#: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:178
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:178
 #: src/vscreen/vs_util.cc:216
 msgid "No"
 msgstr "Ні"
 
-#: src/cmdline/cmdline_prompt.cc:417
+#: src/cmdline/cmdline_prompt.cc:419
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Бажаєте ігнорувати це попередження і все одно продовжити?\n"
 
-#: src/cmdline/cmdline_prompt.cc:418
+#: src/cmdline/cmdline_prompt.cc:420
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "Для продовження введіть \"%s\"; введіть \"%s\", щоб перервати процес: "
 
-#: src/cmdline/cmdline_prompt.cc:432
+#: src/cmdline/cmdline_prompt.cc:434
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr ""
 "Неможливо розпізнати введу фразу. Вимагається лише \"%s\" або \"%s\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:534
+#: src/cmdline/cmdline_prompt.cc:536
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr ""
 "Наступні пакунки РЕКОМЕНДУЮТЬСЯ, однак НЕ будуть встановлені автоматично:\n"
 
-#: src/cmdline/cmdline_prompt.cc:540
+#: src/cmdline/cmdline_prompt.cc:542
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr ""
 "Наступні пакунки ПРОПОНУЮТЬСЯ, однак НЕ будуть встановлені автоматично:\n"
 
-#: src/cmdline/cmdline_prompt.cc:545
+#: src/cmdline/cmdline_prompt.cc:547
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Жодного не буде встановлено, оновлено або видалено.\n"
 
-#: src/cmdline/cmdline_prompt.cc:547
+#: src/cmdline/cmdline_prompt.cc:549
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu пакунків оновлено, %lu нових встановлено, "
 
-#: src/cmdline/cmdline_prompt.cc:551
+#: src/cmdline/cmdline_prompt.cc:553
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu перевстановлено, "
 
-#: src/cmdline/cmdline_prompt.cc:553
+#: src/cmdline/cmdline_prompt.cc:555
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu замінено на давніші версії, "
 
-#: src/cmdline/cmdline_prompt.cc:555
+#: src/cmdline/cmdline_prompt.cc:557
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu видалено і %lu не оновлено.\n"
 
-#: src/cmdline/cmdline_prompt.cc:562
+#: src/cmdline/cmdline_prompt.cc:564
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Потрібно отримати %sb/%sb архівів. "
 
-#: src/cmdline/cmdline_prompt.cc:565
+#: src/cmdline/cmdline_prompt.cc:567
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Потрібно отримати %sb архівів. "
 
-#: src/cmdline/cmdline_prompt.cc:572
+#: src/cmdline/cmdline_prompt.cc:574
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Після розпакування %sb буде зайнято.\n"
 
-#: src/cmdline/cmdline_prompt.cc:575
+#: src/cmdline/cmdline_prompt.cc:577
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Після розпакування буде звільнено %sb.\n"
 
-#: src/cmdline/cmdline_prompt.cc:613
+#: src/cmdline/cmdline_prompt.cc:615
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr ""
 "Немає пакунків для показу -- введіть назви пакунків в рядку після 'i'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:615
+#: src/cmdline/cmdline_prompt.cc:617
 msgid "Press Return to continue."
 msgstr "Натисніть Enter для продовження."
 
-#: src/cmdline/cmdline_prompt.cc:641
+#: src/cmdline/cmdline_prompt.cc:643
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "Пакунки не знайдені -- введіть назви пакунків в рядку після 'c'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:645
+#: src/cmdline/cmdline_prompt.cc:647
 msgid "Press Return to continue"
 msgstr "Натисніть Enter для продовження."
 
-#: src/cmdline/cmdline_prompt.cc:656
+#: src/cmdline/cmdline_prompt.cc:658
 #, c-format
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 
-#: src/cmdline/cmdline_prompt.cc:676
+#: src/cmdline/cmdline_prompt.cc:678
 msgid "continue with the installation"
 msgstr "продовжити з встановленням"
 
-#: src/cmdline/cmdline_prompt.cc:678
+#: src/cmdline/cmdline_prompt.cc:680
 msgid "abort and quit"
 msgstr "перервати та вийти"
 
-#: src/cmdline/cmdline_prompt.cc:680
+#: src/cmdline/cmdline_prompt.cc:682
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -770,7 +770,7 @@ msgstr ""
 "показати інформацію про один або декілька пакунків; назви пакунків треба "
 "вказувати після 'i'"
 
-#: src/cmdline/cmdline_prompt.cc:682
+#: src/cmdline/cmdline_prompt.cc:684
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -778,23 +778,23 @@ msgstr ""
 "показати список змін Debian для одного або декількох пакунків; назви "
 "пакунків треба вказувати після 'c'"
 
-#: src/cmdline/cmdline_prompt.cc:684
+#: src/cmdline/cmdline_prompt.cc:686
 msgid "toggle the display of dependency information"
 msgstr "перемкнутись на відображення інформації про залежності"
 
-#: src/cmdline/cmdline_prompt.cc:686
+#: src/cmdline/cmdline_prompt.cc:688
 msgid "toggle the display of changes in package sizes"
 msgstr "перемкнутись на відображення змін в розмірах пакунків"
 
-#: src/cmdline/cmdline_prompt.cc:688
+#: src/cmdline/cmdline_prompt.cc:690
 msgid "toggle the display of version numbers"
 msgstr "перемкнутись на відображення номерів версій"
 
-#: src/cmdline/cmdline_prompt.cc:690
+#: src/cmdline/cmdline_prompt.cc:692
 msgid "enter the full visual interface"
 msgstr "увійти до повноекранного візуального інтерфейсу"
 
-#: src/cmdline/cmdline_prompt.cc:691
+#: src/cmdline/cmdline_prompt.cc:693
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -806,50 +806,50 @@ msgstr ""
 "(можна вказувати і шаблони). Ця дія буде виконана для всіх пакунків з вашого "
 "списку. Можливі варіанти дій:"
 
-#: src/cmdline/cmdline_prompt.cc:696 src/cmdline/cmdline_resolver.cc:184
+#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:184
 msgid "'+' to install packages"
 msgstr "'+' встановити пакунки"
 
-#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:186
+#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:186
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' встановити пакунки та одразу позначити їх як автоматично встановлені"
 
-#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:188
+#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:188
 msgid "'-' to remove packages"
 msgstr "'-' видалити пакунки"
 
-#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:190
+#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:190
 msgid "'_' to purge packages"
 msgstr "'_' очистити пакунки"
 
-#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:192
+#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:192
 msgid "'=' to place packages on hold"
 msgstr "'=' зафіксувати пакунки"
 
-#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:194
+#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:194
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "':' зберегти пакунки в їх поточному стані не фіксуючи їх"
 
-#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:196
+#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' позначити пакунки як автоматично встановлені"
 
-#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:198
+#: src/cmdline/cmdline_prompt.cc:712 src/cmdline/cmdline_resolver.cc:198
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' позначити пакунки як встановлені вручну"
 
-#: src/cmdline/cmdline_prompt.cc:712
+#: src/cmdline/cmdline_prompt.cc:714
 msgid "Commands:"
 msgstr "Команди:"
 
-#: src/cmdline/cmdline_prompt.cc:767
+#: src/cmdline/cmdline_prompt.cc:769
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Бажаєте продовжити? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:792
+#: src/cmdline/cmdline_prompt.cc:794
 #, c-format
 msgid ""
 "\n"
@@ -860,7 +860,7 @@ msgstr ""
 "Інформація про залежності буде відображатися.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:794
+#: src/cmdline/cmdline_prompt.cc:796
 #, c-format
 msgid ""
 "\n"
@@ -871,7 +871,7 @@ msgstr ""
 "Інформація про залежності відображатися не буде.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:800
+#: src/cmdline/cmdline_prompt.cc:802
 #, c-format
 msgid ""
 "\n"
@@ -882,7 +882,7 @@ msgstr ""
 "Номера версій будуть відображатися.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:802
+#: src/cmdline/cmdline_prompt.cc:804
 #, c-format
 msgid ""
 "\n"
@@ -893,7 +893,7 @@ msgstr ""
 "Номера версій відображатися не будуть.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:807
+#: src/cmdline/cmdline_prompt.cc:809
 #, c-format
 msgid ""
 "\n"
@@ -904,7 +904,7 @@ msgstr ""
 "Інформація про зміни розмірів буде відображатися.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:809
+#: src/cmdline/cmdline_prompt.cc:811
 #, c-format
 msgid ""
 "\n"
@@ -915,25 +915,25 @@ msgstr ""
 "Інформація про зміни розмірів відображатися не буде.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:832
+#: src/cmdline/cmdline_prompt.cc:834
 #, c-format
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Помилкова відповідь. Введіть правильну команду або натисніть '?' для "
 "довідки.\n"
 
-#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
+#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:599
 #: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Не вдається відкрити %s для запису"
 
-#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:602
+#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:604
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Помилка запису стану розв'язувача залежностей в %s"
 
-#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:604
+#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:606
 msgid "Resolver state successfully written!"
 msgstr "Стан розв'язувача залежностей успішно записано!"
 
@@ -1089,7 +1089,7 @@ msgstr "Ці залежності можуть розв'язати такі ді
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Прийняти цей розв'язок? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:650
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Відхилення всіх спроб розв'язати ці залежності."
 
@@ -1097,28 +1097,28 @@ msgstr "Відхилення всіх спроб розв'язати ці зал
 msgid "The following commands are available:"
 msgstr "Придатними є наступні команди:"
 
-#: src/cmdline/cmdline_resolver.cc:594
+#: src/cmdline/cmdline_resolver.cc:596
 msgid "File to write resolver state to: "
 msgstr "Файл для запису стану розв'язувача:"
 
-#: src/cmdline/cmdline_resolver.cc:609
+#: src/cmdline/cmdline_resolver.cc:611
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Неправильна відповідь; будь ласка, введіть одну з таких команд:"
 
-#: src/cmdline/cmdline_resolver.cc:622
+#: src/cmdline/cmdline_resolver.cc:624
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Не вдалося знайти розв'язок за виділений час. Спробувати ретельніше? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:651
+#: src/cmdline/cmdline_resolver.cc:653
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Невірна відповідь; будь ласка, вкажіть 'y' або 'n'."
 
-#: src/cmdline/cmdline_resolver.cc:660
+#: src/cmdline/cmdline_resolver.cc:662
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Не вдається розв'язати залежності! Я здаюсь..."
 
-#: src/cmdline/cmdline_resolver.cc:666
+#: src/cmdline/cmdline_resolver.cc:668
 msgid "*** No more solutions available ***"
 msgstr "*** Розв'язків більше немає ***"
 
@@ -1414,7 +1414,7 @@ msgstr "НЕЗАДОВОЛЕНО"
 msgid "UNAVAILABLE"
 msgstr "НЕДОСТУПНО"
 
-#: src/desc_parse.cc:275
+#: src/desc_parse.cc:292
 msgid "Tags"
 msgstr "Мітки"
 
@@ -1633,30 +1633,35 @@ msgstr ""
 "Не вдається заблокувати файл кешу. Відкриваю в режимі лише для читання; будь-"
 "які внесені вами зміни станів пакунків НЕ БУДУТЬ збережені!"
 
-#: src/generic/apt/download_install_manager.cc:53
+#: src/generic/apt/download_install_manager.cc:56
 msgid ""
 "The package cache is not available; unable to download and install packages."
 msgstr "Кеш пакунків недоступний; неможливо завантажити та встановити пакунки."
 
-#: src/generic/apt/download_install_manager.cc:69
+#: src/generic/apt/download_install_manager.cc:72
 #: src/generic/apt/download_update_manager.cc:77
 msgid "Couldn't lock list directory..are you root?"
 msgstr "Не вдалося заблокувати теку list.. ви працюєте з правами root?"
 
-#: src/generic/apt/download_install_manager.cc:86
+#: src/generic/apt/download_install_manager.cc:89
 msgid "Internal error: couldn't generate list of packages to download"
 msgstr ""
 "Внутрішня помилка: не вдалося згенерувати список пакунків для завантаження"
 
-#: src/generic/apt/download_install_manager.cc:121
+#: src/generic/apt/download_install_manager.cc:119
+#, c-format
+msgid "Failed to fetch %s: %s"
+msgstr "Не вдалося стягнути %s: %s"
+
+#: src/generic/apt/download_install_manager.cc:125
 msgid "Unable to correct for unavailable packages"
 msgstr "Неможливо виправити для недоступних пакунків"
 
-#: src/generic/apt/download_install_manager.cc:141
+#: src/generic/apt/download_install_manager.cc:151
 msgid "A package failed to install.  Trying to recover:"
 msgstr "Помилка під час встановлення пакунка. Спроба відновлення:"
 
-#: src/generic/apt/download_install_manager.cc:165
+#: src/generic/apt/download_install_manager.cc:176
 msgid ""
 "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr ""
@@ -5411,6 +5416,3 @@ msgstr ""
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "ВЕРХНІЙ РІВЕНЬ"
-
-#~ msgid "Failed to fetch %s: %s"
-#~ msgstr "Не вдалося стягнути %s: %s"

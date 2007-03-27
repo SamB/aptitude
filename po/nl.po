@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude-0.4.3_nl\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2006-09-03 09:36-0700\n"
+"POT-Creation-Date: 2007-03-04 20:22-0800\n"
 "PO-Revision-Date: 2006-10-15 14:08+0200\n"
 "Last-Translator: Frans Pop <elendil@planet.nl>\n"
 "Language-Team: Dutch <debian-l10n-dutch@lists.debian.org>\n"
@@ -66,7 +66,8 @@ msgstr "Toon standaard de uitgebreide beschrijving"
 
 #: src/apt_options.cc:132
 msgid "Advance to the next item after changing the state of a package"
-msgstr "Ga verder naar het volgende item na het wijzigen van de status van een pakket"
+msgstr ""
+"Ga verder naar het volgende item na het wijzigen van de status van een pakket"
 
 #: src/apt_options.cc:134
 msgid "Automatically show why packages are broken"
@@ -98,7 +99,8 @@ msgstr "Automatisch opwaarderen van geïnstalleerde pakketten"
 
 #: src/apt_options.cc:157
 msgid "Remove obsolete package files after downloading new package lists"
-msgstr "Verwijder verouderde pakketbestanden na ophalen van nieuwe pakketlijsten"
+msgstr ""
+"Verwijder verouderde pakketbestanden na ophalen van nieuwe pakketlijsten"
 
 #: src/apt_options.cc:159
 msgid "URL to use to download changelogs"
@@ -109,19 +111,22 @@ msgid "Display a preview of what will be done before doing it"
 msgstr "Toon een preview van wat zal gebeuren alvorens het uit te voeren"
 
 #: src/apt_options.cc:165
-msgid "Forget which packages are \"new\" whenever the package lists are updated"
+msgid ""
+"Forget which packages are \"new\" whenever the package lists are updated"
 msgstr ""
 "Vergeet welke pakketten \"nieuw\" zijn wanneer de pakketlijsten zijn "
 "bijgewerkt"
 
 #: src/apt_options.cc:168
-msgid "Forget which packages are \"new\" whenever packages are installed or removed"
+msgid ""
+"Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr ""
 "Vergeet welke pakketten \"nieuw\" zijn wanneer pakketten worden "
 "geïnstalleerd of verwijderd"
 
 #: src/apt_options.cc:171
-msgid "Do not display a warning when the first change is made in read-only mode"
+msgid ""
+"Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 "Toon geen waarschuwing wanneer de eerste wijziging wordt gemaakt in alleen-"
 "lezen modus"
@@ -138,13 +143,13 @@ msgstr "Bestand om acties in bij te houden"
 
 #: src/apt_options.cc:184
 msgid "Automatically resolve dependencies of a package when it is selected"
-msgstr "Los afhankelijkheden automatisch op wanneer een pakket wordt geselecteerd"
+msgstr ""
+"Los afhankelijkheden automatisch op wanneer een pakket wordt geselecteerd"
 
 #: src/apt_options.cc:186
 msgid "Automatically fix broken packages before installing or removing"
 msgstr ""
-"Repareer automatisch defecte pakketten alvorens te installeren of "
-"verwijderen"
+"Repareer automatisch defecte pakketten alvorens te installeren of verwijderen"
 
 #: src/apt_options.cc:188
 msgid "Install Recommended packages automatically"
@@ -156,7 +161,8 @@ msgstr "Verwijder automatisch ongebruikte pakketten"
 
 #: src/apt_options.cc:192
 msgid "Don't automatically remove unused packages matching this filter"
-msgstr "Verwijder niet automatisch ongebruikte pakketten die voldoen aan deze filter"
+msgstr ""
+"Verwijder niet automatisch ongebruikte pakketten die voldoen aan deze filter"
 
 #: src/apt_options.cc:248 src/mine/cmine.cc:302 src/mine/cmine.cc:367
 #: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:91
@@ -247,7 +253,7 @@ msgstr[1] "%d degradaties"
 msgid "Suggest %F"
 msgstr "Suggereer %F"
 
-#: src/cmdline/cmdline_action.cc:37
+#: src/cmdline/cmdline_action.cc:38
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -256,7 +262,7 @@ msgstr ""
 "Opmerking: \"%s\", wat het virtueel pakket \"%s\" aanbiedt,\n"
 "is reeds geïnstalleerd.\n"
 
-#: src/cmdline/cmdline_action.cc:44
+#: src/cmdline/cmdline_action.cc:45
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -265,7 +271,7 @@ msgstr ""
 "Opmerking: \"%s\", wat het virtueel pakket \"%s\" aanbiedt,\n"
 "zal reeds geïnstalleerd worden.\n"
 
-#: src/cmdline/cmdline_action.cc:62
+#: src/cmdline/cmdline_action.cc:63
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -274,17 +280,17 @@ msgstr ""
 "\"%s\" bestaat in de pakketdatabase, maar het is geen\n"
 "echt pakket en er is geen pakket die het aanbiedt.\n"
 
-#: src/cmdline/cmdline_action.cc:68
+#: src/cmdline/cmdline_action.cc:69
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" is een virtueel pakket aangeboden door:\n"
 
-#: src/cmdline/cmdline_action.cc:71
+#: src/cmdline/cmdline_action.cc:72
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "U moet er één kiezen om te installeren.\n"
 
-#: src/cmdline/cmdline_action.cc:76
+#: src/cmdline/cmdline_action.cc:77
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -293,39 +299,40 @@ msgstr ""
 "Opmerking: \"%s\" geselecteerd in plaats van het\n"
 "     virtueel pakket \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:94
+#: src/cmdline/cmdline_action.cc:95
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s is reeds geïnstalleerd met de gevraagde versie (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:100
+#: src/cmdline/cmdline_action.cc:101
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr ""
 "%s is op dit moment niet geïnstalleerd, dus zal het niet opnieuw worden "
 "geïnstalleerd.\n"
 
-#: src/cmdline/cmdline_action.cc:107 src/cmdline/cmdline_action.cc:113
+#: src/cmdline/cmdline_action.cc:108 src/cmdline/cmdline_action.cc:114
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Pakket %s is niet geïnstalleerd, dus wordt het niet verwijderd\n"
 
-#: src/cmdline/cmdline_action.cc:131
+#: src/cmdline/cmdline_action.cc:132
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "Pakket %s is niet geïnstalleerd, kan een opwaardering niet verbieden\n"
 
-#: src/cmdline/cmdline_action.cc:133
+#: src/cmdline/cmdline_action.cc:134
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
-msgstr "Pakket %s is niet opwaardeerbaar, kan een opwaardering niet verbieden\n"
+msgstr ""
+"Pakket %s is niet opwaardeerbaar, kan een opwaardering niet verbieden\n"
 
-#: src/cmdline/cmdline_action.cc:214
+#: src/cmdline/cmdline_action.cc:212
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Opmerking: de taak \"%s: %s\" geselecteerd voor installatie\n"
 
-#: src/cmdline/cmdline_action.cc:244
+#: src/cmdline/cmdline_action.cc:242
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -334,12 +341,12 @@ msgstr ""
 "U kunt enkel een pakketversie aangeven met een 'install'-commando of een "
 "'forbid-version'-commando.\n"
 
-#: src/cmdline/cmdline_action.cc:252
+#: src/cmdline/cmdline_action.cc:250
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "U kunt enkel een pakketarchief aangeven met een 'install'-commando\n"
 
-#: src/cmdline/cmdline_action.cc:286
+#: src/cmdline/cmdline_action.cc:284
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -348,7 +355,7 @@ msgstr ""
 "Pakket \"%s\" is niet gevonden, en meer dan 40\n"
 "pakketten hebben \"%s\" in hun naam.\n"
 
-#: src/cmdline/cmdline_action.cc:289
+#: src/cmdline/cmdline_action.cc:287
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -357,14 +364,14 @@ msgstr ""
 "Pakket \"%s\" is niet gevonden. Wel hebben de volgende\n"
 "pakketten \"%s\" in hun naam:\n"
 
-#: src/cmdline/cmdline_action.cc:313
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "Geen enkel pakket gevonden waarvan de naam of beschrijving overeenkomen met "
 "\"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:315
+#: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -373,7 +380,7 @@ msgstr ""
 "Geen enkel pakket gevonden dat overeenkomt met \"%s\", en meer dan 40\n"
 "pakketten hebben \"%s\" in hun beschrijving.\n"
 
-#: src/cmdline/cmdline_action.cc:318
+#: src/cmdline/cmdline_action.cc:316
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -383,14 +390,15 @@ msgstr ""
 "volgende\n"
 "pakketten \"%s\" in hun beschrijving:\n"
 
-#: src/cmdline/cmdline_action.cc:437
+#: src/cmdline/cmdline_action.cc:436
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Slecht actiekarakter '%c'\n"
 
 #: src/cmdline/cmdline_changelog.cc:207
 msgid "Can't execute sensible-pager, is this a working Debian system?"
-msgstr "Kan 'sensible-pager' niet uitvoeren, is dit een werkend Debian-systeem?"
+msgstr ""
+"Kan 'sensible-pager' niet uitvoeren, is dit een werkend Debian-systeem?"
 
 #: src/cmdline/cmdline_changelog.cc:263
 #, c-format
@@ -431,7 +439,7 @@ msgstr "Ongeldige operatie %s"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Onverwacht patroonargument na \"keep-all\""
 
-#: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_do_action.cc:241 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:520
 #, c-format
 msgid "Abort.\n"
@@ -443,7 +451,7 @@ msgid "download: you must specify at least one package to download\n"
 msgstr "ophalen: u moet minstens één pakket aangeven om op te halen\n"
 
 #: src/cmdline/cmdline_download.cc:42
-#: src/generic/apt/download_install_manager.cc:76
+#: src/generic/apt/download_install_manager.cc:79
 msgid "Couldn't read source list"
 msgstr "Kon bronnenlijst niet lezen"
 
@@ -478,7 +486,8 @@ msgstr "Er zijn echt geen Paaseieren in dit programma.\n"
 
 #: src/cmdline/cmdline_moo.cc:22
 #, c-format
-msgid "Didn't I already tell you that there are no Easter Eggs in this program?\n"
+msgid ""
+"Didn't I already tell you that there are no Easter Eggs in this program?\n"
 msgstr "Was niet reeds aangegeven dat dit programma geen Paaseieren bevat?\n"
 
 #: src/cmdline/cmdline_moo.cc:25
@@ -499,101 +508,105 @@ msgstr "Vooruit, u wint.\n"
 #: src/cmdline/cmdline_moo.cc:42
 #, c-format
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
-msgstr "Wat het is? Het is natuurlijk een olifant die wordt opgegeten door een slang.\n"
+msgstr ""
+"Wat het is? Het is natuurlijk een olifant die wordt opgegeten door een "
+"slang.\n"
 
-#: src/cmdline/cmdline_prompt.cc:33
+#: src/cmdline/cmdline_prompt.cc:34
 msgid "Unexpected end-of-file on standard input"
 msgstr "Onverwacht bestandseinde in standaardinvoer"
 
-#: src/cmdline/cmdline_prompt.cc:52
+#: src/cmdline/cmdline_prompt.cc:53
 msgid "Couldn't read list of sources"
 msgstr "Kon bronnenlijst niet lezen"
 
-#: src/cmdline/cmdline_prompt.cc:234 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:236 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "maar %s wordt geïnstalleerd."
 
-#: src/cmdline/cmdline_prompt.cc:237 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:239 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "maar %s wordt geïnstalleerd en wordt achtergehouden."
 
-#: src/cmdline/cmdline_prompt.cc:240 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:242 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "maar %s is geïnstalleerd."
 
-#: src/cmdline/cmdline_prompt.cc:244 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:246 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "maar het is niet installeerbaar"
 
-#: src/cmdline/cmdline_prompt.cc:248 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:250 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " dat een virtueel pakket is."
 
-#: src/cmdline/cmdline_prompt.cc:251 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:253 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " of"
 
-#: src/cmdline/cmdline_prompt.cc:263
+#: src/cmdline/cmdline_prompt.cc:265
 msgid "The following packages are BROKEN:"
 msgstr "De volgende pakketten zijn BESCHADIGD:"
 
-#: src/cmdline/cmdline_prompt.cc:264
+#: src/cmdline/cmdline_prompt.cc:266
 msgid "The following packages are unused and will be REMOVED:"
-msgstr "De volgende pakketten zijn niet in gebruik en zullen worden VERWIJDERD:"
+msgstr ""
+"De volgende pakketten zijn niet in gebruik en zullen worden VERWIJDERD:"
 
-#: src/cmdline/cmdline_prompt.cc:265
+#: src/cmdline/cmdline_prompt.cc:267
 msgid "The following packages have been automatically kept back:"
 msgstr "De volgende pakketten zijn automatisch achtergehouden:"
 
-#: src/cmdline/cmdline_prompt.cc:266
+#: src/cmdline/cmdline_prompt.cc:268
 msgid "The following NEW packages will be automatically installed:"
 msgstr "De volgende NIEUWE pakketten zullen automatisch worden geïnstalleerd:"
 
-#: src/cmdline/cmdline_prompt.cc:267
+#: src/cmdline/cmdline_prompt.cc:269
 msgid "The following packages will be automatically REMOVED:"
 msgstr "De volgende pakketten zullen automatisch worden VERWIJDERD:"
 
-#: src/cmdline/cmdline_prompt.cc:268
+#: src/cmdline/cmdline_prompt.cc:270
 msgid "The following packages will be DOWNGRADED:"
 msgstr "De volgende pakketten zullen automatisch worden GEDEGRADEERD:"
 
-#: src/cmdline/cmdline_prompt.cc:269
+#: src/cmdline/cmdline_prompt.cc:271
 msgid "The following packages have been kept back:"
 msgstr "De volgende pakketten zijn achtergehouden:"
 
-#: src/cmdline/cmdline_prompt.cc:270
+#: src/cmdline/cmdline_prompt.cc:272
 msgid "The following packages will be REINSTALLED:"
 msgstr "De volgende pakketten zullen worden GEHERINSTALLEERD:"
 
-#: src/cmdline/cmdline_prompt.cc:271
+#: src/cmdline/cmdline_prompt.cc:273
 msgid "The following NEW packages will be installed:"
 msgstr "De volgende NIEUWE pakketten zullen worden geïnstalleerd:"
 
-#: src/cmdline/cmdline_prompt.cc:272
+#: src/cmdline/cmdline_prompt.cc:274
 msgid "The following packages will be REMOVED:"
 msgstr "De volgende pakketten zullen worden VERWIJDERD:"
 
-#: src/cmdline/cmdline_prompt.cc:273
+#: src/cmdline/cmdline_prompt.cc:275
 msgid "The following packages will be upgraded:"
 msgstr "De volgende pakketten zullen worden opgewaardeerd:"
 
-#: src/cmdline/cmdline_prompt.cc:328
+#: src/cmdline/cmdline_prompt.cc:330
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "De volgende ESSENTIELE pakketten zullen worden VERWIJDERD!\n"
 
-#: src/cmdline/cmdline_prompt.cc:337
+#: src/cmdline/cmdline_prompt.cc:339
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
-msgstr "De volgende ESSENTIELE pakketten zullen worden BESCHADIGD door deze actie:\n"
+msgstr ""
+"De volgende ESSENTIELE pakketten zullen worden BESCHADIGD door deze actie:\n"
 
-#: src/cmdline/cmdline_prompt.cc:347
+#: src/cmdline/cmdline_prompt.cc:349
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -603,16 +616,16 @@ msgstr ""
 "beschadigen!\n"
 "         Ga NIET verder, tenzij u EXACT weet wat u aan het doen bent!\n"
 
-#: src/cmdline/cmdline_prompt.cc:349
+#: src/cmdline/cmdline_prompt.cc:351
 msgid "I am aware that this is a very bad idea"
 msgstr "Ik weet dat dit een heel slecht idee is"
 
-#: src/cmdline/cmdline_prompt.cc:352
+#: src/cmdline/cmdline_prompt.cc:354
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Om verder te gaan, type de zin \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:394
+#: src/cmdline/cmdline_prompt.cc:396
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -630,7 +643,7 @@ msgstr ""
 "bent dat u dat wilt.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:406
+#: src/cmdline/cmdline_prompt.cc:408
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -639,154 +652,159 @@ msgstr ""
 "*** WAARSCHUWING *** Deze vertrouwensschendingen worden genegeerd omdat\n"
 "                    %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:177
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:177
 #: src/vscreen/vs_util.cc:215
 msgid "Yes"
 msgstr "Ja"
 
-#: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:178
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:178
 #: src/vscreen/vs_util.cc:216
 msgid "No"
 msgstr "Nee"
 
-#: src/cmdline/cmdline_prompt.cc:417
+#: src/cmdline/cmdline_prompt.cc:419
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Wilt u deze waarschuwing negeren en toch verdergaan?\n"
 
-#: src/cmdline/cmdline_prompt.cc:418
+#: src/cmdline/cmdline_prompt.cc:420
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "Geef \"%s\" in om verder te gaan, geef \"%s\" in om af te breken: "
 
-#: src/cmdline/cmdline_prompt.cc:432
+#: src/cmdline/cmdline_prompt.cc:434
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Niet-herkende invoer. Geef ofwel \"%s\" ofwel \"%s\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:534
+#: src/cmdline/cmdline_prompt.cc:536
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr ""
 "De volgende pakketten worden AANGERADEN, maar zullen NIET worden "
 "geïnstalleerd:\n"
 
-#: src/cmdline/cmdline_prompt.cc:540
+#: src/cmdline/cmdline_prompt.cc:542
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr ""
 "De volgende pakketten worden GESUGGEREERD, maar zullen NIET worden "
 "geïnstalleerd:\n"
 
-#: src/cmdline/cmdline_prompt.cc:545
+#: src/cmdline/cmdline_prompt.cc:547
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
-msgstr "Er zullen geen pakketten worden geïnstalleerd, opgewaardeerd of verwijderd.\n"
+msgstr ""
+"Er zullen geen pakketten worden geïnstalleerd, opgewaardeerd of verwijderd.\n"
 
-#: src/cmdline/cmdline_prompt.cc:547
+#: src/cmdline/cmdline_prompt.cc:549
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu pakketten opgewaardeerd, %lu nieuwe geïnstalleerd, "
 
-#: src/cmdline/cmdline_prompt.cc:551
+#: src/cmdline/cmdline_prompt.cc:553
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu geherinstalleerd, "
 
-#: src/cmdline/cmdline_prompt.cc:553
+#: src/cmdline/cmdline_prompt.cc:555
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu gedegradeerd, "
 
-#: src/cmdline/cmdline_prompt.cc:555
+#: src/cmdline/cmdline_prompt.cc:557
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu te verwijderen en %lu niet opwaarderen.\n"
 
-#: src/cmdline/cmdline_prompt.cc:562
+#: src/cmdline/cmdline_prompt.cc:564
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Heb %sB/%sB archieven nodig. "
 
-#: src/cmdline/cmdline_prompt.cc:565
+#: src/cmdline/cmdline_prompt.cc:567
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Heb %sB archieven nodig. "
 
-#: src/cmdline/cmdline_prompt.cc:572
+#: src/cmdline/cmdline_prompt.cc:574
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Na uitpakken zal %sB worden gebruikt.\n"
 
-#: src/cmdline/cmdline_prompt.cc:575
+#: src/cmdline/cmdline_prompt.cc:577
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Na uitpakken zal %sB worden vrijgemaakt.\n"
 
-#: src/cmdline/cmdline_prompt.cc:613
+#: src/cmdline/cmdline_prompt.cc:615
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr ""
 "Er zijn geen te tonen pakketten -- geef de pakketnamen in op de regel achter "
 "'i'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:615
+#: src/cmdline/cmdline_prompt.cc:617
 msgid "Press Return to continue."
 msgstr "Druk op return om verder te gaan."
 
-#: src/cmdline/cmdline_prompt.cc:641
+#: src/cmdline/cmdline_prompt.cc:643
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr ""
 "Er zijn geen pakketten gevonden -- geef de pakketnamen in op de regel achter "
 "'c'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:645
+#: src/cmdline/cmdline_prompt.cc:647
 msgid "Press Return to continue"
 msgstr "Druk op Return om verder te gaan"
 
-#: src/cmdline/cmdline_prompt.cc:656
+#: src/cmdline/cmdline_prompt.cc:658
 #, c-format
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 
-#: src/cmdline/cmdline_prompt.cc:676
+#: src/cmdline/cmdline_prompt.cc:678
 msgid "continue with the installation"
 msgstr "ga verder met de installatie"
 
-#: src/cmdline/cmdline_prompt.cc:678
+#: src/cmdline/cmdline_prompt.cc:680
 msgid "abort and quit"
 msgstr "afbreken en afsluiten"
 
-#: src/cmdline/cmdline_prompt.cc:680
+#: src/cmdline/cmdline_prompt.cc:682
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
-msgstr "toon informatie over één of meer pakketten; de pakketnamen behoren achter de 'i'"
+msgstr ""
+"toon informatie over één of meer pakketten; de pakketnamen behoren achter de "
+"'i'"
 
-#: src/cmdline/cmdline_prompt.cc:682
+#: src/cmdline/cmdline_prompt.cc:684
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
-msgstr "toon de Debian-changelogs van één of meer pakketten; de pakketnamen behoren achter de 'c'"
+msgstr ""
+"toon de Debian-changelogs van één of meer pakketten; de pakketnamen behoren "
+"achter de 'c'"
 
-#: src/cmdline/cmdline_prompt.cc:684
+#: src/cmdline/cmdline_prompt.cc:686
 msgid "toggle the display of dependency information"
 msgstr "schakel de weergave van afhankelijkheidsinformatie"
 
-#: src/cmdline/cmdline_prompt.cc:686
+#: src/cmdline/cmdline_prompt.cc:688
 msgid "toggle the display of changes in package sizes"
 msgstr "schakel de weergave van wijzigingen in pakketgroottes"
 
-#: src/cmdline/cmdline_prompt.cc:688
+#: src/cmdline/cmdline_prompt.cc:690
 msgid "toggle the display of version numbers"
 msgstr "schakel de weergave van versienummers"
 
-#: src/cmdline/cmdline_prompt.cc:690
+#: src/cmdline/cmdline_prompt.cc:692
 msgid "enter the full visual interface"
 msgstr "geef de volledige grafische interface"
 
-#: src/cmdline/cmdline_prompt.cc:691
+#: src/cmdline/cmdline_prompt.cc:693
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -794,55 +812,57 @@ msgid ""
 "The following actions are available:"
 msgstr ""
 "U kunt ook wijzigingen opgeven voor de acties die zullen ondernomen worden. "
-"Type hiervoor een actie-teken gevolgd door één of meer pakketnamen "
-"(of patronen). De actie zal worden uitgevoerd op alle pakketten die u "
-"opgeeft. De volgende acties zijn beschikbaar:"
+"Type hiervoor een actie-teken gevolgd door één of meer pakketnamen (of "
+"patronen). De actie zal worden uitgevoerd op alle pakketten die u opgeeft. "
+"De volgende acties zijn beschikbaar:"
 
-#: src/cmdline/cmdline_prompt.cc:696 src/cmdline/cmdline_resolver.cc:184
+#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:184
 msgid "'+' to install packages"
 msgstr "'+' om pakketten te installeren"
 
-#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:186
-msgid "'+M' to install packages and immediately flag them as automatically installed"
+#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:186
+msgid ""
+"'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' om pakketten te installeren en onmiddellijk als automatisch "
 "geïnstalleerd markeren"
 
-#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:188
+#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:188
 msgid "'-' to remove packages"
 msgstr "'-' om pakketten te verwijderen"
 
-#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:190
+#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:190
 msgid "'_' to purge packages"
 msgstr "'_' om pakketten te wissen (purge)"
 
-#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:192
+#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:192
 msgid "'=' to place packages on hold"
 msgstr "'=' om pakketten te behouden"
 
-#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:194
-msgid "':' to keep packages in their current state without placing them on hold"
+#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:194
+msgid ""
+"':' to keep packages in their current state without placing them on hold"
 msgstr ""
-"':' om pakketten in hun huidige toestand te houden zonder ze op 'behouden' te "
-"zetten"
+"':' om pakketten in hun huidige toestand te houden zonder ze op 'behouden' "
+"te zetten"
 
-#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:196
+#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
 msgstr " '&M' om pakketten als automatisch geïnstalleerd te markeren"
 
-#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:198
+#: src/cmdline/cmdline_prompt.cc:712 src/cmdline/cmdline_resolver.cc:198
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' om pakketten als handmatig geïnstalleerd te markeren"
 
-#: src/cmdline/cmdline_prompt.cc:712
+#: src/cmdline/cmdline_prompt.cc:714
 msgid "Commands:"
 msgstr "Commando's:"
 
-#: src/cmdline/cmdline_prompt.cc:767
+#: src/cmdline/cmdline_prompt.cc:769
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Wilt u verder gaan? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:792
+#: src/cmdline/cmdline_prompt.cc:794
 #, c-format
 msgid ""
 "\n"
@@ -853,7 +873,7 @@ msgstr ""
 "Er zal afhankelijkheidsinformatie worden getoond.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:794
+#: src/cmdline/cmdline_prompt.cc:796
 #, c-format
 msgid ""
 "\n"
@@ -864,7 +884,7 @@ msgstr ""
 "Er zal geen afhankelijkheidsinformatie worden getoond.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:800
+#: src/cmdline/cmdline_prompt.cc:802
 #, c-format
 msgid ""
 "\n"
@@ -875,7 +895,7 @@ msgstr ""
 "Er zullen versies worden getoond.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:802
+#: src/cmdline/cmdline_prompt.cc:804
 #, c-format
 msgid ""
 "\n"
@@ -886,7 +906,7 @@ msgstr ""
 "Er zullen geen versies worden getoond.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:807
+#: src/cmdline/cmdline_prompt.cc:809
 #, c-format
 msgid ""
 "\n"
@@ -897,7 +917,7 @@ msgstr ""
 "Er zullen groottewijzigingen worden getoond.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:809
+#: src/cmdline/cmdline_prompt.cc:811
 #, c-format
 msgid ""
 "\n"
@@ -908,23 +928,23 @@ msgstr ""
 "Er zullen geen groottewijzigingen worden getoond.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:832
+#: src/cmdline/cmdline_prompt.cc:834
 #, c-format
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "Ongeldig antwoord. Geef een geldig commando of '?' voor hulp.\n"
 
-#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
+#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:599
 #: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Kan %s niet openen om te schrijven"
 
-#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:602
+#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:604
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Fout bij het schrijven van de resolver-toestand naar %s"
 
-#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:604
+#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:606
 msgid "Resolver state successfully written!"
 msgstr "Oplosser-toestand werd met succes weggeschreven!"
 
@@ -969,7 +989,8 @@ msgstr "onderzoek de oplossing in de visuele gebruikersinterface"
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur."
-msgstr "verwerp de gegeven pakketversies; toon geen oplossingen waarin ze voorkomen."
+msgstr ""
+"verwerp de gegeven pakketversies; toon geen oplossingen waarin ze voorkomen."
 
 #: src/cmdline/cmdline_resolver.cc:180
 msgid ""
@@ -1079,7 +1100,7 @@ msgstr "De volgende acties zullen deze afhankelijkheden oplossen:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Deze oplossing aanvaarden? [Y/n/q/?]"
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:650
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Alle pogingen staken om deze afhankelijkheden op te lossen."
 
@@ -1087,27 +1108,27 @@ msgstr "Alle pogingen staken om deze afhankelijkheden op te lossen."
 msgid "The following commands are available:"
 msgstr "De volgende commando's zijn beschikbaar:"
 
-#: src/cmdline/cmdline_resolver.cc:594
+#: src/cmdline/cmdline_resolver.cc:596
 msgid "File to write resolver state to: "
 msgstr "Bestand om de resolver-toestand in weg te schrijven:"
 
-#: src/cmdline/cmdline_resolver.cc:609
+#: src/cmdline/cmdline_resolver.cc:611
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Ongeldig antwoord; geef één van de volgende commando's:"
 
-#: src/cmdline/cmdline_resolver.cc:622
+#: src/cmdline/cmdline_resolver.cc:624
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "Geen oplossing gevonden in de toegewezen tijd. Harder proberen? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:651
+#: src/cmdline/cmdline_resolver.cc:653
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Ongeldig antwoord; geef 'y' of 'n' in."
 
-#: src/cmdline/cmdline_resolver.cc:660
+#: src/cmdline/cmdline_resolver.cc:662
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Niet gelukt om de afhankelijkheden op te lossen! Gestopt..."
 
-#: src/cmdline/cmdline_resolver.cc:666
+#: src/cmdline/cmdline_resolver.cc:668
 msgid "*** No more solutions available ***"
 msgstr "*** Geen oplossingen meer beschikbaar ***"
 
@@ -1402,7 +1423,7 @@ msgstr "NIET VOLDAAN"
 msgid "UNAVAILABLE"
 msgstr "NIET AANWEZIG"
 
-#: src/desc_parse.cc:275
+#: src/desc_parse.cc:292
 msgid "Tags"
 msgstr "Tags"
 
@@ -1527,8 +1548,8 @@ msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press enter\n"
 msgstr ""
-"Wijziging van media: plaats de schijf met opschrift '%s' in het station '%s' en "
-"druk op enter\n"
+"Wijziging van media: plaats de schijf met opschrift '%s' in het station '%s' "
+"en druk op enter\n"
 
 #: src/generic/apt/aptcache.cc:263
 msgid "Can't open Aptitude extended state file"
@@ -1556,7 +1577,8 @@ msgstr "Schrijven van uitgebreide statusinformatie"
 #: src/generic/apt/aptcache.cc:578
 #, c-format
 msgid "Internal buffer overflow on package \"%s\" while writing state file"
-msgstr "Interne bufferoverloop op pakket \"%s\" bij schrijven naar statusbestand"
+msgstr ""
+"Interne bufferoverloop op pakket \"%s\" bij schrijven naar statusbestand"
 
 #: src/generic/apt/aptcache.cc:587
 msgid "Couldn't write state file"
@@ -1593,7 +1615,8 @@ msgstr "De bronnenlijst kon niet gelezen worden."
 
 #: src/generic/apt/aptcache.cc:1619
 msgid "The package lists or status file could not be parsed or opened."
-msgstr "De pakketlijst of het statusbestand kon niet worden ontleed of geopend."
+msgstr ""
+"De pakketlijst of het statusbestand kon niet worden ontleed of geopend."
 
 #: src/generic/apt/aptcache.cc:1622
 msgid "You may want to update the package lists to correct these missing files"
@@ -1618,37 +1641,44 @@ msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
 msgstr ""
-"Kon het cachebestand niet vergrendelen. Wordt geopend in alleen-lezen modus; elke "
-"wijziging die u maakt aan de toestand van de pakketten zal NIET worden "
+"Kon het cachebestand niet vergrendelen. Wordt geopend in alleen-lezen modus; "
+"elke wijziging die u maakt aan de toestand van de pakketten zal NIET worden "
 "bewaard!"
 
-#: src/generic/apt/download_install_manager.cc:53
-msgid "The package cache is not available; unable to download and install packages."
+#: src/generic/apt/download_install_manager.cc:56
+msgid ""
+"The package cache is not available; unable to download and install packages."
 msgstr ""
 "De pakketcache is niet beschikbaar; onmogelijk om pakketten af te halen en "
 "te installeren."
 
-#: src/generic/apt/download_install_manager.cc:69
+#: src/generic/apt/download_install_manager.cc:72
 #: src/generic/apt/download_update_manager.cc:77
 msgid "Couldn't lock list directory..are you root?"
 msgstr "Kon lijstmap niet vergrendelen, bent u root?"
 
-#: src/generic/apt/download_install_manager.cc:86
+#: src/generic/apt/download_install_manager.cc:89
 msgid "Internal error: couldn't generate list of packages to download"
 msgstr "Interne fout: kon lijst van op te halen pakketten niet genereren"
 
-#: src/generic/apt/download_install_manager.cc:121
+#: src/generic/apt/download_install_manager.cc:119
+#, fuzzy, c-format
+msgid "Failed to fetch %s: %s"
+msgstr "kon %s niet naar %s hernoemen"
+
+#: src/generic/apt/download_install_manager.cc:125
 msgid "Unable to correct for unavailable packages"
 msgstr "Kan niet corrigeren voor niet aanwezige pakketten"
 
-#: src/generic/apt/download_install_manager.cc:141
+#: src/generic/apt/download_install_manager.cc:151
 msgid "A package failed to install.  Trying to recover:"
 msgstr ""
 "Een pakket kon niet geïnstalleerd worden. Er wordt geprobeerd om te "
 "herstellen:"
 
-#: src/generic/apt/download_install_manager.cc:165
-msgid "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
+#: src/generic/apt/download_install_manager.cc:176
+msgid ""
+"Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr ""
 "Kon de systeemvergrendeling niet herwinnen! (Misschien is er een andere apt "
 "of dpkg aan het uitvoeren?)"
@@ -1920,7 +1950,8 @@ msgstr ""
 
 #: src/generic/apt/pkg_acqfile.cc:99
 #, c-format
-msgid "The package index files are corrupted. No Filename: field for package %s."
+msgid ""
+"The package index files are corrupted. No Filename: field for package %s."
 msgstr ""
 "De pakketindexbestanden zijn gecorumpeerd. Veld 'Filename:' voor pakket %s "
 "ontbreekt."
@@ -1965,8 +1996,7 @@ msgstr "Opbouwen van tagdatabase"
 #: src/generic/apt/tags.cc:255
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgstr ""
-"Kan debtags-woordenschat niet laden, misschien is debtags niet "
-"geïnstalleerd?"
+"Kan debtags-woordenschat niet laden, misschien is debtags niet geïnstalleerd?"
 
 #: src/generic/apt/tasks.cc:283
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -2081,7 +2111,8 @@ msgstr "Kan patroon bij '%s' niet ontleden"
 
 #: src/load_grouppolicy.cc:454
 msgid "Exactly one filter must be provided as an argument to a filter policy"
-msgstr "Exact één filter moet worden opgegeven als een argument voor een filterbeleid"
+msgstr ""
+"Exact één filter moet worden opgegeven als een argument voor een filterbeleid"
 
 #: src/load_grouppolicy.cc:473
 msgid "By-mode grouping policies take no arguments"
@@ -2135,7 +2166,8 @@ msgstr "Ongebalanceerd '(' in pattroongroepeerbeleid"
 
 #: src/load_pkgview.cc:58
 msgid "Couldn't parse layout: No column format specified for static item"
-msgstr "Kan layout niet ontleden: geen kolomindeling aangegeven voor statisch item"
+msgstr ""
+"Kan layout niet ontleden: geen kolomindeling aangegeven voor statisch item"
 
 #: src/load_pkgview.cc:91
 msgid "Couldn't parse layout: encoding error in column descriptor"
@@ -2379,8 +2411,10 @@ msgstr " -s             Acties simuleren, maar ze niet werkelijk uitvoeren\n"
 
 #: src/main.cc:147
 #, c-format
-msgid " -d             Only download packages, do not install or remove anything.\n"
-msgstr " -d             Enkel pakketten ophalen, niets installeren of verwijderen.\n"
+msgid ""
+" -d             Only download packages, do not install or remove anything.\n"
+msgstr ""
+" -d             Enkel pakketten ophalen, niets installeren of verwijderen.\n"
 
 #: src/main.cc:148
 #, c-format
@@ -2389,7 +2423,8 @@ msgstr "-P             Steeds naar bevestiging of actie vragen\n"
 
 #: src/main.cc:149
 #, c-format
-msgid " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+msgid ""
+" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr ""
 " -y             Veronderstel dat het antwoord op eenvoudige ja/nee-vragen "
 "'ja' is\n"
@@ -2405,20 +2440,24 @@ msgstr ""
 
 #: src/main.cc:151
 #, c-format
-msgid " -O order       Specify how search results should be sorted; see the manual\n"
+msgid ""
+" -O order       Specify how search results should be sorted; see the manual\n"
 msgstr ""
 " -O ordening       Geef aan hoe zoekresultaten moeten gesorteerd worden; zie "
 "handleiding\n"
 
 #: src/main.cc:152
 #, c-format
-msgid " -w width       Specify the display width for formatting search results\n"
-msgstr " -w breedte       Geeft de breedte aan voor weergave van zoekresultaten\n"
+msgid ""
+" -w width       Specify the display width for formatting search results\n"
+msgstr ""
+" -w breedte       Geeft de breedte aan voor weergave van zoekresultaten\n"
 
 #: src/main.cc:153
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
-msgstr " -f             Probeert reparaties van defecte pakketten te forceren\n"
+msgstr ""
+" -f             Probeert reparaties van defecte pakketten te forceren\n"
 
 #: src/main.cc:154
 #, c-format
@@ -2427,7 +2466,8 @@ msgstr " -V             Toont welke versies van pakketten geïnstalleerd zijn\n"
 
 #: src/main.cc:155
 #, c-format
-msgid " -D             Show the dependencies of automatically changed packages.\n"
+msgid ""
+" -D             Show the dependencies of automatically changed packages.\n"
 msgstr ""
 " -D             Toont de afhankelijkheden van automatisch gewijzigde "
 "pakketten\n"
@@ -2439,14 +2479,16 @@ msgstr " -Z\t\t    Toont de wijziging in installatiegrootte van elk pakket\n"
 
 #: src/main.cc:157
 #, c-format
-msgid " -v             Display extra information. (may be supplied multiple times)\n"
+msgid ""
+" -v             Display extra information. (may be supplied multiple times)\n"
 msgstr ""
 " -v             Toont extra informatie. (kan meerdere keren worden "
 "meegegeven)\n"
 
 #: src/main.cc:158
 #, c-format
-msgid " -t [release]   Set the release from which packages should be installed\n"
+msgid ""
+" -t [release]   Set the release from which packages should be installed\n"
 msgstr ""
 " -t [release]   Zet de release waarvan pakketten moeten geïnstalleerd "
 "worden\n"
@@ -2463,7 +2505,8 @@ msgstr ""
 #: src/main.cc:160
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
-msgstr " -o sleutel=val Zet de configuratie-optie genaamd 'sleutel' rechtstreeks\n"
+msgstr ""
+" -o sleutel=val Zet de configuratie-optie genaamd 'sleutel' rechtstreeks\n"
 
 #: src/main.cc:161
 #, c-format
@@ -2518,7 +2561,8 @@ msgid "Only one of -u and -i may be specified\n"
 msgstr "Er mag slechts één van -u of -i meegegeven worden.\n"
 
 #: src/main.cc:416
-msgid "-u and -i may not be specified in command-line mode (eg, with 'install')"
+msgid ""
+"-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
 "-u en -i mogen niet meegegeven worden in commandoregelmodus (zoals bij "
 "'install')"
@@ -2675,7 +2719,8 @@ msgid "The dart was poisoned!  The poison was deadly...  --More--"
 msgstr "De pijl is giftig! Het gif is dodelijk... --Meer--"
 
 #: src/mine/cmine.cc:494
-msgid "A little dart shoots out at you!  You are hit by a little dart!  --More--"
+msgid ""
+"A little dart shoots out at you!  You are hit by a little dart!  --More--"
 msgstr ""
 "Een kleine pijl vliegt uw richting uit! U bent geraakt door een kleine pijl! "
 "--Meer--"
@@ -3306,8 +3351,8 @@ msgstr ""
 "Verouderde bibliotheken\n"
 " Pakketten in de 'oldlibs'-sectie zijn verouderd en mogen niet gebruikt "
 "worden voor nieuwe software. Ze zijn meegeleverd voor "
-"compatibiliteitsredenen, of omdat software door Debian gedistribueerd ze "
-"nog nodig hebben.\n"
+"compatibiliteitsredenen, of omdat software door Debian gedistribueerd ze nog "
+"nodig hebben.\n"
 " .\n"
 " Met zeer weinig uitzonderingen, moet u  niet expliciet pakketten "
 "installeren uit deze sectie; het pakketsysteem zal ze installeren indien ze "
@@ -3393,8 +3438,8 @@ msgstr ""
 " Pakketten in de 'text'-sectie zijn tekstfilters en tekstverwerkers, "
 "spellingcheckers, woordenboekprogramma's, hulpmiddelen om tussen "
 "verschillende tekencoderingen te converteren en tekstbestandindelingen "
-"(zoals Unix en DOS), tekstindelers en pretty-printers en andere software die op "
-"platte tekst werkt."
+"(zoals Unix en DOS), tekstindelers en pretty-printers en andere software die "
+"op platte tekst werkt."
 
 #: src/pkg_grouppolicy.cc:197
 msgid ""
@@ -3653,8 +3698,8 @@ msgstr ""
 " De afhankelijkheidsvereisten van deze pakketten zullen niet worden "
 "nagekomen nadat de installatie is voltooid.\n"
 " .\n"
-" De aanwezigheid van deze boom geeft waarschijnlijk aan dat iets defect "
-"is, ofwel op uw systeem ofwel in het Debian-archief."
+" De aanwezigheid van deze boom geeft waarschijnlijk aan dat iets defect is, "
+"ofwel op uw systeem ofwel in het Debian-archief."
 
 #: src/pkg_grouppolicy.cc:534
 msgid ""
@@ -3872,8 +3917,8 @@ msgid ""
 "%s is an essential package!%n%nAre you sure you want to remove it?%nType '%"
 "s' if you are."
 msgstr ""
-"%s is een essentieel pakket!%n%nBent u zeker dat u het wil verwijderen?%nType "
-"'%s' als u zeker bent."
+"%s is een essentieel pakket!%n%nBent u zeker dat u het wil verwijderen?%"
+"nType '%s' als u zeker bent."
 
 #: src/pkg_item.cc:220 src/pkg_ver_item.cc:655 src/solution_item.cc:291
 #, c-format
@@ -3985,8 +4030,10 @@ msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: fout in argumenten -- twee hoofd-widgets??"
 
 #: src/pkg_view.cc:414
-msgid "make_package_view: error in arguments -- bad column list for static item"
-msgstr "make_package_view: fout in argumenten -- foute kolomlijst voor statisch item"
+msgid ""
+"make_package_view: error in arguments -- bad column list for static item"
+msgstr ""
+"make_package_view: fout in argumenten -- foute kolomlijst voor statisch item"
 
 #: src/pkg_view.cc:510
 msgid "make_package_view: bad argument!"
@@ -4055,7 +4102,8 @@ msgid "%B%s%b will be automatically removed because of dependency errors:"
 msgstr "%B%s%b zal automatisch verwijderd worden door afhankelijkheidsfouten:"
 
 #: src/reason_fragment.cc:366
-msgid "%B%s%b will be automatically installed to satisfy the following dependencies:"
+msgid ""
+"%B%s%b will be automatically installed to satisfy the following dependencies:"
 msgstr ""
 "%B%s%b zal automatisch geïnstalleerd worden om te voldoen aan volgende "
 "afhankelijkheden:"
@@ -4121,10 +4169,11 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b zal worden opgewaardeerd van versie %B%s%b naar versie %B%s%b."
 
 #: src/reason_fragment.cc:472
-msgid "The following packages depend on %B%s%b and will be broken by its removal:"
+msgid ""
+"The following packages depend on %B%s%b and will be broken by its removal:"
 msgstr ""
-"De volgende pakketten hangen af van %B%s%b en zullen defect raken door "
-"de verwijdering:"
+"De volgende pakketten hangen af van %B%s%b en zullen defect raken door de "
+"verwijdering:"
 
 #: src/reason_fragment.cc:475
 msgid "The following packages depend on %B%s%b and are broken:"
@@ -4135,8 +4184,8 @@ msgid ""
 "The following packages conflict with %B%s%b and will be broken by its "
 "installation:"
 msgstr ""
-"De volgende pakketten conflicteren met %B%s%b en zullen defect raken "
-"bij haar installatie:"
+"De volgende pakketten conflicteren met %B%s%b en zullen defect raken bij "
+"haar installatie:"
 
 #: src/reason_fragment.cc:515
 msgid ""
@@ -4444,7 +4493,8 @@ msgid "Never display this message again."
 msgstr "Toon deze boodschap nooit meer."
 
 #: src/ui.cc:368
-msgid "You may not modify the state of any package while a download is underway."
+msgid ""
+"You may not modify the state of any package while a download is underway."
 msgstr ""
 "U kunt de toestand van een pakket niet wijzigen terwijl er een download "
 "bezig is."
@@ -4454,7 +4504,8 @@ msgid "You already are root!"
 msgstr "U bent reeds root!"
 
 #: src/ui.cc:464
-msgid "Subprocess exited with an error -- did you type your password correctly?"
+msgid ""
+"Subprocess exited with an error -- did you type your password correctly?"
 msgstr ""
 "Subproces is afgesloten met een fout -- heeft u uw wachtwoord correct "
 "ingegeven?"
@@ -4559,8 +4610,11 @@ msgstr "Kan map \"%s\" niet verwijderen"
 
 #: src/ui.cc:998
 #, c-format
-msgid "Unable to remove the old temporary directory; you should remove %s by hand."
-msgstr "Kan de oude tijdelijke map niet verwijderen; u dient %s handmatig te verwijderen."
+msgid ""
+"Unable to remove the old temporary directory; you should remove %s by hand."
+msgstr ""
+"Kan de oude tijdelijke map niet verwijderen; u dient %s handmatig te "
+"verwijderen."
 
 #: src/ui.cc:1003
 #, c-format
@@ -4579,9 +4633,9 @@ msgid ""
 "remove this directory and all its contents?  If you select \"No\", you will "
 "not see this message again."
 msgstr ""
-"Het lijkt erop dat een vorige versie van aptitude bestanden achterliet in %s. "
-"Deze bestanden zijn waarschijnlijk nutteloos en veilig om te verwijderen. %n%"
-"nWilt u deze map en heel de inhoud verwijderen? Als u \"Nee\" selecteert, "
+"Het lijkt erop dat een vorige versie van aptitude bestanden achterliet in %"
+"s. Deze bestanden zijn waarschijnlijk nutteloos en veilig om te verwijderen. "
+"%n%nWilt u deze map en heel de inhoud verwijderen? Als u \"Nee\" selecteert, "
 "dan zult u deze boodschap niet meer zien."
 
 #: src/ui.cc:1071
@@ -4894,8 +4948,11 @@ msgid "^Purge"
 msgstr "^Wis (purge)"
 
 #: src/ui.cc:1999
-msgid "Flag the currently selected package and its configuration files for removal"
-msgstr "Markeer het geselecteerde pakket en zijn configuratiebestanden voor verwijdering"
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr ""
+"Markeer het geselecteerde pakket en zijn configuratiebestanden voor "
+"verwijdering"
 
 #: src/ui.cc:2002
 msgid "^Keep"
@@ -4927,7 +4984,8 @@ msgid ""
 "automatically be removed if no other packages depend on it"
 msgstr ""
 "Markeer het geselecteerde pakket als automatisch geïnstalleerd; het zal "
-"automatisch worden verwijderd als er geen andere pakketten meer van afhankelijk zijn"
+"automatisch worden verwijderd als er geen andere pakketten meer van "
+"afhankelijk zijn"
 
 #: src/ui.cc:2014
 msgid "Mark ^Manual"
@@ -5019,7 +5077,8 @@ msgstr "^Laatste Oplossing"
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
-msgstr "Selecteer de voorlopig laatste oplossing voor de afhankelijkheidsproblemen"
+msgstr ""
+"Selecteer de voorlopig laatste oplossing voor de afhankelijkheidsproblemen"
 
 #: src/ui.cc:2062
 msgid "Toggle ^Rejected"
@@ -5371,12 +5430,11 @@ msgstr "Kuch! Kreeg SIGQUIT, stervend..\n"
 
 #: src/vscreen/vs_pager.cc:439
 #, c-format
-msgid "Unable to load filename: the string %ls has no multibyte representation."
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
 msgstr ""
-"Kan bestandsnaam niet laden; de string %ls heeft geen multibyte-"
-"voorstelling."
+"Kan bestandsnaam niet laden; de string %ls heeft geen multibyte-voorstelling."
 
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "TOP NIVEAU"
-

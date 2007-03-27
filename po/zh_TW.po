@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2006-09-03 09:36-0700\n"
+"POT-Creation-Date: 2007-03-04 20:22-0800\n"
 "PO-Revision-Date: 2006-10-21 22:43+0800\n"
 "Last-Translator: Asho Yeh <asho@debian.org.tw>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -109,15 +109,18 @@ msgid "Display a preview of what will be done before doing it"
 msgstr "在實際執行動作前顯示將執行動作的預覽"
 
 #: src/apt_options.cc:165
-msgid "Forget which packages are \"new\" whenever the package lists are updated"
+msgid ""
+"Forget which packages are \"new\" whenever the package lists are updated"
 msgstr "當套件列表更新後忽略哪些套件是“新”的"
 
 #: src/apt_options.cc:168
-msgid "Forget which packages are \"new\" whenever packages are installed or removed"
+msgid ""
+"Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr "安裝或者移除套件後忽略哪些套件是“新”的"
 
 #: src/apt_options.cc:171
-msgid "Do not display a warning when the first change is made in read-only mode"
+msgid ""
+"Do not display a warning when the first change is made in read-only mode"
 msgstr "當第一個更動是在唯讀模式下進行時不顯示警告。"
 
 #: src/apt_options.cc:174
@@ -148,23 +151,15 @@ msgstr "自動移除未用套件"
 msgid "Don't automatically remove unused packages matching this filter"
 msgstr "不自動移除符合此過濾器的未用套件"
 
-#: src/apt_options.cc:248
-#: src/mine/cmine.cc:302
-#: src/mine/cmine.cc:367
-#: src/ui.cc:267
-#: src/ui.cc:339
-#: src/vscreen/vs_util.cc:91
-#: src/vscreen/vs_util.cc:104
-#: src/vscreen/vs_util.cc:283
+#: src/apt_options.cc:248 src/mine/cmine.cc:302 src/mine/cmine.cc:367
+#: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:91
+#: src/vscreen/vs_util.cc:104 src/vscreen/vs_util.cc:283
 #: src/vscreen/vs_util.cc:321
 msgid "Ok"
 msgstr "確定"
 
-#: src/apt_options.cc:249
-#: src/download_list.cc:88
-#: src/mine/cmine.cc:303
-#: src/mine/cmine.cc:368
-#: src/vscreen/vs_util.cc:322
+#: src/apt_options.cc:249 src/download_list.cc:88 src/mine/cmine.cc:303
+#: src/mine/cmine.cc:368 src/vscreen/vs_util.cc:322
 msgid "Cancel"
 msgstr "取消"
 
@@ -197,8 +192,7 @@ msgstr "無法解決相依關係。"
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] 正在解決相依賴關係"
 
-#: src/broken_indicator.cc:273
-#: src/solution_dialog.cc:126
+#: src/broken_indicator.cc:273 src/solution_dialog.cc:126
 #: src/solution_screen.cc:522
 msgid "Internal error: unexpected null solution."
 msgstr "內部錯誤：意料之外的無效解決方案。"
@@ -241,7 +235,7 @@ msgstr[0] "%d 個可下載"
 msgid "Suggest %F"
 msgstr "建議 %F"
 
-#: src/cmdline/cmdline_action.cc:37
+#: src/cmdline/cmdline_action.cc:38
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -250,7 +244,7 @@ msgstr ""
 "附註: \"%s\", 提供虛擬套件\n"
 "      \"%s\", 已經安裝.\n"
 
-#: src/cmdline/cmdline_action.cc:44
+#: src/cmdline/cmdline_action.cc:45
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -259,7 +253,7 @@ msgstr ""
 "附註: \"%s\", 提供虛擬套件\n"
 "      \"%s\", 即將準備安裝.\n"
 
-#: src/cmdline/cmdline_action.cc:62
+#: src/cmdline/cmdline_action.cc:63
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -268,17 +262,17 @@ msgstr ""
 "\"%s\" 存在套件資料庫，但它不是一個真正的套件，\n"
 "而且沒有套件提供取代它。\n"
 
-#: src/cmdline/cmdline_action.cc:68
+#: src/cmdline/cmdline_action.cc:69
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" 是一個虛擬套件，由以下套件所提供:\n"
 
-#: src/cmdline/cmdline_action.cc:71
+#: src/cmdline/cmdline_action.cc:72
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "你必須至少選擇一個來安裝。\n"
 
-#: src/cmdline/cmdline_action.cc:76
+#: src/cmdline/cmdline_action.cc:77
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -287,57 +281,58 @@ msgstr ""
 "附註: 選擇 \"%s\" 以取代\n"
 "      虛擬套件 \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:94
+#: src/cmdline/cmdline_action.cc:95
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s 已經安裝為被要求的版本 (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:100
+#: src/cmdline/cmdline_action.cc:101
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s 尚未安裝，因此不會被重新安裝。\n"
 
-#: src/cmdline/cmdline_action.cc:107
-#: src/cmdline/cmdline_action.cc:113
+#: src/cmdline/cmdline_action.cc:108 src/cmdline/cmdline_action.cc:114
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Package %s 未安裝, 因此它將不會移除\n"
 
-#: src/cmdline/cmdline_action.cc:131
+#: src/cmdline/cmdline_action.cc:132
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "Package %s 未安裝, 無法禁制升級\n"
 
-#: src/cmdline/cmdline_action.cc:133
+#: src/cmdline/cmdline_action.cc:134
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr ""
 "Package %s 將不會升級, 無法禁制升級\n"
 "\n"
 
-#: src/cmdline/cmdline_action.cc:214
+#: src/cmdline/cmdline_action.cc:212
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "附註: 選擇安裝作業 \"%s: %s\"\n"
 
-#: src/cmdline/cmdline_action.cc:244
+#: src/cmdline/cmdline_action.cc:242
 #, c-format
-msgid "You can only specify a package version with an 'install' command or a 'forbid-version' command.\n"
+msgid ""
+"You can only specify a package version with an 'install' command or a "
+"'forbid-version' command.\n"
 msgstr "您只能在“install”或“forbid-version”命令中指定一個套件的版本。\n"
 
-#: src/cmdline/cmdline_action.cc:252
+#: src/cmdline/cmdline_action.cc:250
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "您只能使用 'install' 指令指定套件歸檔\n"
 
-#: src/cmdline/cmdline_action.cc:286
+#: src/cmdline/cmdline_action.cc:284
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
 "packages contain \"%s\" in their name.\n"
 msgstr "無法找到套件 \"%s\"，而且超過 40 各套件名稱中包含 \"%s\"。\n"
 
-#: src/cmdline/cmdline_action.cc:289
+#: src/cmdline/cmdline_action.cc:287
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -346,12 +341,12 @@ msgstr ""
 "無法找到套件 \"%s\"。 然而，以下\n"
 "套件名稱中包含 \"%s\":\n"
 
-#: src/cmdline/cmdline_action.cc:313
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr "無法找到任何套件的名稱或敘述含有 \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:315
+#: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -360,7 +355,7 @@ msgstr ""
 "無法找到任何套件吻合 \"%s\"，而且超過 40 各套件的敘述包含\n"
 "了 \"%s\"。\n"
 
-#: src/cmdline/cmdline_action.cc:318
+#: src/cmdline/cmdline_action.cc:316
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -369,7 +364,7 @@ msgstr ""
 "無法找到任何套件吻合 \"%s\"。 然而，以下的套件敘述中包含\n"
 "\"%s\":\n"
 
-#: src/cmdline/cmdline_action.cc:437
+#: src/cmdline/cmdline_action.cc:436
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "錯誤的動作指令鍵 '%c'\n"
@@ -417,10 +412,8 @@ msgstr "無效的操作“%s”"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "在參數“keep-all”之後有意料之外的模式"
 
-#: src/cmdline/cmdline_do_action.cc:236
-#: src/cmdline/cmdline_simulate.cc:31
-#: src/cmdline/cmdline_upgrade.cc:104
-#: src/main.cc:520
+#: src/cmdline/cmdline_do_action.cc:241 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:520
 #, c-format
 msgid "Abort.\n"
 msgstr "關於。\n"
@@ -431,7 +424,7 @@ msgid "download: you must specify at least one package to download\n"
 msgstr "下載: 你必須至少指定一個下載套件\n"
 
 #: src/cmdline/cmdline_download.cc:42
-#: src/generic/apt/download_install_manager.cc:76
+#: src/generic/apt/download_install_manager.cc:79
 msgid "Couldn't read source list"
 msgstr "無法讀取源列表檔案"
 
@@ -442,7 +435,9 @@ msgstr "無法找到任何套件的名稱 \"%s\""
 
 #: src/cmdline/cmdline_download.cc:80
 #, c-format
-msgid "No downloadable files for %s version %s; perhaps it is a local or obsolete package?"
+msgid ""
+"No downloadable files for %s version %s; perhaps it is a local or obsolete "
+"package?"
 msgstr "%s 版本 %s 沒有可以下載的檔案; 也許這是一個本地或廢除的套件？"
 
 #: src/cmdline/cmdline_forget_new.cc:44
@@ -462,7 +457,8 @@ msgstr "此軟體真的沒有復活節彩蛋程式。\n"
 
 #: src/cmdline/cmdline_moo.cc:22
 #, c-format
-msgid "Didn't I already tell you that there are no Easter Eggs in this program?\n"
+msgid ""
+"Didn't I already tell you that there are no Easter Eggs in this program?\n"
 msgstr "我不是已經告訴你這個軟體真的沒有復活節彩蛋程式了嗎?\n"
 
 #: src/cmdline/cmdline_moo.cc:25
@@ -485,105 +481,99 @@ msgstr "好啦，你贏了。\n"
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr "這是什麼? 這當然是一隻大象被一隻蛇吞掉。\n"
 
-#: src/cmdline/cmdline_prompt.cc:33
+#: src/cmdline/cmdline_prompt.cc:34
 msgid "Unexpected end-of-file on standard input"
 msgstr "標準輸入中遇到意料之外的檔案結束"
 
-#: src/cmdline/cmdline_prompt.cc:52
+#: src/cmdline/cmdline_prompt.cc:53
 msgid "Couldn't read list of sources"
 msgstr "無法讀取套件來源列表"
 
-#: src/cmdline/cmdline_prompt.cc:234
-#: src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:236 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "但 %s 將會安裝。"
 
-#: src/cmdline/cmdline_prompt.cc:237
-#: src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:239 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "但 %s 已安裝且保持現有版本。"
 
-#: src/cmdline/cmdline_prompt.cc:240
-#: src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:242 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "但 %s 已安裝"
 
-#: src/cmdline/cmdline_prompt.cc:244
-#: src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:246 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "但這無法安裝"
 
-#: src/cmdline/cmdline_prompt.cc:248
-#: src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:250 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " 這是虛擬套件"
 
-#: src/cmdline/cmdline_prompt.cc:251
-#: src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:253 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " 或"
 
-#: src/cmdline/cmdline_prompt.cc:263
+#: src/cmdline/cmdline_prompt.cc:265
 msgid "The following packages are BROKEN:"
 msgstr "以下的套件狀態為毀斷"
 
-#: src/cmdline/cmdline_prompt.cc:264
+#: src/cmdline/cmdline_prompt.cc:266
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "以下未使用的套件將會移除:"
 
-#: src/cmdline/cmdline_prompt.cc:265
+#: src/cmdline/cmdline_prompt.cc:267
 msgid "The following packages have been automatically kept back:"
 msgstr "以下套件已經設為自動保持現狀:"
 
-#: src/cmdline/cmdline_prompt.cc:266
+#: src/cmdline/cmdline_prompt.cc:268
 msgid "The following NEW packages will be automatically installed:"
 msgstr "以下新套件將會自動安裝:"
 
-#: src/cmdline/cmdline_prompt.cc:267
+#: src/cmdline/cmdline_prompt.cc:269
 msgid "The following packages will be automatically REMOVED:"
 msgstr "以下套件將會自動移除:"
 
-#: src/cmdline/cmdline_prompt.cc:268
+#: src/cmdline/cmdline_prompt.cc:270
 msgid "The following packages will be DOWNGRADED:"
 msgstr "以下套件將會自動降級:"
 
-#: src/cmdline/cmdline_prompt.cc:269
+#: src/cmdline/cmdline_prompt.cc:271
 msgid "The following packages have been kept back:"
 msgstr "以下套件已經設為保持現狀:"
 
-#: src/cmdline/cmdline_prompt.cc:270
+#: src/cmdline/cmdline_prompt.cc:272
 msgid "The following packages will be REINSTALLED:"
 msgstr "以下套件將重新安裝:"
 
-#: src/cmdline/cmdline_prompt.cc:271
+#: src/cmdline/cmdline_prompt.cc:273
 msgid "The following NEW packages will be installed:"
 msgstr "以下新套件將會安裝:"
 
-#: src/cmdline/cmdline_prompt.cc:272
+#: src/cmdline/cmdline_prompt.cc:274
 msgid "The following packages will be REMOVED:"
 msgstr "以下新套件將會移除:"
 
-#: src/cmdline/cmdline_prompt.cc:273
+#: src/cmdline/cmdline_prompt.cc:275
 msgid "The following packages will be upgraded:"
 msgstr "以下套件將會升級:"
 
-#: src/cmdline/cmdline_prompt.cc:328
+#: src/cmdline/cmdline_prompt.cc:330
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "以下基本套件將會移除！\n"
 
-#: src/cmdline/cmdline_prompt.cc:337
+#: src/cmdline/cmdline_prompt.cc:339
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "以下基本套件將會因此動作而毀斷！\n"
 
-#: src/cmdline/cmdline_prompt.cc:347
+#: src/cmdline/cmdline_prompt.cc:349
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -592,16 +582,16 @@ msgstr ""
 "警告: 執行以下動作可能會造成您的系統毀壞！\n"
 "             不要持續進行，無非您很清楚自己在做什麼！\n"
 
-#: src/cmdline/cmdline_prompt.cc:349
+#: src/cmdline/cmdline_prompt.cc:351
 msgid "I am aware that this is a very bad idea"
 msgstr "I am aware that this is a very bad idea"
 
-#: src/cmdline/cmdline_prompt.cc:352
+#: src/cmdline/cmdline_prompt.cc:354
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "要繼續，請輸入以下聲明  \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:394
+#: src/cmdline/cmdline_prompt.cc:396
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -617,7 +607,7 @@ msgstr ""
 "只有在您確定您真的要這麼做時，您才可以進行安裝作業。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:406
+#: src/cmdline/cmdline_prompt.cc:408
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -626,196 +616,198 @@ msgstr ""
 "*** 警告 ***  忽略這些信任違背，因為\n"
 "                 %s::CmdLine::Ignore-Trust-Violations 的值為“真”！\n"
 
-#: src/cmdline/cmdline_prompt.cc:413
-#: src/vscreen/vs_util.cc:177
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:177
 #: src/vscreen/vs_util.cc:215
 msgid "Yes"
 msgstr "Yes"
 
-#: src/cmdline/cmdline_prompt.cc:413
-#: src/vscreen/vs_util.cc:178
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:178
 #: src/vscreen/vs_util.cc:216
 msgid "No"
 msgstr "No"
 
-#: src/cmdline/cmdline_prompt.cc:417
+#: src/cmdline/cmdline_prompt.cc:419
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "您是否要忽略這個警告，不管如何繼續進行？\n"
 
-#: src/cmdline/cmdline_prompt.cc:418
+#: src/cmdline/cmdline_prompt.cc:420
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "要繼續，請輸入 \"%s\"；若要放棄，請輸入 \"%s\"："
 
-#: src/cmdline/cmdline_prompt.cc:432
+#: src/cmdline/cmdline_prompt.cc:434
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "輸入的文字無法辨識。 請輸入 \"%s\" 或 \"%s\"。\n"
 
-#: src/cmdline/cmdline_prompt.cc:534
+#: src/cmdline/cmdline_prompt.cc:536
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "以下套件受到推薦但是將不會安裝:\n"
 
-#: src/cmdline/cmdline_prompt.cc:540
+#: src/cmdline/cmdline_prompt.cc:542
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "以下套件受到建議但是將不會安裝:\n"
 
-#: src/cmdline/cmdline_prompt.cc:545
+#: src/cmdline/cmdline_prompt.cc:547
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "沒有套件將會被安裝、升級或移除。\n"
 
-#: src/cmdline/cmdline_prompt.cc:547
+#: src/cmdline/cmdline_prompt.cc:549
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu 個套件升級, %lu 個新安裝, "
 
-#: src/cmdline/cmdline_prompt.cc:551
+#: src/cmdline/cmdline_prompt.cc:553
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu 個重新安裝, "
 
-#: src/cmdline/cmdline_prompt.cc:553
+#: src/cmdline/cmdline_prompt.cc:555
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu 個降級, "
 
-#: src/cmdline/cmdline_prompt.cc:555
+#: src/cmdline/cmdline_prompt.cc:557
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu 個將移除且 %lu 個不會升級.\n"
 
-#: src/cmdline/cmdline_prompt.cc:562
+#: src/cmdline/cmdline_prompt.cc:564
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "需要下載 %sB/%sB 的歸檔檔案. "
 
-#: src/cmdline/cmdline_prompt.cc:565
+#: src/cmdline/cmdline_prompt.cc:567
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "需要下載 %sB 的歸檔檔案. "
 
-#: src/cmdline/cmdline_prompt.cc:572
+#: src/cmdline/cmdline_prompt.cc:574
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "解裝後將用去 %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:575
+#: src/cmdline/cmdline_prompt.cc:577
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "解裝後將釋出 %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:613
+#: src/cmdline/cmdline_prompt.cc:615
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "無顯示套件 -- 請在 'i' 之後輸入套件名稱。\n"
 
-#: src/cmdline/cmdline_prompt.cc:615
+#: src/cmdline/cmdline_prompt.cc:617
 msgid "Press Return to continue."
 msgstr "按 Return 繼續。"
 
-#: src/cmdline/cmdline_prompt.cc:641
+#: src/cmdline/cmdline_prompt.cc:643
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "未找到套件 -- 請在 'c' 之後輸入套件名稱。\n"
 
-#: src/cmdline/cmdline_prompt.cc:645
+#: src/cmdline/cmdline_prompt.cc:647
 msgid "Press Return to continue"
 msgstr "按 Return 繼續。"
 
-#: src/cmdline/cmdline_prompt.cc:656
+#: src/cmdline/cmdline_prompt.cc:658
 #, c-format
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 
-#: src/cmdline/cmdline_prompt.cc:676
+#: src/cmdline/cmdline_prompt.cc:678
 msgid "continue with the installation"
 msgstr "繼續安裝"
 
-#: src/cmdline/cmdline_prompt.cc:678
+#: src/cmdline/cmdline_prompt.cc:680
 msgid "abort and quit"
 msgstr "放棄並退出"
 
-#: src/cmdline/cmdline_prompt.cc:680
-msgid "show information about one or more packages; the package names should follow the 'i'"
+#: src/cmdline/cmdline_prompt.cc:682
+msgid ""
+"show information about one or more packages; the package names should follow "
+"the 'i'"
 msgstr "顯示一個或者多個套件的訊息；套件的名字將在字元“i”之後。"
 
-#: src/cmdline/cmdline_prompt.cc:682
-msgid "show the Debian changelogs of one or more packages; the package names should follow the 'c'"
+#: src/cmdline/cmdline_prompt.cc:684
+msgid ""
+"show the Debian changelogs of one or more packages; the package names should "
+"follow the 'c'"
 msgstr "顯示一個或者多個套件的變更記錄；套件的名字將在字元“c”之後。"
 
-#: src/cmdline/cmdline_prompt.cc:684
+#: src/cmdline/cmdline_prompt.cc:686
 msgid "toggle the display of dependency information"
 msgstr "切換是否顯示相依賴關系訊息"
 
-#: src/cmdline/cmdline_prompt.cc:686
+#: src/cmdline/cmdline_prompt.cc:688
 msgid "toggle the display of changes in package sizes"
 msgstr "切換是否顯示套件的大小"
 
-#: src/cmdline/cmdline_prompt.cc:688
+#: src/cmdline/cmdline_prompt.cc:690
 msgid "toggle the display of version numbers"
 msgstr "切換是否顯示版本號"
 
-#: src/cmdline/cmdline_prompt.cc:690
+#: src/cmdline/cmdline_prompt.cc:692
 msgid "enter the full visual interface"
 msgstr "進入全屏視覺化介面"
 
-#: src/cmdline/cmdline_prompt.cc:691
-msgid "You may also specify modification to the actions which will be taken.  To do so, type an action character followed by one or more package names (or patterns).  The action will be applied to all the packages that you list.  The following actions are available:"
-msgstr "您也可以對將要實施的動作進行修改。方法是，輸入一個動作字元後輸入一個或者多個套件的名稱(或者模式)。該動作將被實施到您所選擇的全部套件。下列動作可供選擇："
+#: src/cmdline/cmdline_prompt.cc:693
+msgid ""
+"You may also specify modification to the actions which will be taken.  To do "
+"so, type an action character followed by one or more package names (or "
+"patterns).  The action will be applied to all the packages that you list.  "
+"The following actions are available:"
+msgstr ""
+"您也可以對將要實施的動作進行修改。方法是，輸入一個動作字元後輸入一個或者多個"
+"套件的名稱(或者模式)。該動作將被實施到您所選擇的全部套件。下列動作可供選擇："
 
-#: src/cmdline/cmdline_prompt.cc:696
-#: src/cmdline/cmdline_resolver.cc:184
+#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:184
 msgid "'+' to install packages"
 msgstr "按'+'鍵來安裝套件"
 
-#: src/cmdline/cmdline_prompt.cc:698
-#: src/cmdline/cmdline_resolver.cc:186
-msgid "'+M' to install packages and immediately flag them as automatically installed"
+#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:186
+msgid ""
+"'+M' to install packages and immediately flag them as automatically installed"
 msgstr "按'+M'安裝套件並且立即將它們標記為已安裝狀態"
 
-#: src/cmdline/cmdline_prompt.cc:700
-#: src/cmdline/cmdline_resolver.cc:188
+#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:188
 msgid "'-' to remove packages"
 msgstr "按'-'移除套件"
 
-#: src/cmdline/cmdline_prompt.cc:702
-#: src/cmdline/cmdline_resolver.cc:190
+#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:190
 msgid "'_' to purge packages"
 msgstr "按'_'清除套件"
 
-#: src/cmdline/cmdline_prompt.cc:704
-#: src/cmdline/cmdline_resolver.cc:192
+#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:192
 msgid "'=' to place packages on hold"
 msgstr "“=”將套件置於保持狀態"
 
-#: src/cmdline/cmdline_prompt.cc:706
-#: src/cmdline/cmdline_resolver.cc:194
-msgid "':' to keep packages in their current state without placing them on hold"
+#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:194
+msgid ""
+"':' to keep packages in their current state without placing them on hold"
 msgstr "按':'將維持套件當前狀態但是並不將其置於保持狀態"
 
-#: src/cmdline/cmdline_prompt.cc:708
-#: src/cmdline/cmdline_resolver.cc:196
+#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
 msgstr "按'&M'將套件標記為自動安裝"
 
-#: src/cmdline/cmdline_prompt.cc:710
-#: src/cmdline/cmdline_resolver.cc:198
+#: src/cmdline/cmdline_prompt.cc:712 src/cmdline/cmdline_resolver.cc:198
 msgid "'&m' to mark packages as manually installed"
 msgstr "按'm'將套件標記為手動安裝"
 
-#: src/cmdline/cmdline_prompt.cc:712
+#: src/cmdline/cmdline_prompt.cc:714
 msgid "Commands:"
 msgstr "命令："
 
-#: src/cmdline/cmdline_prompt.cc:767
+#: src/cmdline/cmdline_prompt.cc:769
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "您想繼續嗎? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:792
+#: src/cmdline/cmdline_prompt.cc:794
 #, c-format
 msgid ""
 "\n"
@@ -826,7 +818,7 @@ msgstr ""
 "相依性資訊將會顯示。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:794
+#: src/cmdline/cmdline_prompt.cc:796
 #, c-format
 msgid ""
 "\n"
@@ -837,7 +829,7 @@ msgstr ""
 "相依性資訊將不會顯示。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:800
+#: src/cmdline/cmdline_prompt.cc:802
 #, c-format
 msgid ""
 "\n"
@@ -848,7 +840,7 @@ msgstr ""
 "版本將會顯示。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:802
+#: src/cmdline/cmdline_prompt.cc:804
 #, c-format
 msgid ""
 "\n"
@@ -859,7 +851,7 @@ msgstr ""
 "版本將不會顯示\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:807
+#: src/cmdline/cmdline_prompt.cc:809
 #, c-format
 msgid ""
 "\n"
@@ -870,7 +862,7 @@ msgstr ""
 "變動大小將會顯示\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:809
+#: src/cmdline/cmdline_prompt.cc:811
 #, c-format
 msgid ""
 "\n"
@@ -881,33 +873,34 @@ msgstr ""
 "變動大小將不會顯示\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:832
+#: src/cmdline/cmdline_prompt.cc:834
 #, c-format
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "錯誤回應。請輸入一個正確的指令或 '?' 以取得協助。\n"
 
-#: src/cmdline/cmdline_resolver.cc:124
-#: src/cmdline/cmdline_resolver.cc:597
+#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:599
 #: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "無法打開 %s 以寫入"
 
-#: src/cmdline/cmdline_resolver.cc:130
-#: src/cmdline/cmdline_resolver.cc:602
+#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:604
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "將相依關係解決狀態寫入檔案 %s 時發生錯誤"
 
-#: src/cmdline/cmdline_resolver.cc:132
-#: src/cmdline/cmdline_resolver.cc:604
+#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:606
 msgid "Resolver state successfully written!"
 msgstr "成功寫入每依關係解決狀態！"
 
 #: src/cmdline/cmdline_resolver.cc:145
 #, c-format
-msgid "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
-msgstr "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
+msgid ""
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
+"n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
+msgstr ""
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
+"n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:164
 msgid "accept the proposed changes"
@@ -938,11 +931,15 @@ msgid "examine the solution in the visual user interface"
 msgstr "檢查用戶可視介面中的設定方案"
 
 #: src/cmdline/cmdline_resolver.cc:178
-msgid "reject the given package versions; don't display any solutions in which they occur."
+msgid ""
+"reject the given package versions; don't display any solutions in which they "
+"occur."
 msgstr "拒絕給定的套件版本；不顯示任何包括它們的解決方案。"
 
 #: src/cmdline/cmdline_resolver.cc:180
-msgid "accept the given package versions; display only solutions in which they occur."
+msgid ""
+"accept the given package versions; display only solutions in which they "
+"occur."
 msgstr "接受給定的套件版本；僅顯示包括它們的解決方案。"
 
 #: src/cmdline/cmdline_resolver.cc:182
@@ -950,7 +947,9 @@ msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr "修改所列套件的狀態，這裡“動作”為下列項之一："
 
 #: src/cmdline/cmdline_resolver.cc:200
-msgid "Adjustments will cause the current solution to be discarded and recalculated as necessary."
+msgid ""
+"Adjustments will cause the current solution to be discarded and recalculated "
+"as necessary."
 msgstr "修改將導致當前解決方案被放棄或者必須重新計算。"
 
 #: src/cmdline/cmdline_resolver.cc:214
@@ -1028,8 +1027,7 @@ msgstr "要求移除 %s"
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "要求安裝 %s 的 %s 版本(%s)"
 
-#: src/cmdline/cmdline_resolver.cc:464
-#: src/solution_screen.cc:495
+#: src/cmdline/cmdline_resolver.cc:464 src/solution_screen.cc:495
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgstr "打開：%d；關閉；%d；defer: %d; 衝突；%d"
@@ -1042,8 +1040,7 @@ msgstr "以下動作會解決這些相依問題:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "是否接受該解決方案？[Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552
-#: src/cmdline/cmdline_resolver.cc:648
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:650
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "放棄解決這些相依關係的全部努力。"
 
@@ -1051,27 +1048,27 @@ msgstr "放棄解決這些相依關係的全部努力。"
 msgid "The following commands are available:"
 msgstr "下列命令可選："
 
-#: src/cmdline/cmdline_resolver.cc:594
+#: src/cmdline/cmdline_resolver.cc:596
 msgid "File to write resolver state to: "
 msgstr "將相依關係解決狀態寫入檔案："
 
-#: src/cmdline/cmdline_resolver.cc:609
+#: src/cmdline/cmdline_resolver.cc:611
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "錯誤回應。請輸入以下任一個指令："
 
-#: src/cmdline/cmdline_resolver.cc:622
+#: src/cmdline/cmdline_resolver.cc:624
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "在分配的時間內未找到解決方案。加把勁再試試？[Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:651
+#: src/cmdline/cmdline_resolver.cc:653
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "錯誤回應。請輸入“y”或“n”。"
 
-#: src/cmdline/cmdline_resolver.cc:660
+#: src/cmdline/cmdline_resolver.cc:662
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "未能解決相依關係！放棄..."
 
-#: src/cmdline/cmdline_resolver.cc:666
+#: src/cmdline/cmdline_resolver.cc:668
 msgid "*** No more solutions available ***"
 msgstr "*** 沒有更多的解決方案了 ***"
 
@@ -1090,19 +1087,16 @@ msgstr "搜尋: 您至少要提供一個搜尋字串\n"
 msgid "The following packages have unmet dependencies:\n"
 msgstr "以下套件含有相依性:\n"
 
-#: src/cmdline/cmdline_show.cc:161
-#: src/cmdline/cmdline_show.cc:398
+#: src/cmdline/cmdline_show.cc:161 src/cmdline/cmdline_show.cc:398
 #: src/solution_fragment.cc:56
 msgid "<NULL>"
 msgstr "<NULL>"
 
-#: src/cmdline/cmdline_show.cc:178
-#: src/cmdline/cmdline_show.cc:183
+#: src/cmdline/cmdline_show.cc:178 src/cmdline/cmdline_show.cc:183
 msgid "not installed"
 msgstr "尚未安裝"
 
-#: src/cmdline/cmdline_show.cc:185
-#: src/pkg_columnizer.cc:233
+#: src/cmdline/cmdline_show.cc:185 src/pkg_columnizer.cc:233
 #: src/pkg_ver_item.cc:228
 msgid "unpacked"
 msgstr "未解包的"
@@ -1119,8 +1113,7 @@ msgstr "部份安裝"
 msgid "not installed (configuration files remain)"
 msgstr "未安裝 (尚保留設定檔案)"
 
-#: src/cmdline/cmdline_show.cc:193
-#: src/pkg_columnizer.cc:241
+#: src/cmdline/cmdline_show.cc:193 src/pkg_columnizer.cc:241
 #: src/pkg_ver_item.cc:236
 msgid "installed"
 msgstr "已安裝"
@@ -1130,8 +1123,7 @@ msgstr "已安裝"
 msgid "%s; will be purged because nothing depends on it"
 msgstr "%s; 將清除，因為無軟體相依於上"
 
-#: src/cmdline/cmdline_show.cc:218
-#: src/cmdline/cmdline_show.cc:314
+#: src/cmdline/cmdline_show.cc:218 src/cmdline/cmdline_show.cc:314
 #, c-format
 msgid "%s; will be purged"
 msgstr "%s; 將被清除"
@@ -1184,32 +1176,26 @@ msgstr "%s; 版本 %s 將被安裝"
 msgid "%s; version %s will be installed automatically"
 msgstr "%s; 版本 %s 將會自動安裝"
 
-#: src/cmdline/cmdline_show.cc:333
-#: src/cmdline/cmdline_show.cc:354
+#: src/cmdline/cmdline_show.cc:333 src/cmdline/cmdline_show.cc:354
 msgid "Package: "
 msgstr "套件:"
 
-#: src/cmdline/cmdline_show.cc:334
-#: src/cmdline/cmdline_show.cc:362
+#: src/cmdline/cmdline_show.cc:334 src/cmdline/cmdline_show.cc:362
 #: src/pkg_columnizer.cc:89
 msgid "State"
 msgstr "狀態"
 
-#: src/cmdline/cmdline_show.cc:335
-#: src/cmdline/cmdline_show.cc:418
+#: src/cmdline/cmdline_show.cc:335 src/cmdline/cmdline_show.cc:418
 #: src/generic/apt/matchers.cc:1663
 msgid "Provided by"
 msgstr "提供於"
 
-#: src/cmdline/cmdline_show.cc:356
-#: src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:356 src/pkg_info_screen.cc:107
 msgid "Essential: "
 msgstr "基礎的："
 
-#: src/cmdline/cmdline_show.cc:356
-#: src/cmdline/cmdline_show.cc:360
-#: src/cmdline/cmdline_show.cc:371
-#: src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:356 src/cmdline/cmdline_show.cc:360
+#: src/cmdline/cmdline_show.cc:371 src/pkg_info_screen.cc:107
 msgid "yes"
 msgstr "是"
 
@@ -1233,24 +1219,20 @@ msgstr "否"
 msgid "Version: "
 msgstr "版本:"
 
-#: src/cmdline/cmdline_show.cc:374
-#: src/pkg_info_screen.cc:115
+#: src/cmdline/cmdline_show.cc:374 src/pkg_info_screen.cc:115
 msgid "Priority: "
 msgstr "優先級："
 
-#: src/cmdline/cmdline_show.cc:375
-#: src/cmdline/cmdline_show.cc:377
+#: src/cmdline/cmdline_show.cc:375 src/cmdline/cmdline_show.cc:377
 #: src/cmdline/cmdline_show.cc:386
 msgid "N/A"
 msgstr "N/A"
 
-#: src/cmdline/cmdline_show.cc:376
-#: src/pkg_info_screen.cc:116
+#: src/cmdline/cmdline_show.cc:376 src/pkg_info_screen.cc:116
 msgid "Section: "
 msgstr "部分："
 
-#: src/cmdline/cmdline_show.cc:378
-#: src/pkg_info_screen.cc:117
+#: src/cmdline/cmdline_show.cc:378 src/pkg_info_screen.cc:117
 msgid "Maintainer: "
 msgstr "維護者："
 
@@ -1274,8 +1256,7 @@ msgstr "檔名: "
 msgid "MD5sum: "
 msgstr "MD5sum: "
 
-#: src/cmdline/cmdline_show.cc:395
-#: src/cmdline/cmdline_show.cc:398
+#: src/cmdline/cmdline_show.cc:395 src/cmdline/cmdline_show.cc:398
 msgid "Archive"
 msgstr "歸檔"
 
@@ -1307,13 +1288,11 @@ msgstr "替換"
 msgid "Obsoletes"
 msgstr "過期檔案"
 
-#: src/cmdline/cmdline_show.cc:417
-#: src/generic/apt/matchers.cc:1617
+#: src/cmdline/cmdline_show.cc:417 src/generic/apt/matchers.cc:1617
 msgid "Provides"
 msgstr "提供"
 
-#: src/cmdline/cmdline_show.cc:421
-#: src/pkg_info_screen.cc:95
+#: src/cmdline/cmdline_show.cc:421 src/pkg_info_screen.cc:95
 msgid "Description: "
 msgstr "描述: "
 
@@ -1380,24 +1359,20 @@ msgstr "你無法同時指定一個套件的歸檔類別與版本\n"
 msgid "UNSATISFIED"
 msgstr "未滿足的"
 
-#: src/dep_item.cc:140
-#: src/reason_fragment.cc:244
+#: src/dep_item.cc:140 src/reason_fragment.cc:244
 msgid "UNAVAILABLE"
 msgstr "不可用"
 
-#: src/desc_parse.cc:275
+#: src/desc_parse.cc:292
 msgid "Tags"
 msgstr "標簽"
 
-#: src/download_bar.cc:49
-#: src/download_list.cc:335
-#: src/download_screen.cc:56
+#: src/download_bar.cc:49 src/download_list.cc:335 src/download_screen.cc:56
 #, c-format
 msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
 msgstr "請將標號為“%s”的磁碟插入驅動器“%s”"
 
-#: src/download_bar.cc:66
-#: src/generic/apt/acqprogress.cc:65
+#: src/download_bar.cc:66 src/generic/apt/acqprogress.cc:65
 msgid "Hit "
 msgstr "已有 "
 
@@ -1413,21 +1388,17 @@ msgstr "已取得 "
 msgid "Downloading..."
 msgstr "正在下載..."
 
-#: src/download_item.cc:72
-#: src/download_item.cc:76
-#: src/download_item.cc:98
+#: src/download_item.cc:72 src/download_item.cc:76 src/download_item.cc:98
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
 msgid " [Working]"
 msgstr "[正在工作]"
 
-#: src/download_item.cc:102
-#: src/download_list.cc:356
+#: src/download_item.cc:102 src/download_list.cc:356
 msgid "[Hit]"
 msgstr "[命中]"
 
-#: src/download_item.cc:102
-#: src/download_list.cc:378
+#: src/download_item.cc:102 src/download_list.cc:378
 msgid "[Downloaded]"
 msgstr "[已下載]"
 
@@ -1441,19 +1412,15 @@ msgstr "已下載 %sB，耗時 %s (%sB/s)。"
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%n某些檔案無法下載。"
 
-#: src/download_list.cc:86
-#: src/download_list.cc:340
-#: src/download_screen.cc:64
+#: src/download_list.cc:86 src/download_list.cc:340 src/download_screen.cc:64
 msgid "Continue"
 msgstr "繼續"
 
-#: src/download_list.cc:203
-#: src/download_screen.cc:203
+#: src/download_list.cc:203 src/download_screen.cc:203
 msgid "Total Progress: "
 msgstr "總進度："
 
-#: src/download_list.cc:231
-#: src/download_screen.cc:218
+#: src/download_list.cc:231 src/download_screen.cc:218
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ]  (%sB/s, 剩下 %s)"
@@ -1463,14 +1430,12 @@ msgstr " [ %i%% ]  (%sB/s, 剩下 %s)"
 msgid " [ %i%% ] (stalled)"
 msgstr " [ %i%% ] (已停頓)"
 
-#: src/download_list.cc:235
-#: src/download_list.cc:264
+#: src/download_list.cc:235 src/download_list.cc:264
 #, c-format
 msgid " [ %i%% ]"
 msgstr " [ %i%% ]"
 
-#: src/download_list.cc:342
-#: src/download_screen.cc:67
+#: src/download_list.cc:342 src/download_screen.cc:67
 msgid "Abort"
 msgstr "放棄"
 
@@ -1519,21 +1484,21 @@ msgstr "已下載 %sB，耗時 %s (%sB/s)\n"
 
 #: src/generic/apt/acqprogress.cc:296
 #, c-format
-msgid "Media Change: Please insert the disc labeled '%s' in the drive '%s' and press enter\n"
+msgid ""
+"Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
+"press enter\n"
 msgstr "媒體改變: 請將標注為“%s”的磁碟插入磁碟機“%s” 並按下 enter\n"
 
 #: src/generic/apt/aptcache.cc:263
 msgid "Can't open Aptitude extended state file"
 msgstr "無法打開 Aptitude 延伸狀態檔案"
 
-#: src/generic/apt/aptcache.cc:270
-#: src/generic/apt/aptcache.cc:324
+#: src/generic/apt/aptcache.cc:270 src/generic/apt/aptcache.cc:324
 #: src/generic/apt/aptcache.cc:326
 msgid "Reading extended state information"
 msgstr "正在讀取延伸狀態檔案"
 
-#: src/generic/apt/aptcache.cc:332
-#: src/generic/apt/aptcache.cc:408
+#: src/generic/apt/aptcache.cc:332 src/generic/apt/aptcache.cc:408
 #: src/generic/apt/aptcache.cc:411
 msgid "Initializing package states"
 msgstr "初始化套件狀態"
@@ -1542,8 +1507,7 @@ msgstr "初始化套件狀態"
 msgid "Cannot open Aptitude state file"
 msgstr "無法打開 Aptitude 延伸狀態檔案"
 
-#: src/generic/apt/aptcache.cc:540
-#: src/generic/apt/aptcache.cc:596
+#: src/generic/apt/aptcache.cc:540 src/generic/apt/aptcache.cc:596
 #: src/generic/apt/aptcache.cc:599
 msgid "Writing extended state information"
 msgstr "正在編輯延伸狀態訊息"
@@ -1603,32 +1567,43 @@ msgid "Unable to replace %s with new configuration file"
 msgstr "無法用新的配置檔案代替 %s"
 
 #: src/generic/apt/apt.cc:306
-msgid "Could not lock the cache file.  Opening in read-only mode; any changes you make to the states of packages will NOT be preserved!"
-msgstr "無法鎖定緩衝檔案。正在以唯讀方式打開；您對套件狀態所作的任何改變都不會被儲存！"
+msgid ""
+"Could not lock the cache file.  Opening in read-only mode; any changes you "
+"make to the states of packages will NOT be preserved!"
+msgstr ""
+"無法鎖定緩衝檔案。正在以唯讀方式打開；您對套件狀態所作的任何改變都不會被儲"
+"存！"
 
-#: src/generic/apt/download_install_manager.cc:53
-msgid "The package cache is not available; unable to download and install packages."
+#: src/generic/apt/download_install_manager.cc:56
+msgid ""
+"The package cache is not available; unable to download and install packages."
 msgstr "套件 cache 不可用；無法下載並安裝套件。"
 
-#: src/generic/apt/download_install_manager.cc:69
+#: src/generic/apt/download_install_manager.cc:72
 #: src/generic/apt/download_update_manager.cc:77
 msgid "Couldn't lock list directory..are you root?"
 msgstr "無法鎖定列表目錄..您是 root 嗎？"
 
-#: src/generic/apt/download_install_manager.cc:86
+#: src/generic/apt/download_install_manager.cc:89
 msgid "Internal error: couldn't generate list of packages to download"
 msgstr "內部錯誤：無法生成下載套件列表"
 
-#: src/generic/apt/download_install_manager.cc:121
+#: src/generic/apt/download_install_manager.cc:119
+#, fuzzy, c-format
+msgid "Failed to fetch %s: %s"
+msgstr "更名 %s 成 %s 失敗"
+
+#: src/generic/apt/download_install_manager.cc:125
 msgid "Unable to correct for unavailable packages"
 msgstr "無法修正不可用的套件"
 
-#: src/generic/apt/download_install_manager.cc:141
+#: src/generic/apt/download_install_manager.cc:151
 msgid "A package failed to install.  Trying to recover:"
 msgstr "套件安裝失敗。正在試圖恢復："
 
-#: src/generic/apt/download_install_manager.cc:165
-msgid "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
+#: src/generic/apt/download_install_manager.cc:176
+msgid ""
+"Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr "無法重新取得系統鎖定！(也許另一個 apt 或 dpkg 正在執行？)"
 
 #: src/generic/apt/download_update_manager.cc:66
@@ -1752,8 +1727,7 @@ msgstr ""
 msgid "Automatically Installed"
 msgstr "已自動安裝"
 
-#: src/generic/apt/matchers.cc:705
-#: src/generic/apt/matchers.cc:894
+#: src/generic/apt/matchers.cc:705 src/generic/apt/matchers.cc:894
 msgid "Broken"
 msgstr "已損壞"
 
@@ -1846,8 +1820,7 @@ msgstr "無法結束 %s 之後的未結束字串"
 msgid "Unmatched '('"
 msgstr "不匹配“(”"
 
-#: src/generic/apt/matchers.cc:2114
-#: src/generic/apt/matchers.cc:2187
+#: src/generic/apt/matchers.cc:2114 src/generic/apt/matchers.cc:2187
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "未知依賴類型：%s"
@@ -1889,22 +1862,25 @@ msgstr "意外的“)”"
 
 #: src/generic/apt/pkg_acqfile.cc:50
 #, c-format
-msgid "I wasn't able to locate a file for the %s package. This might mean you need to manually fix this package. (due to missing arch)"
-msgstr "我無法找到套件 %s 的檔案。這可能代表你必須手動修復這個套件。 (應該是遺漏 arch)"
+msgid ""
+"I wasn't able to locate a file for the %s package. This might mean you need "
+"to manually fix this package. (due to missing arch)"
+msgstr ""
+"我無法找到套件 %s 的檔案。這可能代表你必須手動修復這個套件。 (應該是遺漏 "
+"arch)"
 
 #: src/generic/apt/pkg_acqfile.cc:99
 #, c-format
-msgid "The package index files are corrupted. No Filename: field for package %s."
+msgid ""
+"The package index files are corrupted. No Filename: field for package %s."
 msgstr "套件索引列表是損壞的。無套件 %s 的檔名: 欄位。"
 
-#: src/generic/apt/pkg_changelog.cc:151
-#: src/view_changelog.cc:149
+#: src/generic/apt/pkg_changelog.cc:151 src/view_changelog.cc:149
 #, c-format
 msgid "ChangeLog of %s"
 msgstr "%s 的變更日誌"
 
-#: src/generic/apt/pkg_hier.cc:29
-#: src/generic/apt/pkg_hier.cc:50
+#: src/generic/apt/pkg_hier.cc:29 src/generic/apt/pkg_hier.cc:50
 #, c-format
 msgid "Warning: group %s is involved in a cycle"
 msgstr "警告：%s 組在一個循環中"
@@ -1932,8 +1908,7 @@ msgstr "遇到錯誤記錄(包=%s，組=%s)條目，跳過它"
 msgid "Multiple descriptions found for group %s, ignoring one"
 msgstr "發現組 %s 的多個描述，忽略其中一個"
 
-#: src/generic/apt/tags.cc:216
-#: src/generic/apt/tags.cc:223
+#: src/generic/apt/tags.cc:216 src/generic/apt/tags.cc:223
 msgid "Building tag database"
 msgstr "建立標簽資料庫"
 
@@ -1945,14 +1920,12 @@ msgstr "無法讀取 debtags 關鍵詞表，可能沒有安裝 debtags？"
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "無法開啟  /usr/share/tasksel/debian-tasks.desc"
 
-#: src/generic/apt/tasks.cc:290
-#: src/generic/apt/tasks.cc:332
+#: src/generic/apt/tasks.cc:290 src/generic/apt/tasks.cc:332
 #: src/generic/apt/tasks.cc:334
 msgid "Reading task descriptions"
 msgstr "閱讀作業敘述"
 
-#: src/generic/util/temp.cc:63
-#: src/generic/util/temp.cc:128
+#: src/generic/util/temp.cc:63 src/generic/util/temp.cc:128
 #: src/generic/util/temp.cc:142
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
@@ -1995,8 +1968,7 @@ msgstr "預設的顏色可以只被用做背景。"
 msgid "Unknown style attribute %s"
 msgstr "未知的風格屬性 %s"
 
-#: src/load_config.cc:165
-#: src/load_config.cc:167
+#: src/load_config.cc:165 src/load_config.cc:167
 #, c-format
 msgid "Invalid entry in keybinding group: \"%s\""
 msgstr "快捷鍵綁定中的無效條目：“%s”"
@@ -2120,8 +2092,7 @@ msgstr "無法分析佈局：列標識符編碼錯誤"
 msgid "Couldn't parse layout: unknown view item type \"%s\""
 msgstr "無法分析配置: 未知的瀏覽項目類型 \"%s\""
 
-#: src/load_pkgview.cc:119
-#: src/load_pkgview.cc:127
+#: src/load_pkgview.cc:119 src/load_pkgview.cc:127
 msgid "Couldn't parse layout: no row number specified"
 msgstr "無法分析配置: 未指定行數"
 
@@ -2133,8 +2104,7 @@ msgstr "無法分析配置: 未指定寬度"
 msgid "Couldn't parse layout: no height specified"
 msgstr "無法分析配置: 未指定高度"
 
-#: src/load_pkgview.cc:174
-#: src/load_pkgview.cc:192
+#: src/load_pkgview.cc:174 src/load_pkgview.cc:192
 #, c-format
 msgid "Unknown alignment type '%s'"
 msgstr "未知的排列類型 '%s'"
@@ -2267,7 +2237,9 @@ msgstr " unmarkauto   - 將套件標記為手動安裝\n"
 
 #: src/main.cc:131
 #, c-format
-msgid " forbid-version - Forbid aptitude from upgrading to a specific package version.\n"
+msgid ""
+" forbid-version - Forbid aptitude from upgrading to a specific package "
+"version.\n"
 msgstr "禁制版本 - 禁止 aptitude 升級特定的套件版本。\n"
 
 #: src/main.cc:132
@@ -2282,7 +2254,9 @@ msgstr " upgrade      - 執行一次安全的升級\n"
 
 #: src/main.cc:134
 #, c-format
-msgid " dist-upgrade - Perform an upgrade, possibly installing and removing packages\n"
+msgid ""
+" dist-upgrade - Perform an upgrade, possibly installing and removing "
+"packages\n"
 msgstr " dist-upgrade - 執行升級，可能會安裝和移除套件\n"
 
 #: src/main.cc:135
@@ -2322,7 +2296,9 @@ msgstr " download     - 下載套件的 .deb 檔案\n"
 
 #: src/main.cc:142
 #, c-format
-msgid " reinstall    - Download and (possibly) reinstall a currently installed package\n"
+msgid ""
+" reinstall    - Download and (possibly) reinstall a currently installed "
+"package\n"
 msgstr " reinstall    - 下載並(可能)重新安裝一個現在已經安裝了的套件\n"
 
 #: src/main.cc:144
@@ -2342,7 +2318,8 @@ msgstr " -s             模擬動作，但是並不真正執行。\n"
 
 #: src/main.cc:147
 #, c-format
-msgid " -d             Only download packages, do not install or remove anything.\n"
+msgid ""
+" -d             Only download packages, do not install or remove anything.\n"
 msgstr " -d             僅僅下載套件，不安裝或者移除任何東西。\n"
 
 #: src/main.cc:148
@@ -2352,22 +2329,27 @@ msgstr " -P             總是提示確認執行動作\n"
 
 #: src/main.cc:149
 #, c-format
-msgid " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+msgid ""
+" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr " -y             假設對簡單的 是/否 問題回答“是”\n"
 
 #: src/main.cc:150
 #, c-format
-msgid " -F format      Specify a format for displaying search results; see the manual\n"
+msgid ""
+" -F format      Specify a format for displaying search results; see the "
+"manual\n"
 msgstr " -F 格式        指定顯示搜尋結果的格式；參見手冊\n"
 
 #: src/main.cc:151
 #, c-format
-msgid " -O order       Specify how search results should be sorted; see the manual\n"
+msgid ""
+" -O order       Specify how search results should be sorted; see the manual\n"
 msgstr " -O 次序        指定如何排列顯示搜尋結果；參見手冊\n"
 
 #: src/main.cc:152
 #, c-format
-msgid " -w width       Specify the display width for formatting search results\n"
+msgid ""
+" -w width       Specify the display width for formatting search results\n"
 msgstr " -w 寬度        指定顯示搜尋結果的格式寬度\n"
 
 #: src/main.cc:153
@@ -2382,7 +2364,8 @@ msgstr " -V             顯示就要安裝的套件版本。\n"
 
 #: src/main.cc:155
 #, c-format
-msgid " -D             Show the dependencies of automatically changed packages.\n"
+msgid ""
+" -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D             顯示自動改變的套件的依賴關係\n"
 
 #: src/main.cc:156
@@ -2392,17 +2375,21 @@ msgstr " -Z\t\t    顯示每個套件的安裝尺寸的變化。\n"
 
 #: src/main.cc:157
 #, c-format
-msgid " -v             Display extra information. (may be supplied multiple times)\n"
+msgid ""
+" -v             Display extra information. (may be supplied multiple times)\n"
 msgstr " -v             顯示附加訊息。(可能會提供多次) \n"
 
 #: src/main.cc:158
 #, c-format
-msgid " -t [release]   Set the release from which packages should be installed\n"
+msgid ""
+" -t [release]   Set the release from which packages should be installed\n"
 msgstr " -t [release]   設置將要安裝的套件的發布版本\n"
 
 #: src/main.cc:159
 #, c-format
-msgid " -q             In command-line mode, suppress the incremental progress indicators.\n"
+msgid ""
+" -q             In command-line mode, suppress the incremental progress "
+"indicators.\n"
 msgstr " -q            在命令行狀態下，不顯示進度。\n"
 
 #: src/main.cc:160
@@ -2452,8 +2439,7 @@ msgstr "在 -q= 之後需要一個數字，但卻得到 %s\n"
 msgid "-o requires an argument of the form key=value, got %s"
 msgstr "-o 需要一個參數如 key=value, 得 %s"
 
-#: src/main.cc:382
-#: src/main.cc:391
+#: src/main.cc:382 src/main.cc:391
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "詭異：收到未知的選項代碼\n"
 
@@ -2462,7 +2448,8 @@ msgid "Only one of -u and -i may be specified\n"
 msgstr "選項 -u 和 -i 只能指定一個\n"
 
 #: src/main.cc:416
-msgid "-u and -i may not be specified in command-line mode (eg, with 'install')"
+msgid ""
+"-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr "選項 -u 和 -i 不能在命令行模式中指定 (例如，和“install”一起)"
 
 #: src/main.cc:437
@@ -2474,14 +2461,12 @@ msgstr "選項 -u 和 -i 不能在和一個命令一起指定 "
 msgid "Unknown command \"%s\"\n"
 msgstr "未知的命令“%s”\n"
 
-#: src/main.cc:525
-#: src/main.cc:574
+#: src/main.cc:525 src/main.cc:574
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "未知的例外：%s\n"
 
-#: src/main.cc:529
-#: src/main.cc:578
+#: src/main.cc:529 src/main.cc:578
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -2490,21 +2475,15 @@ msgstr ""
 "回溯：\n"
 "%s"
 
-#: src/menu_text_layout.cc:36
-#: src/menu_tree.cc:204
-#: src/view_changelog.cc:55
+#: src/menu_text_layout.cc:36 src/menu_tree.cc:204 src/view_changelog.cc:55
 msgid "Search for: "
 msgstr "搜尋："
 
-#: src/menu_text_layout.cc:68
-#: src/menu_tree.cc:221
-#: src/view_changelog.cc:67
+#: src/menu_text_layout.cc:68 src/menu_tree.cc:221 src/view_changelog.cc:67
 msgid "Search backwards for: "
 msgstr "向前搜尋："
 
-#: src/mine/cmine.cc:106
-#: src/mine/cmine.cc:148
-#: src/ui.cc:1446
+#: src/mine/cmine.cc:106 src/mine/cmine.cc:148 src/ui.cc:1446
 msgid "Minesweeper"
 msgstr "掃雷"
 
@@ -2513,13 +2492,11 @@ msgstr "掃雷"
 msgid "%i/%i mines  %d %s"
 msgstr "%i/%i mines  %d %s"
 
-#: src/mine/cmine.cc:116
-#: src/mine/cmine.cc:123
+#: src/mine/cmine.cc:116 src/mine/cmine.cc:123
 msgid "second"
 msgstr "秒"
 
-#: src/mine/cmine.cc:116
-#: src/mine/cmine.cc:123
+#: src/mine/cmine.cc:116 src/mine/cmine.cc:123
 msgid "seconds"
 msgstr "分"
 
@@ -2536,8 +2513,7 @@ msgstr "贏"
 msgid "Lost"
 msgstr "輸"
 
-#: src/mine/cmine.cc:165
-#: src/mine/cmine.cc:209
+#: src/mine/cmine.cc:165 src/mine/cmine.cc:209
 #, c-format
 msgid "Could not open file \"%s\""
 msgstr "無法打開檔案“%s”"
@@ -2628,7 +2604,8 @@ msgid "The dart was poisoned!  The poison was deadly...  --More--"
 msgstr "飛鏢有毒！毒藥是致命的...  --更多--"
 
 #: src/mine/cmine.cc:494
-msgid "A little dart shoots out at you!  You are hit by a little dart!  --More--"
+msgid ""
+"A little dart shoots out at you!  You are hit by a little dart!  --More--"
 msgstr "一個飛鏢向您射來！ 您被一個飛鏢刺中了！  --更多--"
 
 #: src/mine/cmine.cc:498
@@ -2644,7 +2621,9 @@ msgid "You feel here a cockatrice corpse.  --More--"
 msgstr "這裡您感覺到一個怪蛇的身體。 --更多--"
 
 #: src/mine/cmine.cc:506
-msgid "Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --More--"
+msgid ""
+"Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --"
+"More--"
 msgstr "啪！您觸發了一個滾石陷阱！您被一個大圓石擊中了！ --更多--"
 
 #: src/mine/cmine.cc:516
@@ -2708,8 +2687,7 @@ msgstr "mine-help.txt 的編碼|UTF-8"
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 
-#: src/pkg_columnizer.cc:86
-#: src/ui.cc:2340
+#: src/pkg_columnizer.cc:86 src/ui.cc:2340
 msgid "Package"
 msgstr "套件"
 
@@ -2789,52 +2767,40 @@ msgstr "佔用磁碟空間"
 msgid "DownloadSize"
 msgstr "下載檔案大小"
 
-#: src/pkg_columnizer.cc:128
-#: src/pkg_columnizer.cc:140
-#: src/pkg_ver_item.cc:106
+#: src/pkg_columnizer.cc:128 src/pkg_columnizer.cc:140 src/pkg_ver_item.cc:106
 #: src/pkg_ver_item.cc:171
 msgid "<N/A>"
 msgstr "<不可用>"
 
-#: src/pkg_columnizer.cc:170
-#: src/pkg_columnizer.cc:181
+#: src/pkg_columnizer.cc:170 src/pkg_columnizer.cc:181
 msgid "<none>"
 msgstr "<無>"
 
-#: src/pkg_columnizer.cc:221
-#: src/pkg_grouppolicy.cc:233
+#: src/pkg_columnizer.cc:221 src/pkg_grouppolicy.cc:233
 msgid "virtual"
 msgstr "虛擬"
 
-#: src/pkg_columnizer.cc:228
-#: src/pkg_ver_item.cc:215
-#: src/pkg_ver_item.cc:223
+#: src/pkg_columnizer.cc:228 src/pkg_ver_item.cc:215 src/pkg_ver_item.cc:223
 msgid "purged"
 msgstr "清除"
 
-#: src/pkg_columnizer.cc:235
-#: src/pkg_ver_item.cc:230
+#: src/pkg_columnizer.cc:235 src/pkg_ver_item.cc:230
 msgid "half-config"
 msgstr "配置完成一半"
 
-#: src/pkg_columnizer.cc:237
-#: src/pkg_ver_item.cc:232
+#: src/pkg_columnizer.cc:237 src/pkg_ver_item.cc:232
 msgid "half-install"
 msgstr "安裝完成一半"
 
-#: src/pkg_columnizer.cc:239
-#: src/pkg_ver_item.cc:234
+#: src/pkg_columnizer.cc:239 src/pkg_ver_item.cc:234
 msgid "config-files"
 msgstr "配置檔案"
 
-#: src/pkg_columnizer.cc:243
-#: src/pkg_columnizer.cc:523
-#: src/pkg_ver_item.cc:238
+#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:523 src/pkg_ver_item.cc:238
 msgid "ERROR"
 msgstr "錯誤"
 
-#: src/pkg_columnizer.cc:290
-#: src/pkg_ver_item.cc:296
+#: src/pkg_columnizer.cc:290 src/pkg_ver_item.cc:296
 msgid "hold"
 msgstr "保持"
 
@@ -2846,20 +2812,15 @@ msgstr "被禁止的升級"
 msgid "purge"
 msgstr "清除"
 
-#: src/pkg_columnizer.cc:295
-#: src/pkg_ver_item.cc:320
+#: src/pkg_columnizer.cc:295 src/pkg_ver_item.cc:320
 msgid "delete"
 msgstr "刪除"
 
-#: src/pkg_columnizer.cc:297
-#: src/pkg_ver_item.cc:218
-#: src/pkg_ver_item.cc:302
+#: src/pkg_columnizer.cc:297 src/pkg_ver_item.cc:218 src/pkg_ver_item.cc:302
 msgid "broken"
 msgstr "毀斷"
 
-#: src/pkg_columnizer.cc:299
-#: src/pkg_ver_item.cc:306
-#: src/pkg_ver_item.cc:313
+#: src/pkg_columnizer.cc:299 src/pkg_ver_item.cc:306 src/pkg_ver_item.cc:313
 #: src/pkg_ver_item.cc:322
 msgid "install"
 msgstr "安裝"
@@ -2872,58 +2833,44 @@ msgstr "重新安裝"
 msgid "upgrade"
 msgstr "升級"
 
-#: src/pkg_columnizer.cc:305
-#: src/pkg_columnizer.cc:307
-#: src/pkg_ver_item.cc:308
-#: src/pkg_ver_item.cc:315
-#: src/pkg_ver_item.cc:324
-#: src/pkg_ver_item.cc:327
+#: src/pkg_columnizer.cc:305 src/pkg_columnizer.cc:307 src/pkg_ver_item.cc:308
+#: src/pkg_ver_item.cc:315 src/pkg_ver_item.cc:324 src/pkg_ver_item.cc:327
 msgid "none"
 msgstr "無"
 
-#: src/pkg_columnizer.cc:330
-#: src/pkg_columnizer.cc:351
-#: src/pkg_columnizer.cc:358
-#: src/pkg_grouppolicy.cc:227
-#: src/pkg_info_screen.cc:115
-#: src/pkg_info_screen.cc:116
-#: src/pkg_ver_item.cc:345
-#: src/pkg_ver_item.cc:379
+#: src/pkg_columnizer.cc:330 src/pkg_columnizer.cc:351
+#: src/pkg_columnizer.cc:358 src/pkg_grouppolicy.cc:227
+#: src/pkg_info_screen.cc:115 src/pkg_info_screen.cc:116
+#: src/pkg_ver_item.cc:345 src/pkg_ver_item.cc:379
 msgid "Unknown"
 msgstr "未知"
 
 #. ForTranslators: Imp = Important
-#: src/pkg_columnizer.cc:338
-#: src/pkg_ver_item.cc:354
+#: src/pkg_columnizer.cc:338 src/pkg_ver_item.cc:354
 msgid "Imp"
 msgstr "導入"
 
 #. ForTranslators: Req = Required
-#: src/pkg_columnizer.cc:340
-#: src/pkg_ver_item.cc:357
+#: src/pkg_columnizer.cc:340 src/pkg_ver_item.cc:357
 msgid "Req"
 msgstr "要求"
 
 #. ForTranslators: Std = Standard
-#: src/pkg_columnizer.cc:342
-#: src/pkg_ver_item.cc:360
+#: src/pkg_columnizer.cc:342 src/pkg_ver_item.cc:360
 msgid "Std"
 msgstr "標準"
 
 #. ForTranslators: Opt = Optional
-#: src/pkg_columnizer.cc:344
-#: src/pkg_ver_item.cc:363
+#: src/pkg_columnizer.cc:344 src/pkg_ver_item.cc:363
 msgid "Opt"
 msgstr "可選"
 
 #. ForTranslators: Xtr = Extra
-#: src/pkg_columnizer.cc:346
-#: src/pkg_ver_item.cc:366
+#: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:366
 msgid "Xtr"
 msgstr "額外"
 
-#: src/pkg_columnizer.cc:348
-#: src/pkg_ver_item.cc:368
+#: src/pkg_columnizer.cc:348 src/pkg_ver_item.cc:368
 msgid "ERR"
 msgstr "錯誤"
 
@@ -2952,8 +2899,7 @@ msgstr "需下載：%sB"
 msgid "HN too long"
 msgstr "HN 太長"
 
-#: src/pkg_columnizer.cc:647
-#: src/pkg_columnizer.cc:656
+#: src/pkg_columnizer.cc:647 src/pkg_columnizer.cc:656
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr "在“%ls”之後無法解析套件顯示格式"
@@ -2965,15 +2911,19 @@ msgstr "內部錯誤：預設欄字符串無法解析"
 #: src/pkg_grouppolicy.cc:161
 msgid ""
 "Packages which set up your computer to perform a particular task\n"
-" Packages in the 'Tasks' section contain no files; they merely depend upon other packages. These packages provide an easy way to select a predefined set of packages for a specialized task."
+" Packages in the 'Tasks' section contain no files; they merely depend upon "
+"other packages. These packages provide an easy way to select a predefined "
+"set of packages for a specialized task."
 msgstr ""
 "設置您的計算機以完成特定作業的一組套件\n"
-"  'Tasks' 分類的套件不含任何檔案；它們僅僅依賴其它的套件。 這些套件提供了一種簡單的方法來選擇一組完成特定作業的預定義套件。"
+"  'Tasks' 分類的套件不含任何檔案；它們僅僅依賴其它的套件。 這些套件提供了一種"
+"簡單的方法來選擇一組完成特定作業的預定義套件。"
 
 #: src/pkg_grouppolicy.cc:163
 msgid ""
 "Packages with no declared section\n"
-" No section is given for these packages. Perhaps there is an error in the Packages file?"
+" No section is given for these packages. Perhaps there is an error in the "
+"Packages file?"
 msgstr ""
 "沒有定義分類的套件\n"
 " 這些套件沒有定義部分。也許是套件檔案本身有錯誤？"
@@ -2981,15 +2931,19 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:165
 msgid ""
 "Administrative utilities (install software, manage users, etc)\n"
-" Packages in the 'admin' section allow you to perform administrative tasks such as installing software, managing users, configuring and monitoring your system, examining network traffic, and so on."
+" Packages in the 'admin' section allow you to perform administrative tasks "
+"such as installing software, managing users, configuring and monitoring your "
+"system, examining network traffic, and so on."
 msgstr ""
 "管理工具(安裝軟體，管理使用者等)\n"
-"  'admin' 分類的套件讓您執行系統管理作業，例如安裝軟體、管理使用者、設定和監視您的系統、檢閱網路流量等等。"
+"  'admin' 分類的套件讓您執行系統管理作業，例如安裝軟體、管理使用者、設定和監"
+"視您的系統、檢閱網路流量等等。"
 
 #: src/pkg_grouppolicy.cc:167
 msgid ""
 "Packages converted from foreign formats (rpm, tgz, etc)\n"
-" Packages in the 'alien' section were created by the 'alien' program from a non-Debian package format such as RPM"
+" Packages in the 'alien' section were created by the 'alien' program from a "
+"non-Debian package format such as RPM"
 msgstr ""
 "從其它外部格式(rpm，tgz，等)轉換得到的套件\n"
 " “外部”分類的套件是由“alien”程式從非 Debian 套件(如 RPM)創建的"
@@ -3005,27 +2959,39 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:169
 msgid ""
 "Programs for faxmodems and other communication devices\n"
-" Packages in the 'comm' section are used to control modems and other hardware communications devices. This includes software to control faxmodems (for instance, PPP for dial-up internet connections and programs originally written for that purpose, such as zmodem/kermit), as well as software to control cellular phones, interface with FidoNet, and run a BBS."
+" Packages in the 'comm' section are used to control modems and other "
+"hardware communications devices. This includes software to control faxmodems "
+"(for instance, PPP for dial-up internet connections and programs originally "
+"written for that purpose, such as zmodem/kermit), as well as software to "
+"control cellular phones, interface with FidoNet, and run a BBS."
 msgstr ""
 "用于傳真調制解調器和其它通訊設備的程序\n"
-" “通訊”部分的套件用于控制調制解調器和其它硬件通訊設備。包括控制傳真調制解調器的軟件(例如，用于撥號網絡連接的 PPP 以及最初為該用途所編寫的程序如 zmodem/kermit)，還有用于控制蜂窩式移動電話，與 FidoNet 的接口，以及運行 BBS 的軟件。"
+" “通訊”部分的套件用于控制調制解調器和其它硬件通訊設備。包括控制傳真調制解調器"
+"的軟件(例如，用于撥號網絡連接的 PPP 以及最初為該用途所編寫的程序如 zmodem/"
+"kermit)，還有用于控制蜂窩式移動電話，與 FidoNet 的接口，以及運行 BBS 的軟件。"
 
 #: src/pkg_grouppolicy.cc:170
 msgid ""
 "Utilities and programs for software development\n"
-" Packages in the 'devel' section are used to write new software and work on existing software. Non-programmers who do not compile their own software probably do not need much software from this section.\n"
+" Packages in the 'devel' section are used to write new software and work on "
+"existing software. Non-programmers who do not compile their own software "
+"probably do not need much software from this section.\n"
 " .\n"
-" It includes compilers, debugging tools, programmer's editors, source processing tools, and other things related to software development."
+" It includes compilers, debugging tools, programmer's editors, source "
+"processing tools, and other things related to software development."
 msgstr ""
 "用於軟體開發的工具和程式\n"
-"  'devel' 分類的套件用於編寫新軟體和用於現有軟體。不自行編譯軟體的非程式設計師大概不需要太多這個分類的軟體。\n"
+"  'devel' 分類的套件用於編寫新軟體和用於現有軟體。不自行編譯軟體的非程式設計"
+"師大概不需要太多這個分類的軟體。\n"
 " .\n"
-"   此部分包括編譯器、除錯工具、程式設計編輯器、源碼處理工具，以及其它與軟體開發 有關的東西。"
+"   此部分包括編譯器、除錯工具、程式設計編輯器、源碼處理工具，以及其它與軟體開"
+"發 有關的東西。"
 
 #: src/pkg_grouppolicy.cc:171
 msgid ""
 "Documentation and specialized programs for viewing documentation\n"
-" Packages in the 'doc' section document parts of the Debian system, or are viewers for documentation formats."
+" Packages in the 'doc' section document parts of the Debian system, or are "
+"viewers for documentation formats."
 msgstr ""
 "文件和瀏覽文件的特定程式\n"
 " 'doc' 分類的套件為提供 Debian 系統各部分文件，或者為各種格式文件的瀏覽器。"
@@ -3033,34 +2999,45 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:172
 msgid ""
 "Text editors and word processors\n"
-" Packages in the 'editors' section allow you to edit plain ASCII text. These are not necessarily word processors, although some word processors may be found in this section."
+" Packages in the 'editors' section allow you to edit plain ASCII text. These "
+"are not necessarily word processors, although some word processors may be "
+"found in this section."
 msgstr ""
 "純文字編輯器和文書處理器\n"
-" 'editors' 分類的套件幫助您編輯純 ASCII 純文字。 這些不必然是文書處理器，雖然有些文書處理器也包括在該部分。"
+" 'editors' 分類的套件幫助您編輯純 ASCII 純文字。 這些不必然是文書處理器，雖然"
+"有些文書處理器也包括在該部分。"
 
 #: src/pkg_grouppolicy.cc:173
 msgid ""
 "Programs for working with circuits and electronics\n"
-" Packages in the 'electronics' section include circuit design tools, simulators and assemblers for microcontrollers, and other related software."
+" Packages in the 'electronics' section include circuit design tools, "
+"simulators and assemblers for microcontrollers, and other related software."
 msgstr ""
 "用於電路和電子器材的程式\n"
-"  'electronics' 分類的套件包括電路設計工具、微控制器的模擬器和組譯器，以及其它相關軟 體。"
+"  'electronics' 分類的套件包括電路設計工具、微控制器的模擬器和組譯器，以及其"
+"它相關軟 體。"
 
 #: src/pkg_grouppolicy.cc:174
 msgid ""
 "Programs for embedded systems\n"
-" Packages in the 'embedded' section are meant to run on embedded devices. Embedded devices are specialized hardware devices with much less power than a typical desktop system: for instance, a PDA, a cell phone, or a Tivo."
+" Packages in the 'embedded' section are meant to run on embedded devices. "
+"Embedded devices are specialized hardware devices with much less power than "
+"a typical desktop system: for instance, a PDA, a cell phone, or a Tivo."
 msgstr ""
 "嵌入式系統程式\n"
-" 'embedded' 分類中的套件是用於在嵌入式硬體上執行的軟體。所謂嵌入式硬體指的是那些較桌面系統使用較少功率的特定硬體;像是 PDA, 手機或是Tivo。"
+" 'embedded' 分類中的套件是用於在嵌入式硬體上執行的軟體。所謂嵌入式硬體指的是"
+"那些較桌面系統使用較少功率的特定硬體;像是 PDA, 手機或是Tivo。"
 
 #: src/pkg_grouppolicy.cc:175
 msgid ""
 "The GNOME Desktop System\n"
-" GNOME is a collection of software which provides an easy-to-use desktop environment for Linux.  Packages in the 'gnome' section are part of the GNOME environment or closely integrated into it."
+" GNOME is a collection of software which provides an easy-to-use desktop "
+"environment for Linux.  Packages in the 'gnome' section are part of the "
+"GNOME environment or closely integrated into it."
 msgstr ""
 "GNOME 桌面系統\n"
-" GNOME 蒐集了簡易使用的 linux 桌面軟體。'gnome' 分類中的套件是 GNOME 環境的一部份或是可以整合於其中的軟體。"
+" GNOME 蒐集了簡易使用的 linux 桌面軟體。'gnome' 分類中的套件是 GNOME 環境的一"
+"部份或是可以整合於其中的軟體。"
 
 #: src/pkg_grouppolicy.cc:176
 msgid ""
@@ -3073,15 +3050,20 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:177
 msgid ""
 "Utilities to create, view, and edit graphics files\n"
-" Packages in the 'graphics' section include viewers for image files, image processing and manipulation software, software to interact with graphics hardware (such as video cards, scanners, and digital cameras), and programming tools for handling graphics."
+" Packages in the 'graphics' section include viewers for image files, image "
+"processing and manipulation software, software to interact with graphics "
+"hardware (such as video cards, scanners, and digital cameras), and "
+"programming tools for handling graphics."
 msgstr ""
 "建立、查看和編輯圖形檔案的工具\n"
-"  'graphics' 分類的套件包括圖形檔案的瀏覽器、圖形處理和修改軟體，與圖形硬體 (如顯示卡，掃描器和數位相機)應用的軟體，及處理圖形的程設工具。"
+"  'graphics' 分類的套件包括圖形檔案的瀏覽器、圖形處理和修改軟體，與圖形硬體 "
+"(如顯示卡，掃描器和數位相機)應用的軟體，及處理圖形的程設工具。"
 
 #: src/pkg_grouppolicy.cc:178
 msgid ""
 "Software for ham radio operators\n"
-" Packages in the 'hamradio' section are meant primarily for ham radio operators."
+" Packages in the 'hamradio' section are meant primarily for ham radio "
+"operators."
 msgstr ""
 "業餘無線電操作員的軟體\n"
 " 'hamradio' 分類的套件主要供業餘無線電操作員使用"
@@ -3089,67 +3071,94 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:179
 msgid ""
 "Interpreters for interpreted languages\n"
-" Packages in the 'interpreters' section include interpreters for languages like Python, Perl, and Ruby, and libraries for these same languages."
+" Packages in the 'interpreters' section include interpreters for languages "
+"like Python, Perl, and Ruby, and libraries for these same languages."
 msgstr ""
 "直譯語言的直譯器\n"
-" 'interpreters' 分類的套件包括像 Python， Perl 和 Ruby 的語言直譯器，以及這些語言的函式庫。"
+" 'interpreters' 分類的套件包括像 Python， Perl 和 Ruby 的語言直譯器，以及這些"
+"語言的函式庫。"
 
 #: src/pkg_grouppolicy.cc:180
 msgid ""
 "The KDE Desktop System\n"
-" KDE is a collection of software which provides an easy-to-use desktop environment for Linux.  Packages in the 'kde' section are part of the KDE environment or closely integrated into it."
+" KDE is a collection of software which provides an easy-to-use desktop "
+"environment for Linux.  Packages in the 'kde' section are part of the KDE "
+"environment or closely integrated into it."
 msgstr ""
 "KDE 桌面系統\n"
-" KDE 蒐集了簡易使用的 linux 桌面軟體。'kde' 分類中的套件是 KDE 環境的一部份或是可以整合於其中的軟體。"
+" KDE 蒐集了簡易使用的 linux 桌面軟體。'kde' 分類中的套件是 KDE 環境的一部份或"
+"是可以整合於其中的軟體。"
 
 #: src/pkg_grouppolicy.cc:181
 msgid ""
 "Development files for libraries\n"
-" Packages in the 'libdevel' section contain files required for building programs that use libraries in the 'libs' section.  You don't need packages from this section unless you want to compile software yourself."
+" Packages in the 'libdevel' section contain files required for building "
+"programs that use libraries in the 'libs' section.  You don't need packages "
+"from this section unless you want to compile software yourself."
 msgstr ""
 "函式庫的開發用檔案\n"
-" 'libdevel' 分類的套件包含應用 'libs' 分類的函式庫建程式的必須檔案。您不需要此分類的套件，除非您想自行編譯軟體。"
+" 'libdevel' 分類的套件包含應用 'libs' 分類的函式庫建程式的必須檔案。您不需要"
+"此分類的套件，除非您想自行編譯軟體。"
 
 #: src/pkg_grouppolicy.cc:182
 msgid ""
 "Collections of software routines\n"
-" Packages in the 'libs' section provide necessary functionality for other software on the computer. With very few exceptions, you should not need to explicitly install a package from this section; the package system will install them as required to fulfill dependencies."
+" Packages in the 'libs' section provide necessary functionality for other "
+"software on the computer. With very few exceptions, you should not need to "
+"explicitly install a package from this section; the package system will "
+"install them as required to fulfill dependencies."
 msgstr ""
 "軟體子程序集合\n"
-"  'libs' 分類的套件為電腦上其它軟體提供必需的功能。除了極少數情況，您不 需要單獨安裝該分類的套件；套件管理系統會自動安裝它們以滿足依賴關係。"
+"  'libs' 分類的套件為電腦上其它軟體提供必需的功能。除了極少數情況，您不 需要"
+"單獨安裝該分類的套件；套件管理系統會自動安裝它們以滿足依賴關係。"
 
 #: src/pkg_grouppolicy.cc:183
 msgid ""
 "Perl interpreter and libraries\n"
-" Packages in the 'perl' section provide the Perl programming language and many third-party libraries for it. Unless you are a Perl programmer, you don't need to install packages from this section explicitly; the package system will install them if they are required."
+" Packages in the 'perl' section provide the Perl programming language and "
+"many third-party libraries for it. Unless you are a Perl programmer, you "
+"don't need to install packages from this section explicitly; the package "
+"system will install them if they are required."
 msgstr ""
 "Perl 直譯器與函式庫\n"
-"  \"Perl\" 分類的套件提供 Perl 程式設計語言與許多協力函式庫。除非你是 Perl 軟體設計師，否則你不需要安裝此分類的套件; 如果必要的話，套件系統會自動安裝。 "
+"  \"Perl\" 分類的套件提供 Perl 程式設計語言與許多協力函式庫。除非你是 Perl 軟"
+"體設計師，否則你不需要安裝此分類的套件; 如果必要的話，套件系統會自動安裝。 "
 
 #
 #: src/pkg_grouppolicy.cc:184
 msgid ""
 "Python interpreter and libraries\n"
-" Packages in the 'python' section provide the Python programming language and many third-party libraries for it. Unless you are a Python programmer, you don't need to install packages from this section explicitly; the package system will install them if they are required."
+" Packages in the 'python' section provide the Python programming language "
+"and many third-party libraries for it. Unless you are a Python programmer, "
+"you don't need to install packages from this section explicitly; the package "
+"system will install them if they are required."
 msgstr ""
 "Python 直譯器與函式庫\n"
-"  \"Python\" 分類的套件提供 Python 程式設計語言與許多協力函式庫。除非你是 Python 軟體設計師，否則你不需要安裝此分類的套件;如果必要的話，套件系統會自動安裝。"
+"  \"Python\" 分類的套件提供 Python 程式設計語言與許多協力函式庫。除非你是 "
+"Python 軟體設計師，否則你不需要安裝此分類的套件;如果必要的話，套件系統會自動"
+"安裝。"
 
 #: src/pkg_grouppolicy.cc:185
 msgid ""
 "Programs to write, send, and route email messages\n"
-" Packages in the 'mail' section include mail readers, mail transport daemons, mailing list software, and spam filters, as well as various other software related to electronic mail."
+" Packages in the 'mail' section include mail readers, mail transport "
+"daemons, mailing list software, and spam filters, as well as various other "
+"software related to electronic mail."
 msgstr ""
 "用於書寫，發送和轉發電子郵件的程式\n"
-"  'mail' 分類的套件包括郵件閱讀軟體、郵件傳輸伺服軟體、郵遞論壇軟體， 和垃圾郵件過濾器，以及其它各種與電子郵件有關的軟體。"
+"  'mail' 分類的套件包括郵件閱讀軟體、郵件傳輸伺服軟體、郵遞論壇軟體， 和垃圾"
+"郵件過濾器，以及其它各種與電子郵件有關的軟體。"
 
 #: src/pkg_grouppolicy.cc:186
 msgid ""
 "Numeric analysis and other mathematics-related software\n"
-" Packages in the 'math' section include calculators, languages for mathematical computation (similar to Mathematica), symbolic algebra packages, and programs to visualize mathematical objects."
+" Packages in the 'math' section include calculators, languages for "
+"mathematical computation (similar to Mathematica), symbolic algebra "
+"packages, and programs to visualize mathematical objects."
 msgstr ""
 "數值分析和其它數學相關的軟體\n"
-" 'math '分類的套件包括計算器，數學計算語言(類似於 Mathematica)，符號代數 軟體和用來圖形顯示數理物件的軟體。"
+" 'math '分類的套件包括計算器，數學計算語言(類似於 Mathematica)，符號代數 軟體"
+"和用來圖形顯示數理物件的軟體。"
 
 #: src/pkg_grouppolicy.cc:187
 msgid ""
@@ -3162,55 +3171,74 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:188
 msgid ""
 "Programs to connect to and provide various services\n"
-" Packages in the 'net' section include clients and servers for many protocols, tools to manipulate and debug low-level network protocols, IM systems, and other network-related software."
+" Packages in the 'net' section include clients and servers for many "
+"protocols, tools to manipulate and debug low-level network protocols, IM "
+"systems, and other network-related software."
 msgstr ""
 "連接或者提供各種服務的程序\n"
-"  'net' 分類的套件包括許多通訊協定的客戶和伺服器，操作和除錯底層網路協定 的工具，即時訊息系統，和其它網路相關的軟體。"
+"  'net' 分類的套件包括許多通訊協定的客戶和伺服器，操作和除錯底層網路協定 的工"
+"具，即時訊息系統，和其它網路相關的軟體。"
 
 #: src/pkg_grouppolicy.cc:189
 msgid ""
 "Usenet clients and servers\n"
-" Packages in the 'news' section are related to the Usenet distributed news system.  They include news readers and news servers."
+" Packages in the 'news' section are related to the Usenet distributed news "
+"system.  They include news readers and news servers."
 msgstr ""
 "Usenet 客戶端和伺服器\n"
-" 'news' 分類的套件與 Usenet 分布式新聞系統相關，包括新聞閱讀軟體和新聞伺服器。"
+" 'news' 分類的套件與 Usenet 分布式新聞系統相關，包括新聞閱讀軟體和新聞伺服"
+"器。"
 
 #: src/pkg_grouppolicy.cc:190
 msgid ""
 "Obsolete libraries\n"
-" Packages in the 'oldlibs' section are obsolete and should not be used by new software.  They are provided for compatibility reasons, or because software distributed by Debian still requires them.\n"
+" Packages in the 'oldlibs' section are obsolete and should not be used by "
+"new software.  They are provided for compatibility reasons, or because "
+"software distributed by Debian still requires them.\n"
 " .\n"
-" With very few exceptions, you should not need to explicitly install a package from this section; the package system will install them as required to fulfill dependencies."
+" With very few exceptions, you should not need to explicitly install a "
+"package from this section; the package system will install them as required "
+"to fulfill dependencies."
 msgstr ""
 "過期的函式庫\n"
-" 'oldlibs' 分類的套件是廢用的，不應該被新的軟體使用。提供它們的目的是為了保持兼容性， 或者是因為 Debian 發行的軟體仍然需要它們。\n"
+" 'oldlibs' 分類的套件是廢用的，不應該被新的軟體使用。提供它們的目的是為了保持"
+"兼容性， 或者是因為 Debian 發行的軟體仍然需要它們。\n"
 " .\n"
-" 除了極少數情況，您不需要單獨安裝這分類的套件；包管理系統將根據需求安裝它們 以滿足依賴關係。"
+" 除了極少數情況，您不需要單獨安裝這分類的套件；包管理系統將根據需求安裝它們 "
+"以滿足依賴關係。"
 
 #: src/pkg_grouppolicy.cc:191
 msgid ""
 "Emulators and software to read foreign filesystems\n"
-" Packages in the 'otherosfs' section emulate hardware and operating systems and provide tools for transferring data between different operating systems and hardware platforms. (for instance, utilities to read DOS floppies, and utilities to communicate with Palm Pilots)\n"
+" Packages in the 'otherosfs' section emulate hardware and operating systems "
+"and provide tools for transferring data between different operating systems "
+"and hardware platforms. (for instance, utilities to read DOS floppies, and "
+"utilities to communicate with Palm Pilots)\n"
 " .\n"
 " It is worth noting that CD burning software is included in THIS section."
 msgstr ""
 "模擬器和讀取外部檔案系統的軟體\n"
-" 'otherosfs' 分類的套件模擬硬體和操作系統，並提供在不同操作系統和硬體 平台之間傳送數據的工具。(例如，讀取 DOS 軟碟的工具，與 Palm Pilot 交換訊息的 工具)\n"
+" 'otherosfs' 分類的套件模擬硬體和操作系統，並提供在不同操作系統和硬體 平台之"
+"間傳送數據的工具。(例如，讀取 DOS 軟碟的工具，與 Palm Pilot 交換訊息的 工"
+"具)\n"
 " .\n"
 " 值得一提的是，光碟燒錄軟體包含在 '此' 部分。"
 
 #: src/pkg_grouppolicy.cc:192
 msgid ""
 "Software for scientific work\n"
-" Packages in the 'science' section include tools for astronomy, biology, and chemistry, as well as other science-related software."
+" Packages in the 'science' section include tools for astronomy, biology, and "
+"chemistry, as well as other science-related software."
 msgstr ""
 "科學工作軟體\n"
-"  'secience' 分類的套件包括天文學、生物學、和化學的工具軟體，以及其它科學相關的 軟體。"
+"  'secience' 分類的套件包括天文學、生物學、和化學的工具軟體，以及其它科學相關"
+"的 軟體。"
 
 #: src/pkg_grouppolicy.cc:193
 msgid ""
 "Command shells and alternative console environments\n"
-" Packages in the 'shells' section include programs providing a command-line interface."
+" Packages in the 'shells' section include programs providing a command-line "
+"interface."
 msgstr ""
 "指令列介面和替代控制台環境\n"
 " 'shells' 分類的套件提供命令行界面。"
@@ -3218,31 +3246,47 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:194
 msgid ""
 "Utilities to play and record sound\n"
-" Packages in the 'sound' section include sound players, recorders, and encoders for many formats, mixers and volume controls, MIDI sequencers and programs to generate musical notation, drivers for sound hardware, and sound processing software."
+" Packages in the 'sound' section include sound players, recorders, and "
+"encoders for many formats, mixers and volume controls, MIDI sequencers and "
+"programs to generate musical notation, drivers for sound hardware, and sound "
+"processing software."
 msgstr ""
 "播放和錄製音效的工具\n"
-"  'sound' 分類的套件包括音效播放器、錄音機和多格式的編碼器、混音器和音量控制 ，MIDI 音序器和產生樂譜的程式、音效硬體的驅動程式，以及音效處理軟體。"
+"  'sound' 分類的套件包括音效播放器、錄音機和多格式的編碼器、混音器和音量控"
+"制 ，MIDI 音序器和產生樂譜的程式、音效硬體的驅動程式，以及音效處理軟體。"
 
 #: src/pkg_grouppolicy.cc:195
 msgid ""
 "The TeX typesetting system\n"
-" Packages in the 'tex' section are related to TeX, a system for producing high-quality typeset output.  They include TeX itself, TeX packages, editors designed for TeX, utilities to convert TeX and TeX output files to various formats, TeX fonts, and other software related to TeX."
+" Packages in the 'tex' section are related to TeX, a system for producing "
+"high-quality typeset output.  They include TeX itself, TeX packages, editors "
+"designed for TeX, utilities to convert TeX and TeX output files to various "
+"formats, TeX fonts, and other software related to TeX."
 msgstr ""
 "TeX 排版系統\n"
-" 'tex' 分類的套件與 TeX 相關，TeX是一個產生高質量排版輸出的系統。該部分包括 TeX 本身、TeX 套件、專為 TeX 設計的編輯器，將 TeX 和 TeX 輸出檔案轉換到各種格式的工具，TeX 字體，和其它 TeX 相關的軟體。"
+" 'tex' 分類的套件與 TeX 相關，TeX是一個產生高質量排版輸出的系統。該部分包括 "
+"TeX 本身、TeX 套件、專為 TeX 設計的編輯器，將 TeX 和 TeX 輸出檔案轉換到各種格"
+"式的工具，TeX 字體，和其它 TeX 相關的軟體。"
 
 #: src/pkg_grouppolicy.cc:196
 msgid ""
 "Text processing utilities\n"
-" Packages in the 'text' section include text filters and processors, spelling checkers, dictionary programs, utilities to convert between character encodings and text file formats (eg, Unix and DOS), text formatters and pretty-printers, and other software which operates on plain text."
+" Packages in the 'text' section include text filters and processors, "
+"spelling checkers, dictionary programs, utilities to convert between "
+"character encodings and text file formats (eg, Unix and DOS), text "
+"formatters and pretty-printers, and other software which operates on plain "
+"text."
 msgstr ""
 "純文字處理工具\n"
-"  'text' 分類的套件包括純文字過濾器和處理器、拼字檢查、字典程式、轉換不同 文字編碼和純文字檔案格式(如 Unix 和 Dos)的工具，純文字格式軟體和美化列印程序 ，以及其它和純文字操作有關的軟體。"
+"  'text' 分類的套件包括純文字過濾器和處理器、拼字檢查、字典程式、轉換不同 文"
+"字編碼和純文字檔案格式(如 Unix 和 Dos)的工具，純文字格式軟體和美化列印程序 ，"
+"以及其它和純文字操作有關的軟體。"
 
 #: src/pkg_grouppolicy.cc:197
 msgid ""
 "Various system utilities\n"
-" Packages in the 'utils' section are utilities whose purpose is too unique to be classified."
+" Packages in the 'utils' section are utilities whose purpose is too unique "
+"to be classified."
 msgstr ""
 "各種系統工具\n"
 "  'utils' 分類的套件是一些工具，其功能非常獨特以致於無法歸類。"
@@ -3250,78 +3294,110 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:198
 msgid ""
 "Web browsers, servers, proxies, and other tools\n"
-" Packages in the 'web' section include Web browsers, Web servers and proxies, software to write CGI scripts or Web-based programs, pre-written Web-based programs, and other software related to the World Wide Web."
+" Packages in the 'web' section include Web browsers, Web servers and "
+"proxies, software to write CGI scripts or Web-based programs, pre-written "
+"Web-based programs, and other software related to the World Wide Web."
 msgstr ""
 "網際網路瀏覽器，伺服器，代理伺服器和其它軟體\n"
-"  'web' 分類的套件包括網際網路瀏覽器，伺服器和代理伺服器，編寫 CGI 命令稿和網站系統的軟體、預編寫用於網站的程式以及其它與網際網路有關的軟體。"
+"  'web' 分類的套件包括網際網路瀏覽器，伺服器和代理伺服器，編寫 CGI 命令稿和網"
+"站系統的軟體、預編寫用於網站的程式以及其它與網際網路有關的軟體。"
 
 #: src/pkg_grouppolicy.cc:199
 msgid ""
 "The X window system and related software\n"
-" Packages in the 'x11' section include the core packages for the X window system, window managers, utility programs for X, and miscellaneous programs with an X GUI which were placed here because they didn't fit anywhere else."
+" Packages in the 'x11' section include the core packages for the X window "
+"system, window managers, utility programs for X, and miscellaneous programs "
+"with an X GUI which were placed here because they didn't fit anywhere else."
 msgstr ""
 "X 視窗系統和相關軟體\n"
-" 'x11'分類的套件包括 X 視窗核心程序、視窗管理器、工具程式，以及一些使用 X 圖形使用者界面的雜項程序，被擺到這裡是因為它們不屬於其它任何部分。"
+" 'x11'分類的套件包括 X 視窗核心程序、視窗管理器、工具程式，以及一些使用 X 圖"
+"形使用者界面的雜項程序，被擺到這裡是因為它們不屬於其它任何部分。"
 
 #: src/pkg_grouppolicy.cc:201
 msgid ""
 "Programs which depend on software not in Debian\n"
 " Packages in the 'contrib' section are not part of Debian.\n"
 " .\n"
-" These packages are Free Software, but they depend on software which is not part of Debian.  This may be because it is not Free Software, but is packaged in the non-free section of the archive, because Debian cannot distribute it at all, or (in rare cases) because no-one has packaged it yet.\n"
+" These packages are Free Software, but they depend on software which is not "
+"part of Debian.  This may be because it is not Free Software, but is "
+"packaged in the non-free section of the archive, because Debian cannot "
+"distribute it at all, or (in rare cases) because no-one has packaged it "
+"yet.\n"
 " .\n"
-" For more information about what Debian considers to be Free Software, see http://www.debian.org/social_contract#guidelines"
+" For more information about what Debian considers to be Free Software, see "
+"http://www.debian.org/social_contract#guidelines"
 msgstr ""
 "依賴於未被 Debian 包括的軟體的程序\n"
 " 'contrib' 分類的套件不是 Debian 的組成部分。\n"
 " .\n"
-" 這些套件是自由軟體，但是它們依賴於 Debian 以外的軟體。這可能是因為該軟體不是 自由軟體，但被封裝並放置於此歸檔的 'non-free' 分類，因為 Debian 根本無法發行它 ，或者(在少數情況下)還沒有人將其打包。\n"
+" 這些套件是自由軟體，但是它們依賴於 Debian 以外的軟體。這可能是因為該軟體不"
+"是 自由軟體，但被封裝並放置於此歸檔的 'non-free' 分類，因為 Debian 根本無法發"
+"行它 ，或者(在少數情況下)還沒有人將其打包。\n"
 " .\n"
-" 關於 Debian 認為什麼樣的軟體是自由軟體的更多訊息，請參見 http://www.debian.org/social_contract#guidelines"
+" 關於 Debian 認為什麼樣的軟體是自由軟體的更多訊息，請參見 http://www.debian."
+"org/social_contract#guidelines"
 
 #: src/pkg_grouppolicy.cc:202
 msgid ""
 "The main Debian archive\n"
-" The Debian distribution consists of packages from the 'main' section. Every package in 'main' is Free Software.\n"
+" The Debian distribution consists of packages from the 'main' section. Every "
+"package in 'main' is Free Software.\n"
 " .\n"
-" For more information about what Debian considers to be Free Software, see http://www.debian.org/social_contract#guidelines"
+" For more information about what Debian considers to be Free Software, see "
+"http://www.debian.org/social_contract#guidelines"
 msgstr ""
 "主要的 Debian 歸檔\n"
 " Debian 系統由 'main' 分類的套件組成， 'main' 分類的全部套件都是自由軟體。\n"
 " .\n"
-" 關於Debian認為什麼樣的軟體是自由軟體的更多訊息，請參見 http://www.debian.org/social_contract#guidelines"
+" 關於Debian認為什麼樣的軟體是自由軟體的更多訊息，請參見 http://www.debian."
+"org/social_contract#guidelines"
 
 #: src/pkg_grouppolicy.cc:203
 msgid ""
 "Programs stored outside the US due to export controls\n"
-" Packages in 'non-US' likely contain cryptography; a few implement patented algorithms. Because of this, they cannot be exported from the United States, and hence are stored on a server in the \"free world\".\n"
+" Packages in 'non-US' likely contain cryptography; a few implement patented "
+"algorithms. Because of this, they cannot be exported from the United States, "
+"and hence are stored on a server in the \"free world\".\n"
 " .\n"
-" Note: the Debian Project is currently merging cryptographic software into the US-based archives after consulting with legal experts about recent changes in export policies. Most packages which were formerly found in this section, therefore, are now in 'main'."
+" Note: the Debian Project is currently merging cryptographic software into "
+"the US-based archives after consulting with legal experts about recent "
+"changes in export policies. Most packages which were formerly found in this "
+"section, therefore, are now in 'main'."
 msgstr ""
 "因出口控制而存儲於美國之外的程序\n"
-"  'non-US' 分類的套件可能包括密碼學；一些已註冊專利的加密演算法。因上述原因， 它們不能自美國出口，所以儲存在 '自由世界' 的伺服器上。 .\n"
-" 附註：針對美國出口條例最近的變化，在諮詢了法律專家的意見後，Debian 計劃目前正在將加密軟體融入 '基於美國' 的歸檔。因此， 大部分過去存在於此分類的套件現在都在 'main' 部分中。"
+"  'non-US' 分類的套件可能包括密碼學；一些已註冊專利的加密演算法。因上述原"
+"因， 它們不能自美國出口，所以儲存在 '自由世界' 的伺服器上。 .\n"
+" 附註：針對美國出口條例最近的變化，在諮詢了法律專家的意見後，Debian 計劃目前"
+"正在將加密軟體融入 '基於美國' 的歸檔。因此， 大部分過去存在於此分類的套件現在"
+"都在 'main' 部分中。"
 
 #: src/pkg_grouppolicy.cc:204
 msgid ""
 "Programs which are not free software\n"
 " Packages in the 'non-free' section are not part of Debian.\n"
 " .\n"
-" These packages fail to meet one or more of the requirements of the Debian Free Software Guidelines (see below). You should read the license of programs in this section to be sure that you are allowed to use them in the way you intend.\n"
+" These packages fail to meet one or more of the requirements of the Debian "
+"Free Software Guidelines (see below). You should read the license of "
+"programs in this section to be sure that you are allowed to use them in the "
+"way you intend.\n"
 " .\n"
-" For more information about what Debian considers to be Free Software, see http://www.debian.org/social_contract#guidelines"
+" For more information about what Debian considers to be Free Software, see "
+"http://www.debian.org/social_contract#guidelines"
 msgstr ""
 "不是自由軟件的程序\n"
 " “非自由”部分的套件不是 Debian 的組成部分。\n"
 " .\n"
-" 這些套件不滿足 Debian 自由軟件標準(見下)的一項或者多項要求。您應該閱讀該部分程序的許可證以確認您能夠以您自己希望的方式使用這些程序。\n"
+" 這些套件不滿足 Debian 自由軟件標準(見下)的一項或者多項要求。您應該閱讀該部分"
+"程序的許可證以確認您能夠以您自己希望的方式使用這些程序。\n"
 " .\n"
-" 要得到 Debian 認為什麼樣的軟件是自由軟件的更多訊息，請參見http://www.debian.org/social_contract#guidelines"
+" 要得到 Debian 認為什麼樣的軟件是自由軟件的更多訊息，請參見http://www.debian."
+"org/social_contract#guidelines"
 
 #: src/pkg_grouppolicy.cc:206
 msgid ""
 "Virtual packages\n"
-" These packages do not exist; they are names other packages use to require or provide some functionality."
+" These packages do not exist; they are names other packages use to require "
+"or provide some functionality."
 msgstr ""
 "虛擬套件\n"
 " 這些套件並不存在；它們是一些其它套件所要求的套件名稱或者提供某種功能。"
@@ -3330,8 +3406,7 @@ msgstr ""
 msgid "Tasks/Tasks"
 msgstr "作業/作業"
 
-#: src/pkg_grouppolicy.cc:221
-#: src/pkg_grouppolicy.cc:955
+#: src/pkg_grouppolicy.cc:221 src/pkg_grouppolicy.cc:955
 msgid "Tasks"
 msgstr "作業"
 
@@ -3366,10 +3441,13 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:331
 msgid ""
 "New Packages\n"
-" These packages have been added to Debian since the last time you cleared the list of \"new\" packages (choose \"Forget new packages\" from the Actions menu to empty this list)."
+" These packages have been added to Debian since the last time you cleared "
+"the list of \"new\" packages (choose \"Forget new packages\" from the "
+"Actions menu to empty this list)."
 msgstr ""
 "新套件\n"
-" 這些套件在您上次清空“新”套件列表之後添加到 Debian 中。(從動作選單中選擇“忘記新套件”項以清空此列表) "
+" 這些套件在您上次清空“新”套件列表之後添加到 Debian 中。(從動作選單中選擇“忘記"
+"新套件”項以清空此列表) "
 
 #: src/pkg_grouppolicy.cc:332
 msgid ""
@@ -3390,15 +3468,19 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:334
 msgid ""
 "Obsolete and Locally Created Packages\n"
-" These packages are currently installed on your computer, but they are not available from any apt source.  They may be obsolete and removed from the archive, or you may have built a private version of them yourself."
+" These packages are currently installed on your computer, but they are not "
+"available from any apt source.  They may be obsolete and removed from the "
+"archive, or you may have built a private version of them yourself."
 msgstr ""
 "過期的和自行建立的套件\n"
-" 這些套件目前安裝在您的機器上，但是它們不能從任何 apt 來源獲得。它們可能已經過時並在歸檔中被刪除，或者您自己建立了私人版本。"
+" 這些套件目前安裝在您的機器上，但是它們不能從任何 apt 來源獲得。它們可能已經"
+"過時並在歸檔中被刪除，或者您自己建立了私人版本。"
 
 #: src/pkg_grouppolicy.cc:335
 msgid ""
 "Virtual Packages\n"
-" These packages do not exist; they are names other packages use to require or provide some functionality."
+" These packages do not exist; they are names other packages use to require "
+"or provide some functionality."
 msgstr ""
 "虛擬套件\n"
 " 這些套件不存在；它們是一些其它套件要求或者提供某種功能的名稱。 "
@@ -3406,25 +3488,33 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:486
 msgid ""
 "Packages which are recommended by other packages\n"
-" These packages are not strictly required, but they may be necessary to provide full functionality in some other programs that you are installing or upgrading."
+" These packages are not strictly required, but they may be necessary to "
+"provide full functionality in some other programs that you are installing or "
+"upgrading."
 msgstr ""
 "套件由其他套件所建議\n"
-" 這些並非使您的系統運作妥當的必要套件，但它們為其他您正安裝的套件提供輔助 的功能。"
+" 這些並非使您的系統運作妥當的必要套件，但它們為其他您正安裝的套件提供輔助 的"
+"功能。"
 
 #: src/pkg_grouppolicy.cc:506
 msgid ""
 "Packages which are suggested by other packages\n"
-" These packages are not required in order to make your system function properly, but they may provide enhanced functionality for some programs that you are currently installing."
+" These packages are not required in order to make your system function "
+"properly, but they may provide enhanced functionality for some programs that "
+"you are currently installing."
 msgstr ""
 "套件由其他套件所建議\n"
-" 這些並非使你的系統運作妥當的必要套件，但它們為其他你正安裝的套件提供加強 的功能。"
+" 這些並非使你的系統運作妥當的必要套件，但它們為其他你正安裝的套件提供加強 的"
+"功能。"
 
 #: src/pkg_grouppolicy.cc:533
 msgid ""
 "Packages with unsatisfied dependencies\n"
-" The dependency requirements of these packages will be unmet after the install is complete.\n"
+" The dependency requirements of these packages will be unmet after the "
+"install is complete.\n"
 " .\n"
-" The presence of this tree probably indicates that something is broken, either on your system or in the Debian archive."
+" The presence of this tree probably indicates that something is broken, "
+"either on your system or in the Debian archive."
 msgstr ""
 "依賴關係未被滿足的套件\n"
 " 這些套件的依賴需求將會在安裝完成之後毀斷。\n"
@@ -3434,15 +3524,19 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:534
 msgid ""
 "Packages being removed because they are no longer used\n"
-" These packages are being deleted because they were automatically installed to fulfill dependencies, and the planned action will result in no installed package declaring an 'important' dependency on them.\n"
+" These packages are being deleted because they were automatically installed "
+"to fulfill dependencies, and the planned action will result in no installed "
+"package declaring an 'important' dependency on them.\n"
 msgstr ""
 "因不再使用而刪除的套件\n"
-" 這些套件被刪除，因為它們被自動安裝以滿足依賴關係，同時計劃中的操作將導致沒有任何套件宣稱與它們有 '重要' 依賴關係。\n"
+" 這些套件被刪除，因為它們被自動安裝以滿足依賴關係，同時計劃中的操作將導致沒有"
+"任何套件宣稱與它們有 '重要' 依賴關係。\n"
 
 #: src/pkg_grouppolicy.cc:535
 msgid ""
 "Packages being automatically held in their current state\n"
-" These packages could be upgraded, but they have been kept in their current state to avoid breaking dependencies."
+" These packages could be upgraded, but they have been kept in their current "
+"state to avoid breaking dependencies."
 msgstr ""
 "被自動保持在當前狀態的套件\n"
 " 這些套件可以被升級，但是它們被保持在其當前狀態以避免破壞依賴關係。"
@@ -3450,7 +3544,8 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:536
 msgid ""
 "Packages being automatically installed to satisfy dependencies\n"
-" These packages are being installed because they are required by another package you have chosen for installation."
+" These packages are being installed because they are required by another "
+"package you have chosen for installation."
 msgstr ""
 "被自動安裝以滿足依賴關係的套件\n"
 " 這些套件被安裝的原因是您選擇安裝的另一個套件要求它們。"
@@ -3458,15 +3553,18 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:537
 msgid ""
 "Packages being deleted due to unsatisfied dependencies\n"
-" These packages are being deleted because one or more of their dependencies is no longer available, or because another package conflicts with them."
+" These packages are being deleted because one or more of their dependencies "
+"is no longer available, or because another package conflicts with them."
 msgstr ""
 "由於未滿足依賴關係而移除的套件\n"
-" 這些套件被移除，因為它們的一個或者多個依賴關係無法滿足，或者另一個套件和它們相沖突。"
+" 這些套件被移除，因為它們的一個或者多個依賴關係無法滿足，或者另一個套件和它們"
+"相沖突。"
 
 #: src/pkg_grouppolicy.cc:538
 msgid ""
 "Packages to be downgraded\n"
-" An older version of these packages than is currently installed will be installed."
+" An older version of these packages than is currently installed will be "
+"installed."
 msgstr ""
 "將被降級的套件\n"
 " 這些套件的一個比目前安裝版本老的版本將被安裝。"
@@ -3474,7 +3572,8 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:539
 msgid ""
 "Packages being held back\n"
-" These packages could be upgraded, but you have asked for them to be held at their current version."
+" These packages could be upgraded, but you have asked for them to be held at "
+"their current version."
 msgstr ""
 "被保持的套件\n"
 " 這些套件可以升級，但是您已經要求將它們保持在現有版本。"
@@ -3490,7 +3589,8 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:541
 msgid ""
 "Packages to be installed\n"
-" These packages have been manually selected for installation on your computer."
+" These packages have been manually selected for installation on your "
+"computer."
 msgstr ""
 "將要安裝的套件\n"
 " 這些套件已經被手動選擇安裝在您的機器上。"
@@ -3555,7 +3655,8 @@ msgstr "其他作業"
 #: src/pkg_grouppolicy.cc:956
 msgid ""
 "\n"
-" Tasks are groups of packages which provide an easy way to select a predefined set of packages for a particular purpose."
+" Tasks are groups of packages which provide an easy way to select a "
+"predefined set of packages for a particular purpose."
 msgstr ""
 "\n"
 " 作業是一組套件，它們提供了一種簡單的方法來安裝特定作業導向的軟體"
@@ -3623,19 +3724,18 @@ msgstr "是的，我知道這是一個非常糟糕的主意"
 
 #: src/pkg_item.cc:80
 #, c-format
-msgid "%s is an essential package!%n%nAre you sure you want to remove it?%nType '%s' if you are."
-msgstr "%s 是一個核心套件！%n%n 您確定您要移除它嗎？%n 如果您確定的話輸入“%s”。"
+msgid ""
+"%s is an essential package!%n%nAre you sure you want to remove it?%nType '%"
+"s' if you are."
+msgstr ""
+"%s 是一個核心套件！%n%n 您確定您要移除它嗎？%n 如果您確定的話輸入“%s”。"
 
-#: src/pkg_item.cc:220
-#: src/pkg_ver_item.cc:655
-#: src/solution_item.cc:291
+#: src/pkg_item.cc:220 src/pkg_ver_item.cc:655 src/solution_item.cc:291
 #, c-format
 msgid "Information about %s"
 msgstr "關於 %s 的訊息"
 
-#: src/pkg_item.cc:222
-#: src/pkg_ver_item.cc:657
-#: src/solution_item.cc:289
+#: src/pkg_item.cc:222 src/pkg_ver_item.cc:657 src/solution_item.cc:289
 #, c-format
 msgid "%s info"
 msgstr "%s 訊息"
@@ -3650,47 +3750,46 @@ msgstr "%s可用的版本 "
 msgid "%s versions"
 msgstr "%s版本號"
 
-#: src/pkg_item.cc:331
-#: src/pkg_ver_item.cc:685
+#: src/pkg_item.cc:331 src/pkg_ver_item.cc:685
 #, c-format
 msgid "Dependencies of %s"
 msgstr "%s 的依賴關係"
 
-#: src/pkg_item.cc:333
-#: src/pkg_ver_item.cc:687
+#: src/pkg_item.cc:333 src/pkg_ver_item.cc:687
 #, c-format
 msgid "%s deps"
 msgstr "%s 相依"
 
-#: src/pkg_item.cc:344
-#: src/pkg_ver_item.cc:697
+#: src/pkg_item.cc:344 src/pkg_ver_item.cc:697
 #, c-format
 msgid "Packages depending on %s"
 msgstr "依賴於 %s 的套件"
 
-#: src/pkg_item.cc:346
-#: src/pkg_ver_item.cc:699
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:699
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s 反向相依"
 
-#: src/pkg_item.cc:396
-#: src/pkg_ver_item.cc:747
+#: src/pkg_item.cc:396 src/pkg_ver_item.cc:747
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "回報 %s 的臭蟲:\n"
 
 #: src/pkg_item.cc:416
-msgid "You are not root and I cannot find any way to become root.  To reconfigure this package, install the menu package, the login package, or run aptitude as root."
-msgstr "您不是 root，而且我沒有發現任何方法來變成 root。要重新設定這個套件，請安裝 menu 套件，login 套件，或者以 root 身份執行 aptitude 。"
+msgid ""
+"You are not root and I cannot find any way to become root.  To reconfigure "
+"this package, install the menu package, the login package, or run aptitude "
+"as root."
+msgstr ""
+"您不是 root，而且我沒有發現任何方法來變成 root。要重新設定這個套件，請安裝 "
+"menu 套件，login 套件，或者以 root 身份執行 aptitude 。"
 
 #: src/pkg_item.cc:424
 #, c-format
 msgid "Reconfiguring %s\n"
 msgstr "重新設定 %s\n"
 
-#: src/pkg_item.cc:434
-#: src/ui.cc:1048
+#: src/pkg_item.cc:434 src/ui.cc:1048
 msgid "Press return to continue.\n"
 msgstr "按 Return 繼續。\n"
 
@@ -3706,8 +3805,7 @@ msgstr "層次編輯器"
 msgid "All Packages"
 msgstr "全部包"
 
-#: src/pkg_tree.cc:179
-#: src/pkg_tree.cc:194
+#: src/pkg_tree.cc:179 src/pkg_tree.cc:194
 msgid "Building view"
 msgstr "建立視望中"
 
@@ -3741,7 +3839,8 @@ msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: 參數錯誤 -- 兩個主要部件？ "
 
 #: src/pkg_view.cc:414
-msgid "make_package_view: error in arguments -- bad column list for static item"
+msgid ""
+"make_package_view: error in arguments -- bad column list for static item"
 msgstr "make_package_view: 參數錯誤 -- 靜態項目的欄列表錯誤"
 
 #: src/pkg_view.cc:510
@@ -3791,11 +3890,15 @@ msgid "%F%s %F %F"
 msgstr "%F%s %F %F"
 
 #: src/reason_fragment.cc:324
-msgid "If you select a package, an explanation of its current state will appear in this space."
+msgid ""
+"If you select a package, an explanation of its current state will appear in "
+"this space."
 msgstr "如果你選擇了一個套件，它的敘述將會顯示在此空白處。"
 
 #: src/reason_fragment.cc:358
-msgid "%B%s%b was installed automatically;  it is being removed because all of the packages which depend upon it are being removed:"
+msgid ""
+"%B%s%b was installed automatically;  it is being removed because all of the "
+"packages which depend upon it are being removed:"
 msgstr "%B%s%b 已自動安裝; 它將與相依的套件一起被移除: "
 
 #: src/reason_fragment.cc:362
@@ -3803,16 +3906,20 @@ msgid "%B%s%b will be automatically removed because of dependency errors:"
 msgstr "%B%s%b 將會由於相依性錯誤自動移除:"
 
 #: src/reason_fragment.cc:366
-msgid "%B%s%b will be automatically installed to satisfy the following dependencies:"
+msgid ""
+"%B%s%b will be automatically installed to satisfy the following dependencies:"
 msgstr "%B%s%b 將會自動安裝以滿足以下的關聯性:"
 
-#: src/reason_fragment.cc:372
-#: src/reason_fragment.cc:384
-msgid "%B%s%b cannot be upgraded now, but if it could be, it would still be held at version %B%s%b."
+#: src/reason_fragment.cc:372 src/reason_fragment.cc:384
+msgid ""
+"%B%s%b cannot be upgraded now, but if it could be, it would still be held at "
+"version %B%s%b."
 msgstr "%B%s%b 目前將不會升級，但如果可以升級，它依舊會保持在版本 %B%s%b。"
 
 #: src/reason_fragment.cc:375
-msgid "%B%s%b will not be upgraded to version %B%s%b, to avoid breaking the following dependencies:"
+msgid ""
+"%B%s%b will not be upgraded to version %B%s%b, to avoid breaking the "
+"following dependencies:"
 msgstr "%B%s%b 將會升級到 %B%s%b, 以避免破壞以下相依性:"
 
 #: src/reason_fragment.cc:387
@@ -3836,7 +3943,9 @@ msgid "%B%s%b will not be upgraded to the forbidden version %B%s%b."
 msgstr "%B%s%b 遭禁制，將不會升級到版本 %B%s%b。"
 
 #: src/reason_fragment.cc:416
-msgid "%B%s%b could be upgraded to version %B%s%b, but it is being held at version %B%s%b."
+msgid ""
+"%B%s%b could be upgraded to version %B%s%b, but it is being held at version %"
+"B%s%b."
 msgstr "%B%s%b 可以升級到版本 %B%s%b，但它將會保持為版本 %B%s%b。"
 
 #: src/reason_fragment.cc:423
@@ -3856,7 +3965,8 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b 將從版本 %B%s%b 升級到版本 %B%s%b。"
 
 #: src/reason_fragment.cc:472
-msgid "The following packages depend on %B%s%b and will be broken by its removal:"
+msgid ""
+"The following packages depend on %B%s%b and will be broken by its removal:"
 msgstr "以下套件將會由於 %B%s%b 遭到移除而毀斷:"
 
 #: src/reason_fragment.cc:475
@@ -3864,15 +3974,22 @@ msgid "The following packages depend on %B%s%b and are broken:"
 msgstr "以下相依於·%B%s%b 的套件將毀損:"
 
 #: src/reason_fragment.cc:482
-msgid "The following packages conflict with %B%s%b and will be broken by its installation:"
+msgid ""
+"The following packages conflict with %B%s%b and will be broken by its "
+"installation:"
 msgstr "以下套件與 %B%s%b 衝突 且將在此次安裝中毀斷:"
 
 #: src/reason_fragment.cc:515
-msgid "The following packages depend on a version of %B%s%b other than the currently installed version of %B%s%b, or conflict with the currently installed version:"
+msgid ""
+"The following packages depend on a version of %B%s%b other than the "
+"currently installed version of %B%s%b, or conflict with the currently "
+"installed version:"
 msgstr "以下套件相依於 %B%s%b，而非目前安裝版本 %B%s%b，或與目前安裝版本衝突:"
 
 #: src/reason_fragment.cc:519
-msgid "The following packages conflict with %B%s%b, or depend on a version of it which is not going to be installed."
+msgid ""
+"The following packages conflict with %B%s%b, or depend on a version of it "
+"which is not going to be installed."
 msgstr "以下套件與 %B%s%b 衝突，或相依於將不被安裝的版本。"
 
 #: src/reason_fragment.cc:523
@@ -3880,11 +3997,15 @@ msgid "The following packages conflict with %B%s%b:"
 msgstr "以下套件與 %B%s%b 衝突:"
 
 #: src/reason_fragment.cc:528
-msgid "The following packages depend on a version of %B%s%b other than the currently installed version of %B%s%b:"
+msgid ""
+"The following packages depend on a version of %B%s%b other than the "
+"currently installed version of %B%s%b:"
 msgstr "以下套件相依於版本 %B%s%b 而非現有安裝的版本 %B%s%b:"
 
 #: src/reason_fragment.cc:532
-msgid "The following packages depend on a version of %B%s%b which is not going to be installed."
+msgid ""
+"The following packages depend on a version of %B%s%b which is not going to "
+"be installed."
 msgstr "以下相依於版本 %B%s%b 的套件將不會安裝。"
 
 #: src/reason_fragment.cc:538
@@ -3896,19 +4017,27 @@ msgid "downgraded"
 msgstr "已下載"
 
 #: src/reason_fragment.cc:544
-msgid "The following packages depend on the currently installed version of %B%s%b (%B%s%b), or conflict with the version it will be %s to (%B%s%b), and will be broken if it is %s."
-msgstr "以下套件相依於現有安裝版本 %B%s%b (%b%s%b)，或與版本 %s (%B%s%b) 衝突，且 若為 %s 將造成毀斷。"
+msgid ""
+"The following packages depend on the currently installed version of %B%s%b (%"
+"B%s%b), or conflict with the version it will be %s to (%B%s%b), and will be "
+"broken if it is %s."
+msgstr ""
+"以下套件相依於現有安裝版本 %B%s%b (%b%s%b)，或與版本 %s (%B%s%b) 衝突，且 若"
+"為 %s 將造成毀斷。"
 
 #: src/reason_fragment.cc:551
-msgid "The following packages conflict with version %B%s%b of %B%s%b, and will be broken if it is %s."
+msgid ""
+"The following packages conflict with version %B%s%b of %B%s%b, and will be "
+"broken if it is %s."
 msgstr "以下套件與版本 %B%s%b 的 %B%s%b 衝突，使用 %s 將會造成毀斷。"
 
 #: src/reason_fragment.cc:556
-msgid "The following packages depend on version %B%s%b of %B%s%b, and will be broken if it is %s."
+msgid ""
+"The following packages depend on version %B%s%b of %B%s%b, and will be "
+"broken if it is %s."
 msgstr "以下套件相依於版本 %B%s%b 的 %B%s%b，使用 %s 將會造成毀斷。"
 
-#: src/solution_dialog.cc:91
-#: src/solution_screen.cc:465
+#: src/solution_dialog.cc:91 src/solution_screen.cc:465
 msgid "The package cache is not available."
 msgstr "套件 cache 不可用。"
 
@@ -3916,13 +4045,11 @@ msgstr "套件 cache 不可用。"
 msgid "No packages are broken."
 msgstr "沒有損毀的套件。"
 
-#: src/solution_dialog.cc:108
-#: src/solution_screen.cc:488
+#: src/solution_dialog.cc:108 src/solution_screen.cc:488
 msgid "No resolution found."
 msgstr "未發現任何解決方案。"
 
-#: src/solution_dialog.cc:114
-#: src/solution_screen.cc:499
+#: src/solution_dialog.cc:114 src/solution_screen.cc:499
 msgid "Resolving dependencies..."
 msgstr "相依賴關係分析中..."
 
@@ -3957,8 +4084,7 @@ msgstr "%s 預先相依於 %s"
 msgid "%s suggests %s"
 msgstr "%s 建議 %s"
 
-#: src/solution_fragment.cc:113
-#: src/solution_item.cc:593
+#: src/solution_fragment.cc:113 src/solution_item.cc:593
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s 推薦 %s"
@@ -4099,14 +4225,18 @@ msgstr " 不解決下列推薦的套件："
 msgid "No broken packages."
 msgstr "無損毀的套件。"
 
-#: src/trust.cc:17
-#: src/trust.cc:19
+#: src/trust.cc:17 src/trust.cc:19
 msgid "WARNING"
 msgstr "[警告]"
 
 #: src/trust.cc:18
-msgid "%F: This version of %s is from an %Buntrusted source%b!  Installing this package could allow a malicious individual to damage or take control of your system."
-msgstr "%F: 這個版本的 %s 來自於%B未受信任的來源%b！ 安裝了這個套件可能會讓您的系統被懷有惡意的人破壞或加以控制。"
+msgid ""
+"%F: This version of %s is from an %Buntrusted source%b!  Installing this "
+"package could allow a malicious individual to damage or take control of your "
+"system."
+msgstr ""
+"%F: 這個版本的 %s 來自於%B未受信任的來源%b！ 安裝了這個套件可能會讓您的系統被"
+"懷有惡意的人破壞或加以控制。"
 
 #: src/ui.cc:217
 msgid "Er, there aren't any errors, this shouldn't have happened.."
@@ -4125,15 +4255,21 @@ msgid "Search for:"
 msgstr "搜尋："
 
 #: src/ui.cc:316
-msgid "WARNING: the package cache is opened in read-only mode!  This change and all subsequent changes will not be saved unless you stop all other running apt-based programs and select \"Become root\" from the Actions menu."
-msgstr "注意：套件緩衝是用唯讀模式打開！本次更改和其他更改將不會被保留，除非你暫停其他給予 apt 的程序，並且在動作選單中選擇 \"變為 root\"。"
+msgid ""
+"WARNING: the package cache is opened in read-only mode!  This change and all "
+"subsequent changes will not be saved unless you stop all other running apt-"
+"based programs and select \"Become root\" from the Actions menu."
+msgstr ""
+"注意：套件緩衝是用唯讀模式打開！本次更改和其他更改將不會被保留，除非你暫停其"
+"他給予 apt 的程序，並且在動作選單中選擇 \"變為 root\"。"
 
 #: src/ui.cc:322
 msgid "Never display this message again."
 msgstr "不要再顯示此信息。"
 
 #: src/ui.cc:368
-msgid "You may not modify the state of any package while a download is underway."
+msgid ""
+"You may not modify the state of any package while a download is underway."
 msgstr "\"在下載還在繼續的時候，您不能修改任何套件的狀態。\""
 
 #: src/ui.cc:399
@@ -4141,7 +4277,8 @@ msgid "You already are root!"
 msgstr "您已經是 root 了！"
 
 #: src/ui.cc:464
-msgid "Subprocess exited with an error -- did you type your password correctly?"
+msgid ""
+"Subprocess exited with an error -- did you type your password correctly?"
 msgstr "子程序返回一個錯誤 -- 您輸入的密碼正確嗎？"
 
 #: src/ui.cc:503
@@ -4156,21 +4293,12 @@ msgstr "真的要退出 Aptitude 嗎？"
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr "真的要放棄您的個人設置並載入預設值嗎？"
 
-#: src/ui.cc:703
-#: src/ui.cc:705
-#: src/ui.cc:752
-#: src/ui.cc:754
-#: src/ui.cc:773
-#: src/ui.cc:775
-#: src/ui.cc:796
-#: src/ui.cc:798
+#: src/ui.cc:703 src/ui.cc:705 src/ui.cc:752 src/ui.cc:754 src/ui.cc:773
+#: src/ui.cc:775 src/ui.cc:796 src/ui.cc:798
 msgid "Packages"
 msgstr "套件"
 
-#: src/ui.cc:704
-#: src/ui.cc:753
-#: src/ui.cc:774
-#: src/ui.cc:797
+#: src/ui.cc:704 src/ui.cc:753 src/ui.cc:774 src/ui.cc:797
 msgid "View available packages and choose actions to perform"
 msgstr "查看可選套件以及選擇要執行的動作"
 
@@ -4187,8 +4315,15 @@ msgid "Recommendations"
 msgstr "推薦"
 
 #: src/ui.cc:839
-msgid "Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with %BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This is free software, and you are welcome to redistribute it under certain conditions; see 'license' for details."
-msgstr "Aptitude %s%n%n版權所有 2000-2005 Daniel Burrows。%n%n使用 Aptitude 軟件%B無任何擔保%b；細節請查閱幫助菜單的“license”項。該軟件是自由軟件，歡迎您遵照某些條款分發該軟件；細節請查閱“license”檔案。"
+msgid ""
+"Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with %"
+"BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
+"is free software, and you are welcome to redistribute it under certain "
+"conditions; see 'license' for details."
+msgstr ""
+"Aptitude %s%n%n版權所有 2000-2005 Daniel Burrows。%n%n使用 Aptitude 軟件%B無"
+"任何擔保%b；細節請查閱幫助菜單的“license”項。該軟件是自由軟件，歡迎您遵照某些"
+"條款分發該軟件；細節請查閱“license”檔案。"
 
 #: src/ui.cc:862
 msgid "help.txt"
@@ -4245,18 +4380,28 @@ msgstr "無法刪除目錄“%s”"
 
 #: src/ui.cc:998
 #, c-format
-msgid "Unable to remove the old temporary directory; you should remove %s by hand."
+msgid ""
+"Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr "無法刪除舊的臨時目錄；你需要手動刪除 %s。"
 
 #: src/ui.cc:1003
 #, c-format
-msgid "Will not remove %s; you should examine the files in it and remove them by hand."
+msgid ""
+"Will not remove %s; you should examine the files in it and remove them by "
+"hand."
 msgstr "不會刪除 %s；你需要堅持該目錄內的檔案，然後手動刪除。"
 
 #: src/ui.cc:1029
 #, c-format
-msgid "It appears that a previous version of aptitude left files behind in %s.  These files are probably useless and safe to delete.%n%nDo you want to remove this directory and all its contents?  If you select \"No\", you will not see this message again."
-msgstr "好像上一個版本的 aptitude 在 %s 中留了一些檔案。這些檔案基本上沒什麼用處了，可以安裝的刪除。%n%n你要刪除這些目錄和裡面的內容嗎？如果你選擇“不”，你將不會再看到這條訊息。"
+msgid ""
+"It appears that a previous version of aptitude left files behind in %s.  "
+"These files are probably useless and safe to delete.%n%nDo you want to "
+"remove this directory and all its contents?  If you select \"No\", you will "
+"not see this message again."
+msgstr ""
+"好像上一個版本的 aptitude 在 %s 中留了一些檔案。這些檔案基本上沒什麼用處了，"
+"可以安裝的刪除。%n%n你要刪除這些目錄和裡面的內容嗎？如果你選擇“不”，你將不會"
+"再看到這條訊息。"
 
 #: src/ui.cc:1071
 msgid "Downloading packages"
@@ -4271,8 +4416,14 @@ msgid "Package Download"
 msgstr "套件下載"
 
 #: src/ui.cc:1106
-msgid "%BWARNING%b: untrusted versions of the following packages will be installed!%n%nUntrusted packages could %Bcompromise your system's security%b.  You should only proceed with the installation if you are certain that this is what you want to do.%n%n"
-msgstr "%B[警告]%b：將會安裝以下版本未受信賴的套件！%n%n未受信賴的套件有可能會%B危害到您系統的安全%b。 只有在您確定您真的要這麼做時，您才可以進行安裝作業。%n%n"
+msgid ""
+"%BWARNING%b: untrusted versions of the following packages will be installed!%"
+"n%nUntrusted packages could %Bcompromise your system's security%b.  You "
+"should only proceed with the installation if you are certain that this is "
+"what you want to do.%n%n"
+msgstr ""
+"%B[警告]%b：將會安裝以下版本未受信賴的套件！%n%n未受信賴的套件有可能會%B危害"
+"到您系統的安全%b。 只有在您確定您真的要這麼做時，您才可以進行安裝作業。%n%n"
 
 #: src/ui.cc:1112
 msgid "  %S*%N %s [version %s]%n"
@@ -4308,25 +4459,27 @@ msgstr "這些相依賴關係沒有解決方案！"
 
 #: src/ui.cc:1256
 #, c-format
-msgid "Ran out of time while trying to resolve dependencies (press \"%s\" to try harder)"
+msgid ""
+"Ran out of time while trying to resolve dependencies (press \"%s\" to try "
+"harder)"
 msgstr "試圖搜尋解決方案時用時已盡 (按“%s”加把勁兒再試試)"
 
 #: src/ui.cc:1302
-msgid "Installing/removing packages requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"
-msgstr "安裝/刪除套件需要管理員權限，而您現在沒有這種權限。您想要進入 root 帳號嗎？"
+msgid ""
+"Installing/removing packages requires administrative privileges, which you "
+"currently do not have.  Would you like to change to the root account?"
+msgstr ""
+"安裝/刪除套件需要管理員權限，而您現在沒有這種權限。您想要進入 root 帳號嗎？"
 
-#: src/ui.cc:1305
-#: src/ui.cc:1434
+#: src/ui.cc:1305 src/ui.cc:1434
 msgid "Become root"
 msgstr "變成 root(^B)"
 
-#: src/ui.cc:1307
-#: src/ui.cc:1436
+#: src/ui.cc:1307 src/ui.cc:1436
 msgid "Don't become root"
 msgstr "不變成 root"
 
-#: src/ui.cc:1312
-#: src/ui.cc:1441
+#: src/ui.cc:1312 src/ui.cc:1441
 msgid "A package-list update or install run is already taking place."
 msgstr "已經開始了一個套件列表更新或者安裝的動作。"
 
@@ -4335,11 +4488,15 @@ msgid "No packages are scheduled to be installed, removed, or upgraded."
 msgstr "沒有套件被預定安裝、升級或移除。"
 
 #: src/ui.cc:1345
-msgid "No packages will be installed, removed or upgraded.  Some packages could be upgraded, but you have not chosen to upgrade them.  Type \"U\" to prepare an upgrade."
-msgstr "沒有套件將被安裝、移除或升級。某些套件可以被升級，但是您並沒有選擇升級它們。輸入 \"U\" 來準備升級。"
+msgid ""
+"No packages will be installed, removed or upgraded.  Some packages could be "
+"upgraded, but you have not chosen to upgrade them.  Type \"U\" to prepare an "
+"upgrade."
+msgstr ""
+"沒有套件將被安裝、移除或升級。某些套件可以被升級，但是您並沒有選擇升級它們。"
+"輸入 \"U\" 來準備升級。"
 
-#: src/ui.cc:1403
-#: src/ui.cc:1516
+#: src/ui.cc:1403 src/ui.cc:1516
 msgid "Deleting obsolete downloaded files"
 msgstr "刪除過期的下載檔案"
 
@@ -4356,16 +4513,17 @@ msgid "List Update"
 msgstr "列表更新"
 
 #: src/ui.cc:1431
-msgid "Updating the package lists requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"
-msgstr "更新套件列表需要管理員權限，而您現在沒有這種權限。您想要進入 root 帳號嗎？"
+msgid ""
+"Updating the package lists requires administrative privileges, which you "
+"currently do not have.  Would you like to change to the root account?"
+msgstr ""
+"更新套件列表需要管理員權限，而您現在沒有這種權限。您想要進入 root 帳號嗎？"
 
-#: src/ui.cc:1446
-#: src/ui.cc:1967
+#: src/ui.cc:1446 src/ui.cc:1967
 msgid "Waste time trying to find mines"
 msgstr "玩玩踩地雷來消磨時間"
 
-#: src/ui.cc:1453
-#: src/ui.cc:1513
+#: src/ui.cc:1453 src/ui.cc:1513
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "在下載進行過程中不允許執行清除"
 
@@ -4383,7 +4541,9 @@ msgstr "套件 cache 不可用：無法 auto-clean 。"
 
 #: src/ui.cc:1536
 #, c-format
-msgid "Obsolete downloaded package files have been deleted, freeing %sB of disk space."
+msgid ""
+"Obsolete downloaded package files have been deleted, freeing %sB of disk "
+"space."
 msgstr "過期的下載檔案已經被刪除，正在釋放 %sB 的磁碟空間。"
 
 #: src/ui.cc:1633
@@ -4398,8 +4558,7 @@ msgstr "未能找到一個可以應用的解決方案。"
 msgid "Ran out of time while trying to find a solution."
 msgstr "尋找解決方案時用時已盡。"
 
-#: src/ui.cc:1870
-#: src/ui.cc:1872
+#: src/ui.cc:1870 src/ui.cc:1872
 msgid "Resolve Dependencies"
 msgstr "解決相依賴關係"
 
@@ -4493,7 +4652,9 @@ msgid "^Become root"
 msgstr "變成 root(^B)"
 
 #: src/ui.cc:1972
-msgid "Run 'su' to become root; this will restart the program, but your settings will be preserved"
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
 msgstr "執行 'su' 成為 root。這將重新啟動程式，但是您的設置將會被保存下來。"
 
 #: src/ui.cc:1974
@@ -4504,8 +4665,7 @@ msgstr "退出(^Q)"
 msgid "Exit the program"
 msgstr "退出此程序"
 
-#: src/ui.cc:1981
-#: src/ui.cc:2339
+#: src/ui.cc:1981 src/ui.cc:2339
 msgid "Undo"
 msgstr "復原"
 
@@ -4534,7 +4694,8 @@ msgid "^Purge"
 msgstr "清除(^P)"
 
 #: src/ui.cc:1999
-msgid "Flag the currently selected package and its configuration files for removal"
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
 msgstr "標示移除現選的套件與其設定檔"
 
 #: src/ui.cc:2002
@@ -4550,7 +4711,9 @@ msgid "^Hold"
 msgstr "保留(^H)"
 
 #: src/ui.cc:2007
-msgid "Cancel any action on the selected package, and protect it from future upgrades"
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
 msgstr "取消在選擇套件的任何指令，並保證未來也不升級"
 
 #: src/ui.cc:2010
@@ -4558,7 +4721,9 @@ msgid "Mark ^Auto"
 msgstr "標示為自動(^A)"
 
 #: src/ui.cc:2011
-msgid "Mark the selected package as having been automatically installed; it will automatically be removed if no other packages depend on it"
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
 msgstr "標示自動安裝選擇的套件;如果沒有其他套件相依於上，它將會被自動移除"
 
 #: src/ui.cc:2014
@@ -4566,7 +4731,9 @@ msgid "Mark ^Manual"
 msgstr "標示為手動處理(^M)"
 
 #: src/ui.cc:2015
-msgid "Mark the selected package as having been manually installed; it will not be removed unless you manually remove it"
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
 msgstr "標示手動安裝選擇的套件;除非您手動移除，否則它將不會被移除"
 
 #: src/ui.cc:2018
@@ -4574,7 +4741,9 @@ msgid "^Forbid Version"
 msgstr "禁制版本(^F)"
 
 #: src/ui.cc:2019
-msgid "Forbid the candidate version of the selected package from being installed; newer versions of the package will be installed as usual"
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
 msgstr "禁制安裝選擇套件的候選版本;新版本的套件將會像往常一樣被安裝"
 
 #: src/ui.cc:2023
@@ -4638,7 +4807,9 @@ msgid "^Last Solution"
 msgstr "最後一個解決方案(^L)"
 
 #: src/ui.cc:2056
-msgid "Select the last solution to the dependency problems that has been generated so far."
+msgid ""
+"Select the last solution to the dependency problems that has been generated "
+"so far."
 msgstr "選擇當前已經生成的解決此依賴問題的最後一個方案。"
 
 #: src/ui.cc:2062
@@ -4782,7 +4953,9 @@ msgid "Audit ^Recommendations"
 msgstr "檢查推薦結果(^R)"
 
 #: src/ui.cc:2156
-msgid "View packages which it is recommended that you install, but which are not currently installed."
+msgid ""
+"View packages which it is recommended that you install, but which are not "
+"currently installed."
 msgstr "查看推薦您安裝，但是現在尚未安裝的套件。"
 
 #: src/ui.cc:2159
@@ -4883,16 +5056,16 @@ msgstr "求助"
 
 #: src/ui.cc:2410
 #, c-format
-msgid "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove Pkgs"
+msgid ""
+"%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
+"Pkgs"
 msgstr "%ls：選單  %ls：幫助  %ls：退出  %ls：更新  %ls：下載/安裝/移除套件"
 
-#: src/ui.cc:2753
-#: src/vscreen/vscreen.cc:724
+#: src/ui.cc:2753 src/vscreen/vscreen.cc:724
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2754
-#: src/vscreen/vscreen.cc:725
+#: src/ui.cc:2754 src/vscreen/vscreen.cc:725
 msgid "no_key"
 msgstr "n"
 
@@ -4981,7 +5154,8 @@ msgstr "哎唷! 得到 SIGQUIT, 垂死中..\n"
 
 #: src/vscreen/vs_pager.cc:439
 #, c-format
-msgid "Unable to load filename: the string %ls has no multibyte representation."
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
 msgstr "無法讀取檔案名：字符串“%ls”無法用多字節字符表示。"
 
 #: src/vscreen/vs_tree.cc:942
@@ -5007,36 +5181,48 @@ msgstr "最上層"
 #, fuzzy
 #~ msgid "Search backwards for:"
 #~ msgstr "搜尋："
+
 #~ msgid "Happy?"
 #~ msgstr "滿足了嗎?"
+
 #~ msgid "Can't get value of $HOME, using TMPDIR (insecure)"
 #~ msgstr "無法取得 $HOME 的值，使用 TMPDIR (不安全)"
 
 #, fuzzy
 #~ msgid "Create a new flat package list"
 #~ msgstr "建立新的預設套件視野"
+
 #~ msgid "Search for a package"
 #~ msgstr "搜尋套件"
 
 #, fuzzy
 #~ msgid "Search backwards for a package"
 #~ msgstr "搜尋套件"
+
 #~ msgid "Bad filter type '%s' (valid types are: 'missing')"
 #~ msgstr "壞的過濾器類型“%s”(有效類型是“missing”)"
+
 #~ msgid "Version-generating grouping policies must be the tail of a chain"
 #~ msgstr "按版本號分組策略必須在一個鏈的尾部"
+
 #~ msgid "Dep-generating grouping policies must be the tail of a chain"
 #~ msgstr "按依賴關係分組策略必須在一個鏈的尾部"
+
 #~ msgid "Invalid zero-length grouping policy name"
 #~ msgstr "無效零長度分組策略名"
+
 #~ msgid "Invalid grouping policy type '%s'"
 #~ msgstr "無效的排序策略類型“%s”"
+
 #~ msgid "%sB bytes of disk space will be freed\n"
 #~ msgstr "將要釋放 %sB 的磁碟空間\n"
+
 #~ msgid "Warning: could not lock the cache file.  Opening in read-only mode"
 #~ msgstr "警告：無法鎖定快取檔案。以只讀方式打開"
+
 #~ msgid "The number of mines must be a number"
 #~ msgstr "地雷個數必須是數字"
+
 #~ msgid ""
 #~ "Commands:\n"
 #~ "  y: continue with the installation\n"
@@ -5085,6 +5271,7 @@ msgstr "最上層"
 #~ "  - : 移除\n"
 #~ "  _ : 清除\n"
 #~ "  = : 保留\n"
+
 #~ msgid ""
 #~ "Some packages had unmet dependencies.  This may mean that you have\n"
 #~ "requested an impossible situation or if you are using the unstable\n"
@@ -5096,20 +5283,26 @@ msgstr "最上層"
 #~ "本，而有\n"
 #~ "些套件尚未建立或被移出 Incoming 目錄。\n"
 #~ "\n"
+
 #~ msgid ""
 #~ "Please insert the following disc into the drive \"%s\":\n"
 #~ "%s"
 #~ msgstr ""
 #~ "請將以下磁碟插入磁碟器“%s”：\n"
 #~ "%s"
+
 #~ msgid "Need exactly two colors in color definition \"%s\""
 #~ msgstr "顏色定義“%s”需要正好兩種顏色"
+
 #~ msgid "Can't parse foreground \"%s\"of color \"%s\""
 #~ msgstr "無法解析前景 \"%s\" 色 \"%s\""
+
 #~ msgid "Can't parse background \"%s\" of color \"%s\""
 #~ msgstr "無法解析背景 \"%s\" 色 \"%s\""
+
 #~ msgid "Invalid option for interactive mode: -s\n"
 #~ msgstr "交互模式的無效選項：-s\n"
+
 #~ msgid ""
 #~ "Programs for faxmodems and other communications devices\n"
 #~ " Packages in the 'comm' section are used to control modems and other "
@@ -5123,6 +5316,7 @@ msgstr "最上層"
 #~ " “通訊”分類的套件用於控制數據機和其它硬體通訊設備。包括控制傳真數據機的軟 "
 #~ "體(例如，用於撥號網路連接的 PPP)以及原本為該用途所編寫的程式(zmodem/"
 #~ "kermit)， 還有用於控制蜂窩式移動電話、與 FidoNet 介面、以及執行 BBS 的軟體"
+
 #~ msgid ""
 #~ "Programs which are not free software\n"
 #~ " Packages in the 'non-free' section are not part of Debian.\n"
@@ -5143,6 +5337,7 @@ msgstr "最上層"
 #~ " .\n"
 #~ " 關於 Debian 認為什麼樣的軟體是自由軟體的更多訊息，請參見 http://www."
 #~ "debian.org/social_contract#guidelines"
+
 #~ msgid ""
 #~ "New Packages\n"
 #~ " These packages have been added to Debian since the last time you cleared "
@@ -5152,6 +5347,7 @@ msgstr "最上層"
 #~ "新套件\n"
 #~ " 這些套件在您上次清空 '新' 套件列表之後添加到 Debian 中。(從動作選單中選"
 #~ "擇 '忽略新套件' 項以清空此列表) "
+
 #~ msgid ""
 #~ "%s is an essential package!\n"
 #~ "\n"
@@ -5162,8 +5358,10 @@ msgstr "最上層"
 #~ "\n"
 #~ "您確定您要移除它嗎？\n"
 #~ "如果您確定的話輸入 '%s' 。"
+
 #~ msgid "Available versions of "
 #~ msgstr "可用的版本 "
+
 #~ msgid ""
 #~ "You are not root and I cannot find any way\n"
 #~ "to become root.  To reconfigure this package,\n"
@@ -5174,8 +5372,10 @@ msgstr "最上層"
 #~ "來變成 root。要重新配置這個套件，\n"
 #~ "請安裝 menu 套件，login 套件，\n"
 #~ "或者以 root 身份執行 aptitude 。"
+
 #~ msgid "Information about "
 #~ msgstr "訊息關於"
+
 #~ msgid ""
 #~ "Aptitude %s\n"
 #~ "\n"
@@ -5193,12 +5393,16 @@ msgstr "最上層"
 #~ "\n"
 #~ "Aptitude 無任何擔保；細節請查閱求助選單的許可證。\n"
 #~ "此軟體是自由軟體，歡迎您遵照特定條款散佈此軟體；細節請查閱許可證。"
+
 #~ msgid "Some packages were broken and have been fixed"
 #~ msgstr "某些毀斷的套件已經被修補！"
+
 #~ msgid "Some broken packages could not be fixed!"
 #~ msgstr "某些毀斷的套件無法修補！"
+
 #~ msgid "Some packages are broken.  Try to fix them?"
 #~ msgstr "某些套件已毀斷。試圖修補它們嗎？"
+
 #~ msgid ""
 #~ "Installing/removing packages requires administrative privileges, which\n"
 #~ "you currently do not have.  Would you like to change to the root "
@@ -5206,6 +5410,7 @@ msgstr "最上層"
 #~ msgstr ""
 #~ "安裝/刪除套件需要管理員權限，而您現在\n"
 #~ "沒有這種權限。您想要進入 root 帳號嗎？\n"
+
 #~ msgid ""
 #~ "No packages will be installed, removed or upgraded.\n"
 #~ "\n"
@@ -5217,6 +5422,7 @@ msgstr "最上層"
 #~ "\n"
 #~ "某些套件可以被升級，但是您並沒有選擇升級它們。\n"
 #~ "輸入 \"U\" 來準備升級。"
+
 #~ msgid ""
 #~ "Updating the package lists requires administrative privileges, which\n"
 #~ "you currently do not have.  Would you like to change to the root "
@@ -5224,26 +5430,31 @@ msgstr "最上層"
 #~ msgstr ""
 #~ "更新套件列表需要管理員權限，而您現在\n"
 #~ "沒有這種權限。您想要進入 root 帳號嗎？\n"
+
 #~ msgid "Obsolete downloaded package files have been deleted"
 #~ msgstr "過期的下載檔案已經被刪除"
+
 #~ msgid ""
 #~ "Run 'su' to become root; this will restart the program, but your\n"
 #~ "settings will be preserved"
 #~ msgstr ""
 #~ "執行 'su' 成為 root。這將重新啟動程式，但是您的\n"
 #~ "設置將會被保存下來。"
+
 #~ msgid ""
 #~ "Mark the selected package as having been automatically installed;\n"
 #~ "it will automatically be removed if no other packages depend on it"
 #~ msgstr ""
 #~ "標示自動安裝選擇的套件;\n"
 #~ "如果沒有其他套件相依於上，它將會被自動移除"
+
 #~ msgid ""
 #~ "Mark the selected package as having been manually installed;\n"
 #~ "it will not be removed unless you manually remove it"
 #~ msgstr ""
 #~ "標示手動安裝選擇的套件;\n"
 #~ "除非您手動移除，否則它將不會被移除"
+
 #~ msgid ""
 #~ "Forbid the candidate version of the selected package from being "
 #~ "installed;\n"
@@ -5251,8 +5462,10 @@ msgstr "最上層"
 #~ msgstr ""
 #~ "禁制安裝選擇套件的候選版本;\n"
 #~ "新版本的套件將會像往常一樣被安裝"
+
 #~ msgid "^ChangeLog"
 #~ msgstr "變更紀錄(^C)"
+
 #~ msgid "View the important changes made in each version of the program"
 #~ msgstr "查看此程式每一版本中所做的重大修改"
 
@@ -5266,16 +5479,22 @@ msgstr "最上層"
 #~ "%B[警告]%b：將會安裝以下版本未受信賴的套件！%n%n未受信賴的套件有可能會%B危"
 #~ "害到您系統的安全%b。 只有在您確定您真的要這麼做時，您才可以進行安裝作業。%"
 #~ "n%n"
+
 #~ msgid "Go away, I'm trying to think.\n"
 #~ msgstr "走開啦，我正試著專心。\n"
+
 #~ msgid "  This will use %sB of disk space."
 #~ msgstr "  將使用 %sB 磁碟空間。"
+
 #~ msgid "  This will free %sB of disk space."
 #~ msgstr " 將釋放 %sB 磁碟空間"
+
 #~ msgid "Use new (idempotent) package command behavior"
 #~ msgstr "Utilitza el nou comportament (idempotent) d'ordres per a paquets"
+
 #~ msgid "Install Suggested packages automatically"
 #~ msgstr "自動安裝建議套件"
+
 #~ msgid ""
 #~ "Packages with unsatisfied dependencies\n"
 #~ " The dependency requirements of these packages will be after the install "
@@ -5288,16 +5507,20 @@ msgstr "最上層"
 #~ " 這些套件的依賴需求將會在安裝完成之後毀斷。\n"
 #~ " .\n"
 #~ " 此分類樹的存在表示您的系統上或者 Debian 歸檔中的某些東西被破壞。"
+
 #~ msgid "Description of %s"
 #~ msgstr " %s 之描述 "
+
 #~ msgid "Description of "
 #~ msgstr "描述"
+
 #~ msgid " -S fname       read the aptitude extended status info from fname.\n"
 #~ msgstr " -S fname       從檔案名中讀取 aptitude 的延伸狀態資訊。\n"
+
 #~ msgid ""
 #~ "Could not regain the system lock!  (Perhaps another apt or dpkg is "
 #~ "running?"
 #~ msgstr "無法重新取得系統鎖定！(也許另一個 apt 或 dpkg 正在執行？)"
+
 #~ msgid "Bad section name '%s' (use 'none', 'topdir', or 'subdir'"
 #~ msgstr "拙劣的分類名稱 '%s' (使用 'none' ，'topdir'，或者'subdir'"
-

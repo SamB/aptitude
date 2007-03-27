@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2006-09-03 09:36-0700\n"
+"POT-Creation-Date: 2007-03-04 20:22-0800\n"
 "PO-Revision-Date: 2006-10-22 16:18+0300\n"
 "Last-Translator: Ossama M. Khayat <okhayat@yahoo.com>\n"
 "Language-Team: Arabic <support@arabeyes.org>\n"
@@ -15,7 +15,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=4; plural=n%100==1 || n==0 ? 0 : n%100==2 ? 2 : n%100>=3 && n%100<=10 ? 2 : 3;\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 || n==0 ? 0 : n%100==2 ? 2 : n%"
+"100>=3 && n%100<=10 ? 2 : 3;\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
@@ -110,15 +111,18 @@ msgid "Display a preview of what will be done before doing it"
 msgstr "إظهار معاينة لما سيتم عمله قبل القيام به"
 
 #: src/apt_options.cc:165
-msgid "Forget which packages are \"new\" whenever the package lists are updated"
+msgid ""
+"Forget which packages are \"new\" whenever the package lists are updated"
 msgstr "نسيان ما هي الحزم \"الجديدة\" حالما يتم تحديث لوائح الحزم"
 
 #: src/apt_options.cc:168
-msgid "Forget which packages are \"new\" whenever packages are installed or removed"
+msgid ""
+"Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr "نسيان ما هي الحزم \"الجديدة\" حالما يتم تثبيت أو إزالة حزم"
 
 #: src/apt_options.cc:171
-msgid "Do not display a warning when the first change is made in read-only mode"
+msgid ""
+"Do not display a warning when the first change is made in read-only mode"
 msgstr "عدم إظهار تحذير عن إتمام التغيير الأول في وضع القراءة فقط"
 
 #: src/apt_options.cc:174
@@ -248,7 +252,7 @@ msgstr[3] "%d تثبيط"
 msgid "Suggest %F"
 msgstr "اقتراح %F"
 
-#: src/cmdline/cmdline_action.cc:37
+#: src/cmdline/cmdline_action.cc:38
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -257,7 +261,7 @@ msgstr ""
 "ملاحظة: \"%s\"، التي توفر الحزمة الوهمية\n"
 "      \"%s\"، هي مثبّتة مسبقاً.\n"
 
-#: src/cmdline/cmdline_action.cc:44
+#: src/cmdline/cmdline_action.cc:45
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -266,7 +270,7 @@ msgstr ""
 "ملاحظة: \"%s\"، التي توفر الحزمة الوهمية\n"
 "      \"%s\"، سيتم تثبيتها مسبقاً.\n"
 
-#: src/cmdline/cmdline_action.cc:62
+#: src/cmdline/cmdline_action.cc:63
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -275,17 +279,17 @@ msgstr ""
 "\"%s\" موجودة في قاعدة بيانات الحزم، إلا أنّها ليست\n"
 "حزمة حقيقية ولا يوفّرها أي من الحزم.\n"
 
-#: src/cmdline/cmdline_action.cc:68
+#: src/cmdline/cmdline_action.cc:69
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" هي حزمة وهميّة توفّرها:\n"
 
-#: src/cmdline/cmdline_action.cc:71
+#: src/cmdline/cmdline_action.cc:72
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "يجب أن تختار واحدة لتثبيتها.\n"
 
-#: src/cmdline/cmdline_action.cc:76
+#: src/cmdline/cmdline_action.cc:77
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -294,51 +298,50 @@ msgstr ""
 "ملاحظة: تحديد \"%s\" بدلاً من\n"
 "      الحزمة الوهمية \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:94
+#: src/cmdline/cmdline_action.cc:95
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s مثبتة مسبقاً بالنسخة المطلوبة (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:100
+#: src/cmdline/cmdline_action.cc:101
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s غير مثبتة حالياً، لذا لن يتم تثبيتها مجدداً.\n"
 
-#: src/cmdline/cmdline_action.cc:107 src/cmdline/cmdline_action.cc:113
+#: src/cmdline/cmdline_action.cc:108 src/cmdline/cmdline_action.cc:114
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "الحزمة %s غير مثبتة، لذا لن يتم إزالتها\n"
 
-#: src/cmdline/cmdline_action.cc:131
+#: src/cmdline/cmdline_action.cc:132
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "الحزمة %s غير مثبتة، لن يمكن منع الترقية\n"
 
-#: src/cmdline/cmdline_action.cc:133
+#: src/cmdline/cmdline_action.cc:134
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "الحزمة %s غير قابلة للترقية، لا يمكن منع الترقية\n"
 
-#: src/cmdline/cmdline_action.cc:214
+#: src/cmdline/cmdline_action.cc:212
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "ملاحظة: تحديد المهمة \"%s: %s\" للتثبيت\n"
 
-#: src/cmdline/cmdline_action.cc:244
+#: src/cmdline/cmdline_action.cc:242
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
 msgstr ""
-"يمكنك تحديد نسخة حزمة فقط مع أمر التثبيت 'install' أو "
-"أمر 'forbid-version'\n"
+"يمكنك تحديد نسخة حزمة فقط مع أمر التثبيت 'install' أو أمر 'forbid-version'\n"
 
-#: src/cmdline/cmdline_action.cc:252
+#: src/cmdline/cmdline_action.cc:250
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "يمكنك تحديد أرشيف حزمة فقط مع أمر التثبيت 'install'\n"
 
-#: src/cmdline/cmdline_action.cc:286
+#: src/cmdline/cmdline_action.cc:284
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -347,7 +350,7 @@ msgstr ""
 "تعذر العثور على \"%s\"، وأكثر من 40\n"
 "حزمة تحتوي %s\" في اسمها.\n"
 
-#: src/cmdline/cmdline_action.cc:289
+#: src/cmdline/cmdline_action.cc:287
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -356,12 +359,12 @@ msgstr ""
 "تعذر العثور على \"%s\".  على كلّ، الحزمة\n"
 "التالية تحتوي %s\" في اسمها:\n"
 
-#: src/cmdline/cmdline_action.cc:313
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr "تعذر العثور على أيّة حزمة يطابق اسمها أو وصفها \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:315
+#: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -370,7 +373,7 @@ msgstr ""
 "تعذر العثور على أيّة حزمة تطابق \"%s\"، وأكثر من 40\n"
 "حزمة تحتوي %s\" في وصفها.\n"
 
-#: src/cmdline/cmdline_action.cc:318
+#: src/cmdline/cmdline_action.cc:316
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -379,7 +382,7 @@ msgstr ""
 "تعذر العثور على أيّة حزمة تطابق \"%s\".  على كلّ، الحزم\n"
 "التالية تحتوي %s\" في وصفها:\n"
 
-#: src/cmdline/cmdline_action.cc:437
+#: src/cmdline/cmdline_action.cc:436
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "حرف عمل سيء '%c'\n"
@@ -427,7 +430,7 @@ msgstr "عملية غير صالحة %s"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "مُعطى صيغة غير متوقع يتبع \"إبقاء الكل\""
 
-#: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_do_action.cc:241 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:520
 #, c-format
 msgid "Abort.\n"
@@ -439,7 +442,7 @@ msgid "download: you must specify at least one package to download\n"
 msgstr "التنزيل: يجب تحديد حزمة واحدة على الأقل لتنزيلها\n"
 
 #: src/cmdline/cmdline_download.cc:42
-#: src/generic/apt/download_install_manager.cc:76
+#: src/generic/apt/download_install_manager.cc:79
 msgid "Couldn't read source list"
 msgstr "تعذرت قراءة لائحة المصادر"
 
@@ -472,7 +475,8 @@ msgstr "حقاً ليس هناك بيض عيد الفصح في هذا البرن
 
 #: src/cmdline/cmdline_moo.cc:22
 #, c-format
-msgid "Didn't I already tell you that there are no Easter Eggs in this program?\n"
+msgid ""
+"Didn't I already tell you that there are no Easter Eggs in this program?\n"
 msgstr "ألم أخبرك أنّه ليس هناك بيض عيد الفصح في هذا البرنامج؟\n"
 
 #: src/cmdline/cmdline_moo.cc:25
@@ -495,99 +499,99 @@ msgstr "حسناً، أنت تفوز.\n"
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr "ما الأمر؟  إنّه فيلٌ التهمه ثعبان بالطبع.\n"
 
-#: src/cmdline/cmdline_prompt.cc:33
+#: src/cmdline/cmdline_prompt.cc:34
 msgid "Unexpected end-of-file on standard input"
 msgstr "نهاية ملف غير متوقعة من الإدخال الافتراضي"
 
-#: src/cmdline/cmdline_prompt.cc:52
+#: src/cmdline/cmdline_prompt.cc:53
 msgid "Couldn't read list of sources"
 msgstr "تعذرت قراءة لائحة المصادر"
 
-#: src/cmdline/cmdline_prompt.cc:234 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:236 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "إلا أنه يجب تثبيت %s."
 
-#: src/cmdline/cmdline_prompt.cc:237 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:239 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "إلا أن %s مثبتة ومُبقاة."
 
-#: src/cmdline/cmdline_prompt.cc:240 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:242 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "إلا أنّ %s مثبتة."
 
-#: src/cmdline/cmdline_prompt.cc:244 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:246 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "إلا أنّها غير قابلة للتثبيت"
 
-#: src/cmdline/cmdline_prompt.cc:248 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:250 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " والتي هي حزمة وهمية."
 
-#: src/cmdline/cmdline_prompt.cc:251 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:253 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " أو"
 
-#: src/cmdline/cmdline_prompt.cc:263
+#: src/cmdline/cmdline_prompt.cc:265
 msgid "The following packages are BROKEN:"
 msgstr "الحزمة التالية معطوبة:"
 
-#: src/cmdline/cmdline_prompt.cc:264
+#: src/cmdline/cmdline_prompt.cc:266
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "الحزم التالية غير مستخدمة وسوف تزال:"
 
-#: src/cmdline/cmdline_prompt.cc:265
+#: src/cmdline/cmdline_prompt.cc:267
 msgid "The following packages have been automatically kept back:"
 msgstr "تمّ إبقاء الحزمة التالية تلقائياً:"
 
-#: src/cmdline/cmdline_prompt.cc:266
+#: src/cmdline/cmdline_prompt.cc:268
 msgid "The following NEW packages will be automatically installed:"
 msgstr "الحزم الجديدة التالية سوف تُثبت تلقائياً:"
 
-#: src/cmdline/cmdline_prompt.cc:267
+#: src/cmdline/cmdline_prompt.cc:269
 msgid "The following packages will be automatically REMOVED:"
 msgstr "سيتم إزالة الحزم التالية تلقائياً:"
 
-#: src/cmdline/cmdline_prompt.cc:268
+#: src/cmdline/cmdline_prompt.cc:270
 msgid "The following packages will be DOWNGRADED:"
 msgstr "سيتم تثبيط الحزم التالية:"
 
-#: src/cmdline/cmdline_prompt.cc:269
+#: src/cmdline/cmdline_prompt.cc:271
 msgid "The following packages have been kept back:"
 msgstr "تم إبقاء الحزم التالية:"
 
-#: src/cmdline/cmdline_prompt.cc:270
+#: src/cmdline/cmdline_prompt.cc:272
 msgid "The following packages will be REINSTALLED:"
 msgstr "سيعاد تثبيت الحزم التالية:"
 
-#: src/cmdline/cmdline_prompt.cc:271
+#: src/cmdline/cmdline_prompt.cc:273
 msgid "The following NEW packages will be installed:"
 msgstr "سيتم تثبيت الحزم الجديدة التالية:"
 
-#: src/cmdline/cmdline_prompt.cc:272
+#: src/cmdline/cmdline_prompt.cc:274
 msgid "The following packages will be REMOVED:"
 msgstr "سيتم إزالة الحزم التالية:"
 
-#: src/cmdline/cmdline_prompt.cc:273
+#: src/cmdline/cmdline_prompt.cc:275
 msgid "The following packages will be upgraded:"
 msgstr "ستتم ترقية الحزم التالية:"
 
-#: src/cmdline/cmdline_prompt.cc:328
+#: src/cmdline/cmdline_prompt.cc:330
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "الحزم الأساسيّة التالية سيتم إزالتها!\n"
 
-#: src/cmdline/cmdline_prompt.cc:337
+#: src/cmdline/cmdline_prompt.cc:339
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "ستصبح الحزم الأساسية التالية معطوبة بسبب هذا العمل:\n"
 
-#: src/cmdline/cmdline_prompt.cc:347
+#: src/cmdline/cmdline_prompt.cc:349
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -596,16 +600,16 @@ msgstr ""
 "تحذير: إجراء هذا العمل سيتسبب على الأرجح بإعطاب نظامك!\n"
 "         لا تُكمل ما لم تكن متأكّداً مما تقوم به بالضبط!\n"
 
-#: src/cmdline/cmdline_prompt.cc:349
+#: src/cmdline/cmdline_prompt.cc:351
 msgid "I am aware that this is a very bad idea"
 msgstr "أعلم أن هذه فكرة سيئة جداً"
 
-#: src/cmdline/cmdline_prompt.cc:352
+#: src/cmdline/cmdline_prompt.cc:354
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "للاستمرار، اكتب الجملة \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:394
+#: src/cmdline/cmdline_prompt.cc:396
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -621,133 +625,134 @@ msgstr ""
 "هذا ما تريد القيام به. \n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:406
+#: src/cmdline/cmdline_prompt.cc:408
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 msgstr ""
 "*** تحذير ***   تجاهل خروقات الثقة هذه لأن\n"
-"                   الخيار %s::CmdLine::Ignore-Trust-Violations محدد بالقيمة 'true'!\n"
+"                   الخيار %s::CmdLine::Ignore-Trust-Violations محدد بالقيمة "
+"'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:177
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:177
 #: src/vscreen/vs_util.cc:215
 msgid "Yes"
 msgstr "نعم"
 
-#: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:178
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:178
 #: src/vscreen/vs_util.cc:216
 msgid "No"
 msgstr "لا"
 
-#: src/cmdline/cmdline_prompt.cc:417
+#: src/cmdline/cmdline_prompt.cc:419
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "هل تريد تجاهل هذا التحذير والاستمرار على أي حال؟\n"
 
-#: src/cmdline/cmdline_prompt.cc:418
+#: src/cmdline/cmdline_prompt.cc:420
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "للاستمرار، اكتب \"%s\"; للتجاهل، اكتب \"%s\": "
 
-#: src/cmdline/cmdline_prompt.cc:432
+#: src/cmdline/cmdline_prompt.cc:434
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "لا يمكن التعرف على المدخلات.  أدخل إما \"%s\" أو \"%s\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:534
+#: src/cmdline/cmdline_prompt.cc:536
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "الحزم التالية مقترحة ولكن لن يتم تثبيتها:\n"
 
-#: src/cmdline/cmdline_prompt.cc:540
+#: src/cmdline/cmdline_prompt.cc:542
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "الحزم التالية مقترحة ولكن لن يتم تثبيتها:\n"
 
-#: src/cmdline/cmdline_prompt.cc:545
+#: src/cmdline/cmdline_prompt.cc:547
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "لن يتم تثبيت، أو ترقية، أو إزالة أية حزم.\n"
 
-#: src/cmdline/cmdline_prompt.cc:547
+#: src/cmdline/cmdline_prompt.cc:549
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu حزمة تمت ترقيتها، و%lu حزمة جديدة تم تثبيتها، "
 
-#: src/cmdline/cmdline_prompt.cc:551
+#: src/cmdline/cmdline_prompt.cc:553
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu تمت إعادة تثبيتها، "
 
-#: src/cmdline/cmdline_prompt.cc:553
+#: src/cmdline/cmdline_prompt.cc:555
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu تم تثبيطها، "
 
-#: src/cmdline/cmdline_prompt.cc:555
+#: src/cmdline/cmdline_prompt.cc:557
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu سيتم إزالتها و %lu لم يتم ترقيتها.\n"
 
-#: src/cmdline/cmdline_prompt.cc:562
+#: src/cmdline/cmdline_prompt.cc:564
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "نحتاج إلى جلب %sب/%sب من الأرشيف. "
 
-#: src/cmdline/cmdline_prompt.cc:565
+#: src/cmdline/cmdline_prompt.cc:567
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "يجب جلب %sب من الأرشيف. "
 
-#: src/cmdline/cmdline_prompt.cc:572
+#: src/cmdline/cmdline_prompt.cc:574
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "فك فك التغليف سيستخدم %sب.\n"
 
-#: src/cmdline/cmdline_prompt.cc:575
+#: src/cmdline/cmdline_prompt.cc:577
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "فك فك التغليف سيفرغ %sب.\n"
 
-#: src/cmdline/cmdline_prompt.cc:613
+#: src/cmdline/cmdline_prompt.cc:615
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "ليست هناك حزم لإظهارها -- أدخل أسماء الحزم على السطر بعد 'i'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:615
+#: src/cmdline/cmdline_prompt.cc:617
 msgid "Press Return to continue."
 msgstr "إضغط زر الإدخال للاستمرار."
 
-#: src/cmdline/cmdline_prompt.cc:641
+#: src/cmdline/cmdline_prompt.cc:643
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "لم يعثر على أية حزم -- أدخل أسماء الحزم على السطر بعد 'c'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:645
+#: src/cmdline/cmdline_prompt.cc:647
 msgid "Press Return to continue"
 msgstr "إضغط زر الإدخال للاستمرار"
 
-#: src/cmdline/cmdline_prompt.cc:656
+#: src/cmdline/cmdline_prompt.cc:658
 #, c-format
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 
-#: src/cmdline/cmdline_prompt.cc:676
+#: src/cmdline/cmdline_prompt.cc:678
 msgid "continue with the installation"
 msgstr "الاستمرار بالتثبيت"
 
-#: src/cmdline/cmdline_prompt.cc:678
+#: src/cmdline/cmdline_prompt.cc:680
 msgid "abort and quit"
 msgstr "الإجهاض والخروج"
 
-#: src/cmdline/cmdline_prompt.cc:680
+#: src/cmdline/cmdline_prompt.cc:682
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
 msgstr "إظهار معلومات حول واحد أو أكثر من الحزم؛ أسماء الحزم يجب أن تتبع 'i'"
 
-#: src/cmdline/cmdline_prompt.cc:682
+#: src/cmdline/cmdline_prompt.cc:684
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -755,23 +760,23 @@ msgstr ""
 "إظهار سجلات تغيير ديبيان لواحد أو أكثر من الحزم؛ يجب أن تتبع أسماء الحزم "
 "الحرف 'c'"
 
-#: src/cmdline/cmdline_prompt.cc:684
+#: src/cmdline/cmdline_prompt.cc:686
 msgid "toggle the display of dependency information"
 msgstr "عكس عرض معلومات المعتمدات"
 
-#: src/cmdline/cmdline_prompt.cc:686
+#: src/cmdline/cmdline_prompt.cc:688
 msgid "toggle the display of changes in package sizes"
 msgstr "عكس عرض التغييرات في أحجام الحزم"
 
-#: src/cmdline/cmdline_prompt.cc:688
+#: src/cmdline/cmdline_prompt.cc:690
 msgid "toggle the display of version numbers"
 msgstr "عكس عرض أرقام النسخ"
 
-#: src/cmdline/cmdline_prompt.cc:690
+#: src/cmdline/cmdline_prompt.cc:692
 msgid "enter the full visual interface"
 msgstr "دخول الواجهة المرئية الكاملة"
 
-#: src/cmdline/cmdline_prompt.cc:691
+#: src/cmdline/cmdline_prompt.cc:693
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -782,47 +787,49 @@ msgstr ""
 "الإجراء متبوعاً بواحد أو أكثر من أسماء الحزم (أو التعابير). سيطبق الإجراء على "
 "جميع الحزم التي تسردها. الإجراءات التالية هي المتوفرة:"
 
-#: src/cmdline/cmdline_prompt.cc:696 src/cmdline/cmdline_resolver.cc:184
+#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:184
 msgid "'+' to install packages"
 msgstr "'+' لتثبيت الحزم"
 
-#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:186
-msgid "'+M' to install packages and immediately flag them as automatically installed"
+#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:186
+msgid ""
+"'+M' to install packages and immediately flag them as automatically installed"
 msgstr "'+M' لتثبيت الحزم ولتوّه سيشار إليها كمثبّتة تلقائيا"
 
-#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:188
+#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:188
 msgid "'-' to remove packages"
 msgstr "'-' لإزالة الحزم"
 
-#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:190
+#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:190
 msgid "'_' to purge packages"
 msgstr "'_' لتنظيف الحزم"
 
-#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:192
+#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:192
 msgid "'=' to place packages on hold"
 msgstr "'=' لوضع الحزم قيد الإبقاء"
 
-#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:194
-msgid "':' to keep packages in their current state without placing them on hold"
+#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:194
+msgid ""
+"':' to keep packages in their current state without placing them on hold"
 msgstr "':' لإبقاء الحزم على وضعها الحالي دون جعلها في وضع الإبقاء"
 
-#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:196
+#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' لتحديد الحزم بالتثبيت التلقائي"
 
-#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:198
+#: src/cmdline/cmdline_prompt.cc:712 src/cmdline/cmdline_resolver.cc:198
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' لتحديد الحزم بالتثبيت اليدوي"
 
-#: src/cmdline/cmdline_prompt.cc:712
+#: src/cmdline/cmdline_prompt.cc:714
 msgid "Commands:"
 msgstr "أوامر:"
 
-#: src/cmdline/cmdline_prompt.cc:767
+#: src/cmdline/cmdline_prompt.cc:769
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "هل تريد الاستمرار؟ [ن/ل/؟]"
 
-#: src/cmdline/cmdline_prompt.cc:792
+#: src/cmdline/cmdline_prompt.cc:794
 #, c-format
 msgid ""
 "\n"
@@ -833,7 +840,7 @@ msgstr ""
 "سوف تظهر معلومات المعتمدات.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:794
+#: src/cmdline/cmdline_prompt.cc:796
 #, c-format
 msgid ""
 "\n"
@@ -844,7 +851,7 @@ msgstr ""
 "لن تظهر معلومات المعتمدات.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:800
+#: src/cmdline/cmdline_prompt.cc:802
 #, c-format
 msgid ""
 "\n"
@@ -855,7 +862,7 @@ msgstr ""
 "ستظهر معلومات النسخة.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:802
+#: src/cmdline/cmdline_prompt.cc:804
 #, c-format
 msgid ""
 "\n"
@@ -866,7 +873,7 @@ msgstr ""
 "لن تظهر معلومات النسخة.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:807
+#: src/cmdline/cmdline_prompt.cc:809
 #, c-format
 msgid ""
 "\n"
@@ -877,7 +884,7 @@ msgstr ""
 "ستظهر تغييرات الحجم.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:809
+#: src/cmdline/cmdline_prompt.cc:811
 #, c-format
 msgid ""
 "\n"
@@ -888,23 +895,23 @@ msgstr ""
 "لن تظهر تغييرات الحجم.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:832
+#: src/cmdline/cmdline_prompt.cc:834
 #, c-format
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "ردّ غير صالح.  رجاء أدخل أمراً صالحاً أ '؟' للمساعدة.\n"
 
-#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
+#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:599
 #: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "تعذر فتح %s للتسجيل"
 
-#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:602
+#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:604
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "خطأ في تسجيل وضع المُحلّل إلى %s"
 
-#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:604
+#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:606
 msgid "Resolver state successfully written!"
 msgstr "تم تسجيل وضع المحلّل بنجاح!"
 
@@ -1055,7 +1062,7 @@ msgstr "العمليات التالية ستحلّ هذه الاعتمادات:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "قبول هذا الحل? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:650
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "تجاهل جميع الجهود لحلّ هذه المعتمدات."
 
@@ -1063,27 +1070,27 @@ msgstr "تجاهل جميع الجهود لحلّ هذه المعتمدات."
 msgid "The following commands are available:"
 msgstr "الأوامر التالية متوفّرة:"
 
-#: src/cmdline/cmdline_resolver.cc:594
+#: src/cmdline/cmdline_resolver.cc:596
 msgid "File to write resolver state to: "
 msgstr "اسم الملف المطلوب تسجيل وضع المحلّل إليه:"
 
-#: src/cmdline/cmdline_resolver.cc:609
+#: src/cmdline/cmdline_resolver.cc:611
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "ردّ باطل؛ من فضلك أدخل أحد هذه الأوامر: "
 
-#: src/cmdline/cmdline_resolver.cc:622
+#: src/cmdline/cmdline_resolver.cc:624
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "لم يُعثر على حل ضمن الوقع المُخصّص.  هل أحاول بجهد أكبر؟ [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:651
+#: src/cmdline/cmdline_resolver.cc:653
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "ردّ باطل؛ من فضلك أدخل 'y' أو 'n'."
 
-#: src/cmdline/cmdline_resolver.cc:660
+#: src/cmdline/cmdline_resolver.cc:662
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "تعذر إرضاء المعتمدات!  الاستسلام..."
 
-#: src/cmdline/cmdline_resolver.cc:666
+#: src/cmdline/cmdline_resolver.cc:668
 msgid "*** No more solutions available ***"
 msgstr "*** لا مزيد من الحلول ***"
 
@@ -1378,7 +1385,7 @@ msgstr "غير مستوفى"
 msgid "UNAVAILABLE"
 msgstr "غير متوفر"
 
-#: src/desc_parse.cc:275
+#: src/desc_parse.cc:292
 msgid "Tags"
 msgstr "علامات"
 
@@ -1478,7 +1485,8 @@ msgstr "تعذر فتح \"%s\" للكتابة"
 
 #: src/edit_pkg_hier.cc:331
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
-msgstr "تعذر التعرف على مكان دليلك الموطن، لذا سيتم الحفظ في /tmp/function_pkgs!"
+msgstr ""
+"تعذر التعرف على مكان دليلك الموطن، لذا سيتم الحفظ في /tmp/function_pkgs!"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -1502,7 +1510,8 @@ msgstr "تم جلب %s بايت خلال %s (%s بايت/ثانية)\n"
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press enter\n"
-msgstr "تغيير الوسط: رجاء إدخال القرص المعنون '%s' في السواقة '%s' وضغط زر الإدخال\n"
+msgstr ""
+"تغيير الوسط: رجاء إدخال القرص المعنون '%s' في السواقة '%s' وضغط زر الإدخال\n"
 
 #: src/generic/apt/aptcache.cc:263
 msgid "Can't open Aptitude extended state file"
@@ -1586,32 +1595,39 @@ msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
 msgstr ""
-"تعذر قفل ملف المخزن. سيتم فتحه بوضع القراءة فقط;أي تغييرات سوف "
-"تقوم بها على حالة الحزم لن يتم حفظها!"
+"تعذر قفل ملف المخزن. سيتم فتحه بوضع القراءة فقط;أي تغييرات سوف تقوم بها على "
+"حالة الحزم لن يتم حفظها!"
 
-#: src/generic/apt/download_install_manager.cc:53
-msgid "The package cache is not available; unable to download and install packages."
+#: src/generic/apt/download_install_manager.cc:56
+msgid ""
+"The package cache is not available; unable to download and install packages."
 msgstr "مخزن الحزم ليس متوفراً; تعذر تنزيل وتثبيت الحزم"
 
-#: src/generic/apt/download_install_manager.cc:69
+#: src/generic/apt/download_install_manager.cc:72
 #: src/generic/apt/download_update_manager.cc:77
 msgid "Couldn't lock list directory..are you root?"
 msgstr "تعذر قفل دليل اللائحة... أأنت مستخدم جذر؟"
 
-#: src/generic/apt/download_install_manager.cc:86
+#: src/generic/apt/download_install_manager.cc:89
 msgid "Internal error: couldn't generate list of packages to download"
 msgstr "خطأ داخلي: تعذر توليد لائحة الحزم المطلوب تنزيلها"
 
-#: src/generic/apt/download_install_manager.cc:121
+#: src/generic/apt/download_install_manager.cc:119
+#, fuzzy, c-format
+msgid "Failed to fetch %s: %s"
+msgstr "فشل تغيير اسم %s إلى %s"
+
+#: src/generic/apt/download_install_manager.cc:125
 msgid "Unable to correct for unavailable packages"
 msgstr "تعذر التصحيح من أجل الحزم الغير متوفرة"
 
-#: src/generic/apt/download_install_manager.cc:141
+#: src/generic/apt/download_install_manager.cc:151
 msgid "A package failed to install.  Trying to recover:"
 msgstr "فشل تثبيت أحد الحزم.  محاولة كل المشكلة:"
 
-#: src/generic/apt/download_install_manager.cc:165
-msgid "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
+#: src/generic/apt/download_install_manager.cc:176
+msgid ""
+"Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr "تعذر الحصول على قفل النظام! (قد يكون apt أو dpkg آخر يعمل؟)"
 
 #: src/generic/apt/download_update_manager.cc:66
@@ -1880,7 +1896,8 @@ msgstr ""
 
 #: src/generic/apt/pkg_acqfile.cc:99
 #, c-format
-msgid "The package index files are corrupted. No Filename: field for package %s."
+msgid ""
+"The package index files are corrupted. No Filename: field for package %s."
 msgstr "ملفات فهرس الحزمة فاسدة. لا اسم ملف: الحقل للحزمة %s."
 
 #: src/generic/apt/pkg_changelog.cc:151 src/view_changelog.cc:149
@@ -2014,7 +2031,8 @@ msgstr "'%s' هو اسم مقطع سيء (استخدم 'none' أو 'topdir' أو
 #: src/load_grouppolicy.cc:377
 #, c-format
 msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
-msgstr "تعيين passthrough غير صالح '%s' (استخدم 'passthrough' أو 'nopassthrough')"
+msgstr ""
+"تعيين passthrough غير صالح '%s' (استخدم 'passthrough' أو 'nopassthrough')"
 
 #: src/load_grouppolicy.cc:382
 msgid "Too many arguments to by-section grouping policy"
@@ -2308,9 +2326,7 @@ msgstr " download     - تنزيل الملف .deb لحزمة\n"
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
-msgstr ""
-" reinstall    - تنزيل و(محتمل) إعادة تثبيت حزمة"
-"مثبتة حالياً\n"
+msgstr " reinstall    - تنزيل و(محتمل) إعادة تثبيت حزمةمثبتة حالياً\n"
 
 #: src/main.cc:144
 #, c-format
@@ -2329,7 +2345,8 @@ msgstr " -s             تمثيل الإجراءات، لكن دون تنفيذ
 
 #: src/main.cc:147
 #, c-format
-msgid " -d             Only download packages, do not install or remove anything.\n"
+msgid ""
+" -d             Only download packages, do not install or remove anything.\n"
 msgstr " -d             تنزيل الحزم فقط، دون تثبيت أو إزالة أيها.\n"
 
 #: src/main.cc:148
@@ -2339,7 +2356,8 @@ msgstr " -P             السؤال دائماً للتأكيد أو لتنفي
 
 #: src/main.cc:149
 #, c-format
-msgid " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+msgid ""
+" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr ""
 " -y             افتراض أن الإجابة على أسئلة الإجابة بنعم أو لا البسيطة هي "
 "'نعم'\n"
@@ -2353,12 +2371,14 @@ msgstr " -F format      تحديد نسق عرض نتائج البحث؛ راج�
 
 #: src/main.cc:151
 #, c-format
-msgid " -O order       Specify how search results should be sorted; see the manual\n"
+msgid ""
+" -O order       Specify how search results should be sorted; see the manual\n"
 msgstr " -O order       تحديد كيفية فرز نتائج البحث؛ راجع التعليمات\n"
 
 #: src/main.cc:152
 #, c-format
-msgid " -w width       Specify the display width for formatting search results\n"
+msgid ""
+" -w width       Specify the display width for formatting search results\n"
 msgstr " -w width       تحديد عرض الإظهار لتنسيق نتائج البحث\n"
 
 #: src/main.cc:153
@@ -2373,7 +2393,8 @@ msgstr " -V             إظهار نسخة الحزم التي سيتم تثب�
 
 #: src/main.cc:155
 #, c-format
-msgid " -D             Show the dependencies of automatically changed packages.\n"
+msgid ""
+" -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D             إظهار معتمدات الحزم المغيرة تلقائياً.\n"
 
 #: src/main.cc:156
@@ -2383,12 +2404,14 @@ msgstr " -Z\t\t    إظهار التغيير في حجم تثبيت كل حزم�
 
 #: src/main.cc:157
 #, c-format
-msgid " -v             Display extra information. (may be supplied multiple times)\n"
+msgid ""
+" -v             Display extra information. (may be supplied multiple times)\n"
 msgstr " -v             عرض معلومات إضافية. (يمكن استخدامه عدة مرات)\n"
 
 #: src/main.cc:158
 #, c-format
-msgid " -t [release]   Set the release from which packages should be installed\n"
+msgid ""
+" -t [release]   Set the release from which packages should be installed\n"
 msgstr " -t [release]   تحديد الإصدارة التي يجب تثبيت الحزم منها\n"
 
 #: src/main.cc:159
@@ -2458,7 +2481,8 @@ msgid "Only one of -u and -i may be specified\n"
 msgstr "يمكن تحديد -u أو -i فقط\n"
 
 #: src/main.cc:416
-msgid "-u and -i may not be specified in command-line mode (eg, with 'install')"
+msgid ""
+"-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr "-u و -i لا يمكن تحديدها في وضع سطر الأوامر (مثلاً، مع 'install')"
 
 #: src/main.cc:437
@@ -2613,7 +2637,8 @@ msgid "The dart was poisoned!  The poison was deadly...  --More--"
 msgstr "الرمح مسمم!  السم مميت...  --المزيد--"
 
 #: src/mine/cmine.cc:494
-msgid "A little dart shoots out at you!  You are hit by a little dart!  --More--"
+msgid ""
+"A little dart shoots out at you!  You are hit by a little dart!  --More--"
 msgstr "لقد قام رام برميك برمح!  لقد أصبت برمح صغير!  --المزيد--"
 
 #: src/mine/cmine.cc:498
@@ -2924,9 +2949,8 @@ msgid ""
 "set of packages for a specialized task."
 msgstr ""
 "الحزم التي تقوم بإعداد جهازك للقيام بمهمة ما\n"
-" الحزم في قسم 'Tasks' لا تحتوي أية ملفات؛ وقلما تعتمد على "
-"حزم أخرى. هذه الحزم توفر طريقة سهلة لاختيار مجموعة "
-"معرفة مسبقاً من الحزم لمهمة مخصصة."
+" الحزم في قسم 'Tasks' لا تحتوي أية ملفات؛ وقلما تعتمد على حزم أخرى. هذه "
+"الحزم توفر طريقة سهلة لاختيار مجموعة معرفة مسبقاً من الحزم لمهمة مخصصة."
 
 #: src/pkg_grouppolicy.cc:163
 msgid ""
@@ -2935,8 +2959,7 @@ msgid ""
 "Packages file?"
 msgstr ""
 "الحزم الغير محددة القسم\n"
-" لا يوجد قسم معيّن لهذه الحزم. ربما هناك خطأ في "
-"ملف الحزم؟"
+" لا يوجد قسم معيّن لهذه الحزم. ربما هناك خطأ في ملف الحزم؟"
 
 #: src/pkg_grouppolicy.cc:165
 msgid ""
@@ -2946,9 +2969,8 @@ msgid ""
 "system, examining network traffic, and so on."
 msgstr ""
 "البرامج الإدارية (تثبيت البرامج، إدارة المستخدمين، إلخ)\n"
-" الحزم في قسم 'admin' تسمح لك بأداء المهمات الإدارية "
-"كتثبيت البرامج، وإدارة المستخدمين، وتهيئة ومراقبة "
-"النظام، وتفحص سير بيانات الشبكة، وما إلى ذلك."
+" الحزم في قسم 'admin' تسمح لك بأداء المهمات الإدارية كتثبيت البرامج، وإدارة "
+"المستخدمين، وتهيئة ومراقبة النظام، وتفحص سير بيانات الشبكة، وما إلى ذلك."
 
 #: src/pkg_grouppolicy.cc:167
 msgid ""
@@ -2957,8 +2979,8 @@ msgid ""
 "non-Debian package format such as RPM"
 msgstr ""
 "الحزم المحولة من الأنساق الغريبة (rpm، tgz، إلخ)\n"
-" الحزم في قسم 'alien' تم إنشاءها بواسطة برنامج 'alien' من "
-"حزم غير حزم ديبيان مثل RPM"
+" الحزم في قسم 'alien' تم إنشاءها بواسطة برنامج 'alien' من حزم غير حزم ديبيان "
+"مثل RPM"
 
 #: src/pkg_grouppolicy.cc:168
 msgid ""
@@ -2978,11 +3000,10 @@ msgid ""
 "control cellular phones, interface with FidoNet, and run a BBS."
 msgstr ""
 "البرامج الخاصة بالفاكس مودم وأجهزة الاتصال الأخرى\n"
-" الحزم في قسم 'comm' تستخدم للتحكم بالمودم وأجهزة "
-"الاتصال الأخرى. تشمل هذه برامج التحكم بالفاكس مودم "
-"(مثلاً، PPP لوصلات الإنترنت عبر الطلب الهاتفي والبرامج المكتوبة "
-"أصلاً لذلك الغرض، مثل zmodem/kermit)، بالإضافة إلى البرامج التي "
-"تتحكم بالهواتف الخليوية، والتي تتعامل مع FidoNet، وتشغل الـBBS."
+" الحزم في قسم 'comm' تستخدم للتحكم بالمودم وأجهزة الاتصال الأخرى. تشمل هذه "
+"برامج التحكم بالفاكس مودم (مثلاً، PPP لوصلات الإنترنت عبر الطلب الهاتفي "
+"والبرامج المكتوبة أصلاً لذلك الغرض، مثل zmodem/kermit)، بالإضافة إلى البرامج "
+"التي تتحكم بالهواتف الخليوية، والتي تتعامل مع FidoNet، وتشغل الـBBS."
 
 #: src/pkg_grouppolicy.cc:170
 msgid ""
@@ -2995,12 +3016,12 @@ msgid ""
 "processing tools, and other things related to software development."
 msgstr ""
 "منافع وبرامج لتطوير البرامج\n"
-" الحزم في قسم 'devel' تستخدم لكتابة البرامج الجديدة والعمل "
-"على البرامج الموجودة. غير المستخدمين الذي لا يقومون بتجميع برامجهم الخاصة "
-"على الأرجح لا يحتاجون الكثير من البرامج من هذا القسم.\n"
+" الحزم في قسم 'devel' تستخدم لكتابة البرامج الجديدة والعمل على البرامج "
+"الموجودة. غير المستخدمين الذي لا يقومون بتجميع برامجهم الخاصة على الأرجح لا "
+"يحتاجون الكثير من البرامج من هذا القسم.\n"
 " .\n"
-" يحتوي القسم على مجمعات، وأدوات إزالة العلل، ومحررات البرامج، وأدوات "
-"تحرير المصدر، وأشياء أخرى متعلقة بتطوير البرامج."
+" يحتوي القسم على مجمعات، وأدوات إزالة العلل، ومحررات البرامج، وأدوات تحرير "
+"المصدر، وأشياء أخرى متعلقة بتطوير البرامج."
 
 #: src/pkg_grouppolicy.cc:171
 msgid ""
@@ -3009,8 +3030,8 @@ msgid ""
 "viewers for documentation formats."
 msgstr ""
 "التوثيق والبرامج المخصصة لعرض الوثائق\n"
-" الحزم في قسم 'doc' تشمل توثيق أجزاء من نظام ديبيان، أو برامج "
-"استعراض لأنساق التوثيق."
+" الحزم في قسم 'doc' تشمل توثيق أجزاء من نظام ديبيان، أو برامج استعراض لأنساق "
+"التوثيق."
 
 #: src/pkg_grouppolicy.cc:172
 msgid ""
@@ -3020,9 +3041,8 @@ msgid ""
 "found in this section."
 msgstr ""
 "محررارت ومعالجات النصوص\n"
-" الحزم في قسم 'editors' تسمح لك بتعديل ملفات ASCII النصية المجردة. وللا"
-"تكون بالضرورة معالجات نصوص، رغم أنك قد تجد بعد معلاجات "
-"النصوص في هذا القسم."
+" الحزم في قسم 'editors' تسمح لك بتعديل ملفات ASCII النصية المجردة. وللاتكون "
+"بالضرورة معالجات نصوص، رغم أنك قد تجد بعد معلاجات النصوص في هذا القسم."
 
 #: src/pkg_grouppolicy.cc:173
 msgid ""
@@ -3031,8 +3051,8 @@ msgid ""
 "simulators and assemblers for microcontrollers, and other related software."
 msgstr ""
 "برامج للعمل على الدارات والإلكترونيات\n"
-" الحزم في قسم 'electronics' تشمل أدوات تصميم الدارات، "
-"والمحاكيات والمجمعات للميكروكنترولر، وبرامج أخرى مرتبطة بها."
+" الحزم في قسم 'electronics' تشمل أدوات تصميم الدارات، والمحاكيات والمجمعات "
+"للميكروكنترولر، وبرامج أخرى مرتبطة بها."
 
 #: src/pkg_grouppolicy.cc:174
 msgid ""
@@ -3042,9 +3062,9 @@ msgid ""
 "a typical desktop system: for instance, a PDA, a cell phone, or a Tivo."
 msgstr ""
 "برامج للأنظمة الضمنية\n"
-" الحزم في قسم 'embedded' مخصصة للعمل على الأجهزة الضمنية. "
-"والأجهزة الضمنية هي أجهزة عتاد متخصصة ذات استهلاك للطاقة أقل بكثير من "
-"أنظمة سطح المكتب الاعتيادية: مثلاً، الأجهزة الكفية PDA، أو الهاتف الخليوي، أو Tivo."
+" الحزم في قسم 'embedded' مخصصة للعمل على الأجهزة الضمنية. والأجهزة الضمنية "
+"هي أجهزة عتاد متخصصة ذات استهلاك للطاقة أقل بكثير من أنظمة سطح المكتب "
+"الاعتيادية: مثلاً، الأجهزة الكفية PDA، أو الهاتف الخليوي، أو Tivo."
 
 #: src/pkg_grouppolicy.cc:175
 msgid ""
@@ -3074,10 +3094,9 @@ msgid ""
 "programming tools for handling graphics."
 msgstr ""
 "برامج لإنشاء، وعرض، وتحرير ملفات الرسوم\n"
-" الحزم في قسم 'graphics' تشمل مستعرضات ملفات الصور، "
-"وبرامج معالجة وتعديل، وبرامج للتفاعل مع عتاد "
-"الرسوم (مثل بطاقات الفيديو، والمساحات الضوئية، والكاميرات الرقمية)، "
-"وأدوات البرمجة للتعامل مع الرسوم."
+" الحزم في قسم 'graphics' تشمل مستعرضات ملفات الصور، وبرامج معالجة وتعديل، "
+"وبرامج للتفاعل مع عتاد الرسوم (مثل بطاقات الفيديو، والمساحات الضوئية، "
+"والكاميرات الرقمية)، وأدوات البرمجة للتعامل مع الرسوم."
 
 #: src/pkg_grouppolicy.cc:178
 msgid ""
@@ -3095,8 +3114,8 @@ msgid ""
 "like Python, Perl, and Ruby, and libraries for these same languages."
 msgstr ""
 "برامج الإعراب ولغاتها\n"
-" الحزم في قسم 'interpreters' تشمل برامج إعراب للغات "
-"مثل Python، وPerl، وRuby، ومكتبات لهذه اللغات."
+" الحزم في قسم 'interpreters' تشمل برامج إعراب للغات مثل Python، وPerl، "
+"وRuby، ومكتبات لهذه اللغات."
 
 #: src/pkg_grouppolicy.cc:180
 msgid ""
@@ -3117,9 +3136,9 @@ msgid ""
 "from this section unless you want to compile software yourself."
 msgstr ""
 "ملفات تطويرية للمكتبات\n"
-" الحزم في القسم 'libdevel' تحتوي ملفات مطلوبة لبناء "
-"البرامج التي تستخدم المكتبات في قسم 'libs'. لا تحتاج إلى الحزم "
-"من هذا القسم إلا إن كنت تريد تجميع البرامج بنفسك."
+" الحزم في القسم 'libdevel' تحتوي ملفات مطلوبة لبناء البرامج التي تستخدم "
+"المكتبات في قسم 'libs'. لا تحتاج إلى الحزم من هذا القسم إلا إن كنت تريد "
+"تجميع البرامج بنفسك."
 
 #: src/pkg_grouppolicy.cc:182
 msgid ""
@@ -3130,10 +3149,9 @@ msgid ""
 "install them as required to fulfill dependencies."
 msgstr ""
 "مجموعات من روتينات البرامج\n"
-" الحزم في قسم 'libs' توفر إمكانية العمل الضرورية للبرامج "
-"الأخرى على الحاسب. باستثناء القليل، لن تكون بحاجة إلى "
-"تثبيت أية حزم من هذا القسم بنفسك؛ حيث سيقوم نظام "
-"الحزم بتثبيتها حسب الحاجة وإرضاء المعتمدات."
+" الحزم في قسم 'libs' توفر إمكانية العمل الضرورية للبرامج الأخرى على الحاسب. "
+"باستثناء القليل، لن تكون بحاجة إلى تثبيت أية حزم من هذا القسم بنفسك؛ حيث "
+"سيقوم نظام الحزم بتثبيتها حسب الحاجة وإرضاء المعتمدات."
 
 #: src/pkg_grouppolicy.cc:183
 msgid ""
@@ -3144,10 +3162,9 @@ msgid ""
 "system will install them if they are required."
 msgstr ""
 "برنامج إعراب Perl ومكتباتها\n"
-" الحزم في قسم 'perl' توفر لغة برمجة Perl والعديد "
-"من المكتبات الإضافية لها. إلا إن كنت مبرمج Perl، فلن "
-"تحتاج إلى تثبيت الحزم من هذا القسم بنفسك؛ حيث سيقوم "
-"نظام الحزم بتثبيتها إن كانت هناك حاجة."
+" الحزم في قسم 'perl' توفر لغة برمجة Perl والعديد من المكتبات الإضافية لها. "
+"إلا إن كنت مبرمج Perl، فلن تحتاج إلى تثبيت الحزم من هذا القسم بنفسك؛ حيث "
+"سيقوم نظام الحزم بتثبيتها إن كانت هناك حاجة."
 
 #: src/pkg_grouppolicy.cc:184
 msgid ""
@@ -3158,10 +3175,9 @@ msgid ""
 "system will install them if they are required."
 msgstr ""
 "برنامج إعراب Python ومكتباتها\n"
-" الحزم في قسم 'python' توفر لغة برمجة Python والعديد "
-"من المكتبات الإضافية لها. إلا إن كنت مبرمج Python، فلن "
-"تحتاج إلى تثبيت الحزم من هذا القسم بنفسك؛ حيث سيقوم "
-"نظام الحزم بتثبيتها إن كانت هناك حاجة."
+" الحزم في قسم 'python' توفر لغة برمجة Python والعديد من المكتبات الإضافية "
+"لها. إلا إن كنت مبرمج Python، فلن تحتاج إلى تثبيت الحزم من هذا القسم بنفسك؛ "
+"حيث سيقوم نظام الحزم بتثبيتها إن كانت هناك حاجة."
 
 #: src/pkg_grouppolicy.cc:185
 msgid ""
@@ -3171,9 +3187,9 @@ msgid ""
 "software related to electronic mail."
 msgstr ""
 "برامج لكتابة،وإرسال وتوجيه رسائل البريد الالكتروني\n"
-" الحزم في قسم 'mail' تشمل قارئات البريد، وعفاريت نقل البريد، "
-"وبرامج القوائم البريدية، ومصفيات البريد الغير مرغوب، بالإضافة إلى العديد من "
-"البرامج الأخرى المرتبطة بالبريد الإلكتروني."
+" الحزم في قسم 'mail' تشمل قارئات البريد، وعفاريت نقل البريد، وبرامج القوائم "
+"البريدية، ومصفيات البريد الغير مرغوب، بالإضافة إلى العديد من البرامج الأخرى "
+"المرتبطة بالبريد الإلكتروني."
 
 #: src/pkg_grouppolicy.cc:186
 msgid ""
@@ -3183,9 +3199,8 @@ msgid ""
 "packages, and programs to visualize mathematical objects."
 msgstr ""
 "التحليلات الرياضية والبرامج الأخرى المتعلقة بالرياضيات.\n"
-" الحزم في قسم 'math' تشمل الآلات الحاسبة، ولغات "
-"الحساب الرياضية (المشابهة لـMathematica)، وحزم الجبر الرمزي، "
-"وبرامج لرسم المجسمات الرياضية."
+" الحزم في قسم 'math' تشمل الآلات الحاسبة، ولغات الحساب الرياضية (المشابهة "
+"لـMathematica)، وحزم الجبر الرمزي، وبرامج لرسم المجسمات الرياضية."
 
 #: src/pkg_grouppolicy.cc:187
 msgid ""
@@ -3203,9 +3218,9 @@ msgid ""
 "systems, and other network-related software."
 msgstr ""
 "برامج الاتصال وتقديم العديد من الخدمات\n"
-" الحزم في قسم 'net' تشمل العملاء والخادمات للعديد "
-"من البروتوكولات، والأدوات لتعديل وإزالة علل بروتوكولات الشبكة منخفضة المستوى، "
-"وأنظمة التراسل الفوري، والبرامج الأخرى المتعلقة بالشبكة."
+" الحزم في قسم 'net' تشمل العملاء والخادمات للعديد من البروتوكولات، والأدوات "
+"لتعديل وإزالة علل بروتوكولات الشبكة منخفضة المستوى، وأنظمة التراسل الفوري، "
+"والبرامج الأخرى المتعلقة بالشبكة."
 
 #: src/pkg_grouppolicy.cc:189
 msgid ""
@@ -3214,8 +3229,8 @@ msgid ""
 "system.  They include news readers and news servers."
 msgstr ""
 "عملاء وخادمات Usenet\n"
-" الحزم في قسم 'news' مرتبطة بنظام أخبار Usenet "
-"الموزّعة. كما أنها تشمل قارءات وخادمات الأخبار."
+" الحزم في قسم 'news' مرتبطة بنظام أخبار Usenet الموزّعة. كما أنها تشمل قارءات "
+"وخادمات الأخبار."
 
 #: src/pkg_grouppolicy.cc:190
 msgid ""
@@ -3229,13 +3244,12 @@ msgid ""
 "to fulfill dependencies."
 msgstr ""
 "المكتبات الملغاة\n"
-" الحزم في قسم 'oldlibs' ملغاة ولا يجب استخدامها من قبل "
-"أي برامج جديدة.  وهي متوفرة لاسباب التوافق فقط، أو لأن "
-"البرامج التي توزعها ديبيان لا زالت تتطلبها.\n"
+" الحزم في قسم 'oldlibs' ملغاة ولا يجب استخدامها من قبل أي برامج جديدة.  وهي "
+"متوفرة لاسباب التوافق فقط، أو لأن البرامج التي توزعها ديبيان لا زالت "
+"تتطلبها.\n"
 " .\n"
-"باستثناء القليل، لن تكون بحاجة إلى تثبيت "
-"أية حزم من هذا القسم بنفسك؛ حيث سيقوم نظام الحزم بتثبيتها حسب الحاجة "
-"وإرضاء المعتمدات."
+"باستثناء القليل، لن تكون بحاجة إلى تثبيت أية حزم من هذا القسم بنفسك؛ حيث "
+"سيقوم نظام الحزم بتثبيتها حسب الحاجة وإرضاء المعتمدات."
 
 #: src/pkg_grouppolicy.cc:191
 msgid ""
@@ -3248,10 +3262,9 @@ msgid ""
 " It is worth noting that CD burning software is included in THIS section."
 msgstr ""
 "المحاكيات والبرامج القارئة لأنظمة الملفات الغريبة\n"
-" الحزم في قسم 'otherosfs' تحاكي العتاد وأنظمة التشغيل "
-"وتوفر أدوات لنقل البيانات بين أنظمة التشغيل المختلفة "
-"والعتاد. (على سبيل المثال، منافع لقراءة أقراص DOS المرنة، و "
-"الاتصال بأجهزة Palm Pilot)\n"
+" الحزم في قسم 'otherosfs' تحاكي العتاد وأنظمة التشغيل وتوفر أدوات لنقل "
+"البيانات بين أنظمة التشغيل المختلفة والعتاد. (على سبيل المثال، منافع لقراءة "
+"أقراص DOS المرنة، و الاتصال بأجهزة Palm Pilot)\n"
 " .\n"
 " من الجدير بالذكر أن برامج نسخ الأقراص المدمجة مشمولة في هذا القسم."
 
@@ -3283,9 +3296,9 @@ msgid ""
 "processing software."
 msgstr ""
 "برامج لتشغيل وتسجيل الصوتيات.\n"
-" الحزم في قسم 'sound' تشميل مشغلات الصوتيات، والمسجلات، "
-"وبرامج التشفير بأنساق عدة، والمازجات ومتحكمات الصوت، ومسلسلات MIDI و "
-"برامج لتوليد النوتات الموسيقية، ومُشغّلات لعتاد الصوت، وبرامج لمعالجة الصوت."
+" الحزم في قسم 'sound' تشميل مشغلات الصوتيات، والمسجلات، وبرامج التشفير "
+"بأنساق عدة، والمازجات ومتحكمات الصوت، ومسلسلات MIDI و برامج لتوليد النوتات "
+"الموسيقية، ومُشغّلات لعتاد الصوت، وبرامج لمعالجة الصوت."
 
 #: src/pkg_grouppolicy.cc:195
 msgid ""
@@ -3296,10 +3309,9 @@ msgid ""
 "formats, TeX fonts, and other software related to TeX."
 msgstr ""
 "نظام التنضيد TeX\n"
-" الحزم في قسم 'tex' مربتطة بنظام TeX، وهو نظام لإنتاج"
-"مخرجات منضدة عالية الجودة.  وتشمل برنامج TeX نفسه، ومحررات "
-"مصممة لنظام TeX، وبرامج لتحويل TeX ومخرجات ملفات TeX إلى أنساق "
-"عدة، وخطوط TeX، وبرامج أخرى متعلقة به."
+" الحزم في قسم 'tex' مربتطة بنظام TeX، وهو نظام لإنتاجمخرجات منضدة عالية "
+"الجودة.  وتشمل برنامج TeX نفسه، ومحررات مصممة لنظام TeX، وبرامج لتحويل TeX "
+"ومخرجات ملفات TeX إلى أنساق عدة، وخطوط TeX، وبرامج أخرى متعلقة به."
 
 #: src/pkg_grouppolicy.cc:196
 msgid ""
@@ -3311,10 +3323,9 @@ msgid ""
 "text."
 msgstr ""
 "برامج معالجة النصوص\n"
-" الحزم في قسم 'text' تشمل برامج تصفية ومعالجة النصوص، "
-"والمدققات الإملائية، وبرامج القواميس، وبرامج للتحويل بين "
-"مجموعات المحارف وأنساق ملفات النص (مثل، يونكس ودوس)، ومنسقات "
-"النص ومجملات الطباعة، والبرامج الأخري التي تعمل على "
+" الحزم في قسم 'text' تشمل برامج تصفية ومعالجة النصوص، والمدققات الإملائية، "
+"وبرامج القواميس، وبرامج للتحويل بين مجموعات المحارف وأنساق ملفات النص (مثل، "
+"يونكس ودوس)، ومنسقات النص ومجملات الطباعة، والبرامج الأخري التي تعمل على "
 "النص المجرد."
 
 #: src/pkg_grouppolicy.cc:197
@@ -3334,9 +3345,9 @@ msgid ""
 "Web-based programs, and other software related to the World Wide Web."
 msgstr ""
 "متصفحات الوب، والخادمات، والبروكسي، والأدوات الأخرى\n"
-" الحزم في قسم 'web' تشمل متصفحات الوب، وخادمات الوب "
-"والبروكسي، والبرامج المستخدمة لكتابة نصوص CGI برمجية أو برامج تعتمد الوب، وبرامج "
-"الوب المكتوبة مسبقاً، والبرامج الأخرى المربتطة بالشبكة العالمية World Wide Web."
+" الحزم في قسم 'web' تشمل متصفحات الوب، وخادمات الوب والبروكسي، والبرامج "
+"المستخدمة لكتابة نصوص CGI برمجية أو برامج تعتمد الوب، وبرامج الوب المكتوبة "
+"مسبقاً، والبرامج الأخرى المربتطة بالشبكة العالمية World Wide Web."
 
 #: src/pkg_grouppolicy.cc:199
 msgid ""
@@ -3346,9 +3357,9 @@ msgid ""
 "with an X GUI which were placed here because they didn't fit anywhere else."
 msgstr ""
 "نظام نوافذ X والبرامج المرتبطة به\n"
-" الحزم في قسم 'x11' تشمل الحزم الأساسية لنظام "
-"نوافذ X، ومدراء النوافذ، وبرامج X النفعية، وبرامج متنوعة "
-"لها واجهة مستخدم رسومية تعتمد على X والتي تم وضعها هنا لأنها لم تلائم أي مكان آخر."
+" الحزم في قسم 'x11' تشمل الحزم الأساسية لنظام نوافذ X، ومدراء النوافذ، "
+"وبرامج X النفعية، وبرامج متنوعة لها واجهة مستخدم رسومية تعتمد على X والتي تم "
+"وضعها هنا لأنها لم تلائم أي مكان آخر."
 
 #: src/pkg_grouppolicy.cc:201
 msgid ""
@@ -3367,13 +3378,13 @@ msgstr ""
 "البرامج التي تعتمد على برامج ليست في ديبيان\n"
 " الحزم في قسم 'contrib' ليس جزءً من ديبيان.\n"
 " .\n"
-" هذه الحزم هي برامج حرّة، إلا أنها تعتمد على برامج ليست "
-"جزءً من ديبيان.   قد يكون هذا بسبب أن هذه البرامج ليس برامج حرّة، ولكنها "
-"متوفرة كحزم في قسم non-free من الأرشيف، حيث أنه لا يمكن لديبيان توزيعها على الإطلاق، "
-"أو في حالات نادرة لأن لا أحد قام بتوفيرها كحزم بعد.\n"
+" هذه الحزم هي برامج حرّة، إلا أنها تعتمد على برامج ليست جزءً من ديبيان.   قد "
+"يكون هذا بسبب أن هذه البرامج ليس برامج حرّة، ولكنها متوفرة كحزم في قسم non-"
+"free من الأرشيف، حيث أنه لا يمكن لديبيان توزيعها على الإطلاق، أو في حالات "
+"نادرة لأن لا أحد قام بتوفيرها كحزم بعد.\n"
 " .\n"
-" للمزيد من المعلومات حول ما تعتبره ديبيان برامج حرّة، راجع"
-"http://www.debian.org/social_contract#guidelines"
+" للمزيد من المعلومات حول ما تعتبره ديبيان برامج حرّة، راجعhttp://www.debian."
+"org/social_contract#guidelines"
 
 #: src/pkg_grouppolicy.cc:202
 msgid ""
@@ -3408,10 +3419,10 @@ msgstr ""
 "لوغاريتمات محميّة بحقوق الملكية الفكرية. ولهذا، فلا يمكن تصديرها خارج "
 "الولايات المتحدة، وبالتالي تخزن في خادم موجود في \"العالم الحر\".\n"
 " .\n"
-" ملاحظة: يقوم مشروع ديبيان حالياً بدمج برامج التشفير مع "
-"الأرشيفات الموجودة في الولايات المتحدة بعد أن استشير الخبراء القانونيون حول "
-"التغيير الأخيرة في شروط وأحكام التصدير. ولذا، فإن معظم الحزم التي كانت سابقاً "
-"في هذا القسم، هي موجودة الآن في القسم 'main'."
+" ملاحظة: يقوم مشروع ديبيان حالياً بدمج برامج التشفير مع الأرشيفات الموجودة في "
+"الولايات المتحدة بعد أن استشير الخبراء القانونيون حول التغيير الأخيرة في "
+"شروط وأحكام التصدير. ولذا، فإن معظم الحزم التي كانت سابقاً في هذا القسم، هي "
+"موجودة الآن في القسم 'main'."
 
 #: src/pkg_grouppolicy.cc:204
 msgid ""
@@ -3429,13 +3440,12 @@ msgstr ""
 "البرامج التي ليس برامج حرّة\n"
 " الحزم الموجودة في قسم 'non-free' ليست جزءً من ديبيان.\n"
 " .\n"
-" لا تطابق هذه الحزم أحد متطلبات إرشادات ديبيان "
-"للبرامج الحرّة أو بعضها (انظر أدناه). يجب عليك قراءة رخصة "
-"البرامج في هذا القسم قد تتأكد من أنك تستطيع استخدامها بالطريقة "
-"التي تنوي بها استخدامها.\n"
+" لا تطابق هذه الحزم أحد متطلبات إرشادات ديبيان للبرامج الحرّة أو بعضها (انظر "
+"أدناه). يجب عليك قراءة رخصة البرامج في هذا القسم قد تتأكد من أنك تستطيع "
+"استخدامها بالطريقة التي تنوي بها استخدامها.\n"
 " .\n"
-" للمزيد من المعلومات حول ما تعتبره ديبيان برامج حرّة، راجع"
-"http://www.debian.org/social_contract#guidelines"
+" للمزيد من المعلومات حول ما تعتبره ديبيان برامج حرّة، راجعhttp://www.debian."
+"org/social_contract#guidelines"
 
 #: src/pkg_grouppolicy.cc:206
 msgid ""
@@ -3829,8 +3839,8 @@ msgid ""
 "this package, install the menu package, the login package, or run aptitude "
 "as root."
 msgstr ""
-"أنت لست المستخدم root ولا أعلم أية طريقة كي تصبح كذلك. كي تعيد تهيئة "
-"هذه الحزمة، قم بتثبيت حزمة menu، وحزمة login، أو قم بتشغيل aptitude كمستخدم root."
+"أنت لست المستخدم root ولا أعلم أية طريقة كي تصبح كذلك. كي تعيد تهيئة هذه "
+"الحزمة، قم بتثبيت حزمة menu، وحزمة login، أو قم بتشغيل aptitude كمستخدم root."
 
 #: src/pkg_item.cc:424
 #, c-format
@@ -3887,7 +3897,8 @@ msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: خطأ في المعطيات -- هناك أكثر من widget؟؟"
 
 #: src/pkg_view.cc:414
-msgid "make_package_view: error in arguments -- bad column list for static item"
+msgid ""
+"make_package_view: error in arguments -- bad column list for static item"
 msgstr "make_package_view: خطأ في المعطيات -- قائمة عمودية خاطئة للعنصر الثابت"
 
 #: src/pkg_view.cc:510
@@ -3955,14 +3966,16 @@ msgid "%B%s%b will be automatically removed because of dependency errors:"
 msgstr "ستتم إزالة %B%s%b تلقائياً بسبب أخطاء في المعتمدات:"
 
 #: src/reason_fragment.cc:366
-msgid "%B%s%b will be automatically installed to satisfy the following dependencies:"
+msgid ""
+"%B%s%b will be automatically installed to satisfy the following dependencies:"
 msgstr "سيتم تثبيت %B%s%b تلقائياً لإرضاء المعتمدات التالية:"
 
 #: src/reason_fragment.cc:372 src/reason_fragment.cc:384
 msgid ""
 "%B%s%b cannot be upgraded now, but if it could be, it would still be held at "
 "version %B%s%b."
-msgstr "لا يمكن ترقية %B%s%b الآن، وإن كان ممكناً، فسيتم إبقاءها غلى النسخة %B%s%b."
+msgstr ""
+"لا يمكن ترقية %B%s%b الآن، وإن كان ممكناً، فسيتم إبقاءها غلى النسخة %B%s%b."
 
 #: src/reason_fragment.cc:375
 msgid ""
@@ -3994,7 +4007,8 @@ msgstr "لن تتم ترقية %B%s%b إلى النسخة المحظورة %B%s%
 msgid ""
 "%B%s%b could be upgraded to version %B%s%b, but it is being held at version %"
 "B%s%b."
-msgstr "يمكن ترقية %B%s%b إلى النسخة  %B%s%b، إلا أنّها مبقاة على النسخة %B%s%b."
+msgstr ""
+"يمكن ترقية %B%s%b إلى النسخة  %B%s%b، إلا أنّها مبقاة على النسخة %B%s%b."
 
 #: src/reason_fragment.cc:423
 msgid "%B%s%b will be re-installed."
@@ -4013,7 +4027,8 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "ستتم ترقية %B%s%b من النسخة %B%s%b إلى النسخة %B%s%b."
 
 #: src/reason_fragment.cc:472
-msgid "The following packages depend on %B%s%b and will be broken by its removal:"
+msgid ""
+"The following packages depend on %B%s%b and will be broken by its removal:"
 msgstr "الحزم التالية تعتمد على %B%s%b وستعطب بإزالته:"
 
 #: src/reason_fragment.cc:475
@@ -4049,7 +4064,8 @@ msgstr "الحزم التالية تتعارض مع %B%s%b:"
 msgid ""
 "The following packages depend on a version of %B%s%b other than the "
 "currently installed version of %B%s%b:"
-msgstr "الحزم التالية تعتمد على نسخة من %B%s%b غير %B%s%b والتي هي مثبتة حالياً:"
+msgstr ""
+"الحزم التالية تعتمد على نسخة من %B%s%b غير %B%s%b والتي هي مثبتة حالياً:"
 
 #: src/reason_fragment.cc:532
 msgid ""
@@ -4284,9 +4300,8 @@ msgid ""
 "package could allow a malicious individual to damage or take control of your "
 "system."
 msgstr ""
-"%F: هذه النسخة من %s قادمة من %Bمصدر غير موثوق%b!  تثبيت هذه "
-"الحزمة قد يسمح لشخص مخرب أن يدمر نظامك "
-"أو أن يتحكم فيه."
+"%F: هذه النسخة من %s قادمة من %Bمصدر غير موثوق%b!  تثبيت هذه الحزمة قد يسمح "
+"لشخص مخرب أن يدمر نظامك أو أن يتحكم فيه."
 
 #: src/ui.cc:217
 msgid "Er, there aren't any errors, this shouldn't have happened.."
@@ -4310,17 +4325,17 @@ msgid ""
 "subsequent changes will not be saved unless you stop all other running apt-"
 "based programs and select \"Become root\" from the Actions menu."
 msgstr ""
-"تحذير: مخزن الحزم مفتوح بوضع القراءة فقط!  لن يتم حفظ هذا "
-"التغيير وأي تغييرات تالية إلا إن قمت بإيقاف عمل أي برامج أخرى "
-"تعمل بمساعدة apt واختيار \"تحول إلى root\" "
-"من قائمة أعمال."
+"تحذير: مخزن الحزم مفتوح بوضع القراءة فقط!  لن يتم حفظ هذا التغيير وأي "
+"تغييرات تالية إلا إن قمت بإيقاف عمل أي برامج أخرى تعمل بمساعدة apt واختيار "
+"\"تحول إلى root\" من قائمة أعمال."
 
 #: src/ui.cc:322
 msgid "Never display this message again."
 msgstr "عدم إظهار هذه الرسالة مجدداً."
 
 #: src/ui.cc:368
-msgid "You may not modify the state of any package while a download is underway."
+msgid ""
+"You may not modify the state of any package while a download is underway."
 msgstr "لا يمكنك تعديل حالة أي حزمة أثناء القيام بالتنزيل."
 
 #: src/ui.cc:399
@@ -4328,7 +4343,8 @@ msgid "You already are root!"
 msgstr "أنت الجذر مسبقا!"
 
 #: src/ui.cc:464
-msgid "Subprocess exited with an error -- did you type your password correctly?"
+msgid ""
+"Subprocess exited with an error -- did you type your password correctly?"
 msgstr "العملية الفرعية انتهت بخطأ -- هل كتبت كلمة المرور بشكل صحيح؟"
 
 #: src/ui.cc:503
@@ -4371,10 +4387,10 @@ msgid ""
 "is free software, and you are welcome to redistribute it under certain "
 "conditions; see 'license' for details."
 msgstr ""
-"Aptitude %s%n%nحقوق النسخ لسنة 2000-2005 محفوظة لـDaniel Burrows.%n%naptitude %"
-"Bليس معه أي كفالة%b; للتفاصيل راجع 'الرخصة' في قائمة المساعدة.  هذا "
-"البرنامج هو برنامج حرّ، ونرحب باستخدامك له وإعادة توزيع ضمن شروط "
-"معينة; راجع 'الرخصة' للتفاصيل."
+"Aptitude %s%n%nحقوق النسخ لسنة 2000-2005 محفوظة لـDaniel Burrows.%n%"
+"naptitude %Bليس معه أي كفالة%b; للتفاصيل راجع 'الرخصة' في قائمة المساعدة.  "
+"هذا البرنامج هو برنامج حرّ، ونرحب باستخدامك له وإعادة توزيع ضمن شروط معينة; "
+"راجع 'الرخصة' للتفاصيل."
 
 #: src/ui.cc:862
 msgid "help.txt"
@@ -4431,7 +4447,8 @@ msgstr "تعذرت إزالة الدليل \"%s\""
 
 #: src/ui.cc:998
 #, c-format
-msgid "Unable to remove the old temporary directory; you should remove %s by hand."
+msgid ""
+"Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr "تعذرت إزالة الدليل المؤقت القديم; عليك إزالة %s بنفسك."
 
 #: src/ui.cc:1003
@@ -4439,7 +4456,8 @@ msgstr "تعذرت إزالة الدليل المؤقت القديم; عليك �
 msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
 "hand."
-msgstr "لن تتم إزالة %s; يجب أن تطّلع على الملفات التي فيه وتقوم بإزالتها بنفسك."
+msgstr ""
+"لن تتم إزالة %s; يجب أن تطّلع على الملفات التي فيه وتقوم بإزالتها بنفسك."
 
 #: src/ui.cc:1029
 #, c-format
@@ -4449,10 +4467,9 @@ msgid ""
 "remove this directory and all its contents?  If you select \"No\", you will "
 "not see this message again."
 msgstr ""
-"يبدو أن نسخة سابقة من aptitude خلفت ملفات في %s. "
-"هذه الملفات على الأرجح غير مهمة ومن الآمن مسحها.%n%nهل تريد"
-"إزالة هذا الدليل وجميع محتوياته؟  إن قمت باختيار \"لا\"، سوف "
-"لن ترى هذه الرسالة مجدداً."
+"يبدو أن نسخة سابقة من aptitude خلفت ملفات في %s. هذه الملفات على الأرجح غير "
+"مهمة ومن الآمن مسحها.%n%nهل تريدإزالة هذا الدليل وجميع محتوياته؟  إن قمت "
+"باختيار \"لا\"، سوف لن ترى هذه الرسالة مجدداً."
 
 #: src/ui.cc:1071
 msgid "Downloading packages"
@@ -4598,7 +4615,8 @@ msgstr "ملف مخزن apt ليس متوفراً; التنظيف التلقائ
 msgid ""
 "Obsolete downloaded package files have been deleted, freeing %sB of disk "
 "space."
-msgstr "ملفات الحزم المنزلة الملغاة تم حذفها، ما جعل %s بايت من مساحة القرص فارغة."
+msgstr ""
+"ملفات الحزم المنزلة الملغاة تم حذفها، ما جعل %s بايت من مساحة القرص فارغة."
 
 #: src/ui.cc:1633
 msgid "No more solutions."
@@ -4750,7 +4768,8 @@ msgid "^Purge"
 msgstr "^إلغاء"
 
 #: src/ui.cc:1999
-msgid "Flag the currently selected package and its configuration files for removal"
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
 msgstr "تعليم الحزمة المحددة حالياً وملفات تهيئتها للإزالة"
 
 #: src/ui.cc:2002
@@ -4792,8 +4811,8 @@ msgid ""
 "Mark the selected package as having been manually installed; it will not be "
 "removed unless you manually remove it"
 msgstr ""
-"تعليم الحزمة المحدّدة على أنها ثُبتت يدويّاً؛ لن يتم إزالتها "
-"إلا إن قمت بذلك يدوياً"
+"تعليم الحزمة المحدّدة على أنها ثُبتت يدويّاً؛ لن يتم إزالتها إلا إن قمت بذلك "
+"يدوياً"
 
 #: src/ui.cc:2018
 msgid "^Forbid Version"
@@ -5017,9 +5036,7 @@ msgstr "التدقيق بالتو^صيات"
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
-msgstr ""
-"عرض الحزم التي نوصيك بتثبيتها، ولكن التي ليست "
-"مثبتة حالياً."
+msgstr "عرض الحزم التي نوصيك بتثبيتها، ولكن التي ليست مثبتة حالياً."
 
 #: src/ui.cc:2159
 msgid "New ^Flat Package List"
@@ -5122,7 +5139,8 @@ msgstr "مساعدة"
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
 "Pkgs"
-msgstr "%ls: قائمة  %ls: مساعدة  %ls: خروج  %ls: تحديث  %ls: تحميل/تثبيت/إزالة حزم"
+msgstr ""
+"%ls: قائمة  %ls: مساعدة  %ls: خروج  %ls: تحديث  %ls: تحميل/تثبيت/إزالة حزم"
 
 #: src/ui.cc:2753 src/vscreen/vscreen.cc:724
 msgid "yes_key"
@@ -5217,10 +5235,10 @@ msgstr "آخ!  قابلت إشارة خروج SIGQUIT، جاري التنفيذ.
 
 #: src/vscreen/vs_pager.cc:439
 #, c-format
-msgid "Unable to load filename: the string %ls has no multibyte representation."
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
 msgstr "تعذر تحميل اسم الملف: السلسلة %ls لا تملك صورة multibyte."
 
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "المستوى الأعلى"
-

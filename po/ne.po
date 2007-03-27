@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_ne\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2006-09-03 09:36-0700\n"
+"POT-Creation-Date: 2007-03-04 20:22-0800\n"
 "PO-Revision-Date: 2006-10-08 16:27+0545\n"
 "Last-Translator: Shiva Prasad Pokharel <pokharelshiva@hotmail.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -113,15 +113,18 @@ msgid "Display a preview of what will be done before doing it"
 msgstr "यो गर्नु अघि गरिने पूर्ववलोकन प्रदर्शन गर्नुहोस्"
 
 #: src/apt_options.cc:165
-msgid "Forget which packages are \"new\" whenever the package lists are updated"
+msgid ""
+"Forget which packages are \"new\" whenever the package lists are updated"
 msgstr "जहिलेपनि प्याकेज सूचिहरू अपडेट भएको बेला \"new\" प्याकेजहरू बिर्सनुहोस्"
 
 #: src/apt_options.cc:168
-msgid "Forget which packages are \"new\" whenever packages are installed or removed"
+msgid ""
+"Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr "जहिलेपनि प्याकेजहरू स्थापना वा हटाइएको बेला \"new\" प्याकेजहरू बिर्सनुहोस्"
 
 #: src/apt_options.cc:171
-msgid "Do not display a warning when the first change is made in read-only mode"
+msgid ""
+"Do not display a warning when the first change is made in read-only mode"
 msgstr "पढ्ने-मात्र मोडमा पहिलो परिवर्नत बनिरहेको बेला चेतावनी प्रदर्शन नगर्नुहोस् "
 
 #: src/apt_options.cc:174
@@ -243,7 +246,7 @@ msgstr[1] "%d स्तरकम गर्छ"
 msgid "Suggest %F"
 msgstr "%F सुझाव दिनुहोस्"
 
-#: src/cmdline/cmdline_action.cc:37
+#: src/cmdline/cmdline_action.cc:38
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -252,7 +255,7 @@ msgstr ""
 "द्रष्टब्य: \"%s\", अवास्तविक प्याकेज उपलब्ध गराउने\n"
 "      \"%s\", पहिल्यै स्थापना भयो ।\n"
 
-#: src/cmdline/cmdline_action.cc:44
+#: src/cmdline/cmdline_action.cc:45
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -261,7 +264,7 @@ msgstr ""
 "द्रष्टब्य: \"%s\", अवास्तविक प्याकेज उपलब्ध गराउने\n"
 "      \"%s\", पहिल्यै स्थापना हुन गइरहेको छ ।\n"
 
-#: src/cmdline/cmdline_action.cc:62
+#: src/cmdline/cmdline_action.cc:63
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -270,17 +273,17 @@ msgstr ""
 "\"%s\" प्याकेज डेटाबेसमा अवस्थित छ, तर यो वास्तविक प्याकेज होइन र\n"
 " यसलाई कुनै प्याकेजहरू उपलब्ध छैन ।\n"
 
-#: src/cmdline/cmdline_action.cc:68
+#: src/cmdline/cmdline_action.cc:69
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" द्वारा उपलब्ध गराइएको अवास्तविक प्याकेज हो:\n"
 
-#: src/cmdline/cmdline_action.cc:71
+#: src/cmdline/cmdline_action.cc:72
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "स्थापना गर्न तपाईँले एउटा रोझ।नु पर्छ ।\n"
 
-#: src/cmdline/cmdline_action.cc:76
+#: src/cmdline/cmdline_action.cc:77
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -289,37 +292,37 @@ msgstr ""
 "द्रष्टब्य: अवास्तविक प्याकेज \"%s\" को सट्टा\n"
 "      \"%s\" चयन गरिदैछ\n"
 
-#: src/cmdline/cmdline_action.cc:94
+#: src/cmdline/cmdline_action.cc:95
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s अनुरोध गरिएको संस्करण (%s) मा पहिल्यै स्थापना भयो\n"
 
-#: src/cmdline/cmdline_action.cc:100
+#: src/cmdline/cmdline_action.cc:101
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s हालै स्थापना गरिएको होइन, त्यसैले यो पुन: स्थापना हुने छैन ।\n"
 
-#: src/cmdline/cmdline_action.cc:107 src/cmdline/cmdline_action.cc:113
+#: src/cmdline/cmdline_action.cc:108 src/cmdline/cmdline_action.cc:114
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "प्याकेज %s स्थापना भएन, त्यसैले यो हटाउन सकिदैन\n"
 
-#: src/cmdline/cmdline_action.cc:131
+#: src/cmdline/cmdline_action.cc:132
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "प्याकेज %s स्थापना भएन, एउटा स्तरवृद्धि गर्न रोक्न सक्दैन\n"
 
-#: src/cmdline/cmdline_action.cc:133
+#: src/cmdline/cmdline_action.cc:134
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "प्याकेज %s स्तरवृद्धियोग्य छैन, एउटा स्तरवृद्धि गर्न रोक्न सक्दैन\n"
 
-#: src/cmdline/cmdline_action.cc:214
+#: src/cmdline/cmdline_action.cc:212
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "द्रष्टब्य: स्थापनाको लागि कार्य \"%s: %s\" चयन गरिदैछ\n"
 
-#: src/cmdline/cmdline_action.cc:244
+#: src/cmdline/cmdline_action.cc:242
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -328,12 +331,12 @@ msgstr ""
 "तपाईँ एउटा 'स्थापना' आदेश वा 'निषेधित-संस्करण' आदेश संगै प्याकेज संस्करण मात्र निर्दिष्ट गर्न "
 "सक्नुहुन्छ ।\n"
 
-#: src/cmdline/cmdline_action.cc:252
+#: src/cmdline/cmdline_action.cc:250
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "तपाईँ 'स्थापना' आदेश संगै प्याकेज संग्रह मात्र निर्दिष्ट गर्नुहोस् ।\n"
 
-#: src/cmdline/cmdline_action.cc:286
+#: src/cmdline/cmdline_action.cc:284
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -342,7 +345,7 @@ msgstr ""
 "\"%s\" प्याकेज फेला पार्न सकिएन, र तिनीहरुको नाममा ४० प्याकेजहरू भन्दा\n"
 " बढी \"%s\" समविष्ट छ ।\n"
 
-#: src/cmdline/cmdline_action.cc:289
+#: src/cmdline/cmdline_action.cc:287
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -351,12 +354,12 @@ msgstr ""
 "\"%s\" प्याकेज फेला पार्न सकिएन । जे भए पनि, तिनीहरुको नाममा निम्न\n"
 " प्याकेजहरू \"%s\" समविष्ट छन् ।\n"
 
-#: src/cmdline/cmdline_action.cc:313
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr "नाम वा वर्णन मेल खाने कुनै प्याकेज फेला परेन \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:315
+#: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -365,7 +368,7 @@ msgstr ""
 "कुनै मेल खाने प्याकेज फेला परेन \"%s\", र तिनीहरुको वर्णनमा ४० भन्दा बढी \n"
 " प्याकेजहरू \"%s\" समविष्ट छन् ।\n"
 
-#: src/cmdline/cmdline_action.cc:318
+#: src/cmdline/cmdline_action.cc:316
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -374,7 +377,7 @@ msgstr ""
 "\"%s\" संग मेल खाने कुनै प्याकेज फेला परेन । जे भए पनि, तिनीहरुको वर्णनमा\n"
 " निम्न प्याकेजहरू \"%s\" समाविष्ट हुन्छन्:\n"
 
-#: src/cmdline/cmdline_action.cc:437
+#: src/cmdline/cmdline_action.cc:436
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "खराब कार्य क्यारेक्टर '%c'\n"
@@ -422,7 +425,7 @@ msgstr "अवैध सञ्चालन %s"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "अनपेक्षित बान्की तर्क निम्न \"keep-all\" "
 
-#: src/cmdline/cmdline_do_action.cc:236 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_do_action.cc:241 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:520
 #, c-format
 msgid "Abort.\n"
@@ -434,7 +437,7 @@ msgid "download: you must specify at least one package to download\n"
 msgstr "डाउनलोड: तपाईँले डाउनलोड गर्न कम्तिमा एउटा प्याकेज निर्दिष्ट गर्नुपर्छ\n"
 
 #: src/cmdline/cmdline_download.cc:42
-#: src/generic/apt/download_install_manager.cc:76
+#: src/generic/apt/download_install_manager.cc:79
 msgid "Couldn't read source list"
 msgstr "स्रोत सूचि पढ्न सकिदैन"
 
@@ -469,7 +472,8 @@ msgstr "त्यहाँ साँच्चै यो कार्यक्र
 
 #: src/cmdline/cmdline_moo.cc:22
 #, c-format
-msgid "Didn't I already tell you that there are no Easter Eggs in this program?\n"
+msgid ""
+"Didn't I already tell you that there are no Easter Eggs in this program?\n"
 msgstr "के मैले पहिल्यै भने त्यहाँ यो कार्यक्रममा इस्टर एग छैन ?\n"
 
 #: src/cmdline/cmdline_moo.cc:25
@@ -480,7 +484,8 @@ msgstr "यसलाई रोक्नुहोस् !\n"
 #: src/cmdline/cmdline_moo.cc:28
 #, c-format
 msgid "Okay, okay, if I give you an Easter Egg, will you go away?\n"
-msgstr "ठीक छ, ठीक छ, यदि मैले तपाईँलाई एउटा इस्टर एग दिए भने, तपाईँ बाहिर जानुहुन्छ ?\n"
+msgstr ""
+"ठीक छ, ठीक छ, यदि मैले तपाईँलाई एउटा इस्टर एग दिए भने, तपाईँ बाहिर जानुहुन्छ ?\n"
 
 #: src/cmdline/cmdline_moo.cc:31
 #, c-format
@@ -492,99 +497,99 @@ msgstr "सबै ठीक छ, तपाईँले जित्नुभय�
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr "यो के हो ?  यो सर्पले खाएको हात्ती हो, वास्तवमा ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:33
+#: src/cmdline/cmdline_prompt.cc:34
 msgid "Unexpected end-of-file on standard input"
 msgstr "मानक आगतमा अनपेक्षित फाइलको समाप्ती"
 
-#: src/cmdline/cmdline_prompt.cc:52
+#: src/cmdline/cmdline_prompt.cc:53
 msgid "Couldn't read list of sources"
 msgstr "स्रोतहरुको सूचि पढ्न सकिदैन"
 
-#: src/cmdline/cmdline_prompt.cc:234 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:236 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "तर  %s स्थापना हुनुपर्छ ।"
 
-#: src/cmdline/cmdline_prompt.cc:237 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:239 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "%s स्थापना भयो तर यो पछाडि राखियो ।"
 
-#: src/cmdline/cmdline_prompt.cc:240 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:242 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "तर %s स्थापना भयो ।"
 
-#: src/cmdline/cmdline_prompt.cc:244 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:246 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "तर यो स्थापना योग्य छैन"
 
-#: src/cmdline/cmdline_prompt.cc:248 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:250 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr "कुन अवास्तविक प्याकेज हो ।"
 
-#: src/cmdline/cmdline_prompt.cc:251 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:253 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " वा"
 
-#: src/cmdline/cmdline_prompt.cc:263
+#: src/cmdline/cmdline_prompt.cc:265
 msgid "The following packages are BROKEN:"
 msgstr "निम्न प्याकेजहरू विच्छेदन भयो:"
 
-#: src/cmdline/cmdline_prompt.cc:264
+#: src/cmdline/cmdline_prompt.cc:266
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "निम्न प्याकेजहरू प्रयोग नभएकोले हटाइनेछ: "
 
-#: src/cmdline/cmdline_prompt.cc:265
+#: src/cmdline/cmdline_prompt.cc:267
 msgid "The following packages have been automatically kept back:"
 msgstr "निम्न प्याकेजहरू स्वत: पछाडि राखियो:"
 
-#: src/cmdline/cmdline_prompt.cc:266
+#: src/cmdline/cmdline_prompt.cc:268
 msgid "The following NEW packages will be automatically installed:"
 msgstr "निम्न नयाँ प्याकेजहरू स्वत: स्थापना हुनेछ:"
 
-#: src/cmdline/cmdline_prompt.cc:267
+#: src/cmdline/cmdline_prompt.cc:269
 msgid "The following packages will be automatically REMOVED:"
 msgstr "निम्न प्याकेजहरू स्वत: हट्नेछन्:"
 
-#: src/cmdline/cmdline_prompt.cc:268
+#: src/cmdline/cmdline_prompt.cc:270
 msgid "The following packages will be DOWNGRADED:"
 msgstr "निम्न प्याकेजहरू स्तरकम हुनेछन्:"
 
-#: src/cmdline/cmdline_prompt.cc:269
+#: src/cmdline/cmdline_prompt.cc:271
 msgid "The following packages have been kept back:"
 msgstr "निम्न प्याकेजहरू पछाडि राखियो:"
 
-#: src/cmdline/cmdline_prompt.cc:270
+#: src/cmdline/cmdline_prompt.cc:272
 msgid "The following packages will be REINSTALLED:"
 msgstr "निम्न प्याकेजहरू पुन:स्थापित हुनेछन्:"
 
-#: src/cmdline/cmdline_prompt.cc:271
+#: src/cmdline/cmdline_prompt.cc:273
 msgid "The following NEW packages will be installed:"
 msgstr "निम्न नयाँ प्याकेजहरू स्थापित हुनेछन्:"
 
-#: src/cmdline/cmdline_prompt.cc:272
+#: src/cmdline/cmdline_prompt.cc:274
 msgid "The following packages will be REMOVED:"
 msgstr "निम्न प्याकेजहरू हटाइनेछन्:"
 
-#: src/cmdline/cmdline_prompt.cc:273
+#: src/cmdline/cmdline_prompt.cc:275
 msgid "The following packages will be upgraded:"
 msgstr "निम्न प्याकेजहरू स्तरवृद्धि हुनेछन्:"
 
-#: src/cmdline/cmdline_prompt.cc:328
+#: src/cmdline/cmdline_prompt.cc:330
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "निम्न आवश्यक प्याकेजहरू हटाइनेछन्!\n"
 
-#: src/cmdline/cmdline_prompt.cc:337
+#: src/cmdline/cmdline_prompt.cc:339
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "निम्न आवश्यक प्याकेजहरू यो कार्य द्वारा विच्छेदन हुनेछन्:\n"
 
-#: src/cmdline/cmdline_prompt.cc:347
+#: src/cmdline/cmdline_prompt.cc:349
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -593,16 +598,16 @@ msgstr ""
 "चेतावनी: यो कार्य सम्पादन गर्नाले सम्भवत: तपाईँको प्रणाली विच्छेदन गर्नेछ!\n"
 "        तपाईँ के गर्दै हुनुहुन्छ यथार्थ नभएसम्म निरन्तरता नदिनुहोस्!\n"
 
-#: src/cmdline/cmdline_prompt.cc:349
+#: src/cmdline/cmdline_prompt.cc:351
 msgid "I am aware that this is a very bad idea"
 msgstr "यो धेरै खराब विचारमा म सावधान छु "
 
-#: src/cmdline/cmdline_prompt.cc:352
+#: src/cmdline/cmdline_prompt.cc:354
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "निरन्तरता दिन, वाक्यांश टाइप गर्नुहोस् \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:394
+#: src/cmdline/cmdline_prompt.cc:396
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -619,7 +624,7 @@ msgstr ""
 ", तपाईँ स्थापना संगै प्रक्रिया गर्नुहोस् ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:406
+#: src/cmdline/cmdline_prompt.cc:408
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -628,124 +633,124 @@ msgstr ""
 "*** चेतावनी ***   यी विश्वासहरू उलङ्गन गर्न उपेक्षा गरिदैछ किनभने\n"
 "                  %s::CmdLine::विश्वास उलङ्गन गर्न उपेक्षा गर्नु 'ट्रु' हो!\n"
 
-#: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:177
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:177
 #: src/vscreen/vs_util.cc:215
 msgid "Yes"
 msgstr "हो"
 
-#: src/cmdline/cmdline_prompt.cc:413 src/vscreen/vs_util.cc:178
+#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:178
 #: src/vscreen/vs_util.cc:216
 msgid "No"
 msgstr "होइन"
 
-#: src/cmdline/cmdline_prompt.cc:417
+#: src/cmdline/cmdline_prompt.cc:419
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "के तपाईँ यो चेतावनीलाई उपेक्षा गर्नुहुन्छ र जे भए पनि प्रक्रिया गर्नुहुन्छ?\n"
 
-#: src/cmdline/cmdline_prompt.cc:418
+#: src/cmdline/cmdline_prompt.cc:420
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "निरन्तर गर्न, \"%s\" प्रविष्ट गर्नुहोस्; परित्याग गर्न, \"%s\" प्रविष्ट गर्नुहोस्:"
 
-#: src/cmdline/cmdline_prompt.cc:432
+#: src/cmdline/cmdline_prompt.cc:434
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "नचिनेको आगत ।  या \"%s\" वा \"%s\" प्रविष्ट गर्नुहोस् ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:534
+#: src/cmdline/cmdline_prompt.cc:536
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "निम्न प्याकेजहरू सिफारिस गरिएका छन् तर स्थापना हुनेछैन:\n"
 
-#: src/cmdline/cmdline_prompt.cc:540
+#: src/cmdline/cmdline_prompt.cc:542
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "निम्न प्याकेजहरूलाई सुझाब गरिएका छन् तर स्थापना हुनेछैन:\n"
 
-#: src/cmdline/cmdline_prompt.cc:545
+#: src/cmdline/cmdline_prompt.cc:547
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "कुनै प्याकेजहरू स्थापना हुने छैन, स्तरवृद्धि भयो, वा हटाइयो ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:547
+#: src/cmdline/cmdline_prompt.cc:549
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu प्याकेजहरू स्तरवृद्धि गरियो, %lu नयाँ स्थापना गरियो,"
 
-#: src/cmdline/cmdline_prompt.cc:551
+#: src/cmdline/cmdline_prompt.cc:553
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu पुन: स्थापना गरियो,"
 
-#: src/cmdline/cmdline_prompt.cc:553
+#: src/cmdline/cmdline_prompt.cc:555
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu स्तरकम गरियो, "
 
-#: src/cmdline/cmdline_prompt.cc:555
+#: src/cmdline/cmdline_prompt.cc:557
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu हटाउन र %lu स्तरवृद्धि गरिएन ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:562
+#: src/cmdline/cmdline_prompt.cc:564
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "संग्रहहरुको %sB/%sB प्राप्त गर्न आवश्यक छ । "
 
-#: src/cmdline/cmdline_prompt.cc:565
+#: src/cmdline/cmdline_prompt.cc:567
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "संग्रहहरुको %sB प्राप्त गर्न आवश्यक छ । "
 
-#: src/cmdline/cmdline_prompt.cc:572
+#: src/cmdline/cmdline_prompt.cc:574
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "प्याक गरेपछि %sB प्रयोग हुनेछन् ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:575
+#: src/cmdline/cmdline_prompt.cc:577
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "प्याक गरेपछि %sB खाली हुनेछन् ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:613
+#: src/cmdline/cmdline_prompt.cc:615
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "देखाउन कुनै प्याकेजहरू छैन -- 'i' पछि रेखामा प्याकेज नाम प्रविष्ट गर्नुहोस् ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:615
+#: src/cmdline/cmdline_prompt.cc:617
 msgid "Press Return to continue."
 msgstr "निरन्तरता दिन 'फर्कनुहोस्' थिच्नुहोस् ।"
 
-#: src/cmdline/cmdline_prompt.cc:641
+#: src/cmdline/cmdline_prompt.cc:643
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "कुनै प्याकेजहरू फेला परेन -- 'c' पछि रेखामा प्याकेज नाम प्रविष्ट गर्नुहोस् ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:645
+#: src/cmdline/cmdline_prompt.cc:647
 msgid "Press Return to continue"
 msgstr "निरन्तरता दिन 'फर्कनुहोस्' थिच्नुहोस् "
 
-#: src/cmdline/cmdline_prompt.cc:656
+#: src/cmdline/cmdline_prompt.cc:658
 #, c-format
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 
-#: src/cmdline/cmdline_prompt.cc:676
+#: src/cmdline/cmdline_prompt.cc:678
 msgid "continue with the installation"
 msgstr "स्थापना संगै निरन्तरता दिनुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:678
+#: src/cmdline/cmdline_prompt.cc:680
 msgid "abort and quit"
 msgstr "परित्याग गर्नुहोस् र बन्द गर्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:680
+#: src/cmdline/cmdline_prompt.cc:682
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
 msgstr "एउटा वा धेरै प्याकेजहरू बारे सूचना देखाउनुहोस्; प्याकेज नामहरुले 'i' लाई पछ्याउँदछ"
 
-#: src/cmdline/cmdline_prompt.cc:682
+#: src/cmdline/cmdline_prompt.cc:684
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -753,23 +758,23 @@ msgstr ""
 "एउटा वा धेरै प्याकेजहरुको डेवियन परिवर्तन लगहरू देखाउनुहोस्; प्याकेज नामहरुले 'c' लाई "
 "पछ्याउँदछ"
 
-#: src/cmdline/cmdline_prompt.cc:684
+#: src/cmdline/cmdline_prompt.cc:686
 msgid "toggle the display of dependency information"
 msgstr "निर्भरता सूचनाको प्रदर्शन टगल गर्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:686
+#: src/cmdline/cmdline_prompt.cc:688
 msgid "toggle the display of changes in package sizes"
 msgstr "प्याकेज साइजहरुमा परिवर्तनको प्रदर्शन टगल गर्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:688
+#: src/cmdline/cmdline_prompt.cc:690
 msgid "toggle the display of version numbers"
 msgstr "संस्करण नम्बरहरुको प्रदर्शन टगल गर्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:690
+#: src/cmdline/cmdline_prompt.cc:692
 msgid "enter the full visual interface"
 msgstr "पुरा दृश्यात्मक इन्टरफेस प्रविष्ट गर्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:691
+#: src/cmdline/cmdline_prompt.cc:693
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -780,47 +785,50 @@ msgstr ""
 "एउटा वा धेरै प्याकेज नामहरु (वा बान्कीहरू) ले पछ्याएको एउटा कार्य क्यारेक्टर टाइप गर्नुहोस् "
 "। यो कार्यले तपाईँले सूचि गर्नु भएको सबै प्याकेजहरुलाई लागू गर्नेछ । निम्न कार्यहरू उपलब्ध छन्:"
 
-#: src/cmdline/cmdline_prompt.cc:696 src/cmdline/cmdline_resolver.cc:184
+#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:184
 msgid "'+' to install packages"
 msgstr "'+' प्याकेजहरू स्थापना गर्न"
 
-#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:186
-msgid "'+M' to install packages and immediately flag them as automatically installed"
-msgstr "'+M' प्याकेजहरू स्थापना गर्न र तत्काल तिनीहरुलाई स्वत: स्थापित भएको रुपमा झुण्डयाउने गर्दछ"
+#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:186
+msgid ""
+"'+M' to install packages and immediately flag them as automatically installed"
+msgstr ""
+"'+M' प्याकेजहरू स्थापना गर्न र तत्काल तिनीहरुलाई स्वत: स्थापित भएको रुपमा झुण्डयाउने गर्दछ"
 
-#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:188
+#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:188
 msgid "'-' to remove packages"
 msgstr "'-' प्याकेजहरू हटाउन"
 
-#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:190
+#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:190
 msgid "'_' to purge packages"
 msgstr "'-' प्याकेजहरू निर्मल गर्न"
 
-#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:192
+#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:192
 msgid "'=' to place packages on hold"
 msgstr "'=' समाउनेमा प्याकेजहरू राख्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:194
-msgid "':' to keep packages in their current state without placing them on hold"
+#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:194
+msgid ""
+"':' to keep packages in their current state without placing them on hold"
 msgstr "':' समाउनेमा प्याकेजहरुलाई स्थान्तरण नगरी हालको अवास्था राख्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:196
+#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' प्याकेजहरू म्यानुल्ली स्थापना भएकोमा चिनो गर्न"
 
-#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:198
+#: src/cmdline/cmdline_prompt.cc:712 src/cmdline/cmdline_resolver.cc:198
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&M' प्याकेजहरू म्यानुल्ली स्थापना भएकोमा चिनो गर्न"
 
-#: src/cmdline/cmdline_prompt.cc:712
+#: src/cmdline/cmdline_prompt.cc:714
 msgid "Commands:"
 msgstr "आदेशहरू:"
 
-#: src/cmdline/cmdline_prompt.cc:767
+#: src/cmdline/cmdline_prompt.cc:769
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "के तपाईँ निरन्तर गर्न चाहनुहुन्छ ? [Y/n/?]"
 
-#: src/cmdline/cmdline_prompt.cc:792
+#: src/cmdline/cmdline_prompt.cc:794
 #, c-format
 msgid ""
 "\n"
@@ -831,7 +839,7 @@ msgstr ""
 "निर्भरता सूचना देखिने छन् ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:794
+#: src/cmdline/cmdline_prompt.cc:796
 #, c-format
 msgid ""
 "\n"
@@ -842,7 +850,7 @@ msgstr ""
 "निर्भरता सूचना देखिने छैन ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:800
+#: src/cmdline/cmdline_prompt.cc:802
 #, c-format
 msgid ""
 "\n"
@@ -853,7 +861,7 @@ msgstr ""
 "संस्करणहरू देखिने छन् ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:802
+#: src/cmdline/cmdline_prompt.cc:804
 #, c-format
 msgid ""
 "\n"
@@ -864,7 +872,7 @@ msgstr ""
 "संस्करणहरू देखिने छैन ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:807
+#: src/cmdline/cmdline_prompt.cc:809
 #, c-format
 msgid ""
 "\n"
@@ -875,7 +883,7 @@ msgstr ""
 "साइज परिवर्तनहरू देखिने छन् ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:809
+#: src/cmdline/cmdline_prompt.cc:811
 #, c-format
 msgid ""
 "\n"
@@ -886,23 +894,23 @@ msgstr ""
 "साइज परिवर्तनहरू देखिने छैन ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:832
+#: src/cmdline/cmdline_prompt.cc:834
 #, c-format
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "अवैध प्रतिक्रिया ।  कृपया मद्दतको लागि वैध आदेश वा '?' प्रविष्ट गर्नुहोस् ।\n"
 
-#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:597
+#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:599
 #: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "लेख्नको लागि %s खोल्न असक्षम भयो"
 
-#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:602
+#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:604
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "%s मा त्रुटि लेखन हलकर्ता स्थिति"
 
-#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:604
+#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:606
 msgid "Resolver state successfully written!"
 msgstr "हलकर्ता स्थिति सफलतापूर्वक लेखियो!"
 
@@ -955,7 +963,8 @@ msgstr ""
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur."
-msgstr "दिएको प्याकेज संस्करणहरू स्वीकार गर्नुहोस्; तिनीहरुले उत्पन्न गर्ने समाधानहरू प्रदर्शन गर्नुहोस् ।"
+msgstr ""
+"दिएको प्याकेज संस्करणहरू स्वीकार गर्नुहोस्; तिनीहरुले उत्पन्न गर्ने समाधानहरू प्रदर्शन गर्नुहोस् ।"
 
 #: src/cmdline/cmdline_resolver.cc:182
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -1055,7 +1064,7 @@ msgstr "निम्न कार्यहरुले यी निर्भर
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "यो समाधान स्वीकार गर्नुहुन्छ ?[Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:648
+#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:650
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "यी निर्भरताहरुलाई हल गर्न सबै प्रयासहरू त्याग गरिदैछ ।"
 
@@ -1063,27 +1072,27 @@ msgstr "यी निर्भरताहरुलाई हल गर्न �
 msgid "The following commands are available:"
 msgstr "निम्न आदेशहरू उपलब्ध छन्:"
 
-#: src/cmdline/cmdline_resolver.cc:594
+#: src/cmdline/cmdline_resolver.cc:596
 msgid "File to write resolver state to: "
 msgstr "हलकर्ता स्थिति लेख्न फाइल:"
 
-#: src/cmdline/cmdline_resolver.cc:609
+#: src/cmdline/cmdline_resolver.cc:611
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "अवैध प्रतिक्रिया; कृपया निम्न आदेशहरू मध्य एउटा प्रविष्टि गर्नुहोस्:"
 
-#: src/cmdline/cmdline_resolver.cc:622
+#: src/cmdline/cmdline_resolver.cc:624
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "बाँडिएको समय भित्र कुनै समाधान फेला परेन । अझ कठिन प्रयास गर्नुहुन्छ ?[Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:651
+#: src/cmdline/cmdline_resolver.cc:653
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "अवैध प्रतिक्रिया; कृपया 'y' वा 'n' प्रविषट गर्नुहोस् ।"
 
-#: src/cmdline/cmdline_resolver.cc:660
+#: src/cmdline/cmdline_resolver.cc:662
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "निर्भरताहरू हल गर्न असक्षम भयो! छोडिदैछ..."
 
-#: src/cmdline/cmdline_resolver.cc:666
+#: src/cmdline/cmdline_resolver.cc:668
 msgid "*** No more solutions available ***"
 msgstr "*** त्यति धेरै समाधानहरू उपलब्ध छैन ***"
 
@@ -1378,7 +1387,7 @@ msgstr "UNSATISFIED"
 msgid "UNAVAILABLE"
 msgstr "UNAVAILABLE"
 
-#: src/desc_parse.cc:275
+#: src/desc_parse.cc:292
 msgid "Tags"
 msgstr "ट्यागहरू"
 
@@ -1502,7 +1511,8 @@ msgstr "%s (%sB/s) मा %sB प्राप्त भयो\n"
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press enter\n"
-msgstr "मेडिया परिवर्तन: कृपया '%s' ड्राइभमा '%s' डिस्क लेबुल घुसाउनुहोस् र इन्टर थिच्नुहोस्\n"
+msgstr ""
+"मेडिया परिवर्तन: कृपया '%s' ड्राइभमा '%s' डिस्क लेबुल घुसाउनुहोस् र इन्टर थिच्नुहोस्\n"
 
 #: src/generic/apt/aptcache.cc:263
 msgid "Can't open Aptitude extended state file"
@@ -1589,29 +1599,36 @@ msgstr ""
 "क्यास फाइलमा ताल्चा लगाउन सकिदैन । पढ्ने-मात्र मोडमा खोलिरहेको छ; प्याकेजहरुको "
 "प्रान्तहरुमा कुनै परिवर्तनहरू जोगाउन सकिदैन!"
 
-#: src/generic/apt/download_install_manager.cc:53
-msgid "The package cache is not available; unable to download and install packages."
+#: src/generic/apt/download_install_manager.cc:56
+msgid ""
+"The package cache is not available; unable to download and install packages."
 msgstr "प्याकेज क्यास उपलब्ध छैन; प्याकेजहरू डाउनलोड गर्न र स्थापना गर्न असक्षम भयो ।"
 
-#: src/generic/apt/download_install_manager.cc:69
+#: src/generic/apt/download_install_manager.cc:72
 #: src/generic/apt/download_update_manager.cc:77
 msgid "Couldn't lock list directory..are you root?"
 msgstr "सूचि डाइरेक्ट्रीमा ताल्चा लगाउन सकिएन..के तपाईँ मूल हो ?"
 
-#: src/generic/apt/download_install_manager.cc:86
+#: src/generic/apt/download_install_manager.cc:89
 msgid "Internal error: couldn't generate list of packages to download"
 msgstr "आन्तरिक त्रुटि: डाउनलोड गर्न प्याकेजहरुको सूचि सिर्जना गर्न सक्दैन"
 
-#: src/generic/apt/download_install_manager.cc:121
+#: src/generic/apt/download_install_manager.cc:119
+#, fuzzy, c-format
+msgid "Failed to fetch %s: %s"
+msgstr "%s लाई %s मा पुन:नामकरण गर्न असफल"
+
+#: src/generic/apt/download_install_manager.cc:125
 msgid "Unable to correct for unavailable packages"
 msgstr "उपलब्ध नभएको प्याकेजहरुका लागि सुधार गर्न सकिएन "
 
-#: src/generic/apt/download_install_manager.cc:141
+#: src/generic/apt/download_install_manager.cc:151
 msgid "A package failed to install.  Trying to recover:"
 msgstr "प्याकेज स्थापना गर्न असक्षम भयो । पुन:प्राप्त गर्ने प्रयास गरिदैछ:"
 
-#: src/generic/apt/download_install_manager.cc:165
-msgid "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
+#: src/generic/apt/download_install_manager.cc:176
+msgid ""
+"Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr "प्रणाली ताल्चा पुन:लाभ गर्न सकिदैन!  (संभवतः अर्को apt वा dpkg चलिरहेको हुन्छ ?)"
 
 #: src/generic/apt/download_update_manager.cc:66
@@ -1880,7 +1897,8 @@ msgstr ""
 
 #: src/generic/apt/pkg_acqfile.cc:99
 #, c-format
-msgid "The package index files are corrupted. No Filename: field for package %s."
+msgid ""
+"The package index files are corrupted. No Filename: field for package %s."
 msgstr "प्याकेज अनुक्रमणिका फाइलहरू दूषित भयो । फाइलनाम छैन: प्याकेज %s को लागि फाँट ।"
 
 #: src/generic/apt/pkg_changelog.cc:151 src/view_changelog.cc:149
@@ -2332,7 +2350,8 @@ msgstr " -s             कार्यहरू नक्कल गर्नु
 
 #: src/main.cc:147
 #, c-format
-msgid " -d             Only download packages, do not install or remove anything.\n"
+msgid ""
+" -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
 " -d             प्याकेजहरू मात्र डाउनलोड गर्नुहोस्, केही पनि स्थापना गर्ने वा हटाउने "
 "कार्य नगर्नुहोस् ।\n"
@@ -2344,7 +2363,8 @@ msgstr " -P             यकिन वा कार्यहरुको ल�
 
 #: src/main.cc:149
 #, c-format
-msgid " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+msgid ""
+" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr " -y             मान्नुहोस् कि साधारण हो/होइन प्रश्नको उत्तर 'हो' हो\n"
 
 #: src/main.cc:150
@@ -2358,13 +2378,17 @@ msgstr ""
 
 #: src/main.cc:151
 #, c-format
-msgid " -O order       Specify how search results should be sorted; see the manual\n"
-msgstr " -O आदेश        कसरी खोजी नतिजाहरू क्रमबद्ध गर्ने निर्दिष्ट गर्नुहोस्, म्यानुल हेर्नुहोस्\n"
+msgid ""
+" -O order       Specify how search results should be sorted; see the manual\n"
+msgstr ""
+" -O आदेश        कसरी खोजी नतिजाहरू क्रमबद्ध गर्ने निर्दिष्ट गर्नुहोस्, म्यानुल हेर्नुहोस्\n"
 
 #: src/main.cc:152
 #, c-format
-msgid " -w width       Specify the display width for formatting search results\n"
-msgstr " -w चौडा         खोजी नतिजाहरू ढाँचाका लागि प्रदर्शन चौडाई निर्दिष्ट गर्नुहोस्\n"
+msgid ""
+" -w width       Specify the display width for formatting search results\n"
+msgstr ""
+" -w चौडा         खोजी नतिजाहरू ढाँचाका लागि प्रदर्शन चौडाई निर्दिष्ट गर्नुहोस्\n"
 
 #: src/main.cc:153
 #, c-format
@@ -2378,7 +2402,8 @@ msgstr " -V             प्याकेजहरुको कुन संस
 
 #: src/main.cc:155
 #, c-format
-msgid " -D             Show the dependencies of automatically changed packages.\n"
+msgid ""
+" -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D              स्वत: परिवर्तन भएका प्याकेजहरुको निर्भरता देखाउनुहोस् ।\n"
 
 #: src/main.cc:156
@@ -2388,12 +2413,14 @@ msgstr " -Z\t\t     प्रत्येक प्याकेजको स्�
 
 #: src/main.cc:157
 #, c-format
-msgid " -v             Display extra information. (may be supplied multiple times)\n"
+msgid ""
+" -v             Display extra information. (may be supplied multiple times)\n"
 msgstr " -v             अन्य सूचना प्रदर्शन गर्नुहोस् । (बहुँविद समयमा आपूर्ति हुन सक्छ)\n"
 
 #: src/main.cc:158
 #, c-format
-msgid " -t [release]   Set the release from which packages should be installed\n"
+msgid ""
+" -t [release]   Set the release from which packages should be installed\n"
 msgstr " -t [release]   स्थापना हुन लागेको प्याकेजहरू बाट विमोचन सेट गर्नुहोस्\n"
 
 #: src/main.cc:159
@@ -2461,7 +2488,8 @@ msgid "Only one of -u and -i may be specified\n"
 msgstr "-u र -i को एउटा मात्रै निर्दिष्ट हुनेछ\n"
 
 #: src/main.cc:416
-msgid "-u and -i may not be specified in command-line mode (eg, with 'install')"
+msgid ""
+"-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr "आदेश-रेखा मोडमा -u र -i निर्दिष्ट हुने छैन (जस्तै, 'install' संगै)"
 
 #: src/main.cc:437
@@ -2616,8 +2644,10 @@ msgid "The dart was poisoned!  The poison was deadly...  --More--"
 msgstr "बाँण विषाक्त थियो!  विष घातक थियो...  --धेरै--"
 
 #: src/mine/cmine.cc:494
-msgid "A little dart shoots out at you!  You are hit by a little dart!  --More--"
-msgstr "एउटा सानो बाँणले तपाईँलाई मार्छ!  तपाईँ एउटा सानो बाँण द्वारा मारिनुभयो!  --धेरै-- "
+msgid ""
+"A little dart shoots out at you!  You are hit by a little dart!  --More--"
+msgstr ""
+"एउटा सानो बाँणले तपाईँलाई मार्छ!  तपाईँ एउटा सानो बाँण द्वारा मारिनुभयो!  --धेरै-- "
 
 #: src/mine/cmine.cc:498
 msgid "You turn to stone... --More--"
@@ -3896,7 +3926,8 @@ msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "प्याकेज-दृश्य-बनाउनुहोस्:तर्कहरुमा त्रुटि --दुई मुख्य विजेटहरू ??"
 
 #: src/pkg_view.cc:414
-msgid "make_package_view: error in arguments -- bad column list for static item"
+msgid ""
+"make_package_view: error in arguments -- bad column list for static item"
 msgstr "प्याकेज-दृश्य-बनाउनुहोस्:तर्कहरुमा त्रुटि --स्थिर वस्तुको लागि खराब स्तम्भ सूचि"
 
 #: src/pkg_view.cc:510
@@ -3957,14 +3988,16 @@ msgstr ""
 msgid ""
 "%B%s%b was installed automatically;  it is being removed because all of the "
 "packages which depend upon it are being removed:"
-msgstr "%B%s%b स्वत: स्थापना भयो;यो हट्यो किन भने यसमा आधारित सबै प्याकेजहरू हटिरहेका छन्:"
+msgstr ""
+"%B%s%b स्वत: स्थापना भयो;यो हट्यो किन भने यसमा आधारित सबै प्याकेजहरू हटिरहेका छन्:"
 
 #: src/reason_fragment.cc:362
 msgid "%B%s%b will be automatically removed because of dependency errors:"
 msgstr "निर्भरता त्रुटिहरुको कारणले %B%s%b स्वत: हट्नेछ:"
 
 #: src/reason_fragment.cc:366
-msgid "%B%s%b will be automatically installed to satisfy the following dependencies:"
+msgid ""
+"%B%s%b will be automatically installed to satisfy the following dependencies:"
 msgstr "निम्न निर्भरताहरू सन्तुष्ट पार्न %B%s%b स्वत: स्थापना हुनेछ:"
 
 #: src/reason_fragment.cc:372 src/reason_fragment.cc:384
@@ -3977,7 +4010,8 @@ msgstr "%B%s%b अहिले स्तरवृद्दि हुन सक�
 msgid ""
 "%B%s%b will not be upgraded to version %B%s%b, to avoid breaking the "
 "following dependencies:"
-msgstr "संस्करण %B%s%b मा, %B%s%b उन्नत हुनेछैन, निम्न निर्भरताहरू बिग्रन त्याग गर्न सकिन्छ :"
+msgstr ""
+"संस्करण %B%s%b मा, %B%s%b उन्नत हुनेछैन, निम्न निर्भरताहरू बिग्रन त्याग गर्न सकिन्छ :"
 
 #: src/reason_fragment.cc:387
 msgid "%B%s%b is currently installed."
@@ -4022,7 +4056,8 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b संस्करण %B%s%b देखी संस्करण %B%s%b उन्नत हुनेछ ।"
 
 #: src/reason_fragment.cc:472
-msgid "The following packages depend on %B%s%b and will be broken by its removal:"
+msgid ""
+"The following packages depend on %B%s%b and will be broken by its removal:"
 msgstr "निम्न प्याकेजहरू %B%s%b मा आधारित छ र त्यसको हटाउने द्धारा बिग्रिन् सक्छ:"
 
 #: src/reason_fragment.cc:475
@@ -4095,7 +4130,8 @@ msgstr "निम्न प्याकेजहरू संस्करण %B%
 msgid ""
 "The following packages depend on version %B%s%b of %B%s%b, and will be "
 "broken if it is %s."
-msgstr "निम्न प्याकेजहरू संस्करण %B%s%b of %B%s%b मा आधारति छ, यदि यो छ %s भने बिग्रन्छ ।"
+msgstr ""
+"निम्न प्याकेजहरू संस्करण %B%s%b of %B%s%b मा आधारति छ, यदि यो छ %s भने बिग्रन्छ ।"
 
 #: src/solution_dialog.cc:91 src/solution_screen.cc:465
 msgid "The package cache is not available."
@@ -4329,7 +4365,8 @@ msgid "Never display this message again."
 msgstr "यो सन्देश कहिल्यै पनि नदेखाउनुहोस् ।"
 
 #: src/ui.cc:368
-msgid "You may not modify the state of any package while a download is underway."
+msgid ""
+"You may not modify the state of any package while a download is underway."
 msgstr "डाउनलोड हुदै गर्दा तपाईँले प्याकेजको वस्तुस्थिति परिमार्जन नगर्नुहोला ।"
 
 #: src/ui.cc:399
@@ -4337,7 +4374,8 @@ msgid "You already are root!"
 msgstr "तपाईँ पहिल्यै मूलमा हुनुहुन्छ !"
 
 #: src/ui.cc:464
-msgid "Subprocess exited with an error -- did you type your password correctly?"
+msgid ""
+"Subprocess exited with an error -- did you type your password correctly?"
 msgstr ""
 "सहायक प्रक्रियाहरू त्रुटि संग अवस्थित छ -- के तपाईँले तपाईँको पासवर्ड सहि तरिकाले टाइप "
 "गर्नु भयो ?"
@@ -4442,7 +4480,8 @@ msgstr "डाइरेक्टरी \"%s\" हटाउन असक्षम
 
 #: src/ui.cc:998
 #, c-format
-msgid "Unable to remove the old temporary directory; you should remove %s by hand."
+msgid ""
+"Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr "पुरानो अस्थायी डाइरेक्टरी हटाउन असक्षम; तपाईँले  %s लाई हातैले मेट्नु पर्दछ ।"
 
 #: src/ui.cc:1003
@@ -4450,7 +4489,8 @@ msgstr "पुरानो अस्थायी डाइरेक्टरी 
 msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
 "hand."
-msgstr "तपाईँले %s मेटाउनुहुन्छ; तपाईँले यसमा फाइल परिक्षण गर्नु पर्दछ र त्यसलाई हातैले हटाउनु पर्दछ ।"
+msgstr ""
+"तपाईँले %s मेटाउनुहुन्छ; तपाईँले यसमा फाइल परिक्षण गर्नु पर्दछ र त्यसलाई हातैले हटाउनु पर्दछ ।"
 
 #: src/ui.cc:1029
 #, c-format
@@ -4552,7 +4592,8 @@ msgstr "एउटा प्याकेज सूची अद्यावधि
 
 #: src/ui.cc:1339
 msgid "No packages are scheduled to be installed, removed, or upgraded."
-msgstr "कुनै पनि प्याकेजहरू स्थापना गर्न, हटाउन, वा अद्यावधिक गर्न कार्यतालिका बद्ध गरिएको छैन ।"
+msgstr ""
+"कुनै पनि प्याकेजहरू स्थापना गर्न, हटाउन, वा अद्यावधिक गर्न कार्यतालिका बद्ध गरिएको छैन ।"
 
 #: src/ui.cc:1345
 msgid ""
@@ -4670,7 +4711,8 @@ msgstr "Up^gradable लाई चिनो लगाउनुहोस्"
 
 #: src/ui.cc:1938
 msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr "सबै अद्यावधिक गर्न लायक प्याकेजहरू जसलाई अद्यावधिकमा नराखिएको छ भने चिन्ह दिनुहोस्"
+msgstr ""
+"सबै अद्यावधिक गर्न लायक प्याकेजहरू जसलाई अद्यावधिकमा नराखिएको छ भने चिन्ह दिनुहोस्"
 
 #: src/ui.cc:1942
 msgid "^Forget new packages"
@@ -4765,7 +4807,8 @@ msgid "^Purge"
 msgstr "^सफा गर्नुहोस्"
 
 #: src/ui.cc:1999
-msgid "Flag the currently selected package and its configuration files for removal"
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
 msgstr "यसका कन्फिगरेसन फाइलहरू हटाउनका लागि हालमा चयन गरिएको प्याकेजहरू झुन्डाउनुहोस्"
 
 #: src/ui.cc:2002
@@ -4976,7 +5019,8 @@ msgstr "^निर्भरता ह्यान्डलिङ्"
 
 #: src/ui.cc:2116
 msgid "Change the settings which affect how package dependencies are handled"
-msgstr "सेटिङ्हरू परिवर्तन गर्नुहोस् जसले कसरि प्याकेजहरू निर्भरताहरू ह्यान्डल गर्नेलाई असर् पार्दछ"
+msgstr ""
+"सेटिङ्हरू परिवर्तन गर्नुहोस् जसले कसरि प्याकेजहरू निर्भरताहरू ह्यान्डल गर्नेलाई असर् पार्दछ"
 
 #: src/ui.cc:2119
 msgid "^Miscellaneous"
@@ -5212,7 +5256,8 @@ msgstr "अवैध झूठा कुज्जि बाइन्डिङ्
 
 #: src/vscreen/config/keybindings.cc:351
 msgid "Sorry, control modifiers may not be used with unprintable characters"
-msgstr "क्षमा गर्नुहोस्, अमौद्रिक क्यारेक्टरहरू संग नियन्त्रण परिमार्जनकर्ता प्रयोग गर्न सकिने छैन"
+msgstr ""
+"क्षमा गर्नुहोस्, अमौद्रिक क्यारेक्टरहरू संग नियन्त्रण परिमार्जनकर्ता प्रयोग गर्न सकिने छैन"
 
 #: src/vscreen/vscreen.cc:125
 #, c-format
@@ -5236,10 +5281,10 @@ msgstr "उफ् !  SIGQUIT प्राप्त, मर्दै..\n"
 
 #: src/vscreen/vs_pager.cc:439
 #, c-format
-msgid "Unable to load filename: the string %ls has no multibyte representation."
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
 msgstr "फाइलनाम लोड गर्न असक्षम: स्टिङ् %lsले बहुबाइट प्रतिनिधित्व गर्दैन ।"
 
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "TOP LEVEL"
-
