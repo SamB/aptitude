@@ -19,7 +19,7 @@
 
 
 <xsl:template match="literal">
-  <xsl:text>\fB</xsl:text><xsl:apply-templates/><xsl:text>\fR</xsl:text>
+  <xsl:apply-templates mode="bold" select="."/>
 </xsl:template>
 
 <xsl:param name="preferred.mediaobject.role">text</xsl:param>
