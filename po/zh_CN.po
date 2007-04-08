@@ -3,14 +3,15 @@
 # Haifeng Chen <optical.dlz@gmail.com>, 2005
 # Ming Hua <minghua@rice.edu>, 2005,2006
 # Carlos Z.F. Liu <carlosliu@users.sourceforge.net>, 2005,2006
+# Kov Chai <tchaikov@sjtu.org>, 2007
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.3-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-03-04 20:22-0800\n"
-"PO-Revision-Date: 2006-10-14 00:22-0500\n"
-"Last-Translator: Ming Hua <minghua@rice.edu>\n"
+"PO-Revision-Date: 2007-04-07 18:33+0800\n"
+"Last-Translator: Kov Chai <tchaikov@sjtu.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,15 +24,15 @@ msgstr "将某些可用的命令显示在屏幕顶端"
 
 #: src/apt_options.cc:112
 msgid "Hide the menubar when it is not being used"
-msgstr "未使用时隐藏菜单条"
+msgstr "不使用菜单条时隐藏它"
 
 #: src/apt_options.cc:114
 msgid "Use a minibuffer-style prompt when possible"
-msgstr "如果可能的话使用微缓冲区类型的提示信息"
+msgstr "如果可能的话使用微缓冲区风格的提示信息"
 
 #: src/apt_options.cc:116
 msgid "Show partial search results (incremental search)"
-msgstr "显示部分搜索结果(渐进搜索)"
+msgstr "显示部分搜索结果(增量搜索)"
 
 #: src/apt_options.cc:118
 msgid "Closing the last view exits the program"
@@ -39,7 +40,7 @@ msgstr "关闭最后一个画面并退出该程序"
 
 #: src/apt_options.cc:120
 msgid "Prompt for confirmation at exit"
-msgstr "退出时提示要求确认"
+msgstr "退出时进行提示并要求确认"
 
 #: src/apt_options.cc:122
 msgid "Pause after downloading files"
@@ -468,7 +469,7 @@ msgstr "停下来！\n"
 #: src/cmdline/cmdline_moo.cc:28
 #, c-format
 msgid "Okay, okay, if I give you an Easter Egg, will you go away?\n"
-msgstr "行，行，如果我给您一个复活节彩蛋，您会走开吗？\n"
+msgstr "好吧，好吧，如果我给您复活节彩蛋，您会停手吗？\n"
 
 #: src/cmdline/cmdline_moo.cc:31
 #, c-format
@@ -612,18 +613,18 @@ msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 msgstr ""
-"*** 警告 ***  忽略这些信任违背，因为\n"
+"*** 警告 ***  忽略这些违反信任机制的问题，因为\n"
 "                 %s::CmdLine::Ignore-Trust-Violations 的值为“真”！\n"
 
 #: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:177
 #: src/vscreen/vs_util.cc:215
 msgid "Yes"
-msgstr "是"
+msgstr "Yes"
 
 #: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:178
 #: src/vscreen/vs_util.cc:216
 msgid "No"
-msgstr "否"
+msgstr "No"
 
 #: src/cmdline/cmdline_prompt.cc:419
 #, c-format
@@ -663,7 +664,7 @@ msgstr "%lu 个软件包被升级，新安装 %lu 个，"
 #: src/cmdline/cmdline_prompt.cc:553
 #, c-format
 msgid "%lu reinstalled, "
-msgstr "%lu 个重新安装，"
+msgstr "%lu 个被重新安装，"
 
 #: src/cmdline/cmdline_prompt.cc:555
 #, c-format
@@ -985,7 +986,7 @@ msgstr "没有这个软件包“%s”"
 #: src/cmdline/cmdline_resolver.cc:284
 #, c-format
 msgid "%s has no version named \"%s\""
-msgstr "%s 没有“%s”这样一个版本"
+msgstr "%s 没有名字叫“%s”的版本"
 
 #: src/cmdline/cmdline_resolver.cc:301
 #, c-format
@@ -1054,11 +1055,11 @@ msgstr "将依赖关系解决状态写入文件："
 
 #: src/cmdline/cmdline_resolver.cc:611
 msgid "Invalid response; please enter one of the following commands:"
-msgstr "非法响应；请输入下列命令之一："
+msgstr "无效响应；请输入下列命令之一："
 
 #: src/cmdline/cmdline_resolver.cc:624
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
-msgstr "在分配的时间内未找到解决方案。加把劲再试试？[Y/n]"
+msgstr "在限定的时间内没能找到解决方案。加把劲再试试？[Y/n]"
 
 #: src/cmdline/cmdline_resolver.cc:653
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -1589,13 +1590,13 @@ msgid "Internal error: couldn't generate list of packages to download"
 msgstr "内部错误：无法生成下载软件包列表"
 
 #: src/generic/apt/download_install_manager.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to fetch %s: %s"
-msgstr "无法将 %s 改名为 %s"
+msgstr "无法下载 %s：%s"
 
 #: src/generic/apt/download_install_manager.cc:125
 msgid "Unable to correct for unavailable packages"
-msgstr "无法修正不可用的软件包"
+msgstr "无法修正因软件包不可用而造成的错误"
 
 #: src/generic/apt/download_install_manager.cc:151
 msgid "A package failed to install.  Trying to recover:"
@@ -2027,7 +2028,7 @@ msgstr "无法在“%s”中分析模式"
 
 #: src/load_grouppolicy.cc:454
 msgid "Exactly one filter must be provided as an argument to a filter policy"
-msgstr "必须提供恰好一个过滤器名称作为过滤器策略的参数"
+msgstr "必须提供一个也只能是一个过滤器的名称作为过滤器策略的参数"
 
 #: src/load_grouppolicy.cc:473
 msgid "By-mode grouping policies take no arguments"
@@ -2591,15 +2592,15 @@ msgstr "桩子有毒！毒药是致命的..  --更多--"
 
 #: src/mine/cmine.cc:481
 msgid "You land on a set of sharp iron spikes!  --More--"
-msgstr "您着陆于一片尖锐的铁桩上了！  --更多--"
+msgstr "您着陆在了一片尖锐的铁桩上！  --更多--"
 
 #: src/mine/cmine.cc:484
 msgid "You fall into a pit!  --More--"
-msgstr "您掉进了一个坑中！  --更多--"
+msgstr "您掉进坑里了！  --更多--"
 
 #: src/mine/cmine.cc:487
 msgid "KABOOM!  You step on a land mine.  --More--"
-msgstr "梆！您踩到地雷上了！  --更多--"
+msgstr "梆！您踩上地雷了！  --更多--"
 
 #: src/mine/cmine.cc:492
 msgid "The dart was poisoned!  The poison was deadly...  --More--"
@@ -2667,7 +2668,7 @@ msgstr "您的魔杖 %s 断开并爆炸了！ --更多--"
 
 #: src/mine/cmine.cc:549
 msgid "You are jolted by a surge of electricity!  --More--"
-msgstr "您被一股强电流电击了！  --更多--"
+msgstr "您被一股强电流击中了！  --更多--"
 
 #: src/mine/cmine.cc:653
 msgid "Enter the filename to load: "
@@ -3006,8 +3007,8 @@ msgid ""
 "found in this section."
 msgstr ""
 "文本编辑器和字处理器\n"
-" “编辑器”部分的软件包帮助您编辑纯 ASCII 文本。这不一定必然是字处理器，虽然有"
-"些字处理器也包括在该部分。"
+" “编辑器”部分的软件包帮助您编辑纯 ASCII 文本。这不一定就都是字处理器软件，虽"
+"然有些字处理器也包括在该部分。"
 
 #: src/pkg_grouppolicy.cc:173
 msgid ""
@@ -3026,10 +3027,10 @@ msgid ""
 "Embedded devices are specialized hardware devices with much less power than "
 "a typical desktop system: for instance, a PDA, a cell phone, or a Tivo."
 msgstr ""
-"由于嵌入式系统的程序\n"
+"用于嵌入式系统的程序\n"
 " “嵌入式”部分的软件包需要运行在嵌入式系统中。嵌入式设备是一类特殊的硬件设"
-"备， 其硬件功能比典型的桌面系统少：例如，PDA (个人数字助理)， 手机或者 "
-"Tivo。 "
+"备， 与典型的桌面系统相比，其硬件功能显得有些局限。比如 PDA (个人数字助理)， "
+"手机或者 Tivo。 "
 
 #: src/pkg_grouppolicy.cc:175
 msgid ""
@@ -3039,15 +3040,15 @@ msgid ""
 "GNOME environment or closely integrated into it."
 msgstr ""
 "GNOME 桌面系统\n"
-" GNOME 是一组为 Linux 提供易于使用的桌面环境的软件。“gnome”部分的软件包是 "
-"GNOME 环境的一部分或者紧密集成到该环境中。"
+" GNOME 是一组软件，它们为 Linux 提供易于使用的桌面环境。“gnome”部分的软件包或"
+"者是 GNOME 环境的一部分，或者与之紧密集成。"
 
 #: src/pkg_grouppolicy.cc:176
 msgid ""
 "Games, toys, and fun programs\n"
 " Packages in the 'games' section are meant primarily for entertainment."
 msgstr ""
-"游戏，玩具，以及玩笑程序\n"
+"游戏，玩具，以及有趣的程序\n"
 " “游戏”部分的软件包主要是用于娱乐。"
 
 #: src/pkg_grouppolicy.cc:177
@@ -3068,7 +3069,7 @@ msgid ""
 " Packages in the 'hamradio' section are meant primarily for ham radio "
 "operators."
 msgstr ""
-"业余无线电操作员的软件\n"
+"业余无线电 (ham) 操作员的软件\n"
 " “业余无线电”部分的软件包主要供业余无线电操作员使用"
 
 #: src/pkg_grouppolicy.cc:179
@@ -3077,8 +3078,9 @@ msgid ""
 " Packages in the 'interpreters' section include interpreters for languages "
 "like Python, Perl, and Ruby, and libraries for these same languages."
 msgstr ""
-"解释性语言的解释器\n"
-" ”解释器“部分的软件包包括象Python，Perl和Ruby的语言解释器，以及这些语言的库。"
+"解释型语言的解释器\n"
+" ”解释器“部分的软件包包括象 Python，Perl 和 Ruby 的语言解释器，以及这些语言的"
+"库。"
 
 #: src/pkg_grouppolicy.cc:180
 msgid ""
@@ -3088,8 +3090,8 @@ msgid ""
 "environment or closely integrated into it."
 msgstr ""
 "KDE 桌面系统\n"
-" KDE 是一组为 Linux 提供易于使用的桌面环境的软件。“kde”部分的软件包是 KDE 环"
-"境的一部分或者紧密集成到该环境中。"
+" KDE 是一组软件，这些软件为 Linux 提供易于使用的桌面环境。“kde”部分的软件包或"
+"者是 KDE 环境的一部分，或者与该环境紧密集成。"
 
 #: src/pkg_grouppolicy.cc:181
 msgid ""
@@ -3098,9 +3100,9 @@ msgid ""
 "programs that use libraries in the 'libs' section.  You don't need packages "
 "from this section unless you want to compile software yourself."
 msgstr ""
-"用于库的开发文件\n"
-" “libdevel”部分的软件包包含若干文件，这些文件在编译其它用到“libs”部分的库的程"
-"序需要。除非您希望自己编译软件，否则您不需要该部分的软件包。"
+"用于程序库的开发文件\n"
+" “libdevel”部分的软件包包含若干文件，在编译其它用到“libs”部分的库的程序时，会"
+"需要这些文件。除非您希望自己编译软件，否则您不需要该部分的软件包。"
 
 #: src/pkg_grouppolicy.cc:182
 msgid ""
@@ -3124,8 +3126,8 @@ msgid ""
 msgstr ""
 "Perl 解释器以及库\n"
 " “perl”部分的软件包提供 Perl 编程语言和许多基于该语言的第三方软件库。除非您是"
-"一个 Perl 程序员，您不需要特地从该部分选择安装软件包；软件包系统将在需要的时"
-"候自动安装它们。"
+"一个 Perl 程序员，您不需要特地从该部分选择安装软件包；软件包管理系统将在需要"
+"的时候自动安装它们。"
 
 #: src/pkg_grouppolicy.cc:184
 msgid ""
@@ -3160,7 +3162,7 @@ msgid ""
 msgstr ""
 "数值分析和其它数学相关的软件\n"
 " “数学”部分的软件包包括计算器，数学计算语言(类似于 Mathematica)，符号代数软"
-"件，和用于图像显示数学对象的软件。"
+"件，和能将数学对象可视化的软件。"
 
 #: src/pkg_grouppolicy.cc:187
 msgid ""
@@ -3168,7 +3170,7 @@ msgid ""
 " Packages in the 'misc' section have too unusual a function to be classified."
 msgstr ""
 "杂项软件\n"
-" “杂项”部分的软件包有不常见的功能以致于无法对其归类。"
+" “杂项”部分的软件包具有太不常用的功能，以致于无法对它们归类。"
 
 #: src/pkg_grouppolicy.cc:188
 msgid ""
@@ -3232,8 +3234,8 @@ msgid ""
 "chemistry, as well as other science-related software."
 msgstr ""
 "科学工作软件\n"
-" “科学”部分的软件包包括天文学，生物学，和化学的工具软件，以及其它科学相关的软"
-"件。"
+" “科学”部分的软件包包括天文学，生物学，和化学方面的工具软件，以及其它科学相关"
+"的软件。"
 
 #: src/pkg_grouppolicy.cc:193
 msgid ""
@@ -3253,8 +3255,8 @@ msgid ""
 "processing software."
 msgstr ""
 "播放和录制声音的工具\n"
-" “声音”部分的软件包包括音频播放器，录音机，和许多格式的编码器，混频器和音量控"
-"制，MIDI音序器和产生乐谱的程序，声音硬件的驱动程序，以及音频处理软件。"
+" “声音”部分的软件包包括音频播放器，录音机，和许多格式的编码器，混音器和音量控"
+"制，MIDI音序器和打谱的程序，声音硬件的驱动程序，以及音频处理软件。"
 
 #: src/pkg_grouppolicy.cc:195
 msgid ""
@@ -3265,9 +3267,9 @@ msgid ""
 "formats, TeX fonts, and other software related to TeX."
 msgstr ""
 "TeX 排版系统\n"
-" “tex”部分的软件包与TeX相关，TeX是一个产生高质量排版输出的系统。该部分包括 "
-"TeX 本身，TeX 包，专为 TeX 设计的编辑器，将 TeX 和 TeX 输出文件转换到各种格式"
-"的工具，TeX 字体，和其它 TeX 相关的软件。"
+" “tex”部分的软件包与TeX相关，TeX 是一个产生高质量排版输出的系统。该部分包括 "
+"TeX 本身，TeX 宏包，专为 TeX 设计的编辑器，将 TeX 和 TeX 输出文件转换到各种格"
+"式的工具、TeX 字体，和其它 TeX 相关的软件。"
 
 #: src/pkg_grouppolicy.cc:196
 msgid ""
@@ -3280,7 +3282,7 @@ msgid ""
 msgstr ""
 "文本处理工具\n"
 " “文本”部分的软件包包括文本过滤器和处理器，拼写检查器，字典程序，转换不同字符"
-"编码和文本文件格式(如 Unix 和 Dos)的工具，文本格式处理程序和美化打印程序，以"
+"编码和文本文件格式(如 Unix 和 DOS)的工具，文本格式处理程序和美化打印程序，以"
 "及其它和纯文本有关的软件。"
 
 #: src/pkg_grouppolicy.cc:197
@@ -3530,8 +3532,8 @@ msgid ""
 "package declaring an 'important' dependency on them.\n"
 msgstr ""
 "因不再使用而删除的软件包\n"
-" 这些软件包被删除，因为它们被自动安装以满足依赖关系，同时计划中的操作将导致没"
-"有任何软件包宣称与它们有“重要”依赖关系。\n"
+" 这些软件包被删除，因为它们曾被自动安装以满足依赖关系，同时计划中的操作将导致"
+"没有任何软件包声明与它们有“重要”依赖关系。\n"
 
 #: src/pkg_grouppolicy.cc:535
 msgid ""
@@ -4563,7 +4565,7 @@ msgstr "未能找到一个可以应用的解决方案。"
 
 #: src/ui.cc:1827
 msgid "Ran out of time while trying to find a solution."
-msgstr "寻找解决方案时用时已尽。"
+msgstr "寻求解决方案时耗尽了时限。"
 
 #: src/ui.cc:1870 src/ui.cc:1872
 msgid "Resolve Dependencies"
@@ -5045,7 +5047,7 @@ msgstr "动作"
 
 #: src/ui.cc:2341
 msgid "Resolver"
-msgstr "解释器"
+msgstr "解决手段"
 
 #: src/ui.cc:2342
 msgid "Search"
@@ -5057,7 +5059,7 @@ msgstr "选项"
 
 #: src/ui.cc:2344
 msgid "Views"
-msgstr "查看"
+msgstr "视图"
 
 #: src/ui.cc:2345
 msgid "Help"
