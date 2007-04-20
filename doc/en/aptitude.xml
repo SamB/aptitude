@@ -8127,6 +8127,22 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configCmdLine-Resolver-Show-Steps'>
+	      <seg><literal>Aptitude::CmdLine::Resolver-Show-Steps</literal></seg>
+
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		If this option is <literal>true</literal>, then a
+		dependency solution will be displayed as a sequence of
+		resolutions of individual dependencies; for instance,
+		<quote><literal>wesnoth depends upon wesnoth-data (=
+		1.2.4-1) -> installing wesnoth-data 1.2.4-1
+		(unstable)</literal></quote>.  To toggle between the
+		two display modes, press <keycap>o</keycap> at the
+		prompt <quote><literal>Accept this solution?</literal></quote>.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configCmdLine-Request-Strictness'>
 	      <seg><literal>Aptitude::CmdLine::Request-Strictness</literal></seg>
 	      <seg><literal>10000</literal></seg>

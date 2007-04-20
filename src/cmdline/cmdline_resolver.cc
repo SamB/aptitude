@@ -1,6 +1,6 @@
 // cmdline_resolver.cc
 //
-//   Copyright (C) 2005-2006 Daniel Burrows
+//   Copyright (C) 2005-2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -171,7 +171,7 @@ static void resolver_help(ostream &out)
 			      flowindentbox(0, 3,
 					    fragf(_("move to the previous solution"))),
 			      flowindentbox(0, 3,
-					    fragf(_("view an explanation of the changes in the solution"))),
+					    fragf(_("toggle between the contents of the solution and an explanation of the solution"))),
 			      flowindentbox(0, 3,
 					    fragf(_("examine the solution in the visual user interface"))),
 			      flowindentbox(0, 3,
@@ -485,6 +485,8 @@ bool cmdline_resolve_deps(pkgset &to_install,
 			  bool force_no_change,
 			  int verbose)
 {
+  bool story_is_default = aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Show-Steps", false);
+
   while(!show_broken())
     {
       setup_resolver(to_install, to_hold, to_remove, to_purge,
@@ -509,7 +511,9 @@ bool cmdline_resolve_deps(pkgset &to_install,
 		  {
 		    fragment *f=sequence_fragment(flowbox(text_fragment(_("The following actions will resolve these dependencies:"))),
 						  newline_fragment(),
-						  solution_fragment(sol),
+						  story_is_default
+						    ? solution_story(sol)
+						    : solution_fragment(sol),
 						  NULL);
 
 		    update_screen_width();
@@ -553,7 +557,10 @@ bool cmdline_resolve_deps(pkgset &to_install,
 		    return false;
 		  case 'O':
 		    {
-		      fragment *f = solution_story(sol);
+		      story_is_default = !story_is_default;
+		      fragment *f = story_is_default
+			              ? solution_story(sol)
+			              : solution_fragment(sol);
 		      update_screen_width();
 		      cout << f->layout(screen_width, screen_width,
 					style()) << endl;
