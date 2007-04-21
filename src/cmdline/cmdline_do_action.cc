@@ -46,7 +46,8 @@ int cmdline_do_action(int argc, char *argv[],
     default_action=cmdline_install;
   else if(!strcasecmp(argv[0], "reinstall"))
     default_action=cmdline_reinstall;
-  else if(!strcasecmp(argv[0], "dist-upgrade"))
+  else if(!strcasecmp(argv[0], "full-upgrade") ||
+	  !strcasecmp(argv[0], "dist-upgrade"))
     {
       default_action=cmdline_install;
       dist_upgrade=true;

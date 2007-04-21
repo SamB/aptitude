@@ -63,7 +63,7 @@
 	<arg choice='plain'>forget-new</arg>
 	<arg choice='plain'>keep-all</arg>
 	<arg choice='plain'>update</arg>
-	<arg choice='plain'>upgrade</arg>
+	<arg choice='plain'>safe-upgrade</arg>
       </group>
     </cmdsynopsis>
 
@@ -74,7 +74,7 @@
 
       <group choice='req'>
 	<arg choice='plain'>changelog</arg>
-	<arg choice='plain'>dist-upgrade</arg>
+	<arg choice='plain'>full-upgrade</arg>
 	<arg choice='plain'>download</arg>
 	<arg choice='plain'>forbid-version</arg>
 	<arg choice='plain'>hold</arg>
@@ -304,11 +304,11 @@
 	    difference between <literal>hold</literal> and
 	    <literal>keep</literal> is that <literal>hold</literal>
 	    will cause a package to be ignored by future
-	    <literal>upgrade</literal> commands, while
+	    <literal>safe-upgrade</literal> or <literal>full-upgrade</literal> commands, while
 	    <literal>keep</literal> merely cancels any scheduled
 	    actions on the package.  <literal>unhold</literal> will
-	    cause a package to be upgraded by future
-	    <literal>upgrade</literal> commands, without otherwise
+	    allow a package to be upgraded by future
+	    <literal>safe-upgrade</literal> or <literal>full-upgrade</literal> commands, without otherwise
 	    altering its state.
 	  </para>
 
@@ -383,7 +383,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term><literal>upgrade</literal></term>
+	<term><literal>safe-upgrade</literal></term>
 
 	<listitem>
 	  <para>
@@ -397,28 +397,39 @@
 	  </para>
 
 	  <para>
-	    If a package cannot be upgraded without violating these
-	    constraints, it will be kept at its current version.  Use
-	    the <link
-	    linkend='manpageDistUpgrade'><literal>dist-upgrade</literal></link>
-	    command to upgrade these packages as well.
+	      It is sometimes necessary to remove or install one
+	      package in order to upgrade another; this command is not
+	      able to upgrade packages in such situations.  Use the
+	      <link
+	      linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>
+	      command to upgrade as many packages as possible.
 	  </para>
 	</listitem>
       </varlistentry>
 
-      <varlistentry id='manpageDistUpgrade'>
-	<term><literal>dist-upgrade</literal></term>
+      <varlistentry id='manpageFullUpgrade'>
+	<term><literal>full-upgrade</literal></term>
 
 	<listitem>
 	  <para>
 	    Upgrades installed packages to their most recent version,
 	    removing or installing packages as necessary.  This
 	    command is less conservative than
-	    <literal>upgrade</literal> and thus more likely to perform
-	    unwanted actions.  Users are advised to either use
-	    <literal>upgrade</literal> instead or to carefully inspect
-	    the list of packages to be installed and removed.
+	    <literal>safe-upgrade</literal> and thus more likely to
+	    perform unwanted actions.  However, it is capable of
+	    upgrading packages that <literal>safe-upgrade</literal> cannot
+	    upgrade.
 	  </para>
+
+	  <note>
+	    <para>
+	      This command was originally named
+	      <literal>dist-upgrade</literal> for historical reasons,
+	      and &aptitude; still recognizes
+	      <literal>dist-upgrade</literal> as a synonym for
+	      <literal>full-upgrade</literal>.
+	    </para>
+	  </note>
 	</listitem>
       </varlistentry>
 
@@ -649,7 +660,7 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 	<listitem>
 	  <para>
 	    For commands that will install or remove packages
-	    (<literal>install</literal>, <literal>upgrade</literal>,
+	    (<literal>install</literal>, <literal>full-upgrade</literal>,
 	    etc), show brief explanations of automatic installations
 	    and removals.
 	  </para>

@@ -130,8 +130,8 @@ static void usage()
   // problem.
   printf(_(" forbid-version - Forbid aptitude from upgrading to a specific package version.\n"));
   printf(_(" update       - Download lists of new/upgradable packages\n"));
-  printf(_(" upgrade      - Perform a safe upgrade\n"));
-  printf(_(" dist-upgrade - Perform an upgrade, possibly installing and removing packages\n"));
+  printf(_(" safe-upgrade - Perform a safe upgrade\n"));
+  printf(_(" full-upgrade - Perform an upgrade, possibly installing and removing packages\n"));
   printf(_(" forget-new   - Forget what packages are \"new\"\n"));
   printf(_(" search       - Search for a package by name and/or expression\n"));
   printf(_(" show         - Display detailed information about a package\n"));
@@ -457,6 +457,7 @@ int main(int argc, char *argv[])
 	  else if( (!strcasecmp(argv[optind], "install")) ||
 		   (!strcasecmp(argv[optind], "reinstall")) ||
 		   (!strcasecmp(argv[optind], "dist-upgrade")) ||
+		   (!strcasecmp(argv[optind], "full-upgrade")) ||
 		   (!strcasecmp(argv[optind], "remove")) ||
 		   (!strcasecmp(argv[optind], "purge")) ||
 		   (!strcasecmp(argv[optind], "hold")) ||
@@ -472,7 +473,8 @@ int main(int argc, char *argv[])
 				     fix_broken, showvers, showdeps, showsize,
 				     visual_preview, always_prompt,
 				     queue_only, verbose);
-	  else if(!strcasecmp(argv[optind], "upgrade"))
+	  else if(!strcasecmp(argv[optind], "safe-upgrade") ||
+		  !strcasecmp(argv[optind], "upgrade"))
 	    return cmdline_upgrade(argc-optind, argv+optind,
 				   status_fname,
 				   simulate, assume_yes, download_only,

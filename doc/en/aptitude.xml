@@ -1576,16 +1576,23 @@ space.
 	  <term>
 	    <cmdsynopsis>
 	      <command>aptitude</command>
-	      <arg choice='plain'>upgrade</arg>
+	      <arg choice='plain'>safe-upgrade</arg>
 	    </cmdsynopsis>
 	  </term>
 
 	  <listitem>
 	    <para>
-	      This command will upgrade as many packages as possible.
-	      If there are dependency problems, it will avoid
-	      upgrading packages (rather than, for instance, removing
-	      them).
+	      This command will upgrade as many packages as it can
+	      upgrade without removing existing packages or installing
+	      new ones.
+	    </para>
+
+	    <para>
+	      It is sometimes necessary to remove or install one
+	      package in order to upgrade another; this command is not
+	      able to upgrade packages in such situations.  Use the
+	      <literal>full-upgrade</literal> to upgrade those
+	      packages as well.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -1594,19 +1601,28 @@ space.
 	  <term>
 	    <cmdsynopsis>
 	      <command>aptitude</command>
-	      <arg choice='plain'>dist-upgrade</arg>
+	      <arg choice='plain'>full-upgrade</arg>
 	    </cmdsynopsis>
 	  </term>
 
 	  <listitem>
 	    <para>
-	      This command will also attempt to upgrade packages, but
-	      it is more aggressive about solving dependency problems:
-	      it will install and remove packages until all
-	      dependencies are satisfied.  Because of the nature of
-	      this command, it is possible that it will do undesirable
-	      things, and so you should be careful when using it.
+	      Like <literal>safe-upgrade</literal>, this command will
+	      attempt to upgrade packages, but it is more aggressive
+	      about solving dependency problems: it will install and
+	      remove packages until all dependencies are satisfied.
+	      Because of the nature of this command, it is possible
+	      that it will do undesirable things, and so you should be
+	      careful when using it.
 	    </para>
+
+	    <note>
+	      <para>
+		For historical reasons, this command was originally
+		named <literal>dist-upgrade</literal>, and that name
+		is still recognized by &aptitude;.
+	      </para>
+	    </note>
 	  </listitem>
 	</varlistentry>
 
@@ -3291,8 +3307,8 @@ i A 0.5.25
 		      <para>
 			That is, it will be unaffected by
 			&actions-upgrade; or the
-			<command>dist-upgrade</command> or
-			<command>upgrade</command> command-line
+			<command>full-upgrade</command> or
+			<command>safe-upgrade</command> command-line
 			actions.
 		      </para>
 		    </footnote>
