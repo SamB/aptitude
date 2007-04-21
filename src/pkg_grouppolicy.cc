@@ -1,6 +1,6 @@
 // pkg_grouppolicy.cc
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -368,11 +368,7 @@ void pkg_grouppolicy_status::add_package(const pkgCache::PkgIterator &pkg,
     {
       if(pkg_obsolete(pkg))
 	section=obsolete_pkg;
-      else if((*apt_cache_file)->get_ext_state(pkg).new_package)
-	section=newpkg;
-      else if(state.Status==2)
-	section=not_installed;
-      else if(state.Upgradable())
+      else if(state.Status != 2 && state.Upgradable())
 	{
 	  pkgCache::VerIterator candver=state.CandidateVerIter(*apt_cache_file);
 	  if(version_is_security(candver))
@@ -380,6 +376,10 @@ void pkg_grouppolicy_status::add_package(const pkgCache::PkgIterator &pkg,
 	  else
 	    section=upgradable;
 	}
+      else if((*apt_cache_file)->get_ext_state(pkg).new_package)
+	section=newpkg;
+      else if(state.Status==2)
+	section=not_installed;
       else
 	section=installed;
     }
