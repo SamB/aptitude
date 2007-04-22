@@ -38,6 +38,7 @@ resolver_manager::resolver_manager(aptitudeDepCache *_cache)
   :cache(_cache),
    resolver(NULL),
    undos(new undo_list),
+   solution_search_aborted(false),
    selected_solution(0),
    background_thread_killed(false),
    background_thread_running(false),
@@ -205,9 +206,7 @@ void resolver_manager::background_thread_execution()
 	}
       catch(Exception &e)
 	{
-	  std::cerr << "*** Uncaught exception in resolver thread:" << std::endl;
-	  std::cerr << e.errmsg() << std::endl;
-	  abort();
+	  job.k->aborted(e);
 	}
 
       l.acquire();
@@ -271,6 +270,8 @@ void resolver_manager::kill_background_thread()
       background_thread_killed = false;
       background_thread_suspend_count = 0;
       background_thread_in_resolver = false;
+      solution_search_aborted = false;
+      solution_search_abort_msg.clear();
     }
 }
 
@@ -343,6 +344,8 @@ void resolver_manager::discard_resolver()
   {
     threads::mutex::lock l2(solutions_mutex);
     solutions.clear();
+    solution_search_aborted = false;
+    solution_search_abort_msg.clear();
     selected_solution = 0;
   }
 
@@ -459,6 +462,24 @@ bool resolver_manager::background_thread_active()
   return !pending_jobs.empty() || background_thread_in_resolver;
 }
 
+bool resolver_manager::background_thread_aborted()
+{
+  threads::mutex::lock l(mutex);
+
+  threads::mutex::lock sol_l(solutions_mutex);
+
+  return solution_search_aborted;
+}
+
+std::string resolver_manager::background_thread_abort_msg()
+{
+  threads::mutex::lock l(mutex);
+
+  threads::mutex::lock sol_l(solutions_mutex);
+
+  return solution_search_aborted ? solution_search_abort_msg : "";
+}
+
 resolver_manager::state resolver_manager::state_snapshot()
 {
   threads::mutex::lock l(mutex);
@@ -469,10 +490,14 @@ resolver_manager::state resolver_manager::state_snapshot()
 
   state rval;
 
-  rval.selected_solution        = selected_solution;
-  rval.generated_solutions      = solutions.size();
-  rval.resolver_exists          = (resolver != NULL);
-  rval.background_thread_active = (!pending_jobs.empty() || background_thread_in_resolver);
+  rval.selected_solution           = selected_solution;
+  rval.generated_solutions         = solutions.size();
+  rval.resolver_exists             = (resolver != NULL);
+  rval.background_thread_active    = !solution_search_aborted &&
+                                        (!pending_jobs.empty() ||
+				         background_thread_in_resolver);
+  rval.background_thread_aborted   = solution_search_aborted;
+  rval.background_thread_abort_msg = solution_search_abort_msg;
 
   if(resolver != NULL)
     {
@@ -523,6 +548,13 @@ aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, un
 	{
 	  throw NoMoreSolutions();
 	}
+      catch(Exception &e)
+	{
+	  sol_l.acquire();
+	  solution_search_aborted = true;
+	  solution_search_abort_msg = e.errmsg();
+	  throw;
+	}
     }
 
   return solutions[solution_num];
@@ -530,23 +562,26 @@ aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, un
 
 /** A continuation that works by either placing \b true in the Boolean
  *  variable corresponding to the thrown exception, or updating the
- *  given solution, then signalling the given condition.  Note that
- *  this only works because we expect to be able to
+ *  given solution, then signalling the given condition.  If the
+ *  search terminated with an exception, we set the output solution to
+ *  NULL and set abort_msg to the exception's description.
  */
 class solution_return_continuation : public resolver_manager::background_continuation
 {
   const generic_solution<aptitude_universe> * &sol;
+  std::string &abort_msg;
   bool &oot;
   bool &oos;
   threads::mutex &m;
   threads::condition &c;
 public:
   solution_return_continuation(const generic_solution<aptitude_universe> * &_sol,
+			       std::string &_abort_msg,
 			       bool &_oot,
 			       bool &_oos,
 			       threads::mutex &_m,
 			       threads::condition &_c)
-    :sol(_sol), oot(_oot), oos(_oos), m(_m), c(_c)
+    :sol(_sol), abort_msg(_abort_msg), oot(_oot), oos(_oos), m(_m), c(_c)
   {
   }
 
@@ -578,6 +613,34 @@ public:
     // Should never happen, since we hold the big lock.
     abort();
   }
+
+  void aborted(const Exception &e)
+  {
+    threads::mutex::lock l(m);
+
+    sol = NULL;
+    abort_msg = e.errmsg();
+    c.wake_all();
+  }
+};
+
+/** \brief Sadly, we can't easily save the real exception and reuse it
+ *  :(.
+ */
+class SolutionSearchAbortException : public Exception
+{
+  std::string msg;
+
+public:
+  SolutionSearchAbortException(const std::string &_msg)
+  {
+    msg = _msg;
+  }
+
+  std::string errmsg() const
+  {
+    return msg;
+  }
 };
 
 const aptitude_resolver::solution &resolver_manager::get_solution(unsigned int solution_num,
@@ -595,12 +658,13 @@ const aptitude_resolver::solution &resolver_manager::get_solution(unsigned int s
 
 
   const generic_solution<aptitude_universe> *sol = NULL;
+  std::string abort_msg;
   bool oot = false;
   bool oos = false;
   threads::mutex m;
   threads::condition c;
 
-  get_solution_background(solution_num, max_steps, new solution_return_continuation(sol, oot, oos, m, c));
+  get_solution_background(solution_num, max_steps, new solution_return_continuation(sol, abort_msg, oot, oos, m, c));
   l.release();
 
   threads::mutex::lock cond_l(m);
@@ -612,6 +676,8 @@ const aptitude_resolver::solution &resolver_manager::get_solution(unsigned int s
     throw NoMoreTime();
   else if(oos)
     throw NoMoreSolutions();
+  else if(sol == NULL)
+    throw SolutionSearchAbortException(abort_msg);
 
   return *sol;
 }
@@ -701,6 +767,12 @@ public:
   void interrupted()
   {
     result_box.put(false);
+  }
+
+  void aborted(const Exception &e)
+  {
+    k->aborted(e);
+    result_box.put(true);
   }
 };
 
@@ -860,6 +932,21 @@ void resolver_manager::select_solution(unsigned int solnum)
   sol_l.release();
 
   l.release();
+  state_changed();
+}
+
+void resolver_manager::discard_error_information()
+{
+  threads::mutex::lock l(mutex);
+
+  threads::mutex::lock sol_l(solutions_mutex);
+
+  solution_search_aborted = false;
+  solution_search_abort_msg.clear();
+
+  sol_l.release();
+  l.release();
+
   state_changed();
 }
 

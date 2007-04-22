@@ -1670,6 +1670,30 @@ class interactive_continuation : public resolver_manager::background_continuatio
       manager->state_changed();
     }
   };
+
+  class solution_search_aborted_event : public vscreen_event
+  {
+    resolver_manager *manager;
+    std::string msg;
+  public:
+    solution_search_aborted_event(resolver_manager *_manager,
+				  std::string _msg)
+      : manager(_manager), msg(_msg)
+    {
+    }
+
+    void dispatch()
+    {
+      resolver_manager::state st = manager->state_snapshot();
+
+      if(st.selected_solution == st.generated_solutions)
+	manager->select_previous_solution();
+      show_message(ssprintf("Fatal error in dependency resolver.  You can continue searching, but some solutions might be impossible to generate.\n\n%s",
+			    msg.c_str()));
+
+      manager->state_changed();
+    }
+  };
 public:
   interactive_continuation(resolver_manager *_manager)
     :manager(_manager)
@@ -1694,6 +1718,11 @@ public:
   void interrupted()
   {
   }
+
+  void aborted(const Exception &e)
+  {
+    vscreen_post_event(new solution_search_aborted_event(manager, e.errmsg()));
+  }
 };
 
 // If the current solution pointer is past the end of the solution
@@ -1709,7 +1738,8 @@ static void start_solution_calculation(bool blocking)
   if(state.resolver_exists &&
      state.selected_solution == state.generated_solutions &&
      !state.solutions_exhausted &&
-     !state.background_thread_active)
+     !state.background_thread_active &&
+     !state.background_thread_aborted)
     {
       const int selected = state.selected_solution;
       const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
@@ -1749,7 +1779,12 @@ void do_next_solution()
   if(!do_next_solution_enabled())
     beep();
   else
-    resman->select_next_solution();
+    {
+      // If an error was encountered, pressing "next solution"
+      // skips it.
+      resman->discard_error_information();
+      resman->select_next_solution();
+    }
 }
 
 static bool do_previous_solution_enabled()

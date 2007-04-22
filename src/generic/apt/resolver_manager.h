@@ -1,6 +1,6 @@
 // resolver_manager.h                                -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -89,6 +89,9 @@ public:
      *  InterruptedException)
      */
     virtual void interrupted() = 0;
+
+    /** Invoked when a fatal exception was thrown. */
+    virtual void aborted(const Exception &e) = 0;
   };
 
   /** A snapshot of the state of the resolver. */
@@ -110,6 +113,16 @@ public:
 
     /** If \b true, the background thread has jobs. */
     bool background_thread_active;
+
+    /** If \b true, then background_thread_active is \b false and
+     *  the background thread was killed by an uncaught exception.
+     */
+    bool background_thread_aborted;
+
+    /** If background_thread_aborted is \b true, holds the error
+     *  message that killed the background thread.
+     */
+    std::string background_thread_abort_msg;
 
     /** The size of the resolver's open queue. */
     size_t open_size;
@@ -171,9 +184,20 @@ private:
    */
   std::vector<generic_solution<aptitude_universe> *> solutions;
 
-  /** A lock for the list of solutions; used to allow the background
-   *  thread to immediately post results without taking the big class
-   *  lock (since that might be taken by stop_background_resolver())
+  /** True if the solution search was aborted due to an uncaught
+   *  exception.
+   */
+  bool solution_search_aborted;
+
+  /** If solution_search_aborted is true, stored the error message
+   *  attached to the exception in question.
+   */
+  std::string solution_search_abort_msg;
+
+  /** A lock for solutions, solution_search_aborted, and
+   *  solution_search_abort_msg; used to allow the background thread
+   *  to immediately post results without taking the big class lock
+   *  (since that might be taken by stop_background_resolver()).
    */
   mutable threads::mutex solutions_mutex;
 
@@ -340,6 +364,7 @@ public:
    *                    at each step).
    *  \throw ResolverManagerThreadClashException if a new solution
    *         would be generated and a background thread exists.
+   *  \throw Exception if the background thread aborted with an exception.
    */
   const generic_solution<aptitude_universe> &get_solution(unsigned int solution_num,
 							  int max_steps);
@@ -396,10 +421,23 @@ public:
   /** If \b true, the background thread is working on a job. */
   bool background_thread_active();
 
+  /** If \b true, the background thread was killed by a fatal
+   *  exception.
+   */
+  bool background_thread_aborted();
+
+  /** If background_thread_aborted is \b true, returns the error
+   *  message associated with the exception that killed the background
+   *  thread; otherwise returns an empty string.
+   */
+  std::string background_thread_abort_msg();
+
   /** Get a snapshot of the current resolver state; contains the
    *  values that would be returned by get_selected_solution(),
-   *  generated_solution_count(), and solutions_exhausted(); however,
-   *  this snapshot is taken atomically.
+   *  generated_solution_count(), solutions_exhausted(),
+   *  background_thread_active(), background_thread_aborted(),
+   *  and background_thread_abort_msg(); however, this snapshot
+   *  is taken atomically.
    */
   state state_snapshot();
 
@@ -473,6 +511,14 @@ public:
 
   /** Set the selection pointer to a particular solution. */
   void select_solution(unsigned int solnum);
+
+  /** Discards information about the last error encountered
+   *  in a search.
+   *
+   *  aptitude uses this when the user asks to retrieve the "next"
+   *  solution, to allow them to try to search past errors.
+   */
+  void discard_error_information();
 
   /** Move the selection pointer to the next solution, without
    *  generating it.

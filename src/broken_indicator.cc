@@ -1,6 +1,6 @@
 // broken_indicator.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -232,6 +232,14 @@ public:
     // Handle the case where the resolver is churning away.
     if(state.selected_solution >= state.generated_solutions)
       {
+	if(state.background_thread_aborted)
+	  {
+	    set_fragment(fragf(_("Fatal error in resolver")));
+	    last_sol.nullify();
+	    show();
+	    return;
+	  }
+
 	// TODO: add a column-generating fragment that can
 	//       left/right justify stuff.
 

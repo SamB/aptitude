@@ -492,6 +492,13 @@ public:
 
     if(state.selected_solution >= state.generated_solutions)
       {
+	if(state.background_thread_aborted)
+	  {
+	    set_static_root(transcode(state.background_thread_abort_msg));
+	    last_sol.nullify();
+	    return;
+	  }
+
 	wstring generation_info = swsprintf(transcode(_("open: %d; closed: %d; defer: %d; conflict: %d")).c_str(),
 					    state.open_size, state.closed_size,
 					    state.deferred_size, state.conflicts_size);

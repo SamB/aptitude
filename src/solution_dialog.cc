@@ -1,6 +1,6 @@
 // solution_dialog.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -111,8 +111,16 @@ public:
 
     if(state.selected_solution >= state.generated_solutions)
       {
-	set_fragment(fragf("%s", _("Resolving dependencies...")));
-	return;
+	if(state.background_thread_aborted)
+	  {
+	    set_fragment(fragf("%s", state.background_thread_abort_msg.c_str()));
+	    return;
+	  }
+	else
+	  {
+	    set_fragment(fragf("%s", _("Resolving dependencies...")));
+	    return;
+	  }
       }
 
     aptitude_solution sol = resman->get_solution(state.selected_solution, 0);

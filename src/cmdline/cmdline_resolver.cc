@@ -364,8 +364,16 @@ public:
     /** If \b true, then NoMoreTime was thrown. */
     bool out_of_time;
 
-    /** If out_of_solutions and out_of_time are false, this is
-     *  the result returned by the resolver.
+    /** If \b true, then we got a fatal exception. */
+    bool aborted;
+
+    /** If aborted is \b true, then this is the message associated
+     *  with the deadly exception.
+     */
+    std::string abort_msg;
+
+    /** If out_of_solutions, out_of_time, and aborted are \b false,
+    this is * the result returned by the resolver.
      */
     aptitude_solution sol;
 
@@ -374,15 +382,39 @@ public:
     {
     }
 
-    resolver_result(bool _out_of_solutions, bool _out_of_time)
+  private:
+    resolver_result(bool _out_of_solutions,
+		    bool _out_of_time,
+		    bool _aborted,
+		    std::string _abort_msg,
+		    const aptitude_solution &_sol)
       : out_of_solutions(_out_of_solutions),
-	out_of_time(_out_of_time)
+	out_of_time(_out_of_time),
+	aborted(_aborted),
+	abort_msg(_abort_msg),
+	sol(_sol)
     {
     }
 
-    resolver_result(const aptitude_solution &_sol)
-      : out_of_solutions(false), out_of_time(false), sol(_sol)
+  public:
+    static resolver_result OutOfSolutions()
     {
+      return resolver_result(true, false, false, "", aptitude_solution());
+    }
+
+    static resolver_result OutOfTime()
+    {
+      return resolver_result(false, true, false, "", aptitude_solution());
+    }
+
+    static resolver_result Aborted(const std::string &msg)
+    {
+      return resolver_result(false, false, true, msg, aptitude_solution());
+    }
+
+    static resolver_result Success(const aptitude_solution &sol)
+    {
+      return resolver_result(false, false, false, "", sol);
     }
   };
 
@@ -397,23 +429,41 @@ public:
 
   void success(const aptitude_solution &sol)
   {
-    retbox.put(resolver_result(sol));
+    retbox.put(resolver_result::Success(sol));
   }
 
   void no_more_solutions()
   {
-    retbox.put(resolver_result(true, false));
+    retbox.put(resolver_result::OutOfSolutions());
   }
 
   void no_more_time()
   {
-    retbox.put(resolver_result(false, true));
+    retbox.put(resolver_result::OutOfTime());
   }
 
   void interrupted()
   {
     abort();
   }
+
+  void aborted(const Exception &e)
+  {
+    retbox.put(resolver_result::Aborted(e.errmsg()));
+  }
+};
+
+class CmdlineSearchAbortedException : public Exception
+{
+  std::string msg;
+
+public:
+  CmdlineSearchAbortedException(const std::string &_msg)
+    : msg(_msg)
+  {
+  }
+
+  std::string errmsg() const { return msg; }
 };
 
 /** \return the resolver's current solution; if it needs to be calculated
@@ -473,6 +523,8 @@ aptitude_solution calculate_current_solution()
     throw NoMoreTime();
   else if(res.out_of_solutions)
     throw NoMoreSolutions();
+  else if(res.aborted)
+    throw CmdlineSearchAbortedException(res.abort_msg);
   else
     return res.sol;
 }
@@ -677,6 +729,25 @@ bool cmdline_resolve_deps(pkgset &to_install,
 		     << endl;
 		// Force it to re-print the last solution.
 		resman->select_previous_solution();
+		lastsol.nullify();
+	      }
+	  }
+	catch(Exception &e)
+	  {
+	    cout << _("*** ERROR: search aborted by fatal exception.  You may continue\n           searching, but some solutions will be unreachable.")
+		 << endl
+		 << endl
+		 << e.errmsg();
+
+	    if(resman->generated_solution_count() == 0)
+	      return false;
+	    else
+	      {
+		cout << endl << endl;
+
+		// Force it to re-print the last solution.
+		if(resman->get_selected_solution() == resman->generated_solution_count())
+		  resman->select_previous_solution();
 		lastsol.nullify();
 	      }
 	  }

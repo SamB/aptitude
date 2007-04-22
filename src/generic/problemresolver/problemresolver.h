@@ -2081,6 +2081,7 @@ private:
 			   const SolutionGenerator &generator) const
   {
     version source = d.get_source();
+
     typename imm::map<package, action>::node
       source_found = s.get_actions().lookup(source.get_package());
 
