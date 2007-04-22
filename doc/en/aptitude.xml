@@ -8737,13 +8737,17 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	    <seglistitem id='configProblemResolver-StepScore'>
 	      <seg><literal>Aptitude::ProblemResolver::StepScore</literal></seg>
-	      <seg><literal>10</literal></seg>
+	      <seg><literal>70</literal></seg>
 
 	      <seg>
 		How much to reward or penalize prospective solutions
 		based on their length.  For each action performed by a
 		solution, this many points are added to its score.
-		Typically this should be a negative value.
+		The larger this value is, the more the resolver tends
+		to stick with its first choice rather than considering
+		alternatives; this will cause it to produce a solution
+		more quickly, but the solution might be of slightly
+		lower quality than it would otherwise be.
 	      </seg>
 	    </seglistitem>
 
