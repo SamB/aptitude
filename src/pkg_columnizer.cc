@@ -2,7 +2,7 @@
 //
 //  The pkg_columnizer class.
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -485,17 +485,20 @@ column_disposition pkg_item::pkg_columnizer::setup_column(int type)
       {
 	int count=0;
 	char buf[100];
-	for(pkgCache::DepIterator D=pkg.RevDependsList(); !D.end(); D++)
-	  if(D.IsCritical() &&
-	     D->Type!=pkgCache::Dep::Conflicts &&
-	     D.ParentVer()==D.ParentPkg().CurrentVer() &&
-	     // That test is CORRECT; we want to see if the version
-	     // providing the dependency is correct.
-	     // (I'm writing this note because I just looked at the test
-	     //  and couldn't remember what it did despite writing it
-	     //  5 minutes ago. Maybe I should have my head examined :) )
-	     _system->VS->CheckDep(visible_ver.VerStr(), D->CompareOp, D.TargetVer()))
-	    count++;
+	if(!visible_ver.end())
+	  {
+	    for(pkgCache::DepIterator D=pkg.RevDependsList(); !D.end(); D++)
+	      if(D.IsCritical() &&
+		 D->Type!=pkgCache::Dep::Conflicts &&
+		 D.ParentVer()==D.ParentPkg().CurrentVer() &&
+		 // That test is CORRECT; we want to see if the version
+		 // providing the dependency is correct.
+		 // (I'm writing this note because I just looked at the test
+		 //  and couldn't remember what it did despite writing it
+		 //  5 minutes ago. Maybe I should have my head examined :) )
+		 _system->VS->CheckDep(visible_ver.VerStr(), D->CompareOp, D.TargetVer()))
+		count++;
+	  }
 
 	for(pkgCache::PrvIterator i=pkg.ProvidesList(); !i.end(); i++)
 	  for(pkgCache::DepIterator D=i.ParentPkg().RevDependsList(); !D.end(); D++)
