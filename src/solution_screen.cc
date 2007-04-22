@@ -1,6 +1,6 @@
 // solution_screen.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -356,8 +356,8 @@ class solution_examiner : public vs_multiplex
 
   void set_static_root(const wstring &s)
   {
-    solution_tree->set_root(new vs_staticitem(s, L""), true);
-    story_tree->set_root(new vs_staticitem(s, L""), true);
+    solution_tree->set_root(new vs_layout_item(hardwrapbox(text_fragment(s))), true);
+    story_tree->set_root(new vs_layout_item(hardwrapbox(text_fragment(s))), true);
   }
 
   /** Send highlighted/unhighlighted messages to the subwidgets so
