@@ -149,7 +149,7 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
     case pkgPackageManager::Failed:
       _error->DumpErrors();
       cerr << _("A package failed to install.  Trying to recover:") << endl;
-      system("dpkg --configure -a");
+      system("DPKG_NO_TSTP=1 dpkg --configure -a");
       _error->Discard();
       
       rval = failure;
