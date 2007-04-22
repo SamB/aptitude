@@ -1,6 +1,6 @@
 // vs_layout_item.cc
 //
-//   Copyright (C) 2004-2005 Daniel Burrows
+//   Copyright (C) 2004-2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -59,7 +59,7 @@ vs_layout_item::levelref *vs_layout_item::levelref::clone() const
 
 
 vs_layout_item::vs_layout_item(fragment *_f)
-  :f(_f), lastw(0), lastbasex(-1)
+  :vs_treeitem(false), f(_f), lastw(0), lastbasex(-1)
 {
 }
 
