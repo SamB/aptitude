@@ -1,20 +1,20 @@
-# translation of aptitude-0.4.3_nl.po to Dutch
-# Luk Claes <luk@debian.org>, 2005, 2006.
-# Frans Pop <elendil@planet.nl>, 2006.
+# translation of aptitude_4.4.4-1_nl.po to Dutch
 #
+# Luk Claes <luk@debian.org>, 2005, 2006.
+# Frans Pop <elendil@planet.nl>, 2006, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude-0.4.3_nl\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-03-04 20:22-0800\n"
-"PO-Revision-Date: 2006-10-15 14:08+0200\n"
+"PO-Revision-Date: 2007-05-02 15:46+0200\n"
 "Last-Translator: Frans Pop <elendil@planet.nl>\n"
 "Language-Team: Dutch <debian-l10n-dutch@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: KBabel 1.9.1\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
@@ -50,7 +50,7 @@ msgstr "Nooit"
 
 #: src/apt_options.cc:125
 msgid "When an error occurs"
-msgstr "Wanneer er een fout gebeurt"
+msgstr "Als zich een fout voordoet"
 
 #: src/apt_options.cc:126
 msgid "Always"
@@ -134,8 +134,8 @@ msgstr ""
 #: src/apt_options.cc:174
 msgid "Warn when attempting to perform a privileged action as a non-root user"
 msgstr ""
-"Waarschuw me wanneer er geprobeerd wordt een gepriviligeerde actie uit te "
-"voeren als een niet-root-gebruiker"
+"Waarschuw wanneer geprobeerd wordt een gepriviligeerde actie uit te voeren "
+"als een niet-root-gebruiker"
 
 #: src/apt_options.cc:177
 msgid "File to log actions into"
@@ -477,18 +477,18 @@ msgstr "Zou vergeten welke pakketten nieuw zijn\n"
 #: src/cmdline/cmdline_moo.cc:16
 #, c-format
 msgid "There are no Easter Eggs in this program.\n"
-msgstr "Er zijn geen Paaseieren in dit programma.\n"
+msgstr "Dit programma bevat geen Paaseieren.\n"
 
 #: src/cmdline/cmdline_moo.cc:19
 #, c-format
 msgid "There really are no Easter Eggs in this program.\n"
-msgstr "Er zijn echt geen Paaseieren in dit programma.\n"
+msgstr "Er bevinden zich echt geen Paaseieren in dit programma.\n"
 
 #: src/cmdline/cmdline_moo.cc:22
 #, c-format
 msgid ""
 "Didn't I already tell you that there are no Easter Eggs in this program?\n"
-msgstr "Was niet reeds aangegeven dat dit programma geen Paaseieren bevat?\n"
+msgstr "Heb ik u niet al verteld dat dit programma geen Paaseieren bevat?\n"
 
 #: src/cmdline/cmdline_moo.cc:25
 #, c-format
@@ -509,8 +509,7 @@ msgstr "Vooruit, u wint.\n"
 #, c-format
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr ""
-"Wat het is? Het is natuurlijk een olifant die wordt opgegeten door een "
-"slang.\n"
+"Wat het is? Een olifant die wordt opgegeten door een slang natuurlijk.\n"
 
 #: src/cmdline/cmdline_prompt.cc:34
 msgid "Unexpected end-of-file on standard input"
@@ -1662,9 +1661,9 @@ msgid "Internal error: couldn't generate list of packages to download"
 msgstr "Interne fout: kon lijst van op te halen pakketten niet genereren"
 
 #: src/generic/apt/download_install_manager.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to fetch %s: %s"
-msgstr "kon %s niet naar %s hernoemen"
+msgstr "Fout bij ophalen van %s: %s"
 
 #: src/generic/apt/download_install_manager.cc:125
 msgid "Unable to correct for unavailable packages"
@@ -2473,7 +2472,8 @@ msgstr ""
 "pakketten\n"
 
 #: src/main.cc:156
-#, c-format
+#, fuzzy, c-format
+#| msgid " -Z\t\t    Show the change in installed size of each package.\n"
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    Toont de wijziging in installatiegrootte van elk pakket\n"
 
@@ -2518,19 +2518,22 @@ msgstr ""
 "             afhankelijkheden worden behandeld\n"
 
 #: src/main.cc:162
-#, c-format
+#, fuzzy, c-format
+#| msgid " -S fname: Read the aptitude extended status info from fname.\n"
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr " -S fnaam: Lees de uitgebreide statusinfo van aptitude over fnaam.\n"
 
 #: src/main.cc:163
-#, c-format
+#, fuzzy, c-format
+#| msgid " -u      : Download new package lists on startup.\n"
 msgid " -u             Download new package lists on startup.\n"
-msgstr " -u             Haal nieuwe pakketlijsten op bij het opstarten.\n"
+msgstr " -u      : Haal nieuwe pakketlijsten op bij het opstarten.\n"
 
 #: src/main.cc:164
-#, c-format
+#, fuzzy, c-format
+#| msgid " -i      : Perform an install run on startup.\n"
 msgid " -i             Perform an install run on startup.\n"
-msgstr " -i             Voer een installatieloop uit bij het opstarten.\n"
+msgstr " -i      : Voer een installatieloop uit bij het opstarten.\n"
 
 #: src/main.cc:166
 #, c-format
@@ -3629,7 +3632,7 @@ msgid ""
 " These packages are currently installed on your computer."
 msgstr ""
 "Geïnstalleerde pakketten\n"
-" Deze pakketten worden momenteel geïnstalleerd op uw computer."
+" Deze pakketten zijn op dit moment geïnstalleerd op uw computer."
 
 #: src/pkg_grouppolicy.cc:333
 msgid ""
@@ -3637,7 +3640,7 @@ msgid ""
 " These packages are not installed on your computer."
 msgstr ""
 "Niet geïnstalleerde pakketten\n"
-" Deze pakketten worden niet geïnstalleerd op uw computer."
+" Deze pakketten zijn niet geïnstalleerd op uw computer."
 
 #: src/pkg_grouppolicy.cc:334
 msgid ""
@@ -3647,9 +3650,10 @@ msgid ""
 "archive, or you may have built a private version of them yourself."
 msgstr ""
 "Verouderde en lokaal aangemaakte pakketten\n"
-" Deze pakketten worden momenteel geïnstalleerd op uw computer, maar ze zijn "
-"niet beschikbaar van een apt-bron. Ze kunnen verouderd zijn en uit het "
-"archief verwijderd, of u kunt zelf een private versie van ze gebouwd hebben."
+" Deze pakketten zijn op dit moment geïnstalleerd op uw computer, maar ze "
+"zijn niet beschikbaar van een apt-bron. Mogelijk zijn ze verouderd en "
+"verwijderd uit het archief; ook kan het zijn dat het een pakket is dat u "
+"zelf gebouwd heeft."
 
 #: src/pkg_grouppolicy.cc:335
 msgid ""
@@ -4126,7 +4130,7 @@ msgstr ""
 
 #: src/reason_fragment.cc:387
 msgid "%B%s%b is currently installed."
-msgstr "%B%s%b is op dit momet geïnstalleerd."
+msgstr "%B%s%b is op dit moment geïnstalleerd."
 
 #: src/reason_fragment.cc:393
 msgid "%B%s%b is not currently installed."
@@ -5337,11 +5341,11 @@ msgstr ""
 
 #: src/ui.cc:2753 src/vscreen/vscreen.cc:724
 msgid "yes_key"
-msgstr "j"
+msgstr "ja-toets"
 
 #: src/ui.cc:2754 src/vscreen/vscreen.cc:725
 msgid "no_key"
-msgstr "n"
+msgstr "nee-toets"
 
 #: src/view_changelog.cc:150
 #, c-format
