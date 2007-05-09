@@ -8,4 +8,5 @@ test_LDADD = $(top_builddir)/src/generic/util/libgeneric-util.a
 
 test_SOURCES=test.cc dump_universe.h \
 	dummy_universe.cc dummy_universe.h \
-	exceptions.h problemresolver.h solution.h
+	exceptions.h problemresolver.h \
+	sanity_check_universe.h solution.h
