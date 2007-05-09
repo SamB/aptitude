@@ -43,6 +43,7 @@
 #include <vscreen/vs_util.h>
 
 #include <cmdline/cmdline_changelog.h>
+#include <cmdline/cmdline_check_resolver.h>
 #include <cmdline/cmdline_clean.h>
 #include <cmdline/cmdline_common.h>
 #include <cmdline/cmdline_do_action.h>
@@ -491,6 +492,8 @@ int main(int argc, char *argv[])
 	    return cmdline_show(argc-optind, argv+optind, verbose);
 	  else if(!strcasecmp(argv[optind], "dump-resolver"))
 	    return cmdline_dump_resolver(argc-optind, argv+optind, status_fname);
+	  else if(!strcasecmp(argv[optind], "check-resolver"))
+	    return cmdline_check_resolver(argc-optind, argv+optind, status_fname);
 	  else if(!strcasecmp(argv[optind], "help"))
 	    {
 	      usage();

@@ -7,6 +7,8 @@ libcmdline_a_SOURCES=\
 	cmdline_action.h \
 	cmdline_changelog.cc \
 	cmdline_changelog.h \
+	cmdline_check_resolver.cc \
+	cmdline_check_resolver.h \
 	cmdline_clean.cc \
 	cmdline_clean.h \
 	cmdline_common.h \
