@@ -1,6 +1,6 @@
 // test.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -23,6 +23,7 @@
 
 #include "dummy_universe.h"
 #include "problemresolver.h"
+#include "sanity_check_universe.h"
 
 #include <iostream>
 #include <fstream>
@@ -203,6 +204,8 @@ void run_test_file(istream &f, bool show_world)
 	    throw ParseError("Expected '[' following UNIVERSE, got " + s);
 
 	  universe=parse_universe_tail(f);
+
+	  sanity_check_universe(universe);
 
 	  if(show_world)
 	    {
