@@ -62,6 +62,10 @@ bool download_install_manager::prepare(OpProgress &progress,
 
   progress.Done();
 
+  // Abort here so we don't spew random messages below.
+  if(_error->PendingError())
+    return false;
+
   // Lock the archive directory..
   FileFd lock;
   if(aptcfg->FindB("Debug::NoLocking", false) == false)

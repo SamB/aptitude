@@ -1,6 +1,6 @@
 // download_update_manager.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -66,6 +66,10 @@ bool download_update_manager::prepare(OpProgress &progress,
       _error->Error(_("Couldn't read list of package sources"));
       return false;
     }
+
+  // Abort here so we don't spew random messages below.
+  if(_error->PendingError())
+    return false;
 
   // Lock the list directory
   FileFd lock;
