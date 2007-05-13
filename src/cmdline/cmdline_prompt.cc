@@ -829,6 +829,7 @@ bool cmdline_do_prompt(bool as_upgrade,
 		case '=':
 		case '_':
 		case ':':
+		case '&':
 		  cmdline_parse_action(response, to_install, to_hold,
 				       to_remove, to_purge, verbose, true);
 		  break;
