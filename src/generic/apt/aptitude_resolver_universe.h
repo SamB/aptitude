@@ -429,7 +429,7 @@ class aptitude_resolver_package::version_iterator
     while(!ver.end() &&
 	  !ver.Downloadable() &&
 	  (ver != pkg.CurrentVer() || pkg->CurrentState == pkgCache::State::ConfigFiles))
-    ++ver;
+      ++ver;
   }
 public:
   /** \brief Create an invalid version_iterator. */
@@ -444,6 +444,7 @@ public:
 		   pkgDepCache *_cache)
     :cache(_cache), pkg(_pkg), ver(_pkg.VersionList())
   {
+    normalize();
   }
 
   /** \return The APT package corresponding to this abstract package. */
@@ -616,6 +617,25 @@ class aptitude_resolver_version::dep_iterator
    *  the packages providing its target.
    */
   bool prv_open;
+
+  /** \brief Walk forward on the full dependency graph (including
+   *  things that we filter out at the high level, like self-depends)
+   */
+  void advance();
+
+  static bool applicable(const pkgCache::DepIterator &dep,
+			 const pkgCache::PrvIterator &prv,
+			 bool prv_open,
+			 pkgDepCache *cache);
+
+  /** \return \b true if this dependency is one that should be made
+   *  visible in the dep graph.
+   *
+   *  Specifically, the dependency should not be a (direct or
+   *  indirect) self-depends, a non-interesting dependency, or
+   *  a conflict that can't be triggered.
+   */
+  bool applicable();
 
   void normalize();
 

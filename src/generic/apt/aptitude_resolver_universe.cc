@@ -17,6 +17,55 @@ bool ver_disappeared(const pkgCache::VerIterator ver)
      ver.ParentPkg()->CurrentState == pkgCache::State::ConfigFiles);
 }
 
+/** Detects dependencies that (provides ignored) are conflicts that
+ *  can't be triggered ever.
+ *
+ *  We want to eliminate these dependencies because they are an
+ *  inconsistency (albiet spurious) in aptitude's model: they don't
+ *  appear as reverse dependencies since there is no package that they
+ *  would be followed backwards from.
+ *
+ *  Ignoring provides is safe since conflicts as seen in the model are
+ *  specific to a particular provides link, and
+ *  conflicts-through-provides can't be empty (true?  maybe not: what
+ *  about disappeared providers?).
+ */
+static bool empty_conflict(const pkgCache::DepIterator &dep,
+			   const pkgCache::PrvIterator &prv)
+{
+  if(dep->Type != pkgCache::Dep::Conflicts)
+    return false;
+
+  if(prv.end())
+    {
+      bool found = false;
+      for(pkgCache::VerIterator ver =
+	    const_cast<pkgCache::DepIterator &>(dep).TargetPkg().VersionList();
+	  !ver.end() && !found; ++ver)
+	{
+	  if(!ver_disappeared(ver) &&
+	     (dep.TargetVer() == NULL ||
+	      _system->VS->CheckDep(ver.VerStr(),
+				    dep->CompareOp,
+				    dep.TargetVer())))
+	    found = true;
+	}
+
+      // If we found no matching non-disappeared version, then this
+      // conflict is irrelevant.
+      return !found;
+    }
+  else
+    {
+      if(ver_disappeared(const_cast<pkgCache::PrvIterator &>(prv).OwnerVer()))
+	return true;
+
+      // If the provider doesn't match the dependency, then this is an
+      // irrelevant conflict.
+      return !_system->VS->CheckDep(prv.ProvideVersion(),
+				    dep->CompareOp, dep.TargetVer());
+    }
+}
 
 string aptitude_resolver_version::get_name() const
 {
@@ -63,7 +112,34 @@ bool aptitude_resolver_version::revdep_iterator::applicable() const
   if(!is_interesting_dep(dep_lst, cache))
     return false;
 
-  // Unversioned deps always apply.
+  // Screen out self-conflicts from the reverse dependency list.  Note
+  // that we can screen out *any* conflict on a version of the same
+  // package: if a version conflicts with itself it's ignored, and if
+  // a version conflicts with a different version of the same package,
+  // that's just a redundant expression of the rule that no two
+  // versions of the same package can be simultaneously installed.
+  //
+  // As a bonus, this lets us match what gets generated for forward
+  // deps.
+  if(dep_lst->Type == pkgCache::Dep::Conflicts &&
+     !prv_lst.end() &&
+     const_cast<pkgCache::PrvIterator &>(prv_lst).OwnerPkg() == const_cast<pkgCache::DepIterator &>(dep_lst).ParentPkg())
+    return false;
+  // Self-deps are always irrelevant regardless of whether we're in a
+  // Provides: or not.
+  if(prv_lst.end() &&
+     const_cast<pkgCache::DepIterator &>(dep_lst).ParentPkg() == const_cast<pkgCache::DepIterator &>(dep_lst).TargetPkg())
+    return false;
+
+  // Drop irrelevant conflicts; that is, conflicts that are never
+  // satisfied.  This improves the connection consistency of the
+  // abstract model.
+  if(empty_conflict(dep_lst, prv_lst))
+    return false;
+
+
+  // Unversioned deps always apply unless they are self-deps or
+  // empty conflicts.
   if(!dep_lst.TargetVer())
     return true;
 
@@ -110,36 +186,112 @@ void aptitude_resolver_version::revdep_iterator::normalize()
     }
 }
 
-void aptitude_resolver_version::dep_iterator::normalize()
+inline void aptitude_resolver_version::dep_iterator::advance()
+{
+  bool move_to_next_dep = true;
+
+  eassert(prv_open == !prv.end());
+
+  // If the Provides list is nonempty, advance it.
+  if(!prv.end())
+    {
+      eassert(prv_open);
+
+      ++prv;
+      if(prv.end())
+	prv_open = false;
+      else
+	move_to_next_dep = false;
+    }
+  // If we weren't trying to iterate over a Provides list *and* the
+  // current dep is a non-versioned Conflicts, start such an
+  // iteration.
+  else if(!prv_open && dep->Type == pkgCache::Dep::Conflicts &&
+	  !dep.TargetVer())
+    {
+      prv = dep.TargetPkg().ProvidesList();
+      if(!prv.end()) // otherwise we should advance to the next dep.
+	{
+	  prv_open = true;
+	  move_to_next_dep = false;
+	}
+    }
+
+  eassert(prv_open == !prv.end());
+
+  if(move_to_next_dep)
+    {
+      if(!dep.end() && dep->Type == pkgCache::Dep::Conflicts)
+	++dep;
+      else
+	{
+	  // If it's not a conflict, skip a whole OR group.
+	  while(!dep.end() && (dep->CompareOp & pkgCache::Dep::Or))
+	    ++dep;
+
+	  // Now we're on the last element of the OR group, push
+	  // forward.
+	  if(!dep.end())
+	    ++dep;
+	}
+    }
+}
+
+inline bool
+aptitude_resolver_version::dep_iterator::applicable(const pkgCache::DepIterator &dep,
+						    const pkgCache::PrvIterator &prv,
+						    bool prv_open,
+						    pkgDepCache *cache)
 {
   if(prv_open)
     {
       eassert(!dep.end());
+      eassert(!prv.end());
       eassert(dep->Type == pkgCache::Dep::Conflicts);
 
-      while(!prv.end() && prv.OwnerPkg()==dep.ParentPkg())
-	++prv;
+      if(const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg() == const_cast<pkgCache::DepIterator &>(dep).ParentPkg())
+	return false;
+    }
+  else
+    if(const_cast<pkgCache::DepIterator &>(dep).ParentPkg() == const_cast<pkgCache::DepIterator &>(dep).TargetPkg())
+      return false;
 
-      if(prv.end())
+  if(!is_interesting_dep(dep, cache))
+    return false;
+  if(empty_conflict(dep, prv))
+    return false;
+
+  return true;
+}
+
+bool aptitude_resolver_version::dep_iterator::applicable()
+{
+  if(dep->Type == pkgCache::Dep::Conflicts)
+    // In this case the current dependency is represented completely
+    // by the depends and provides iterators; no need to step.
+    return applicable(dep, prv, prv_open, cache);
+  else
+    {
+      // We need to check everything in the current OR block.
+      pkgCache::DepIterator tmpdep = dep;
+
+      if(!tmpdep.end() && applicable(tmpdep, prv, prv_open, cache))
+	return true;
+      while(!tmpdep.end() && (tmpdep->CompareOp & pkgCache::Dep::Or))
 	{
-	  prv_open=false;
-	  ++dep;
+	  ++tmpdep;
+	  if(!tmpdep.end() && applicable(tmpdep, prv, prv_open, cache))
+	    return true;
 	}
-      else
-	return;
     }
 
-  eassert(!prv_open);
+  return false;
+}
 
-
-  // Skip non-critical and self dependencies.  Need to do this here
-  // as well as below in case dep already points to such a
-  // dependency.
-  while(!dep.end() &&
-	(dep.ParentPkg() == dep.TargetPkg() ||
-	 !is_interesting_dep(dep, cache)))
-    ++dep;
-
+void aptitude_resolver_version::dep_iterator::normalize()
+{
+  while(!dep.end() && !applicable())
+    advance();
   // If we ran out of deps, we're done!
 }
 
@@ -342,36 +494,7 @@ aptitude_resolver_version::dep_iterator &aptitude_resolver_version::dep_iterator
 {
   eassert(!dep.end());
 
-  // If the Provides list is nonempty, advance it.
-  if(!prv.end())
-    ++prv;
-  // If we weren't trying to iterate over a Provides list *and* the
-  // current dep is a non-versioned Conflicts, start such an
-  // iteration.
-  else if(!prv_open && dep->Type == pkgCache::Dep::Conflicts &&
-	  !dep.TargetVer())
-    {
-      prv_open=true;
-      prv=dep.TargetPkg().ProvidesList();
-    }
-  // Otherwise push on to the next top-level dep.
-  else
-    {
-      if(!dep.end() && dep->Type == pkgCache::Dep::Conflicts)
-	++dep;
-      else
-	{
-	  // If it's not a conflict, skip a whole OR group.
-	  while(!dep.end() && (dep->CompareOp & pkgCache::Dep::Or))
-	    ++dep;
-
-	  // Now we're on the last element of the OR group, push
-	  // forward.
-	  if(!dep.end())
-	    ++dep;
-	}
-    }
-
+  advance();
   normalize();
 
   return *this;
