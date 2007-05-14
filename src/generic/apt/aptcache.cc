@@ -45,6 +45,8 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
+#include <sys/stat.h>
+
 #include <generic/util/eassert.h>
 
 #include <sigc++/adaptors/bind.h>
@@ -548,9 +550,13 @@ bool aptitudeDepCache::save_selection_list(OpProgress &prog,
   FileFd newstate;
 
   if(!status_fname)
-    newstate.Open(statefile+".new", FileFd::WriteEmpty);
+    newstate.Open(statefile+".new", FileFd::WriteEmpty, 0644);
   else
-    newstate.Open(status_fname, FileFd::WriteEmpty);
+    newstate.Open(status_fname, FileFd::WriteEmpty, 0644);
+
+  // The user might have a restrictive umask -- make sure we get a
+  // mode 644 file.
+  fchmod(newstate.Fd(), 0644);
 
   if(!newstate.IsOpen())
     _error->Error(_("Cannot open Aptitude state file"));
