@@ -1,3 +1,210 @@
+[5/14/2007]
+Version 0.4.5                               "Confused Cockroach"
+
+- New features:
+
+  * For standard string prompts, the default is now initially
+    displayed, but erased if the user starts out by inserting a new
+    character.
+
+  * 'N' now repeats the last search in the opposite direction (as
+    opposed to 'n', which repeats it in the same direction).
+    (Closes: #414020, #397880)
+
+  * aptitude now recognizes Apt::Get::AllowUnauthenticated as a
+    synonym for Aptitude::Ignore-Trust-Violations. (Closes: #411927)
+
+  * Fix the handling of dselect/dpkg state.  Previously, mixing the
+    command-line and visual modes of operation could result in
+    aptitude thinking it should remove a package that was actually
+    installed on your system.  This was especially nasty since the
+    Debian installer tripped this condition, leaving people with a
+    broken initial system.  Ow.  (Closes: #411123)
+
+  * Added a config option "Aptitude::CmdLine::Resolver-Show-Steps",
+    which causes the dependency resolver to default to displaying its
+    output as a list of individual resolutions, rather than a list
+    organized by the type of change that will be made. (equivalent to
+    pressing "o" at the first resolver prompt)
+
+  * Added "safe-upgrade" and "full-upgrade" as synonyms for "upgrade"
+    and "dist-upgrade" respectively.  The goal here is to eliminate
+    massive confusion about what these commands actually do.
+    "upgrade", in particular, is now deprecated ("dist-upgrade"
+    probably has too much currency to kill off, but hopefully people
+    will at least be rid of the notion that it's exclusively for
+    whole-distribution upgrades).
+
+
+- Bug fixes:
+
+  + Crashes and serious errors:
+
+    * Improve the internal consistency of aptitude's reduction of the
+      apt dependency graph.  As part of this change, a new
+      (undocumented, primarily for debug purposes) command-line action
+      "check-resolver" was added; it verifies empirically that the
+      dependency structure obeys the invariants that it's expected to
+      obey (for instance, that all forward dependencies have a
+      corresponding reverse dependency).
+
+      In addition to a number of harmless discrepancies, this flushed
+      out the forward/reverse dependency mismatch that was causing
+      crashes in the resolver. (Closes: #420358, #420381, #420407).
+
+      Note that check-resolver only verifies *internal* properties of
+      the resolver's model; it doesn't verify that the model
+      faithfully represents the dependency problem posed by the apt
+      package database.
+
+    * Don't crash on amd64 and other architectures where va_args
+      structures can't be reused.  This is an old bug; it was turned
+      up by a new test for ssprintf.
+
+    * Increase the default value of StepScore to 70 and improve its
+      documentation.  This should make it much less likely that the
+      resolver wanders off into lala land trying to solve dependency
+      problems. (Closes: #418385)
+
+    * When --without-recommends is passed at the command-line,
+      automatically enable Keep-Recommends at the same time we disable
+      Recommends-Important, so we don't automatically remove half the
+      user's system. (Closes: #143532)
+
+    * Fix an internal sprintf variant to produce correct output (the
+      previous code was safe, just wrong; it safely produced a buffer
+      of the correct size, then truncated it to its initial buffer
+      size).
+
+    * If the dependency resolver throws an exception, catch it and
+      handle it as cleanly as possible, rather than unceremoniously
+      exploding.
+
+    * Don't block signals when running dpkg after a package install
+      failed, and tell dpkg not to use TSTP in this circumstance.
+      This tended to cause horrible breakage of dpkg's
+      auto-backgrounding (the "Z" conffile prompt option).
+      (Closes: #367052)
+
+    * Fix a crash that occurred when generating a revdep-count column
+      for some virtual packages. (Closes: #420405)
+
+  + Cosmetic and UI bugs:
+
+    * If a package is both "new" and "upgradable", place it in the
+      "upgradable packages" list instead of the "new packages list",
+      since this seems to be the path of least confusion. (Closes:
+      #419999)
+
+    * Try to include more information when an internal consistency
+      check is triggered (e.g., the dependency that the program was
+      looking at).
+
+    * Only print an error about being unable to acquire a lock after
+      downloading when an error actually occurred during the call to
+      GetLock(); this message was getting triggered by stray errors
+      from methods invoked earlier in the download/install
+      process. (Closes: #422700)
+
+    * Don't ever display more than one "really quit?" dialog box, so
+      people who hold down the "q" key don't have to also hold down
+      "n". (Closes: #411158)
+
+    * When writing out the aptitude state file, open it mode 0644 and
+      explicitly chmod it to mode 0644, so it doesn't start out
+      world-writable, but ends up group- and world-readable even if
+      root has a more restrictive imask.  pkgstates isn't
+      security-sensitive, and aptitude produces surprising results if
+      it can't read this file.  If you really need to hide pkgstates
+      from non-root users for some reason, you can chmod -x the
+      directory /var/lib/aptitude.
+
+      (Closes: #41809, #421811)
+
+    * If a command (e.g., update) takes no arguments, aptitude will
+      produce an error if it receives arguments. (Closes: #411152)
+
+    * Write "[Enter]" instead of "enter" in the media-change prompt,
+      to make it clear that the user should press the key of that
+      name. (Closes: #414777)
+
+  + Potential bugs:
+
+    * Delete some internal cache arrays using operator delete[]
+      instead of operator delete.
+
+    * Initialize package selection states to the Unknown state
+      explicitly.
+
+  + Documentation:
+
+    * Fix the docbook encoding of the users manual and manpages.
+
+    * Fix an error in the DocBook code of the manual page that caused
+      the AUTHOR section to appear twice.
+
+    * Fix how bolding is applied to literal elements in the manpage,
+      so that the manpages are no longer screwed up.
+         (Closes: #415468, #416232)
+
+    * Users manual corrections (thanks to Noritada Kobayashi for
+      patches).
+
+    * Improve the description of the Recommends-Important,
+      Keep-Recommends, and Keep-Suggests: clean up the language and
+      try to make their precise behavior clearer.  Thanks to Stefan
+      Kangas for the initial suggestion. (Closes: #405002)
+
+    * Try to make it clearer in both the manpage and the user's manual
+      that "aptitude search" does an implicit OR on its command-line
+      parameters, rather than an implicit AND. (arguably it SHOULD do
+      an "AND", but it's probably too late to change this now)
+
+    * Add some commands to the online help that weren't previously
+      documented. (Closes: #402360)
+
+    * Fix misaligned items in the online help. (Closes: #399048)
+
+- Translation updates:
+
+  * Task group names localized.
+
+  * Basque (Closes: #418862)
+
+  * Catalan (Closes: #353308)
+
+  * Chinese (Simplified) (Closes: #405166)
+
+  * Chinese (Traditional) (Closes: #338056, #418139)
+
+  * Danish (Closes: #409480)
+
+  * Finnish (Closes: #392305)
+
+  * French (Closes: #403561, #388504)
+
+  * Galacian (Closes: #412829)
+
+  * Greek
+
+  * Hungarian (Closes: #405550)
+
+  * Japanese users manual added.
+
+  * Marathi (Closes: #416807)
+
+  * Nepali (Closes: #452278)
+
+  * Portuguese (Closes: #418940)
+
+  * Romanian (Closes: #415763)
+
+  * Slovak (Closes: #401105)
+
+  * Spanish (Closes: #416339)
+
+  * Ukranian (Closes: #415448)
+
 [10/26/2006]
 Version 0.4.4                           "I shall smite you with my
                                          Ultimate Power of Cuteness!"
