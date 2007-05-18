@@ -40,6 +40,7 @@
 #include <sys/types.h>
 
 #include <fstream>
+#include <sstream>
 #include <utility>
 
 #ifdef HAVE_CONFIG_H
@@ -407,6 +408,29 @@ static void do_su_to_root(string args)
       return;
     }
 
+  std::string root_command = aptcfg->Find(PACKAGE "::Get-Root-Command",
+					  "su:/bin/su");
+
+  if(root_command == "su")
+    root_command = "su:/bin/su";
+  else if(root_command == "sudo")
+    root_command = "sudo:/usr/bin/sudo";
+
+  std::string::size_type splitloc = root_command.find(':');
+  if(splitloc == std::string::npos)
+    {
+      _error->Error(_("Invalid Get-Root-Command; it should start with su: or sudo:"));
+      return;
+    }
+
+  std::string protocol(root_command, 0, splitloc);
+  if(protocol != "su" && protocol != "sudo")
+    {
+      _error->Error(_("Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"), protocol.c_str());
+      return;
+    }
+  std::string root_program(root_command, splitloc + 1);
+
   temp::dir  tempdir("aptitude");
   temp::name statusname(tempdir, "pkgstates");
   temp::name fifoname(tempdir, "control");
@@ -418,10 +442,23 @@ static void do_su_to_root(string args)
       return;
     }
 
+  // Shut curses down.  This is done before we fork because otherwise
+  // we'll end up with curses apparently being initialized in the
+  // child and with mutexes locked (despite the fact that no thread
+  // holds them), and get horribly confused, especially if we try to
+  // invoke exit(3).
+  //
+  // An alternative is to invoke _exit(2) instead, but it seems
+  // cleaner to suspend curses right here.
+  vscreen_suspend();
+
   int pid=fork();
 
   if(pid==-1)
-    _error->Error("Unable to fork: %s", strerror(errno));
+    {
+      _error->Error("Unable to fork: %s", strerror(errno));
+      vscreen_resume();
+    }
   else if(pid==0) // I'm a child!
     {
       // Read one byte from the FIFO for synchronization
@@ -437,10 +474,57 @@ static void do_su_to_root(string args)
       //
       // What happens if tmpdir has spaces in it?  Can I get more
       // control over how the su-to-root function is called?
-      char cmdbuf[512];
-      snprintf(cmdbuf, 512, "%s -S %s %s",
-	       argv0, statusname.get_name().c_str(), args.c_str());
-      execl("/bin/su", "/bin/su", "-c", cmdbuf, NULL);
+      if(protocol == "su")
+	{
+	  std::ostringstream cmdbuf;
+	  cmdbuf << argv0 << " -S "
+		 << statusname.get_name() << " "
+		 << args;
+	  execl(root_program.c_str(), root_program.c_str(), "-c", cmdbuf.str().c_str(), NULL);
+
+	  exit(1);
+	}
+      else if(protocol == "sudo")
+	{
+	  std::vector<std::string> cmdlist;
+	  // Split whitespace in the input command.
+	  std::string command = root_program + " " + argv0 + " -S " + statusname.get_name() + " " + args;
+	  std::string::const_iterator it = command.begin();
+	  while(it != command.end() && isspace(*it))
+	    ++it;
+
+	  while(it != command.end())
+	    {
+	      std::string tmp;
+	      while(it != command.end() && !isspace(*it))
+		{
+		  tmp += *it;
+		  ++it;
+		}
+
+	      cmdlist.push_back(tmp);
+
+	      while(it != command.end() && isspace(*it))
+		++it;
+	    }
+
+	  const char **real_cmd = new const char*[cmdlist.size() + 1];
+	  for(std::string::size_type i = 0; i < cmdlist.size(); ++i)
+	    real_cmd[i] = cmdlist[i].c_str();
+	  real_cmd[cmdlist.size()] = NULL;
+
+	  execv(real_cmd[0], const_cast<char* const*>(real_cmd));
+
+	  std::string errmsg = ssprintf("aptitude: do_su_to_root: exec \"%s\" failed", root_program.c_str());
+	  perror(errmsg.c_str());
+
+	  delete[] real_cmd;
+
+	  // Eek, something bad happened.
+	  exit(1);
+	}
+      else
+	exit(1); // Should never happen -- see the test above.
     }
   else
     {
@@ -451,9 +535,6 @@ static void do_su_to_root(string args)
       // case of a closed cache.
       if(apt_cache_file != NULL)
 	(*apt_cache_file)->save_selection_list(foo, statusname.get_name().c_str());
-
-      // Shut curses down.
-      vscreen_suspend();
 
       // Ok, wake the other process up.
       char tmp=0;

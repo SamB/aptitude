@@ -9017,6 +9017,34 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configGet-Root-Command'>
+	      <seg><literal>Aptitude::Get-Root-Command</literal></seg>
+
+	      <seg><literal>su:/usr/bin/su</literal></seg>
+
+	      <seg>
+		This option sets the external command that &aptitude;
+		will use to switch to the &root; user (see <xref
+		linkend='secBecomingRoot'/>).  It has the form
+		<literal><replaceable>protocol</replaceable>:<replaceable>command</replaceable></literal>.
+		<replaceable>protocol</replaceable> must be either
+		<literal>su</literal> or <literal>sudo</literal>; it
+		determines how aptitude invokes the program when it
+		wants to gain root privileges.  If
+		<replaceable>protocol</replaceable> is
+		<literal>su</literal>, then
+		<literal><replaceable>command</replaceable> -c
+		<replaceable>arguments</replaceable></literal> is used
+		to become root; otherwise, aptitude uses
+		<literal><replaceable>command</replaceable>
+		<replaceable>arguments</replaceable></literal>.  The
+		first word in <replaceable>command</replaceable> is
+		the name of the program that should be invoked;
+		remaining words are treated as arguments to that
+		program.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configHelpBar'>
 	      <seg><literal>Aptitude::UI::HelpBar</literal></seg>
 
