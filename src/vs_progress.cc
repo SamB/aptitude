@@ -1,6 +1,6 @@
 // vs_progress.cc
 //
-//  Copyright 2000, 2004-2006 Daniel Burrows
+//  Copyright 2000, 2004-2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License as
@@ -29,16 +29,33 @@ vs_progress::vs_progress()
 {
 }
 
+namespace
+{
+  // Converts a percentage between 0 and 100 to an integer for
+  // display purposes.  Out-of-range values are clamped, to avoid
+  // nasty boundary problems.
+  int convertPercent(double Percent)
+  {
+    int rval = (int)Percent;
+    if(rval < 0)
+      rval = 0;
+    if(rval > 100)
+      rval = 100;
+
+    return rval;
+  }
+}
+
 void vs_progress::paint(const style &st)
 {
   int width=getmaxx();
 
   if(!Op.empty())
     {
-      eassert(Percent>=0 && Percent<=100);
+      int truncPercent = convertPercent(Percent);
 
       std::ostringstream percentstream;
-      percentstream << " " << ((int) Percent) << "%";
+      percentstream << " " << truncPercent << "%";
       std::string percentstr = percentstream.str();
 
       mvaddstr(0, 0, transcode(Op));
@@ -55,7 +72,7 @@ bool vs_progress::get_cursorvisible()
 
 point vs_progress::get_cursorloc()
 {
-  return point(int(Percent*getmaxx()/100.0), 0);
+  return point(int(convertPercent(Percent) * getmaxx() / 100.0), 0);
 }
 
 void vs_progress::Update()
