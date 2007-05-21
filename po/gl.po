@@ -1,14 +1,14 @@
 # Galician translation of aptitude
 # Copyright (C) 2005 Daniel Burrows <dburrows@debian.org>
 # This file is distributed under the same license as the aptitude package.
-# Jacobo Tarrío <jtarrio@debian.org>, 2005.
+# Jacobo Tarrío <jtarrio@debian.org>, 2005, 2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-05-14 21:38-0700\n"
-"PO-Revision-Date: 2007-02-28 13:16+0100\n"
+"PO-Revision-Date: 2007-05-21 09:49+0200\n"
 "Last-Translator: Jacobo Tarrío <jtarrio@debian.org>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -196,7 +196,7 @@ msgstr "Non se puido resolver as dependencias."
 
 #: src/broken_indicator.cc:237
 msgid "Fatal error in resolver"
-msgstr ""
+msgstr "Erro grave no resolvedor"
 
 #: src/broken_indicator.cc:248
 #, c-format
@@ -407,9 +407,9 @@ msgid "Couldn't find a changelog for %s"
 msgstr "Non se puido atopar o rexistro de cambios de %s"
 
 #: src/cmdline/cmdline_clean.cc:29
-#, fuzzy, c-format
+#, c-format
 msgid "E: The clean command takes no arguments\n"
-msgstr "E: A orde \"update\" non toma argumentos\n"
+msgstr "E: A orde \"clean\" non toma argumentos\n"
 
 #: src/cmdline/cmdline_clean.cc:58
 #, c-format
@@ -422,9 +422,9 @@ msgid "Del %s %s [%sB]\n"
 msgstr "Bor %s %s [%sB]\n"
 
 #: src/cmdline/cmdline_clean.cc:111
-#, fuzzy, c-format
+#, c-format
 msgid "E: The autoclean command takes no arguments\n"
-msgstr "E: A orde \"update\" non toma argumentos\n"
+msgstr "E: A orde \"autoclean\" non toma argumentos\n"
 
 #: src/cmdline/cmdline_clean.cc:148
 #, c-format
@@ -476,9 +476,9 @@ msgstr ""
 "un paquete local ou obsoleto."
 
 #: src/cmdline/cmdline_forget_new.cc:25
-#, fuzzy, c-format
+#, c-format
 msgid "E: The forget-new command takes no arguments\n"
-msgstr "E: A orde \"update\" non toma argumentos\n"
+msgstr "E: A orde \"forget-new\" non toma argumentos\n"
 
 #: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
@@ -658,13 +658,12 @@ msgstr ""
 "                %s::CmdLine::Ignore-Trust-Violations é 'true'\n"
 
 #: src/cmdline/cmdline_prompt.cc:417
-#, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
 "*** AVISO ***   Ignóranse estas violacións de confianza porque\n"
-"                %s::CmdLine::Ignore-Trust-Violations é 'true'\n"
+"                Apt::Get::AllowUnauthenticated é 'true'\n"
 
 #: src/cmdline/cmdline_prompt.cc:423 src/vscreen/vs_util.cc:194
 #: src/vscreen/vs_util.cc:232
@@ -987,7 +986,7 @@ msgstr "moverse á solución anterior"
 msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
-msgstr ""
+msgstr "cambiar entre o contido da solución e unha explicación da solución"
 
 #: src/cmdline/cmdline_resolver.cc:176
 msgid "examine the solution in the visual user interface"
@@ -1146,6 +1145,8 @@ msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
+"*** ERRO: a busca quedou cancelada por unha excepción grave. Pode\n"
+"          seguir a buscar, pero non se han poder obter algunhas solucións."
 
 #: src/cmdline/cmdline_search.cc:100
 #, c-format
@@ -1401,9 +1402,9 @@ msgid "E: The update command takes no arguments\n"
 msgstr "E: A orde \"update\" non toma argumentos\n"
 
 #: src/cmdline/cmdline_upgrade.cc:41
-#, fuzzy, c-format
+#, c-format
 msgid "E: The %s command takes no arguments\n"
-msgstr "E: A orde \"update\" non toma argumentos\n"
+msgstr "E: A orde \"%s\" non toma argumentos\n"
 
 #: src/cmdline/cmdline_util.cc:93
 #, c-format
@@ -1564,13 +1565,13 @@ msgid "Fetched %sB in %s (%sB/s)\n"
 msgstr "Recibíronse %sB en %s (%sB/s)\n"
 
 #: src/generic/apt/acqprogress.cc:296
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press [Enter].\n"
 msgstr ""
 "Cambio de soporte: Introduza o disco etiquetado \"%s\" na unidade \"%s\" e "
-"prema Intro\n"
+"prema [Intro]\n"
 
 #: src/generic/apt/aptcache.cc:266
 msgid "Can't open Aptitude extended state file"
@@ -2368,17 +2369,17 @@ msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - Descargar as listas de paquetes novos/actualizables\n"
 
 #: src/main.cc:134
-#, fuzzy, c-format
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
-msgstr " upgrade      - Realizar unha actualización segura\n"
+msgstr " safe-upgrade - Realizar unha actualización segura\n"
 
 #: src/main.cc:135
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr ""
-" dist-upgrade - Facer unha actualización, quizais instalando e borrando "
+" full-upgrade - Facer unha actualización, quizais instalando e borrando "
 "paquetes\n"
 
 #: src/main.cc:136
@@ -5151,14 +5152,12 @@ msgid "Repeat the last search"
 msgstr "Repetir a última busca"
 
 #: src/ui.cc:2163
-#, fuzzy
 msgid "Find Again ^Backwards"
-msgstr "Buscar cara a ^atrás"
+msgstr "Buscar outro cara a ^atrás"
 
 #: src/ui.cc:2164
-#, fuzzy
 msgid "Repeat the last search in the opposite direction"
-msgstr "Repetir a última busca"
+msgstr "Repetir a última busca na dirección oposta"
 
 #: src/ui.cc:2168
 msgid "^Limit Display"
