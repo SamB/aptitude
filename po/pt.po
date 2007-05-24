@@ -1,13 +1,13 @@
 # Portuguese (Portugal) Translation Project <traduz@debianpt.org>
 # Nuno Sénica, 2004
-# Miguel Figueiredo <elmig@debianpt.org>, 2005, 2006
+# Miguel Figueiredo <elmig@debianpt.org>, 2005, 2006, 2007
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-05-14 21:38-0700\n"
-"PO-Revision-Date: 2007-04-12 21:48+0100\n"
+"PO-Revision-Date: 2007-05-21 18:15+0100\n"
 "Last-Translator: Miguel Figueiredo <elmig@debianPT.org>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
 "MIME-Version: 1.0\n"
@@ -202,7 +202,7 @@ msgstr "Não foi possível resolver as dependências."
 
 #: src/broken_indicator.cc:237
 msgid "Fatal error in resolver"
-msgstr ""
+msgstr "Erro fatal no resolver"
 
 #: src/broken_indicator.cc:248
 #, c-format
@@ -415,9 +415,9 @@ msgid "Couldn't find a changelog for %s"
 msgstr "Não foi possível encontrar um changelog para %s"
 
 #: src/cmdline/cmdline_clean.cc:29
-#, fuzzy, c-format
+#, c-format
 msgid "E: The clean command takes no arguments\n"
-msgstr "E: O comando update não tem argumentos\n"
+msgstr "E: O comando clean não leva argumentos\n"
 
 #: src/cmdline/cmdline_clean.cc:58
 #, c-format
@@ -430,9 +430,9 @@ msgid "Del %s %s [%sB]\n"
 msgstr "Del %s %s [%sB]\n"
 
 #: src/cmdline/cmdline_clean.cc:111
-#, fuzzy, c-format
+#, c-format
 msgid "E: The autoclean command takes no arguments\n"
-msgstr "E: O comando update não tem argumentos\n"
+msgstr "E: O comando autoclean não leva argumentos\n"
 
 #: src/cmdline/cmdline_clean.cc:148
 #, c-format
@@ -484,9 +484,9 @@ msgstr ""
 "local ou obsoleto?"
 
 #: src/cmdline/cmdline_forget_new.cc:25
-#, fuzzy, c-format
+#, c-format
 msgid "E: The forget-new command takes no arguments\n"
-msgstr "E: O comando update não tem argumentos\n"
+msgstr "E: O comando forget-new não leva argumentos\n"
 
 #: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
@@ -668,13 +668,12 @@ msgstr ""
 "                 %s::CmdLine::Ignore-Trust-Violations é 'true'!\n"
 
 #: src/cmdline/cmdline_prompt.cc:417
-#, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
 " *** AVISO ***   A ignorar estas violações de confiança porque\n"
-"                 %s::CmdLine::Ignore-Trust-Violations é 'true'!\n"
+"                 Apt::Get::AllowUnauthenticated é 'true'!\n"
 
 #: src/cmdline/cmdline_prompt.cc:423 src/vscreen/vs_util.cc:194
 #: src/vscreen/vs_util.cc:232
@@ -1001,7 +1000,7 @@ msgstr "ir para a solução anterior"
 msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
-msgstr ""
+msgstr "alternar entre o conteúdo da solução e a explicação da solução"
 
 #: src/cmdline/cmdline_resolver.cc:176
 msgid "examine the solution in the visual user interface"
@@ -1161,6 +1160,8 @@ msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
+"*** ERRO: pesquisa abortada por uma excepção fatal.  Pode continuar\n"
+"          a pesquisa, mas algumas soluções serão inalcançáveis."
 
 #: src/cmdline/cmdline_search.cc:100
 #, c-format
@@ -1413,12 +1414,12 @@ msgstr "A apagar os ficheiros obsoletos a que foi feito o download\n"
 #: src/cmdline/cmdline_update.cc:42
 #, c-format
 msgid "E: The update command takes no arguments\n"
-msgstr "E: O comando update não tem argumentos\n"
+msgstr "E: O comando update não leva argumentos\n"
 
 #: src/cmdline/cmdline_upgrade.cc:41
-#, fuzzy, c-format
+#, c-format
 msgid "E: The %s command takes no arguments\n"
-msgstr "E: O comando update não tem argumentos\n"
+msgstr "E: O comando %s não leva argumentos\n"
 
 #: src/cmdline/cmdline_util.cc:93
 #, c-format
@@ -1581,13 +1582,13 @@ msgid "Fetched %sB in %s (%sB/s)\n"
 msgstr "Obteve %sB em %s (%sB/s)\n"
 
 #: src/generic/apt/acqprogress.cc:296
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press [Enter].\n"
 msgstr ""
 "Mudança de Media: Por favor, insira o disco chamado '%s' na drive '%s' e "
-"carregue em Enter\n"
+"carregue em [Enter]\n"
 
 #: src/generic/apt/aptcache.cc:266
 msgid "Can't open Aptitude extended state file"
@@ -2142,7 +2143,7 @@ msgstr "Demasiados argumentos para a política de agrupamento por secção"
 
 #: src/load_grouppolicy.cc:395
 msgid "By-status grouping policies take no arguments"
-msgstr "As políticas de agrupamentos por estado não tem argumentos"
+msgstr "As políticas de agrupamentos por estado não levam argumentos"
 
 #: src/load_grouppolicy.cc:412
 msgid "Expected '(' after 'filter'"
@@ -2394,17 +2395,17 @@ msgstr ""
 " update       - Fazer o download das listas de pacotes novos/actualizados\n"
 
 #: src/main.cc:134
-#, fuzzy, c-format
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
-msgstr " upgrade      - Executar uma actualização segura\n"
+msgstr " safe-upgrade - Executar uma actualização segura\n"
 
 #: src/main.cc:135
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr ""
-" dist-upgrade - Executar uma actualização, possivelmente instalando e "
+" full-upgrade - Executar uma actualização, possivelmente instalando e "
 "removendo pacotes\n"
 
 #: src/main.cc:136
@@ -5193,14 +5194,12 @@ msgid "Repeat the last search"
 msgstr "Repetir a última procura"
 
 #: src/ui.cc:2163
-#, fuzzy
 msgid "Find Again ^Backwards"
-msgstr "^F Procurar para trás"
+msgstr "^F Procurar Novamente Para Trás"
 
 #: src/ui.cc:2164
-#, fuzzy
 msgid "Repeat the last search in the opposite direction"
-msgstr "Repetir a última procura"
+msgstr "Repetir a última procura no sentido contrário"
 
 #: src/ui.cc:2168
 msgid "^Limit Display"
