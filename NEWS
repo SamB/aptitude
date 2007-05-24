@@ -35,6 +35,11 @@ Version 0.4.5                               "Confused Cockroach"
     will at least be rid of the notion that it's exclusively for
     whole-distribution upgrades).
 
+  * The option "Aptitude::Get-Root-Command" can be used to choose how
+    aptitude tries to gain root privileges.  It defaults to "su";
+    setting it to "sudo" will choose that program, and other programs
+    can also be chosen (see the user's manual for details).
+
 
 - Bug fixes:
 
@@ -89,6 +94,9 @@ Version 0.4.5                               "Confused Cockroach"
     * Fix a crash that occurred when generating a revdep-count column
       for some virtual packages. (Closes: #420405)
 
+    * Don't abort() if something tries to display a progress
+      percentage that's not strictly between 0 and 100. (Closes: #425145)
+
   + Cosmetic and UI bugs:
 
     * If a package is both "new" and "upgradable", place it in the
@@ -127,6 +135,9 @@ Version 0.4.5                               "Confused Cockroach"
     * Write "[Enter]" instead of "enter" in the media-change prompt,
       to make it clear that the user should press the key of that
       name. (Closes: #414777)
+
+    * Remove *.gmo in distclean, so the Debian package can be built
+      twice in a row. (Closes: #424102)
 
   + Potential bugs:
 
@@ -183,7 +194,7 @@ Version 0.4.5                               "Confused Cockroach"
 
   * French (Closes: #403561, #388504)
 
-  * Galacian (Closes: #412829)
+  * Galacian (Closes: #412829, #425358)
 
   * Greek
 
