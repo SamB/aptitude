@@ -1,6 +1,6 @@
 // apt.h  -*-c++-*-
 //
-//  Copyright 1999-2002, 2004-2005 Daniel Burrows
+//  Copyright 1999-2002, 2004-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -141,8 +141,9 @@ enum pkg_action_state {pkg_unchanged=-1,
 		       pkg_reinstall,
 		       pkg_install,
 		       pkg_remove,
-		       pkg_upgrade};
-const int num_pkg_action_states=11;
+		       pkg_upgrade,
+                       pkg_unconfigured};
+const int num_pkg_action_states=12;
 pkg_action_state find_pkg_state(pkgCache::PkgIterator pkg);
 // A utility routine to return a useful notion of a package's "action-state"
 // and an enum associated with it

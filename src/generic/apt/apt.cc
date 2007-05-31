@@ -1,6 +1,6 @@
 // apt.cc
 //
-//  Copyright 1999-2006 Daniel Burrows
+//  Copyright 1999-2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -403,6 +403,10 @@ pkg_action_state find_pkg_state(pkgCache::PkgIterator pkg)
 
   else if(state.iFlags&pkgDepCache::ReInstall)
     return pkg_reinstall;
+  // States where --configure fixes things.
+  else if(pkg->CurrentState == pkgCache::State::UnPacked ||
+	  pkg->CurrentState == pkgCache::State::HalfConfigured)
+    return pkg_unconfigured;
 
   return pkg_unchanged;
 }
