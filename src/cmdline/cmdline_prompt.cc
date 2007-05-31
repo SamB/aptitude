@@ -273,6 +273,7 @@ static const char *cmdline_action_descriptions[num_pkg_action_states]={
   N_("The following NEW packages will be installed:"),
   N_("The following packages will be REMOVED:"),
   N_("The following packages will be upgraded:"),
+  N_("The following partially installed packages will be configured:")
 };
 
 // Probably something like cin.getline() would work, but I don't trust that

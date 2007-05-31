@@ -439,6 +439,9 @@ fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
 					  candver.VerStr(), A_BOLD)));
       }
       break;
+    case pkg_unconfigured:
+      fragments.push_back(wrapbox(fragf(_("%B%s%b is only partly installed; its installation will be completed."), pkg.Name())));
+      break;
     default:
       // Another non-translatable internal error.
       fragments.push_back(wrapbox(fragf("Internal error: Unknown package state for %s!",

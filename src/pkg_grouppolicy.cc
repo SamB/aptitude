@@ -541,6 +541,7 @@ const char * const pkg_grouppolicy_mode::child_names[num_pkg_action_states]=
   N_("Packages to be installed\n These packages have been manually selected for installation on your computer."),
   N_("Packages to be removed\n These packages have been manually selected for removal."),
   N_("Packages to be upgraded\n These packages will be upgraded to a newer version."),
+  N_("Packages that are partially installed\n These packages are not fully installed and configured; an attempt will be made to complete their installation."),
 };
 
 pkg_grouppolicy *pkg_grouppolicy_mode_factory::instantiate(pkg_signal *_sig,
