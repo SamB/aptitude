@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-05-14 21:38-0700\n"
-"PO-Revision-Date: 2006-06-16 06:50+0200\n"
+"PO-Revision-Date: 2007-05-21 14:11+0200\n"
 "Last-Translator: Jean-Luc Coulon <jean-luc.coulon@wanadoo.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -194,7 +194,7 @@ msgstr "Résolution des dépendances impossible."
 
 #: src/broken_indicator.cc:237
 msgid "Fatal error in resolver"
-msgstr ""
+msgstr "Erreur fatale du solveur"
 
 #: src/broken_indicator.cc:248
 #, c-format
@@ -412,9 +412,9 @@ msgid "Couldn't find a changelog for %s"
 msgstr "Impossible de trouver le journal des modifications (changelog) pour %s"
 
 #: src/cmdline/cmdline_clean.cc:29
-#, fuzzy, c-format
+#, c-format
 msgid "E: The clean command takes no arguments\n"
-msgstr "E : la commande update ne prend pas de paramètre\n"
+msgstr "E : la commande « clean » ne prend pas de paramètre\n"
 
 #: src/cmdline/cmdline_clean.cc:58
 #, c-format
@@ -427,9 +427,9 @@ msgid "Del %s %s [%sB]\n"
 msgstr "Eff %s %s [%so]\n"
 
 #: src/cmdline/cmdline_clean.cc:111
-#, fuzzy, c-format
+#, c-format
 msgid "E: The autoclean command takes no arguments\n"
-msgstr "E : la commande update ne prend pas de paramètre\n"
+msgstr "E : la commande « autoclean » ne prend pas de paramètre\n"
 
 #: src/cmdline/cmdline_clean.cc:148
 #, c-format
@@ -481,9 +481,9 @@ msgstr ""
 "obsolète ?"
 
 #: src/cmdline/cmdline_forget_new.cc:25
-#, fuzzy, c-format
+#, c-format
 msgid "E: The forget-new command takes no arguments\n"
-msgstr "E : la commande update ne prend pas de paramètre\n"
+msgstr "E : la commande « forget-new » ne prend pas de paramètre\n"
 
 #: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
@@ -671,13 +671,12 @@ msgstr ""
 "                  %s::CmdLine::Ignore-Trust-Violations a la valeur « true »\n"
 
 #: src/cmdline/cmdline_prompt.cc:417
-#, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
 "*** ATTENTION *** violations de ces clauses de confiance ignorées parce que\n"
-"                  %s::CmdLine::Ignore-Trust-Violations a la valeur « true »\n"
+"                  Apt::Get::AllowUnauthenticated a la valeur « true » !\n"
 
 #: src/cmdline/cmdline_prompt.cc:423 src/vscreen/vs_util.cc:194
 #: src/vscreen/vs_util.cc:232
@@ -1007,6 +1006,7 @@ msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
 msgstr ""
+"basculer entre le contenu de la solution et une explication de la solution"
 
 #: src/cmdline/cmdline_resolver.cc:176
 msgid "examine the solution in the visual user interface"
@@ -1157,7 +1157,7 @@ msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Réponse incorrecte. Veuillez entrer « y » ou « n »."
 
 #: src/cmdline/cmdline_resolver.cc:721
-msgid "Unable to resolve dependencies!  Giving up..."
+inaccessibles."msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Impossible de trouver une solution à ces dépendances ! Abandon..."
 
 #: src/cmdline/cmdline_resolver.cc:727
@@ -1169,6 +1169,9 @@ msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
+"*** ERREUR : la recherche a été interrompue par une exception fatale.\n"
+"             Vous pouvez poursuivre la recherche mais certaines solutions\n"
+"             seront inaccessibles."
 
 #: src/cmdline/cmdline_search.cc:100
 #, c-format
@@ -1424,9 +1427,9 @@ msgid "E: The update command takes no arguments\n"
 msgstr "E : la commande update ne prend pas de paramètre\n"
 
 #: src/cmdline/cmdline_upgrade.cc:41
-#, fuzzy, c-format
+#, c-format
 msgid "E: The %s command takes no arguments\n"
-msgstr "E : la commande update ne prend pas de paramètre\n"
+msgstr "E : la commande %s ne prend pas de paramètre\n"
 
 #: src/cmdline/cmdline_util.cc:93
 #, c-format
@@ -1592,13 +1595,13 @@ msgid "Fetched %sB in %s (%sB/s)\n"
 msgstr " %so téléchargés en %s (%so/s)\n"
 
 #: src/generic/apt/acqprogress.cc:296
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press [Enter].\n"
 msgstr ""
 "Changement de support : veuillez insérer le disque dont le nom est « %s » "
-"dans le lecteur « %s » et presser Entrée\n"
+"dans le lecteur « %s » et presser Entrée.\n"
 
 #: src/generic/apt/aptcache.cc:266
 msgid "Can't open Aptitude extended state file"
@@ -2407,17 +2410,17 @@ msgstr ""
 " update       - Télécharger les listes de paquets nouveaux/à mettre à jour\n"
 
 #: src/main.cc:134
-#, fuzzy, c-format
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
-msgstr " upgrade      - Effectuer une mise à jour en toute sécurité\n"
+msgstr "safe-upgrade  - Effectuer une mise à jour en toute sécurité\n"
 
 #: src/main.cc:135
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr ""
-" dist-upgrade - Effectuer une mise à jour, en installant et supprimant\n"
+" full-upgrade - Effectuer une mise à jour, en installant et supprimant\n"
 "                éventuellement des paquets\n"
 
 #: src/main.cc:136
@@ -5263,14 +5266,12 @@ msgid "Repeat the last search"
 msgstr "Recommencer la recherche précédente"
 
 #: src/ui.cc:2163
-#, fuzzy
 msgid "Find Again ^Backwards"
-msgstr "Rechercher en ^arrière"
+msgstr "Poursuivre la recherche en ^arrière"
 
 #: src/ui.cc:2164
-#, fuzzy
 msgid "Repeat the last search in the opposite direction"
-msgstr "Recommencer la recherche précédente"
+msgstr "Recommencer la recherche précédente dans le sens opposé"
 
 #: src/ui.cc:2168
 msgid "^Limit Display"
