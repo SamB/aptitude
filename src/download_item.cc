@@ -1,6 +1,6 @@
 // download_item.cc
 //
-//  Copyright 1999, 2004-2005 Daniel Burrows
+//  Copyright 1999, 2004-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,6 +42,8 @@ style download_item::get_normal_style()
 	return vs_treeitem::get_normal_style()+get_style("DownloadHit");
     case pkgAcquire::Item::StatError:
       return vs_treeitem::get_normal_style()+get_style("Error");
+    case pkgAcquire::Item::StatTransientNetworkError:
+      return vs_treeitem::get_normal_style() + get_style("Error");
     case pkgAcquire::Item::StatAuthError:
       return vs_treeitem::get_normal_style()+get_style("Error");
     default:
@@ -103,6 +105,9 @@ void download_item::paint(vs_tree *win, int y, bool hierarchical,
       break;
     case pkgAcquire::Item::StatError:
       output+=item.Owner->ErrorText;
+      break;
+    case pkgAcquire::Item::StatTransientNetworkError:
+      output += item.Owner->ErrorText;
       break;
     case pkgAcquire::Item::StatAuthError:
       output+=item.Owner->ErrorText;
