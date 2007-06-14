@@ -29,6 +29,8 @@
   « - » :          Retirer un paquet
   « = » :          Conserver un paquet dans sa version actuelle en
                    empêchant les mises à jour
+  « : » :          Conserve un paquet à sa version actuelle. À la différence
+                   de « = », cela n'empêchera pas les mises à jour futures.
   « _ » :          Demander à ce qu'un paquet et tous ses fichiers de 
   		   configuration soient retirés
   « L » :          Demander à ce qu'un paquet soit réinstallé	
@@ -37,6 +39,9 @@
 		   supprimés si aucun paquet manuellement installé n'en
 		   a besoin.
   « m » :          Marquer un paquet comme ayant été manuellement installé
+  « F » :          Interdit à un paquet d'être mis à jour automatiquement
+                   vers une version particulière ; les versions plus
+                   récentes seront installées automatiquement.
   
   « u » :          Mettre à jour la liste des paquets disponibles
   « U » :          Marquer comme devant être mis à jour tous les paquets 
@@ -48,6 +53,8 @@
   		   d'actions
   « / » :          Effectuer une recherche
   « \ » :          Effectuer une recherche dans le sens inverse
+  « n » :          Répète la dernière recherche
+  « b » :          Recherche le prochain paquet cassé
   
   « v » :          Afficher toutes les versions disponibles d'un paquet
   « d » :          Afficher toutes les dépendances d'un paquet
@@ -83,3 +90,4 @@
   i - installe
   r - réinstalle
   u - mise à jour
+  F - la mise à jour possible a été interdite avec « F »
