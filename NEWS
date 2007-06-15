@@ -1,3 +1,24 @@
+[6/15/2007]
+Version 0.4.5.1                             "Nothing could possibly go
+                                             wrAAAAAAAAAAaaaa..."
+
+- New features:
+
+  * aptitude now uses apt's central database to track which packages
+    are auto-installed.  Aptitude's own list of automatic packages
+    will be merged into the global list the first time that aptitude
+    is run.
+
+  * Packages that are not fully configured are now listed in aptitude's
+    preview, and aptitude will let you do an install run if there are
+    unconfigured packages but nothing to install/remove. (Closes: #424709)
+
+- Translation updates:
+
+  * French (Closes: #428585, #428826)
+  * Portuguese (Closes: #425779)
+  * Vietnamese (Closes: #426976)
+
 [5/14/2007]
 Version 0.4.5                               "Confused Cockroach"
 
