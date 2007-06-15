@@ -441,7 +441,7 @@ column_disposition pkg_item::pkg_columnizer::setup_column(int type)
       // or purged already and is not presently being installed.
       if((!pkg.CurrentVer().end() ||
 	  (*apt_cache_file)[pkg].Install()) &&
-	 (*apt_cache_file)->get_ext_state(pkg).install_reason!=aptitudeDepCache::manual)
+	 ((*apt_cache_file)[pkg].Flags & pkgCache::Flag::Auto))
 	return column_disposition("A", 0);
       else
 	return column_disposition("", 0);

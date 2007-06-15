@@ -674,7 +674,7 @@ public:
   {
     return
       (!pkg.CurrentVer().end() || (*apt_cache_file)[pkg].Install()) &&
-      ((*apt_cache_file)->get_ext_state(pkg).install_reason!=aptitudeDepCache::manual);
+      ((*apt_cache_file)[pkg].Flags & pkgCache::Flag::Auto);
   }
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
@@ -1376,7 +1376,7 @@ public:
     if(ver.end())
       return false;
     else
-      return (*apt_cache_file)->get_ext_state(pkg).garbage;
+      return (*apt_cache_file)[pkg].Garbage;
   }
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,

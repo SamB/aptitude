@@ -278,7 +278,7 @@ static fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::VerIterator
 	      if(pkg->CurrentState == pkgCache::State::NotInstalled ||
 		 pkg->CurrentState == pkgCache::State::ConfigFiles)
 		{
-		  if(estate.install_reason == aptitudeDepCache::manual)
+		  if(state.Flags & pkgCache::Flag::Auto)
 		    return fragf(_("%s; will be installed"), statestr);
 		  else
 		    return fragf(_("%s; will be installed automatically"), statestr);
@@ -300,7 +300,7 @@ static fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::VerIterator
 	 (pkg->CurrentState==pkgCache::State::NotInstalled ||
 	  pkg->CurrentState==pkgCache::State::ConfigFiles))
 	{
-	  if(estate.install_reason == aptitudeDepCache::manual)
+	  if(state.Flags & pkgCache::Flag::Auto)
 	    return fragf(_("%s; version %s will be installed"),
 			 statestr,
 			 instver.VerStr());
@@ -350,6 +350,7 @@ static fragment *version_file_fragment(pkgCache::VerIterator ver,
   pkgCache::PkgIterator pkg=ver.ParentPkg();
   pkgRecords::Parser &rec=apt_package_records->Lookup(vf);
   aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
+  pkgDepCache::StateCache &state = (*apt_cache_file)[pkg];
 
   fragments.push_back(fragf("%s%s%n", _("Package: "), pkg.Name()));
   if((pkg->Flags & pkgCache::Flag::Essential)==pkgCache::Flag::Essential)
@@ -367,7 +368,7 @@ static fragment *version_file_fragment(pkgCache::VerIterator ver,
 
   if(!pkg.CurrentVer().end())
     fragments.push_back(fragf("%s: %s%n", _("Automatically installed"),
-			      estate.install_reason == aptitudeDepCache::manual
+			      (state.Flags & pkgCache::Flag::Auto)
 			      ? _("no") : _("yes")));
 
   fragments.push_back(fragf("%s%s%n", _("Version: "), ver.VerStr()));

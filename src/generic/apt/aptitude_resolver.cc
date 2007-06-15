@@ -64,6 +64,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
     {
       const aptitude_universe::package &p=*pi;
       aptitudeDepCache::aptitude_state &state=get_universe().get_cache()->get_ext_state(p.get_pkg());
+      pkgDepCache::StateCache &apt_state = (*get_universe().get_cache())[p.get_pkg()];
 
       // Packages are considered "manual" if either they were manually
       // installed, or if they are currently installed and were
@@ -72,7 +73,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
       // There is NO PENALTY for any change to a non-manual package's
       // state, other than the usual priority-based and non-default
       // version weighting.
-      bool manual = ((!p.current_version().get_ver().end()) && state.install_reason == aptitudeDepCache::manual) ||
+      bool manual = ((!p.current_version().get_ver().end()) && (apt_state.Flags & pkgCache::Flag::Auto)) ||
 	(p.current_version().get_ver().end() && (p.get_pkg().CurrentVer().end() || state.remove_reason == aptitudeDepCache::manual));
 
       for(aptitude_universe::package::version_iterator vi=p.versions_begin(); !vi.end(); ++vi)

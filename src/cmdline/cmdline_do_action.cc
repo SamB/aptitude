@@ -134,7 +134,9 @@ int cmdline_do_action(int argc, char *argv[],
 
   // TODO: look for filenames and call dpkg directly if that's the case.
 
-  (*apt_cache_file)->begin_action_group();
+  {
+    aptitudeDepCache::action_group group(*apt_cache_file, NULL);
+
   // If keep-all is the argument, we expect no patterns and keep all
   // packages back.
   if(!strcasecmp(argv[0], "keep-all"))
@@ -147,7 +149,7 @@ int cmdline_do_action(int argc, char *argv[],
 
       for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin();
 	  !i.end(); ++i)
-	(*apt_cache_file)->mark_keep(i, true, false, NULL);
+	(*apt_cache_file)->mark_keep(i, false, false, NULL);
     }
   else
     // If we didn't take the keep-all path, mark according to the
@@ -203,13 +205,16 @@ int cmdline_do_action(int argc, char *argv[],
 	cmdline_applyaction(argv[i], action,
 			    to_install, to_hold, to_remove, to_purge,
 			    verbose, false);
+
+	// If we have auto-install turned on, do a second run over all
+	// the packages being installed to blindly resolve their deps.
+	if(aptcfg->FindB(PACKAGE "::Auto-Install", true))
+	  {
+	    for(pkgset::const_iterator i = to_install.begin(); i != to_install.end(); ++i)
+	      (*apt_cache_file)->mark_install(*i, true, (*apt_cache_file)->get_ext_state(*i).reinstall, NULL);
+	  }
       }
-  if(aptcfg->FindB(PACKAGE "::Auto-Install", true))
-    {
-      for(pkgset::const_iterator i = to_install.begin(); i != to_install.end(); ++i)
-	(*apt_cache_file)->mark_install(*i, true, (*apt_cache_file)->get_ext_state(*i).reinstall, NULL);
-    }
-  (*apt_cache_file)->end_action_group(NULL);
+  }
 
   if(visual_preview)
     {

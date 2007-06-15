@@ -386,7 +386,7 @@ pkg_action_state find_pkg_state(pkgCache::PkgIterator pkg)
 	    // FOO!  Should I abort here?
 	    return pkg_install;
 	}
-      else if(extstate.install_reason!=aptitudeDepCache::manual)
+      else if(state.Flags & pkgCache::Flag::Auto)
 	return pkg_auto_install;
       else
 	return pkg_install;

@@ -1314,13 +1314,11 @@ static void do_keep_all()
 {
   auto_ptr<undo_group> undo(new apt_undo_group);
 
-  (*apt_cache_file)->begin_action_group();
+  aptitudeDepCache::action_group group(*apt_cache_file, undo.get());
 
   for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin();
       !i.end(); ++i)
-    (*apt_cache_file)->mark_keep(i, true, false, undo.get());
-
-  (*apt_cache_file)->end_action_group(undo.get());
+    (*apt_cache_file)->mark_keep(i, false, false, undo.get());
 
   if(!undo.get()->empty())
     apt_undos->add_item(undo.release());

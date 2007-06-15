@@ -51,72 +51,58 @@ bool pkg_subtree::dispatch_key(const key &k, vs_tree *owner)
 
 void pkg_subtree::select(undo_group *undo)
 {
-  (*apt_cache_file)->begin_action_group();
+  aptitudeDepCache::action_group group(*apt_cache_file, undo);
 
   for(child_iterator i=get_children_begin(); i!=get_children_end(); i++)
     (*i)->select(undo);
-
-  (*apt_cache_file)->end_action_group(undo);
 }
 
 void pkg_subtree::hold(undo_group *undo)
 {
-  (*apt_cache_file)->begin_action_group();
+  aptitudeDepCache::action_group group(*apt_cache_file, undo);
 
   for(child_iterator i=get_children_begin(); i!=get_children_end(); i++)
     (*i)->hold(undo);
-
-  (*apt_cache_file)->end_action_group(undo);
 }
 
 void pkg_subtree::keep(undo_group *undo)
 {
-  (*apt_cache_file)->begin_action_group();
+  aptitudeDepCache::action_group group(*apt_cache_file, undo);
 
   for(child_iterator i=get_children_begin(); i!=get_children_end(); i++)
     (*i)->keep(undo);
-
-  (*apt_cache_file)->end_action_group(undo);
 }
 
 void pkg_subtree::remove(undo_group *undo)
 {
-  (*apt_cache_file)->begin_action_group();
+  aptitudeDepCache::action_group group(*apt_cache_file, undo);
 
   for(child_iterator i=get_children_begin(); i!=get_children_end(); i++)
     (*i)->remove(undo);
-
-  (*apt_cache_file)->end_action_group(undo);
 }
 
 void pkg_subtree::purge(undo_group *undo)
 {
-  (*apt_cache_file)->begin_action_group();
+  aptitudeDepCache::action_group group(*apt_cache_file, undo);
 
   for(child_iterator i=get_children_begin(); i!=get_children_end(); i++)
     (*i)->purge(undo);
-
-  (*apt_cache_file)->end_action_group(undo);
 }
 
 void pkg_subtree::reinstall(undo_group *undo)
 {
-  (*apt_cache_file)->begin_action_group();
+  aptitudeDepCache::action_group group(*apt_cache_file, undo);
 
   for(child_iterator i=get_children_begin(); i!=get_children_end(); i++)
     (*i)->reinstall(undo);
-
-  (*apt_cache_file)->end_action_group(undo);
 }
 
 void pkg_subtree::set_auto(bool isauto, undo_group *undo)
 {
-  (*apt_cache_file)->begin_action_group();
+  aptitudeDepCache::action_group group(*apt_cache_file, undo);
 
   for(child_iterator i=get_children_begin(); i!=get_children_end(); i++)
     (*i)->set_auto(isauto, undo);
-
-  (*apt_cache_file)->end_action_group(undo);
 }
 
 void pkg_subtree::highlighted(vs_tree *win)

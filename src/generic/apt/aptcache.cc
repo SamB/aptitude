@@ -66,25 +66,20 @@ class aptitudeDepCache::apt_undoer:public undoable
 {
   PkgIterator pkg;
   int prev_mode;  // One of Delete,Keep,Install
-  int prev_flags; /* For Delete, tracks Purge mode; for Install, tracks 
-		   * Reinstall mode..
-		   */
-  bool prev_autoinstalled;
-  changed_reason prev_installreason, prev_removereason;
+  int prev_iflags, prev_flags;
+  changed_reason prev_removereason;
   pkgCache::State::PkgSelectedState prev_selection_state;
 
   string prev_forbidver;
 
   aptitudeDepCache *owner;
 public:
-  apt_undoer(PkgIterator _pkg, int _prev_mode, int _prev_flags,
-	     changed_reason _prev_installreason,
+  apt_undoer(PkgIterator _pkg, int _prev_mode, int _prev_flags, int _prev_iflags,
 	     changed_reason _prev_removereason,
 	     pkgCache::State::PkgSelectedState _prev_selection_state,
 	     string _prev_forbidver,
 	     aptitudeDepCache *_owner)
-    :pkg(_pkg), prev_mode(_prev_mode), prev_flags(_prev_flags),
-     prev_installreason(_prev_installreason),
+    :pkg(_pkg), prev_mode(_prev_mode), prev_iflags(_prev_iflags), prev_flags(_prev_flags),
      prev_removereason(_prev_removereason),
      prev_selection_state(_prev_selection_state),
      prev_forbidver(_prev_forbidver),
@@ -94,24 +89,26 @@ public:
 
   void undo()
   {
-    if(prev_flags&ReInstall)
-      owner->internal_mark_install(pkg, false, true, NULL, false);
+    aptitudeDepCache::action_group group(*owner);
+
+    if(prev_iflags&ReInstall)
+      owner->internal_mark_install(pkg, false, true);
     else switch(prev_mode)
       {
       case ModeDelete:
 	// the unused_delete parameter isn't that important..
-	owner->internal_mark_delete(pkg, prev_flags&Purge, prev_removereason==unused, NULL, false);
+	owner->internal_mark_delete(pkg, prev_iflags & Purge, prev_removereason == unused);
 	break;
       case ModeKeep:
-	owner->internal_mark_keep(pkg, prev_flags&AutoKept, prev_selection_state==pkgCache::State::Hold, NULL, false);
+	owner->internal_mark_keep(pkg, prev_iflags & AutoKept, prev_selection_state == pkgCache::State::Hold);
 	break;
       case ModeInstall:
-	owner->internal_mark_install(pkg, false, false, NULL, false);
+	owner->internal_mark_install(pkg, false, false);
 	break;
       }
 
     // make sure that everything is really set.
-    owner->get_ext_state(pkg).install_reason=prev_installreason;
+    owner->MarkAuto(pkg, (prev_flags & Flag::Auto));
     owner->get_ext_state(pkg).remove_reason=prev_removereason;
     owner->get_ext_state(pkg).forbidver=prev_forbidver;
   }
@@ -167,27 +164,43 @@ public:
   }
 };
 
+aptitudeDepCache::action_group::action_group(aptitudeDepCache &cache, undo_group *group)
+  : parent_group(new pkgDepCache::ActionGroup(cache)),
+    cache(cache), group(group)
+{
+  cache.begin_action_group();
+}
+
+aptitudeDepCache::action_group::~action_group()
+{
+  // Force the parent to mark-and-sweep first.
+  delete parent_group;
+
+  cache.end_action_group(group);
+}
+
 aptitudeDepCache::aptitudeDepCache(pkgCache *Cache, Policy *Plcy)
   :pkgDepCache(Cache, Plcy), dirty(false), read_only(true),
-   package_states(NULL), lock(-1), group_level(0),
-   mark_and_sweep_in_progress(false)
+   package_states(NULL), lock(-1), group_level(0)
 {
   // When the "install recommended packages" flag changes, collect garbage.
+#if 0
   aptcfg->connect(PACKAGE "::Recommends-Important",
 		  sigc::bind(sigc::mem_fun(*this,
-					   &aptitudeDepCache::mark_and_sweep),
+					   &pkgDepCache::MarkAndSweep),
 			     (undo_group *) NULL));
 
   aptcfg->connect(PACKAGE "::Keep-Recommends",
 		  sigc::bind(sigc::mem_fun(*this,
-					   &aptitudeDepCache::mark_and_sweep),
+					   &pkgDepCache::MarkAndSweep),
 			     (undo_group *) NULL));
 
   // sim.
   aptcfg->connect(PACKAGE "::Keep-Suggests",
 		  sigc::bind(sigc::mem_fun(*this,
-					   &aptitudeDepCache::mark_and_sweep),
+					   &pkgDepCache::MarkAndSweep),
 			     (undo_group *) NULL));
+#endif
 }
 
 bool aptitudeDepCache::Init(OpProgress *Prog, bool WithLock, bool do_initselections, const char *status_fname)
@@ -212,6 +225,8 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 					    bool do_initselections,
 					    const char *status_fname)
 {
+  action_group group(*this);
+
   bool initial_open=false;
   // This will be set to true if the state file does not exist.
 
@@ -226,7 +241,6 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
     {
       package_states[i].new_package=true;
       package_states[i].reinstall=false;
-      package_states[i].install_reason=manual;
       package_states[i].remove_reason=manual;
       package_states[i].selection_state = pkgCache::State::Unknown;
     }
@@ -272,7 +286,6 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
       int file_size=state_file.Size();
       Prog.OverallProgress(0, file_size, 1, _("Reading extended state information"));
 
-      begin_action_group();
       pkgTagFile tagfile(&state_file);
       pkgTagSection section;
       int amt=0;
@@ -300,9 +313,15 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 	      // The install reason is much more important to preserve
 	      // from previous versions, so support the outdated name
 	      // for it.
-	      pkg_state.install_reason=(changed_reason)
+	      changed_reason install_reason=(changed_reason)
 		section.FindI("Install-Reason",
 			      section.FindI("Last-Change", manual));
+
+	      if(install_reason != manual)
+		{
+		  MarkAuto(pkg, true);
+		  dirty = true;
+		}
 
 	      pkg_state.remove_reason=(changed_reason)
 		section.FindI("Remove-Reason", manual);
@@ -346,7 +365,6 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 	  Prog.OverallProgress(amt, file_size, 1, _("Reading extended state information"));
 	}
       Prog.OverallProgress(file_size, file_size, 1, _("Reading extended state information"));
-      end_action_group(NULL);
     }
 
   int num=0;
@@ -437,16 +455,6 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
   if(aptcfg->FindB(PACKAGE "::Auto-Upgrade", false) && do_initselections)
     mark_all_upgradable(aptcfg->FindB(PACKAGE "::Auto-Install", true),
 			true, NULL);
-  else
-    {
-      // Normally this was done in the mark_all_upgradable, but we no
-      // longer do that by default.
-      mark_and_sweep(NULL);
-      cleanup_after_change(NULL);
-    }
-
-  duplicate_cache(&backup_state);
-
   Prog.Done();
 
   read_only = (lock == -1);
@@ -465,7 +473,7 @@ void aptitudeDepCache::mark_all_upgradable(bool with_autoinst,
       return;
     }
 
-  begin_action_group();
+  action_group group(*this, undo);
 
   for(int iter=0; iter==0 || (iter==1 && with_autoinst); ++iter)
     {
@@ -525,9 +533,6 @@ void aptitudeDepCache::mark_all_upgradable(bool with_autoinst,
 	    }
 	}
     }
-
-  // will handle setting undos, mark-and-sweep, etc:
-  end_action_group(undo);
 }
 
 // If fd is -1, just write unconditionally to the given fd.
@@ -545,6 +550,9 @@ bool aptitudeDepCache::save_selection_list(OpProgress &prog,
 
   if(lock==-1 && !status_fname)
     return true;
+
+  writeStateFile(&prog);
+
   string statefile=_config->FindDir("Dir::Aptitude::state", STATEDIR)+"pkgstates";
 
   FileFd newstate;
@@ -589,12 +597,11 @@ bool aptitudeDepCache::save_selection_list(OpProgress &prog,
 
 	    len=snprintf(buf,
 			 400,
-			 "Package: %s\nUnseen: %s\nState: %i\nDselect-State: %i\nLast-Change: %i\nRemove-Reason: %i\n%s%s%s\n",
+			 "Package: %s\nUnseen: %s\nState: %i\nDselect-State: %i\nRemove-Reason: %i\n%s%s%s\n",
 			 i.Name(),
 			 estate.new_package?"yes":"no",
 			 estate.selection_state,
 			 i->SelectedState,
-			 estate.install_reason,
 			 estate.remove_reason,
 			 upgradestr.c_str(),
 			 forbidstr.c_str(),
@@ -730,8 +737,8 @@ void aptitudeDepCache::forget_new(undoable **undoer)
 
 undoable *aptitudeDepCache::state_restorer(PkgIterator pkg, StateCache &state, aptitude_state &ext_state)
 {
-  return new apt_undoer(pkg, state.Mode, state.iFlags,
-			ext_state.install_reason, ext_state.remove_reason,
+  return new apt_undoer(pkg, state.Mode, state.Flags, state.iFlags,
+			ext_state.remove_reason,
 			ext_state.selection_state,
 			ext_state.forbidver, this);
 }
@@ -744,9 +751,9 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
   for(pkgCache::PkgIterator pkg=PkgBegin(); !pkg.end(); pkg++)
     {
       if(PkgState[pkg->ID].Mode!=backup_state.PkgState[pkg->ID].Mode ||
+	 (PkgState[pkg->ID].Flags & pkgCache::Flag::Auto) != (backup_state.PkgState[pkg->ID].Flags & pkgCache::Flag::Auto) ||
 	 package_states[pkg->ID].selection_state!=backup_state.AptitudeState[pkg->ID].selection_state ||
 	 package_states[pkg->ID].reinstall!=backup_state.AptitudeState[pkg->ID].reinstall ||
-	 package_states[pkg->ID].install_reason!=backup_state.AptitudeState[pkg->ID].install_reason ||
 	 package_states[pkg->ID].remove_reason!=backup_state.AptitudeState[pkg->ID].remove_reason ||
 	 package_states[pkg->ID].forbidver!=backup_state.AptitudeState[pkg->ID].forbidver)
 	{
@@ -775,12 +782,6 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
 		    }
 		  break;
 		case ModeKeep:
-		  // If this was going to be deleted, assume it was
-		  // automatically marked to be installed.
-		  if(package_states[pkg->ID].selection_state==pkgCache::State::DeInstall ||
-		     package_states[pkg->ID].selection_state==pkgCache::State::Purge)
-		    package_states[pkg->ID].install_reason=libapt;
-
 		  if(!pkg.CurrentVer().end())
 		    package_states[pkg->ID].selection_state=pkgCache::State::Install;
 		  else if(pkg->CurrentState==pkgCache::State::NotInstalled)
@@ -790,15 +791,7 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
 		  break;
 		case ModeInstall:
 		  if(package_states[pkg->ID].selection_state!=pkgCache::State::Install)
-		    {
-		      package_states[pkg->ID].selection_state=pkgCache::State::Install;
-		      // Only set it to not be manual if it's a new
-		      // install, or the package was going to be
-		      // removed.
-		      if(pkg.CurrentVer().end() ||
-			 backup_state.PkgState[pkg->ID].Delete())
-			package_states[pkg->ID].install_reason=libapt;
-		    }
+		    package_states[pkg->ID].selection_state=pkgCache::State::Install;
 		  break;
 		}
 	    }
@@ -811,11 +804,10 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
     }
 }
 
-void aptitudeDepCache::internal_mark_install(const PkgIterator &Pkg,
-					     bool AutoInst,
-					     bool ReInstall,
-					     undo_group *undo,
-					     bool do_mark_and_sweep)
+void aptitudeDepCache::mark_install(const PkgIterator &Pkg,
+				    bool AutoInst,
+				    bool ReInstall,
+				    undo_group *undo)
 {
   if(read_only && !read_only_permission())
     {
@@ -824,14 +816,18 @@ void aptitudeDepCache::internal_mark_install(const PkgIterator &Pkg,
       return;
     }
 
-  pre_package_state_changed();
-  dirty=true;
+  action_group group(*this, undo);
 
-  // Only change the install reason if the package was not previously
-  // installed OR it was going to be removed because it was gc'ed.
-  if((Pkg.CurrentVer().end() && !(*this)[Pkg].Install()) ||
-     (!Pkg.CurrentVer().end() && get_ext_state(Pkg).garbage))
-    get_ext_state(Pkg).install_reason=manual;
+  pre_package_state_changed();
+
+  internal_mark_install(Pkg, AutoInst, ReInstall);
+}
+
+void aptitudeDepCache::internal_mark_install(const PkgIterator &Pkg,
+					     bool AutoInst,
+					     bool ReInstall)
+{
+  dirty=true;
 
   if(!ReInstall)
     pkgDepCache::MarkInstall(Pkg, AutoInst);
@@ -843,25 +839,12 @@ void aptitudeDepCache::internal_mark_install(const PkgIterator &Pkg,
   get_ext_state(Pkg).selection_state=pkgCache::State::Install;
   get_ext_state(Pkg).reinstall=ReInstall;
   get_ext_state(Pkg).forbidver="";
-
-  if(group_level==0)
-    {
-      if(do_mark_and_sweep)
-	mark_and_sweep(undo);
-
-      cleanup_after_change(undo);
-
-      duplicate_cache(&backup_state);
-
-      package_state_changed();
-    }
 }
 
-void aptitudeDepCache::internal_mark_delete(const PkgIterator &Pkg,
-					    bool Purge,
-					    bool unused_delete,
-					    undo_group *undo,
-					    bool do_mark_and_sweep)
+void aptitudeDepCache::mark_delete(const PkgIterator &Pkg,
+				   bool Purge,
+				   bool unused_delete,
+				   undo_group *undo)
 {
   if(read_only && !read_only_permission())
     {
@@ -870,7 +853,17 @@ void aptitudeDepCache::internal_mark_delete(const PkgIterator &Pkg,
       return;
     }
 
+  action_group group(*this, undo);
+
   pre_package_state_changed();
+
+  internal_mark_delete(Pkg, Purge, unused_delete);
+}
+
+void aptitudeDepCache::internal_mark_delete(const PkgIterator &Pkg,
+					    bool Purge,
+					    bool unused_delete)
+{
   dirty=true;
 
   bool previously_to_delete=(*this)[Pkg].Delete();
@@ -888,23 +881,9 @@ void aptitudeDepCache::internal_mark_delete(const PkgIterator &Pkg,
       else
 	get_ext_state(Pkg).remove_reason=manual;
     }
-
-  // Argh argh argh.  Doing any of this when there's a mark-and-sweep
-  // running causes extreme screwiness.
-  if(!mark_and_sweep_in_progress && group_level==0)
-    {
-      if(do_mark_and_sweep)
-	mark_and_sweep(undo);
-
-      cleanup_after_change(undo);
-
-      duplicate_cache(&backup_state);
-
-      package_state_changed();
-    }
 }
 
-void aptitudeDepCache::internal_mark_keep(const PkgIterator &Pkg, bool Soft, bool SetHold, undo_group *undo, bool do_mark_and_sweep)
+void aptitudeDepCache::mark_keep(const PkgIterator &Pkg, bool Automatic, bool SetHold, undo_group *undo)
 {
   if(read_only && !read_only_permission())
     {
@@ -913,17 +892,18 @@ void aptitudeDepCache::internal_mark_keep(const PkgIterator &Pkg, bool Soft, boo
       return;
     }
 
+  action_group group(*this);
+
   pre_package_state_changed();
+
+  internal_mark_keep(Pkg, Automatic, SetHold);
+}
+
+void aptitudeDepCache::internal_mark_keep(const PkgIterator &Pkg, bool Automatic, bool SetHold)
+{
   dirty=true;
 
-  // On an unused package, this has the effect of making it manually
-  // installed.  (check the current version to avoid adjusting
-  // already-removed packages that are being purged)
-  if((*this)[Pkg].Delete() && !Pkg.CurrentVer().end() &&
-     get_ext_state(Pkg).remove_reason==unused)
-    get_ext_state(Pkg).install_reason=manual;
-
-  pkgDepCache::MarkKeep(Pkg, Soft);
+  pkgDepCache::MarkKeep(Pkg, false, !Automatic);
   pkgDepCache::SetReInstall(Pkg, false);
   get_ext_state(Pkg).reinstall=false;
 
@@ -938,18 +918,6 @@ void aptitudeDepCache::internal_mark_keep(const PkgIterator &Pkg, bool Soft, boo
     get_ext_state(Pkg).selection_state=pkgCache::State::Hold;
   else
     get_ext_state(Pkg).selection_state=pkgCache::State::Install;
-
-  if(group_level==0)
-    {
-      if(do_mark_and_sweep)
-	mark_and_sweep(undo);
-
-      cleanup_after_change(undo);
-
-      duplicate_cache(&backup_state);
-
-      package_state_changed();
-    }
 }
 
 void aptitudeDepCache::set_candidate_version(const VerIterator &ver,
@@ -990,7 +958,7 @@ void aptitudeDepCache::set_candidate_version(const VerIterator &ver,
 	  if(undo)
 	    undo->add_item(new candver_undoer(prev, this));
 
-	  mark_and_sweep(undo);
+	  MarkAndSweep();
 
 	  //if(BrokenCount()>0)
 	  //create_resolver();
@@ -1017,6 +985,8 @@ void aptitudeDepCache::forbid_upgrade(const PkgIterator &pkg,
 
   if(verstr!=estate.forbidver)
     {
+      action_group group(*this, undo);
+
       pre_package_state_changed();
 
       pkgCache::VerIterator candver=(*this)[pkg].CandidateVerIter(*this);
@@ -1026,17 +996,6 @@ void aptitudeDepCache::forbid_upgrade(const PkgIterator &pkg,
       estate.forbidver=verstr;
       if(!candver.end() && candver.VerStr()==verstr && (*this)[pkg].Install())
 	MarkKeep(pkg, false);
-
-      if(group_level==0)
-	{
-	  mark_and_sweep(undo);
-
-	  cleanup_after_change(undo, false);
-
-	  duplicate_cache(&backup_state);
-
-	  package_state_changed();
-	}
     }
 }
 
@@ -1049,6 +1008,8 @@ void aptitudeDepCache::mark_single_install(const PkgIterator &Pkg, undo_group *u
       return;
     }
 
+  action_group group(*this, undo);
+
   pre_package_state_changed();
   dirty=true;
 
@@ -1056,17 +1017,6 @@ void aptitudeDepCache::mark_single_install(const PkgIterator &Pkg, undo_group *u
     pkgDepCache::MarkKeep(i, true);
 
   pkgDepCache::MarkInstall(Pkg, true);
-
-  if(group_level==0)
-    {
-      mark_and_sweep(undo);
-
-      cleanup_after_change(undo, false);
-
-      duplicate_cache(&backup_state);
-
-      package_state_changed();
-    }
 }
 
 void aptitudeDepCache::mark_auto_installed(const PkgIterator &Pkg,
@@ -1080,21 +1030,12 @@ void aptitudeDepCache::mark_auto_installed(const PkgIterator &Pkg,
       return;
     }
 
+  action_group group(*this, undo);
+
   pre_package_state_changed();
   dirty=true;
 
-  get_ext_state(Pkg).install_reason=set_auto?user_auto:manual;
-
-  if(group_level==0)
-    {
-      mark_and_sweep(undo);
-
-      cleanup_after_change(undo);
-
-      duplicate_cache(&backup_state);
-
-      package_state_changed();
-    }
+  MarkAuto(Pkg, set_auto);
 }
 
 bool aptitudeDepCache::all_upgrade(bool with_autoinst, undo_group *undo)
@@ -1105,6 +1046,8 @@ bool aptitudeDepCache::all_upgrade(bool with_autoinst, undo_group *undo)
 	read_only_fail();
       return false;
     }
+
+  action_group group(*this, undo);
 
   pre_package_state_changed();
 
@@ -1125,17 +1068,6 @@ bool aptitudeDepCache::all_upgrade(bool with_autoinst, undo_group *undo)
 
   bool rval=fixer.ResolveByKeep();
 
-  if(group_level==0)
-    {
-      mark_and_sweep(undo);
-
-      cleanup_after_change(undo);
-
-      duplicate_cache(&backup_state);
-
-      package_state_changed();
-    }
-
   return rval;
 }
 
@@ -1148,6 +1080,8 @@ bool aptitudeDepCache::try_fix_broken(pkgProblemResolver &fixer, undo_group *und
       return false;
     }
 
+  action_group group(*this, undo);
+
   pre_package_state_changed();
   dirty=true;
   bool founderr=false;
@@ -1156,17 +1090,6 @@ bool aptitudeDepCache::try_fix_broken(pkgProblemResolver &fixer, undo_group *und
 
   if(founderr)
     _error->Error(_("Unable to correct dependencies, some packages cannot be installed"));
-
-  if(group_level==0)
-    {
-      mark_and_sweep(undo);
-
-      cleanup_after_change(undo);
-
-      duplicate_cache(&backup_state);
-
-      package_state_changed();
-    }
 
   return !founderr;
 }
@@ -1276,6 +1199,47 @@ void aptitudeDepCache::duplicate_cache(apt_state_snapshot *target)
   target->iBadCount=iBadCount;
 }
 
+void aptitudeDepCache::sweep()
+{
+  // Suppress intermediate removals.
+  //
+  // \todo this may cause problems if we do undo tracking via ActionGroups.
+  pkgDepCache::ActionGroup group(*this);
+
+  bool purge_unused = aptcfg->FindB(PACKAGE "::Purge-Unused", false);
+
+  for(pkgCache::PkgIterator pkg = PkgBegin(); !pkg.end(); ++pkg)
+    {
+      if(PkgState[pkg->ID].Garbage)
+	{
+	  if(pkg.CurrentVer() != 0 && pkg->CurrentState != pkgCache::State::ConfigFiles)
+	    {
+	      MarkDelete(pkg, purge_unused);
+	      package_states[pkg->ID].selection_state =
+		(purge_unused ? pkgCache::State::Purge : pkgCache::State::DeInstall);
+	      package_states[pkg->ID].remove_reason = unused;
+	    }
+	  else
+	    {
+	      if(pkg.CurrentVer().end())
+		{
+		  if((*this)[pkg].iFlags & Purge)
+		    package_states[pkg->ID].selection_state = pkgCache::State::Purge;
+		  else
+		    package_states[pkg->ID].selection_state = pkgCache::State::DeInstall;
+		}
+	      else
+		package_states[pkg->ID].selection_state = pkgCache::State::Install;
+	      MarkKeep(pkg, false, false);
+	    }
+	}
+      else if(PkgState[pkg->ID].Delete() && package_states[pkg->ID].remove_reason == unused)
+	{
+	  MarkKeep(pkg, false, false);
+	}
+    }
+}
+
 void aptitudeDepCache::begin_action_group()
 {
   group_level++;
@@ -1291,10 +1255,12 @@ void aptitudeDepCache::end_action_group(undo_group *undo)
 	{
 	  if(group_level == 0)
 	    read_only_fail();
+
+	  group_level--;
 	  return;
 	}
 
-      mark_and_sweep(undo);
+      sweep();
 
       cleanup_after_change(undo);
 
@@ -1340,226 +1306,6 @@ void aptitudeDepCache::restore_apt_state(const apt_state_snapshot *snapshot)
   iBadCount=snapshot->iBadCount;
 }
 
-// Mark-and-sweep starts here.
-//
-// If a package version is not installed and is not going to be installed, it
-// is not visited further.  Otherwise, the appropriate mark is set.
-//
-//  FIXME: follow Recommends iff the appropriate stuff is set.
-void aptitudeDepCache::mark_package(const PkgIterator &pkg,
-				    const VerIterator &ver,
-				    bool follow_recommends,
-				    bool follow_suggests,
-				    bool debug,
-				    int level)
-{
-  pkgDepCache::StateCache &state=(*this)[pkg];
-  aptitude_state &estate=get_ext_state(pkg);
-  pkgCache::VerIterator candver=state.CandidateVerIter(*this);
-  pkgCache::VerIterator instver=state.InstVerIter(*this);
-
-  // If a package was garbage-collected but is now being marked, we
-  // should re-select it.  (note: undo==NULL is actually correct;
-  // mark_and_sweep *never* stores undo info....)
-  if(state.Delete() && estate.remove_reason==unused)
-    {
-      if(ver==candver)
-	{
-	  if(debug)
-	    std::cout << string(level*2, ' ')
-		      << "Cancelling the deletion of "
-		      << pkg.Name() << " and installing its candidate version ("
-		      << ver.VerStr() << ")" << std::endl;
-
-	  mark_install(pkg, false, false, NULL);
-	}
-      else if(ver==pkg.CurrentVer())
-	{
-	  if(debug)
-	    std::cout << string(level*2, ' ')
-		      << "Cancelling the deletion of "
-		      << pkg.Name() << " and reverting to its currently installed version ("
-		      << ver.VerStr() << ")" << std::endl;
-
-	  pre_package_state_changed();
-	  MarkKeep(pkg);
-	}
-
-      instver=state.InstVerIter(*this);
-    }
-
-  if(!(ver==instver && !instver.end()))
-    {
-      if(debug)
-	{
-	  std::cout << string(level*2, ' ')
-		    << "Not marking " << pkg.Name()
-		    << " " << (ver.end() ? "[UNINST]" : ver.VerStr())
-		    << ": ";
-
-	  if(ver == instver)
-	    std::cout << "it is the UNINST version";
-	  else
-	    std::cout << "it is not the version to be installed ("
-		      << (instver.end() ? "[UNINST]" : instver.VerStr())
-		      << ")" << std::endl;
-	}
-      return;
-    }
-
-  if(estate.marked)
-    {
-      if(debug)
-	std::cout << string(level*2, ' ')
-		  << "Not marking " << pkg.Name()
-		  << " " << (ver.end() ? "[UNINST]" : ver.VerStr())
-		  << ": it is already marked." << std::endl;
-      return;
-    }
-
-  if(debug)
-    std::cout << string(level*2, ' ')
-	      << "Marking " << pkg.Name() << " "
-	      << (ver.end() ? "[UNINST]" : ver.VerStr())
-	      << std::endl;
-  estate.marked=true;
-
-  if(!ver.end())
-    {
-      for(DepIterator d=ver.DependsList(); !d.end(); ++d)
-	{
-	  if(d->Type==pkgCache::Dep::Depends ||
-	     d->Type==pkgCache::Dep::PreDepends ||
-	     (follow_recommends &&
-	      d->Type==pkgCache::Dep::Recommends) ||
-	     (follow_suggests &&
-	      d->Type==pkgCache::Dep::Suggests))
-	    {
-	      if(debug)
-		{
-		  std::cout << string(level*2, ' ')
-			    << "Following dependency "
-			    << d.ParentPkg().Name()
-			    << " "
-			    << d.DepType()
-			    << " "
-			    << d.TargetPkg().Name();
-		  if(d.TargetVer() != NULL)
-		    std::cout << " ("
-			      << d.CompType()
-			      << " "
-			      << d.TargetVer()
-			      << ")";
-		  std::cout << std::endl;
-		}
-
-	      // Try all versions of this package.
-	      for(VerIterator V=d.TargetPkg().VersionList(); !V.end(); ++V)
-		if(_system->VS->CheckDep(V.VerStr(), d->CompareOp, d.TargetVer()))
-		  mark_package(V.ParentPkg(), V,
-			       follow_recommends, follow_suggests, debug, level + 1);
-
-	      // Now try virtual packages
-	      for(PrvIterator prv=d.TargetPkg().ProvidesList(); !prv.end(); ++prv)
-		if(_system->VS->CheckDep(prv.ProvideVersion(), d->CompareOp, d.TargetVer()))
-		  mark_package(prv.OwnerPkg(), prv.OwnerVer(),
-			       follow_recommends, follow_suggests, debug, level + 1);
-	    }
-	}
-    }
-}
-
-// The root-set is every essential package, as well as those packages which
-// have been manually chosen for installation, and are planned to be installed.
-void aptitudeDepCache::mark_and_sweep(undo_group *undo)
-{
-  // EWW.
-  if(mark_and_sweep_in_progress)
-    return;
-
-  begin_action_group();
-
-  mark_and_sweep_in_progress=true;
-
-  std::string matchterm = aptcfg->Find(PACKAGE "::Keep-Unused-Pattern", "~nlinux-image-.*");
-  if(matchterm.empty()) // Bug-compatibility with old versions.
-    matchterm = aptcfg->Find(PACKAGE "::Delete-Unused-Pattern", "");
-  pkg_matcher *matcher=matchterm.empty()?NULL:parse_pattern(matchterm);
-
-  for(pkgCache::PkgIterator p=PkgBegin(); !p.end(); ++p)
-    {
-      package_states[p->ID].marked=false;
-      package_states[p->ID].garbage=false;
-    }
-
-  bool follow_recommends=aptcfg->FindB(PACKAGE "::Recommends-Important", true) ||
-    aptcfg->FindB(PACKAGE "::Keep-Recommends", false);
-  bool follow_suggests=aptcfg->FindB(PACKAGE "::Keep-Suggests", false) ||
-    aptcfg->FindB(PACKAGE "::Suggests-Important", false);
-  bool debug = aptcfg->FindB(PACKAGE "::GC-Debug", false);
-
-  if(debug)
-    std::cout << "*** BEGIN MARK AND SWEEP ***" << std::endl;
-
-  for(pkgCache::PkgIterator p=PkgBegin(); !p.end(); ++p)
-    {
-      if(package_states[p->ID].install_reason==manual ||
-	 (p->Flags & pkgCache::Flag::Essential) ||
-	 (matcher && ((PkgState[p->ID].Keep() &&
-		       !p.CurrentVer().end() &&
-		       matcher->matches(p)) ||
-		      (PkgState[p->ID].Install() &&
-		       matcher->matches(p)))))
-	{
-	  if(PkgState[p->ID].Keep() && !p.CurrentVer().end())
-	    mark_package(p, p.CurrentVer(),
-			 follow_recommends, follow_suggests, debug, 0);
-	  else if(PkgState[p->ID].Install())
-	    mark_package(p, PkgState[p->ID].InstVerIter(GetCache()),
-			 follow_recommends, follow_suggests, debug, 0);
-	}
-    }
-
-  bool delete_unused=aptcfg->FindB(PACKAGE "::Delete-Unused", true);
-
-  for(pkgCache::PkgIterator p=PkgBegin(); !p.end(); ++p)
-    {
-      StateCache &state=(*this)[p];
-      aptitude_state &estate=get_ext_state(p);
-
-      if(!estate.marked)
-	{
-	  estate.garbage=true;
-
-	  // Be sure not to re-delete already deleted packages.
-	  if(delete_unused && (!p.CurrentVer().end() || state.Install()) &&
-	     !state.Delete())
-	    {
-	      bool do_delete=true;
-
-	      if(debug)
-		std::cout << "*** Removing unused package " << p.Name() << std::endl;
-
-	      if(do_delete)
-		mark_delete(p,
-			    aptcfg->FindB(PACKAGE "::Purge-Unused", false),
-			    true,
-			    undo);
-	    }
-	}
-    }
-
-  mark_and_sweep_in_progress=false;
-
-  delete matcher;
-
-  if(debug)
-    std::cout << "*** END MARK AND SWEEP ***" << std::endl;
-
-  // end_action_group is written carefully so it works here:
-  end_action_group(undo);
-}
-
 void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> &sol,
 				      undo_group *undo)
 {
@@ -1570,7 +1316,7 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
       return;
     }
 
-  begin_action_group();
+  action_group group(*this, undo);
 
   for(imm::map<aptitude_resolver_package, generic_solution<aptitude_universe>::action>::const_iterator
 	i = sol.get_actions().begin();
@@ -1584,24 +1330,19 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
       if(actionver.end())
 	{
 	  // removal.
-	  internal_mark_delete(pkg, false, false, undo, false);
+	  internal_mark_delete(pkg, false, false);
 	  if(!curver.end())
-	    get_ext_state(pkg).remove_reason=from_resolver;
+	    get_ext_state(pkg).remove_reason = from_resolver;
 	}
       else if(actionver == curver)
-	// keep
-	internal_mark_keep(pkg, false, false, undo, false);
+	internal_mark_keep(pkg, false, true);
       else
 	// install a particular version that's not the current one.
 	{
 	  set_candidate_version(actionver, undo);
-	  internal_mark_install(pkg, false, false, undo, false);
-	  if(curver.end())
-	    get_ext_state(pkg).install_reason=from_resolver;
+	  internal_mark_install(pkg, false, false);
 	}
     }
-
-  end_action_group(undo);  
 }
 
 aptitudeCacheFile::aptitudeCacheFile()
@@ -1700,4 +1441,86 @@ bool aptitudeDepCache::is_held(const PkgIterator &pkg)
   return !pkg.CurrentVer().end() &&
     (state.selection_state == pkgCache::State::Hold ||
      (!candver.end() && candver.VerStr() == state.forbidver));
+}
+
+bool aptitudeDepCache::MarkFollowsRecommends()
+{
+  return pkgDepCache::MarkFollowsRecommends() ||
+    aptcfg->FindB(PACKAGE "::Recommends-Important", true) ||
+    aptcfg->FindB(PACKAGE "::Keep-Recommends", false);
+}
+
+bool aptitudeDepCache::MarkFollowsSuggests()
+{
+  return pkgDepCache::MarkFollowsSuggests() ||
+    aptcfg->FindB(PACKAGE "::Keep-Suggests", false) ||
+    aptcfg->FindB(PACKAGE "::Suggests-Important", false);
+}
+
+class AptitudeInRootSetFunc : public pkgDepCache::InRootSetFunc
+{
+  /** A matcher if one could be created; otherwise NULL. */
+  pkg_matcher *m;
+
+  /** \b true if the package was successfully constructed. */
+  bool constructedSuccessfully;
+
+  /** The secondary test to apply.  Only set if creating the
+   *  matcher succeeds.
+   */
+  pkgDepCache::InRootSetFunc *chain;
+public:
+  AptitudeInRootSetFunc(pkgDepCache::InRootSetFunc *_chain)
+    : m(NULL), constructedSuccessfully(false), chain(NULL)
+  {
+    std::string matchterm = aptcfg->Find(PACKAGE "::Keep-Unused-Pattern", "~nlinux-image-.*");
+    if(matchterm.empty()) // Bug-compatibility with old versions.
+      matchterm = aptcfg->Find(PACKAGE "::Delete-Unused-Pattern");
+
+    if(matchterm.empty())
+      constructedSuccessfully = true;
+    else
+      {
+	m = parse_pattern(matchterm);
+	if(m != NULL)
+	  constructedSuccessfully = true;
+      }
+
+    if(constructedSuccessfully)
+      chain = _chain;
+  }
+
+  bool wasConstructedSuccessfully() const
+  {
+    return constructedSuccessfully;
+  }
+
+  bool InRootSet(const pkgCache::PkgIterator &pkg)
+  {
+    if(m != NULL && m->matches(pkg))
+      return true;
+    else
+      return chain != NULL && chain->InRootSet(pkg);
+  }
+
+  ~AptitudeInRootSetFunc()
+  {
+    delete m;
+    delete chain;
+  }
+};
+
+pkgDepCache::InRootSetFunc *aptitudeDepCache::GetRootSetFunc()
+{
+  InRootSetFunc *superFunc = pkgDepCache::GetRootSetFunc();
+
+  AptitudeInRootSetFunc *f = new AptitudeInRootSetFunc(superFunc);
+
+  if(f->wasConstructedSuccessfully())
+    return f;
+  else
+    {
+      delete f;
+      return superFunc;
+    }
 }

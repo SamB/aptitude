@@ -6,10 +6,7 @@
 
 void apt_undo_group::undo()
 {
-  (*apt_cache_file)->begin_action_group();
+  aptitudeDepCache::action_group group(*apt_cache_file, NULL);
 
   undo_group::undo();
-
-  // Discard changes (could be used to generate a "redo" item?)
-  (*apt_cache_file)->end_action_group(NULL);
 }

@@ -8,7 +8,7 @@
 // own file (I think..apt doesn't have hooks for adding stuff..) containing
 // that information, properly lock/unlock it, etc.
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -78,12 +78,6 @@ public:
      */
     std::string forbidver;
 
-    /** If the package is currently installed or if the
-     *  selection_state is Install, this gives the reason for the
-     *  installation.
-     */
-    changed_reason install_reason:3;
-
     /** If the package is going to be removed, this gives the reason
      *  for the removal.
      */
@@ -128,19 +122,25 @@ public:
 
     /** If \b true, the package in question is flagged for future reference. */
     bool flagged:1;
+  };
 
-    /** During mark-and-sweep, this is set to \b true iff the package
-     *  is reachable from the root set.
+  /** \brief Represents a group of aptitude actions. */
+  class action_group
+  {
+    /** The parent group.  This is a member and not a parent class so
+     *  that I can force its cleanup routines to run before mine.
      */
-    bool marked:1;
+    pkgDepCache::ActionGroup *parent_group;
 
-    /** When garbage collection runs, this field is set to \b true on
-     *  each package that is not reachable from the root set.  These
-     *  packages are automatically deleted if the appropriate option
-     *  is set, but this flag is set whether or not the package is
-     *  actually marked for deletion.
-     */
-    bool garbage:1;
+    aptitudeDepCache &cache;
+
+    undo_group *group;
+
+    action_group(const action_group &other);
+  public:
+    action_group(aptitudeDepCache &cache, undo_group *group = NULL);
+
+    ~action_group();
   };
 
   /** This flag is \b true iff the persistent state has changed (ie, we
@@ -236,25 +236,19 @@ private:
   // Marks the package based on its current status and its dselect state,
   // adjusting its selected state as appropriate.
 
-  // gc
-  void mark_package(const PkgIterator &pkg,
-		    const VerIterator &ver,
-		    bool follow_recommends,
-		    bool follow_suggests,
-		    bool debug,
-		    int level);
-  void mark_and_sweep(undo_group *undo);
+  // The following methods just perform the core part of the named
+  // action, without creating a new action group or running
+  // mark&sweep.
+  void internal_mark_install(const PkgIterator &Pkg, bool AutoInst, bool ReInstall);
+  void internal_mark_delete(const PkgIterator &Pkg, bool Purge, bool unused_delete);
+  void internal_mark_keep(const PkgIterator &Pkg, bool Automatic, bool SetHold);
 
-  // The following three methods exist so that undos function sensibly.
-  // The problem is that (a) undo groups contain complete information about
-  // the cache state, so mark-and-sweep is unnecessary, and (b) if the
-  // undo groups are executed in the wrong order, the results will also
-  // be wrong.  For instance: A depends on B (auto installed) and A is
-  // removed.  When this is undone, B is first re-installed and marked as
-  // "auto", causing it to immediately be removed again!
-  void internal_mark_install(const PkgIterator &Pkg, bool AutoInst, bool ReInstall, undo_group *undo, bool do_mark_sweep);
-  void internal_mark_delete(const PkgIterator &Pkg, bool Purge, bool unused_delete, undo_group *undo, bool do_mark_sweep);
-  void internal_mark_keep(const PkgIterator &Pkg, bool Soft, bool SetHold, undo_group *undo, bool do_mark_sweep);
+  /** Handle changing package states to take into account the garbage
+   *  collector's output.  Uses the core pkgDepCache methods.
+   */
+  void sweep();
+  void begin_action_group();
+  void end_action_group(undo_group *undo);
 public:
   /** Create a new depcache from the given cache and policy.  By
    *  default, the depcache is readonly if and only if it is not
@@ -294,22 +288,22 @@ public:
   bool save_selection_list(OpProgress &prog, const char *status_fname=NULL);
   // If the list isn't locked (or an fd isn't provided), is a NOP.
 
-  void begin_action_group();
-  void end_action_group(undo_group *undo);
-  //  Start and end, respectively, a group of actions.  The benefit of using
-  // these routines is EFFICIENCY -- in particular, mark_* will refrain from
-  // iterating over the entire package cache while these are enabled.
-  // These are meant to be called at the beginning and end of a large group
-  // of successive state changes.  All action groups should really be folded
-  // up before you return to the UI.
-  //  Calls to these routines nest.
+  void mark_install(const PkgIterator &Pkg, bool AutoInst, bool ReInstall, undo_group *undo);
+  void mark_delete(const PkgIterator &Pkg, bool Purge, bool unused_delete, undo_group *undo);
 
-  void mark_install(const PkgIterator &Pkg, bool AutoInst, bool ReInstall, undo_group *undo)
-  {internal_mark_install(Pkg, AutoInst, ReInstall, undo, true);}
-  void mark_delete(const PkgIterator &Pkg, bool Purge, bool unused_delete, undo_group *undo)
-  {internal_mark_delete(Pkg, Purge, unused_delete, undo, true);}
-  void mark_keep(const PkgIterator &Pkg, bool Soft, bool SetHold, undo_group *undo)
-  {internal_mark_keep(Pkg, Soft, SetHold, undo, true);}
+  /** \brief Keep the given package at its current version.
+   *
+   *  \param Pkg The package to keep.
+   *
+   *  \param Automatic If \b true, then this is an automatically
+   *  triggered action.
+   *
+   *  \param SetHold If \b true, then a sticky hold will be set on
+   *  this package.
+   *
+   *  \param undo The undo group into which actions should be placed.
+   */
+  void mark_keep(const PkgIterator &Pkg, bool Automatic, bool SetHold, undo_group *undo);
 
   void set_candidate_version(const VerIterator &TargetVer, undo_group *undo);
   // These just wrap the equivalent depCache functions for the UI's benefit;
@@ -415,6 +409,15 @@ public:
    *  emitted exactly once for every action group.
    */
   sigc::signal0<void> read_only_fail;
+
+  /** \name GC control methods */
+  // @{
+
+  InRootSetFunc *GetRootSetFunc();
+  bool MarkFollowsRecommends();
+  bool MarkFollowsSuggests();
+
+  // @}
 
   virtual ~aptitudeDepCache();
 };
