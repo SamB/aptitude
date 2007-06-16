@@ -1318,6 +1318,8 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
 
   action_group group(*this, undo);
 
+  pre_package_state_changed();
+
   for(imm::map<aptitude_resolver_package, generic_solution<aptitude_universe>::action>::const_iterator
 	i = sol.get_actions().begin();
       i != sol.get_actions().end(); ++i)
