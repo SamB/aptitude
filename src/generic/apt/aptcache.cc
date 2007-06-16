@@ -1343,6 +1343,7 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
 	{
 	  set_candidate_version(actionver, NULL);
 	  internal_mark_install(pkg, false, false);
+	  MarkAuto(pkg, true);
 	}
     }
 }
