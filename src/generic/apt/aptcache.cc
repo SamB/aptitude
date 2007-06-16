@@ -1337,7 +1337,7 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
 	    get_ext_state(pkg).remove_reason = from_resolver;
 	}
       else if(actionver == curver)
-	internal_mark_keep(pkg, false, true);
+	internal_mark_keep(pkg, true, false);
       else
 	// install a particular version that's not the current one.
 	{
