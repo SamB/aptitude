@@ -1,6 +1,6 @@
 // threads.h                                              -*-c++-*-
 //
-//   Copyright (C) 2005-2006 Daniel Burrows
+//   Copyright (C) 2005-2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -912,6 +912,32 @@ namespace threads
       return b.timed_put(in, until);
     }
   };
+
+  // A utility that proxies for noncopyable thread bootstrap
+  // objects.  The only requirement is that the pointer passed
+  // to the constructor must not be destroyed until the thread
+  // completes.
+  template<typename F>
+  class bootstrap_proxy
+  {
+    F *f;
+  public:
+    bootstrap_proxy(F *_f)
+      : f(_f)
+    {
+    }
+
+    void operator()() const
+    {
+      (*f)();
+    }
+  };
+
+  template<typename F>
+  bootstrap_proxy<F> make_bootstrap_proxy(F *f)
+  {
+    return bootstrap_proxy<F>(f);
+  }
 }
 
 #endif // THREADS_H
