@@ -1,4 +1,20 @@
 [6/15/2007]
+Version 0.4.5.2                             "To ook is human,
+                                             to meow feline"
+
+  * Multiple minor bugs introduced by the patches to support apt's
+    auto-marking were fixed.
+    - Packages kept at their current version by applying a solution
+      no longer get their hold flags turned on.
+    - Packages that are installed by a solution get their auto-installed
+      flag set.
+    - Applying a solution updates the resolver state (so the error
+      bar doesn't stick around until you change a package's state
+      by hand).
+
+  * Fixed a broken cross-reference in the manpage.
+
+[6/15/2007]
 Version 0.4.5.1                             "Nothing could possibly go
                                              wrAAAAAAAAAAaaaa..."
 
