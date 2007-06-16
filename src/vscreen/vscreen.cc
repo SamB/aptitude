@@ -43,6 +43,7 @@
 #include "config/style.h"
 
 #include <generic/util/event_queue.h>
+#include <generic/util/util.h>
 #include <generic/util/threads.h>
 
 // For _()
@@ -201,55 +202,135 @@ void vscreen_post_event(vscreen_event *ev)
 //////////////////////////////////////////////////////////////////////
 // Event management threads
 
-/** This thread is responsible for posting wget_wch() calls. */
+/** This thread is responsible for posting wget_wch() calls.
+ *
+ *  Note that the actual call to wget_wch must take place in the
+ *  foreground thread, because wget_wch will invoke wrefresh().
+ *  So instead of calling it in the background thread, I post
+ *  input events to the foreground thread.
+ *
+ *  To prevent the background thread from spamming the foreground
+ *  thread with events, I suspend it until the event actually
+ *  triggers.
+ */
 class input_thread
 {
-  class key_input_event : public vscreen_event
+  class get_input_event : public vscreen_event
   {
-    key k;
+    // A reference to the parent's condition mutex;
+    // should be held while we signal the condition.
+    threads::mutex &m;
+    // A reference to the parent's variable indicating
+    // whether the event has triggered.  Will be set
+    // to "true" after we try to read all available
+    // keystrokes.
+    bool &b;
+    // A reference to the parent's condition variable.
+    threads::condition &c;
+
   public:
-    key_input_event (const key &_k)
-      :k(_k)
+    get_input_event(threads::mutex &_m, bool &_b, threads::condition &_c)
+      : m(_m), b(_b), c(_c)
     {
     }
 
     void dispatch()
     {
-      if(global_bindings.key_matches(k, "Refresh"))
-	vscreen_redraw();
-      else
-	toplevel->dispatch_key(k);
+      // NB: use the GLOBAL getch function to avoid weirdness
+      // referencing the state of toplevel.
+      wint_t wch = 0;
+      int status;
+
+      bool done = false;
+
+      while(!done)
+	{
+	  // I assume here that vscreen_init() set nodelay.
+	  do
+	    {
+	      status = get_wch(&wch);
+	    } while(status == KEY_CODE_YES && wch == KEY_RESIZE);
+
+	  if(status == ERR) // No more to read.
+	    {
+	      threads::mutex::lock l(m);
+	      b = true;
+	      c.wake_all();
+	      done = true;
+	    }
+	  else
+	    {
+	      key k(wch, status == KEY_CODE_YES);
+
+	      if(wch == KEY_MOUSE)
+		{
+		  if(toplevel.valid())
+		    {
+		      MEVENT ev;
+		      getmouse(&ev);
+
+		      toplevel->dispatch_mouse(ev.id, ev.x, ev.y, ev.z, ev.bstate);
+		    }
+		}
+	      else
+		{
+		  if(global_bindings.key_matches(k, "Refresh"))
+		    vscreen_redraw();
+		  else
+		    toplevel->dispatch_key(k);
+		}
+	    }
+	}
     }
   };
 
-  class mouse_input_event : public vscreen_event
+  class fatal_input_exception : public Exception
   {
-    MEVENT ev;
-
+    int err;
   public:
-    mouse_input_event(const MEVENT &_ev)
-      :ev(_ev)
+    fatal_input_exception(int _err)
+      : err(_err)
+    {
+    }
+
+    std::string errmsg() const
+    {
+      return "Unable to read from stdin: " + sstrerror(err);
+    }
+  };
+
+  class fatal_input_error : public vscreen_event
+  {
+    int err;
+  public:
+    fatal_input_error(int _err)
+      : err(_err)
     {
     }
 
     void dispatch()
     {
-      if(toplevel.valid())
-	toplevel->dispatch_mouse(ev.id, ev.x, ev.y, ev.z, ev.bstate);
+      throw new fatal_input_exception(err);
     }
   };
+
+  threads::mutex input_event_mutex;
+  // Used to block this thread until an event to read input fires.
+  bool input_event_fired;
+  threads::condition input_event_condition;
 
   static input_thread instance;
 
   static threads::mutex instance_mutex;
   static threads::thread *instancet;
+
 public:
   static void start()
   {
     threads::mutex::lock l(instance_mutex);
 
     if(instancet == NULL)
-      instancet = new threads::thread(instance);
+      instancet = new threads::thread(threads::make_bootstrap_proxy(&instance));
   }
 
   static void stop()
@@ -265,34 +346,48 @@ public:
       }
   }
 
-  void operator()() const
+  void operator()()
   {
-    // NB: use the GLOBAL getch function to avoid weirdness
-    // referencing the state of toplevel.
+    threads::mutex::lock l(input_event_mutex);
+    input_event_fired = false;
+
+    // Important note: this routine only blocks indefinitely in
+    // select() and pthread_cond_wait(), assuming no bugs in
+    // vscreen_post_event().  pthread_cond_wait() is a cancellation
+    // point.  select() should be but isn't, but there is a
+    // workaround below.
+
     while(1)
       {
-	wint_t wch = 0;
-	int status;
+	// Select on stdin; when we see that input is available, spawn
+	// an input event.
+	fd_set selectfds;
+	FD_ZERO(&selectfds);
+	FD_SET(0, &selectfds);
 
-	do
+	pthread_testcancel();
+	int result = select(1, &selectfds, NULL, NULL, NULL);
+	pthread_testcancel();	// Workaround for Linux threads suckage.
+                                // See pthread_cancel(3).
+
+	if(result != 1)
 	  {
-	    status = get_wch(&wch);
-	  } while(status == KEY_CODE_YES && wch == KEY_RESIZE);
-
-	key k(wch, status == KEY_CODE_YES);
-
-	if(status == ERR)
-	  return; // ???
-
-	if(wch == KEY_MOUSE)
-	  {
-	    MEVENT ev;
-	    getmouse(&ev);
-
-	    vscreen_post_event(new mouse_input_event(ev));
+	    if(errno != EINTR)
+	      // Probably means that there was an error reading
+	      // standard input.  (could also be ENOMEM)
+	      vscreen_post_event(new fatal_input_error(errno));
+	    break;
 	  }
 	else
-	  vscreen_post_event(new key_input_event(k));
+	  {
+	    vscreen_post_event(new get_input_event(input_event_mutex,
+						   input_event_fired,
+						   input_event_condition));
+
+	    while(!input_event_fired)
+	      input_event_condition.wait(l);
+	    input_event_fired = false;
+	  }
       }
   }
 };
@@ -673,6 +768,7 @@ void vscreen_init()
 
   curses_avail=true;
   cbreak();
+  rootwin.nodelay(true);
   rootwin.keypad(true);
 
   global_bindings.set("Quit", quitkey);
