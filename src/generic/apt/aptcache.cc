@@ -1341,7 +1341,7 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
       else
 	// install a particular version that's not the current one.
 	{
-	  set_candidate_version(actionver, undo);
+	  set_candidate_version(actionver, NULL);
 	  internal_mark_install(pkg, false, false);
 	}
     }
