@@ -497,23 +497,6 @@ class timeout_thread
   // The global instance; this is a Singleton.
   static timeout_thread instance;
 
-  // Unfortunately, technical considerations in the threading code
-  // mean that the actual thread object is expected to be copyable.
-  // Hence this proxy:
-  class timeout_proxy
-  {
-    timeout_thread &real_thread;
-  public:
-    timeout_proxy(timeout_thread &_real_thread)
-      : real_thread(_real_thread)
-    {
-    }
-
-    void operator()() const
-    {
-      real_thread();
-    }
-  };
 public:
   static timeout_thread &get_instance()
   {
@@ -531,7 +514,8 @@ public:
 	throw SingletonViolationException();
       }
 
-    instance.running_thread.put(new threads::thread(timeout_proxy(instance)));
+    threads::thread *t = new threads::thread(threads::make_bootstrap_proxy(&instance));
+    instance.running_thread.put(t);
   }
 
   static void stop()
