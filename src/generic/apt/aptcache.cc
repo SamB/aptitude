@@ -96,7 +96,6 @@ public:
     else switch(prev_mode)
       {
       case ModeDelete:
-	// the unused_delete parameter isn't that important..
 	owner->internal_mark_delete(pkg, prev_iflags & Purge, prev_removereason == unused);
 	break;
       case ModeKeep:
