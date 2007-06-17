@@ -1,6 +1,6 @@
 // column_definition.h   -*-c++-*-
 //
-//  Copyright 2000, 2005 Daniel Burrows
+//  Copyright 2000, 2005, 2007 Daniel Burrows
 //  
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -119,10 +119,10 @@ class column_generator
 // Stores the information needed to parse and then generate columns.
 {
   column_definition_list columns;
-protected:
+public:
   virtual column_disposition setup_column(int type)=0;
   // Sets up a column of the given type (the width field may be overridden?)
-public:
+
   column_generator(const column_definition_list &_columns)
     :columns(_columns) {}
 
