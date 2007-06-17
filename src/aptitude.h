@@ -27,6 +27,7 @@ inline void setlocale(int, const char *)
 # include <libintl.h>
 # include <string.h>
 # define _(Text) gettext (Text)
+# define W_(Text) transcode (gettext (Text) )
 # define N_(Text) Text
 
 /** Strips everything up to and including the first pipe character
