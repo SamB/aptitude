@@ -903,7 +903,7 @@ void aptitudeDepCache::mark_keep(const PkgIterator &Pkg, bool Automatic, bool Se
       return;
     }
 
-  action_group group(*this);
+  action_group group(*this, undo);
 
   pre_package_state_changed();
 
