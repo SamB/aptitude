@@ -829,8 +829,19 @@ void aptitudeDepCache::internal_mark_install(const PkgIterator &Pkg,
 {
   dirty=true;
 
+
+  bool set_to_manual =
+    ((Pkg.CurrentVer().end()  && !(*this)[Pkg].Install()) ||
+     (!Pkg.CurrentVer().end() && (*this)[Pkg].Delete() && get_ext_state(Pkg).remove_reason == unused));
+
+  if(set_to_manual)
+    MarkAuto(Pkg, false);
+
+
   if(!ReInstall)
-    pkgDepCache::MarkInstall(Pkg, AutoInst);
+    {
+      pkgDepCache::MarkInstall(Pkg, AutoInst);
+    }
   else
     pkgDepCache::MarkKeep(Pkg, AutoInst);
 
@@ -903,6 +914,20 @@ void aptitudeDepCache::internal_mark_keep(const PkgIterator &Pkg, bool Automatic
 {
   dirty=true;
 
+
+  // If the package is currently installed and is being garbage
+  // collected, switch it to manual mode.  We check
+  // pkg.CurrentVer().end() to avoid fiddling with packages that are
+  // in the ConfigFiles state and are being purged.
+  bool was_garbage_removed =
+    (*this)[Pkg].Delete() &&
+    !Pkg.CurrentVer().end() &&
+    get_ext_state(Pkg).remove_reason == unused;
+
+  if(was_garbage_removed)
+    MarkAuto(Pkg, false);
+
+
   pkgDepCache::MarkKeep(Pkg, false, !Automatic);
   pkgDepCache::SetReInstall(Pkg, false);
   get_ext_state(Pkg).reinstall=false;
@@ -938,6 +963,21 @@ void aptitudeDepCache::set_candidate_version(const VerIterator &ver,
        ver.ParentPkg()->CurrentState != pkgCache::State::ConfigFiles)))
     {
       pre_package_state_changed();
+
+
+      // Make the package manually installed if it was being
+      // garbage-collected.
+      bool set_to_manual =
+	(ver.ParentPkg().CurrentVer().end() && !(*this)[ver.ParentPkg()].Install()) ||
+	(!ver.ParentPkg().CurrentVer().end() &&
+	 (*this)[ver.ParentPkg()].Delete() &&
+	 get_ext_state(ver.ParentPkg()).remove_reason == unused);
+
+      if(set_to_manual)
+	MarkAuto(ver.ParentPkg(), false);
+
+
+
       // Use the InstVerIter instead of GetCandidateVersion, since
       // that seems to store the currently to-be-installed version.
       VerIterator prev=(*this)[(ver.ParentPkg())].InstVerIter(GetCache());
@@ -1015,6 +1055,14 @@ void aptitudeDepCache::mark_single_install(const PkgIterator &Pkg, undo_group *u
 
   for(PkgIterator i=PkgBegin(); !i.end(); i++)
     pkgDepCache::MarkKeep(i, true);
+
+
+  bool set_to_manual =
+    ((Pkg.CurrentVer().end()  && !(*this)[Pkg].Install()) ||
+     (!Pkg.CurrentVer().end() && (*this)[Pkg].Delete() && get_ext_state(Pkg).remove_reason == unused));
+
+  if(set_to_manual)
+    MarkAuto(Pkg, false);
 
   pkgDepCache::MarkInstall(Pkg, true);
 }
