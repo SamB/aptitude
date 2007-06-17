@@ -1,6 +1,6 @@
 // pkg_columnizer.h  -*-c++-*-
 //
-//  Copyright 1999-2002, 2004-2005 Daniel Burrows
+//  Copyright 1999-2002, 2004-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -40,10 +40,15 @@ class pkg_item::pkg_columnizer:public column_generator
   // Set up the translated format widths.
   static void init_formatting();
 protected:
-  virtual column_disposition setup_column(int type);
   const pkgCache::PkgIterator &get_pkg() {return pkg;}
   const pkgCache::VerIterator &get_visible_ver() {return visible_ver;}
 public:
+  static column_disposition setup_column(const pkgCache::PkgIterator &pkg,
+					 const pkgCache::VerIterator &ver,
+					 int basex,
+					 int type);
+  virtual column_disposition setup_column(int type);
+
   static const column_definition_list &get_columns()
   {
     setup_columns();

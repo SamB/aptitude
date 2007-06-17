@@ -1,6 +1,6 @@
 // pkg_ver_item.h (This is -*-c++-*-)
 //
-//  Copyright 1999-2002, 2004-2005 Daniel Burrows
+//  Copyright 1999-2002, 2004-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 
 #include "apt_info_tree.h"
 
+#include "pkg_columnizer.h"
 #include "pkg_node.h"
 #include "pkg_grouppolicy.h"
 #include "pkg_item_with_subtree.h"
@@ -35,6 +36,29 @@
 #include <apt-pkg/version.h>
 #include <apt-pkg/depcache.h>
 #include <apt-pkg/pkgsystem.h>
+
+
+class pkg_ver_columnizer:public pkg_item::pkg_columnizer
+{
+  bool show_pkg_name;
+
+public:
+  static column_disposition setup_column(const pkgCache::VerIterator &ver,
+					 bool show_pkg_name,
+					 int basex,
+					 int type);
+  column_disposition setup_column(int type);
+
+
+  pkg_ver_columnizer(const pkgCache::VerIterator &_ver,
+		     bool _show_pkg_name,
+		     const column_definition_list &_columns,
+		     int _basex):
+    pkg_item::pkg_columnizer(_ver.ParentPkg(), _ver, _columns, _basex),
+    show_pkg_name(_show_pkg_name)
+  {
+  }
+};
 
 class pkg_ver_item:public pkg_tree_node
 {

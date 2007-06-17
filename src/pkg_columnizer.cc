@@ -110,6 +110,14 @@ const char *pkg_item::pkg_columnizer::column_names[pkg_columnizer::numtypes]=
 
 column_disposition pkg_item::pkg_columnizer::setup_column(int type)
 {
+  return setup_column(pkg, visible_ver, basex, type);
+}
+
+column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIterator &pkg,
+							  const pkgCache::VerIterator &visible_ver,
+							  int basex,
+							  int type)
+{
   switch(type)
     {
     case name:
@@ -323,9 +331,9 @@ column_disposition pkg_item::pkg_columnizer::setup_column(int type)
       break;
     case priority:
       if(!visible_ver.end() &&
-	 visible_ver.PriorityType() &&
-	 visible_ver.PriorityType()[0])
-	return column_disposition(visible_ver.PriorityType(), 0);
+	 const_cast<pkgCache::VerIterator &>(visible_ver).PriorityType() &&
+	 const_cast<pkgCache::VerIterator &>(visible_ver).PriorityType()[0])
+	return column_disposition(const_cast<pkgCache::VerIterator &>(visible_ver).PriorityType(), 0);
       else
 	return column_disposition(_("Unknown"), 0);
 

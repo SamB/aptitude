@@ -1,6 +1,6 @@
 // pkg_ver_item.cc
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -50,28 +50,16 @@
 
 using namespace std;
 
-class pkg_ver_columnizer:public pkg_item::pkg_columnizer
-{
-  bool show_pkg_name;
-
-protected:
-  column_disposition setup_column(int type);
-public:
-  pkg_ver_columnizer(const pkgCache::VerIterator &_ver,
-		     bool _show_pkg_name,
-		     const column_definition_list &_columns,
-		     int _basex):
-    pkg_item::pkg_columnizer(_ver.ParentPkg(), _ver, _columns, _basex),
-    show_pkg_name(_show_pkg_name)
-  {
-  }
-};
-
 column_disposition pkg_ver_columnizer::setup_column(int type)
 {
-  pkgCache::VerIterator ver=get_visible_ver();
-  int basex=get_basex();
+  return setup_column(get_visible_ver(), show_pkg_name, get_basex(), type);
+}
 
+column_disposition pkg_ver_columnizer::setup_column(const pkgCache::VerIterator &ver,
+						    bool show_pkg_name,
+						    int basex,
+						    int type)
+{
   switch(type)
     {
     case name:
@@ -339,8 +327,9 @@ column_disposition pkg_ver_columnizer::setup_column(int type)
       if(ver.end())
 	return column_disposition("", 0);
 
-      if(ver.PriorityType() && ver.PriorityType()[0])
-	return column_disposition(ver.PriorityType(), 0);
+      if(const_cast<pkgCache::VerIterator &>(ver).PriorityType() &&
+	 const_cast<pkgCache::VerIterator &>(ver).PriorityType()[0])
+	return column_disposition(const_cast<pkgCache::VerIterator &>(ver).PriorityType(), 0);
       else
 	return column_disposition(_("Unknown"), 0);
     case shortpriority:
@@ -418,7 +407,10 @@ column_disposition pkg_ver_columnizer::setup_column(int type)
 	  return column_disposition("U", 0);
       }
     default:
-      return pkg_columnizer::setup_column(type);
+      return pkg_columnizer::setup_column(ver.ParentPkg(),
+					  ver,
+					  basex,
+					  type);
     }
 }
 
