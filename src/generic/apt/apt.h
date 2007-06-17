@@ -27,6 +27,8 @@
 
 #include "aptcache.h"
 
+#include <string.h>
+
 #include <utility>
 
 class OpProgress;

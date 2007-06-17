@@ -1,6 +1,6 @@
 // transcode.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -22,6 +22,10 @@
 #include <generic/util/eassert.h>
 #include <errno.h>
 #include <iconv.h>
+#include <langinfo.h>
+
+#include <stdlib.h>
+#include <string.h>
 
 using namespace std;
 

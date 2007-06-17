@@ -1,6 +1,6 @@
 // curses++.h  (this is -*-c++-*-)
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@
 
 // For isspace
 #include <ctype.h>
+
+#include <string.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -77,7 +79,7 @@ struct wchtype
 
   bool operator<(const wchtype &other) const
   {
-    return ch<other.ch || ch==other.ch && attrs<other.attrs;
+    return ch<other.ch || (ch==other.ch && attrs<other.attrs);
   }
 
   bool operator<=(const wchtype &other) const

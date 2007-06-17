@@ -21,6 +21,8 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/strutl.h>
 
+#include <algorithm>
+
 using namespace std;
 
 class search_result_parameters : public column_parameters

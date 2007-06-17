@@ -5,6 +5,7 @@
 #include "pkg_hier.h"
 
 #include <stdio.h>
+#include <string.h>
 
 #include <apt-pkg/error.h>
 

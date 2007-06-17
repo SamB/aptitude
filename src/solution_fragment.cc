@@ -1,7 +1,7 @@
 // solution_fragment.cc
 //
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -31,6 +31,7 @@
 #include <vscreen/fragment.h>
 #include <vscreen/transcode.h>
 
+#include <algorithm>
 #include <vector>
 
 typedef generic_solution<aptitude_universe> aptitude_solution;

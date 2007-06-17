@@ -19,6 +19,8 @@
 
 #include "dummy_universe.h"
 
+#include <algorithm>
+
 using namespace std;
 
 dummy_package::dummy_package(const string &_name, unsigned int id)

@@ -806,8 +806,8 @@ static bool internal_is_interesting_dep(const pkgCache::DepIterator &d,
 	  while(!d2.end())
 	    {
 	      if(d2->Type == pkgCache::Dep::Recommends &&
-		 or_group_subsumes(d2, d, &cache->GetCache()) ||
-		 or_group_subsumes(d, d2, &cache->GetCache()))
+		 (or_group_subsumes(d2, d, &cache->GetCache()) ||
+		  or_group_subsumes(d, d2, &cache->GetCache())))
 		{
 		  pkgCache::DepIterator dtmp = d;
 		  while(!dtmp.end() && dtmp->CompareOp & pkgCache::Dep::Or)

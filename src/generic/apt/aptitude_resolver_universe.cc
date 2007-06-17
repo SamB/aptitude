@@ -4,6 +4,7 @@
 
 #include <generic/problemresolver/solution.h>
 
+#include <algorithm>
 #include <sstream>
 
 using namespace std;

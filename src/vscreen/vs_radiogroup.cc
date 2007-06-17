@@ -4,6 +4,8 @@
 
 #include "vs_togglebutton.h"
 
+#include <stdlib.h>
+
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/mem_fun.h>
 

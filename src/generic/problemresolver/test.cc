@@ -33,6 +33,8 @@
 
 #include <generic/util/eassert.h>
 
+#include <string.h>
+
 using namespace std;
 
 // To make things easier, the tests are specified as plaintext files.

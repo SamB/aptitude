@@ -49,6 +49,7 @@
 // For _()
 #include "../aptitude.h"
 
+#include <limits.h>
 #include <signal.h>
 
 #include <generic/util/eassert.h>
@@ -526,7 +527,7 @@ class timeout_thread
 	gettimeofday(&curtime, 0);
 
 	if(timeval_subtract(&result, &i->second.activate_time, &curtime) == 1 ||
-	   result.tv_sec == 0 && result.tv_usec <= 10)
+	   (result.tv_sec == 0 && result.tv_usec <= 10))
 	  {
 	    vscreen_post_event(i->second.ev);
 	    timeouts.erase(i);
@@ -556,7 +557,7 @@ class timeout_thread
 	j++;
 	timeval diff;
 	if(timeval_subtract(&diff, &i->second.activate_time, &curtime) == 1 ||
-	   diff.tv_sec == 0 && diff.tv_usec <= 10)
+	   (diff.tv_sec == 0 && diff.tv_usec <= 10))
 	  {
 	    tv_out = curtime;
 	    return true;
