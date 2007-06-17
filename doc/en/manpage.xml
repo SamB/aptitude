@@ -589,39 +589,57 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 
 	  <para>
 	    This command searches for packages that require or
-	    conflict with the given package.  The result is a sequence
-	    of dependencies leading to the target package:
+	    conflict with the given package.  It displays a sequence
+	    of dependencies leading to the target package, along with
+	    a note indicating the installed state of each package in
+	    the dependency chain:
 	  </para>
 
-	  <screen>gnome-desktop-environment Depends  gdm (>= 2.18.2)
-gdm                       Depends  gnome-session | xterm | x-window-manager | x-terminal-emulator
-fvwm                      Provides x-window-manager</screen>
+	  <screen>$ aptitude why kdepim
+i   nautilus-data Recommends nautilus
+i A nautilus      Recommends desktop-base (>= 0.2)
+i A desktop-base  Suggests   gnome | kde | xfce4 | wmaker
+p   kde           Depends    kdepim (>= 4:3.4.3)</screen>
 
 	  <para>
-	    For <literal>why</literal>, the last dependency listed
-	    will be a positive dependency (such as Depends or
-	    Recommends), while for <literal>why-not</literal>, the
-	    last dependency (but no other dependency) will be a
-	    conflict.
+	    The command <literal>why</literal> finds a dependency
+	    chain that installs the package named on the command line,
+	    as above.  Note that the dependency that aptitude produced
+	    in this case is only a suggestion.  This is because no
+	    package installed on my computer depends on or recommends
+	    the <systemitem>kdepim</systemitem> package; if a stronger
+	    dependency were available, aptitude would have displayed
+	    it.
 	  </para>
+
+	  <para>
+	    In contrast, <literal>why-not</literal> finds a
+	    dependency chain leading to a conflict
+	    with the target package:
+	  </para>
+
+	  <screen>$ aptitude why-not textopo
+i   ocaml-core          Depends   ocamlweb
+i A ocamlweb            Depends   tetex-extra | texlive-latex-extra
+i A texlive-latex-extra Conflicts textopo</screen>
 
 	  <para>
 	    If one or more <replaceable>patterns</replaceable> are
 	    present, then aptitude will begin its search at these
-	    patterns; that is, the first package in the list will be a
-	    package matching the pattern in question.  The patterns
-	    are considered to be package names unless they contain a
-	    tilde character (<literal>~</literal>), in which case they
-	    are treated as search patterns (see the section
-	    <quote><link linkend='secSearchPatterns'>Search
+	    patterns; that is, the first package in the chain it
+	    prints will be a package matching the pattern in question.
+	    The patterns are considered to be package names unless
+	    they contain a tilde character (<literal>~</literal>), in
+	    which case they are treated as search patterns (see the
+	    section <quote><link linkend='secSearchPatterns'>Search
 	    Patterns</link></quote> in the &aptitude; reference
 	    manual).
 	  </para>
 
 	  <para>
-	    If no patterns are present, then &aptitude; will find a
-	    dependency chain beginning at a manually installed
-	    package.
+	    If no patterns are present, then &aptitude; will search
+	    for dependency chains beginning at manually installed
+	    packages.
 	  </para>
 
 	  <note>
@@ -646,9 +664,16 @@ fvwm                      Provides x-window-manager</screen>
 	    that avoid ORed dependencies and Provides; and it looks
 	    for the shortest dependency chain meeting those criteria.
 	    These rules are progressively weakened until a match is
-	    found.  If the verbosity level is 1 or more, then
+	    found.
+	  </para>
+
+	  <para>
+	    If the verbosity level is 1 or more, then
 	    <emphasis>all</emphasis> the explanations aptitude can
-	    find will be displayed, in inverse order of relevance.
+	    find will be displayed, in inverse order of relevance.  If
+	    the verbosity level is 2 or more, a truly excessive amount
+	    of debugging information will be printed to standard
+	    output.
 	  </para>
 
 	  <para>
