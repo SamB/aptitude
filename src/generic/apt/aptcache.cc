@@ -1261,10 +1261,19 @@ void aptitudeDepCache::sweep()
 	{
 	  if(pkg.CurrentVer() != 0 && pkg->CurrentState != pkgCache::State::ConfigFiles)
 	    {
-	      MarkDelete(pkg, purge_unused);
-	      package_states[pkg->ID].selection_state =
-		(purge_unused ? pkgCache::State::Purge : pkgCache::State::DeInstall);
-	      package_states[pkg->ID].remove_reason = unused;
+	      // NB: apt sets the Garbage flag on packages that are
+	      // being deleted and are automatic (this is due to some
+	      // internal details of the mark&sweep algorithm and its
+	      // aptitude heritage).  To compensate for this, we
+	      // *only* set the unused-delete flag if the package was
+	      // not previously being deleted.
+	      if(!PkgState[pkg->ID].Delete())
+		{
+		  MarkDelete(pkg, purge_unused);
+		  package_states[pkg->ID].selection_state =
+		    (purge_unused ? pkgCache::State::Purge : pkgCache::State::DeInstall);
+		  package_states[pkg->ID].remove_reason = unused;
+		}
 	    }
 	  else
 	    {
