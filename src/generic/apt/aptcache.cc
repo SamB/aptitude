@@ -91,6 +91,8 @@ public:
   {
     aptitudeDepCache::action_group group(*owner);
 
+    owner->pre_package_state_changed();
+
     if(prev_iflags&ReInstall)
       owner->internal_mark_install(pkg, false, true);
     else switch(prev_mode)
@@ -159,7 +161,9 @@ public:
 
   void undo()
   {
+    owner->pre_package_state_changed();
     owner->set_candidate_version(oldver, NULL);
+    owner->package_state_changed();
   }
 };
 
