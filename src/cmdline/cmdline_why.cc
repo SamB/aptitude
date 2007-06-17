@@ -22,6 +22,8 @@
 
 #include <aptitude.h>
 
+#include <pkg_ver_item.h> // For column formats.
+
 #include <algorithm>
 #include <deque>
 
@@ -64,7 +66,7 @@ namespace
 
   public:
     justify_action(const pkgCache::DepIterator &_dep,
-		   int _id)
+	   int _id)
       : dep(_dep), id(_id)
     {
     }
@@ -79,10 +81,40 @@ namespace
     // higher-level code to do column-based formatting.
     std::string description_col1() const
     {
+      pkgCache::VerIterator ver;
       if(!dep.end())
-	return const_cast<pkgCache::DepIterator &>(dep).ParentPkg().Name();
+	ver = const_cast<pkgCache::DepIterator &>(dep).ParentVer();
       else
-	return const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name();
+	ver = const_cast<pkgCache::PrvIterator &>(prv).OwnerVer();
+
+      pkgCache::PkgIterator pkg = ver.ParentPkg();
+
+      // Copy flags from "aptitude search" et al.
+      //
+      // This is a little crufty; the column formatting needs an overhaul.
+      column_disposition flag1 =
+	pkg_ver_columnizer::setup_column(ver, true, 0, pkg_item::pkg_columnizer::stateflag);
+      column_disposition flag2 =
+	pkg_ver_columnizer::setup_column(ver, true, 0, pkg_item::pkg_columnizer::actionflag);
+      column_disposition flag3 =
+	pkg_ver_columnizer::setup_column(ver, true, 0, pkg_item::pkg_columnizer::autoset);
+
+      std::string rval;
+      if(flag1.text.size() < 1)
+	rval += ' ';
+      else
+	rval += transcode(flag1.text);
+      if(flag2.text.size() < 1)
+	rval += ' ';
+      else
+	rval += transcode(flag2.text);
+      if(flag3.text.size() < 1)
+	rval += ' ';
+      else
+	rval += transcode(flag3.text);
+      rval += ' ';
+      rval += pkg.Name();
+      return rval;
     }
 
     std::string description_col2() const
@@ -476,7 +508,7 @@ namespace
 	  it != actions.end(); ++it)
 	{
 	  rval += "  | ";
-	  rval += it->description().c_str();
+	  rval += it->description();
 	  rval += '\n';
 	}
       return rval;
