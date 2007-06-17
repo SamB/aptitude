@@ -104,6 +104,21 @@
 
     <cmdsynopsis>
       <command>aptitude</command>
+
+      <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
+
+      <group choice='req'>
+	<arg choice='plain'>why</arg>
+	<arg choice='plain'>why-not</arg>
+      </group>
+
+      <arg choice='plain' rep='repeat'><replaceable>patterns</replaceable></arg>
+
+      <arg choice='plain'><replaceable>package</replaceable></arg>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+      <command>aptitude</command>
       <arg choice='opt'>-S <replaceable>fname</replaceable></arg>
       <group choice='opt'><arg choice='plain'>-u</arg> <arg
       choice='plain'>-i</arg></group>
@@ -559,6 +574,86 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 	    will be displayed.  If the verbosity level is 2 or
 	    greater, the select version or versions will be displayed
 	    once for each archive in which they are found.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>why</literal>, <literal>why-not</literal></term>
+
+	<listitem>
+	  <para>
+	    Explains the reason that a particular package can or
+	    cannot be installed on the system.
+	  </para>
+
+	  <para>
+	    This command searches for packages that require or
+	    conflict with the given package.  The result is a sequence
+	    of dependencies leading to the target package:
+	  </para>
+
+	  <screen>gnome-desktop-environment Depends  gdm (>= 2.18.2)
+gdm                       Depends  gnome-session | xterm | x-window-manager | x-terminal-emulator
+fvwm                      Provides x-window-manager</screen>
+
+	  <para>
+	    For <literal>why</literal>, the last dependency listed
+	    will be a positive dependency (such as Depends or
+	    Recommends), while for <literal>why-not</literal>, the
+	    last dependency (but no other dependency) will be a
+	    conflict.
+	  </para>
+
+	  <para>
+	    If one or more <replaceable>patterns</replaceable> are
+	    present, then aptitude will begin its search at these
+	    patterns; that is, the first package in the list will be a
+	    package matching the pattern in question.  The patterns
+	    are considered to be package names unless they contain a
+	    tilde character (<literal>~</literal>), in which case they
+	    are treated as search patterns (see the section
+	    <quote><link linkend='secSearchPatterns'>Search
+	    Patterns</link></quote> in the &aptitude; reference
+	    manual).
+	  </para>
+
+	  <para>
+	    If no patterns are present, then &aptitude; will find a
+	    dependency chain beginning at a manually installed
+	    package.
+	  </para>
+
+	  <note>
+	    <para>
+	      <literal>aptitude why</literal> does not perform full
+	      dependency resolution; it only displays direct
+	      relationships between packages.  For instance, if A
+	      requires B, C requires D, and B and C conflict,
+	      <quote><literal>aptitude why-not D</literal></quote>
+	      will not produce the answer <quote>A depends on B, B
+	      conflicts with C, and D depends on C</quote>.
+	    </para>
+	  </note>
+
+	  <para>
+	    By default aptitude outputs only the <quote>most
+	    installed, strongest, tightest, shortest</quote>
+	    dependency chain.  That is, it looks for a chain that only
+	    contains packages which are installed or will be
+	    installed; it looks for the strongest possible
+	    dependencies under that restriction; it looks for chains
+	    that avoid ORed dependencies and Provides; and it looks
+	    for the shortest dependency chain meeting those criteria.
+	    These rules are progressively weakened until a match is
+	    found.  If the verbosity level is 1 or more, then
+	    <emphasis>all</emphasis> the explanations aptitude can
+	    find will be displayed, in inverse order of relevance.
+	  </para>
+
+	  <para>
+	    This command returns 0 if successful, 1 if no explanation
+	    could be constructed, and -1 if an error occured.
 	  </para>
 	</listitem>
       </varlistentry>

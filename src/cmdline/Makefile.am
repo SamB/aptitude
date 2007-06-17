@@ -43,4 +43,6 @@ libcmdline_a_SOURCES=\
 	cmdline_upgrade.cc \
 	cmdline_upgrade.h \
 	cmdline_util.cc \
-	cmdline_util.h
+	cmdline_util.h \
+	cmdline_why.cc \
+	cmdline_why.h

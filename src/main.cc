@@ -56,6 +56,7 @@
 #include <cmdline/cmdline_show.h>
 #include <cmdline/cmdline_update.h>
 #include <cmdline/cmdline_upgrade.h>
+#include <cmdline/cmdline_why.h>
 
 #include <sigc++/functors/ptr_fun.h>
 
@@ -455,6 +456,12 @@ int main(int argc, char *argv[])
 				  status_fname,
 				  display_format, width,
 				  sort_policy);
+	  else if(!strcasecmp(argv[optind], "why"))
+	    return cmdline_why(argc - optind, argv + optind,
+			       status_fname, verbose, false);
+	  else if(!strcasecmp(argv[optind], "why-not"))
+	    return cmdline_why(argc - optind, argv + optind,
+			       status_fname, verbose, true);
 	  else if( (!strcasecmp(argv[optind], "install")) ||
 		   (!strcasecmp(argv[optind], "reinstall")) ||
 		   (!strcasecmp(argv[optind], "dist-upgrade")) ||
