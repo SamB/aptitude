@@ -25,11 +25,11 @@
  *  aptitude why A1 [A2 ...] B
  *     --> show the shortest strongest justification from (some) A to B.
  *          A and B may NOT have version/archive tags; any A may be a pattern,
- *          but B must not be.  If B is prefixed by a hyphen (-), we search
- *          for justifications for removing B.
+ *          but B must not be.
  *  aptitude why-not A1 [A2 ...] B
- *     --> Equivalent to aptitude why-required A1 [A2 ...] -B.  If B starts
- *         with a hyphen, the hyphen is implicitly removed.
+ *     --> show the shortest strongest justification from (some) A1
+ *         to a conflict on B. A and B may NOT have version/archive tags;
+ *         any A may be a pattern, but B must not be.
  *  aptitude why B
  *    --> Equivalent to aptitude why ~i!~M B
  *  aptitude why-not B

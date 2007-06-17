@@ -1088,11 +1088,6 @@ int cmdline_why(int argc, char *argv[],
 
   const char *pkgname = argv[argc - 1];
   bool is_removal = is_why_not;
-  if(*pkgname == '-')
-    {
-      is_removal = !is_removal;
-      ++pkgname;
-    }
   pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(argv[argc - 1]);
   if(pkg.end())
     {
