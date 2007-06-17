@@ -79,7 +79,7 @@ namespace
 
     // Description generation is split by column to allow
     // higher-level code to do column-based formatting.
-    std::string description_col1() const
+    std::wstring description_col1() const
     {
       pkgCache::VerIterator ver;
       if(!dep.end())
@@ -99,59 +99,60 @@ namespace
       column_disposition flag3 =
 	pkg_ver_columnizer::setup_column(ver, true, 0, pkg_item::pkg_columnizer::autoset);
 
-      std::string rval;
+      std::wstring rval;
       if(flag1.text.size() < 1)
-	rval += ' ';
+	rval += L' ';
       else
-	rval += transcode(flag1.text);
+	rval += flag1.text;
       if(flag2.text.size() < 1)
-	rval += ' ';
+	rval += L' ';
       else
-	rval += transcode(flag2.text);
+	rval += flag2.text;
       if(flag3.text.size() < 1)
-	rval += ' ';
+	rval += L' ';
       else
-	rval += transcode(flag3.text);
-      rval += ' ';
-      rval += pkg.Name();
+	rval += flag3.text;
+      rval += L' ';
+      rval += transcode(pkg.Name());
       return rval;
     }
 
-    std::string description_col2() const
+    std::wstring description_col2() const
     {
       if(!dep.end())
-	return const_cast<pkgCache::DepIterator &>(dep).DepType();
+	return transcode(const_cast<pkgCache::DepIterator &>(dep).DepType());
       else
-	return _("Provides");
+	return W_("Provides");
     }
 
-    std::string description_col3() const
+    std::wstring description_col3() const
     {
+      // Q: can I use a std::string and transcode on the way out instead?
       if(!dep.end())
 	{
 	  pkgCache::DepIterator start, end;
 	  surrounding_or(dep, start, end);
 	  bool first = true;
 
-	  std::string rval = "";
+	  std::wstring rval = L"";
 	  while(start != end)
 	    {
 	      if(first)
 		first = false;
 	      else
-		rval += " | ";
+		rval += L" | ";
 
 	      if(start.TargetVer() != NULL)
 		{
-		  rval += const_cast<pkgCache::DepIterator &>(start).TargetPkg().Name();
-		  rval += " (";
-		  rval += const_cast<pkgCache::DepIterator &>(start).CompType();
-		  rval += " ";
-		  rval += const_cast<pkgCache::DepIterator &>(start).TargetVer();
-		  rval += ")";
+		  rval += transcode(const_cast<pkgCache::DepIterator &>(start).TargetPkg().Name());
+		  rval += L" (";
+		  rval += transcode(const_cast<pkgCache::DepIterator &>(start).CompType());
+		  rval += L" ";
+		  rval += transcode(const_cast<pkgCache::DepIterator &>(start).TargetVer());
+		  rval += L")";
 		}
 	      else
-		rval += const_cast<pkgCache::DepIterator &>(start).TargetPkg().Name();
+		rval += transcode(const_cast<pkgCache::DepIterator &>(start).TargetPkg().Name());
 
 	      ++start;
 	    }
@@ -159,12 +160,12 @@ namespace
 	  return rval;
 	}
       else
-	return const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name();
+	return transcode(const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name());
     }
 
-    std::string description() const
+    std::wstring description() const
     {
-      return description_col1() + " " + description_col2() + " " + description_col3();
+      return description_col1() + L" " + description_col2() + L" " + description_col3();
     }
 
     bool operator<(const justify_action &other) const
@@ -259,50 +260,56 @@ namespace
 
     bool get_allow_choices() const { return allow_choices; }
 
-    std::string description() const
+    std::wstring description() const
     {
-      std::string rval("{ dep_level = ");
+      std::wstring rval(L"{ ");
+      rval += W_("dep_level");
+      rval += L" = ";
 
       switch(dep_level)
 	{
 	case DependsOnly:
-	  rval += "DependsOnly";
+	  rval += W_("DependsOnly");
 	  break;
 	case Recommends:
-	  rval += "Recommends";
+	  rval += W_("Recommends");
 	  break;
 	case Suggests:
-	  rval += "Suggests";
+	  rval += W_("Suggests");
 	  break;
 	default:
-	  rval += "???";
+	  rval += L"???";
 	  break;
 	}
 
-      rval += ", version_selection = ";
+      rval += L", ";
+      rval += W_("version_selection");
+      rval += L" = ";
       switch(version_selection)
 	{
 	case Current:
-	  rval += "Current";
+	  rval += W_("Current");
 	  break;
 	case Candidate:
-	  rval += "Candidate";
+	  rval += W_("Candidate");
 	  break;
 	case Install:
-	  rval += "Install";
+	  rval += W_("Install");
 	  break;
 	default:
-	  rval += "???";
+	  rval += L"???";
 	  break;
 	}
 
-      rval += ", allow_choices = ";
+      rval += L", ";
+      rval += W_("allow_choices");
+      rval += L" = ";
       if(allow_choices)
-	rval += "true";
+	rval += W_("true");
       else
-	rval += "false";
+	rval += W_("false");
 
-      rval += " }";
+      rval += L" }";
       return rval;
     }
   };
@@ -402,24 +409,24 @@ namespace
       return justify_target(pkg, RemoveType);
     }
 
-    std::string description() const
+    std::wstring description() const
     {
       pkgCache::PkgIterator &mpkg = const_cast<pkgCache::PkgIterator &>(pkg);
 
       switch(node_type)
 	{
 	case InstallType:
-	  return ssprintf(_("Install(%s)"), mpkg.Name());
+	  return swsprintf(W_("Install(%s)").c_str(), mpkg.Name());
 	case RemoveType:
-	  return ssprintf(_("Remove(%s)"), mpkg.Name());
+	  return swsprintf(W_("Remove(%s)").c_str(), mpkg.Name());
 	case ProvidesInstall:
-	  return ssprintf(_("Install(%s provides %s)"),
-			  const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
-			  mpkg.Name());
+	  return swsprintf(W_("Install(%s provides %s)").c_str(),
+			   const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
+			   mpkg.Name());
 	case ProvidesRemove:
-	  return ssprintf(_("Remove(%s provides %s)"),
-			  const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
-			  mpkg.Name());
+	  return swsprintf(W_("Remove(%s provides %s)").c_str(),
+			   const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
+			   mpkg.Name());
 	}
     }
 
@@ -499,36 +506,36 @@ namespace
       return justify_node(target, new_actions);
     }
 
-    std::string description() const
+    std::wstring description() const
     {
-      std::string rval;
+      std::wstring rval;
       rval += target.description();
-      rval += '\n';
+      rval += L'\n';
       for(imm::set<justify_action>::const_iterator it = actions.begin();
 	  it != actions.end(); ++it)
 	{
-	  rval += "  | ";
+	  rval += L"  | ";
 	  rval += it->description();
-	  rval += '\n';
+	  rval += L'\n';
 	}
       return rval;
     }
   };
 
-  std::string print_dep(pkgCache::DepIterator dep)
+  std::wstring print_dep(pkgCache::DepIterator dep)
   {
     if(dep.TargetVer() != NULL)
-      return ssprintf("%s %s %s (%s %s)",
-		      dep.ParentPkg().Name(),
-		      dep.DepType(),
-		      dep.TargetPkg().Name(),
-		      dep.CompType(),
-		      dep.TargetVer());
+      return swsprintf(L"%s %s %s (%s %s)",
+		       dep.ParentPkg().Name(),
+		       dep.DepType(),
+		       dep.TargetPkg().Name(),
+		       dep.CompType(),
+		       dep.TargetVer());
     else
-      return ssprintf("%s %s %s",
-		      dep.ParentPkg().Name(),
-		      dep.DepType(),
-		      dep.TargetPkg().Name());
+      return swsprintf(L"%s %s %s",
+		       dep.ParentPkg().Name(),
+		       dep.DepType(),
+		       dep.TargetPkg().Name());
   }
 
 
@@ -1018,28 +1025,43 @@ int do_why(const std::vector<pkg_matcher *> &leaves,
 		   root.Name());
 	  else
 	    {
-	      string::size_type col1_size = 0;
-	      string::size_type col2_size = 0;
+	      std::wstring::size_type col1_size = 0;
+	      std::wstring::size_type col2_size = 0;
 	      for(std::vector<justify_action>::const_iterator resIt =
 		    results.begin(); resIt != results.end(); ++resIt)
 		{
-		  col1_size = std::max(col1_size, resIt->description_col1().size());
-		  col2_size = std::max(col2_size, resIt->description_col2().size());
+		  std::wstring col1 = resIt->description_col1();
+		  std::wstring col2 = resIt->description_col2();
+
+		  std::wstring::size_type col1_width =
+		    (unsigned)wcswidth(col1.c_str(), col1.size());
+		  std::wstring::size_type col2_width =
+		    (unsigned)wcswidth(col2.c_str(), col2.size());
+
+		  col1_size = std::max(col1_size, col1_width);
+		  col2_size = std::max(col2_size, col2_width);
 		}
 
 	      for(std::vector<justify_action>::const_iterator resIt =
 		    results.begin(); resIt != results.end(); ++resIt)
 		{
-		  std::string col1 = resIt->description_col1();
-		  std::string col2 = resIt->description_col2();
+		  std::wstring col1 = resIt->description_col1();
+		  std::wstring col2 = resIt->description_col2();
 
-		  std::string col1_padding(col1_size - col1.size(), ' ');
-		  std::string col2_padding(col2_size - col2.size(), ' ');
+		  int col1_width = wcswidth(col1.c_str(), col1.size());
+		  int col2_width = wcswidth(col2.c_str(), col2.size());
 
-		  printf("%s%s %s%s %s\n",
-			 col1.c_str(), col1_padding.c_str(),
-			 col2.c_str(), col2_padding.c_str(),
-			 resIt->description_col3().c_str());
+		  std::wstring col1_padding(col1_size - col1_width, L' ');
+		  std::wstring col2_padding(col2_size - col2_width, L' ');
+
+		  std::wstring output =
+		    swsprintf(L"%ls%ls %ls%ls %ls\n",
+			      col1.c_str(), col1_padding.c_str(),
+			      col2.c_str(), col2_padding.c_str(),
+			      resIt->description_col3().c_str());
+		  std::string output_narrow = transcode(output);
+
+		  printf("%s", output_narrow.c_str());
 		}
 
 	      if(verbosity < 1)
