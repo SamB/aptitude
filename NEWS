@@ -1,6 +1,52 @@
+[6/17/2007]
+Version 0.4.5.3                             "The Long Dark Tea-Time
+                                             Of The Code"
+
+- New features:
+
+  * Added two commands "aptitude why" and "aptitude why-not" that
+    provide explanations of why a package is, must be, should be, or
+    must not be installed on your system.  They are not complete, by
+    which I mean that they can't always provide the most useful
+    justification, but they should answer a lot of questions that I
+    hear people asking regularly.
+
+- Bug fixes:
+
+  + Crashes and serious errors:
+
+    * Eliminate a nasty race that was probably the cause of corrupted
+      output on some dual-core systems. (Closes: #414838, #406193)
+
+    * Fix a bug that could cause aptitude to try to remove a package
+      that it had already removed. (Closes: #429388) This can't be
+      totally eliminated without help from dpkg, but hopefully this
+      fix will make the problem much more difficult to trigger.
+
+      Unfortunately, the fix also means that aptitude has to perform a
+      save/load cycle after installing packages to make sure that
+      everything is consistent.
+
+    * Allow "keep" actions to be undone.
+
+    * Don't consider every removed package to be an unused package.
+
+    * Clear the broken package indicator when the user undoes an
+      action.
+
+    * Fix build errors on other architectures. (Closes: #429348)
+
+    * Set packages to manual mode when the user cancels their removal.
+      (Closes: #429271)
+
+    * Fix compile bugs with g++-4.3. (Closes: #413488)
+
+
 [6/15/2007]
 Version 0.4.5.2                             "To ook is human,
                                              to meow feline"
+
+- Bug fixes:
 
   * Multiple minor bugs introduced by the patches to support apt's
     auto-marking were fixed.
