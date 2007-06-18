@@ -2,20 +2,20 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Inaki Larranaga Murgotio <dooteo@euskalgnu.org>, 2005.
-# Piarres Beobide <pi@beobide.net>, 2006.
+# Piarres Beobide <pi@beobide.net>, 2006, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_eu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-06-17 21:16-0700\n"
-"PO-Revision-Date: 2007-05-22 10:56+0200\n"
+"PO-Revision-Date: 2006-09-27 14:05+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: librezale <librezale@librezale.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 0.11\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
@@ -200,7 +200,7 @@ msgstr "Ezin da mendekotasunak ebatzi."
 
 #: src/broken_indicator.cc:237
 msgid "Fatal error in resolver"
-msgstr "Errore konponezina ebazterakoan"
+msgstr ""
 
 #: src/broken_indicator.cc:248
 #, c-format
@@ -412,9 +412,10 @@ msgid "Couldn't find a changelog for %s"
 msgstr "Ezin izan da %s(r)e 'changelog'a aurkitu"
 
 #: src/cmdline/cmdline_clean.cc:29
-#, c-format
+#, fuzzy, c-format
+#| msgid "E: The update command takes no arguments\n"
 msgid "E: The clean command takes no arguments\n"
-msgstr "E: Garbitu komandoak ez du argumenturik hartzen\n"
+msgstr "E: Eguneratzeko komandoak ez du argumenturik hartzen\n"
 
 #: src/cmdline/cmdline_clean.cc:58
 #, c-format
@@ -427,9 +428,10 @@ msgid "Del %s %s [%sB]\n"
 msgstr "Ezab %s %s [%sB]\n"
 
 #: src/cmdline/cmdline_clean.cc:111
-#, c-format
+#, fuzzy, c-format
+#| msgid "E: The update command takes no arguments\n"
 msgid "E: The autoclean command takes no arguments\n"
-msgstr "E: Autogarbitu komandoak ez du argumenturik hartzen\n"
+msgstr "E: Eguneratzeko komandoak ez du argumenturik hartzen\n"
 
 #: src/cmdline/cmdline_clean.cc:148
 #, c-format
@@ -481,9 +483,10 @@ msgstr ""
 "lokala edo zaharkitua izango da?"
 
 #: src/cmdline/cmdline_forget_new.cc:25
-#, c-format
+#, fuzzy, c-format
+#| msgid "E: The update command takes no arguments\n"
 msgid "E: The forget-new command takes no arguments\n"
-msgstr "E: Ahaztu-berriak komandoak ez du argumenturik onartzen\n"
+msgstr "E: Eguneratzeko komandoak ez du argumenturik hartzen\n"
 
 #: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
@@ -610,6 +613,7 @@ msgstr "Ondorengo paketeak BERTSIO-BERRITUKO dira:"
 
 #: src/cmdline/cmdline_prompt.cc:276
 #, fuzzy
+#| msgid "The following packages will be upgraded:"
 msgid "The following partially installed packages will be configured:"
 msgstr "Ondorengo paketeak BERTSIO-BERRITUKO dira:"
 
@@ -668,12 +672,16 @@ msgstr ""
 "                  %s::CmdLine::Ignore-Trust-Violations 'egia' baita!\n"
 
 #: src/cmdline/cmdline_prompt.cc:418
+#, fuzzy
+#| msgid ""
+#| "*** WARNING ***   Ignoring these trust violations because\n"
+#| "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
-"*** ABISUA ***   Fidagarritasun bortxaketa hauei ez ikusi egiten. Zergatia:\n"
-"                  %s::CmdLine::Ignore-Trust-Violations 'true' baita!\n"
+"*** ABISUA ***   Fidagarritasun-bortxaketei ez ikusi egiten. Zergatia:\n"
+"                  %s::CmdLine::Ignore-Trust-Violations 'egia' baita!\n"
 
 #: src/cmdline/cmdline_prompt.cc:424 src/vscreen/vs_util.cc:194
 #: src/vscreen/vs_util.cc:232
@@ -996,7 +1004,7 @@ msgstr "joan aurreko irtenbidera"
 msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
-msgstr "Txandakatu konponbidearen edukietatik konponbidearen argibideeetara"
+msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:176
 msgid "examine the solution in the visual user interface"
@@ -1154,8 +1162,6 @@ msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
-"*** ERROREA: bilaketa utzi egin da errore konponezin bat dela            "
-"eta, baina zenbait irtenbide ezingo dira eskuratu."
 
 #: src/cmdline/cmdline_search.cc:102
 #, c-format
@@ -1411,9 +1417,10 @@ msgid "E: The update command takes no arguments\n"
 msgstr "E: Eguneratzeko komandoak ez du argumenturik hartzen\n"
 
 #: src/cmdline/cmdline_upgrade.cc:41
-#, c-format
+#, fuzzy, c-format
+#| msgid "E: The update command takes no arguments\n"
 msgid "E: The %s command takes no arguments\n"
-msgstr "E: %s komandoak ez du argumenturik onartzen\n"
+msgstr "E: Eguneratzeko komandoak ez du argumenturik hartzen\n"
 
 #: src/cmdline/cmdline_util.cc:93
 #, c-format
@@ -1573,13 +1580,16 @@ msgid "Fetched %sB in %s (%sB/s)\n"
 msgstr "Lortuta: %sB (%s) (%sB/s)\n"
 
 #: src/generic/apt/acqprogress.cc:296
-#, c-format
+#, fuzzy, c-format
+#| msgid ""
+#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
+#| "press enter\n"
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press [Enter].\n"
 msgstr ""
-"Euskarri-aldaketa: sartu '%s' etiketadun diskoa '%s' unitatean, eta [Enter] "
-"sakatu\n"
+"Euskarri-aldaketa: sartu '%s' etiketadun diskoa '%s' unitatean, eta sakatu "
+"Sartu\n"
 
 #: src/generic/apt/aptcache.cc:283
 msgid "Can't open Aptitude extended state file"
@@ -1690,7 +1700,7 @@ msgstr "Barne-errorea: ezin izan da deskargatzeko paketeen zerrenda sortu"
 #: src/generic/apt/download_install_manager.cc:123
 #, c-format
 msgid "Failed to fetch %s: %s"
-msgstr "Huts %s eskuratzerakoan: %s"
+msgstr "Huts egin du %s eskuratzean: %s"
 
 #: src/generic/apt/download_install_manager.cc:129
 msgid "Unable to correct for unavailable packages"
@@ -2375,18 +2385,22 @@ msgstr ""
 "modukoenzerrendak\n"
 
 #: src/main.cc:135
-#, c-format
+#, fuzzy, c-format
+#| msgid " upgrade      - Perform a safe upgrade\n"
 msgid " safe-upgrade - Perform a safe upgrade\n"
-msgstr " safe-upgrade - Egin ertsio-berritze segurua\n"
+msgstr " upgrade      - Egin bertsio-berritze segurua\n"
 
 #: src/main.cc:136
-#, c-format
+#, fuzzy, c-format
+#| msgid ""
+#| " dist-upgrade - Perform an upgrade, possibly installing and removing "
+#| "packages\n"
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr ""
-" full-upgrade - Bertsio berritze bat egin, posibleki paketak instalatu eta "
-"kenduaz.\n"
+" dist-upgrade - Egin eguneratze bat, seguru asko paketeak instalatuz eta "
+"kenduz\n"
 
 #: src/main.cc:137
 #, c-format
@@ -3836,6 +3850,10 @@ msgstr ""
 
 #: src/pkg_grouppolicy.cc:544
 #, fuzzy
+#| msgid ""
+#| "Packages being automatically installed to satisfy dependencies\n"
+#| " These packages are being installed because they are required by another "
+#| "package you have chosen for installation."
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
@@ -4215,6 +4233,7 @@ msgstr "%B%s%b berritu egingo da %B%s%b bertsiotik %B%s%b bertsiora."
 
 #: src/reason_fragment.cc:443
 #, fuzzy
+#| msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgid "%B%s%b is only partly installed; its installation will be completed."
 msgstr "%s ez dago instalatuta, eta, beraz, ez da berrinstalatuko.\n"
 
@@ -5177,12 +5196,16 @@ msgid "Repeat the last search"
 msgstr "Errepikatu azken bilaketa"
 
 #: src/ui.cc:2242
+#, fuzzy
+#| msgid "^Find Backwards"
 msgid "Find Again ^Backwards"
-msgstr "^Bilatu atzerantz berriz"
+msgstr "^Bilatu atzerantz"
 
 #: src/ui.cc:2243
+#, fuzzy
+#| msgid "Repeat the last search"
 msgid "Repeat the last search in the opposite direction"
-msgstr "Errepikatu azken bilaketa aurkako norabidean"
+msgstr "Errepikatu azken bilaketa"
 
 #: src/ui.cc:2247
 msgid "^Limit Display"
