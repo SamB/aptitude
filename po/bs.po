@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-06-15 21:09-0700\n"
+"POT-Creation-Date: 2007-06-17 21:16-0700\n"
 "PO-Revision-Date: 2004-05-08 17:40+0100\n"
 "Last-Translator: Safir Šećerović <sapphire@linux.org.ba>\n"
 "Language-Team: Bosnian <lokal@lugbih.org>\n"
@@ -418,7 +418,7 @@ msgid "Unexpected pattern argument following \"keep-all\""
 msgstr ""
 
 #: src/cmdline/cmdline_do_action.cc:247 src/cmdline/cmdline_simulate.cc:31
-#: src/cmdline/cmdline_upgrade.cc:113 src/main.cc:526
+#: src/cmdline/cmdline_upgrade.cc:113 src/main.cc:533
 #, c-format
 msgid "Abort.\n"
 msgstr ""
@@ -1076,12 +1076,12 @@ msgid ""
 "           searching, but some solutions will be unreachable."
 msgstr ""
 
-#: src/cmdline/cmdline_search.cc:100
+#: src/cmdline/cmdline_search.cc:102
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_search.cc:116
+#: src/cmdline/cmdline_search.cc:118
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr ""
@@ -1092,7 +1092,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr ""
 
 #: src/cmdline/cmdline_show.cc:161 src/cmdline/cmdline_show.cc:399
-#: src/solution_fragment.cc:56
+#: src/solution_fragment.cc:57
 msgid "<NULL>"
 msgstr ""
 
@@ -1100,8 +1100,8 @@ msgstr ""
 msgid "not installed"
 msgstr ""
 
-#: src/cmdline/cmdline_show.cc:185 src/pkg_columnizer.cc:233
-#: src/pkg_ver_item.cc:228
+#: src/cmdline/cmdline_show.cc:185 src/pkg_columnizer.cc:241
+#: src/pkg_ver_item.cc:216
 msgid "unpacked"
 msgstr ""
 
@@ -1117,8 +1117,8 @@ msgstr ""
 msgid "not installed (configuration files remain)"
 msgstr ""
 
-#: src/cmdline/cmdline_show.cc:193 src/pkg_columnizer.cc:241
-#: src/pkg_ver_item.cc:236
+#: src/cmdline/cmdline_show.cc:193 src/pkg_columnizer.cc:249
+#: src/pkg_ver_item.cc:224
 msgid "installed"
 msgstr ""
 
@@ -1499,70 +1499,70 @@ msgid ""
 "press [Enter].\n"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:280
+#: src/generic/apt/aptcache.cc:283
 msgid "Can't open Aptitude extended state file"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:287 src/generic/apt/aptcache.cc:365
-#: src/generic/apt/aptcache.cc:367
+#: src/generic/apt/aptcache.cc:290 src/generic/apt/aptcache.cc:368
+#: src/generic/apt/aptcache.cc:370
 msgid "Reading extended state information"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:372 src/generic/apt/aptcache.cc:448
-#: src/generic/apt/aptcache.cc:451
+#: src/generic/apt/aptcache.cc:375 src/generic/apt/aptcache.cc:451
+#: src/generic/apt/aptcache.cc:454
 msgid "Initializing package states"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:570
+#: src/generic/apt/aptcache.cc:573
 msgid "Cannot open Aptitude state file"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:574 src/generic/apt/aptcache.cc:629
-#: src/generic/apt/aptcache.cc:632
+#: src/generic/apt/aptcache.cc:577 src/generic/apt/aptcache.cc:632
+#: src/generic/apt/aptcache.cc:635
 msgid "Writing extended state information"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:611
+#: src/generic/apt/aptcache.cc:614
 #, c-format
 msgid "Internal buffer overflow on package \"%s\" while writing state file"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:620
+#: src/generic/apt/aptcache.cc:623
 msgid "Couldn't write state file"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:637
+#: src/generic/apt/aptcache.cc:640
 msgid "Error writing state file"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:655
+#: src/generic/apt/aptcache.cc:658
 #, c-format
 msgid "failed to remove %s"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:662
+#: src/generic/apt/aptcache.cc:665
 #, c-format
 msgid "failed to rename %s to %s"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:670
+#: src/generic/apt/aptcache.cc:673
 #, c-format
 msgid "couldn't replace %s with %s"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:1092
+#: src/generic/apt/aptcache.cc:1143
 msgid "Unable to correct dependencies, some packages cannot be installed"
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:1382
+#: src/generic/apt/aptcache.cc:1442
 msgid "The list of sources could not be read."
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:1389
+#: src/generic/apt/aptcache.cc:1449
 msgid "The package lists or status file could not be parsed or opened."
 msgstr ""
 
-#: src/generic/apt/aptcache.cc:1392
+#: src/generic/apt/aptcache.cc:1452
 msgid "You may want to update the package lists to correct these missing files"
 msgstr ""
 
@@ -2144,329 +2144,329 @@ msgstr ""
 msgid "Invalid sorting policy type '%s'"
 msgstr ""
 
-#: src/main.cc:83
+#: src/main.cc:84
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr ""
 
-#: src/main.cc:92
+#: src/main.cc:93
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr ""
 
-#: src/main.cc:100
+#: src/main.cc:101
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr ""
 
-#: src/main.cc:103
+#: src/main.cc:104
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr ""
 
-#: src/main.cc:106
+#: src/main.cc:107
 #, c-format
 msgid ""
 "\n"
 "NCurses version: %s\n"
 msgstr ""
 
-#: src/main.cc:108
+#: src/main.cc:109
 #, c-format
 msgid ""
 "\n"
 "Curses version: %s\n"
 msgstr ""
 
-#: src/main.cc:110
+#: src/main.cc:111
 #, c-format
 msgid "libsigc++ version: %s\n"
 msgstr ""
 
-#: src/main.cc:116
+#: src/main.cc:117
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr ""
 
-#: src/main.cc:118
+#: src/main.cc:119
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr ""
 
-#: src/main.cc:120
+#: src/main.cc:121
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
 "\n"
 msgstr ""
 
-#: src/main.cc:121
+#: src/main.cc:122
 #, c-format
 msgid " install      - Install/upgrade packages\n"
 msgstr ""
 
-#: src/main.cc:122
+#: src/main.cc:123
 #, c-format
 msgid " remove       - Remove packages\n"
 msgstr ""
 
-#: src/main.cc:123
+#: src/main.cc:124
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr ""
 
-#: src/main.cc:124
+#: src/main.cc:125
 #, c-format
 msgid " hold         - Place packages on hold\n"
 msgstr ""
 
-#: src/main.cc:125
+#: src/main.cc:126
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
 msgstr ""
 
-#: src/main.cc:126
+#: src/main.cc:127
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
 msgstr ""
 
-#: src/main.cc:127
+#: src/main.cc:128
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr ""
 
-#: src/main.cc:132
+#: src/main.cc:133
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
 "version.\n"
 msgstr ""
 
-#: src/main.cc:133
+#: src/main.cc:134
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr ""
 
-#: src/main.cc:134
+#: src/main.cc:135
 #, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr ""
 
-#: src/main.cc:135
+#: src/main.cc:136
 #, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr ""
 
-#: src/main.cc:136
+#: src/main.cc:137
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr ""
 
-#: src/main.cc:137
+#: src/main.cc:138
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr ""
 
-#: src/main.cc:138
+#: src/main.cc:139
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr ""
 
-#: src/main.cc:139
+#: src/main.cc:140
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr ""
 
-#: src/main.cc:140
+#: src/main.cc:141
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr ""
 
-#: src/main.cc:141
+#: src/main.cc:142
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr ""
 
-#: src/main.cc:142
+#: src/main.cc:143
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr ""
 
-#: src/main.cc:143
+#: src/main.cc:144
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
 msgstr ""
 
-#: src/main.cc:145
+#: src/main.cc:146
 #, c-format
 msgid "  Options:\n"
 msgstr ""
 
-#: src/main.cc:146
+#: src/main.cc:147
 #, c-format
 msgid " -h             This help text\n"
 msgstr ""
 
-#: src/main.cc:147
+#: src/main.cc:148
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr ""
 
-#: src/main.cc:148
+#: src/main.cc:149
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
 
-#: src/main.cc:149
+#: src/main.cc:150
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr ""
 
-#: src/main.cc:150
+#: src/main.cc:151
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr ""
 
-#: src/main.cc:151
+#: src/main.cc:152
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual\n"
 msgstr ""
 
-#: src/main.cc:152
+#: src/main.cc:153
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr ""
 
-#: src/main.cc:153
+#: src/main.cc:154
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr ""
 
-#: src/main.cc:154
+#: src/main.cc:155
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr ""
 
-#: src/main.cc:155
+#: src/main.cc:156
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr ""
 
-#: src/main.cc:156
+#: src/main.cc:157
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr ""
 
-#: src/main.cc:157
-#, c-format
-msgid " -Z             Show the change in installed size of each package.\n"
-msgstr ""
-
 #: src/main.cc:158
 #, c-format
-msgid ""
-" -v             Display extra information. (may be supplied multiple times)\n"
+msgid " -Z             Show the change in installed size of each package.\n"
 msgstr ""
 
 #: src/main.cc:159
 #, c-format
 msgid ""
-" -t [release]   Set the release from which packages should be installed\n"
+" -v             Display extra information. (may be supplied multiple times)\n"
 msgstr ""
 
 #: src/main.cc:160
+#, c-format
+msgid ""
+" -t [release]   Set the release from which packages should be installed\n"
+msgstr ""
+
+#: src/main.cc:161
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
 msgstr ""
 
-#: src/main.cc:161
+#: src/main.cc:162
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr ""
 
-#: src/main.cc:162
+#: src/main.cc:163
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies\n"
 msgstr ""
 
-#: src/main.cc:163
+#: src/main.cc:164
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr ""
 
-#: src/main.cc:164
+#: src/main.cc:165
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr ""
 
-#: src/main.cc:165
+#: src/main.cc:166
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr ""
 
-#: src/main.cc:167
+#: src/main.cc:168
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr ""
 
-#: src/main.cc:306
+#: src/main.cc:307
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr ""
 
-#: src/main.cc:315
+#: src/main.cc:316
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr ""
 
-#: src/main.cc:339
+#: src/main.cc:340
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s"
 msgstr ""
 
-#: src/main.cc:384 src/main.cc:393
+#: src/main.cc:385 src/main.cc:394
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr ""
 
-#: src/main.cc:410
+#: src/main.cc:411
 msgid "Only one of -u and -i may be specified\n"
 msgstr ""
 
-#: src/main.cc:418
+#: src/main.cc:419
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
 
-#: src/main.cc:439
+#: src/main.cc:440
 msgid "-u and -i may not be specified with a command"
 msgstr ""
 
-#: src/main.cc:519
+#: src/main.cc:526
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr ""
 
-#: src/main.cc:531 src/main.cc:580
+#: src/main.cc:538 src/main.cc:587
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr ""
 
-#: src/main.cc:535 src/main.cc:584
+#: src/main.cc:542 src/main.cc:591
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -2765,144 +2765,144 @@ msgstr ""
 msgid "DownloadSize"
 msgstr ""
 
-#: src/pkg_columnizer.cc:128 src/pkg_columnizer.cc:140 src/pkg_ver_item.cc:106
-#: src/pkg_ver_item.cc:171
+#: src/pkg_columnizer.cc:136 src/pkg_columnizer.cc:148 src/pkg_ver_item.cc:94
+#: src/pkg_ver_item.cc:159
 msgid "<N/A>"
 msgstr ""
 
-#: src/pkg_columnizer.cc:170 src/pkg_columnizer.cc:181
+#: src/pkg_columnizer.cc:178 src/pkg_columnizer.cc:189
 msgid "<none>"
 msgstr ""
 
-#: src/pkg_columnizer.cc:221 src/pkg_grouppolicy.cc:233
+#: src/pkg_columnizer.cc:229 src/pkg_grouppolicy.cc:233
 msgid "virtual"
 msgstr ""
 
-#: src/pkg_columnizer.cc:228 src/pkg_ver_item.cc:215 src/pkg_ver_item.cc:223
+#: src/pkg_columnizer.cc:236 src/pkg_ver_item.cc:203 src/pkg_ver_item.cc:211
 msgid "purged"
 msgstr ""
 
-#: src/pkg_columnizer.cc:235 src/pkg_ver_item.cc:230
+#: src/pkg_columnizer.cc:243 src/pkg_ver_item.cc:218
 msgid "half-config"
 msgstr ""
 
-#: src/pkg_columnizer.cc:237 src/pkg_ver_item.cc:232
+#: src/pkg_columnizer.cc:245 src/pkg_ver_item.cc:220
 msgid "half-install"
 msgstr ""
 
-#: src/pkg_columnizer.cc:239 src/pkg_ver_item.cc:234
+#: src/pkg_columnizer.cc:247 src/pkg_ver_item.cc:222
 msgid "config-files"
 msgstr ""
 
-#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:526 src/pkg_ver_item.cc:238
+#: src/pkg_columnizer.cc:251 src/pkg_columnizer.cc:534 src/pkg_ver_item.cc:226
 msgid "ERROR"
 msgstr ""
 
-#: src/pkg_columnizer.cc:290 src/pkg_ver_item.cc:296
+#: src/pkg_columnizer.cc:298 src/pkg_ver_item.cc:284
 msgid "hold"
 msgstr ""
 
-#: src/pkg_columnizer.cc:293
+#: src/pkg_columnizer.cc:301
 msgid "forbidden upgrade"
 msgstr ""
 
-#: src/pkg_columnizer.cc:295
+#: src/pkg_columnizer.cc:303
 msgid "purge"
 msgstr ""
 
-#: src/pkg_columnizer.cc:295 src/pkg_ver_item.cc:320
+#: src/pkg_columnizer.cc:303 src/pkg_ver_item.cc:308
 msgid "delete"
 msgstr ""
 
-#: src/pkg_columnizer.cc:297 src/pkg_ver_item.cc:218 src/pkg_ver_item.cc:302
+#: src/pkg_columnizer.cc:305 src/pkg_ver_item.cc:206 src/pkg_ver_item.cc:290
 msgid "broken"
 msgstr ""
 
-#: src/pkg_columnizer.cc:299 src/pkg_ver_item.cc:306 src/pkg_ver_item.cc:313
-#: src/pkg_ver_item.cc:322
+#: src/pkg_columnizer.cc:307 src/pkg_ver_item.cc:294 src/pkg_ver_item.cc:301
+#: src/pkg_ver_item.cc:310
 msgid "install"
 msgstr ""
 
-#: src/pkg_columnizer.cc:301
+#: src/pkg_columnizer.cc:309
 msgid "reinstall"
 msgstr ""
 
-#: src/pkg_columnizer.cc:303
+#: src/pkg_columnizer.cc:311
 msgid "upgrade"
 msgstr ""
 
-#: src/pkg_columnizer.cc:305 src/pkg_columnizer.cc:307 src/pkg_ver_item.cc:308
-#: src/pkg_ver_item.cc:315 src/pkg_ver_item.cc:324 src/pkg_ver_item.cc:327
+#: src/pkg_columnizer.cc:313 src/pkg_columnizer.cc:315 src/pkg_ver_item.cc:296
+#: src/pkg_ver_item.cc:303 src/pkg_ver_item.cc:312 src/pkg_ver_item.cc:315
 msgid "none"
 msgstr ""
 
-#: src/pkg_columnizer.cc:330 src/pkg_columnizer.cc:351
-#: src/pkg_columnizer.cc:358 src/pkg_grouppolicy.cc:227
+#: src/pkg_columnizer.cc:338 src/pkg_columnizer.cc:359
+#: src/pkg_columnizer.cc:366 src/pkg_grouppolicy.cc:227
 #: src/pkg_info_screen.cc:115 src/pkg_info_screen.cc:116
-#: src/pkg_ver_item.cc:345 src/pkg_ver_item.cc:379
+#: src/pkg_ver_item.cc:334 src/pkg_ver_item.cc:368
 msgid "Unknown"
 msgstr ""
 
 #. ForTranslators: Imp = Important
-#: src/pkg_columnizer.cc:338 src/pkg_ver_item.cc:354
+#: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:343
 msgid "Imp"
 msgstr ""
 
 #. ForTranslators: Req = Required
-#: src/pkg_columnizer.cc:340 src/pkg_ver_item.cc:357
+#: src/pkg_columnizer.cc:348 src/pkg_ver_item.cc:346
 msgid "Req"
 msgstr ""
 
 #. ForTranslators: Std = Standard
-#: src/pkg_columnizer.cc:342 src/pkg_ver_item.cc:360
+#: src/pkg_columnizer.cc:350 src/pkg_ver_item.cc:349
 msgid "Std"
 msgstr ""
 
 #. ForTranslators: Opt = Optional
-#: src/pkg_columnizer.cc:344 src/pkg_ver_item.cc:363
+#: src/pkg_columnizer.cc:352 src/pkg_ver_item.cc:352
 msgid "Opt"
 msgstr ""
 
 #. ForTranslators: Xtr = Extra
-#: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:366
+#: src/pkg_columnizer.cc:354 src/pkg_ver_item.cc:355
 msgid "Xtr"
 msgstr ""
 
-#: src/pkg_columnizer.cc:348 src/pkg_ver_item.cc:368
+#: src/pkg_columnizer.cc:356 src/pkg_ver_item.cc:357
 msgid "ERR"
 msgstr ""
 
-#: src/pkg_columnizer.cc:370
+#: src/pkg_columnizer.cc:378
 #, c-format
 msgid "#Broken: %ld"
 msgstr ""
 
-#: src/pkg_columnizer.cc:385
+#: src/pkg_columnizer.cc:393
 #, c-format
 msgid "Will use %sB of disk space"
 msgstr ""
 
-#: src/pkg_columnizer.cc:393
+#: src/pkg_columnizer.cc:401
 #, c-format
 msgid "Will free %sB of disk space"
 msgstr ""
 
-#: src/pkg_columnizer.cc:407
+#: src/pkg_columnizer.cc:415
 #, c-format
 msgid "DL Size: %sB"
 msgstr ""
 
 #. ForTranslators: Hostname
-#: src/pkg_columnizer.cc:478
+#: src/pkg_columnizer.cc:486
 msgid "HN too long"
 msgstr ""
 
-#: src/pkg_columnizer.cc:650 src/pkg_columnizer.cc:659
+#: src/pkg_columnizer.cc:658 src/pkg_columnizer.cc:667
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr ""
 
-#: src/pkg_columnizer.cc:666
+#: src/pkg_columnizer.cc:674
 msgid "Internal error: Default column string is unparsable"
 msgstr ""
 
@@ -3539,12 +3539,12 @@ msgid ""
 "s' if you are."
 msgstr ""
 
-#: src/pkg_item.cc:220 src/pkg_ver_item.cc:655 src/solution_item.cc:291
+#: src/pkg_item.cc:220 src/pkg_ver_item.cc:647 src/solution_item.cc:291
 #, c-format
 msgid "Information about %s"
 msgstr ""
 
-#: src/pkg_item.cc:222 src/pkg_ver_item.cc:657 src/solution_item.cc:289
+#: src/pkg_item.cc:222 src/pkg_ver_item.cc:649 src/solution_item.cc:289
 #, c-format
 msgid "%s info"
 msgstr ""
@@ -3559,27 +3559,27 @@ msgstr ""
 msgid "%s versions"
 msgstr "Verzija:"
 
-#: src/pkg_item.cc:331 src/pkg_ver_item.cc:685
+#: src/pkg_item.cc:331 src/pkg_ver_item.cc:677
 #, c-format
 msgid "Dependencies of %s"
 msgstr ""
 
-#: src/pkg_item.cc:333 src/pkg_ver_item.cc:687
+#: src/pkg_item.cc:333 src/pkg_ver_item.cc:679
 #, c-format
 msgid "%s deps"
 msgstr ""
 
-#: src/pkg_item.cc:344 src/pkg_ver_item.cc:697
+#: src/pkg_item.cc:344 src/pkg_ver_item.cc:689
 #, c-format
 msgid "Packages depending on %s"
 msgstr ""
 
-#: src/pkg_item.cc:346 src/pkg_ver_item.cc:699
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:691
 #, c-format
 msgid "%s reverse deps"
 msgstr ""
 
-#: src/pkg_item.cc:396 src/pkg_ver_item.cc:747
+#: src/pkg_item.cc:396 src/pkg_ver_item.cc:739
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr ""
@@ -3879,91 +3879,91 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: src/solution_fragment.cc:104
+#: src/solution_fragment.cc:105
 #, c-format
 msgid "%s depends upon %s"
 msgstr ""
 
-#: src/solution_fragment.cc:107
+#: src/solution_fragment.cc:108
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr ""
 
-#: src/solution_fragment.cc:110
+#: src/solution_fragment.cc:111
 #, fuzzy, c-format
 msgid "%s suggests %s"
 msgstr "Predlaže"
 
-#: src/solution_fragment.cc:113 src/solution_item.cc:593
+#: src/solution_fragment.cc:114 src/solution_item.cc:593
 #, fuzzy, c-format
 msgid "%s recommends %s"
 msgstr "Preporučuje"
 
-#: src/solution_fragment.cc:116
+#: src/solution_fragment.cc:117
 #, c-format
 msgid "%s conflicts with %s"
 msgstr ""
 
-#: src/solution_fragment.cc:119
+#: src/solution_fragment.cc:120
 #, fuzzy, c-format
 msgid "%s replaces %s"
 msgstr "Zamjenjuje"
 
-#: src/solution_fragment.cc:122
+#: src/solution_fragment.cc:123
 #, fuzzy, c-format
 msgid "%s obsoletes %s"
 msgstr "Zastarijeva"
 
-#: src/solution_fragment.cc:135
+#: src/solution_fragment.cc:136
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
 msgstr ""
 
-#: src/solution_fragment.cc:145
+#: src/solution_fragment.cc:146
 #, c-format
 msgid "Removing %s"
 msgstr ""
 
-#: src/solution_fragment.cc:147
+#: src/solution_fragment.cc:148
 #, c-format
 msgid "Installing %s %s (%s)"
 msgstr ""
 
-#: src/solution_fragment.cc:216
+#: src/solution_fragment.cc:217
 #, fuzzy
 msgid "%BRemove%b the following packages:%n"
 msgstr "Slijedeći paketi su OŠTEĆENI:"
 
-#: src/solution_fragment.cc:226
+#: src/solution_fragment.cc:227
 #, fuzzy
 msgid "%BInstall%b the following packages:%n"
 msgstr "Slijedeći paketi su OŠTEĆENI:"
 
-#: src/solution_fragment.cc:239
+#: src/solution_fragment.cc:240
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr ""
 
-#: src/solution_fragment.cc:246
+#: src/solution_fragment.cc:247
 #, fuzzy
 msgid "Not Installed"
 msgstr "Automatski nadogradi instalirane pakete"
 
-#: src/solution_fragment.cc:259
+#: src/solution_fragment.cc:260
 #, fuzzy
 msgid "%BUpgrade%b the following packages:%n"
 msgstr "Slijedeći paketi su OŠTEĆENI:"
 
-#: src/solution_fragment.cc:274
+#: src/solution_fragment.cc:275
 #, fuzzy
 msgid "%BDowngrade%b the following packages:%n"
 msgstr "Slijedeći paketi su OŠTEĆENI:"
 
-#: src/solution_fragment.cc:291
+#: src/solution_fragment.cc:292
 #, fuzzy, c-format
 msgid "Leave the following dependencies unresolved:%n"
 msgstr "Slijedeći paketi su OŠTEĆENI:"
 
-#: src/solution_fragment.cc:299
+#: src/solution_fragment.cc:300
 #, c-format
 msgid "Score is %d"
 msgstr ""
@@ -4891,11 +4891,11 @@ msgid ""
 "Pkgs"
 msgstr ""
 
-#: src/ui.cc:2907 src/vscreen/vscreen.cc:727
+#: src/ui.cc:2907 src/vscreen/vscreen.cc:808
 msgid "yes_key"
 msgstr ""
 
-#: src/ui.cc:2908 src/vscreen/vscreen.cc:728
+#: src/ui.cc:2908 src/vscreen/vscreen.cc:809
 msgid "no_key"
 msgstr ""
 
@@ -4964,22 +4964,22 @@ msgstr ""
 msgid "Sorry, control modifiers may not be used with unprintable characters"
 msgstr ""
 
-#: src/vscreen/vscreen.cc:125
+#: src/vscreen/vscreen.cc:127
 #, c-format
 msgid "Ouch!  Got SIGTERM, dying..\n"
 msgstr ""
 
-#: src/vscreen/vscreen.cc:128
+#: src/vscreen/vscreen.cc:130
 #, c-format
 msgid "Ouch!  Got SIGSEGV, dying..\n"
 msgstr ""
 
-#: src/vscreen/vscreen.cc:131
+#: src/vscreen/vscreen.cc:133
 #, c-format
 msgid "Ouch!  Got SIGABRT, dying..\n"
 msgstr ""
 
-#: src/vscreen/vscreen.cc:134
+#: src/vscreen/vscreen.cc:136
 #, c-format
 msgid "Ouch!  Got SIGQUIT, dying..\n"
 msgstr ""
