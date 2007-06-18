@@ -196,12 +196,20 @@ download_manager::result download_install_manager::finish(pkgAcquire::RunResult 
       if(log != NULL)
 	log->Complete();
 
+      // We absolutely need to do this here.  Yes, it slows things
+      // down, but without this we get stuff like #429388 due to
+      // inconsistencies between aptitude's state file and the real
+      // world.
+      //
+      // This implicitly updates the package state file on disk.
+      apt_load_cache(&progress, true);
+
       if(aptcfg->FindB(PACKAGE "::Forget-New-On-Install", false))
 	{
-	  apt_load_cache(&progress, true);
 	  if(apt_cache_file != NULL)
 	    {
 	      (*apt_cache_file)->forget_new(NULL);
+	      (*apt_cache_file)->save_selection_list(progress);
 	      post_forget_new_hook();
 	    }
 	}
