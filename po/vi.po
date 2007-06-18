@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-06-17 21:16-0700\n"
-"PO-Revision-Date: 2007-06-01 15:02+0930\n"
+"PO-Revision-Date: 2007-06-18 16:31+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -603,9 +603,8 @@ msgid "The following packages will be upgraded:"
 msgstr "Những gói sau sẽ được nâng cấp:"
 
 #: src/cmdline/cmdline_prompt.cc:276
-#, fuzzy
 msgid "The following partially installed packages will be configured:"
-msgstr "Những gói sau sẽ được nâng cấp:"
+msgstr "Theo đây có những gói đã cài đặt bộ phận sẽ được cấu hình:"
 
 #: src/cmdline/cmdline_prompt.cc:331
 #, c-format
@@ -3816,15 +3815,13 @@ msgstr ""
 " Những gói này sẽ được nâng cấp lên phiên bản mới hơn."
 
 #: src/pkg_grouppolicy.cc:544
-#, fuzzy
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
 "made to complete their installation."
 msgstr ""
-"Gói đang được cài đặt tự động để thỏa điều kiện phụ thuộc\n"
-" Những gói này đang được cài đặt vì chúng cần thiết bởi một gói khác mà bạn "
-"đã chọn cài đặt."
+"Gói đã cài đặt bộ phận\n"
+" Những gói này chưa được cài đặt và cấu hình đầy đủ nên sẽ thử cài đặt xong."
 
 #: src/pkg_grouppolicy.cc:659
 msgid "unknown"
@@ -4200,9 +4197,8 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b sẽ được nâng cấp từ phiên bản %B%s%b lên phiên bản %B%s%b."
 
 #: src/reason_fragment.cc:443
-#, fuzzy
 msgid "%B%s%b is only partly installed; its installation will be completed."
-msgstr "Chưa cài đặt « %s » nên sẽ không cài lại nó.\n"
+msgstr "%B%s%b chỉ được cài đặt bộ phận nên sẽ cài đặt xong."
 
 #: src/reason_fragment.cc:475
 msgid ""
@@ -4535,11 +4531,15 @@ msgstr "Bạn đã đăng nhập với tư cách người chủ."
 #: src/ui.cc:422
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
 msgstr ""
+"Lệnh « Get-Root-Command » không hợp lệ: nó nên bắt đầu với « su: » hay « "
+"sudo: »"
 
 #: src/ui.cc:429
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr ""
+"Lệnh « Get-Root-Command » không hợp lệ: nó nên bắt đầu với « su: » hay « "
+"sudo: », không phải « %s: »"
 
 #: src/ui.cc:552
 msgid ""
