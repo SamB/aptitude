@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-06-17 21:16-0700\n"
-"PO-Revision-Date: 2007-05-21 09:49+0200\n"
+"PO-Revision-Date: 2007-06-18 15:15+0200\n"
 "Last-Translator: Jacobo Tarrío <jtarrio@debian.org>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -604,9 +604,8 @@ msgid "The following packages will be upgraded:"
 msgstr "Os seguintes paquetes hanse actualizar:"
 
 #: src/cmdline/cmdline_prompt.cc:276
-#, fuzzy
 msgid "The following partially installed packages will be configured:"
-msgstr "Os seguintes paquetes hanse actualizar:"
+msgstr "Os seguintes paquetes parcialmente instalados hanse configurar:"
 
 #: src/cmdline/cmdline_prompt.cc:331
 #, c-format
@@ -3831,15 +3830,14 @@ msgstr ""
 " Estes paquetes hanse actualizar a unha versión máis recente."
 
 #: src/pkg_grouppolicy.cc:544
-#, fuzzy
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
 "made to complete their installation."
 msgstr ""
-"Paquetes instalados automaticamente para satisfacer dependencias\n"
-" Estes paquetes instálanse porque son necesarios para outro paquete que "
-"escolleu instalar."
+"Paquetes instalados parcialmente\n"
+" Estes paquetes non están totalmente instalados e configurados; hase tentar "
+"completar a súa instalación."
 
 #: src/pkg_grouppolicy.cc:659
 msgid "unknown"
@@ -4215,9 +4213,9 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b hase actualizar dende a versión %B%s%b á versión %B%s%b."
 
 #: src/reason_fragment.cc:443
-#, fuzzy
 msgid "%B%s%b is only partly installed; its installation will be completed."
-msgstr "%s non está instalado agora, así que non se ha reinstalar.\n"
+msgstr ""
+"%B%s%b só está instalado parcialmente; hase completar a súa instalación."
 
 #: src/reason_fragment.cc:475
 msgid ""
@@ -4554,12 +4552,13 @@ msgstr "Xa é administrador"
 
 #: src/ui.cc:422
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
-msgstr ""
+msgstr "Get-Root-Command non válido; debería comezar por su: ou sudo:"
 
 #: src/ui.cc:429
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr ""
+"Get-Root-Command non válido; debería comezar por su: ou sudo:, non por %s:"
 
 #: src/ui.cc:552
 msgid ""
