@@ -282,7 +282,14 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
       if(errno!=ENOENT)
 	_error->Warning(_("Can't open Aptitude extended state file"));
       else
-	initial_open=true;
+	{
+	  initial_open=true;
+	  // Mark the cache as dirty so that we'll create the
+	  // pkgstates file later.  We need to do this even if the
+	  // user doesn't change anything because otherwise we won't
+	  // know which packages are new until we save the cache (#429732).
+	  dirty = true;
+	}
     }
   else
     {
