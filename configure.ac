@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(aptitude, 0.4.5.3)
+AC_INIT(aptitude, 0.4.5.2)
 AC_CONFIG_SRCDIR([src/main.cc])
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(config.h)
@@ -26,6 +26,14 @@ dnl Checks for libraries.
 AC_CHECK_LIB(ncursesw, initscr, ,
 	[AC_MSG_ERROR([Can't find libncursesw -- please install libncursesw5-dev])])
 AC_CHECK_LIB(apt-pkg, main, , [AC_MSG_ERROR([Can't find the APT libraries -- please install libapt-pkg-dev])])
+
+AC_MSG_CHECKING([whether apt includes the automatic dependency removal patch (required)])
+
+AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[#include <apt-pkg/depcache.h>]],
+				  [[extern pkgDepCache::ActionGroup d;]]),
+		  AC_MSG_RESULT([yes]),
+		  AC_MSG_FAILURE([need libapt-pkg 0.7 or later]))
+
 AC_CHECK_LIB(pthread, main,
 	HAVE_LIBPTHREAD=1
 	, [AC_MSG_ERROR([Can't find the POSIX thread libraries])])
