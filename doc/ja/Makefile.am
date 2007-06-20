@@ -26,6 +26,7 @@ clean-local:
 	-rm -fr output-html/ output-txt/ output-man/
 	-rm -f doc-stamp doc-css-stamp doc-html-stamp doc-txt-stamp doc-man-stamp
 	-rm -fr $(MANPAGE) $(README)
+	-rm -f $(XMLSOURCES)
 
 install-data-hook:
 	$(mkinstalldirs) $(DESTDIR)$(localemandir)/man8
