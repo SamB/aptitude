@@ -369,7 +369,11 @@ bool vs_editline::handle_key(const key &k)
   else
     {
       if(clear_on_this_edit)
-	text.clear();
+	{
+	  text.clear();
+	  curloc = 0;
+	  startloc = 0;
+	}
 
       text.insert(curloc++, 1, k.ch);
       normalize_cursor();
