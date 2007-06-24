@@ -1,6 +1,6 @@
 // fragment.h             -*-c++-*-
 //
-//   Copyright (C) 2004-2005 Daniel Burrows
+//   Copyright (C) 2004-2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -272,6 +272,13 @@ struct fragment_column_entry
    */
   bool proportional;
 
+  /** If proportional is \b false and the fragment is not NULL, then
+   *  setting this to \b true means that the width below will be
+   *  expanded to max_width if necessary.  If the resulting fragment
+   *  exceeds the screen width, it will be shrunk as necessary.
+   */
+  bool expandable;
+
   /** If proportional is \b true, this is a number giving the relative
    *  size of this column compared to other proportional columns;
    *  otherwise, this is the width of the column in character cells.
@@ -291,9 +298,12 @@ struct fragment_column_entry
   /** The fragment to display, or \b NULL for blank space. */
   fragment *f;
 
-  fragment_column_entry(bool _proportional, size_t _width, align _vert_align,
+  fragment_column_entry(bool _proportional,
+			bool _expandable,
+			size_t _width, align _vert_align,
 			fragment *_f)
     :proportional(_proportional),
+     expandable(_expandable),
      width(_width),
      vert_align(_vert_align),
      f(_f)

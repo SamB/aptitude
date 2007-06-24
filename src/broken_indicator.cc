@@ -245,13 +245,13 @@ public:
 
 	vector<fragment_column_entry> columns;
 
-	columns.push_back(fragment_column_entry(true, 1, fragment_column_entry::top, flowbox(text_fragment(ssprintf(_("[%d(%d)/...] Resolving dependencies"),
+	columns.push_back(fragment_column_entry(true, false, 1, fragment_column_entry::top, flowbox(text_fragment(ssprintf(_("[%d(%d)/...] Resolving dependencies"),
 														    state.selected_solution + 1,
 														    state.generated_solutions)))));
 
-	columns.push_back(fragment_column_entry(false, 1, fragment_column_entry::top, NULL));
+	columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL));
 
-	columns.push_back(fragment_column_entry(false, 1, fragment_column_entry::top, text_fragment(spin_string(state))));
+	columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, text_fragment(spin_string(state))));
 
 	set_fragment(sequence_fragment(fragment_columns(columns),
 				       key_hint_fragment(state),
@@ -372,11 +372,11 @@ public:
     if(state.background_thread_active)
       {
 	vector<fragment_column_entry> columns;
-	columns.push_back(fragment_column_entry(true, 1, fragment_column_entry::top, hardwrapbox(sequence_fragment(fragments))));
+	columns.push_back(fragment_column_entry(true, false, 1, fragment_column_entry::top, hardwrapbox(sequence_fragment(fragments))));
 
-	columns.push_back(fragment_column_entry(false, 1, fragment_column_entry::top, NULL));
+	columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL));
 
-	columns.push_back(fragment_column_entry(false, 1, fragment_column_entry::top, text_fragment(spin_string(state))));
+	columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, text_fragment(spin_string(state))));
 
 
 	fragments.clear();

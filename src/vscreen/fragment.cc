@@ -1,7 +1,7 @@
 // fragment.cc
 //
 //
-//   Copyright (C) 2004-2005 Daniel Burrows
+//   Copyright (C) 2004-2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -1004,6 +1004,7 @@ class _fragment_columns : public fragment_container
 		     size_t w) const
   {
     size_t total = 0, denominator = 0;
+    bool contains_resizable = false;
 
     for(size_t i = 0; i < columns.size(); ++i)
       {
@@ -1014,8 +1015,17 @@ class _fragment_columns : public fragment_container
 	  }
 	else
 	  {
-	    widths[i] = columns[i].width;
-	    total    += widths[i];
+	    if(columns[i].expandable &&
+	       columns[i].f != NULL)
+	      {
+		contains_resizable = true;
+		widths[i] = std::max(columns[i].width,
+				     columns[i].f->max_width(0, 0));
+	      }
+	    else
+	      widths[i] = columns[i].width;
+
+	    total += widths[i];
 	  }
       }
 
@@ -1030,6 +1040,50 @@ class _fragment_columns : public fragment_container
 	      denominator -= columns[i].width;
 	      remainder   -= widths[i];
 	    }
+      }
+    else if(total > w && contains_resizable)
+      {
+	int avail_shrinkage = 0;
+	size_t worst_case_shrinkage = 0;
+	for(size_t i = 0; i < columns.size(); ++i)
+	  if(columns[i].expandable)
+	    {
+	      avail_shrinkage      += widths[i] - columns[i].width;
+	      worst_case_shrinkage += widths[i] - 1;
+	    }
+
+	if(total - avail_shrinkage <= w)
+	  {
+	    int needed_shrinkage = total - w;
+	    for(size_t i = 0; i < columns.size(); ++i)
+	      {
+		// Shrink proprtionally to how much this was expanded.
+		const int expansion = widths[i] - columns[i].width;
+		const int shrinkamt = (expansion * needed_shrinkage) / avail_shrinkage;
+
+		avail_shrinkage  -= expansion;
+		needed_shrinkage -= shrinkamt;
+		widths[i]        -= shrinkamt;
+	      }
+	  }
+	else
+	  {
+	    // Erk.  Shrink the expandable columns as much as
+	    // necessary, to a minimum of 1 char per column. (whatever
+	    // we do here will suck anyway, so..)
+	    size_t needed_shrinkage = std::min(worst_case_shrinkage,
+					       total - w);
+	    for(size_t i = 0; i < columns.size(); ++i)
+	      {
+		// Shrink proprtionally to how much this was expanded.
+		const int expansion = widths[i] - 1;
+		const int shrinkamt = (expansion * needed_shrinkage) / avail_shrinkage;
+
+		avail_shrinkage  -= expansion;
+		needed_shrinkage -= shrinkamt;
+		widths[i]        -= shrinkamt;
+	      }
+	  }
       }
 
     // Clip.
@@ -1130,7 +1184,8 @@ public:
 	size_t thisw =
 	  i->f == NULL ? 0 : i->f->max_width(first_indent, rest_indent);
 
-	if(!i->proportional && thisw < i->width)
+	if(!i->proportional && (i->f == NULL ||
+				(i->expandable && thisw < i->width)))
 	  thisw = i->width;
 
 	rval += thisw;
