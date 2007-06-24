@@ -20,9 +20,13 @@
 
 #include "cmdline_why.h"
 
+#include "cmdline_common.h"
+#include "cmdline_show.h"
+
 #include <aptitude.h>
 
 #include <pkg_ver_item.h> // For column formats.
+#include <solution_fragment.h> // For dep_targets()
 
 #include <algorithm>
 #include <deque>
@@ -38,6 +42,8 @@
 
 #include <generic/util/immset.h>
 #include <generic/util/util.h>
+
+#include <vscreen/fragment.h>
 
 #include <set>
 
@@ -77,9 +83,7 @@ namespace
     {
     }
 
-    // Description generation is split by column to allow
-    // higher-level code to do column-based formatting.
-    std::wstring description_col1() const
+    fragment *description_column1_fragment() const
     {
       pkgCache::VerIterator ver;
       if(!dep.end())
@@ -114,58 +118,36 @@ namespace
 	rval += flag3.text;
       rval += L' ';
       rval += transcode(pkg.Name());
-      return rval;
+      return text_fragment(rval);
     }
 
-    std::wstring description_col2() const
+    fragment *description_column2_fragment() const
     {
       if(!dep.end())
-	return transcode(const_cast<pkgCache::DepIterator &>(dep).DepType());
+	return text_fragment(const_cast<pkgCache::DepIterator &>(dep).DepType());
       else
-	return W_("Provides");
+	return text_fragment(_("Provides"));
     }
 
-    std::wstring description_col3() const
+    fragment *description_column3_fragment() const
     {
       // Q: can I use a std::string and transcode on the way out instead?
       if(!dep.end())
 	{
 	  pkgCache::DepIterator start, end;
 	  surrounding_or(dep, start, end);
-	  bool first = true;
-
-	  std::wstring rval = L"";
-	  while(start != end)
-	    {
-	      if(first)
-		first = false;
-	      else
-		rval += L" | ";
-
-	      if(start.TargetVer() != NULL)
-		{
-		  rval += transcode(const_cast<pkgCache::DepIterator &>(start).TargetPkg().Name());
-		  rval += L" (";
-		  rval += transcode(const_cast<pkgCache::DepIterator &>(start).CompType());
-		  rval += L" ";
-		  rval += transcode(const_cast<pkgCache::DepIterator &>(start).TargetVer());
-		  rval += L")";
-		}
-	      else
-		rval += transcode(const_cast<pkgCache::DepIterator &>(start).TargetPkg().Name());
-
-	      ++start;
-	    }
-
-	  return rval;
+	  return text_fragment(dep_targets(start));
 	}
       else
-	return transcode(const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name());
+	return text_fragment(const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name());
     }
 
-    std::wstring description() const
+    fragment *description_fragment() const
     {
-      return description_col1() + L" " + description_col2() + L" " + description_col3();
+      return fragf("%F %F %F",
+		   description_column1_fragment(),
+		   description_column2_fragment(),
+		   description_column3_fragment());
     }
 
     bool operator<(const justify_action &other) const
@@ -409,24 +391,24 @@ namespace
       return justify_target(pkg, RemoveType);
     }
 
-    std::wstring description() const
+    fragment *description() const
     {
       pkgCache::PkgIterator &mpkg = const_cast<pkgCache::PkgIterator &>(pkg);
 
       switch(node_type)
 	{
 	case InstallType:
-	  return swsprintf(W_("Install(%s)").c_str(), mpkg.Name());
+	  return fragf(_("Install(%s)"), mpkg.Name());
 	case RemoveType:
-	  return swsprintf(W_("Remove(%s)").c_str(), mpkg.Name());
+	  return fragf(_("Remove(%s)"), mpkg.Name());
 	case ProvidesInstall:
-	  return swsprintf(W_("Install(%s provides %s)").c_str(),
-			   const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
-			   mpkg.Name());
+	  return fragf(_("Install(%s provides %s)"),
+		       const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
+		       mpkg.Name());
 	case ProvidesRemove:
-	  return swsprintf(W_("Remove(%s provides %s)").c_str(),
-			   const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
-			   mpkg.Name());
+	  return fragf(_("Remove(%s provides %s)"),
+		       const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
+		       mpkg.Name());
 	}
     }
 
@@ -506,36 +488,43 @@ namespace
       return justify_node(target, new_actions);
     }
 
-    std::wstring description() const
+    fragment *description() const
     {
-      std::wstring rval;
-      rval += target.description();
-      rval += L'\n';
+      std::vector<fragment *> rval;
+      rval.push_back(fragf("%F\n", target.description()));
+      std::vector<fragment *> col1_entries, col2_entries, col3_entries;
       for(imm::set<justify_action>::const_iterator it = actions.begin();
 	  it != actions.end(); ++it)
 	{
-	  rval += L"  | ";
-	  rval += it->description();
-	  rval += L'\n';
+	  col1_entries.push_back(fragf("%F | \n", it->description_column1_fragment()));
+	  col2_entries.push_back(fragf("%F\n", it->description_column2_fragment()));
+	  col3_entries.push_back(fragf("%F\n", it->description_column3_fragment()));
 	}
-      return rval;
+      std::vector<fragment_column_entry> columns;
+      columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, sequence_fragment(col1_entries)));
+      columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL)),
+      columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, sequence_fragment(col2_entries)));
+      columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL)),
+      columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, sequence_fragment(col3_entries)));
+      rval.push_back(fragment_columns(columns));
+      return sequence_fragment(rval);
     }
   };
 
-  std::wstring print_dep(pkgCache::DepIterator dep)
+  fragment *print_dep(pkgCache::DepIterator dep)
   {
     if(dep.TargetVer() != NULL)
-      return swsprintf(L"%s %s %s (%s %s)",
-		       dep.ParentPkg().Name(),
-		       dep.DepType(),
-		       dep.TargetPkg().Name(),
-		       dep.CompType(),
-		       dep.TargetVer());
+      return fragf("%s %s %s (%s %s)",
+		   dep.ParentPkg().Name(),
+		   dep.DepType(),
+		   dep.TargetPkg().Name(),
+		   dep.CompType(),
+		   dep.TargetVer());
     else
-      return swsprintf(L"%s %s %s",
-		       dep.ParentPkg().Name(),
-		       dep.DepType(),
-		       dep.TargetPkg().Name());
+      return fragf("%s %s %s",
+		   dep.ParentPkg().Name(),
+		   dep.DepType(),
+		   dep.TargetPkg().Name());
   }
 
 
@@ -587,7 +576,10 @@ namespace
 	}
 
 	if(verbosity > 1)
-	  printf(_("    ++ Examining %s\n"), print_dep(dep).c_str());
+	  {
+	    std::auto_ptr<fragment> tmp(fragf(_("    ++ Examining %s\n"), print_dep(dep)));
+	    std::cout << tmp->layout(screen_width, screen_width, style());
+	  }
 
 	if(is_remove())
 	  {
@@ -595,7 +587,7 @@ namespace
 	    if(dep->Type != pkgCache::Dep::Conflicts)
 	      {
 		if(verbosity > 1)
-		  printf(_("    ++   --> skipping, not a conflict\n"));
+		  std::cout << _("    ++   --> skipping, not a conflict\n");
 		continue;
 	      }
 	  }
@@ -605,7 +597,7 @@ namespace
 	    if(dep->Type == pkgCache::Dep::Conflicts)
 	      {
 		if(verbosity > 1)
-		  printf(_("    ++   --> skipping conflict\n"));
+		  std::cout << _("    ++   --> skipping conflict\n");
 		continue;
 	      }
 	  }
@@ -613,14 +605,14 @@ namespace
 	if(!params.should_follow_dep(dep))
 	  {
 	    if(verbosity > 1)
-	      printf(_("    ++   --> skipping, not relevant according to params\n"));
+	      std::cout << _("    ++   --> skipping, not relevant according to params\n");
 	    continue;
 	  }
 
 	if(dep.ParentVer() != params.selected_version(dep.ParentPkg()))
 	  {
 	    if(verbosity > 1)
-	      printf(_("    ++   --> skipping, parent is not the selected version\n"));
+	      std::cout << _("    ++   --> skipping, parent is not the selected version\n");
 	    continue;
 	  }
 
@@ -649,14 +641,14 @@ namespace
 				  dep.TargetVer())))
 	  {
 	    if(verbosity > 1)
-	      printf(_("    ++   --> ENQUEUING\n"));
+	      std::cout << _("    ++   --> ENQUEUING\n");
 	    justify_target target(Install(dep.ParentPkg()));
 	    output.push_back(parent.successor(target, dep));
 	  }
 	else
 	  {
 	    if(verbosity > 1)
-	      printf(_("    ++   --> skipping, version check failed.\n"));
+	      std::cout << _("    ++   --> skipping, version check failed.\n");
 	  }
       }
 
@@ -674,9 +666,9 @@ namespace
 	    for(pkgCache::PrvIterator prv = ver.ProvidesList(); !prv.end(); ++prv)
 	      {
 		if(verbosity > 1)
-		  printf(_("    ++   --> ENQUEUING %s Provides %s\n"),
-			 prv.OwnerPkg().Name(),
-			 prv.ParentPkg().Name());
+		  std::cout << ssprintf(_("    ++   --> ENQUEUING %s Provides %s\n"),
+					prv.OwnerPkg().Name(),
+					prv.ParentPkg().Name());
 		justify_target target(Provide(prv.ParentPkg(), prv, is_remove()));
 		output.push_back(parent.successor(target, prv));
 	      }
@@ -805,8 +797,8 @@ namespace
       if(first_iteration)
 	{
 	  if(verbosity > 1)
-	    printf(_("Starting search with parameters %s\n"),
-		   params.description().c_str());
+	    std::cout << ssprintf(_("Starting search with parameters %s\n"),
+				  params.description().c_str());
 	  first_iteration = false;
 	}
 
@@ -819,7 +811,13 @@ namespace
 
 
 	  if(verbosity > 1)
-	    printf("Searching for %s\n", front.description().c_str());
+	    {
+	      std::auto_ptr<fragment> f(fragf("Search for %F\n",
+					      front.description()));
+	      std::cout << f->layout(screen_width,
+				     screen_width,
+				     style());
+	    }
 
 
 	  // If we visited this package already, skip it.  Otherwise,
@@ -1009,7 +1007,7 @@ int do_why(const std::vector<pkg_matcher *> &leaves,
 	  if(seen_results.find(results) != seen_results.end())
 	    {
 	      if(verbosity > 1)
-		printf(_("Skipping this solution, I've already seen it.\n"));
+		std::cout << ssprintf(_("Skipping this solution, I've already seen it.\n"));
 	      continue;
 	    }
 	  else
@@ -1018,51 +1016,56 @@ int do_why(const std::vector<pkg_matcher *> &leaves,
 	  if(first)
 	    first = false;
 	  else
-	    printf("\n");
+	    std::cout << std::endl;
 
 	  if(results.empty())
-	    printf(_("The package \"%s\" is a starting point of the search.\n"),
-		   root.Name());
+	    std::cout << ssprintf(_("The package \"%s\" is a starting point of the search.\n"),
+				  root.Name());
 	  else
 	    {
-	      std::wstring::size_type col1_size = 0;
-	      std::wstring::size_type col2_size = 0;
-	      for(std::vector<justify_action>::const_iterator resIt =
-		    results.begin(); resIt != results.end(); ++resIt)
+	      std::vector<fragment *> col1_entries, col2_entries, col3_entries;
+	      for(std::vector<justify_action>::const_iterator it = results.begin();
+		  it != results.end(); ++it)
 		{
-		  std::wstring col1 = resIt->description_col1();
-		  std::wstring col2 = resIt->description_col2();
-
-		  std::wstring::size_type col1_width =
-		    (unsigned)wcswidth(col1.c_str(), col1.size());
-		  std::wstring::size_type col2_width =
-		    (unsigned)wcswidth(col2.c_str(), col2.size());
-
-		  col1_size = std::max(col1_size, col1_width);
-		  col2_size = std::max(col2_size, col2_width);
+		  col1_entries.push_back(fragf("%F\n", it->description_column1_fragment()));
+		  col2_entries.push_back(fragf("%F\n", it->description_column2_fragment()));
+		  col3_entries.push_back(fragf("%F\n", it->description_column3_fragment()));
 		}
-
-	      for(std::vector<justify_action>::const_iterator resIt =
-		    results.begin(); resIt != results.end(); ++resIt)
-		{
-		  std::wstring col1 = resIt->description_col1();
-		  std::wstring col2 = resIt->description_col2();
-
-		  int col1_width = wcswidth(col1.c_str(), col1.size());
-		  int col2_width = wcswidth(col2.c_str(), col2.size());
-
-		  std::wstring col1_padding(col1_size - col1_width, L' ');
-		  std::wstring col2_padding(col2_size - col2_width, L' ');
-
-		  std::wstring output =
-		    swsprintf(L"%ls%ls %ls%ls %ls\n",
-			      col1.c_str(), col1_padding.c_str(),
-			      col2.c_str(), col2_padding.c_str(),
-			      resIt->description_col3().c_str());
-		  std::string output_narrow = transcode(output);
-
-		  printf("%s", output_narrow.c_str());
-		}
+	      std::vector<fragment_column_entry> columns;
+	      fragment *col1_contents = sequence_fragment(col1_entries);
+	      fragment *col2_contents = sequence_fragment(col2_entries);
+	      fragment *col3_contents = sequence_fragment(col3_entries);
+	      columns.push_back(fragment_column_entry(false,
+						      true,
+						      0,
+						      fragment_column_entry::top,
+						      col1_contents));
+	      columns.push_back(fragment_column_entry(false,
+						      false,
+						      1,
+						      fragment_column_entry::top,
+						      NULL));
+	      columns.push_back(fragment_column_entry(false,
+						      true,
+						      0,
+						      fragment_column_entry::top,
+						      col2_contents));
+	      columns.push_back(fragment_column_entry(false,
+						      false,
+						      1,
+						      fragment_column_entry::top,
+						      NULL));
+	      columns.push_back(fragment_column_entry(false,
+						      true,
+						      0,
+						      fragment_column_entry::top,
+						      col3_contents));
+	      std::auto_ptr<fragment>
+		solution_fragment(fragment_columns(columns));
+	      update_screen_width();
+	      std::cout << solution_fragment->layout(screen_width,
+						     screen_width,
+						     style());
 
 	      if(verbosity < 1)
 		return 0;
@@ -1073,9 +1076,9 @@ int do_why(const std::vector<pkg_matcher *> &leaves,
   if(first)
     {
       if(root_is_removal)
-	printf(_("No justification for removing %s could be constructed.\n"), root.Name());
+	std::cout << ssprintf(_("No justification for removing %s could be constructed.\n"), root.Name());
       else
-	printf(_("No justification for %s could be constructed.\n"), root.Name());
+	std::cout << ssprintf(_("No justification for %s could be constructed.\n"), root.Name());
       return 1;
     }
   else
@@ -1104,6 +1107,9 @@ int cmdline_why(int argc, char *argv[],
       _error->DumpErrors();
       return -1;
     }
+
+  update_screen_width();
+
   // Keep track of whether any argument couldn't be parsed, but
   // don't bail until we finish parsing, so we can display all
   // the errors we find.
