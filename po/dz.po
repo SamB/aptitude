@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-03-04 20:22-0800\n"
-"PO-Revision-Date: 2006-09-18 15:31+0530\n"
-"Last-Translator: dorji tashi <dorjee_doss@hotmail.com>\n"
+"POT-Creation-Date: 2007-06-17 21:16-0700\n"
+"PO-Revision-Date: 2007-06-14 03:27+0530\n"
+"Last-Translator: Tshewang Norbu <bumthap2006@hotmail.com>\n"
 "Language-Team: Dzongkha <pgeyleg@dit.gov.bt>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -165,14 +165,14 @@ msgstr ""
 "མ་གཏང་།"
 
 #: src/apt_options.cc:248 src/mine/cmine.cc:302 src/mine/cmine.cc:367
-#: src/ui.cc:267 src/ui.cc:339 src/vscreen/vs_util.cc:91
-#: src/vscreen/vs_util.cc:104 src/vscreen/vs_util.cc:283
-#: src/vscreen/vs_util.cc:321
+#: src/ui.cc:275 src/ui.cc:347 src/vscreen/vs_util.cc:108
+#: src/vscreen/vs_util.cc:121 src/vscreen/vs_util.cc:304
+#: src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "བཏུབ།"
 
 #: src/apt_options.cc:249 src/download_list.cc:88 src/mine/cmine.cc:303
-#: src/mine/cmine.cc:368 src/vscreen/vs_util.cc:322
+#: src/mine/cmine.cc:368 src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "ཆ་མེད།"
 
@@ -200,45 +200,49 @@ msgstr "%s:ཧེ་མམ།"
 msgid "Unable to resolve dependencies."
 msgstr "རྟེན་འབྲེལ་ཚུ་མོས་མཐུན་འབད་མ་ཚུགས།"
 
-#: src/broken_indicator.cc:240
+#: src/broken_indicator.cc:237
+msgid "Fatal error in resolver"
+msgstr "མུས་མཐུན་པ་ནང་ཚུབ་ཅན་གྱི་འཛོལ་བ་འབྱུང་ཡོདཔ"
+
+#: src/broken_indicator.cc:248
 #, c-format
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] རྟེན་འབྲེལ་ཚུ་མོས་མཐུན་འབད་དོ།"
 
-#: src/broken_indicator.cc:273 src/solution_dialog.cc:126
-#: src/solution_screen.cc:522
+#: src/broken_indicator.cc:281 src/solution_dialog.cc:134
+#: src/solution_screen.cc:529
 msgid "Internal error: unexpected null solution."
 msgstr "ནང་འཁོད་འཛོལ་བ:རེ་འདུན་མེད་པའི་ ཐབས་ཤེས་སྟོང་ཆ།"
 
-#: src/broken_indicator.cc:330
+#: src/broken_indicator.cc:338
 #, c-format
 msgid "%d install"
 msgid_plural "%d installs"
 msgstr[0] "%d གཞི་བཙུགས་འབད་ནི།"
 msgstr[1] "%d གཞི་བཙུགས་འབད་ནི་ཚུ།"
 
-#: src/broken_indicator.cc:336
+#: src/broken_indicator.cc:344
 #, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
 msgstr[0] "%d རྩ་བསྐྲད།"
 msgstr[1] "%d རྩ་བསྐྲད་ཚུ།"
 
-#: src/broken_indicator.cc:342
+#: src/broken_indicator.cc:350
 #, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
 msgstr[0] "%d བདག་འཛིན་སྦེ་བཞག"
 msgstr[1] "%d བདག་འཛིན་སྦེ་བཞགཔ་ཨིན།"
 
-#: src/broken_indicator.cc:348
+#: src/broken_indicator.cc:356
 #, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
 msgstr[0] "%d ཡར་བསྐྱེད་འབད།"
 msgstr[1] "%d ཡར་བསྐྱེད་འབདཝ་ཨིན། "
 
-#: src/broken_indicator.cc:354
+#: src/broken_indicator.cc:362
 #, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
@@ -248,7 +252,7 @@ msgstr[1] "%d མར་ཕབ་འབདཝ་ཨིན།"
 #. ForTranslators: %F is replaced with a comma separated list such as
 #. "n1 installs, n2 removals", ...
 #.
-#: src/broken_indicator.cc:362
+#: src/broken_indicator.cc:370
 #, c-format
 msgid "Suggest %F"
 msgstr "%F གི་བསམ་འཆར་བཀོད།"
@@ -405,37 +409,47 @@ msgstr ""
 msgid "Couldn't find a changelog for %s"
 msgstr "%s གི་དོན་ལུ་ བསྒྱུར་བཅོས་དྲན་དེབ་ཐོབ་མ་ཚུགས།"
 
-#: src/cmdline/cmdline_clean.cc:52
+#: src/cmdline/cmdline_clean.cc:29
+#, c-format
+msgid "E: The clean command takes no arguments\n"
+msgstr "ཨི: བརྡ་བཀོད་རྩ་བ་ལས་སྒྲུབ་རྟགས་མི་འབག\n"
+
+#: src/cmdline/cmdline_clean.cc:58
 #, c-format
 msgid "Del %s* %spartial/*\n"
 msgstr "%s* %spartial/* བཏོན་གཏང་།\n"
 
-#: src/cmdline/cmdline_clean.cc:80
+#: src/cmdline/cmdline_clean.cc:86
 #, c-format
 msgid "Del %s %s [%sB]\n"
 msgstr "%s %s [%sB] བཏོན་གཏང་།\n"
 
-#: src/cmdline/cmdline_clean.cc:136
+#: src/cmdline/cmdline_clean.cc:111
+#, c-format
+msgid "E: The autoclean command takes no arguments\n"
+msgstr "ཨི:རང་བཞིན་ཡང་དག་བརྡ་བཀོད་གིས་སྒྲུབ་རྟགས་མི་འབག\n"
+
+#: src/cmdline/cmdline_clean.cc:148
 #, c-format
 msgid "Would free %sB of disk space\n"
 msgstr "ཌིཀསི་བར་སྟོང་ %sབི་ རང་དབང་སྦེེ་བཞག་ནིའི་གོ་སྐབས་ཡོད། \n"
 
-#: src/cmdline/cmdline_clean.cc:139
+#: src/cmdline/cmdline_clean.cc:151
 #, c-format
 msgid "Freed %sB of disk space\n"
 msgstr "ཌིཀསི་བར་སྟོང་གི་་%sབི་ རང་དབང་སབེ་བཞག་ནུག \n"
 
-#: src/cmdline/cmdline_do_action.cc:73
+#: src/cmdline/cmdline_do_action.cc:74
 #, c-format
 msgid "Invalid operation %s"
 msgstr "ནུས་མེད་བཀོལ་སྤྱོད་ %s"
 
-#: src/cmdline/cmdline_do_action.cc:143
+#: src/cmdline/cmdline_do_action.cc:146
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "རེ་འདུན་མེད་པའི་ དཔེ་གཞི་སྒྲུབ་རྟགས་ཀྱི་རྗེས་སུ་འབྲངས་ནི།\"keep-all\""
 
-#: src/cmdline/cmdline_do_action.cc:241 src/cmdline/cmdline_simulate.cc:31
-#: src/cmdline/cmdline_upgrade.cc:104 src/main.cc:520
+#: src/cmdline/cmdline_do_action.cc:247 src/cmdline/cmdline_simulate.cc:31
+#: src/cmdline/cmdline_upgrade.cc:113 src/main.cc:533
 #, c-format
 msgid "Abort.\n"
 msgstr "བར་བཤོལ།\n"
@@ -447,7 +461,7 @@ msgstr ""
 "ཕབ་ལེན:ཕབ་ལེན་འབད་ནིའི་དོན་ལུ་ ཁྱོད་ཀྱིས་ཉུང་ཤོས་རང་ཐུམ་སྒྲིལ་གཅིག་གསལ་བཀོད་འབད་དགོཔ་ཨིན། \n"
 
 #: src/cmdline/cmdline_download.cc:42
-#: src/generic/apt/download_install_manager.cc:79
+#: src/generic/apt/download_install_manager.cc:83
 msgid "Couldn't read source list"
 msgstr "འབྱུང་ཁུངས་ཀྱི་ཐོ་ཡིག་ལྷག་མ་ཚུགས།"
 
@@ -465,7 +479,12 @@ msgstr ""
 "%s ཐོན་རིམ་ %s དེ་གི་དོན་ལུ་ ཕབ་ལེན་འབད་བཏུབ་པའི་ཡིག་སྣོད་ཚུ་མིན་འདུག; ཡང་ཅིན་འ་ནི་དེ་ ཉེ་གནས་"
 "ཡང་ན་ ཕན་མེད་ཐུམ་སྒྲིལ་ཚུ་ཨིན་ན?"
 
-#: src/cmdline/cmdline_forget_new.cc:44
+#: src/cmdline/cmdline_forget_new.cc:25
+#, c-format
+msgid "E: The forget-new command takes no arguments\n"
+msgstr "ཨི:བརྗེད་པའི་ བརྡ་བཀོད་གསརཔ་དེ་གིས་སྒྲུབ་རྟགས་མི་འབག\n"
+
+#: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
 msgid "Would forget what packages are new\n"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་ག་ཆི་གསརཔ་ཨིན་ན་ སེམས་ཁར་ལས་བརྗེད་ནིའི་ཉེན་ཁ་ཡོད། \n"
@@ -588,17 +607,23 @@ msgstr "འོག་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་
 msgid "The following packages will be upgraded:"
 msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་དེ་ཚུ་ཡར་བསྐྱེད་འབད་ནི་ཨིན:"
 
-#: src/cmdline/cmdline_prompt.cc:330
+#: src/cmdline/cmdline_prompt.cc:276
+#, fuzzy
+#| msgid "The following packages will be upgraded:"
+msgid "The following partially installed packages will be configured:"
+msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་དེ་ཚུ་ཡར་བསྐྱེད་འབད་ནི་ཨིན:"
+
+#: src/cmdline/cmdline_prompt.cc:331
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "འོག་ལུ་ཡོད་མི་་ཉེར་མཁོའི་ཐུམ་སྒྲིལ་ཚུ་རྩ་བསྐྲད་གཏངའོང་!\n"
 
-#: src/cmdline/cmdline_prompt.cc:339
+#: src/cmdline/cmdline_prompt.cc:340
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "འོག་ལུ་ཡོད་མི་་ཉེར་མཁོའི་ཐུམ་སྒྲིལ་ཚུ་ བྱ་བ་འདི་གིས་བཅག་གཏང་འོང་\n"
 
-#: src/cmdline/cmdline_prompt.cc:349
+#: src/cmdline/cmdline_prompt.cc:350
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -607,16 +632,16 @@ msgstr ""
 "ཉེན་བརྡ: བྱ་བ་འདི་ལཱ་དགན་འགྲུབ་མི་དེ་གིས་  ཁྱོད་ཀྱི་རིམ་ལུགས་དེ་བཅག་ནིའི་ཉེན་ཁ་ཡོདཔ་ཨིན!\n"
 "ཁྱོད་ཀྱིས་ཁྱོད་ག་ཅི་འབདཝ་ཨིན་ན་ཏག་ཏག་སྦེ་མ་ཤེས་ཚུན་ཚོད་ འཕྲོ་མཐུད་མ་འབད!\n"
 
-#: src/cmdline/cmdline_prompt.cc:351
+#: src/cmdline/cmdline_prompt.cc:352
 msgid "I am aware that this is a very bad idea"
 msgstr "འདི་གནས་སྐབས་གནམ་མེད་ས་མེད་བྱང་ཉེས་ཅིག་ཨིན་པས་ཟེར་ང་གིས་ཤེས།"
 
-#: src/cmdline/cmdline_prompt.cc:354
+#: src/cmdline/cmdline_prompt.cc:355
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "འཕྲོ་མཐུད་ནིའི་དོན་ལུ་ ཚིག་ཚན་\"%s\"དེ་ཡིག་དཔར་རྐྱབས།:\n"
 
-#: src/cmdline/cmdline_prompt.cc:396
+#: src/cmdline/cmdline_prompt.cc:397
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -627,7 +652,7 @@ msgid ""
 "\n"
 msgstr "ཉེན་བརྡ: འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་གི་ བློ་གཏད་མ་ཚུགས་པའི་ཐོན་རིམ་དེ་གཞི་བཙུགས་འབད་འོང་!\n"
 
-#: src/cmdline/cmdline_prompt.cc:408
+#: src/cmdline/cmdline_prompt.cc:409
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -636,121 +661,129 @@ msgstr ""
 "*** ཉེན་བརྡ་ ***   བློ་གཏད་འགལ་བ་འདི་ཚུ་སྣང་མེད་བཞག་དོ་ ག་ཅི་སྦེ་ཟེར་བ་ཅིན་\n"
 "          %s::CmdLine::སྣང་མེད་-བློ་གཏད་-འགལ་བ་དེ་ 'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:177
-#: src/vscreen/vs_util.cc:215
+#: src/cmdline/cmdline_prompt.cc:418
+msgid ""
+"*** WARNING ***   Ignoring these trust violations because\n"
+"                  Apt::Get::AllowUnauthenticated is 'true'!\n"
+msgstr ""
+"*** ཉེན་བརྡ་ ***   བློ་གཏད་འགལ་བ་འདི་ཚུ་སྣང་མེད་བཞག་དོ་ ག་ཅི་སྦེ་ཟེར་བ་ཅིན་\n"
+"           Apt::Get::སྣང་མེད་བློ་གཏད་ཆོག་མི་དེ 'true'!\n"
+
+#: src/cmdline/cmdline_prompt.cc:424 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "བཏུབ།"
 
-#: src/cmdline/cmdline_prompt.cc:415 src/vscreen/vs_util.cc:178
-#: src/vscreen/vs_util.cc:216
+#: src/cmdline/cmdline_prompt.cc:424 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "མི་བཏུབ།"
 
-#: src/cmdline/cmdline_prompt.cc:419
+#: src/cmdline/cmdline_prompt.cc:428
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "ཁྱོད་ཀྱིས་ཉེན་བརྡ་དེ་སྣང་མེད་འབད་བཞག་སྟེ་ གང་རུང་སྦེ་འཕྲོ་མཐུད་ནི་ཨིན་ན?\n"
 
-#: src/cmdline/cmdline_prompt.cc:420
+#: src/cmdline/cmdline_prompt.cc:429
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr ""
 "འཕྲོ་མཐུད་ནིའི་དོན་ལུ་ \"%s\";དེ་ཐོ་བཀོད་འབད། བར་བཤོལ་འབད་ནིའི་དོན་ལུ་\"%s\": དོ་ཐོ་བཀོད་འབད།"
 
-#: src/cmdline/cmdline_prompt.cc:434
+#: src/cmdline/cmdline_prompt.cc:443
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr ""
 "ངོས་འཛིནམ་འབད་བར་ཡོད་མི་ ཨིན་པུཊི།  \"%s\" ཡང་ན་ \"%s\" གཉིས་ལས་ག་འབད་རུང་ཅིག་ཐོ་"
 "བཀོདའབད།\n"
 
-#: src/cmdline/cmdline_prompt.cc:536
+#: src/cmdline/cmdline_prompt.cc:545
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་འོས་སྦྱོར་འབད་ནུག དེ་འབདཝ་ད་ གཞི་བཙུགས་མི་འབད:\n"
 
-#: src/cmdline/cmdline_prompt.cc:542
+#: src/cmdline/cmdline_prompt.cc:551
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་བསམ་འཆར་བཀོད་ཚར་མི་ཚུ་ཨིན་ དེ་འབདཝ་ད་ གཞི་བཙུགས་མི་འབད:\n"
 
-#: src/cmdline/cmdline_prompt.cc:547
+#: src/cmdline/cmdline_prompt.cc:556
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་གཞི་བཙུགས་དང་ ཡར་བསྐྱེད་ ཡང་ན་ རྩ་བསྐྲད་གཏང་འོང་།\n"
 
-#: src/cmdline/cmdline_prompt.cc:549
+#: src/cmdline/cmdline_prompt.cc:558
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu ཐུམ་སྒྲིལ་ཚུ་ཡར་བསྐྱེད་འབད་ཡོདཔ། %lu གསརཔ་གཞི་བཙུགས་འབད་ཡོདཔ།"
 
-#: src/cmdline/cmdline_prompt.cc:553
+#: src/cmdline/cmdline_prompt.cc:562
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu སླར་གཞི་བཙུགས་འབད་ཡོདཔ།"
 
-#: src/cmdline/cmdline_prompt.cc:555
+#: src/cmdline/cmdline_prompt.cc:564
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu་མར་ཕབ་འབད་ཡོདཔ།"
 
-#: src/cmdline/cmdline_prompt.cc:557
+#: src/cmdline/cmdline_prompt.cc:566
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "རྩ་བསྐྲད་འབད་ནི་གི་ %lu དང་ %lu ཡར་བསྐྱེད་མ་འབད་བར་ཡོདཔ།\n"
 
-#: src/cmdline/cmdline_prompt.cc:564
+#: src/cmdline/cmdline_prompt.cc:573
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "ཡིག་མཛོད་ཚུ་གི་%sB/%sB དེ་ལེན་དགོཔ་ཨིན།"
 
-#: src/cmdline/cmdline_prompt.cc:567
+#: src/cmdline/cmdline_prompt.cc:576
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "ཡིག་མཛོད་ཚུ་གི་%sB ལེན་དགོཔ་ཨིན།"
 
-#: src/cmdline/cmdline_prompt.cc:574
+#: src/cmdline/cmdline_prompt.cc:583
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "སྒམ་བཤུབ་ཚར་ཞིནམ་ལས་ %sB དེ་ལག་ལེན་འཐབ་འོང་།\n"
 
-#: src/cmdline/cmdline_prompt.cc:577
+#: src/cmdline/cmdline_prompt.cc:586
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "སྒམ་བཤུབ་ཚར་ཞིནམ་ལས་%sBདེ་རང་དབང་སྦེ་བཞག་འོང་།\n"
 
-#: src/cmdline/cmdline_prompt.cc:615
+#: src/cmdline/cmdline_prompt.cc:624
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་སྟོན་ནི་མེད --  'i' གི་ཤུལ་ལས་གྲལ་ཐིག་གུར་ཐུམ་སྒྲིལ་ཚུ་གི་མིང་ཐོབཀད་འབད།\n"
 
-#: src/cmdline/cmdline_prompt.cc:617
+#: src/cmdline/cmdline_prompt.cc:626
 msgid "Press Return to continue."
 msgstr "འཕྲོ་མཐུད་ནིའི་དོན་ལུ་ སལར་ལལོག་ལུ་ཨེབ་གཏང་འབད།"
 
-#: src/cmdline/cmdline_prompt.cc:643
+#: src/cmdline/cmdline_prompt.cc:652
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་མ་ཐོབ་་--  'c'་གི་ཤུལ་ལས་གྲལ་ཐིག་གུར་ཐུམ་སྒྲིལ་དེ་གི་ཚུ་མིང་ཚུ་ཐོ་བཀོད་འབད།\n"
 
-#: src/cmdline/cmdline_prompt.cc:647
+#: src/cmdline/cmdline_prompt.cc:656
 msgid "Press Return to continue"
 msgstr "འཕྲོ་མཐུད་ནིའི་དོན་ལུ་ སླར་ལོག་ལུ་ཨེབ་གཏང་འབད།"
 
-#: src/cmdline/cmdline_prompt.cc:658
+#: src/cmdline/cmdline_prompt.cc:667
 #, c-format
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 
-#: src/cmdline/cmdline_prompt.cc:678
+#: src/cmdline/cmdline_prompt.cc:687
 msgid "continue with the installation"
 msgstr "གཞི་བཙུགས་དེ་འཕྲོ་མཐུད་འབད།"
 
-#: src/cmdline/cmdline_prompt.cc:680
+#: src/cmdline/cmdline_prompt.cc:689
 msgid "abort and quit"
 msgstr "བར་བཤོལ་དང་གཤག་ནི།"
 
-#: src/cmdline/cmdline_prompt.cc:682
+#: src/cmdline/cmdline_prompt.cc:691
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -758,7 +791,7 @@ msgstr ""
 "གཅིག་ཡང་ན་ དེ་ལས་ལྷག་སྟེ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་གི་སྐོར་ལས་བརྡ་དོན་ཚུ་སྟོན: ཐུམ་སྒྲིལ་མིང་དེ་གིས་ 'i' གི་རྗེས་"
 "སུ་འབྲངས་དགོཔ་ཨིན།"
 
-#: src/cmdline/cmdline_prompt.cc:684
+#: src/cmdline/cmdline_prompt.cc:693
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -766,23 +799,23 @@ msgstr ""
 "གཅིག་ཡང་ན་དེ་ལས་ལྷག་སྟེ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་གི་ ཌེ་བི་ཡཱན་ བསྒྱུར་བཅོས་དྲན་དེབ་ཚུ་སྟོན; ཐུམ་སྒྲིལ་མིང་དེ་"
 "གིས་ 'c'་གི་རྗེས་སུ་འབྲངས་དགོཔ་ཨིན།"
 
-#: src/cmdline/cmdline_prompt.cc:686
+#: src/cmdline/cmdline_prompt.cc:695
 msgid "toggle the display of dependency information"
 msgstr "རྟེན་འབྲེལ་བརྡ་དོན་གྱི་བཀྲམ་སྟོན་དེ་སོར་སྟོན་འབད།"
 
-#: src/cmdline/cmdline_prompt.cc:688
+#: src/cmdline/cmdline_prompt.cc:697
 msgid "toggle the display of changes in package sizes"
 msgstr "བསྒྱུར་བཅོས་ཚུ་གི་བཀྲམ་སྟོན་དེ་ཐུམ་སྒྲིལ་ཚད་ཚུ་གི་ནང་ལུ་སོར་སྟོན་འབད།"
 
-#: src/cmdline/cmdline_prompt.cc:690
+#: src/cmdline/cmdline_prompt.cc:699
 msgid "toggle the display of version numbers"
 msgstr "ཐོན་རིམ་ཨང་གྲངས་ཚུ་གི་བཀྲམ་སྟོན་དེ་སོར་སྟོན་འབད།"
 
-#: src/cmdline/cmdline_prompt.cc:692
+#: src/cmdline/cmdline_prompt.cc:701
 msgid "enter the full visual interface"
 msgstr "མཐོང་བའི་ངོས་འདྲ་བ་ཆ་ཚང་དེ་ཐོ་བཀོད་འབད།"
 
-#: src/cmdline/cmdline_prompt.cc:693
+#: src/cmdline/cmdline_prompt.cc:702
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -794,51 +827,51 @@ msgstr ""
 "ཡིག་འབྲུ་དེ་ཡིག་དཔར་རྐྱབས། བྱ་བ་དེ་ ཁྱོད་ཀྱིས་ཐོ་བཀོད་འབད་དེ་ཡོད་པའི་ཐུམ་སྒྲིལ་ཆ་མཉམ་ལུ་འཇུག་སྤྱོད་འབད་"
 "འོང་། འོག་ལུ་ཡོད་མི་བྱ་བ་ཚུ་འཐོབ་ཚུགས:"
 
-#: src/cmdline/cmdline_prompt.cc:698 src/cmdline/cmdline_resolver.cc:184
+#: src/cmdline/cmdline_prompt.cc:707 src/cmdline/cmdline_resolver.cc:184
 msgid "'+' to install packages"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་གཞི་བཙུགས་འབད་ནིའི་དོན་ལུ '+' "
 
-#: src/cmdline/cmdline_prompt.cc:700 src/cmdline/cmdline_resolver.cc:186
+#: src/cmdline/cmdline_prompt.cc:709 src/cmdline/cmdline_resolver.cc:186
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "ཐུམ་སྒྲིལ་ཚུ་གཞི་བཙུགས་འབད་ནིའི་དོན་ལུ་ '+M' དང་ དེ་ཚུ་རང་བཞིན་གྱིས་གཞི་བཙུགས་འབད་དེ་ཡོད་དོ་བཟུམ་"
 "སྦེ་ དེ་འཕྲལ་ལས་ཟུར་རྟགས་བཀལ།"
 
-#: src/cmdline/cmdline_prompt.cc:702 src/cmdline/cmdline_resolver.cc:188
+#: src/cmdline/cmdline_prompt.cc:711 src/cmdline/cmdline_resolver.cc:188
 msgid "'-' to remove packages"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་རྩ་བསྐྲད་གཏང་ནིའི་དོན་ལུ་ '-'"
 
-#: src/cmdline/cmdline_prompt.cc:704 src/cmdline/cmdline_resolver.cc:190
+#: src/cmdline/cmdline_prompt.cc:713 src/cmdline/cmdline_resolver.cc:190
 msgid "'_' to purge packages"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་ཕྱིར་བསྐྲད་འབད་ནིའི་དོན་ལུ་ '_' "
 
-#: src/cmdline/cmdline_prompt.cc:706 src/cmdline/cmdline_resolver.cc:192
+#: src/cmdline/cmdline_prompt.cc:715 src/cmdline/cmdline_resolver.cc:192
 msgid "'=' to place packages on hold"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་འཆང་ནིའི་གུར་ཞབག་ནིའི་དོན་ལུ་ '='"
 
-#: src/cmdline/cmdline_prompt.cc:708 src/cmdline/cmdline_resolver.cc:194
+#: src/cmdline/cmdline_prompt.cc:717 src/cmdline/cmdline_resolver.cc:194
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་འཆང་ནིའི་གུར་མ་བཞག་པར་ཁོང་རའི་ད་ལྟོ་གི་གནས་ལུགས་གུར་བཞག་ནིའི་དོན་ལུ་ ':'"
 
-#: src/cmdline/cmdline_prompt.cc:710 src/cmdline/cmdline_resolver.cc:196
+#: src/cmdline/cmdline_prompt.cc:719 src/cmdline/cmdline_resolver.cc:196
 msgid "'&M' to mark packages as automatically installed"
 msgstr "རང་བཞིན་གྱིས་གཞི་བཙུགས་འབད་དེ་ཡོདཔ་བཟུམ་སྦེ་རྟགས་བཀལ་ནིའི་དོན་ལུ་ '&M'"
 
-#: src/cmdline/cmdline_prompt.cc:712 src/cmdline/cmdline_resolver.cc:198
+#: src/cmdline/cmdline_prompt.cc:721 src/cmdline/cmdline_resolver.cc:198
 msgid "'&m' to mark packages as manually installed"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་ལག་ཐོག་ལས་གཞི་བཙུགས་འབད་དེ་ཡོདཔ་བཟུམ་སྦེ་རྟགས་བཀལ་ནིའི་དོན་ལུ་ '&m'"
 
-#: src/cmdline/cmdline_prompt.cc:714
+#: src/cmdline/cmdline_prompt.cc:723
 msgid "Commands:"
 msgstr "བརྡ་བཀོད:"
 
-#: src/cmdline/cmdline_prompt.cc:769
+#: src/cmdline/cmdline_prompt.cc:778
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "ཁྱོད་ཀྱིས་འཕྲོ་མཐུད་འབད་ནི་ཨིན་ན་? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:794
+#: src/cmdline/cmdline_prompt.cc:803
 #, c-format
 msgid ""
 "\n"
@@ -849,7 +882,7 @@ msgstr ""
 "རྟེན་འབྲེལ་བྲད་དོན་དེ་སྟོན་འོང་།\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:796
+#: src/cmdline/cmdline_prompt.cc:805
 #, c-format
 msgid ""
 "\n"
@@ -860,7 +893,7 @@ msgstr ""
 "རྟེན་འབྲེལ་བརྡ་དོན་དེ་སྟོན་འོང་།\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:802
+#: src/cmdline/cmdline_prompt.cc:811
 #, c-format
 msgid ""
 "\n"
@@ -871,7 +904,7 @@ msgstr ""
 "ཐོན་རིམ་དེ་སྟོན་འོང་།\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:804
+#: src/cmdline/cmdline_prompt.cc:813
 #, c-format
 msgid ""
 "\n"
@@ -882,7 +915,7 @@ msgstr ""
 "ཐོབ་རིམ་དེ་སྟོན་འོང་།\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:809
+#: src/cmdline/cmdline_prompt.cc:818
 #, c-format
 msgid ""
 "\n"
@@ -893,7 +926,7 @@ msgstr ""
 "ཚད་ཀྱི་བསྒྱུར་བཅོས་ཚུ་སྟོན་འོང།\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:811
+#: src/cmdline/cmdline_prompt.cc:820
 #, c-format
 msgid ""
 "\n"
@@ -904,23 +937,23 @@ msgstr ""
 "ཚད་ཀྱི་བསྒྱུར་བཅོས་ཚུ་སྟོན་འོང་།\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:834
+#: src/cmdline/cmdline_prompt.cc:844
 #, c-format
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "ནུས་མེད་ལན། གྲོགས་རམ་གྱི་དོན་ལུ་ནུས་ཅན་བརྡ་བཀོད་ཡང་ན་ '?' ཅིག་ཐོ་བཀོད་འབད།\n"
 
-#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:599
+#: src/cmdline/cmdline_resolver.cc:124 src/cmdline/cmdline_resolver.cc:658
 #: src/generic/apt/apt.cc:200
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "འབྲི་ནིའི་དོན་ལུ་ %s་དེ་ཁ་ཕྱེ་མ་ཚུགས།"
 
-#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:604
+#: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:663
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "%s མོས་མཐུན་པའི་གནས་ལུགས་འབྲི་ནི་ལུ་ འཛོལ་བ་འདུག"
 
-#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:606
+#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:665
 msgid "Resolver state successfully written!"
 msgstr "མོས་མཐུན་པའི་གནས་ལུགས་དེ་མཐར་འཁོལ་ཅན་སྦེ་བྲི་ཡི!"
 
@@ -954,8 +987,10 @@ msgid "move to the previous solution"
 msgstr "ཧ་མམ་གྱི་ཐབས་ཤེས་ལུ་སྤོ་བཤུད་འབད།"
 
 #: src/cmdline/cmdline_resolver.cc:174
-msgid "view an explanation of the changes in the solution"
-msgstr "བསྒྱུར་བཅོས་ཚུ་གི་གསལ་བཤད་དེ་ཐབས་ཤེས་ཀྱི་ནང་ལུ་སྟོན།"
+msgid ""
+"toggle between the contents of the solution and an explanation of the "
+"solution"
+msgstr "སོར་སྟོན་"
 
 #: src/cmdline/cmdline_resolver.cc:176
 msgid "examine the solution in the visual user interface"
@@ -1020,7 +1055,7 @@ msgstr "\"%s\" བཟུམ་གྱི་ཐུམ་སྒྲིལ་མེ�
 #: src/cmdline/cmdline_resolver.cc:284
 #, c-format
 msgid "%s has no version named \"%s\""
-msgstr "%sལུ་མིང་\"%s\" ཟེར་མི་ཐོན་རིམ་མིང་མེད།"
+msgstr "%s ལུ་མིང་\"%s\" ཟེར་མི་ཐོན་རིམ་མིང་མེད།"
 
 #: src/cmdline/cmdline_resolver.cc:301
 #, c-format
@@ -1062,58 +1097,66 @@ msgstr "%s རྩ་སྐྲད་གཏང་ནི་ནེ་དགོས་
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr " %s ཐོན་རིམ་ %s (%s) གི་གཞི་བཙུགས་དེ་དགོས་ཡོད།"
 
-#: src/cmdline/cmdline_resolver.cc:464 src/solution_screen.cc:495
+#: src/cmdline/cmdline_resolver.cc:514 src/solution_screen.cc:502
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgstr "ཁ་ཕྱེ་: %d; ཁ་བསྡམས་ཡོདཔ་: %d; ཕར་འགྱངས: %d;མི་མཐེན་པ་: %d"
 
-#: src/cmdline/cmdline_resolver.cc:510
+#: src/cmdline/cmdline_resolver.cc:564
 msgid "The following actions will resolve these dependencies:"
 msgstr "འོག་ལུ་ཡོད་མི་བྱ་བ་དེ་གིས་ རྟེན་འབྲེལ་འ་ནི་ཚུ་མོས་མཐུན་འབདཝ་ཨིན།"
 
-#: src/cmdline/cmdline_resolver.cc:525
+#: src/cmdline/cmdline_resolver.cc:581
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "ཐབས་ཤེས་འདི་དང་ལེན་འབད་ནི་ཨིན་ན? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:552 src/cmdline/cmdline_resolver.cc:650
+#: src/cmdline/cmdline_resolver.cc:608 src/cmdline/cmdline_resolver.cc:709
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "རྟེན་འབྲེལ་འ་ནི་ཚུ་མོས་མཐུན་འབད་ནིའི་དོན་ལུ་ བརྩོན་ཤུགས་འདོར་བའི་སྒང་ཡོད།"
 
-#: src/cmdline/cmdline_resolver.cc:579
+#: src/cmdline/cmdline_resolver.cc:638
 msgid "The following commands are available:"
 msgstr "འོག་ལུ་ཡོད་མི་བརྡ་བཀོད་ཚུ་འཐོབ་ཚུགས:"
 
-#: src/cmdline/cmdline_resolver.cc:596
+#: src/cmdline/cmdline_resolver.cc:655
 msgid "File to write resolver state to: "
 msgstr "དེ་ལུ་ མོས་མཐུན་པའི་གནས་ལུགས་འབྲི་ནིའི་དོན་ལུ་ ཡག་སྣོད:"
 
-#: src/cmdline/cmdline_resolver.cc:611
+#: src/cmdline/cmdline_resolver.cc:670
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "ནུས་མེད་ལན་གསལ། འོག་ལུ་ཡོད་མི་བརྡ་བཀོད་ཚུ་ལས་ཅིག་ཐོ་བཀད་འབད་གནང་:"
 
-#: src/cmdline/cmdline_resolver.cc:624
+#: src/cmdline/cmdline_resolver.cc:683
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "སྤྲོད་དེ་ཡོད་པའི་དུས་ཚོད་ཀྱི་ནང་འཁོད་ལུ་ཐབས་ཤེས་ཐོབ་མ་ཚུགས། ལྷག་པར་འབད་རྩོལ་བསྐྱེད་ནི་ཨིན་ན? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:653
+#: src/cmdline/cmdline_resolver.cc:712
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "ནུས་མེད་ལན་གསལ། 'y' ཡང་ན་ 'n'་ཐོ་བཀོད་འབད་གནང་།"
 
-#: src/cmdline/cmdline_resolver.cc:662
+#: src/cmdline/cmdline_resolver.cc:721
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "རྟེན་འབྲེལ་མོས་མཐུན་འབད་མ་ཚུགས! བཀོག་བཞག་དོ..."
 
-#: src/cmdline/cmdline_resolver.cc:668
+#: src/cmdline/cmdline_resolver.cc:727
 msgid "*** No more solutions available ***"
 msgstr "*** ཐབས་ཤེས་དེ་ལལས་མངམ་སྦེ་ཐོབ་མི་ཚུགས། ***"
 
-#: src/cmdline/cmdline_search.cc:100
+#: src/cmdline/cmdline_resolver.cc:737
+msgid ""
+"*** ERROR: search aborted by fatal exception.  You may continue\n"
+"           searching, but some solutions will be unreachable."
+msgstr ""
+"***འཛོལ་བ:ཚུབ་ཆེན་དམིགས་གསལ་གྱིས་འབལ་ཤོལ་འཚོལ།ཁྱོད་ཀྱི་འཕྲོ་འཐུད་དེ་འཚོལ་ཞིབ་འབད དེ་འབདཝ་ད་ཐབས་"
+"ཤེས་གཞན་མི་ཚུ་གི་ལྷོད་མི་ཚུགས།"
+
+#: src/cmdline/cmdline_search.cc:102
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr "%s གི་ངོས་དཔར་ཝི་འཐུས་ཤོར་བྱུང་ཡོདཔ།\n"
 
-#: src/cmdline/cmdline_search.cc:116
+#: src/cmdline/cmdline_search.cc:118
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr "འཚོལ་ཞིབ་འབད: ཁྱོད་ཀྱིས་ཉུང་ཤོས་རང་འཚོལ་ཞིབ་ཀྱི་ལམ་ལུགས་གཅིག་བྱིན་དགོ\n"
@@ -1123,8 +1166,8 @@ msgstr "འཚོལ་ཞིབ་འབད: ཁྱོད་ཀྱིས་ཉ�
 msgid "The following packages have unmet dependencies:\n"
 msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་གིས་གཞན་རྟེན་དང་མ་ཕྱེད་པས:\n"
 
-#: src/cmdline/cmdline_show.cc:161 src/cmdline/cmdline_show.cc:398
-#: src/solution_fragment.cc:56
+#: src/cmdline/cmdline_show.cc:161 src/cmdline/cmdline_show.cc:399
+#: src/solution_fragment.cc:57
 msgid "<NULL>"
 msgstr "<སྟོང་ཆ།>"
 
@@ -1132,8 +1175,8 @@ msgstr "<སྟོང་ཆ།>"
 msgid "not installed"
 msgstr "གཞི་བཙུགས་མ་འབད་བས།"
 
-#: src/cmdline/cmdline_show.cc:185 src/pkg_columnizer.cc:233
-#: src/pkg_ver_item.cc:228
+#: src/cmdline/cmdline_show.cc:185 src/pkg_columnizer.cc:241
+#: src/pkg_ver_item.cc:216
 msgid "unpacked"
 msgstr "གམ་ཤུབ་ཡོདཔ།"
 
@@ -1149,8 +1192,8 @@ msgstr "ཆ་ཤས་ཅིག་གཞི་བཙུགས་འབད་ཡ
 msgid "not installed (configuration files remain)"
 msgstr "གཞི་བཙུགས་མ་འབད་བས།(རིམ་སྒྲིག་གི་ཡིག་སྣོད་ཚུ་ལུས་འོང་།)"
 
-#: src/cmdline/cmdline_show.cc:193 src/pkg_columnizer.cc:241
-#: src/pkg_ver_item.cc:236
+#: src/cmdline/cmdline_show.cc:193 src/pkg_columnizer.cc:249
+#: src/pkg_ver_item.cc:224
 msgid "installed"
 msgstr "གཞི་བཙུགས་འབད་ཡོདཔ་།"
 
@@ -1212,132 +1255,132 @@ msgstr "%s; ཐོན་རིམ་ %s དེ་གཞི་བཙུགས་�
 msgid "%s; version %s will be installed automatically"
 msgstr "%s; ཐོན་རིམ་ %s དེ་རང་བཞིན་གྱིས་གཞི་་བཙུགས་ནི་ཨིན།"
 
-#: src/cmdline/cmdline_show.cc:333 src/cmdline/cmdline_show.cc:354
+#: src/cmdline/cmdline_show.cc:333 src/cmdline/cmdline_show.cc:355
 msgid "Package: "
 msgstr "ཐུམ་་སྒྲིལ་:"
 
-#: src/cmdline/cmdline_show.cc:334 src/cmdline/cmdline_show.cc:362
+#: src/cmdline/cmdline_show.cc:334 src/cmdline/cmdline_show.cc:363
 #: src/pkg_columnizer.cc:89
 msgid "State"
 msgstr "གནས་ལུགས།"
 
-#: src/cmdline/cmdline_show.cc:335 src/cmdline/cmdline_show.cc:418
+#: src/cmdline/cmdline_show.cc:335 src/cmdline/cmdline_show.cc:419
 #: src/generic/apt/matchers.cc:1663
 msgid "Provided by"
 msgstr "གིས་འབྱིན་བྱིནམ་ཨིན།"
 
-#: src/cmdline/cmdline_show.cc:356 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:357 src/pkg_info_screen.cc:107
 msgid "Essential: "
 msgstr "ཉེ་བར་མཁོ་བ:"
 
-#: src/cmdline/cmdline_show.cc:356 src/cmdline/cmdline_show.cc:360
-#: src/cmdline/cmdline_show.cc:371 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:357 src/cmdline/cmdline_show.cc:361
+#: src/cmdline/cmdline_show.cc:372 src/pkg_info_screen.cc:107
 msgid "yes"
 msgstr "ཨིན།"
 
-#: src/cmdline/cmdline_show.cc:360
+#: src/cmdline/cmdline_show.cc:361
 msgid "New"
 msgstr "གསརཔ།"
 
-#: src/cmdline/cmdline_show.cc:365
+#: src/cmdline/cmdline_show.cc:366
 msgid "Forbidden version"
 msgstr "བཀག་དམ་འབད་ཡོད་པའི་ཐོན་རིམ།"
 
-#: src/cmdline/cmdline_show.cc:369
+#: src/cmdline/cmdline_show.cc:370
 msgid "Automatically installed"
 msgstr "རང་བཞིན་གྱིས་ཐོག་ལས་གཞི་བཙུགས་འབད་ཡོདཔ།"
 
-#: src/cmdline/cmdline_show.cc:371
+#: src/cmdline/cmdline_show.cc:372
 msgid "no"
 msgstr "མེན།"
 
-#: src/cmdline/cmdline_show.cc:373
+#: src/cmdline/cmdline_show.cc:374
 msgid "Version: "
 msgstr "ཐོན་རིམ:"
 
-#: src/cmdline/cmdline_show.cc:374 src/pkg_info_screen.cc:115
+#: src/cmdline/cmdline_show.cc:375 src/pkg_info_screen.cc:115
 msgid "Priority: "
 msgstr "གཙོ་རིམ: "
 
-#: src/cmdline/cmdline_show.cc:375 src/cmdline/cmdline_show.cc:377
-#: src/cmdline/cmdline_show.cc:386
+#: src/cmdline/cmdline_show.cc:376 src/cmdline/cmdline_show.cc:378
+#: src/cmdline/cmdline_show.cc:387
 msgid "N/A"
 msgstr "ཨེན/ཨེ།"
 
-#: src/cmdline/cmdline_show.cc:376 src/pkg_info_screen.cc:116
+#: src/cmdline/cmdline_show.cc:377 src/pkg_info_screen.cc:116
 msgid "Section: "
 msgstr "དབྱེ་ཚན:"
 
-#: src/cmdline/cmdline_show.cc:378 src/pkg_info_screen.cc:117
+#: src/cmdline/cmdline_show.cc:379 src/pkg_info_screen.cc:117
 msgid "Maintainer: "
 msgstr "རྒྱུན་་སྐྱོང་པ:"
 
-#: src/cmdline/cmdline_show.cc:381
+#: src/cmdline/cmdline_show.cc:382
 msgid "Uncompressed Size: "
 msgstr "ཨེབ་བཙུགས་མ་འབད་བར་ཡོའ་མི་ཚད:"
 
-#: src/cmdline/cmdline_show.cc:385
+#: src/cmdline/cmdline_show.cc:386
 msgid "Architecture: "
 msgstr "བཟོ་བཀོད:"
 
-#: src/cmdline/cmdline_show.cc:387
+#: src/cmdline/cmdline_show.cc:388
 msgid "Compressed Size: "
 msgstr "ཨེབ་བཙུགས་འབད་ཡོད་པའི་ཚད: "
 
-#: src/cmdline/cmdline_show.cc:389
+#: src/cmdline/cmdline_show.cc:390
 msgid "Filename: "
 msgstr "ཡིག་སྣོད་མིང: "
 
-#: src/cmdline/cmdline_show.cc:391
+#: src/cmdline/cmdline_show.cc:392
 msgid "MD5sum: "
 msgstr "ཨེམ་ཌི་༥བསྡོམས: "
 
-#: src/cmdline/cmdline_show.cc:395 src/cmdline/cmdline_show.cc:398
+#: src/cmdline/cmdline_show.cc:396 src/cmdline/cmdline_show.cc:399
 msgid "Archive"
 msgstr "ཡིག་མཛོད།"
 
-#: src/cmdline/cmdline_show.cc:403
+#: src/cmdline/cmdline_show.cc:404
 msgid "Depends"
 msgstr "བརྟེནམ་ཨིན།།"
 
-#: src/cmdline/cmdline_show.cc:405
+#: src/cmdline/cmdline_show.cc:406
 msgid "PreDepends"
 msgstr "སྔོན་བརྟེན།"
 
-#: src/cmdline/cmdline_show.cc:407
+#: src/cmdline/cmdline_show.cc:408
 msgid "Recommends"
 msgstr "འོས་སྦྱོར་འབདཝ་ཨིན།"
 
-#: src/cmdline/cmdline_show.cc:409
+#: src/cmdline/cmdline_show.cc:410
 msgid "Suggests"
 msgstr "བསམ་འཆར་བཀོདཔ་ཨིན།"
 
-#: src/cmdline/cmdline_show.cc:411
+#: src/cmdline/cmdline_show.cc:412
 msgid "Conflicts"
 msgstr "མི་མཐུནམ་ཨིན།"
 
-#: src/cmdline/cmdline_show.cc:413
+#: src/cmdline/cmdline_show.cc:414
 msgid "Replaces"
 msgstr "ཚབ་བཙུགཔ་ཨིན།"
 
-#: src/cmdline/cmdline_show.cc:415
+#: src/cmdline/cmdline_show.cc:416
 msgid "Obsoletes"
 msgstr "ཕན་ཐོག་མེདཔ་ཨིན།"
 
-#: src/cmdline/cmdline_show.cc:417 src/generic/apt/matchers.cc:1617
+#: src/cmdline/cmdline_show.cc:418 src/generic/apt/matchers.cc:1617
 msgid "Provides"
 msgstr "བྱིནམ་ཨིན།"
 
-#: src/cmdline/cmdline_show.cc:421 src/pkg_info_screen.cc:95
+#: src/cmdline/cmdline_show.cc:422 src/pkg_info_screen.cc:95
 msgid "Description: "
 msgstr "འགྲེལ་བཤད: "
 
-#: src/cmdline/cmdline_show.cc:518
+#: src/cmdline/cmdline_show.cc:519
 #, c-format
 msgid "Unable to locate package %s"
 msgstr "ཐུམ་སྒྲིལ་%sདེ་ག་ཡོད་འཚོལ་མ་ཚུགས།"
 
-#: src/cmdline/cmdline_show.cc:531
+#: src/cmdline/cmdline_show.cc:532
 #, c-format
 msgid "Unable to parse pattern %s"
 msgstr "དཔེ་གཞི་%s་དེ་མིང་དཔྱད་འབད་མ་ཚུགས།"
@@ -1360,6 +1403,11 @@ msgstr "ཕབ་ལེན་འབད་ཡོད་པའི་ཕན་མེ
 #, c-format
 msgid "E: The update command takes no arguments\n"
 msgstr "ཨི: བརྡ་བཀོད་དུས་མཐུན་བཟོ་མི་དེ་གིས་སྒྲུབ་རྟགས་མི་འབག\n"
+
+#: src/cmdline/cmdline_upgrade.cc:41
+#, c-format
+msgid "E: The %s command takes no arguments\n"
+msgstr "ཨི: %s བརྡ་བཀོད་དེ་གིས་སྒྲུབ་རྟགས་མི་འབག\n"
 
 #: src/cmdline/cmdline_util.cc:93
 #, c-format
@@ -1424,17 +1472,17 @@ msgstr "ཐོབ་ཅི།"
 msgid "Downloading..."
 msgstr "ཕབ་ལེན་འབད་དོ..."
 
-#: src/download_item.cc:72 src/download_item.cc:76 src/download_item.cc:98
+#: src/download_item.cc:74 src/download_item.cc:78 src/download_item.cc:100
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
 msgid " [Working]"
 msgstr "[ལཱ་ཡགོག་འབད་དོ]"
 
-#: src/download_item.cc:102 src/download_list.cc:356
+#: src/download_item.cc:104 src/download_list.cc:356
 msgid "[Hit]"
 msgstr "[ཨེབ་ནི།]"
 
-#: src/download_item.cc:102 src/download_list.cc:378
+#: src/download_item.cc:104 src/download_list.cc:378
 msgid "[Downloaded]"
 msgstr "[ཕབ་ལེན་འབད་ཡོདཔ།]"
 
@@ -1522,75 +1570,75 @@ msgstr "%s (%sB/s)ནང་ %sB དེ་ལེན་ཏེ་ཡོད།\n"
 #, c-format
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
-"press enter\n"
+"press [Enter].\n"
 msgstr ""
-"བརྡ་ལམ་བསྒྱུར་བཅོས:འདྲེན་འཕྲུལ་'%s'ནང་ལུ་ ཌིཀསི་གི་ཁ་ཡིག་'%s'འབད་མི་དེ་བཙུགས་ཞིནམ་ལས་ བཙུགས་དེ་"
-"ཨེབ་གནང་།\n"
+"བརྡ་ལམ་བསྒྱུར་བཅོས:འདྲེན་འཕྲུལ་'%s'ནང་ལུ་ ཌིཀསི་གི་ཁ་ཡིག་'%s'འབད་མི་དེ་བཙུགས་ཞིནམ་ལས་  [ཐོ་བཀོད]"
+"དེ་ཨེབ་གནང་།\n"
 
-#: src/generic/apt/aptcache.cc:263
+#: src/generic/apt/aptcache.cc:283
 msgid "Can't open Aptitude extended state file"
 msgstr "མགྱོགས་པ་རྒྱ་བསྐྱེད་འབད་མི་གི་གནས་ལུགས་ནང་ཡོད་མི་ཡིག་སྣོད་དེ་ཁ་ཕྱེ་མི་ཚུགས་པས།"
 
-#: src/generic/apt/aptcache.cc:270 src/generic/apt/aptcache.cc:324
-#: src/generic/apt/aptcache.cc:326
+#: src/generic/apt/aptcache.cc:290 src/generic/apt/aptcache.cc:368
+#: src/generic/apt/aptcache.cc:370
 msgid "Reading extended state information"
 msgstr "རྒྱ་བསྐྱེད་ཅན་གྱི་གནས་ལུགས་ནང་ཡོད་བརྡ་དོན་དེ་ལྷག་དོ།"
 
-#: src/generic/apt/aptcache.cc:332 src/generic/apt/aptcache.cc:408
-#: src/generic/apt/aptcache.cc:411
+#: src/generic/apt/aptcache.cc:375 src/generic/apt/aptcache.cc:451
+#: src/generic/apt/aptcache.cc:454
 msgid "Initializing package states"
 msgstr "ཐུམ་སྒྲིལ་གྱི་གནས་ལུགས་ཚུ་འགོ་འབྱེད་འབད་དོ།"
 
-#: src/generic/apt/aptcache.cc:536
+#: src/generic/apt/aptcache.cc:573
 msgid "Cannot open Aptitude state file"
 msgstr "གོམ་སའདྲིས་ཅན་གྱི་གནས་ལུགས་ཡིག་སྣོད་དེ་ཁ་ཕྱེ་མ་ཚུགས།"
 
-#: src/generic/apt/aptcache.cc:540 src/generic/apt/aptcache.cc:596
-#: src/generic/apt/aptcache.cc:599
+#: src/generic/apt/aptcache.cc:577 src/generic/apt/aptcache.cc:632
+#: src/generic/apt/aptcache.cc:635
 msgid "Writing extended state information"
 msgstr "རྒྱ་བསྐྱེད་ཅན་གྱི་་གནས་ལུགས་བརྡ་དོན་བྲི་དོ།"
 
-#: src/generic/apt/aptcache.cc:578
+#: src/generic/apt/aptcache.cc:614
 #, c-format
 msgid "Internal buffer overflow on package \"%s\" while writing state file"
 msgstr "གནས་ལུགས་ཡཡིག་སྣོད་དེ་འབྲི་བའི་སྐབས་ལུ་ ཐུམ་སྒྲིལ་\"%s\"གུར་ ནང་འཁོད་གནད་ཁོངས་ལུད་སོང་ནུག"
 
-#: src/generic/apt/aptcache.cc:587
+#: src/generic/apt/aptcache.cc:623
 msgid "Couldn't write state file"
 msgstr "གནས་ལུགས་ཡིག་སྣོད་འབྲི་མ་ཚུགས།"
 
-#: src/generic/apt/aptcache.cc:604
+#: src/generic/apt/aptcache.cc:640
 msgid "Error writing state file"
 msgstr "གནས་ལུགས་ཡིག་སྣོད་འབྲི་ནི་ལུ་འཛོལ་བ་འདུག"
 
-#: src/generic/apt/aptcache.cc:622
+#: src/generic/apt/aptcache.cc:658
 #, c-format
 msgid "failed to remove %s"
 msgstr "%sདེ་རྩ་བསྐྲད་གཏང་ནི་ལུ་འཐུས་ཤོར་བྱུང་ནུག"
 
-#: src/generic/apt/aptcache.cc:629
+#: src/generic/apt/aptcache.cc:665
 #, c-format
 msgid "failed to rename %s to %s"
 msgstr "%sལས་%sལུ་བསྐྱར་མིང་བཏགས་ནི་དེ་འཐུས་ཤོར་བྱུང་ནུག"
 
-#: src/generic/apt/aptcache.cc:637
+#: src/generic/apt/aptcache.cc:673
 #, c-format
 msgid "couldn't replace %s with %s"
 msgstr "%sདེ་%sདང་གཅིག་ཁར་ཚབ་བཙུགས་མ་ཚུགས།"
 
-#: src/generic/apt/aptcache.cc:1132
+#: src/generic/apt/aptcache.cc:1143
 msgid "Unable to correct dependencies, some packages cannot be installed"
 msgstr "རྟེན་འབྲེལ་ཚུ་ལུ་ནོར་བཅོས་འབད་འབད་མ་ཚུགས། ཐུམ་སྒྲིལ་ལ་ལོ་ཅིག་གཞི་བཙུགས་འབད་མི་བཏུབ།"
 
-#: src/generic/apt/aptcache.cc:1612
+#: src/generic/apt/aptcache.cc:1442
 msgid "The list of sources could not be read."
 msgstr "འབྱུང་ཁུངས་ཀྱི་ཐོ་ཡིག་དེ་ལྷག་མི་ཚུགས།"
 
-#: src/generic/apt/aptcache.cc:1619
+#: src/generic/apt/aptcache.cc:1449
 msgid "The package lists or status file could not be parsed or opened."
 msgstr "ཐུམ་སྒྲིལ་གྱི་ཐོ་ཡིཡག་ཡང་ན་ གནས་ཚད་ཡིག་སྣོད་དེ་མིང་དཔྱད་འབད་ནི་དང་ ཡང་ན་ ཁ་ཕྱེ་མི་བཏུབ།"
 
-#: src/generic/apt/aptcache.cc:1622
+#: src/generic/apt/aptcache.cc:1452
 msgid "You may want to update the package lists to correct these missing files"
 msgstr ""
 "བརླག་སྟོར་ཞུགས་ཡོད་མི་ཡིག་སྣོད་འདི་ཚུ་ནོར་བཅོས་འབད་ནིའི་དོན་ལུ་ ཁྱོད་ཀྱིས་ཐུམ་སྒྲིལ་ཐོ་ཡིག་ཚུ་དུས་མཐུན་བཟོ་"
@@ -1619,29 +1667,29 @@ msgid ""
 "The package cache is not available; unable to download and install packages."
 msgstr "ཐུམ་སྒྲིལ་འདྲ་མཛོད་དེ་འཐོབ་མི་ཚུགས། ཐུམ་སྒྲིལ་ཚུ་ཕབ་ལེན་འབད་ནི་དང་གཞི་བབཙུགས་འབད་མ་ཚུགས།"
 
-#: src/generic/apt/download_install_manager.cc:72
-#: src/generic/apt/download_update_manager.cc:77
+#: src/generic/apt/download_install_manager.cc:76
+#: src/generic/apt/download_update_manager.cc:81
 msgid "Couldn't lock list directory..are you root?"
 msgstr "ཐོ་བཀོད་འབད་ནི་སྣོད་ཐོ་དེ་བསྡམ་བཞག་མ་ཚུགས་་་་ཁྱོད་རྩ་བ་ཨིན་ན?"
 
-#: src/generic/apt/download_install_manager.cc:89
+#: src/generic/apt/download_install_manager.cc:93
 msgid "Internal error: couldn't generate list of packages to download"
 msgstr "ནང་འཁོད་འཛོལ་བ་: ཕབ་ལེན་ལུ་ཐུམ་སྒྲིལ་ཚུ་གི་ཐོ་ཡིག་བཟོ་བཏོན་འབད་མ་ཚུགས།"
 
-#: src/generic/apt/download_install_manager.cc:119
-#, fuzzy, c-format
+#: src/generic/apt/download_install_manager.cc:123
+#, c-format
 msgid "Failed to fetch %s: %s"
-msgstr "%sལས་%sལུ་བསྐྱར་མིང་བཏགས་ནི་དེ་འཐུས་ཤོར་བྱུང་ནུག"
+msgstr "%s: %sལུ་་ལེན་ནི་དེ་འཐུས་ཤོར་བྱུང་ནུག"
 
-#: src/generic/apt/download_install_manager.cc:125
+#: src/generic/apt/download_install_manager.cc:129
 msgid "Unable to correct for unavailable packages"
 msgstr "འཐོབ་མ་ཚུགས་པའི་ཐུམ་སྒྲིལ་ཚུ་གི་དོན་ལུ་ ནོར་བཅོས་འབད་མི་ཚུགས་པས།"
 
-#: src/generic/apt/download_install_manager.cc:151
+#: src/generic/apt/download_install_manager.cc:155
 msgid "A package failed to install.  Trying to recover:"
 msgstr "ཐུམ་སྒྲིལ་གཞི་བཙུགས་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ནུག སླར་གསོ་འབད་ནི་ལུ་འབད་རྩོལ་བསྐྱེད་དོ།"
 
-#: src/generic/apt/download_install_manager.cc:176
+#: src/generic/apt/download_install_manager.cc:180
 msgid ""
 "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr ""
@@ -1652,11 +1700,11 @@ msgstr ""
 msgid "Couldn't read list of package sources"
 msgstr "ཐུམ་སྒྲིལ་འབྱུང་ཁུངས་ཀྱི་ཐོ་ཡིག་ལྷག་མ་ཚུགས།"
 
-#: src/generic/apt/download_update_manager.cc:110
+#: src/generic/apt/download_update_manager.cc:114
 msgid "Couldn't clean out list directories"
 msgstr "ཐོ་བཀོད་འབད་ནིའི་སྣོད་ཐོ་ཚུ་སེལ་མ་ཚུགས།"
 
-#: src/generic/apt/download_update_manager.cc:122
+#: src/generic/apt/download_update_manager.cc:126
 msgid "Couldn't rebuild package cache"
 msgstr "ཐུམ་སྒྲིལ་འདྲ་མཛོད་སླར་བཟོ་བརྩིགས་འབད་མ་ཚུགས།"
 
@@ -1920,7 +1968,7 @@ msgid ""
 msgstr ""
 "ཐུམ་སྒྲིལ་ཟུར་ཐོའི་ཡིག་སྣོད་ཚུ་ངན་ཅན་ལུ་གྱུར་སོང་ནུག ཡིག་སྣོད་མིང་མེད: ཐུམ་སྒྲིལ་%s དེ་གི་དོན་ལུ་ས་སྒོ།"
 
-#: src/generic/apt/pkg_changelog.cc:151 src/view_changelog.cc:149
+#: src/generic/apt/pkg_changelog.cc:151 src/view_changelog.cc:159
 #, c-format
 msgid "ChangeLog of %s"
 msgstr "%sགི་བསྒྱུར་བཅོས་དྲན་དེབ།"
@@ -2187,60 +2235,60 @@ msgstr "སྲིད་བྱུས་འགྲལ་བཤད་དབྱེ་
 msgid "Invalid sorting policy type '%s'"
 msgstr "ནུས་མེད་དབྱེ་སེལ་འབད་ནིའི་སྲིད་བྱུའི་དབྱེ་བ་'%s'"
 
-#: src/main.cc:82
+#: src/main.cc:84
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr "\"%ls\"གི་ཤུལ་ལས་ བཱའིཊི་སྣ་མང་གི་ཡིག་རྒྱུན་ ཌི་ཀོཌི་འབད་མི་ཚུགས།"
 
-#: src/main.cc:91
+#: src/main.cc:93
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr " \"%s\"དེ་གི་ཤུལ་ལས་ རྒྱ་ཅན-ཡིག་འབྲུའི་ཡིག་རྒྱུན་ཌི་ཀོཌི་འབད་མ་ཚུགས།"
 
-#: src/main.cc:99
+#: src/main.cc:101
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr "%s %s དེ་%s %sགུར་ཕྱོགས་སྒྲིག་འབད་བཞག་ནུག།\n"
 
-#: src/main.cc:102
+#: src/main.cc:104
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr "ཕྱོགས་སྒྲིག་པ: g++ %s\n"
-
-#: src/main.cc:105
-#, c-format
-msgid ""
-"\n"
-"NCurses version: %s\n"
-msgstr ""
-"\n"
-"NCurses version: %s\n"
 
 #: src/main.cc:107
 #, c-format
 msgid ""
 "\n"
+"NCurses version: %s\n"
+msgstr ""
+"\n"
+"NCurses version: %s\n"
+
+#: src/main.cc:109
+#, c-format
+msgid ""
+"\n"
 "Curses version: %s\n"
 msgstr ""
 "\n"
 "Curses version: %s\n"
 
-#: src/main.cc:109
+#: src/main.cc:111
 #, c-format
 msgid "libsigc++ version: %s\n"
 msgstr "libsigc++ཐོན་རིམ་: %s\n"
 
-#: src/main.cc:115
+#: src/main.cc:117
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "ལགལེན་: གོམས་འདྲིས་ [-S fname] [-u|-i]"
 
-#: src/main.cc:117
+#: src/main.cc:119
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "aptitude [གདམ་ཁ་ཚུ་] <བྱ་བ་> ..."
 
-#: src/main.cc:119
+#: src/main.cc:121
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -2250,44 +2298,44 @@ msgstr ""
 "།):\n"
 "\n"
 
-#: src/main.cc:120
+#: src/main.cc:122
 #, c-format
 msgid " install      - Install/upgrade packages\n"
 msgstr "གཞི་བཙུགས་འབད།  -ཐུམ་སྒྲིལ་ཚུ་གཞི་བཙུགས་དང་ ཡར་བསྐྱེད་འབད།\n"
 
-#: src/main.cc:121
+#: src/main.cc:123
 #, c-format
 msgid " remove       - Remove packages\n"
 msgstr "རྩ་བསྐྲད་གཏང་།  - ཐུམ་སྒྲིལ་ཚུ་རྩ་བསྐྲད་གཏང་།\n"
 
-#: src/main.cc:122
+#: src/main.cc:124
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr "ཕྱིར་བསྐྲད་གཏང་།  ་-  ཐུམ་སྒྲིལ་ཚུ་དང་དེ་ཚུ་གི་རིམ་སྒྲིག་ཡིག་སྣོད་ཚུ་རྩ་བསྐྲད་གཏང་།\n"
 
-#: src/main.cc:123
+#: src/main.cc:125
 #, c-format
 msgid " hold         - Place packages on hold\n"
 msgstr "འཆང་།    - འཆང་ནིའི་གུར་ཐུམ་སྒྲིལ་ཚུ་བཞག\n"
 
-#: src/main.cc:124
+#: src/main.cc:126
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
 msgstr "འཆང་མི་དགོ   -  ཐུམ་སྒྲིལ་ཅིག་གི་དོན་ལུ་ འཆང་ནིའི་བརྡ་བཀོད་ཆ་མེད་གཏང་།\n"
 
-#: src/main.cc:125
+#: src/main.cc:127
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
 msgstr ""
 "རང་བཞིན་རྟགས་བཀལ-  ཐུམ་སྒྲིལ་ཚུ་རང་བཞིན་གྱིས་ཐོག་ལས་གཞི་བཙུགས་འབད་ཡོད་མི་བཟུམ་སྦེ་རྟགས་བཀལ།\n"
 
-#: src/main.cc:126
+#: src/main.cc:128
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr ""
 "རང་བཞིན་རྟགས་མ་བཀལ-  ཐུམ་སྒྲིལ་ཚུ་ རང་བཞིན་གྱིས་ཐོག་ལས་རྟགས་བཀལ་ཡོད་མི་བཟུམ་སྦེ་རྟགས་བཀལ།\n"
 
-#: src/main.cc:131
+#: src/main.cc:133
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
@@ -2296,59 +2344,59 @@ msgstr ""
 "ཐོན་རིམ་བཀག་དམ་འབད-  གོམས་འདྲིས་དེ་ ཡར་བསྐྱེད་འབད་ནི་ལས་གསལ་བཀོད་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་ཐོན་རིམ་"
 "ཚུན་ བཀག་དམ་འབད།\n"
 
-#: src/main.cc:132
+#: src/main.cc:134
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr "དུས་མཐུན་བཟོ -    གསརཔ་/ཡར་བསྐྱེད་འབད་བཏུབ་པའི་ཐུམ་སྒྲིལ་ཐོ་ཡིག་ཅིག་ཕབ་་ལེན་འབད།\n"
 
-#: src/main.cc:133
+#: src/main.cc:135
 #, c-format
-msgid " upgrade      - Perform a safe upgrade\n"
-msgstr "ཡར་བསྐྱེད་- ཉེན་སྲུང་ལྡན་པའི་ཡར་བསྐྱེད་འབད།\n"
+msgid " safe-upgrade - Perform a safe upgrade\n"
+msgstr "ཉེན་སྲུང་ཡར་བསྐྱེད་- ཉེན་སྲུང་ལྡན་པའི་ཡར་བསྐྱེད་འབད།\n"
 
-#: src/main.cc:134
+#: src/main.cc:136
 #, c-format
 msgid ""
-" dist-upgrade - Perform an upgrade, possibly installing and removing "
+" full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
-msgstr "ཌིསཊི-ཡར་བསྐྱེད་-ཐུམ་སྒྲིལ་ཚུ་གཞི་བཙུགས་དང་རྩ་བསྐྲད་གཏང་པའི་ཐོག་ལས་ ཡར་བསྐྱེད་འབད།\n"
+msgstr "ཆ་ཚང་-ཡར་བསྐྱེད་-ཐུམ་སྒྲིལ་ཚུ་གཞི་བཙུགས་དང་རྩ་བསྐྲད་གཏང་པའི་ཐོག་ལས་ ཡར་བསྐྱེད་འབད།\n"
 
-#: src/main.cc:135
+#: src/main.cc:137
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr "བརྗེད་ནི་ - གསརཔ་ -  ཐུམ་སྒྲིལ་ག་ཅི་ཚུ་\"new\" ཨིན་ན་བརྗེད་དགོ\n"
 
-#: src/main.cc:136
+#: src/main.cc:138
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr "འཛོལ་ཞིབ་འབད་-   ཐུམ་སྒྲིལ་ཚུ་གི་དོན་ལུ་མིང་/ཡང་ན་གསལ་བརྗོད་ཀྱིས་འཛོལ་ཞིབ་འབད།\n"
 
-#: src/main.cc:137
+#: src/main.cc:139
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr "སྟོན་ -  ཐུམ་སྒྲིལ་ཅིག་གི་སྐོར་ལས་རྒྱས་ཤིང་རྒྱསཔ་སྦེ་ཡོད་མི་བརྡ་དོན་ཚུ་བཀྲམ་སྟོན་འབད།\n"
 
-#: src/main.cc:138
+#: src/main.cc:140
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr "སེལ -  ཕབ་ལེན་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་ཡིག་སྣོད་ཚུ་ཀྲེག་གཏང་།\n"
 
-#: src/main.cc:139
+#: src/main.cc:141
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr "རང་བཞིན་གྱིས་སེལ་ནི་ -  ཕབ་ལེན་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་ཡིཡག་སྣོད་་རྙིངམ་ཚུ་ཀྲེག་གཏང་།\n"
 
-#: src/main.cc:140
+#: src/main.cc:142
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr "བསྒྱུར་བཅོས་དྲན་དེབ -  ཐུམ་སྒྲིལ་གྱི་བསྒྱུར་བཅོས་དྲན་དེབ་ཅིག་སྟོན།\n"
 
-#: src/main.cc:141
+#: src/main.cc:143
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr "ཕབ་ལེན་འབད-  ཐུམ་སྒྲིལ་ཅིག་གི་དོན་ལུ་ཌེབ་ཡིག་སྣོད་དེ་ཕབ་ལེན་འབད།\n"
 
-#: src/main.cc:142
+#: src/main.cc:144
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -2357,39 +2405,39 @@ msgstr ""
 "བསྐྱར་བཙུགས་འབད -  འཕྲལ་ཁམས་གཞི་བཙུགས་འབད་ཡོད་མི་ཐུམ་སྒརིལ་དེ་ཕབ་ལེན་འབད་དེ་སླར་གཞི་བཙུགས་"
 "འབད།\n"
 
-#: src/main.cc:144
+#: src/main.cc:146
 #, c-format
 msgid "  Options:\n"
 msgstr "གདམ་ཁ་ཚུ་:\n"
 
-#: src/main.cc:145
+#: src/main.cc:147
 #, c-format
 msgid " -h             This help text\n"
 msgstr "  -h    འདི་གྲོགས་རམ་ཚིག་ཡིག་ཨིན།\n"
 
-#: src/main.cc:146
+#: src/main.cc:148
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr "  -s       བྱ་བ་ཚུ་རྫུས་མ་བཟོ་ དེ་འབདཝ་ད་ དེ་ཚུ་ངོ་མ་སྦེ་ལག་ལེན་འཐབ།\n"
 
-#: src/main.cc:147
+#: src/main.cc:149
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr " -d་ ཐུམ་སྒྲིལ་ཚུ་ཕབ་ལེན་འབད་ནི་མ་གཏོགས་ ག་ནི་ཡང་གཞི་བཙུགས་དང་རྩ་བསྐྲད་མ་གཏང་།\n"
 
-#: src/main.cc:148
+#: src/main.cc:150
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr " -P      ཨ་རྟག་རང་ ངེས་དཔྱད་འབད་ནི་དང་བྱ་བ་ཚུ་གི་དོན་ལུ་ནུས་སྤེལ་འབད།\n"
 
-#: src/main.cc:149
+#: src/main.cc:151
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr " -y      བཏུབ་/མི་བཏུབ་ཀྱི་དྲི་བའི་ལན་དེ་ 'yes' ཨིན་ཟེར་མནོ་རུང་བཏུབ།\n"
 
-#: src/main.cc:150
+#: src/main.cc:152
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
@@ -2398,7 +2446,7 @@ msgstr ""
 " -F format    འཚོལ་ཞིབ་འབད་ཡོད་པའི་གྲུབ་འབྲས་ཚུ་བཀྲམ་སྟོན་འབད་ནིའི་དོན་ལུ་ རྩ་སྒྲིག་ཅིག་གསལ་བཀོད་"
 "འབད། ལག་དེབ་ལུ་བལྟ།\n"
 
-#: src/main.cc:151
+#: src/main.cc:153
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
@@ -2406,42 +2454,42 @@ msgstr ""
 " -O order  འཚོལ་ཞིབ་འབད་ཡོད་པའི་གྲུབ་འབྲས་ཚུ་ག་དེ་སྦེ་གསོག་འཇོག་འབད་ནི་ཨིན་ན་གསལ་བཀོད་འབད། "
 "ལག་དེབ་ལུ་བལྟ།\n"
 
-#: src/main.cc:152
+#: src/main.cc:154
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr ""
 " -w width འཚོལ་ཞིབ་གྲུབ་འབྲས་རྩ་སྒྲིག་འབད་ནིའི་དོན་ལུ་ བཀྲམ་སྟོན་གྱི་རྒྱ་ཚད་དེ་གསལ་བཀོད་འབད།\n"
 
-#: src/main.cc:153
+#: src/main.cc:155
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr ""
 " -f    ཐུམ་སྒྲིལ་ཆག་འགྱོ་ཡོད་མི་ཚུ་ བཙན་ཤུགས་ཅན་གྱི་ཐོག་ལས་ཚུད་སྒྲིག་འབད་ནི་ལུ་འབད་རྩོལ་བསྐྱེད།\n"
 
-#: src/main.cc:154
+#: src/main.cc:156
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr "-V   ཐུམ་སྒྲིལ་ཚུ་གི་ཐོན་རིམ་ག་འདི་གཞི་བཙུགས་འབད་ནི་ཨིན་ན་སྟོན།\n"
 
-#: src/main.cc:155
+#: src/main.cc:157
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D  རང་བཞིན་གྱིས་བསྒྱུར་བཅོས་འགྱོ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་གི་བརྟེན་འབྲེལ་དེ་སྟོན།\n"
 
-#: src/main.cc:156
+#: src/main.cc:158
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
-msgstr " -Z\t\t ཐུམ་སྒྲིལ་རེ་རེ་བཞིན་གྱི་གཞི་བཙུགས་འབད་ཡོད་པའི་ཚད་ནང་གི་བསྒྱུར་བཅོས་སྟོན།\n"
+msgstr " -Z   ཐུམ་སྒྲིལ་རེ་རེ་བཞིན་གྱི་གཞི་བཙུགས་འབད་ཡོད་པའི་ཚད་ནང་གི་བསྒྱུར་བཅོས་སྟོན།\n"
 
-#: src/main.cc:157
+#: src/main.cc:159
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr " -v  བརྡ་དོན་ཐེབས་བཀྲམསྟོན་འབད།(ཐེངས་ལེ་ཤ་ཅིག་བཀྲམ་སྤེལ་འབད་འབདཝ་འོང་།)\n"
 
-#: src/main.cc:158
+#: src/main.cc:160
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
@@ -2449,7 +2497,7 @@ msgstr ""
 " -t[གསར་བཏོན་འབད་ནི་] གསར་སྟོན་དེ་ ཐུམ་སྒྲིལ་ག་འདི་གཞི་བཙུགས་འབད་དགོཔ་ཨིན་ན་གི་ནང་ལས་ གཞི་སྒྲིག་"
 "འབད།\n"
 
-#: src/main.cc:159
+#: src/main.cc:161
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
@@ -2457,12 +2505,12 @@ msgid ""
 msgstr ""
 "-q   བརྡ་བཀོད་-གྲལ་ཐིག་གི་ཐབས་ལམ་ནང་ལུ་ ཡར་འཕར་ཡར་འཕེལ་གྱི་བརྡ་སྟོན་པ་དེ་མར་མནོན་འབད།\n"
 
-#: src/main.cc:160
+#: src/main.cc:162
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr " -o key=val   རིམ་སྒྲིག་གདམ་ཁའི་མིང་'key'ཟེར་མི་དེ་ཐད་ཀར་དུ་གཞི་སྒྲིག་འབད།'\n"
 
-#: src/main.cc:161
+#: src/main.cc:163
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -2471,72 +2519,71 @@ msgstr ""
 " --with(out)-recommends\tའོས་སྦྱོར་ཚུ་སྒྲིང་སྒྲིང་ཡོད་པའི་བརྟེན་འབྲེལ་་བཟུམ་སྦེ་\n"
 "              བརྩིའཇོག་འབད་དགོ་དང་མི་དགོ་གསལ་བཀོད་འབད།\n"
 
-#: src/main.cc:162
-#, c-format
-msgid " -S fname       Read the aptitude extended status info from fname.\n"
-msgstr ""
-"-S fname       ཨེཕི་མིང་ནང་ལས་ གོམས་འདྲིས་བརྒྱ་བསྐྱེད་འབད་ཡོད་པའི་གནས་ཚད་བརྡ་དོན་དེ་ལྷག\n"
-
-#: src/main.cc:163
-#, c-format
-msgid " -u             Download new package lists on startup.\n"
-msgstr " -u             འགོ་བཙུགས་གུར་ ཐུམ་སྒྲིལ་གྱི་ཐོ་ཡིག་གསརཔ་ཚུ་ཕབ་ལེན་འབད།\n"
-
 #: src/main.cc:164
 #, c-format
-msgid " -i             Perform an install run on startup.\n"
-msgstr " -i             འགོ་བཙུགས་གུར་གཞི་བཙུགས་གཡོག་བཀོལ་དེ་ལག་ལེན་འཐབ།\n"
+msgid " -S fname       Read the aptitude extended status info from fname.\n"
+msgstr "-S fname ཨེཕི་མིང་ནང་ལས་ གོམས་འདྲིས་བརྒྱ་བསྐྱེད་འབད་ཡོད་པའི་གནས་ཚད་བརྡ་དོན་དེ་ལྷག།\n"
+
+#: src/main.cc:165
+#, c-format
+msgid " -u             Download new package lists on startup.\n"
+msgstr " -u      འགོ་བཙུགས་གུར་ ཐུམ་སྒྲིལ་གྱི་ཐོ་ཡིག་གསརཔ་ཚུ་ཕབ་ལེན་འབད།\n"
 
 #: src/main.cc:166
+#, c-format
+msgid " -i             Perform an install run on startup.\n"
+msgstr " -i       འགོ་བཙུགས་གུར་གཞི་བཙུགས་གཡོག་བཀོལ་དེ་ལག་ལེན་འཐབ།\n"
+
+#: src/main.cc:168
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                 གོམས་འདྲིས་འདི་ལུ་ཡང་དག་པའི་ཀཱའུ་ནུས་ཤུགས་དེ་མེད།.\n"
 
-#: src/main.cc:305
+#: src/main.cc:307
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "-q= དེ་གི་ཤུལ་ལས་ཨང་ཡིག་ཅིག་རེ་བ་བསྐྱེད་ཅི།\n"
 
-#: src/main.cc:314
+#: src/main.cc:316
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "-q=, got %sདེ་གི་ཤུལ་ལས་ཨང་ཡིག་ཅིག་རེ་བ་བསྐྱེད་ཅི།\n"
 
-#: src/main.cc:337
+#: src/main.cc:340
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s"
 msgstr "-o དེ་ལུ་རྣམ་པའི་ལྡེ་མིིིག་=གནས་གོང་གི་སྒྲུབ་རྟགས་དེ་དགོས་མཁོ་ཡོདཔ་ཨིན། %s་ ཐོབ་ཅི།"
 
-#: src/main.cc:382 src/main.cc:391
+#: src/main.cc:385 src/main.cc:394
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "WEIRDNESS:མ་ཤེས་པའི་གདམ་ཁའི་ཨང་རྟགས་ཐོབ་ཡོདཔ།\n"
 
-#: src/main.cc:408
+#: src/main.cc:411
 msgid "Only one of -u and -i may be specified\n"
 msgstr "-uདང་ -i གི་ནང་གཅིག་རྐྱངམ་ཅིག་གསལ་བཀོད་འབད་འོང་ག་མི་ཤེས།\n"
 
-#: src/main.cc:416
+#: src/main.cc:419
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
 "-u དང་ -i དེ་བརྡ་བཀོད་-གྲལ་ཐིག་ཐབས་ལམ་ནང་ལུ་གསལ་བཀོད་མི་འབད་འོང་།(དཔེ་འབད་བ་ཅིན་, 'གཞི་"
 "བཙུགས'དང་གཅིག་ཁར།)"
 
-#: src/main.cc:437
+#: src/main.cc:440
 msgid "-u and -i may not be specified with a command"
 msgstr "-u དང་ -i དེ་བརྡ་བཀོད་དང་གཅིག་ཁར་གསལ་བཀོད་མི་འབད་འོང་།"
 
-#: src/main.cc:513
+#: src/main.cc:526
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "མ་ཤེས་པའི་བརྡ་བཀོད་\"%s\"\n"
 
-#: src/main.cc:525 src/main.cc:574
+#: src/main.cc:538 src/main.cc:587
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "མ་འཛིན་པའི་དང་ལེན: %s\n"
 
-#: src/main.cc:529 src/main.cc:578
+#: src/main.cc:542 src/main.cc:591
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -2545,15 +2592,15 @@ msgstr ""
 "རྒྱབ་འཚོn:\n"
 "%s"
 
-#: src/menu_text_layout.cc:36 src/menu_tree.cc:204 src/view_changelog.cc:55
+#: src/menu_text_layout.cc:37 src/menu_tree.cc:204 src/view_changelog.cc:55
 msgid "Search for: "
 msgstr "དོན་ལུ་འཚོལ་ཞིབ་འབད:"
 
-#: src/menu_text_layout.cc:68 src/menu_tree.cc:221 src/view_changelog.cc:67
+#: src/menu_text_layout.cc:69 src/menu_tree.cc:221 src/view_changelog.cc:67
 msgid "Search backwards for: "
 msgstr "དོན་ལུ་རྒྱབ་ལོག་སྦེ་འཛོལ་ཞིབ་འབད:"
 
-#: src/mine/cmine.cc:106 src/mine/cmine.cc:148 src/ui.cc:1446
+#: src/mine/cmine.cc:106 src/mine/cmine.cc:148 src/ui.cc:1560
 msgid "Minesweeper"
 msgstr "གཏེར་ཁ་འཕྱག་མི།"
 
@@ -2758,7 +2805,7 @@ msgstr "འགས་རྫས་-གྲོགས་རམ་གྱི་ཨི�
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "༣༠ ༦༦ ༡༡ ༤༠ ༡༠ ༡༠ ༡༡ ༡༠ ༣༥ ༩ ༡༠ ༢ ༡༡ ༡༠ ༡༢ ༣༠ ༡༢ ༡༥ ༡༥"
 
-#: src/pkg_columnizer.cc:86 src/ui.cc:2340
+#: src/pkg_columnizer.cc:86 src/ui.cc:2493
 msgid "Package"
 msgstr "ཐུམ་སྒྲིལ།"
 
@@ -2838,144 +2885,144 @@ msgstr "ཌིཀསི་ལག་ལེན།"
 msgid "DownloadSize"
 msgstr "ཕབ་ལེན་གྱི་ཚད།"
 
-#: src/pkg_columnizer.cc:128 src/pkg_columnizer.cc:140 src/pkg_ver_item.cc:106
-#: src/pkg_ver_item.cc:171
+#: src/pkg_columnizer.cc:136 src/pkg_columnizer.cc:148 src/pkg_ver_item.cc:94
+#: src/pkg_ver_item.cc:159
 msgid "<N/A>"
 msgstr "<ཨེན/ཨེ།>"
 
-#: src/pkg_columnizer.cc:170 src/pkg_columnizer.cc:181
+#: src/pkg_columnizer.cc:178 src/pkg_columnizer.cc:189
 msgid "<none>"
 msgstr "<ཅི་མེད།>"
 
-#: src/pkg_columnizer.cc:221 src/pkg_grouppolicy.cc:233
+#: src/pkg_columnizer.cc:229 src/pkg_grouppolicy.cc:233
 msgid "virtual"
 msgstr "བར་ཅུ་ཡལ།"
 
-#: src/pkg_columnizer.cc:228 src/pkg_ver_item.cc:215 src/pkg_ver_item.cc:223
+#: src/pkg_columnizer.cc:236 src/pkg_ver_item.cc:203 src/pkg_ver_item.cc:211
 msgid "purged"
 msgstr "ཕྱིར་བསྐྲད།"
 
-#: src/pkg_columnizer.cc:235 src/pkg_ver_item.cc:230
+#: src/pkg_columnizer.cc:243 src/pkg_ver_item.cc:218
 msgid "half-config"
 msgstr "རིམ་སྒྲིག་-ཕྱད་ཀ"
 
-#: src/pkg_columnizer.cc:237 src/pkg_ver_item.cc:232
+#: src/pkg_columnizer.cc:245 src/pkg_ver_item.cc:220
 msgid "half-install"
 msgstr "གཞི་བཙུགས་-ཕྱེ་ཀ"
 
-#: src/pkg_columnizer.cc:239 src/pkg_ver_item.cc:234
+#: src/pkg_columnizer.cc:247 src/pkg_ver_item.cc:222
 msgid "config-files"
 msgstr "རིམ་སྒྲིག་- ཡིག་སྣོད།"
 
-#: src/pkg_columnizer.cc:243 src/pkg_columnizer.cc:523 src/pkg_ver_item.cc:238
+#: src/pkg_columnizer.cc:251 src/pkg_columnizer.cc:534 src/pkg_ver_item.cc:226
 msgid "ERROR"
 msgstr "འཛོལ་བ།"
 
-#: src/pkg_columnizer.cc:290 src/pkg_ver_item.cc:296
+#: src/pkg_columnizer.cc:298 src/pkg_ver_item.cc:284
 msgid "hold"
 msgstr "འཆང་།"
 
-#: src/pkg_columnizer.cc:293
+#: src/pkg_columnizer.cc:301
 msgid "forbidden upgrade"
 msgstr "ཡར་བསྐྱེད་བཀག་དམ་འབད་ཡོདཔ།"
 
-#: src/pkg_columnizer.cc:295
+#: src/pkg_columnizer.cc:303
 msgid "purge"
 msgstr "ཕྱིར་བསྐྲད།"
 
-#: src/pkg_columnizer.cc:295 src/pkg_ver_item.cc:320
+#: src/pkg_columnizer.cc:303 src/pkg_ver_item.cc:308
 msgid "delete"
 msgstr "བཏོན་གཏང་།"
 
-#: src/pkg_columnizer.cc:297 src/pkg_ver_item.cc:218 src/pkg_ver_item.cc:302
+#: src/pkg_columnizer.cc:305 src/pkg_ver_item.cc:206 src/pkg_ver_item.cc:290
 msgid "broken"
 msgstr "ཆག་ཆགཔ།"
 
-#: src/pkg_columnizer.cc:299 src/pkg_ver_item.cc:306 src/pkg_ver_item.cc:313
-#: src/pkg_ver_item.cc:322
+#: src/pkg_columnizer.cc:307 src/pkg_ver_item.cc:294 src/pkg_ver_item.cc:301
+#: src/pkg_ver_item.cc:310
 msgid "install"
 msgstr "གཞི་བཙུགས།"
 
-#: src/pkg_columnizer.cc:301
+#: src/pkg_columnizer.cc:309
 msgid "reinstall"
 msgstr "སླར་གཞི་བཙུགས་འབད་ཡོདཔ།"
 
-#: src/pkg_columnizer.cc:303
+#: src/pkg_columnizer.cc:311
 msgid "upgrade"
 msgstr "ཡར་བསྐྱེད།"
 
-#: src/pkg_columnizer.cc:305 src/pkg_columnizer.cc:307 src/pkg_ver_item.cc:308
-#: src/pkg_ver_item.cc:315 src/pkg_ver_item.cc:324 src/pkg_ver_item.cc:327
+#: src/pkg_columnizer.cc:313 src/pkg_columnizer.cc:315 src/pkg_ver_item.cc:296
+#: src/pkg_ver_item.cc:303 src/pkg_ver_item.cc:312 src/pkg_ver_item.cc:315
 msgid "none"
 msgstr "ཅི་མེད།"
 
-#: src/pkg_columnizer.cc:330 src/pkg_columnizer.cc:351
-#: src/pkg_columnizer.cc:358 src/pkg_grouppolicy.cc:227
+#: src/pkg_columnizer.cc:338 src/pkg_columnizer.cc:359
+#: src/pkg_columnizer.cc:366 src/pkg_grouppolicy.cc:227
 #: src/pkg_info_screen.cc:115 src/pkg_info_screen.cc:116
-#: src/pkg_ver_item.cc:345 src/pkg_ver_item.cc:379
+#: src/pkg_ver_item.cc:334 src/pkg_ver_item.cc:368
 msgid "Unknown"
 msgstr "མ་ཤེསཔ།"
 
 #. ForTranslators: Imp = Important
-#: src/pkg_columnizer.cc:338 src/pkg_ver_item.cc:354
+#: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:343
 msgid "Imp"
 msgstr "ཨའི་ཨེམ་པི།"
 
 #. ForTranslators: Req = Required
-#: src/pkg_columnizer.cc:340 src/pkg_ver_item.cc:357
+#: src/pkg_columnizer.cc:348 src/pkg_ver_item.cc:346
 msgid "Req"
 msgstr "ཨའར་ཀེཡུ།"
 
 #. ForTranslators: Std = Standard
-#: src/pkg_columnizer.cc:342 src/pkg_ver_item.cc:360
+#: src/pkg_columnizer.cc:350 src/pkg_ver_item.cc:349
 msgid "Std"
 msgstr "ཨེསི་ཊི་ཌི།"
 
 #. ForTranslators: Opt = Optional
-#: src/pkg_columnizer.cc:344 src/pkg_ver_item.cc:363
+#: src/pkg_columnizer.cc:352 src/pkg_ver_item.cc:352
 msgid "Opt"
 msgstr "ཨོ་པི་ཊི།"
 
 #. ForTranslators: Xtr = Extra
-#: src/pkg_columnizer.cc:346 src/pkg_ver_item.cc:366
+#: src/pkg_columnizer.cc:354 src/pkg_ver_item.cc:355
 msgid "Xtr"
 msgstr "ཨེགསི་ཊི་ཨཱར།"
 
-#: src/pkg_columnizer.cc:348 src/pkg_ver_item.cc:368
+#: src/pkg_columnizer.cc:356 src/pkg_ver_item.cc:357
 msgid "ERR"
 msgstr "ཨི་ཨཱར་ཨཱར།"
 
-#: src/pkg_columnizer.cc:370
+#: src/pkg_columnizer.cc:378
 #, c-format
 msgid "#Broken: %ld"
 msgstr "#ཆག་ཆགཔ: %ld"
 
-#: src/pkg_columnizer.cc:385
+#: src/pkg_columnizer.cc:393
 #, c-format
 msgid "Will use %sB of disk space"
 msgstr "ཌིཀསི་བར་སྟོང་གི་%sB དེ་ལག་ལེན་འཐབ་འོང་།"
 
-#: src/pkg_columnizer.cc:393
+#: src/pkg_columnizer.cc:401
 #, c-format
 msgid "Will free %sB of disk space"
 msgstr "ཌིཀསི་བར་སྟོང་གི་%sB དེ་རང་དབང་སབེ་བཞག་ནི་ཨན།"
 
-#: src/pkg_columnizer.cc:407
+#: src/pkg_columnizer.cc:415
 #, c-format
 msgid "DL Size: %sB"
 msgstr "དི་ཨེལ་ཚད:  %sB"
 
 #. ForTranslators: Hostname
-#: src/pkg_columnizer.cc:478
+#: src/pkg_columnizer.cc:486
 msgid "HN too long"
 msgstr "ཨེཆ་ཨེན་ གནམ་མེད་ས་མེད་རིངམོ་འདུག"
 
-#: src/pkg_columnizer.cc:647 src/pkg_columnizer.cc:656
+#: src/pkg_columnizer.cc:658 src/pkg_columnizer.cc:667
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr "\"%ls\"དེ་གི་ཤུལ་ལས་ ཐུམ་སྒྲིལ་བཀྲམ་སྟོན་རྩ་སྒྲིག་དེ་ཊནསི་ཀོཌི་འབད་མི་ཚུགས་པས།"
 
-#: src/pkg_columnizer.cc:663
+#: src/pkg_columnizer.cc:674
 msgid "Internal error: Default column string is unparsable"
 msgstr "ནང་འཁོད་འཛོལ་བ: སྔོན་སྒྲིག་ཀོར་ཐིག་ཡིག་རྒྱུན་དེ་མིང་དཔྱད་འབད་མ་བཏུབ་མི་ཨིན།"
 
@@ -3525,7 +3572,7 @@ msgstr ""
 msgid "Tasks/Tasks"
 msgstr "ལས་ཀ་ཚུ/ལས་ཀ་ཚུ།"
 
-#: src/pkg_grouppolicy.cc:221 src/pkg_grouppolicy.cc:955
+#: src/pkg_grouppolicy.cc:221 src/pkg_grouppolicy.cc:956
 msgid "Tasks"
 msgstr "ལས་ཀ་ཚུ།"
 
@@ -3741,48 +3788,63 @@ msgstr ""
 "ཡར་བསྐྱེད་འབད་ནིའི་ཐུམ་སྒྲིལ་ཚུ།\n"
 "ཐུམ་སྒྲིལ་འདི་ཚུ་ཐོན་རིམ་གསར་པའི་ནང་ལུ་ཡར་བསྐྱེད་འབད་འོང་།"
 
-#: src/pkg_grouppolicy.cc:658
+#: src/pkg_grouppolicy.cc:544
+#, fuzzy
+#| msgid ""
+#| "Packages being automatically installed to satisfy dependencies\n"
+#| " These packages are being installed because they are required by another "
+#| "package you have chosen for installation."
+msgid ""
+"Packages that are partially installed\n"
+" These packages are not fully installed and configured; an attempt will be "
+"made to complete their installation."
+msgstr ""
+"རྟེན་འབྲེལ་ཚུ་གི་ངལ་རངས་འབྱུང་ནིའི་དོན་ལུ་ ཐུམ་སྒྲིལ་ཚུ་རང་བཞིན་གྱིས་གཞི་བཙུགས་འབད་ཡོདཔ།\n"
+"ཐུམ་སྒྲིས་འདི་ཚུ་གཞི་བཙུགས་འབད་དེ་ཡོདཔ་ཨིན ག་ཅི་སྦེ་ཟེར་བ་ཅིན་ གཞི་བཙུགས་ཀྱི་དོན་ལུ་ཁྱོད་ཀྱིས་གདམ་ཁ་"
+"བརྐྱབས་ཡོད་མི་ཐུམ་སྒྲིལ་གཞན་མི་ཅིག་ལུ་དགོས་མཁོ་ཡོདཔ་ཨིན།"
+
+#: src/pkg_grouppolicy.cc:659
 msgid "unknown"
 msgstr "མ་ཤེསཔ།"
 
-#: src/pkg_grouppolicy.cc:669
+#: src/pkg_grouppolicy.cc:670
 #, c-format
 msgid "Priority %s"
 msgstr "གཙོ་རིམ་%s"
 
-#: src/pkg_grouppolicy.cc:779
+#: src/pkg_grouppolicy.cc:780
 msgid "UNCATEGORIZED"
 msgstr "དབྱེ་རིམ་བཟོ་སྟེ་མེད་མི།"
 
-#: src/pkg_grouppolicy.cc:898
+#: src/pkg_grouppolicy.cc:899
 msgid "End-user"
 msgstr "མཇུག་གི་-ལག་ལེན་པ།"
 
-#: src/pkg_grouppolicy.cc:899
+#: src/pkg_grouppolicy.cc:900
 msgid "Servers"
 msgstr "སར་བརས་ཚུ།"
 
-#: src/pkg_grouppolicy.cc:900
+#: src/pkg_grouppolicy.cc:901
 msgid "Development"
 msgstr "གོང་འཕེལ།"
 
-#: src/pkg_grouppolicy.cc:901
+#: src/pkg_grouppolicy.cc:902
 msgid "Localization"
 msgstr "ཡུལ་མཐུན་བཟོ་བ།"
 
-#: src/pkg_grouppolicy.cc:902
+#: src/pkg_grouppolicy.cc:903
 msgid "Hardware Support"
 msgstr "སྲ་ཆས་རྒྱབ་སྐྱོར།"
 
-#: src/pkg_grouppolicy.cc:903
+#: src/pkg_grouppolicy.cc:904
 msgid "Miscellaneous"
 msgstr "སྣ་ཚོགས"
 
-#: src/pkg_grouppolicy.cc:904
+#: src/pkg_grouppolicy.cc:905
 msgid "Unrecognized tasks"
 msgstr "ངོས་འཛིན་འབད་པའི་ཚུགས་མི་ལས་ཀ་ཚུ།"
 
-#: src/pkg_grouppolicy.cc:956
+#: src/pkg_grouppolicy.cc:957
 msgid ""
 "\n"
 " Tasks are groups of packages which provide an easy way to select a "
@@ -3792,26 +3854,26 @@ msgstr ""
 "ལས་ཀ་ཟེར་མི་འདི་ དམིགས་བསལ་དགོས་དོན་གྱི་དོན་ལུ་སྔ་གོང་ངེས་འཛིན་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་ཆ་ཚན་ཅིག་སེལ་"
 "འཐུ་འབད་ནིི་ལུ་ཐབས་ལམ་འཇམ་ཏོང་ཏོ་བྱིན་མི་ ཐུམ་སྒྲིལ་སྡེ་ཚན་ཅིག་ལུ་སླབ་ཨིན།"
 
-#: src/pkg_grouppolicy.cc:1079
+#: src/pkg_grouppolicy.cc:1080
 #, c-format
 msgid "Bad number in format string: %ls"
 msgstr "རྩ་སྒྲིག་ཡིག་རྒྱུན་ནང་ལུ་ཡིགརྒྱུན་བྱང་ཉེས:%ls"
 
-#: src/pkg_grouppolicy.cc:1088
+#: src/pkg_grouppolicy.cc:1089
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
 msgstr "མཐུན་སྒྲིག་བརྡ་སྟོན་དེ་༡་ཡང་ན་དེ་ལས་ལྷག་སྟེ་དགོཔ་ཨིན།\"%s\"དེ་མེན།"
 
-#: src/pkg_grouppolicy.cc:1106
+#: src/pkg_grouppolicy.cc:1107
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
 msgstr "མཐུན་སྒྲིག་བརྡ་སྟོན་%lsདེ་གནམ་མེད་ས་མེད་སྦོམ་དྲག་པས། (%s)དེ་འཐོབ་ཚུགས་པའི་སྡེ་ཚན་ཨིན།"
 
-#: src/pkg_grouppolicy.cc:1315
+#: src/pkg_grouppolicy.cc:1316
 msgid "TAGLESS PACKAGES"
 msgstr "ངོ་རྟགས་མེད་མི་ཐུམ་སྒྲིལ་ཚུ།"
 
-#: src/pkg_grouppolicy.cc:1316
+#: src/pkg_grouppolicy.cc:1317
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags."
@@ -3819,7 +3881,7 @@ msgstr ""
 "\n"
 "ཐུམ་སྒྲིལ་འདི་ཚུ་ད་ལྟོ་ཡང་ཌེབ་ངོ་རྟགས་ནང་ལུ་དབྱེ་བ་བཟོ་སྟེ་མེདཔ་ཨིན།"
 
-#: src/pkg_grouppolicy.cc:1341
+#: src/pkg_grouppolicy.cc:1342
 msgid "MISSING TAG"
 msgstr "ངོ་རྟགས་བརླག་སྟོར་ཞུགས་ཡོདཔ།"
 
@@ -3862,12 +3924,12 @@ msgstr ""
 "%sདེེ་ཉེ་བར་མཁོ་བའི་ཐུམོ་སྒྲིལ་ཨིན! %n%n ཁྱོད་ཀྱིས་འདི་རྩ་བསྐྲད་གཏང་ནིི་ཨིན་ཟེར་མི་དེ་ངེས་ཏིག་ཨིན་ན? %n "
 "ཁྱོད་ཨིན་པ་ཅིན་ '%s' དེ་ཡིག་དཔར་རྐྱབས།"
 
-#: src/pkg_item.cc:220 src/pkg_ver_item.cc:655 src/solution_item.cc:291
+#: src/pkg_item.cc:220 src/pkg_ver_item.cc:647 src/solution_item.cc:291
 #, c-format
 msgid "Information about %s"
 msgstr "%sདེ་གི་སྐོར་ལས་བརྡ་དོན།"
 
-#: src/pkg_item.cc:222 src/pkg_ver_item.cc:657 src/solution_item.cc:289
+#: src/pkg_item.cc:222 src/pkg_ver_item.cc:649 src/solution_item.cc:289
 #, c-format
 msgid "%s info"
 msgstr "%s བརྡ་དོན།"
@@ -3882,27 +3944,27 @@ msgstr "%sདེ་གི་ཐོབ་འཐོབ་ཚུགས་པའི�
 msgid "%s versions"
 msgstr "%s  ཐོན་རིམ་ཚུ།"
 
-#: src/pkg_item.cc:331 src/pkg_ver_item.cc:685
+#: src/pkg_item.cc:331 src/pkg_ver_item.cc:677
 #, c-format
 msgid "Dependencies of %s"
 msgstr "%s དེ་གི་རྟེན་འབྲེལ་ཚུ།"
 
-#: src/pkg_item.cc:333 src/pkg_ver_item.cc:687
+#: src/pkg_item.cc:333 src/pkg_ver_item.cc:679
 #, c-format
 msgid "%s deps"
 msgstr "%sཌེབསི།"
 
-#: src/pkg_item.cc:344 src/pkg_ver_item.cc:697
+#: src/pkg_item.cc:344 src/pkg_ver_item.cc:689
 #, c-format
 msgid "Packages depending on %s"
 msgstr "%sདེ་ལུ་བརྟེན་སྡོད་མི་ཐུམ་སྒྲིལ་ཚུ།"
 
-#: src/pkg_item.cc:346 src/pkg_ver_item.cc:699
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:691
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s རིམ་ལོག་ཌེབསི།"
 
-#: src/pkg_item.cc:396 src/pkg_ver_item.cc:747
+#: src/pkg_item.cc:396 src/pkg_ver_item.cc:739
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "%sནང་ལུ་རྐྱེན་སྙན་ཞུ་འབད་དོ:\n"
@@ -3922,7 +3984,7 @@ msgstr ""
 msgid "Reconfiguring %s\n"
 msgstr "%sསླར་རིམ་སྒྲིག་འབད་དོ།\n"
 
-#: src/pkg_item.cc:434 src/ui.cc:1048
+#: src/pkg_item.cc:434 src/ui.cc:1164
 msgid "Press return to continue.\n"
 msgstr "འཕྲོ་མཐུད་ལུ་ཨེབ་གཏང་འབད་ཟེར་མི་དེ་ལུ་ཨེབ།\n"
 
@@ -4110,17 +4172,23 @@ msgstr "%B%s%b དེ་རྩ་བསྐྲད་གཏང་ནི་ཨི�
 msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b དེ་ཐོན་རིམ་%B%s%b དེ་ནང་ལས་ཐོན་རིམ་%B%s%b ལུ་ཡར་བསྐྱེད་འབད་ནི་ཨིན།"
 
-#: src/reason_fragment.cc:472
+#: src/reason_fragment.cc:443
+#, fuzzy
+#| msgid "%s is not currently installed, so it will not be reinstalled.\n"
+msgid "%B%s%b is only partly installed; its installation will be completed."
+msgstr "%s ད་ལྟོ་གཞི་བཙུགས་མ་འབད་བས། དེ་འབདཝ་ལས་ འ་ནི་དེ་སླར་གཞི་བཙུགས་མི་འབད། \n"
+
+#: src/reason_fragment.cc:475
 msgid ""
 "The following packages depend on %B%s%b and will be broken by its removal:"
 msgstr ""
 "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་ %B%s%b དེ་ལུ་བརྟེན་དོ་ཡོདཔ་ད་ འ་ནི་དེ་རྩ་བསྐྲད་གཏང་མི་དེ་གིས་ཆག་འགྱོ་འོང་:"
 
-#: src/reason_fragment.cc:475
+#: src/reason_fragment.cc:478
 msgid "The following packages depend on %B%s%b and are broken:"
 msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་ %B%s%b དེ་ལུ་བརྟེན་དོ་ཡོདཔ་མི་དེ་ཆད་འགྱོ་ནུག:"
 
-#: src/reason_fragment.cc:482
+#: src/reason_fragment.cc:485
 msgid ""
 "The following packages conflict with %B%s%b and will be broken by its "
 "installation:"
@@ -4128,7 +4196,7 @@ msgstr ""
 "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་གིས་ %B%s%b རྩོད་རྙོག་བཀོད་ཨིནམ་དང་ འ་ནི་དེ་གཞི་བཙུགས་འབད་མི་དེ་གིས་ཆད་"
 "འགྱོཝ་ཨིན།"
 
-#: src/reason_fragment.cc:515
+#: src/reason_fragment.cc:518
 msgid ""
 "The following packages depend on a version of %B%s%b other than the "
 "currently installed version of %B%s%b, or conflict with the currently "
@@ -4137,7 +4205,7 @@ msgstr ""
 "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་གིས་ ད་ལྟོ་གཞི་བཙུགས་འབད་ཡོད་མི་ B%s%b་དེ་གི་ཐོནརིམ་དེ་མེན་པར་ %B%s%b "
 "དེལུ་བརྟེནམ་ཨིནམ་འང་ ཡང་ན་ ད་ལྟོ་གཞི་བཙུགས་འབད་ཡོད་མི་ཐོན་རིམ་དང་གཅིག་ཁར་རྩོད་རྙོག་བཀོདཔ་ཨིན།"
 
-#: src/reason_fragment.cc:519
+#: src/reason_fragment.cc:522
 msgid ""
 "The following packages conflict with %B%s%b, or depend on a version of it "
 "which is not going to be installed."
@@ -4145,11 +4213,11 @@ msgstr ""
 "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་དེ་ཚུ་ %B%s%b་དང་གཅིག་ཁར་མི་མཐུནམ་ཨིནམ་དང་ གཞི་བཙུགས་མི་འབད་ནི་ཨིན་མི་ "
 "དེའི་ཐོན་རིམ་གུར་བརྟེནམ་ཨིན།"
 
-#: src/reason_fragment.cc:523
+#: src/reason_fragment.cc:526
 msgid "The following packages conflict with %B%s%b:"
 msgstr "འོགལུ་ཡོད་མི་ཐུམ་སྒྲིལ་དེ་གིས་ %B%s%b དེ་དང་གཅིག་ཁར་རྩོད་རྙོག་བཀོདཔ་ཨིན:"
 
-#: src/reason_fragment.cc:528
+#: src/reason_fragment.cc:531
 msgid ""
 "The following packages depend on a version of %B%s%b other than the "
 "currently installed version of %B%s%b:"
@@ -4157,21 +4225,21 @@ msgstr ""
 "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་དེ་གིས་ད་ལྟོ་གཞི་བཙུགས་འབད་ཡོད་མི་%B%s%b དེ་གི་ཐོན་རིམ་དེ་མེན་པར་ %B%s%b གི་"
 "ཐོན་རིམ་དེ་ལུ་བརྟེནམ་ཨིན:"
 
-#: src/reason_fragment.cc:532
+#: src/reason_fragment.cc:535
 msgid ""
 "The following packages depend on a version of %B%s%b which is not going to "
 "be installed."
 msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་དེ་གིས་གཞི་བཙུགས་མི་འབད་ནི་ཨིན་མི་ %B%s%b གི་ཐོན་རིམ་གུར་བརྟེནམ་ཨིན།"
 
-#: src/reason_fragment.cc:538
+#: src/reason_fragment.cc:541
 msgid "upgraded"
 msgstr "ཡར་བསྐྱེད་འབད་ཡོདཔ།"
 
-#: src/reason_fragment.cc:538
+#: src/reason_fragment.cc:541
 msgid "downgraded"
 msgstr "མར་ཕབ་འབད་ཡོདཔ།"
 
-#: src/reason_fragment.cc:544
+#: src/reason_fragment.cc:547
 msgid ""
 "The following packages depend on the currently installed version of %B%s%b (%"
 "B%s%b), or conflict with the version it will be %s to (%B%s%b), and will be "
@@ -4181,7 +4249,7 @@ msgstr ""
 "ཡོདཔ་ཨིནམ་དང་ ཡང་ན་ ཐོན་རིམ་དང་གཅིག་ཁར་མ་མཐུན་པ་ཅིན་ འད་ནི་དེ་(%B%s%b) ལུ་ %s སྦེ་འོང་ནི་"
 "ཨིནམ་དང་ འ་ནི་དེ་%s ཨིན་པ་ཅིན་རྒྱུན་ཆད་འགྱོཝ་ཨིན།"
 
-#: src/reason_fragment.cc:551
+#: src/reason_fragment.cc:554
 msgid ""
 "The following packages conflict with version %B%s%b of %B%s%b, and will be "
 "broken if it is %s."
@@ -4189,7 +4257,7 @@ msgstr ""
 "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་གིས་%B%s%b་གི་ཐོན་རིམ་%B%s%b དང་གཅིག་ཁར་རྩོད་རྙོག་བཀོདཔ་ཨིནམ་དང་ འ་ནི་"
 "དེ་ %s ཨིན་པ་ཅིན་རྒྱུན་ཆད་འགྱོཝ་ཨིན།"
 
-#: src/reason_fragment.cc:556
+#: src/reason_fragment.cc:559
 msgid ""
 "The following packages depend on version %B%s%b of %B%s%b, and will be "
 "broken if it is %s."
@@ -4209,106 +4277,106 @@ msgstr "ཐུམ་སྒྲིལ་ག་ཡང་རྒྱུན་ཆད་
 msgid "No resolution found."
 msgstr "ཧུམ་ཆ་མ་འཐོབ།"
 
-#: src/solution_dialog.cc:114 src/solution_screen.cc:499
+#: src/solution_dialog.cc:121 src/solution_screen.cc:506
 msgid "Resolving dependencies..."
 msgstr "རྟེན་འབྲེལ་ཚུ་མོས་མཐུན་འབད་དོ།"
 
-#: src/solution_dialog.cc:169
+#: src/solution_dialog.cc:177
 msgid "Previous"
 msgstr "ཧེ་མམ།"
 
-#: src/solution_dialog.cc:170
+#: src/solution_dialog.cc:178
 msgid "Next"
 msgstr "ཤུལ་མམ།"
 
-#: src/solution_dialog.cc:171
+#: src/solution_dialog.cc:179
 msgid "Apply"
 msgstr "འཇུག་སྤྱོད།"
 
-#: src/solution_dialog.cc:172
+#: src/solution_dialog.cc:180
 msgid "Close"
 msgstr "ཁ་བསྡམས།"
 
-#: src/solution_fragment.cc:104
+#: src/solution_fragment.cc:105
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%sདེ་གིས་%sདེ་ལུ་བརྟེན་དོ་ཡོདཔ་ཨིན།"
 
-#: src/solution_fragment.cc:107
+#: src/solution_fragment.cc:108
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s དེ་གིས་ཧེ་མ་རང་%s་དེ་ལུ་བརྟེན་དོ་ཡོདཔ་ཨིན།"
 
-#: src/solution_fragment.cc:110
+#: src/solution_fragment.cc:111
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s དེ་གིས་ %s དེ་བསམ་འཆར་བཀོདཔ་ཨིན།"
 
-#: src/solution_fragment.cc:113 src/solution_item.cc:593
+#: src/solution_fragment.cc:114 src/solution_item.cc:593
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s་དེ་གིས་%s དེ་འོས་སྦྱོར་འབདཝ་ཨིན།"
 
-#: src/solution_fragment.cc:116
+#: src/solution_fragment.cc:117
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s་དེ་%s་དང་གཅིག་ཁར་མི་མཐུནམ་ཨིན།"
 
-#: src/solution_fragment.cc:119
+#: src/solution_fragment.cc:120
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s དེགིས་%sདེ་ཚབ་བཙུགསཔ་ཨིན།"
 
-#: src/solution_fragment.cc:122
+#: src/solution_fragment.cc:123
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s དེགིས་%s ཕན་མེད་བཟོཝ་ཨིན།"
 
-#: src/solution_fragment.cc:135
+#: src/solution_fragment.cc:136
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
 msgstr "%s དེ་%s དང་གཅིག་ཁར་མི་མཐུན་དོ་ཡོདཔ་ཨིན།[%s %s དེ་གིས་བྱིན་ཡོདཔ་ཨིན།]"
 
-#: src/solution_fragment.cc:145
+#: src/solution_fragment.cc:146
 #, c-format
 msgid "Removing %s"
 msgstr "%sདེ་རྩ་བསྐྲད་གཏང་དོ།"
 
-#: src/solution_fragment.cc:147
+#: src/solution_fragment.cc:148
 #, c-format
 msgid "Installing %s %s (%s)"
 msgstr "%s %s (%s) དེ་གཞི་བཙུགས་འབད་དོ།"
 
-#: src/solution_fragment.cc:216
+#: src/solution_fragment.cc:217
 msgid "%BRemove%b the following packages:%n"
 msgstr "%B འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་%bརྩ་བསྐྲད་གཏང:%n"
 
-#: src/solution_fragment.cc:226
+#: src/solution_fragment.cc:227
 msgid "%BInstall%b the following packages:%n"
 msgstr "%Bའོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་ %b གཞི་བཙུགས་འབད:%n"
 
-#: src/solution_fragment.cc:239
+#: src/solution_fragment.cc:240
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr "%B འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་ཁོང་རའི་ད་ལྟོའི་ཐོན་རིམ་གུར་Keep བཞག:%n"
 
-#: src/solution_fragment.cc:246
+#: src/solution_fragment.cc:247
 msgid "Not Installed"
 msgstr "གཞི་བཙུགས་མ་འབད་བས།"
 
-#: src/solution_fragment.cc:259
+#: src/solution_fragment.cc:260
 msgid "%BUpgrade%b the following packages:%n"
 msgstr "%B འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་ %b ཡར་བསྐྱེད་མ་འབད:%n"
 
-#: src/solution_fragment.cc:274
+#: src/solution_fragment.cc:275
 msgid "%BDowngrade%b the following packages:%n"
 msgstr "%B འོག་ལུ་ཡོད་མི་ཐུམ་སྒརིལ་ཚུ་ %b མར་ཕབ་འབད:%n"
 
-#: src/solution_fragment.cc:291
+#: src/solution_fragment.cc:292
 #, c-format
 msgid "Leave the following dependencies unresolved:%n"
 msgstr "འོག་ལུ་ཡོད་མི་རྟེན་འབྲེལ་ཚུ་མོས་མཐུན་མ་འབད་བར་་བཞག:%n"
 
-#: src/solution_fragment.cc:299
+#: src/solution_fragment.cc:300
 #, c-format
 msgid "Score is %d"
 msgstr "སྐུགས་དེ་ %d ཨིན།"
@@ -4399,23 +4467,23 @@ msgstr ""
 "མི་དེ་གིས་ ཁྱོད་རའི་རིམ་ལུགས་ལུ་གནོད་སྐྱོན་དང་ ཡང་ན ཚད་འཛིན་འབད་ནིའི་དོན་ལུ་ངན་སེམས་ཅན་གྱི་ངོ་རྐྱང་"
 "ཆོགཔ་ཨིན།"
 
-#: src/ui.cc:217
+#: src/ui.cc:220
 msgid "Er, there aren't any errors, this shouldn't have happened.."
 msgstr "ཨི་ཨཱར།  དེ་ནང་ལུ་འཛོལ་བ་ཅིག་ཡང་མིན་འདུག འདི་བཟུམ་བྱུང་བཅུག་ནིི་མི་འོང་།"
 
-#: src/ui.cc:223
+#: src/ui.cc:226
 msgid "E:"
 msgstr "ཨི:"
 
-#: src/ui.cc:225
+#: src/ui.cc:228
 msgid "W:"
 msgstr "ཌབ་ལུ:"
 
-#: src/ui.cc:239
+#: src/ui.cc:242
 msgid "Search for:"
 msgstr "དོན་ལུ་འཚོལ་ཞིབ་འབད:"
 
-#: src/ui.cc:316
+#: src/ui.cc:324
 msgid ""
 "WARNING: the package cache is opened in read-only mode!  This change and all "
 "subsequent changes will not be saved unless you stop all other running apt-"
@@ -4426,61 +4494,70 @@ msgstr ""
 "དང་ བྱ་བའི་དཀར་ཆག་ནང་ལས་  \"Become root\" དེ་སེལ་འཐུ་མ་འབད་ཚུན་ཚོད་ ཁྱོད་ཀྱིས་བསྒྱུར་བཅོས་"
 "འདི་དང་ ཤུལ་ལས་ཀྱི་བསྒྱུར་བཅོས་ཆ་མཉམ་རང་ སྲུང་བཞག་མི་འབད།"
 
-#: src/ui.cc:322
+#: src/ui.cc:330
 msgid "Never display this message again."
 msgstr "འཕྲིན་དོན་འདི་ལོག་ནམ་ཡང་བཀྲམ་སྟོན་འབད་ནི་མི་འོང་།"
 
-#: src/ui.cc:368
+#: src/ui.cc:376
 msgid ""
 "You may not modify the state of any package while a download is underway."
 msgstr ""
 "ཕབ་ལེན་བའི་སྒང་ཡོད་པའི་སྐབས་ལུ་ ཁྱོད་ཀྱིས་ཐུམ་སྒྲིལ་ག་གི་གནས་ལུགས་ཡང་ལེགས་བཅོས་་མ་འབད་རུང་བཏུབ།"
 
-#: src/ui.cc:399
+#: src/ui.cc:407
 msgid "You already are root!"
 msgstr "ཁྱོད་ཧེ་མ་ལས་རང་རྩ་བ་ཨིན!"
 
-#: src/ui.cc:464
+#: src/ui.cc:422
+msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
+msgstr ""
+
+#: src/ui.cc:429
+#, c-format
+msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
+msgstr ""
+
+#: src/ui.cc:552
 msgid ""
 "Subprocess exited with an error -- did you type your password correctly?"
 msgstr ""
 "ཡན་ལག་ལས་སྦྱོར་དེ་འཛོལ་བ་དང་གཅིག་ཁར་ཕྱིར་ཐོན་ཡོདཔ། -- ཁྱོད་ཀྱིས་ཁྱོད་རའི་ཆོག་ཡིག་ངེས་བདེན་སྦེ་ཡིག་"
 "དཔར་བརྐྱབ་ཅི་ག?"
 
-#: src/ui.cc:503
+#: src/ui.cc:591
 msgid "Loading cache"
 msgstr "འདྲ་མཛོད་ཕབ་ལེན་འབད་དོ།"
 
-#: src/ui.cc:525
+#: src/ui.cc:633
 msgid "Really quit Aptitude?"
 msgstr "གོམས་འདྲིས་དེ་ཐད་རི་འབའ་རི་སྤང་་ནི་ཨིན་ན?"
 
-#: src/ui.cc:599
+#: src/ui.cc:711
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr "ཁྱོད་ཀྱི་རང་སྡོན་གྱི་སྒྲིག་སྟངས་དེ་བཏོན་བཀོག་སྟེ་སྔོན་སྒྲིག་ཚུ་སླར་ཕབ་ལེད་འབད་ནི་ཨིན་ན?"
 
-#: src/ui.cc:703 src/ui.cc:705 src/ui.cc:752 src/ui.cc:754 src/ui.cc:773
-#: src/ui.cc:775 src/ui.cc:796 src/ui.cc:798
+#: src/ui.cc:815 src/ui.cc:817 src/ui.cc:864 src/ui.cc:866 src/ui.cc:885
+#: src/ui.cc:887 src/ui.cc:908 src/ui.cc:910
 msgid "Packages"
 msgstr "ཐུམ་སྒྲིལ་ཚུ།"
 
-#: src/ui.cc:704 src/ui.cc:753 src/ui.cc:774 src/ui.cc:797
+#: src/ui.cc:816 src/ui.cc:865 src/ui.cc:886 src/ui.cc:909
 msgid "View available packages and choose actions to perform"
 msgstr "འཐོབ་ཚུགས་པའི་ཐུམ་སྒྲིལ་ཚུ་སྟོན་ཞིནམ་ལས་ལཱ་འགན་འགྲུབ་ནིའི་དོན་ལུ་ བྱ་བ་ཚུ་གདམ་ཁ་རྐྱབས།"
 
-#: src/ui.cc:733
+#: src/ui.cc:845
 msgid "Recommended Packages"
 msgstr "འོས་སྦྱོར་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་ཚུ།"
 
-#: src/ui.cc:734
+#: src/ui.cc:846
 msgid "View packages that it is recommended that you install"
 msgstr "ཁྱོད་ཀྱིས་གཞི་བཙུགས་འབདམི་ཐུམ་སྒྲིལ་འོས་སྦྱོར་འབད་ཡོད་མི་ཚུ་སྟོན།"
 
-#: src/ui.cc:735
+#: src/ui.cc:847
 msgid "Recommendations"
 msgstr "འོས་སྦྱོར་ཚུ།"
 
-#: src/ui.cc:839
+#: src/ui.cc:951
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
@@ -4492,67 +4569,67 @@ msgstr ""
 "ནང་ལུ་ཡོད་མི་ 'ཆོག་ཐམ' ལུ་བལྟ། འ་ནི་འདི་རང་དབང་མཉེན་ཆས་ཨིནམ་ལས་ གནས་སྟངས་ལ་ལུ་ཅིག་གི་འོག་ལུ་ "
 "ཁྱོད་ཀྱིས་འདི་སླར་བགོ་བཀྲམ་འབད་ནིའི་དོན་ལུ་བྱོན་པ་ལེགས་སོ་ཡོད། ཁ་གསལ་གྱི་སྐོར་ལས་'ཆོག་ཐམ་' ལུ་བལྟ།"
 
-#: src/ui.cc:862
+#: src/ui.cc:975
 msgid "help.txt"
 msgstr "གྲོགས་རམ་ ཊི་ཨེགསི་ཊི།"
 
-#: src/ui.cc:864
+#: src/ui.cc:977
 msgid "Encoding of help.txt|UTF-8"
 msgstr "གྲོགས་རམ་ ཊི་ཨེགསི་ཊི|ཡུ་ཊི་ཨེཕི་-༨ བརྒྱད་ཀྱི་ཨིན་ཀོཌི་འབད་ནི།"
 
-#: src/ui.cc:886
+#: src/ui.cc:1000
 msgid "README"
 msgstr "ང་ལྷག"
 
-#: src/ui.cc:888
+#: src/ui.cc:1002
 msgid "Encoding of README|ISO_8859-1"
 msgstr "ཨའི་ཨེསི་ཨོ-༨༨༥༩-༡"
 
-#: src/ui.cc:919
+#: src/ui.cc:1035
 msgid "User's Manual"
 msgstr "ལག་ལེན་པའི་ལག་དེབ།"
 
-#: src/ui.cc:919
+#: src/ui.cc:1035
 msgid "Read the full user's manual of aptitude"
 msgstr "ལག་ལེན་པ་ཆ་ཚང་གི་གོམས་འདྲིས་གི་ལག་དེབ་དེ་ལྷག"
 
-#: src/ui.cc:919
+#: src/ui.cc:1035
 msgid "Manual"
 msgstr "ལག་དེབ།"
 
-#: src/ui.cc:953
+#: src/ui.cc:1069
 #, c-format
 msgid "Unable to stat \"%s\""
 msgstr " \"%s\" དེ་སི་ཊེཊི་འབད་མི་ཚུགས་པས།"
 
-#: src/ui.cc:959
+#: src/ui.cc:1075
 #, c-format
 msgid "Unable to remove \"%s\""
 msgstr " \"%s\" དེ་རྩ་བསྐྲད་གཏང་མ་ཚུགས།"
 
-#: src/ui.cc:969
+#: src/ui.cc:1085
 #, c-format
 msgid "Unable to list files in \"%s\""
 msgstr "ཡིག་སྣོད་ཚུ་ \"%s\" དེ་ནང་ལུ་ཐོ་བཀོད་མ་ཚུགས།"
 
-#: src/ui.cc:982
+#: src/ui.cc:1098
 #, c-format
 msgid "Failure closing directory \"%s\""
 msgstr "སྣོད་ཐོ་\"%s\" དེ་ཁ་བསྡམ་ནི་ལུ་འཐུས་ཤོར་བྱུང་ནུག"
 
-#: src/ui.cc:988
+#: src/ui.cc:1104
 #, c-format
 msgid "Unable to remove directory \"%s\""
 msgstr "སྣོད་ཐོ་  \"%s\" དེ་རྩ་བསྐྲད་གཏང་མ་ཚུགས།"
 
-#: src/ui.cc:998
+#: src/ui.cc:1114
 #, c-format
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr ""
 "གནས་སྐབས་ཀྱིི་སྣོད་ཐོ་རྙིངམ་དེ་རྩ་བསྐྲད་གཏང་མ་ཚུགས། ཁྱོད་ཀྱིས་ %s དེ་ལགཔ་གིས་རྩ་བསྐྲད་གཏང་དགོཔ་ཨིན།"
 
-#: src/ui.cc:1003
+#: src/ui.cc:1119
 #, c-format
 msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
@@ -4561,7 +4638,7 @@ msgstr ""
 "%s དེ་རྩ་བསྐྲད་མི་གཏང་། ཁྱོད་ཀྱིས་ཡིཡག་སྣོད་ཚུ་འདི་ནང་ལུ་བརྟག་དཔྱད་འབད་དགོཔ་ཨིནམ་དང་ དེ་ཚུ་ཁྱོད་ཀྱི་"
 "ལགཔ་གིས་རྩ་བསྐྲད་གཏང་།"
 
-#: src/ui.cc:1029
+#: src/ui.cc:1145
 #, c-format
 msgid ""
 "It appears that a previous version of aptitude left files behind in %s.  "
@@ -4573,19 +4650,19 @@ msgstr ""
 "གཏང་ནི་ལུ་ཉེན་ཁ་མེདཔ་ཨིན། %n%n ཁྱོད་ཀྱིས་སྣོད་ཐོ་འདི་དེ་ནང་ལུ་ཡོད་མི་ཚུ་ཆ་མཉམ་རྩ་བསྐྲད་གཏང་ནི་ཨིན་"
 "ན? ཁྱོད་ཀྱིས་\"No\" དེ་སེལ་འཐུ་འབད་བ་ཅིན་ཁྱོད་ཀྱིས་འཕྲིན་དོན་འདི་ལོག་མཐོང་མི་ཚུགས།"
 
-#: src/ui.cc:1071
+#: src/ui.cc:1187
 msgid "Downloading packages"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་ཕབ་ལེན་འབད་དོ།"
 
-#: src/ui.cc:1072
+#: src/ui.cc:1188
 msgid "View the progress of the package download"
 msgstr "ཐུམ་སྒྲིལ་ཕབ་ལེན་གི་ཡར་འཕེལ་དེ་སྟོན།"
 
-#: src/ui.cc:1073
+#: src/ui.cc:1189
 msgid "Package Download"
 msgstr "ཐུམ་སྒྲིལ་ཕབ་ལེན།"
 
-#: src/ui.cc:1106
+#: src/ui.cc:1222
 msgid ""
 "%BWARNING%b: untrusted versions of the following packages will be installed!%"
 "n%nUntrusted packages could %Bcompromise your system's security%b.  You "
@@ -4596,39 +4673,39 @@ msgstr ""
 "ཚུགས་པའིི་ཐུམ་སྒྲིལ་ཚུ་གིས་%B ཁྱོད་ཀྱི་རིམ་ལུགས་ཀྱི་སྲུང་སྐྱོབ་%bདེ་ ནང་འགྲིགས་འབད་དགོ ཁྱོད་ཀྱིས་འ་ནི་འདི་"
 "ཁྱོདཀྱིས་འབད་ནི་ཨིནམ་ངེས་ཅན་སྦེ་ཤེས་པ་ཅིན་རྐྱངམ་ཅིག་ གཞི་བཙུགས་འབད་ནིི་དེ་འཕྲོ་མཐུད་དགོ%n%n "
 
-#: src/ui.cc:1112
+#: src/ui.cc:1228
 msgid "  %S*%N %s [version %s]%n"
 msgstr "%S*%N %s [ཐོན་རིམ་ %s]%n"
 
-#: src/ui.cc:1118
+#: src/ui.cc:1234
 msgid "Really Continue"
 msgstr "ཐད་རི་འབའ་རི་འཕྲོ་མཐུད་འབད།"
 
-#: src/ui.cc:1120
+#: src/ui.cc:1236
 msgid "Abort Installation"
 msgstr "གཞི་བཙུགས་འབད་ནི་བར་བཤོལ།"
 
-#: src/ui.cc:1182
+#: src/ui.cc:1298
 msgid "Preview of package installation"
 msgstr "ཐུམ་སྒྲིལ་གཞི་བཙུགས་ཀྱི་སྔོན་བལྟ།"
 
-#: src/ui.cc:1183
+#: src/ui.cc:1299
 msgid "View and/or adjust the actions that will be performed"
 msgstr "སྟོན་ཡང་ན་ལས་འགན་འགྲུབ་ནི་ཨིན་མའི་དོན་ལུ་བྱ་བ་ཚུ་བདེ་སྒྲིག་འབད། "
 
-#: src/ui.cc:1184
+#: src/ui.cc:1300
 msgid "Preview"
 msgstr "སྔོན་བལྟ།"
 
-#: src/ui.cc:1242
+#: src/ui.cc:1356
 msgid "Some packages were broken and have been fixed:"
 msgstr "ཐུམ་སྒྲིལ་ལ་ལུ་ཅིག་ཆག་སོངམ་ལས་གཏན་པར་བཟོོ་ནུག:"
 
-#: src/ui.cc:1250
+#: src/ui.cc:1364
 msgid "No solution to these dependency problems exists!"
 msgstr "རྟེན་འབྲེལ་འདི་ལུ་ཐབས་ཤེས་མེད་ཟེར་བཟི་དཀའ་ངལ་བྱུང་མ་ཨིན!"
 
-#: src/ui.cc:1256
+#: src/ui.cc:1370
 #, c-format
 msgid ""
 "Ran out of time while trying to resolve dependencies (press \"%s\" to try "
@@ -4637,7 +4714,7 @@ msgstr ""
 "རྟེན་འབྲེལ་ཚུ་མོས་མཐུན་འབད་ནི་ལུ་འབད་རྩོལ་བསྐྱེད་པའི་སྐབས་ལུ་དུས་ཚོད་ཀྱི་བདའ་མ་ཟུན།(ཧེང་བཀལ་འབད་རྩོལ་"
 "བསྐྱེད་ནིའི་དོན་ལུ་ \"%s\" དེ་ལུ་ཨེབ།)"
 
-#: src/ui.cc:1302
+#: src/ui.cc:1416
 msgid ""
 "Installing/removing packages requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
@@ -4645,27 +4722,27 @@ msgstr ""
 "ཐུམ་སྒྲིལ་ཚུ་གཞི་བཙུགས་/རྩ་བསྐྲད་གཏང་ནི་ལུ་ ཁྱོད་ལུ་ད་ལྟོ་མེད་པའི་བདག་སྐྱོང་དང་འབྲེལ་བའི་ཁེ་དབང་དགོས་མཁོ་"
 "ཡོདཔཨིན། ཁྱོད་ཀྱིས་རྩ་བའི་རྩིས་ཐོ་ལུ་བསྒྱུར་བཅོས་འབད་ནི་ཨིན་ན?"
 
-#: src/ui.cc:1305 src/ui.cc:1434
+#: src/ui.cc:1419 src/ui.cc:1548
 msgid "Become root"
 msgstr "རྩ་བ་ལུ་འགྱུར།"
 
-#: src/ui.cc:1307 src/ui.cc:1436
+#: src/ui.cc:1421 src/ui.cc:1550
 msgid "Don't become root"
 msgstr "རྩ་བ་ལུ་འགྱུར་མི་དགོ"
 
-#: src/ui.cc:1312 src/ui.cc:1441
+#: src/ui.cc:1426 src/ui.cc:1555
 msgid "A package-list update or install run is already taking place."
 msgstr ""
 "ཐུམ་སྒྲིལ་-ཐོ་ཡིག་ཅིག་དུས་མཐུན་བཟོ་ནིི་དང་ ཡང་ན་ གཡོག་བཀོལ་ནི་གཞི་བཙུགས་འབད་ནི་དེ་ཧེ་མ་ལས་རང་ས་"
 "གནས་ནང་ལུ་འདུག"
 
-#: src/ui.cc:1339
+#: src/ui.cc:1453
 msgid "No packages are scheduled to be installed, removed, or upgraded."
 msgstr ""
 "ཐུམ་སྒྲིལ་ཚུ་ཅིག་ཡང་གཞི་བཙུགས་འབད་ནི་དང་ རྩ་བསྐྲད་གཏང་ནི་ ཡང་ན་ ཡར་བསྐྱེད་འབད་ནི་ལུ་འཆར་རིམ་མ་"
 "བཟོ་བས།"
 
-#: src/ui.cc:1345
+#: src/ui.cc:1459
 msgid ""
 "No packages will be installed, removed or upgraded.  Some packages could be "
 "upgraded, but you have not chosen to upgrade them.  Type \"U\" to prepare an "
@@ -4675,23 +4752,23 @@ msgstr ""
 "ཚུགསཔ་འོང་དེ་འབདཝ་ད་ ཁྱོད་ཀྱིས་དེ་ཚུ་ཡར་བསྐཡེད་འབད་ནི་ལུ་གདམ་ག་མ་བརྐྱབ་པས། ཡར་བསྐྱེད་གུར་གྲ་སྒྲིག་"
 "འབད་ནིའ་དོན་ལུ་ \"U\" དེ་ཡིག་དཔར་རྐྱབས།"
 
-#: src/ui.cc:1403 src/ui.cc:1516
+#: src/ui.cc:1517 src/ui.cc:1630
 msgid "Deleting obsolete downloaded files"
 msgstr "ཕན་མེད་ཕབ་ལེན་འབད་ཡོད་པའི་ཡིག་སྣོད་ཚུ་བཏོན་གཏང་དོ།"
 
-#: src/ui.cc:1418
+#: src/ui.cc:1532
 msgid "Updating package lists"
 msgstr "ཐུམ་སྒྲིལ་གྱི་ཐོ་ཡིག་ཚུ་དུས་མཐུན་བཟོ་དོ།"
 
-#: src/ui.cc:1419
+#: src/ui.cc:1533
 msgid "View the progress of the package list update"
 msgstr "ཐུམ་སྒྲིལ་ཐོ་ཡིག་གི་དུས་མཐུན་བཟོ་ནིའི་ཡར་འཕེལ་དེ་སྟོན།"
 
-#: src/ui.cc:1420
+#: src/ui.cc:1534
 msgid "List Update"
 msgstr "དུས་མཐོན་ཐོ་བཀོད་འབད།"
 
-#: src/ui.cc:1431
+#: src/ui.cc:1545
 msgid ""
 "Updating the package lists requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
@@ -4699,27 +4776,27 @@ msgstr ""
 "ཐུམ་སྒྲིལ་ཐོ་ཡིག་ཚུ་དུས་མཐུན་བཟོ་ནི་ལུ་ ཁྱོད་ལུ་ད་ལྟོ་མེད་པའི་བདག་སྐྱོང་དང་འབྲེལ་བའི་ཁེ་དབང་ཚུ་དགོས་མཁོ་"
 "ཡོདཔ་ཨིན། ཁྱོད་ཀྱིས་རྩ་བའི་རྩིས་ཐོ་བསྒྱུར་བཅོས་འབད་ནི་ཨིན་ན?"
 
-#: src/ui.cc:1446 src/ui.cc:1967
+#: src/ui.cc:1560 src/ui.cc:2116
 msgid "Waste time trying to find mines"
 msgstr "འགས་རྫས་ཚུ་འཚོལ་ནིའི་འབད་རྩོལ་བསྐྱེད་དགོ་པ་ཅིན་དུས་་ཚོད་འབྱིན་དགོཔ་ཨིན།"
 
-#: src/ui.cc:1453 src/ui.cc:1513
+#: src/ui.cc:1567 src/ui.cc:1627
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "ཕབ་ལེན་ཡར་འཕེལ་འབད་བའི་སྒང་ཡོད་མི་དེ་མ་ཆོགཔ་ད་ལུ་གཙང་དག་བཟོ་དོ།"
 
-#: src/ui.cc:1456
+#: src/ui.cc:1570
 msgid "Deleting downloaded files"
 msgstr "ཕབ་ལེན་འབད་ཡོད་པའི་ཡིག་སྣོད་ཚུ་བཏོན་གཏང་དོ།"
 
-#: src/ui.cc:1470
+#: src/ui.cc:1584
 msgid "Downloaded package files have been deleted"
 msgstr "ཕབ་ལེན་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་ཡིག་སྣོད་ཚུ་བཏོན་གཏང་ནུག"
 
-#: src/ui.cc:1510
+#: src/ui.cc:1624
 msgid "The apt cache file is not available; cannot auto-clean."
 msgstr "ཨེཔཊི་འདྲ་མཛོད་ཀྱི་ཡིག་སྣོད་དེ་འཐོབ་མི་ཚུགས། རང་བཞིན་གྱིས་གཙང་དག་བཟོ་མི་ཚུགས།"
 
-#: src/ui.cc:1536
+#: src/ui.cc:1650
 #, c-format
 msgid ""
 "Obsolete downloaded package files have been deleted, freeing %sB of disk "
@@ -4728,115 +4805,115 @@ msgstr ""
 "ཕན་མེད་ཀྱི་ཕབ་ལེན་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་ཡིག་སྣོད་ཚུ་བཏོན་གཏང་ནུག ཌིཀསི་བར་སྟོང་གི་ %sB དེ་རང་དབང་"
 "ཅན་བཟོ་དོ།"
 
-#: src/ui.cc:1633
+#: src/ui.cc:1747
 msgid "No more solutions."
 msgstr "ཐབས་ཤེས་དེ་ལས་ལྷག་སྟེ་མེད།"
 
-#: src/ui.cc:1821
+#: src/ui.cc:1970
 msgid "Unable to find a solution to apply."
 msgstr "འཇུག་སྤྱོད་འབད་ནིའི་དོན་ལུ་ཐབས་ཤེས་ཅིག་འཚོལ་མ་འཐོབ།"
 
-#: src/ui.cc:1827
+#: src/ui.cc:1976
 msgid "Ran out of time while trying to find a solution."
 msgstr "ཐབས་ཤེས་ཅིག་འཚོལ་བའི་སྐབས་ལུ་དུས་ཚོད་ཀྱི་བདའ་མ་ཟུན།"
 
-#: src/ui.cc:1870 src/ui.cc:1872
+#: src/ui.cc:2019 src/ui.cc:2021
 msgid "Resolve Dependencies"
 msgstr "རྟེན་འབྲེལ་ཚུ་མོས་མཐུན་བཟོ།"
 
-#: src/ui.cc:1871
+#: src/ui.cc:2020
 msgid "Search for solutions to unsatisfied dependencies"
 msgstr "ངལ་རངས་མ་འབྱུང་པའི་རྟེན་འབྲེལ་ཚུ་གི་དོན་ལུ་ ཐབས་ཤེས་ཚུ་འཚོལ་ཞིབ་འབད།"
 
-#: src/ui.cc:1883
+#: src/ui.cc:2032
 #, c-format
 msgid "Unable to open %ls"
 msgstr "%ls དེ་ཁ་ཕྱེ་མི་ཚུགས་པས།"
 
-#: src/ui.cc:1889
+#: src/ui.cc:2038
 msgid "Error while dumping resolver state"
 msgstr "མོས་མཐུན་བཟོ་མི་གནས་ལུགས་དེ་བཀོག་བཞག་པའི་སྐབས་ལུ་འཛོལ་བ་བྱུང་ནུག"
 
-#: src/ui.cc:1899
+#: src/ui.cc:2048
 msgid "File to which the resolver state should be dumped:"
 msgstr "མོས་མཐུན་བཟོ་མི་གནས་ལུགས་དེ་བཀོག་བཞག་དགོ་སའི་ཡིག་སྣོད:"
 
-#: src/ui.cc:1929
+#: src/ui.cc:2078
 msgid "^Install/remove packages"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་གཞི་བཙུགས/རྩ་བསྐྲད་གཏང་།(^I)"
 
-#: src/ui.cc:1930
+#: src/ui.cc:2079
 msgid "Perform all pending installs and removals"
 msgstr "བསྣར་ཏེ་ཡོད་པའི་གཞི་བཙུགས་འབད་ནི་དང་རྩ་བསྐྲད་གཏང་ནི་ཚུ་ཆ་མཉམ་ལག་ལེན་འཐབ།"
 
-#: src/ui.cc:1932
+#: src/ui.cc:2081
 msgid "^Update package list"
 msgstr "ཐུམ་སྒྲིལ་གྱི་ཐོ་ཡིག་དེ་དུས་མཐུན་བཟོ།(^U)"
 
-#: src/ui.cc:1933
+#: src/ui.cc:2082
 msgid "Check for new versions of packages"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་གི་ཐོན་རིམ་གསརཔ་ཚུ་གི་དོན་ལུ་ཞིབ་དཔྱད་འབད།"
 
-#: src/ui.cc:1937
+#: src/ui.cc:2086
 msgid "Mark Up^gradable"
 msgstr "ཡར་བསྐྱེད་འབད་བཏུབ་མི་ལུ་རྟགས་བཀལ།(^g)"
 
-#: src/ui.cc:1938
+#: src/ui.cc:2087
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr ""
 "ཡར་བསྐྱེད་འབད་བཏུབ་མི་ཐུམ་སྒྲིལ་ཡར་བསྐྱེད་འབད་ནིའི་དོན་ལུ་འཆང་སྟེ་མེད་མི་མི་ཚུ་ཆ་མཉམ་ལུ་རྟགས་བཀལ།"
 
-#: src/ui.cc:1942
+#: src/ui.cc:2091
 msgid "^Forget new packages"
 msgstr "ཐུམ་སྒྲིལ་གསརཔ་ཚུ་སེམས་ཁར་ལས་བརྗེད་ད།(^F)"
 
-#: src/ui.cc:1943
+#: src/ui.cc:2092
 msgid "Forget which packages are \"new\""
 msgstr "ཐུམ་སྒྲིལ་ག་དེ་\"new\"ཨིན་ན་སེམས་ཁར་ལས་བརྗེད་ད།"
 
-#: src/ui.cc:1946
+#: src/ui.cc:2095
 msgid "Canc^el pending actions"
 msgstr "བསྣར་ཏེ་ཡོད་པའི་བྱ་བ་ཚུ་ཆ་མེད་གཏང་།(^e)"
 
-#: src/ui.cc:1947
+#: src/ui.cc:2096
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr ""
 "བསྣར་ཏེ་ཡོད་པའི་གཞི་བཙུགས་འབད་ནི་དང་ རྩབསྐྲད་གཏང་ནི་ འཆང་ནི་དང་ཡར་བསྐྱེད་འབད་ནི་ཚུ་ཆ་མཉམ་ཆ་མེད་"
 "གཏང་།"
 
-#: src/ui.cc:1950
+#: src/ui.cc:2099
 msgid "^Clean package cache"
 msgstr "ཐུམ་སྒྲིལ་འདྲ་མཛོད་དེ་གཙང་དག་བཟོ། (^C)"
 
-#: src/ui.cc:1951
+#: src/ui.cc:2100
 msgid "Delete package files which were previously downloaded"
 msgstr "ཧེ་མ་ལས་ཕབ་ལེན་འབད་ཡོའ་པའི་ཐུམ་སྒྲིལ་ཡིག་སྣོད་ཚུ་བཏོན་གཏང་།"
 
-#: src/ui.cc:1954
+#: src/ui.cc:2103
 msgid "Clean ^obsolete files"
 msgstr "ཕན་ཡིག་སྣོད་ཚུ་གཙང་དག་བཟོ། (^o)"
 
-#: src/ui.cc:1955
+#: src/ui.cc:2104
 msgid "Delete package files which can no longer be downloaded"
 msgstr "ད་ལས་ཕར་ཕབ་ལེན་འབད་མ་བཏུབ་མི་ཐུམ་སྒྲིལ་ཡིག་སྣོད་ཚུ་བཏོན་གཏང་།"
 
-#: src/ui.cc:1961
+#: src/ui.cc:2110
 msgid "^Reload package cache"
 msgstr "ཐུམ་སྒྲིལ་འདྲ་མཛོད་དེ་ཡང་བསྐྱར་མངོན་གསལ་འབད།(^R)"
 
-#: src/ui.cc:1962
+#: src/ui.cc:2111
 msgid "Reload the package cache"
 msgstr "ཐུམ་སྒྲིལ་འདྲ་མཛོད་དེ་ཡང་བསྐྱར་མངོན་གསལ་འབད།"
 
-#: src/ui.cc:1966
+#: src/ui.cc:2115
 msgid "^Play Minesweeper"
 msgstr "འགས་རྫས་འཕྱག་མི་གཏང་། (^P)"
 
-#: src/ui.cc:1971
+#: src/ui.cc:2120
 msgid "^Become root"
 msgstr "རྩ་བ་ལུ་འགྱུར་འོང་། (^B)"
 
-#: src/ui.cc:1972
+#: src/ui.cc:2121
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
@@ -4844,63 +4921,63 @@ msgstr ""
 " 'ཨེསི་ཡུ་' དེ་རྩ་བ་ལུ་འགྱུར་ནིའི་དོན་ལུ་གཡོག་བཀོལ། འདི་གིས་ལས་རིམ་དེ་སླར་འགོ་བཙུགསཔ་ཨིན་ དེ་འབདཝ་"
 "ད་ ཁྱོད་ཀྱི་སྒྲིག་སྟངས་དེ་ཉམས་སྲུང་འབད་བཞག་འོང་།"
 
-#: src/ui.cc:1974
+#: src/ui.cc:2123
 msgid "^Quit"
 msgstr "སྤང་།(^Q)"
 
-#: src/ui.cc:1975
+#: src/ui.cc:2124
 msgid "Exit the program"
 msgstr "ལས་རིམ་དེ་ཕྱིར་འཐོན་འབད།"
 
-#: src/ui.cc:1981 src/ui.cc:2339
+#: src/ui.cc:2130 src/ui.cc:2492
 msgid "Undo"
 msgstr "འབད་བཤོལ།"
 
-#: src/ui.cc:1982
+#: src/ui.cc:2131
 msgid "Undo the last package operation or group of operations"
 msgstr "མཇུག་གི་ཐུམ་སྒྲིལ་བཀོལ་སྤྱོད་ ཡང་ན་ བཀོལ་སྤྱོད་སྡེ་ཚན་ཚུ་འབད་བཤོལ་བཞག"
 
-#: src/ui.cc:1990
+#: src/ui.cc:2139
 msgid "^Install"
 msgstr "གཞི་བཙུགས།(^I)"
 
-#: src/ui.cc:1991
+#: src/ui.cc:2140
 msgid "Flag the currently selected package for installation or upgrade"
 msgstr ""
 "གཞི་བཙུགས་དང་ཡར་བསྐྱེད་འབད་ནིའི་དོན་ལུ་ ད་ལྟོ་སེལ་འཐུ་འབད་ཡོའ་པའི་ཐུམ་སྒྲིལ་དེ་ལུ་ཟུར་རྟགས་བཀོད།"
 
-#: src/ui.cc:1994
+#: src/ui.cc:2143
 msgid "^Remove"
 msgstr "རྩ་བསྐྲད། (^R)"
 
-#: src/ui.cc:1995
+#: src/ui.cc:2144
 msgid "Flag the currently selected package for removal"
 msgstr "རྩ་བསྐྲད་གཏང་ནིའི་དོན་ལུ་ ད་ལྟོ་སེལ་འཐུ་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་དེ་ལུ་ཟུར་རྟགས་བཀོད།"
 
-#: src/ui.cc:1998
+#: src/ui.cc:2147
 msgid "^Purge"
 msgstr "ཕྱིར་བསྐྲད། (^P)"
 
-#: src/ui.cc:1999
+#: src/ui.cc:2148
 msgid ""
 "Flag the currently selected package and its configuration files for removal"
 msgstr ""
 "རྩ་བསྐྲད་གཏང་ནིའི་དོན་ལུ་ད་ལྟོ་སེལ་འཐུ་འབད་ཡོད་མི་ཐུམ་སྒྲིལ་དང་ དེའི་རིམ་སྒྲིག་ཡིག་སྣོད་དེ་ལུ་ ཟུར་རྟགས་"
 "བཀོད།"
 
-#: src/ui.cc:2002
+#: src/ui.cc:2151
 msgid "^Keep"
 msgstr "བཞག(^K)"
 
-#: src/ui.cc:2003
+#: src/ui.cc:2152
 msgid "Cancel any action on the selected package"
 msgstr "བྱ་བ་ག་འབད་རུང་ཅིག་སེལ་འཐུ་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་གུར་ཆ་མེད་གཏང་།"
 
-#: src/ui.cc:2006
+#: src/ui.cc:2155
 msgid "^Hold"
 msgstr "འཆང། (^H)"
 
-#: src/ui.cc:2007
+#: src/ui.cc:2156
 msgid ""
 "Cancel any action on the selected package, and protect it from future "
 "upgrades"
@@ -4908,11 +4985,11 @@ msgstr ""
 "བྱ་བ་ག་འབད་རུང་ཅིག་སེལ་འཐུ་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་གུར་ཆ་མེད་གཏང་ཞིནམ་ལས་ འ་ནི་དེ་མ་འོངས་པ་ལུ་ཡར་"
 "བསྐྱེད་འབད་ནི་ལས་ཉེན་སྐྱོབ་འབད།"
 
-#: src/ui.cc:2010
+#: src/ui.cc:2159
 msgid "Mark ^Auto"
 msgstr "རང་བཞིན་ལུ་རྟགས་བཀལ། (^A)"
 
-#: src/ui.cc:2011
+#: src/ui.cc:2160
 msgid ""
 "Mark the selected package as having been automatically installed; it will "
 "automatically be removed if no other packages depend on it"
@@ -4920,11 +4997,11 @@ msgstr ""
 "སེལ་འཐུ་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་ཚུ་རང་བཞིན་གྱིས་ཐོག་ལས་གཞི་བཙུགས་འབད་ཡོདཔ་བཟུམ་སྦེ་རྟགས་བཀལ། ཐུམ་སྒྲིལ་"
 "གཞན་མི་ཚུ་གིས་དེ་ལུ་མ་བརྟེན་པ་ཅིན་ འ་ནི་དེ་རང་བཞིན་གྱིས་རྩ་བསྐྲད་གཏང་འོང་།"
 
-#: src/ui.cc:2014
+#: src/ui.cc:2163
 msgid "Mark ^Manual"
 msgstr "ལག་དེབ་ལུ་རྟགས་བཀལ།(^M)"
 
-#: src/ui.cc:2015
+#: src/ui.cc:2164
 msgid ""
 "Mark the selected package as having been manually installed; it will not be "
 "removed unless you manually remove it"
@@ -4932,11 +5009,11 @@ msgstr ""
 "སེལ་འཐུ་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་ཚུ་ལག་ཐོག་ལས་གཞི་བཙུགས་འབད་དེ་ཡོད་དོ་བཟུམ་སྦེ་རྟགས་བཀལ། ཁྱོད་ཀྱིས་ལག་"
 "ཐོག་ལས་རྩ་བསྐྲད་མ་གཏང་ཚུན་ཚོད་ དེ་གིས་རྩ་བསྐྲད་མི་འགྱོ།"
 
-#: src/ui.cc:2018
+#: src/ui.cc:2167
 msgid "^Forbid Version"
 msgstr "ཐོན་རིམ་མ་ཆོགཔ་བཟོ།(^F)"
 
-#: src/ui.cc:2019
+#: src/ui.cc:2168
 msgid ""
 "Forbid the candidate version of the selected package from being installed; "
 "newer versions of the package will be installed as usual"
@@ -4944,317 +5021,325 @@ msgstr ""
 "སེལ་འཐུ་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་ཚུ་གིས་མི་ངོའི་ཐོན་རིམ་དེ་གཞི་བཙུགས་འབད་ནི་ལས་མ་ཆོགཔ་བཟོ། ཐུམ་སྒྲིལ་དེ་གི་"
 "ཐོན་རིམ་གསརཔ་ཚུ་ཨ་རྟག་བཟུམ་སྦེ་གཞི་བཙུགས་འབད་ནི་ཨིན།"
 
-#: src/ui.cc:2023
+#: src/ui.cc:2172
 msgid "I^nformation"
 msgstr "བརྡ་དོན།(^n)"
 
-#: src/ui.cc:2024
+#: src/ui.cc:2173
 msgid "Display more information about the selected package"
 msgstr "སེལ་འཐུ་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་དེ་གི་སྐོར་ལས་བརྡ་དོན་ཧེང་བཀལ་བཀྲམ་སྟོན་འབད།"
 
-#: src/ui.cc:2027
+#: src/ui.cc:2176
 msgid "^Changelog"
 msgstr "བསྒྱུར་བཅོས་དྲན་དེབ། (^C)"
 
-#: src/ui.cc:2028
+#: src/ui.cc:2177
 msgid "Display the Debian changelog of the selected package"
 msgstr "སེལ་འཐུ་འབད་ཡོད་པའི་ཐུམ་སྒྲིལ་དེ་གི་ཌེ་བི་ཡཱན་བསྒྱུར་བཅོས་དྲན་དེབ་བཀྲམ་སྟོན་འབད།"
 
-#: src/ui.cc:2035
+#: src/ui.cc:2184
 msgid "^Examine Solution"
 msgstr "ཐབས་ཤེས་བརྟག་དཔྱད་འབད།"
 
-#: src/ui.cc:2036
+#: src/ui.cc:2185
 msgid "Examine the currently selected solution to the dependency problems."
 msgstr "ད་ལྟོ་སེལ་འཐུ་འབད་ཡོད་པའི་ཐབས་ཤེས་དེ་རྟེན་འབྲེལ་གྱི་དཀའ་ངལ་དེ་ལུ་བརྟག་དཔྱད་འབད།"
 
-#: src/ui.cc:2039
+#: src/ui.cc:2188
 msgid "Apply ^Solution"
 msgstr "ཐབས་ཤེས་འཇུག་སྤྱོད་འབད།"
 
-#: src/ui.cc:2040
+#: src/ui.cc:2189
 msgid "Perform the actions contained in the currently selected solution."
 msgstr "ད་ལྟོ་སེལ་འཐུ་འབད་ཡོད་པའི་ཐབས་ཤེས་ཚུ་ནང་ལུ་ཡོད་པའི་བྱ་བ་ཚུ་ལག་ལེན་འཐབ།"
 
-#: src/ui.cc:2043
+#: src/ui.cc:2192
 msgid "^Next Solution"
 msgstr "ཤུལ་མམ་གྱི་ཐབས་ལམ། (^N)"
 
-#: src/ui.cc:2044
+#: src/ui.cc:2193
 msgid "Select the next solution to the dependency problems."
 msgstr "ཤུལ་མམ་གྱི་ཐབས་ཤེས་དེ་རྟེན་འབྲེལ་གྱི་དཀའ་ངལ་དེ་ལུ་སེལ་འཐུ་འབད།"
 
-#: src/ui.cc:2047
+#: src/ui.cc:2196
 msgid "^Previous Solution"
 msgstr "ཧེ་མམ་གྱི་་ཐབས་ཤེས། (^P)"
 
-#: src/ui.cc:2048
+#: src/ui.cc:2197
 msgid "Select the previous solution to the dependency problems."
 msgstr "ཧེ་མམ་གྱི་ཐབས་ཤེས་དེ་རྟེན་འབྲེལ་གྱི་དཀའ་ངལ་དེ་ལུ་སེལ་འཐུ་འབད།"
 
-#: src/ui.cc:2051
+#: src/ui.cc:2200
 msgid "^First Solution"
 msgstr "ཐབས་དང་པ། (^F)"
 
-#: src/ui.cc:2052
+#: src/ui.cc:2201
 msgid "Select the first solution to the dependency problems."
 msgstr "ཐབས་ཤེས་དང་པམ་དེ་རྟེན་འབྲེལ་གྱི་དཀའ་ངལ་དེ་ལུ་སེལ་འཐུ་འབད།"
 
-#: src/ui.cc:2055
+#: src/ui.cc:2204
 msgid "^Last Solution"
 msgstr "མཇུག་གི་ཐབས་ཤེས།"
 
-#: src/ui.cc:2056
+#: src/ui.cc:2205
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
 msgstr ""
 "མཇུག་གི་སེལ་འཐུ་དེ་ད་ལྟོ་ཚུན་ཚོད་བཟོ་བཏོན་འབད་ཡོད་པའི་རྟེན་འབྲེལ་གྱི་དཀའ་ངལ་དེ་ལུ་སེལ་འཐུ་འབད།"
 
-#: src/ui.cc:2062
+#: src/ui.cc:2211
 msgid "Toggle ^Rejected"
 msgstr "སོར་སྟོན་སྣང་མེད་སྦེ་བཞག་ཡོདཔ།(^R)"
 
-#: src/ui.cc:2063
+#: src/ui.cc:2212
 msgid "Toggle whether the currently selected action is rejected."
 msgstr "ད་ལྟོ་སེལ་འཐུ་འབཐ་ཡོད་པའི་བྱ་བ་དེ་སྣང་མེད་སྦེ་བཞག་སྟེ་ཡོད་དང་མེད་སོར་སྟོན་འབད།"
 
-#: src/ui.cc:2067
+#: src/ui.cc:2216
 msgid "Toggle ^Approved"
 msgstr "སོར་སྟོན་གནང་བ་གྲོལ་ཡོདཔ། (^A)"
 
-#: src/ui.cc:2068
+#: src/ui.cc:2217
 msgid "Toggle whether the currently selected action is approved."
 msgstr "ད་ལྟོ་སེལ་འཐུ་འབད་ཡོད་པའི་བྱ་བ་དེ་གི་གནང་བ་གྲོལ་ཡོད་དང་མེད་སོར་སྟོན་འབད།"
 
-#: src/ui.cc:2072
+#: src/ui.cc:2221
 msgid "^View Target"
 msgstr "དམིགས་གཏད་སྟོན། (^V)"
 
-#: src/ui.cc:2073
+#: src/ui.cc:2222
 msgid "View the package which will be affected by the selected action"
 msgstr "ཐུམ་སྒྲིལ་ག་དེ་ལུ་སེལ་འཐུ་འབད་ཡོད་པའི་བྱ་བ་གིས་གནོད་སྐྱོན་འབྱུང་ནི་ཨིན་པས་ག་སྟོན།"
 
-#: src/ui.cc:2081
+#: src/ui.cc:2230
 msgid "^Find"
 msgstr "འཚོལ།(^F)"
 
-#: src/ui.cc:2082
+#: src/ui.cc:2231
 msgid "Search forwards"
 msgstr "གདོང་བསྐྱོད་འབད་དེ་འཚོལ་ཞིབ་འབད།"
 
-#: src/ui.cc:2085
+#: src/ui.cc:2234
 msgid "^Find Backwards"
 msgstr "རྒྱབ་བསྐྱོད་དེ་འཚོལ། (^F)"
 
-#: src/ui.cc:2086
+#: src/ui.cc:2235
 msgid "Search backwards"
 msgstr "རྒྱབ་བསྐྱོད་འབད་དེ་ཚའོལ་ཞིབ་འབད།"
 
-#: src/ui.cc:2089
+#: src/ui.cc:2238
 msgid "Find ^Again"
 msgstr "ལོག་སྟེ་འཚོལ།(^A)"
 
-#: src/ui.cc:2090
+#: src/ui.cc:2239
 msgid "Repeat the last search"
 msgstr "མཇུག་གི་འཚོལ་ཞིབ་འབད་ཡོད་མི་དེ་ཡང་བསྐྱར་འབད།"
 
-#: src/ui.cc:2094
+#: src/ui.cc:2242
+msgid "Find Again ^Backwards"
+msgstr "རྒྱབ་བསྐྱོད་དེ་ལོག་འཚོལ། (^B)"
+
+#: src/ui.cc:2243
+msgid "Repeat the last search in the opposite direction"
+msgstr "མཇུག་གི་འཚོལ་ཞིབ་འབད་ཡོད་མི་དེ་རྒྱབ་འགལ་ཕྱོགས་སུ་་ཡང་བསྐྱར་འབད།"
+
+#: src/ui.cc:2247
 msgid "^Limit Display"
 msgstr "བཀྲམ་སྟོན་འབད་ནི་ལུ་་ཚད་བཀལ།(^L)"
 
-#: src/ui.cc:2095
+#: src/ui.cc:2248
 msgid "Apply a filter to the package list"
 msgstr "ཐུམ་སྒྲིལ་ཐོ་ཡིག་དེ་ལུ་ཚགས་མ་ཅིག་འཇུག་སྤྱོད་འབད།"
 
-#: src/ui.cc:2098
+#: src/ui.cc:2251
 msgid "^Un-Limit Display"
 msgstr "བཀྲམ་སྟོན་འབད་ནི་ལུ་ཚད་བཤོལ་འབད།"
 
-#: src/ui.cc:2099
+#: src/ui.cc:2252
 msgid "Remove the filter from the package list"
 msgstr "ཐུམ་སྒྲིལ་གྱི་ཐོ་ཡིག་དེ་ནང་ལས་ཚགས་མ་དེ་སྟོན་གཏང་།"
 
-#: src/ui.cc:2103
+#: src/ui.cc:2256
 msgid "Find ^Broken"
 msgstr "ཆག་ཆགཔ་འཚོལ།(^B)"
 
-#: src/ui.cc:2104
+#: src/ui.cc:2257
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "ཤུལ་མམ་གྱི་ཐུམ་སྒྲིལ་དེ་ངལ་མ་འབྱུང་མི་རྟེན་འབྲེལ་ཚུ་དང་གཅིག་ཁར་འཚོལ།"
 
-#: src/ui.cc:2111
+#: src/ui.cc:2264
 msgid "^UI options"
 msgstr "ཡུ་ཨའི་གི་གདམ་ཁ།(^M)"
 
-#: src/ui.cc:2112
+#: src/ui.cc:2265
 msgid "Change the settings which affect the user interface"
 msgstr "ལག་ལེན་པའི་ངོས་འདྲ་བ་དེ་ལུ་གནོད་སྐྱོན་འབྱུང་བཅུག་མི་སྒྲིག་སྟངས་དེ་བསྒྱུར་བཅོས་འབད།"
 
-#: src/ui.cc:2115
+#: src/ui.cc:2268
 msgid "^Dependency handling"
 msgstr "རྟེན་འབྲེལ་ལེགས་སྐྱོང་འཐབ་ནི།(^D)"
 
-#: src/ui.cc:2116
+#: src/ui.cc:2269
 msgid "Change the settings which affect how package dependencies are handled"
 msgstr ""
 "ཐུམ་སྒྲིལ་གྱི་རྟེན་འབྲེལ་ག་དེ་སྦེེ་ལེགས་སྐྱོང་འཐབ་ཨིན་ན་ལུ་གོནད་སྐྱོན་འབྱུང་བཅུག་མི་སྒྲིག་སྟངས་དེ་བསྒྱུར་བཅོས་འབད།"
 
-#: src/ui.cc:2119
+#: src/ui.cc:2272
 msgid "^Miscellaneous"
 msgstr "སྣ་ཚོགས།(^M)"
 
-#: src/ui.cc:2120
+#: src/ui.cc:2273
 msgid "Change miscellaneous program settings"
 msgstr "ལས་རིམ་སྣ་ཚོགས་ཀྱི་སྒྲིག་སྟངས་དེ་བསྒྱུར་བཅོས་འབད།"
 
-#: src/ui.cc:2125
+#: src/ui.cc:2278
 msgid "^Revert options"
 msgstr "གདམ་ཁ་ཚུ་རྒྱབ་ལོག་འབད།(^R)"
 
-#: src/ui.cc:2126
+#: src/ui.cc:2279
 msgid "Reset all settings to the system defaults"
 msgstr "སྒྲིག་སྟངས་ཚུ་ཆ་མཉམ་རང་རིམ་ལུགས་སྔོན་སྒྲིག་དེ་ལུ་སླར་སྒྲིག་འབད།"
 
-#: src/ui.cc:2137
+#: src/ui.cc:2290
 msgid "^Next"
 msgstr "ཤུལ་མམ།(^N)"
 
-#: src/ui.cc:2138
+#: src/ui.cc:2291
 msgid "View next display"
 msgstr "ཤུལ་མམ་གྱི་བཀྲམ་སྟོན་དེ་སྟོན།"
 
-#: src/ui.cc:2141
+#: src/ui.cc:2294
 msgid "^Prev"
 msgstr "ཧེ་མམ།(^P)"
 
-#: src/ui.cc:2142
+#: src/ui.cc:2295
 msgid "View previous display"
 msgstr "ཧེ་མམ་གྱི་བཀྲམ་སྟོན་དེ་སྟོན།"
 
-#: src/ui.cc:2145
+#: src/ui.cc:2298
 msgid "^Close"
 msgstr "ཁ་བསྡམས།(^C)"
 
-#: src/ui.cc:2146
+#: src/ui.cc:2299
 msgid "Close this display"
 msgstr "བཀྲམ་སྟོན་འདི་ཁ་བསྡམས།"
 
-#: src/ui.cc:2151
+#: src/ui.cc:2304
 msgid "New Package ^View"
 msgstr "ཐུམ་སྒྲིལ་གསརཔ་སྟོན།(^V)"
 
-#: src/ui.cc:2152
+#: src/ui.cc:2305
 msgid "Create a new default package view"
 msgstr "སྔོན་སྒྲིག་ཐུམ་སྒྲིལ་གྱི་མཐོང་སྣང་ཅིག་གསར་བསྐྲུན་འབད།"
 
-#: src/ui.cc:2155
+#: src/ui.cc:2308
 msgid "Audit ^Recommendations"
 msgstr "རྩིས་ཞིབ་འོས་སྦྱོར།(^R)"
 
-#: src/ui.cc:2156
+#: src/ui.cc:2309
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
 msgstr "ཁྱོད་ཀྱིས་གཞི་བཙུགས་འབད་མི་འོས་སྦྱོར་འབད་ཡོད་མི་ཐུམ་སྒྲིལ་ད་ལྟོ་གཞི་བཙུགས་འབད་དེ་མེད་མི་ཚུ་སྟོན།"
 
-#: src/ui.cc:2159
+#: src/ui.cc:2312
 msgid "New ^Flat Package List"
 msgstr "ཐུམ་སྒྲིལ་ལེབ་ཏེམ་ཡོད་མི་ཐོ་ཡིག་གསརཔ།(^F)"
 
-#: src/ui.cc:2160
+#: src/ui.cc:2313
 msgid "View all the packages on the system in a single uncategorized list"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་ཆ་མཉམ་རིམ་ལུགས་གུར་དབྱེ་རིམ་བཟོ་སྟེ་མེད་མི་ཐོ་ཡིག་རྐྱང་པའི་ནང་སྦེ་སྟོན།"
 
-#: src/ui.cc:2163
+#: src/ui.cc:2316
 msgid "New ^Debtags Browser"
 msgstr "ཌེབ་ཊེགསི་་བརའུ་ཟར་གསརཔ།(^D)"
 
-#: src/ui.cc:2165
+#: src/ui.cc:2318
 msgid "Browse packages using Debtags data"
 msgstr "ཌེབ་ཊེགསི་གནད་སྡུད་དེ་ལག་ལེན་འཐབ་པའི་ཐོག་ལས་ཐུམ་སྒྲིལ་ཚུ་བརྡ་འཚོལ་འབད།"
 
-#: src/ui.cc:2168
+#: src/ui.cc:2321
 msgid "New Categorical ^Browser"
 msgstr "དབྱ་རིམ་གསརཔ་གི་བརའུ་ཟར།(^B)"
 
-#: src/ui.cc:2170
+#: src/ui.cc:2323
 msgid "Browse packages by category"
 msgstr "ཐུམ་སྒྲིལ་ཚུ་དབྱེ་རིམ་གིས་སྦེ་བརྡ་འཚོལ་འབད།"
 
-#: src/ui.cc:2178
+#: src/ui.cc:2331
 msgid "^About"
 msgstr "སྐོར་ལས།(^A)"
 
-#: src/ui.cc:2179
+#: src/ui.cc:2332
 msgid "View information about this program"
 msgstr "ལས་རིམ་འདི་གི་སྐོར་ལས་བརྡ་དོན་སྟོན།"
 
-#: src/ui.cc:2182
+#: src/ui.cc:2335
 msgid "^Help"
 msgstr "གྲོགས་རམ།(^H)"
 
-#: src/ui.cc:2183
+#: src/ui.cc:2336
 msgid "View the on-line help"
 msgstr "གློག་ཐོག་གྲོགས་རམ་དེ་སྟོན།"
 
-#: src/ui.cc:2185
+#: src/ui.cc:2338
 msgid "User's ^Manual"
 msgstr "ལག་ལེན་པའི་ལག་དེབ།(^M)"
 
-#: src/ui.cc:2186
+#: src/ui.cc:2339
 msgid "View the detailed program manual"
 msgstr "རྒྱས་བཤད་ལས་རིམ་གྱི་ལག་དེབ་དེ་སྟོན།"
 
-#: src/ui.cc:2189
+#: src/ui.cc:2342
 msgid "^FAQ"
 msgstr "ཨེཕ་ཨེ་ཀེཡུ།(^F)"
 
-#: src/ui.cc:2190
+#: src/ui.cc:2343
 msgid "View a list of frequently asked questions"
 msgstr "འཕྲལ་འཕྲལ་རང་་འདྲི་མི་འདྲི་བ་ཚུ་གི་ཐོ་ཡིག་ཅིག་སྟོན།"
 
-#: src/ui.cc:2193
+#: src/ui.cc:2346
 msgid "^News"
 msgstr "གནས་ཚུལ།(^N)"
 
-#: src/ui.cc:2194
+#: src/ui.cc:2347
 msgid "View the important changes made in each version of "
 msgstr "གི་ཐོན་རིམ་རེ་རེའི་ནང་ལུ་བཟོ་ཡོད་མི་གལ་གནད་ཅན་གྱི་བསྒྱུར་བཅོས་དེ་ཚུ་སྟོན།"
 
-#: src/ui.cc:2197
+#: src/ui.cc:2350
 msgid "^License"
 msgstr "ཆོག་ཐམ།(^L)"
 
-#: src/ui.cc:2198
+#: src/ui.cc:2351
 msgid "View the terms under which you may copy the program"
 msgstr "ཁྱོད་ཀྱིས་ལས་རིམ་འདྲ་བཤུས་བརྐྱབ་ཆོག་པའི་ལམ་ལུགས་དེ་སྟོན།"
 
-#: src/ui.cc:2338
+#: src/ui.cc:2491
 msgid "Actions"
 msgstr "བྱ་བ་ཚུ་སྟོན།"
 
-#: src/ui.cc:2341
+#: src/ui.cc:2494
 msgid "Resolver"
 msgstr "མོས་མཐུན་བཟོ་མི།"
 
-#: src/ui.cc:2342
+#: src/ui.cc:2495
 msgid "Search"
 msgstr "འཚོལ་ཞིབ།"
 
-#: src/ui.cc:2343
+#: src/ui.cc:2496
 msgid "Options"
 msgstr "གདམ་ཁ་ཚུ།"
 
-#: src/ui.cc:2344
+#: src/ui.cc:2497
 msgid "Views"
 msgstr "མཐོང་སྣང་།"
 
-#: src/ui.cc:2345
+#: src/ui.cc:2498
 msgid "Help"
 msgstr "གྲོགས་རམ།"
 
-#: src/ui.cc:2410
+#: src/ui.cc:2563
 #, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
@@ -5263,32 +5348,32 @@ msgstr ""
 "%ls: དཀར་ཆག  %ls: གྲོགས་རམ་  %ls: སྤང་  %ls: དུས་མཐུན་བཟོ་  %ls: ཐུམ་སྒྲིལ་ཚུ་ ཕབ་ལེན་/"
 "གཞི་བཙུགས་/རྩ་བསྐྲད་གཏང།"
 
-#: src/ui.cc:2753 src/vscreen/vscreen.cc:724
+#: src/ui.cc:2907 src/vscreen/vscreen.cc:808
 msgid "yes_key"
-msgstr "y"
+msgstr "ལྡེ་མིག་ཡོད།(_K)"
 
-#: src/ui.cc:2754 src/vscreen/vscreen.cc:725
+#: src/ui.cc:2908 src/vscreen/vscreen.cc:809
 msgid "no_key"
-msgstr "n"
+msgstr "ལྡེ་མིག་མེད།(_k)"
 
-#: src/view_changelog.cc:150
+#: src/view_changelog.cc:160
 #, c-format
 msgid "%s changes"
 msgstr "%s བསྒྱུར་བཅོས།"
 
-#: src/view_changelog.cc:151
+#: src/view_changelog.cc:161
 msgid "View the list of changes made to this Debian package."
 msgstr "ཌེ་བི་ཡན་ཐུམ་སྒྲིལ་འདི་གི་དོན་ལུ་བཟོ་ཡོད་མི་ བསྒྱུར་བཅོས་ཀྱི་ཐོ་ཡིག་དེ་སྟོན།"
 
-#: src/view_changelog.cc:215
+#: src/view_changelog.cc:225
 msgid "You can only view changelogs of official Debian packages."
 msgstr "ཁྱོད་ཀྱིས་གཞུང་འབྲེལ་གྱི་ཌེ་བི་ཡཱན་ཐུམ་སྒྲིལ་ཚུ་གི་བསྒྱུར་བཅོས་དྲན་དེབ་རྐྱངམ་ཅིག་སྟོན་ཚུགས།"
 
-#: src/view_changelog.cc:225
+#: src/view_changelog.cc:235
 msgid "Downloading Changelog"
 msgstr "བསྒྱུར་བཅོས་དྲེན་དེབ་ཕབ་ལེན་འབད་དོ།"
 
-#: src/view_changelog.cc:227
+#: src/view_changelog.cc:237
 msgid "Download Changelog"
 msgstr "བསྒྱུར་བཅོས་དྲན་དེབ་ཕབ་ལེན་འབད།"
 
@@ -5336,22 +5421,22 @@ msgstr ""
 "དགོངསམ་མ་ཁྲེལ། དཔར་བསྐྲུན་འབད་མ་བཏུབ་མི་ཡིག་འབྲུ་ཚུ་དང་གཅིག་ཁར་ཚད་འཛིན་ལེགས་བཅོས་འབད་མི་ཚུ་ལག་"
 "ལེན་འཐབ་མི་བཏུབ་འོང་།"
 
-#: src/vscreen/vscreen.cc:125
+#: src/vscreen/vscreen.cc:127
 #, c-format
 msgid "Ouch!  Got SIGTERM, dying..\n"
 msgstr "ཨའུཅི! སིག་ཊམ་ཐོབ་ཅི། ཤི་རྐྱེན་བྱུང་དོ་..\n"
 
-#: src/vscreen/vscreen.cc:128
+#: src/vscreen/vscreen.cc:130
 #, c-format
 msgid "Ouch!  Got SIGSEGV, dying..\n"
 msgstr "ཨའུཅི!སིག་སེགཝི་ཐོབ་ཅི། ཤི་རྐྱེན་བྱུང་དོ..\n"
 
-#: src/vscreen/vscreen.cc:131
+#: src/vscreen/vscreen.cc:133
 #, c-format
 msgid "Ouch!  Got SIGABRT, dying..\n"
 msgstr "ཨའུཅི! སི་བརཊི་ཐོབ་ཅི། ཤི་རྐྱེན་བྱུང་དོ..\n"
 
-#: src/vscreen/vscreen.cc:134
+#: src/vscreen/vscreen.cc:136
 #, c-format
 msgid "Ouch!  Got SIGQUIT, dying..\n"
 msgstr "ཨའུཅི! སིག་ཀེཡུཊི་ཐོབ་ཅི། ཤི་རྐྱེན་བྱུང་དོ..\n"
@@ -5365,3 +5450,6 @@ msgstr "ཡིག་སྣོད་ཀྱི་མིང་ཕབ་ལེན་
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "གནས་རིམ་དྲག་ཤོས།"
+
+#~ msgid "view an explanation of the changes in the solution"
+#~ msgstr "བསྒྱུར་བཅོས་ཚུ་གི་གསལ་བཤད་དེ་ཐབས་ཤེས་ཀྱི་ནང་ལུ་སྟོན།"
