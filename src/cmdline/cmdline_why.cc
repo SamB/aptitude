@@ -1216,6 +1216,15 @@ int cmdline_why(int argc, char *argv[],
   // the errors we find.
   bool parsing_arguments_failed = false;
 
+  const char *pkgname = argv[argc - 1];
+  bool is_removal = is_why_not;
+  pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(argv[argc - 1]);
+  if(pkg.end())
+    {
+      _error->Error(_("No package named \"%s\" exists."), pkgname);
+      parsing_arguments_failed = true;
+    }
+
   std::vector<std::string> arguments;
   for(int i = 1; i + 1 < argc; ++i)
     arguments.push_back(argv[i]);
@@ -1229,17 +1238,18 @@ int cmdline_why(int argc, char *argv[],
       if(m == NULL)
 	parsing_arguments_failed = true;
       else
-	matchers.push_back(m);
+	{
+	  matchers.push_back(m);
+	  if(m->matches(pkg, pkg.CurrentVer()))
+	    {
+	      printf(_("The package \"%s\" is manually installed.\n"),
+		     pkg.Name());
+	      delete m;
+	      return 0;
+	    }
+	}
     }
 
-  const char *pkgname = argv[argc - 1];
-  bool is_removal = is_why_not;
-  pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(argv[argc - 1]);
-  if(pkg.end())
-    {
-      _error->Error(_("No package named \"%s\" exists."), pkgname);
-      parsing_arguments_failed = true;
-    }
 
 
   _error->DumpErrors();
