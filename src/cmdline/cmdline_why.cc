@@ -896,11 +896,15 @@ namespace
   };
 }
 
-int do_why(const std::vector<pkg_matcher *> &leaves,
-	   const pkgCache::PkgIterator &root,
-	   int verbosity,
-	   bool root_is_removal)
+fragment *do_why(const std::vector<pkg_matcher *> &leaves,
+		 const pkgCache::PkgIterator &root,
+		 int verbosity,
+		 bool root_is_removal,
+		 bool &success)
 {
+  std::vector<fragment *> rval;
+  success = true;
+
   std::vector<search_params> searches;
 
   // The priority of searches goes like this:
@@ -1019,8 +1023,8 @@ int do_why(const std::vector<pkg_matcher *> &leaves,
 	    std::cout << std::endl;
 
 	  if(results.empty())
-	    std::cout << ssprintf(_("The package \"%s\" is a starting point of the search.\n"),
-				  root.Name());
+	    return fragf(_("The package \"%s\" is a starting point of the search.\n"),
+			 root.Name());
 	  else
 	    {
 	      std::vector<fragment *> col1_entries, col2_entries, col3_entries;
@@ -1060,29 +1064,126 @@ int do_why(const std::vector<pkg_matcher *> &leaves,
 						      0,
 						      fragment_column_entry::top,
 						      col3_contents));
-	      std::auto_ptr<fragment>
-		solution_fragment(fragment_columns(columns));
-	      update_screen_width();
-	      std::cout << solution_fragment->layout(screen_width,
-						     screen_width,
-						     style());
+	      fragment *solution_fragment(fragment_columns(columns));
 
 	      if(verbosity < 1)
-		return 0;
+		return solution_fragment;
+	      else
+		rval.push_back(solution_fragment);
 	    }
 	}
     }
 
   if(first)
     {
+      success = false;
+
       if(root_is_removal)
-	std::cout << ssprintf(_("No justification for removing %s could be constructed.\n"), root.Name());
+	return fragf(_("No justification for removing %s could be constructed.\n"), root.Name());
       else
-	std::cout << ssprintf(_("No justification for %s could be constructed.\n"), root.Name());
-      return 1;
+	return fragf(_("No justification for %s could be constructed.\n"), root.Name());
     }
   else
-    return 0;
+    return sequence_fragment(rval);
+}
+
+int do_why(const std::vector<pkg_matcher *> &leaves,
+	   const pkgCache::PkgIterator &root,
+	   int verbosity,
+	   bool root_is_removal)
+{
+  bool success = false;
+  std::auto_ptr<fragment> f(do_why(leaves, root, verbosity, root_is_removal,
+				   success));
+  update_screen_width();
+  // TODO: display each result as we find it.
+  std::cout << f->layout(screen_width, screen_width, style());
+
+  return success ? 0 : 1;
+}
+
+fragment *do_why(const std::vector<pkg_matcher *> &leaves,
+		 const pkgCache::PkgIterator &root,
+		 bool find_all,
+		 bool root_is_removal,
+		 bool &success)
+{
+  const int verbosity = find_all ? 1 : 0;
+  return do_why(leaves, root, verbosity, root_is_removal, success);
+}
+
+bool interpret_why_args(const std::vector<std::string> &args,
+			std::vector<pkg_matcher *> &output)
+{
+  bool parsing_arguments_failed = false;
+
+  for(std::vector<std::string>::const_iterator it = args.begin();
+      it != args.end(); ++it)
+    {
+      // If there isn't a tilde, treat it as an exact package name.
+      pkg_matcher *m = NULL;
+      if(it->find('~') == std::string::npos)
+	{
+	  pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*it);
+	  if(pkg.end())
+	    _error->Error(_("No package named \"%s\" exists."), it->c_str());
+	  else
+	    m = new const_matcher(pkg);
+	}
+      else
+	m = parse_pattern(*it);
+
+      if(m == NULL)
+	parsing_arguments_failed = true;
+      else
+	output.push_back(m);
+    }
+
+  return !parsing_arguments_failed;
+}
+
+fragment *do_why(const std::vector<std::string> &arguments,
+		 const std::string &root,
+		 int verbosity,
+		 bool root_is_removal,
+		 bool &success)
+{
+  success = false;
+
+  pkgCache::PkgIterator pkg((*apt_cache_file)->FindPkg(root.c_str()));
+  if(pkg.end())
+    return fragf(_("No package named \"%s\" exists."), root.c_str());
+
+  std::vector<pkg_matcher *> matchers;
+  for(std::vector<std::string>::const_iterator it = arguments.begin();
+      it != arguments.end(); ++it)
+    {
+      pkg_matcher *m = parse_pattern(*it);
+      if(m == NULL)
+	{
+	  for(std::vector<pkg_matcher *>::const_iterator it2 = matchers.begin();
+	      it2 != matchers.end(); ++it2)
+	    delete *it2;
+	  return fragf(_("Unable to parse the pattern \"%s\"."));
+	}
+      else
+	matchers.push_back(m);
+    }
+
+  fragment *rval = do_why(matchers, pkg, verbosity, root_is_removal, success);
+  for(std::vector<pkg_matcher *>::const_iterator it = matchers.begin();
+      it != matchers.end(); ++it)
+    delete *it;
+  return rval;
+}
+
+fragment *do_why(const std::vector<std::string> &leaves,
+		 const std::string &root,
+		 bool find_all,
+		 bool root_is_removal,
+		 bool &success)
+{
+  return do_why(leaves, root, find_all ? 1 : 0, root_is_removal, success);
 }
 
 int cmdline_why(int argc, char *argv[],
@@ -1115,27 +1216,12 @@ int cmdline_why(int argc, char *argv[],
   // the errors we find.
   bool parsing_arguments_failed = false;
 
-  std::vector<pkg_matcher *> matchers;
+  std::vector<std::string> arguments;
   for(int i = 1; i + 1 < argc; ++i)
-    {
-      // If there isn't a tilde, treat it as an exact package name.
-      pkg_matcher *m = NULL;
-      if(strchr(argv[i], '~') == NULL)
-	{
-	  pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(argv[i]);
-	  if(pkg.end())
-	    _error->Error(_("No package named \"%s\" exists."), argv[i]);
-	  else
-	    m = new const_matcher(pkg);
-	}
-      else
-	m = parse_pattern(argv[i]);
-
-      if(m == NULL)
-	parsing_arguments_failed = true;
-      else
-	matchers.push_back(m);
-    }
+    arguments.push_back(argv[i]);
+  std::vector<pkg_matcher *> matchers;
+  if(!interpret_why_args(arguments, matchers))
+    parsing_arguments_failed = true;
 
   if(matchers.empty())
     {

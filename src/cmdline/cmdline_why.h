@@ -20,6 +20,9 @@
 #ifndef CMDLINE_WHY_H
 #define CMDLINE_WHY_H
 
+#include <vector>
+#include <apt-pkg/pkgcache.h>
+
 /** \brief Explain why a package is installed or conflicted against.
  *
  *  aptitude why A1 [A2 ...] B
@@ -45,5 +48,24 @@
 int cmdline_why(int argc, char *argv[],
 		const char *status_fname, int verbosity,
 		bool why_not);
+
+
+// Direct access to the "why" algorithm.
+class fragment;
+class pkg_matcher;
+
+fragment *do_why(const std::vector<pkg_matcher *> &leaves,
+		 const pkgCache::PkgIterator &root,
+		 bool find_all,
+		 bool root_is_removal,
+		 bool &success);
+
+// Parses the leaves as if they were command-line arguments.
+fragment *do_why(const std::vector<std::string> &arguments,
+		 const std::string &root,
+		 bool find_all,
+		 bool root_is_removal,
+		 bool &success);
+
 
 #endif
