@@ -1240,7 +1240,7 @@ int cmdline_why(int argc, char *argv[],
       else
 	{
 	  matchers.push_back(m);
-	  if(m->matches(pkg, pkg.CurrentVer()))
+	  if(!pkg.end() && m->matches(pkg, pkg.CurrentVer()))
 	    {
 	      printf(_("The package \"%s\" is manually installed.\n"),
 		     pkg.Name());
