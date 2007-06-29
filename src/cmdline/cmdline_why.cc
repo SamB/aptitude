@@ -1254,8 +1254,14 @@ int cmdline_why(int argc, char *argv[],
 
   _error->DumpErrors();
 
+  int rval;
   if(parsing_arguments_failed)
-    return -1;
+    rval = -1;
   else
-    return do_why(matchers, pkg, verbosity, is_removal);
+    rval = do_why(matchers, pkg, verbosity, is_removal);
+
+  for(std::vector<pkg_matcher *>::const_iterator it = matchers.begin();
+      it != matchers.end(); ++it)
+    delete *it;
+  return rval;
 }
