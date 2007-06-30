@@ -1155,19 +1155,12 @@ fragment *do_why(const std::vector<std::string> &arguments,
     return fragf(_("No package named \"%s\" exists."), root.c_str());
 
   std::vector<pkg_matcher *> matchers;
-  for(std::vector<std::string>::const_iterator it = arguments.begin();
-      it != arguments.end(); ++it)
+  if(!interpret_why_args(arguments, matchers))
     {
-      pkg_matcher *m = parse_pattern(*it);
-      if(m == NULL)
-	{
-	  for(std::vector<pkg_matcher *>::const_iterator it2 = matchers.begin();
-	      it2 != matchers.end(); ++it2)
-	    delete *it2;
-	  return fragf(_("Unable to parse the pattern \"%s\"."));
-	}
-      else
-	matchers.push_back(m);
+      for(std::vector<pkg_matcher *>::const_iterator it = matchers.begin();
+	  it != matchers.end(); ++it)
+	delete *it;
+      return text_fragment(_("Unable to parse some match patterns."));
     }
 
   fragment *rval = do_why(matchers, pkg, verbosity, root_is_removal, success);
