@@ -17,6 +17,8 @@
 #include <generic/apt/download_signal_log.h>
 #include <generic/apt/infer_reason.h>
 
+#include <generic/util/util.h>
+
 #include <vscreen/fragment.h>
 #include <vscreen/vscreen.h>
 #include <vscreen/transcode.h>
@@ -599,29 +601,16 @@ static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 static void cmdline_parse_show(string response,
 			       int verbose)
 {
-  bool one_shown=false;
   // assume response[0]=='i'
-  string::size_type i=1;
+  std::vector<std::string> packages;
+  splitws(response, packages, 1, response.size());
 
-  while(i<response.size())
-    {
-      while(i<response.size() && isspace(response[i]))
-	++i;
-
-      string pkgname;
-      // Could support quoting, etc?
-      while(i<response.size() && !isspace(response[i]))
-	pkgname+=response[i++];
-
-      if(!pkgname.empty())
-	{
-	  one_shown=true;
-	  do_cmdline_show(pkgname, verbose);
-	}
-    }
-
-  if(!one_shown)
+  if(packages.empty())
     printf(_("No packages to show -- enter the package names on the line after 'i'.\n"));
+  else
+    for(std::vector<std::string>::const_iterator it = packages.begin();
+	it != packages.end(); ++it)
+      do_cmdline_show(*it, verbose);
 
   prompt_string(_("Press Return to continue."));
 }
@@ -629,24 +618,9 @@ static void cmdline_parse_show(string response,
 // Erm.  Merge w/ above?
 static void cmdline_parse_changelog(string response)
 {
-  // assume response[0]=='i'
-  string::size_type i=1;
-
   vector<string> packages;
-
-  while(i<response.size())
-    {
-      while(i<response.size() && isspace(response[i]))
-	++i;
-
-      string pkgname;
-      // Could support quoting, etc?
-      while(i<response.size() && !isspace(response[i]))
-	pkgname+=response[i++];
-
-      if(!pkgname.empty())
-	packages.push_back(pkgname);
-    }
+  // assume response[0]=='c'
+  splitws(response, packages, 1, response.size());
 
   if(packages.empty())
     printf(_("No packages found -- enter the package names on the line after 'c'.\n"));
