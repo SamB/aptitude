@@ -9,6 +9,7 @@
 #include "cmdline_resolver.h"
 #include "cmdline_show.h"
 #include "cmdline_util.h"
+#include "cmdline_why.h"
 
 #include <ui.h>
 
@@ -630,6 +631,27 @@ static void cmdline_parse_changelog(string response)
   prompt_string(_("Press Return to continue"));
 }
 
+static void cmdline_parse_why(string response)
+{
+  vector<string> arguments;
+  // assume response[0]=='w'
+  splitws(response, arguments, 1, response.size());
+
+  if(arguments.empty())
+    printf(_("No packages found -- enter zero or more roots of the search followed by the package to justify."));
+  else
+    {
+      bool success;
+      string root = arguments.back();
+      arguments.pop_back();
+      std::auto_ptr<fragment> frag(do_why(arguments, root, false, false, success));
+      update_screen_width();
+      if(frag.get() != NULL)
+	std::cout << frag->layout(screen_width, screen_width, style());
+      _error->DumpErrors();
+    }
+}
+
 static inline fragment *flowindentbox(int i1, int irest, fragment *f)
 {
   return indentbox(i1, irest, flowbox(f));
@@ -645,10 +667,12 @@ static void prompt_help(ostream &out)
 				"d: %F"
 				"s: %F"
 				"v: %F"
+				"w: %F"
 				"e: %F"
 				"%n"
 				"%F"
 				"%n"
+				"%F"
 				"%F"
 				"%F"
 				"%F"
@@ -671,6 +695,8 @@ static void prompt_help(ostream &out)
 					    fragf(_("toggle the display of changes in package sizes"))),
 			      flowindentbox(0, 3,
 					    fragf(_("toggle the display of version numbers"))),
+			      flowindentbox(0, 3,
+					    fragf(_("try to find a reason for installing a single package, or explain why installing one package should lead to installing another package."))),
 			      flowindentbox(0, 3,
 					    fragf(_("enter the full visual interface"))),
 			      flowbox(fragf(_("You may also specify modification to the actions which will be taken.  To do so, type an action character followed by one or more package names (or patterns).  The action will be applied to all the packages that you list.  The following actions are available:"))),
@@ -798,6 +824,9 @@ bool cmdline_do_prompt(bool as_upgrade,
 		  break;
 		case 'C':
 		  cmdline_parse_changelog(response);
+		  break;
+		case 'W': // should be 'Y' but that's for "yes"
+		  cmdline_parse_why(response);
 		  break;
 		case '+':
 		case '-':
