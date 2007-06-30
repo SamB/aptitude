@@ -48,6 +48,28 @@ void stripws(string &s)
     s.assign(s, start, end-start);
 }
 
+void splitws(const string &s, vector<string> &output, int start, int length)
+{
+  while(start < length)
+    {
+      while(start < length && isspace(s[start]))
+	++start;
+
+      string tmp;
+      // Could support quoting, etc?
+      while(start < length && !isspace(s[start]))
+	tmp += s[start++];
+
+      if(!tmp.empty())
+	output.push_back(tmp);
+    }
+}
+
+void splitws(const string &s, vector<string> &output)
+{
+  return splitws(s, output, 0, s.size());
+}
+
 string ssprintf(const char *format, ...)
 {
   va_list ap;

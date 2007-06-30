@@ -1,6 +1,6 @@
 // Random utility functions that have nothing to do with apt. -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -22,11 +22,31 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 struct tm;
 
 // Strip whitespace from the beginning and end of a string.
 void stripws(std::string &s);
+
+/** \brief Split the given string into words, pushing the words in
+ *  order onto the end of the given vector.
+ *
+ *  \param s the string to split
+ *  \param output the output vector onto which to push the words of s.
+ *  \param start the first index in s at which to split
+ *  \param length the number of characters in s to split
+ */
+void splitws(const std::string &s, std::vector<std::string> &output,
+	     int start, int length);
+
+/** \brief Split the given string into words, pushing the words in
+ *  order onto the end of the given vector.
+ *
+ *  \param s the string to split
+ *  \param output the output vector onto which to push the words of s.
+ */
+void splitws(const std::string &s, std::vector<std::string> &output);
 
 // Printf for std::string.
 #ifdef __GNUG__
