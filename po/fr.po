@@ -1,5 +1,5 @@
-# translation of fr-new.po to French
 # French translation of aptitude messages
+# This file is licensed under the same license as the aptitude software
 # Copyright (C) 2001, 2004, 2005, 2006 Free Software Foundation, Inc.
 #
 # Martin Quinson <mquinson@ens-lyon.fr>, 2001.
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-07-03 07:04-0700\n"
-"PO-Revision-Date: 2007-05-21 14:11+0200\n"
+"PO-Revision-Date: 2007-06-30 12:37+0200\n"
 "Last-Translator: Jean-Luc Coulon <jean-luc.coulon@wanadoo.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -414,7 +414,7 @@ msgstr "Impossible de trouver le journal des modifications (changelog) pour %s"
 #: src/cmdline/cmdline_clean.cc:29
 #, c-format
 msgid "E: The clean command takes no arguments\n"
-msgstr "E : la commande « clean » ne prend pas de paramètre\n"
+msgstr "E : la commande « clean » ne prend pas de paramètre\n"
 
 #: src/cmdline/cmdline_clean.cc:58
 #, c-format
@@ -429,7 +429,7 @@ msgstr "Eff %s %s [%so]\n"
 #: src/cmdline/cmdline_clean.cc:111
 #, c-format
 msgid "E: The autoclean command takes no arguments\n"
-msgstr "E : la commande « autoclean » ne prend pas de paramètre\n"
+msgstr "E : la commande « autoclean » ne prend pas de paramètre\n"
 
 #: src/cmdline/cmdline_clean.cc:148
 #, c-format
@@ -483,7 +483,7 @@ msgstr ""
 #: src/cmdline/cmdline_forget_new.cc:25
 #, c-format
 msgid "E: The forget-new command takes no arguments\n"
-msgstr "E : la commande « forget-new » ne prend pas de paramètre\n"
+msgstr "E : la commande « forget-new » ne prend pas de paramètre\n"
 
 #: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
@@ -614,9 +614,8 @@ msgid "The following packages will be upgraded:"
 msgstr "Les paquets suivants seront mis à jour : "
 
 #: src/cmdline/cmdline_prompt.cc:279
-#, fuzzy
 msgid "The following partially installed packages will be configured:"
-msgstr "Les paquets suivants seront mis à jour : "
+msgstr "Les paquets partiellement installés suivants seront configurés : "
 
 #: src/cmdline/cmdline_prompt.cc:334
 #, c-format
@@ -673,7 +672,7 @@ msgid ""
 "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 msgstr ""
 "*** ATTENTION *** violations de ces clauses de confiance ignorées parce que\n"
-"                  %s::CmdLine::Ignore-Trust-Violations a la valeur « true »\n"
+"                  %s::CmdLine::Ignore-Trust-Violations a la valeur « true ».\n"
 
 #: src/cmdline/cmdline_prompt.cc:421
 msgid ""
@@ -681,7 +680,7 @@ msgid ""
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
 "*** ATTENTION *** violations de ces clauses de confiance ignorées parce que\n"
-"                  Apt::Get::AllowUnauthenticated a la valeur « true » !\n"
+"                  Apt::Get::AllowUnauthenticated a la valeur « true ».\n"
 
 #: src/cmdline/cmdline_prompt.cc:427 src/vscreen/vs_util.cc:194
 #: src/vscreen/vs_util.cc:232
@@ -1187,7 +1186,7 @@ msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
-"*** ERREUR : la recherche a été interrompue par une exception fatale.\n"
+"*** ERREUR : la recherche a été interrompue par une exception fatale.\n"
 "             Vous pouvez poursuivre la recherche mais certaines solutions\n"
 "             seront inaccessibles."
 
@@ -1737,7 +1736,7 @@ msgstr ""
 #: src/generic/apt/download_install_manager.cc:123
 #, c-format
 msgid "Failed to fetch %s: %s"
-msgstr "impossible de récupérer %s : %s"
+msgstr "impossible de récupérer %s : %s"
 
 #: src/generic/apt/download_install_manager.cc:129
 msgid "Unable to correct for unavailable packages"
@@ -3940,15 +3939,14 @@ msgstr ""
 " Ces paquets vont être mis à jour vers une nouvelle version"
 
 #: src/pkg_grouppolicy.cc:544
-#, fuzzy
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
 "made to complete their installation."
 msgstr ""
-"Paquets ajoutés automatiquement pour satisfaire des dépendances\n"
-" Ces paquets ont été installés parce qu'ils sont nécessaires à un nouveau "
-"paquet dont vous avez demandé l'installation."
+"Paquets partiellement installés\n"
+" Ces paquets ne sont pas complètement installés et configurés ; une tentative "
+"pour terminer leur installation sera faite."
 
 #: src/pkg_grouppolicy.cc:659
 msgid "unknown"
@@ -4330,9 +4328,9 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b sera mis à jour de la version %B%s%b vers la version %B%s%b."
 
 #: src/reason_fragment.cc:443
-#, fuzzy
 msgid "%B%s%b is only partly installed; its installation will be completed."
-msgstr "%s n'est pas actuellement installé, il ne sera donc pas réinstallé.\n"
+msgstr ""
+"%B%s%b n'est que partiellement installé ; son installation sera terminée."
 
 #: src/reason_fragment.cc:475
 msgid ""
@@ -4672,11 +4670,14 @@ msgstr "Vous êtes déjà administrateur."
 #: src/ui.cc:422
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
 msgstr ""
+"Commande « Get-Root » non valable ; elle doit commencer par su: ou sudo:"
 
 #: src/ui.cc:429
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr ""
+"Commande « Get-Root » non valable ; elle doit commencer par su: ou sudo: et "
+"non par %s:"
 
 #: src/ui.cc:552
 msgid ""
