@@ -1259,6 +1259,9 @@ void aptitudeDepCache::duplicate_cache(apt_state_snapshot *target)
 
 void aptitudeDepCache::sweep()
 {
+  if(!aptcfg->FindB(PACKAGE "::Delete-Unused", true))
+    return;
+
   // Suppress intermediate removals.
   //
   // \todo this may cause problems if we do undo tracking via ActionGroups.
