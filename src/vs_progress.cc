@@ -72,7 +72,13 @@ bool vs_progress::get_cursorvisible()
 
 point vs_progress::get_cursorloc()
 {
-  return point(int(convertPercent(Percent) * getmaxx() / 100.0), 0);
+  double xd = (Percent * getmaxx()) / 100.0;
+  int x     = static_cast<int>(xd);
+  int maxx  = getmaxx();
+
+  x = std::min(x, maxx);
+  x = std::max(x, 0);
+  return point(x, 0);
 }
 
 void vs_progress::Update()
