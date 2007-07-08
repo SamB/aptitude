@@ -758,6 +758,15 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
   // selected_state if it's not already updated; (b) adds an item to the
   // undo group.
 {
+  // We get here with NULL backup_state in certain very early failures
+  // (e.g., when someone else is holding a lock).  In this case we
+  // don't know what the previous state was, so we can't possibly
+  // build a collection of undoers to return to it.
+  if(backup_state.PkgState == NULL ||
+     backup_state.DepState == NULL ||
+     backup_state.AptitudeState == NULL)
+    return;
+
   for(pkgCache::PkgIterator pkg=PkgBegin(); !pkg.end(); pkg++)
     {
       if(PkgState[pkg->ID].Mode!=backup_state.PkgState[pkg->ID].Mode ||
