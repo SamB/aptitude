@@ -1,0 +1,43 @@
+#!/bin/bash
+
+HELP=0
+PRINT_INPUTS=0
+
+DONE=0
+while [ $DONE = 0 ]
+do
+  case "$1" in
+      --print-inputs )
+	  PRINT_INPUTS=1
+	  shift
+	  ;;
+      --help )
+	  HELP=1
+	  shift
+	  ;;
+      * )
+	  DONE=1
+	  ;;
+  esac
+done
+
+if [ "$#" -ne 1 ] || [ $HELP = 1 ]
+then
+    echo "Usage: $0 [options ... ] <output-file>"
+    echo
+    echo "This script will collect the copious information needed to"
+    echo "reproduce an aptitude bug, storing it in the given output file."
+    echo
+    echo "Options:"
+    echo "  --help            Print this message, then exit."
+    echo "  --print-inputs    Display the list of files and directories"
+    echo "                    that would be included in the bundle, then exit."
+
+    exit 1
+fi
+
+
+
+OUTFILE="$1"
+
+(cd / && tar c ./$HOME/.aptitude ./var/lib/aptitude ./var/lib/apt ./var/cache/apt/*.bin ./etc/apt ./var/lib/dpkg/status) | gzip -c > "$OUTFILE"
