@@ -28,6 +28,22 @@ The output of this program can be used as an argument to
 \fBaptitude-run-state-bundle\fR(1).
 .SH "OPTIONS"
 .PP
+\fB--force-bzip2\fR
+.RS
+Override the autodetection of which compression algorithm to use.  By
+default, \fBaptitude-create-state-bundle\fR uses \fBbzip2\fR(1) if it
+is available, and \fBgzip\fR(1) otherwise.  Passing this option forces
+the use of \fRbzip2\fR even if it doesn't appear to be available.
+.RE
+.PP
+\fB--force-gzip\fR
+.RS
+Override the autodetection of which compression algorithm to use.  By
+default, \fBaptitude-create-state-bundle\fR uses \fBbzip2\fR(1) if it
+is available, and \fBgzip\fR(1) otherwise.  Passing this option forces
+the use of \fRgzip\fR even if \fRbzip2\fR is available.
+.RE
+.PP
 \fB--help\fR
 .RS
 Print a brief usage message, then exit.

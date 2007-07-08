@@ -2,17 +2,29 @@
 
 HELP=0
 PRINT_INPUTS=0
+FORCE_GZIP=0
+FORCE_BZIP2=0
 
 DONE=0
 while [ $DONE = 0 ]
 do
   case "$1" in
-      --print-inputs )
-	  PRINT_INPUTS=1
+      --force-gzip )
+	  FORCE_GZIP=1
+	  FORCE_BZIP2=0
+	  shift
+	  ;;
+      --force-bzip2 )
+	  FORCE_GZIP=0
+	  FORCE_BZIP2=1
 	  shift
 	  ;;
       --help )
 	  HELP=1
+	  shift
+	  ;;
+      --print-inputs )
+	  PRINT_INPUTS=1
 	  shift
 	  ;;
       * )
@@ -31,6 +43,11 @@ then
     echo "reproduce an aptitude bug, storing it in the given output file."
     echo
     echo "Options:"
+    echo "  --force-bzip2     Override autodetection of the comrpession"
+    echo "                    format: use bzip2 even if it appears to be"
+    echo "                    unavailable."
+    echo "  --force-gzip      Override autodetection of the compression"
+    echo "                    format: use gzip even if bzip2 is available."
     echo "  --help            Print this message, then exit."
     echo "  --print-inputs    Display the list of files and directories"
     echo "                    that would be included in the bundle, then exit."
@@ -62,7 +79,7 @@ done
 
 OUTFILE="$1"
 
-if which bzip2 2> /dev/null > /dev/null
+if [ $FORCE_BZIP2 = 1 ] || ([ $FORCE_GZIP = 0 ] && which bzip2 2> /dev/null > /dev/null)
 then
     COMPRESSOR=bzip2
 else
