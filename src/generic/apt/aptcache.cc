@@ -236,6 +236,12 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
   if(!pkgDepCache::Init(&Prog))
     return false;
 
+  // This is necessary so that the Garbage flags are initialized.
+  // Some of the Mark* methods perturb the Auto flag in largely
+  // uncontrollable ways, and one defense against this is to get
+  // Garbage set up (they behave more the way they ought to then).
+  MarkAndSweep();
+
   string statedir=aptcfg->FindDir("Dir::Aptitude::state", STATEDIR);
   // Should this not go under Dir:: ?  I'm not sure..
   delete package_states;
