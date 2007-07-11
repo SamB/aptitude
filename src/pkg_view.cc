@@ -1,6 +1,6 @@
 // pkg_view.cc
 //
-//  Copyright 2000-2005 Daniel Burrows
+//  Copyright 2000-2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -160,7 +160,6 @@ static void do_set_column_format(string key, string the_default,
 
 class pkg_description_widget:public vs_text_layout
 {
-  int start_line;
 protected:
   pkg_description_widget()
   {
