@@ -8,9 +8,12 @@ DOCDIRS=@DOCDIRS@
 
 SUBDIRS=$(SRCDIRS) $(DOCDIRS) m4 po tests
 
+bin_SCRIPTS = aptitude-create-state-bundle aptitude-run-state-bundle
+MANPAGES = aptitude-create-state-bundle.1 aptitude-run-state-bundle.1
+
 MANPAGE_LOCALES=gl it pl
 
-TLMANPAGES = $(wildcard aptitude.??.8)
+TLMANPAGES = $(wildcard aptitude.??.8) $(wildcard aptitude-create-state-bundle.??.1) $(wildcard aptitude-run-state-bundle.??.1)
 TLHELPTXTS = help.txt $(wildcard help-??.txt) $(wildcard help-??_??.txt)
 EXTRA_DIST = config.rpath  ChangeLog.SVN Doxyfile.in FAQ README.i18n README.SMART-POINTERS README.THREADS README.VSCREEN aptitude-hackers-guide.txt aclocal.m4 \
 	function_groups function_pkgs aptitude-defaults \

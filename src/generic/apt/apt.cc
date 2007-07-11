@@ -289,6 +289,9 @@ void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
 
   bool simulate = aptcfg->FindB(PACKAGE "::Simulate", false);
 
+  // Clear the error stack so that we don't get confused by old errors.
+  consume_errors();
+
   bool open_failed=!new_file->Open(*progress_bar, do_initselections,
 				   (getuid() == 0) && !simulate,
 				   status_fname)

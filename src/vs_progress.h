@@ -1,6 +1,6 @@
 // vs_progress.h   -*-c++-*-
 //
-//  Copyright 2000, 2004-2005 Daniel Burrows
+//  Copyright 2000, 2004-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by

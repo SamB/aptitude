@@ -236,6 +236,12 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
   if(!pkgDepCache::Init(&Prog))
     return false;
 
+  // This is necessary so that the Garbage flags are initialized.
+  // Some of the Mark* methods perturb the Auto flag in largely
+  // uncontrollable ways, and one defense against this is to get
+  // Garbage set up (they behave more the way they ought to then).
+  MarkAndSweep();
+
   string statedir=aptcfg->FindDir("Dir::Aptitude::state", STATEDIR);
   // Should this not go under Dir:: ?  I'm not sure..
   delete package_states;
@@ -758,6 +764,15 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
   // selected_state if it's not already updated; (b) adds an item to the
   // undo group.
 {
+  // We get here with NULL backup_state in certain very early failures
+  // (e.g., when someone else is holding a lock).  In this case we
+  // don't know what the previous state was, so we can't possibly
+  // build a collection of undoers to return to it.
+  if(backup_state.PkgState == NULL ||
+     backup_state.DepState == NULL ||
+     backup_state.AptitudeState == NULL)
+    return;
+
   for(pkgCache::PkgIterator pkg=PkgBegin(); !pkg.end(); pkg++)
     {
       if(PkgState[pkg->ID].Mode!=backup_state.PkgState[pkg->ID].Mode ||
@@ -1259,6 +1274,9 @@ void aptitudeDepCache::duplicate_cache(apt_state_snapshot *target)
 
 void aptitudeDepCache::sweep()
 {
+  if(!aptcfg->FindB(PACKAGE "::Delete-Unused", true))
+    return;
+
   // Suppress intermediate removals.
   //
   // \todo this may cause problems if we do undo tracking via ActionGroups.
