@@ -29,6 +29,8 @@
 #include "trust.h"
 #include "ui.h"
 
+#include <cmdline/cmdline_why.h>
+
 #include <vscreen/fragment.h>
 #include <vscreen/vs_label.h>
 #include <vscreen/vs_multiplex.h>
@@ -41,6 +43,7 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
+#include <generic/apt/matchers.h>
 
 #include <apt-pkg/error.h>
 #include <apt-pkg/pkgrecords.h>
@@ -158,6 +161,54 @@ static void do_set_column_format(string key, string the_default,
     l->set_columns(columns);
 }
 
+class pkg_why_widget:public vs_text_layout
+{
+protected:
+  pkg_why_widget()
+  {
+  }
+public:
+  static ref_ptr<pkg_why_widget> create()
+  {
+    ref_ptr<pkg_why_widget> rval(new pkg_why_widget);
+    rval->decref();
+    return rval;
+  }
+
+  void set_package(const pkgCache::PkgIterator &pkg,
+		   const pkgCache::VerIterator &ver)
+  {
+    if(pkg.end())
+      {
+	set_fragment(text_fragment(""));
+	return;
+      }
+
+    std::vector<pkg_matcher *> search_leaves;
+    search_leaves.push_back(parse_pattern("~i!~M"));
+    try
+      {
+	bool success = false;
+	set_fragment(do_why(search_leaves,
+			    pkg,
+			    false,
+			    false,
+			    success));
+      }
+    catch(...)
+      {
+	for(std::vector<pkg_matcher *>::const_iterator it
+	      = search_leaves.begin(); it != search_leaves.end(); ++it)
+	  delete *it;
+      }
+
+    for(std::vector<pkg_matcher *>::const_iterator it
+	  = search_leaves.begin(); it != search_leaves.end(); ++it)
+      delete *it;
+  }
+};
+typedef ref_ptr<pkg_why_widget> pkg_why_widget_ref;
+
 class pkg_description_widget:public vs_text_layout
 {
 protected:
@@ -218,6 +269,10 @@ class info_area_multiplex:public vs_multiplex
   vs_hier_editor_ref editor;
   pkg_description_widget_ref description;
   vs_table_ref description_table;
+
+  pkg_why_widget_ref why;
+  vs_table_ref why_table;
+
   vs_text_layout_ref reasons;
   vs_table_ref reasons_table;
 
@@ -236,11 +291,14 @@ protected:
   info_area_multiplex(const vs_hier_editor_ref &_editor,
 		      const pkg_description_widget_ref &_description,
 		      const vs_table_ref &_description_table,
+		      const pkg_why_widget_ref &_why,
+		      const vs_table_ref &_why_table,
 		      const vs_text_layout_ref &_reasons,
 		      const vs_table_ref &_reasons_table)
     :vs_multiplex(false),
      editor(_editor),
      description(_description), description_table(_description_table),
+     why(_why), why_table(_why_table),
      reasons(_reasons), reasons_table(_reasons_table),
      hadBreakage(false), autoswitch(NULL)
   {
@@ -253,12 +311,14 @@ public:
   create(const vs_hier_editor_ref &editor,
 	 const pkg_description_widget_ref &description,
 	 const vs_table_ref &description_table,
+	 const pkg_why_widget_ref &why,
+	 const vs_table_ref &why_table,
 	 const vs_text_layout_ref &reasons,
 	 const vs_table_ref &reasons_table)
   {
     ref_ptr<info_area_multiplex>
       rval(new info_area_multiplex(editor, description, description_table,
-				   reasons, reasons_table));
+				   why, why_table, reasons, reasons_table));
     rval->decref();
     return rval;
   }
@@ -271,6 +331,8 @@ public:
 
     if(w==description_table)
       description->line_up();
+    else if(w == why_table)
+      why->line_up();
     else if(w==reasons_table)
       reasons->line_up();
   }
@@ -283,6 +345,8 @@ public:
 
     if(w==description_table)
       description->line_down();
+    else if(w == why_table)
+      why->line_down();
     else if(w==reasons_table)
       reasons->line_down();
   }
@@ -297,6 +361,7 @@ public:
     description->set_package(pkg, ver);
     reasons->set_fragment(reason_fragment(pkg, hasBreakage));
     editor->set_package(pkg, ver);
+    why->set_package(pkg, ver);
 
     // autoswitch if a package is newly broken, or if we have just
     // moved to a broken package.
@@ -431,24 +496,32 @@ vs_widget_ref make_package_view(list<package_view_item> &format,
 	  {
 	    vs_hier_editor_ref e=vs_hier_editor::create();
 	    pkg_description_widget_ref w=pkg_description_widget::create();
+	    pkg_why_widget_ref why = pkg_why_widget::create();
 	    vs_text_layout_ref l=vs_text_layout::create();
 
 	    vs_table_ref wt=vs_table::create();
 	    vs_table_ref lt=vs_table::create();
+	    vs_table_ref why_table = vs_table::create();
 	    info_area_multiplex_ref m=info_area_multiplex::create(e,
 								  w, wt,
+								  why, why_table,
 								  l, lt);
 	    vs_scrollbar_ref ws=vs_scrollbar::create(vs_scrollbar::VERTICAL);
 	    vs_scrollbar_ref ls=vs_scrollbar::create(vs_scrollbar::VERTICAL);
+	    vs_scrollbar_ref why_scrollbar = vs_scrollbar::create(vs_scrollbar::VERTICAL);
 
 	    w->location_changed.connect(sigc::mem_fun(*ws.unsafe_get_ref(), &vs_scrollbar::set_slider));
 	    l->location_changed.connect(sigc::mem_fun(*ls.unsafe_get_ref(), &vs_scrollbar::set_slider));
+	    why->location_changed.connect(sigc::mem_fun(*why_scrollbar.unsafe_get_ref(), &vs_scrollbar::set_slider));
 
 	    wt->add_widget_opts(w, 0, 0, 1, 1, vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK, vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
 	    wt->add_widget_opts(ws, 0, 1, 1, 1, vs_table::ALIGN_RIGHT, vs_table::ALIGN_CENTER | vs_table::FILL);
 
 	    lt->add_widget_opts(l, 0, 0, 1, 1, vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK, vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
 	    lt->add_widget_opts(ls, 0, 1, 1, 1, vs_table::ALIGN_RIGHT, vs_table::EXPAND | vs_table::ALIGN_CENTER | vs_table::FILL);
+
+	    why_table->add_widget_opts(why, 0, 0, 1, 1, vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK, vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
+	    why_table->add_widget_opts(why_scrollbar, 0, 1, 1, 1, vs_table::ALIGN_RIGHT, vs_table::EXPAND | vs_table::ALIGN_CENTER | vs_table::FILL);
 
 	    // HACK: speaks for itself
 	    vs_tree_ref thetree=mainwidget.dyn_downcast<vs_tree>();
@@ -494,6 +567,7 @@ vs_widget_ref make_package_view(list<package_view_item> &format,
 	    m->add_visible_widget(e, false);
 	    m->add_visible_widget(wt, true);
 	    m->add_visible_widget(lt, true);
+	    m->add_visible_widget(why_table, true);
 
 	    if(show_reason_first)
 	      lt->show();
