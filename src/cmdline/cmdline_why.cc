@@ -45,6 +45,8 @@
 
 #include <vscreen/fragment.h>
 
+#include <../pkg_item.h>
+
 #include <set>
 
 namespace
@@ -81,6 +83,17 @@ namespace
 		   int _id)
       : prv(_prv), id(_id)
     {
+    }
+
+    style get_style() const
+    {
+      pkgCache::PkgIterator pkg;
+      if(!dep.end())
+	pkg = const_cast<pkgCache::DepIterator &>(dep).ParentPkg();
+      else
+	pkg = const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg();
+
+      return pkg_item::pkg_style(pkg, false);
     }
 
     fragment *description_column1_fragment() const
@@ -1031,9 +1044,12 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 	      for(std::vector<justify_action>::const_iterator it = results.begin();
 		  it != results.end(); ++it)
 		{
-		  col1_entries.push_back(fragf("%F\n", it->description_column1_fragment()));
-		  col2_entries.push_back(fragf("%F\n", it->description_column2_fragment()));
-		  col3_entries.push_back(fragf("%F\n", it->description_column3_fragment()));
+		  col1_entries.push_back(style_fragment(fragf("%F\n", it->description_column1_fragment()),
+							it->get_style()));
+		  col2_entries.push_back(style_fragment(fragf("%F\n", it->description_column2_fragment()),
+							it->get_style()));
+		  col3_entries.push_back(style_fragment(fragf("%F\n", it->description_column3_fragment()),
+							it->get_style()));
 		}
 	      std::vector<fragment_column_entry> columns;
 	      fragment *col1_contents = sequence_fragment(col1_entries);
