@@ -2162,6 +2162,10 @@ private:
 	      {
 		std::ostringstream msg;
 
+		msg << "In solution ";
+		curr.dump(msg);
+		msg << ":" << std::endl;
+
 		msg << "Unexpectedly non-broken dependency "
 		    << *bi << "!" << std::endl;
 
