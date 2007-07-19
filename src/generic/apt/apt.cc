@@ -875,7 +875,7 @@ std::wstring get_short_description(const pkgCache::VerIterator &ver)
   if(vf.end())
     return std::wstring();
   else
-    return transcode(apt_package_records->Lookup(vf).ShortDesc(), "UTF-8");
+    return transcode(apt_package_records->Lookup(vf).ShortDesc());
 #else
   pkgCache::DescIterator d = ver.TranslatedDescription();
 
@@ -887,12 +887,10 @@ std::wstring get_short_description(const pkgCache::VerIterator &ver)
   if(df.end())
     return std::wstring();
   else
-    // Since Packages files don't have a bundled description and it
-    // just feels icky for the data in Packages to depend on the
-    // encoding, I just force a sane encoding on it here.  Really,
-    // though, Packages files should have an encapsulated encoding
-    // somewhere.
-    return transcode(apt_package_records->Lookup(df).ShortDesc(), "UTF-8");
+    // apt "helpfully" transcodes the description for us, instead of
+    // providing direct access to it.  So I need to assume that the
+    // description is encoded in the current locale.
+    return transcode(apt_package_records->Lookup(df).ShortDesc());
 #endif
 }
 
@@ -907,7 +905,7 @@ std::wstring get_long_description(const pkgCache::VerIterator &ver)
   if(vf.end())
     return std::wstring();
   else
-    return transcode(apt_package_records->Lookup(vf).LongDesc(), "UTF-8");
+    return transcode(apt_package_records->Lookup(vf).LongDesc());
 #else
   pkgCache::DescIterator d = ver.TranslatedDescription();
 
@@ -919,6 +917,6 @@ std::wstring get_long_description(const pkgCache::VerIterator &ver)
   if(df.end())
     return std::wstring();
   else
-    return transcode(apt_package_records->Lookup(df).LongDesc(), "UTF-8");
+    return transcode(apt_package_records->Lookup(df).LongDesc());
 #endif
 }

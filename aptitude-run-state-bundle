@@ -4,13 +4,26 @@ NO_CLEAN=0
 STATEDIR=0
 UNPACK_ONLY=0
 HELP=0
+APPEND=1
 
 DONE=0
 while [ $DONE = 0 ]
 do
   case "$1" in
+      --append-args )
+	  APPEND=1
+	  shift
+	  ;;
+      --help )
+	  HELP=1
+	  shift
+	  ;;
       --no-clean )
 	  NO_CLEAN=1
+	  shift
+	  ;;
+      --prepend-args )
+	  APPEND=0
 	  shift
 	  ;;
       --really-clean )
@@ -24,10 +37,6 @@ do
 	  ;;
       --unpack )
 	  UNPACK_ONLY=1
-	  shift
-	  ;;
-      --help )
-	  HELP=1
 	  shift
 	  ;;
       * )
@@ -49,9 +58,13 @@ then
     echo "data store."
     echo
     echo "Options:"
+    echo "  --append-args    Place the generated arguments at the end of"
+    echo "                   the command line (default)."
     echo "  --help           Display this message and exit."
     echo "  --no-clean       Do not remove the temporary directory after"
     echo "                   invoking aptitude."
+    echo "  --prepend-args   Place the generated arguments at the beginning"
+    echo "                   of the command line."
     echo "  --really-clean   Remove the state directory, even if --statedir"
     echo "                   was passed as an argument."
     echo "  --statedir       The <input-file> is an unpacked aptitude bundle,"
@@ -116,4 +129,10 @@ then
     exit 0
 fi
 
-"$PROGRAM" -o "Dir=$tempdir" -o "Dir::State::status=$tempdir/var/lib/dpkg/status" "$@"
+if [ "$APPEND" = 1 ]
+then
+    "$PROGRAM" "$@" -o "Dir=$tempdir" -o "Dir::State::status=$tempdir/var/lib/dpkg/status"
+else
+
+    "$PROGRAM" -o "Dir=$tempdir" -o "Dir::State::status=$tempdir/var/lib/dpkg/status" "$@"
+fi
