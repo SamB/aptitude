@@ -374,10 +374,12 @@ public:
 	if(result != 1)
 	  {
 	    if(errno != EINTR)
-	      // Probably means that there was an error reading
-	      // standard input.  (could also be ENOMEM)
-	      vscreen_post_event(new fatal_input_error(errno));
-	    break;
+	      {
+		// Probably means that there was an error reading
+		// standard input.  (could also be ENOMEM)
+		vscreen_post_event(new fatal_input_error(errno));
+		break;
+	      }
 	  }
 	else
 	  {
