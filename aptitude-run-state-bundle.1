@@ -22,10 +22,24 @@ The following options may occur on the command-line before the input
 file.  Options following the input file are presumed to be arguments
 to aptitude.
 .PP
+\fB--append-args\fR
+.RS
+Place the options that give the location of the state bundle at the
+end of the command line, rather than at the beginning (the default).
+.RE
+.PP
 \fB--help\fR
 .RS
 Display a brief usage summary.
 .RE
+.PP
+\fB--prepend-args\fR
+.RS
+Place the options that give the location of the state bundle at the
+beginning of the command line (the default), overriding any previous
+\fB--prepend-args\fR.
+.RE
+.PP
 \fB--no-clean\fR
 .RE
 .RS
