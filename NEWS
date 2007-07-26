@@ -21,6 +21,10 @@ Version 0.4.6                               "He who works and works
     * Handle EINTR from select() better; thanks to Jiří Paleček for
       tracking this down. (Closes: #431054, #431688, #432323)
 
+      Note that there is still a race condition lurking here, although
+      it's almost impossible to trigger it.  The next release should
+      eliminate it, though.
+
     * Run mark-and-sweep on startup, to initialize apt's auto flags.
       This should prevent aptitude from losing the auto flag when a
       package is marked for upgrade. (Closes: #432017)
