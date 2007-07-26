@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.3-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-07-03 07:04-0700\n"
+"POT-Creation-Date: 2007-07-25 20:26-0700\n"
 "PO-Revision-Date: 2007-04-07 18:33+0800\n"
 "Last-Translator: Kov Chai <tchaikov@sjtu.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
@@ -1549,70 +1549,70 @@ msgid ""
 "press [Enter].\n"
 msgstr "更换介质：请将标号为“%s”的磁盘插入驱动器“%s”并按回车(enter)\n"
 
-#: src/generic/apt/aptcache.cc:283
+#: src/generic/apt/aptcache.cc:289
 msgid "Can't open Aptitude extended state file"
 msgstr "无法打开 Aptitude 扩展状态文件"
 
-#: src/generic/apt/aptcache.cc:297 src/generic/apt/aptcache.cc:375
-#: src/generic/apt/aptcache.cc:377
+#: src/generic/apt/aptcache.cc:303 src/generic/apt/aptcache.cc:381
+#: src/generic/apt/aptcache.cc:383
 msgid "Reading extended state information"
 msgstr "正在读取扩展状态文件"
 
-#: src/generic/apt/aptcache.cc:382 src/generic/apt/aptcache.cc:458
-#: src/generic/apt/aptcache.cc:461
+#: src/generic/apt/aptcache.cc:388 src/generic/apt/aptcache.cc:464
+#: src/generic/apt/aptcache.cc:467
 msgid "Initializing package states"
 msgstr "正在初始化软件包状态"
 
-#: src/generic/apt/aptcache.cc:580
+#: src/generic/apt/aptcache.cc:586
 msgid "Cannot open Aptitude state file"
 msgstr "无法打开 Aptitude 扩展状态文件"
 
-#: src/generic/apt/aptcache.cc:584 src/generic/apt/aptcache.cc:639
-#: src/generic/apt/aptcache.cc:642
+#: src/generic/apt/aptcache.cc:590 src/generic/apt/aptcache.cc:645
+#: src/generic/apt/aptcache.cc:648
 msgid "Writing extended state information"
 msgstr "正在编辑扩展状态信息"
 
-#: src/generic/apt/aptcache.cc:621
+#: src/generic/apt/aptcache.cc:627
 #, c-format
 msgid "Internal buffer overflow on package \"%s\" while writing state file"
 msgstr "写入状态文件时包“%s”发生内部缓冲溢出"
 
-#: src/generic/apt/aptcache.cc:630
+#: src/generic/apt/aptcache.cc:636
 msgid "Couldn't write state file"
 msgstr "不能写入状态文件"
 
-#: src/generic/apt/aptcache.cc:647
+#: src/generic/apt/aptcache.cc:653
 msgid "Error writing state file"
 msgstr "写入状态文件时发生错误"
 
-#: src/generic/apt/aptcache.cc:665
+#: src/generic/apt/aptcache.cc:671
 #, c-format
 msgid "failed to remove %s"
 msgstr "无法删除 %s"
 
-#: src/generic/apt/aptcache.cc:672
+#: src/generic/apt/aptcache.cc:678
 #, c-format
 msgid "failed to rename %s to %s"
 msgstr "无法将 %s 改名为 %s"
 
-#: src/generic/apt/aptcache.cc:680
+#: src/generic/apt/aptcache.cc:686
 #, c-format
 msgid "couldn't replace %s with %s"
 msgstr "无法用 %s 代替 %s"
 
-#: src/generic/apt/aptcache.cc:1150
+#: src/generic/apt/aptcache.cc:1165
 msgid "Unable to correct dependencies, some packages cannot be installed"
 msgstr "无法修正依赖关系，一些包无法安装"
 
-#: src/generic/apt/aptcache.cc:1449
+#: src/generic/apt/aptcache.cc:1467
 msgid "The list of sources could not be read."
 msgstr "无法读取软件源列表。"
 
-#: src/generic/apt/aptcache.cc:1456
+#: src/generic/apt/aptcache.cc:1474
 msgid "The package lists or status file could not be parsed or opened."
 msgstr "无法解析或打开软件包列表文件或状态文件。"
 
-#: src/generic/apt/aptcache.cc:1459
+#: src/generic/apt/aptcache.cc:1477
 msgid "You may want to update the package lists to correct these missing files"
 msgstr "您可能需要更新软件包列表来解决缺少这些文件的问题"
 
@@ -1626,7 +1626,7 @@ msgstr "%s 可读但不可写；无法写入配置文件。"
 msgid "Unable to replace %s with new configuration file"
 msgstr "无法用新的配置文件代替 %s"
 
-#: src/generic/apt/apt.cc:306
+#: src/generic/apt/apt.cc:309
 msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
@@ -3899,28 +3899,28 @@ msgstr "为此显示输入新的软件包分组机制："
 msgid "Enter the new package sorting mechanism for this display: "
 msgstr "为此显示输入新的软件包排序机制："
 
-#: src/pkg_view.cc:149
+#: src/pkg_view.cc:152
 msgid "Couldn't transcode column definition"
 msgstr "无法给列定义转码"
 
-#: src/pkg_view.cc:156
+#: src/pkg_view.cc:159
 msgid "Couldn't parse column definition"
 msgstr "无法解析列定义"
 
-#: src/pkg_view.cc:408
+#: src/pkg_view.cc:472
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: 参数错误 -- 两个主要部件？ "
 
-#: src/pkg_view.cc:414
+#: src/pkg_view.cc:478
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr "make_package_view: 参数错误 -- 静态项目的栏列表错误"
 
-#: src/pkg_view.cc:510
+#: src/pkg_view.cc:583
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: 参数错误！"
 
-#: src/pkg_view.cc:562
+#: src/pkg_view.cc:635
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: 未发现主要部件"
 
@@ -5165,11 +5165,11 @@ msgid ""
 "Pkgs"
 msgstr "%ls：菜单  %ls：帮助  %ls：退出  %ls：更新  %ls：下载/安装/删除软件包"
 
-#: src/ui.cc:2907 src/vscreen/vscreen.cc:808
+#: src/ui.cc:2907 src/vscreen/vscreen.cc:810
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2908 src/vscreen/vscreen.cc:809
+#: src/ui.cc:2908 src/vscreen/vscreen.cc:811
 msgid "no_key"
 msgstr "n"
 
