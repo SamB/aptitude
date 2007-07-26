@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <sstream>
 
+#include <apt-pkg/error.h>
+
 using namespace std;
 
 static inline
@@ -557,6 +559,14 @@ bool aptitude_universe::broken_dep_iterator::dep_is_inst_broken(const pkgCache::
   return ((*cache)[d2] & pkgDepCache::DepGInstall)==0;
 }
 
+struct DummyEmptySolution
+{
+  aptitude_resolver_version version_of(const aptitude_resolver_package &p) const
+  {
+    return p.current_version();
+  }
+};
+
 void aptitude_universe::broken_dep_iterator::normalize()
 {
   while(!the_dep.end() &&
@@ -661,6 +671,18 @@ void aptitude_universe::broken_dep_iterator::normalize()
       normalize();
       // hopefully g++ is smart enough to optimize this into a
       // tail call.
+      return;
+    }
+
+  if(!end() && !(**this).broken_under(DummyEmptySolution()))
+    {
+      std::ostringstream s;
+      s << **this;
+      // Not translated because this is an internal error that users
+      // should report to me verbatim.
+      _error->Warning("apt thinks that %s is broken, but I don't.",
+		      s.str().c_str());
+      ++(*this);
       return;
     }
 }
