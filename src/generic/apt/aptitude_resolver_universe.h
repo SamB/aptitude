@@ -853,11 +853,16 @@ bool aptitude_resolver_dep::broken_under(const InstallationType &I) const
       while(!dep.end())
 	{
 	  pkgCache::VerIterator direct_ver=I.version_of(aptitude_resolver_package(dep.TargetPkg(), cache)).get_ver();
-	  if(!direct_ver.end() &&
-	     _system->VS->CheckDep(direct_ver.VerStr(),
-				   dep->CompareOp,
-				   dep.TargetVer()))
-	    return false;
+	  if(!direct_ver.end())
+	    {
+	      const char * const direct_verstr = direct_ver.VerStr();
+	      const char * const dep_targetstr = dep.TargetVer();
+	      if(!direct_ver.end() &&
+		 _system->VS->CheckDep(direct_verstr,
+				       dep->CompareOp,
+				       dep_targetstr))
+		return false;
+	    }
 
 	  if(!dep.TargetVer())
 	    {

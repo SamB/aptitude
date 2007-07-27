@@ -1,3 +1,79 @@
+[7/25/2007]
+Version 0.4.6.1
+
+- Minor bugfix to include the new scripts/manpages that didn't get
+  distributed with the previous release.
+
+[7/25/2007]
+Version 0.4.6                               "He who works and works
+                                             all day, gets to work
+                                             another day."
+
+- New features:
+
+  * Added two programs, aptitude-create-state-bundle(1) and
+    aptitude-run-state-bundle(1), to eliminate some of the drudgery
+    involved in collecting apt state and running aptitude with a state
+    snapshot.
+
+  * "why" output is now available in visual mode (hit 'i' to cycle
+    through informational displays).  The formatting and styling are
+    pretty awful in this release.
+
+- Bug fixes:
+
+  + Crashes and serious errors:
+
+    * Handle EINTR from select() better; thanks to Jiří Paleček for
+      tracking this down. (Closes: #431054, #431688, #432323)
+
+      Note that there is still a race condition lurking here, although
+      it's almost impossible to trigger it.  The next release should
+      eliminate it, though.
+
+    * Run mark-and-sweep on startup, to initialize apt's auto flags.
+      This should prevent aptitude from losing the auto flag when a
+      package is marked for upgrade. (Closes: #432017)
+
+    * Don't crash on startup when something goes wrong early in the
+      initialization process (e.g., when the cache is locked;
+      Closes: #430061).
+
+  + Minor bugs:
+
+    * Disable unused-package removal if Delete-Unused is false.
+      (Closes: #431716)
+
+  + Cosmetic and UI bugs:
+
+    * Don't garble descriptions in non-UTF8 locales. (Closes: #432911)
+
+    * Hopefully fixed the problem that was garbling the startup
+      progress indicator.
+
+    * Eliminate another bogus error about a supposedly locked cache.
+      (Closes: #431909)
+
+  + Documentation bugs:
+
+    * Fix the manpage's metainformation so that the footer gets
+      generated.
+
+  + Potential bugs:
+
+    * Handle some unusual cases where the resolver could dereference
+      invalid pointers (no bugs reported).
+
+    * Added code to recover with an error if apt improperly marks a
+      dependency as broken.
+
+- Translation updates:
+
+  * Basque (Closes: #432535)
+  * Dzongkha
+  * French
+  * Vietnamese (Closes: #432283)
+
 [7/3/2007]
 Version 0.4.5.4                             "Oh my God,
                                              THEY KILLED LENNY!
@@ -3298,7 +3374,7 @@ Version 0.1.3 "South Blue Quickly"
   * Added sorting policies.  It was harder than it sounds.  See README.
 
 [2/21/2001]
-Version 0.1.2 "Erlk�nig"
+Version 0.1.2 "Erlkönig"
   * Still a BETA DEVELOPMENT RELEASE.
 
   * How packages are grouped into the hierarchy can finally be configured!
@@ -3663,7 +3739,7 @@ Version 0.0.7.1
 [4/18/2000]
 Version 0.0.7
   * The segfault that plagued 0.0.6.9 seems to be gone.  Thanks go to
-   Panu H�llfors <panupa@iki.fi> for helping me narrow the problem down.
+   Panu Hällfors <panupa@iki.fi> for helping me narrow the problem down.
    Please let me know if you encounter similar problems (or, indeed, any
    problems :) ).
 

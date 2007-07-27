@@ -8,8 +8,8 @@ DOCDIRS=@DOCDIRS@
 
 SUBDIRS=$(SRCDIRS) $(DOCDIRS) m4 po tests
 
-bin_SCRIPTS = aptitude-create-state-bundle aptitude-run-state-bundle
-MANPAGES = aptitude-create-state-bundle.1 aptitude-run-state-bundle.1
+dist_bin_SCRIPTS = aptitude-create-state-bundle aptitude-run-state-bundle
+dist_man_MANS = aptitude-create-state-bundle.1 aptitude-run-state-bundle.1
 
 MANPAGE_LOCALES=gl it pl
 
