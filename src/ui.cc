@@ -994,14 +994,11 @@ static vs_widget_ref setup_fileview(const std::string &filename,
 
 static void do_help_license()
 {
-  vs_widget_ref w=vs_dialog_fileview(HELPDIR "/COPYING",
-				     NULL,
-				     arg(sigc::ptr_fun(pager_search)),
-				     arg(sigc::ptr_fun(pager_repeat_search)),
-				     arg(sigc::ptr_fun(pager_repeat_search_back)));
-  w->show_all();
-
-  popup_widget(w);
+  setup_fileview(HELPDIR "/COPYING",
+		 NULL,
+		 _("License"),
+		 _("View the terms under which you may copy and distribute aptitude"),
+		 _("License"));
 }
 
 static void do_help_help()
@@ -2367,7 +2364,7 @@ vs_menu_info help_menu_info[]={
 	       sigc::ptr_fun(do_help_news)),
 
   vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^License"), NULL,
-	       N_("View the terms under which you may copy the program"),
+	       N_("View the terms under which you may copy and distribute aptiutde"),
 	       sigc::ptr_fun(do_help_license)),
 
   VS_MENU_END
