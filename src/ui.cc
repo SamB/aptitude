@@ -956,6 +956,42 @@ static void do_help_about()
   popup_widget(w);
 }
 
+/** Set up a new top-level file-viewing widget with a scrollbar. */
+static vs_widget_ref setup_fileview(const std::string &filename,
+				    const char *encoding,
+				    const std::string &menudesc,
+				    const std::string &longmenudesc,
+				    const std::string &tabdesc)
+{
+
+  vs_table_ref t      = vs_table::create();
+  vs_scrollbar_ref s  = vs_scrollbar::create(vs_scrollbar::VERTICAL);
+  vs_file_pager_ref p = vs_file_pager::create(filename, encoding);
+
+  p->line_changed.connect(sigc::mem_fun(s.unsafe_get_ref(), &vs_scrollbar::set_slider));
+  s->scrollbar_interaction.connect(sigc::mem_fun(p.unsafe_get_ref(), &vs_pager::scroll_page));
+  p->scroll_top(); // Force a scrollbar update.
+
+  p->connect_key("Search", &global_bindings,
+		 sigc::bind(sigc::ptr_fun(&pager_search), p.weak_ref()));
+  p->connect_key("ReSearch", &global_bindings,
+		 sigc::bind(sigc::ptr_fun(&pager_repeat_search), p.weak_ref()));
+  p->connect_key("RepeatSearchBack", &global_bindings,
+		 sigc::bind(sigc::ptr_fun(&pager_repeat_search_back), p.weak_ref()));
+
+  t->add_widget_opts(p, 0, 0, 1, 1,
+		     vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+		     vs_table::EXPAND | vs_table::FILL);
+  t->add_widget_opts(s, 0, 1, 1, 1,
+		     vs_table::EXPAND, vs_table::EXPAND | vs_table::FILL);
+
+  s->show();
+  p->show();
+
+  add_main_widget(t, menudesc, longmenudesc, tabdesc);
+  return t;
+}
+
 static void do_help_license()
 {
   vs_widget_ref w=vs_dialog_fileview(HELPDIR "/COPYING",
@@ -995,44 +1031,22 @@ static void do_help_help()
 
 static void do_help_readme()
 {
-  char buf[512];
-
-  snprintf(buf, 512, HELPDIR "/%s", _("README")); // README can be translated...
-
-  const char *encoding=P_("Encoding of README|ISO_8859-1");
+  // Look up the translation of README.
+  std::string readme_file = ssprintf(HELPDIR "/%s", _("README"));
+  const char *encoding    = P_("Encoding of README|ISO_8859-1");
 
   // Deal with missing localized docs.
-  if(access(buf, R_OK)!=0)
+  if(access(readme_file.c_str(), R_OK)!=0)
     {
-      strncpy(buf, HELPDIR "/README", 512);
-      encoding="ISO_8859-1";
+      readme_file = HELPDIR "/README";
+      encoding    = "ISO_8859-1";
     }
 
-  vs_table_ref t      = vs_table::create();
-  vs_scrollbar_ref s  = vs_scrollbar::create(vs_scrollbar::VERTICAL);
-  vs_file_pager_ref p = vs_file_pager::create(buf, encoding);
-
-  p->line_changed.connect(sigc::mem_fun(s.unsafe_get_ref(), &vs_scrollbar::set_slider));
-  s->scrollbar_interaction.connect(sigc::mem_fun(p.unsafe_get_ref(), &vs_pager::scroll_page));
-  p->scroll_top(); // Force a scrollbar update.
-
-  p->connect_key("Search", &global_bindings,
-		 sigc::bind(sigc::ptr_fun(&pager_search), p.weak_ref()));
-  p->connect_key("ReSearch", &global_bindings,
-		 sigc::bind(sigc::ptr_fun(&pager_repeat_search), p.weak_ref()));
-  p->connect_key("RepeatSearchBack", &global_bindings,
-		 sigc::bind(sigc::ptr_fun(&pager_repeat_search_back), p.weak_ref()));
-
-  t->add_widget_opts(p, 0, 0, 1, 1,
-		     vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
-		     vs_table::EXPAND | vs_table::FILL);
-  t->add_widget_opts(s, 0, 1, 1, 1,
-		     vs_table::EXPAND, vs_table::EXPAND | vs_table::FILL);
-
-  s->show();
-  p->show();
-
-  add_main_widget(t, _("User's Manual"), _("Read the full user's manual of aptitude"), _("Manual"));
+  setup_fileview(readme_file,
+		 encoding,
+		 _("User's Manual"),
+		 _("Read the full user's manual of aptitude"),
+		 _("Manual"));
 }
 
 static void do_help_faq()
