@@ -133,6 +133,11 @@ public:
     return ref_ptr<S>(dynamic_cast<S*>(ref));
   }
 
+  void clear()
+  {
+    (*this) = 0;
+  }
+
   bool valid() const
   {
     return ref != 0;
