@@ -1006,27 +1006,32 @@ static void do_help_license()
 
 static void do_help_help()
 {
-  char buf[512];
+  static vs_widget_ref fileview_widget;
 
-  snprintf(buf, 512, HELPDIR "/%s", _("help.txt"));
-
-  const char *encoding=P_("Encoding of help.txt|UTF-8");
-
-  // Deal with missing localized docs.
-  if(access(buf, R_OK)!=0)
+  if(fileview_widget.valid())
     {
-      strncpy(buf, HELPDIR "/help.txt", 512);
-      encoding="UTF-8";
+      fileview_widget->show();
+      return;
     }
 
-  vs_widget_ref w=vs_dialog_fileview(buf, NULL,
-				     arg(sigc::ptr_fun(pager_search)),
-				     arg(sigc::ptr_fun(pager_repeat_search)),
-				     arg(sigc::ptr_fun(pager_repeat_search_back)),
-				     encoding);
-  w->show_all();
+  std::string filename = ssprintf(HELPDIR "/%s", _("help.txt"));
 
-  popup_widget(w);
+  const char *encoding = P_("Encoding of help.txt|UTF-8");
+
+  // Deal with missing localized docs.
+  if(access(filename.c_str(), R_OK) != 0)
+    {
+      filename = HELPDIR "/help.txt";
+      encoding = "UTF-8";
+    }
+
+  fileview_widget = setup_fileview(filename,
+				   encoding,
+				   _("Online Help"),
+				   _("View a brief introduction to aptitude"),
+				   _("Help"));
+  fileview_widget->destroyed.connect(sigc::mem_fun(fileview_widget,
+						   &vs_widget_ref::clear));
 }
 
 static void do_help_readme()
