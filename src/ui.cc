@@ -983,7 +983,7 @@ static vs_widget_ref setup_fileview(const std::string &filename,
 		     vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
 		     vs_table::EXPAND | vs_table::FILL);
   t->add_widget_opts(s, 0, 1, 1, 1,
-		     vs_table::EXPAND, vs_table::EXPAND | vs_table::FILL);
+		     0, vs_table::EXPAND | vs_table::FILL);
 
   s->show();
   p->show();
