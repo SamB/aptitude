@@ -1063,12 +1063,11 @@ static void do_help_faq()
 // news isn't translated since it's just a changelog.
 static void do_help_news()
 {
-  vs_widget_ref w=vs_dialog_fileview(HELPDIR "/NEWS", NULL,
-				     arg(sigc::ptr_fun(pager_search)),
-				     arg(sigc::ptr_fun(pager_repeat_search)));
-  w->show_all();
-
-  popup_widget(w);
+  setup_fileview(HELPDIR "/NEWS",
+		 NULL,
+		 _("News"),
+		 _("View the important changes made in each version of " PACKAGE),
+		 _("News"));
 }
 
 /** Remove the given file/directory and all its children.  Behaves
