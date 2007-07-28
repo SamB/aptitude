@@ -1053,12 +1053,11 @@ static void do_help_readme()
 
 static void do_help_faq()
 {
-  vs_widget_ref w=vs_dialog_fileview(HELPDIR "/FAQ", NULL,
-				     arg(sigc::ptr_fun(pager_search)),
-				     arg(sigc::ptr_fun(pager_repeat_search)));
-  w->show_all();
-
-  popup_widget(w);
+  setup_fileview(HELPDIR "/FAQ",
+		 NULL,
+		 _("FAQ"),
+		 _("View a list of frequently asked questions"),
+		 _("FAQ"));
 }
 
 // news isn't translated since it's just a changelog.
