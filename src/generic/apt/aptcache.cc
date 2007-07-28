@@ -1411,6 +1411,7 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
     {
       pkgCache::PkgIterator pkg=i->first.get_pkg();
       pkgCache::VerIterator curver=pkg.CurrentVer();
+      pkgCache::VerIterator instver = (*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
       pkgCache::VerIterator actionver=i->second.ver.get_ver();
 
       // Check what type of action it is.
@@ -1429,8 +1430,12 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
 	  set_candidate_version(actionver, NULL);
 	  internal_mark_install(pkg, false, false);
 	  // Mark the package as automatic iff it isn't currently
-	  // installed.
-	  if(curver.end())
+	  // going to be installed.  Thus packages that are currently
+	  // manually installed don't get marked as auto, packages
+	  // that are going to be manually installed don't get marked
+	  // as auto, but packages that are being removed *do* get
+	  // marked as auto.
+	  if(instver.end())
 	    MarkAuto(pkg, true);
 	}
     }
