@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.3-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-07-25 20:26-0700\n"
-"PO-Revision-Date: 2007-03-27 03:50+0200\n"
+"PO-Revision-Date: 2007-07-26 15:12+0200\n"
 "Last-Translator: Javier Fernandez-Sanguino <jfs@debian.org>\n"
 "Language-Team: Debian-l10n-Spanish <debian-l10n-spanish@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -206,7 +206,7 @@ msgstr "Incapaz de resolver las dependencias."
 
 #: src/broken_indicator.cc:237
 msgid "Fatal error in resolver"
-msgstr ""
+msgstr "Error falta al resolver"
 
 #: src/broken_indicator.cc:248
 #, c-format
@@ -421,9 +421,9 @@ msgid "Couldn't find a changelog for %s"
 msgstr "No se puede encontrar el registro de cambios para %s"
 
 #: src/cmdline/cmdline_clean.cc:29
-#, fuzzy, c-format
+#, c-format
 msgid "E: The clean command takes no arguments\n"
-msgstr "E: La orden «update» no toma argumentos\n"
+msgstr "E: La orden «clean» no toma argumentos\n"
 
 #: src/cmdline/cmdline_clean.cc:58
 #, c-format
@@ -436,9 +436,9 @@ msgid "Del %s %s [%sB]\n"
 msgstr "Borra %s %s [%sB]\n"
 
 #: src/cmdline/cmdline_clean.cc:111
-#, fuzzy, c-format
+#, c-format
 msgid "E: The autoclean command takes no arguments\n"
-msgstr "E: La orden «update» no toma argumentos\n"
+msgstr "E: La orden «autoclean» no toma argumentos\n"
 
 #: src/cmdline/cmdline_clean.cc:148
 #, c-format
@@ -490,9 +490,9 @@ msgstr ""
 "un paquete local u obsoleto?"
 
 #: src/cmdline/cmdline_forget_new.cc:25
-#, fuzzy, c-format
+#, c-format
 msgid "E: The forget-new command takes no arguments\n"
-msgstr "E: La orden «update» no toma argumentos\n"
+msgstr "E: La orden «forget-new» no toma argumentos\n"
 
 #: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
@@ -622,9 +622,8 @@ msgid "The following packages will be upgraded:"
 msgstr "Se actualizarán los siguientes paquetes:"
 
 #: src/cmdline/cmdline_prompt.cc:279
-#, fuzzy
 msgid "The following partially installed packages will be configured:"
-msgstr "Se actualizarán los siguientes paquetes:"
+msgstr "Se configurarán los siguientes paquetes que están ahora parcialmente instalados:"
 
 #: src/cmdline/cmdline_prompt.cc:334
 #, c-format
@@ -682,13 +681,12 @@ msgstr ""
 "                %s::CmdLine::Ignore-Trust-Violations es «true»!\n"
 
 #: src/cmdline/cmdline_prompt.cc:421
-#, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
-"*** AVISO ***   ¡Ignorando las firmas incorrecta porque\n"
-"                %s::CmdLine::Ignore-Trust-Violations es «true»!\n"
+"*** AVISO ***   ¡Ignorando estas violaciones de confianza\n"
+"                Apt::Get::AllowUnauthenticated es «true»!\n"
 
 #: src/cmdline/cmdline_prompt.cc:427 src/vscreen/vs_util.cc:194
 #: src/vscreen/vs_util.cc:232
@@ -797,12 +795,12 @@ msgstr "Presione Enter para continuar"
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify."
-msgstr ""
+msgstr "No se encontró ningún paquete: introduzca una o más raíces para la búsqueda seguidos del paquete a justificar."
 
 #: src/cmdline/cmdline_prompt.cc:663
-#, fuzzy, c-format
+#, c-format
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
-msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
+msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_prompt.cc:685
 msgid "continue with the installation"
@@ -845,7 +843,7 @@ msgstr "activar/desactivar la información sobre las versiones"
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
-msgstr ""
+msgstr "intentar buscar una razón para la instalación de un único paquete, o explicar porque la instalación de un paquete lleva a la instalación de otro distinto."
 
 #: src/cmdline/cmdline_prompt.cc:701
 msgid "enter the full visual interface"
@@ -1028,7 +1026,7 @@ msgstr "ir a la solución anterior"
 msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
-msgstr ""
+msgstr "conmutar entre los contenidos de la solución y la explicación de la solución"
 
 #: src/cmdline/cmdline_resolver.cc:176
 msgid "examine the solution in the visual user interface"
@@ -1191,6 +1189,9 @@ msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
+"*** ERROR: se interrumpió la búsqueda debido a un excepción fatal.\n"
+"           Puede seguir buscando pero no podrá llegarse a algunas\n"
+"           excepciones."
 
 #: src/cmdline/cmdline_search.cc:102
 #, c-format
@@ -1446,9 +1447,9 @@ msgid "E: The update command takes no arguments\n"
 msgstr "E: La orden «update» no toma argumentos\n"
 
 #: src/cmdline/cmdline_upgrade.cc:41
-#, fuzzy, c-format
+#, c-format
 msgid "E: The %s command takes no arguments\n"
-msgstr "E: La orden «update» no toma argumentos\n"
+msgstr "E: La orden «%s» no toma argumentos\n"
 
 #: src/cmdline/cmdline_util.cc:93
 #, c-format
@@ -1473,8 +1474,7 @@ msgstr "Incapaz de encontrar una versión \"%s\" para el paquete \"%s\"\n"
 #: src/cmdline/cmdline_util.cc:126
 #, c-format
 msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
-msgstr ""
-"¡Error interno: se ha pasado a cmdline_find_ver un valor inválido %i!\n"
+msgstr "¡Error interno: se ha pasado a cmdline_find_ver un valor inválido %i!\n"
 
 #: src/cmdline/cmdline_util.cc:156
 #, c-format
@@ -1614,14 +1614,13 @@ msgid "Fetched %sB in %s (%sB/s)\n"
 msgstr "Descargados %sB en %s (%sB/s).\n"
 
 #: src/generic/apt/acqprogress.cc:296
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press [Enter].\n"
 msgstr ""
-"Cambio de medio: Por favor, introduzca el disco etiquetado «%s» en la unidad "
-"«%s»\n"
-"y presione enter\n"
+"Cambio de medio: Por favor, introduzca el disco etiquetado «%s» en la unidad «%s»\n"
+"y pulse [Intro].\n"
 
 #: src/generic/apt/aptcache.cc:289
 msgid "Can't open Aptitude extended state file"
@@ -2418,18 +2417,16 @@ msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - descarga las listas de paquetes nuevos/actualizables\n"
 
 #: src/main.cc:135
-#, fuzzy, c-format
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
-msgstr " upgrade      - realiza una actualización segura\n"
+msgstr " safe-upgrade      - realiza una actualización segura\n"
 
 #: src/main.cc:136
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
-msgstr ""
-" dist-upgrade - realiza una actualización, posiblemente instalando y "
-"eliminando paquetes\n"
+msgstr " full-upgrade - realiza una actualización, posiblemente instalando y eliminando paquetes\n"
 
 #: src/main.cc:137
 #, c-format
@@ -3897,15 +3894,13 @@ msgstr ""
 " Estos paquetes serán actualizados a una nueva versión"
 
 #: src/pkg_grouppolicy.cc:544
-#, fuzzy
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
 "made to complete their installation."
 msgstr ""
-"Paquetes automáticamente instalados para satisfacer las dependencias\n"
-" Estos paquetes se instalarán porque algún paquete seleccionado para "
-"instalar los necesita."
+"Paquetes que están parcialmente instalados\n"
+" Estos paquetes no están totalmente instalados y configurados , se intentará completar su instalación."
 
 #: src/pkg_grouppolicy.cc:659
 msgid "unknown"
@@ -4210,7 +4205,7 @@ msgid ""
 "packages which depend upon it are being removed:"
 msgstr ""
 "%B%s%b se instaló automáticamente, se elimina porque todos los paquetes que "
-"dependen de él van ha ser eliminados:"
+"dependen de él van a ser eliminados:"
 
 #: src/reason_fragment.cc:362
 msgid "%B%s%b will be automatically removed because of dependency errors:"
@@ -4284,9 +4279,8 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "Se actualizará %B%s%b de la versión %B%s%b a la versión %B%s%b."
 
 #: src/reason_fragment.cc:443
-#, fuzzy
 msgid "%B%s%b is only partly installed; its installation will be completed."
-msgstr "%s no está instalado actualmente, luego no se reinstala.\n"
+msgstr "%B%s%B está ahora parcialmente instalado. Se completará su instalación.\n"
 
 #: src/reason_fragment.cc:475
 msgid ""
@@ -4624,12 +4618,12 @@ msgstr "¡Ya es el administrador!"
 
 #: src/ui.cc:422
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
-msgstr ""
+msgstr "Get-Root-Command inválido: debería comenzar con su: o sudo:"
 
 #: src/ui.cc:429
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
-msgstr ""
+msgstr "Get-Root-Command inválido: debería comenzar con su: o sudo:, no con %s:"
 
 #: src/ui.cc:552
 msgid ""
@@ -5259,14 +5253,12 @@ msgid "Repeat the last search"
 msgstr "Repetir la última búsqueda"
 
 #: src/ui.cc:2242
-#, fuzzy
 msgid "Find Again ^Backwards"
-msgstr "^Buscar hacia atrás"
+msgstr "Buscar de nuevo hacia ^atrás"
 
 #: src/ui.cc:2243
-#, fuzzy
 msgid "Repeat the last search in the opposite direction"
-msgstr "Repetir la última búsqueda"
+msgstr "Repetir la última búsqueda en la dirección opuesta"
 
 #: src/ui.cc:2247
 msgid "^Limit Display"
