@@ -659,66 +659,70 @@ static inline fragment *flowindentbox(int i1, int irest, fragment *f)
 
 static void prompt_help(ostream &out)
 {
-  fragment *f=indentbox(2, 2,
-			fragf(_("y: %F"
-				"n: %F"
-				"i: %F"
-				"c: %F"
-				"d: %F"
-				"s: %F"
-				"v: %F"
-				"w: %F"
-				"e: %F"
-				"%n"
-				"%F"
-				"%n"
-				"%F"
-				"%F"
-				"%F"
-				"%F"
-				"%F"
-				"%F"
-				"%F"
-				"%F"
-				"%F"),
+  std::vector<fragment *> fragments;
+
+  fragments.push_back(fragf(_("y: %F"),
 			      flowindentbox(0, 3,
-					    fragf(_("continue with the installation"))),
-			      flowindentbox(0, 3,
-					    fragf(_("abort and quit"))),
-			      flowindentbox(0, 3,
-					    fragf(_("show information about one or more packages; the package names should follow the 'i'"))),
-			      flowindentbox(0, 3,
-					    fragf(_("show the Debian changelogs of one or more packages; the package names should follow the 'c'"))),
-			      flowindentbox(0, 3,
-					    fragf(_("toggle the display of dependency information"))),
-			      flowindentbox(0, 3,
-					    fragf(_("toggle the display of changes in package sizes"))),
-			      flowindentbox(0, 3,
-					    fragf(_("toggle the display of version numbers"))),
-			      flowindentbox(0, 3,
-					    fragf(_("try to find a reason for installing a single package, or explain why installing one package should lead to installing another package."))),
-			      flowindentbox(0, 3,
-					    fragf(_("enter the full visual interface"))),
-			      flowbox(fragf(_("You may also specify modification to the actions which will be taken.  To do so, type an action character followed by one or more package names (or patterns).  The action will be applied to all the packages that you list.  The following actions are available:"))),
-			      // FIXME: copied from
-			      // cmdline_resolver.cc, maybe this
-			      // should be placed in a common file?
-			      flowindentbox(0, 4,
-					    fragf(_("'+' to install packages"))),
-			      flowindentbox(0, 5,
-					    fragf(_("'+M' to install packages and immediately flag them as automatically installed"))),
-			      flowindentbox(0, 4,
-					    fragf(_("'-' to remove packages"))),
-			      flowindentbox(0, 4,
-					    fragf(_("'_' to purge packages"))),
-			      flowindentbox(0, 4,
-					    fragf(_("'=' to place packages on hold"))),
-			      flowindentbox(0, 4,
-					    fragf(_("':' to keep packages in their current state without placing them on hold"))),
-			      flowindentbox(0, 4,
-					    fragf(_("'&M' to mark packages as automatically installed"))),
-			      flowindentbox(0, 4,
-					    fragf(_("'&m' to mark packages as manually installed")))));
+					    fragf(_("continue with the installation")))));
+
+  fragments.push_back(fragf(_("n: %F"),
+			    flowindentbox(0, 3,
+					  fragf(_("abort and quit")))));
+
+  fragments.push_back(fragf(_("i: %F"),
+			    flowindentbox(0, 3,
+					  fragf(_("show information about one or more packages; the package names should follow the 'i'")))));
+
+  fragments.push_back(fragf(_("c: %F"),
+			    flowindentbox(0, 3,
+					  fragf(_("show the Debian changelogs of one or more packages; the package names should follow the 'c'")))));
+
+  fragments.push_back(fragf(_("d: %F"),
+			    flowindentbox(0, 3,
+					  fragf(_("toggle the display of dependency information")))));
+
+  fragments.push_back(fragf(_("s: %F"),
+			    flowindentbox(0, 3,
+					  fragf(_("toggle the display of changes in package sizes")))));
+
+  fragments.push_back(fragf(_("v: %F"),
+			    flowindentbox(0, 3,
+					  fragf(_("toggle the display of version numbers")))));
+
+  fragments.push_back(fragf(_("w: %F"),
+			    flowindentbox(0, 3,
+					  fragf(_("try to find a reason for installing a single package, or explain why installing one package should lead to installing another package.")))));
+
+  fragments.push_back(fragf(_("e: %F"),
+			    flowindentbox(0, 3,
+					  fragf(_("enter the full visual interface")))));
+
+  fragments.push_back(newline_fragment());
+  fragments.push_back(flowbox(fragf(_("You may also specify modification to the actions which will be taken.  To do so, type an action character followed by one or more package names (or patterns).  The action will be applied to all the packages that you list.  The following actions are available:"))));
+  fragments.push_back(newline_fragment());
+
+  // FIXME: copied from
+  // cmdline_resolver.cc, maybe this
+  // should be placed in a common file?
+  fragments.push_back(flowindentbox(0, 4,
+				    fragf(_("'+' to install packages"))));
+
+  fragments.push_back(flowindentbox(0, 5,
+				    fragf(_("'+M' to install packages and immediately flag them as automatically installed"))));
+  fragments.push_back(flowindentbox(0, 4,
+				    fragf(_("'-' to remove packages"))));
+  fragments.push_back(flowindentbox(0, 4,
+				    fragf(_("'_' to purge packages"))));
+  fragments.push_back(flowindentbox(0, 4,
+				    fragf(_("'=' to place packages on hold"))));
+  fragments.push_back(flowindentbox(0, 4,
+				    fragf(_("':' to keep packages in their current state without placing them on hold"))));
+  fragments.push_back(flowindentbox(0, 4,
+				    fragf(_("'&M' to mark packages as automatically installed"))));
+  fragments.push_back(flowindentbox(0, 4,
+				    fragf(_("'&m' to mark packages as manually installed"))));
+
+  fragment *f = indentbox(2, 2, sequence_fragment(fragments));
 
   out << _("Commands:") << endl;
   out << f->layout(screen_width, screen_width, style());
