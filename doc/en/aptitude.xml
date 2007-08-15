@@ -5233,6 +5233,23 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		</para>
 
 		<para>
+		  Instead of <literal>=>
+		  <replaceable>title</replaceable></literal>, an entry
+		  may end with <literal>||</literal>.  This indicates
+		  that packages matching the corresponding
+		  <replaceable>pattern</replaceable> will be inserted
+		  into the tree at the same level as the
+		  <literal>pattern</literal> grouping, rather than
+		  being placed in subtrees.  For instance,
+		  <literal>pattern(~aremove => Packages Being Removed,
+		  ~T ||)</literal> will place packages that are being
+		  removed into a subtree, and place all the other
+		  packages at the current level.  Any later grouping
+		  policies will apply to both sets of packages, of
+		  course.
+		</para>
+
+		<para>
 		  See <xref linkend='secSearchPatterns'/>
 		  for more information on the format of
 		  <replaceable>pattern</replaceable>.

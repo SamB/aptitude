@@ -1,6 +1,6 @@
 // pkg_grouppolicy.h       -*-c++-*-
 //
-//  Copyright 1999-2002, 2005 Daniel Burrows
+//  Copyright 1999-2002, 2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -268,9 +268,12 @@ public:
   {
     pkg_matcher *matcher;
     std::wstring tree_name;
+    bool passthrough;
 
-    match_pair(pkg_matcher *_matcher, const std::wstring &_tree_name)
-      :matcher(_matcher), tree_name(_tree_name)
+    match_pair(pkg_matcher *_matcher,
+	       const std::wstring &_tree_name,
+	       bool _passthrough)
+      :matcher(_matcher), tree_name(_tree_name), passthrough(_passthrough)
     {
     }
   };

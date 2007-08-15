@@ -589,6 +589,7 @@ class pattern_policy_parser : public group_policy_parser
     vector<const char *> terminators;
     terminators.push_back(",");
     terminators.push_back("=>");
+    terminators.push_back("||");
 
     try
       {
@@ -601,6 +602,8 @@ class pattern_policy_parser : public group_policy_parser
 	    auto_ptr<pkg_matcher> matcher(parse_pattern(begin, end,
 							terminators,
 							false, true, false));
+
+	    bool passthrough = false;
 
 	    if(matcher.get() == NULL)
 	      throw GroupParseException(_("Unable to parse pattern after \"%s\""),
@@ -628,8 +631,28 @@ class pattern_policy_parser : public group_policy_parser
 		  throw GroupParseException(_("Unexpectedly empty tree title after \"%s\""),
 					    string(begin0, end).c_str());
 	      }
+	    else if(begin != end && *begin == '|')
+	      {
+		++begin;
 
-	    subgroups.push_back(pkg_grouppolicy_matchers_factory::match_pair(matcher.release(), transcode(format)));
+		eassert(begin != end && *begin == '|');
+
+		passthrough = true;
+
+		++begin;
+
+		while(begin != end && isspace(*begin))
+		  ++begin;
+
+		if(begin != end)
+		  {
+		    if(*begin != ',' && *begin != ')')
+		      throw GroupParseException(_("Expected ',' or ')' following '||', got '%s'"),
+						string(begin, begin + 1).c_str());
+		  }
+	      }
+
+	    subgroups.push_back(pkg_grouppolicy_matchers_factory::match_pair(matcher.release(), transcode(format), passthrough));
 
 	    if(begin != end && *begin == ',')
 	      ++begin;

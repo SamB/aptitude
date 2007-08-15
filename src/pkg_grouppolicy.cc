@@ -1032,6 +1032,7 @@ public:
   };
 private:
   pkg_grouppolicy_factory *chain;
+  pkg_grouppolicy *passthrough_policy;
   const vector<match_pair> &subgroups;
   typedef map<wstring, subtree_pair> subtree_map;
   subtree_map subtrees;
@@ -1122,7 +1123,8 @@ public:
 			   pkg_signal *_sig, desc_signal *_desc_sig,
 			   const vector<match_pair> &_subgroups)
         :pkg_grouppolicy(_sig, _desc_sig),
-	 chain(_chain), subgroups(_subgroups)
+	 chain(_chain), passthrough_policy(NULL),
+	 subgroups(_subgroups)
   {
   }
 
@@ -1131,6 +1133,7 @@ public:
     for(subtree_map::const_iterator i = subtrees.begin();
 	i != subtrees.end(); ++i)
       delete i->second.policy;
+    delete passthrough_policy;
   }
 
   void add_package(const pkgCache::PkgIterator &pkg,
@@ -1142,6 +1145,15 @@ public:
 	  pkg_match_result *res = i->matcher->get_match(pkg);
 	  if(res != NULL)
 	    {
+	      if(i->passthrough)
+		{
+		  if(passthrough_policy == NULL)
+		    passthrough_policy = chain->instantiate(get_sig(),
+							    get_desc_sig());
+		  passthrough_policy->add_package(pkg, root);
+		  break;
+		}
+
 	      wstring title = substitute(i->tree_name, res);
 	      delete res;
 
@@ -1161,6 +1173,8 @@ public:
 
 		  policy->add_package(pkg, tree);
 		}
+
+	      break;
 	    }
 	}
   }
