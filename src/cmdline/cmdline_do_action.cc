@@ -152,68 +152,84 @@ int cmdline_do_action(int argc, char *argv[],
 	(*apt_cache_file)->mark_keep(i, false, false, NULL);
     }
   else
-    // If we didn't take the keep-all path, mark according to the
-    // action requested.
-    for(int i=1; i<argc; ++i)
-      {
-	cmdline_pkgaction_type action=default_action;
-	int tmp=strlen(argv[i])-1;
+    {
+      typedef std::pair<cmdline_pkgaction_type, std::string> action_pair;
+      std::vector<action_pair> actions;
+      for(int i=1; i<argc; ++i)
+	{
+	  cmdline_pkgaction_type action = default_action;
+	  std::string target = argv[i];
+	  int tmp = strlen(argv[i]) - 1;
 
-	// HACK: disable interpreting of escapes if it's an existing
-	//      package name.
-	if((*apt_cache_file)->FindPkg(argv[i]).end())
-	  switch(argv[i][tmp])
+	  // HACK: disable interpreting of escapes if it's an existing
+	  //      package name.
+	  if((*apt_cache_file)->FindPkg(argv[i]).end())
+	    switch(argv[i][tmp])
+	      {
+	      case '-':
+		action = cmdline_remove;
+		target = std::string(argv[i], 0, tmp);
+		break;
+	      case '=':
+		action = cmdline_hold;
+		target = std::string(argv[i], 0, tmp);
+		break;
+	      case '+':
+		action = cmdline_install;
+		target = std::string(argv[i], 0, tmp);
+		break;
+	      case '_':
+		action = cmdline_purge;
+		target = std::string(argv[i], 0, tmp);
+
+		break;
+	      case ':':
+		action = cmdline_keep;
+		target = std::string(argv[i], 0, tmp);
+		break;
+	      case 'm':
+	      case 'M':
+		if(tmp > 0 && argv[i][tmp - 1] == '&')
+		  {
+		    if(argv[i][tmp] == 'm')
+		      action = cmdline_unmarkauto;
+		    else
+		      action = cmdline_markauto;
+		    target = std::string(argv[i], 0, tmp - 1);
+		  }
+		else if(tmp>0 && argv[i][tmp-1] == '+' && argv[i][tmp] == 'M')
+		  {
+		    action = cmdline_installauto;
+		    target = std::string(argv[i], 0, tmp - 1);
+		  }
+	      }
+
+	  actions.push_back(action_pair(action, target));
+	}
+
+      // If we have auto-install turned on, do a second run over all
+      // the packages being installed to blindly resolve their deps.
+      const bool do_autoinstall = aptcfg->FindB(PACKAGE "::Auto-Install", true);
+      const int num_passes = do_autoinstall ? 2 : 1;
+      for(int pass = 0; pass < num_passes; ++pass)
+	{
+	  // Clear these to avoid undesirable interactions between the
+	  // first and second passes.
+	  to_install.clear();
+	  to_hold.clear();
+	  to_remove.clear();
+	  to_purge.clear();
+
+
+	  for(std::vector<action_pair>::const_iterator it = actions.begin();
+	      it != actions.end(); ++it)
 	    {
-	    case '-':
-	      action=cmdline_remove;
-	      argv[i][tmp]=0;
-	      break;
-	    case '=':
-	      action=cmdline_hold;
-	      argv[i][tmp]=0;
-	      break;
-	    case '+':
-	      action=cmdline_install;
-	      argv[i][tmp]=0;
-	      break;
-	    case '_':
-	      action=cmdline_purge;
-	      argv[i][tmp]=0;
-
-	      break;
-	    case ':':
-	      action=cmdline_keep;
-	      argv[i][tmp]=0;
-	      break;
-	    case 'm':
-	    case 'M':
-	      if(tmp>0 && argv[i][tmp-1]=='&')
-		{
-		  argv[i][tmp-1]=0;
-		  if(argv[i][tmp]=='m')
-		    action=cmdline_unmarkauto;
-		  else
-		    action=cmdline_markauto;
-		}
-	      else if(tmp>0 && argv[i][tmp-1]=='+' && argv[i][tmp]=='M')
-		{
-		  argv[i][tmp-1]=0;
-		  action=cmdline_installauto;
-		}
+	      cmdline_applyaction(it->second, it->first,
+				  to_install, to_hold, to_remove, to_purge,
+				  verbose, pass > 0);
 	    }
-
-	cmdline_applyaction(argv[i], action,
-			    to_install, to_hold, to_remove, to_purge,
-			    verbose, false);
-
-	// If we have auto-install turned on, do a second run over all
-	// the packages being installed to blindly resolve their deps.
-	if(aptcfg->FindB(PACKAGE "::Auto-Install", true))
-	  {
-	    for(pkgset::const_iterator i = to_install.begin(); i != to_install.end(); ++i)
-	      (*apt_cache_file)->mark_install(*i, true, (*apt_cache_file)->get_ext_state(*i).reinstall, NULL);
-	  }
-      }
+	}
+    }
   }
 
   if(visual_preview)
