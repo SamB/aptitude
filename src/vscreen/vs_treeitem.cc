@@ -9,10 +9,6 @@
 
 using namespace std;
 
-void vs_treeitem::highlighted(vs_tree *win)
-{
-}
-
 void vs_treeitem::paint(vs_tree *win, int y, bool hierarchical,
 			const wstring &str, int depth_shift)
 {

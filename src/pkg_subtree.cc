@@ -1,6 +1,6 @@
 // pkg_subtree.cc
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -105,14 +105,16 @@ void pkg_subtree::set_auto(bool isauto, undo_group *undo)
     (*i)->set_auto(isauto, undo);
 }
 
-void pkg_subtree::highlighted(vs_tree *win)
+void pkg_subtree::do_highlighted_changed(bool highlighted)
 {
-  if(info_signal)
-    (*info_signal)(description);
-}
-
-void pkg_subtree::unhighlighted(vs_tree *win)
-{
-  if(info_signal)
-    (*info_signal)(L"");
+  if(highlighted)
+    {
+      if(info_signal)
+	(*info_signal)(description);
+    }
+  else
+    {
+      if(info_signal)
+	(*info_signal)(L"");
+    }
 }

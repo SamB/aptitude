@@ -480,6 +480,7 @@ pkg_ver_item::pkg_ver_item(const pkgCache::VerIterator &_version, pkg_signal *_s
   :version(_version), version_name(transcode(version.VerStr(), "ASCII")),
    show_pkg_name(_show_pkg_name), sig(_sig)
 {
+  highlighted_changed.connect(sigc::mem_fun(this, &pkg_ver_item::do_highlighted_changed));
 }
 
 #define MAYBE_HIGHLIGHTED(x) (highlighted ? (x "Highlighted") : (x))
@@ -534,17 +535,19 @@ void pkg_ver_item::paint(vs_tree *win, int y, bool hierarchical,
   win->mvaddnstr(y, 0, disp.c_str(), width);
 }
 
-void pkg_ver_item::highlighted(vs_tree *win)
+void pkg_ver_item::do_highlighted_changed(bool highlighted)
 {
-  if(sig)
-    (*sig)(version.ParentPkg(), version);
-}
-
-void pkg_ver_item::unhighlighted(vs_tree *win)
-{
-  if(sig)
-    (*sig)(pkgCache::PkgIterator(),
-	   pkgCache::VerIterator(*apt_cache_file));
+  if(highlighted)
+    {
+      if(sig)
+	(*sig)(version.ParentPkg(), version);
+    }
+  else
+    {
+      if(sig)
+	(*sig)(pkgCache::PkgIterator(),
+	       pkgCache::VerIterator(*apt_cache_file));
+    }
 }
 
 const wchar_t *pkg_ver_item::tag()

@@ -1,6 +1,6 @@
 // pkg_subtree.h (this is -*-c++-*-)
 //
-//  Copyright 1999-2002, 2004-2005 Daniel Burrows
+//  Copyright 1999-2002, 2004-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,6 +33,8 @@ class pkg_subtree:public vs_subtree<pkg_tree_node>,
   std::wstring description; // This is like a Description: field.
 
   sigc::signal1<void, std::wstring> *info_signal;
+
+  void do_highlighted_changed(bool highlighted);
 protected:
   void set_label(const std::wstring &_name) {name=_name;}
 public:
@@ -41,12 +43,15 @@ public:
 	      bool _expanded=false):
     vs_subtree<pkg_tree_node>(_expanded), name(_name),
     description(_description), info_signal(_info_signal)
-  {}
+  {
+    highlighted_changed.connect(sigc::mem_fun(this, &pkg_subtree::do_highlighted_changed));
+  }
 
   pkg_subtree(std::wstring _name, bool _expanded):
     vs_subtree<pkg_tree_node>(_expanded), name(_name),
     description(L""), info_signal(NULL)
   {
+    highlighted_changed.connect(sigc::mem_fun(this, &pkg_subtree::do_highlighted_changed));
   }
 
   virtual void paint(vs_tree *win, int y, bool hierarchical,
@@ -61,9 +66,6 @@ public:
   virtual void purge(undo_group *undo);
   virtual void reinstall(undo_group *undo);
   virtual void set_auto(bool isauto, undo_group *undo);
-
-  virtual void highlighted(vs_tree *win);
-  virtual void unhighlighted(vs_tree *win);
 
   std::wstring get_name() {return name;}
   std::wstring get_description() {return description;}

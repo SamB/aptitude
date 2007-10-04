@@ -1,6 +1,6 @@
 // pkg_item.cc
 //
-// Copyright 1999-2005 Daniel Burrows
+// Copyright 1999-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -97,19 +97,22 @@ pkg_item::pkg_item(const pkgCache::PkgIterator &_package,
 		   sigc::signal2<void, const pkgCache::PkgIterator &, const pkgCache::VerIterator &> *sig)
 :package(_package), info_signal(sig)
 {
+  highlighted_changed.connect(sigc::mem_fun(this, &pkg_item::do_highlighted_changed));
 }
 
-void pkg_item::highlighted(vs_tree *win)
+void pkg_item::do_highlighted_changed(bool highlighted)
 {
-  if(info_signal)
-    (*info_signal)(package, visible_version());
-}
-
-void pkg_item::unhighlighted(vs_tree *win)
-{
-  if(info_signal)
-    (*info_signal)(pkgCache::PkgIterator(),
-		   pkgCache::VerIterator(*apt_cache_file));
+  if(highlighted)
+    {
+      if(info_signal)
+	(*info_signal)(package, visible_version());
+    }
+  else
+    {
+      if(info_signal)
+	(*info_signal)(pkgCache::PkgIterator(),
+		       pkgCache::VerIterator(*apt_cache_file));
+    }
 }
 
 void pkg_item::do_select(undo_group *undo)

@@ -60,7 +60,6 @@ class pkg_tree:public apt_undo_tree
 
   /** Set up the limit and handle a few other things. */
   void init(const char *limitstr);
-
 protected:
   virtual bool handle_key(const key &k);
 
