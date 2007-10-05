@@ -1,6 +1,6 @@
 // vs_tree.h  (this is -*-c++-*-)
 //
-//  Copyright 1999-2001, 2004-2006 Daniel Burrows
+//  Copyright 1999-2001, 2004-2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -185,6 +185,13 @@ public:
   /** Send an 'unhighlighted' message to the currently selected item. */
   void unhighlight_current();
 
+  /** \brief Emitted when the selection moves to a new item.
+   *
+   *  The item will be NULL if nothing is selected.  The signal will
+   *  also be emitted when the widget is shown/hidden and when the
+   * 
+   */
+  sigc::signal1<void, vs_treeitem *> selection_changed;
 
   // Execute the given command
   void line_up();

@@ -83,7 +83,12 @@ vs_tree::~vs_tree()
 void vs_tree::do_shown()
 {
   if(selected!=end)
-    selected->highlighted_changed(true);
+    {
+      selected->highlighted_changed(true);
+      selection_changed(&*selected);
+    }
+  else
+    selection_changed(NULL);
 }
 
 int vs_tree::width_request()
@@ -107,7 +112,12 @@ void vs_tree::set_root(vs_treeitem *_root, bool showroot)
     }
 
   if(selected!=end)
-    selected->highlighted_changed(true);
+    {
+      selected->highlighted_changed(true);
+      selection_changed(&*selected);
+    }
+  else
+    selection_changed(NULL);
 
   if(root)
     delete root;
@@ -145,7 +155,12 @@ void vs_tree::set_root(vs_treeitem *_root, bool showroot)
   while(selected!=end && !selected->get_selectable())
     selected++;
   if(selected!=end)
-    selected->highlighted_changed(true);
+    {
+      selected->highlighted_changed(true);
+      selection_changed(&*selected);
+    }
+  else
+    selection_changed(NULL);
 }
 
 void vs_tree::sync_bounds()
@@ -238,7 +253,12 @@ void vs_tree::set_selection(vs_treeiterator to, bool force_to_top)
 	selected->highlighted_changed(false);
       selected=to;
       if(selected!=end)
-	selected->highlighted_changed(true);
+	{
+	  selected->highlighted_changed(true);
+	  selection_changed(&*selected);
+	}
+      else
+	selection_changed(NULL);
 
       vscreen_update();
     }
@@ -284,7 +304,12 @@ void vs_tree::set_selection(vs_treeiterator to, bool force_to_top)
 	    selected->highlighted_changed(false);
 
 	  if(to != end)
-	    to->highlighted_changed(true);
+	    {
+	      to->highlighted_changed(true);
+	      selection_changed(&*to);
+	    }
+	  else
+	    selection_changed(NULL);
 	}
 
       selected = to;
@@ -367,7 +392,12 @@ void vs_tree::line_down()
 	orig->highlighted_changed(false);
 
       if(selected != end)
-	selected->highlighted_changed(true);
+	{
+	  selected->highlighted_changed(true);
+	  selection_changed(&*selected);
+	}
+      else
+	selection_changed(NULL);
     }
 
   vscreen_update();
@@ -407,13 +437,19 @@ void vs_tree::set_hierarchical(bool _hierarchical)
 void vs_tree::highlight_current()
 {
   if(root != NULL && selected != end)
-    selected->highlighted_changed(true);
+    {
+      selected->highlighted_changed(true);
+      selection_changed(&*selected);
+    }
+  else
+    selection_changed(NULL);
 }
 
 void vs_tree::unhighlight_current()
 {
   if(root != NULL && selected != end)
     selected->highlighted_changed(false);
+  selection_changed(NULL);
 }
 
 void vs_tree::line_up()
@@ -482,7 +518,12 @@ void vs_tree::line_up()
 	orig->highlighted_changed(false);
 
       if(selected != end)
-	selected->highlighted_changed(true);
+	{
+	  selected->highlighted_changed(true);
+	  selection_changed(&*selected);
+	}
+      else
+	selection_changed(NULL);
     }
 
   vscreen_update();
@@ -523,6 +564,7 @@ void vs_tree::page_down()
       if(l==height || selected==end)
 	selected=top;
       (*selected).highlighted_changed(true);
+      selection_changed(&*selected);
       vscreen_update();
     }
 }
@@ -564,7 +606,12 @@ void vs_tree::page_up()
 	selected=top;
 
       if(selected!=end)
-	(*selected).highlighted_changed(true);
+	{
+	  (*selected).highlighted_changed(true);
+	  selection_changed(&*selected);
+	}
+      else
+	selection_changed(NULL);
       vscreen_update();
     }
 }
@@ -596,7 +643,12 @@ void vs_tree::jump_to_begin()
     selected=begin;
 
   if(selected!=end)
-    selected->highlighted_changed(true);
+    {
+      selected->highlighted_changed(true);
+      selection_changed(&*selected);
+    }
+  else
+    selection_changed(NULL);
 
   if(top!=begin)
     top=begin;
@@ -647,7 +699,12 @@ void vs_tree::jump_to_end()
     selected=last;
 
   if(selected!=end)
-    selected->highlighted_changed(true);
+    {
+      selected->highlighted_changed(true);
+      selection_changed(&*selected);
+    }
+  else
+    selection_changed(NULL);
 
   if(newtop!=top)
     top=newtop;
@@ -704,6 +761,7 @@ bool vs_tree::handle_key(const key &k)
 	  prev_level=next;
 
 	  selected->highlighted_changed(true);
+	  selection_changed(&*selected);
 
 	  vscreen_update();
 	}
@@ -722,6 +780,7 @@ bool vs_tree::handle_key(const key &k)
 	  selected=begin;
 
 	  selected->highlighted_changed(true);
+	  selection_changed(&*selected);
 
 	  vscreen_update();
 	}
