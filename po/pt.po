@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-07-25 20:26-0700\n"
-"PO-Revision-Date: 2007-05-21 18:15+0100\n"
+"PO-Revision-Date: 2007-09-12 22:03+0100\n"
 "Last-Translator: Miguel Figueiredo <elmig@debianPT.org>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
 "MIME-Version: 1.0\n"
@@ -612,9 +612,8 @@ msgid "The following packages will be upgraded:"
 msgstr "Os seguintes pacotes serão actualizados:"
 
 #: src/cmdline/cmdline_prompt.cc:279
-#, fuzzy
 msgid "The following partially installed packages will be configured:"
-msgstr "Os seguintes pacotes serão actualizados:"
+msgstr "Os seguintes pacotes parcialmente instalados serão configurados:"
 
 #: src/cmdline/cmdline_prompt.cc:334
 #, c-format
@@ -792,6 +791,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:663
 #, fuzzy, c-format
+#| msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
 msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 
@@ -3881,15 +3881,14 @@ msgstr ""
 " Estes pacotes irão ser actualizados para uma versão mais recente."
 
 #: src/pkg_grouppolicy.cc:544
-#, fuzzy
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
 "made to complete their installation."
 msgstr ""
-"Pacotes a serem automaticamente instalados para satisfazer dependências\n"
-" Estes pacotes estão a ser instalados porque são necessários a outro pacote "
-"que escolheu para ser instalado."
+"Pacotes que estão parcialmente instalados\n"
+" Estes pacotes nãoo estão totalmente instalados e configurados; será feita "
+"uma tentatica para completar a sua instalação."
 
 #: src/pkg_grouppolicy.cc:659
 msgid "unknown"
@@ -4263,9 +4262,9 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b será actualizado da versão %B%s%b para a versão %B%s%b."
 
 #: src/reason_fragment.cc:443
-#, fuzzy
 msgid "%B%s%b is only partly installed; its installation will be completed."
-msgstr "%s não está actualmente instalado, portanto não será reinstalado.\n"
+msgstr ""
+"%B%s%b está apenas parcialmente instalado; a sua instalação será completada."
 
 #: src/reason_fragment.cc:475
 msgid ""
@@ -4603,12 +4602,13 @@ msgstr "Você já é root!"
 
 #: src/ui.cc:422
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
-msgstr ""
+msgstr "Get-Root-Command inválido; deveria começar por su: ou sudo:"
 
 #: src/ui.cc:429
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr ""
+"Get-Root-Command inválido; deveria começar por su: ou sudo:, e não por %s:"
 
 #: src/ui.cc:552
 msgid ""

@@ -389,6 +389,7 @@ msgstr "无法找到 %s 的变更日志"
 
 #: src/cmdline/cmdline_clean.cc:29
 #, fuzzy, c-format
+#| msgid "E: The update command takes no arguments\n"
 msgid "E: The clean command takes no arguments\n"
 msgstr "E: update 命令不接受任何参数\n"
 
@@ -404,6 +405,7 @@ msgstr "删除 %s %s [%sB]\n"
 
 #: src/cmdline/cmdline_clean.cc:111
 #, fuzzy, c-format
+#| msgid "E: The update command takes no arguments\n"
 msgid "E: The autoclean command takes no arguments\n"
 msgstr "E: update 命令不接受任何参数\n"
 
@@ -456,6 +458,7 @@ msgstr "%s 版本 %s 没有可下载的文件；也许它是一个本地软件�
 
 #: src/cmdline/cmdline_forget_new.cc:25
 #, fuzzy, c-format
+#| msgid "E: The update command takes no arguments\n"
 msgid "E: The forget-new command takes no arguments\n"
 msgstr "E: update 命令不接受任何参数\n"
 
@@ -584,6 +587,7 @@ msgstr "下列软件包将被升级："
 
 #: src/cmdline/cmdline_prompt.cc:279
 #, fuzzy
+#| msgid "The following packages will be upgraded:"
 msgid "The following partially installed packages will be configured:"
 msgstr "下列软件包将被升级："
 
@@ -642,6 +646,9 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:421
 #, fuzzy
+#| msgid ""
+#| "*** WARNING ***   Ignoring these trust violations because\n"
+#| "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
@@ -756,6 +763,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:663
 #, fuzzy, c-format
+#| msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
 msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 
@@ -1382,6 +1390,7 @@ msgstr "E: update 命令不接受任何参数\n"
 
 #: src/cmdline/cmdline_upgrade.cc:41
 #, fuzzy, c-format
+#| msgid "E: The update command takes no arguments\n"
 msgid "E: The %s command takes no arguments\n"
 msgstr "E: update 命令不接受任何参数\n"
 
@@ -1544,6 +1553,9 @@ msgstr "已下载 %sB，耗时 %s (%sB/s)\n"
 
 #: src/generic/apt/acqprogress.cc:296
 #, fuzzy, c-format
+#| msgid ""
+#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
+#| "press enter\n"
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press [Enter].\n"
@@ -2309,11 +2321,15 @@ msgstr " update       - 下载新/可升级软件包列表\n"
 
 #: src/main.cc:135
 #, fuzzy, c-format
+#| msgid " upgrade      - Perform a safe upgrade\n"
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr " upgrade      - 执行一次安全的升级\n"
 
 #: src/main.cc:136
 #, fuzzy, c-format
+#| msgid ""
+#| " dist-upgrade - Perform an upgrade, possibly installing and removing "
+#| "packages\n"
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
@@ -3675,6 +3691,10 @@ msgstr ""
 
 #: src/pkg_grouppolicy.cc:544
 #, fuzzy
+#| msgid ""
+#| "Packages being automatically installed to satisfy dependencies\n"
+#| " These packages are being installed because they are required by another "
+#| "package you have chosen for installation."
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
@@ -4040,6 +4060,7 @@ msgstr "%B%s%b 将从版本 %B%s%b升级到版本%B%s%b。"
 
 #: src/reason_fragment.cc:443
 #, fuzzy
+#| msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgid "%B%s%b is only partly installed; its installation will be completed."
 msgstr "%s 目前未被安装，所以它不会被重新安装。\n"
 
@@ -4956,11 +4977,13 @@ msgstr "重复上一次查找"
 
 #: src/ui.cc:2242
 #, fuzzy
+#| msgid "^Find Backwards"
 msgid "Find Again ^Backwards"
 msgstr "向后查找(^F)"
 
 #: src/ui.cc:2243
 #, fuzzy
+#| msgid "Repeat the last search"
 msgid "Repeat the last search in the opposite direction"
 msgstr "重复上一次查找"
 
