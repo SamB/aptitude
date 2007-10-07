@@ -17,6 +17,8 @@ aptitude_SOURCES= 	\
 	main.cc		\
 	desc_parse.cc   \
 	desc_parse.h    \
+	apt_config_treeitems.cc \
+	apt_config_treeitems.h  \
 	apt_config_widgets.cc \
 	apt_config_widgets.h  \
 	apt_info_tree.cc\

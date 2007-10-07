@@ -17,4 +17,16 @@ vs_widget_ref make_ui_options_dialog();
 vs_widget_ref make_misc_options_dialog();
 vs_widget_ref make_dependency_options_dialog();
 
+
+namespace aptitude
+{
+  namespace ui
+  {
+    namespace config
+    {
+      vs_widget_ref make_options_tree();
+    }
+  }
+}
+
 #endif

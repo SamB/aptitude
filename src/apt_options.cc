@@ -3,6 +3,7 @@
 //  Copyright 2000 Daniel Burrows
 
 #include "apt_options.h"
+#include "apt_config_treeitems.h"
 #include "apt_config_widgets.h"
 #include "pkg_columnizer.h"
 #include "ui.h"
@@ -14,7 +15,9 @@
 #include <vscreen/vs_center.h>
 #include <vscreen/vs_frame.h>
 #include <vscreen/vs_label.h>
+#include <vscreen/vs_subtree.h>
 #include <vscreen/vs_table.h>
+#include <vscreen/vs_text_layout.h>
 
 #include <vscreen/config/keybindings.h>
 #include <vscreen/config/colors.h>
@@ -383,4 +386,85 @@ vs_widget_ref make_misc_options_dialog()
 vs_widget_ref make_dependency_options_dialog()
 {
   return realize_options_dialog(dependency_options);
+}
+
+namespace aptitude
+{
+  namespace ui
+  {
+    namespace config
+    {
+      namespace
+      {
+	class dummy_root : public vs_subtree<config_treeitem>
+	{
+	public:
+	  dummy_root() : vs_subtree<config_treeitem>(true)
+	  {
+	  }
+
+	  void paint(vs_tree *win, int y,
+		     bool hierarchical, const style &)
+	  {
+	    vs_subtree<config_treeitem>::paint(win, y, hierarchical, L"");
+	  }
+
+	  const wchar_t *tag()
+	  {
+	    return L"";
+	  }
+
+	  const wchar_t *label()
+	  {
+	    return L"";
+	   }
+	 };
+       }
+
+       void handle_selection_changed(vs_treeitem *selected,
+				     vs_text_layout &layout)
+       {
+	 config_treeitem *configitem = dynamic_cast<config_treeitem *>(selected);
+	 if(configitem == NULL)
+	   layout.set_fragment(NULL);
+	 else
+	   layout.set_fragment(configitem->get_long_description());
+       }
+
+       vs_widget_ref make_options_tree()
+       {
+	 dummy_root *root = new dummy_root;
+	 root->add_child(make_boolean_item(L"Dummy Option",
+					   L"This option is a test option to check that the new configuration framework is sane.",
+					   "Aptitude::Dummy-Test-Option",
+					   true));
+
+	 vs_tree_ref tree = vs_tree::create(root);
+
+	 // Use an empty label to produce a "bar" dividing the two
+	 // halves of the screen.
+	 vs_label_ref middle_label = vs_label::create("", get_style("Status"));
+	 vs_text_layout_ref desc_area = vs_text_layout::create();
+
+	 tree->selection_changed.connect(sigc::bind(sigc::ptr_fun(&handle_selection_changed), desc_area.weak_ref()));
+	 tree->highlight_current();
+
+	 vs_table_ref tbl = vs_table::create();
+
+	 tbl->add_widget_opts(tree, 0, 0, 1, 1,
+			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
+
+	 tbl->add_widget_opts(middle_label, 1, 0, 1, 1,
+			      vs_table::ALIGN_CENTER | vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+			      vs_table::ALIGN_CENTER);
+
+	 tbl->add_widget_opts(desc_area, 2, 0, 1, 1,
+			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
+
+	 return tbl;
+       }
+    }
+  }
 }
