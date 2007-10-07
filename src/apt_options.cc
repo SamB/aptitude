@@ -417,54 +417,90 @@ namespace aptitude
 	  const wchar_t *label()
 	  {
 	    return L"";
-	   }
-	 };
-       }
+	  }
+	};
 
-       void handle_selection_changed(vs_treeitem *selected,
-				     vs_text_layout &layout)
-       {
-	 config_treeitem *configitem = dynamic_cast<config_treeitem *>(selected);
-	 if(configitem == NULL)
-	   layout.set_fragment(NULL);
-	 else
-	   layout.set_fragment(configitem->get_long_description());
-       }
+	class apt_options_view : public vs_table
+	{
+	  vs_text_layout_ref desc_area;
+	  vs_tree_ref tree;
 
-       vs_widget_ref make_options_tree()
-       {
-	 dummy_root *root = new dummy_root;
-	 root->add_child(make_boolean_item(L"Dummy Option",
-					   L"This option is a test option to check that the new configuration framework is sane.",
-					   "Aptitude::Dummy-Test-Option",
-					   true));
+	  sigc::connection last_connection;
 
-	 vs_tree_ref tree = vs_tree::create(root);
+	  void handle_selection_changed(vs_treeitem *selected)
+	  {
+	    last_connection.disconnect();
 
-	 // Use an empty label to produce a "bar" dividing the two
-	 // halves of the screen.
-	 vs_label_ref middle_label = vs_label::create("", get_style("Status"));
-	 vs_text_layout_ref desc_area = vs_text_layout::create();
+	    config_treeitem *configitem = dynamic_cast<config_treeitem *>(selected);
+	    if(configitem == NULL)
+		desc_area->set_fragment(NULL);
+	    else
+	      {
+		last_connection = configitem->description_changed.connect(sigc::mem_fun(this, &apt_options_view::handle_description_changed));
+		desc_area->set_fragment(configitem->get_long_description());
+	      }
+	  }
 
-	 tree->selection_changed.connect(sigc::bind(sigc::ptr_fun(&handle_selection_changed), desc_area.weak_ref()));
-	 tree->highlight_current();
+	  void handle_description_changed()
+	  {
+	    vs_treeiterator selected = tree->get_selection();
+	    config_treeitem *configitem;
 
-	 vs_table_ref tbl = vs_table::create();
+	    if(selected == tree->get_end())
+	      configitem = NULL;
+	    else
+	      configitem = dynamic_cast<config_treeitem *>(&*selected);
 
-	 tbl->add_widget_opts(tree, 0, 0, 1, 1,
-			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
-			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
+	    if(configitem == NULL)
+	      desc_area->set_fragment(NULL);
+	    else
+	      desc_area->set_fragment(configitem->get_long_description());
+	  }
 
-	 tbl->add_widget_opts(middle_label, 1, 0, 1, 1,
-			      vs_table::ALIGN_CENTER | vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
-			      vs_table::ALIGN_CENTER);
+	  apt_options_view()
+	  {
+	    dummy_root *root = new dummy_root;
+	    root->add_child(make_boolean_item(L"Dummy Option",
+					      L"This option is a test option to check that the new configuration framework is sane.",
+					      "Aptitude::Dummy-Test-Option",
+					      true));
 
-	 tbl->add_widget_opts(desc_area, 2, 0, 1, 1,
-			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
-			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
+	    tree = vs_tree::create(root);
 
-	 return tbl;
-       }
+	    // Use an empty label to produce a "bar" dividing the two
+	    // halves of the screen.
+	    vs_label_ref middle_label = vs_label::create("", get_style("Status"));
+	    desc_area = vs_text_layout::create();
+
+	    tree->selection_changed.connect(sigc::mem_fun(this, &apt_options_view::handle_selection_changed));
+	    tree->highlight_current();
+
+	    add_widget_opts(tree, 0, 0, 1, 1,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
+
+	    add_widget_opts(middle_label, 1, 0, 1, 1,
+			    vs_table::ALIGN_CENTER | vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+			    vs_table::ALIGN_CENTER);
+
+	    add_widget_opts(desc_area, 2, 0, 1, 1,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
+	  }
+
+	public:
+	  static ref_ptr<apt_options_view> create()
+	  {
+	    return ref_ptr<apt_options_view>(new apt_options_view);
+	  }
+	};
+	typedef ref_ptr<apt_options_view> apt_options_view_ref;
+      }
+
+      vs_widget_ref make_options_tree()
+      {
+	return apt_options_view::create();
+      }
     }
   }
 }

@@ -35,6 +35,11 @@ namespace aptitude
       class config_treeitem : virtual public vs_treeitem
       {
       public:
+	/** \brief A signal emitted when the description of this tree-item
+	 *  needs to be refreshed.
+	 */
+	sigc::signal0<void> description_changed;
+
 	/** \brief Option information
 	 *
 	 *  These methods retrieve information about the option for

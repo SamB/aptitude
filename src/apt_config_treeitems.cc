@@ -48,6 +48,7 @@ namespace aptitude
 	void value_changed()
 	{
 	  vscreen_update();
+	  description_changed();
 	}
       public:
 	boolean_config_treeitem(const std::string &_item,
