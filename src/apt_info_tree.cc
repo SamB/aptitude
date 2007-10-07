@@ -69,5 +69,5 @@ void apt_info_tree::repeat_signal()
 {
   vs_widget_ref tmpref(this);
 
-  get_selected()->highlighted_changed(true);
+  get_selection()->highlighted_changed(true);
 }

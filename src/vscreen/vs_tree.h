@@ -97,10 +97,6 @@ class vs_tree:public vscreen_widget
 
   void do_shown();
 protected:
-  vs_treeiterator get_selected() {return selected;}
-  vs_treeiterator get_begin() {return begin;}
-  vs_treeiterator get_end() {return end;}
-
   void sync_bounds();
   // This is an awful hack; I've been thinking about an alternate design of
   // the tree code for a while, and this just confirms it.  Yuck! :)
@@ -157,9 +153,30 @@ public:
    *  be immediately expanded.
    */
   void set_selection(vs_treeiterator to, bool force_to_top = false);
-  // Directly sets the selection to a given item.  [ the item must be
-  // visible -- ie, all its parents must be expanded ]
-  // Causes a redraw.
+
+  /** \brief Retrieve a reference to the currently selected entry in
+   *  the tree.
+   *
+   *  This iterator might be invalidated by user interactions and
+   *  should not be saved.
+   */
+  vs_treeiterator get_selection() const
+  {
+    return selected;
+  }
+
+  /** \brief Retrieve an iterator referencing the start of the tree. */
+  vs_treeiterator get_begin()
+  {
+    return begin;
+  }
+
+  /** \brief Retrieve an iterator referencing the end of the tree. */
+  vs_treeiterator get_end()
+  {
+    return end;
+  }
+
   virtual ~vs_tree();
 
   void search_for(vs_tree_search_func &matches);
