@@ -2382,17 +2382,17 @@ static void munge_menu(vs_menu_info *menu)
     }
 }
 
-static void do_show_menu_description(vs_menu_item *item, const vs_label_ref &label)
+static void do_show_menu_description(vs_menu_item *item, vs_label &label)
 {
   if(item && item->get_description().size()>0)
     {
-      label->show();
-      label->set_text(wrapbox(text_fragment(item->get_description())));
+      label.show();
+      label.set_text(wrapbox(text_fragment(item->get_description())));
     }
   else
     {
-      label->hide();
-      label->set_text("");
+      label.hide();
+      label.set_text("");
     }
 }
 
@@ -2429,7 +2429,7 @@ static vs_menu_ref add_menu(vs_menu_info *info, const std::string &name,
   main_menu->append_item(transcode(name), menu);
 
   menu->item_highlighted.connect(sigc::bind(sigc::ptr_fun(do_show_menu_description),
-					    menu_description));
+					    menu_description.weak_ref()));
 
   return menu;
 }
