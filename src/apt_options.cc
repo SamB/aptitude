@@ -396,17 +396,17 @@ namespace aptitude
     {
       namespace
       {
-	class dummy_root : public vs_subtree<config_treeitem>
+	class dummy_root : public vs_subtree<vs_treeitem>
 	{
 	public:
-	  dummy_root() : vs_subtree<config_treeitem>(true)
+	  dummy_root() : vs_subtree<vs_treeitem>(true)
 	  {
 	  }
 
 	  void paint(vs_tree *win, int y,
 		     bool hierarchical, const style &)
 	  {
-	    vs_subtree<config_treeitem>::paint(win, y, hierarchical, L"");
+	    vs_subtree<vs_treeitem>::paint(win, y, hierarchical, L"");
 	  }
 
 	  const wchar_t *tag()
@@ -433,7 +433,7 @@ namespace aptitude
 
 	    config_treeitem *configitem = dynamic_cast<config_treeitem *>(selected);
 	    if(configitem == NULL)
-		desc_area->set_fragment(NULL);
+	      desc_area->set_fragment(NULL);
 	    else
 	      {
 		last_connection = configitem->description_changed.connect(sigc::mem_fun(this, &apt_options_view::handle_description_changed));
@@ -464,6 +464,10 @@ namespace aptitude
 					      L"This option is a test option to check that the new configuration framework is sane.",
 					      "Aptitude::Dummy-Test-Option",
 					      true));
+	    root->add_child(make_string_item(L"Dummy String Option",
+					     L"This option is a string option used to test the new configuration framework.",
+					     "Aptitude::Dummy-Test-String-Option",
+					     "Some text"));
 
 	    tree = vs_tree::create(root);
 

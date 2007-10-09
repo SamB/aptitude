@@ -68,10 +68,10 @@ namespace aptitude
        *  Selecting the option and pressing "Confirm" will toggle it on
        *  or off.
        */
-      config_treeitem *make_boolean_item(const std::wstring &description,
-					 const std::wstring &long_description,
-					 const std::string  &item,
-					 const bool          dflt);
+      vs_treeitem *make_boolean_item(const std::wstring &description,
+				     const std::wstring &long_description,
+				     const std::string  &item,
+				     const bool          dflt);
 
       /** \brief Generate a tree item for the given string option.
        *
@@ -87,10 +87,10 @@ namespace aptitude
        *  Selecting the option and pressing "Confirm" will display a
        *  prompt to enter a new value for the option.
        */
-      config_treeitem *make_string_item(const std::wstring &description,
-					const std::wstring &long_description,
-					const std::string  &item,
-					const std::string  &dflt);
+      vs_treeitem *make_string_item(const std::wstring &description,
+				    const std::wstring &long_description,
+				    const std::string  &item,
+				    const std::string  &dflt);
 
       /** \brief Information about a single option in a multiple-choice setting. */
       class radio_choice
@@ -140,11 +140,11 @@ namespace aptitude
        *  Selecting the option and pressing "Confirm" will display a
        *  prompt to choose a new value for the option.
        */
-      config_treeitem *make_radio_item(const std::wstring &description,
-				       const std::wstring &long_description,
-				       const std::string  &item,
-				       const std::vector<radio_choice> &choices,
-				       const std::string  &dflt);
+      vs_treeitem *make_radio_item(const std::wstring &description,
+				   const std::wstring &long_description,
+				   const std::string  &item,
+				   const std::vector<radio_choice> &choices,
+				   const std::string  &dflt);
     }
   }
 }
