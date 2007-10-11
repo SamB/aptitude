@@ -15,6 +15,7 @@
 #include <vscreen/vs_center.h>
 #include <vscreen/vs_frame.h>
 #include <vscreen/vs_label.h>
+#include <vscreen/vs_scrollbar.h>
 #include <vscreen/vs_subtree.h>
 #include <vscreen/vs_table.h>
 #include <vscreen/vs_text_layout.h>
@@ -476,20 +477,34 @@ namespace aptitude
 	    vs_label_ref middle_label = vs_label::create("", get_style("Status"));
 	    desc_area = vs_text_layout::create();
 
+	    vs_scrollbar_ref desc_area_scrollbar = vs_scrollbar::create(vs_scrollbar::VERTICAL);
+
 	    tree->selection_changed.connect(sigc::mem_fun(this, &apt_options_view::handle_selection_changed));
 	    tree->highlight_current();
 
-	    add_widget_opts(tree, 0, 0, 1, 1,
-			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
-			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
+	    add_widget_opts(tree, 0, 0, 1, 2,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK | vs_table::IGNORE_SIZE_REQUEST,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK | vs_table::IGNORE_SIZE_REQUEST);
 
-	    add_widget_opts(middle_label, 1, 0, 1, 1,
+	    add_widget_opts(middle_label, 1, 0, 1, 2,
 			    vs_table::ALIGN_CENTER | vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
 			    vs_table::ALIGN_CENTER);
 
 	    add_widget_opts(desc_area, 2, 0, 1, 1,
-			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK | vs_table::IGNORE_SIZE_REQUEST,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK | vs_table::IGNORE_SIZE_REQUEST);
+	    add_widget_opts(desc_area_scrollbar, 2, 1, 1, 1,
+			    vs_table::FILL | vs_table::SHRINK,
 			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
+
+	    desc_area->location_changed.connect(sigc::mem_fun(*desc_area_scrollbar.unsafe_get_ref(), &vs_scrollbar::set_slider));
+
+	    tree->connect_key("DescriptionUp", &global_bindings,
+			      sigc::mem_fun(*desc_area.unsafe_get_ref(),
+					    &vs_text_layout::line_up));
+	    tree->connect_key("DescriptionDown", &global_bindings,
+			      sigc::mem_fun(*desc_area.unsafe_get_ref(),
+					    &vs_text_layout::line_down));
 	  }
 
 	public:
