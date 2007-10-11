@@ -470,6 +470,22 @@ namespace aptitude
 					     "Aptitude::Dummy-Test-String-Option",
 					     "Some text"));
 
+	    std::vector<radio_choice> choices;
+	    choices.push_back(radio_choice("SomeOption",
+					   L"Some option",
+					   L"An option that I am too tired to make up a witty description for."));
+	    choices.push_back(radio_choice("Algebra",
+					   L"Algebra",
+					   L"The science of notation and symbolic manipulation."));
+	    choices.push_back(radio_choice("Aardvark",
+					   L"Aardvark",
+					   L"The animal with a silly name that eats insects."));
+	    root->add_child(make_radio_item(L"Dummy Radio Option",
+					    L"An option to test my support for radio-style configuration items.",
+					    "Aptitude::Dummy-Radio-Option",
+					    choices,
+					    "Algebra"));
+
 	    tree = vs_tree::create(root);
 
 	    // Use an empty label to produce a "bar" dividing the two

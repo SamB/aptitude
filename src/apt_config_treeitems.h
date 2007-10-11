@@ -95,14 +95,18 @@ namespace aptitude
       /** \brief Information about a single option in a multiple-choice setting. */
       class radio_choice
       {
-	const std::string value;
-	const std::string description;
-	const std::string long_description;
+	std::string value;
+	std::wstring description;
+	std::wstring long_description;
 
       public:
+	radio_choice()
+	{
+	}
+
 	radio_choice(const std::string &_value,
-		     const std::string &_description,
-		     const std::string &_long_description)
+		     const std::wstring &_description,
+		     const std::wstring &_long_description)
 	  : value(_value),
 	    description(_description),
 	    long_description(_long_description)
@@ -114,12 +118,12 @@ namespace aptitude
 	  return value;
 	}
 
-	const std::string &get_description() const
+	const std::wstring &get_description() const
 	{
 	  return description;
 	}
 
-	const std::string &get_long_description() const
+	const std::wstring &get_long_description() const
 	{
 	  return long_description;
 	}
