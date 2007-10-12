@@ -1,17 +1,17 @@
-# translation of aptitude_po_ru.po to Russian
+# translation of ru.po to Russian
 # This file is distributed under the same license as the aptitude package.
 # Copyright (C) 2004 THE aptitude'S COPYRIGHT HOLDER.
 #
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2004.
 # Yuriy Talakan' <yt@amur.elektra.ru>, 2004.
 # Dmitry Beloglazov <dm-guest@alioth.debian.org>, 2004.
-# Yuri Kozlov <kozlov.y@gmail.com>, 2004, 2005, 2006.
+# Yuri Kozlov <kozlov.y@gmail.com>, 2004, 2005, 2006, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.4.3-1\n"
+"Project-Id-Version: 0.4.6.1-1.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-07-25 20:26-0700\n"
-"PO-Revision-Date: 2006-10-19 21:50+0400\n"
+"PO-Revision-Date: 2007-10-11 21:32+0400\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: KBabel 1.11.2\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: src/apt_options.cc:110
 msgid "Display some available commands at the top of the screen"
@@ -198,7 +198,7 @@ msgstr "Не удалось разрешить зависимости."
 
 #: src/broken_indicator.cc:237
 msgid "Fatal error in resolver"
-msgstr ""
+msgstr "Неустранимая ошибка в решателе"
 
 #: src/broken_indicator.cc:248
 #, c-format
@@ -412,9 +412,9 @@ msgid "Couldn't find a changelog for %s"
 msgstr "Не удалось найти changelog для %s"
 
 #: src/cmdline/cmdline_clean.cc:29
-#, fuzzy, c-format
+#, c-format
 msgid "E: The clean command takes no arguments\n"
-msgstr "E: Команде update не нужны аргументы\n"
+msgstr "E: Команде clean не нужны аргументы\n"
 
 #: src/cmdline/cmdline_clean.cc:58
 #, c-format
@@ -427,9 +427,9 @@ msgid "Del %s %s [%sB]\n"
 msgstr "Del %s %s [%sB]\n"
 
 #: src/cmdline/cmdline_clean.cc:111
-#, fuzzy, c-format
+#, c-format
 msgid "E: The autoclean command takes no arguments\n"
-msgstr "E: Команде update не нужны аргументы\n"
+msgstr "E: Команде autoclean не нужны аргументы\n"
 
 #: src/cmdline/cmdline_clean.cc:148
 #, c-format
@@ -481,9 +481,9 @@ msgstr ""
 "устаревший пакет?"
 
 #: src/cmdline/cmdline_forget_new.cc:25
-#, fuzzy, c-format
+#, c-format
 msgid "E: The forget-new command takes no arguments\n"
-msgstr "E: Команде update не нужны аргументы\n"
+msgstr "E: Команде forget-new не нужны аргументы\n"
 
 #: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
@@ -609,9 +609,8 @@ msgid "The following packages will be upgraded:"
 msgstr "Следующие пакеты будут обновлены:"
 
 #: src/cmdline/cmdline_prompt.cc:279
-#, fuzzy
 msgid "The following partially installed packages will be configured:"
-msgstr "Следующие пакеты будут обновлены:"
+msgstr "Следующие не до конца установленные пакеты будут настроены:"
 
 #: src/cmdline/cmdline_prompt.cc:334
 #, c-format
@@ -670,14 +669,12 @@ msgstr ""
 "'true'!\n"
 
 #: src/cmdline/cmdline_prompt.cc:421
-#, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
 "*** ПРЕДУПРЕЖДЕНИЕ ***   Игнорирование этих надёжных противоречий, так как\n"
-"                  %s::CmdLine::Ignore-Trust-Violations установлено в "
-"'true'!\n"
+"                  Apt::Get::AllowUnauthenticated установлено в 'true'!\n"
 
 #: src/cmdline/cmdline_prompt.cc:427 src/vscreen/vs_util.cc:194
 #: src/vscreen/vs_util.cc:232
@@ -785,11 +782,13 @@ msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify."
 msgstr ""
+"Пакеты не найдены -- введите ноль или более корней поиска после пакета для "
+"подтверждения."
 
 #: src/cmdline/cmdline_prompt.cc:663
-#, fuzzy, c-format
+#, c-format
 msgid "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
-msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
+msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_prompt.cc:685
 msgid "continue with the installation"
@@ -832,6 +831,8 @@ msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
 msgstr ""
+"попытаться выяснить причину установки одного пакета или объяснить почему "
+"установка одного пакета должна привести к установке другого пакета."
 
 #: src/cmdline/cmdline_prompt.cc:701
 msgid "enter the full visual interface"
@@ -1011,7 +1012,7 @@ msgstr "перейти к предыдущему решению"
 msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
-msgstr ""
+msgstr "переключиться между содержимым решения и его объяснением"
 
 #: src/cmdline/cmdline_resolver.cc:176
 msgid "examine the solution in the visual user interface"
@@ -1171,6 +1172,8 @@ msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
+"*** ОШИБКА: поиск прерван из-за неустранимого исключения. Вы можете\n"
+"           продолжить поиск, но некоторые решения будут невыполнимы."
 
 #: src/cmdline/cmdline_search.cc:102
 #, c-format
@@ -1409,7 +1412,7 @@ msgstr "Не удалось проанализировать шаблон %s"
 #: src/cmdline/cmdline_simulate.cc:37
 #, c-format
 msgid "Would download/install/remove packages.\n"
-msgstr "Загрузить/установить/удалить пакеты.\n"
+msgstr "Эти пакеты были бы загружены/установлены/удалены.\n"
 
 #: src/cmdline/cmdline_simulate.cc:48
 msgid "Internal Error, Ordering didn't finish"
@@ -1426,9 +1429,9 @@ msgid "E: The update command takes no arguments\n"
 msgstr "E: Команде update не нужны аргументы\n"
 
 #: src/cmdline/cmdline_upgrade.cc:41
-#, fuzzy, c-format
+#, c-format
 msgid "E: The %s command takes no arguments\n"
-msgstr "E: Команде update не нужны аргументы\n"
+msgstr "E: Команде %s не нужны аргументы\n"
 
 #: src/cmdline/cmdline_util.cc:93
 #, c-format
@@ -1589,13 +1592,13 @@ msgid "Fetched %sB in %s (%sB/s)\n"
 msgstr "Получено %sБ в %s (%sБ/с)\n"
 
 #: src/generic/apt/acqprogress.cc:296
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press [Enter].\n"
 msgstr ""
 "Смена носителя: вставьте диск, помеченный как '%s' в привод '%s' и нажмите "
-"ввод\n"
+"[Enter].\n"
 
 #: src/generic/apt/aptcache.cc:289
 msgid "Can't open Aptitude extended state file"
@@ -1706,13 +1709,13 @@ msgstr ""
 "Внутренняя ошибка: не удалось сгенерировать список пакетов для загрузки"
 
 #: src/generic/apt/download_install_manager.cc:123
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to fetch %s: %s"
-msgstr "не удалось переименовать %s в %s"
+msgstr "Не удалось получить %s: %s"
 
 #: src/generic/apt/download_install_manager.cc:129
 msgid "Unable to correct for unavailable packages"
-msgstr "Не удаётся скорректировать недоступность пакетов"
+msgstr "Не удалось скорректировать недоступность пакетов"
 
 #: src/generic/apt/download_install_manager.cc:155
 msgid "A package failed to install.  Trying to recover:"
@@ -2266,7 +2269,7 @@ msgstr "Неверный тип сортирующего правила '%s'"
 #: src/main.cc:84
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
-msgstr "Не удалось декодировать мультибайтовую строку после \"%ls\""
+msgstr "Не удалось декодировать многобайтовую строку после \"%ls\""
 
 #: src/main.cc:93
 #, c-format
@@ -2375,17 +2378,17 @@ msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - Загрузить список новых/обновлённых пакетов\n"
 
 #: src/main.cc:135
-#, fuzzy, c-format
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
-msgstr " upgrade      - Выполнить безопасное обновление\n"
+msgstr " safe-upgrade - Выполнить безопасное обновление\n"
 
 #: src/main.cc:136
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr ""
-" dist-upgrade - Выполнить обновление, возможна установка и удаление пакетов\n"
+" full-upgrade - Выполнить обновление, возможна установка и удаление пакетов\n"
 
 #: src/main.cc:137
 #, c-format
@@ -3825,15 +3828,14 @@ msgstr ""
 " Эти пакеты будут обновлены до последней версии."
 
 #: src/pkg_grouppolicy.cc:544
-#, fuzzy
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
 "made to complete their installation."
 msgstr ""
-"Пакеты устанавливаемые автоматически для удовлетворения зависимостей\n"
-" Эти пакеты устанавливаются, так как они нужны другим пакетам, которые вы "
-"выбрали для установки."
+"Не до конца установленные пакеты\n"
+" Эти пакеты установлены не полностью и не настроены; будет предпринята "
+"попытка завершить их установку."
 
 #: src/pkg_grouppolicy.cc:659
 msgid "unknown"
@@ -4204,9 +4206,8 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b будет обновлён с версии %B%s%b до версии %B%s%b."
 
 #: src/reason_fragment.cc:443
-#, fuzzy
 msgid "%B%s%b is only partly installed; its installation will be completed."
-msgstr "%s не установлен, поэтому не может быть переустановлен.\n"
+msgstr "%B%s%b не до конца установлен; его установка будет завершена."
 
 #: src/reason_fragment.cc:475
 msgid ""
@@ -4536,11 +4537,14 @@ msgstr "Вы уже суперпользователь!"
 #: src/ui.cc:422
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
 msgstr ""
+"Неверная команда в Get-Root-Command; она должна начинаться с su: или sudo:"
 
 #: src/ui.cc:429
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr ""
+"Неверная команда в Get-Root-Command; она должна начинаться с su: или sudo: "
+"а, не c %s:"
 
 #: src/ui.cc:552
 msgid ""
@@ -5151,14 +5155,12 @@ msgid "Repeat the last search"
 msgstr "Повторить последний поиск"
 
 #: src/ui.cc:2242
-#, fuzzy
 msgid "Find Again ^Backwards"
-msgstr "^Поиск назад"
+msgstr "Найти опять ^Назад"
 
 #: src/ui.cc:2243
-#, fuzzy
 msgid "Repeat the last search in the opposite direction"
-msgstr "Повторить последний поиск"
+msgstr "Повторить последний поиск в обратном направлении"
 
 #: src/ui.cc:2247
 msgid "^Limit Display"
@@ -5459,11 +5461,8 @@ msgstr "Ой!  Получен сигнал SIGQUIT, выход..\n"
 #, c-format
 msgid ""
 "Unable to load filename: the string %ls has no multibyte representation."
-msgstr "Не удалось загрузить имя файла: строка %ls не является мультибайтовой."
+msgstr "Не удалось загрузить имя файла: строка %ls не является многобайтовой."
 
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
 msgstr "САМЫЙ ВЕРХНИЙ УРОВЕНЬ"
-
-#~ msgid "view an explanation of the changes in the solution"
-#~ msgstr "посмотреть объяснение изменений в решении"
