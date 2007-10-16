@@ -476,6 +476,7 @@ int main(int argc, char *argv[])
 
   vs_editline::history_list h;
   vs_editline_ref l=vs_editline::create(20, "Input: ", "Pane 3", &h);
+  l->set_allow_wrap(true);
   l->entered.connect(sigc::bind(sigc::ptr_fun(&do_editline_history),
 				l.weak_ref()));
 

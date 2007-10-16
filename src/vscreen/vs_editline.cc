@@ -34,7 +34,7 @@ vs_editline::vs_editline(const string &_prompt, const string &_text,
 			 history_list *_history)
   :vscreen_widget(), curloc(_text.size()),
    startloc(0), desired_size(-1), history(_history),
-   history_loc(0), using_history(false), clear_on_first_edit(false)
+   history_loc(0), using_history(false), allow_wrap(false), clear_on_first_edit(false)
 {
   // Just spew a partial/null string if errors happen for now.
   transcode(_prompt.c_str(), prompt);
@@ -51,7 +51,7 @@ vs_editline::vs_editline(const wstring &_prompt, const wstring &_text,
 			 history_list *_history)
   :vscreen_widget(), prompt(_prompt), text(_text), curloc(_text.size()),
    startloc(0), desired_size(-1), history(_history),
-   history_loc(0), using_history(false), clear_on_first_edit(false)
+   history_loc(0), using_history(false), allow_wrap(false), clear_on_first_edit(false)
 {
   set_bg_style(get_style("EditLine"));
 
@@ -64,7 +64,7 @@ vs_editline::vs_editline(int maxlength, const string &_prompt,
 			 const string &_text, history_list *_history)
   :vscreen_widget(), curloc(0),
    startloc(0), desired_size(maxlength), history(_history), history_loc(0),
-   using_history(false), clear_on_first_edit(false)
+   using_history(false), allow_wrap(false), clear_on_first_edit(false)
 {
   // As above, ignore errors.
   transcode(_prompt, prompt);
@@ -78,7 +78,7 @@ vs_editline::vs_editline(int maxlength, const wstring &_prompt,
 			 const wstring &_text, history_list *_history)
   :vscreen_widget(), prompt(_prompt), text(_text), curloc(0),
    startloc(0), desired_size(maxlength), history(_history), history_loc(0),
-   using_history(false), clear_on_first_edit(false)
+   using_history(false), allow_wrap(false), clear_on_first_edit(false)
 {
   set_bg_style(get_style("EditLine"));
   do_layout.connect(sigc::mem_fun(*this, &vs_editline::normalize_cursor));
@@ -98,71 +98,92 @@ void vs_editline::normalize_cursor()
 {
   vs_widget_ref tmpref(this);
 
-  if(get_width() <= 0)
-    return;
-
-  int w=get_width();
-
-  int promptwidth=wcswidth(prompt.c_str(), prompt.size());
-  int textwidth=wcswidth(text.c_str(), text.size());
-
-  int cursorx=0;
-  if(curloc+prompt.size()>startloc)
-    for(size_t i=startloc; i<curloc+prompt.size(); ++i)
-      cursorx+=wcwidth(get_char(i));
-  else
-    for(size_t i=curloc+prompt.size(); i<startloc; ++i)
-      cursorx-=wcwidth(get_char(i));
-
-  if(promptwidth+textwidth+1<w)
-    startloc=0;
-  else if(w>2)
+  if(!allow_wrap)
     {
-      // Need to move the screen start to this far behind the cursor
-      // loc.
-      int decamt=0;
-      bool needs_move=false;
+      if(get_width() <= 0)
+	return;
 
-      if(cursorx>=w-2)
-	{
-	  decamt=w-2;
-	  needs_move=true;
-	}
-      else if(cursorx<2)
-	{
-	  decamt=2;
-	  needs_move=true;
-	}
+      int w=get_width();
 
-      if(needs_move) // equivalent to but more readable than decamt!=0
-	{
-	  // Do it by moving back this many chars
-	  size_t chars=0;
+      int promptwidth=wcswidth(prompt.c_str(), prompt.size());
+      int textwidth=wcswidth(text.c_str(), text.size());
 
-	  while(decamt>0 && chars<curloc+prompt.size())
+      int cursorx=0;
+      if(curloc+prompt.size()>startloc)
+	for(size_t i=startloc; i<curloc+prompt.size(); ++i)
+	  cursorx+=wcwidth(get_char(i));
+      else
+	for(size_t i=curloc+prompt.size(); i<startloc; ++i)
+	  cursorx-=wcwidth(get_char(i));
+
+      if(promptwidth+textwidth+1<w)
+	startloc=0;
+      else if(w>2)
+	{
+	  // Need to move the screen start to this far behind the cursor
+	  // loc.
+	  int decamt=0;
+	  bool needs_move=false;
+
+	  if(cursorx>=w-2)
 	    {
-	      ++chars;
-	      decamt-=wcwidth(get_char(prompt.size()+curloc-chars));
+	      decamt=w-2;
+	      needs_move=true;
+	    }
+	  else if(cursorx<2)
+	    {
+	      decamt=2;
+	      needs_move=true;
 	    }
 
-	  if(decamt<0 && chars>1)
-	    --chars;
+	  if(needs_move) // equivalent to but more readable than decamt!=0
+	    {
+	      // Do it by moving back this many chars
+	      size_t chars=0;
 
-	  startloc=curloc+prompt.size()-chars;
+	      while(decamt>0 && chars<curloc+prompt.size())
+		{
+		  ++chars;
+		  decamt-=wcwidth(get_char(prompt.size()+curloc-chars));
+		}
+
+	      if(decamt<0 && chars>1)
+		--chars;
+
+	      startloc=curloc+prompt.size()-chars;
+	    }
 	}
+      else
+	{
+	  // if width=1, use a primitive approach (we're screwed anyway in
+	  // this case)
+	  if(cursorx>=w)
+	    startloc=prompt.size()+curloc-w+1;
+
+	  if(cursorx<0)
+	    startloc=prompt.size()+curloc;
+	}
+
+      vscreen_updatecursor();
     }
   else
     {
-      // if width=1, use a primitive approach (we're screwed anyway in
-      // this case)
-      if(cursorx>=w)
-	startloc=prompt.size()+curloc-w+1;
+      const int width         = get_width();
+      const int startline     = get_line_of_character(startloc, width);
+      const int currline      = get_line_of_character(curloc,   width);
+      const int height        = get_height();
 
-      if(cursorx<0)
-	startloc=prompt.size()+curloc;
+      if(currline < startline)
+	{
+	  startloc = curloc;
+	  vscreen_update();
+	}
+      else if(currline - startline >= height)
+	{
+	  startloc = get_character_of_line(currline - (height - 1), width);
+	  vscreen_update();
+	}
     }
-
-  vscreen_updatecursor();
 }
 
 bool vs_editline::get_cursorvisible()
@@ -178,10 +199,14 @@ point vs_editline::get_cursorloc()
     {
       int x=0;
 
-      for(size_t loc=startloc; loc<curloc+prompt.size(); ++loc)
+      const int width        = getmaxx();
+      const size_t whereami  = curloc + prompt.size();
+      const int curline      = get_line_of_character(whereami, width);
+      const int curlinestart = get_character_of_line(curline,  width);
+      for(size_t loc = curlinestart; loc < whereami; ++loc)
 	x+=wcwidth(get_char(loc));
 
-      return point(x, 0);
+      return point(x, curline);
     }
   else
     return point(0,0);
@@ -206,7 +231,7 @@ bool vs_editline::handle_key(const key &k)
 	  text.erase(--curloc, 1);
 	  normalize_cursor();
 	  text_changed(wstring(text));
-	  vscreen_update();
+	  vscreen_queuelayout();
 	}
       else
 	{
@@ -222,7 +247,7 @@ bool vs_editline::handle_key(const key &k)
 	  text.erase(curloc, 1);
 	  normalize_cursor();
 	  text_changed(wstring(text));
-	  vscreen_update();
+	  vscreen_queuelayout();
 	}
       else
 	{
@@ -288,7 +313,7 @@ bool vs_editline::handle_key(const key &k)
       text.erase(curloc);
       normalize_cursor();
       text_changed(wstring(text));
-      vscreen_update();
+      vscreen_queuelayout();
       return true;
     }
   else if(bindings->key_matches(k, "DelBOL"))
@@ -297,7 +322,7 @@ bool vs_editline::handle_key(const key &k)
       curloc=0;
       normalize_cursor();
       text_changed(wstring(text));
-      vscreen_update();
+      vscreen_queuelayout();
       return true;
     }
   else if(history && bindings->key_matches(k, "HistoryPrev"))
@@ -322,7 +347,7 @@ bool vs_editline::handle_key(const key &k)
       startloc=0;
       normalize_cursor();
       text_changed(wstring(text));
-      vscreen_update();
+      vscreen_queuelayout();
 
       return true;
     }
@@ -341,7 +366,7 @@ bool vs_editline::handle_key(const key &k)
 	  startloc=0;
 	  normalize_cursor();
 	  text_changed(wstring(text));
-	  vscreen_update();
+	  vscreen_queuelayout();
 
 	  // FIXME: store the pre-history edit and restore that.
 	  return true;
@@ -355,7 +380,7 @@ bool vs_editline::handle_key(const key &k)
 	  startloc=0;
 	  normalize_cursor();
 	  text_changed(wstring(text));
-	  vscreen_update();
+	  vscreen_queuelayout();
 
 	  return true;
 	}
@@ -378,66 +403,150 @@ bool vs_editline::handle_key(const key &k)
       text.insert(curloc++, 1, k.ch);
       normalize_cursor();
       text_changed(wstring(text));
-      vscreen_update();
+      vscreen_queuelayout();
       return true;
     }
 }
 
+int vs_editline::get_line_of_character(size_t n, int width)
+{
+  if(!allow_wrap)
+    return 0;
+
+  int rval = 0;
+  int curr_line_width = 0;
+  for(size_t i = 0; i < n && i < get_num_chars(); ++i)
+    {
+      wchar_t ch = get_char(i);
+      int ch_width = wcwidth(ch);
+      if(curr_line_width + ch_width > width)
+	{
+	  ++rval;
+	  curr_line_width = ch_width;
+	}
+      else
+	{
+	  curr_line_width += ch_width;
+	  if(curr_line_width == width)
+	    {
+	      ++rval;
+	      curr_line_width = 0;
+	    }
+	}
+    }
+
+  return rval;
+}
+
+int vs_editline::get_character_of_line(size_t n, int width)
+{
+  if(!allow_wrap)
+    return startloc;
+
+  size_t curr_line = 0;
+  int curr_line_width = 0;
+  size_t i;
+  for(i = 0; curr_line < n && i < get_num_chars(); ++i)
+    {
+      wchar_t ch = get_char(i);
+      int ch_width = wcwidth(ch);
+      if(curr_line_width + ch_width > width)
+	{
+	  ++curr_line;
+	  curr_line_width = ch_width;
+	}
+      else
+	{
+	  curr_line_width += ch_width;
+	  if(curr_line_width == width)
+	    {
+	      ++curr_line;
+	      curr_line_width = 0;
+	    }
+	}
+    }
+
+  return (signed)i;
+}
+
 void vs_editline::paint(const style &st)
 {
+  if(getmaxy() == 0)
+    return;
+
   vs_widget_ref tmpref(this);
 
   int width=getmaxx();
+  int y = 0;
+  const int height = allow_wrap ? getmaxy() : 1;
+  size_t linestart = startloc;
 
-  int used=0;
-  size_t chars=0;
-
-  while(used<width && startloc+chars<prompt.size()+text.size())
+  wstring todisp = prompt + text;
+  while(y < height && linestart < prompt.size() + text.size())
     {
-      wchar_t ch=get_char(startloc+chars);
-      used+=wcwidth(ch);
-      ++chars;
+      int used = 0;
+      size_t chars = 0;
+
+      while(used < width && linestart + chars < prompt.size() + text.size())
+	{
+	  wchar_t ch = get_char(linestart + chars);
+	  used += wcwidth(ch);
+	  ++chars;
+	}
+
+      if(used > width && chars > 1)
+	--chars;
+
+      mvaddstr(y, 0, wstring(todisp, linestart, chars));
+
+      ++y;
+      linestart += chars;
     }
-
-  if(used>width && chars>1)
-    --chars;
-
-  wstring todisp=prompt+text;
-  mvaddstr(0, 0, wstring(todisp, startloc, chars));
 }
 
 void vs_editline::dispatch_mouse(short id, int x, int y, int z, mmask_t bstate)
 {
   vs_widget_ref tmpref(this);
 
-  size_t mouseloc=startloc; // The character at which the mouse press occured
+  if(!allow_wrap)
+    {
+      if(y > 0)
+	return;
+    }
+
+  const int width        = get_width();
+  const int curlinestart = get_character_of_line(y, width);
+
+  // mouseloc is used to compute the character at which the mouse
+  // press occurred.
+  size_t mouseloc = curlinestart;
 
   clear_on_first_edit = false;
 
-  while(mouseloc<prompt.size()+text.size() && x>0)
+  while(mouseloc < prompt.size() + text.size() && x > 0)
     {
-      int curwidth=wcwidth(get_char(mouseloc));
+      int curwidth = wcwidth(get_char(mouseloc));
 
-      if(curwidth>x)
+      if(curwidth > x)
 	break;
       else
 	{
 	  ++mouseloc;
-	  x-=curwidth;
+	  x -= curwidth;
 	}
     }
 
-  if(mouseloc>=prompt.size())
+  if(mouseloc >= prompt.size())
     {
-      mouseloc-=prompt.size();
+      mouseloc -= prompt.size();
 
-      if(mouseloc<=text.size())
-	curloc=mouseloc;
+      if(mouseloc <= text.size())
+	curloc = mouseloc;
       else
-	curloc=text.size();
+	curloc = text.size();
     }
   else
-    return; // Break out
+    return; // Do nothing if the user clicked on the prompt.
 
   vscreen_update();
 }
@@ -510,5 +619,12 @@ int vs_editline::width_request()
 
 int vs_editline::height_request(int width)
 {
-  return 1;
+  if(!allow_wrap)
+    return 1;
+  else
+    {
+      const int last_line = get_line_of_character(prompt.size() + text.size(), width);
+
+      return last_line + 1;
+    }
 }

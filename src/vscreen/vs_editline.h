@@ -40,6 +40,14 @@ private:
   std::wstring pre_history_text;
   // Used as a "virtual" history entry.
 
+  // curloc is the offset of the cursor within the input string;
+  // startloc is the offset of the first visible character within the
+  // combined input string and prompt.
+  //
+  // If allow_wrap is true, startloc is the first character of the
+  // first visible line (i.e., it represents vertical scrolling).
+  // Otherwise, it is the first character within the sole line that is
+  // visible (i.e., it represents horizontal scrolling).
   std::wstring::size_type curloc, startloc;
 
   int desired_size;
@@ -52,6 +60,8 @@ private:
   // problems)
   bool using_history;
 
+  bool allow_wrap;
+
   /** \brief If \b true and the first user input is a character
    *  insertion, the edit buffer will be cleared.
    *
@@ -63,10 +73,30 @@ private:
 
   void normalize_cursor();
 
-  /** \return the nth char of the visual representation (from either
-   *  the prompt or the string being edited)
+  /** \return the zero-based index of the line containing the nth character
+   *  of the visual representation.
+   */
+  int get_line_of_character(size_t n, int width);
+
+  /** \return the zero-based index of the first visible character of
+   *  the nth line of the visual representation.
+   *
+   *  If allow_wrap is false, returns the first visible character on
+   *  the sole line.  Otherwise, returns the first character of the
+   *  first visible line.
+   */
+  int get_character_of_line(size_t n, int width);
+
+  /** \return the nth char of the current textual representation of
+   *  this edit widget.
+   *
+   *  The textual representation consists of the prompt concatenated
+   *  with the text being edited.
    */
   wchar_t get_char(size_t n);
+
+  /** \return the number of characters in the visual representation. */
+  size_t get_num_chars() const { return prompt.size() + text.size(); }
 protected:
   bool handle_key(const key &k);
 
@@ -137,6 +167,9 @@ public:
   {
     clear_on_first_edit = value;
   }
+
+  void set_allow_wrap(bool allow) { allow_wrap = allow; }
+  bool get_allow_wrap() const { return allow_wrap; }
 
   bool focus_me();
   void paint(const style &st);
