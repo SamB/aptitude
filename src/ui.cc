@@ -2858,6 +2858,7 @@ void prompt_string(const std::wstring &prompt,
   if(aptcfg->FindB(PACKAGE "::UI::Minibuf-Prompts"))
     {
       vs_editline_ref e=vs_editline::create(prompt, text, history);
+      e->set_allow_wrap(true);
       e->set_clear_on_first_edit(true);
       if(slot)
 	e->entered.connect(*slot);
