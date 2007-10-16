@@ -171,16 +171,29 @@ void vs_editline::normalize_cursor()
       const int width         = get_width();
       const int startline     = get_line_of_character(startloc, width);
       const int currline      = get_line_of_character(curloc,   width);
+      const int lastline      = get_line_of_character(get_num_chars(), width);
       const int height        = get_height();
 
+      int newstartline = startline;
+
       if(currline < startline)
-	{
-	  startloc = get_character_of_line(currline, width);
-	  vscreen_update();
-	}
+	newstartline = currline;
       else if(currline - startline >= height)
+	newstartline = currline - (height - 1);
+
+      // If there are empty lines at the end and we could display all
+      // the text, scroll up.
+      if(newstartline > 0 && newstartline + height > lastline + 1)
 	{
-	  startloc = get_character_of_line(currline - (height - 1), width);
+	  if(lastline + 1 >= height)
+	    newstartline = lastline + 1 - height;
+	  else
+	    newstartline = 0;
+	}
+
+      if(newstartline != startline)
+	{
+	  startloc = get_character_of_line(newstartline, width);
 	  vscreen_update();
 	}
     }
