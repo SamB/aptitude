@@ -264,6 +264,16 @@ fragment *clipbox(fragment *contents);
  */
 fragment *indentbox(size_t firstindent, size_t restindent, fragment *contents);
 
+/** Indent a paragraph, placing the given text on the first line.
+ *
+ *  This just expands to an invocation of indentbox, with the
+ *  indentation constants set appropriately.  The result will consist
+ *  of "header" prepended to the first line of "contents", with
+ *  successive lines of "contents" indented to line up with the first
+ *  line of "contents".
+ */
+fragment *dropbox(fragment *header, fragment *contents);
+
 /** Stores information on a single column of fragments. */
 struct fragment_column_entry
 {

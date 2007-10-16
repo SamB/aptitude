@@ -71,6 +71,8 @@ class pkg_ver_item:public pkg_tree_node
   bool show_pkg_name;
 
   pkg_signal *sig;
+
+  void do_highlighted_changed(bool highlighted);
 public:
   pkg_ver_item(const pkgCache::VerIterator &_version, pkg_signal *_sig,
 	       bool _show_pkg_name=false);
@@ -95,9 +97,6 @@ public:
   virtual void set_auto(bool isauto, undo_group *undo);
 
   virtual void forbid_version(undo_group *undo);
-
-  virtual void highlighted(vs_tree *win);
-  virtual void unhighlighted(vs_tree *win);
 
   void show_information();
 

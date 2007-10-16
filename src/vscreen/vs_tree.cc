@@ -1,6 +1,6 @@
 // vs_tree.cc
 //
-//  Copyright 1999-2002, 2004-2006 Daniel Burrows
+//  Copyright 1999-2002, 2004-2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -83,7 +83,12 @@ vs_tree::~vs_tree()
 void vs_tree::do_shown()
 {
   if(selected!=end)
-    selected->highlighted(this);
+    {
+      selected->highlighted_changed(true);
+      selection_changed(&*selected);
+    }
+  else
+    selection_changed(NULL);
 }
 
 int vs_tree::width_request()
@@ -107,7 +112,12 @@ void vs_tree::set_root(vs_treeitem *_root, bool showroot)
     }
 
   if(selected!=end)
-    selected->unhighlighted(this);
+    {
+      selected->highlighted_changed(true);
+      selection_changed(&*selected);
+    }
+  else
+    selection_changed(NULL);
 
   if(root)
     delete root;
@@ -145,7 +155,12 @@ void vs_tree::set_root(vs_treeitem *_root, bool showroot)
   while(selected!=end && !selected->get_selectable())
     selected++;
   if(selected!=end)
-    selected->highlighted(this);
+    {
+      selected->highlighted_changed(true);
+      selection_changed(&*selected);
+    }
+  else
+    selection_changed(NULL);
 }
 
 void vs_tree::sync_bounds()
@@ -235,10 +250,15 @@ void vs_tree::set_selection(vs_treeiterator to, bool force_to_top)
   if(item_visible(to))
     {
       if(selected!=end)
-	selected->unhighlighted(this);
+	selected->highlighted_changed(false);
       selected=to;
       if(selected!=end)
-	selected->highlighted(this);
+	{
+	  selected->highlighted_changed(true);
+	  selection_changed(&*selected);
+	}
+      else
+	selection_changed(NULL);
 
       vscreen_update();
     }
@@ -281,10 +301,15 @@ void vs_tree::set_selection(vs_treeiterator to, bool force_to_top)
       if(selected != to)
 	{
 	  if(selected != end)
-	    selected->unhighlighted(this);
+	    selected->highlighted_changed(false);
 
 	  if(to != end)
-	    to->highlighted(this);
+	    {
+	      to->highlighted_changed(true);
+	      selection_changed(&*to);
+	    }
+	  else
+	    selection_changed(NULL);
 	}
 
       selected = to;
@@ -364,10 +389,15 @@ void vs_tree::line_down()
   if(orig != selected)
     {
       if(orig != end)
-	orig->unhighlighted(this);
+	orig->highlighted_changed(false);
 
       if(selected != end)
-	selected->highlighted(this);
+	{
+	  selected->highlighted_changed(true);
+	  selection_changed(&*selected);
+	}
+      else
+	selection_changed(NULL);
     }
 
   vscreen_update();
@@ -407,13 +437,19 @@ void vs_tree::set_hierarchical(bool _hierarchical)
 void vs_tree::highlight_current()
 {
   if(root != NULL && selected != end)
-    selected->highlighted(this);
+    {
+      selected->highlighted_changed(true);
+      selection_changed(&*selected);
+    }
+  else
+    selection_changed(NULL);
 }
 
 void vs_tree::unhighlight_current()
 {
   if(root != NULL && selected != end)
-    selected->unhighlighted(this);
+    selected->highlighted_changed(false);
+  selection_changed(NULL);
 }
 
 void vs_tree::line_up()
@@ -479,10 +515,15 @@ void vs_tree::line_up()
   if(orig != selected)
     {
       if(orig != end)
-	orig->unhighlighted(this);
+	orig->highlighted_changed(false);
 
       if(selected != end)
-	selected->highlighted(this);
+	{
+	  selected->highlighted_changed(true);
+	  selection_changed(&*selected);
+	}
+      else
+	selection_changed(NULL);
     }
 
   vscreen_update();
@@ -513,7 +554,7 @@ void vs_tree::page_down()
   if(count==0 && newtop!=end)
     {
       int l=0;
-      (*selected).unhighlighted(this);
+      (*selected).highlighted_changed(false);
       selected=top=newtop;
       while(l<height && selected!=end && !selected->get_selectable())
 	if(hierarchical)
@@ -522,7 +563,8 @@ void vs_tree::page_down()
 	  selected.move_forward_level();
       if(l==height || selected==end)
 	selected=top;
-      (*selected).highlighted(this);
+      (*selected).highlighted_changed(true);
+      selection_changed(&*selected);
       vscreen_update();
     }
 }
@@ -553,7 +595,7 @@ void vs_tree::page_up()
     {
       int l=0;
       if(selected!=end)
-	(*selected).unhighlighted(this);
+	(*selected).highlighted_changed(false);
       selected=top=newtop;
       while(l<height && selected!=end && !selected->get_selectable())
 	if(hierarchical)
@@ -564,7 +606,12 @@ void vs_tree::page_up()
 	selected=top;
 
       if(selected!=end)
-	(*selected).highlighted(this);
+	{
+	  (*selected).highlighted_changed(true);
+	  selection_changed(&*selected);
+	}
+      else
+	selection_changed(NULL);
       vscreen_update();
     }
 }
@@ -584,7 +631,7 @@ void vs_tree::jump_to_begin()
   vs_treeiterator prev=selected;
 
   if(selected!=end)
-    selected->unhighlighted(this);
+    selected->highlighted_changed(false);
 
   selected=begin;
   while(l<height && selected!=end && !selected->get_selectable())
@@ -596,7 +643,12 @@ void vs_tree::jump_to_begin()
     selected=begin;
 
   if(selected!=end)
-    selected->highlighted(this);
+    {
+      selected->highlighted_changed(true);
+      selection_changed(&*selected);
+    }
+  else
+    selection_changed(NULL);
 
   if(top!=begin)
     top=begin;
@@ -632,7 +684,7 @@ void vs_tree::jump_to_end()
     }
 
   if(selected!=end)
-    selected->unhighlighted(this);
+    selected->highlighted_changed(false);
 
   selected=last;
   while(l>=0 && selected!=end && !selected->get_selectable())
@@ -647,7 +699,12 @@ void vs_tree::jump_to_end()
     selected=last;
 
   if(selected!=end)
-    selected->highlighted(this);
+    {
+      selected->highlighted_changed(true);
+      selection_changed(&*selected);
+    }
+  else
+    selection_changed(NULL);
 
   if(newtop!=top)
     top=newtop;
@@ -692,7 +749,7 @@ bool vs_tree::handle_key(const key &k)
 	}
       else if(root != NULL && !hierarchical && prev_level && bindings->key_matches(k, "Left"))
 	{
-	  selected->unhighlighted(this);
+	  selected->highlighted_changed(false);
 
 	  top=prev_level->top;
 	  begin=prev_level->begin;
@@ -703,7 +760,8 @@ bool vs_tree::handle_key(const key &k)
 	  delete prev_level;
 	  prev_level=next;
 
-	  selected->highlighted(this);
+	  selected->highlighted_changed(true);
+	  selection_changed(&*selected);
 
 	  vscreen_update();
 	}
@@ -713,7 +771,7 @@ bool vs_tree::handle_key(const key &k)
 	      (bindings->key_matches(k, "Right") ||
 	       bindings->key_matches(k, "Confirm")))
 	{
-	  selected->unhighlighted(this);
+	  selected->highlighted_changed(false);
 	  prev_level=new flat_frame(begin, end, top, selected, prev_level);
 
 	  begin=selected->begin();
@@ -721,7 +779,8 @@ bool vs_tree::handle_key(const key &k)
 	  top=begin;
 	  selected=begin;
 
-	  selected->highlighted(this);
+	  selected->highlighted_changed(true);
+	  selection_changed(&*selected);
 
 	  vscreen_update();
 	}
@@ -915,7 +974,7 @@ void vs_tree::paint(const style &st)
     }
 
   //if(selected!=end && selected->get_selectable())
-  //selected->highlighted(this);
+  //selected->highlighted_changed(true);
   // Some classes need this to update display stuff properly.  For instance,
   // when a new pkg_tree is created, its 'update the status line' signal
   // won't be properly called without this.

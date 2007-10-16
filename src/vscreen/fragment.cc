@@ -996,6 +996,13 @@ fragment *indentbox(size_t firstindent,
   return new _indentbox(firstindent, restindent, contents);
 }
 
+fragment *dropbox(fragment *header, fragment *contents)
+{
+  const int indent = header->max_width(0, 0);
+
+  return indentbox(0, indent, sequence_fragment(header, contents, NULL));
+}
+
 class _fragment_columns : public fragment_container
 {
   vector<fragment_column_entry> columns;

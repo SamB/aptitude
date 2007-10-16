@@ -1,6 +1,6 @@
 // solution_item.h                                   -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -98,6 +98,8 @@ class solution_act_item : public solution_item
 
   /** A callback to be invoked with the dependency corresponding to this item. */
   sigc::slot1<void, aptitude_resolver_dep> set_active_dep;
+
+  void do_highlighted_changed(bool highlighted);
 public:
 
   /** Create a solution_act_item.
@@ -116,6 +118,7 @@ public:
      set_short_description(_set_short_description),
      set_active_dep(_set_active_dep)
   {
+    highlighted_changed.connect(sigc::mem_fun(this, &solution_act_item::do_highlighted_changed));
   }
 
   bool is_rejected();
@@ -131,10 +134,6 @@ public:
   void unmandate();
 
   void show_target_info();
-
-  void highlighted(vs_tree *win);
-
-  void unhighlighted(vs_tree *win);
 
   aptitude_universe::version get_ver() const
   {
@@ -179,18 +178,19 @@ class solution_unresolved_item : public solution_item
   bool fully_explained;
 
   sigc::slot1<void, aptitude_resolver_dep> set_active_dep;
+
+  void do_highlighted_changed(bool highlighted);
 public:
   solution_unresolved_item(const aptitude_universe::dep &_d,
 			   bool _fully_explained,
 			   const sigc::slot1<void, aptitude_resolver_dep> &_set_active_dep)
     :d(_d), fully_explained(_fully_explained), set_active_dep(_set_active_dep)
   {
+    highlighted_changed.connect(sigc::mem_fun(this, &solution_unresolved_item::do_highlighted_changed));
   }
 
   bool is_rejected();
   bool is_mandatory();
-  void highlighted(vs_tree *win);
-  void unhighlighted(vs_tree *win);
   void reject();
   void unreject();
   void mandate();

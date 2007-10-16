@@ -47,5 +47,7 @@ int cmdline_check_resolver(int argc, char *argv[],
 
   sanity_check_universe(u);
 
+  std::cout << "Sanity check complete." << std::endl;
+
   return 0;
 }

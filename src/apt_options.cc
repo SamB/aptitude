@@ -1,8 +1,24 @@
 // apt_options.cc
 //
-//  Copyright 2000 Daniel Burrows
+//   Copyright (C) 2000, 2007 Daniel Burrows
+//
+//   This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License as
+//   published by the Free Software Foundation; either version 2 of
+//   the License, or (at your option) any later version.
+//
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//   General Public License for more details.
+//
+//   You should have received a copy of the GNU General Public License
+//   along with this program; see the file COPYING.  If not, write to
+//   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+//   Boston, MA 02111-1307, USA.
 
 #include "apt_options.h"
+#include "apt_config_treeitems.h"
 #include "apt_config_widgets.h"
 #include "pkg_columnizer.h"
 #include "ui.h"
@@ -14,7 +30,10 @@
 #include <vscreen/vs_center.h>
 #include <vscreen/vs_frame.h>
 #include <vscreen/vs_label.h>
+#include <vscreen/vs_scrollbar.h>
+#include <vscreen/vs_subtree.h>
 #include <vscreen/vs_table.h>
+#include <vscreen/vs_text_layout.h>
 
 #include <vscreen/config/keybindings.h>
 #include <vscreen/config/colors.h>
@@ -383,4 +402,155 @@ vs_widget_ref make_misc_options_dialog()
 vs_widget_ref make_dependency_options_dialog()
 {
   return realize_options_dialog(dependency_options);
+}
+
+namespace aptitude
+{
+  namespace ui
+  {
+    namespace config
+    {
+      namespace
+      {
+	class dummy_root : public vs_subtree<vs_treeitem>
+	{
+	public:
+	  dummy_root() : vs_subtree<vs_treeitem>(true)
+	  {
+	  }
+
+	  void paint(vs_tree *win, int y,
+		     bool hierarchical, const style &)
+	  {
+	    vs_subtree<vs_treeitem>::paint(win, y, hierarchical, L"");
+	  }
+
+	  const wchar_t *tag()
+	  {
+	    return L"";
+	  }
+
+	  const wchar_t *label()
+	  {
+	    return L"";
+	  }
+	};
+
+	class apt_options_view : public vs_table
+	{
+	  vs_text_layout_ref desc_area;
+	  vs_tree_ref tree;
+
+	  sigc::connection last_connection;
+
+	  void handle_selection_changed(vs_treeitem *selected)
+	  {
+	    last_connection.disconnect();
+
+	    config_treeitem *configitem = dynamic_cast<config_treeitem *>(selected);
+	    if(configitem == NULL)
+	      desc_area->set_fragment(NULL);
+	    else
+	      {
+		last_connection = configitem->description_changed.connect(sigc::mem_fun(this, &apt_options_view::handle_description_changed));
+		desc_area->set_fragment(configitem->get_long_description());
+	      }
+	  }
+
+	  void handle_description_changed()
+	  {
+	    vs_treeiterator selected = tree->get_selection();
+	    config_treeitem *configitem;
+
+	    if(selected == tree->get_end())
+	      configitem = NULL;
+	    else
+	      configitem = dynamic_cast<config_treeitem *>(&*selected);
+
+	    if(configitem == NULL)
+	      desc_area->set_fragment(NULL);
+	    else
+	      desc_area->set_fragment(configitem->get_long_description());
+	  }
+
+	  apt_options_view()
+	  {
+	    dummy_root *root = new dummy_root;
+	    root->add_child(make_boolean_item(L"Dummy Option",
+					      L"This option is a test option to check that the new configuration framework is sane.",
+					      "Aptitude::Dummy-Test-Option",
+					      true));
+	    root->add_child(make_string_item(L"Dummy String Option",
+					     L"This option is a string option used to test the new configuration framework.",
+					     "Aptitude::Dummy-Test-String-Option",
+					     "Some text"));
+
+	    std::vector<radio_choice> choices;
+	    choices.push_back(radio_choice("SomeOption",
+					   L"Some option",
+					   L"An option that I am too tired to make up a witty description for."));
+	    choices.push_back(radio_choice("Algebra",
+					   L"Algebra",
+					   L"The science of notation and symbolic manipulation."));
+	    choices.push_back(radio_choice("Aardvark",
+					   L"Aardvark",
+					   L"The animal with a silly name that eats insects."));
+	    root->add_child(make_radio_item(L"Dummy Radio Option",
+					    L"An option to test my support for radio-style configuration items.",
+					    "Aptitude::Dummy-Radio-Option",
+					    choices,
+					    "Algebra"));
+
+	    tree = vs_tree::create(root);
+
+	    // Use an empty label to produce a "bar" dividing the two
+	    // halves of the screen.
+	    vs_label_ref middle_label = vs_label::create("", get_style("Status"));
+	    desc_area = vs_text_layout::create();
+
+	    vs_scrollbar_ref desc_area_scrollbar = vs_scrollbar::create(vs_scrollbar::VERTICAL);
+
+	    tree->selection_changed.connect(sigc::mem_fun(this, &apt_options_view::handle_selection_changed));
+	    tree->highlight_current();
+
+	    add_widget_opts(tree, 0, 0, 1, 2,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK | vs_table::IGNORE_SIZE_REQUEST,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK | vs_table::IGNORE_SIZE_REQUEST);
+
+	    add_widget_opts(middle_label, 1, 0, 1, 2,
+			    vs_table::ALIGN_CENTER | vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
+			    vs_table::ALIGN_CENTER);
+
+	    add_widget_opts(desc_area, 2, 0, 1, 1,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK | vs_table::IGNORE_SIZE_REQUEST,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK | vs_table::IGNORE_SIZE_REQUEST);
+	    add_widget_opts(desc_area_scrollbar, 2, 1, 1, 1,
+			    vs_table::FILL | vs_table::SHRINK,
+			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
+
+	    desc_area->location_changed.connect(sigc::mem_fun(*desc_area_scrollbar.unsafe_get_ref(), &vs_scrollbar::set_slider));
+
+	    tree->connect_key("DescriptionUp", &global_bindings,
+			      sigc::mem_fun(*desc_area.unsafe_get_ref(),
+					    &vs_text_layout::line_up));
+	    tree->connect_key("DescriptionDown", &global_bindings,
+			      sigc::mem_fun(*desc_area.unsafe_get_ref(),
+					    &vs_text_layout::line_down));
+	  }
+
+	public:
+	  static ref_ptr<apt_options_view> create()
+	  {
+	    return ref_ptr<apt_options_view>(new apt_options_view);
+	  }
+	};
+	typedef ref_ptr<apt_options_view> apt_options_view_ref;
+      }
+
+      vs_widget_ref make_options_tree()
+      {
+	return apt_options_view::create();
+      }
+    }
+  }
 }

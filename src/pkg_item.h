@@ -1,6 +1,6 @@
 // pkg_item.h  -*-c++-*-
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -43,6 +43,8 @@ class pkg_item:public pkg_tree_node
   void do_select(undo_group *undo);
   void do_hold(undo_group *undo);
   void do_remove(undo_group *undo);
+
+  void do_highlighted_changed(bool highlighted);
 public:
   class pkg_columnizer;
   static pkgCache::VerIterator visible_version(const pkgCache::PkgIterator &pkg);
@@ -65,9 +67,6 @@ public:
   virtual void reinstall(undo_group *undo);
   virtual void set_auto(bool isauto, undo_group *undo);
   virtual void forbid_upgrade(undo_group *undo);
-
-  virtual void highlighted(vs_tree *win);
-  virtual void unhighlighted(vs_tree *win);
 
   virtual style get_highlight_style();
   virtual style get_normal_style();

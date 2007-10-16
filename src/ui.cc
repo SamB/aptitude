@@ -679,6 +679,16 @@ static void do_view_prev()
   main_multiplex->cycle_backward();
 }
 
+static void do_show_options_tree()
+{
+  vs_widget_ref w = aptitude::ui::config::make_options_tree();
+  add_main_widget(w,
+		  _("Preferences"),
+		  _("Change the behavior of aptitude"),
+		  _("Preferences"));
+  w->show_all();
+}
+
 static void do_show_ui_options_dlg()
 {
   vs_widget_ref w = make_ui_options_dialog();
@@ -2275,6 +2285,10 @@ vs_menu_info search_menu[]={
 };
 
 vs_menu_info options_menu[]={
+  vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^Preferences"), NULL,
+	       N_("Change the behavior of aptitude"),
+	       sigc::ptr_fun(do_show_options_tree)),
+
   vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^UI options"), NULL,
 	       N_("Change the settings which affect the user interface"),
 	       sigc::ptr_fun(do_show_ui_options_dlg)),
@@ -2382,17 +2396,17 @@ static void munge_menu(vs_menu_info *menu)
     }
 }
 
-static void do_show_menu_description(vs_menu_item *item, const vs_label_ref &label)
+static void do_show_menu_description(vs_menu_item *item, vs_label &label)
 {
   if(item && item->get_description().size()>0)
     {
-      label->show();
-      label->set_text(wrapbox(text_fragment(item->get_description())));
+      label.show();
+      label.set_text(wrapbox(text_fragment(item->get_description())));
     }
   else
     {
-      label->hide();
-      label->set_text("");
+      label.hide();
+      label.set_text("");
     }
 }
 
@@ -2429,7 +2443,7 @@ static vs_menu_ref add_menu(vs_menu_info *info, const std::string &name,
   main_menu->append_item(transcode(name), menu);
 
   menu->item_highlighted.connect(sigc::bind(sigc::ptr_fun(do_show_menu_description),
-					    menu_description));
+					    menu_description.weak_ref()));
 
   return menu;
 }

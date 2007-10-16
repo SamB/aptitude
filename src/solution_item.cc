@@ -1,6 +1,6 @@
 // solution_item.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -240,37 +240,39 @@ void solution_act_item::unmandate()
   resman->unmandate_version(ver);
 }
 
-void solution_act_item::highlighted(vs_tree *win)
+void solution_act_item::do_highlighted_changed(bool highlighted)
 {
-  if(apt_cache_file == NULL)
+  if(highlighted)
+    {
+      if(apt_cache_file == NULL)
+	{
+	  set_short_description(fragf(""));
+	  set_active_dep(aptitude_resolver_dep());
+	  return;
+	}
+
+      pkgCache::VerIterator real_ver = ver.get_ver();
+
+      if(real_ver.end())
+	real_ver = ver.get_package().current_version().get_ver();
+
+      if(real_ver.end())
+	real_ver = ver.get_pkg().VersionList();
+
+      if(real_ver.end() || real_ver.FileList().end() ||
+	 apt_package_records == NULL)
+	set_short_description(fragf(""));
+      else
+	set_short_description(text_fragment(get_short_description(real_ver)));
+
+      set_active_dep(d);
+    }
+  else
     {
       set_short_description(fragf(""));
+
       set_active_dep(aptitude_resolver_dep());
-      return;
     }
-
-  pkgCache::VerIterator real_ver = ver.get_ver();
-
-  if(real_ver.end())
-    real_ver = ver.get_package().current_version().get_ver();
-
-  if(real_ver.end())
-    real_ver = ver.get_pkg().VersionList();
-
-  if(real_ver.end() || real_ver.FileList().end() ||
-     apt_package_records == NULL)
-    set_short_description(fragf(""));
-  else
-    set_short_description(text_fragment(get_short_description(real_ver)));
-
-  set_active_dep(d);
-}
-
-void solution_act_item::unhighlighted(vs_tree *win)
-{
-  set_short_description(fragf(""));
-
-  set_active_dep(aptitude_resolver_dep());
 }
 
 void solution_act_item::show_target_info()
@@ -522,17 +524,19 @@ bool solution_unresolved_item::is_mandatory()
   return resman->is_approved_broken(d);
 }
 
-void solution_unresolved_item::highlighted(vs_tree *win)
+void solution_unresolved_item::do_highlighted_changed(bool highlighted)
 {
-  if(apt_cache_file == NULL)
-    set_active_dep(aptitude_resolver_dep());
+  if(highlighted)
+    {
+      if(apt_cache_file == NULL)
+	set_active_dep(aptitude_resolver_dep());
+      else
+	set_active_dep(d);
+    }
   else
-    set_active_dep(d);
-}
-
-void solution_unresolved_item::unhighlighted(vs_tree *win)
-{
-  set_active_dep(aptitude_resolver_dep());
+    {
+      set_active_dep(aptitude_resolver_dep());
+    }
 }
 
 void solution_unresolved_item::reject()

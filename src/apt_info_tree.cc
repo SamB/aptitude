@@ -1,6 +1,6 @@
 // apt_info_tree.cc
 //
-//  Copyright 2000-2003, 2005 Daniel Burrows
+//  Copyright 2000-2003, 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -69,5 +69,5 @@ void apt_info_tree::repeat_signal()
 {
   vs_widget_ref tmpref(this);
 
-  get_selected()->highlighted(this);
+  get_selection()->highlighted_changed(true);
 }

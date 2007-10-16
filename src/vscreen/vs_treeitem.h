@@ -1,6 +1,6 @@
 // vs_treeitem.h    (this is -*-c++-*-)
 //
-//  Copyright 1999-2001, 2004-2005 Daniel Burrows
+//  Copyright 1999-2001, 2004-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -152,10 +152,21 @@ class vs_treeitem
   // Sorts an item's subtree (NOP for most items) -- provided to make it easy
   // to recursively sort the list.
 
-  virtual void highlighted(vs_tree *win);
-  // Called when an item is highlighted
-  virtual void unhighlighted(vs_tree *win) {}
-  // Called when the highlight leaves an item.
+  /** \brief A signal emitted when the tree-item is highlighted
+   *  or unhighlighted.
+   *
+   *  This used to be a pair of virtual methods, but I found that
+   *  I was constantly overriding them to just invoke a signal.
+   *  This approach has more runtime overhead, but should make it
+   *  a lot easier to code up new tree items.
+   */
+  //@{
+
+  /** \brief Causes this tree-item to become highlighted. */
+  sigc::signal1<void, bool> highlighted_changed;
+
+  //@}
+
   virtual bool dispatch_key(const key &k, vs_tree *owner) {return false;}
   // Called when a key is pressed while the item is highlighted.  The return
   // value indicates whether a redraw of the screen is needed.

@@ -81,7 +81,7 @@ bool menu_tree::proxy_redirect(bool (menu_redirect::*call)())
   if(!get_visible())
     return false;
 
-  vs_treeiterator curr = get_selected();
+  vs_treeiterator curr = get_selection();
   if(curr == get_end())
     return false;
 
@@ -349,7 +349,7 @@ void menu_tree::do_incsearch(std::wstring s, bool backward)
   if(!doing_incsearch)
     {
       doing_incsearch=true;
-      pre_incsearch_selected=get_selected();
+      pre_incsearch_selected=get_selection();
     }
 
   pkg_matcher *m=parse_pattern(transcode(s), false, false);
