@@ -98,11 +98,11 @@ void vs_editline::normalize_cursor()
 {
   vs_widget_ref tmpref(this);
 
+  if(get_width() <= 0 || get_height() <= 0)
+    return;
+
   if(!allow_wrap)
     {
-      if(get_width() <= 0)
-	return;
-
       int w=get_width();
 
       int promptwidth=wcswidth(prompt.c_str(), prompt.size());
@@ -175,7 +175,7 @@ void vs_editline::normalize_cursor()
 
       if(currline < startline)
 	{
-	  startloc = curloc;
+	  startloc = get_character_of_line(currline, width);
 	  vscreen_update();
 	}
       else if(currline - startline >= height)
@@ -202,11 +202,12 @@ point vs_editline::get_cursorloc()
       const int width        = getmaxx();
       const size_t whereami  = curloc + prompt.size();
       const int curline      = get_line_of_character(whereami, width);
+      const int startline    = get_line_of_character(startloc, width);
       const int curlinestart = get_character_of_line(curline,  width);
       for(size_t loc = curlinestart; loc < whereami; ++loc)
 	x+=wcwidth(get_char(loc));
 
-      return point(x, curline);
+      return point(x, curline - startline);
     }
   else
     return point(0,0);

@@ -78,12 +78,8 @@ private:
    */
   int get_line_of_character(size_t n, int width);
 
-  /** \return the zero-based index of the first visible character of
-   *  the nth line of the visual representation.
-   *
-   *  If allow_wrap is false, returns the first visible character on
-   *  the sole line.  Otherwise, returns the first character of the
-   *  first visible line.
+  /** \return the zero-based index of the first character of the nth
+   *  line of the visual representation.
    */
   int get_character_of_line(size_t n, int width);
 
