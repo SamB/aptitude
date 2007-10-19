@@ -96,7 +96,7 @@ namespace aptitude
 				    dflt  ? _("True") : _("False"),
 				    value ? _("True") : _("False")));
 	  fragments.push_back(newline_fragment());
-	  fragments.push_back(wrapbox(text_fragment(description.c_str())));
+	  fragments.push_back(wrapbox(text_fragment(long_description.c_str())));
 
 	  return sequence_fragment(fragments);
 	}
