@@ -125,6 +125,9 @@ struct option_item
     rval.option_name=option_name;
     rval.s_default=def;
 
+    rval.choices.push_back(*choice_1);
+    delete choice_1;
+
     while(1)
       {
 	radio_choice *choice=va_arg(args, radio_choice *);
