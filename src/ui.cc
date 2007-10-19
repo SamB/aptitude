@@ -689,6 +689,7 @@ static void do_show_options_tree()
   w->show_all();
 }
 
+#if 0
 static void do_show_ui_options_dlg()
 {
   vs_widget_ref w = make_ui_options_dialog();
@@ -709,6 +710,7 @@ static void do_show_dependency_options_dlg()
   main_stacked->add_visible_widget(w, true);
   w->show();
 }
+#endif
 
 static void really_do_revert_options()
 {
@@ -2289,6 +2291,7 @@ vs_menu_info options_menu[]={
 	       N_("Change the behavior of aptitude"),
 	       sigc::ptr_fun(do_show_options_tree)),
 
+#if 0
   vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^UI options"), NULL,
 	       N_("Change the settings which affect the user interface"),
 	       sigc::ptr_fun(do_show_ui_options_dlg)),
@@ -2300,6 +2303,7 @@ vs_menu_info options_menu[]={
   vs_menu_info(vs_menu_info::VS_MENU_ITEM, N_("^Miscellaneous"), NULL,
 	       N_("Change miscellaneous program settings"),
 	       sigc::ptr_fun(do_show_misc_options_dlg)),
+#endif
 
   VS_MENU_SEPARATOR,
 

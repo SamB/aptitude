@@ -34,6 +34,7 @@
 #include <vscreen/vs_subtree.h>
 #include <vscreen/vs_table.h>
 #include <vscreen/vs_text_layout.h>
+#include <vscreen/transcode.h>
 
 #include <vscreen/config/keybindings.h>
 #include <vscreen/config/colors.h>
@@ -49,361 +50,6 @@
 
 using namespace std;
 
-struct option_item
-{
-  enum {OPTION_BOOL, OPTION_STRING, OPTION_RADIO, OPTION_END} type;
-  const char *description;
-  const char *option_name;
-
-  union
-  {
-    bool b_default;
-    const char *s_default;
-  };
-
-  /** Used by radio options: the valid values for this option. */
-  vector<string> choices;
-
-  /** Used by radio options: the descriptions corresponding to
-      elements of "choices". */
-  vector<string> choice_descriptions;
-
-  option_item()
-    :type(OPTION_END), description(NULL), option_name(NULL)
-  {
-  }
-
-  option_item(const char *_description, const char *_option_name,
-	      bool def)
-    :type(OPTION_BOOL), description(_description), option_name(_option_name),
-     b_default(def)
-  {
-  }
-
-  option_item(const char *_description, const char *_option_name,
-	      const char *def)
-    :type(OPTION_STRING), description(_description), option_name(_option_name),
-     s_default(def)
-  {
-  }
-
-  static option_item radio(const char *description,
-			   const char *option_name,
-			   const char *def,
-			   ...)
-  {
-    option_item rval;
-
-    va_list args;
-    va_start(args, def);
-
-    rval.type=OPTION_RADIO;
-    rval.description=description;
-    rval.option_name=option_name;
-    rval.s_default=def;
-
-    while(1)
-      {
-	const char *choice=va_arg(args, const char *);
-
-	if(choice == NULL)
-	  break;
-
-	const char *description=va_arg(args, const char *);
-
-	if(description == NULL)
-	  break;
-
-	rval.choices.push_back(choice);
-
-	rval.choice_descriptions.push_back(description);
-      }
-
-    va_end(args);
-
-    return rval;
-  }
-};
-
-option_item ui_options[]={
-  option_item(N_("Display some available commands at the top of the screen"),
-	      PACKAGE "::UI::HelpBar", true),
-  option_item(N_("Hide the menubar when it is not being used"),
-	      PACKAGE "::UI::Menubar-Autohide", false),
-  option_item(N_("Use a minibuffer-style prompt when possible"),
-	      PACKAGE "::UI::Minibuf-Prompts", false),
-  option_item(N_("Show partial search results (incremental search)"),
-	      PACKAGE "::UI::Incremental-Search", true),
-  option_item(N_("Closing the last view exits the program"),
-	      PACKAGE "::UI::Exit-On-Last-Close", true),
-  option_item(N_("Prompt for confirmation at exit"),
-	      PACKAGE "::UI::Prompt-On-Exit", true),
-  option_item::radio(N_("Pause after downloading files"),
-		     PACKAGE "::UI::Pause-After-Download", "OnlyIfError",
-		     "No", _("Never"),
-		     "OnlyIfError", _("When an error occurs"),
-		     "Yes", _("Always"),
-		     NULL, NULL),
-  option_item(N_("Use a 'status-line' download indicator for all downloads"),
-	      PACKAGE "::UI::Minibuf-Download-Bar", false),
-  option_item(N_("Display the extended description area by default"),
-	      PACKAGE "::UI::Description-Visible-By-Default", true),
-  option_item(N_("Advance to the next item after changing the state of a package"),
-	      PACKAGE "::UI::Advance-On-Action", false),
-  option_item(N_("Automatically show why packages are broken"),
-	      PACKAGE "::UI::Auto-Show-Reasons", true),
-  option_item(N_("The default grouping method for package views"),
-	      PACKAGE "::UI::Default-Grouping", default_grpstr),
-  option_item(N_("The default display-limit for package views"),
-	      PACKAGE "::Pkg-Display-Limit", ""),
-  option_item(N_("The display format for package views"),
-	      PACKAGE "::UI::Package-Display-Format",
-	      pkg_item::pkg_columnizer::default_pkgdisplay),
-  option_item(N_("The display format for the status line"),
-	      PACKAGE "::UI::Package-Status-Format",
-	      default_pkgstatusdisplay),
-  option_item(N_("The display format for the header line"),
-	      PACKAGE "::UI::Package-Header-Format",
-	      default_pkgheaderdisplay),
-  //option_item(N_("Use new (idempotent) package command behavior"),
-  //	      PACKAGE "::UI::New-Package-Commands", true),
-  option_item()
-};
-
-option_item misc_options[]={
-  option_item(N_("Automatically upgrade installed packages"),
-	      PACKAGE "::Auto-Upgrade", false),
-  option_item(N_("Remove obsolete package files after downloading new package lists"),
-	      PACKAGE "::AutoClean-After-Update", false),
-  option_item(N_("URL to use to download changelogs"),
-	      PACKAGE "::Changelog-URL-Template",
-	      "http://cgi.debian.org/cgi-bin/get-changelog?package=%s"),
-  option_item(N_("Display a preview of what will be done before doing it"),
-	      PACKAGE "::Display-Planned-Action",
-	      true),
-  option_item(N_("Forget which packages are \"new\" whenever the package lists are updated"),
-	      PACKAGE "::Forget-New-On-Update",
-	      false),
-  option_item(N_("Forget which packages are \"new\" whenever packages are installed or removed"),
-	      PACKAGE "::Forget-New-On-Install",
-	      false),
-  option_item(N_("Do not display a warning when the first change is made in read-only mode"),
-	      PACKAGE "::Suppress-Read-Only-Warning",
-	      false),
-  option_item(N_("Warn when attempting to perform a privileged action as a non-root user"),
-	      PACKAGE "::Warn-Not-Root",
-	      true),
-  option_item(N_("File to log actions into"),
-	      PACKAGE "::Log",
-	      "/var/log/aptitude"),
-  option_item()
-};
-
-option_item dependency_options[]={
-  option_item(N_("Automatically resolve dependencies of a package when it is selected"),
-	      PACKAGE "::Auto-Install", true),
-  option_item(N_("Automatically fix broken packages before installing or removing"),
-	      PACKAGE "::Auto-Fix-Broken", true),
-  option_item(N_("Install Recommended packages automatically"),
-	      PACKAGE "::Recommends-Important", true),
-  option_item(N_("Remove unused packages automatically"),
-	      PACKAGE "::Delete-Unused", true),
-  option_item(N_("Don't automatically remove unused packages matching this filter"),
-	      PACKAGE "::Keep-Unused-Pattern", ""),
-  option_item()
-};
-
-// Commits all the entries of an options dialog, then saves the
-// present settings and destroys the dialog.
-class dialog_manager:public sigc::trackable
-{
-public:
-  dialog_manager(const vs_widget_ref &_dialog):dialog(_dialog) {}
-
-  ~dialog_manager()
-  {
-    for(vector<apt_config_widget *>::iterator i=widgets.begin();
-	i!=widgets.end(); ++i)
-      delete *i;
-
-    widgets.clear();
-  }
-
-  void add_widget(apt_config_widget *w) {widgets.push_back(w);}
-
-  void commit()
-  {
-    for(vector<apt_config_widget *>::iterator i=widgets.begin();
-	i!=widgets.end(); ++i)
-      (*i)->commit();
-
-    apt_dumpcfg(PACKAGE);
-
-    destroy();
-  }
-
-  void destroy()
-  {
-    dialog->destroy();
-
-    delete this;
-  }
-
-private:
-  vector<apt_config_widget *> widgets;
-
-  vs_widget_ref dialog;
-};
-
-static vs_widget_ref realize_options_dialog(option_item *items)
-{
-  vs_center_ref center=vs_center::create();
-
-  // Create general infrastructure (FIXME: make a plugin dialog widget thingy
-  // that does this?
-  vs_table_ref table=vs_table::create();
-  table->set_colsep(1);
-
-  vs_button_ref okbutton=vs_button::create(_("Ok"));
-  vs_button_ref cancelbutton=vs_button::create(_("Cancel"));
-
-  table->connect_key("Confirm", &global_bindings, okbutton->pressed.make_slot());
-  table->connect_key("Cancel", &global_bindings, cancelbutton->pressed.make_slot());
-
-  dialog_manager *manager=new dialog_manager(center);
-
-  okbutton->pressed.connect(sigc::mem_fun(*manager, &dialog_manager::commit));
-  cancelbutton->pressed.connect(sigc::mem_fun(*manager, &dialog_manager::destroy));
-
-  int row=0;
-
-  while(items->type!=option_item::OPTION_END)
-    {
-      vs_label_ref l=NULL;
-
-      switch(items->type)
-	{
-	case option_item::OPTION_BOOL:
-	  {
-	    apt_bool_widget *w=new apt_bool_widget(_(items->description),
-						   items->option_name,
-						   items->b_default);
-
-	    table->add_widget_opts(w->cb, row, 0, 1, 2,
-				   vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
-				   vs_table::EXPAND);
-
-	    manager->add_widget(w);
-	  }
-	  ++row;
-	  break;
-	case option_item::OPTION_STRING:
-	  {
-	    apt_string_widget *w=new apt_string_widget(items->option_name,
-						       items->s_default);
-
-	    l = vs_label::create(flowbox(text_fragment(_(items->description))));
-
-	    table->add_widget_opts(l, row, 0, 1, 1,
-			      vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
-			      vs_table::EXPAND);
-	    table->add_widget_opts(w->w, row, 1, 1, 1,
-				   vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
-				   vs_table::EXPAND);
-
-	    manager->add_widget(w);
-	  }
-	  ++row;
-	  break;
-	case option_item::OPTION_RADIO:
-	  {
-	    eassert(items->choices.size()==items->choice_descriptions.size());
-
-	    eassert(items->choices.size()>0);
-
-	    apt_radio_widget *w=new apt_radio_widget(items->option_name,
-						     items->choices,
-						     items->s_default);
-
-	    string curr=aptcfg->Find(items->option_name,
-				     items->s_default);
-
-	    l = vs_label::create(flowbox(text_fragment(_(items->description))));
-
-	    for(vector<string>::size_type i=0; i<items->choices.size(); ++i)
-	      {
-		string choice=items->choices[i];
-		string description=items->choice_descriptions[i];
-
-		vs_togglebutton_ref b=vs_radiobutton::create(_(description.c_str()),
-							     choice == curr);
-
-		table->add_widget(b, row+i, 1, 1, 1,
-				  vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
-				  vs_table::EXPAND);
-
-		w->rg.add_button(b, i);
-	      }
-
-	    if(!w->rg.selection_valid())
-	      {
-		// Hm, if it didn't work the first time, why would it
-		// work the second time?
-		for(vector<string>::size_type i=0; i<items->choices.size(); ++i)
-		  if(items->choices[i]==curr)
-		    {
-		      w->rg.select(i);
-		      break;
-		    }
-	      }
-
-	    table->add_widget(l, row+(items->choices.size()-1)/2, 0, 1, 1, false, false);
-	    row+=items->choices.size();
-	    manager->add_widget(w);
-	  }
-	  break;
-
-	default:
-	  eassert(0);  // Someone probably goofed in setting the tables up
-	}
-
-      items++;
-    }
-
-  vs_table_ref bt=vs_table::create();
-  bt->add_widget_opts(okbutton, 0, 0, 1, 1,
-		      vs_table::ALIGN_CENTER | vs_table::EXPAND,
-		      vs_table::ALIGN_CENTER);
-  bt->add_widget_opts(cancelbutton, 0, 1, 1, 1,
-		      vs_table::ALIGN_CENTER | vs_table::EXPAND,
-		      vs_table::ALIGN_CENTER);
-  table->add_widget_opts(bt, row, 0, 1, 2,
-			 vs_table::ALIGN_CENTER | vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
-			 vs_table::ALIGN_CENTER);
-  
-  vs_frame_ref frame=vs_frame::create(table);
-
-  center->add_widget(frame);
-  center->set_bg_style(style_attrs_flip(A_REVERSE));
-
-  return center;
-}
-
-vs_widget_ref make_ui_options_dialog()
-{
-  return realize_options_dialog(ui_options);
-}
-
-vs_widget_ref make_misc_options_dialog()
-{
-  return realize_options_dialog(misc_options);
-}
-
-vs_widget_ref make_dependency_options_dialog()
-{
-  return realize_options_dialog(dependency_options);
-}
-
 namespace aptitude
 {
   namespace ui
@@ -412,17 +58,340 @@ namespace aptitude
     {
       namespace
       {
-	class dummy_root : public vs_subtree<vs_treeitem>
+struct option_item
+{
+  enum {OPTION_BOOL, OPTION_STRING, OPTION_RADIO, OPTION_END} type;
+  const char *description;
+  const char *long_description;
+  const char *option_name;
+
+  union
+  {
+    bool b_default;
+    const char *s_default;
+  };
+
+  /** Used by radio options to store the list of valid values for
+   *  the option.
+   */
+  vector<radio_choice> choices;
+
+  option_item()
+    :type(OPTION_END), description(NULL), option_name(NULL)
+  {
+  }
+
+  option_item(const char *_description,
+	      const char *_long_description,
+	      const char *_option_name, bool def)
+    :type(OPTION_BOOL),
+     description(_description),
+     long_description(_long_description),
+     option_name(_option_name),
+     b_default(def)
+  {
+  }
+
+  option_item(const char *_description,
+	      const char *_long_description,
+	      const char *_option_name,
+	      const char *def)
+    :type(OPTION_STRING),
+     description(_description),
+     long_description(_long_description),
+     option_name(_option_name),
+     s_default(def)
+  {
+  }
+
+  /** \brief Construct a radio item from a list of choices,
+   *  destroying each choice after it's inserted into the list.
+   */
+  static option_item radio(const char *option_name,
+			   const char *description,
+			   const char *long_description,
+			   const char *def,
+			   const radio_choice *choice_1,
+			   ...)
+  {
+    option_item rval;
+
+    va_list args;
+    va_start(args, choice_1);
+
+    rval.type=OPTION_RADIO;
+    rval.description=description;
+    rval.long_description = long_description;
+    rval.option_name=option_name;
+    rval.s_default=def;
+
+    while(1)
+      {
+	radio_choice *choice=va_arg(args, radio_choice *);
+
+	if(choice == NULL)
+	  break;
+
+	rval.choices.push_back(*choice);
+	delete choice;
+      }
+
+    va_end(args);
+
+    return rval;
+  }
+};
+
+	radio_choice *choice(const char *value,
+			     const char *description,
+			     const char *long_description)
 	{
+	  return new radio_choice(value,
+				  transcode(_(description)),
+				  transcode(_(long_description)));
+	}
+
+option_item ui_options[]={
+  option_item(N_("Display some available commands at the top of the screen"),
+	      N_("If this option is enabled, a brief summary of some "
+		 "of the most important aptitude commands will appear "
+		 "beneath the menu bar."),
+	      PACKAGE "::UI::HelpBar", true),
+  option_item(N_("Hide the menu bar when it is not being used"),
+	      N_("If this option is enabled, the menu bar will "
+		 "only appear when it has been activated by pressing "
+		 "the menu key."),
+	      PACKAGE "::UI::Menubar-Autohide", false),
+  option_item(N_("Use a minibuffer-style prompt when possible"),
+	      N_("If this option is enabled, prompts will be "
+		 "displayed in a single line at the bottom of "
+		 "the screen.  If not, prompts will be displayed "
+		 "as pop-up dialog boxes."),
+	      PACKAGE "::UI::Minibuf-Prompts", false),
+  option_item(N_("Show partial search results (incremental search)"),
+	      N_("If this option is enabled, aptitude will "
+		 "perform searches within the package list as "
+		 "you type them.  This is convenient, but may "
+		 "slow the program down, particularly on older "
+		 "computers."),
+	      PACKAGE "::UI::Incremental-Search", true),
+  option_item(N_("Closing the last view exits the program"),
+	      N_("If this option is enabled, aptitude will stop "
+		 "running when all views (package lists, package "
+		 "details, etc) have been closed.  Otherwise, "
+		 "aptitude will continue running until you select "
+		 "'Quit' from the Actions menu."),
+	      PACKAGE "::UI::Exit-On-Last-Close", true),
+  option_item(N_("Prompt for confirmation at exit"),
+	      N_("If this option is enabled, aptitude will "
+		 "not terminate until you confirm that you "
+		 "really want to quit."),
+	      PACKAGE "::UI::Prompt-On-Exit", true),
+  option_item::radio(N_("Pause after downloading files"),
+		     N_("This option controls whether aptitude will wait for confirmation after a download before it goes ahead and installs packages."),
+		     PACKAGE "::UI::Pause-After-Download",
+		     "OnlyIfError",
+		     choice("No", _("Never"),
+			    _("Never wait for the user after downloading packages: always begin the installation immediately.")),
+		     choice("OnlyIfError", _("When an error occurs"),
+			    _("Wait for confirmation if an error occurred during the download.  If there were no errors, begin installing packages immediately.")),
+		     choice("Yes", _("Always"),
+			    _("Always wait for the user to confirm the download before proceeding with the installation.")),
+		     NULL),
+  option_item(N_("Use a 'status-line' download indicator for all downloads"),
+	      N_("If this option is enabled, aptitude will display "
+		 "the status of ongoing downloads at the bottom of "
+		 "the screen, rather than opening a new view."),
+	      PACKAGE "::UI::Minibuf-Download-Bar", false),
+  option_item(N_("Display the extended description area by default"),
+	      N_("If this option is enabled, the long description "
+		 "area (the pane at the bottom of the screen) in the "
+		 "package list will be visible when the program "
+		 "starts; otherwise, it will be initially hidden."),
+	      PACKAGE "::UI::Description-Visible-By-Default", true),
+  option_item(N_("Advance to the next item after changing the state of a package"),
+	      N_("If this option is enabled, then performing an "
+		 "action on a package (for instance, installing or "
+		 "removing it) will move the selection to the next "
+		 "package in the list."),
+	      PACKAGE "::UI::Advance-On-Action", false),
+  option_item(N_("Automatically show why packages are broken"),
+	      N_("If this option is enabled, then highlighting a "
+		 "package that has broken dependencies will "
+		 "automatically display the dependencies that "
+		 "are unfulfilled in the lower pane of the "
+		 "display."),
+	      PACKAGE "::UI::Auto-Show-Reasons", true),
+  option_item(N_("The default grouping method for package views"),
+	      N_("This option controls how aptitude organizes the "
+		 "package list.  See the aptitude user's manual for "
+		 "information on how to specify a grouping method."),
+	      PACKAGE "::UI::Default-Grouping", default_grpstr),
+  option_item(N_("The default display-limit for package views"),
+	      N_("By default, the limit of each package view will "
+		 "be set to the value specified by this option.  "
+		 "See the aptitude user's manual for detailed "
+		 "information about searches."),
+	      PACKAGE "::Pkg-Display-Limit", ""),
+  option_item(N_("The display format for package views"),
+	      N_("This option controls how aptitude formats lines "
+		 "of the package list.  See the aptitude user's "
+		 "manual for information on how to specify a "
+		 "display format."),
+	      PACKAGE "::UI::Package-Display-Format",
+	      pkg_item::pkg_columnizer::default_pkgdisplay),
+  option_item(N_("The display format for the status line"),
+	      N_("This option controls how aptitude formats the "
+		 "status line (the line between the package list "
+		 "and the lower pane).  See the aptitude user's "
+		 "manual for information on how to specify a "
+		 "display format."),
+	      PACKAGE "::UI::Package-Status-Format",
+	      default_pkgstatusdisplay),
+  option_item(N_("The display format for the header line"),
+	      N_("This option controls how aptitude formats the "
+		 "header line (the line above the package list).  "
+		 "See the aptitude user's manual for information on "
+		 "how to specify a display format."),
+	      PACKAGE "::UI::Package-Header-Format",
+	      default_pkgheaderdisplay),
+  option_item()
+};
+
+option_item misc_options[]={
+  option_item(N_("Automatically upgrade installed packages"),
+	      N_("If this option is enabled, then on startup, "
+		 "aptitude will select all upgradable packages for "
+		 "upgrade."),
+	      PACKAGE "::Auto-Upgrade", false),
+  option_item(N_("Remove obsolete package files after downloading new package lists"),
+	      N_("If this option is enabled, then after every "
+		 "install run, aptitude will delete from the package "
+		 "cache any package files that can no longer be "
+		 "downloaded from any archive in sources.lst."),
+	      PACKAGE "::AutoClean-After-Update", false),
+  option_item(N_("URL to use to download changelogs"),
+	      N_("This option controls the template that's used to "
+		 "download changelogs from the Debian Web site.  You "
+		 "should only need to change this if the URL of "
+		 "the package archive changes."),
+	      PACKAGE "::Changelog-URL-Template",
+	      "http://cgi.debian.org/cgi-bin/get-changelog?package=%s"),
+  option_item(N_("Display a preview of what will be done before doing it"),
+	      N_("If this option is enabled, then when you ask "
+		 "aptitude to perform an install run, it will "
+		 "first display a summary of the actions it is "
+		 "going to perform."),
+	      PACKAGE "::Display-Planned-Action",
+	      true),
+  option_item(N_("Forget which packages are \"new\" whenever the package lists are updated"),
+	      N_("If this option is enabled, then aptitude will "
+		 "clear the list of new packages after you update "
+		 "the package lists (e.g., by pressing 'u')."),
+	      PACKAGE "::Forget-New-On-Update",
+	      false),
+  option_item(N_("Forget which packages are \"new\" whenever packages are installed or removed"),
+	      N_("If this option is enabled, then aptitude will "
+		 "clear the list of new packages after you perform "
+		 "an install run or install or remove packages from "
+		 "the command-line."),
+	      PACKAGE "::Forget-New-On-Install",
+	      false),
+  option_item(N_("Do not display a warning when the first change is made in read-only mode"),
+	      N_("If this option is %Bnot%b enabled, aptitude will "
+		 "display a warning when you modify the state of a "
+		 "package if you do not have permissions to apply "
+		 "the change to the system."),
+	      PACKAGE "::Suppress-Read-Only-Warning",
+	      false),
+  option_item(N_("Warn when attempting to perform a privileged action as a non-root user"),
+	      N_("If this option is enabled, aptitude will "
+		 "warn you when you attempt to perform an action "
+		 "which you do not have permission to do: for "
+		 "instance, installing packages as a non-root user.  "
+		 "You will be given the option to log in as root "
+		 "and perform the action with root privileges."),
+	      PACKAGE "::Warn-Not-Root",
+	      true),
+  // TODO: support multiple log destinations.
+  option_item(N_("File to log actions into"),
+	      N_("When you install or remove packages, a summary of "
+		 "what aptitude does will be written to this file.  "
+		 "If the first character of the file name is a pipe "
+		 "character ('%B|%b'), the remainder of the name will "
+		 "be interpreted as a shell command that is to "
+		 "receive the log on standard input."),
+	      PACKAGE "::Log",
+	      "/var/log/aptitude"),
+  option_item()
+};
+
+option_item dependency_options[]={
+  option_item(N_("Automatically resolve dependencies of a package when it is selected"),
+	      N_("If this option is enabled, aptitude will "
+		 "use a simple heuristic to immediately resolve "
+		 "the dependencies of each package you flag for "
+		 "installation.  This is much faster than the "
+		 "built-in dependency resolver, but may produce "
+		 "suboptimal results or fail entirely in some "
+		 "scenarios."),
+	      PACKAGE "::Auto-Install", true),
+  option_item(N_("Automatically fix broken packages before installing or removing"),
+	      N_("If this option is enabled, and you perform an "
+		 "install run while some packages are broken, "
+		 "aptitude will automatically apply the current "
+		 "suggestion of the problem resolver.  Otherwise,"
+		 "aptitude will prompt you for a solution to the "
+		 "broken dependencies."),
+	      PACKAGE "::Auto-Fix-Broken", true),
+  option_item(N_("Install recommended packages automatically"),
+	      N_("If this option is enabled  and \"automatically "
+		 "resolve dependencies\" is also enabled, aptitude "
+		 "will attempt to install the recommendations of "
+		 "newly installed packages in addition to their "
+		 "outright dependencies.  Suggestions will not "
+		 "be automatically installed."
+		 "\n"
+		 "If this option is enabled and \"Remove unused "
+		 "packages automatically\" is enabled, packages "
+		 "that are recommended by an installed package "
+		 "will not automatically be removed."),
+	      PACKAGE "::Recommends-Important", true),
+  option_item(N_("Remove unused packages automatically"),
+	      N_("If this option is enabled, packages that are "
+		 "automatically installed and that no manually "
+		 "installed package depends on will be removed "
+		 "from the system.  Cancelling the removal will "
+		 "flag the package as manually installed."
+		 "\n"
+		 "If this option is enabled and \"Install recommended "
+		 "packages automatically\" is enabled, "
+		 "automatically installed packages will not be "
+		 "removed if any installed package recommends them."),
+	      PACKAGE "::Delete-Unused", true),
+  option_item(N_("Packages that should never be automatically removed"),
+	      N_("Packages matching this search pattern will "
+		 "always be treated as if an installed package "
+		 "depends on them: they will never be targeted "
+		 "for removal as unused packages."),
+	      PACKAGE "::Keep-Unused-Pattern", ""),
+  option_item()
+};
+
+	class dummy_subtree : public vs_subtree<vs_treeitem>
+	{
+	  std::wstring text;
 	public:
-	  dummy_root() : vs_subtree<vs_treeitem>(true)
+	  dummy_subtree(const std::wstring &_text)
+	    : vs_subtree<vs_treeitem>(true),
+	      text(_text)
 	  {
 	  }
 
 	  void paint(vs_tree *win, int y,
 		     bool hierarchical, const style &)
 	  {
-	    vs_subtree<vs_treeitem>::paint(win, y, hierarchical, L"");
+	    vs_subtree<vs_treeitem>::paint(win, y, hierarchical, text);
 	  }
 
 	  const wchar_t *tag()
@@ -435,6 +404,33 @@ namespace aptitude
 	    return L"";
 	  }
 	};
+
+	vs_treeitem *parse_option(const option_item &option)
+	{
+	  eassert(option.type != option_item::OPTION_END);
+	  switch(option.type)
+	    {
+	    case option_item::OPTION_BOOL:
+	      return make_boolean_item(transcode(_(option.description)),
+				       transcode(_(option.long_description)),
+				       option.option_name,
+				       option.b_default);
+	    case option_item::OPTION_STRING:
+	      return make_string_item(transcode(_(option.description)),
+				      transcode(_(option.long_description)),
+				      option.option_name,
+				      option.s_default);
+	    case option_item::OPTION_RADIO:
+	      return make_radio_item(transcode(_(option.description)),
+				     transcode(_(option.long_description)),
+				     option.option_name,
+				     option.choices,
+				     option.s_default);
+	    default:
+	      eassert(!"This should never happen.");
+	      return NULL;
+	    }
+	}
 
 	class apt_options_view : public vs_table
 	{
@@ -449,7 +445,7 @@ namespace aptitude
 
 	    config_treeitem *configitem = dynamic_cast<config_treeitem *>(selected);
 	    if(configitem == NULL)
-	      desc_area->set_fragment(NULL);
+	      desc_area->set_fragment(newline_fragment());
 	    else
 	      {
 		last_connection = configitem->description_changed.connect(sigc::mem_fun(this, &apt_options_view::handle_description_changed));
@@ -468,38 +464,37 @@ namespace aptitude
 	      configitem = dynamic_cast<config_treeitem *>(&*selected);
 
 	    if(configitem == NULL)
-	      desc_area->set_fragment(NULL);
+	      desc_area->set_fragment(newline_fragment());
 	    else
 	      desc_area->set_fragment(configitem->get_long_description());
 	  }
 
+	  void make_children(dummy_subtree *parent, option_item *children)
+	  {
+	    for(option_item *it = children;
+		it->type != option_item::OPTION_END;
+		++it)
+	      parent->add_child(parse_option(*it));
+	  }
+
 	  apt_options_view()
 	  {
-	    dummy_root *root = new dummy_root;
-	    root->add_child(make_boolean_item(L"Dummy Option",
-					      L"This option is a test option to check that the new configuration framework is sane.",
-					      "Aptitude::Dummy-Test-Option",
-					      true));
-	    root->add_child(make_string_item(L"Dummy String Option",
-					     L"This option is a string option used to test the new configuration framework.",
-					     "Aptitude::Dummy-Test-String-Option",
-					     "Some text"));
+	    dummy_subtree *root = new dummy_subtree(L"");
 
-	    std::vector<radio_choice> choices;
-	    choices.push_back(radio_choice("SomeOption",
-					   L"Some option",
-					   L"An option that I am too tired to make up a witty description for."));
-	    choices.push_back(radio_choice("Algebra",
-					   L"Algebra",
-					   L"The science of notation and symbolic manipulation."));
-	    choices.push_back(radio_choice("Aardvark",
-					   L"Aardvark",
-					   L"The animal with a silly name that eats insects."));
-	    root->add_child(make_radio_item(L"Dummy Radio Option",
-					    L"An option to test my support for radio-style configuration items.",
-					    "Aptitude::Dummy-Radio-Option",
-					    choices,
-					    "Algebra"));
+	    dummy_subtree *ui_tree =
+	      new dummy_subtree(transcode(_("UI options")));
+	    dummy_subtree *dep_tree =
+	      new dummy_subtree(transcode(_("Dependency handling")));
+	    dummy_subtree *misc_tree =
+	      new dummy_subtree(transcode(_("Miscellaneous")));
+
+	    root->add_child(ui_tree);
+	    root->add_child(dep_tree);
+	    root->add_child(misc_tree);
+
+	    make_children(ui_tree,   ui_options);
+	    make_children(dep_tree,  dependency_options);
+	    make_children(misc_tree, misc_options);
 
 	    tree = vs_tree::create(root);
 
