@@ -1218,6 +1218,8 @@ public:
 			   pkg_subtree *root)
   {
     const set<tag> *tags = get_tags(pkg);
+    if(tags == NULL)
+      return;
     for(set<tag>::const_iterator ti = tags->begin();
 	ti != tags->end(); ++ti)
       {
@@ -1319,6 +1321,9 @@ public:
 			   pkg_subtree *root)
   {
     const set<tag> *tags = get_tags(pkg);
+
+    if(tags == NULL)
+      return;
 
     // Put all untagged, non-virtual packages into a separate list.
     if(tags->empty() && !pkg.VersionList().end())

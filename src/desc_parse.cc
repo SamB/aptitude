@@ -282,7 +282,7 @@ fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
     return NULL;
 
   const set<tag> *s = get_tags(pkg);
-  if(!s->empty())
+  if(s != NULL && !s->empty())
     {
       vector<fragment *> tags;
 
