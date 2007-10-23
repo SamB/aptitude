@@ -113,7 +113,7 @@ void vs_tree::set_root(vs_treeitem *_root, bool showroot)
 
   if(selected!=end)
     {
-      selected->highlighted_changed(true);
+      selected->highlighted_changed(false);
       selection_changed(&*selected);
     }
   else
