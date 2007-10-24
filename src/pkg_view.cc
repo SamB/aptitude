@@ -226,11 +226,23 @@ public:
   void set_package(const pkgCache::PkgIterator &pkg,
 		   const pkgCache::VerIterator &ver)
   {
+#ifdef APT_HAS_HOMEPAGE
+    pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
+#endif
+
     // Check against pkg.end() to hack around #339533; if ver is a
     // default iterator, pkg.end() is true.
     wstring newdesc(pkg.end() ? L"" : get_long_description(ver));
 
     fragment *frag=make_desc_fragment(newdesc);
+
+#ifdef APT_HAS_HOMEPAGE
+    fragment *homepage =
+      rec.Homepage() == ""
+        ? fragf("")
+      : dropbox(fragf("%B%s%b", _("Homepage")),
+		hardwrapbox(text_fragment(rec.Homepage())));
+#endif
 
     fragment *tags=make_tags_fragment(pkg);
     if(tags != NULL)

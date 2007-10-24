@@ -1,6 +1,6 @@
 // pkg_info_screen.cc
 //
-//  Copyright 2000-2002, 2004-2005 Daniel Burrows
+//  Copyright 2000-2002, 2004-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -94,6 +94,12 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
       frags.push_back(clipbox(fragf("%B%s%b%ls%n",
 				    _("Description: "), shortdesc.c_str())));
       frags.push_back(indentbox(2, 2, make_desc_fragment(desc)));
+
+#ifdef APT_HAS_HOMEPAGE
+      if(rec.Homepage() != "")
+	frags.push_back(dropbox(fragf("%B%s%b", _("Homepage: ")),
+				hardwrapbox(text_fragment(rec.Homepage()))));
+#endif
 
       fragment *tags = make_tags_fragment(pkg);
       if(tags != NULL)

@@ -425,6 +425,12 @@ static fragment *version_file_fragment(pkgCache::VerIterator ver,
 			    get_short_description(ver).c_str()));
   fragments.push_back(indentbox(1, 1, make_desc_fragment(get_long_description(ver))));
 
+#ifdef APT_HAS_HOMEPAGE
+  if(rec.Homepage() != "")
+    fragments.push_back(dropbox(text_fragment(_("Homepage: ")),
+				hardwrapbox(text_fragment(rec.Homepage()))));
+#endif
+
   fragment *tags = make_tags_fragment(pkg);
   if(tags)
     fragments.push_back(fragf("%n%F", tags));
