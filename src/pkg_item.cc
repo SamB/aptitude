@@ -291,6 +291,8 @@ style pkg_item::pkg_style(pkgCache::PkgIterator package, bool highlighted)
 	return get_style(MAYBE_HIGHLIGHTED("PkgBroken"));
       else if(state.Upgrade())
 	return get_style(MAYBE_HIGHLIGHTED("PkgToUpgrade"));
+      else if(state.Downgrade())
+	return get_style(MAYBE_HIGHLIGHTED("PkgToDowngrade"));
       else if(package.CurrentVer().end())
 	return get_style(MAYBE_HIGHLIGHTED("PkgNotInstalled"));
       else

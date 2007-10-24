@@ -92,6 +92,7 @@ static void init_styles()
   set_style("PkgBroken", style_fg(COLOR_RED) + style_attrs_on(A_REVERSE));
   set_style("PkgToInstall", style_fg(COLOR_GREEN) + style_attrs_on(A_REVERSE));
   set_style("PkgToUpgrade", style_fg(COLOR_CYAN) + style_attrs_on(A_REVERSE));
+  set_style("PkgToDowngrade", style_attrs_on(A_BOLD));
 
 
   set_style("PkgNotInstalledHighlighted",
@@ -108,7 +109,8 @@ static void init_styles()
 	    style_fg(COLOR_GREEN));
   set_style("PkgToUpgradeHighlighted",
 	    style_fg(COLOR_CYAN));
-
+  set_style("PkgToDowngradeHighlighted",
+	    style_attrs_on(A_BOLD) + style_attrs_flip(A_REVERSE));
 
 
 
