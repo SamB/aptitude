@@ -17,7 +17,7 @@
 using namespace std;
 
 // Report dependencies in the order:
-//   PreDepends, Depends, Recommends, Conflicts, Suggests, Replaces, Obsoletes
+//   PreDepends, Depends, Recommends, Conflicts, Breaks, Suggests, Replaces, Obsoletes
 static int cmp_dep_types(unsigned char A, unsigned char B)
 {
   if(A==B)
@@ -50,6 +50,16 @@ static int cmp_dep_types(unsigned char A, unsigned char B)
 	  return 1;
 	default:
 	  return -1;
+	}
+    case pkgCache::Dep::DpkgBreaks:
+      switch(B)
+	{
+	case pkgCache::Dep::Suggests:
+	case pkgCache::Dep::Replaces:
+	case pkgCache::Dep::Obsoletes:
+	  return -1;
+	default:
+	  return 1;
 	}
     case pkgCache::Dep::Suggests:
       switch(B)
@@ -104,7 +114,7 @@ static bool relevant_dep(pkgCache::VerIterator ver, pkgCache::DepIterator d)
  *  self-conflict on a pure virtual package that is not provided by
  *  any other package which is to be installed. (the last condition is
  *  because packages which will not be installed are uninteresting for
- *  a Conflicts)
+ *  a Conflicts/Breaks)
  *
  *  \param dep the dependency to test.
  */
@@ -145,7 +155,7 @@ void infer_reason(pkgCache::PkgIterator pkg, set<reason> &reasons)
   if(actionstate==pkg_auto_install)
     {
       for(rev_dep_iterator d(instver); !d.end(); ++d)
-	if((*d)->Type!=pkgCache::Dep::Conflicts &&
+	if(!is_conflict((*d)->Type) &&
 	   relevant_dep(instver, *d))
 	  reasons.insert(reason((*d).ParentPkg(), *d));
     }
@@ -166,7 +176,7 @@ void infer_reason(pkgCache::PkgIterator pkg, set<reason> &reasons)
     {
       // Look for *other* packages that conflict with this one.
       for(rev_dep_iterator d(pkg.CurrentVer()); !d.end(); ++d)
-	if((*d)->Type==pkgCache::Dep::Conflicts &&
+	if(is_conflict((*d)->Type) &&
 	   relevant_dep(pkg.CurrentVer(), *d) &&
 	   !is_simple_self_conflict(*d))
 	  reasons.insert(reason((*d).ParentPkg(), *d));
@@ -260,7 +270,7 @@ void infer_reverse_breakage(pkgCache::PkgIterator &pkg,
 	reasons.insert(reason(dep.ParentPkg(), dep));
     }
   // Look at any conflict that's not an immediate self-conflict
-  else if(dep->Type==pkgCache::Dep::Conflicts &&
+  else if(is_conflict(dep->Type) &&
 	  (dep.TargetPkg()!=pkg || dep.ParentPkg()!=pkg))
     {
       pkgCache::VerIterator instver=(*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);

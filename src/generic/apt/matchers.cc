@@ -1842,6 +1842,8 @@ pkgCache::Dep::DepType parse_deptype(const string &s)
     return pkgCache::Dep::Suggests;
   else if(!strcasecmp(s.c_str(), "conflicts"))
     return pkgCache::Dep::Conflicts;
+  else if(!strcasecmp(s.c_str(), "breaks"))
+    return pkgCache::Dep::DpkgBreaks;
   else if(!strcasecmp(s.c_str(), "replaces"))
     return pkgCache::Dep::Replaces;
   else // ewww.

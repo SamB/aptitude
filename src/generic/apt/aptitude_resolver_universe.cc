@@ -36,7 +36,7 @@ bool ver_disappeared(const pkgCache::VerIterator ver)
 static bool empty_conflict(const pkgCache::DepIterator &dep,
 			   const pkgCache::PrvIterator &prv)
 {
-  if(dep->Type != pkgCache::Dep::Conflicts)
+  if(!is_conflict(dep->Type))
     return false;
 
   if(prv.end())
@@ -124,7 +124,7 @@ bool aptitude_resolver_version::revdep_iterator::applicable() const
   //
   // As a bonus, this lets us match what gets generated for forward
   // deps.
-  if(dep_lst->Type == pkgCache::Dep::Conflicts &&
+  if(is_conflict(dep_lst->Type) &&
      !prv_lst.end() &&
      const_cast<pkgCache::PrvIterator &>(prv_lst).OwnerPkg() == const_cast<pkgCache::DepIterator &>(dep_lst).ParentPkg())
     return false;
@@ -209,7 +209,7 @@ inline void aptitude_resolver_version::dep_iterator::advance()
   // If we weren't trying to iterate over a Provides list *and* the
   // current dep is a non-versioned Conflicts, start such an
   // iteration.
-  else if(!prv_open && dep->Type == pkgCache::Dep::Conflicts &&
+  else if(!prv_open && is_conflict(dep->Type) &&
 	  !dep.TargetVer())
     {
       prv = dep.TargetPkg().ProvidesList();
@@ -224,7 +224,7 @@ inline void aptitude_resolver_version::dep_iterator::advance()
 
   if(move_to_next_dep)
     {
-      if(!dep.end() && dep->Type == pkgCache::Dep::Conflicts)
+      if(!dep.end() && is_conflict(dep->Type))
 	++dep;
       else
 	{
@@ -250,7 +250,7 @@ aptitude_resolver_version::dep_iterator::applicable(const pkgCache::DepIterator 
     {
       eassert(!dep.end());
       eassert(!prv.end());
-      eassert(dep->Type == pkgCache::Dep::Conflicts);
+      eassert(is_conflict(dep->Type));
 
       if(const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg() == const_cast<pkgCache::DepIterator &>(dep).ParentPkg())
 	return false;
@@ -269,7 +269,7 @@ aptitude_resolver_version::dep_iterator::applicable(const pkgCache::DepIterator 
 
 bool aptitude_resolver_version::dep_iterator::applicable()
 {
-  if(dep->Type == pkgCache::Dep::Conflicts)
+  if(is_conflict(dep->Type))
     // In this case the current dependency is represented completely
     // by the depends and provides iterators; no need to step.
     return applicable(dep, prv, prv_open, cache);
@@ -302,7 +302,7 @@ void aptitude_resolver_version::dep_iterator::normalize()
 
 void aptitude_resolver_dep::solver_iterator::normalize()
 {
-  if(dep_lst->Type != pkgCache::Dep::Conflicts)
+  if(!is_conflict(dep_lst->Type))
     {
       while(!end())
 	{
@@ -362,7 +362,7 @@ void aptitude_resolver_dep::solver_iterator::normalize()
     }
   else
     {
-      // For Conflicts, we're iterating over all the versions of
+      // For Conflicts/Breaks, we're iterating over all the versions of
       // *one* package for *one* dep, either the owner of the
       // dep or a provided package.  (prv_lst is mostly
       // unnecessary, but it makes it simple to remember whether
@@ -383,7 +383,7 @@ void aptitude_resolver_dep::solver_iterator::normalize()
 	      ++ver_lst;
 	    }
 	  // Important point: end version iterators always match
-	  // a Conflicts! (i.e., any Conflicts can be resolved
+	  // a Conflicts/Breaks! (i.e., those can always be resolved
 	  // by removing the conflicted package)
 	  return;
 	}
@@ -419,7 +419,7 @@ bool aptitude_resolver_dep::solved_by(const aptitude_resolver_version &v) const
   // Now check each of the members of the OR group.
   pkgCache::DepIterator d = start;
 
-  if(start->Type != pkgCache::Dep::Conflicts)
+  if(!is_conflict(start->Type))
     {
       // Of course, installing an end version never fixes a
       // non-conflict unless it removes the source (tested for above).
@@ -480,7 +480,7 @@ aptitude_resolver_dep::solver_iterator &aptitude_resolver_dep::solver_iterator::
 
   if(!ver_lst.end())
     ++ver_lst;
-  else if(dep_lst->Type != pkgCache::Dep::Conflicts)
+  else if(!is_conflict(dep_lst->Type))
     {
       if(!prv_lst.end())
 	++prv_lst;
@@ -511,7 +511,7 @@ aptitude_resolver_version aptitude_resolver_dep::solver_iterator::operator*() co
     return aptitude_resolver_version(ver_lst.ParentPkg(),ver_lst,cache);
   else // In this case we're trying to remove some package or other.
     {
-      if(dep_lst->Type != pkgCache::Dep::Conflicts)
+      if(!is_conflict(dep_lst->Type))
 	{
 	  // Assume this because otherwise end() should be true.
 	  eassert(!prv_lst.end());
@@ -603,7 +603,7 @@ void aptitude_universe::broken_dep_iterator::normalize()
 
   // Now dep is a broken critical dep or an end dep.  If it is a
   // conflicts, we might need to push down into Provides...
-  if(!the_dep.end() && the_dep->Type == pkgCache::Dep::Conflicts)
+  if(!the_dep.end() && is_conflict(the_dep->Type))
     {
       // If we aren't in provides, check whether the dep is
       // trivially broken (i.e., without following provides).
@@ -693,7 +693,7 @@ aptitude_universe::broken_dep_iterator &aptitude_universe::broken_dep_iterator::
   // If the_dep.end() we have pkg.end().
   eassert(!the_dep.end());
 
-  if(!prv_open && the_dep->Type == pkgCache::Dep::Conflicts)
+  if(!prv_open && is_conflict(the_dep->Type))
     {
       prv_open = true;
       prv = the_dep.TargetPkg().ProvidesList();

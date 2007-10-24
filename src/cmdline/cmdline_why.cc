@@ -227,6 +227,7 @@ namespace
 	case pkgCache::Dep::Depends:
 	case pkgCache::Dep::PreDepends:
 	case pkgCache::Dep::Conflicts:
+	case pkgCache::Dep::DpkgBreaks:
 	  return true;
 	case pkgCache::Dep::Recommends:
 	  return dep_level == Recommends || dep_level == Suggests;
@@ -564,7 +565,7 @@ namespace
       {
 	// If we walked through a Provides, we can only look at conflicts.
 	if(!params.get_allow_choices() &&
-	   dep->Type != pkgCache::Dep::Conflicts &&
+	   !is_conflict(dep->Type) &&
 	   is_provides())
 	  continue;
 
@@ -572,7 +573,8 @@ namespace
 	  pkgCache::DepIterator start, end;
 	  // Drop ORs if choices are disallowed.  Note that ORs are
 	  // meaningless for conflicts, so we ignore them there.
-	  if(!params.get_allow_choices() && dep->Type != pkgCache::Dep::Conflicts)
+	  if(!params.get_allow_choices() &&
+	     !is_conflict(dep->Type))
 	    {
 	      // Check if we're in an OR by checking whether either
 	      // (a) the OR flag is set, or (b) this isn't the first
@@ -597,7 +599,7 @@ namespace
 	if(is_remove())
 	  {
 	    // Remove, ProvidesRemove nodes take this.
-	    if(dep->Type != pkgCache::Dep::Conflicts)
+	    if(!is_conflict(dep->Type))
 	      {
 		if(verbosity > 1)
 		  std::cout << _("    ++   --> skipping, not a conflict\n");
@@ -607,7 +609,7 @@ namespace
 	else
 	  {
 	    // Install, ProvidesInstall nodes take this.
-	    if(dep->Type == pkgCache::Dep::Conflicts)
+	    if(is_conflict(dep->Type))
 	      {
 		if(verbosity > 1)
 		  std::cout << _("    ++   --> skipping conflict\n");

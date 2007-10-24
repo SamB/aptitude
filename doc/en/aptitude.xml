@@ -197,7 +197,8 @@
       Some packages require other packages in order to function.  In
       Debian, packages can <firstterm>depend</firstterm> upon,
       <firstterm>recommend</firstterm>,
-      <firstterm>suggest</firstterm>, or
+      <firstterm>suggest</firstterm>,
+      <firstterm>break</firstterm>, or
       <firstterm>conflict</firstterm> with other packages.
     </para>
 
@@ -4244,6 +4245,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <quote><literal>predepends</literal></quote>,
 	      <quote><literal>recommends</literal></quote>,
 	      <quote><literal>suggests</literal></quote>,
+	      <quote><literal>breaks</literal></quote>,
 	      <quote><literal>conflicts</literal></quote>, or
 	      <quote><literal>replaces</literal></quote>.
 	    </para>
@@ -4256,7 +4258,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <listitem>
 	    <para>
 	      Matches packages that are <quote>broken</quote>: they have an
-	      unfulfilled dependency, predependency, or conflict.
+	      unfulfilled dependency, predependency, breaks, or conflict.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -10101,6 +10103,16 @@ Minesweeper                                   Minesweeper    Lost in 2388 second
 	  </para>
 	</listitem>
       </varlistentry>
+
+      <varlistentry>
+	<term>Support for the dpkg Breaks field</term>
+
+	<listitem>
+	  <para>
+	    Ian Jackson, Michael Vogt
+	  </para>
+	</listitem>
+      </varistentry>
     </variablelist>
   </chapter>
 

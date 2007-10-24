@@ -158,6 +158,7 @@ style pkg_depitem::get_normal_style()
 void pkg_depitem::select(undo_group *undo)
 {
   if(firstdep->Type!=pkgCache::Dep::Conflicts &&
+     firstdep->Type!=pkgCache::Dep::DpkgBreaks &&
      firstdep->Type!=pkgCache::Dep::Replaces)
     {
       bool last_or=true;

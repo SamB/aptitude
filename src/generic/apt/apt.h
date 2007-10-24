@@ -240,4 +240,25 @@ public:
   }
 };
 
+/** \return \b true if the given dependency type is Conflicts or
+ *  Breaks.
+ *
+ *  We need this overload because the Type field of the dependency
+ *  structure is an unsigned char, not a DepType.
+ */
+inline bool is_conflict(unsigned char type)
+{
+  return
+    type == pkgCache::Dep::Conflicts ||
+    type == pkgCache::Dep::DpkgBreaks;
+}
+
+/** \return \b true if the given dependency type is Conflicts or
+ *  Breaks.
+ */
+inline bool is_conflict(pkgCache::Dep::DepType type)
+{
+  return is_conflict(static_cast<unsigned char>(type));
+}
+
 #endif

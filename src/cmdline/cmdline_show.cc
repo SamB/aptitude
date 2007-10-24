@@ -411,6 +411,8 @@ static fragment *version_file_fragment(pkgCache::VerIterator ver,
   fragments.push_back(dep_lst_frag(ver.DependsList(),
 				   _("Conflicts"), pkgCache::Dep::Conflicts));
   fragments.push_back(dep_lst_frag(ver.DependsList(),
+				   _("Breaks"), pkgCache::Dep::DpkgBreaks));
+  fragments.push_back(dep_lst_frag(ver.DependsList(),
 				   _("Replaces"), pkgCache::Dep::Replaces));
   fragments.push_back(dep_lst_frag(ver.DependsList(),
 				   _("Obsoletes"), pkgCache::Dep::Obsoletes));

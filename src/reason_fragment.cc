@@ -36,6 +36,8 @@ fragment *depname_frag(pkgCache::DepIterator dep)
 							 style_attrs_on(A_BOLD));
     case pkgCache::Dep::Conflicts: return text_fragment(_("conflicts with"),
 							style_attrs_on(A_BOLD));
+    case pkgCache::Dep::DpkgBreaks: return text_fragment(_("breaks"),
+							style_attrs_on(A_BOLD));
     case pkgCache::Dep::Replaces: return text_fragment(_("replaces"));
     case pkgCache::Dep::Obsoletes: return text_fragment(_("obsoletes"));
     }
@@ -240,7 +242,7 @@ fragment *dep_singlefrag(pkgCache::PkgIterator pkg,
 	       verfrag,
 	       prvfrag(dep.TargetPkg(),
 		       dep.ParentPkg(),
-		       dep->Type==pkgCache::Dep::Conflicts),
+		       is_conflict(dep->Type)),
 	       available?"":(string(" [")+_("UNAVAILABLE")+"]").c_str());
 }
 
@@ -485,7 +487,7 @@ fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
 	    fragments.push_back(wrapbox(fragf(_("The following packages conflict with %B%s%b and will be broken by its installation:"),
 					      pkg.Name())));
 	  else
-	    // up/downgrade; could be either Depends or Conflicts
+	    // up/downgrade; could be either Depends or Conflicts/Breaks
 	    {
 	      bool has_depends=false;
 	      bool has_conflicts=false;
@@ -495,7 +497,7 @@ fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
 	      for(set<reason>::const_iterator i=reasons.begin();
 		  i!=reasons.end(); ++i)
 		{
-		  if(i->dep->Type == pkgCache::Dep::Conflicts)
+		  if(is_conflict(i->dep->Type))
 		    has_conflicts=true;
 		  else
 		    has_depends=true;

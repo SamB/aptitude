@@ -116,6 +116,9 @@ wstring dep_text(const pkgCache::DepIterator &d)
     case pkgCache::Dep::Conflicts:
       return swsprintf(transcode(_("%s conflicts with %s")).c_str(),
 		       name, targets.c_str());
+    case pkgCache::Dep::DpkgBreaks:
+      return swsprintf(transcode(_("%s breaks %s")).c_str(),
+		       name, targets.c_str());
     case pkgCache::Dep::Replaces:
       return swsprintf(transcode(_("%s replaces %s")).c_str(),
 				 name, targets.c_str());
@@ -130,7 +133,7 @@ wstring dep_text(const pkgCache::DepIterator &d)
 wstring conflict_text(const pkgCache::DepIterator &conflict,
 		      const pkgCache::PrvIterator &prv)
 {
-  if(prv.end() || conflict->Type != pkgCache::Dep::Conflicts)
+  if(prv.end() || !is_conflict(conflict->Type))
     return dep_text(conflict);
 
   return swsprintf(transcode(_("%s conflicts with %s [provided by %s %s]")).c_str(),

@@ -497,7 +497,7 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 	  {
 	    for(pkgCache::DepIterator D=pkg.RevDependsList(); !D.end(); D++)
 	      if(D.IsCritical() &&
-		 D->Type!=pkgCache::Dep::Conflicts &&
+		 !is_conflict(D->Type) &&
 		 D.ParentVer()==D.ParentPkg().CurrentVer() &&
 		 // That test is CORRECT; we want to see if the version
 		 // providing the dependency is correct.
@@ -512,7 +512,7 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 	  for(pkgCache::DepIterator D=i.ParentPkg().RevDependsList(); !D.end(); D++)
 	    {
 	      if(D.IsCritical() &&
-		 D->Type!=pkgCache::Dep::Conflicts &&
+		 !is_conflict(D->Type) &&
 		 D.ParentVer()==D.ParentPkg().CurrentVer() &&
 		 _system->VS->CheckDep(i.ProvideVersion(), D->CompareOp, D.TargetVer()))
 		count++;

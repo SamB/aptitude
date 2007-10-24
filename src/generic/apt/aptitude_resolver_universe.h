@@ -256,14 +256,14 @@ inline aptitude_resolver_version aptitude_resolver_package::current_version() co
  *
  *  This class is a model of the \ref universe_dep "Dependency concept".
  *
- *  Dependency relationships other than Conflicts are translated in a
+ *  Dependency relationships other than Conflicts/Breaks are translated in a
  *  very straightforward manner: unversioned dependencies collect all
  *  the versions of the target package and are pushed backwards
  *  through Provides, while versioned dependencies collect all
  *  matching versions.  ORed dependencies collect all the versions
  *  targeted by their subcomponents.
  *
- *  Conflicts relationships are handled by generating one abstract
+ *  Conflicts/Breaks relationships are handled by generating one abstract
  *  dependency for the immediate conflict, and then a separate one for
  *  \e each provider of the conflicted name (if the conflict is
  *  unversioned, of course).  The solvers of these conflicts are the
@@ -277,12 +277,13 @@ class aptitude_resolver_dep
 {
   pkgDepCache *cache;
   pkgCache::DepIterator start;
-  /** If start is a Conflicts and prv is not an end iterator, then the
-   *  object represents "V -> {V'_1 V'_2 ..} where the V'-s are
-   *  versions of prv.OwnerPkg() that do *not* provide V.ParentPkg().
-   *  Otherwise, if start is a Conflicts and prv is an end iterator,
-   *  the object represents the non-virtual part of the Conflicts; if
-   *  start is not a Conflicts, prv is unused.
+  /** If start is a Conflicts/Breaks and prv is not an end iterator,
+   *  then the object represents "V -> {V'_1 V'_2 ..} where the V'-s
+   *  are versions of prv.OwnerPkg() that do *not* provide
+   *  V.ParentPkg().  Otherwise, if start is a Conflicts/Breaks and
+   *  prv is an end iterator, the object represents the non-virtual
+   *  part of the Conflicts/Breaks; if start is not a
+   *  Conflicts/Breaks, prv is unused.
    *
    *  All that discussion is mainly important when checking if the dep
    *  is broken and/or when finding its solvers.
@@ -300,7 +301,7 @@ public:
    *
    *  \param dep The APT dependency to represent.
    *
-   *  \param _prv If dep is a Conflicts, then this is either an end
+   *  \param _prv If dep is a Conflicts/Breaks, then this is either an end
    *  iterator (indicating that this object represents the conflict on
    *  the real target package), or the Provides through which the
    *  conflict should be projected.
@@ -316,7 +317,7 @@ public:
     eassert(const_cast<pkgCache::DepIterator &>(dep).Cache()!=0);
     eassert(prv.Cache()!=0);
     eassert(!dep.end());
-    if(dep->Type != pkgCache::Dep::Conflicts)
+    if(!is_conflict(dep->Type))
       {
 	// Throw away the end, since it's not necessary.
 	pkgCache::DepIterator end;
@@ -342,14 +343,14 @@ public:
   bool operator==(const aptitude_resolver_dep &other) const
   {
     return start == other.start &&
-      (start->Type != pkgCache::Dep::Conflicts || prv == other.prv);
+      (!is_conflict(start->Type) || prv == other.prv);
   }
 
   /** \brief Compare two dependencies for equality. */
   bool operator!=(const aptitude_resolver_dep &other) const
   {
     return start != other.start ||
-      (start->Type == pkgCache::Dep::Conflicts && prv != other.prv);
+      (is_conflict(start->Type) && prv != other.prv);
   }
 
   /** \brief Orders dependencies according to their memory
@@ -361,7 +362,7 @@ public:
       return true;
     else if(((const pkgCache::Dependency *) start) > ((const pkgCache::Dependency *) other.start))
       return false;
-    else if(start->Type != pkgCache::Dep::Conflicts)
+    else if(!is_conflict(start->Type))
       return false;
     else if(((const pkgCache::Provides *) prv) < ((const pkgCache::Provides *) other.prv))
       return true;
@@ -613,7 +614,7 @@ class aptitude_resolver_version::dep_iterator
   pkgDepCache *cache;
   pkgCache::DepIterator dep;
   pkgCache::PrvIterator prv;
-  /** If \b true, then dep is a Conflicts and we are iterating over
+  /** If \b true, then dep is a Conflicts/Breaks and we are iterating over
    *  the packages providing its target.
    */
   bool prv_open;
@@ -734,7 +735,7 @@ class aptitude_resolver_dep::solver_iterator
 
 public:
   /** \brief Initialize a solution iterator for a dependency that is
-   *  not a Conflicts.
+   *  not a Conflicts/Breaks.
    *
    *  \param start The dependency whose targets should be enumerated.
    *
@@ -750,7 +751,7 @@ public:
   {
     if(!dep_lst.end())
       {
-	eassert(dep_lst->Type != pkgCache::Dep::Conflicts);
+	eassert(!is_conflict(dep_lst->Type));
 
 	ver_lst=const_cast<pkgCache::DepIterator &>(start).TargetPkg().VersionList();
 	prv_lst=const_cast<pkgCache::DepIterator &>(start).TargetPkg().ProvidesList();
@@ -759,13 +760,13 @@ public:
     normalize();
   }
 
-  /** \brief Initialize a solution iterator for a Conflicts.
+  /** \brief Initialize a solution iterator for a Conflicts/Breaks.
    *
    *  \param d The conflict that we should iterate over solutions to.
    *
-   *  \param p The Provides through which the Conflicts is being
-   *  projected, or an end iterator if we are handling a straight
-   *  Conflicts.
+   *  \param p The Provides through which the Conflicts/Breaks is
+   *  being projected, or an end iterator if we are handling a
+   *  straight Conflicts/Breaks.
    *
    *  \param _cache The package cache in which to work.
    */
@@ -776,7 +777,7 @@ public:
   {
     if(!dep_lst.end())
       {
-	eassert(d->Type == pkgCache::Dep::Conflicts);
+	eassert(is_conflict(d->Type));
 	// Either we're looking at all versions of the named dep, or
 	// at all versions of the providing package.
 	if(prv_lst.end())
@@ -833,7 +834,7 @@ public:
 
 inline aptitude_resolver_dep::solver_iterator aptitude_resolver_dep::solvers_begin() const
 {
-  if(start->Type != pkgCache::Dep::Conflicts)
+  if(!is_conflict(start->Type))
     return solver_iterator(start, cache);
   else
     return solver_iterator(start, prv, cache);
@@ -846,7 +847,7 @@ bool aptitude_resolver_dep::broken_under(const InstallationType &I) const
   if(const_cast<pkgCache::DepIterator &>(start).ParentVer() != I.version_of(aptitude_resolver_package(const_cast<pkgCache::DepIterator &>(start).ParentPkg(), cache)).get_ver())
     return false;
 
-  if(start->Type != pkgCache::Dep::Conflicts)
+  if(!is_conflict(start->Type))
     {
       pkgCache::DepIterator dep=start;
 
@@ -881,9 +882,9 @@ bool aptitude_resolver_dep::broken_under(const InstallationType &I) const
     }
   else
     {
-      // Recall that a Conflicts dep iterator is looking at a single
-      // element of the Conflicts: either a direct conflict or an
-      // indirect conflict (i.e., via a virtual pkg).
+      // Recall that a Conflicts/Breaks dep iterator is looking at a
+      // single element of the Conflicts/Breaks: either a direct
+      // conflict or an indirect conflict (i.e., via a virtual pkg).
 
       if(prv.end())
 	{
@@ -1071,7 +1072,7 @@ public:
    *  a version iterator here.
    *
    *  Note on OR groups: DepGInstall is only set on the last entry in
-   *  an OR group.  But Conflicts should be handled individually.  As
+   *  an OR group.  But Conflicts/Breaks should be handled individually.  As
    *  I'm not even sure ORed conflicts are valid, none exist in the
    *  wild, and ORed conflicts are a Pointless Idea[tm] anyway, THIS
    *  WILL NOT PRODUCE CORRECT OUTPUT for ORed conflicts.  \todo try
@@ -1084,7 +1085,7 @@ public:
 
     class pkgCache::PkgIterator pkg;
     class pkgCache::DepIterator the_dep;
-    /** If the_dep is a Conflicts, then the following keep track
+    /** If the_dep is a Conflicts/Breaks, then the following keep track
      *  of which sub-relationship is being examined.
      */
     class pkgCache::PrvIterator prv;
