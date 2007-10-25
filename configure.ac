@@ -99,8 +99,8 @@ AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[#include <apt-pkg/pkgcache.h>]],
 AC_MSG_CHECKING([whether apt supports the Homepage: field])
 
 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[#include <apt-pkg/pkgrecords.h>]],
-				  [[  pkgRecords::Parser p;]]
-				  [[  p.Homepage();]]),
+				  [[  pkgRecords::Parser *p = NULL;]]
+				  [[  if(0) p->Homepage();]]),
 		   AC_MSG_RESULT([yes])
 		   AC_DEFINE([APT_HAS_HOMEPAGE], [], [Set to true if apt supports the Homepage: field]),
 		   AC_MSG_RESULT([no]))
