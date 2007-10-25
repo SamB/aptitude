@@ -240,8 +240,10 @@ public:
     fragment *homepage =
       rec.Homepage() == ""
         ? fragf("")
-      : dropbox(fragf("%B%s%b", _("Homepage")),
+      : dropbox(fragf("%B%s%b%n", _("Homepage")),
 		hardwrapbox(text_fragment(rec.Homepage())));
+#else
+    fragment *homepage = fragf("");
 #endif
 
     fragment *tags=make_tags_fragment(pkg);
@@ -260,7 +262,8 @@ public:
     if(untrusted_frag == NULL)
       set_fragment(fragf("%F%F", frag, tags));
     else
-      set_fragment(fragf("%F%n%F%F", untrusted_frag, frag, tags));
+      set_fragment(fragf("%F%n%F%F%F", untrusted_frag, frag,
+			 homepage, tags));
   }
 };
 
