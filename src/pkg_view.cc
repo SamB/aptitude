@@ -226,10 +226,6 @@ public:
   void set_package(const pkgCache::PkgIterator &pkg,
 		   const pkgCache::VerIterator &ver)
   {
-#ifdef APT_HAS_HOMEPAGE
-    pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
-#endif
-
     // Check against pkg.end() to hack around #339533; if ver is a
     // default iterator, pkg.end() is true.
     wstring newdesc(pkg.end() ? L"" : get_long_description(ver));
@@ -237,11 +233,18 @@ public:
     fragment *frag=make_desc_fragment(newdesc);
 
 #ifdef APT_HAS_HOMEPAGE
-    fragment *homepage =
-      rec.Homepage() == ""
-        ? fragf("")
-      : dropbox(fragf("%B%s%b%n", _("Homepage")),
-		hardwrapbox(text_fragment(rec.Homepage())));
+    fragment *homepage;
+    if(!ver.end())
+      {
+	pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
+	string homepagestr = rec.Homepage();
+	homepage = (homepagestr == ""
+		    ? fragf("")
+		    : dropbox(fragf("%B%s%b", _("Homepage: ")),
+			      hardwrapbox(text_fragment(rec.Homepage()))));
+      }
+    else
+      homepage = fragf("");
 #else
     fragment *homepage = fragf("");
 #endif
@@ -260,7 +263,7 @@ public:
       untrusted_frag=make_untrusted_warning(ver);
 
     if(untrusted_frag == NULL)
-      set_fragment(fragf("%F%F", frag, tags));
+      set_fragment(fragf("%F%F%F", frag, homepage, tags));
     else
       set_fragment(fragf("%F%n%F%F%F", untrusted_frag, frag,
 			 homepage, tags));
