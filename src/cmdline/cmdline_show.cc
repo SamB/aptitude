@@ -189,6 +189,12 @@ static const char *current_state_string(pkgCache::PkgIterator pkg, pkgCache::Ver
       return _("partially installed");
     case pkgCache::State::ConfigFiles:
       return _("not installed (configuration files remain)");
+#ifdef APT_HAS_TRIGGERS
+    case pkgCache::State::TriggersAwaited:
+      return _("awaiting trigger processing by other package(s)");
+    case pkgCache::State::TriggersPending:
+      return _("awaiting trigger processing");
+#endif
     case pkgCache::State::Installed:
       return _("installed");
     default:

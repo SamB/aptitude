@@ -408,7 +408,12 @@ pkg_action_state find_pkg_state(pkgCache::PkgIterator pkg)
     return pkg_reinstall;
   // States where --configure fixes things.
   else if(pkg->CurrentState == pkgCache::State::UnPacked ||
-	  pkg->CurrentState == pkgCache::State::HalfConfigured)
+	  pkg->CurrentState == pkgCache::State::HalfConfigured
+#ifdef APT_HAS_TRIGGERS
+	  || pkg->CurrentState == pkgCache::State::TriggersAwaited
+	  || pkg->CurrentState == pkgCache::State::TriggersPending
+#endif
+	  )
     return pkg_unconfigured;
 
   return pkg_unchanged;

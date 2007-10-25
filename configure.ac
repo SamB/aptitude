@@ -105,6 +105,15 @@ AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[#include <apt-pkg/pkgrecords.h>]],
 		   AC_DEFINE([APT_HAS_HOMEPAGE], [], [Set to true if apt supports the Homepage: field]),
 		   AC_MSG_RESULT([no]))
 
+AC_MSG_CHECKING([whether apt supports dpkg triggers])
+
+AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[#include <apt-pkg/pkgcache.h>]],
+			          [[pkgCache::State::TriggersAwaited;]]
+				  [[pkgCache::State::TriggersPending;]]),
+		  AC_MSG_RESULT([yes])
+		  AC_DEFINE([APT_HAS_TRIGGERS], [], [Set to true if apt supports dpkg trigger states]),
+		  AC_MSG_RESULT([no]))
+
 # Try to guess what namespace the hash stuff is in (maybe I should just
 # use rbltrees instead in most places?)
 if test x$HASH_INC != x
