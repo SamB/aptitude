@@ -592,7 +592,7 @@ namespace
 
 	if(verbosity > 1)
 	  {
-	    std::auto_ptr<fragment> tmp(fragf(_("    ++ Examining %s\n"), print_dep(dep)));
+	    std::auto_ptr<fragment> tmp(fragf(_("    ++ Examining %F\n"), print_dep(dep)));
 	    std::cout << tmp->layout(screen_width, screen_width, style());
 	  }
 
