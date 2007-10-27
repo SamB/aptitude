@@ -812,7 +812,7 @@ namespace
       if(first_iteration)
 	{
 	  if(verbosity > 1)
-	    std::cout << ssprintf(_("Starting search with parameters %s\n"),
+	    std::cout << ssprintf(_("Starting search with parameters %ls\n"),
 				  params.description().c_str());
 	  first_iteration = false;
 	}
