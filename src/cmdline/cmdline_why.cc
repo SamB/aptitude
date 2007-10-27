@@ -1035,7 +1035,7 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 	  if(first)
 	    first = false;
 	  else
-	    std::cout << std::endl;
+	    rval.push_back(newline_fragment());
 
 	  if(results.empty())
 	    return fragf(_("The package \"%s\" is a starting point of the search.\n"),
