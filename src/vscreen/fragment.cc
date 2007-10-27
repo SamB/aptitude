@@ -1162,10 +1162,12 @@ public:
 	     y < starting_lines[i] + child_layouts[i].size())
 	    {
 	      fragment_line &s = child_layouts[i][y - starting_lines[i]];
+	      if((unsigned)s.width() > widths[i])
+		s.erase(widths[i], s.size());
 	      tmp += s;
 
-	      if(widths[i] > s.size())
-		tmp += fragment_line(widths[i] - s.size(), L' ',
+	      if(widths[i] > (unsigned)s.width())
+		tmp += fragment_line(widths[i] - s.width(), L' ',
 				     st.get_attrs());
 	    }
 	  else
