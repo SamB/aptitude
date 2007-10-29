@@ -1015,22 +1015,32 @@ class _fragment_columns : public fragment_container
 
     for(size_t i = 0; i < columns.size(); ++i)
       {
-	if(columns[i].proportional)
+	const fragment_column_entry &col(columns[i]);
+	if(col.proportional)
 	  {
 	    widths[i]    = 0;
 	    denominator += columns[i].width;
 	  }
 	else
 	  {
-	    if(columns[i].expandable &&
-	       columns[i].f != NULL)
+	    widths[i] = columns[i].width;
+
+	    if(col.expandable)
 	      {
-		contains_resizable = true;
-		widths[i] = std::max(columns[i].width,
-				     columns[i].f->max_width(0, 0));
+		for(std::vector<fragment *>::const_iterator line_it =
+		      col.lines.begin();
+		      line_it != col.lines.end();
+		    ++line_it)
+		  {
+		    fragment *f = *line_it;
+		    if(f != NULL)
+		      {
+			contains_resizable = true;
+			widths[i] = std::max(widths[i],
+					     f->max_width(0, 0));
+		      }
+		  }
 	      }
-	    else
-	      widths[i] = columns[i].width;
 
 	    total += widths[i];
 	  }
@@ -1110,22 +1120,43 @@ public:
   {
     for(vector<fragment_column_entry>::const_iterator
 	  i = columns.begin(); i != columns.end(); ++i)
-      delete i->f;
+      {
+	for(std::vector<fragment *>::const_iterator line_it =
+	      i->lines.begin(); line_it != i->lines.end(); ++line_it)
+	  delete *line_it;
+      }
   }
 
-  fragment_contents layout(size_t firstw, size_t restw, const style &st)
+private:
+  fragment *get_column_line(size_t colnum, size_t linenum) const
   {
-    eassert(firstw == restw);
+    const std::vector<fragment *>& line(columns[colnum].lines);
+    if(linenum < line.size())
+      return line[linenum];
+    else
+      return NULL;
+  }
 
-    vector<size_t> widths(columns.size());
-    update_widths(widths, restw);
-
+  // Build the kth line as a contents structure.
+  //
+  // Note: the interface is optimized for clarity; for efficiency we
+  // would output directly to the final location instead of building a
+  // temporary copy.
+  fragment_contents make_line(size_t linenum,
+			      const vector<size_t> &widths,
+			      const style &st) const
+  {
     vector<fragment_contents> child_layouts(columns.size());
 
     for(size_t i = 0; i < columns.size(); ++i)
-      if(columns[i].f != NULL)
-	child_layouts[i]    = columns[i].f->layout(widths[i], widths[i], st);
+      {
+	fragment *f = get_column_line(i, linenum);
+	if(f != NULL)
+	  child_layouts[i]    = f->layout(widths[i], widths[i], st);
+      }
 
+    // Figure out how to align the lines: find the height of this
+    // table row and adjust positions accordingly.
     size_t height = 0;
     for(size_t i = 0; i < columns.size(); ++i)
       if(child_layouts[i].size() > height)
@@ -1157,7 +1188,7 @@ public:
 	fragment_line tmp(L"");
 
 	for(size_t i = 0; i < columns.size(); ++i)
-	  if(columns[i].f != NULL &&
+	  if(get_column_line(i, linenum) != NULL &&
 	     y >= starting_lines[i] &&
 	     y < starting_lines[i] + child_layouts[i].size())
 	    {
@@ -1181,6 +1212,39 @@ public:
     return rval;
   }
 
+public:
+  fragment_contents layout(size_t firstw, size_t restw, const style &st)
+  {
+    eassert(firstw == restw);
+
+    vector<size_t> widths(columns.size());
+    update_widths(widths, restw);
+
+    size_t num_lines = 0;
+    for(std::vector<fragment_column_entry>::const_iterator
+	  it = columns.begin(); it != columns.end(); ++it)
+      num_lines = std::max(num_lines, it->lines.size());
+
+    fragment_contents rval;
+    for(size_t i = 0; i < num_lines; ++i)
+      {
+	fragment_contents curr = make_line(i, widths, st);
+
+	if(curr.size() == 0 && curr.get_final_nl())
+	  rval.push_back(fragment_line(L""));
+	else
+	  {
+	    for(fragment_contents::const_iterator curr_it = curr.begin();
+		curr_it != curr.end(); ++curr_it)
+	      rval.push_back(*curr_it);
+	  }
+      }
+
+    rval.set_final_nl(true);
+
+    return rval;
+  }
+
   size_t calc_max_width(size_t first_indent, size_t rest_indent) const
   {
     eassert(first_indent == rest_indent);
@@ -1190,12 +1254,31 @@ public:
     for(vector<fragment_column_entry>::const_iterator
 	  i = columns.begin(); i != columns.end(); ++i)
       {
-	size_t thisw =
-	  i->f == NULL ? 0 : i->f->max_width(first_indent, rest_indent);
+	size_t thisw = 0;
+	for(std::vector<fragment *>::const_iterator
+	      line_it = i->lines.begin();
+	    line_it != i->lines.end();
+	    ++line_it)
+	  {
+	    // Start by making the line large enough to hold its
+	    // content.
+	    size_t line_width = 0;
+	    if((*line_it) != NULL)
+	      line_width = std::max(thisw,
+				    (*line_it)->max_width(first_indent,
+							  rest_indent));
 
-	if(!i->proportional && (i->f == NULL ||
-				(i->expandable && thisw < i->width)))
-	  thisw = i->width;
+	    // If this line doesn't have content or it can be
+	    // expanded, make its width at least the declared
+	    // column width.
+	    if(!i->proportional &&
+	          ((*line_it) == NULL ||
+		   (i->expandable && line_width < i->width)))
+	      line_width = std::max(line_width, i->width);
+
+	    // Expand the column to cover this line.
+	    thisw = std::max(thisw, line_width);
+	  }
 
 	rval += thisw;
 

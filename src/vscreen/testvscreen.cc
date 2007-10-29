@@ -359,9 +359,22 @@ fragment *dickens_fragment()
 
   vector<fragment_column_entry> column_entries;
 
-  column_entries.push_back(fragment_column_entry(true, false, 5, fragment_column_entry::top, flowbox(fragf("Scrooge never painted out Old Marley's name. There it stood, years afterwards, above the warehouse door: Scrooge and Marley.  The firm was known as Scrooge and Marley.  Sometimes people new to the business called Scrooge Scrooge, and sometimes Marley, but he answered to both names: it was all the same to him.\n\nOh!  But he was a tight-fisted hand at the grind-stone, Scrooge! a squeezing, wrenching, grasping, scraping, clutching, covetous, old sinner!  Hard and sharp as flint, from which no steel had ever struck out generous fire; secret, and self-contained, and solitary as an oyster.  The cold within him froze his old features, nipped his pointed nose, shriveled his cheek, stiffened his gait; made his eyes red, his thin lips blue and spoke out shrewdly in his grating voice.  A frosty rime was on his head, and on his eyebrows, and his wiry chin.  He carried his own low temperature always about with him; he iced his office in the dogdays; and didn't thaw it one degree at Christmas."))));
-  column_entries.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL));
-  column_entries.push_back(fragment_column_entry(true, false, 1, fragment_column_entry::bottom, flowbox(fragf("Here we see further evidence of Scrooge's miserly behavior: to save himself a bit of money on paint and labour, he leaves an inaccurate (and somewhat spooky) sign above the door of his business."))));
+  std::vector<fragment *> column1_lines;
+  column1_lines.push_back(flowbox(fragf("Scrooge never painted out Old Marley's name. There it stood, years afterwards, above the warehouse door: Scrooge and Marley.  The firm was known as Scrooge and Marley.  Sometimes people new to the business called Scrooge Scrooge, and sometimes Marley, but he answered to both names: it was all the same to him.\n\nOh!  But he was a tight-fisted hand at the grind-stone, Scrooge! a squeezing, wrenching, grasping, scraping, clutching, covetous, old sinner!  Hard and sharp as flint, from which no steel had ever struck out generous fire; secret, and self-contained, and solitary as an oyster.  The cold within him froze his old features, nipped his pointed nose, shriveled his cheek, stiffened his gait; made his eyes red, his thin lips blue and spoke out shrewdly in his grating voice.  A frosty rime was on his head, and on his eyebrows, and his wiry chin.  He carried his own low temperature always about with him; he iced his office in the dogdays; and didn't thaw it one degree at Christmas.")));
+
+  column1_lines.push_back(newline_fragment());
+  column1_lines.push_back(newline_fragment());
+  column1_lines.push_back(flowbox(text_fragment("External heat and cold had little influence on Scrooge.  No warmth could warm, no wintry weather chill him.  No wind that blew was bitterer than he, no falling snow was more intent upon its purpose, no pelting rain less open to entreaty.  Foul weather didn't know where to have him.  The heaviest rain, and snow, and hail, and sleet, could boast of the advantage over him in only one respect.  They often \"came down\" handsomely, and Scrooge never did.")));
+
+  column_entries.push_back(fragment_column_entry(true, false, 5, fragment_column_entry::top, column1_lines));
+  column_entries.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, std::vector<fragment *>()));
+
+  std::vector<fragment *> column3_lines;
+  column3_lines.push_back(flowbox(fragf("Here we see further evidence of Scrooge's miserly behavior: to save himself a bit of money on paint and labour, he leaves an inaccurate (and somewhat spooky) sign above the door of his business.")));
+  column3_lines.push_back(newline_fragment());
+  column3_lines.push_back(flowbox(fragf("Spoiler: things only get spookier from here on.")));
+
+  column_entries.push_back(fragment_column_entry(true, false, 1, fragment_column_entry::bottom, column3_lines));
 
   v.push_back(fragment_columns(column_entries));
 

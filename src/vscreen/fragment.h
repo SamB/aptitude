@@ -305,18 +305,40 @@ struct fragment_column_entry
    */
   align vert_align;
 
-  /** The fragment to display, or \b NULL for blank space. */
-  fragment *f;
+  /** The vertical components of this column.
+   *
+   *  Each vertical entry in the column will begin on the same line as
+   *  the corresponding vertical entries in the other columns.  If not
+   *  all columns have the same number of vertical entries, the
+   *  shorter columns are padded with blank lines to be the same
+   *  length as the longer columns.
+   *
+   *  NULL entries produce blank lines.
+   */
+  std::vector<fragment *>lines;
+
+  /** \brief Create a fragment column that has a single line. */
+  fragment_column_entry(bool _proportional,
+			bool _expandable,
+			size_t _width, align _vert_align,
+			fragment *f)
+    :proportional(_proportional),
+     expandable(_expandable),
+     width(_width),
+     vert_align(_vert_align)
+  {
+    lines.push_back(f);
+  }
 
   fragment_column_entry(bool _proportional,
 			bool _expandable,
 			size_t _width, align _vert_align,
-			fragment *_f)
+			const std::vector<fragment *> &_lines)
     :proportional(_proportional),
      expandable(_expandable),
      width(_width),
      vert_align(_vert_align),
-     f(_f)
+     lines(_lines)
   {
   }
 

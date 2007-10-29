@@ -510,16 +510,16 @@ namespace
       for(imm::set<justify_action>::const_iterator it = actions.begin();
 	  it != actions.end(); ++it)
 	{
-	  col1_entries.push_back(fragf("%F | \n", it->description_column1_fragment()));
-	  col2_entries.push_back(fragf("%F\n", it->description_column2_fragment()));
-	  col3_entries.push_back(fragf("%F\n", it->description_column3_fragment()));
+	  col1_entries.push_back(hardwrapbox(fragf("%F | \n", it->description_column1_fragment())));
+	  col2_entries.push_back(hardwrapbox(fragf("%F\n", it->description_column2_fragment())));
+	  col3_entries.push_back(hardwrapbox(fragf("%F\n", it->description_column3_fragment())));
 	}
       std::vector<fragment_column_entry> columns;
-      columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, sequence_fragment(col1_entries)));
+      columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, col1_entries));
       columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL)),
-      columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, sequence_fragment(col2_entries)));
+      columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, col2_entries));
       columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL)),
-      columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, sequence_fragment(col3_entries)));
+      columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, col3_entries));
       rval.push_back(fragment_columns(columns));
       return sequence_fragment(rval);
     }
@@ -1046,22 +1046,19 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 	      for(std::vector<justify_action>::const_iterator it = results.begin();
 		  it != results.end(); ++it)
 		{
-		  col1_entries.push_back(style_fragment(fragf("%F\n", it->description_column1_fragment()),
-							it->get_style()));
-		  col2_entries.push_back(style_fragment(fragf("%F\n", it->description_column2_fragment()),
-							it->get_style()));
-		  col3_entries.push_back(style_fragment(fragf("%F\n", it->description_column3_fragment()),
-							it->get_style()));
+		  col1_entries.push_back(hardwrapbox(style_fragment(fragf("%F\n", it->description_column1_fragment()),
+								    it->get_style())));
+		  col2_entries.push_back(hardwrapbox(style_fragment(fragf("%F\n", it->description_column2_fragment()),
+								    it->get_style())));
+		  col3_entries.push_back(hardwrapbox(style_fragment(fragf("%F\n", it->description_column3_fragment()),
+								    it->get_style())));
 		}
 	      std::vector<fragment_column_entry> columns;
-	      fragment *col1_contents = sequence_fragment(col1_entries);
-	      fragment *col2_contents = sequence_fragment(col2_entries);
-	      fragment *col3_contents = sequence_fragment(col3_entries);
 	      columns.push_back(fragment_column_entry(false,
 						      true,
 						      0,
 						      fragment_column_entry::top,
-						      col1_contents));
+						      col1_entries));
 	      columns.push_back(fragment_column_entry(false,
 						      false,
 						      1,
@@ -1071,7 +1068,7 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 						      true,
 						      0,
 						      fragment_column_entry::top,
-						      col2_contents));
+						      col2_entries));
 	      columns.push_back(fragment_column_entry(false,
 						      false,
 						      1,
@@ -1081,7 +1078,7 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 						      true,
 						      0,
 						      fragment_column_entry::top,
-						      col3_contents));
+						      col3_entries));
 	      fragment *solution_fragment(fragment_columns(columns));
 
 	      if(verbosity < 1)
