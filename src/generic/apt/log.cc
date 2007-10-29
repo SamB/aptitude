@@ -1,6 +1,6 @@
 // log.cc
 //
-//   Copyright (C) 2005-2006 Daniel Burrows
+//   Copyright (C) 2005-2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -126,6 +126,10 @@ bool do_log(const string &log,
 		break;
 	      case pkg_auto_hold:
 		tag = _("HOLD, DEPENDENCIES");
+		break;
+	      case pkg_unconfigured:
+		tag = _("UNCONFIGURED");
+		break;
 	      default:
 		tag = _("????????");
 		break;
