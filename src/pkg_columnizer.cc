@@ -329,7 +329,8 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 
       break;
     case description:
-      return column_disposition(get_short_description(visible_ver), 0);
+      return column_disposition(get_short_description(visible_ver,
+						      apt_package_records), 0);
 
       break;
     case maintainer:

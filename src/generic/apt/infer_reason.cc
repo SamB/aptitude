@@ -146,7 +146,7 @@ static bool is_simple_self_conflict(pkgCache::DepIterator dep) {
 
 void infer_reason(pkgCache::PkgIterator pkg, set<reason> &reasons)
 {
-  pkg_action_state actionstate=find_pkg_state(pkg);
+  pkg_action_state actionstate=find_pkg_state(pkg, *apt_cache_file);
 
   pkgDepCache::StateCache &state=(*apt_cache_file)[pkg];
   pkgCache::VerIterator instver=state.InstVerIter(*apt_cache_file);

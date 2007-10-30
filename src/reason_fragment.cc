@@ -345,7 +345,7 @@ fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
   infer_reason(pkg, reasons);
 
   vector<fragment *> fragments;
-  pkg_action_state actionstate=find_pkg_state(pkg);
+  pkg_action_state actionstate = find_pkg_state(pkg, *apt_cache_file);
 
   aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
   aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);

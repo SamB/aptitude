@@ -33,6 +33,7 @@
 #include <generic/util/bool_accumulate.h>
 
 #include <apt-pkg/depcache.h>
+#include <apt-pkg/pkgrecords.h>
 
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
@@ -214,12 +215,10 @@ private:
   /** The number of "new" packages. */
   int new_package_count;
 
-  bool mark_and_sweep_in_progress;
-  // Tracks whether a mark-and-sweep is running to avoid infinite recursion.
-  // FIXME: disgusting hack.
-
   apt_state_snapshot backup_state;
   // Stores what the cache was like just before an action was performed
+
+  pkgRecords *records;
 
   /** Call whenever the cache state is modified; discards the
    *  state of the active resolver.
@@ -274,6 +273,8 @@ public:
   bool is_locked() {return lock!=-1;}
 
   bool is_dirty() {return dirty;}
+
+  pkgRecords &get_records() { return *records; }
 
   // If do_initselections is "false", the "sticky states" will not be used
   // to initialize packages.  (important for the command-line mode)

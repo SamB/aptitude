@@ -146,7 +146,8 @@ enum pkg_action_state {pkg_unchanged=-1,
 		       pkg_upgrade,
                        pkg_unconfigured};
 const int num_pkg_action_states=12;
-pkg_action_state find_pkg_state(pkgCache::PkgIterator pkg);
+pkg_action_state find_pkg_state(pkgCache::PkgIterator pkg,
+				aptitudeDepCache &cache);
 // A utility routine to return a useful notion of a package's "action-state"
 // and an enum associated with it
 
@@ -168,12 +169,14 @@ void surrounding_or(pkgCache::DepIterator dep,
 /** \return a short description string corresponding to the given
  *  version.
  */
-std::wstring get_short_description(const pkgCache::VerIterator &ver);
+std::wstring get_short_description(const pkgCache::VerIterator &ver,
+				   pkgRecords *records);
 
 /** \return a long description string corresponding to the given
  *  version.
  */
-std::wstring get_long_description(const pkgCache::VerIterator &ver);
+std::wstring get_long_description(const pkgCache::VerIterator &ver,
+				  pkgRecords *records);
 
 /** \return true if pkg is suggested by another package which will be
  *  installed.

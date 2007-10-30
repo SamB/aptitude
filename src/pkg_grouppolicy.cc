@@ -416,7 +416,7 @@ public:
 
   virtual void add_package(const pkgCache::PkgIterator &pkg, pkg_subtree *root)
   {
-    if(filter->matches(pkg))
+    if(filter->matches(pkg, *apt_cache_file, *apt_package_records))
       chain->add_package(pkg, root);
   }
 
@@ -458,7 +458,7 @@ public:
 
   void add_package(const pkgCache::PkgIterator &pkg, pkg_subtree *root)
   {
-    int group=find_pkg_state(pkg);
+    int group = find_pkg_state(pkg, *apt_cache_file);
     if(group!=pkg_unchanged)
       {
 	if(!children[group].second)
@@ -1142,7 +1142,7 @@ public:
     for(vector<match_pair>::const_iterator i = subgroups.begin();
 	i != subgroups.end(); ++i)
 	{
-	  pkg_match_result *res = i->matcher->get_match(pkg);
+	  pkg_match_result *res = i->matcher->get_match(pkg, *apt_cache_file, *apt_package_records);
 	  if(res != NULL)
 	    {
 	      if(i->passthrough)

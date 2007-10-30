@@ -1460,7 +1460,7 @@ void do_package_run_or_show_preview()
   bool some_non_simple_keep_happening=false;
   for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin(); !i.end(); ++i)
     {
-      pkg_action_state state=find_pkg_state(i);
+      pkg_action_state state = find_pkg_state(i, *apt_cache_file);
 
       if(state!=pkg_unchanged)
 	{

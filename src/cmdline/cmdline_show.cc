@@ -428,8 +428,8 @@ static fragment *version_file_fragment(pkgCache::VerIterator ver,
 
   fragments.push_back(fragf("%s%ls%n",
 			    _("Description: "),
-			    get_short_description(ver).c_str()));
-  fragments.push_back(indentbox(1, 1, make_desc_fragment(get_long_description(ver))));
+			    get_short_description(ver, apt_package_records).c_str()));
+  fragments.push_back(indentbox(1, 1, make_desc_fragment(get_long_description(ver, apt_package_records))));
 
 #ifdef APT_HAS_HOMEPAGE
   if(rec.Homepage() != "")
@@ -549,7 +549,7 @@ bool do_cmdline_show(string s, int verbose)
 
       for(pkgCache::PkgIterator P=(*apt_cache_file)->PkgBegin();
 	  !P.end(); ++P)
-	if(m->matches(P))
+	if(m->matches(P, *apt_cache_file, *apt_package_records))
 	  {
 	    if(!do_cmdline_show_target(P, source, sourcestr, verbose, has_explicit_source))
 	      return false;

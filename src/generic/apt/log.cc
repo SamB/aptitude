@@ -186,7 +186,7 @@ void log_changes()
       for(pkgCache::PkgIterator i
 	    = (*apt_cache_file)->PkgBegin(); !i.end(); i++)
 	{
-	  pkg_action_state s = find_pkg_state(i);
+	  pkg_action_state s = find_pkg_state(i, *apt_cache_file);
 	  if(s != pkg_unchanged)
 	    changed_packages.push_back(logitem(i, s));
 	}

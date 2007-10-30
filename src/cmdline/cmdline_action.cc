@@ -271,7 +271,7 @@ bool cmdline_applyaction(string s,
 	  for(pkgCache::PkgIterator j=(*apt_cache_file)->PkgBegin();
 	      !j.end(); ++j)
 	    {
-	      if(!(j.VersionList().end() && j.ProvidesList().end()) && m->matches(j))
+	      if(!(j.VersionList().end() && j.ProvidesList().end()) && m->matches(j, *apt_cache_file, *apt_package_records))
 		possible.push_back(j);
 	    }
 
@@ -301,7 +301,7 @@ bool cmdline_applyaction(string s,
 	      for(pkgCache::PkgIterator j=(*apt_cache_file)->PkgBegin();
 		  !j.end(); ++j)
 		{
-		  if(m->matches(j))
+		  if(m->matches(j, *apt_cache_file, *apt_package_records))
 		    possible.push_back(j);
 		}
 
@@ -340,7 +340,7 @@ bool cmdline_applyaction(string s,
 	{
 	  pkgCache::VerIterator testver;
 
-	  if(m->matches(pkg))
+	  if(m->matches(pkg, *apt_cache_file, *apt_package_records))
 	    rval=cmdline_applyaction(action, pkg,
 				     to_install, to_hold, to_remove, to_purge,
 				     verbose, source,

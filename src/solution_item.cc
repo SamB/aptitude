@@ -263,7 +263,7 @@ void solution_act_item::do_highlighted_changed(bool highlighted)
 	 apt_package_records == NULL)
 	set_short_description(fragf(""));
       else
-	set_short_description(text_fragment(get_short_description(real_ver)));
+	set_short_description(text_fragment(get_short_description(real_ver, apt_package_records)));
 
       set_active_dep(d);
     }

@@ -228,7 +228,7 @@ public:
   {
     // Check against pkg.end() to hack around #339533; if ver is a
     // default iterator, pkg.end() is true.
-    wstring newdesc(pkg.end() ? L"" : get_long_description(ver));
+    wstring newdesc(pkg.end() ? L"" : get_long_description(ver, apt_package_records));
 
     fragment *frag=make_desc_fragment(newdesc);
 

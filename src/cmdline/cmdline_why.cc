@@ -851,7 +851,9 @@ namespace
 	    for(std::vector<pkg_matcher *>::const_iterator it = leaves.begin();
 		!reached_leaf && it != leaves.end(); ++it)
 	      {
-		if((*it)->matches(frontpkg, frontver))
+		if((*it)->matches(frontpkg, frontver,
+				  *apt_cache_file,
+				  *apt_package_records))
 		  reached_leaf = true;
 	      }
 	  if(reached_leaf)
@@ -895,13 +897,17 @@ namespace
     }
 
     bool matches(const pkgCache::PkgIterator &pkg,
-		 const pkgCache::VerIterator &ver)
+		 const pkgCache::VerIterator &ver,
+		 aptitudeDepCache &cache,
+		 pkgRecords &records)
     {
       return pkg == match_pkg;
     }
 
     pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
-				const pkgCache::VerIterator &ver)
+				const pkgCache::VerIterator &ver,
+				aptitudeDepCache &cache,
+				pkgRecords &records)
     {
       if(pkg == match_pkg)
 	return new const_name_result(pkg.Name());
@@ -1248,7 +1254,8 @@ int cmdline_why(int argc, char *argv[],
       else
 	{
 	  matchers.push_back(m);
-	  if(!pkg.end() && m->matches(pkg, pkg.CurrentVer()))
+	  if(!pkg.end() && m->matches(pkg, pkg.CurrentVer(),
+				      *apt_cache_file, *apt_package_records))
 	    {
 	      printf(_("The package \"%s\" is manually installed.\n"),
 		     pkg.Name());

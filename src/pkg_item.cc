@@ -475,7 +475,9 @@ void pkg_item::dispatch_mouse(short id, int x, mmask_t bstate, vs_tree *owner)
 
 bool pkg_item::matches(const string &s) const
 {
-  return pkg_matches(s, package, visible_version());
+  return pkg_matches(s, package, visible_version(),
+		     *apt_cache_file,
+		     *apt_package_records);
 }
 
 pkgCache::VerIterator pkg_item::visible_version(const pkgCache::PkgIterator &pkg)

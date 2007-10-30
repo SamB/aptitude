@@ -184,7 +184,8 @@ aptitudeDepCache::action_group::~action_group()
 
 aptitudeDepCache::aptitudeDepCache(pkgCache *Cache, Policy *Plcy)
   :pkgDepCache(Cache, Plcy), dirty(false), read_only(true),
-   package_states(NULL), lock(-1), group_level(0)
+   package_states(NULL), lock(-1), group_level(0),
+   new_package_count(0), records(NULL)
 {
   // When the "install recommended packages" flag changes, collect garbage.
 #if 0
@@ -213,6 +214,7 @@ bool aptitudeDepCache::Init(OpProgress *Prog, bool WithLock, bool do_initselecti
 
 aptitudeDepCache::~aptitudeDepCache()
 {
+  delete records;
   delete[] package_states;
 
   if(lock!=-1)
@@ -235,6 +237,8 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 
   if(!pkgDepCache::Init(&Prog))
     return false;
+
+  records = new pkgRecords(*this);
 
   // This is necessary so that the Garbage flags are initialized.
   // Some of the Mark* methods perturb the Auto flag in largely
@@ -1569,6 +1573,9 @@ bool aptitudeDepCache::MarkFollowsSuggests()
 
 class AptitudeInRootSetFunc : public pkgDepCache::InRootSetFunc
 {
+  /** \brief A pointer to the cache in which we're matching. */
+  aptitudeDepCache &cache;
+
   /** A matcher if one could be created; otherwise NULL. */
   pkg_matcher *m;
 
@@ -1580,8 +1587,9 @@ class AptitudeInRootSetFunc : public pkgDepCache::InRootSetFunc
    */
   pkgDepCache::InRootSetFunc *chain;
 public:
-  AptitudeInRootSetFunc(pkgDepCache::InRootSetFunc *_chain)
-    : m(NULL), constructedSuccessfully(false), chain(NULL)
+  AptitudeInRootSetFunc(pkgDepCache::InRootSetFunc *_chain,
+			aptitudeDepCache &_cache)
+    : cache(_cache), m(NULL), constructedSuccessfully(false), chain(NULL)
   {
     std::string matchterm = aptcfg->Find(PACKAGE "::Keep-Unused-Pattern", "~nlinux-image-.*");
     if(matchterm.empty()) // Bug-compatibility with old versions.
@@ -1607,7 +1615,8 @@ public:
 
   bool InRootSet(const pkgCache::PkgIterator &pkg)
   {
-    if(m != NULL && m->matches(pkg))
+    pkgRecords &records(cache.get_records());
+    if(m != NULL && m->matches(pkg, cache, records))
       return true;
     else
       return chain != NULL && chain->InRootSet(pkg);
@@ -1624,7 +1633,7 @@ pkgDepCache::InRootSetFunc *aptitudeDepCache::GetRootSetFunc()
 {
   InRootSetFunc *superFunc = pkgDepCache::GetRootSetFunc();
 
-  AptitudeInRootSetFunc *f = new AptitudeInRootSetFunc(superFunc);
+  AptitudeInRootSetFunc *f = new AptitudeInRootSetFunc(superFunc, *this);
 
   if(f->wasConstructedSuccessfully())
     return f;

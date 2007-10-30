@@ -485,7 +485,7 @@ static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 	      ((*apt_cache_file)[pkg].iFlags & pkgDepCache::ReInstall))
 	++ReInstall;
 
-      pkg_action_state state=find_pkg_state(pkg);
+      pkg_action_state state=find_pkg_state(pkg, *apt_cache_file);
 
       switch(state)
 	{

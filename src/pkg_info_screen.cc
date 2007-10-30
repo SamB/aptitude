@@ -78,7 +78,7 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
     {
       pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
 
-      std::wstring desc(get_long_description(ver));
+      std::wstring desc(get_long_description(ver, apt_package_records));
       std::wstring shortdesc(desc, 0, desc.find(L'\n'));
 
       vector<fragment*> frags;

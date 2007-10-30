@@ -323,7 +323,7 @@ column_disposition pkg_ver_columnizer::setup_column(const pkgCache::VerIterator 
 
       break;
     case description:
-      return column_disposition(get_short_description(ver), 0);
+      return column_disposition(get_short_description(ver, apt_package_records), 0);
     case maintainer:
       if(ver.end())
 	return column_disposition("", 0);

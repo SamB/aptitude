@@ -1,6 +1,6 @@
 // pkg_tree.cc
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2005, 2007 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -184,7 +184,7 @@ bool pkg_tree::build_tree(OpProgress &progress)
 	  if(i.VersionList().end() && i.ProvidesList().end())
 	    continue;
 
-	  if((!limit) || limit->matches(i))
+	  if((!limit) || limit->matches(i, *apt_cache_file, *apt_package_records))
 	    {
 	      empty=false;
 	      grouper->add_package(i, mytree);

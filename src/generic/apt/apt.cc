@@ -359,10 +359,11 @@ pkg_hier *get_user_pkg_hier()
   return user_pkg_hier;
 }
 
-pkg_action_state find_pkg_state(pkgCache::PkgIterator pkg)
+pkg_action_state find_pkg_state(pkgCache::PkgIterator pkg,
+				aptitudeDepCache &cache)
 {
-  aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
-  aptitudeDepCache::aptitude_state &extstate=(*apt_cache_file)->get_ext_state(pkg);
+  aptitudeDepCache::StateCache &state = cache[pkg];
+  aptitudeDepCache::aptitude_state &extstate = cache.get_ext_state(pkg);
 
   if(state.InstBroken())
     return pkg_broken;
@@ -869,9 +870,10 @@ bool is_interesting_dep(const pkgCache::DepIterator &d,
     }
 }
 
-std::wstring get_short_description(const pkgCache::VerIterator &ver)
+std::wstring get_short_description(const pkgCache::VerIterator &ver,
+				   pkgRecords *records)
 {
-  if(ver.end() || ver.FileList().end() || apt_package_records == NULL)
+  if(ver.end() || ver.FileList().end() || records == NULL)
     return std::wstring();
 
 #ifndef HAVE_DDTP
@@ -880,7 +882,7 @@ std::wstring get_short_description(const pkgCache::VerIterator &ver)
   if(vf.end())
     return std::wstring();
   else
-    return transcode(apt_package_records->Lookup(vf).ShortDesc());
+    return transcode(records->Lookup(vf).ShortDesc());
 #else
   pkgCache::DescIterator d = ver.TranslatedDescription();
 
@@ -895,13 +897,14 @@ std::wstring get_short_description(const pkgCache::VerIterator &ver)
     // apt "helpfully" transcodes the description for us, instead of
     // providing direct access to it.  So I need to assume that the
     // description is encoded in the current locale.
-    return transcode(apt_package_records->Lookup(df).ShortDesc());
+    return transcode(records->Lookup(df).ShortDesc());
 #endif
 }
 
-std::wstring get_long_description(const pkgCache::VerIterator &ver)
+std::wstring get_long_description(const pkgCache::VerIterator &ver,
+				  pkgRecords *records)
 {
-  if(ver.end() || ver.FileList().end() || apt_package_records == NULL)
+  if(ver.end() || ver.FileList().end() || records == NULL)
     return std::wstring();
 
 #ifndef HAVE_DDTP
@@ -910,7 +913,7 @@ std::wstring get_long_description(const pkgCache::VerIterator &ver)
   if(vf.end())
     return std::wstring();
   else
-    return transcode(apt_package_records->Lookup(vf).LongDesc());
+    return transcode(records->Lookup(vf).LongDesc());
 #else
   pkgCache::DescIterator d = ver.TranslatedDescription();
 
@@ -922,6 +925,6 @@ std::wstring get_long_description(const pkgCache::VerIterator &ver)
   if(df.end())
     return std::wstring();
   else
-    return transcode(apt_package_records->Lookup(df).LongDesc());
+    return transcode(records->Lookup(df).LongDesc());
 #endif
 }

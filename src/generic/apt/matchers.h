@@ -29,6 +29,9 @@
 
 #include <apt-pkg/pkgcache.h>
 
+class aptitudeDepCache;
+class pkgRecords;
+
 /* For the cases where you want to investigate just what you matched a
  * bit more thoroughly.
  *
@@ -52,24 +55,35 @@ class pkg_matcher
 {
 public:
   virtual bool matches(const pkgCache::PkgIterator &pkg,
-		       const pkgCache::VerIterator &ver)=0;
+		       const pkgCache::VerIterator &ver,
+		       aptitudeDepCache &cache,
+		       pkgRecords &records)=0;
+
+
+
   /** \return a match result, or \b NULL if there is no match.  It's
    *  the caller's responsibility to delete this.
    */
   virtual pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
-				      const pkgCache::VerIterator &ver)=0;
+				      const pkgCache::VerIterator &ver,
+				      aptitudeDepCache &cache,
+				      pkgRecords &records)=0;
 
   /** See whether this matches a versionless package.  This applies
    *  the matcher to every version of the package and returns \b true
    *  if any version is matched.
    */
-  virtual bool matches(const pkgCache::PkgIterator &pkg);
+  virtual bool matches(const pkgCache::PkgIterator &pkg,
+		       aptitudeDepCache &cache,
+		       pkgRecords &records);
 
   /** Get a match result for a versionless package.  This applies the
    *  matcher to each version of the package, returning \b NULL if
    *  none matches or the first match found otherwise.
    */
-  virtual pkg_match_result *get_match(const pkgCache::PkgIterator &pkg);
+  virtual pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+				      aptitudeDepCache &cache,
+				      pkgRecords &records);
 
   virtual ~pkg_matcher();
 };
@@ -127,7 +141,9 @@ inline pkg_matcher *parse_pattern(const std::string &s,
 
 inline bool pkg_matches(const string &s,
 			const pkgCache::PkgIterator &pkg,
-			const pkgCache::VerIterator &ver)
+			const pkgCache::VerIterator &ver,
+			aptitudeDepCache &cache,
+			pkgRecords &records)
 {
   std::string::const_iterator start=s.begin();
   std::auto_ptr<pkg_matcher> m(parse_pattern(start, s.end()));
@@ -135,7 +151,7 @@ inline bool pkg_matches(const string &s,
     return false;
   else
     {
-      bool rval=m.get()->matches(pkg, ver);
+      bool rval=m.get()->matches(pkg, ver, cache, records);
       return rval;
     }
 }
