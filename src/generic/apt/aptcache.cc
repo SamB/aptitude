@@ -326,6 +326,11 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 	      section.FindFlag("Upgrade", tmp, 1);
 	      pkg_state.upgrade=(tmp==1);
 
+	      unsigned long auto_new_install = 0;
+	      section.FindFlag("Auto-New-Install", auto_new_install, 1);
+	      if(auto_new_install)
+		pkg_state.previously_auto_package = true;
+
 	      // The install reason is much more important to preserve
 	      // from previous versions, so support the outdated name
 	      // for it.
@@ -334,10 +339,7 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 			      section.FindI("Last-Change", manual));
 
 	      if(install_reason != manual)
-		{
-		  MarkAuto(pkg, true);
-		  dirty = true;
-		}
+		pkg_state.previously_auto_package = true;
 
 	      pkg_state.remove_reason=(changed_reason)
 		section.FindI("Remove-Reason", manual);
@@ -458,6 +460,12 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 	  if(!i.CurrentVer().end())
 	    MarkDelete(i, true);
 	  break;
+	}
+
+      if(estate.previously_auto_package)
+	{
+	  MarkAuto(i, true);
+	  dirty = true;
 	}
 
       ++num;
@@ -603,6 +611,11 @@ bool aptitudeDepCache::save_selection_list(OpProgress &prog,
 	    bool upgrade=(!i.CurrentVer().end()) && state.Install();
 	    string upgradestr=upgrade ? "Upgrade: yes\n" : "";
 
+	    bool auto_new_install = (i.CurrentVer().end() &&
+				     state.Install() &&
+				     ((state.Flags & Flag::Auto) != 0));
+	    string autostr = auto_new_install ? "Auto-New-Install: yes\n" : "";
+
 	    string tailstr;
 
 	    if(state.Install() &&
@@ -613,13 +626,14 @@ bool aptitudeDepCache::save_selection_list(OpProgress &prog,
 
 	    len=snprintf(buf,
 			 400,
-			 "Package: %s\nUnseen: %s\nState: %i\nDselect-State: %i\nRemove-Reason: %i\n%s%s%s\n",
+			 "Package: %s\nUnseen: %s\nState: %i\nDselect-State: %i\nRemove-Reason: %i\n%s%s%s%s\n",
 			 i.Name(),
 			 estate.new_package?"yes":"no",
 			 estate.selection_state,
 			 i->SelectedState,
 			 estate.remove_reason,
 			 upgradestr.c_str(),
+			 autostr.c_str(),
 			 forbidstr.c_str(),
 			 tailstr.c_str());
 	    if(len>=399)

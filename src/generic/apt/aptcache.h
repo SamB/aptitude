@@ -92,6 +92,18 @@ public:
      */
     bool new_package:1;
 
+    /** \brief True if an aptitude flag from the last run indicates
+     *  that this package should be set to automatically installed.
+     *
+     *  This flag is used to migrate old settings and to flag queued
+     *  installations as automatic.
+     *
+     *  \warning This value is stored here to get it from the code
+     *  that interprets pkgstates to the code that sets up package
+     *  states; user code should not assume that it is meaningful.
+     */
+    bool previously_auto_package:1;
+
     /** If the package is in state Install and is upgradable, this
      *  field determines whether or not it should be upgraded.  This
      *  field is not updated as the package is modified; it is used
