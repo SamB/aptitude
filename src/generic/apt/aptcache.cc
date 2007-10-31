@@ -256,7 +256,7 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
       package_states[i].reinstall=false;
       package_states[i].remove_reason=manual;
       package_states[i].selection_state = pkgCache::State::Unknown;
-      package_states[i].auto_new_install = false;
+      package_states[i].previously_auto_package = false;
     }
 
   if(WithLock && lock==-1)
