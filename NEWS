@@ -1,3 +1,95 @@
+[10/30/2007]
+Version 0.4.7                               "Where did all these
+                                             balloons come from?
+                                             And why am I wearing
+                                             a fake nose?"
+
+- New features:
+
+  * The options dialogs have been completely replaced by a new
+    interface, based on a top-level list view.  This fixes many
+    deficiencies of the old interface: it handles long strings more
+    gracefully, avoids many of the focus-handling bugs that the old
+    dialogs had, and should generally be better-behaved.
+     (Closes: #197976, #331200, #424708)
+
+  * Prompts that ask you to enter text will now wrap to multiple lines
+    when the text gets long, rather than hiding parts of the string.
+
+  * The online help and other Help-menu itmes are now top-level views,
+    which should make them somewhat more usable. (Closes: #434349)
+
+  * Support for the "Breaks" field and for trigger states (thanks to
+    Michael Vogt and Ian Jackson for patches and prodding).
+    (Closes: #438543)
+
+  * Two new styles, "PkgDowngraded" and "PkgDowngradedHighlighted",
+    are provided to control how downgraded packages look.  By default
+    these packages look like any other installed package.
+    (Closes: #434442)
+
+  * aptitude can now display homepage URLs stored in the Homepage
+    field of packages.
+
+- Bug fixes:
+
+  + Crashes and serious errors:
+
+    * When applying the resolver's output, only set the packages that
+      are newly installed to be automatic, rather than making
+      everything the resolver touches automatic.
+
+    * Save and restore the automatic flag on packages that are not
+      not currently installed and that are being installed.
+        (Closes: #435079)
+
+    * Fix the help generated when the user presses '?' at the prompt
+      to not segfault, and rewrite the code to avoid this bug in the
+      future (it was using a format string with a huge number of
+      placeholders; now it builds a list of the output lines
+      explicitly).
+
+    * Eliminate a crash on startup caused by using a global pointer to
+      the cache in the package matching logic (which might be null)
+      instead of taking a valid pointer to the cache as a parameter.
+      This is necessary since the matcher might be invoked while the
+      cache is being loaded, e.g., to decide if a package should be
+      part of the root set.
+
+  + Minor bugs:
+
+    * Fix the 'pattern' grouping policy: it was inserting packages
+      into all the trees that matched, not just the first one.
+
+    * Make removals and holds that occur later on the command-line
+      override earlier commands.
+
+    * The debugging output from "why" no longer tries to dereference
+      invalid pointers or display multibyte strings as single-byte
+      strings. (Closes: #447290)
+
+  + Cosmetic and UI bugs:
+
+    * If the text in a column of the "why" output exceeds the column
+      width, the column will now wrap correctly onto the next line.
+
+    * Auto-held and unconfigured packages no longer generate ?????? in
+      the aptitude log.
+
+  + Documentation bugs:
+
+    * Fix the documentation on aptitude development.  It now gives the
+      correct URL and version control system for the upstream
+      repository, and somewhat more actively solicits contributions.
+
+- Translation updates:
+
+  * Galician (Closes: #446620)
+  * Nepali
+  * Russian
+  * Spanish
+  * Swedish (Closes: #434643)
+
 [7/25/2007]
 Version 0.4.6.1
 
