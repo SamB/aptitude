@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES=Makefile.in
 
-SUBDIRS=generic vscreen cmdline mine
+SUBDIRS=generic cmdline mine
 
 localedir = $(datadir)/locale
 INCLUDES = -Wall @WERROR@ -I$(top_builddir) -I$(srcdir) -I$(top_srcdir) -I$(top_srcdir)/src
@@ -8,8 +8,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 bin_PROGRAMS=aptitude
 
-LDADD=@LIBINTL@ cmdline/libcmdline.a vscreen/config/libconf.a \
-	mine/libcmine.a vscreen/libvscreen.a \
+LDADD=@LIBINTL@ cmdline/libcmdline.a mine/libcmine.a \
 	generic/util/libgeneric-util.a generic/apt/libgeneric-apt.a
 
 aptitude_SOURCES= 	\
