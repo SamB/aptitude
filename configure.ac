@@ -41,16 +41,12 @@ AC_CHECK_LIB(pthread, main,
 ALL_LINGUAS="ar bs ca cs da de el es eu fi fr gl hu it ja km ku lt mr nb nl nn pl pt pt_BR ro ru sk sv tl tr vi zh_CN zh_TW"
 AM_GNU_GETTEXT([external])
 
-dnl Old sigc:
-dnl AM_PATH_SIGC(1.0.1, , AC_MSG_ERROR([Can't find libsigc++ 1.0.1 -- please install it.]))
-
-dnl Less old sogc:
-dnl PKG_CHECK_MODULES(SIGC, sigc++-1.2)
-
 PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 
-CXXFLAGS="$CXXFLAGS $SIGC_CFLAGS"
-LIBS="$LIBS $SIGC_LIBS"
+PKG_CHECK_MODULES(CWIDGET, cwidget)
+
+CXXFLAGS="$CXXFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS"
+LIBS="$LIBS $SIGC_LIBS $CWIDGET_LIBS"
 AC_DEFINE_UNQUOTED(SIGC_VERSION, ["$(pkg-config --modversion sigc++-2.0)"], [The version of libsigc++ with which the program was compiled])
 
 dnl Checks for header files.
