@@ -27,7 +27,7 @@
 #define DOWNLOAD_BAR_H
 
 #include <apt-pkg/acquire.h>
-#include "vscreen/vscreen_widget.h"
+#include <cwidget/widgets/widgets.h>
 
 class download_status_bar:public pkgAcquireStatus, public vscreen_widget
 {

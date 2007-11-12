@@ -23,7 +23,7 @@
 #define VS_PROGRESS_H
 
 #include "vscreen/vs_tree.h"
-#include "vscreen/vscreen_widget.h"
+#include <cwidget/widgets/widgets.h>
 
 #include <apt-pkg/progress.h>
 
