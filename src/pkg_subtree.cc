@@ -23,7 +23,7 @@
 
 #include <generic/apt/apt.h>
 
-#include <vscreen/vs_tree.h>
+#include <cwidget/widgets/tree.h>
 
 void pkg_subtree::paint(vs_tree *win, int y, bool hierarchical,
 			const style &st)

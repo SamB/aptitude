@@ -24,7 +24,7 @@
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
 
-#include <vscreen/vs_subtree.h>
+#include <cwidget/widgets/subtree.h>
 
 // Blah, this is the easiest way to define trivial subclasses:
 // (not that far from lambda, actually)

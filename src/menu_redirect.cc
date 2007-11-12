@@ -24,7 +24,7 @@
 #include <sigc++/bind.h>
 
 #include <vscreen/ref_ptr.h>
-#include <vscreen/vs_container.h>
+#include <cwidget/widgets/container.h>
 
 bool menu_redirect::undo_undo_enabled() { return false; }
 bool menu_redirect::undo_undo() { return false; }

@@ -18,7 +18,7 @@
 #include <generic/util/bool_accumulate.h>
 #include <generic/util/slotarg.h>
 
-#include <vscreen/vs_editline.h>
+#include <cwidget/widgets/editline.h>
 // Bleah..this needs to be included so histories work
 
 class OpProgress;

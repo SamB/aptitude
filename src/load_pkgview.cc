@@ -12,7 +12,7 @@
 #include <generic/apt/apt.h>
 
 #include <vscreen/transcode.h>
-#include <vscreen/vs_table.h>
+#include <cwidget/widgets/table.h>
 
 #include <apt-pkg/error.h>
 

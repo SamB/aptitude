@@ -35,7 +35,7 @@
 #include <vscreen/config/colors.h>
 #include <vscreen/config/keybindings.h>
 #include <vscreen/fragment.h>
-#include <vscreen/vs_text_layout.h>
+#include <cwidget/widgets/text_layout.h>
 #include <vscreen/vscreen.h>
 
 #include <apt-pkg/pkgsystem.h>

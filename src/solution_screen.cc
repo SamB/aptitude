@@ -37,12 +37,12 @@
 #include <vscreen/config/style.h>
 #include <vscreen/fragment.h>
 #include <vscreen/transcode.h>
-#include <vscreen/vs_label.h>
-#include <vscreen/vs_layout_item.h>
-#include <vscreen/vs_multiplex.h>
-#include <vscreen/vs_staticitem.h>
-#include <vscreen/vs_subtree.h>
-#include <vscreen/vs_table.h>
+#include <cwidget/widgets/label.h>
+#include <cwidget/widgets/layout_item.h>
+#include <cwidget/widgets/multiplex.h>
+#include <cwidget/widgets/staticitem.h>
+#include <cwidget/widgets/subtree.h>
+#include <cwidget/widgets/table.h>
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
 

@@ -24,8 +24,8 @@
 
 #include "board.h"
 
-#include <vscreen/vs_minibuf_win.h>
-#include <vscreen/vs_editline.h>
+#include <cwidget/widgets/minibuf_win.h>
+#include <cwidget/widgets/editline.h>
 
 class vs_radiogroup;
 class keybindings;

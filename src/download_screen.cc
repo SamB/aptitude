@@ -33,7 +33,7 @@
 
 #include <vscreen/transcode.h>
 #include <vscreen/vscreen.h>
-#include <vscreen/vs_util.h>
+#include <cwidget/widgets/util.h>
 
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/ptr_fun.h>

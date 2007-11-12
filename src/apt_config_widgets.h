@@ -27,9 +27,9 @@
 #ifndef APT_CONFIG_WIDGETS_H
 #define APT_CONFIG_WIDGETS_H
 
-#include <vscreen/vs_togglebutton.h>
-#include <vscreen/vs_editline.h>
-#include <vscreen/vs_radiogroup.h>
+#include <cwidget/widgets/togglebutton.h>
+#include <cwidget/widgets/editline.h>
+#include <cwidget/widgets/radiogroup.h>
 
 #include <sigc++/object.h>
 

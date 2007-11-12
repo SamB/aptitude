@@ -33,7 +33,7 @@
 
 #include <vscreen/fragment.h>
 #include <vscreen/vscreen.h>
-#include <vscreen/vs_util.h>
+#include <cwidget/widgets/util.h>
 #include <vscreen/config/colors.h>
 #include <vscreen/config/keybindings.h>
 #include <vscreen/transcode.h>

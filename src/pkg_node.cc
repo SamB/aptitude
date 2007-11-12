@@ -31,7 +31,7 @@
 
 #include <generic/util/undo.h>
 
-#include <vscreen/vs_tree.h>
+#include <cwidget/widgets/tree.h>
 
 keybindings *pkg_tree_node::bindings=NULL;
 

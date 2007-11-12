@@ -32,11 +32,11 @@
 #include <cmdline/cmdline_why.h>
 
 #include <vscreen/fragment.h>
-#include <vscreen/vs_label.h>
-#include <vscreen/vs_multiplex.h>
-#include <vscreen/vs_scrollbar.h>
-#include <vscreen/vs_table.h>
-#include <vscreen/vs_text_layout.h>
+#include <cwidget/widgets/label.h>
+#include <cwidget/widgets/multiplex.h>
+#include <cwidget/widgets/scrollbar.h>
+#include <cwidget/widgets/table.h>
+#include <cwidget/widgets/text_layout.h>
 #include <vscreen/vscreen_widget.h>
 #include <vscreen/config/keybindings.h>
 #include <vscreen/transcode.h>

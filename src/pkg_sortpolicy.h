@@ -27,7 +27,7 @@
 #define PKG_SORTPOLICY_H
 
 #include <apt-pkg/pkgcache.h>
-#include <vscreen/vs_treeitem.h>
+#include <cwidget/widgets/treeitem.h>
 
 class pkg_tree_node;
 

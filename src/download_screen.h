@@ -39,9 +39,9 @@
 #endif
 #endif
 
-#include <vscreen/vs_table.h>
-#include <vscreen/vs_tree.h>
-#include <vscreen/vs_subtree.h>
+#include <cwidget/widgets/table.h>
+#include <cwidget/widgets/tree.h>
+#include <cwidget/widgets/subtree.h>
 
 class download_item;
 

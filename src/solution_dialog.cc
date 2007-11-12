@@ -26,12 +26,12 @@
 #include <vscreen/config/colors.h>
 #include <vscreen/config/keybindings.h>
 #include <vscreen/fragment.h>
-#include <vscreen/vs_button.h>
-#include <vscreen/vs_center.h>
-#include <vscreen/vs_frame.h>
-#include <vscreen/vs_scrollbar.h>
-#include <vscreen/vs_table.h>
-#include <vscreen/vs_text_layout.h>
+#include <cwidget/widgets/button.h>
+#include <cwidget/widgets/center.h>
+#include <cwidget/widgets/frame.h>
+#include <cwidget/widgets/scrollbar.h>
+#include <cwidget/widgets/table.h>
+#include <cwidget/widgets/text_layout.h>
 #include <vscreen/vscreen.h>
 
 #include <generic/apt/apt.h>

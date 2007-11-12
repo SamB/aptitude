@@ -25,7 +25,7 @@
 #include <apt-pkg/strutl.h>
 
 #include <vscreen/transcode.h>
-#include <vscreen/vs_tree.h>
+#include <cwidget/widgets/tree.h>
 
 style download_item::get_normal_style()
 {

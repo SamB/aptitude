@@ -35,7 +35,7 @@
 #include <vscreen/config/keybindings.h>
 #include <vscreen/fragment.h>
 #include <vscreen/transcode.h>
-#include <vscreen/vs_tree.h>
+#include <cwidget/widgets/tree.h>
 
 
 using namespace std;

@@ -22,8 +22,8 @@
 
 #include "menu_redirect.h"
 
-#include <vscreen/vs_editline.h>
-#include <vscreen/vs_text_layout.h>
+#include <cwidget/widgets/editline.h>
+#include <cwidget/widgets/text_layout.h>
 
 class menu_text_layout : public vs_text_layout, public menu_redirect
 {

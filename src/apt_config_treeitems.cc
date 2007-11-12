@@ -33,10 +33,10 @@
 #include <vscreen/fragment.h>
 #include <vscreen/transcode.h>
 #include <vscreen/vscreen_widget.h>
-#include <vscreen/vs_layout_item.h>
-#include <vscreen/vs_treeitem.h>
-#include <vscreen/vs_subtree.h>
-#include <vscreen/vs_tree.h>
+#include <cwidget/widgets/layout_item.h>
+#include <cwidget/widgets/treeitem.h>
+#include <cwidget/widgets/subtree.h>
+#include <cwidget/widgets/tree.h>
 
 #include <map>
 

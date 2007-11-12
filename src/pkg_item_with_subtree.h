@@ -29,7 +29,7 @@
 #include <vscreen/columnify.h>
 #include <vscreen/config/column_definition.h>
 #include <vscreen/transcode.h>
-#include <vscreen/vs_subtree.h>
+#include <cwidget/widgets/subtree.h>
 
 template<class child, class sorter=tag_sort_policy>
 class pkg_item_with_subtree:public vs_subtree<child, sorter>, public pkg_item

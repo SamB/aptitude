@@ -32,7 +32,7 @@
 
 #include <apt-pkg/pkgcache.h>
 
-#include <vscreen/vs_tree.h>
+#include <cwidget/widgets/tree.h>
 
 class vs_hier_editor:public vs_tree
 {

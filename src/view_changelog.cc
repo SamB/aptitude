@@ -20,10 +20,10 @@
 #include <vscreen/config/colors.h>
 #include <vscreen/config/keybindings.h>
 #include <vscreen/transcode.h>
-#include <vscreen/vs_pager.h>
-#include <vscreen/vs_scrollbar.h>
-#include <vscreen/vs_table.h>
-#include <vscreen/vs_text_layout.h>
+#include <cwidget/widgets/pager.h>
+#include <cwidget/widgets/scrollbar.h>
+#include <cwidget/widgets/table.h>
+#include <cwidget/widgets/text_layout.h>
 
 #include "changelog_parse.h"
 #include "download_bar.h"

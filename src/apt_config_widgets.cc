@@ -25,7 +25,7 @@
 #include <vscreen/config/colors.h>
 #include <vscreen/fragment.h>
 #include <vscreen/transcode.h>
-#include <vscreen/vs_size_box.h>
+#include <cwidget/widgets/size_box.h>
 
 using namespace std;
 

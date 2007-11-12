@@ -34,7 +34,7 @@
 
 #include <vscreen/columnify.h>
 #include <vscreen/transcode.h>
-#include <vscreen/vs_treeitem.h>
+#include <cwidget/widgets/treeitem.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>

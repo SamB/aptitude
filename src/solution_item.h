@@ -30,7 +30,7 @@
 
 #include <generic/problemresolver/solution.h>
 
-#include <vscreen/vs_treeitem.h>
+#include <cwidget/widgets/treeitem.h>
 
 class fragment;
 

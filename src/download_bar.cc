@@ -25,8 +25,8 @@
 #include <vscreen/config/keybindings.h>
 #include <vscreen/config/colors.h>
 #include <vscreen/fragment.h>
-#include <vscreen/vs_minibuf_win.h>
-#include <vscreen/vs_util.h>
+#include <cwidget/widgets/minibuf_win.h>
+#include <cwidget/widgets/util.h>
 #include <vscreen/transcode.h>
 
 #include <apt-pkg/strutl.h>

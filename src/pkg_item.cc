@@ -25,7 +25,7 @@
 #include <vscreen/config/keybindings.h>
 #include <vscreen/fragment.h>
 #include <vscreen/transcode.h>
-#include <vscreen/vs_util.h>
+#include <cwidget/widgets/util.h>
 
 #include "edit_pkg_hier.h"
 #include "pkg_columnizer.h"

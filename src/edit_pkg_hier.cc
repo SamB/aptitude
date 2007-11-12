@@ -34,7 +34,7 @@
 #include <generic/util/util.h>
 
 #include <vscreen/config/keybindings.h>
-#include <vscreen/vs_subtree.h>
+#include <cwidget/widgets/subtree.h>
 #include <vscreen/transcode.h>
 
 using namespace std;

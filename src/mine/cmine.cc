@@ -17,15 +17,15 @@
 #include <vscreen/vscreen.h>
 
 #include <vscreen/transcode.h>
-#include <vscreen/vs_button.h>
-#include <vscreen/vs_center.h>
-#include <vscreen/vs_editline.h>
-#include <vscreen/vs_frame.h>
-#include <vscreen/vs_label.h>
-#include <vscreen/vs_radiogroup.h>
-#include <vscreen/vs_table.h>
-#include <vscreen/vs_togglebutton.h>
-#include <vscreen/vs_util.h>
+#include <cwidget/widgets/button.h>
+#include <cwidget/widgets/center.h>
+#include <cwidget/widgets/editline.h>
+#include <cwidget/widgets/frame.h>
+#include <cwidget/widgets/label.h>
+#include <cwidget/widgets/radiogroup.h>
+#include <cwidget/widgets/table.h>
+#include <cwidget/widgets/togglebutton.h>
+#include <cwidget/widgets/util.h>
 
 #include <string>
 #include <fstream>

@@ -25,7 +25,7 @@
 
 #include "menu_redirect.h"
 
-#include <vscreen/vs_treeitem.h>
+#include <cwidget/widgets/treeitem.h>
 
 class undo_group;
 class keybindings;

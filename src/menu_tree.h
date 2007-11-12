@@ -24,9 +24,9 @@
 
 #include "menu_redirect.h"
 
-#include <vscreen/vs_editline.h>
+#include <cwidget/widgets/editline.h>
 
-#include <vscreen/vs_tree.h>
+#include <cwidget/widgets/tree.h>
 
 class pkg_matcher;
 class pkg_tree_node;

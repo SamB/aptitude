@@ -20,7 +20,7 @@
 #ifndef APT_CONFIG_TREEITEMS_H
 #define APT_CONFIG_TREEITEMS_H
 
-#include <vscreen/vs_treeitem.h>
+#include <cwidget/widgets/treeitem.h>
 
 class fragment;
 

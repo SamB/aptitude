@@ -40,7 +40,7 @@
 #include <vscreen/config/keybindings.h>
 #include <vscreen/transcode.h>
 #include <vscreen/vscreen.h>
-#include <vscreen/vs_util.h>
+#include <cwidget/widgets/util.h>
 
 #include <cmdline/cmdline_changelog.h>
 #include <cmdline/cmdline_check_resolver.h>
