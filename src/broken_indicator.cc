@@ -36,7 +36,7 @@
 #include <vscreen/config/keybindings.h>
 #include <vscreen/fragment.h>
 #include <cwidget/widgets/text_layout.h>
-#include <vscreen/vscreen.h>
+#include <cwidget/toplevel.h>
 
 #include <apt-pkg/pkgsystem.h>
 

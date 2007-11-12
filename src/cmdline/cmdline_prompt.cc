@@ -21,7 +21,7 @@
 #include <generic/util/util.h>
 
 #include <vscreen/fragment.h>
-#include <vscreen/vscreen.h>
+#include <cwidget/toplevel.h>
 #include <vscreen/transcode.h>
 
 #include <apt-pkg/algorithms.h>

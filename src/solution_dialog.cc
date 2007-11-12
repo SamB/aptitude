@@ -32,7 +32,7 @@
 #include <cwidget/widgets/scrollbar.h>
 #include <cwidget/widgets/table.h>
 #include <cwidget/widgets/text_layout.h>
-#include <vscreen/vscreen.h>
+#include <cwidget/toplevel.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/aptitude_resolver_universe.h>

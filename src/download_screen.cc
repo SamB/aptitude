@@ -32,7 +32,7 @@
 #include <apt-pkg/acquire-worker.h>
 
 #include <vscreen/transcode.h>
-#include <vscreen/vscreen.h>
+#include <cwidget/toplevel.h>
 #include <cwidget/widgets/util.h>
 
 #include <sigc++/adaptors/bind.h>

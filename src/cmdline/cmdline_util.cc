@@ -16,7 +16,7 @@
 #include <generic/apt/download_manager.h>
 #include <generic/apt/download_signal_log.h>
 
-#include <vscreen/vscreen.h>
+#include <cwidget/toplevel.h>
 
 #include <sigc++/functors/ptr_fun.h>
 

@@ -32,7 +32,7 @@
 #include <apt-pkg/strutl.h>
 
 #include <vscreen/fragment.h>
-#include <vscreen/vscreen.h>
+#include <cwidget/toplevel.h>
 #include <cwidget/widgets/util.h>
 #include <vscreen/config/colors.h>
 #include <vscreen/config/keybindings.h>

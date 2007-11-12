@@ -39,7 +39,7 @@
 
 #include <vscreen/config/keybindings.h>
 #include <vscreen/transcode.h>
-#include <vscreen/vscreen.h>
+#include <cwidget/toplevel.h>
 #include <cwidget/widgets/util.h>
 
 #include <cmdline/cmdline_changelog.h>

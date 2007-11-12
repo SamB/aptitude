@@ -62,7 +62,7 @@
 
 #include <vscreen/curses++.h>
 #include <vscreen/fragment.h>
-#include <vscreen/vscreen.h>
+#include <cwidget/toplevel.h>
 #include <cwidget/widgets/button.h>
 #include <cwidget/widgets/center.h>
 #include <cwidget/widgets/editline.h>

@@ -14,7 +14,7 @@
 #include <vscreen/config/colors.h>
 
 #include <vscreen/vscreen_widget.h>
-#include <vscreen/vscreen.h>
+#include <cwidget/toplevel.h>
 
 #include <vscreen/transcode.h>
 #include <cwidget/widgets/button.h>
