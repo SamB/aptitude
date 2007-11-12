@@ -29,7 +29,7 @@
 
 #include <sigc++/functors/mem_fun.h>
 
-#include <vscreen/vscreen_widget.h> // For vs_widget_ref
+#include <cwidget/widgets/widget.h> // For vs_widget_ref
 
 ui_download_manager::ui_download_manager(download_manager *_manager,
 					 bool force_noninvasive,

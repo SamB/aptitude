@@ -37,7 +37,7 @@
 #include <cwidget/widgets/scrollbar.h>
 #include <cwidget/widgets/table.h>
 #include <cwidget/widgets/text_layout.h>
-#include <vscreen/vscreen_widget.h>
+#include <cwidget/widgets/widget.h>
 #include <vscreen/config/keybindings.h>
 #include <vscreen/transcode.h>
 

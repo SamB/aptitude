@@ -29,7 +29,7 @@
 
 #include <generic/util/slotarg.h>
 
-#include <vscreen/vscreen_widget.h>
+#include <cwidget/widgets/widget.h>
 
 class download_signal_log;
 

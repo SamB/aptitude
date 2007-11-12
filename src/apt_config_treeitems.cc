@@ -32,7 +32,7 @@
 
 #include <vscreen/fragment.h>
 #include <vscreen/transcode.h>
-#include <vscreen/vscreen_widget.h>
+#include <cwidget/widgets/widget.h>
 #include <cwidget/widgets/layout_item.h>
 #include <cwidget/widgets/treeitem.h>
 #include <cwidget/widgets/subtree.h>

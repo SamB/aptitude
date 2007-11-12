@@ -13,7 +13,7 @@
 #include <vscreen/config/keybindings.h>
 #include <vscreen/config/colors.h>
 
-#include <vscreen/vscreen_widget.h>
+#include <cwidget/widgets/widget.h>
 #include <cwidget/toplevel.h>
 
 #include <vscreen/transcode.h>
