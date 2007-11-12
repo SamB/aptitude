@@ -115,7 +115,7 @@ private:
 
     vector<fragment *> key_hints;
 
-    key_hints.push_back(fragf(_("%s: Examine"),
+    key_hints.push_back(fragf(_("%ls: Examine"),
 			      examine.c_str()));
 
 
@@ -123,15 +123,15 @@ private:
     bool can_next = (state.selected_solution < state.generated_solutions &&
 		     !(state.selected_solution + 1 == state.generated_solutions && state.solutions_exhausted));
 
-    key_hints.push_back(style_fragment(fragf(_("%s: Apply"),
+    key_hints.push_back(style_fragment(fragf(_("%ls: Apply"),
 					     apply.c_str()),
 				       can_apply ? st_normal : st_disabled));
-    key_hints.push_back(style_fragment(fragf(_("%s: Next"),
+    key_hints.push_back(style_fragment(fragf(_("%ls: Next"),
 					     next.c_str()),
 				       can_next ? st_normal : st_disabled));
 
     bool can_prev = (state.selected_solution > 0);
-    key_hints.push_back(style_fragment(fragf(_("%s: Previous"),
+    key_hints.push_back(style_fragment(fragf(_("%ls: Previous"),
 					     prev.c_str()),
 				       can_prev ? st_normal : st_disabled));
 
