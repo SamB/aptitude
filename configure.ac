@@ -302,8 +302,6 @@ AC_CONFIG_FILES([
 	src/generic/problemresolver/Makefile
 	src/generic/util/Makefile
 	src/mine/Makefile
-	src/vscreen/Makefile
-	src/vscreen/config/Makefile
 	tests/Makefile
 ])
 
