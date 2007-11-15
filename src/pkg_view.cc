@@ -557,22 +557,22 @@ widgets::widget_ref make_package_view(list<package_view_item> &format,
 	    if(desc_sig)
 	      desc_sig->connect(sigc::mem_fun(*m.unsafe_get_ref(), &info_area_multiplex::set_description));
 
-	    mainwidget->connect_key("DescriptionDown", &cw::global_bindings,
+	    mainwidget->connect_key("DescriptionDown", &cw::config::global_bindings,
 				    sigc::mem_fun(*m.unsafe_get_ref(),
 						  &info_area_multiplex::line_down));
-	    mainwidget->connect_key("DescriptionUp", &cw::global_bindings,
+	    mainwidget->connect_key("DescriptionUp", &cw::config::global_bindings,
 				    sigc::mem_fun(*m.unsafe_get_ref(),
 						  &info_area_multiplex::line_up));
-	    mainwidget->connect_key("DescriptionCycle", &cw::global_bindings,
+	    mainwidget->connect_key("DescriptionCycle", &cw::config::global_bindings,
 				    sigc::mem_fun(*m.unsafe_get_ref(),
 						  &info_area_multiplex::cycle));
-	    mainwidget->connect_key("EditHier", &cw::global_bindings,
+	    mainwidget->connect_key("EditHier", &cw::config::global_bindings,
 				    sigc::mem_fun(*e.unsafe_get_ref(),
 						  &cwidget::widgets::widget::show));
-	    mainwidget->connect_key("EditHier", &cw::global_bindings,
+	    mainwidget->connect_key("EditHier", &cw::config::global_bindings,
 				    sigc::mem_fun(*m.unsafe_get_ref(),
 						  &cwidget::widgets::widget::show));
-	    mainwidget->connect_key("EditHier", &cw::global_bindings,
+	    mainwidget->connect_key("EditHier", &cw::config::global_bindings,
 				    sigc::bind(sigc::mem_fun(*rval.unsafe_get_ref(), &widgets::table::focus_widget_bare),
 					       m.weak_ref()));
 
@@ -622,7 +622,7 @@ widgets::widget_ref make_package_view(list<package_view_item> &format,
 
 	  if(i->popupdownkey.size()>0)
 	    rval->connect_key(i->popupdownkey,
-			      &cw::global_bindings,
+			      &cw::config::global_bindings,
 			      sigc::mem_fun(*i->widget.unsafe_get_ref(),
 					    &cwidget::widgets::widget::toggle_visible));
 

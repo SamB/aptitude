@@ -272,7 +272,7 @@ static widgets::widget_ref make_error_dialog(const widgets::text_layout_ref &lay
   layout->location_changed.connect(sigc::mem_fun(s.unsafe_get_ref(), &widgets::scrollbar::set_slider));
   s->scrollbar_interaction.connect(sigc::mem_fun(layout.unsafe_get_ref(), &widgets::text_layout::scroll));
 
-  return widgets::dialog_ok(t, NULL, W_("Ok"), get_style("Error"));
+  return widgets::dialog_ok(t, NULL, W_("Ok"), cw::get_style("Error"));
 }
 
 // blah, I hate C++
@@ -761,7 +761,7 @@ static widgets::widget_ref make_default_view(const menu_tree_ref &mainwidget,
 					   0, 0, 1, 1,
 					   widgets::table::ALIGN_CENTER | widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK,
 					   widgets::table::ALIGN_CENTER,
-					   get_style("Header"),
+					   cw::get_style("Header"),
 					   "",
 					   "",
 					   true));
@@ -780,7 +780,7 @@ static widgets::widget_ref make_default_view(const menu_tree_ref &mainwidget,
 					   2, 0, 1, 1,
 					   widgets::table::ALIGN_CENTER | widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK,
 					   widgets::table::ALIGN_CENTER,
-					   get_style("Status"),
+					   cw::get_style("Status"),
 					   "", "",
 					   true));
 
@@ -984,11 +984,11 @@ static widgets::widget_ref setup_fileview(const std::string &filename,
   s->scrollbar_interaction.connect(sigc::mem_fun(p.unsafe_get_ref(), &widgets::pager::scroll_page));
   p->scroll_top(); // Force a scrollbar update.
 
-  p->connect_key("Search", &cw::global_bindings,
+  p->connect_key("Search", &cw::config::global_bindings,
 		 sigc::bind(sigc::ptr_fun(&pager_search), p.weak_ref()));
-  p->connect_key("ReSearch", &cw::global_bindings,
+  p->connect_key("ReSearch", &cw::config::global_bindings,
 		 sigc::bind(sigc::ptr_fun(&pager_repeat_search), p.weak_ref()));
-  p->connect_key("RepeatSearchBack", &cw::global_bindings,
+  p->connect_key("RepeatSearchBack", &cw::config::global_bindings,
 		 sigc::bind(sigc::ptr_fun(&pager_repeat_search_back), p.weak_ref()));
 
   t->add_widget_opts(p, 0, 0, 1, 1,
@@ -1260,7 +1260,7 @@ static void check_package_trust()
 						       W_("Really Continue"),
 						       NULL,
 						       W_("Abort Installation"),
-						       get_style("TrustWarning"),
+						       cw::get_style("TrustWarning"),
 						       true,
 						       false),
 				       true);
@@ -1319,7 +1319,7 @@ static void do_show_preview()
 
       active_preview->destroyed.connect(sigc::ptr_fun(reset_preview));
       active_preview->connect_key("DoInstallRun",
-				  &cw::global_bindings,
+				  &cw::config::global_bindings,
 				  sigc::ptr_fun(actually_do_package_run));
       add_main_widget(active_preview, _("Preview of package installation"),
 		      _("View and/or adjust the actions that will be performed"),
@@ -1389,14 +1389,14 @@ static void auto_fix_broken()
     {
       show_message(_("No solution to these dependency problems exists!"),
 		   NULL,
-		   get_style("Error"));
+		   cw::get_style("Error"));
     }
   catch(NoMoreTime)
     {
       show_message(fragf(_("Ran out of time while trying to resolve dependencies (press \"%s\" to try harder)"),
-			 cw::global_bindings.readable_keyname("NextSolution").c_str()),
+			 cw::config::global_bindings.readable_keyname("NextSolution").c_str()),
 		   NULL,
-		   get_style("Error"));
+		   cw::get_style("Error"));
     }
 
   if(!undo->empty())
@@ -1445,11 +1445,11 @@ static void actually_do_package_run()
 					   W_("Become root"),
 					   arg(sigc::ptr_fun(&check_package_trust)),
 					   W_("Don't become root"),
-					   get_style("Error")));
+					   cw::get_style("Error")));
 	    }
 	}
       else
-	show_message(_("A package-list update or install run is already taking place."), NULL, get_style("Error"));
+	show_message(_("A package-list update or install run is already taking place."), NULL, cw::get_style("Error"));
     }
 }
 
@@ -1574,11 +1574,11 @@ void do_update_lists()
 				       W_("Become root"),
 				       arg(sigc::ptr_fun(&really_do_update_lists)),
 				       W_("Don't become root"),
-				       get_style("Error")));
+				       cw::get_style("Error")));
 	}
     }
   else
-    show_message(_("A package-list update or install run is already taking place."), NULL, get_style("Error"));
+    show_message(_("A package-list update or install run is already taking place."), NULL, cw::get_style("Error"));
 }
 
 static void do_sweep()
@@ -1995,13 +1995,13 @@ void do_apply_solution()
 	{
 	  show_message(_("Unable to find a solution to apply."),
 		       NULL,
-		       get_style("Error"));
+		       cw::get_style("Error"));
 	}
       catch(NoMoreTime)
 	{
 	  show_message(_("Ran out of time while trying to find a solution."),
 		       NULL,
-		       get_style("Error"));
+		       cw::get_style("Error"));
 	}
 
       if(!undo->empty())
@@ -2423,7 +2423,7 @@ static void do_setup_columns()
 static void load_options(string base, bool usetheme)
 {
   load_styles(base+"::Styles", usetheme);
-  load_bindings(base+"::Keybindings", &cw::global_bindings, usetheme);
+  load_bindings(base+"::Keybindings", &cw::config::global_bindings, usetheme);
   load_bindings(base+"::Keybindings::EditLine", widgets::editline::bindings, usetheme);
   load_bindings(base+"::Keybindings::Menu", widgets::menu::bindings, usetheme);
   load_bindings(base+"::Keybindings::Menubar", widgets::menubar::bindings, usetheme);
@@ -2533,52 +2533,52 @@ void ui_init()
   main_menu->set_subwidget(main_stacked);
   main_stacked->show();
 
-  main_stacked->connect_key_post("QuitProgram", &cw::global_bindings, sigc::ptr_fun(do_quit));
-  main_stacked->connect_key_post("Quit", &cw::global_bindings, sigc::ptr_fun(do_destroy_visible));
+  main_stacked->connect_key_post("QuitProgram", &cw::config::global_bindings, sigc::ptr_fun(do_quit));
+  main_stacked->connect_key_post("Quit", &cw::config::global_bindings, sigc::ptr_fun(do_destroy_visible));
   main_stacked->connect_key_post("CycleNext",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_view_next));
   main_stacked->connect_key_post("CyclePrev",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_view_prev));
   main_stacked->connect_key_post("DoInstallRun",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_package_run));
   main_stacked->connect_key_post("UpdatePackageList",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_update_lists));
   main_stacked->connect_key_post("MarkUpgradable",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_mark_upgradable));
   main_stacked->connect_key_post("ForgetNewPackages",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_forget_new));
   main_stacked->connect_key_post("Help",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_help_help));
   main_stacked->connect_key_post("Undo",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::hide_return(undo_undo.make_slot()));
   main_stacked->connect_key_post("NextSolution",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_next_solution));
   main_stacked->connect_key_post("PrevSolution",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_previous_solution));
   main_stacked->connect_key_post("FirstSolution",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_first_solution));
   main_stacked->connect_key_post("LastSolution",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_last_solution));
   main_stacked->connect_key_post("ApplySolution",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_apply_solution));
   main_stacked->connect_key_post("ExamineSolution",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_examine_solution));
   main_stacked->connect_key_post("DumpResolver",
-				 &cw::global_bindings,
+				 &cw::config::global_bindings,
 				 sigc::ptr_fun(do_dump_resolver));
 
   main_table=widgets::table::create();
@@ -2586,11 +2586,11 @@ void ui_init()
   main_table->show();
 
   // FIXME: highlight the keys.
-  wstring menu_key=cw::global_bindings.readable_keyname("ToggleMenuActive"),
-    help_key=cw::global_bindings.readable_keyname("Help"),
-    quit_key=cw::global_bindings.readable_keyname("Quit"),
-    update_key=cw::global_bindings.readable_keyname("UpdatePackageList"),
-    install_key=cw::global_bindings.readable_keyname("DoInstallRun");
+  wstring menu_key=cw::config::global_bindings.readable_keyname("ToggleMenuActive"),
+    help_key=cw::config::global_bindings.readable_keyname("Help"),
+    quit_key=cw::config::global_bindings.readable_keyname("Quit"),
+    update_key=cw::config::global_bindings.readable_keyname("UpdatePackageList"),
+    install_key=cw::config::global_bindings.readable_keyname("DoInstallRun");
 
   wstring helptext = swsprintf(W_("%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove Pkgs").c_str(),
 			menu_key.c_str(),
@@ -2599,7 +2599,7 @@ void ui_init()
 			update_key.c_str(),
 			install_key.c_str());
 
-  help_bar_ref help_label(help_bar::create(helptext, get_style("Header")));
+  help_bar_ref help_label(help_bar::create(helptext, cw::get_style("Header")));
   main_table->add_widget_opts(help_label, 0, 0, 1, 1,
 			      widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK,
 			      widgets::table::ALIGN_CENTER);
@@ -2620,7 +2620,7 @@ void ui_init()
 			      widgets::table::ALIGN_CENTER);
 
   main_status_multiplex=widgets::multiplex::create();
-  main_status_multiplex->set_bg_style(get_style("Status"));
+  main_status_multiplex->set_bg_style(cw::get_style("Status"));
   main_table->add_widget_opts(main_status_multiplex, 3, 0, 1, 1,
 			      widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK,
 			      widgets::table::ALIGN_CENTER);
@@ -2874,12 +2874,12 @@ void prompt_string(const std::wstring &prompt,
 	e->text_changed.connect(*changed_slot);
 
       e->connect_key("Cancel",
-		     &cw::global_bindings,
+		     &cw::config::global_bindings,
 		     sigc::mem_fun(e.unsafe_get_ref(), &cwidget::widgets::widget::destroy));
 
       if(cancel_slot)
 	e->connect_key("Cancel",
-		       &cw::global_bindings,
+		       &cw::config::global_bindings,
 		       *cancel_slot);
 
       main_status_multiplex->add_visible_widget(e, true);
@@ -3031,7 +3031,7 @@ void show_message(fragment *msg,
   if(aptcfg->FindB(PACKAGE "::UI::Minibuf-Prompts"))
     {
       widgets::text_layout_ref l = self_destructing_layout::create(msg);
-      l->set_bg_style(get_style("Status")+st);
+      l->set_bg_style(cw::get_style("Status")+st);
       if(okslot)
 	l->destroyed.connect(*okslot);
 

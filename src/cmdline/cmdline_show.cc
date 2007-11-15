@@ -27,9 +27,9 @@
 
 #include <iostream>
 
+namespace cw = cwidget;
 using cwidget::fragf;
 using cwidget::fragment;
-using cwidget::util::transcode;
 using namespace std;
 
 ostream &operator<<(ostream &out, const cwidget::fragment_contents &contents)

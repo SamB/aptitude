@@ -125,13 +125,13 @@ bool menu_text_layout::find_repeat_search_back()
 
 bool menu_text_layout::handle_key(const cwi::key &k)
 {
-  if(cw::global_bindings.key_matches(k, "Search"))
+  if(cw::config::global_bindings.key_matches(k, "Search"))
     find_search();
-  else if(cw::global_bindings.key_matches(k, "SearchBack"))
+  else if(cw::config::global_bindings.key_matches(k, "SearchBack"))
     find_search_back();
-  else if(cw::global_bindings.key_matches(k, "ReSearch"))
+  else if(cw::config::global_bindings.key_matches(k, "ReSearch"))
     find_research();
-  else if(cw::global_bindings.key_matches(k, "RepeatSearchBack"))
+  else if(cw::config::global_bindings.key_matches(k, "RepeatSearchBack"))
     find_repeat_search_back();
   else
     return widgets::text_layout::handle_key(k);

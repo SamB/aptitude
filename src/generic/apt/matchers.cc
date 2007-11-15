@@ -60,7 +60,7 @@
 #include <sys/types.h>
 
 using namespace std;
-using cwidget::util::transcode;
+namespace cw = cwidget;
 
 /** Used to cleanly abort without having to contort the code. */
 class CompilationException

@@ -425,7 +425,7 @@ protected:
   {
     widgets::widget_ref tmpref(this);
 
-    if(cw::global_bindings.key_matches(k, "CycleOrder"))
+    if(cw::config::global_bindings.key_matches(k, "CycleOrder"))
       cycle_forward();
     else
       return widgets::multiplex::handle_key(k);
@@ -577,11 +577,11 @@ widgets::widget_ref make_solution_screen()
   create_menu_bindings(info_tree.unsafe_get_ref(), info_tree);
 
 
-  info_tree->connect_key("ShowHideDescription", &cw::global_bindings,
+  info_tree->connect_key("ShowHideDescription", &cw::config::global_bindings,
 			 sigc::mem_fun(info_tree.unsafe_get_ref(),
 				       &cwidget::widgets::widget::toggle_visible));
 
-  l->set_bg_style(get_style("Status"));
+  l->set_bg_style(cw::get_style("Status"));
 
   rval->add_widget_opts(examiner,
 			0, 0, 1, 1, widgets::table::EXPAND | widgets::table::FILL,

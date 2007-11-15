@@ -153,21 +153,21 @@ const wchar_t *solution_item::label()
 style solution_item::get_normal_style()
 {
   if(is_rejected())
-    return get_style("SolutionActionRejected");
+    return cw::get_style("SolutionActionRejected");
   else if(is_mandatory())
-    return get_style("SolutionActionApproved");
+    return cw::get_style("SolutionActionApproved");
   else
     return style();
 }
 
 bool solution_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 {
-  if(cw::global_bindings.key_matches(k, "SolutionActionReject"))
+  if(cw::config::global_bindings.key_matches(k, "SolutionActionReject"))
     {
       toggle_rejected();
       owner->line_down();
     }
-  else if(cw::global_bindings.key_matches(k, "SolutionActionApprove"))
+  else if(cw::config::global_bindings.key_matches(k, "SolutionActionApprove"))
     {
       toggle_mandated();
       owner->line_down();
@@ -295,7 +295,7 @@ void solution_act_item::show_target_info()
 
 bool solution_act_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 {
-  if(cw::global_bindings.key_matches(k, "InfoScreen"))
+  if(cw::config::global_bindings.key_matches(k, "InfoScreen"))
     {
       show_target_info();
       return true;

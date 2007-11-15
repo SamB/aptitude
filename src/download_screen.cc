@@ -65,7 +65,7 @@ bool download_screen::MediaChange(string Media, string Drive)
 			       arg(sigc::bind(sigc::ptr_fun(set_and_exit),
 					      rval, false)),
 			       W_("Abort"),
-			       get_style("MediaChange")));
+			       cw::get_style("MediaChange")));
 
   toplevel::mainloop();  // Eeeeeek!  Recursive mainloop!  I'm afraid..
 
@@ -234,7 +234,7 @@ bool download_screen::handle_key(const cwi::key &k)
 {
   widgets::widget_ref tmpref(this);
 
-  if(cw::global_bindings.key_matches(k, "Quit"))
+  if(cw::config::global_bindings.key_matches(k, "Quit"))
     cancelled=true;
   else
     return widgets::tree::handle_key(k);

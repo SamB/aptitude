@@ -88,7 +88,7 @@ namespace
     {
     }
 
-    cwidget::style get_style() const
+    cwidget::style cw::get_style() const
     {
       pkgCache::PkgIterator pkg;
       if(!dep.end())
@@ -1059,11 +1059,11 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 		  it != results.end(); ++it)
 		{
 		  col1_entries.push_back(hardwrapbox(style_fragment(fragf("%F\n", it->description_column1_fragment()),
-								    it->get_style())));
+								    it->cw::get_style())));
 		  col2_entries.push_back(hardwrapbox(style_fragment(fragf("%F\n", it->description_column2_fragment()),
-								    it->get_style())));
+								    it->cw::get_style())));
 		  col3_entries.push_back(hardwrapbox(style_fragment(fragf("%F\n", it->description_column3_fragment()),
-								    it->get_style())));
+								    it->cw::get_style())));
 		}
 
 	      using cwidget::fragment_column_entry;

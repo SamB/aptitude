@@ -146,11 +146,11 @@ void cmine::paint_header(const cwidget::style &st)
 	  ++loc;
 	}
 
-      display_header(header, st+get_style("Header"));
+      display_header(header, st + cw::get_style("Header"));
     }
   else
     display_header(W_("Minesweeper"),
-		   st+get_style("Header"));
+		   st+cw::get_style("Header"));
 }
 
 void cmine::do_load_game(wstring ws)
@@ -169,7 +169,7 @@ void cmine::do_load_game(wstring ws)
 	  snprintf(buf, 512, _("Could not open file \"%s\""), s.c_str());
 
 	  popup_widget(dialogs::ok(cw::util::transcode(buf), NULL,
-				   get_style("Error")));
+				   cw::get_style("Error")));
 	}
       else
 	{
@@ -185,7 +185,7 @@ void cmine::do_load_game(wstring ws)
 		       s.c_str());
 
 	      popup_widget(dialogs::ok(cw::util::transcode(buf), NULL,
-				       get_style("Error")));
+				       cw::get_style("Error")));
 	      delete brd;
 	    }
 	  else
@@ -213,7 +213,7 @@ void cmine::do_save_game(wstring ws)
 	  snprintf(buf, 512, _("Could not open file \"%s\""), s.c_str());
 
 	  popup_widget(dialogs::ok(cw::util::transcode(buf), NULL,
-				   get_style("Error")));
+				   cw::get_style("Error")));
 	}
       else
 	{
@@ -250,7 +250,7 @@ void cmine::do_start_custom_game(widgets::widget &w_bare,
       // That's ok, they'll do that anyway in a couple releases ;-)
       popup_widget(dialogs::ok(W_("The board height must be a positive integer"),
 			       NULL,
-			       get_style("Error")));
+			       cw::get_style("Error")));
       return;
     }
 
@@ -262,7 +262,7 @@ void cmine::do_start_custom_game(widgets::widget &w_bare,
     {
       popup_widget(dialogs::ok(W_("The board width must be a positive integer"),
 			       NULL,
-			       get_style("Error")));
+			       cw::get_style("Error")));
       return;
     }
 
@@ -274,7 +274,7 @@ void cmine::do_start_custom_game(widgets::widget &w_bare,
     {
       popup_widget(dialogs::ok(W_("Invalid mine count; please enter a positive integer"),
 			       NULL,
-			       get_style("Error")));
+			       cw::get_style("Error")));
       return;
     }
 
@@ -373,12 +373,12 @@ void cmine::do_new_game()
 
   using cwidget::config::global_bindings;
 
-  table->connect_key_post("Confirm", &cw::global_bindings, okbutton->pressed.make_slot());
+  table->connect_key_post("Confirm", &cw::config::global_bindings, okbutton->pressed.make_slot());
 
-  easybutton->connect_key("Confirm", &cw::global_bindings, okbutton->pressed.make_slot());
-  mediumbutton->connect_key("Confirm", &cw::global_bindings, okbutton->pressed.make_slot());
-  hardbutton->connect_key("Confirm", &cw::global_bindings, okbutton->pressed.make_slot());
-  custombutton->connect_key("Confirm", &cw::global_bindings, okbutton->pressed.make_slot());
+  easybutton->connect_key("Confirm", &cw::config::global_bindings, okbutton->pressed.make_slot());
+  mediumbutton->connect_key("Confirm", &cw::config::global_bindings, okbutton->pressed.make_slot());
+  hardbutton->connect_key("Confirm", &cw::config::global_bindings, okbutton->pressed.make_slot());
+  custombutton->connect_key("Confirm", &cw::config::global_bindings, okbutton->pressed.make_slot());
 
   widgets::radiogroup *grp = new widgets::radiogroup;
   grp->add_button(easybutton, 0);
@@ -438,7 +438,7 @@ void cmine::do_continue_new_game(bool start,
       default:
 	popup_widget(dialogs::ok(cw::util::transcode("Internal error: execution reached an impossible point"),
 				 NULL,
-				 get_style("Error")));
+				 cw::get_style("Error")));
 	break;
       }
 
@@ -728,18 +728,18 @@ void cmine::paint_square(int x, int y, const cwidget::style &st)
 	      if(entry.flagged)
 		{
 		  ch=L'F';
-		  cur_st=get_style("MineFlag");
+		  cur_st=cw::get_style("MineFlag");
 		}
 	      else
 		{
 		  ch=L' ';
-		  cur_st=get_style("DefaultWidgetBackground");
+		  cur_st=cw::get_style("DefaultWidgetBackground");
 		}
 	    }
 	  else if(entry.contains_mine)
 	    {
 	      ch=L'^';
-	      cur_st=get_style("MineBombColor");
+	      cur_st=cw::get_style("MineBombColor");
 	    }
 	  else if(entry.adjacent_mines==0)
 	    ch=L'.';
@@ -748,7 +748,7 @@ void cmine::paint_square(int x, int y, const cwidget::style &st)
 	      ch=(L'0'+entry.adjacent_mines);
 	      string stname("MineNumber");
 	      stname+=(char) '0'+entry.adjacent_mines;
-	      cur_st=get_style(string("MineNumber")+char('0'+entry.adjacent_mines));
+	      cur_st=cw::get_style(string("MineNumber")+char('0'+entry.adjacent_mines));
 	    }
 	}
       else
@@ -759,12 +759,12 @@ void cmine::paint_square(int x, int y, const cwidget::style &st)
 		 x==board->get_minex() && y==board->get_miney())
 		{
 		  ch=L'*';
-		  cur_st=get_style("MineDetonated");
+		  cur_st=cw::get_style("MineDetonated");
 		}
 	      else
 		{
 		  ch=L'^';
-		  cur_st=get_style("MineBomb");
+		  cur_st=cw::get_style("MineBomb");
 		}
 	    }
 	  else if(entry.uncovered || true)
@@ -776,7 +776,7 @@ void cmine::paint_square(int x, int y, const cwidget::style &st)
 		  ch=(L'0'+entry.adjacent_mines);
 		  string stname("MineNumber");
 		  stname+=(char) '0'+entry.adjacent_mines;
-		  cur_st=get_style(string("MineNumber")+char('0'+entry.adjacent_mines));
+		  cur_st=cw::get_style(string("MineNumber")+char('0'+entry.adjacent_mines));
 		}
 	    }
 	  else
@@ -821,7 +821,7 @@ void cmine::paint(const cwidget::style &st)
 
       if(board)
 	{
-	  apply_style(st+get_style("MineBorder"));
+	  apply_style(st+cw::get_style("MineBorder"));
 
 	  int right=basex+board->get_width()+1, down=basey+1+board->get_height()+1;
 	  // x and y coordinates, respectively, of the right and lower
@@ -950,11 +950,11 @@ void cmine::init_bindings()
   using cwidget::config::key;
   using cwidget::config::keybindings;
 
-  cw::global_bindings.set("MineUncoverSweepSquare", key(KEY_ENTER, true));
-  cw::global_bindings.set("MineFlagSquare", key(L'f', false));
-  cw::global_bindings.set("MineNewGame", key(L'n', false));
-  cw::global_bindings.set("MineSaveGame", key(L'S', false));
-  cw::global_bindings.set("MineLoadGame", key(L'L', false));
+  cw::config::global_bindings.set("MineUncoverSweepSquare", key(KEY_ENTER, true));
+  cw::config::global_bindings.set("MineFlagSquare", key(L'f', false));
+  cw::config::global_bindings.set("MineNewGame", key(L'n', false));
+  cw::config::global_bindings.set("MineSaveGame", key(L'S', false));
+  cw::config::global_bindings.set("MineLoadGame", key(L'L', false));
 
-  bindings = new keybindings(&cw::global_bindings);
+  bindings = new keybindings(&cw::config::global_bindings);
 }

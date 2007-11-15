@@ -57,8 +57,8 @@ public:
 
   bool dispatch_key(const cwi::key &k, widgets::tree *owner)
   {
-    if(cw::global_bindings.key_matches(k, "PushButton") ||
-       cw::global_bindings.key_matches(k, "Confirm"))
+    if(cw::config::global_bindings.key_matches(k, "PushButton") ||
+       cw::config::global_bindings.key_matches(k, "Confirm"))
       {
 	selected=!selected;
 	toplevel::update();
@@ -321,7 +321,7 @@ void widgets::hier_editor::save_hier(string file)
 
 bool widgets::hier_editor::handle_key(const cwi::key &k)
 {
-  if(cw::global_bindings.key_matches(k, "SaveHier"))
+  if(cw::config::global_bindings.key_matches(k, "SaveHier"))
     {
       string homedir = get_homedir();
       string cfgfile;
@@ -330,14 +330,14 @@ bool widgets::hier_editor::handle_key(const cwi::key &k)
 	{
 	  show_message(_("Unable to look up your home directory, saving to /tmp/function_pkgs!"),
 		       NULL,
-		       get_style("Error"));
+		       cw::get_style("Error"));
 	  cfgfile = "/tmp/function_pkgs";
 	}
       else
 	cfgfile = homedir + "/.aptitude/function_pkgs";
       save_hier(cfgfile);
     }
-  else if(cw::global_bindings.key_matches(k, "Quit"))
+  else if(cw::config::global_bindings.key_matches(k, "Quit"))
     {
       if(item)
 	{
@@ -350,7 +350,7 @@ bool widgets::hier_editor::handle_key(const cwi::key &k)
 
       hide();
     }
-  else if(cw::global_bindings.key_matches(k, "Commit"))
+  else if(cw::config::global_bindings.key_matches(k, "Commit"))
     {
       if(item)
 	{
@@ -363,7 +363,7 @@ bool widgets::hier_editor::handle_key(const cwi::key &k)
 
       commit_changes();
     }
-  else if(cw::global_bindings.key_matches(k, "Abort"))
+  else if(cw::config::global_bindings.key_matches(k, "Abort"))
     hide();
   else
     return widgets::tree::handle_key(k);

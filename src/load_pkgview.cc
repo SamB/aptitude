@@ -197,7 +197,7 @@ std::list<package_view_item> *load_pkgview(std::string cfggroup)
 
       if(subtree.Exists("Style"))
 	{
-	  tmp.st=get_style(subtree.Find("Style"));
+	  tmp.st=cw::get_style(subtree.Find("Style"));
 	}
 
       tmp.visible=subtree.FindB("Visible", true);

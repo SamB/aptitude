@@ -502,26 +502,26 @@ style pkg_ver_item::ver_style(pkgCache::VerIterator version,
       (state.Install() &&
        !state.InstBroken() &&
        state.InstVerIter(*apt_cache_file)!=version)))
-    return get_style(MAYBE_HIGHLIGHTED("PkgToRemove"));
+    return cw::get_style(MAYBE_HIGHLIGHTED("PkgToRemove"));
 
   else if(((state.NewInstall() || state.Install()) &&
 	   !state.InstBroken() &&
 	   state.InstVerIter(*apt_cache_file)==version) ||
 	  (version==version.ParentPkg().CurrentVer() &&
 	   state.iFlags&pkgDepCache::ReInstall))
-    return get_style(MAYBE_HIGHLIGHTED("PkgToInstall"));
+    return cw::get_style(MAYBE_HIGHLIGHTED("PkgToInstall"));
 
   else if(state.InstBroken() && state.InstVerIter(*apt_cache_file)==version)
-    return get_style(MAYBE_HIGHLIGHTED("PkgBroken"));
+    return cw::get_style(MAYBE_HIGHLIGHTED("PkgBroken"));
 
   else if(pkg.CurrentVer()!=version)
-    return get_style(MAYBE_HIGHLIGHTED("PkgNotInstalled"));
+    return cw::get_style(MAYBE_HIGHLIGHTED("PkgNotInstalled"));
 
   else if(state.NowBroken())
-    return get_style(MAYBE_HIGHLIGHTED("PkgBroken"));
+    return cw::get_style(MAYBE_HIGHLIGHTED("PkgBroken"));
 
   else
-    return get_style(MAYBE_HIGHLIGHTED("PkgIsInstalled"));
+    return cw::get_style(MAYBE_HIGHLIGHTED("PkgIsInstalled"));
 }
 
 void pkg_ver_item::paint(widgets::tree *win, int y, bool hierarchical,

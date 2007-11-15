@@ -94,13 +94,13 @@ protected:
 		       int width = 0, int height = 0):
     widgets::file_pager(filename.get_name()), last_search_forwards(true)
   {
-    connect_key("Search", &cw::global_bindings,
+    connect_key("Search", &cw::config::global_bindings,
 		sigc::mem_fun(*this, &pkg_changelog_screen::do_search));
-    connect_key("SearchBack", &cw::global_bindings,
+    connect_key("SearchBack", &cw::config::global_bindings,
 		sigc::mem_fun(*this, &pkg_changelog_screen::do_search_back));
-    connect_key("ReSearch", &cw::global_bindings,
+    connect_key("ReSearch", &cw::config::global_bindings,
 		sigc::mem_fun(*this, &pkg_changelog_screen::do_repeat_search));
-    connect_key("RepeatSearchBack", &cw::global_bindings,
+    connect_key("RepeatSearchBack", &cw::config::global_bindings,
 		sigc::mem_fun(*this, &pkg_changelog_screen::do_repeat_search_back));
   }
 
@@ -223,7 +223,7 @@ void view_changelog(pkgCache::VerIterator ver)
   if(!in_debian)
     {
       show_message(_("You can only view changelogs of official Debian packages."),
-		   NULL, get_style("Error"));
+		   NULL, cw::get_style("Error"));
       return;
     }
 

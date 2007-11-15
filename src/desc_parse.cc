@@ -292,7 +292,7 @@ cw::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
       for(set<tag>::const_iterator i = s->begin(); i != s->end(); ++i)
 	tags.push_back(cw::text_fragment(i->str(), cw::style_attrs_on(A_BOLD)));
 
-      wstring tagstitle = cwidget::util::transcode(_("Tags"));
+      wstring tagstitle = W_("Tags");
 
       return fragf("%ls: %F",
 		   tagstitle.c_str(),

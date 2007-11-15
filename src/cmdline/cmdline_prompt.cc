@@ -31,9 +31,9 @@
 #include <apt-pkg/strutl.h>
 
 using namespace std;
+namespace cw = cwidget;
 using cwidget::fragment;
 using cwidget::fragf;
-using cwidget::util::transcode;
 
 string StdinEOFException::errmsg() const
 {

@@ -37,7 +37,7 @@ keybindings *pkg_tree_node::bindings=NULL;
 
 void pkg_tree_node::init_bindings()
 {
-  bindings=new keybindings(&cw::global_bindings);
+  bindings=new keybindings(&cw::config::global_bindings);
 }
 
 // FIXME: add a do_action() command that takes a function pointer and does all

@@ -386,7 +386,7 @@ void pkg_grouppolicy_status::add_package(const pkgCache::PkgIterator &pkg,
 
   if(!children[section].second)
     {
-      wstring desc=cw::util::transcode(_(state_titles[section]));
+      wstring desc = W_(state_titles[section]);
       wstring shortdesc(desc, 0, desc.find('\n'));
 
       pkg_subtree *newtree=new pkg_subtree_with_order(shortdesc, desc,
@@ -463,7 +463,7 @@ public:
       {
 	if(!children[group].second)
 	  {
-	    wstring desc=cw::util::transcode(_(child_names[group]));
+	    wstring desc = W_(child_names[group]);
 	    wstring shortdesc(desc, 0, desc.find('\n'));
 
 	    pkg_subtree *newtree=new pkg_subtree_with_order(shortdesc,

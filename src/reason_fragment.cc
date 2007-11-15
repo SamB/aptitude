@@ -45,7 +45,7 @@ fragment *depname_frag(pkgCache::DepIterator dep)
   // Untranslated (internal error that will only happen if things go
   // entirely wonky, and I want to be able to understand it if it
   // appears)
-  return text_fragment("has an invalid dependency type!", get_style("Error"));
+  return text_fragment("has an invalid dependency type!", cw::get_style("Error"));
 }
 
 /** Compare two packages by name */
@@ -204,12 +204,12 @@ fragment *dep_singlefrag(pkgCache::PkgIterator pkg,
 	  if(matches_inst)
 	    verstyle=style_attrs_on(A_BOLD);
 	  else
-	    verstyle=get_style("PkgToRemove");
+	    verstyle=cw::get_style("PkgToRemove");
 	}
       else
 	{
 	  if(matches_inst)
-	    verstyle=get_style("PkgToInstall");
+	    verstyle=cw::get_style("PkgToInstall");
 	}
 
       verfrag=fragf(" (%s %F)",
@@ -311,7 +311,7 @@ fragment *reasonsfrag(pkgCache::PkgIterator pkg, set<reason> &reasons)
 	  fragment *itemtext=dep_or_frag(pkg, i->dep);
 
 	  fragments.push_back(sequence_fragment(text_fragment("  * ",
-							      get_style("Bullet")),
+							      cw::get_style("Bullet")),
 						indentbox(0, 4, flowbox(itemtext)),
 						NULL));
 	}

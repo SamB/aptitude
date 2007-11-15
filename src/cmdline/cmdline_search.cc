@@ -24,6 +24,7 @@
 #include <algorithm>
 
 using namespace std;
+namespace cw = cwidget;
 using cwidget::util::transcode;
 
 class search_result_parameters : public cwidget::config::column_parameters

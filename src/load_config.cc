@@ -182,7 +182,7 @@ void load_bindings(std::string group, keybindings *toload, bool use_theme)
 		  _error->Error(_("Ignoring invalid keybinding \"%s\" -> \"%s\""), i->Tag.c_str(), currval.c_str());
 		split=newsplit+1;
 	      } while(newsplit!=string::npos);
-	    cw::global_bindings.set(i->Tag, newbinding);
+	    cw::config::global_bindings.set(i->Tag, newbinding);
 	  }
       }
 }

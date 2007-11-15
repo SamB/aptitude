@@ -266,13 +266,13 @@ style pkg_item::pkg_style(pkgCache::PkgIterator package, bool highlighted)
 	}
 
       if(present_now && present_inst)
-	return get_style(MAYBE_HIGHLIGHTED("PkgIsInstalled"));
+	return cw::get_style(MAYBE_HIGHLIGHTED("PkgIsInstalled"));
       else if(present_now)
-	return get_style(MAYBE_HIGHLIGHTED("PkgToRemove"));
+	return cw::get_style(MAYBE_HIGHLIGHTED("PkgToRemove"));
       else if(present_inst)
-	return get_style(MAYBE_HIGHLIGHTED("PkgToInstall"));
+	return cw::get_style(MAYBE_HIGHLIGHTED("PkgToInstall"));
       else
-	return get_style(MAYBE_HIGHLIGHTED("PkgNotInstalled"));
+	return cw::get_style(MAYBE_HIGHLIGHTED("PkgNotInstalled"));
     }
   else
     {
@@ -280,23 +280,23 @@ style pkg_item::pkg_style(pkgCache::PkgIterator package, bool highlighted)
 
       if(!state.InstBroken() &&
 	 (state.NewInstall() || (state.iFlags&pkgDepCache::ReInstall)))
-	return get_style(MAYBE_HIGHLIGHTED("PkgToInstall"));
+	return cw::get_style(MAYBE_HIGHLIGHTED("PkgToInstall"));
       else if(state.Status!=2 && // Not being upgraded
 	      (*apt_cache_file)->get_ext_state(package).selection_state==pkgCache::State::Hold // Flagged for hold
 	      && !state.InstBroken()) // Not currently broken.
-	return get_style(MAYBE_HIGHLIGHTED("PkgToHold"));
+	return cw::get_style(MAYBE_HIGHLIGHTED("PkgToHold"));
       else if(state.Delete())
-	return get_style(MAYBE_HIGHLIGHTED("PkgToRemove"));
+	return cw::get_style(MAYBE_HIGHLIGHTED("PkgToRemove"));
       else if(state.InstBroken())
-	return get_style(MAYBE_HIGHLIGHTED("PkgBroken"));
+	return cw::get_style(MAYBE_HIGHLIGHTED("PkgBroken"));
       else if(state.Upgrade())
-	return get_style(MAYBE_HIGHLIGHTED("PkgToUpgrade"));
+	return cw::get_style(MAYBE_HIGHLIGHTED("PkgToUpgrade"));
       else if(state.Downgrade())
-	return get_style(MAYBE_HIGHLIGHTED("PkgToDowngrade"));
+	return cw::get_style(MAYBE_HIGHLIGHTED("PkgToDowngrade"));
       else if(package.CurrentVer().end())
-	return get_style(MAYBE_HIGHLIGHTED("PkgNotInstalled"));
+	return cw::get_style(MAYBE_HIGHLIGHTED("PkgNotInstalled"));
       else
-	return get_style(MAYBE_HIGHLIGHTED("PkgIsInstalled"));
+	return cw::get_style(MAYBE_HIGHLIGHTED("PkgIsInstalled"));
     }
 }
 
@@ -455,7 +455,7 @@ bool pkg_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
       // FIXME: better title
       add_main_widget(e, _("Hierarchy editor"), "", _("Hierarchy Editor"));
 
-      e->connect_key("Quit", &cw::global_bindings,
+      e->connect_key("Quit", &cw::config::global_bindings,
 		     sigc::mem_fun(*e.unsafe_get_ref(), &cwidget::widgets::widget::destroy));
     }
   else
