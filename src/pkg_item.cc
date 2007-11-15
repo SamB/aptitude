@@ -79,7 +79,7 @@ static void confirm_delete_essential(const pkgCache::PkgIterator &pkg,
 
   fragment *f=wrapbox(fragf(_("%s is an essential package!%n%nAre you sure you want to remove it?%nType '%s' if you are."), pkg.Name(), _(confirm_str)));
 
-  cw::widget_ref w=cw::dialog_string(f,
+  cw::widget_ref w=cw::dialogs::string(f,
 				   L"",
 				   arg(sigc::bind(sigc::ptr_fun(try_delete_essential),
 						  pkg, purge)),
@@ -418,7 +418,7 @@ bool pkg_item::dispatch_key(const cwi::key &k, cw::tree *owner)
       else if(access("/bin/su", X_OK)==0)
 	sucmd="/bin/su -c \"/usr/sbin/dpkg-reconfigure '%s'\"";
       else
-	popup_widget(cw::dialog_ok(text_fragment(_("You are not root and I cannot find any way to become root.  To reconfigure this package, install the menu package, the login package, or run aptitude as root."))));
+	popup_widget(cw::dialogs::ok(text_fragment(_("You are not root and I cannot find any way to become root.  To reconfigure this package, install the menu package, the login package, or run aptitude as root."))));
 
       if(sucmd)
 	{

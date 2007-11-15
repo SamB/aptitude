@@ -64,14 +64,14 @@ bool download_screen::MediaChange(string Media, string Drive)
 
   bool rval=true;
 
-  popup_widget(cw::dialog_yesno(cw::util::transcode(buf),
-			       arg(sigc::bind(sigc::ptr_fun(set_and_exit),
-					      rval, true)),
-			       W_("Continue"),
-			       arg(sigc::bind(sigc::ptr_fun(set_and_exit),
-					      rval, false)),
-			       W_("Abort"),
-			       cw::get_style("MediaChange")));
+  popup_widget(cw::dialogs::yesno(cw::util::transcode(buf),
+				  arg(sigc::bind(sigc::ptr_fun(set_and_exit),
+						 rval, true)),
+				  W_("Continue"),
+				  arg(sigc::bind(sigc::ptr_fun(set_and_exit),
+						 rval, false)),
+				  W_("Abort"),
+				  cw::get_style("MediaChange")));
 
   cw::toplevel::mainloop();  // Eeeeeek!  Recursive mainloop!  I'm afraid..
 
@@ -187,8 +187,8 @@ void download_screen::Stop()
 
   snprintf(buf, 256, _("Downloaded %sB in %ss (%sB/s)."), SizeToStr(FetchedBytes).c_str(), TimeToStr(ElapsedTime).c_str(), SizeToStr(CurrentCPS).c_str());
 
-  popup_widget(cw::dialog_ok(cw::util::transcode(buf),
-			    arg(sigc::ptr_fun(cw::toplevel::exitmain))));
+  popup_widget(cw::dialogs::ok(cw::util::transcode(buf),
+			       arg(sigc::ptr_fun(cw::toplevel::exitmain))));
 
   cw::toplevel::mainloop();
 

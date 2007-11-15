@@ -272,7 +272,7 @@ static cw::widget_ref make_error_dialog(const cw::text_layout_ref &layout)
   layout->location_changed.connect(sigc::mem_fun(s.unsafe_get_ref(), &cw::scrollbar::set_slider));
   s->scrollbar_interaction.connect(sigc::mem_fun(layout.unsafe_get_ref(), &cw::text_layout::scroll));
 
-  return cw::dialog_ok(t, NULL, W_("Ok"), cw::get_style("Error"));
+  return cw::dialogs::ok(t, NULL, W_("Ok"), cw::get_style("Error"));
 }
 
 // blah, I hate C++
@@ -962,7 +962,7 @@ static void do_help_about()
 {
   fragment *f=fragf(_("Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with %BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This is free software, and you are welcome to redistribute it under certain conditions; see 'license' for details."), VERSION);
 
-  cw::widget_ref w=cw::dialog_ok(wrapbox(f));
+  cw::widget_ref w=cw::dialogs::ok(wrapbox(f));
   w->show_all();
 
   popup_widget(w);
@@ -1255,7 +1255,7 @@ static void check_package_trust()
 				      "Bullet",
 				      i->ParentPkg().Name(), i->VerStr())));
 
-      main_stacked->add_visible_widget(cw::dialog_yesno(sequence_fragment(frags),
+      main_stacked->add_visible_widget(cw::dialogs::yesno(sequence_fragment(frags),
 						       arg(sigc::ptr_fun(install_or_remove_packages)),
 						       W_("Really Continue"),
 						       NULL,
@@ -1378,7 +1378,7 @@ static void auto_fix_broken()
 
       (*apt_cache_file)->apply_solution(sol, undo);
 
-      cw::widget_ref d = cw::dialog_ok(fragf("%s%n%n%F",
+      cw::widget_ref d = cw::dialogs::ok(fragf("%s%n%n%F",
 					   _("Some packages were broken and have been fixed:"),
 					   solution_fragment(sol)),
 				     NULL);
@@ -1439,7 +1439,7 @@ static void actually_do_package_run()
 	    check_package_trust();
 	  else
 	    {
-	      popup_widget(cw::dialog_yesno(wrapbox(text_fragment(_("Installing/removing packages requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
+	      popup_widget(cw::dialogs::yesno(wrapbox(text_fragment(_("Installing/removing packages requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
 					   arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
 						      "-i")),
 					   W_("Become root"),
@@ -1568,7 +1568,7 @@ void do_update_lists()
 	really_do_update_lists();
       else
 	{
-	  popup_widget(cw::dialog_yesno(wrapbox(text_fragment(_("Updating the package lists requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
+	  popup_widget(cw::dialogs::yesno(wrapbox(text_fragment(_("Updating the package lists requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
 				       arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
 						      "-u")),
 				       W_("Become root"),
@@ -2886,7 +2886,7 @@ void prompt_string(const std::wstring &prompt,
       main_table->focus_widget(main_status_multiplex);
     }
   else
-    main_stacked->add_visible_widget(cw::dialog_string(prompt, text,
+    main_stacked->add_visible_widget(cw::dialogs::string(prompt, text,
 						      slot, cancel_slot,
 						      changed_slot,
 						      history),
@@ -2951,7 +2951,7 @@ void prompt_yesno(const std::wstring &prompt,
       main_table->focus_widget(main_status_multiplex);
     }
   else
-    main_stacked->add_visible_widget(cw::dialog_yesno(prompt,
+    main_stacked->add_visible_widget(cw::dialogs::yesno(prompt,
 						     yesslot,
 						     noslot,
 						     deflt),
@@ -2963,7 +2963,7 @@ void prompt_yesno_popup(fragment *prompt,
 			slot0arg yesslot,
 			slot0arg noslot)
 {
-  main_stacked->add_visible_widget(cw::dialog_yesno(prompt,
+  main_stacked->add_visible_widget(cw::dialogs::yesno(prompt,
 						   yesslot,
 						   noslot,
 						   false,
@@ -3039,7 +3039,7 @@ void show_message(fragment *msg,
       main_table->focus_widget(main_status_multiplex);
     }
   else
-    main_stacked->add_visible_widget(cw::dialog_ok(msg, okslot, st), true);
+    main_stacked->add_visible_widget(cw::dialogs::ok(msg, okslot, st), true);
 }
 
 void show_message(const std::string &msg,
