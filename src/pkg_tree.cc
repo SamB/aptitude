@@ -258,7 +258,7 @@ bool pkg_tree::find_limit()
 {
   prompt_string(W_("Enter the new package tree limit: "),
 		limitstr,
-		arg(sigc::mem_fun(*this, &pkg_tree::set_limit)),
+		cw::util::arg(sigc::mem_fun(*this, &pkg_tree::set_limit)),
 		NULL,
 		NULL,
 		&limit_history);
@@ -292,7 +292,7 @@ bool pkg_tree::handle_key(const cwi::key &k)
   else if(bindings->key_matches(k, "ChangePkgTreeGrouping"))
     prompt_string(_("Enter the new package grouping mechanism for this display: "),
 		  groupingstr,
-		  arg(sigc::mem_fun(*this,
+		  cw::util::arg(sigc::mem_fun(*this,
 				    (void (pkg_tree::*) (const std::wstring &)) &pkg_tree::set_grouping)),
 		  NULL,
 		  NULL,
@@ -300,7 +300,7 @@ bool pkg_tree::handle_key(const cwi::key &k)
   else if(bindings->key_matches(k, "ChangePkgTreeSorting"))
     prompt_string(_("Enter the new package sorting mechanism for this display: "),
 		  "",
-		  arg(sigc::mem_fun(*this,
+		  cw::util::arg(sigc::mem_fun(*this,
 				    (void (pkg_tree::*) (const std::wstring &)) &pkg_tree::set_sorting)),
 		  NULL,
 		  NULL,

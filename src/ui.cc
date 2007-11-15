@@ -241,7 +241,7 @@ static void pager_search(cw::pager &p)
 {
   prompt_string(W_("Search for:"),
 		p.get_last_search(),
-		arg(sigc::mem_fun(p, &cw::pager::search_for)),
+		cw::util::arg(sigc::mem_fun(p, &cw::pager::search_for)),
 		NULL,
 		NULL,
 		NULL);
@@ -631,8 +631,8 @@ static void do_quit()
 	{
 	  really_quit_active = true;
 	  prompt_yesno(_("Really quit Aptitude?"), false,
-		       arg(sigc::bind(ptr_fun(do_really_quit_answer), true)),
-		       arg(sigc::bind(ptr_fun(do_really_quit_answer), false)));
+		       cw::util::arg(sigc::bind(ptr_fun(do_really_quit_answer), true)),
+		       cw::util::arg(sigc::bind(ptr_fun(do_really_quit_answer), false)));
 	}
     }
   else
@@ -722,7 +722,7 @@ static void do_revert_options()
 {
   prompt_yesno(_("Really discard your personal settings and reload the defaults?"),
 	       false,
-	       arg(sigc::ptr_fun(really_do_revert_options)),
+	       cw::util::arg(sigc::ptr_fun(really_do_revert_options)),
 	       NULL);
 }
 
@@ -1170,8 +1170,8 @@ static void maybe_show_old_tmpdir_message()
   if(access(tmpdir_path.c_str(), F_OK) == 0)
     prompt_yesno_popup(wrapbox(fragf(_("It appears that a previous version of aptitude left files behind in %s.  These files are probably useless and safe to delete.%n%nDo you want to remove this directory and all its contents?  If you select \"No\", you will not see this message again."), tmpdir_path.c_str())),
 		       false,
-		       arg(sigc::bind(sigc::ptr_fun(do_kill_old_tmp), tmpdir_path)),
-		       arg(sigc::bind(sigc::ptr_fun(cancel_kill_old_tmp), tmpdir_path)));
+		       cw::util::arg(sigc::bind(sigc::ptr_fun(do_kill_old_tmp), tmpdir_path)),
+		       cw::util::arg(sigc::bind(sigc::ptr_fun(cancel_kill_old_tmp), tmpdir_path)));
 }
 
 // There are some circular references because of the code to test
@@ -1256,7 +1256,7 @@ static void check_package_trust()
 				      i->ParentPkg().Name(), i->VerStr())));
 
       main_stacked->add_visible_widget(cw::dialogs::yesno(sequence_fragment(frags),
-						       arg(sigc::ptr_fun(install_or_remove_packages)),
+						       cw::util::arg(sigc::ptr_fun(install_or_remove_packages)),
 						       W_("Really Continue"),
 						       NULL,
 						       W_("Abort Installation"),
@@ -1440,10 +1440,10 @@ static void actually_do_package_run()
 	  else
 	    {
 	      popup_widget(cw::dialogs::yesno(wrapbox(text_fragment(_("Installing/removing packages requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
-					   arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
+					   cw::util::arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
 						      "-i")),
 					   W_("Become root"),
-					   arg(sigc::ptr_fun(&check_package_trust)),
+					   cw::util::arg(sigc::ptr_fun(&check_package_trust)),
 					   W_("Don't become root"),
 					   cw::get_style("Error")));
 	    }
@@ -1569,10 +1569,10 @@ void do_update_lists()
       else
 	{
 	  popup_widget(cw::dialogs::yesno(wrapbox(text_fragment(_("Updating the package lists requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
-				       arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
+				       cw::util::arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
 						      "-u")),
 				       W_("Become root"),
-				       arg(sigc::ptr_fun(&really_do_update_lists)),
+				       cw::util::arg(sigc::ptr_fun(&really_do_update_lists)),
 				       W_("Don't become root"),
 				       cw::get_style("Error")));
 	}
@@ -2073,7 +2073,7 @@ static void do_dump_resolver()
   if(resman != NULL && resman->resolver_exists())
     prompt_string(_("File to which the resolver state should be dumped:"),
 		  "",
-		  arg(sigc::ptr_fun(handle_dump_resolver_response)),
+		  cw::util::arg(sigc::ptr_fun(handle_dump_resolver_response)),
 		  NULL,
 		  NULL,
 		  &history);
@@ -2312,7 +2312,7 @@ cw::menu_info options_menu[]={
 	       sigc::ptr_fun(do_revert_options)),
 
   //{cw::menu_info::VS_MENU_ITEM, N_("^Save options"), NULL,
-  // N_("Save current settings for future sessions"), arg(bind(sigc::ptr_fun(apt_dumpcfg)),
+  // N_("Save current settings for future sessions"), cw::util::arg(bind(sigc::ptr_fun(apt_dumpcfg)),
   //							 PACKAGE)},
 
   VS_MENU_END

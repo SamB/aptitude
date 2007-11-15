@@ -668,14 +668,14 @@ bool cmine::handle_key(const cwidget::config::key &k)
   else if(bindings->key_matches(k, "MineLoadGame"))
     prompt_string(_("Enter the filename to load: "),
 		  "",
-		  arg(sigc::mem_fun(*this, &cmine::do_load_game)),
+		  cw::util::arg(sigc::mem_fun(*this, &cmine::do_load_game)),
 		  NULL,
 		  NULL,
 		  &load_history);
   else if(bindings->key_matches(k, "MineSaveGame"))
     prompt_string(_("Enter the filename to save: "),
 		  "",
-		  arg(sigc::mem_fun(*this, &cmine::do_save_game)),
+		  cw::util::arg(sigc::mem_fun(*this, &cmine::do_save_game)),
 		  NULL,
 		  NULL,
 		  &save_history);

@@ -36,7 +36,7 @@ bool menu_text_layout::find_search()
 {
   prompt_string(W_("Search for: "),
 		last_search,
-		arg(sigc::mem_fun(this, &menu_text_layout::do_find_search)),
+		cw::util::arg(sigc::mem_fun(this, &menu_text_layout::do_find_search)),
 		NULL,
 		NULL,
 		&search_history);
@@ -68,7 +68,7 @@ bool menu_text_layout::find_search_back()
 {
   prompt_string(_("Search backwards for: "),
 		cw::util::transcode(last_search),
-		arg(sigc::mem_fun(this, &menu_text_layout::do_find_search_back)),
+		cw::util::arg(sigc::mem_fun(this, &menu_text_layout::do_find_search_back)),
 		NULL,
 		NULL,
 		&search_history);

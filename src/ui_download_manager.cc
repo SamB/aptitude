@@ -44,7 +44,7 @@ ui_download_manager::ui_download_manager(download_manager *_manager,
   std::pair<download_signal_log *, cw::widget_ref> progpair =
     gen_download_progress(force_noninvasive, list_update,
 			  title, longtitle, tablabel,
-			  arg(sigc::mem_fun(abort_state,
+			  cw::util::arg(sigc::mem_fun(abort_state,
 					    &aborter::abort)));
 
   log             = progpair.first;

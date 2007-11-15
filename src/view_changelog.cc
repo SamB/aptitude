@@ -54,7 +54,7 @@ class pkg_changelog_screen : public cw::file_pager, public menu_redirect
 
     prompt_string(W_("Search for: "),
 		  get_last_search(),
-		  arg(sigc::mem_fun(*this, &cw::pager::search_for)),
+		  cw::util::arg(sigc::mem_fun(*this, &cw::pager::search_for)),
 		  NULL,
 		  NULL,
 		  NULL);
@@ -66,7 +66,7 @@ class pkg_changelog_screen : public cw::file_pager, public menu_redirect
 
     prompt_string(W_("Search backwards for: "),
 		  get_last_search(),
-		  arg(sigc::mem_fun(*this, &cw::pager::search_back_for)),
+		  cw::util::arg(sigc::mem_fun(*this, &cw::pager::search_back_for)),
 		  NULL,
 		  NULL,
 		  NULL);

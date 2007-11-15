@@ -81,7 +81,7 @@ static void confirm_delete_essential(const pkgCache::PkgIterator &pkg,
 
   cw::widget_ref w=cw::dialogs::string(f,
 				   L"",
-				   arg(sigc::bind(sigc::ptr_fun(try_delete_essential),
+				   cw::util::arg(sigc::bind(sigc::ptr_fun(try_delete_essential),
 						  pkg, purge)),
 				   NULL,
 				   NULL,

@@ -207,9 +207,9 @@ bool menu_tree::find_search()
 {
   prompt_string(W_("Search for: "),
 		last_search_term,
-		arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_search), false)),
-		arg(sigc::mem_fun(*this, &menu_tree::do_cancel_incsearch)),
-		arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_incsearch), false)),
+		cw::util::arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_search), false)),
+		cw::util::arg(sigc::mem_fun(*this, &menu_tree::do_cancel_incsearch)),
+		cw::util::arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_incsearch), false)),
 		&search_history);
 
   return true;
@@ -224,9 +224,9 @@ bool menu_tree::find_search_back()
 {
   prompt_string(W_("Search backwards for: "),
 		last_search_term,
-		arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_search), true)),
-		arg(sigc::mem_fun(*this, &menu_tree::do_cancel_incsearch)),
-		arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_incsearch), true)),
+		cw::util::arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_search), true)),
+		cw::util::arg(sigc::mem_fun(*this, &menu_tree::do_cancel_incsearch)),
+		cw::util::arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_incsearch), true)),
 		&search_history);
 
   return true;
