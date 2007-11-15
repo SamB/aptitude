@@ -118,7 +118,7 @@ public:
   }
 
   void paint(cw::tree *win, int y, bool hierarchical,
-	     const cw::style const style &st)
+	     const cw::style &st)
   {
     cw::subtree<cw::treeitem>::paint(win, y, hierarchical, my_label);
   }
@@ -448,7 +448,7 @@ public:
     return rval;
   }
 
-  void paint(const cw::style const style &st)
+  void paint(const cw::style &st)
   {
     if(apt_cache_file == NULL)
       update();

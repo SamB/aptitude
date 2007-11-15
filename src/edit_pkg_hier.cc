@@ -81,7 +81,7 @@ public:
       cw::treeitem::dispatch_mouse(id, x, bstate, owner);
   }
 
-  void paint(cw::tree *win, int y, bool hierarchical, const cw::style const style &st)
+  void paint(cw::tree *win, int y, bool hierarchical, const cw::style &st)
   {
     string::size_type width=win->get_width();
     string todisp=" ";
@@ -143,7 +143,7 @@ public:
   silly_subtree(bool expanded, const wstring &_txt)
     :widgets::subtree_generic(expanded), txt(_txt) {}
 
-  void paint(cw::tree *win, int y, bool hierarchical, const cw::style const style &st)
+  void paint(cw::tree *win, int y, bool hierarchical, const cw::style &st)
   {
     cw::subtree_generic::paint(win, y, hierarchical, txt);
   }
@@ -178,7 +178,7 @@ bool cw::hier_editor::get_cursorvisible()
     return true;
 }
 
-void cw::hier_editor::paint(const cw::style const style &st)
+void cw::hier_editor::paint(const cw::style &st)
 {
   if(!item)
     mvaddnstr(0, 0, _("No hierarchy information to edit"), get_width());

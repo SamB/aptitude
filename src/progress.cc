@@ -46,7 +46,7 @@ namespace
   }
 }
 
-void progress::paint(const cw::style const style &st)
+void progress::paint(const cw::style &st)
 {
   int width=getmaxx();
 

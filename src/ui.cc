@@ -2461,13 +2461,13 @@ static void do_update_show_tabs(cw::multiplex &mp)
 class help_bar:public cw::label
 {
 protected:
-  help_bar(const wstring &txt, const cw::style const style &st):widgets::label(txt, st)
+  help_bar(const wstring &txt, const cw::style &st):widgets::label(txt, st)
   {
     set_visibility();
   }
 public:
   static
-  ref_ptr<help_bar> create(const wstring &txt, const cw::style const style &st)
+  ref_ptr<help_bar> create(const wstring &txt, const cw::style &st)
   {
     ref_ptr<help_bar> rval(new help_bar(txt, st));
     rval->decref();
@@ -3025,7 +3025,7 @@ public:
 
 void show_message(fragment *msg,
 		  slot0arg okslot,
-		  const cw::style const style &st)
+		  const cw::style &st)
 {
   msg=wrapbox(msg);
   if(aptcfg->FindB(PACKAGE "::UI::Minibuf-Prompts"))
@@ -3044,14 +3044,14 @@ void show_message(fragment *msg,
 
 void show_message(const std::string &msg,
 		  slot0arg okslot,
-		  const cw::style const style &st)
+		  const cw::style &st)
 {
   show_message(text_fragment(msg), okslot, st);
 }
 
 void show_message(const std::wstring &msg,
 		  slot0arg okslot,
-		  const cw::style const style &st)
+		  const cw::style &st)
 {
   show_message(text_fragment(msg), okslot, st);
 }

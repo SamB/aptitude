@@ -145,7 +145,7 @@ public:
 
   bool dispatch_key(const cwidget::config::key &k, cwidget::widgets::tree *owner);
 
-  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const cwidget::style const style &st);
+  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const cwidget::style &st);
 
 
   // Menu redirections.
@@ -166,7 +166,7 @@ public:
   {
   }
 
-  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const cwidget::style const style &st);
+  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const cwidget::style &st);
 };
 
 /** A solution item corresponding to leaving a dependency unresolved. */
@@ -199,7 +199,7 @@ public:
   void mandate();
   void unmandate();
 
-  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const cwidget::style const style &st);
+  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const cwidget::style &st);
 };
 
 

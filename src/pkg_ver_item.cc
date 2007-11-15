@@ -525,7 +525,7 @@ style pkg_ver_item::ver_style(pkgCache::VerIterator version,
 }
 
 void pkg_ver_item::paint(cw::tree *win, int y, bool hierarchical,
-			 const cw::style const style &st)
+			 const cw::style &st)
 {
   int basex=hierarchical?2*get_depth():0;
   int width, height;

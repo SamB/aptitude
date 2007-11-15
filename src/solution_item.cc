@@ -304,7 +304,7 @@ bool solution_act_item::dispatch_key(const cw::config::key &k, cw::tree *owner)
     return solution_item::dispatch_key(k, owner);
 }
 
-void solution_act_item::paint(cw::tree *win, int y, bool hierarchical, const cw::style const style &st)
+void solution_act_item::paint(cw::tree *win, int y, bool hierarchical, const cw::style &st)
 {
   unsigned int basex = hierarchical ? 2*get_depth() : 0;
   unsigned int width = win->getmaxx();
@@ -396,7 +396,7 @@ bool solution_act_item::view_target()
 
 
 
-void solution_act_item_bare::paint(cw::tree *win, int y, bool hierarchical, const cw::style const style &st)
+void solution_act_item_bare::paint(cw::tree *win, int y, bool hierarchical, const cw::style &st)
 {
   unsigned int basex = hierarchical ? 2*get_depth() : 0;
   unsigned int width = win->getmaxx();
@@ -559,7 +559,7 @@ void solution_unresolved_item::unmandate()
   resman->unapprove_broken_dep(d);
 }
 
-void solution_unresolved_item::paint(cw::tree *win, int y, bool hierarchical, const cw::style const style &st)
+void solution_unresolved_item::paint(cw::tree *win, int y, bool hierarchical, const cw::style &st)
 {
   unsigned int basex = hierarchical ? 2*get_depth() : 0;
   unsigned int width = win->getmaxx();

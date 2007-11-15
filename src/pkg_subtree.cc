@@ -26,7 +26,7 @@
 #include <cwidget/widgets/tree.h>
 
 void pkg_subtree::paint(cw::tree *win, int y, bool hierarchical,
-			const cw::style const style &st)
+			const cw::style &st)
 {
   cw::subtree<pkg_tree_node>::paint(win, y, hierarchical, name);
 }

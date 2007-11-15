@@ -28,6 +28,8 @@
 #include <sigc++/slot.h>
 #include <sigc++/functors/mem_fun.h>
 
+namespace cw = cwidget;
+
 template<typename RVal>
 class background_execute : public cw::toplevel::event
 {

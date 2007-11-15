@@ -300,7 +300,7 @@ style pkg_item::pkg_style(pkgCache::PkgIterator package, bool highlighted)
     }
 }
 
-void pkg_item::paint(cw::tree *win, int y, bool hierarchical, const cw::style const style &st)
+void pkg_item::paint(cw::tree *win, int y, bool hierarchical, const cw::style &st)
 {
   int basex=hierarchical?2*get_depth():0;
   int width, height;

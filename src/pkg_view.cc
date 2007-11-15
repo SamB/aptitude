@@ -109,7 +109,7 @@ public:
     cw::toplevel::update();
   }
 
-  void paint(const cw::style const style &st)
+  void paint(const cw::style &st)
   {
     cw::widget_ref tmpref(this);
 
