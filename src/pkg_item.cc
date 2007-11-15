@@ -449,7 +449,7 @@ bool pkg_item::dispatch_key(const cw::config::key &k, cw::tree *owner)
     }
   else if(bindings->key_matches(k, "EditHier"))
     {
-      cw::hier_editor_ref e=cw::hier_editor::create();
+      hier_editor_ref e=hier_editor::create();
       e->set_package(package, visible_version());
 
       // FIXME: better title

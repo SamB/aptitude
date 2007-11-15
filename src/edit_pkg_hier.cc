@@ -41,7 +41,7 @@ using namespace std;
 using namespace __gnu_cxx;
 
 // Stores a group (name) and a Y/N state
-class cw::hier_editor::widgets::hier_item:public sigc::trackable, public cw::treeitem
+class hier_editor::widgets::hier_item : public sigc::trackable, public cw::treeitem
 {
   bool selected;
   pkg_hier::group *group;
@@ -49,7 +49,7 @@ class cw::hier_editor::widgets::hier_item:public sigc::trackable, public cw::tre
   // whatever
   wstring group_name;
 public:
-  cw::hier_item(pkg_hier::group *_group, pkg_hier::item *_item)
+  hier_item(pkg_hier::group *_group, pkg_hier::item *_item)
     :widgets::treeitem(true), group(_group), group_name(cw::util::transcode(group->name, "ASCII"))
   {
     set_item(_item);
@@ -152,12 +152,12 @@ public:
   const wchar_t *label() {return txt.c_str();}
 };
 
-cw::hier_editor::widgets::hier_editor():item(NULL)
+hier_editor::widgets::hier_editor():item(NULL)
 {
-  hier_reloaded.connect(sigc::mem_fun(*this, &cw::hier_editor::handle_reload));
+  hier_reloaded.connect(sigc::mem_fun(*this, &hier_editor::handle_reload));
 }
 
-void cw::hier_editor::handle_reload()
+void hier_editor::handle_reload()
 {
   cw::widget_ref tmpref(this);
 
@@ -170,7 +170,7 @@ void cw::hier_editor::handle_reload()
 	      pkgCache::VerIterator(*apt_cache_file));
 }
 
-bool cw::hier_editor::get_cursorvisible()
+bool hier_editor::get_cursorvisible()
 {
   if(!item)
     return false;
@@ -178,7 +178,7 @@ bool cw::hier_editor::get_cursorvisible()
     return true;
 }
 
-void cw::hier_editor::paint(const cw::style &st)
+void hier_editor::paint(const cw::style &st)
 {
   if(!item)
     mvaddnstr(0, 0, _("No hierarchy information to edit"), get_width());
@@ -189,7 +189,7 @@ void cw::hier_editor::paint(const cw::style &st)
 // Creates a new list of edit-widgets if pkg isn't an end iterator.
 //
 // (yes, it would be nicer in some ways to not recreate the tree continually)
-void cw::hier_editor::set_package(const pkgCache::PkgIterator &pkg)
+void hier_editor::set_package(const pkgCache::PkgIterator &pkg)
 {
   cw::widget_ref tmpref(this);
 
@@ -222,8 +222,8 @@ void cw::hier_editor::set_package(const pkgCache::PkgIterator &pkg)
 		  i!=user_pkg_hier->groups.end();
 		  ++i)
 		{
-		  cw::hier_item *tmp=new cw::hier_item(&i->second, item);
-		  commit_changes.connect(sigc::mem_fun(*tmp, &cw::hier_item::commit));
+		  hier_item *tmp=new hier_item(&i->second, item);
+		  commit_changes.connect(sigc::mem_fun(*tmp, &hier_item::commit));
 
 		  newroot->add_child(tmp);
 		  items.push_back(tmp);
@@ -234,7 +234,7 @@ void cw::hier_editor::set_package(const pkgCache::PkgIterator &pkg)
 	      set_root(newroot);
 	    }
 
-	  for(vector<cw::hier_item *>::iterator i=items.begin();
+	  for(vector<hier_item *>::iterator i=items.begin();
 	      i!=items.end(); ++i)
 	    (*i)->set_item(item);
 	}
@@ -246,18 +246,18 @@ void cw::hier_editor::set_package(const pkgCache::PkgIterator &pkg)
       string name=pkg.end()?"":pkg.Name();
 
       shown_conn=shown_sig.connect(sigc::bind(sigc::mem_fun(*this,
-							    (void (cw::hier_editor::*) (string)) &cw::hier_editor::set_package),
+							    (void (hier_editor::*) (string)) &hier_editor::set_package),
 					      name));
     }
 }
 
-void cw::hier_editor::set_package(const pkgCache::PkgIterator &pkg,
+void hier_editor::set_package(const pkgCache::PkgIterator &pkg,
 				 const pkgCache::VerIterator &ver)
 {
   set_package(pkg);
 }
 
-void cw::hier_editor::set_package(std::string name)
+void hier_editor::set_package(std::string name)
 {
   if(apt_cache_file)
     set_package((*apt_cache_file)->FindPkg(name));
@@ -272,7 +272,7 @@ struct item_cmp
   }
 };
 
-void cw::hier_editor::save_hier(string file)
+void hier_editor::save_hier(string file)
 {
   // We copy references to items into a list, then sort it (so that the
   // output is in a predictable order -- this makes diffs against an
@@ -319,7 +319,7 @@ void cw::hier_editor::save_hier(string file)
   fclose(f);
 }
 
-bool cw::hier_editor::handle_key(const cw::config::key &k)
+bool hier_editor::handle_key(const cw::config::key &k)
 {
   if(cw::config::global_bindings.key_matches(k, "SaveHier"))
     {
@@ -343,7 +343,7 @@ bool cw::hier_editor::handle_key(const cw::config::key &k)
 	{
 	  item->parents.clear();
 
-	  for(vector<cw::hier_item *>::iterator i=items.begin();
+	  for(vector<hier_item *>::iterator i=items.begin();
 	      i!=items.end(); ++i)
 	    (*i)->commit();
 	}
@@ -356,7 +356,7 @@ bool cw::hier_editor::handle_key(const cw::config::key &k)
 	{
 	  item->parents.clear();
 
-	  for(vector<cw::hier_item *>::iterator i=items.begin();
+	  for(vector<hier_item *>::iterator i=items.begin();
 	      i!=items.end(); ++i)
 	    (*i)->commit();
 	}

@@ -284,7 +284,7 @@ typedef cw::util::ref_ptr<pkg_description_widget> pkg_description_widget_ref;
 // This is still rather gross, and a better way would be nice.
 class info_area_multiplex:public cw::multiplex
 {
-  cw::hier_editor_ref editor;
+  hier_editor_ref editor;
   pkg_description_widget_ref description;
   cw::table_ref description_table;
 
@@ -306,7 +306,7 @@ class info_area_multiplex:public cw::multiplex
   cw::widget_ref autoswitch;
 
 protected:
-  info_area_multiplex(const cw::hier_editor_ref &_editor,
+  info_area_multiplex(const hier_editor_ref &_editor,
 		      const pkg_description_widget_ref &_description,
 		      const cw::table_ref &_description_table,
 		      const pkg_why_widget_ref &_why,
@@ -326,7 +326,7 @@ protected:
 
 public:
   static cw::util::ref_ptr<info_area_multiplex>
-  create(const cw::hier_editor_ref &editor,
+  create(const hier_editor_ref &editor,
 	 const pkg_description_widget_ref &description,
 	 const cw::table_ref &description_table,
 	 const pkg_why_widget_ref &why,
@@ -512,7 +512,7 @@ cw::widget_ref make_package_view(list<package_view_item> &format,
 	  break;
 	case PACKAGE_VIEW_DESCRIPTION:
 	  {
-	    cw::hier_editor_ref e=cw::hier_editor::create();
+	    hier_editor_ref e=hier_editor::create();
 	    pkg_description_widget_ref w=pkg_description_widget::create();
 	    pkg_why_widget_ref why = pkg_why_widget::create();
 	    cw::text_layout_ref l=cw::text_layout::create();
