@@ -80,7 +80,7 @@ public:
 
   style get_normal_style();
 
-  bool dispatch_key(const cwidget::key &k, cwidget::widgets::tree *owner);
+  bool dispatch_key(const cwidget::config::key &k, cwidget::widgets::tree *owner);
 
   // Menu redirections:
   bool resolver_toggle_approved();
@@ -143,7 +143,7 @@ public:
     return ver;
   }
 
-  bool dispatch_key(const cwidget::key &k, cwidget::widgets::tree *owner);
+  bool dispatch_key(const cwidget::config::key &k, cwidget::widgets::tree *owner);
 
   void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const cwidget::style const style &st);
 

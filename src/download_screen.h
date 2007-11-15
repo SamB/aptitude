@@ -95,7 +95,7 @@ class download_screen:public cwidget::widgets::tree, public pkgAcquireStatus
   }
 
 protected:
-  bool handle_key(const cwidget::key &k);
+  bool handle_key(const cwidget::config::key &k);
 
 public:
   download_screen():prev(NULL),finished(false),cancelled(false) {contents=new download_tree; set_root(contents);}
