@@ -567,6 +567,51 @@ struct DummyEmptySolution
   }
 };
 
+void dumpDep(std::ostream &out, pkgCache::DepIterator &dep,
+	     pkgDepCache *cache)
+{
+  out << dep.ParentPkg().Name() << " ("
+      << dep.ParentVer().VerStr() << ") "
+      << dep.DepType()
+      << " "
+      << dep.TargetPkg().Name();
+  if(dep.TargetVer() != NULL)
+    {
+      out << " (" << dep.CompType() << " " << dep.TargetVer() << ")";
+    }
+  std::vector<std::string> flags;
+  if(dep->Type & pkgCache::Dep::Or)
+    flags.push_back("OR");
+
+  unsigned char dep_state = (*cache)[dep];
+  if(dep_state & pkgDepCache::DepNow)
+    flags.push_back("DEPNOW");
+  if(dep_state & pkgDepCache::DepInstall)
+    flags.push_back("DEPINSTALL");
+  if(dep_state & pkgDepCache::DepCVer)
+    flags.push_back("DEPCVER");
+  if(dep_state & pkgDepCache::DepGNow)
+    flags.push_back("DEPGNOW");
+  if(dep_state & pkgDepCache::DepGInstall)
+    flags.push_back("DEPGINSTALL");
+  if(dep_state & pkgDepCache::DepGCVer)
+    flags.push_back("DEPGCVER");
+
+  out << "[";
+  bool first = true;
+  for(std::vector<std::string>::const_iterator it =
+	flags.begin(); it != flags.end(); ++it)
+    {
+      if(first)
+	first = false;
+      else
+	out << " ";
+
+      out << *it;
+    }
+  out << "]";
+}
+
 void aptitude_universe::broken_dep_iterator::normalize()
 {
   while(!the_dep.end() &&
