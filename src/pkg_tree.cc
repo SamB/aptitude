@@ -30,7 +30,7 @@
 #include "pkg_sortpolicy.h"
 #include "pkg_subtree.h"
 #include "ui.h"
-#include "widgets::progress.h"
+#include "cw::progress.h"
 
 #include <vscreen/columnify.h>
 #include <cwidget/generic/util/transcode.h>
@@ -49,12 +49,12 @@
 
 keybindings *pkg_tree::bindings=NULL;
 
-widgets::editline::history_list pkg_tree::limit_history, pkg_tree::grouping_history,
+cw::editline::history_list pkg_tree::limit_history, pkg_tree::grouping_history,
   pkg_tree::sorting_history;
 
 void pkg_tree::init_bindings()
 {
-  bindings=new keybindings(widgets::tree::bindings);
+  bindings=new keybindings(cw::tree::bindings);
 }
 
 pkg_tree::pkg_tree(const std::string &def_grouping,
@@ -212,7 +212,7 @@ bool pkg_tree::build_tree(OpProgress &progress)
 
 bool pkg_tree::build_tree()
 {
-  widgets::progress_ref p=gen_progress_bar();
+  cw::progress_ref p=gen_progress_bar();
   bool rval=build_tree(*p.unsafe_get_ref());
   p->destroy();
 

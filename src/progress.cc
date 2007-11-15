@@ -1,4 +1,4 @@
-// widgets::progress.cc
+// cw::progress.cc
 //
 //  Copyright 2000, 2004-2007 Daniel Burrows
 //

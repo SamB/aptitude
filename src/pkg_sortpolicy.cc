@@ -69,7 +69,7 @@ pkg_sortpolicy *name(pkg_sortpolicy *chain, bool reversed)	\
  *  \return \b true if the conversion was successful.
  */
 static
-bool find_package_and_ver(widgets::treeitem *item,
+bool find_package_and_ver(cw::treeitem *item,
 			  pkgCache::PkgIterator &pkg,
 			  pkgCache::VerIterator &ver)
 {
@@ -92,8 +92,8 @@ bool find_package_and_ver(widgets::treeitem *item,
   return false;
 }
 
-int pkg_sortpolicy_wrapper::compare(widgets::treeitem *item1,
-				    widgets::treeitem *item2) const
+int pkg_sortpolicy_wrapper::compare(cw::treeitem *item1,
+				    cw::treeitem *item2) const
 {
   pkgCache::PkgIterator pkg1, pkg2;
   pkgCache::VerIterator ver1, ver2;

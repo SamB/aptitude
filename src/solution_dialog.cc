@@ -45,7 +45,7 @@
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
 
-class solution_dialog:public widgets::text_layout
+class solution_dialog:public cw::text_layout
 {
   aptitude_solution last_sol;
 
@@ -84,7 +84,7 @@ public:
 
   void update()
   {
-    widgets::widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
     if(!apt_cache_file)
       {
@@ -141,43 +141,43 @@ typedef ref_ptr<solution_dialog> solution_dialog_ref;
 
 static void do_apply(cwidget::widgets::widget &wBare)
 {
-  widgets::widget_ref w(&wBare);
+  cw::widget_ref w(&wBare);
 
   do_apply_solution();
   w->destroy();
 }
 
-widgets::widget_ref make_solution_dialog()
+cw::widget_ref make_solution_dialog()
 {
-  widgets::table_ref t=widgets::table::create();
-  widgets::widget_ref rval=widgets::center::create(widgets::frame::create(t));
+  cw::table_ref t=cw::table::create();
+  cw::widget_ref rval=cw::center::create(cw::frame::create(t));
 
-  widgets::text_layout_ref display=solution_dialog::create();
-  widgets::scrollbar_ref scrl=widgets::scrollbar::create(widgets::scrollbar::VERTICAL);
+  cw::text_layout_ref display=solution_dialog::create();
+  cw::scrollbar_ref scrl=cw::scrollbar::create(cw::scrollbar::VERTICAL);
 
-  display->location_changed.connect(sigc::mem_fun(scrl.unsafe_get_ref(), &widgets::scrollbar::set_slider));
-  scrl->scrollbar_interaction.connect(sigc::mem_fun(display.unsafe_get_ref(), &widgets::text_layout::scroll));
+  display->location_changed.connect(sigc::mem_fun(scrl.unsafe_get_ref(), &cw::scrollbar::set_slider));
+  scrl->scrollbar_interaction.connect(sigc::mem_fun(display.unsafe_get_ref(), &cw::text_layout::scroll));
 
   t->add_widget_opts(display,
 		     0, 0, 1, 1,
-		     widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK,
-		     widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK);
+		     cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK,
+		     cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK);
 
   t->add_widget_opts(scrl,
 		     0, 1, 1, 1,
-		     widgets::table::ALIGN_RIGHT,
-		     widgets::table::ALIGN_CENTER | widgets::table::FILL | widgets::table::SHRINK);
+		     cw::table::ALIGN_RIGHT,
+		     cw::table::ALIGN_CENTER | cw::table::FILL | cw::table::SHRINK);
 
-  widgets::table_ref bt=widgets::table::create();
+  cw::table_ref bt=cw::table::create();
 
   //t->set_bg(get_color("DefaultWidgetBackground")|A_REVERSE);
 
   // TODO: for dialogs like this, I really should have support for
   // "wrapping" lines of buttons if they get too long, like fragments.
-  widgets::button_ref bprev  = widgets::button::create(_("Previous"));
-  widgets::button_ref bnext  = widgets::button::create(_("Next"));
-  widgets::button_ref bapply = widgets::button::create(_("Apply"));
-  widgets::button_ref bclose = widgets::button::create(_("Close"));
+  cw::button_ref bprev  = cw::button::create(_("Previous"));
+  cw::button_ref bnext  = cw::button::create(_("Next"));
+  cw::button_ref bapply = cw::button::create(_("Apply"));
+  cw::button_ref bclose = cw::button::create(_("Close"));
 
   bprev->pressed.connect(sigc::ptr_fun(do_previous_solution));
   bnext->pressed.connect(sigc::ptr_fun(do_next_solution));
@@ -197,20 +197,20 @@ widgets::widget_ref make_solution_dialog()
 
   bt->add_widget_opts(bprev,
 		     0, 0, 1, 1,
-		     widgets::table::FILL | widgets::table::EXPAND, widgets::table::FILL);
+		     cw::table::FILL | cw::table::EXPAND, cw::table::FILL);
   bt->add_widget_opts(bnext,
 		     0, 1, 1, 1,
-		     widgets::table::FILL | widgets::table::EXPAND, widgets::table::FILL);
+		     cw::table::FILL | cw::table::EXPAND, cw::table::FILL);
   bt->add_widget_opts(bapply,
 		     0, 2, 1, 1,
-		     widgets::table::FILL | widgets::table::EXPAND, widgets::table::FILL);
+		     cw::table::FILL | cw::table::EXPAND, cw::table::FILL);
   bt->add_widget_opts(bclose,
 		     0, 3, 1, 1,
-		     widgets::table::FILL | widgets::table::EXPAND, widgets::table::FILL);
+		     cw::table::FILL | cw::table::EXPAND, cw::table::FILL);
 
   t->add_widget_opts(bt, 1, 0, 1, 2,
-		     widgets::table::FILL | widgets::table::EXPAND | widgets::table::SHRINK,
-		     widgets::table::FILL);
+		     cw::table::FILL | cw::table::EXPAND | cw::table::SHRINK,
+		     cw::table::FILL);
 
   return rval;
 }

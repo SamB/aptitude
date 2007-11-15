@@ -41,6 +41,10 @@
 #include <generic/util/mut_fun.h>
 
 namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 static void set_and_exit(bool &target, bool val)
 {
@@ -50,7 +54,7 @@ static void set_and_exit(bool &target, bool val)
 
 bool download_screen::MediaChange(string Media, string Drive)
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   char buf[512];
 
@@ -60,7 +64,7 @@ bool download_screen::MediaChange(string Media, string Drive)
 
   bool rval=true;
 
-  popup_widget(widgets::dialog_yesno(cw::util::transcode(buf),
+  popup_widget(cw::dialog_yesno(cw::util::transcode(buf),
 			       arg(sigc::bind(sigc::ptr_fun(set_and_exit),
 					      rval, true)),
 			       W_("Continue"),
@@ -76,7 +80,7 @@ bool download_screen::MediaChange(string Media, string Drive)
 
 void download_screen::IMSHit(pkgAcquire::ItemDesc &itmdesc)
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   downloadmap::iterator found=active_items.find(itmdesc.Owner);
 
@@ -95,7 +99,7 @@ void download_screen::IMSHit(pkgAcquire::ItemDesc &itmdesc)
 
 void download_screen::Fetch(pkgAcquire::ItemDesc &itmdesc)
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   downloadmap::iterator found=active_items.find(itmdesc.Owner);
 
@@ -113,7 +117,7 @@ void download_screen::Fetch(pkgAcquire::ItemDesc &itmdesc)
 
 void download_screen::Done(pkgAcquire::ItemDesc &itmdesc)
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   downloadmap::iterator found=active_items.find(itmdesc.Owner);
   if(found==active_items.end())
@@ -135,7 +139,7 @@ void download_screen::Done(pkgAcquire::ItemDesc &itmdesc)
 
 void download_screen::Fail(pkgAcquire::ItemDesc &itmdesc)
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   downloadmap::iterator found=active_items.find(itmdesc.Owner);
   if(found!=active_items.end())
@@ -148,7 +152,7 @@ void download_screen::Fail(pkgAcquire::ItemDesc &itmdesc)
 
 bool download_screen::Pulse(pkgAcquire *Owner)
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   pkgAcquireStatus::Pulse(Owner);
 
@@ -168,14 +172,14 @@ bool download_screen::Pulse(pkgAcquire *Owner)
 
 void download_screen::Start()
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   pkgAcquireStatus::Start();
 }
 
 void download_screen::Stop()
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   char buf[256];
 
@@ -183,7 +187,7 @@ void download_screen::Stop()
 
   snprintf(buf, 256, _("Downloaded %sB in %ss (%sB/s)."), SizeToStr(FetchedBytes).c_str(), TimeToStr(ElapsedTime).c_str(), SizeToStr(CurrentCPS).c_str());
 
-  popup_widget(widgets::dialog_ok(cw::util::transcode(buf),
+  popup_widget(cw::dialog_ok(cw::util::transcode(buf),
 			    arg(sigc::ptr_fun(cw::toplevel::exitmain))));
 
   cw::toplevel::mainloop();
@@ -195,7 +199,7 @@ void download_screen::Stop()
 void download_screen::paint_status()
 {
   if(finished)
-    widgets::tree::paint_status();
+    cw::tree::paint_status();
   else
     {
       int width,height;
@@ -234,12 +238,12 @@ void download_screen::paint_status()
 
 bool download_screen::handle_key(const cwi::key &k)
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   if(cw::config::global_bindings.key_matches(k, "Quit"))
     cancelled=true;
   else
-    return widgets::tree::handle_key(k);
+    return cw::tree::handle_key(k);
 
   return true;
 }

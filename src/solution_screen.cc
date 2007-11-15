@@ -104,7 +104,7 @@ void bin_actions(const aptitude_solution &sol,
       }
 }
 
-class label_tree : public widgets::subtree_generic
+class label_tree : public cw::subtree_generic
 {
   wstring my_label;
 public:
@@ -117,10 +117,10 @@ public:
     set_depth(depth);
   }
 
-  void paint(widgets::tree *win, int y, bool hierarchical,
+  void paint(cw::tree *win, int y, bool hierarchical,
 	     const cw::style const style &st)
   {
-    widgets::subtree<widgets::treeitem>::paint(win, y, hierarchical, my_label);
+    cw::subtree<cw::treeitem>::paint(win, y, hierarchical, my_label);
   }
 
   const wchar_t *tag()
@@ -136,17 +136,17 @@ public:
 
 
 
-widgets::subtree_generic *make_dep_solvers_tree(const aptitude_resolver_dep &d)
+cw::subtree_generic *make_dep_solvers_tree(const aptitude_resolver_dep &d)
 {
   pkgCache::DepIterator real_dep = d.get_dep();
   pkgCache::PrvIterator prv = d.get_prv();
 
-  widgets::subtree_generic *root = new label_tree(L"", true, true, -1);
+  cw::subtree_generic *root = new label_tree(L"", true, true, -1);
 
-  widgets::staticitem *conflict_item = new widgets::staticitem(conflict_text(real_dep, prv), L"");
+  cw::staticitem *conflict_item = new cw::staticitem(conflict_text(real_dep, prv), L"");
   root->add_child(conflict_item);
 
-  widgets::subtree_generic *resolvers = new label_tree(W_("The following actions will resolve this dependency:"), true, false);
+  cw::subtree_generic *resolvers = new label_tree(W_("The following actions will resolve this dependency:"), true, false);
 
   root->add_child(resolvers);
 
@@ -177,7 +177,7 @@ widgets::subtree_generic *make_dep_solvers_tree(const aptitude_resolver_dep &d)
   return root;
 }
 
-widgets::subtree_generic *make_story_tree(const aptitude_solution &sol,
+cw::subtree_generic *make_story_tree(const aptitude_solution &sol,
 				    const sigc::slot1<void, fragment *> &set_short_description,
 				    const sigc::slot1<void, aptitude_resolver_dep> &set_active_dep)
 {
@@ -189,12 +189,12 @@ widgets::subtree_generic *make_story_tree(const aptitude_solution &sol,
 
   sort(actions.begin(), actions.end(), aptitude_solution::action_id_compare());
 
-  widgets::subtree_generic *root = new label_tree(L"");
+  cw::subtree_generic *root = new label_tree(L"");
 
   for(vector<aptitude_solution::action>::const_iterator
 	i = actions.begin(); i != actions.end(); ++i)
     {
-      widgets::subtree_generic *tree = new label_tree(dep_text(i->d.get_dep()), true, false);
+      cw::subtree_generic *tree = new label_tree(dep_text(i->d.get_dep()), true, false);
 
       tree->add_child(new solution_act_item(*i, set_short_description, set_active_dep));
       root->add_child(tree);
@@ -203,7 +203,7 @@ widgets::subtree_generic *make_story_tree(const aptitude_solution &sol,
   return root;
 }
 
-widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
+cw::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 				       const sigc::slot1<void, fragment *> &set_short_description,
 				       const sigc::slot1<void, aptitude_resolver_dep> &set_active_dep)
 {
@@ -228,11 +228,11 @@ widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
   sort(upgrade_actions.begin(), upgrade_actions.end(),
        act_name_lt());
 
-  widgets::subtree_generic *root = new label_tree(L"");
+  cw::subtree_generic *root = new label_tree(L"");
 
   if(!remove_actions.empty())
     {
-      widgets::subtree_generic *remove_tree = new label_tree(W_("Remove the following packages:"));
+      cw::subtree_generic *remove_tree = new label_tree(W_("Remove the following packages:"));
 
       for(vector<aptitude_solution::action>::const_iterator i = remove_actions.begin();
 	  i != remove_actions.end(); ++i)
@@ -243,7 +243,7 @@ widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 
   if(!keep_actions.empty())
     {
-      widgets::subtree_generic *keep_tree = new label_tree(W_("Keep the following packages at their current version:"));
+      cw::subtree_generic *keep_tree = new label_tree(W_("Keep the following packages at their current version:"));
 
       for(vector<aptitude_solution::action>::const_iterator i = keep_actions.begin();
 	  i != keep_actions.end(); ++i)
@@ -254,7 +254,7 @@ widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 
   if(!install_actions.empty())
     {
-      widgets::subtree_generic *install_tree = new label_tree(W_("Install the following packages:"));
+      cw::subtree_generic *install_tree = new label_tree(W_("Install the following packages:"));
 
       for(vector<aptitude_solution::action>::const_iterator i = install_actions.begin();
 	  i != install_actions.end(); ++i)
@@ -265,7 +265,7 @@ widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 
   if(!upgrade_actions.empty())
     {
-      widgets::subtree_generic *upgrade_tree = new label_tree(W_("Upgrade the following packages:"));
+      cw::subtree_generic *upgrade_tree = new label_tree(W_("Upgrade the following packages:"));
 
       for(vector<aptitude_solution::action>::const_iterator i = upgrade_actions.begin();
 	  i != upgrade_actions.end(); ++i)
@@ -276,7 +276,7 @@ widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 
   if(!downgrade_actions.empty())
     {
-      widgets::subtree_generic *downgrade_tree = new label_tree(W_("Downgrade the following packages:"));
+      cw::subtree_generic *downgrade_tree = new label_tree(W_("Downgrade the following packages:"));
 
       for(vector<aptitude_solution::action>::const_iterator i = downgrade_actions.begin();
 	  i != downgrade_actions.end(); ++i)
@@ -289,7 +289,7 @@ widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 
   if(!unresolved.empty())
     {
-      widgets::subtree_generic *unresolved_tree = new label_tree(W_("Leave the following recommendations unresolved:"));
+      cw::subtree_generic *unresolved_tree = new label_tree(W_("Leave the following recommendations unresolved:"));
 
       for(imm::set<aptitude_universe::dep>::const_iterator i = unresolved.begin();
 	  i != unresolved.end(); ++i)
@@ -330,7 +330,7 @@ public:
 };
 typedef ref_ptr<solution_undo_tree> solution_undo_tree_ref;
 
-class solution_examiner : public widgets::multiplex
+class solution_examiner : public cw::multiplex
 {
   aptitude_solution last_sol;
 
@@ -356,8 +356,8 @@ class solution_examiner : public widgets::multiplex
 
   void set_static_root(const wstring &s)
   {
-    solution_tree->set_root(new widgets::layout_item(hardwrapbox(text_fragment(s))), true);
-    story_tree->set_root(new widgets::layout_item(hardwrapbox(text_fragment(s))), true);
+    solution_tree->set_root(new cw::layout_item(hardwrapbox(text_fragment(s))), true);
+    story_tree->set_root(new cw::layout_item(hardwrapbox(text_fragment(s))), true);
   }
 
   /** Send highlighted/unhighlighted messages to the subwidgets so
@@ -365,7 +365,7 @@ class solution_examiner : public widgets::multiplex
    */
   void update_highlights()
   {
-    widgets::widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
     if(solution_tree == visible_widget())
       {
@@ -381,7 +381,7 @@ class solution_examiner : public widgets::multiplex
 
   void tick()
   {
-    widgets::widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
     if(resman != NULL && resman->resolver_exists())
       {
@@ -398,7 +398,7 @@ class solution_examiner : public widgets::multiplex
 protected:
   solution_examiner(const sigc::slot1<void, fragment *> &_set_short_description,
 		    const sigc::slot1<void, aptitude_resolver_dep> &_set_active_dep)
-    : widgets::multiplex(false),
+    : cw::multiplex(false),
       solution_tree(solution_undo_tree::create()), story_tree(solution_undo_tree::create()),
       set_short_description(_set_short_description),
       set_active_dep(_set_active_dep)
@@ -423,12 +423,12 @@ protected:
 
   bool handle_key(const cwi::key &k)
   {
-    widgets::widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
     if(cw::config::global_bindings.key_matches(k, "CycleOrder"))
       cycle_forward();
     else
-      return widgets::multiplex::handle_key(k);
+      return cw::multiplex::handle_key(k);
 
     return true;
   }
@@ -453,7 +453,7 @@ public:
     if(apt_cache_file == NULL)
       update();
 
-    widgets::multiplex::paint(st);
+    cw::multiplex::paint(st);
   }
 
   void update()
@@ -481,7 +481,7 @@ public:
 
   void update_from_state(const resolver_manager::state &state)
   {
-    widgets::widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
     if(state.solutions_exhausted && state.generated_solutions == 0)
       {
@@ -505,11 +505,11 @@ public:
 
 	wstring msg = W_("Resolving dependencies...");
 
-	widgets::subtree_generic *sol_root = new label_tree(msg);
-	sol_root->add_child(new widgets::layout_item(hardwrapbox(text_fragment(generation_info))));
+	cw::subtree_generic *sol_root = new label_tree(msg);
+	sol_root->add_child(new cw::layout_item(hardwrapbox(text_fragment(generation_info))));
 
-	widgets::subtree_generic *story_root = new label_tree(msg);
-	story_root->add_child(new widgets::layout_item(hardwrapbox(text_fragment(generation_info))));
+	cw::subtree_generic *story_root = new label_tree(msg);
+	story_root->add_child(new cw::layout_item(hardwrapbox(text_fragment(generation_info))));
 
 	solution_tree->set_root(sol_root, true);
 	story_tree->set_root(story_root, true);
@@ -540,9 +540,9 @@ public:
 typedef ref_ptr<solution_examiner> solution_examiner_ref;
 
 static
-void update_dep_display(aptitude_resolver_dep d, widgets::tree *tBare)
+void update_dep_display(aptitude_resolver_dep d, cw::tree *tBare)
 {
-  widgets::tree_ref t(tBare);
+  cw::tree_ref t(tBare);
 
   if(d.get_dep().end())
     t->set_root(NULL);
@@ -553,22 +553,22 @@ void update_dep_display(aptitude_resolver_dep d, widgets::tree *tBare)
 static
 void maybe_remove_examiner(cwidget::widgets::widget &wBare)
 {
-  widgets::widget_ref w(&wBare);
+  cw::widget_ref w(&wBare);
 
   if(resman && !resman->resolver_exists())
     w->destroy();
 }
 
-widgets::widget_ref make_solution_screen()
+cw::widget_ref make_solution_screen()
 {
-  widgets::table_ref rval     = widgets::table::create();
+  cw::table_ref rval     = cw::table::create();
 
-  widgets::label_ref l        = widgets::label::create(L"");
+  cw::label_ref l        = cw::label::create(L"");
   menu_tree_ref info_tree = solution_undo_tree::create();
 
   solution_examiner_ref examiner
     = solution_examiner::create(sigc::mem_fun(l.unsafe_get_ref(),
-					      (void (widgets::label::*) (fragment *)) &widgets::label::set_text),
+					      (void (cw::label::*) (fragment *)) &cw::label::set_text),
 				sigc::bind(sigc::ptr_fun(update_dep_display),
 					   info_tree.unsafe_get_ref()));
 
@@ -584,15 +584,15 @@ widgets::widget_ref make_solution_screen()
   l->set_bg_style(cw::get_style("Status"));
 
   rval->add_widget_opts(examiner,
-			0, 0, 1, 1, widgets::table::EXPAND | widgets::table::FILL,
-			widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK);
+			0, 0, 1, 1, cw::table::EXPAND | cw::table::FILL,
+			cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK);
   rval->add_widget_opts(l,
-			1, 0, 1, 1, widgets::table::EXPAND | widgets::table::FILL,
+			1, 0, 1, 1, cw::table::EXPAND | cw::table::FILL,
 			0);
 
   rval->add_widget_opts(info_tree,
-			2, 0, 1, 1, widgets::table::EXPAND | widgets::table::FILL,
-			widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK);
+			2, 0, 1, 1, cw::table::EXPAND | cw::table::FILL,
+			cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK);
 
 
   cache_reloaded.connect(sigc::bind(sigc::ptr_fun(&maybe_remove_examiner),

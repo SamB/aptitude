@@ -120,7 +120,7 @@ namespace aptitude
 	  apt_dumpcfg(PACKAGE);
 	}
 
-	bool dispatch_key(const cw::config::key &k, widgets::tree *owner)
+	bool dispatch_key(const cw::config::key &k, cw::tree *owner)
 	{
 	  if(cw::config::global_bindings.key_matches(k, "Confirm"))
 	    toggle();
@@ -130,7 +130,7 @@ namespace aptitude
 	  return true;
 	}
 
-	void dispatch_mouse(short id, int x, mmask_t bstate, widgets::tree *owner)
+	void dispatch_mouse(short id, int x, mmask_t bstate, cw::tree *owner)
 	{
 	  if((bstate & BUTTON1_CLICKED) != 0 &&
 	     x >= 2 * get_depth() &&
@@ -138,12 +138,12 @@ namespace aptitude
 	    toggle();
 	}
 
-	void paint(widgets::tree *win, int y, bool hierarchical, const cw::style &st)
+	void paint(cw::tree *win, int y, bool hierarchical, const cw::style &st)
 	{
 	  bool checked = aptcfg->FindB(item, dflt);
 	  const char *box = checked ? "[X]" : "[ ]";
 
-	  widgets::treeitem::paint(win, y, hierarchical,
+	  cw::treeitem::paint(win, y, hierarchical,
 			     swsprintf(L"%s %ls", box, description.c_str()));
 	}
 
@@ -158,7 +158,7 @@ namespace aptitude
 	}
       };
 
-      widgets::treeitem *make_boolean_item(const std::wstring &description,
+      cw::treeitem *make_boolean_item(const std::wstring &description,
 				     const std::wstring &long_description,
 				     const std::string  &item,
 				     const bool          dflt)
@@ -222,7 +222,7 @@ namespace aptitude
 	    return sequence_fragment(fragments);
 	  }
 
-	  void paint(widgets::tree *win, int y, bool hierarchical, const cw::style &st)
+	  void paint(cw::tree *win, int y, bool hierarchical, const cw::style &st)
 	  {
 	    win->move(y, 0);
 	    int x = 0;
@@ -285,7 +285,7 @@ namespace aptitude
 			  NULL);
 	  }
 
-	  bool dispatch_key(const cw::config::key &k, widgets::tree *owner)
+	  bool dispatch_key(const cw::config::key &k, cw::tree *owner)
 	  {
 	    if(cw::config::global_bindings.key_matches(k, "Confirm"))
 	      edit();
@@ -296,21 +296,21 @@ namespace aptitude
 	  }
 	};
 
-	class dummy_subtree : public widgets::subtree<config_treeitem>
+	class dummy_subtree : public cw::subtree<config_treeitem>
 	{
 	  const std::wstring description;
 	public:
 	  dummy_subtree(const std::wstring &_description)
-	    : widgets::subtree<config_treeitem>(true),
+	    : cw::subtree<config_treeitem>(true),
 	      description(_description)
 	  {
 	    set_selectable(false);
 	  }
 
-	  void paint(widgets::tree *win, int y,
+	  void paint(cw::tree *win, int y,
 		     bool hierarchical, const cw::style &)
 	  {
-	    widgets::subtree<config_treeitem>::paint(win, y, hierarchical, description);
+	    cw::subtree<config_treeitem>::paint(win, y, hierarchical, description);
 	  }
 
 	  const wchar_t *tag()
@@ -325,7 +325,7 @@ namespace aptitude
 	};
       }
 
-      widgets::treeitem *make_string_item(const std::wstring &description,
+      cw::treeitem *make_string_item(const std::wstring &description,
 				    const std::wstring &long_description,
 				    const std::string  &item,
 				    const std::string  &dflt)
@@ -416,7 +416,7 @@ namespace aptitude
 	  apt_dumpcfg(PACKAGE);
 	}
 
-	bool dispatch_key(const cw::config::key &k, widgets::tree *owner)
+	bool dispatch_key(const cw::config::key &k, cw::tree *owner)
 	{
 	  if(cw::config::global_bindings.key_matches(k, "Confirm"))
 	    choose();
@@ -426,7 +426,7 @@ namespace aptitude
 	  return true;
 	}
 
-	void dispatch_mouse(short id, int x, mmask_t bstate, widgets::tree *owner)
+	void dispatch_mouse(short id, int x, mmask_t bstate, cw::tree *owner)
 	{
 	  if((bstate & BUTTON1_CLICKED) != 0 &&
 	     x >= 2 * get_depth() &&
@@ -434,7 +434,7 @@ namespace aptitude
 	    choose();
 	}
 
-	void paint(widgets::tree *win, int y, bool hierarchical, const cw::style &st)
+	void paint(cw::tree *win, int y, bool hierarchical, const cw::style &st)
 	{
 	  const std::map<std::string, radio_choice>::const_iterator my_choice_found =
 	    choices.find(my_choice);
@@ -444,7 +444,7 @@ namespace aptitude
 	  bool selected = aptcfg->Find(item, dflt.c_str()) == my_choice;
 	  const char *box = selected ? "(*)" : "( )";
 
-	  widgets::treeitem::paint(win, y, hierarchical,
+	  cw::treeitem::paint(win, y, hierarchical,
 			     swsprintf(L"%s %ls", box, my_choice_found->second.get_description().c_str()));
 	}
 
@@ -459,7 +459,7 @@ namespace aptitude
 	}
       };
 
-      widgets::treeitem *make_radio_item(const std::wstring &description,
+      cw::treeitem *make_radio_item(const std::wstring &description,
 				   const std::wstring &long_description,
 				   const std::string  &item,
 				   const std::vector<radio_choice> &choices,

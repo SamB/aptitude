@@ -32,7 +32,7 @@
 #include "pkg_item.h"
 #include "ui.h"
 #include "view_changelog.h"
-#include "widgets::progress.h"
+#include "cw::progress.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/apt_undo_group.h>
@@ -79,7 +79,7 @@ static void confirm_delete_essential(const pkgCache::PkgIterator &pkg,
 
   fragment *f=wrapbox(fragf(_("%s is an essential package!%n%nAre you sure you want to remove it?%nType '%s' if you are."), pkg.Name(), _(confirm_str)));
 
-  widgets::widget_ref w=widgets::dialog_string(f,
+  cw::widget_ref w=cw::dialog_string(f,
 				   L"",
 				   arg(sigc::bind(sigc::ptr_fun(try_delete_essential),
 						  pkg, purge)),
@@ -225,7 +225,7 @@ void pkg_item::show_information()
   snprintf(buf, 512, _("%s info"), package.Name());
   string tablabel(buf);
 
-  widgets::widget_ref w=make_info_screen(package, visible_version());
+  cw::widget_ref w=make_info_screen(package, visible_version());
   // what to use as the menu description?
   insert_main_widget(w, menulabel, "", tablabel);
 }
@@ -237,12 +237,12 @@ void pkg_item::show_changelog()
 
 style pkg_item::get_highlight_style()
 {
-  return widgets::treeitem::get_normal_style() + pkg_style(package, true);
+  return cw::treeitem::get_normal_style() + pkg_style(package, true);
 }
 
 style pkg_item::get_normal_style()
 {
-  return widgets::treeitem::get_normal_style() + pkg_style(package, false);
+  return cw::treeitem::get_normal_style() + pkg_style(package, false);
 }
 
 #define MAYBE_HIGHLIGHTED(x) (highlighted ? (x "Highlighted") : (x))
@@ -300,7 +300,7 @@ style pkg_item::pkg_style(pkgCache::PkgIterator package, bool highlighted)
     }
 }
 
-void pkg_item::paint(widgets::tree *win, int y, bool hierarchical, const cw::style const style &st)
+void pkg_item::paint(cw::tree *win, int y, bool hierarchical, const cw::style const style &st)
 {
   int basex=hierarchical?2*get_depth():0;
   int width, height;
@@ -313,7 +313,7 @@ void pkg_item::paint(widgets::tree *win, int y, bool hierarchical, const cw::sty
   win->mvaddnstr(y, 0, disp.c_str(), width);
 }
 
-bool pkg_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
+bool pkg_item::dispatch_key(const cwi::key &k, cw::tree *owner)
 {
   if(bindings->key_matches(k, "Versions"))
     {
@@ -325,7 +325,7 @@ bool pkg_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 	       package.Name());
       string tablabel(buf);
 
-      widgets::widget_ref w=make_ver_screen(package);
+      cw::widget_ref w=make_ver_screen(package);
       insert_main_widget(w, menulabel, "", tablabel);
     }
   else if(bindings->key_matches(k, "Dependencies"))
@@ -338,7 +338,7 @@ bool pkg_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 	  snprintf(buf, 512, _("%s deps"), package.Name());
 	  string tablabel(buf);
 
-	  widgets::widget_ref w=make_dep_screen(package, visible_version());
+	  cw::widget_ref w=make_dep_screen(package, visible_version());
 	  insert_main_widget(w, menulabel, "", tablabel);
 	  w->show();
 	}
@@ -351,7 +351,7 @@ bool pkg_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
       snprintf(buf, 512, _("%s reverse deps"), package.Name());
       string tablabel(buf);
 
-      widgets::widget_ref w=make_dep_screen(package, visible_version(), true);
+      cw::widget_ref w=make_dep_screen(package, visible_version(), true);
       insert_main_widget(w, menulabel, "", tablabel);
     }
   else if(bindings->key_matches(k, "InfoScreen"))
@@ -418,7 +418,7 @@ bool pkg_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
       else if(access("/bin/su", X_OK)==0)
 	sucmd="/bin/su -c \"/usr/sbin/dpkg-reconfigure '%s'\"";
       else
-	popup_widget(widgets::dialog_ok(text_fragment(_("You are not root and I cannot find any way to become root.  To reconfigure this package, install the menu package, the login package, or run aptitude as root."))));
+	popup_widget(cw::dialog_ok(text_fragment(_("You are not root and I cannot find any way to become root.  To reconfigure this package, install the menu package, the login package, or run aptitude as root."))));
 
       if(sucmd)
 	{
@@ -442,14 +442,14 @@ bool pkg_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 	      cw::toplevel::resume();
 	    }
 
-	  widgets::progress_ref p = gen_progress_bar();
+	  cw::progress_ref p = gen_progress_bar();
 	  apt_reload_cache(p.unsafe_get_ref(), true);
 	  p->destroy();
 	}
     }
   else if(bindings->key_matches(k, "EditHier"))
     {
-      widgets::hier_editor_ref e=widgets::hier_editor::create();
+      cw::hier_editor_ref e=cw::hier_editor::create();
       e->set_package(package, visible_version());
 
       // FIXME: better title
@@ -464,7 +464,7 @@ bool pkg_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
   return true;
 }
 
-void pkg_item::dispatch_mouse(short id, int x, mmask_t bstate, widgets::tree *owner)
+void pkg_item::dispatch_mouse(short id, int x, mmask_t bstate, cw::tree *owner)
 {
   if(bstate & (BUTTON1_DOUBLE_CLICKED | BUTTON2_DOUBLE_CLICKED |
 	       BUTTON3_DOUBLE_CLICKED | BUTTON4_DOUBLE_CLICKED |

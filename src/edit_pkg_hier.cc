@@ -41,7 +41,7 @@ using namespace std;
 using namespace __gnu_cxx;
 
 // Stores a group (name) and a Y/N state
-class widgets::hier_editor::widgets::hier_item:public sigc::trackable, public widgets::treeitem
+class cw::hier_editor::widgets::hier_item:public sigc::trackable, public cw::treeitem
 {
   bool selected;
   pkg_hier::group *group;
@@ -49,13 +49,13 @@ class widgets::hier_editor::widgets::hier_item:public sigc::trackable, public wi
   // whatever
   wstring group_name;
 public:
-  widgets::hier_item(pkg_hier::group *_group, pkg_hier::item *_item)
+  cw::hier_item(pkg_hier::group *_group, pkg_hier::item *_item)
     :widgets::treeitem(true), group(_group), group_name(cw::util::transcode(group->name, "ASCII"))
   {
     set_item(_item);
   }
 
-  bool dispatch_key(const cwi::key &k, widgets::tree *owner)
+  bool dispatch_key(const cwi::key &k, cw::tree *owner)
   {
     if(cw::config::global_bindings.key_matches(k, "PushButton") ||
        cw::config::global_bindings.key_matches(k, "Confirm"))
@@ -64,12 +64,12 @@ public:
 	cw::toplevel::update();
       }
     else
-      return widgets::treeitem::dispatch_key(k, owner);
+      return cw::treeitem::dispatch_key(k, owner);
 
     return true;
   }
 
-  void dispatch_mouse(short id, int x, mmask_t bstate, widgets::tree *owner)
+  void dispatch_mouse(short id, int x, mmask_t bstate, cw::tree *owner)
   {
     if(bstate&BUTTON1_DOUBLE_CLICKED || bstate & BUTTON3_PRESSED ||
        bstate & BUTTON3_CLICKED)
@@ -78,10 +78,10 @@ public:
 	cw::toplevel::update();
       }
     else
-      widgets::treeitem::dispatch_mouse(id, x, bstate, owner);
+      cw::treeitem::dispatch_mouse(id, x, bstate, owner);
   }
 
-  void paint(widgets::tree *win, int y, bool hierarchical, const cw::style const style &st)
+  void paint(cw::tree *win, int y, bool hierarchical, const cw::style const style &st)
   {
     string::size_type width=win->get_width();
     string todisp=" ";
@@ -136,30 +136,30 @@ public:
 };
 
 // FIXME: I shouldn't have to do this.
-class silly_subtree:public widgets::subtree_generic
+class silly_subtree:public cw::subtree_generic
 {
   wstring txt;
 public:
   silly_subtree(bool expanded, const wstring &_txt)
     :widgets::subtree_generic(expanded), txt(_txt) {}
 
-  void paint(widgets::tree *win, int y, bool hierarchical, const cw::style const style &st)
+  void paint(cw::tree *win, int y, bool hierarchical, const cw::style const style &st)
   {
-    widgets::subtree_generic::paint(win, y, hierarchical, txt);
+    cw::subtree_generic::paint(win, y, hierarchical, txt);
   }
 
   const wchar_t *tag() {return txt.c_str();}
   const wchar_t *label() {return txt.c_str();}
 };
 
-widgets::hier_editor::widgets::hier_editor():item(NULL)
+cw::hier_editor::widgets::hier_editor():item(NULL)
 {
-  hier_reloaded.connect(sigc::mem_fun(*this, &widgets::hier_editor::handle_reload));
+  hier_reloaded.connect(sigc::mem_fun(*this, &cw::hier_editor::handle_reload));
 }
 
-void widgets::hier_editor::handle_reload()
+void cw::hier_editor::handle_reload()
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   set_root(NULL);
   items.clear();
@@ -170,7 +170,7 @@ void widgets::hier_editor::handle_reload()
 	      pkgCache::VerIterator(*apt_cache_file));
 }
 
-bool widgets::hier_editor::get_cursorvisible()
+bool cw::hier_editor::get_cursorvisible()
 {
   if(!item)
     return false;
@@ -178,20 +178,20 @@ bool widgets::hier_editor::get_cursorvisible()
     return true;
 }
 
-void widgets::hier_editor::paint(const cw::style const style &st)
+void cw::hier_editor::paint(const cw::style const style &st)
 {
   if(!item)
     mvaddnstr(0, 0, _("No hierarchy information to edit"), get_width());
   else
-    widgets::tree::paint(st);
+    cw::tree::paint(st);
 }
 
 // Creates a new list of edit-widgets if pkg isn't an end iterator.
 //
 // (yes, it would be nicer in some ways to not recreate the tree continually)
-void widgets::hier_editor::set_package(const pkgCache::PkgIterator &pkg)
+void cw::hier_editor::set_package(const pkgCache::PkgIterator &pkg)
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   shown_conn.disconnect();
   if(get_visible())
@@ -222,8 +222,8 @@ void widgets::hier_editor::set_package(const pkgCache::PkgIterator &pkg)
 		  i!=user_pkg_hier->groups.end();
 		  ++i)
 		{
-		  widgets::hier_item *tmp=new widgets::hier_item(&i->second, item);
-		  commit_changes.connect(sigc::mem_fun(*tmp, &widgets::hier_item::commit));
+		  cw::hier_item *tmp=new cw::hier_item(&i->second, item);
+		  commit_changes.connect(sigc::mem_fun(*tmp, &cw::hier_item::commit));
 
 		  newroot->add_child(tmp);
 		  items.push_back(tmp);
@@ -234,7 +234,7 @@ void widgets::hier_editor::set_package(const pkgCache::PkgIterator &pkg)
 	      set_root(newroot);
 	    }
 
-	  for(vector<widgets::hier_item *>::iterator i=items.begin();
+	  for(vector<cw::hier_item *>::iterator i=items.begin();
 	      i!=items.end(); ++i)
 	    (*i)->set_item(item);
 	}
@@ -246,18 +246,18 @@ void widgets::hier_editor::set_package(const pkgCache::PkgIterator &pkg)
       string name=pkg.end()?"":pkg.Name();
 
       shown_conn=shown_sig.connect(sigc::bind(sigc::mem_fun(*this,
-							    (void (widgets::hier_editor::*) (string)) &widgets::hier_editor::set_package),
+							    (void (cw::hier_editor::*) (string)) &cw::hier_editor::set_package),
 					      name));
     }
 }
 
-void widgets::hier_editor::set_package(const pkgCache::PkgIterator &pkg,
+void cw::hier_editor::set_package(const pkgCache::PkgIterator &pkg,
 				 const pkgCache::VerIterator &ver)
 {
   set_package(pkg);
 }
 
-void widgets::hier_editor::set_package(std::string name)
+void cw::hier_editor::set_package(std::string name)
 {
   if(apt_cache_file)
     set_package((*apt_cache_file)->FindPkg(name));
@@ -272,7 +272,7 @@ struct item_cmp
   }
 };
 
-void widgets::hier_editor::save_hier(string file)
+void cw::hier_editor::save_hier(string file)
 {
   // We copy references to items into a list, then sort it (so that the
   // output is in a predictable order -- this makes diffs against an
@@ -319,7 +319,7 @@ void widgets::hier_editor::save_hier(string file)
   fclose(f);
 }
 
-bool widgets::hier_editor::handle_key(const cwi::key &k)
+bool cw::hier_editor::handle_key(const cwi::key &k)
 {
   if(cw::config::global_bindings.key_matches(k, "SaveHier"))
     {
@@ -343,7 +343,7 @@ bool widgets::hier_editor::handle_key(const cwi::key &k)
 	{
 	  item->parents.clear();
 
-	  for(vector<widgets::hier_item *>::iterator i=items.begin();
+	  for(vector<cw::hier_item *>::iterator i=items.begin();
 	      i!=items.end(); ++i)
 	    (*i)->commit();
 	}
@@ -356,7 +356,7 @@ bool widgets::hier_editor::handle_key(const cwi::key &k)
 	{
 	  item->parents.clear();
 
-	  for(vector<widgets::hier_item *>::iterator i=items.begin();
+	  for(vector<cw::hier_item *>::iterator i=items.begin();
 	      i!=items.end(); ++i)
 	    (*i)->commit();
 	}
@@ -366,7 +366,7 @@ bool widgets::hier_editor::handle_key(const cwi::key &k)
   else if(cw::config::global_bindings.key_matches(k, "Abort"))
     hide();
   else
-    return widgets::tree::handle_key(k);
+    return cw::tree::handle_key(k);
 
   return true;
 }

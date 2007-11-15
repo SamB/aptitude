@@ -150,25 +150,25 @@ std::list<package_view_item> *load_pkgview(std::string cfggroup)
       tmp.yopts=0;
 
       if(subtree.FindB("ColExpand", false))
-	tmp.xopts|=widgets::table::EXPAND;
+	tmp.xopts|=cw::table::EXPAND;
       if(subtree.FindB("RowExpand", false))
-	tmp.yopts|=widgets::table::EXPAND;
+	tmp.yopts|=cw::table::EXPAND;
 
       if(subtree.FindB("ColShrink", false))
-	tmp.xopts|=widgets::table::SHRINK;
+	tmp.xopts|=cw::table::SHRINK;
       if(subtree.FindB("RowShrink", false))
-	tmp.yopts|=widgets::table::SHRINK;
+	tmp.yopts|=cw::table::SHRINK;
 
       if(subtree.Exists("ColAlign"))
 	{
 	  std::string s=subtree.Find("ColAlign");
 
 	  if(!strcasecmp(s.c_str(), "left"))
-	    tmp.xopts|=widgets::table::ALIGN_LEFT;
+	    tmp.xopts|=cw::table::ALIGN_LEFT;
 	  else if(!strcasecmp(s.c_str(), "right"))
-	    tmp.xopts|=widgets::table::ALIGN_RIGHT;
+	    tmp.xopts|=cw::table::ALIGN_RIGHT;
 	  else if(!strcasecmp(s.c_str(), "center"))
-	    tmp.xopts|=widgets::table::ALIGN_CENTER;
+	    tmp.xopts|=cw::table::ALIGN_CENTER;
 	  else
 	    {
 	      _error->Error(_("Unknown alignment type '%s'"), s.c_str());
@@ -182,11 +182,11 @@ std::list<package_view_item> *load_pkgview(std::string cfggroup)
 	  std::string s=subtree.Find("RowAlign");
 
 	  if(!strcasecmp(s.c_str(), "top"))
-	    tmp.yopts|=widgets::table::ALIGN_LEFT;
+	    tmp.yopts|=cw::table::ALIGN_LEFT;
 	  else if(!strcasecmp(s.c_str(), "bottom"))
-	    tmp.yopts|=widgets::table::ALIGN_RIGHT;
+	    tmp.yopts|=cw::table::ALIGN_RIGHT;
 	  else if(!strcasecmp(s.c_str(), "center"))
-	    tmp.yopts|=widgets::table::ALIGN_CENTER;
+	    tmp.yopts|=cw::table::ALIGN_CENTER;
 	  else
 	    {
 	      _error->Error(_("Unknown alignment type '%s'"), s.c_str());

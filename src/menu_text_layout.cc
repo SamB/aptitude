@@ -134,7 +134,7 @@ bool menu_text_layout::handle_key(const cwi::key &k)
   else if(cw::config::global_bindings.key_matches(k, "RepeatSearchBack"))
     find_repeat_search_back();
   else
-    return widgets::text_layout::handle_key(k);
+    return cw::text_layout::handle_key(k);
 
   return true;
 }

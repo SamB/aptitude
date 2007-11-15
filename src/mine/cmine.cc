@@ -55,7 +55,7 @@ namespace widgets = cwidget::widgets;
 
 cwidget::config::keybindings *cmine::bindings;
 
-widgets::editline::history_list cmine::load_history, cmine::save_history;
+cw::editline::history_list cmine::load_history, cmine::save_history;
 
 int cmine::width_request()
 {
@@ -99,7 +99,7 @@ void cmine::update_header()
 void cmine::paint_header(const cwidget::style &st)
   // Shows the header with its extra info
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   if(board)
     {
@@ -154,7 +154,7 @@ void cmine::paint_header(const cwidget::style &st)
 
 void cmine::do_load_game(wstring ws)
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   string s=cw::util::transcode(ws);
 
@@ -198,7 +198,7 @@ void cmine::do_load_game(wstring ws)
 
 void cmine::do_save_game(wstring ws)
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   string s=cw::util::transcode(ws);
 
@@ -222,16 +222,16 @@ void cmine::do_save_game(wstring ws)
     }
 }
 
-void cmine::do_start_custom_game(widgets::widget &w_bare,
-				 widgets::editline &heightedit_bare,
-				 widgets::editline &widthedit_bare,
-				 widgets::editline &minesedit_bare)
+void cmine::do_start_custom_game(cw::widget &w_bare,
+				 cw::editline &heightedit_bare,
+				 cw::editline &widthedit_bare,
+				 cw::editline &minesedit_bare)
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   // Be ultra-safe and hold strong references to everything.
-  widgets::widget_ref w(&w_bare);
-  widgets::editline_ref heightedit(&heightedit_bare),
+  cw::widget_ref w(&w_bare);
+  cw::editline_ref heightedit(&heightedit_bare),
     widthedit(&widthedit_bare), minesedit(&minesedit_bare);
 
   wstring s=heightedit->get_text();
@@ -284,26 +284,26 @@ void cmine::do_start_custom_game(widgets::widget &w_bare,
 
 void cmine::do_custom_game()
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
-  widgets::center_ref center = widgets::center::create();
+  cw::center_ref center = cw::center::create();
   center->set_bg_style(cwidget::style_attrs_flip(A_REVERSE));
 
-  widgets::table_ref table = widgets::table::create();
+  cw::table_ref table = cw::table::create();
 
-  widgets::label_ref overalllabel = widgets::label::create(_("Setup custom game"));
+  cw::label_ref overalllabel = cw::label::create(_("Setup custom game"));
 
-  widgets::label_ref heightlabel = widgets::label::create(_("Height of board: "));
-  widgets::editline_ref heightedit = widgets::editline::create(L"");
+  cw::label_ref heightlabel = cw::label::create(_("Height of board: "));
+  cw::editline_ref heightedit = cw::editline::create(L"");
 
-  widgets::label_ref widthlabel = widgets::label::create(_("Width of board: "));
-  widgets::editline_ref widthedit = widgets::editline::create(L"");
+  cw::label_ref widthlabel = cw::label::create(_("Width of board: "));
+  cw::editline_ref widthedit = cw::editline::create(L"");
 
-  widgets::label_ref mineslabel = widgets::label::create(_("Number of mines: "));
-  widgets::editline_ref minesedit = widgets::editline::create(L"");
+  cw::label_ref mineslabel = cw::label::create(_("Number of mines: "));
+  cw::editline_ref minesedit = cw::editline::create(L"");
 
-  widgets::button_ref okbutton = widgets::button::create(_("Ok"));
-  widgets::button_ref cancelbutton = widgets::button::create(_("Cancel"));
+  cw::button_ref okbutton = cw::button::create(_("Ok"));
+  cw::button_ref cancelbutton = cw::button::create(_("Cancel"));
 
   table->connect_key("Confirm", &cwidget::config::global_bindings, okbutton->pressed.make_slot());
 
@@ -316,8 +316,8 @@ void cmine::do_custom_game()
 
   table->connect_key("Cancel", &cwidget::config::global_bindings, cancelbutton->pressed.make_slot());
 
-  widgets::center_ref cyes = widgets::center::create(okbutton);
-  widgets::center_ref cno = widgets::center::create(cancelbutton);
+  cw::center_ref cyes = cw::center::create(okbutton);
+  cw::center_ref cno = cw::center::create(cancelbutton);
 
   table->add_widget(overalllabel, 0, 0, 1, 2, true, false);
 
@@ -345,7 +345,7 @@ void cmine::do_custom_game()
   cyes->show();
   cno->show();
 
-  widgets::frame_ref frame = widgets::frame::create(table);
+  cw::frame_ref frame = cw::frame::create(table);
   center->add_widget(frame);
 
   popup_widget(center);
@@ -353,22 +353,22 @@ void cmine::do_custom_game()
 
 void cmine::do_new_game()
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
-  widgets::center_ref center = widgets::center::create();
+  cw::center_ref center = cw::center::create();
   center->set_bg_style(cwidget::style_attrs_flip(A_REVERSE));
 
-  widgets::table_ref table = widgets::table::create();
+  cw::table_ref table = cw::table::create();
 
-  widgets::label_ref overalllabel = widgets::label::create(_("Choose difficulty level"));
+  cw::label_ref overalllabel = cw::label::create(_("Choose difficulty level"));
 
-  widgets::radiobutton_ref easybutton = widgets::radiobutton::create(_("Easy"), true);
-  widgets::radiobutton_ref mediumbutton = widgets::radiobutton::create(_("Medium"), false);
-  widgets::radiobutton_ref hardbutton = widgets::radiobutton::create(_("Hard"), false);
-  widgets::radiobutton_ref custombutton = widgets::radiobutton::create(_("Custom"), false);
+  cw::radiobutton_ref easybutton = cw::radiobutton::create(_("Easy"), true);
+  cw::radiobutton_ref mediumbutton = cw::radiobutton::create(_("Medium"), false);
+  cw::radiobutton_ref hardbutton = cw::radiobutton::create(_("Hard"), false);
+  cw::radiobutton_ref custombutton = cw::radiobutton::create(_("Custom"), false);
 
-  widgets::button_ref okbutton = widgets::button::create(_("Ok"));
-  widgets::button_ref cancelbutton = widgets::button::create(_("Cancel"));
+  cw::button_ref okbutton = cw::button::create(_("Ok"));
+  cw::button_ref cancelbutton = cw::button::create(_("Cancel"));
 
   using cwidget::config::global_bindings;
 
@@ -379,7 +379,7 @@ void cmine::do_new_game()
   hardbutton->connect_key("Confirm", &cw::config::global_bindings, okbutton->pressed.make_slot());
   custombutton->connect_key("Confirm", &cw::config::global_bindings, okbutton->pressed.make_slot());
 
-  widgets::radiogroup *grp = new widgets::radiogroup;
+  cw::radiogroup *grp = new cw::radiogroup;
   grp->add_button(easybutton, 0);
   grp->add_button(mediumbutton, 1);
   grp->add_button(hardbutton, 2);
@@ -394,8 +394,8 @@ void cmine::do_new_game()
 					   center.weak_ref(),
 					   grp));
 
-  widgets::center_ref cok = widgets::center::create(okbutton);
-  widgets::center_ref ccancel = widgets::center::create(cancelbutton);
+  cw::center_ref cok = cw::center::create(okbutton);
+  cw::center_ref ccancel = cw::center::create(cancelbutton);
 
   table->add_widget(overalllabel, 0, 0, 1, 2, true, false);
   table->add_widget(easybutton,   1, 0, 1, 2, true, false);
@@ -405,7 +405,7 @@ void cmine::do_new_game()
   table->add_widget(cok,          6, 0, 1, 1, false, false);
   table->add_widget(ccancel,      6, 1, 1, 1, false, false);
 
-  widgets::frame_ref frame = widgets::frame::create(table);
+  cw::frame_ref frame = cw::frame::create(table);
   center->add_widget(frame);
 
   popup_widget(center);
@@ -413,11 +413,11 @@ void cmine::do_new_game()
 
 void cmine::do_continue_new_game(bool start,
 				 cwidget::widgets::widget &w_bare,
-				 widgets::radiogroup *grp)
+				 cw::radiogroup *grp)
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
-  widgets::widget_ref w(&w_bare);
+  cw::widget_ref w(&w_bare);
 
   if(start)
     switch(grp->get_selected())
@@ -461,7 +461,7 @@ cmine::~cmine()
 void cmine::checkend()
   // Prints out silly messages when the player wins or loses
 {
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   if(board->get_state()==mine_board::won)
     // "You hold up the Amulet of Yendor.  An invisible choir sings..."
@@ -473,7 +473,7 @@ void cmine::checkend()
       // (messages in reverse order because the minibuf is a stack by default..
       // I could use the special feature of sticking them at the end, but I
       // want them to override whatever's there (probably nothing :) )
-      add_status_widget(new widgets::label(_("You die...  --More--"),
+      add_status_widget(new cw::label(_("You die...  --More--"),
 				     retr_status_color()));
       switch(rand()/(RAND_MAX/8))
 	{
@@ -486,35 +486,35 @@ void cmine::checkend()
 	      if(rand()<(RAND_MAX/3))
 		{
 		  if(rand()<(RAND_MAX/2))
-		    add_status_widget(widgets::label::create(_("The spikes were poisoned!  The poison was deadly...  --More--"),
+		    add_status_widget(cw::label::create(_("The spikes were poisoned!  The poison was deadly...  --More--"),
 						       retr_status_color()));
 
-		  add_status_widget(widgets::label::create(_("You land on a set of sharp iron spikes!  --More--"),
+		  add_status_widget(cw::label::create(_("You land on a set of sharp iron spikes!  --More--"),
 						     retr_status_color()));
 		}
-	      add_status_widget(widgets::label::create(_("You fall into a pit!  --More--"),
+	      add_status_widget(cw::label::create(_("You fall into a pit!  --More--"),
 						 retr_status_color()));
 	    }
-	  add_status_widget(widgets::label::create(_("KABOOM!  You step on a land mine.  --More--"),
+	  add_status_widget(cw::label::create(_("KABOOM!  You step on a land mine.  --More--"),
 					     retr_status_color()));
 	  break;
 	case 4:
 	  if(rand()<RAND_MAX/2)
-	    add_status_widget(widgets::label::create(_("The dart was poisoned!  The poison was deadly...  --More--"),
+	    add_status_widget(cw::label::create(_("The dart was poisoned!  The poison was deadly...  --More--"),
 					       retr_status_color()));
-	  add_status_widget(widgets::label::create(_("A little dart shoots out at you!  You are hit by a little dart!  --More--"),
+	  add_status_widget(cw::label::create(_("A little dart shoots out at you!  You are hit by a little dart!  --More--"),
 					     retr_status_color()));
 	  break;
 	case 5:
-	  add_status_widget(widgets::label::create(_("You turn to stone... --More--"),
+	  add_status_widget(cw::label::create(_("You turn to stone... --More--"),
 					     retr_status_color()));
-	  add_status_widget(widgets::label::create(_("Touching the cockatrice corpse was a fatal mistake.  --More--"),
+	  add_status_widget(cw::label::create(_("Touching the cockatrice corpse was a fatal mistake.  --More--"),
 					     retr_status_color()));
-	  add_status_widget(widgets::label::create(_("You feel here a cockatrice corpse.  --More--"),
+	  add_status_widget(cw::label::create(_("You feel here a cockatrice corpse.  --More--"),
 					     retr_status_color()));
 	  break;
 	case 6:
-	  add_status_widget(widgets::label::create(_("Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --More--"),
+	  add_status_widget(cw::label::create(_("Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --More--"),
 					     retr_status_color()));
 	  break;
 	case 7:
@@ -553,11 +553,11 @@ void cmine::checkend()
 
 	      snprintf(buf, 512, _("Your wand of %s breaks apart and explodes!  --More--"));
 
-	      add_status_widget(widgets::label::create(buf,
+	      add_status_widget(cw::label::create(buf,
 						 retr_status_color()));
 	    }
 
-	  add_status_widget(widgets::label::create(_("You are jolted by a surge of electricity!  --More--"),
+	  add_status_widget(cw::label::create(_("You are jolted by a surge of electricity!  --More--"),
 					     retr_status_color()));
 	  break;
 	}
@@ -586,7 +586,7 @@ bool cmine::handle_key(const cwidget::config::key &k)
 {
   using cwidget::util::arg;
 
-  widgets::widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   int width,height;
   getmaxyx(height, width);
@@ -690,7 +690,7 @@ bool cmine::handle_key(const cwidget::config::key &k)
 	  encoding="UTF-8";
 	}
 
-      widgets::widget_ref w = dialogs::fileview(buf, NULL, NULL, NULL, NULL, encoding);
+      cw::widget_ref w = dialogs::fileview(buf, NULL, NULL, NULL, NULL, encoding);
       w->show_all();
 
       popup_widget(w);

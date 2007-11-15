@@ -30,13 +30,13 @@
 #include "pkg_sortpolicy.h"
 #include "ui.h"
 #include "view_changelog.h"
-#include "widgets::progress.h"
+#include "cw::progress.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/apt_undo_group.h>
 #include <generic/apt/config_signal.h>
 
-#include "vscreen/widgets::multiplex.h"
+#include "vscreen/cw::multiplex.h"
 
 #include <algorithm>
 #include <string>
@@ -473,12 +473,12 @@ pkg_grouppolicy *pkg_grouppolicy_ver_factory::instantiate(pkg_signal *sig,
 
 style pkg_ver_item::get_normal_style()
 {
-  return widgets::treeitem::get_normal_style() + ver_style(version, false);
+  return cw::treeitem::get_normal_style() + ver_style(version, false);
 }
 
 style pkg_ver_item::get_highlighted_style()
 {
-  return widgets::treeitem::get_normal_style() + ver_style(version, true);
+  return cw::treeitem::get_normal_style() + ver_style(version, true);
 }
 
 pkg_ver_item::pkg_ver_item(const pkgCache::VerIterator &_version, pkg_signal *_sig,
@@ -524,7 +524,7 @@ style pkg_ver_item::ver_style(pkgCache::VerIterator version,
     return cw::get_style(MAYBE_HIGHLIGHTED("PkgIsInstalled"));
 }
 
-void pkg_ver_item::paint(widgets::tree *win, int y, bool hierarchical,
+void pkg_ver_item::paint(cw::tree *win, int y, bool hierarchical,
 			 const cw::style const style &st)
 {
   int basex=hierarchical?2*get_depth():0;
@@ -650,7 +650,7 @@ void pkg_ver_item::forbid_version(undo_group *undo)
 
 void pkg_ver_item::show_information()
 {
-  widgets::widget_ref w=make_info_screen(version.ParentPkg(), version);
+  cw::widget_ref w=make_info_screen(version.ParentPkg(), version);
 
   char buf[512];
   snprintf(buf, 512, _("Information about %s"), version.ParentPkg().Name());
@@ -668,7 +668,7 @@ pkg_ver_screen::pkg_ver_screen(const pkgCache::PkgIterator &pkg)
   //set_header(_("Available versions of ")+string(pkg.Name()));
 }
 
-widgets::treeitem *pkg_ver_screen::setup_new_root(const pkgCache::PkgIterator &pkg,
+cw::treeitem *pkg_ver_screen::setup_new_root(const pkgCache::PkgIterator &pkg,
 					    const pkgCache::VerIterator &ver)
 {
   pkg_vertree *newtree=new pkg_vertree(pkg, get_sig(), true);
@@ -678,7 +678,7 @@ widgets::treeitem *pkg_ver_screen::setup_new_root(const pkgCache::PkgIterator &p
   return newtree;
 }
 
-bool pkg_ver_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
+bool pkg_ver_item::dispatch_key(const cwi::key &k, cw::tree *owner)
 {
   if(bindings->key_matches(k, "Dependencies"))
     {
@@ -688,7 +688,7 @@ bool pkg_ver_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
       snprintf(buf, 512, _("%s deps"), version.ParentPkg().Name());
       string tablabel(buf);
 
-      widgets::widget_ref w=make_dep_screen(version.ParentPkg(), version);
+      cw::widget_ref w=make_dep_screen(version.ParentPkg(), version);
       insert_main_widget(w, menulabel, "", tablabel);
       return true;
     }
@@ -700,7 +700,7 @@ bool pkg_ver_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
       snprintf(buf, 512, _("%s reverse deps"), version.ParentPkg().Name());
       string tablabel(buf);
 
-      widgets::widget_ref w=make_dep_screen(version.ParentPkg(), version, true);
+      cw::widget_ref w=make_dep_screen(version.ParentPkg(), version, true);
       insert_main_widget(w, menulabel, "", tablabel);
       return true;
     }
@@ -758,7 +758,7 @@ bool pkg_ver_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 
       cw::toplevel::resume();
 
-      widgets::progress_ref p = gen_progress_bar();
+      cw::progress_ref p = gen_progress_bar();
       apt_reload_cache(p.unsafe_get_ref(), true);
       p->destroy();
 

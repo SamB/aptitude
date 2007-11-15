@@ -67,8 +67,8 @@ static bool do_menu_callback(cwidget::widgets::widget &viewBare,
 			     menu_redirect *redirect,
 			     bool (menu_redirect::* action)())
 {
-  widgets::widget_ref view(&viewBare);
-  ref_ptr<widgets::container> owner = view->get_owner();
+  cw::widget_ref view(&viewBare);
+  ref_ptr<cw::container> owner = view->get_owner();
 
   while(owner.valid())
     {

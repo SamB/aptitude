@@ -58,7 +58,7 @@
 
 using namespace std;
 
-class pkg_handling_label:public widgets::label
+class pkg_handling_label:public cw::label
 {
   column_definition_list *columns;
 
@@ -111,7 +111,7 @@ public:
 
   void paint(const cw::style const style &st)
   {
-    widgets::widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
     if(apt_cache_file)
       {
@@ -132,7 +132,7 @@ public:
     else
       set_text("");
 
-    widgets::label::paint(st);
+    cw::label::paint(st);
   }
 };
 
@@ -161,7 +161,7 @@ static void do_set_column_format(string key, string the_default,
     l->set_columns(columns);
 }
 
-class pkg_why_widget:public widgets::text_layout
+class pkg_why_widget:public cw::text_layout
 {
 protected:
   pkg_why_widget()
@@ -209,7 +209,7 @@ public:
 };
 typedef ref_ptr<pkg_why_widget> pkg_why_widget_ref;
 
-class pkg_description_widget:public widgets::text_layout
+class pkg_description_widget:public cw::text_layout
 {
 protected:
   pkg_description_widget()
@@ -282,17 +282,17 @@ typedef ref_ptr<pkg_description_widget> pkg_description_widget_ref;
 //     of a few redundant pointers is acceptable.  In my opinion.
 //
 // This is still rather gross, and a better way would be nice.
-class info_area_multiplex:public widgets::multiplex
+class info_area_multiplex:public cw::multiplex
 {
-  widgets::hier_editor_ref editor;
+  cw::hier_editor_ref editor;
   pkg_description_widget_ref description;
-  widgets::table_ref description_table;
+  cw::table_ref description_table;
 
   pkg_why_widget_ref why;
-  widgets::table_ref why_table;
+  cw::table_ref why_table;
 
-  widgets::text_layout_ref reasons;
-  widgets::table_ref reasons_table;
+  cw::text_layout_ref reasons;
+  cw::table_ref reasons_table;
 
   pkgCache::PkgIterator lastPkg;
   pkgCache::VerIterator lastVer;
@@ -303,16 +303,16 @@ class info_area_multiplex:public widgets::multiplex
   /** If the view was autoswitched to breakage reasons, this is set
    *  to the widget we switched away from; otherwise, it is \b NULL.
    */
-  widgets::widget_ref autoswitch;
+  cw::widget_ref autoswitch;
 
 protected:
-  info_area_multiplex(const widgets::hier_editor_ref &_editor,
+  info_area_multiplex(const cw::hier_editor_ref &_editor,
 		      const pkg_description_widget_ref &_description,
-		      const widgets::table_ref &_description_table,
+		      const cw::table_ref &_description_table,
 		      const pkg_why_widget_ref &_why,
-		      const widgets::table_ref &_why_table,
-		      const widgets::text_layout_ref &_reasons,
-		      const widgets::table_ref &_reasons_table)
+		      const cw::table_ref &_why_table,
+		      const cw::text_layout_ref &_reasons,
+		      const cw::table_ref &_reasons_table)
     :widgets::multiplex(false),
      editor(_editor),
      description(_description), description_table(_description_table),
@@ -326,13 +326,13 @@ protected:
 
 public:
   static ref_ptr<info_area_multiplex>
-  create(const widgets::hier_editor_ref &editor,
+  create(const cw::hier_editor_ref &editor,
 	 const pkg_description_widget_ref &description,
-	 const widgets::table_ref &description_table,
+	 const cw::table_ref &description_table,
 	 const pkg_why_widget_ref &why,
-	 const widgets::table_ref &why_table,
-	 const widgets::text_layout_ref &reasons,
-	 const widgets::table_ref &reasons_table)
+	 const cw::table_ref &why_table,
+	 const cw::text_layout_ref &reasons,
+	 const cw::table_ref &reasons_table)
   {
     ref_ptr<info_area_multiplex>
       rval(new info_area_multiplex(editor, description, description_table,
@@ -343,9 +343,9 @@ public:
 
   void line_up()
   {
-    widgets::widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
-    widgets::widget_ref w=visible_widget();
+    cw::widget_ref w=visible_widget();
 
     if(w==description_table)
       description->line_up();
@@ -357,9 +357,9 @@ public:
 
   void line_down()
   {
-    widgets::widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
-    widgets::widget_ref w=visible_widget();
+    cw::widget_ref w=visible_widget();
 
     if(w==description_table)
       description->line_down();
@@ -372,7 +372,7 @@ public:
   void set_package(const pkgCache::PkgIterator &pkg,
 		   const pkgCache::VerIterator &ver)
   {
-    widgets::widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
     bool hasBreakage;
 
@@ -418,7 +418,7 @@ public:
   /** Cycles the multiplex, taking autoswitch behavior into account. */
   void cycle()
   {
-    widgets::widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
     if(autoswitch.valid() && autoswitch!=visible_widget())
       {
@@ -447,7 +447,7 @@ public:
    */
   void set_description(const std::wstring &s)
   {
-    widgets::widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
     if(s!=lastDesc)
       {
@@ -467,15 +467,15 @@ public:
 
 typedef ref_ptr<info_area_multiplex> info_area_multiplex_ref;
 
-widgets::widget_ref make_package_view(list<package_view_item> &format,
-				const widgets::widget_ref &mainwidget,
+cw::widget_ref make_package_view(list<package_view_item> &format,
+				const cw::widget_ref &mainwidget,
 				menu_redirect *menu_handler,
 				pkg_signal *sig, desc_signal *desc_sig,
 				bool show_reason_first)
 {
   bool found_mainwidget=false;
 
-  widgets::table_ref rval=widgets::table::create();
+  cw::table_ref rval=cw::table::create();
 
   eassert(mainwidget.valid());
 
@@ -512,37 +512,37 @@ widgets::widget_ref make_package_view(list<package_view_item> &format,
 	  break;
 	case PACKAGE_VIEW_DESCRIPTION:
 	  {
-	    widgets::hier_editor_ref e=widgets::hier_editor::create();
+	    cw::hier_editor_ref e=cw::hier_editor::create();
 	    pkg_description_widget_ref w=pkg_description_widget::create();
 	    pkg_why_widget_ref why = pkg_why_widget::create();
-	    widgets::text_layout_ref l=widgets::text_layout::create();
+	    cw::text_layout_ref l=cw::text_layout::create();
 
-	    widgets::table_ref wt=widgets::table::create();
-	    widgets::table_ref lt=widgets::table::create();
-	    widgets::table_ref why_table = widgets::table::create();
+	    cw::table_ref wt=cw::table::create();
+	    cw::table_ref lt=cw::table::create();
+	    cw::table_ref why_table = cw::table::create();
 	    info_area_multiplex_ref m=info_area_multiplex::create(e,
 								  w, wt,
 								  why, why_table,
 								  l, lt);
-	    widgets::scrollbar_ref ws=widgets::scrollbar::create(widgets::scrollbar::VERTICAL);
-	    widgets::scrollbar_ref ls=widgets::scrollbar::create(widgets::scrollbar::VERTICAL);
-	    widgets::scrollbar_ref why_scrollbar = widgets::scrollbar::create(widgets::scrollbar::VERTICAL);
+	    cw::scrollbar_ref ws=cw::scrollbar::create(cw::scrollbar::VERTICAL);
+	    cw::scrollbar_ref ls=cw::scrollbar::create(cw::scrollbar::VERTICAL);
+	    cw::scrollbar_ref why_scrollbar = cw::scrollbar::create(cw::scrollbar::VERTICAL);
 
-	    w->location_changed.connect(sigc::mem_fun(*ws.unsafe_get_ref(), &widgets::scrollbar::set_slider));
-	    l->location_changed.connect(sigc::mem_fun(*ls.unsafe_get_ref(), &widgets::scrollbar::set_slider));
-	    why->location_changed.connect(sigc::mem_fun(*why_scrollbar.unsafe_get_ref(), &widgets::scrollbar::set_slider));
+	    w->location_changed.connect(sigc::mem_fun(*ws.unsafe_get_ref(), &cw::scrollbar::set_slider));
+	    l->location_changed.connect(sigc::mem_fun(*ls.unsafe_get_ref(), &cw::scrollbar::set_slider));
+	    why->location_changed.connect(sigc::mem_fun(*why_scrollbar.unsafe_get_ref(), &cw::scrollbar::set_slider));
 
-	    wt->add_widget_opts(w, 0, 0, 1, 1, widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK, widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK);
-	    wt->add_widget_opts(ws, 0, 1, 1, 1, widgets::table::ALIGN_RIGHT, widgets::table::ALIGN_CENTER | widgets::table::FILL);
+	    wt->add_widget_opts(w, 0, 0, 1, 1, cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK, cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK);
+	    wt->add_widget_opts(ws, 0, 1, 1, 1, cw::table::ALIGN_RIGHT, cw::table::ALIGN_CENTER | cw::table::FILL);
 
-	    lt->add_widget_opts(l, 0, 0, 1, 1, widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK, widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK);
-	    lt->add_widget_opts(ls, 0, 1, 1, 1, widgets::table::ALIGN_RIGHT, widgets::table::EXPAND | widgets::table::ALIGN_CENTER | widgets::table::FILL);
+	    lt->add_widget_opts(l, 0, 0, 1, 1, cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK, cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK);
+	    lt->add_widget_opts(ls, 0, 1, 1, 1, cw::table::ALIGN_RIGHT, cw::table::EXPAND | cw::table::ALIGN_CENTER | cw::table::FILL);
 
-	    why_table->add_widget_opts(why, 0, 0, 1, 1, widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK, widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK);
-	    why_table->add_widget_opts(why_scrollbar, 0, 1, 1, 1, widgets::table::ALIGN_RIGHT, widgets::table::EXPAND | widgets::table::ALIGN_CENTER | widgets::table::FILL);
+	    why_table->add_widget_opts(why, 0, 0, 1, 1, cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK, cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK);
+	    why_table->add_widget_opts(why_scrollbar, 0, 1, 1, 1, cw::table::ALIGN_RIGHT, cw::table::EXPAND | cw::table::ALIGN_CENTER | cw::table::FILL);
 
 	    // HACK: speaks for itself
-	    widgets::tree_ref thetree=mainwidget.dyn_downcast<widgets::tree>();
+	    cw::tree_ref thetree=mainwidget.dyn_downcast<cw::tree>();
 
 	    i->widget=m;
 
@@ -573,14 +573,14 @@ widgets::widget_ref make_package_view(list<package_view_item> &format,
 				    sigc::mem_fun(*m.unsafe_get_ref(),
 						  &cwidget::widgets::widget::show));
 	    mainwidget->connect_key("EditHier", &cw::config::global_bindings,
-				    sigc::bind(sigc::mem_fun(*rval.unsafe_get_ref(), &widgets::table::focus_widget_bare),
+				    sigc::bind(sigc::mem_fun(*rval.unsafe_get_ref(), &cw::table::focus_widget_bare),
 					       m.weak_ref()));
 
-	    e->hidden_sig.connect(sigc::bind(sigc::mem_fun(*rval.unsafe_get_ref(), &widgets::table::focus_widget_bare),
+	    e->hidden_sig.connect(sigc::bind(sigc::mem_fun(*rval.unsafe_get_ref(), &cw::table::focus_widget_bare),
 					     mainwidget.weak_ref()));
 
 	    if(thetree.valid())
-	      e->commit_changes.connect(sigc::mem_fun(*thetree.unsafe_get_ref(), &widgets::tree::line_down));
+	      e->commit_changes.connect(sigc::mem_fun(*thetree.unsafe_get_ref(), &cw::tree::line_down));
 
 	    m->add_visible_widget(e, false);
 	    m->add_visible_widget(wt, true);
@@ -611,8 +611,8 @@ widgets::widget_ref make_package_view(list<package_view_item> &format,
 	  if(i->type == PACKAGE_VIEW_MAINWIDGET ||
 	     i->type == PACKAGE_VIEW_DESCRIPTION)
 	    {
-	      xopts|=widgets::table::IGNORE_SIZE_REQUEST;
-	      yopts|=widgets::table::IGNORE_SIZE_REQUEST;
+	      xopts|=cw::table::IGNORE_SIZE_REQUEST;
+	      yopts|=cw::table::IGNORE_SIZE_REQUEST;
 	    }
 
 	  rval->add_widget_opts(i->widget, i->row, i->col, i->h, i->w,
