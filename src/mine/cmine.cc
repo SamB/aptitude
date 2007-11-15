@@ -51,7 +51,7 @@
 using namespace std;
 namespace cw = cwidget;
 namespace dialogs = cwidget::dialogs;
-namespace cw
+namespace cwidget
 {
   using namespace widgets;
 }
