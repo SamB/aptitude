@@ -55,7 +55,7 @@ public:
     set_item(_item);
   }
 
-  bool dispatch_key(const cw::key &k, cw::tree *owner)
+  bool dispatch_key(const cw::config::key &k, cw::tree *owner)
   {
     if(cw::config::global_bindings.key_matches(k, "PushButton") ||
        cw::config::global_bindings.key_matches(k, "Confirm"))
@@ -319,7 +319,7 @@ void cw::hier_editor::save_hier(string file)
   fclose(f);
 }
 
-bool cw::hier_editor::handle_key(const cw::key &k)
+bool cw::hier_editor::handle_key(const cw::config::key &k)
 {
   if(cw::config::global_bindings.key_matches(k, "SaveHier"))
     {

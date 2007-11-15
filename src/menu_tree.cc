@@ -388,7 +388,7 @@ void menu_tree::reset_incsearch()
   pre_incsearch_selected=get_end();
 }
 
-bool menu_tree::handle_key(const cw::key &k)
+bool menu_tree::handle_key(const cw::config::key &k)
 {
   // ick -- but having our own bindings is also ugly. hm.
   if(pkg_tree::bindings->key_matches(k, "Search"))

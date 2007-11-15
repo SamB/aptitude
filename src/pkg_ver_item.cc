@@ -678,7 +678,7 @@ cw::treeitem *pkg_ver_screen::setup_new_root(const pkgCache::PkgIterator &pkg,
   return newtree;
 }
 
-bool pkg_ver_item::dispatch_key(const cw::key &k, cw::tree *owner)
+bool pkg_ver_item::dispatch_key(const cw::config::key &k, cw::tree *owner)
 {
   if(bindings->key_matches(k, "Dependencies"))
     {
