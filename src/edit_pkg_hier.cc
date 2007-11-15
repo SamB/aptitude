@@ -41,7 +41,7 @@ using namespace std;
 using namespace __gnu_cxx;
 
 // Stores a group (name) and a Y/N state
-class hier_editor::widgets::hier_item : public sigc::trackable, public cw::treeitem
+class hier_editor::hier_item : public sigc::trackable, public cw::treeitem
 {
   bool selected;
   pkg_hier::group *group;
@@ -152,7 +152,7 @@ public:
   const wchar_t *label() {return txt.c_str();}
 };
 
-hier_editor::widgets::hier_editor():item(NULL)
+hier_editor::hier_editor():item(NULL)
 {
   hier_reloaded.connect(sigc::mem_fun(*this, &hier_editor::handle_reload));
 }
