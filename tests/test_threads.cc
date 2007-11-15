@@ -20,7 +20,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include <generic/util/event_queue.h>
-#include <generic/util/threads.h>
+#include <cwidget/generic/util/threads.h>
 
 #include <iostream>
 
