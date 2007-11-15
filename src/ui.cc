@@ -2467,9 +2467,9 @@ protected:
   }
 public:
   static
-  ref_ptr<help_bar> create(const wstring &txt, const cw::style &st)
+  cw::util::ref_ptr<help_bar> create(const wstring &txt, const cw::style &st)
   {
-    ref_ptr<help_bar> rval(new help_bar(txt, st));
+    cw::util::ref_ptr<help_bar> rval(new help_bar(txt, st));
     rval->decref();
     return rval;
   }
@@ -2479,7 +2479,7 @@ public:
     set_visible(aptcfg->FindB(PACKAGE "::UI::HelpBar", true));
   }
 };
-typedef ref_ptr<help_bar> help_bar_ref;
+typedef cw::util::ref_ptr<help_bar> help_bar_ref;
 
 void ui_init()
 {
@@ -3008,16 +3008,16 @@ public:
     return true;
   }
 
-  static ref_ptr<self_destructing_layout> create()
+  static cw::util::ref_ptr<self_destructing_layout> create()
   {
-    ref_ptr<self_destructing_layout> rval(new self_destructing_layout());
+    cw::util::ref_ptr<self_destructing_layout> rval(new self_destructing_layout());
     rval->decref();
     return rval;
   }
 
-  static ref_ptr<self_destructing_layout> create(fragment *f)
+  static cw::util::ref_ptr<self_destructing_layout> create(fragment *f)
   {
-    ref_ptr<self_destructing_layout> rval(new self_destructing_layout(f));
+    cw::util::ref_ptr<self_destructing_layout> rval(new self_destructing_layout(f));
     rval->decref();
     return rval;
   }

@@ -44,16 +44,16 @@ protected:
 			      const pkgCache::VerIterator &ver);
   pkg_info_screen(const pkgCache::PkgIterator &pkg, const pkgCache::VerIterator &ver);
 public:
-  static ref_ptr<pkg_info_screen>
+  static cwidget::util::ref_ptr<pkg_info_screen>
   create(const pkgCache::PkgIterator &pkg,
 	 const pkgCache::VerIterator &ver)
   {
-    ref_ptr<pkg_info_screen> rval(new pkg_info_screen(pkg, ver));
+    cwidget::util::ref_ptr<pkg_info_screen> rval(new pkg_info_screen(pkg, ver));
     rval->decref();
     return rval;
   }
 };
 
-typedef ref_ptr<pkg_info_screen> pkg_info_screen_ref;
+typedef cwidget::util::ref_ptr<pkg_info_screen> pkg_info_screen_ref;
 
 #endif

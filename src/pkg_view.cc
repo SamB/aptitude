@@ -79,10 +79,10 @@ protected:
   }
 
 public:
-  static ref_ptr<pkg_handling_label>
+  static cw::util::ref_ptr<pkg_handling_label>
   create(column_definition_list *columns)
   {
-    ref_ptr<pkg_handling_label> rval(new pkg_handling_label(columns));
+    cw::util::ref_ptr<pkg_handling_label> rval(new pkg_handling_label(columns));
     rval->decref();
     return rval;
   }
@@ -136,7 +136,7 @@ public:
   }
 };
 
-typedef ref_ptr<pkg_handling_label> pkg_handling_label_ref;
+typedef cw::util::ref_ptr<pkg_handling_label> pkg_handling_label_ref;
 
 static void do_set_column_format(string key, string the_default,
 				 pkg_handling_label &lBare)
@@ -168,9 +168,9 @@ protected:
   {
   }
 public:
-  static ref_ptr<pkg_why_widget> create()
+  static cw::util::ref_ptr<pkg_why_widget> create()
   {
-    ref_ptr<pkg_why_widget> rval(new pkg_why_widget);
+    cw::util::ref_ptr<pkg_why_widget> rval(new pkg_why_widget);
     rval->decref();
     return rval;
   }
@@ -207,7 +207,7 @@ public:
       delete *it;
   }
 };
-typedef ref_ptr<pkg_why_widget> pkg_why_widget_ref;
+typedef cw::util::ref_ptr<pkg_why_widget> pkg_why_widget_ref;
 
 class pkg_description_widget:public cw::text_layout
 {
@@ -216,9 +216,9 @@ protected:
   {
   }
 public:
-  static ref_ptr<pkg_description_widget> create()
+  static cw::util::ref_ptr<pkg_description_widget> create()
   {
-    ref_ptr<pkg_description_widget> rval(new pkg_description_widget);
+    cw::util::ref_ptr<pkg_description_widget> rval(new pkg_description_widget);
     rval->decref();
     return rval;
   }
@@ -270,7 +270,7 @@ public:
   }
 };
 
-typedef ref_ptr<pkg_description_widget> pkg_description_widget_ref;
+typedef cw::util::ref_ptr<pkg_description_widget> pkg_description_widget_ref;
 
 // In order to properly dispatch line-up/down events to the sub-widgets,
 // we need a meta-widget that knows about them.
@@ -325,7 +325,7 @@ protected:
   }
 
 public:
-  static ref_ptr<info_area_multiplex>
+  static cw::util::ref_ptr<info_area_multiplex>
   create(const cw::hier_editor_ref &editor,
 	 const pkg_description_widget_ref &description,
 	 const cw::table_ref &description_table,
@@ -334,7 +334,7 @@ public:
 	 const cw::text_layout_ref &reasons,
 	 const cw::table_ref &reasons_table)
   {
-    ref_ptr<info_area_multiplex>
+    cw::util::ref_ptr<info_area_multiplex>
       rval(new info_area_multiplex(editor, description, description_table,
 				   why, why_table, reasons, reasons_table));
     rval->decref();
@@ -465,7 +465,7 @@ public:
   }
 };
 
-typedef ref_ptr<info_area_multiplex> info_area_multiplex_ref;
+typedef cw::util::ref_ptr<info_area_multiplex> info_area_multiplex_ref;
 
 cw::widget_ref make_package_view(list<package_view_item> &format,
 				const cw::widget_ref &mainwidget,

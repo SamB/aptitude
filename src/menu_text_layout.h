@@ -55,16 +55,16 @@ protected:
   {
   }
 public:
-  static ref_ptr<menu_text_layout> create()
+  static cwidget::util::ref_ptr<menu_text_layout> create()
   {
-    ref_ptr<menu_text_layout> rval = new menu_text_layout;
+    cwidget::util::ref_ptr<menu_text_layout> rval = new menu_text_layout;
     rval->decref();
     return rval;
   }
 
-  static ref_ptr<menu_text_layout> create(fragment *f)
+  static cwidget::util::ref_ptr<menu_text_layout> create(fragment *f)
   {
-    ref_ptr<menu_text_layout> rval = new menu_text_layout(f);
+    cwidget::util::ref_ptr<menu_text_layout> rval = new menu_text_layout(f);
     rval->decref();
     return rval;
   }
@@ -80,6 +80,6 @@ public:
   bool find_repeat_search_back_enabled();
   bool find_repeat_search_back();
 };
-typedef ref_ptr<menu_text_layout> menu_text_layout_ref;
+typedef cwidget::util::ref_ptr<menu_text_layout> menu_text_layout_ref;
 
 #endif

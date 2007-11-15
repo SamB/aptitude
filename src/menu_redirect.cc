@@ -23,7 +23,7 @@
 
 #include <sigc++/bind.h>
 
-#include <vscreen/ref_ptr.h>
+#include <vscreen/cw::util::ref_ptr.h>
 #include <cwidget/widgets/container.h>
 
 bool menu_redirect::undo_undo_enabled() { return false; }
@@ -68,7 +68,7 @@ static bool do_menu_callback(cwidget::widgets::widget &viewBare,
 			     bool (menu_redirect::* action)())
 {
   cw::widget_ref view(&viewBare);
-  ref_ptr<cw::container> owner = view->get_owner();
+  cw::util::ref_ptr<cw::container> owner = view->get_owner();
 
   while(owner.valid())
     {
@@ -83,7 +83,7 @@ static bool do_menu_callback(cwidget::widgets::widget &viewBare,
 }
 
 void create_menu_bindings(menu_redirect *menu_handler,
-			  const ref_ptr<cwidget::widgets::widget> &valve)
+			  const cw::util::ref_ptr<cwidget::widgets::widget> &valve)
 {
   undo_undo_enabled.connect(sigc::bind(ptr_fun(do_menu_callback),
 				       valve.weak_ref(),

@@ -311,9 +311,9 @@ protected:
   {
   }
 public:
-  static ref_ptr<solution_undo_tree> create()
+  static cw::util::ref_ptr<solution_undo_tree> create()
   {
-    ref_ptr<solution_undo_tree> rval(new solution_undo_tree);
+    cw::util::ref_ptr<solution_undo_tree> rval(new solution_undo_tree);
     rval->decref();
     return rval;
   }
@@ -328,7 +328,7 @@ public:
     return resman != NULL && resman->undo();
   }
 };
-typedef ref_ptr<solution_undo_tree> solution_undo_tree_ref;
+typedef cw::util::ref_ptr<solution_undo_tree> solution_undo_tree_ref;
 
 class solution_examiner : public cw::multiplex
 {
@@ -439,10 +439,10 @@ public:
     create_menu_bindings(solution_tree.unsafe_get_ref(), solution_tree);
   }
 
-  static ref_ptr<solution_examiner> create(const sigc::slot1<void, fragment *> &set_short_description,
+  static cw::util::ref_ptr<solution_examiner> create(const sigc::slot1<void, fragment *> &set_short_description,
 					   const sigc::slot1<void, aptitude_resolver_dep> &set_active_dep)
   {
-    ref_ptr<solution_examiner>
+    cw::util::ref_ptr<solution_examiner>
       rval(new solution_examiner(set_short_description, set_active_dep));
     rval->decref();
     return rval;
@@ -458,7 +458,7 @@ public:
 
   void update()
   {
-    ref_ptr<solution_examiner> tmpref(this);
+    cw::util::ref_ptr<solution_examiner> tmpref(this);
 
     if(!apt_cache_file)
       {
@@ -537,7 +537,7 @@ public:
   }
 };
 
-typedef ref_ptr<solution_examiner> solution_examiner_ref;
+typedef cw::util::ref_ptr<solution_examiner> solution_examiner_ref;
 
 static
 void update_dep_display(aptitude_resolver_dep d, cw::tree *tBare)

@@ -27,7 +27,7 @@
 
 #include <apt-pkg/acquire.h>
 
-#include <vscreen/ref_ptr.h>
+#include <vscreen/cwidget::util::ref_ptr.h>
 
 #include <sigc++/trackable.h>
 
@@ -81,7 +81,7 @@ class ui_download_manager : public sigc::trackable
   /** Used to keep the download status widget alive until the download
    *  completes.
    */
-  ref_ptr<cwidget::widgets::widget> download_status;
+  cwidget::util::ref_ptr<cwidget::widgets::widget> download_status;
 
   void done(download_thread *, pkgAcquire::RunResult res);
 public:

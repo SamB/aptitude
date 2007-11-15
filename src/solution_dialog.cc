@@ -75,9 +75,9 @@ protected:
   }
 
 public:
-  static ref_ptr<solution_dialog> create()
+  static cw::util::ref_ptr<solution_dialog> create()
   {
-    ref_ptr<solution_dialog> rval(new solution_dialog);
+    cw::util::ref_ptr<solution_dialog> rval(new solution_dialog);
     rval->decref();
     return rval;
   }
@@ -137,7 +137,7 @@ public:
   }
 };
 
-typedef ref_ptr<solution_dialog> solution_dialog_ref;
+typedef cw::util::ref_ptr<solution_dialog> solution_dialog_ref;
 
 static void do_apply(cwidget::widgets::widget &wBare)
 {

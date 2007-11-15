@@ -105,11 +105,11 @@ protected:
   }
 
 public:
-  static ref_ptr<pkg_changelog_screen>
+  static cw::util::ref_ptr<pkg_changelog_screen>
   create(const temp::name &filename,
 	 int x = 0, int y = 0, int width = 0, int height = 0)
   {
-    ref_ptr<pkg_changelog_screen>
+    cw::util::ref_ptr<pkg_changelog_screen>
       rval(new pkg_changelog_screen(filename, x, y, width, height));
     rval->decref();
     return rval;
@@ -148,7 +148,7 @@ public:
     return true;
   }
 };
-typedef ref_ptr<pkg_changelog_screen> pkg_changelog_screen_ref;
+typedef cw::util::ref_ptr<pkg_changelog_screen> pkg_changelog_screen_ref;
 
 
 static void do_view_changelog(temp::name n,

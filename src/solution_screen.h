@@ -20,14 +20,14 @@
 #ifndef SOLUTION_SCREEN_H
 #define SOLUTION_SCREEN_H
 
-#include <vscreen/ref_ptr.h>
+#include <vscreen/cwidget::util::ref_ptr.h>
 
 class aptitude_universe;
 template<class PackageUniverse> class generic_solution;
 class cwidget::widgets::widget;
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
-typedef ref_ptr<cwidget::widgets::widget> cwidget::widgets::widget_ref;
+typedef cwidget::util::ref_ptr<cwidget::widgets::widget> cwidget::widgets::widget_ref;
 
 /** Generate a new widget suitable for inclusion at the top-level
  *  which describes the given solution.

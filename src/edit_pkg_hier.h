@@ -59,9 +59,9 @@ protected:
 
   hier_editor();
 public:
-  static ref_ptr<hier_editor> create()
+  static cwidget::util::ref_ptr<hier_editor> create()
   {
-    ref_ptr<hier_editor> rval(new hier_editor);
+    cwidget::util::ref_ptr<hier_editor> rval(new hier_editor);
     rval->decref();
     return rval;
   }
@@ -78,6 +78,6 @@ public:
   sigc::signal0<void> commit_changes;
 };
 
-typedef ref_ptr<hier_editor> hier_editor_ref;
+typedef cwidget::util::ref_ptr<hier_editor> hier_editor_ref;
 
 #endif
