@@ -51,7 +51,10 @@
 using namespace std;
 namespace cw = cwidget;
 namespace dialogs = cwidget::dialogs;
-namespace widgets = cwidget::widgets;
+namespace cw
+{
+  using namespace widgets;
+}
 
 cwidget::config::keybindings *cmine::bindings;
 

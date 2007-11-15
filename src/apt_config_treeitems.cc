@@ -44,7 +44,10 @@
 namespace cw = cwidget;
 using cw::fragment;
 using cw::util::transcode;
-namespace widgets = cw::widgets;
+namespace cw
+{
+  using namespace widgets;
+}
 
 namespace aptitude
 {
