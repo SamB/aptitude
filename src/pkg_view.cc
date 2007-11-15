@@ -568,10 +568,10 @@ cw::widget_ref make_package_view(list<package_view_item> &format,
 						  &info_area_multiplex::cycle));
 	    mainwidget->connect_key("EditHier", &cw::config::global_bindings,
 				    sigc::mem_fun(*e.unsafe_get_ref(),
-						  &cwidget::cw::widget::show));
+						  &cw::widget::show));
 	    mainwidget->connect_key("EditHier", &cw::config::global_bindings,
 				    sigc::mem_fun(*m.unsafe_get_ref(),
-						  &cwidget::cw::widget::show));
+						  &cw::widget::show));
 	    mainwidget->connect_key("EditHier", &cw::config::global_bindings,
 				    sigc::bind(sigc::mem_fun(*rval.unsafe_get_ref(), &cw::table::focus_widget_bare),
 					       m.weak_ref()));
@@ -624,7 +624,7 @@ cw::widget_ref make_package_view(list<package_view_item> &format,
 	    rval->connect_key(i->popupdownkey,
 			      &cw::config::global_bindings,
 			      sigc::mem_fun(*i->widget.unsafe_get_ref(),
-					    &cwidget::cw::widget::toggle_visible));
+					    &cw::widget::toggle_visible));
 
 	  if(i->visible)
 	    i->widget->show();
@@ -643,8 +643,8 @@ cw::widget_ref make_package_view(list<package_view_item> &format,
 	  if(!strcasecmp(j->name.c_str(), i->popupdownlinked.c_str()))
 	    {
 	      // Having to make two connections is annoying.
-	      j->widget->shown_sig.connect(sigc::mem_fun(*i->widget.unsafe_get_ref(), &cwidget::cw::widget::show));
-	      j->widget->hidden_sig.connect(sigc::mem_fun(*i->widget.unsafe_get_ref(), &cwidget::cw::widget::hide));
+	      j->widget->shown_sig.connect(sigc::mem_fun(*i->widget.unsafe_get_ref(), &cw::widget::show));
+	      j->widget->hidden_sig.connect(sigc::mem_fun(*i->widget.unsafe_get_ref(), &cw::widget::hide));
 	      break;
 	    }
 	}

@@ -456,7 +456,7 @@ bool pkg_item::dispatch_key(const cw::config::key &k, cw::tree *owner)
       add_main_widget(e, _("Hierarchy editor"), "", _("Hierarchy Editor"));
 
       e->connect_key("Quit", &cw::config::global_bindings,
-		     sigc::mem_fun(*e.unsafe_get_ref(), &cwidget::cw::widget::destroy));
+		     sigc::mem_fun(*e.unsafe_get_ref(), &cw::widget::destroy));
     }
   else
     return pkg_tree_node::dispatch_key(k, owner);

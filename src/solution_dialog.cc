@@ -139,7 +139,7 @@ public:
 
 typedef cw::util::ref_ptr<solution_dialog> solution_dialog_ref;
 
-static void do_apply(cwidget::cw::widget &wBare)
+static void do_apply(cw::widget &wBare)
 {
   cw::widget_ref w(&wBare);
 
@@ -184,7 +184,7 @@ cw::widget_ref make_solution_dialog()
   bapply->pressed.connect(sigc::bind(sigc::ptr_fun(do_apply),
 				     rval.weak_ref()));
   bclose->pressed.connect(sigc::mem_fun(rval.unsafe_get_ref(),
-					&cwidget::cw::widget::destroy));
+					&cw::widget::destroy));
 
   rval->connect_key("ApplySolution", &cw::config::global_bindings,
 		    sigc::bind(sigc::ptr_fun(do_apply),

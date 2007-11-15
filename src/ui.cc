@@ -359,7 +359,7 @@ static bool do_read_only_permission()
 
 	  cw::center_ref c = cw::center::create(frame);
 
-	  ok->pressed.connect(sigc::mem_fun(c.unsafe_get_ref(), &cwidget::cw::widget::destroy));
+	  ok->pressed.connect(sigc::mem_fun(c.unsafe_get_ref(), &cw::widget::destroy));
 	  c->destroyed.connect(sigc::bind(sigc::ptr_fun(&read_only_permissions_table_destroyed), sigc::ref(*w)));
 
 	  popup_widget(c);
@@ -1542,7 +1542,7 @@ static void lists_autoclean_msg(download_update_manager *m)
 {
   cw::widget_ref msg = cw::center::create(cw::frame::create(cw::label::create(_("Deleting obsolete downloaded files"))));
   m->post_autoclean_hook.connect(sigc::mem_fun(msg.unsafe_get_ref(),
-					       &cwidget::cw::widget::destroy));
+					       &cw::widget::destroy));
 
   popup_widget(msg);
   cw::toplevel::tryupdate();
@@ -2691,7 +2691,7 @@ static void setup_main_widget(const cw::widget_ref &w, const std::wstring &menur
   // FIXME: if w is removed from the multiplexer but not destroyed, this may
   //       break.  Fix for now: Don't Do That Then!
   w->destroyed.connect(sigc::bind(sigc::mem_fun(views_menu.unsafe_get_ref(), &cw::menu::remove_item), menuentry));
-  menuentry->selected.connect(sigc::mem_fun(w.unsafe_get_ref(), &cwidget::cw::widget::show));
+  menuentry->selected.connect(sigc::mem_fun(w.unsafe_get_ref(), &cw::widget::show));
 
   views_menu->append_item(menuentry);
 }
@@ -2869,13 +2869,13 @@ void prompt_string(const std::wstring &prompt,
 
       e->entered.connect(sigc::bind(sigc::ptr_fun(do_prompt_string),
 				    e.weak_ref(),
-				    sigc::mem_fun(e.unsafe_get_ref(), &cwidget::cw::widget::destroy)));
+				    sigc::mem_fun(e.unsafe_get_ref(), &cw::widget::destroy)));
       if(changed_slot)
 	e->text_changed.connect(*changed_slot);
 
       e->connect_key("Cancel",
 		     &cw::config::global_bindings,
-		     sigc::mem_fun(e.unsafe_get_ref(), &cwidget::cw::widget::destroy));
+		     sigc::mem_fun(e.unsafe_get_ref(), &cw::widget::destroy));
 
       if(cancel_slot)
 	e->connect_key("Cancel",

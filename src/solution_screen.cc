@@ -551,7 +551,7 @@ void update_dep_display(aptitude_resolver_dep d, cw::tree *tBare)
 }
 
 static
-void maybe_remove_examiner(cwidget::cw::widget &wBare)
+void maybe_remove_examiner(cw::widget &wBare)
 {
   cw::widget_ref w(&wBare);
 
@@ -579,7 +579,7 @@ cw::widget_ref make_solution_screen()
 
   info_tree->connect_key("ShowHideDescription", &cw::config::global_bindings,
 			 sigc::mem_fun(info_tree.unsafe_get_ref(),
-				       &cwidget::cw::widget::toggle_visible));
+				       &cw::widget::toggle_visible));
 
   l->set_bg_style(cw::get_style("Status"));
 

@@ -315,7 +315,7 @@ void cmine::do_custom_game()
 				       heightedit.weak_ref(),
 				       widthedit.weak_ref(),
 				       minesedit.weak_ref()));
-  cancelbutton->pressed.connect(sigc::mem_fun(*center.unsafe_get_ref(), &cwidget::cw::widget::destroy));
+  cancelbutton->pressed.connect(sigc::mem_fun(*center.unsafe_get_ref(), &cw::widget::destroy));
 
   table->connect_key("Cancel", &cwidget::config::global_bindings, cancelbutton->pressed.make_slot());
 
@@ -415,7 +415,7 @@ void cmine::do_new_game()
 }
 
 void cmine::do_continue_new_game(bool start,
-				 cwidget::cw::widget &w_bare,
+				 cw::widget &w_bare,
 				 cw::radiogroup *grp)
 {
   cw::widget_ref tmpref(this);
