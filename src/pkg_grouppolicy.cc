@@ -158,52 +158,52 @@ void pkg_grouppolicy_section::init_section_descriptions()
   if(already_done)
     return;
 
-  section_descriptions["Tasks"]=cw::util::transcode(_("Packages which set up your computer to perform a particular task\n Packages in the 'Tasks' section contain no files; they merely depend upon other packages. These packages provide an easy way to select a predefined set of packages for a specialized task."));
+  section_descriptions["Tasks"]=W_("Packages which set up your computer to perform a particular task\n Packages in the 'Tasks' section contain no files; they merely depend upon other packages. These packages provide an easy way to select a predefined set of packages for a specialized task.");
 
-  section_descriptions["Unknown"]=cw::util::transcode(_("Packages with no declared section\n No section is given for these packages. Perhaps there is an error in the Packages file?"));
+  section_descriptions["Unknown"]=W_("Packages with no declared section\n No section is given for these packages. Perhaps there is an error in the Packages file?");
 
-  section_descriptions["admin"]=cw::util::transcode(_("Administrative utilities (install software, manage users, etc)\n Packages in the 'admin' section allow you to perform administrative tasks such as installing software, managing users, configuring and monitoring your system, examining network traffic, and so on."));
+  section_descriptions["admin"]=W_("Administrative utilities (install software, manage users, etc)\n Packages in the 'admin' section allow you to perform administrative tasks such as installing software, managing users, configuring and monitoring your system, examining network traffic, and so on.");
 
-  section_descriptions["alien"]=cw::util::transcode(_("Packages converted from foreign formats (rpm, tgz, etc)\n Packages in the 'alien' section were created by the 'alien' program from a non-Debian package format such as RPM"));
-  section_descriptions["base"]=cw::util::transcode(_("The Debian base system\n Packages in the 'base' section are part of the initial system installation."));
-  section_descriptions["comm"]=cw::util::transcode(_("Programs for faxmodems and other communication devices\n Packages in the 'comm' section are used to control modems and other hardware communications devices. This includes software to control faxmodems (for instance, PPP for dial-up internet connections and programs originally written for that purpose, such as zmodem/kermit), as well as software to control cellular phones, interface with FidoNet, and run a BBS."));
-  section_descriptions["devel"]=cw::util::transcode(_("Utilities and programs for software development\n Packages in the 'devel' section are used to write new software and work on existing software. Non-programmers who do not compile their own software probably do not need much software from this section.\n .\n It includes compilers, debugging tools, programmer's editors, source processing tools, and other things related to software development."));
-  section_descriptions["doc"]=cw::util::transcode(_("Documentation and specialized programs for viewing documentation\n Packages in the 'doc' section document parts of the Debian system, or are viewers for documentation formats."));
-  section_descriptions["editors"]=cw::util::transcode(_("Text editors and word processors\n Packages in the 'editors' section allow you to edit plain ASCII text. These are not necessarily word processors, although some word processors may be found in this section."));
-  section_descriptions["electronics"]=cw::util::transcode(_("Programs for working with circuits and electronics\n Packages in the 'electronics' section include circuit design tools, simulators and assemblers for microcontrollers, and other related software."));
-  section_descriptions["embedded"]=cw::util::transcode(_("Programs for embedded systems\n Packages in the 'embedded' section are meant to run on embedded devices. Embedded devices are specialized hardware devices with much less power than a typical desktop system: for instance, a PDA, a cell phone, or a Tivo."));
-  section_descriptions["gnome"]=cw::util::transcode(_("The GNOME Desktop System\n GNOME is a collection of software which provides an easy-to-use desktop environment for Linux.  Packages in the 'gnome' section are part of the GNOME environment or closely integrated into it."));
-  section_descriptions["games"]=cw::util::transcode(_("Games, toys, and fun programs\n Packages in the 'games' section are meant primarily for entertainment."));
-  section_descriptions["graphics"]=cw::util::transcode(_("Utilities to create, view, and edit graphics files\n Packages in the 'graphics' section include viewers for image files, image processing and manipulation software, software to interact with graphics hardware (such as video cards, scanners, and digital cameras), and programming tools for handling graphics."));
-  section_descriptions["hamradio"]=cw::util::transcode(_("Software for ham radio operators\n Packages in the 'hamradio' section are meant primarily for ham radio operators."));
-  section_descriptions["interpreters"]=cw::util::transcode(_("Interpreters for interpreted languages\n Packages in the 'interpreters' section include interpreters for languages like Python, Perl, and Ruby, and libraries for these same languages."));
-  section_descriptions["kde"]=cw::util::transcode(_("The KDE Desktop System\n KDE is a collection of software which provides an easy-to-use desktop environment for Linux.  Packages in the 'kde' section are part of the KDE environment or closely integrated into it."));
-  section_descriptions["libdevel"]=cw::util::transcode(_("Development files for libraries\n Packages in the 'libdevel' section contain files required for building programs that use libraries in the 'libs' section.  You don't need packages from this section unless you want to compile software yourself."));
-  section_descriptions["libs"]=cw::util::transcode(_("Collections of software routines\n Packages in the 'libs' section provide necessary functionality for other software on the computer. With very few exceptions, you should not need to explicitly install a package from this section; the package system will install them as required to fulfill dependencies."));
-  section_descriptions["perl"]=cw::util::transcode(_("Perl interpreter and libraries\n Packages in the 'perl' section provide the Perl programming language and many third-party libraries for it. Unless you are a Perl programmer, you don't need to install packages from this section explicitly; the package system will install them if they are required."));
-  section_descriptions["python"]=cw::util::transcode(_("Python interpreter and libraries\n Packages in the 'python' section provide the Python programming language and many third-party libraries for it. Unless you are a Python programmer, you don't need to install packages from this section explicitly; the package system will install them if they are required."));
-  section_descriptions["mail"]=cw::util::transcode(_("Programs to write, send, and route email messages\n Packages in the 'mail' section include mail readers, mail transport daemons, mailing list software, and spam filters, as well as various other software related to electronic mail."));
-  section_descriptions["math"]=cw::util::transcode(_("Numeric analysis and other mathematics-related software\n Packages in the 'math' section include calculators, languages for mathematical computation (similar to Mathematica), symbolic algebra packages, and programs to visualize mathematical objects."));
-  section_descriptions["misc"]=cw::util::transcode(_("Miscellaneous software\n Packages in the 'misc' section have too unusual a function to be classified."));
-  section_descriptions["net"]=cw::util::transcode(_("Programs to connect to and provide various services\n Packages in the 'net' section include clients and servers for many protocols, tools to manipulate and debug low-level network protocols, IM systems, and other network-related software."));
-  section_descriptions["news"]=cw::util::transcode(_("Usenet clients and servers\n Packages in the 'news' section are related to the Usenet distributed news system.  They include news readers and news servers."));
-  section_descriptions["oldlibs"]=cw::util::transcode(_("Obsolete libraries\n Packages in the 'oldlibs' section are obsolete and should not be used by new software.  They are provided for compatibility reasons, or because software distributed by Debian still requires them.\n .\n With very few exceptions, you should not need to explicitly install a package from this section; the package system will install them as required to fulfill dependencies."));
-  section_descriptions["otherosfs"]=cw::util::transcode(_("Emulators and software to read foreign filesystems\n Packages in the 'otherosfs' section emulate hardware and operating systems and provide tools for transferring data between different operating systems and hardware platforms. (for instance, utilities to read DOS floppies, and utilities to communicate with Palm Pilots)\n .\n It is worth noting that CD burning software is included in THIS section."));
-  section_descriptions["science"]=cw::util::transcode(_("Software for scientific work\n Packages in the 'science' section include tools for astronomy, biology, and chemistry, as well as other science-related software."));
-  section_descriptions["shells"]=cw::util::transcode(_("Command shells and alternative console environments\n Packages in the 'shells' section include programs providing a command-line interface."));
-  section_descriptions["sound"]=cw::util::transcode(_("Utilities to play and record sound\n Packages in the 'sound' section include sound players, recorders, and encoders for many formats, mixers and volume controls, MIDI sequencers and programs to generate musical notation, drivers for sound hardware, and sound processing software."));
-  section_descriptions["tex"]=cw::util::transcode(_("The TeX typesetting system\n Packages in the 'tex' section are related to TeX, a system for producing high-quality typeset output.  They include TeX itself, TeX packages, editors designed for TeX, utilities to convert TeX and TeX output files to various formats, TeX fonts, and other software related to TeX."));
-  section_descriptions["text"]=cw::util::transcode(_("Text processing utilities\n Packages in the 'text' section include text filters and processors, spelling checkers, dictionary programs, utilities to convert between character encodings and text file formats (eg, Unix and DOS), text formatters and pretty-printers, and other software which operates on plain text."));
-  section_descriptions["utils"]=cw::util::transcode(_("Various system utilities\n Packages in the 'utils' section are utilities whose purpose is too unique to be classified."));
-  section_descriptions["web"]=cw::util::transcode(_("Web browsers, servers, proxies, and other tools\n Packages in the 'web' section include Web browsers, Web servers and proxies, software to write CGI scripts or Web-based programs, pre-written Web-based programs, and other software related to the World Wide Web."));
-  section_descriptions["x11"]=cw::util::transcode(_("The X window system and related software\n Packages in the 'x11' section include the core packages for the X window system, window managers, utility programs for X, and miscellaneous programs with an X GUI which were placed here because they didn't fit anywhere else."));
+  section_descriptions["alien"]=W_("Packages converted from foreign formats (rpm, tgz, etc)\n Packages in the 'alien' section were created by the 'alien' program from a non-Debian package format such as RPM");
+  section_descriptions["base"]=W_("The Debian base system\n Packages in the 'base' section are part of the initial system installation.");
+  section_descriptions["comm"]=W_("Programs for faxmodems and other communication devices\n Packages in the 'comm' section are used to control modems and other hardware communications devices. This includes software to control faxmodems (for instance, PPP for dial-up internet connections and programs originally written for that purpose, such as zmodem/kermit), as well as software to control cellular phones, interface with FidoNet, and run a BBS.");
+  section_descriptions["devel"]=W_("Utilities and programs for software development\n Packages in the 'devel' section are used to write new software and work on existing software. Non-programmers who do not compile their own software probably do not need much software from this section.\n .\n It includes compilers, debugging tools, programmer's editors, source processing tools, and other things related to software development.");
+  section_descriptions["doc"]=W_("Documentation and specialized programs for viewing documentation\n Packages in the 'doc' section document parts of the Debian system, or are viewers for documentation formats.");
+  section_descriptions["editors"]=W_("Text editors and word processors\n Packages in the 'editors' section allow you to edit plain ASCII text. These are not necessarily word processors, although some word processors may be found in this section.");
+  section_descriptions["electronics"]=W_("Programs for working with circuits and electronics\n Packages in the 'electronics' section include circuit design tools, simulators and assemblers for microcontrollers, and other related software.");
+  section_descriptions["embedded"]=W_("Programs for embedded systems\n Packages in the 'embedded' section are meant to run on embedded devices. Embedded devices are specialized hardware devices with much less power than a typical desktop system: for instance, a PDA, a cell phone, or a Tivo.");
+  section_descriptions["gnome"]=W_("The GNOME Desktop System\n GNOME is a collection of software which provides an easy-to-use desktop environment for Linux.  Packages in the 'gnome' section are part of the GNOME environment or closely integrated into it.");
+  section_descriptions["games"]=W_("Games, toys, and fun programs\n Packages in the 'games' section are meant primarily for entertainment.");
+  section_descriptions["graphics"]=W_("Utilities to create, view, and edit graphics files\n Packages in the 'graphics' section include viewers for image files, image processing and manipulation software, software to interact with graphics hardware (such as video cards, scanners, and digital cameras), and programming tools for handling graphics.");
+  section_descriptions["hamradio"]=W_("Software for ham radio operators\n Packages in the 'hamradio' section are meant primarily for ham radio operators.");
+  section_descriptions["interpreters"]=W_("Interpreters for interpreted languages\n Packages in the 'interpreters' section include interpreters for languages like Python, Perl, and Ruby, and libraries for these same languages.");
+  section_descriptions["kde"]=W_("The KDE Desktop System\n KDE is a collection of software which provides an easy-to-use desktop environment for Linux.  Packages in the 'kde' section are part of the KDE environment or closely integrated into it.");
+  section_descriptions["libdevel"]=W_("Development files for libraries\n Packages in the 'libdevel' section contain files required for building programs that use libraries in the 'libs' section.  You don't need packages from this section unless you want to compile software yourself.");
+  section_descriptions["libs"]=W_("Collections of software routines\n Packages in the 'libs' section provide necessary functionality for other software on the computer. With very few exceptions, you should not need to explicitly install a package from this section; the package system will install them as required to fulfill dependencies.");
+  section_descriptions["perl"]=W_("Perl interpreter and libraries\n Packages in the 'perl' section provide the Perl programming language and many third-party libraries for it. Unless you are a Perl programmer, you don't need to install packages from this section explicitly; the package system will install them if they are required.");
+  section_descriptions["python"]=W_("Python interpreter and libraries\n Packages in the 'python' section provide the Python programming language and many third-party libraries for it. Unless you are a Python programmer, you don't need to install packages from this section explicitly; the package system will install them if they are required.");
+  section_descriptions["mail"]=W_("Programs to write, send, and route email messages\n Packages in the 'mail' section include mail readers, mail transport daemons, mailing list software, and spam filters, as well as various other software related to electronic mail.");
+  section_descriptions["math"]=W_("Numeric analysis and other mathematics-related software\n Packages in the 'math' section include calculators, languages for mathematical computation (similar to Mathematica), symbolic algebra packages, and programs to visualize mathematical objects.");
+  section_descriptions["misc"]=W_("Miscellaneous software\n Packages in the 'misc' section have too unusual a function to be classified.");
+  section_descriptions["net"]=W_("Programs to connect to and provide various services\n Packages in the 'net' section include clients and servers for many protocols, tools to manipulate and debug low-level network protocols, IM systems, and other network-related software.");
+  section_descriptions["news"]=W_("Usenet clients and servers\n Packages in the 'news' section are related to the Usenet distributed news system.  They include news readers and news servers.");
+  section_descriptions["oldlibs"]=W_("Obsolete libraries\n Packages in the 'oldlibs' section are obsolete and should not be used by new software.  They are provided for compatibility reasons, or because software distributed by Debian still requires them.\n .\n With very few exceptions, you should not need to explicitly install a package from this section; the package system will install them as required to fulfill dependencies.");
+  section_descriptions["otherosfs"]=W_("Emulators and software to read foreign filesystems\n Packages in the 'otherosfs' section emulate hardware and operating systems and provide tools for transferring data between different operating systems and hardware platforms. (for instance, utilities to read DOS floppies, and utilities to communicate with Palm Pilots)\n .\n It is worth noting that CD burning software is included in THIS section.");
+  section_descriptions["science"]=W_("Software for scientific work\n Packages in the 'science' section include tools for astronomy, biology, and chemistry, as well as other science-related software.");
+  section_descriptions["shells"]=W_("Command shells and alternative console environments\n Packages in the 'shells' section include programs providing a command-line interface.");
+  section_descriptions["sound"]=W_("Utilities to play and record sound\n Packages in the 'sound' section include sound players, recorders, and encoders for many formats, mixers and volume controls, MIDI sequencers and programs to generate musical notation, drivers for sound hardware, and sound processing software.");
+  section_descriptions["tex"]=W_("The TeX typesetting system\n Packages in the 'tex' section are related to TeX, a system for producing high-quality typeset output.  They include TeX itself, TeX packages, editors designed for TeX, utilities to convert TeX and TeX output files to various formats, TeX fonts, and other software related to TeX.");
+  section_descriptions["text"]=W_("Text processing utilities\n Packages in the 'text' section include text filters and processors, spelling checkers, dictionary programs, utilities to convert between character encodings and text file formats (eg, Unix and DOS), text formatters and pretty-printers, and other software which operates on plain text.");
+  section_descriptions["utils"]=W_("Various system utilities\n Packages in the 'utils' section are utilities whose purpose is too unique to be classified.");
+  section_descriptions["web"]=W_("Web browsers, servers, proxies, and other tools\n Packages in the 'web' section include Web browsers, Web servers and proxies, software to write CGI scripts or Web-based programs, pre-written Web-based programs, and other software related to the World Wide Web.");
+  section_descriptions["x11"]=W_("The X window system and related software\n Packages in the 'x11' section include the core packages for the X window system, window managers, utility programs for X, and miscellaneous programs with an X GUI which were placed here because they didn't fit anywhere else.");
 
-  section_descriptions["contrib"]=cw::util::transcode(_("Programs which depend on software not in Debian\n Packages in the 'contrib' section are not part of Debian.\n .\n These packages are Free Software, but they depend on software which is not part of Debian.  This may be because it is not Free Software, but is packaged in the non-free section of the archive, because Debian cannot distribute it at all, or (in rare cases) because no-one has packaged it yet.\n .\n For more information about what Debian considers to be Free Software, see http://www.debian.org/social_contract#guidelines"));
-  section_descriptions["main"]=cw::util::transcode(_("The main Debian archive\n The Debian distribution consists of packages from the 'main' section. Every package in 'main' is Free Software.\n .\n For more information about what Debian considers to be Free Software, see http://www.debian.org/social_contract#guidelines"));
-  section_descriptions["non-US"]=cw::util::transcode(_("Programs stored outside the US due to export controls\n Packages in 'non-US' likely contain cryptography; a few implement patented algorithms. Because of this, they cannot be exported from the United States, and hence are stored on a server in the \"free world\".\n .\n Note: the Debian Project is currently merging cryptographic software into the US-based archives after consulting with legal experts about recent changes in export policies. Most packages which were formerly found in this section, therefore, are now in 'main'."));
-  section_descriptions["non-free"]=cw::util::transcode(_("Programs which are not free software\n Packages in the 'non-free' section are not part of Debian.\n .\n These packages fail to meet one or more of the requirements of the Debian Free Software Guidelines (see below). You should read the license of programs in this section to be sure that you are allowed to use them in the way you intend.\n .\n For more information about what Debian considers to be Free Software, see http://www.debian.org/social_contract#guidelines"));
+  section_descriptions["contrib"]=W_("Programs which depend on software not in Debian\n Packages in the 'contrib' section are not part of Debian.\n .\n These packages are Free Software, but they depend on software which is not part of Debian.  This may be because it is not Free Software, but is packaged in the non-free section of the archive, because Debian cannot distribute it at all, or (in rare cases) because no-one has packaged it yet.\n .\n For more information about what Debian considers to be Free Software, see http://www.debian.org/social_contract#guidelines");
+  section_descriptions["main"]=W_("The main Debian archive\n The Debian distribution consists of packages from the 'main' section. Every package in 'main' is Free Software.\n .\n For more information about what Debian considers to be Free Software, see http://www.debian.org/social_contract#guidelines");
+  section_descriptions["non-US"]=W_("Programs stored outside the US due to export controls\n Packages in 'non-US' likely contain cryptography; a few implement patented algorithms. Because of this, they cannot be exported from the United States, and hence are stored on a server in the \"free world\".\n .\n Note: the Debian Project is currently merging cryptographic software into the US-based archives after consulting with legal experts about recent changes in export policies. Most packages which were formerly found in this section, therefore, are now in 'main'.");
+  section_descriptions["non-free"]=W_("Programs which are not free software\n Packages in the 'non-free' section are not part of Debian.\n .\n These packages fail to meet one or more of the requirements of the Debian Free Software Guidelines (see below). You should read the license of programs in this section to be sure that you are allowed to use them in the way you intend.\n .\n For more information about what Debian considers to be Free Software, see http://www.debian.org/social_contract#guidelines");
 
-  section_descriptions["virtual"]=cw::util::transcode(_("Virtual packages\n These packages do not exist; they are names other packages use to require or provide some functionality."));
+  section_descriptions["virtual"]=W_("Virtual packages\n These packages do not exist; they are names other packages use to require or provide some functionality.");
 
   already_done=true;
 }
@@ -483,7 +483,7 @@ public:
       {
 	if(!recommended_child.second)
 	  {
-	    const wstring desc=cw::util::transcode(_("Packages which are recommended by other packages\n These packages are not strictly required, but they may be necessary to provide full functionality in some other programs that you are installing or upgrading."));
+	    const wstring desc=W_("Packages which are recommended by other packages\n These packages are not strictly required, but they may be necessary to provide full functionality in some other programs that you are installing or upgrading.");
 	    const wstring shortdesc(desc, 0, desc.find('\n'));
 
 	    pkg_subtree *newtree=new pkg_subtree_with_order(shortdesc,
@@ -503,7 +503,7 @@ public:
       {
 	if(!suggested_child.second)
 	  {
-	    const wstring desc=cw::util::transcode(_("Packages which are suggested by other packages\n These packages are not required in order to make your system function properly, but they may provide enhanced functionality for some programs that you are currently installing."));
+	    const wstring desc=W_("Packages which are suggested by other packages\n These packages are not required in order to make your system function properly, but they may provide enhanced functionality for some programs that you are currently installing.");
 	    const wstring shortdesc(desc, 0, desc.find('\n'));
 
 	    pkg_subtree *newtree=new pkg_subtree_with_order(shortdesc,
@@ -777,7 +777,7 @@ public:
       {
 	if(!uncategorized)
 	  {
-	    uncategorized=new pkg_subtree(cw::util::transcode(_("UNCATEGORIZED")));
+	    uncategorized=new pkg_subtree(W_("UNCATEGORIZED"));
 	    uncategorized_policy=chain->instantiate(sig, desc_sig);
 	    root->add_child(uncategorized);
 	  }
@@ -896,13 +896,13 @@ void pkg_grouppolicy_task::init_section_descriptions()
   if(already_done)
     return;
 
-  task_section_descriptions.push_back(pair<string,wstring>("user", cw::util::transcode(_("End-user"))));
-  task_section_descriptions.push_back(pair<string,wstring>("server", cw::util::transcode(_("Servers"))));
-  task_section_descriptions.push_back(pair<string,wstring>("devel", cw::util::transcode(_("Development"))));
-  task_section_descriptions.push_back(pair<string,wstring>("l10n", cw::util::transcode(_("Localization"))));
-  task_section_descriptions.push_back(pair<string,wstring>("hware", cw::util::transcode(_("Hardware Support"))));
-  task_section_descriptions.push_back(pair<string,wstring>("misc", cw::util::transcode(_("Miscellaneous"))));
-  task_section_descriptions.push_back(pair<string,wstring>("unknown", cw::util::transcode(_("Unrecognized tasks"))));
+  task_section_descriptions.push_back(pair<string,wstring>("user", W_("End-user")));
+  task_section_descriptions.push_back(pair<string,wstring>("server", W_("Servers")));
+  task_section_descriptions.push_back(pair<string,wstring>("devel", W_("Development")));
+  task_section_descriptions.push_back(pair<string,wstring>("l10n", W_("Localization")));
+  task_section_descriptions.push_back(pair<string,wstring>("hware", W_("Hardware Support")));
+  task_section_descriptions.push_back(pair<string,wstring>("misc", W_("Miscellaneous")));
+  task_section_descriptions.push_back(pair<string,wstring>("unknown", W_("Unrecognized tasks")));
 }
 
 /** Uses the fact that 0<=Relevance<=10 to encode Relevance as a character. */
@@ -953,8 +953,8 @@ void pkg_grouppolicy_task::add_package(const pkgCache::PkgIterator &pkg,
 
 	  if(!tasks_subtree)
 	    {
-	      tasks_subtree=new pkg_subtree(cw::util::transcode(_("Tasks")),
-					    cw::util::transcode(_("\n Tasks are groups of packages which provide an easy way to select a predefined set of packages for a particular purpose.")), get_desc_sig());
+	      tasks_subtree=new pkg_subtree(W_("Tasks"),
+					    W_("\n Tasks are groups of packages which provide an easy way to select a predefined set of packages for a particular purpose."), get_desc_sig());
 	      root->add_child(tasks_subtree);
 	    }
 
@@ -1078,7 +1078,7 @@ private:
 		  {
 		    wchar_t buf[512];
 
-		    swprintf(buf, 512, cw::util::transcode(_("Bad number in format string: %ls")).c_str(),
+		    swprintf(buf, 512, W_("Bad number in format string: %ls").c_str(),
 			     tocvt.c_str());
 
 		    return buf;
@@ -1087,7 +1087,7 @@ private:
 		if(val < 1)
 		  {
 		    wchar_t buf[512];
-		    swprintf(buf, 512, cw::util::transcode(_("Match indices must be 1 or greater, not \"%s\"")).c_str(),
+		    swprintf(buf, 512, W_("Match indices must be 1 or greater, not \"%s\"").c_str(),
 			     tocvt.c_str());
 		    return buf;
 		  }
@@ -1105,7 +1105,7 @@ private:
 		      }
 
 		    wchar_t buf[1024];
-		    swprintf(buf, 1024, cw::util::transcode(_("Match index %ls is too large; available groups are (%s)")).c_str(),
+		    swprintf(buf, 1024, W_("Match index %ls is too large; available groups are (%s)").c_str(),
 			     tocvt.c_str(), group_values.c_str());
 
 		    return buf;
@@ -1332,8 +1332,8 @@ public:
 	  {
 	    eassert(untagged_policy == NULL);
 
-	    untagged_tree = new pkg_subtree(cw::util::transcode(_("TAGLESS PACKAGES")),
-					    cw::util::transcode(_("\n These packages have not yet been classified in debtags.")),
+	    untagged_tree = new pkg_subtree(W_("TAGLESS PACKAGES"),
+					    W_("\n These packages have not yet been classified in debtags."),
 					    get_desc_sig());
 	    root->add_child(untagged_tree);
 

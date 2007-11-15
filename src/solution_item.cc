@@ -594,11 +594,11 @@ void solution_unresolved_item::paint(widgets::tree *win, int y, bool hierarchica
   wstring text;
 
   if(!fully_explained)
-    text = swsprintf(cw::util::transcode(_("%s recommends %s")).c_str(),
+    text = swsprintf(W_("%s recommends %s").c_str(),
 		     d.get_dep().ParentPkg().Name(),
 		     dep_targets(d.get_dep()).c_str());
   else
-    text = swsprintf(cw::util::transcode(_("-> Leave the dependency \"%s recommends %s\" unresolved.")).c_str(),
+    text = swsprintf(W_("-> Leave the dependency \"%s recommends %s\" unresolved.").c_str(),
 		     d.get_dep().ParentPkg().Name(),
 		     dep_targets(d.get_dep()).c_str());
 

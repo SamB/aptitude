@@ -107,13 +107,13 @@ void cmine::paint_header(const cwidget::style &st)
       int width,height;
       getmaxyx(height,width);
 
-      wstring header=cw::util::transcode(_("Minesweeper"));
+      wstring header=W_("Minesweeper");
       wchar_t buf[200];
 
       if(board->get_state()==mine_board::playing)
 	swprintf(buf,
 		 sizeof(buf),
-		 cw::util::transcode(_("%i/%i mines  %d %s")).c_str(),
+		 W_("%i/%i mines  %d %s").c_str(),
 		 board->get_nummines()-board->get_numflags(),
 		 board->get_nummines(),
 		 (int) board->get_duration(),
@@ -121,7 +121,7 @@ void cmine::paint_header(const cwidget::style &st)
       else
 	swprintf(buf,
 		 sizeof(buf),
-		 cw::util::transcode(_("    %s in %d %s")).c_str(),
+		 W_("    %s in %d %s").c_str(),
 		 board->get_state()==mine_board::won?_("Won"):_("Lost"),
 		 (int) board->get_duration(),
 		 board->get_duration()==1?_("second"):_("seconds"));
@@ -149,7 +149,7 @@ void cmine::paint_header(const cwidget::style &st)
       display_header(header, st+get_style("Header"));
     }
   else
-    display_header(cw::util::transcode(_("Minesweeper")),
+    display_header(W_("Minesweeper"),
 		   st+get_style("Header"));
 }
 
@@ -248,7 +248,7 @@ void cmine::do_start_custom_game(widgets::widget &w_bare,
       //
       //
       // That's ok, they'll do that anyway in a couple releases ;-)
-      popup_widget(dialogs::ok(cw::util::transcode(_("The board height must be a positive integer")),
+      popup_widget(dialogs::ok(W_("The board height must be a positive integer"),
 			       NULL,
 			       get_style("Error")));
       return;
@@ -260,7 +260,7 @@ void cmine::do_start_custom_game(widgets::widget &w_bare,
 
   if(s.c_str()[0]=='\0' || *end!='\0' || width<1)
     {
-      popup_widget(dialogs::ok(cw::util::transcode(_("The board width must be a positive integer")),
+      popup_widget(dialogs::ok(W_("The board width must be a positive integer"),
 			       NULL,
 			       get_style("Error")));
       return;
@@ -272,7 +272,7 @@ void cmine::do_start_custom_game(widgets::widget &w_bare,
 
   if(s.c_str()[0]=='\0' || *end!='\0' || mines<1)
     {
-      popup_widget(dialogs::ok(cw::util::transcode(_("Invalid mine count; please enter a positive integer")),
+      popup_widget(dialogs::ok(W_("Invalid mine count; please enter a positive integer"),
 			       NULL,
 			       get_style("Error")));
       return;
@@ -466,10 +466,10 @@ void cmine::checkend()
 
   if(board->get_state()==mine_board::won)
     // "You hold up the Amulet of Yendor.  An invisible choir sings..."
-    popup_widget(dialogs::ok(cw::util::transcode(_("You have won."))));
+    popup_widget(dialogs::ok(W_("You have won.")));
   else if(board->get_state()==mine_board::lost)
     {
-      popup_widget(dialogs::ok(cw::util::transcode(_("You lose!"))));
+      popup_widget(dialogs::ok(W_("You lose!")));
 #if 0
       // (messages in reverse order because the minibuf is a stack by default..
       // I could use the special feature of sticking them at the end, but I

@@ -239,7 +239,7 @@ static fragment *apt_error_fragment()
 // Handles "search" dialogs for pagers
 static void pager_search(widgets::pager &p)
 {
-  prompt_string(cw::util::transcode(_("Search for:")),
+  prompt_string(W_("Search for:"),
 		p.get_last_search(),
 		arg(sigc::mem_fun(p, &widgets::pager::search_for)),
 		NULL,
@@ -272,7 +272,7 @@ static widgets::widget_ref make_error_dialog(const widgets::text_layout_ref &lay
   layout->location_changed.connect(sigc::mem_fun(s.unsafe_get_ref(), &widgets::scrollbar::set_slider));
   s->scrollbar_interaction.connect(sigc::mem_fun(layout.unsafe_get_ref(), &widgets::text_layout::scroll));
 
-  return widgets::dialog_ok(t, NULL, cw::util::transcode(_("Ok")), get_style("Error"));
+  return widgets::dialog_ok(t, NULL, W_("Ok"), get_style("Error"));
 }
 
 // blah, I hate C++
@@ -1257,9 +1257,9 @@ static void check_package_trust()
 
       main_stacked->add_visible_widget(widgets::dialog_yesno(sequence_fragment(frags),
 						       arg(sigc::ptr_fun(install_or_remove_packages)),
-						       cw::util::transcode(_("Really Continue")),
+						       W_("Really Continue"),
 						       NULL,
-						       cw::util::transcode(_("Abort Installation")),
+						       W_("Abort Installation"),
 						       get_style("TrustWarning"),
 						       true,
 						       false),
@@ -1442,9 +1442,9 @@ static void actually_do_package_run()
 	      popup_widget(widgets::dialog_yesno(wrapbox(text_fragment(_("Installing/removing packages requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
 					   arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
 						      "-i")),
-					   cw::util::transcode(_("Become root")),
+					   W_("Become root"),
 					   arg(sigc::ptr_fun(&check_package_trust)),
-					   cw::util::transcode(_("Don't become root")),
+					   W_("Don't become root"),
 					   get_style("Error")));
 	    }
 	}
@@ -1571,9 +1571,9 @@ void do_update_lists()
 	  popup_widget(widgets::dialog_yesno(wrapbox(text_fragment(_("Updating the package lists requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
 				       arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
 						      "-u")),
-				       cw::util::transcode(_("Become root")),
+				       W_("Become root"),
 				       arg(sigc::ptr_fun(&really_do_update_lists)),
-				       cw::util::transcode(_("Don't become root")),
+				       W_("Don't become root"),
 				       get_style("Error")));
 	}
     }
@@ -2592,7 +2592,7 @@ void ui_init()
     update_key=cw::global_bindings.readable_keyname("UpdatePackageList"),
     install_key=cw::global_bindings.readable_keyname("DoInstallRun");
 
-  wstring helptext = swsprintf(cw::util::transcode(_("%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove Pkgs")).c_str(),
+  wstring helptext = swsprintf(W_("%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove Pkgs").c_str(),
 			menu_key.c_str(),
 			help_key.c_str(),
 			quit_key.c_str(),

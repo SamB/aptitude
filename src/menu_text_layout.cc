@@ -34,7 +34,7 @@ bool menu_text_layout::find_search_enabled()
 
 bool menu_text_layout::find_search()
 {
-  prompt_string(cw::util::transcode(_("Search for: ")),
+  prompt_string(W_("Search for: "),
 		last_search,
 		arg(sigc::mem_fun(this, &menu_text_layout::do_find_search)),
 		NULL,

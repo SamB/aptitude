@@ -102,28 +102,28 @@ wstring dep_text(const pkgCache::DepIterator &d)
   switch(d->Type)
     {
     case pkgCache::Dep::Depends:
-      return swsprintf(cw::util::transcode(_("%s depends upon %s")).c_str(),
+      return swsprintf(W_("%s depends upon %s").c_str(),
 		       name, targets.c_str());
     case pkgCache::Dep::PreDepends:
-      return swsprintf(cw::util::transcode(_("%s pre-depends upon %s")).c_str(),
+      return swsprintf(W_("%s pre-depends upon %s").c_str(),
 		       name, targets.c_str());
     case pkgCache::Dep::Suggests:
-      return swsprintf(cw::util::transcode(_("%s suggests %s")).c_str(),
+      return swsprintf(W_("%s suggests %s").c_str(),
 		       name, targets.c_str());
     case pkgCache::Dep::Recommends:
-      return swsprintf(cw::util::transcode(_("%s recommends %s")).c_str(),
+      return swsprintf(W_("%s recommends %s").c_str(),
 		       name, targets.c_str());
     case pkgCache::Dep::Conflicts:
-      return swsprintf(cw::util::transcode(_("%s conflicts with %s")).c_str(),
+      return swsprintf(W_("%s conflicts with %s").c_str(),
 		       name, targets.c_str());
     case pkgCache::Dep::DpkgBreaks:
-      return swsprintf(cw::util::transcode(_("%s breaks %s")).c_str(),
+      return swsprintf(W_("%s breaks %s").c_str(),
 		       name, targets.c_str());
     case pkgCache::Dep::Replaces:
-      return swsprintf(cw::util::transcode(_("%s replaces %s")).c_str(),
+      return swsprintf(W_("%s replaces %s").c_str(),
 				 name, targets.c_str());
     case pkgCache::Dep::Obsoletes:
-      return swsprintf(cw::util::transcode(_("%s obsoletes %s")).c_str(),
+      return swsprintf(W_("%s obsoletes %s").c_str(),
 				 name, targets.c_str());
     default:
       abort();
@@ -136,7 +136,7 @@ wstring conflict_text(const pkgCache::DepIterator &conflict,
   if(prv.end() || !is_conflict(conflict->Type))
     return dep_text(conflict);
 
-  return swsprintf(cw::util::transcode(_("%s conflicts with %s [provided by %s %s]")).c_str(),
+  return swsprintf(W_("%s conflicts with %s [provided by %s %s]").c_str(),
 		   const_cast<pkgCache::DepIterator &>(conflict).ParentPkg().Name(),
 		   const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name(),
 		   const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),

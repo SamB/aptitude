@@ -61,10 +61,10 @@ bool download_screen::MediaChange(string Media, string Drive)
   popup_widget(widgets::dialog_yesno(cw::util::transcode(buf),
 			       arg(sigc::bind(sigc::ptr_fun(set_and_exit),
 					      rval, true)),
-			       cw::util::transcode(_("Continue")),
+			       W_("Continue"),
 			       arg(sigc::bind(sigc::ptr_fun(set_and_exit),
 					      rval, false)),
-			       cw::util::transcode(_("Abort")),
+			       W_("Abort"),
 			       get_style("MediaChange")));
 
   toplevel::mainloop();  // Eeeeeek!  Recursive mainloop!  I'm afraid..

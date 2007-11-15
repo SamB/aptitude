@@ -163,7 +163,7 @@ bool pkg_tree::build_tree(OpProgress &progress)
     {
       bool empty=true, cache_empty=true;
 
-      pkg_subtree *mytree=new pkg_subtree(cw::util::transcode(_("All Packages")), true);
+      pkg_subtree *mytree=new pkg_subtree(W_("All Packages"), true);
       pkg_grouppolicy *grouper=grouping->instantiate(&selected_signal,
 						     &selected_desc_signal);
 
@@ -234,7 +234,7 @@ void pkg_tree::set_limit(const std::wstring &_limit)
 	{
 	  wchar_t buf[512];
 
-	  swprintf(buf, 512, cw::util::transcode(_("No packages matched the pattern \"%ls\".")).c_str(),
+	  swprintf(buf, 512, W_("No packages matched the pattern \"%ls\".").c_str(),
 		   _limit.c_str());
 
 	  show_message(buf);
@@ -256,7 +256,7 @@ bool pkg_tree::find_limit_enabled()
 
 bool pkg_tree::find_limit()
 {
-  prompt_string(cw::util::transcode(_("Enter the new package tree limit: ")),
+  prompt_string(W_("Enter the new package tree limit: "),
 		limitstr,
 		arg(sigc::mem_fun(*this, &pkg_tree::set_limit)),
 		NULL,
