@@ -40,6 +40,12 @@
 using namespace std;
 using namespace __gnu_cxx;
 
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
 // Stores a group (name) and a Y/N state
 class hier_editor::hier_item : public sigc::trackable, public cw::treeitem
 {
