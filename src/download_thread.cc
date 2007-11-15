@@ -33,10 +33,10 @@ class background_execute : public cw::toplevel::event
 {
   sigc::slot0<RVal> slot;
 
-  threads::box<RVal> &return_box;
+  cw::threads::box<RVal> &return_box;
 public:
   background_execute(const sigc::slot0<RVal> &_slot,
-		     threads::box<RVal> &_return_box)
+		     cw::threads::box<RVal> &_return_box)
     :slot(_slot), return_box(_return_box)
   {
   }
@@ -51,10 +51,10 @@ template<>
 class background_execute<void> : public cw::toplevel::event
 {
   sigc::slot0<void> slot;
-  threads::box<void> &return_box;
+  cw::threads::box<void> &return_box;
 public:
   background_execute(const sigc::slot0<void> &_slot,
-		     threads::box<void> &_return_box)
+		     cw::threads::box<void> &_return_box)
     :slot(_slot), return_box(_return_box)
   {
   }
@@ -72,7 +72,7 @@ static
 RVal do_foreground_execute(C *inst,
 			   RVal (C::* fun) ())
 {
-  threads::box<RVal> return_box;
+  cw::threads::box<RVal> return_box;
 
   cw::toplevel::post_event(new background_execute<RVal>(sigc::mem_fun(inst, fun),
 						  return_box));
@@ -87,7 +87,7 @@ RVal do_foreground_execute(C *inst,
 			   Arg0 arg0,
 			   RVal (C::* fun) (Arg0))
 {
-  threads::box<RVal> return_box;
+  cw::threads::box<RVal> return_box;
 
   cw::toplevel::post_event(new background_execute<RVal>(bind(sigc::mem_fun(inst, fun), arg0),
 						  return_box));
@@ -103,7 +103,7 @@ RVal do_foreground_execute(C *inst,
 			   Arg1 arg1,
 			   RVal (C::* fun) (Arg0, Arg1))
 {
-  threads::box<RVal> return_box;
+  cw::threads::box<RVal> return_box;
 
   cw::toplevel::post_event(new background_execute<RVal>(bind(sigc::mem_fun(inst, fun), arg0, arg1),
 						  return_box));
@@ -120,7 +120,7 @@ RVal do_foreground_execute(C *inst,
 			   Arg2 arg2,
 			   RVal (C::* fun) (Arg0, Arg1, Arg2))
 {
-  threads::box<RVal> return_box;
+  cw::threads::box<RVal> return_box;
 
   cw::toplevel::post_event(new background_execute<RVal>(bind(sigc::mem_fun(inst, fun), arg0, arg1, arg2),
 						  return_box));
@@ -137,13 +137,13 @@ void background_status::Fetched(unsigned long Size,
 
 bool background_status::MediaChange(std::string Media, std::string Drive)
 {
-  threads::box<bool> return_box;
+  cw::threads::box<bool> return_box;
 
   do_foreground_execute<download_signal_log,
     void, const std::string &, const std::string &,
     const sigc::slot1<void, bool> &>  (real_status, Media, Drive,
 				       sigc::mem_fun(return_box,
-						     &threads::box<bool>::put),
+						     &cw::threads::box<bool>::put),
 				       &download_signal_log::MediaChange);
 
   return return_box.take();
@@ -171,13 +171,13 @@ void background_status::Fail(pkgAcquire::ItemDesc &item)
 
 bool background_status::Pulse(pkgAcquire *Owner)
 {
-  threads::box<bool> return_box;
+  cw::threads::box<bool> return_box;
 
   do_foreground_execute<download_signal_log, void,
     pkgAcquire *,
     const sigc::slot1<void, bool> &>(real_status, Owner,
 				     sigc::mem_fun(&return_box,
-						   &threads::box<bool>::put),
+						   &cw::threads::box<bool>::put),
 				     &download_signal_log::Pulse);
 
   return return_box.take();
@@ -190,13 +190,13 @@ void background_status::Start()
 
 void background_status::Stop()
 {
-  threads::box<void> return_box;
+  cw::threads::box<void> return_box;
 
   do_foreground_execute<download_signal_log,
     void,
     const sigc::slot0<void> &>(real_status,
 			       sigc::mem_fun(&return_box,
-					     &threads::box<void>::put),
+					     &cw::threads::box<void>::put),
 			       &download_signal_log::Stop);
 
   return_box.take();

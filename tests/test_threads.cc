@@ -43,9 +43,9 @@ public:
   struct add_thread
   {
     int n;
-    threads::box<int> &count;
+    cw::threads::box<int> &count;
   public:
-    add_thread(int _n, threads::box<int> &_count)
+    add_thread(int _n, cw::threads::box<int> &_count)
       :n(_n), count(_count)
     {
     }
@@ -62,14 +62,14 @@ public:
     const int thread_count = 50;
     const int thread_limit = 1000;
 
-    threads::box<int> b(100);
+    cw::threads::box<int> b(100);
 
     CPPUNIT_ASSERT_EQUAL(100, b.take());
 
-    std::auto_ptr<threads::thread> writers[thread_count];
+    std::auto_ptr<cw::threads::thread> writers[thread_count];
 
     for(int i = 0; i<thread_count; ++i)
-      writers[i] = std::auto_ptr<threads::thread>(new threads::thread(add_thread(thread_limit, b)));
+      writers[i] = std::auto_ptr<cw::threads::thread>(new cw::threads::thread(add_thread(thread_limit, b)));
 
     int foo;
     CPPUNIT_ASSERT(!b.try_take(foo));
@@ -99,7 +99,7 @@ public:
   {
     timeval now;
 
-    threads::box<int> b;
+    cw::threads::box<int> b;
 
     gettimeofday(&now, NULL);
     timespec timeout;
@@ -133,11 +133,11 @@ public:
 
   class event_queue_write_thread
   {
-    threads::event_queue<std::pair<int, int> > &eq;
+    cw::threads::event_queue<std::pair<int, int> > &eq;
 
     int id, n;
   public:
-    event_queue_write_thread(threads::event_queue<std::pair<int, int> > &_eq,
+    event_queue_write_thread(cw::threads::event_queue<std::pair<int, int> > &_eq,
 			     int _id, int _n)
       :eq(_eq), id(_id), n(_n)
     {
@@ -155,16 +155,16 @@ public:
     const int thread_count = 100;
     const int thread_limit = 1000;
 
-    threads::event_queue<std::pair<int, int> > eq;
+    cw::threads::event_queue<std::pair<int, int> > eq;
 
-    std::auto_ptr<threads::thread> writers[thread_count];
+    std::auto_ptr<cw::threads::thread> writers[thread_count];
     int last_thread_msg[thread_count];
 
     for(int i = 0; i < thread_count; ++i)
       last_thread_msg[i] = -1;
 
     for(int i = 0; i < thread_count; ++i)
-      writers[i] = std::auto_ptr<threads::thread>(new threads::thread(event_queue_write_thread(eq, i, thread_limit)));
+      writers[i] = std::auto_ptr<cw::threads::thread>(new cw::threads::thread(event_queue_write_thread(eq, i, thread_limit)));
 
     for(int i = 0; i < thread_count * thread_limit; ++i)
       {
@@ -190,7 +190,7 @@ public:
 
   void testAutoDetach()
   {
-    threads::thread t(do_nothing());
+    cw::threads::thread t(do_nothing());
   }
 };
 

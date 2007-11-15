@@ -62,7 +62,7 @@ public:
 /** The thread that performs the download. */
 class download_thread
 {
-  threads::box<bool> cancelled;
+  cwidget::threads::box<bool> cancelled;
 
   /** The bundled download_manager object.  It should have been
    *  initialized using a background_status wrapper as above, and you
@@ -78,7 +78,7 @@ class download_thread
    */
   sigc::slot2<void, download_thread *, pkgAcquire::RunResult> continuation;
 
-  threads::thread *t;
+  cwidget::threads::thread *t;
 
   download_thread(const download_thread &other);
   download_thread &operator=(const download_thread &other);
@@ -101,7 +101,7 @@ public:
     if(t != NULL)
       _error->Error("Attempt to start a download thread twice!");
     else
-      t = new threads::thread(threads::noncopy_bootstrap<download_thread>(*this));
+      t = new cwidget::threads::thread(cwidget::threads::noncopy_bootstrap<download_thread>(*this));
   }
 
   void join()
