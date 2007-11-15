@@ -70,7 +70,7 @@
 #include "pkg_grouppolicy.h"
 #include "pkg_view.h"
 
-namespace toplevel = cwidget::toplevel;
+namespace cw = cwidget;
 
 #if 0
 // These are commented out so as to not punish users unduly for coding
@@ -562,12 +562,12 @@ int main(int argc, char *argv[])
 	free(status_fname);
       check_apt_errors();
 
-      file_quit.connect(sigc::ptr_fun(toplevel::exitmain));
+      file_quit.connect(sigc::ptr_fun(cw::toplevel::exitmain));
 
       if(apt_cache_file)
 	{
-	  (*apt_cache_file)->package_state_changed.connect(sigc::ptr_fun(toplevel::update));
-	  (*apt_cache_file)->package_category_changed.connect(sigc::ptr_fun(toplevel::update));
+	  (*apt_cache_file)->package_state_changed.connect(sigc::ptr_fun(cw::toplevel::update));
+	  (*apt_cache_file)->package_category_changed.connect(sigc::ptr_fun(cw::toplevel::update));
 	}
 
       do_new_package_view(*p.unsafe_get_ref());
@@ -584,7 +584,7 @@ int main(int argc, char *argv[])
     }
   catch(const cwidget::util::Exception &e)
     {
-      toplevel::shutdown();
+      cw::toplevel::shutdown();
 
       fprintf(stderr, _("Uncaught exception: %s\n"), e.errmsg().c_str());
 

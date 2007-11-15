@@ -205,7 +205,7 @@ bool pkg_tree::build_tree(OpProgress &progress)
   else
     rval=true;
 
-  toplevel::update();
+  cw::toplevel::update();
 
   return rval;
 }

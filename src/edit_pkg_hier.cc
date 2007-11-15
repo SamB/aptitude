@@ -61,7 +61,7 @@ public:
        cw::config::global_bindings.key_matches(k, "Confirm"))
       {
 	selected=!selected;
-	toplevel::update();
+	cw::toplevel::update();
       }
     else
       return widgets::treeitem::dispatch_key(k, owner);
@@ -75,7 +75,7 @@ public:
        bstate & BUTTON3_CLICKED)
       {
 	selected=!selected;
-	toplevel::update();
+	cw::toplevel::update();
       }
     else
       widgets::treeitem::dispatch_mouse(id, x, bstate, owner);

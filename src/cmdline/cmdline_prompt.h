@@ -10,7 +10,7 @@
 #include <generic/util/exception.h>
 
 /** Thrown when we get EOF on stdin.  Should never be thrown
- *  to the toplevel.
+ *  to the cwidget::toplevel.
  */
 class StdinEOFException : public cwidget::util::Exception
 {

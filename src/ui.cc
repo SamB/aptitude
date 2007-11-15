@@ -450,14 +450,14 @@ static void do_su_to_root(string args)
   //
   // An alternative is to invoke _exit(2) instead, but it seems
   // cleaner to suspend curses right here.
-  toplevel::suspend();
+  cw::toplevel::suspend();
 
   int pid=fork();
 
   if(pid==-1)
     {
       _error->Error("Unable to fork: %s", strerror(errno));
-      toplevel::resume();
+      cw::toplevel::resume();
     }
   else if(pid==0) // I'm a child!
     {
@@ -550,7 +550,7 @@ static void do_su_to_root(string args)
 	{
 	  _error->Error("%s",
 			_("Subprocess exited with an error -- did you type your password correctly?"));
-	  toplevel::resume();
+	  cw::toplevel::resume();
 	  check_apt_errors();
 	  // We have to clear these out or the cache won't reload properly (?)
 
@@ -593,7 +593,7 @@ static void do_show_reload_message()
       reload_message->show_all();
       popup_widget(reload_message);
 
-      toplevel::tryupdate();
+      cw::toplevel::tryupdate();
     }
 }
 
@@ -603,7 +603,7 @@ static void do_hide_reload_message()
     {
       reload_message->destroy();
       reload_message = NULL;
-      toplevel::tryupdate();
+      cw::toplevel::tryupdate();
     }
 }
 
@@ -1196,16 +1196,16 @@ static void finish_install_run(pkgPackageManager::OrderResult res)
 
   // libapt-pkg likes to stomp on SIGINT and SIGQUIT.  Restore them
   // here in the simplest possible way.
-  toplevel::install_sighandlers();
+  cw::toplevel::install_sighandlers();
 
-  toplevel::resume();
+  cw::toplevel::resume();
 }
 
 void install_or_remove_packages()
 {
   download_install_manager *m = new download_install_manager(false);
 
-  m->pre_install_hook.connect(sigc::ptr_fun(&toplevel::suspend));
+  m->pre_install_hook.connect(sigc::ptr_fun(&cw::toplevel::suspend));
   m->post_install_hook.connect(sigc::ptr_fun(&finish_install_run));
   m->post_forget_new_hook.connect(package_states_changed.make_slot());
 
@@ -1545,7 +1545,7 @@ static void lists_autoclean_msg(download_update_manager *m)
 					       &cwidget::widgets::widget::destroy));
 
   popup_widget(msg);
-  toplevel::tryupdate();
+  cw::toplevel::tryupdate();
 }
 
 void really_do_update_lists()
@@ -1596,7 +1596,7 @@ static void do_clean()
       widgets::widget_ref msg=widgets::center::create(widgets::frame::create(widgets::label::create(_("Deleting downloaded files"))));
       msg->show_all();
       popup_widget(msg);
-      toplevel::tryupdate();
+      cw::toplevel::tryupdate();
 
       if(aptcfg)
 	{
@@ -1656,7 +1656,7 @@ static void do_autoclean()
       widgets::widget_ref msg=widgets::center::create(widgets::frame::create(widgets::label::create(_("Deleting obsolete downloaded files"))));
       msg->show_all();
       popup_widget(msg);
-      toplevel::tryupdate();
+      cw::toplevel::tryupdate();
 
       long cleaned_size=0;
 
@@ -1740,7 +1740,7 @@ class interactive_continuation : public resolver_manager::background_continuatio
   /** Indicate that a new solution is available by invoking the
    *  selection_changed signal.
    */
-  class success_event : public toplevel::event
+  class success_event : public cw::toplevel::event
   {
     resolver_manager *manager;
   public:
@@ -1755,7 +1755,7 @@ class interactive_continuation : public resolver_manager::background_continuatio
     }
   };
 
-  class no_more_solutions_event : public toplevel::event
+  class no_more_solutions_event : public cw::toplevel::event
   {
     resolver_manager *manager;
   public:
@@ -1776,7 +1776,7 @@ class interactive_continuation : public resolver_manager::background_continuatio
     }
   };
 
-  class solution_search_aborted_event : public toplevel::event
+  class solution_search_aborted_event : public cw::toplevel::event
   {
     resolver_manager *manager;
     std::string msg;
@@ -1807,12 +1807,12 @@ public:
 
   void success(const aptitude_solution &sol)
   {
-    toplevel::post_event(new success_event(manager));
+    cw::toplevel::post_event(new success_event(manager));
   }
 
   void no_more_solutions()
   {
-    toplevel::post_event(new no_more_solutions_event(manager));
+    cw::toplevel::post_event(new no_more_solutions_event(manager));
   }
 
   void no_more_time()
@@ -1826,7 +1826,7 @@ public:
 
   void aborted(const Exception &e)
   {
-    toplevel::post_event(new solution_search_aborted_event(manager, e.errmsg()));
+    cw::toplevel::post_event(new solution_search_aborted_event(manager, e.errmsg()));
   }
 };
 
@@ -1863,7 +1863,7 @@ static void do_connect_resolver_callback()
   resman->state_changed.connect(sigc::bind(sigc::ptr_fun(&start_solution_calculation), true));
   // We may have missed a signal before making the connection:
   start_solution_calculation();
-  resman->state_changed.connect(sigc::ptr_fun(&toplevel::update));
+  resman->state_changed.connect(sigc::ptr_fun(&cw::toplevel::update));
 }
 
 static bool do_next_solution_enabled()
@@ -2483,12 +2483,12 @@ typedef ref_ptr<help_bar> help_bar_ref;
 
 void ui_init()
 {
-  toplevel::init();
+  cw::toplevel::init();
   init_defaults();
 
   // The basic behavior of the package state signal is to update the
   // display.
-  package_states_changed.connect(sigc::ptr_fun(toplevel::update));
+  package_states_changed.connect(sigc::ptr_fun(cw::toplevel::update));
 
   consume_errors.connect(sigc::ptr_fun(check_apt_errors));
 
@@ -2630,7 +2630,7 @@ void ui_init()
 
   main_menu->show();
 
-  toplevel::settoplevel(main_menu);
+  cw::toplevel::setcw::toplevel(main_menu);
 
   check_apt_errors();
   main_hook.connect(sigc::ptr_fun(check_apt_errors));
@@ -2659,7 +2659,7 @@ void ui_init()
 
 void ui_main()
 {
-  toplevel::mainloop();
+  cw::toplevel::mainloop();
 
   if(apt_cache_file &&
      (aptitudeDepCache *) (*apt_cache_file) &&
@@ -2670,7 +2670,7 @@ void ui_main()
       p->destroy();
     }
 
-  toplevel::shutdown();
+  cw::toplevel::shutdown();
 }
 
 void popup_widget(const widgets::widget_ref &w, bool do_show_all)

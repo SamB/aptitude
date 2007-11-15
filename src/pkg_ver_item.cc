@@ -741,7 +741,7 @@ bool pkg_ver_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 
       sigaction(SIGCONT, &act, &oldact);
 
-      toplevel::suspend();
+      cw::toplevel::suspend();
 
       apt_cache_file->ReleaseLock();
 
@@ -756,7 +756,7 @@ bool pkg_ver_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 
 
 
-      toplevel::resume();
+      cw::toplevel::resume();
 
       widgets::progress_ref p = gen_progress_bar();
       apt_reload_cache(p.unsafe_get_ref(), true);

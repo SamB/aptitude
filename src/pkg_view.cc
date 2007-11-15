@@ -95,7 +95,7 @@ public:
   {
     delete columns;
     columns=_columns;
-    toplevel::update();
+    cw::toplevel::update();
   }
 
   void do_columnify(const pkgCache::PkgIterator &_pkg,
@@ -106,7 +106,7 @@ public:
 
     have_pkg=!pkg.end();
 
-    toplevel::update();
+    cw::toplevel::update();
   }
 
   void paint(const cw::style const style &st)

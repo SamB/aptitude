@@ -396,13 +396,13 @@ bool pkg_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
       if(!ver.end())
 	cmd+=string(" -V '")+ver.VerStr()+"'";
 
-      toplevel::suspend();
+      cw::toplevel::suspend();
 
       printf(_("Reporting a bug in %s:\n"), package.Name());
 
       system(cmd.c_str());
 
-      toplevel::resume();
+      cw::toplevel::resume();
     }
   else if(bindings->key_matches(k, "DpkgReconfigure"))
     // Don't bother with my internal su-to-root stuff here, since I don't
@@ -422,7 +422,7 @@ bool pkg_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 
       if(sucmd)
 	{
-	  toplevel::suspend();
+	  cw::toplevel::suspend();
 
 	  apt_cache_file->ReleaseLock();
 
@@ -439,7 +439,7 @@ bool pkg_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 	      cerr<<_("Press return to continue.\n");
 	      getchar();
 
-	      toplevel::resume();
+	      cw::toplevel::resume();
 	    }
 
 	  widgets::progress_ref p = gen_progress_bar();

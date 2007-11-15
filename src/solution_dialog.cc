@@ -59,7 +59,7 @@ class solution_dialog:public widgets::text_layout
 
   void post_update()
   {
-    toplevel::post_event(new slot_event(sigc::mem_fun(this, &solution_dialog::update)));
+    cw::toplevel::post_event(new slot_event(sigc::mem_fun(this, &solution_dialog::update)));
   }
 
 protected:

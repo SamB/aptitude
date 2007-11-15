@@ -29,7 +29,7 @@
 #include <sigc++/functors/mem_fun.h>
 
 template<typename RVal>
-class background_execute : public toplevel::event
+class background_execute : public cw::toplevel::event
 {
   sigc::slot0<RVal> slot;
 
@@ -48,7 +48,7 @@ public:
 };
 
 template<>
-class background_execute<void> : public toplevel::event
+class background_execute<void> : public cw::toplevel::event
 {
   sigc::slot0<void> slot;
   threads::box<void> &return_box;
@@ -74,7 +74,7 @@ RVal do_foreground_execute(C *inst,
 {
   threads::box<RVal> return_box;
 
-  toplevel::post_event(new background_execute<RVal>(sigc::mem_fun(inst, fun),
+  cw::toplevel::post_event(new background_execute<RVal>(sigc::mem_fun(inst, fun),
 						  return_box));
 
   return return_box.take();
@@ -89,7 +89,7 @@ RVal do_foreground_execute(C *inst,
 {
   threads::box<RVal> return_box;
 
-  toplevel::post_event(new background_execute<RVal>(bind(sigc::mem_fun(inst, fun), arg0),
+  cw::toplevel::post_event(new background_execute<RVal>(bind(sigc::mem_fun(inst, fun), arg0),
 						  return_box));
 
   return return_box.take();
@@ -105,7 +105,7 @@ RVal do_foreground_execute(C *inst,
 {
   threads::box<RVal> return_box;
 
-  toplevel::post_event(new background_execute<RVal>(bind(sigc::mem_fun(inst, fun), arg0, arg1),
+  cw::toplevel::post_event(new background_execute<RVal>(bind(sigc::mem_fun(inst, fun), arg0, arg1),
 						  return_box));
 
   return return_box.take();
@@ -122,7 +122,7 @@ RVal do_foreground_execute(C *inst,
 {
   threads::box<RVal> return_box;
 
-  toplevel::post_event(new background_execute<RVal>(bind(sigc::mem_fun(inst, fun), arg0, arg1, arg2),
+  cw::toplevel::post_event(new background_execute<RVal>(bind(sigc::mem_fun(inst, fun), arg0, arg1, arg2),
 						  return_box));
 
   return return_box.take();
@@ -202,7 +202,7 @@ void background_status::Stop()
   return_box.take();
 }
 
-class download_thread_complete_event : public toplevel::event
+class download_thread_complete_event : public cw::toplevel::event
 {
   download_thread *t;
   pkgAcquire::RunResult res;
@@ -225,6 +225,6 @@ public:
 
 void download_thread::operator()()
 {
-  toplevel::post_event(new download_thread_complete_event(this, m->do_download(),
+  cw::toplevel::post_event(new download_thread_complete_event(this, m->do_download(),
 							continuation));
 }

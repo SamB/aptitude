@@ -392,7 +392,7 @@ class solution_examiner : public widgets::multiplex
 	  update_from_state(state);
       }
 
-    toplevel::addtimeout(new slot_event(sigc::mem_fun(this, &solution_examiner::tick)), 1000);
+    cw::toplevel::addtimeout(new slot_event(sigc::mem_fun(this, &solution_examiner::tick)), 1000);
   }
 
 protected:
@@ -414,11 +414,11 @@ protected:
 
     cycled.connect(sigc::mem_fun(*this, &solution_examiner::update_highlights));
 
-    toplevel::addtimeout(new slot_event(sigc::mem_fun(this, &solution_examiner::tick)), 1000);
+    cw::toplevel::addtimeout(new slot_event(sigc::mem_fun(this, &solution_examiner::tick)), 1000);
 
     // Because the update event might destroy this object, it needs to
     // take place after the constructor returns.
-    toplevel::post_event(new slot_event(sigc::mem_fun(this, &solution_examiner::update)));
+    cw::toplevel::post_event(new slot_event(sigc::mem_fun(this, &solution_examiner::update)));
   }
 
   bool handle_key(const cwi::key &k)

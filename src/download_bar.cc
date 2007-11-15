@@ -39,7 +39,6 @@
 #include <sigc++/functors/ptr_fun.h>
 
 namespace cw = cwidget;
-namespace toplevel = cwidget::toplevel;
 namespace cwidget
 {
   using namespace widgets;
@@ -56,12 +55,12 @@ bool download_status_bar::MediaChange(string media, string drive)
   cw::fragment *f = wrapbox(cw::fragf(_("Please insert the disc labeled \"%s\" into the drive \"%s\""),
 					  media.c_str(), drive.c_str()));
 
-  cw::widget_ref w = cw::dialogs::ok(f, cw::util::arg(sigc::ptr_fun(&toplevel::exitmain)),
+  cw::widget_ref w = cw::dialogs::ok(f, cw::util::arg(sigc::ptr_fun(&cw::toplevel::exitmain)),
 				     cw::get_style("MediaChange"));
   w->show_all();
   popup_widget(w);
 
-  toplevel::mainloop();  // Eeeeeek!  Recursive mainloop!  I'm afraid..
+  cw::toplevel::mainloop();  // Eeeeeek!  Recursive mainloop!  I'm afraid..
 
   return true;
 }
@@ -73,8 +72,8 @@ void download_status_bar::IMSHit(pkgAcquire::ItemDesc &itm)
   last_msg=_("Hit ")+itm.Description;
   last_switchtime=time(0);
 
-  toplevel::update();
-  toplevel::tryupdate();
+  cw::toplevel::update();
+  cw::toplevel::tryupdate();
 }
 
 void download_status_bar::Fetch(pkgAcquire::ItemDesc &itm)
@@ -84,8 +83,8 @@ void download_status_bar::Fetch(pkgAcquire::ItemDesc &itm)
   last_msg=_("Downloading ")+itm.ShortDesc;
   last_switchtime=time(0);
 
-  toplevel::update();
-  toplevel::tryupdate();
+  cw::toplevel::update();
+  cw::toplevel::tryupdate();
 }
 
 void download_status_bar::Done(pkgAcquire::ItemDesc &itm)
@@ -95,8 +94,8 @@ void download_status_bar::Done(pkgAcquire::ItemDesc &itm)
   last_msg=_("Got ")+itm.Description;
   last_switchtime=time(0);
 
-  toplevel::update();
-  toplevel::tryupdate();
+  cw::toplevel::update();
+  cw::toplevel::tryupdate();
 }
 
 void download_status_bar::Fail(pkgAcquire::ItemDesc &itm)
@@ -106,8 +105,8 @@ void download_status_bar::Fail(pkgAcquire::ItemDesc &itm)
   last_msg=itm.Description+": "+itm.Owner->ErrorText;
   last_switchtime=time(0);
 
-  toplevel::update();
-  toplevel::tryupdate();
+  cw::toplevel::update();
+  cw::toplevel::tryupdate();
 }
 
 bool download_status_bar::Pulse(pkgAcquire *Owner)
@@ -160,10 +159,10 @@ bool download_status_bar::Pulse(pkgAcquire *Owner)
 	    }
 	}
 
-      toplevel::poll();
+      cw::toplevel::poll();
 
-      toplevel::update();
-      toplevel::tryupdate();
+      cw::toplevel::update();
+      cw::toplevel::tryupdate();
     }
 
   return !cancelled;

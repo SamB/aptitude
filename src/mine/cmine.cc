@@ -51,7 +51,6 @@
 using namespace std;
 namespace cw = cwidget;
 namespace dialogs = cwidget::dialogs;
-namespace toplevel = cwidget::toplevel;
 namespace widgets = cwidget::widgets;
 
 cwidget::config::keybindings *cmine::bindings;
@@ -74,7 +73,7 @@ int cmine::height_request(int w)
     return 1;
 }
 
-class cmine::update_header_event : public toplevel::event
+class cmine::update_header_event : public cw::toplevel::event
 {
   cwidget::util::ref_ptr<cmine> cm;
 
@@ -92,9 +91,9 @@ public:
 
 void cmine::update_header()
 {
-  timeout_num = toplevel::addtimeout(new update_header_event(this), 500);
+  timeout_num = cw::toplevel::addtimeout(new update_header_event(this), 500);
 
-  toplevel::update();
+  cw::toplevel::update();
 };
 
 void cmine::paint_header(const cwidget::style &st)
@@ -191,7 +190,7 @@ void cmine::do_load_game(wstring ws)
 	  else
 	    {
 	      set_board(brd);
-	      toplevel::update();
+	      cw::toplevel::update();
 	    }
 	}
     }
@@ -218,7 +217,7 @@ void cmine::do_save_game(wstring ws)
       else
 	{
 	  board->save(out);
-	  toplevel::update();
+	  cw::toplevel::update();
 	}
     }
 }
@@ -449,14 +448,14 @@ void cmine::do_continue_new_game(bool start,
 cmine::cmine():board(NULL), prevwidth(0), prevheight(0)
 {
   set_board(easy_game());
-  toplevel::addtimeout(new update_header_event(this), 500);
+  cw::toplevel::addtimeout(new update_header_event(this), 500);
   //set_status(_("n - New Game  Cursor keys - move cursor  f - flag  enter - check  ? - help"));
 }
 
 cmine::~cmine()
 {
   delete board;
-  toplevel::deltimeout(timeout_num);
+  cw::toplevel::deltimeout(timeout_num);
 }
 
 void cmine::checkend()
@@ -580,7 +579,7 @@ void cmine::set_board(mine_board *_board)
   basex=(width-_board->get_width()-2)/2;
   basey=(height-_board->get_height()-4)/2;
 
-  toplevel::update();
+  cw::toplevel::update();
 }
 
 bool cmine::handle_key(const cwidget::config::key &k)
@@ -603,23 +602,23 @@ bool cmine::handle_key(const cwidget::config::key &k)
 
 	  checkend();
 	}
-      toplevel::update();
+      cw::toplevel::update();
     }
   else if(bindings->key_matches(k, "MineUncoverSquare"))
     {
       board->uncover(curx, cury);
-      toplevel::update();
+      cw::toplevel::update();
     }
   else if(bindings->key_matches(k, "MineSweepSquare"))
     {
       board->sweep(curx, cury);
-      toplevel::update();
+      cw::toplevel::update();
     }
   else if(bindings->key_matches(k, "MineFlagSquare"))
     {
       board->toggle_flag(curx, cury);
       // FIXME: handle errors?
-      toplevel::update();
+      cw::toplevel::update();
     }
   else if(bindings->key_matches(k, "Up"))
     {
@@ -628,7 +627,7 @@ bool cmine::handle_key(const cwidget::config::key &k)
 	  cury--;
 	  while(basey+cury+1<1)
 	    basey++;
-	  toplevel::update();
+	  cw::toplevel::update();
 	}
     }
   else if(bindings->key_matches(k, "Down"))
@@ -638,7 +637,7 @@ bool cmine::handle_key(const cwidget::config::key &k)
 	  cury++;
 	  while(basey+cury+1>=height-3)
 	    basey--;
-	  toplevel::update();
+	  cw::toplevel::update();
 	}
     }
   else if(bindings->key_matches(k, "Left"))
@@ -648,7 +647,7 @@ bool cmine::handle_key(const cwidget::config::key &k)
 	  curx--;
 	  while(basex+curx+1<1)
 	    basex++;
-	  toplevel::update();
+	  cw::toplevel::update();
 	}
     }
   else if(bindings->key_matches(k, "Right"))
@@ -658,7 +657,7 @@ bool cmine::handle_key(const cwidget::config::key &k)
 	  curx++;
 	  while(basex+curx+1>=width-1)
 	    basex--;
-	  toplevel::update();
+	  cw::toplevel::update();
 	}
     }
   else if(bindings->key_matches(k, "MineNewGame"))

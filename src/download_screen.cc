@@ -40,10 +40,12 @@
 
 #include <generic/util/mut_fun.h>
 
+namespace cw = cwidget;
+
 static void set_and_exit(bool &target, bool val)
 {
   target=val;
-  toplevel::exitmain();
+  cw::toplevel::exitmain();
 }
 
 bool download_screen::MediaChange(string Media, string Drive)
@@ -67,7 +69,7 @@ bool download_screen::MediaChange(string Media, string Drive)
 			       W_("Abort"),
 			       cw::get_style("MediaChange")));
 
-  toplevel::mainloop();  // Eeeeeek!  Recursive mainloop!  I'm afraid..
+  cw::toplevel::mainloop();  // Eeeeeek!  Recursive mainloop!  I'm afraid..
 
   return rval;
 }
@@ -87,8 +89,8 @@ void download_screen::IMSHit(pkgAcquire::ItemDesc &itmdesc)
     }
   else
     found->second->download_done(true);
-  toplevel::update();
-  toplevel::tryupdate();
+  cw::toplevel::update();
+  cw::toplevel::tryupdate();
 }
 
 void download_screen::Fetch(pkgAcquire::ItemDesc &itmdesc)
@@ -105,8 +107,8 @@ void download_screen::Fetch(pkgAcquire::ItemDesc &itmdesc)
       sync_bounds();
     }
 
-  toplevel::update();
-  toplevel::tryupdate();
+  cw::toplevel::update();
+  cw::toplevel::tryupdate();
 }
 
 void download_screen::Done(pkgAcquire::ItemDesc &itmdesc)
@@ -127,8 +129,8 @@ void download_screen::Done(pkgAcquire::ItemDesc &itmdesc)
       found->second->set_worker(NULL);
     }
 
-  toplevel::update();
-  toplevel::tryupdate();
+  cw::toplevel::update();
+  cw::toplevel::tryupdate();
 }
 
 void download_screen::Fail(pkgAcquire::ItemDesc &itmdesc)
@@ -140,8 +142,8 @@ void download_screen::Fail(pkgAcquire::ItemDesc &itmdesc)
     found->second->set_worker(NULL);
 
   // Nothing really to do??
-  toplevel::update();
-  toplevel::tryupdate();
+  cw::toplevel::update();
+  cw::toplevel::tryupdate();
 }
 
 bool download_screen::Pulse(pkgAcquire *Owner)
@@ -156,10 +158,10 @@ bool download_screen::Pulse(pkgAcquire *Owner)
 	get_itm(*i->CurrentItem)->set_worker(i);
     }
 
-  toplevel::poll();
+  cw::toplevel::poll();
 
-  toplevel::update();
-  toplevel::tryupdate();
+  cw::toplevel::update();
+  cw::toplevel::tryupdate();
 
   return !cancelled;
 }
@@ -182,9 +184,9 @@ void download_screen::Stop()
   snprintf(buf, 256, _("Downloaded %sB in %ss (%sB/s)."), SizeToStr(FetchedBytes).c_str(), TimeToStr(ElapsedTime).c_str(), SizeToStr(CurrentCPS).c_str());
 
   popup_widget(widgets::dialog_ok(cw::util::transcode(buf),
-			    arg(sigc::ptr_fun(toplevel::exitmain))));
+			    arg(sigc::ptr_fun(cw::toplevel::exitmain))));
 
-  toplevel::mainloop();
+  cw::toplevel::mainloop();
 
   destroy();
 }

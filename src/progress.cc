@@ -87,17 +87,17 @@ void progress::Update()
 
   if(CheckChange(0.25))
     {
-      toplevel::update();
-      toplevel::updatecursor();
-      toplevel::tryupdate();
+      cw::toplevel::update();
+      cw::toplevel::updatecursor();
+      cw::toplevel::tryupdate();
     }
 }
 
 void progress::Done()
 {
-  toplevel::update();
-  toplevel::updatecursor();
-  toplevel::tryupdate();
+  cw::toplevel::update();
+  cw::toplevel::updatecursor();
+  cw::toplevel::tryupdate();
   //hide();
 }
 

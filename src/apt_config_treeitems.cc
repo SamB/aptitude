@@ -45,7 +45,6 @@ namespace cw = cwidget;
 using cw::fragment;
 using cw::util::transcode;
 namespace widgets = cw::widgets;
-namespace toplevel = cw::toplevel;
 
 namespace aptitude
 {
@@ -79,7 +78,7 @@ namespace aptitude
 
 	void value_changed()
 	{
-	  toplevel::update();
+	  cw::toplevel::update();
 	  description_changed();
 	}
       public:
@@ -184,7 +183,7 @@ namespace aptitude
 
 	  void value_changed()
 	  {
-	    toplevel::update();
+	    cw::toplevel::update();
 	    description_changed();
 	  }
 
@@ -350,7 +349,7 @@ namespace aptitude
 
 	void value_changed()
 	{
-	  toplevel::update();
+	  cw::toplevel::update();
 	  description_changed();
 	}
       public:
