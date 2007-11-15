@@ -44,7 +44,7 @@
 namespace cw = cwidget;
 using cw::fragment;
 using cw::util::transcode;
-namespace cw
+namespace cwidget
 {
   using namespace widgets;
 }
