@@ -23,7 +23,7 @@
 #include <apt-pkg/acquire.h>
 #include <apt-pkg/error.h>
 
-#include <cwidget/generic/util/threads.h>
+#include <cwidget/generic/threads/threads.h>
 
 #include <sigc++/slot.h>
 
