@@ -10,13 +10,13 @@
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/mem_fun.h>
 
-#include <vscreen/config/keybindings.h>
-#include <vscreen/config/colors.h>
+#include <cwidget/config/keybindings.h>
+#include <cwidget/config/colors.h>
 
 #include <cwidget/widgets/widget.h>
 #include <cwidget/toplevel.h>
 
-#include <vscreen/transcode.h>
+#include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/button.h>
 #include <cwidget/widgets/center.h>
 #include <cwidget/widgets/editline.h>
@@ -25,7 +25,7 @@
 #include <cwidget/widgets/radiogroup.h>
 #include <cwidget/widgets/table.h>
 #include <cwidget/widgets/togglebutton.h>
-#include <cwidget/widgets/util.h>
+#include <cwidget/dialogs.h>
 
 #include <string>
 #include <fstream>
@@ -48,11 +48,16 @@
 #define MINE_LRCORNER L'+'
 #endif
 
+using cwidget::get_style;
+using cwidget::util::transcode;
 using namespace std;
+namespace dialogs = cwidget::dialogs;
+namespace toplevel = cwidget::toplevel;
+namespace widgets = cwidget::widgets;
 
-keybindings *cmine::bindings;
+cwidget::config::keybindings *cmine::bindings;
 
-vs_editline::history_list cmine::load_history, cmine::save_history;
+widgets::editline::history_list cmine::load_history, cmine::save_history;
 
 int cmine::width_request()
 {
@@ -70,9 +75,9 @@ int cmine::height_request(int w)
     return 1;
 }
 
-class cmine::update_header_event : public vscreen_event
+class cmine::update_header_event : public toplevel::event
 {
-  ref_ptr<cmine> cm;
+  cwidget::util::ref_ptr<cmine> cm;
 
 public:
   update_header_event(cmine *_cm)
@@ -88,15 +93,15 @@ public:
 
 void cmine::update_header()
 {
-  timeout_num = vscreen_addtimeout(new update_header_event(this), 500);
+  timeout_num = toplevel::addtimeout(new update_header_event(this), 500);
 
-  vscreen_update();
+  toplevel::update();
 };
 
-void cmine::paint_header(const style &st)
+void cmine::paint_header(const cwidget::style &st)
   // Shows the header with its extra info
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   if(board)
     {
@@ -151,7 +156,7 @@ void cmine::paint_header(const style &st)
 
 void cmine::do_load_game(wstring ws)
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   string s=transcode(ws);
 
@@ -164,8 +169,8 @@ void cmine::do_load_game(wstring ws)
 
 	  snprintf(buf, 512, _("Could not open file \"%s\""), s.c_str());
 
-	  popup_widget(vs_dialog_ok(transcode(buf), NULL,
-				    get_style("Error")));
+	  popup_widget(dialogs::ok(transcode(buf), NULL,
+				   get_style("Error")));
 	}
       else
 	{
@@ -180,14 +185,14 @@ void cmine::do_load_game(wstring ws)
 	      snprintf(buf, 512, _("Could not load game from %s"),
 		       s.c_str());
 
-	      popup_widget(vs_dialog_ok(transcode(buf), NULL,
-					get_style("Error")));
+	      popup_widget(dialogs::ok(transcode(buf), NULL,
+				       get_style("Error")));
 	      delete brd;
 	    }
 	  else
 	    {
 	      set_board(brd);
-	      vscreen_update();
+	      toplevel::update();
 	    }
 	}
     }
@@ -195,7 +200,7 @@ void cmine::do_load_game(wstring ws)
 
 void cmine::do_save_game(wstring ws)
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   string s=transcode(ws);
 
@@ -208,27 +213,27 @@ void cmine::do_save_game(wstring ws)
 
 	  snprintf(buf, 512, _("Could not open file \"%s\""), s.c_str());
 
-	  popup_widget(vs_dialog_ok(transcode(buf), NULL,
-				    get_style("Error")));
+	  popup_widget(dialogs::ok(transcode(buf), NULL,
+				   get_style("Error")));
 	}
       else
 	{
 	  board->save(out);
-	  vscreen_update();
+	  toplevel::update();
 	}
     }
 }
 
-void cmine::do_start_custom_game(vscreen_widget &w_bare,
-				 vs_editline &heightedit_bare,
-				 vs_editline &widthedit_bare,
-				 vs_editline &minesedit_bare)
+void cmine::do_start_custom_game(widgets::widget &w_bare,
+				 widgets::editline &heightedit_bare,
+				 widgets::editline &widthedit_bare,
+				 widgets::editline &minesedit_bare)
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   // Be ultra-safe and hold strong references to everything.
-  vs_widget_ref w(&w_bare);
-  vs_editline_ref heightedit(&heightedit_bare),
+  widgets::widget_ref w(&w_bare);
+  widgets::editline_ref heightedit(&heightedit_bare),
     widthedit(&widthedit_bare), minesedit(&minesedit_bare);
 
   wstring s=heightedit->get_text();
@@ -244,9 +249,9 @@ void cmine::do_start_custom_game(vscreen_widget &w_bare,
       //
       //
       // That's ok, they'll do that anyway in a couple releases ;-)
-      popup_widget(vs_dialog_ok(transcode(_("The board height must be a positive integer")),
-				NULL,
-				get_style("Error")));
+      popup_widget(dialogs::ok(transcode(_("The board height must be a positive integer")),
+			       NULL,
+			       get_style("Error")));
       return;
     }
 
@@ -256,9 +261,9 @@ void cmine::do_start_custom_game(vscreen_widget &w_bare,
 
   if(s.c_str()[0]=='\0' || *end!='\0' || width<1)
     {
-      popup_widget(vs_dialog_ok(transcode(_("The board width must be a positive integer")),
-				NULL,
-				get_style("Error")));
+      popup_widget(dialogs::ok(transcode(_("The board width must be a positive integer")),
+			       NULL,
+			       get_style("Error")));
       return;
     }
 
@@ -268,9 +273,9 @@ void cmine::do_start_custom_game(vscreen_widget &w_bare,
 
   if(s.c_str()[0]=='\0' || *end!='\0' || mines<1)
     {
-      popup_widget(vs_dialog_ok(transcode(_("Invalid mine count; please enter a positive integer")),
-				NULL,
-				get_style("Error")));
+      popup_widget(dialogs::ok(transcode(_("Invalid mine count; please enter a positive integer")),
+			       NULL,
+			       get_style("Error")));
       return;
     }
 
@@ -281,40 +286,40 @@ void cmine::do_start_custom_game(vscreen_widget &w_bare,
 
 void cmine::do_custom_game()
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
-  vs_center_ref center=vs_center::create();
-  center->set_bg_style(style_attrs_flip(A_REVERSE));
+  widgets::center_ref center = widgets::center::create();
+  center->set_bg_style(cwidget::style_attrs_flip(A_REVERSE));
 
-  vs_table_ref table=vs_table::create();
+  widgets::table_ref table = widgets::table::create();
 
-  vs_label_ref overalllabel=vs_label::create(_("Setup custom game"));
+  widgets::label_ref overalllabel = widgets::label::create(_("Setup custom game"));
 
-  vs_label_ref heightlabel=vs_label::create(_("Height of board: "));
-  vs_editline_ref heightedit=vs_editline::create(L"");
+  widgets::label_ref heightlabel = widgets::label::create(_("Height of board: "));
+  widgets::editline_ref heightedit = widgets::editline::create(L"");
 
-  vs_label_ref widthlabel=vs_label::create(_("Width of board: "));
-  vs_editline_ref widthedit=vs_editline::create(L"");
+  widgets::label_ref widthlabel = widgets::label::create(_("Width of board: "));
+  widgets::editline_ref widthedit = widgets::editline::create(L"");
 
-  vs_label_ref mineslabel=vs_label::create(_("Number of mines: "));
-  vs_editline_ref minesedit=vs_editline::create(L"");
+  widgets::label_ref mineslabel = widgets::label::create(_("Number of mines: "));
+  widgets::editline_ref minesedit = widgets::editline::create(L"");
 
-  vs_button_ref okbutton=vs_button::create(_("Ok"));
-  vs_button_ref cancelbutton=vs_button::create(_("Cancel"));
+  widgets::button_ref okbutton = widgets::button::create(_("Ok"));
+  widgets::button_ref cancelbutton = widgets::button::create(_("Cancel"));
 
-  table->connect_key("Confirm", &global_bindings, okbutton->pressed.make_slot());
+  table->connect_key("Confirm", &cwidget::config::global_bindings, okbutton->pressed.make_slot());
 
   okbutton->pressed.connect(sigc::bind(sigc::mem_fun(*this, &cmine::do_start_custom_game),
 				       center.weak_ref(),
 				       heightedit.weak_ref(),
 				       widthedit.weak_ref(),
 				       minesedit.weak_ref()));
-  cancelbutton->pressed.connect(sigc::mem_fun(*center.unsafe_get_ref(), &vscreen_widget::destroy));
+  cancelbutton->pressed.connect(sigc::mem_fun(*center.unsafe_get_ref(), &cwidget::widgets::widget::destroy));
 
-  table->connect_key("Cancel", &global_bindings, cancelbutton->pressed.make_slot());
+  table->connect_key("Cancel", &cwidget::config::global_bindings, cancelbutton->pressed.make_slot());
 
-  vs_center_ref cyes=vs_center::create(okbutton);
-  vs_center_ref cno=vs_center::create(cancelbutton);
+  widgets::center_ref cyes = widgets::center::create(okbutton);
+  widgets::center_ref cno = widgets::center::create(cancelbutton);
 
   table->add_widget(overalllabel, 0, 0, 1, 2, true, false);
 
@@ -342,7 +347,7 @@ void cmine::do_custom_game()
   cyes->show();
   cno->show();
 
-  vs_frame_ref frame=vs_frame::create(table);
+  widgets::frame_ref frame = widgets::frame::create(table);
   center->add_widget(frame);
 
   popup_widget(center);
@@ -350,22 +355,24 @@ void cmine::do_custom_game()
 
 void cmine::do_new_game()
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
-  vs_center_ref center=vs_center::create();
-  center->set_bg_style(style_attrs_flip(A_REVERSE));
+  widgets::center_ref center = widgets::center::create();
+  center->set_bg_style(cwidget::style_attrs_flip(A_REVERSE));
 
-  vs_table_ref table=vs_table::create();
+  widgets::table_ref table = widgets::table::create();
 
-  vs_label_ref overalllabel=vs_label::create(_("Choose difficulty level"));
+  widgets::label_ref overalllabel = widgets::label::create(_("Choose difficulty level"));
 
-  vs_radiobutton_ref easybutton=vs_radiobutton::create(_("Easy"), true);
-  vs_radiobutton_ref mediumbutton=vs_radiobutton::create(_("Medium"), false);
-  vs_radiobutton_ref hardbutton=vs_radiobutton::create(_("Hard"), false);
-  vs_radiobutton_ref custombutton=vs_radiobutton::create(_("Custom"), false);
+  widgets::radiobutton_ref easybutton = widgets::radiobutton::create(_("Easy"), true);
+  widgets::radiobutton_ref mediumbutton = widgets::radiobutton::create(_("Medium"), false);
+  widgets::radiobutton_ref hardbutton = widgets::radiobutton::create(_("Hard"), false);
+  widgets::radiobutton_ref custombutton = widgets::radiobutton::create(_("Custom"), false);
 
-  vs_button_ref okbutton=vs_button::create(_("Ok"));
-  vs_button_ref cancelbutton=vs_button::create(_("Cancel"));
+  widgets::button_ref okbutton = widgets::button::create(_("Ok"));
+  widgets::button_ref cancelbutton = widgets::button::create(_("Cancel"));
+
+  using cwidget::config::global_bindings;
 
   table->connect_key_post("Confirm", &global_bindings, okbutton->pressed.make_slot());
 
@@ -374,7 +381,7 @@ void cmine::do_new_game()
   hardbutton->connect_key("Confirm", &global_bindings, okbutton->pressed.make_slot());
   custombutton->connect_key("Confirm", &global_bindings, okbutton->pressed.make_slot());
 
-  vs_radiogroup *grp=new vs_radiogroup;
+  widgets::radiogroup *grp = new widgets::radiogroup;
   grp->add_button(easybutton, 0);
   grp->add_button(mediumbutton, 1);
   grp->add_button(hardbutton, 2);
@@ -389,8 +396,8 @@ void cmine::do_new_game()
 					   center.weak_ref(),
 					   grp));
 
-  vs_center_ref cok=vs_center::create(okbutton);
-  vs_center_ref ccancel=vs_center::create(cancelbutton);
+  widgets::center_ref cok = widgets::center::create(okbutton);
+  widgets::center_ref ccancel = widgets::center::create(cancelbutton);
 
   table->add_widget(overalllabel, 0, 0, 1, 2, true, false);
   table->add_widget(easybutton,   1, 0, 1, 2, true, false);
@@ -400,19 +407,19 @@ void cmine::do_new_game()
   table->add_widget(cok,          6, 0, 1, 1, false, false);
   table->add_widget(ccancel,      6, 1, 1, 1, false, false);
 
-  vs_frame_ref frame=vs_frame::create(table);
+  widgets::frame_ref frame = widgets::frame::create(table);
   center->add_widget(frame);
 
   popup_widget(center);
 }
 
 void cmine::do_continue_new_game(bool start,
-				 vscreen_widget &w_bare,
-				 vs_radiogroup *grp)
+				 cwidget::widgets::widget &w_bare,
+				 widgets::radiogroup *grp)
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
-  vs_widget_ref w(&w_bare);
+  widgets::widget_ref w(&w_bare);
 
   if(start)
     switch(grp->get_selected())
@@ -430,9 +437,9 @@ void cmine::do_continue_new_game(bool start,
 	do_custom_game();
 	break;
       default:
-	popup_widget(vs_dialog_ok(transcode("Internal error: execution reached an impossible point"),
-				  NULL,
-				  get_style("Error")));
+	popup_widget(dialogs::ok(transcode("Internal error: execution reached an impossible point"),
+				 NULL,
+				 get_style("Error")));
 	break;
       }
 
@@ -443,26 +450,32 @@ void cmine::do_continue_new_game(bool start,
 cmine::cmine():board(NULL), prevwidth(0), prevheight(0)
 {
   set_board(easy_game());
-  vscreen_addtimeout(new update_header_event(this), 500);
+  toplevel::addtimeout(new update_header_event(this), 500);
   //set_status(_("n - New Game  Cursor keys - move cursor  f - flag  enter - check  ? - help"));
+}
+
+cmine::~cmine()
+{
+  delete board;
+  toplevel::deltimeout(timeout_num);
 }
 
 void cmine::checkend()
   // Prints out silly messages when the player wins or loses
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   if(board->get_state()==mine_board::won)
     // "You hold up the Amulet of Yendor.  An invisible choir sings..."
-    popup_widget(vs_dialog_ok(transcode(_("You have won."))));
+    popup_widget(dialogs::ok(transcode(_("You have won."))));
   else if(board->get_state()==mine_board::lost)
     {
-      popup_widget(vs_dialog_ok(transcode(_("You lose!"))));
+      popup_widget(dialogs::ok(transcode(_("You lose!"))));
 #if 0
       // (messages in reverse order because the minibuf is a stack by default..
       // I could use the special feature of sticking them at the end, but I
       // want them to override whatever's there (probably nothing :) )
-      add_status_widget(new vs_label(_("You die...  --More--"),
+      add_status_widget(new widgets::label(_("You die...  --More--"),
 				     retr_status_color()));
       switch(rand()/(RAND_MAX/8))
 	{
@@ -475,35 +488,35 @@ void cmine::checkend()
 	      if(rand()<(RAND_MAX/3))
 		{
 		  if(rand()<(RAND_MAX/2))
-		    add_status_widget(vs_label::create(_("The spikes were poisoned!  The poison was deadly...  --More--"),
+		    add_status_widget(widgets::label::create(_("The spikes were poisoned!  The poison was deadly...  --More--"),
 						       retr_status_color()));
 
-		  add_status_widget(vs_label::create(_("You land on a set of sharp iron spikes!  --More--"),
+		  add_status_widget(widgets::label::create(_("You land on a set of sharp iron spikes!  --More--"),
 						     retr_status_color()));
 		}
-	      add_status_widget(vs_label::create(_("You fall into a pit!  --More--"),
+	      add_status_widget(widgets::label::create(_("You fall into a pit!  --More--"),
 						 retr_status_color()));
 	    }
-	  add_status_widget(vs_label::create(_("KABOOM!  You step on a land mine.  --More--"),
+	  add_status_widget(widgets::label::create(_("KABOOM!  You step on a land mine.  --More--"),
 					     retr_status_color()));
 	  break;
 	case 4:
 	  if(rand()<RAND_MAX/2)
-	    add_status_widget(vs_label::create(_("The dart was poisoned!  The poison was deadly...  --More--"),
+	    add_status_widget(widgets::label::create(_("The dart was poisoned!  The poison was deadly...  --More--"),
 					       retr_status_color()));
-	  add_status_widget(vs_label::create(_("A little dart shoots out at you!  You are hit by a little dart!  --More--"),
+	  add_status_widget(widgets::label::create(_("A little dart shoots out at you!  You are hit by a little dart!  --More--"),
 					     retr_status_color()));
 	  break;
 	case 5:
-	  add_status_widget(vs_label::create(_("You turn to stone... --More--"),
+	  add_status_widget(widgets::label::create(_("You turn to stone... --More--"),
 					     retr_status_color()));
-	  add_status_widget(vs_label::create(_("Touching the cockatrice corpse was a fatal mistake.  --More--"),
+	  add_status_widget(widgets::label::create(_("Touching the cockatrice corpse was a fatal mistake.  --More--"),
 					     retr_status_color()));
-	  add_status_widget(vs_label::create(_("You feel here a cockatrice corpse.  --More--"),
+	  add_status_widget(widgets::label::create(_("You feel here a cockatrice corpse.  --More--"),
 					     retr_status_color()));
 	  break;
 	case 6:
-	  add_status_widget(vs_label::create(_("Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --More--"),
+	  add_status_widget(widgets::label::create(_("Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --More--"),
 					     retr_status_color()));
 	  break;
 	case 7:
@@ -542,11 +555,11 @@ void cmine::checkend()
 
 	      snprintf(buf, 512, _("Your wand of %s breaks apart and explodes!  --More--"));
 
-	      add_status_widget(vs_label::create(buf,
+	      add_status_widget(widgets::label::create(buf,
 						 retr_status_color()));
 	    }
 
-	  add_status_widget(vs_label::create(_("You are jolted by a surge of electricity!  --More--"),
+	  add_status_widget(widgets::label::create(_("You are jolted by a surge of electricity!  --More--"),
 					     retr_status_color()));
 	  break;
 	}
@@ -568,12 +581,14 @@ void cmine::set_board(mine_board *_board)
   basex=(width-_board->get_width()-2)/2;
   basey=(height-_board->get_height()-4)/2;
 
-  vscreen_update();
+  toplevel::update();
 }
 
-bool cmine::handle_key(const key &k)
+bool cmine::handle_key(const cwidget::config::key &k)
 {
-  vs_widget_ref tmpref(this);
+  using cwidget::util::arg;
+
+  widgets::widget_ref tmpref(this);
 
   int width,height;
   getmaxyx(height, width);
@@ -589,23 +604,23 @@ bool cmine::handle_key(const key &k)
 
 	  checkend();
 	}
-      vscreen_update();
+      toplevel::update();
     }
   else if(bindings->key_matches(k, "MineUncoverSquare"))
     {
       board->uncover(curx, cury);
-      vscreen_update();
+      toplevel::update();
     }
   else if(bindings->key_matches(k, "MineSweepSquare"))
     {
       board->sweep(curx, cury);
-      vscreen_update();
+      toplevel::update();
     }
   else if(bindings->key_matches(k, "MineFlagSquare"))
     {
       board->toggle_flag(curx, cury);
       // FIXME: handle errors?
-      vscreen_update();
+      toplevel::update();
     }
   else if(bindings->key_matches(k, "Up"))
     {
@@ -614,7 +629,7 @@ bool cmine::handle_key(const key &k)
 	  cury--;
 	  while(basey+cury+1<1)
 	    basey++;
-	  vscreen_update();
+	  toplevel::update();
 	}
     }
   else if(bindings->key_matches(k, "Down"))
@@ -624,7 +639,7 @@ bool cmine::handle_key(const key &k)
 	  cury++;
 	  while(basey+cury+1>=height-3)
 	    basey--;
-	  vscreen_update();
+	  toplevel::update();
 	}
     }
   else if(bindings->key_matches(k, "Left"))
@@ -634,7 +649,7 @@ bool cmine::handle_key(const key &k)
 	  curx--;
 	  while(basex+curx+1<1)
 	    basex++;
-	  vscreen_update();
+	  toplevel::update();
 	}
     }
   else if(bindings->key_matches(k, "Right"))
@@ -644,7 +659,7 @@ bool cmine::handle_key(const key &k)
 	  curx++;
 	  while(basex+curx+1>=width-1)
 	    basex--;
-	  vscreen_update();
+	  toplevel::update();
 	}
     }
   else if(bindings->key_matches(k, "MineNewGame"))
@@ -677,7 +692,7 @@ bool cmine::handle_key(const key &k)
 	  encoding="UTF-8";
 	}
 
-      vs_widget_ref w=vs_dialog_fileview(buf, NULL, NULL, NULL, NULL, encoding);
+      widgets::widget_ref w = dialogs::fileview(buf, NULL, NULL, NULL, NULL, encoding);
       w->show_all();
 
       popup_widget(w);
@@ -688,7 +703,7 @@ bool cmine::handle_key(const key &k)
   return true;
 }
 
-void cmine::paint_square(int x, int y, const style &st)
+void cmine::paint_square(int x, int y, const cwidget::style &st)
   // Displays a single square.
 {
   int width,height;
@@ -702,7 +717,7 @@ void cmine::paint_square(int x, int y, const style &st)
   if(screenx>=0 && screenx<width && screeny>=0 && screeny<height-1)
     {
       wchar_t ch;
-      style cur_st;
+      cwidget::style cur_st;
       const mine_board::board_entry &entry=board->get_square(x, y);
       // We want to handle the case of 'game-over' differently from
       // the case of 'still playing' -- when the game is over, all
@@ -769,14 +784,14 @@ void cmine::paint_square(int x, int y, const style &st)
 	    ch=L' ';
 	}
       if(board->get_state()==mine_board::playing && x==curx && y==cury)
-	cur_st+=style_attrs_flip(A_REVERSE);
+	cur_st+=cwidget::style_attrs_flip(A_REVERSE);
 
       apply_style(cur_st);
       mvadd_wch(screeny, screenx, ch);
     }
 }
 
-void cmine::paint(const style &st)
+void cmine::paint(const cwidget::style &st)
 {
   if(get_win())
     {
@@ -913,6 +928,12 @@ void cmine::init_bindings()
 {
   srand(time(0));
 
+  using cwidget::set_style;
+  using cwidget::style_attrs_off;
+  using cwidget::style_attrs_on;
+  using cwidget::style_bg;
+  using cwidget::style_fg;
+
   set_style("MineFlag", style_fg(COLOR_RED)+style_attrs_on(A_BOLD));
   set_style("MineBomb", style_fg(COLOR_RED)+style_attrs_on(A_BOLD));
   set_style("MineDetonated", style_fg(COLOR_RED)+style_attrs_on(A_BOLD));
@@ -926,11 +947,15 @@ void cmine::init_bindings()
   set_style("MineNumber8", style_attrs_on(A_BOLD));
   set_style("MineBorder", style_attrs_on(A_BOLD));
 
+  using cwidget::config::global_bindings;
+  using cwidget::config::key;
+  using cwidget::config::keybindings;
+
   global_bindings.set("MineUncoverSweepSquare", key(KEY_ENTER, true));
   global_bindings.set("MineFlagSquare", key(L'f', false));
   global_bindings.set("MineNewGame", key(L'n', false));
   global_bindings.set("MineSaveGame", key(L'S', false));
   global_bindings.set("MineLoadGame", key(L'L', false));
 
-  bindings=new keybindings(&global_bindings);
+  bindings = new keybindings(&global_bindings);
 }

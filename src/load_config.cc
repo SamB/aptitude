@@ -4,8 +4,8 @@
 
 #include "aptitude.h"
 
-#include "vscreen/config/style.h"
-#include "vscreen/config/keybindings.h"
+#include "cwidget/config/style.h"
+#include "cwidget/config/keybindings.h"
 
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
@@ -13,7 +13,7 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 
-#include <vscreen/transcode.h>
+#include <cwidget/generic/util/transcode.h>
 
 #include <ctype.h>
 

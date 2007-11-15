@@ -25,7 +25,7 @@
 
 #include "aptitude.h"
 
-#include <vscreen/fragment.h>
+#include <cwidget/fragment.h>
 #include <cwidget/widgets/button.h>
 #include <cwidget/widgets/center.h>
 #include <cwidget/widgets/frame.h>
@@ -34,10 +34,9 @@
 #include <cwidget/widgets/subtree.h>
 #include <cwidget/widgets/table.h>
 #include <cwidget/widgets/text_layout.h>
-#include <vscreen/transcode.h>
 
-#include <vscreen/config/keybindings.h>
-#include <vscreen/config/colors.h>
+#include <cwidget/config/keybindings.h>
+#include <cwidget/config/colors.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
@@ -49,6 +48,9 @@
 #include <vector>
 
 using namespace std;
+
+namespace cw = cwidget;
+namespace cwidget { using namespace widgets; }
 
 namespace aptitude
 {
@@ -150,8 +152,8 @@ struct option_item
 			     const char *long_description)
 	{
 	  return new radio_choice(value,
-				  transcode(_(description)),
-				  transcode(_(long_description)));
+				  W_(description),
+				  W_(long_description));
 	}
 
 option_item ui_options[]={
@@ -381,20 +383,20 @@ option_item dependency_options[]={
   option_item()
 };
 
-	class dummy_subtree : public vs_subtree<vs_treeitem>
+	class dummy_subtree : public cw::subtree<cw::treeitem>
 	{
 	  std::wstring text;
 	public:
 	  dummy_subtree(const std::wstring &_text)
-	    : vs_subtree<vs_treeitem>(true),
+	    : cw::subtree<cw::treeitem>(true),
 	      text(_text)
 	  {
 	  }
 
-	  void paint(vs_tree *win, int y,
-		     bool hierarchical, const style &)
+	  void paint(cw::tree *win, int y,
+		     bool hierarchical, const cw::style &)
 	  {
-	    vs_subtree<vs_treeitem>::paint(win, y, hierarchical, text);
+	    cw::subtree<cw::treeitem>::paint(win, y, hierarchical, text);
 	  }
 
 	  const wchar_t *tag()
@@ -408,24 +410,24 @@ option_item dependency_options[]={
 	  }
 	};
 
-	vs_treeitem *parse_option(const option_item &option)
+	cw::treeitem *parse_option(const option_item &option)
 	{
 	  eassert(option.type != option_item::OPTION_END);
 	  switch(option.type)
 	    {
 	    case option_item::OPTION_BOOL:
-	      return make_boolean_item(transcode(_(option.description)),
-				       transcode(_(option.long_description)),
+	      return make_boolean_item(W_(option.description),
+				       W_(option.long_description),
 				       option.option_name,
 				       option.b_default);
 	    case option_item::OPTION_STRING:
-	      return make_string_item(transcode(_(option.description)),
-				      transcode(_(option.long_description)),
+	      return make_string_item(W_(option.description),
+				      W_(option.long_description),
 				      option.option_name,
 				      option.s_default);
 	    case option_item::OPTION_RADIO:
-	      return make_radio_item(transcode(_(option.description)),
-				     transcode(_(option.long_description)),
+	      return make_radio_item(W_(option.description),
+				     W_(option.long_description),
 				     option.option_name,
 				     option.choices,
 				     option.s_default);
@@ -435,20 +437,20 @@ option_item dependency_options[]={
 	    }
 	}
 
-	class apt_options_view : public vs_table
+	class apt_options_view : public cw::table
 	{
-	  vs_text_layout_ref desc_area;
-	  vs_tree_ref tree;
+	  cw::text_layout_ref desc_area;
+	  cw::tree_ref tree;
 
 	  sigc::connection last_connection;
 
-	  void handle_selection_changed(vs_treeitem *selected)
+	  void handle_selection_changed(cw::treeitem *selected)
 	  {
 	    last_connection.disconnect();
 
 	    config_treeitem *configitem = dynamic_cast<config_treeitem *>(selected);
 	    if(configitem == NULL)
-	      desc_area->set_fragment(newline_fragment());
+	      desc_area->set_fragment(cw::newline_fragment());
 	    else
 	      {
 		last_connection = configitem->description_changed.connect(sigc::mem_fun(this, &apt_options_view::handle_description_changed));
@@ -458,7 +460,7 @@ option_item dependency_options[]={
 
 	  void handle_description_changed()
 	  {
-	    vs_treeiterator selected = tree->get_selection();
+	    cw::treeiterator selected = tree->get_selection();
 	    config_treeitem *configitem;
 
 	    if(selected == tree->get_end())
@@ -467,7 +469,7 @@ option_item dependency_options[]={
 	      configitem = dynamic_cast<config_treeitem *>(&*selected);
 
 	    if(configitem == NULL)
-	      desc_area->set_fragment(newline_fragment());
+	      desc_area->set_fragment(cw::newline_fragment());
 	    else
 	      desc_area->set_fragment(configitem->get_long_description());
 	  }
@@ -485,11 +487,11 @@ option_item dependency_options[]={
 	    dummy_subtree *root = new dummy_subtree(L"");
 
 	    dummy_subtree *ui_tree =
-	      new dummy_subtree(transcode(_("UI options")));
+	      new dummy_subtree(W_("UI options"));
 	    dummy_subtree *dep_tree =
-	      new dummy_subtree(transcode(_("Dependency handling")));
+	      new dummy_subtree(W_("Dependency handling"));
 	    dummy_subtree *misc_tree =
-	      new dummy_subtree(transcode(_("Miscellaneous")));
+	      new dummy_subtree(W_("Miscellaneous"));
 
 	    root->add_child(ui_tree);
 	    root->add_child(dep_tree);
@@ -499,53 +501,53 @@ option_item dependency_options[]={
 	    make_children(dep_tree,  dependency_options);
 	    make_children(misc_tree, misc_options);
 
-	    tree = vs_tree::create(root);
+	    tree = cw::tree::create(root);
 
 	    // Use an empty label to produce a "bar" dividing the two
 	    // halves of the screen.
-	    vs_label_ref middle_label = vs_label::create("", get_style("Status"));
-	    desc_area = vs_text_layout::create();
+	    cw::label_ref middle_label = cw::label::create("", cw::get_style("Status"));
+	    desc_area = cw::text_layout::create();
 
-	    vs_scrollbar_ref desc_area_scrollbar = vs_scrollbar::create(vs_scrollbar::VERTICAL);
+	    cw::scrollbar_ref desc_area_scrollbar = cw::scrollbar::create(cw::scrollbar::VERTICAL);
 
 	    tree->selection_changed.connect(sigc::mem_fun(this, &apt_options_view::handle_selection_changed));
 	    tree->highlight_current();
 
 	    add_widget_opts(tree, 0, 0, 1, 2,
-			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK | vs_table::IGNORE_SIZE_REQUEST,
-			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK | vs_table::IGNORE_SIZE_REQUEST);
+			    cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK | cw::table::IGNORE_SIZE_REQUEST,
+			    cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK | cw::table::IGNORE_SIZE_REQUEST);
 
 	    add_widget_opts(middle_label, 1, 0, 1, 2,
-			    vs_table::ALIGN_CENTER | vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
-			    vs_table::ALIGN_CENTER);
+			    cw::table::ALIGN_CENTER | cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK,
+			    cw::table::ALIGN_CENTER);
 
 	    add_widget_opts(desc_area, 2, 0, 1, 1,
-			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK | vs_table::IGNORE_SIZE_REQUEST,
-			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK | vs_table::IGNORE_SIZE_REQUEST);
+			    cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK | cw::table::IGNORE_SIZE_REQUEST,
+			    cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK | cw::table::IGNORE_SIZE_REQUEST);
 	    add_widget_opts(desc_area_scrollbar, 2, 1, 1, 1,
-			    vs_table::FILL | vs_table::SHRINK,
-			    vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
+			    cw::table::FILL | cw::table::SHRINK,
+			    cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK);
 
-	    desc_area->location_changed.connect(sigc::mem_fun(*desc_area_scrollbar.unsafe_get_ref(), &vs_scrollbar::set_slider));
+	    desc_area->location_changed.connect(sigc::mem_fun(*desc_area_scrollbar.unsafe_get_ref(), &cw::scrollbar::set_slider));
 
-	    tree->connect_key("DescriptionUp", &global_bindings,
+	    tree->connect_key("DescriptionUp", &cw::config::global_bindings,
 			      sigc::mem_fun(*desc_area.unsafe_get_ref(),
-					    &vs_text_layout::line_up));
-	    tree->connect_key("DescriptionDown", &global_bindings,
+					    &cw::text_layout::line_up));
+	    tree->connect_key("DescriptionDown", &cw::config::global_bindings,
 			      sigc::mem_fun(*desc_area.unsafe_get_ref(),
-					    &vs_text_layout::line_down));
+					    &cw::text_layout::line_down));
 	  }
 
 	public:
-	  static ref_ptr<apt_options_view> create()
+	  static cw::util::ref_ptr<apt_options_view> create()
 	  {
-	    return ref_ptr<apt_options_view>(new apt_options_view);
+	    return cw::util::ref_ptr<apt_options_view>(new apt_options_view);
 	  }
 	};
-	typedef ref_ptr<apt_options_view> apt_options_view_ref;
+	typedef cw::util::ref_ptr<apt_options_view> apt_options_view_ref;
       }
 
-      vs_widget_ref make_options_tree()
+      cw::widget_ref make_options_tree()
       {
 	return apt_options_view::create();
       }

@@ -28,8 +28,8 @@
 
 #include <generic/util/util.h>
 
-#include <vscreen/fragment.h>
-#include <vscreen/transcode.h>
+#include <cwidget/fragment.h>
+#include <cwidget/generic/util/transcode.h>
 
 #include <algorithm>
 #include <vector>

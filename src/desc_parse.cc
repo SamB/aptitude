@@ -28,11 +28,13 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/tags.h>
 
-#include <vscreen/fragment.h>
-#include <vscreen/transcode.h>
-#include <vscreen/config/colors.h>
+#include <cwidget/fragment.h>
+#include <cwidget/generic/util/transcode.h>
+#include <cwidget/config/colors.h>
 
 using namespace std;
+
+namespace cw = cwidget;
 
 // Notes on bulletting:
 //
@@ -74,13 +76,13 @@ using namespace std;
  *
  *  \return the new fragment.
  */
-static fragment *make_level_fragment(const wstring &desc,
-				     unsigned int level,
-				     wstring::size_type indent,
-				     wstring::size_type &start,
-				     bool recognize_bullets)
+static cw::fragment *make_level_fragment(const wstring &desc,
+					 unsigned int level,
+					 wstring::size_type indent,
+					 wstring::size_type &start,
+					 bool recognize_bullets)
 {
-  vector<fragment*> fragments;
+  vector<cw::fragment*> fragments;
   bool first=true;
 
   while(start<desc.size())
@@ -119,7 +121,7 @@ static fragment *make_level_fragment(const wstring &desc,
       // space; other full stops are treated as part of a paragraph.
       if(nspaces == 1 && desc[loc] == '.')
 	{
-	  fragments.push_back(newline_fragment());
+	  fragments.push_back(cw::newline_fragment());
 
 	  while(loc < desc.size() && desc[loc] != L'\n')
 	    ++loc;
@@ -165,17 +167,18 @@ static fragment *make_level_fragment(const wstring &desc,
 
 		start = loc2 + 2;
 
-		fragment *item_contents=make_level_fragment(desc,
-							    level+1,
-							    nspaces2 + 2,
-							    start,
-							    recognize_bullets);
+		cw::fragment *item_contents =
+		  make_level_fragment(desc,
+				      level+1,
+				      nspaces2 + 2,
+				      start,
+				      recognize_bullets);
 
-		fragments.push_back(style_fragment(text_fragment(bullet),
-						   get_style("Bullet")));
-		fragments.push_back(indentbox(1,
-					      (level+1)*2,
-					      item_contents));
+		fragments.push_back(cw::style_fragment(cw::text_fragment(bullet),
+							    cw::get_style("Bullet")));
+		fragments.push_back(cw::indentbox(1,
+						       (level+1)*2,
+						       item_contents));
 
 	      }
 	    else
@@ -185,7 +188,7 @@ static fragment *make_level_fragment(const wstring &desc,
 		  ++amt;
 
 		// Hard-wrap AS REQUIRED BY POLICY.
-		fragments.push_back(hardwrapbox(text_fragment(wstring(desc, loc, amt))));
+		fragments.push_back(cw::hardwrapbox(cw::text_fragment(wstring(desc, loc, amt))));
 
 		loc+=amt;
 		if(loc<desc.size())
@@ -245,18 +248,18 @@ static fragment *make_level_fragment(const wstring &desc,
 		cont=false;
 	    } while(cont);
 
-	    fragments.push_back(wrapbox(text_fragment(par)));
+	    fragments.push_back(wrapbox(cw::text_fragment(par)));
 	  }
 	}
     }
 
-  return sequence_fragment(fragments);
+  return cw::sequence_fragment(fragments);
 }
 
-fragment *make_desc_fragment(const wstring &desc)
+cw::fragment *make_desc_fragment(const wstring &desc)
 {
   wstring::size_type loc=0;
-  vector<fragment*> fragments;
+  vector<cw::fragment*> fragments;
 
   // Skip the short description
   while(loc<desc.size() && desc[loc]!=L'\n')
@@ -276,7 +279,7 @@ fragment *make_desc_fragment(const wstring &desc)
 }
 
 
-fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
+cw::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
 {
   if(pkg.end())
     return NULL;
@@ -284,17 +287,17 @@ fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
   const set<tag> *s = get_tags(pkg);
   if(s != NULL && !s->empty())
     {
-      vector<fragment *> tags;
+      vector<cw::fragment *> tags;
 
       for(set<tag>::const_iterator i = s->begin(); i != s->end(); ++i)
-	tags.push_back(text_fragment(i->str(), style_attrs_on(A_BOLD)));
+	tags.push_back(cw::text_fragment(i->str(), cw::style_attrs_on(A_BOLD)));
 
-      wstring tagstitle = transcode(_("Tags"));
+      wstring tagstitle = cwidget::util::transcode(_("Tags"));
 
       return fragf("%ls: %F",
 		   tagstitle.c_str(),
 		   indentbox(0, wcswidth(tagstitle.c_str(), tagstitle.size())+2,
-			     wrapbox(join_fragments(tags, L", "))));
+			     wrapbox(cw::join_fragments(tags, L", "))));
     }
   else
     return NULL;

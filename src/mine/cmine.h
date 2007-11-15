@@ -27,12 +27,22 @@
 #include <cwidget/widgets/minibuf_win.h>
 #include <cwidget/widgets/editline.h>
 
-class vs_radiogroup;
-class keybindings;
-
-class cmine:public vscreen_widget
+namespace cwidget
 {
-  //vs_multiplex *status_multiplex;
+  namespace widgets
+  {
+    class radiogroup;
+  }
+
+  namespace config
+  {
+    class keybindings;
+  }
+}
+
+class cmine:public cwidget::widgets::widget
+{
+  //cwidget::widgets::multiplex *status_multiplex;
   mine_board *board;
   int curx, cury; // Cursor location
   int basex, basey; // Where the board starts relative to the window.
@@ -41,13 +51,13 @@ class cmine:public vscreen_widget
   // moment, I'm looking for a cleaner solution.
   int timeout_num;
 
-  static vs_editline::history_list load_history, save_history;
+  static cwidget::widgets::editline::history_list load_history, save_history;
 
   void set_board(mine_board *_board);
   // Deletes the old board, and replaces it with the new one.  cur[xy] and
   // base[xy] are set so that the board appears in the center of the screen,
   // with the cursor approxiomately in its center.
-  void paint_square(int x, int y, const style &st);
+  void paint_square(int x, int y, const cwidget::style &st);
 
   void checkend();
   // Checks whether the game is over, prints cute message if so.
@@ -62,41 +72,37 @@ class cmine:public vscreen_widget
   void do_save_game(std::wstring s);
   void do_new_game();
   void do_continue_new_game(bool start,
-			    vscreen_widget &w,
-			    vs_radiogroup *grp);
+			    cwidget::widgets::widget &w,
+			    cwidget::widgets::radiogroup *grp);
   void do_custom_game();
-  void do_start_custom_game(vscreen_widget &w,
-			    vs_editline &heightedit,
-			    vs_editline &widthedit,
-			    vs_editline &minesedit);
+  void do_start_custom_game(cwidget::widgets::widget &w,
+			    cwidget::widgets::editline &heightedit,
+			    cwidget::widgets::editline &widthedit,
+			    cwidget::widgets::editline &minesedit);
 protected:
-  void paint_header(const style &st);
+  void paint_header(const cwidget::style &st);
 
   cmine();
 public:
-  static ref_ptr<cmine> create()
+  static cwidget::util::ref_ptr<cmine> create()
   {
-    ref_ptr<cmine> rval(new cmine);
+    cwidget::util::ref_ptr<cmine> rval(new cmine);
     rval->decref();
     return rval;
   }
 
-  bool handle_key(const key &k);
-  void paint(const style &st);
-  ~cmine()
-  {
-    delete board;
-    vscreen_deltimeout(timeout_num);
-  }
+  bool handle_key(const cwidget::config::key &k);
+  void paint(const cwidget::style &st);
+  ~cmine();
 
   int width_request();
   int height_request(int w);
 
   bool get_cursorvisible() {return false;}
-  point get_cursorloc() {return point(0,0);}
+  cwidget::widgets::point get_cursorloc() {return cwidget::widgets::point(0,0);}
   bool focus_me() {return true;}
 
-  static keybindings *bindings;
+  static cwidget::config::keybindings *bindings;
   static void init_bindings();
 };
 

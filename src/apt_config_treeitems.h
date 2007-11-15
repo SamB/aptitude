@@ -22,7 +22,10 @@
 
 #include <cwidget/widgets/treeitem.h>
 
-class fragment;
+namespace cwidget
+{
+  class fragment;
+}
 
 namespace aptitude
 {
@@ -32,7 +35,7 @@ namespace aptitude
     {
       /** \brief The interface for configuration list-items.
        */
-      class config_treeitem : virtual public vs_treeitem
+      class config_treeitem : virtual public cwidget::widgets::treeitem
       {
       public:
 	/** \brief A signal emitted when the description of this tree-item
@@ -49,7 +52,7 @@ namespace aptitude
 
 	/** \brief Retrieve a long description of this configuration item.
 	 */
-	virtual fragment *get_long_description() const = 0;
+	virtual cwidget::fragment *get_long_description() const = 0;
 
 	// @}
       };
@@ -68,7 +71,7 @@ namespace aptitude
        *  Selecting the option and pressing "Confirm" will toggle it on
        *  or off.
        */
-      vs_treeitem *make_boolean_item(const std::wstring &description,
+      cwidget::widgets::treeitem *make_boolean_item(const std::wstring &description,
 				     const std::wstring &long_description,
 				     const std::string  &item,
 				     const bool          dflt);
@@ -87,7 +90,7 @@ namespace aptitude
        *  Selecting the option and pressing "Confirm" will display a
        *  prompt to enter a new value for the option.
        */
-      vs_treeitem *make_string_item(const std::wstring &description,
+      cwidget::widgets::treeitem *make_string_item(const std::wstring &description,
 				    const std::wstring &long_description,
 				    const std::string  &item,
 				    const std::string  &dflt);
@@ -144,7 +147,7 @@ namespace aptitude
        *  Selecting the option and pressing "Confirm" will display a
        *  prompt to choose a new value for the option.
        */
-      vs_treeitem *make_radio_item(const std::wstring &description,
+      cwidget::widgets::treeitem *make_radio_item(const std::wstring &description,
 				   const std::wstring &long_description,
 				   const std::string  &item,
 				   const std::vector<radio_choice> &choices,

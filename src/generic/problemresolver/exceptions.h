@@ -23,7 +23,7 @@
 #include <generic/util/exception.h>
 
 /** Generic errors in the problem resolver. */
-class ProblemResolverError : public Exception {
+class ProblemResolverError : public cwidget::util::Exception {
 };
 
 /** An exception indicating that no more solutions are available. */

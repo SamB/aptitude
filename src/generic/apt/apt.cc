@@ -31,9 +31,12 @@
 #include "tags.h"
 #include "tasks.h"
 
-#include <generic/util/undo.h>
+#include <cwidget/generic/util/eassert.h>
+#include <cwidget/generic/util/transcode.h>
+
 #include <generic/util/util.h>
-#include <vscreen/transcode.h>
+
+#include <generic/util/undo.h>
 
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/depcache.h>
@@ -45,7 +48,6 @@
 
 #include <fstream>
 
-#include <generic/util/eassert.h>
 #include <signal.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -897,7 +899,7 @@ std::wstring get_short_description(const pkgCache::VerIterator &ver,
     // apt "helpfully" transcodes the description for us, instead of
     // providing direct access to it.  So I need to assume that the
     // description is encoded in the current locale.
-    return transcode(records->Lookup(df).ShortDesc());
+    return cwidget::util::transcode(records->Lookup(df).ShortDesc());
 #endif
 }
 
@@ -925,6 +927,6 @@ std::wstring get_long_description(const pkgCache::VerIterator &ver,
   if(df.end())
     return std::wstring();
   else
-    return transcode(records->Lookup(df).LongDesc());
+    return cwidget::util::transcode(records->Lookup(df).LongDesc());
 #endif
 }

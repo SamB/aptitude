@@ -32,9 +32,9 @@
 
 #include <generic/util/util.h>
 
-#include <vscreen/config/keybindings.h>
-#include <vscreen/fragment.h>
-#include <vscreen/transcode.h>
+#include <cwidget/config/keybindings.h>
+#include <cwidget/fragment.h>
+#include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/tree.h>
 
 
@@ -160,7 +160,7 @@ style solution_item::get_normal_style()
     return style();
 }
 
-bool solution_item::dispatch_key(const key &k, vs_tree *owner)
+bool solution_item::dispatch_key(const key &k, widgets::tree *owner)
 {
   if(global_bindings.key_matches(k, "SolutionActionReject"))
     {
@@ -173,7 +173,7 @@ bool solution_item::dispatch_key(const key &k, vs_tree *owner)
       owner->line_down();
     }
   else
-    return vs_treeitem::dispatch_key(k, owner);
+    return widgets::treeitem::dispatch_key(k, owner);
 
   return true;
 }
@@ -293,7 +293,7 @@ void solution_act_item::show_target_info()
 		     ssprintf(_("Information about %s"), pkg.Name()));
 }
 
-bool solution_act_item::dispatch_key(const key &k, vs_tree *owner)
+bool solution_act_item::dispatch_key(const key &k, widgets::tree *owner)
 {
   if(global_bindings.key_matches(k, "InfoScreen"))
     {
@@ -304,7 +304,7 @@ bool solution_act_item::dispatch_key(const key &k, vs_tree *owner)
     return solution_item::dispatch_key(k, owner);
 }
 
-void solution_act_item::paint(vs_tree *win, int y, bool hierarchical, const style &st)
+void solution_act_item::paint(widgets::tree *win, int y, bool hierarchical, const style &st)
 {
   unsigned int basex = hierarchical ? 2*get_depth() : 0;
   unsigned int width = win->getmaxx();
@@ -396,7 +396,7 @@ bool solution_act_item::view_target()
 
 
 
-void solution_act_item_bare::paint(vs_tree *win, int y, bool hierarchical, const style &st)
+void solution_act_item_bare::paint(widgets::tree *win, int y, bool hierarchical, const style &st)
 {
   unsigned int basex = hierarchical ? 2*get_depth() : 0;
   unsigned int width = win->getmaxx();
@@ -559,7 +559,7 @@ void solution_unresolved_item::unmandate()
   resman->unapprove_broken_dep(d);
 }
 
-void solution_unresolved_item::paint(vs_tree *win, int y, bool hierarchical, const style &st)
+void solution_unresolved_item::paint(widgets::tree *win, int y, bool hierarchical, const style &st)
 {
   unsigned int basex = hierarchical ? 2*get_depth() : 0;
   unsigned int width = win->getmaxx();

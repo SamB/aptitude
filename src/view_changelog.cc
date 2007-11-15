@@ -17,9 +17,9 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
-#include <vscreen/config/colors.h>
-#include <vscreen/config/keybindings.h>
-#include <vscreen/transcode.h>
+#include <cwidget/config/colors.h>
+#include <cwidget/config/keybindings.h>
+#include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/pager.h>
 #include <cwidget/widgets/scrollbar.h>
 #include <cwidget/widgets/table.h>
@@ -44,7 +44,7 @@
 
 using namespace std;
 
-class pkg_changelog_screen : public vs_file_pager, public menu_redirect
+class pkg_changelog_screen : public widgets::file_pager, public menu_redirect
 {
   bool last_search_forwards;
 
@@ -54,7 +54,7 @@ class pkg_changelog_screen : public vs_file_pager, public menu_redirect
 
     prompt_string(transcode(_("Search for: ")),
 		  get_last_search(),
-		  arg(sigc::mem_fun(*this, &vs_pager::search_for)),
+		  arg(sigc::mem_fun(*this, &widgets::pager::search_for)),
 		  NULL,
 		  NULL,
 		  NULL);
@@ -66,7 +66,7 @@ class pkg_changelog_screen : public vs_file_pager, public menu_redirect
 
     prompt_string(transcode(_("Search backwards for: ")),
 		  get_last_search(),
-		  arg(sigc::mem_fun(*this, &vs_pager::search_back_for)),
+		  arg(sigc::mem_fun(*this, &widgets::pager::search_back_for)),
 		  NULL,
 		  NULL,
 		  NULL);
@@ -92,7 +92,7 @@ protected:
   pkg_changelog_screen(const temp::name &filename,
 		       int x = 0, int y = 0,
 		       int width = 0, int height = 0):
-    vs_file_pager(filename.get_name()), last_search_forwards(true)
+    widgets::file_pager(filename.get_name()), last_search_forwards(true)
   {
     connect_key("Search", &global_bindings,
 		sigc::mem_fun(*this, &pkg_changelog_screen::do_search));
@@ -162,37 +162,37 @@ static void do_view_changelog(temp::name n,
 
   fragment *f = make_changelog_fragment(n, curverstr);
 
-  vs_table_ref           t = vs_table::create();
+  widgets::table_ref           t = widgets::table::create();
   if(f != NULL)
     {
-      vs_scrollbar_ref   s = vs_scrollbar::create(vs_scrollbar::VERTICAL);
+      widgets::scrollbar_ref   s = widgets::scrollbar::create(widgets::scrollbar::VERTICAL);
       menu_text_layout_ref l = menu_text_layout::create();
 
 
-      l->location_changed.connect(sigc::mem_fun(s.unsafe_get_ref(), &vs_scrollbar::set_slider));
-      s->scrollbar_interaction.connect(sigc::mem_fun(l.unsafe_get_ref(), &vs_text_layout::scroll));
+      l->location_changed.connect(sigc::mem_fun(s.unsafe_get_ref(), &widgets::scrollbar::set_slider));
+      s->scrollbar_interaction.connect(sigc::mem_fun(l.unsafe_get_ref(), &widgets::text_layout::scroll));
       l->set_fragment(f);
 
       t->add_widget_opts(l, 0, 0, 1, 1,
-			 vs_table::EXPAND|vs_table::SHRINK, vs_table::EXPAND);
+			 widgets::table::EXPAND|widgets::table::SHRINK, widgets::table::EXPAND);
       t->add_widget_opts(s, 0, 1, 1, 1, 0,
-			 vs_table::EXPAND | vs_table::FILL);
+			 widgets::table::EXPAND | widgets::table::FILL);
 
       create_menu_bindings(l.unsafe_get_ref(), t);
     }
   else
     {
       pkg_changelog_screen_ref cs = pkg_changelog_screen::create(n);
-      vs_scrollbar_ref          s = vs_scrollbar::create(vs_scrollbar::VERTICAL);
+      widgets::scrollbar_ref          s = widgets::scrollbar::create(widgets::scrollbar::VERTICAL);
 
-      cs->line_changed.connect(sigc::mem_fun(s.unsafe_get_ref(), &vs_scrollbar::set_slider));
+      cs->line_changed.connect(sigc::mem_fun(s.unsafe_get_ref(), &widgets::scrollbar::set_slider));
       s->scrollbar_interaction.connect(sigc::mem_fun(cs.unsafe_get_ref(), &pkg_changelog_screen::scroll_page));
       cs->scroll_top();
 
       t->add_widget_opts(cs, 0, 0, 1, 1,
-			 vs_table::EXPAND|vs_table::SHRINK, vs_table::EXPAND);
+			 widgets::table::EXPAND|widgets::table::SHRINK, widgets::table::EXPAND);
       t->add_widget_opts(s, 0, 1, 1, 1, 0,
-			 vs_table::EXPAND | vs_table::FILL);
+			 widgets::table::EXPAND | widgets::table::FILL);
 
       create_menu_bindings(cs.unsafe_get_ref(), t);
     }

@@ -31,12 +31,12 @@
 #include <apt-pkg/acquire-item.h>
 #include <apt-pkg/strutl.h>
 
-#include <vscreen/fragment.h>
+#include <cwidget/fragment.h>
 #include <cwidget/toplevel.h>
-#include <cwidget/widgets/util.h>
-#include <vscreen/config/colors.h>
-#include <vscreen/config/keybindings.h>
-#include <vscreen/transcode.h>
+#include <cwidget/dialogs.h>
+#include <cwidget/config/colors.h>
+#include <cwidget/config/keybindings.h>
+#include <cwidget/generic/util/transcode.h>
 
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/mem_fun.h>
@@ -46,71 +46,77 @@
 
 using namespace std;
 
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
 download_list::workerinf::workerinf(const wstring &_msg, unsigned long _current, unsigned long _total)
   :msg(_msg), current(_current), total(_total)
 {
 }
 
 download_list::workerinf::workerinf(const string &_msg, unsigned long _current, unsigned long _total)
-  :msg(transcode(_msg)), current(_current), total(_total)
+  :msg(cw::util::transcode(_msg)), current(_current), total(_total)
 {
 }
 
 // Unfortunately the cancel_slot is necessary so we know we've cancelled..
-static vs_widget_ref download_summary(const download_list_ref &l,
-				      bool failed,
-				      bool already_cancelled,
-				      slot0arg cancel_slot,
-				      double FetchedBytes,
-				      unsigned long ElapsedTime,
-				      double CurrentCPS)
+static cw::widget_ref download_summary(const download_list_ref &l,
+				       bool failed,
+				       bool already_cancelled,
+				       cw::util::slot0arg cancel_slot,
+				       double FetchedBytes,
+				       unsigned long ElapsedTime,
+				       double CurrentCPS)
 {
-  vector<fragment*> fragments;
+  vector<cw::fragment *> fragments;
 
-  fragments.push_back(fragf(_("Downloaded %sB in %s (%sB/s)."),
-			    SizeToStr(FetchedBytes).c_str(), TimeToStr(ElapsedTime).c_str(),
-			    SizeToStr(CurrentCPS).c_str()));
+  fragments.push_back(cw::fragf(_("Downloaded %sB in %s (%sB/s)."),
+				SizeToStr(FetchedBytes).c_str(), TimeToStr(ElapsedTime).c_str(),
+				SizeToStr(CurrentCPS).c_str()));
 
   if(failed)
     // TODO: list the stuff that failed?
-    fragments.push_back(fragf(_("%n%nSome files were not downloaded successfully.")));
+    fragments.push_back(cw::fragf(_("%n%nSome files were not downloaded successfully.")));
 
-  fragment *fragment=wrapbox(sequence_fragment(fragments));
+  cw::fragment *fragment = wrapbox(cw::sequence_fragment(fragments));
 
-  vs_widget_ref rval;
+  cw::widget_ref rval;
   if(already_cancelled || !cancel_slot)
-    rval=vs_dialog_ok(fragment, NULL);
+    rval=cw::dialogs::ok(fragment, NULL);
   else
-    rval=vs_dialog_yesno(fragment,
-			 NULL,
-			 transcode(_("Continue")),
-			 arg(cancel_slot),
-			 transcode(_("Cancel")),
-			 style_attrs_flip(A_REVERSE));
+    rval=cw::dialogs::yesno(fragment,
+			    NULL,
+			    W_("Continue"),
+			    cw::util::arg(cancel_slot),
+			    W_("Cancel"),
+			    cw::style_attrs_flip(A_REVERSE));
 
   rval->connect_key("PrevPage",
-		    &global_bindings,
+		    &cw::config::global_bindings,
 		    sigc::mem_fun(*l.unsafe_get_ref(), &download_list::pageup));
   rval->connect_key("Up",
-		    &global_bindings,
+		    &cw::config::global_bindings,
 		    sigc::mem_fun(*l.unsafe_get_ref(), &download_list::lineup));
   rval->connect_key("NextPage",
-		    &global_bindings,
+		    &cw::config::global_bindings,
 		    sigc::mem_fun(*l.unsafe_get_ref(), &download_list::pagedown));
   rval->connect_key("Down",
-		    &global_bindings,
+		    &cw::config::global_bindings,
 		    sigc::mem_fun(*l.unsafe_get_ref(), &download_list::linedown));
   rval->connect_key("Begin",
-		    &global_bindings,
+		    &cw::config::global_bindings,
 		    sigc::mem_fun(*l.unsafe_get_ref(), &download_list::skip_to_top));
   rval->connect_key("End",
-		    &global_bindings,
+		    &cw::config::global_bindings,
 		    sigc::mem_fun(*l.unsafe_get_ref(), &download_list::skip_to_bottom));
   rval->connect_key("Left",
-		    &global_bindings,
+		    &cw::config::global_bindings,
 		    sigc::mem_fun(*l.unsafe_get_ref(), &download_list::shift_left));
   rval->connect_key("Right",
-		    &global_bindings,
+		    &cw::config::global_bindings,
 		    sigc::mem_fun(*l.unsafe_get_ref(), &download_list::shift_right));
 
   rval->show_all();
@@ -119,7 +125,7 @@ static vs_widget_ref download_summary(const download_list_ref &l,
 }
 				 
 
-download_list::download_list(slot0arg _abortslot,
+download_list::download_list(cw::util::slot0arg _abortslot,
 			     bool _display_messages, bool _display_cumulative_progress)
   :start(0), sticky_end(true), cancelled(false), failed(false),
    abortslot(_abortslot), display_messages(_display_messages),
@@ -144,23 +150,23 @@ void download_list::destroy()
 {
   cancel();
 
-  vscreen_widget::destroy();
+  cw::widget::destroy();
 }
 
-void download_list::paint(const style &st)
+void download_list::paint(const cw::style &st)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   int y=0;
   unsigned int where=start;
   int width,height;
-  const style progress_style=st+get_style("DownloadProgress");
+  const cw::style progress_style = st + cw::get_style("DownloadProgress");
   getmaxyx(height, width);
 
   // Display the completed items
   while(y<height-1 && where<msgs.size())
     {
-      const style msg_style=st+msgs[where].second;
+      const cw::style msg_style = st + msgs[where].second;
       const wstring disp(msgs[where].first,
 			 min<wstring::size_type>(startx, msgs[where].first.size()));
 
@@ -200,7 +206,7 @@ void download_list::paint(const style &st)
   // status line.
   wstring output=L"";
 
-  output+=transcode(_("Total Progress: "));
+  output += W_("Total Progress: ");
 
   int barsize=0;
 
@@ -225,7 +231,7 @@ void download_list::paint(const style &st)
 
 	  barsize = int(width * fraction_complete);
 
-	  apply_style(get_style("Status"));
+	  apply_style(cw::get_style("Status"));
 
 	  if(CurrentCPS > 0)
 	    progress_string = ssprintf(_(" [ %i%% ] (%sB/s, %s remaining)"), int(100.0 * fraction_complete), SizeToStr(CurrentCPS).c_str(), TimeToStr(ETA).c_str());
@@ -265,21 +271,21 @@ void download_list::paint(const style &st)
 	}
 
 
-      output += transcode(progress_string);
+      output += cw::util::transcode(progress_string);
     }
 
   show_string_as_progbar(0,
 			 height-1,
 			 output,
 			 progress_style,
-			 get_style("Status"),
+			 cw::get_style("Status"),
 			 barsize,
 			 width);
 }
 
 void download_list::update_workers(pkgAcquire *Owner)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   int width,height;
   getmaxyx(height, width);
@@ -296,13 +302,17 @@ void download_list::update_workers(pkgAcquire *Owner)
 	    {
 	      workers.push_back(workerinf(serf->Status, 0, 1));
 	      if(get_visible())
-		vscreen_queuelayout();
+		cw::toplevel::queuelayout();
 	    }
 	}
       else
 	{
 	  pkgAcquire::ItemDesc *item=serf->CurrentItem;
-	  wstring output=transcode((item->Owner->Status==pkgAcquire::Item::StatFetching)?item->ShortDesc:item->Description+": ");
+	  string status =
+	    (item->Owner->Status == pkgAcquire::Item::StatFetching)
+	      ? item->ShortDesc
+	    : item->Description + ": ";
+	  wstring output = cw::util::transcode(status);
 
 	  char intbuf[50]; // Waay more than enough.
 
@@ -311,13 +321,13 @@ void download_list::update_workers(pkgAcquire *Owner)
 		  SizeToStr(serf->CurrentSize).c_str(),
 		  SizeToStr(serf->TotalSize).c_str());
 
-	  output+=transcode(intbuf);
+	  output += cw::util::transcode(intbuf);
 
 	  workers.push_back(workerinf(output,
 				      serf->CurrentSize,
 				      serf->TotalSize));
 	  if(get_visible())
-	    vscreen_queuelayout();
+	    cw::toplevel::queuelayout();
 	}
 
       serf=Owner->WorkerStep(serf);
@@ -330,17 +340,17 @@ void download_list::MediaChange(string media, string drive,
 				download_signal_log &manager,
 				const sigc::slot1<void, bool> &k)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
-  fragment *f=wrapbox(fragf(_("Please insert the disc labeled \"%s\" into the drive \"%s\""),
-			    media.c_str(), drive.c_str()));
+  cw::fragment *f = wrapbox(cw::fragf(_("Please insert the disc labeled \"%s\" into the drive \"%s\""),
+				      media.c_str(), drive.c_str()));
 
-  vs_widget_ref w=vs_dialog_yesno(f,
-				  arg(sigc::bind(k, true)),
-				  transcode(_("Continue")),
-				  arg(sigc::bind(k, false)),
-				  transcode(_("Abort")),
-				  get_style("MediaChange"));
+  cw::widget_ref w=cw::dialogs::yesno(f,
+				      cw::util::arg(sigc::bind(k, true)),
+				      W_("Continue"),
+				      cw::util::arg(sigc::bind(k, false)),
+				      W_("Abort"),
+				      cw::get_style("MediaChange"));
   w->show_all();
 
   popup_widget(w);
@@ -349,17 +359,17 @@ void download_list::MediaChange(string media, string drive,
 void download_list::IMSHit(pkgAcquire::ItemDesc &itmdesc,
 			   download_signal_log &manager)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   if(display_messages)
     {
-      msgs.push_back(msg(transcode(itmdesc.Description+" "+_("[Hit]")),
-			 get_style("DownloadHit")));
+      msgs.push_back(msg(cw::util::transcode(itmdesc.Description + " " + _("[Hit]")),
+			 cw::get_style("DownloadHit")));
 
       sync_top();
 
       if(get_visible())
-	vscreen_queuelayout();
+	cw::toplevel::queuelayout();
     }
 }
 
@@ -371,24 +381,24 @@ void download_list::Fetch(pkgAcquire::ItemDesc &itmdesc,
 void download_list::Done(pkgAcquire::ItemDesc &itmdesc,
 			 download_signal_log &manager)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   if(display_messages)
     {
-      msgs.push_back(msg(transcode(itmdesc.Description+" "+_("[Downloaded]")),
-			 get_style("DownloadProgress")));
+      msgs.push_back(msg(cw::util::transcode(itmdesc.Description + " " + _("[Downloaded]")),
+			 cw::get_style("DownloadProgress")));
 
       sync_top();
 
       if(get_visible())
-	vscreen_queuelayout();
+	cw::toplevel::queuelayout();
     }
 }
 
 void download_list::Fail(pkgAcquire::ItemDesc &itmdesc,
 			 download_signal_log &manager)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   if(display_messages)
     {
@@ -397,28 +407,28 @@ void download_list::Fail(pkgAcquire::ItemDesc &itmdesc,
 
       // ???
       if(itmdesc.Owner->Status==pkgAcquire::Item::StatDone)
-	msgs.push_back(msg(transcode(itmdesc.Description+" "+_("[IGNORED]")),
-			   get_style("DownloadHit")));
+	msgs.push_back(msg(cw::util::transcode(itmdesc.Description + " " + _("[IGNORED]")),
+			   cw::get_style("DownloadHit")));
       else
 	{
 	  failed=true;
 
-	  msgs.push_back(msg(transcode(itmdesc.Description+" "+_("[ERROR]")),
-			     get_style("Error")));
-	  msgs.push_back(msg(transcode(" "+itmdesc.Owner->ErrorText),
-			     get_style("Error")));
+	  msgs.push_back(msg(cw::util::transcode(itmdesc.Description + " " + _("[ERROR]")),
+			     cw::get_style("Error")));
+	  msgs.push_back(msg(cw::util::transcode(" " + itmdesc.Owner->ErrorText),
+			     cw::get_style("Error")));
 	}
 
       sync_top();
 
       if(get_visible())
-	vscreen_queuelayout();
+	cw::toplevel::queuelayout();
     }
 }
 
 void download_list::Start(download_signal_log &manager)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   // Delete stuff from previous runs (eg, for multiple CDs)
   workers.erase(workers.begin(), workers.end());
@@ -427,7 +437,7 @@ void download_list::Start(download_signal_log &manager)
 
 void download_list::Stop(download_signal_log &manager, const sigc::slot0<void> &k)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   string s=aptcfg->Find(PACKAGE "::UI::Pause-After-Download", "OnlyIfError");
 
@@ -440,13 +450,13 @@ void download_list::Stop(download_signal_log &manager, const sigc::slot0<void> &
 
   if(show_summary)
     {
-      vs_widget_ref summary = download_summary(this,
-					       failed,
-					       cancelled,
-					       abortslot,
-					       manager.get_fetched_bytes(),
-					       manager.get_elapsed_time(),
-					       manager.get_currentCPS());
+      cw::widget_ref summary = download_summary(this,
+						failed,
+						cancelled,
+						abortslot,
+						manager.get_fetched_bytes(),
+						manager.get_elapsed_time(),
+						manager.get_currentCPS());
 
       summary->destroyed.connect(k);
 
@@ -459,13 +469,13 @@ void download_list::Stop(download_signal_log &manager, const sigc::slot0<void> &
 void download_list::Complete(download_signal_log &manager)
 {
   // Destroy ourselves.
-  vscreen_widget::destroy();
+  cw::widget::destroy();
 }
 
 void download_list::Pulse(pkgAcquire *Owner, download_signal_log &manager,
 			  const sigc::slot1<void, bool> &k)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   TotalBytes=manager.get_total_bytes();
   TotalItems=manager.get_total_items();
@@ -476,7 +486,7 @@ void download_list::Pulse(pkgAcquire *Owner, download_signal_log &manager,
   update_workers(Owner);
 
   if(get_visible())
-    vscreen_queuelayout(); // Force an update
+    cw::toplevel::queuelayout(); // Force an update
 
   if(cancelled)
     k(false);
@@ -494,28 +504,28 @@ int download_list::height_request(int w)
   return msgs.size()+workers.size()+1;
 }
 
-bool download_list::handle_key(const key &k)
+bool download_list::handle_key(const cw::config::key &k)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
-  if(global_bindings.key_matches(k, "NextPage"))
+  if(cw::config::global_bindings.key_matches(k, "NextPage"))
     pagedown();
-  if(global_bindings.key_matches(k, "Down"))
+  if(cw::config::global_bindings.key_matches(k, "Down"))
     linedown();
-  else if(global_bindings.key_matches(k, "PrevPage"))
+  else if(cw::config::global_bindings.key_matches(k, "PrevPage"))
     pageup();
-  else if(global_bindings.key_matches(k, "Up"))
+  else if(cw::config::global_bindings.key_matches(k, "Up"))
     lineup();
-  else if(global_bindings.key_matches(k, "Begin"))
+  else if(cw::config::global_bindings.key_matches(k, "Begin"))
     skip_to_top();
-  else if(global_bindings.key_matches(k, "End"))
+  else if(cw::config::global_bindings.key_matches(k, "End"))
     skip_to_bottom();
-  else if(global_bindings.key_matches(k, "Left"))
+  else if(cw::config::global_bindings.key_matches(k, "Left"))
     shift_left();
-  else if(global_bindings.key_matches(k, "Right"))
+  else if(cw::config::global_bindings.key_matches(k, "Right"))
     shift_right();
   else
-    return vscreen_widget::handle_key(k);
+    return cw::widget::handle_key(k);
 
   return true;
 }
@@ -526,13 +536,13 @@ void download_list::pageup()
     {
       start-=getmaxy()-1;
 
-      vscreen_update();
+      cw::toplevel::update();
     }
   else
     {
       start=0;
 
-      vscreen_update();
+      cw::toplevel::update();
     }
 
   sticky_end=false;
@@ -544,7 +554,7 @@ void download_list::lineup()
     {
       --start;
 
-      vscreen_update();
+      cw::toplevel::update();
     }
 
   sticky_end=false;
@@ -555,7 +565,7 @@ void download_list::pagedown()
   if(start<msgs.size()+workers.size()-getmaxy())
     {
       start+=getmaxy();
-      vscreen_update();
+      cw::toplevel::update();
     }
   else
     sticky_end=true;
@@ -566,7 +576,7 @@ void download_list::linedown()
   if(start<msgs.size()+workers.size()-getmaxy())
     {
       ++start;
-      vscreen_update();
+      cw::toplevel::update();
     }
   else
     sticky_end=true;
@@ -579,7 +589,7 @@ void download_list::skip_to_bottom()
 
   sticky_end=true;
 
-  vscreen_update();
+  cw::toplevel::update();
 }
 
 void download_list::skip_to_top()
@@ -587,7 +597,7 @@ void download_list::skip_to_top()
   start=0;
   sticky_end=false;
 
-  vscreen_update();
+  cw::toplevel::update();
 }
 
 void download_list::shift_left()
@@ -595,7 +605,7 @@ void download_list::shift_left()
   if(startx>0)
     {
       startx-=8;
-      vscreen_update();
+      cw::toplevel::update();
     }
 }
 
@@ -613,7 +623,7 @@ void download_list::shift_right()
   if(startx+8<maxx)
     {
       startx+=8;
-      vscreen_update();
+      cw::toplevel::update();
     }
 }
 

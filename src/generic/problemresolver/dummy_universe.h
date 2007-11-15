@@ -29,11 +29,11 @@
 #include <string>
 #include <vector>
 
-#include <generic/util/eassert.h>
-#include <generic/util/exception.h>
+#include <cwidget/generic/util/eassert.h>
+#include <cwidget/generic/util/exception.h>
 
 // An error type that's thrown when a name lookup fails.
-class NoSuchNameError:public Exception
+class NoSuchNameError : public cwidget::util::Exception
 {
   std::string name;
   std::string type;
@@ -749,7 +749,7 @@ std::ostream &operator<<(std::ostream &out, const dummy_universe::version &v);
 
 std::ostream &operator<<(std::ostream &out, const dummy_universe::dep &d);
 
-class ParseError : public Exception
+class ParseError : public cwidget::util::Exception
 {
   std::string msg;
 public:

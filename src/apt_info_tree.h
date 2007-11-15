@@ -47,7 +47,7 @@ class apt_info_tree:public apt_undo_tree
   void handle_cache_close();
 protected:
   void restore_state();
-  virtual vs_treeitem *setup_new_root(const pkgCache::PkgIterator &pkg,
+  virtual cwidget::widgets::treeitem *setup_new_root(const pkgCache::PkgIterator &pkg,
 				      const pkgCache::VerIterator &ver)=0;
 public:
   sigc::signal2<void, const pkgCache::PkgIterator &, const pkgCache::VerIterator &> *get_sig() {return &sig;}

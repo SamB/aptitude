@@ -30,7 +30,7 @@
 class undo_group;
 class keybindings;
 
-class pkg_tree_node:virtual public vs_treeitem, public menu_redirect
+class pkg_tree_node:virtual public cwidget::widgets::treeitem, public menu_redirect
 // Provides some extra package-related interfaces.
 {
   /** Used to convert calls via the menu interface to wrapped
@@ -50,9 +50,9 @@ public:
   void mark_auto(undo_group *undo) {set_auto(true, undo);}
   void unmark_auto(undo_group *undo) {set_auto(false, undo);}
 
-  bool dispatch_key(const key &k, vs_tree *owner);
+  bool dispatch_key(const cwidget::config::key &k, cwidget::widgets::tree *owner);
   // IMPORTANT NOTE: pkg_tree_node::dispatch_char() does NOT call
-  // vs_treeitem::dispatch_char!
+  // cwidget::widgets::treeitem::dispatch_char!
 
   static keybindings *bindings;
   static void init_bindings();

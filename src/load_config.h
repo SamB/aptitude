@@ -7,7 +7,7 @@
 #ifndef LOAD_CONFIG_H
 #define LOAD_CONFIG_H
 
-#include "vscreen/config/keybindings.h"
+#include "cwidget/config/keybindings.h"
 
 void load_styles(std::string group, bool usetheme);
 //  Loads in color definitions from the given group.

@@ -25,14 +25,14 @@
 
 #include <string>
 
-#include "eassert.h"
-#include "exception.h"
-#include "threads.h"
+#include <cwidget/generic/util/eassert.h>
+#include <cwidget/generic/util/exception.h>
+#include <cwidget/generic/threads/threads.h>
 
 namespace temp
 {
   /** An exception thrown when a temporary object cannot be created. */
-  class TemporaryCreationFailure : public Exception
+  class TemporaryCreationFailure : public cwidget::util::Exception
   {
     std::string msg;
   public:
@@ -106,7 +106,7 @@ namespace temp
     /** The parent of this directory, if any. */
     dir parent;
 
-    threads::mutex m;
+    cwidget::threads::mutex m;
 
     int refcount;
 
@@ -164,14 +164,14 @@ namespace temp
     /** Increment the reference count of this impl. */
     void incref()
     {
-      threads::mutex::lock l(m);
+      cwidget::threads::mutex::lock l(m);
       ++refcount;
     }
 
     /** Decrement the reference count of this impl. */
     void decref()
     {
-      threads::mutex::lock l(m);
+      cwidget::threads::mutex::lock l(m);
 
       eassert(refcount > 0);
       --refcount;
@@ -282,7 +282,7 @@ namespace temp
     dir parent;
 
     /** The mutex of this name's reference count. */
-    threads::mutex m;
+    cwidget::threads::mutex m;
 
     /** The reference count of this name. */
     int refcount;
@@ -315,14 +315,14 @@ namespace temp
     /** Increment the reference count of this impl. */
     void incref()
     {
-      threads::mutex::lock l(m);
+      cwidget::threads::mutex::lock l(m);
       ++refcount;
     }
 
     /** Decrement the reference count of this impl. */
     void decref()
     {
-      threads::mutex::lock l(m);
+      cwidget::threads::mutex::lock l(m);
 
       eassert(refcount > 0);
       --refcount;

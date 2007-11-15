@@ -24,16 +24,16 @@
 #define PKG_COLUMNIZER_H
 
 #include "pkg_item.h"
-#include "vscreen/config/column_definition.h"
+#include <cwidget/config/column_definition.h>
 
-class pkg_item::pkg_columnizer:public column_generator
+class pkg_item::pkg_columnizer : public cwidget::config::column_generator
 {
   class pkg_genheaders;
 
   pkgCache::PkgIterator pkg;
   pkgCache::VerIterator visible_ver;
 
-  static column_definition_list *columns;
+  static cwidget::config::column_definition_list *columns;
 
   int basex;
 
@@ -43,13 +43,13 @@ protected:
   const pkgCache::PkgIterator &get_pkg() {return pkg;}
   const pkgCache::VerIterator &get_visible_ver() {return visible_ver;}
 public:
-  static column_disposition setup_column(const pkgCache::PkgIterator &pkg,
-					 const pkgCache::VerIterator &ver,
-					 int basex,
-					 int type);
-  virtual column_disposition setup_column(int type);
+  static cwidget::column_disposition setup_column(const pkgCache::PkgIterator &pkg,
+						  const pkgCache::VerIterator &ver,
+						  int basex,
+						  int type);
+  virtual cwidget::column_disposition setup_column(int type);
 
-  static const column_definition_list &get_columns()
+  static const cwidget::config::column_definition_list &get_columns()
   {
     setup_columns();
     return *columns;
@@ -62,7 +62,7 @@ public:
 
               progname, progver, brokencount, diskusage, downloadsize,
 	      pin_priority, hostname, trust_state, numtypes};
-  static column_type_defaults defaults[numtypes];
+  static cwidget::config::column_type_defaults defaults[numtypes];
   static const char *column_names[numtypes];
 
   static const char *default_pkgdisplay;
@@ -81,12 +81,12 @@ public:
 
   pkg_columnizer(const pkgCache::PkgIterator &_pkg,
 		 const pkgCache::VerIterator &_visible_ver,
-		 const column_definition_list &_columns,
+		 const cwidget::config::column_definition_list &_columns,
 		 int _basex)
-    :column_generator(_columns),
-     pkg(_pkg),
-     visible_ver(_visible_ver),
-     basex(_basex)
+    : column_generator(_columns),
+      pkg(_pkg),
+      visible_ver(_visible_ver),
+      basex(_basex)
   {
   }
 

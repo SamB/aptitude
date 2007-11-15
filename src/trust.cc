@@ -5,8 +5,8 @@
 
 #include <generic/apt/apt.h>
 
-#include <vscreen/fragment.h>
-#include <vscreen/config/colors.h>
+#include <cwidget/fragment.h>
+#include <cwidget/config/colors.h>
 
 fragment *make_untrusted_warning(const pkgCache::VerIterator &ver)
 {

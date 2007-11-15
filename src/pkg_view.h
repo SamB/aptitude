@@ -27,9 +27,8 @@
 #ifndef PKG_VIEW_H
 #define PKG_VIEW_H
 
-#include "vscreen/ref_ptr.h"
-#include "vscreen/config/column_definition.h"
-#include "vscreen/config/style.h"
+#include <cwidget/config/column_definition.h>
+#include <cwidget/style.h>
 #include "pkg_grouppolicy.h"
 
 #include <list>
@@ -38,8 +37,20 @@
 class menu_redirect;
 class package_view_item;
 class pkg_grouppolicy_factory;
-class vscreen_widget;
-typedef ref_ptr<vscreen_widget> vs_widget_ref;
+
+namespace cwidget
+{
+  namespace util
+  {
+    template<typename T> class ref_ptr;
+  }
+
+  namespace widgets
+  {
+    class widget;
+    typedef util::ref_ptr<widget> widget_ref;
+  }
+}
 
 // The available types of items are:
 //
@@ -67,7 +78,7 @@ struct package_view_item
 
   package_view_itemtype type;
 
-  column_definition_list *columns;
+  cwidget::config::column_definition_list *columns;
   // For static items, a column-format
   std::string columns_cfg;
   // For static items, the name of a configuration setting which will be
@@ -79,14 +90,14 @@ struct package_view_item
   // obvious table stuff
 
   /** The style with which this item should be displayed. */
-  style st;
+  cwidget::style st;
 
   std::string popupdownkey;
   // The key used to toggle the visibility of this item.  ("" for none)
   std::string popupdownlinked;
   // Who are we linked to for our popupdown status?
 
-  vs_widget_ref widget;
+  cwidget::widgets::widget_ref widget;
   // For the internal use of make_package_view (stores the widget this item
   // generated)
 
@@ -94,9 +105,9 @@ struct package_view_item
   // True if the widget is visible immediately
 
   package_view_item(std::string _name,
-		    column_definition_list *_columns, std::string _columns_cfg,
+		    cwidget::config::column_definition_list *_columns, std::string _columns_cfg,
 		    int _row, int _col, int _w, int _h, int _xopts, int _yopts,
-		    const style &_st, std::string _popupdownkey,
+		    const cwidget::style &_st, std::string _popupdownkey,
 		    std::string _popupdownlinked, bool _visible)
     :name(_name), type(PACKAGE_VIEW_STATIC), columns(_columns),
      columns_cfg(_columns_cfg), row(_row), col(_col), w(_w), h(_h),
@@ -105,7 +116,7 @@ struct package_view_item
 
   package_view_item(std::string _name,
 		    int _row, int _col, int _w, int _h, int _xopts, int _yopts,
-		    const style &_st, std::string _popupdownkey, 
+		    const cwidget::style &_st, std::string _popupdownkey, 
 		    std::string _popupdownlinked, bool _visible)
     :name(_name), type(PACKAGE_VIEW_DESCRIPTION), columns(NULL),
      row(_row), col(_col), w(_w), h(_h), xopts(_xopts), yopts(_yopts),
@@ -114,7 +125,7 @@ struct package_view_item
 
   package_view_item(std::string _name,
 		    int _row, int _col, int _w, int _h,
-		    int _xopts, int _yopts, const style &_st, bool _visible)
+		    int _xopts, int _yopts, const cwidget::style &_st, bool _visible)
     :name(_name), type(PACKAGE_VIEW_MAINWIDGET), columns(NULL),
      row(_row), col(_col), w(_w), h(_h), xopts(_xopts), yopts(_yopts),
      st(_st), widget(NULL), visible(_visible) {}
@@ -142,8 +153,8 @@ struct package_view_item
  *                         visible; otherwise, the description will be
  *                         initially visible.
  */
-vs_widget_ref make_package_view(std::list<package_view_item> &format,
-				const vs_widget_ref &mainwidget,
+cwidget::widgets::widget_ref make_package_view(std::list<package_view_item> &format,
+				const cwidget::widgets::widget_ref &mainwidget,
 				menu_redirect *menu_handler,
 				pkg_signal *sig, desc_signal *desc_sig,
 				bool show_reason_first);

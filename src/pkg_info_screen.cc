@@ -25,8 +25,8 @@
 
 #include "pkg_info_screen.h"
 
-#include "vscreen/fragment.h"
-#include "vscreen/vs_layout_item.h"
+#include "cwidget/fragment.h"
+#include "vscreen/widgets::layout_item.h"
 
 #include "dep_item.h"
 #include "desc_parse.h"
@@ -126,7 +126,7 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
 				    _("Source Package: "),
 				    rec.SourcePkg().empty()?pkg.Name():rec.SourcePkg().c_str())));
 
-      tree->add_child(new vs_layout_item(sequence_fragment(frags)));
+      tree->add_child(new widgets::layout_item(sequence_fragment(frags)));
 
       setup_package_deps<pkg_item_with_generic_subtree>(pkg, ver, tree, sig);
 
@@ -160,7 +160,7 @@ pkg_info_screen::pkg_info_screen(const pkgCache::PkgIterator &pkg,
   set_root(setup_new_root(pkg, ver), true);
 }
 
-vs_treeitem *pkg_info_screen::setup_new_root(const pkgCache::PkgIterator &pkg,
+widgets::treeitem *pkg_info_screen::setup_new_root(const pkgCache::PkgIterator &pkg,
 					     const pkgCache::VerIterator &ver)
 {
   pkg_item_with_generic_subtree *tree=new pkg_item_with_generic_subtree(pkg,

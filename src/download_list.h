@@ -33,7 +33,7 @@
 
 class download_signal_log;
 
-class download_list:public vscreen_widget
+class download_list:public cwidget::widgets::widget
 {
   // Caches the last-seen info about a worker.
   struct workerinf
@@ -45,7 +45,7 @@ class download_list:public vscreen_widget
     workerinf(const std::string &_msg, unsigned long _current, unsigned long _total);
   };
 
-  typedef std::pair<std::wstring, style> msg;
+  typedef std::pair<std::wstring, cwidget::style> msg;
 
   // Contains strings paired with attributes.
   typedef std::vector<msg> msglist;
@@ -72,7 +72,7 @@ class download_list:public vscreen_widget
   // Set to true if an item failed.
   bool failed;
 
-  slot0arg abortslot;
+  cwidget::util::slot0arg abortslot;
 
   // Will we display things other than the current workers?
   bool display_messages;
@@ -106,18 +106,18 @@ class download_list:public vscreen_widget
 
   void layout_me();
 protected:
-  void paint(const style &st);
-  bool handle_key(const key &k);
+  void paint(const cwidget::style &st);
+  bool handle_key(const cwidget::config::key &k);
 
-  download_list(slot0arg _abortslot = NULL,
+  download_list(cwidget::util::slot0arg _abortslot = NULL,
 		bool _display_messages = true,
 		bool _display_cumulative_progress = true);
 public:
-  static ref_ptr<download_list> create(slot0arg abortslot = NULL,
-				       bool display_messages = true,
-				       bool display_cumulative_progress = true)
+  static cwidget::util::ref_ptr<download_list> create(cwidget::util::slot0arg abortslot = NULL,
+						      bool display_messages = true,
+						      bool display_cumulative_progress = true)
   {
-    ref_ptr<download_list> rval(new download_list(abortslot, display_messages, display_cumulative_progress));
+    cwidget::util::ref_ptr<download_list> rval(new download_list(abortslot, display_messages, display_cumulative_progress));
     rval->decref();
     return rval;
   }
@@ -139,7 +139,7 @@ public:
   int height_request(int w);
 
   bool get_cursorvisible() {return false;}
-  point get_cursorloc() {return point(0,0);}
+  cwidget::widgets::point get_cursorloc() { return cwidget::widgets::point(0,0); }
   bool focus_me() {return true;}
 
   // FIXME: overriding this is a terrible hack.  A cancel() hook should be
@@ -158,6 +158,6 @@ public:
   void shift_right();
 };
 
-typedef ref_ptr<download_list> download_list_ref;
+typedef cwidget::util::ref_ptr<download_list> download_list_ref;
 
 #endif

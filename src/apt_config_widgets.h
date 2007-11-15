@@ -58,7 +58,7 @@ public:
 		  const std::string &_item, bool _default);
 
   /** The actual underlying object. */
-  vs_checkbutton_ref cb;
+  cwidget::widgets::checkbutton_ref cb;
 
   void commit();
 };
@@ -70,13 +70,13 @@ class apt_string_widget : public apt_config_widget
   std::string my_default;
 
   /** The underlying object. */
-  vs_editline_ref el;
+  cwidget::widgets::editline_ref el;
 public:
   apt_string_widget(const std::string &_item,
 		    const std::string &_default);
 
   /** The enclosing size box. */
-  vs_widget_ref w;
+  cwidget::widgets::widget_ref w;
 
   void commit();
 };
@@ -98,7 +98,7 @@ public:
 		   const std::string &_default);
 
   /** The underlying interface object. */
-  vs_radiogroup rg;
+  cwidget::widgets::radiogroup rg;
 
   void commit();
 };

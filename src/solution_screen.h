@@ -24,14 +24,14 @@
 
 class aptitude_universe;
 template<class PackageUniverse> class generic_solution;
-class vscreen_widget;
+class cwidget::widgets::widget;
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
-typedef ref_ptr<vscreen_widget> vs_widget_ref;
+typedef ref_ptr<cwidget::widgets::widget> cwidget::widgets::widget_ref;
 
 /** Generate a new widget suitable for inclusion at the top-level
  *  which describes the given solution.
  */
-vs_widget_ref make_solution_screen();
+cwidget::widgets::widget_ref make_solution_screen();
 
 #endif // SOLUTION_SCREEN_H

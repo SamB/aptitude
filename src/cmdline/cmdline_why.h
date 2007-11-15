@@ -51,21 +51,24 @@ int cmdline_why(int argc, char *argv[],
 
 
 // Direct access to the "why" algorithm.
-class fragment;
+namespace cwidget
+{
+  class fragment;
+}
 class pkg_matcher;
 
-fragment *do_why(const std::vector<pkg_matcher *> &leaves,
-		 const pkgCache::PkgIterator &root,
-		 bool find_all,
-		 bool root_is_removal,
-		 bool &success);
+cwidget::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
+			  const pkgCache::PkgIterator &root,
+			  bool find_all,
+			  bool root_is_removal,
+			  bool &success);
 
 // Parses the leaves as if they were command-line arguments.
-fragment *do_why(const std::vector<std::string> &arguments,
-		 const std::string &root,
-		 bool find_all,
-		 bool root_is_removal,
-		 bool &success);
+cwidget::fragment *do_why(const std::vector<std::string> &arguments,
+			  const std::string &root,
+			  bool find_all,
+			  bool root_is_removal,
+			  bool &success);
 
 
 #endif

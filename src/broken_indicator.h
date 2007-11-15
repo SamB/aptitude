@@ -23,10 +23,20 @@
 #ifndef BROKEN_INDICATOR_H
 #define BROKEN_INDICATOR_H
 
-class vscreen_widget;
-template<class T> class ref_ptr;
+namespace cwidget
+{
+  namespace widgets
+  {
+    class widget;
+  }
+
+  namespace util
+  {
+    template<class T> class ref_ptr;
+  }
+}
 
 /** \return a newly generated "broken indicator". */
-ref_ptr<vscreen_widget> make_broken_indicator();
+cwidget::util::ref_ptr<cwidget::widgets::widget> make_broken_indicator();
 
 #endif // BROKEN_INDICATOR_H

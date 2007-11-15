@@ -28,7 +28,7 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "eassert.h"
+#include <cwidget/generic/util/eassert.h>
 
 using namespace std;
 

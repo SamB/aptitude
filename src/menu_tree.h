@@ -17,7 +17,7 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// A vs_tree augmented with the ability to act as a menu redirector.
+// A cwidget::widgets::tree augmented with the ability to act as a menu redirector.
 
 #ifndef MENU_TREE
 #define MENU_TREE
@@ -33,7 +33,7 @@ class pkg_tree_node;
 class solution_item;
 class undo_group;
 
-/** A vs_tree that can be generically used as a menu redirector.  All
+/** A cwidget::widgets::tree that can be generically used as a menu redirector.  All
  *  the menu redirection routines are filled in; case analysis on the
  *  currently selected tree item is used to implement them.  In
  *  addition, the tree will pop up a search dialog in response to
@@ -44,7 +44,7 @@ class undo_group;
  *  you can just cast the active item to a menu_redirect and proxy for
  *  it.
  */
-class menu_tree:public vs_tree, public menu_redirect
+class menu_tree:public cwidget::widgets::tree, public menu_redirect
 {
   /** Proxy the given call to the currently selected item, if it
    *  implements the menu_redirect interface.
@@ -72,7 +72,7 @@ class menu_tree:public vs_tree, public menu_redirect
   bool doing_incsearch;
 
   /** The iterator that was selected prior to the incremental search. */
-  vs_treeiterator pre_incsearch_selected;
+  cwidget::widgets::treeiterator pre_incsearch_selected;
 
   void do_search(std::wstring s, bool backward);
   void do_incsearch(std::wstring s, bool backward);
@@ -86,7 +86,7 @@ class menu_tree:public vs_tree, public menu_redirect
   /** \return \b true if a package or a package version is selected. */
   bool pkg_or_ver_selected();
 
-  static vs_editline::history_list search_history;
+  static cwidget::widgets::editline::history_list search_history;
 protected:
   /** Reset all information about the incremental search.  This must be
    *  performed whenever the root is changed.
@@ -95,9 +95,9 @@ protected:
 
   menu_tree();
 public:
-  static ref_ptr<menu_tree> create()
+  static cwidget::util::ref_ptr<menu_tree> create()
   {
-    ref_ptr<menu_tree> rval(new menu_tree);
+    cwidget::util::ref_ptr<menu_tree> rval(new menu_tree);
     rval->decref();
     return rval;
   }
@@ -210,9 +210,9 @@ public:
   /** Find the next broken package (searches for '~b'). */
   bool find_broken();
 
-  bool handle_key(const key &k);
+  bool handle_key(const cwidget::config::key &k);
 };
 
-typedef ref_ptr<menu_tree> menu_tree_ref;
+typedef cwidget::util::ref_ptr<menu_tree> menu_tree_ref;
 
 #endif

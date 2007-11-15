@@ -43,11 +43,14 @@
 #include <generic/util/immset.h>
 #include <generic/util/util.h>
 
-#include <vscreen/fragment.h>
+#include <cwidget/fragment.h>
 
 #include <../pkg_item.h>
 
 #include <set>
+
+using cwidget::fragf;
+using cwidget::fragment;
 
 namespace
 {
@@ -85,7 +88,7 @@ namespace
     {
     }
 
-    style get_style() const
+    cwidget::style get_style() const
     {
       pkgCache::PkgIterator pkg;
       if(!dep.end())
@@ -109,11 +112,11 @@ namespace
       // Copy flags from "aptitude search" et al.
       //
       // This is a little crufty; the column formatting needs an overhaul.
-      column_disposition flag1 =
+      cwidget::column_disposition flag1 =
 	pkg_ver_columnizer::setup_column(ver, true, 0, pkg_item::pkg_columnizer::stateflag);
-      column_disposition flag2 =
+      cwidget::column_disposition flag2 =
 	pkg_ver_columnizer::setup_column(ver, true, 0, pkg_item::pkg_columnizer::actionflag);
-      column_disposition flag3 =
+      cwidget::column_disposition flag3 =
 	pkg_ver_columnizer::setup_column(ver, true, 0, pkg_item::pkg_columnizer::autoset);
 
       std::wstring rval;
@@ -130,16 +133,16 @@ namespace
       else
 	rval += flag3.text;
       rval += L' ';
-      rval += transcode(pkg.Name());
-      return text_fragment(rval);
+      rval += cwidget::util::transcode(pkg.Name());
+      return cwidget::text_fragment(rval);
     }
 
     fragment *description_column2_fragment() const
     {
       if(!dep.end())
-	return text_fragment(const_cast<pkgCache::DepIterator &>(dep).DepType());
+	return cwidget::text_fragment(const_cast<pkgCache::DepIterator &>(dep).DepType());
       else
-	return text_fragment(_("Provides"));
+	return cwidget::text_fragment(_("Provides"));
     }
 
     fragment *description_column3_fragment() const
@@ -149,10 +152,10 @@ namespace
 	{
 	  pkgCache::DepIterator start, end;
 	  surrounding_or(dep, start, end);
-	  return text_fragment(dep_targets(start));
+	  return cwidget::text_fragment(dep_targets(start));
 	}
       else
-	return text_fragment(const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name());
+	return cwidget::text_fragment(const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name());
     }
 
     fragment *description_fragment() const
@@ -514,6 +517,9 @@ namespace
 	  col2_entries.push_back(hardwrapbox(fragf("%F\n", it->description_column2_fragment())));
 	  col3_entries.push_back(hardwrapbox(fragf("%F\n", it->description_column3_fragment())));
 	}
+
+      using cwidget::fragment_column_entry;
+
       std::vector<fragment_column_entry> columns;
       columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, col1_entries));
       columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL)),
@@ -593,7 +599,7 @@ namespace
 	if(verbosity > 1)
 	  {
 	    std::auto_ptr<fragment> tmp(fragf(_("    ++ Examining %F\n"), print_dep(dep)));
-	    std::cout << tmp->layout(screen_width, screen_width, style());
+	    std::cout << tmp->layout(screen_width, screen_width, cwidget::style());
 	  }
 
 	if(is_remove())
@@ -831,7 +837,7 @@ namespace
 					      front.description()));
 	      std::cout << f->layout(screen_width,
 				     screen_width,
-				     style());
+				     cwidget::style());
 	    }
 
 
@@ -1041,7 +1047,7 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 	  if(first)
 	    first = false;
 	  else
-	    rval.push_back(newline_fragment());
+	    rval.push_back(cwidget::newline_fragment());
 
 	  if(results.empty())
 	    return fragf(_("The package \"%s\" is a starting point of the search.\n"),
@@ -1059,6 +1065,9 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 		  col3_entries.push_back(hardwrapbox(style_fragment(fragf("%F\n", it->description_column3_fragment()),
 								    it->get_style())));
 		}
+
+	      using cwidget::fragment_column_entry;
+
 	      std::vector<fragment_column_entry> columns;
 	      columns.push_back(fragment_column_entry(false,
 						      true,
@@ -1085,7 +1094,7 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 						      0,
 						      fragment_column_entry::top,
 						      col3_entries));
-	      fragment *solution_fragment(fragment_columns(columns));
+	      fragment *solution_fragment(cwidget::fragment_columns(columns));
 
 	      if(verbosity < 1)
 		return solution_fragment;
@@ -1118,7 +1127,7 @@ int do_why(const std::vector<pkg_matcher *> &leaves,
 				   success));
   update_screen_width();
   // TODO: display each result as we find it.
-  std::cout << f->layout(screen_width, screen_width, style());
+  std::cout << f->layout(screen_width, screen_width, cwidget::style());
 
   return success ? 0 : 1;
 }
@@ -1181,7 +1190,7 @@ fragment *do_why(const std::vector<std::string> &arguments,
       for(std::vector<pkg_matcher *>::const_iterator it = matchers.begin();
 	  it != matchers.end(); ++it)
 	delete *it;
-      return text_fragment(_("Unable to parse some match patterns."));
+      return cwidget::text_fragment(_("Unable to parse some match patterns."));
     }
 
   fragment *rval = do_why(matchers, pkg, verbosity, root_is_removal, success);

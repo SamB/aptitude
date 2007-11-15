@@ -152,8 +152,17 @@ public:
   virtual ~menu_redirect() {}
 };
 
-template<typename T> class ref_ptr;
-class vscreen_widget;
+namespace cwidget
+{
+  namespace util
+  {
+    template<typename T> class ref_ptr;
+  }
+  namespace widgets
+  {
+    class widget;
+  }
+}
 
 /** Bind up all the menu-related signals to the given menu handler.
  *  The resulting bindings will cause menu items to be enabled if (a)
@@ -161,6 +170,6 @@ class vscreen_widget;
  *  _enabled test returns \b true.
  */
 void create_menu_bindings(menu_redirect *menu_handler,
-			  const ref_ptr<vscreen_widget> &valve);
+			  const cwidget::util::ref_ptr<cwidget::widgets::widget> &valve);
 
 #endif

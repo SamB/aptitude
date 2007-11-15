@@ -31,9 +31,9 @@
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/acquire-worker.h>
 
-#include <vscreen/transcode.h>
+#include <cwidget/generic/util/transcode.h>
 #include <cwidget/toplevel.h>
-#include <cwidget/widgets/util.h>
+#include <cwidget/dialogs.h>
 
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/ptr_fun.h>
@@ -43,12 +43,12 @@
 static void set_and_exit(bool &target, bool val)
 {
   target=val;
-  vscreen_exitmain();
+  toplevel::exitmain();
 }
 
 bool download_screen::MediaChange(string Media, string Drive)
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   char buf[512];
 
@@ -58,7 +58,7 @@ bool download_screen::MediaChange(string Media, string Drive)
 
   bool rval=true;
 
-  popup_widget(vs_dialog_yesno(transcode(buf),
+  popup_widget(widgets::dialog_yesno(transcode(buf),
 			       arg(sigc::bind(sigc::ptr_fun(set_and_exit),
 					      rval, true)),
 			       transcode(_("Continue")),
@@ -67,14 +67,14 @@ bool download_screen::MediaChange(string Media, string Drive)
 			       transcode(_("Abort")),
 			       get_style("MediaChange")));
 
-  vscreen_mainloop();  // Eeeeeek!  Recursive mainloop!  I'm afraid..
+  toplevel::mainloop();  // Eeeeeek!  Recursive mainloop!  I'm afraid..
 
   return rval;
 }
 
 void download_screen::IMSHit(pkgAcquire::ItemDesc &itmdesc)
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   downloadmap::iterator found=active_items.find(itmdesc.Owner);
 
@@ -87,13 +87,13 @@ void download_screen::IMSHit(pkgAcquire::ItemDesc &itmdesc)
     }
   else
     found->second->download_done(true);
-  vscreen_update();
-  vscreen_tryupdate();
+  toplevel::update();
+  toplevel::tryupdate();
 }
 
 void download_screen::Fetch(pkgAcquire::ItemDesc &itmdesc)
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   downloadmap::iterator found=active_items.find(itmdesc.Owner);
 
@@ -105,13 +105,13 @@ void download_screen::Fetch(pkgAcquire::ItemDesc &itmdesc)
       sync_bounds();
     }
 
-  vscreen_update();
-  vscreen_tryupdate();
+  toplevel::update();
+  toplevel::tryupdate();
 }
 
 void download_screen::Done(pkgAcquire::ItemDesc &itmdesc)
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   downloadmap::iterator found=active_items.find(itmdesc.Owner);
   if(found==active_items.end())
@@ -127,26 +127,26 @@ void download_screen::Done(pkgAcquire::ItemDesc &itmdesc)
       found->second->set_worker(NULL);
     }
 
-  vscreen_update();
-  vscreen_tryupdate();
+  toplevel::update();
+  toplevel::tryupdate();
 }
 
 void download_screen::Fail(pkgAcquire::ItemDesc &itmdesc)
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   downloadmap::iterator found=active_items.find(itmdesc.Owner);
   if(found!=active_items.end())
     found->second->set_worker(NULL);
 
   // Nothing really to do??
-  vscreen_update();
-  vscreen_tryupdate();
+  toplevel::update();
+  toplevel::tryupdate();
 }
 
 bool download_screen::Pulse(pkgAcquire *Owner)
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   pkgAcquireStatus::Pulse(Owner);
 
@@ -156,24 +156,24 @@ bool download_screen::Pulse(pkgAcquire *Owner)
 	get_itm(*i->CurrentItem)->set_worker(i);
     }
 
-  vscreen_poll();
+  toplevel::poll();
 
-  vscreen_update();
-  vscreen_tryupdate();
+  toplevel::update();
+  toplevel::tryupdate();
 
   return !cancelled;
 }
 
 void download_screen::Start()
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   pkgAcquireStatus::Start();
 }
 
 void download_screen::Stop()
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   char buf[256];
 
@@ -181,10 +181,10 @@ void download_screen::Stop()
 
   snprintf(buf, 256, _("Downloaded %sB in %ss (%sB/s)."), SizeToStr(FetchedBytes).c_str(), TimeToStr(ElapsedTime).c_str(), SizeToStr(CurrentCPS).c_str());
 
-  popup_widget(vs_dialog_ok(transcode(buf),
-			    arg(sigc::ptr_fun(vscreen_exitmain))));
+  popup_widget(widgets::dialog_ok(transcode(buf),
+			    arg(sigc::ptr_fun(toplevel::exitmain))));
 
-  vscreen_mainloop();
+  toplevel::mainloop();
 
   destroy();
 }
@@ -193,7 +193,7 @@ void download_screen::Stop()
 void download_screen::paint_status()
 {
   if(finished)
-    vs_tree::paint_status();
+    widgets::tree::paint_status();
   else
     {
       int width,height;
@@ -232,12 +232,12 @@ void download_screen::paint_status()
 
 bool download_screen::handle_key(const key &k)
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   if(global_bindings.key_matches(k, "Quit"))
     cancelled=true;
   else
-    return vs_tree::handle_key(k);
+    return widgets::tree::handle_key(k);
 
   return true;
 }

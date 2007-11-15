@@ -29,10 +29,7 @@
 #include <sigc++/signal.h>
 
 #include "aptitude.h"
-#include "vscreen/ref_ptr.h"
-
-class vscreen_widget;
-typedef ref_ptr<vscreen_widget> vs_widget_ref;
+#include <cwidget/generic/util/ref_ptr.h>
 
 /** A download-signal log translates AcquireStatus calls into signals.
  *  Typically only one slot will be attached to each signal, but this

@@ -53,7 +53,7 @@ public:
 	   const pkgCache::PkgIterator &,
 	   const pkgCache::VerIterator &> *sig);
 
-  virtual void paint(vs_tree *win, int y, bool hierarchical, const style &st);
+  virtual void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const cwidget::style &st);
 
   virtual const wchar_t *tag();
   virtual const wchar_t *label();
@@ -68,8 +68,8 @@ public:
   virtual void set_auto(bool isauto, undo_group *undo);
   virtual void forbid_upgrade(undo_group *undo);
 
-  virtual style get_highlight_style();
-  virtual style get_normal_style();
+  virtual cwidget::style get_highlight_style();
+  virtual cwidget::style get_normal_style();
 
   void show_changelog();
   void show_information();
@@ -77,8 +77,8 @@ public:
   const pkgCache::PkgIterator &get_package() const;
   pkgCache::VerIterator visible_version() const;
 
-  bool dispatch_key(const key &k, vs_tree *owner);
-  void dispatch_mouse(short id, int x, mmask_t bstate, vs_tree *owner);
+  bool dispatch_key(const cwidget::config::key &k, cwidget::widgets::tree *owner);
+  void dispatch_mouse(short id, int x, mmask_t bstate, cwidget::widgets::tree *owner);
 
   /** Returns the style that would be used to display the given
    *  package.
@@ -86,7 +86,7 @@ public:
    *  \param package the package to generate a style for
    *  \param highlighted if \b true, the package is highlighted
    */
-  static style pkg_style(pkgCache::PkgIterator package, bool highlighted);
+  static cwidget::style pkg_style(pkgCache::PkgIterator package, bool highlighted);
 
   // Menu redirections:
   bool package_forbid_enabled();

@@ -34,12 +34,12 @@
 
 #include <cwidget/widgets/tree.h>
 
-class vs_hier_editor:public vs_tree
+class hier_editor : public cwidget::widgets::tree
 {
-  class vs_hier_item;
+  class hier_item;
 
   // Ugh..track all the children we created..
-  std::vector<vs_hier_item *> items;
+  std::vector<hier_item *> items;
 
   pkg_hier::item *item;
 
@@ -57,11 +57,11 @@ protected:
 
   void paint(const style &st);
 
-  vs_hier_editor();
+  hier_editor();
 public:
-  static ref_ptr<vs_hier_editor> create()
+  static ref_ptr<hier_editor> create()
   {
-    ref_ptr<vs_hier_editor> rval(new vs_hier_editor);
+    ref_ptr<hier_editor> rval(new hier_editor);
     rval->decref();
     return rval;
   }
@@ -78,6 +78,6 @@ public:
   sigc::signal0<void> commit_changes;
 };
 
-typedef ref_ptr<vs_hier_editor> vs_hier_editor_ref;
+typedef ref_ptr<hier_editor> hier_editor_ref;
 
 #endif

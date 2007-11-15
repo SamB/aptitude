@@ -1,4 +1,4 @@
-// vs_progress.cc
+// widgets::progress.cc
 //
 //  Copyright 2000, 2004-2007 Daniel Burrows
 //
@@ -19,13 +19,13 @@
 
 #include "aptitude.h"
 
-#include "vs_progress.h"
+#include "progress.h"
 
 #include <sstream>
 
-#include <vscreen/transcode.h>
+#include <cwidget/generic/util/transcode.h>
 
-vs_progress::vs_progress()
+progress::progress()
 {
 }
 
@@ -46,7 +46,7 @@ namespace
   }
 }
 
-void vs_progress::paint(const style &st)
+void progress::paint(const style &st)
 {
   int width=getmaxx();
 
@@ -65,12 +65,12 @@ void vs_progress::paint(const style &st)
     erase();
 }
 
-bool vs_progress::get_cursorvisible()
+bool progress::get_cursorvisible()
 {
   return false;
 }
 
-point vs_progress::get_cursorloc()
+point progress::get_cursorloc()
 {
   double xd = (Percent * getmaxx()) / 100.0;
   int x     = static_cast<int>(xd);
@@ -81,32 +81,32 @@ point vs_progress::get_cursorloc()
   return point(x, 0);
 }
 
-void vs_progress::Update()
+void progress::Update()
 {
   show();
 
   if(CheckChange(0.25))
     {
-      vscreen_update();
-      vscreen_updatecursor();
-      vscreen_tryupdate();
+      toplevel::update();
+      toplevel::updatecursor();
+      toplevel::tryupdate();
     }
 }
 
-void vs_progress::Done()
+void progress::Done()
 {
-  vscreen_update();
-  vscreen_updatecursor();
-  vscreen_tryupdate();
+  toplevel::update();
+  toplevel::updatecursor();
+  toplevel::tryupdate();
   //hide();
 }
 
-int vs_progress::width_request()
+int progress::width_request()
 {
   return 40;
 }
 
-int vs_progress::height_request(int w)
+int progress::height_request(int w)
 {
   return 1;
 }

@@ -7,15 +7,25 @@
 #ifndef APT_OPTIONS_H
 #define APT_OPTIONS_H
 
-class vscreen_widget;
+namespace cwidget
+{
+  namespace util
+  {
+    template<class T> class ref_ptr;
+  }
 
-template<class T> class ref_ptr;
+  namespace widgets
+  {
+    class widget;
 
-typedef ref_ptr<vscreen_widget> vs_widget_ref;
+    typedef util::ref_ptr<widget> widget_ref;
+  }
+}
+
 // hmm, maybe just make this a global variable that gets shown and hidden?
-vs_widget_ref make_ui_options_dialog();
-vs_widget_ref make_misc_options_dialog();
-vs_widget_ref make_dependency_options_dialog();
+cwidget::widgets::widget_ref make_ui_options_dialog();
+cwidget::widgets::widget_ref make_misc_options_dialog();
+cwidget::widgets::widget_ref make_dependency_options_dialog();
 
 
 namespace aptitude
@@ -24,7 +34,7 @@ namespace aptitude
   {
     namespace config
     {
-      vs_widget_ref make_options_tree();
+      cwidget::widgets::widget_ref make_options_tree();
     }
   }
 }

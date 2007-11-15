@@ -24,7 +24,10 @@
 
 #include <apt-pkg/pkgcache.h>
 
-class fragment;
+namespace cwidget
+{
+  class fragment;
+}
 
 /** Parses the given description string according to the standard
  *  formatting rules.
@@ -32,11 +35,11 @@ class fragment;
  *  \param desc a Description tag to parse
  *  \return a fragment representing that description
  */
-fragment *make_desc_fragment(const std::wstring &desc);
+cwidget::fragment *make_desc_fragment(const std::wstring &desc);
 
 /** \return a fragment listing the tags of the given package, or \b
  *  NULL if there are no tags.
  */
-fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg);
+cwidget::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg);
 
 #endif

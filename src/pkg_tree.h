@@ -17,7 +17,7 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  Uses the vs_tree classes to display a tree containing packages.  A generic
+//  Uses the cwidget::widgets::tree classes to display a tree containing packages.  A generic
 // version of this, suitable only for displaying the current state of the
 // package cache, is provided; it can be extended as needed.
 
@@ -53,7 +53,7 @@ class pkg_tree:public apt_undo_tree
   // to be displayed)  This could be a grouping policy, but hardcoding the
   // filter here makes it easier to alter from the UI.
 
-  static vs_editline::history_list limit_history, grouping_history,
+  static cwidget::widgets::editline::history_list limit_history, grouping_history,
     sorting_history;
 
   void handle_cache_close();
@@ -61,7 +61,7 @@ class pkg_tree:public apt_undo_tree
   /** Set up the limit and handle a few other things. */
   void init(const char *limitstr);
 protected:
-  virtual bool handle_key(const key &k);
+  virtual bool handle_key(const cwidget::config::key &k);
 
   pkg_tree(const std::string &groupingstr,
 	   pkg_grouppolicy_factory *_grouping,
@@ -74,12 +74,12 @@ public:
    *  should call build_tree().  The main reason to do this is so you
    *  can connect up the tree's signals before building it.
    */
-  static ref_ptr<pkg_tree>
+  static cwidget::util::ref_ptr<pkg_tree>
   create(const std::string &groupingstr,
 	 pkg_grouppolicy_factory *grouping,
 	 const std::wstring &limitstr)
   {
-    ref_ptr<pkg_tree> rval(new pkg_tree(groupingstr, grouping, limitstr));
+    cwidget::util::ref_ptr<pkg_tree> rval(new pkg_tree(groupingstr, grouping, limitstr));
     rval->decref();
     return rval;
   }
@@ -90,11 +90,11 @@ public:
    *
    *  The default tree limit is used.
    */
-  static ref_ptr<pkg_tree>
+  static cwidget::util::ref_ptr<pkg_tree>
   create(const std::string &groupingstr,
 	 pkg_grouppolicy_factory *grouping)
   {
-    ref_ptr<pkg_tree> rval(new pkg_tree(groupingstr, grouping));
+    cwidget::util::ref_ptr<pkg_tree> rval(new pkg_tree(groupingstr, grouping));
     rval->decref();
     return rval;
   }
@@ -141,13 +141,13 @@ public:
   bool find_reset_limit();
 
   // Local bindings:
-  static keybindings *bindings;
+  static cwidget::config::keybindings *bindings;
   static void init_bindings();
 
   sigc::signal2<void, const pkgCache::PkgIterator &, const pkgCache::VerIterator &> selected_signal;
   sigc::signal1<void, std::wstring> selected_desc_signal;
 };
 
-typedef ref_ptr<pkg_tree> pkg_tree_ref;
+typedef cwidget::util::ref_ptr<pkg_tree> pkg_tree_ref;
 
 #endif

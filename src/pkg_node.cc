@@ -19,7 +19,7 @@
 //
 //  Implementations of stuff in pkg_node.h
 
-#include "vscreen/config/keybindings.h"
+#include "cwidget/config/keybindings.h"
 
 #include "pkg_node.h"
 
@@ -42,7 +42,7 @@ void pkg_tree_node::init_bindings()
 
 // FIXME: add a do_action() command that takes a function pointer and does all
 // the extra junk below.
-bool pkg_tree_node::dispatch_key(const key &k, vs_tree *owner)
+bool pkg_tree_node::dispatch_key(const key &k, widgets::tree *owner)
 {
   undo_group *grp=new apt_undo_group;
 

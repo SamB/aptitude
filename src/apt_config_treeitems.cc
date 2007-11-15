@@ -1,6 +1,6 @@
 // apt_config_treeitems.cc      -*-c++-*-
 //
-//   Copyright (C) 2007 Daniel Burrows
+// Copyright (C) 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -28,10 +28,11 @@
 
 #include <generic/util/util.h>
 
-#include <vscreen/config/keybindings.h>
+#include <cwidget/config/keybindings.h>
 
-#include <vscreen/fragment.h>
-#include <vscreen/transcode.h>
+#include <cwidget/fragment.h>
+#include <cwidget/generic/util/transcode.h>
+#include <cwidget/toplevel.h>
 #include <cwidget/widgets/widget.h>
 #include <cwidget/widgets/layout_item.h>
 #include <cwidget/widgets/treeitem.h>
@@ -39,6 +40,12 @@
 #include <cwidget/widgets/tree.h>
 
 #include <map>
+
+namespace cw = cwidget;
+using cw::fragment;
+using cw::util::transcode;
+namespace widgets = cw::widgets;
+namespace toplevel = cw::toplevel;
 
 namespace aptitude
 {
@@ -48,6 +55,10 @@ namespace aptitude
     {
       namespace
       {
+	using cw::dropbox;
+	using cw::hardwrapbox;
+	using cw::text_fragment;
+
 	fragment *drophardwrapbox(fragment *header, const std::string &contents)
 	{
 	  return dropbox(header, hardwrapbox(text_fragment(contents)));
@@ -68,7 +79,7 @@ namespace aptitude
 
 	void value_changed()
 	{
-	  vscreen_update();
+	  toplevel::update();
 	  description_changed();
 	}
       public:
@@ -89,14 +100,14 @@ namespace aptitude
 	  bool value = aptcfg->FindB(item, dflt);
 
 	  std::vector<fragment *> fragments;
-	  fragments.push_back(fragf(_("%BOption:%b  %s\n"
-				      "%BDefault:%b %s\n"
-				      "%BValue:%b   %s\n"),
-				    item.c_str(),
-				    dflt  ? _("True") : _("False"),
-				    value ? _("True") : _("False")));
-	  fragments.push_back(newline_fragment());
-	  fragments.push_back(wrapbox(text_fragment(long_description.c_str())));
+	  fragments.push_back(cw::fragf(_("%BOption:%b  %s\n"
+					  "%BDefault:%b %s\n"
+					  "%BValue:%b   %s\n"),
+					item.c_str(),
+					dflt  ? _("True") : _("False"),
+					value ? _("True") : _("False")));
+	  fragments.push_back(cw::newline_fragment());
+	  fragments.push_back(wrapbox(cw::text_fragment(long_description.c_str())));
 
 	  return sequence_fragment(fragments);
 	}
@@ -110,9 +121,9 @@ namespace aptitude
 	  apt_dumpcfg(PACKAGE);
 	}
 
-	bool dispatch_key(const key &k, vs_tree *owner)
+	bool dispatch_key(const cw::config::key &k, widgets::tree *owner)
 	{
-	  if(global_bindings.key_matches(k, "Confirm"))
+	  if(cw::config::global_bindings.key_matches(k, "Confirm"))
 	    toggle();
 	  else
 	    return config_treeitem::dispatch_key(k, owner);
@@ -120,7 +131,7 @@ namespace aptitude
 	  return true;
 	}
 
-	void dispatch_mouse(short id, int x, mmask_t bstate, vs_tree *owner)
+	void dispatch_mouse(short id, int x, mmask_t bstate, widgets::tree *owner)
 	{
 	  if((bstate & BUTTON1_CLICKED) != 0 &&
 	     x >= 2 * get_depth() &&
@@ -128,12 +139,12 @@ namespace aptitude
 	    toggle();
 	}
 
-	void paint(vs_tree *win, int y, bool hierarchical, const style &st)
+	void paint(widgets::tree *win, int y, bool hierarchical, const cw::style &st)
 	{
 	  bool checked = aptcfg->FindB(item, dflt);
 	  const char *box = checked ? "[X]" : "[ ]";
 
-	  vs_treeitem::paint(win, y, hierarchical,
+	  widgets::treeitem::paint(win, y, hierarchical,
 			     swsprintf(L"%s %ls", box, description.c_str()));
 	}
 
@@ -148,7 +159,7 @@ namespace aptitude
 	}
       };
 
-      vs_treeitem *make_boolean_item(const std::wstring &description,
+      widgets::treeitem *make_boolean_item(const std::wstring &description,
 				     const std::wstring &long_description,
 				     const std::string  &item,
 				     const bool          dflt)
@@ -173,7 +184,7 @@ namespace aptitude
 
 	  void value_changed()
 	  {
-	    vscreen_update();
+	    toplevel::update();
 	    description_changed();
 	  }
 
@@ -198,21 +209,21 @@ namespace aptitude
 	    std::vector<fragment *> fragments;
 
 
-	    fragments.push_back(drophardwrapbox(fragf(_("%BOption:%b  ")),
+	    fragments.push_back(drophardwrapbox(cw::fragf(_("%BOption:%b  ")),
 						item));
-	    fragments.push_back(drophardwrapbox(fragf(_("%BDefault:%b ")),
+	    fragments.push_back(drophardwrapbox(cw::fragf(_("%BDefault:%b ")),
 						dflt));
-	    fragments.push_back(drophardwrapbox(fragf(_("%BValue:%b   ")),
+	    fragments.push_back(drophardwrapbox(cw::fragf(_("%BValue:%b   ")),
 						value));
 
 
-	    fragments.push_back(newline_fragment());
-	    fragments.push_back(wrapbox(text_fragment(long_description)));
+	    fragments.push_back(cw::newline_fragment());
+	    fragments.push_back(wrapbox(cw::text_fragment(long_description)));
 
 	    return sequence_fragment(fragments);
 	  }
 
-	  void paint(vs_tree *win, int y, bool hierarchical, const style &st)
+	  void paint(widgets::tree *win, int y, bool hierarchical, const cw::style &st)
 	  {
 	    win->move(y, 0);
 	    int x = 0;
@@ -269,15 +280,15 @@ namespace aptitude
 	  {
 	    prompt_string(ssprintf(_("Editing \"%ls\""), description.c_str()),
 			  aptcfg->Find(item, dflt.c_str()),
-			  arg(sigc::mem_fun(this, &string_config_treeitem::set_text)),
+			  cw::util::arg(sigc::mem_fun(this, &string_config_treeitem::set_text)),
 			  NULL,
 			  NULL,
 			  NULL);
 	  }
 
-	  bool dispatch_key(const key &k, vs_tree *owner)
+	  bool dispatch_key(const cw::config::key &k, widgets::tree *owner)
 	  {
-	    if(global_bindings.key_matches(k, "Confirm"))
+	    if(cw::config::global_bindings.key_matches(k, "Confirm"))
 	      edit();
 	    else
 	      return config_treeitem::dispatch_key(k, owner);
@@ -286,21 +297,21 @@ namespace aptitude
 	  }
 	};
 
-	class dummy_subtree : public vs_subtree<config_treeitem>
+	class dummy_subtree : public widgets::subtree<config_treeitem>
 	{
 	  const std::wstring description;
 	public:
 	  dummy_subtree(const std::wstring &_description)
-	    : vs_subtree<config_treeitem>(true),
+	    : widgets::subtree<config_treeitem>(true),
 	      description(_description)
 	  {
 	    set_selectable(false);
 	  }
 
-	  void paint(vs_tree *win, int y,
-		     bool hierarchical, const style &)
+	  void paint(widgets::tree *win, int y,
+		     bool hierarchical, const cw::style &)
 	  {
-	    vs_subtree<config_treeitem>::paint(win, y, hierarchical, description);
+	    widgets::subtree<config_treeitem>::paint(win, y, hierarchical, description);
 	  }
 
 	  const wchar_t *tag()
@@ -315,7 +326,7 @@ namespace aptitude
 	};
       }
 
-      vs_treeitem *make_string_item(const std::wstring &description,
+      widgets::treeitem *make_string_item(const std::wstring &description,
 				    const std::wstring &long_description,
 				    const std::string  &item,
 				    const std::string  &dflt)
@@ -339,7 +350,7 @@ namespace aptitude
 
 	void value_changed()
 	{
-	  vscreen_update();
+	  toplevel::update();
 	  description_changed();
 	}
       public:
@@ -381,22 +392,22 @@ namespace aptitude
 	    : dflt_found->second.get_description();
 
 	  std::vector<fragment *> fragments;
-	  fragments.push_back(drophardwrapbox(fragf(_("%BOption:%b  ")),
+	  fragments.push_back(drophardwrapbox(cw::fragf(_("%BOption:%b  ")),
 					      item));
-	  fragments.push_back(drophardwrapbox(fragf(_("%BDefault:%b ")),
+	  fragments.push_back(drophardwrapbox(cw::fragf(_("%BDefault:%b ")),
 					      dflt_desc));
-	  fragments.push_back(drophardwrapbox(fragf(_("%BValue:%b   ")),
+	  fragments.push_back(drophardwrapbox(cw::fragf(_("%BValue:%b   ")),
 					      value_desc));
 
-	  fragments.push_back(newline_fragment());
-	  fragments.push_back(drophardwrapbox(fragf(_("%BChoice:%b  ")),
+	  fragments.push_back(cw::newline_fragment());
+	  fragments.push_back(drophardwrapbox(cw::fragf(_("%BChoice:%b  ")),
 					      my_choice_found->second.get_description()));
-	  fragments.push_back(wrapbox(text_fragment(my_choice_found->second.get_long_description())));
+	  fragments.push_back(wrapbox(cw::text_fragment(my_choice_found->second.get_long_description())));
 
-	  fragments.push_back(newline_fragment());
-	  fragments.push_back(wrapbox(text_fragment(description)));
+	  fragments.push_back(cw::newline_fragment());
+	  fragments.push_back(wrapbox(cw::text_fragment(description)));
 
-	  return sequence_fragment(fragments);
+	  return cw::sequence_fragment(fragments);
 	}
 
 	void choose()
@@ -406,9 +417,9 @@ namespace aptitude
 	  apt_dumpcfg(PACKAGE);
 	}
 
-	bool dispatch_key(const key &k, vs_tree *owner)
+	bool dispatch_key(const cw::config::key &k, widgets::tree *owner)
 	{
-	  if(global_bindings.key_matches(k, "Confirm"))
+	  if(cw::config::global_bindings.key_matches(k, "Confirm"))
 	    choose();
 	  else
 	    return config_treeitem::dispatch_key(k, owner);
@@ -416,7 +427,7 @@ namespace aptitude
 	  return true;
 	}
 
-	void dispatch_mouse(short id, int x, mmask_t bstate, vs_tree *owner)
+	void dispatch_mouse(short id, int x, mmask_t bstate, widgets::tree *owner)
 	{
 	  if((bstate & BUTTON1_CLICKED) != 0 &&
 	     x >= 2 * get_depth() &&
@@ -424,7 +435,7 @@ namespace aptitude
 	    choose();
 	}
 
-	void paint(vs_tree *win, int y, bool hierarchical, const style &st)
+	void paint(widgets::tree *win, int y, bool hierarchical, const cw::style &st)
 	{
 	  const std::map<std::string, radio_choice>::const_iterator my_choice_found =
 	    choices.find(my_choice);
@@ -434,7 +445,7 @@ namespace aptitude
 	  bool selected = aptcfg->Find(item, dflt.c_str()) == my_choice;
 	  const char *box = selected ? "(*)" : "( )";
 
-	  vs_treeitem::paint(win, y, hierarchical,
+	  widgets::treeitem::paint(win, y, hierarchical,
 			     swsprintf(L"%s %ls", box, my_choice_found->second.get_description().c_str()));
 	}
 
@@ -449,7 +460,7 @@ namespace aptitude
 	}
       };
 
-      vs_treeitem *make_radio_item(const std::wstring &description,
+      widgets::treeitem *make_radio_item(const std::wstring &description,
 				   const std::wstring &long_description,
 				   const std::string  &item,
 				   const std::vector<radio_choice> &choices,

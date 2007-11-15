@@ -19,7 +19,7 @@
 //
 //
 // Package sorting policies.  Currently they just handle PkgIterator/VerIterator
-// pairs and a wrapper class integrates them with vs_tree.  If this can handle
+// pairs and a wrapper class integrates them with cwidget::widgets::tree.  If this can handle
 // everything useful, I'd like to keep it as is, since it's simpler than the
 // alternatives.
 
@@ -65,14 +65,14 @@ pkg_sortpolicy *pkg_sortpolicy_priority(pkg_sortpolicy *chain, bool reversed);
 // work if it did without all sorts of evil.  You have been warned.
 //
 //  Having the operator() be virtual is a bit of an ick..
-class pkg_sortpolicy_wrapper:public sortpolicy
+class pkg_sortpolicy_wrapper : public cwidget::widgets::sortpolicy
 {
   pkg_sortpolicy *chain;
 public:
   pkg_sortpolicy_wrapper(pkg_sortpolicy *_chain):chain(_chain) {}
 
-  int compare(vs_treeitem *item1, vs_treeitem *item2) const;
-  bool operator()(vs_treeitem *item1, vs_treeitem *item2)
+  int compare(cwidget::widgets::treeitem *item1, cwidget::widgets::treeitem *item2) const;
+  bool operator()(cwidget::widgets::treeitem *item1, cwidget::widgets::treeitem *item2)
   {
     return (compare(item1, item2)<0);
   }

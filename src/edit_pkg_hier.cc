@@ -33,15 +33,15 @@
 
 #include <generic/util/util.h>
 
-#include <vscreen/config/keybindings.h>
+#include <cwidget/config/keybindings.h>
 #include <cwidget/widgets/subtree.h>
-#include <vscreen/transcode.h>
+#include <cwidget/generic/util/transcode.h>
 
 using namespace std;
 using namespace __gnu_cxx;
 
 // Stores a group (name) and a Y/N state
-class vs_hier_editor::vs_hier_item:public sigc::trackable, public vs_treeitem
+class widgets::hier_editor::widgets::hier_item:public sigc::trackable, public widgets::treeitem
 {
   bool selected;
   pkg_hier::group *group;
@@ -49,39 +49,39 @@ class vs_hier_editor::vs_hier_item:public sigc::trackable, public vs_treeitem
   // whatever
   wstring group_name;
 public:
-  vs_hier_item(pkg_hier::group *_group, pkg_hier::item *_item)
-    :vs_treeitem(true), group(_group), group_name(transcode(group->name, "ASCII"))
+  widgets::hier_item(pkg_hier::group *_group, pkg_hier::item *_item)
+    :widgets::treeitem(true), group(_group), group_name(transcode(group->name, "ASCII"))
   {
     set_item(_item);
   }
 
-  bool dispatch_key(const key &k, vs_tree *owner)
+  bool dispatch_key(const key &k, widgets::tree *owner)
   {
     if(global_bindings.key_matches(k, "PushButton") ||
        global_bindings.key_matches(k, "Confirm"))
       {
 	selected=!selected;
-	vscreen_update();
+	toplevel::update();
       }
     else
-      return vs_treeitem::dispatch_key(k, owner);
+      return widgets::treeitem::dispatch_key(k, owner);
 
     return true;
   }
 
-  void dispatch_mouse(short id, int x, mmask_t bstate, vs_tree *owner)
+  void dispatch_mouse(short id, int x, mmask_t bstate, widgets::tree *owner)
   {
     if(bstate&BUTTON1_DOUBLE_CLICKED || bstate & BUTTON3_PRESSED ||
        bstate & BUTTON3_CLICKED)
       {
 	selected=!selected;
-	vscreen_update();
+	toplevel::update();
       }
     else
-      vs_treeitem::dispatch_mouse(id, x, bstate, owner);
+      widgets::treeitem::dispatch_mouse(id, x, bstate, owner);
   }
 
-  void paint(vs_tree *win, int y, bool hierarchical, const style &st)
+  void paint(widgets::tree *win, int y, bool hierarchical, const style &st)
   {
     string::size_type width=win->get_width();
     string todisp=" ";
@@ -136,30 +136,30 @@ public:
 };
 
 // FIXME: I shouldn't have to do this.
-class silly_subtree:public vs_subtree_generic
+class silly_subtree:public widgets::subtree_generic
 {
   wstring txt;
 public:
   silly_subtree(bool expanded, const wstring &_txt)
-    :vs_subtree_generic(expanded), txt(_txt) {}
+    :widgets::subtree_generic(expanded), txt(_txt) {}
 
-  void paint(vs_tree *win, int y, bool hierarchical, const style &st)
+  void paint(widgets::tree *win, int y, bool hierarchical, const style &st)
   {
-    vs_subtree_generic::paint(win, y, hierarchical, txt);
+    widgets::subtree_generic::paint(win, y, hierarchical, txt);
   }
 
   const wchar_t *tag() {return txt.c_str();}
   const wchar_t *label() {return txt.c_str();}
 };
 
-vs_hier_editor::vs_hier_editor():item(NULL)
+widgets::hier_editor::widgets::hier_editor():item(NULL)
 {
-  hier_reloaded.connect(sigc::mem_fun(*this, &vs_hier_editor::handle_reload));
+  hier_reloaded.connect(sigc::mem_fun(*this, &widgets::hier_editor::handle_reload));
 }
 
-void vs_hier_editor::handle_reload()
+void widgets::hier_editor::handle_reload()
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   set_root(NULL);
   items.clear();
@@ -170,7 +170,7 @@ void vs_hier_editor::handle_reload()
 	      pkgCache::VerIterator(*apt_cache_file));
 }
 
-bool vs_hier_editor::get_cursorvisible()
+bool widgets::hier_editor::get_cursorvisible()
 {
   if(!item)
     return false;
@@ -178,20 +178,20 @@ bool vs_hier_editor::get_cursorvisible()
     return true;
 }
 
-void vs_hier_editor::paint(const style &st)
+void widgets::hier_editor::paint(const style &st)
 {
   if(!item)
     mvaddnstr(0, 0, _("No hierarchy information to edit"), get_width());
   else
-    vs_tree::paint(st);
+    widgets::tree::paint(st);
 }
 
 // Creates a new list of edit-widgets if pkg isn't an end iterator.
 //
 // (yes, it would be nicer in some ways to not recreate the tree continually)
-void vs_hier_editor::set_package(const pkgCache::PkgIterator &pkg)
+void widgets::hier_editor::set_package(const pkgCache::PkgIterator &pkg)
 {
-  vs_widget_ref tmpref(this);
+  widgets::widget_ref tmpref(this);
 
   shown_conn.disconnect();
   if(get_visible())
@@ -222,8 +222,8 @@ void vs_hier_editor::set_package(const pkgCache::PkgIterator &pkg)
 		  i!=user_pkg_hier->groups.end();
 		  ++i)
 		{
-		  vs_hier_item *tmp=new vs_hier_item(&i->second, item);
-		  commit_changes.connect(sigc::mem_fun(*tmp, &vs_hier_item::commit));
+		  widgets::hier_item *tmp=new widgets::hier_item(&i->second, item);
+		  commit_changes.connect(sigc::mem_fun(*tmp, &widgets::hier_item::commit));
 
 		  newroot->add_child(tmp);
 		  items.push_back(tmp);
@@ -234,7 +234,7 @@ void vs_hier_editor::set_package(const pkgCache::PkgIterator &pkg)
 	      set_root(newroot);
 	    }
 
-	  for(vector<vs_hier_item *>::iterator i=items.begin();
+	  for(vector<widgets::hier_item *>::iterator i=items.begin();
 	      i!=items.end(); ++i)
 	    (*i)->set_item(item);
 	}
@@ -246,18 +246,18 @@ void vs_hier_editor::set_package(const pkgCache::PkgIterator &pkg)
       string name=pkg.end()?"":pkg.Name();
 
       shown_conn=shown_sig.connect(sigc::bind(sigc::mem_fun(*this,
-							    (void (vs_hier_editor::*) (string)) &vs_hier_editor::set_package),
+							    (void (widgets::hier_editor::*) (string)) &widgets::hier_editor::set_package),
 					      name));
     }
 }
 
-void vs_hier_editor::set_package(const pkgCache::PkgIterator &pkg,
+void widgets::hier_editor::set_package(const pkgCache::PkgIterator &pkg,
 				 const pkgCache::VerIterator &ver)
 {
   set_package(pkg);
 }
 
-void vs_hier_editor::set_package(std::string name)
+void widgets::hier_editor::set_package(std::string name)
 {
   if(apt_cache_file)
     set_package((*apt_cache_file)->FindPkg(name));
@@ -272,7 +272,7 @@ struct item_cmp
   }
 };
 
-void vs_hier_editor::save_hier(string file)
+void widgets::hier_editor::save_hier(string file)
 {
   // We copy references to items into a list, then sort it (so that the
   // output is in a predictable order -- this makes diffs against an
@@ -319,7 +319,7 @@ void vs_hier_editor::save_hier(string file)
   fclose(f);
 }
 
-bool vs_hier_editor::handle_key(const key &k)
+bool widgets::hier_editor::handle_key(const key &k)
 {
   if(global_bindings.key_matches(k, "SaveHier"))
     {
@@ -343,7 +343,7 @@ bool vs_hier_editor::handle_key(const key &k)
 	{
 	  item->parents.clear();
 
-	  for(vector<vs_hier_item *>::iterator i=items.begin();
+	  for(vector<widgets::hier_item *>::iterator i=items.begin();
 	      i!=items.end(); ++i)
 	    (*i)->commit();
 	}
@@ -356,7 +356,7 @@ bool vs_hier_editor::handle_key(const key &k)
 	{
 	  item->parents.clear();
 
-	  for(vector<vs_hier_item *>::iterator i=items.begin();
+	  for(vector<widgets::hier_item *>::iterator i=items.begin();
 	      i!=items.end(); ++i)
 	    (*i)->commit();
 	}
@@ -366,7 +366,7 @@ bool vs_hier_editor::handle_key(const key &k)
   else if(global_bindings.key_matches(k, "Abort"))
     hide();
   else
-    return vs_tree::handle_key(k);
+    return widgets::tree::handle_key(k);
 
   return true;
 }

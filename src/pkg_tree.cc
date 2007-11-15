@@ -30,10 +30,10 @@
 #include "pkg_sortpolicy.h"
 #include "pkg_subtree.h"
 #include "ui.h"
-#include "vs_progress.h"
+#include "widgets::progress.h"
 
 #include <vscreen/columnify.h>
-#include <vscreen/transcode.h>
+#include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/treeitem.h>
 
 #include <generic/apt/apt.h>
@@ -49,12 +49,12 @@
 
 keybindings *pkg_tree::bindings=NULL;
 
-vs_editline::history_list pkg_tree::limit_history, pkg_tree::grouping_history,
+widgets::editline::history_list pkg_tree::limit_history, pkg_tree::grouping_history,
   pkg_tree::sorting_history;
 
 void pkg_tree::init_bindings()
 {
-  bindings=new keybindings(vs_tree::bindings);
+  bindings=new keybindings(widgets::tree::bindings);
 }
 
 pkg_tree::pkg_tree(const std::string &def_grouping,
@@ -205,14 +205,14 @@ bool pkg_tree::build_tree(OpProgress &progress)
   else
     rval=true;
 
-  vscreen_update();
+  toplevel::update();
 
   return rval;
 }
 
 bool pkg_tree::build_tree()
 {
-  vs_progress_ref p=gen_progress_bar();
+  widgets::progress_ref p=gen_progress_bar();
   bool rval=build_tree(*p.unsafe_get_ref());
   p->destroy();
 

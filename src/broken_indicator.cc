@@ -32,9 +32,9 @@
 
 #include <generic/util/util.h>
 
-#include <vscreen/config/colors.h>
-#include <vscreen/config/keybindings.h>
-#include <vscreen/fragment.h>
+#include <cwidget/config/colors.h>
+#include <cwidget/config/keybindings.h>
+#include <cwidget/fragment.h>
 #include <cwidget/widgets/text_layout.h>
 #include <cwidget/toplevel.h>
 
@@ -44,6 +44,11 @@
 #include <vector>
 
 using namespace std;
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
 
@@ -54,7 +59,7 @@ typedef generic_solution<aptitude_universe> aptitude_solution;
  *  \todo write a simple table fragment class and use that to
  *  right-justify the text that obviously should be
  */
-class broken_indicator:public vs_text_layout
+class broken_indicator : public cw::text_layout
 {
   aptitude_solution last_sol;
 
@@ -89,68 +94,76 @@ protected:
     cache_closed.connect(sigc::mem_fun(*this, &broken_indicator::update));
     cache_reloaded.connect(sigc::mem_fun(*this, &broken_indicator::handle_cache_reload));
 
-    set_bg_style(get_style("Error"));
+    set_bg_style(cw::get_style("Error"));
 
     update();
 
-    vscreen_addtimeout(new slot_event(sigc::mem_fun(this, &broken_indicator::tick_timeout)),
-		       aptcfg->FindI(PACKAGE "::Spin-Interval", 500));
+    cw::toplevel::addtimeout(new cw::toplevel::slot_event(sigc::mem_fun(this, &broken_indicator::tick_timeout)),
+			     aptcfg->FindI(PACKAGE "::Spin-Interval", 500));
   }
 
 private:
-  static fragment *key_hint_fragment(const resolver_manager::state &state)
+  static cw::fragment *key_hint_fragment(const resolver_manager::state &state)
   {
-    wstring next=global_bindings.readable_keyname("NextSolution");
-    wstring prev=global_bindings.readable_keyname("PrevSolution");
-    wstring examine=global_bindings.readable_keyname("ExamineSolution");
-    wstring apply=global_bindings.readable_keyname("ApplySolution");
+    wstring next = cw::config::global_bindings.readable_keyname("NextSolution");
+    wstring prev = cw::config::global_bindings.readable_keyname("PrevSolution");
+    wstring examine = cw::config::global_bindings.readable_keyname("ExamineSolution");
+    wstring apply = cw::config::global_bindings.readable_keyname("ApplySolution");
 
 
 
-    style st_normal;
-    style st_disabled;
+    cw::style st_normal;
+    cw::style st_disabled;
     st_disabled.attrs_off(A_BOLD);
     st_disabled.attrs_on(A_DIM);
     st_disabled.set_fg(COLOR_BLACK);
 
-    vector<fragment *> key_hints;
+    vector<cw::fragment *> key_hints;
 
-    key_hints.push_back(fragf(_("%ls: Examine"),
-			      examine.c_str()));
+    key_hints.push_back(cw::fragf(_("%ls: Examine"),
+				  examine.c_str()));
 
 
     bool can_apply = (state.selected_solution < state.generated_solutions);
     bool can_next = (state.selected_solution < state.generated_solutions &&
 		     !(state.selected_solution + 1 == state.generated_solutions && state.solutions_exhausted));
 
-    key_hints.push_back(style_fragment(fragf(_("%ls: Apply"),
-					     apply.c_str()),
-				       can_apply ? st_normal : st_disabled));
-    key_hints.push_back(style_fragment(fragf(_("%ls: Next"),
-					     next.c_str()),
-				       can_next ? st_normal : st_disabled));
+    cw::fragment *apply_fragment =
+      cw::style_fragment(cw::fragf(_("%ls: Apply"),
+				   apply.c_str()),
+			 can_apply ? st_normal : st_disabled);
 
-    bool can_prev = (state.selected_solution > 0);
-    key_hints.push_back(style_fragment(fragf(_("%ls: Previous"),
-					     prev.c_str()),
-				       can_prev ? st_normal : st_disabled));
+    cw::fragment *next_fragment =
+      cw::style_fragment(cw::fragf(_("%ls: Next"),
+				   next.c_str()),
+			 can_next ? st_normal : st_disabled);
 
-    return join_fragments(key_hints, L"  ");
+    const bool can_prev = (state.selected_solution > 0);
+    cw::fragment *prev_fragment =
+      cw::style_fragment(cw::fragf(_("%ls: Previous"),
+				   prev.c_str()),
+			 can_prev ? st_normal : st_disabled);
+
+    key_hints.push_back(apply_fragment);
+    key_hints.push_back(next_fragment);
+    key_hints.push_back(prev_fragment);
+
+    return cw::join_fragments(key_hints, L"  ");
   }
 
   void tick_timeout()
   {
-    vs_widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
     if(resman != NULL && resman->background_thread_active())
       {
  	++spin_count;
 	update();
-	vscreen_update();
+	cw::toplevel::update();
       }
 
-    vscreen_addtimeout(new slot_event(sigc::mem_fun(this, &broken_indicator::tick_timeout)),
-		       aptcfg->FindI(PACKAGE "::Spin-Interval", 500));
+    cw::toplevel::addtimeout(new cw::toplevel::slot_event(sigc::mem_fun(this, &broken_indicator::tick_timeout)),
+			     aptcfg->FindI(PACKAGE "::Spin-Interval", 500));
   }
 
   std::string spin_string(const resolver_manager::state &state) const
@@ -173,7 +186,7 @@ private:
       }
   }
 
-  struct update_event : public vscreen_event
+  struct update_event : public cw::toplevel::event
   {
     broken_indicator *b;
   public:
@@ -195,12 +208,12 @@ private:
    */
   void post_update()
   {
-    vscreen_post_event(new update_event(this));
+    cw::toplevel::post_event(new update_event(this));
   }
 public:
-  static ref_ptr<broken_indicator> create()
+  static cw::util::ref_ptr<broken_indicator> create()
   {
-    ref_ptr<broken_indicator> rval(new broken_indicator);
+    cw::util::ref_ptr<broken_indicator> rval(new broken_indicator);
     rval->decref();
     return rval;
   }
@@ -208,11 +221,11 @@ public:
   // TODO: split this monster up.
   void update()
   {
-    vs_widget_ref tmpref(this);
+    cw::widget_ref tmpref(this);
 
     if(resman == NULL || !resman->resolver_exists())
       {
-	set_fragment(fragf(""));
+	set_fragment(cw::fragf(""));
 	last_sol.nullify();
 	hide();
 	return;
@@ -223,7 +236,7 @@ public:
 
     if(state.solutions_exhausted && state.generated_solutions == 0)
       {
-	set_fragment(fragf(_("Unable to resolve dependencies.")));
+	set_fragment(cw::fragf(_("Unable to resolve dependencies.")));
 	last_sol.nullify();
 	show();
 	return;
@@ -234,7 +247,7 @@ public:
       {
 	if(state.background_thread_aborted)
 	  {
-	    set_fragment(fragf(_("Fatal error in resolver")));
+	    set_fragment(cw::fragf(_("Fatal error in resolver")));
 	    last_sol.nullify();
 	    show();
 	    return;
@@ -243,19 +256,22 @@ public:
 	// TODO: add a column-generating fragment that can
 	//       left/right justify stuff.
 
-	vector<fragment_column_entry> columns;
+	vector<cw::fragment_column_entry> columns;
 
-	columns.push_back(fragment_column_entry(true, false, 1, fragment_column_entry::top, flowbox(text_fragment(ssprintf(_("[%d(%d)/...] Resolving dependencies"),
-														    state.selected_solution + 1,
-														    state.generated_solutions)))));
+	cw::fragment *col1_fragment =
+	  cw::flowbox(cw::text_fragment(ssprintf(_("[%d(%d)/...] Resolving dependencies"),
+						 state.selected_solution + 1,
+						 state.generated_solutions)));
+	columns.push_back(cw::fragment_column_entry(true, false, 1, cw::fragment_column_entry::top, col1_fragment));
 
-	columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL));
+	columns.push_back(cw::fragment_column_entry(false, false, 1, cw::fragment_column_entry::top, NULL));
 
-	columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, text_fragment(spin_string(state))));
+	cw::fragment *col3_fragment = cw::text_fragment(spin_string(state));
+	columns.push_back(cw::fragment_column_entry(false, false, 1, cw::fragment_column_entry::top, col3_fragment));
 
-	set_fragment(sequence_fragment(fragment_columns(columns),
-				       key_hint_fragment(state),
-				       NULL));
+	set_fragment(cw::sequence_fragment(cw::fragment_columns(columns),
+					   key_hint_fragment(state),
+					   NULL));
 	last_sol.nullify();
 	show();
 	return;
@@ -278,7 +294,7 @@ public:
 
     if(sol.get_actions().empty())
       {
-	set_fragment(fragf("%s", _("Internal error: unexpected null solution.")));
+	set_fragment(cw::fragf("%s", _("Internal error: unexpected null solution.")));
 	show();
 	return;
       }
@@ -323,77 +339,103 @@ public:
 	  }
       }
 
-    vector<fragment *> fragments;
+    vector<cw::fragment *> fragments;
 
     string countstr
       = ssprintf(state.solutions_exhausted?"[%d/%d]":"[%d(%d)/...]",
 		 state.selected_solution + 1,
 		 state.generated_solutions);
-    fragments.push_back(fragf("%s ", countstr.c_str()));
+    fragments.push_back(cw::fragf("%s ", countstr.c_str()));
 
 
-    vector<fragment *> suggestions;
+    vector<cw::fragment *> suggestions;
 
     if(install_count>0)
-      suggestions.push_back(text_fragment(ssprintf(ngettext("%d install",
-							    "%d installs",
-							    install_count),
-						   install_count)));
+      {
+	cw::fragment *install_count_fragment =
+	  cw::text_fragment(ssprintf(ngettext("%d install",
+					      "%d installs",
+					      install_count),
+				     install_count));
+	suggestions.push_back(install_count_fragment);
+      }
 
     if(remove_count>0)
-      suggestions.push_back(text_fragment(ssprintf(ngettext("%d removal",
-							    "%d removals",
-							    remove_count),
-						   remove_count)));
+      {
+	cw::fragment *remove_count_fragment =
+	  cw::text_fragment(ssprintf(ngettext("%d removal",
+					      "%d removals",
+					      remove_count),
+				     remove_count));
+	suggestions.push_back(remove_count_fragment);
+      }
 
     if(keep_count>0)
-      suggestions.push_back(text_fragment(ssprintf(ngettext("%d keep",
-							    "%d keeps",
-							    keep_count),
-						   keep_count)));
+      {
+	cw::fragment *keep_count_fragment =
+	  cw::text_fragment(ssprintf(ngettext("%d keep",
+					      "%d keeps",
+					      keep_count),
+				     keep_count));
+	suggestions.push_back(keep_count_fragment);
+      }
 
     if(upgrade_count>0)
-      suggestions.push_back(text_fragment(ssprintf(ngettext("%d upgrade",
-							    "%d upgrades",
-							    upgrade_count),
-						   upgrade_count)));
+      {
+	cw::fragment *upgrade_count_fragment =
+	  cw::text_fragment(ssprintf(ngettext("%d upgrade",
+					      "%d upgrades",
+					      upgrade_count),
+				     upgrade_count));
+	  suggestions.push_back(upgrade_count_fragment);
+      }
 
     if(downgrade_count>0)
-      suggestions.push_back(text_fragment(ssprintf(ngettext("%d downgrade",
-							    "%d downgrades",
-							    downgrade_count),
-						   downgrade_count)));
+      {
+	cw::fragment *downgrade_count_fragment =
+	  cw::text_fragment(ssprintf(ngettext("%d downgrade",
+					      "%d downgrades",
+					      downgrade_count),
+				     downgrade_count));
+
+	suggestions.push_back(downgrade_count_fragment);
+      }
 
     /* ForTranslators: %F is replaced with a comma separated list such as
        "n1 installs, n2 removals", ...
      */
-    fragments.push_back(fragf(_("Suggest %F"), join_fragments(suggestions, L", ")));
+    fragments.push_back(cw::fragf(_("Suggest %F"), cw::join_fragments(suggestions, L", ")));
 
     if(state.background_thread_active)
       {
-	vector<fragment_column_entry> columns;
-	columns.push_back(fragment_column_entry(true, false, 1, fragment_column_entry::top, hardwrapbox(sequence_fragment(fragments))));
+	vector<cw::fragment_column_entry> columns;
 
-	columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL));
+	cw::fragment *col1_fragment =
+	  cw::hardwrapbox(cw::sequence_fragment(fragments));
+	columns.push_back(cw::fragment_column_entry(true, false, 1, cw::fragment_column_entry::top, col1_fragment));
 
-	columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, text_fragment(spin_string(state))));
+	columns.push_back(cw::fragment_column_entry(false, false, 1, cw::fragment_column_entry::top, NULL));
+
+	cw::fragment *col3_fragment =
+	  cw::text_fragment(spin_string(state));
+	columns.push_back(cw::fragment_column_entry(false, false, 1, cw::fragment_column_entry::top, col3_fragment));
 
 
 	fragments.clear();
-	fragments.push_back(fragment_columns(columns));
+	fragments.push_back(cw::fragment_columns(columns));
       }
     else
-      fragments.push_back(newline_fragment());
-    fragments.push_back(hardwrapbox(key_hint_fragment(state)));
+      fragments.push_back(cw::newline_fragment());
+    fragments.push_back(cw::hardwrapbox(key_hint_fragment(state)));
 
-    fragment *f=sequence_fragment(fragments);
+    cw::fragment *f = cw::sequence_fragment(fragments);
     set_fragment(f);
 
     show();
   }
 };
 
-ref_ptr<vscreen_widget> make_broken_indicator()
+cw::util::ref_ptr<cw::widgets::widget> make_broken_indicator()
 {
   return broken_indicator::create();
 }

@@ -19,7 +19,7 @@
 
 #include "download_signal_log.h"
 
-#include <cwidget/widgets/widgets.h>
+#include <cwidget/widgets/widget.h>
 
 #include <sigc++/adaptors/bind.h>
 

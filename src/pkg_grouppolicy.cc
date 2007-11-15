@@ -25,7 +25,7 @@
 #include "pkg_item.h"
 #include "pkg_subtree.h"
 
-#include <vscreen/transcode.h>
+#include <cwidget/generic/util/transcode.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/matchers.h>

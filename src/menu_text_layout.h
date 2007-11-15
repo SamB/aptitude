@@ -25,11 +25,11 @@
 #include <cwidget/widgets/editline.h>
 #include <cwidget/widgets/text_layout.h>
 
-class menu_text_layout : public vs_text_layout, public menu_redirect
+class menu_text_layout : public cwidget::widgets::text_layout, public menu_redirect
 {
   std::wstring last_search;
   bool last_search_forward;
-  vs_editline::history_list search_history;
+  cwidget::widgets::editline::history_list search_history;
 
   menu_text_layout(const menu_text_layout &other);
 
@@ -51,7 +51,7 @@ protected:
   }
 
   menu_text_layout(fragment *f)
-    : vs_text_layout(f), last_search_forward(true)
+    : cwidget::widgets::text_layout(f), last_search_forward(true)
   {
   }
 public:

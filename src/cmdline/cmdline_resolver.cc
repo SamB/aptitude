@@ -40,7 +40,7 @@
 
 #include <generic/util/util.h>
 
-#include <vscreen/fragment.h>
+#include <cwidget/fragment.h>
 
 #include <apt-pkg/error.h>
 #include <apt-pkg/strutl.h>
@@ -50,6 +50,8 @@
 #include <sstream>
 
 using namespace std;
+using cwidget::fragment;
+using cwidget::fragf;
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
 
@@ -199,7 +201,7 @@ static void resolver_help(ostream &out)
 			      flowindentbox(0, 3,
 					    fragf(_("Adjustments will cause the current solution to be discarded and recalculated as necessary.")))));
 
-  out << f->layout(screen_width, screen_width, style());
+  out << f->layout(screen_width, screen_width, cwidget::style());
   delete f;
 }
 
@@ -419,10 +421,10 @@ public:
   };
 
 private:
-  threads::box<resolver_result> &retbox;
+  cwidget::threads::box<resolver_result> &retbox;
 
 public:
-  cmdline_resolver_continuation(threads::box<resolver_result> &_retbox)
+  cmdline_resolver_continuation(cwidget::threads::box<resolver_result> &_retbox)
     : retbox(_retbox)
   {
   }
@@ -447,13 +449,13 @@ public:
     abort();
   }
 
-  void aborted(const Exception &e)
+  void aborted(const cwidget::util::Exception &e)
   {
     retbox.put(resolver_result::Aborted(e.errmsg()));
   }
 };
 
-class CmdlineSearchAbortedException : public Exception
+class CmdlineSearchAbortedException : public cwidget::util::Exception
 {
   std::string msg;
 
@@ -481,7 +483,7 @@ aptitude_solution calculate_current_solution()
 
   std::cout << "Resolving dependencies..." << std::endl;
 
-  threads::box<cmdline_resolver_continuation::resolver_result> retbox;
+  cwidget::threads::box<cmdline_resolver_continuation::resolver_result> retbox;
 
   resman->get_solution_background(resman->generated_solution_count(),
 				  aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000),
@@ -561,8 +563,8 @@ bool cmdline_resolve_deps(pkgset &to_install,
 
 		if(sol != lastsol)
 		  {
-		    fragment *f=sequence_fragment(flowbox(text_fragment(_("The following actions will resolve these dependencies:"))),
-						  newline_fragment(),
+		    fragment *f=sequence_fragment(flowbox(cwidget::text_fragment(_("The following actions will resolve these dependencies:"))),
+						  cwidget::newline_fragment(),
 						  story_is_default
 						    ? solution_story(sol)
 						    : solution_fragment(sol),
@@ -570,7 +572,7 @@ bool cmdline_resolve_deps(pkgset &to_install,
 
 		    update_screen_width();
 
-		    fragment_contents lines=f->layout(screen_width, screen_width, style());
+		    cwidget::fragment_contents lines=f->layout(screen_width, screen_width, cwidget::style());
 
 		    delete f;
 
@@ -615,7 +617,7 @@ bool cmdline_resolve_deps(pkgset &to_install,
 			              : solution_fragment(sol);
 		      update_screen_width();
 		      cout << f->layout(screen_width, screen_width,
-					style()) << endl;
+					cwidget::style()) << endl;
 		      delete f;
 		      break;
 		    }
@@ -732,7 +734,7 @@ bool cmdline_resolve_deps(pkgset &to_install,
 		lastsol.nullify();
 	      }
 	  }
-	catch(Exception &e)
+	catch(cwidget::util::Exception &e)
 	  {
 	    cout << _("*** ERROR: search aborted by fatal exception.  You may continue\n           searching, but some solutions will be unreachable.")
 		 << endl

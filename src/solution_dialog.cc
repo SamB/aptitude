@@ -23,9 +23,9 @@
 
 #include <aptitude.h>
 
-#include <vscreen/config/colors.h>
-#include <vscreen/config/keybindings.h>
-#include <vscreen/fragment.h>
+#include <cwidget/config/colors.h>
+#include <cwidget/config/keybindings.h>
+#include <cwidget/fragment.h>
 #include <cwidget/widgets/button.h>
 #include <cwidget/widgets/center.h>
 #include <cwidget/widgets/frame.h>
@@ -45,7 +45,7 @@
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
 
-class solution_dialog:public vs_text_layout
+class solution_dialog:public widgets::text_layout
 {
   aptitude_solution last_sol;
 
@@ -59,7 +59,7 @@ class solution_dialog:public vs_text_layout
 
   void post_update()
   {
-    vscreen_post_event(new slot_event(sigc::mem_fun(this, &solution_dialog::update)));
+    toplevel::post_event(new slot_event(sigc::mem_fun(this, &solution_dialog::update)));
   }
 
 protected:
@@ -84,7 +84,7 @@ public:
 
   void update()
   {
-    vs_widget_ref tmpref(this);
+    widgets::widget_ref tmpref(this);
 
     if(!apt_cache_file)
       {
@@ -139,52 +139,52 @@ public:
 
 typedef ref_ptr<solution_dialog> solution_dialog_ref;
 
-static void do_apply(vscreen_widget &wBare)
+static void do_apply(cwidget::widgets::widget &wBare)
 {
-  vs_widget_ref w(&wBare);
+  widgets::widget_ref w(&wBare);
 
   do_apply_solution();
   w->destroy();
 }
 
-vs_widget_ref make_solution_dialog()
+widgets::widget_ref make_solution_dialog()
 {
-  vs_table_ref t=vs_table::create();
-  vs_widget_ref rval=vs_center::create(vs_frame::create(t));
+  widgets::table_ref t=widgets::table::create();
+  widgets::widget_ref rval=widgets::center::create(widgets::frame::create(t));
 
-  vs_text_layout_ref display=solution_dialog::create();
-  vs_scrollbar_ref scrl=vs_scrollbar::create(vs_scrollbar::VERTICAL);
+  widgets::text_layout_ref display=solution_dialog::create();
+  widgets::scrollbar_ref scrl=widgets::scrollbar::create(widgets::scrollbar::VERTICAL);
 
-  display->location_changed.connect(sigc::mem_fun(scrl.unsafe_get_ref(), &vs_scrollbar::set_slider));
-  scrl->scrollbar_interaction.connect(sigc::mem_fun(display.unsafe_get_ref(), &vs_text_layout::scroll));
+  display->location_changed.connect(sigc::mem_fun(scrl.unsafe_get_ref(), &widgets::scrollbar::set_slider));
+  scrl->scrollbar_interaction.connect(sigc::mem_fun(display.unsafe_get_ref(), &widgets::text_layout::scroll));
 
   t->add_widget_opts(display,
 		     0, 0, 1, 1,
-		     vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK,
-		     vs_table::EXPAND | vs_table::FILL | vs_table::SHRINK);
+		     widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK,
+		     widgets::table::EXPAND | widgets::table::FILL | widgets::table::SHRINK);
 
   t->add_widget_opts(scrl,
 		     0, 1, 1, 1,
-		     vs_table::ALIGN_RIGHT,
-		     vs_table::ALIGN_CENTER | vs_table::FILL | vs_table::SHRINK);
+		     widgets::table::ALIGN_RIGHT,
+		     widgets::table::ALIGN_CENTER | widgets::table::FILL | widgets::table::SHRINK);
 
-  vs_table_ref bt=vs_table::create();
+  widgets::table_ref bt=widgets::table::create();
 
   //t->set_bg(get_color("DefaultWidgetBackground")|A_REVERSE);
 
   // TODO: for dialogs like this, I really should have support for
   // "wrapping" lines of buttons if they get too long, like fragments.
-  vs_button_ref bprev  = vs_button::create(_("Previous"));
-  vs_button_ref bnext  = vs_button::create(_("Next"));
-  vs_button_ref bapply = vs_button::create(_("Apply"));
-  vs_button_ref bclose = vs_button::create(_("Close"));
+  widgets::button_ref bprev  = widgets::button::create(_("Previous"));
+  widgets::button_ref bnext  = widgets::button::create(_("Next"));
+  widgets::button_ref bapply = widgets::button::create(_("Apply"));
+  widgets::button_ref bclose = widgets::button::create(_("Close"));
 
   bprev->pressed.connect(sigc::ptr_fun(do_previous_solution));
   bnext->pressed.connect(sigc::ptr_fun(do_next_solution));
   bapply->pressed.connect(sigc::bind(sigc::ptr_fun(do_apply),
 				     rval.weak_ref()));
   bclose->pressed.connect(sigc::mem_fun(rval.unsafe_get_ref(),
-					&vscreen_widget::destroy));
+					&cwidget::widgets::widget::destroy));
 
   rval->connect_key("ApplySolution", &global_bindings,
 		    sigc::bind(sigc::ptr_fun(do_apply),
@@ -197,20 +197,20 @@ vs_widget_ref make_solution_dialog()
 
   bt->add_widget_opts(bprev,
 		     0, 0, 1, 1,
-		     vs_table::FILL | vs_table::EXPAND, vs_table::FILL);
+		     widgets::table::FILL | widgets::table::EXPAND, widgets::table::FILL);
   bt->add_widget_opts(bnext,
 		     0, 1, 1, 1,
-		     vs_table::FILL | vs_table::EXPAND, vs_table::FILL);
+		     widgets::table::FILL | widgets::table::EXPAND, widgets::table::FILL);
   bt->add_widget_opts(bapply,
 		     0, 2, 1, 1,
-		     vs_table::FILL | vs_table::EXPAND, vs_table::FILL);
+		     widgets::table::FILL | widgets::table::EXPAND, widgets::table::FILL);
   bt->add_widget_opts(bclose,
 		     0, 3, 1, 1,
-		     vs_table::FILL | vs_table::EXPAND, vs_table::FILL);
+		     widgets::table::FILL | widgets::table::EXPAND, widgets::table::FILL);
 
   t->add_widget_opts(bt, 1, 0, 1, 2,
-		     vs_table::FILL | vs_table::EXPAND | vs_table::SHRINK,
-		     vs_table::FILL);
+		     widgets::table::FILL | widgets::table::EXPAND | widgets::table::SHRINK,
+		     widgets::table::FILL);
 
   return rval;
 }

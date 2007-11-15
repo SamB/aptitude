@@ -34,7 +34,13 @@
 class download_manager;
 class download_signal_log;
 class download_thread;
-class vscreen_widget;
+namespace cwidget
+{
+  namespace widgets
+  {
+    class widget;
+  }
+}
 
 /** Represents the UI end of a download process.  This object
  *  completely handles its own memory management -- you don't have to
@@ -75,7 +81,7 @@ class ui_download_manager : public sigc::trackable
   /** Used to keep the download status widget alive until the download
    *  completes.
    */
-  ref_ptr<vscreen_widget> download_status;
+  ref_ptr<cwidget::widgets::widget> download_status;
 
   void done(download_thread *, pkgAcquire::RunResult res);
 public:

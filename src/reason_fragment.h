@@ -11,7 +11,10 @@
 
 #include <generic/apt/infer_reason.h>
 
-class fragment;
+namespace cwidget
+{
+  class fragment;
+}
 
 /** Generate a fragment containing a (multi-line) description of why
  *  the package is in its present state.

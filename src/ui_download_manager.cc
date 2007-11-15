@@ -21,7 +21,7 @@
 
 #include "aptitude.h"
 #include "ui.h"
-#include "vs_progress.h"
+#include "widgets::progress.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/download_manager.h>
@@ -29,7 +29,7 @@
 
 #include <sigc++/functors/mem_fun.h>
 
-#include <cwidget/widgets/widget.h> // For vs_widget_ref
+#include <cwidget/widgets/widget.h> // For widgets::widget_ref
 
 ui_download_manager::ui_download_manager(download_manager *_manager,
 					 bool force_noninvasive,
@@ -41,7 +41,7 @@ ui_download_manager::ui_download_manager(download_manager *_manager,
   : manager(_manager),
     t(NULL)
 {
-  std::pair<download_signal_log *, vs_widget_ref> progpair =
+  std::pair<download_signal_log *, widgets::widget_ref> progpair =
     gen_download_progress(force_noninvasive, list_update,
 			  title, longtitle, tablabel,
 			  arg(sigc::mem_fun(abort_state,
@@ -71,7 +71,7 @@ ui_download_manager::~ui_download_manager()
 
 void ui_download_manager::done(download_thread *, pkgAcquire::RunResult res)
 {
-  vs_progress_ref p = gen_progress_bar();
+  widgets::progress_ref p = gen_progress_bar();
 
   download_manager::result run_res = download_manager::failure;
 
@@ -95,7 +95,7 @@ void ui_download_manager::done(download_thread *, pkgAcquire::RunResult res)
 
 void ui_download_manager::start()
 {
-  vs_progress_ref p = gen_progress_bar();
+  widgets::progress_ref p = gen_progress_bar();
 
   bool ok = manager->prepare(*p.unsafe_get_ref(), *st, log);
 

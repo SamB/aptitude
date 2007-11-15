@@ -9,7 +9,7 @@
 
 #include <aptitude.h>
 #include <ui.h>
-#include <vs_progress.h>
+#include <progress.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
@@ -23,7 +23,7 @@
 void ui_preview()
 {
   ui_init();
-  file_quit.connect(sigc::ptr_fun(vscreen_exitmain));
+  file_quit.connect(sigc::ptr_fun(cwidget::toplevel::exitmain));
   do_package_run_or_show_preview();
   ui_main();
   exit(0);
@@ -32,9 +32,9 @@ void ui_preview()
 void ui_solution_screen()
 {
   ui_init();
-  file_quit.connect(sigc::ptr_fun(vscreen_exitmain));
+  file_quit.connect(sigc::ptr_fun(cwidget::toplevel::exitmain));
 
-  vs_progress_ref p = gen_progress_bar();
+  progress_ref p = gen_progress_bar();
   do_new_package_view(*p.unsafe_get_ref());
 
   do_examine_solution();

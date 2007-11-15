@@ -11,7 +11,7 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/apt.h>
 
-#include <vscreen/transcode.h>
+#include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/table.h>
 
 #include <apt-pkg/error.h>
@@ -150,25 +150,25 @@ std::list<package_view_item> *load_pkgview(std::string cfggroup)
       tmp.yopts=0;
 
       if(subtree.FindB("ColExpand", false))
-	tmp.xopts|=vs_table::EXPAND;
+	tmp.xopts|=widgets::table::EXPAND;
       if(subtree.FindB("RowExpand", false))
-	tmp.yopts|=vs_table::EXPAND;
+	tmp.yopts|=widgets::table::EXPAND;
 
       if(subtree.FindB("ColShrink", false))
-	tmp.xopts|=vs_table::SHRINK;
+	tmp.xopts|=widgets::table::SHRINK;
       if(subtree.FindB("RowShrink", false))
-	tmp.yopts|=vs_table::SHRINK;
+	tmp.yopts|=widgets::table::SHRINK;
 
       if(subtree.Exists("ColAlign"))
 	{
 	  std::string s=subtree.Find("ColAlign");
 
 	  if(!strcasecmp(s.c_str(), "left"))
-	    tmp.xopts|=vs_table::ALIGN_LEFT;
+	    tmp.xopts|=widgets::table::ALIGN_LEFT;
 	  else if(!strcasecmp(s.c_str(), "right"))
-	    tmp.xopts|=vs_table::ALIGN_RIGHT;
+	    tmp.xopts|=widgets::table::ALIGN_RIGHT;
 	  else if(!strcasecmp(s.c_str(), "center"))
-	    tmp.xopts|=vs_table::ALIGN_CENTER;
+	    tmp.xopts|=widgets::table::ALIGN_CENTER;
 	  else
 	    {
 	      _error->Error(_("Unknown alignment type '%s'"), s.c_str());
@@ -182,11 +182,11 @@ std::list<package_view_item> *load_pkgview(std::string cfggroup)
 	  std::string s=subtree.Find("RowAlign");
 
 	  if(!strcasecmp(s.c_str(), "top"))
-	    tmp.yopts|=vs_table::ALIGN_LEFT;
+	    tmp.yopts|=widgets::table::ALIGN_LEFT;
 	  else if(!strcasecmp(s.c_str(), "bottom"))
-	    tmp.yopts|=vs_table::ALIGN_RIGHT;
+	    tmp.yopts|=widgets::table::ALIGN_RIGHT;
 	  else if(!strcasecmp(s.c_str(), "center"))
-	    tmp.yopts|=vs_table::ALIGN_CENTER;
+	    tmp.yopts|=widgets::table::ALIGN_CENTER;
 	  else
 	    {
 	      _error->Error(_("Unknown alignment type '%s'"), s.c_str());

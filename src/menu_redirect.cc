@@ -63,12 +63,12 @@ bool menu_redirect::find_reset_limit() { return false; }
 bool menu_redirect::find_broken_enabled() { return false; }
 bool menu_redirect::find_broken() { return false; }
 
-static bool do_menu_callback(vscreen_widget &viewBare,
+static bool do_menu_callback(cwidget::widgets::widget &viewBare,
 			     menu_redirect *redirect,
 			     bool (menu_redirect::* action)())
 {
-  vs_widget_ref view(&viewBare);
-  ref_ptr<vs_container> owner = view->get_owner();
+  widgets::widget_ref view(&viewBare);
+  ref_ptr<widgets::container> owner = view->get_owner();
 
   while(owner.valid())
     {
@@ -83,7 +83,7 @@ static bool do_menu_callback(vscreen_widget &viewBare,
 }
 
 void create_menu_bindings(menu_redirect *menu_handler,
-			  const ref_ptr<vscreen_widget> &valve)
+			  const ref_ptr<cwidget::widgets::widget> &valve)
 {
   undo_undo_enabled.connect(sigc::bind(ptr_fun(do_menu_callback),
 				       valve.weak_ref(),

@@ -1,4 +1,4 @@
-// vs_progress.h   -*-c++-*-
+// progress.h   -*-c++-*-
 //
 //  Copyright 2000, 2004-2005, 2007 Daniel Burrows
 //
@@ -17,27 +17,27 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  A vscreen_widget that also acts as a progress bar.
+//  A cwidget::widgets::widget that also acts as a progress bar.
 
 #ifndef VS_PROGRESS_H
 #define VS_PROGRESS_H
 
-#include "vscreen/vs_tree.h"
-#include <cwidget/widgets/widgets.h>
+#include <cwidget/widgets/tree.h>
+#include <cwidget/widgets/widget.h>
 
 #include <apt-pkg/progress.h>
 
-class vs_progress:public vscreen_widget, public OpProgress
+class progress : public cwidget::widgets::widget, public OpProgress
 {
 protected:
-  vs_progress();
+  progress();
 public:
-  static ref_ptr<vs_progress> create()
+  static cwidget::util::ref_ptr<progress> create()
   {
-    return new vs_progress;
+    return new progress;
   }
 
-  virtual void paint(const style &st);
+  virtual void paint(const cwidget::style &st);
   virtual void Update();
   virtual void Done();
 
@@ -45,9 +45,9 @@ public:
   int height_request(int w);
 
   bool get_cursorvisible();
-  point get_cursorloc();
+  cwidget::widgets::point get_cursorloc();
 };
 
-typedef ref_ptr<vs_progress> vs_progress_ref;
+typedef cwidget::util::ref_ptr<progress> progress_ref;
 
 #endif

@@ -34,7 +34,7 @@
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/version.h>
 
-#include <vscreen/transcode.h>
+#include <cwidget/generic/util/transcode.h>
 
 #include <unistd.h>
 

@@ -37,15 +37,15 @@
 
 #include <sigc++/adaptors/bind.h>
 
-vs_editline::history_list menu_tree::search_history;
+widgets::editline::history_list menu_tree::search_history;
 
-class pkg_matcher_search:public vs_tree_search_func
+class pkg_matcher_search:public widgets::tree_search_func
 {
   pkg_matcher *matcher;
 public:
   pkg_matcher_search(pkg_matcher *_matcher):matcher(_matcher) {}
 
-  bool operator()(const vs_treeitem &item)
+  bool operator()(const widgets::treeitem &item)
   {
     // EWW
     const pkg_item *pitem=dynamic_cast<const pkg_item *>(&item);
@@ -85,7 +85,7 @@ bool menu_tree::proxy_redirect(bool (menu_redirect::*call)())
   if(!get_visible())
     return false;
 
-  vs_treeiterator curr = get_selection();
+  widgets::treeiterator curr = get_selection();
   if(curr == get_end())
     return false;
 
@@ -402,7 +402,7 @@ bool menu_tree::handle_key(const key &k)
   else if(pkg_tree::bindings->key_matches(k, "SearchBroken"))
     find_broken();
   else
-    return vs_tree::handle_key(k);
+    return widgets::tree::handle_key(k);
 
   return true;
 }

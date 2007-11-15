@@ -22,7 +22,10 @@
 
 #include <apt-pkg/pkgcache.h>
 
-class fragment;
+namespace cwidget
+{
+  class fragment;
+}
 namespace temp {class name;}
 
 /** Parse the contents of the given file as a Debian changelog.  If
@@ -33,7 +36,7 @@ namespace temp {class name;}
  *                this package (empty if there is no installed
  *                version)
  */
-fragment *make_changelog_fragment(const temp::name &file,
-				  const std::string &curver);
+cwidget::fragment *make_changelog_fragment(const temp::name &file,
+					   const std::string &curver);
 
 #endif

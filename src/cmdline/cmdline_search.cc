@@ -15,8 +15,8 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/matchers.h>
 
-#include <vscreen/config/column_definition.h>
-#include <vscreen/transcode.h>
+#include <cwidget/config/column_definition.h>
+#include <cwidget/generic/util/transcode.h>
 
 #include <apt-pkg/error.h>
 #include <apt-pkg/strutl.h>
@@ -24,8 +24,9 @@
 #include <algorithm>
 
 using namespace std;
+using cwidget::util::transcode;
 
-class search_result_parameters : public column_parameters
+class search_result_parameters : public cwidget::config::column_parameters
 {
   pkg_match_result *r;
 public:
@@ -103,9 +104,10 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
       return -1;
     }
 
-  column_definition_list *columns=parse_columns(wdisplay_format,
-						pkg_item::pkg_columnizer::parse_column_type,
-						pkg_item::pkg_columnizer::defaults);
+  cwidget::config::column_definition_list *columns =
+    parse_columns(wdisplay_format,
+		  pkg_item::pkg_columnizer::parse_column_type,
+		  pkg_item::pkg_columnizer::defaults);
 
   if(!columns)
     {
@@ -178,7 +180,8 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
   for(vector<pair<pkgCache::PkgIterator, pkg_match_result *> >::iterator i=output.begin();
       i!=output.end(); ++i)
     {
-      column_parameters *p=new search_result_parameters(i->second);
+      cwidget::config::column_parameters *p =
+	new search_result_parameters(i->second);
 
       printf("%ls\n",
 	     pkg_item::pkg_columnizer(i->first,

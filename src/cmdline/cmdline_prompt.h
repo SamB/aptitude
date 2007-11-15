@@ -12,7 +12,7 @@
 /** Thrown when we get EOF on stdin.  Should never be thrown
  *  to the toplevel.
  */
-class StdinEOFException : public Exception
+class StdinEOFException : public cwidget::util::Exception
 {
 public:
   std::string errmsg() const;

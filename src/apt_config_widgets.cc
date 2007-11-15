@@ -22,25 +22,31 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 
-#include <vscreen/config/colors.h>
-#include <vscreen/fragment.h>
-#include <vscreen/transcode.h>
+#include <cwidget/config/colors.h>
+#include <cwidget/fragment.h>
+#include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/size_box.h>
 
 using namespace std;
+namespace cw = cwidget;
+
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 apt_bool_widget::apt_bool_widget(const wstring &_label,
 				 const string &_item, bool _default)
   :item(_item), my_default(_default),
-   cb(vs_checkbutton::create(flowbox(text_fragment(_label)),
-			     aptcfg->FindB(_item, _default)))
+   cb(cw::checkbutton::create(cw::flowbox(cw::text_fragment(_label)),
+			      aptcfg->FindB(_item, _default)))
 {
 }
 
 apt_bool_widget::apt_bool_widget(const string &_label,
 				 const string &_item, bool _default)
   :item(_item), my_default(_default),
-   cb(vs_checkbutton::create(flowbox(text_fragment(_label)), aptcfg->FindB(_item, _default)))
+   cb(cw::checkbutton::create(cw::flowbox(cw::text_fragment(_label)), aptcfg->FindB(_item, _default)))
 {
 }
 
@@ -55,14 +61,14 @@ void apt_bool_widget::commit()
 apt_string_widget::apt_string_widget(const string &_item,
 				     const string &_default)
   :item(_item), my_default(_default),
-   el(vs_editline::create("", aptcfg->Find(_item, _default.c_str()))),
-   w(vs_size_box::create(size(5, 1), el))
+   el(cw::editline::create("", aptcfg->Find(_item, _default.c_str()))),
+   w(cw::size_box::create(cw::size(5, 1), el))
 {
 }
 
 void apt_string_widget::commit()
 {
-  string text=transcode(el->get_text());
+  string text = cw::util::transcode(el->get_text());
 
   if(aptcfg->ExistsUser(item) ||
      aptcfg->Find(item, my_default.c_str())!=text)

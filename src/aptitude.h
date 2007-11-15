@@ -23,11 +23,13 @@ inline void setlocale(int, const char *)
 }
 #endif
 
+
 #if ENABLE_NLS
 # include <libintl.h>
 # include <string.h>
+# include <cwidget/generic/util/transcode.h>
 # define _(Text) gettext (Text)
-# define W_(Text) transcode (gettext (Text) )
+# define W_(Text) cwidget::util::transcode (gettext (Text) )
 # define N_(Text) Text
 
 /** Strips everything up to and including the first pipe character

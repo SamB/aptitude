@@ -30,7 +30,7 @@
 
 #include <config.h>
 
-#include <generic/util/bool_accumulate.h>
+#include <cwidget/generic/util/bool_accumulate.h>
 
 #include <apt-pkg/depcache.h>
 #include <apt-pkg/pkgrecords.h>
@@ -416,7 +416,7 @@ public:
    *  cache while it is in read-only mode.  If any callback returns \b
    *  false, the modification is cancelled.
    */
-  sigc::signal0<bool, accumulate_and> read_only_permission;
+  sigc::signal0<bool, cwidget::util::accumulate_and> read_only_permission;
 
   /** This signal is emitted when a read-only operation fails.  It is
    *  emitted exactly once for every action group.

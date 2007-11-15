@@ -22,12 +22,13 @@
 #include "download_bar.h"
 #include "ui.h"
 
-#include <vscreen/config/keybindings.h>
-#include <vscreen/config/colors.h>
-#include <vscreen/fragment.h>
+#include <cwidget/config/colors.h>
+#include <cwidget/config/keybindings.h>
+#include <cwidget/dialogs.h>
+#include <cwidget/fragment.h>
+#include <cwidget/generic/util/transcode.h>
+#include <cwidget/toplevel.h>
 #include <cwidget/widgets/minibuf_win.h>
-#include <cwidget/widgets/util.h>
-#include <vscreen/transcode.h>
 
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/acquire-item.h>
@@ -37,6 +38,12 @@
 
 #include <sigc++/functors/ptr_fun.h>
 
+namespace cw = cwidget;
+namespace toplevel = cwidget::toplevel;
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 download_status_bar::download_status_bar()
 {
@@ -44,68 +51,68 @@ download_status_bar::download_status_bar()
 
 bool download_status_bar::MediaChange(string media, string drive)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
-  fragment *f=wrapbox(fragf(_("Please insert the disc labeled \"%s\" into the drive \"%s\""),
-			      media.c_str(), drive.c_str()));
+  cw::fragment *f = wrapbox(cw::fragf(_("Please insert the disc labeled \"%s\" into the drive \"%s\""),
+					  media.c_str(), drive.c_str()));
 
-  vs_widget_ref w = vs_dialog_ok(f, arg(sigc::ptr_fun(vscreen_exitmain)),
-				 get_style("MediaChange"));
+  cw::widget_ref w = cw::dialogs::ok(f, cw::util::arg(sigc::ptr_fun(&toplevel::exitmain)),
+				     cw::get_style("MediaChange"));
   w->show_all();
   popup_widget(w);
 
-  vscreen_mainloop();  // Eeeeeek!  Recursive mainloop!  I'm afraid..
+  toplevel::mainloop();  // Eeeeeek!  Recursive mainloop!  I'm afraid..
 
   return true;
 }
 
 void download_status_bar::IMSHit(pkgAcquire::ItemDesc &itm)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   last_msg=_("Hit ")+itm.Description;
   last_switchtime=time(0);
 
-  vscreen_update();
-  vscreen_tryupdate();
+  toplevel::update();
+  toplevel::tryupdate();
 }
 
 void download_status_bar::Fetch(pkgAcquire::ItemDesc &itm)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   last_msg=_("Downloading ")+itm.ShortDesc;
   last_switchtime=time(0);
 
-  vscreen_update();
-  vscreen_tryupdate();
+  toplevel::update();
+  toplevel::tryupdate();
 }
 
 void download_status_bar::Done(pkgAcquire::ItemDesc &itm)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   last_msg=_("Got ")+itm.Description;
   last_switchtime=time(0);
 
-  vscreen_update();
-  vscreen_tryupdate();
+  toplevel::update();
+  toplevel::tryupdate();
 }
 
 void download_status_bar::Fail(pkgAcquire::ItemDesc &itm)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   last_msg=itm.Description+": "+itm.Owner->ErrorText;
   last_switchtime=time(0);
 
-  vscreen_update();
-  vscreen_tryupdate();
+  toplevel::update();
+  toplevel::tryupdate();
 }
 
 bool download_status_bar::Pulse(pkgAcquire *Owner)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   pkgAcquireStatus::Pulse(Owner);
 
@@ -153,18 +160,18 @@ bool download_status_bar::Pulse(pkgAcquire *Owner)
 	    }
 	}
 
-      vscreen_poll();
+      toplevel::poll();
 
-      vscreen_update();
-      vscreen_tryupdate();
+      toplevel::update();
+      toplevel::tryupdate();
     }
 
   return !cancelled;
 }
 
-void download_status_bar::paint(const style &st)
+void download_status_bar::paint(const cw::style &st)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   int width=getmaxx();
   string todisp=last_msg,totalprogress;
@@ -196,34 +203,34 @@ void download_status_bar::paint(const style &st)
 
   show_string_as_progbar(0,
 			 0,
-			 transcode(todisp),
-			 st+get_style("Progress"),
-			 st+get_style("Status"),
+			 cw::util::transcode(todisp),
+			 st + cw::get_style("Progress"),
+			 st + cw::get_style("Status"),
 			 barsize,
 			 width);
 }
 
 void download_status_bar::Start()
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   pkgAcquireStatus::Start();
 }
 
 void download_status_bar::Stop()
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   pkgAcquireStatus::Stop();
 
   destroy();
 }
 
-bool download_status_bar::handle_key(const key &k)
+bool download_status_bar::handle_key(const cw::config::key &k)
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
-  if(global_bindings.key_matches(k, "Quit"))
+  if(cw::config::global_bindings.key_matches(k, "Quit"))
     {
       cancelled=true;
       return true;

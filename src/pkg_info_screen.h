@@ -40,7 +40,7 @@ public:
 class pkg_info_screen:public apt_info_tree
 {
 protected:
-  vs_treeitem *setup_new_root(const pkgCache::PkgIterator &pkg,
+  cwidget::widgets::treeitem *setup_new_root(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver);
   pkg_info_screen(const pkgCache::PkgIterator &pkg, const pkgCache::VerIterator &ver);
 public:

@@ -24,8 +24,8 @@
 
 #include <generic/util/slotarg.h>
 
-#include <vscreen/config/keybindings.h>
-#include <vscreen/transcode.h>
+#include <cwidget/config/keybindings.h>
+#include <cwidget/generic/util/transcode.h>
 
 bool menu_text_layout::find_search_enabled()
 {
@@ -134,7 +134,7 @@ bool menu_text_layout::handle_key(const key &k)
   else if(global_bindings.key_matches(k, "RepeatSearchBack"))
     find_repeat_search_back();
   else
-    return vs_text_layout::handle_key(k);
+    return widgets::text_layout::handle_key(k);
 
   return true;
 }

@@ -22,7 +22,7 @@
 #ifndef DEP_ITEM_H
 #define DEP_ITEM_H
 
-#include "vscreen/vs_subtree.h"
+#include <cwidget/widgets/subtree.h>
 #include "apt_info_tree.h"
 
 #include "pkg_grouppolicy.h"
@@ -54,19 +54,19 @@ class pkg_dep_screen:public apt_info_tree
 {
   bool reverse;
 protected:
-  vs_treeitem *setup_new_root(const pkgCache::PkgIterator &pkg,
+  cwidget::widgets::treeitem *setup_new_root(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver);
 
   pkg_dep_screen(const pkgCache::PkgIterator &pkg,
 		 const pkgCache::VerIterator &ver,
 		 bool _reverse=false);
 public:
-  static ref_ptr<pkg_dep_screen>
+  static cwidget::util::ref_ptr<pkg_dep_screen>
   create(const pkgCache::PkgIterator &pkg,
 	 const pkgCache::VerIterator &ver,
 	 bool reverse = false)
   {
-    ref_ptr<pkg_dep_screen> rval(new pkg_dep_screen(pkg, ver, reverse));
+    cwidget::util::ref_ptr<pkg_dep_screen> rval(new pkg_dep_screen(pkg, ver, reverse));
     rval->decref();
     return rval;
   }
@@ -74,6 +74,6 @@ public:
   virtual ~pkg_dep_screen() {}
 };
 
-typedef ref_ptr<pkg_dep_screen> pkg_dep_screen_ref;
+typedef cwidget::util::ref_ptr<pkg_dep_screen> pkg_dep_screen_ref;
 
 #endif

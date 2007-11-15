@@ -32,13 +32,15 @@
 #include <generic/util/temp.h>
 #include <generic/util/util.h>
 
-#include <vscreen/fragment.h>
-#include <vscreen/transcode.h>
+#include <cwidget/fragment.h>
+#include <cwidget/generic/util/transcode.h>
+
+namespace cw = cwidget;
 
 static
-fragment *change_text_fragment(const std::string &s)
+cw::fragment *change_text_fragment(const std::string &s)
 {
-  std::vector<fragment *> lines;
+  std::vector<cw::fragment *> lines;
 
   std::string::size_type start = 0;
   std::string::size_type next_nl;
@@ -52,7 +54,7 @@ fragment *change_text_fragment(const std::string &s)
 
       if(next_nl == start + 1 && s[start] == '.')
 	{
-	  lines.push_back(newline_fragment());
+	  lines.push_back(cw::newline_fragment());
 	  start = next_nl + 1;
 	  continue;
 	}
@@ -79,13 +81,17 @@ fragment *change_text_fragment(const std::string &s)
 	  }
 
       if(has_bullet)
-	lines.push_back(hardwrapbox(fragf("%s%F%s%n",
-					  std::string(this_line, 0, first_nonspace).c_str(),
-					  text_fragment(std::string(this_line, first_nonspace, 1).c_str(),
-							get_style("Bullet")),
-					  std::string(this_line, first_nonspace + 1).c_str())));
+	{
+	  cw::fragment *item =
+	    cw::fragf("%s%F%s%n",
+		      std::string(this_line, 0, first_nonspace).c_str(),
+		      cw::text_fragment(std::string(this_line, first_nonspace, 1).c_str(),
+					cw::get_style("Bullet")),
+		      std::string(this_line, first_nonspace + 1).c_str());
+	  lines.push_back(cw::hardwrapbox(item));
+	}
       else
-	lines.push_back(hardwrapbox(fragf("%s%n", this_line.c_str())));
+	lines.push_back(cw::hardwrapbox(cw::fragf("%s%n", this_line.c_str())));
 
       start = next_nl + 1;
     } while(next_nl != std::string::npos);
@@ -94,8 +100,8 @@ fragment *change_text_fragment(const std::string &s)
 }
 
 static
-fragment *parse_predigested_changelog(const temp::name &digest,
-				      const std::string &curver)
+cw::fragment *parse_predigested_changelog(const temp::name &digest,
+					  const std::string &curver)
 {
   FileFd digestfd(digest.get_name(), FileFd::ReadOnly);
 
@@ -107,7 +113,7 @@ fragment *parse_predigested_changelog(const temp::name &digest,
 
       pkgTagSection sec;
 
-      std::vector<fragment *> fragments;
+      std::vector<cw::fragment *> fragments;
 
       bool first = true;
 
@@ -118,18 +124,21 @@ fragment *parse_predigested_changelog(const temp::name &digest,
 	  std::string maintainer(sec.FindS("Maintainer"));
 	  std::string date(sec.FindS("Date"));
 
-	  fragment *f = fragf(first ? "%F%F" : "%n%F%F",
-			      change_text_fragment(changes),
-			      hardwrapbox(fragf("%n -- %s  %s",
-						maintainer.c_str(),
-						date.c_str())));
+	  cw::fragment *taglineFrag =
+	    cw::hardwrapbox(cw::fragf("%n -- %s  %s",
+				      maintainer.c_str(),
+				      date.c_str()));
+	  cw::fragment *f =
+	    cw::fragf(first ? "%F%F" : "%n%F%F",
+		      change_text_fragment(changes),
+		      taglineFrag);
 
 	  first = false;
 
 	  if(!curver.empty() && _system->VS->CmpVersion(version, curver) > 0)
 	    {
-	      style s = get_style("ChangelogNewerVersion");
-	      fragments.push_back(style_fragment(f, s));
+	      cw::style s = cw::get_style("ChangelogNewerVersion");
+	      fragments.push_back(cw::style_fragment(f, s));
 	    }
 	  else
 	    fragments.push_back(f);
@@ -152,8 +161,8 @@ temp::name digest_changelog(const temp::name &changelog)
     return temp::name();
 }
 
-fragment *make_changelog_fragment(const temp::name &file,
-				  const std::string &curver)
+cw::fragment *make_changelog_fragment(const temp::name &file,
+				      const std::string &curver)
 {
   temp::name digested = digest_changelog(file);
 

@@ -55,8 +55,9 @@
 #include "solution.h"
 #include "resolver_undo.h"
 
+#include <cwidget/generic/threads/threads.h>
+
 #include <generic/util/dense_setset.h>
-#include <generic/util/threads.h>
 
 template<typename Obj1, typename Obj2, typename Uni>
 inline void eassert_fail_on_2objs_soln(const std::string &file,
@@ -74,7 +75,7 @@ inline void eassert_fail_on_2objs_soln(const std::string &file,
   soln.dump(out, true);
   out << " with " << obj1name << "=" << obj1;
   out << " and " << obj2name << "=" << obj2;
-  throw AssertionFailure(file, line, func, exp, out.str());
+  throw cwidget::util::AssertionFailure(file, line, func, exp, out.str());
 }
 
 template<typename Obj1, typename Obj2>
@@ -90,7 +91,7 @@ inline void eassert_fail_on_2objs(const std::string &file,
   std::ostringstream out;
   out << "With " << obj1name << "=" << obj1;
   out << " and " << obj2name << "=" << obj2;
-  throw AssertionFailure(file, line, func, exp, out.str());
+  throw cwidget::util::AssertionFailure(file, line, func, exp, out.str());
 }
 
 template<typename Obj, typename Uni>
@@ -108,7 +109,7 @@ inline void eassert_fail_on_soln_obj(const std::string &file,
   soln.dump(out, true);
   out << " on " << objtype << " " << objname << "=";
   out << o;
-  throw AssertionFailure(file, line, func, exp, out.str());
+  throw cwidget::util::AssertionFailure(file, line, func, exp, out.str());
 }
 
 template<typename Uni>
@@ -121,7 +122,7 @@ inline void eassert_fail_on_soln(const std::string &file,
   std::ostringstream out;
   out << "In context ";
   soln.dump(out, true);
-  throw AssertionFailure(file, line, func, exp, out.str());
+  throw cwidget::util::AssertionFailure(file, line, func, exp, out.str());
 }
 
 #define eassert_on_2objs_soln(invariant, obj1, obj2, soln) \
@@ -594,7 +595,7 @@ private:
     instance_tracker(generic_problem_resolver &_r)
       :r(_r)
     {
-      threads::mutex::lock l(r.execution_mutex);
+      cwidget::threads::mutex::lock l(r.execution_mutex);
       if(r.solver_executing)
 	throw DoubleRunException();
       else
@@ -603,7 +604,7 @@ private:
 
     ~instance_tracker()
     {
-      threads::mutex::lock l(r.execution_mutex);
+      cwidget::threads::mutex::lock l(r.execution_mutex);
       eassert(r.solver_executing);
 
       r.solver_executing = false;
@@ -692,14 +693,14 @@ private:
    *  mutex, test solver_executing, and run the code if
    *  solver_executing is \b false.
    */
-  threads::mutex execution_mutex;
+  cwidget::threads::mutex execution_mutex;
 
 
 
   queue_counts counts;
 
   /** Mutex guarding the cache of resolver status information. */
-  threads::mutex counts_mutex;
+  cwidget::threads::mutex counts_mutex;
 
 
 
@@ -2628,14 +2629,14 @@ public:
    */
   void cancel_solver()
   {
-    threads::mutex::lock l(execution_mutex);
+    cwidget::threads::mutex::lock l(execution_mutex);
     solver_cancelled = true;
   }
 
   /** Remove any pending find_next_solution cancellation. */
   void uncancel_solver()
   {
-    threads::mutex::lock l(execution_mutex);
+    cwidget::threads::mutex::lock l(execution_mutex);
     solver_cancelled = false;
   }
 
@@ -2644,14 +2645,14 @@ public:
   {
     maybe_update_deferred_and_counts();
 
-    threads::mutex::lock l(counts_mutex);
+    cwidget::threads::mutex::lock l(counts_mutex);
     return counts;
   }
 
   /** Update the cached queue sizes. */
   void update_counts_cache()
   {
-    threads::mutex::lock l(counts_mutex);
+    cwidget::threads::mutex::lock l(counts_mutex);
     counts.open      = open.size();
     counts.closed    = closed.size();
     counts.deferred  = deferred.size();
@@ -2666,7 +2667,7 @@ public:
    */
   void maybe_update_deferred_and_counts()
   {
-    threads::mutex::lock l(execution_mutex);
+    cwidget::threads::mutex::lock l(execution_mutex);
     if(!solver_executing)
       {
 	if(deferred_dirty)
@@ -2731,7 +2732,7 @@ public:
       {
 	// Threaded operation: check whether we have been cancelled.
 	{
-	  threads::mutex::lock l(execution_mutex);
+	  cwidget::threads::mutex::lock l(execution_mutex);
 	  if(solver_cancelled)
 	    throw InterruptedException();
 	}

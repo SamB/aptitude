@@ -46,7 +46,7 @@ resolver_manager::resolver_manager(aptitudeDepCache *_cache)
    background_thread_suspend_count(0),
    background_thread_in_resolver(false),
    resolver_thread(NULL),
-   mutex(threads::mutex::attr(PTHREAD_MUTEX_RECURSIVE))
+   mutex(cwidget::threads::mutex::attr(PTHREAD_MUTEX_RECURSIVE))
 {
   cache->pre_package_state_changed.connect(sigc::mem_fun(this, &resolver_manager::discard_resolver));
   cache->package_state_changed.connect(sigc::mem_fun(this, &resolver_manager::maybe_create_resolver));
@@ -140,7 +140,7 @@ public:
 // interactively)
 void resolver_manager::background_thread_execution()
 {
-  threads::mutex::lock l(background_control_mutex);
+  cwidget::threads::mutex::lock l(background_control_mutex);
   set_when_destroyed<bool> cancel_set_running(background_thread_running, false);
 
   while(1)
@@ -204,7 +204,7 @@ void resolver_manager::background_thread_execution()
 
 	  job.k->no_more_time();
 	}
-      catch(Exception &e)
+      catch(cwidget::util::Exception &e)
 	{
 	  job.k->aborted(e);
 	}
@@ -235,22 +235,22 @@ public:
 
 void resolver_manager::start_background_thread()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
   if(resolver_thread == NULL)
     {
       background_thread_running = true;
-      resolver_thread = new threads::thread(background_thread_bootstrap(*this));
+      resolver_thread = new cwidget::threads::thread(background_thread_bootstrap(*this));
     }
 }
 
 void resolver_manager::kill_background_thread()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
   if(resolver_thread != NULL)
     {
-      threads::mutex::lock control_lock(background_control_mutex);
+      cwidget::threads::mutex::lock control_lock(background_control_mutex);
 
       if(resolver != NULL)
 	resolver->cancel_solver();
@@ -277,14 +277,14 @@ void resolver_manager::kill_background_thread()
 
 void resolver_manager::suspend_background_thread()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
   // May occur due to background_suspend objects existing while
   // kill_background_thread runs.
   if(resolver_thread == NULL)
     return;
 
-  threads::mutex::lock control_lock(background_control_mutex);
+  cwidget::threads::mutex::lock control_lock(background_control_mutex);
 
   if(resolver != NULL)
     resolver->cancel_solver();
@@ -301,12 +301,12 @@ void resolver_manager::suspend_background_thread()
 
 void resolver_manager::unsuspend_background_thread()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
   if(resolver_thread == NULL)
     return;
 
-  threads::mutex::lock control_lock(background_control_mutex);
+  cwidget::threads::mutex::lock control_lock(background_control_mutex);
 
   eassert(background_thread_suspend_count > 0);
   --background_thread_suspend_count;
@@ -315,7 +315,7 @@ void resolver_manager::unsuspend_background_thread()
 
 void resolver_manager::maybe_create_resolver()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
   if(resolver == NULL && cache->BrokenCount() > 0)
     create_resolver();
@@ -330,7 +330,7 @@ void resolver_manager::maybe_create_resolver()
 
 void resolver_manager::discard_resolver()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
   if(resolver == NULL)
     return;
@@ -342,7 +342,7 @@ void resolver_manager::discard_resolver()
   delete resolver;
 
   {
-    threads::mutex::lock l2(solutions_mutex);
+    cwidget::threads::mutex::lock l2(solutions_mutex);
     solutions.clear();
     solution_search_aborted = false;
     solution_search_abort_msg.clear();
@@ -352,7 +352,7 @@ void resolver_manager::discard_resolver()
   resolver = NULL;
 
   {
-    threads::mutex::lock l2(background_control_mutex);
+    cwidget::threads::mutex::lock l2(background_control_mutex);
     resolver_null = true;
     while(!pending_jobs.empty())
       {
@@ -365,7 +365,7 @@ void resolver_manager::discard_resolver()
 
 void resolver_manager::create_resolver()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
   eassert(resolver == NULL);
 
   // NOTE: the performance of the resolver is highly sensitive to
@@ -407,7 +407,7 @@ void resolver_manager::create_resolver()
 				aptcfg->FindI(PACKAGE "::ProblemResolver::ExtraScore", -1));
 
   {
-    threads::mutex::lock l2(background_control_mutex);
+    cwidget::threads::mutex::lock l2(background_control_mutex);
     resolver_null = false;
     background_control_cond.wake_all();
   }
@@ -415,7 +415,7 @@ void resolver_manager::create_resolver()
 
 void resolver_manager::set_debug(bool activate)
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
   background_suspender bs(*this);
 
   eassert(resolver_exists());
@@ -425,15 +425,15 @@ void resolver_manager::set_debug(bool activate)
 
 bool resolver_manager::resolver_exists() const
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
   return resolver != NULL;
 }
 
 unsigned int resolver_manager::generated_solution_count() const
 {
-  threads::mutex::lock l(mutex);
-  threads::mutex::lock l2(solutions_mutex);
+  cwidget::threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l2(solutions_mutex);
 
   return solutions.size();
 }
@@ -445,7 +445,7 @@ bool resolver_manager::solution_generation_complete() // const
 
 bool resolver_manager::solutions_at_start() const
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
   if(!resolver_exists())
     return true;
@@ -455,38 +455,38 @@ bool resolver_manager::solutions_at_start() const
 
 bool resolver_manager::background_thread_active()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
-  threads::mutex::lock ctl_l(background_control_mutex);
+  cwidget::threads::mutex::lock ctl_l(background_control_mutex);
 
   return !pending_jobs.empty() || background_thread_in_resolver;
 }
 
 bool resolver_manager::background_thread_aborted()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
-  threads::mutex::lock sol_l(solutions_mutex);
+  cwidget::threads::mutex::lock sol_l(solutions_mutex);
 
   return solution_search_aborted;
 }
 
 std::string resolver_manager::background_thread_abort_msg()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
-  threads::mutex::lock sol_l(solutions_mutex);
+  cwidget::threads::mutex::lock sol_l(solutions_mutex);
 
   return solution_search_aborted ? solution_search_abort_msg : "";
 }
 
 resolver_manager::state resolver_manager::state_snapshot()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
-  threads::mutex::lock ctl_l(background_control_mutex);
+  cwidget::threads::mutex::lock ctl_l(background_control_mutex);
 
-  threads::mutex::lock sol_l(solutions_mutex);
+  cwidget::threads::mutex::lock sol_l(solutions_mutex);
 
   state rval;
 
@@ -524,7 +524,7 @@ resolver_manager::state resolver_manager::state_snapshot()
 
 aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, unsigned int solution_num)
 {
-  threads::mutex::lock sol_l(solutions_mutex);
+  cwidget::threads::mutex::lock sol_l(solutions_mutex);
   if(solution_num < solutions.size())
     return solutions[solution_num];
 
@@ -548,7 +548,7 @@ aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, un
 	{
 	  throw NoMoreSolutions();
 	}
-      catch(Exception &e)
+      catch(cwidget::util::Exception &e)
 	{
 	  sol_l.acquire();
 	  solution_search_aborted = true;
@@ -572,22 +572,22 @@ class solution_return_continuation : public resolver_manager::background_continu
   std::string &abort_msg;
   bool &oot;
   bool &oos;
-  threads::mutex &m;
-  threads::condition &c;
+  cwidget::threads::mutex &m;
+  cwidget::threads::condition &c;
 public:
   solution_return_continuation(const generic_solution<aptitude_universe> * &_sol,
 			       std::string &_abort_msg,
 			       bool &_oot,
 			       bool &_oos,
-			       threads::mutex &_m,
-			       threads::condition &_c)
+			       cwidget::threads::mutex &_m,
+			       cwidget::threads::condition &_c)
     :sol(_sol), abort_msg(_abort_msg), oot(_oot), oos(_oos), m(_m), c(_c)
   {
   }
 
   void success(const generic_solution<aptitude_universe> &result)
   {
-    threads::mutex::lock l(m);
+    cwidget::threads::mutex::lock l(m);
 
     sol = &result;
     c.wake_all();
@@ -595,7 +595,7 @@ public:
 
   void no_more_time()
   {
-    threads::mutex::lock l(m);
+    cwidget::threads::mutex::lock l(m);
 
     oot = true;
     c.wake_all();
@@ -603,7 +603,7 @@ public:
 
   void no_more_solutions()
   {
-    threads::mutex::lock l(m);
+    cwidget::threads::mutex::lock l(m);
     oos = true;
     c.wake_all();
   }
@@ -614,9 +614,9 @@ public:
     abort();
   }
 
-  void aborted(const Exception &e)
+  void aborted(const cwidget::util::Exception &e)
   {
-    threads::mutex::lock l(m);
+    cwidget::threads::mutex::lock l(m);
 
     sol = NULL;
     abort_msg = e.errmsg();
@@ -627,7 +627,7 @@ public:
 /** \brief Sadly, we can't easily save the real exception and reuse it
  *  :(.
  */
-class SolutionSearchAbortException : public Exception
+class SolutionSearchAbortException : public cwidget::util::Exception
 {
   std::string msg;
 
@@ -646,12 +646,12 @@ public:
 const aptitude_resolver::solution &resolver_manager::get_solution(unsigned int solution_num,
 								  int max_steps)
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
   eassert(resolver);
 
   {
-    threads::mutex::lock l2(solutions_mutex);
+    cwidget::threads::mutex::lock l2(solutions_mutex);
     if(solution_num < solutions.size())
       return *solutions[solution_num];
   }
@@ -661,13 +661,13 @@ const aptitude_resolver::solution &resolver_manager::get_solution(unsigned int s
   std::string abort_msg;
   bool oot = false;
   bool oos = false;
-  threads::mutex m;
-  threads::condition c;
+  cwidget::threads::mutex m;
+  cwidget::threads::condition c;
 
   get_solution_background(solution_num, max_steps, new solution_return_continuation(sol, abort_msg, oot, oos, m, c));
   l.release();
 
-  threads::mutex::lock cond_l(m);
+  cwidget::threads::mutex::lock cond_l(m);
 
   while(!sol && !oot && !oos)
     c.wait(cond_l);
@@ -686,7 +686,7 @@ void resolver_manager::get_solution_background(unsigned int solution_num,
 					       int max_steps,
 					       background_continuation *k)
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
   // It's necessary to stop the background thread because we might be
   // decreasing the maximum number of steps to search.
@@ -694,7 +694,7 @@ void resolver_manager::get_solution_background(unsigned int solution_num,
 
   eassert(resolver_exists());
 
-  threads::mutex::lock sol_l(solutions_mutex);
+  cwidget::threads::mutex::lock sol_l(solutions_mutex);
   if(solution_num < solutions.size())
     {
       generic_solution<aptitude_universe> *sol = solutions[solution_num];
@@ -706,7 +706,7 @@ void resolver_manager::get_solution_background(unsigned int solution_num,
   sol_l.release();
 
 
-  threads::mutex::lock control_lock(background_control_mutex);
+  cwidget::threads::mutex::lock control_lock(background_control_mutex);
   pending_jobs.push(job_request(solution_num, max_steps, k));
   background_control_cond.wake_all();
 }
@@ -720,7 +720,7 @@ class blocking_continuation : public resolver_manager::background_continuation
   unsigned int solution_num;
 
   /** The channel through which the result should be announced. */
-  threads::box<bool> &result_box;
+  cwidget::threads::box<bool> &result_box;
 
   /** The number of steps to try searching for a solution after this if
    *  time runs out.
@@ -732,7 +732,7 @@ class blocking_continuation : public resolver_manager::background_continuation
 public:
   blocking_continuation(background_continuation *_k,
 			unsigned int _solution_num,
-			threads::box<bool> &_result_box,
+			cwidget::threads::box<bool> &_result_box,
 			int _remaining_steps,
 			resolver_manager &_m)
     : k(_k), solution_num(_solution_num), result_box(_result_box),
@@ -769,7 +769,7 @@ public:
     result_box.put(false);
   }
 
-  void aborted(const Exception &e)
+  void aborted(const cwidget::util::Exception &e)
   {
     k->aborted(e);
     result_box.put(true);
@@ -794,7 +794,7 @@ bool resolver_manager::get_solution_background_blocking(unsigned int solution_nu
   else
     remaining = 0;
 
-  threads::box<bool> rbox;
+  cwidget::threads::box<bool> rbox;
 
   get_solution_background(solution_num, block_steps,
 			  new blocking_continuation(k, solution_num, rbox,
@@ -807,7 +807,7 @@ template<typename T>
 void resolver_manager::resolver_manipulation(const T &t,
 					     void (generic_problem_resolver<aptitude_universe>::*action)(const T &, undo_group *))
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
   background_suspender bs(*this);
 
   undo_group *undo = new undo_group;
@@ -834,7 +834,7 @@ void resolver_manager::unreject_version(const aptitude_resolver_version &ver)
 
 bool resolver_manager::is_rejected(const aptitude_resolver_version &ver)
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
   eassert(resolver);
 
   return resolver->is_rejected(ver);
@@ -852,7 +852,7 @@ void resolver_manager::unmandate_version(const aptitude_resolver_version &ver)
 
 bool resolver_manager::is_mandatory(const aptitude_resolver_version &ver)
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
   eassert(resolver);
 
   return resolver->is_mandatory(ver);
@@ -870,7 +870,7 @@ void resolver_manager::unharden_dep(const aptitude_resolver_dep &dep)
 
 bool resolver_manager::is_hardened(const aptitude_resolver_dep &dep)
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
   eassert(resolver);
 
   return resolver->is_hardened(dep);
@@ -888,7 +888,7 @@ void resolver_manager::unapprove_broken_dep(const aptitude_resolver_dep &dep)
 
 bool resolver_manager::is_approved_broken(const aptitude_resolver_dep &dep)
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
   eassert(resolver != NULL);
 
   return resolver->is_approved_broken(dep);
@@ -896,14 +896,14 @@ bool resolver_manager::is_approved_broken(const aptitude_resolver_dep &dep)
 
 bool resolver_manager::has_undo_items()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
   return undos->size() > 0;
 }
 
 bool resolver_manager::undo()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
   if(undos->size() > 0)
     {
@@ -924,9 +924,9 @@ bool resolver_manager::undo()
 
 void resolver_manager::select_solution(unsigned int solnum)
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
-  threads::mutex::lock sol_l(solutions_mutex);
+  cwidget::threads::mutex::lock sol_l(solutions_mutex);
   if(solnum >= 0 && solnum <= solutions.size())
     selected_solution = solnum;
   sol_l.release();
@@ -937,9 +937,9 @@ void resolver_manager::select_solution(unsigned int solnum)
 
 void resolver_manager::discard_error_information()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
-  threads::mutex::lock sol_l(solutions_mutex);
+  cwidget::threads::mutex::lock sol_l(solutions_mutex);
 
   solution_search_aborted = false;
   solution_search_abort_msg.clear();
@@ -952,9 +952,9 @@ void resolver_manager::discard_error_information()
 
 void resolver_manager::select_next_solution()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
-  threads::mutex::lock sol_l(solutions_mutex);
+  cwidget::threads::mutex::lock sol_l(solutions_mutex);
   if(selected_solution < solutions.size())
     ++selected_solution;
   sol_l.release();
@@ -965,9 +965,9 @@ void resolver_manager::select_next_solution()
 
 void resolver_manager::select_previous_solution()
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
 
-  threads::mutex::lock sol_l(solutions_mutex);
+  cwidget::threads::mutex::lock sol_l(solutions_mutex);
   if(selected_solution > 0)
     --selected_solution;
   sol_l.release();
@@ -980,7 +980,7 @@ void resolver_manager::tweak_score(const pkgCache::PkgIterator &pkg,
 				   const pkgCache::VerIterator &ver,
 				   int score)
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
   background_suspender bs(*this);
 
   eassert(resolver_exists());
@@ -992,7 +992,7 @@ void resolver_manager::tweak_score(const pkgCache::PkgIterator &pkg,
 
 void resolver_manager::dump(ostream &out)
 {
-  threads::mutex::lock l(mutex);
+  cwidget::threads::mutex::lock l(mutex);
   background_suspender bs(*this);
 
   if(!resolver_exists())

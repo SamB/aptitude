@@ -23,6 +23,13 @@
 
 #include <sigc++/functors/mem_fun.h>
 
+namespace cwidget
+{
+  using namespace widgets;
+}
+
+namespace cw = cwidget;
+
 apt_info_tree::apt_info_tree(const string &_package, const string &_version)
   :package(_package), version(_version)
 {
@@ -37,7 +44,7 @@ void apt_info_tree::handle_cache_close()
 
 void apt_info_tree::restore_state()
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   reset_incsearch();
 
@@ -67,7 +74,7 @@ void apt_info_tree::restore_state()
 
 void apt_info_tree::repeat_signal()
 {
-  vs_widget_ref tmpref(this);
+  cw::widget_ref tmpref(this);
 
   get_selection()->highlighted_changed(true);
 }

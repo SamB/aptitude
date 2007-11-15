@@ -27,8 +27,9 @@
 #ifndef RESOLVER_MANAGER_H
 #define RESOLVER_MANAGER_H
 
-#include <generic/util/exception.h>
-#include <generic/util/threads.h>
+#include <cwidget/generic/threads/threads.h>
+
+#include <cwidget/generic/util/exception.h>
 
 #include <apt-pkg/pkgcache.h>
 
@@ -91,7 +92,7 @@ public:
     virtual void interrupted() = 0;
 
     /** Invoked when a fatal exception was thrown. */
-    virtual void aborted(const Exception &e) = 0;
+    virtual void aborted(const cwidget::util::Exception &e) = 0;
   };
 
   /** A snapshot of the state of the resolver. */
@@ -199,7 +200,7 @@ private:
    *  to immediately post results without taking the big class lock
    *  (since that might be taken by stop_background_resolver()).
    */
-  mutable threads::mutex solutions_mutex;
+  mutable cwidget::threads::mutex solutions_mutex;
 
   /** The index of the currently selected solution. */
   unsigned int selected_solution;
@@ -237,27 +238,27 @@ private:
    *  background_thread_suspend_count, background_thread_in_resolver,
    *  and resolver_null.
    */
-  threads::mutex background_control_mutex;
+  cwidget::threads::mutex background_control_mutex;
 
   /** A condition signalled for pending_jobs,
    *  background_thread_killed, background_thread_suspend_count, and
    *  resolver_null.
    */
-  threads::condition background_control_cond;
+  cwidget::threads::condition background_control_cond;
 
   /** A condition signalled for background_thread_in_resolver.
    */
-  threads::condition background_resolver_cond;
+  cwidget::threads::condition background_resolver_cond;
 
   /** The thread in which a background resolver is running, or \b NULL
    *  if none is.
    */
-  threads::thread *resolver_thread;
+  cwidget::threads::thread *resolver_thread;
 
   /** This lock is used to serialize all accesses to this object,
    *  except background_get_solution().
    */
-  mutable threads::mutex mutex;
+  mutable cwidget::threads::mutex mutex;
 
   void discard_resolver();
   void create_resolver();

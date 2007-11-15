@@ -20,9 +20,9 @@
 
 #include <generic/util/util.h>
 
-#include <vscreen/fragment.h>
+#include <cwidget/fragment.h>
+#include <cwidget/generic/util/transcode.h>
 #include <cwidget/toplevel.h>
-#include <vscreen/transcode.h>
 
 #include <apt-pkg/algorithms.h>
 #include <apt-pkg/dpkgpm.h>
@@ -31,6 +31,9 @@
 #include <apt-pkg/strutl.h>
 
 using namespace std;
+using cwidget::fragment;
+using cwidget::fragf;
+using cwidget::util::transcode;
 
 string StdinEOFException::errmsg() const
 {
@@ -647,7 +650,7 @@ static void cmdline_parse_why(string response)
       std::auto_ptr<fragment> frag(do_why(arguments, root, false, false, success));
       update_screen_width();
       if(frag.get() != NULL)
-	std::cout << frag->layout(screen_width, screen_width, style());
+	std::cout << frag->layout(screen_width, screen_width, cwidget::style());
       _error->DumpErrors();
     }
 }
@@ -697,9 +700,9 @@ static void prompt_help(ostream &out)
 			    flowindentbox(0, 3,
 					  fragf(_("enter the full visual interface")))));
 
-  fragments.push_back(newline_fragment());
-  fragments.push_back(flowbox(fragf(_("You may also specify modification to the actions which will be taken.  To do so, type an action character followed by one or more package names (or patterns).  The action will be applied to all the packages that you list.  The following actions are available:"))));
-  fragments.push_back(newline_fragment());
+  fragments.push_back(fragf("\n"));
+  fragments.push_back(cwidget::flowbox(fragf(_("You may also specify modification to the actions which will be taken.  To do so, type an action character followed by one or more package names (or patterns).  The action will be applied to all the packages that you list.  The following actions are available:"))));
+  fragments.push_back(fragf("\n"));
 
   // FIXME: copied from
   // cmdline_resolver.cc, maybe this
@@ -725,7 +728,7 @@ static void prompt_help(ostream &out)
   fragment *f = indentbox(2, 2, sequence_fragment(fragments));
 
   out << _("Commands:") << endl;
-  out << f->layout(screen_width, screen_width, style());
+  out << f->layout(screen_width, screen_width, cwidget::style());
   delete f;
 }
 

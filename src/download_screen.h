@@ -55,25 +55,25 @@ namespace HASH_NAMESPACE {
 }
 #endif
 
-class download_tree:public vs_subtree_generic
+class download_tree:public cwidget::widgets::subtree_generic
 {
 public:
-  download_tree():vs_subtree_generic(true) {}
+  download_tree():cwidget::widgets::subtree_generic(true) {}
 
-  void paint(vs_tree *win, int y, bool hierarchical, const style &style)
-  {vs_subtree_generic::paint(win, y, hierarchical, L"ERROR: SHOULD NOT APPEAR");}
+  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const style &style)
+  {cwidget::widgets::subtree_generic::paint(win, y, hierarchical, L"ERROR: SHOULD NOT APPEAR");}
   const wchar_t * tag() {return L"download tree";}
   const wchar_t * label() {return L"download tree";}
 };
 
-class download_screen:public vs_tree, public pkgAcquireStatus
+class download_screen:public cwidget::widgets::tree, public pkgAcquireStatus
 {
   typedef HASH_NAMESPACE::hash_map<void *, download_item *> downloadmap;
   downloadmap active_items;
   // Makes it easy to find a currently downloading item when we get a hit
   // for it.
 
-  vscreen_widget *prev;
+  cwidget::widgets::widget *prev;
   // The screen that was being displayed before we started running the
   // download.
 

@@ -26,31 +26,31 @@
 #include "pkg_item.h"
 #include "pkg_columnizer.h"
 
-#include <vscreen/columnify.h>
-#include <vscreen/config/column_definition.h>
-#include <vscreen/transcode.h>
+#include <cwidget/columnify.h>
+#include <cwidget/config/column_definition.h>
+#include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/subtree.h>
 
-template<class child, class sorter=tag_sort_policy>
-class pkg_item_with_subtree:public vs_subtree<child, sorter>, public pkg_item
+template<class child, class sorter = cwidget::widgets::tag_sort_policy>
+class pkg_item_with_subtree:public cwidget::widgets::subtree<child, sorter>, public pkg_item
 {
   class pkg_with_subtree_columnizer:public pkg_columnizer
   {
     bool expanded, hierarchical;
   protected:
-    column_disposition setup_column(int type)
+    cwidget::column_disposition setup_column(int type)
       {
 	if(type==name)
 	  {
-	    std::wstring name=transcode(get_pkg().Name());
+	    std::wstring name = cwidget::util::transcode(get_pkg().Name());
 
 	    // Interesting question: would it be reasonable to use graphical
 	    // characters here?  What about Unicode graphical characters?
 	    if(hierarchical)
-	      return column_disposition(std::wstring(expanded?L"--\\ ":L"--- ")+name, get_basex());
+	      return cwidget::column_disposition(std::wstring(expanded ? L"--\\ " : L"--- ") + name, get_basex());
 	    else
 	      {
-		return column_disposition(L"-> "+name, get_basex());
+		return cwidget::column_disposition(L"-> " + name, get_basex());
 	      }
 	  }
 	else
@@ -61,7 +61,7 @@ class pkg_item_with_subtree:public vs_subtree<child, sorter>, public pkg_item
     pkg_with_subtree_columnizer(bool _expanded, bool _hierarchical,
 				const pkgCache::PkgIterator &_pkg,
 				const pkgCache::VerIterator &_visible_ver,
-				const column_definition_list &_columns, int _basex)
+				const cwidget::config::column_definition_list &_columns, int _basex)
       :pkg_columnizer(_pkg, _visible_ver, _columns, _basex),
        expanded(_expanded), hierarchical(_hierarchical)
     {}
@@ -70,10 +70,10 @@ class pkg_item_with_subtree:public vs_subtree<child, sorter>, public pkg_item
 public:
   pkg_item_with_subtree<child,sorter>(const pkgCache::PkgIterator &_package,
 				      sigc::signal2<void, const pkgCache::PkgIterator &, const pkgCache::VerIterator &> *_sig,
-				      bool _expanded=false):vs_subtree<child, sorter>(_expanded), pkg_item(_package, _sig) {}
+				      bool _expanded=false):cwidget::widgets::subtree<child, sorter>(_expanded), pkg_item(_package, _sig) {}
 
-  virtual void paint(vs_tree *win, int y, bool hierarchical,
-		     const style &st)
+  virtual void paint(cwidget::widgets::tree *win, int y, bool hierarchical,
+		     const cwidget::style &st)
   {
     int basex=2*get_depth();
     int width, height;
@@ -81,9 +81,9 @@ public:
     win->getmaxyx(height, width);
     pkg_columnizer::setup_columns();
 
-    empty_column_parameters p;
+    cwidget::config::empty_column_parameters p;
 
-    std::wstring disp=pkg_with_subtree_columnizer(vs_subtree<child, sorter>::get_expanded(),
+    std::wstring disp=pkg_with_subtree_columnizer(cwidget::widgets::subtree<child, sorter>::get_expanded(),
 						  hierarchical,
 						  get_package(),
 						  visible_version(),
@@ -92,21 +92,21 @@ public:
     win->mvaddnstr(y, 0, disp, width);
   }
 
-  bool dispatch_key(const key &k, vs_tree *owner)
+  bool dispatch_key(const cwidget::config::key &k, cwidget::widgets::tree *owner)
   {
-    if(vs_subtree<child, sorter>::dispatch_key(k, owner))
+    if(cwidget::widgets::subtree<child, sorter>::dispatch_key(k, owner))
       return true;
     else
       return pkg_item::dispatch_key(k, owner);
   }
 
-  void dispatch_mouse(short id, int x, mmask_t bstate, vs_tree *owner)
+  void dispatch_mouse(short id, int x, mmask_t bstate, cwidget::widgets::tree *owner)
   {
     pkg_item::dispatch_mouse(id, x, bstate, owner);
   }
 };
 
-typedef pkg_item_with_subtree<vs_treeitem> pkg_item_with_generic_subtree;
+typedef pkg_item_with_subtree<cwidget::widgets::treeitem> pkg_item_with_generic_subtree;
 typedef pkg_item_with_subtree<pkg_tree_node> pkg_item_with_pkgnode_subtree;
 
 #endif

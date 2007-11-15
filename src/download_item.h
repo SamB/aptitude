@@ -24,9 +24,9 @@
 
 #include <apt-pkg/acquire-item.h>
 
-#include "vscreen/vs_treeitem.h"
+#include <cwidget/widgets/treeitem.h>
 
-class download_item:public vs_treeitem
+class download_item:public cwidget::widgets::treeitem
 {
   pkgAcquire::ItemDesc item;
   pkgAcquire::Worker *worker;
@@ -40,12 +40,12 @@ class download_item:public vs_treeitem
   int doneColor;
   // The color to use to display the package after finishing.
 public:
-  download_item(const pkgAcquire::ItemDesc &_item):vs_treeitem(false), item(_item), worker(NULL) {}
+  download_item(const pkgAcquire::ItemDesc &_item):cwidget::widgets::treeitem(false), item(_item), worker(NULL) {}
 
-  style get_normal_style();
+  cwidget::style get_normal_style();
 
-  virtual void paint(vs_tree *win, int y, bool hierarchical,
-		     const style &st);
+  virtual void paint(cwidget::widgets::tree *win, int y, bool hierarchical,
+		     const cwidget::style &st);
 
   void download_done(bool _hit) {hit=_hit;}
   void set_worker(pkgAcquire::Worker *_worker) {worker=_worker;}

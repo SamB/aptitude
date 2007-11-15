@@ -43,16 +43,16 @@ class pkg_ver_columnizer:public pkg_item::pkg_columnizer
   bool show_pkg_name;
 
 public:
-  static column_disposition setup_column(const pkgCache::VerIterator &ver,
-					 bool show_pkg_name,
-					 int basex,
-					 int type);
-  column_disposition setup_column(int type);
+  static cwidget::column_disposition setup_column(const pkgCache::VerIterator &ver,
+						  bool show_pkg_name,
+						  int basex,
+						  int type);
+  cwidget::column_disposition setup_column(int type);
 
 
   pkg_ver_columnizer(const pkgCache::VerIterator &_ver,
 		     bool _show_pkg_name,
-		     const column_definition_list &_columns,
+		     const cwidget::config::column_definition_list &_columns,
 		     int _basex):
     pkg_item::pkg_columnizer(_ver.ParentPkg(), _ver, _columns, _basex),
     show_pkg_name(_show_pkg_name)
@@ -80,10 +80,10 @@ public:
   pkgCache::PkgIterator get_package() const {return version.ParentPkg();}
   const pkgCache::VerIterator &get_version() const {return version;}
 
-  virtual style get_normal_style();
-  virtual style get_highlighted_style();
-  virtual void paint(vs_tree *win, int y, bool hierarchical,
-		     const style &st);
+  virtual cwidget::style get_normal_style();
+  virtual cwidget::style get_highlighted_style();
+  virtual void paint(cwidget::widgets::tree *win, int y, bool hierarchical,
+		     const cwidget::style &st);
 
   virtual const wchar_t *tag();
   virtual const wchar_t *label();
@@ -100,12 +100,12 @@ public:
 
   void show_information();
 
-  bool dispatch_key(const key &k, vs_tree *owner);
+  bool dispatch_key(const cwidget::config::key &k, cwidget::widgets::tree *owner);
 
   pkg_ver_item *get_sig();
 
-  static style ver_style(pkgCache::VerIterator version,
-			 bool highlighted);
+  static cwidget::style ver_style(pkgCache::VerIterator version,
+				  bool highlighted);
 
 
   // Menu redirections:
@@ -117,7 +117,7 @@ public:
   bool package_information();
 };
 
-class versort:public sortpolicy
+class versort:public cwidget::widgets::sortpolicy
 {
 public:
   inline int compare(const pkg_ver_item *item1, const pkg_ver_item *item2) const
@@ -129,7 +129,7 @@ public:
     return _system->VS->CmpVersion(item1->get_version().VerStr(), item2->get_version().VerStr());
   }
 
-  bool operator()(vs_treeitem *item1, vs_treeitem *item2)
+  bool operator()(cwidget::widgets::treeitem *item1, cwidget::widgets::treeitem *item2)
   {
     // FIXME: this is horrible.
     const pkg_ver_item *pitem1=dynamic_cast<const pkg_ver_item *>(item1);
@@ -143,13 +143,13 @@ public:
 };
 
 typedef pkg_item_with_subtree<pkg_ver_item, versort> pkg_vertree;
-class pkg_vertree_generic:public vs_subtree<pkg_ver_item, versort>
+class pkg_vertree_generic:public cwidget::widgets::subtree<pkg_ver_item, versort>
 {
   std::wstring name;
 public:
-  pkg_vertree_generic(std::wstring _name, bool _expanded):vs_subtree<pkg_ver_item, versort>(_expanded),name(_name) {}
-  void paint(vs_tree *win, int y, bool hierarchical, const style &st)
-  {vs_subtree<pkg_ver_item, versort>::paint(win, y, hierarchical, name);}
+  pkg_vertree_generic(std::wstring _name, bool _expanded):cwidget::widgets::subtree<pkg_ver_item, versort>(_expanded),name(_name) {}
+  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const cwidget::style &st)
+  {cwidget::widgets::subtree<pkg_ver_item, versort>::paint(win, y, hierarchical, name);}
   const wchar_t *tag() {return name.c_str();}
   const wchar_t *label() {return name.c_str();}
 };
@@ -168,19 +168,19 @@ public:
 class pkg_ver_screen:public apt_info_tree
 {
 protected:
-  virtual vs_treeitem *setup_new_root(const pkgCache::PkgIterator &pkg,
+  virtual cwidget::widgets::treeitem *setup_new_root(const pkgCache::PkgIterator &pkg,
 				      const pkgCache::VerIterator &ver);
   pkg_ver_screen(const pkgCache::PkgIterator &pkg);
 public:
-  static ref_ptr<pkg_ver_screen> create(const pkgCache::PkgIterator &pkg)
+  static cwidget::util::ref_ptr<pkg_ver_screen> create(const pkgCache::PkgIterator &pkg)
   {
-    ref_ptr<pkg_ver_screen> rval(new pkg_ver_screen(pkg));
+    cwidget::util::ref_ptr<pkg_ver_screen> rval(new pkg_ver_screen(pkg));
     rval->decref();
     return rval;
   }
 };
 
-typedef ref_ptr<pkg_ver_screen> pkg_ver_screen_ref;
+typedef cwidget::util::ref_ptr<pkg_ver_screen> pkg_ver_screen_ref;
 
 void setup_package_versions(const pkgCache::PkgIterator &pkg, pkg_vertree *tree, pkg_signal *sig);
 void setup_package_versions(const pkgCache::PkgIterator &pkg, pkg_vertree_generic *tree, pkg_signal *sig);

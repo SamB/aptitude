@@ -22,11 +22,11 @@
 #ifndef PKG_SUBTREE_H
 #define PKG_SUBTREE_H
 
-#include "vscreen/vs_subtree.h"
+#include <cwidget/widgets/subtree.h>
 
 #include "pkg_node.h"
 
-class pkg_subtree:public vs_subtree<pkg_tree_node>,
+class pkg_subtree:public cwidget::widgets::subtree<pkg_tree_node>,
 		  public pkg_tree_node
 {
   std::wstring name;
@@ -41,21 +41,21 @@ public:
   pkg_subtree(std::wstring _name, std::wstring _description=L"",
 	      sigc::signal1<void, std::wstring> *_info_signal=NULL,
 	      bool _expanded=false):
-    vs_subtree<pkg_tree_node>(_expanded), name(_name),
+    cwidget::widgets::subtree<pkg_tree_node>(_expanded), name(_name),
     description(_description), info_signal(_info_signal)
   {
     highlighted_changed.connect(sigc::mem_fun(this, &pkg_subtree::do_highlighted_changed));
   }
 
   pkg_subtree(std::wstring _name, bool _expanded):
-    vs_subtree<pkg_tree_node>(_expanded), name(_name),
+    cwidget::widgets::subtree<pkg_tree_node>(_expanded), name(_name),
     description(L""), info_signal(NULL)
   {
     highlighted_changed.connect(sigc::mem_fun(this, &pkg_subtree::do_highlighted_changed));
   }
 
-  virtual void paint(vs_tree *win, int y, bool hierarchical,
-		     const style &st);
+  virtual void paint(cwidget::widgets::tree *win, int y, bool hierarchical,
+		     const cwidget::style &st);
   virtual const wchar_t *tag();
   virtual const wchar_t *label();
 
@@ -70,7 +70,7 @@ public:
   std::wstring get_name() {return name;}
   std::wstring get_description() {return description;}
 
-  bool dispatch_key(const key &k, vs_tree *owner);
+  bool dispatch_key(const cwidget::config::key &k, cwidget::widgets::tree *owner);
 };
 
 #endif

@@ -31,10 +31,13 @@
 // So passing aptitude_solution::action to a function is legal
 #include <generic/apt/aptitude_resolver_universe.h>
 
-class fragment;
+namespace cwidget
+{
+  class fragment;
+}
 class aptitude_universe;
 
-fragment *solution_fragment(const generic_solution<aptitude_universe> &solution);
+cwidget::fragment *solution_fragment(const generic_solution<aptitude_universe> &solution);
 
 /** \return a list of the archives to which a version
  *  belongs in the form "archive1,archive2,..."
@@ -42,7 +45,7 @@ fragment *solution_fragment(const generic_solution<aptitude_universe> &solution)
 std::string archives_text(const pkgCache::VerIterator &v);
 
 /** \return a fragment describing the given action. */
-fragment *action_fragment(const generic_solution<aptitude_universe>::action &a);
+cwidget::fragment *action_fragment(const generic_solution<aptitude_universe>::action &a);
 
 /** \return descriptive text about a single dependency. */
 std::wstring dep_text(const pkgCache::DepIterator &d);

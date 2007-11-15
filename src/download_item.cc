@@ -24,35 +24,41 @@
 #include <apt-pkg/acquire-worker.h>
 #include <apt-pkg/strutl.h>
 
-#include <vscreen/transcode.h>
+#include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/tree.h>
 
-style download_item::get_normal_style()
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
+cw::style download_item::get_normal_style()
 {
   switch(item.Owner->Status)
     {
     case pkgAcquire::Item::StatIdle:
-      return vs_treeitem::get_normal_style()+style_attrs_on(A_DIM);
+      return cw::treeitem::get_normal_style() + cw::style_attrs_on(A_DIM);
     case pkgAcquire::Item::StatFetching:
-      return vs_treeitem::get_normal_style();
+      return cw::treeitem::get_normal_style();
     case pkgAcquire::Item::StatDone:
       if(!hit)
-	return vs_treeitem::get_normal_style()+get_style("Progress");
+	return cw::treeitem::get_normal_style() + cw::get_style("Progress");
       else
-	return vs_treeitem::get_normal_style()+get_style("DownloadHit");
+	return cw::treeitem::get_normal_style() + cw::get_style("DownloadHit");
     case pkgAcquire::Item::StatError:
-      return vs_treeitem::get_normal_style()+get_style("Error");
+      return cw::treeitem::get_normal_style() + cw::get_style("Error");
     case pkgAcquire::Item::StatTransientNetworkError:
-      return vs_treeitem::get_normal_style() + get_style("Error");
+      return cw::treeitem::get_normal_style() + cw::get_style("Error");
     case pkgAcquire::Item::StatAuthError:
-      return vs_treeitem::get_normal_style()+get_style("Error");
+      return cw::treeitem::get_normal_style() + cw::get_style("Error");
     default:
       eassert(0);
     }
 }
 
-void download_item::paint(vs_tree *win, int y, bool hierarchical,
-			  const style &st)
+void download_item::paint(cw::tree *win, int y, bool hierarchical,
+			  const cw::style &st)
   // A little confusing -- basically, there are two branches: either we display
   // a progress bar, or we don't.  If we don't, I can just display it as usual
   // (note, though, that I don't yet indent it according to the depth..); if we
@@ -64,8 +70,8 @@ void download_item::paint(vs_tree *win, int y, bool hierarchical,
 
   win->getmaxyx(height,width);
 
-  const style progress_style=st+get_style("DownloadProgress");
-  const style normal_style=st+get_normal_style();
+  const cw::style progress_style=st + cw::get_style("DownloadProgress");
+  const cw::style normal_style=st + get_normal_style();
   int barsize=width;
 
   switch(item.Owner->Status)
@@ -114,7 +120,7 @@ void download_item::paint(vs_tree *win, int y, bool hierarchical,
       break;
     }
 
-  win->show_string_as_progbar(0, y, transcode(output),
+  win->show_string_as_progbar(0, y, cw::util::transcode(output),
 			      progress_style, normal_style,
 			      barsize, width);
 }

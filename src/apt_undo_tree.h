@@ -30,9 +30,9 @@ class apt_undo_tree : public menu_tree
 protected:
   apt_undo_tree();
 public:
-  ref_ptr<apt_undo_tree> create()
+  cwidget::util::ref_ptr<apt_undo_tree> create()
   {
-    ref_ptr<apt_undo_tree> rval = new apt_undo_tree;
+    cwidget::util::ref_ptr<apt_undo_tree> rval = new apt_undo_tree;
     rval->decref();
     return rval;
   }

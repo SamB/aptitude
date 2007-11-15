@@ -31,7 +31,7 @@
 #include <map>
 #include <vector>
 
-#include <generic/util/eassert.h>
+#include <cwidget/generic/util/eassert.h>
 
 #include <string.h>
 
@@ -387,7 +387,7 @@ int main(int argc, char **argv)
 	  f >> ws;
 	  run_test_file(f, show_world);
 	}
-      catch(const Exception &e)
+      catch(const cwidget::util::Exception &e)
 	{
 	  cerr << "Error reading " << argv[i] << ": " << e.errmsg() << endl;
 	  rval=-1;

@@ -35,6 +35,11 @@
 
 using namespace std;
 using namespace __gnu_cxx;
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 class pkg_depitem:public pkg_subtree
 {
@@ -49,10 +54,10 @@ class pkg_depitem:public pkg_subtree
 public:
   pkg_depitem(pkgCache::DepIterator &_first, pkg_signal *_sig);
 
-  void paint(vs_tree *win, int y, bool hierarchical,
-	     const style &st);
+  void paint(cw::tree *win, int y, bool hierarchical,
+	     const cw::style &st);
 
-  style get_normal_style();
+  cw::style get_normal_style();
 
   void select(undo_group *undo);
   // A special case -- installs the 'best' target package (using
@@ -105,7 +110,7 @@ pkg_depitem::pkg_depitem(pkgCache::DepIterator &first, pkg_signal *sig):
       // Bleach.  Anyone who can offer a cleaner way to do this gets a virtual cookie :)
       start++;
     } while(1);
-  pkg_subtree::set_label(transcode(currlabel, "ASCII"));
+  pkg_subtree::set_label(cw::util::transcode(currlabel, "ASCII"));
 }
 
 bool pkg_depitem::is_broken()
@@ -128,8 +133,8 @@ bool pkg_depitem::is_broken()
 	  !((*apt_cache_file)[dep]&pkgDepCache::DepGInstall));
 }
 
-void pkg_depitem::paint(vs_tree *win, int y, bool hierarchical,
-			const style &st)
+void pkg_depitem::paint(cw::tree *win, int y, bool hierarchical,
+			const cw::style &st)
 {
   if(is_broken())
     {
@@ -137,20 +142,19 @@ void pkg_depitem::paint(vs_tree *win, int y, bool hierarchical,
       // the user that.  (specifically, if there are no available packages
       // fulfilling the dependency)
 
-      wstring broken_str=transcode(available?_("UNSATISFIED"):_("UNAVAILABLE"));
+      wstring broken_str = available ? W_("UNSATISFIED") : W_("UNAVAILABLE");
 
-      vs_subtree<pkg_tree_node>::paint(win, y, hierarchical,
-				       get_name()+L" ("+broken_str+L")");
+      cw::subtree<pkg_tree_node>::paint(win, y, hierarchical,
+					get_name()+L" ("+broken_str+L")");
     }
   else
-    pkg_subtree::paint(win, y, hierarchical,
-		       st);
+    pkg_subtree::paint(win, y, hierarchical, st);
 }
 
-style pkg_depitem::get_normal_style()
+cw::style pkg_depitem::get_normal_style()
 {
   if(is_broken())
-    return get_style("DepBroken");
+    return cw::get_style("DepBroken");
   else
     return pkg_subtree::get_normal_style();
 }
@@ -205,8 +209,8 @@ pkg_grouppolicy *pkg_grouppolicy_dep_factory::instantiate(pkg_signal *_sig,
   return new pkg_grouppolicy_dep(_sig, _desc_sig);
 }
 
-vs_treeitem *pkg_dep_screen::setup_new_root(const pkgCache::PkgIterator &pkg,
-					    const pkgCache::VerIterator &ver)
+cw::treeitem *pkg_dep_screen::setup_new_root(const pkgCache::PkgIterator &pkg,
+					     const pkgCache::VerIterator &ver)
 {
   pkg_item_with_generic_subtree *newtree=new pkg_item_with_generic_subtree(pkg, get_sig(), true);
 
@@ -262,8 +266,8 @@ void setup_package_deps(const pkgCache::PkgIterator &pkg,
       tree_map::iterator found=subtrees.find(D.DepType());
       if(found==subtrees.end())
 	{
-	  subtree=new pkg_subtree(transcode(D.DepType()),
-				  true);
+	  subtree = new pkg_subtree(cw::util::transcode(D.DepType()),
+				    true);
 	  subtrees[D.DepType()]=subtree;
 	  tree->add_child(subtree);
 	}
@@ -292,8 +296,8 @@ void setup_package_deps(const pkgCache::PkgIterator &pkg,
 		tree_map::iterator found=subtrees.find(D.DepType());
 		if(found==subtrees.end())
 		  {
-		    subtree=new pkg_subtree(transcode(D.DepType()),
-					    true);
+		    subtree = new pkg_subtree(cw::util::transcode(D.DepType()),
+					      true);
 		    subtrees[D.DepType()]=subtree;
 		    tree->add_child(subtree);
 		  }

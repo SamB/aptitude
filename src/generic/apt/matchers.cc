@@ -40,7 +40,8 @@
 #include <aptitude.h>
 
 #include <generic/util/util.h>
-#include <vscreen/transcode.h>
+
+#include <cwidget/generic/util/transcode.h>
 
 #include <set>
 
@@ -59,6 +60,7 @@
 #include <sys/types.h>
 
 using namespace std;
+using cwidget::util::transcode;
 
 /** Used to cleanly abort without having to contort the code. */
 class CompilationException

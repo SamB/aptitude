@@ -27,9 +27,9 @@
 #define DOWNLOAD_BAR_H
 
 #include <apt-pkg/acquire.h>
-#include <cwidget/widgets/widgets.h>
+#include <cwidget/widgets/widget.h>
 
-class download_status_bar:public pkgAcquireStatus, public vscreen_widget
+class download_status_bar:public pkgAcquireStatus, public cwidget::widgets::widget
 {
   std::string last_msg;
   // Stores the last thing we displayed
@@ -47,9 +47,9 @@ class download_status_bar:public pkgAcquireStatus, public vscreen_widget
 protected:
   download_status_bar();
 public:
-  static ref_ptr<download_status_bar> create()
+  static cwidget::util::ref_ptr<download_status_bar> create()
   {
-    ref_ptr<download_status_bar> rval(new download_status_bar);
+    cwidget::util::ref_ptr<download_status_bar> rval(new download_status_bar);
     rval->decref();
     return rval;
   }
@@ -64,15 +64,18 @@ public:
   void Start();
   void Stop();
 
-  void paint(const style &st);
-  bool handle_key(const key &k);
+  void paint(const cwidget::style &st);
+  bool handle_key(const cwidget::config::key &k);
 
   int width_request();
   int height_request(int);
   bool get_cursorvisible() {return false;}
-  point get_cursorloc() {return point(0,0);}
+  cwidget::widgets::point get_cursorloc()
+  {
+    return cwidget::widgets::point(0,0);
+  }
 };
 
-typedef ref_ptr<download_status_bar> download_status_bar_ref;
+typedef cwidget::util::ref_ptr<download_status_bar> download_status_bar_ref;
 
 #endif

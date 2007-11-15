@@ -32,9 +32,12 @@
 
 #include <cwidget/widgets/treeitem.h>
 
-class fragment;
+namespace cwidget
+{
+  class fragment;
+}
 
-class solution_item : public vs_treeitem, public menu_redirect
+class solution_item : public cwidget::widgets::treeitem, public menu_redirect
 {
 public:
   const wchar_t *tag();
@@ -77,7 +80,7 @@ public:
 
   style get_normal_style();
 
-  bool dispatch_key(const key &k, vs_tree *owner);
+  bool dispatch_key(const key &k, cwidget::widgets::tree *owner);
 
   // Menu redirections:
   bool resolver_toggle_approved();
@@ -140,9 +143,9 @@ public:
     return ver;
   }
 
-  bool dispatch_key(const key &k, vs_tree *owner);
+  bool dispatch_key(const key &k, cwidget::widgets::tree *owner);
 
-  void paint(vs_tree *win, int y, bool hierarchical, const style &st);
+  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const style &st);
 
 
   // Menu redirections.
@@ -163,7 +166,7 @@ public:
   {
   }
 
-  void paint(vs_tree *win, int y, bool hierarchical, const style &st);
+  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const style &st);
 };
 
 /** A solution item corresponding to leaving a dependency unresolved. */
@@ -196,7 +199,7 @@ public:
   void mandate();
   void unmandate();
 
-  void paint(vs_tree *win, int y, bool hierarchical, const style &st);
+  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const style &st);
 };
 
 

@@ -25,10 +25,10 @@
 
 #include <cwidget/widgets/tree.h>
 
-void pkg_subtree::paint(vs_tree *win, int y, bool hierarchical,
+void pkg_subtree::paint(widgets::tree *win, int y, bool hierarchical,
 			const style &st)
 {
-  vs_subtree<pkg_tree_node>::paint(win, y, hierarchical, name);
+  widgets::subtree<pkg_tree_node>::paint(win, y, hierarchical, name);
 }
 
 const wchar_t *pkg_subtree::tag()
@@ -41,12 +41,12 @@ const wchar_t *pkg_subtree::label()
   return name.c_str();
 }
 
-bool pkg_subtree::dispatch_key(const key &k, vs_tree *owner)
+bool pkg_subtree::dispatch_key(const key &k, widgets::tree *owner)
 {
   if(pkg_tree_node::dispatch_key(k, owner))
     return true;
   else
-    return vs_subtree<pkg_tree_node>::dispatch_key(k, owner);
+    return widgets::subtree<pkg_tree_node>::dispatch_key(k, owner);
 }
 
 void pkg_subtree::select(undo_group *undo)

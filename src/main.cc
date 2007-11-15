@@ -37,10 +37,10 @@
 
 #include <generic/problemresolver/exceptions.h>
 
-#include <vscreen/config/keybindings.h>
-#include <vscreen/transcode.h>
+#include <cwidget/config/keybindings.h>
+#include <cwidget/generic/util/transcode.h>
 #include <cwidget/toplevel.h>
-#include <cwidget/widgets/util.h>
+#include <cwidget/dialogs.h>
 
 #include <cmdline/cmdline_changelog.h>
 #include <cmdline/cmdline_check_resolver.h>
@@ -65,10 +65,12 @@
 
 #include "ui.h"
 
-#include "vs_progress.h"
+#include "progress.h"
 #include "pkg_columnizer.h"
 #include "pkg_grouppolicy.h"
 #include "pkg_view.h"
+
+namespace toplevel = cwidget::toplevel;
 
 #if 0
 // These are commented out so as to not punish users unduly for coding
@@ -533,7 +535,7 @@ int main(int argc, char *argv[])
 	  printf("%s", _("Abort.\n"));
 	  return -1;
 	}
-      catch(const Exception &e)
+      catch(const cwidget::util::Exception &e)
 	{
 	  fprintf(stderr, _("Uncaught exception: %s\n"), e.errmsg().c_str());
 
@@ -548,7 +550,7 @@ int main(int argc, char *argv[])
 
   try
     {
-      vs_progress_ref p=gen_progress_bar();
+      progress_ref p=gen_progress_bar();
       // We can avoid reading in the package lists in the case that
       // we're about to update them (since they'd be closed and
       // reloaded anyway).  Obviously we still need them for installs,
@@ -560,12 +562,12 @@ int main(int argc, char *argv[])
 	free(status_fname);
       check_apt_errors();
 
-      file_quit.connect(sigc::ptr_fun(vscreen_exitmain));
+      file_quit.connect(sigc::ptr_fun(toplevel::exitmain));
 
       if(apt_cache_file)
 	{
-	  (*apt_cache_file)->package_state_changed.connect(sigc::ptr_fun(vscreen_update));
-	  (*apt_cache_file)->package_category_changed.connect(sigc::ptr_fun(vscreen_update));
+	  (*apt_cache_file)->package_state_changed.connect(sigc::ptr_fun(toplevel::update));
+	  (*apt_cache_file)->package_category_changed.connect(sigc::ptr_fun(toplevel::update));
 	}
 
       do_new_package_view(*p.unsafe_get_ref());
@@ -580,9 +582,9 @@ int main(int argc, char *argv[])
 
       ui_main();
     }
-  catch(const Exception &e)
+  catch(const cwidget::util::Exception &e)
     {
-      vscreen_shutdown();
+      toplevel::shutdown();
 
       fprintf(stderr, _("Uncaught exception: %s\n"), e.errmsg().c_str());
 

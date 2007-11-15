@@ -21,18 +21,18 @@
 
 #include "aptitude.h"
 
-#include <vscreen/config/column_definition.h>
-#include <vscreen/config/keybindings.h>
-#include <vscreen/fragment.h>
-#include <vscreen/transcode.h>
-#include <cwidget/widgets/util.h>
+#include <cwidget/config/column_definition.h>
+#include <cwidget/config/keybindings.h>
+#include <cwidget/fragment.h>
+#include <cwidget/generic/util/transcode.h>
+#include <cwidget/dialogs.h>
 
 #include "edit_pkg_hier.h"
 #include "pkg_columnizer.h"
 #include "pkg_item.h"
 #include "ui.h"
 #include "view_changelog.h"
-#include "vs_progress.h"
+#include "widgets::progress.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/apt_undo_group.h>
@@ -79,7 +79,7 @@ static void confirm_delete_essential(const pkgCache::PkgIterator &pkg,
 
   fragment *f=wrapbox(fragf(_("%s is an essential package!%n%nAre you sure you want to remove it?%nType '%s' if you are."), pkg.Name(), _(confirm_str)));
 
-  vs_widget_ref w=vs_dialog_string(f,
+  widgets::widget_ref w=widgets::dialog_string(f,
 				   L"",
 				   arg(sigc::bind(sigc::ptr_fun(try_delete_essential),
 						  pkg, purge)),
@@ -225,7 +225,7 @@ void pkg_item::show_information()
   snprintf(buf, 512, _("%s info"), package.Name());
   string tablabel(buf);
 
-  vs_widget_ref w=make_info_screen(package, visible_version());
+  widgets::widget_ref w=make_info_screen(package, visible_version());
   // what to use as the menu description?
   insert_main_widget(w, menulabel, "", tablabel);
 }
@@ -237,12 +237,12 @@ void pkg_item::show_changelog()
 
 style pkg_item::get_highlight_style()
 {
-  return vs_treeitem::get_normal_style() + pkg_style(package, true);
+  return widgets::treeitem::get_normal_style() + pkg_style(package, true);
 }
 
 style pkg_item::get_normal_style()
 {
-  return vs_treeitem::get_normal_style() + pkg_style(package, false);
+  return widgets::treeitem::get_normal_style() + pkg_style(package, false);
 }
 
 #define MAYBE_HIGHLIGHTED(x) (highlighted ? (x "Highlighted") : (x))
@@ -300,7 +300,7 @@ style pkg_item::pkg_style(pkgCache::PkgIterator package, bool highlighted)
     }
 }
 
-void pkg_item::paint(vs_tree *win, int y, bool hierarchical, const style &st)
+void pkg_item::paint(widgets::tree *win, int y, bool hierarchical, const style &st)
 {
   int basex=hierarchical?2*get_depth():0;
   int width, height;
@@ -313,7 +313,7 @@ void pkg_item::paint(vs_tree *win, int y, bool hierarchical, const style &st)
   win->mvaddnstr(y, 0, disp.c_str(), width);
 }
 
-bool pkg_item::dispatch_key(const key &k, vs_tree *owner)
+bool pkg_item::dispatch_key(const key &k, widgets::tree *owner)
 {
   if(bindings->key_matches(k, "Versions"))
     {
@@ -325,7 +325,7 @@ bool pkg_item::dispatch_key(const key &k, vs_tree *owner)
 	       package.Name());
       string tablabel(buf);
 
-      vs_widget_ref w=make_ver_screen(package);
+      widgets::widget_ref w=make_ver_screen(package);
       insert_main_widget(w, menulabel, "", tablabel);
     }
   else if(bindings->key_matches(k, "Dependencies"))
@@ -338,7 +338,7 @@ bool pkg_item::dispatch_key(const key &k, vs_tree *owner)
 	  snprintf(buf, 512, _("%s deps"), package.Name());
 	  string tablabel(buf);
 
-	  vs_widget_ref w=make_dep_screen(package, visible_version());
+	  widgets::widget_ref w=make_dep_screen(package, visible_version());
 	  insert_main_widget(w, menulabel, "", tablabel);
 	  w->show();
 	}
@@ -351,7 +351,7 @@ bool pkg_item::dispatch_key(const key &k, vs_tree *owner)
       snprintf(buf, 512, _("%s reverse deps"), package.Name());
       string tablabel(buf);
 
-      vs_widget_ref w=make_dep_screen(package, visible_version(), true);
+      widgets::widget_ref w=make_dep_screen(package, visible_version(), true);
       insert_main_widget(w, menulabel, "", tablabel);
     }
   else if(bindings->key_matches(k, "InfoScreen"))
@@ -396,13 +396,13 @@ bool pkg_item::dispatch_key(const key &k, vs_tree *owner)
       if(!ver.end())
 	cmd+=string(" -V '")+ver.VerStr()+"'";
 
-      vscreen_suspend();
+      toplevel::suspend();
 
       printf(_("Reporting a bug in %s:\n"), package.Name());
 
       system(cmd.c_str());
 
-      vscreen_resume();
+      toplevel::resume();
     }
   else if(bindings->key_matches(k, "DpkgReconfigure"))
     // Don't bother with my internal su-to-root stuff here, since I don't
@@ -418,11 +418,11 @@ bool pkg_item::dispatch_key(const key &k, vs_tree *owner)
       else if(access("/bin/su", X_OK)==0)
 	sucmd="/bin/su -c \"/usr/sbin/dpkg-reconfigure '%s'\"";
       else
-	popup_widget(vs_dialog_ok(text_fragment(_("You are not root and I cannot find any way to become root.  To reconfigure this package, install the menu package, the login package, or run aptitude as root."))));
+	popup_widget(widgets::dialog_ok(text_fragment(_("You are not root and I cannot find any way to become root.  To reconfigure this package, install the menu package, the login package, or run aptitude as root."))));
 
       if(sucmd)
 	{
-	  vscreen_suspend();
+	  toplevel::suspend();
 
 	  apt_cache_file->ReleaseLock();
 
@@ -439,24 +439,24 @@ bool pkg_item::dispatch_key(const key &k, vs_tree *owner)
 	      cerr<<_("Press return to continue.\n");
 	      getchar();
 
-	      vscreen_resume();
+	      toplevel::resume();
 	    }
 
-	  vs_progress_ref p = gen_progress_bar();
+	  widgets::progress_ref p = gen_progress_bar();
 	  apt_reload_cache(p.unsafe_get_ref(), true);
 	  p->destroy();
 	}
     }
   else if(bindings->key_matches(k, "EditHier"))
     {
-      vs_hier_editor_ref e=vs_hier_editor::create();
+      widgets::hier_editor_ref e=widgets::hier_editor::create();
       e->set_package(package, visible_version());
 
       // FIXME: better title
       add_main_widget(e, _("Hierarchy editor"), "", _("Hierarchy Editor"));
 
       e->connect_key("Quit", &global_bindings,
-		     sigc::mem_fun(*e.unsafe_get_ref(), &vscreen_widget::destroy));
+		     sigc::mem_fun(*e.unsafe_get_ref(), &cwidget::widgets::widget::destroy));
     }
   else
     return pkg_tree_node::dispatch_key(k, owner);
@@ -464,7 +464,7 @@ bool pkg_item::dispatch_key(const key &k, vs_tree *owner)
   return true;
 }
 
-void pkg_item::dispatch_mouse(short id, int x, mmask_t bstate, vs_tree *owner)
+void pkg_item::dispatch_mouse(short id, int x, mmask_t bstate, widgets::tree *owner)
 {
   if(bstate & (BUTTON1_DOUBLE_CLICKED | BUTTON2_DOUBLE_CLICKED |
 	       BUTTON3_DOUBLE_CLICKED | BUTTON4_DOUBLE_CLICKED |

@@ -14,8 +14,8 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/matchers.h>
 
-#include <vscreen/fragment.h>
-#include <vscreen/transcode.h>
+#include <cwidget/fragment.h>
+#include <cwidget/generic/util/transcode.h>
 
 #include <apt-pkg/error.h>
 #include <apt-pkg/init.h>
@@ -27,16 +27,19 @@
 
 #include <iostream>
 
+using cwidget::fragf;
+using cwidget::fragment;
+using cwidget::util::transcode;
 using namespace std;
 
-ostream &operator<<(ostream &out, const fragment_contents &contents)
+ostream &operator<<(ostream &out, const cwidget::fragment_contents &contents)
 {
-  for(fragment_contents::const_iterator i=contents.begin();
+  for(cwidget::fragment_contents::const_iterator i=contents.begin();
       i!=contents.end(); ++i)
     {
       wstring s;
       // Drop the attributes.
-      for(fragment_line::const_iterator j=i->begin(); j!=i->end(); ++j)
+      for(cwidget::fragment_line::const_iterator j=i->begin(); j!=i->end(); ++j)
 	s.push_back((*j).ch);
 
       out << transcode(s) << endl;
@@ -45,9 +48,12 @@ ostream &operator<<(ostream &out, const fragment_contents &contents)
   return out;
 }
 
-static fragment *dep_lst_frag(pkgCache::DepIterator dep,
-			      string title, pkgCache::Dep::DepType T)
+static cwidget::fragment *dep_lst_frag(pkgCache::DepIterator dep,
+				       string title, pkgCache::Dep::DepType T)
 {
+  using cwidget::fragment;
+  using cwidget::fragf;
+
   vector<fragment *> fragments;
 
   while(!dep.end())
@@ -99,11 +105,14 @@ struct package_version_pair_cmp
   }
 };
 
-static fragment *prv_lst_frag(pkgCache::PrvIterator prv,
-			      bool reverse,
-			      int verbose,
-			      const std::string &title)
+static cwidget::fragment *prv_lst_frag(pkgCache::PrvIterator prv,
+				       bool reverse,
+				       int verbose,
+				       const std::string &title)
 {
+  using cwidget::fragment;
+  using cwidget::fragf;
+
   vector<fragment *> fragments;
 
   if(reverse && verbose >= 1)
@@ -138,7 +147,7 @@ static fragment *prv_lst_frag(pkgCache::PrvIterator prv,
 
       for(std::set<std::string>::const_iterator it = packages.begin();
 	  it != packages.end(); ++it)
-	fragments.push_back(text_fragment(*it));
+	fragments.push_back(cwidget::text_fragment(*it));
     }
 
   if(fragments.size()==0)
@@ -150,17 +159,17 @@ static fragment *prv_lst_frag(pkgCache::PrvIterator prv,
 			   flowbox(join_fragments(fragments, L", "))));
 }
 
-static fragment *archive_lst_frag(pkgCache::VerFileIterator vf,
-				  const std::string &title)
+static cwidget::fragment *archive_lst_frag(pkgCache::VerFileIterator vf,
+					   const std::string &title)
 {
-  vector<fragment *> fragments;
+  vector<cwidget::fragment *> fragments;
 
   for( ; !vf.end(); ++vf)
     {
       if(vf.File().Archive() == 0)
-	fragments.push_back(text_fragment(_("<NULL>")));
+	fragments.push_back(cwidget::text_fragment(_("<NULL>")));
       else
-	fragments.push_back(text_fragment(vf.File().Archive()));
+	fragments.push_back(cwidget::text_fragment(vf.File().Archive()));
     }
 
   if(fragments.size()==0)
@@ -208,9 +217,9 @@ static const char *current_state_string(pkgCache::PkgIterator pkg, pkgCache::Ver
  *  statestr is passed to avoid screwing up translations (otherwise I'd
  *  have to break the format string into two pieces).
  */
-static fragment *deletion_fragment(const char *statestr,
-				   const pkgDepCache::StateCache &state,
-				   const aptitudeDepCache::aptitude_state &estate)
+static cwidget::fragment *deletion_fragment(const char *statestr,
+					    const pkgDepCache::StateCache &state,
+					    const aptitudeDepCache::aptitude_state &estate)
 {
   bool unused_delete=(estate.remove_reason!=aptitudeDepCache::manual);
 
@@ -232,10 +241,10 @@ static fragment *deletion_fragment(const char *statestr,
     }
 }
 
-static fragment *version_change_fragment(const char *statestr,
-					 const char *holdstr,
-					 pkgCache::VerIterator curver,
-					 pkgCache::VerIterator instver)
+static cwidget::fragment *version_change_fragment(const char *statestr,
+						  const char *holdstr,
+						  pkgCache::VerIterator curver,
+						  pkgCache::VerIterator instver)
 {
   const char *curverstr=curver.VerStr();
   const char *instverstr=instver.VerStr();
@@ -255,7 +264,7 @@ static fragment *version_change_fragment(const char *statestr,
     return fragf("%s%s", statestr, holdstr);
 }
 
-static fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+static cwidget::fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
 {
   if(pkg.end() || pkg.VersionList().end())
     return fragf(_("not a real package"));
@@ -342,7 +351,7 @@ static void show_package(pkgCache::PkgIterator pkg, int verbose)
 
   fragment *f=sequence_fragment(fragments);
 
-  cout << f->layout(screen_width, screen_width, style());
+  cout << f->layout(screen_width, screen_width, cwidget::style());
 
   delete f;
 }
@@ -433,8 +442,8 @@ static fragment *version_file_fragment(pkgCache::VerIterator ver,
 
 #ifdef APT_HAS_HOMEPAGE
   if(rec.Homepage() != "")
-    fragments.push_back(dropbox(text_fragment(_("Homepage: ")),
-				hardwrapbox(text_fragment(rec.Homepage()))));
+    fragments.push_back(dropbox(cwidget::text_fragment(_("Homepage: ")),
+				hardwrapbox(cwidget::text_fragment(rec.Homepage()))));
 #endif
 
   fragment *tags = make_tags_fragment(pkg);
@@ -450,7 +459,7 @@ static void show_version(pkgCache::VerIterator ver, int verbose)
     {
       fragment *f=version_file_fragment(ver, ver.FileList(), verbose);
 
-      cout << f->layout(screen_width, screen_width, style());
+      cout << f->layout(screen_width, screen_width, cwidget::style());
 
       delete f;
     }
@@ -460,7 +469,7 @@ static void show_version(pkgCache::VerIterator ver, int verbose)
 	{
 	  fragment *f=version_file_fragment(ver, vf, verbose);
 
-	  cout << f->layout(screen_width, screen_width, style()) << endl;
+	  cout << f->layout(screen_width, screen_width, cwidget::style()) << endl;
 
 	  delete f;
 

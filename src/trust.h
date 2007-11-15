@@ -9,7 +9,10 @@
 
 #include <apt-pkg/pkgcache.h>
 
-class fragment;
+namespace cwidget
+{
+  class fragment;
+}
 
 /** Create a new fragment, suitable as a BIG FAT WARNING to the user
  *  that a single package is not trusted.

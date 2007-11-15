@@ -22,10 +22,19 @@
 #ifndef SOLUTION_DIALOG_H
 #define SOLUTION_DIALOG_H
 
-class vscreen_widget;
-template<class T> class ref_ptr;
-typedef ref_ptr<vscreen_widget> vs_widget_ref;
+namespace cwidget
+{
+  namespace util
+  {
+    template<class T> class ref_ptr;
+  }
+  namespace widgets
+  {
+    class widget;
+    typedef util::ref_ptr<widget> widget_ref;
+  }
+}
 
-vs_widget_ref make_solution_dialog();
+cwidget::widgets::widget_ref make_solution_dialog();
 
 #endif // SOLUTION_DIALOG_H
