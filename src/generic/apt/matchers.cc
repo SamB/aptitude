@@ -371,7 +371,7 @@ public:
     if(ver.end())
       return match_target(false, "");
     else
-      return match_target(true, transcode(get_long_description(ver, &records).c_str()));
+      return match_target(true, cw::util::transcode(get_long_description(ver, &records).c_str()));
   }
 };
 

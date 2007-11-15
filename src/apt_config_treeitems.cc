@@ -194,7 +194,7 @@ namespace aptitude
 				 const std::wstring &_long_description,
 				 const std::string  &_dflt)
 	    : item(_item),
-	      witem(transcode(_item)),
+	      witem(cw::util::transcode(_item)),
 	      description(_description),
 	      long_description(_long_description),
 	      dflt(_dflt)
@@ -229,7 +229,7 @@ namespace aptitude
 	    int x = 0;
 	    const int maxx = win->getmaxx();
 
-	    std::wstring value = transcode(aptcfg->Find(item, dflt.c_str()));
+	    std::wstring value = cw::util::transcode(aptcfg->Find(item, dflt.c_str()));
 	    std::wstring::const_iterator valueIt = value.begin();
 	    while(x < maxx)
 	      {
@@ -273,7 +273,7 @@ namespace aptitude
 
 	  void set_text(const std::wstring &text)
 	  {
-	    aptcfg->Set(item, transcode(text));
+	    aptcfg->Set(item, cw::util::transcode(text));
 	  }
 
 	  void edit()
@@ -384,11 +384,11 @@ namespace aptitude
 
 	  const std::wstring value_desc =
 	    value_found == choices.end()
-	    ? transcode(value)
+	    ? cw::util::transcode(value)
 	    : value_found->second.get_description();
 	  const std::wstring dflt_desc =
 	    dflt_found == choices.end()
-	    ? transcode(dflt)
+	    ? cw::util::transcode(dflt)
 	    : dflt_found->second.get_description();
 
 	  std::vector<fragment *> fragments;

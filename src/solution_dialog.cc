@@ -186,7 +186,7 @@ widgets::widget_ref make_solution_dialog()
   bclose->pressed.connect(sigc::mem_fun(rval.unsafe_get_ref(),
 					&cwidget::widgets::widget::destroy));
 
-  rval->connect_key("ApplySolution", &global_bindings,
+  rval->connect_key("ApplySolution", &cw::global_bindings,
 		    sigc::bind(sigc::ptr_fun(do_apply),
 			       rval.weak_ref()));
 

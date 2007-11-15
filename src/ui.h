@@ -224,9 +224,9 @@ cwidget::fragment *wrapbox(cwidget::fragment *contents);
  *                           utterly useless progress indication in this
  *                           case)
  *  \param title             if a new view is generated, this string is
- *                           used as its title; it will be transcoded.
+ *                           used as its title; it will be cwidget::util::transcoded.
  *  \param longtitle         if a new view is generated, this string is
- *                           used as its long title; it will be transcoded.
+ *                           used as its long title; it will be cwidget::util::transcoded.
  *  \param abortslot         the slot to trigger if the download is aborted.
  *
  *  \return the new download manager and the download status widget.
@@ -302,7 +302,7 @@ void show_message(const std::wstring &msg,
  *  need a scrollbar on a 'reasonable' terminal); it will be
  *  paragraph-wrapped as necessary.
  *
- *  \param msg the message to display; will be transcoded
+ *  \param msg the message to display; will be cwidget::util::transcoded
  *  \param okslot an optional slot to be called when the message is dismissed
  */
 void show_message(const std::string &msg,

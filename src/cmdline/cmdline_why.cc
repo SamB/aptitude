@@ -147,7 +147,7 @@ namespace
 
     fragment *description_column3_fragment() const
     {
-      // Q: can I use a std::string and transcode on the way out instead?
+      // Q: can I use a std::string and cw::util::transcode on the way out instead?
       if(!dep.end())
 	{
 	  pkgCache::DepIterator start, end;

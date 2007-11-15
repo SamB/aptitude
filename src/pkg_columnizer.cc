@@ -665,10 +665,10 @@ void pkg_item::pkg_columnizer::setup_columns(bool force_update)
     {
       std::wstring cfg;
 
-      if(!transcode(aptcfg->Find(PACKAGE "::UI::Package-Display-Format",
+      if(!cw::util::transcode(aptcfg->Find(PACKAGE "::UI::Package-Display-Format",
 				 default_pkgdisplay).c_str(),
 		    cfg))
-	_error->Errno("iconv", _("Unable to transcode package display format after \"%ls\""), cfg.c_str());
+	_error->Errno("iconv", _("Unable to cw::util::transcode package display format after \"%ls\""), cfg.c_str());
       else
 	columns=parse_columns(cfg,
 			      pkg_columnizer::parse_column_type,
@@ -676,8 +676,8 @@ void pkg_item::pkg_columnizer::setup_columns(bool force_update)
       if(!columns)
 	{
 	  cfg.clear();
-	  if(!transcode(default_pkgdisplay, cfg))
-	    _error->Errno("iconv", _("Unable to transcode package display format after \"%ls\""), cfg.c_str());
+	  if(!cw::util::transcode(default_pkgdisplay, cfg))
+	    _error->Errno("iconv", _("Unable to cw::util::transcode package display format after \"%ls\""), cfg.c_str());
 	  else
 	    columns=parse_columns(cfg,
 				  pkg_columnizer::parse_column_type,

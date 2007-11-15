@@ -102,28 +102,28 @@ wstring dep_text(const pkgCache::DepIterator &d)
   switch(d->Type)
     {
     case pkgCache::Dep::Depends:
-      return swsprintf(transcode(_("%s depends upon %s")).c_str(),
+      return swsprintf(cw::util::transcode(_("%s depends upon %s")).c_str(),
 		       name, targets.c_str());
     case pkgCache::Dep::PreDepends:
-      return swsprintf(transcode(_("%s pre-depends upon %s")).c_str(),
+      return swsprintf(cw::util::transcode(_("%s pre-depends upon %s")).c_str(),
 		       name, targets.c_str());
     case pkgCache::Dep::Suggests:
-      return swsprintf(transcode(_("%s suggests %s")).c_str(),
+      return swsprintf(cw::util::transcode(_("%s suggests %s")).c_str(),
 		       name, targets.c_str());
     case pkgCache::Dep::Recommends:
-      return swsprintf(transcode(_("%s recommends %s")).c_str(),
+      return swsprintf(cw::util::transcode(_("%s recommends %s")).c_str(),
 		       name, targets.c_str());
     case pkgCache::Dep::Conflicts:
-      return swsprintf(transcode(_("%s conflicts with %s")).c_str(),
+      return swsprintf(cw::util::transcode(_("%s conflicts with %s")).c_str(),
 		       name, targets.c_str());
     case pkgCache::Dep::DpkgBreaks:
-      return swsprintf(transcode(_("%s breaks %s")).c_str(),
+      return swsprintf(cw::util::transcode(_("%s breaks %s")).c_str(),
 		       name, targets.c_str());
     case pkgCache::Dep::Replaces:
-      return swsprintf(transcode(_("%s replaces %s")).c_str(),
+      return swsprintf(cw::util::transcode(_("%s replaces %s")).c_str(),
 				 name, targets.c_str());
     case pkgCache::Dep::Obsoletes:
-      return swsprintf(transcode(_("%s obsoletes %s")).c_str(),
+      return swsprintf(cw::util::transcode(_("%s obsoletes %s")).c_str(),
 				 name, targets.c_str());
     default:
       abort();
@@ -136,7 +136,7 @@ wstring conflict_text(const pkgCache::DepIterator &conflict,
   if(prv.end() || !is_conflict(conflict->Type))
     return dep_text(conflict);
 
-  return swsprintf(transcode(_("%s conflicts with %s [provided by %s %s]")).c_str(),
+  return swsprintf(cw::util::transcode(_("%s conflicts with %s [provided by %s %s]")).c_str(),
 		   const_cast<pkgCache::DepIterator &>(conflict).ParentPkg().Name(),
 		   const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name(),
 		   const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),

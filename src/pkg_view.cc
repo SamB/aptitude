@@ -109,7 +109,7 @@ public:
     toplevel::update();
   }
 
-  void paint(const style &st)
+  void paint(const cw::style const style &st)
   {
     widgets::widget_ref tmpref(this);
 
@@ -148,8 +148,8 @@ static void do_set_column_format(string key, string the_default,
 
   column_definition_list *columns=NULL;
 
-  if(!transcode(format.c_str(), wformat))
-    _error->Errno("iconv", _("Couldn't transcode column definition"));
+  if(!cw::util::transcode(format.c_str(), wformat))
+    _error->Errno("iconv", _("Couldn't cw::util::transcode column definition"));
   else
     columns=parse_columns(wformat,
 			  pkg_item::pkg_columnizer::parse_column_type,
@@ -557,22 +557,22 @@ widgets::widget_ref make_package_view(list<package_view_item> &format,
 	    if(desc_sig)
 	      desc_sig->connect(sigc::mem_fun(*m.unsafe_get_ref(), &info_area_multiplex::set_description));
 
-	    mainwidget->connect_key("DescriptionDown", &global_bindings,
+	    mainwidget->connect_key("DescriptionDown", &cw::global_bindings,
 				    sigc::mem_fun(*m.unsafe_get_ref(),
 						  &info_area_multiplex::line_down));
-	    mainwidget->connect_key("DescriptionUp", &global_bindings,
+	    mainwidget->connect_key("DescriptionUp", &cw::global_bindings,
 				    sigc::mem_fun(*m.unsafe_get_ref(),
 						  &info_area_multiplex::line_up));
-	    mainwidget->connect_key("DescriptionCycle", &global_bindings,
+	    mainwidget->connect_key("DescriptionCycle", &cw::global_bindings,
 				    sigc::mem_fun(*m.unsafe_get_ref(),
 						  &info_area_multiplex::cycle));
-	    mainwidget->connect_key("EditHier", &global_bindings,
+	    mainwidget->connect_key("EditHier", &cw::global_bindings,
 				    sigc::mem_fun(*e.unsafe_get_ref(),
 						  &cwidget::widgets::widget::show));
-	    mainwidget->connect_key("EditHier", &global_bindings,
+	    mainwidget->connect_key("EditHier", &cw::global_bindings,
 				    sigc::mem_fun(*m.unsafe_get_ref(),
 						  &cwidget::widgets::widget::show));
-	    mainwidget->connect_key("EditHier", &global_bindings,
+	    mainwidget->connect_key("EditHier", &cw::global_bindings,
 				    sigc::bind(sigc::mem_fun(*rval.unsafe_get_ref(), &widgets::table::focus_widget_bare),
 					       m.weak_ref()));
 
@@ -622,7 +622,7 @@ widgets::widget_ref make_package_view(list<package_view_item> &format,
 
 	  if(i->popupdownkey.size()>0)
 	    rval->connect_key(i->popupdownkey,
-			      &global_bindings,
+			      &cw::global_bindings,
 			      sigc::mem_fun(*i->widget.unsafe_get_ref(),
 					    &cwidget::widgets::widget::toggle_visible));
 

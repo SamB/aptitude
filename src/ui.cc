@@ -239,7 +239,7 @@ static fragment *apt_error_fragment()
 // Handles "search" dialogs for pagers
 static void pager_search(widgets::pager &p)
 {
-  prompt_string(transcode(_("Search for:")),
+  prompt_string(cw::util::transcode(_("Search for:")),
 		p.get_last_search(),
 		arg(sigc::mem_fun(p, &widgets::pager::search_for)),
 		NULL,
@@ -272,7 +272,7 @@ static widgets::widget_ref make_error_dialog(const widgets::text_layout_ref &lay
   layout->location_changed.connect(sigc::mem_fun(s.unsafe_get_ref(), &widgets::scrollbar::set_slider));
   s->scrollbar_interaction.connect(sigc::mem_fun(layout.unsafe_get_ref(), &widgets::text_layout::scroll));
 
-  return widgets::dialog_ok(t, NULL, transcode(_("Ok")), get_style("Error"));
+  return widgets::dialog_ok(t, NULL, cw::util::transcode(_("Ok")), get_style("Error"));
 }
 
 // blah, I hate C++
@@ -754,7 +754,7 @@ static widgets::widget_ref make_default_view(const menu_tree_ref &mainwidget,
 
   // FIXME: do the config lookup inside the package-view code?
   basic_format.push_back(package_view_item("static1",
-					   parse_columns(transcode(aptcfg->Find(PACKAGE "::UI::Package-Header-Format", default_pkgheaderdisplay)),
+					   parse_columns(cw::util::transcode(aptcfg->Find(PACKAGE "::UI::Package-Header-Format", default_pkgheaderdisplay)),
 							 pkg_item::pkg_columnizer::parse_column_type,
 							 pkg_item::pkg_columnizer::defaults),
 					   PACKAGE "::UI::Package-Header-Format",
@@ -773,7 +773,7 @@ static widgets::widget_ref make_default_view(const menu_tree_ref &mainwidget,
 					   true));
 
   basic_format.push_back(package_view_item("static2",
-					   parse_columns(transcode(aptcfg->Find(PACKAGE "::UI::Package-Status-Format", default_pkgstatusdisplay)),
+					   parse_columns(cw::util::transcode(aptcfg->Find(PACKAGE "::UI::Package-Status-Format", default_pkgstatusdisplay)),
 							 pkg_item::pkg_columnizer::parse_column_type,
 							 pkg_item::pkg_columnizer::defaults),
 					   PACKAGE "::UI::Package-Status-Format",
@@ -868,7 +868,7 @@ static void do_new_flat_view_with_new_bar()
 
   pkg_grouppolicy_factory *grp = new pkg_grouppolicy_end_factory;
   pkg_tree_ref tree = pkg_tree::create("", grp);
-  tree->set_limit(transcode("!~v"));
+  tree->set_limit(cw::util::transcode("!~v"));
 
   add_main_widget(make_default_view(tree,
 				    &tree->selected_signal,
@@ -911,7 +911,7 @@ void do_new_hier_view(OpProgress &progress)
   grp=parse_grouppolicy(grpstr);
 
   pkg_tree_ref tree=pkg_tree::create(grpstr.c_str(), grp);
-  tree->set_limit(transcode("!~v"));
+  tree->set_limit(cw::util::transcode("!~v"));
   //tree->set_hierarchical(false);
 
   add_main_widget(make_default_view(tree,
@@ -984,11 +984,11 @@ static widgets::widget_ref setup_fileview(const std::string &filename,
   s->scrollbar_interaction.connect(sigc::mem_fun(p.unsafe_get_ref(), &widgets::pager::scroll_page));
   p->scroll_top(); // Force a scrollbar update.
 
-  p->connect_key("Search", &global_bindings,
+  p->connect_key("Search", &cw::global_bindings,
 		 sigc::bind(sigc::ptr_fun(&pager_search), p.weak_ref()));
-  p->connect_key("ReSearch", &global_bindings,
+  p->connect_key("ReSearch", &cw::global_bindings,
 		 sigc::bind(sigc::ptr_fun(&pager_repeat_search), p.weak_ref()));
-  p->connect_key("RepeatSearchBack", &global_bindings,
+  p->connect_key("RepeatSearchBack", &cw::global_bindings,
 		 sigc::bind(sigc::ptr_fun(&pager_repeat_search_back), p.weak_ref()));
 
   t->add_widget_opts(p, 0, 0, 1, 1,
@@ -1257,9 +1257,9 @@ static void check_package_trust()
 
       main_stacked->add_visible_widget(widgets::dialog_yesno(sequence_fragment(frags),
 						       arg(sigc::ptr_fun(install_or_remove_packages)),
-						       transcode(_("Really Continue")),
+						       cw::util::transcode(_("Really Continue")),
 						       NULL,
-						       transcode(_("Abort Installation")),
+						       cw::util::transcode(_("Abort Installation")),
 						       get_style("TrustWarning"),
 						       true,
 						       false),
@@ -1307,7 +1307,7 @@ static void do_show_preview()
 	}
 
       if(aptcfg->Exists(PACKAGE "::UI::Preview-Limit"))
-	active_preview_tree=pkg_tree::create(grpstr.c_str(), grp, transcode(aptcfg->Find(PACKAGE "::UI::Preview-Limit").c_str()));
+	active_preview_tree=pkg_tree::create(grpstr.c_str(), grp, cw::util::transcode(aptcfg->Find(PACKAGE "::UI::Preview-Limit").c_str()));
       else
 	active_preview_tree=pkg_tree::create(grpstr.c_str(), grp);
 
@@ -1319,7 +1319,7 @@ static void do_show_preview()
 
       active_preview->destroyed.connect(sigc::ptr_fun(reset_preview));
       active_preview->connect_key("DoInstallRun",
-				  &global_bindings,
+				  &cw::global_bindings,
 				  sigc::ptr_fun(actually_do_package_run));
       add_main_widget(active_preview, _("Preview of package installation"),
 		      _("View and/or adjust the actions that will be performed"),
@@ -1394,7 +1394,7 @@ static void auto_fix_broken()
   catch(NoMoreTime)
     {
       show_message(fragf(_("Ran out of time while trying to resolve dependencies (press \"%s\" to try harder)"),
-			 global_bindings.readable_keyname("NextSolution").c_str()),
+			 cw::global_bindings.readable_keyname("NextSolution").c_str()),
 		   NULL,
 		   get_style("Error"));
     }
@@ -1442,9 +1442,9 @@ static void actually_do_package_run()
 	      popup_widget(widgets::dialog_yesno(wrapbox(text_fragment(_("Installing/removing packages requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
 					   arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
 						      "-i")),
-					   transcode(_("Become root")),
+					   cw::util::transcode(_("Become root")),
 					   arg(sigc::ptr_fun(&check_package_trust)),
-					   transcode(_("Don't become root")),
+					   cw::util::transcode(_("Don't become root")),
 					   get_style("Error")));
 	    }
 	}
@@ -1571,9 +1571,9 @@ void do_update_lists()
 	  popup_widget(widgets::dialog_yesno(wrapbox(text_fragment(_("Updating the package lists requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
 				       arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
 						      "-u")),
-				       transcode(_("Become root")),
+				       cw::util::transcode(_("Become root")),
 				       arg(sigc::ptr_fun(&really_do_update_lists)),
-				       transcode(_("Don't become root")),
+				       cw::util::transcode(_("Don't become root")),
 				       get_style("Error")));
 	}
     }
@@ -2052,7 +2052,7 @@ static void handle_dump_resolver_response(const wstring &s)
 {
   if(resman != NULL && resman->resolver_exists())
     {
-      ofstream out(transcode(s).c_str());
+      ofstream out(cw::util::transcode(s).c_str());
 
       if(!out)
 	_error->Errno("dump_resolver", _("Unable to open %ls"), s.c_str());
@@ -2423,7 +2423,7 @@ static void do_setup_columns()
 static void load_options(string base, bool usetheme)
 {
   load_styles(base+"::Styles", usetheme);
-  load_bindings(base+"::Keybindings", &global_bindings, usetheme);
+  load_bindings(base+"::Keybindings", &cw::global_bindings, usetheme);
   load_bindings(base+"::Keybindings::EditLine", widgets::editline::bindings, usetheme);
   load_bindings(base+"::Keybindings::Menu", widgets::menu::bindings, usetheme);
   load_bindings(base+"::Keybindings::Menubar", widgets::menubar::bindings, usetheme);
@@ -2444,7 +2444,7 @@ static widgets::menu_ref add_menu(widgets::menu_info *info, const std::string &n
 
   widgets::menu_ref menu=widgets::menu::create(0, 0, 0, info);
 
-  main_menu->append_item(transcode(name), menu);
+  main_menu->append_item(cw::util::transcode(name), menu);
 
   menu->item_highlighted.connect(sigc::bind(sigc::ptr_fun(do_show_menu_description),
 					    menu_description.weak_ref()));
@@ -2461,13 +2461,13 @@ static void do_update_show_tabs(widgets::multiplex &mp)
 class help_bar:public widgets::label
 {
 protected:
-  help_bar(const wstring &txt, const style &st):widgets::label(txt, st)
+  help_bar(const wstring &txt, const cw::style const style &st):widgets::label(txt, st)
   {
     set_visibility();
   }
 public:
   static
-  ref_ptr<help_bar> create(const wstring &txt, const style &st)
+  ref_ptr<help_bar> create(const wstring &txt, const cw::style const style &st)
   {
     ref_ptr<help_bar> rval(new help_bar(txt, st));
     rval->decref();
@@ -2533,52 +2533,52 @@ void ui_init()
   main_menu->set_subwidget(main_stacked);
   main_stacked->show();
 
-  main_stacked->connect_key_post("QuitProgram", &global_bindings, sigc::ptr_fun(do_quit));
-  main_stacked->connect_key_post("Quit", &global_bindings, sigc::ptr_fun(do_destroy_visible));
+  main_stacked->connect_key_post("QuitProgram", &cw::global_bindings, sigc::ptr_fun(do_quit));
+  main_stacked->connect_key_post("Quit", &cw::global_bindings, sigc::ptr_fun(do_destroy_visible));
   main_stacked->connect_key_post("CycleNext",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_view_next));
   main_stacked->connect_key_post("CyclePrev",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_view_prev));
   main_stacked->connect_key_post("DoInstallRun",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_package_run));
   main_stacked->connect_key_post("UpdatePackageList",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_update_lists));
   main_stacked->connect_key_post("MarkUpgradable",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_mark_upgradable));
   main_stacked->connect_key_post("ForgetNewPackages",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_forget_new));
   main_stacked->connect_key_post("Help",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_help_help));
   main_stacked->connect_key_post("Undo",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::hide_return(undo_undo.make_slot()));
   main_stacked->connect_key_post("NextSolution",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_next_solution));
   main_stacked->connect_key_post("PrevSolution",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_previous_solution));
   main_stacked->connect_key_post("FirstSolution",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_first_solution));
   main_stacked->connect_key_post("LastSolution",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_last_solution));
   main_stacked->connect_key_post("ApplySolution",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_apply_solution));
   main_stacked->connect_key_post("ExamineSolution",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_examine_solution));
   main_stacked->connect_key_post("DumpResolver",
-				 &global_bindings,
+				 &cw::global_bindings,
 				 sigc::ptr_fun(do_dump_resolver));
 
   main_table=widgets::table::create();
@@ -2586,13 +2586,13 @@ void ui_init()
   main_table->show();
 
   // FIXME: highlight the keys.
-  wstring menu_key=global_bindings.readable_keyname("ToggleMenuActive"),
-    help_key=global_bindings.readable_keyname("Help"),
-    quit_key=global_bindings.readable_keyname("Quit"),
-    update_key=global_bindings.readable_keyname("UpdatePackageList"),
-    install_key=global_bindings.readable_keyname("DoInstallRun");
+  wstring menu_key=cw::global_bindings.readable_keyname("ToggleMenuActive"),
+    help_key=cw::global_bindings.readable_keyname("Help"),
+    quit_key=cw::global_bindings.readable_keyname("Quit"),
+    update_key=cw::global_bindings.readable_keyname("UpdatePackageList"),
+    install_key=cw::global_bindings.readable_keyname("DoInstallRun");
 
-  wstring helptext = swsprintf(transcode(_("%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove Pkgs")).c_str(),
+  wstring helptext = swsprintf(cw::util::transcode(_("%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove Pkgs")).c_str(),
 			menu_key.c_str(),
 			help_key.c_str(),
 			quit_key.c_str(),
@@ -2723,8 +2723,8 @@ void add_main_widget(const widgets::widget_ref &w, const std::string &menuref,
 		     const std::string &menudesc,
 		     const std::string &tabdesc)
 {
-  add_main_widget(w, transcode(menuref), transcode(menudesc),
-		  transcode(tabdesc));
+  add_main_widget(w, cw::util::transcode(menuref), cw::util::transcode(menudesc),
+		  cw::util::transcode(tabdesc));
 }
 
 void insert_main_widget(const widgets::widget_ref &w, const std::wstring &menuref,
@@ -2742,8 +2742,8 @@ void insert_main_widget(const widgets::widget_ref &w, const std::string &menuref
 			const std::string &menudesc,
 			const std::string &tabdesc)
 {
-  insert_main_widget(w, transcode(menuref),
-		     transcode(menudesc), transcode(tabdesc));
+  insert_main_widget(w, cw::util::transcode(menuref),
+		     cw::util::transcode(menudesc), cw::util::transcode(tabdesc));
 }
 
 widgets::widget_ref active_main_widget()
@@ -2846,9 +2846,9 @@ gen_download_progress(bool force_noninvasive,
 {
   return gen_download_progress(force_noninvasive,
 			       list_update,
-			       transcode(title),
-			       transcode(longtitle),
-			       transcode(tablabel),
+			       cw::util::transcode(title),
+			       cw::util::transcode(longtitle),
+			       cw::util::transcode(tablabel),
 			       abortslot);
 }
 
@@ -2874,12 +2874,12 @@ void prompt_string(const std::wstring &prompt,
 	e->text_changed.connect(*changed_slot);
 
       e->connect_key("Cancel",
-		     &global_bindings,
+		     &cw::global_bindings,
 		     sigc::mem_fun(e.unsafe_get_ref(), &cwidget::widgets::widget::destroy));
 
       if(cancel_slot)
 	e->connect_key("Cancel",
-		       &global_bindings,
+		       &cw::global_bindings,
 		       *cancel_slot);
 
       main_status_multiplex->add_visible_widget(e, true);
@@ -2900,7 +2900,7 @@ void prompt_string(const std::string &prompt,
 		   slotarg<sigc::slot1<void, wstring> > changed_slot,
 		   widgets::editline::history_list *history)
 {
-  prompt_string(transcode(prompt), transcode(text),
+  prompt_string(cw::util::transcode(prompt), cw::util::transcode(text),
 		slot, cancel_slot, changed_slot, history);
 }
 
@@ -2941,7 +2941,7 @@ void prompt_yesno(const std::wstring &prompt,
       nostring+=_("no_key")[0];
       string yesnostring=deflt?yesstring+nostring:nostring+yesstring;
 
-      widgets::statuschoice_ref c=widgets::statuschoice::create(prompt, transcode(yesnostring));
+      widgets::statuschoice_ref c=widgets::statuschoice::create(prompt, cw::util::transcode(yesnostring));
       c->chosen.connect(sigc::bind(sigc::ptr_fun(&do_prompt_yesno),
 				   deflt,
 				   yesslot,
@@ -2976,7 +2976,7 @@ void prompt_yesno(const std::string &prompt,
 		  slot0arg yesslot,
 		  slot0arg noslot)
 {
-  return prompt_yesno(transcode(prompt), deflt, yesslot, noslot);
+  return prompt_yesno(cw::util::transcode(prompt), deflt, yesslot, noslot);
 }
 
 class self_destructing_layout : public widgets::text_layout
@@ -2991,7 +2991,7 @@ protected:
   }
 
 public:
-  bool handle_key(const key &k)
+  bool handle_key(const cwi::key &k)
   {
     if(!widgets::text_layout::focus_me() ||
        !widgets::text_layout::handle_key(k))
@@ -3025,7 +3025,7 @@ public:
 
 void show_message(fragment *msg,
 		  slot0arg okslot,
-		  const style &st)
+		  const cw::style const style &st)
 {
   msg=wrapbox(msg);
   if(aptcfg->FindB(PACKAGE "::UI::Minibuf-Prompts"))
@@ -3044,14 +3044,14 @@ void show_message(fragment *msg,
 
 void show_message(const std::string &msg,
 		  slot0arg okslot,
-		  const style &st)
+		  const cw::style const style &st)
 {
   show_message(text_fragment(msg), okslot, st);
 }
 
 void show_message(const std::wstring &msg,
 		  slot0arg okslot,
-		  const style &st)
+		  const cw::style const style &st)
 {
   show_message(text_fragment(msg), okslot, st);
 }

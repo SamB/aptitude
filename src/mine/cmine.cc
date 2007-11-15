@@ -48,9 +48,8 @@
 #define MINE_LRCORNER L'+'
 #endif
 
-using cwidget::get_style;
-using cwidget::util::transcode;
 using namespace std;
+namespace cw = cwidget;
 namespace dialogs = cwidget::dialogs;
 namespace toplevel = cwidget::toplevel;
 namespace widgets = cwidget::widgets;
@@ -108,13 +107,13 @@ void cmine::paint_header(const cwidget::style &st)
       int width,height;
       getmaxyx(height,width);
 
-      wstring header=transcode(_("Minesweeper"));
+      wstring header=cw::util::transcode(_("Minesweeper"));
       wchar_t buf[200];
 
       if(board->get_state()==mine_board::playing)
 	swprintf(buf,
 		 sizeof(buf),
-		 transcode(_("%i/%i mines  %d %s")).c_str(),
+		 cw::util::transcode(_("%i/%i mines  %d %s")).c_str(),
 		 board->get_nummines()-board->get_numflags(),
 		 board->get_nummines(),
 		 (int) board->get_duration(),
@@ -122,7 +121,7 @@ void cmine::paint_header(const cwidget::style &st)
       else
 	swprintf(buf,
 		 sizeof(buf),
-		 transcode(_("    %s in %d %s")).c_str(),
+		 cw::util::transcode(_("    %s in %d %s")).c_str(),
 		 board->get_state()==mine_board::won?_("Won"):_("Lost"),
 		 (int) board->get_duration(),
 		 board->get_duration()==1?_("second"):_("seconds"));
@@ -150,7 +149,7 @@ void cmine::paint_header(const cwidget::style &st)
       display_header(header, st+get_style("Header"));
     }
   else
-    display_header(transcode(_("Minesweeper")),
+    display_header(cw::util::transcode(_("Minesweeper")),
 		   st+get_style("Header"));
 }
 
@@ -158,7 +157,7 @@ void cmine::do_load_game(wstring ws)
 {
   widgets::widget_ref tmpref(this);
 
-  string s=transcode(ws);
+  string s=cw::util::transcode(ws);
 
   if(s!="")
     {
@@ -169,7 +168,7 @@ void cmine::do_load_game(wstring ws)
 
 	  snprintf(buf, 512, _("Could not open file \"%s\""), s.c_str());
 
-	  popup_widget(dialogs::ok(transcode(buf), NULL,
+	  popup_widget(dialogs::ok(cw::util::transcode(buf), NULL,
 				   get_style("Error")));
 	}
       else
@@ -185,7 +184,7 @@ void cmine::do_load_game(wstring ws)
 	      snprintf(buf, 512, _("Could not load game from %s"),
 		       s.c_str());
 
-	      popup_widget(dialogs::ok(transcode(buf), NULL,
+	      popup_widget(dialogs::ok(cw::util::transcode(buf), NULL,
 				       get_style("Error")));
 	      delete brd;
 	    }
@@ -202,7 +201,7 @@ void cmine::do_save_game(wstring ws)
 {
   widgets::widget_ref tmpref(this);
 
-  string s=transcode(ws);
+  string s=cw::util::transcode(ws);
 
   if(s!="")
     {
@@ -213,7 +212,7 @@ void cmine::do_save_game(wstring ws)
 
 	  snprintf(buf, 512, _("Could not open file \"%s\""), s.c_str());
 
-	  popup_widget(dialogs::ok(transcode(buf), NULL,
+	  popup_widget(dialogs::ok(cw::util::transcode(buf), NULL,
 				   get_style("Error")));
 	}
       else
@@ -249,7 +248,7 @@ void cmine::do_start_custom_game(widgets::widget &w_bare,
       //
       //
       // That's ok, they'll do that anyway in a couple releases ;-)
-      popup_widget(dialogs::ok(transcode(_("The board height must be a positive integer")),
+      popup_widget(dialogs::ok(cw::util::transcode(_("The board height must be a positive integer")),
 			       NULL,
 			       get_style("Error")));
       return;
@@ -261,7 +260,7 @@ void cmine::do_start_custom_game(widgets::widget &w_bare,
 
   if(s.c_str()[0]=='\0' || *end!='\0' || width<1)
     {
-      popup_widget(dialogs::ok(transcode(_("The board width must be a positive integer")),
+      popup_widget(dialogs::ok(cw::util::transcode(_("The board width must be a positive integer")),
 			       NULL,
 			       get_style("Error")));
       return;
@@ -273,7 +272,7 @@ void cmine::do_start_custom_game(widgets::widget &w_bare,
 
   if(s.c_str()[0]=='\0' || *end!='\0' || mines<1)
     {
-      popup_widget(dialogs::ok(transcode(_("Invalid mine count; please enter a positive integer")),
+      popup_widget(dialogs::ok(cw::util::transcode(_("Invalid mine count; please enter a positive integer")),
 			       NULL,
 			       get_style("Error")));
       return;
@@ -374,12 +373,12 @@ void cmine::do_new_game()
 
   using cwidget::config::global_bindings;
 
-  table->connect_key_post("Confirm", &global_bindings, okbutton->pressed.make_slot());
+  table->connect_key_post("Confirm", &cw::global_bindings, okbutton->pressed.make_slot());
 
-  easybutton->connect_key("Confirm", &global_bindings, okbutton->pressed.make_slot());
-  mediumbutton->connect_key("Confirm", &global_bindings, okbutton->pressed.make_slot());
-  hardbutton->connect_key("Confirm", &global_bindings, okbutton->pressed.make_slot());
-  custombutton->connect_key("Confirm", &global_bindings, okbutton->pressed.make_slot());
+  easybutton->connect_key("Confirm", &cw::global_bindings, okbutton->pressed.make_slot());
+  mediumbutton->connect_key("Confirm", &cw::global_bindings, okbutton->pressed.make_slot());
+  hardbutton->connect_key("Confirm", &cw::global_bindings, okbutton->pressed.make_slot());
+  custombutton->connect_key("Confirm", &cw::global_bindings, okbutton->pressed.make_slot());
 
   widgets::radiogroup *grp = new widgets::radiogroup;
   grp->add_button(easybutton, 0);
@@ -437,7 +436,7 @@ void cmine::do_continue_new_game(bool start,
 	do_custom_game();
 	break;
       default:
-	popup_widget(dialogs::ok(transcode("Internal error: execution reached an impossible point"),
+	popup_widget(dialogs::ok(cw::util::transcode("Internal error: execution reached an impossible point"),
 				 NULL,
 				 get_style("Error")));
 	break;
@@ -467,10 +466,10 @@ void cmine::checkend()
 
   if(board->get_state()==mine_board::won)
     // "You hold up the Amulet of Yendor.  An invisible choir sings..."
-    popup_widget(dialogs::ok(transcode(_("You have won."))));
+    popup_widget(dialogs::ok(cw::util::transcode(_("You have won."))));
   else if(board->get_state()==mine_board::lost)
     {
-      popup_widget(dialogs::ok(transcode(_("You lose!"))));
+      popup_widget(dialogs::ok(cw::util::transcode(_("You lose!"))));
 #if 0
       // (messages in reverse order because the minibuf is a stack by default..
       // I could use the special feature of sticking them at the end, but I
@@ -951,11 +950,11 @@ void cmine::init_bindings()
   using cwidget::config::key;
   using cwidget::config::keybindings;
 
-  global_bindings.set("MineUncoverSweepSquare", key(KEY_ENTER, true));
-  global_bindings.set("MineFlagSquare", key(L'f', false));
-  global_bindings.set("MineNewGame", key(L'n', false));
-  global_bindings.set("MineSaveGame", key(L'S', false));
-  global_bindings.set("MineLoadGame", key(L'L', false));
+  cw::global_bindings.set("MineUncoverSweepSquare", key(KEY_ENTER, true));
+  cw::global_bindings.set("MineFlagSquare", key(L'f', false));
+  cw::global_bindings.set("MineNewGame", key(L'n', false));
+  cw::global_bindings.set("MineSaveGame", key(L'S', false));
+  cw::global_bindings.set("MineLoadGame", key(L'L', false));
 
-  bindings = new keybindings(&global_bindings);
+  bindings = new keybindings(&cw::global_bindings);
 }

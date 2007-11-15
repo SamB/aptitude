@@ -483,7 +483,7 @@ style pkg_ver_item::get_highlighted_style()
 
 pkg_ver_item::pkg_ver_item(const pkgCache::VerIterator &_version, pkg_signal *_sig,
 			   bool _show_pkg_name)
-  :version(_version), version_name(transcode(version.VerStr(), "ASCII")),
+  :version(_version), version_name(cw::util::transcode(version.VerStr(), "ASCII")),
    show_pkg_name(_show_pkg_name), sig(_sig)
 {
   highlighted_changed.connect(sigc::mem_fun(this, &pkg_ver_item::do_highlighted_changed));
@@ -525,7 +525,7 @@ style pkg_ver_item::ver_style(pkgCache::VerIterator version,
 }
 
 void pkg_ver_item::paint(widgets::tree *win, int y, bool hierarchical,
-			 const style &st)
+			 const cw::style const style &st)
 {
   int basex=hierarchical?2*get_depth():0;
   int width, height;
@@ -678,7 +678,7 @@ widgets::treeitem *pkg_ver_screen::setup_new_root(const pkgCache::PkgIterator &p
   return newtree;
 }
 
-bool pkg_ver_item::dispatch_key(const key &k, widgets::tree *owner)
+bool pkg_ver_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 {
   if(bindings->key_matches(k, "Dependencies"))
     {

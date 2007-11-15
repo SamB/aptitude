@@ -64,7 +64,7 @@ class pkg_ver_item:public pkg_tree_node
 {
   pkgCache::VerIterator version;
   /** Stores the name of this version to avoid problems that can arise
-   *  with transcode().
+   *  with cwidget::util::transcode().
    */
   std::wstring version_name;
 

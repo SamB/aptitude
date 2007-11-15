@@ -53,9 +53,9 @@ class hier_editor : public cwidget::widgets::tree
 
   void handle_reload();
 protected:
-  virtual bool handle_key(const key &k);
+  virtual bool handle_key(const cwidget::key &k);
 
-  void paint(const style &st);
+  void paint(const cwidget::style const style &st);
 
   hier_editor();
 public:

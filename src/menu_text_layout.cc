@@ -34,7 +34,7 @@ bool menu_text_layout::find_search_enabled()
 
 bool menu_text_layout::find_search()
 {
-  prompt_string(transcode(_("Search for: ")),
+  prompt_string(cw::util::transcode(_("Search for: ")),
 		last_search,
 		arg(sigc::mem_fun(this, &menu_text_layout::do_find_search)),
 		NULL,
@@ -67,7 +67,7 @@ bool menu_text_layout::find_search_back_enabled()
 bool menu_text_layout::find_search_back()
 {
   prompt_string(_("Search backwards for: "),
-		transcode(last_search),
+		cw::util::transcode(last_search),
 		arg(sigc::mem_fun(this, &menu_text_layout::do_find_search_back)),
 		NULL,
 		NULL,
@@ -123,15 +123,15 @@ bool menu_text_layout::find_repeat_search_back()
 }
 
 
-bool menu_text_layout::handle_key(const key &k)
+bool menu_text_layout::handle_key(const cwi::key &k)
 {
-  if(global_bindings.key_matches(k, "Search"))
+  if(cw::global_bindings.key_matches(k, "Search"))
     find_search();
-  else if(global_bindings.key_matches(k, "SearchBack"))
+  else if(cw::global_bindings.key_matches(k, "SearchBack"))
     find_search_back();
-  else if(global_bindings.key_matches(k, "ReSearch"))
+  else if(cw::global_bindings.key_matches(k, "ReSearch"))
     find_research();
-  else if(global_bindings.key_matches(k, "RepeatSearchBack"))
+  else if(cw::global_bindings.key_matches(k, "RepeatSearchBack"))
     find_repeat_search_back();
   else
     return widgets::text_layout::handle_key(k);

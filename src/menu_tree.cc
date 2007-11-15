@@ -205,7 +205,7 @@ bool menu_tree::find_search_enabled()
 
 bool menu_tree::find_search()
 {
-  prompt_string(transcode(_("Search for: ")),
+  prompt_string(cw::util::transcode(_("Search for: ")),
 		last_search_term,
 		arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_search), false)),
 		arg(sigc::mem_fun(*this, &menu_tree::do_cancel_incsearch)),
@@ -222,7 +222,7 @@ bool menu_tree::find_search_back_enabled()
 
 bool menu_tree::find_search_back()
 {
-  prompt_string(transcode(_("Search backwards for: ")),
+  prompt_string(cw::util::transcode(_("Search backwards for: ")),
 		last_search_term,
 		arg(sigc::bind(sigc::mem_fun(*this, &menu_tree::do_search), true)),
 		arg(sigc::mem_fun(*this, &menu_tree::do_cancel_incsearch)),
@@ -323,7 +323,7 @@ void menu_tree::do_search(std::wstring s, bool backward)
     {
       delete last_search_matcher;
       last_search_term=s;
-      last_search_matcher=parse_pattern(transcode(s));
+      last_search_matcher=parse_pattern(cw::util::transcode(s));
     }
 
   if(doing_incsearch)
@@ -356,7 +356,7 @@ void menu_tree::do_incsearch(std::wstring s, bool backward)
       pre_incsearch_selected=get_selection();
     }
 
-  pkg_matcher *m=parse_pattern(transcode(s), false, false);
+  pkg_matcher *m=parse_pattern(cw::util::transcode(s), false, false);
 
   set_selection(pre_incsearch_selected);
 
@@ -388,7 +388,7 @@ void menu_tree::reset_incsearch()
   pre_incsearch_selected=get_end();
 }
 
-bool menu_tree::handle_key(const key &k)
+bool menu_tree::handle_key(const cwi::key &k)
 {
   // ick -- but having our own bindings is also ugly. hm.
   if(pkg_tree::bindings->key_matches(k, "Search"))

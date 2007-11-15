@@ -68,7 +68,7 @@ pkg_tree::pkg_tree(const std::string &def_grouping,
    limitstr(def_limit)
 {
   if(!limitstr.empty())
-    limit=parse_pattern(transcode(limitstr));
+    limit=parse_pattern(cw::util::transcode(limitstr));
 }
 
 pkg_tree::pkg_tree(const std::string &def_grouping,
@@ -78,10 +78,10 @@ pkg_tree::pkg_tree(const std::string &def_grouping,
    sorting(parse_sortpolicy(aptcfg->Find(PACKAGE "::UI::Default-Sorting",
 					 "name"))),
    limit(NULL),
-   limitstr(transcode(aptcfg->Find(PACKAGE "::Pkg-Display-Limit", "")))
+   limitstr(cw::util::transcode(aptcfg->Find(PACKAGE "::Pkg-Display-Limit", "")))
 {
   if(!limitstr.empty())
-    limit=parse_pattern(transcode(limitstr));
+    limit=parse_pattern(cw::util::transcode(limitstr));
 }
 
 void pkg_tree::handle_cache_close()
@@ -112,7 +112,7 @@ void pkg_tree::set_grouping(pkg_grouppolicy_factory *_grouping)
 void pkg_tree::set_grouping(const std::wstring &s)
 {
   // FIXME: push wstrings down into the parsing code.
-  groupingstr=transcode(s);
+  groupingstr=cw::util::transcode(s);
 
   pkg_grouppolicy_factory *grp=parse_grouppolicy(groupingstr);
 
@@ -134,7 +134,7 @@ void pkg_tree::set_sorting(pkg_sortpolicy *_sorting)
 void pkg_tree::set_sorting(const std::wstring &s)
 {
   // FIXME: push wstrings down into the parsing code.
-  pkg_sortpolicy *policy=parse_sortpolicy(transcode(s));
+  pkg_sortpolicy *policy=parse_sortpolicy(cw::util::transcode(s));
 
   if(policy)
     set_sorting(policy);
@@ -163,7 +163,7 @@ bool pkg_tree::build_tree(OpProgress &progress)
     {
       bool empty=true, cache_empty=true;
 
-      pkg_subtree *mytree=new pkg_subtree(transcode(_("All Packages")), true);
+      pkg_subtree *mytree=new pkg_subtree(cw::util::transcode(_("All Packages")), true);
       pkg_grouppolicy *grouper=grouping->instantiate(&selected_signal,
 						     &selected_desc_signal);
 
@@ -224,7 +224,7 @@ void pkg_tree::set_limit(const std::wstring &_limit)
   pkg_matcher *old_limit=limit;
   std::wstring old_limitstr=limitstr;
 
-  pkg_matcher *new_limit=parse_pattern(transcode(_limit));
+  pkg_matcher *new_limit=parse_pattern(cw::util::transcode(_limit));
   if(_limit.empty() || new_limit)
     {
       limit=new_limit;
@@ -234,7 +234,7 @@ void pkg_tree::set_limit(const std::wstring &_limit)
 	{
 	  wchar_t buf[512];
 
-	  swprintf(buf, 512, transcode(_("No packages matched the pattern \"%ls\".")).c_str(),
+	  swprintf(buf, 512, cw::util::transcode(_("No packages matched the pattern \"%ls\".")).c_str(),
 		   _limit.c_str());
 
 	  show_message(buf);
@@ -256,7 +256,7 @@ bool pkg_tree::find_limit_enabled()
 
 bool pkg_tree::find_limit()
 {
-  prompt_string(transcode(_("Enter the new package tree limit: ")),
+  prompt_string(cw::util::transcode(_("Enter the new package tree limit: ")),
 		limitstr,
 		arg(sigc::mem_fun(*this, &pkg_tree::set_limit)),
 		NULL,
@@ -285,7 +285,7 @@ bool pkg_tree::find_reset_limit()
   return true;
 }
 
-bool pkg_tree::handle_key(const key &k)
+bool pkg_tree::handle_key(const cwi::key &k)
 {
   if(bindings->key_matches(k, "ChangePkgTreeLimit"))
     find_limit();

@@ -134,7 +134,7 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
       if(!ver.ProvidesList().end())
 	{
 	  snprintf(buf, 256, _("Package names provided by %s"), pkg.Name());
-	  pkg_subtree *prvtree=new pkg_subtree(transcode(buf));
+	  pkg_subtree *prvtree=new pkg_subtree(cw::util::transcode(buf));
 
 	  for(pkgCache::PrvIterator prv=ver.ProvidesList(); !prv.end(); ++prv)
 	    prvtree->add_child(new pkg_item(prv.ParentPkg(), sig));
@@ -144,11 +144,11 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
     }
 
   snprintf(buf, 256, _("Packages which depend on %s"), pkg.Name());
-  pkg_subtree *revtree=new pkg_subtree(transcode(buf));
+  pkg_subtree *revtree=new pkg_subtree(cw::util::transcode(buf));
   setup_package_deps<pkg_subtree>(pkg, ver, revtree, sig, true);
   tree->add_child(revtree);
 
-  pkg_vertree_generic *newtree=new pkg_vertree_generic(transcode(_("Versions")), true);
+  pkg_vertree_generic *newtree=new pkg_vertree_generic(cw::util::transcode(_("Versions")), true);
   setup_package_versions(pkg, newtree, sig);
   tree->add_child(newtree);
 }

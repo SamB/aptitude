@@ -52,7 +52,7 @@ class pkg_changelog_screen : public widgets::file_pager, public menu_redirect
   {
     last_search_forwards = true;
 
-    prompt_string(transcode(_("Search for: ")),
+    prompt_string(cw::util::transcode(_("Search for: ")),
 		  get_last_search(),
 		  arg(sigc::mem_fun(*this, &widgets::pager::search_for)),
 		  NULL,
@@ -64,7 +64,7 @@ class pkg_changelog_screen : public widgets::file_pager, public menu_redirect
   {
     last_search_forwards = false;
 
-    prompt_string(transcode(_("Search backwards for: ")),
+    prompt_string(cw::util::transcode(_("Search backwards for: ")),
 		  get_last_search(),
 		  arg(sigc::mem_fun(*this, &widgets::pager::search_back_for)),
 		  NULL,
@@ -94,13 +94,13 @@ protected:
 		       int width = 0, int height = 0):
     widgets::file_pager(filename.get_name()), last_search_forwards(true)
   {
-    connect_key("Search", &global_bindings,
+    connect_key("Search", &cw::global_bindings,
 		sigc::mem_fun(*this, &pkg_changelog_screen::do_search));
-    connect_key("SearchBack", &global_bindings,
+    connect_key("SearchBack", &cw::global_bindings,
 		sigc::mem_fun(*this, &pkg_changelog_screen::do_search_back));
-    connect_key("ReSearch", &global_bindings,
+    connect_key("ReSearch", &cw::global_bindings,
 		sigc::mem_fun(*this, &pkg_changelog_screen::do_repeat_search));
-    connect_key("RepeatSearchBack", &global_bindings,
+    connect_key("RepeatSearchBack", &cw::global_bindings,
 		sigc::mem_fun(*this, &pkg_changelog_screen::do_repeat_search_back));
   }
 

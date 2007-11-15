@@ -652,7 +652,7 @@ class pattern_policy_parser : public group_policy_parser
 		  }
 	      }
 
-	    subgroups.push_back(pkg_grouppolicy_matchers_factory::match_pair(matcher.release(), transcode(format), passthrough));
+	    subgroups.push_back(pkg_grouppolicy_matchers_factory::match_pair(matcher.release(), cw::util::transcode(format), passthrough));
 
 	    if(begin != end && *begin == ',')
 	      ++begin;

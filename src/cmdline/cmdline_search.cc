@@ -47,7 +47,7 @@ public:
 
   wstring get_param(int n)
   {
-    return transcode(r->group(n));
+    return cw::util::transcode(r->group(n));
   }
 };
 
@@ -97,7 +97,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
 
   wstring wdisplay_format;
 
-  if(!transcode(display_format.c_str(), wdisplay_format))
+  if(!cw::util::transcode(display_format.c_str(), wdisplay_format))
     {
       _error->DumpErrors();
       fprintf(stderr, _("iconv of %s failed.\n"), display_format.c_str());

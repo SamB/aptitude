@@ -91,7 +91,7 @@ static string reason_string_list(set<reason> &reasons)
 	}
 
       string dep_type = const_cast<pkgCache::DepIterator &>(why->dep).DepType();
-      s += transcode(transcode(dep_type).substr(0, 1));
+      s += cw::util::transcode(cw::util::transcode(dep_type).substr(0, 1));
       s+=": ";
       s+=why->pkg.Name();
     }

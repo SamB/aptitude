@@ -37,12 +37,12 @@ keybindings *pkg_tree_node::bindings=NULL;
 
 void pkg_tree_node::init_bindings()
 {
-  bindings=new keybindings(&global_bindings);
+  bindings=new keybindings(&cw::global_bindings);
 }
 
 // FIXME: add a do_action() command that takes a function pointer and does all
 // the extra junk below.
-bool pkg_tree_node::dispatch_key(const key &k, widgets::tree *owner)
+bool pkg_tree_node::dispatch_key(const cwi::key &k, widgets::tree *owner)
 {
   undo_group *grp=new apt_undo_group;
 

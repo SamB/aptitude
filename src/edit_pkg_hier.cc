@@ -50,15 +50,15 @@ class widgets::hier_editor::widgets::hier_item:public sigc::trackable, public wi
   wstring group_name;
 public:
   widgets::hier_item(pkg_hier::group *_group, pkg_hier::item *_item)
-    :widgets::treeitem(true), group(_group), group_name(transcode(group->name, "ASCII"))
+    :widgets::treeitem(true), group(_group), group_name(cw::util::transcode(group->name, "ASCII"))
   {
     set_item(_item);
   }
 
-  bool dispatch_key(const key &k, widgets::tree *owner)
+  bool dispatch_key(const cwi::key &k, widgets::tree *owner)
   {
-    if(global_bindings.key_matches(k, "PushButton") ||
-       global_bindings.key_matches(k, "Confirm"))
+    if(cw::global_bindings.key_matches(k, "PushButton") ||
+       cw::global_bindings.key_matches(k, "Confirm"))
       {
 	selected=!selected;
 	toplevel::update();
@@ -81,7 +81,7 @@ public:
       widgets::treeitem::dispatch_mouse(id, x, bstate, owner);
   }
 
-  void paint(widgets::tree *win, int y, bool hierarchical, const style &st)
+  void paint(widgets::tree *win, int y, bool hierarchical, const cw::style const style &st)
   {
     string::size_type width=win->get_width();
     string todisp=" ";
@@ -99,7 +99,7 @@ public:
     while(todisp.size()<width)
       todisp+=" ";
 
-    win->mvaddnstr(y, 0, transcode(todisp, "ASCII"), width);
+    win->mvaddnstr(y, 0, cw::util::transcode(todisp, "ASCII"), width);
   }
 
   const wchar_t *tag()
@@ -143,7 +143,7 @@ public:
   silly_subtree(bool expanded, const wstring &_txt)
     :widgets::subtree_generic(expanded), txt(_txt) {}
 
-  void paint(widgets::tree *win, int y, bool hierarchical, const style &st)
+  void paint(widgets::tree *win, int y, bool hierarchical, const cw::style const style &st)
   {
     widgets::subtree_generic::paint(win, y, hierarchical, txt);
   }
@@ -178,7 +178,7 @@ bool widgets::hier_editor::get_cursorvisible()
     return true;
 }
 
-void widgets::hier_editor::paint(const style &st)
+void widgets::hier_editor::paint(const cw::style const style &st)
 {
   if(!item)
     mvaddnstr(0, 0, _("No hierarchy information to edit"), get_width());
@@ -319,9 +319,9 @@ void widgets::hier_editor::save_hier(string file)
   fclose(f);
 }
 
-bool widgets::hier_editor::handle_key(const key &k)
+bool widgets::hier_editor::handle_key(const cwi::key &k)
 {
-  if(global_bindings.key_matches(k, "SaveHier"))
+  if(cw::global_bindings.key_matches(k, "SaveHier"))
     {
       string homedir = get_homedir();
       string cfgfile;
@@ -337,7 +337,7 @@ bool widgets::hier_editor::handle_key(const key &k)
 	cfgfile = homedir + "/.aptitude/function_pkgs";
       save_hier(cfgfile);
     }
-  else if(global_bindings.key_matches(k, "Quit"))
+  else if(cw::global_bindings.key_matches(k, "Quit"))
     {
       if(item)
 	{
@@ -350,7 +350,7 @@ bool widgets::hier_editor::handle_key(const key &k)
 
       hide();
     }
-  else if(global_bindings.key_matches(k, "Commit"))
+  else if(cw::global_bindings.key_matches(k, "Commit"))
     {
       if(item)
 	{
@@ -363,7 +363,7 @@ bool widgets::hier_editor::handle_key(const key &k)
 
       commit_changes();
     }
-  else if(global_bindings.key_matches(k, "Abort"))
+  else if(cw::global_bindings.key_matches(k, "Abort"))
     hide();
   else
     return widgets::tree::handle_key(k);

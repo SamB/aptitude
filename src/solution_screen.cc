@@ -118,7 +118,7 @@ public:
   }
 
   void paint(widgets::tree *win, int y, bool hierarchical,
-	     const style &st)
+	     const cw::style const style &st)
   {
     widgets::subtree<widgets::treeitem>::paint(win, y, hierarchical, my_label);
   }
@@ -146,7 +146,7 @@ widgets::subtree_generic *make_dep_solvers_tree(const aptitude_resolver_dep &d)
   widgets::staticitem *conflict_item = new widgets::staticitem(conflict_text(real_dep, prv), L"");
   root->add_child(conflict_item);
 
-  widgets::subtree_generic *resolvers = new label_tree(transcode(_("The following actions will resolve this dependency:")), true, false);
+  widgets::subtree_generic *resolvers = new label_tree(cw::util::transcode(_("The following actions will resolve this dependency:")), true, false);
 
   root->add_child(resolvers);
 
@@ -232,7 +232,7 @@ widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 
   if(!remove_actions.empty())
     {
-      widgets::subtree_generic *remove_tree = new label_tree(transcode(_("Remove the following packages:")));
+      widgets::subtree_generic *remove_tree = new label_tree(cw::util::transcode(_("Remove the following packages:")));
 
       for(vector<aptitude_solution::action>::const_iterator i = remove_actions.begin();
 	  i != remove_actions.end(); ++i)
@@ -243,7 +243,7 @@ widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 
   if(!keep_actions.empty())
     {
-      widgets::subtree_generic *keep_tree = new label_tree(transcode(_("Keep the following packages at their current version:")));
+      widgets::subtree_generic *keep_tree = new label_tree(cw::util::transcode(_("Keep the following packages at their current version:")));
 
       for(vector<aptitude_solution::action>::const_iterator i = keep_actions.begin();
 	  i != keep_actions.end(); ++i)
@@ -254,7 +254,7 @@ widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 
   if(!install_actions.empty())
     {
-      widgets::subtree_generic *install_tree = new label_tree(transcode(_("Install the following packages:")));
+      widgets::subtree_generic *install_tree = new label_tree(cw::util::transcode(_("Install the following packages:")));
 
       for(vector<aptitude_solution::action>::const_iterator i = install_actions.begin();
 	  i != install_actions.end(); ++i)
@@ -265,7 +265,7 @@ widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 
   if(!upgrade_actions.empty())
     {
-      widgets::subtree_generic *upgrade_tree = new label_tree(transcode(_("Upgrade the following packages:")));
+      widgets::subtree_generic *upgrade_tree = new label_tree(cw::util::transcode(_("Upgrade the following packages:")));
 
       for(vector<aptitude_solution::action>::const_iterator i = upgrade_actions.begin();
 	  i != upgrade_actions.end(); ++i)
@@ -276,7 +276,7 @@ widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 
   if(!downgrade_actions.empty())
     {
-      widgets::subtree_generic *downgrade_tree = new label_tree(transcode(_("Downgrade the following packages:")));
+      widgets::subtree_generic *downgrade_tree = new label_tree(cw::util::transcode(_("Downgrade the following packages:")));
 
       for(vector<aptitude_solution::action>::const_iterator i = downgrade_actions.begin();
 	  i != downgrade_actions.end(); ++i)
@@ -289,7 +289,7 @@ widgets::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 
   if(!unresolved.empty())
     {
-      widgets::subtree_generic *unresolved_tree = new label_tree(transcode(_("Leave the following recommendations unresolved:")));
+      widgets::subtree_generic *unresolved_tree = new label_tree(cw::util::transcode(_("Leave the following recommendations unresolved:")));
 
       for(imm::set<aptitude_universe::dep>::const_iterator i = unresolved.begin();
 	  i != unresolved.end(); ++i)
@@ -421,11 +421,11 @@ protected:
     toplevel::post_event(new slot_event(sigc::mem_fun(this, &solution_examiner::update)));
   }
 
-  bool handle_key(const key &k)
+  bool handle_key(const cwi::key &k)
   {
     widgets::widget_ref tmpref(this);
 
-    if(global_bindings.key_matches(k, "CycleOrder"))
+    if(cw::global_bindings.key_matches(k, "CycleOrder"))
       cycle_forward();
     else
       return widgets::multiplex::handle_key(k);
@@ -448,7 +448,7 @@ public:
     return rval;
   }
 
-  void paint(const style &st)
+  void paint(const cw::style const style &st)
   {
     if(apt_cache_file == NULL)
       update();
@@ -462,14 +462,14 @@ public:
 
     if(!apt_cache_file)
       {
-	set_static_root(transcode(_("The package cache is not available.")));
+	set_static_root(cw::util::transcode(_("The package cache is not available.")));
 	set_active_dep(aptitude_resolver_dep());
 	return;
       }
 
     if(!resman->resolver_exists())
       {
-	set_static_root(transcode(_("No broken packages.")));
+	set_static_root(cw::util::transcode(_("No broken packages.")));
 	set_short_description(fragf(""));
 	set_active_dep(aptitude_resolver_dep());
 	return;
@@ -485,7 +485,7 @@ public:
 
     if(state.solutions_exhausted && state.generated_solutions == 0)
       {
-	set_static_root(transcode(_("No resolution found.")));
+	set_static_root(cw::util::transcode(_("No resolution found.")));
 	last_sol.nullify();
 	return;
       }
@@ -494,16 +494,16 @@ public:
       {
 	if(state.background_thread_aborted)
 	  {
-	    set_static_root(transcode(state.background_thread_abort_msg));
+	    set_static_root(cw::util::transcode(state.background_thread_abort_msg));
 	    last_sol.nullify();
 	    return;
 	  }
 
-	wstring generation_info = swsprintf(transcode(_("open: %d; closed: %d; defer: %d; conflict: %d")).c_str(),
+	wstring generation_info = swsprintf(cw::util::transcode(_("open: %d; closed: %d; defer: %d; conflict: %d")).c_str(),
 					    state.open_size, state.closed_size,
 					    state.deferred_size, state.conflicts_size);
 
-	wstring msg = transcode(_("Resolving dependencies..."));
+	wstring msg = cw::util::transcode(_("Resolving dependencies..."));
 
 	widgets::subtree_generic *sol_root = new label_tree(msg);
 	sol_root->add_child(new widgets::layout_item(hardwrapbox(text_fragment(generation_info))));
@@ -526,7 +526,7 @@ public:
     last_sol = sol;
 
     if(sol.get_actions().empty())
-      set_static_root(transcode(_("Internal error: unexpected null solution.")));
+      set_static_root(cw::util::transcode(_("Internal error: unexpected null solution.")));
     else
       {
 	solution_tree->set_root(make_solution_tree(sol, set_short_description, set_active_dep));
@@ -577,7 +577,7 @@ widgets::widget_ref make_solution_screen()
   create_menu_bindings(info_tree.unsafe_get_ref(), info_tree);
 
 
-  info_tree->connect_key("ShowHideDescription", &global_bindings,
+  info_tree->connect_key("ShowHideDescription", &cw::global_bindings,
 			 sigc::mem_fun(info_tree.unsafe_get_ref(),
 				       &cwidget::widgets::widget::toggle_visible));
 

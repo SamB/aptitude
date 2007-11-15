@@ -60,7 +60,7 @@ class download_tree:public cwidget::widgets::subtree_generic
 public:
   download_tree():cwidget::widgets::subtree_generic(true) {}
 
-  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const style &style)
+  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const cwidget::style &style)
   {cwidget::widgets::subtree_generic::paint(win, y, hierarchical, L"ERROR: SHOULD NOT APPEAR");}
   const wchar_t * tag() {return L"download tree";}
   const wchar_t * label() {return L"download tree";}
@@ -95,7 +95,7 @@ class download_screen:public cwidget::widgets::tree, public pkgAcquireStatus
   }
 
 protected:
-  bool handle_key(const key &k);
+  bool handle_key(const cwidget::key &k);
 
 public:
   download_screen():prev(NULL),finished(false),cancelled(false) {contents=new download_tree; set_root(contents);}

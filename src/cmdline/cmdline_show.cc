@@ -42,7 +42,7 @@ ostream &operator<<(ostream &out, const cwidget::fragment_contents &contents)
       for(cwidget::fragment_line::const_iterator j=i->begin(); j!=i->end(); ++j)
 	s.push_back((*j).ch);
 
-      out << transcode(s) << endl;
+      out << cw::util::transcode(s) << endl;
     }
 
   return out;

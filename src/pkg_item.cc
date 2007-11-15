@@ -58,7 +58,7 @@ static void try_delete_essential(wstring s,
 				 const pkgCache::PkgIterator pkg,
 				 bool purge)
 {
-  if(s==transcode(_(confirm_str)))
+  if(s==cw::util::transcode(_(confirm_str)))
     {
       undo_group *grp=new apt_undo_group;
 
@@ -300,7 +300,7 @@ style pkg_item::pkg_style(pkgCache::PkgIterator package, bool highlighted)
     }
 }
 
-void pkg_item::paint(widgets::tree *win, int y, bool hierarchical, const style &st)
+void pkg_item::paint(widgets::tree *win, int y, bool hierarchical, const cw::style const style &st)
 {
   int basex=hierarchical?2*get_depth():0;
   int width, height;
@@ -313,7 +313,7 @@ void pkg_item::paint(widgets::tree *win, int y, bool hierarchical, const style &
   win->mvaddnstr(y, 0, disp.c_str(), width);
 }
 
-bool pkg_item::dispatch_key(const key &k, widgets::tree *owner)
+bool pkg_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 {
   if(bindings->key_matches(k, "Versions"))
     {
@@ -455,7 +455,7 @@ bool pkg_item::dispatch_key(const key &k, widgets::tree *owner)
       // FIXME: better title
       add_main_widget(e, _("Hierarchy editor"), "", _("Hierarchy Editor"));
 
-      e->connect_key("Quit", &global_bindings,
+      e->connect_key("Quit", &cw::global_bindings,
 		     sigc::mem_fun(*e.unsafe_get_ref(), &cwidget::widgets::widget::destroy));
     }
   else
@@ -500,7 +500,7 @@ const wchar_t *pkg_item::tag()
   // FIXME: ew
   static wstring pkgname;
 
-  pkgname=transcode(package.Name(), "ASCII");
+  pkgname=cw::util::transcode(package.Name(), "ASCII");
 
   return pkgname.c_str();
 }
@@ -510,7 +510,7 @@ const wchar_t *pkg_item::label()
   // FIXME: ew
   static wstring pkgname;
 
-  pkgname=transcode(package.Name(), "ASCII");
+  pkgname=cw::util::transcode(package.Name(), "ASCII");
 
   return pkgname.c_str();
 }

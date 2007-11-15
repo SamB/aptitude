@@ -884,7 +884,7 @@ std::wstring get_short_description(const pkgCache::VerIterator &ver,
   if(vf.end())
     return std::wstring();
   else
-    return transcode(records->Lookup(vf).ShortDesc());
+    return cw::util::transcode(records->Lookup(vf).ShortDesc());
 #else
   pkgCache::DescIterator d = ver.TranslatedDescription();
 
@@ -896,7 +896,7 @@ std::wstring get_short_description(const pkgCache::VerIterator &ver,
   if(df.end())
     return std::wstring();
   else
-    // apt "helpfully" transcodes the description for us, instead of
+    // apt "helpfully" cw::util::transcodes the description for us, instead of
     // providing direct access to it.  So I need to assume that the
     // description is encoded in the current locale.
     return cwidget::util::transcode(records->Lookup(df).ShortDesc());
@@ -915,7 +915,7 @@ std::wstring get_long_description(const pkgCache::VerIterator &ver,
   if(vf.end())
     return std::wstring();
   else
-    return transcode(records->Lookup(vf).LongDesc());
+    return cw::util::transcode(records->Lookup(vf).LongDesc());
 #else
   pkgCache::DescIterator d = ver.TranslatedDescription();
 

@@ -69,7 +69,7 @@ public:
     return rval;
   }
 
-  bool handle_key(const key &k);
+  bool handle_key(const cwidget::key &k);
 
   bool find_search_enabled();
   bool find_search();

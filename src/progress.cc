@@ -46,7 +46,7 @@ namespace
   }
 }
 
-void progress::paint(const style &st)
+void progress::paint(const cw::style const style &st)
 {
   int width=getmaxx();
 
@@ -58,8 +58,8 @@ void progress::paint(const style &st)
       percentstream << " " << truncPercent << "%";
       std::string percentstr = percentstream.str();
 
-      mvaddstr(0, 0, transcode(Op));
-      mvaddstr(0, width - percentstr.size(), transcode(percentstr));
+      mvaddstr(0, 0, cw::util::transcode(Op));
+      mvaddstr(0, width - percentstr.size(), cw::util::transcode(percentstr));
     }
   else
     erase();

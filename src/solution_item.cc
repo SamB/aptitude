@@ -160,14 +160,14 @@ style solution_item::get_normal_style()
     return style();
 }
 
-bool solution_item::dispatch_key(const key &k, widgets::tree *owner)
+bool solution_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 {
-  if(global_bindings.key_matches(k, "SolutionActionReject"))
+  if(cw::global_bindings.key_matches(k, "SolutionActionReject"))
     {
       toggle_rejected();
       owner->line_down();
     }
-  else if(global_bindings.key_matches(k, "SolutionActionApprove"))
+  else if(cw::global_bindings.key_matches(k, "SolutionActionApprove"))
     {
       toggle_mandated();
       owner->line_down();
@@ -293,9 +293,9 @@ void solution_act_item::show_target_info()
 		     ssprintf(_("Information about %s"), pkg.Name()));
 }
 
-bool solution_act_item::dispatch_key(const key &k, widgets::tree *owner)
+bool solution_act_item::dispatch_key(const cwi::key &k, widgets::tree *owner)
 {
-  if(global_bindings.key_matches(k, "InfoScreen"))
+  if(cw::global_bindings.key_matches(k, "InfoScreen"))
     {
       show_target_info();
       return true;
@@ -304,7 +304,7 @@ bool solution_act_item::dispatch_key(const key &k, widgets::tree *owner)
     return solution_item::dispatch_key(k, owner);
 }
 
-void solution_act_item::paint(widgets::tree *win, int y, bool hierarchical, const style &st)
+void solution_act_item::paint(widgets::tree *win, int y, bool hierarchical, const cw::style const style &st)
 {
   unsigned int basex = hierarchical ? 2*get_depth() : 0;
   unsigned int width = win->getmaxx();
@@ -396,7 +396,7 @@ bool solution_act_item::view_target()
 
 
 
-void solution_act_item_bare::paint(widgets::tree *win, int y, bool hierarchical, const style &st)
+void solution_act_item_bare::paint(widgets::tree *win, int y, bool hierarchical, const cw::style const style &st)
 {
   unsigned int basex = hierarchical ? 2*get_depth() : 0;
   unsigned int width = win->getmaxx();
@@ -559,7 +559,7 @@ void solution_unresolved_item::unmandate()
   resman->unapprove_broken_dep(d);
 }
 
-void solution_unresolved_item::paint(widgets::tree *win, int y, bool hierarchical, const style &st)
+void solution_unresolved_item::paint(widgets::tree *win, int y, bool hierarchical, const cw::style const style &st)
 {
   unsigned int basex = hierarchical ? 2*get_depth() : 0;
   unsigned int width = win->getmaxx();
@@ -594,11 +594,11 @@ void solution_unresolved_item::paint(widgets::tree *win, int y, bool hierarchica
   wstring text;
 
   if(!fully_explained)
-    text = swsprintf(transcode(_("%s recommends %s")).c_str(),
+    text = swsprintf(cw::util::transcode(_("%s recommends %s")).c_str(),
 		     d.get_dep().ParentPkg().Name(),
 		     dep_targets(d.get_dep()).c_str());
   else
-    text = swsprintf(transcode(_("-> Leave the dependency \"%s recommends %s\" unresolved.")).c_str(),
+    text = swsprintf(cw::util::transcode(_("-> Leave the dependency \"%s recommends %s\" unresolved.")).c_str(),
 		     d.get_dep().ParentPkg().Name(),
 		     dep_targets(d.get_dep()).c_str());
 

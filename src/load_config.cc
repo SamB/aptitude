@@ -174,7 +174,7 @@ void load_bindings(std::string group, keybindings *toload, bool use_theme)
 		newsplit=i->Value.find(',',split);
 		string currval(i->Value, split, newsplit-split);
 
-		key k=parse_key(transcode(currval));
+		key k=parse_key(cw::util::transcode(currval));
 
 		if(k.ch!=(wint_t) ERR)
 		  newbinding.push_back(k);
@@ -182,7 +182,7 @@ void load_bindings(std::string group, keybindings *toload, bool use_theme)
 		  _error->Error(_("Ignoring invalid keybinding \"%s\" -> \"%s\""), i->Tag.c_str(), currval.c_str());
 		split=newsplit+1;
 	      } while(newsplit!=string::npos);
-	    global_bindings.set(i->Tag, newbinding);
+	    cw::global_bindings.set(i->Tag, newbinding);
 	  }
       }
 }

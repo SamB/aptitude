@@ -74,7 +74,7 @@ namespace toplevel = cwidget::toplevel;
 
 #if 0
 // These are commented out so as to not punish users unduly for coding
-// errors.  The transcoder now substitutes conspicuous '?' characters
+// errors.  The cw::util::transcoder now substitutes conspicuous '?' characters
 // into its output, which should be enough of a clue.
 
 
@@ -210,8 +210,8 @@ int main(int argc, char *argv[])
 
   // See earlier note
   //
-  //transcode_mbtow_err=handle_mbtow_error;
-  //transcode_wtomb_err=handle_wtomb_error;
+  //cw::util::transcode_mbtow_err=handle_mbtow_error;
+  //cw::util::transcode_wtomb_err=handle_wtomb_error;
 
   setlocale(LC_ALL, "");
   bindtextdomain(PACKAGE, LOCALEDIR);

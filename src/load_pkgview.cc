@@ -86,7 +86,7 @@ std::list<package_view_item> *load_pkgview(std::string cfggroup)
 	    colinf=subtree.Find("Columns");
 
 	  std::wstring wcolinf;
-	  if(!transcode(colinf.c_str(), wcolinf))
+	  if(!cw::util::transcode(colinf.c_str(), wcolinf))
 	    {
 	      _error->Error(_("Couldn't parse layout: encoding error in column descriptor"));
 	      delete rval;
