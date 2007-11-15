@@ -421,7 +421,7 @@ protected:
     cw::toplevel::post_event(new slot_event(sigc::mem_fun(this, &solution_examiner::update)));
   }
 
-  bool handle_key(const cwi::key &k)
+  bool handle_key(const cw::key &k)
   {
     cw::widget_ref tmpref(this);
 

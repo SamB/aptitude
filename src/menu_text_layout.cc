@@ -123,7 +123,7 @@ bool menu_text_layout::find_repeat_search_back()
 }
 
 
-bool menu_text_layout::handle_key(const cwi::key &k)
+bool menu_text_layout::handle_key(const cw::key &k)
 {
   if(cw::config::global_bindings.key_matches(k, "Search"))
     find_search();

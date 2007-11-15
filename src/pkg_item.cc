@@ -313,7 +313,7 @@ void pkg_item::paint(cw::tree *win, int y, bool hierarchical, const cw::style co
   win->mvaddnstr(y, 0, disp.c_str(), width);
 }
 
-bool pkg_item::dispatch_key(const cwi::key &k, cw::tree *owner)
+bool pkg_item::dispatch_key(const cw::key &k, cw::tree *owner)
 {
   if(bindings->key_matches(k, "Versions"))
     {

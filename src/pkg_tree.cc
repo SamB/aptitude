@@ -285,7 +285,7 @@ bool pkg_tree::find_reset_limit()
   return true;
 }
 
-bool pkg_tree::handle_key(const cwi::key &k)
+bool pkg_tree::handle_key(const cw::key &k)
 {
   if(bindings->key_matches(k, "ChangePkgTreeLimit"))
     find_limit();

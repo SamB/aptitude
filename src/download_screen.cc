@@ -236,7 +236,7 @@ void download_screen::paint_status()
 }
 #endif
 
-bool download_screen::handle_key(const cwi::key &k)
+bool download_screen::handle_key(const cw::key &k)
 {
   cw::widget_ref tmpref(this);
 

@@ -42,7 +42,7 @@ void pkg_tree_node::init_bindings()
 
 // FIXME: add a do_action() command that takes a function pointer and does all
 // the extra junk below.
-bool pkg_tree_node::dispatch_key(const cwi::key &k, cw::tree *owner)
+bool pkg_tree_node::dispatch_key(const cw::key &k, cw::tree *owner)
 {
   undo_group *grp=new apt_undo_group;
 

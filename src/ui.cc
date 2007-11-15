@@ -2991,7 +2991,7 @@ protected:
   }
 
 public:
-  bool handle_key(const cwi::key &k)
+  bool handle_key(const cw::key &k)
   {
     if(!cw::text_layout::focus_me() ||
        !cw::text_layout::handle_key(k))

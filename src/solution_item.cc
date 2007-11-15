@@ -160,7 +160,7 @@ style solution_item::get_normal_style()
     return style();
 }
 
-bool solution_item::dispatch_key(const cwi::key &k, cw::tree *owner)
+bool solution_item::dispatch_key(const cw::key &k, cw::tree *owner)
 {
   if(cw::config::global_bindings.key_matches(k, "SolutionActionReject"))
     {
@@ -293,7 +293,7 @@ void solution_act_item::show_target_info()
 		     ssprintf(_("Information about %s"), pkg.Name()));
 }
 
-bool solution_act_item::dispatch_key(const cwi::key &k, cw::tree *owner)
+bool solution_act_item::dispatch_key(const cw::key &k, cw::tree *owner)
 {
   if(cw::config::global_bindings.key_matches(k, "InfoScreen"))
     {
