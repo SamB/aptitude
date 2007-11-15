@@ -111,7 +111,7 @@ public:
   label_tree(wstring _label, bool _expanded = true,
 	     bool selectable = true,
 	     int depth = 0)
-    :widgets::subtree_generic(_expanded), my_label(_label)
+    :cw::subtree_generic(_expanded), my_label(_label)
   {
     set_selectable(selectable);
     set_depth(depth);
@@ -551,7 +551,7 @@ void update_dep_display(aptitude_resolver_dep d, cw::tree *tBare)
 }
 
 static
-void maybe_remove_examiner(cwidget::widgets::widget &wBare)
+void maybe_remove_examiner(cwidget::cw::widget &wBare)
 {
   cw::widget_ref w(&wBare);
 
@@ -579,7 +579,7 @@ cw::widget_ref make_solution_screen()
 
   info_tree->connect_key("ShowHideDescription", &cw::config::global_bindings,
 			 sigc::mem_fun(info_tree.unsafe_get_ref(),
-				       &cwidget::widgets::widget::toggle_visible));
+				       &cwidget::cw::widget::toggle_visible));
 
   l->set_bg_style(cw::get_style("Status"));
 

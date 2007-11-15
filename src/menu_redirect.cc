@@ -63,7 +63,7 @@ bool menu_redirect::find_reset_limit() { return false; }
 bool menu_redirect::find_broken_enabled() { return false; }
 bool menu_redirect::find_broken() { return false; }
 
-static bool do_menu_callback(cwidget::widgets::widget &viewBare,
+static bool do_menu_callback(cwidget::cw::widget &viewBare,
 			     menu_redirect *redirect,
 			     bool (menu_redirect::* action)())
 {
@@ -83,7 +83,7 @@ static bool do_menu_callback(cwidget::widgets::widget &viewBare,
 }
 
 void create_menu_bindings(menu_redirect *menu_handler,
-			  const cw::util::ref_ptr<cwidget::widgets::widget> &valve)
+			  const cw::util::ref_ptr<cwidget::cw::widget> &valve)
 {
   undo_undo_enabled.connect(sigc::bind(ptr_fun(do_menu_callback),
 				       valve.weak_ref(),

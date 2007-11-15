@@ -56,7 +56,7 @@ class hier_editor::hier_item : public sigc::trackable, public cw::treeitem
   wstring group_name;
 public:
   hier_item(pkg_hier::group *_group, pkg_hier::item *_item)
-    :widgets::treeitem(true), group(_group), group_name(cw::util::transcode(group->name, "ASCII"))
+    :cw::treeitem(true), group(_group), group_name(cw::util::transcode(group->name, "ASCII"))
   {
     set_item(_item);
   }
@@ -147,7 +147,7 @@ class silly_subtree:public cw::subtree_generic
   wstring txt;
 public:
   silly_subtree(bool expanded, const wstring &_txt)
-    :widgets::subtree_generic(expanded), txt(_txt) {}
+    :cw::subtree_generic(expanded), txt(_txt) {}
 
   void paint(cw::tree *win, int y, bool hierarchical, const cw::style &st)
   {

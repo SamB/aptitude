@@ -435,7 +435,7 @@ public:
   }
 };
 
-cw::util::ref_ptr<cw::widgets::widget> make_broken_indicator()
+cw::util::ref_ptr<cw::widget> make_broken_indicator()
 {
   return broken_indicator::create();
 }

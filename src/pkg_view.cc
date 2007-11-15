@@ -73,7 +73,7 @@ class pkg_handling_label:public cw::label
 
 protected:
   pkg_handling_label(column_definition_list *_columns)
-    :widgets::label(" "), columns(_columns), have_pkg(false)
+    :cw::label(" "), columns(_columns), have_pkg(false)
   {
     cache_closed.connect(sigc::mem_fun(*this, &pkg_handling_label::zap_package));
   }
@@ -313,7 +313,7 @@ protected:
 		      const cw::table_ref &_why_table,
 		      const cw::text_layout_ref &_reasons,
 		      const cw::table_ref &_reasons_table)
-    :widgets::multiplex(false),
+    :cw::multiplex(false),
      editor(_editor),
      description(_description), description_table(_description_table),
      why(_why), why_table(_why_table),
@@ -568,10 +568,10 @@ cw::widget_ref make_package_view(list<package_view_item> &format,
 						  &info_area_multiplex::cycle));
 	    mainwidget->connect_key("EditHier", &cw::config::global_bindings,
 				    sigc::mem_fun(*e.unsafe_get_ref(),
-						  &cwidget::widgets::widget::show));
+						  &cwidget::cw::widget::show));
 	    mainwidget->connect_key("EditHier", &cw::config::global_bindings,
 				    sigc::mem_fun(*m.unsafe_get_ref(),
-						  &cwidget::widgets::widget::show));
+						  &cwidget::cw::widget::show));
 	    mainwidget->connect_key("EditHier", &cw::config::global_bindings,
 				    sigc::bind(sigc::mem_fun(*rval.unsafe_get_ref(), &cw::table::focus_widget_bare),
 					       m.weak_ref()));
@@ -624,7 +624,7 @@ cw::widget_ref make_package_view(list<package_view_item> &format,
 	    rval->connect_key(i->popupdownkey,
 			      &cw::config::global_bindings,
 			      sigc::mem_fun(*i->widget.unsafe_get_ref(),
-					    &cwidget::widgets::widget::toggle_visible));
+					    &cwidget::cw::widget::toggle_visible));
 
 	  if(i->visible)
 	    i->widget->show();
@@ -643,8 +643,8 @@ cw::widget_ref make_package_view(list<package_view_item> &format,
 	  if(!strcasecmp(j->name.c_str(), i->popupdownlinked.c_str()))
 	    {
 	      // Having to make two connections is annoying.
-	      j->widget->shown_sig.connect(sigc::mem_fun(*i->widget.unsafe_get_ref(), &cwidget::widgets::widget::show));
-	      j->widget->hidden_sig.connect(sigc::mem_fun(*i->widget.unsafe_get_ref(), &cwidget::widgets::widget::hide));
+	      j->widget->shown_sig.connect(sigc::mem_fun(*i->widget.unsafe_get_ref(), &cwidget::cw::widget::show));
+	      j->widget->hidden_sig.connect(sigc::mem_fun(*i->widget.unsafe_get_ref(), &cwidget::cw::widget::hide));
 	      break;
 	    }
 	}
