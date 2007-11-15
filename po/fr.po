@@ -9,27 +9,30 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-10-30 21:11-0700\n"
-"PO-Revision-Date: 2007-06-30 12:37+0200\n"
-"Last-Translator: Jean-Luc Coulon <jean-luc.coulon@wanadoo.fr>\n"
+"PO-Revision-Date: 2007-11-06 18:29+0100\n"
+"Last-Translator: Jean-Luc Coulon (f5ibh) <jean-luc.coulon@wanadoo.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
 "X-Generator: KBabel 1.11.2\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
 
 #: src/apt_options.cc:158
 msgid "Display some available commands at the top of the screen"
-msgstr "Afficher certaines des commandes disponibles"
+msgstr "Afficher en haut de l'écran certaines des commandes disponibles"
 
 #: src/apt_options.cc:159
 msgid ""
 "If this option is enabled, a brief summary of some of the most important "
 "aptitude commands will appear beneath the menu bar."
 msgstr ""
+"Si cette option est activée, une brève description des commandes les plus "
+"importantes d'aptitude sera affichée sous la barre de menu."
 
 #: src/apt_options.cc:163
-#, fuzzy
 msgid "Hide the menu bar when it is not being used"
 msgstr "Cacher la barre de menu lorsqu'elle n'est pas utilisée"
 
@@ -38,6 +41,8 @@ msgid ""
 "If this option is enabled, the menu bar will only appear when it has been "
 "activated by pressing the menu key."
 msgstr ""
+"Si cette option est activée, la barre de menu n'apparaîtra qu'une fois "
+"activée en pressant la touche de menu."
 
 #: src/apt_options.cc:168
 msgid "Use a minibuffer-style prompt when possible"
@@ -49,6 +54,9 @@ msgid ""
 "bottom of the screen.  If not, prompts will be displayed as pop-up dialog "
 "boxes."
 msgstr ""
+"Si cette option est activée, les invites seront affichée sur une seule ligne "
+"en bas de l'écran. Sinon, les invites seront affichée sous forme de boîtes "
+"de dialogue."
 
 #: src/apt_options.cc:174
 msgid "Show partial search results (incremental search)"
@@ -60,6 +68,9 @@ msgid ""
 "list as you type them.  This is convenient, but may slow the program down, "
 "particularly on older computers."
 msgstr ""
+"Si cette option est activée, aptitude effectuera les recherches dans la "
+"liste des paquets au fur et à mesure de la frappe. Ceci est commode, mais "
+"peut ralentir le programme, particulièrement sur les ordinateurs anciens."
 
 #: src/apt_options.cc:181
 msgid "Closing the last view exits the program"
@@ -71,6 +82,10 @@ msgid ""
 "(package lists, package details, etc) have been closed.  Otherwise, aptitude "
 "will continue running until you select 'Quit' from the Actions menu."
 msgstr ""
+"Si cette option est activée, aptitude s'arrêtera lorsque toutes les vues "
+"(listes de paquets, détails des paquets, etc.) auront été fermées. Sinon, "
+"aptitude continuera de tourner jusqu'à ce que vous sélectionnez « Quitter » "
+"depuis le menu des actions."
 
 #: src/apt_options.cc:188
 msgid "Prompt for confirmation at exit"
@@ -81,6 +96,7 @@ msgid ""
 "If this option is enabled, aptitude will not terminate until you confirm "
 "that you really want to quit."
 msgstr ""
+"Si cette option est activée, aptitude ne se terminera pas avant confirmation."
 
 #: src/apt_options.cc:193
 msgid "Pause after downloading files"
@@ -91,6 +107,8 @@ msgid ""
 "This option controls whether aptitude will wait for confirmation after a "
 "download before it goes ahead and installs packages."
 msgstr ""
+"Cette option contrôle si aptitude doit attendre une confirmation après avoir "
+"effectué un téléchargement pour commencer l'installation des paquets."
 
 #: src/apt_options.cc:197
 msgid "Never"
@@ -101,6 +119,8 @@ msgid ""
 "Never wait for the user after downloading packages: always begin the "
 "installation immediately."
 msgstr ""
+"Ne jamais attendre d'action de l'utilisateur après avoir téléchargé des "
+"paquets : toujours commencer l'installation immédiatement."
 
 #: src/apt_options.cc:199
 msgid "When an error occurs"
@@ -111,6 +131,9 @@ msgid ""
 "Wait for confirmation if an error occurred during the download.  If there "
 "were no errors, begin installing packages immediately."
 msgstr ""
+"Attendre une confirmation si une erreur s'est produite lors du "
+"téléchargement. S'il ne s'est pas produit d'erreur, commencer l'installation "
+"des paquets immédiatement."
 
 #: src/apt_options.cc:201
 msgid "Always"
@@ -121,6 +144,8 @@ msgid ""
 "Always wait for the user to confirm the download before proceeding with the "
 "installation."
 msgstr ""
+"Toujours attendre que l'utilisateur confirme le téléchargement avant de "
+"commencer l'installation."
 
 #: src/apt_options.cc:204
 msgid "Use a 'status-line' download indicator for all downloads"
@@ -131,6 +156,8 @@ msgid ""
 "If this option is enabled, aptitude will display the status of ongoing "
 "downloads at the bottom of the screen, rather than opening a new view."
 msgstr ""
+"Si cette option est activée, aptitude affichera l'état des téléchargements "
+"en cours en bas de l'écran plutôt que d'ouvrir une nouvelle vue."
 
 #: src/apt_options.cc:209
 msgid "Display the extended description area by default"
@@ -142,6 +169,9 @@ msgid ""
 "of the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
+"Si cette option est activée, la zone de description longue (la boîte en bas "
+"de l'écran) de la liste des paquets sera visible au démarrage du programme, "
+"sinon, elle sera cachée au départ."
 
 #: src/apt_options.cc:215
 msgid "Advance to the next item after changing the state of a package"
@@ -153,6 +183,9 @@ msgid ""
 "instance, installing or removing it) will move the selection to the next "
 "package in the list."
 msgstr ""
+"Si cette option est activée, l'exécution d'une action sur un paquet (par "
+"exemple, son installation ou sa suppression) déplacera la sélection vers le "
+"paquet suivant de la liste."
 
 #: src/apt_options.cc:221
 msgid "Automatically show why packages are broken"
@@ -164,6 +197,9 @@ msgid ""
 "dependencies will automatically display the dependencies that are "
 "unfulfilled in the lower pane of the display."
 msgstr ""
+"Si cette option est activée, alors, la mise en évidence d'un paquet "
+"possédant des dépendances cassées affichera automatiquement, dans la boîte "
+"du bas de l'écran, les dépendances qui ne sont pas satisfaites ."
 
 #: src/apt_options.cc:228
 msgid "The default grouping method for package views"
@@ -174,6 +210,10 @@ msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
 msgstr ""
+"Cette option contrôle la manière dont aptitude organise la liste des "
+"paquets. Veuillez consulter le manuel de l'utilisateur d'aptitude pour "
+"davantage d'informations sur la manière de configurer une méthode de "
+"regroupement."
 
 #: src/apt_options.cc:233
 msgid "The default display-limit for package views"
@@ -185,6 +225,9 @@ msgid ""
 "specified by this option.  See the aptitude user's manual for detailed "
 "information about searches."
 msgstr ""
+"Par défaut, la limite de chaque vue de paquet sera définie à la valeur "
+"indiquée par cette option. Veuillez consulter le manuel de l'utilisateur "
+"d'aptitude pour des informations détaillées concernant les recherches."
 
 #: src/apt_options.cc:239
 msgid "The display format for package views"
@@ -196,6 +239,10 @@ msgid ""
 "the aptitude user's manual for information on how to specify a display "
 "format."
 msgstr ""
+"Cette option contrôle la manière dont aptitude formate les lignes de la "
+"liste des paquets. Veuillez consulter le manuel de l'utilisateur d'aptitude "
+"pour davantage d'informations sur la manière de définir un format "
+"d'affichage."
 
 #: src/apt_options.cc:246
 msgid "The display format for the status line"
@@ -207,6 +254,10 @@ msgid ""
 "the package list and the lower pane).  See the aptitude user's manual for "
 "information on how to specify a display format."
 msgstr ""
+"Cette option contrôle la manière dont aptitude formate la ligne d'état (la "
+"ligne se trouvant entre la liste des paquets et la boîte inférieure). "
+"Veuillez consulter le manuel de l'utilisateur d'aptitude pour davantage "
+"d'informations sur la manière de définir un format d'affichage."
 
 #: src/apt_options.cc:254
 msgid "The display format for the header line"
@@ -218,6 +269,10 @@ msgid ""
 "the package list).  See the aptitude user's manual for information on how to "
 "specify a display format."
 msgstr ""
+"Cette option contrôle la manière dont aptitude formate la ligne d'en-tête "
+"(ligne se trouvant au-dessus de la liste des paquets). Veuillez consulter le "
+"guide de l'utilisateur d'aptitude pour davantage d'informations sur la "
+"manière de définir un format d'affichage."
 
 #: src/apt_options.cc:265
 msgid "Automatically upgrade installed packages"
@@ -228,6 +283,8 @@ msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
 msgstr ""
+"Si cette option est activée, alors, au démarrage, aptitude marquera pour "
+"mise à niveau tous les paquets susceptibles de l'être."
 
 #: src/apt_options.cc:270
 msgid "Remove obsolete package files after downloading new package lists"
@@ -239,6 +296,9 @@ msgid ""
 "delete from the package cache any package files that can no longer be "
 "downloaded from any archive in sources.lst."
 msgstr ""
+"Si cette option est activée, alors, après chaque phase d'installation, "
+"aptitude effacera du cache des paquets tous les fichiers qui ne peuvent plus "
+"être téléchargés depuis les archives du fichier sources.lst."
 
 #: src/apt_options.cc:276
 msgid "URL to use to download changelogs"
@@ -250,6 +310,9 @@ msgid ""
 "the Debian Web site.  You should only need to change this if the URL of the "
 "package archive changes."
 msgstr ""
+"Cette option contrôle le patron utilisé pour télécharger les journaux des "
+"modifications depuis le site Web de Debian. Vous ne devriez avoir besoin de "
+"le modifier que si l'URL de l'archive des paquets est modifiée."
 
 #: src/apt_options.cc:283
 msgid "Display a preview of what will be done before doing it"
@@ -260,6 +323,9 @@ msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
 msgstr ""
+"Si cette option est activée, alors, lorsque vous demandez à aptitude "
+"d'effectuer une phase d'installation, il affichera tout d'abord un résumé "
+"des actions qu'il est sur le point d'effectuer."
 
 #: src/apt_options.cc:290
 msgid ""
@@ -271,6 +337,9 @@ msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
 msgstr ""
+"Si cette option est activée, alors aptitude effacera la liste des nouveaux "
+"paquets après la mises à jour de la liste des paquets (par exemple, en "
+"pressant « u »)."
 
 #: src/apt_options.cc:296
 msgid ""
@@ -283,6 +352,9 @@ msgid ""
 "after you perform an install run or install or remove packages from the "
 "command-line."
 msgstr ""
+"Si cette option est activée, alors aptitude effacera la liste des nouveau "
+"paquets après une phase d'installation ou de suppression de paquets depuis "
+"la ligne de commande."
 
 #: src/apt_options.cc:303
 msgid ""
@@ -297,6 +369,9 @@ msgid ""
 "modify the state of a package if you do not have permissions to apply the "
 "change to the system."
 msgstr ""
+"Si cette option n'est %Bpas%b activée, alors aptitude affichera un "
+"avertissement si vous modifiez l'état d'un paquet et que vous n'avez pas les "
+"droits pour appliquer les modifications sur le système."
 
 #: src/apt_options.cc:310
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -310,6 +385,11 @@ msgid ""
 "installing packages as a non-root user.  You will be given the option to log "
 "in as root and perform the action with root privileges."
 msgstr ""
+"Si cette option est activée, aptitude affichera un avertissement si vous "
+"tentez d'effectuer une action que vous n'avez pas la permission de faire : "
+"par exemple, installer des paquets si vous n'êtes pas le superutilisateur "
+"(« root »). Vous aurez la possibilité de vous connecter en tant que root et "
+"d'effectuer l'action avec les privilèges de root."
 
 #: src/apt_options.cc:320
 msgid "File to log actions into"
@@ -322,6 +402,11 @@ msgid ""
 "character ('%B|%b'), the remainder of the name will be interpreted as a "
 "shell command that is to receive the log on standard input."
 msgstr ""
+"Lorsque vous installez ou supprimez des paquets, un résumé de ce que fait "
+"aptitude sera écrit dans ce fichier. Si le premier caractère du nom de "
+"fichier est le caractère de tubage (« %B|%b »), le reste du nom sera "
+"interprété comme une commande de l'interpréteur qui recevra le journal sur "
+"l'entrée standard."
 
 #: src/apt_options.cc:333
 msgid "Automatically resolve dependencies of a package when it is selected"
@@ -334,6 +419,11 @@ msgid ""
 "installation.  This is much faster than the built-in dependency resolver, "
 "but may produce suboptimal results or fail entirely in some scenarios."
 msgstr ""
+"Si cette option est activée, aptitude utilisera une heuristique simple pour "
+"résoudre immédiatement les dépendances de chacun des paquets que vous avez "
+"marqué pour installation. Ceci est beaucoup plus rapide que le solveur de "
+"dépendances interne , mais peut donner des résultats suboptimaux ou échouer "
+"complètement dans certains scénarios."
 
 #: src/apt_options.cc:342
 msgid "Automatically fix broken packages before installing or removing"
@@ -346,9 +436,12 @@ msgid ""
 "suggestion of the problem resolver.  Otherwise,aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
+"Si cette option est activée et que vous effectuez une phase d'installation "
+"alors que certains paquets sont cassés, aptitude appliquera automatiquement "
+"la suggestion en cours du solveur de problème. Sinon, aptitude vous "
+"proposera pour confirmation une solution aux dépendances cassées."
 
 #: src/apt_options.cc:350
-#, fuzzy
 msgid "Install recommended packages automatically"
 msgstr "Installer automatiquement les paquets recommandés"
 
@@ -362,6 +455,14 @@ msgid ""
 "enabled, packages that are recommended by an installed package will not "
 "automatically be removed."
 msgstr ""
+"Si cette option est activée, et que « Résoudre automatiquement les "
+"dépendances » est aussi activé, aptitude tentera d'installer les "
+"recommandations des paquets nouvellement installés en plus de leur "
+"dépendances directes. Les suggestions ne seront pas automatiquement "
+"installées.\n"
+"Si cette option est activée, et que « Supprimer les paquets installés "
+"automatiquement et non utilisés » est activée, les paquets qui sont "
+"recommandés par un paquet installé ne seront pas automatiquement supprimés."
 
 #: src/apt_options.cc:363
 msgid "Remove unused packages automatically"
@@ -377,10 +478,17 @@ msgid ""
 "is enabled, automatically installed packages will not be removed if any "
 "installed package recommends them."
 msgstr ""
+"Si cette option est activée, les paquets qui sont installés automatiquement "
+"et qui ne dépendent d'aucun paquet installé par vous-même sera supprimé du "
+"système. Abandonner la suppression marquera le paquet comme ayant été "
+"installé manuellement.\n"
+"Si cette option est activée, et que « Installer automatiquement les paquets "
+"recommandés » est activée, les paquets installés automatiquement ne seront "
+"pas enlevée si un quelconque paquet qui les recommande est installé."
 
 #: src/apt_options.cc:375
 msgid "Packages that should never be automatically removed"
-msgstr ""
+msgstr "Paquets qui ne devraient jamais être automatiquement supprimés"
 
 #: src/apt_options.cc:376
 msgid ""
@@ -388,16 +496,17 @@ msgid ""
 "installed package depends on them: they will never be targeted for removal "
 "as unused packages."
 msgstr ""
+"La correspondance des paquets à ce motif de recherche sera toujours traitée "
+"comme si un paquet installé en dépendait : il ne seront jamais considérés "
+"comme devant être supprimés en tant que paquets non utilisée."
 
 #: src/apt_options.cc:488
-#, fuzzy
 msgid "UI options"
-msgstr "Options de l'interface ^utilisateur"
+msgstr "Options de l'interface utilisateur"
 
 #: src/apt_options.cc:490
-#, fuzzy
 msgid "Dependency handling"
-msgstr "^Gestion des dépendances"
+msgstr "Gestion des dépendances"
 
 #: src/apt_options.cc:492 src/pkg_grouppolicy.cc:904
 msgid "Miscellaneous"
@@ -1032,7 +1141,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:664
 #, c-format
 msgid "y: %F"
-msgstr ""
+msgstr "y : %F"
 
 #: src/cmdline/cmdline_prompt.cc:666
 msgid "continue with the installation"
@@ -1041,7 +1150,7 @@ msgstr "poursuivre l'installation"
 #: src/cmdline/cmdline_prompt.cc:668
 #, c-format
 msgid "n: %F"
-msgstr ""
+msgstr "n : %F"
 
 #: src/cmdline/cmdline_prompt.cc:670
 msgid "abort and quit"
@@ -1050,7 +1159,7 @@ msgstr "abandonner et quitter"
 #: src/cmdline/cmdline_prompt.cc:672
 #, c-format
 msgid "i: %F"
-msgstr ""
+msgstr "i : %F"
 
 #: src/cmdline/cmdline_prompt.cc:674
 msgid ""
@@ -1063,7 +1172,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:676
 #, c-format
 msgid "c: %F"
-msgstr ""
+msgstr "c : %F"
 
 #: src/cmdline/cmdline_prompt.cc:678
 msgid ""
@@ -1076,7 +1185,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:680
 #, c-format
 msgid "d: %F"
-msgstr ""
+msgstr "d : %F"
 
 #: src/cmdline/cmdline_prompt.cc:682
 msgid "toggle the display of dependency information"
@@ -1085,7 +1194,7 @@ msgstr "basculer vers l'affichage des informations de dépendances"
 #: src/cmdline/cmdline_prompt.cc:684
 #, c-format
 msgid "s: %F"
-msgstr ""
+msgstr "s : %F"
 
 #: src/cmdline/cmdline_prompt.cc:686
 msgid "toggle the display of changes in package sizes"
@@ -1094,7 +1203,7 @@ msgstr "basculer vers l'affichage de la modification de la taille des paquets"
 #: src/cmdline/cmdline_prompt.cc:688
 #, c-format
 msgid "v: %F"
-msgstr ""
+msgstr "v : %F"
 
 #: src/cmdline/cmdline_prompt.cc:690
 msgid "toggle the display of version numbers"
@@ -1103,7 +1212,7 @@ msgstr "basculer vers l'affichage des numéros de version"
 #: src/cmdline/cmdline_prompt.cc:692
 #, c-format
 msgid "w: %F"
-msgstr ""
+msgstr "w : %F"
 
 #: src/cmdline/cmdline_prompt.cc:694
 msgid ""
@@ -1117,7 +1226,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:696
 #, c-format
 msgid "e: %F"
-msgstr ""
+msgstr "e : %F"
 
 #: src/cmdline/cmdline_prompt.cc:698
 msgid "enter the full visual interface"
@@ -1514,11 +1623,11 @@ msgstr "non installé (il reste les fichiers de configuration)"
 
 #: src/cmdline/cmdline_show.cc:194
 msgid "awaiting trigger processing by other package(s)"
-msgstr ""
+msgstr "en attente du déclenchement du traitement par un ou des autres paquets"
 
 #: src/cmdline/cmdline_show.cc:196
 msgid "awaiting trigger processing"
-msgstr ""
+msgstr "en attente du déclenchement du traitement"
 
 #: src/cmdline/cmdline_show.cc:199 src/pkg_columnizer.cc:255
 #: src/pkg_ver_item.cc:230
@@ -1689,7 +1798,7 @@ msgstr "Est en conflit"
 
 #: src/cmdline/cmdline_show.cc:420
 msgid "Breaks"
-msgstr ""
+msgstr "Casse"
 
 #: src/cmdline/cmdline_show.cc:422
 msgid "Replaces"
@@ -1710,7 +1819,7 @@ msgstr "Description : "
 #: src/cmdline/cmdline_show.cc:436 src/pkg_info_screen.cc:100
 #: src/pkg_view.cc:243
 msgid "Homepage: "
-msgstr ""
+msgstr "Site :"
 
 #: src/cmdline/cmdline_show.cc:533
 #, c-format
@@ -2157,7 +2266,7 @@ msgstr "CONSERVÉ, DÉPENDANCES"
 
 #: src/generic/apt/log.cc:131
 msgid "UNCONFIGURED"
-msgstr ""
+msgstr "NON CONFIGURÉ"
 
 #: src/generic/apt/log.cc:134
 msgid "????????"
@@ -2552,9 +2661,9 @@ msgid "Unexpectedly empty tree title after \"%s\""
 msgstr "Titre d'arborescence vide inattendu après « %s »"
 
 #: src/load_grouppolicy.cc:650
-#, fuzzy, c-format
+#, c-format
 msgid "Expected ',' or ')' following '||', got '%s'"
-msgstr "« %c » a été reçu alors que « , » ou « ( » était attendu"
+msgstr "« , » ou « ) » suivant « || » attendu, « %s » a été obtenu"
 
 #: src/load_grouppolicy.cc:662
 msgid "Unmatched '(' in pattern grouping policy"
@@ -3345,11 +3454,11 @@ msgstr "fichiers de config"
 
 #: src/pkg_columnizer.cc:258
 msgid "triggers-awaited"
-msgstr ""
+msgstr "déclenchement-à-venir"
 
 #: src/pkg_columnizer.cc:260
 msgid "triggers-pending"
-msgstr ""
+msgstr "déclenchement-en-attente"
 
 #: src/pkg_columnizer.cc:263 src/pkg_columnizer.cc:547 src/pkg_ver_item.cc:232
 msgid "ERROR"
@@ -4545,7 +4654,7 @@ msgstr "est en conflit avec"
 
 #: src/reason_fragment.cc:39
 msgid "breaks"
-msgstr ""
+msgstr "casse"
 
 #: src/reason_fragment.cc:41
 msgid "replaces"
@@ -4807,9 +4916,9 @@ msgid "%s conflicts with %s"
 msgstr "%s est en conflit avec %s"
 
 #: src/solution_fragment.cc:120
-#, fuzzy, c-format
+#, c-format
 msgid "%s breaks %s"
-msgstr "%s remplace %s"
+msgstr "%s casse %s"
 
 #: src/solution_fragment.cc:123
 #, c-format
@@ -5026,13 +5135,12 @@ msgid "Really quit Aptitude?"
 msgstr " Voulez-vous vraiment quitter Aptitude ? "
 
 #: src/ui.cc:686 src/ui.cc:688
-#, fuzzy
 msgid "Preferences"
-msgstr "Pré-dépend"
+msgstr "Préférences"
 
 #: src/ui.cc:687 src/ui.cc:2291
 msgid "Change the behavior of aptitude"
-msgstr ""
+msgstr "Modifier le comportement d'aptitude"
 
 #: src/ui.cc:723
 msgid "Really discard your personal settings and reload the defaults?"
@@ -5075,14 +5183,13 @@ msgstr ""
 "de détails."
 
 #: src/ui.cc:1011 src/ui.cc:1013
-#, fuzzy
 msgid "License"
-msgstr "^Licence"
+msgstr "Licence"
 
 #: src/ui.cc:1012
-#, fuzzy
 msgid "View the terms under which you may copy and distribute aptitude"
-msgstr "Afficher les termes selon lesquels vous pouvez copier ce programme"
+msgstr ""
+"Afficher les termes selon lesquels vous pouvez copier et distribuer aptitude"
 
 #: src/ui.cc:1026
 msgid "help.txt"
@@ -5094,11 +5201,11 @@ msgstr "Encodage de help-fr.txt|UTF-8"
 
 #: src/ui.cc:1039
 msgid "Online Help"
-msgstr ""
+msgstr "Aide en ligne"
 
 #: src/ui.cc:1040
 msgid "View a brief introduction to aptitude"
-msgstr ""
+msgstr "Afficher une courte introduction à aptitude"
 
 #: src/ui.cc:1041 src/ui.cc:2530
 msgid "Help"
@@ -5125,18 +5232,16 @@ msgid "Manual"
 msgstr "Manuel"
 
 #: src/ui.cc:1070 src/ui.cc:1072
-#, fuzzy
 msgid "FAQ"
-msgstr "^FAQ"
+msgstr "FAQ"
 
 #: src/ui.cc:1071 src/ui.cc:2375
 msgid "View a list of frequently asked questions"
 msgstr "Afficher la liste des questions souvent posées"
 
 #: src/ui.cc:1080 src/ui.cc:1082
-#, fuzzy
 msgid "News"
-msgstr "^Nouvelles"
+msgstr "Nouvelles"
 
 #: src/ui.cc:1081 src/ui.cc:2379
 msgid "View the important changes made in each version of "
@@ -5722,9 +5827,8 @@ msgid "Find the next package with unsatisfied dependencies"
 msgstr "Rechercher le prochain paquet avec des dépendances non satisfaites"
 
 #: src/ui.cc:2290
-#, fuzzy
 msgid "^Preferences"
-msgstr "Pré-dépend"
+msgstr "^Préférences"
 
 #: src/ui.cc:2295
 msgid "^UI options"
@@ -5865,9 +5969,9 @@ msgid "^License"
 msgstr "^Licence"
 
 #: src/ui.cc:2383
-#, fuzzy
 msgid "View the terms under which you may copy and distribute aptiutde"
-msgstr "Afficher les termes selon lesquels vous pouvez copier ce programme"
+msgstr ""
+"Afficher les termes selon lesquels vous pouvez copier et distribuer aptitude"
 
 #: src/ui.cc:2523
 msgid "Actions"

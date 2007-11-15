@@ -1,13 +1,13 @@
-# translation of aptitude_4.4.4-1_nl.po to Dutch
+# translation of aptitude_0.4.6.1-1.1_nl.po to Dutch
 #
 # Luk Claes <luk@debian.org>, 2005, 2006.
 # Frans Pop <elendil@planet.nl>, 2006, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude-0.4.3_nl\n"
+"Project-Id-Version: aptitude_0.4.6.1-1.1_nl\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-10-30 21:11-0700\n"
-"PO-Revision-Date: 2007-05-02 15:46+0200\n"
+"PO-Revision-Date: 2007-10-19 20:36+0200\n"
 "Last-Translator: Frans Pop <elendil@planet.nl>\n"
 "Language-Team: Dutch <debian-l10n-dutch@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: src/apt_options.cc:158
 msgid "Display some available commands at the top of the screen"
-msgstr "Toon enkele aanwezige commando's bovenaan het scherm"
+msgstr "Toon enkele beschikbare commando's bovenaan het scherm"
 
 #: src/apt_options.cc:159
 msgid ""
@@ -28,6 +28,7 @@ msgstr ""
 
 #: src/apt_options.cc:163
 #, fuzzy
+#| msgid "Hide the menubar when it is not being used"
 msgid "Hide the menu bar when it is not being used"
 msgstr "Verberg de menubalk wanneer die niet wordt gebruikt"
 
@@ -356,6 +357,7 @@ msgstr ""
 
 #: src/apt_options.cc:350
 #, fuzzy
+#| msgid "Install Recommended packages automatically"
 msgid "Install recommended packages automatically"
 msgstr "Installeer automatisch aanbevolen pakketten"
 
@@ -398,11 +400,13 @@ msgstr ""
 
 #: src/apt_options.cc:488
 #, fuzzy
+#| msgid "^UI options"
 msgid "UI options"
 msgstr "^Interface Opties"
 
 #: src/apt_options.cc:490
 #, fuzzy
+#| msgid "^Dependency handling"
 msgid "Dependency handling"
 msgstr "^Afhankelijkheidsafhandeling"
 
@@ -436,12 +440,12 @@ msgstr "Kan afhankelijkheden niet oplossen."
 
 #: src/broken_indicator.cc:237
 msgid "Fatal error in resolver"
-msgstr ""
+msgstr "Fatale fout in de oplosser"
 
 #: src/broken_indicator.cc:248
 #, c-format
 msgid "[%d(%d)/...] Resolving dependencies"
-msgstr "[%d(%d)/...] Afhankelijkheden aan het oplossen."
+msgstr "[%d(%d)/...] Bezig met het oplossen van afhankelijkheden"
 
 #: src/broken_indicator.cc:281 src/solution_dialog.cc:134
 #: src/solution_screen.cc:529
@@ -649,9 +653,9 @@ msgid "Couldn't find a changelog for %s"
 msgstr "Kon changelog voor %s niet vinden"
 
 #: src/cmdline/cmdline_clean.cc:29
-#, fuzzy, c-format
+#, c-format
 msgid "E: The clean command takes no arguments\n"
-msgstr "E: Het bijwerkcommando heeft geen argumenten\n"
+msgstr "E: Het commando 'clean' kent geen argumenten\n"
 
 #: src/cmdline/cmdline_clean.cc:58
 #, c-format
@@ -664,9 +668,9 @@ msgid "Del %s %s [%sB]\n"
 msgstr "Verwijder %s %s [%sB]\n"
 
 #: src/cmdline/cmdline_clean.cc:111
-#, fuzzy, c-format
+#, c-format
 msgid "E: The autoclean command takes no arguments\n"
-msgstr "E: Het bijwerkcommando heeft geen argumenten\n"
+msgstr "E: Het commando 'autoclean' kent geen argumenten\n"
 
 #: src/cmdline/cmdline_clean.cc:148
 #, c-format
@@ -718,9 +722,9 @@ msgstr ""
 "verouderd pakket?"
 
 #: src/cmdline/cmdline_forget_new.cc:25
-#, fuzzy, c-format
+#, c-format
 msgid "E: The forget-new command takes no arguments\n"
-msgstr "E: Het bijwerkcommando heeft geen argumenten\n"
+msgstr "E: Het commando 'forget-new' kent geen argumenten\n"
 
 #: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
@@ -848,20 +852,21 @@ msgid "The following packages will be upgraded:"
 msgstr "De volgende pakketten zullen worden opgewaardeerd:"
 
 #: src/cmdline/cmdline_prompt.cc:279
-#, fuzzy
 msgid "The following partially installed packages will be configured:"
-msgstr "De volgende pakketten zullen worden opgewaardeerd:"
+msgstr ""
+"De volgende gedeeltelijk geïnstalleerde pakketten zullen worden "
+"geconfigureerd:"
 
 #: src/cmdline/cmdline_prompt.cc:334
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
-msgstr "De volgende ESSENTIELE pakketten zullen worden VERWIJDERD!\n"
+msgstr "De volgende ESSENTIËLE pakketten zullen worden VERWIJDERD!\n"
 
 #: src/cmdline/cmdline_prompt.cc:343
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr ""
-"De volgende ESSENTIELE pakketten zullen worden BESCHADIGD door deze actie:\n"
+"De volgende ESSENTIËLE pakketten zullen door deze actie worden BESCHADIGD:\n"
 
 #: src/cmdline/cmdline_prompt.cc:353
 #, c-format
@@ -869,9 +874,9 @@ msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
 "         Do NOT continue unless you know EXACTLY what you are doing!\n"
 msgstr ""
-"WAARSCHUWING: Deze actie uitvoeren zal uw systeem waarschijnlijk "
-"beschadigen!\n"
-"         Ga NIET verder, tenzij u EXACT weet wat u aan het doen bent!\n"
+"WAARSCHUWING: Het uitvoeren van deze actie zal waarschijnlijk de juiste\n"
+"              werking van uw systeem aantasten!\n"
+"              Ga NIET verder, tenzij u EXACT weet wat u aan het doen bent!\n"
 
 #: src/cmdline/cmdline_prompt.cc:355
 msgid "I am aware that this is a very bad idea"
@@ -892,12 +897,11 @@ msgid ""
 "this is what you want to do.\n"
 "\n"
 msgstr ""
-"WAARSCHUWING: de niet-vertrouwde versies van volgende pakketten worden "
-"geïnstalleerd!\n"
+"WAARSCHUWING: Van de volgende pakketten zullen niet-vertrouwde versies\n"
+"              worden geïnstalleerd!\n"
 "\n"
 "Niet-vertrouwde pakketten kunnen de veiligheid van uw systeem aantasten.\n"
-"Ga enkel verder met de installatie als u zeker\n"
-"bent dat u dat wilt.\n"
+"Ga alleen verder met de installatie als u zeker weet dat dat is wat u wilt.\n"
 "\n"
 
 #: src/cmdline/cmdline_prompt.cc:412
@@ -907,16 +911,15 @@ msgid ""
 "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 msgstr ""
 "*** WAARSCHUWING *** Deze vertrouwensschendingen worden genegeerd omdat\n"
-"                    %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
+"                     %s::CmdLine::Ignore-Trust-Violations 'true' is!\n"
 
 #: src/cmdline/cmdline_prompt.cc:421
-#, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
 "*** WAARSCHUWING *** Deze vertrouwensschendingen worden genegeerd omdat\n"
-"                    %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
+"                     Apt::Get::AllowUnauthenticated 'true' is!\n"
 
 #: src/cmdline/cmdline_prompt.cc:427 src/vscreen/vs_util.cc:194
 #: src/vscreen/vs_util.cc:232
@@ -1031,6 +1034,8 @@ msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify."
 msgstr ""
+"Geen pakketten gevonden -- geef nul of meer startpunten op gevolgd door het "
+"te rechtvaardigen pakket."
 
 #: src/cmdline/cmdline_prompt.cc:664
 #, c-format
@@ -1113,6 +1118,9 @@ msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
 msgstr ""
+"probeer een reden te vinden voor de installatie van een pakket, of verklaar "
+"waarom installatie van een pakket zou leiden tot installatie van een ander "
+"pakket."
 
 #: src/cmdline/cmdline_prompt.cc:696
 #, c-format
@@ -1261,11 +1269,11 @@ msgstr "Kan %s niet openen om te schrijven"
 #: src/cmdline/cmdline_resolver.cc:130 src/cmdline/cmdline_resolver.cc:663
 #, c-format
 msgid "Error writing resolver state to %s"
-msgstr "Fout bij het schrijven van de resolver-toestand naar %s"
+msgstr "Fout bij het schrijven van de status van de oplosser naar %s"
 
 #: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:665
 msgid "Resolver state successfully written!"
-msgstr "Oplosser-toestand werd met succes weggeschreven!"
+msgstr "Status van oplosser met succes weggeschreven!"
 
 #: src/cmdline/cmdline_resolver.cc:145
 #, c-format
@@ -1301,6 +1309,7 @@ msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
 msgstr ""
+"wissel tussen de inhoud van de oplossing en een uitleg van de oplossing"
 
 #: src/cmdline/cmdline_resolver.cc:176
 msgid "examine the solution in the visual user interface"
@@ -1431,7 +1440,7 @@ msgstr "De volgende commando's zijn beschikbaar:"
 
 #: src/cmdline/cmdline_resolver.cc:655
 msgid "File to write resolver state to: "
-msgstr "Bestand om de resolver-toestand in weg te schrijven:"
+msgstr "Bestand om status van de oplosser naar weg te schrijven:"
 
 #: src/cmdline/cmdline_resolver.cc:670
 msgid "Invalid response; please enter one of the following commands:"
@@ -1458,6 +1467,8 @@ msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
+"*** FOUT: zoekopdracht afgebroken vanwege fatale fout. U kunt de opdracht\n"
+"          vervolgen, maar sommige oplossingen zullen onbereikbaar zijn."
 
 #: src/cmdline/cmdline_search.cc:102
 #, c-format
@@ -1727,12 +1738,12 @@ msgstr "Verwijderen van verouderde, opgehaalde bestanden\n"
 #: src/cmdline/cmdline_update.cc:42
 #, c-format
 msgid "E: The update command takes no arguments\n"
-msgstr "E: Het bijwerkcommando heeft geen argumenten\n"
+msgstr "E: Het commando 'update' kent geen argumenten\n"
 
 #: src/cmdline/cmdline_upgrade.cc:41
-#, fuzzy, c-format
+#, c-format
 msgid "E: The %s command takes no arguments\n"
-msgstr "E: Het bijwerkcommando heeft geen argumenten\n"
+msgstr "E: Het commando '%s' kent geen argumenten\n"
 
 #: src/cmdline/cmdline_util.cc:93
 #, c-format
@@ -1897,13 +1908,13 @@ msgid "Fetched %sB in %s (%sB/s)\n"
 msgstr "%sB opgehaald in %s (%sB/s)\n"
 
 #: src/generic/apt/acqprogress.cc:296
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press [Enter].\n"
 msgstr ""
-"Wijziging van media: plaats de schijf met opschrift '%s' in het station '%s' "
-"en druk op enter\n"
+"Mediawisseling: plaats de schijf met opschrift '%s' in het station '%s' en "
+"druk op [Enter].\n"
 
 #: src/generic/apt/aptcache.cc:294
 msgid "Can't open Aptitude extended state file"
@@ -2043,7 +2054,7 @@ msgstr "Kon lijst van pakketbronnen niet lezen"
 
 #: src/generic/apt/download_update_manager.cc:114
 msgid "Couldn't clean out list directories"
-msgstr "Kon lijstmappen niet opkuisen"
+msgstr "Kon lijstmappen niet opschonen"
 
 #: src/generic/apt/download_update_manager.cc:126
 msgid "Couldn't rebuild package cache"
@@ -2520,6 +2531,7 @@ msgstr "Onverwacht lege boomtitel na \"%s\""
 
 #: src/load_grouppolicy.cc:650
 #, fuzzy, c-format
+#| msgid "Expected ',' or '(', got '%c'"
 msgid "Expected ',' or ')' following '||', got '%s'"
 msgstr "Verwachtte ',' of '(', kreeg '%c'"
 
@@ -2700,17 +2712,17 @@ msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - Lijsten van nieuwe/opwaardeerbare pakketten ophalen\n"
 
 #: src/main.cc:135
-#, fuzzy, c-format
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
-msgstr " upgrade      - Een veilige opwaardering uitvoeren\n"
+msgstr " safe-upgrade - Een veilige opwaardering uitvoeren\n"
 
 #: src/main.cc:136
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr ""
-" dist-upgrade - Een opwaardering uitvoeren, waarbij mogelijk pakketten "
+" full-upgrade - Een opwaardering uitvoeren, waarbij mogelijk pakketten "
 "worden geïnstalleerd of verwijderd\n"
 
 #: src/main.cc:137
@@ -2836,9 +2848,10 @@ msgstr ""
 "pakketten\n"
 
 #: src/main.cc:158
-#, fuzzy, c-format
+#, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
-msgstr " -Z\t\t    Toont de wijziging in installatiegrootte van elk pakket\n"
+msgstr ""
+" -Z             Toont de wijziging in installatiegrootte van elk pakket\n"
 
 #: src/main.cc:159
 #, c-format
@@ -2862,7 +2875,7 @@ msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
 msgstr ""
-" -q             Onderdruk de incrementele voortgangsindicators in "
+" -q             Onderdruk de incrementele voortgangsindicatoren in "
 "commandoregelmodus.\n"
 
 #: src/main.cc:162
@@ -2881,24 +2894,25 @@ msgstr ""
 "             afhankelijkheden worden behandeld\n"
 
 #: src/main.cc:164
-#, fuzzy, c-format
+#, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
-msgstr " -S fnaam: Lees de uitgebreide statusinfo van aptitude over fnaam.\n"
+msgstr ""
+" -S fnaam       Lees de uitgebreide statusinfo van aptitude uit fnaam.\n"
 
 #: src/main.cc:165
-#, fuzzy, c-format
+#, c-format
 msgid " -u             Download new package lists on startup.\n"
-msgstr " -u      : Haal nieuwe pakketlijsten op bij het opstarten.\n"
+msgstr " -u             Haal bij het opstarten nieuwe pakketlijsten op.\n"
 
 #: src/main.cc:166
-#, fuzzy, c-format
+#, c-format
 msgid " -i             Perform an install run on startup.\n"
-msgstr " -i      : Voer een installatieloop uit bij het opstarten.\n"
+msgstr " -i             Voer bij het opstarten een installatieslag uit.\n"
 
 #: src/main.cc:168
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
-msgstr "                  Deze aptitude heeft geen Super Koekrachten.\n"
+msgstr "                  Deze aptitude heeft geen Super Koe-krachten.\n"
 
 #: src/main.cc:307
 #, c-format
@@ -4177,16 +4191,14 @@ msgstr ""
 " Deze pakketten zullen worden opgewaardeerd naar een nieuwere versie."
 
 #: src/pkg_grouppolicy.cc:544
-#, fuzzy
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
 "made to complete their installation."
 msgstr ""
-"Pakketten die automatisch geïnstalleerd worden om een afhankelijkheid na te "
-"komen\n"
-" Deze pakketen worden geïnstalleerd omdat ze vereist zijn door een ander "
-"pakket dat u hebt gekozen om te installeren."
+"Pakketten die gedeeltelijk geïnstalleerd zijn\n"
+" Deze pakketen zijn niet volledig geïnstalleerd en geconfigureerd; gepoogd "
+"zal worden hun installatie te voltooien."
 
 #: src/pkg_grouppolicy.cc:659
 msgid "unknown"
@@ -4559,11 +4571,10 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b zal worden opgewaardeerd van versie %B%s%b naar versie %B%s%b."
 
 #: src/reason_fragment.cc:445
-#, fuzzy
 msgid "%B%s%b is only partly installed; its installation will be completed."
 msgstr ""
-"%s is op dit moment niet geïnstalleerd, dus zal het niet opnieuw worden "
-"geïnstalleerd.\n"
+"%B%s%b is slechts gedeeltelijk geïnstalleerd; de installatie zal worden "
+"voltooid."
 
 #: src/reason_fragment.cc:477
 msgid ""
@@ -4715,6 +4726,7 @@ msgstr "%s conflicteert met %s"
 
 #: src/solution_fragment.cc:120
 #, fuzzy, c-format
+#| msgid "%s replaces %s"
 msgid "%s breaks %s"
 msgstr "%s vervangt %s"
 
@@ -4907,12 +4919,14 @@ msgstr "U bent reeds root!"
 
 #: src/ui.cc:422
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
-msgstr ""
+msgstr "Ongeldig Get-Root-Command; het dient te beginnen met 'su:' of 'sudo:'"
 
 #: src/ui.cc:429
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr ""
+"Ongeldig Get-Root-Command; het dient te beginnen met 'su:' of 'sudo:', niet "
+"met '%s:'"
 
 #: src/ui.cc:552
 msgid ""
@@ -4931,6 +4945,7 @@ msgstr "Aptitude echt afsluiten?"
 
 #: src/ui.cc:686 src/ui.cc:688
 #, fuzzy
+#| msgid "PreDepends"
 msgid "Preferences"
 msgstr "Hangt af van voorgeconfigureerde"
 
@@ -4977,11 +4992,13 @@ msgstr ""
 
 #: src/ui.cc:1011 src/ui.cc:1013
 #, fuzzy
+#| msgid "^License"
 msgid "License"
 msgstr "^Licentie"
 
 #: src/ui.cc:1012
 #, fuzzy
+#| msgid "View the terms under which you may copy the program"
 msgid "View the terms under which you may copy and distribute aptitude"
 msgstr "Bekijk de voorwaarden waaronder u het programma mag kopiëren"
 
@@ -5027,6 +5044,7 @@ msgstr "Handmatig"
 
 #: src/ui.cc:1070 src/ui.cc:1072
 #, fuzzy
+#| msgid "^FAQ"
 msgid "FAQ"
 msgstr "^FAQ"
 
@@ -5036,6 +5054,7 @@ msgstr "Bekijk een overzicht van veel gestelde vragen"
 
 #: src/ui.cc:1080 src/ui.cc:1082
 #, fuzzy
+#| msgid "^News"
 msgid "News"
 msgstr "^Nieuws"
 
@@ -5231,7 +5250,7 @@ msgstr "Tijd verliezen bij het proberen vinden van mijnen"
 
 #: src/ui.cc:1593 src/ui.cc:1653
 msgid "Cleaning while a download is in progress is not allowed"
-msgstr "Opkuisen terwijl een ophaling aan de gang is, is niet toegelaten."
+msgstr "Opschonen terwijl een download bezig is, is niet toegestaan."
 
 #: src/ui.cc:1596
 msgid "Deleting downloaded files"
@@ -5281,11 +5300,11 @@ msgstr "Kan %ls niet openen"
 
 #: src/ui.cc:2064
 msgid "Error while dumping resolver state"
-msgstr "Fout bij het archiveren van de resolver-toestand"
+msgstr "Fout bij het archiveren van de status van de oplosser"
 
 #: src/ui.cc:2074
 msgid "File to which the resolver state should be dumped:"
-msgstr "Bestand waarin de resolver-toestand moet worden gearchiveerd:"
+msgstr "Bestand waarin de status van de oplosser moet worden gearchiveerd:"
 
 #: src/ui.cc:2104
 msgid "^Install/remove packages"
@@ -5589,14 +5608,12 @@ msgid "Repeat the last search"
 msgstr "Herhaal de laatste zoekopdracht"
 
 #: src/ui.cc:2268
-#, fuzzy
 msgid "Find Again ^Backwards"
-msgstr "Zoek ^Achterwaarts"
+msgstr "Zoek Opniew Achter^waarts"
 
 #: src/ui.cc:2269
-#, fuzzy
 msgid "Repeat the last search in the opposite direction"
-msgstr "Herhaal de laatste zoekopdracht"
+msgstr "Herhaal de laatste zoekopdracht in tegengestelde richting"
 
 #: src/ui.cc:2273
 msgid "^Limit Display"
@@ -5624,6 +5641,7 @@ msgstr "Zoek het volgende pakket met niet-voldane afhankelijkheden"
 
 #: src/ui.cc:2290
 #, fuzzy
+#| msgid "PreDepends"
 msgid "^Preferences"
 msgstr "Hangt af van voorgeconfigureerde"
 
@@ -5767,6 +5785,7 @@ msgstr "^Licentie"
 
 #: src/ui.cc:2383
 #, fuzzy
+#| msgid "View the terms under which you may copy the program"
 msgid "View the terms under which you may copy and distribute aptiutde"
 msgstr "Bekijk de voorwaarden waaronder u het programma mag kopiëren"
 
@@ -5908,10 +5927,7 @@ msgstr "TOP NIVEAU"
 #~ "Verwijder niet automatisch ongebruikte pakketten die voldoen aan deze "
 #~ "filter"
 
-#, fuzzy
 #~ msgid ""
 #~ "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
-#~ msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
-
-#~ msgid "view an explanation of the changes in the solution"
-#~ msgstr "bekijk een verklaring van de wijzigingen in de oplossing"
+#~ msgstr ""
+#~ "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
