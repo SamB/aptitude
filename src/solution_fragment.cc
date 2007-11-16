@@ -143,7 +143,7 @@ wstring conflict_text(const pkgCache::DepIterator &conflict,
 		   const_cast<pkgCache::PrvIterator &>(prv).OwnerVer().VerStr());
 }
 
-fragment *action_fragment(const aptitude_solution::action &a)
+cw::fragment *action_fragment(const aptitude_solution::action &a)
 {
   if(a.ver.get_ver().end())
     return cw::fragf(_("Removing %s"), a.ver.get_pkg().Name());
@@ -154,7 +154,7 @@ fragment *action_fragment(const aptitude_solution::action &a)
 }
 
 
-fragment *solution_fragment(const aptitude_solution &sol)
+cw::fragment *solution_fragment(const aptitude_solution &sol)
 {
   // Bin packages according to what will happen to them.
   vector<pkgCache::PkgIterator> remove_packages;

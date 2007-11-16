@@ -20,24 +20,26 @@
 
 using namespace std;
 
+namespace cw = cwidget;
+
 /** Returns a cw::fragment describing a dependency (as in "depends
  *  on" or "suggests" rather than "Depends" or "Suggests")
  */
-fragment *depname_frag(pkgCache::DepIterator dep)
+cw::fragment *depname_frag(pkgCache::DepIterator dep)
 {
   switch(dep->Type)
     {
     case pkgCache::Dep::Depends: return cw::text_fragment(_("depends on"),
-						      cw::style_attrs_on(A_BOLD));
+							  cw::style_attrs_on(A_BOLD));
     case pkgCache::Dep::PreDepends: return cw::text_fragment(_("pre-depends on"),
-							 cw::style_attrs_on(A_BOLD));
+							     cw::style_attrs_on(A_BOLD));
     case pkgCache::Dep::Suggests: return cw::text_fragment(_("suggests"));
     case pkgCache::Dep::Recommends: return cw::text_fragment(_("recommends"),
-							 cw::style_attrs_on(A_BOLD));
+							     cw::style_attrs_on(A_BOLD));
     case pkgCache::Dep::Conflicts: return cw::text_fragment(_("conflicts with"),
-							cw::style_attrs_on(A_BOLD));
+							    cw::style_attrs_on(A_BOLD));
     case pkgCache::Dep::DpkgBreaks: return cw::text_fragment(_("breaks"),
-							cw::style_attrs_on(A_BOLD));
+							     cw::style_attrs_on(A_BOLD));
     case pkgCache::Dep::Replaces: return cw::text_fragment(_("replaces"));
     case pkgCache::Dep::Obsoletes: return cw::text_fragment(_("obsoletes"));
     }
@@ -79,9 +81,9 @@ struct ver_ptr_cmp
  *  installed, or which will be installed, are shown; otherwise, all
  *  providees are shown.
  */
-fragment *prvfrag(pkgCache::PkgIterator pkg,
-		  pkgCache::PkgIterator ignpkg,
-		  bool installed)
+cw::fragment *prvfrag(pkgCache::PkgIterator pkg,
+		      pkgCache::PkgIterator ignpkg,
+		      bool installed)
 {
   // All packages providing the given package name are listed.
   //
@@ -139,15 +141,15 @@ fragment *prvfrag(pkgCache::PkgIterator pkg,
 	 (currver.end() || provided_curr) &&
 	 (provided_cand || provided_curr))
 	fragments.push_back(cw::text_fragment(P->Name(),
-					  pkg_item::pkg_style(*P, false)));
+					      pkg_item::pkg_style(*P, false)));
       else if(provided_cand || provided_curr)
 	{
 	  pkgCache::VerIterator &pv=provided_cand?candver:currver;
 
 	  fragments.push_back(cw::style_fragment(cw::fragf("%s %s",
-						   P->Name(),
-						   pv.VerStr()),
-					     pkg_ver_item::ver_style(pv, false)));
+							   P->Name(),
+							   pv.VerStr()),
+						 pkg_ver_item::ver_style(pv, false)));
 	}
       else
 	// Bail and print EVERYTHING IN SIGHT...not very efficiently, either.
@@ -156,9 +158,9 @@ fragment *prvfrag(pkgCache::PkgIterator pkg,
 	      i!=providing_versions.end(); ++i)
 	    if(i->ParentPkg()==*P)
 	      fragments.push_back(cw::style_fragment(cw::fragf("%s %s",
-						       P->Name(),
-						       i->VerStr()),
-						 pkg_ver_item::ver_style(*i, false)));
+							       P->Name(),
+							       i->VerStr()),
+						     pkg_ver_item::ver_style(*i, false)));
 	}
     }
 
@@ -166,12 +168,12 @@ fragment *prvfrag(pkgCache::PkgIterator pkg,
     return cw::fragf("");
   else
     return cw::fragf(_(" (provided by %F)"),
-		 cw::join_fragments(fragments, L", "));
+		     cw::join_fragments(fragments, L", "));
 }
 
 /** Generate a cw::fragment describing the given dependency iterator. */
-fragment *dep_singlefrag(pkgCache::PkgIterator pkg,
-			 pkgCache::DepIterator dep)
+cw::fragment *dep_singlefrag(pkgCache::PkgIterator pkg,
+			     pkgCache::DepIterator dep)
 {
   cw::fragment *verfrag;
 
@@ -213,8 +215,8 @@ fragment *dep_singlefrag(pkgCache::PkgIterator pkg,
 	}
 
       verfrag=cw::fragf(" (%s %F)",
-		    dep.CompType(),
-		    cw::text_fragment(dep.TargetVer(), verstyle));
+			dep.CompType(),
+			cw::text_fragment(dep.TargetVer(), verstyle));
     }
 
   // Display a note if the package that is depended upon is not in
@@ -236,22 +238,22 @@ fragment *dep_singlefrag(pkgCache::PkgIterator pkg,
       available=true;
 
   return cw::fragf("%F%s%F%F%s",
-	       cw::text_fragment(dep.TargetPkg().Name(),
-			     pkg_item::pkg_style(dep.TargetPkg(), false)),
-	       sec.empty() || sec=="main"?"":(" ["+sec+']').c_str(),
-	       verfrag,
-	       prvfrag(dep.TargetPkg(),
-		       dep.ParentPkg(),
-		       is_conflict(dep->Type)),
-	       available?"":(string(" [")+_("UNAVAILABLE")+"]").c_str());
+		   cw::text_fragment(dep.TargetPkg().Name(),
+				     pkg_item::pkg_style(dep.TargetPkg(), false)),
+		   sec.empty() || sec=="main"?"":(" ["+sec+']').c_str(),
+		   verfrag,
+		   prvfrag(dep.TargetPkg(),
+			   dep.ParentPkg(),
+			   is_conflict(dep->Type)),
+		   available?"":(string(" [")+_("UNAVAILABLE")+"]").c_str());
 }
 
 /** Generate a cw::fragment describing the OR group that contains the
  *  given dependency, assuming that we are examining pkg.  Assumes
  *  that duplicate OR dependencies are already dealt with in some way.
  */
-fragment *dep_or_frag(pkgCache::PkgIterator pkg,
-		      pkgCache::DepIterator dep)
+cw::fragment *dep_or_frag(pkgCache::PkgIterator pkg,
+			  pkgCache::DepIterator dep)
 {
   vector<cw::fragment*> fragments;
 
@@ -262,7 +264,7 @@ fragment *dep_or_frag(pkgCache::PkgIterator pkg,
   for(pkgCache::DepIterator D=or_begin; D!=or_end; ++D)
     if(D->CompareOp&pkgCache::Dep::Or)
       fragments.push_back(cw::fragf("%F | ",
-				dep_singlefrag(pkg, D)));
+				    dep_singlefrag(pkg, D)));
     else
       fragments.push_back(dep_singlefrag(pkg, D));
 
@@ -275,17 +277,17 @@ fragment *dep_or_frag(pkgCache::PkgIterator pkg,
     sec=string(sec, 0, sec.find('/'));
 
   return cw::fragf(_("%F%s %F %F"),
-	       cw::text_fragment(dep.ParentPkg().Name(),
-			     pkg_item::pkg_style(dep.ParentPkg(), false)),
-	       sec.empty() || sec=="main"?"":(" ["+sec+']').c_str(),
-	       depname_frag(dep),
-	       cw::sequence_fragment(fragments));
+		   cw::text_fragment(dep.ParentPkg().Name(),
+				     pkg_item::pkg_style(dep.ParentPkg(), false)),
+		   sec.empty() || sec=="main"?"":(" ["+sec+']').c_str(),
+		   depname_frag(dep),
+		   cw::sequence_fragment(fragments));
 }
 
 typedef pair<pkgCache::DepIterator, pkgCache::DepIterator> deppair;
 
 /** Return a cw::fragment describing the reasons in the given vector. */
-fragment *reasonsfrag(pkgCache::PkgIterator pkg, set<reason> &reasons)
+cw::fragment *reasonsfrag(pkgCache::PkgIterator pkg, set<reason> &reasons)
 {
   vector<cw::fragment*> fragments;
 
@@ -311,9 +313,9 @@ fragment *reasonsfrag(pkgCache::PkgIterator pkg, set<reason> &reasons)
 	  cw::fragment *itemtext=dep_or_frag(pkg, i->dep);
 
 	  fragments.push_back(cw::sequence_fragment(cw::text_fragment("  * ",
-							      cw::get_style("Bullet")),
-						indentbox(0, 4, flowbox(itemtext)),
-						NULL));
+								      cw::get_style("Bullet")),
+						    indentbox(0, 4, flowbox(itemtext)),
+						    NULL));
 	}
     }
 
@@ -321,19 +323,19 @@ fragment *reasonsfrag(pkgCache::PkgIterator pkg, set<reason> &reasons)
 }
 
 /** Return a cw::fragment describing the lack of a package. */
-fragment *nopackage()
+cw::fragment *nopackage()
 {
   return wrapbox(cw::text_fragment(_("If you select a package, an explanation of its current state will appear in this space.")));
 }
 
-fragment *reason_fragment(const pkgCache::PkgIterator &pkg)
+cw::fragment *reason_fragment(const pkgCache::PkgIterator &pkg)
 {
   bool dummy;
 
   return reason_fragment(pkg, dummy);
 }
 
-fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
+cw::fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
 {
   breakage=false;
 
@@ -358,25 +360,25 @@ fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
     {
     case pkg_unused_remove:
       fragments.push_back(wrapbox(cw::fragf(_("%B%s%b was installed automatically;  it is being removed because all of the packages which depend upon it are being removed:"),
-					pkg.Name())));
+					    pkg.Name())));
       break;
     case pkg_auto_remove:
       fragments.push_back(wrapbox(cw::fragf(_("%B%s%b will be automatically removed because of dependency errors:"),
-					pkg.Name())));
+					    pkg.Name())));
       break;
     case pkg_auto_install:
       fragments.push_back(wrapbox(cw::fragf(_("%B%s%b will be automatically installed to satisfy the following dependencies:"),
-					pkg.Name())));
+					    pkg.Name())));
       break;
     case pkg_auto_hold:
       {
 	if(candver.end() || candver==pkg.CurrentVer())
 	  fragments.push_back(wrapbox(cw::fragf(_("%B%s%b cannot be upgraded now, but if it could be, it would still be held at version %B%s%b."),
-					    pkg.Name(), pkg.CurrentVer().VerStr())));
+						pkg.Name(), pkg.CurrentVer().VerStr())));
 	else
 	  fragments.push_back(wrapbox(cw::fragf(_("%B%s%b will not be upgraded to version %B%s%b, to avoid breaking the following dependencies:"),
-					    pkg.Name(),
-					    candver.VerStr())));
+						pkg.Name(),
+						candver.VerStr())));
 	break;
       }
     case pkg_unchanged:
@@ -384,16 +386,16 @@ fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
 	{
 	  if((*apt_cache_file)->is_held(pkg))
 	    fragments.push_back(wrapbox(cw::fragf(_("%B%s%b cannot be upgraded now, but if it could be, it would still be held at version %B%s%b."),
-					      pkg.Name(), pkg.CurrentVer().VerStr())));
+						  pkg.Name(), pkg.CurrentVer().VerStr())));
 	  else
 	    fragments.push_back(wrapbox(cw::fragf(_("%B%s%b is currently installed."),
-					      pkg.Name())));
+						  pkg.Name())));
 	  break;
 	}
       else
 	{
 	  fragments.push_back(wrapbox(cw::fragf(_("%B%s%b is not currently installed."),
-					    pkg.Name())));
+						pkg.Name())));
 
 	  break;
 	}
@@ -401,44 +403,44 @@ fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
       breakage=true;
 
       fragments.push_back(wrapbox(cw::fragf(_("Some dependencies of %B%s%b are not satisfied:"),
-					pkg.Name())));
+					    pkg.Name())));
       break;
     case pkg_downgrade:
       fragments.push_back(wrapbox(cw::fragf(_("%B%s%b will be downgraded."),
-					pkg.Name())));
+					    pkg.Name())));
       break;
     case pkg_hold:
       {
 	if(estate.selection_state != pkgCache::State::Hold &&
 	   !candver.end() && candver.VerStr() == estate.forbidver)
 	  fragments.push_back(wrapbox(cw::fragf(_("%B%s%b will not be upgraded to the forbidden version %B%s%b."),
-					    pkg.Name(),
-					    candver.VerStr())));
+						pkg.Name(),
+						candver.VerStr())));
 	else
 	  fragments.push_back(wrapbox(cw::fragf(_("%B%s%b could be upgraded to version %B%s%b, but it is being held at version %B%s%b."),
-					    pkg.Name(),
-					    candver.VerStr(),
-					    pkg.CurrentVer().VerStr())));
+						pkg.Name(),
+						candver.VerStr(),
+						pkg.CurrentVer().VerStr())));
       }
       break;
     case pkg_reinstall:
       fragments.push_back(wrapbox(cw::fragf(_("%B%s%b will be re-installed."),
-					pkg.Name())));
+					    pkg.Name())));
       break;
     case pkg_install:
       fragments.push_back(wrapbox(cw::fragf(_("%B%s%b will be installed."),
-					pkg.Name())));
+					    pkg.Name())));
       break;
     case pkg_remove:
       fragments.push_back(wrapbox(cw::fragf(_("%B%s%b will be removed."),
-					pkg.Name())));
+					    pkg.Name())));
       break;
     case pkg_upgrade:
       {
 	fragments.push_back(wrapbox(cw::fragf(_("%B%s%b will be upgraded from version %B%s%b to version %B%s%b."),
-					  pkg.Name(),
-					  pkg.CurrentVer().VerStr(),
-					  candver.VerStr(), A_BOLD)));
+					      pkg.Name(),
+					      pkg.CurrentVer().VerStr(),
+					      candver.VerStr(), A_BOLD)));
       }
       break;
     case pkg_unconfigured:
@@ -447,14 +449,14 @@ fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
     default:
       // Another non-translatable internal error.
       fragments.push_back(wrapbox(cw::fragf("Internal error: Unknown package state for %s!",
-					pkg.Name())));
+					    pkg.Name())));
     }
 
 
   if(!reasons.empty())
     fragments.push_back(cw::sequence_fragment(cw::newline_fragment(),
-					  cw::newline_fragment(),
-					  NULL));
+					      cw::newline_fragment(),
+					      NULL));
 
   fragments.push_back(reasonsfrag(pkg, reasons));
 
@@ -467,25 +469,25 @@ fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
       breakage=true;
 
       fragments.push_back(cw::sequence_fragment(cw::newline_fragment(),
-					    cw::newline_fragment(),
-					    NULL));
+						cw::newline_fragment(),
+						NULL));
 
       // It will end up un-installed.
       if(instver.end())
 	{
 	  if(state.Delete())
 	    fragments.push_back(wrapbox(cw::fragf(_("The following packages depend on %B%s%b and will be broken by its removal:"),
-					      pkg.Name())));
+						  pkg.Name())));
 	  else
 	    fragments.push_back(wrapbox(cw::fragf(_("The following packages depend on %B%s%b and are broken:"),
-					      pkg.Name())));
+						  pkg.Name())));
 	}
       // It will end up installed.
       else
 	{
 	  if(pkg.CurrentVer().end())
 	    fragments.push_back(wrapbox(cw::fragf(_("The following packages conflict with %B%s%b and will be broken by its installation:"),
-					      pkg.Name())));
+						  pkg.Name())));
 	  else
 	    // up/downgrade; could be either Depends or Conflicts/Breaks
 	    {
@@ -518,24 +520,24 @@ fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
 		    {
 		      if(state.Keep())
 			fragments.push_back(wrapbox(cw::fragf(_("The following packages depend on a version of %B%s%b other than the currently installed version of %B%s%b, or conflict with the currently installed version:"),
-							  pkg.Name(),
-							  pkg.CurrentVer().VerStr())));
+							      pkg.Name(),
+							      pkg.CurrentVer().VerStr())));
 		      else
 			fragments.push_back(wrapbox(cw::fragf(_("The following packages conflict with %B%s%b, or depend on a version of it which is not going to be installed."),
-							  pkg.Name())));
+							      pkg.Name())));
 		    }
 		  else if(has_conflicts)
 		    fragments.push_back(wrapbox(cw::fragf(_("The following packages conflict with %B%s%b:"),
-						      pkg.Name())));
+							  pkg.Name())));
 		  else if(has_depends)
 		    {
 		      if(state.Keep())
 			fragments.push_back(wrapbox(cw::fragf(_("The following packages depend on a version of %B%s%b other than the currently installed version of %B%s%b:"),
-							  pkg.Name(),
-							  pkg.CurrentVer().VerStr())));
+							      pkg.Name(),
+							      pkg.CurrentVer().VerStr())));
 		      else
 			fragments.push_back(wrapbox(cw::fragf(_("The following packages depend on a version of %B%s%b which is not going to be installed."),
-							  pkg.Name())));
+							      pkg.Name())));
 		    }
 		}
 	      else
@@ -547,28 +549,28 @@ fragment *reason_fragment(const pkgCache::PkgIterator &pkg, bool &breakage)
 		    // factoring out upgraded/downgraded in its two senses
 		    // would be a royal pain even if gettext supported it.
 		    fragments.push_back(wrapbox(cw::fragf(_("The following packages depend on the currently installed version of %B%s%b (%B%s%b), or conflict with the version it will be %s to (%B%s%b), and will be broken if it is %s."),
-						      pkg.Name(),
-						      pkg.CurrentVer().VerStr(),
-						      actionname,
-						      instver.VerStr(),
-						      actionname)));
+							  pkg.Name(),
+							  pkg.CurrentVer().VerStr(),
+							  actionname,
+							  instver.VerStr(),
+							  actionname)));
 		  else if(has_conflicts)
 		    fragments.push_back(wrapbox(cw::fragf(_("The following packages conflict with version %B%s%b of %B%s%b, and will be broken if it is %s."),
-						      instver.VerStr(),
-						      pkg.Name(),
-						      actionname)));
+							  instver.VerStr(),
+							  pkg.Name(),
+							  actionname)));
 		  else if(has_depends)
 		    fragments.push_back(wrapbox(cw::fragf(_("The following packages depend on version %B%s%b of %B%s%b, and will be broken if it is %s."),
-						      pkg.CurrentVer().VerStr(),
-						      pkg.Name(),
-						      actionname)));
+							  pkg.CurrentVer().VerStr(),
+							  pkg.Name(),
+							  actionname)));
 		}
 	    }
 	}
 
       fragments.push_back(cw::sequence_fragment(cw::newline_fragment(),
-					    cw::newline_fragment(),
-					    NULL));
+						cw::newline_fragment(),
+						NULL));
 
       fragments.push_back(reasonsfrag(pkg, reasons));
     }

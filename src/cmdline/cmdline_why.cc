@@ -924,7 +924,7 @@ namespace
   };
 }
 
-fragment *do_why(const std::vector<pkg_matcher *> &leaves,
+cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 		 const pkgCache::PkgIterator &root,
 		 int verbosity,
 		 bool root_is_removal,
@@ -1133,7 +1133,7 @@ int do_why(const std::vector<pkg_matcher *> &leaves,
   return success ? 0 : 1;
 }
 
-fragment *do_why(const std::vector<pkg_matcher *> &leaves,
+cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 		 const pkgCache::PkgIterator &root,
 		 bool find_all,
 		 bool root_is_removal,
@@ -1173,7 +1173,7 @@ bool interpret_why_args(const std::vector<std::string> &args,
   return !parsing_arguments_failed;
 }
 
-fragment *do_why(const std::vector<std::string> &arguments,
+cw::fragment *do_why(const std::vector<std::string> &arguments,
 		 const std::string &root,
 		 int verbosity,
 		 bool root_is_removal,
@@ -1201,7 +1201,7 @@ fragment *do_why(const std::vector<std::string> &arguments,
   return rval;
 }
 
-fragment *do_why(const std::vector<std::string> &leaves,
+cw::fragment *do_why(const std::vector<std::string> &leaves,
 		 const std::string &root,
 		 bool find_all,
 		 bool root_is_removal,

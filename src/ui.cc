@@ -2760,7 +2760,7 @@ progress_ref gen_progress_bar()
   return rval;
 }
 
-fragment *wrapbox(cw::fragment *contents)
+cw::fragment *wrapbox(cw::fragment *contents)
 {
   if(aptcfg->FindB(PACKAGE "::UI::Fill-Text", false))
     return fillbox(contents);
