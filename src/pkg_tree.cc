@@ -32,7 +32,7 @@
 #include "ui.h"
 #include "progress.h"
 
-#include <vscreen/columnify.h>
+#include <cwidget/columnify.h>
 #include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/treeitem.h>
 
@@ -47,7 +47,7 @@
 #include <sigc++/adaptors/retype_return.h>
 #include <sigc++/functors/mem_fun.h>
 
-keybindings *pkg_tree::bindings=NULL;
+cw::config::keybindings *pkg_tree::bindings=NULL;
 
 cw::editline::history_list pkg_tree::limit_history, pkg_tree::grouping_history,
   pkg_tree::sorting_history;
