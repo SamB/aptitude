@@ -36,6 +36,7 @@
 #include <generic/apt/apt_undo_group.h>
 #include <generic/apt/config_signal.h>
 
+#include <cwidget/toplevel.h>
 #include <cwidget/widgets/multiplex.h>
 
 #include <algorithm>
@@ -539,7 +540,7 @@ void pkg_ver_item::paint(cw::tree *win, int y, bool hierarchical,
   win->getmaxyx(height, width);
   pkg_item::pkg_columnizer::setup_columns();
 
-  empty_column_parameters p;
+  cw::config::empty_column_parameters p;
   wstring disp=pkg_ver_columnizer(version,
 				  show_pkg_name,
 				  pkg_item::pkg_columnizer::get_columns(),
