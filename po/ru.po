@@ -1,4 +1,4 @@
-# translation of ru.po to Russian
+# translation of aptitude_po_ru.po to Russian
 # This file is distributed under the same license as the aptitude package.
 # Copyright (C) 2004 THE aptitude'S COPYRIGHT HOLDER.
 #
@@ -8,10 +8,10 @@
 # Yuri Kozlov <kozlov.y@gmail.com>, 2004, 2005, 2006, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.4.6.1-1.1\n"
+"Project-Id-Version: 0.4.6.1-1.1-next\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-10-30 21:11-0700\n"
-"PO-Revision-Date: 2007-10-11 21:32+0400\n"
+"PO-Revision-Date: 2007-11-15 21:24+0300\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -30,9 +30,10 @@ msgid ""
 "If this option is enabled, a brief summary of some of the most important "
 "aptitude commands will appear beneath the menu bar."
 msgstr ""
+"Если эта опция включена, под строкой меню показываются краткая справка на "
+"некоторые наиболее важные команды aptitude."
 
 #: src/apt_options.cc:163
-#, fuzzy
 msgid "Hide the menu bar when it is not being used"
 msgstr "Скрывать строку меню, когда она не используется"
 
@@ -41,6 +42,8 @@ msgid ""
 "If this option is enabled, the menu bar will only appear when it has been "
 "activated by pressing the menu key."
 msgstr ""
+"Если эта опция включена, то строка меню отображается только когда она "
+"активирована нажатием клавиши меню."
 
 #: src/apt_options.cc:168
 msgid "Use a minibuffer-style prompt when possible"
@@ -52,6 +55,8 @@ msgid ""
 "bottom of the screen.  If not, prompts will be displayed as pop-up dialog "
 "boxes."
 msgstr ""
+"Если эта опция включена, то одиночная строка ввода будет доступна внизу "
+"экрана. Если нет, то ввод будет показан в виде всплывающего диалогового окна."
 
 #: src/apt_options.cc:174
 msgid "Show partial search results (incremental search)"
@@ -63,6 +68,9 @@ msgid ""
 "list as you type them.  This is convenient, but may slow the program down, "
 "particularly on older computers."
 msgstr ""
+"Если эта опция включена, то aptitude будет выполнять поиск по списку пакетов "
+"сразу после нажатия символов. Это удобно, но может затормозить работу "
+"программы, особенно на старых компьютерах."
 
 #: src/apt_options.cc:181
 msgid "Closing the last view exits the program"
@@ -74,6 +82,9 @@ msgid ""
 "(package lists, package details, etc) have been closed.  Otherwise, aptitude "
 "will continue running until you select 'Quit' from the Actions menu."
 msgstr ""
+"Если эта опция включена, то aptitude завершит работу после закрытия всех "
+"окон (списки пакетов, описания пакетов и т.д.). В противном случае aptitude "
+"будет продолжать работать, пока вы не выберете 'Выйти' в меню Действий."
 
 #: src/apt_options.cc:188
 msgid "Prompt for confirmation at exit"
@@ -84,6 +95,8 @@ msgid ""
 "If this option is enabled, aptitude will not terminate until you confirm "
 "that you really want to quit."
 msgstr ""
+"Если эта опция включена, то aptitude не завершит работу пока вы не "
+"подтвердите, что действительно этого хотите."
 
 #: src/apt_options.cc:193
 msgid "Pause after downloading files"
@@ -94,6 +107,8 @@ msgid ""
 "This option controls whether aptitude will wait for confirmation after a "
 "download before it goes ahead and installs packages."
 msgstr ""
+"Эта опция контролирует, будет ли aptitude ждать подтверждения после загрузки "
+"перед тем как приступить к установке пакетов."
 
 #: src/apt_options.cc:197
 msgid "Never"
@@ -104,6 +119,8 @@ msgid ""
 "Never wait for the user after downloading packages: always begin the "
 "installation immediately."
 msgstr ""
+"Никогда не ждать подтверждения пользователя после загрузки пакетов: всегда "
+"начинать установку сразу же."
 
 #: src/apt_options.cc:199
 msgid "When an error occurs"
@@ -114,6 +131,8 @@ msgid ""
 "Wait for confirmation if an error occurred during the download.  If there "
 "were no errors, begin installing packages immediately."
 msgstr ""
+"Ждать подтверждения, если при загрузке произошла ошибка. Если ошибок не было "
+"-- начинать установку пакетов сразу же."
 
 #: src/apt_options.cc:201
 msgid "Always"
@@ -124,6 +143,8 @@ msgid ""
 "Always wait for the user to confirm the download before proceeding with the "
 "installation."
 msgstr ""
+"Всегда ждать подтверждения пользователя после загрузки перед тем как "
+"продолжить установку."
 
 #: src/apt_options.cc:204
 msgid "Use a 'status-line' download indicator for all downloads"
@@ -134,6 +155,8 @@ msgid ""
 "If this option is enabled, aptitude will display the status of ongoing "
 "downloads at the bottom of the screen, rather than opening a new view."
 msgstr ""
+"Если эта опция включена, то aptitude будет показывать индикатор загрузки "
+"внизу экрана, а не открывать для этого новое окно."
 
 #: src/apt_options.cc:209
 msgid "Display the extended description area by default"
@@ -145,6 +168,9 @@ msgid ""
 "of the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
+"Если эта опция включена, то при запуске программы в списке пакетов будет "
+"видна область развёрнутого описания (панель внизу экрана); иначе изначально "
+"она скрыта."
 
 #: src/apt_options.cc:215
 msgid "Advance to the next item after changing the state of a package"
@@ -156,6 +182,9 @@ msgid ""
 "instance, installing or removing it) will move the selection to the next "
 "package in the list."
 msgstr ""
+"Если эта опция включена, то при выполнении действия с пакетом (например, "
+"установка или удаление) выбранным пакетом становится следующий пакет из "
+"списка."
 
 #: src/apt_options.cc:221
 msgid "Automatically show why packages are broken"
@@ -167,6 +196,9 @@ msgid ""
 "dependencies will automatically display the dependencies that are "
 "unfulfilled in the lower pane of the display."
 msgstr ""
+"Если эта опция включена, то для выделенного пакета, имеющего сломанные "
+"зависимости, в нижней панели экрана будут автоматически показаны "
+"зависимости, которые не могут быть удовлетворены."
 
 #: src/apt_options.cc:228
 msgid "The default grouping method for package views"
@@ -177,6 +209,8 @@ msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
 msgstr ""
+"Эта опция контролирует как aptitude формирует список пакетов. О том как "
+"задать метод группировки смотрите в руководстве пользователя aptitude."
 
 #: src/apt_options.cc:233
 msgid "The default display-limit for package views"
@@ -188,6 +222,9 @@ msgid ""
 "specified by this option.  See the aptitude user's manual for detailed "
 "information about searches."
 msgstr ""
+"По умолчанию, ограничение окна для каждого пакета устанавливается равным "
+"значению этой опции. О поиске подробней смотрите руководство пользователя "
+"aptitude."
 
 #: src/apt_options.cc:239
 msgid "The display format for package views"
@@ -199,6 +236,9 @@ msgid ""
 "the aptitude user's manual for information on how to specify a display "
 "format."
 msgstr ""
+"Эта опция контролирует как aptitude формирует строки списка пакетов. "
+"Подробней о том, как настроить формат строк смотрите в руководстве "
+"пользователя aptitude."
 
 #: src/apt_options.cc:246
 msgid "The display format for the status line"
@@ -210,6 +250,9 @@ msgid ""
 "the package list and the lower pane).  See the aptitude user's manual for "
 "information on how to specify a display format."
 msgstr ""
+"Эта опция контролирует как aptitude формирует строку состояния (строка между "
+"списком пакетов и нижней панелью). Подробней о том, как настроить формат "
+"строки смотрите в руководстве пользователя aptitude."
 
 #: src/apt_options.cc:254
 msgid "The display format for the header line"
@@ -221,6 +264,9 @@ msgid ""
 "the package list).  See the aptitude user's manual for information on how to "
 "specify a display format."
 msgstr ""
+"Эта опция контролирует как aptitude формирует строку заголовка (строка выше "
+"списка пакетов). Подробней о том, как настроить формат строки смотрите в "
+"руководстве пользователя aptitude."
 
 #: src/apt_options.cc:265
 msgid "Automatically upgrade installed packages"
@@ -231,10 +277,12 @@ msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
 msgstr ""
+"Если опция включена, то при запуске aptitude выберет все обновляемые пакеты "
+"для обновления."
 
 #: src/apt_options.cc:270
 msgid "Remove obsolete package files after downloading new package lists"
-msgstr "Удалять устаревшие списки пакетов после загрузки новых"
+msgstr "Удалять устаревшие файлы пакетов после загрузки нового списка пакетов"
 
 #: src/apt_options.cc:271
 msgid ""
@@ -242,6 +290,9 @@ msgid ""
 "delete from the package cache any package files that can no longer be "
 "downloaded from any archive in sources.lst."
 msgstr ""
+"Если эта опция включена, то после каждого запуска установки aptitude будет "
+"удалять из кеша пакетов все файлы пакетов, которые более не могут быть "
+"загружены из любого архива, указанного в sources.list."
 
 #: src/apt_options.cc:276
 msgid "URL to use to download changelogs"
@@ -253,16 +304,21 @@ msgid ""
 "the Debian Web site.  You should only need to change this if the URL of the "
 "package archive changes."
 msgstr ""
+"Эта опция контролирует шаблон, который используется для загрузки списка "
+"изменений с веб-сайта Debian. Её нужно менять только если изменился URL "
+"архива пакетов."
 
 #: src/apt_options.cc:283
 msgid "Display a preview of what will be done before doing it"
-msgstr "Показать, что будет сделано, перед тем, как делать"
+msgstr "Показать, что будет сделано, перед тем как делать"
 
 #: src/apt_options.cc:284
 msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
 msgstr ""
+"Если эта опция включена, то перед тем как aptitude попросит подтвердить "
+"установку пакета, будет показан список действий, которые будут выполнены."
 
 #: src/apt_options.cc:290
 msgid ""
@@ -274,11 +330,13 @@ msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
 msgstr ""
+"Если эта опция включена, то aptitude очистит список новых пакетов после "
+"обновления списка пакетов (например, по нажатию 'u')."
 
 #: src/apt_options.cc:296
 msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
-msgstr "Забывать о \"новых\" пакетах после установки или удаления пакетов"
+msgstr "Забывать о \"новых\" пакетах после установки или удалении пакетов"
 
 #: src/apt_options.cc:297
 msgid ""
@@ -286,6 +344,9 @@ msgid ""
 "after you perform an install run or install or remove packages from the "
 "command-line."
 msgstr ""
+"Если эта опция включена, то aptitude очистит список новых пакетов после того "
+"как вы выполните запуск установки или установку или удаление пакетов из "
+"командной строки."
 
 #: src/apt_options.cc:303
 msgid ""
@@ -299,6 +360,9 @@ msgid ""
 "modify the state of a package if you do not have permissions to apply the "
 "change to the system."
 msgstr ""
+"Если эта опция %Bвыключена%b, aptitude будет показывать предупреждение когда "
+"вы изменяете состояние пакета, если вы не имеете прав делать изменения в "
+"системе."
 
 #: src/apt_options.cc:310
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -312,6 +376,11 @@ msgid ""
 "installing packages as a non-root user.  You will be given the option to log "
 "in as root and perform the action with root privileges."
 msgstr ""
+"Если эта опция включена, aptitude будет показывать предупреждение когда вы "
+"пытаетесь выполнить действие для которого у вас не хватает прав: например, "
+"при установке пакета без прав суперпользователя. В это случае вам будет "
+"предложена войти в систему суперпользователем и выполнить действие с "
+"большими правами."
 
 #: src/apt_options.cc:320
 msgid "File to log actions into"
@@ -324,6 +393,10 @@ msgid ""
 "character ('%B|%b'), the remainder of the name will be interpreted as a "
 "shell command that is to receive the log on standard input."
 msgstr ""
+"При установке или удалении пакетов всё, что выполняет aptitude будет "
+"записано в этот файл. Если первый символ имени файла вертикальная черта ('%B|"
+"%b'), то остаток имени будет рассматриваться как команда оболочки командной "
+"строки, которая принимает данные о действиях aptitude со стандартного ввода."
 
 #: src/apt_options.cc:333
 msgid "Automatically resolve dependencies of a package when it is selected"
@@ -336,11 +409,15 @@ msgid ""
 "installation.  This is much faster than the built-in dependency resolver, "
 "but may produce suboptimal results or fail entirely in some scenarios."
 msgstr ""
+"Если эта опция включена, aptitude с помощью простой эвристики сразу же решит "
+"зависимости каждого пакета, который вы пометили для установки. Это намного "
+"быстрее чем встроенный решатель зависимостей, но может приводить к "
+"неоптимальным результатам или вообще не сработает в некоторых случаях."
 
 #: src/apt_options.cc:342
 msgid "Automatically fix broken packages before installing or removing"
 msgstr ""
-"Автоматически исправлять неработосп. пакетов перед установкой или удалением"
+"Автоматически исправлять сломанные пакеты перед установкой или удалением"
 
 #: src/apt_options.cc:343
 msgid ""
@@ -349,9 +426,12 @@ msgid ""
 "suggestion of the problem resolver.  Otherwise,aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
+"Если эта опция включена и вы запускаете установку имя сломанные пакеты, "
+"aptitude автоматически применит имеющиеся предложения по решению проблемы от "
+"решателя. Иначе aptitude предложит вам решение с проблемой сломанных "
+"зависимостей."
 
 #: src/apt_options.cc:350
-#, fuzzy
 msgid "Install recommended packages automatically"
 msgstr "Автоматически устанавливать рекомендуемые пакеты"
 
@@ -365,6 +445,12 @@ msgid ""
 "enabled, packages that are recommended by an installed package will not "
 "automatically be removed."
 msgstr ""
+"Если эта опция и опция \"автоматически разрешать зависимости\" включены, "
+"aptitude попытается установить рекомендуемые к новым устанавливаемым пакетам "
+"вместе с их зависимостями. Предложения не будут автоматически установлены.\n"
+"Если эта опция и опция \"автоматически удалять неиспользуемые пакеты\" "
+"включены, то пакеты, рекомендуемые устанавливаемым пакетом не будут "
+"автоматически удалены."
 
 #: src/apt_options.cc:363
 msgid "Remove unused packages automatically"
@@ -380,10 +466,16 @@ msgid ""
 "is enabled, automatically installed packages will not be removed if any "
 "installed package recommends them."
 msgstr ""
+"Если эта опция включена, то автоматически установленные пакеты, для которых "
+"нет зависящих пакетов установленных вручную, будут удалены из системы. При "
+"отмене удаления пакет помечается как установленный вручную.\n"
+"Если эта опция и опция \"устанавливать рекомендуемые пакеты автоматически\" "
+"включены, то автоматически установленные пакеты не будут удаляться, если "
+"какой-то из установленных пакетов их рекомендует."
 
 #: src/apt_options.cc:375
 msgid "Packages that should never be automatically removed"
-msgstr ""
+msgstr "Пакеты, которые никогда не будут автоматически удалены"
 
 #: src/apt_options.cc:376
 msgid ""
@@ -391,16 +483,17 @@ msgid ""
 "installed package depends on them: they will never be targeted for removal "
 "as unused packages."
 msgstr ""
+"Пакеты, подходящие под этот поисковый шаблон будут всегда восприниматься, "
+"как если бы установленные пакеты зависели от них: они никогда не будут "
+"помечаться для удаления как неиспользуемые пакеты."
 
 #: src/apt_options.cc:488
-#, fuzzy
 msgid "UI options"
-msgstr "^Настройки интерфейса"
+msgstr "Настройки интерфейса"
 
 #: src/apt_options.cc:490
-#, fuzzy
 msgid "Dependency handling"
-msgstr "^Работа с зависимостями"
+msgstr "Работа с зависимостями"
 
 #: src/apt_options.cc:492 src/pkg_grouppolicy.cc:904
 msgid "Miscellaneous"
@@ -990,7 +1083,7 @@ msgstr "После распаковки %sB будет занято.\n"
 #: src/cmdline/cmdline_prompt.cc:589
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
-msgstr "После распаковки освободится %sB.\n"
+msgstr "После распаковки освободится %s байт.\n"
 
 #: src/cmdline/cmdline_prompt.cc:610
 #, c-format
@@ -1022,7 +1115,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:664
 #, c-format
 msgid "y: %F"
-msgstr ""
+msgstr "y: %F"
 
 #: src/cmdline/cmdline_prompt.cc:666
 msgid "continue with the installation"
@@ -1031,7 +1124,7 @@ msgstr "продолжить с установкой"
 #: src/cmdline/cmdline_prompt.cc:668
 #, c-format
 msgid "n: %F"
-msgstr ""
+msgstr "n: %F"
 
 #: src/cmdline/cmdline_prompt.cc:670
 msgid "abort and quit"
@@ -1040,7 +1133,7 @@ msgstr "прервать и завершить работу"
 #: src/cmdline/cmdline_prompt.cc:672
 #, c-format
 msgid "i: %F"
-msgstr ""
+msgstr "i: %F"
 
 #: src/cmdline/cmdline_prompt.cc:674
 msgid ""
@@ -1053,7 +1146,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:676
 #, c-format
 msgid "c: %F"
-msgstr ""
+msgstr "c: %F"
 
 #: src/cmdline/cmdline_prompt.cc:678
 msgid ""
@@ -1066,7 +1159,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:680
 #, c-format
 msgid "d: %F"
-msgstr ""
+msgstr "d: %F"
 
 #: src/cmdline/cmdline_prompt.cc:682
 msgid "toggle the display of dependency information"
@@ -1075,7 +1168,7 @@ msgstr "переключиться на показ информации о за�
 #: src/cmdline/cmdline_prompt.cc:684
 #, c-format
 msgid "s: %F"
-msgstr ""
+msgstr "s: %F"
 
 #: src/cmdline/cmdline_prompt.cc:686
 msgid "toggle the display of changes in package sizes"
@@ -1084,7 +1177,7 @@ msgstr "переключиться на показ изменений разме
 #: src/cmdline/cmdline_prompt.cc:688
 #, c-format
 msgid "v: %F"
-msgstr ""
+msgstr "v: %F"
 
 #: src/cmdline/cmdline_prompt.cc:690
 msgid "toggle the display of version numbers"
@@ -1093,7 +1186,7 @@ msgstr "переключиться на показ номеров версий"
 #: src/cmdline/cmdline_prompt.cc:692
 #, c-format
 msgid "w: %F"
-msgstr ""
+msgstr "w: %F"
 
 #: src/cmdline/cmdline_prompt.cc:694
 msgid ""
@@ -1106,7 +1199,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:696
 #, c-format
 msgid "e: %F"
-msgstr ""
+msgstr "e: %F"
 
 #: src/cmdline/cmdline_prompt.cc:698
 msgid "enter the full visual interface"
@@ -1165,7 +1258,7 @@ msgstr "Команды:"
 
 #: src/cmdline/cmdline_prompt.cc:782
 msgid "Do you want to continue? [Y/n/?] "
-msgstr "Хотите продолжить? [Y/n/?] "
+msgstr "Хотите продолжить? [Д/н/?] "
 
 #: src/cmdline/cmdline_prompt.cc:807
 #, c-format
@@ -1492,11 +1585,11 @@ msgstr "не установлен (файлы настроек сохранен�
 
 #: src/cmdline/cmdline_show.cc:194
 msgid "awaiting trigger processing by other package(s)"
-msgstr ""
+msgstr "ожидание запуска обработки из-за другого(их) пакета(ов)"
 
 #: src/cmdline/cmdline_show.cc:196
 msgid "awaiting trigger processing"
-msgstr ""
+msgstr "ожидание запуска обработки"
 
 #: src/cmdline/cmdline_show.cc:199 src/pkg_columnizer.cc:255
 #: src/pkg_ver_item.cc:230
@@ -1516,7 +1609,7 @@ msgstr "%s; будет вычищен"
 #: src/cmdline/cmdline_show.cc:229
 #, c-format
 msgid "%s; will be removed because nothing depends on it"
-msgstr "%s; будет удалены, так как от него ничто не зависит"
+msgstr "%s; будет удалён, так как от него ничто не зависит"
 
 #: src/cmdline/cmdline_show.cc:231
 #, c-format
@@ -1544,7 +1637,7 @@ msgstr " [зафиксирован]"
 #: src/cmdline/cmdline_show.cc:288
 #, c-format
 msgid "%s; will be installed"
-msgstr "%s; будет установлен."
+msgstr "%s; будет установлен"
 
 #: src/cmdline/cmdline_show.cc:290
 #, c-format
@@ -1667,7 +1760,7 @@ msgstr "Конфликтуют"
 
 #: src/cmdline/cmdline_show.cc:420
 msgid "Breaks"
-msgstr ""
+msgstr "Ломают"
 
 #: src/cmdline/cmdline_show.cc:422
 msgid "Replaces"
@@ -1688,7 +1781,7 @@ msgstr "Описание: "
 #: src/cmdline/cmdline_show.cc:436 src/pkg_info_screen.cc:100
 #: src/pkg_view.cc:243
 msgid "Homepage: "
-msgstr ""
+msgstr "Сайт: "
 
 #: src/cmdline/cmdline_show.cc:533
 #, c-format
@@ -1773,7 +1866,7 @@ msgstr "Вставьте диск, помеченный как \"%s\" в при�
 
 #: src/download_bar.cc:66 src/generic/apt/acqprogress.cc:65
 msgid "Hit "
-msgstr "Из кэша: "
+msgstr "Из кеша: "
 
 #: src/download_bar.cc:77
 msgid "Downloading "
@@ -1795,7 +1888,7 @@ msgstr " [Обработка]"
 
 #: src/download_item.cc:104 src/download_list.cc:356
 msgid "[Hit]"
-msgstr "[Из кэша]"
+msgstr "[Из кеша]"
 
 #: src/download_item.cc:104 src/download_list.cc:378
 msgid "[Downloaded]"
@@ -1986,13 +2079,13 @@ msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
 msgstr ""
-"Не удалось заблокировать кэш файл. Открытие в режиме только для чтения; "
+"Не удалось заблокировать кеш файл. Открытие в режиме только для чтения; "
 "любые изменения состояний пакетов сохранены НЕ БУДУТ!"
 
 #: src/generic/apt/download_install_manager.cc:56
 msgid ""
 "The package cache is not available; unable to download and install packages."
-msgstr "Недоступен кэш пакетов; не удалось загрузить и установить пакеты."
+msgstr "Недоступен кеш пакетов; не удалось загрузить и установить пакеты."
 
 #: src/generic/apt/download_install_manager.cc:76
 #: src/generic/apt/download_update_manager.cc:81
@@ -2034,7 +2127,7 @@ msgstr "Не удалось очистить каталог list"
 
 #: src/generic/apt/download_update_manager.cc:126
 msgid "Couldn't rebuild package cache"
-msgstr "Не удалось перестроить кэш пакетов"
+msgstr "Не удалось перестроить кеш пакетов"
 
 #: src/generic/apt/log.cc:52
 #, c-format
@@ -2125,7 +2218,7 @@ msgstr "ФИКСИРОВАТЬ, ЗАВИСИМОСТИ"
 
 #: src/generic/apt/log.cc:131
 msgid "UNCONFIGURED"
-msgstr ""
+msgstr "НЕНАСТРОЕНО"
 
 #: src/generic/apt/log.cc:134
 msgid "????????"
@@ -2501,9 +2594,9 @@ msgid "Unexpectedly empty tree title after \"%s\""
 msgstr "Неожиданно пустой заголовок дерева после \"%s\""
 
 #: src/load_grouppolicy.cc:650
-#, fuzzy, c-format
+#, c-format
 msgid "Expected ',' or ')' following '||', got '%s'"
-msgstr "Ожидался ',' или '(', получен '%c'"
+msgstr "Ожидался ',' или ')' после '||', получен '%s'"
 
 #: src/load_grouppolicy.cc:662
 msgid "Unmatched '(' in pattern grouping policy"
@@ -3247,7 +3340,7 @@ msgstr "виртуальный"
 
 #: src/pkg_columnizer.cc:242 src/pkg_ver_item.cc:209 src/pkg_ver_item.cc:217
 msgid "purged"
-msgstr "очищен"
+msgstr "вычищен"
 
 #: src/pkg_columnizer.cc:249 src/pkg_ver_item.cc:224
 msgid "half-config"
@@ -3263,11 +3356,11 @@ msgstr "config-files"
 
 #: src/pkg_columnizer.cc:258
 msgid "triggers-awaited"
-msgstr ""
+msgstr "triggers-awaited"
 
 #: src/pkg_columnizer.cc:260
 msgid "triggers-pending"
-msgstr ""
+msgstr "triggers-pending"
 
 #: src/pkg_columnizer.cc:263 src/pkg_columnizer.cc:547 src/pkg_ver_item.cc:232
 msgid "ERROR"
@@ -4419,7 +4512,7 @@ msgstr "конфликтует с"
 
 #: src/reason_fragment.cc:39
 msgid "breaks"
-msgstr ""
+msgstr "ломает"
 
 #: src/reason_fragment.cc:41
 msgid "replaces"
@@ -4613,7 +4706,7 @@ msgstr ""
 
 #: src/solution_dialog.cc:91 src/solution_screen.cc:465
 msgid "The package cache is not available."
-msgstr "Недоступен кэш пакетов."
+msgstr "Недоступен кеш пакетов."
 
 #: src/solution_dialog.cc:99
 msgid "No packages are broken."
@@ -4669,9 +4762,9 @@ msgid "%s conflicts with %s"
 msgstr "%s конфликтует с %s"
 
 #: src/solution_fragment.cc:120
-#, fuzzy, c-format
+#, c-format
 msgid "%s breaks %s"
-msgstr "%s замещает %s"
+msgstr "%s ломает %s"
 
 #: src/solution_fragment.cc:123
 #, c-format
@@ -4840,7 +4933,7 @@ msgid ""
 "subsequent changes will not be saved unless you stop all other running apt-"
 "based programs and select \"Become root\" from the Actions menu."
 msgstr ""
-"ПРЕДУПРЕЖДЕНИЕ: кэш пакетов открыт в режиме только для чтения! Текущее "
+"ПРЕДУПРЕЖДЕНИЕ: кеш пакетов открыт в режиме только для чтения! Текущее "
 "изменение и все последующие изменения не будут сохранены, если вы не "
 "остановите все другие запущенные основанные на apt программы и не выберите "
 "\"Стать суперпользователем\" из меню Действия."
@@ -4877,20 +4970,19 @@ msgstr "Подпроцесс завершился с ошибкой -- вы вв
 
 #: src/ui.cc:591
 msgid "Loading cache"
-msgstr "Загрузка кэша"
+msgstr "Загрузка кеша"
 
 #: src/ui.cc:633
 msgid "Really quit Aptitude?"
 msgstr "Завершить работу с Aptitude?"
 
 #: src/ui.cc:686 src/ui.cc:688
-#, fuzzy
 msgid "Preferences"
-msgstr "Предварительные зависимости"
+msgstr "Предпочтения"
 
 #: src/ui.cc:687 src/ui.cc:2291
 msgid "Change the behavior of aptitude"
-msgstr ""
+msgstr "Изменение поведения aptitude"
 
 #: src/ui.cc:723
 msgid "Really discard your personal settings and reload the defaults?"
@@ -4930,14 +5022,13 @@ msgstr ""
 "определённых условиях, подробней смотрите 'лицензия'."
 
 #: src/ui.cc:1011 src/ui.cc:1013
-#, fuzzy
 msgid "License"
-msgstr "^Лицензия"
+msgstr "Лицензия"
 
 #: src/ui.cc:1012
-#, fuzzy
 msgid "View the terms under which you may copy and distribute aptitude"
-msgstr "Показать условия, согласно которым вы можете копировать программу"
+msgstr ""
+"Показать условия, на которых можно копировать и распространять aptitude"
 
 #: src/ui.cc:1026
 msgid "help.txt"
@@ -4949,11 +5040,11 @@ msgstr "Кодировка help-ru.txt|UTF-8"
 
 #: src/ui.cc:1039
 msgid "Online Help"
-msgstr ""
+msgstr "Оперативная справка"
 
 #: src/ui.cc:1040
 msgid "View a brief introduction to aptitude"
-msgstr ""
+msgstr "Просмотреть краткое введение в aptitude"
 
 #: src/ui.cc:1041 src/ui.cc:2530
 msgid "Help"
@@ -4965,7 +5056,7 @@ msgstr "README"
 
 #: src/ui.cc:1050
 msgid "Encoding of README|ISO_8859-1"
-msgstr "Encoding of README|UTF-8"
+msgstr "Кодировка README|UTF-8"
 
 #: src/ui.cc:1061
 msgid "User's Manual"
@@ -4980,18 +5071,16 @@ msgid "Manual"
 msgstr "Руководство"
 
 #: src/ui.cc:1070 src/ui.cc:1072
-#, fuzzy
 msgid "FAQ"
-msgstr "^ЧАВО"
+msgstr "ЧАВО"
 
 #: src/ui.cc:1071 src/ui.cc:2375
 msgid "View a list of frequently asked questions"
 msgstr "Показать список часто задаваемых вопросов"
 
 #: src/ui.cc:1080 src/ui.cc:1082
-#, fuzzy
 msgid "News"
-msgstr "^Новости"
+msgstr "Новости"
 
 #: src/ui.cc:1081 src/ui.cc:2379
 msgid "View the important changes made in each version of "
@@ -5190,7 +5279,7 @@ msgstr "Загруженные файлы были удалены"
 
 #: src/ui.cc:1650
 msgid "The apt cache file is not available; cannot auto-clean."
-msgstr "Недоступен apt кэш пакетов; не будет выполнен auto-clean."
+msgstr "Недоступен apt кеш пакетов; не будет выполнен auto-clean."
 
 #: src/ui.cc:1676
 #, c-format
@@ -5277,7 +5366,7 @@ msgstr "Отменить все незаконченные установки, �
 
 #: src/ui.cc:2125
 msgid "^Clean package cache"
-msgstr "^Очистить кэш пакетов"
+msgstr "^Очистить кеш пакетов"
 
 #: src/ui.cc:2126
 msgid "Delete package files which were previously downloaded"
@@ -5293,11 +5382,11 @@ msgstr "Удалить файлы пакетов, которые больше н
 
 #: src/ui.cc:2136
 msgid "^Reload package cache"
-msgstr "^Перезагрузить кэш пакетов"
+msgstr "^Перезагрузить кеш пакетов"
 
 #: src/ui.cc:2137
 msgid "Reload the package cache"
-msgstr "Перезагрузить кэш пакетов."
+msgstr "Перезагрузить кеш пакетов."
 
 #: src/ui.cc:2141
 msgid "^Play Minesweeper"
@@ -5560,13 +5649,12 @@ msgid "Find the next package with unsatisfied dependencies"
 msgstr "Найти следующий пакет с неудовлетворёнными зависимостями"
 
 #: src/ui.cc:2290
-#, fuzzy
 msgid "^Preferences"
-msgstr "Предварительные зависимости"
+msgstr "Предпочтения"
 
 #: src/ui.cc:2295
 msgid "^UI options"
-msgstr "^Настройки интерфейса"
+msgstr "Настройки интерфейса"
 
 #: src/ui.cc:2296
 msgid "Change the settings which affect the user interface"
@@ -5700,9 +5788,9 @@ msgid "^License"
 msgstr "^Лицензия"
 
 #: src/ui.cc:2383
-#, fuzzy
 msgid "View the terms under which you may copy and distribute aptiutde"
-msgstr "Показать условия, согласно которым вы можете копировать программу"
+msgstr ""
+"Показать условия, на которых можно копировать и распространять aptitude"
 
 #: src/ui.cc:2523
 msgid "Actions"
@@ -5833,12 +5921,3 @@ msgstr "Не удалось загрузить имя файла: строка %
 #: src/vscreen/vs_tree.cc:1001
 msgid "TOP LEVEL"
 msgstr "САМЫЙ ВЕРХНИЙ УРОВЕНЬ"
-
-#~ msgid "Don't automatically remove unused packages matching this filter"
-#~ msgstr ""
-#~ "Не удалять автоматически неиспользуемые пакеты, подходящие под этот фильтр"
-
-#~ msgid ""
-#~ "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
-#~ msgstr ""
-#~ "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
