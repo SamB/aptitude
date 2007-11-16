@@ -49,6 +49,8 @@
 using namespace std;
 using namespace __gnu_cxx;
 
+namespace cw = cwidget;
+
 pkg_grouppolicy_factory::~pkg_grouppolicy_factory()
 {
 }
