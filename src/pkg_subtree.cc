@@ -25,6 +25,12 @@
 
 #include <cwidget/widgets/tree.h>
 
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
 void pkg_subtree::paint(cw::tree *win, int y, bool hierarchical,
 			const cw::style &st)
 {
