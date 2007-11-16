@@ -38,12 +38,14 @@
 
 #include <unistd.h>
 
-column_definition_list *pkg_item::pkg_columnizer::columns=NULL;
+namespace cw = cwidget;
+
+cw::config::column_definition_list *pkg_item::pkg_columnizer::columns=NULL;
 const char *pkg_item::pkg_columnizer::default_pkgdisplay="%c%a%M%S %p %Z %v %V";
 
 // NOTE: the default widths here will be overridden by the initialization
 //      code.
-column_type_defaults pkg_item::pkg_columnizer::defaults[pkg_columnizer::numtypes]={
+cw::config::column_type_defaults pkg_item::pkg_columnizer::defaults[pkg_columnizer::numtypes] = {
   {30, true, true},     // name
   {6, false, false},    // installed_size
   {6, false, false},    // debsize
@@ -80,7 +82,7 @@ column_type_defaults pkg_item::pkg_columnizer::defaults[pkg_columnizer::numtypes
 //
 // You can't set default widths for the program name and version here (those
 // strings aren't affected by translation, for one thing)
-const char *default_widths=N_("30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15");
+const char *default_widths = N_("30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15");
 
 const char *pkg_item::pkg_columnizer::column_names[pkg_columnizer::numtypes]=
   {N_("Package"),
@@ -108,51 +110,51 @@ const char *pkg_item::pkg_columnizer::column_names[pkg_columnizer::numtypes]=
    N_("DownloadSize")
   };
 
-column_disposition pkg_item::pkg_columnizer::setup_column(int type)
+cw::column_disposition pkg_item::pkg_columnizer::setup_column(int type)
 {
   return setup_column(pkg, visible_ver, basex, type);
 }
 
-column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIterator &pkg,
-							  const pkgCache::VerIterator &visible_ver,
-							  int basex,
-							  int type)
+cw::column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIterator &pkg,
+							      const pkgCache::VerIterator &visible_ver,
+							      int basex,
+							      int type)
 {
   switch(type)
     {
     case name:
       if(!pkg.end())
-	return column_disposition(pkg.Name(), basex);
+	return cw::column_disposition(pkg.Name(), basex);
       else
-	return column_disposition("", 0);
+	return cw::column_disposition("", 0);
 
       break;
     case installed_size:
       if(!visible_ver.end())
 	{
 	  if(visible_ver->InstalledSize>0)
-	    return column_disposition(SizeToStr(visible_ver->InstalledSize)+'B', 0);
+	    return cw::column_disposition(SizeToStr(visible_ver->InstalledSize)+'B', 0);
 	  else
-	    return column_disposition(_("<N/A>"), 0);
+	    return cw::column_disposition(_("<N/A>"), 0);
 	}
       else
-	return column_disposition("", 0);	
+	return cw::column_disposition("", 0);	
 
       break;
     case debsize:
       if(!visible_ver.end())
 	{
 	  if(visible_ver->Size>0)
-	    return column_disposition(SizeToStr(visible_ver->Size)+'B', 0);
+	    return cw::column_disposition(SizeToStr(visible_ver->Size)+'B', 0);
 	  else
-	    return column_disposition(_("<N/A>"), 0);
+	    return cw::column_disposition(_("<N/A>"), 0);
 	}
       else
-	return column_disposition("", 0);
+	return cw::column_disposition("", 0);
       break;
     case sizechange:
       if(pkg.end())
-	return column_disposition("", 0);
+	return cw::column_disposition("", 0);
       else
 	{
 	  pkgCache::VerIterator inst_ver=(*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
@@ -162,20 +164,20 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 	    -(pkg.CurrentVer().end()?0:pkg.CurrentVer()->InstalledSize);
 
 	  if(dsize==0)
-	    return column_disposition("", 0);
+	    return cw::column_disposition("", 0);
 	  else if(dsize>0)
-	    return column_disposition("+"+SizeToStr(dsize)+"B", 0);
+	    return cw::column_disposition("+"+SizeToStr(dsize)+"B", 0);
 	  else
-	    return column_disposition("-"+SizeToStr(dsize)+"B", 0);
+	    return cw::column_disposition("-"+SizeToStr(dsize)+"B", 0);
 	}
       break;
     case currver:
       if(pkg.end())
-	return column_disposition("", 0);
+	return cw::column_disposition("", 0);
       else if(!pkg.CurrentVer().end())
-	return column_disposition(pkg.CurrentVer().VerStr(), 0);
+	return cw::column_disposition(pkg.CurrentVer().VerStr(), 0);
       else
-	return column_disposition(_("<none>"), 0);
+	return cw::column_disposition(_("<none>"), 0);
 
       break;
     case candver:
@@ -184,90 +186,90 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 	  pkgCache::VerIterator cand_ver=(*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
 
 	  if(!cand_ver.end() && !pkg_obsolete(pkg))
-	    return column_disposition(cand_ver.VerStr(), 0);
+	    return cw::column_disposition(cand_ver.VerStr(), 0);
 	  else
-	    return column_disposition(_("<none>"), 0);
+	    return cw::column_disposition(_("<none>"), 0);
 	}
       else
-	return column_disposition("", 0);
+	return cw::column_disposition("", 0);
 
       break;
     case stateflag:
       if(pkg.end())
-	return column_disposition("", 0);
+	return cw::column_disposition("", 0);
       else if(pkg.VersionList().end())
-	return column_disposition("v", 0);
+	return cw::column_disposition("v", 0);
       else if((*apt_cache_file)[pkg].NowBroken())
-	return column_disposition("B", 0);
+	return cw::column_disposition("B", 0);
       else
 	switch(pkg->CurrentState)
 	  {
 	  case pkgCache::State::NotInstalled:
-	    return column_disposition("p", 0);
+	    return cw::column_disposition("p", 0);
 	    // Assume it's purged if we're in this state.  Is this correct?
 	    // If it's removed but config-files are present it should be
 	    // in the ConfigFiles state.
 	  case pkgCache::State::UnPacked:
-	    return column_disposition("u", 0);
+	    return cw::column_disposition("u", 0);
 	  case pkgCache::State::HalfConfigured:
-	    return column_disposition("C", 0);
+	    return cw::column_disposition("C", 0);
 	  case pkgCache::State::HalfInstalled:
-	    return column_disposition("H", 0);
+	    return cw::column_disposition("H", 0);
 	  case pkgCache::State::ConfigFiles:
-	    return column_disposition("c", 0);
+	    return cw::column_disposition("c", 0);
 	  case pkgCache::State::Installed:
-	    return column_disposition("i", 0);
+	    return cw::column_disposition("i", 0);
 #ifdef APT_HAS_TRIGGERS
 	  case pkgCache::State::TriggersAwaited:
-	    return column_disposition("W", 0);
+	    return cw::column_disposition("W", 0);
 	  case pkgCache::State::TriggersPending:
-	    return column_disposition("T", 0);
+	    return cw::column_disposition("T", 0);
 #endif
 	  default:
-	    return column_disposition("E", 0);
+	    return cw::column_disposition("E", 0);
 	  }
 
       break;
     case longstate:
       if(pkg.end())
-	return column_disposition("", 0);
+	return cw::column_disposition("", 0);
       else if(pkg.VersionList().end())
-	return column_disposition(_("virtual"), 0);
+	return cw::column_disposition(_("virtual"), 0);
       else if((*apt_cache_file)[pkg].NowBroken())
-	return column_disposition("B", 0);
+	return cw::column_disposition("B", 0);
       else
 	switch(pkg->CurrentState)
 	  {
 	  case pkgCache::State::NotInstalled:
-	    return column_disposition(_("purged"), 0);
+	    return cw::column_disposition(_("purged"), 0);
 	    // Assume it's purged if we're in this state.  Is this correct?
 	    // If it's removed but config-files are present it should be
 	    // in the ConfigFiles state.
 	  case pkgCache::State::UnPacked:
-	    return column_disposition(_("unpacked"), 0);
+	    return cw::column_disposition(_("unpacked"), 0);
 	  case pkgCache::State::HalfConfigured:
-	    return column_disposition(_("half-config"), 0);
+	    return cw::column_disposition(_("half-config"), 0);
 	  case pkgCache::State::HalfInstalled:
-	    return column_disposition(_("half-install"), 0);
+	    return cw::column_disposition(_("half-install"), 0);
 	  case pkgCache::State::ConfigFiles:
-	    return column_disposition(_("config-files"), 0);
+	    return cw::column_disposition(_("config-files"), 0);
 	  case pkgCache::State::Installed:
-	    return column_disposition(_("installed"), 0);
+	    return cw::column_disposition(_("installed"), 0);
 #ifdef APT_HAS_TRIGGERS
 	  case pkgCache::State::TriggersAwaited:
-	    return column_disposition(_("triggers-awaited"), 0);
+	    return cw::column_disposition(_("triggers-awaited"), 0);
 	  case pkgCache::State::TriggersPending:
-	    return column_disposition(_("triggers-pending"), 0);
+	    return cw::column_disposition(_("triggers-pending"), 0);
 #endif
 	  default:
-	    return column_disposition(_("ERROR"), 0);
+	    return cw::column_disposition(_("ERROR"), 0);
 	  }
 
       break;
     case actionflag:
       {
 	if(pkg.end())
-	  return column_disposition("", 0);
+	  return cw::column_disposition("", 0);
 
 	aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
 	aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
@@ -276,60 +278,60 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 	if(state.Status!=2 &&
 	   (*apt_cache_file)->get_ext_state(pkg).selection_state==pkgCache::State::Hold &&
 	   !state.InstBroken())
-	  return column_disposition("h", 0);
+	  return cw::column_disposition("h", 0);
 	else if(state.Upgradable() && !pkg.CurrentVer().end() &&
 		!candver.end() && candver.VerStr() == estate.forbidver)
-	  return column_disposition("F", 0);
+	  return cw::column_disposition("F", 0);
 	else if(state.Delete())
-	  return column_disposition((state.iFlags&pkgDepCache::Purge)?"p":"d", 0);
+	  return cw::column_disposition((state.iFlags&pkgDepCache::Purge)?"p":"d", 0);
 	else if(state.InstBroken())
-	  return column_disposition("B", 0);
+	  return cw::column_disposition("B", 0);
 	else if(state.NewInstall())
-	  return column_disposition("i", 0);
+	  return cw::column_disposition("i", 0);
 	else if(state.iFlags&pkgDepCache::ReInstall)
-	  return column_disposition("r", 0);
+	  return cw::column_disposition("r", 0);
 	else if(state.Upgrade())
-	  return column_disposition("u", 0);
+	  return cw::column_disposition("u", 0);
 	else if(pkg.CurrentVer().end())
-	  return column_disposition(" ", 0);
+	  return cw::column_disposition(" ", 0);
 	else
-	  return column_disposition(" ", 0);
+	  return cw::column_disposition(" ", 0);
       }
 
       break;
     case longaction:
       {
 	if(pkg.end())
-	  return column_disposition("", 0);
+	  return cw::column_disposition("", 0);
 
 	aptitudeDepCache::StateCache state=(*apt_cache_file)[pkg];
 	aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
 	pkgCache::VerIterator candver=state.CandidateVerIter(*apt_cache_file);
 
 	if(state.Status!=2 && (state.Held() || estate.selection_state==pkgCache::State::Hold) && !state.InstBroken())
-	  return column_disposition(_("hold"), 0);
+	  return cw::column_disposition(_("hold"), 0);
 	else if(state.Upgradable() && !pkg.CurrentVer().end() &&
 		!candver.end() && candver.VerStr() == estate.forbidver)
-	  return column_disposition(_("forbidden upgrade"), 0);
+	  return cw::column_disposition(_("forbidden upgrade"), 0);
 	else if(state.Delete())
-	  return column_disposition((state.iFlags&pkgDepCache::Purge)?_("purge"):_("delete"), 0);
+	  return cw::column_disposition((state.iFlags&pkgDepCache::Purge)?_("purge"):_("delete"), 0);
 	else if(state.InstBroken())
-	  return column_disposition(_("broken"), 0);
+	  return cw::column_disposition(_("broken"), 0);
 	else if(state.NewInstall())
-	  return column_disposition(_("install"), 0);
+	  return cw::column_disposition(_("install"), 0);
 	else if(state.iFlags&pkgDepCache::ReInstall)
-	  return column_disposition(_("reinstall"), 0);
+	  return cw::column_disposition(_("reinstall"), 0);
 	else if(state.Upgrade())
-	  return column_disposition(_("upgrade"), 0);
+	  return cw::column_disposition(_("upgrade"), 0);
 	else if(pkg.CurrentVer().end())
-	  return column_disposition(_("none"), 0);
+	  return cw::column_disposition(_("none"), 0);
 	else
-	  return column_disposition(_("none"), 0);
+	  return cw::column_disposition(_("none"), 0);
       }
 
       break;
     case description:
-      return column_disposition(get_short_description(visible_ver,
+      return cw::column_disposition(get_short_description(visible_ver,
 						      apt_package_records), 0);
 
       break;
@@ -337,18 +339,18 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
       if(!visible_ver.end() &&
 	 !visible_ver.FileList().end() &&
 	 apt_package_records)
-	return column_disposition(apt_package_records->Lookup(visible_ver.FileList()).Maintainer(), 0);
+	return cw::column_disposition(apt_package_records->Lookup(visible_ver.FileList()).Maintainer(), 0);
       else
-	return column_disposition("", 0);
+	return cw::column_disposition("", 0);
 
       break;
     case priority:
       if(!visible_ver.end() &&
 	 const_cast<pkgCache::VerIterator &>(visible_ver).PriorityType() &&
 	 const_cast<pkgCache::VerIterator &>(visible_ver).PriorityType()[0])
-	return column_disposition(const_cast<pkgCache::VerIterator &>(visible_ver).PriorityType(), 0);
+	return cw::column_disposition(const_cast<pkgCache::VerIterator &>(visible_ver).PriorityType(), 0);
       else
-	return column_disposition(_("Unknown"), 0);
+	return cw::column_disposition(_("Unknown"), 0);
 
       break;
     case shortpriority:
@@ -356,33 +358,33 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 	switch(visible_ver->Priority)
 	  {
 	  case pkgCache::State::Important:
-	    return column_disposition(_("Imp"), 0);
+	    return cw::column_disposition(_("Imp"), 0);
 	  case pkgCache::State::Required:
-	    return column_disposition(_("Req"), 0);
+	    return cw::column_disposition(_("Req"), 0);
 	  case pkgCache::State::Standard:
-	    return column_disposition(_("Std"), 0);
+	    return cw::column_disposition(_("Std"), 0);
 	  case pkgCache::State::Optional:
-	    return column_disposition(_("Opt"), 0);
+	    return cw::column_disposition(_("Opt"), 0);
 	  case pkgCache::State::Extra:
-	    return column_disposition(_("Xtr"), 0);
+	    return cw::column_disposition(_("Xtr"), 0);
 	  default:
-	    return column_disposition(_("ERR"), 0);
+	    return cw::column_disposition(_("ERR"), 0);
 	  }
       else
-	return column_disposition(_("Unknown"), 0);
+	return cw::column_disposition(_("Unknown"), 0);
 
       break;
     case section:
       if(!visible_ver.end() && visible_ver.Section())
-	return column_disposition(visible_ver.Section(), 0);
+	return cw::column_disposition(visible_ver.Section(), 0);
       else
-	return column_disposition(_("Unknown"), 0);
+	return cw::column_disposition(_("Unknown"), 0);
 
       break;
     case progname:
-      return column_disposition(PACKAGE, 0);
+      return cw::column_disposition(PACKAGE, 0);
     case progver:
-      return column_disposition(VERSION, 0);
+      return cw::column_disposition(VERSION, 0);
     case brokencount:
       if(apt_cache_file && (*apt_cache_file)->BrokenCount()>0)
 	{
@@ -390,10 +392,10 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 
 	  snprintf(buf, 512, _("#Broken: %ld"),
 		   (*apt_cache_file)->BrokenCount());
-	  return column_disposition(buf, 0);
+	  return cw::column_disposition(buf, 0);
 	}
       else
-	return column_disposition("", 0);
+	return cw::column_disposition("", 0);
 
       break;
     case diskusage:
@@ -404,7 +406,7 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 	    // Be translator-friendly -- breaking messages up like that is not
 	    // so good..
 	    snprintf(buf, 256, _("Will use %sB of disk space"), SizeToStr((*apt_cache_file)->UsrSize()).c_str());
-	    return column_disposition(buf, 0);
+	    return cw::column_disposition(buf, 0);
 	  }
 	else if(apt_cache_file &&
 		(*apt_cache_file)->UsrSize()<0)
@@ -412,10 +414,10 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 	    // Be translator-friendly -- breaking messages up like that is not
 	    // so good..
 	    snprintf(buf, 256, _("Will free %sB of disk space"), SizeToStr(-(*apt_cache_file)->UsrSize()).c_str());
-	    return column_disposition(buf, 0);
+	    return cw::column_disposition(buf, 0);
 	  }
 	else
-	  return column_disposition("", 0);
+	  return cw::column_disposition("", 0);
       }
 
       break;
@@ -426,10 +428,10 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 	    char buf[256];
 	    snprintf(buf, 256,
 		     _("DL Size: %sB"), SizeToStr((*apt_cache_file)->DebSize()).c_str());
-	    return column_disposition(buf, 0);
+	    return cw::column_disposition(buf, 0);
 	  }
 	else
-	  return column_disposition("", 0);
+	  return cw::column_disposition("", 0);
       }
 
       break;
@@ -442,20 +444,20 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 	    pkgPolicy *policy=dynamic_cast<pkgPolicy *>(&(*apt_cache_file)->GetPolicy());
 
 	    if(!policy)
-	      return column_disposition("", 0);
+	      return cw::column_disposition("", 0);
 
 	    // Not quite sure what this indicates
 	    signed short priority=policy->GetPriority(pkg);
 
 	    if(priority==0)
-	      return column_disposition("", 0);
+	      return cw::column_disposition("", 0);
 
 	    snprintf(buf, 256, "%d", priority);
 
-	    return column_disposition(buf, 0);
+	    return cw::column_disposition(buf, 0);
 	  }
 	else
-	  return column_disposition("", 0);
+	  return cw::column_disposition("", 0);
       }
     case autoset:
       // Display the "auto" flag UNLESS the package has been removed
@@ -463,16 +465,16 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
       if((!pkg.CurrentVer().end() ||
 	  (*apt_cache_file)[pkg].Install()) &&
 	 ((*apt_cache_file)[pkg].Flags & pkgCache::Flag::Auto))
-	return column_disposition("A", 0);
+	return cw::column_disposition("A", 0);
       else
-	return column_disposition("", 0);
+	return cw::column_disposition("", 0);
 
       break;
     case tagged:
       if((*apt_cache_file)->get_ext_state(pkg).tagged)
-	return column_disposition("*", 0);
+	return cw::column_disposition("*", 0);
       else
-	return column_disposition("", 0);
+	return cw::column_disposition("", 0);
 
       break;
 
@@ -486,7 +488,7 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 	      if(pkgfile.Archive() && strcmp(pkgfile.Archive(), "now"))
 		buf+=string(buf.empty()?"":",")+pkgfile.Archive();
 	    }
-	  return column_disposition(buf,0);
+	  return cw::column_disposition(buf,0);
 	}
 
     case hostname:
@@ -496,9 +498,9 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 	if(gethostname(buf, 255)!=0)
 	  // Panic
 	  // ForTranslators: Hostname
-	  return column_disposition(_("HN too long"), 0);
+	  return cw::column_disposition(_("HN too long"), 0);
 	else
-	  return column_disposition(buf, 0);
+	  return cw::column_disposition(buf, 0);
       }
 
       break;
@@ -531,20 +533,20 @@ column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::PkgIte
 		count++;
 	    }
 	snprintf(buf, 100, "%i", count);
-	return column_disposition(buf, 0);
+	return cw::column_disposition(buf, 0);
       }
       break;
     case trust_state:
       {
 	if(visible_ver.end())
-	  return column_disposition(" ", 0);
+	  return cw::column_disposition(" ", 0);
 	else if(package_trusted(visible_ver))
-	  return column_disposition(" ", 0);
+	  return cw::column_disposition(" ", 0);
 	else
-	  return column_disposition("U", 0);
+	  return cw::column_disposition("U", 0);
       }
     default:
-      return column_disposition(_("ERROR"), 0);
+      return cw::column_disposition(_("ERROR"), 0);
     }
 }
 
@@ -616,13 +618,13 @@ int pkg_item::pkg_columnizer::parse_column_type(char id)
 class pkg_item::pkg_columnizer::pkg_genheaders:public column_generator
 {
 protected:
-  column_disposition setup_column(int type)
+  cw::column_disposition setup_column(int type)
   {
-    return column_disposition(_(pkg_columnizer::column_names[type]), 0);
+    return cw::column_disposition(_(pkg_columnizer::column_names[type]), 0);
   }
 public:
-  pkg_genheaders(const column_definition_list &_columns)
-    :column_generator(_columns) {}
+  pkg_genheaders(const cw::config::column_definition_list &_columns)
+    : column_generator(_columns) {}
 };
 
 void pkg_item::pkg_columnizer::init_formatting()
@@ -685,7 +687,12 @@ void pkg_item::pkg_columnizer::setup_columns(bool force_update)
 	  if(!columns)
 	    {
 	      _error->Warning(_("Internal error: Default column string is unparsable"));
-	      columns->push_back(column_definition(column_definition::COLUMN_GENERATED, pkg_columnizer::name, pkg_columnizer::defaults[pkg_columnizer::name].width, true, true, false));
+	      const cw::config::column_definition
+		col(cw::config::column_definition::COLUMN_GENERATED,
+		    pkg_columnizer::name,
+		    pkg_columnizer::defaults[pkg_columnizer::name].width,
+		    true, true, false);
+	      columns->push_back(col);
 	    }
 	}
     }
@@ -695,6 +702,6 @@ std::wstring pkg_item::pkg_columnizer::format_column_names(unsigned int width)
 {
   setup_columns();
 
-  empty_column_parameters p;
+  cw::config::empty_column_parameters p;
   return pkg_genheaders(*columns).layout_columns(width, p);
 }
