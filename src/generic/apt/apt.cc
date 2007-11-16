@@ -152,7 +152,7 @@ void apt_preinit()
 
   cache_closed.connect(sigc::ptr_fun(&reset_surrounding_or_memoization));
 
-  apt_dumpcfg("Aptitude");
+  apt_dumpcfg(PACKAGE);
 
   apt_undos=new undo_list;
 }
