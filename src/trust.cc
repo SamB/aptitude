@@ -8,6 +8,8 @@
 #include <cwidget/fragment.h>
 #include <cwidget/config/colors.h>
 
+namespace cw = cwidget;
+
 cw::fragment *make_untrusted_warning(const pkgCache::VerIterator &ver)
 {
   if(package_trusted(ver))
