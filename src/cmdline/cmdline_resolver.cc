@@ -50,10 +50,10 @@
 #include <sstream>
 
 using namespace std;
-using cwidget::fragment;
-using cwidget::fragf;
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
+
+namespace cw = cwidget;
 
 /** Generate a cw::fragment describing a solution as an ordered sequence
  *  of actions.
