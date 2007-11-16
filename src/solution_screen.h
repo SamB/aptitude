@@ -20,7 +20,7 @@
 #ifndef SOLUTION_SCREEN_H
 #define SOLUTION_SCREEN_H
 
-#include <vscreen/cwidget::util::ref_ptr.h>
+#include <cwidget/generic/util/ref_ptr.h>
 
 class aptitude_universe;
 template<class PackageUniverse> class generic_solution;

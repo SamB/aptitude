@@ -27,7 +27,7 @@
 
 #include <apt-pkg/acquire.h>
 
-#include <vscreen/cwidget::util::ref_ptr.h>
+#include <cwidget/generic/util/ref_ptr.h>
 
 #include <sigc++/trackable.h>
 

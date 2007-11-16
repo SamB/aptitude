@@ -32,7 +32,7 @@
 #include "pkg_item.h"
 #include "ui.h"
 #include "view_changelog.h"
-#include "cw::progress.h"
+#include "progress.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/apt_undo_group.h>

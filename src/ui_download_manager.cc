@@ -21,7 +21,7 @@
 
 #include "aptitude.h"
 #include "ui.h"
-#include "cw::progress.h"
+#include "progress.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/download_manager.h>

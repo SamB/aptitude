@@ -30,13 +30,13 @@
 #include "pkg_sortpolicy.h"
 #include "ui.h"
 #include "view_changelog.h"
-#include "cw::progress.h"
+#include "progress.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/apt_undo_group.h>
 #include <generic/apt/config_signal.h>
 
-#include "vscreen/cw::multiplex.h"
+#include "cwidget/widgets/multiplex.h"
 
 #include <algorithm>
 #include <string>

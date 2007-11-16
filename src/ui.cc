@@ -111,7 +111,7 @@
 #include "pkg_ver_item.h"
 #include "pkg_view.h"
 #include "ui_download_manager.h"
-#include "cw::progress.h"
+#include "progress.h"
 
 using namespace std;
 

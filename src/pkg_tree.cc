@@ -30,7 +30,7 @@
 #include "pkg_sortpolicy.h"
 #include "pkg_subtree.h"
 #include "ui.h"
-#include "cw::progress.h"
+#include "progress.h"
 
 #include <vscreen/columnify.h>
 #include <cwidget/generic/util/transcode.h>
