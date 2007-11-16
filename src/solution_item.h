@@ -78,7 +78,7 @@ public:
       unmandate();
   }
 
-  style get_normal_style();
+  cwidget::style get_normal_style();
 
   bool dispatch_key(const cwidget::config::key &k, cwidget::widgets::tree *owner);
 

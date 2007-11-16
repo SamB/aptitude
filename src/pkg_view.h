@@ -85,7 +85,7 @@ struct package_view_item
   int xopts, yopts;
   // obvious table stuff
 
-  /** The style with which this item should be displayed. */
+  /** The cwidget::style with which this item should be displayed. */
   cwidget::style st;
 
   std::string popupdownkey;

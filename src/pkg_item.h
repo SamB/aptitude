@@ -80,10 +80,10 @@ public:
   bool dispatch_key(const cwidget::config::key &k, cwidget::widgets::tree *owner);
   void dispatch_mouse(short id, int x, mmask_t bstate, cwidget::widgets::tree *owner);
 
-  /** Returns the style that would be used to display the given
+  /** Returns the cwidget::style that would be used to display the given
    *  package.
    *
-   *  \param package the package to generate a style for
+   *  \param package the package to generate a cwidget::style for
    *  \param highlighted if \b true, the package is highlighted
    */
   static cwidget::style pkg_style(pkgCache::PkgIterator package, bool highlighted);
