@@ -39,8 +39,6 @@
 #ifndef PROBLEMRESOLVER_H
 #define PROBLEMRESOLVER_H
 
-#include <generic/util/eassert.h>
-
 #include <algorithm>
 #include <map>
 #include <queue>
@@ -56,6 +54,7 @@
 #include "resolver_undo.h"
 
 #include <cwidget/generic/threads/threads.h>
+#include <cwidget/generic/util/eassert.h>
 
 #include <generic/util/dense_setset.h>
 

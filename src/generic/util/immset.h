@@ -33,7 +33,7 @@
 #ifndef IMMSET_H
 #define IMMSET_H
 
-#include <generic/util/eassert.h>
+#include <cwidget/generic/util/eassert.h>
 #include <iostream>
 
 #include <vector>

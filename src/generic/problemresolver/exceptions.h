@@ -20,7 +20,7 @@
 #ifndef EXCEPTIONS_H
 #define EXCEPTIONS_H
 
-#include <generic/util/exception.h>
+#include <cwidget/generic/util/exception.h>
 
 /** Generic errors in the problem resolver. */
 class ProblemResolverError : public cwidget::util::Exception {
