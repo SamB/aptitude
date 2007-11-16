@@ -60,7 +60,8 @@
 #include "solution_fragment.h"
 #include "solution_screen.h"
 
-#include <vscreen/curses++.h>
+#include <cwidget/curses++.h>
+#include <cwidget/dialogs.h>
 #include <cwidget/fragment.h>
 #include <cwidget/toplevel.h>
 #include <cwidget/widgets/button.h>
@@ -77,10 +78,9 @@
 #include <cwidget/widgets/statuschoice.h>
 #include <cwidget/widgets/table.h>
 #include <cwidget/widgets/text_layout.h>
-#include <cwidget/widgets/transient.h>
 #include <cwidget/widgets/togglebutton.h>
+#include <cwidget/widgets/transient.h>
 #include <cwidget/widgets/tree.h>
-#include <cwidget/dialogs.h>
 
 #include <mine/cmine.h>
 
@@ -114,6 +114,11 @@
 #include "progress.h"
 
 using namespace std;
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
 
@@ -145,49 +150,49 @@ cw::widget_ref active_status_download;
 
 sigc::signal0<void> file_quit;
 
-sigc::signal0<bool, accumulate_or> undo_undo;
-sigc::signal0<bool, accumulate_or> undo_undo_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> undo_undo;
+sigc::signal0<bool, cw::util::accumulate_or> undo_undo_enabled;
 
 sigc::signal0<void> package_states_changed;
 
-sigc::signal0<bool, accumulate_or> package_menu_enabled;
-sigc::signal0<bool, accumulate_or> package_forbid_enabled;
-sigc::signal0<bool, accumulate_or> package_information_enabled;
-sigc::signal0<bool, accumulate_or> package_changelog_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> package_menu_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> package_forbid_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> package_information_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> package_changelog_enabled;
 
-sigc::signal0<bool, accumulate_or> find_search_enabled;
-sigc::signal0<bool, accumulate_or> find_search_back_enabled;
-sigc::signal0<bool, accumulate_or> find_research_enabled;
-sigc::signal0<bool, accumulate_or> find_repeat_search_back_enabled;
-sigc::signal0<bool, accumulate_or> find_limit_enabled;
-sigc::signal0<bool, accumulate_or> find_cancel_limit_enabled;
-sigc::signal0<bool, accumulate_or> find_broken_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> find_search_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> find_search_back_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> find_research_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> find_repeat_search_back_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> find_limit_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> find_cancel_limit_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> find_broken_enabled;
 
-sigc::signal0<bool, accumulate_or> package_install;
-sigc::signal0<bool, accumulate_or> package_remove;
-sigc::signal0<bool, accumulate_or> package_purge;
-sigc::signal0<bool, accumulate_or> package_hold;
-sigc::signal0<bool, accumulate_or> package_keep;
-sigc::signal0<bool, accumulate_or> package_mark_auto;
-sigc::signal0<bool, accumulate_or> package_unmark_auto;
-sigc::signal0<bool, accumulate_or> package_forbid;
-sigc::signal0<bool, accumulate_or> package_information;
-sigc::signal0<bool, accumulate_or> package_changelog;
+sigc::signal0<bool, cw::util::accumulate_or> package_install;
+sigc::signal0<bool, cw::util::accumulate_or> package_remove;
+sigc::signal0<bool, cw::util::accumulate_or> package_purge;
+sigc::signal0<bool, cw::util::accumulate_or> package_hold;
+sigc::signal0<bool, cw::util::accumulate_or> package_keep;
+sigc::signal0<bool, cw::util::accumulate_or> package_mark_auto;
+sigc::signal0<bool, cw::util::accumulate_or> package_unmark_auto;
+sigc::signal0<bool, cw::util::accumulate_or> package_forbid;
+sigc::signal0<bool, cw::util::accumulate_or> package_information;
+sigc::signal0<bool, cw::util::accumulate_or> package_changelog;
 
-sigc::signal0<bool, accumulate_or> resolver_toggle_rejected;
-sigc::signal0<bool, accumulate_or> resolver_toggle_rejected_enabled;
-sigc::signal0<bool, accumulate_or> resolver_toggle_approved;
-sigc::signal0<bool, accumulate_or> resolver_toggle_approved_enabled;
-sigc::signal0<bool, accumulate_or> resolver_view_target;
-sigc::signal0<bool, accumulate_or> resolver_view_target_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> resolver_toggle_rejected;
+sigc::signal0<bool, cw::util::accumulate_or> resolver_toggle_rejected_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> resolver_toggle_approved;
+sigc::signal0<bool, cw::util::accumulate_or> resolver_toggle_approved_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> resolver_view_target;
+sigc::signal0<bool, cw::util::accumulate_or> resolver_view_target_enabled;
 
-sigc::signal0<bool, accumulate_or> find_search;
-sigc::signal0<bool, accumulate_or> find_search_back;
-sigc::signal0<bool, accumulate_or> find_research;
-sigc::signal0<bool, accumulate_or> find_repeat_search_back;
-sigc::signal0<bool, accumulate_or> find_limit;
-sigc::signal0<bool, accumulate_or> find_cancel_limit;
-sigc::signal0<bool, accumulate_or> find_broken;
+sigc::signal0<bool, cw::util::accumulate_or> find_search;
+sigc::signal0<bool, cw::util::accumulate_or> find_search_back;
+sigc::signal0<bool, cw::util::accumulate_or> find_research;
+sigc::signal0<bool, cw::util::accumulate_or> find_repeat_search_back;
+sigc::signal0<bool, cw::util::accumulate_or> find_limit;
+sigc::signal0<bool, cw::util::accumulate_or> find_cancel_limit;
+sigc::signal0<bool, cw::util::accumulate_or> find_broken;
 
 const char *default_pkgstatusdisplay="%d";
 const char *default_pkgheaderdisplay="%N %n #%B %u %o";
@@ -1824,7 +1829,7 @@ public:
   {
   }
 
-  void aborted(const Exception &e)
+  void aborted(const cw::util::Exception &e)
   {
     cw::toplevel::post_event(new solution_search_aborted_event(manager, e.errmsg()));
   }
@@ -2097,299 +2102,299 @@ static void do_dump_resolver()
 // the alternatives are worse.
 
 cw::menu_info actions_menu[]={
-  //{cw::menu_info::VS_MENU_ITEM, N_("Test ^Errors"), NULL,
+  //{cw::menu_info::MENU_ITEM, N_("Test ^Errors"), NULL,
   //N_("Generate an APT error for testing purposes"),
   //SigC::bind(SigC::slot(&silly_test_error), "This is a test error item.")},
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Install/remove packages"), "DoInstallRun",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Install/remove packages"), "DoInstallRun",
 	       N_("Perform all pending installs and removals"), sigc::ptr_fun(do_package_run), sigc::ptr_fun(can_start_download_and_install)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Update package list"), "UpdatePackageList",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Update package list"), "UpdatePackageList",
 	       N_("Check for new versions of packages"), sigc::ptr_fun(do_update_lists), sigc::ptr_fun(can_start_download)),
 
-  VS_MENU_SEPARATOR,
+  cw::menu_info::MENU_SEPARATOR,
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Mark Up^gradable"), "MarkUpgradable",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Mark Up^gradable"), "MarkUpgradable",
 	       N_("Mark all upgradable packages which are not held for upgrade"),
 	       sigc::ptr_fun(do_mark_upgradable), sigc::ptr_fun(do_mark_upgradable_enabled)),
 
   // FIXME: this is a bad name for the menu item.
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Forget new packages"), "ForgetNewPackages",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Forget new packages"), "ForgetNewPackages",
 	       N_("Forget which packages are \"new\""),
 	       sigc::ptr_fun(do_forget_new), sigc::ptr_fun(forget_new_enabled)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Canc^el pending actions"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Canc^el pending actions"), NULL,
 	       N_("Cancel all pending installations, removals, holds, and upgrades."),
 	       sigc::ptr_fun(do_keep_all)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Clean package cache"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Clean package cache"), NULL,
 	       N_("Delete package files which were previously downloaded"),
 	       sigc::ptr_fun(do_clean)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Clean ^obsolete files"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Clean ^obsolete files"), NULL,
 	       N_("Delete package files which can no longer be downloaded"),
 	       sigc::ptr_fun(do_autoclean), sigc::ptr_fun(do_autoclean_enabled)),
 
-  VS_MENU_SEPARATOR,
+  cw::menu_info::MENU_SEPARATOR,
 
 #ifdef WITH_RELOAD_CACHE
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Reload package cache"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Reload package cache"), NULL,
 	       N_("Reload the package cache"),
 	       sigc::ptr_fun(do_reload_cache)),
 #endif
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Play Minesweeper"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Play Minesweeper"), NULL,
 	       N_("Waste time trying to find mines"), sigc::ptr_fun(do_sweep)),
 
-  VS_MENU_SEPARATOR,
+  cw::menu_info::MENU_SEPARATOR,
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Become root"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Become root"), NULL,
 	       N_("Run 'su' to become root; this will restart the program, but your settings will be preserved"), sigc::bind(sigc::ptr_fun(do_su_to_root), ""), sigc::ptr_fun(su_to_root_enabled)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Quit"), "QuitProgram",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Quit"), "QuitProgram",
 	       N_("Exit the program"), sigc::ptr_fun(do_quit)),
 
-  VS_MENU_END
+  cw::menu_info::MENU_END
 };
 
 cw::menu_info undo_menu[]={
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Undo"), "Undo",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Undo"), "Undo",
 	       N_("Undo the last package operation or group of operations"),
 	       sigc::hide_return(undo_undo.make_slot()),
 	       undo_undo_enabled.make_slot()),
 
-  VS_MENU_END
+  cw::menu_info::MENU_END
 };
 
 cw::menu_info package_menu[]={
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Install"), "Install",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Install"), "Install",
 	       N_("Flag the currently selected package for installation or upgrade"),
 	       sigc::hide_return(package_install.make_slot()),
 	       package_menu_enabled.make_slot()),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Remove"), "Remove",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Remove"), "Remove",
 	       N_("Flag the currently selected package for removal"),
 	       sigc::hide_return(package_remove.make_slot()),
 	       package_menu_enabled.make_slot()),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Purge"), "Purge",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Purge"), "Purge",
 	       N_("Flag the currently selected package and its configuration files for removal"),
 	       sigc::hide_return(package_purge.make_slot()),
 	       package_menu_enabled.make_slot()),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Keep"), "Keep",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Keep"), "Keep",
 	       N_("Cancel any action on the selected package"),
 	       sigc::hide_return(package_keep.make_slot()),
 	       package_menu_enabled.make_slot()),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Hold"), "Hold",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Hold"), "Hold",
 	       N_("Cancel any action on the selected package, and protect it from future upgrades"),
 	       sigc::hide_return(package_hold.make_slot()),
 	       package_menu_enabled.make_slot()),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Mark ^Auto"), "SetAuto",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Mark ^Auto"), "SetAuto",
 	       N_("Mark the selected package as having been automatically installed; it will automatically be removed if no other packages depend on it"),
 	       sigc::hide_return(package_mark_auto.make_slot()),
 	       package_menu_enabled.make_slot()),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Mark ^Manual"), "ClearAuto",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Mark ^Manual"), "ClearAuto",
 	       N_("Mark the selected package as having been manually installed; it will not be removed unless you manually remove it"),
 	       sigc::hide_return(package_unmark_auto.make_slot()),
 	       package_menu_enabled.make_slot()),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Forbid Version"), "ForbidUpgrade",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Forbid Version"), "ForbidUpgrade",
 	       N_("Forbid the candidate version of the selected package from being installed; newer versions of the package will be installed as usual"),
 	       sigc::hide_return(package_forbid.make_slot()),
 	       package_forbid_enabled.make_slot()),
-  VS_MENU_SEPARATOR,
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("I^nformation"), "InfoScreen",
+  cw::menu_info::MENU_SEPARATOR,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("I^nformation"), "InfoScreen",
 	       N_("Display more information about the selected package"),
 	       sigc::hide_return(package_information.make_slot()),
 	       package_information_enabled.make_slot()),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Changelog"), "Changelog",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Changelog"), "Changelog",
 	       N_("Display the Debian changelog of the selected package"),
 	       sigc::hide_return(package_changelog.make_slot()),
 	       package_changelog_enabled.make_slot()),
-  VS_MENU_END
+  cw::menu_info::MENU_END
 };
 
 cw::menu_info resolver_menu[] = {
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Examine Solution"),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Examine Solution"),
 	       "ExamineSolution", N_("Examine the currently selected solution to the dependency problems."),
 	       sigc::ptr_fun(do_examine_solution),
 	       sigc::ptr_fun(do_examine_solution_enabled)),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Apply ^Solution"),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Apply ^Solution"),
 	       "ApplySolution", N_("Perform the actions contained in the currently selected solution."),
 	       sigc::ptr_fun(do_apply_solution),
 	       sigc::ptr_fun(do_apply_solution_enabled)),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Next Solution"),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Next Solution"),
 	       "NextSolution", N_("Select the next solution to the dependency problems."),
 	       sigc::ptr_fun(do_next_solution),
 	       sigc::ptr_fun(do_next_solution_enabled)),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Previous Solution"),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Previous Solution"),
 	       "PrevSolution", N_("Select the previous solution to the dependency problems."),
 	       sigc::ptr_fun(do_previous_solution),
 	       sigc::ptr_fun(do_previous_solution_enabled)),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^First Solution"),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^First Solution"),
 	       "FirstSolution", N_("Select the first solution to the dependency problems."),
 	       sigc::ptr_fun(do_first_solution),
 	       sigc::ptr_fun(do_first_solution_enabled)),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Last Solution"),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Last Solution"),
 	       "LastSolution", N_("Select the last solution to the dependency problems that has been generated so far."),
 	       sigc::ptr_fun(do_last_solution),
 	       sigc::ptr_fun(do_last_solution_enabled)),
 
-  VS_MENU_SEPARATOR,
+  cw::menu_info::MENU_SEPARATOR,
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Toggle ^Rejected"),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Toggle ^Rejected"),
 	       "SolutionActionReject", N_("Toggle whether the currently selected action is rejected."),
 	       sigc::hide_return(resolver_toggle_rejected.make_slot()),
 	       resolver_toggle_rejected_enabled.make_slot()),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Toggle ^Approved"),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Toggle ^Approved"),
 	       "SolutionActionApprove", N_("Toggle whether the currently selected action is approved."),
 	       sigc::hide_return(resolver_toggle_approved.make_slot()),
 	       resolver_toggle_approved_enabled.make_slot()),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^View Target"),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^View Target"),
 	       "InfoScreen", N_("View the package which will be affected by the selected action"),
 	       sigc::hide_return(resolver_view_target.make_slot()),
 	       resolver_view_target_enabled.make_slot()),
 
-  VS_MENU_END
+  cw::menu_info::MENU_END
 };
 
 cw::menu_info search_menu[]={
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Find"), "Search",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Find"), "Search",
 	       N_("Search forwards"),
 	       sigc::hide_return(find_search.make_slot()),
 	       find_search_enabled.make_slot()),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Find Backwards"), "SearchBack",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Find Backwards"), "SearchBack",
 	       N_("Search backwards"),
 	       sigc::hide_return(find_search_back.make_slot()),
 	       find_search_back_enabled.make_slot()),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Find ^Again"), "ReSearch",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Find ^Again"), "ReSearch",
 	       N_("Repeat the last search"),
 	       sigc::hide_return(find_research.make_slot()),
 	       find_research_enabled.make_slot()),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Find Again ^Backwards"), "RepeatSearchBack",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Find Again ^Backwards"), "RepeatSearchBack",
 	       N_("Repeat the last search in the opposite direction"),
 	       sigc::hide_return(find_repeat_search_back.make_slot()),
 	       find_repeat_search_back_enabled.make_slot()),
-  VS_MENU_SEPARATOR,
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Limit Display"),
+  cw::menu_info::MENU_SEPARATOR,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Limit Display"),
 	       "ChangePkgTreeLimit", N_("Apply a filter to the package list"),
 	       sigc::hide_return(find_limit.make_slot()),
 	       find_limit_enabled.make_slot()),
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Un-Limit Display"),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Un-Limit Display"),
 	       NULL, N_("Remove the filter from the package list"),
 	       sigc::hide_return(find_cancel_limit.make_slot()),
 	       find_cancel_limit_enabled.make_slot()),
-  VS_MENU_SEPARATOR,
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Find ^Broken"),
+  cw::menu_info::MENU_SEPARATOR,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Find ^Broken"),
 	       "SearchBroken", N_("Find the next package with unsatisfied dependencies"),
 	       sigc::hide_return(find_broken.make_slot()),
 	       find_broken_enabled.make_slot()),
-  VS_MENU_END
+  cw::menu_info::MENU_END
 };
 
 cw::menu_info options_menu[]={
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Preferences"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Preferences"), NULL,
 	       N_("Change the behavior of aptitude"),
 	       sigc::ptr_fun(do_show_options_tree)),
 
 #if 0
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^UI options"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^UI options"), NULL,
 	       N_("Change the settings which affect the user interface"),
 	       sigc::ptr_fun(do_show_ui_options_dlg)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Dependency handling"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Dependency handling"), NULL,
 	       N_("Change the settings which affect how package dependencies are handled"),
 	       sigc::ptr_fun(do_show_dependency_options_dlg)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Miscellaneous"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Miscellaneous"), NULL,
 	       N_("Change miscellaneous program settings"),
 	       sigc::ptr_fun(do_show_misc_options_dlg)),
 #endif
 
-  VS_MENU_SEPARATOR,
+  cw::menu_info::MENU_SEPARATOR,
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Revert options"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Revert options"), NULL,
 	       N_("Reset all settings to the system defaults"),
 	       sigc::ptr_fun(do_revert_options)),
 
-  //{cw::menu_info::VS_MENU_ITEM, N_("^Save options"), NULL,
+  //{cw::menu_info::MENU_ITEM, N_("^Save options"), NULL,
   // N_("Save current settings for future sessions"), cw::util::arg(bind(sigc::ptr_fun(apt_dumpcfg)),
   //							 PACKAGE)},
 
-  VS_MENU_END
+  cw::menu_info::MENU_END
 };
 
 cw::menu_info views_menu_info[]={
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Next"), "CycleNext",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Next"), "CycleNext",
 	       N_("View next display"), sigc::ptr_fun(do_view_next),
 	       sigc::ptr_fun(view_next_prev_enabled)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Prev"), "CyclePrev",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Prev"), "CyclePrev",
 	       N_("View previous display"), sigc::ptr_fun(do_view_prev),
 	       sigc::ptr_fun(view_next_prev_enabled)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Close"), "Quit",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Close"), "Quit",
 	       N_("Close this display"), sigc::ptr_fun(do_destroy_visible),
 	       sigc::ptr_fun(any_view_visible)),
 
-  VS_MENU_SEPARATOR,
+  cw::menu_info::MENU_SEPARATOR,
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("New Package ^View"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("New Package ^View"), NULL,
 	       N_("Create a new default package view"),
 	       sigc::ptr_fun(do_new_package_view_with_new_bar)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("Audit ^Recommendations"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Audit ^Recommendations"), NULL,
 	       N_("View packages which it is recommended that you install, but which are not currently installed."),
 	       sigc::ptr_fun(do_new_recommendations_view)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("New ^Flat Package List"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("New ^Flat Package List"), NULL,
 	       N_("View all the packages on the system in a single uncategorized list"),
 	       sigc::ptr_fun(do_new_flat_view_with_new_bar)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("New ^Debtags Browser"),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("New ^Debtags Browser"),
 	       NULL,
 	       N_("Browse packages using Debtags data"),
 	       sigc::ptr_fun(do_new_tag_view_with_new_bar)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("New Categorical ^Browser"),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("New Categorical ^Browser"),
 	       NULL,
 	       N_("Browse packages by category"),
 	       sigc::ptr_fun(do_new_hier_view_with_new_bar)),
 
-  VS_MENU_SEPARATOR,
-  VS_MENU_END
+  cw::menu_info::MENU_SEPARATOR,
+  cw::menu_info::MENU_END
 };
 
 cw::menu_info help_menu_info[]={
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^About"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^About"), NULL,
 	       N_("View information about this program"),
 	       sigc::ptr_fun(do_help_about)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^Help"), "Help",
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Help"), "Help",
 	       N_("View the on-line help"), sigc::ptr_fun(do_help_help)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("User's ^Manual"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("User's ^Manual"), NULL,
 	       N_("View the detailed program manual"),
 	       sigc::ptr_fun(do_help_readme)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^FAQ"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^FAQ"), NULL,
 	       N_("View a list of frequently asked questions"),
 	       sigc::ptr_fun(do_help_faq)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^News"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^News"), NULL,
 	       N_("View the important changes made in each version of " PACKAGE),
 	       sigc::ptr_fun(do_help_news)),
 
-  cw::menu_info(cw::menu_info::VS_MENU_ITEM, N_("^License"), NULL,
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("^License"), NULL,
 	       N_("View the terms under which you may copy and distribute aptiutde"),
 	       sigc::ptr_fun(do_help_license)),
 
-  VS_MENU_END
+  cw::menu_info::MENU_END
 };
 
 // This is responsible for converting a particular menu-info thingy.
 static void munge_menu(cw::menu_info *menu)
 {
-  while(menu->item_type!=cw::menu_info::VS_MENU_END)
+  while(menu->item_type!=cw::menu_info::MENU_END)
     {
       if(menu->item_description)
 	menu->item_description=_(menu->item_description);
@@ -2630,10 +2635,10 @@ void ui_init()
 
   main_menu->show();
 
-  cw::toplevel::setcw::toplevel(main_menu);
+  cw::toplevel::settoplevel(main_menu);
 
   check_apt_errors();
-  main_hook.connect(sigc::ptr_fun(check_apt_errors));
+  cw::toplevel::main_hook.connect(sigc::ptr_fun(check_apt_errors));
 
   help_label->set_visibility();
 
@@ -2753,7 +2758,7 @@ cw::widget_ref active_main_widget()
 
 progress_ref gen_progress_bar()
 {
-  progress_ref rval=cw::progress::create();
+  progress_ref rval = progress::create();
 
   main_status_multiplex->add_visible_widget(rval, true);
 
@@ -2780,7 +2785,7 @@ gen_download_progress(bool force_noninvasive,
 		      const wstring &title,
 		      const wstring &longtitle,
 		      const wstring &tablabel,
-		      slot0arg abortslot)
+		      cw::util::slot0arg abortslot)
 {
   download_signal_log *m=new download_signal_log;
   download_list_ref w=NULL;
@@ -2842,7 +2847,7 @@ gen_download_progress(bool force_noninvasive,
 		      const string &title,
 		      const string &longtitle,
 		      const string &tablabel,
-		      slot0arg abortslot)
+		      cw::util::slot0arg abortslot)
 {
   return gen_download_progress(force_noninvasive,
 			       list_update,
@@ -2854,9 +2859,9 @@ gen_download_progress(bool force_noninvasive,
 
 void prompt_string(const std::wstring &prompt,
 		   const std::wstring &text,
-		   slotarg<sigc::slot1<void, wstring> > slot,
-		   slotarg<sigc::slot0<void> > cancel_slot,
-		   slotarg<sigc::slot1<void, wstring> > changed_slot,
+		   cw::util::slotarg<sigc::slot1<void, wstring> > slot,
+		   cw::util::slotarg<sigc::slot0<void> > cancel_slot,
+		   cw::util::slotarg<sigc::slot1<void, wstring> > changed_slot,
 		   cw::editline::history_list *history)
 {
   if(aptcfg->FindB(PACKAGE "::UI::Minibuf-Prompts"))
@@ -2895,9 +2900,9 @@ void prompt_string(const std::wstring &prompt,
 
 void prompt_string(const std::string &prompt,
 		   const std::string &text,
-		   slotarg<sigc::slot1<void, wstring> > slot,
-		   slotarg<sigc::slot0<void> > cancel_slot,
-		   slotarg<sigc::slot1<void, wstring> > changed_slot,
+		   cw::util::slotarg<sigc::slot1<void, wstring> > slot,
+		   cw::util::slotarg<sigc::slot0<void> > cancel_slot,
+		   cw::util::slotarg<sigc::slot1<void, wstring> > changed_slot,
 		   cw::editline::history_list *history)
 {
   prompt_string(cw::util::transcode(prompt), cw::util::transcode(text),
@@ -2906,8 +2911,8 @@ void prompt_string(const std::string &prompt,
 
 static void do_prompt_yesno(int cval,
 			    bool deflt,
-			    slot0arg yesslot,
-			    slot0arg noslot)
+			    cw::util::slot0arg yesslot,
+			    cw::util::slot0arg noslot)
 {
   bool rval;
 
@@ -2930,8 +2935,8 @@ static void do_prompt_yesno(int cval,
 
 void prompt_yesno(const std::wstring &prompt,
 		  bool deflt,
-		  slot0arg yesslot,
-		  slot0arg noslot)
+		  cw::util::slot0arg yesslot,
+		  cw::util::slot0arg noslot)
 {
   if(aptcfg->FindB(PACKAGE "::UI::Minibuf-Prompts"))
     {
@@ -2960,8 +2965,8 @@ void prompt_yesno(const std::wstring &prompt,
 
 void prompt_yesno_popup(cw::fragment *prompt,
 			bool deflt,
-			slot0arg yesslot,
-			slot0arg noslot)
+			cw::util::slot0arg yesslot,
+			cw::util::slot0arg noslot)
 {
   main_stacked->add_visible_widget(cw::dialogs::yesno(prompt,
 						   yesslot,
@@ -2973,8 +2978,8 @@ void prompt_yesno_popup(cw::fragment *prompt,
 
 void prompt_yesno(const std::string &prompt,
 		  bool deflt,
-		  slot0arg yesslot,
-		  slot0arg noslot)
+		  cw::util::slot0arg yesslot,
+		  cw::util::slot0arg noslot)
 {
   return prompt_yesno(cw::util::transcode(prompt), deflt, yesslot, noslot);
 }
@@ -3024,7 +3029,7 @@ public:
 };
 
 void show_message(cw::fragment *msg,
-		  slot0arg okslot,
+		  cw::util::slot0arg okslot,
 		  const cw::style &st)
 {
   msg=wrapbox(msg);
@@ -3043,14 +3048,14 @@ void show_message(cw::fragment *msg,
 }
 
 void show_message(const std::string &msg,
-		  slot0arg okslot,
+		  cw::util::slot0arg okslot,
 		  const cw::style &st)
 {
   show_message(cw::text_fragment(msg), okslot, st);
 }
 
 void show_message(const std::wstring &msg,
-		  slot0arg okslot,
+		  cw::util::slot0arg okslot,
 		  const cw::style &st)
 {
   show_message(cw::text_fragment(msg), okslot, st);
