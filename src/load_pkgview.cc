@@ -17,6 +17,10 @@
 #include <apt-pkg/error.h>
 
 namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 std::list<package_view_item> *load_pkgview(std::string cfggroup)
 {
@@ -152,14 +156,14 @@ std::list<package_view_item> *load_pkgview(std::string cfggroup)
       tmp.yopts=0;
 
       if(subtree.FindB("ColExpand", false))
-	tmp.xopts|=cw::table::EXPAND;
+	tmp.xopts |= cw::table::EXPAND;
       if(subtree.FindB("RowExpand", false))
-	tmp.yopts|=cw::table::EXPAND;
+	tmp.yopts |= cw::table::EXPAND;
 
       if(subtree.FindB("ColShrink", false))
-	tmp.xopts|=cw::table::SHRINK;
+	tmp.xopts |= cw::table::SHRINK;
       if(subtree.FindB("RowShrink", false))
-	tmp.yopts|=cw::table::SHRINK;
+	tmp.yopts |= cw::table::SHRINK;
 
       if(subtree.Exists("ColAlign"))
 	{
