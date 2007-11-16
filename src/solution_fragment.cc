@@ -37,6 +37,7 @@
 typedef generic_solution<aptitude_universe> aptitude_solution;
 
 using namespace std;
+namespace cw = cwidget;
 
 string archives_text(const pkgCache::VerIterator &ver)
 {
