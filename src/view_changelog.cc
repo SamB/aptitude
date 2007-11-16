@@ -44,6 +44,12 @@
 
 using namespace std;
 
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
 class pkg_changelog_screen : public cw::file_pager, public menu_redirect
 {
   bool last_search_forwards;
