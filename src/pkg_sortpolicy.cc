@@ -26,6 +26,12 @@
 
 #include <cwidget/widgets/subtree.h>
 
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
 // Blah, this is the easiest way to define trivial subclasses:
 // (not that far from lambda, actually)
 // Yes, I hate typing more than I have to.
