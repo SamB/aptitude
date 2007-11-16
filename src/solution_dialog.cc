@@ -43,6 +43,12 @@
 
 #include <sigc++/bind.h>
 
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
 typedef generic_solution<aptitude_universe> aptitude_solution;
 
 class solution_dialog:public cw::text_layout
@@ -59,7 +65,7 @@ class solution_dialog:public cw::text_layout
 
   void post_update()
   {
-    cw::toplevel::post_event(new slot_event(sigc::mem_fun(this, &solution_dialog::update)));
+    cw::toplevel::post_event(new cw::toplevel::slot_event(sigc::mem_fun(this, &solution_dialog::update)));
   }
 
 protected:
