@@ -31,6 +31,12 @@
 
 #include <cwidget/widgets/widget.h> // For cw::widget_ref
 
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
 ui_download_manager::ui_download_manager(download_manager *_manager,
 					 bool force_noninvasive,
 					 bool list_update,
@@ -45,7 +51,7 @@ ui_download_manager::ui_download_manager(download_manager *_manager,
     gen_download_progress(force_noninvasive, list_update,
 			  title, longtitle, tablabel,
 			  cw::util::arg(sigc::mem_fun(abort_state,
-					    &aborter::abort)));
+						      &aborter::abort)));
 
   log             = progpair.first;
   download_status = progpair.second;
