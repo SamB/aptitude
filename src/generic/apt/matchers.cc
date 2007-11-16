@@ -53,7 +53,7 @@
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
 
-#include <generic/util/eassert.h>
+#include <cwidget/generic/util/eassert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <regex.h>

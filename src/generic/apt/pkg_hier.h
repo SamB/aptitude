@@ -49,7 +49,7 @@
 #endif
 #endif
 
-#include <generic/util/strhash.h>
+#include <cwidget/generic/util/strhash.h>
 
 #include <string>
 #include <vector>

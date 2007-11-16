@@ -47,7 +47,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 
-#include <generic/util/eassert.h>
+#include <cwidget/generic/util/eassert.h>
 
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/mem_fun.h>

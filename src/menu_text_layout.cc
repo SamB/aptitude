@@ -22,7 +22,7 @@
 #include "aptitude.h"
 #include "ui.h"
 
-#include <generic/util/slotarg.h>
+#include <cwidget/generic/util/slotarg.h>
 
 #include <cwidget/config/keybindings.h>
 #include <cwidget/generic/util/transcode.h>

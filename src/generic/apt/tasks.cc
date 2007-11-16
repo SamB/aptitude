@@ -11,7 +11,7 @@
 #include <apt-pkg/pkgrecords.h>
 #include <apt-pkg/tagfile.h>
 
-#include <generic/util/eassert.h>
+#include <cwidget/generic/util/eassert.h>
 #include <errno.h>
 
 #include <ctype.h>

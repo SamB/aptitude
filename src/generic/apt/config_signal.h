@@ -60,7 +60,7 @@
 
 #include <vector>
 
-#include <generic/util/strhash.h>
+#include <cwidget/generic/util/strhash.h>
 
 class signalling_config:public sigc::trackable
 {

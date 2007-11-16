@@ -7,7 +7,7 @@
 
 #include "cmdline_common.h"
 
-#include <generic/util/exception.h>
+#include <cwidget/generic/util/exception.h>
 
 /** Thrown when we get EOF on stdin.  Should never be thrown
  *  to the cwidget::toplevel.

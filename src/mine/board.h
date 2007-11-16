@@ -10,7 +10,7 @@
 
 #include <string>
 #include <iostream>
-#include <generic/util/eassert.h>
+#include <cwidget/generic/util/eassert.h>
 #include <time.h>
 
 class mine_board

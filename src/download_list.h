@@ -27,7 +27,7 @@
 
 #include <apt-pkg/acquire.h>
 
-#include <generic/util/slotarg.h>
+#include <cwidget/generic/util/slotarg.h>
 
 #include <cwidget/widgets/widget.h>
 
