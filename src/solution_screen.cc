@@ -34,9 +34,10 @@
 
 #include <sigc++/adaptors/bind.h>
 
-#include <cwidget/style.h>
 #include <cwidget/fragment.h>
 #include <cwidget/generic/util/transcode.h>
+#include <cwidget/style.h>
+#include <cwidget/toplevel.h>
 #include <cwidget/widgets/label.h>
 #include <cwidget/widgets/layout_item.h>
 #include <cwidget/widgets/multiplex.h>
@@ -47,6 +48,11 @@
 typedef generic_solution<aptitude_universe> aptitude_solution;
 
 using namespace std;
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 struct act_name_lt
 {
@@ -392,7 +398,7 @@ class solution_examiner : public cw::multiplex
 	  update_from_state(state);
       }
 
-    cw::toplevel::addtimeout(new slot_event(sigc::mem_fun(this, &solution_examiner::tick)), 1000);
+    cw::toplevel::addtimeout(new cw::toplevel::slot_event(sigc::mem_fun(this, &solution_examiner::tick)), 1000);
   }
 
 protected:
@@ -414,11 +420,11 @@ protected:
 
     cycled.connect(sigc::mem_fun(*this, &solution_examiner::update_highlights));
 
-    cw::toplevel::addtimeout(new slot_event(sigc::mem_fun(this, &solution_examiner::tick)), 1000);
+    cw::toplevel::addtimeout(new cw::toplevel::slot_event(sigc::mem_fun(this, &solution_examiner::tick)), 1000);
 
     // Because the update event might destroy this object, it needs to
     // take place after the constructor returns.
-    cw::toplevel::post_event(new slot_event(sigc::mem_fun(this, &solution_examiner::update)));
+    cw::toplevel::post_event(new cw::toplevel::slot_event(sigc::mem_fun(this, &solution_examiner::update)));
   }
 
   bool handle_key(const cw::config::key &k)

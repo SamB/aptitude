@@ -24,10 +24,16 @@
 
 class aptitude_universe;
 template<class PackageUniverse> class generic_solution;
-class cwidget::widgets::widget;
+namespace cwidget
+{
+  namespace widgets
+  {
+    class widget;
+    typedef util::ref_ptr<cwidget::widgets::widget> widget_ref;
+  }
+}
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
-typedef cwidget::util::ref_ptr<cwidget::widgets::widget> cwidget::widgets::widget_ref;
 
 /** Generate a new widget suitable for inclusion at the top-level
  *  which describes the given solution.
