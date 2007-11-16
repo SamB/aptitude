@@ -7,12 +7,12 @@
 #ifndef LOAD_CONFIG_H
 #define LOAD_CONFIG_H
 
-#include "cwidget/config/keybindings.h"
+#include <cwidget/config/keybindings.h>
 
 void load_styles(std::string group, bool usetheme);
 //  Loads in color definitions from the given group.
 
-void load_bindings(std::string group, keybindings *toload, bool usetheme);
+void load_bindings(std::string group, cwidget::config::keybindings *toload, bool usetheme);
 //  Loads values from the given APT configuration group into the given
 // keybindings.
 
