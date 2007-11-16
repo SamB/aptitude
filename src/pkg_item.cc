@@ -23,9 +23,10 @@
 
 #include <cwidget/config/column_definition.h>
 #include <cwidget/config/keybindings.h>
+#include <cwidget/dialogs.h>
 #include <cwidget/fragment.h>
 #include <cwidget/generic/util/transcode.h>
-#include <cwidget/dialogs.h>
+#include <cwidget/toplevel.h>
 
 #include "edit_pkg_hier.h"
 #include "pkg_columnizer.h"
@@ -51,6 +52,11 @@
 #include <unistd.h>
 
 using namespace std;
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 static const char *confirm_str=N_("Yes, I am aware this is a very bad idea");
 
@@ -308,7 +314,7 @@ void pkg_item::paint(cw::tree *win, int y, bool hierarchical, const cw::style &s
   win->getmaxyx(height, width);
   pkg_columnizer::setup_columns();
 
-  empty_column_parameters p;
+  cw::config::empty_column_parameters p;
   wstring disp=pkg_columnizer(package, visible_version(), pkg_columnizer::get_columns(), basex).layout_columns(width, p);
   win->mvaddnstr(y, 0, disp.c_str(), width);
 }
@@ -442,7 +448,7 @@ bool pkg_item::dispatch_key(const cw::config::key &k, cw::tree *owner)
 	      cw::toplevel::resume();
 	    }
 
-	  cw::progress_ref p = gen_progress_bar();
+	  progress_ref p = gen_progress_bar();
 	  apt_reload_cache(p.unsafe_get_ref(), true);
 	  p->destroy();
 	}

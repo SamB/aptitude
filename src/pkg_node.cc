@@ -33,11 +33,17 @@
 
 #include <cwidget/widgets/tree.h>
 
-keybindings *pkg_tree_node::bindings=NULL;
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
+cw::config::keybindings *pkg_tree_node::bindings=NULL;
 
 void pkg_tree_node::init_bindings()
 {
-  bindings=new keybindings(&cw::config::global_bindings);
+  bindings = new cw::config::keybindings(&cw::config::global_bindings);
 }
 
 // FIXME: add a do_action() command that takes a function pointer and does all

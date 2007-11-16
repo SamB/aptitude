@@ -28,7 +28,13 @@
 #include <cwidget/widgets/treeitem.h>
 
 class undo_group;
-class keybindings;
+namespace cwidget
+{
+  namespace config
+  {
+    class keybindings;
+  }
+}
 
 class pkg_tree_node:virtual public cwidget::widgets::treeitem, public menu_redirect
 // Provides some extra package-related interfaces.
@@ -54,7 +60,7 @@ public:
   // IMPORTANT NOTE: pkg_tree_node::dispatch_char() does NOT call
   // cwidget::widgets::treeitem::dispatch_char!
 
-  static keybindings *bindings;
+  static cwidget::config::keybindings *bindings;
   static void init_bindings();
 
   // Menu redirections:
