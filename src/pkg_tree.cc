@@ -34,6 +34,7 @@
 
 #include <cwidget/columnify.h>
 #include <cwidget/generic/util/transcode.h>
+#include <cwidget/toplevel.h>
 #include <cwidget/widgets/treeitem.h>
 
 #include <generic/apt/apt.h>
@@ -46,6 +47,12 @@
 
 #include <sigc++/adaptors/retype_return.h>
 #include <sigc++/functors/mem_fun.h>
+
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 cw::config::keybindings *pkg_tree::bindings=NULL;
 
