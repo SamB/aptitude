@@ -273,7 +273,7 @@ option_item misc_options[]={
 	      N_("If this option is enabled, then after every "
 		 "install run, aptitude will delete from the package "
 		 "cache any package files that can no longer be "
-		 "downloaded from any archive in sources.lst."),
+		 "downloaded from any archive in sources.list."),
 	      PACKAGE "::AutoClean-After-Update", false),
   option_item(N_("URL to use to download changelogs"),
 	      N_("This option controls the template that's used to "
