@@ -29,8 +29,8 @@ namespace cwidget
  *                 one of its reverse dependencies.
  *  \return the new text fragment
  */
-fragment *reason_fragment(const pkgCache::PkgIterator &pkg,
-			  bool &breakage);
+cwidget::fragment *reason_fragment(const pkgCache::PkgIterator &pkg,
+				   bool &breakage);
 
 /** Generate a cwidget::fragment containing a (multi-line) description of why
  *  the package is in its present state.
@@ -40,9 +40,9 @@ fragment *reason_fragment(const pkgCache::PkgIterator &pkg,
  *  \param pkg the package to examine
  *  \return the new text fragment
  */
-fragment *reason_fragment(const pkgCache::PkgIterator &pkg);
+cwidget::fragment *reason_fragment(const pkgCache::PkgIterator &pkg);
 
 /** \return a string explaining that no package is selected. */
-fragment *nopackage();
+cwidget::fragment *nopackage();
 
 #endif

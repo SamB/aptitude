@@ -31,15 +31,16 @@
 
 #include <cmdline/cmdline_why.h>
 
+#include <cwidget/config/keybindings.h>
 #include <cwidget/fragment.h>
+#include <cwidget/generic/util/transcode.h>
+#include <cwidget/toplevel.h>
 #include <cwidget/widgets/label.h>
 #include <cwidget/widgets/multiplex.h>
 #include <cwidget/widgets/scrollbar.h>
 #include <cwidget/widgets/table.h>
 #include <cwidget/widgets/text_layout.h>
 #include <cwidget/widgets/widget.h>
-#include <cwidget/config/keybindings.h>
-#include <cwidget/generic/util/transcode.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
@@ -58,9 +59,15 @@
 
 using namespace std;
 
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
 class pkg_handling_label:public cw::label
 {
-  column_definition_list *columns;
+  cw::config::column_definition_list *columns;
 
   bool have_pkg;
   pkgCache::PkgIterator pkg;
@@ -72,7 +79,7 @@ class pkg_handling_label:public cw::label
   }
 
 protected:
-  pkg_handling_label(column_definition_list *_columns)
+  pkg_handling_label(cw::config::column_definition_list *_columns)
     :cw::label(" "), columns(_columns), have_pkg(false)
   {
     cache_closed.connect(sigc::mem_fun(*this, &pkg_handling_label::zap_package));
@@ -80,7 +87,7 @@ protected:
 
 public:
   static cw::util::ref_ptr<pkg_handling_label>
-  create(column_definition_list *columns)
+  create(cw::config::column_definition_list *columns)
   {
     cw::util::ref_ptr<pkg_handling_label> rval(new pkg_handling_label(columns));
     rval->decref();
@@ -89,9 +96,9 @@ public:
 
   ~pkg_handling_label() {delete columns;}
 
-  size size_request() {return size(1,1);}
+  cw::size size_request() {return cw::size(1,1);}
 
-  void set_columns(column_definition_list *_columns)
+  void set_columns(cw::config::column_definition_list *_columns)
   {
     delete columns;
     columns=_columns;
@@ -126,7 +133,7 @@ public:
 	    ver=pkgCache::VerIterator(*apt_cache_file);
 	  }
 
-	empty_column_parameters p;
+	cw::config::empty_column_parameters p;
 	set_text(pkg_item::pkg_columnizer(pkg, ver, *columns, 0).layout_columns(getmaxx(), p));
       }
     else
@@ -146,7 +153,7 @@ static void do_set_column_format(string key, string the_default,
   string format=aptcfg->Find(key, the_default.c_str());
   wstring wformat;
 
-  column_definition_list *columns=NULL;
+  cw::config::column_definition_list *columns=NULL;
 
   if(!cw::util::transcode(format.c_str(), wformat))
     _error->Errno("iconv", _("Couldn't cw::util::transcode column definition"));
