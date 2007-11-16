@@ -24,6 +24,13 @@
 #include <sstream>
 
 #include <cwidget/generic/util/transcode.h>
+#include <cwidget/toplevel.h>
+
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 progress::progress()
 {
@@ -70,7 +77,7 @@ bool progress::get_cursorvisible()
   return false;
 }
 
-point progress::get_cursorloc()
+cw::point progress::get_cursorloc()
 {
   double xd = (Percent * getmaxx()) / 100.0;
   int x     = static_cast<int>(xd);
@@ -78,7 +85,7 @@ point progress::get_cursorloc()
 
   x = std::min(x, maxx);
   x = std::max(x, 0);
-  return point(x, 0);
+  return cw::point(x, 0);
 }
 
 void progress::Update()
