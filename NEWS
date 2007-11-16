@@ -1,3 +1,18 @@
+[11/15/2007]
+Version 0.4.8                               "The fun never stops!"
+
+This change removes the internal widget set, instead using the cwidget
+curses widget library (which just happens to provide all the same
+functionality as the aptitude widget set, imagine that).
+
+- Bug fixes:
+
+  + Cosmetic and UI bugs:
+
+    * Interpret key names in the broken indicator as wide-character
+      strings; fixes actual display corruption on some platforms and
+      potential corruption on all platforms.  (Closes: #448753)
+
 [10/30/2007]
 Version 0.4.7                               "Where did all these
                                              balloons come from?
