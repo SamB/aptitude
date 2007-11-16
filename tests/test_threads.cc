@@ -17,15 +17,20 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
+// TODO: threads code lives in cwidget now, this test should move
+// there.
+
 #include <cppunit/extensions/HelperMacros.h>
 
-#include <generic/util/event_queue.h>
+#include <cwidget/generic/threads/event_queue.h>
 #include <cwidget/generic/threads/threads.h>
 
 #include <iostream>
 
 #include <sys/time.h>
 #include <time.h>
+
+namespace cw = cwidget;
 
 class TestThreads : public CppUnit::TestFixture
 {
@@ -88,7 +93,7 @@ public:
       {
 	do_testBox();
       }
-    catch(const Exception &e)
+    catch(const cw::util::Exception &e)
       {
 	std::cerr << "Caught exception in testBox: " << e.errmsg() << std::endl;
 	throw;

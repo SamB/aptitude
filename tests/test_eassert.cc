@@ -17,7 +17,10 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
-#include <generic/util/eassert.h>
+// TODO: eassert lives in cwidget now, this test should perhaps move
+// there.
+
+#include <cwidget/generic/util/eassert.h>
 
 #include <cppunit/extensions/HelperMacros.h>
 
@@ -45,7 +48,7 @@ public:
       {
 	failureLine = __LINE__; eassert(a == 1);
       }
-    catch(AssertionFailure &e)
+    catch(cwidget::util::AssertionFailure &e)
       {
 	CPPUNIT_ASSERT_EQUAL(std::string("a == 1"), e.get_exp());
 	CPPUNIT_ASSERT_EQUAL(failureLine, e.get_line());
