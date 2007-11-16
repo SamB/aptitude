@@ -81,6 +81,8 @@ aptitude_SOURCES= 	\
 	pkg_ver_item.h	\
 	pkg_view.cc	\
 	pkg_view.h	\
+	progress.cc	\
+	progress.h	\
 	reason_fragment.cc\
 	reason_fragment.h\
 	solution_dialog.cc\
@@ -98,6 +100,4 @@ aptitude_SOURCES= 	\
 	ui_download_manager.cc \
 	ui_download_manager.h  \
 	view_changelog.cc \
-	view_changelog.h \
-	vs_progress.cc  \
-	vs_progress.h
+	view_changelog.h
