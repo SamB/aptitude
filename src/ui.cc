@@ -355,7 +355,7 @@ static bool do_read_only_permission()
 	  t->focus_widget(ok);
 
 	  cw::frame_ref frame = cw::frame::create(t);
-	  frame->set_bg_style(style_attrs_flip(A_REVERSE));
+	  frame->set_bg_style(cw::style_attrs_flip(A_REVERSE));
 
 	  cw::center_ref c = cw::center::create(frame);
 
@@ -769,7 +769,7 @@ static cw::widget_ref make_default_view(const menu_tree_ref &mainwidget,
   basic_format.push_back(package_view_item("main", 1, 0, 1, 1,
 					   cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK,
 					   cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK,
-					   style(),
+					   cw::style(),
 					   true));
 
   basic_format.push_back(package_view_item("static2",
@@ -787,7 +787,7 @@ static cw::widget_ref make_default_view(const menu_tree_ref &mainwidget,
   basic_format.push_back(package_view_item("desc", 3, 0, 1, 1,
 					   cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK,
 					   cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK,
-					   style(),
+					   cw::style(),
 					   "ShowHideDescription", "",
 					   allow_visible_desc && aptcfg->FindB(PACKAGE "::UI::Description-Visible-By-Default", true)));
 

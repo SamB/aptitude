@@ -89,14 +89,14 @@ static fragment *action_description(const aptitude_resolver_version &ver)
     {
     case action_remove:
       return fragf(_("Remove %F [%s (%s)]"),
-		   text_fragment(pkg.Name(), style_attrs_on(A_BOLD)),
+		   text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
 		   pkg.CurrentVer().VerStr(),
 		   archives_text(pkg.CurrentVer()).c_str());
       break;
 
     case action_install:
       return fragf(_("Install %F [%s (%s)]"),
-		   text_fragment(pkg.Name(), style_attrs_on(A_BOLD)),
+		   text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
 		   ver.get_ver().VerStr(),
 		   archives_text(ver.get_ver()).c_str());
       break;
@@ -104,13 +104,13 @@ static fragment *action_description(const aptitude_resolver_version &ver)
     case action_keep:
       if(ver.get_ver().end())
 	return fragf(_("Cancel the installation of %F"),
-		     text_fragment(pkg.Name(), style_attrs_on(A_BOLD)));
+		     text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)));
       else if(ver.get_package().current_version().get_ver().end())
 	return fragf(_("Cancel the removal of %F"),
-		     text_fragment(pkg.Name(), style_attrs_on(A_BOLD)));
+		     text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)));
       else
 	return fragf(_("Keep %F at version %s (%s)"),
-		     text_fragment(pkg.Name(), style_attrs_on(A_BOLD)),
+		     text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
 		     ver.get_ver().VerStr(),
 		     archives_text(ver.get_ver()).c_str());
 
@@ -118,7 +118,7 @@ static fragment *action_description(const aptitude_resolver_version &ver)
 
     case action_upgrade:
       return fragf(_("Upgrade %F [%s (%s) -> %s (%s)]"),
-		   text_fragment(pkg.Name(), style_attrs_on(A_BOLD)),
+		   text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
 		   pkg.CurrentVer().VerStr(),
 		   archives_text(pkg.CurrentVer()).c_str(),
 		   ver.get_ver().VerStr(), archives_text(ver.get_ver()).c_str());
@@ -127,7 +127,7 @@ static fragment *action_description(const aptitude_resolver_version &ver)
 
     case action_downgrade:
       return fragf(_("Downgrade %F [%s (%s) -> %s (%s)]"),
-		   text_fragment(pkg.Name(), style_attrs_on(A_BOLD)),
+		   text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
 		   pkg.CurrentVer().VerStr(), archives_text(pkg.CurrentVer()).c_str(),
 		   ver.get_ver().VerStr(), archives_text(ver.get_ver()).c_str());
       break;
@@ -150,14 +150,14 @@ const wchar_t *solution_item::label()
   return L"";
 }
 
-style solution_item::get_normal_style()
+cw::style solution_item::get_normal_style()
 {
   if(is_rejected())
     return cw::get_style("SolutionActionRejected");
   else if(is_mandatory())
     return cw::get_style("SolutionActionApproved");
   else
-    return style();
+    return cw::style();
 }
 
 bool solution_item::dispatch_key(const cw::config::key &k, cw::tree *owner)
@@ -428,7 +428,7 @@ void solution_act_item_bare::paint(cw::tree *win, int y, bool hierarchical, cons
       ++x;
     }
 
-  win->apply_style(st+style_attrs_on(A_BOLD));
+  win->apply_style(st+cw::style_attrs_on(A_BOLD));
 
   aptitude_universe::version ver = get_ver();
 

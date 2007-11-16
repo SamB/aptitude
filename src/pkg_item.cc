@@ -86,7 +86,7 @@ static void confirm_delete_essential(const pkgCache::PkgIterator &pkg,
 				   NULL,
 				   NULL,
 				   NULL,
-				   style_attrs_flip(A_REVERSE));
+				   cw::style_attrs_flip(A_REVERSE));
 
   w->show_all();
 
@@ -235,19 +235,19 @@ void pkg_item::show_changelog()
    view_changelog(visible_version());
 }
 
-style pkg_item::get_highlight_style()
+cw::style pkg_item::get_highlight_style()
 {
   return cw::treeitem::get_normal_style() + pkg_style(package, true);
 }
 
-style pkg_item::get_normal_style()
+cw::style pkg_item::get_normal_style()
 {
   return cw::treeitem::get_normal_style() + pkg_style(package, false);
 }
 
 #define MAYBE_HIGHLIGHTED(x) (highlighted ? (x "Highlighted") : (x))
 
-style pkg_item::pkg_style(pkgCache::PkgIterator package, bool highlighted)
+cw::style pkg_item::pkg_style(pkgCache::PkgIterator package, bool highlighted)
 {
   if(package.VersionList().end())
     {

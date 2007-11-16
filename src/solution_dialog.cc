@@ -190,10 +190,10 @@ cw::widget_ref make_solution_dialog()
 		    sigc::bind(sigc::ptr_fun(do_apply),
 			       rval.weak_ref()));
 
-  bprev->set_bg_style(style_attrs_flip(A_REVERSE));
-  bnext->set_bg_style(style_attrs_flip(A_REVERSE));
-  bapply->set_bg_style(style_attrs_flip(A_REVERSE));
-  bclose->set_bg_style(style_attrs_flip(A_REVERSE));
+  bprev->set_bg_style(cw::style_attrs_flip(A_REVERSE));
+  bnext->set_bg_style(cw::style_attrs_flip(A_REVERSE));
+  bapply->set_bg_style(cw::style_attrs_flip(A_REVERSE));
+  bclose->set_bg_style(cw::style_attrs_flip(A_REVERSE));
 
   bt->add_widget_opts(bprev,
 		     0, 0, 1, 1,

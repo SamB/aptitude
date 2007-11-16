@@ -117,7 +117,7 @@ class pkg_grouppolicy_section:public pkg_grouppolicy
   int split_mode;
   bool passthrough;
 
-  // The descriptions are in the style used by package descriptions.
+  // The descriptions are in the cw::style used by package descriptions.
   static hash_map<string, wstring> section_descriptions;
   static void init_section_descriptions();
 public:

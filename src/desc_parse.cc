@@ -62,7 +62,7 @@ namespace cw = cwidget;
  *
  *  \param desc the string from which the description should be built.
  *  \param level how many list indent levels have been entered; used
- *  to choose bullet style.
+ *  to choose bullet cw::style.
  *
  *  \param indent the number of spaces to strip from the left-hand
  *  side of each line.  If a line with less than this many spaces is

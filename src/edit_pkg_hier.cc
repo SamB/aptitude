@@ -34,8 +34,9 @@
 #include <generic/util/util.h>
 
 #include <cwidget/config/keybindings.h>
-#include <cwidget/widgets/subtree.h>
 #include <cwidget/generic/util/transcode.h>
+#include <cwidget/toplevel.h>
+#include <cwidget/widgets/subtree.h>
 
 using namespace std;
 using namespace __gnu_cxx;

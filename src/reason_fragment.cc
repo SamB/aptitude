@@ -28,16 +28,16 @@ fragment *depname_frag(pkgCache::DepIterator dep)
   switch(dep->Type)
     {
     case pkgCache::Dep::Depends: return text_fragment(_("depends on"),
-						      style_attrs_on(A_BOLD));
+						      cw::style_attrs_on(A_BOLD));
     case pkgCache::Dep::PreDepends: return text_fragment(_("pre-depends on"),
-							 style_attrs_on(A_BOLD));
+							 cw::style_attrs_on(A_BOLD));
     case pkgCache::Dep::Suggests: return text_fragment(_("suggests"));
     case pkgCache::Dep::Recommends: return text_fragment(_("recommends"),
-							 style_attrs_on(A_BOLD));
+							 cw::style_attrs_on(A_BOLD));
     case pkgCache::Dep::Conflicts: return text_fragment(_("conflicts with"),
-							style_attrs_on(A_BOLD));
+							cw::style_attrs_on(A_BOLD));
     case pkgCache::Dep::DpkgBreaks: return text_fragment(_("breaks"),
-							style_attrs_on(A_BOLD));
+							cw::style_attrs_on(A_BOLD));
     case pkgCache::Dep::Replaces: return text_fragment(_("replaces"));
     case pkgCache::Dep::Obsoletes: return text_fragment(_("obsoletes"));
     }
@@ -144,7 +144,7 @@ fragment *prvfrag(pkgCache::PkgIterator pkg,
 	{
 	  pkgCache::VerIterator &pv=provided_cand?candver:currver;
 
-	  fragments.push_back(style_fragment(fragf("%s %s",
+	  fragments.push_back(cw::style_fragment(fragf("%s %s",
 						   P->Name(),
 						   pv.VerStr()),
 					     pkg_ver_item::ver_style(pv, false)));
@@ -155,7 +155,7 @@ fragment *prvfrag(pkgCache::PkgIterator pkg,
 	  for(set<pkgCache::VerIterator>::const_iterator i=providing_versions.begin();
 	      i!=providing_versions.end(); ++i)
 	    if(i->ParentPkg()==*P)
-	      fragments.push_back(style_fragment(fragf("%s %s",
+	      fragments.push_back(cw::style_fragment(fragf("%s %s",
 						       P->Name(),
 						       i->VerStr()),
 						 pkg_ver_item::ver_style(*i, false)));
@@ -188,7 +188,7 @@ fragment *dep_singlefrag(pkgCache::PkgIterator pkg,
       // it is satisfied but won't be, and "installing" if it is not
       // satisfied and will be.
 
-      style verstyle;
+      cw::style verstyle;
 
       bool matches_now=!pkg.CurrentVer().end() &&
 	_system->VS->CheckDep(pkg.CurrentVer().VerStr(),
@@ -202,7 +202,7 @@ fragment *dep_singlefrag(pkgCache::PkgIterator pkg,
       if(matches_now)
 	{
 	  if(matches_inst)
-	    verstyle=style_attrs_on(A_BOLD);
+	    verstyle=cw::style_attrs_on(A_BOLD);
 	  else
 	    verstyle=cw::get_style("PkgToRemove");
 	}

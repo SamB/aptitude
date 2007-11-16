@@ -28,6 +28,7 @@
 #define PKG_VIEW_H
 
 #include <cwidget/config/column_definition.h>
+#include <cwidget/generic/util/ref_ptr.h>
 #include <cwidget/style.h>
 #include "pkg_grouppolicy.h"
 
@@ -40,11 +41,6 @@ class pkg_grouppolicy_factory;
 
 namespace cwidget
 {
-  namespace util
-  {
-    template<typename T> class ref_ptr;
-  }
-
   namespace widgets
   {
     class widget;

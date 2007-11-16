@@ -16,6 +16,8 @@
 
 #include <apt-pkg/error.h>
 
+namespace cw = cwidget;
+
 std::list<package_view_item> *load_pkgview(std::string cfggroup)
 {
   std::list<package_view_item> *rval=new std::list<package_view_item>;

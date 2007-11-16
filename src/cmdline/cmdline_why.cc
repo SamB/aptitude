@@ -1059,12 +1059,12 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 	      for(std::vector<justify_action>::const_iterator it = results.begin();
 		  it != results.end(); ++it)
 		{
-		  col1_entries.push_back(hardwrapbox(style_fragment(fragf("%F\n", it->description_column1_fragment()),
-								    it->get_style())));
-		  col2_entries.push_back(hardwrapbox(style_fragment(fragf("%F\n", it->description_column2_fragment()),
-								    it->get_style())));
-		  col3_entries.push_back(hardwrapbox(style_fragment(fragf("%F\n", it->description_column3_fragment()),
-								    it->get_style())));
+		  col1_entries.push_back(hardwrapbox(cw::style_fragment(fragf("%F\n", it->description_column1_fragment()),
+									it->get_style())));
+		  col2_entries.push_back(hardwrapbox(cw::style_fragment(fragf("%F\n", it->description_column2_fragment()),
+									it->get_style())));
+		  col3_entries.push_back(hardwrapbox(cw::style_fragment(fragf("%F\n", it->description_column3_fragment()),
+									it->get_style())));
 		}
 
 	      using cw::fragment_column_entry;

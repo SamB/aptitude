@@ -44,6 +44,7 @@
 #include <map>
 
 using namespace std;
+namespace cw = cwidget;
 
 class GroupParseException
 {

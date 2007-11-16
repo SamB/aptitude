@@ -935,18 +935,18 @@ void cmine::init_bindings()
   using cwidget::style_bg;
   using cwidget::style_fg;
 
-  set_style("MineFlag", style_fg(COLOR_RED)+style_attrs_on(A_BOLD));
-  set_style("MineBomb", style_fg(COLOR_RED)+style_attrs_on(A_BOLD));
-  set_style("MineDetonated", style_fg(COLOR_RED)+style_attrs_on(A_BOLD));
-  set_style("MineNumber1", style_fg(COLOR_WHITE));
-  set_style("MineNumber2", style_fg(COLOR_GREEN));
-  set_style("MineNumber3", style_fg(COLOR_CYAN));
-  set_style("MineNumber4", style_fg(COLOR_MAGENTA)+style_attrs_on(A_BOLD));
-  set_style("MineNumber5", style_fg(COLOR_RED)+style_attrs_on(A_BOLD));
-  set_style("MineNumber6", style_attrs_on(A_BOLD)+style_fg(COLOR_CYAN));
-  set_style("MineNumber7", style_attrs_on(A_BOLD)+style_fg(COLOR_GREEN));
-  set_style("MineNumber8", style_attrs_on(A_BOLD));
-  set_style("MineBorder", style_attrs_on(A_BOLD));
+  set_style("MineFlag", cw::style_fg(COLOR_RED)+cw::style_attrs_on(A_BOLD));
+  set_style("MineBomb", cw::style_fg(COLOR_RED)+cw::style_attrs_on(A_BOLD));
+  set_style("MineDetonated", cw::style_fg(COLOR_RED)+cw::style_attrs_on(A_BOLD));
+  set_style("MineNumber1", cw::style_fg(COLOR_WHITE));
+  set_style("MineNumber2", cw::style_fg(COLOR_GREEN));
+  set_style("MineNumber3", cw::style_fg(COLOR_CYAN));
+  set_style("MineNumber4", cw::style_fg(COLOR_MAGENTA)+cw::style_attrs_on(A_BOLD));
+  set_style("MineNumber5", cw::style_fg(COLOR_RED)+cw::style_attrs_on(A_BOLD));
+  set_style("MineNumber6", cw::style_attrs_on(A_BOLD)+cw::style_fg(COLOR_CYAN));
+  set_style("MineNumber7", cw::style_attrs_on(A_BOLD)+cw::style_fg(COLOR_GREEN));
+  set_style("MineNumber8", cw::style_attrs_on(A_BOLD));
+  set_style("MineBorder", cw::style_attrs_on(A_BOLD));
 
   using cwidget::config::global_bindings;
   using cwidget::config::key;

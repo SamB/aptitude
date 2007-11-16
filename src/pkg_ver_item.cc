@@ -471,12 +471,12 @@ pkg_grouppolicy *pkg_grouppolicy_ver_factory::instantiate(pkg_signal *sig,
   return new pkg_grouppolicy_ver(sig, desc_sig);
 }
 
-style pkg_ver_item::get_normal_style()
+cw::style pkg_ver_item::get_normal_style()
 {
   return cw::treeitem::get_normal_style() + ver_style(version, false);
 }
 
-style pkg_ver_item::get_highlighted_style()
+cw::style pkg_ver_item::get_highlighted_style()
 {
   return cw::treeitem::get_normal_style() + ver_style(version, true);
 }
@@ -491,7 +491,7 @@ pkg_ver_item::pkg_ver_item(const pkgCache::VerIterator &_version, pkg_signal *_s
 
 #define MAYBE_HIGHLIGHTED(x) (highlighted ? (x "Highlighted") : (x))
 
-style pkg_ver_item::ver_style(pkgCache::VerIterator version,
+cw::style pkg_ver_item::ver_style(pkgCache::VerIterator version,
 			      bool highlighted)
 {
   pkgCache::PkgIterator pkg=version.ParentPkg();

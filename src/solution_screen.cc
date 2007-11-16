@@ -34,7 +34,7 @@
 
 #include <sigc++/adaptors/bind.h>
 
-#include <cwidget/config/style.h>
+#include <cwidget/config/cw::style.h>
 #include <cwidget/fragment.h>
 #include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/label.h>

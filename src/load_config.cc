@@ -4,8 +4,8 @@
 
 #include "aptitude.h"
 
-#include "cwidget/config/style.h"
-#include "cwidget/config/keybindings.h"
+#include <cwidget/config/keybindings.h>
+#include <cwidget/style.h>
 
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
@@ -18,6 +18,8 @@
 #include <ctype.h>
 
 using namespace std;
+
+namespace cw = cwidget;
 
 static int parse_color(const string &s)
 {
@@ -108,12 +110,12 @@ void load_styles(std::string group, bool use_theme)
   for(Configuration::Item const *i=cfg_grp->Child; i; i=i->Next)
     {
       if(!i->Value.empty())
-	_error->Error(_("Invalid entry in style definition group: \"%s\""), i->Tag.c_str());
+	_error->Error(_("Invalid entry in cw::style definition group: \"%s\""), i->Tag.c_str());
       else if(i->Tag.empty())
-	_error->Error(_("Invalid tagless entry in style definition group: \"%s\""), i->Value.c_str());
+	_error->Error(_("Invalid tagless entry in cw::style definition group: \"%s\""), i->Value.c_str());
       else
 	{
-	  style curr;
+	  cw::style curr;
 
 	  for(Configuration::Item const *j=i->Child; j; j=j->Next)
 	    {
@@ -130,16 +132,16 @@ void load_styles(std::string group, bool use_theme)
 		curr.set_bg(parse_color(j->Value));
 	      else
 		{
-		  void (style::*f)(attr_t)=NULL;
+		  void (cw::style::*f)(attr_t)=NULL;
 		  if(!strcasecmp(j->Tag.c_str(), "set"))
-		    f=&style::attrs_on;
+		    f=&cw::style::attrs_on;
 		  else if(!strcasecmp(j->Tag.c_str(), "clear"))
-		    f=&style::attrs_off;
+		    f=&cw::style::attrs_off;
 		  else if(!strcasecmp(j->Tag.c_str(), "flip"))
-		    f=&style::attrs_flip;
+		    f=&cw::style::attrs_flip;
 
 		  if(!f)
-		    _error->Error(_("Unknown style attribute %s"),
+		    _error->Error(_("Unknown cw::style attribute %s"),
 				  j->Tag.c_str());
 		  else
 		    (curr.*f)(parse_attrs(j->Value));
@@ -151,7 +153,7 @@ void load_styles(std::string group, bool use_theme)
     }
 }
 
-void load_bindings(std::string group, keybindings *toload, bool use_theme)
+void load_bindings(std::string group, cw::config::keybindings *toload, bool use_theme)
 {
   Configuration::Item const *cfg_grp=aptcfg->get_cfg(use_theme)->Tree(group.c_str());
 
@@ -168,13 +170,13 @@ void load_bindings(std::string group, keybindings *toload, bool use_theme)
 	else
 	  {
 	    std::string::size_type split=0,newsplit;
-	    keybinding newbinding;
+	    cw::config::keybinding newbinding;
 	    do
 	      {
 		newsplit=i->Value.find(',',split);
 		string currval(i->Value, split, newsplit-split);
 
-		key k=parse_key(cw::util::transcode(currval));
+		cw::config::key k = cw::config::parse_key(cw::util::transcode(currval));
 
 		if(k.ch!=(wint_t) ERR)
 		  newbinding.push_back(k);
