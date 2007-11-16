@@ -373,8 +373,6 @@ void cmine::do_new_game()
   cw::button_ref okbutton = cw::button::create(_("Ok"));
   cw::button_ref cancelbutton = cw::button::create(_("Cancel"));
 
-  using cwidget::config::global_bindings;
-
   table->connect_key_post("Confirm", &cw::config::global_bindings, okbutton->pressed.make_slot());
 
   easybutton->connect_key("Confirm", &cw::config::global_bindings, okbutton->pressed.make_slot());
@@ -587,8 +585,6 @@ void cmine::set_board(mine_board *_board)
 
 bool cmine::handle_key(const cwidget::config::key &k)
 {
-  using cwidget::util::arg;
-
   cw::widget_ref tmpref(this);
 
   int width,height;
@@ -929,34 +925,24 @@ void cmine::init_bindings()
 {
   srand(time(0));
 
-  using cwidget::set_style;
-  using cwidget::style_attrs_off;
-  using cwidget::style_attrs_on;
-  using cwidget::style_bg;
-  using cwidget::style_fg;
+  cw::set_style("MineFlag", cw::style_fg(COLOR_RED)+cw::style_attrs_on(A_BOLD));
+  cw::set_style("MineBomb", cw::style_fg(COLOR_RED)+cw::style_attrs_on(A_BOLD));
+  cw::set_style("MineDetonated", cw::style_fg(COLOR_RED)+cw::style_attrs_on(A_BOLD));
+  cw::set_style("MineNumber1", cw::style_fg(COLOR_WHITE));
+  cw::set_style("MineNumber2", cw::style_fg(COLOR_GREEN));
+  cw::set_style("MineNumber3", cw::style_fg(COLOR_CYAN));
+  cw::set_style("MineNumber4", cw::style_fg(COLOR_MAGENTA)+cw::style_attrs_on(A_BOLD));
+  cw::set_style("MineNumber5", cw::style_fg(COLOR_RED)+cw::style_attrs_on(A_BOLD));
+  cw::set_style("MineNumber6", cw::style_attrs_on(A_BOLD)+cw::style_fg(COLOR_CYAN));
+  cw::set_style("MineNumber7", cw::style_attrs_on(A_BOLD)+cw::style_fg(COLOR_GREEN));
+  cw::set_style("MineNumber8", cw::style_attrs_on(A_BOLD));
+  cw::set_style("MineBorder", cw::style_attrs_on(A_BOLD));
 
-  set_style("MineFlag", cw::style_fg(COLOR_RED)+cw::style_attrs_on(A_BOLD));
-  set_style("MineBomb", cw::style_fg(COLOR_RED)+cw::style_attrs_on(A_BOLD));
-  set_style("MineDetonated", cw::style_fg(COLOR_RED)+cw::style_attrs_on(A_BOLD));
-  set_style("MineNumber1", cw::style_fg(COLOR_WHITE));
-  set_style("MineNumber2", cw::style_fg(COLOR_GREEN));
-  set_style("MineNumber3", cw::style_fg(COLOR_CYAN));
-  set_style("MineNumber4", cw::style_fg(COLOR_MAGENTA)+cw::style_attrs_on(A_BOLD));
-  set_style("MineNumber5", cw::style_fg(COLOR_RED)+cw::style_attrs_on(A_BOLD));
-  set_style("MineNumber6", cw::style_attrs_on(A_BOLD)+cw::style_fg(COLOR_CYAN));
-  set_style("MineNumber7", cw::style_attrs_on(A_BOLD)+cw::style_fg(COLOR_GREEN));
-  set_style("MineNumber8", cw::style_attrs_on(A_BOLD));
-  set_style("MineBorder", cw::style_attrs_on(A_BOLD));
+  cw::config::global_bindings.set("MineUncoverSweepSquare", cw::config::key(KEY_ENTER, true));
+  cw::config::global_bindings.set("MineFlagSquare", cw::config::key(L'f', false));
+  cw::config::global_bindings.set("MineNewGame", cw::config::key(L'n', false));
+  cw::config::global_bindings.set("MineSaveGame", cw::config::key(L'S', false));
+  cw::config::global_bindings.set("MineLoadGame", cw::config::key(L'L', false));
 
-  using cwidget::config::global_bindings;
-  using cwidget::config::key;
-  using cwidget::config::keybindings;
-
-  cw::config::global_bindings.set("MineUncoverSweepSquare", key(KEY_ENTER, true));
-  cw::config::global_bindings.set("MineFlagSquare", key(L'f', false));
-  cw::config::global_bindings.set("MineNewGame", key(L'n', false));
-  cw::config::global_bindings.set("MineSaveGame", key(L'S', false));
-  cw::config::global_bindings.set("MineLoadGame", key(L'L', false));
-
-  bindings = new keybindings(&cw::config::global_bindings);
+  bindings = new cw::config::keybindings(&cw::config::global_bindings);
 }

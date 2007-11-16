@@ -54,7 +54,7 @@ cw::editline::history_list pkg_tree::limit_history, pkg_tree::grouping_history,
 
 void pkg_tree::init_bindings()
 {
-  bindings=new keybindings(cw::tree::bindings);
+  bindings=new cw::config::keybindings(cw::tree::bindings);
 }
 
 pkg_tree::pkg_tree(const std::string &def_grouping,
