@@ -146,9 +146,9 @@ wstring conflict_text(const pkgCache::DepIterator &conflict,
 fragment *action_fragment(const aptitude_solution::action &a)
 {
   if(a.ver.get_ver().end())
-    return fragf(_("Removing %s"), a.ver.get_pkg().Name());
+    return cw::fragf(_("Removing %s"), a.ver.get_pkg().Name());
   else
-    return fragf(_("Installing %s %s (%s)"),
+    return cw::fragf(_("Installing %s %s (%s)"),
 		   a.ver.get_pkg().Name(), a.ver.get_ver().VerStr(),
 		   archives_text(a.ver.get_ver()).c_str());
 }
@@ -213,95 +213,95 @@ fragment *solution_fragment(const aptitude_solution &sol)
   sort(upgrade_packages.begin(), upgrade_packages.end(),
        ver_name_lt());
 
-  vector<fragment *> fragments;
+  vector<cw::fragment *> fragments;
 
   if(!remove_packages.empty())
     {
-      fragments.push_back(fragf(_("%BRemove%b the following packages:%n")));
+      fragments.push_back(cw::fragf(_("%BRemove%b the following packages:%n")));
       for(vector<pkgCache::PkgIterator>::const_iterator i=remove_packages.begin();
 	  i!=remove_packages.end(); ++i)
-	fragments.push_back(fragf("  %s%n", i->Name()));
+	fragments.push_back(cw::fragf("  %s%n", i->Name()));
 
-      fragments.push_back(newline_fragment());
+      fragments.push_back(cw::newline_fragment());
     }
 
   if(!install_packages.empty())
     {
-      fragments.push_back(fragf(_("%BInstall%b the following packages:%n")));
+      fragments.push_back(cw::fragf(_("%BInstall%b the following packages:%n")));
       for(vector<pkgCache::VerIterator>::const_iterator i=install_packages.begin();
 	  i!=install_packages.end(); ++i)
-	fragments.push_back(fragf("  %s [%s (%s)]%n",
+	fragments.push_back(cw::fragf("  %s [%s (%s)]%n",
 				  i->ParentPkg().Name(),
 				  i->VerStr(),
 				  archives_text(*i).c_str()));
 
-      fragments.push_back(newline_fragment());
+      fragments.push_back(cw::newline_fragment());
     }
 
   if(!keep_packages.empty())
     {
-      fragments.push_back(fragf(_("%BKeep%b the following packages at their current version:%n")));
+      fragments.push_back(cw::fragf(_("%BKeep%b the following packages at their current version:%n")));
       for(vector<pkgCache::PkgIterator>::const_iterator i=keep_packages.begin();
 	  i!=keep_packages.end(); ++i)
 	{
 	  if(i->CurrentVer().end())
-	    fragments.push_back(fragf("  %s [%s]%n",
+	    fragments.push_back(cw::fragf("  %s [%s]%n",
 				      i->Name(),
 				      _("Not Installed")));
 	  else
-	    fragments.push_back(fragf("  %s [%s (%s)]%n",
+	    fragments.push_back(cw::fragf("  %s [%s (%s)]%n",
 				      i->Name(),
 				      i->CurrentVer().VerStr(),
 				      archives_text(i->CurrentVer()).c_str()));
 	}
 
-      fragments.push_back(newline_fragment());
+      fragments.push_back(cw::newline_fragment());
     }
 
   if(!upgrade_packages.empty())
     {
-      fragments.push_back(fragf(_("%BUpgrade%b the following packages:%n")));
+      fragments.push_back(cw::fragf(_("%BUpgrade%b the following packages:%n")));
       for(vector<pkgCache::VerIterator>::const_iterator i=upgrade_packages.begin();
 	  i!=upgrade_packages.end(); ++i)
-	fragments.push_back(fragf("  %s [%s (%s) -> %s (%s)]%n",
+	fragments.push_back(cw::fragf("  %s [%s (%s) -> %s (%s)]%n",
 				  i->ParentPkg().Name(),
 				  i->ParentPkg().CurrentVer().VerStr(),
 				  archives_text(i->ParentPkg().CurrentVer()).c_str(),
 				  i->VerStr(),
 				  archives_text(*i).c_str()));
 
-      fragments.push_back(newline_fragment());
+      fragments.push_back(cw::newline_fragment());
     }
 
   if(!downgrade_packages.empty())
     {
-      fragments.push_back(fragf(_("%BDowngrade%b the following packages:%n")));
+      fragments.push_back(cw::fragf(_("%BDowngrade%b the following packages:%n")));
       for(vector<pkgCache::VerIterator>::const_iterator i=downgrade_packages.begin();
 	  i!=downgrade_packages.end(); ++i)
-	fragments.push_back(fragf("  %s [%s (%s) -> %s (%s)]%n",
+	fragments.push_back(cw::fragf("  %s [%s (%s) -> %s (%s)]%n",
 				  i->ParentPkg().Name(),
 				  i->ParentPkg().CurrentVer().VerStr(),
 				  archives_text(i->ParentPkg().CurrentVer()).c_str(),
 				  i->VerStr(),
 				  archives_text(*i).c_str()));
 
-      fragments.push_back(newline_fragment());
+      fragments.push_back(cw::newline_fragment());
     }
 
   const imm::set<aptitude_universe::dep> &unresolved = sol.get_unresolved_soft_deps();
 
   if(!unresolved.empty())
     {
-      fragments.push_back(fragf(_("Leave the following dependencies unresolved:%n")));
+      fragments.push_back(cw::fragf(_("Leave the following dependencies unresolved:%n")));
 
       for(imm::set<aptitude_universe::dep>::const_iterator i = unresolved.begin();
 	  i != unresolved.end(); ++i)
-	fragments.push_back(fragf("%ls%n", dep_text((*i).get_dep()).c_str()));
+	fragments.push_back(cw::fragf("%ls%n", dep_text((*i).get_dep()).c_str()));
     }
 
   char buf[512];
   snprintf(buf, 512, _("Score is %d"), sol.get_score());
-  fragments.push_back(fragf("%s", buf));
+  fragments.push_back(cw::fragf("%s", buf));
 
-  return flowbox(sequence_fragment(fragments));
+  return flowbox(cw::sequence_fragment(fragments));
 }

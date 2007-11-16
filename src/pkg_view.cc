@@ -180,7 +180,7 @@ public:
   {
     if(pkg.end())
       {
-	set_fragment(text_fragment(""));
+	set_fragment(cw::text_fragment(""));
 	return;
       }
 
@@ -230,32 +230,32 @@ public:
     // default iterator, pkg.end() is true.
     wstring newdesc(pkg.end() ? L"" : get_long_description(ver, apt_package_records));
 
-    fragment *frag=make_desc_fragment(newdesc);
+    cw::fragment *frag=make_desc_fragment(newdesc);
 
 #ifdef APT_HAS_HOMEPAGE
-    fragment *homepage;
+    cw::fragment *homepage;
     if(!ver.end())
       {
 	pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
 	string homepagestr = rec.Homepage();
 	homepage = (homepagestr == ""
-		    ? fragf("")
-		    : dropbox(fragf("%B%s%b", _("Homepage: ")),
-			      hardwrapbox(text_fragment(rec.Homepage()))));
+		    ? cw::fragf("")
+		    : cw::dropbox(cw::fragf("%B%s%b", _("Homepage: ")),
+			      cw::hardwrapbox(cw::text_fragment(rec.Homepage()))));
       }
     else
-      homepage = fragf("");
+      homepage = cw::fragf("");
 #else
-    fragment *homepage = fragf("");
+    cw::fragment *homepage = cw::fragf("");
 #endif
 
-    fragment *tags=make_tags_fragment(pkg);
+    cw::fragment *tags=make_tags_fragment(pkg);
     if(tags != NULL)
-      tags = fragf("%n%n%F", tags);
+      tags = cw::fragf("%n%n%F", tags);
     else
-      tags = fragf("");
+      tags = cw::fragf("");
 
-    fragment *untrusted_frag;
+    cw::fragment *untrusted_frag;
 
     if(pkg.end() || ver.end())
       untrusted_frag=NULL;
@@ -263,9 +263,9 @@ public:
       untrusted_frag=make_untrusted_warning(ver);
 
     if(untrusted_frag == NULL)
-      set_fragment(fragf("%F%F%F", frag, homepage, tags));
+      set_fragment(cw::fragf("%F%F%F", frag, homepage, tags));
     else
-      set_fragment(fragf("%F%n%F%F%F", untrusted_frag, frag,
+      set_fragment(cw::fragf("%F%n%F%F%F", untrusted_frag, frag,
 			 homepage, tags));
   }
 };
@@ -454,8 +454,8 @@ public:
 	lastDesc=s;
 
 	description->set_fragment(make_desc_fragment(s));
-	reasons->set_fragment(sequence_fragment(make_desc_fragment(s),
-						newline_fragment(),
+	reasons->set_fragment(cw::sequence_fragment(make_desc_fragment(s),
+						cw::newline_fragment(),
 						nopackage(),
 						NULL));
 

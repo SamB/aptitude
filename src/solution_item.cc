@@ -81,44 +81,44 @@ action_type analyze_action(const aptitude_universe::version &ver)
 /** \return a description of what will happen if the given version
  *  is installed.
  */
-static fragment *action_description(const aptitude_resolver_version &ver)
+static cw::fragment *action_description(const aptitude_resolver_version &ver)
 {
   pkgCache::PkgIterator pkg = ver.get_pkg();
 
   switch(analyze_action(ver))
     {
     case action_remove:
-      return fragf(_("Remove %F [%s (%s)]"),
-		   text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
+      return cw::fragf(_("Remove %F [%s (%s)]"),
+		   cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
 		   pkg.CurrentVer().VerStr(),
 		   archives_text(pkg.CurrentVer()).c_str());
       break;
 
     case action_install:
-      return fragf(_("Install %F [%s (%s)]"),
-		   text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
+      return cw::fragf(_("Install %F [%s (%s)]"),
+		   cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
 		   ver.get_ver().VerStr(),
 		   archives_text(ver.get_ver()).c_str());
       break;
 
     case action_keep:
       if(ver.get_ver().end())
-	return fragf(_("Cancel the installation of %F"),
-		     text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)));
+	return cw::fragf(_("Cancel the installation of %F"),
+		     cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)));
       else if(ver.get_package().current_version().get_ver().end())
-	return fragf(_("Cancel the removal of %F"),
-		     text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)));
+	return cw::fragf(_("Cancel the removal of %F"),
+		     cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)));
       else
-	return fragf(_("Keep %F at version %s (%s)"),
-		     text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
+	return cw::fragf(_("Keep %F at version %s (%s)"),
+		     cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
 		     ver.get_ver().VerStr(),
 		     archives_text(ver.get_ver()).c_str());
 
       break;
 
     case action_upgrade:
-      return fragf(_("Upgrade %F [%s (%s) -> %s (%s)]"),
-		   text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
+      return cw::fragf(_("Upgrade %F [%s (%s) -> %s (%s)]"),
+		   cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
 		   pkg.CurrentVer().VerStr(),
 		   archives_text(pkg.CurrentVer()).c_str(),
 		   ver.get_ver().VerStr(), archives_text(ver.get_ver()).c_str());
@@ -126,8 +126,8 @@ static fragment *action_description(const aptitude_resolver_version &ver)
 
 
     case action_downgrade:
-      return fragf(_("Downgrade %F [%s (%s) -> %s (%s)]"),
-		   text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
+      return cw::fragf(_("Downgrade %F [%s (%s) -> %s (%s)]"),
+		   cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
 		   pkg.CurrentVer().VerStr(), archives_text(pkg.CurrentVer()).c_str(),
 		   ver.get_ver().VerStr(), archives_text(ver.get_ver()).c_str());
       break;
@@ -246,7 +246,7 @@ void solution_act_item::do_highlighted_changed(bool highlighted)
     {
       if(apt_cache_file == NULL)
 	{
-	  set_short_description(fragf(""));
+	  set_short_description(cw::fragf(""));
 	  set_active_dep(aptitude_resolver_dep());
 	  return;
 	}
@@ -261,15 +261,15 @@ void solution_act_item::do_highlighted_changed(bool highlighted)
 
       if(real_ver.end() || real_ver.FileList().end() ||
 	 apt_package_records == NULL)
-	set_short_description(fragf(""));
+	set_short_description(cw::fragf(""));
       else
-	set_short_description(text_fragment(get_short_description(real_ver, apt_package_records)));
+	set_short_description(cw::text_fragment(get_short_description(real_ver, apt_package_records)));
 
       set_active_dep(d);
     }
   else
     {
-      set_short_description(fragf(""));
+      set_short_description(cw::fragf(""));
 
       set_active_dep(aptitude_resolver_dep());
     }
@@ -354,7 +354,7 @@ void solution_act_item::paint(cw::tree *win, int y, bool hierarchical, const cw:
       ++x;
     }
 
-  fragment *f = clipbox(action_description(ver));
+  cw::fragment *f = clipbox(action_description(ver));
   fragment_contents c = f->layout(width-x, width-x, st);
   delete f;
 

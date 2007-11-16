@@ -54,26 +54,26 @@ static cwidget::fragment *dep_lst_frag(pkgCache::DepIterator dep,
   using cwidget::fragment;
   using cwidget::fragf;
 
-  vector<fragment *> fragments;
+  vector<cw::fragment *> fragments;
 
   while(!dep.end())
     {
       pkgCache::DepIterator start, end;
       dep.GlobOr(start, end);
 
-      vector<fragment *> or_fragments;
+      vector<cw::fragment *> or_fragments;
 
       if(start->Type==T)
 	do
 	  {
-	    fragment *verfrag;
+	    cw::fragment *verfrag;
 
 	    if(start.TargetVer())
-	      verfrag=fragf(" (%s %s)", start.CompType(), start.TargetVer());
+	      verfrag=cw::fragf(" (%s %s)", start.CompType(), start.TargetVer());
 	    else
-	      verfrag=fragf("");
+	      verfrag=cw::fragf("");
 
-	    or_fragments.push_back(fragf("%s%F",
+	    or_fragments.push_back(cw::fragf("%s%F",
 					 start.TargetPkg().Name(),
 					 verfrag));
 
@@ -83,16 +83,16 @@ static cwidget::fragment *dep_lst_frag(pkgCache::DepIterator dep,
 	  } while(1);
 
       if(!or_fragments.empty())
-	fragments.push_back(join_fragments(or_fragments, L" | "));
+	fragments.push_back(cw::join_fragments(or_fragments, L" | "));
     }
 
   if(fragments.size()==0)
-    return fragf("");
+    return cw::fragf("");
   else
-    return fragf("%s: %F",
+    return cw::fragf("%s: %F",
 		 title.c_str(),
 		 indentbox(0, title.size()+2,
-			   flowbox(join_fragments(fragments, L", "))));
+			   flowbox(cw::join_fragments(fragments, L", "))));
 }
 
 typedef std::pair<std::string, std::string> pkgverpair;
@@ -113,7 +113,7 @@ static cwidget::fragment *prv_lst_frag(pkgCache::PrvIterator prv,
   using cwidget::fragment;
   using cwidget::fragf;
 
-  vector<fragment *> fragments;
+  vector<cw::fragment *> fragments;
 
   if(reverse && verbose >= 1)
     {
@@ -132,7 +132,7 @@ static cwidget::fragment *prv_lst_frag(pkgCache::PrvIterator prv,
 
       for(std::set<pkgverpair>::const_iterator it = packagevers.begin();
 	  it != packagevers.end(); ++it)
-	fragments.push_back(fragf("%s (%s)", it->first.c_str(), it->second.c_str()));
+	fragments.push_back(cw::fragf("%s (%s)", it->first.c_str(), it->second.c_str()));
     }
   else
     {
@@ -151,12 +151,12 @@ static cwidget::fragment *prv_lst_frag(pkgCache::PrvIterator prv,
     }
 
   if(fragments.size()==0)
-    return fragf("");
+    return cw::fragf("");
   else
-    return fragf("%s: %F",
+    return cw::fragf("%s: %F",
 		 title.c_str(),
 		 indentbox(0, title.size()+2,
-			   flowbox(join_fragments(fragments, L", "))));
+			   flowbox(cw::join_fragments(fragments, L", "))));
 }
 
 static cwidget::fragment *archive_lst_frag(pkgCache::VerFileIterator vf,
@@ -173,12 +173,12 @@ static cwidget::fragment *archive_lst_frag(pkgCache::VerFileIterator vf,
     }
 
   if(fragments.size()==0)
-    return fragf("");
+    return cw::fragf("");
   else
-    return fragf("%s: %F",
+    return cw::fragf("%s: %F",
 		 title.c_str(),
 		 indentbox(0, title.size()+2,
-			   flowbox(join_fragments(fragments, L", "))));
+			   flowbox(cw::join_fragments(fragments, L", "))));
 }
 
 static const char *current_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
@@ -211,7 +211,7 @@ static const char *current_state_string(pkgCache::PkgIterator pkg, pkgCache::Ver
     }
 }
 
-/** \brief Return a fragment describing the reason that the package
+/** \brief Return a cw::fragment describing the reason that the package
  *  with the given state is being deleted.
  *
  *  statestr is passed to avoid screwing up translations (otherwise I'd
@@ -224,20 +224,20 @@ static cwidget::fragment *deletion_fragment(const char *statestr,
   bool unused_delete=(estate.remove_reason!=aptitudeDepCache::manual);
 
   if(!state.Delete())
-    return fragf("Internal error: no InstVer for a non-deleted package");
+    return cw::fragf("Internal error: no InstVer for a non-deleted package");
   else if(state.iFlags&pkgDepCache::Purge)
     {
       if(unused_delete)
-	return fragf(_("%s; will be purged because nothing depends on it"), statestr);
+	return cw::fragf(_("%s; will be purged because nothing depends on it"), statestr);
       else
-	return fragf(_("%s; will be purged"));
+	return cw::fragf(_("%s; will be purged"));
     }
   else
     {
       if(unused_delete)
-	return fragf(_("%s; will be removed because nothing depends on it"), statestr);
+	return cw::fragf(_("%s; will be removed because nothing depends on it"), statestr);
       else
-	return fragf(_("%s; will be removed"));
+	return cw::fragf(_("%s; will be removed"));
     }
 }
 
@@ -255,19 +255,19 @@ static cwidget::fragment *version_change_fragment(const char *statestr,
 				       instverstr+strlen(instverstr));
 
   if(vercmp>0)
-    return fragf(_("%s%s; will be downgraded [%s -> %s]"),
+    return cw::fragf(_("%s%s; will be downgraded [%s -> %s]"),
 		 statestr, holdstr, curverstr, instverstr);
   else if(vercmp<0)
-    return fragf(_("%s%s; will be upgraded [%s -> %s]"),
+    return cw::fragf(_("%s%s; will be upgraded [%s -> %s]"),
 		 statestr, holdstr, curverstr, instverstr);
   else
-    return fragf("%s%s", statestr, holdstr);
+    return cw::fragf("%s%s", statestr, holdstr);
 }
 
 static cwidget::fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
 {
   if(pkg.end() || pkg.VersionList().end())
-    return fragf(_("not a real package"));
+    return cw::fragf(_("not a real package"));
 
   pkgCache::VerIterator curver=pkg.CurrentVer();
   pkgCache::VerIterator instver=(*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
@@ -285,7 +285,7 @@ static cwidget::fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::Ve
   if(!ver.end())
     {
       if(instver != ver && curver != ver)
-	return fragf("%s", statestr);
+	return cw::fragf("%s", statestr);
       else if(instver == ver)
 	{
 	  if(curver != instver)
@@ -294,15 +294,15 @@ static cwidget::fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::Ve
 		 pkg->CurrentState == pkgCache::State::ConfigFiles)
 		{
 		  if(state.Flags & pkgCache::Flag::Auto)
-		    return fragf(_("%s; will be installed"), statestr);
+		    return cw::fragf(_("%s; will be installed"), statestr);
 		  else
-		    return fragf(_("%s; will be installed automatically"), statestr);
+		    return cw::fragf(_("%s; will be installed automatically"), statestr);
 		}
 	      else
 		return version_change_fragment(statestr, holdstr, curver, instver);
 	    }
 	  else
-	    return fragf("%s", statestr);
+	    return cw::fragf("%s", statestr);
 	}
       else if(instver.end()) // Now curver is ver.
 	return deletion_fragment(statestr, state, estate);
@@ -316,19 +316,19 @@ static cwidget::fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::Ve
 	  pkg->CurrentState==pkgCache::State::ConfigFiles))
 	{
 	  if(state.Flags & pkgCache::Flag::Auto)
-	    return fragf(_("%s; version %s will be installed"),
+	    return cw::fragf(_("%s; version %s will be installed"),
 			 statestr,
 			 instver.VerStr());
 	  else
-	    return fragf(_("%s; version %s will be installed automatically"),
+	    return cw::fragf(_("%s; version %s will be installed automatically"),
 			 statestr,
 			 instver.VerStr());
 	}
       else if(state.Delete() && (state.iFlags&pkgDepCache::Purge) &&
 	      pkg->CurrentState!=pkgCache::State::NotInstalled)
-	return fragf(_("%s; will be purged"), statestr);
+	return cw::fragf(_("%s; will be purged"), statestr);
       else
-	return fragf("%s", statestr);
+	return cw::fragf("%s", statestr);
     }
   else if(instver.end())
     {
@@ -343,75 +343,75 @@ static cwidget::fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::Ve
 /** \brief Shows information about a package. */
 static void show_package(pkgCache::PkgIterator pkg, int verbose)
 {
-  vector<fragment *> fragments;
+  vector<cw::fragment *> fragments;
 
-  fragments.push_back(fragf("%s%s%n", _("Package: "), pkg.Name()));
-  fragments.push_back(fragf("%s: %F%n", _("State"), state_fragment(pkg, pkgCache::VerIterator())));
+  fragments.push_back(cw::fragf("%s%s%n", _("Package: "), pkg.Name()));
+  fragments.push_back(cw::fragf("%s: %F%n", _("State"), state_fragment(pkg, pkgCache::VerIterator())));
   fragments.push_back(prv_lst_frag(pkg.ProvidesList(), true, verbose, _("Provided by")));
 
-  fragment *f=sequence_fragment(fragments);
+  cw::fragment *f=cw::sequence_fragment(fragments);
 
   cout << f->layout(screen_width, screen_width, cwidget::style());
 
   delete f;
 }
 
-static fragment *version_file_fragment(pkgCache::VerIterator ver,
+static cw::fragment *version_file_fragment(pkgCache::VerIterator ver,
 				       pkgCache::VerFileIterator vf,
 				       int verbose)
 {
-  vector<fragment *> fragments;
+  vector<cw::fragment *> fragments;
 
   pkgCache::PkgIterator pkg=ver.ParentPkg();
   pkgRecords::Parser &rec=apt_package_records->Lookup(vf);
   aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
   pkgDepCache::StateCache &state = (*apt_cache_file)[pkg];
 
-  fragments.push_back(fragf("%s%s%n", _("Package: "), pkg.Name()));
+  fragments.push_back(cw::fragf("%s%s%n", _("Package: "), pkg.Name()));
   if((pkg->Flags & pkgCache::Flag::Essential)==pkgCache::Flag::Essential)
-    fragments.push_back(fragf("%s%s%n", _("Essential: "),  _("yes")));
+    fragments.push_back(cw::fragf("%s%s%n", _("Essential: "),  _("yes")));
 
   if(estate.new_package)
-    fragments.push_back(fragf("%s: %s%n",
+    fragments.push_back(cw::fragf("%s: %s%n",
 			      _("New"), _("yes")));
 
-  fragments.push_back(fragf("%s: %F%n", _("State"), state_fragment(pkg, ver)));
+  fragments.push_back(cw::fragf("%s: %F%n", _("State"), state_fragment(pkg, ver)));
   if(!estate.forbidver.empty())
-    fragments.push_back(fragf("%s: %s%n",
+    fragments.push_back(cw::fragf("%s: %s%n",
 			      _("Forbidden version"),
 			      estate.forbidver.c_str()));
 
   if(!pkg.CurrentVer().end())
-    fragments.push_back(fragf("%s: %s%n", _("Automatically installed"),
+    fragments.push_back(cw::fragf("%s: %s%n", _("Automatically installed"),
 			      (state.Flags & pkgCache::Flag::Auto)
 			      ? _("no") : _("yes")));
 
-  fragments.push_back(fragf("%s%s%n", _("Version: "), ver.VerStr()));
-  fragments.push_back(fragf("%s%s%n", _("Priority: "),
+  fragments.push_back(cw::fragf("%s%s%n", _("Version: "), ver.VerStr()));
+  fragments.push_back(cw::fragf("%s%s%n", _("Priority: "),
 			    ver.PriorityType()?ver.PriorityType():_("N/A")));
-  fragments.push_back(fragf("%s%s%n", _("Section: "),
+  fragments.push_back(cw::fragf("%s%s%n", _("Section: "),
 			    ver.Section()?ver.Section():_("N/A")));
-  fragments.push_back(fragf("%s%s%n", _("Maintainer: "),
+  fragments.push_back(cw::fragf("%s%s%n", _("Maintainer: "),
 			    rec.Maintainer().c_str()));
 
-  fragments.push_back(fragf("%s%s%n", _("Uncompressed Size: "),
+  fragments.push_back(cw::fragf("%s%s%n", _("Uncompressed Size: "),
 			    SizeToStr(ver->InstalledSize).c_str()));
   if(verbose>0)
     {
-      fragments.push_back(fragf("%s%s%n", _("Architecture: "),
+      fragments.push_back(cw::fragf("%s%s%n", _("Architecture: "),
 				ver.Arch()?ver.Arch():_("N/A")));
-      fragments.push_back(fragf("%s%s%n", _("Compressed Size: "),
+      fragments.push_back(cw::fragf("%s%s%n", _("Compressed Size: "),
 				SizeToStr(ver->Size).c_str()));
-      fragments.push_back(fragf("%s%s%n", _("Filename: "),
+      fragments.push_back(cw::fragf("%s%s%n", _("Filename: "),
 				rec.FileName().c_str()));
-      fragments.push_back(fragf("%s%s%n", _("MD5sum: "),
+      fragments.push_back(cw::fragf("%s%s%n", _("MD5sum: "),
 				rec.MD5Hash().c_str()));
 
       if(verbose<2) // Show all archives in a list.
 	fragments.push_back(archive_lst_frag(ver.FileList(), _("Archive")));
       else
 	{
-	  fragments.push_back(fragf("%s: %s%n", _("Archive"), vf.File().Archive()?vf.File().Archive():_("<NULL>")));
+	  fragments.push_back(cw::fragf("%s: %s%n", _("Archive"), vf.File().Archive()?vf.File().Archive():_("<NULL>")));
 	}
     }
 
@@ -435,29 +435,29 @@ static fragment *version_file_fragment(pkgCache::VerIterator ver,
   fragments.push_back(prv_lst_frag(ver.ProvidesList(), false, verbose, _("Provides")));
   fragments.push_back(prv_lst_frag(ver.ParentPkg().ProvidesList(), true, verbose, _("Provided by")));
 
-  fragments.push_back(fragf("%s%ls%n",
+  fragments.push_back(cw::fragf("%s%ls%n",
 			    _("Description: "),
 			    get_short_description(ver, apt_package_records).c_str()));
   fragments.push_back(indentbox(1, 1, make_desc_fragment(get_long_description(ver, apt_package_records))));
 
 #ifdef APT_HAS_HOMEPAGE
   if(rec.Homepage() != "")
-    fragments.push_back(dropbox(cwidget::text_fragment(_("Homepage: ")),
-				hardwrapbox(cwidget::text_fragment(rec.Homepage()))));
+    fragments.push_back(cw::dropbox(cwidget::text_fragment(_("Homepage: ")),
+				cw::hardwrapbox(cwidget::text_fragment(rec.Homepage()))));
 #endif
 
-  fragment *tags = make_tags_fragment(pkg);
+  cw::fragment *tags = make_tags_fragment(pkg);
   if(tags)
-    fragments.push_back(fragf("%n%F", tags));
+    fragments.push_back(cw::fragf("%n%F", tags));
 
-  return sequence_fragment(fragments);
+  return cw::sequence_fragment(fragments);
 }
 
 static void show_version(pkgCache::VerIterator ver, int verbose)
 {
   if(ver.FileList().end())
     {
-      fragment *f=version_file_fragment(ver, ver.FileList(), verbose);
+      cw::fragment *f=version_file_fragment(ver, ver.FileList(), verbose);
 
       cout << f->layout(screen_width, screen_width, cwidget::style());
 
@@ -467,7 +467,7 @@ static void show_version(pkgCache::VerIterator ver, int verbose)
     {
       for(pkgCache::VerFileIterator vf=ver.FileList(); !vf.end(); ++vf)
 	{
-	  fragment *f=version_file_fragment(ver, vf, verbose);
+	  cw::fragment *f=version_file_fragment(ver, vf, verbose);
 
 	  cout << f->layout(screen_width, screen_width, cwidget::style()) << endl;
 

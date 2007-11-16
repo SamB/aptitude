@@ -16,7 +16,7 @@ namespace cwidget
   class fragment;
 }
 
-/** Generate a fragment containing a (multi-line) description of why
+/** Generate a cwidget::fragment containing a (multi-line) description of why
  *  the package is in its present state.
  *
  *  If pkg.end() is \b true, returns nopackage().
@@ -32,7 +32,7 @@ namespace cwidget
 fragment *reason_fragment(const pkgCache::PkgIterator &pkg,
 			  bool &breakage);
 
-/** Generate a fragment containing a (multi-line) description of why
+/** Generate a cwidget::fragment containing a (multi-line) description of why
  *  the package is in its present state.
  *
  *  If pkg.end() is \b true, returns nopackage().

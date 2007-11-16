@@ -212,12 +212,12 @@ void ui_stop_download()
     (*apt_cache_file)->set_read_only(false);
 }
 
-static fragment *apt_error_fragment()
+static cw::fragment *apt_error_fragment()
 {
-  vector<fragment *> frags;
+  vector<cw::fragment *> frags;
 
   if(_error->empty())
-    frags.push_back(text_fragment(_("Er, there aren't any errors, this shouldn't have happened..")));
+    frags.push_back(cw::text_fragment(_("Er, there aren't any errors, this shouldn't have happened..")));
   else while(!_error->empty())
     {
       string currerr, tag;
@@ -228,12 +228,12 @@ static fragment *apt_error_fragment()
 	tag=_("W:");
 
       frags.push_back(indentbox(0, 3,
-				wrapbox(fragf("%B%s%b %s",
+				wrapbox(cw::fragf("%B%s%b %s",
 					      tag.c_str(),
 					      currerr.c_str()))));
     }
 
-  return sequence_fragment(frags);
+  return cw::sequence_fragment(frags);
 }
 
 // Handles "search" dialogs for pagers
@@ -321,7 +321,7 @@ static bool do_read_only_permission()
 	{
 	  cw::table_ref t(cw::table::create());
 
-	  fragment *f = wrapbox(text_fragment(_("WARNING: the package cache is opened in read-only mode!  This change and all subsequent changes will not be saved unless you stop all other running apt-based programs and select \"Become root\" from the Actions menu.")));
+	  cw::fragment *f = wrapbox(cw::text_fragment(_("WARNING: the package cache is opened in read-only mode!  This change and all subsequent changes will not be saved unless you stop all other running apt-based programs and select \"Become root\" from the Actions menu.")));
 
 	  t->add_widget_opts(cw::text_layout::create(f),
 			     0, 0, 1, 1, cw::table::EXPAND | cw::table::FILL | cw::table::SHRINK,
@@ -960,7 +960,7 @@ cw::widget_ref make_ver_screen(const pkgCache::PkgIterator &pkg)
 
 static void do_help_about()
 {
-  fragment *f=fragf(_("Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with %BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This is free software, and you are welcome to redistribute it under certain conditions; see 'license' for details."), VERSION);
+  cw::fragment *f=cw::fragf(_("Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with %BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This is free software, and you are welcome to redistribute it under certain conditions; see 'license' for details."), VERSION);
 
   cw::widget_ref w=cw::dialogs::ok(wrapbox(f));
   w->show_all();
@@ -1168,7 +1168,7 @@ static void maybe_show_old_tmpdir_message()
     return;
 
   if(access(tmpdir_path.c_str(), F_OK) == 0)
-    prompt_yesno_popup(wrapbox(fragf(_("It appears that a previous version of aptitude left files behind in %s.  These files are probably useless and safe to delete.%n%nDo you want to remove this directory and all its contents?  If you select \"No\", you will not see this message again."), tmpdir_path.c_str())),
+    prompt_yesno_popup(wrapbox(cw::fragf(_("It appears that a previous version of aptitude left files behind in %s.  These files are probably useless and safe to delete.%n%nDo you want to remove this directory and all its contents?  If you select \"No\", you will not see this message again."), tmpdir_path.c_str())),
 		       false,
 		       cw::util::arg(sigc::bind(sigc::ptr_fun(do_kill_old_tmp), tmpdir_path)),
 		       cw::util::arg(sigc::bind(sigc::ptr_fun(cancel_kill_old_tmp), tmpdir_path)));
@@ -1243,19 +1243,19 @@ static void check_package_trust()
 
   if(!untrusted.empty())
     {
-      vector<fragment *> frags;
+      vector<cw::fragment *> frags;
 
-      frags.push_back(wrapbox(fragf(_("%BWARNING%b: untrusted versions of the following packages will be installed!%n%n"
+      frags.push_back(wrapbox(cw::fragf(_("%BWARNING%b: untrusted versions of the following packages will be installed!%n%n"
 				      "Untrusted packages could %Bcompromise your system's security%b.  "
 				      "You should only proceed with the installation if you are certain that this is what you want to do.%n%n"), "Error")));
 
       for(vector<pkgCache::VerIterator>::const_iterator i=untrusted.begin();
 	  i!=untrusted.end(); ++i)
-	frags.push_back(clipbox(fragf(_("  %S*%N %s [version %s]%n"),
+	frags.push_back(clipbox(cw::fragf(_("  %S*%N %s [version %s]%n"),
 				      "Bullet",
 				      i->ParentPkg().Name(), i->VerStr())));
 
-      main_stacked->add_visible_widget(cw::dialogs::yesno(sequence_fragment(frags),
+      main_stacked->add_visible_widget(cw::dialogs::yesno(cw::sequence_fragment(frags),
 						       cw::util::arg(sigc::ptr_fun(install_or_remove_packages)),
 						       W_("Really Continue"),
 						       NULL,
@@ -1378,7 +1378,7 @@ static void auto_fix_broken()
 
       (*apt_cache_file)->apply_solution(sol, undo);
 
-      cw::widget_ref d = cw::dialogs::ok(fragf("%s%n%n%F",
+      cw::widget_ref d = cw::dialogs::ok(cw::fragf("%s%n%n%F",
 					   _("Some packages were broken and have been fixed:"),
 					   solution_fragment(sol)),
 				     NULL);
@@ -1393,7 +1393,7 @@ static void auto_fix_broken()
     }
   catch(NoMoreTime)
     {
-      show_message(fragf(_("Ran out of time while trying to resolve dependencies (press \"%s\" to try harder)"),
+      show_message(cw::fragf(_("Ran out of time while trying to resolve dependencies (press \"%s\" to try harder)"),
 			 cw::config::global_bindings.readable_keyname("NextSolution").c_str()),
 		   NULL,
 		   cw::get_style("Error"));
@@ -1439,7 +1439,7 @@ static void actually_do_package_run()
 	    check_package_trust();
 	  else
 	    {
-	      popup_widget(cw::dialogs::yesno(wrapbox(text_fragment(_("Installing/removing packages requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
+	      popup_widget(cw::dialogs::yesno(wrapbox(cw::text_fragment(_("Installing/removing packages requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
 					   cw::util::arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
 						      "-i")),
 					   W_("Become root"),
@@ -1568,7 +1568,7 @@ void do_update_lists()
 	really_do_update_lists();
       else
 	{
-	  popup_widget(cw::dialogs::yesno(wrapbox(text_fragment(_("Updating the package lists requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
+	  popup_widget(cw::dialogs::yesno(wrapbox(cw::text_fragment(_("Updating the package lists requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
 				       cw::util::arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
 						      "-u")),
 				       W_("Become root"),
@@ -2405,7 +2405,7 @@ static void do_show_menu_description(cw::menu_item *item, cw::label &label)
   if(item && item->get_description().size()>0)
     {
       label.show();
-      label.set_text(wrapbox(text_fragment(item->get_description())));
+      label.set_text(wrapbox(cw::text_fragment(item->get_description())));
     }
   else
     {
@@ -2760,7 +2760,7 @@ cw::progress_ref gen_progress_bar()
   return rval;
 }
 
-fragment *wrapbox(fragment *contents)
+fragment *wrapbox(cw::fragment *contents)
 {
   if(aptcfg->FindB(PACKAGE "::UI::Fill-Text", false))
     return fillbox(contents);
@@ -2958,7 +2958,7 @@ void prompt_yesno(const std::wstring &prompt,
 				     true);
 }
 
-void prompt_yesno_popup(fragment *prompt,
+void prompt_yesno_popup(cw::fragment *prompt,
 			bool deflt,
 			slot0arg yesslot,
 			slot0arg noslot)
@@ -2986,7 +2986,7 @@ protected:
   {
   }
 
-  self_destructing_layout(fragment *f) : cw::text_layout(f)
+  self_destructing_layout(cw::fragment *f) : cw::text_layout(f)
   {
   }
 
@@ -3015,7 +3015,7 @@ public:
     return rval;
   }
 
-  static cw::util::ref_ptr<self_destructing_layout> create(fragment *f)
+  static cw::util::ref_ptr<self_destructing_layout> create(cw::fragment *f)
   {
     cw::util::ref_ptr<self_destructing_layout> rval(new self_destructing_layout(f));
     rval->decref();
@@ -3023,7 +3023,7 @@ public:
   }
 };
 
-void show_message(fragment *msg,
+void show_message(cw::fragment *msg,
 		  slot0arg okslot,
 		  const cw::style &st)
 {
@@ -3046,12 +3046,12 @@ void show_message(const std::string &msg,
 		  slot0arg okslot,
 		  const cw::style &st)
 {
-  show_message(text_fragment(msg), okslot, st);
+  show_message(cw::text_fragment(msg), okslot, st);
 }
 
 void show_message(const std::wstring &msg,
 		  slot0arg okslot,
 		  const cw::style &st)
 {
-  show_message(text_fragment(msg), okslot, st);
+  show_message(cw::text_fragment(msg), okslot, st);
 }

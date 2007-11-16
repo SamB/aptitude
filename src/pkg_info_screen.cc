@@ -81,38 +81,38 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
       std::wstring desc(get_long_description(ver, apt_package_records));
       std::wstring shortdesc(desc, 0, desc.find(L'\n'));
 
-      vector<fragment*> frags;
+      vector<cw::fragment*> frags;
 
-      fragment *untrusted_warning=make_untrusted_warning(ver);
+      cw::fragment *untrusted_warning=make_untrusted_warning(ver);
       if(untrusted_warning != NULL)
 	{
 	  frags.push_back(untrusted_warning);
-	  frags.push_back(newline_fragment());
+	  frags.push_back(cw::newline_fragment());
 	}
 
       // Avoid creating new strings to translate.
-      frags.push_back(clipbox(fragf("%B%s%b%ls%n",
+      frags.push_back(clipbox(cw::fragf("%B%s%b%ls%n",
 				    _("Description: "), shortdesc.c_str())));
       frags.push_back(indentbox(2, 2, make_desc_fragment(desc)));
 
 #ifdef APT_HAS_HOMEPAGE
       if(rec.Homepage() != "")
-	frags.push_back(dropbox(fragf("%B%s%b", _("Homepage: ")),
-				hardwrapbox(text_fragment(rec.Homepage()))));
+	frags.push_back(cw::dropbox(cw::fragf("%B%s%b", _("Homepage: ")),
+				cw::hardwrapbox(cw::text_fragment(rec.Homepage()))));
 #endif
 
-      fragment *tags = make_tags_fragment(pkg);
+      cw::fragment *tags = make_tags_fragment(pkg);
       if(tags != NULL)
-	frags.push_back(fragf("%n%F", tags));
+	frags.push_back(cw::fragf("%n%F", tags));
 
       // Can I use something other than a clipbox below?
 
       if((pkg->Flags&pkgCache::Flag::Essential)==pkgCache::Flag::Essential ||
 	 (pkg->Flags&pkgCache::Flag::Important)==pkgCache::Flag::Important)
-	frags.push_back(clipbox(fragf("%B%s%b%s",
+	frags.push_back(clipbox(cw::fragf("%B%s%b%s",
 				      _("Essential: "), _("yes"))));
 
-      frags.push_back(clipbox(fragf("%B%s%b%s%n"
+      frags.push_back(clipbox(cw::fragf("%B%s%b%s%n"
 				    "%B%s%b%s%n"
 				    "%B%s%b%s%n"
 				    "%B%s%b%s%n"
@@ -126,7 +126,7 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
 				    _("Source Package: "),
 				    rec.SourcePkg().empty()?pkg.Name():rec.SourcePkg().c_str())));
 
-      tree->add_child(new cw::layout_item(sequence_fragment(frags)));
+      tree->add_child(new cw::layout_item(cw::sequence_fragment(frags)));
 
       setup_package_deps<pkg_item_with_generic_subtree>(pkg, ver, tree, sig);
 

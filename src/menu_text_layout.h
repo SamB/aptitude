@@ -50,7 +50,7 @@ protected:
   {
   }
 
-  menu_text_layout(fragment *f)
+  menu_text_layout(cwidget::fragment *f)
     : cwidget::widgets::text_layout(f), last_search_forward(true)
   {
   }
@@ -62,7 +62,7 @@ public:
     return rval;
   }
 
-  static cwidget::util::ref_ptr<menu_text_layout> create(fragment *f)
+  static cwidget::util::ref_ptr<menu_text_layout> create(cwidget::fragment *f)
   {
     cwidget::util::ref_ptr<menu_text_layout> rval = new menu_text_layout(f);
     rval->decref();

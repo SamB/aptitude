@@ -97,7 +97,7 @@ class solution_act_item : public solution_item
   /** A callback to be invoked with a fragment-based description of
    *  this item.
    */
-  sigc::slot1<void, fragment *> set_short_description;
+  sigc::slot1<void, cwidget::fragment *> set_short_description;
 
   /** A callback to be invoked with the dependency corresponding to this item. */
   sigc::slot1<void, aptitude_resolver_dep> set_active_dep;
@@ -114,7 +114,7 @@ public:
    *               corresponding to this item when the item is selected
    */
   solution_act_item(const generic_solution<aptitude_universe>::action &act,
-		    const sigc::slot1<void, fragment *> &_set_short_description,
+		    const sigc::slot1<void, cwidget::fragment *> &_set_short_description,
 		    const sigc::slot1<void, aptitude_resolver_dep> &_set_active_dep)
     :ver(act.ver),
      d(act.d),
@@ -160,7 +160,7 @@ class solution_act_item_bare : public solution_act_item
 {
 public:
   solution_act_item_bare(const generic_solution<aptitude_universe>::action &act,
-			 const sigc::slot1<void, fragment *> &set_short_description,
+			 const sigc::slot1<void, cwidget::fragment *> &set_short_description,
 			 const sigc::slot1<void, aptitude_resolver_dep> &set_active_dep)
     :solution_act_item(act, set_short_description, set_active_dep)
   {

@@ -17,7 +17,7 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-//  Parses a description into a fragment.
+//  Parses a description into a cw::fragment.
 
 #include "desc_parse.h"
 
@@ -74,7 +74,7 @@ namespace cw = cwidget;
  *  placed after the "nspaces" indentation -- but it will be updated
  *  to be placed at the beginning of a line (0 indentation).
  *
- *  \return the new fragment.
+ *  \return the new cw::fragment.
  */
 static cw::fragment *make_level_fragment(const wstring &desc,
 					 unsigned int level,
@@ -294,7 +294,7 @@ cw::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
 
       wstring tagstitle = W_("Tags");
 
-      return fragf("%ls: %F",
+      return cw::fragf("%ls: %F",
 		   tagstitle.c_str(),
 		   indentbox(0, wcswidth(tagstitle.c_str(), tagstitle.size())+2,
 			     wrapbox(cw::join_fragments(tags, L", "))));

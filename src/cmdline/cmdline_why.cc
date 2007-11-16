@@ -100,7 +100,7 @@ namespace
       return pkg_item::pkg_style(pkg, false);
     }
 
-    fragment *description_column1_fragment() const
+    cw::fragment *description_column1_fragment() const
     {
       pkgCache::VerIterator ver;
       if(!dep.end())
@@ -138,7 +138,7 @@ namespace
       return cw::text_fragment(rval);
     }
 
-    fragment *description_column2_fragment() const
+    cw::fragment *description_column2_fragment() const
     {
       if(!dep.end())
 	return cw::text_fragment(const_cast<pkgCache::DepIterator &>(dep).DepType());
@@ -146,7 +146,7 @@ namespace
 	return cw::text_fragment(_("Provides"));
     }
 
-    fragment *description_column3_fragment() const
+    cw::fragment *description_column3_fragment() const
     {
       // Q: can I use a std::string and cw::util::transcode on the way out instead?
       if(!dep.end())
@@ -159,9 +159,9 @@ namespace
 	return cw::text_fragment(const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name());
     }
 
-    fragment *description_fragment() const
+    cw::fragment *description_fragment() const
     {
-      return fragf("%F %F %F",
+      return cw::fragf("%F %F %F",
 		   description_column1_fragment(),
 		   description_column2_fragment(),
 		   description_column3_fragment());
@@ -409,22 +409,22 @@ namespace
       return justify_target(pkg, RemoveType);
     }
 
-    fragment *description() const
+    cw::fragment *description() const
     {
       pkgCache::PkgIterator &mpkg = const_cast<pkgCache::PkgIterator &>(pkg);
 
       switch(node_type)
 	{
 	case InstallType:
-	  return fragf(_("Install(%s)"), mpkg.Name());
+	  return cw::fragf(_("Install(%s)"), mpkg.Name());
 	case RemoveType:
-	  return fragf(_("Remove(%s)"), mpkg.Name());
+	  return cw::fragf(_("Remove(%s)"), mpkg.Name());
 	case ProvidesInstall:
-	  return fragf(_("Install(%s provides %s)"),
+	  return cw::fragf(_("Install(%s provides %s)"),
 		       const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
 		       mpkg.Name());
 	case ProvidesRemove:
-	  return fragf(_("Remove(%s provides %s)"),
+	  return cw::fragf(_("Remove(%s provides %s)"),
 		       const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
 		       mpkg.Name());
 	}
@@ -506,17 +506,17 @@ namespace
       return justify_node(target, new_actions);
     }
 
-    fragment *description() const
+    cw::fragment *description() const
     {
-      std::vector<fragment *> rval;
-      rval.push_back(fragf("%F\n", target.description()));
-      std::vector<fragment *> col1_entries, col2_entries, col3_entries;
+      std::vector<cw::fragment *> rval;
+      rval.push_back(cw::fragf("%F\n", target.description()));
+      std::vector<cw::fragment *> col1_entries, col2_entries, col3_entries;
       for(imm::set<justify_action>::const_iterator it = actions.begin();
 	  it != actions.end(); ++it)
 	{
-	  col1_entries.push_back(hardwrapbox(fragf("%F | \n", it->description_column1_fragment())));
-	  col2_entries.push_back(hardwrapbox(fragf("%F\n", it->description_column2_fragment())));
-	  col3_entries.push_back(hardwrapbox(fragf("%F\n", it->description_column3_fragment())));
+	  col1_entries.push_back(cw::hardwrapbox(cw::fragf("%F | \n", it->description_column1_fragment())));
+	  col2_entries.push_back(cw::hardwrapbox(cw::fragf("%F\n", it->description_column2_fragment())));
+	  col3_entries.push_back(cw::hardwrapbox(cw::fragf("%F\n", it->description_column3_fragment())));
 	}
 
       using cw::fragment_column_entry;
@@ -528,21 +528,21 @@ namespace
       columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL)),
       columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, col3_entries));
       rval.push_back(fragment_columns(columns));
-      return sequence_fragment(rval);
+      return cw::sequence_fragment(rval);
     }
   };
 
-  fragment *print_dep(pkgCache::DepIterator dep)
+  cw::fragment *print_dep(pkgCache::DepIterator dep)
   {
     if(dep.TargetVer() != NULL)
-      return fragf("%s %s %s (%s %s)",
+      return cw::fragf("%s %s %s (%s %s)",
 		   dep.ParentPkg().Name(),
 		   dep.DepType(),
 		   dep.TargetPkg().Name(),
 		   dep.CompType(),
 		   dep.TargetVer());
     else
-      return fragf("%s %s %s",
+      return cw::fragf("%s %s %s",
 		   dep.ParentPkg().Name(),
 		   dep.DepType(),
 		   dep.TargetPkg().Name());
@@ -599,7 +599,7 @@ namespace
 
 	if(verbosity > 1)
 	  {
-	    std::auto_ptr<fragment> tmp(fragf(_("    ++ Examining %F\n"), print_dep(dep)));
+	    std::auto_ptr<cw::fragment> tmp(cw::fragf(_("    ++ Examining %F\n"), print_dep(dep)));
 	    std::cout << tmp->layout(screen_width, screen_width, cw::style());
 	  }
 
@@ -834,7 +834,7 @@ namespace
 
 	  if(verbosity > 1)
 	    {
-	      std::auto_ptr<fragment> f(fragf("Search for %F\n",
+	      std::auto_ptr<cw::fragment> f(cw::fragf("Search for %F\n",
 					      front.description()));
 	      std::cout << f->layout(screen_width,
 				     screen_width,
@@ -930,7 +930,7 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 		 bool root_is_removal,
 		 bool &success)
 {
-  std::vector<fragment *> rval;
+  std::vector<cw::fragment *> rval;
   success = true;
 
   std::vector<search_params> searches;
@@ -1051,19 +1051,19 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 	    rval.push_back(cw::newline_fragment());
 
 	  if(results.empty())
-	    return fragf(_("The package \"%s\" is a starting point of the search.\n"),
+	    return cw::fragf(_("The package \"%s\" is a starting point of the search.\n"),
 			 root.Name());
 	  else
 	    {
-	      std::vector<fragment *> col1_entries, col2_entries, col3_entries;
+	      std::vector<cw::fragment *> col1_entries, col2_entries, col3_entries;
 	      for(std::vector<justify_action>::const_iterator it = results.begin();
 		  it != results.end(); ++it)
 		{
-		  col1_entries.push_back(hardwrapbox(cw::style_fragment(fragf("%F\n", it->description_column1_fragment()),
+		  col1_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column1_fragment()),
 									it->get_style())));
-		  col2_entries.push_back(hardwrapbox(cw::style_fragment(fragf("%F\n", it->description_column2_fragment()),
+		  col2_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column2_fragment()),
 									it->get_style())));
-		  col3_entries.push_back(hardwrapbox(cw::style_fragment(fragf("%F\n", it->description_column3_fragment()),
+		  col3_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column3_fragment()),
 									it->get_style())));
 		}
 
@@ -1095,7 +1095,7 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 						      0,
 						      fragment_column_entry::top,
 						      col3_entries));
-	      fragment *solution_fragment(cw::fragment_columns(columns));
+	      cw::fragment *solution_fragment(cw::fragment_columns(columns));
 
 	      if(verbosity < 1)
 		return solution_fragment;
@@ -1110,12 +1110,12 @@ fragment *do_why(const std::vector<pkg_matcher *> &leaves,
       success = false;
 
       if(root_is_removal)
-	return fragf(_("No justification for removing %s could be constructed.\n"), root.Name());
+	return cw::fragf(_("No justification for removing %s could be constructed.\n"), root.Name());
       else
-	return fragf(_("No justification for %s could be constructed.\n"), root.Name());
+	return cw::fragf(_("No justification for %s could be constructed.\n"), root.Name());
     }
   else
-    return sequence_fragment(rval);
+    return cw::sequence_fragment(rval);
 }
 
 int do_why(const std::vector<pkg_matcher *> &leaves,
@@ -1124,7 +1124,7 @@ int do_why(const std::vector<pkg_matcher *> &leaves,
 	   bool root_is_removal)
 {
   bool success = false;
-  std::auto_ptr<fragment> f(do_why(leaves, root, verbosity, root_is_removal,
+  std::auto_ptr<cw::fragment> f(do_why(leaves, root, verbosity, root_is_removal,
 				   success));
   update_screen_width();
   // TODO: display each result as we find it.
@@ -1183,7 +1183,7 @@ fragment *do_why(const std::vector<std::string> &arguments,
 
   pkgCache::PkgIterator pkg((*apt_cache_file)->FindPkg(root.c_str()));
   if(pkg.end())
-    return fragf(_("No package named \"%s\" exists."), root.c_str());
+    return cw::fragf(_("No package named \"%s\" exists."), root.c_str());
 
   std::vector<pkg_matcher *> matchers;
   if(!interpret_why_args(arguments, matchers))
@@ -1194,7 +1194,7 @@ fragment *do_why(const std::vector<std::string> &arguments,
       return cw::text_fragment(_("Unable to parse some match patterns."));
     }
 
-  fragment *rval = do_why(matchers, pkg, verbosity, root_is_removal, success);
+  cw::fragment *rval = do_why(matchers, pkg, verbosity, root_is_removal, success);
   for(std::vector<pkg_matcher *>::const_iterator it = matchers.begin();
       it != matchers.end(); ++it)
     delete *it;

@@ -33,11 +33,11 @@ namespace cwidget
  *  formatting rules.
  *
  *  \param desc a Description tag to parse
- *  \return a fragment representing that description
+ *  \return a cwidget::fragment representing that description
  */
 cwidget::fragment *make_desc_fragment(const std::wstring &desc);
 
-/** \return a fragment listing the tags of the given package, or \b
+/** \return a cwidget::fragment listing the tags of the given package, or \b
  *  NULL if there are no tags.
  */
 cwidget::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg);

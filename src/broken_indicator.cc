@@ -56,7 +56,7 @@ typedef generic_solution<aptitude_universe> aptitude_solution;
  *  that describes the current state of the problem resolver.  Hidden
  *  if no problem resolver is active.
  *
- *  \todo write a simple table fragment class and use that to
+ *  \todo write a simple table cw::fragment class and use that to
  *  right-justify the text that obviously should be
  */
 class broken_indicator : public cw::text_layout
@@ -253,7 +253,7 @@ public:
 	    return;
 	  }
 
-	// TODO: add a column-generating fragment that can
+	// TODO: add a column-generating cw::fragment that can
 	//       left/right justify stuff.
 
 	vector<cw::fragment_column_entry> columns;

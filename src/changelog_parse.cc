@@ -96,7 +96,7 @@ cw::fragment *change_text_fragment(const std::string &s)
       start = next_nl + 1;
     } while(next_nl != std::string::npos);
 
-  return sequence_fragment(lines);
+  return cw::sequence_fragment(lines);
 }
 
 static
@@ -144,7 +144,7 @@ cw::fragment *parse_predigested_changelog(const temp::name &digest,
 	    fragments.push_back(f);
 	}
 
-      return sequence_fragment(fragments);
+      return cw::sequence_fragment(fragments);
     }
 }
 

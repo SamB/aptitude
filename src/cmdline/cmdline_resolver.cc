@@ -55,10 +55,10 @@ using cwidget::fragf;
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
 
-/** Generate a fragment describing a solution as an ordered sequence
+/** Generate a cw::fragment describing a solution as an ordered sequence
  *  of actions.
  */
-static fragment *solution_story(const aptitude_solution &s)
+static cw::fragment *solution_story(const aptitude_solution &s)
 {
   std::vector<aptitude_solution::action> actions;
   for(imm::map<aptitude_universe::package, aptitude_solution::action>::const_iterator
@@ -67,15 +67,15 @@ static fragment *solution_story(const aptitude_solution &s)
   sort(actions.begin(), actions.end(), aptitude_solution::action_id_compare());
 
 
-  vector<fragment *> fragments;
+  vector<cw::fragment *> fragments;
 
   for(vector<aptitude_solution::action>::const_iterator i = actions.begin();
       i != actions.end(); ++i)
-    fragments.push_back(fragf("%ls%n -> %F%n",
+    fragments.push_back(cw::fragf("%ls%n -> %F%n",
 			      dep_text(i->d.get_dep()).c_str(),
 			      indentbox(0, 4, action_fragment(*i))));
 
-  return sequence_fragment(fragments);
+  return cw::sequence_fragment(fragments);
 }
 
 static void setup_resolver(pkgset &to_install,
@@ -136,15 +136,15 @@ static void setup_resolver(pkgset &to_install,
     }
 }
 
-static inline fragment *flowindentbox(int i1, int irest, fragment *f)
+static inline cw::fragment *flowindentbox(int i1, int irest, cw::fragment *f)
 {
   return indentbox(i1, irest, flowbox(f));
 }
 
 static void resolver_help(ostream &out)
 {
-  fragment *f=indentbox(2, 2,
-			fragf(_("y: %F"
+  cw::fragment *f=indentbox(2, 2,
+			cw::fragf(_("y: %F"
 				"n: %F"
 				"q: %F"
 				",: %F"
@@ -163,43 +163,43 @@ static void resolver_help(ostream &out)
 				"%F"
 				"%F"),
 			      flowindentbox(0, 3,
-					    fragf(_("accept the proposed changes"))),
+					    cw::fragf(_("accept the proposed changes"))),
 			      flowindentbox(0, 3,
-					    fragf(_("reject the proposed changes and search for another solution"))),
+					    cw::fragf(_("reject the proposed changes and search for another solution"))),
 			      flowindentbox(0, 3,
-					    fragf(_("give up and quit the program"))),
+					    cw::fragf(_("give up and quit the program"))),
 			      flowindentbox(0, 3,
-					    fragf(_("move to the next solution"))),
+					    cw::fragf(_("move to the next solution"))),
 			      flowindentbox(0, 3,
-					    fragf(_("move to the previous solution"))),
+					    cw::fragf(_("move to the previous solution"))),
 			      flowindentbox(0, 3,
-					    fragf(_("toggle between the contents of the solution and an explanation of the solution"))),
+					    cw::fragf(_("toggle between the contents of the solution and an explanation of the solution"))),
 			      flowindentbox(0, 3,
-					    fragf(_("examine the solution in the visual user interface"))),
+					    cw::fragf(_("examine the solution in the visual user interface"))),
 			      flowindentbox(0, 3,
-					    fragf(_("reject the given package versions; don't display any solutions in which they occur."))),
+					    cw::fragf(_("reject the given package versions; don't display any solutions in which they occur."))),
 			      flowindentbox(0, 3,
-					    fragf(_("accept the given package versions; display only solutions in which they occur."))),
+					    cw::fragf(_("accept the given package versions; display only solutions in which they occur."))),
 			      flowindentbox(0, 3,
-					    fragf(_("adjust the state of the listed packages, where ACTION is one of:"))),
+					    cw::fragf(_("adjust the state of the listed packages, where ACTION is one of:"))),
 			      flowindentbox(0, 4,
-					    fragf(_("'+' to install packages"))),
+					    cw::fragf(_("'+' to install packages"))),
 			      flowindentbox(0, 5,
-					    fragf(_("'+M' to install packages and immediately flag them as automatically installed"))),
+					    cw::fragf(_("'+M' to install packages and immediately flag them as automatically installed"))),
 			      flowindentbox(0, 4,
-					    fragf(_("'-' to remove packages"))),
+					    cw::fragf(_("'-' to remove packages"))),
 			      flowindentbox(0, 4,
-					    fragf(_("'_' to purge packages"))),
+					    cw::fragf(_("'_' to purge packages"))),
 			      flowindentbox(0, 4,
-					    fragf(_("'=' to place packages on hold"))),
+					    cw::fragf(_("'=' to place packages on hold"))),
 			      flowindentbox(0, 4,
-					    fragf(_("':' to keep packages in their current state without placing them on hold"))),
+					    cw::fragf(_("':' to keep packages in their current state without placing them on hold"))),
 			      flowindentbox(0, 4,
-					    fragf(_("'&M' to mark packages as automatically installed"))),
+					    cw::fragf(_("'&M' to mark packages as automatically installed"))),
 			      flowindentbox(0, 4,
-					    fragf(_("'&m' to mark packages as manually installed"))),
+					    cw::fragf(_("'&m' to mark packages as manually installed"))),
 			      flowindentbox(0, 3,
-					    fragf(_("Adjustments will cause the current solution to be discarded and recalculated as necessary.")))));
+					    cw::fragf(_("Adjustments will cause the current solution to be discarded and recalculated as necessary.")))));
 
   out << f->layout(screen_width, screen_width, cwidget::style());
   delete f;
@@ -563,7 +563,7 @@ bool cmdline_resolve_deps(pkgset &to_install,
 
 		if(sol != lastsol)
 		  {
-		    fragment *f=sequence_fragment(flowbox(cwidget::text_fragment(_("The following actions will resolve these dependencies:"))),
+		    cw::fragment *f=cw::sequence_fragment(flowbox(cwidget::text_fragment(_("The following actions will resolve these dependencies:"))),
 						  cwidget::newline_fragment(),
 						  story_is_default
 						    ? solution_story(sol)
@@ -612,7 +612,7 @@ bool cmdline_resolve_deps(pkgset &to_install,
 		  case 'O':
 		    {
 		      story_is_default = !story_is_default;
-		      fragment *f = story_is_default
+		      cw::fragment *f = story_is_default
 			              ? solution_story(sol)
 			              : solution_fragment(sol);
 		      update_screen_width();

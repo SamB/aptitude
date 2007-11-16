@@ -81,13 +81,13 @@ static cw::widget_ref download_summary(const download_list_ref &l,
     // TODO: list the stuff that failed?
     fragments.push_back(cw::fragf(_("%n%nSome files were not downloaded successfully.")));
 
-  cw::fragment *fragment = wrapbox(cw::sequence_fragment(fragments));
+  cw::fragment *cw::fragment = wrapbox(cw::sequence_fragment(fragments));
 
   cw::widget_ref rval;
   if(already_cancelled || !cancel_slot)
-    rval=cw::dialogs::ok(fragment, NULL);
+    rval=cw::dialogs::ok(cw::fragment, NULL);
   else
-    rval=cw::dialogs::yesno(fragment,
+    rval=cw::dialogs::yesno(cw::fragment,
 			    NULL,
 			    W_("Continue"),
 			    cw::util::arg(cancel_slot),

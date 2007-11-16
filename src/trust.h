@@ -14,11 +14,11 @@ namespace cwidget
   class fragment;
 }
 
-/** Create a new fragment, suitable as a BIG FAT WARNING to the user
+/** Create a new cwidget::fragment, suitable as a BIG FAT WARNING to the user
  *  that a single package is not trusted.
  *
- *  \param ver the version to which the fragment refers
- *  \return the new fragment, or NULL if ver is trusted.
+ *  \param ver the version to which the cwidget::fragment refers
+ *  \return the new cwidget::fragment, or NULL if ver is trusted.
  */
 fragment *make_untrusted_warning(const pkgCache::VerIterator &ver);
 

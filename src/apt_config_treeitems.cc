@@ -42,8 +42,6 @@
 #include <map>
 
 namespace cw = cwidget;
-using cw::fragment;
-using cw::util::transcode;
 namespace cwidget
 {
   using namespace widgets;
@@ -57,18 +55,14 @@ namespace aptitude
     {
       namespace
       {
-	using cw::dropbox;
-	using cw::hardwrapbox;
-	using cw::text_fragment;
-
-	fragment *drophardwrapbox(fragment *header, const std::string &contents)
+	cw::fragment *drophardwrapbox(cw::fragment *header, const std::string &contents)
 	{
-	  return dropbox(header, hardwrapbox(text_fragment(contents)));
+	  return cw::dropbox(header, cw::hardwrapbox(cw::text_fragment(contents)));
 	}
 
-	fragment *drophardwrapbox(fragment *header, const std::wstring &contents)
+	cw::fragment *drophardwrapbox(cw::fragment *header, const std::wstring &contents)
 	{
-	  return dropbox(header, hardwrapbox(text_fragment(contents)));
+	  return cw::dropbox(header, cw::hardwrapbox(cw::text_fragment(contents)));
 	}
       }
 
@@ -97,11 +91,11 @@ namespace aptitude
 	  aptcfg->connect(item, sigc::mem_fun(*this, &boolean_config_treeitem::value_changed));
 	}
 
-	fragment *get_long_description() const
+	cw::fragment *get_long_description() const
 	{
 	  bool value = aptcfg->FindB(item, dflt);
 
-	  std::vector<fragment *> fragments;
+	  std::vector<cw::fragment *> fragments;
 	  fragments.push_back(cw::fragf(_("%BOption:%b  %s\n"
 					  "%BDefault:%b %s\n"
 					  "%BValue:%b   %s\n"),
@@ -111,7 +105,7 @@ namespace aptitude
 	  fragments.push_back(cw::newline_fragment());
 	  fragments.push_back(wrapbox(cw::text_fragment(long_description.c_str())));
 
-	  return sequence_fragment(fragments);
+	  return cw::sequence_fragment(fragments);
 	}
 
 	void toggle()
@@ -204,11 +198,11 @@ namespace aptitude
 	    aptcfg->connect(item, sigc::mem_fun(*this, &string_config_treeitem::value_changed));
 	  }
 
-	  fragment *get_long_description() const
+	  cw::fragment *get_long_description() const
 	  {
 	    const std::string value = aptcfg->Find(item, dflt.c_str());
 
-	    std::vector<fragment *> fragments;
+	    std::vector<cw::fragment *> fragments;
 
 
 	    fragments.push_back(drophardwrapbox(cw::fragf(_("%BOption:%b  ")),
@@ -222,7 +216,7 @@ namespace aptitude
 	    fragments.push_back(cw::newline_fragment());
 	    fragments.push_back(wrapbox(cw::text_fragment(long_description)));
 
-	    return sequence_fragment(fragments);
+	    return cw::sequence_fragment(fragments);
 	  }
 
 	  void paint(cw::tree *win, int y, bool hierarchical, const cw::style &st)
@@ -372,7 +366,7 @@ namespace aptitude
 	  aptcfg->connect(item, sigc::mem_fun(*this, &radio_config_treeitem::value_changed));
 	}
 
-	fragment *get_long_description() const
+	cw::fragment *get_long_description() const
 	{
 	  const std::string value = aptcfg->Find(item, dflt.c_str());
 	  const std::map<std::string, radio_choice>::const_iterator value_found =
@@ -393,7 +387,7 @@ namespace aptitude
 	    ? cw::util::transcode(dflt)
 	    : dflt_found->second.get_description();
 
-	  std::vector<fragment *> fragments;
+	  std::vector<cw::fragment *> fragments;
 	  fragments.push_back(drophardwrapbox(cw::fragf(_("%BOption:%b  ")),
 					      item));
 	  fragments.push_back(drophardwrapbox(cw::fragf(_("%BDefault:%b ")),

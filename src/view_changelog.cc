@@ -160,7 +160,7 @@ static void do_view_changelog(temp::name n,
   string tablabel = ssprintf(_("%s changes"), pkgname.c_str());
   string desclabel = _("View the list of changes made to this Debian package.");
 
-  fragment *f = make_changelog_fragment(n, curverstr);
+  cw::fragment *f = make_changelog_fragment(n, curverstr);
 
   cw::table_ref           t = cw::table::create();
   if(f != NULL)

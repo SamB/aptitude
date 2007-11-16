@@ -157,7 +157,7 @@ cw::subtree_generic *make_dep_solvers_tree(const aptitude_resolver_dep &d)
 	aptitude_solution::action act(*vi, d, true, 0);
 
 	resolvers->add_child(new solution_act_item(act,
-						   sigc::slot1<void, fragment *>(),
+						   sigc::slot1<void, cw::fragment *>(),
 						   sigc::slot1<void, aptitude_resolver_dep>()));
       }
 
@@ -167,7 +167,7 @@ cw::subtree_generic *make_dep_solvers_tree(const aptitude_resolver_dep &d)
       aptitude_solution::action act(*si, d, false, 0);
 
       resolvers->add_child(new solution_act_item(act,
-						 sigc::slot1<void, fragment *>(),
+						 sigc::slot1<void, cw::fragment *>(),
 						 sigc::slot1<void, aptitude_resolver_dep>()));
     }
 
@@ -178,7 +178,7 @@ cw::subtree_generic *make_dep_solvers_tree(const aptitude_resolver_dep &d)
 }
 
 cw::subtree_generic *make_story_tree(const aptitude_solution &sol,
-				    const sigc::slot1<void, fragment *> &set_short_description,
+				    const sigc::slot1<void, cw::fragment *> &set_short_description,
 				    const sigc::slot1<void, aptitude_resolver_dep> &set_active_dep)
 {
   vector<aptitude_solution::action> actions;
@@ -204,7 +204,7 @@ cw::subtree_generic *make_story_tree(const aptitude_solution &sol,
 }
 
 cw::subtree_generic *make_solution_tree(const aptitude_solution &sol,
-				       const sigc::slot1<void, fragment *> &set_short_description,
+				       const sigc::slot1<void, cw::fragment *> &set_short_description,
 				       const sigc::slot1<void, aptitude_resolver_dep> &set_active_dep)
 {
   // Bin packages according to what will happen to them.
@@ -337,7 +337,7 @@ class solution_examiner : public cw::multiplex
   menu_tree_ref solution_tree;
   menu_tree_ref story_tree;
 
-  sigc::slot1<void, fragment *> set_short_description;
+  sigc::slot1<void, cw::fragment *> set_short_description;
   sigc::slot1<void, aptitude_resolver_dep> set_active_dep;
 
   void attach_apt_cache_signals()
@@ -356,8 +356,8 @@ class solution_examiner : public cw::multiplex
 
   void set_static_root(const wstring &s)
   {
-    solution_tree->set_root(new cw::layout_item(hardwrapbox(text_fragment(s))), true);
-    story_tree->set_root(new cw::layout_item(hardwrapbox(text_fragment(s))), true);
+    solution_tree->set_root(new cw::layout_item(cw::hardwrapbox(cw::text_fragment(s))), true);
+    story_tree->set_root(new cw::layout_item(cw::hardwrapbox(cw::text_fragment(s))), true);
   }
 
   /** Send highlighted/unhighlighted messages to the subwidgets so
@@ -396,7 +396,7 @@ class solution_examiner : public cw::multiplex
   }
 
 protected:
-  solution_examiner(const sigc::slot1<void, fragment *> &_set_short_description,
+  solution_examiner(const sigc::slot1<void, cw::fragment *> &_set_short_description,
 		    const sigc::slot1<void, aptitude_resolver_dep> &_set_active_dep)
     : cw::multiplex(false),
       solution_tree(solution_undo_tree::create()), story_tree(solution_undo_tree::create()),
@@ -439,7 +439,7 @@ public:
     create_menu_bindings(solution_tree.unsafe_get_ref(), solution_tree);
   }
 
-  static cw::util::ref_ptr<solution_examiner> create(const sigc::slot1<void, fragment *> &set_short_description,
+  static cw::util::ref_ptr<solution_examiner> create(const sigc::slot1<void, cw::fragment *> &set_short_description,
 					   const sigc::slot1<void, aptitude_resolver_dep> &set_active_dep)
   {
     cw::util::ref_ptr<solution_examiner>
@@ -470,7 +470,7 @@ public:
     if(!resman->resolver_exists())
       {
 	set_static_root(W_("No broken packages."));
-	set_short_description(fragf(""));
+	set_short_description(cw::fragf(""));
 	set_active_dep(aptitude_resolver_dep());
 	return;
       }
@@ -506,10 +506,10 @@ public:
 	wstring msg = W_("Resolving dependencies...");
 
 	cw::subtree_generic *sol_root = new label_tree(msg);
-	sol_root->add_child(new cw::layout_item(hardwrapbox(text_fragment(generation_info))));
+	sol_root->add_child(new cw::layout_item(cw::hardwrapbox(cw::text_fragment(generation_info))));
 
 	cw::subtree_generic *story_root = new label_tree(msg);
-	story_root->add_child(new cw::layout_item(hardwrapbox(text_fragment(generation_info))));
+	story_root->add_child(new cw::layout_item(cw::hardwrapbox(cw::text_fragment(generation_info))));
 
 	solution_tree->set_root(sol_root, true);
 	story_tree->set_root(story_root, true);
@@ -568,7 +568,7 @@ cw::widget_ref make_solution_screen()
 
   solution_examiner_ref examiner
     = solution_examiner::create(sigc::mem_fun(l.unsafe_get_ref(),
-					      (void (cw::label::*) (fragment *)) &cw::label::set_text),
+					      (void (cw::label::*) (cw::fragment *)) &cw::label::set_text),
 				sigc::bind(sigc::ptr_fun(update_dep_display),
 					   info_tree.unsafe_get_ref()));
 

@@ -88,7 +88,7 @@ public:
 
     if(!apt_cache_file)
       {
-	set_fragment(fragf("%s", _("The package cache is not available.")));
+	set_fragment(cw::fragf("%s", _("The package cache is not available.")));
 	last_sol.nullify();
 	return;
       }
@@ -96,7 +96,7 @@ public:
     if(!resman->resolver_exists())
       {
 	// This makes ASS-U-MPTIONS about how resolver_exists works.
-	set_fragment(fragf("%s", _("No packages are broken.")));
+	set_fragment(cw::fragf("%s", _("No packages are broken.")));
 	last_sol.nullify();
 	return;
       }
@@ -105,7 +105,7 @@ public:
 
     if(state.solutions_exhausted && state.generated_solutions == 0)
       {
-	set_fragment(fragf("%s", _("No resolution found.")));
+	set_fragment(cw::fragf("%s", _("No resolution found.")));
 	return;
       }
 
@@ -113,12 +113,12 @@ public:
       {
 	if(state.background_thread_aborted)
 	  {
-	    set_fragment(fragf("%s", state.background_thread_abort_msg.c_str()));
+	    set_fragment(cw::fragf("%s", state.background_thread_abort_msg.c_str()));
 	    return;
 	  }
 	else
 	  {
-	    set_fragment(fragf("%s", _("Resolving dependencies...")));
+	    set_fragment(cw::fragf("%s", _("Resolving dependencies...")));
 	    return;
 	  }
       }
@@ -131,7 +131,7 @@ public:
     last_sol=sol;
 
     if(sol.get_actions().empty())
-      set_fragment(fragf("%s", _("Internal error: unexpected null solution.")));
+      set_fragment(cw::fragf("%s", _("Internal error: unexpected null solution.")));
     else
       set_fragment(solution_fragment(sol));
   }

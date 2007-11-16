@@ -44,7 +44,7 @@ cwidget::fragment *solution_fragment(const generic_solution<aptitude_universe> &
  */
 std::string archives_text(const pkgCache::VerIterator &v);
 
-/** \return a fragment describing the given action. */
+/** \return a cwidget::fragment describing the given action. */
 cwidget::fragment *action_fragment(const generic_solution<aptitude_universe>::action &a);
 
 /** \return descriptive text about a single dependency. */

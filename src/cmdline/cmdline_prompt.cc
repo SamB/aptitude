@@ -32,8 +32,6 @@
 
 using namespace std;
 namespace cw = cwidget;
-using cwidget::fragment;
-using cwidget::fragf;
 
 string StdinEOFException::errmsg() const
 {
@@ -647,7 +645,7 @@ static void cmdline_parse_why(string response)
       bool success;
       string root = arguments.back();
       arguments.pop_back();
-      std::auto_ptr<fragment> frag(do_why(arguments, root, false, false, success));
+      std::auto_ptr<cw::fragment> frag(do_why(arguments, root, false, false, success));
       update_screen_width();
       if(frag.get() != NULL)
 	std::cout << frag->layout(screen_width, screen_width, cwidget::style());
@@ -655,77 +653,77 @@ static void cmdline_parse_why(string response)
     }
 }
 
-static inline fragment *flowindentbox(int i1, int irest, fragment *f)
+static inline cw::fragment *flowindentbox(int i1, int irest, cw::fragment *f)
 {
   return indentbox(i1, irest, flowbox(f));
 }
 
 static void prompt_help(ostream &out)
 {
-  std::vector<fragment *> fragments;
+  std::vector<cw::fragment *> fragments;
 
-  fragments.push_back(fragf(_("y: %F"),
-			      flowindentbox(0, 3,
-					    fragf(_("continue with the installation")))));
+  fragments.push_back(cw::fragf(_("y: %F"),
+				flowindentbox(0, 3,
+					      cw::fragf(_("continue with the installation")))));
 
-  fragments.push_back(fragf(_("n: %F"),
-			    flowindentbox(0, 3,
-					  fragf(_("abort and quit")))));
+  fragments.push_back(cw::fragf(_("n: %F"),
+				flowindentbox(0, 3,
+					      cw::fragf(_("abort and quit")))));
 
-  fragments.push_back(fragf(_("i: %F"),
-			    flowindentbox(0, 3,
-					  fragf(_("show information about one or more packages; the package names should follow the 'i'")))));
+  fragments.push_back(cw::fragf(_("i: %F"),
+				flowindentbox(0, 3,
+					      cw::fragf(_("show information about one or more packages; the package names should follow the 'i'")))));
 
-  fragments.push_back(fragf(_("c: %F"),
-			    flowindentbox(0, 3,
-					  fragf(_("show the Debian changelogs of one or more packages; the package names should follow the 'c'")))));
+  fragments.push_back(cw::fragf(_("c: %F"),
+				flowindentbox(0, 3,
+					      cw::fragf(_("show the Debian changelogs of one or more packages; the package names should follow the 'c'")))));
 
-  fragments.push_back(fragf(_("d: %F"),
-			    flowindentbox(0, 3,
-					  fragf(_("toggle the display of dependency information")))));
+  fragments.push_back(cw::fragf(_("d: %F"),
+				flowindentbox(0, 3,
+					      cw::fragf(_("toggle the display of dependency information")))));
 
-  fragments.push_back(fragf(_("s: %F"),
-			    flowindentbox(0, 3,
-					  fragf(_("toggle the display of changes in package sizes")))));
+  fragments.push_back(cw::fragf(_("s: %F"),
+				flowindentbox(0, 3,
+					      cw::fragf(_("toggle the display of changes in package sizes")))));
 
-  fragments.push_back(fragf(_("v: %F"),
-			    flowindentbox(0, 3,
-					  fragf(_("toggle the display of version numbers")))));
+  fragments.push_back(cw::fragf(_("v: %F"),
+				flowindentbox(0, 3,
+					      cw::fragf(_("toggle the display of version numbers")))));
 
-  fragments.push_back(fragf(_("w: %F"),
-			    flowindentbox(0, 3,
-					  fragf(_("try to find a reason for installing a single package, or explain why installing one package should lead to installing another package.")))));
+  fragments.push_back(cw::fragf(_("w: %F"),
+				flowindentbox(0, 3,
+					      cw::fragf(_("try to find a reason for installing a single package, or explain why installing one package should lead to installing another package.")))));
 
-  fragments.push_back(fragf(_("e: %F"),
-			    flowindentbox(0, 3,
-					  fragf(_("enter the full visual interface")))));
+  fragments.push_back(cw::fragf(_("e: %F"),
+				flowindentbox(0, 3,
+					      cw::fragf(_("enter the full visual interface")))));
 
-  fragments.push_back(fragf("\n"));
-  fragments.push_back(cwidget::flowbox(fragf(_("You may also specify modification to the actions which will be taken.  To do so, type an action character followed by one or more package names (or patterns).  The action will be applied to all the packages that you list.  The following actions are available:"))));
-  fragments.push_back(fragf("\n"));
+  fragments.push_back(cw::fragf("\n"));
+  fragments.push_back(cwidget::flowbox(cw::fragf(_("You may also specify modification to the actions which will be taken.  To do so, type an action character followed by one or more package names (or patterns).  The action will be applied to all the packages that you list.  The following actions are available:"))));
+  fragments.push_back(cw::fragf("\n"));
 
   // FIXME: copied from
   // cmdline_resolver.cc, maybe this
   // should be placed in a common file?
   fragments.push_back(flowindentbox(0, 4,
-				    fragf(_("'+' to install packages"))));
+				    cw::fragf(_("'+' to install packages"))));
 
   fragments.push_back(flowindentbox(0, 5,
-				    fragf(_("'+M' to install packages and immediately flag them as automatically installed"))));
+				    cw::fragf(_("'+M' to install packages and immediately flag them as automatically installed"))));
   fragments.push_back(flowindentbox(0, 4,
-				    fragf(_("'-' to remove packages"))));
+				    cw::fragf(_("'-' to remove packages"))));
   fragments.push_back(flowindentbox(0, 4,
-				    fragf(_("'_' to purge packages"))));
+				    cw::fragf(_("'_' to purge packages"))));
   fragments.push_back(flowindentbox(0, 4,
-				    fragf(_("'=' to place packages on hold"))));
+				    cw::fragf(_("'=' to place packages on hold"))));
   fragments.push_back(flowindentbox(0, 4,
-				    fragf(_("':' to keep packages in their current state without placing them on hold"))));
+				    cw::fragf(_("':' to keep packages in their current state without placing them on hold"))));
   fragments.push_back(flowindentbox(0, 4,
-				    fragf(_("'&M' to mark packages as automatically installed"))));
+				    cw::fragf(_("'&M' to mark packages as automatically installed"))));
   fragments.push_back(flowindentbox(0, 4,
-				    fragf(_("'&m' to mark packages as manually installed"))));
+				    cw::fragf(_("'&m' to mark packages as manually installed"))));
 
-  fragment *f = indentbox(2, 2, sequence_fragment(fragments));
+  cw::fragment *f = indentbox(2, 2, cw::sequence_fragment(fragments));
 
   out << _("Commands:") << endl;
   out << f->layout(screen_width, screen_width, cwidget::style());
