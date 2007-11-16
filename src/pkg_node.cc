@@ -19,7 +19,7 @@
 //
 //  Implementations of stuff in pkg_node.h
 
-#include "cwidget/config/keybindings.h"
+#include <cwidget/config/keybindings.h>
 
 #include "pkg_node.h"
 

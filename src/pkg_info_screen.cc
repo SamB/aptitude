@@ -25,8 +25,8 @@
 
 #include "pkg_info_screen.h"
 
-#include "cwidget/fragment.h"
-#include "cwidget/widgets/layout_item.h"
+#include <cwidget/fragment.h>
+#include <cwidget/widgets/layout_item.h>
 
 #include "dep_item.h"
 #include "desc_parse.h"

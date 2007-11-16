@@ -4,8 +4,8 @@
 //
 //  Defaults for Aptitude.
 
-#include "cwidget/config/keybindings.h"
-#include "cwidget/config/colors.h"
+#include <cwidget/config/keybindings.h>
+#include <cwidget/config/colors.h>
 
 #include "mine/cmine.h"
 
