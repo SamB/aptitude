@@ -39,6 +39,11 @@
 
 
 using namespace std;
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 
 action_type analyze_action(const aptitude_universe::version &ver)
@@ -355,15 +360,15 @@ void solution_act_item::paint(cw::tree *win, int y, bool hierarchical, const cw:
     }
 
   cw::fragment *f = clipbox(action_description(ver));
-  fragment_contents c = f->layout(width-x, width-x, st);
+  cw::fragment_contents c = f->layout(width-x, width-x, st);
   delete f;
 
   eassert(c.size() < 2);
   if(c.size() > 0)
     {
-      const fragment_line &l = c.front();
+      const cw::fragment_line &l = c.front();
 
-      fragment_line::const_iterator loc = l.begin();
+      cw::fragment_line::const_iterator loc = l.begin();
       while(loc != l.end() && x < width)
 	{
 	  win->attrset(loc->attrs);
