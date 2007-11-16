@@ -37,6 +37,12 @@
 
 #include <sigc++/adaptors/bind.h>
 
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
 cw::editline::history_list menu_tree::search_history;
 
 class pkg_matcher_search:public cw::tree_search_func
