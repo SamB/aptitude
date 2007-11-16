@@ -23,8 +23,14 @@
 
 #include <sigc++/bind.h>
 
-#include <vscreen/cw::util::ref_ptr.h>
+#include <cwidget/generic/util/ref_ptr.h>
 #include <cwidget/widgets/container.h>
+
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
 
 bool menu_redirect::undo_undo_enabled() { return false; }
 bool menu_redirect::undo_undo() { return false; }
