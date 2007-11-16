@@ -71,7 +71,7 @@ ui_download_manager::~ui_download_manager()
 
 void ui_download_manager::done(download_thread *, pkgAcquire::RunResult res)
 {
-  cw::progress_ref p = gen_progress_bar();
+  progress_ref p = gen_progress_bar();
 
   download_manager::result run_res = download_manager::failure;
 
@@ -95,7 +95,7 @@ void ui_download_manager::done(download_thread *, pkgAcquire::RunResult res)
 
 void ui_download_manager::start()
 {
-  cw::progress_ref p = gen_progress_bar();
+  progress_ref p = gen_progress_bar();
 
   bool ok = manager->prepare(*p.unsafe_get_ref(), *st, log);
 

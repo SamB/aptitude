@@ -554,7 +554,7 @@ static void do_su_to_root(string args)
 	  check_apt_errors();
 	  // We have to clear these out or the cache won't reload properly (?)
 
-	  cw::progress_ref p = gen_progress_bar();
+	  progress_ref p = gen_progress_bar();
 	  apt_reload_cache(p.unsafe_get_ref(), true, statusname.get_name().c_str());
 	  p->destroy();
 	}
@@ -834,14 +834,14 @@ void do_new_package_view(OpProgress &progress)
 // For signal connections.
 static void do_new_package_view_with_new_bar()
 {
-  cw::progress_ref p = gen_progress_bar();
+  progress_ref p = gen_progress_bar();
   do_new_package_view(*p.unsafe_get_ref());
   p->destroy();
 }
 
 static void do_new_recommendations_view()
 {
-  cw::progress_ref p = gen_progress_bar();
+  progress_ref p = gen_progress_bar();
 
   pkg_grouppolicy_factory *grp = new pkg_grouppolicy_end_factory();
   std::string grpstr="section(subdir, passthrough)";
@@ -864,7 +864,7 @@ static void do_new_recommendations_view()
 
 static void do_new_flat_view_with_new_bar()
 {
-  cw::progress_ref p = gen_progress_bar();
+  progress_ref p = gen_progress_bar();
 
   pkg_grouppolicy_factory *grp = new pkg_grouppolicy_end_factory;
   pkg_tree_ref tree = pkg_tree::create("", grp);
@@ -883,7 +883,7 @@ static void do_new_flat_view_with_new_bar()
 
 static void do_new_tag_view_with_new_bar()
 {
-  cw::progress_ref p = gen_progress_bar();
+  progress_ref p = gen_progress_bar();
 
   pkg_grouppolicy_factory *grp = NULL;
   string grpstr = "tag";
@@ -926,7 +926,7 @@ void do_new_hier_view(OpProgress &progress)
 // For signal connections.
 static void do_new_hier_view_with_new_bar()
 {
-  cw::progress_ref p=gen_progress_bar();
+  progress_ref p=gen_progress_bar();
   do_new_hier_view(*p.unsafe_get_ref());
   p->destroy();
 }
@@ -1325,7 +1325,7 @@ static void do_show_preview()
 		      _("View and/or adjust the actions that will be performed"),
 		      _("Preview"));
 
-      cw::progress_ref p=gen_progress_bar();
+      progress_ref p=gen_progress_bar();
       active_preview_tree->build_tree(*p.unsafe_get_ref());
       p->destroy();
     }
@@ -1724,7 +1724,7 @@ void do_forget_new()
 #ifdef WITH_RELOAD_CACHE
 static void do_reload_cache()
 {
-  cw::progress_ref p = gen_progress_bar();
+  progress_ref p = gen_progress_bar();
   apt_reload_cache(p.unsafe_get_ref(), true);
   p->destroy();
 }
@@ -2665,7 +2665,7 @@ void ui_main()
      (aptitudeDepCache *) (*apt_cache_file) &&
      apt_cache_file->is_locked())
     {
-      cw::progress_ref p=gen_progress_bar();
+      progress_ref p=gen_progress_bar();
       (*apt_cache_file)->save_selection_list(*p.unsafe_get_ref());
       p->destroy();
     }
@@ -2751,9 +2751,9 @@ cw::widget_ref active_main_widget()
   return main_multiplex->visible_widget();
 }
 
-cw::progress_ref gen_progress_bar()
+progress_ref gen_progress_bar()
 {
-  cw::progress_ref rval=cw::progress::create();
+  progress_ref rval=cw::progress::create();
 
   main_status_multiplex->add_visible_widget(rval, true);
 
