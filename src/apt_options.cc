@@ -109,9 +109,9 @@ struct option_item
   /** \brief Construct a radio item from a list of choices,
    *  destroying each choice after it's inserted into the list.
    */
-  static option_item radio(const char *option_name,
-			   const char *description,
+  static option_item radio(const char *description,
 			   const char *long_description,
+			   const char *option_name,
 			   const char *def,
 			   const radio_choice *choice_1,
 			   ...)
