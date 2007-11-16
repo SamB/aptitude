@@ -40,6 +40,12 @@
 #include <apt-pkg/pkgrecords.h>
 #include <apt-pkg/strutl.h>
 
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
 class pkg_grouppolicy_info:public pkg_grouppolicy
 {
 public:

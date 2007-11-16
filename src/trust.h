@@ -20,6 +20,6 @@ namespace cwidget
  *  \param ver the version to which the cwidget::fragment refers
  *  \return the new cwidget::fragment, or NULL if ver is trusted.
  */
-fragment *make_untrusted_warning(const pkgCache::VerIterator &ver);
+cwidget::fragment *make_untrusted_warning(const pkgCache::VerIterator &ver);
 
 #endif
