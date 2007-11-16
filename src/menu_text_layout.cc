@@ -27,6 +27,12 @@
 #include <cwidget/config/keybindings.h>
 #include <cwidget/generic/util/transcode.h>
 
+namespace cw = cwidget;
+namespace cwidget
+{
+  using namespace widgets;
+}
+
 bool menu_text_layout::find_search_enabled()
 {
   return true;
