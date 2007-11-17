@@ -1985,6 +1985,29 @@ public:
   }
 };
 
+class pkg_obsolete_matcher : public pkg_matcher
+{
+public:
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records)
+  {
+    return pkg_obsolete(pkg);
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records)
+  {
+    if(!matches(pkg, ver, cache, records))
+      return NULL;
+    else
+      return new unitary_result(_("Obsolete"));
+  }
+};
+
 // Check for terminators.  Not terribly efficient, but I expect under
 // 3 terminators in any interesting usage (more than that and I really
 // should force yacc to do my bidding)
@@ -2230,6 +2253,8 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		  return new pkg_new_matcher;
 		case 'U':
 		  return new pkg_upgradable_matcher;
+		case 'o':
+		  return new pkg_obsolete_matcher;
 		case 'P':
 		case 'C':
 		case 'W':

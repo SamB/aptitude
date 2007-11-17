@@ -457,10 +457,10 @@ namespace aptitude
       };
 
       cw::treeitem *make_radio_item(const std::wstring &description,
-				   const std::wstring &long_description,
-				   const std::string  &item,
-				   const std::vector<radio_choice> &choices,
-				   const std::string  &dflt)
+				    const std::wstring &long_description,
+				    const std::string  &item,
+				    const std::vector<radio_choice> &choices,
+				    const std::string  &dflt)
       {
 	dummy_subtree *rval = new dummy_subtree(description);
 	std::map<std::string, radio_choice> choices_map;
