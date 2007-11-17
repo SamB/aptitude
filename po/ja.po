@@ -164,7 +164,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-11-15 21:50-0800\n"
+"POT-Creation-Date: 2007-11-17 09:09-0800\n"
 "PO-Revision-Date: 2006-11-04 15:34+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
@@ -2484,52 +2484,57 @@ msgstr "新規パッケージ"
 msgid "Upgradable"
 msgstr "更新可能"
 
-#: src/generic/apt/matchers.cc:2110
+#: src/generic/apt/matchers.cc:2007
+#, fuzzy
+msgid "Obsolete"
+msgstr "廃止"
+
+#: src/generic/apt/matchers.cc:2133
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "%s の後に終端文字のないリテラル文字列があります"
 
-#: src/generic/apt/matchers.cc:2170
+#: src/generic/apt/matchers.cc:2193
 msgid "Unmatched '('"
 msgstr "対応する '(' がありません"
 
-#: src/generic/apt/matchers.cc:2303 src/generic/apt/matchers.cc:2376
+#: src/generic/apt/matchers.cc:2328 src/generic/apt/matchers.cc:2401
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "依存関係の種類が不明です: %s"
 
-#: src/generic/apt/matchers.cc:2309
+#: src/generic/apt/matchers.cc:2334
 msgid "Provides: cannot be broken"
 msgstr "Provides: は破損することはありません"
 
-#: src/generic/apt/matchers.cc:2364
+#: src/generic/apt/matchers.cc:2389
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "アクションの種類が不明です: %s"
 
-#: src/generic/apt/matchers.cc:2418
+#: src/generic/apt/matchers.cc:2443
 #, c-format
 msgid "Unknown priority %s"
 msgstr "優先度が不明です: %s"
 
-#: src/generic/apt/matchers.cc:2439
+#: src/generic/apt/matchers.cc:2464
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "パターンの種類が不明です: %c"
 
-#: src/generic/apt/matchers.cc:2462
+#: src/generic/apt/matchers.cc:2487
 msgid "Can't search for \"\""
 msgstr "\"\" は検索できません"
 
-#: src/generic/apt/matchers.cc:2490
+#: src/generic/apt/matchers.cc:2515
 msgid "Unexpected empty expression"
 msgstr "想定外の空の式です"
 
-#: src/generic/apt/matchers.cc:2517
+#: src/generic/apt/matchers.cc:2542
 msgid "Badly formed expression"
 msgstr "不正な書式です"
 
-#: src/generic/apt/matchers.cc:2552
+#: src/generic/apt/matchers.cc:2577
 msgid "Unexpected ')'"
 msgstr "想定外の ')' です"
 

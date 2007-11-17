@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-11-15 21:50-0800\n"
+"POT-Creation-Date: 2007-11-17 09:09-0800\n"
 "PO-Revision-Date: 2006-10-21 22:43+0800\n"
 "Last-Translator: Asho Yeh <asho@debian.org.tw>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -2229,52 +2229,57 @@ msgstr "新套件"
 msgid "Upgradable"
 msgstr "可升級"
 
-#: src/generic/apt/matchers.cc:2110
+#: src/generic/apt/matchers.cc:2007
+#, fuzzy
+msgid "Obsolete"
+msgstr "過期檔案"
+
+#: src/generic/apt/matchers.cc:2133
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "無法結束 %s 之後的未結束字串"
 
-#: src/generic/apt/matchers.cc:2170
+#: src/generic/apt/matchers.cc:2193
 msgid "Unmatched '('"
 msgstr "不匹配“(”"
 
-#: src/generic/apt/matchers.cc:2303 src/generic/apt/matchers.cc:2376
+#: src/generic/apt/matchers.cc:2328 src/generic/apt/matchers.cc:2401
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "未知依賴類型：%s"
 
-#: src/generic/apt/matchers.cc:2309
+#: src/generic/apt/matchers.cc:2334
 msgid "Provides: cannot be broken"
 msgstr "“提供”類型不可能損壞"
 
-#: src/generic/apt/matchers.cc:2364
+#: src/generic/apt/matchers.cc:2389
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "未知的操作類型：%s"
 
-#: src/generic/apt/matchers.cc:2418
+#: src/generic/apt/matchers.cc:2443
 #, c-format
 msgid "Unknown priority %s"
 msgstr "未知的優先值 %s"
 
-#: src/generic/apt/matchers.cc:2439
+#: src/generic/apt/matchers.cc:2464
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "未知的模式類型：%c"
 
-#: src/generic/apt/matchers.cc:2462
+#: src/generic/apt/matchers.cc:2487
 msgid "Can't search for \"\""
 msgstr "無法搜尋“”"
 
-#: src/generic/apt/matchers.cc:2490
+#: src/generic/apt/matchers.cc:2515
 msgid "Unexpected empty expression"
 msgstr "意外的空表達式"
 
-#: src/generic/apt/matchers.cc:2517
+#: src/generic/apt/matchers.cc:2542
 msgid "Badly formed expression"
 msgstr "錯誤格式的表達式"
 
-#: src/generic/apt/matchers.cc:2552
+#: src/generic/apt/matchers.cc:2577
 msgid "Unexpected ')'"
 msgstr "意外的“)”"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.3-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-11-15 21:50-0800\n"
+"POT-Creation-Date: 2007-11-17 09:09-0800\n"
 "PO-Revision-Date: 2007-04-07 18:33+0800\n"
 "Last-Translator: Kov Chai <tchaikov@sjtu.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
@@ -2230,52 +2230,57 @@ msgstr "新软件包"
 msgid "Upgradable"
 msgstr "可升级"
 
-#: src/generic/apt/matchers.cc:2110
+#: src/generic/apt/matchers.cc:2007
+#, fuzzy
+msgid "Obsolete"
+msgstr "过期"
+
+#: src/generic/apt/matchers.cc:2133
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "无法对 %s 之后的未结束的文字字符串"
 
-#: src/generic/apt/matchers.cc:2170
+#: src/generic/apt/matchers.cc:2193
 msgid "Unmatched '('"
 msgstr "不匹配的“(”"
 
-#: src/generic/apt/matchers.cc:2303 src/generic/apt/matchers.cc:2376
+#: src/generic/apt/matchers.cc:2328 src/generic/apt/matchers.cc:2401
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "未知依赖类型：%s"
 
-#: src/generic/apt/matchers.cc:2309
+#: src/generic/apt/matchers.cc:2334
 msgid "Provides: cannot be broken"
 msgstr "“提供”类型不可能损坏"
 
-#: src/generic/apt/matchers.cc:2364
+#: src/generic/apt/matchers.cc:2389
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "未知的操作类型：%s"
 
-#: src/generic/apt/matchers.cc:2418
+#: src/generic/apt/matchers.cc:2443
 #, c-format
 msgid "Unknown priority %s"
 msgstr "未知的优先级：%s"
 
-#: src/generic/apt/matchers.cc:2439
+#: src/generic/apt/matchers.cc:2464
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "未知的模式类型：%c"
 
-#: src/generic/apt/matchers.cc:2462
+#: src/generic/apt/matchers.cc:2487
 msgid "Can't search for \"\""
 msgstr "无法搜索“”"
 
-#: src/generic/apt/matchers.cc:2490
+#: src/generic/apt/matchers.cc:2515
 msgid "Unexpected empty expression"
 msgstr "意外的空表达式"
 
-#: src/generic/apt/matchers.cc:2517
+#: src/generic/apt/matchers.cc:2542
 msgid "Badly formed expression"
 msgstr "错误格式的表达式"
 
-#: src/generic/apt/matchers.cc:2552
+#: src/generic/apt/matchers.cc:2577
 msgid "Unexpected ')'"
 msgstr "意外的“)”"
 
