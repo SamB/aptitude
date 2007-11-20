@@ -53,9 +53,7 @@
   <!ENTITY search-unlimit "<menuchoice><guimenu>Search</guimenu><guimenuitem>Un-Limit Display</guimenuitem></menuchoice>">
   <!ENTITY search-find-broken "<menuchoice><shortcut><keycap>b</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find Broken</guimenuitem></menuchoice>">
 
-  <!ENTITY options-ui "<menuchoice><guimenu>Options</guimenu><guimenuitem>UI options</guimenuitem></menuchoice>">
-  <!ENTITY options-dep "<menuchoice><guimenu>Options</guimenu><guimenuitem>Dependency handling</guimenuitem></menuchoice>">
-  <!ENTITY options-misc "<menuchoice><guimenu>Options</guimenu><guimenuitem>Miscellaneous</guimenuitem></menuchoice>">
+  <!ENTITY options-preferences "<menuchoice><guimenu>Options</guimenu><guimenuitem>Preferences</guimenuitem></menuchoice>">
   <!ENTITY options-revert "<menuchoice><guimenu>Options</guimenu><guimenuitem>Revert options</guimenuitem></menuchoice>">
 
   <!ENTITY views-next "<menuchoice><shortcut><keycap>F6</keycap></shortcut><guimenu>Views</guimenu><guimenuitem>Next</guimenuitem></menuchoice>">
@@ -2473,40 +2471,19 @@ Abort.</screen>
 
 		<tbody>
 		  <row>
-		    <entry>&options-ui;</entry>
+		    <entry>&options-preferences;</entry>
 
 		    <entry>
-		      Display a dialog box in which you can set
-		      options pertaining to the interface (how
-		      messages are displayed, how packages are
-		      organized, etc).<!--  TODO: See <xref
-		      linkend='secOptionsUI'/>. -->
-		    </entry>
-		  </row>
-
-		  <row>
-		    <entry>&options-dep;</entry>
-
-		    <entry>
-		      Display a dialog box in which you can set
-		      options pertaining to how dependencies are
-		      treated: for instance, whether to automatically
-		      install packages which are recommended by other
-		      packages.  <!-- TODO: See <xref
-		      linkend='secOptionsDep'/>. -->
-		    </entry>
-		  </row>
-
-		  <row>
-		    <entry>&options-misc;</entry>
-
-		    <entry>
-		      Display a dialog box in which you can set
-		      options that don't fit into the previous two
-		      categories: for instance, whether packages
-		      should be automatically flagged for upgrade when
-		      &aptitude; starts. <!-- TODO:  See <xref
-		      linkend='secOptionsMisc'/>. -->
+		      Open a new top-level view in which you can
+		      modify &aptitude;'s settings.  Configuration
+		      options are displayed in a tree similar to the
+		      tree of packages; to enable or disable an
+		      option, select it and press
+		      <keycap>Space</keycap> or
+		      <keycap>Enter</keycap>.  Configuration options
+		      are saved to
+		      <filename>~/.aptitude/config</filename>
+		      immediately upon being selected.
 		    </entry>
 		  </row>
 
@@ -5720,9 +5697,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		<entry><literal>enter</literal></entry>
 		<entry>
 		  In dialog boxes, this is equivalent to pressing
-		  <quote><guilabel>Ok</guilabel></quote>; when interacting with a
-		  status-line multiple choice question, it chooses the
-		  default option.
+		  <quote><guilabel>Ok</guilabel></quote>; when
+		  interacting with a status-line multiple choice
+		  question, it chooses the default option.
 		</entry>
 	      </row>
 
