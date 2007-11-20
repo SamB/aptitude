@@ -734,6 +734,10 @@ bool cmdline_resolve_deps(pkgset &to_install,
 		lastsol.nullify();
 	      }
 	  }
+	catch(StdinEOFException)
+	  {
+	    throw;
+	  }
 	catch(cwidget::util::Exception &e)
 	  {
 	    cout << _("*** ERROR: search aborted by fatal exception.  You may continue\n           searching, but some solutions will be unreachable.")
