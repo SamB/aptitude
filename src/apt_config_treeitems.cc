@@ -119,7 +119,8 @@ namespace aptitude
 
 	bool dispatch_key(const cw::config::key &k, cw::tree *owner)
 	{
-	  if(cw::config::global_bindings.key_matches(k, "Confirm"))
+	  if(cw::config::global_bindings.key_matches(k, "Confirm") ||
+	     cw::config::global_bindings.key_matches(k, "PushButton"))
 	    toggle();
 	  else
 	    return config_treeitem::dispatch_key(k, owner);
@@ -415,7 +416,8 @@ namespace aptitude
 
 	bool dispatch_key(const cw::config::key &k, cw::tree *owner)
 	{
-	  if(cw::config::global_bindings.key_matches(k, "Confirm"))
+	  if(cw::config::global_bindings.key_matches(k, "Confirm") ||
+	     cw::config::global_bindings.key_matches(k, "PushButton"))
 	    choose();
 	  else
 	    return config_treeitem::dispatch_key(k, owner);
