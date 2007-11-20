@@ -301,6 +301,12 @@ class info_area_multiplex:public cw::multiplex
   cw::text_layout_ref reasons;
   cw::table_ref reasons_table;
 
+  /** True if the package members are valid.
+   *
+   *  This needs to be here because it's not always safe to check end()
+   *  if the cache has been reloaded.
+   */
+  bool have_pkg;
   pkgCache::PkgIterator lastPkg;
   pkgCache::VerIterator lastVer;
   wstring lastDesc;
@@ -311,6 +317,11 @@ class info_area_multiplex:public cw::multiplex
    *  to the widget we switched away from; otherwise, it is \b NULL.
    */
   cw::widget_ref autoswitch;
+
+  void clear_package()
+  {
+    have_pkg = false;
+  }
 
 protected:
   info_area_multiplex(const hier_editor_ref &_editor,
@@ -327,6 +338,8 @@ protected:
      reasons(_reasons), reasons_table(_reasons_table),
      hadBreakage(false), autoswitch(NULL)
   {
+    cache_closed.connect(sigc::mem_fun(*this,
+				       &info_area_multiplex::clear_package));
     package_states_changed.connect(sigc::mem_fun(*this,
 						 &info_area_multiplex::reset_package));
   }
@@ -392,6 +405,7 @@ public:
     // moved to a broken package.
     if(hasBreakage &&
        (!hadBreakage ||
+	!have_pkg ||
 	!(pkg==lastPkg && ver==lastVer)) &&
        aptcfg->FindB(PACKAGE "::UI::Auto-Show-Reasons", true))
       {
@@ -404,7 +418,7 @@ public:
 
     // We always set the package anyway in case something changed,
     // but only scroll to the top in this case:
-    if(pkg!=lastPkg || ver!=lastVer)
+    if(!have_pkg || pkg != lastPkg || ver != lastVer)
       {
 	lastPkg=pkg;
 	lastVer=ver;
@@ -420,6 +434,7 @@ public:
       }
 
     hadBreakage=hasBreakage;
+    have_pkg = true;
   }
 
   /** Cycles the multiplex, taking autoswitch behavior into account. */
@@ -444,7 +459,8 @@ public:
    */
   void reset_package()
   {
-    set_package(lastPkg, lastVer);
+    if(have_pkg)
+      set_package(lastPkg, lastVer);
   }
 
   /** Set the description directly, without reference to a package.
@@ -462,9 +478,9 @@ public:
 
 	description->set_fragment(make_desc_fragment(s));
 	reasons->set_fragment(cw::sequence_fragment(make_desc_fragment(s),
-						cw::newline_fragment(),
-						nopackage(),
-						NULL));
+						    cw::newline_fragment(),
+						    nopackage(),
+						    NULL));
 
 	description->move_to_top();
 	reasons->move_to_top();
