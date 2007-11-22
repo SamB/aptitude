@@ -1854,12 +1854,16 @@ static void start_solution_calculation(bool blocking)
       const int selected = state.selected_solution;
       const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
       const int wait_steps = aptcfg->FindI(PACKAGE "::ProblemResolver::WaitSteps", 50);
-      interactive_continuation * const k = new interactive_continuation(resman);
 
-      if(blocking)
-	resman->get_solution_background_blocking(selected, limit, wait_steps, k);
-      else
-	resman->get_solution_background(selected, limit, k);
+      if(limit != 0)
+	{
+	  interactive_continuation * const k = new interactive_continuation(resman);
+
+	  if(blocking)
+	    resman->get_solution_background_blocking(selected, limit, wait_steps, k);
+	  else
+	    resman->get_solution_background(selected, limit, k);
+	}
     }
 }
 

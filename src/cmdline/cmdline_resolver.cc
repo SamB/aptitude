@@ -556,8 +556,8 @@ bool cmdline_resolve_deps(pkgset &to_install,
       aptitude_solution lastsol;
 
       // The inner loop tries to generate solutions until some
-      // packages are modified (then the new set of broken packages,
-      // if any, is displayed and we start over)
+      // packages are modified by the user (then the new set of broken
+      // packages, if any, is displayed and we start over)
       bool modified_pkgs=false;
       while(!modified_pkgs)
 	try
