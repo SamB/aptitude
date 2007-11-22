@@ -489,7 +489,7 @@ aptitude_solution calculate_current_solution()
 
   cmdline_spinner spin(aptcfg->FindI("Quiet", 0));
 
-  std::cout << "Resolving dependencies..." << std::endl;
+  std::cout << _("Resolving dependencies...") << std::endl;
 
   cwidget::threads::box<cmdline_resolver_continuation::resolver_result> retbox;
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-11-21 17:15-0800\n"
+"POT-Creation-Date: 2007-11-21 17:18-0800\n"
 "PO-Revision-Date: 2007-11-01 22:36+0000\n"
 "Last-Translator: Jacobo Tarrío <jtarrio@debian.org>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -1475,6 +1475,10 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:492 src/solution_dialog.cc:127
+msgid "Resolving dependencies..."
+msgstr "A resolver as dependencias..."
 
 #: src/cmdline/cmdline_resolver.cc:524
 #, c-format
@@ -4128,10 +4132,6 @@ msgstr "Non hai paquetes rotos."
 #: src/solution_dialog.cc:114
 msgid "No resolution found."
 msgstr "Non se atopou unha solución."
-
-#: src/solution_dialog.cc:127
-msgid "Resolving dependencies..."
-msgstr "A resolver as dependencias..."
 
 #: src/solution_dialog.cc:183
 msgid "Previous"

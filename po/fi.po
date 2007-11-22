@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.4\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-11-21 17:15-0800\n"
+"POT-Creation-Date: 2007-11-21 17:18-0800\n"
 "PO-Revision-Date: 2006-11-05 15:47+0200\n"
 "Last-Translator: Jaakko Kangasharju <ashar@iki.fi>\n"
 "Language-Team: Jaakko Kangasharju <ashar@iki.fi>\n"
@@ -1370,6 +1370,10 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:492 src/solution_dialog.cc:127
+msgid "Resolving dependencies..."
+msgstr "Selvitän riippuvuuksia..."
 
 #: src/cmdline/cmdline_resolver.cc:524
 #, c-format
@@ -3986,10 +3990,6 @@ msgstr "Mikään paketti ei ole rikki."
 #: src/solution_dialog.cc:114
 msgid "No resolution found."
 msgstr "Ratkaisua ei löytynyt."
-
-#: src/solution_dialog.cc:127
-msgid "Resolving dependencies..."
-msgstr "Selvitän riippuvuuksia..."
 
 #: src/solution_dialog.cc:183
 msgid "Previous"

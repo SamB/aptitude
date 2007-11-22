@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-11-21 17:15-0800\n"
+"POT-Creation-Date: 2007-11-21 17:18-0800\n"
 "PO-Revision-Date: 2007-03-21 20:44+0200\n"
 "Last-Translator: Sorin Batariuc <sorin@bonbon.net>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
@@ -1406,6 +1406,10 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:492 src/solution_dialog.cc:127
+msgid "Resolving dependencies..."
+msgstr "Se rezolvă dependenţele..."
 
 #: src/cmdline/cmdline_resolver.cc:524
 #, c-format
@@ -4052,10 +4056,6 @@ msgstr "Nici un pachet nu este deteriorat."
 #: src/solution_dialog.cc:114
 msgid "No resolution found."
 msgstr "Nici o rezoluţie găsită."
-
-#: src/solution_dialog.cc:127
-msgid "Resolving dependencies..."
-msgstr "Se rezolvă dependenţele..."
 
 #: src/solution_dialog.cc:183
 msgid "Previous"

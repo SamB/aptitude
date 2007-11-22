@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-11-21 17:15-0800\n"
+"POT-Creation-Date: 2007-11-21 17:18-0800\n"
 "PO-Revision-Date: 2005-11-28 01:17+0200\n"
 "Last-Translator: Darius Žitkevičius <skystis@splius.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -1370,6 +1370,10 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:492 src/solution_dialog.cc:127
+msgid "Resolving dependencies..."
+msgstr "Sprendžiamos priklausomybės..."
 
 #: src/cmdline/cmdline_resolver.cc:524
 #, c-format
@@ -3993,10 +3997,6 @@ msgstr "Bėra blogų paketų."
 #: src/solution_dialog.cc:114
 msgid "No resolution found."
 msgstr "Sprendimas nerastas."
-
-#: src/solution_dialog.cc:127
-msgid "Resolving dependencies..."
-msgstr "Sprendžiamos priklausomybės..."
 
 #: src/solution_dialog.cc:183
 msgid "Previous"

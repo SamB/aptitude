@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_0.4.6.1-1.1_nl\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-11-21 17:15-0800\n"
+"POT-Creation-Date: 2007-11-21 17:18-0800\n"
 "PO-Revision-Date: 2007-10-19 20:36+0200\n"
 "Last-Translator: Frans Pop <elendil@planet.nl>\n"
 "Language-Team: Dutch <debian-l10n-dutch@lists.debian.org>\n"
@@ -1402,6 +1402,10 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:492 src/solution_dialog.cc:127
+msgid "Resolving dependencies..."
+msgstr "Afhankelijkheden aan het oplossen..."
 
 #: src/cmdline/cmdline_resolver.cc:524
 #, c-format
@@ -4054,10 +4058,6 @@ msgstr "Er zijn geen defecte pakketten."
 #: src/solution_dialog.cc:114
 msgid "No resolution found."
 msgstr "Geen oplossing gevonden."
-
-#: src/solution_dialog.cc:127
-msgid "Resolving dependencies..."
-msgstr "Afhankelijkheden aan het oplossen..."
 
 #: src/solution_dialog.cc:183
 msgid "Previous"

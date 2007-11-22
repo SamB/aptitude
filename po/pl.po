@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3.3\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-11-21 17:15-0800\n"
+"POT-Creation-Date: 2007-11-21 17:18-0800\n"
 "PO-Revision-Date: 2006-04-20 08:46+0200\n"
 "Last-Translator: Michal Politowski <l10n@mp.pl.eu.org>\n"
 "Language-Team: Polish\n"
@@ -1371,6 +1371,10 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:492 src/solution_dialog.cc:127
+msgid "Resolving dependencies..."
+msgstr "Rozwi±zywanie problemów..."
 
 #: src/cmdline/cmdline_resolver.cc:524
 #, c-format
@@ -4004,10 +4008,6 @@ msgstr "Nie ma pakietów z niespe³nionymi zale¿no¶ciami."
 #: src/solution_dialog.cc:114
 msgid "No resolution found."
 msgstr "Nie znaleziono rozwi±zania."
-
-#: src/solution_dialog.cc:127
-msgid "Resolving dependencies..."
-msgstr "Rozwi±zywanie problemów..."
 
 #: src/solution_dialog.cc:183
 msgid "Previous"

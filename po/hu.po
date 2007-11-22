@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_hu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-11-21 17:15-0800\n"
+"POT-Creation-Date: 2007-11-21 17:18-0800\n"
 "PO-Revision-Date: 2006-10-12 20:44+0100\n"
 "Last-Translator: SZERVÁC Attila <sas@321.hu>\n"
 "Language-Team: Hungarian <debian-l10n-hungarian@lists.debian.org>\n"
@@ -1382,6 +1382,10 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:492 src/solution_dialog.cc:127
+msgid "Resolving dependencies..."
+msgstr "Függőségek feloldása..."
 
 #: src/cmdline/cmdline_resolver.cc:524
 #, c-format
@@ -4025,10 +4029,6 @@ msgstr "Nincs törött csomag."
 #: src/solution_dialog.cc:114
 msgid "No resolution found."
 msgstr "Nem találok megoldást."
-
-#: src/solution_dialog.cc:127
-msgid "Resolving dependencies..."
-msgstr "Függőségek feloldása..."
 
 #: src/solution_dialog.cc:183
 msgid "Previous"

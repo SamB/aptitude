@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_eu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-11-21 17:15-0800\n"
+"POT-Creation-Date: 2007-11-21 17:18-0800\n"
 "PO-Revision-Date: 2007-07-10 13:32+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <Librezale@librezale.org>\n"
@@ -1383,6 +1383,10 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:492 src/solution_dialog.cc:127
+msgid "Resolving dependencies..."
+msgstr "Mendekotasunak ebazten..."
 
 #: src/cmdline/cmdline_resolver.cc:524
 #, c-format
@@ -4029,10 +4033,6 @@ msgstr "Ez dago hautsitako paketerik."
 #: src/solution_dialog.cc:114
 msgid "No resolution found."
 msgstr "Ez da bereizmenik aurkitu."
-
-#: src/solution_dialog.cc:127
-msgid "Resolving dependencies..."
-msgstr "Mendekotasunak ebazten..."
 
 #: src/solution_dialog.cc:183
 msgid "Previous"
