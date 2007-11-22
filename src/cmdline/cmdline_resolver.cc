@@ -498,6 +498,13 @@ aptitude_solution calculate_current_solution()
       throw CmdlineSearchDisabledException(msg);
     }
 
+  if(!resman->resolver_exists())
+    {
+      const std::string msg = _("I want to resolve dependencies, but no dependency resolver was created.");
+
+      throw CmdlineSearchAbortedException(msg);
+    }
+
 
 
   if(resman->get_selected_solution() < resman->generated_solution_count())
