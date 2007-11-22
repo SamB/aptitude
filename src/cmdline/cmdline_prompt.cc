@@ -812,6 +812,9 @@ bool cmdline_do_prompt(bool as_upgrade,
 	      while(loc<response.size() && isspace(response[loc]))
 		++loc;
 
+	      // If the user just pushes Enter, default to accepting
+	      // the current state if there aren't broken packages; if
+	      // there are broken packages, abort.
 	      if(loc==response.size())
 		{
 		  response = !have_broken ? 'y' : 'n';
