@@ -478,6 +478,14 @@ aptitude_solution calculate_current_solution()
   if(resman->get_selected_solution() < resman->generated_solution_count())
     return resman->get_solution(resman->get_selected_solution(), 0);
 
+  const int step_limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
+  if(step_limit == 0)
+    {
+      const std::string msg = ssprintf(_("Would resolve dependencies, but dependency resolution is disabled.\n   (%s::ProblemResolver::StepLimit = 0)\n"), PACKAGE);
+
+      throw CmdlineSearchAbortedException(msg);
+    }
+
 
   cmdline_spinner spin(aptcfg->FindI("Quiet", 0));
 
@@ -486,7 +494,7 @@ aptitude_solution calculate_current_solution()
   cwidget::threads::box<cmdline_resolver_continuation::resolver_result> retbox;
 
   resman->get_solution_background(resman->generated_solution_count(),
-				  aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000),
+				  step_limit,
 				  new cmdline_resolver_continuation(retbox));
 
   cmdline_resolver_continuation::resolver_result res;

@@ -8814,14 +8814,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		Decreasing this number will make the program
 		<quote>give up</quote> sooner; increasing it will
 		permit the search for a solution to consume much more
-		time and memory before it is aborted.  The default
-		value is large enough to accomodate commonly
-		encountered situations, while preventing the program
-		from <quote>blowing up</quote> if an overly
-		complicated problem is encountered.  (note: this
-		applies only to command-line searches; in the visual
-		interface, the resolver will continue working until it
-		reaches a solution)
+		time and memory before it is aborted.  Setting
+		<literal>StepLimit</literal> to 0 will disable the
+		problem resolver entirely.  The default value is large
+		enough to accomodate commonly encountered situations,
+		while preventing the program from <quote>blowing
+		up</quote> if an overly complicated problem is
+		encountered.  (note: this applies only to command-line
+		searches; in the visual interface, the resolver will
+		continue working until it reaches a solution)
 	      </seg>
 	    </seglistitem>
 

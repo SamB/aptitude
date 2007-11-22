@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude-0.4.2\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-11-17 09:09-0800\n"
+"POT-Creation-Date: 2007-11-21 17:15-0800\n"
 "PO-Revision-Date: 2007-02-03 15:53+0100\n"
 "Last-Translator: Claus Hindsgaul <claus.hindsgaul@gmail.com>\n"
 "Language-Team: Danish\n"
@@ -1216,18 +1216,18 @@ msgstr ""
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "Ugyldigt svar. Anfør en gyldig kommando eller \"?\" for hjælp.\n"
 
-#: src/cmdline/cmdline_resolver.cc:126 src/cmdline/cmdline_resolver.cc:660
+#: src/cmdline/cmdline_resolver.cc:126 src/cmdline/cmdline_resolver.cc:668
 #: src/generic/apt/apt.cc:202
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Kunne ikke åbne %s til skrivning"
 
-#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:665
+#: src/cmdline/cmdline_resolver.cc:132 src/cmdline/cmdline_resolver.cc:673
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Kunne ikke skrive status ved løsningsforslag til %s"
 
-#: src/cmdline/cmdline_resolver.cc:134 src/cmdline/cmdline_resolver.cc:667
+#: src/cmdline/cmdline_resolver.cc:134 src/cmdline/cmdline_resolver.cc:675
 msgid "Resolver state successfully written!"
 msgstr "Status for løsningsforslag gemt!"
 
@@ -1371,54 +1371,61 @@ msgstr "Kræver %s afinstalleret"
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "Kræver installering af %s version %s (%s)"
 
+#: src/cmdline/cmdline_resolver.cc:484
+#, c-format
+msgid ""
+"Would resolve dependencies, but dependency resolution is disabled.\n"
+"   (%s::ProblemResolver::StepLimit = 0)\n"
+msgstr ""
+
 # Er i tvivl om "defer" -MBJ
-#: src/cmdline/cmdline_resolver.cc:516
+#: src/cmdline/cmdline_resolver.cc:524
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgstr "åbne: %d; lukkede: %d; afviste: %d; konflikter: %d"
 
-#: src/cmdline/cmdline_resolver.cc:566
+#: src/cmdline/cmdline_resolver.cc:574
 msgid "The following actions will resolve these dependencies:"
 msgstr "De følgende handlinger vil udrede disse afhængigheder:"
 
-#: src/cmdline/cmdline_resolver.cc:583
+#: src/cmdline/cmdline_resolver.cc:591
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Godkend denne løsning? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:610 src/cmdline/cmdline_resolver.cc:711
+#: src/cmdline/cmdline_resolver.cc:618 src/cmdline/cmdline_resolver.cc:719
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Opgiver alle forsøg på at udrede disse afhængigheder."
 
-#: src/cmdline/cmdline_resolver.cc:640
+#: src/cmdline/cmdline_resolver.cc:648
 msgid "The following commands are available:"
 msgstr "De følgende kommandoer er tilgængelige:"
 
-#: src/cmdline/cmdline_resolver.cc:657
+#: src/cmdline/cmdline_resolver.cc:665
 msgid "File to write resolver state to: "
 msgstr "Fil som status ved løsningsforslag skrives til: "
 
-#: src/cmdline/cmdline_resolver.cc:672
+#: src/cmdline/cmdline_resolver.cc:680
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Ugyldigt svar. Anfør en af følgende kommandoer:"
 
-#: src/cmdline/cmdline_resolver.cc:685
+#: src/cmdline/cmdline_resolver.cc:693
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Ingen løsning fundet indenfor den fastsatte tid. Prøv mere ihærdigt? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:714
+#: src/cmdline/cmdline_resolver.cc:722
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Ugyldigt svar; anfør venligst 'y' eller 'n'."
 
-#: src/cmdline/cmdline_resolver.cc:723
+#: src/cmdline/cmdline_resolver.cc:731
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Kunne ikke udrede afhængigheder! Opgiver ..."
 
-#: src/cmdline/cmdline_resolver.cc:729
+#: src/cmdline/cmdline_resolver.cc:737
 msgid "*** No more solutions available ***"
 msgstr "*** Ikke flere tilgængelige løsninger ***"
 
-#: src/cmdline/cmdline_resolver.cc:739
+#: src/cmdline/cmdline_resolver.cc:751
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
@@ -3728,22 +3735,22 @@ msgstr "Kunne ikke omkode kolonne-definition"
 msgid "Couldn't parse column definition"
 msgstr "Kunne ikke fortolke kolonne-definition"
 
-#: src/pkg_view.cc:497
+#: src/pkg_view.cc:513
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: fejl i parametre - to \"main widgets\"??"
 
-#: src/pkg_view.cc:503
+#: src/pkg_view.cc:519
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: fejl i parametre - forkert kolonneliste for statisk "
 "element"
 
-#: src/pkg_view.cc:608
+#: src/pkg_view.cc:624
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: forkert argument!"
 
-#: src/pkg_view.cc:660
+#: src/pkg_view.cc:676
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: ingen \"main widget\" fundet"
 
@@ -5040,25 +5047,25 @@ msgstr ""
 msgid "False"
 msgstr "Luk"
 
-#: src/apt_config_treeitems.cc:208 src/apt_config_treeitems.cc:391
+#: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:392
 #, fuzzy
 msgid "%BOption:%b  "
 msgstr "Indstillinger"
 
-#: src/apt_config_treeitems.cc:210 src/apt_config_treeitems.cc:393
+#: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:394
 msgid "%BDefault:%b "
 msgstr ""
 
-#: src/apt_config_treeitems.cc:212 src/apt_config_treeitems.cc:395
+#: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:396
 msgid "%BValue:%b   "
 msgstr ""
 
-#: src/apt_config_treeitems.cc:277
+#: src/apt_config_treeitems.cc:278
 #, c-format
 msgid "Editing \"%ls\""
 msgstr ""
 
-#: src/apt_config_treeitems.cc:399
+#: src/apt_config_treeitems.cc:400
 msgid "%BChoice:%b  "
 msgstr ""
 
