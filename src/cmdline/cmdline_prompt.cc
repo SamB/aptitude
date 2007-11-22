@@ -8,6 +8,7 @@
 #include "cmdline_changelog.h"
 #include "cmdline_resolver.h"
 #include "cmdline_show.h"
+#include "cmdline_show_broken.h"
 #include "cmdline_util.h"
 #include "cmdline_why.h"
 
@@ -749,6 +750,7 @@ bool cmdline_do_prompt(bool as_upgrade,
 
   while(!exit)
     {
+      bool have_broken = false;
       if(!cmdline_show_preview(true, to_install, to_hold, to_remove,
 			       showvers, showdeps, showsize, verbose) &&
 	 first &&
@@ -764,23 +766,47 @@ bool cmdline_do_prompt(bool as_upgrade,
 				   assume_yes,
 				   force_no_change,
 				   verbose))
+	    have_broken = true;
+
+	  if(first && assume_yes)
 	    {
-	      exit=true;
-	      rval=false;
+	      rval = false;
+	      exit = true;
 	    }
 	}
-      else if(assume_yes)
+      else if(first && assume_yes)
 	exit=true;
-      else
+
+      if(!exit)
 	{
 	  bool valid_response=false;
+
+	  if(have_broken)
+	    {
+	      if(first)
+		{
+		  const std::string msg = _("aptitude failed to find a solution to these dependencies.  You can solve them yourself by hand or type 'n' to quit.");
+		  cw::fragment *f = cw::text_fragment(msg);
+		  cout << f->layout(screen_width,
+				    screen_width,
+				    cwidget::style());
+		  delete f;
+
+		  show_broken();
+		}
+	    }
 
 	  while(!valid_response)
 	    {
 	      valid_response=true;
 	      fflush(stdout);
 
-	      string response=prompt_string(_("Do you want to continue? [Y/n/?] "));
+	      string prompt =
+		!have_broken
+		    ? _("Do you want to continue? [Y/n/?] ")
+		    : _("Resolve these dependencies by hand? [N/+/-/_/:/?] ");
+
+	      string response=prompt_string(prompt);
 	      string::size_type loc=0;
 
 	      while(loc<response.size() && isspace(response[loc]))
@@ -788,15 +814,23 @@ bool cmdline_do_prompt(bool as_upgrade,
 
 	      if(loc==response.size())
 		{
-		  response='y';
+		  response = !have_broken ? 'y' : 'n';
 		  loc=0;
 		}
 
 	      switch(toupper(response[loc]))
 		{
 		case 'Y':
-		  rval=true;
-		  exit=true;
+		  if(have_broken)
+		    {
+		      printf("\n%s", _("You must resolve these dependencies before continuing."));
+		      valid_response = false;
+		    }
+		  else
+		    {
+		      rval=true;
+		      exit=true;
+		    }
 		  break;
 		case 'N':
 		  rval=false;
