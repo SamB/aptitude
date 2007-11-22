@@ -468,6 +468,19 @@ public:
   std::string errmsg() const { return msg; }
 };
 
+class CmdlineSearchDisabledException : public cwidget::util::Exception
+{
+  std::string msg;
+
+public:
+  CmdlineSearchDisabledException(const std::string &_msg)
+    : msg(_msg)
+  {
+  }
+
+  std::string errmsg() const { return msg; }
+};
+
 /** \return the resolver's current solution; if it needs to be calculated
  *          first, run the calculation in the background and display
  *          a spinner in the foreground.
@@ -475,16 +488,20 @@ public:
 static
 aptitude_solution calculate_current_solution()
 {
-  if(resman->get_selected_solution() < resman->generated_solution_count())
-    return resman->get_solution(resman->get_selected_solution(), 0);
-
   const int step_limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
   if(step_limit == 0)
     {
       const std::string msg = ssprintf(_("Would resolve dependencies, but dependency resolution is disabled.\n   (%s::ProblemResolver::StepLimit = 0)\n"), PACKAGE);
 
-      throw CmdlineSearchAbortedException(msg);
+      // It's important that the code path leading to here doesn't
+      // access resman: the resolver won't exist in this case.
+      throw CmdlineSearchDisabledException(msg);
     }
+
+
+
+  if(resman->get_selected_solution() < resman->generated_solution_count())
+    return resman->get_solution(resman->get_selected_solution(), 0);
 
 
   cmdline_spinner spin(aptcfg->FindI("Quiet", 0));
@@ -745,6 +762,11 @@ bool cmdline_resolve_deps(pkgset &to_install,
 	catch(StdinEOFException)
 	  {
 	    throw;
+	  }
+	catch(const CmdlineSearchDisabledException &e)
+	  {
+	    cout << e.errmsg();
+	    return false;
 	  }
 	catch(cwidget::util::Exception &e)
 	  {
