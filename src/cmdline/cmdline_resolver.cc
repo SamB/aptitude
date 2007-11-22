@@ -84,6 +84,9 @@ static void setup_resolver(pkgset &to_install,
 			   pkgset &to_purge,
 			   bool force_no_change)
 {
+  if(!resman->resolver_exists())
+    return;
+
   resman->set_debug(aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Debug", false));
 
   // For all packages that the user listed on the command-line (i.e.,
