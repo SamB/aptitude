@@ -231,6 +231,16 @@ public:
 	return;
       }
 
+    // Use our special knowledge that this means no solution will ever
+    // be generated.
+    if(aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000) <= 0)
+      {
+	set_fragment(cw::text_fragment(_("Dependency resolution disabled.")));
+	last_sol.nullify();
+	show();
+	return;
+      }
+
     // Take a snapshot of the state.
     resolver_manager::state state = resman->state_snapshot();
 

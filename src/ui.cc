@@ -2030,7 +2030,8 @@ static void do_nullify_solver(cw::widget_ref *solver)
 
 static bool do_examine_solution_enabled()
 {
-  return resman != NULL && resman->resolver_exists();
+  return resman != NULL && resman->resolver_exists() &&
+    aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000) > 0;
 }
 
 void do_examine_solution()
