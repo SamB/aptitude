@@ -743,18 +743,18 @@ bool cmdline_do_prompt(bool as_upgrade,
 		       bool assume_yes,
 		       bool force_no_change)
 {
-  bool cont=false;
+  bool exit=false;
   bool rval=true;
   bool first=true;
 
-  while(!cont)
+  while(!exit)
     {
       if(!cmdline_show_preview(true, to_install, to_hold, to_remove,
 			       showvers, showdeps, showsize, verbose) &&
 	 first &&
 	 !always_prompt &&
 	 (*apt_cache_file)->BrokenCount()==0)
-	cont=true;
+	exit=true;
       else if((*apt_cache_file)->BrokenCount() > 0)
 	{
 	  if(!cmdline_resolve_deps(to_install,
@@ -765,12 +765,12 @@ bool cmdline_do_prompt(bool as_upgrade,
 				   force_no_change,
 				   verbose))
 	    {
-	      cont=true;
+	      exit=true;
 	      rval=false;
 	    }
 	}
       else if(assume_yes)
-	cont=true;
+	exit=true;
       else
 	{
 	  bool valid_response=false;
@@ -796,11 +796,11 @@ bool cmdline_do_prompt(bool as_upgrade,
 		{
 		case 'Y':
 		  rval=true;
-		  cont=true;
+		  exit=true;
 		  break;
 		case 'N':
 		  rval=false;
-		  cont=true;
+		  exit=true;
 		  break;
 		case 'D':
 		  showdeps=!showdeps;
@@ -860,7 +860,7 @@ bool cmdline_do_prompt(bool as_upgrade,
       if(rval && (!prompt_essential() || !prompt_trust()))
 	{
 	  rval=false;
-	  cont=true;
+	  exit=true;
 	}
 
       first=false;
