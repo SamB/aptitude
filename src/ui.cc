@@ -1855,7 +1855,7 @@ static void start_solution_calculation(bool blocking)
       const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
       const int wait_steps = aptcfg->FindI(PACKAGE "::ProblemResolver::WaitSteps", 50);
 
-      if(limit != 0)
+      if(limit > 0)
 	{
 	  interactive_continuation * const k = new interactive_continuation(resman);
 
