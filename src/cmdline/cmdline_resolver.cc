@@ -489,7 +489,7 @@ static
 aptitude_solution calculate_current_solution()
 {
   const int step_limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
-  if(step_limit == 0)
+  if(step_limit <= 0)
     {
       const std::string msg = ssprintf(_("Would resolve dependencies, but dependency resolution is disabled.\n   (%s::ProblemResolver::StepLimit = 0)\n"), PACKAGE);
 
