@@ -467,6 +467,7 @@ static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 				 bool showvers, bool showdeps, bool showsize,
 				 int verbose)
 {
+  const int quiet = aptcfg->FindI("Quiet", 0);
   bool all_empty=true;
 
   pkgvector lists[num_pkg_action_states];
@@ -545,7 +546,7 @@ static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 	}
     }
 
-  if(!recommended.empty())
+  if(quiet == 0 && !recommended.empty())
     {
       printf(_("The following packages are RECOMMENDED but will NOT be installed:\n"));
       cmdline_show_instinfo(recommended, showvers, showdeps, showsize, false);
