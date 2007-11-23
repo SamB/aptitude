@@ -780,6 +780,16 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
     <variablelist>
       <varlistentry>
+	<term><literal>--allow-untrusted</literal></term>
+
+	<listitem>
+	  Install packages from untrusted sources without prompting.
+	  You should only use this if you know what you are doing, as
+	  it could easily compromise your system's security.
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
 	<term><literal>-D</literal>, <literal>--show-deps</literal></term>
 
 	<listitem>

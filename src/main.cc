@@ -176,6 +176,7 @@ enum {
   OPTION_VISUAL_PREVIEW,
   OPTION_QUEUE_ONLY,
   OPTION_PURGE_UNUSED,
+  OPTION_ALLOW_UNTRUSTED,
 };
 int getopt_result;
 
@@ -186,6 +187,7 @@ option opts[]={
   {"quiet", 2, NULL, 'q'},
   {"width", 1, NULL, 'w'},
   {"simulate", 0, NULL, 's'},
+  {"allow-untrusted", 0, &getopt_result, OPTION_ALLOW_UNTRUSTED},
   {"with-recommends", 0, NULL, 'r'},
   {"without-recommends", 0, NULL, 'R'},
   {"download-only", 0, NULL, 'd'},
@@ -373,6 +375,9 @@ int main(int argc, char *argv[])
 	    case OPTION_VERSION:
 	      show_version();
 	      exit(0);
+	    case OPTION_ALLOW_UNTRUSTED:
+	      aptcfg->Set(PACKAGE "::CmdLine::Ignore-Trust-Violations", true);
+	      break;
 	    case OPTION_VISUAL_PREVIEW:
 	      visual_preview=true;	      
 	      break;
