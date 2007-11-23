@@ -69,6 +69,25 @@ public:
   }
 };
 
+/** \brief operator== for match results. */
+class result_equality
+{
+  pkg_sortpolicy *s;
+public:
+  result_equality(pkg_sortpolicy *_s):s(_s) {}
+
+  bool operator()(const pair<pkgCache::PkgIterator, pkg_match_result *> &a,
+		  const pair<pkgCache::PkgIterator, pkg_match_result *> &b)
+  {
+    pkgCache::VerIterator av =
+      (*apt_cache_file)[a.first].CandidateVerIter(*apt_cache_file);
+    pkgCache::VerIterator bv =
+      (*apt_cache_file)[b.first].CandidateVerIter(*apt_cache_file);
+
+    return s->compare(a.first, av, b.first, bv) == 0;
+  }
+};
+
 // FIXME: apt-cache does lots of tricks to make this fast.  Should I?
 int cmdline_search(int argc, char *argv[], const char *status_fname,
 		   string display_format, string width, string sort)
@@ -84,8 +103,6 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
       _error->DumpErrors();
       return -1;
     }
-
-  compare comp(s);
 
   _error->DumpErrors();
 
@@ -176,7 +193,9 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
 	}
     }
 
-  std::sort(output.begin(), output.end(), comp);
+  std::sort(output.begin(), output.end(), compare(s));
+  output.erase(std::unique(output.begin(), output.end(), result_equality(s)),
+	       output.end());
 
   for(vector<pair<pkgCache::PkgIterator, pkg_match_result *> >::iterator i=output.begin();
       i!=output.end(); ++i)
