@@ -328,6 +328,11 @@ public:
 
   virtual ~resolver_manager();
 
+  /** \brief Discard all past interactions and return the resolver to
+   *  its initial state.
+   */
+  void reset_resolver();
+
   /** If \b true, then a resolver has been created, indicating that
    *  problems may exist in the cache.
    */
