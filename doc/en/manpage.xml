@@ -407,20 +407,21 @@
 
 	<listitem>
 	  <para>
-	    Upgrades installed packages to their most recent
-	    version.  Installed packages will not be removed
-	    unless they are unused (see the section <quote><link
-	    linkend='secAutoInstall'>Managing Automatically
-	    Installed Packages</link></quote> in the &aptitude;
-	    reference manual); packages which are not currently
-	    installed will not be installed.
+	    Upgrades installed packages to their most recent version.
+	    Installed packages will not be removed unless they are
+	    unused (see the section <quote><link
+	    linkend='secAutoInstall'>Managing Automatically Installed
+	    Packages</link></quote> in the &aptitude; reference
+	    manual).  Packages which are not currently installed may
+	    be installed to resolve dependencies unless the <link
+	    linkend='cmdlineOptionSafeUpgradeNoNewInstalls'><literal>--no-new-installs</literal></link>
+	    command-line option is supplied.
 	  </para>
 
 	  <para>
-	      It is sometimes necessary to remove or install one
-	      package in order to upgrade another; this command is not
-	      able to upgrade packages in such situations.  Use the
-	      <link
+	      It is sometimes necessary to remove one package in order
+	      to upgrade another; this command is not able to upgrade
+	      packages in such situations.  Use the <link
 	      linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>
 	      command to upgrade as many packages as possible.
 	  </para>
@@ -869,6 +870,26 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	<listitem>
 	  <para>
 	    Display a brief help message.  Identical to the <literal>help</literal> action.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry id='cmdlineOptionSafeUpgradeNoNewInstalls'>
+	<term>
+	  <literal>--no-new-installs</literal>
+	</term>
+
+	<listitem>
+	  <para>
+	    If present, causes <literal>safe-upgrade</literal> to not
+	    install any new packages.  This mimics the historical
+	    behavior of <command>apt-get upgrade</command>.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option
+	    <literal><link
+	    linkend='configCmdLine-Safe-Upgrade-No-New-Installs'>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</link></literal>.
 	  </para>
 	</listitem>
       </varlistentry>

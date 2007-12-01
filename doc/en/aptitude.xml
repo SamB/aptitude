@@ -8303,6 +8303,24 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configCmdLine-Safe-Upgrade-No-New-Installs'>
+	      <seg><literal>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		In command-line mode, if this option is
+		<literal>true</literal>, the
+		<literal>safe-upgrade</literal> command will not
+		attempt to resolve dependencies by installing new
+		packages.  If upgrading package
+		<replaceable>A</replaceable> would require package
+		<replaceable>B</replaceable> to be newly installed,
+		package <replaceable>A</replaceable> will not be
+		upgraded.  This corresponds to the command-line option
+		<literal><link
+		linkend='cmdlineOptionSafeUpgradeNoNewInstalls'>--no-new-installs</link></literal>.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configCmdLine-Show-Deps'>
 	      <seg><literal>Aptitude::CmdLine::Show-Deps</literal></seg>
 	      <seg><literal>false</literal></seg>
