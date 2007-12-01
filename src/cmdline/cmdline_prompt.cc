@@ -835,7 +835,12 @@ bool cmdline_do_prompt(bool as_upgrade,
 		case 'Y':
 		  if(have_broken)
 		    {
-		      printf("\n%s", _("You must resolve these dependencies before continuing."));
+		      cw::fragment *f = flowbox(cw::text_fragment(_("Enter a package management command (such as '+ package' to install a package) or 'N' to abort.")));
+		      cout << f->layout(screen_width,
+					screen_width,
+					cwidget::style());
+		      delete f;
+		      
 		      valid_response = false;
 		    }
 		  else
