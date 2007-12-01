@@ -660,7 +660,7 @@ static inline cw::fragment *flowindentbox(int i1, int irest, cw::fragment *f)
   return indentbox(i1, irest, flowbox(f));
 }
 
-static void prompt_help(ostream &out)
+static void prompt_help(ostream &out, bool show_resolver_key)
 {
   std::vector<cw::fragment *> fragments;
 
@@ -695,6 +695,11 @@ static void prompt_help(ostream &out)
   fragments.push_back(cw::fragf(_("w: %F"),
 				flowindentbox(0, 3,
 					      cw::fragf(_("try to find a reason for installing a single package, or explain why installing one package should lead to installing another package.")))));
+
+  if(show_resolver_key)
+    fragments.push_back(cw::fragf(_("r: %F"),
+				  flowindentbox(0, 3,
+						cw::text_fragment(_("run the automatic dependency resolver to fix the broken dependencies.")))));
 
   fragments.push_back(cw::fragf(_("e: %F"),
 				flowindentbox(0, 3,
@@ -748,10 +753,20 @@ bool cmdline_do_prompt(bool as_upgrade,
   bool exit=false;
   bool rval=true;
   bool first=true;
+  // If true, we will automatically use the internal resolver.  If
+  // false, the internal resolver has failed at least once and so we
+  // should not use it.
+  //
+  // The idea here is that the resolver stays disabled until the
+  // dependencies are resolved (unless explicitly re-enabled), then
+  // becomes available for future breakage.
+  bool use_internal_resolver = true;
 
   while(!exit)
     {
       bool have_broken = false;
+      // If we're only doing what the user asked and it's OK to go
+      // ahead, we can break out immediately.
       if(!cmdline_show_preview(true, to_install, to_hold, to_remove,
 			       showvers, showdeps, showsize, verbose) &&
 	 first &&
@@ -760,31 +775,46 @@ bool cmdline_do_prompt(bool as_upgrade,
 	exit=true;
       else if((*apt_cache_file)->BrokenCount() > 0)
 	{
-	  if(!cmdline_resolve_deps(to_install,
-				   to_hold,
-				   to_remove,
-				   to_purge,
-				   assume_yes,
-				   force_no_change,
-				   verbose))
-	    have_broken = true;
-
-	  if(first && assume_yes)
+	  if(use_internal_resolver)
 	    {
-	      // If we're supposed to assume "yes", then we actually
-	      // say to abort if there are still broken packages, and
-	      // say to continue otherwise.
-	      rval = !have_broken;
-	      exit = true;
-	    }
+	      if(!cmdline_resolve_deps(to_install,
+				       to_hold,
+				       to_remove,
+				       to_purge,
+				       assume_yes,
+				       force_no_change,
+				       verbose))
+		{
+		  have_broken = true;
+		  use_internal_resolver = false;
+		}
 
-	  // Re-display the preview so the user can see any changes
-	  // the resolver made.
-	  cmdline_show_preview(true, to_install, to_hold, to_remove,
-			       showvers, showdeps, showsize, verbose);
+	      if(first && assume_yes)
+		{
+		  // If we're supposed to assume "yes", then we actually
+		  // say to abort if there are still broken packages, and
+		  // say to continue otherwise.
+		  rval = !have_broken;
+		  exit = true;
+		}
+
+	      // Re-display the preview so the user can see any changes
+	      // the resolver made.
+	      cmdline_show_preview(true, to_install, to_hold, to_remove,
+				   showvers, showdeps, showsize, verbose);
+	    }
+	  else
+	    // The internal resolver is disabled, fall back to manual
+	    // resolution.
+	    have_broken = true;
 	}
       else if(first && assume_yes)
 	exit=true;
+
+      // Re-enable the resolver, if it was disabled for some reason
+      // already (e.g., if the dependencies have been fixed manually).
+      if(!have_broken)
+	use_internal_resolver = true;
 
       if(!exit)
 	{
@@ -830,12 +860,14 @@ bool cmdline_do_prompt(bool as_upgrade,
 		  loc=0;
 		}
 
+	      const std::string unknown_key_message =
+		_("Invalid response.  Please enter a valid command or '?' for help.\n");
 	      switch(toupper(response[loc]))
 		{
 		case 'Y':
 		  if(have_broken)
 		    {
-		      cw::fragment *f = flowbox(cw::text_fragment(_("Enter a package management command (such as '+ package' to install a package) or 'N' to abort.")));
+		      cw::fragment *f = flowbox(cw::text_fragment(_("Enter a package management command (such as '+ package' to install a package), 'R' to attempt automatic dependency resolution or 'N' to abort.")));
 		      cout << f->layout(screen_width,
 					screen_width,
 					cwidget::style());
@@ -852,6 +884,16 @@ bool cmdline_do_prompt(bool as_upgrade,
 		case 'N':
 		  rval=false;
 		  exit=true;
+		  break;
+		case 'R':
+		  if(!have_broken)
+		    {
+		      // Pretend we don't understand.
+		      printf("%s", unknown_key_message.c_str());
+		      valid_response=false;
+		    }
+		  else
+		    use_internal_resolver = true;
 		  break;
 		case 'D':
 		  showdeps=!showdeps;
@@ -897,10 +939,10 @@ bool cmdline_do_prompt(bool as_upgrade,
 		  ui_preview();
 		case '?':
 		  valid_response=false;
-		  prompt_help(cout);
+		  prompt_help(cout, have_broken);
 		  break;
 		default:
-		  printf(_("Invalid response.  Please enter a valid command or '?' for help.\n"));
+		  printf("%s", unknown_key_message.c_str());
 		  valid_response=false;
 		  break;
 		}
