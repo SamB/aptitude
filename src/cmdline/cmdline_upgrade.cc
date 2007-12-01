@@ -6,6 +6,7 @@
 
 #include "cmdline_progress.h"
 #include "cmdline_prompt.h"
+#include "cmdline_resolver.h" // for cmdline_dump_resolver.
 #include "cmdline_show_broken.h"
 #include "cmdline_simulate.h"
 #include "cmdline_util.h"
@@ -13,13 +14,106 @@
 #include <aptitude.h>
 
 #include <generic/apt/apt.h>
+#include <generic/apt/aptitude_resolver_universe.h>
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_install_manager.h>
+#include <generic/apt/resolver_manager.h>
+
+#include <generic/problemresolver/exceptions.h>
 
 #include <apt-pkg/depcache.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/packagemanager.h>
 #include <apt-pkg/progress.h>
+
+#include <cwidget/generic/util/ssprintf.h>
+
+namespace cw = cwidget;
+
+namespace
+{
+  // Set up aptitude's internal resolver for a 'safe' upgrade.
+  // Essentialy this means (1) forbid it from removing any package,
+  // and (2) only install the default candidate version of a package
+  // or the current version.
+  void setup_resolver_for_safe_upgrade()
+  {
+    if(!resman->resolver_exists())
+      return;
+
+    resman->reset_resolver();
+
+    resman->set_debug(aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Debug", false));
+
+    for(pkgCache::PkgIterator p = (*apt_cache_file)->PkgBegin();
+	!p.end(); ++p)
+      {
+	// Forbid the resolver from removing installed packages.
+	if(!p.CurrentVer().end())
+	  {
+	    aptitude_resolver_version
+	      remove_p(p,
+		       pkgCache::VerIterator(*apt_cache_file),
+		       *apt_cache_file);
+
+	    resman->reject_version(remove_p);
+	  }
+
+	// Forbid all real versions that aren't the current version or
+	// the install version.
+	for(pkgCache::VerIterator v = p.VersionList();
+	    !v.end(); ++v)
+	  {
+	    if(v != p.CurrentVer() &&
+	       v != (*apt_cache_file)[p].InstVerIter(*apt_cache_file))
+	      {
+		aptitude_resolver_version
+		  p_v(p, v, *apt_cache_file);
+		resman->reject_version(p_v);
+	      }
+	  }
+      }
+
+    cmdline_dump_resolver();
+  }
+
+  // Take the first solution we can compute, returning false if we
+  // failed to find a solution.
+  bool safe_upgrade_resolve_deps(int verbose)
+  {
+    if(!resman->resolver_exists())
+      return true;
+
+    setup_resolver_for_safe_upgrade();
+
+    try
+      {
+	generic_solution<aptitude_universe> sol = calculate_current_solution();
+	(*apt_cache_file)->apply_solution(sol, NULL);
+      }
+    // If anything goes wrong, we give up (silently if verbosity is disabled).
+    catch(NoMoreTime)
+      {
+	if(verbose > 0)
+	  std::cout << _("Unable to resolve dependencies for the upgrade (resolver timed out).");
+	return false;
+      }
+    catch(NoMoreSolutions)
+      {
+	if(verbose > 0)
+	  std::cout << _("Unable to resolve dependencies for the upgrade (no solution found).");
+	return false;
+      }
+    catch(const cw::util::Exception &e)
+      {
+	if(verbose > 0)
+	  std::cout << cw::util::ssprintf(_("Unable to resolve dependencies for the upgrade (%s)."), e.errmsg().c_str());
+	return false;
+      }
+
+    return true;
+  }
+}
 
 int cmdline_upgrade(int argc, char *argv[],
 		    const char *status_fname, bool simulate,
@@ -72,12 +166,29 @@ int cmdline_upgrade(int argc, char *argv[],
 	to_install.insert(i);
     }
 
-  if(!(*apt_cache_file)->all_upgrade(false, NULL))
-    {
-      show_broken();
+  if(verbose > 0)
+    show_broken();
 
-      _error->DumpErrors();
-      return -1;
+  // First try the built-in resolver; if it fails (which it shouldn't
+  // if an upgrade is possible), cancel all changes and try apt's
+  // resolver.
+  (*apt_cache_file)->mark_all_upgradable(false, true, NULL);
+  if(!safe_upgrade_resolve_deps(verbose))
+    {
+      // Reset all the package states.
+      for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin();
+	  !i.end(); ++i)
+	(*apt_cache_file)->mark_keep(i, false, false, NULL);
+
+      // Use the apt 'upgrade' algorithm as a fallback against, e.g.,
+      // bugs in the aptitude resolver.
+      if(!(*apt_cache_file)->all_upgrade(false, NULL))
+	{
+	  show_broken();
+
+	  _error->DumpErrors();
+	  return -1;
+	}
     }
 
   if(!show_broken())
