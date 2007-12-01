@@ -336,7 +336,7 @@ protected:
      description(_description), description_table(_description_table),
      why(_why), why_table(_why_table),
      reasons(_reasons), reasons_table(_reasons_table),
-     hadBreakage(false), autoswitch(NULL)
+     have_pkg(false), hadBreakage(false), autoswitch(NULL)
   {
     cache_closed.connect(sigc::mem_fun(*this,
 				       &info_area_multiplex::clear_package));
