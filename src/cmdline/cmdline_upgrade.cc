@@ -167,13 +167,14 @@ int cmdline_upgrade(int argc, char *argv[],
 	to_install.insert(i);
     }
 
-  if(verbose > 0)
-    show_broken();
-
   // First try the built-in resolver; if it fails (which it shouldn't
   // if an upgrade is possible), cancel all changes and try apt's
   // resolver.
   (*apt_cache_file)->mark_all_upgradable(false, true, NULL);
+
+  if(verbose > 0)
+    show_broken();
+
   if(!safe_upgrade_resolve_deps(verbose, no_new_installs))
     {
       // Reset all the package states.
