@@ -771,9 +771,17 @@ bool cmdline_do_prompt(bool as_upgrade,
 
 	  if(first && assume_yes)
 	    {
-	      rval = false;
+	      // If we're supposed to assume "yes", then we actually
+	      // say to abort if there are still broken packages, and
+	      // say to continue otherwise.
+	      rval = !have_broken;
 	      exit = true;
 	    }
+
+	  // Re-display the preview so the user can see any changes
+	  // the resolver made.
+	  cmdline_show_preview(true, to_install, to_hold, to_remove,
+			       showvers, showdeps, showsize, verbose);
 	}
       else if(first && assume_yes)
 	exit=true;
