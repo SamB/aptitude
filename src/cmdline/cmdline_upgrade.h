@@ -7,6 +7,7 @@
 
 int cmdline_upgrade(int argc, char *argv[],
 		    const char *status_fname, bool simulate,
+		    bool no_new_installs,
 		    bool assume_yes, bool download_only,
 		    bool showvers, bool showdeps, bool showsize,
 		    bool visual_preview, bool always_prompt,

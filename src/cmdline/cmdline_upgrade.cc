@@ -36,7 +36,7 @@ namespace
   // Essentialy this means (1) forbid it from removing any package,
   // and (2) only install the default candidate version of a package
   // or the current version.
-  void setup_resolver_for_safe_upgrade()
+  void setup_resolver_for_safe_upgrade(bool no_new_installs)
   {
     if(!resman->resolver_exists())
       return;
@@ -65,7 +65,7 @@ namespace
 	    !v.end(); ++v)
 	  {
 	    if(v != p.CurrentVer() &&
-	       v != (*apt_cache_file)[p].CandidateVerIter(*apt_cache_file))
+	       (no_new_installs || v != (*apt_cache_file)[p].CandidateVerIter(*apt_cache_file)))
 	      {
 		aptitude_resolver_version
 		  p_v(p, v, *apt_cache_file);
@@ -79,12 +79,12 @@ namespace
 
   // Take the first solution we can compute, returning false if we
   // failed to find a solution.
-  bool safe_upgrade_resolve_deps(int verbose)
+  bool safe_upgrade_resolve_deps(int verbose, bool no_new_installs)
   {
     if(!resman->resolver_exists())
       return true;
 
-    setup_resolver_for_safe_upgrade();
+    setup_resolver_for_safe_upgrade(no_new_installs);
 
     try
       {
@@ -117,6 +117,7 @@ namespace
 
 int cmdline_upgrade(int argc, char *argv[],
 		    const char *status_fname, bool simulate,
+		    bool no_new_installs,
 		    bool assume_yes, bool download_only,
 		    bool showvers, bool showdeps, bool showsize,
 		    bool visual_preview,
@@ -173,7 +174,7 @@ int cmdline_upgrade(int argc, char *argv[],
   // if an upgrade is possible), cancel all changes and try apt's
   // resolver.
   (*apt_cache_file)->mark_all_upgradable(false, true, NULL);
-  if(!safe_upgrade_resolve_deps(verbose))
+  if(!safe_upgrade_resolve_deps(verbose, no_new_installs))
     {
       // Reset all the package states.
       for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin();
