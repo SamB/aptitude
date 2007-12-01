@@ -1827,16 +1827,16 @@ Need to get 3200kB of archives. After unpacking 8413kB will be used.</screen>
       <screen>The following packages are BROKEN:
   libsdl1.2debian
 The following packages will be REMOVED:
-  libsdl1.2debian-all
+  libsdl1.2debian-alsa
 .
 .
 .
 The following actions will resolve these dependencies:
 
 Install the following packages:
-libsdl1.2debian-oss [1.2.7+1.2.8cvs20041007-4.1 (unstable)]
+libsdl1.2debian-all [1.2.12-1 (unstable)]
 
-Score is 19
+Score is 41
 
 <prompt>Accept this solution? [Y/n/q/?]</prompt></screen>
 
@@ -1851,20 +1851,11 @@ Score is 19
 The following actions will resolve these dependencies:
 
 Install the following packages:
-libsdl1.2debian-alsa [1.2.7+1.2.8cvs20041007-4.1 (unstable,now)]
+libsdl1.2debian-esd [1.2.12-1 (unstable)]
 
 Score is 19
 
 <prompt>Accept this solution? [Y/n/q/?]</prompt></screen>
-
-      <para>
-	Typing <userinput>q</userinput> will <quote>give up</quote>
-	and quit the program immediately:
-      </para>
-
-      <screen><prompt>Accept this solution? [Y/n/q/?]</prompt> <userinput>q</userinput>
-Abandoning all efforts to resolve these dependencies.
-Abort.</screen>
 
       <para>
 	As with the main command-line prompt, you can perform a number
@@ -1872,6 +1863,34 @@ Abort.</screen>
 	of packages, from the dependency resolution prompt.  Type
 	<userinput>?</userinput> to see a complete list.
       </para>
+
+      <para>
+	Typing <userinput>q</userinput> will abort the automatic
+	resolver and allow you to resolve the dependencies manually:
+      </para>
+
+      <screen><prompt>Accept this solution? [Y/n/q/?]</prompt> <userinput>q</userinput>
+aptitude failed to find a solution to these dependencies.  You can solve them yourself by hand or type 'n' to quit.
+The following packages have unmet dependencies:
+  libsdl1.2debian: Depends: libsdl1.2debian-alsa (= 1.2.12-1) but it is not installable or
+                            libsdl1.2debian-all (= 1.2.12-1) but it is not installable or
+                            libsdl1.2debian-esd (= 1.2.12-1) but it is not installable or
+                            libsdl1.2debian-arts (= 1.2.12-1) but it is not installable or
+                            libsdl1.2debian-oss (= 1.2.12-1) but it is not installable or
+                            libsdl1.2debian-nas (= 1.2.12-1) but it is not installable or
+                            libsdl1.2debian-pulseaudio (= 1.2.12-1) but it is not installable
+Resolve these dependencies by hand? [N/+/-/_/:/?]</screen>
+
+      <para>
+	You can use any of the package manipulation commands to
+	resolve the broken dependencies (type <userinput>?</userinput>
+	for a full list of the available commands).  Type
+	<userinput>n</userinput> or press <keycap>enter</keycap> to
+	quit the program:
+      </para>
+
+<screen>Resolve these dependencies by hand? [N/+/-/_/:/?] n
+Abort.</screen>
 
       <para>
 	For complete documentation of the command-line features of
