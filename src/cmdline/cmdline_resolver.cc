@@ -87,6 +87,10 @@ static void setup_resolver(pkgset &to_install,
   if(!resman->resolver_exists())
     return;
 
+  // Make sure the resolver is in the initial state so we can twiddle
+  // it.
+  resman->reset_resolver();
+
   resman->set_debug(aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Debug", false));
 
   // For all packages that the user listed on the command-line (i.e.,
