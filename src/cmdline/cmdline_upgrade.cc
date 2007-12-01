@@ -60,12 +60,12 @@ namespace
 	  }
 
 	// Forbid all real versions that aren't the current version or
-	// the install version.
+	// the candidate version.
 	for(pkgCache::VerIterator v = p.VersionList();
 	    !v.end(); ++v)
 	  {
 	    if(v != p.CurrentVer() &&
-	       v != (*apt_cache_file)[p].InstVerIter(*apt_cache_file))
+	       v != (*apt_cache_file)[p].CandidateVerIter(*apt_cache_file))
 	      {
 		aptitude_resolver_version
 		  p_v(p, v, *apt_cache_file);
