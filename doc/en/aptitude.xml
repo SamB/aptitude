@@ -1625,7 +1625,7 @@ space.
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='safeUpgrade'>
 	  <term>
 	    <cmdsynopsis>
 	      <command>aptitude</command>
@@ -1636,21 +1636,20 @@ space.
 	  <listitem>
 	    <para>
 	      This command will upgrade as many packages as it can
-	      upgrade without removing existing packages or installing
-	      new ones.
+	      upgrade without removing existing packages.
 	    </para>
 
 	    <para>
-	      It is sometimes necessary to remove or install one
-	      package in order to upgrade another; this command is not
-	      able to upgrade packages in such situations.  Use the
-	      <literal>full-upgrade</literal> to upgrade those
-	      packages as well.
+	      It is sometimes necessary to remove one package in order
+	      to upgrade another; this command is not able to upgrade
+	      packages in such situations.  Use the <link
+	      linkend='fullUpgrade'><literal>full-upgrade</literal></link>
+	      command to upgrade those packages as well.
 	    </para>
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='fullUpgrade'>
 	  <term>
 	    <cmdsynopsis>
 	      <command>aptitude</command>
@@ -1660,13 +1659,14 @@ space.
 
 	  <listitem>
 	    <para>
-	      Like <literal>safe-upgrade</literal>, this command will
-	      attempt to upgrade packages, but it is more aggressive
-	      about solving dependency problems: it will install and
-	      remove packages until all dependencies are satisfied.
-	      Because of the nature of this command, it is possible
-	      that it will do undesirable things, and so you should be
-	      careful when using it.
+	      Like <link
+	      linkend='safeUpgrade'><literal>safe-upgrade</literal></link>,
+	      this command will attempt to upgrade packages, but it is
+	      more aggressive about solving dependency problems: it
+	      will install and remove packages until all dependencies
+	      are satisfied.  Because of the nature of this command,
+	      it is possible that it will do undesirable things, and
+	      so you should be careful when using it.
 	    </para>
 
 	    <note>
@@ -3342,10 +3342,11 @@ i A 0.5.25
 		    <footnote id='footAutoUpgrade'>
 		      <para>
 			That is, it will be unaffected by
-			&actions-upgrade; or the
-			<command>full-upgrade</command> or
-			<command>safe-upgrade</command> command-line
-			actions.
+			&actions-upgrade; or the <link
+			linkend='fullUpgrade'><literal>full-upgrade</literal></link>
+			or <link
+			linkend='safeUpgrade'><literal>safe-upgrade</literal></link>
+			command-line actions.
 		      </para>
 		    </footnote>
 		    until the hold is removed.  You may cancel a hold
@@ -8308,10 +8309,10 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg><literal>false</literal></seg>
 	      <seg>
 		In command-line mode, if this option is
-		<literal>true</literal>, the
-		<literal>safe-upgrade</literal> command will not
-		attempt to resolve dependencies by installing new
-		packages.  If upgrading package
+		<literal>true</literal>, the <link
+		linkend='safeUpgrade'><literal>safe-upgrade</literal></link>
+		command will not attempt to resolve dependencies by
+		installing new packages.  If upgrading package
 		<replaceable>A</replaceable> would require package
 		<replaceable>B</replaceable> to be newly installed,
 		package <replaceable>A</replaceable> will not be

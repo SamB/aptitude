@@ -323,13 +323,17 @@
 	    linkend='parOverrideSpecifiers'>overridden</link>.  The
 	    difference between <literal>hold</literal> and
 	    <literal>keep</literal> is that <literal>hold</literal>
-	    will cause a package to be ignored by future
-	    <literal>safe-upgrade</literal> or <literal>full-upgrade</literal> commands, while
-	    <literal>keep</literal> merely cancels any scheduled
-	    actions on the package.  <literal>unhold</literal> will
-	    allow a package to be upgraded by future
-	    <literal>safe-upgrade</literal> or <literal>full-upgrade</literal> commands, without otherwise
-	    altering its state.
+	    will cause a package to be ignored by future <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    or <link
+	    linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>
+	    commands, while <literal>keep</literal> merely cancels any
+	    scheduled actions on the package.
+	    <literal>unhold</literal> will allow a package to be
+	    upgraded by future <literal>safe-upgrade</literal> or
+	    <link
+	    linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>
+	    commands, without otherwise altering its state.
 	  </para>
 
 	  <para>
@@ -402,7 +406,7 @@
 	</listitem>
       </varlistentry>
 
-      <varlistentry>
+      <varlistentry id='manpageSafeUpgrade'>
 	<term><literal>safe-upgrade</literal></term>
 
 	<listitem>
@@ -435,11 +439,12 @@
 	  <para>
 	    Upgrades installed packages to their most recent version,
 	    removing or installing packages as necessary.  This
-	    command is less conservative than
-	    <literal>safe-upgrade</literal> and thus more likely to
-	    perform unwanted actions.  However, it is capable of
-	    upgrading packages that <literal>safe-upgrade</literal> cannot
-	    upgrade.
+	    command is less conservative than <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    and thus more likely to perform unwanted actions.
+	    However, it is capable of upgrading packages that <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    cannot upgrade.
 	  </para>
 
 	  <note>
@@ -796,7 +801,8 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	<listitem>
 	  <para>
 	    For commands that will install or remove packages
-	    (<literal>install</literal>, <literal>full-upgrade</literal>,
+	    (<literal>install</literal>, <link
+	    linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>,
 	    etc), show brief explanations of automatic installations
 	    and removals.
 	  </para>
@@ -881,9 +887,10 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
 	<listitem>
 	  <para>
-	    If present, causes <literal>safe-upgrade</literal> to not
-	    install any new packages.  This mimics the historical
-	    behavior of <command>apt-get upgrade</command>.
+	    If present, causes <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    to not install any new packages.  This mimics the
+	    historical behavior of <command>apt-get upgrade</command>.
 	  </para>
 
 	  <para>
