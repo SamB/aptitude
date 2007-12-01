@@ -8106,15 +8106,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <segtitle>Default</segtitle>
 	    <segtitle>Description</segtitle>
 
-	    <seglistitem id='configDir-Aptitude-State'>
-	      <seg><literal>Dir::Aptitude::state</literal></seg>
-	      <seg><filename>/var/lib/aptitude</filename></seg>
-	      <seg>
-		The directory in which &aptitude;'s persistent
-		state information is stored.
-	      </seg>
-	    </seglistitem>
-
 	    <seglistitem id='configAllow-Null-Upgrade'>
 	      <seg><literal>Aptitude::Allow-Null-Upgrade</literal></seg>
 	      <seg><literal>false</literal></seg>
@@ -8198,6 +8189,31 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configCmdLine-Download-Only'>
+	      <seg><literal>Aptitude::CmdLine::Download-Only</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		In command-line mode, if this option is
+		<literal>true</literal>, &aptitude; will
+		download package files but not install them.
+		This is equivalent to the <literal>-d</literal>
+		command-line option.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configCmdLine-Fix-Broken'>
+	      <seg><literal>Aptitude::CmdLine::Fix-Broken</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		In command-line mode, if this option is
+		<literal>true</literal>, &aptitude; will be more
+		aggressive when attempting to fix the
+		dependencies of broken packages.  This is
+		equivalent to the <literal>-f</literal>
+		command-line option.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configCmdLine-Ignore-Trust-Violations'>
 	      <seg><literal>Aptitude::CmdLine::Ignore-Trust-Violations</literal></seg>
 	      <seg><literal>false</literal></seg>
@@ -8206,6 +8222,44 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		installation of <link linkend='secTrust'>untrusted
 		packages</link>.  This is a synonym for
 		<literal>Apt::Get::AllowUnauthenticated</literal>.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configCmdLine-Package-Display-Format'>
+	      <seg><literal>Aptitude::CmdLine::Package-Display-Format</literal></seg>
+	      <seg><literal>%c%a%M %p# - %d#</literal></seg>
+
+	      <seg>
+		This is a format string, as described in <xref
+		linkend='secDisplayFormat'/>, which is used to
+		display the results of a command-line search.
+		This is equivalent to the <literal>-F</literal>
+		command-line option.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configCmdLine-Package-Display-Width'>
+	      <seg><literal>Aptitude::CmdLine::Package-Display-Width</literal></seg>
+	      <seg></seg>
+	      <seg>
+		This option gives the width in characters for
+		which command-line search results should be
+		formatted.  If it is empty (the default; ie,
+		<literal>""</literal>), search results will be
+		formatted for the current terminal size, or for
+		an 80-column display if the terminal size cannot
+		be determined.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configCmdLine-Request-Strictness'>
+	      <seg><literal>Aptitude::CmdLine::Request-Strictness</literal></seg>
+	      <seg><literal>10000</literal></seg>
+	      <seg>
+		When run in command-line mode, if dependency problems
+		are encountered, &aptitude; will add this value to the
+		problem resolver score of each action that you
+		explicitly request.
 	      </seg>
 	    </seglistitem>
 
@@ -8249,69 +8303,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configCmdLine-Request-Strictness'>
-	      <seg><literal>Aptitude::CmdLine::Request-Strictness</literal></seg>
-	      <seg><literal>10000</literal></seg>
-	      <seg>
-		When run in command-line mode, if dependency problems
-		are encountered, &aptitude; will add this value to the
-		problem resolver score of each action that you
-		explicitly request.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configCmdLine-Download-Only'>
-	      <seg><literal>Aptitude::CmdLine::Download-Only</literal></seg>
-	      <seg><literal>false</literal></seg>
-	      <seg>
-		In command-line mode, if this option is
-		<literal>true</literal>, &aptitude; will
-		download package files but not install them.
-		This is equivalent to the <literal>-d</literal>
-		command-line option.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configCmdLine-Fix-Broken'>
-	      <seg><literal>Aptitude::CmdLine::Fix-Broken</literal></seg>
-	      <seg><literal>false</literal></seg>
-	      <seg>
-		In command-line mode, if this option is
-		<literal>true</literal>, &aptitude; will be more
-		aggressive when attempting to fix the
-		dependencies of broken packages.  This is
-		equivalent to the <literal>-f</literal>
-		command-line option.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configCmdLine-Package-Display-Format'>
-	      <seg><literal>Aptitude::CmdLine::Package-Display-Format</literal></seg>
-	      <seg><literal>%c%a%M %p# - %d#</literal></seg>
-
-	      <seg>
-		This is a format string, as described in <xref
-		linkend='secDisplayFormat'/>, which is used to
-		display the results of a command-line search.
-		This is equivalent to the <literal>-F</literal>
-		command-line option.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configCmdLine-Package-Display-Width'>
-	      <seg><literal>Aptitude::CmdLine::Package-Display-Width</literal></seg>
-	      <seg></seg>
-	      <seg>
-		This option gives the width in characters for
-		which command-line search results should be
-		formatted.  If it is empty (the default; ie,
-		<literal>""</literal>), search results will be
-		formatted for the current terminal size, or for
-		an 80-column display if the terminal size cannot
-		be determined.
-	      </seg>
-	    </seglistitem>
-
 	    <seglistitem id='configCmdLine-Show-Deps'>
 	      <seg><literal>Aptitude::CmdLine::Show-Deps</literal></seg>
 	      <seg><literal>false</literal></seg>
@@ -8325,18 +8316,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configCmdLine-Show-Versions'>
-	      <seg><literal>Aptitude::CmdLine::Show-Versions</literal></seg>
-	      <seg><literal>false</literal></seg>
-	      <seg>
-		In command-line mode, if this option is
-		<literal>true</literal>, &aptitude; will display
-		the version of a package that is being installed
-		or removed.  This is equivalent to the
-		<literal>-V</literal> command-line option.
-	      </seg>
-	    </seglistitem>
-
 	    <seglistitem id='configCmdLine-Show-Size-Changes'>
 	      <seg><literal>Aptitude::CmdLine::Show-Size-Changes</literal></seg>
 	      <seg><literal>false</literal></seg>
@@ -8346,6 +8325,18 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		the expected change in the amount of space used
 		by each package.  This is equivalent to the
 		<literal>-Z</literal> command-line option.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configCmdLine-Show-Versions'>
+	      <seg><literal>Aptitude::CmdLine::Show-Versions</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		In command-line mode, if this option is
+		<literal>true</literal>, &aptitude; will display
+		the version of a package that is being installed
+		or removed.  This is equivalent to the
+		<literal>-V</literal> command-line option.
 	      </seg>
 	    </seglistitem>
 
@@ -8366,6 +8357,17 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configCmdLine-Verbose'>
+	      <seg><literal>Aptitude::CmdLine::Verbose</literal></seg>
+	      <seg><literal>0</literal></seg>
+	      <seg>
+		This controls how verbose the command-line mode
+		of &aptitude; is.  Every occurrence of the
+		<literal>-v</literal> command-line option adds 1
+		to this value.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configCmdLine-Visual-Preview'>
 	      <seg><literal>Aptitude::CmdLine::Visual-Preview</literal></seg>
 
@@ -8376,17 +8378,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		&aptitude; will enter its visual mode to display
 		the preview of an installation run and to
 		download packages.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configCmdLine-Verbose'>
-	      <seg><literal>Aptitude::CmdLine::Verbose</literal></seg>
-	      <seg><literal>0</literal></seg>
-	      <seg>
-		This controls how verbose the command-line mode
-		of &aptitude; is.  Every occurrence of the
-		<literal>-v</literal> command-line option adds 1
-		to this value.
 	      </seg>
 	    </seglistitem>
 
@@ -8428,6 +8419,20 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configForget-New-On-Install'>
+	      <seg><literal>Aptitude::Forget-New-On-Install</literal></seg>
+
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		If this option is <literal>true</literal>,
+		&aptitude; will clear the list of new packages
+		whenever you install, upgrade, or remove
+		packages, as if you had issued the command
+		&actions-forget;.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configForget-New-On-Update'>
 	      <seg><literal>Aptitude::Forget-New-On-Update</literal></seg>
 
@@ -8441,17 +8446,31 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configForget-New-On-Install'>
-	      <seg><literal>Aptitude::Forget-New-On-Install</literal></seg>
+	    <seglistitem id='configGet-Root-Command'>
+	      <seg><literal>Aptitude::Get-Root-Command</literal></seg>
 
-	      <seg><literal>false</literal></seg>
+	      <seg><literal>su:/usr/bin/su</literal></seg>
 
 	      <seg>
-		If this option is <literal>true</literal>,
-		&aptitude; will clear the list of new packages
-		whenever you install, upgrade, or remove
-		packages, as if you had issued the command
-		&actions-forget;.
+		This option sets the external command that &aptitude;
+		will use to switch to the &root; user (see <xref
+		linkend='secBecomingRoot'/>).  It has the form
+		<literal><replaceable>protocol</replaceable>:<replaceable>command</replaceable></literal>.
+		<replaceable>protocol</replaceable> must be either
+		<literal>su</literal> or <literal>sudo</literal>; it
+		determines how aptitude invokes the program when it
+		wants to gain root privileges.  If
+		<replaceable>protocol</replaceable> is
+		<literal>su</literal>, then
+		<literal><replaceable>command</replaceable> -c
+		<replaceable>arguments</replaceable></literal> is used
+		to become root; otherwise, aptitude uses
+		<literal><replaceable>command</replaceable>
+		<replaceable>arguments</replaceable></literal>.  The
+		first word in <replaceable>command</replaceable> is
+		the name of the program that should be invoked;
+		remaining words are treated as arguments to that
+		program.
 	      </seg>
 	    </seglistitem>
 
@@ -8586,26 +8605,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		The default filter applied to the package list;
 		see <xref linkend='secSearchPatterns'/> for
 		details about its format.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configRecommends-Important'>
-	      <seg><literal>Aptitude::Recommends-Important</literal></seg>
-
-	      <seg><literal>true</literal></seg>
-
-	      <seg>
-		If this option is <literal>true</literal> and
-		<literal>Aptitude::Auto-Install</literal> is
-		<literal>true</literal>, then whenever you mark a
-		package for installation, &aptitude; will also mark
-		the packages it recommends for installation.
-		Furthermore, if this option is
-		<literal>true</literal>, &aptitude; will not consider
-		packages to be unused (and thus will not automatically
-		remove them) as long as any installed package
-		reommends them.  For more information, see <xref
-		linkend='secAutoInstall'/>.
 	      </seg>
 	    </seglistitem>
 
@@ -8761,17 +8760,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configProblemResolver-ResolutionScore'>
-	      <seg><literal>Aptitude::ProblemResolver::ResolutionScore</literal></seg>
-	      <seg><literal>50</literal></seg>
-
-	      <seg>
-		In addition to all other scoring factors, proposed
-		solutions that actually resolve all unsatisfied
-		dependencies are awarded this many extra points.
-	      </seg>
-	    </seglistitem>
-
 	    <seglistitem id='configProblemResolver-RemoveScore'>
 	      <seg><literal>Aptitude::ProblemResolver::RemoveScore</literal></seg>
 	      <seg><literal>-300</literal></seg>
@@ -8790,6 +8778,17 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		Any version of a package whose Priority is
 		<quote>required</quote> will have this many points
 		added to its score.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configProblemResolver-ResolutionScore'>
+	      <seg><literal>Aptitude::ProblemResolver::ResolutionScore</literal></seg>
+	      <seg><literal>50</literal></seg>
+
+	      <seg>
+		In addition to all other scoring factors, proposed
+		solutions that actually resolve all unsatisfied
+		dependencies are awarded this many extra points.
 	      </seg>
 	    </seglistitem>
 
@@ -8898,6 +8897,26 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configRecommends-Important'>
+	      <seg><literal>Aptitude::Recommends-Important</literal></seg>
+
+	      <seg><literal>true</literal></seg>
+
+	      <seg>
+		If this option is <literal>true</literal> and
+		<literal>Aptitude::Auto-Install</literal> is
+		<literal>true</literal>, then whenever you mark a
+		package for installation, &aptitude; will also mark
+		the packages it recommends for installation.
+		Furthermore, if this option is
+		<literal>true</literal>, &aptitude; will not consider
+		packages to be unused (and thus will not automatically
+		remove them) as long as any installed package
+		reommends them.  For more information, see <xref
+		linkend='secAutoInstall'/>.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configSimulate'>
 	      <seg><literal>Aptitude::Simulate</literal></seg>
 	      <seg><literal>false</literal></seg>
@@ -8909,6 +8928,18 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		mode regardless of whether you are &root; or not.
 		This is equivalent to the <literal>-s</literal>
 		command-line option.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configSpin-Interval'>
+	      <seg><literal>Aptitude::Spin-Interval</literal></seg>
+
+	      <seg><literal>500</literal></seg>
+
+	      <seg>
+		The number of milliseconds to delay in between
+		updating the <quote>spinner</quote> that appears while
+		the problem resolver is running.
 	      </seg>
 	    </seglistitem>
 
@@ -8928,6 +8959,19 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='suppressReadOnlyWarning'>
+	      <seg><literal>Aptitude::Suppress-Read-Only-Warning</literal></seg>
+
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		If this option is <literal>false</literal>, &aptitude;
+		will display a warning the first time that you attempt
+		to modify package states while the program is in
+		read-only mode.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configTheme'>
 	      <seg><literal>Aptitude::Theme</literal></seg>
 
@@ -8936,18 +8980,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg>
 		The theme that &aptitude; should use; see <xref
 		linkend='secThemes'/> for more information.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configSpin-Interval'>
-	      <seg><literal>Aptitude::Spin-Interval</literal></seg>
-
-	      <seg><literal>500</literal></seg>
-
-	      <seg>
-		The number of milliseconds to delay in between
-		updating the <quote>spinner</quote> that appears while
-		the problem resolver is running.
 	      </seg>
 	    </seglistitem>
 
@@ -9011,6 +9043,19 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configDefault-Package-View'>
+	      <seg><literal>Aptitude::UI::Default-Package-View</literal></seg>
+
+	      <seg></seg>
+
+	      <seg>
+		This option is a group whose members define the
+		default layout of &aptitude;'s display.  See
+		<xref linkend='secDisplayLayout'/> for more
+		information.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configDefault-Preview-Grouping'>
 	      <seg><literal>Aptitude::UI::Default-Preview-Grouping</literal></seg>
 
@@ -9047,19 +9092,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		visible if this option is
 		<literal>true</literal> and hidden if it is
 		<literal>false</literal>.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configDefault-Package-View'>
-	      <seg><literal>Aptitude::UI::Default-Package-View</literal></seg>
-
-	      <seg></seg>
-
-	      <seg>
-		This option is a group whose members define the
-		default layout of &aptitude;'s display.  See
-		<xref linkend='secDisplayLayout'/> for more
-		information.
 	      </seg>
 	    </seglistitem>
 
@@ -9101,34 +9133,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		If this option is <literal>true</literal>,
 		&aptitude; will format descriptions so that each
 		line is exactly the width of the screen.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configGet-Root-Command'>
-	      <seg><literal>Aptitude::Get-Root-Command</literal></seg>
-
-	      <seg><literal>su:/usr/bin/su</literal></seg>
-
-	      <seg>
-		This option sets the external command that &aptitude;
-		will use to switch to the &root; user (see <xref
-		linkend='secBecomingRoot'/>).  It has the form
-		<literal><replaceable>protocol</replaceable>:<replaceable>command</replaceable></literal>.
-		<replaceable>protocol</replaceable> must be either
-		<literal>su</literal> or <literal>sudo</literal>; it
-		determines how aptitude invokes the program when it
-		wants to gain root privileges.  If
-		<replaceable>protocol</replaceable> is
-		<literal>su</literal>, then
-		<literal><replaceable>command</replaceable> -c
-		<replaceable>arguments</replaceable></literal> is used
-		to become root; otherwise, aptitude uses
-		<literal><replaceable>command</replaceable>
-		<replaceable>arguments</replaceable></literal>.  The
-		first word in <replaceable>command</replaceable> is
-		the name of the program that should be invoked;
-		remaining words are treated as arguments to that
-		program.
 	      </seg>
 	    </seglistitem>
 
@@ -9335,19 +9339,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='suppressReadOnlyWarning'>
-	      <seg><literal>Aptitude::Suppress-Read-Only-Warning</literal></seg>
-
-	      <seg><literal>false</literal></seg>
-
-	      <seg>
-		If this option is <literal>false</literal>, &aptitude;
-		will display a warning the first time that you attempt
-		to modify package states while the program is in
-		read-only mode.
-	      </seg>
-	    </seglistitem>
-
 	    <seglistitem id='configWarn-Not-Root'>
 	      <seg><literal>Aptitude::Warn-Not-Root</literal></seg>
 
@@ -9371,6 +9362,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		The location of the <literal>debtags</literal>
 		vocabulary file; used to load in the package tag
 		metadata.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configDir-Aptitude-State'>
+	      <seg><literal>Dir::Aptitude::state</literal></seg>
+	      <seg><filename>/var/lib/aptitude</filename></seg>
+	      <seg>
+		The directory in which &aptitude;'s persistent
+		state information is stored.
 	      </seg>
 	    </seglistitem>
 
