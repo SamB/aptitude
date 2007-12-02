@@ -177,10 +177,14 @@ int cmdline_upgrade(int argc, char *argv[],
 
   if(!safe_upgrade_resolve_deps(verbose, no_new_installs))
     {
-      // Reset all the package states.
-      for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin();
-	  !i.end(); ++i)
-	(*apt_cache_file)->mark_keep(i, false, false, NULL);
+      {
+	aptitudeDepCache::action_group action_group(*apt_cache_file);
+
+	// Reset all the package states.
+	for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin();
+	    !i.end(); ++i)
+	  (*apt_cache_file)->mark_keep(i, false, false, NULL);
+      }
 
       // Use the apt 'upgrade' algorithm as a fallback against, e.g.,
       // bugs in the aptitude resolver.
