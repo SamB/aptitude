@@ -303,7 +303,8 @@ download_manager::result cmdline_do_download(download_manager *m,
       // This does exactly what we want: nothing if the cache is
       // already loaded, and loads the cache with a minimum of frills
       // otherwise.
-      apt_load_cache(&progress, false, NULL);
+      OpProgress tmpProgress;
+      apt_load_cache(&tmpProgress, false, NULL);
       initial_stats = compute_apt_stats();
     }
 
@@ -324,7 +325,8 @@ download_manager::result cmdline_do_download(download_manager *m,
   stats final_stats(0, 0, 0);
   if(aptcfg->FindI("Quiet", 0) == 0)
     {
-      apt_load_cache(&progress, false, NULL);
+      OpProgress tmpProgress;
+      apt_load_cache(&tmpProgress, false, NULL);
       final_stats = compute_apt_stats();
       show_stats_change(initial_stats, final_stats,
 			verbose >= 1, verbose >= 2);
