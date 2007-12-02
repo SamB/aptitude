@@ -1,6 +1,6 @@
 // cmdline_resolver.h                              -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -21,6 +21,42 @@
 #define CMDLINE_RESOLVER_H
 
 #include "cmdline_common.h"
+
+// We need these two to declare get_current_solution().
+//#include <generic/apt/aptitude_resolver_universe.h>
+#include <generic/problemresolver/solution.h>
+class aptitude_universe;
+
+/** \brief Compute the current solution with a command-line-appropriate
+ *  UI.
+ *
+ * \return the resolver manager's current solution; if it needs to be
+ *          calculated first, run the calculation in the background
+ *          and display a spinner in the foreground.
+ *
+ *  \return the current solution.
+ *
+ *  \note The exceptions are the same as the exceptions of the
+ *  resolver manager's get_solution.
+ *
+ *  \throw NoMoreSolutions if the list of solutions is exhausted
+ *  \throw NoMoreTime if time is exhausted while searching for
+ *                    the solution (time here is counted separately
+ *                    at each step).
+ *  \throw ResolverManagerThreadClashException if a new solution
+ *         would be generated and a background thread exists.
+ *  \throw Exception if the background thread aborted with an exception.
+ */
+
+generic_solution<aptitude_universe> calculate_current_solution();
+
+/** \brief Write the resolver state to a file as appropriate.
+ *
+ *  If the configuration option Aptitude::CMdLine::Resolver-Dump is
+ *  set, its value is taken to be the name of a file to which the
+ *  resolver state should be written.
+ */
+void cmdline_dump_resolver();
 
 /** Run the resolver once, possibly prompting the user in the process.
  *

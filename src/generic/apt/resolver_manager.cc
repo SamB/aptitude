@@ -74,6 +74,12 @@ resolver_manager::~resolver_manager()
   delete undos;
 }
 
+void resolver_manager::reset_resolver()
+{
+  discard_resolver();
+  maybe_create_resolver();
+}
+
 resolver_manager::background_continuation::~background_continuation()
 {
 }

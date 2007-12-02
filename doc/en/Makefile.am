@@ -19,7 +19,7 @@ clean-local:
 	-rm -f doc-stamp doc-css-stamp doc-html-stamp doc-txt-stamp doc-man-stamp
 	-rm -fr aptitude.8 $(README)
 
-man_MANS=aptitude.8
+man_MANS=aptitude.8 aptitude-create-state-bundle.1 aptitude-run-state-bundle.1
 
 install-data-hook:
 	$(mkinstalldirs) $(DESTDIR)$(docdir)/html/en/images
@@ -28,15 +28,16 @@ install-data-hook:
 
 	$(INSTALL_DATA) README.en $(DESTDIR)$(pkgdatadir)/README
 
-doc-stamp: doc-html-stamp doc-css-stamp $(README) aptitude.8
+doc-stamp: doc-html-stamp doc-css-stamp $(README) man-stamp
 	touch doc-stamp
 
 db2latex: doc-db2latex-stamp
 
-aptitude.8: aptitude.xml manpage.xml $(srcdir)/../aptitude-man.xsl
+man-stamp: aptitude.xml manpage.xml $(srcdir)/../aptitude-man.xsl
 	-rm -fr output-man
-	xsltproc -o output-man/aptitude.8 $(srcdir)/../aptitude-man.xsl $(srcdir)/aptitude.xml
-	mv output-man/aptitude.8 .
+	xsltproc -o output-man/ $(srcdir)/../aptitude-man.xsl $(srcdir)/aptitude.xml
+	for x in $(man_MANS); do mv output-man/$$x .; done
+	touch man-stamp
 
 $(README): aptitude.xml manpage.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
 	-rm -fr output-txt/

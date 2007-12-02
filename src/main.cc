@@ -177,6 +177,7 @@ enum {
   OPTION_QUEUE_ONLY,
   OPTION_PURGE_UNUSED,
   OPTION_ALLOW_UNTRUSTED,
+  OPTION_NO_NEW_INSTALLS
 };
 int getopt_result;
 
@@ -198,6 +199,7 @@ option opts[]={
   {"prompt", 0, NULL, 'P'},
   {"sort", 1, NULL, 'O'},
   {"target-release", 1, NULL, 't'},
+  {"no-new-installs", 0, &getopt_result, OPTION_NO_NEW_INSTALLS},
   {"visual-preview", 0, &getopt_result, OPTION_VISUAL_PREVIEW},
   {"schedule-only", 0, &getopt_result, OPTION_QUEUE_ONLY},
   {"purge-unused", 0, &getopt_result, OPTION_PURGE_UNUSED},
@@ -233,6 +235,7 @@ int main(int argc, char *argv[])
   bool update_only=false, install_only=false, queue_only=false;
   bool assume_yes=aptcfg->FindB(PACKAGE "::CmdLine::Assume-Yes", false);
   bool fix_broken=aptcfg->FindB(PACKAGE "::CmdLine::Fix-Broken", false);
+  bool no_new_installs = aptcfg->FindB(PACKAGE "::CmdLine::Safe-Upgrade::No-New-Installs", false);
   bool showvers=aptcfg->FindB(PACKAGE "::CmdLine::Show-Versions", false);
   bool showdeps=aptcfg->FindB(PACKAGE "::CmdLine::Show-Deps", false);
   bool showsize=aptcfg->FindB(PACKAGE "::CmdLine::Show-Size-Changes", false);
@@ -378,6 +381,9 @@ int main(int argc, char *argv[])
 	    case OPTION_ALLOW_UNTRUSTED:
 	      aptcfg->Set(PACKAGE "::CmdLine::Ignore-Trust-Violations", true);
 	      break;
+	    case OPTION_NO_NEW_INSTALLS:
+	      no_new_installs = true;
+	      break;
 	    case OPTION_VISUAL_PREVIEW:
 	      visual_preview=true;	      
 	      break;
@@ -491,8 +497,9 @@ int main(int argc, char *argv[])
 	  else if(!strcasecmp(argv[optind], "safe-upgrade") ||
 		  !strcasecmp(argv[optind], "upgrade"))
 	    return cmdline_upgrade(argc-optind, argv+optind,
-				   status_fname,
-				   simulate, assume_yes, download_only,
+				   status_fname, simulate,
+				   no_new_installs,
+				   assume_yes, download_only,
 				   showvers, showdeps, showsize,
 				   visual_preview, always_prompt,
 				   queue_only, verbose);

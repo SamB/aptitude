@@ -22,6 +22,10 @@
 
     <legalnotice>
       <para>
+	Copyright 2004-2007 Daniel Burrows.
+      </para>
+
+      <para>
 	This manual page is free software; you can redistribute it
 	and/or modify it under the terms of the GNU General Public
 	License as published by the Free Software Foundation;
@@ -323,13 +327,17 @@
 	    linkend='parOverrideSpecifiers'>overridden</link>.  The
 	    difference between <literal>hold</literal> and
 	    <literal>keep</literal> is that <literal>hold</literal>
-	    will cause a package to be ignored by future
-	    <literal>safe-upgrade</literal> or <literal>full-upgrade</literal> commands, while
-	    <literal>keep</literal> merely cancels any scheduled
-	    actions on the package.  <literal>unhold</literal> will
-	    allow a package to be upgraded by future
-	    <literal>safe-upgrade</literal> or <literal>full-upgrade</literal> commands, without otherwise
-	    altering its state.
+	    will cause a package to be ignored by future <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    or <link
+	    linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>
+	    commands, while <literal>keep</literal> merely cancels any
+	    scheduled actions on the package.
+	    <literal>unhold</literal> will allow a package to be
+	    upgraded by future <literal>safe-upgrade</literal> or
+	    <link
+	    linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>
+	    commands, without otherwise altering its state.
 	  </para>
 
 	  <para>
@@ -402,25 +410,26 @@
 	</listitem>
       </varlistentry>
 
-      <varlistentry>
+      <varlistentry id='manpageSafeUpgrade'>
 	<term><literal>safe-upgrade</literal></term>
 
 	<listitem>
 	  <para>
-	    Upgrades installed packages to their most recent
-	    version.  Installed packages will not be removed
-	    unless they are unused (see the section <quote><link
-	    linkend='secAutoInstall'>Managing Automatically
-	    Installed Packages</link></quote> in the &aptitude;
-	    reference manual); packages which are not currently
-	    installed will not be installed.
+	    Upgrades installed packages to their most recent version.
+	    Installed packages will not be removed unless they are
+	    unused (see the section <quote><link
+	    linkend='secAutoInstall'>Managing Automatically Installed
+	    Packages</link></quote> in the &aptitude; reference
+	    manual).  Packages which are not currently installed may
+	    be installed to resolve dependencies unless the <link
+	    linkend='cmdlineOptionSafeUpgradeNoNewInstalls'><literal>--no-new-installs</literal></link>
+	    command-line option is supplied.
 	  </para>
 
 	  <para>
-	      It is sometimes necessary to remove or install one
-	      package in order to upgrade another; this command is not
-	      able to upgrade packages in such situations.  Use the
-	      <link
+	      It is sometimes necessary to remove one package in order
+	      to upgrade another; this command is not able to upgrade
+	      packages in such situations.  Use the <link
 	      linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>
 	      command to upgrade as many packages as possible.
 	  </para>
@@ -434,11 +443,12 @@
 	  <para>
 	    Upgrades installed packages to their most recent version,
 	    removing or installing packages as necessary.  This
-	    command is less conservative than
-	    <literal>safe-upgrade</literal> and thus more likely to
-	    perform unwanted actions.  However, it is capable of
-	    upgrading packages that <literal>safe-upgrade</literal> cannot
-	    upgrade.
+	    command is less conservative than <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    and thus more likely to perform unwanted actions.
+	    However, it is capable of upgrading packages that <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    cannot upgrade.
 	  </para>
 
 	  <note>
@@ -795,7 +805,8 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	<listitem>
 	  <para>
 	    For commands that will install or remove packages
-	    (<literal>install</literal>, <literal>full-upgrade</literal>,
+	    (<literal>install</literal>, <link
+	    linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>,
 	    etc), show brief explanations of automatic installations
 	    and removals.
 	  </para>
@@ -869,6 +880,27 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	<listitem>
 	  <para>
 	    Display a brief help message.  Identical to the <literal>help</literal> action.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry id='cmdlineOptionSafeUpgradeNoNewInstalls'>
+	<term>
+	  <literal>--no-new-installs</literal>
+	</term>
+
+	<listitem>
+	  <para>
+	    If present, causes <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    to not install any new packages.  This mimics the
+	    historical behavior of <command>apt-get upgrade</command>.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option
+	    <literal><link
+	    linkend='configCmdLine-Safe-Upgrade-No-New-Installs'>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</link></literal>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1264,6 +1296,418 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
     <para>
       <citerefentry><refentrytitle>apt-get</refentrytitle><manvolnum>8</manvolnum></citerefentry>, <citerefentry><refentrytitle>apt</refentrytitle><manvolnum>8</manvolnum></citerefentry>, <filename>/usr/share/doc/aptitude/html/<replaceable>lang</replaceable>/index.html</filename> from the package aptitude-doc-<replaceable>lang</replaceable>
+    </para>
+  </refsect1>
+</refentry>
+
+<refentry>
+  <refentryinfo>
+    <!--
+	The <author> element isn't needed here, because docbook-xsl
+	automatically generates author information from the main
+	document's author element.  Languages that provide only a
+	manpage should include this information, though.
+
+    <author>
+      <personname>
+	<firstname>Daniel</firstname>
+	<surname>Burrows</surname>
+      </personname>
+      <email>dburrows@debian.org</email>
+    </author>
+    -->
+
+    <title>aptitude-create-state-bundle</title>
+
+     <!-- NWalsh's docbook scripts use this to generate the footer: -->
+    <productname><command>aptitude-create-state-bundle</command></productname>
+    <productnumber>&VERSION;</productnumber>
+
+    <legalnotice>
+      <para>
+	Copyright 2007 Daniel Burrows.
+      </para>
+
+      <para>
+	This manual page is free software; you can redistribute it
+	and/or modify it under the terms of the GNU General Public
+	License as published by the Free Software Foundation;
+	either version 2 of the License, or (at your option) any
+	later version.
+      </para>
+
+      <para>
+	This manual page is distributed in the hope that it will
+	be useful, but WITHOUT ANY WARRANTY; without even the
+	implied warranty of MERCHANTABILITY or FITNESS FOR A
+	PARTICULAR PURPOSE.  See the GNU General Public License
+	for more details.
+      </para>
+
+      <para>
+	You should have received a copy of the GNU General Public
+	License along with this program; if not, write to the Free
+	Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+	Boston, MA 02110-1301 USA.
+      </para>
+    </legalnotice>
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle><command>aptitude-create-state-bundle</command></refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>aptitude-create-state-bundle</refname>
+    <refpurpose>bundle the current aptitude state</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>aptitude-create-state-bundle</command>
+
+      <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
+
+      <arg choice='plain'><replaceable>output-file</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1>
+    <title>Description</title>
+
+    <para>
+      <command>aptitude-create-state-bundle</command> produces a
+      compressed archive storing the files that are required to
+      replicate the current package archive state.  The following
+      files and directories are included in the bundle:
+    </para>
+
+    <itemizedlist>
+      <listitem>
+	<para><filename><envar>$HOME</envar>/.aptitude</filename></para>
+      </listitem>
+
+      <listitem>
+	<para><filename>/var/lib/aptitude</filename></para>
+      </listitem>
+
+      <listitem>
+	<para><filename>/var/lib/apt</filename></para>
+      </listitem>
+
+      <listitem>
+	<para><filename>/var/cache/apt/*.bin</filename></para>
+      </listitem>
+
+      <listitem>
+	<para><filename>/etc/apt</filename></para>
+      </listitem>
+
+      <listitem>
+	<para><filename>/var/lib/dpkg/status</filename></para>
+      </listitem>
+    </itemizedlist>
+
+    <para>
+      The output of this program can be used as an argument to <link
+      linkend='aptitudeRunStateBundle'><citerefentry><refentrytitle>aptitude-run-state-bundle</refentrytitle><manvolnum>1</manvolnum></citerefentry></link>.
+    </para>
+  </refsect1>
+
+  <refsect1>
+    <title>Options</title>
+
+    <variablelist>
+      <varlistentry>
+	<term><literal>--force-bzip2</literal></term>
+
+	<listitem>
+	  <para>
+	    Override the autodetection of which compression algorithm
+	    to use.  By default,
+	    <command>aptitude-create-state-bundle</command> uses
+	    <citerefentry><refentrytitle>bzip2</refentrytitle><manvolnum>1</manvolnum></citerefentry>
+	    if it is available, and
+	    <citerefentry><refentrytitle>gzip</refentrytitle><manvolnum>1</manvolnum></citerefentry>
+	    otherwise.  Passing this option forces the use of
+	    <command>bzip2</command> even if it doesn't appear to be
+	    available.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--force-gzip</literal></term>
+
+	<listitem>
+	  <para>
+	    Override the autodetection of which compression algorithm
+	    to use.  By default,
+	    <command>aptitude-create-state-bundle</command> uses
+	    <citerefentry><refentrytitle>bzip2</refentrytitle><manvolnum>1</manvolnum></citerefentry>
+	    if it is available, and
+	    <citerefentry><refentrytitle>gzip</refentrytitle><manvolnum>1</manvolnum></citerefentry>
+	    otherwise.  Passing this option forces the use of
+	    <command>gzip</command> even if <command>bzip2</command>
+	    is available.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--help</literal></term>
+
+	<listitem>
+	  <para>
+	    Print a brief usage message, then exit.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--print-inputs</literal></term>
+
+	<listitem>
+	  <para>
+	    Display a list of the files and directories that will be
+	    included in the bundle.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+
+  <refsect1>
+    <title>File Format</title>
+
+    <para>
+      The bundle file is simply a
+      <citerefentry><refentrytitle>tar</refentrytitle><manvolnum>1</manvolnum></citerefentry>
+      file compressed with
+      <citerefentry><refentrytitle>bzip2</refentrytitle><manvolnum>1</manvolnum></citerefentry>
+      or
+      <citerefentry><refentrytitle>gzip</refentrytitle><manvolnum>1</manvolnum></citerefentry>,
+      with each of the input directory trees rooted at
+      <quote><filename>.</filename></quote>.
+    </para>
+  </refsect1>
+
+  <refsect1>
+    <title>See Also</title>
+
+    <para>
+      <citerefentry><refentrytitle>aptitude-run-state-bundle</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>aptitude</refentrytitle><manvolnum>8</manvolnum></citerefentry>, <citerefentry><refentrytitle>apt</refentrytitle><manvolnum>8</manvolnum></citerefentry>
+    </para>
+  </refsect1>
+</refentry>
+
+<refentry>
+  <refentryinfo>
+    <!--
+	The <author> element isn't needed here, because docbook-xsl
+	automatically generates author information from the main
+	document's author element.  Languages that provide only a
+	manpage should include this information, though.
+
+    <author>
+      <personname>
+	<firstname>Daniel</firstname>
+	<surname>Burrows</surname>
+      </personname>
+      <email>dburrows@debian.org</email>
+    </author>
+    -->
+
+    <title>aptitude-run-state-bundle</title>
+
+     <!-- NWalsh's docbook scripts use this to generate the footer: -->
+    <productname><command>aptitude-run-state-bundle</command></productname>
+    <productnumber>&VERSION;</productnumber>
+
+    <legalnotice>
+      <para>
+	Copyright 2007 Daniel Burrows.
+      </para>
+
+      <para>
+	This manual page is free software; you can redistribute it
+	and/or modify it under the terms of the GNU General Public
+	License as published by the Free Software Foundation;
+	either version 2 of the License, or (at your option) any
+	later version.
+      </para>
+
+      <para>
+	This manual page is distributed in the hope that it will
+	be useful, but WITHOUT ANY WARRANTY; without even the
+	implied warranty of MERCHANTABILITY or FITNESS FOR A
+	PARTICULAR PURPOSE.  See the GNU General Public License
+	for more details.
+      </para>
+
+      <para>
+	You should have received a copy of the GNU General Public
+	License along with this program; if not, write to the Free
+	Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+	Boston, MA 02110-1301 USA.
+      </para>
+    </legalnotice>
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle><command>aptitude-run-state-bundle</command></refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>aptitude-run-state-bundle</refname>
+    <refpurpose>unpack an aptitude state bundle and invoke aptitude on it</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>aptitude-run-state-bundle</command>
+
+      <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
+
+      <arg choice='plain'><replaceable>input-file</replaceable></arg>
+
+      <arg choice='opt' rep='repeat'><replaceable>program-arguments</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1>
+    <title>Description</title>
+
+    <para>
+      <command>aptitude-run-state-bundle</command> unpacks the given
+      aptitude state bundle created by
+      <citerefentry><refentrytitle>aptitude-create-state-bundle</refentrytitle><manvolnum>1</manvolnum></citerefentry>
+      to a temporary directory, invokes
+      <replaceable>program</replaceable> on it with the supplied
+      arguments, and removes the temporary directory afterwards.  If
+      <replaceable>program</replaceable> is not supplied, it defaults
+      to
+      <citerefentry><refentrytitle>aptitude</refentrytitle><manvolnum>8</manvolnum></citerefentry>.
+    </para>
+  </refsect1>
+
+  <refsect1>
+    <title>Options</title>
+
+    <para>
+      The following options may occur on the command-line before the
+      input file.  Options following the input file are presumed to be
+      arguments to aptitude.
+    </para>
+
+    <variablelist>
+      <varlistentry>
+	<term><literal>--append-args</literal></term>
+
+	<listitem>
+	  <para>
+	    Place the options that give the location of the state
+	    bundle at the end of the command line when invoking
+	    <replaceable>program</replaceable>, rather than at the
+	    beginning (the default is to place options at the
+	    beginning).
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--help</literal></term>
+
+	<listitem>
+	  <para>
+	    Display a brief usage summary.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--prepend-args</literal></term>
+
+	<listitem>
+	  <para>
+	    Place the options that give the location of the state
+	    bundle at the beginning of the command line when invoking
+	    <replaceable>program</replaceable>, overriding any
+	    previous <literal>--append-args</literal> (the default is
+	    to place options at the beginning).
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--no-clean</literal></term>
+
+	<listitem>
+	  <para>
+	    Do not remove the unpacked state directory after running
+	    <command>aptitude</command>.  You might want to use this
+	    if, for instance, you are debugging a problem that appears
+	    when aptitude's state file is modified.  When
+	    <command>aptitude</command> finishes running, the name of
+	    the state directory will be printed so that you can access
+	    it in the future.
+	  </para>
+
+	  <para>
+	    This option is enabled automatically by
+	    <literal>--statedir</literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--really-clean</literal></term>
+
+	<listitem>
+	  <para>
+	    Delete the state directory after running
+	    <command>aptitude</command>, even if
+	    <literal>--no-clean</literal> or
+	    <literal>--statedir</literal> was supplied.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--statedir</literal></term>
+
+	<listitem>
+	  <para>
+	    Instead of treating the input file as a state bundle,
+	    treat it as an unpacked state bundle.  For instance, you
+	    can use this to access the state directory that was
+	    created by a prior run with <literal>--no-clean</literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--unpack</literal></term>
+
+	<listitem>
+	  <para>
+	    Unpack the input file to a temporary directory, but don't
+	    actually run <command>aptitude</command>.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+
+  <refsect1>
+    <title>See Also</title>
+
+    <para>
+      <citerefentry><refentrytitle>aptitude-create-state-bundle</refentrytitle><manvolnum>1</manvolnum></citerefentry>,
+      <citerefentry><refentrytitle>aptitude</refentrytitle><manvolnum>8</manvolnum></citerefentry>,
+      <citerefentry><refentrytitle>apt</refentrytitle><manvolnum>8</manvolnum></citerefentry>
     </para>
   </refsect1>
 </refentry>
