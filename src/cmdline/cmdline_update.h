@@ -5,6 +5,6 @@
 #ifndef CMDLINE_UPDATE_H
 #define CMDLINE_UPDATE_H
 
-int cmdline_update(int argc, char *argv[]);
+int cmdline_update(int argc, char *argv[], int verbose);
 
 #endif // CMDLINE_UPDATE_H

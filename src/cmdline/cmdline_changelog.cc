@@ -112,7 +112,7 @@ temp::name changelog_by_version(const std::string &pkg,
 							     &rval));
   if(m != NULL)
     {
-      res = cmdline_do_download(m);
+      res = cmdline_do_download(m, 0);
       delete m;
     }
 
@@ -122,7 +122,7 @@ temp::name changelog_by_version(const std::string &pkg,
 				    sigc::bind(sigc::ptr_fun(set_name), &rval));
       if(m != NULL)
 	{
-	  res = cmdline_do_download(m);
+	  res = cmdline_do_download(m, 0);
 	  delete m;
 	}
     }
@@ -133,7 +133,7 @@ temp::name changelog_by_version(const std::string &pkg,
 				    sigc::bind(sigc::ptr_fun(set_name), &rval));
       if(m != NULL)
 	{
-	  res = cmdline_do_download(m);
+	  res = cmdline_do_download(m, 0);
 	  delete m;
 	}
     }
@@ -273,7 +273,7 @@ bool do_cmdline_changelog(const vector<string> &packages)
 						  sigc::bind(sigc::ptr_fun(&set_name), &filename));
 	      if(m != NULL)
 		{
-		  cmdline_do_download(m);
+		  cmdline_do_download(m, 0);
 		  delete m;
 		}
 	    }
@@ -330,7 +330,7 @@ bool do_cmdline_changelog(const vector<string> &packages)
 
 	      if(m != NULL)
 		{
-		  cmdline_do_download(m);
+		  cmdline_do_download(m, 0);
 
 		  delete m;
 		}

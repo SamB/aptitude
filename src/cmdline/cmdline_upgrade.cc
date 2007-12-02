@@ -233,7 +233,7 @@ int cmdline_upgrade(int argc, char *argv[],
 
       download_install_manager m(download_only);
       int rval =
-	(cmdline_do_download(&m) == download_manager::success ? 0 : -1);
+	(cmdline_do_download(&m, verbose) == download_manager::success ? 0 : -1);
 
       if(_error->PendingError())
 	rval = -1;

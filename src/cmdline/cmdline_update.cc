@@ -1,6 +1,6 @@
 // cmdline_update.cc
 //
-//   Copyright (C) 2004-2006 Daniel Burrows
+//   Copyright (C) 2004-2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -26,14 +26,13 @@
 #include <generic/apt/download_update_manager.h>
 
 #include <apt-pkg/error.h>
-#include <apt-pkg/progress.h>
 
 void print_autoclean_msg()
 {
   printf(_("Deleting obsolete downloaded files\n"));
 }
 
-int cmdline_update(int argc, char *argv[])
+int cmdline_update(int argc, char *argv[], int verbose)
 {
   _error->DumpErrors();
 
@@ -42,8 +41,6 @@ int cmdline_update(int argc, char *argv[])
       fprintf(stderr, _("E: The update command takes no arguments\n"));
       return -1;
     }
-
-  OpTextProgress progress(aptcfg->FindI("Quiet", 0));
 
   if(_error->PendingError())
     {
@@ -54,7 +51,7 @@ int cmdline_update(int argc, char *argv[])
   download_update_manager m;
   m.pre_autoclean_hook.connect(sigc::ptr_fun(print_autoclean_msg));
   int rval =
-    (cmdline_do_download(&m) == download_manager::success ? 0 : -1);
+    (cmdline_do_download(&m, verbose) == download_manager::success ? 0 : -1);
 
   if(_error->PendingError())
     rval = -1;

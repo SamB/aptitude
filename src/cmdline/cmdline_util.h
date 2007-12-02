@@ -50,9 +50,14 @@ bool cmdline_parse_source(const string &input,
  *  standard command-line UI.  Runs the preparation routine, the
  *  actual download, and the post-download commands.
  *
+ *  \param m        the download process to run.
+ *  \param verbose  the verbosity level; controls how many
+ *                  stats are printed when the run completes.
+ *
  *  \return the success status of the post-download commands, or
  *  failure if the process failed before they could be run.
  */
-download_manager::result cmdline_do_download(download_manager *m);
+download_manager::result cmdline_do_download(download_manager *m,
+					     int verbose);
 
 #endif // CMDLINE_UTIL_H

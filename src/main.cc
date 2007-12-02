@@ -456,7 +456,7 @@ int main(int argc, char *argv[])
 	    }
 
 	  if(!strcasecmp(argv[optind], "update"))
-	    return cmdline_update(argc-optind, argv+optind);
+	    return cmdline_update(argc-optind, argv+optind, verbose);
 	  else if(!strcasecmp(argv[optind], "clean"))
 	    return cmdline_clean(argc-optind, argv+optind, simulate);
 	  else if(!strcasecmp(argv[optind], "autoclean"))
