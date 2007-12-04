@@ -1995,8 +1995,12 @@ private:
 				 const version &v,
 				 bool from_dep_source,
 				 imm::map<package, action> &conflict,
-				 const SolutionGenerator &generator) const
+				 const SolutionGenerator &generator,
+				 std::set<package> *visited_packages) const
   {
+    if(visited_packages != NULL)
+      visited_packages->insert(v.get_package());
+
     action conflictor;
 
     if(debug)
@@ -2072,15 +2076,23 @@ private:
    *  solvers, this will be a full conflict explaining the lack of
    *  solvers).
    *
+   *  \param visited_packages a set into which the packages used
+   *                          to compute the successors will be
+   *                          pushed.
+   *
    *  \param out a vector onto which the successors should be pushed.
    */
   template<typename SolutionGenerator>
   void generate_successors(const solution &s,
 			   const dep &d,
 			   imm::map<package, action> &conflict,
-			   const SolutionGenerator &generator) const
+			   const SolutionGenerator &generator,
+			   std::set<package> *visited_packages) const
   {
     version source = d.get_source();
+
+    if(visited_packages != NULL)
+      visited_packages->insert(source.get_package());
 
     typename imm::map<package, action>::node
       source_found = s.get_actions().lookup(source.get_package());
@@ -2098,13 +2110,19 @@ private:
 	for(typename package::version_iterator vi = source.get_package().versions_begin();
 	    !vi.end(); ++vi)
 	  if(*vi != source)
-	    generate_single_successor(s, d, *vi, true, conflict, generator);
+	    generate_single_successor(s, d, *vi, true, conflict, generator,
+				      visited_packages);
       }
 
     // Now try installing each target of the dependency.
     for(typename dep::solver_iterator si = d.solvers_begin();
 	!si.end(); ++si)
-      generate_single_successor(s, d, *si, false, conflict, generator);
+      {
+	if(visited_packages != NULL)
+	  visited_packages->insert((*si).get_package());
+	generate_single_successor(s, d, *si, false, conflict, generator,
+				  visited_packages);
+      }
 
     // Finally, maybe we can leave this dependency unresolved.
     if(d.is_soft())
@@ -2116,7 +2134,8 @@ private:
    *  (if any are available).  Note that for clarity, we now generate
    *  *all* successors before examining *any*.
    */
-  void process_solution(const solution &s)
+  void process_solution(const solution &s,
+			std::set<package> *visited_packages)
   {
     // Any forcings are immediately applied to 'curr', so that
     // forcings are performed ASAP.
@@ -2191,7 +2210,8 @@ private:
 
 	    int num_successors = 0;
 	    generate_successors(curr, *bi, conflict,
-				null_generator(num_successors));
+				null_generator(num_successors),
+				visited_packages);
 
 
 
@@ -2221,7 +2241,8 @@ private:
 		// NB: this may do redundant work adding to 'conflict'.
 		// Use a generator object to avoid that?
 		generate_successors(curr, *bi, conflict,
-				    real_generator(v));
+				    real_generator(v),
+				    visited_packages);
 
 		eassert_on_dep(v.size() == 1, s, *bi);
 
@@ -2263,7 +2284,8 @@ private:
 		      << std::endl;
 
 	  std::vector<solution> v;
-	  generate_successors(curr, *bi, conflict, real_generator(v));
+	  generate_successors(curr, *bi, conflict, real_generator(v),
+			      visited_packages);
 	  try_enqueue(v);
 	  nsols += v.size();
 	}
@@ -2280,7 +2302,8 @@ private:
 		    << std::endl;
 
 	std::vector<solution> v;
-	generate_successors(curr, *bi, conflict, real_generator(v));
+	generate_successors(curr, *bi, conflict, real_generator(v),
+			    visited_packages);
 	try_enqueue(v);
 	nsols += v.size();
       }
@@ -2690,6 +2713,10 @@ public:
    *
    *  \param max_steps the maximum number of solutions to test.
    *
+   *  \param visited_packages
+   *           if not NULL, each package that influences the
+   *           resolver's choices will be placed here.
+   *
    *  \return a solution that fixes all broken dependencies
    *
    * \throws NoMoreSolutions if the potential solution list is exhausted.
@@ -2698,7 +2725,8 @@ public:
    *  \todo when throwing NoMoreSolutions or NoMoreTime, maybe we
    *        should include the "least broken" solution seen.
    */
-  solution find_next_solution(int max_steps)
+  solution find_next_solution(int max_steps,
+			      std::set<package> *visited_packages)
   {
     // This object is responsible for managing the instance variables
     // that control threaded operation: it sets solver_executing when
@@ -2836,7 +2864,7 @@ public:
 	  }
 	// Nope, let's go enqueue successor nodes.
 	else
-	  process_solution(s);
+	  process_solution(s, visited_packages);
 
 	if(debug)
 	  std::cout << "Done generating successors." << std::endl;

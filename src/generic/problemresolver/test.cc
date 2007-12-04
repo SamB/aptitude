@@ -289,7 +289,7 @@ void run_test_file(istream &f, bool show_world)
 		{
 		  try
 		    {
-		      dummy_resolver::solution next_soln=resolver.find_next_solution(step_count);
+		      dummy_resolver::solution next_soln = resolver.find_next_solution(step_count, NULL);
 
 		      cout << "Next solution is ";
 		      next_soln.dump(cout);
@@ -311,7 +311,7 @@ void run_test_file(istream &f, bool show_world)
 		    {
 		      map<dummy_universe::package, dummy_resolver::version> expected=read_solution(f, universe);
 
-		      dummy_resolver::solution next_soln=resolver.find_next_solution(step_count);
+		      dummy_resolver::solution next_soln=resolver.find_next_solution(step_count, NULL);
 
 
 		      cout << "Next solution is ";

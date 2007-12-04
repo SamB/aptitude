@@ -540,7 +540,7 @@ aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, un
 
       try
 	{
-	  generic_solution<aptitude_universe> sol = resolver->find_next_solution(max_steps);
+	  generic_solution<aptitude_universe> sol = resolver->find_next_solution(max_steps, NULL);
 
 	  sol_l.acquire();
 	  solutions.push_back(new aptitude_resolver::solution(sol.clone()));
