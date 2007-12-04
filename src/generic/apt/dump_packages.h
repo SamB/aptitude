@@ -22,6 +22,7 @@
 
 #include <apt-pkg/pkgcache.h>
 
+#include <set>
 #include <vector>
 
 /** \brief Functions to write information about packages to a stream
@@ -62,6 +63,17 @@ namespace aptitude
      */
     void dump_versions(const std::vector<pkgCache::VerIterator> &versions,
 		       std::ostream &out);
+
+    /** \brief Write all the entries associated with the given
+     *         packages, dropping outgoing dependencies.
+     *
+     *  Dependencies that point to a package not in the given set
+     *  will be stripped from the output file.  This is used to
+     *  drop irrelevant dependencies when generating resolver test
+     *  cases.
+     */
+    void dump_truncated_packages(const std::set<pkgCache::PkgIterator> &versions,
+				 std::ostream &out);
   }
 }
 

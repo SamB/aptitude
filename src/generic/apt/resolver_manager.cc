@@ -146,18 +146,15 @@ void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_pa
   if(resolver_subset_file.empty())
     return;
 
-  std::vector<pkgCache::VerIterator> versions;
+  std::set<pkgCache::PkgIterator> packages;
   for(std::set<aptitude_resolver_package>::const_iterator it = visited_packages.begin();
       it != visited_packages.end(); ++it)
     {
-      pkgCache::PkgIterator pkg = (*it).get_pkg();
-      for(pkgCache::VerIterator ver = pkg.VersionList();
-	  !ver.end(); ++ver)
-	versions.push_back(ver);
+      packages.insert((*it).get_pkg());
     }
 
   std::ofstream out(resolver_subset_file.c_str());
-  aptitude::apt::dump_versions(versions, out);
+  aptitude::apt::dump_truncated_packages(packages, out);
 }
 
 // This assumes that background_resolver_active is empty when it
