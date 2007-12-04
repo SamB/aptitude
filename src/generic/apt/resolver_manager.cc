@@ -23,6 +23,9 @@
 #include "aptitude_resolver.h"
 #include "aptitude_resolver_universe.h"
 #include "config_signal.h"
+#include "dump_packages.h"
+
+#include <fstream>
 
 #include <generic/problemresolver/problemresolver.h>
 #include <generic/util/undo.h>
@@ -138,6 +141,25 @@ public:
   }
 };
 
+void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_package> &visited_packages)
+{
+  if(resolver_subset_file.empty())
+    return;
+
+  std::vector<pkgCache::VerIterator> versions;
+  for(std::set<aptitude_resolver_package>::const_iterator it = visited_packages.begin();
+      it != visited_packages.end(); ++it)
+    {
+      pkgCache::PkgIterator pkg = (*it).get_pkg();
+      for(pkgCache::VerIterator ver = pkg.VersionList();
+	  !ver.end(); ++ver)
+	versions.push_back(ver);
+    }
+
+  std::ofstream out(resolver_subset_file.c_str());
+  aptitude::apt::dump_versions(versions, out);
+}
+
 // This assumes that background_resolver_active is empty when it
 // starts (see restart_background_resolver)
 //
@@ -146,6 +168,8 @@ public:
 // interactively)
 void resolver_manager::background_thread_execution()
 {
+  std::set<aptitude_resolver_package> visited_packages;
+
   cwidget::threads::mutex::lock l(background_control_mutex);
   set_when_destroyed<bool> cancel_set_running(background_thread_running, false);
 
@@ -167,13 +191,15 @@ void resolver_manager::background_thread_execution()
       try
 	{
 	  aptitude_resolver::solution *sol = do_get_solution(job.max_steps,
-							     job.sol_num);
+							     job.sol_num,
+							     visited_packages);
 
 	  // Set the state variable BEFORE exiting the resolver; this
 	  // is done so that if there are no more jobs, the foreground
 	  // thread sees that we're out of the resolver when it
 	  // examines the solution.
 	  l.acquire();
+	  dump_visited_packages(visited_packages);
 	  background_thread_in_resolver = false;
 	  background_resolver_cond.wake_all();
 	  l.release();
@@ -184,6 +210,7 @@ void resolver_manager::background_thread_execution()
 	{
 	  // Put it back into the pot.
 	  l.acquire();
+	  dump_visited_packages(visited_packages);
 	  background_thread_in_resolver = false;
 	  background_resolver_cond.wake_all();
 	  pending_jobs.push(job);
@@ -195,6 +222,7 @@ void resolver_manager::background_thread_execution()
       catch(NoMoreSolutions)
 	{
 	  l.acquire();
+	  dump_visited_packages(visited_packages);
 	  background_thread_in_resolver = false;
 	  background_resolver_cond.wake_all();
 	  l.release();
@@ -204,6 +232,7 @@ void resolver_manager::background_thread_execution()
       catch(NoMoreTime)
 	{
 	  l.acquire();
+	  dump_visited_packages(visited_packages);
 	  background_thread_in_resolver = false;
 	  background_resolver_cond.wake_all();
 	  l.release();
@@ -212,11 +241,14 @@ void resolver_manager::background_thread_execution()
 	}
       catch(cwidget::util::Exception &e)
 	{
+	  dump_visited_packages(visited_packages);
 	  job.k->aborted(e);
 	}
 
       l.acquire();
       delete job.k;
+
+      // If the user asked us to, dump out the 
 
       background_thread_in_resolver = false;
       background_resolver_cond.wake_all();
@@ -324,7 +356,13 @@ void resolver_manager::maybe_create_resolver()
   cwidget::threads::mutex::lock l(mutex);
 
   if(resolver == NULL && cache->BrokenCount() > 0)
-    create_resolver();
+    {
+      {
+	cwidget::threads::mutex::lock l(background_control_mutex);
+	resolver_subset_file = aptcfg->Find(PACKAGE "::ProblemResolver::Trace-File", "");
+      }
+      create_resolver();
+    }
 
   // Always signal a state change: we are signalling for the whole
   // discard/create pair, and even if we didn't create a new resolver
@@ -417,6 +455,12 @@ void resolver_manager::create_resolver()
     resolver_null = false;
     background_control_cond.wake_all();
   }
+}
+
+void resolver_manager::set_resolver_subset_file(const std::string &file)
+{
+  cwidget::threads::mutex::lock l(background_control_mutex);
+  resolver_subset_file = file;
 }
 
 void resolver_manager::set_debug(bool activate)
@@ -528,7 +572,8 @@ resolver_manager::state resolver_manager::state_snapshot()
   return rval;
 }
 
-aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, unsigned int solution_num)
+aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, unsigned int solution_num,
+							       std::set<aptitude_resolver_package> &visited_packages)
 {
   cwidget::threads::mutex::lock sol_l(solutions_mutex);
   if(solution_num < solutions.size())
@@ -540,7 +585,7 @@ aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, un
 
       try
 	{
-	  generic_solution<aptitude_universe> sol = resolver->find_next_solution(max_steps, NULL);
+	  generic_solution<aptitude_universe> sol = resolver->find_next_solution(max_steps, &visited_packages);
 
 	  sol_l.acquire();
 	  solutions.push_back(new aptitude_resolver::solution(sol.clone()));

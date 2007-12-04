@@ -37,12 +37,14 @@
 #include <sigc++/trackable.h>
 
 #include <queue>
+#include <set>
 #include <vector>
 
-class aptitudeDepCache;
 class aptitude_universe;
+class aptitude_resolver_package;
 class aptitude_resolver_version;
 class aptitude_resolver_dep;
+class aptitudeDepCache;
 template<typename PackageUniverse> class generic_solution;
 template<typename PackageUniverse> class generic_problem_resolver;
 class aptitude_resolver;
@@ -222,6 +224,14 @@ private:
    */
   bool resolver_null;
 
+  /** If set to a non-empty string, the packages touched by the
+   *  resolver will be written to this file whenever the resolver
+   *  finishes running.
+   *
+   *  This is in the scope of background_control_mutex.
+   */
+  std::string resolver_subset_file;
+
   /** The number of times the background thread has been suspended; it
    *  will only be allowed to run if this value is 0.
    */
@@ -236,13 +246,13 @@ private:
 
   /** A lock around pending_jobs, background_thread_killed,
    *  background_thread_suspend_count, background_thread_in_resolver,
-   *  and resolver_null.
+   *  resolver_null, and resolver_subset_file.
    */
   cwidget::threads::mutex background_control_mutex;
 
   /** A condition signalled for pending_jobs,
-   *  background_thread_killed, background_thread_suspend_count, and
-   *  resolver_null.
+   *  background_thread_killed, background_thread_suspend_count,
+   *  resolver_null, and resolver_subset_file.
    */
   cwidget::threads::condition background_control_cond;
 
@@ -275,12 +285,19 @@ private:
   class background_suspender;
   friend class background_suspender;
 
+  /** \brief Dump the visited packages to a file if necessary.
+   *
+   *  Must be called with background_control_mutex held.
+   */
+  void dump_visited_packages(const std::set<aptitude_resolver_package> &visited_packages);
+
   /** Low-level code to get a solution; it does not take the global
    *  lock, does not stop a background thread, and may run either in
    *  the foreground or in the background.  It is called by
    *  background_thread_execution and get_solution.
    */
-  generic_solution<aptitude_universe> *do_get_solution(int max_steps, unsigned int solution_number);
+  generic_solution<aptitude_universe> *do_get_solution(int max_steps, unsigned int solution_number,
+						       std::set<aptitude_resolver_package> &visited_packages);
 
   /** The actual background thread. */
   void background_thread_execution();
@@ -346,6 +363,14 @@ public:
    *  default (off).  \todo allow any ostream.
    */
   void set_debug(bool activate);
+
+  /** \brief Set the file to which future resolver runs will dump
+   *  the visited subset of the packages file.
+   *
+   *  \param file the file to which the subset should be written,
+   *  or an empty string to not write anything.
+   */
+  void set_resolver_subset_file(const std::string &file);
 
   /** The number of solutions generated. */
   unsigned int generated_solution_count() const;
