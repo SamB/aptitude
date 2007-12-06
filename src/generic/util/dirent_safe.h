@@ -33,7 +33,11 @@ union dirent_safe
 {
   /** \brief The actual dirent. */
   struct dirent d;
+#if NAME_MAX < 255
+  char b[offsetof(struct dirent, d_name) + 255 + 1];
+#else
   char b[offsetof(struct dirent, d_name) + NAME_MAX + 1];
+#endif
 };
 
 #endif // DIRENT_SAFE_H
