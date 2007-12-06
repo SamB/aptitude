@@ -282,7 +282,7 @@ namespace
 
     if(fragments.size() > 0)
       {
-	cw::fragment *f = fragf(_("%F"),
+	cw::fragment *f = fragf(_("There are now %F."),
 				cw::join_fragments(fragments, L", "));
 
 	update_screen_width();
