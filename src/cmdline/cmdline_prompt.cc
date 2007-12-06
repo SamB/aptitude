@@ -121,6 +121,7 @@ static void cmdline_show_instinfo(pkgvector &items,
 
   for(pkgvector::iterator i=items.begin(); i!=items.end(); ++i)
     {
+      std::string tags;
       string s=i->Name();
 
       pkgDepCache::StateCache &state=(*apt_cache_file)[*i];
@@ -130,7 +131,27 @@ static void cmdline_show_instinfo(pkgvector &items,
       if(showpurge)
 	{
 	  if(state.Delete() && state.iFlags&pkgDepCache::Purge)
-	    s += "{p}";
+	    tags.push_back('p');
+	}
+
+      switch(find_pkg_state(*i, *apt_cache_file))
+	{
+	case pkg_auto_remove:
+	case pkg_auto_install:
+	case pkg_auto_hold:
+	  tags.push_back('a');
+	  break;
+	case pkg_unused_remove:
+	  tags.push_back('u');
+	  break;
+	}
+
+      if(!tags.empty())
+	{
+	  std::sort(tags.begin(), tags.end());
+	  s.push_back('{');
+	  s += tags;
+	  s.push_back('}');
 	}
 
       // Display version numbers.
