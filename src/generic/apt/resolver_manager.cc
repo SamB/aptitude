@@ -25,8 +25,6 @@
 #include "config_signal.h"
 #include "dump_packages.h"
 
-#include <fstream>
-
 #include <generic/problemresolver/problemresolver.h>
 #include <generic/util/undo.h>
 
@@ -143,7 +141,7 @@ public:
 
 void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_package> &visited_packages)
 {
-  if(resolver_subset_file.empty())
+  if(resolver_trace_dir.empty())
     return;
 
   std::set<pkgCache::PkgIterator> packages;
@@ -153,8 +151,7 @@ void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_pa
       packages.insert((*it).get_pkg());
     }
 
-  std::ofstream out(resolver_subset_file.c_str());
-  aptitude::apt::dump_truncated_packages(packages, out);
+  aptitude::apt::make_truncated_state_copy(resolver_trace_dir, packages);
 }
 
 // This assumes that background_resolver_active is empty when it
@@ -356,7 +353,7 @@ void resolver_manager::maybe_create_resolver()
     {
       {
 	cwidget::threads::mutex::lock l(background_control_mutex);
-	resolver_subset_file = aptcfg->Find(PACKAGE "::ProblemResolver::Trace-File", "");
+	resolver_trace_dir = aptcfg->Find(PACKAGE "::ProblemResolver::Trace-Directory", "");
       }
       create_resolver();
     }
@@ -454,10 +451,10 @@ void resolver_manager::create_resolver()
   }
 }
 
-void resolver_manager::set_resolver_subset_file(const std::string &file)
+void resolver_manager::set_resolver_trace_dir(const std::string &path)
 {
   cwidget::threads::mutex::lock l(background_control_mutex);
-  resolver_subset_file = file;
+  resolver_trace_dir = path;
 }
 
 void resolver_manager::set_debug(bool activate)

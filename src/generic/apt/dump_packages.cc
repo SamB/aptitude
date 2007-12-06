@@ -21,8 +21,24 @@
 
 #include "apt.h"
 
+#include <apt-pkg/configuration.h>
+#include <apt-pkg/error.h>
+#include <apt-pkg/tagfile.h>
+
 #include <cwidget/generic/util/eassert.h>
 #include <cwidget/generic/util/exception.h>
+#include <cwidget/generic/util/ssprintf.h>
+
+#include <aptitude.h>
+#include <generic/util/dirent_safe.h>
+
+#include <dirent.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+#include <fstream>
 
 namespace aptitude
 {
@@ -311,16 +327,13 @@ namespace aptitude
 	out << std::endl;
       }
 
-      void dump_truncated_version_file(const pkgCache::VerFileIterator &vf,
-				       const std::set<pkgCache::PkgIterator> &visited_packages,
-				       std::ostream &out)
+      void dump_truncated_section(const char *start,
+				  const char *stop,
+				  const std::set<pkgCache::PkgIterator> &visited_packages,
+				  std::ostream &out)
       {
 	eassert(apt_cache_file != NULL);
 	eassert(apt_package_records != NULL);
-
-	pkgRecords::Parser &p = apt_package_records->Lookup(vf);
-	const char *start, *stop;
-	p.GetRec(start, stop);
 
 	while(start != stop)
 	  {
@@ -403,7 +416,7 @@ namespace aptitude
 			std::vector<dep_element> filtered_deps;
 			filter_deps(deps, visited_packages, filtered_deps);
 
-			if(!deps.empty())
+			if(!filtered_deps.empty())
 			  {
 			    // Write out everything up to **and including**
 			    // the colon.
@@ -417,6 +430,317 @@ namespace aptitude
 		  }
 	      }
 	  }
+      }
+
+      // Use pkgTagFile to copy all the entries of fd that are tagged
+      // with 'Package' and a package whose name appears in the given
+      // set to the output stream.
+      //
+      // Note that this **assumes** that the file has to do with
+      // describing the current cache state.  This is necessary in order
+      // to look up providers of names (if it weren't true, we'd have to
+      // load all the files to copy and interpret them by hand before
+      // doing anything with them!).
+      void copy_truncated(FileFd &fd,
+			  std::ostream &out,
+			  const std::set<pkgCache::PkgIterator> &visited_packages)
+      {
+	pkgTagFile tag_file(&fd);
+
+	pkgTagSection section;
+	while(tag_file.Step(section))
+	  {
+	    // Look for a Package tag.
+	    std::string pkg_name = section.FindS("Package");
+
+	    if(pkg_name.empty())
+	      continue;
+
+	    pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(pkg_name);
+	    if(pkg.end())
+	      continue;
+
+	    if(visited_packages.find(pkg) == visited_packages.end())
+	      continue;
+
+	    // Whee, write out the section.
+	    const char *start;
+	    const char *stop;
+	    section.GetSection(start, stop);
+	    dump_truncated_section(start, stop, visited_packages, out);
+	  }
+      }
+    }
+
+    std::string dirname(const std::string &name)
+    {
+      int len = name.size();
+      while(len > 0 && name[len - 1] != '/')
+	--len;
+      while(len > 0 && name[len - 1] == '/')
+	--len;
+      if(len == 0)
+	return "/";
+      else
+	return std::string(name, 0, len);
+    }
+
+    int make_directory_and_parents(const std::string &dir)
+    {
+      // Trivial code to make a directory.  HERE BE RACES!
+      int result = mkdir(dir.c_str(), 0777);
+      if(result != 0 && errno == ENOENT)
+	{
+	  make_directory_and_parents(dirname(dir));
+	  result = mkdir(dir.c_str(), 0777);
+	}
+
+      if(result != 0 && errno == EEXIST)
+	{
+	  // Check that the path is a directory.  We follow
+	  // symlinks, which is probably what you want.
+	  struct stat buf;
+	  int stat_result = stat(dir.c_str(), &buf);
+	  if(stat_result != 0)
+	    return stat_result;
+
+	  if(S_ISDIR(buf.st_mode))
+	    return 0;
+	  else
+	    return result;
+	}
+      else
+	return result;
+    }
+
+    void copy_truncated(const std::string &inFileName,
+			const std::string &outFileName,
+			const std::set<pkgCache::PkgIterator> &visited_packages)
+    {
+      FileFd infile(inFileName, FileFd::ReadOnly);
+      if(!infile.IsOpen() || infile.Failed())
+	return;
+
+      struct stat buf;
+      if(fstat(infile.Fd(), &buf) != 0)
+	{
+	  _error->Errno("stat", _("Unable to stat %s."), inFileName.c_str());
+	  return;
+	}
+
+      if(S_ISDIR(buf.st_mode))
+	return;
+
+      make_directory_and_parents(dirname(outFileName));
+
+      std::ofstream outfile(outFileName.c_str());
+      if(!outfile)
+	return;
+
+      copy_truncated(infile, outfile, visited_packages);
+    }
+
+    void get_directory_files(const std::string &dir,
+			     std::vector<std::string> &out)
+    {
+      DIR *d = opendir(dir.c_str());
+      if(d == NULL) // Assume no dir means no files to copy.
+	return;
+
+      struct dirent *tmp;
+      dirent_safe dir_entry;
+      for(int readdir_result = readdir_r(d, &dir_entry.d, &tmp);
+	  readdir_result == 0 && tmp != NULL;
+	  readdir_result = readdir_r(d, &dir_entry.d, &tmp))
+	out.push_back(dir_entry.d.d_name);
+    }
+
+    void copy_dir_truncated(const std::string &dir,
+			    const std::string &to,
+			    std::set<pkgCache::PkgIterator> visited_packages)
+    {
+      std::vector<std::string> dir_files;
+      get_directory_files(dir, dir_files);
+
+      // Don't even create a destination directory with an emtpy
+      // input.
+      if(dir_files.empty())
+	return;
+
+      if(make_directory_and_parents(to) != 0)
+	return;
+
+      for(std::vector<std::string>::const_iterator it = dir_files.begin();
+	  it != dir_files.end(); ++it)
+	{
+	  if(*it == "." || *it == "..")
+	    continue;
+
+	  const std::string inFileName = dir + "/" + *it;
+	  const std::string outFileName = to + "/" + *it;
+	  copy_truncated(inFileName, outFileName, visited_packages);
+	}
+    }
+
+    void recursive_copy_dir(const std::string &from,
+			    const std::string &to)
+     {
+       std::vector<std::string> dir_files;
+       get_directory_files(from, dir_files);
+
+       // Don't even create a destination directory with an emtpy
+       // input.
+       if(dir_files.empty())
+	 return;
+
+       make_directory_and_parents(to);
+
+       for(std::vector<std::string>::const_iterator it = dir_files.begin();
+	   it != dir_files.end(); ++it)
+	 {
+	   if(*it == "." || *it == "..")
+	     continue;
+
+	   std::string infilename = from + "/" + *it;
+	   FileFd infile(infilename, FileFd::ReadOnly);
+	   if(!infile.IsOpen() || infile.Failed())
+	     continue;
+
+	   struct stat buf;
+	   if(fstat(infile.Fd(), &buf) != 0)
+	     {
+	       _error->Errno("stat", _("Unable to stat %s."), infilename.c_str());
+	       continue;
+	     }
+
+	   if(S_ISDIR(buf.st_mode))
+	     {
+	       recursive_copy_dir(infilename, to + "/" + *it);
+	     }
+	   else
+	     {
+	       FileFd outfile(to + "/" + *it, FileFd::WriteEmpty);
+	      if(outfile.IsOpen() && !outfile.Failed())
+		CopyFile(infile, outfile);
+	    }
+	}
+    }
+
+    void copy_file(const std::string &in, const std::string &out)
+    {
+      make_directory_and_parents(dirname(out));
+
+      FileFd inFile(in, FileFd::ReadOnly);
+      FileFd outFile(out, FileFd::WriteEmpty);
+
+      CopyFile(inFile, outFile);
+    }
+
+    void make_truncated_cache(const std::set<pkgCache::PkgIterator> &packages,
+			      const std::string &out_directory)
+    {
+      if(make_directory_and_parents(out_directory) != 0)
+	{
+	  std::string tmp = cwidget::util::sstrerror(errno);
+	  _error->Error("Unable to create truncated cache: %s.",
+			tmp.c_str());
+	  return;
+	}
+    }
+
+    // Make a truncated state snapshot.  We need to copy:
+    //
+    //   $(Dir::Aptitude::state)
+    //   $(Dir::State::lists)/*
+    //   $(Dir::State::status)/*
+    //   $(Dir::Etc::sourceparts)/*
+    //   $(Dir::Etc::vendorlist)
+    //   $(Dir::Etc::vendorparts)/*
+    //   $(Dir::Etc::main)
+    //   $(Dir::Etc::parts)/*
+    //   $(Dir::Etc::preferences)
+    //
+    // Dir::State::* are truncated copies; the others are copied
+    // literally.
+    void make_truncated_state_copy(const std::string &outDir,
+				   const std::set<pkgCache::PkgIterator> &visited_packages)
+    {
+      {
+	// WARNING: duplicated from other places.
+	const string statefile = _config->FindDir("Dir::Aptitude::state", STATEDIR)+"pkgstates";
+
+	copy_truncated(statefile, outDir + "/" + statefile,
+		       visited_packages);
+      }
+
+      {
+	const std::string lists = _config->FindDir("Dir::State::lists");
+	if(!lists.empty())
+	  copy_dir_truncated(lists, outDir + "/" + lists,
+			     visited_packages);
+      }
+
+      {
+	const std::string status = _config->FindFile("Dir::State::status");
+	if(!status.empty())
+	  copy_truncated(status, outDir + "/" + status,
+			 visited_packages);
+      }
+
+      {
+	const std::string lists = _config->FindFile("Dir::State::lists");
+	if(!lists.empty())
+	  copy_dir_truncated(lists, outDir + "/" + lists,
+			     visited_packages);
+      }
+
+      {
+	// Could do a recursive copy of Dir::Etc, which would pick
+	// up files not explicitly called out here, but that's an
+	// awfully broad brush and fails if any of these have been
+	// renamed.
+
+	const std::string sourceList = _config->FindFile("Dir::Etc::status");
+
+	if(!sourceList.empty())
+	  copy_file(sourceList, outDir + "/" + sourceList);
+      }
+
+      {
+	const std::string sourceParts = _config->FindDir("Dir::Etc::sourcelist");
+	if(!sourceParts.empty())
+	  recursive_copy_dir(sourceParts, outDir + "/" + sourceParts);
+      }
+
+      {
+	const std::string vendorList = _config->FindFile("Dir::Etc::vendorlist");
+	if(!vendorList.empty())
+	  copy_file(vendorList, outDir + "/" + vendorList);
+      }
+
+      {
+	const std::string vendorParts = _config->FindDir("Dir::Etc::vendorparts");
+	if(!vendorParts.empty())
+	  recursive_copy_dir(vendorParts, outDir + "/" + vendorParts);
+      }
+
+      {
+	const std::string main = _config->FindFile("Dir::Etc::main");
+	if(!main.empty())
+	  copy_file(main, outDir + "/" + main);
+      }
+
+      {
+	const std::string parts = _config->FindDir("Dir::Etc::parts");
+	if(!parts.empty())
+	  recursive_copy_dir(parts, outDir + "/" + parts);
+      }
+
+      {
+	const std::string preferences = _config->FindFile("Dir::Etc::preferences");
+	if(!preferences.empty())
+	  copy_truncated(preferences, outDir + "/" + preferences,
+			 visited_packages);
       }
     }
 
@@ -438,7 +762,12 @@ namespace aptitude
 			first = false;
 		      else
 			out << std::endl;
-		      dump_truncated_version_file(vfIt, packages, out);
+
+		      pkgRecords::Parser &p = apt_package_records->Lookup(vfIt);
+		      const char *start, *stop;
+		      p.GetRec(start, stop);
+
+		      dump_truncated_section(start, stop, packages, out);
 		    }
 		}
 	    }
