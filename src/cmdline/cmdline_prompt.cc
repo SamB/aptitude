@@ -287,6 +287,8 @@ static void show_broken_deps(pkgCache::PkgIterator pkg)
     }
 }
 
+// Note that not all of these are actually used, but I'm preserving
+// the tags in case there are requests to reinstate them.
 static const char *cmdline_action_descriptions[num_pkg_action_states]={
   N_("The following packages are BROKEN:"),
   N_("The following packages are unused and will be REMOVED:"),
@@ -537,14 +539,24 @@ static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 	  break;
 	}
 
-      if(state!=pkg_unchanged &&
-	 !((state==pkg_auto_hold || state==pkg_hold) && !as_upgrade))
-	lists[state].push_back(pkg);
-
-      if(state==pkg_auto_install)
-	lists[pkg_install].push_back(pkg);
-      else if(state==pkg_auto_remove)
-	lists[pkg_remove].push_back(pkg);
+      switch(state)
+	{
+	case pkg_auto_install:
+	  lists[pkg_install].push_back(pkg);
+	  break;
+	case pkg_unused_remove:
+	case pkg_auto_remove:
+	  lists[pkg_remove].push_back(pkg);
+	  break;
+	case pkg_auto_hold:
+	  if(as_upgrade)
+	    lists[pkg_hold].push_back(pkg);
+	  break;
+	case pkg_unchanged:
+	  break;
+	default:
+	  lists[state].push_back(pkg);
+	}
     }
 
   for(int i=0; i<num_pkg_action_states; ++i)
