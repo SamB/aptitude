@@ -1123,7 +1123,8 @@ static bool recursive_remdir(const std::string &dirname)
   dirent_safe dent;
   dirent *tmp;
   for(int dirent_result = readdir_r(dir, &dent.d, &tmp);
-      dirent_result == 0; dirent_result = readdir_r(dir, &dent.d, &tmp))
+      dirent_result == 0 && tmp != NULL;
+      dirent_result = readdir_r(dir, &dent.d, &tmp))
     if(strcmp(dent.d.d_name, ".") != 0 &&
        strcmp(dent.d.d_name, "..") != 0)
       rval = (rval && recursive_remdir(dirname + "/" + dent.d.d_name));
