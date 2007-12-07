@@ -74,6 +74,38 @@ namespace aptitude
      */
     void dump_truncated_packages(const std::set<pkgCache::PkgIterator> &versions,
 				 std::ostream &out);
+
+
+
+    /** Make a truncated state snapshot in the given directory.
+     *
+     *  We need to copy:
+     *
+     *  - $(Dir::State::lists)/
+     *  - $(Dir::State::status)/
+     *  - $(Dir::Etc::sourceparts)/
+     *  - $(Dir::Etc::vendorlist)
+     *  - $(Dir::Etc::vendorparts)/
+     *  - $(Dir::Etc::main)
+     *  - $(Dir::Etc::parts)/
+     *  - $(Dir::Etc::preferences)
+     *
+     * Dir::State::* are truncated copies; the others are copied
+     * literally.
+     *
+     *  \todo check that outDir doesn't exist.
+     *
+     *  \note This calls _error in many places; instead it should
+     *        throw exceptions (all else aside, _error isn't
+     *        thread-safe!).
+     *
+     *  \param out_dir   the target directory, which should not
+     *                   exist.
+     *  \param visited_packages    the packages that should
+     *                             be contained in the truncated cache.
+     */
+    void make_truncated_state_copy(const std::string &out_dir,
+				   const std::set<pkgCache::PkgIterator> &visited_packages);
   }
 }
 

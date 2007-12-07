@@ -224,13 +224,14 @@ private:
    */
   bool resolver_null;
 
-  /** If set to a non-empty string, the packages touched by the
-   *  resolver will be written to this file whenever the resolver
-   *  finishes running.
+  /** If set to a non-empty string, an excerpt of the cache
+   *  corresponding to the packages touched by the resolver will be
+   *  written to this directory whenever the resolver finishes
+   *  running.
    *
    *  This is in the scope of background_control_mutex.
    */
-  std::string resolver_subset_file;
+  std::string resolver_trace_dir;
 
   /** The number of times the background thread has been suspended; it
    *  will only be allowed to run if this value is 0.
@@ -246,13 +247,13 @@ private:
 
   /** A lock around pending_jobs, background_thread_killed,
    *  background_thread_suspend_count, background_thread_in_resolver,
-   *  resolver_null, and resolver_subset_file.
+   *  resolver_null, and resolver_trace_dir.
    */
   cwidget::threads::mutex background_control_mutex;
 
   /** A condition signalled for pending_jobs,
    *  background_thread_killed, background_thread_suspend_count,
-   *  resolver_null, and resolver_subset_file.
+   *  resolver_null, and resolver_trace_dir.
    */
   cwidget::threads::condition background_control_cond;
 
@@ -364,13 +365,14 @@ public:
    */
   void set_debug(bool activate);
 
-  /** \brief Set the file to which future resolver runs will dump
-   *  the visited subset of the packages file.
+  /** \brief Set the directory to which future resolver runs will
+   *  dump a cache containing only references to packages that
+   *  were touched by the resolver.
    *
-   *  \param file the file to which the subset should be written,
-   *  or an empty string to not write anything.
+   *  \param path the directory to which the subset should be
+   *  written, or an empty string to not write anything.
    */
-  void set_resolver_subset_file(const std::string &file);
+  void set_resolver_trace_dir(const std::string &path);
 
   /** The number of solutions generated. */
   unsigned int generated_solution_count() const;

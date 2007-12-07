@@ -121,6 +121,7 @@ static void cmdline_show_instinfo(pkgvector &items,
 
   for(pkgvector::iterator i=items.begin(); i!=items.end(); ++i)
     {
+      std::string tags;
       string s=i->Name();
 
       pkgDepCache::StateCache &state=(*apt_cache_file)[*i];
@@ -130,7 +131,27 @@ static void cmdline_show_instinfo(pkgvector &items,
       if(showpurge)
 	{
 	  if(state.Delete() && state.iFlags&pkgDepCache::Purge)
-	    s += "{p}";
+	    tags.push_back('p');
+	}
+
+      switch(find_pkg_state(*i, *apt_cache_file))
+	{
+	case pkg_auto_remove:
+	case pkg_auto_install:
+	case pkg_auto_hold:
+	  tags.push_back('a');
+	  break;
+	case pkg_unused_remove:
+	  tags.push_back('u');
+	  break;
+	}
+
+      if(!tags.empty())
+	{
+	  std::sort(tags.begin(), tags.end());
+	  s.push_back('{');
+	  s += tags;
+	  s.push_back('}');
 	}
 
       // Display version numbers.
@@ -266,6 +287,8 @@ static void show_broken_deps(pkgCache::PkgIterator pkg)
     }
 }
 
+// Note that not all of these are actually used, but I'm preserving
+// the tags in case there are requests to reinstate them.
 static const char *cmdline_action_descriptions[num_pkg_action_states]={
   N_("The following packages are BROKEN:"),
   N_("The following packages are unused and will be REMOVED:"),
@@ -516,14 +539,24 @@ static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 	  break;
 	}
 
-      if(state!=pkg_unchanged &&
-	 !((state==pkg_auto_hold || state==pkg_hold) && !as_upgrade))
-	lists[state].push_back(pkg);
-
-      if(state==pkg_auto_install)
-	lists[pkg_install].push_back(pkg);
-      else if(state==pkg_auto_remove)
-	lists[pkg_remove].push_back(pkg);
+      switch(state)
+	{
+	case pkg_auto_install:
+	  lists[pkg_install].push_back(pkg);
+	  break;
+	case pkg_unused_remove:
+	case pkg_auto_remove:
+	  lists[pkg_remove].push_back(pkg);
+	  break;
+	case pkg_auto_hold:
+	  if(as_upgrade)
+	    lists[pkg_hold].push_back(pkg);
+	  break;
+	case pkg_unchanged:
+	  break;
+	default:
+	  lists[state].push_back(pkg);
+	}
     }
 
   for(int i=0; i<num_pkg_action_states; ++i)

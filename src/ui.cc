@@ -96,6 +96,7 @@
 #include <generic/problemresolver/exceptions.h>
 #include <generic/problemresolver/solution.h>
 
+#include <generic/util/dirent_safe.h>
 #include <generic/util/temp.h>
 #include <generic/util/util.h>
 
@@ -1119,10 +1120,14 @@ static bool recursive_remdir(const std::string &dirname)
 
   bool rval = true;
 
-  for(dirent *dent = readdir(dir); dent != NULL; dent = readdir(dir))
-    if(strcmp(dent->d_name, ".") != 0 &&
-       strcmp(dent->d_name, "..") != 0)
-      rval = (rval && recursive_remdir(dirname + "/" + dent->d_name));
+  dirent_safe dent;
+  dirent *tmp;
+  for(int dirent_result = readdir_r(dir, &dent.d, &tmp);
+      dirent_result == 0 && tmp != NULL;
+      dirent_result = readdir_r(dir, &dent.d, &tmp))
+    if(strcmp(dent.d.d_name, ".") != 0 &&
+       strcmp(dent.d.d_name, "..") != 0)
+      rval = (rval && recursive_remdir(dirname + "/" + dent.d.d_name));
 
   if(closedir(dir) != 0)
     {
