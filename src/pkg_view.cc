@@ -434,7 +434,12 @@ public:
       }
 
     hadBreakage=hasBreakage;
-    have_pkg = true;
+
+    // Important: we have to set have_pkg according to whether
+    // pkg.end() is true, because if it is, then we might be closing
+    // the cache, and then we might not recognize that the package is
+    // null when we open the cache again.
+    have_pkg = !pkg.end();
   }
 
   /** Cycles the multiplex, taking autoswitch behavior into account. */
