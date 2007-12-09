@@ -693,6 +693,10 @@ aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, un
 	  actions_since_last_solution.clear();
 	  sol_l.release();
 	}
+      catch(InterruptedException)
+	{
+	  throw InterruptedException();
+	}
       catch(NoMoreTime)
 	{
 	  throw NoMoreTime();
