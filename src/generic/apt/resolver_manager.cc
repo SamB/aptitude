@@ -133,6 +133,12 @@ public:
   }
 };
 
+resolver_manager::solution_information::~solution_information()
+{
+  delete interactions;
+  delete solution;
+}
+
 // NB: we need a recursive mutex because some routines can be called
 // either by other routines of the class (already have a mutex lock)
 // or by the user (don't have a mutex lock); I could sidestep this
@@ -142,6 +148,7 @@ resolver_manager::resolver_manager(aptitudeDepCache *_cache)
   :cache(_cache),
    resolver(NULL),
    undos(new undo_list),
+   ticks_since_last_solution(0),
    solution_search_aborted(false),
    selected_solution(0),
    background_thread_killed(false),
@@ -172,10 +179,10 @@ resolver_manager::~resolver_manager()
 
   kill_background_thread();
 
-  for(unsigned int i = 0; i < solutions.size(); ++i)
+  for(std::vector<const solution_information *>::const_iterator it =
+	solutions.begin(); it != solutions.end(); ++it)
     {
-      delete solutions[i].first;
-      delete solutions[i].second;
+      delete *it;
     }
 
   delete undos;
@@ -290,9 +297,10 @@ void resolver_manager::background_thread_execution()
 
       try
 	{
-	  aptitude_resolver::solution *sol = do_get_solution(job.max_steps,
-							     job.sol_num,
-							     visited_packages);
+	  const aptitude_resolver::solution *sol =
+	    do_get_solution(job.max_steps,
+			    job.sol_num,
+			    visited_packages);
 
 	  // Set the state variable BEFORE exiting the resolver; this
 	  // is done so that if there are no more jobs, the foreground
@@ -487,6 +495,13 @@ void resolver_manager::discard_resolver()
 
   {
     cwidget::threads::mutex::lock l2(solutions_mutex);
+    actions_since_last_solution.clear();
+    ticks_since_last_solution = 0;
+
+    for(std::vector<const solution_information *>::const_iterator it =
+	  solutions.begin(); it != solutions.end(); ++it)
+      delete *it;
+
     solutions.clear();
     solution_search_aborted = false;
     solution_search_abort_msg.clear();
@@ -672,12 +687,13 @@ resolver_manager::state resolver_manager::state_snapshot()
   return rval;
 }
 
-aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, unsigned int solution_num,
-							       std::set<aptitude_resolver_package> &visited_packages)
+const aptitude_resolver::solution *
+resolver_manager::do_get_solution(int max_steps, unsigned int solution_num,
+				  std::set<aptitude_resolver_package> &visited_packages)
 {
   cwidget::threads::mutex::lock sol_l(solutions_mutex);
   if(solution_num < solutions.size())
-    return solutions[solution_num].second;
+    return solutions[solution_num]->get_solution();
 
   while(solution_num >= solutions.size())
     {
@@ -688,14 +704,16 @@ aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, un
 	  generic_solution<aptitude_universe> sol = resolver->find_next_solution(max_steps, &visited_packages);
 
 	  sol_l.acquire();
-	  solutions.push_back(std::make_pair(new std::vector<resolver_interaction>(actions_since_last_solution),
-					     new aptitude_resolver::solution(sol.clone())));
+	  solutions.push_back(new solution_information(new std::vector<resolver_interaction>(actions_since_last_solution),
+						       ticks_since_last_solution + max_steps,
+						       new aptitude_resolver::solution(sol.clone())));
 	  actions_since_last_solution.clear();
 	  sol_l.release();
 	}
-      catch(InterruptedException)
+      catch(const InterruptedException &e)
 	{
-	  throw InterruptedException();
+	  ticks_since_last_solution += e.get_steps();
+	  throw e;
 	}
       catch(NoMoreTime)
 	{
@@ -714,7 +732,7 @@ aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, un
 	}
     }
 
-  return solutions[solution_num].second;
+  return solutions[solution_num]->get_solution();
 }
 
 /** A continuation that works by either placing \b true in the Boolean
@@ -810,7 +828,7 @@ const aptitude_resolver::solution &resolver_manager::get_solution(unsigned int s
   {
     cwidget::threads::mutex::lock l2(solutions_mutex);
     if(solution_num < solutions.size())
-      return *solutions[solution_num].second;
+      return *solutions[solution_num]->get_solution();
   }
 
 
@@ -854,7 +872,7 @@ void resolver_manager::get_solution_background(unsigned int solution_num,
   cwidget::threads::mutex::lock sol_l(solutions_mutex);
   if(solution_num < solutions.size())
     {
-      generic_solution<aptitude_universe> *sol = solutions[solution_num].second;
+      const generic_solution<aptitude_universe> *sol = solutions[solution_num]->get_solution();
       sol_l.release();
 
       k->success(*sol);
