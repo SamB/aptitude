@@ -30,6 +30,109 @@
 
 #include <sigc++/functors/mem_fun.h>
 
+class resolver_manager::resolver_interaction
+{
+public:
+  /** \brief The type tag of a resolver interaction. */
+  enum tag
+    {
+      reject_version,
+      unreject_version,
+      mandate_version,
+      unmandate_version,
+      harden_dep,
+      unharden_dep,
+      approve_broken_dep,
+      unapprove_broken_dep,
+      undo
+    };
+
+private:
+  tag type;
+
+  aptitude_resolver_version version;
+  aptitude_resolver_dep dep;
+
+  resolver_interaction(tag _type,
+		       const aptitude_resolver_version &_version,
+		       const aptitude_resolver_dep &_dep)
+    : type(_type), version(_version), dep(_dep)
+  {
+  }
+
+public:
+  static resolver_interaction RejectVersion(const aptitude_resolver_version &version)
+  {
+    return resolver_interaction(reject_version, version,
+				aptitude_resolver_dep());
+  }
+
+  static resolver_interaction UnRejectVersion(const aptitude_resolver_version &version)
+  {
+    return resolver_interaction(unreject_version, version,
+				aptitude_resolver_dep());
+  }
+
+  static resolver_interaction MandateVersion(const aptitude_resolver_version &version)
+  {
+    return resolver_interaction(mandate_version, version,
+				aptitude_resolver_dep());
+  }
+
+  static resolver_interaction UnMandateVersion(const aptitude_resolver_version &version)
+  {
+    return resolver_interaction(unmandate_version, version,
+				aptitude_resolver_dep());
+  }
+
+  static resolver_interaction HardenDep(const aptitude_resolver_dep &dep)
+  {
+    return resolver_interaction(harden_dep,
+				aptitude_resolver_version(),
+				dep);
+  }
+
+  static resolver_interaction UnHardenDep(const aptitude_resolver_dep &dep)
+  {
+    return resolver_interaction(unharden_dep,
+				aptitude_resolver_version(),
+				dep);
+  }
+
+  static resolver_interaction ApproveBrokenDep(const aptitude_resolver_dep &dep)
+  {
+    return resolver_interaction(approve_broken_dep,
+				aptitude_resolver_version(),
+				dep);
+  }
+
+  static resolver_interaction UnApproveBrokenDep(const aptitude_resolver_dep &dep)
+  {
+    return resolver_interaction(unapprove_broken_dep,
+				aptitude_resolver_version(),
+				dep);
+  }
+
+  static resolver_interaction Undo()
+  {
+    return resolver_interaction(undo,
+				aptitude_resolver_version(),
+				aptitude_resolver_dep());
+  }
+
+  tag get_type() const { return type; }
+  const aptitude_resolver_version &get_version() const
+  {
+    eassert(!version.get_pkg().end());
+    return version;
+  }
+  const aptitude_resolver_dep &get_dep() const
+  {
+    eassert(!dep.get_dep().end());
+    return dep;
+  }
+};
+
 // NB: we need a recursive mutex because some routines can be called
 // either by other routines of the class (already have a mutex lock)
 // or by the user (don't have a mutex lock); I could sidestep this
@@ -70,7 +173,10 @@ resolver_manager::~resolver_manager()
   kill_background_thread();
 
   for(unsigned int i = 0; i < solutions.size(); ++i)
-    delete solutions[i];
+    {
+      delete solutions[i].first;
+      delete solutions[i].second;
+    }
 
   delete undos;
 }
@@ -571,7 +677,7 @@ aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, un
 {
   cwidget::threads::mutex::lock sol_l(solutions_mutex);
   if(solution_num < solutions.size())
-    return solutions[solution_num];
+    return solutions[solution_num].second;
 
   while(solution_num >= solutions.size())
     {
@@ -582,7 +688,9 @@ aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, un
 	  generic_solution<aptitude_universe> sol = resolver->find_next_solution(max_steps, &visited_packages);
 
 	  sol_l.acquire();
-	  solutions.push_back(new aptitude_resolver::solution(sol.clone()));
+	  solutions.push_back(std::make_pair(new std::vector<resolver_interaction>(actions_since_last_solution),
+					     new aptitude_resolver::solution(sol.clone())));
+	  actions_since_last_solution.clear();
 	  sol_l.release();
 	}
       catch(NoMoreTime)
@@ -602,7 +710,7 @@ aptitude_resolver::solution *resolver_manager::do_get_solution(int max_steps, un
 	}
     }
 
-  return solutions[solution_num];
+  return solutions[solution_num].second;
 }
 
 /** A continuation that works by either placing \b true in the Boolean
@@ -698,7 +806,7 @@ const aptitude_resolver::solution &resolver_manager::get_solution(unsigned int s
   {
     cwidget::threads::mutex::lock l2(solutions_mutex);
     if(solution_num < solutions.size())
-      return *solutions[solution_num];
+      return *solutions[solution_num].second;
   }
 
 
@@ -742,7 +850,7 @@ void resolver_manager::get_solution_background(unsigned int solution_num,
   cwidget::threads::mutex::lock sol_l(solutions_mutex);
   if(solution_num < solutions.size())
     {
-      generic_solution<aptitude_universe> *sol = solutions[solution_num];
+      generic_solution<aptitude_universe> *sol = solutions[solution_num].second;
       sol_l.release();
 
       k->success(*sol);
@@ -850,7 +958,8 @@ bool resolver_manager::get_solution_background_blocking(unsigned int solution_nu
 
 template<typename T>
 void resolver_manager::resolver_manipulation(const T &t,
-					     void (generic_problem_resolver<aptitude_universe>::*action)(const T &, undo_group *))
+					     void (generic_problem_resolver<aptitude_universe>::*action)(const T &, undo_group *),
+					     const resolver_interaction &act)
 {
   cwidget::threads::mutex::lock l(mutex);
   background_suspender bs(*this);
@@ -862,6 +971,8 @@ void resolver_manager::resolver_manipulation(const T &t,
   else
     undos->add_item(undo);
 
+  actions_since_last_solution.push_back(act);
+
   l.release();
   bs.unsuspend();
   state_changed();
@@ -869,12 +980,14 @@ void resolver_manager::resolver_manipulation(const T &t,
 
 void resolver_manager::reject_version(const aptitude_resolver_version &ver)
 {
-  resolver_manipulation(ver, &aptitude_resolver::reject_version);
+  resolver_manipulation(ver, &aptitude_resolver::reject_version,
+			resolver_interaction::RejectVersion(ver));
 }
 
 void resolver_manager::unreject_version(const aptitude_resolver_version &ver)
 {
-  resolver_manipulation(ver, &aptitude_resolver::unreject_version);
+  resolver_manipulation(ver, &aptitude_resolver::unreject_version,
+			resolver_interaction::UnRejectVersion(ver));
 }
 
 bool resolver_manager::is_rejected(const aptitude_resolver_version &ver)
@@ -887,12 +1000,14 @@ bool resolver_manager::is_rejected(const aptitude_resolver_version &ver)
 
 void resolver_manager::mandate_version(const aptitude_resolver_version &ver)
 {
-  resolver_manipulation(ver, &aptitude_resolver::mandate_version);
+  resolver_manipulation(ver, &aptitude_resolver::mandate_version,
+			resolver_interaction::MandateVersion(ver));
 }
 
 void resolver_manager::unmandate_version(const aptitude_resolver_version &ver)
 {
-  resolver_manipulation(ver, &aptitude_resolver::unmandate_version);
+  resolver_manipulation(ver, &aptitude_resolver::unmandate_version,
+			resolver_interaction::UnMandateVersion(ver));
 }
 
 bool resolver_manager::is_mandatory(const aptitude_resolver_version &ver)
@@ -905,12 +1020,14 @@ bool resolver_manager::is_mandatory(const aptitude_resolver_version &ver)
 
 void resolver_manager::harden_dep(const aptitude_resolver_dep &dep)
 {
-  resolver_manipulation(dep, &aptitude_resolver::harden);
+  resolver_manipulation(dep, &aptitude_resolver::harden,
+			resolver_interaction::HardenDep(dep));
 }
 
 void resolver_manager::unharden_dep(const aptitude_resolver_dep &dep)
 {
-  resolver_manipulation(dep, &aptitude_resolver::unharden);
+  resolver_manipulation(dep, &aptitude_resolver::unharden,
+			resolver_interaction::UnHardenDep(dep));
 }
 
 bool resolver_manager::is_hardened(const aptitude_resolver_dep &dep)
@@ -923,12 +1040,14 @@ bool resolver_manager::is_hardened(const aptitude_resolver_dep &dep)
 
 void resolver_manager::approve_broken_dep(const aptitude_resolver_dep &dep)
 {
-  resolver_manipulation(dep, &aptitude_resolver::approve_break);
+  resolver_manipulation(dep, &aptitude_resolver::approve_break,
+			resolver_interaction::ApproveBrokenDep(dep));
 }
 
 void resolver_manager::unapprove_broken_dep(const aptitude_resolver_dep &dep)
 {
-  resolver_manipulation(dep, &aptitude_resolver::unapprove_break);
+  resolver_manipulation(dep, &aptitude_resolver::unapprove_break,
+			resolver_interaction::UnApproveBrokenDep(dep));
 }
 
 bool resolver_manager::is_approved_broken(const aptitude_resolver_dep &dep)
@@ -955,6 +1074,8 @@ bool resolver_manager::undo()
       background_suspender bs(*this);
 
       undos->undo();
+
+      actions_since_last_solution.push_back(resolver_interaction::Undo());
 
       bs.unsuspend();
       l.release();
