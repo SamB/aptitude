@@ -1,6 +1,6 @@
 // exceptions.h                                     -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -48,6 +48,18 @@ class NoMoreTime:public ProblemResolverError {
  *  another thread.
  */
 class InterruptedException : public ProblemResolverError {
+  int steps;
+public:
+  InterruptedException(int _steps)
+    : steps(_steps)
+  {
+  }
+
+  /** \brief Return the number of steps after which the resolver was
+   *  interrupted.
+   */
+  int get_steps() const { return steps; }
+
   std::string errmsg() const
   {
     return "Dependency solution was interrupted.";

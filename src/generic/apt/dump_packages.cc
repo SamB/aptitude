@@ -34,6 +34,7 @@
 
 #include <dirent.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -517,7 +518,10 @@ namespace aptitude
 			const std::string &outFileName,
 			const std::set<pkgCache::PkgIterator> &visited_packages)
     {
-      FileFd infile(inFileName, FileFd::ReadOnly);
+      int infd = open(inFileName.c_str(), O_RDONLY);
+      if(infd == -1)
+	return;
+      FileFd infile(infd);
       if(!infile.IsOpen() || infile.Failed())
 	return;
 
@@ -531,7 +535,8 @@ namespace aptitude
       if(S_ISDIR(buf.st_mode))
 	return;
 
-      make_directory_and_parents(dirname(outFileName));
+      if(make_directory_and_parents(dirname(outFileName)) != 0)
+	return;
 
       std::ofstream outfile(outFileName.c_str());
       if(!outfile)
@@ -562,7 +567,7 @@ namespace aptitude
       std::vector<std::string> dir_files;
       get_directory_files(dir, dir_files);
 
-      // Don't even create a destination directory with an emtpy
+      // Don't even create a destination directory with an empty
       // input.
       if(dir_files.empty())
 	return;
@@ -593,7 +598,8 @@ namespace aptitude
        if(dir_files.empty())
 	 return;
 
-       make_directory_and_parents(to);
+       if(make_directory_and_parents(to) != 0)
+	 return;
 
        for(std::vector<std::string>::const_iterator it = dir_files.begin();
 	   it != dir_files.end(); ++it)
@@ -602,7 +608,10 @@ namespace aptitude
 	     continue;
 
 	   std::string infilename = from + "/" + *it;
-	   FileFd infile(infilename, FileFd::ReadOnly);
+	   int infd = open(infilename.c_str(), O_RDONLY);
+	   if(infd == -1)
+	     continue;
+	   FileFd infile(infd);
 	   if(!infile.IsOpen() || infile.Failed())
 	     continue;
 
@@ -619,19 +628,31 @@ namespace aptitude
 	     }
 	   else
 	     {
-	       FileFd outfile(to + "/" + *it, FileFd::WriteEmpty);
-	      if(outfile.IsOpen() && !outfile.Failed())
-		CopyFile(infile, outfile);
+	       int outfd = creat((to + "/" + *it).c_str(), 0666);
+	       if(outfd == -1)
+		 continue;
+	       FileFd outfile(outfd);
+	       if(outfile.IsOpen() && !outfile.Failed())
+		 CopyFile(infile, outfile);
 	    }
 	}
     }
 
     void copy_file(const std::string &in, const std::string &out)
     {
-      make_directory_and_parents(dirname(out));
+      // Open the file ourselves to avoid bogus error spewage.
+      int infd = open(in.c_str(), O_RDONLY);
+      if(infd == -1)
+	return;
+      FileFd inFile(infd);
 
-      FileFd inFile(in, FileFd::ReadOnly);
-      FileFd outFile(out, FileFd::WriteEmpty);
+      if(make_directory_and_parents(dirname(out)) != 0)
+	return;
+
+      int outfd = open(out.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0666);
+      if(outfd == -1)
+	return;
+      FileFd outFile(outfd);
 
       CopyFile(inFile, outFile);
     }

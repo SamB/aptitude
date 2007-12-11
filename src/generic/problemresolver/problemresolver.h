@@ -2735,7 +2735,8 @@ public:
     instance_tracker t(*this);
  
 
-    // Counter for debugging (see below)
+    // Counter for checking how long we've been running and for
+    // debugging (see below).
     int odometer = 0;
 
     if(deferred_dirty)
@@ -2761,7 +2762,7 @@ public:
 	{
 	  cwidget::threads::mutex::lock l(execution_mutex);
 	  if(solver_cancelled)
-	    throw InterruptedException();
+	    throw InterruptedException(odometer);
 	}
 
 	update_counts_cache();
