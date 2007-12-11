@@ -450,6 +450,7 @@ namespace aptitude
 	pkgTagFile tag_file(&fd);
 
 	pkgTagSection section;
+	bool first = true;
 	while(tag_file.Step(section))
 	  {
 	    // Look for a Package tag.
@@ -464,6 +465,12 @@ namespace aptitude
 
 	    if(visited_packages.find(pkg) == visited_packages.end())
 	      continue;
+
+	    // Write out a separator if we already write something.
+	    if(first)
+	      first = false;
+	    else
+	      out << std::endl;
 
 	    // Whee, write out the section.
 	    const char *start;
