@@ -28,7 +28,11 @@
 #include <generic/problemresolver/problemresolver.h>
 #include <generic/util/undo.h>
 
+#include <apt-pkg/strutl.h>
+
 #include <sigc++/functors/mem_fun.h>
+
+#include <fstream>
 
 class resolver_manager::resolver_interaction
 {
@@ -252,7 +256,133 @@ public:
   }
 };
 
-void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_package> &visited_packages)
+void resolver_manager::write_test_control_file(const std::set<aptitude_resolver_package> &visited_packages,
+					       int solution_number)
+{
+  static const char * const strBadChars = "\\\"";
+
+  std::string control_filename = resolver_trace_dir + "/APTITUDE.TRACE";
+  std::ofstream control_file(control_filename.c_str());
+  if(!control_file)
+    return; // Should we output an error here?
+
+  // The state files are written out in make_truncated_state_copy.
+  // Here we just indicate the actual installs / removals that are
+  // queued up.
+
+  control_file << "initial {" << std::endl;
+  for(std::set<aptitude_resolver_package>::const_iterator
+	it = visited_packages.begin();
+      it != visited_packages.end();
+      ++it)
+    {
+      const aptitude_resolver_package &p(*it);
+      if(visited_packages.find(p) == visited_packages.end())
+	continue;
+
+      pkg_action_state action = find_pkg_state(p.get_pkg(), *apt_cache_file);
+      std::string actionstr;
+      switch(action)
+	{
+	case pkg_unused_remove:
+	case pkg_auto_remove:
+	case pkg_remove:
+	  actionstr = "remove";
+	  break;
+
+	case pkg_auto_install:
+	case pkg_downgrade:
+	case pkg_install:
+	case pkg_upgrade:
+	  actionstr = std::string("install ") +
+	    (*apt_cache_file)[p.get_pkg()].InstVerIter(*apt_cache_file).VerStr();
+	  break;
+
+	default:
+	  break;
+	}
+
+      if(!actionstr.empty())
+	control_file << "  " << actionstr << " \"" << QuoteString(p.get_name(), strBadChars) << "\"" << std::endl;;
+    }
+
+  control_file << "}" << std::endl;
+  control_file << std::endl;
+
+  {
+    cwidget::threads::mutex::lock sol_l(solutions_mutex);
+
+    for(std::vector<const solution_information *>::const_iterator infIt =
+	  solutions.begin();
+	infIt != solutions.end() && infIt - solutions.begin() <= solution_number;
+	++infIt)
+      {
+	control_file << "test {" << std::endl;
+
+	const solution_information &inf = **infIt;
+	const std::vector<resolver_interaction> &acts =
+	  *inf.get_interactions();
+	const generic_solution<aptitude_universe> &sol = *inf.get_solution();
+
+	for(std::vector<resolver_interaction>::const_iterator actIt =
+	      acts.begin(); actIt != acts.end(); ++actIt)
+	  {
+	    switch(actIt->get_type())
+	      {
+	      case resolver_interaction::reject_version:
+		control_file << "reject " << actIt->get_version() << std::endl;
+		break;
+	      case resolver_interaction::unreject_version:
+		control_file << "unreject " << actIt->get_version() << std::endl;
+		break;
+	      case resolver_interaction::mandate_version:
+		control_file << "mandate " << actIt->get_version() << std::endl;
+		break;
+	      case resolver_interaction::unmandate_version:
+		control_file << "unmandate " << actIt->get_version() << std::endl;
+		break;
+	      case resolver_interaction::harden_dep:
+		control_file << "harden " << actIt->get_dep() << std::endl;
+		break;
+	      case resolver_interaction::unharden_dep:
+		control_file << "unharden " << actIt->get_dep() << std::endl;
+		break;
+	      case resolver_interaction::approve_broken_dep:
+		control_file << "approve_broken " << actIt->get_dep() << std::endl;
+		break;
+	      case resolver_interaction::unapprove_broken_dep:
+		control_file << "unapprove_broken " << actIt->get_dep() << std::endl;
+		break;
+	      case resolver_interaction::undo:
+		control_file << "undo" << std::endl;
+		break;
+	      }
+	  }
+
+	control_file << "  expect " << inf.get_ticks() << " {" << std::endl;
+
+	typedef generic_solution<aptitude_universe>::action action;
+	typedef aptitude_resolver_package package;
+	const imm::map<package, action> &actions = sol.get_actions();
+	for(imm::map<package, action>::const_iterator solActIt =
+	      actions.begin(); solActIt != actions.end(); ++solActIt)
+	  {
+	    control_file << "    \""
+			 << QuoteString(solActIt->first.get_name(), strBadChars)
+			 << "\" \""
+			 << QuoteString(solActIt->second.ver.get_name(), strBadChars)
+			 << "\""
+			 << std::endl;
+	  }
+	control_file << "  }" << std::endl;
+
+	control_file << "}" << std::endl;
+      }
+  }
+}
+
+void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_package> &visited_packages,
+					     int solution_number)
 {
   if(resolver_trace_dir.empty())
     return;
@@ -265,6 +395,7 @@ void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_pa
     }
 
   aptitude::apt::make_truncated_state_copy(resolver_trace_dir, packages);
+  write_test_control_file(visited_packages, solution_number);
 }
 
 // This assumes that background_resolver_active is empty when it
@@ -307,7 +438,8 @@ void resolver_manager::background_thread_execution()
 	  // thread sees that we're out of the resolver when it
 	  // examines the solution.
 	  l.acquire();
-	  dump_visited_packages(visited_packages);
+	  dump_visited_packages(visited_packages,
+				job.sol_num);
 	  background_thread_in_resolver = false;
 	  background_resolver_cond.wake_all();
 	  l.release();
@@ -318,7 +450,8 @@ void resolver_manager::background_thread_execution()
 	{
 	  // Put it back into the pot.
 	  l.acquire();
-	  dump_visited_packages(visited_packages);
+	  dump_visited_packages(visited_packages,
+				job.sol_num);
 	  background_thread_in_resolver = false;
 	  background_resolver_cond.wake_all();
 	  pending_jobs.push(job);
@@ -330,7 +463,8 @@ void resolver_manager::background_thread_execution()
       catch(NoMoreSolutions)
 	{
 	  l.acquire();
-	  dump_visited_packages(visited_packages);
+	  dump_visited_packages(visited_packages,
+				job.sol_num);
 	  background_thread_in_resolver = false;
 	  background_resolver_cond.wake_all();
 	  l.release();
@@ -340,7 +474,8 @@ void resolver_manager::background_thread_execution()
       catch(NoMoreTime)
 	{
 	  l.acquire();
-	  dump_visited_packages(visited_packages);
+	  dump_visited_packages(visited_packages,
+				job.sol_num);
 	  background_thread_in_resolver = false;
 	  background_resolver_cond.wake_all();
 	  l.release();
@@ -349,14 +484,13 @@ void resolver_manager::background_thread_execution()
 	}
       catch(cwidget::util::Exception &e)
 	{
-	  dump_visited_packages(visited_packages);
+	  dump_visited_packages(visited_packages,
+				job.sol_num);
 	  job.k->aborted(e);
 	}
 
       l.acquire();
       delete job.k;
-
-      // If the user asked us to, dump out the 
 
       background_thread_in_resolver = false;
       background_resolver_cond.wake_all();
@@ -717,6 +851,7 @@ resolver_manager::do_get_solution(int max_steps, unsigned int solution_num,
 	}
       catch(NoMoreTime)
 	{
+	  ticks_since_last_solution += max_steps;
 	  throw NoMoreTime();
 	}
       catch(NoMoreSolutions)
