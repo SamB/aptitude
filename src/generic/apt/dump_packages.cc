@@ -31,6 +31,7 @@
 
 #include <aptitude.h>
 #include <generic/util/dirent_safe.h>
+#include <generic/util/temp.h>
 
 #include <dirent.h>
 #include <errno.h>
@@ -669,6 +670,32 @@ namespace aptitude
 	}
     }
 
+    void dump_truncated_apt_extended_states(const std::set<pkgCache::PkgIterator> &visited_packages,
+					    const std::string &outDir)
+    {
+      temp::dir tmp_dir("aptitude-dump-directory");
+      std::string oldStateDir(_config->Find("Dir::State"));
+
+      try
+	{
+	  _config->Set("Dir::State", tmp_dir.get_name());
+	  OpProgress dummy_progress;
+	  (*apt_cache_file)->writeStateFile(&dummy_progress, false);
+	  _config->Set("Dir::State", oldStateDir);
+	}
+      catch(...)
+	{
+	  _config->Set("Dir::State", oldStateDir);
+	  throw;
+	}
+
+      copy_truncated(tmp_dir.get_name() + "/extended_states",
+		     outDir + "/extended_states",
+		     visited_packages);
+
+      unlink((oldStateDir + "/extended_states").c_str());
+    }
+
     // Make a truncated state snapshot.  We need to copy:
     //
     //   $(Dir::Aptitude::state)
@@ -692,6 +719,14 @@ namespace aptitude
 
 	copy_truncated(statefile, outDir + "/" + statefile,
 		       visited_packages);
+      }
+
+      {
+	const std::string state_dir = _config->FindDir("Dir::state");
+
+	if(!state_dir.empty())
+	  dump_truncated_apt_extended_states(visited_packages,
+					     outDir + "/" + state_dir);
       }
 
       {
