@@ -696,6 +696,8 @@ namespace aptitude
 	  throw;
 	}
 
+      make_directory_and_parents(outDir);
+
       copy_truncated(tmp_dir.get_name() + "/extended_states",
 		     outDir + "/extended_states",
 		     visited_packages);
