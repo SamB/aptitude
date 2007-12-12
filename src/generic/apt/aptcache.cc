@@ -580,7 +580,14 @@ bool aptitudeDepCache::save_selection_list(OpProgress &prog,
   if(lock==-1 && !status_fname)
     return true;
 
-  writeStateFile(&prog);
+  // Don't write the global apt state file if we're not writing our
+  // own global state.  TODO: this means that su-to-root will lose
+  // automatic states! (but we couldn't do anything about it anyway
+  // because we're not root and so can't write the global state file)
+  // Ow, that sucks.  The solution will be to write the apt states to
+  // a separate file.
+  if(status_fname == NULL)
+    writeStateFile(&prog);
 
   string statefile=_config->FindDir("Dir::Aptitude::state", STATEDIR)+"pkgstates";
 
