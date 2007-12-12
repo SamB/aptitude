@@ -705,9 +705,32 @@ namespace aptitude
       unlink((oldStateDir + "/extended_states").c_str());
     }
 
+    void dump_truncated_aptitude_states(const std::set<pkgCache::PkgIterator> &visited_packages,
+					const std::string &outDir)
+    {
+      temp::dir tmp_dir("aptitude-dump-directory");
+      temp::name tmp_states(tmp_dir, "aptitude_states");
+      OpProgress progress;
+
+      if(!(*apt_cache_file)->save_selection_list(progress,
+						 tmp_states.get_name().c_str()))
+	return;
+
+      const std::string aptitude_state_dir =
+	_config->FindDir("Dir::Aptitude::state", STATEDIR);
+      make_directory_and_parents(aptitude_state_dir);
+
+      const std::string state_file = aptitude_state_dir + "pkgstates";
+      const std::string out_file = outDir + "/" + state_file;
+      copy_truncated(tmp_states.get_name(),
+		     out_file,
+		     visited_packages);
+    }
+
     // Make a truncated state snapshot.  We need to copy:
     //
-    //   $(Dir::Aptitude::state)
+    //   $(Dir::Aptitude::state)/pkgstates -- but a newly written
+    //                                        version.
     //   $(Dir::State::lists)/*
     //   $(Dir::State::status)/*
     //   $(Dir::Etc::sourceparts)/*
@@ -723,11 +746,7 @@ namespace aptitude
 				   const std::set<pkgCache::PkgIterator> &visited_packages)
     {
       {
-	// WARNING: duplicated from other places.
-	const string statefile = _config->FindDir("Dir::Aptitude::state", STATEDIR)+"pkgstates";
-
-	copy_truncated(statefile, outDir + "/" + statefile,
-		       visited_packages);
+	dump_truncated_aptitude_states(visited_packages, outDir);
       }
 
       {
