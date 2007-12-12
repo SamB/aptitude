@@ -347,11 +347,29 @@ private:
   class background_suspender;
   friend class background_suspender;
 
+  /** \brief Write a test control file, which can be used to replicate
+   * test output.
+   *
+   *  \param visited_packages   the packages visited by the problem resolver.
+   *
+   *  \param solution_number the setup and parameters used to compute
+   *  all solutions up to and including this solution index will be
+   *  dumped to the file.
+   */
+  void write_test_control_file(const std::set<aptitude_resolver_package> &visited_packages,
+				int solution_number);
+
   /** \brief Dump the visited packages to a file if necessary.
    *
    *  Must be called with background_control_mutex held.
+   *
+   *  \param visited_packages  the packages touched by the
+   *                           problem resolver.
+   *  \param solution_number   the index of the last solution to
+   *                           dump a test for.
    */
-  void dump_visited_packages(const std::set<aptitude_resolver_package> &visited_packages);
+  void dump_visited_packages(const std::set<aptitude_resolver_package> &visited_packages,
+			     int solution_number);
 
   /** Low-level code to get a solution; it does not take the global
    *  lock, does not stop a background thread, and may run either in

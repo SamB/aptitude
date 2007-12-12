@@ -1410,9 +1410,12 @@ void aptitudeDepCache::restore_apt_state(const apt_state_snapshot *snapshot)
   iBadCount=snapshot->iBadCount;
 }
 
-void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> &sol,
+void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> &realSol,
 				      undo_group *undo)
 {
+  // Make a local copy so we don't crash when applying the solution.
+  const generic_solution<aptitude_universe> sol(realSol);
+
   if(read_only && !read_only_permission())
     {
       if(group_level == 0)
