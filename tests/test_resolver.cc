@@ -1,6 +1,6 @@
 // test_resolver.cc                       -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -302,7 +302,7 @@ private:
 
     try
       {
-	r.find_next_solution(1000000);
+	r.find_next_solution(1000000, NULL);
       }
     catch(NoMoreSolutions)
       {
@@ -328,7 +328,7 @@ private:
 
     try
       {
-	s = r.find_next_solution(100);
+	s = r.find_next_solution(100, NULL);
       }
     catch(NoMoreSolutions)
       {
@@ -340,7 +340,7 @@ private:
 
     try
       {
-	s = r.find_next_solution(100);
+	s = r.find_next_solution(100, NULL);
       }
     catch(NoMoreSolutions)
       {
