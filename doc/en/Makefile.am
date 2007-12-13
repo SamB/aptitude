@@ -16,7 +16,7 @@ all-local: doc-stamp
 
 clean-local:
 	-rm -fr output-html/ output-txt/ output-man/
-	-rm -f doc-stamp doc-css-stamp doc-html-stamp doc-txt-stamp doc-man-stamp
+	-rm -f doc-stamp doc-css-stamp doc-html-stamp doc-txt-stamp man-stamp
 	-rm -fr aptitude.8 $(README)
 
 man_MANS=aptitude.8 aptitude-create-state-bundle.1 aptitude-run-state-bundle.1
