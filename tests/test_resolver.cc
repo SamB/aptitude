@@ -355,6 +355,15 @@ private:
     // for is present, it'll try to install a:v2 again; otherwise
     // it'll reject that solution as containing a conflict.
     CPPUNIT_ASSERT(s.version_of(a) != av2);
+
+    try
+      {
+	s = r.find_next_solution(100, NULL);
+	CPPUNIT_FAIL("Expected exactly two solutions, got more than two.");
+      }
+    catch(NoMoreSolutions)
+      {
+      }
   }
 };
 
