@@ -702,7 +702,7 @@ namespace aptitude
 		     outDir + "/extended_states",
 		     visited_packages);
 
-      unlink((oldStateDir + "/extended_states").c_str());
+      unlink((tmp_dir.get_name() + "/extended_states").c_str());
     }
 
     void dump_truncated_aptitude_states(const std::set<pkgCache::PkgIterator> &visited_packages,
