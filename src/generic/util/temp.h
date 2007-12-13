@@ -1,6 +1,6 @@
 // temp.h                                 -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -68,6 +68,20 @@ namespace temp
      */
     dir(const std::string &prefix);
 
+    /** \brief Create a new temporary directory.
+     *
+     *  \param prefix   the text with which the new directory's
+     *                  name should begin.
+     *  \param forceful_delete   if \b true, the new directory
+     *                           and all its contents will be
+     *                           unconditionally removed when
+     *                           all references to it leave scope.
+     *                           Otherwise, the directory
+     *                           will only be deleted if it is
+     *                           not empty.
+     */
+    dir(const std::string &prefix, bool forceful_delete);
+
     /** Create a new temporary directory that is a subdirectory of an
      *  existing directory and whose name begins with prefix.
      *
@@ -110,6 +124,11 @@ namespace temp
 
     int refcount;
 
+    /** \brief If \b true, the directory will be deleted as if with rm
+     *  -rf; otherwise it's deleted as if with rmdir.
+     */
+    bool forceful_delete;
+
     /** Set up a temporary directory with the given prefix.
      *
      *  Contains common code for the constructors.
@@ -127,10 +146,13 @@ namespace temp
      *  prefix begins with a '/', then it is considered an absolute
      *  path; otherwise, it is considered a relative path within the
      *  system temporary directory.
+     *  \param forceful_delete If \b true, the directory will be
+     *  deleted as if with rm -rf; otherwise it's deleted as if with
+     *  rmdir.
      *
      *  \throws TemporaryCreationFailure
      */
-    impl(const std::string &prefix);
+    impl(const std::string &prefix, bool forceful_delete);
 
     /** Create a new temporary directory within another temporary
      *  directory.
@@ -140,10 +162,13 @@ namespace temp
      *                with a '/'
      *  \param parent the parent directory to create this directory
      *                within
+     *  \param forceful_delete If \b true, the directory will be
+     *  deleted as if with rm -rf; otherwise it's deleted as if with
+     *  rmdir.
      *
      *  \throws TemporaryCreationFailure
      */
-    impl(const std::string &prefix, const dir &parent);
+    impl(const std::string &prefix, const dir &parent, bool forceful_delete);
 
     /** Attempt to remove the temporary directory. */
     ~impl();
@@ -182,12 +207,17 @@ namespace temp
   };
 
   inline dir::dir(const std::string &prefix)
-    : real_dir(new impl(prefix))
+    : real_dir(new impl(prefix, false))
+  {
+  }
+
+  inline dir::dir(const std::string &prefix, bool forceful_delete)
+    : real_dir(new impl(prefix, forceful_delete))
   {
   }
 
   inline dir::dir(const std::string &prefix, const dir &parent)
-    : real_dir(new impl(prefix, parent))
+    : real_dir(new impl(prefix, parent, false))
   {
   }
 

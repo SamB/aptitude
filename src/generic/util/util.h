@@ -75,6 +75,22 @@ std::string sstrerror(int errnum);
  */
 std::string get_homedir();
 
+namespace aptitude
+{
+  namespace util
+  {
+    /** Remove the given file/directory and all its children.  Behaves
+     *  like rm -fr.
+     *
+     *  Errors are logged to _error.
+     *
+     *  \param dirname   the directory (or file) to remove.
+     *  \return \b true if successful, \b false otherwise.
+     */
+    bool recursive_remdir(const std::string &dirname);
+  }
+}
+
 /** Compare pairs, with (a,b) considered eqivalent to (b,a). */
 template<typename T>
 struct orderless_lt

@@ -1,6 +1,6 @@
 // temp.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -24,6 +24,8 @@
 #include <aptitude.h>
 
 #include <stdlib.h>
+
+#include <apt-pkg/error.h>
 
 namespace temp
 {
@@ -72,14 +74,14 @@ namespace temp
     delete[] tmpl;
   }
 
-  dir::impl::impl(const std::string &prefix)
-    : refcount(1)
+  dir::impl::impl(const std::string &prefix, bool _forceful_delete)
+    : refcount(1), forceful_delete(_forceful_delete)
   {
     init_dir(prefix);
   }
 
-  dir::impl::impl(const std::string &prefix, const dir &_parent)
-    : parent(_parent), refcount(1)
+  dir::impl::impl(const std::string &prefix, const dir &_parent, bool _forceful_delete)
+    : parent(_parent), refcount(1), forceful_delete(_forceful_delete)
   {
     if(prefix.size() > 0 && prefix[0] == '/')
       throw TemporaryCreationFailure("Invalid attempt to create an absolute rooted temporary directory.");
@@ -89,7 +91,13 @@ namespace temp
 
   dir::impl::~impl()
   {
-    rmdir(dirname.c_str());
+    if(forceful_delete)
+      aptitude::util::recursive_remdir(dirname);
+    else
+      {
+	if(rmdir(dirname.c_str()) != 0)
+	  _error->Errno("rmdir", _("Unable to delete temporary directory \"%s\""), dirname.c_str());
+      }
   }
 
 

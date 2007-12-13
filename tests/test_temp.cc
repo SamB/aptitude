@@ -1,6 +1,6 @@
 // test_temp.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -47,14 +47,18 @@ class TempTest : public CppUnit::TestFixture
 public:
   void testTempDir()
   {
-    std::string d1name, d2name;
+    std::string d1name, d2name, d3name, d4name;
 
     {
       temp::dir d1("tmp");
       temp::dir d2("tmp", d1);
+      temp::dir d3("tmp");
+      temp::dir d4("tmp", true);
 
       d1name = d1.get_name();
       d2name = d2.get_name();
+      d3name = d3.get_name();
+      d4name = d4.get_name();
 
       int result = access(d1name.c_str(), F_OK);
       if(result != 0)
@@ -87,6 +91,9 @@ public:
 
       ASSERT_STAT(d2.get_name().c_str(), &stbuf);
       CPPUNIT_ASSERT(S_ISDIR(stbuf.st_mode));
+
+      close(creat((d3name + "/" + "foo").c_str(), 0644));
+      close(creat((d4name + "/" + "foo").c_str(), 0644));
     }
 
     int result = access(d1name.c_str(), F_OK);
@@ -94,6 +101,19 @@ public:
     CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
 
     result = access(d2name.c_str(), F_OK);
+    CPPUNIT_ASSERT(result != 0);
+    CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
+
+    result = access(d3name.c_str(), F_OK);
+    CPPUNIT_ASSERT(result == 0);
+
+    CPPUNIT_ASSERT(aptitude::util::recursive_remdir(d3name));
+
+    result = access(d3name.c_str(), F_OK);
+    CPPUNIT_ASSERT(result != 0);
+    CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
+
+    result = access(d4name.c_str(), F_OK);
     CPPUNIT_ASSERT(result != 0);
     CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
   }
