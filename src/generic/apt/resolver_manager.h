@@ -294,6 +294,15 @@ private:
    */
   std::string resolver_trace_dir;
 
+  /** If set to a non-empty string, an excerpt of the cache
+   *  corresponding to the packages touched by the resolver will be
+   *  archived and written to this file whenever the resolver finishes
+   *  running.
+   *
+   *  This is in the scope of background_control_mutex.
+   */
+  std::string resolver_trace_file;
+
   /** The number of times the background thread has been suspended; it
    *  will only be allowed to run if this value is 0.
    */
@@ -356,8 +365,9 @@ private:
    *  all solutions up to and including this solution index will be
    *  dumped to the file.
    */
-  void write_test_control_file(const std::set<aptitude_resolver_package> &visited_packages,
-				int solution_number);
+  void write_test_control_file(const std::string &outDir,
+			       const std::set<aptitude_resolver_package> &visited_packages,
+			       int solution_number);
 
   /** \brief Dump the visited packages to a file if necessary.
    *

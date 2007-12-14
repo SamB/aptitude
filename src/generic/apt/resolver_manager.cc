@@ -26,13 +26,18 @@
 #include "dump_packages.h"
 
 #include <generic/problemresolver/problemresolver.h>
+#include <generic/util/temp.h>
 #include <generic/util/undo.h>
 
+#include <apt-pkg/error.h>
 #include <apt-pkg/strutl.h>
 
 #include <sigc++/functors/mem_fun.h>
 
 #include <fstream>
+
+#include <sys/types.h>
+#include <sys/wait.h>
 
 class resolver_manager::resolver_interaction
 {
@@ -256,12 +261,13 @@ public:
   }
 };
 
-void resolver_manager::write_test_control_file(const std::set<aptitude_resolver_package> &visited_packages,
+void resolver_manager::write_test_control_file(const std::string &outDir,
+					       const std::set<aptitude_resolver_package> &visited_packages,
 					       int solution_number)
 {
   static const char * const strBadChars = "\\\"";
 
-  std::string control_filename = resolver_trace_dir + "/APTITUDE.TRACE";
+  std::string control_filename = outDir + "/APTITUDE.TRACE";
   std::ofstream control_file(control_filename.c_str());
   if(!control_file)
     return; // Should we output an error here?
@@ -384,7 +390,16 @@ void resolver_manager::write_test_control_file(const std::set<aptitude_resolver_
 void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_package> &visited_packages,
 					     int solution_number)
 {
-  if(resolver_trace_dir.empty())
+  std::string trace_dir;
+  temp::dir temp_trace_dir;
+  if(!resolver_trace_dir.empty())
+    trace_dir = resolver_trace_dir;
+  else if(!resolver_trace_file.empty())
+    {
+      temp_trace_dir = temp::dir("aptitude-trace-dump", true);
+      trace_dir = temp_trace_dir.get_name();
+    }
+  else
     return;
 
   std::set<pkgCache::PkgIterator> packages;
@@ -394,8 +409,46 @@ void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_pa
       packages.insert((*it).get_pkg());
     }
 
-  aptitude::apt::make_truncated_state_copy(resolver_trace_dir, packages);
-  write_test_control_file(visited_packages, solution_number);
+  aptitude::apt::make_truncated_state_copy(trace_dir, packages);
+  write_test_control_file(trace_dir, visited_packages, solution_number);
+
+  if(!resolver_trace_file.empty())
+    {
+      int pid = fork();
+      if(pid == -1)
+	_error->Errno("fork", "Unable to run \"tar\" to create the trace file.");
+      else if(pid != 0)
+	{
+	  int status;
+	  while(waitpid(pid, &status, 0) != pid ||
+		(!WIFEXITED(status) &&
+		 !WIFSIGNALED(status)))
+	    ;
+
+	  if(WIFSIGNALED(status))
+	    _error->Error("Unable to create the output file: child killed by signal %d.", WTERMSIG(status));
+	  else if(WEXITSTATUS(status) != 0)
+	    _error->Error("Unable to create the output file: child exited with status %d.", WEXITSTATUS(status));
+
+	  // Whee, we win!
+	}
+      else
+	{
+	  // Should I close open fds here?
+
+	  // Should I allow tar to be found on the path?
+	  execl("/bin/tar", "/bin/tar", "czf",
+		resolver_trace_file.c_str(),
+		"-C",
+		trace_dir.c_str(),
+		".",
+		NULL);
+
+	  // TODO: communicate to the parent that we couldn't find
+	  // tar?
+	  exit(1);
+	}
+    }
 }
 
 // This assumes that background_resolver_active is empty when it
@@ -602,6 +655,7 @@ void resolver_manager::maybe_create_resolver()
       {
 	cwidget::threads::mutex::lock l(background_control_mutex);
 	resolver_trace_dir = aptcfg->Find(PACKAGE "::ProblemResolver::Trace-Directory", "");
+	resolver_trace_file = aptcfg->Find(PACKAGE "::ProblemResolver::Trace-File", "");
       }
       create_resolver();
     }
