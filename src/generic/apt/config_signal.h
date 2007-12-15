@@ -208,4 +208,55 @@ public:
   void Dump(std::ostream &out);
 };
 
+// Used to generate stack-scoped changes to a config member.
+//
+// TODO: should take a config_signal, but I need Clear() and
+// config_signal doesn't implement that.
+class config_change_pusher
+{
+  const std::string key;
+
+  std::string old_value;
+
+  Configuration &cfg;
+
+public:
+  config_change_pusher(const std::string &_key, const std::string &val,
+		       Configuration &_cfg)
+    : key(_key), cfg(_cfg)
+  {
+    old_value = cfg.Find(key);
+    cfg.Set(key, val);
+  }
+
+  config_change_pusher(const std::string &_key, const char *val,
+		       Configuration &_cfg)
+    : key(_key), cfg(_cfg)
+  {
+    old_value = cfg.Find(key);
+    cfg.Set(key, val);
+  }
+
+  config_change_pusher(const std::string &_key, int val,
+		       Configuration &_cfg)
+    : key(_key), cfg(_cfg)
+  {
+    old_value = cfg.Find(key);
+    cfg.Set(key.c_str(), val);
+  }
+
+  config_change_pusher(const std::string &_key, bool val,
+		       Configuration &_cfg)
+    : key(_key), cfg(_cfg)
+  {
+    old_value = cfg.Find(key);
+    cfg.Set(key, val ? "true" : "false");
+  }
+
+  ~config_change_pusher()
+  {
+    cfg.Set(key, old_value);
+  }
+};
+
 #endif
