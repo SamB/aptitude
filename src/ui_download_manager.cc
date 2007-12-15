@@ -1,6 +1,6 @@
 // ui_download_manager.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -96,7 +96,10 @@ void ui_download_manager::done(download_thread *, pkgAcquire::RunResult res)
 			 sigc::mem_fun(this,
 				       &ui_download_manager::done)))->start();
   else
-    delete this;
+    {
+      download_complete(run_res == download_manager::success);
+      delete this;
+    }
 }
 
 void ui_download_manager::start()

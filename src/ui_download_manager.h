@@ -1,6 +1,6 @@
 // ui_download_manager.h                           -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -29,6 +29,7 @@
 
 #include <cwidget/generic/util/ref_ptr.h>
 
+#include <sigc++/signal.h>
 #include <sigc++/trackable.h>
 
 class download_manager;
@@ -95,6 +96,15 @@ public:
   ~ui_download_manager();
 
   void start();
+
+  /** \brief A signal emitted when the download and any post-download
+   *  actions are finished.
+   *
+   *  The parameter is \b true if the download was sucessful and \b
+   *  false otherwise.  The signal is always emitted in the foreground
+   *  thread.
+   */
+  sigc::signal<void, bool> download_complete;
 };
 
 
