@@ -21,17 +21,40 @@
 #include <cwidget/toplevel.h>
 #include <cwidget/generic/util/ssprintf.h>
 
+#include <sigc++/bind.h>
 #include <sigc++/functors/ptr_fun.h>
 
 namespace cw = cwidget;
 
+namespace
+{
+  const int no_install_run_from_ui_preview_return = -1;
+  const int ui_preview_install_failed_return = -1;
+
+  // Completion routine for the UI preview; causes the program to
+  // return 0 if the install succeded and 1 otherwise.
+  //
+  // There's a question in my mind of what to do if the user cancels
+  // the preview or runs multiple previews.  At the moment we return
+  // -1 if the preview is cancelled and the result of the last install
+  // run otherwise.
+  void ui_preview_complete(bool success, int *result)
+  {
+    *result = success ? 0 : ui_preview_install_failed_return;
+  }
+}
+
 void ui_preview()
 {
+  int result = no_install_run_from_ui_preview_return;
+
   ui_init();
   file_quit.connect(sigc::ptr_fun(cwidget::toplevel::exitmain));
+  install_finished.connect(sigc::bind(sigc::ptr_fun(ui_preview_complete),
+				      &result));
   do_package_run_or_show_preview();
   ui_main();
-  exit(0);
+  exit(result);
 }
 
 void ui_solution_screen()
