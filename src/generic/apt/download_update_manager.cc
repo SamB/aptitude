@@ -23,6 +23,7 @@
 #include "config_signal.h"
 #include "download_signal_log.h"
 
+#include <apt-pkg/acquire-item.h>
 #include <apt-pkg/cachefile.h>
 #include <apt-pkg/clean.h>
 #include <apt-pkg/error.h>
@@ -137,6 +138,27 @@ download_update_manager::finish(pkgAcquire::RunResult res,
   if(need_forget_new || need_autoclean)
     apt_load_cache(&progress, true);
 
+  result rval = success;
+
+  // We need to claim that the download failed if any source failed,
+  // and invoke Finished() on any failed items.
+  //
+  // See also apt-get.cc.
+  for(pkgAcquire::ItemIterator it = fetcher->ItemsBegin();
+      it != fetcher->ItemsEnd(); ++it)
+    {
+      if((*it)->Status == pkgAcquire::Item::StatDone)
+	continue;
+
+      (*it)->Finished();
+
+      if((*it)->Status == pkgAcquire::Item::StatTransientNetworkError)
+	continue;
+
+      // Q: should I display an error message for this source?
+      rval = failure;
+    }
+
   if(apt_cache_file != NULL && need_forget_new)
     {
       (*apt_cache_file)->forget_new(NULL);
@@ -155,6 +177,6 @@ download_update_manager::finish(pkgAcquire::RunResult res,
       post_autoclean_hook();
     }
 
-  return success;
+  return rval;
 }
 
