@@ -193,6 +193,9 @@ sigc::signal0<bool, cw::util::accumulate_or> find_limit;
 sigc::signal0<bool, cw::util::accumulate_or> find_cancel_limit;
 sigc::signal0<bool, cw::util::accumulate_or> find_broken;
 
+sigc::signal1<void, bool> install_finished;
+sigc::signal1<void, bool> update_finished;
+
 const char *default_pkgstatusdisplay="%d";
 const char *default_pkgheaderdisplay="%N %n #%B %u %o";
 const char *default_grpstr="task,status,section(subdir,passthrough),section(topdir)";
@@ -1161,10 +1164,14 @@ void install_or_remove_packages()
   m->post_install_hook.connect(sigc::ptr_fun(&finish_install_run));
   m->post_forget_new_hook.connect(package_states_changed.make_slot());
 
-  (new ui_download_manager(m, false, false, true,
-			   _("Downloading packages"),
-			   _("View the progress of the package download"),
-			   _("Package Download")))->start();
+  ui_download_manager *uim =
+    new ui_download_manager(m, false, false, true,
+			    _("Downloading packages"),
+			    _("View the progress of the package download"),
+			    _("Package Download"));
+
+  uim->download_complete.connect(install_finished.make_slot());
+  uim->start();
 }
 
 /** Make sure that no trust violations are about to be committed.  If
@@ -1506,10 +1513,14 @@ void really_do_update_lists()
   m->pre_autoclean_hook.connect(sigc::bind(sigc::ptr_fun(lists_autoclean_msg),
 					   m));
   m->post_forget_new_hook.connect(package_states_changed.make_slot());
-  (new ui_download_manager(m, false, true, false,
-			   _("Updating package lists"),
-			   _("View the progress of the package list update"),
-			   _("List Update")))->start();
+  ui_download_manager *uim =
+    new ui_download_manager(m, false, true, false,
+			    _("Updating package lists"),
+			    _("View the progress of the package list update"),
+			    _("List Update"));
+
+  uim->download_complete.connect(update_finished.make_slot());
+  uim->start();
 }
 
 void do_update_lists()

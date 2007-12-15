@@ -175,6 +175,16 @@ extern sigc::signal0<bool, cwidget::util::accumulate_or> find_broken;
 
 /*****************************************************************************/
 
+/** \brief Emitted when an install completes.  The parameter is \b
+ *  true if the install succeeded and \b false otherwise.
+ */
+extern sigc::signal1<void, bool> install_finished;
+
+/** \brief Emitted when a list update completes.  The parameter is \b
+ *  true if the update succeeded and \b false otherwise.
+ */
+extern sigc::signal1<void, bool> update_finished;
+
 void ui_init();
 void ui_main();
 
