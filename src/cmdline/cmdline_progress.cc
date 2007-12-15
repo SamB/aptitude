@@ -37,9 +37,6 @@ download_signal_log *gen_cmdline_download_progress()
 {
   download_signal_log *m=new download_signal_log;
 
-  // FIXME: LEAK!!!!  (since the command-line stuff will only use this once
-  // and then terminate, and killing this leak is a major pain, I'm
-  // letting it by for now, but this MUST BE FIXED EVENTUALLY!)
   AcqTextStatus *acqprogress=new AcqTextStatus(screen_width, aptcfg->FindI("Quiet", 0));
 
   m->MediaChange_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::MediaChange));
@@ -52,9 +49,6 @@ download_signal_log *gen_cmdline_download_progress()
   m->Stop_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Stop));
   m->Complete_sig.connect(sigc::bind(sigc::ptr_fun(dl_complete),
 				     acqprogress));
-
-  // FIXME: Maybe the AcqTextStatus should be deleted on Complete?
-  //m->Complete_sig.connect(sigc::mem_fun(acqprogress, &AcqTextStatus::Complete));
 
   return m;
 }
