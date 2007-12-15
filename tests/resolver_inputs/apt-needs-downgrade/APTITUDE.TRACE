@@ -1,0 +1,11 @@
+initial {
+}
+
+test {
+  expect 5000 {
+    "aptitude" "[UNINST]"
+    "libapt-pkg-perl" "[UNINST]"
+    "apt-file" "[UNINST]"
+    "aptitude-dbg" "[UNINST]"
+  }
+}

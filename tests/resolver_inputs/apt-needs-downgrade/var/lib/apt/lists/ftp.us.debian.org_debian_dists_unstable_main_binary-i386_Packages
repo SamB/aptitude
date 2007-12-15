@@ -1,0 +1,116 @@
+Package: apt
+Priority: important
+Section: admin
+Installed-Size: 5016
+Maintainer: APT Development Team <deity@lists.debian.org>
+Architecture: i386
+Version: 0.7.9
+Provides: libapt-pkg-libc6.6-6-4.6
+Suggests: aptitude
+Filename: pool/main/a/apt/apt_0.7.9_i386.deb
+Size: 1591780
+MD5sum: fb0f84ae20a57dffa65b6c521aec1107
+SHA1: b2f245051812d74538c01138168f96793fb19518
+SHA256: 367b0703dc868c61ea2489e4bc2137ab19c3599c112834bea4c96ef51fc8795b
+Description: Advanced front-end for dpkg
+ This is Debian's next generation front-end for the dpkg package manager.
+ It provides the apt-get utility and APT dselect method that provides a
+ simpler, safer way to install and upgrade packages.
+ .
+ APT features complete installation ordering, multiple source capability
+ and several other unique features, see the Users Guide in apt-doc.
+Build-Essential: yes
+Tag: admin::package-management, filetransfer::ftp, filetransfer::http, hardware::storage, hardware::storage:cd, interface::commandline, network::client, protocol::{ftp,http,ipv6}, role::program, suite::debian, use::downloading, use::searching, works-with::software:package
+
+Package: apt-file
+Priority: optional
+Section: admin
+Installed-Size: 96
+Maintainer: Sebastien J. Gross <sjg@debian.org>
+Architecture: all
+Version: 2.0.8.2
+Depends: libapt-pkg-perl
+Filename: pool/main/a/apt-file/apt-file_2.0.8.2_all.deb
+Size: 12902
+MD5sum: 369114261071e005a8b54b250208fb91
+SHA1: ebab2159475c5699cd56a731afbe534bfa285061
+SHA256: 0b53d7f7d28bbe957e3eb2289d033c2ae6f6932459bd97f1d503b8bbb03eb970
+Description: APT package searching utility -- command-line interface
+ apt-file is a command line tool for searching packages for the APT
+ packaging system.
+ .
+ Unlike apt-cache, you can search in which package a file is included
+ or list the contents of a package without installing or fetching it.
+ .
+ Please read README file for curl or wget instructions.
+Tag: implemented-in::perl, interface::commandline, role::program, suite::debian, use::searching, works-with::file, works-with::software:package
+
+Package: aptitude
+Priority: important
+Section: admin
+Installed-Size: 7544
+Maintainer: Daniel Burrows <dburrows@debian.org>
+Architecture: i386
+Version: 0.4.9-2
+Depends: libapt-pkg-libc6.6-6-4.6
+Filename: pool/main/a/aptitude/aptitude_0.4.9-2_i386.deb
+Size: 2404946
+MD5sum: 5fe451d1dff329c88ddb4ea0e5ab6a3d
+SHA1: 853e258e5e50b02dbdb199fff7a4381ba15fbe2e
+SHA256: 0c008f0ad3e667ece66eed55380c445868d8da38b90f4e405069159da7a687cd
+Description: terminal-based package manager
+ aptitude is a terminal-based package managemer with a number of
+ useful features, including: a mutt-like syntax for matching packages
+ in a flexible manner, dselect-like persistence of user actions, the
+ ability to retrieve and display the Debian changelog of most
+ packages, and a command-line mode similar to that of apt-get.
+ .
+ aptitude is also Y2K-compliant, non-fattening, naturally cleansing,
+ and housebroken.
+Tag: admin::configuring, admin::package-management, implemented-in::c++, interface::commandline, interface::text-mode, role::program, scope::application, suite::debian, uitoolkit::ncurses, use::browsing, use::configuring, works-with::software:package
+
+Package: aptitude-dbg
+Priority: extra
+Section: devel
+Installed-Size: 18732
+Maintainer: Daniel Burrows <dburrows@debian.org>
+Architecture: i386
+Source: aptitude
+Version: 0.4.9-2
+Depends: aptitude (= 0.4.9-2)
+Filename: pool/main/a/aptitude/aptitude-dbg_0.4.9-2_i386.deb
+Size: 6348394
+MD5sum: 4d5b181b44b05615adec15a54b637a18
+SHA1: e33db1cabfe4e338ffb9553d18ae38e7c1dff9e1
+SHA256: b12ab82584bef4c21571bbf44d876ae23f62b042f06df892a259a27943bf17e8
+Description: Debug symbols for the aptitude package manager
+ aptitude is a terminal-based package manager with a number of useful
+ features, including: a mutt-like syntax for matching packages in a
+ flexible manner, dselect-like persistence of user actions, the
+ ability to retrieve and display the Debian changelog of most
+ packages, and a command-line mode similar to that of apt-get.
+ .
+ This package contains the debugging symbols for aptitude.  You only
+ need these if you want to generate debugging backtraces of aptitude;
+ if you do, you probably also want the debug package for the cwidget
+ library.
+
+Package: libapt-pkg-perl
+Priority: optional
+Section: perl
+Installed-Size: 248
+Maintainer: Brendan O'Dea <bod@debian.org>
+Architecture: i386
+Source: libapt-pkg-perl (0.1.21)
+Version: 0.1.21+b2
+Depends: libapt-pkg-libc6.6-6-4.6
+Filename: pool/main/liba/libapt-pkg-perl/libapt-pkg-perl_0.1.21+b2_i386.deb
+Size: 87804
+MD5sum: e8d90d56393c3b54e2c85ee8056b2039
+SHA1: 5ab17877543d3266012ae876353351cba04eff5c
+SHA256: 25ce6b1a2621b6f180d9965f0b93f206b47884b560a44fe265a0fc9306fe1d8c
+Description: Perl interface to libapt-pkg
+ A Perl interface to APT's libapt-pkg which provides modules for configuration
+ file/command line parsing, version comparison, inspection of the binary
+ package cache and source package details.
+Tag: admin::package-management, devel::{debian,lang:perl,library}, implemented-in::perl, role::shared-lib, suite::debian, works-with::software:package
