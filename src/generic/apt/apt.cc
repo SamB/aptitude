@@ -73,6 +73,10 @@ resolver_manager *resman = NULL;
 string *pendingerr=NULL;
 bool erroriswarning=false;
 
+// Set to "true" if we have a version of the apt library with
+// support for overriding configuration settings via RootDir.
+static bool apt_knows_about_rootdir;
+
 static Configuration *theme_config;
 static Configuration *user_config;
 
@@ -110,9 +114,36 @@ static void reload_user_pkg_hier()
     }
 }
 
+bool get_apt_knows_about_rootdir()
+{
+  return apt_knows_about_rootdir;
+}
+
 void apt_preinit()
 {
   signal(SIGPIPE, SIG_IGN);
+
+  // Probe apt to see if it has RootDir support.
+  {
+    Configuration tmp;
+    config_change_pusher push1("RootDir", "/a/b/c/d", tmp);
+    config_change_pusher push2("Dir::ASDF", "/x/y/z", tmp);
+
+    std::string found_loc = tmp.FindFile("Dir::ASDF");
+
+    std::string real_found_loc;
+    for(std::string::const_iterator it = found_loc.begin();
+	it != found_loc.end(); ++it)
+      {
+	// Drop repeated slashes.
+	if(*it != '/' || real_found_loc.size() == 0 ||
+	   real_found_loc[real_found_loc.size() - 1] != '/')
+	  real_found_loc.push_back(*it);
+      }
+
+    apt_knows_about_rootdir =
+      (real_found_loc == "/a/b/c/d/x/y/z");
+  }
 
   theme_config=new Configuration;
   user_config=new Configuration;

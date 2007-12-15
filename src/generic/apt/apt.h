@@ -74,6 +74,13 @@ void apt_init(OpProgress *progess_bar,
 /** Close the cache file and destroy the associated data structures. */
 void apt_close_cache();
 
+/** \return \b true if the version of the apt library against
+ *  which we are running supports the RootDir convention.
+ *
+ *  This returns \b false if apt_preinit() has not yet been invoked.
+ */
+bool get_apt_knows_about_rootdir();
+
 /** If the cache is closed, open it; otherwise do nothing.
  *
  *  \param progress_bar a progress bar with which to display the
