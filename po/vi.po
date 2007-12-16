@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-11-21 21:11-0800\n"
-"PO-Revision-Date: 2007-07-09 15:42+0930\n"
+"PO-Revision-Date: 2007-12-01 17:01+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: LocFactoryEditor 1.6.4a6\n"
+"X-Generator: LocFactoryEditor 1.7b1\n"
 
 #: src/apt_options.cc:160
 msgid "Display some available commands at the top of the screen"
@@ -26,9 +26,10 @@ msgid ""
 "If this option is enabled, a brief summary of some of the most important "
 "aptitude commands will appear beneath the menu bar."
 msgstr ""
+"Không bật tùy chọn nay thì bản tóm tắt ngắn một số lệnh aptitude quan trọng "
+"nhất sẽ xuất hiện bên dưới thanh trình đơn."
 
 #: src/apt_options.cc:165
-#, fuzzy
 msgid "Hide the menu bar when it is not being used"
 msgstr "Ẩn thanh trình đơn khi nó không dùng"
 
@@ -37,6 +38,8 @@ msgid ""
 "If this option is enabled, the menu bar will only appear when it has been "
 "activated by pressing the menu key."
 msgstr ""
+"Bật tùy chọn này thì thanh trình đơn sẽ chỉ xuất hiện khi nó được kích hoạt "
+"(bằng cách bấm phím trình đơn)."
 
 #: src/apt_options.cc:170
 msgid "Use a minibuffer-style prompt when possible"
@@ -48,6 +51,8 @@ msgid ""
 "bottom of the screen.  If not, prompts will be displayed as pop-up dialog "
 "boxes."
 msgstr ""
+"Bật tùy chọn này thì các lời nhắc được hiển thị theo một đường riêng lẻ ở "
+"đáy màn hình. Không thì các lời nhắc được hiển thị dạng hộp thoại tự mở."
 
 #: src/apt_options.cc:176
 msgid "Show partial search results (incremental search)"
@@ -59,6 +64,9 @@ msgid ""
 "list as you type them.  This is convenient, but may slow the program down, "
 "particularly on older computers."
 msgstr ""
+"Bật tùy chọn này thì aptitude sẽ tìm kiếm trong danh sách gói trong khi bạn "
+"gõ. Tính năng này hơi tiện ích, còn có thể làm cho chương trình chạy chậm, "
+"nhất là trên máy tính cũ."
 
 #: src/apt_options.cc:183
 msgid "Closing the last view exits the program"
@@ -70,6 +78,9 @@ msgid ""
 "(package lists, package details, etc) have been closed.  Otherwise, aptitude "
 "will continue running until you select 'Quit' from the Actions menu."
 msgstr ""
+"Bật tùy chọn này thì aptitude sẽ dừng chạy khi tất cả các ô xem (danh sách "
+"gói, chi tiết gói v.v.) đã được đóng. Không thì aptitude tiếp tục chạy đến "
+"khi bạn chọn lệnh « Thoát » trong trình đơn « Hành động »."
 
 #: src/apt_options.cc:190
 msgid "Prompt for confirmation at exit"
@@ -80,6 +91,8 @@ msgid ""
 "If this option is enabled, aptitude will not terminate until you confirm "
 "that you really want to quit."
 msgstr ""
+"Bật tùy chọn này thì aptitude chỉ thoát một khi bạn xác nhận thực sự muốn "
+"thoát."
 
 #: src/apt_options.cc:195
 msgid "Pause after downloading files"
@@ -90,6 +103,8 @@ msgid ""
 "This option controls whether aptitude will wait for confirmation after a "
 "download before it goes ahead and installs packages."
 msgstr ""
+"Tùy chọn này điều khiển nếu aptitude đợi bạn xác nhận sau khi tải về, để cài "
+"đặt gói đó."
 
 #: src/apt_options.cc:199
 msgid "Never"
@@ -100,6 +115,8 @@ msgid ""
 "Never wait for the user after downloading packages: always begin the "
 "installation immediately."
 msgstr ""
+"Không bao giờ đợi người dùng xác nhận sau khi tải về gói: luôn luôn cài đặt "
+"lập tức."
 
 #: src/apt_options.cc:201
 msgid "When an error occurs"
@@ -110,6 +127,8 @@ msgid ""
 "Wait for confirmation if an error occurred during the download.  If there "
 "were no errors, begin installing packages immediately."
 msgstr ""
+"Đợi người dùng xác nhận nếu gặp lỗi trong khi tải về gói. Không có lỗi thì "
+"cài đặt lập tức."
 
 #: src/apt_options.cc:203
 msgid "Always"
@@ -119,7 +138,7 @@ msgstr "Luôn luôn"
 msgid ""
 "Always wait for the user to confirm the download before proceeding with the "
 "installation."
-msgstr ""
+msgstr "Luôn luôn đợi người dùng xác nhận việc tải về, để cài đặt."
 
 #: src/apt_options.cc:206
 msgid "Use a 'status-line' download indicator for all downloads"
@@ -130,6 +149,8 @@ msgid ""
 "If this option is enabled, aptitude will display the status of ongoing "
 "downloads at the bottom of the screen, rather than opening a new view."
 msgstr ""
+"Bật tùy chọn này thì aptitude hiển thị ở đáy màn hình trạng thái về các việc "
+"tải về đang chạy, hơn là mở ô xem mới."
 
 #: src/apt_options.cc:211
 msgid "Display the extended description area by default"
@@ -141,6 +162,8 @@ msgid ""
 "of the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
+"Bật tùy chọn này thì vùng mô tả dài (ô cửa sổ ở đáy màn hình) trong danh "
+"sách gói sẽ hiện rõ khi chương trình khởi chạy; không thì nó bị ẩn đầu tiên."
 
 #: src/apt_options.cc:217
 msgid "Advance to the next item after changing the state of a package"
@@ -152,6 +175,8 @@ msgid ""
 "instance, installing or removing it) will move the selection to the next "
 "package in the list."
 msgstr ""
+"Bật tùy chọn này thì làm hành động với gói (chẳng hạn, cài đặt hay gỡ bỏ nó) "
+"sẽ di chuyển vùng chọn xuống gói kế tiếp trong danh sách."
 
 #: src/apt_options.cc:223
 msgid "Automatically show why packages are broken"
@@ -163,6 +188,9 @@ msgid ""
 "dependencies will automatically display the dependencies that are "
 "unfulfilled in the lower pane of the display."
 msgstr ""
+"Bật tùy chọn này thì việc tô sáng gói có quan hệ phụ thuộc bị ngắt sẽ tự "
+"động hiển thị trong ô cửa sổ bên dưới những tiêu chuẩn quan hệ phụ thuộc "
+"chưa thỏa."
 
 #: src/apt_options.cc:230
 msgid "The default grouping method for package views"
@@ -173,6 +201,9 @@ msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
 msgstr ""
+"Tùy chọn này điều khiển aptitude tổ chức danh sách gói như thế nào. Xem sổ "
+"tay người dùng của aptitude để tìm thông tin về cách ghi rõ phương pháp nhóm "
+"lại."
 
 #: src/apt_options.cc:235
 msgid "The default display-limit for package views"
@@ -184,6 +215,9 @@ msgid ""
 "specified by this option.  See the aptitude user's manual for detailed "
 "information about searches."
 msgstr ""
+"Mặc định là sự hạn chế của mỗi gói được đặt thành giá trị được tùy chọn này "
+"ghi rõ. Xem sổ tay người dùng của aptitude để tìm thông tin chi tiết về việc "
+"tìm kiếm."
 
 #: src/apt_options.cc:241
 msgid "The display format for package views"
@@ -195,6 +229,9 @@ msgid ""
 "the aptitude user's manual for information on how to specify a display "
 "format."
 msgstr ""
+"Tùy chọn này điều khiển aptitude định dạng các dòng của danh sách gói như "
+"thế nào. Xem sổ tay người dùng của aptitude để tìm thông tin về cách ghi rõ "
+"định dạng hiển thị."
 
 #: src/apt_options.cc:248
 msgid "The display format for the status line"
@@ -206,6 +243,9 @@ msgid ""
 "the package list and the lower pane).  See the aptitude user's manual for "
 "information on how to specify a display format."
 msgstr ""
+"Tùy chọn này điều khiển aptitude định dạng dòng trạng thái như thế nào. Xem "
+"sổ tay người dùng của aptitude để tìm thông tin về cách ghi rõ định dạng "
+"hiển thị."
 
 #: src/apt_options.cc:256
 msgid "The display format for the header line"
@@ -217,6 +257,9 @@ msgid ""
 "the package list).  See the aptitude user's manual for information on how to "
 "specify a display format."
 msgstr ""
+"Tùy chọn này điều khiển aptitude định dạng dòng đầu (dòng bên trên danh sách "
+"gói) như thế nào. Xem sổ tay người dùng của aptitude để tìm thông tin về "
+"cách ghi rõ định dạng hiển thị."
 
 #: src/apt_options.cc:267
 msgid "Automatically upgrade installed packages"
@@ -227,6 +270,8 @@ msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
 msgstr ""
+"Bật tùy chọn này thì khi khởi chạy, aptitude sẽ chọn tất cả các gói có thể "
+"nâng cấp được, để nâng cấp."
 
 #: src/apt_options.cc:272
 msgid "Remove obsolete package files after downloading new package lists"
@@ -238,6 +283,9 @@ msgid ""
 "delete from the package cache any package files that can no longer be "
 "downloaded from any archive in sources.list."
 msgstr ""
+"Bật tùy chọn này thì sau mỗi lần thi hành tiến trình cài đặt, aptitude sẽ "
+"xoá khỏi bộ nhớ tạm gói bất cứ tập tin gói nào không còn có thể tải được lại "
+"xuống kho lưu trong danh sách nguồn « sources.list »."
 
 #: src/apt_options.cc:278
 msgid "URL to use to download changelogs"
@@ -249,6 +297,9 @@ msgid ""
 "the Debian Web site.  You should only need to change this if the URL of the "
 "package archive changes."
 msgstr ""
+"Tùy chọn này điều khiển mẫu được dùng để tải các bản ghi thay đổi "
+"(changelog) xuống địa chỉ Web của Debian. Chỉ cần điều chỉnh tùy chọn này "
+"nếu địa chỉ URL của kho lưu gói đã thay đổi."
 
 #: src/apt_options.cc:285
 msgid "Display a preview of what will be done before doing it"
@@ -259,6 +310,8 @@ msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
 msgstr ""
+"Bật tùy chọn này thì khi bạn yêu cầu aptitude thi hành tiến trình cài đặt, "
+"trước tiên nó sẽ hiển thị bản tóm tắt các hành động cần làm."
 
 #: src/apt_options.cc:292
 msgid ""
@@ -270,6 +323,8 @@ msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
 msgstr ""
+"Bật tùy chọn này thì aptitude sẽ gột các gói mới khỏi danh sách sau khi bạn "
+"cập nhật các danh sách gói (v.d. bằng cách bấm phím « u »)."
 
 #: src/apt_options.cc:298
 msgid ""
@@ -282,6 +337,8 @@ msgid ""
 "after you perform an install run or install or remove packages from the "
 "command-line."
 msgstr ""
+"Bật tùy chọn này thì aptitude sẽ gột các gói mới khỏi danh sách sau khi bạn "
+"thi hành tiến trình cài đặt, hoặc cài đặt hoặc gỡ bỏ gói từ dòng lệnh."
 
 #: src/apt_options.cc:305
 msgid ""
@@ -296,6 +353,8 @@ msgid ""
 "modify the state of a package if you do not have permissions to apply the "
 "change to the system."
 msgstr ""
+"%BKhông%b bật tùy chọn này thì aptitude sẽ hiển thị cảnh báo khi bạn sửa đổi "
+"tình trạng của gói còn không có quyền áp dụng thay đổi đó cho hệ thống."
 
 #: src/apt_options.cc:312
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -310,6 +369,10 @@ msgid ""
 "installing packages as a non-root user.  You will be given the option to log "
 "in as root and perform the action with root privileges."
 msgstr ""
+"Bật tùy chọn này thì aptitude sẽ cảnh báo khi bạn thử làm hành động cho đó "
+"bạn không có quyền làm (chẳng hạn, cài đặt gói khi không phải là người chủ). "
+"Lúc đó, bạn có tùy chọn đăng nhập với tư cách là người chủ rồi làm hành động "
+"với quyền người chủ."
 
 #: src/apt_options.cc:322
 msgid "File to log actions into"
@@ -322,6 +385,10 @@ msgid ""
 "character ('%B|%b'), the remainder of the name will be interpreted as a "
 "shell command that is to receive the log on standard input."
 msgstr ""
+"Khi bạn cài đặt hay gỡ bỏ gói, aptitude sẽ tóm tắt vào tập tin các hành "
+"động. Nếu ký tự đầu của tên tập tin là ký tự ống dẫn ('%B|%b') thì phần còn "
+"lại của tên sẽ được giải thích là lệnh trình bao sẽ nhận bản ghi ở thiết bị "
+"nhập chuẩn."
 
 #: src/apt_options.cc:335
 msgid "Automatically resolve dependencies of a package when it is selected"
@@ -334,6 +401,11 @@ msgid ""
 "installation.  This is much faster than the built-in dependency resolver, "
 "but may produce suboptimal results or fail entirely in some scenarios."
 msgstr ""
+"Bật tùy chọn này thì aptitude sẽ sử dụng một tiến trình tìm ra đơn giản để "
+"giải quyết lập tức các quan hệ phụ thuộc của mỗi gói bạn nhãn cần cài đặt. "
+"Phương pháp này rất nhanh hơn bộ giải quyết quan hệ phụ thuộc có sẵn, còn có "
+"thể làm kết quả dưới tối ưu hoặc hoàn toàn không thành công trong một số "
+"trường hợp riêng."
 
 #: src/apt_options.cc:344
 msgid "Automatically fix broken packages before installing or removing"
@@ -346,11 +418,14 @@ msgid ""
 "suggestion of the problem resolver.  Otherwise,aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
+"Bật tùy chọn này, và bạn thi hành tiến trình cài đặt khi một số gói bị ngắt, "
+"thì aptitude áp dụng lập tức lời đề nghị hiện thời của bộ giải quyết vấn đề. "
+"Không thì aptitude sẽ nhắc bạn giải quyết tiêu chuẩn quan hệ phụ thuộc chưa "
+"thỏa."
 
 #: src/apt_options.cc:352
-#, fuzzy
 msgid "Install recommended packages automatically"
-msgstr "Tự cài đặt các gói đã Khuyến khích"
+msgstr "Tự động cài đặt các gói đã khuyến khích"
 
 #: src/apt_options.cc:353
 msgid ""
@@ -362,6 +437,12 @@ msgid ""
 "enabled, packages that are recommended by an installed package will not "
 "automatically be removed."
 msgstr ""
+"Bật tùy chọn này, cũng bật tùy chọn « Tự động giải quyết quan hệ phụ thuộc "
+"chưa thỏa », thì aptitude sẽ thử cài đặt lời khuyên của gói mới cài đặt, "
+"thêm vào quan hệ phụ thuộc bắt buộc phải thỏa. Tuy nhiên, lời đề nghị sẽ "
+"không được cài đặt tự động.\n"
+"Bật tùy chọn này, cũng bật tùy chọn « Tự động gỡ bỏ gói không dùng », thì "
+"không tự động gỡ bỏ gói khuyến khích bởi gói đã cài đặt."
 
 #: src/apt_options.cc:365
 msgid "Remove unused packages automatically"
@@ -377,10 +458,15 @@ msgid ""
 "is enabled, automatically installed packages will not be removed if any "
 "installed package recommends them."
 msgstr ""
+"Bật tùy chọn này thì gỡ bỏ khỏi hệ thống mỗi gói được cài đặt tự động còn "
+"không có gói bạn tự cài đặt có phụ thuộc vào nó. Thôi tiến trình gỡ bỏ thì "
+"nhãn gói đã được cài đặt bằng tay.\n"
+"Bật tùy chọn này, cũng bật tùy chọn « Tự động cài đặt gói khuyến khích », "
+"thì không gỡ bỏ gói đã cài đặt tự động cũng khuyến khích bởi gói đã cài đặt."
 
 #: src/apt_options.cc:377
 msgid "Packages that should never be automatically removed"
-msgstr ""
+msgstr "Gói không bao giờ nên bị gỡ bỏ tự động"
 
 #: src/apt_options.cc:378
 msgid ""
@@ -388,30 +474,32 @@ msgid ""
 "installed package depends on them: they will never be targeted for removal "
 "as unused packages."
 msgstr ""
+"Gói tương ứng với chuỗi tìm kiếm này sẽ luôn luôn được xử lý như thế gói đã "
+"cài đặt có phụ thuộc vào nó : không bao giờ gỡ bỏ nó vì « gói không dùng »."
 
 #: src/broken_indicator.cc:123
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Examine"
-msgstr "%s: Kiểm tra"
+msgstr "%ls: Kiểm tra"
 
 #: src/broken_indicator.cc:132
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Apply"
-msgstr "%s: Áp dụng"
+msgstr "%ls: Áp dụng"
 
 #: src/broken_indicator.cc:137
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Next"
-msgstr "%s: Kế"
+msgstr "%ls: Kế"
 
 #: src/broken_indicator.cc:143
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Previous"
-msgstr "%s: Lùi"
+msgstr "%ls: Lùi"
 
 #: src/broken_indicator.cc:238
 msgid "Dependency resolution disabled."
-msgstr ""
+msgstr "Khả năng giải quyết quan hệ phụ thuộc bị tắt."
 
 #: src/broken_indicator.cc:249
 msgid "Unable to resolve dependencies."
@@ -1002,7 +1090,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:666
 #, c-format
 msgid "y: %F"
-msgstr ""
+msgstr "y: %F"
 
 #: src/cmdline/cmdline_prompt.cc:668
 msgid "continue with the installation"
@@ -1011,7 +1099,7 @@ msgstr "tiếp tục lại cài đặt"
 #: src/cmdline/cmdline_prompt.cc:670
 #, c-format
 msgid "n: %F"
-msgstr ""
+msgstr "n: %F"
 
 #: src/cmdline/cmdline_prompt.cc:672
 msgid "abort and quit"
@@ -1020,7 +1108,7 @@ msgstr "hủy bỏ rồi thoát"
 #: src/cmdline/cmdline_prompt.cc:674
 #, c-format
 msgid "i: %F"
-msgstr ""
+msgstr "i: %F"
 
 #: src/cmdline/cmdline_prompt.cc:676
 msgid ""
@@ -1032,7 +1120,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:678
 #, c-format
 msgid "c: %F"
-msgstr ""
+msgstr "c: %F"
 
 #: src/cmdline/cmdline_prompt.cc:680
 msgid ""
@@ -1045,7 +1133,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:682
 #, c-format
 msgid "d: %F"
-msgstr ""
+msgstr "d: %F"
 
 #: src/cmdline/cmdline_prompt.cc:684
 msgid "toggle the display of dependency information"
@@ -1054,7 +1142,7 @@ msgstr "bật/tắt hiển thị thông tin về điều kiện phụ thuộc"
 #: src/cmdline/cmdline_prompt.cc:686
 #, c-format
 msgid "s: %F"
-msgstr ""
+msgstr "s: %F"
 
 #: src/cmdline/cmdline_prompt.cc:688
 msgid "toggle the display of changes in package sizes"
@@ -1063,7 +1151,7 @@ msgstr "bật/tắt hiển thị các thay đổi kích cỡ gói"
 #: src/cmdline/cmdline_prompt.cc:690
 #, c-format
 msgid "v: %F"
-msgstr ""
+msgstr "v: %F"
 
 #: src/cmdline/cmdline_prompt.cc:692
 msgid "toggle the display of version numbers"
@@ -1072,7 +1160,7 @@ msgstr "bật/tắt hiển thị các số thứ tự phiên bản"
 #: src/cmdline/cmdline_prompt.cc:694
 #, c-format
 msgid "w: %F"
-msgstr ""
+msgstr "w: %F"
 
 #: src/cmdline/cmdline_prompt.cc:696
 msgid ""
@@ -1085,7 +1173,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:698
 #, c-format
 msgid "e: %F"
-msgstr ""
+msgstr "e: %F"
 
 #: src/cmdline/cmdline_prompt.cc:700
 msgid "enter the full visual interface"
@@ -1149,6 +1237,8 @@ msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
 msgstr ""
+"Trình aptitude không thể giải quyết quan hệ phụ thuộc này. Vậy bạn cần phải "
+"tự giải quyết, hoặc bấm phím « n » để thoát."
 
 #: src/cmdline/cmdline_prompt.cc:806
 msgid "Do you want to continue? [Y/n/?] "
@@ -1156,12 +1246,11 @@ msgstr "Bạn có muốn tiếp tục chứ? [Y/n : Có/không] "
 
 #: src/cmdline/cmdline_prompt.cc:807
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
-msgstr ""
+msgstr "Bạn tự giải quyết quan hệ phụ thuộc này không? [N/+/-/_/:/?] "
 
 #: src/cmdline/cmdline_prompt.cc:829
-#, fuzzy
 msgid "You must resolve these dependencies before continuing."
-msgstr "Không thể tháo gỡ điều kiện phụ thuộc. Đang hủy bỏ..."
+msgstr "Bạn cần phải giải quyết quan hệ phụ thuộc này, để tiếp tục."
 
 #: src/cmdline/cmdline_prompt.cc:845
 #, c-format
@@ -1400,10 +1489,15 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+"Có thể giải quyết quan hệ phụ thuộc, nhưng khả năng giải quyết quan hệ phụ "
+"thuộc hiện thời bị tắt.\n"
+"   (%s::ProblemResolver::StepLimit = 0)\n"
 
 #: src/cmdline/cmdline_resolver.cc:506
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
+"Trình này có thể giải quyết quan hệ phụ thuộc, nhưng chưa tạo bộ giải quyết "
+"quan hệ phụ thuộc."
 
 #: src/cmdline/cmdline_resolver.cc:519 src/solution_dialog.cc:127
 msgid "Resolving dependencies..."
@@ -1503,11 +1597,11 @@ msgstr "chưa cài (các tập tin cấu hình còn lại)"
 
 #: src/cmdline/cmdline_show.cc:203
 msgid "awaiting trigger processing by other package(s)"
-msgstr ""
+msgstr "đang đợi gói khác xử lý bộ gây nên"
 
 #: src/cmdline/cmdline_show.cc:205
 msgid "awaiting trigger processing"
-msgstr ""
+msgstr "đang đợi xử lý bộ gây nên"
 
 #: src/cmdline/cmdline_show.cc:208 src/pkg_columnizer.cc:257
 #: src/pkg_ver_item.cc:237
@@ -1679,7 +1773,7 @@ msgstr "Xung đột"
 
 #: src/cmdline/cmdline_show.cc:429
 msgid "Breaks"
-msgstr ""
+msgstr "Ngắt"
 
 #: src/cmdline/cmdline_show.cc:431
 msgid "Replaces"
@@ -1701,7 +1795,7 @@ msgstr "Mô tả: "
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:106
 #: src/pkg_view.cc:250
 msgid "Homepage: "
-msgstr ""
+msgstr "Trang chủ : "
 
 #: src/cmdline/cmdline_show.cc:542
 #, c-format
@@ -1775,103 +1869,102 @@ msgid "You cannot specify both an archive and a version for a package\n"
 msgstr "Không thể ghi rõ cả kho lẫn phiên bản đều cho gói.\n"
 
 #: src/cmdline/cmdline_why.cc:419
-#, fuzzy, c-format
+#, c-format
 msgid "Install(%s)"
-msgstr "Cài"
+msgstr "Cài(%s)"
 
 #: src/cmdline/cmdline_why.cc:421
-#, fuzzy, c-format
+#, c-format
 msgid "Remove(%s)"
-msgstr "Bỏ"
+msgstr "Bỏ(%s)"
 
 #: src/cmdline/cmdline_why.cc:423
-#, fuzzy, c-format
+#, c-format
 msgid "Install(%s provides %s)"
-msgstr "Đang cài đặt %s %s (%s)"
+msgstr "Cài(%s cung cấp %s)"
 
 #: src/cmdline/cmdline_why.cc:427
-#, fuzzy, c-format
+#, c-format
 msgid "Remove(%s provides %s)"
-msgstr "Gỡ bỏ %F [%s (%s)]"
+msgstr "Bỏ(%s cung cấp %s"
 
 #: src/cmdline/cmdline_why.cc:602
 #, c-format
 msgid "    ++ Examining %F\n"
-msgstr ""
+msgstr "    ++ Đang kiểm tra %F\n"
 
 #: src/cmdline/cmdline_why.cc:612
 msgid "    ++   --> skipping, not a conflict\n"
-msgstr ""
+msgstr "    ++   --> đang bỏ qua, không phải xung đột\n"
 
 #: src/cmdline/cmdline_why.cc:622
 msgid "    ++   --> skipping conflict\n"
-msgstr ""
+msgstr "    ++   --> đang bỏ qua xung đột\n"
 
 #: src/cmdline/cmdline_why.cc:630
 msgid "    ++   --> skipping, not relevant according to params\n"
-msgstr ""
+msgstr "    ++   --> đang bỏ qua, không thích hợp tùy theo tham số\n"
 
 #: src/cmdline/cmdline_why.cc:637
 msgid "    ++   --> skipping, parent is not the selected version\n"
-msgstr ""
+msgstr "    ++   --> bỏ qua, cha không phải phiên bản đã chọn\n"
 
 #: src/cmdline/cmdline_why.cc:666
 msgid "    ++   --> ENQUEUING\n"
-msgstr ""
+msgstr "    ++   --> ĐANG XẾP HÀNG\n"
 
 #: src/cmdline/cmdline_why.cc:673
 msgid "    ++   --> skipping, version check failed.\n"
-msgstr ""
+msgstr "    ++   --> đang bỏ qua, lỗi kiểm tra phiên bản.\n"
 
 #: src/cmdline/cmdline_why.cc:691
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
-msgstr ""
+msgstr "    ++   --> ĐANG XẾP HÀNG %s cung cấp %s\n"
 
 #: src/cmdline/cmdline_why.cc:822
 #, c-format
 msgid "Starting search with parameters %ls\n"
-msgstr ""
+msgstr "Đang khởi chạy tiến trình tìm kiếm với tham số %ls\n"
 
 #: src/cmdline/cmdline_why.cc:1042
 msgid "Skipping this solution, I've already seen it.\n"
-msgstr ""
+msgstr "Đang bỏ qua giải pháp này, đã xử lý.\n"
 
 #: src/cmdline/cmdline_why.cc:1054
 #, c-format
 msgid "The package \"%s\" is a starting point of the search.\n"
-msgstr ""
+msgstr "Gói « %s » là điểm bắt đầu tìm kiếm.\n"
 
 #: src/cmdline/cmdline_why.cc:1113
 #, c-format
 msgid "No justification for removing %s could be constructed.\n"
-msgstr ""
+msgstr "Không có lý do gỡ bỏ %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1115
 #, c-format
 msgid "No justification for %s could be constructed.\n"
-msgstr ""
+msgstr "Không có lý do %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1160 src/cmdline/cmdline_why.cc:1186
 #: src/cmdline/cmdline_why.cc:1248
-#, fuzzy, c-format
+#, c-format
 msgid "No package named \"%s\" exists."
-msgstr "Không tìm thấy gói nào tên « %s »"
+msgstr "Không có gói tên « %s » tồn tại."
 
 #: src/cmdline/cmdline_why.cc:1194
-#, fuzzy
 msgid "Unable to parse some match patterns."
-msgstr "Không thể phân tách hình mẫu %s"
+msgstr "Không thể phân tích một số mẫu khớp."
 
 #: src/cmdline/cmdline_why.cc:1221
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
-msgstr ""
+msgstr "%s: lệnh này cần thiết ít nhất một đối số (gói cần truy cập)."
 
 #: src/cmdline/cmdline_why.cc:1270
-#, fuzzy, c-format
+#, c-format
 msgid "The package \"%s\" is manually installed.\n"
-msgstr "« &m » để nhãn các gói đã được cài đặt bằng tay"
+msgstr "Gói « %s » được cài đặt bằng tay.\n"
 
 #: src/download_bar.cc:55 src/download_list.cc:345 src/download_screen.cc:62
 #, c-format
@@ -2217,7 +2310,7 @@ msgstr "GIỮ LẠI, PHỤ THUỘC"
 
 #: src/generic/apt/log.cc:131
 msgid "UNCONFIGURED"
-msgstr ""
+msgstr "CHƯA CẤU HÌNH"
 
 # Do not translate/ đừng dịch
 #: src/generic/apt/log.cc:134
@@ -2330,9 +2423,8 @@ msgid "Upgradable"
 msgstr "Nâng cấp được"
 
 #: src/generic/apt/matchers.cc:2007
-#, fuzzy
 msgid "Obsolete"
-msgstr "Làm cũ"
+msgstr "Cũ"
 
 #: src/generic/apt/matchers.cc:2133
 #, c-format
@@ -2470,25 +2562,25 @@ msgid "Unrecognized attribute name \"%s\""
 msgstr "Không nhận ra tên thuộc tính « %s »"
 
 #: src/load_config.cc:113
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid entry in cw::style definition group: \"%s\""
-msgstr "Gặp mục nhập không hợp lệ trong nhóm định nghĩa kiểu dạng: « %s »"
+msgstr "Gặp mục nhập không hợp lệ trong nhóm định nghĩa « cw::style »: « %s »"
 
 #: src/load_config.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid tagless entry in cw::style definition group: \"%s\""
 msgstr ""
-"Gặp mục nhập không có thẻ không hợp lệ trong nhóm định nghĩa kiểu dạng: « %s "
-"»"
+"Gặp mục nhập không có thẻ không hợp lệ trong nhóm định nghĩa « cw::style »: "
+"« %s »"
 
 #: src/load_config.cc:127
 msgid "The default color may only be used as a background."
 msgstr "Màu mặc định có thể được dùng chỉ là nền."
 
 #: src/load_config.cc:144
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown cw::style attribute %s"
-msgstr "Không biểt thuộc tính kiểu dạng %s"
+msgstr "Không rõ thuộc tính « cw::style » %s"
 
 #: src/load_config.cc:167 src/load_config.cc:169
 #, c-format
@@ -2604,9 +2696,10 @@ msgid "Unexpectedly empty tree title after \"%s\""
 msgstr "Gặp tựa cây trống một cách bất thường nằm sau « %s »"
 
 #: src/load_grouppolicy.cc:651
-#, fuzzy, c-format
+#, c-format
 msgid "Expected ',' or ')' following '||', got '%s'"
-msgstr "Ngờ dấu phẩy « , » hoặc ngoặc mở « ( », còn nhận « %c »"
+msgstr ""
+"Mong đợi dấu phẩy « , » hoặc ngoặc đóng « ) » đi theo « || », còn nhận « %s »"
 
 #: src/load_grouppolicy.cc:663
 msgid "Unmatched '(' in pattern grouping policy"
@@ -3324,11 +3417,11 @@ msgstr "tập tin cấu hình"
 
 #: src/pkg_columnizer.cc:260
 msgid "triggers-awaited"
-msgstr ""
+msgstr "bộ gây nên (đợi)"
 
 #: src/pkg_columnizer.cc:262
 msgid "triggers-pending"
-msgstr ""
+msgstr "bộ gây nên (treo)"
 
 #: src/pkg_columnizer.cc:265 src/pkg_columnizer.cc:549 src/pkg_ver_item.cc:239
 msgid "ERROR"
@@ -3434,10 +3527,10 @@ msgid "HN too long"
 msgstr "Tên máy quá dài"
 
 #: src/pkg_columnizer.cc:673 src/pkg_columnizer.cc:682
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to cw::util::transcode package display format after \"%ls\""
 msgstr ""
-"Không thể chuyển đổi bộ ký tự trong định dạng trình bày gói đi sau « %ls »"
+"Không thể « cw::util::transcode » định dạng trình bày gói đi sau « %ls »"
 
 #: src/pkg_columnizer.cc:689
 msgid "Internal error: Default column string is unparsable"
@@ -3784,9 +3877,8 @@ msgid "Enter the new package sorting mechanism for this display: "
 msgstr "Hãy gõ cơ chế sắp xếp gói mới cho bộ trình bày này: "
 
 #: src/pkg_view.cc:159
-#, fuzzy
 msgid "Couldn't cw::util::transcode column definition"
-msgstr "Không thể dịch mã hóa lời định nghĩa cột"
+msgstr "Không thể « cw::util::transcode » lời định nghĩa cột"
 
 #: src/pkg_view.cc:166
 msgid "Couldn't parse column definition"
@@ -3836,7 +3928,7 @@ msgstr "xung đột với"
 
 #: src/reason_fragment.cc:41
 msgid "breaks"
-msgstr ""
+msgstr "ngắt"
 
 #: src/reason_fragment.cc:43
 msgid "replaces"
@@ -4220,13 +4312,12 @@ msgid "Really quit Aptitude?"
 msgstr "Thật sự thoát trình Aptitude không?"
 
 #: src/ui.cc:691 src/ui.cc:693
-#, fuzzy
 msgid "Preferences"
-msgstr "Phụ thuộc sẵn"
+msgstr "Tùy thích"
 
 #: src/ui.cc:692 src/ui.cc:2301
 msgid "Change the behavior of aptitude"
-msgstr ""
+msgstr "Thay đổi ứng xử của aptitude"
 
 #: src/ui.cc:728
 msgid "Really discard your personal settings and reload the defaults?"
@@ -4268,14 +4359,12 @@ msgstr ""
 "lại nó với một số điều kiện nào đó: xem « Giấy phép » để tìm chi tiết."
 
 #: src/ui.cc:1016 src/ui.cc:1018
-#, fuzzy
 msgid "License"
-msgstr "Giấ^y phép"
+msgstr "Giấy phép"
 
 #: src/ui.cc:1017
-#, fuzzy
 msgid "View the terms under which you may copy and distribute aptitude"
-msgstr "Xem những điều kiện sao chép chương trình này"
+msgstr "Xem những điều kiện sao chép và phân phối lại aptitude"
 
 #: src/ui.cc:1031
 msgid "help.txt"
@@ -4287,11 +4376,11 @@ msgstr "UTF-8"
 
 #: src/ui.cc:1044
 msgid "Online Help"
-msgstr ""
+msgstr "Trợ giúp trực tiếp"
 
 #: src/ui.cc:1045
 msgid "View a brief introduction to aptitude"
-msgstr ""
+msgstr "Xem lời giới thiệu ngắn về aptitude"
 
 #: src/ui.cc:1046 src/ui.cc:2540
 msgid "Help"
@@ -4318,18 +4407,16 @@ msgid "Manual"
 msgstr "Sổ tay"
 
 #: src/ui.cc:1075 src/ui.cc:1077
-#, fuzzy
 msgid "FAQ"
-msgstr "^Hỏi đáp"
+msgstr "Hỏi Đáp"
 
 #: src/ui.cc:1076 src/ui.cc:2385
 msgid "View a list of frequently asked questions"
 msgstr "Xem danh sách các câu thường hỏi"
 
 #: src/ui.cc:1085 src/ui.cc:1087
-#, fuzzy
 msgid "News"
-msgstr "Ti^n tức"
+msgstr "Tin tức"
 
 #: src/ui.cc:1086 src/ui.cc:2389
 msgid "View the important changes made in each version of "
@@ -4886,9 +4973,8 @@ msgid "Find the next package with unsatisfied dependencies"
 msgstr "Tìm gói kế tiếp có điều kiện phụ thuộc chưa được thỏa"
 
 #: src/ui.cc:2300
-#, fuzzy
 msgid "^Preferences"
-msgstr "Phụ thuộc sẵn"
+msgstr "Tù^y thích"
 
 #: src/ui.cc:2305
 msgid "^UI options"
@@ -5025,9 +5111,8 @@ msgid "^License"
 msgstr "Giấ^y phép"
 
 #: src/ui.cc:2393
-#, fuzzy
 msgid "View the terms under which you may copy and distribute aptiutde"
-msgstr "Xem những điều kiện sao chép chương trình này"
+msgstr "Xem những điều kiện sao chép và phân phối lại aptitud"
 
 #: src/ui.cc:2533
 msgid "Actions"
@@ -5084,45 +5169,44 @@ msgid ""
 "%BDefault:%b %s\n"
 "%BValue:%b   %s\n"
 msgstr ""
+"%BTùy chọn:%b  %s\n"
+"%BMặc định:%b %s\n"
+"%BGiá trị:%b   %s\n"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
 msgid "True"
-msgstr ""
+msgstr "Đúng"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
-#, fuzzy
 msgid "False"
-msgstr "Đóng"
+msgstr "Sai"
 
 #: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:392
-#, fuzzy
 msgid "%BOption:%b  "
-msgstr "Tùy chọn"
+msgstr "%BTùy chọn:%b  "
 
 #: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:394
 msgid "%BDefault:%b "
-msgstr ""
+msgstr "%BMặc định:%b "
 
 #: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:396
 msgid "%BValue:%b   "
-msgstr ""
+msgstr "%BGiá trị:%b   "
 
 #: src/apt_config_treeitems.cc:278
 #, c-format
 msgid "Editing \"%ls\""
-msgstr ""
+msgstr "Đang sửa « %ls »"
 
 #: src/apt_config_treeitems.cc:400
 msgid "%BChoice:%b  "
-msgstr ""
+msgstr "%BSự chọn:%b  "
 
-#, fuzzy
 #~ msgid "UI options"
-#~ msgstr "Tùy chọn _UI"
+#~ msgstr "Tùy chọn UI"
 
-#, fuzzy
 #~ msgid "Dependency handling"
-#~ msgstr "^Quản lý điều kiện phụ thuộc"
+#~ msgstr "Quản lý quan hệ phụ thuộc"
 
 #~ msgid "Miscellaneous"
 #~ msgstr "Lặt vặt"
@@ -5777,9 +5861,8 @@ msgstr ""
 #~ msgid "%s conflicts with %s"
 #~ msgstr "%s xung đột với %s"
 
-#, fuzzy
 #~ msgid "%s breaks %s"
-#~ msgstr "%s thay thế %s"
+#~ msgstr "%s ngắt %s"
 
 #~ msgid "%s replaces %s"
 #~ msgstr "%s thay thế %s"
