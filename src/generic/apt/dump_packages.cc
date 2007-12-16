@@ -733,6 +733,7 @@ namespace aptitude
     //                                        version.
     //   $(Dir::State::lists)/*
     //   $(Dir::State::status)/*
+    //   $(Dir::Etc::sourcelist)
     //   $(Dir::Etc::sourceparts)/*
     //   $(Dir::Etc::vendorlist)
     //   $(Dir::Etc::vendorparts)/*
@@ -791,7 +792,13 @@ namespace aptitude
       }
 
       {
-	const std::string sourceParts = _config->FindDir("Dir::Etc::sourcelist");
+	const std::string sourceList = _config->FindFile("Dir::Etc::sourcelist");
+	if(!sourceList.empty())
+	  copy_file(sourceList, outDir + "/" + sourceList);
+      }
+
+      {
+	const std::string sourceParts = _config->FindDir("Dir::Etc::sourceparts");
 	if(!sourceParts.empty())
 	  recursive_copy_dir(sourceParts, outDir + "/" + sourceParts);
       }
