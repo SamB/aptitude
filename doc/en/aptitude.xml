@@ -8879,6 +8879,39 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configProblemResolver-Trace-Directory'>
+	      <seg><literal>Aptitude::ProblemResolver::Trace-Directory</literal></seg>
+	      <seg></seg>
+	      <seg>
+		If this value is set, then each time the problem
+		resolver produces a solution, a stripped-down version
+		of the package state sufficient to reproduce that
+		solution is written to the given file.  If
+		<literal>Aptitude::ProblemResolver::Trace-File</literal>
+		is also set, the same information will also be written
+		to the trace file.  Trace directories are more
+		transparent than trace files, and are more suitable
+		for, e.g., including in source trees as test cases.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configProblemResolver-Trace-File'>
+	      <seg><literal>Aptitude::ProblemResolver::Trace-File</literal></seg>
+	      <seg></seg>
+	      <seg>
+		If this value is set, then each time the problem
+		resolver produces a solution, a stripped-down version
+		of the package state sufficient to reproduce that
+		solution is written to the given file.  If
+		<literal>Aptitude::ProblemResolver::Trace-Directory</literal>
+		is also set, the same information will also be written
+		to the trace directory.  A trace file is simply a
+		compressed archive of a trace directory; it will take
+		less space than the trace directory and is suitable
+		for transmission over a network.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configProblemResolver-UnfixedSoftScore'>
 	      <seg><literal>Aptitude::ProblemResolver::UnfixedSoftScore</literal></seg>
 	      <seg><literal>-200</literal></seg>
