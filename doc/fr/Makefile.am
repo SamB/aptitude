@@ -48,13 +48,13 @@ manpage.xml: $(srcdir)/../en/manpage.xml $(srcdir)/../po4a/po/$(LANGCODE).po $(s
 
 $(MANPAGE): aptitude.xml manpage.xml $(srcdir)/../aptitude-man.xsl
 	-rm -fr output-man
-	xsltproc -o output-man/aptitude.8 $(srcdir)/../aptitude-man.xsl $(srcdir)/aptitude.xml
+	xsltproc -o output-man/aptitude.8 $(srcdir)/../aptitude-man.xsl aptitude.xml
 	mv output-man/aptitude.8 $(MANPAGE)
 	/bin/bash $(srcdir)/fixman
 
 $(README): aptitude.xml manpage.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
 	-rm -fr output-txt/
-	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl $(srcdir)/aptitude.xml
+	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl aptitude.xml
 	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | sed 's/&#8212/--/g' > $(README)
 
 doc-css-stamp: doc-html-stamp $(srcdir)/../aptitude.css
@@ -65,7 +65,7 @@ doc-css-stamp: doc-html-stamp $(srcdir)/../aptitude.css
 doc-html-stamp: aptitude.xml manpage.xml $(srcdir)/../aptitude-html.xsl $(srcdir)/../aptitude-common.xsl $(IMAGES)
 	-rm -fr output-html/
 
-	xsltproc -o output-html/ $(srcdir)/../aptitude-html.xsl $(srcdir)/aptitude.xml
+	xsltproc -o output-html/ $(srcdir)/../aptitude-html.xsl aptitude.xml
 
 	mkdir output-html/images/
 	ln -f $(srcdir)/images/*.png output-html/images/

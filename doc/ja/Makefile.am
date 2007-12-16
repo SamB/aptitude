@@ -49,14 +49,14 @@ manpage.xml: $(srcdir)/../en/manpage.xml $(srcdir)/../po4a/po/$(LANGCODE).po
 
 db2latex: doc-db2latex-stamp
 
-$(MANPAGE): $(XMLSOURCES) aptitude-man-$(LANGCODE).xsl $(srcdir)/../aptitude-man.xsl
+$(MANPAGE): $(XMLSOURCES) $(srcdir)/aptitude-man-$(LANGCODE).xsl $(srcdir)/../aptitude-man.xsl
 	-rm -fr output-man
-	xsltproc -o output-man/aptitude.8 aptitude-man-$(LANGCODE).xsl $(srcdir)/aptitude.xml
+	xsltproc -o output-man/aptitude.8 $(srcdir)/aptitude-man-$(LANGCODE).xsl aptitude.xml
 	mv output-man/aptitude.8 $(MANPAGE)
 
 $(README): $(XMLSOURCES) $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
 	-rm -fr output-txt/
-	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl $(srcdir)/aptitude.xml
+	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl aptitude.xml
 	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | sed 's/&#8212/--/g' > $(README)
 
 doc-db2latex-stamp: output-db2latex/aptitude.tex $(IMAGES)
@@ -68,7 +68,7 @@ doc-db2latex-stamp: output-db2latex/aptitude.tex $(IMAGES)
 output-db2latex/aptitude.tex: $(XMLSOURCES) $(srcdir)/../aptitude-db2latex.xsl $(srcdir)/../aptitude-common.xsl
 	-rm -fr output-db2latex
 	mkdir output-db2latex
-	xsltproc -o output-db2latex/aptitude.tex $(srcdir)/../aptitude-db2latex.xsl $(srcdir)/aptitude.xml
+	xsltproc -o output-db2latex/aptitude.tex $(srcdir)/../aptitude-db2latex.xsl aptitude.xml
 
 
 doc-css-stamp: doc-html-stamp $(srcdir)/../aptitude.css
@@ -79,7 +79,7 @@ doc-css-stamp: doc-html-stamp $(srcdir)/../aptitude.css
 doc-html-stamp: $(XMLSOURCES) aptitude-html-$(LANGCODE).xsl $(srcdir)/../aptitude-common.xsl $(IMAGES)
 	-rm -fr output-html/
 
-	xsltproc -o output-html/ aptitude-html-$(LANGCODE).xsl $(srcdir)/aptitude.xml
+	xsltproc -o output-html/ $(srcdir)/aptitude-html-$(LANGCODE).xsl aptitude.xml
 
 	mkdir output-html/images/
 	ln -f $(srcdir)/images/*.png output-html/images/
