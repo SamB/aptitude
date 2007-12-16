@@ -1922,9 +1922,11 @@ private:
   class real_generator
   {
     std::vector<solution> &target;
+    std::set<package> *visited_packages;
   public:
-    real_generator(std::vector<solution> &_target)
-      :target(_target)
+    real_generator(std::vector<solution> &_target,
+		   std::set<package> *_visited_packages)
+      :target(_target), visited_packages(_visited_packages)
     {
     }
 
@@ -1939,6 +1941,23 @@ private:
 					   abegin, aend,
 					   ubegin, uend,
 					   universe, weights));
+
+      // Touch all the packages that are involved in broken dependencies
+      if(visited_packages != NULL)
+	{
+	  const solution &generated(target.back());
+
+	  for(typename imm::set<dep>::const_iterator bi =
+		generated.get_broken().begin();
+	      bi != generated.get_broken().end(); ++bi)
+	    {
+	      for(typename dep::solver_iterator si =
+		    (*bi).solvers_begin(); !si.end(); ++si)
+		visited_packages->insert((*si).get_package());
+
+	      visited_packages->insert((*bi).get_source().get_package());
+	    }
+	}
     }
   };
 
@@ -2169,6 +2188,15 @@ private:
 	    bi!=starting_solution.get_broken().end(); ++bi)
 
 	  {
+	    if(visited_packages != NULL)
+	      {
+		for(typename dep::solver_iterator si = (*bi).solvers_begin();
+		    !si.end(); ++si)
+		  visited_packages->insert((*si).get_package());
+
+		visited_packages->insert((*bi).get_source().get_package());
+	      }
+
 	    // Check for the case where this dependency has been
 	    // fortuitously solved by forcing another broken
 	    // dependency.
@@ -2237,12 +2265,11 @@ private:
 		  std::cout << "Forced resolution of " << *bi << std::endl;
 
 		std::vector<solution> v;
-		real_generator g(v);
+		real_generator g(v, visited_packages);
 		// NB: this may do redundant work adding to 'conflict'.
 		// Use a generator object to avoid that?
 		generate_successors(curr, *bi, conflict,
-				    real_generator(v),
-				    visited_packages);
+				    g, visited_packages);
 
 		eassert_on_dep(v.size() == 1, s, *bi);
 
@@ -2284,7 +2311,8 @@ private:
 		      << std::endl;
 
 	  std::vector<solution> v;
-	  generate_successors(curr, *bi, conflict, real_generator(v),
+	  generate_successors(curr, *bi, conflict,
+			      real_generator(v, visited_packages),
 			      visited_packages);
 	  try_enqueue(v);
 	  nsols += v.size();
@@ -2302,7 +2330,8 @@ private:
 		    << std::endl;
 
 	std::vector<solution> v;
-	generate_successors(curr, *bi, conflict, real_generator(v),
+	generate_successors(curr, *bi, conflict,
+			    real_generator(v, visited_packages),
 			    visited_packages);
 	try_enqueue(v);
 	nsols += v.size();
