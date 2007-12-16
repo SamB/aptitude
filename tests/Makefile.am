@@ -9,7 +9,7 @@ noinst_PROGRAMS = interactive_set_test
 
 TESTS = test
 
-EXTRADIST = data
+EXTRADIST = resolver_inputs
 
 interactive_set_test_SOURCES = interactive_set_test.cc
 
