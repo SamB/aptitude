@@ -1,3 +1,123 @@
+[12/15/2007]
+Version 0.4.10                              "Oscillating Reindeer"
+
+- New features:
+
+  * In command-line mode, if the resolver fails to produce a solution
+    for whatever reason, then instead of aborting the program entirely
+    aptitude will now display a prompt at which you can fix the
+    dependency problems by hand.  Enter "r" at this prompt to try to
+    automatically fix dependencies again.
+
+  * safe-upgrade will now install new packages to fulfill dependences
+    (but it will never remove packages, downgrade packages, or install
+    a version that's not the default).  The option --no-new-installs
+    will disable this behavior.
+
+  * Updates and commands that install, remove, or upgrade packages
+    will now display a brief summary of what changed.  For instance:
+
+       There are now 64 updates [+10], 3 new [+1].
+
+    Unfortunately, this change requires reading the cache after an
+    update is complete.  Passing -q will disable this behavior, but
+    also make the update progress bar less attractive.  More work on
+    resolving this tension between features and performance remains to
+    be done.
+
+  * Add an option --allow-untrusted to override trust warnings.
+    (Closes: #452201, #452541)
+
+  * Recommended packages are now hidden if quiet mode is enabled.
+    (Closes: #452202)
+
+  * The options Aptitude::ProblemResolver::Trace-File and
+    Aptitude::ProblemResolver::Trace-Directory allow you to generate a
+    minimal cut of the cache that allows a problem resolver run to be
+    reproduced.  The eventual aim is both to simplify bug reporting
+    and to generate a corpus of automatic test cases for the resolver
+    (although more work needs to be done to accomplish the latter).
+
+  * When run in command-line mode, instead of displaying many separate
+    and sometimes duplicative groups of packages (e.g.: installed,
+    auto-installed, auto-installed in a light cream sauce, etc),
+    aptitude displays packages in a few exclusive categories and uses
+    tags (like the existing "purge" tag) to provide more state
+    information.  For instance:
+
+      $ aptitude -s install wesnoth
+      The following NEW packages will be installed:
+        wesnoth wesnoth-data{a} wesnoth-music{a}
+      $ aptitude -s remove freeciv-data
+          (... dependency resolution ...)
+      The following packages will be REMOVED:
+        freeciv-client-gtk{a} freeciv-data freeciv-server{a} ggzcore-bin{u}
+        libggz-gtk1{u} libggz2{u} libggzcore9{u} libggzdmod6{u} libggzmod4{u}
+
+    Here {a} indicates that a package was automatically installed or
+    removed, and {u} indicates that a package is being removed because
+    it is unused.  Hopefully this will be less confusing than the old
+    format.
+
+- Bug fixes:
+
+  + Crashes and serious errors:
+
+    * Track down and fix a SEGV triggered on the first action after a
+      cache reload (sometimes).  There are multiple bugs where this
+      might have been the root cause, but it's confirmed that it was
+      the cause of at least #454695, #454700, #455349, and #453362.
+      Bug #455865 is almost certainly the same issue, and bug #352278
+      may be another manifestation of it.
+
+    * If StepLimit is set to 0, refuse to solve dependencies instead
+      of going into an infinite loop.  (Closes: #451311)
+
+  + Minor bugs:
+
+    * Return a failing exit code after jumping from the command-line
+      to visual mode if the last install run failed. (Closes: #282408)
+
+    * Return a failing exit code from "aptitude update" if any
+      download fails. (Closes: #233129)
+
+  + Cosmetic and UI bugs:
+
+    * In addition to Space, Enter will now activate checkboxes and
+      radio buttons. (Closes: #451765)
+
+    * Abort the program if we get EOF at the resolver prompt instead
+      of claiming the resolver failed.
+
+    * Command-line searches will now only print each result once.
+      (Closes: #450798)
+
+  + Documentation bugs:
+
+    * The options menu documentation now minimally describes the new
+      configuration interface.
+
+    * The documentation of the configuration file options has been
+      placed back in alphabetic order after apparently suffering
+      bitrot over the years.
+
+    * Corrected the documented default of Parse-Description-Bullets to
+      match reality.
+
+    * The manpages for aptitude-create-state-bundle and
+      aptitude-run-state-bundle are now generated using DocBook, which
+      should produce higher-quality and more consistent typesetting,
+      as well as making the manpages more maintainable and allowing
+      translators to easily produce localized versions of the manpages.
+
+- Internal changes:
+
+  * Removed some unit tests that really tested cwidget.
+
+- Translation updates:
+
+  * French (Christian Perrier)
+
 [11/17/2007]
 Version 0.4.9                               "Ow. Ow. Ow. Ow. Ow."
 
