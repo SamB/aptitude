@@ -1,3 +1,22 @@
+Package: debconf
+Status: install ok installed
+Priority: important
+Section: admin
+Installed-Size: 1504
+Maintainer: Debconf Developers <debconf-devel@lists.alioth.debian.org>
+Architecture: all
+Version: 1.5.17
+Provides: debconf-2.0
+Recommends: apt-utils (>= 0.5.1)
+Conflicts: apt (<< 0.3.12.1)
+Conffiles:
+ /etc/debconf.conf 8c0619be413824f1fc7698cee0f23811
+ /etc/apt/apt.conf.d/70debconf 7e9d09d5801a42b4926b736b8eeabb73
+ /etc/bash_completion.d/debconf 8fa1862734fbe54d7178aaaa419f5a11
+Description: Debian configuration management system
+ Debconf is a configuration management system for debian packages. Packages
+ use Debconf to ask questions when they are installed.
+
 Package: aptitude-dbg
 Status: install ok installed
 Priority: extra
@@ -28,6 +47,7 @@ Installed-Size: 4996
 Maintainer: APT Development Team <deity@lists.debian.org>
 Architecture: i386
 Version: 0.7.10
+Replaces: libapt-pkg-dev (<< 0.3.7)
 Provides: libapt-pkg-libc6.7-6-4.6
 Suggests: aptitude
 Conffiles:
@@ -41,6 +61,20 @@ Description: Advanced front-end for dpkg
  .
  APT features complete installation ordering, multiple source capability
  and several other unique features, see the Users Guide in apt-doc.
+
+Package: apt-transport-https
+Status: install ok installed
+Priority: optional
+Section: admin
+Installed-Size: 108
+Maintainer: APT Development Team <deity@lists.debian.org>
+Architecture: i386
+Source: apt
+Version: 0.7.10
+Depends: libapt-pkg-libc6.7-6-4.6
+Description: APT https transport
+ This package contains a APT https transport. It makes it possible to
+ use 'deb https://foo distro main' lines in the sources.list.
 
 Package: libapt-pkg-perl
 Status: install ok installed
@@ -99,3 +133,38 @@ Description: terminal-based package manager
  .
  aptitude is also Y2K-compliant, non-fattening, naturally cleansing,
  and housebroken.
+
+Package: libapt-pkg-dev
+Status: install ok installed
+Priority: optional
+Section: libdevel
+Installed-Size: 428
+Maintainer: APT Development Team <deity@lists.debian.org>
+Architecture: i386
+Source: apt
+Version: 0.7.10
+Depends: apt (= 0.7.10), apt-utils (= 0.7.10), libapt-pkg-libc6.7-6-4.6
+Description: Development files for APT's libapt-pkg and libapt-inst
+ This package contains the header files and libraries for
+ developing with APT's libapt-pkg Debian package manipulation
+ library and the libapt-inst deb/tar/ar library.
+
+Package: apt-utils
+Status: install ok installed
+Priority: important
+Section: admin
+Installed-Size: 456
+Maintainer: APT Development Team <deity@lists.debian.org>
+Architecture: i386
+Source: apt
+Version: 0.7.10
+Replaces: apt (<< 0.5.9)
+Provides: libapt-inst-libc6.7-6-1.1
+Depends: libapt-pkg-libc6.7-6-4.6
+Description: APT utility programs
+ This package contains some APT utility programs such as apt-ftparchive,
+ apt-sortpkgs and apt-extracttemplates.
+ .
+ apt-extracttemplates is used by debconf to prompt for configuration
+ questions before installation. apt-ftparchive is used to create Package
+ and other index files. apt-sortpkgs is a Package/Source file normalizer.

@@ -5,6 +5,7 @@ Installed-Size: 5016
 Maintainer: APT Development Team <deity@lists.debian.org>
 Architecture: i386
 Version: 0.7.9
+Replaces: libapt-pkg-dev (<< 0.3.7)
 Provides: libapt-pkg-libc6.6-6-4.6
 Suggests: aptitude
 Filename: pool/main/a/apt/apt_0.7.9_i386.deb
@@ -44,6 +45,50 @@ Description: APT package searching utility -- command-line interface
  .
  Please read README file for curl or wget instructions.
 Tag: implemented-in::perl, interface::commandline, role::program, suite::debian, use::searching, works-with::file, works-with::software:package
+
+Package: apt-transport-https
+Priority: optional
+Section: admin
+Installed-Size: 108
+Maintainer: APT Development Team <deity@lists.debian.org>
+Architecture: i386
+Source: apt
+Version: 0.7.9
+Depends: libapt-pkg-libc6.6-6-4.6
+Filename: pool/main/a/apt/apt-transport-https_0.7.9_i386.deb
+Size: 52184
+MD5sum: 1b13c496f9730451e66d80440bb69569
+SHA1: 1594a62582e4a2ffe27e18c5789b0e8ee453b29b
+SHA256: e245c7eb379e09fa35047f14e675f3c92c2cf7710413cd7801195cd692941269
+Description: APT https transport
+ This package contains a APT https transport. It makes it possible to
+ use 'deb https://foo distro main' lines in the sources.list.
+Tag: admin::package-management, filetransfer::http, protocol::http, protocol::ssl, role::shared-lib, suite::debian
+
+Package: apt-utils
+Priority: important
+Section: admin
+Installed-Size: 456
+Maintainer: APT Development Team <deity@lists.debian.org>
+Architecture: i386
+Source: apt
+Version: 0.7.9
+Replaces: apt (<< 0.5.9)
+Provides: libapt-inst-libc6.6-6-1.1
+Depends: libapt-pkg-libc6.6-6-4.6
+Filename: pool/main/a/apt/apt-utils_0.7.9_i386.deb
+Size: 189014
+MD5sum: 9a9a970e1645cbb44401282011a5963a
+SHA1: 87f78e6df9e2b97ef9602c3be489584af9f15b29
+SHA256: a8155fc5aee43e4b6fe73da5ede3fc50cfe5252f0c01c703d0492ab58d1a3349
+Description: APT utility programs
+ This package contains some APT utility programs such as apt-ftparchive,
+ apt-sortpkgs and apt-extracttemplates.
+ .
+ apt-extracttemplates is used by debconf to prompt for configuration
+ questions before installation. apt-ftparchive is used to create Package
+ and other index files. apt-sortpkgs is a Package/Source file normalizer.
+Tag: admin::package-management, interface::commandline, role::program, scope::utility, suite::debian, use::configuring, use::organizing, works-with::software:package
 
 Package: aptitude
 Priority: important
@@ -94,6 +139,46 @@ Description: Debug symbols for the aptitude package manager
  need these if you want to generate debugging backtraces of aptitude;
  if you do, you probably also want the debug package for the cwidget
  library.
+
+Package: debconf
+Priority: required
+Section: admin
+Installed-Size: 1504
+Maintainer: Debconf Developers <debconf-devel@lists.alioth.debian.org>
+Architecture: all
+Version: 1.5.17
+Provides: debconf-2.0
+Recommends: apt-utils (>= 0.5.1)
+Conflicts: apt (<< 0.3.12.1)
+Filename: pool/main/d/debconf/debconf_1.5.17_all.deb
+Size: 151944
+MD5sum: 51a455e38deb6ca12ed93b3938da2e04
+SHA1: 478086b1d41902c5a95a66b87c63166d13d92450
+SHA256: 387658023e93313a569b6aa941d84f06a447a91d3c317942d61c2a5974efc97a
+Description: Debian configuration management system
+ Debconf is a configuration management system for debian packages. Packages
+ use Debconf to ask questions when they are installed.
+Tag: admin::configuring, implemented-in::perl, interface::{commandline,text-mode,x11}, role::program, scope::utility, suite::debian, uitoolkit::gtk, uitoolkit::qt, use::configuring
+
+Package: libapt-pkg-dev
+Priority: optional
+Section: libdevel
+Installed-Size: 428
+Maintainer: APT Development Team <deity@lists.debian.org>
+Architecture: i386
+Source: apt
+Version: 0.7.9
+Depends: apt (= 0.7.9), apt-utils (= 0.7.9), libapt-pkg-libc6.6-6-4.6
+Filename: pool/main/a/apt/libapt-pkg-dev_0.7.9_i386.deb
+Size: 101938
+MD5sum: 490a3a6270d53e099d5d5d30ed443714
+SHA1: b32dd06ec1325abe585af5abe7720e24158cc8bd
+SHA256: b8be1c96800f3072095d105579d9760311814cca1f7cef3774b91427b0508b71
+Description: Development files for APT's libapt-pkg and libapt-inst
+ This package contains the header files and libraries for
+ developing with APT's libapt-pkg Debian package manipulation
+ library and the libapt-inst deb/tar/ar library.
+Tag: admin::package-management, devel::debian, devel::library, role::devel-lib, suite::debian, works-with::software:package
 
 Package: libapt-pkg-perl
 Priority: optional

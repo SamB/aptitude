@@ -9,3 +9,19 @@ test {
     "aptitude-dbg" "[UNINST]"
   }
 }
+test {
+  expect 5000 {
+    "apt" "0.7.9"
+    "libapt-pkg-dev" "[UNINST]"
+    "apt-utils" "0.7.9"
+    "apt-transport-https" "[UNINST]"
+  }
+}
+test {
+  expect 5000 {
+    "apt" "0.7.9"
+    "libapt-pkg-dev" "0.7.9"
+    "apt-utils" "0.7.9"
+    "apt-transport-https" "[UNINST]"
+  }
+}
