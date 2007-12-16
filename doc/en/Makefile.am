@@ -10,7 +10,9 @@ docdir=$(datadir)/doc/$(PACKAGE)
 # Automake automagically distributes README without asking..
 README=README.en
 
-IMAGES = $(wildcard images/*.png)
+IMAGES = $(wildcard $(srcdir)/images/*.png)
+
+man_MANS=aptitude.8 aptitude-create-state-bundle.1 aptitude-run-state-bundle.1
 
 all-local: doc-stamp
 
@@ -19,8 +21,6 @@ clean-local:
 	-rm -f doc-stamp doc-css-stamp doc-html-stamp doc-txt-stamp man-stamp
 	-rm -fr aptitude.8 aptitude-create-state-bundle.1 aptitude-run-state-bundle.1
 	-rm -fr $(README)
-
-man_MANS=aptitude.8 aptitude-create-state-bundle.1 aptitude-run-state-bundle.1
 
 install-data-hook:
 	$(mkinstalldirs) $(DESTDIR)$(docdir)/html/en/images
@@ -34,13 +34,15 @@ doc-stamp: doc-html-stamp doc-css-stamp $(README) man-stamp
 
 db2latex: doc-db2latex-stamp
 
-man-stamp: aptitude.xml manpage.xml $(srcdir)/../aptitude-man.xsl
+man-stamp: $(srcdir)/aptitude.xml $(srcdir)/manpage.xml $(srcdir)/../aptitude-man.xsl
 	-rm -fr output-man
 	xsltproc -o output-man/ $(srcdir)/../aptitude-man.xsl $(srcdir)/aptitude.xml
 	for x in $(man_MANS); do mv output-man/$$x .; done
 	touch man-stamp
 
-$(README): aptitude.xml manpage.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
+aptitude.8 aptitude-create-state-bundle.1 aptitude-run-state-bundle.1: man-stamp
+
+$(README): $(srcdir)/aptitude.xml $(srcdir)/manpage.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
 	-rm -fr output-txt/
 	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl $(srcdir)/aptitude.xml
 	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | sed 's/&#8212/--/g' > $(README)
