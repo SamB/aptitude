@@ -502,6 +502,8 @@ void aptitudeDepCache::mark_all_upgradable(bool with_autoinst,
       return;
     }
 
+  pre_package_state_changed();
+
   action_group group(*this, undo);
 
   for(int iter=0; iter==0 || (iter==1 && with_autoinst); ++iter)
@@ -808,6 +810,18 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
 	 package_states[pkg->ID].remove_reason!=backup_state.AptitudeState[pkg->ID].remove_reason ||
 	 package_states[pkg->ID].forbidver!=backup_state.AptitudeState[pkg->ID].forbidver)
 	{
+	  // Technically this could be invoked only when we're really
+	  // about to change a package's state, but placing it here
+	  // should avoid signalling changes unnecessarily while still
+	  // signalling a change whenever something changed.
+	  //
+	  // You could argue that this invocation of
+	  // pre_package_state_changed makes all other unnecessary,
+	  // but I think they should be left in for safety's sake.
+	  // Forgetting to call pre_package_state_changed can lead to
+	  // hard to track down bugs like #432411.
+	  pre_package_state_changed();
+
 	  int n=pkg->ID;
 	  n=n;
 	  char curM=PkgState[pkg->ID].Mode;
@@ -1324,6 +1338,7 @@ void aptitudeDepCache::sweep()
 	      // not previously being deleted.
 	      if(!PkgState[pkg->ID].Delete())
 		{
+		  pre_package_state_changed();
 		  MarkDelete(pkg, purge_unused);
 		  package_states[pkg->ID].selection_state =
 		    (purge_unused ? pkgCache::State::Purge : pkgCache::State::DeInstall);
@@ -1341,11 +1356,13 @@ void aptitudeDepCache::sweep()
 		}
 	      else
 		package_states[pkg->ID].selection_state = pkgCache::State::Install;
+	      pre_package_state_changed();
 	      MarkKeep(pkg, false, false);
 	    }
 	}
       else if(PkgState[pkg->ID].Delete() && package_states[pkg->ID].remove_reason == unused)
 	{
+	  pre_package_state_changed();
 	  MarkKeep(pkg, false, false);
 	}
     }
