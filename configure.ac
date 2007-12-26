@@ -41,12 +41,27 @@ AC_CHECK_LIB(pthread, main,
 ALL_LINGUAS="ar bs ca cs da de el es eu fi fr gl hu it ja km ku lt mr nb nl nn pl pt pt_BR ro ru sk sv tl tr vi zh_CN zh_TW"
 AM_GNU_GETTEXT([external])
 
+HAVE_EPT=1
+AC_ARG_WITH(ept,
+	AS_HELP_STRING(--without-ept, [don't compile against the ept library (disables debtags and xapian-index support)]),
+	[if test x$withval = xno
+	 then
+	    HAVE_EPT=
+	 fi])
+
+PKG_CHECK_MODULES(ept, libept, [], [HAVE_EPT=])
+
+if test x$HAVE_EPT = x1
+then
+  AC_DEFINE(HAVE_EPT, 1, [Define if the ept package information library is available.])
+fi
+
 PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 
 PKG_CHECK_MODULES(CWIDGET, cwidget)
 
-CXXFLAGS="$CXXFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS"
-LIBS="$LIBS $SIGC_LIBS $CWIDGET_LIBS"
+CXXFLAGS="$CXXFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS $ept_CFLAGS"
+LIBS="$LIBS $SIGC_LIBS $CWIDGET_LIBS $ept_LIBS"
 AC_DEFINE_UNQUOTED(SIGC_VERSION, ["$(pkg-config --modversion sigc++-2.0)"], [The version of libsigc++ with which the program was compiled])
 
 dnl Checks for header files.
