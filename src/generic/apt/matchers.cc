@@ -582,14 +582,31 @@ public:
 	       aptitudeDepCache &cache,
 	       pkgRecords &records)
   {
-    const std::set<tag> *tags = get_tags(pkg);
+#ifdef HAVE_EPT
+    typedef ept::debtags::Tag tag;
+    using aptitude::apt::get_tags;
+#endif
+
+#ifdef HAVE_EPT
+    const std::set<tag> realTags(get_tags(pkg));
+    const std::set<tag> * const tags(&realTags);
+#else
+    const std::set<tag> * const tags(get_tags(pkg));
+#endif
 
     if(tags == NULL)
       return false;
 
     for(std::set<tag>::const_iterator i=tags->begin(); i!=tags->end(); ++i)
-      if(string_matches(i->str().c_str()))
-	return true;
+      {
+#ifdef HAVE_EPT
+	std::string name(i->fullname());
+#else
+	const std::string name = i->str().c_str();
+#endif
+	if(string_matches(name.c_str()))
+	  return true;
+      }
 
     return false;
   }
@@ -599,14 +616,30 @@ public:
 			      aptitudeDepCache &cache,
 			      pkgRecords &records)
   {
-    const set<tag> *tags = get_tags(pkg);
+#ifdef HAVE_EPT
+    typedef ept::debtags::Tag tag;
+    using aptitude::apt::get_tags;
+#endif
+
+#ifdef HAVE_EPT
+    const set<tag> realTags(get_tags(pkg));
+    const set<tag> * const tags(&realTags);
+#else
+    const set<tag> * const tags(get_tags(pkg));
+#endif
 
     if(tags == NULL)
       return NULL;
 
     for(set<tag>::const_iterator i=tags->begin(); i!=tags->end(); ++i)
       {
-	pkg_match_result *res = get_string_match(i->str().c_str());
+#ifdef HAVE_EPT
+	std::string name(i->fullname());
+#else
+	const std::string name = i->str().c_str();
+#endif
+
+	pkg_match_result *res = get_string_match(name.c_str());
 	if(res != NULL)
 	  return res;
       }

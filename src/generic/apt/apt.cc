@@ -364,7 +364,11 @@ void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
   apt_undos->clear_items();
 
   load_tasks(*progress_bar);
+#ifndef HAVE_EPT
   load_tags(*progress_bar);
+#else
+  aptitude::apt::load_tags();
+#endif
 
   if(user_pkg_hier)
     {

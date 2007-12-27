@@ -1219,12 +1219,39 @@ public:
   virtual void add_package(const pkgCache::PkgIterator &pkg,
 			   pkg_subtree *root)
   {
-    const set<tag> *tags = get_tags(pkg);
-    if(tags == NULL)
+#ifdef HAVE_EPT
+    typedef ept::debtags::Tag tag;
+    using aptitude::apt::get_tags;
+#endif
+
+#ifdef HAVE_EPT
+    const set<tag> realTags(get_tags(pkg));
+    const set<tag> * const tags(&realTags);
+#else
+    const set<tag> * const tags(get_tags(pkg));
+#endif
+
+    if(tags != NULL)
       return;
+
     for(set<tag>::const_iterator ti = tags->begin();
 	ti != tags->end(); ++ti)
       {
+#ifdef HAVE_EPT
+	const ept::debtags::Facet f = ti->facet();
+
+	const std::string thisfacet(f.name());
+
+	// Don't create items for tags that aren't in our facet.
+	if(f.name() != facet)
+	  return;
+
+	// TODO: split up by sub-facet or whatever the debtags guys
+	// call it?
+	std::string tagname;
+	ti->name(tagname);
+
+#else // HAVE_EPT
 	tag::const_iterator j = ti->begin();
 	if(j == ti->end())
 	  continue;
@@ -1239,6 +1266,8 @@ public:
 	  continue;
 
 	string tagname = *j;
+#endif // HAVE_EPT
+
 	childmap::const_iterator found =
 	  children.find(tagname);
 
@@ -1247,8 +1276,16 @@ public:
 
 	if(found == children.end())
 	  {
+#ifdef HAVE_EPT
+	    std::string desc;
+	    ti->longDescription(desc);
+
+	    std::string shortdesc;
+	    ti->shortDescription(shortdesc);
+#else // HAVE_EPT
 	    string desc = tag_description(ti->str());
 	    string shortdesc(desc, 0, desc.find('\n'));
+#endif
 
 	    subtree = new pkg_subtree(swsprintf(L"%s - %s",
 						tagname.c_str(),
@@ -1322,20 +1359,27 @@ public:
   virtual void add_package(const pkgCache::PkgIterator &pkg,
 			   pkg_subtree *root)
   {
-    const set<tag> *tags = get_tags(pkg);
+#ifdef HAVE_EPT
+    typedef ept::debtags::Tag tag;
+    using aptitude::apt::get_tags;
+#endif
 
-    if(tags == NULL)
-      return;
+#ifdef HAVE_EPT
+    const set<tag> realTags(get_tags(pkg));
+    const set<tag> * const tags(&realTags);
+#else
+    const set<tag> * const tags(get_tags(pkg));
+#endif
 
     // Put all untagged, non-virtual packages into a separate list.
-    if(tags->empty() && !pkg.VersionList().end())
+    if((tags == NULL || tags->empty()) && !pkg.VersionList().end())
       {
 	if(untagged_tree == NULL)
 	  {
 	    eassert(untagged_policy == NULL);
 
 	    untagged_tree = new pkg_subtree(W_("TAGLESS PACKAGES"),
-					    W_("\n These packages have not yet been classified in debtags."),
+					    W_("\n These packages have not yet been classified in debtags, or the debtags database is not present (installing debtags may correct this problem)."),
 					    get_desc_sig());
 	    root->add_child(untagged_tree);
 
@@ -1345,9 +1389,17 @@ public:
 	untagged_policy->add_package(pkg, untagged_tree);
       }
 
+    if(tags == NULL)
+      return;
+
     for(set<tag>::const_iterator ti = tags->begin();
 	ti != tags->end(); ++ti)
       {
+#ifdef HAVE_EPT
+	const ept::debtags::Facet f(ti->facet());
+	std::string thisfacet(f.name());
+	std::string thistag(ti->name());
+#else // HAVE_EPT
 	tag::const_iterator j = ti->begin();
 
 	eassert(j != ti->end());
@@ -1363,6 +1415,7 @@ public:
 	  thistag = _("MISSING TAG");
 	else
 	  thistag = *j;
+#endif
 
 	facetmap::const_iterator facetfound =
 	  children.find(thisfacet);
@@ -1372,8 +1425,13 @@ public:
 
 	if(facetfound == children.end())
 	  {
+#ifdef HAVE_EPT
+	    string desc(f.longDescription());
+	    string shortdesc(f.shortDescription());
+#else // HAVE_EPT
 	    string desc = facet_description(thisfacet);
 	    string shortdesc(desc, 0, desc.find('\n'));
+#endif
 
 	    if(!shortdesc.empty())
 	      tagtree = new pkg_subtree(swsprintf(L"%s - %s",
@@ -1404,8 +1462,13 @@ public:
 
 	if(tagfound == tagchildren->end())
 	  {
+#ifdef HAVE_EPT
+	    string desc(ti->longDescription());
+	    string shortdesc(ti->shortDescription());
+#else // HAVE_EPT
 	    string desc = tag_description(ti->str());
 	    string shortdesc(desc, 0, desc.find('\n'));
+#endif
 
 	    if(!shortdesc.empty())
 	      subtree = new pkg_subtree(swsprintf(L"%s - %s",

@@ -1,6 +1,6 @@
 // tags.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -18,6 +18,8 @@
 //   Boston, MA 02111-1307, USA.
 
 #include "tags.h"
+
+#ifndef HAVE_EPT
 
 #include <aptitude.h>
 
@@ -308,3 +310,46 @@ string tag_description(const std::string &tag)
   else
     return found->second;
 }
+
+#else // HAVE_EPT
+
+#include <ept/debtags/debtags.h>
+#include "apt.h"
+
+namespace aptitude
+{
+  namespace apt
+  {
+    const ept::debtags::Debtags *debtagsDB;
+
+    void reset_tags()
+    {
+      delete debtagsDB;
+      debtagsDB = NULL;
+    }
+
+    bool initialized_reset_signal;
+    void load_tags()
+    {
+      if(!initialized_reset_signal)
+	{
+	  cache_closed.connect(sigc::ptr_fun(reset_tags));
+	  cache_reload_failed.connect(sigc::ptr_fun(reset_tags));
+	  initialized_reset_signal = true;
+	}
+
+      debtagsDB = new ept::debtags::Debtags;
+    }
+
+    const std::set<ept::debtags::Tag> get_tags(const pkgCache::PkgIterator &pkg)
+    {
+      if(!apt_cache_file || !debtagsDB)
+	return std::set<ept::debtags::Tag>();
+
+      // TODO: handle !hasData() here.
+      return debtagsDB->getTagsOfItem(pkg.Name());
+    }
+  }
+}
+
+#endif // HAVE_EPT

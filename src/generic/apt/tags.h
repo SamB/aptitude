@@ -1,6 +1,6 @@
 // tags.h                                            -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -21,6 +21,19 @@
 
 #ifndef TAGS_H
 #define TAGS_H
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+// If ept is unavailable, we use our own (broken!) code to build an
+// in-memory database of package tags.  Otherwise, this code just
+// handles initializing it, destroying it, and extracting information
+// from it.  Note that this means that all callers have to be
+// conditionalized on HAVE_EPT: the "tag" class this used to return is
+// broken wrt hierarchies and just using ept is simpler.
+
+#ifndef HAVE_EPT
 
 #include <set>
 #include <string>
@@ -203,5 +216,26 @@ std::string facet_description(const std::string &facet);
 
 // Here "Tag" is a fully qualified tag name.
 std::string tag_description(const std::string &tag);
+
+#else // HAVE_EPT
+
+#include <apt-pkg/pkgcache.h>
+
+#include <ept/debtags/debtags.h>
+
+#include <set>
+
+namespace aptitude
+{
+  namespace apt
+  {
+    const std::set<ept::debtags::Tag> get_tags(const pkgCache::PkgIterator &pkg);
+
+    /** \brief Initialize the cache of debtags information. */
+    void load_tags();
+  }
+}
+
+#endif // HAVE_EPT
 
 #endif

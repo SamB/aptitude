@@ -1,6 +1,6 @@
 // desc_parse.cc
 //
-//  Copyright 2004-2006 Daniel Burrows
+//  Copyright 2004-2007 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -284,13 +284,32 @@ cw::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
   if(pkg.end())
     return NULL;
 
-  const set<tag> *s = get_tags(pkg);
+#ifdef HAVE_EPT
+  typedef ept::debtags::Tag tag;
+  using aptitude::apt::get_tags;
+#endif
+
+#ifdef HAVE_EPT
+  const set<tag> realS(get_tags(pkg));
+  const set<tag> * const s(&realS);
+#else
+  const set<tag> * const s(get_tags(pkg));
+#endif
+
   if(s != NULL && !s->empty())
     {
       vector<cw::fragment *> tags;
 
       for(set<tag>::const_iterator i = s->begin(); i != s->end(); ++i)
-	tags.push_back(cw::text_fragment(i->str(), cw::style_attrs_on(A_BOLD)));
+	{
+#ifdef HAVE_EPT
+	  std::string name(i->fullname());
+#else
+	  const std::string name(i->str());
+#endif
+
+	  tags.push_back(cw::text_fragment(name, cw::style_attrs_on(A_BOLD)));
+	}
 
       wstring tagstitle = W_("Tags");
 
