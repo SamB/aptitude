@@ -41,12 +41,12 @@ AC_CHECK_LIB(pthread, main,
 ALL_LINGUAS="ar bs ca cs da de el es eu fi fr gl hu it ja km ku lt mr nb nl nn pl pt pt_BR ro ru sk sv tl tr vi zh_CN zh_TW"
 AM_GNU_GETTEXT([external])
 
-HAVE_EPT=1
+HAVE_EPT=
 AC_ARG_WITH(ept,
-	AS_HELP_STRING(--without-ept, [don't compile against the ept library (disables debtags and xapian-index support)]),
-	[if test x$withval = xno
+	AS_HELP_STRING(--with-ept, [compile against the ept library (disables debtags and xapian-index support)]),
+	[if test x$withval = xyes
 	 then
-	    HAVE_EPT=
+	    HAVE_EPT=1
 	 fi])
 
 PKG_CHECK_MODULES(ept, libept, [], [HAVE_EPT=])
