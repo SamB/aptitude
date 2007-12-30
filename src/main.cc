@@ -111,6 +111,11 @@ static void show_version()
   printf(_("\nCurses version: %s\n"), curses_version());
 #endif
   printf(_("libsigc++ version: %s\n"), SIGC_VERSION);
+#ifdef HAVE_EPT
+  printf(_("\nEpt support enabled.\n"));
+#else
+  printf(_("\nEpt support disabled.\n"));
+#endif
 }
 
 static void usage()
