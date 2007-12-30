@@ -128,6 +128,9 @@ static void cmdline_show_instinfo(pkgvector &items,
       //aptitudeDepCache::aptitude_state &extstate=(*apt_cache_file)->get_ext_state(*i);
       pkgCache::VerIterator instver=state.InstVerIter(*apt_cache_file);
 
+      // Set to true if this package should get attached deps.
+      bool deps_ok = showdeps;
+
       if(showpurge)
 	{
 	  if(state.Delete() && state.iFlags&pkgDepCache::Purge)
@@ -144,6 +147,11 @@ static void cmdline_show_instinfo(pkgvector &items,
 	case pkg_unused_remove:
 	  tags.push_back('u');
 	  break;
+	case pkg_broken:
+	  // Do nothing, but don't clear out deps_ok.
+	  break;
+	default:
+	  deps_ok = false;
 	}
 
       if(!tags.empty())
@@ -566,16 +574,11 @@ static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 	  all_empty=false;
 
 	  printf("%s\n", _(cmdline_action_descriptions[i]));
-	  if(i==pkg_auto_install || i==pkg_auto_remove || i==pkg_unused_remove ||
-	     i==pkg_auto_hold || i==pkg_broken)
-	    cmdline_show_instinfo(lists[i],
-				  showvers, showdeps, showsize,
-				  (i == pkg_auto_remove ||
-				   i == pkg_unused_remove));
-	  else
-	    cmdline_show_instinfo(lists[i],
-				  showvers, false, showsize,
-				  i == pkg_remove);
+	  cmdline_show_instinfo(lists[i],
+				showvers, showdeps, showsize,
+				i == pkg_remove ||
+				i == pkg_auto_remove ||
+				i == pkg_unused_remove);
 	}
     }
 
