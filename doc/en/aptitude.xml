@@ -5357,7 +5357,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		      <para>
 			Group based on the whole Section field, so
 			categories like <quote>non-free/games</quote> will be
-			created.
+			created.  This is the default if no
+			<replaceable>mode</replaceable> is specified.
 		      </para>
 		    </listitem>
 		  </varlistentry>
@@ -5367,10 +5368,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 		    <listitem>
 		      <para>
-			Group based on the part of the Section field
-			before the <quote><literal>/</literal></quote>; if there is
-			no <literal>/</literal>,
-			<literal>main</literal> will be used instead.
+			Group based on the part of the Section field before the
+			first <literal>/</literal> character; if there is no
+			<literal>/</literal>,
+			<quote><literal>main</literal></quote> will be used
+			instead.
 		      </para>
 		    </listitem>
 		  </varlistentry>
@@ -5380,10 +5382,23 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 		    <listitem>
 		      <para>
-			Group based on the part of the Section field
-			after the <quote><literal>/</literal></quote>; if there is
-			no <literal>/</literal>, the entire field will
-			be used.
+			Group based on the part of the Section field after the
+			first <literal>/</literal> character; if there is no
+			<literal>/</literal>, the entire field will be used.
+		      </para>
+		    </listitem>
+		  </varlistentry>
+
+		  <varlistentry>
+		    <term><literal>subdirs</literal></term>
+
+		    <listitem>
+		      <para>
+			Group based on the part of the Section field after the
+			first <literal>/</literal> character; if there is no
+			<literal>/</literal>, the entire field will be used; if
+			there are multiple <literal>/</literal> characters,
+			a hierarchy of groups will be formed.
 		      </para>
 		    </listitem>
 		  </varlistentry>
@@ -6148,7 +6163,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <row>
 		<entry><literal>PrevPage</literal></entry>
-		<entry><literal>pagedown,C-f</literal></entry>
+		<entry><literal>pageup,C-b</literal></entry>
 		<entry>
 		  Moves the current display one page backward.
 		</entry>
