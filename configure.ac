@@ -43,7 +43,7 @@ AM_GNU_GETTEXT([external])
 
 HAVE_EPT=
 AC_ARG_WITH(ept,
-	AS_HELP_STRING(--with-ept, [compile against the ept library (disables debtags and xapian-index support)]),
+	AS_HELP_STRING(--with-ept, [compile against the ept library (enables debtags and xapian-index support)]),
 	[if test x$withval = xyes
 	 then
 	    HAVE_EPT=1
@@ -54,6 +54,10 @@ PKG_CHECK_MODULES(ept, libept, [], [HAVE_EPT=])
 if test x$HAVE_EPT = x1
 then
   AC_DEFINE(HAVE_EPT, 1, [Define if the ept package information library is available.])
+else
+  # Force the program not to link against ept.
+  ept_CFLAGS=
+  ept_LIBS=
 fi
 
 PKG_CHECK_MODULES(SIGC, sigc++-2.0)
