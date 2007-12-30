@@ -112,9 +112,9 @@ static void show_version()
 #endif
   printf(_("libsigc++ version: %s\n"), SIGC_VERSION);
 #ifdef HAVE_EPT
-  printf(_("\nEpt support enabled.\n"));
+  printf(_("Ept support enabled.\n"));
 #else
-  printf(_("\nEpt support disabled.\n"));
+  printf(_("Ept support disabled.\n"));
 #endif
 }
 
