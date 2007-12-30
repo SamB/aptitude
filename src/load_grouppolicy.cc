@@ -353,7 +353,9 @@ class section_policy_parser : public string_policy_parser
 public:
   group_policy_parse_node *create_node(const vector<string> &args)
   {
-    int split_mode=pkg_grouppolicy_section_factory::split_none;
+    typedef pkg_grouppolicy_section_factory::split_mode_type split_mode_type;
+
+    split_mode_type split_mode = pkg_grouppolicy_section_factory::split_none;
     bool passthrough=false;
 
     if(args.size() >= 1)
@@ -364,8 +366,10 @@ public:
 	  split_mode=pkg_grouppolicy_section_factory::split_topdir;
 	else if(!strcasecmp(args[0].c_str(), "subdir"))
 	  split_mode=pkg_grouppolicy_section_factory::split_subdir;
+	else if(!strcasecmp(args[0].c_str(), "subdirs"))
+	  split_mode=pkg_grouppolicy_section_factory::split_subdirs;
 	else
-	  throw GroupParseException(_("Bad section name '%s' (use 'none', 'topdir', or 'subdir')"), args[0].c_str());
+	  throw GroupParseException(_("Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"), args[0].c_str());
       }
 
     if(args.size() >= 2)
@@ -383,7 +387,7 @@ public:
       throw GroupParseException(_("Too many arguments to by-section grouping policy"));
 
     return new policy_node2<pkg_grouppolicy_section_factory,
-      int, bool>(split_mode, passthrough);
+      split_mode_type, bool>(split_mode, passthrough);
   }
 };
 

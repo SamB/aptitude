@@ -116,14 +116,14 @@ class pkg_grouppolicy_section:public pkg_grouppolicy
   pkg_grouppolicy_factory *chain;
 
   // As in the factory
-  int split_mode;
+  pkg_grouppolicy_section_factory::split_mode_type split_mode;
   bool passthrough;
 
   // The descriptions are in the cw::style used by package descriptions.
   static hash_map<string, wstring> section_descriptions;
   static void init_section_descriptions();
 public:
-  pkg_grouppolicy_section(int _split_mode,
+  pkg_grouppolicy_section(pkg_grouppolicy_section_factory::split_mode_type _split_mode,
 			  bool _passthrough,
 			  pkg_grouppolicy_factory *_chain,
 			  pkg_signal *_sig,
@@ -213,81 +213,138 @@ void pkg_grouppolicy_section::init_section_descriptions()
 void pkg_grouppolicy_section::add_package(const pkgCache::PkgIterator &pkg,
 					  pkg_subtree *root)
 {
-  const char *section=pkg.VersionList().Section();
-  const char *name=pkg.Name();
-  bool maypassthrough=false; // FIXME: HACK!
+  // This flag tracks whether we're in a branch of the logic in which
+  // the passthrough option is obeyed.  That basically means that the
+  // package is virtual, has no section, or is a task package.
+  bool may_passthrough = false;
 
-  if(name[0] == 't' && name[1] == 'a' && name[2] == 's' && name[3] == 'k' && name[4] == '-')
+  string section;
+  if(!strncmp(pkg.Name(), "task-", 5))
     {
-      maypassthrough=true;
-      section=split_mode!=pkg_grouppolicy_section_factory::split_none?_("Tasks/Tasks"):_("Tasks");
+      section=_("Tasks");
+      may_passthrough = true;
     }
-
-  if(!section)
+  else if(pkg.VersionList().end())
     {
-      maypassthrough=true;
-      section=split_mode!=pkg_grouppolicy_section_factory::split_none?_("Unknown/Unknown"):_("Unknown");
+      section=_("virtual");
+      may_passthrough = true;
     }
-
-  if(pkg.VersionList().end())
+  else if(!pkg.VersionList().Section())
     {
-      maypassthrough=true;
-      section=split_mode!=pkg_grouppolicy_section_factory::split_none?_("virtual/virtual"):_("virtual");
-    }
-
-  const char *split=strchr(section, '/');
-  const char *subdir=split?split+1:section;
-
-  string tag;
-
-  if(split_mode==pkg_grouppolicy_section_factory::split_none)
-    tag=section;
-  else if(split_mode==pkg_grouppolicy_section_factory::split_topdir)
-    tag=(split?string(section,split-section):string(_("main")));
-  else if(split_mode==pkg_grouppolicy_section_factory::split_subdir)
-    tag=subdir;
-
-  section_map::iterator found=sections.find(tag);
-
-  if(maypassthrough && passthrough)
-    {
-      if(found==sections.end())
-	sections[tag].first=chain->instantiate(get_sig(), get_desc_sig());
-
-      sections[tag].first->add_package(pkg, root);
+      section=_("Unknown");
+      may_passthrough = true;
     }
   else
     {
-      if(found==sections.end())
+      section=pkg.VersionList().Section();
+
+      // Find the first section divider ('/'); if the split mode is
+      // supposed to include only the part of the section preceding it
+      // or only the part following it, modify the section
+      // accordingly.
+      string::size_type first_split = section.find('/');
+      if(split_mode == pkg_grouppolicy_section_factory::split_topdir)
+	section = (first_split != section.npos
+		   ? section.substr(0,first_split)
+		   : _("main"));
+      else if((split_mode == pkg_grouppolicy_section_factory::split_subdir ||
+	       split_mode == pkg_grouppolicy_section_factory::split_subdirs) &&
+	      first_split != section.npos)
+	section = section.substr(first_split + 1);
+    }
+
+  // If passthrough is enabled and this package is in a section that
+  // can pass through, place it directly in the top-level tree.
+  if(passthrough && may_passthrough)
+    {
+      if(sections.find(section) == sections.end())
+	sections[section].first = chain->instantiate(get_sig(), get_desc_sig());
+      sections[section].first->add_package(pkg, root);
+    }
+  // Find the subtree in which this package is to be placed and add it
+  // to that tree.
+  else
+    {
+      pkg_subtree *current_root = root;
+      // The fully qualified path of the tree in which the current
+      // section is to be placed.  "" for the root tree, "games" for
+      // "games" in the root tree, "non-free/games/arcade" for
+      // "arcade" in the tree for "games" in the tree for "non-free"
+      // in the root tree, etc.
+      string section_id;
+      // The portion of the section that hasn't been instantiated in
+      // the tree yet.
+      string sections_remaining = section;
+      // Sentinel value, set to "true" when we've processed the whole
+      // string.
+      bool done = false;
+      do
 	{
-	  pkg_subtree *newtree;
-	  string realtag=tag;
-
-	  // Go by the last element of the section for multi-level sections.
-	  if(tag.find('/')!=tag.npos)
-	    realtag=string(tag, tag.rfind('/')+1);
-
-	  if(section_descriptions.find(realtag)!=section_descriptions.end())
+	  if(split_mode == pkg_grouppolicy_section_factory::split_subdirs)
 	    {
-	      wstring desc=section_descriptions[realtag];
-
-	      if(desc.find(L'\n')!=desc.npos)
-		newtree=new pkg_subtree(cw::util::transcode(tag)+L" - "+wstring(desc, 0, desc.find('\n')),
-					desc,
-					get_desc_sig());
+	      // If we're splitting into subdirectories, we need to
+	      // strip one path element from the string and
+	      // instantiate it.
+	      string::size_type next_split = sections_remaining.find('/', 1);
+	      section_id.append(sections_remaining.substr(0, next_split));
+	      section = (sections_remaining.at(0) == '/'
+			 ? sections_remaining.substr(1, next_split)
+			 : sections_remaining.substr(0, next_split));
+	      if(next_split == sections_remaining.npos)
+		done = true;
 	      else
-		newtree=new pkg_subtree(cw::util::transcode(tag)+desc);
+		sections_remaining = sections_remaining.substr(next_split);
 	    }
 	  else
-	    newtree=new pkg_subtree(cw::util::transcode(tag));
+	    {
+	      // In this case we've precomputed the full path above,
+	      // and the section will be placed in the root node.
+	      section_id = section;
+	      done = true;
+	    }
 
-	  sections[tag].first=chain->instantiate(get_sig(), get_desc_sig());
-	  sections[tag].second=newtree;
+	  // If the subtree into which this package should be placed
+	  // doesn't exist, create it.
+	  section_map::iterator found = sections.find(section_id);
+	  if(found == sections.end())
+	    {
+	      string section_tail = section;
+	      pkg_subtree *newtree;
 
-	  root->add_child(newtree);
-	}
+	      // Look up the description of the section based on the
+	      // last component of its name, and create a new subtree
+	      // for it.
+	      string::size_type last_split = section.rfind('/');
+	      if(last_split != section.npos)
+		section_tail = section.substr(last_split+1);
 
-      sections[tag].first->add_package(pkg, sections[tag].second);
+	      if(section_descriptions.find(section_tail) != section_descriptions.end())
+		{
+		  wstring desc = section_descriptions[section_tail];
+		  if(desc.find(L'\n') != desc.npos)
+		    newtree = new pkg_subtree(cw::util::transcode(section) + L" - " + wstring(desc, 0, desc.find('\n')), desc, get_desc_sig());
+		  else
+		    newtree = new pkg_subtree(cw::util::transcode(section) + desc);
+		}
+	      else
+		newtree = new pkg_subtree(cw::util::transcode(section));
+
+	      // Generate a new sub-grouping-policy, and insert it
+	      // into the map with the new tree.
+	      //
+	      // Note that the new grouping policy is only used for
+	      // packages that are in this section; packages in
+	      // sub-sections go directly to the policy of the
+	      // sub-section.
+	      sections[section_id].first = chain->instantiate(get_sig(), get_desc_sig());
+	      sections[section_id].second = newtree;
+
+	      current_root->add_child(newtree);
+	    }
+	  current_root=sections[section_id].second;
+	} while(!done);
+
+      sections[section_id].first->add_package(pkg, sections[section_id].second);
     }
 }
 

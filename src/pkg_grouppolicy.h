@@ -107,24 +107,50 @@ class pkg_grouppolicy_end_factory:public pkg_grouppolicy_factory
 // The following policy groups packages by section.
 class pkg_grouppolicy_section_factory:public pkg_grouppolicy_factory
 {
+public:
+  /** \brief Which part of the section to use: */
+  enum split_mode_type
+    {
+      /** \brief Use the whole section, uninterpreted.
+       *
+       *  This gives you names like "games" and "non-free/editors".
+       */
+      split_none = 0,
+
+      /** \brief Use the part of the section before the first slash,
+       *  or "main" if there is no slash ("/").
+       *
+       *  This gives you names like "main", "non-free", etc.
+       */
+      split_topdir = 1,
+
+      /** \brief Use the part of the section after the first slash,
+       *  or the whole section if there is no slash.
+       */
+      split_subdir = 2,
+
+      /** \brief Remove any text preceding a slash, then split the
+       *  remainder at slashes and build a multi-level hierarchy of
+       *  sections.
+       *
+       *  If you have packages in the sections "games/arcade" and
+       *  "games/strategy", this will produce a tree named "games",
+       *  with trees named "arcade" and "strategy" beneath it.
+       */
+      split_subdirs = 3
+    };
+
+private:
   pkg_grouppolicy_factory *chain;
 
-  int split_mode;
+  split_mode_type split_mode;
 
   // If this is true, virtual packages, packages in unknown sections, and
   // task packages will be 'passed through' to the next policy without having
   // a new level of tree structure created.
   bool passthrough;
 public:
-  // How to split the 'section' value:
-  static const int split_none=0;
-  // Don't.  This gives you names like "games" and "non-free/editors".
-  static const int split_topdir=1;
-  // Split it and keep the top-level half (adding an implied "main" to
-  // packages without a first half).  So you get "main", "non-free", etc.
-  static const int split_subdir=2;
-
-  pkg_grouppolicy_section_factory(int _split_mode,
+  pkg_grouppolicy_section_factory(split_mode_type _split_mode,
 				  bool _passthrough,
 				  pkg_grouppolicy_factory *_chain)
     :chain(_chain), split_mode(_split_mode), passthrough(_passthrough) {}
