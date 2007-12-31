@@ -360,7 +360,7 @@ option_item dependency_options[]={
 		 "If this option is enabled and \"Remove unused "
 		 "packages automatically\" is enabled, packages "
 		 "that are recommended by an installed package "
-		 "will not automatically be removed."),
+		 "will not be automatically removed."),
 	      PACKAGE "::Recommends-Important", true),
   option_item(N_("Remove unused packages automatically"),
 	      N_("If this option is enabled, packages that are "
