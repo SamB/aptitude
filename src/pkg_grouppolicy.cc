@@ -1,6 +1,6 @@
 // pkg_grouppolicy.cc
 //
-//  Copyright 1999-2005, 2007 Daniel Burrows
+//  Copyright 1999-2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -984,13 +984,13 @@ public:
 void pkg_grouppolicy_task::add_package(const pkgCache::PkgIterator &pkg,
 				       pkg_subtree *root)
 {
-  list<string> *tasks=get_tasks(pkg);
+  set<string> *tasks=get_tasks(pkg);
 
   eassert(tasks);
 
   chain->add_package(pkg, root);
 
-  for(list<string>::iterator i=tasks->begin(); i!=tasks->end(); ++i)
+  for(set<string>::iterator i = tasks->begin(); i != tasks->end(); ++i)
     {
       subtree_map::iterator found=task_children.find(*i);
 

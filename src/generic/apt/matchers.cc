@@ -530,12 +530,12 @@ public:
 	       aptitudeDepCache &cache,
 	       pkgRecords &records)
   {
-    list<string> *l=get_tasks(pkg);
+    set<string> *l = get_tasks(pkg);
 
     if(!l)
       return false;
 
-    for(list<string>::iterator i=l->begin();
+    for(set<string>::iterator i=l->begin();
 	i!=l->end();
 	++i)
       if(string_matches(i->c_str()))
@@ -550,12 +550,12 @@ public:
 			      aptitudeDepCache &cache,
 			      pkgRecords &records)
   {
-    list<string> *l=get_tasks(pkg);
+    set<string> *l=get_tasks(pkg);
 
     if(!l)
       return NULL;
 
-    for(list<string>::iterator i=l->begin();
+    for(set<string>::iterator i=l->begin();
 	i!=l->end();
 	++i)
       {

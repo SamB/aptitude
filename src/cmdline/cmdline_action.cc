@@ -215,9 +215,9 @@ bool cmdline_applyaction(string s,
       for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin();
 	  !pkg.end(); ++pkg)
 	{
-	  std::list<std::string> *tasks=get_tasks(pkg);
+	  std::set<std::string> *tasks = get_tasks(pkg);
 
-	  for(std::list<std::string>::iterator i=tasks->begin();
+	  for(std::set<std::string>::iterator i = tasks->begin();
 	      i!=tasks->end(); ++i)
 	    if(*i==s)
 	      rval=cmdline_applyaction(action, pkg,

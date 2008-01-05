@@ -6,7 +6,7 @@
 // package.
 
 #include <string>
-#include <list>
+#include <set>
 #include <map>
 #include <apt-pkg/pkgcache.h>
 
@@ -24,15 +24,19 @@ public:
   std::string section;
   std::string shortdesc;
   std::string longdesc;
-  std::list<std::string> keys;
+  std::set<std::string> keys;
 
   bool keys_present();
 
   int relevance;
 };
 
-// The caller should **NOT** delete the list.
-std::list<std::string> *get_tasks(const pkgCache::PkgIterator &pkg);
+/** \brief Get the set of tasks associated with the given package.
+ *
+ *  The caller should not delete this set; it's managed internally by
+ *  the tasks module.
+ */
+std::set<std::string> *get_tasks(const pkgCache::PkgIterator &pkg);
 
 // Stores the various tasks.
 extern std::map<std::string, task> *task_list;

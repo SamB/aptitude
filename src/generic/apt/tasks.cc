@@ -28,10 +28,10 @@ map<string, task> *task_list=new map<string, task>;
 
 // This is an array indexed by package ID, managed by load_tasks.
 // (as usual, it's initialized to NULL)
-list<string> *tasks_by_package;
+set<string> *tasks_by_package;
 
 // Now this is just a wrapper, as you can see..
-std::list<std::string> *get_tasks(const pkgCache::PkgIterator &pkg)
+std::set<std::string> *get_tasks(const pkgCache::PkgIterator &pkg)
 {
   if(!tasks_by_package)
     return NULL;
@@ -39,18 +39,20 @@ std::list<std::string> *get_tasks(const pkgCache::PkgIterator &pkg)
   return tasks_by_package+pkg->ID;
 }
 
-// Thanks to Jason for pointing me to the methods that are necessary
-// to do this.
-static void update_tasks(const pkgCache::PkgIterator &pkg,
+/** \brief Add any tasks found in the given version-file pointer to
+ *  the tasks of the given package.
+ */
+static void append_tasks(const pkgCache::PkgIterator &pkg,
 			 const pkgCache::VerFileIterator &verfile)
 {
   // This should never be called before load_tasks has initialized the
   // tasks structure.
   eassert(tasks_by_package);
 
-  list<string> &lst=tasks_by_package[pkg->ID];
+  if(strcmp(pkg.Name(), "kdeadmin") == 0)
+    eassert(pkg.Name());
 
-  lst.clear();
+  set<string> &task_set=tasks_by_package[pkg->ID];
 
   if(apt_package_records)
     {
@@ -79,7 +81,8 @@ static void update_tasks(const pkgCache::PkgIterator &pkg,
 	    --loc2;
 	  ++loc2;
 
-	  lst.push_back(string(tasks, loc, loc2-loc));
+	  string taskname(tasks, loc, loc2-loc);
+	  task_set.insert(taskname);
 	  loc=firstcomma+1;
 
 	  // Strip leading whitespace
@@ -88,7 +91,7 @@ static void update_tasks(const pkgCache::PkgIterator &pkg,
 	}
 
       if(loc!=tasks.size())
-	lst.push_back(string(tasks, loc));
+	task_set.insert(string(tasks, loc));
     }
 }
 
@@ -99,7 +102,7 @@ bool task::keys_present()
 
   keys_present_cache_stale=false;
 
-  for(list<string>::const_iterator i=keys.begin(); i!=keys.end(); ++i)
+  for(set<string>::const_iterator i=keys.begin(); i!=keys.end(); ++i)
     {
       pkgCache::PkgIterator pkg=(*apt_cache_file)->FindPkg(*i);
 
@@ -112,7 +115,7 @@ bool task::keys_present()
 	// Here it is assumed that all the tasks are loaded, because
 	// we're going to look them up.
 	{
-	  list<string> *tasks=get_tasks(pkg);
+	  set<string> *tasks = get_tasks(pkg);
 
 	  if(!tasks)
 	    {
@@ -120,17 +123,7 @@ bool task::keys_present()
 	      return false;
 	    }
 
-	  bool present=false;
-
-	  for(list<string>::const_iterator j=tasks->begin();
-	      j!=tasks->end(); ++j)
-	    if(*j==name)
-	      {
-		present=true;
-		break;
-	      }
-
-	  if(!present)
+	  if(tasks->find(name) == tasks->end())
 	    {
 	      keys_present_cache=false;
 	      return false;
@@ -250,22 +243,25 @@ void load_tasks(OpProgress &progress)
   for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin();
       !pkg.end(); ++pkg)
     {
-      const pkgCache::VerIterator v=pkg.VersionList();
-
-      if(!v.end() && !v.FileList().end())
-	versionfiles.push_back(loc_pair(v,  v.FileList()));
+      for(pkgCache::VerIterator v = pkg.VersionList(); !v.end(); ++v)
+	{
+	  for(pkgCache::VerFileIterator vf = v.FileList(); !vf.end(); ++vf)
+	    {
+	      versionfiles.push_back(loc_pair(v, vf));
+	    }
+	}
     }
 
   sort(versionfiles.begin(), versionfiles.end(), location_compare());
 
   // Allocate and set up the table of task information.
   delete[] tasks_by_package;
-  tasks_by_package=new list<string>[(*apt_cache_file)->Head().PackageCount];
+  tasks_by_package = new set<string>[(*apt_cache_file)->Head().PackageCount];
 
   for(vector<loc_pair>::iterator i=versionfiles.begin();
       i!=versionfiles.end();
       ++i)
-    update_tasks(i->first.ParentPkg(), i->second);
+    append_tasks(i->first.ParentPkg(), i->second);
 
   FileFd task_file;
 
@@ -311,7 +307,7 @@ void load_tasks(OpProgress &progress)
 
 	      keystr >> ws >> s >> ws;
 
-	      newtask.keys.push_back(s);
+	      newtask.keys.insert(s);
 	    }
 
 	  newtask.name=taskname;
