@@ -1,22 +1,22 @@
 # French translation of aptitude messages
 # This file is licensed under the same license as the aptitude software
-# Copyright (C) 2001, 2004, 2005, 2006 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2004, 2005, 2006, 2007 Jean-Luc Coulon (f5ibh) <jean-luc.coulon@wanadoo.fr>
 #
 # Martin Quinson <mquinson@ens-lyon.fr>, 2001.
-# Christian Perrier <bubulle@debian.org>, 2004, 2006.
+# Christian Perrier <bubulle@debian.org>, 2004, 2006, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2007-12-15 23:07-0800\n"
-"PO-Revision-Date: 2007-11-06 18:29+0100\n"
+"PO-Revision-Date: 2008-01-06 08:19+0100\n"
 "Last-Translator: Jean-Luc Coulon (f5ibh) <jean-luc.coulon@wanadoo.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
-"X-Generator: KBabel 1.11.2\n"
+"X-Generator: KBabel 1.11.4\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-Country: FRANCE\n"
 
@@ -26,37 +26,38 @@ msgid ""
 "%BDefault:%b %s\n"
 "%BValue:%b   %s\n"
 msgstr ""
+"%BOption:%b  %s\n"
+"%BDéfaut:%b %s\n"
+"%BValeur:%b   %s\n"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
 msgid "True"
-msgstr ""
+msgstr "Vrai"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
-#, fuzzy
 msgid "False"
-msgstr "Fermer"
+msgstr "Faux"
 
 #: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:392
-#, fuzzy
 msgid "%BOption:%b  "
-msgstr "Options"
+msgstr "%BOption:%b  "
 
 #: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:394
 msgid "%BDefault:%b "
-msgstr ""
+msgstr "%BDéfaut:%b "
 
 #: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:396
 msgid "%BValue:%b   "
-msgstr ""
+msgstr "%BValeur:%b   "
 
 #: src/apt_config_treeitems.cc:278
 #, c-format
 msgid "Editing \"%ls\""
-msgstr ""
+msgstr "Modification de « %ls »"
 
 #: src/apt_config_treeitems.cc:400
 msgid "%BChoice:%b  "
-msgstr ""
+msgstr "%BChoix:%b  "
 
 #: src/apt_options.cc:160
 msgid "Display some available commands at the top of the screen"
@@ -560,7 +561,7 @@ msgstr "%ls : Précédent"
 
 #: src/broken_indicator.cc:238
 msgid "Dependency resolution disabled."
-msgstr ""
+msgstr "Résolution des dépendances désactivée."
 
 #: src/broken_indicator.cc:249
 msgid "Unable to resolve dependencies."
@@ -1220,7 +1221,7 @@ msgstr "basculer vers l'affichage des informations de dépendances"
 #: src/cmdline/cmdline_prompt.cc:720
 #, c-format
 msgid "s: %F"
-msgstr "s : %F"
+msgstr "s : %F"
 
 #: src/cmdline/cmdline_prompt.cc:722
 msgid "toggle the display of changes in package sizes"
@@ -1250,18 +1251,20 @@ msgstr ""
 "d'autres paquets."
 
 #: src/cmdline/cmdline_prompt.cc:733
-#, fuzzy, c-format
+#, c-format
 msgid "r: %F"
-msgstr "y : %F"
+msgstr "r: %F"
 
 #: src/cmdline/cmdline_prompt.cc:735
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
+"résoudre automatiquement les dépendances pour corriger les dépendances "
+"incorrectes."
 
 #: src/cmdline/cmdline_prompt.cc:737
 #, c-format
 msgid "e: %F"
-msgstr "e : %F"
+msgstr "e : %F"
 
 #: src/cmdline/cmdline_prompt.cc:739
 msgid "enter the full visual interface"
@@ -1327,6 +1330,8 @@ msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
 msgstr ""
+"Il n'a pas été possible de résoudre ces dépendances. Vous pouvez les "
+"résoudre vous-même ou taper « n » pour quitter."
 
 #: src/cmdline/cmdline_prompt.cc:878
 msgid "Do you want to continue? [Y/n/?] "
@@ -1334,7 +1339,7 @@ msgstr "Voulez-vous continuer ? [Y/n/?] "
 
 #: src/cmdline/cmdline_prompt.cc:879
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
-msgstr ""
+msgstr "Faut-il résoudre ces dépendances manuellement ? [N/+/-/_/:/?] "
 
 #: src/cmdline/cmdline_prompt.cc:897
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
@@ -1347,6 +1352,9 @@ msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
 msgstr ""
+"Veuillez entrer une commande de gestion de paquets (comme « + paquet » pour "
+"installer un paquet), « R » pour lancer la résolution automatique des "
+"dépendances ou « N » pour quitter."
 
 #: src/cmdline/cmdline_prompt.cc:934
 #, c-format
@@ -1436,7 +1444,7 @@ msgid ""
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pqt ver ...: %F%na pqt ver ...: %F%"
-"n<ACTION> pqt... : %F%n%F%F%F%F%F%F%F%F"
+"n<ACTION> pqt... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:178
 msgid "accept the proposed changes"
@@ -1579,10 +1587,15 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+"Résoudrait les dépendances, mais la fonction de résolution de dépendances "
+"est désactivée.\n"
+"   (%s::ProblemResolver::StepLimit = 0)\n"
 
 #: src/cmdline/cmdline_resolver.cc:510
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
+"Il serait nécessaire de résoudre les dépendances mais aucun solveur de "
+"dépendances n'a été créé."
 
 #: src/cmdline/cmdline_resolver.cc:523 src/solution_dialog.cc:127
 msgid "Resolving dependencies..."
@@ -1917,19 +1930,21 @@ msgid "E: The update command takes no arguments\n"
 msgstr "E : la commande update ne prend pas de paramètre\n"
 
 #: src/cmdline/cmdline_upgrade.cc:98
-#, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (resolver timed out)."
-msgstr "Impossible de trouver une solution à ces dépendances ! Abandon..."
+msgstr ""
+"Impossible de résoudre les dépendances pour la mise à jour (délai d'attente "
+"écoulé pour le solveur)."
 
 #: src/cmdline/cmdline_upgrade.cc:104
-#, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
-msgstr "Impossible de trouver une solution à ces dépendances ! Abandon..."
+msgstr ""
+"Impossible de résoudre les dépendances pour la mise à jour (aucune solution "
+"trouvée)."
 
 #: src/cmdline/cmdline_upgrade.cc:110
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
-msgstr "Résolution des dépendances impossible."
+msgstr "Impossible de résoudre les dépendances pour la mise à jour (%s)."
 
 #: src/cmdline/cmdline_upgrade.cc:136
 #, c-format
@@ -1973,27 +1988,27 @@ msgstr ""
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d cassé [%+d]"
+msgstr[1] "%d cassés [%+d]"
 
 #: src/cmdline/cmdline_util.cc:283
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d mis à jour [%+d]"
+msgstr[1] "%d maj [%+d]"
 
 #: src/cmdline/cmdline_util.cc:297
 #, c-format
 msgid "%d new [%+d]"
 msgid_plural "%d new [%+d]"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d nouveau [%+d]"
+msgstr[1] "%d nouveaux [%+d]"
 
 #: src/cmdline/cmdline_util.cc:308
 #, c-format
 msgid "There are now %F."
-msgstr ""
+msgstr "Il y a maintenant %F."
 
 #: src/cmdline/cmdline_why.cc:419
 #, c-format
@@ -2018,81 +2033,81 @@ msgstr "Supprimer (%s fournit %s)"
 #: src/cmdline/cmdline_why.cc:602
 #, c-format
 msgid "    ++ Examining %F\n"
-msgstr ""
+msgstr "    ++ Examen de %F\n"
 
 #: src/cmdline/cmdline_why.cc:612
 msgid "    ++   --> skipping, not a conflict\n"
-msgstr ""
+msgstr "    ++   --> sauté, n'est pas un conflit\n"
 
 #: src/cmdline/cmdline_why.cc:622
 msgid "    ++   --> skipping conflict\n"
-msgstr ""
+msgstr "    ++   --> conflit sauté\n"
 
 #: src/cmdline/cmdline_why.cc:630
 msgid "    ++   --> skipping, not relevant according to params\n"
-msgstr ""
+msgstr "    ++   --> sauté, non considéré selon le paramétrage\n"
 
 #: src/cmdline/cmdline_why.cc:637
 msgid "    ++   --> skipping, parent is not the selected version\n"
-msgstr ""
+msgstr "    ++   --> sauté, le parent n'est pas la version choisie\n"
 
 #: src/cmdline/cmdline_why.cc:666
 msgid "    ++   --> ENQUEUING\n"
-msgstr ""
+msgstr "    ++   --> MISE EN ATTENTE\n"
 
 #: src/cmdline/cmdline_why.cc:673
 msgid "    ++   --> skipping, version check failed.\n"
-msgstr ""
+msgstr "    ++   --> sauté, échec du contrôle de la version.\n"
 
 #: src/cmdline/cmdline_why.cc:691
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
-msgstr ""
+msgstr "    ++   --> MISE EN ATTENTE %s fournit %s\n"
 
 #: src/cmdline/cmdline_why.cc:822
 #, c-format
 msgid "Starting search with parameters %ls\n"
-msgstr ""
+msgstr "Lancement de la recherche avec les paramètres %ls\n"
 
 #: src/cmdline/cmdline_why.cc:1042
 msgid "Skipping this solution, I've already seen it.\n"
-msgstr ""
+msgstr "Solution sautée, déjà examniée.\n"
 
 #: src/cmdline/cmdline_why.cc:1054
 #, c-format
 msgid "The package \"%s\" is a starting point of the search.\n"
-msgstr ""
+msgstr "Le paquet « %s » est un point de départ de la recherche.\n"
 
 #: src/cmdline/cmdline_why.cc:1113
 #, c-format
 msgid "No justification for removing %s could be constructed.\n"
-msgstr ""
+msgstr "Aucune justification de la suppression de %s n'a pu être élaborée.\n"
 
 #: src/cmdline/cmdline_why.cc:1115
 #, c-format
 msgid "No justification for %s could be constructed.\n"
-msgstr ""
+msgstr "Aucune justification de %s n'a pu être élaborée.\n"
 
 #: src/cmdline/cmdline_why.cc:1160 src/cmdline/cmdline_why.cc:1186
 #: src/cmdline/cmdline_why.cc:1248
-#, fuzzy, c-format
+#, c-format
 msgid "No package named \"%s\" exists."
-msgstr "Impossible de trouver un paquet appelé « %s »"
+msgstr "Il n'existe pas de paquet appelé « %s »."
 
 #: src/cmdline/cmdline_why.cc:1194
-#, fuzzy
 msgid "Unable to parse some match patterns."
-msgstr "Analyse du motif %s impossible"
+msgstr "Impossible d'analyser certains motifs de correspondance."
 
 #: src/cmdline/cmdline_why.cc:1221
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""
+"%s: cette command a besoin d'au moins un paramètre (le paquet à rechercher)."
 
 #: src/cmdline/cmdline_why.cc:1270
-#, fuzzy, c-format
+#, c-format
 msgid "The package \"%s\" is manually installed.\n"
-msgstr "« &m » pour marquer des paquets comme ayant été manuellement installés"
+msgstr "Le paquet « %s » est manuellement installé.\n"
 
 #: src/download_bar.cc:55 src/download_list.cc:345 src/download_screen.cc:62
 #, c-format
@@ -2358,9 +2373,9 @@ msgid "Couldn't rebuild package cache"
 msgstr "Impossible de reconstruire le cache des paquets"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to stat %s."
-msgstr "stat de « %s » impossible"
+msgstr "stat de « %s » impossible."
 
 #: src/generic/apt/log.cc:52
 #, c-format
@@ -2562,9 +2577,8 @@ msgid "Upgradable"
 msgstr "Susceptible de mise à jour"
 
 #: src/generic/apt/matchers.cc:2007
-#, fuzzy
 msgid "Obsolete"
-msgstr "Rend obsolète"
+msgstr "Obsolète"
 
 #: src/generic/apt/matchers.cc:2133
 #, c-format
@@ -2698,9 +2712,9 @@ msgstr ""
 "Création impossible du répertoire temporaire à partir du modèle « %s » : %s"
 
 #: src/generic/util/temp.cc:99
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to delete temporary directory \"%s\""
-msgstr "Impossible de supprimer le répertoire « %s »"
+msgstr "Impossible de supprimer le répertoire temporaire « %s »"
 
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
@@ -2742,25 +2756,23 @@ msgid "Unrecognized attribute name \"%s\""
 msgstr "Nom d'attribut inconnu « %s »"
 
 #: src/load_config.cc:113
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid entry in cw::style definition group: \"%s\""
-msgstr "Entrée non valable dans le groupe de définition du style : « %s »"
+msgstr "Entrée non valable dans le groupe de définition cw::style : « %s »"
 
 #: src/load_config.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid tagless entry in cw::style definition group: \"%s\""
-msgstr ""
-"Entrée sans étiquette non valable dans le groupe de définition du style : « %"
-"s »"
+msgstr "Entrée sans étiquette dans le groupe de définition cw::style : « %s »"
 
 #: src/load_config.cc:127
 msgid "The default color may only be used as a background."
 msgstr "La couleur par défaut ne peut être utilisée que pour l'arrière-plan."
 
 #: src/load_config.cc:144
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown cw::style attribute %s"
-msgstr "Attribut de style inconnu : %s"
+msgstr "Attribut de cw::style inconnu : %s"
 
 #: src/load_config.cc:167 src/load_config.cc:169
 #, c-format
@@ -3744,10 +3756,11 @@ msgid "HN too long"
 msgstr "HN trop long"
 
 #: src/pkg_columnizer.cc:673 src/pkg_columnizer.cc:682
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to cw::util::transcode package display format after \"%ls\""
 msgstr ""
-"Impossible de transcoder le format de l'affichage du paquet après « %ls »"
+"Impossible de transcoder (cw::util::transcode) le format de l'affichage du "
+"paquet après « %ls »"
 
 #: src/pkg_columnizer.cc:689
 msgid "Internal error: Default column string is unparsable"
@@ -4100,9 +4113,9 @@ msgid "Enter the new package sorting mechanism for this display: "
 msgstr "Entrez le nouveau mécanisme de tri des paquets pour cet affichage : "
 
 #: src/pkg_view.cc:159
-#, fuzzy
 msgid "Couldn't cw::util::transcode column definition"
-msgstr "Impossible de transcoder la définition de colonne"
+msgstr ""
+"Impossible de transcoder (cw::util::transcode) la définition de colonne"
 
 #: src/pkg_view.cc:166
 msgid "Couldn't parse column definition"
@@ -5397,825 +5410,3 @@ msgstr "Téléchargement du fichier « Changelog »"
 #: src/view_changelog.cc:243
 msgid "Download Changelog"
 msgstr "Téléchargement du fichier « Changelog »"
-
-#, fuzzy
-#~ msgid "You must resolve these dependencies before continuing."
-#~ msgstr "Impossible de trouver une solution à ces dépendances ! Abandon..."
-
-#~ msgid "UI options"
-#~ msgstr "Options de l'interface utilisateur"
-
-#~ msgid "Dependency handling"
-#~ msgstr "Gestion des dépendances"
-
-#~ msgid "Miscellaneous"
-#~ msgstr "Divers"
-
-#~ msgid "UNSATISFIED"
-#~ msgstr "NON SATISFAITE"
-
-#~ msgid "Tags"
-#~ msgstr "Marqueurs"
-
-#~ msgid "Continue"
-#~ msgstr "Continuer"
-
-#~ msgid "Abort"
-#~ msgstr "Abandon"
-
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "Ressources insuffisantes pour créer un processus (thread)"
-
-#~ msgid "Search for: "
-#~ msgstr "Recherche de :"
-
-#~ msgid "%i/%i mines  %d %s"
-#~ msgstr "%i/%i mines %d %s"
-
-#~ msgid "    %s in %d %s"
-#~ msgstr "   %s en %d %s"
-
-#~ msgid "The board height must be a positive integer"
-#~ msgstr "La hauteur de l'aire de jeu doit être un entier positif"
-
-#~ msgid "The board width must be a positive integer"
-#~ msgstr "La largeur de l'aire de jeu doit être un entier positif"
-
-#~ msgid "Invalid mine count; please enter a positive integer"
-#~ msgstr "Nombre de mines incorrect, veuillez entrer un entier positif"
-
-#~ msgid "You have won."
-#~ msgstr "Vous avez gagné."
-
-#~ msgid "You lose!"
-#~ msgstr "Vous avez perdu !"
-
-#~ msgid ""
-#~ "Packages which set up your computer to perform a particular task\n"
-#~ " Packages in the 'Tasks' section contain no files; they merely depend "
-#~ "upon other packages. These packages provide an easy way to select a "
-#~ "predefined set of packages for a specialized task."
-#~ msgstr ""
-#~ "Paquets qui configurent votre ordinateur pour réaliser une tâche "
-#~ "particulière\n"
-#~ " Les paquets dans la section « tasks » ne contiennent pas de fichiers ; "
-#~ "ils dépendent simplement d'autres paquets. Ces paquets procurent un moyen "
-#~ "simple d'installer un ensemble de paquets pour réaliser une tâche "
-#~ "spécialisée."
-
-#~ msgid ""
-#~ "Packages with no declared section\n"
-#~ " No section is given for these packages. Perhaps there is an error in the "
-#~ "Packages file?"
-#~ msgstr ""
-#~ "Paquets sans section déclarée\n"
-#~ " Il n'y a pas de section donnée à ces paquets. Peut-être y a-t-il une "
-#~ "erreur dans le fichier Packages ?"
-
-#~ msgid ""
-#~ "Administrative utilities (install software, manage users, etc)\n"
-#~ " Packages in the 'admin' section allow you to perform administrative "
-#~ "tasks such as installing software, managing users, configuring and "
-#~ "monitoring your system, examining network traffic, and so on."
-#~ msgstr ""
-#~ "Utilitaires d'administration (installation de logiciels, gestion des "
-#~ "utilisateurs, etc.)\n"
-#~ " Les paquets dans la section « admin » vous permettent d'effectuer des "
-#~ "tâches d'administration telles que l'installation de logiciels, la "
-#~ "gestion des utilisateurs, la configuration et la surveillance de votre "
-#~ "système, l'examen du trafic du réseau ainsi que d'autres tâches du même "
-#~ "genre."
-
-#~ msgid ""
-#~ "Packages converted from foreign formats (rpm, tgz, etc)\n"
-#~ " Packages in the 'alien' section were created by the 'alien' program from "
-#~ "a non-Debian package format such as RPM"
-#~ msgstr ""
-#~ "Paquets convertis à partir d'autres formats (rpm, tgz, etc.)\n"
-#~ " Les paquets dans la section « alien » ont été créés par le programme "
-#~ "« alien » à partir de formats de paquet non Debian tel que RPM"
-
-#~ msgid ""
-#~ "The Debian base system\n"
-#~ " Packages in the 'base' section are part of the initial system "
-#~ "installation."
-#~ msgstr ""
-#~ "Le système de base Debian\n"
-#~ " Les paquets dans la section « base » font partie de l'installation "
-#~ "initiale du système."
-
-#~ msgid ""
-#~ "Programs for faxmodems and other communication devices\n"
-#~ " Packages in the 'comm' section are used to control modems and other "
-#~ "hardware communications devices. This includes software to control "
-#~ "faxmodems (for instance, PPP for dial-up internet connections and "
-#~ "programs originally written for that purpose, such as zmodem/kermit), as "
-#~ "well as software to control cellular phones, interface with FidoNet, and "
-#~ "run a BBS."
-#~ msgstr ""
-#~ "Programmes pour modem-fax et autres appareils de communication\n"
-#~ " Les paquets dans la section « comm » sont utilisés pour piloter des "
-#~ "modems et d'autres appareils de communication. Ceci inclut les logiciels "
-#~ "de commande pour les modem-fax (par exemple : PPP pour les liaisons "
-#~ "internet par le réseau téléphonique commuté et des programmes "
-#~ "initialement prévus dans ce but tels que zmodem/kermit) ainsi que des "
-#~ "programmes pour contrôler les téléphones cellulaires, l'interface avec "
-#~ "FidoNet et faire tourner une BBS."
-
-#~ msgid ""
-#~ "Utilities and programs for software development\n"
-#~ " Packages in the 'devel' section are used to write new software and work "
-#~ "on existing software. Non-programmers who do not compile their own "
-#~ "software probably do not need much software from this section.\n"
-#~ " .\n"
-#~ " It includes compilers, debugging tools, programmer's editors, source "
-#~ "processing tools, and other things related to software development."
-#~ msgstr ""
-#~ "Utilitaires et logiciels pour le développement de programmes\n"
-#~ " Les paquets dans la section « devel » sont utilisés pour écrire de "
-#~ "nouveaux logiciels et pour travailler sur des logiciels existants. Ceux "
-#~ "qui ne sont pas programmeurs et ne compilent pas leur propre logiciel "
-#~ "n'ont sans doute pas besoin de grand chose dans cette section.\n"
-#~ " .\n"
-#~ " On y trouve les compilateurs, les outils de débogage, les éditeurs pour "
-#~ "les programmeurs, les outils de traitement des sources et d'autres choses "
-#~ "en rapport avec le développement de logiciel."
-
-#~ msgid ""
-#~ "Documentation and specialized programs for viewing documentation\n"
-#~ " Packages in the 'doc' section document parts of the Debian system, or "
-#~ "are viewers for documentation formats."
-#~ msgstr ""
-#~ "Documentation et programmes pour l'affichage de la documentation\n"
-#~ " Les paquets dans la section « doc » documentent les éléments du système "
-#~ "Debian ou sont des outils de visualisation pour les formats de "
-#~ "documentation."
-
-#~ msgid ""
-#~ "Text editors and word processors\n"
-#~ " Packages in the 'editors' section allow you to edit plain ASCII text. "
-#~ "These are not necessarily word processors, although some word processors "
-#~ "may be found in this section."
-#~ msgstr ""
-#~ "Éditeurs de texte et traitement de texte\n"
-#~ " Les paquets dans la section « editors » vous permettent d'éditer des "
-#~ "fichiers texte. Ce ne sont pas nécessairement des outils de traitement de "
-#~ "texte, on trouve cependant certains traitements de texte dans cette "
-#~ "section."
-
-#~ msgid ""
-#~ "Programs for working with circuits and electronics\n"
-#~ " Packages in the 'electronics' section include circuit design tools, "
-#~ "simulators and assemblers for microcontrollers, and other related "
-#~ "software."
-#~ msgstr ""
-#~ "Programme pour les circuits et l'électronique\n"
-#~ " Les paquets de la section « electronics » comprennent des outils de "
-#~ "schématique, des simulateurs et des assembleurs pour des micro-"
-#~ "contrôleurs et d'autres logiciels du même genre."
-
-#~ msgid ""
-#~ "Programs for embedded systems\n"
-#~ " Packages in the 'embedded' section are meant to run on embedded devices. "
-#~ "Embedded devices are specialized hardware devices with much less power "
-#~ "than a typical desktop system: for instance, a PDA, a cell phone, or a "
-#~ "Tivo."
-#~ msgstr ""
-#~ "Programmes pour les systèmes embarqués\n"
-#~ " Les paquets de la section « embedded » sont destinés à être utilisés sur "
-#~ "des systèmes embarqués. Ces systèmes sont des systèmes matériels "
-#~ "spécifiques dotés d'une puissance inférieure aux classiques systèmes de "
-#~ "bureau : par exemple les assistants numériques personnels, les téléphones "
-#~ "portables ou les « Tivo »."
-
-#~ msgid ""
-#~ "The GNOME Desktop System\n"
-#~ " GNOME is a collection of software which provides an easy-to-use desktop "
-#~ "environment for Linux.  Packages in the 'gnome' section are part of the "
-#~ "GNOME environment or closely integrated into it."
-#~ msgstr ""
-#~ "L'environnement GNOME\n"
-#~ " GNOME est un ensemble de logiciels qui constituent un environnement de "
-#~ "bureau simple d'utilisation pour Linux. Les paquets de la section "
-#~ "« gnome » font partie de l'environnement GNOME ou lui sont étroitement "
-#~ "liés."
-
-#~ msgid ""
-#~ "Games, toys, and fun programs\n"
-#~ " Packages in the 'games' section are meant primarily for entertainment."
-#~ msgstr ""
-#~ "Jeux, jouets et programmes de divertissement\n"
-#~ " Les paquets de la section « games » sont utilisés principalement pour le "
-#~ "divertissement."
-
-#~ msgid ""
-#~ "Utilities to create, view, and edit graphics files\n"
-#~ " Packages in the 'graphics' section include viewers for image files, "
-#~ "image processing and manipulation software, software to interact with "
-#~ "graphics hardware (such as video cards, scanners, and digital cameras), "
-#~ "and programming tools for handling graphics."
-#~ msgstr ""
-#~ "Utilitaires pour créer, afficher et éditer les images\n"
-#~ " Les paquets de la section « graphics » comprennent des visualisateurs de "
-#~ "fichiers d'images, des logiciels de traitement d'images, des logiciels "
-#~ "liés au matériel graphique (tels que les cartes graphiques, les scanners "
-#~ "et les appareils photos numériques) et des outils de programmation "
-#~ "prenant en charge le graphisme."
-
-#~ msgid ""
-#~ "Software for ham radio operators\n"
-#~ " Packages in the 'hamradio' section are meant primarily for ham radio "
-#~ "operators."
-#~ msgstr ""
-#~ "Logiciel pour les radioamateurs\n"
-#~ " Les paquets de la section « hamradio » sont principalement destinés aux "
-#~ "radioamateurs."
-
-#~ msgid ""
-#~ "Interpreters for interpreted languages\n"
-#~ " Packages in the 'interpreters' section include interpreters for "
-#~ "languages like Python, Perl, and Ruby, and libraries for these same "
-#~ "languages."
-#~ msgstr ""
-#~ "Interpréteurs pour langages interprétés\n"
-#~ " Les paquets de la section « interpreters » comprennent des interpréteurs "
-#~ "pour des langages tels que Python, Perl et Ruby et des bibliothèques pour "
-#~ "ces mêmes langages."
-
-#~ msgid ""
-#~ "The KDE Desktop System\n"
-#~ " KDE is a collection of software which provides an easy-to-use desktop "
-#~ "environment for Linux.  Packages in the 'kde' section are part of the KDE "
-#~ "environment or closely integrated into it."
-#~ msgstr ""
-#~ "L'environnement KDE\n"
-#~ " KDE est un ensemble de logiciels qui constituent un environnement de "
-#~ "bureau simple d'utilisation pour Linux. Les paquets de la section « kde » "
-#~ "font partie de l'environnement KDE ou lui sont étroitement liés."
-
-#~ msgid ""
-#~ "Development files for libraries\n"
-#~ " Packages in the 'libdevel' section contain files required for building "
-#~ "programs that use libraries in the 'libs' section.  You don't need "
-#~ "packages from this section unless you want to compile software yourself."
-#~ msgstr ""
-#~ "Fichiers de développement pour les bibliothèques\n"
-#~ " Les paquets de la section « libdevel » contiennent les fichiers "
-#~ "nécessaires pour compiler des programmes qui se servent des bibliothèques "
-#~ "de la section « libs ». Vous n'avez besoin de ces paquets que si vous "
-#~ "compilez vous-même des logiciels."
-
-#~ msgid ""
-#~ "Collections of software routines\n"
-#~ " Packages in the 'libs' section provide necessary functionality for other "
-#~ "software on the computer. With very few exceptions, you should not need "
-#~ "to explicitly install a package from this section; the package system "
-#~ "will install them as required to fulfill dependencies."
-#~ msgstr ""
-#~ "Ensembles de routines logicielles\n"
-#~ " Les paquets dans la section « libs » fournissent les fonctionnalités "
-#~ "nécessaires à d'autres logiciels de l'ordinateur. A quelques exceptions "
-#~ "près, vous ne devriez pas avoir à installer explicitement un paquet de "
-#~ "cette section ; le système de gestion des paquets les installe à la "
-#~ "demande pour satisfaire des dépendances."
-
-#~ msgid ""
-#~ "Perl interpreter and libraries\n"
-#~ " Packages in the 'perl' section provide the Perl programming language and "
-#~ "many third-party libraries for it. Unless you are a Perl programmer, you "
-#~ "don't need to install packages from this section explicitly; the package "
-#~ "system will install them if they are required."
-#~ msgstr ""
-#~ "Interpréteur et bibliothèques Perl\n"
-#~ " Les paquets dans la section « perl » fournissent le langage de "
-#~ "programmation Perl et de nombreuses bibliothèques pour ce langage. Vous "
-#~ "ne devriez avoir besoin de demander l'installation de ces paquets que si "
-#~ "vous êtes un programmeur Perl. Ceux qui sont indispensables au système "
-#~ "seront installés automatiquement."
-
-#~ msgid ""
-#~ "Python interpreter and libraries\n"
-#~ " Packages in the 'python' section provide the Python programming language "
-#~ "and many third-party libraries for it. Unless you are a Python "
-#~ "programmer, you don't need to install packages from this section "
-#~ "explicitly; the package system will install them if they are required."
-#~ msgstr ""
-#~ "Interpréteur et bibliothèques Python\n"
-#~ " Les paquets dans la section « python » fournissent le langage de "
-#~ "programmation Python et de nombreuses bibliothèques pour ce langage. Vous "
-#~ "ne devriez avoir besoin de demander l'installation de ces paquets que si "
-#~ "vous êtes un programmeur Python. Ceux qui sont indispensables au système "
-#~ "seront installés automatiquement."
-
-#~ msgid ""
-#~ "Programs to write, send, and route email messages\n"
-#~ " Packages in the 'mail' section include mail readers, mail transport "
-#~ "daemons, mailing list software, and spam filters, as well as various "
-#~ "other software related to electronic mail."
-#~ msgstr ""
-#~ "Programmes pour écrire, envoyer et diriger des courriels\n"
-#~ " Les paquets de la section « mail » comprennent des lecteurs de courriel, "
-#~ "des démons de transport de courriel, des logiciels de gestion de listes "
-#~ "de diffusion, des filtres de courriel non sollicité ainsi que divers "
-#~ "autres logiciels en rapport avec le courrier électronique."
-
-#~ msgid ""
-#~ "Numeric analysis and other mathematics-related software\n"
-#~ " Packages in the 'math' section include calculators, languages for "
-#~ "mathematical computation (similar to Mathematica), symbolic algebra "
-#~ "packages, and programs to visualize mathematical objects."
-#~ msgstr ""
-#~ "Analyse numérique et autres logiciels en rapport avec les mathématiques\n"
-#~ " Les paquets de la section « math » comprennent des calculateurs, des "
-#~ "langages pour les calculs mathématiques (semblables à Mathematica), des "
-#~ "paquets pour l'algèbre symbolique et des programmes pour visualiser des "
-#~ "objets mathématiques."
-
-#~ msgid ""
-#~ "Miscellaneous software\n"
-#~ " Packages in the 'misc' section have too unusual a function to be "
-#~ "classified."
-#~ msgstr ""
-#~ "Logiciels divers\n"
-#~ " Les paquets de la section « misc » ont des fonctions trop peu courantes "
-#~ "pour pouvoir être classés."
-
-#~ msgid ""
-#~ "Programs to connect to and provide various services\n"
-#~ " Packages in the 'net' section include clients and servers for many "
-#~ "protocols, tools to manipulate and debug low-level network protocols, IM "
-#~ "systems, and other network-related software."
-#~ msgstr ""
-#~ "Programmes pour se connecter à différents services et les fournir\n"
-#~ " Les paquets de la section « net » comprennent des clients et des serveurs "
-#~ "pour de nombreux protocoles, des outils pour manipuler et faire le "
-#~ "débogage de bas niveau des protocoles de réseaux, des systèmes de "
-#~ "messagerie instantanée et d'autres logiciels en rapport avec les réseaux."
-
-#~ msgid ""
-#~ "Usenet clients and servers\n"
-#~ " Packages in the 'news' section are related to the Usenet distributed "
-#~ "news system.  They include news readers and news servers."
-#~ msgstr ""
-#~ "Clients et serveurs Usenet\n"
-#~ " Les paquets de la section « news » sont en rapport avec le système "
-#~ "distribué de nouvelles Usenet. Ils comportent des lecteurs et des "
-#~ "serveurs de nouvelles."
-
-#~ msgid ""
-#~ "Obsolete libraries\n"
-#~ " Packages in the 'oldlibs' section are obsolete and should not be used by "
-#~ "new software.  They are provided for compatibility reasons, or because "
-#~ "software distributed by Debian still requires them.\n"
-#~ " .\n"
-#~ " With very few exceptions, you should not need to explicitly install a "
-#~ "package from this section; the package system will install them as "
-#~ "required to fulfill dependencies."
-#~ msgstr ""
-#~ "Bibliothèques périmées\n"
-#~ " Les paquets de la section « oldlibs » sont obsolètes et ne devraient pas "
-#~ "être utilisés par de nouveaux logiciels. Ils sont fournis pour des "
-#~ "raisons de compatibilité ou parce que certains logiciels distribués par "
-#~ "Debian en ont besoin.\n"
-#~ " .\n"
-#~ " À quelques exceptions près, vous ne devriez pas avoir à installer "
-#~ "explicitement un paquet de cette section ; le système de gestion des "
-#~ "paquets les installera pour satisfaire des dépendances."
-
-#~ msgid ""
-#~ "Emulators and software to read foreign filesystems\n"
-#~ " Packages in the 'otherosfs' section emulate hardware and operating "
-#~ "systems and provide tools for transferring data between different "
-#~ "operating systems and hardware platforms. (for instance, utilities to "
-#~ "read DOS floppies, and utilities to communicate with Palm Pilots)\n"
-#~ " .\n"
-#~ " It is worth noting that CD burning software is included in THIS section."
-#~ msgstr ""
-#~ "Émulateurs et logiciels pour lire des systèmes de fichiers étrangers\n"
-#~ " Les paquets de la section « otherosfs » émulent du matériel et des "
-#~ "systèmes d'exploitation, ils fournissent des outils pour échanger des "
-#~ "données entre différents systèmes d'exploitation et plates-formes "
-#~ "matérielles (par exemple, des utilitaires pour lire des disquettes DOS et "
-#~ "des utilitaires pour communiquer avec des Palm-Pilots)\n"
-#~ " .\n"
-#~ " Il est important de noter que les logiciels de gravure de CD sont inclus "
-#~ "dans CETTE section."
-
-#~ msgid ""
-#~ "Software for scientific work\n"
-#~ " Packages in the 'science' section include tools for astronomy, biology, "
-#~ "and chemistry, as well as other science-related software."
-#~ msgstr ""
-#~ "Logiciel pour le travail scientifique\n"
-#~ " Les paquets de la section « science » comprennent des outils pour "
-#~ "l'astronomie, la biologie et la chimie ainsi que des logiciels en rapport "
-#~ "avec d'autres disciplines scientifiques."
-
-#~ msgid ""
-#~ "Command shells and alternative console environments\n"
-#~ " Packages in the 'shells' section include programs providing a command-"
-#~ "line interface."
-#~ msgstr ""
-#~ "Ligne de commande et divers environnements de console\n"
-#~ " Les paquets de la section « shells » contiennent des programmes "
-#~ "fournissant des interfaces en ligne de commande."
-
-#~ msgid ""
-#~ "Utilities to play and record sound\n"
-#~ " Packages in the 'sound' section include sound players, recorders, and "
-#~ "encoders for many formats, mixers and volume controls, MIDI sequencers "
-#~ "and programs to generate musical notation, drivers for sound hardware, "
-#~ "and sound processing software."
-#~ msgstr ""
-#~ "Utilitaires pour jouer et enregistrer du son\n"
-#~ " Les paquets de la section « sound » comprennent des lecteurs, des "
-#~ "enregistreurs et des encodeurs pour de nombreux formats, des mélangeurs "
-#~ "et des contrôleurs de volume, des séquenceurs MIDI et des programmes pour "
-#~ "créer des partitions musicales, des pilotes pour le matériel sonore et "
-#~ "des logiciels de traitement du son."
-
-#~ msgid ""
-#~ "The TeX typesetting system\n"
-#~ " Packages in the 'tex' section are related to TeX, a system for producing "
-#~ "high-quality typeset output.  They include TeX itself, TeX packages, "
-#~ "editors designed for TeX, utilities to convert TeX and TeX output files "
-#~ "to various formats, TeX fonts, and other software related to TeX."
-#~ msgstr ""
-#~ "Le système typographique TeX\n"
-#~ " Les paquets de la section « tex » sont en rapport avec TeX, un système "
-#~ "pour produire des documents typographiques de haute qualité. Ils "
-#~ "comportent Tex lui-même, les paquets Tex, des éditeurs conçus pour Tex, "
-#~ "des utilitaires pour convertir TeX et les fichiers de sortie de Tex vers "
-#~ "divers formats, des polices pour TeX et d'autres logiciels en rapport "
-#~ "avec TeX."
-
-#~ msgid ""
-#~ "Text processing utilities\n"
-#~ " Packages in the 'text' section include text filters and processors, "
-#~ "spelling checkers, dictionary programs, utilities to convert between "
-#~ "character encodings and text file formats (eg, Unix and DOS), text "
-#~ "formatters and pretty-printers, and other software which operates on "
-#~ "plain text."
-#~ msgstr ""
-#~ "Utilitaires de traitement de texte\n"
-#~ " Les paquets de la section « text » comportent des filtres et des "
-#~ "traitements de texte, des correcteurs orthographiques, des dictionnaires, "
-#~ "des utilitaires pour faire des conversions entre différents encodages de "
-#~ "caractères ou différents formats de fichiers (par exemple, Unix et DOS), "
-#~ "des formateurs de texte, des outils d'impression et d'autres logiciels "
-#~ "qui travaillent sur du texte."
-
-#~ msgid ""
-#~ "Various system utilities\n"
-#~ " Packages in the 'utils' section are utilities whose purpose is too "
-#~ "unique to be classified."
-#~ msgstr ""
-#~ "Divers utilitaires système\n"
-#~ " Les paquets de la section « utils » sont des utilitaires dont le but est "
-#~ "trop spécifique pour pouvoir être classés."
-
-#~ msgid ""
-#~ "Web browsers, servers, proxies, and other tools\n"
-#~ " Packages in the 'web' section include Web browsers, Web servers and "
-#~ "proxies, software to write CGI scripts or Web-based programs, pre-written "
-#~ "Web-based programs, and other software related to the World Wide Web."
-#~ msgstr ""
-#~ "Navigateurs, serveurs, serveurs mandataires et outils pour le web\n"
-#~ " Les paquets de la section « web » comprennent des navigateurs Web, des "
-#~ "serveurs Web, des serveurs mandataires, des logiciels pour écrire des "
-#~ "scripts CGI ou des programmes basés sur le Web, des programmes pré-écrits "
-#~ "pour le Web et d'autres logiciels pour le World Wide Web."
-
-#~ msgid ""
-#~ "The X window system and related software\n"
-#~ " Packages in the 'x11' section include the core packages for the X window "
-#~ "system, window managers, utility programs for X, and miscellaneous "
-#~ "programs with an X GUI which were placed here because they didn't fit "
-#~ "anywhere else."
-#~ msgstr ""
-#~ "Le système X window et les logiciels s'y rapportant\n"
-#~ " Les paquets de la section « x11 » comprennent le coeur du système X "
-#~ "window, des gestionnaires de fenêtres, des programmes utilitaires pour X "
-#~ "et divers programmes avec une interface utilisateur graphique qui ont été "
-#~ "placés là parce qu'ils ne trouvaient pas leur place ailleurs."
-
-#~ msgid ""
-#~ "Programs which depend on software not in Debian\n"
-#~ " Packages in the 'contrib' section are not part of Debian.\n"
-#~ " .\n"
-#~ " These packages are Free Software, but they depend on software which is "
-#~ "not part of Debian.  This may be because it is not Free Software, but is "
-#~ "packaged in the non-free section of the archive, because Debian cannot "
-#~ "distribute it at all, or (in rare cases) because no-one has packaged it "
-#~ "yet.\n"
-#~ " .\n"
-#~ " For more information about what Debian considers to be Free Software, "
-#~ "see http://www.debian.org/social_contract#guidelines"
-#~ msgstr ""
-#~ "Programmes qui dépendent de logiciels qui ne sont pas de Debian\n"
-#~ " Les paquets de la section « contrib » ne font pas partie de Debian.\n"
-#~ " .\n"
-#~ " Ces paquets sont des logiciels libres mais ils dépendent de logiciels "
-#~ "qui ne font pas partie de Debian. Ce peut être parce que ce ne sont pas "
-#~ "des logiciels libres et qu'ils se trouvent dans la section « non-free » de "
-#~ "l'archive, ou parce que Debian ne peut pas les distribuer du tout, ou "
-#~ "(dans de rares cas) parce que personne n'en a encore fait de paquet.\n"
-#~ " .\n"
-#~ " Pour plus d'information concernant ce que Debian considère comme "
-#~ "logiciel libre, consultez http://www.debian.org/social_contract#guidelines"
-
-#~ msgid ""
-#~ "The main Debian archive\n"
-#~ " The Debian distribution consists of packages from the 'main' section. "
-#~ "Every package in 'main' is Free Software.\n"
-#~ " .\n"
-#~ " For more information about what Debian considers to be Free Software, "
-#~ "see http://www.debian.org/social_contract#guidelines"
-#~ msgstr ""
-#~ "L'archive principale de Debian\n"
-#~ " La distribution Debian est constituée des paquets de la section « main ». "
-#~ "Chaque paquet de « main » est un logiciel libre.\n"
-#~ " .\n"
-#~ " Pour plus d'information sur ce que Debian considère comme étant un "
-#~ "logiciel libre, voir http://www.debian.org/social_contract#guidelines"
-
-#~ msgid ""
-#~ "Programs stored outside the US due to export controls\n"
-#~ " Packages in 'non-US' likely contain cryptography; a few implement "
-#~ "patented algorithms. Because of this, they cannot be exported from the "
-#~ "United States, and hence are stored on a server in the \"free world\".\n"
-#~ " .\n"
-#~ " Note: the Debian Project is currently merging cryptographic software "
-#~ "into the US-based archives after consulting with legal experts about "
-#~ "recent changes in export policies. Most packages which were formerly "
-#~ "found in this section, therefore, are now in 'main'."
-#~ msgstr ""
-#~ "Programmes archivés en dehors des États-Unis en raison du contrôle des "
-#~ "exportations\n"
-#~ " Les paquets de la section « non-us » sont principalement en rapport avec "
-#~ "la cryptographie, quelques-uns mettent en oeuvre des algorithmes "
-#~ "brevetés. Pour cette raison, ils ne peuvent être exportés depuis les "
-#~ "États-Unis et sont donc placés sur un serveur dans le « monde libre ».\n"
-#~ " .\n"
-#~ " Note : Le Projet Debian, après avoir consulté des légistes concernant "
-#~ "les récents changements dans les règles d'exportation, est en train de "
-#~ "migrer les logiciels cryptographiques. La plupart des paquets qui étaient "
-#~ "précédemment dans cette section se trouvent, de ce fait, maintenant dans "
-#~ "« main »."
-
-#~ msgid ""
-#~ "Programs which are not free software\n"
-#~ " Packages in the 'non-free' section are not part of Debian.\n"
-#~ " .\n"
-#~ " These packages fail to meet one or more of the requirements of the "
-#~ "Debian Free Software Guidelines (see below). You should read the license "
-#~ "of programs in this section to be sure that you are allowed to use them "
-#~ "in the way you intend.\n"
-#~ " .\n"
-#~ " For more information about what Debian considers to be Free Software, "
-#~ "see http://www.debian.org/social_contract#guidelines"
-#~ msgstr ""
-#~ "Programmes qui ne sont pas libres\n"
-#~ " Les paquets de la section « non-free » ne font pas partie de Debian.\n"
-#~ " .\n"
-#~ " Ces paquets ne remplissent pas une ou plusieurs conditions des principes "
-#~ "du logiciel libre selon Debian (voir ci-dessous). Vous devriez lire la "
-#~ "licence des programmes de cette section afin d'être sûr que vous êtes "
-#~ "autorisé à les utiliser de la manière dont vous le prévoyez.\n"
-#~ " .\n"
-#~ " Pour plus d'informations concernant ce que Debian considère comme un "
-#~ "logiciel libre, consulter http://www.debian.org/social_contract#guidelines"
-
-#~ msgid ""
-#~ "Virtual packages\n"
-#~ " These packages do not exist; they are names other packages use to "
-#~ "require or provide some functionality."
-#~ msgstr ""
-#~ "Paquets virtuels\n"
-#~ " Ces paquets n'existent pas ; ce sont des noms que d'autres paquets "
-#~ "utilisent pour exiger ou fournir certaines fonctionnalités."
-
-#~ msgid ""
-#~ "Packages which are recommended by other packages\n"
-#~ " These packages are not strictly required, but they may be necessary to "
-#~ "provide full functionality in some other programs that you are installing "
-#~ "or upgrading."
-#~ msgstr ""
-#~ "Paquets qui sont recommandés par d'autres paquets\n"
-#~ " Ces paquets ne sont pas absolument nécessaires mais ils peuvent être "
-#~ "indispensables pour fournir des fonctionnalités complètes à certains "
-#~ "autres programmes que vous êtes en train d'installer ou de mettre à jour."
-
-#~ msgid ""
-#~ "Packages which are suggested by other packages\n"
-#~ " These packages are not required in order to make your system function "
-#~ "properly, but they may provide enhanced functionality for some programs "
-#~ "that you are currently installing."
-#~ msgstr ""
-#~ "Paquets qui sont suggérés par d'autres paquets\n"
-#~ " Ces paquets ne sont pas nécessaires pour permettre à votre système de "
-#~ "fonctionner correctement, mais ils peuvent fournir des fonctionnalités "
-#~ "améliorées pour certains programmes que vous êtes en train d'installer."
-
-#~ msgid "UNCATEGORIZED"
-#~ msgstr "SANS CATÉGORIE"
-
-#~ msgid "End-user"
-#~ msgstr "Utilisateur final"
-
-#~ msgid "Servers"
-#~ msgstr "Serveurs"
-
-#~ msgid "Development"
-#~ msgstr "Développement"
-
-#~ msgid "Localization"
-#~ msgstr "Localisation (l10n)"
-
-#~ msgid "Hardware Support"
-#~ msgstr "Gestion du matériel"
-
-#~ msgid "Unrecognized tasks"
-#~ msgstr "Tâches inconnues"
-
-#~ msgid ""
-#~ "\n"
-#~ " Tasks are groups of packages which provide an easy way to select a "
-#~ "predefined set of packages for a particular purpose."
-#~ msgstr ""
-#~ "\n"
-#~ " Les tâches sont des groupes de paquets qui procurent un moyen simple de "
-#~ "sélectionner un groupe prédéfini de paquets pour remplir une fonction "
-#~ "particulière."
-
-#~ msgid "Bad number in format string: %ls"
-#~ msgstr "Chiffre erroné dans la chaîne de format : %ls"
-
-#~ msgid "Match indices must be 1 or greater, not \"%s\""
-#~ msgstr ""
-#~ "Les indices de correspondances doivent être supérieurs ou égaux à 1 et "
-#~ "non « %s »"
-
-#~ msgid "Match index %ls is too large; available groups are (%s)"
-#~ msgstr ""
-#~ "L'index de correspondance %ls est trop grand : les groupes disponibles "
-#~ "sont (%s)"
-
-#~ msgid "TAGLESS PACKAGES"
-#~ msgstr "PAQUETS SANS MARQUEUR"
-
-#~ msgid ""
-#~ "\n"
-#~ " These packages have not yet been classified in debtags."
-#~ msgstr ""
-#~ "\n"
-#~ " Ces paquets n'ont pas encore été classés dans « debtags »."
-
-#~ msgid "Versions"
-#~ msgstr "Versions"
-
-#~ msgid "All Packages"
-#~ msgstr "Tous les paquets"
-
-#~ msgid "No packages matched the pattern \"%ls\"."
-#~ msgstr "Aucun paquet ne correspond au motif « %ls »."
-
-#~ msgid "Enter the new package tree limit: "
-#~ msgstr "Entrer la profondeur de l'arborescence des nouveaux paquets : "
-
-#~ msgid "%s depends upon %s"
-#~ msgstr "%s dépend de %s"
-
-#~ msgid "%s pre-depends upon %s"
-#~ msgstr "%s pré-dépend de %s"
-
-#~ msgid "%s suggests %s"
-#~ msgstr "%s suggère %s"
-
-#~ msgid "%s recommends %s"
-#~ msgstr "%s recommande %s"
-
-#~ msgid "%s conflicts with %s"
-#~ msgstr "%s est en conflit avec %s"
-
-#~ msgid "%s breaks %s"
-#~ msgstr "%s casse %s"
-
-#~ msgid "%s replaces %s"
-#~ msgstr "%s remplace %s"
-
-#~ msgid "%s obsoletes %s"
-#~ msgstr "%s rend %s obsolète"
-
-#~ msgid "%s conflicts with %s [provided by %s %s]"
-#~ msgstr "%s est en conflit avec %s [fourni par %s %s]"
-
-#~ msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
-#~ msgstr "-> Conserver la dépendance « %s recommande %s » non résolue."
-
-#~ msgid "The following actions will resolve this dependency:"
-#~ msgstr "Les actions suivantes permettront de résoudre cette dépendance :"
-
-#~ msgid "Remove the following packages:"
-#~ msgstr "Supprimer les paquets suivants :"
-
-#~ msgid "Keep the following packages at their current version:"
-#~ msgstr "Les paquets suivants seront conservés dans leur version actuelle :"
-
-#~ msgid "Install the following packages:"
-#~ msgstr "Installer les paquets suivants :"
-
-#~ msgid "Upgrade the following packages:"
-#~ msgstr "Mettre à jour les paquets suivants :"
-
-#~ msgid "Downgrade the following packages:"
-#~ msgstr "Réinstaller à une version antérieure les paquets suivants :"
-
-#~ msgid "Leave the following recommendations unresolved:"
-#~ msgstr "Les recommandations suivantes n'ont pas été satisfaites :"
-
-#~ msgid "No broken packages."
-#~ msgstr "Aucun paquet cassé."
-
-#~ msgid "Search for:"
-#~ msgstr "Recherche de : "
-
-#~ msgid "Really Continue"
-#~ msgstr "Continuer malgré tout"
-
-#~ msgid "Abort Installation"
-#~ msgstr "Abandon de l'installation"
-
-#~ msgid "Become root"
-#~ msgstr "Devenir administrateur"
-
-#~ msgid "Don't become root"
-#~ msgstr "Ne pas devenir administrateur"
-
-#~ msgid ""
-#~ "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/"
-#~ "Remove Pkgs"
-#~ msgstr ""
-#~ "%ls : Menu  %ls : Aide  %ls : Quitter  %ls : M-à-J  %ls : Téléch./Inst./"
-#~ "Suppr. Pqts"
-
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "Marqueur de formatage sans code de format"
-
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Chiffre erroné dans la chaîne de format « %ls »"
-
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Le chiffre est manquant dans la chaîne de format"
-
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "Les chiffres doivent être supérieurs ou égaux à 1, et non %ld"
-
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Code de formatage inconnu : « %lc »"
-
-#~ msgid "Bad format parameter"
-#~ msgstr "Paramètre de format incorrect"
-
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Échec d'analyse de la description de la clé : %ls"
-
-#~ msgid "Invalid null keybinding"
-#~ msgstr "La valeur « null » n'est pas un raccourci valable"
-
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
-#~ msgstr ""
-#~ "Les modificateurs ne doivent pas être utilisés avec des caractères non "
-#~ "imprimables"
-
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "Signal SIGTERM reçu, arrêt du programme...\n"
-
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "Signal SIGSEGV reçu, arrêt du programme...\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "Signal SIGABRT reçu, arrêt du programme...\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "Signal SIGQUIT reçu, arrêt du programme...\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr ""
-#~ "Chargement de fichier impossible : la chaîne %ls n'a pas de "
-#~ "représentation multi-octets"
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "NIVEAU SUPÉRIEUR"
-
-#~ msgid "Don't automatically remove unused packages matching this filter"
-#~ msgstr "Ne pas supprimer les paquets inutilisés correspondant à ce filtre"
-
-#~ msgid ""
-#~ "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
-#~ msgstr ""
-#~ "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
-
-#~ msgid "view an explanation of the changes in the solution"
-#~ msgstr "afficher une explication des modifications dans la solution"
