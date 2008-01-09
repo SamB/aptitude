@@ -165,24 +165,31 @@ static void cmdline_show_instinfo(pkgvector &items,
       // Display version numbers.
       if(showvers)
 	{
-	  pkgCache::VerIterator cur=i->CurrentVer();
-	  pkgCache::VerIterator cand=state.CandidateVerIter(*apt_cache_file);
+	  pkgCache::VerIterator cur = i->CurrentVer();
+	  pkgCache::VerIterator inst = state.InstVerIter(*apt_cache_file);
 
 	  // Display x -> y for upgraded, held, and downgraded packages.
 	  if( (state.Status==1 || state.Downgrade()) &&
-	      i->CurrentVer()!=cand)
+	      state.Install() &&
+	      i->CurrentVer() != inst)
 	    {
 	      s+=" [";
 	      s+=cur.VerStr();
 	      s+=" -> ";
-	      s+=cand.VerStr();
+	      s+=inst.VerStr();
 	      s+="]";
 	    }
-	  else
+	  else if(state.Install())
 	    {
 	      s+=" [";
-	      s+=cand.VerStr();
+	      s+=inst.VerStr();
 	      s+="]";
+	    }
+	  else if(state.Delete())
+	    {
+	      s += " [";
+	      s += cur.VerStr();
+	      s += "]";
 	    }
 	}
 

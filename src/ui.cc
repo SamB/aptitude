@@ -198,7 +198,7 @@ sigc::signal1<void, bool> update_finished;
 
 const char *default_pkgstatusdisplay="%d";
 const char *default_pkgheaderdisplay="%N %n #%B %u %o";
-const char *default_grpstr="task,status,section(subdir,passthrough),section(topdir)";
+const char *default_grpstr="task,status,section(subdirs,passthrough),section(topdir)";
 
 void ui_start_download(bool hide_preview)
 {
@@ -823,7 +823,7 @@ void do_new_package_view(OpProgress &progress)
       if(!grp)
 	// Eek!  The default grouping failed to parse.  Fall all the
 	// way back.
-	grp=new pkg_grouppolicy_task_factory(new pkg_grouppolicy_status_factory(new pkg_grouppolicy_section_factory(pkg_grouppolicy_section_factory::split_subdir,true,new pkg_grouppolicy_section_factory(pkg_grouppolicy_section_factory::split_topdir,false,new pkg_grouppolicy_end_factory()))));
+	grp=new pkg_grouppolicy_task_factory(new pkg_grouppolicy_status_factory(new pkg_grouppolicy_section_factory(pkg_grouppolicy_section_factory::split_subdirs,true,new pkg_grouppolicy_section_factory(pkg_grouppolicy_section_factory::split_topdir,false,new pkg_grouppolicy_end_factory()))));
     }
 
   pkg_tree_ref tree=pkg_tree::create(grpstr.c_str(), grp);
@@ -851,7 +851,7 @@ static void do_new_recommendations_view()
   progress_ref p = gen_progress_bar();
 
   pkg_grouppolicy_factory *grp = new pkg_grouppolicy_end_factory();
-  std::string grpstr="section(subdir, passthrough)";
+  std::string grpstr="section(subdirs, passthrough)";
 
   pkg_tree_ref tree=pkg_tree::create(grpstr.c_str(), grp,
 				     L"!~v!~i~RBrecommends:~i");
