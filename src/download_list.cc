@@ -1,6 +1,6 @@
 // download_list.cc
 //
-//   Copyright (C) 2001-2005 Daniel Burrows
+//   Copyright (C) 2001-2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -51,6 +51,12 @@ namespace cwidget
 {
   using namespace widgets;
 }
+
+/** \brief The number of seconds after which the spinner will spin, if
+ *  we are just displaying a spinner instead of a real progress
+ *  indicator.
+ */
+const int download_list_spinner_interval = 1;
 
 download_list::workerinf::workerinf(const wstring &_msg, unsigned long _current, unsigned long _total)
   :msg(_msg), current(_current), total(_total)
@@ -133,7 +139,8 @@ download_list::download_list(cw::util::slot0arg _abortslot,
    display_cumulative_progress(_display_cumulative_progress), startx(0),
 
    TotalItems(0), CurrentItems(0),
-   CurrentCPS(0), TotalBytes(0), CurrentBytes(0)
+   CurrentCPS(0), TotalBytes(0), CurrentBytes(0),
+   start_time(time(NULL))
 {
   do_layout.connect(sigc::mem_fun(*this, &download_list::layout_me));
 }
@@ -242,32 +249,22 @@ void download_list::paint(const cw::style &st)
 	}
       else
 	{
-	  const unsigned int active_workers = workers.size();
+	  const int num_spinner_stages = 4;
+	  const int stages_passed = (time(NULL) - start_time) / download_list_spinner_interval;
+	  const int current_stage = stages_passed % num_spinner_stages;
 
-	  unsigned long active_current = 0, active_total = 0;
-	  for(workerlist::const_iterator i = workers.begin();
-	      i != workers.end(); ++i)
+	  std::string spinner = "#";
+	  switch(current_stage)
 	    {
-	      active_current += i->current;
-	      active_total   += i->total;
+	    case 0: spinner = "|";  break;
+	    case 1: spinner = "/";  break;
+	    case 2: spinner = "-";  break;
+	    case 3: spinner = "\\"; break;
 	    }
 
-	  // The contribution of the active workers to the completion
-	  // status.
-	  double active_complete_fraction
-	    = active_total == 0 ? 0 : ((double) active_current) / ((double) active_total);
-
-	  double fraction_complete
-	    = TotalItems == 0 ? 0 : (((double) CurrentItems) + active_workers * active_complete_fraction)
-	    / ((double) TotalItems);
-	  if(fraction_complete > 1)
-	    fraction_complete = 1;
-	  if(fraction_complete < 0)
-	    fraction_complete = 0;
-
-
-	  barsize = int(width * fraction_complete);
-	  progress_string = ssprintf(_(" [ %i%% ]"), int(100.0 * fraction_complete));
+	  barsize = 0;
+	  output = W_("Downloading... ");
+	  progress_string = spinner;
 	}
 
 

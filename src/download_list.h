@@ -1,6 +1,6 @@
 // download_list.h  (this is -*-c++-*-)
 //
-//   Copyright (C) 2001-2005 Daniel Burrows
+//   Copyright (C) 2001-2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -30,6 +30,8 @@
 #include <cwidget/generic/util/slotarg.h>
 
 #include <cwidget/widgets/widget.h>
+
+#include <time.h>
 
 class download_signal_log;
 
@@ -94,6 +96,13 @@ class download_list:public cwidget::widgets::widget
   // we're only synchronous with it in the log callbacks.
   unsigned long TotalItems, CurrentItems;
   double CurrentCPS, TotalBytes, CurrentBytes;
+
+  /** \brief When the download started, as returned by time(2).
+   *
+   *  Used to display a spinner if a real progress percentage can't be
+   *  computed because we're in a list update.
+   */
+  time_t start_time;
 
   // Updates the set of displayed progress bars.
   void update_workers(pkgAcquire *Owner);
