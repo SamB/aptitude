@@ -110,9 +110,9 @@ void load_styles(std::string group, bool use_theme)
   for(Configuration::Item const *i=cfg_grp->Child; i; i=i->Next)
     {
       if(!i->Value.empty())
-	_error->Error(_("Invalid entry in cw::style definition group: \"%s\""), i->Tag.c_str());
+	_error->Error(_("Invalid entry in style definition group: \"%s\""), i->Tag.c_str());
       else if(i->Tag.empty())
-	_error->Error(_("Invalid tagless entry in cw::style definition group: \"%s\""), i->Value.c_str());
+	_error->Error(_("Invalid tagless entry in style definition group: \"%s\""), i->Value.c_str());
       else
 	{
 	  cw::style curr;
@@ -141,7 +141,7 @@ void load_styles(std::string group, bool use_theme)
 		    f=&cw::style::attrs_flip;
 
 		  if(!f)
-		    _error->Error(_("Unknown cw::style attribute %s"),
+		    _error->Error(_("Unknown style attribute %s"),
 				  j->Tag.c_str());
 		  else
 		    (curr.*f)(parse_attrs(j->Value));
