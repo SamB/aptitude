@@ -1,6 +1,6 @@
 // resolver_manager.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -171,7 +171,7 @@ resolver_manager::resolver_manager(aptitudeDepCache *_cache)
   cache->pre_package_state_changed.connect(sigc::mem_fun(this, &resolver_manager::discard_resolver));
   cache->package_state_changed.connect(sigc::mem_fun(this, &resolver_manager::maybe_create_resolver));
 
-  aptcfg->connect(PACKAGE "::Recommends-Important",
+  aptcfg->connect("Apt::Install-Recommends",
 		  sigc::mem_fun(this,
 				&resolver_manager::discard_resolver));
 

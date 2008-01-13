@@ -208,7 +208,7 @@ void infer_reason(pkgCache::PkgIterator pkg, set<reason> &reasons)
 	   ((*apt_cache_file)[d.ParentPkg()].Delete() ||
 	    (*apt_cache_file)[d.ParentPkg()].InstVerIter(*apt_cache_file)!=d.ParentVer()) &&
 	   (d->Type==pkgCache::Dep::Depends ||
-	    (aptcfg->FindB(PACKAGE "::Recommends-Important", true) &&
+	    (aptcfg->FindB("Apt::Install-Recommends", true) &&
 	     d->Type==pkgCache::Dep::Recommends)))
 	  reasons.insert(reason(d.ParentPkg(), d));
     }

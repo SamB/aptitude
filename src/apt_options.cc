@@ -1,6 +1,6 @@
 // apt_options.cc
 //
-//   Copyright (C) 2000, 2007 Daniel Burrows
+//   Copyright (C) 2000, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -361,7 +361,7 @@ option_item dependency_options[]={
 		 "packages automatically\" is enabled, packages "
 		 "that are recommended by an installed package "
 		 "will not be automatically removed."),
-	      PACKAGE "::Recommends-Important", true),
+	      "Apt::Install-Recommends", true),
   option_item(N_("Remove unused packages automatically"),
 	      N_("If this option is enabled, packages that are "
 		 "automatically installed and that no manually "

@@ -1,6 +1,6 @@
 // apt.cc
 //
-//  Copyright 1999-2007 Daniel Burrows
+//  Copyright 1999-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -121,6 +121,11 @@ bool get_apt_knows_about_rootdir()
 
 void apt_preinit()
 {
+  // The old name for the recommends-should-be-automatically-installed
+  // setting and the new one.
+  const char * const aptitudeRecommendsImportant = PACKAGE "::Recommends-Important";
+  const char * const aptInstallRecommends = "APT::Install-Recommends";
+
   signal(SIGPIPE, SIG_IGN);
 
   // Probe apt to see if it has RootDir support.
@@ -153,6 +158,22 @@ void apt_preinit()
   pkgInitConfig(*_config);
   pkgInitSystem(*_config, _system);
 
+  // Obviously this must come before we read user settings.
+  //
+  // Warn if things look shady, but let the user tell use they really
+  // know what they're doing.  (e.g., consider configuration systems
+  // that share settings between machines with different versions)
+  //
+  // Q: Is it better or worse to give the system config file name?
+  // Most of the time this message will indicate a problem there, but
+  // apt also sources /etc/apt/apt.conf.d/* on startup.  If the
+  // problem is in some other file and aptitude calls out
+  // /etc/apt/apt.conf, that would be rather confusing.
+  if(_config->Exists(aptitudeRecommendsImportant) &&
+     !_config->FindB(PACKAGE "::Dont-Warn-About-Recommends-Important", false))
+    _error->Warning(_("The system configuration file (%s) contains a setting for the obsolete option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-Recommends' instead or removing this setting."),
+		    _config->FindFile("Dir::Etc::main").c_str());
+
   // Allow a user-specific customization file.
   const char *HOME = getenv("HOME");
 
@@ -176,7 +197,22 @@ void apt_preinit()
 
   aptcfg=new signalling_config(user_config, _config, theme_config);
 
-  aptcfg->connect(PACKAGE "::Recommends-Important",
+  // Remove any old Recommends-Important setting by setting it to ""
+  // in ~/.aptitude/config.
+  if(aptcfg->Exists(aptitudeRecommendsImportant))
+    {
+      // If it was overridden to "false" and the system setting for
+      // APT::Install-Recommends is "true", set the latter to "false"
+      // to preserve aptitude's behavior.
+      if(!aptcfg->FindB(aptitudeRecommendsImportant, true) &&
+	 aptcfg->FindB(aptInstallRecommends, true))
+	aptcfg->Set(aptInstallRecommends, "false");
+      aptcfg->Set(aptitudeRecommendsImportant, "");
+
+      apt_dumpcfg(PACKAGE);
+    }
+
+  aptcfg->connect("APT::Install-Recommends",
 		  sigc::ptr_fun(&reset_interesting_dep_memoization));
 
   cache_closed.connect(sigc::ptr_fun(&reset_interesting_dep_memoization));
@@ -816,7 +852,7 @@ static bool internal_is_interesting_dep(const pkgCache::DepIterator &d,
   else if(const_cast<pkgCache::DepIterator &>(d).IsCritical())
     return true;
   else if(d->Type != pkgCache::Dep::Recommends ||
-	  !aptcfg->FindB(PACKAGE "::Recommends-Important", true))
+	  !aptcfg->FindB("Apt::Install-Recommends", true))
     return false;
   else
     {

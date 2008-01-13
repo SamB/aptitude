@@ -1,6 +1,6 @@
 // main.cc  (neé testscr.cc)
 //
-//  Copyright 1999-2007 Daniel Burrows
+//  Copyright 1999-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -333,10 +333,10 @@ int main(int argc, char *argv[])
 	  seen_quiet = true;
 	  break;
 	case 'r':
-	  aptcfg->SetNoUser(PACKAGE "::Recommends-Important", "true");
+	  aptcfg->SetNoUser("Apt::Install-Recommends", "true");
 	  break;
 	case 'R':
-	  aptcfg->SetNoUser(PACKAGE "::Recommends-Important", "false");
+	  aptcfg->SetNoUser("Apt::Install-Recommends", "false");
 	  aptcfg->SetNoUser(PACKAGE "::Keep-Recommends", "true");
 	  break;
 	case 't':

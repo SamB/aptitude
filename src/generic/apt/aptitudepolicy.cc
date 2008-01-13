@@ -21,11 +21,5 @@
 
 bool aptitudePolicy::IsImportantDep(pkgCache::DepIterator dep)
 {
-  if(pkgPolicy::IsImportantDep(dep))
-    return true;
-
-  if(dep->Type==pkgCache::Dep::Recommends)
-    return aptcfg->FindB(PACKAGE "::Recommends-Important", true);
-  else
-    return false;
+  return pkgPolicy::IsImportantDep(dep);
 }

@@ -1,6 +1,6 @@
 // aptcache.cc
 //
-//  Copyright 1999-2007 Daniel Burrows
+//  Copyright 1999-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -189,7 +189,7 @@ aptitudeDepCache::aptitudeDepCache(pkgCache *Cache, Policy *Plcy)
 {
   // When the "install recommended packages" flag changes, collect garbage.
 #if 0
-  aptcfg->connect(PACKAGE "::Recommends-Important",
+  aptcfg->connect("Apt::Install-Recommends",
 		  sigc::bind(sigc::mem_fun(*this,
 					   &pkgDepCache::MarkAndSweep),
 			     (undo_group *) NULL));
@@ -1588,7 +1588,7 @@ bool aptitudeDepCache::is_held(const PkgIterator &pkg)
 bool aptitudeDepCache::MarkFollowsRecommends()
 {
   return pkgDepCache::MarkFollowsRecommends() ||
-    aptcfg->FindB(PACKAGE "::Recommends-Important", true) ||
+    aptcfg->FindB("Apt::Install-Recommends", true) ||
     aptcfg->FindB(PACKAGE "::Keep-Recommends", false);
 }
 
