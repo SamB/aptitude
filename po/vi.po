@@ -454,7 +454,7 @@ msgstr "Tự sửa chữa các gói bị hỏng trước khi cài đặt hay g�
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
-"suggestion of the problem resolver.  Otherwise,aptitude will prompt you for "
+"suggestion of the problem resolver.  Otherwise, aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
 "Bật tùy chọn này, và bạn thi hành tiến trình cài đặt khi một số gói bị ngắt, "
@@ -468,8 +468,8 @@ msgstr "Tự động cài đặt các gói đã khuyến khích"
 
 #: src/apt_options.cc:353
 msgid ""
-"If this option is enabled  and \"automatically resolve dependencies\" is "
-"also enabled, aptitude will attempt to install the recommendations of newly "
+"If this option is enabled and \"automatically resolve dependencies\" is also "
+"enabled, aptitude will attempt to install the recommendations of newly "
 "installed packages in addition to their outright dependencies.  Suggestions "
 "will not be automatically installed.\n"
 "If this option is enabled and \"Remove unused packages automatically\" is "
@@ -2005,7 +2005,7 @@ msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> ĐANG XẾP HÀNG\n"
 
 #: src/cmdline/cmdline_why.cc:673
-msgid "    ++   --> skipping, version check failed.\n"
+msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> đang bỏ qua, lỗi kiểm tra phiên bản.\n"
 
 #: src/cmdline/cmdline_why.cc:691
@@ -4486,9 +4486,14 @@ msgstr ""
 msgid "License"
 msgstr "Giấy phép"
 
-#: src/ui.cc:1019
+#: src/ui.cc:1019 src/ui.cc:2351
+#, fuzzy
 msgid "View the terms under which you may copy and distribute aptitude"
-msgstr "Xem những điều kiện sao chép và phân phối lại aptitude"
+msgstr ""
+"#-#-#-#-#  - (aptitude 0.4.x)  #-#-#-#-#\n"
+"Xem những điều kiện sao chép và phân phối lại aptitude\n"
+"#-#-#-#-#  - (aptitude 0.4.x)  #-#-#-#-#\n"
+"Xem những điều kiện sao chép và phân phối lại aptitud"
 
 #: src/ui.cc:1033
 msgid "help.txt"
@@ -5208,10 +5213,6 @@ msgstr "Ti^n tức"
 #: src/ui.cc:2350
 msgid "^License"
 msgstr "Giấ^y phép"
-
-#: src/ui.cc:2351
-msgid "View the terms under which you may copy and distribute aptiutde"
-msgstr "Xem những điều kiện sao chép và phân phối lại aptitud"
 
 #: src/ui.cc:2491
 msgid "Actions"

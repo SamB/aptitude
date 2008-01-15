@@ -670,7 +670,7 @@ namespace
 	else
 	  {
 	    if(verbosity > 1)
-	      std::cout << _("    ++   --> skipping, version check failed.\n");
+	      std::cout << _("    ++   --> skipping, version check failed\n");
 	  }
       }
 

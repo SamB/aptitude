@@ -2348,7 +2348,7 @@ cw::menu_info help_menu_info[]={
 	       sigc::ptr_fun(do_help_news)),
 
   cw::menu_info(cw::menu_info::MENU_ITEM, N_("^License"), NULL,
-	       N_("View the terms under which you may copy and distribute aptiutde"),
+	       N_("View the terms under which you may copy and distribute aptitude"),
 	       sigc::ptr_fun(do_help_license)),
 
   cw::menu_info::MENU_END
