@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_hu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2007-12-15 23:07-0800\n"
+"POT-Creation-Date: 2008-01-15 06:06-0800\n"
 "PO-Revision-Date: 2006-10-12 20:44+0100\n"
 "Last-Translator: SZERVÁC Attila <sas@321.hu>\n"
 "Language-Team: Hungarian <debian-l10n-hungarian@lists.debian.org>\n"
@@ -397,8 +397,8 @@ msgid ""
 "installed packages in addition to their outright dependencies.  Suggestions "
 "will not be automatically installed.\n"
 "If this option is enabled and \"Remove unused packages automatically\" is "
-"enabled, packages that are recommended by an installed package will not "
-"automatically be removed."
+"enabled, packages that are recommended by an installed package will not be "
+"automatically removed."
 msgstr ""
 
 #: src/apt_options.cc:365
@@ -705,7 +705,7 @@ msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Váratlan minta argumentum a \"keep-all\" után"
 
 #: src/cmdline/cmdline_do_action.cc:263 src/cmdline/cmdline_simulate.cc:31
-#: src/cmdline/cmdline_upgrade.cc:230 src/main.cc:547
+#: src/cmdline/cmdline_upgrade.cc:230 src/main.cc:552
 #, c-format
 msgid "Abort.\n"
 msgstr "Megszakítás.\n"
@@ -788,97 +788,97 @@ msgstr "Váratlan fájl-vége jel a szabvány bemeneten"
 msgid "Couldn't read list of sources"
 msgstr "A forráslista elolvasása sikertelen"
 
-#: src/cmdline/cmdline_prompt.cc:262 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:277 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "de a(z) %s-t telepítve lesz."
 
-#: src/cmdline/cmdline_prompt.cc:265 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:280 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "de a(z) %s már telepítve van és vissza van tartva."
 
-#: src/cmdline/cmdline_prompt.cc:268 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:283 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "de a(z) %s már telepítve van."
 
-#: src/cmdline/cmdline_prompt.cc:272 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:287 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "de nem telepíthető"
 
-#: src/cmdline/cmdline_prompt.cc:276 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:291 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " ami egy virtuális csomag."
 
-#: src/cmdline/cmdline_prompt.cc:279 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:294 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " vagy"
 
-#: src/cmdline/cmdline_prompt.cc:293
+#: src/cmdline/cmdline_prompt.cc:308
 msgid "The following packages are BROKEN:"
 msgstr "A következő csomagok TÖRÖTTEK:"
 
-#: src/cmdline/cmdline_prompt.cc:294
+#: src/cmdline/cmdline_prompt.cc:309
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "A következő csomagok használaton kívüliek, így EL lesznek TÁVOLÍTVA:"
 
-#: src/cmdline/cmdline_prompt.cc:295
+#: src/cmdline/cmdline_prompt.cc:310
 msgid "The following packages have been automatically kept back:"
 msgstr "A következő csomagok automatikusan visszatartódnak:"
 
-#: src/cmdline/cmdline_prompt.cc:296
+#: src/cmdline/cmdline_prompt.cc:311
 msgid "The following NEW packages will be automatically installed:"
 msgstr "A következő ÚJ csomagok lesznek automatikusan telepítve:"
 
-#: src/cmdline/cmdline_prompt.cc:297
+#: src/cmdline/cmdline_prompt.cc:312
 msgid "The following packages will be automatically REMOVED:"
 msgstr "A következő csomagok lesznek automatikusan ELTÁVOLÍTVA:"
 
-#: src/cmdline/cmdline_prompt.cc:298
+#: src/cmdline/cmdline_prompt.cc:313
 msgid "The following packages will be DOWNGRADED:"
 msgstr "A következő csomagok lesznek VISSZAFEJLESZTVE:"
 
-#: src/cmdline/cmdline_prompt.cc:299
+#: src/cmdline/cmdline_prompt.cc:314
 msgid "The following packages have been kept back:"
 msgstr "A következő csomagok vannak visszatartva:"
 
-#: src/cmdline/cmdline_prompt.cc:300
+#: src/cmdline/cmdline_prompt.cc:315
 msgid "The following packages will be REINSTALLED:"
 msgstr "A következő csomagok lesznek ÚJRATELEPÍTVE:"
 
-#: src/cmdline/cmdline_prompt.cc:301
+#: src/cmdline/cmdline_prompt.cc:316
 msgid "The following NEW packages will be installed:"
 msgstr "A következő ÚJ csomagok lesznek telepítve:"
 
-#: src/cmdline/cmdline_prompt.cc:302
+#: src/cmdline/cmdline_prompt.cc:317
 msgid "The following packages will be REMOVED:"
 msgstr "A következő csomagok lesznek ELTÁVOLÍTVA:"
 
-#: src/cmdline/cmdline_prompt.cc:303
+#: src/cmdline/cmdline_prompt.cc:318
 msgid "The following packages will be upgraded:"
 msgstr "A következő csomagok lesznek frissítve:"
 
-#: src/cmdline/cmdline_prompt.cc:304
+#: src/cmdline/cmdline_prompt.cc:319
 #, fuzzy
 msgid "The following partially installed packages will be configured:"
 msgstr "A következő csomagok lesznek frissítve:"
 
-#: src/cmdline/cmdline_prompt.cc:359
+#: src/cmdline/cmdline_prompt.cc:374
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "A következő LÉNYEGES csomagok EL lesznek TÁVOLÍTVA!\n"
 
-#: src/cmdline/cmdline_prompt.cc:368
+#: src/cmdline/cmdline_prompt.cc:383
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr ""
 "A következő LÉNYEGES csomagok TÖRÖTTEK lesznek a művelet végrehajtása után:\n"
 
-#: src/cmdline/cmdline_prompt.cc:378
+#: src/cmdline/cmdline_prompt.cc:393
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -887,16 +887,16 @@ msgstr ""
 "FIGYELEM: Ez a művelet a rendszer használhatatlanná válásához vezethet!\n"
 "          NE folytasd, ha nem tudod EGÉSZEN PONTOSAN, hogy mit csinálsz!\n"
 
-#: src/cmdline/cmdline_prompt.cc:380
+#: src/cmdline/cmdline_prompt.cc:395
 msgid "I am aware that this is a very bad idea"
 msgstr "Tudatában vagyok, hogy ez egy nagyon rossz ötlet"
 
-#: src/cmdline/cmdline_prompt.cc:383
+#: src/cmdline/cmdline_prompt.cc:398
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "A folytatáshoz gépeld be a \"%s\" mondatot:\n"
 
-#: src/cmdline/cmdline_prompt.cc:425
+#: src/cmdline/cmdline_prompt.cc:440
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -913,7 +913,7 @@ msgstr ""
 "Csak akkor folytasd a telepítést, ha biztos vagy benne, hogy ezt akarod.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:437
+#: src/cmdline/cmdline_prompt.cc:452
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -924,7 +924,7 @@ msgstr ""
 "                         mivel a(z) %s::CmdLine::Ignore-Trust-Violations "
 "értéke igaz!\n"
 
-#: src/cmdline/cmdline_prompt.cc:446
+#: src/cmdline/cmdline_prompt.cc:461
 #, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -935,136 +935,136 @@ msgstr ""
 "                         mivel a(z) %s::CmdLine::Ignore-Trust-Violations "
 "értéke igaz!\n"
 
-#: src/cmdline/cmdline_prompt.cc:452
+#: src/cmdline/cmdline_prompt.cc:467
 msgid "Yes"
 msgstr "Igen"
 
-#: src/cmdline/cmdline_prompt.cc:452
+#: src/cmdline/cmdline_prompt.cc:467
 msgid "No"
 msgstr "Nem"
 
-#: src/cmdline/cmdline_prompt.cc:456
+#: src/cmdline/cmdline_prompt.cc:471
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Folytatás a figyelmeztetés ellenére is?\n"
 
-#: src/cmdline/cmdline_prompt.cc:457
+#: src/cmdline/cmdline_prompt.cc:472
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "A folytatáshoz írd be a(z) \"%s\"-t; a megszakításhoz a \"%s\"-t: "
 
-#: src/cmdline/cmdline_prompt.cc:471
+#: src/cmdline/cmdline_prompt.cc:486
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Ismeretlen parancs.  Vagy a(z) \"%s\"-t vagy a \"%s\"-t írd be.\n"
 
-#: src/cmdline/cmdline_prompt.cc:584
+#: src/cmdline/cmdline_prompt.cc:594
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "A következő csomagok AJÁNLOTTAK de NEM lesznek telepítve:\n"
 
-#: src/cmdline/cmdline_prompt.cc:590
+#: src/cmdline/cmdline_prompt.cc:600
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "A következő csomagok JAVASOLTAK de NEM lesznek telepítve:\n"
 
-#: src/cmdline/cmdline_prompt.cc:595
+#: src/cmdline/cmdline_prompt.cc:605
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Nem lesz telepítve, frissítve vagy eltávolítva semmilyen csomag.\n"
 
-#: src/cmdline/cmdline_prompt.cc:597
+#: src/cmdline/cmdline_prompt.cc:607
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu csomag fog frissülni, %lu csomag lesz újonnan telepítve, "
 
-#: src/cmdline/cmdline_prompt.cc:601
+#: src/cmdline/cmdline_prompt.cc:611
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu lesz újratelepítve, "
 
-#: src/cmdline/cmdline_prompt.cc:603
+#: src/cmdline/cmdline_prompt.cc:613
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu fog visszafejlesztődni"
 
-#: src/cmdline/cmdline_prompt.cc:605
+#: src/cmdline/cmdline_prompt.cc:615
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu lesz eltávolítva és %lu nem fog frissülni.\n"
 
-#: src/cmdline/cmdline_prompt.cc:612
+#: src/cmdline/cmdline_prompt.cc:622
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Az archívumból %sB/%sB letöltendő. "
 
-#: src/cmdline/cmdline_prompt.cc:615
+#: src/cmdline/cmdline_prompt.cc:625
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Az archívumból %sB letöltendő. "
 
-#: src/cmdline/cmdline_prompt.cc:622
+#: src/cmdline/cmdline_prompt.cc:632
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Kicsomagolás után %sB lesz elfoglalva.\n"
 
-#: src/cmdline/cmdline_prompt.cc:625
+#: src/cmdline/cmdline_prompt.cc:635
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "A kicsomagolás után %sB fog felszabadulni.\n"
 
-#: src/cmdline/cmdline_prompt.cc:646
+#: src/cmdline/cmdline_prompt.cc:656
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr ""
 "Nincs megjelenítendő csomag -- az 'i' utáni sorba kell a csomagneveket "
 "írni.\n"
 
-#: src/cmdline/cmdline_prompt.cc:652
+#: src/cmdline/cmdline_prompt.cc:662
 msgid "Press Return to continue."
 msgstr "Folytatás a Return leütésével."
 
-#: src/cmdline/cmdline_prompt.cc:663
+#: src/cmdline/cmdline_prompt.cc:673
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr ""
 "Nem találtam csomagokat -- a 'c' utáni sorba kell a csomagneveket írni.\n"
 
-#: src/cmdline/cmdline_prompt.cc:667
+#: src/cmdline/cmdline_prompt.cc:677
 msgid "Press Return to continue"
 msgstr "Folytatás a Return leütésével"
 
-#: src/cmdline/cmdline_prompt.cc:677
+#: src/cmdline/cmdline_prompt.cc:687
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:700
+#: src/cmdline/cmdline_prompt.cc:710
 #, c-format
 msgid "y: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:702
+#: src/cmdline/cmdline_prompt.cc:712
 msgid "continue with the installation"
 msgstr "folytatás a telepítéssel"
 
-#: src/cmdline/cmdline_prompt.cc:704
+#: src/cmdline/cmdline_prompt.cc:714
 #, c-format
 msgid "n: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:706
+#: src/cmdline/cmdline_prompt.cc:716
 msgid "abort and quit"
 msgstr "megszakítás és kilépés"
 
-#: src/cmdline/cmdline_prompt.cc:708
+#: src/cmdline/cmdline_prompt.cc:718
 #, c-format
 msgid "i: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:710
+#: src/cmdline/cmdline_prompt.cc:720
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -1072,12 +1072,12 @@ msgstr ""
 "információ megjelenítése egy vagy több csomagról; a csomagneveket az 'i' "
 "után kell beírni"
 
-#: src/cmdline/cmdline_prompt.cc:712
+#: src/cmdline/cmdline_prompt.cc:722
 #, c-format
 msgid "c: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:714
+#: src/cmdline/cmdline_prompt.cc:724
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1085,63 +1085,63 @@ msgstr ""
 "egy vagy több csomag változásnaplójának megjelenítése; a csomagneveket a 'c' "
 "után kell beírni"
 
-#: src/cmdline/cmdline_prompt.cc:716
+#: src/cmdline/cmdline_prompt.cc:726
 #, c-format
 msgid "d: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:718
+#: src/cmdline/cmdline_prompt.cc:728
 msgid "toggle the display of dependency information"
 msgstr "függőségi információk megjelenítésének ki/bekapcsolása"
 
-#: src/cmdline/cmdline_prompt.cc:720
+#: src/cmdline/cmdline_prompt.cc:730
 #, c-format
 msgid "s: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:722
+#: src/cmdline/cmdline_prompt.cc:732
 msgid "toggle the display of changes in package sizes"
 msgstr "a csomagméret változások megjelenítésének ki/bekapcsolása"
 
-#: src/cmdline/cmdline_prompt.cc:724
+#: src/cmdline/cmdline_prompt.cc:734
 #, c-format
 msgid "v: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:726
+#: src/cmdline/cmdline_prompt.cc:736
 msgid "toggle the display of version numbers"
 msgstr "a verziószámok megjelenítésének ki/bekapcsolása"
 
-#: src/cmdline/cmdline_prompt.cc:728
+#: src/cmdline/cmdline_prompt.cc:738
 #, c-format
 msgid "w: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:730
+#: src/cmdline/cmdline_prompt.cc:740
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:733
+#: src/cmdline/cmdline_prompt.cc:743
 #, c-format
 msgid "r: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:735
+#: src/cmdline/cmdline_prompt.cc:745
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:737
+#: src/cmdline/cmdline_prompt.cc:747
 #, c-format
 msgid "e: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:739
+#: src/cmdline/cmdline_prompt.cc:749
 msgid "enter the full visual interface"
 msgstr "belépés a felhasználói felületre"
 
-#: src/cmdline/cmdline_prompt.cc:742
+#: src/cmdline/cmdline_prompt.cc:752
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1153,72 +1153,72 @@ msgstr ""
 "összes felsorolt csomagra végrehajtódik.  A következő műveletek közül lehet "
 "választani:"
 
-#: src/cmdline/cmdline_prompt.cc:749 src/cmdline/cmdline_resolver.cc:198
+#: src/cmdline/cmdline_prompt.cc:759 src/cmdline/cmdline_resolver.cc:198
 msgid "'+' to install packages"
 msgstr "'+' csomag telepítése"
 
-#: src/cmdline/cmdline_prompt.cc:752 src/cmdline/cmdline_resolver.cc:200
+#: src/cmdline/cmdline_prompt.cc:762 src/cmdline/cmdline_resolver.cc:200
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' csomag telepítése és automatikusan telepítettként való megjelölése"
 
-#: src/cmdline/cmdline_prompt.cc:754 src/cmdline/cmdline_resolver.cc:202
+#: src/cmdline/cmdline_prompt.cc:764 src/cmdline/cmdline_resolver.cc:202
 msgid "'-' to remove packages"
 msgstr "'-' csomag eltávolítása"
 
-#: src/cmdline/cmdline_prompt.cc:756 src/cmdline/cmdline_resolver.cc:204
+#: src/cmdline/cmdline_prompt.cc:766 src/cmdline/cmdline_resolver.cc:204
 msgid "'_' to purge packages"
 msgstr "'_' csomag kisöprése"
 
-#: src/cmdline/cmdline_prompt.cc:758 src/cmdline/cmdline_resolver.cc:206
+#: src/cmdline/cmdline_prompt.cc:768 src/cmdline/cmdline_resolver.cc:206
 msgid "'=' to place packages on hold"
 msgstr "'=' csomag frissítésének tiltása"
 
-#: src/cmdline/cmdline_prompt.cc:760 src/cmdline/cmdline_resolver.cc:208
+#: src/cmdline/cmdline_prompt.cc:770 src/cmdline/cmdline_resolver.cc:208
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "':' csomagok jelen állapotának megtartása visszafogásra jelölés nélkül"
 
-#: src/cmdline/cmdline_prompt.cc:762 src/cmdline/cmdline_resolver.cc:210
+#: src/cmdline/cmdline_prompt.cc:772 src/cmdline/cmdline_resolver.cc:210
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' csomag megjelölése automatikusan telepítettként"
 
-#: src/cmdline/cmdline_prompt.cc:764 src/cmdline/cmdline_resolver.cc:212
+#: src/cmdline/cmdline_prompt.cc:774 src/cmdline/cmdline_resolver.cc:212
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' csomag megjelölése manuálisan telepítettként"
 
-#: src/cmdline/cmdline_prompt.cc:768
+#: src/cmdline/cmdline_prompt.cc:778
 msgid "Commands:"
 msgstr "Parancsok:"
 
-#: src/cmdline/cmdline_prompt.cc:860
+#: src/cmdline/cmdline_prompt.cc:870
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:878
+#: src/cmdline/cmdline_prompt.cc:888
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Folytatás? [I/n/?]"
 
-#: src/cmdline/cmdline_prompt.cc:879
+#: src/cmdline/cmdline_prompt.cc:889
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:897
+#: src/cmdline/cmdline_prompt.cc:907
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Értelmezhetetlen válasz.  Kérlek írj be érvényes parancsot vagy '?'-et a "
 "súgóhoz.\n"
 
-#: src/cmdline/cmdline_prompt.cc:903
+#: src/cmdline/cmdline_prompt.cc:913
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:934
+#: src/cmdline/cmdline_prompt.cc:944
 #, c-format
 msgid ""
 "\n"
@@ -1229,7 +1229,7 @@ msgstr ""
 "A függőségi információk meg fognak jelenni.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:936
+#: src/cmdline/cmdline_prompt.cc:946
 #, c-format
 msgid ""
 "\n"
@@ -1240,7 +1240,7 @@ msgstr ""
 "A függőségi információk nem fognak megjelenni.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:942
+#: src/cmdline/cmdline_prompt.cc:952
 #, c-format
 msgid ""
 "\n"
@@ -1251,7 +1251,7 @@ msgstr ""
 "A verziószámok meg fognak jelenni.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:944
+#: src/cmdline/cmdline_prompt.cc:954
 #, c-format
 msgid ""
 "\n"
@@ -1262,7 +1262,7 @@ msgstr ""
 "A verziószámok nem fognak megjelenni.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:949
+#: src/cmdline/cmdline_prompt.cc:959
 #, c-format
 msgid ""
 "\n"
@@ -1273,7 +1273,7 @@ msgstr ""
 "A méretváltozások meg fognak jelenni.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:951
+#: src/cmdline/cmdline_prompt.cc:961
 #, c-format
 msgid ""
 "\n"
@@ -1285,7 +1285,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:88 src/cmdline/cmdline_resolver.cc:699
-#: src/generic/apt/apt.cc:233
+#: src/generic/apt/apt.cc:269
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Nem lehet a(z) %s-t írásra megnyitni"
@@ -1630,7 +1630,7 @@ msgid "State"
 msgstr "Állapot"
 
 #: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:436
-#: src/generic/apt/matchers.cc:1834
+#: src/generic/apt/matchers.cc:1867
 msgid "Provided by"
 msgstr "Ez biztosítja:"
 
@@ -1737,7 +1737,7 @@ msgid "Obsoletes"
 msgstr "Elavulttá teszi"
 
 #: src/cmdline/cmdline_show.cc:435 src/cmdline/cmdline_why.cc:146
-#: src/generic/apt/matchers.cc:1783
+#: src/generic/apt/matchers.cc:1816
 msgid "Provides"
 msgstr "Biztosítja"
 
@@ -1955,7 +1955,7 @@ msgstr ""
 msgid "The package \"%s\" is manually installed.\n"
 msgstr "'&m' csomag megjelölése manuálisan telepítettként"
 
-#: src/download_bar.cc:55 src/download_list.cc:345 src/download_screen.cc:62
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
 #, c-format
 msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
 msgstr "Kérlek tedd be a(z) \"%s\" címkéjű lemezt a \"%s\" meghajtóba"
@@ -1982,44 +1982,44 @@ msgstr "Letöltés..."
 msgid " [Working]"
 msgstr " [Folyamatban]"
 
-#: src/download_item.cc:110 src/download_list.cc:366
+#: src/download_item.cc:110 src/download_list.cc:363
 msgid "[Hit]"
 msgstr "[Találat]"
 
-#: src/download_item.cc:110 src/download_list.cc:388
+#: src/download_item.cc:110 src/download_list.cc:385
 msgid "[Downloaded]"
 msgstr "[Letöltve]"
 
-#: src/download_list.cc:76
+#: src/download_list.cc:82
 #, c-format
 msgid "Downloaded %sB in %s (%sB/s)."
 msgstr "%sB letöltve %s alatt (%sB/s)."
 
-#: src/download_list.cc:82
+#: src/download_list.cc:88
 #, c-format
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nEgyes fájlokat nem sikerült letölteni."
 
-#: src/download_list.cc:237 src/download_screen.cc:224
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, %s van hátra)"
 
-#: src/download_list.cc:239
+#: src/download_list.cc:246
 #, c-format
 msgid " [ %i%% ] (stalled)"
 msgstr " [ %i%% ] (beragadt)"
 
-#: src/download_list.cc:241 src/download_list.cc:270
+#: src/download_list.cc:248
 #, c-format
 msgid " [ %i%% ]"
 msgstr " [ %i%% ]"
 
-#: src/download_list.cc:410
+#: src/download_list.cc:407
 msgid "[IGNORED]"
 msgstr "[FIGYELMEN KÍVÜL HAGYVA]"
 
-#: src/download_list.cc:416
+#: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[HIBA]"
 
@@ -2086,73 +2086,81 @@ msgstr "A kiterjesztett állapotinformáció beolvasása"
 msgid "Initializing package states"
 msgstr "Csomagállapotok inicializálása"
 
-#: src/generic/apt/aptcache.cc:606
+#: src/generic/apt/aptcache.cc:608
 msgid "Cannot open Aptitude state file"
 msgstr "Nem sikerült megnyitni az Aptitude állapotfájlját"
 
-#: src/generic/apt/aptcache.cc:610 src/generic/apt/aptcache.cc:671
-#: src/generic/apt/aptcache.cc:674
+#: src/generic/apt/aptcache.cc:612 src/generic/apt/aptcache.cc:673
+#: src/generic/apt/aptcache.cc:676
 msgid "Writing extended state information"
 msgstr "Kiterjesztett állapotinformáció mentése"
 
-#: src/generic/apt/aptcache.cc:653
+#: src/generic/apt/aptcache.cc:655
 #, c-format
 msgid "Internal buffer overflow on package \"%s\" while writing state file"
 msgstr "Belső puffertúlcsordulás a(z) \"%s\" csomagnál az állapotfájl írásakor"
 
-#: src/generic/apt/aptcache.cc:662
+#: src/generic/apt/aptcache.cc:664
 msgid "Couldn't write state file"
 msgstr "Nem sikerült az állapotfájlba írni"
 
-#: src/generic/apt/aptcache.cc:679
+#: src/generic/apt/aptcache.cc:681
 msgid "Error writing state file"
 msgstr "Hiba ez állapotfájl írása közben"
 
-#: src/generic/apt/aptcache.cc:697
+#: src/generic/apt/aptcache.cc:699
 #, c-format
 msgid "failed to remove %s"
 msgstr "nem siketült eltávolítani a(z) %s-t"
 
-#: src/generic/apt/aptcache.cc:704
+#: src/generic/apt/aptcache.cc:706
 #, c-format
 msgid "failed to rename %s to %s"
 msgstr "nem sikerült átnevezni a(z) %s-t %s-re"
 
-#: src/generic/apt/aptcache.cc:712
+#: src/generic/apt/aptcache.cc:714
 #, c-format
 msgid "couldn't replace %s with %s"
 msgstr "nem sikerült a(z) %s-t %s-re helyettesíteni"
 
-#: src/generic/apt/aptcache.cc:1191
+#: src/generic/apt/aptcache.cc:1205
 msgid "Unable to correct dependencies, some packages cannot be installed"
 msgstr ""
 "Nem sikerült a függőségeket feloldani, néhány csomag nem lesz telepítve"
 
-#: src/generic/apt/aptcache.cc:1504
+#: src/generic/apt/aptcache.cc:1521
 msgid "The list of sources could not be read."
 msgstr "Nem sikerült elolvasni a forráslistát."
 
-#: src/generic/apt/aptcache.cc:1511
+#: src/generic/apt/aptcache.cc:1528
 msgid "The package lists or status file could not be parsed or opened."
 msgstr ""
 "Nem sikerült megnyitni vagy feldolgozni a csomaglistát vagy az állapotfájlt."
 
-#: src/generic/apt/aptcache.cc:1514
+#: src/generic/apt/aptcache.cc:1531
 msgid "You may want to update the package lists to correct these missing files"
 msgstr ""
 "Lehet, hogy frissíteni kéne a csomaglistát, a hiányzó fájlok javításához"
 
-#: src/generic/apt/apt.cc:205
+#: src/generic/apt/apt.cc:174
+#, c-format
+msgid ""
+"The system configuration file (%s) contains a setting for the obsolete "
+"option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
+"Recommends' instead or removing this setting."
+msgstr ""
+
+#: src/generic/apt/apt.cc:241
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "A(z) %s olvasható, de nem írható; nem sikerült a beállítófájlba írni."
 
-#: src/generic/apt/apt.cc:243
+#: src/generic/apt/apt.cc:279
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Nem sikerült a(z) %s-t az új beállítófájllal helyettesíteni"
 
-#: src/generic/apt/apt.cc:342
+#: src/generic/apt/apt.cc:378
 msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
@@ -2322,145 +2330,145 @@ msgstr ""
 "\n"
 "Napló kész.\n"
 
-#: src/generic/apt/matchers.cc:743
+#: src/generic/apt/matchers.cc:776
 msgid "Automatically Installed"
 msgstr "Automatikusan telepítve"
 
-#: src/generic/apt/matchers.cc:769 src/generic/apt/matchers.cc:970
+#: src/generic/apt/matchers.cc:802 src/generic/apt/matchers.cc:1003
 msgid "Broken"
 msgstr "Törött"
 
-#: src/generic/apt/matchers.cc:968
+#: src/generic/apt/matchers.cc:1001
 msgid "Unchanged"
 msgstr "Változatlan"
 
-#: src/generic/apt/matchers.cc:972
+#: src/generic/apt/matchers.cc:1005
 msgid "Remove [unused]"
 msgstr "Eltávolít [használaton kívüli]"
 
-#: src/generic/apt/matchers.cc:974
+#: src/generic/apt/matchers.cc:1007
 msgid "Hold [auto]"
 msgstr "Visszafog [automatikus]"
 
-#: src/generic/apt/matchers.cc:976
+#: src/generic/apt/matchers.cc:1009
 msgid "Install [auto]"
 msgstr "Telepít [automatikus]"
 
-#: src/generic/apt/matchers.cc:978
+#: src/generic/apt/matchers.cc:1011
 msgid "Remove [auto]"
 msgstr "Eltávolítás [automatikus]"
 
-#: src/generic/apt/matchers.cc:980
+#: src/generic/apt/matchers.cc:1013
 msgid "Downgrade"
 msgstr "Visszafejleszt"
 
-#: src/generic/apt/matchers.cc:982
+#: src/generic/apt/matchers.cc:1015
 msgid "Hold"
 msgstr "Visszafog"
 
-#: src/generic/apt/matchers.cc:984
+#: src/generic/apt/matchers.cc:1017
 msgid "Reinstall"
 msgstr "Újratelepít"
 
-#: src/generic/apt/matchers.cc:986
+#: src/generic/apt/matchers.cc:1019
 msgid "Install"
 msgstr "Telepít"
 
-#: src/generic/apt/matchers.cc:988
+#: src/generic/apt/matchers.cc:1021
 msgid "Remove"
 msgstr "Eltávolít"
 
-#: src/generic/apt/matchers.cc:990
+#: src/generic/apt/matchers.cc:1023
 msgid "Upgrade"
 msgstr "Frissít"
 
-#: src/generic/apt/matchers.cc:1014
+#: src/generic/apt/matchers.cc:1047
 msgid "Keep"
 msgstr "Tart"
 
-#: src/generic/apt/matchers.cc:1044
+#: src/generic/apt/matchers.cc:1077
 msgid "Virtual"
 msgstr "Virtuális"
 
-#: src/generic/apt/matchers.cc:1069
+#: src/generic/apt/matchers.cc:1102
 msgid "Installed"
 msgstr "Telepített"
 
-#: src/generic/apt/matchers.cc:1095
+#: src/generic/apt/matchers.cc:1128
 msgid "Essential"
 msgstr "Lényeges"
 
-#: src/generic/apt/matchers.cc:1118
+#: src/generic/apt/matchers.cc:1151
 msgid "Config Files Remain"
 msgstr "Megmaradó beállítófájlok"
 
-#: src/generic/apt/matchers.cc:1533
+#: src/generic/apt/matchers.cc:1566
 msgid "Garbage"
 msgstr "Szemét"
 
-#: src/generic/apt/matchers.cc:1887
+#: src/generic/apt/matchers.cc:1920
 msgid "No reverse dependencies"
 msgstr "Nincsenek ettől függő csomagok"
 
-#: src/generic/apt/matchers.cc:1961
+#: src/generic/apt/matchers.cc:1994
 msgid "New Package"
 msgstr "Új csomag"
 
-#: src/generic/apt/matchers.cc:1984
+#: src/generic/apt/matchers.cc:2017
 msgid "Upgradable"
 msgstr "Frissíthető"
 
-#: src/generic/apt/matchers.cc:2007
+#: src/generic/apt/matchers.cc:2040
 #, fuzzy
 msgid "Obsolete"
 msgstr "Elavulttá teszi"
 
-#: src/generic/apt/matchers.cc:2133
+#: src/generic/apt/matchers.cc:2166
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "Befejezetlen karakterlánc %s után"
 
-#: src/generic/apt/matchers.cc:2193
+#: src/generic/apt/matchers.cc:2226
 msgid "Unmatched '('"
 msgstr "Bezáratlan '('"
 
-#: src/generic/apt/matchers.cc:2328 src/generic/apt/matchers.cc:2401
+#: src/generic/apt/matchers.cc:2361 src/generic/apt/matchers.cc:2434
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Ismeretlen függőségi típus: %s"
 
-#: src/generic/apt/matchers.cc:2334
+#: src/generic/apt/matchers.cc:2367
 msgid "Provides: cannot be broken"
 msgstr "Biztosítja: nem lehet törött"
 
-#: src/generic/apt/matchers.cc:2389
+#: src/generic/apt/matchers.cc:2422
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Ismeretlen művelettípus: %s"
 
-#: src/generic/apt/matchers.cc:2443
+#: src/generic/apt/matchers.cc:2476
 #, c-format
 msgid "Unknown priority %s"
 msgstr "Ismeretlen prioritás %s"
 
-#: src/generic/apt/matchers.cc:2464
+#: src/generic/apt/matchers.cc:2497
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Ismeretlen minta: %c"
 
-#: src/generic/apt/matchers.cc:2487
+#: src/generic/apt/matchers.cc:2520
 msgid "Can't search for \"\""
 msgstr "Nem lehet \"\"-re keresni"
 
-#: src/generic/apt/matchers.cc:2515
+#: src/generic/apt/matchers.cc:2548
 msgid "Unexpected empty expression"
 msgstr "Váratlan üres kifejezés"
 
-#: src/generic/apt/matchers.cc:2542
+#: src/generic/apt/matchers.cc:2575
 msgid "Badly formed expression"
 msgstr "Rosszul formázott kifejezés"
 
-#: src/generic/apt/matchers.cc:2577
+#: src/generic/apt/matchers.cc:2610
 msgid "Unexpected ')'"
 msgstr "Váratlan ')'"
 
@@ -2514,22 +2522,28 @@ msgstr "Hibás rekord (Package=%s vagy Group=%s), kihagyás"
 msgid "Multiple descriptions found for group %s, ignoring one"
 msgstr "Több leírás a(z) %s csoporthoz, az egyik figyelmen kívül hagyva"
 
-#: src/generic/apt/tags.cc:216 src/generic/apt/tags.cc:223
+#: src/generic/apt/tags.cc:218 src/generic/apt/tags.cc:225
 msgid "Building tag database"
 msgstr "Tag adatbázis építése"
 
-#: src/generic/apt/tags.cc:255
+#: src/generic/apt/tags.cc:257
 msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgstr ""
 "Nem sikerült betölteni a debtags szótárat, lehet, hogy nincs debtags "
 "telepítve?"
 
-#: src/generic/apt/tasks.cc:283
+#: src/generic/apt/tags.cc:348
+msgid ""
+"No debtags data available, perhaps you need to install debtags and run "
+"'debtags update'?"
+msgstr ""
+
+#: src/generic/apt/tasks.cc:279
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Nem sikerült megnyitni a /usr/share/tasksel/debian-tasks.desc fájlt"
 
-#: src/generic/apt/tasks.cc:290 src/generic/apt/tasks.cc:332
-#: src/generic/apt/tasks.cc:334
+#: src/generic/apt/tasks.cc:286 src/generic/apt/tasks.cc:328
+#: src/generic/apt/tasks.cc:330
 msgid "Reading task descriptions"
 msgstr "Metacsomag leírások beolvasása"
 
@@ -2585,12 +2599,12 @@ msgstr "Ismeretlen attribútumnév: \"%s\""
 
 #: src/load_config.cc:113
 #, fuzzy, c-format
-msgid "Invalid entry in cw::style definition group: \"%s\""
+msgid "Invalid entry in style definition group: \"%s\""
 msgstr "Ismeretlen bejegyzés a stílusleíró részben: \"%s\""
 
 #: src/load_config.cc:115
 #, fuzzy, c-format
-msgid "Invalid tagless entry in cw::style definition group: \"%s\""
+msgid "Invalid tagless entry in style definition group: \"%s\""
 msgstr "Érvénytelen tagnélküli bejegyzés a stílusleíró részben: \"%s\""
 
 #: src/load_config.cc:127
@@ -2599,7 +2613,7 @@ msgstr "Az alapszín csak háttérként használható."
 
 #: src/load_config.cc:144
 #, fuzzy, c-format
-msgid "Unknown cw::style attribute %s"
+msgid "Unknown style attribute %s"
 msgstr "Ismeretlen stílus attribútum %s"
 
 #: src/load_config.cc:167 src/load_config.cc:169
@@ -2634,12 +2648,12 @@ msgstr "Ismeretlen csoportosítási elv: \"%s\""
 msgid "Terminal policy \"%s\" should be the last policy in the list"
 msgstr "\"%s\" terminál szabály az utolsó kell legyen a listában"
 
-#: src/load_grouppolicy.cc:368
-#, c-format
-msgid "Bad section name '%s' (use 'none', 'topdir', or 'subdir')"
+#: src/load_grouppolicy.cc:372
+#, fuzzy, c-format
+msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
 msgstr "Rossz szakasznév: '%s' (a 'none', 'topdir' vagy 'subdir' használandó)"
 
-#: src/load_grouppolicy.cc:378
+#: src/load_grouppolicy.cc:382
 #, c-format
 msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
 msgstr ""
@@ -2647,80 +2661,80 @@ msgstr ""
 "'nopassthrough'-t)"
 
 # névcsoportosítás, szakaszcsoportosítás, ez még jobb - sas
-#: src/load_grouppolicy.cc:383
+#: src/load_grouppolicy.cc:387
 msgid "Too many arguments to by-section grouping policy"
 msgstr "Túl sok paraméter a szakaszcsoportosítási elvhez"
 
 # vagy pedig lehet később is csoportosítóelv - sas
-#: src/load_grouppolicy.cc:396
+#: src/load_grouppolicy.cc:400
 msgid "By-status grouping policies take no arguments"
 msgstr "Az állapot-alapú csoportosítóelvek nem várnak paramétert"
 
-#: src/load_grouppolicy.cc:413
+#: src/load_grouppolicy.cc:417
 msgid "Expected '(' after 'filter'"
 msgstr "A 'filter' után '(' kell"
 
-#: src/load_grouppolicy.cc:450
+#: src/load_grouppolicy.cc:454
 #, c-format
 msgid "Unable to parse pattern at '%s'"
 msgstr "Nem sikerült elemezni a mintát itt: '%s'"
 
-#: src/load_grouppolicy.cc:455
+#: src/load_grouppolicy.cc:459
 msgid "Exactly one filter must be provided as an argument to a filter policy"
 msgstr "Pontosan egy szűrőt kell paraméterként a szűrési elvekhez megadni"
 
-#: src/load_grouppolicy.cc:474
+#: src/load_grouppolicy.cc:478
 msgid "By-mode grouping policies take no arguments"
 msgstr "A mód-alapú csoportosítási elvek nem várnak paramétert"
 
-#: src/load_grouppolicy.cc:485
+#: src/load_grouppolicy.cc:489
 msgid "First-character grouping policies take no arguments"
 msgstr "Az első karakter-alapú csoportosítási elvek nem várnak paramétert"
 
-#: src/load_grouppolicy.cc:497
+#: src/load_grouppolicy.cc:501
 msgid "Version-generating grouping policies take no arguments"
 msgstr "A verziógenerálási csoportosítási elvek nem várnak paramétert"
 
-#: src/load_grouppolicy.cc:508
+#: src/load_grouppolicy.cc:512
 msgid "Dep-generating grouping policies take no arguments"
 msgstr "A függőséggenerálási csoportosítási elvek nem várnak paramétert"
 
-#: src/load_grouppolicy.cc:519
+#: src/load_grouppolicy.cc:523
 msgid "By-priority grouping policies take no arguments"
 msgstr "A prioritás-alapú csoportosítási elvek nem várnak paramétert"
 
-#: src/load_grouppolicy.cc:550
+#: src/load_grouppolicy.cc:554
 msgid "Task grouping policies take no arguments"
 msgstr "A metacsomag csoportosítási elvek nem várnak paramétert"
 
-#: src/load_grouppolicy.cc:563
+#: src/load_grouppolicy.cc:567
 msgid "Expected no more than one argument to a tag grouping policy"
 msgstr "A tag-alapú csoportosítási elvek legfeljebb 1 paramétert várnak"
 
-#: src/load_grouppolicy.cc:578
+#: src/load_grouppolicy.cc:582
 msgid "Expected '(' after 'pattern'"
 msgstr "A 'pattern' után '(' kell"
 
-#: src/load_grouppolicy.cc:586
+#: src/load_grouppolicy.cc:590
 msgid "Missing arguments to 'pattern'"
 msgstr "Hiányzó paraméterek a 'pattern'-höz"
 
-#: src/load_grouppolicy.cc:610
+#: src/load_grouppolicy.cc:614
 #, c-format
 msgid "Unable to parse pattern after \"%s\""
 msgstr "Nem sikerült elemezni a(z) \"%s\" utáni mintát"
 
-#: src/load_grouppolicy.cc:632
+#: src/load_grouppolicy.cc:636
 #, c-format
 msgid "Unexpectedly empty tree title after \"%s\""
 msgstr "Váratlan üres címfa a(z) \"%s\" után"
 
-#: src/load_grouppolicy.cc:651
+#: src/load_grouppolicy.cc:655
 #, fuzzy, c-format
 msgid "Expected ',' or ')' following '||', got '%s'"
 msgstr "'%c' helyett ',' vagy '(' kellene"
 
-#: src/load_grouppolicy.cc:663
+#: src/load_grouppolicy.cc:667
 msgid "Unmatched '(' in pattern grouping policy"
 msgstr "Bezáratlan '(' a minta csoportosítási elvben"
 
@@ -2828,17 +2842,27 @@ msgstr ""
 msgid "libsigc++ version: %s\n"
 msgstr "libsigc++ verzió: %s\n"
 
-#: src/main.cc:119
+#: src/main.cc:115
+#, c-format
+msgid "Ept support enabled.\n"
+msgstr ""
+
+#: src/main.cc:117
+#, c-format
+msgid "Ept support disabled.\n"
+msgstr ""
+
+#: src/main.cc:124
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "Használat: aptitude [-S fájlnév] [-u|-i]"
 
-#: src/main.cc:121
+#: src/main.cc:126
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "           aptitude [opciók] <művelet> ..."
 
-#: src/main.cc:123
+#: src/main.cc:128
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -2847,61 +2871,61 @@ msgstr ""
 "  Műveletek (ha egy sincs megadva, az aptitude interaktív módban indul):\n"
 "\n"
 
-#: src/main.cc:124
+#: src/main.cc:129
 #, c-format
 msgid " install      - Install/upgrade packages\n"
 msgstr " install      - Csomagok telepítése/frissítése\n"
 
-#: src/main.cc:125
+#: src/main.cc:130
 #, c-format
 msgid " remove       - Remove packages\n"
 msgstr " remove       - Csomagok eltávolítása\n"
 
-#: src/main.cc:126
+#: src/main.cc:131
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr ""
 " purge        - Csomagok eltávolítása a hozzájuk tartozó beállítófájlokkal "
 "együtt\n"
 
-#: src/main.cc:127
+#: src/main.cc:132
 #, c-format
 msgid " hold         - Place packages on hold\n"
 msgstr " hold         - Csomagok jelenlegi állapotban tartása\n"
 
-#: src/main.cc:128
+#: src/main.cc:133
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
 msgstr " unhold       - Visszafogás parancs törlése egy csomagra\n"
 
-#: src/main.cc:129
+#: src/main.cc:134
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
 msgstr " markauto     - Csomagok megjelölése automatikusan telepítettként\n"
 
-#: src/main.cc:130
+#: src/main.cc:135
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr " unmarkauto   - Csomagok megjelölése manuálisan telepítettként\n"
 
-#: src/main.cc:135
+#: src/main.cc:140
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
 "version.\n"
 msgstr " forbid-version - A megadott verzióra való frissítés tiltása\n"
 
-#: src/main.cc:136
+#: src/main.cc:141
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - Az új/frissíthető csomagok listájának letöltése\n"
 
-#: src/main.cc:137
+#: src/main.cc:142
 #, fuzzy, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr " upgrade      - Biztonságos frissítés elvégzése\n"
 
-#: src/main.cc:138
+#: src/main.cc:143
 #, fuzzy, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
@@ -2910,42 +2934,42 @@ msgstr ""
 " dist-upgrade - Frissítés elvégzése, esetleg csomagok eltávolításával és "
 "törlésével együtt\n"
 
-#: src/main.cc:139
+#: src/main.cc:144
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr " forget-new   - Elfelejti, hogy mely csomagok  \"újak\"\n"
 
-#: src/main.cc:140
+#: src/main.cc:145
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr " search       - Csomag keresése név és/vagy kifejezés alapján\n"
 
-#: src/main.cc:141
+#: src/main.cc:146
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr " show         - Részletes információ megjelenítése a csomagokról\n"
 
-#: src/main.cc:142
+#: src/main.cc:147
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr " clean        - A letöltött csomagfájlok törlése\n"
 
-#: src/main.cc:143
+#: src/main.cc:148
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr " autoclean    - A régi letöltött csomagfájlok törlése\n"
 
-#: src/main.cc:144
+#: src/main.cc:149
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr " changelog    - Csomag változásnaplójának megjelenítése\n"
 
-#: src/main.cc:145
+#: src/main.cc:150
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr " download     - Csomag .deb fájljának letöltése\n"
 
-#: src/main.cc:146
+#: src/main.cc:151
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -2954,35 +2978,35 @@ msgstr ""
 " reinstall    - Egy már telepített csomag letöltése és (lehetőség szerint) "
 "újratelepítése\n"
 
-#: src/main.cc:148
+#: src/main.cc:153
 #, c-format
 msgid "  Options:\n"
 msgstr "  Opciók:\n"
 
-#: src/main.cc:149
+#: src/main.cc:154
 #, c-format
 msgid " -h             This help text\n"
 msgstr " -h             Ez a súgó\n"
 
-#: src/main.cc:150
+#: src/main.cc:155
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr ""
 " -s             Műveletek szimulálása a tényleges végrehajtásuk nélkül\n"
 
-#: src/main.cc:151
+#: src/main.cc:156
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
 " -d             Csak csomagok letöltése telepítés vagy eltávolítás nélkül\n"
 
-#: src/main.cc:152
+#: src/main.cc:157
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr " -P             Mindig kér megerősítést vagy művelet megadását\n"
 
-#: src/main.cc:153
+#: src/main.cc:158
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
@@ -2990,7 +3014,7 @@ msgstr ""
 " -y             Felteszi, hogy az egyszerű igen/nem kérdésekre 'igen' a "
 "válasz\n"
 
-#: src/main.cc:154
+#: src/main.cc:159
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
@@ -2999,7 +3023,7 @@ msgstr ""
 " -F formátum      Formátum megadása a keresési eredmények megjelenítéséhez; "
 "lásd a kézikönyvet\n"
 
-#: src/main.cc:155
+#: src/main.cc:160
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
@@ -3007,25 +3031,25 @@ msgstr ""
 " -O rendezés       Rendezési sorrend megadása a keresési eredményekhez; lásd "
 "a kézikönyvet\n"
 
-#: src/main.cc:156
+#: src/main.cc:161
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr ""
 " -w szélesség       Szélesség megadása a keresési eredmények formázásához\n"
 
-#: src/main.cc:157
+#: src/main.cc:162
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr ""
 " -f             A törött csomagok erőszakkal való javításának megkisérlése\n"
 
-#: src/main.cc:158
+#: src/main.cc:163
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             A telepítendő csomagok verziójának megjelenítése\n"
 
-#: src/main.cc:159
+#: src/main.cc:164
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
@@ -3033,14 +3057,14 @@ msgstr ""
 " -D             Az automatikusan változtatott csomagok függőségeinek "
 "megjelenítése\n"
 
-#: src/main.cc:160
+#: src/main.cc:165
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr ""
 " -Z             Minden telepített csomag méretbeli változásának "
 "megjelenítése\n"
 
-#: src/main.cc:161
+#: src/main.cc:166
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
@@ -3048,14 +3072,14 @@ msgstr ""
 " -v             Plusz információ megjelenítése (többszörösen is "
 "alkalmazható)\n"
 
-#: src/main.cc:162
+#: src/main.cc:167
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
 msgstr ""
 " -t [kiadás]   A kiadás beállítása, amiből a csomagokat telepíteni kell\n"
 
-#: src/main.cc:163
+#: src/main.cc:168
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
@@ -3063,13 +3087,13 @@ msgid ""
 msgstr ""
 " -q             Parancssori módban a folyamatos állapotjelzés tiltása\n"
 
-#: src/main.cc:164
+#: src/main.cc:169
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr ""
 " -o kulcs=érték     A 'kulcs' nevű beállítási opció 'érték'-re állítása\n"
 
-#: src/main.cc:165
+#: src/main.cc:170
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -3078,71 +3102,71 @@ msgstr ""
 " --with(out)-recommends\tAz ajánlások erős függőségként való kezelésének\n"
 "                be/kikapcsolása\n"
 
-#: src/main.cc:166
+#: src/main.cc:171
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr ""
 " -S fnév: Az aptitude kiterjesztett állapotinformációjának beolvasása az "
 "fnévből\n"
 
-#: src/main.cc:167
+#: src/main.cc:172
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             Az új csomagok listájának letöltése induláskor\n"
 
-#: src/main.cc:168
+#: src/main.cc:173
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             A telepítések végrehajtása induláskor.\n"
 
-#: src/main.cc:170
+#: src/main.cc:175
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  Az aptitude-nak nincs Szuper Tehén Ereje\n"
 
-#: src/main.cc:314
+#: src/main.cc:319
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "-q= után egy számot kell megadni\n"
 
-#: src/main.cc:323
+#: src/main.cc:328
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "-q= után számot kell megadni, nem ezt: %s\n"
 
-#: src/main.cc:347
+#: src/main.cc:352
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s"
 msgstr "A -o kulcs=érték formájú argumentumot vár %s helyett"
 
-#: src/main.cc:398 src/main.cc:407
+#: src/main.cc:403 src/main.cc:412
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "FURCSASÁG: ismeretlen műveletkód\n"
 
-#: src/main.cc:424
+#: src/main.cc:429
 msgid "Only one of -u and -i may be specified\n"
 msgstr "A -u és a -i közül egyszerre csak az egyiket lehet megadni\n"
 
-#: src/main.cc:432
+#: src/main.cc:437
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr "A -u és a -i nem adható meg parancssori módban (pl. 'install' mellett)"
 
-#: src/main.cc:453
+#: src/main.cc:458
 msgid "-u and -i may not be specified with a command"
 msgstr "A -u és a -i nem adható meg parancs mellett"
 
-#: src/main.cc:540
+#: src/main.cc:545
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Ismeretlen parancs: \"%s\"\n"
 
-#: src/main.cc:552 src/main.cc:601
+#: src/main.cc:557 src/main.cc:606
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Lekezeletlen kivétel: %s\n"
 
-#: src/main.cc:556 src/main.cc:605
+#: src/main.cc:561 src/main.cc:610
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -3424,7 +3448,7 @@ msgstr "<nincs megadva>"
 msgid "<none>"
 msgstr "<nincs>"
 
-#: src/pkg_columnizer.cc:237 src/pkg_grouppolicy.cc:235
+#: src/pkg_columnizer.cc:237 src/pkg_grouppolicy.cc:229
 msgid "virtual"
 msgstr "virtuális"
 
@@ -3495,7 +3519,7 @@ msgid "none"
 msgstr "semelyik"
 
 #: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
-#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:229
+#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:234
 #: src/pkg_info_screen.cc:127 src/pkg_info_screen.cc:128
 #: src/pkg_ver_item.cc:347 src/pkg_ver_item.cc:381
 msgid "Unknown"
@@ -3557,34 +3581,22 @@ msgstr "HN túl hosszú"
 
 #: src/pkg_columnizer.cc:673 src/pkg_columnizer.cc:682
 #, fuzzy, c-format
-msgid "Unable to cw::util::transcode package display format after \"%ls\""
+msgid "Unable to transcode package display format after \"%ls\""
 msgstr "Nem tudom átkódolni a csomag megjelenítési formátumot ez után: \"%ls\""
 
 #: src/pkg_columnizer.cc:689
 msgid "Internal error: Default column string is unparsable"
 msgstr "Belső hiba: az alap oszlopszöveg nem elemezhető"
 
-#: src/pkg_grouppolicy.cc:223
-msgid "Tasks/Tasks"
-msgstr "Metacsomagok/Metacsomagok"
-
-#: src/pkg_grouppolicy.cc:223
+#: src/pkg_grouppolicy.cc:224
 msgid "Tasks"
 msgstr "Metacsomagok"
 
-#: src/pkg_grouppolicy.cc:229
-msgid "Unknown/Unknown"
-msgstr "Ismeretlen/Ismeretlen"
-
-#: src/pkg_grouppolicy.cc:235
-msgid "virtual/virtual"
-msgstr "virtuális/virtuális"
-
-#: src/pkg_grouppolicy.cc:246
+#: src/pkg_grouppolicy.cc:249
 msgid "main"
 msgstr "fő"
 
-#: src/pkg_grouppolicy.cc:331
+#: src/pkg_grouppolicy.cc:388
 msgid ""
 "Security Updates\n"
 " Security updates for these packages are available from security.debian.org."
@@ -3592,7 +3604,7 @@ msgstr ""
 "Biztonsági frissítések\n"
 " E csomagok Biztonsági frissítéseinek elérhetősége: security.debian.org"
 
-#: src/pkg_grouppolicy.cc:332
+#: src/pkg_grouppolicy.cc:389
 msgid ""
 "Upgradable Packages\n"
 " A newer version of these packages is available."
@@ -3600,7 +3612,7 @@ msgstr ""
 "Frissíthető csomagok\n"
 " E csomagok újabb verziója is elérhető."
 
-#: src/pkg_grouppolicy.cc:333
+#: src/pkg_grouppolicy.cc:390
 msgid ""
 "New Packages\n"
 " These packages have been added to Debian since the last time you cleared "
@@ -3612,7 +3624,7 @@ msgstr ""
 "csomagok listáját (válaszd az \"Új csomagok felejtése\") pontot a Műveletek "
 "menüből e lista kiürítéséhez)."
 
-#: src/pkg_grouppolicy.cc:334
+#: src/pkg_grouppolicy.cc:391
 msgid ""
 "Installed Packages\n"
 " These packages are currently installed on your computer."
@@ -3620,7 +3632,7 @@ msgstr ""
 "Telepített csomagok\n"
 " Ezek a csomagok vannak most telepítve a gépeden."
 
-#: src/pkg_grouppolicy.cc:335
+#: src/pkg_grouppolicy.cc:392
 msgid ""
 "Not Installed Packages\n"
 " These packages are not installed on your computer."
@@ -3628,7 +3640,7 @@ msgstr ""
 "Nem telepített csomagok\n"
 " Ezek a csomagok nincsenek telepítve a gépeden."
 
-#: src/pkg_grouppolicy.cc:336
+#: src/pkg_grouppolicy.cc:393
 msgid ""
 "Obsolete and Locally Created Packages\n"
 " These packages are currently installed on your computer, but they are not "
@@ -3641,7 +3653,7 @@ msgstr ""
 "kerültek, vagy máshonnan beszerzett, például saját verziójú csomagot "
 "telepítettél fel."
 
-#: src/pkg_grouppolicy.cc:337
+#: src/pkg_grouppolicy.cc:394
 msgid ""
 "Virtual Packages\n"
 " These packages do not exist; they are names other packages use to require "
@@ -3651,7 +3663,7 @@ msgstr ""
 " E csomagok nem léteznek; más csomagokat neveznek meg általános feladatok "
 "ellátásához."
 
-#: src/pkg_grouppolicy.cc:535
+#: src/pkg_grouppolicy.cc:592
 msgid ""
 "Packages with unsatisfied dependencies\n"
 " The dependency requirements of these packages will be unmet after the "
@@ -3667,7 +3679,7 @@ msgstr ""
 " Ennek a listának a jelenléte arra utal, hogy valami sérült vagy a helyi "
 "rendszeren vagy a Debian archívumban."
 
-#: src/pkg_grouppolicy.cc:536
+#: src/pkg_grouppolicy.cc:593
 msgid ""
 "Packages being removed because they are no longer used\n"
 " These packages are being deleted because they were automatically installed "
@@ -3679,7 +3691,7 @@ msgstr ""
 "automatikusan lettek telepítve, és a tervezett műveletek után nem marad "
 "olyan csomag, ami 'erősen' függ tőle.\n"
 
-#: src/pkg_grouppolicy.cc:537
+#: src/pkg_grouppolicy.cc:594
 msgid ""
 "Packages being automatically held in their current state\n"
 " These packages could be upgraded, but they have been kept in their current "
@@ -3689,7 +3701,7 @@ msgstr ""
 " Ezeket a csomagokat lehetne frissíteni, de meg kell őrizni a jelenlegi "
 "állapotukat a függőségek teljesítése miatt."
 
-#: src/pkg_grouppolicy.cc:538
+#: src/pkg_grouppolicy.cc:595
 msgid ""
 "Packages being automatically installed to satisfy dependencies\n"
 " These packages are being installed because they are required by another "
@@ -3699,7 +3711,7 @@ msgstr ""
 " Ezek a csomagok más telepítésre választott csomagok igényei miatt lesznek "
 "telepítve."
 
-#: src/pkg_grouppolicy.cc:539
+#: src/pkg_grouppolicy.cc:596
 msgid ""
 "Packages being deleted due to unsatisfied dependencies\n"
 " These packages are being deleted because one or more of their dependencies "
@@ -3709,7 +3721,7 @@ msgstr ""
 " Ezek a csomagok immár elérhetetlen függőségeik vagy egy más csomaggal való "
 "ütközésük miatt lesznek törölve."
 
-#: src/pkg_grouppolicy.cc:540
+#: src/pkg_grouppolicy.cc:597
 msgid ""
 "Packages to be downgraded\n"
 " An older version of these packages than is currently installed will be "
@@ -3719,7 +3731,7 @@ msgstr ""
 " Ezeknek a csomagoknak a jelenlegi verziójánál korábbi verziója lesz "
 "telepítve."
 
-#: src/pkg_grouppolicy.cc:541
+#: src/pkg_grouppolicy.cc:598
 msgid ""
 "Packages being held back\n"
 " These packages could be upgraded, but you have asked for them to be held at "
@@ -3729,7 +3741,7 @@ msgstr ""
 " Ezek a csomagok frissíthetők, de azt kérted, hogy egyelőre tartsák meg "
 "jelenlegi verziójukat."
 
-#: src/pkg_grouppolicy.cc:542
+#: src/pkg_grouppolicy.cc:599
 msgid ""
 "Packages to be reinstalled\n"
 " These packages will be reinstalled."
@@ -3737,7 +3749,7 @@ msgstr ""
 "Újratelepítendő csomagok\n"
 " Ezek a csomagok újratelepülnek."
 
-#: src/pkg_grouppolicy.cc:543
+#: src/pkg_grouppolicy.cc:600
 msgid ""
 "Packages to be installed\n"
 " These packages have been manually selected for installation on your "
@@ -3746,7 +3758,7 @@ msgstr ""
 "Telepítendő csomagok\n"
 " Ezeket a csomagokat kézzel választottad ki telepítésre."
 
-#: src/pkg_grouppolicy.cc:544
+#: src/pkg_grouppolicy.cc:601
 msgid ""
 "Packages to be removed\n"
 " These packages have been manually selected for removal."
@@ -3754,7 +3766,7 @@ msgstr ""
 "Eltávolítandó csomagok\n"
 " Ezeket a csomagokat kézzel választottad ki törlésre."
 
-#: src/pkg_grouppolicy.cc:545
+#: src/pkg_grouppolicy.cc:602
 msgid ""
 "Packages to be upgraded\n"
 " These packages will be upgraded to a newer version."
@@ -3762,7 +3774,7 @@ msgstr ""
 "Frissítendő csomagok\n"
 " Ezek a csomagok újabb verziójukra lesznek frissítve."
 
-#: src/pkg_grouppolicy.cc:546
+#: src/pkg_grouppolicy.cc:603
 #, fuzzy
 msgid ""
 "Packages that are partially installed\n"
@@ -3773,16 +3785,16 @@ msgstr ""
 " Ezek a csomagok más telepítésre választott csomagok igényei miatt lesznek "
 "telepítve."
 
-#: src/pkg_grouppolicy.cc:661
+#: src/pkg_grouppolicy.cc:718
 msgid "unknown"
 msgstr "ismeretlen"
 
-#: src/pkg_grouppolicy.cc:672
+#: src/pkg_grouppolicy.cc:729
 #, c-format
 msgid "Priority %s"
 msgstr "%s prioritás"
 
-#: src/pkg_grouppolicy.cc:1363
+#: src/pkg_grouppolicy.cc:1472
 msgid "MISSING TAG"
 msgstr "HIÁNYZÓ TAG"
 
@@ -5187,6 +5199,15 @@ msgstr "Munkanapló letöltése"
 #: src/view_changelog.cc:243
 msgid "Download Changelog"
 msgstr "Munkanapló letöltése"
+
+#~ msgid "Tasks/Tasks"
+#~ msgstr "Metacsomagok/Metacsomagok"
+
+#~ msgid "Unknown/Unknown"
+#~ msgstr "Ismeretlen/Ismeretlen"
+
+#~ msgid "virtual/virtual"
+#~ msgstr "virtuális/virtuális"
 
 #, fuzzy
 #~ msgid "You must resolve these dependencies before continuing."
