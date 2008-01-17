@@ -1,6 +1,6 @@
 // apt_config_treeitems.cc      -*-c++-*-
 //
-// Copyright (C) 2007 Daniel Burrows
+// Copyright (C) 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -70,7 +70,7 @@ namespace aptitude
       {
 	const std::string  item;
 	const std::wstring description;
-	const std::wstring long_description;
+	const std::string  long_description;
 	const bool         dflt;
 
 	void value_changed()
@@ -81,7 +81,7 @@ namespace aptitude
       public:
 	boolean_config_treeitem(const std::string &_item,
 				const std::wstring &_description,
-				const std::wstring &_long_description,
+				const std::string &_long_description,
 				bool _dflt)
 	  : item(_item),
 	    description(_description),
@@ -103,7 +103,7 @@ namespace aptitude
 					dflt  ? _("True") : _("False"),
 					value ? _("True") : _("False")));
 	  fragments.push_back(cw::newline_fragment());
-	  fragments.push_back(wrapbox(cw::text_fragment(long_description.c_str())));
+	  fragments.push_back(wrapbox(cw::fragf(long_description.c_str())));
 
 	  return cw::sequence_fragment(fragments);
 	}
@@ -157,7 +157,7 @@ namespace aptitude
       };
 
       cw::treeitem *make_boolean_item(const std::wstring &description,
-				     const std::wstring &long_description,
+				     const std::string  &long_description,
 				     const std::string  &item,
 				     const bool          dflt)
       {
@@ -176,7 +176,7 @@ namespace aptitude
 	  const std::string  item;
 	  const std::wstring witem;
 	  const std::wstring description;
-	  const std::wstring long_description;
+	  const std::string  long_description;
 	  const std::string  dflt;
 
 	  void value_changed()
@@ -188,7 +188,7 @@ namespace aptitude
 	public:
 	  string_config_treeitem(const std::string  &_item,
 				 const std::wstring &_description,
-				 const std::wstring &_long_description,
+				 const std::string  &_long_description,
 				 const std::string  &_dflt)
 	    : item(_item),
 	      witem(cw::util::transcode(_item)),
@@ -215,7 +215,7 @@ namespace aptitude
 
 
 	    fragments.push_back(cw::newline_fragment());
-	    fragments.push_back(wrapbox(cw::text_fragment(long_description)));
+	    fragments.push_back(wrapbox(cw::fragf(long_description.c_str())));
 
 	    return cw::sequence_fragment(fragments);
 	  }
@@ -324,7 +324,7 @@ namespace aptitude
       }
 
       cw::treeitem *make_string_item(const std::wstring &description,
-				    const std::wstring &long_description,
+				    const std::string  &long_description,
 				    const std::string  &item,
 				    const std::string  &dflt)
       {
@@ -340,7 +340,7 @@ namespace aptitude
       {
 	const std::string  item;
 	const std::wstring description;
-	const std::wstring long_description;
+	const std::string  long_description;
 	const std::map<std::string, radio_choice> choices;
 	const std::string  my_choice;
 	const std::string  dflt;
@@ -353,7 +353,7 @@ namespace aptitude
       public:
 	radio_config_treeitem(const std::string &_item,
 			      const std::wstring &_description,
-			      const std::wstring &_long_description,
+			      const std::string &_long_description,
 			      const std::map<std::string, radio_choice> &_choices,
 			      const std::string &_my_choice,
 			      const std::string &_dflt)
@@ -402,7 +402,7 @@ namespace aptitude
 	  fragments.push_back(wrapbox(cw::text_fragment(my_choice_found->second.get_long_description())));
 
 	  fragments.push_back(cw::newline_fragment());
-	  fragments.push_back(wrapbox(cw::text_fragment(description)));
+	  fragments.push_back(wrapbox(cw::fragf(long_description.c_str())));
 
 	  return cw::sequence_fragment(fragments);
 	}
@@ -459,7 +459,7 @@ namespace aptitude
       };
 
       cw::treeitem *make_radio_item(const std::wstring &description,
-				    const std::wstring &long_description,
+				    const std::string  &long_description,
 				    const std::string  &item,
 				    const std::vector<radio_choice> &choices,
 				    const std::string  &dflt)

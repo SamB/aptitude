@@ -1,6 +1,6 @@
 // apt_config_treeitems.h          -*-c++-*-
 //
-//   Copyright (C) 2007 Daniel Burrows
+//   Copyright (C) 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -60,7 +60,8 @@ namespace aptitude
       /** \brief Generate a configuration item for the given Boolean option.
        *
        *  \param description       A textual description of the configuration item.
-       *  \param long_description  A longer description of the configuration item.
+       *  \param long_description  A longer description of the configuration item,
+       *                           as a fragf-style pattern with no arguments.
        *  \param item    The configuration item that is to be managed.
        *  \param dflt    The default value if the option is not set.
        *
@@ -72,14 +73,15 @@ namespace aptitude
        *  or off.
        */
       cwidget::widgets::treeitem *make_boolean_item(const std::wstring &description,
-				     const std::wstring &long_description,
+				     const std::string  &long_description,
 				     const std::string  &item,
 				     const bool          dflt);
 
       /** \brief Generate a tree item for the given string option.
        *
        *  \param description       A textual description of the configuration item.
-       *  \param long_description  A longer description of the configuration item.
+       *  \param long_description  A longer description of the configuration item,
+       *                           as a fragf-style pattern with no arguments.
        *  \param item    The configuration item that is to be managed.
        *  \param dflt    The default value if the option is not set.
        *
@@ -91,7 +93,7 @@ namespace aptitude
        *  prompt to enter a new value for the option.
        */
       cwidget::widgets::treeitem *make_string_item(const std::wstring &description,
-				    const std::wstring &long_description,
+				    const std::string  &long_description,
 				    const std::string  &item,
 				    const std::string  &dflt);
 
@@ -135,7 +137,8 @@ namespace aptitude
       /** \brief Generate a tree item for the given multi-choice option.
        *
        *  \param description       A textual description of the configuration item.
-       *  \param long_description  A longer description of the configuration item.
+       *  \param long_description  A longer description of the configuration item,
+       *                           as a fragf-style pattern with no arguments.
        *  \param item    The configuration item that is to be managed.
        *  \param choices The permitted choices for the radio item.
        *  \param dflt    The default value if the option is not set.
@@ -148,7 +151,7 @@ namespace aptitude
        *  prompt to choose a new value for the option.
        */
       cwidget::widgets::treeitem *make_radio_item(const std::wstring &description,
-				   const std::wstring &long_description,
+				   const std::string  &long_description,
 				   const std::string  &item,
 				   const std::vector<radio_choice> &choices,
 				   const std::string  &dflt);

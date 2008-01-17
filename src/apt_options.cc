@@ -417,17 +417,17 @@ option_item dependency_options[]={
 	    {
 	    case option_item::OPTION_BOOL:
 	      return make_boolean_item(W_(option.description),
-				       W_(option.long_description),
+				       option.long_description,
 				       option.option_name,
 				       option.b_default);
 	    case option_item::OPTION_STRING:
 	      return make_string_item(W_(option.description),
-				      W_(option.long_description),
+				      option.long_description,
 				      option.option_name,
 				      option.s_default);
 	    case option_item::OPTION_RADIO:
 	      return make_radio_item(W_(option.description),
-				     W_(option.long_description),
+				     option.long_description,
 				     option.option_name,
 				     option.choices,
 				     option.s_default);
