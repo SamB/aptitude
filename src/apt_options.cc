@@ -345,12 +345,12 @@ option_item dependency_options[]={
 	      N_("If this option is enabled, and you perform an "
 		 "install run while some packages are broken, "
 		 "aptitude will automatically apply the current "
-		 "suggestion of the problem resolver.  Otherwise,"
+		 "suggestion of the problem resolver.  Otherwise, "
 		 "aptitude will prompt you for a solution to the "
 		 "broken dependencies."),
 	      PACKAGE "::Auto-Fix-Broken", true),
   option_item(N_("Install recommended packages automatically"),
-	      N_("If this option is enabled  and \"automatically "
+	      N_("If this option is enabled and \"automatically "
 		 "resolve dependencies\" is also enabled, aptitude "
 		 "will attempt to install the recommendations of "
 		 "newly installed packages in addition to their "

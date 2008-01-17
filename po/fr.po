@@ -472,7 +472,7 @@ msgstr "Corriger les paquets cassés avant installation ou suppression"
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
-"suggestion of the problem resolver.  Otherwise,aptitude will prompt you for "
+"suggestion of the problem resolver.  Otherwise, aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
 "Si cette option est activée et que vous effectuez une phase d'installation "
@@ -487,8 +487,8 @@ msgstr "Installer automatiquement les paquets recommandés"
 #: src/apt_options.cc:353
 #, fuzzy
 msgid ""
-"If this option is enabled  and \"automatically resolve dependencies\" is "
-"also enabled, aptitude will attempt to install the recommendations of newly "
+"If this option is enabled and \"automatically resolve dependencies\" is also "
+"enabled, aptitude will attempt to install the recommendations of newly "
 "installed packages in addition to their outright dependencies.  Suggestions "
 "will not be automatically installed.\n"
 "If this option is enabled and \"Remove unused packages automatically\" is "
@@ -1320,7 +1320,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:774 src/cmdline/cmdline_resolver.cc:212
 msgid "'&m' to mark packages as manually installed"
-msgstr "« &m » pour marquer des paquets comme ayant été manuellement installés"
+msgstr "« &m » pour marquer des paquets comme ayant été installés manuellement"
 
 #: src/cmdline/cmdline_prompt.cc:778
 msgid "Commands:"
@@ -2057,7 +2057,7 @@ msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> MISE EN ATTENTE\n"
 
 #: src/cmdline/cmdline_why.cc:673
-msgid "    ++   --> skipping, version check failed.\n"
+msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> sauté, échec du contrôle de la version.\n"
 
 #: src/cmdline/cmdline_why.cc:691
@@ -2108,7 +2108,7 @@ msgstr ""
 #: src/cmdline/cmdline_why.cc:1270
 #, c-format
 msgid "The package \"%s\" is manually installed.\n"
-msgstr "Le paquet « %s » est manuellement installé.\n"
+msgstr "Le paquet « %s » est installé manuellement.\n"
 
 #: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
 #, c-format
@@ -3083,7 +3083,7 @@ msgstr ""
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr ""
-" unmarkauto   - Marquer les paquets comme ayant été manuellement installés\n"
+" unmarkauto   - Marquer les paquets comme ayant été installés manuellement\n"
 
 #: src/main.cc:140
 #, c-format
@@ -4623,7 +4623,7 @@ msgstr ""
 msgid "License"
 msgstr "Licence"
 
-#: src/ui.cc:1019
+#: src/ui.cc:1019 src/ui.cc:2351
 msgid "View the terms under which you may copy and distribute aptitude"
 msgstr ""
 "Afficher les termes selon lesquels vous pouvez copier et distribuer aptitude"
@@ -5063,7 +5063,7 @@ msgid ""
 "Mark the selected package as having been manually installed; it will not be "
 "removed unless you manually remove it"
 msgstr ""
-"Marquer le paquet choisi comme ayant été manuellement installé ; il ne sera "
+"Marquer le paquet choisi comme ayant été installé manuellement  ; il ne sera "
 "pas supprimé tant que vous ne le ferez pas vous-même"
 
 #: src/ui.cc:2161
@@ -5367,11 +5367,6 @@ msgstr "^Nouvelles"
 #: src/ui.cc:2350
 msgid "^License"
 msgstr "^Licence"
-
-#: src/ui.cc:2351
-msgid "View the terms under which you may copy and distribute aptiutde"
-msgstr ""
-"Afficher les termes selon lesquels vous pouvez copier et distribuer aptitude"
 
 #: src/ui.cc:2491
 msgid "Actions"
