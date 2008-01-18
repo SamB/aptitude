@@ -6,11 +6,11 @@
 # Christian Perrier <bubulle@debian.org>, 2004, 2006, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-15 06:06-0800\n"
-"PO-Revision-Date: 2008-01-06 08:19+0100\n"
-"Last-Translator: Jean-Luc Coulon (f5ibh) <jean-luc.coulon@wanadoo.fr>\n"
+"PO-Revision-Date: 2008-01-18 20:45+0100\n"
+"Last-Translator: Christian Perrier <bubulle@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -469,11 +469,10 @@ msgid "Automatically fix broken packages before installing or removing"
 msgstr "Corriger les paquets cassés avant installation ou suppression"
 
 #: src/apt_options.cc:345
-#, fuzzy
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
-"suggestion of the problem resolver.  Otherwise,aptitude will prompt you for "
+"suggestion of the problem resolver.  Otherwise, aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
 "Si cette option est activée et que vous effectuez une phase d'installation "
@@ -486,10 +485,9 @@ msgid "Install recommended packages automatically"
 msgstr "Installer automatiquement les paquets recommandés"
 
 #: src/apt_options.cc:353
-#, fuzzy
 msgid ""
-"If this option is enabled  and \"automatically resolve dependencies\" is "
-"also enabled, aptitude will attempt to install the recommendations of newly "
+"If this option is enabled and \"automatically resolve dependencies\" is also "
+"enabled, aptitude will attempt to install the recommendations of newly "
 "installed packages in addition to their outright dependencies.  Suggestions "
 "will not be automatically installed.\n"
 "If this option is enabled and \"Remove unused packages automatically\" is "
@@ -2058,9 +2056,8 @@ msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> MISE EN ATTENTE\n"
 
 #: src/cmdline/cmdline_why.cc:673
-#, fuzzy
-msgid "    ++   --> skipping, version check failed.\n"
-msgstr "    ++   --> sauté, échec du contrôle de la version.\n"
+msgid "    ++   --> skipping, version check failed\n"
+msgstr "    ++   --> sauté, échec du contrôle de la version\n"
 
 #: src/cmdline/cmdline_why.cc:691
 #, c-format
@@ -2312,6 +2309,9 @@ msgid ""
 "option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
 "Recommends' instead or removing this setting."
 msgstr ""
+"Le fichier de configuration du système (%s) comporte le réglage d'une option "
+"obsolète « Aptitude::Recommends-Important ». Vous devriez la remplacer par "
+"« APT::Install-Recommends » ou la supprimer."
 
 #: src/generic/apt/apt.cc:241
 #, c-format
@@ -2711,6 +2711,8 @@ msgid ""
 "No debtags data available, perhaps you need to install debtags and run "
 "'debtags update'?"
 msgstr ""
+"Aucune donnée « debtags » disponible. Vous devriez probablement installer le "
+"paquet debtags et utiliser la commande « debtags update »."
 
 #: src/generic/apt/tasks.cc:279
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -2773,23 +2775,23 @@ msgid "Unrecognized attribute name \"%s\""
 msgstr "Nom d'attribut inconnu « %s »"
 
 #: src/load_config.cc:113
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid entry in style definition group: \"%s\""
-msgstr "Entrée non valable dans le groupe de définition cw::style : « %s »"
+msgstr "Entrée non valable dans le groupe de définition de style : « %s »"
 
 #: src/load_config.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid tagless entry in style definition group: \"%s\""
-msgstr "Entrée sans étiquette dans le groupe de définition cw::style : « %s »"
+msgstr "Entrée sans étiquette dans le groupe de définition de style : « %s »"
 
 #: src/load_config.cc:127
 msgid "The default color may only be used as a background."
 msgstr "La couleur par défaut ne peut être utilisée que pour l'arrière-plan."
 
 #: src/load_config.cc:144
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown style attribute %s"
-msgstr "Attribut de cw::style inconnu : %s"
+msgstr "Attribut de style inconnu : %s"
 
 #: src/load_config.cc:167 src/load_config.cc:169
 #, c-format
@@ -2822,10 +2824,11 @@ msgid "Terminal policy \"%s\" should be the last policy in the list"
 msgstr "La règle terminale %s devrait être la dernière règle de la liste"
 
 #: src/load_grouppolicy.cc:372
-#, fuzzy, c-format
+#, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
 msgstr ""
-"Mauvais nom de section « %s » (utilisez « none », « topdir » ou « subdir »)"
+"Mauvais nom de section « %s » (utilisez « none », « topdir », « subdir » ou "
+"« subdirs »)"
 
 #: src/load_grouppolicy.cc:382
 #, c-format
@@ -3022,12 +3025,12 @@ msgstr "Version de libsigc++ : %s\n"
 #: src/main.cc:115
 #, c-format
 msgid "Ept support enabled.\n"
-msgstr ""
+msgstr "Gestion d'Ept activée.\n"
 
 #: src/main.cc:117
 #, c-format
 msgid "Ept support disabled.\n"
-msgstr ""
+msgstr "Gestion d'Ept désactivée.\n"
 
 #: src/main.cc:124
 #, c-format
@@ -3783,11 +3786,10 @@ msgid "HN too long"
 msgstr "HN trop long"
 
 #: src/pkg_columnizer.cc:673 src/pkg_columnizer.cc:682
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr ""
-"Impossible de transcoder (cw::util::transcode) le format de l'affichage du "
-"paquet après « %ls »"
+"Impossible de transcoder le format de l'affichage du paquet après « %ls »"
 
 #: src/pkg_columnizer.cc:689
 msgid "Internal error: Default column string is unparsable"
@@ -4625,7 +4627,7 @@ msgstr ""
 msgid "License"
 msgstr "Licence"
 
-#: src/ui.cc:1019
+#: src/ui.cc:1019 src/ui.cc:2351
 msgid "View the terms under which you may copy and distribute aptitude"
 msgstr ""
 "Afficher les termes selon lesquels vous pouvez copier et distribuer aptitude"
@@ -5370,12 +5372,6 @@ msgstr "^Nouvelles"
 msgid "^License"
 msgstr "^Licence"
 
-#: src/ui.cc:2351
-#, fuzzy
-msgid "View the terms under which you may copy and distribute aptiutde"
-msgstr ""
-"Afficher les termes selon lesquels vous pouvez copier et distribuer aptitude"
-
 #: src/ui.cc:2491
 msgid "Actions"
 msgstr "Actions"
@@ -5426,12 +5422,3 @@ msgstr "Téléchargement du fichier « Changelog »"
 #: src/view_changelog.cc:243
 msgid "Download Changelog"
 msgstr "Téléchargement du fichier « Changelog »"
-
-#~ msgid "Tasks/Tasks"
-#~ msgstr "Tâches/Tâches"
-
-#~ msgid "Unknown/Unknown"
-#~ msgstr "Inconnu/Inconnu"
-
-#~ msgid "virtual/virtual"
-#~ msgstr "virtuel/virtuel"
