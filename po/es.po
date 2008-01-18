@@ -482,10 +482,11 @@ msgstr ""
 
 # (jfs) TYPO: No space between «Otherwise, aptitude»
 #: src/apt_options.cc:345
+#, fuzzy
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
-"suggestion of the problem resolver.  Otherwise, aptitude will prompt you for "
+"suggestion of the problem resolver.  Otherwise,aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
 "Aptitude aplicará de forma automática la sugerencia del programa de "
@@ -501,8 +502,8 @@ msgstr "Instalar los paquetes Recomendados de forma automática"
 #: src/apt_options.cc:353
 #, fuzzy
 msgid ""
-"If this option is enabled and \"automatically resolve dependencies\" is also "
-"enabled, aptitude will attempt to install the recommendations of newly "
+"If this option is enabled  and \"automatically resolve dependencies\" is "
+"also enabled, aptitude will attempt to install the recommendations of newly "
 "installed packages in addition to their outright dependencies.  Suggestions "
 "will not be automatically installed.\n"
 "If this option is enabled and \"Remove unused packages automatically\" is "
@@ -2064,7 +2065,8 @@ msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> SACANDO DE LA COLA\n"
 
 #: src/cmdline/cmdline_why.cc:673
-msgid "    ++   --> skipping, version check failed\n"
+#, fuzzy
+msgid "    ++   --> skipping, version check failed.\n"
 msgstr "    ++   --> omitiendo, falló la comprobación de versión.\n"
 
 #: src/cmdline/cmdline_why.cc:691
@@ -4597,7 +4599,7 @@ msgstr "Licencia"
 
 # #-#-#-#-#  - (aptitude 0.4.10)  #-#-#-#-#
 # (jfs) WARNING: TYPO «aptitude» 
-#: src/ui.cc:1019 src/ui.cc:2351
+#: src/ui.cc:1019
 #, fuzzy
 msgid "View the terms under which you may copy and distribute aptitude"
 msgstr ""
@@ -5345,6 +5347,17 @@ msgstr "^Noticias"
 #: src/ui.cc:2350
 msgid "^License"
 msgstr "^Licencia"
+
+# #-#-#-#-#  - (aptitude 0.4.10)  #-#-#-#-#
+# (jfs) WARNING: TYPO «aptitude» 
+#: src/ui.cc:2351
+#, fuzzy
+msgid "View the terms under which you may copy and distribute aptiutde"
+msgstr ""
+"#-#-#-#-#  - (aptitude 0.4.10)  #-#-#-#-#\n"
+"Consultar los términos bajo los que puede copiar y distribuir este programa\n"
+"#-#-#-#-#  - (aptitude 0.4.10)  #-#-#-#-#\n"
+"Consultar los términos bajo los que puede copiar y distribuir aptitude"
 
 #: src/ui.cc:2491
 msgid "Actions"
