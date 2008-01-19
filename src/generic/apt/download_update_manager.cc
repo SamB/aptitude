@@ -1,6 +1,6 @@
 // download_update_manager.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -134,6 +134,17 @@ download_update_manager::finish(pkgAcquire::RunResult res,
 
   bool need_autoclean =
     aptcfg->FindB(PACKAGE "::AutoClean-After-Update", false);
+
+#ifdef HAVE_EPT
+  progress.OverallProgress(0, 0, 1, _("Updating debtags database..."));
+
+  // Merge any new information in the apt cache into the debtags
+  // cache.
+  system("/usr/bin/debtags --local update > /dev/null 2>/dev/null");
+
+  progress.Progress(1);
+  progress.Done();
+#endif
 
   if(need_forget_new || need_autoclean)
     apt_load_cache(&progress, true);
