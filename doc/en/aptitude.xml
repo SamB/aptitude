@@ -8141,6 +8141,25 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <segtitle>Default</segtitle>
 	    <segtitle>Description</segtitle>
 
+	    <seglistitem id='configAptInstall-Recommends'>
+	      <seg><literal>Apt::Install-Recommends</literal></seg>
+	      <seg><literal>true</literal></seg>
+
+	      <seg>
+		If this option is <literal>true</literal> and
+		<literal>Aptitude::Auto-Install</literal> is
+		<literal>true</literal>, then whenever you mark a
+		package for installation, &aptitude; will also mark
+		the packages it recommends for installation.
+		Furthermore, if this option is
+		<literal>true</literal>, &aptitude; will not consider
+		packages to be unused (and thus will not automatically
+		remove them) as long as any installed package
+		reommends them.  For more information, see <xref
+		linkend='secAutoInstall'/>.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configAllow-Null-Upgrade'>
 	      <seg><literal>Aptitude::Allow-Null-Upgrade</literal></seg>
 	      <seg><literal>false</literal></seg>
@@ -8504,6 +8523,21 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configDont-Warn-About-Recommends-Important'>
+	      <seg><literal>Aptitude::Dont-Warn-About-Recommends-Important</literal></seg>
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		Normally &aptitude; will warn you on startup if the
+		obsolete option
+		<literal>Aptitude::Recommends-Important</literal> is
+		contained in the system configuration file.  This
+		option suppresses that warning if for some reason you
+		really need to set
+		<literal>Recommends-Important</literal>./
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configForget-New-On-Install'>
 	      <seg><literal>Aptitude::Forget-New-On-Install</literal></seg>
 
@@ -8589,7 +8623,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		(and thus will not automatically remove them) as long
 		as any installed package recommends them, even if
 		<literal><link
-		linkend='configRecommends-Important'>Aptitude::Recommends-Important</link></literal>
+		linkend='configApt-Install-Recommends'>Apt::Install-Recommends</link></literal>
 		is <literal>false</literal>.  For more information,
 		see <xref linkend='secAutoInstall'/>.
 	      </seg>
@@ -9021,17 +9055,16 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg><literal>true</literal></seg>
 
 	      <seg>
-		If this option is <literal>true</literal> and
-		<literal>Aptitude::Auto-Install</literal> is
-		<literal>true</literal>, then whenever you mark a
-		package for installation, &aptitude; will also mark
-		the packages it recommends for installation.
-		Furthermore, if this option is
-		<literal>true</literal>, &aptitude; will not consider
-		packages to be unused (and thus will not automatically
-		remove them) as long as any installed package
-		reommends them.  For more information, see <xref
-		linkend='secAutoInstall'/>.
+		This is an obsolete configuration option that has been
+		superseded by <link
+		linkend='configAptInstall-Recommends'><literal>Apt::Install-Recommends</literal></link>.
+		On startup, &aptitude; will copy
+		<literal>Aptitude::Recommends-Important</literal> (if
+		it exists) to
+		<literal>Apt::Install-Recommends</literal> and then
+		clear
+		<literal>Aptitude::Recommends-Important</literal> in
+		your user configuration file.
 	      </seg>
 	    </seglistitem>
 
