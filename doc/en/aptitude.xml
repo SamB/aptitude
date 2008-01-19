@@ -8434,6 +8434,38 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configDebtags-Binary'>
+	      <seg><literal>Aptitude::Debtags-Binary</literal></seg>
+	      <seg><literal>/usr/bin/debtags</literal></seg>
+
+	      <seg>
+		The absolute path to the
+		<systemitem>debtags</systemitem> command.  If
+		configured with <systemitem>libept</systemitem>
+		support, &aptitude; will invoke this program whenever
+		the package lists are updated, passing it the
+		arguments listed in <link
+		linkend='configDebtags-Update-Options'>Aptitude::Debtags-Update-Options</link>.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem>
+	      <seg><literal>Aptitude::Debtags-Update-Options</literal></seg>
+	      <seg><literal>--local</literal></seg>
+
+	      <seg>
+		Additional options to pass to <literal>debtags
+		update</literal> when invoking it after the package
+		lists are updated.  These are split at whitespace;
+		single and double-quoted strings are recognized, so
+		setting this to <quote><literal>--vocabulary='/file
+		with a space</literal></quote> will store the
+		<systemitem>debtags</systemitem> vocabulary in
+		<quote><filename>/file with a
+		space</filename></quote>.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configDelete-Unused'>
 	      <seg><literal>Aptitude::Delete-Unused</literal></seg>
 	      <seg><literal>true</literal></seg>
