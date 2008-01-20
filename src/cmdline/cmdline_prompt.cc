@@ -229,6 +229,9 @@ static void cmdline_show_instinfo(pkgvector &items,
 	  s+=reason_string_list(reasons);
 	}
 
+      if(showvers || showsize || showdeps)
+	s += ' ';
+
       output.push_back(s);
     }
 
