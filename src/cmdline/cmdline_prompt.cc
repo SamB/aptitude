@@ -174,21 +174,33 @@ static void cmdline_show_instinfo(pkgvector &items,
 	      i->CurrentVer() != inst)
 	    {
 	      s+=" [";
-	      s+=cur.VerStr();
+	      if(cur.end())
+		s += "??";
+	      else
+		s += cur.VerStr();
 	      s+=" -> ";
-	      s+=inst.VerStr();
+	      if(inst.end())
+		s += "??";
+	      else
+		s += inst.VerStr();
 	      s+="]";
 	    }
 	  else if(state.Install())
 	    {
 	      s+=" [";
-	      s+=inst.VerStr();
+	      if(inst.end())
+		s += "??";
+	      else
+		s += inst.VerStr();
 	      s+="]";
 	    }
 	  else if(state.Delete())
 	    {
 	      s += " [";
-	      s += cur.VerStr();
+	      if(cur.end())
+		s += "??";
+	      else
+		s += cur.VerStr();
 	      s += "]";
 	    }
 	}
