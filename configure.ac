@@ -81,27 +81,35 @@ AC_CHECK_HEADER(locale.h, [AC_DEFINE([HAVE_LOCALE_H], [], [Define if locale.h is
 
 AC_CHECK_DECL(setlocale, [AC_DEFINE([HAVE_SETLOCALE], [], [Define if setlocale is available in locale.h])], , [#include <locale.h>])
 
-HASH_INC=""
-HASH_CLS=""
+dnl All the hash-related stuff is commented out because g++ 4.3 will
+dnl blow us up if we ever include hash_map -- yet it's present and I
+dnl can't make the autoconf test fail.  The replacement is
+dnl unordered_map, which is not just a nonstandard header: it also
+dnl requires language extensions in order to work.  So, since aptitude
+dnl has no real need for hashes anyway, I'm just removing all the
+dnl hashes that it uses.
 
-AC_CHECK_HEADER(hash_map,
-		[HASH_INC="hash_map"
-		 HASH_CLS="hash_map"
-		 AC_DEFINE(HAVE_HASH_MAP, ,
-			  [Define if the g++ extension hash_map is available])],
-	  	[AC_CHECK_HEADER(ext/hash_map,
-				 [HASH_INC="ext/hash_map"
-				  HASH_CLS="hash_map"
-				  AC_DEFINE(HAVE_EXT_HASH_MAP, , [Define if the g++ extension ext/hash_map is available])])])
+dnl HASH_INC=""
+dnl HASH_CLS=""
 
-AC_CHECK_HEADER(hash_set,
-		[HASH_INC="hash_set"
-		 HASH_CLS="hash_set"
-		 AC_DEFINE(HAVE_HASH_SET,  , [Define if the g++ extension hash_set is available])],
-		[AC_CHECK_HEADER(ext/hash_set,
-				[HASH_INC="ext/hash_set"
-				 HASH_CLS="hash_set"
-				 AC_DEFINE(HAVE_EXT_HASH_SET,  , [Define if the g++ extension ext/hash_set is available])])])
+dnl AC_CHECK_HEADER(hash_map,
+dnl 		[HASH_INC="hash_map"
+dnl 		 HASH_CLS="hash_map"
+dnl 		 AC_DEFINE(HAVE_HASH_MAP, ,
+dnl 			  [Define if the g++ extension hash_map is available])],
+dnl 	  	[AC_CHECK_HEADER(ext/hash_map,
+dnl 				 [HASH_INC="ext/hash_map"
+dnl 				  HASH_CLS="hash_map"
+dnl 				  AC_DEFINE(HAVE_EXT_HASH_MAP, , [Define if the g++ extension ext/hash_map is available])])])
+
+dnl AC_CHECK_HEADER(hash_set,
+dnl 		[HASH_INC="hash_set"
+dnl 		 HASH_CLS="hash_set"
+dnl 		 AC_DEFINE(HAVE_HASH_SET,  , [Define if the g++ extension hash_set is available])],
+dnl 		[AC_CHECK_HEADER(ext/hash_set,
+dnl 				[HASH_INC="ext/hash_set"
+dnl 				 HASH_CLS="hash_set"
+dnl 				 AC_DEFINE(HAVE_EXT_HASH_SET,  , [Define if the g++ extension ext/hash_set is available])])])
 
 AC_MSG_CHECKING([whether apt supports ddtp])
 
