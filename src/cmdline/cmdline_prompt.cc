@@ -198,7 +198,12 @@ static void cmdline_show_instinfo(pkgvector &items,
 	    {
 	      s += " [";
 	      if(cur.end())
-		s += "??";
+		{
+		  if((*i)->CurrentState == pkgCache::State::ConfigFiles)
+		    s += _("Config files");
+		  else
+		    s += "??";
+		}
 	      else
 		s += cur.VerStr();
 	      s += "]";
