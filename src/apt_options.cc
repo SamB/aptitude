@@ -505,7 +505,12 @@ option_item dependency_options[]={
 
 	    // Use an empty label to produce a "bar" dividing the two
 	    // halves of the screen.
-	    cw::label_ref middle_label = cw::label::create("", cw::get_style("Status"));
+
+	    // These declarations are workarounds for strange behavior
+	    // in g++ 4.3.
+	    std::string empty_label;
+	    cw::style status_style(cw::get_style("Status"));
+	    cw::label_ref middle_label = cw::label::create(empty_label, status_style);
 	    desc_area = cw::text_layout::create();
 
 	    cw::scrollbar_ref desc_area_scrollbar = cw::scrollbar::create(cw::scrollbar::VERTICAL);

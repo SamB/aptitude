@@ -709,7 +709,11 @@ namespace aptitude
 					const std::string &outDir)
     {
       temp::dir tmp_dir("aptitude-dump-directory");
-      temp::name tmp_states(tmp_dir, "aptitude_states");
+
+      // Declaring aptitude_states_filename is a workaround for
+      // strange behavior in g++ 4.3.
+      std::string aptitude_states_filename("aptitude_states");
+      temp::name tmp_states(tmp_dir, aptitude_states_filename);
       OpProgress progress;
 
       if(!(*apt_cache_file)->save_selection_list(progress,

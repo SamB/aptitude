@@ -571,7 +571,10 @@ cw::widget_ref make_solution_screen()
 {
   cw::table_ref rval     = cw::table::create();
 
-  cw::label_ref l        = cw::label::create(L"");
+  // Declaring an empty string variable is a workaround for strange
+  // behavior in g++ 4.3.
+  std::wstring empty_string;
+  cw::label_ref l        = cw::label::create(empty_string);
   menu_tree_ref info_tree = solution_undo_tree::create();
 
   solution_examiner_ref examiner
