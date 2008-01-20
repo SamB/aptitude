@@ -46,29 +46,16 @@
 #include <config.h>
 #endif
 
-#ifdef HAVE_HASH_MAP
-#include <hash_map>
-#else
-#ifdef HAVE_EXT_HASH_MAP
-#include <ext/hash_map>
-#else
-// Fallback to the non-hashing map class
 #include <map>
-#define hash_map map
-#endif
-#endif
-
 #include <vector>
-
-#include <cwidget/generic/util/strhash.h>
 
 class signalling_config:public sigc::trackable
 {
   Configuration *user_config, *system_config, *theme_config;
 
-  typedef HASH_NAMESPACE::hash_map<string, sigc::signal0<void> *> connhash;
+  typedef std::map<string, sigc::signal0<void> *> connmap;
 
-  connhash conn_table;
+  connmap conn_table;
 
   // The current "theme" root, cached.  (ie, if the theme is "bland",
   // this will be "PACKAGE::UI::Themes::bland::")

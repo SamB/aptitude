@@ -20,7 +20,7 @@ signalling_config::signalling_config(Configuration *_user_config,
 
 signalling_config::~signalling_config()
 {
-  for(connhash::iterator i=conn_table.begin();
+  for(connmap::iterator i=conn_table.begin();
       i!=conn_table.end();
       i++)
     delete i->second;
@@ -43,7 +43,7 @@ void signalling_config::Set(string Name, string Value)
   user_config->Set(Name, Value);
   system_config->Set(Name, Value);
 
-  connhash::iterator found=conn_table.find(Name);
+  connmap::iterator found=conn_table.find(Name);
 
   if(found!=conn_table.end())
     found->second->emit();
@@ -54,7 +54,7 @@ void signalling_config::Set(string Name, int Value)
   user_config->Set(Name.c_str(), Value);
   system_config->Set(Name.c_str(), Value);
 
-  connhash::iterator found=conn_table.find(Name);
+  connmap::iterator found=conn_table.find(Name);
 
   if(found!=conn_table.end())
     found->second->emit();
@@ -64,7 +64,7 @@ void signalling_config::SetNoUser(string Name, string Value)
 {
   system_config->Set(Name, Value);
 
-  connhash::iterator found=conn_table.find(Name);
+  connmap::iterator found=conn_table.find(Name);
 
   if(found!=conn_table.end())
     found->second->emit();
@@ -74,7 +74,7 @@ void signalling_config::SetNoUser(string Name, int Value)
 {
   system_config->Set(Name.c_str(), Value);
 
-  connhash::iterator found=conn_table.find(Name);
+  connmap::iterator found=conn_table.find(Name);
 
   if(found!=conn_table.end())
     found->second->emit();
@@ -82,7 +82,7 @@ void signalling_config::SetNoUser(string Name, int Value)
 
 void signalling_config::connect(string name, const sigc::slot0<void> &slot)
 {
-  connhash::iterator found=conn_table.find(name);
+  connmap::iterator found=conn_table.find(name);
 
   if(found!=conn_table.end())
     found->second->connect(slot);
@@ -110,7 +110,7 @@ void signalling_config::setcfg(Configuration *new_user_cfg,
 
   update_theme(system_config->Find(PACKAGE "::Theme", ""));
 
-  for(connhash::iterator i=conn_table.begin();
+  for(connmap::iterator i=conn_table.begin();
       i!=conn_table.end();
       i++)
     if(Exists(i->first) ||

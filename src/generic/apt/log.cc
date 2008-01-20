@@ -1,6 +1,6 @@
 // log.cc
 //
-//   Copyright (C) 2005-2007 Daniel Burrows
+//   Copyright (C) 2005-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -31,6 +31,8 @@
 #include <apt-pkg/strutl.h>
 
 #include <errno.h>
+
+#include <algorithm>
 
 using namespace std;
 

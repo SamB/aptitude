@@ -30,6 +30,8 @@
 #include <string>
 #include <fstream>
 
+#include <stdlib.h>
+
 #ifndef DONT_USE_FANCYBOXES
 // Some systems (*cough* Solaris xterms *cough*) don't like the fancy ASCII
 // graphics provided by libcurses

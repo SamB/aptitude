@@ -26,30 +26,8 @@
 #include <config.h>
 #endif
 
-#ifdef HAVE_HASH_MAP
-#include <hash_map>
-#else
-#ifdef HAVE_EXT_HASH_MAP
-#include <ext/hash_map>
-#else
-// Fallback to the non-hashing map class
 #include <map>
-#define hash_map map
-#endif
-#endif
-
-#ifdef HAVE_HASH_SET
-#include <hash_set>
-#else
-#ifdef HAVE_EXT_HASH_SET
-#include <ext/hash_set>
-#else
 #include <set>
-#define hash_set set
-#endif
-#endif
-
-#include <cwidget/generic/util/strhash.h>
 
 #include <string>
 #include <vector>
@@ -64,7 +42,7 @@ public:
   struct item
   {
     std::string name;
-    HASH_NAMESPACE::hash_set<std::string> parents;
+    std::set<std::string> parents;
 
     // HACK: Used to build the hierarchy top-down.  Calls an appropriate
     // routine in the given hierarchy class.  parent_data is an opaque
@@ -140,8 +118,8 @@ public:
   // Used so that group numbers are contiguous and unique
   int max_group_id;
 
-  typedef HASH_NAMESPACE::hash_map<std::string, item> pkgmap;
-  typedef HASH_NAMESPACE::hash_map<std::string, group> groupmap;
+  typedef std::map<std::string, item> pkgmap;
+  typedef std::map<std::string, group> groupmap;
 
   pkgmap pkgs;
   groupmap groups;

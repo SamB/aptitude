@@ -31,6 +31,8 @@
 #include <apt-pkg/sourcelist.h>
 #include <apt-pkg/strutl.h>
 
+#include <algorithm>
+
 using namespace std;
 namespace cw = cwidget;
 

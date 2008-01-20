@@ -45,6 +45,8 @@
 #include <cwidget/widgets/subtree.h>
 #include <cwidget/widgets/table.h>
 
+#include <algorithm>
+
 typedef generic_solution<aptitude_universe> aptitude_solution;
 
 using namespace std;

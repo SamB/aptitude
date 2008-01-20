@@ -26,34 +26,13 @@
 #include <config.h>
 #endif
 
-#include <apt-pkg/acquire.h>
-#ifdef HAVE_HASH_MAP
-#include <hash_map>
-#else
-#ifdef HAVE_EXT_HASH_MAP
-#include <ext/hash_map>
-#else
-// Fallback to the non-hashing map class
-#include <map>
-#define hash_map map
-#endif
-#endif
-
 #include <cwidget/widgets/table.h>
 #include <cwidget/widgets/tree.h>
 #include <cwidget/widgets/subtree.h>
 
-class download_item;
+#include <apt-pkg/acquire.h>
 
-#if defined(HAVE_HASH_MAP) || defined(HAVE_EXT_HASH_MAP)
-namespace HASH_NAMESPACE {
-  template <>
-  struct hash<void *>
-  {
-    size_t operator()(void * __x) const { return (size_t) __x; }
-  };
-}
-#endif
+class download_item;
 
 class download_tree:public cwidget::widgets::subtree_generic
 {
@@ -68,7 +47,7 @@ public:
 
 class download_screen:public cwidget::widgets::tree, public pkgAcquireStatus
 {
-  typedef HASH_NAMESPACE::hash_map<void *, download_item *> downloadmap;
+  typedef std::map<void *, download_item *> downloadmap;
   downloadmap active_items;
   // Makes it easy to find a currently downloading item when we get a hit
   // for it.

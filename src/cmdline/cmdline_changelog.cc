@@ -22,6 +22,8 @@
 
 #include <sigc++/adaptors/bind.h>
 
+#include <stdlib.h>
+
 using namespace std;
 
 /** Represents the information needed to retrieve a changelog. */

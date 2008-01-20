@@ -12,7 +12,6 @@
 #include <apt-pkg/tagfile.h>
 
 using namespace std;
-using namespace HASH_NAMESPACE;
 
 void pkg_hier::visit_item(pkg_hier::item *item, void *parent_data,
 			  pkg_hier::hierarchy_realizer *realizer)
@@ -57,7 +56,7 @@ void pkg_hier::realize_group_up(pkg_hier::group *group,
 	  if(group->parents.empty())
 	    info->node_data.push_back(realizer->realize_group(group, NULL));
 	  else
-	    for(hash_set<string>::iterator i=group->parents.begin();
+	    for(std::set<string>::iterator i=group->parents.begin();
 		i!=group->parents.end(); ++i)
 	      {
 		groupmap::iterator found=groups.find(*i);
@@ -89,7 +88,7 @@ void pkg_hier::realize_item_up(pkg_hier::item *item,
   if(item->parents.empty())
     realizer->realize_item(item, NULL);
   else
-    for(hash_set<string>::iterator i=item->parents.begin();
+    for(std::set<string>::iterator i=item->parents.begin();
 	i!=item->parents.end(); ++i)
       {
 	groupmap::iterator found=groups.find(*i);
@@ -267,7 +266,7 @@ void pkg_hier::realize(string grp, void *init_parent_data,
 	i->second.children.clear();
 
       for(groupmap::iterator i=groups.begin(); i!=groups.end(); ++i)
-	for(hash_set<string>::iterator j=i->second.parents.begin();
+	for(std::set<string>::iterator j=i->second.parents.begin();
 	    j!=i->second.parents.end();
 	    ++j)
 	  {
@@ -279,7 +278,7 @@ void pkg_hier::realize(string grp, void *init_parent_data,
 
       // Now, resolve references from packages to groups.
       for(pkgmap::iterator i=pkgs.begin(); i!=pkgs.end(); ++i)
-	for(hash_set<string>::iterator j=i->second.parents.begin();
+	for(std::set<string>::iterator j=i->second.parents.begin();
 	    j!=i->second.parents.end();
 	    ++j)
 	  {

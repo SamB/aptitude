@@ -9,6 +9,8 @@
 
 #include <apt-pkg/error.h>
 
+#include <algorithm>
+
 using namespace std;
 
 class text_hier_realizer:public pkg_hier::hierarchy_realizer

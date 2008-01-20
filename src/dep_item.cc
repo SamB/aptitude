@@ -34,7 +34,6 @@
 #include <apt-pkg/version.h>
 
 using namespace std;
-using namespace __gnu_cxx;
 namespace cw = cwidget;
 namespace cwidget
 {
@@ -232,7 +231,7 @@ pkg_dep_screen::pkg_dep_screen(const pkgCache::PkgIterator &pkg,
   set_root(setup_new_root(pkg, ver), true);
 }
 
-typedef hash_map<string, pkg_subtree *> tree_map;
+typedef std::map<string, pkg_subtree *> tree_map;
 
 template<class tree_type>
 void setup_package_deps(const pkgCache::PkgIterator &pkg,

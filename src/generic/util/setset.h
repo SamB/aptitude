@@ -1,6 +1,6 @@
 // setset.h                             -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -44,25 +44,14 @@
 #include <vector>
 #include "immset.h"
 
-#ifdef HAVE_HASH_MAP
-#include <hash_map>
-#else
-#ifdef HAVE_EXT_HASH_MAP
-#include <ext/hash_map>
-#else
-// D'oh.
-#error "Need hash_map for setset."
-#endif
-#endif
+#include <map>
 
 /** Maintains a set of imm::sets of Val objects, arranged so that
  *  quick answers to the query "does the set S subsume any element of
  *  this set?" can be produced.  At the moment this object increases
  *  monotonically, to keep things simple.
- *
- *  For efficiency, requires that Val be hashable.
  */
-template<typename Val, typename HashFcn = HASH_NAMESPACE::hash<Val>, typename EqualFcn = std::equal_to<Val>, typename Compare = std::less<Val> >
+template<typename Val, typename Compare = std::less<Val> >
 class setset
 {
 private:
@@ -88,7 +77,7 @@ private:
 
   typedef std::pair<typename entries_list::size_type, Val> index_entry;
 
-  typedef HASH_NAMESPACE::hash_map<Val, std::vector<index_entry>, HashFcn, EqualFcn> index_type;
+  typedef std::map<Val, std::vector<index_entry>, Compare> index_type;
 
   index_type sets_by_key;
 
@@ -262,9 +251,8 @@ public:
   }
 
   setset(size_type n,
-	 const HashFcn &hasher = HashFcn(),
-	 const EqualFcn &keyequal = EqualFcn())
-    :sets_by_key(n, hasher, keyequal)
+	 const Compare &comparer = Compare())
+    :sets_by_key(n, comparer)
   {
   }
 
@@ -318,43 +306,26 @@ public:
 };
 
 template<typename Key, typename Val,
-	 typename HashFcn = HASH_NAMESPACE::hash<Key>,
-	 typename EqualKey = std::equal_to<Key>,
 	 typename Compare = std::less<Key> >
 class mapset
 {
-  struct hash_key
+  struct key_compare
   {
-    HashFcn hasher;
+    Compare cmp;
   public:
-    hash_key(const HashFcn &f)
-      :hasher(f)
-    {
-    }
-
-    size_t operator()(const std::pair<Key, Val> &p) const
-    {
-      return hasher(p.first);
-    }
-  };
-
-  struct key_equal_to
-  {
-    EqualKey eq;
-  public:
-    key_equal_to(const EqualKey &_eq)
-      :eq(_eq)
+    key_equal_to(const Compare &_cmp)
+      :cmp(_cmp)
     {
     }
 
     size_t operator()(const std::pair<Key, Val> &p1,
 		      const std::pair<Key, Val> &p2) const
     {
-      return p1.first == p2.first;
+      return cmp(p1, p2);
     }
   };
 
-  typedef setset<std::pair<Key, Val>, hash_key, key_equal_to,
+  typedef setset<std::pair<Key, Val>, key_compare,
 		 imm::key_compare<Key, Val, Compare> > mapset_type;
 
   mapset_type S;
@@ -451,9 +422,8 @@ public:
   };
 
   mapset(size_type n = 0,
-	 const HashFcn &hasher = HashFcn(),
-	 const EqualKey &keyequal = EqualKey())
-    :S(n, hash_key(hasher), key_equal_to(keyequal))
+	 const Compare &cmp = Compare())
+    :S(n, cmp)
   {
   }
 

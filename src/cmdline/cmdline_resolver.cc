@@ -49,6 +49,8 @@
 #include <fstream>
 #include <sstream>
 
+#include <algorithm>
+
 using namespace std;
 
 typedef generic_solution<aptitude_universe> aptitude_solution;

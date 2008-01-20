@@ -38,8 +38,9 @@
 #include <cwidget/toplevel.h>
 #include <cwidget/widgets/subtree.h>
 
+#include <algorithm>
+
 using namespace std;
-using namespace __gnu_cxx;
 
 namespace cw = cwidget;
 namespace cwidget
@@ -309,7 +310,7 @@ void hier_editor::save_hier(string file)
     {
       string parentsstr;
 
-      for(hash_set<string>::iterator j=(*i)->parents.begin();
+      for(std::set<string>::iterator j=(*i)->parents.begin();
 	  j!=(*i)->parents.end(); ++j)
 	{
 	  if(j==(*i)->parents.begin())

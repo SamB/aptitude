@@ -16,7 +16,6 @@
 
 #include <ctype.h>
 
-// Don't bother with hashing.
 #include <map>
 #include <vector>
 #include <algorithm>

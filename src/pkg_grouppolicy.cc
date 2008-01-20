@@ -47,7 +47,6 @@
 #include <sigc++/trackable.h>
 
 using namespace std;
-using namespace __gnu_cxx;
 
 namespace cw = cwidget;
 
@@ -110,7 +109,7 @@ pkg_grouppolicy *pkg_grouppolicy_end_factory::instantiate(pkg_signal *_sig,
 
 class pkg_grouppolicy_section:public pkg_grouppolicy
 {
-  typedef hash_map<string, pair<pkg_grouppolicy *, pkg_subtree *> > section_map;
+  typedef std::map<string, pair<pkg_grouppolicy *, pkg_subtree *> > section_map;
   section_map sections;
 
   pkg_grouppolicy_factory *chain;
@@ -120,7 +119,7 @@ class pkg_grouppolicy_section:public pkg_grouppolicy
   bool passthrough;
 
   // The descriptions are in the cw::style used by package descriptions.
-  static hash_map<string, wstring> section_descriptions;
+  static std::map<string, wstring> section_descriptions;
   static void init_section_descriptions();
 public:
   pkg_grouppolicy_section(pkg_grouppolicy_section_factory::split_mode_type _split_mode,
@@ -150,7 +149,7 @@ pkg_grouppolicy *pkg_grouppolicy_section_factory::instantiate(pkg_signal *_sig,
 				     _sig, _desc_sig);
 }
 
-hash_map<string, wstring> pkg_grouppolicy_section::section_descriptions;
+std::map<string, wstring> pkg_grouppolicy_section::section_descriptions;
 
 // Should this be externally configurable?
 void pkg_grouppolicy_section::init_section_descriptions()
@@ -914,7 +913,7 @@ pkg_grouppolicy_hier_factory::~pkg_grouppolicy_hier_factory()
 class pkg_grouppolicy_task:public pkg_grouppolicy
 {
   /** The subtrees are indexed by Task. */
-  typedef hash_map<string, pkg_subtree *> subtree_map;
+  typedef std::map<string, pkg_subtree *> subtree_map;
 
   /** A list of [task,description] pairs. */
   typedef vector<pair<string, wstring> > desclist;
@@ -928,7 +927,7 @@ class pkg_grouppolicy_task:public pkg_grouppolicy
 
   static desclist task_section_descriptions;
   // Lifted from tasksel.  There are so few of them that it's not
-  // worth using a hash_map.  Even a map is overkill.
+  // worth using a std::map, IMNSHO.
 
   static void init_section_descriptions();
 public:
@@ -1263,7 +1262,7 @@ class pkg_grouppolicy_tag : public pkg_grouppolicy
 
   string facet;
 
-  typedef hash_map<string, pair<pkg_grouppolicy *, pkg_subtree *> > childmap;
+  typedef std::map<string, pair<pkg_grouppolicy *, pkg_subtree *> > childmap;
 
   childmap children;
 public:
@@ -1393,9 +1392,9 @@ class pkg_grouppolicy_facet_tag : public pkg_grouppolicy
 {
   pkg_grouppolicy_factory *chain;
 
-  typedef hash_map<string, pair<pkg_grouppolicy *, pkg_subtree *> > tagmap;
+  typedef std::map<string, pair<pkg_grouppolicy *, pkg_subtree *> > tagmap;
 
-  typedef hash_map<string, pair<tagmap *, pkg_subtree *> > facetmap;
+  typedef std::map<string, pair<tagmap *, pkg_subtree *> > facetmap;
 
   pkg_subtree *untagged_tree;
   pkg_grouppolicy *untagged_policy;

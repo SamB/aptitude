@@ -1,6 +1,6 @@
 // test_setset.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -120,30 +120,12 @@ public:
     }
   };
 
-  struct HalfHash
-  {
-  public:
-    size_t operator()(int a) const
-    {
-      return a/2;
-    }
-  };
-
-  struct HalfEqualTo
-  {
-  public:
-    size_t operator()(int a, int b) const
-    {
-      return a/2 == b/2;
-    }
-  };
-
   // Test searching for subsets of a set using subsumption.
   void testSubsetPredicateSearch()
   {
     imm::set<int, HalfCmp> s1, s2, s3;
 
-    setset<int, HalfHash, HalfEqualTo, HalfCmp> S;
+    setset<int, HalfCmp> S;
 
     s1.insert(5);
     CPPUNIT_ASSERT(s1.contains(5));
@@ -164,7 +146,7 @@ public:
 
     t.insert(5);
 
-    setset<int, HalfHash, HalfEqualTo, HalfCmp>::const_iterator found = S.find_subset(t);
+    setset<int, HalfCmp>::const_iterator found = S.find_subset(t);
     CPPUNIT_ASSERT(found != S.end());
     CPPUNIT_ASSERT_EQUAL(s1, *found);
 

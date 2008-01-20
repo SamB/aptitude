@@ -16,6 +16,8 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/pkgcache.h>
 
+#include <stdlib.h>
+
 bool cmdline_applyaction(cmdline_pkgaction_type action,
 			 pkgCache::PkgIterator pkg,
 			 pkgset &to_install, pkgset &to_hold,
