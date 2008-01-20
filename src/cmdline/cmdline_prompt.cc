@@ -174,21 +174,38 @@ static void cmdline_show_instinfo(pkgvector &items,
 	      i->CurrentVer() != inst)
 	    {
 	      s+=" [";
-	      s+=cur.VerStr();
+	      if(cur.end())
+		s += "??";
+	      else
+		s += cur.VerStr();
 	      s+=" -> ";
-	      s+=inst.VerStr();
+	      if(inst.end())
+		s += "??";
+	      else
+		s += inst.VerStr();
 	      s+="]";
 	    }
 	  else if(state.Install())
 	    {
 	      s+=" [";
-	      s+=inst.VerStr();
+	      if(inst.end())
+		s += "??";
+	      else
+		s += inst.VerStr();
 	      s+="]";
 	    }
 	  else if(state.Delete())
 	    {
 	      s += " [";
-	      s += cur.VerStr();
+	      if(cur.end())
+		{
+		  if((*i)->CurrentState == pkgCache::State::ConfigFiles)
+		    s += _("Config files");
+		  else
+		    s += "??";
+		}
+	      else
+		s += cur.VerStr();
 	      s += "]";
 	    }
 	}
@@ -211,6 +228,9 @@ static void cmdline_show_instinfo(pkgvector &items,
 	  infer_reason(*i, reasons);
 	  s+=reason_string_list(reasons);
 	}
+
+      if(showvers || showsize || showdeps)
+	s += ' ';
 
       output.push_back(s);
     }
