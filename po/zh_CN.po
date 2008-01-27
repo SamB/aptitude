@@ -1,17 +1,17 @@
-# Copyright (C) 2005 - 2006 Free Software Foundation, Inc.
-# Yongtao Yang <yongtao.yang@telia.com>, 2004
-# Haifeng Chen <optical.dlz@gmail.com>, 2005
-# Ming Hua <minghua@rice.edu>, 2005,2006
-# Carlos Z.F. Liu <carlosliu@users.sourceforge.net>, 2005,2006
-# Kov Chai <tchaikov@sjtu.org>, 2007
-# Deng Xiyue <manphiz-guest@users.alioth.debian.org>, 2007
+# Copyright (C) 2005 - 2008 Free Software Foundation, Inc.
+# Yongtao Yang <yongtao.yang@telia.com>, 2004.
+# Haifeng Chen <optical.dlz@gmail.com>, 2005.
+# Ming Hua <minghua@rice.edu>, 2005, 2006.
+# Carlos Z.F. Liu <carlosliu@users.sourceforge.net>, 2005, 2006.
+# Kov Chai <tchaikov@sjtu.org>, 2007.
+# Deng Xiyue <manphiz-guest@users.alioth.debian.org>, 2007, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.3-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-15 06:06-0800\n"
-"PO-Revision-Date: 2007-12-29 14:44+0800\n"
+"PO-Revision-Date: 2008-01-27 15:49+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -428,8 +428,8 @@ msgid ""
 "suggestion of the problem resolver.  Otherwise, aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
-"如果开启此选项，并且您在有些软件包被破坏的时候执行安装， aptitude 会自动使用"
-"问题解决器的当前建议。否则， aptitude 会提示您解决依赖破坏的解决方法。"
+"如果开启此选项，并且您在有些软件包被破坏的时候执行安装， aptitude 会自动应用"
+"问题解决器的当前建议。否则， aptitude 会提示您依赖破坏的解决方法。"
 
 #: src/apt_options.cc:352
 msgid "Install recommended packages automatically"
@@ -445,8 +445,8 @@ msgid ""
 "enabled, packages that are recommended by an installed package will not be "
 "automatically removed."
 msgstr ""
-"如果开启此选项并且开启“自动解决依赖关系”， aptitude 会在安装新安装软件包的直"
-"接依赖包之外尝试安装其推荐的软件包。建议的软件包不会被自动安装。\n"
+"如果开启此选项并且开启“自动解决依赖关系”， aptitude 会在安装新软件包的直接依"
+"赖包之外尝试安装其推荐的软件包。建议的软件包不会被自动安装。\n"
 "如果开启此选项并且开启“自动移除未用的软件包”，被所安装包推荐安装的包不会被自"
 "动移除。"
 
@@ -1920,7 +1920,7 @@ msgstr "    ++   --> 加入队列\n"
 
 #: src/cmdline/cmdline_why.cc:673
 msgid "    ++   --> skipping, version check failed\n"
-msgstr "    ++   --> 跳过，版本检查失败。\n"
+msgstr "    ++   --> 跳过，版本检查失败\n"
 
 #: src/cmdline/cmdline_why.cc:691
 #, c-format
@@ -2159,6 +2159,8 @@ msgid ""
 "option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
 "Recommends' instead or removing this setting."
 msgstr ""
+"系统配置文件(%s)包含废弃选项“Aptitude::Recommends-Important”的设置；请考虑使"
+"用“APT::Install-Recommends”或移出此设置。"
 
 #: src/generic/apt/apt.cc:241
 #, c-format
@@ -2538,6 +2540,7 @@ msgid ""
 "No debtags data available, perhaps you need to install debtags and run "
 "'debtags update'?"
 msgstr ""
+"没有可用的 debtags 数据，也许您需要安装 debtags 并运行“debtags update”？"
 
 #: src/generic/apt/tasks.cc:279
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -2599,23 +2602,23 @@ msgid "Unrecognized attribute name \"%s\""
 msgstr "无法识别的属性名“%s”"
 
 #: src/load_config.cc:113
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid entry in style definition group: \"%s\""
-msgstr "cw::style 定义组中的无效条目：“%s”"
+msgstr "样式定义组中有无效条目：“%s”"
 
 #: src/load_config.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid tagless entry in style definition group: \"%s\""
-msgstr "cw::style 定义组中无效的无标签条目：“%s”"
+msgstr "样式定义组中有无效的无标签条目：“%s”"
 
 #: src/load_config.cc:127
 msgid "The default color may only be used as a background."
 msgstr "默认的颜色可以只被用做背景。"
 
 #: src/load_config.cc:144
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown style attribute %s"
-msgstr "未知的 cw::style 属性 %s"
+msgstr "未知的样式属性 %s"
 
 #: src/load_config.cc:167 src/load_config.cc:169
 #, c-format
@@ -2648,9 +2651,9 @@ msgid "Terminal policy \"%s\" should be the last policy in the list"
 msgstr "终极策略“%s”应该是列表中的最后一个策略"
 
 #: src/load_grouppolicy.cc:372
-#, fuzzy, c-format
+#, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
-msgstr "坏的部分名称“%s”(使用“none”，“topdir”，或者“subdir”)"
+msgstr "坏的区段名称“%s”(使用“none”，“topdir”，“subdir”，或者“subdirs”)"
 
 #: src/load_grouppolicy.cc:382
 #, c-format
@@ -2838,12 +2841,12 @@ msgstr "libsigc++ 版本：%s\n"
 #: src/main.cc:115
 #, c-format
 msgid "Ept support enabled.\n"
-msgstr ""
+msgstr "Ept 支持已开启。\n"
 
 #: src/main.cc:117
 #, c-format
 msgid "Ept support disabled.\n"
-msgstr ""
+msgstr "Ept 支持已禁用\n"
 
 #: src/main.cc:124
 #, c-format
@@ -3544,9 +3547,9 @@ msgid "HN too long"
 msgstr "HN 太长"
 
 #: src/pkg_columnizer.cc:673 src/pkg_columnizer.cc:682
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to transcode package display format after \"%ls\""
-msgstr "在“%ls”之后无法执行 cw::util::transcode 软件包显示格式"
+msgstr "在“%ls”之后无法转码软件包显示格式"
 
 #: src/pkg_columnizer.cc:689
 msgid "Internal error: Default column string is unparsable"
@@ -5077,6 +5080,9 @@ msgstr "下载变更日志"
 
 #~ msgid "virtual/virtual"
 #~ msgstr "虚拟/虚拟"
+
+#~ msgid "View the terms under which you may copy and distribute aptiutde"
+#~ msgstr "查看您可以在何种条款下拷贝和分发 aptitude"
 
 #~ msgid "You must resolve these dependencies before continuing."
 #~ msgstr "您必须解决这些依赖关系才能继续。"
