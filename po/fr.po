@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-01-15 06:06-0800\n"
+"POT-Creation-Date: 2008-01-29 19:30-0800\n"
 "PO-Revision-Date: 2008-01-18 20:45+0100\n"
 "Last-Translator: Jean-Luc Coulon (f5ibh) <jean-luc.coulon@wanadoo.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -623,7 +623,7 @@ msgstr[1] " %d vers version antérieure"
 msgid "Suggest %F"
 msgstr "Suggère %F"
 
-#: src/cmdline/cmdline_action.cc:38
+#: src/cmdline/cmdline_action.cc:40
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -632,7 +632,7 @@ msgstr ""
 "Note : « %s », fournissant le paquet virtuel\n"
 "       « %s », est déjà installé.\n"
 
-#: src/cmdline/cmdline_action.cc:45
+#: src/cmdline/cmdline_action.cc:47
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -641,7 +641,7 @@ msgstr ""
 "Note : « %s », fournissant le paquet virtuel\n"
 "       « %s », est déjà en attente d'installation.\n"
 
-#: src/cmdline/cmdline_action.cc:63
+#: src/cmdline/cmdline_action.cc:65
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -650,17 +650,17 @@ msgstr ""
 "« %s » existe dans la base de données des paquets mais ce\n"
 "n'est pas un vrai paquet et aucun paquet ne le fournit.\n"
 
-#: src/cmdline/cmdline_action.cc:69
+#: src/cmdline/cmdline_action.cc:71
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "« %s » est un paquet virtuel fourni par :\n"
 
-#: src/cmdline/cmdline_action.cc:72
+#: src/cmdline/cmdline_action.cc:74
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Vous devez en choisir un à installer.\n"
 
-#: src/cmdline/cmdline_action.cc:77
+#: src/cmdline/cmdline_action.cc:79
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -669,41 +669,41 @@ msgstr ""
 "Note : sélection de « %s » à la place du\n"
 "       paquet virtuel « %s »\n"
 
-#: src/cmdline/cmdline_action.cc:95
+#: src/cmdline/cmdline_action.cc:97
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s est déjà installé avec la version demandée (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:101
+#: src/cmdline/cmdline_action.cc:103
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s n'est pas actuellement installé, il ne sera donc pas réinstallé.\n"
 
-#: src/cmdline/cmdline_action.cc:108 src/cmdline/cmdline_action.cc:114
+#: src/cmdline/cmdline_action.cc:110 src/cmdline/cmdline_action.cc:116
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Le paquet %s n'est pas installé, il ne sera donc pas enlevé\n"
 
-#: src/cmdline/cmdline_action.cc:132
+#: src/cmdline/cmdline_action.cc:134
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr ""
 "Le paquet %s n'est pas installé, l'interdiction de mise à jour n'est pas "
 "possible\n"
 
-#: src/cmdline/cmdline_action.cc:134
+#: src/cmdline/cmdline_action.cc:136
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr ""
 "Le paquet %s n'est pas susceptible d'être mis à jour, l'interdiction de mise "
 "à jour n'est pas possible\n"
 
-#: src/cmdline/cmdline_action.cc:212
+#: src/cmdline/cmdline_action.cc:214
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Note : sélection de la tâche « %s : %s » pour installation\n"
 
-#: src/cmdline/cmdline_action.cc:242
+#: src/cmdline/cmdline_action.cc:244
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -712,14 +712,14 @@ msgstr ""
 "Vous ne pouvez préciser une version de paquet qu'avec une commande "
 "« install » ou « forbid-version ».\n"
 
-#: src/cmdline/cmdline_action.cc:250
+#: src/cmdline/cmdline_action.cc:252
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr ""
 "Vous ne pouvez préciser une archive de paquet qu'avec une commande "
 "« install »I\n"
 
-#: src/cmdline/cmdline_action.cc:284
+#: src/cmdline/cmdline_action.cc:286
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -728,7 +728,7 @@ msgstr ""
 "Impossible de trouver le paquet « %s » et plus de 40\n"
 "paquets comportent « %s » dans leur nom.\n"
 
-#: src/cmdline/cmdline_action.cc:287
+#: src/cmdline/cmdline_action.cc:289
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -737,14 +737,14 @@ msgstr ""
 "Impossible de trouver le paquet « %s ». Cependant, les\n"
 "paquets suivants comportent « %s » dans leur nom :\n"
 
-#: src/cmdline/cmdline_action.cc:311
+#: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "Impossible de trouver un paquet dont le nom ou la description correspond à « %"
 "s »\n"
 
-#: src/cmdline/cmdline_action.cc:313
+#: src/cmdline/cmdline_action.cc:315
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -753,7 +753,7 @@ msgstr ""
 "Impossible de trouver un paquet correspondant à « %s »\n"
 "et plus de 40 paquets comportent « %s » dans leur description.\n"
 
-#: src/cmdline/cmdline_action.cc:316
+#: src/cmdline/cmdline_action.cc:318
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -762,25 +762,25 @@ msgstr ""
 "Impossible de trouver un paquet correspondant à « %s ». Cependant,\n"
 "les paquets suivants comportent « %s » dans leur description :\n"
 
-#: src/cmdline/cmdline_action.cc:436
+#: src/cmdline/cmdline_action.cc:438
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Le caractère « %c » ne correspond à aucune action connue\n"
 
-#: src/cmdline/cmdline_changelog.cc:207
+#: src/cmdline/cmdline_changelog.cc:209
 msgid "Can't execute sensible-pager, is this a working Debian system?"
 msgstr ""
 "Impossible d'exécuter « sensible-pager ». Ce système est-il un système Debian "
 "complet ?"
 
-#: src/cmdline/cmdline_changelog.cc:263
+#: src/cmdline/cmdline_changelog.cc:265
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr ""
 "%s n'est pas un paquet Debian officiel : il n'est pas possible d'afficher le "
 "suivi des modifications (« changelog »)."
 
-#: src/cmdline/cmdline_changelog.cc:341
+#: src/cmdline/cmdline_changelog.cc:343
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Impossible de trouver le journal des modifications (changelog) pour %s"
@@ -905,103 +905,108 @@ msgstr ""
 "Qu'est-ce que c'est ? C'est un éléphant qui se fait manger par un\n"
 "serpent, bien sûr.\n"
 
-#: src/cmdline/cmdline_prompt.cc:39
+#: src/cmdline/cmdline_prompt.cc:41
 msgid "Unexpected end-of-file on standard input"
 msgstr "Fin de fichier inattendue sur l'entrée standard"
 
-#: src/cmdline/cmdline_prompt.cc:58
+#: src/cmdline/cmdline_prompt.cc:60
 msgid "Couldn't read list of sources"
 msgstr "Impossible de lire la liste des sources"
 
-#: src/cmdline/cmdline_prompt.cc:277 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:205
+#, fuzzy
+msgid "Config files"
+msgstr "fichiers de config"
+
+#: src/cmdline/cmdline_prompt.cc:299 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "mais %s doit être installé."
 
-#: src/cmdline/cmdline_prompt.cc:280 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:302 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "mais %s est installé et a été conservé"
 
-#: src/cmdline/cmdline_prompt.cc:283 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:305 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "mais %s est installé."
 
-#: src/cmdline/cmdline_prompt.cc:287 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:309 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "mais il n'est pas installable"
 
-#: src/cmdline/cmdline_prompt.cc:291 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:313 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " qui est un paquet virtuel"
 
-#: src/cmdline/cmdline_prompt.cc:294 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:316 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " ou"
 
-#: src/cmdline/cmdline_prompt.cc:308
+#: src/cmdline/cmdline_prompt.cc:330
 msgid "The following packages are BROKEN:"
 msgstr "Les paquets suivants sont CASSÉS : "
 
-#: src/cmdline/cmdline_prompt.cc:309
+#: src/cmdline/cmdline_prompt.cc:331
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Les paquets suivants ne sont pas utilisés et vont être ENLEVÉS : "
 
-#: src/cmdline/cmdline_prompt.cc:310
+#: src/cmdline/cmdline_prompt.cc:332
 msgid "The following packages have been automatically kept back:"
 msgstr "Les paquets suivants ont été conservés automatiquement : "
 
-#: src/cmdline/cmdline_prompt.cc:311
+#: src/cmdline/cmdline_prompt.cc:333
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Les NOUVEAUX paquets suivants vont être automatiquement installés : "
 
-#: src/cmdline/cmdline_prompt.cc:312
+#: src/cmdline/cmdline_prompt.cc:334
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Les paquets suivants seront automatiquement ENLEVÉS : "
 
-#: src/cmdline/cmdline_prompt.cc:313
+#: src/cmdline/cmdline_prompt.cc:335
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Les paquets suivants vont être RÉINSTALLÉS à une VERSION ANTÉRIEURE : "
 
-#: src/cmdline/cmdline_prompt.cc:314
+#: src/cmdline/cmdline_prompt.cc:336
 msgid "The following packages have been kept back:"
 msgstr "Les paquets suivants ont été conservés : "
 
-#: src/cmdline/cmdline_prompt.cc:315
+#: src/cmdline/cmdline_prompt.cc:337
 msgid "The following packages will be REINSTALLED:"
 msgstr "Les paquets suivants seront RÉINSTALLÉS : "
 
-#: src/cmdline/cmdline_prompt.cc:316
+#: src/cmdline/cmdline_prompt.cc:338
 msgid "The following NEW packages will be installed:"
 msgstr "Les NOUVEAUX paquets suivants vont être installés : "
 
-#: src/cmdline/cmdline_prompt.cc:317
+#: src/cmdline/cmdline_prompt.cc:339
 msgid "The following packages will be REMOVED:"
 msgstr "Les paquets suivants seront ENLEVÉS : "
 
-#: src/cmdline/cmdline_prompt.cc:318
+#: src/cmdline/cmdline_prompt.cc:340
 msgid "The following packages will be upgraded:"
 msgstr "Les paquets suivants seront mis à jour : "
 
-#: src/cmdline/cmdline_prompt.cc:319
+#: src/cmdline/cmdline_prompt.cc:341
 msgid "The following partially installed packages will be configured:"
 msgstr "Les paquets partiellement installés suivants seront configurés : "
 
-#: src/cmdline/cmdline_prompt.cc:374
+#: src/cmdline/cmdline_prompt.cc:396
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Les paquets ESSENTIELS suivants vont être ENLEVÉS !\n"
 
-#: src/cmdline/cmdline_prompt.cc:383
+#: src/cmdline/cmdline_prompt.cc:405
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "Les paquets ESSENTIELS suivants vont être CASSÉS par cette action :\n"
 
-#: src/cmdline/cmdline_prompt.cc:393
+#: src/cmdline/cmdline_prompt.cc:415
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1012,16 +1017,16 @@ msgstr ""
 "             Ne PAS poursuivre à moins que vous ne sachiez EXACTEMENT ce\n"
 "             que vous faites !\n"
 
-#: src/cmdline/cmdline_prompt.cc:395
+#: src/cmdline/cmdline_prompt.cc:417
 msgid "I am aware that this is a very bad idea"
 msgstr "Je suis conscient que c'est une très mauvaise idée"
 
-#: src/cmdline/cmdline_prompt.cc:398
+#: src/cmdline/cmdline_prompt.cc:420
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Pour continuer, entrer la phrase « %s » :\n"
 
-#: src/cmdline/cmdline_prompt.cc:440
+#: src/cmdline/cmdline_prompt.cc:462
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1039,7 +1044,7 @@ msgstr ""
 "que c'est bien votre intention.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:452
+#: src/cmdline/cmdline_prompt.cc:474
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1048,7 +1053,7 @@ msgstr ""
 "*** ATTENTION *** violations de ces clauses de confiance ignorées parce que\n"
 "                  %s::CmdLine::Ignore-Trust-Violations a la valeur « true ».\n"
 
-#: src/cmdline/cmdline_prompt.cc:461
+#: src/cmdline/cmdline_prompt.cc:483
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
@@ -1056,107 +1061,107 @@ msgstr ""
 "*** ATTENTION *** violations de ces clauses de confiance ignorées parce que\n"
 "                  Apt::Get::AllowUnauthenticated a la valeur « true ».\n"
 
-#: src/cmdline/cmdline_prompt.cc:467
+#: src/cmdline/cmdline_prompt.cc:489
 msgid "Yes"
 msgstr "Oui"
 
-#: src/cmdline/cmdline_prompt.cc:467
+#: src/cmdline/cmdline_prompt.cc:489
 msgid "No"
 msgstr "Non"
 
-#: src/cmdline/cmdline_prompt.cc:471
+#: src/cmdline/cmdline_prompt.cc:493
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Voulez-vous ignorer cet avertissement et continuer quand même ?\n"
 
-#: src/cmdline/cmdline_prompt.cc:472
+#: src/cmdline/cmdline_prompt.cc:494
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr ""
 "Pour continuer, entrer « %s ». Pour interrompre l'installation, entrer « %"
 "s » : "
 
-#: src/cmdline/cmdline_prompt.cc:486
+#: src/cmdline/cmdline_prompt.cc:508
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Saisie incorrecte. Vous devez entrer « %s » ou « %s ».\n"
 
-#: src/cmdline/cmdline_prompt.cc:594
+#: src/cmdline/cmdline_prompt.cc:616
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Les paquets suivants sont RECOMMANDÉS mais ne seront pas installés :\n"
 
-#: src/cmdline/cmdline_prompt.cc:600
+#: src/cmdline/cmdline_prompt.cc:622
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Les paquets suivants sont SUGGÉRÉS mais ne seront pas installés :\n"
 
-#: src/cmdline/cmdline_prompt.cc:605
+#: src/cmdline/cmdline_prompt.cc:627
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Aucun paquet ne va être installé, mis à jour ou enlevé.\n"
 
-#: src/cmdline/cmdline_prompt.cc:607
+#: src/cmdline/cmdline_prompt.cc:629
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu paquets mis à jour, %lu nouvellement installés, "
 
-#: src/cmdline/cmdline_prompt.cc:611
+#: src/cmdline/cmdline_prompt.cc:633
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu réinstallés, "
 
-#: src/cmdline/cmdline_prompt.cc:613
+#: src/cmdline/cmdline_prompt.cc:635
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu remis à une version antérieure, "
 
-#: src/cmdline/cmdline_prompt.cc:615
+#: src/cmdline/cmdline_prompt.cc:637
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu à enlever et %lu non mis à jour.\n"
 
-#: src/cmdline/cmdline_prompt.cc:622
+#: src/cmdline/cmdline_prompt.cc:644
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Il est nécessaire de télécharger %so/%so d'archives. "
 
-#: src/cmdline/cmdline_prompt.cc:625
+#: src/cmdline/cmdline_prompt.cc:647
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Il est nécessaire de télécharger %so d'archives. "
 
-#: src/cmdline/cmdline_prompt.cc:632
+#: src/cmdline/cmdline_prompt.cc:654
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Après dépaquetage, %so seront utilisés.\n"
 
-#: src/cmdline/cmdline_prompt.cc:635
+#: src/cmdline/cmdline_prompt.cc:657
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Après dépaquetage, %so seront libérés.\n"
 
-#: src/cmdline/cmdline_prompt.cc:656
+#: src/cmdline/cmdline_prompt.cc:678
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr ""
 "Aucun paquet à afficher - indiquez les noms de paquets à la suite de « i ».\n"
 
-#: src/cmdline/cmdline_prompt.cc:662
+#: src/cmdline/cmdline_prompt.cc:684
 msgid "Press Return to continue."
 msgstr "Appuyez sur Entrée pour continuer."
 
-#: src/cmdline/cmdline_prompt.cc:673
+#: src/cmdline/cmdline_prompt.cc:695
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr ""
 "Aucun paquet trouvé - indiquez les noms de paquets à la suite de « c ».\n"
 
-#: src/cmdline/cmdline_prompt.cc:677
+#: src/cmdline/cmdline_prompt.cc:699
 msgid "Press Return to continue"
 msgstr "Appuyez sur Entrée pour continuer"
 
-#: src/cmdline/cmdline_prompt.cc:687
+#: src/cmdline/cmdline_prompt.cc:709
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
@@ -1165,30 +1170,30 @@ msgstr ""
 "Aucun paquet trouvé -- veuillez optionnellement indiquer la ou les racines "
 "de la recherche, suivie(s) par le nom du paquet à justifier"
 
-#: src/cmdline/cmdline_prompt.cc:710
+#: src/cmdline/cmdline_prompt.cc:732
 #, c-format
 msgid "y: %F"
 msgstr "y : %F"
 
-#: src/cmdline/cmdline_prompt.cc:712
+#: src/cmdline/cmdline_prompt.cc:734
 msgid "continue with the installation"
 msgstr "poursuivre l'installation"
 
-#: src/cmdline/cmdline_prompt.cc:714
+#: src/cmdline/cmdline_prompt.cc:736
 #, c-format
 msgid "n: %F"
 msgstr "n : %F"
 
-#: src/cmdline/cmdline_prompt.cc:716
+#: src/cmdline/cmdline_prompt.cc:738
 msgid "abort and quit"
 msgstr "abandonner et quitter"
 
-#: src/cmdline/cmdline_prompt.cc:718
+#: src/cmdline/cmdline_prompt.cc:740
 #, c-format
 msgid "i: %F"
 msgstr "i : %F"
 
-#: src/cmdline/cmdline_prompt.cc:720
+#: src/cmdline/cmdline_prompt.cc:742
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -1196,12 +1201,12 @@ msgstr ""
 "afficher les informations concernant un ou plusieurs paquets, les noms de "
 "paquets doivent suivre le « i »"
 
-#: src/cmdline/cmdline_prompt.cc:722
+#: src/cmdline/cmdline_prompt.cc:744
 #, c-format
 msgid "c: %F"
 msgstr "c : %F"
 
-#: src/cmdline/cmdline_prompt.cc:724
+#: src/cmdline/cmdline_prompt.cc:746
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1209,39 +1214,39 @@ msgstr ""
 "Afficher les fichiers de suivi des modifications de Debian (« changelog ») "
 "d'un ou de plusieurs paquets ; les noms de paquets doivent suivre le « c »"
 
-#: src/cmdline/cmdline_prompt.cc:726
+#: src/cmdline/cmdline_prompt.cc:748
 #, c-format
 msgid "d: %F"
 msgstr "d : %F"
 
-#: src/cmdline/cmdline_prompt.cc:728
+#: src/cmdline/cmdline_prompt.cc:750
 msgid "toggle the display of dependency information"
 msgstr "basculer vers l'affichage des informations de dépendances"
 
-#: src/cmdline/cmdline_prompt.cc:730
+#: src/cmdline/cmdline_prompt.cc:752
 #, c-format
 msgid "s: %F"
 msgstr "s : %F"
 
-#: src/cmdline/cmdline_prompt.cc:732
+#: src/cmdline/cmdline_prompt.cc:754
 msgid "toggle the display of changes in package sizes"
 msgstr "basculer vers l'affichage de la modification de la taille des paquets"
 
-#: src/cmdline/cmdline_prompt.cc:734
+#: src/cmdline/cmdline_prompt.cc:756
 #, c-format
 msgid "v: %F"
 msgstr "v : %F"
 
-#: src/cmdline/cmdline_prompt.cc:736
+#: src/cmdline/cmdline_prompt.cc:758
 msgid "toggle the display of version numbers"
 msgstr "basculer vers l'affichage des numéros de version"
 
-#: src/cmdline/cmdline_prompt.cc:738
+#: src/cmdline/cmdline_prompt.cc:760
 #, c-format
 msgid "w: %F"
 msgstr "w : %F"
 
-#: src/cmdline/cmdline_prompt.cc:740
+#: src/cmdline/cmdline_prompt.cc:762
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
@@ -1250,27 +1255,27 @@ msgstr ""
 "pourquoi l'installation d'un seul paquet devrait conduire à installer "
 "d'autres paquets."
 
-#: src/cmdline/cmdline_prompt.cc:743
+#: src/cmdline/cmdline_prompt.cc:765
 #, c-format
 msgid "r: %F"
 msgstr "r : %F"
 
-#: src/cmdline/cmdline_prompt.cc:745
+#: src/cmdline/cmdline_prompt.cc:767
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 "résoudre automatiquement les dépendances pour corriger les dépendances "
 "incorrectes."
 
-#: src/cmdline/cmdline_prompt.cc:747
+#: src/cmdline/cmdline_prompt.cc:769
 #, c-format
 msgid "e: %F"
 msgstr "e : %F"
 
-#: src/cmdline/cmdline_prompt.cc:749
+#: src/cmdline/cmdline_prompt.cc:771
 msgid "enter the full visual interface"
 msgstr "basculer vers l'interface visuelle"
 
-#: src/cmdline/cmdline_prompt.cc:752
+#: src/cmdline/cmdline_prompt.cc:774
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1282,50 +1287,50 @@ msgstr ""
 "de plusieurs noms de paquets (ou motif). L'action sera appliquée à tous les "
 "paquets que vous avez indiqués. Les actions possibles sont les suivantes :"
 
-#: src/cmdline/cmdline_prompt.cc:759 src/cmdline/cmdline_resolver.cc:198
+#: src/cmdline/cmdline_prompt.cc:781 src/cmdline/cmdline_resolver.cc:200
 msgid "'+' to install packages"
 msgstr "« + » pour installer des paquets"
 
-#: src/cmdline/cmdline_prompt.cc:762 src/cmdline/cmdline_resolver.cc:200
+#: src/cmdline/cmdline_prompt.cc:784 src/cmdline/cmdline_resolver.cc:202
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "« +M » pour installer des paquets et les marquer aussitôt comme ayant été "
 "installés automatiquement."
 
-#: src/cmdline/cmdline_prompt.cc:764 src/cmdline/cmdline_resolver.cc:202
+#: src/cmdline/cmdline_prompt.cc:786 src/cmdline/cmdline_resolver.cc:204
 msgid "'-' to remove packages"
 msgstr "« - » pour supprimer des paquets"
 
-#: src/cmdline/cmdline_prompt.cc:766 src/cmdline/cmdline_resolver.cc:204
+#: src/cmdline/cmdline_prompt.cc:788 src/cmdline/cmdline_resolver.cc:206
 msgid "'_' to purge packages"
 msgstr "« _ » pour purger des paquets"
 
-#: src/cmdline/cmdline_prompt.cc:768 src/cmdline/cmdline_resolver.cc:206
+#: src/cmdline/cmdline_prompt.cc:790 src/cmdline/cmdline_resolver.cc:208
 msgid "'=' to place packages on hold"
 msgstr "« = » pour conserver des paquets"
 
-#: src/cmdline/cmdline_prompt.cc:770 src/cmdline/cmdline_resolver.cc:208
+#: src/cmdline/cmdline_prompt.cc:792 src/cmdline/cmdline_resolver.cc:210
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 "« : » pour conserver les paquets dans leur état actuel sans les mettre dans "
 "l'état conservé (« hold »)"
 
-#: src/cmdline/cmdline_prompt.cc:772 src/cmdline/cmdline_resolver.cc:210
+#: src/cmdline/cmdline_prompt.cc:794 src/cmdline/cmdline_resolver.cc:212
 msgid "'&M' to mark packages as automatically installed"
 msgstr ""
 "« &M » pour marquer des paquets comme ayant été installés automatiquement"
 
-#: src/cmdline/cmdline_prompt.cc:774 src/cmdline/cmdline_resolver.cc:212
+#: src/cmdline/cmdline_prompt.cc:796 src/cmdline/cmdline_resolver.cc:214
 msgid "'&m' to mark packages as manually installed"
 msgstr "« &m » pour marquer des paquets comme ayant été installés manuellement"
 
-#: src/cmdline/cmdline_prompt.cc:778
+#: src/cmdline/cmdline_prompt.cc:800
 msgid "Commands:"
 msgstr "Commandes :"
 
-#: src/cmdline/cmdline_prompt.cc:870
+#: src/cmdline/cmdline_prompt.cc:892
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
@@ -1333,21 +1338,21 @@ msgstr ""
 "Il n'a pas été possible de résoudre ces dépendances. Vous pouvez les "
 "résoudre vous-même ou taper « n » pour quitter."
 
-#: src/cmdline/cmdline_prompt.cc:888
+#: src/cmdline/cmdline_prompt.cc:910
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Voulez-vous continuer ? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:889
+#: src/cmdline/cmdline_prompt.cc:911
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr "Faut-il résoudre ces dépendances manuellement ? [N/+/-/_/:/?] "
 
-#: src/cmdline/cmdline_prompt.cc:907
+#: src/cmdline/cmdline_prompt.cc:929
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Réponse incorrecte. Veuillez entrer une commande correcte ou « ? » pour "
 "obtenir de l'aide.\n"
 
-#: src/cmdline/cmdline_prompt.cc:913
+#: src/cmdline/cmdline_prompt.cc:935
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
@@ -1356,7 +1361,7 @@ msgstr ""
 "installer un paquet), « R » pour lancer la résolution automatique des "
 "dépendances ou « N » pour quitter."
 
-#: src/cmdline/cmdline_prompt.cc:944
+#: src/cmdline/cmdline_prompt.cc:966
 #, c-format
 msgid ""
 "\n"
@@ -1367,7 +1372,7 @@ msgstr ""
 "Les informations de dépendances seront affichées.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:946
+#: src/cmdline/cmdline_prompt.cc:968
 #, c-format
 msgid ""
 "\n"
@@ -1378,7 +1383,7 @@ msgstr ""
 "Les informations de dépendances ne seront pas affichées.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:952
+#: src/cmdline/cmdline_prompt.cc:974
 #, c-format
 msgid ""
 "\n"
@@ -1389,7 +1394,7 @@ msgstr ""
 "Les versions seront affichées.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:954
+#: src/cmdline/cmdline_prompt.cc:976
 #, c-format
 msgid ""
 "\n"
@@ -1400,7 +1405,7 @@ msgstr ""
 "Les versions ne seront pas affichées.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:959
+#: src/cmdline/cmdline_prompt.cc:981
 #, c-format
 msgid ""
 "\n"
@@ -1411,7 +1416,7 @@ msgstr ""
 "Les modifications de taille seront affichées.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:961
+#: src/cmdline/cmdline_prompt.cc:983
 #, c-format
 msgid ""
 "\n"
@@ -1422,22 +1427,22 @@ msgstr ""
 "Les modifications de taille ne seront pas affichées.\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:88 src/cmdline/cmdline_resolver.cc:699
-#: src/generic/apt/apt.cc:269
+#: src/cmdline/cmdline_resolver.cc:90 src/cmdline/cmdline_resolver.cc:701
+#: src/generic/apt/apt.cc:287
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Impossible d'ouvrir %s en écriture"
 
-#: src/cmdline/cmdline_resolver.cc:94 src/cmdline/cmdline_resolver.cc:704
+#: src/cmdline/cmdline_resolver.cc:96 src/cmdline/cmdline_resolver.cc:706
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Erreur lors de l'écriture de l'état du solveur vers %s"
 
-#: src/cmdline/cmdline_resolver.cc:96 src/cmdline/cmdline_resolver.cc:706
+#: src/cmdline/cmdline_resolver.cc:98 src/cmdline/cmdline_resolver.cc:708
 msgid "Resolver state successfully written!"
 msgstr "L'état du solveur a été enregistré avec succès."
 
-#: src/cmdline/cmdline_resolver.cc:159
+#: src/cmdline/cmdline_resolver.cc:161
 #, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
@@ -1446,38 +1451,38 @@ msgstr ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pqt ver ...: %F%na pqt ver ...: %F%"
 "n<ACTION> pqt... : %F%n%F%F%F%F%F%F%F%F"
 
-#: src/cmdline/cmdline_resolver.cc:178
+#: src/cmdline/cmdline_resolver.cc:180
 msgid "accept the proposed changes"
 msgstr "accepter les modifications proposées"
 
-#: src/cmdline/cmdline_resolver.cc:180
+#: src/cmdline/cmdline_resolver.cc:182
 msgid "reject the proposed changes and search for another solution"
 msgstr "rejeter les modifications proposées et rechercher une autre solution"
 
-#: src/cmdline/cmdline_resolver.cc:182
+#: src/cmdline/cmdline_resolver.cc:184
 msgid "give up and quit the program"
 msgstr "abandonner et quitter le programme"
 
-#: src/cmdline/cmdline_resolver.cc:184
+#: src/cmdline/cmdline_resolver.cc:186
 msgid "move to the next solution"
 msgstr "aller à la solution suivante"
 
-#: src/cmdline/cmdline_resolver.cc:186
+#: src/cmdline/cmdline_resolver.cc:188
 msgid "move to the previous solution"
 msgstr "aller à la solution précédente"
 
-#: src/cmdline/cmdline_resolver.cc:188
+#: src/cmdline/cmdline_resolver.cc:190
 msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
 msgstr ""
 "basculer entre le contenu de la solution et une explication de la solution"
 
-#: src/cmdline/cmdline_resolver.cc:190
+#: src/cmdline/cmdline_resolver.cc:192
 msgid "examine the solution in the visual user interface"
 msgstr "examiner la solution dans l'interface utilisateur visuelle"
 
-#: src/cmdline/cmdline_resolver.cc:192
+#: src/cmdline/cmdline_resolver.cc:194
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur."
@@ -1485,7 +1490,7 @@ msgstr ""
 "rejeter les versions données du paquet ; n'afficher aucune solution dans "
 "laquelle elles apparaissent."
 
-#: src/cmdline/cmdline_resolver.cc:194
+#: src/cmdline/cmdline_resolver.cc:196
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur."
@@ -1493,12 +1498,12 @@ msgstr ""
 "accepter les versions données du paquet ; n'afficher que les solutions dans "
 "lesquelles elles apparaissent."
 
-#: src/cmdline/cmdline_resolver.cc:196
+#: src/cmdline/cmdline_resolver.cc:198
 msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr ""
 "ajuster l'état des paquets affichés, où ACTION est l'une des suivantes :"
 
-#: src/cmdline/cmdline_resolver.cc:214
+#: src/cmdline/cmdline_resolver.cc:216
 msgid ""
 "Adjustments will cause the current solution to be discarded and recalculated "
 "as necessary."
@@ -1506,82 +1511,82 @@ msgstr ""
 "Les ajustements feront abandonner et recalculer la solution actuelle si "
 "besoin."
 
-#: src/cmdline/cmdline_resolver.cc:228
+#: src/cmdline/cmdline_resolver.cc:230
 #, c-format
 msgid "The version %s is available in the following archives:"
 msgstr "La version %s est disponible dans les archives suivantes :"
 
-#: src/cmdline/cmdline_resolver.cc:236
+#: src/cmdline/cmdline_resolver.cc:238
 #, c-format
 msgid "Select the version of %s that should be used: "
 msgstr "Choisir la version de %s devant être utilisée : "
 
-#: src/cmdline/cmdline_resolver.cc:243
+#: src/cmdline/cmdline_resolver.cc:245
 #, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
 msgstr "Réponse incorrecte. Veuillez entrer un entier compris entre 1 et %d."
 
-#: src/cmdline/cmdline_resolver.cc:258
+#: src/cmdline/cmdline_resolver.cc:260
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
 msgstr "Vous devez indiquer au moins une paire « paquet/version » après « %c »"
 
-#: src/cmdline/cmdline_resolver.cc:272
+#: src/cmdline/cmdline_resolver.cc:274
 #, c-format
 msgid "Expected a version after \"%s\""
 msgstr "« %s » doit être suivi d'un numéro de version"
 
-#: src/cmdline/cmdline_resolver.cc:282
+#: src/cmdline/cmdline_resolver.cc:284
 #, c-format
 msgid "No such package \"%s\""
 msgstr "Le paquet « %s » n'existe pas"
 
-#: src/cmdline/cmdline_resolver.cc:298
+#: src/cmdline/cmdline_resolver.cc:300
 #, c-format
 msgid "%s has no version named \"%s\""
 msgstr "il n'y a pas de version de %s appelée « %s »"
 
-#: src/cmdline/cmdline_resolver.cc:315
+#: src/cmdline/cmdline_resolver.cc:317
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr "Autorisation de supprimer %s"
 
-#: src/cmdline/cmdline_resolver.cc:318
+#: src/cmdline/cmdline_resolver.cc:320
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr "Autorisation d'installer %s, version %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:328
+#: src/cmdline/cmdline_resolver.cc:330
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr "Rejet de la suppression de %s"
 
-#: src/cmdline/cmdline_resolver.cc:331
+#: src/cmdline/cmdline_resolver.cc:333
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr "Rejet de l'installation de %s, version %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:344
+#: src/cmdline/cmdline_resolver.cc:346
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr "La suppression de %s n'est plus demandée"
 
-#: src/cmdline/cmdline_resolver.cc:347
+#: src/cmdline/cmdline_resolver.cc:349
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr "L'installation de %s, version %s (%s), n'est plus demandée"
 
-#: src/cmdline/cmdline_resolver.cc:356
+#: src/cmdline/cmdline_resolver.cc:358
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr "Demande de suppression de %s"
 
-#: src/cmdline/cmdline_resolver.cc:359
+#: src/cmdline/cmdline_resolver.cc:361
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "Demande d'installation de %s, version %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:501
+#: src/cmdline/cmdline_resolver.cc:503
 #, c-format
 msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
@@ -1591,65 +1596,65 @@ msgstr ""
 "est désactivée.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 
-#: src/cmdline/cmdline_resolver.cc:510
+#: src/cmdline/cmdline_resolver.cc:512
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
 "Il serait nécessaire de résoudre les dépendances mais aucun solveur de "
 "dépendances n'a été créé."
 
-#: src/cmdline/cmdline_resolver.cc:523 src/solution_dialog.cc:127
+#: src/cmdline/cmdline_resolver.cc:525 src/solution_dialog.cc:127
 msgid "Resolving dependencies..."
 msgstr "Résolution des dépendances..."
 
-#: src/cmdline/cmdline_resolver.cc:555
+#: src/cmdline/cmdline_resolver.cc:557
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgstr "ouverts : %d ; fermés : %d ; reportés : %d ; en conflit : %d"
 
-#: src/cmdline/cmdline_resolver.cc:605
+#: src/cmdline/cmdline_resolver.cc:607
 msgid "The following actions will resolve these dependencies:"
 msgstr "Les actions suivantes permettront de résoudre ces dépendances :"
 
-#: src/cmdline/cmdline_resolver.cc:622
+#: src/cmdline/cmdline_resolver.cc:624
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Accepter cette solution ? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:649 src/cmdline/cmdline_resolver.cc:750
+#: src/cmdline/cmdline_resolver.cc:651 src/cmdline/cmdline_resolver.cc:752
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr ""
 "Abandon de tous les efforts pour rechercher une solution à ces dépendances."
 
-#: src/cmdline/cmdline_resolver.cc:679
+#: src/cmdline/cmdline_resolver.cc:681
 msgid "The following commands are available:"
 msgstr "Les commandes suivantes sont disponibles :"
 
-#: src/cmdline/cmdline_resolver.cc:696
+#: src/cmdline/cmdline_resolver.cc:698
 msgid "File to write resolver state to: "
 msgstr "Fichier dans lequel sera écrit l'état du solveur :"
 
-#: src/cmdline/cmdline_resolver.cc:711
+#: src/cmdline/cmdline_resolver.cc:713
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Réponse incorrecte. Veuillez entrer une des commandes suivantes :"
 
-#: src/cmdline/cmdline_resolver.cc:724
+#: src/cmdline/cmdline_resolver.cc:726
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Aucune solution n'a été trouvée dans le temps alloué. Faut-il poursuivre la "
 "recherche ? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:753
+#: src/cmdline/cmdline_resolver.cc:755
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Réponse incorrecte. Veuillez entrer « y » ou « n »."
 
-#: src/cmdline/cmdline_resolver.cc:762
+#: src/cmdline/cmdline_resolver.cc:764
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Impossible de trouver une solution à ces dépendances ! Abandon..."
 
-#: src/cmdline/cmdline_resolver.cc:768
+#: src/cmdline/cmdline_resolver.cc:770
 msgid "*** No more solutions available ***"
 msgstr "*** Aucune autre solution disponible ***"
 
-#: src/cmdline/cmdline_resolver.cc:787
+#: src/cmdline/cmdline_resolver.cc:789
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
@@ -2186,16 +2191,16 @@ msgstr "%so téléchargés en %ss (%so/s)."
 msgid "Total Progress: "
 msgstr "État d'avancement : "
 
-#: src/edit_pkg_hier.cc:191
+#: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
 msgstr "Aucune information de hiérarchie à éditer"
 
-#: src/edit_pkg_hier.cc:293
+#: src/edit_pkg_hier.cc:294
 #, c-format
 msgid "Couldn't open \"%s\" for writing"
 msgstr "Ouverture en écriture de « %s » impossible"
 
-#: src/edit_pkg_hier.cc:338
+#: src/edit_pkg_hier.cc:339
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "Votre répertoire personnel est introuvable, enregistrement dans /tmp/"
@@ -2302,7 +2307,21 @@ msgstr ""
 "Vous devriez mettre à jour la liste des paquets pour corriger ces fichiers "
 "manquants."
 
-#: src/generic/apt/apt.cc:174
+#. ForTranslators: Set this string to the name of a configuration
+#. file in /usr/share/aptitude that overrides defaults for your
+#. language.  This is particularly intended for overriding entries
+#. in the Aptitude::Sections::Descriptions tree.
+#.
+#. For instance, Sections localized for the language .ww might be
+#. stored in a file named aptitude-defaults.ww, which would be
+#. indicated by translating "Localized defaults|" below to
+#. "aptitude-defaults.ww".  If you use this mechanism, you should
+#. also add your defaults file to pkgdata_DATA in Makefile.am.
+#: src/generic/apt/apt.cc:173
+msgid "Localized defaults|"
+msgstr ""
+
+#: src/generic/apt/apt.cc:192
 #, c-format
 msgid ""
 "The system configuration file (%s) contains a setting for the obsolete "
@@ -2313,19 +2332,19 @@ msgstr ""
 "obsolète « Aptitude::Recommends-Important ». Vous devriez la remplacer par "
 "« APT::Install-Recommends » ou la supprimer."
 
-#: src/generic/apt/apt.cc:241
+#: src/generic/apt/apt.cc:259
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr ""
 "%s n'est accessible qu'en lecture ; impossible d'écrire le fichier de "
 "configuration"
 
-#: src/generic/apt/apt.cc:279
+#: src/generic/apt/apt.cc:297
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Impossible de remplacer %s avec le nouveau fichier de configuration"
 
-#: src/generic/apt/apt.cc:378
+#: src/generic/apt/apt.cc:396
 msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
@@ -2342,7 +2361,7 @@ msgstr ""
 "d'installer des paquets."
 
 #: src/generic/apt/download_install_manager.cc:76
-#: src/generic/apt/download_update_manager.cc:82
+#: src/generic/apt/download_update_manager.cc:92
 msgid "Couldn't lock list directory..are you root?"
 msgstr "Impossible de bloquer le répertoire des listes... Êtes-vous root ? "
 
@@ -2371,38 +2390,104 @@ msgstr ""
 "Impossible de récupérer le verrou système ! (il est possible qu'un autre "
 "processus apt ou dpkg soit en cours)"
 
-#: src/generic/apt/download_update_manager.cc:67
+#: src/generic/apt/download_update_manager.cc:77
 msgid "Couldn't read list of package sources"
 msgstr "Impossible de lire les sources de listes de paquets"
 
-#: src/generic/apt/download_update_manager.cc:115
+#: src/generic/apt/download_update_manager.cc:214
+#, c-format
+msgid "fork() failed: %s"
+msgstr ""
+
+#: src/generic/apt/download_update_manager.cc:261
+#, c-format
+msgid "waitpid() failed: %s"
+msgstr ""
+
+#: src/generic/apt/download_update_manager.cc:285
 msgid "Couldn't clean out list directories"
 msgstr "Impossible de nettoyer l'index des listes"
 
-#: src/generic/apt/download_update_manager.cc:127
+#: src/generic/apt/download_update_manager.cc:297
 msgid "Couldn't rebuild package cache"
 msgstr "Impossible de reconstruire le cache des paquets"
+
+#: src/generic/apt/download_update_manager.cc:312
+msgid "The debtags command must not be an empty string."
+msgstr ""
+
+#: src/generic/apt/download_update_manager.cc:316
+msgid "The debtags command must be an absolute path."
+msgstr ""
+
+#: src/generic/apt/download_update_manager.cc:325
+#, fuzzy, c-format
+msgid ""
+"The debtags command (%s) does not exist; perhaps you need to install the "
+"debtags package?"
+msgstr ""
+"Aucune donnée « debtags » disponible. Vous devriez probablement installer le "
+"paquet debtags et utiliser la commande « debtags update »."
+
+#: src/generic/apt/download_update_manager.cc:328
+#, c-format
+msgid "The debtags command (%s) cannot be executed: %s"
+msgstr ""
+
+#: src/generic/apt/download_update_manager.cc:333
+#, fuzzy
+msgid "Updating debtags database..."
+msgstr "Construction de la base de données des étiquettes"
+
+#: src/generic/apt/download_update_manager.cc:350
+msgid "(core dumped)"
+msgstr ""
+
+#: src/generic/apt/download_update_manager.cc:352
+#, c-format
+msgid "The debtags update process (%s %s) was killed by signal %d%s."
+msgstr ""
+
+#: src/generic/apt/download_update_manager.cc:359
+#, c-format
+msgid "The debtags update process (%s %s) exited abnormally (code %d)."
+msgstr ""
+
+#: src/generic/apt/download_update_manager.cc:365
+#, c-format
+msgid ""
+"The debtags update process (%s %s) exited in an unexpected way (status %d)."
+msgstr ""
+
+#: src/generic/apt/download_update_manager.cc:370
+#, fuzzy, c-format
+msgid ""
+"Updating the debtags database (%s %s) failed (perhaps debtags is not "
+"installed?): %s"
+msgstr ""
+"Impossible de charger le vocabulaire de debtags, le paquet debtags est-il "
+"installé ?"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
 #, c-format
 msgid "Unable to stat %s."
 msgstr "stat de « %s » impossible."
 
-#: src/generic/apt/log.cc:52
+#: src/generic/apt/log.cc:54
 #, c-format
 msgid "Unable to open %s to log actions"
 msgstr "Impossible d'ouvrir %s pour enregistrer les actions"
 
-#: src/generic/apt/log.cc:64
+#: src/generic/apt/log.cc:66
 #, c-format
 msgid "Error generating local time (%s)"
 msgstr "Erreur lors de la définition de l'heure locale (%s)"
 
-#: src/generic/apt/log.cc:68
+#: src/generic/apt/log.cc:70
 msgid "log report"
 msgstr "journal"
 
-#: src/generic/apt/log.cc:69
+#: src/generic/apt/log.cc:71
 #, c-format
 msgid ""
 "IMPORTANT: this log only lists intended actions; actions which fail due to\n"
@@ -2414,81 +2499,81 @@ msgstr ""
 "échouent à cause d'erreurs de dpkg peuvent donc ne pas être réalisées.\n"
 "\n"
 
-#: src/generic/apt/log.cc:70
+#: src/generic/apt/log.cc:72
 #, c-format
 msgid "Will install %li packages, and remove %li packages.\n"
 msgstr "%li paquets vont être installés, et %li retirés.\n"
 
-#: src/generic/apt/log.cc:74
+#: src/generic/apt/log.cc:76
 #, c-format
 msgid "%sB of disk space will be used\n"
 msgstr "%so d'espace disque vont être utilisés\n"
 
-#: src/generic/apt/log.cc:77
+#: src/generic/apt/log.cc:79
 #, c-format
 msgid "%sB of disk space will be freed\n"
 msgstr "%so d'espace disque vont être libérés\n"
 
-#: src/generic/apt/log.cc:87
+#: src/generic/apt/log.cc:89
 #, c-format
 msgid "[UPGRADE] %s %s -> %s\n"
 msgstr "[MIS A JOUR] %s %s -> %s\n"
 
-#: src/generic/apt/log.cc:91
+#: src/generic/apt/log.cc:93
 #, c-format
 msgid "[DOWNGRADE] %s %s -> %s\n"
 msgstr "[VERSION PRÉCÉDENTE] %s %s -> %s\n"
 
-#: src/generic/apt/log.cc:101
+#: src/generic/apt/log.cc:103
 msgid "REMOVE"
 msgstr "RETIRÉ"
 
-#: src/generic/apt/log.cc:107
+#: src/generic/apt/log.cc:109
 msgid "INSTALL"
 msgstr "INSTALLÉ"
 
-#: src/generic/apt/log.cc:110
+#: src/generic/apt/log.cc:112
 msgid "REINSTALL"
 msgstr "RÉINSTALLÉ"
 
-#: src/generic/apt/log.cc:113
+#: src/generic/apt/log.cc:115
 msgid "HOLD"
 msgstr "CONSERVÉ"
 
-#: src/generic/apt/log.cc:116
+#: src/generic/apt/log.cc:118
 msgid "BROKEN"
 msgstr "CASSÉ"
 
-#: src/generic/apt/log.cc:119
+#: src/generic/apt/log.cc:121
 msgid "REMOVE, NOT USED"
 msgstr "SUPPRIMÉ, NON UTILISÉ"
 
-#: src/generic/apt/log.cc:122
+#: src/generic/apt/log.cc:124
 msgid "REMOVE, DEPENDENCIES"
 msgstr "RETIRÉ, DÉPENDANCES"
 
-#: src/generic/apt/log.cc:125
+#: src/generic/apt/log.cc:127
 msgid "INSTALL, DEPENDENCIES"
 msgstr "INSTALLÉ, DÉPENDANCES"
 
-#: src/generic/apt/log.cc:128
+#: src/generic/apt/log.cc:130
 msgid "HOLD, DEPENDENCIES"
 msgstr "CONSERVÉ, DÉPENDANCES"
 
-#: src/generic/apt/log.cc:131
+#: src/generic/apt/log.cc:133
 msgid "UNCONFIGURED"
 msgstr "NON CONFIGURÉ"
 
-#: src/generic/apt/log.cc:134
+#: src/generic/apt/log.cc:136
 msgid "????????"
 msgstr "????????"
 
-#: src/generic/apt/log.cc:138
+#: src/generic/apt/log.cc:140
 #, c-format
 msgid "[%s] %s\n"
 msgstr "[%s] %s\n"
 
-#: src/generic/apt/log.cc:141
+#: src/generic/apt/log.cc:143
 #, c-format
 msgid ""
 "===============================================================================\n"
@@ -2662,34 +2747,34 @@ msgstr ""
 msgid "ChangeLog of %s"
 msgstr "Liste des modifications de %s"
 
-#: src/generic/apt/pkg_hier.cc:29 src/generic/apt/pkg_hier.cc:50
+#: src/generic/apt/pkg_hier.cc:28 src/generic/apt/pkg_hier.cc:49
 #, c-format
 msgid "Warning: group %s is involved in a cycle"
 msgstr "Attention : le groupe %s est impliqué dans une boucle"
 
-#: src/generic/apt/pkg_hier.cc:144
+#: src/generic/apt/pkg_hier.cc:143
 #, c-format
 msgid "Cannot open package hierarchy file %s"
 msgstr "Impossible d'ouvrir le fichier de hiérarchie des paquets %s"
 
-#: src/generic/apt/pkg_hier.cc:165
+#: src/generic/apt/pkg_hier.cc:164
 msgid "Global block encountered after first record, ignoring"
 msgstr "Un bloc global placé après le premier enregistrement a été ignoré"
 
-#: src/generic/apt/pkg_hier.cc:178
+#: src/generic/apt/pkg_hier.cc:177
 msgid "Bad record encountered (no Package or Group entry), skipping"
 msgstr ""
 "Un enregistrement défectueux a été trouvé (entrée de Paquet ou de Groupe "
 "manquante), passage au suivant"
 
-#: src/generic/apt/pkg_hier.cc:180
+#: src/generic/apt/pkg_hier.cc:179
 #, c-format
 msgid "Bad record encountered (Package=%s, Group=%s), skipping"
 msgstr ""
 "Un enregistrement défectueux a été trouvé (Paquet = %s, Groupe = %s), "
 "passage au suivant"
 
-#: src/generic/apt/pkg_hier.cc:243
+#: src/generic/apt/pkg_hier.cc:242
 #, c-format
 msgid "Multiple descriptions found for group %s, ignoring one"
 msgstr ""
@@ -2706,20 +2791,12 @@ msgstr ""
 "Impossible de charger le vocabulaire de debtags, le paquet debtags est-il "
 "installé ?"
 
-#: src/generic/apt/tags.cc:348
-msgid ""
-"No debtags data available, perhaps you need to install debtags and run "
-"'debtags update'?"
-msgstr ""
-"Aucune donnée « debtags » disponible. Vous devriez probablement installer le "
-"paquet debtags et utiliser la commande « debtags update »."
-
-#: src/generic/apt/tasks.cc:279
+#: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Impossible d'ouvrir /usr/share/tasksel/debian-tasks.desc"
 
-#: src/generic/apt/tasks.cc:286 src/generic/apt/tasks.cc:328
-#: src/generic/apt/tasks.cc:330
+#: src/generic/apt/tasks.cc:285 src/generic/apt/tasks.cc:327
+#: src/generic/apt/tasks.cc:329
 msgid "Reading task descriptions"
 msgstr "Lecture des descriptions de tâches"
 
@@ -2803,117 +2880,117 @@ msgstr "Entrée invalide dans le groupe de raccourci clavier : « %s »"
 msgid "Ignoring invalid keybinding \"%s\" -> \"%s\""
 msgstr "Raccourci clavier invalide « %s » -> « %s » ignoré"
 
-#: src/load_grouppolicy.cc:259
+#: src/load_grouppolicy.cc:257
 #, c-format
 msgid "Expected policy identifier, got '%c'"
 msgstr "« %c » a été reçu alors qu'un identificateur de règle était attendu"
 
-#: src/load_grouppolicy.cc:271
+#: src/load_grouppolicy.cc:269
 #, c-format
 msgid "Expected ',' or '(', got '%c'"
 msgstr "« %c » a été reçu alors que « , » ou « ( » était attendu"
 
-#: src/load_grouppolicy.cc:278
+#: src/load_grouppolicy.cc:276
 #, c-format
 msgid "Unknown grouping policy \"%s\""
 msgstr "Règle de regroupement inconnue « %s »"
 
-#: src/load_grouppolicy.cc:285
+#: src/load_grouppolicy.cc:283
 #, c-format
 msgid "Terminal policy \"%s\" should be the last policy in the list"
 msgstr "La règle terminale %s devrait être la dernière règle de la liste"
 
-#: src/load_grouppolicy.cc:372
+#: src/load_grouppolicy.cc:370
 #, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
 msgstr ""
 "Mauvais nom de section « %s » (utilisez « none », « topdir », « subdir » ou "
 "« subdirs »)"
 
-#: src/load_grouppolicy.cc:382
+#: src/load_grouppolicy.cc:380
 #, c-format
 msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
 msgstr ""
 "%s est une valeur incorrecte pour passthrough (utiliser « passthrough » ou "
 "« nopassthrough »)"
 
-#: src/load_grouppolicy.cc:387
+#: src/load_grouppolicy.cc:385
 msgid "Too many arguments to by-section grouping policy"
 msgstr "Trop de paramètres dans la règle de regroupement par section"
 
-#: src/load_grouppolicy.cc:400
+#: src/load_grouppolicy.cc:398
 msgid "By-status grouping policies take no arguments"
 msgstr "Les règles de regroupement par état ne prennent aucun paramètre"
 
-#: src/load_grouppolicy.cc:417
+#: src/load_grouppolicy.cc:415
 msgid "Expected '(' after 'filter'"
 msgstr "« ( » est attendu après « filtre »"
 
-#: src/load_grouppolicy.cc:454
+#: src/load_grouppolicy.cc:452
 #, c-format
 msgid "Unable to parse pattern at '%s'"
 msgstr "Analyse de l'expression impossible à « %s »"
 
-#: src/load_grouppolicy.cc:459
+#: src/load_grouppolicy.cc:457
 msgid "Exactly one filter must be provided as an argument to a filter policy"
 msgstr ""
 "Un et un seul nom de filtre doit être passé en paramètre à une règle de "
 "filtrage"
 
-#: src/load_grouppolicy.cc:478
+#: src/load_grouppolicy.cc:476
 msgid "By-mode grouping policies take no arguments"
 msgstr "Les règles de regroupement par mode ne prennent aucun paramètre"
 
-#: src/load_grouppolicy.cc:489
+#: src/load_grouppolicy.cc:487
 msgid "First-character grouping policies take no arguments"
 msgstr ""
 "La règle de regroupement selon le premier caractère ne prend aucun paramètre"
 
-#: src/load_grouppolicy.cc:501
+#: src/load_grouppolicy.cc:499
 msgid "Version-generating grouping policies take no arguments"
 msgstr "La règle de regroupement par version ne prend pas de paramètre"
 
-#: src/load_grouppolicy.cc:512
+#: src/load_grouppolicy.cc:510
 msgid "Dep-generating grouping policies take no arguments"
 msgstr "La règle de regroupement par dépendances ne prend pas de paramètre"
 
-#: src/load_grouppolicy.cc:523
+#: src/load_grouppolicy.cc:521
 msgid "By-priority grouping policies take no arguments"
 msgstr "La règle de regroupement par priorité ne prend pas de paramètre"
 
-#: src/load_grouppolicy.cc:554
+#: src/load_grouppolicy.cc:552
 msgid "Task grouping policies take no arguments"
 msgstr "La règle de regroupement par tâche ne prend pas de paramètre"
 
-#: src/load_grouppolicy.cc:567
+#: src/load_grouppolicy.cc:565
 msgid "Expected no more than one argument to a tag grouping policy"
 msgstr ""
 "Un seul paramètre est attendu dans une règle de regroupement par étiquette"
 
-#: src/load_grouppolicy.cc:582
+#: src/load_grouppolicy.cc:580
 msgid "Expected '(' after 'pattern'"
 msgstr "« ( » est attendu après « pattern »"
 
-#: src/load_grouppolicy.cc:590
+#: src/load_grouppolicy.cc:588
 msgid "Missing arguments to 'pattern'"
 msgstr "Paramètres manquants pour « pattern »"
 
-#: src/load_grouppolicy.cc:614
+#: src/load_grouppolicy.cc:612
 #, c-format
 msgid "Unable to parse pattern after \"%s\""
 msgstr "Impossible d'analyser l'expression après « %s »"
 
-#: src/load_grouppolicy.cc:636
+#: src/load_grouppolicy.cc:634
 #, c-format
 msgid "Unexpectedly empty tree title after \"%s\""
 msgstr "Titre d'arborescence vide inattendu après « %s »"
 
-#: src/load_grouppolicy.cc:655
+#: src/load_grouppolicy.cc:653
 #, c-format
 msgid "Expected ',' or ')' following '||', got '%s'"
 msgstr "« , » ou « ) » suivant « || » attendu, « %s » a été obtenu"
 
-#: src/load_grouppolicy.cc:667
+#: src/load_grouppolicy.cc:665
 msgid "Unmatched '(' in pattern grouping policy"
 msgstr "« (  » non fermée dans la règle de regroupement par expression"
 
@@ -3377,125 +3454,125 @@ msgstr ""
 msgid "Search backwards for: "
 msgstr "Recherche arrière de :"
 
-#: src/mine/cmine.cc:122 src/mine/cmine.cc:129
+#: src/mine/cmine.cc:124 src/mine/cmine.cc:131
 msgid "second"
 msgstr "seconde"
 
-#: src/mine/cmine.cc:122 src/mine/cmine.cc:129
+#: src/mine/cmine.cc:124 src/mine/cmine.cc:131
 msgid "seconds"
 msgstr "secondes"
 
-#: src/mine/cmine.cc:127
+#: src/mine/cmine.cc:129
 msgid "Won"
 msgstr "gagné"
 
-#: src/mine/cmine.cc:127
+#: src/mine/cmine.cc:129
 msgid "Lost"
 msgstr "perdu"
 
-#: src/mine/cmine.cc:171 src/mine/cmine.cc:215
+#: src/mine/cmine.cc:173 src/mine/cmine.cc:217
 #, c-format
 msgid "Could not open file \"%s\""
 msgstr "Impossible d'ouvrir le fichier « %s »"
 
-#: src/mine/cmine.cc:186
+#: src/mine/cmine.cc:188
 #, c-format
 msgid "Could not load game from %s"
 msgstr "Impossible de charger le jeu à partir de %s"
 
-#: src/mine/cmine.cc:297
+#: src/mine/cmine.cc:299
 msgid "Setup custom game"
 msgstr "Paramétrer un jeu personnalisé"
 
-#: src/mine/cmine.cc:299
+#: src/mine/cmine.cc:301
 msgid "Height of board: "
 msgstr "Hauteur du champ : "
 
-#: src/mine/cmine.cc:302
+#: src/mine/cmine.cc:304
 msgid "Width of board: "
 msgstr "Largeur du champ : "
 
-#: src/mine/cmine.cc:305
+#: src/mine/cmine.cc:307
 msgid "Number of mines: "
 msgstr "Nombre de mines : "
 
-#: src/mine/cmine.cc:308 src/mine/cmine.cc:373 src/ui.cc:354
+#: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:354
 msgid "Ok"
 msgstr "Continuer"
 
-#: src/mine/cmine.cc:309 src/mine/cmine.cc:374
+#: src/mine/cmine.cc:311 src/mine/cmine.cc:376
 msgid "Cancel"
 msgstr "Abandonner"
 
-#: src/mine/cmine.cc:366
+#: src/mine/cmine.cc:368
 msgid "Choose difficulty level"
 msgstr "Choisir le niveau de difficulté"
 
-#: src/mine/cmine.cc:368
+#: src/mine/cmine.cc:370
 msgid "Easy"
 msgstr "Facile"
 
-#: src/mine/cmine.cc:369
+#: src/mine/cmine.cc:371
 msgid "Medium"
 msgstr "Intermédiaire"
 
-#: src/mine/cmine.cc:370
+#: src/mine/cmine.cc:372
 msgid "Hard"
 msgstr "Difficile"
 
-#: src/mine/cmine.cc:371
+#: src/mine/cmine.cc:373
 msgid "Custom"
 msgstr "Personnalisé"
 
-#: src/mine/cmine.cc:477
+#: src/mine/cmine.cc:479
 msgid "You die...  --More--"
 msgstr "Vous êtes mort... --Recommencer--"
 
-#: src/mine/cmine.cc:490
+#: src/mine/cmine.cc:492
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
 msgstr ""
 "Les pointes étaient empoisonnées ! Le poison était mortel...--Recommencer--"
 
-#: src/mine/cmine.cc:493
+#: src/mine/cmine.cc:495
 msgid "You land on a set of sharp iron spikes!  --More--"
 msgstr ""
 "Vous avez atterri sur une zone de piques métalliques pointues ! --"
 "Recommencer--"
 
-#: src/mine/cmine.cc:496
+#: src/mine/cmine.cc:498
 msgid "You fall into a pit!  --More--"
 msgstr "Vous êtes tombé dans un puits ! --Recommencer--"
 
-#: src/mine/cmine.cc:499
+#: src/mine/cmine.cc:501
 msgid "KABOOM!  You step on a land mine.  --More--"
 msgstr "Badaboum ! Vous avez marché sur une mine. --Recommencer--"
 
-#: src/mine/cmine.cc:504
+#: src/mine/cmine.cc:506
 msgid "The dart was poisoned!  The poison was deadly...  --More--"
 msgstr ""
 "La pointe était empoisonnée ! Le poison était mortel... --Recommencer--"
 
-#: src/mine/cmine.cc:506
+#: src/mine/cmine.cc:508
 msgid ""
 "A little dart shoots out at you!  You are hit by a little dart!  --More--"
 msgstr ""
 "On vous a lancé une fléchette ! Vous avez été touché par une fléchette ! --"
 "Recommencer--"
 
-#: src/mine/cmine.cc:510
+#: src/mine/cmine.cc:512
 msgid "You turn to stone... --More--"
 msgstr "Vous vous êtes changé en roc... --Recommencer--"
 
-#: src/mine/cmine.cc:512
+#: src/mine/cmine.cc:514
 msgid "Touching the cockatrice corpse was a fatal mistake.  --More--"
 msgstr ""
 "Toucher le cadavre du cockatrice était une erreur fatale. --Recommencer--"
 
-#: src/mine/cmine.cc:514
+#: src/mine/cmine.cc:516
 msgid "You feel here a cockatrice corpse.  --More--"
 msgstr "Vous avez senti ici le cadavre d'un cockatrice. --Recommencer--"
 
-#: src/mine/cmine.cc:518
+#: src/mine/cmine.cc:520
 msgid ""
 "Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --"
 "More--"
@@ -3503,61 +3580,61 @@ msgstr ""
 "Clic ! Vous avez déclenché un piège à rocher roulant ! Vous avez été touché "
 "par un rocher ! --Recommencer--"
 
-#: src/mine/cmine.cc:528
+#: src/mine/cmine.cc:530
 msgid "sleep"
 msgstr "sommeil"
 
-#: src/mine/cmine.cc:531
+#: src/mine/cmine.cc:533
 msgid "striking"
 msgstr "combat"
 
-#: src/mine/cmine.cc:534
+#: src/mine/cmine.cc:536
 msgid "death"
 msgstr "mort"
 
-#: src/mine/cmine.cc:537
+#: src/mine/cmine.cc:539
 msgid "polymorph"
 msgstr "polymorphe"
 
-#: src/mine/cmine.cc:540
+#: src/mine/cmine.cc:542
 msgid "magic missile"
 msgstr "missile magique"
 
-#: src/mine/cmine.cc:543
+#: src/mine/cmine.cc:545
 msgid "secret door detection"
 msgstr "détection de porte secrète"
 
-#: src/mine/cmine.cc:546
+#: src/mine/cmine.cc:548
 msgid "invisibility"
 msgstr "invisibilité"
 
-#: src/mine/cmine.cc:549
+#: src/mine/cmine.cc:551
 msgid "cold"
 msgstr "froid"
 
-#: src/mine/cmine.cc:555
+#: src/mine/cmine.cc:557
 #, c-format
 msgid "Your wand of %s breaks apart and explodes!  --More--"
 msgstr ""
 "Votre baguette magique de %s s'est brisée et a explosé ! --Recommencer--"
 
-#: src/mine/cmine.cc:561
+#: src/mine/cmine.cc:563
 msgid "You are jolted by a surge of electricity!  --More--"
 msgstr "Vous avez été secoué par une décharge électrique ! --Recommencer--"
 
-#: src/mine/cmine.cc:665
+#: src/mine/cmine.cc:667
 msgid "Enter the filename to load: "
 msgstr "Entrer le nom du fichier à charger : "
 
-#: src/mine/cmine.cc:672
+#: src/mine/cmine.cc:674
 msgid "Enter the filename to save: "
 msgstr "Entrer le nom du fichier à enregistrer : "
 
-#: src/mine/cmine.cc:682
+#: src/mine/cmine.cc:684
 msgid "mine-help.txt"
 msgstr "mine-help-fr.txt"
 
-#: src/mine/cmine.cc:684
+#: src/mine/cmine.cc:686
 msgid "Encoding of mine-help.txt|UTF-8"
 msgstr "Encodage de mine-help-fr.txt|ISO-8859-15"
 
@@ -3654,7 +3731,7 @@ msgstr "<N/A>"
 msgid "<none>"
 msgstr "<aucun>"
 
-#: src/pkg_columnizer.cc:237 src/pkg_grouppolicy.cc:229
+#: src/pkg_columnizer.cc:237 src/pkg_grouppolicy.cc:259
 msgid "virtual"
 msgstr "virtuel"
 
@@ -3725,7 +3802,7 @@ msgid "none"
 msgstr "aucun"
 
 #: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
-#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:234
+#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:264
 #: src/pkg_info_screen.cc:127 src/pkg_info_screen.cc:128
 #: src/pkg_ver_item.cc:347 src/pkg_ver_item.cc:381
 msgid "Unknown"
@@ -3796,15 +3873,15 @@ msgid "Internal error: Default column string is unparsable"
 msgstr ""
 "Erreur interne : la chaîne dans la colonne par défaut est incompréhensible"
 
-#: src/pkg_grouppolicy.cc:224
+#: src/pkg_grouppolicy.cc:254
 msgid "Tasks"
 msgstr "Tâches"
 
-#: src/pkg_grouppolicy.cc:249
+#: src/pkg_grouppolicy.cc:279
 msgid "main"
 msgstr "main"
 
-#: src/pkg_grouppolicy.cc:388
+#: src/pkg_grouppolicy.cc:418
 msgid ""
 "Security Updates\n"
 " Security updates for these packages are available from security.debian.org."
@@ -3813,7 +3890,7 @@ msgstr ""
 " Les mises à jour de sécurité pour ces paquets sont disponibles depuis "
 "security.debian.org."
 
-#: src/pkg_grouppolicy.cc:389
+#: src/pkg_grouppolicy.cc:419
 msgid ""
 "Upgradable Packages\n"
 " A newer version of these packages is available."
@@ -3821,7 +3898,7 @@ msgstr ""
 "Paquets pouvant être mis à jour\n"
 " Une version plus récente de ces paquets existe."
 
-#: src/pkg_grouppolicy.cc:390
+#: src/pkg_grouppolicy.cc:420
 msgid ""
 "New Packages\n"
 " These packages have been added to Debian since the last time you cleared "
@@ -3833,7 +3910,7 @@ msgstr ""
 "nettoyé la liste des paquets « nouveaux » (Choisir « oublier les nouveaux "
 "paquets » depuis le menu Actions pour vider cette liste)."
 
-#: src/pkg_grouppolicy.cc:391
+#: src/pkg_grouppolicy.cc:421
 msgid ""
 "Installed Packages\n"
 " These packages are currently installed on your computer."
@@ -3841,7 +3918,7 @@ msgstr ""
 "Paquets installés\n"
 " Ces paquets sont actuellement installés sur votre ordinateur."
 
-#: src/pkg_grouppolicy.cc:392
+#: src/pkg_grouppolicy.cc:422
 msgid ""
 "Not Installed Packages\n"
 " These packages are not installed on your computer."
@@ -3849,7 +3926,7 @@ msgstr ""
 "Paquets non installés\n"
 " Ces paquets ne sont pas installés sur votre ordinateur."
 
-#: src/pkg_grouppolicy.cc:393
+#: src/pkg_grouppolicy.cc:423
 msgid ""
 "Obsolete and Locally Created Packages\n"
 " These packages are currently installed on your computer, but they are not "
@@ -3861,7 +3938,7 @@ msgstr ""
 "sont disponibles sur aucune source d'apt. Ils peuvent soit être obsolètes et "
 "avoir été retirés de l'archive soit avoir été créés par vous-même."
 
-#: src/pkg_grouppolicy.cc:394
+#: src/pkg_grouppolicy.cc:424
 msgid ""
 "Virtual Packages\n"
 " These packages do not exist; they are names other packages use to require "
@@ -3871,7 +3948,7 @@ msgstr ""
 " Ces paquets n'existent pas ; ce sont des noms que d'autres paquets "
 "utilisent pour exiger ou fournir certaines fonctionnalités."
 
-#: src/pkg_grouppolicy.cc:592
+#: src/pkg_grouppolicy.cc:622
 msgid ""
 "Packages with unsatisfied dependencies\n"
 " The dependency requirements of these packages will be unmet after the "
@@ -3887,7 +3964,7 @@ msgstr ""
 " La présence de cet arbre indique que quelque chose est certainement cassé "
 "soit sur votre système soit dans l'archive Debian."
 
-#: src/pkg_grouppolicy.cc:593
+#: src/pkg_grouppolicy.cc:623
 msgid ""
 "Packages being removed because they are no longer used\n"
 " These packages are being deleted because they were automatically installed "
@@ -3900,7 +3977,7 @@ msgstr ""
 "conduira à ce que plus aucun des paquets ne les déclarera comme une "
 "dépendance « importante ».\n"
 
-#: src/pkg_grouppolicy.cc:594
+#: src/pkg_grouppolicy.cc:624
 msgid ""
 "Packages being automatically held in their current state\n"
 " These packages could be upgraded, but they have been kept in their current "
@@ -3910,7 +3987,7 @@ msgstr ""
 " Ces paquets pourraient être mis à jour mais ont été maintenus dans leur "
 "état actuel afin d'éviter de casser des dépendances."
 
-#: src/pkg_grouppolicy.cc:595
+#: src/pkg_grouppolicy.cc:625
 msgid ""
 "Packages being automatically installed to satisfy dependencies\n"
 " These packages are being installed because they are required by another "
@@ -3920,7 +3997,7 @@ msgstr ""
 " Ces paquets ont été installés parce qu'ils sont nécessaires à un nouveau "
 "paquet dont vous avez demandé l'installation."
 
-#: src/pkg_grouppolicy.cc:596
+#: src/pkg_grouppolicy.cc:626
 msgid ""
 "Packages being deleted due to unsatisfied dependencies\n"
 " These packages are being deleted because one or more of their dependencies "
@@ -3932,7 +4009,7 @@ msgstr ""
 "dépendances ne sont plus disponible ou parce qu'ils sont en conflit avec un "
 "autre paquet."
 
-#: src/pkg_grouppolicy.cc:597
+#: src/pkg_grouppolicy.cc:627
 msgid ""
 "Packages to be downgraded\n"
 " An older version of these packages than is currently installed will be "
@@ -3942,7 +4019,7 @@ msgstr ""
 " Une version plus ancienne que la version actuellement installée de ces "
 "paquets va être installée."
 
-#: src/pkg_grouppolicy.cc:598
+#: src/pkg_grouppolicy.cc:628
 msgid ""
 "Packages being held back\n"
 " These packages could be upgraded, but you have asked for them to be held at "
@@ -3952,7 +4029,7 @@ msgstr ""
 " Ces paquets pourraient être mis à jour mais vous avez demandé à ce qu'ils "
 "soient maintenus dans leur version actuelle."
 
-#: src/pkg_grouppolicy.cc:599
+#: src/pkg_grouppolicy.cc:629
 msgid ""
 "Packages to be reinstalled\n"
 " These packages will be reinstalled."
@@ -3960,7 +4037,7 @@ msgstr ""
 "Paquets qui vont être réinstallés\n"
 " Ces paquets vont être réinstallés."
 
-#: src/pkg_grouppolicy.cc:600
+#: src/pkg_grouppolicy.cc:630
 msgid ""
 "Packages to be installed\n"
 " These packages have been manually selected for installation on your "
@@ -3970,7 +4047,7 @@ msgstr ""
 " Ces paquets ont été marqués manuellement comme devant être installés sur "
 "votre ordinateur."
 
-#: src/pkg_grouppolicy.cc:601
+#: src/pkg_grouppolicy.cc:631
 msgid ""
 "Packages to be removed\n"
 " These packages have been manually selected for removal."
@@ -3978,7 +4055,7 @@ msgstr ""
 "Paquets à enlever\n"
 " Ces paquets ont été sélectionnés manuellement afin d'être enlevés"
 
-#: src/pkg_grouppolicy.cc:602
+#: src/pkg_grouppolicy.cc:632
 msgid ""
 "Packages to be upgraded\n"
 " These packages will be upgraded to a newer version."
@@ -3986,7 +4063,7 @@ msgstr ""
 "Paquets à mettre à jour\n"
 " Ces paquets vont être mis à jour vers une nouvelle version"
 
-#: src/pkg_grouppolicy.cc:603
+#: src/pkg_grouppolicy.cc:633
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
@@ -3996,16 +4073,16 @@ msgstr ""
 " Ces paquets ne sont pas complètement installés et configurés ; une "
 "tentative pour terminer leur installation sera faite."
 
-#: src/pkg_grouppolicy.cc:718
+#: src/pkg_grouppolicy.cc:748
 msgid "unknown"
 msgstr "Inconnu"
 
-#: src/pkg_grouppolicy.cc:729
+#: src/pkg_grouppolicy.cc:759
 #, c-format
 msgid "Priority %s"
 msgstr "Priorité : %s"
 
-#: src/pkg_grouppolicy.cc:1472
+#: src/pkg_grouppolicy.cc:1502
 msgid "MISSING TAG"
 msgstr "MARQUEUR MANQUANT"
 
