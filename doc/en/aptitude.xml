@@ -3997,7 +3997,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      More precisely: they will be removed when there is no
 	      path via Depends, PreDepends, or Recommends to them from
 	      a manually installed package.  If <link
-	      linkend='configKeepSuggests'>Aptitude::Keep-Suggests</link>
+	      linkend='configKeep-Suggests'>Aptitude::Keep-Suggests</link>
 	      is true, a Suggests relationship is also enough to keep
 	      a package installed.
 	    </para>
@@ -8492,7 +8492,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem>
+	    <seglistitem id='configDebtags-Update-Options'>
 	      <seg><literal>Aptitude::Debtags-Update-Options</literal></seg>
 	      <seg><literal>--local</literal></seg>
 
@@ -8636,7 +8636,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configKeepRecommends'>
+	    <seglistitem id='configKeep-Recommends'>
 	      <seg><literal>Aptitude::Keep-Recommends</literal></seg>
 
 	      <seg><literal>false</literal></seg>
@@ -8647,13 +8647,13 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		(and thus will not automatically remove them) as long
 		as any installed package recommends them, even if
 		<literal><link
-		linkend='configApt-Install-Recommends'>Apt::Install-Recommends</link></literal>
+		linkend='configAptInstall-Recommends'>Apt::Install-Recommends</link></literal>
 		is <literal>false</literal>.  For more information,
 		see <xref linkend='secAutoInstall'/>.
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configKeepSuggests'>
+	    <seglistitem id='configKeep-Suggests'>
 	      <seg><literal>Aptitude::Keep-Suggests</literal></seg>
 
 	      <seg><literal>false</literal></seg>
@@ -9172,11 +9172,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <seg>
 		This is an obsolete option; use <literal><link
-		linkend='configKeepSuggests'>Aptitude::Keep-Suggests</link></literal>
+		linkend='configKeep-Suggests'>Aptitude::Keep-Suggests</link></literal>
 		instead.  Setting this option to
 		<literal>true</literal> has the same effect as setting
 		<literal><link
-		linkend='configKeepSuggests'>Aptitude::Keep-Suggests</link></literal>
+		linkend='configKeep-Suggests'>Aptitude::Keep-Suggests</link></literal>
 		to <literal>true</literal>.
 	      </seg>
 	    </seglistitem>
