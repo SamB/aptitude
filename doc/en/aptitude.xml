@@ -5368,11 +5368,14 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 		    <listitem>
 		      <para>
-			Group based on the part of the Section field before the
-			first <literal>/</literal> character; if there is no
-			<literal>/</literal>,
-			<quote><literal>main</literal></quote> will be used
-			instead.
+			Group based on the part of the Section field
+			before the first <literal>/</literal>
+			character; if this part of the Section is not
+			recognized, or if there is no
+			<literal>/</literal>, the first entry in the
+			list <literal><link
+			linkend='configTop-Sections'>Aptitude::Sections::Top-Sections</link></literal>
+			will be used instead.
 		      </para>
 		    </listitem>
 		  </varlistentry>
@@ -5382,9 +5385,14 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 		    <listitem>
 		      <para>
-			Group based on the part of the Section field after the
-			first <literal>/</literal> character; if there is no
-			<literal>/</literal>, the entire field will be used.
+			Group based on the part of the Section field
+			after the first <literal>/</literal>
+			character, if it is contained in the list
+			<literal><link
+			linkend='configTop-Sections'>Aptitude::Sections::Top-Sections</link></literal>.
+			If not, or if there is no
+			<literal>/</literal>, group based on the
+			entire Section field instead.
 		      </para>
 		    </listitem>
 		  </varlistentry>
@@ -5394,11 +5402,27 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 		    <listitem>
 		      <para>
-			Group based on the part of the Section field after the
-			first <literal>/</literal> character; if there is no
-			<literal>/</literal>, the entire field will be used; if
-			there are multiple <literal>/</literal> characters,
-			a hierarchy of groups will be formed.
+			Group based on the part of the Section field
+			after the first <literal>/</literal>
+			character, if the portion of the field
+			preceding it is contained in the list
+			<literal><link
+			linkend='configTop-Sections'>Aptitude::Sections::Top-Sections</link></literal>;
+			if not, or if there is no
+			<literal>/</literal>, the entire field will be
+			used.  If there are multiple
+			<literal>/</literal> characters in the portion
+			of the field that is used, a hierarchy of
+			groups will be formed.  For instance, if
+			<quote><literal>games</literal></quote> is not
+			a member of <literal><link
+			linkend='configTop-Sections'>Aptitude::Sections::Top-Sections</link></literal>,
+			then a package with a section of
+			<quote><literal>games/arcade</literal></quote>
+			will be placed under the top-level heading
+			<quote><literal>games</literal></quote>, in a
+			sub-tree named
+			<quote><literal>arcade</literal></quote>.
 		      </para>
 		    </listitem>
 		  </varlistentry>
@@ -9065,6 +9089,53 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		clear
 		<literal>Aptitude::Recommends-Important</literal> in
 		your user configuration file.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configTop-Sections'>
+	      <seg><literal>Aptitude::Sections::Top-Sections</literal></seg>
+	      <seg><literal>"main"; "contrib"; "non-free"; "non-US";</literal></seg>
+	      <seg>
+		A configuration group whose elements are the names of
+		the top-level archive sections.  The
+		<quote><literal>topdir</literal></quote>,
+		<quote><literal>subdir</literal></quote>, and
+		<quote><literal>subdirs</literal></quote> grouping
+		policies use this list to interpret Section fields: if
+		the first path element of a package's Section is
+		<emphasis>not</emphasis> contained in this list, or if
+		its Section has only one element, then the package
+		will be grouped using the first member of this list as
+		its first path element.  For example, if the first
+		member of <literal>Top-Sections</literal> is
+		<quote><literal>main</literal></quote>, then a package
+		whose Section is
+		<quote><literal>games</literal></quote> will be
+		treated as if its Section field were
+		<quote><literal>games/arcade</literal></quote>.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configDescriptions'>
+	      <seg><literal>Aptitude::Sections::Descriptions</literal></seg>
+	      <seg>See <literal>$prefix/share/aptitude/section-descriptions</literal></seg>
+	      <seg>
+		This option is a group whose members define the
+		descriptions displayed for each section when using the
+		<quote><literal>section</literal></quote> package
+		hierarchy grouping policy.  Descriptions are assigned
+		to section trees based on the last component of the
+		name: for instance, a member of this group named
+		<quote><literal>games</literal></quote> will be used
+		to describe the Sections
+		<quote><literal>games</literal></quote>,
+		<quote><literal>non-free/games</literal></quote>, and
+		<quote><literal>non-free/desktop/games</literal></quote>.
+		Within the text of section descriptions, the string
+		<quote><literal>\n</literal></quote> will be replaced
+		by a line-break, and the string
+		<quote><literal>''</literal></quote> will be replaced
+		by a double-quote character.
 	      </seg>
 	    </seglistitem>
 
