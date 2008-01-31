@@ -278,8 +278,8 @@ option_item misc_options[]={
   option_item(N_("URL to use to download changelogs"),
 	      N_("This option controls the template that's used to "
 		 "download changelogs from the Debian Web site.  You "
-		 "should only need to change this if the URL of "
-		 "the package archive changes."),
+		 "should only need to change this if the changelogs move "
+		 "to a different URL."),
 	      PACKAGE "::Changelog-URL-Template",
 	      "http://cgi.debian.org/cgi-bin/get-changelog?package=%s"),
   option_item(N_("Display a preview of what will be done before doing it"),
