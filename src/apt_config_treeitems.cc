@@ -382,11 +382,11 @@ namespace aptitude
 	  const std::wstring value_desc =
 	    value_found == choices.end()
 	    ? cw::util::transcode(value)
-	    : value_found->second.get_description();
+	    : W_(value_found->second.get_untranslated_description().c_str());
 	  const std::wstring dflt_desc =
 	    dflt_found == choices.end()
 	    ? cw::util::transcode(dflt)
-	    : dflt_found->second.get_description();
+	    : W_(dflt_found->second.get_untranslated_description().c_str());
 
 	  std::vector<cw::fragment *> fragments;
 	  fragments.push_back(drophardwrapbox(cw::fragf(_("%BOption:%b  ")),
@@ -398,8 +398,8 @@ namespace aptitude
 
 	  fragments.push_back(cw::newline_fragment());
 	  fragments.push_back(drophardwrapbox(cw::fragf(_("%BChoice:%b  ")),
-					      my_choice_found->second.get_description()));
-	  fragments.push_back(wrapbox(cw::text_fragment(my_choice_found->second.get_long_description())));
+					      _(my_choice_found->second.get_untranslated_description().c_str())));
+	  fragments.push_back(wrapbox(cw::text_fragment(_(my_choice_found->second.get_untranslated_long_description().c_str()))));
 
 	  fragments.push_back(cw::newline_fragment());
 	  fragments.push_back(wrapbox(cw::fragf(long_description.c_str())));
@@ -444,7 +444,7 @@ namespace aptitude
 	  const char *box = selected ? "(*)" : "( )";
 
 	  cw::treeitem::paint(win, y, hierarchical,
-			     swsprintf(L"%s %ls", box, my_choice_found->second.get_description().c_str()));
+			      swsprintf(L"%s %s", box, _(my_choice_found->second.get_untranslated_description().c_str())));
 	}
 
 	const wchar_t *tag()

@@ -156,6 +156,24 @@ void apt_preinit()
   ReadConfigFile(*theme_config, PKGDATADIR "/aptitude-defaults");
 
   pkgInitConfig(*_config);
+
+
+  ReadConfigFile(*_config, PKGDATADIR "/section-descriptions");
+
+  // ForTranslators: Set this string to the name of a configuration
+  // file in /usr/share/aptitude that overrides defaults for your
+  // language.  This is particularly intended for overriding entries
+  // in the Aptitude::Sections::Descriptions tree.
+  //
+  // For instance, Sections localized for the language .ww might be
+  // stored in a file named aptitude-defaults.ww, which would be
+  // indicated by translating "Localized defaults|" below to
+  // "aptitude-defaults.ww".  If you use this mechanism, you should
+  // also add your defaults file to pkgdata_DATA in Makefile.am.
+  std::string localized_config_name = P_("Localized defaults|");
+  if(localized_config_name.size() > 0)
+    ReadConfigFile(*_config, PKGDATADIR "/" + localized_config_name);
+
   pkgInitSystem(*_config, _system);
 
   // Obviously this must come before we read user settings.
