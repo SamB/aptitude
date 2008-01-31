@@ -63,8 +63,8 @@ namespace aptitude
 struct option_item
 {
   enum {OPTION_BOOL, OPTION_STRING, OPTION_RADIO, OPTION_END} type;
-  const char *description;
-  const char *long_description;
+  const char *untranslated_description;
+  const char *untranslated_long_description;
   const char *option_name;
 
   union
@@ -79,28 +79,28 @@ struct option_item
   vector<radio_choice> choices;
 
   option_item()
-    :type(OPTION_END), description(NULL), option_name(NULL)
+    :type(OPTION_END), untranslated_description(NULL), option_name(NULL)
   {
   }
 
-  option_item(const char *_description,
-	      const char *_long_description,
+  option_item(const char *_untranslated_description,
+	      const char *_untranslated_long_description,
 	      const char *_option_name, bool def)
     :type(OPTION_BOOL),
-     description(_description),
-     long_description(_long_description),
+     untranslated_description(_untranslated_description),
+     untranslated_long_description(_untranslated_long_description),
      option_name(_option_name),
      b_default(def)
   {
   }
 
-  option_item(const char *_description,
-	      const char *_long_description,
+  option_item(const char *_untranslated_description,
+	      const char *_untranslated_long_description,
 	      const char *_option_name,
 	      const char *def)
     :type(OPTION_STRING),
-     description(_description),
-     long_description(_long_description),
+     untranslated_description(_untranslated_description),
+     untranslated_long_description(_untranslated_long_description),
      option_name(_option_name),
      s_default(def)
   {
@@ -109,8 +109,8 @@ struct option_item
   /** \brief Construct a radio item from a list of choices,
    *  destroying each choice after it's inserted into the list.
    */
-  static option_item radio(const char *description,
-			   const char *long_description,
+  static option_item radio(const char *untranslated_description,
+			   const char *untranslated_long_description,
 			   const char *option_name,
 			   const char *def,
 			   const radio_choice *choice_1,
@@ -122,9 +122,9 @@ struct option_item
     va_start(args, choice_1);
 
     rval.type=OPTION_RADIO;
-    rval.description=description;
-    rval.long_description = long_description;
-    rval.option_name=option_name;
+    rval.untranslated_description = untranslated_description;
+    rval.untranslated_long_description = untranslated_long_description;
+    rval.option_name = option_name;
     rval.s_default=def;
 
     rval.choices.push_back(*choice_1);
@@ -148,12 +148,12 @@ struct option_item
 };
 
 	radio_choice *choice(const char *value,
-			     const char *description,
-			     const char *long_description)
+			     const char *untranslated_description,
+			     const char *untranslated_long_description)
 	{
 	  return new radio_choice(value,
-				  W_(description),
-				  W_(long_description));
+				  untranslated_description,
+				  untranslated_long_description);
 	}
 
 option_item ui_options[]={
@@ -196,12 +196,12 @@ option_item ui_options[]={
 		     N_("This option controls whether aptitude will wait for confirmation after a download before it goes ahead and installs packages."),
 		     PACKAGE "::UI::Pause-After-Download",
 		     "OnlyIfError",
-		     choice("No", _("Never"),
-			    _("Never wait for the user after downloading packages: always begin the installation immediately.")),
-		     choice("OnlyIfError", _("When an error occurs"),
-			    _("Wait for confirmation if an error occurred during the download.  If there were no errors, begin installing packages immediately.")),
-		     choice("Yes", _("Always"),
-			    _("Always wait for the user to confirm the download before proceeding with the installation.")),
+		     choice("No", N_("Never"),
+			    N_("Never wait for the user after downloading packages: always begin the installation immediately.")),
+		     choice("OnlyIfError", N_("When an error occurs"),
+			    N_("Wait for confirmation if an error occurred during the download.  If there were no errors, begin installing packages immediately.")),
+		     choice("Yes", N_("Always"),
+			    N_("Always wait for the user to confirm the download before proceeding with the installation.")),
 		     NULL),
   option_item(N_("Use a 'status-line' download indicator for all downloads"),
 	      N_("If this option is enabled, aptitude will display "
@@ -410,24 +410,29 @@ option_item dependency_options[]={
 	  }
 	};
 
+	/** \brief Instantiate a widget for the given option description.
+	 *
+	 *  Any untranslated strings in the structure are translated
+	 *  by calls to gettext().
+	 */
 	cw::treeitem *parse_option(const option_item &option)
 	{
 	  eassert(option.type != option_item::OPTION_END);
 	  switch(option.type)
 	    {
 	    case option_item::OPTION_BOOL:
-	      return make_boolean_item(W_(option.description),
-				       option.long_description,
+	      return make_boolean_item(W_(option.untranslated_description),
+				       _(option.untranslated_long_description),
 				       option.option_name,
 				       option.b_default);
 	    case option_item::OPTION_STRING:
-	      return make_string_item(W_(option.description),
-				      option.long_description,
+	      return make_string_item(W_(option.untranslated_description),
+				      _(option.untranslated_long_description),
 				      option.option_name,
 				      option.s_default);
 	    case option_item::OPTION_RADIO:
-	      return make_radio_item(W_(option.description),
-				     option.long_description,
+	      return make_radio_item(W_(option.untranslated_description),
+				     _(option.untranslated_long_description),
 				     option.option_name,
 				     option.choices,
 				     option.s_default);

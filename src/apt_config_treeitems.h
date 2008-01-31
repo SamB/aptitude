@@ -73,8 +73,8 @@ namespace aptitude
        *  or off.
        */
       cwidget::widgets::treeitem *make_boolean_item(const std::wstring &description,
-				     const std::string  &long_description,
-				     const std::string  &item,
+				     const std::string   &long_description,
+				     const std::string   &item,
 				     const bool          dflt);
 
       /** \brief Generate a tree item for the given string option.
@@ -101,8 +101,8 @@ namespace aptitude
       class radio_choice
       {
 	std::string value;
-	std::wstring description;
-	std::wstring long_description;
+	std::string untranslated_description;
+	std::string untranslated_long_description;
 
       public:
 	radio_choice()
@@ -110,11 +110,11 @@ namespace aptitude
 	}
 
 	radio_choice(const std::string &_value,
-		     const std::wstring &_description,
-		     const std::wstring &_long_description)
+		     const std::string &_untranslated_description,
+		     const std::string &_untranslated_long_description)
 	  : value(_value),
-	    description(_description),
-	    long_description(_long_description)
+	    untranslated_description(_untranslated_description),
+	    untranslated_long_description(_untranslated_long_description)
 	{
 	}
 
@@ -123,14 +123,14 @@ namespace aptitude
 	  return value;
 	}
 
-	const std::wstring &get_description() const
+	const std::string &get_untranslated_description() const
 	{
-	  return description;
+	  return untranslated_description;
 	}
 
-	const std::wstring &get_long_description() const
+	const std::string &get_untranslated_long_description() const
 	{
-	  return long_description;
+	  return untranslated_long_description;
 	}
       };
 
