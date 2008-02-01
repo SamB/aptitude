@@ -161,7 +161,7 @@ void apt_preinit()
   ReadConfigFile(*_config, PKGDATADIR "/section-descriptions");
 
   // ForTranslators: Set this string to the name of a configuration
-  // file in /usr/share/aptitude that overrides defaults for your
+  // file in $pkgdatadir/aptitude that overrides defaults for your
   // language.  This is particularly intended for overriding entries
   // in the Aptitude::Sections::Descriptions tree.
   //
