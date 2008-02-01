@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-30 19:56-0800\n"
-"PO-Revision-Date: 2008-01-18 20:45+0100\n"
+"PO-Revision-Date: 2008-02-01 07:44+0100\n"
 "Last-Translator: Jean-Luc Coulon (f5ibh) <jean-luc.coulon@wanadoo.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -344,15 +344,14 @@ msgid "URL to use to download changelogs"
 msgstr "URL d'où télécharger les journaux des modifications"
 
 #: src/apt_options.cc:279
-#, fuzzy
 msgid ""
 "This option controls the template that's used to download changelogs from "
 "the Debian Web site.  You should only need to change this if the changelogs "
 "move to a different URL."
 msgstr ""
 "Cette option contrôle le patron utilisé pour télécharger les journaux des "
-"modifications depuis le site Web de Debian. Vous ne devriez avoir besoin de "
-"le modifier que si l'URL de l'archive des paquets est modifiée."
+"modifications depuis le site web de Debian. Vous ne devriez avoir besoin de "
+"le modifier que si l'adresse de téléchargement de ces journaux est modifiée."
 
 #: src/apt_options.cc:285
 msgid "Display a preview of what will be done before doing it"
@@ -915,9 +914,8 @@ msgid "Couldn't read list of sources"
 msgstr "Impossible de lire la liste des sources"
 
 #: src/cmdline/cmdline_prompt.cc:205
-#, fuzzy
 msgid "Config files"
-msgstr "fichiers de config"
+msgstr "fichiers de configuration"
 
 #: src/cmdline/cmdline_prompt.cc:299 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
@@ -2320,7 +2318,7 @@ msgstr ""
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
 #: src/generic/apt/apt.cc:173
 msgid "Localized defaults|"
-msgstr ""
+msgstr "Localized defaults|"
 
 #: src/generic/apt/apt.cc:192
 #, c-format
@@ -2398,12 +2396,12 @@ msgstr "Impossible de lire les sources de listes de paquets"
 #: src/generic/apt/download_update_manager.cc:214
 #, c-format
 msgid "fork() failed: %s"
-msgstr ""
+msgstr "échec de « fork » : %s"
 
 #: src/generic/apt/download_update_manager.cc:261
 #, c-format
 msgid "waitpid() failed: %s"
-msgstr ""
+msgstr "échec de « waitpid » : %s"
 
 #: src/generic/apt/download_update_manager.cc:285
 msgid "Couldn't clean out list directories"
@@ -2415,59 +2413,63 @@ msgstr "Impossible de reconstruire le cache des paquets"
 
 #: src/generic/apt/download_update_manager.cc:312
 msgid "The debtags command must not be an empty string."
-msgstr ""
+msgstr "La commande debtags ne doit pas être une chaîne vide."
 
 #: src/generic/apt/download_update_manager.cc:316
 msgid "The debtags command must be an absolute path."
-msgstr ""
+msgstr "La commande debtags doit être un chemin absolu."
 
 #: src/generic/apt/download_update_manager.cc:325
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The debtags command (%s) does not exist; perhaps you need to install the "
 "debtags package?"
 msgstr ""
-"Aucune donnée « debtags » disponible. Vous devriez probablement installer le "
-"paquet debtags et utiliser la commande « debtags update »."
+"La commande debtags (%s) n'existe pas. Vous devriez probablement installer "
+"le paquet debtags."
 
 #: src/generic/apt/download_update_manager.cc:328
 #, c-format
 msgid "The debtags command (%s) cannot be executed: %s"
-msgstr ""
+msgstr "Impossible d'exécuter la commande debtags (%s) : %s"
 
 #: src/generic/apt/download_update_manager.cc:333
-#, fuzzy
 msgid "Updating debtags database..."
-msgstr "Construction de la base de données des étiquettes"
+msgstr "Mise à jour de la base de données de debtags..."
 
 #: src/generic/apt/download_update_manager.cc:350
 msgid "(core dumped)"
-msgstr ""
+msgstr "(informations de débogage écrites)"
 
 #: src/generic/apt/download_update_manager.cc:352
 #, c-format
 msgid "The debtags update process (%s %s) was killed by signal %d%s."
 msgstr ""
+"Le processus de mise à jour de debtags (%s %s) a été tué avec le signal %d%s."
 
 #: src/generic/apt/download_update_manager.cc:359
 #, c-format
 msgid "The debtags update process (%s %s) exited abnormally (code %d)."
 msgstr ""
+"Le processus de mise à jour de debtags (%s %s) s'est anormalement terminé "
+"(code %d)."
 
 #: src/generic/apt/download_update_manager.cc:365
 #, c-format
 msgid ""
 "The debtags update process (%s %s) exited in an unexpected way (status %d)."
 msgstr ""
+"Le processus de mise à jour de debtags (%s %s) s'est anormalement terminé "
+"(état %d)."
 
 #: src/generic/apt/download_update_manager.cc:370
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Updating the debtags database (%s %s) failed (perhaps debtags is not "
 "installed?): %s"
 msgstr ""
-"Impossible de charger le vocabulaire de debtags, le paquet debtags est-il "
-"installé ?"
+"Échec de mise à jour de la base de données de debtags (%s %s). Le paquet "
+"debtags n'est peut-être pas installé : %s"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
 #, c-format
