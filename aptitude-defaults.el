@@ -1,14 +1,9 @@
 // -*-c++-*-
 //
-// This file defines the names of sections known by aptitude.  You can
-// add new sections by adding new entries to the "Top-Sections" list
-// and the "Descriptions" tree, and you can cause a translation of
-// this file to be selected by providing a translation for
-// "aptitude-section-names" in the .po for your language.
+// This file defines the names of sections known by aptitude for el.
 
 Aptitude::Sections
 {
-  Top-Sections { "main"; "contrib"; "non-free"; "non-US"; }
   Descriptions {
     Unknown	"Πακέτα χωρίς δηλωμένο τομέα\n Δεν έχει οριστεί το πεδίο 'τομέας' για αυτά τα πακέτα. Πιθανόν να υπάρχει κάποιο σφάλμα στο αρχείο Packages.";
     Virtual	"Εικονικά πακέτα\n Αυτά τα πακέτα δεν υπάρχουν, είναι ονόματα που χρησιμοποιούν άλλα πακέτα για να παρέχουν κάποια λειτουργικότητα.";
