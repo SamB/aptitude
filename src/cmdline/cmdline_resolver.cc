@@ -1,6 +1,6 @@
 // cmdline_resolver.cc
 //
-//   Copyright (C) 2005-2007 Daniel Burrows
+//   Copyright (C) 2005-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -271,7 +271,7 @@ static void reject_or_mandate_version(const string &s,
 
       if(in.eof())
 	{
-	  cerr << ssprintf(_("Expected a version after \"%s\""), pkgname.c_str()) << endl;
+	  cerr << ssprintf(_("Expected a version or \"UNINST\" after \"%s\""), pkgname.c_str()) << endl;
 	  return;
 	}
 
