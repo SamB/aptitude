@@ -384,7 +384,7 @@ static cw::fragment *version_file_fragment(pkgCache::VerIterator ver,
   if(!pkg.CurrentVer().end())
     fragments.push_back(cw::fragf("%s: %s%n", _("Automatically installed"),
 			      (state.Flags & pkgCache::Flag::Auto)
-			      ? _("no") : _("yes")));
+			      ? _("yes") : _("no")));
 
   fragments.push_back(cw::fragf("%s%s%n", _("Version: "), ver.VerStr()));
   fragments.push_back(cw::fragf("%s%s%n", _("Priority: "),
