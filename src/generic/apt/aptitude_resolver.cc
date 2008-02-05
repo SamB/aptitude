@@ -1,6 +1,6 @@
 // aptitude_resolver.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -32,23 +32,25 @@ aptitude_resolver::aptitude_resolver(int step_score,
 {
   set_remove_stupid(aptcfg->FindB(PACKAGE "::ProblemResolver::Remove-Stupid-Pairs", true));
 
-  if(aptcfg->FindB(PACKAGE "::ProblemResolver::Discard-Null-Solution", true))
+  for(pkgCache::PkgIterator i = cache->PkgBegin(); !i.end(); ++i)
     {
-      imm::map<package, action> null_solution;
+      pkgDepCache::StateCache &s((*cache)[i]);
 
-      for(pkgCache::PkgIterator i = cache->PkgBegin(); !i.end(); ++i)
-	{
-	  pkgDepCache::StateCache &s((*cache)[i]);
-
-	  if(!s.Keep())
-	    null_solution.put(package(i, cache),
+      if(!s.Keep())
+	keep_all_solution.put(package(i, cache),
 			      action(version(i, i.CurrentVer(), cache),
 				     dep(), false, 0));
-	}
-
-      if(!null_solution.empty())
-	add_conflict(null_solution);
     }
+
+  if(aptcfg->FindB(PACKAGE "::ProblemResolver::Discard-Null-Solution", true) &&
+     !keep_all_solution.empty())
+    add_conflict(keep_all_solution);
+}
+
+imm::map<aptitude_resolver::package, aptitude_resolver::action>
+aptitude_resolver::get_keep_all_solution() const
+{
+  return keep_all_solution;
 }
 
 void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,

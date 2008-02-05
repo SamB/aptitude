@@ -1,6 +1,6 @@
 // resolver_manager.h                                -*-c++-*-
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -211,12 +211,15 @@ private:
     const std::vector<resolver_interaction> *interactions;
     int ticks;
     const generic_solution<aptitude_universe> *solution;
+    bool is_keep_all_solution;
 
   public:
     solution_information(const std::vector<resolver_interaction> *_interactions,
 			 int _ticks,
-			 const generic_solution<aptitude_universe> *_solution)
-      : interactions(_interactions), ticks(_ticks), solution(_solution)
+			 const generic_solution<aptitude_universe> *_solution,
+			 bool _is_keep_all_solution)
+      : interactions(_interactions), ticks(_ticks), solution(_solution),
+	is_keep_all_solution(_is_keep_all_solution)
     {
     }
 
@@ -239,6 +242,14 @@ private:
     const generic_solution<aptitude_universe> *get_solution() const
     {
       return solution;
+    }
+
+    /** \return \b true if this solution is the "revert-all" solution,
+     *  the one that keeps all packages at their current version.
+    */
+    bool get_is_keep_all_solution() const
+    {
+      return is_keep_all_solution;
     }
   };
 
@@ -492,6 +503,11 @@ public:
    */
   const generic_solution<aptitude_universe> &get_solution(unsigned int solution_num,
 							  int max_steps);
+
+  /** As get_solution, but returns whether the solution in question
+   *  is equal to the resolver's "keep-all" solution.
+   */
+  bool get_is_keep_all_solution(unsigned int solution_num, int max_steps);
 
   /** As get_solution, but run in a background thread if necessary.
    *

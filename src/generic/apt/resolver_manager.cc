@@ -892,9 +892,14 @@ resolver_manager::do_get_solution(int max_steps, unsigned int solution_num,
 	  generic_solution<aptitude_universe> sol = resolver->find_next_solution(max_steps, &visited_packages);
 
 	  sol_l.acquire();
+
+	  bool is_keep_all_solution =
+	    (sol.get_actions() == resolver->get_keep_all_solution());
+
 	  solutions.push_back(new solution_information(new std::vector<resolver_interaction>(actions_since_last_solution),
 						       ticks_since_last_solution + max_steps,
-						       new aptitude_resolver::solution(sol.clone())));
+						       new aptitude_resolver::solution(sol.clone()),
+						       is_keep_all_solution));
 	  actions_since_last_solution.clear();
 	  sol_l.release();
 	}
@@ -1044,6 +1049,21 @@ const aptitude_resolver::solution &resolver_manager::get_solution(unsigned int s
     throw SolutionSearchAbortException(abort_msg);
 
   return *sol;
+}
+
+bool resolver_manager::get_is_keep_all_solution(unsigned int solution_num,
+						int max_steps)
+{
+  cwidget::threads::mutex::lock l(mutex);
+
+  get_solution(solution_num, max_steps);
+
+  {
+    cwidget::threads::mutex::lock l2(solutions_mutex);
+    eassert(solution_num < solutions.size());
+
+    return solutions[solution_num]->get_is_keep_all_solution();;
+  }
 }
 
 void resolver_manager::get_solution_background(unsigned int solution_num,

@@ -1,6 +1,6 @@
 // broken_indicator.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -62,6 +62,9 @@ typedef generic_solution<aptitude_universe> aptitude_solution;
 class broken_indicator : public cw::text_layout
 {
   aptitude_solution last_sol;
+
+  /** Records whether the last solution is the "keep-all" one. */
+  bool last_sol_is_keep_all : 1;
 
   /** Records whether we had generated all solutions at the time of
    *  the last update.
@@ -301,6 +304,7 @@ public:
     last_sol = sol;
     last_complete = state.solutions_exhausted;
     last_background_active = state.background_thread_active;
+    last_sol_is_keep_all = resman->get_is_keep_all_solution(state.selected_solution, 0);
 
     if(sol.get_actions().empty())
       {
@@ -358,63 +362,68 @@ public:
     fragments.push_back(cw::fragf("%s ", countstr.c_str()));
 
 
-    vector<cw::fragment *> suggestions;
-
-    if(install_count>0)
+    if(last_sol_is_keep_all)
+      fragments.push_back(cw::text_fragment(_("Suggest keeping all packages at their current version.")));
+    else
       {
-	cw::fragment *install_count_fragment =
-	  cw::text_fragment(ssprintf(ngettext("%d install",
-					      "%d installs",
-					      install_count),
-				     install_count));
-	suggestions.push_back(install_count_fragment);
+	vector<cw::fragment *> suggestions;
+
+	if(install_count>0)
+	  {
+	    cw::fragment *install_count_fragment =
+	      cw::text_fragment(ssprintf(ngettext("%d install",
+						  "%d installs",
+						  install_count),
+					 install_count));
+	    suggestions.push_back(install_count_fragment);
+	  }
+
+	if(remove_count>0)
+	  {
+	    cw::fragment *remove_count_fragment =
+	      cw::text_fragment(ssprintf(ngettext("%d removal",
+						  "%d removals",
+						  remove_count),
+					 remove_count));
+	    suggestions.push_back(remove_count_fragment);
+	  }
+
+	if(keep_count>0)
+	  {
+	    cw::fragment *keep_count_fragment =
+	      cw::text_fragment(ssprintf(ngettext("%d keep",
+						  "%d keeps",
+						  keep_count),
+					 keep_count));
+	    suggestions.push_back(keep_count_fragment);
+	  }
+
+	if(upgrade_count>0)
+	  {
+	    cw::fragment *upgrade_count_fragment =
+	      cw::text_fragment(ssprintf(ngettext("%d upgrade",
+						  "%d upgrades",
+						  upgrade_count),
+					 upgrade_count));
+	    suggestions.push_back(upgrade_count_fragment);
+	  }
+
+	if(downgrade_count>0)
+	  {
+	    cw::fragment *downgrade_count_fragment =
+	      cw::text_fragment(ssprintf(ngettext("%d downgrade",
+						  "%d downgrades",
+						  downgrade_count),
+					 downgrade_count));
+
+	    suggestions.push_back(downgrade_count_fragment);
+	  }
+
+	/* ForTranslators: %F is replaced with a comma separated list such as
+	   "n1 installs, n2 removals", ...
+	*/
+	fragments.push_back(cw::fragf(_("Suggest %F"), cw::join_fragments(suggestions, L", ")));
       }
-
-    if(remove_count>0)
-      {
-	cw::fragment *remove_count_fragment =
-	  cw::text_fragment(ssprintf(ngettext("%d removal",
-					      "%d removals",
-					      remove_count),
-				     remove_count));
-	suggestions.push_back(remove_count_fragment);
-      }
-
-    if(keep_count>0)
-      {
-	cw::fragment *keep_count_fragment =
-	  cw::text_fragment(ssprintf(ngettext("%d keep",
-					      "%d keeps",
-					      keep_count),
-				     keep_count));
-	suggestions.push_back(keep_count_fragment);
-      }
-
-    if(upgrade_count>0)
-      {
-	cw::fragment *upgrade_count_fragment =
-	  cw::text_fragment(ssprintf(ngettext("%d upgrade",
-					      "%d upgrades",
-					      upgrade_count),
-				     upgrade_count));
-	  suggestions.push_back(upgrade_count_fragment);
-      }
-
-    if(downgrade_count>0)
-      {
-	cw::fragment *downgrade_count_fragment =
-	  cw::text_fragment(ssprintf(ngettext("%d downgrade",
-					      "%d downgrades",
-					      downgrade_count),
-				     downgrade_count));
-
-	suggestions.push_back(downgrade_count_fragment);
-      }
-
-    /* ForTranslators: %F is replaced with a comma separated list such as
-       "n1 installs, n2 removals", ...
-     */
-    fragments.push_back(cw::fragf(_("Suggest %F"), cw::join_fragments(suggestions, L", ")));
 
     if(state.background_thread_active)
       {

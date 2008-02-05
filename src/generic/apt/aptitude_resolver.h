@@ -1,7 +1,7 @@
 // aptitude_resolver.h                  -*-c++-*-
 //
 // 
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2008 Daniel Burrows
 
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -41,8 +41,12 @@
 
 #include <generic/problemresolver/problemresolver.h>
 
+#include <generic/util/immset.h>
+
 class aptitude_resolver:public generic_problem_resolver<aptitude_universe>
 {
+  imm::map<package, action> keep_all_solution;
+
 public:
   aptitude_resolver(int step_score, int broken_score,
 		    int unfixed_soft_score,
@@ -102,6 +106,11 @@ public:
    */
   void add_priority_scores(int important, int required, int standard,
 			   int optional, int extra);
+
+  /** \return the "keep-all" solution, the solution that cancels
+   *  all of the user's planned actions.
+   */
+  imm::map<package, action> get_keep_all_solution() const;
 };
 
 #endif
