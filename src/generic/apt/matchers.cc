@@ -1,6 +1,6 @@
 // matchers.cc
 //
-//  Copyright 2000-2005, 2007 Daniel Burrows
+//  Copyright 2000-2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  Grammer for the condition language (probably not very correctly done, but
-// close enough :) ):
+//  Grammer for the condition language.  (TODO: this is what the
+//  grammar *will* be, not what it is)
 //
 //  CONDITION := CONDITION-LIST
 //  CONDITION-LIST := CONDITION-AND-GROUP '|' CONDITION-LIST
@@ -27,8 +27,16 @@
 //                      := CONDITION-ATOM
 //  CONDITION-ATOM := '(' CONDITION-LIST ')'
 //                 |  '!' CONDITION-ATOM
+//                 |  '?' condition-name '(' arguments... ')'
 //                 |  '~'field-id <string>
 //                 |  <string>
+//
+// The (arguments...) to a ?function-style matcher are parsed
+// according to their expected type.  This is unfortunate but
+// necessary: since arbitrary strings not containing metacharacters
+// are legal condition values, distinguishing conditions from other
+// argument types would require the user to type extra punctuation in,
+// e.g., ?broken(Depends, ?name(apt.*)).
 
 #include "matchers.h"
 
@@ -41,6 +49,7 @@
 
 #include <generic/util/util.h>
 
+#include <cwidget/generic/util/ssprintf.h>
 #include <cwidget/generic/util/transcode.h>
 
 #include <set>
@@ -73,19 +82,54 @@ public:
     __attribute__ ((format (printf, 2, 3)))
 #endif
   {
-    // eh, I should really move this to common code.
-    char buf[1024];
     va_list args;
 
     va_start(args, format);
 
-    vsnprintf(buf, sizeof(buf), format, args);
-
-    reason.assign(buf, 1024);
+    reason = cw::util::vssprintf(format, args);
   }
 
   const string &get_msg() {return reason;}
 };
+
+namespace
+{
+  /** \brief Enumeration containing the known types of
+   *  matchers.
+   *
+   *  I want to have a table mapping matcher names to matcher types,
+   *  and so the matcher type has to be POD.  Well, I could use some
+   *  indirection pattern like grouping policies do, but IMNSHO the
+   *  payoff in grouping-policy land has not made up for the syntactic
+   *  clutter and semantic overhead.  I think that if anything it
+   *  would be less valuable here.
+   */
+  enum matcher_type
+    {
+      matcher_type_false,
+      matcher_type_name,
+      matcher_type_true,
+      matcher_type_version
+    };
+
+  struct matcher_info
+  {
+    /** \brief The string used to pick the matcher.
+     */
+    const char *name;
+
+    /** \brief The matcher type indicated by this struct. */
+    matcher_type type;
+  };
+
+  const matcher_info matcher_types[] =
+  {
+    { N_("Matcher Type|false"), matcher_type_false },
+    { N_("Matcher Type|name"), matcher_type_name },
+    { N_("Matcher Type|true"), matcher_type_true },
+    { N_("Matcher Type|version"), matcher_type_version }
+  };
+}
 
 pkg_match_result::~pkg_match_result()
 {
@@ -517,6 +561,18 @@ public:
       return NULL;
   }
 };
+
+pkg_matcher *make_package_version_matcher(const string &substr)
+{
+  if(substr == "CURRENT")
+    return new pkg_curr_version_matcher;
+  else if(substr == "TARGET")
+    return new pkg_inst_version_matcher;
+  else if(substr == "CANDIDATE")
+    return new pkg_cand_version_matcher;
+  else
+    return new pkg_version_matcher(substr);
+}
 
 class pkg_task_matcher : public pkg_string_matcher
 {
@@ -2098,6 +2154,50 @@ pkg_matcher *parse_condition_list(string::const_iterator &start,
 				  const vector<const char *> &terminators,
 				  bool match_descriptions);
 
+static
+std::string parse_literal_string_tail(string::const_iterator &start,
+				      const string::const_iterator end)
+{
+  std::string rval;
+
+  while(start != end && *start != '"')
+    {
+      if(*start == '\\')
+	{
+	  ++start;
+	  if(start != end)
+	    {
+	      switch(*start)
+		{
+		case 'n':
+		  rval += '\n';
+		  break;
+		case 't':
+		  rval += '\t';
+		  break;
+		default:
+		  rval += *start;
+		  break;
+		}
+	      ++start;
+	    }
+	}
+      else
+	{
+	  rval += *start;
+	  ++start;
+	}
+    }
+
+  if(start == end)
+    throw CompilationException(_("Unterminated literal string after %s"), rval.c_str());
+
+  eassert(*start == '"');
+  ++start;
+
+  return rval;
+}
+
 // Returns a substring up to the first metacharacter, including escaped
 // metacharacters (parentheses, ~, |, and !)
 //
@@ -2133,40 +2233,7 @@ std::string parse_substr(string::const_iterator &start,
 	{
 	  ++start;
 
-	  while(start != end && *start != '"')
-	    {
-	      if(*start == '\\')
-		{
-		  ++start;
-		  if(start != end)
-		    {
-		      switch(*start)
-			{
-			case 'n':
-			  rval += '\n';
-			  break;
-			case 't':
-			  rval += '\t';
-			  break;
-			default:
-			  rval += *start;
-			  break;
-			}
-		      ++start;
-		    }
-		}
-	      else
-		{
-		  rval += *start;
-		  ++start;
-		}
-	    }
-
-	  if(start == end)
-	    throw CompilationException(_("Unterminated literal string after %s"), rval.c_str());
-
-	  eassert(*start == '"');
-	  ++start;
+	  rval += parse_literal_string_tail(start, end);
 	}
 
       // We quit because we ran off the end of the string or saw a
@@ -2192,6 +2259,131 @@ std::string parse_substr(string::const_iterator &start,
     } while(!done);
 
   return rval;
+}
+
+
+void parse_required_character(string::const_iterator &start,
+			      const string::const_iterator &end,
+			      char c)
+{
+  while(start != end && isspace(*start))
+    ++start;
+
+  if( ! (start != end && *start == c))
+    throw CompilationException(_("Expected '%c', got '%c'."),
+			       c, *start);
+
+  ++start;
+}
+
+void parse_open_paren(string::const_iterator &start,
+		      const string::const_iterator &end)
+{
+  parse_required_character(start, end, '(');
+}
+
+void parse_close_paren(string::const_iterator &start,
+		       const string::const_iterator &end)
+{
+  parse_required_character(start, end, ')');
+}
+
+void parse_coma(string::const_iterator &start,
+		const string::const_iterator &end)
+{
+  parse_required_character(start, end, ',');
+}
+
+string parse_string_match_args(string::const_iterator &start,
+			       const string::const_iterator &end)
+{
+  parse_open_paren(start, end);
+  const std::string substr = parse_substr(start, end, std::vector<const char *>());
+  parse_close_paren(start, end);
+
+  return substr;
+}
+
+pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
+					       const string::const_iterator &end,
+					       const vector<const char *> &terminators,
+					       bool search_descriptions)
+{
+  // The name is considered to be the next sequence of non-whitespace
+  // characters that are not an open paren.
+
+  while(start != end && isspace(*start))
+    ++start;
+
+  string raw_name;
+  string lower_case_name;
+  while(start != end && *start != '(' && !isspace(*start) &&
+	!terminate(start, end, terminators))
+    {
+      raw_name += *start;
+      lower_case_name += tolower(*start);
+      ++start;
+    }
+
+  matcher_type type;
+  bool found = false;
+
+  // Hokey sequential scan.  Why?  Allocating a static map and
+  // populating it raises icky issues of thread-safety, when the
+  // initializer runs, etc...I'd rather just accept some (hopefully
+  // minor) inefficiency.
+  for(const matcher_info *it = matcher_types;
+      !found && (unsigned)(it - matcher_types) < (sizeof(matcher_types) / sizeof(matcher_types[0]));
+      ++it)
+    {
+      string test_name = it->name;
+      string::size_type found = test_name.find('|');
+      if(found != string::npos)
+	test_name.erase(0, found + 1);
+
+      if(lower_case_name == test_name)
+	{
+	  type = it->type;
+	  found = true;
+	}
+    }
+
+  for(const matcher_info *it = matcher_types;
+      !found && (unsigned)(it - matcher_types) < (sizeof(matcher_types) / sizeof(matcher_types[0]));
+      ++it)
+    {
+      string name_to_check(P_(it->name));
+      for(std::string::iterator name_to_check_it = name_to_check.begin();
+	  name_to_check_it != name_to_check.end(); ++name_to_check_it)
+	{
+	  *name_to_check_it = tolower(*name_to_check_it);
+	}
+
+      if(lower_case_name == name_to_check)
+	{
+	  type = it->type;
+	  found = true;
+	}
+    }
+
+  if(!found)
+    throw CompilationException(_("Unknown matcher type \"%s\"."),
+			       raw_name.c_str());
+
+  switch(type)
+    {
+    case matcher_type_false:
+      return new pkg_false_matcher;
+    case matcher_type_name:
+      return new pkg_name_matcher(parse_string_match_args(start, end));
+    case matcher_type_true:
+      return new pkg_true_matcher;
+    case matcher_type_version:
+      return make_package_version_matcher(parse_string_match_args(start, end));
+    default:
+      throw CompilationException(_("Unexpected matcher type %d encountered."),
+				 type);
+    }
 }
 
 pkg_matcher *parse_atom(string::const_iterator &start,
@@ -2229,6 +2421,11 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 	      ++start;
 	      return lst.release();
 	    }
+	}
+      else if(*start == '?')
+	{
+	  ++start;
+	  return parse_function_style_matcher_tail(start, end, terminators, search_descriptions);
 	}
       else if(*start == '~')
 	{
@@ -2485,14 +2682,7 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		    case 'T':
 		      return new pkg_true_matcher;
 		    case 'V':
-		      if(substr == "CURRENT")
-			return new pkg_curr_version_matcher;
-		      else if(substr == "TARGET")
-			return new pkg_inst_version_matcher;
-		      else if(substr == "CANDIDATE")
-			return new pkg_cand_version_matcher;
-		      else
-			return new pkg_version_matcher(substr);
+		      return make_package_version_matcher(substr);
 		    default:
 		      throw CompilationException(_("Unknown pattern type: %c"), search_flag);
 		    }

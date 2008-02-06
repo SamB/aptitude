@@ -4034,10 +4034,24 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
       <para>
 	A search pattern consists of one or more conditions (sometimes
-	known as <quote>terms</quote>); packages match the pattern if they match
-	all of its terms.  Terms generally start with a tilde
-	character (<quote>~</quote>), followed by a character identifying the type
-	of term, and then any additional text required by the term.
+	known as <quote>terms</quote>); packages match the pattern if
+	they match all of its terms.  Terms generally start with a
+	question mark (<quote>?</quote>), followed by the name of the
+	match term, which describes the search that the term performs:
+	for instance, the term <link
+	linkend="searchTermName"><literal>name</literal></link>
+	matches package names, while the term <link
+	linkend="searchTermVersion"><literal>version</literal></link>
+	matches package versions.  Finally, any additional parameters
+	to the search term are placed in parentheses (see the
+	documentation of individual terms for more information on
+	this).  Some search terms can be written using
+	<quote>short</quote> forms, which consist of a tilde
+	(<quote>~</quote>) followed by a single character that
+	identifies the term, and finally the arguments (if any) to the
+	term.  For instance, the short form of
+	<literal>?name(aptitude)</literal> is <literal>~n
+	aptitude</literal>.
       </para>
 
       <para>
@@ -4433,8 +4447,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
-	  <term><literal>~n<replaceable>name</replaceable></literal></term>
+	<varlistentry id="searchTermName">
+	  <term><literal>?name(<replaceable>name</replaceable>)</literal>, <literal>~n<replaceable>name</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
@@ -4612,9 +4626,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id="searchTermVersion">
 	  <term>
-	    <literal>~V<replaceable>version</replaceable></literal>
+	    <literal>?version(<replaceable>version</replaceable>)</literal>, <literal>~V<replaceable>version</replaceable></literal>
 	  </term>
 
 	  <listitem>
