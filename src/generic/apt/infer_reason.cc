@@ -132,6 +132,11 @@ static bool is_simple_self_conflict(pkgCache::DepIterator dep) {
     for(pkgCache::PrvIterator P=dep.TargetPkg().ProvidesList();
 	!P.end(); ++P)
       {
+	// Ignore provides that don't impact the dep.
+	if(!_system->VS->CheckDep(P.ProvideVersion(),
+				  dep->CompareOp, dep.TargetVer()))
+	  continue;
+
 	pkgCache::PkgIterator pkg=P.OwnerPkg();
 	pkgDepCache::StateCache state=(*apt_cache_file)[pkg];
 
@@ -316,10 +321,12 @@ void infer_reverse_breakage(pkgCache::PkgIterator pkg,
 	  {
 	    seen.insert(prv_pkg);
 	    for(pkgCache::DepIterator D=prv_pkg.RevDependsList(); !D.end(); ++D)
-	      // Provides can't be versioned, ignore versioned
-	      // dependencies on provided packages.
-	      if(!D.TargetVer())
-		infer_reverse_breakage(pkg, D, reasons);
+	      {
+		if(_system->VS->CheckDep(P.ProvideVersion(),
+					 D->CompareOp,
+					 D.TargetVer()))
+		  infer_reverse_breakage(prv_pkg, D, reasons);
+	      }
 	  }
       }
 }
