@@ -4090,9 +4090,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
       </para>
 
       <para>
-	Normally, <quote>whitespace</quote> -- that is, space
-	characters, tabs, and so on -- separates terms but is
-	otherwise ignored by &aptitude;.  To include whitespace (or
+	In the short forms of terms, <quote>whitespace</quote> -- that
+	is, space characters, tabs, and so on -- separates terms but
+	is otherwise ignored by &aptitude;.  To include whitespace (or
 	other special characters) in a term, you can either place a
 	tilde in front of it (as in <literal>Debian~
 	Project</literal>) or place quotation marks around it (as in
@@ -4111,6 +4111,18 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </para>
 	</footnote>
       </para>
+
+      <note>
+	<para>
+	  The above comments on whitespace apply only to the
+	  <quote>short</quote> forms of terms, such as
+	  <literal>~d"Debian Project"</literal>.  While you
+	  <emphasis>may</emphasis> write <literal>?description("Debian
+	  Project")</literal>, this is not required;
+	  <literal>?description(Debian Project)</literal> produces
+	  exactly the same matcher as the previous two options.
+	</para>
+      </note>
 
       <para>
 	The following types of terms are available:

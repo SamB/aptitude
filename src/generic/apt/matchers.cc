@@ -106,6 +106,7 @@ namespace
    */
   enum matcher_type
     {
+      matcher_type_description,
       matcher_type_false,
       matcher_type_name,
       matcher_type_true,
@@ -122,8 +123,20 @@ namespace
     matcher_type type;
   };
 
+  // ForTranslators: these strings can be translated to allow your
+  // users to specify match terms in their native tongue.  However,
+  // the English words are the canonical names for match terms and
+  // will always be accepted *in preference to* any translation, in
+  // order to ensure that scripts and user instructions can use the
+  // English names without fear that the meanings will change with the
+  // locale.
+  //
+  // That is: if you translate "false" to "description", "description"
+  // would still produce a description matcher, not a false matcher,
+  // because the English meaning takes precedence.
   const matcher_info matcher_types[] =
   {
+    { N_("Matcher Type|description"), matcher_type_description },
     { N_("Matcher Type|false"), matcher_type_false },
     { N_("Matcher Type|name"), matcher_type_name },
     { N_("Matcher Type|true"), matcher_type_true },
@@ -2204,7 +2217,8 @@ std::string parse_literal_string_tail(string::const_iterator &start,
 // Advances loc to the first character of 's' following the escaped string.
 std::string parse_substr(string::const_iterator &start,
 			 const string::const_iterator &end,
-			 const vector<const char *> &terminators)
+			 const vector<const char *> &terminators,
+			 bool whitespace_breaks)
 {
   std::string rval;
   bool done=false;
@@ -2222,7 +2236,7 @@ std::string parse_substr(string::const_iterator &start,
 	    *start != '~' &&
 	    *start != '|' &&
 	    *start != '"' &&
-	    !isspace(*start) &&
+	    (!whitespace_breaks || !isspace(*start)) &&
 	    !terminate(start, end, terminators))
 	{
 	  rval += *start;
@@ -2246,7 +2260,7 @@ std::string parse_substr(string::const_iterator &start,
 	  if(next == '(' || next == ')' ||
 	     next == '!' || next == '~' ||
 	     next == '|' || next == '"' ||
-	     isspace(next))
+	     (whitespace_breaks && isspace(next)))
 	    {
 	      rval += next;
 	      start += 2;
@@ -2269,7 +2283,10 @@ void parse_required_character(string::const_iterator &start,
   while(start != end && isspace(*start))
     ++start;
 
-  if( ! (start != end && *start == c))
+  if(start == end)
+    throw CompilationException(_("Unexpected end of match pattern (expected '%c')."),
+			       c);
+  else if(*start != c)
     throw CompilationException(_("Expected '%c', got '%c'."),
 			       c, *start);
 
@@ -2298,7 +2315,7 @@ string parse_string_match_args(string::const_iterator &start,
 			       const string::const_iterator &end)
 {
   parse_open_paren(start, end);
-  const std::string substr = parse_substr(start, end, std::vector<const char *>());
+  const std::string substr = parse_substr(start, end, std::vector<const char *>(), false);
   parse_close_paren(start, end);
 
   return substr;
@@ -2372,6 +2389,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 
   switch(type)
     {
+    case matcher_type_description:
+      return new pkg_description_matcher(parse_string_match_args(start, end));
     case matcher_type_false:
       return new pkg_false_matcher;
     case matcher_type_name:
@@ -2581,7 +2600,7 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		      }
 		  }
 		default:
-		  substr=parse_substr(start, end, terminators);
+		  substr = parse_substr(start, end, terminators, true);
 		  switch(search_flag)
 		    {
 		    case 'a':
@@ -2693,10 +2712,10 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 	{
 	  if(!search_descriptions)
 	    return new pkg_name_matcher(parse_substr(start, end,
-						     terminators));
+						     terminators, true));
 	  else
 	    {
-	      substr=parse_substr(start, end, terminators);
+	      substr = parse_substr(start, end, terminators, true);
 	      auto_ptr<pkg_matcher> name(new pkg_name_matcher(substr));
 	      auto_ptr<pkg_matcher> desc(new pkg_description_matcher(substr));
 
