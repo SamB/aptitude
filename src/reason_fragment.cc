@@ -74,6 +74,9 @@ struct ver_ptr_cmp
 
 /** Generate a cw::fragment describing the packages providing a given package.
  *
+ *  \param dep the dependency that the provides are related to;
+ *             will be used to throw away provides that don't
+ *             provide the right version of the package.
  *  \param pkg the package whose providers will be described.
  *  \param ignpkg a package which should not be shown as a provider.
  *
@@ -81,7 +84,8 @@ struct ver_ptr_cmp
  *  installed, or which will be installed, are shown; otherwise, all
  *  providees are shown.
  */
-cw::fragment *prvfrag(pkgCache::PkgIterator pkg,
+cw::fragment *prvfrag(pkgCache::DepIterator dep,
+		      pkgCache::PkgIterator pkg,
 		      pkgCache::PkgIterator ignpkg,
 		      bool installed)
 {
@@ -103,7 +107,10 @@ cw::fragment *prvfrag(pkgCache::PkgIterator pkg,
   for(pkgCache::PrvIterator P=pkg.ProvidesList();
       !P.end(); ++P)
     {
-      if(P.OwnerPkg()!=ignpkg)
+      if(P.OwnerPkg() != ignpkg &&
+	 _system->VS->CheckDep(P.ProvideVersion(),
+			       dep->CompareOp,
+			       dep.TargetVer()))
 	{
 	  providing_versions.insert(P.OwnerVer());
 	  providing_packages.insert(P.OwnerPkg());
@@ -242,7 +249,8 @@ cw::fragment *dep_singlefrag(pkgCache::PkgIterator pkg,
 				     pkg_item::pkg_style(dep.TargetPkg(), false)),
 		   sec.empty() || sec=="main"?"":(" ["+sec+']').c_str(),
 		   verfrag,
-		   prvfrag(dep.TargetPkg(),
+		   prvfrag(dep,
+			   dep.TargetPkg(),
 			   dep.ParentPkg(),
 			   is_conflict(dep->Type)),
 		   available?"":(string(" [")+_("UNAVAILABLE")+"]").c_str());
