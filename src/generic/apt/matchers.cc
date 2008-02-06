@@ -106,6 +106,7 @@ namespace
    */
   enum matcher_type
     {
+      matcher_type_archive,
       matcher_type_description,
       matcher_type_false,
       matcher_type_name,
@@ -137,6 +138,7 @@ namespace
   const matcher_info matcher_types[] =
   {
     { N_("Matcher Type|description"), matcher_type_description },
+    { N_("Matcher Type|archive"), matcher_type_archive },
     { N_("Matcher Type|false"), matcher_type_false },
     { N_("Matcher Type|name"), matcher_type_name },
     { N_("Matcher Type|true"), matcher_type_true },
@@ -2389,6 +2391,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 
   switch(type)
     {
+    case matcher_type_archive:
+      return new pkg_archive_matcher(parse_string_match_args(start, end));
     case matcher_type_description:
       return new pkg_description_matcher(parse_string_match_args(start, end));
     case matcher_type_false:
