@@ -71,6 +71,11 @@
 using namespace std;
 namespace cw = cwidget;
 
+pkg_matcher *parse_atom(string::const_iterator &start,
+			const string::const_iterator &end,
+			const vector<const char *> &terminators,
+			bool search_descriptions);
+
 /** Used to cleanly abort without having to contort the code. */
 class CompilationException
 {
@@ -2325,6 +2330,32 @@ string parse_string_match_args(string::const_iterator &start,
   return substr;
 }
 
+pkg_matcher *parse_pkg_matcher_args(string::const_iterator &start,
+				    const string::const_iterator &end,
+				    const std::vector<const char *> terminators,
+				    bool search_descriptions)
+{
+  parse_open_paren(start, end);
+  auto_ptr<pkg_matcher> m(parse_atom(start, end, terminators, search_descriptions));
+  parse_close_paren(start, end);
+
+  return m.release();
+}
+
+pkg_matcher *parse_optional_pkg_matcher_args(string::const_iterator &start,
+					     const string::const_iterator &end,
+					     const std::vector<const char *> terminators,
+					     bool search_descriptions)
+{
+  while(start != end && isspace(*start))
+    ++start;
+
+  if(start != end && *start == '(')
+    return parse_pkg_matcher_args(start, end, terminators, search_descriptions);
+  else
+    return NULL;
+}
+
 pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 					       const string::const_iterator &end,
 					       const vector<const char *> &terminators,
@@ -2338,7 +2369,7 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 
   string raw_name;
   string lower_case_name;
-  while(start != end && *start != '(' && !isspace(*start) &&
+  while(start != end && *start != '-' && *start != '(' && !isspace(*start) &&
 	!terminate(start, end, terminators))
     {
       raw_name += *start;
@@ -2396,7 +2427,41 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
     case matcher_type_archive:
       return new pkg_archive_matcher(parse_string_match_args(start, end));
     case matcher_type_broken:
-      return new pkg_broken_matcher;
+      {
+	// Could be broken-foo, or broken-foo(matcher).
+	if(start != end && !terminate(start, end, terminators) && *start == '-')
+	  {
+	    ++start;
+	    std::string deptype_name;
+	    // TODO: need to take other syntactic elements, like ! and
+	    // |, into account.
+	    while(start != end && *start != '(' && !isspace(*start) &&
+		  !terminate(start, end, terminators))
+	      {
+		deptype_name += *start;
+		++start;
+	      }
+
+	    while(start != end && *start != '(' && !isspace(*start) &&
+		  !terminate(start, end, terminators))
+	      ++start;
+
+	    pkgCache::Dep::DepType deptype = parse_deptype(deptype_name);
+
+	    if(deptype == -1)
+	      throw CompilationException(_("Unknown dependency type: %s"),
+					 deptype_name.c_str());
+
+	    auto_ptr<pkg_matcher> m(parse_optional_pkg_matcher_args(start, end, terminators, search_descriptions));
+
+	    if(m.get() != NULL)
+	      return new pkg_dep_matcher(deptype, m.release(), true);
+	    else
+	      return new pkg_broken_type_matcher(deptype);
+	  }
+	else
+	  return new pkg_broken_matcher;
+      }
     case matcher_type_description:
       return new pkg_description_matcher(parse_string_match_args(start, end));
     case matcher_type_false:

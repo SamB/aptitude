@@ -4256,8 +4256,19 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
+	<varlistentry>
+	  <term><literal>?broken</literal>, <literal>~b</literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches packages that are <quote>broken</quote>: they have an
+	      unfulfilled dependency, predependency, breaks, or conflict.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
 	<varlistentry id='searchBrokenType'>
-	  <term><literal>~B<replaceable>type</replaceable></literal></term>
+	  <term><literal>?broken-<replaceable>type</replaceable></literal>, <literal>~B<replaceable>type</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
@@ -4275,13 +4286,18 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
-	  <term><literal>?broken</literal>, <literal>~b</literal></term>
+	<varlistentry id='searchBroken'>
+	  <term><literal>?broken-<replaceable>type</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>~DB<optional><replaceable>type</replaceable>:</optional><replaceable>term</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
-	      Matches packages that are <quote>broken</quote>: they have an
-	      unfulfilled dependency, predependency, breaks, or conflict.
+	      Matches packages with an unsatisfied dependency of type
+	      <replaceable>type</replaceable> on a package matching
+	      <replaceable>term</replaceable>.
+	      <replaceable>type</replaceable> may any one of the
+	      dependency types listed in <link
+	      linkend='searchBrokenType'>the documentation of
+	      <literal>?broken</literal></link>.
 	    </para>
 	  </listitem>
 	</varlistentry>
