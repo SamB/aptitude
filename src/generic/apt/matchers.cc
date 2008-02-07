@@ -121,6 +121,7 @@ namespace
       matcher_type_description,
       matcher_type_essential,
       matcher_type_false,
+      matcher_type_garbage,
       matcher_type_installed,
       matcher_type_name,
       matcher_type_not,
@@ -161,6 +162,7 @@ namespace
     { N_("Matcher Type|description"), matcher_type_description },
     { N_("Matcher Type|essential"), matcher_type_essential },
     { N_("Matcher Type|false"), matcher_type_false },
+    { N_("Matcher Type|garbage"), matcher_type_garbage },
     { N_("Matcher Type|installed"), matcher_type_installed },
     { N_("Matcher Type|name"), matcher_type_name },
     { N_("Matcher Type|not"), matcher_type_not },
@@ -2645,6 +2647,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       return new pkg_essential_matcher;
     case matcher_type_false:
       return new pkg_false_matcher;
+    case matcher_type_garbage:
+      return new pkg_garbage_matcher;
     case matcher_type_installed:
       return new pkg_installed_matcher;
     case matcher_type_name:
