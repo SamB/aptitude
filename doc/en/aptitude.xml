@@ -4329,30 +4329,29 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchDep'>
-	  <term><literal>~D<optional>B</optional><optional><replaceable>type</replaceable>:</optional><replaceable>term</replaceable></literal></term>
+	  <term><literal>?<replaceable>type</replaceable></literal>, <literal>~D<optional><replaceable>type</replaceable>:</optional><replaceable>term</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
-	      <replaceable>type</replaceable> may be either
-	      <quote><literal>provides</literal></quote> or one of the
+	      <replaceable>type</replaceable> may be any one of the
 	      dependency types given in <link
 	      linkend='searchBrokenType'>the documentation of
-	      <literal>~B</literal></link>.  If
-	      <replaceable>type</replaceable> is not present, it
-	      defaults to <literal>depends</literal>.  If
-	      <literal>B</literal> is present, only broken
-	      dependencies will be considered.
+	      <literal>?broken-<replaceable>type</replaceable></literal></link>,
+	      as well as <literal>provides</literal>.  If
+	      <replaceable>type</replaceable> is not present for
+	      <literal>~D</literal>, it defaults to
+	      <literal>depends</literal>.
 	    </para>
 
 	    <para>
 	      If <replaceable>type</replaceable> is
 	      <quote><literal>provides</literal></quote>, matches
 	      packages that provide a package matching
-	      <replaceable>term</replaceable> (the equivalent of
-	      <literal>~P</literal>).  Otherwise, matches packages
-	      which declare a dependency of type
-	      <replaceable>type</replaceable> upon a package version which
-	      matches <replaceable>term</replaceable>.
+	      <replaceable>term</replaceable> (the equivalent of <link
+	      linkend='searchProvides'><literal>?provides</literal></link>).
+	      Otherwise, matches packages which declare a dependency
+	      of type <replaceable>type</replaceable> upon a package
+	      version which matches <replaceable>term</replaceable>.
 	    </para>
 	  </listitem>
 	</varlistentry>

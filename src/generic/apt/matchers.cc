@@ -108,6 +108,9 @@ namespace
    *  payoff in grouping-policy land has not made up for the syntactic
    *  clutter and semantic overhead.  I think that if anything it
    *  would be less valuable here.
+   *
+   *  Note that matchers for dependencies and for broken dependencies
+   *  are parsed separately below.
    */
   enum matcher_type
     {
@@ -2376,6 +2379,19 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       lower_case_name += tolower(*start);
       ++start;
     }
+
+  // All dependency types can be used directly as matchers.
+  {
+    pkgCache::Dep::DepType depType = parse_deptype(lower_case_name);
+    if(depType != (pkgCache::Dep::DepType)-1)
+      {
+	return new pkg_dep_matcher(depType,
+				   parse_pkg_matcher_args(start, end,
+							  terminators,
+							  search_descriptions),
+				   false);
+      }
+  }
 
   matcher_type type;
   bool found = false;
