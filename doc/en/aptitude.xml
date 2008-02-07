@@ -4392,16 +4392,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry>
-	  <term><literal>~F</literal></term>
+	  <term><literal>?false</literal>, <literal>~F</literal></term>
 
 	  <listitem>
 	    <para>
-	      This term does not match any package (<quote>F</quote> stands for
-	      <quote>false</quote>).
+	      This term does not match any package.
 	      <footnote>
 		<para>
 		  This is provided largely for symmetry with
-		  <literal>~T</literal>.
+		  <literal>?true</literal>.
 		</para>
 	      </footnote>
 	    </para>
@@ -4648,14 +4647,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	<varlistentry>
 	  <term>
-	    <literal>~T</literal>
+	    <literal>?true</literal>, <literal>~T</literal>
 	  </term>
 
 	  <listitem>
 	    <para>
 	      This term matches any package.  For instance,
-	      <quote><literal>~i~P~T</literal></quote> matches installed packages
-	      which are provided by any package.
+	      <quote><literal>~i?provides(?true)</literal></quote>
+	      matches installed packages which are provided by any
+	      package.
 	    </para>
 	  </listitem>
 	</varlistentry>
