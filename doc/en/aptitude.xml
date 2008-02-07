@@ -4337,10 +4337,12 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      dependency types given in <link
 	      linkend='searchBrokenType'>the documentation of
 	      <literal>?broken-<replaceable>type</replaceable></literal></link>,
-	      as well as <literal>provides</literal>.  If
-	      <replaceable>type</replaceable> is not present for
-	      <literal>~D</literal>, it defaults to
-	      <literal>depends</literal>.
+	      as well as <literal>provides</literal>: for instance,
+	      <literal>?depends(libpng3)</literal> to find any package
+	      that depends on <literal>libpng3</literal>.  If the
+	      short form (<literal>~D</literal>) is used and
+	      <replaceable>type</replaceable> is not present, it
+	      defaults to <literal>depends</literal>.
 	    </para>
 
 	    <para>
