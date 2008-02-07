@@ -114,12 +114,14 @@ namespace
    */
   enum matcher_type
     {
+      matcher_type_and,
       matcher_type_archive,
       matcher_type_broken,
       matcher_type_description,
       matcher_type_false,
       matcher_type_name,
       matcher_type_not,
+      matcher_type_or,
       matcher_type_true,
       matcher_type_version
     };
@@ -147,12 +149,14 @@ namespace
   // because the English meaning takes precedence.
   const matcher_info matcher_types[] =
   {
+    { N_("Matcher Type|and"), matcher_type_and },
     { N_("Matcher Type|broken"), matcher_type_broken },
     { N_("Matcher Type|description"), matcher_type_description },
     { N_("Matcher Type|archive"), matcher_type_archive },
     { N_("Matcher Type|false"), matcher_type_false },
     { N_("Matcher Type|name"), matcher_type_name },
     { N_("Matcher Type|not"), matcher_type_not },
+    { N_("Matcher Type|or"), matcher_type_or },
     { N_("Matcher Type|true"), matcher_type_true },
     { N_("Matcher Type|version"), matcher_type_version }
   };
@@ -2307,6 +2311,9 @@ void parse_required_character(string::const_iterator &start,
   ++start;
 }
 
+template<typename arg>
+struct parse_method;
+
 void parse_open_paren(string::const_iterator &start,
 		      const string::const_iterator &end)
 {
@@ -2319,17 +2326,72 @@ void parse_close_paren(string::const_iterator &start,
   parse_required_character(start, end, ')');
 }
 
-void parse_coma(string::const_iterator &start,
-		const string::const_iterator &end)
+void parse_comma(string::const_iterator &start,
+		 const string::const_iterator &end)
 {
   parse_required_character(start, end, ',');
+}
+
+template<>
+struct parse_method<string>
+{
+  string operator()(string::const_iterator &start,
+		    const string::const_iterator &end,
+		    const std::vector<const char *> &terminators,
+		    bool search_descriptions) const
+  {
+    return parse_substr(start, end, std::vector<const char *>(), false);
+  }
+};
+
+template<>
+struct parse_method<pkg_matcher *>
+{
+  pkg_matcher *operator()(string::const_iterator &start,
+			  const string::const_iterator &end,
+			  const std::vector<const char *> &terminators,
+			  bool search_descriptions) const
+  {
+    return parse_atom(start, end, terminators, search_descriptions);
+  }
+};
+
+template<typename T, typename A1>
+T *parse_unary_matcher(string::const_iterator &start,
+		       const string::const_iterator &end,
+		       const std::vector<const char *> &terminators,
+		       bool search_descriptions,
+		       const parse_method<A1> &parse1 = parse_method<A1>())
+{
+  parse_open_paren(start, end);
+  A1 a1(parse1(start, end, terminators, search_descriptions));
+  parse_close_paren(start, end);
+
+  return new T(a1);
+}
+
+template<typename T, typename A1, typename A2>
+T *parse_binary_matcher(string::const_iterator &start,
+			const string::const_iterator &end,
+			const std::vector<const char *> &terminators,
+			bool search_descriptions,
+			const parse_method<A1> &parse1 = parse_method<A1>(),
+			const parse_method<A2> &parse2 = parse_method<A2>())
+{
+  parse_open_paren(start, end);
+  A1 a1(parse1(start, end, terminators, search_descriptions));
+  parse_comma(start, end);
+  A2 a2(parse2(start, end, terminators, search_descriptions));
+  parse_close_paren(start, end);
+
+  return new T(a1, a2);
 }
 
 string parse_string_match_args(string::const_iterator &start,
 			       const string::const_iterator &end)
 {
   parse_open_paren(start, end);
-  const std::string substr = parse_substr(start, end, std::vector<const char *>(), false);
+  string substr(parse_substr(start, end, std::vector<const char *>(), false));
   parse_close_paren(start, end);
 
   return substr;
@@ -2337,7 +2399,7 @@ string parse_string_match_args(string::const_iterator &start,
 
 pkg_matcher *parse_pkg_matcher_args(string::const_iterator &start,
 				    const string::const_iterator &end,
-				    const std::vector<const char *> terminators,
+				    const std::vector<const char *> &terminators,
 				    bool search_descriptions)
 {
   parse_open_paren(start, end);
@@ -2470,6 +2532,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 
   switch(type)
     {
+    case matcher_type_and:
+      return parse_binary_matcher<pkg_and_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions);
     case matcher_type_archive:
       return new pkg_archive_matcher(parse_string_match_args(start, end));
     case matcher_type_broken:
@@ -2482,6 +2546,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       return new pkg_name_matcher(parse_string_match_args(start, end));
     case matcher_type_not:
       return new pkg_not_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions));
+    case matcher_type_or:
+      return parse_binary_matcher<pkg_or_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions);
     case matcher_type_true:
       return new pkg_true_matcher;
     case matcher_type_version:

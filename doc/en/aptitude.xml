@@ -4173,7 +4173,19 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry>
-	  <term><literal><replaceable>term1</replaceable> | <replaceable>term2</replaceable></literal></term>
+	  <term><literal>?and(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>, <replaceable>term1</replaceable> <replaceable>term2</replaceable></term>
+
+	  <listitem>
+	    <para>
+	      Matches packages that match both
+	      <replaceable>term1</replaceable> and
+	      <replaceable>term2</replaceable>.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><literal>?or(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>, <literal><replaceable>term1</replaceable> | <replaceable>term2</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
