@@ -2372,7 +2372,9 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 
   string raw_name;
   string lower_case_name;
-  while(start != end && *start != '-' && *start != '(' && !isspace(*start) &&
+  while(start != end && *start != '(' && *start != '!' &&
+	*start != '|' && *start != ')' && *start != '?' &&
+	*start != '~' && !isspace(*start) &&
 	!terminate(start, end, terminators))
     {
       raw_name += *start;
@@ -2380,9 +2382,10 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       ++start;
     }
 
-  // All dependency types can be used directly as matchers.
+  // All dependency types can be used directly as matchers,
+  // as can broken-TYPE.
   {
-    pkgCache::Dep::DepType depType = parse_deptype(lower_case_name);
+    const pkgCache::Dep::DepType depType = parse_deptype(lower_case_name);
     if(depType != (pkgCache::Dep::DepType)-1)
       {
 	return new pkg_dep_matcher(depType,
@@ -2390,6 +2393,31 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 							  terminators,
 							  search_descriptions),
 				   false);
+      }
+  }
+
+  {
+    const std::string broken_prefix("broken-");
+    if(std::string(lower_case_name, 0, broken_prefix.size()) == broken_prefix)
+      {
+	std::string suffix(lower_case_name, broken_prefix.size());
+
+	const pkgCache::Dep::DepType broken_deptype = parse_deptype(suffix);
+
+	while(start != end && isspace(*start) &&
+	      !terminate(start, end, terminators))
+	  ++start;
+
+	if(broken_deptype == -1)
+	  throw CompilationException(_("Unknown dependency type: %s"),
+				     suffix.c_str());
+
+	auto_ptr<pkg_matcher> m(parse_optional_pkg_matcher_args(start, end, terminators, search_descriptions));
+
+	if(m.get() != NULL)
+	  return new pkg_dep_matcher(broken_deptype, m.release(), true);
+	else
+	  return new pkg_broken_type_matcher(broken_deptype);
       }
   }
 
@@ -2443,41 +2471,7 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
     case matcher_type_archive:
       return new pkg_archive_matcher(parse_string_match_args(start, end));
     case matcher_type_broken:
-      {
-	// Could be broken-foo, or broken-foo(matcher).
-	if(start != end && !terminate(start, end, terminators) && *start == '-')
-	  {
-	    ++start;
-	    std::string deptype_name;
-	    // TODO: need to take other syntactic elements, like ! and
-	    // |, into account.
-	    while(start != end && *start != '(' && !isspace(*start) &&
-		  !terminate(start, end, terminators))
-	      {
-		deptype_name += *start;
-		++start;
-	      }
-
-	    while(start != end && *start != '(' && !isspace(*start) &&
-		  !terminate(start, end, terminators))
-	      ++start;
-
-	    pkgCache::Dep::DepType deptype = parse_deptype(deptype_name);
-
-	    if(deptype == -1)
-	      throw CompilationException(_("Unknown dependency type: %s"),
-					 deptype_name.c_str());
-
-	    auto_ptr<pkg_matcher> m(parse_optional_pkg_matcher_args(start, end, terminators, search_descriptions));
-
-	    if(m.get() != NULL)
-	      return new pkg_dep_matcher(deptype, m.release(), true);
-	    else
-	      return new pkg_broken_type_matcher(deptype);
-	  }
-	else
-	  return new pkg_broken_matcher;
-      }
+      return new pkg_broken_matcher;
     case matcher_type_description:
       return new pkg_description_matcher(parse_string_match_args(start, end));
     case matcher_type_false:
