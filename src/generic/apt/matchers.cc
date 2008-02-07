@@ -120,6 +120,7 @@ namespace
       matcher_type_description,
       matcher_type_essential,
       matcher_type_false,
+      matcher_type_installed,
       matcher_type_name,
       matcher_type_not,
       matcher_type_obsolete,
@@ -158,6 +159,7 @@ namespace
     { N_("Matcher Type|archive"), matcher_type_archive },
     { N_("Matcher Type|essential"), matcher_type_essential },
     { N_("Matcher Type|false"), matcher_type_false },
+    { N_("Matcher Type|installed"), matcher_type_installed },
     { N_("Matcher Type|name"), matcher_type_name },
     { N_("Matcher Type|not"), matcher_type_not },
     { N_("Matcher Type|obsolete"), matcher_type_obsolete },
@@ -2599,6 +2601,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       return new pkg_essential_matcher;
     case matcher_type_false:
       return new pkg_false_matcher;
+    case matcher_type_installed:
+      return new pkg_installed_matcher;
     case matcher_type_name:
       return new pkg_name_matcher(parse_string_match_args(start, end));
     case matcher_type_not:
