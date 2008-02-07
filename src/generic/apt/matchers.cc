@@ -114,6 +114,7 @@ namespace
    */
   enum matcher_type
     {
+      matcher_type_action,
       matcher_type_and,
       matcher_type_archive,
       matcher_type_broken,
@@ -153,10 +154,11 @@ namespace
   // because the English meaning takes precedence.
   const matcher_info matcher_types[] =
   {
+    { N_("Matcher Type|action"), matcher_type_action },
     { N_("Matcher Type|and"), matcher_type_and },
+    { N_("Matcher Type|archive"), matcher_type_archive },
     { N_("Matcher Type|broken"), matcher_type_broken },
     { N_("Matcher Type|description"), matcher_type_description },
-    { N_("Matcher Type|archive"), matcher_type_archive },
     { N_("Matcher Type|essential"), matcher_type_essential },
     { N_("Matcher Type|false"), matcher_type_false },
     { N_("Matcher Type|installed"), matcher_type_installed },
@@ -2188,6 +2190,46 @@ pkgCache::Dep::DepType parse_deptype(const string &s)
     return (pkgCache::Dep::DepType) -1;
 }
 
+// Ideally this would parse the string and return an action type, but
+// purging isn't a separate type to the matcher.  Maybe instead there
+// should be a separate enum for the action matcher's modes?
+pkg_matcher *make_action_matcher(const std::string &action_str)
+{
+  // Match packages to be installed
+  if(!strcasecmp(action_str.c_str(), "install"))
+    return new pkg_action_matcher(pkg_install, false);
+
+  // Match packages to be upgraded
+  else if(!strcasecmp(action_str.c_str(), "upgrade"))
+    return new pkg_action_matcher(pkg_upgrade, false);
+
+  else if(!strcasecmp(action_str.c_str(), "downgrade"))
+    return new pkg_action_matcher(pkg_downgrade, false);
+
+  // Match packages to be removed OR purged
+  else if(!strcasecmp(action_str.c_str(), "remove"))
+    return new pkg_action_matcher(pkg_remove, false);
+
+  // Match packages to be purged
+  else if(!strcasecmp(action_str.c_str(), "purge"))
+    return new pkg_action_matcher(pkg_remove, true);
+
+  // Match packages to be reinstalled
+  else if(!strcasecmp(action_str.c_str(), "reinstall"))
+    return new pkg_action_matcher(pkg_reinstall, false);
+
+  // Match held packages
+  else if(!strcasecmp(action_str.c_str(), "hold"))
+    return new pkg_action_matcher(pkg_hold, false);
+  else if(!strcasecmp(action_str.c_str(), "keep"))
+    return new pkg_keep_matcher;
+
+  else
+    throw CompilationException(_("Unknown action type: %s"),
+			       action_str.c_str());
+}
+
+
 pkg_matcher *parse_condition_list(string::const_iterator &start,
 				  const string::const_iterator &end,
 				  const vector<const char *> &terminators,
@@ -2589,6 +2631,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 
   switch(type)
     {
+    case matcher_type_action:
+      return make_action_matcher(parse_string_match_args(start, end));
     case matcher_type_and:
       return parse_binary_matcher<pkg_and_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions);
     case matcher_type_archive:
@@ -2823,38 +2867,7 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		    {
 		    case 'a':
 		      {
-			// Match packages to be installed
-			if(!strcasecmp(substr.c_str(), "install"))
-			  return new pkg_action_matcher(pkg_install, false);
-
-			// Match packages to be upgraded
-			else if(!strcasecmp(substr.c_str(), "upgrade"))
-			  return new pkg_action_matcher(pkg_upgrade, false);
-
-			else if(!strcasecmp(substr.c_str(), "downgrade"))
-			  return new pkg_action_matcher(pkg_downgrade, false);
-
-			// Match packages to be removed OR purged
-			else if(!strcasecmp(substr.c_str(), "remove"))
-			  return new pkg_action_matcher(pkg_remove, false);
-
-			// Match packages to be purged
-			else if(!strcasecmp(substr.c_str(), "purge"))
-			  return new pkg_action_matcher(pkg_remove, true);
-
-			// Match packages to be reinstalled
-			else if(!strcasecmp(substr.c_str(), "reinstall"))
-			  return new pkg_action_matcher(pkg_reinstall, false);
-
-			// Match held packages
-			else if(!strcasecmp(substr.c_str(), "hold"))
-			  return new pkg_action_matcher(pkg_hold, false);
-			else if(!strcasecmp(substr.c_str(), "keep"))
-			  return new pkg_keep_matcher;
-
-			else
-			  throw CompilationException(_("Unknown action type: %s"),
-						     substr.c_str());
+			return make_action_matcher(substr.c_str());
 		      }
 		    case 'A':
 		      return new pkg_archive_matcher(substr);
