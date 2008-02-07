@@ -122,6 +122,7 @@ namespace
       matcher_type_name,
       matcher_type_not,
       matcher_type_or,
+      matcher_type_provides,
       matcher_type_true,
       matcher_type_version
     };
@@ -157,6 +158,7 @@ namespace
     { N_("Matcher Type|name"), matcher_type_name },
     { N_("Matcher Type|not"), matcher_type_not },
     { N_("Matcher Type|or"), matcher_type_or },
+    { N_("Matcher Type|provides"), matcher_type_provides },
     { N_("Matcher Type|true"), matcher_type_true },
     { N_("Matcher Type|version"), matcher_type_version }
   };
@@ -2548,6 +2550,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       return new pkg_not_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions));
     case matcher_type_or:
       return parse_binary_matcher<pkg_or_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions);
+    case matcher_type_provides:
+      return parse_unary_matcher<pkg_provides_matcher, pkg_matcher*>(start, end, terminators, search_descriptions);
     case matcher_type_true:
       return new pkg_true_matcher;
     case matcher_type_version:
