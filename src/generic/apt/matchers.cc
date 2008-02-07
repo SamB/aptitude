@@ -2448,42 +2448,91 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       ++start;
     }
 
-  // All dependency types can be used directly as matchers,
-  // as can broken-TYPE.
   {
-    const pkgCache::Dep::DepType depType = parse_deptype(lower_case_name);
-    if(depType != (pkgCache::Dep::DepType)-1)
-      {
-	return new pkg_dep_matcher(depType,
-				   parse_pkg_matcher_args(start, end,
-							  terminators,
-							  search_descriptions),
-				   false);
-      }
-  }
-
-  {
+    // This block parses the following forms:
+    //
+    // ?TYPE(term)
+    // ?broken-TYPE
+    // ?broken-TYPE(term)
+    // ?reverse-TYPE(term)
+    // ?broken-reverse-TYPE(term)
+    // ?reverse-broken-TYPE(term)
     const std::string broken_prefix("broken-");
+    const std::string reverse_prefix("reverse-");
+
+    bool broken = false;
+    bool reverse = false;
+    std::string suffix;
+
     if(std::string(lower_case_name, 0, broken_prefix.size()) == broken_prefix)
       {
-	std::string suffix(lower_case_name, broken_prefix.size());
+	broken = true;
 
-	const pkgCache::Dep::DepType broken_deptype = parse_deptype(suffix);
+	if(std::string(lower_case_name, broken_prefix.size(), reverse_prefix.size()) == reverse_prefix)
+	  {
+	    reverse = true;
+	    suffix = std::string(lower_case_name, broken_prefix.size() + reverse_prefix.size());
+	  }
+	else
+	  suffix = std::string(lower_case_name, broken_prefix.size());
+      }
+    else if(std::string(lower_case_name, 0, reverse_prefix.size()) == reverse_prefix)
+      {
+	reverse = true;
 
-	while(start != end && isspace(*start) &&
-	      !terminate(start, end, terminators))
-	  ++start;
+	if(std::string(lower_case_name, reverse_prefix.size(), broken_prefix.size()) == broken_prefix)
+	  {
+	    broken = true;
+	    suffix = std::string(lower_case_name, broken_prefix.size() + reverse_prefix.size());
+	  }
+	else
+	  suffix = std::string(lower_case_name, reverse_prefix.size());
+      }
 
-	if(broken_deptype == -1)
+    const pkgCache::Dep::DepType deptype = parse_deptype(suffix);
+
+    while(start != end && isspace(*start) &&
+	  !terminate(start, end, terminators))
+      ++start;
+
+    if(deptype == -1)
+      {
+	// Handle the special case of reverse-provides.
+	if(reverse && suffix == "provides")
+	  return new pkg_revprv_matcher(parse_pkg_matcher_args(start, end,
+							       terminators,
+							       search_descriptions));
+	else if(broken || reverse)
 	  throw CompilationException(_("Unknown dependency type: %s"),
 				     suffix.c_str());
 
-	auto_ptr<pkg_matcher> m(parse_optional_pkg_matcher_args(start, end, terminators, search_descriptions));
+	// Otherwise what we have isn't a dep-matcher at all, so just
+	// don't do anything and try other options.
+      }
+    else
+      {
+	if(reverse)
+	  {
+	    // broken-reverse-TYPE(term) and reverse-broken-TYPE(term)
+	    pkg_matcher *m(parse_pkg_matcher_args(start, end,
+						  terminators,
+						  search_descriptions));
 
-	if(m.get() != NULL)
-	  return new pkg_dep_matcher(broken_deptype, m.release(), true);
+	    return new pkg_revdep_matcher(deptype, m, broken);
+	  }
 	else
-	  return new pkg_broken_type_matcher(broken_deptype);
+	  {
+	    // broken-TYPE and broken-TYPE(term) in the first branch,
+	    // TYPE(term) in the second.
+	    auto_ptr<pkg_matcher> m(broken
+				    ? parse_optional_pkg_matcher_args(start, end, terminators, search_descriptions)
+				    : parse_pkg_matcher_args(start, end, terminators, search_descriptions));
+
+	    if(m.get() != NULL)
+	      return new pkg_dep_matcher(deptype, m.release(), broken);
+	    else
+	      return new pkg_broken_type_matcher(deptype);
+	  }
       }
   }
 

@@ -4568,7 +4568,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry>
-	  <term><literal>~R<optional>B</optional><optional><replaceable>type</replaceable>:</optional><replaceable>term</replaceable></literal></term>
+	  <term><literal>?reverse-<replaceable>type</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>~R<optional><replaceable>type</replaceable>:</optional><replaceable>term</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
@@ -4576,11 +4576,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <quote><literal>provides</literal></quote> or one of the
 	      dependency types given in <link
 	      linkend='searchBrokenType'>the documentation of
-	      <literal>~B</literal></link>.  If
-	      <replaceable>type</replaceable> is not present, it
-	      defaults to <literal>depends</literal>.  If
-	      <literal>B</literal> is present, only broken
-	      dependencies will be considered.
+	      <literal>?broken-<replaceable>type</replaceable></literal></link>.
+	      If <replaceable>type</replaceable> is not present, it
+	      defaults to <literal>depends</literal>.
 	    </para>
 
 	    <para>
@@ -4591,6 +4589,28 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      matches packages which a package version matching
 	      <replaceable>term</replaceable> declares a dependency of
 	      type <replaceable>type</replaceable> upon.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><literal>?broken-reverse-<replaceable>type</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>?reverse-broken-<replaceable>type</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>~RB<optional><replaceable>type</replaceable>:</optional><replaceable>term</replaceable></literal></term>
+
+	  <listitem>
+	    <para>
+	      <replaceable>type</replaceable> may be either
+	      <quote><literal>provides</literal></quote> or one of the
+	      dependency types given in <link
+	      linkend='searchBrokenType'>the documentation of
+	      <literal>~B</literal></link>.  If
+	      <replaceable>type</replaceable> is not present, it
+	      defaults to <literal>depends</literal>.
+	    </para>
+
+	    <para>
+	      Matches packages which a package version matching
+	      <replaceable>term</replaceable> declares an unsatisfied
+	      dependency of type <replaceable>type</replaceable> upon.
 	    </para>
 	  </listitem>
 	</varlistentry>
