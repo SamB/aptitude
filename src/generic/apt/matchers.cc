@@ -76,6 +76,11 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 			const vector<const char *> &terminators,
 			bool search_descriptions);
 
+pkg_matcher *parse_condition_list(string::const_iterator &start,
+				  const string::const_iterator &end,
+				  const vector<const char *> &terminators,
+				  bool search_descriptions);
+
 /** Used to cleanly abort without having to contort the code. */
 class CompilationException
 {
@@ -2420,7 +2425,7 @@ struct parse_method<pkg_matcher *>
 			  const std::vector<const char *> &terminators,
 			  bool search_descriptions) const
   {
-    return parse_atom(start, end, terminators, search_descriptions);
+    return parse_condition_list(start, end, terminators, search_descriptions);
   }
 };
 
@@ -2471,7 +2476,7 @@ pkg_matcher *parse_pkg_matcher_args(string::const_iterator &start,
 				    bool search_descriptions)
 {
   parse_open_paren(start, end);
-  auto_ptr<pkg_matcher> m(parse_atom(start, end, terminators, search_descriptions));
+  auto_ptr<pkg_matcher> m(parse_condition_list(start, end, terminators, search_descriptions));
   parse_close_paren(start, end);
 
   return m.release();
