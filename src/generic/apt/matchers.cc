@@ -2542,6 +2542,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 	else
 	  suffix = std::string(lower_case_name, reverse_prefix.size());
       }
+    else
+      suffix = lower_case_name;
 
     const pkgCache::Dep::DepType deptype = parse_deptype(suffix);
 
