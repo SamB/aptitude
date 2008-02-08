@@ -136,7 +136,8 @@ namespace
       matcher_type_section,
       matcher_type_tag,
       matcher_type_true,
-      matcher_type_version
+      matcher_type_version,
+      matcher_type_widen
     };
 
   struct matcher_info
@@ -184,7 +185,8 @@ namespace
     { N_("Matcher Type|section"), matcher_type_section },
     { N_("Matcher Type|tag"), matcher_type_tag },
     { N_("Matcher Type|true"), matcher_type_true },
-    { N_("Matcher Type|version"), matcher_type_version }
+    { N_("Matcher Type|version"), matcher_type_version },
+    { N_("Matcher Type|widen"), matcher_type_widen }
   };
 }
 
@@ -2695,6 +2697,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       return new pkg_true_matcher;
     case matcher_type_version:
       return make_package_version_matcher(parse_string_match_args(start, end));
+    case matcher_type_widen:
+      return new pkg_widen_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions));
     default:
       throw CompilationException(_("Unexpected matcher type %d encountered."),
 				 type);
