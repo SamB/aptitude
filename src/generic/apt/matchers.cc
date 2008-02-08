@@ -131,6 +131,7 @@ namespace
       matcher_type_not,
       matcher_type_obsolete,
       matcher_type_or,
+      matcher_type_origin,
       matcher_type_provides,
       matcher_type_tag,
       matcher_type_true,
@@ -177,6 +178,7 @@ namespace
     { N_("Matcher Type|not"), matcher_type_not },
     { N_("Matcher Type|obsolete"), matcher_type_obsolete },
     { N_("Matcher Type|or"), matcher_type_or },
+    { N_("Matcher Type|origin"), matcher_type_origin },
     { N_("Matcher Type|provides"), matcher_type_provides },
     { N_("Matcher Type|tag"), matcher_type_tag },
     { N_("Matcher Type|true"), matcher_type_true },
@@ -2679,6 +2681,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       return new pkg_obsolete_matcher;
     case matcher_type_or:
       return parse_binary_matcher<pkg_or_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions);
+    case matcher_type_origin:
+      return new pkg_origin_matcher(parse_string_match_args(start, end));
     case matcher_type_provides:
       return parse_unary_matcher<pkg_provides_matcher, pkg_matcher*>(start, end, terminators, search_descriptions);
     case matcher_type_tag:
