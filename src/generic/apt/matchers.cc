@@ -144,6 +144,7 @@ namespace
       matcher_type_true,
       matcher_type_upgradable,
       matcher_type_version,
+      matcher_type_virtual,
       matcher_type_widen
     };
 
@@ -195,6 +196,7 @@ namespace
     { N_("Matcher Type|true"), matcher_type_true },
     { N_("Matcher Type|upgradable"), matcher_type_upgradable },
     { N_("Matcher Type|version"), matcher_type_version },
+    { N_("Matcher Type|virtual"), matcher_type_virtual },
     { N_("Matcher Type|widen"), matcher_type_widen }
   };
 }
@@ -2714,6 +2716,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       return parse_binary_matcher<pkg_or_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions);
     case matcher_type_origin:
       return new pkg_origin_matcher(parse_string_match_args(start, end));
+    case matcher_type_virtual:
+      return new pkg_virtual_matcher;
     case matcher_type_provides:
       return parse_unary_matcher<pkg_provides_matcher, pkg_matcher*>(start, end, terminators, search_descriptions);
     case matcher_type_section:
