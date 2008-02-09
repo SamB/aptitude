@@ -4058,13 +4058,14 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	By default, patterns are checked against all versions of the
 	package.  However, some patterns will restrict which versions
 	are tested.  For instance, the <link
-	linkend='searchDep'><literal>~D</literal></link> pattern takes
-	another pattern as an argument, and matches any package that
-	depends on another package matching that pattern.  In this
-	case, only package versions that satisfy the dependency will
-	be tested against.  The versions that are used to test for a
-	match will only change in match terms that have a subterm
-	(like <link linkend='searchDep'><literal>~D</literal></link>).
+	linkend='searchDep'><literal>?depends</literal></link> pattern
+	takes another pattern as an argument, and matches any package
+	that depends on another package matching that pattern.  In
+	this case, only package versions that satisfy the dependency
+	will be tested against.  The versions that are used to test
+	for a match will only change in match terms that have a
+	subterm (like <link
+	linkend='searchDep'><literal>?depends</literal></link>).
       </para>
 
       <para>
@@ -4209,11 +4210,10 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	  <listitem>
 	    <para>
-	      Matches <replaceable>term</replaceable>; this is useful
-	      to explicitly select the grouping of complex
-	      expressions.  For instance,
-	      <quote><literal>~D(perl|python)</literal></quote> matches any package
-	      that depends on a package whose name contains either
+	      Matches <replaceable>term</replaceable>.  For instance,
+	      <quote><literal>opengl (perl|python)</literal></quote>
+	      matches any package whose name contains
+	      <literal>opengl</literal>, and also contains either
 	      <literal>perl</literal> or <literal>python</literal>.
 	    </para>
 	  </listitem>
@@ -4794,8 +4794,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <quote>Widens</quote> the match: if the versions to
 	      match against have been limited by an enclosing matcher
 	      (such as <link
-	      linkend='searchDep'><literal>~D</literal></link>), these
-	      limits are dropped.  Thus,
+	      linkend='searchDep'><literal>?depends</literal></link>),
+	      these limits are dropped.  Thus,
 	      <literal>?widen(<replaceable>term</replaceable>)</literal>
 	      matches a package version if
 	      <replaceable>term</replaceable> matches
