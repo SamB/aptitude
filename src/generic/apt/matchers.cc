@@ -2445,6 +2445,19 @@ T *parse_unary_matcher(string::const_iterator &start,
   return new T(a1);
 }
 
+void add_new_terminator(const char *new_terminator,
+			std::vector<const char *> &terminators)
+{
+  for(std::vector<const char*>::const_iterator it = terminators.begin();
+      it != terminators.end(); ++it)
+    {
+      if(strcmp(new_terminator, *it) == 0)
+	return;
+    }
+
+  terminators.push_back(new_terminator);
+}
+
 template<typename T, typename A1, typename A2>
 T *parse_binary_matcher(string::const_iterator &start,
 			const string::const_iterator &end,
@@ -2453,8 +2466,11 @@ T *parse_binary_matcher(string::const_iterator &start,
 			const parse_method<A1> &parse1 = parse_method<A1>(),
 			const parse_method<A2> &parse2 = parse_method<A2>())
 {
+  std::vector<const char *> terminators_plus_comma(terminators);
+  add_new_terminator(",", terminators_plus_comma);
+
   parse_open_paren(start, end);
-  A1 a1(parse1(start, end, terminators, search_descriptions));
+  A1 a1(parse1(start, end, terminators_plus_comma, search_descriptions));
   parse_comma(start, end);
   A2 a2(parse2(start, end, terminators, search_descriptions));
   parse_close_paren(start, end);
