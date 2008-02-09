@@ -74,12 +74,14 @@ namespace cw = cwidget;
 pkg_matcher *parse_atom(string::const_iterator &start,
 			const string::const_iterator &end,
 			const vector<const char *> &terminators,
-			bool search_descriptions);
+			bool search_descriptions,
+			bool wide_context);
 
 pkg_matcher *parse_condition_list(string::const_iterator &start,
 				  const string::const_iterator &end,
 				  const vector<const char *> &terminators,
-				  bool search_descriptions);
+				  bool search_descriptions,
+				  bool wide_context);
 
 /** Used to cleanly abort without having to contort the code. */
 class CompilationException
@@ -120,6 +122,7 @@ namespace
   enum matcher_type
     {
       matcher_type_action,
+      matcher_type_all,
       matcher_type_and,
       matcher_type_archive,
       matcher_type_automatic,
@@ -171,6 +174,7 @@ namespace
   // because the English meaning takes precedence.
   const matcher_info matcher_types[] =
   {
+    { N_("Matcher Type|all"), matcher_type_all },
     { N_("Matcher Type|action"), matcher_type_action },
     { N_("Matcher Type|and"), matcher_type_and },
     { N_("Matcher Type|archive"), matcher_type_archive },
@@ -2167,6 +2171,73 @@ public:
   }
 };
 
+class pkg_all_matcher : public pkg_matcher
+{
+  pkg_matcher *sub_matcher;
+public:
+  pkg_all_matcher(pkg_matcher *_sub_matcher)
+    : sub_matcher(_sub_matcher)
+  {
+  }
+
+  ~pkg_all_matcher()
+  {
+    delete sub_matcher;
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records)
+  {
+    return sub_matcher->matches(pkg, ver, cache, records);
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records)
+  {
+    for(pkgCache::VerIterator ver = pkg.VersionList();
+	!ver.end(); ++ver)
+      {
+	if(!sub_matcher->matches(pkg, ver, cache, records))
+	   return false;
+      }
+
+    return true;
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records)
+  {
+    return sub_matcher->get_match(pkg, ver, cache, records);
+  }
+
+  // This will somewhat arbitrarily return the string associated with
+  // the last thing matched.  I don't want to return all the strings
+  // since that would make it impossible to reliably select a string
+  // later in the search expression.
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records)
+  {
+    pkg_match_result *tmp = NULL;
+
+    for(pkgCache::VerIterator ver = pkg.VersionList();
+	!ver.end(); ++ver)
+      {
+	delete tmp;
+	tmp = sub_matcher->get_match(pkg, ver, cache, records);
+	if(tmp == NULL)
+	  return tmp;
+      }
+
+    return tmp;
+  }
+};
+
 // Check for terminators.  Not terribly efficient, but I expect under
 // 3 terminators in any interesting usage (more than that and I really
 // should force yacc to do my bidding)
@@ -2417,7 +2488,8 @@ struct parse_method<string>
   string operator()(string::const_iterator &start,
 		    const string::const_iterator &end,
 		    const std::vector<const char *> &terminators,
-		    bool search_descriptions) const
+		    bool search_descriptions,
+		    bool wide_context) const
   {
     return parse_substr(start, end, std::vector<const char *>(), false);
   }
@@ -2429,9 +2501,10 @@ struct parse_method<pkg_matcher *>
   pkg_matcher *operator()(string::const_iterator &start,
 			  const string::const_iterator &end,
 			  const std::vector<const char *> &terminators,
-			  bool search_descriptions) const
+			  bool search_descriptions,
+			  bool wide_context) const
   {
-    return parse_condition_list(start, end, terminators, search_descriptions);
+    return parse_condition_list(start, end, terminators, search_descriptions, wide_context);
   }
 };
 
@@ -2440,10 +2513,11 @@ T *parse_unary_matcher(string::const_iterator &start,
 		       const string::const_iterator &end,
 		       const std::vector<const char *> &terminators,
 		       bool search_descriptions,
+		       bool wide_context,
 		       const parse_method<A1> &parse1 = parse_method<A1>())
 {
   parse_open_paren(start, end);
-  A1 a1(parse1(start, end, terminators, search_descriptions));
+  A1 a1(parse1(start, end, terminators, search_descriptions, wide_context));
   parse_close_paren(start, end);
 
   return new T(a1);
@@ -2467,6 +2541,7 @@ T *parse_binary_matcher(string::const_iterator &start,
 			const string::const_iterator &end,
 			const std::vector<const char *> &terminators,
 			bool search_descriptions,
+			bool wide_context,
 			const parse_method<A1> &parse1 = parse_method<A1>(),
 			const parse_method<A2> &parse2 = parse_method<A2>())
 {
@@ -2474,9 +2549,9 @@ T *parse_binary_matcher(string::const_iterator &start,
   add_new_terminator(",", terminators_plus_comma);
 
   parse_open_paren(start, end);
-  A1 a1(parse1(start, end, terminators_plus_comma, search_descriptions));
+  A1 a1(parse1(start, end, terminators_plus_comma, search_descriptions, wide_context));
   parse_comma(start, end);
-  A2 a2(parse2(start, end, terminators, search_descriptions));
+  A2 a2(parse2(start, end, terminators, search_descriptions, wide_context));
   parse_close_paren(start, end);
 
   return new T(a1, a2);
@@ -2495,10 +2570,10 @@ string parse_string_match_args(string::const_iterator &start,
 pkg_matcher *parse_pkg_matcher_args(string::const_iterator &start,
 				    const string::const_iterator &end,
 				    const std::vector<const char *> &terminators,
-				    bool search_descriptions)
+				    bool search_descriptions, bool wide_context)
 {
   parse_open_paren(start, end);
-  auto_ptr<pkg_matcher> m(parse_condition_list(start, end, terminators, search_descriptions));
+  auto_ptr<pkg_matcher> m(parse_condition_list(start, end, terminators, search_descriptions, wide_context));
   parse_close_paren(start, end);
 
   return m.release();
@@ -2507,13 +2582,14 @@ pkg_matcher *parse_pkg_matcher_args(string::const_iterator &start,
 pkg_matcher *parse_optional_pkg_matcher_args(string::const_iterator &start,
 					     const string::const_iterator &end,
 					     const std::vector<const char *> terminators,
-					     bool search_descriptions)
+					     bool search_descriptions,
+					     bool wide_context)
 {
   while(start != end && isspace(*start))
     ++start;
 
   if(start != end && *start == '(')
-    return parse_pkg_matcher_args(start, end, terminators, search_descriptions);
+    return parse_pkg_matcher_args(start, end, terminators, search_descriptions, wide_context);
   else
     return NULL;
 }
@@ -2521,7 +2597,8 @@ pkg_matcher *parse_optional_pkg_matcher_args(string::const_iterator &start,
 pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 					       const string::const_iterator &end,
 					       const vector<const char *> &terminators,
-					       bool search_descriptions)
+					       bool search_descriptions,
+					       bool wide_context)
 {
   // The name is considered to be the next sequence of non-whitespace
   // characters that are not an open paren.
@@ -2596,7 +2673,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 	if(reverse && suffix == "provides")
 	  return new pkg_revprv_matcher(parse_pkg_matcher_args(start, end,
 							       terminators,
-							       search_descriptions));
+							       search_descriptions,
+							       false));
 	else if(broken || reverse)
 	  throw CompilationException(_("Unknown dependency type: %s"),
 				     suffix.c_str());
@@ -2611,7 +2689,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 	    // broken-reverse-TYPE(term) and reverse-broken-TYPE(term)
 	    pkg_matcher *m(parse_pkg_matcher_args(start, end,
 						  terminators,
-						  search_descriptions));
+						  search_descriptions,
+						  false));
 
 	    return new pkg_revdep_matcher(deptype, m, broken);
 	  }
@@ -2620,8 +2699,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 	    // broken-TYPE and broken-TYPE(term) in the first branch,
 	    // TYPE(term) in the second.
 	    auto_ptr<pkg_matcher> m(broken
-				    ? parse_optional_pkg_matcher_args(start, end, terminators, search_descriptions)
-				    : parse_pkg_matcher_args(start, end, terminators, search_descriptions));
+				    ? parse_optional_pkg_matcher_args(start, end, terminators, search_descriptions, false)
+				    : parse_pkg_matcher_args(start, end, terminators, search_descriptions, false));
 
 	    if(m.get() != NULL)
 	      return new pkg_dep_matcher(deptype, m.release(), broken);
@@ -2680,8 +2759,13 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
     {
     case matcher_type_action:
       return make_action_matcher(parse_string_match_args(start, end));
+    case matcher_type_all:
+      if(!wide_context)
+	throw CompilationException(_("The ?all matcher must be used in a \"wide\" context (a top-level context, or a context enclosed by ?widen)."));
+      else
+	return new pkg_all_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false));
     case matcher_type_and:
-      return parse_binary_matcher<pkg_and_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions);
+      return parse_binary_matcher<pkg_and_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions, wide_context);
     case matcher_type_archive:
       return new pkg_archive_matcher(parse_string_match_args(start, end));
     case matcher_type_automatic:
@@ -2705,21 +2789,19 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
     case matcher_type_name:
       return new pkg_name_matcher(parse_string_match_args(start, end));
     case matcher_type_narrow:
-      return parse_binary_matcher<pkg_select_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions);
+      return parse_binary_matcher<pkg_select_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions, false);
     case matcher_type_new:
       return new pkg_new_matcher;
     case matcher_type_not:
-      return new pkg_not_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions));
+      return new pkg_not_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, wide_context));
     case matcher_type_obsolete:
       return new pkg_obsolete_matcher;
     case matcher_type_or:
-      return parse_binary_matcher<pkg_or_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions);
+      return parse_binary_matcher<pkg_or_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions, wide_context);
     case matcher_type_origin:
       return new pkg_origin_matcher(parse_string_match_args(start, end));
-    case matcher_type_virtual:
-      return new pkg_virtual_matcher;
     case matcher_type_provides:
-      return parse_unary_matcher<pkg_provides_matcher, pkg_matcher*>(start, end, terminators, search_descriptions);
+      return parse_unary_matcher<pkg_provides_matcher, pkg_matcher*>(start, end, terminators, search_descriptions, false);
     case matcher_type_section:
       return new pkg_section_matcher(parse_string_match_args(start, end));
     case matcher_type_tag:
@@ -2731,7 +2813,9 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
     case matcher_type_version:
       return make_package_version_matcher(parse_string_match_args(start, end));
     case matcher_type_widen:
-      return new pkg_widen_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions));
+      return new pkg_widen_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, true));
+    case matcher_type_virtual:
+      return new pkg_virtual_matcher;
     default:
       throw CompilationException(_("Unexpected matcher type %d encountered."),
 				 type);
@@ -2741,7 +2825,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 pkg_matcher *parse_atom(string::const_iterator &start,
 			const string::const_iterator &end,
 			const vector<const char *> &terminators,
-			bool search_descriptions)
+			bool search_descriptions,
+			bool wide_context)
 {
   std::string substr;
 
@@ -2755,7 +2840,8 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 	{
 	  ++start;
 	  return new pkg_not_matcher(parse_atom(start, end, terminators,
-						search_descriptions));
+						search_descriptions,
+						wide_context));
 	}
       else if(*start == '(')
 	// Recur into the list, losing the extra terminators (they are
@@ -2764,7 +2850,8 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 	  ++start;
 	  auto_ptr<pkg_matcher> lst(parse_condition_list(start, end,
 							 vector<const char *>(),
-							 search_descriptions));
+							 search_descriptions,
+							 wide_context));
 
 	  if(!(start != end && *start == ')'))
 	    throw CompilationException(_("Unmatched '('"));
@@ -2777,7 +2864,8 @@ pkg_matcher *parse_atom(string::const_iterator &start,
       else if(*start == '?')
 	{
 	  ++start;
-	  return parse_function_style_matcher_tail(start, end, terminators, search_descriptions);
+	  return parse_function_style_matcher_tail(start, end, terminators, search_descriptions,
+						   wide_context);
 	}
       else if(*start == '~')
 	{
@@ -2844,7 +2932,8 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		    auto_ptr<pkg_matcher> m(parse_atom(start,
 						       end,
 						       terminators,
-						       search_descriptions));
+						       search_descriptions,
+						       search_flag == 'W'));
 		    
 		    switch(search_flag)
 		      {
@@ -2861,12 +2950,14 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		    auto_ptr<pkg_matcher> filter(parse_atom(start,
 							    end,
 							    terminators,
-							    search_descriptions));
+							    search_descriptions,
+							    false));
 
 		    auto_ptr<pkg_matcher> pattern(parse_atom(start,
 							     end,
 							     terminators,
-							     search_descriptions));
+							     search_descriptions,
+							     false));
 
 		    return new pkg_select_matcher(filter.release(), pattern.release());
 		  }
@@ -2916,7 +3007,8 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		      throw CompilationException(_("Provides: cannot be broken"));
 
 		    auto_ptr<pkg_matcher> m(parse_atom(start, end, terminators,
-						       search_descriptions));
+						       search_descriptions,
+						       false));
 
 		    switch(search_flag)
 		      {
@@ -3034,7 +3126,8 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 pkg_matcher *parse_and_group(string::const_iterator &start,
 			     const string::const_iterator &end,
 			     const vector<const char *> &terminators,
-			     bool search_descriptions)
+			     bool search_descriptions,
+			     bool wide_context)
 {
   auto_ptr<pkg_matcher> rval(NULL);
   while(start != end && isspace(*start))
@@ -3044,7 +3137,8 @@ pkg_matcher *parse_and_group(string::const_iterator &start,
 	!terminate(start, end, terminators))
     {
       auto_ptr<pkg_matcher> atom(parse_atom(start, end, terminators,
-					    search_descriptions));
+					    search_descriptions,
+					    wide_context));
 
       if(rval.get() == NULL)
 	rval = atom;
@@ -3064,10 +3158,11 @@ pkg_matcher *parse_and_group(string::const_iterator &start,
 pkg_matcher *parse_condition_list(string::const_iterator &start,
 				  const string::const_iterator &end,
 				  const vector<const char *> &terminators,
-				  bool search_descriptions)
+				  bool search_descriptions,
+				  bool wide_context)
 {
   auto_ptr<pkg_matcher> grp(parse_and_group(start, end, terminators,
-					    search_descriptions));
+					    search_descriptions, wide_context));
 
   while(start != end && isspace(*start))
     ++start;
@@ -3078,7 +3173,8 @@ pkg_matcher *parse_condition_list(string::const_iterator &start,
 	{
 	  ++start;
 	  auto_ptr<pkg_matcher> grp2(parse_condition_list(start, end, terminators,
-							  search_descriptions));
+							  search_descriptions,
+							  wide_context));
 
 	  return new pkg_or_matcher(grp.release(), grp2.release());
 	}
@@ -3112,7 +3208,8 @@ pkg_matcher *parse_pattern(string::const_iterator &start,
   try
     {
       auto_ptr<pkg_matcher> rval(parse_condition_list(start, end, terminators,
-						      search_descriptions));
+						      search_descriptions,
+						      true));
 
       while(start != end && isspace(*start))
 	++start;

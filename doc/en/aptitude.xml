@@ -4254,6 +4254,33 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry>
+	  <term><literal>?all(<replaceable>term</replaceable>)</literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches any package whose versions all match the given
+	      expression.  Each version of a package will be
+	      separately tested against
+	      <replaceable>term</replaceable>, and the package will
+	      match if all of its versions match.  Packages without
+	      versions, such as virtual packages, will always be
+	      matched by this search term.
+	    </para>
+
+	    <para>
+	      This term may not be used in a context in which the
+	      versions to match against have already been narrowed,
+	      such as within <link
+	      linkend='searchDep'><literal>?depends</literal></link>
+	      or <link
+	      linkend='searchNarrow'><literal>?narrow</literal></link>.
+	      However, it may always be used within <link
+	      linkend='searchWiden'><literal>?widen</literal></link>.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
 	  <term><literal>?archive(<replaceable>archive</replaceable>)</literal>, <literal>~A<replaceable>archive</replaceable></literal></term>
 
 	  <listitem>
@@ -4458,7 +4485,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchNarrow'>
 	  <term>
 	    <literal>?narrow(<replaceable>filter</replaceable>, <replaceable>term</replaceable>)</literal>, <literal>~S <replaceable>filter</replaceable> <replaceable>term</replaceable></literal>
 	  </term>
@@ -4757,7 +4784,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchWiden'>
 	  <term>
 	    <literal>?widen(<replaceable>term</replaceable>)</literal>, <literal>~W<replaceable>term</replaceable></literal> 
 	  </term>
