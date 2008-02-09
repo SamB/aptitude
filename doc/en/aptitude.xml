@@ -4478,6 +4478,24 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry>
+	  <term>
+	    <literal>?narrow(<replaceable>filter</replaceable>, <replaceable>term</replaceable>)</literal>, <literal>~S <replaceable>filter</replaceable> <replaceable>term</replaceable></literal>
+	  </term>
+
+	  <listitem>
+	    <para>
+	      This term <quote>narrows</quote> the search to package
+	      versions matching <replaceable>filter</replaceable>.  In
+	      particular, it matches any package version which matches
+	      both <replaceable>filter</replaceable> and
+	      <replaceable>term</replaceable>.  The string value of
+	      the match is the string value of
+	      <replaceable>term</replaceable>.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
 	  <term><literal>?new</literal>, <literal>~N</literal></term>
 
 	  <listitem>
@@ -4610,24 +4628,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      Matches packages which a package version matching
 	      <replaceable>term</replaceable> declares an unsatisfied
 	      dependency of type <replaceable>type</replaceable> upon.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term>
-	    <literal>~S <replaceable>filter</replaceable> <replaceable>term</replaceable></literal>
-	  </term>
-
-	  <listitem>
-	    <para>
-	      This term <quote>narrows</quote> the search to package
-	      versions matching <replaceable>filter</replaceable>.  In
-	      particular, it matches any package version which matches
-	      both <replaceable>filter</replaceable> and
-	      <replaceable>term</replaceable>.  The string value of
-	      the match is the string value of
-	      <replaceable>term</replaceable>.
 	    </para>
 	  </listitem>
 	</varlistentry>

@@ -131,6 +131,7 @@ namespace
       matcher_type_garbage,
       matcher_type_installed,
       matcher_type_maintainer,
+      matcher_type_narrow,
       matcher_type_name,
       matcher_type_new,
       matcher_type_not,
@@ -181,6 +182,7 @@ namespace
     { N_("Matcher Type|installed"), matcher_type_installed },
     { N_("Matcher Type|maintainer"), matcher_type_maintainer },
     { N_("Matcher Type|name"), matcher_type_name },
+    { N_("Matcher Type|narrow"), matcher_type_narrow },
     { N_("Matcher Type|new"), matcher_type_new },
     { N_("Matcher Type|not"), matcher_type_not },
     { N_("Matcher Type|obsolete"), matcher_type_obsolete },
@@ -2682,6 +2684,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       return new pkg_maintainer_matcher(parse_string_match_args(start, end));
     case matcher_type_name:
       return new pkg_name_matcher(parse_string_match_args(start, end));
+    case matcher_type_narrow:
+      return parse_binary_matcher<pkg_select_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions);
     case matcher_type_new:
       return new pkg_new_matcher;
     case matcher_type_not:
