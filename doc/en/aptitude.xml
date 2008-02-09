@@ -4220,21 +4220,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry>
-	  <term><literal>?archive(<replaceable>archive</replaceable>)</literal>, <literal>~A<replaceable>archive</replaceable></literal></term>
-
-	  <listitem>
-	    <para>
-	      Matches package versions which are available from an
-	      archive that matches the regular expression
-	      <replaceable>archive</replaceable>.  For instance,
-	      <quote><literal>~Atesting</literal></quote> matches any
-	      package available from the <literal>testing</literal>
-	      archive.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
 	  <term><literal>?action(<replaceable>action</replaceable>)</literal>, <literal>~a<replaceable>action</replaceable></literal></term>
 
 	  <listitem>
@@ -4264,6 +4249,31 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      not packages which <emphasis>could</emphasis> be
 	      upgraded in the future (for that, use
 	      <literal>~U</literal>).
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><literal>?archive(<replaceable>archive</replaceable>)</literal>, <literal>~A<replaceable>archive</replaceable></literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches package versions which are available from an
+	      archive that matches the regular expression
+	      <replaceable>archive</replaceable>.  For instance,
+	      <quote><literal>~Atesting</literal></quote> matches any
+	      package available from the <literal>testing</literal>
+	      archive.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><literal>?automatic</literal>, <literal>~M</literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches packages which were automatically installed.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -4420,25 +4430,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry>
-	  <term><literal>?tag(<replaceable>tag</replaceable>)</literal>, <literal>~G<replaceable>tag</replaceable></literal></term>
-
-	  <listitem>
-	    <para>
-	      Matches packages whose Tag field matches the regular
-	      expression <replaceable>tag</replaceable>.  For
-	      instance, the pattern
-	      <literal>~Ggame::strategy</literal> would match strategy
-	      games.
-	    </para>
-
-	    <para>
-	      For more information on tags and debtags, see <ulink
-	      url='http://debtags.alioth.debian.org'/>.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
 	  <term><literal>?installed</literal>, <literal>~i</literal></term>
 
 	  <listitem>
@@ -4449,16 +4440,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      Since all versions are tested by default, this normally
 	      matches packages which are currently installed.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term><literal>?automatic</literal>, <literal>~M</literal></term>
-
-	  <listitem>
-	    <para>
-	      Matches packages which were automatically installed.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -4520,22 +4501,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry>
-	  <term><literal>?origin(<replaceable>origin</replaceable>)</literal>, <literal>~O<replaceable>origin</replaceable></literal></term>
-
-	  <listitem>
-	    <para>
-	      Matches package versions whose origin matches the
-	      regular expression <replaceable>origin</replaceable>.
-	      For instance,
-	      <quote><literal>!~Odebian</literal></quote> will find
-	      any unofficial packages on your system (packages not
-	      from the Debian archive).
-	    </para>
-	  </listitem>
-	</varlistentry>
-
-
-	<varlistentry>
 	  <term>
 	    <literal>?obsolete</literal>, <literal>~o</literal>
 	  </term>
@@ -4546,6 +4511,21 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      available in any version from any archive.  These
 	      packages appear as <quote>Obsolete or Locally
 	      Installed</quote> in the visual interface.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><literal>?origin(<replaceable>origin</replaceable>)</literal>, <literal>~O<replaceable>origin</replaceable></literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches package versions whose origin matches the
+	      regular expression <replaceable>origin</replaceable>.
+	      For instance,
+	      <quote><literal>!~Odebian</literal></quote> will find
+	      any unofficial packages on your system (packages not
+	      from the Debian archive).
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -4641,6 +4621,25 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      Matches packages whose section matches the regular
 	      expression <replaceable>section</replaceable>.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><literal>?tag(<replaceable>tag</replaceable>)</literal>, <literal>~G<replaceable>tag</replaceable></literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches packages whose Tag field matches the regular
+	      expression <replaceable>tag</replaceable>.  For
+	      instance, the pattern
+	      <literal>~Ggame::strategy</literal> would match strategy
+	      games.
+	    </para>
+
+	    <para>
+	      For more information on tags and debtags, see <ulink
+	      url='http://debtags.alioth.debian.org'/>.
 	    </para>
 	  </listitem>
 	</varlistentry>
