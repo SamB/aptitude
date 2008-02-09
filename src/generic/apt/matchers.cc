@@ -142,6 +142,7 @@ namespace
       matcher_type_section,
       matcher_type_tag,
       matcher_type_true,
+      matcher_type_upgradable,
       matcher_type_version,
       matcher_type_widen
     };
@@ -192,6 +193,7 @@ namespace
     { N_("Matcher Type|section"), matcher_type_section },
     { N_("Matcher Type|tag"), matcher_type_tag },
     { N_("Matcher Type|true"), matcher_type_true },
+    { N_("Matcher Type|upgradable"), matcher_type_upgradable },
     { N_("Matcher Type|version"), matcher_type_version },
     { N_("Matcher Type|widen"), matcher_type_widen }
   };
@@ -2720,6 +2722,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       return new pkg_tag_matcher(parse_string_match_args(start, end));
     case matcher_type_true:
       return new pkg_true_matcher;
+    case matcher_type_upgradable:
+      return new pkg_upgradable_matcher;
     case matcher_type_version:
       return make_package_version_matcher(parse_string_match_args(start, end));
     case matcher_type_widen:
