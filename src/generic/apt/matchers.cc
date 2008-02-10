@@ -134,8 +134,8 @@ namespace
       matcher_type_garbage,
       matcher_type_installed,
       matcher_type_maintainer,
-      matcher_type_narrow,
       matcher_type_name,
+      matcher_type_narrow,
       matcher_type_new,
       matcher_type_not,
       matcher_type_obsolete,
@@ -174,8 +174,8 @@ namespace
   // because the English meaning takes precedence.
   const matcher_info matcher_types[] =
   {
-    { N_("Matcher Type|all-versions"), matcher_type_all },
     { N_("Matcher Type|action"), matcher_type_action },
+    { N_("Matcher Type|all-versions"), matcher_type_all },
     { N_("Matcher Type|and"), matcher_type_and },
     { N_("Matcher Type|archive"), matcher_type_archive },
     { N_("Matcher Type|automatic"), matcher_type_automatic },
