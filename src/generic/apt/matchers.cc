@@ -124,6 +124,7 @@ namespace
       matcher_type_action,
       matcher_type_all,
       matcher_type_and,
+      matcher_type_any,
       matcher_type_archive,
       matcher_type_automatic,
       matcher_type_broken,
@@ -169,14 +170,15 @@ namespace
   // English names without fear that the meanings will change with the
   // locale.
   //
-  // That is: if you translate "false" to "description", "description"
-  // would still produce a description matcher, not a false matcher,
-  // because the English meaning takes precedence.
+  // That is: if you translate "Matcher Type|false" to "description",
+  // "description" would still produce a description matcher, not a
+  // false matcher, because the English meaning takes precedence.
   const matcher_info matcher_types[] =
   {
     { N_("Matcher Type|action"), matcher_type_action },
     { N_("Matcher Type|all-versions"), matcher_type_all },
     { N_("Matcher Type|and"), matcher_type_and },
+    { N_("Matcher Type|any-version"), matcher_type_any },
     { N_("Matcher Type|archive"), matcher_type_archive },
     { N_("Matcher Type|automatic"), matcher_type_automatic },
     { N_("Matcher Type|broken"), matcher_type_broken },
@@ -2238,6 +2240,66 @@ public:
   }
 };
 
+class pkg_any_matcher : public pkg_matcher
+{
+  pkg_matcher *sub_matcher;
+public:
+  pkg_any_matcher(pkg_matcher *_sub_matcher)
+    : sub_matcher(_sub_matcher)
+  {
+  }
+
+  ~pkg_any_matcher()
+  {
+    delete sub_matcher;
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records)
+  {
+    return sub_matcher->matches(pkg, ver, cache, records);
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records)
+  {
+    for(pkgCache::VerIterator ver = pkg.VersionList();
+	!ver.end(); ++ver)
+      {
+	if(sub_matcher->matches(pkg, ver, cache, records))
+	   return true;
+      }
+
+    return false;
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records)
+  {
+    return sub_matcher->get_match(pkg, ver, cache, records);
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records)
+  {
+    for(pkgCache::VerIterator ver = pkg.VersionList();
+	!ver.end(); ++ver)
+      {
+	pkg_match_result *tmp = sub_matcher->get_match(pkg, ver, cache, records);
+	if(tmp != NULL)
+	  return tmp;
+      }
+
+    return NULL;
+  }
+};
+
 // Check for terminators.  Not terribly efficient, but I expect under
 // 3 terminators in any interesting usage (more than that and I really
 // should force yacc to do my bidding)
@@ -2766,6 +2828,13 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 	return new pkg_all_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false));
     case matcher_type_and:
       return parse_binary_matcher<pkg_and_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions, wide_context);
+    case matcher_type_any:
+      if(!wide_context)
+	throw CompilationException(_("The ?%s matcher must be used in a \"wide\" context (a top-level context, or a context enclosed by ?widen)."),
+				   lower_case_name.c_str());
+      else
+	return new pkg_all_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false));
+      return new pkg_any_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false));
     case matcher_type_archive:
       return new pkg_archive_matcher(parse_string_match_args(start, end));
     case matcher_type_automatic:

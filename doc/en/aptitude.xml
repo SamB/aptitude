@@ -4253,7 +4253,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchAllVersions'>
 	  <term><literal>?all-versions(<replaceable>term</replaceable>)</literal></term>
 
 	  <listitem>
@@ -4277,6 +4277,42 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      However, it may always be used within <link
 	      linkend='searchWiden'><literal>?widen</literal></link>.
 	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry id='searchAnyVersion'>
+	  <term><literal>?any-version(<replaceable>term</replaceable>)</literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches a package if any one of its versions matches the
+	      enclosed term.  This is the dual to <link
+	      linkend='searchAllVersions'><literal>?all-versions</literal></link>.
+	    </para>
+
+	    <para>
+	      This term may not be used in a context in which the
+	      versions to match against have already been narrowed,
+	      such as within <link
+	      linkend='searchDep'><literal>?depends</literal></link>
+	      or <link
+	      linkend='searchNarrow'><literal>?narrow</literal></link>.
+	      However, it may always be used within <link
+	      linkend='searchWiden'><literal>?widen</literal></link>.
+	    </para>
+
+	    <note>
+	      <para>
+		This term is closely related to <link
+		linkend='searchNarrow'><literal>?narrow</literal></link>.
+		In fact,
+		<literal>?any-version(<replaceable>term1</replaceable>
+		<replaceable>term2</replaceable>)</literal> is exactly
+		the same as
+		<literal>?narrow(<replaceable>term1</replaceable>,
+		<replaceable>term2</replaceable>)</literal>.
+	      </para>
+	    </note>
 	  </listitem>
 	</varlistentry>
 
