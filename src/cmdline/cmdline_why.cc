@@ -1,6 +1,6 @@
 // cmdline_why.cc                                -*-c++-*-
 //
-//   Copyright (C) 2007 Daniel Burrows
+//   Copyright (C) 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -52,6 +52,8 @@
 namespace cw = cwidget;
 using cwidget::fragf;
 using cwidget::fragment;
+
+using namespace aptitude::matching;
 
 namespace
 {
@@ -858,9 +860,10 @@ namespace
 	    for(std::vector<pkg_matcher *>::const_iterator it = leaves.begin();
 		!reached_leaf && it != leaves.end(); ++it)
 	      {
-		if((*it)->matches(frontpkg, frontver,
-				  *apt_cache_file,
-				  *apt_package_records))
+		if(apply_matcher((*it),
+				 frontpkg, frontver,
+				 *apt_cache_file,
+				 *apt_package_records))
 		  reached_leaf = true;
 	      }
 	  if(reached_leaf)
@@ -877,49 +880,6 @@ namespace
 
       output.swap(tmp);
       return reached_leaf;
-    }
-  };
-
-  // Silly matcher that only matches one package.
-  class const_matcher : public pkg_matcher
-  {
-    pkgCache::PkgIterator match_pkg;
-
-    class const_name_result : public pkg_match_result
-    {
-      std::string name_group;
-    public:
-      const_name_result(const std::string &_name_group)
-	: name_group(_name_group)
-      {
-      }
-
-      unsigned int num_groups() { return 1; }
-      const std::string &group(unsigned int n) { return name_group; }
-    };
-  public:
-    const_matcher(const pkgCache::PkgIterator &_match_pkg)
-      : match_pkg(_match_pkg)
-    {
-    }
-
-    bool matches(const pkgCache::PkgIterator &pkg,
-		 const pkgCache::VerIterator &ver,
-		 aptitudeDepCache &cache,
-		 pkgRecords &records)
-    {
-      return pkg == match_pkg;
-    }
-
-    pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
-				const pkgCache::VerIterator &ver,
-				aptitudeDepCache &cache,
-				pkgRecords &records)
-    {
-      if(pkg == match_pkg)
-	return new const_name_result(pkg.Name());
-      else
-	return NULL;
     }
   };
 }
@@ -1159,7 +1119,7 @@ bool interpret_why_args(const std::vector<std::string> &args,
 	  if(pkg.end())
 	    _error->Error(_("No package named \"%s\" exists."), it->c_str());
 	  else
-	    m = new const_matcher(pkg);
+	    m = make_const_matcher(pkg);
 	}
       else
 	m = parse_pattern(*it);
@@ -1264,8 +1224,8 @@ int cmdline_why(int argc, char *argv[],
       else
 	{
 	  matchers.push_back(m);
-	  if(!pkg.end() && m->matches(pkg, pkg.CurrentVer(),
-				      *apt_cache_file, *apt_package_records))
+	  if(!pkg.end() && apply_matcher(m, pkg, pkg.CurrentVer(),
+					 *apt_cache_file, *apt_package_records))
 	    {
 	      printf(_("The package \"%s\" is manually installed.\n"),
 		     pkg.Name());

@@ -1,6 +1,6 @@
 // cmdline_why.h                            -*-c++-*-
 //
-//   Copyright (C) 2007 Daniel Burrows
+//   Copyright (C) 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -55,9 +55,15 @@ namespace cwidget
 {
   class fragment;
 }
-class pkg_matcher;
+namespace aptitude
+{
+  namespace matching
+  {
+    class pkg_matcher;
+  }
+}
 
-cwidget::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
+cwidget::fragment *do_why(const std::vector<aptitude::matching::pkg_matcher *> &leaves,
 			  const pkgCache::PkgIterator &root,
 			  bool find_all,
 			  bool root_is_removal,

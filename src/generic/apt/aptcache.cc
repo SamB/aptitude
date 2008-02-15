@@ -1605,7 +1605,7 @@ class AptitudeInRootSetFunc : public pkgDepCache::InRootSetFunc
   aptitudeDepCache &cache;
 
   /** A matcher if one could be created; otherwise NULL. */
-  pkg_matcher *m;
+  aptitude::matching::pkg_matcher *m;
 
   /** \b true if the package was successfully constructed. */
   bool constructedSuccessfully;
@@ -1627,7 +1627,7 @@ public:
       constructedSuccessfully = true;
     else
       {
-	m = parse_pattern(matchterm);
+	m = aptitude::matching::parse_pattern(matchterm);
 	if(m != NULL)
 	  constructedSuccessfully = true;
       }
@@ -1644,7 +1644,7 @@ public:
   bool InRootSet(const pkgCache::PkgIterator &pkg)
   {
     pkgRecords &records(cache.get_records());
-    if(m != NULL && m->matches(pkg, cache, records))
+    if(m != NULL && aptitude::matching::apply_matcher(m, pkg, cache, records))
       return true;
     else
       return chain != NULL && chain->InRootSet(pkg);

@@ -1,6 +1,6 @@
 // pkg_tree.h      -*-c++-*-
 //
-//  Copyright 1999-2002, 2004-2005 Daniel Burrows
+//  Copyright 1999-2002, 2004-2005, 2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ class pkg_tree:public apt_undo_tree
   std::string groupingstr;
   pkg_sortpolicy *sorting;
 
-  pkg_matcher *limit;
+  aptitude::matching::pkg_matcher *limit;
   std::wstring limitstr;
   // Defines the limits on the display (what packages will be allowed
   // to be displayed)  This could be a grouping policy, but hardcoding the

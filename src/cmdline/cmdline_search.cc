@@ -26,6 +26,7 @@
 using namespace std;
 namespace cw = cwidget;
 using cwidget::util::transcode;
+using namespace aptitude::matching;
 
 class search_result_parameters : public cwidget::config::column_parameters
 {
@@ -184,9 +185,9 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
       for(vector<pkg_matcher *>::iterator m=matchers.begin();
 	  m!=matchers.end(); ++m)
 	{
-	  pkg_match_result *r=(*m)->get_match(pkg,
-					      *apt_cache_file,
-					      *apt_package_records);
+	  pkg_match_result *r = get_match(*m, pkg,
+					  *apt_cache_file,
+					  *apt_package_records);
 
 	  if(r != NULL)
 	    output.push_back(pair<pkgCache::PkgIterator, pkg_match_result *>(pkg, r));

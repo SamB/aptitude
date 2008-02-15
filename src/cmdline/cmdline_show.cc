@@ -548,6 +548,8 @@ bool do_cmdline_show(string s, int verbose)
     return do_cmdline_show_target(pkg, source, sourcestr, verbose, has_explicit_source);
   else if(is_pattern)
     {
+      using namespace aptitude::matching;
+
       std::auto_ptr<pkg_matcher> m(parse_pattern(name));
 
       if(m.get() == NULL)
@@ -558,7 +560,7 @@ bool do_cmdline_show(string s, int verbose)
 
       for(pkgCache::PkgIterator P=(*apt_cache_file)->PkgBegin();
 	  !P.end(); ++P)
-	if(m->matches(P, *apt_cache_file, *apt_package_records))
+	if(apply_matcher(m.get(), P, *apt_cache_file, *apt_package_records))
 	  {
 	    if(!do_cmdline_show_target(P, source, sourcestr, verbose, has_explicit_source))
 	      return false;

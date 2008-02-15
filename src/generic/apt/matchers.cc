@@ -27,7 +27,9 @@
 //                      := CONDITION-ATOM
 //  CONDITION-ATOM := '(' CONDITION-LIST ')'
 //                 |  '!' CONDITION-ATOM
-//                 |  '?' condition-name '(' arguments... ')'
+//                 |  '??' variable-name ':' CONDITION-LIST
+//                 |  '?=' variable-name
+//                 |  '?' (variable-name ':')?  condition-name '(' arguments... ')'
 //                 |  '~'field-id <string>
 //                 |  <string>
 //
@@ -47,6 +49,7 @@
 
 #include <aptitude.h>
 
+#include <generic/util/immset.h>
 #include <generic/util/util.h>
 
 #include <cwidget/generic/util/ssprintf.h>
@@ -71,17 +74,218 @@
 using namespace std;
 namespace cw = cwidget;
 
-pkg_matcher *parse_atom(string::const_iterator &start,
-			const string::const_iterator &end,
-			const vector<const char *> &terminators,
-			bool search_descriptions,
-			bool wide_context);
+namespace aptitude
+{
+namespace matching
+{
 
-pkg_matcher *parse_condition_list(string::const_iterator &start,
-				  const string::const_iterator &end,
-				  const vector<const char *> &terminators,
-				  bool search_descriptions,
-				  bool wide_context);
+pkg_match_result::~pkg_match_result()
+{
+}
+
+pkg_matcher::~pkg_matcher()
+{
+}
+
+namespace
+{
+// The condition this represents should never ever happen; this is
+// just to provide a well-defined message in case it does so I can
+// track it down.
+class BadValueTypeException : public cw::util::Exception
+{
+  std::string msg;
+public:
+  BadValueTypeException(int type,
+			const std::string &file,
+			int line_number)
+    : msg(ssprintf("%s:%d: Internal error: unknown value type %d.",
+		   file.c_str(), line_number, type))
+  {
+  }
+
+  std::string errmsg() const { return msg; }
+};
+
+#define THROW_BAD_VALUE(type) throw BadValueTypeException((type), __FILE__, __LINE__)
+
+/** An object describing a matching rule.  Note that we match on a
+ *  particular version, not just on the package (this is because some
+ *  attributes are pretty meaningless for only a package)
+ */
+class pkg_matcher_real : public pkg_matcher
+{
+public:
+  class stack_value;
+  typedef std::vector<stack_value> match_stack;
+
+  // The type of values stored on the match stack.
+  //
+  // This is basically a proto-value-type for the match language; if
+  // the match language grows into an implementation of the full
+  // lambda calculus, it will need to include more types (at the
+  // minimum, it'll need a type for matchers).
+  class stack_value
+  {
+    enum value_type
+      {
+	package_value,
+	version_value
+      };
+
+    value_type type;
+    pkgCache::PkgIterator pkg;
+    pkgCache::VerIterator ver;
+
+    stack_value(value_type _type, const pkgCache::PkgIterator &_pkg, const pkgCache::VerIterator &_ver)
+      : type(_type), pkg(_pkg), ver(_ver)
+    {
+    }
+
+  public:
+    static stack_value package(const pkgCache::PkgIterator &pkg)
+    {
+      return stack_value(package_value, pkg, pkgCache::VerIterator());
+    }
+
+    static stack_value version(const pkgCache::PkgIterator &pkg,
+			       const pkgCache::VerIterator &ver)
+    {
+      return stack_value(version_value, pkg, ver);
+    }
+
+    /** \brief Return \b true if this value "matches" the
+     *  given value.
+     *
+     *  This relation is reflexive and symmetric, but not transitive.
+     *
+     *  Packages match any of their versions or themselves, versions
+     *  match themselves and their package.
+     */
+    bool is_match_for(const stack_value &other) const
+    {
+      switch(type)
+	{
+	case package_value:
+	  switch(other.type)
+	    {
+	    case package_value:
+	      return pkg == other.pkg;
+	    case version_value:
+	      return pkg == other.pkg;
+	    default:
+	      THROW_BAD_VALUE(other.type);
+	    }
+	case version_value:
+	  switch(other.type)
+	    {
+	    case package_value:
+	      return pkg == other.pkg;
+	    case version_value:
+	      return pkg == other.pkg && ver == other.ver;
+	    default:
+	      THROW_BAD_VALUE(other.type);
+	    }
+	default:
+	  THROW_BAD_VALUE(type);
+	}
+    }
+
+
+    bool visit_matches(pkg_matcher_real *matcher,
+		       aptitudeDepCache &cache,
+		       pkgRecords &records,
+		       match_stack &stack) const;
+
+    pkg_match_result *visit_get_match(pkg_matcher_real *matcher,
+				      aptitudeDepCache &cache,
+				      pkgRecords &records,
+				      match_stack &stack) const;
+  };
+
+  virtual bool matches(const pkgCache::PkgIterator &pkg,
+		       const pkgCache::VerIterator &ver,
+		       aptitudeDepCache &cache,
+		       pkgRecords &records,
+		       match_stack &stack)=0;
+
+
+
+  /** \return a match result, or \b NULL if there is no match.  It's
+   *  the caller's responsibility to delete this.
+   */
+  virtual pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+				      const pkgCache::VerIterator &ver,
+				      aptitudeDepCache &cache,
+				      pkgRecords &records,
+				      match_stack &stack)=0;
+
+  /** See whether this matches a versionless package.  This applies
+   *  the matcher to every version of the package and returns \b true
+   *  if any version is matched.
+   */
+  virtual bool matches(const pkgCache::PkgIterator &pkg,
+		       aptitudeDepCache &cache,
+		       pkgRecords &records,
+		       match_stack &stack);
+
+  /** Get a match result for a versionless package.  This applies the
+   *  matcher to each version of the package, returning \b NULL if
+   *  none matches or the first match found otherwise.
+   */
+  virtual pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+				      aptitudeDepCache &cache,
+				      pkgRecords &records,
+				      match_stack &stack);
+};
+
+bool pkg_matcher_real::stack_value::visit_matches(pkg_matcher_real *matcher,
+						  aptitudeDepCache &cache,
+						  pkgRecords &records,
+						  match_stack &stack) const
+{
+  switch(type)
+    {
+    case package_value:
+      return matcher->matches(pkg, cache, records, stack);
+    case version_value:
+      return matcher->matches(pkg, ver, cache, records, stack);
+    default:
+      THROW_BAD_VALUE(type);
+    }
+}
+
+pkg_match_result *pkg_matcher_real::stack_value::visit_get_match(pkg_matcher_real *matcher,
+								 aptitudeDepCache &cache,
+								 pkgRecords &records,
+								 match_stack &stack) const
+{
+  switch(type)
+    {
+    case package_value:
+      return matcher->get_match(pkg, cache, records, stack);
+    case version_value:
+      return matcher->get_match(pkg, ver, cache, records, stack);
+    default:
+      THROW_BAD_VALUE(type);
+    }
+}
+
+typedef imm::map<std::string, int> parse_environment;
+
+pkg_matcher_real *parse_atom(string::const_iterator &start,
+			     const string::const_iterator &end,
+			     const vector<const char *> &terminators,
+			     bool search_descriptions,
+			     bool wide_context,
+			     const parse_environment &name_context);
+
+pkg_matcher_real *parse_condition_list(string::const_iterator &start,
+				       const string::const_iterator &end,
+				       const vector<const char *> &terminators,
+				       bool search_descriptions,
+				       bool wide_context,
+				       const parse_environment &name_context);
 
 /** Used to cleanly abort without having to contort the code. */
 class CompilationException
@@ -207,45 +411,39 @@ namespace
   };
 }
 
-pkg_match_result::~pkg_match_result()
-{
-}
-
-bool pkg_matcher::matches(const pkgCache::PkgIterator &pkg,
-			  aptitudeDepCache &cache,
-			  pkgRecords &records)
+bool pkg_matcher_real::matches(const pkgCache::PkgIterator &pkg,
+			       aptitudeDepCache &cache,
+			       pkgRecords &records,
+			       match_stack &stack)
 {
   for(pkgCache::VerIterator v = pkg.VersionList();
       !v.end(); ++v)
-    if(matches(pkg, v, cache, records))
+    if(matches(pkg, v, cache, records, stack))
       return true;
 
   if(pkg.VersionList().end())
     return matches(pkg, pkgCache::VerIterator(cache, 0),
-		   cache, records);
+		   cache, records, stack);
   else
     return false;
 }
 
-pkg_match_result *pkg_matcher::get_match(const pkgCache::PkgIterator &pkg,
-					 aptitudeDepCache &cache,
-					 pkgRecords &records)
+pkg_match_result *pkg_matcher_real::get_match(const pkgCache::PkgIterator &pkg,
+					      aptitudeDepCache &cache,
+					      pkgRecords &records,
+					      match_stack &stack)
 {
   pkg_match_result *rval = NULL;
 
   for(pkgCache::VerIterator v = pkg.VersionList();
       rval == NULL && !v.end(); ++v)
-    rval = get_match(pkg, v, cache, records);
+    rval = get_match(pkg, v, cache, records, stack);
 
   if(pkg.VersionList().end())
     rval = get_match(pkg, pkgCache::VerIterator(cache, 0),
-		     cache, records);
+		     cache, records, stack);
 
   return rval;
-}
-
-pkg_matcher::~pkg_matcher()
-{
 }
 
 /** A common class to use when there's no interesting result.  This is
@@ -260,15 +458,16 @@ public:
   const string &group(unsigned int n) {abort();}
 };
 
-class pkg_nonstring_matcher : public pkg_matcher
+class pkg_nonstring_matcher : public pkg_matcher_real
 {
 public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    return matches(pkg, ver, cache, records) ? new empty_match_result : NULL;
+    return matches(pkg, ver, cache, records, stack) ? new empty_match_result : NULL;
   }
 };
 
@@ -321,7 +520,7 @@ public:
   }
 };
 
-class pkg_string_matcher : public pkg_matcher
+class pkg_string_matcher : public pkg_matcher_real
 {
   regex_t pattern_nogroup;
   regex_t pattern_group;
@@ -440,7 +639,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     match_target v = val(pkg, ver, cache, records);
 
@@ -453,7 +653,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     match_target v = val(pkg, ver, cache, records);
 
@@ -567,13 +768,14 @@ public:
 // over all versions when they only match one; if they become a
 // performance problem (unlikely), you could (carefully!!) implement
 // the version-agnostic match variants to speed things up.
-class pkg_curr_version_matcher : public pkg_matcher
+class pkg_curr_version_matcher : public pkg_matcher_real
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return !ver.end() && ver == pkg.CurrentVer();
   }
@@ -581,22 +783,24 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    if(matches(pkg, ver, cache, records))
+    if(matches(pkg, ver, cache, records, stack))
       return new unitary_result(ver.VerStr());
     else
       return NULL;
   }
 };
 
-class pkg_cand_version_matcher : public pkg_matcher
+class pkg_cand_version_matcher : public pkg_matcher_real
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return !ver.end() &&
       ver == cache[pkg].CandidateVerIter(cache);
@@ -605,22 +809,24 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    if(matches(pkg, ver, cache, records))
+    if(matches(pkg, ver, cache, records, stack))
       return new unitary_result(ver.VerStr());
     else
       return NULL;
   }
 };
 
-class pkg_inst_version_matcher : public pkg_matcher
+class pkg_inst_version_matcher : public pkg_matcher_real
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return !ver.end() &&
       ver == cache[pkg].InstVerIter(cache);
@@ -629,16 +835,17 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    if(matches(pkg, ver, cache, records))
+    if(matches(pkg, ver, cache, records, stack))
       return new unitary_result(ver.VerStr());
     else
       return NULL;
   }
 };
 
-pkg_matcher *make_package_version_matcher(const string &substr)
+pkg_matcher_real *make_package_version_matcher(const string &substr)
 {
   if(substr == "CURRENT")
     return new pkg_curr_version_matcher;
@@ -660,7 +867,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &v,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     set<string> *l = get_tasks(pkg);
 
@@ -680,7 +888,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     set<string> *l=get_tasks(pkg);
 
@@ -712,7 +921,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
 #ifdef HAVE_EPT
     typedef ept::debtags::Tag tag;
@@ -746,7 +956,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
 #ifdef HAVE_EPT
     typedef ept::debtags::Tag tag;
@@ -794,7 +1005,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     if(ver.end())
       return false;
@@ -813,7 +1025,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     if(ver.end())
       return NULL;
@@ -845,7 +1058,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     if(ver.end() || ver.FileList().end())
       return false;
@@ -864,7 +1078,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     if(ver.end() || ver.FileList().end())
       return NULL;
@@ -886,13 +1101,14 @@ public:
   }
 };
 
-class pkg_auto_matcher:public pkg_matcher
+class pkg_auto_matcher:public pkg_matcher_real
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return
       (!pkg.CurrentVer().end() || cache[pkg].Install()) &&
@@ -902,20 +1118,22 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    return matches(pkg, ver, cache, records)
+    return matches(pkg, ver, cache, records, stack)
       ? new unitary_result(_("Automatically Installed")) : NULL;
   }
 };
 
-class pkg_broken_matcher:public pkg_matcher
+class pkg_broken_matcher:public pkg_matcher_real
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     if(ver.end())
       return false;
@@ -929,13 +1147,14 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    return matches(pkg, ver, cache, records) ? new unitary_result(_("Broken")) : NULL;
+    return matches(pkg, ver, cache, records, stack) ? new unitary_result(_("Broken")) : NULL;
   }
 };
 
-class pkg_priority_matcher:public pkg_matcher
+class pkg_priority_matcher:public pkg_matcher_real
 {
   pkgCache::State::VerPriority type;
 public:
@@ -945,7 +1164,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     if(ver.end())
       return false;
@@ -956,7 +1176,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     if(ver.end())
       return NULL;
@@ -1004,7 +1225,7 @@ pkg_match_result *dep_match(const pkgCache::DepIterator &dep)
 }
 
 // Matches packages with unmet dependencies of a particular type.
-class pkg_broken_type_matcher:public pkg_matcher
+class pkg_broken_type_matcher:public pkg_matcher_real
 {
   pkgCache::Dep::DepType type; // Which type to match
 public:
@@ -1014,7 +1235,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     if(ver.end())
       return false;
@@ -1042,7 +1264,8 @@ public:
   pkg_match_result * get_match(const pkgCache::PkgIterator &pkg,
 			       const pkgCache::VerIterator &ver,
 			       aptitudeDepCache &cache,
-			       pkgRecords &records)
+			       pkgRecords &records,
+			       match_stack &stack)
   {
     if(ver.end())
       return NULL;
@@ -1073,7 +1296,7 @@ public:
 //
 // It will treat a request for a non-auto type as also being a request
 // for the auto type.
-class pkg_action_matcher:public pkg_matcher
+class pkg_action_matcher:public pkg_matcher_real
 {
   pkg_action_state type;
   bool require_purge;
@@ -1086,7 +1309,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     if(require_purge &&
        (cache[pkg].iFlags & pkgDepCache::Purge) == 0)
@@ -1122,9 +1346,10 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    if(!matches(pkg, ver, cache, records))
+    if(!matches(pkg, ver, cache, records, stack))
       return NULL;
     else
       switch(type)
@@ -1160,12 +1385,13 @@ public:
   }
 };
 
-class pkg_keep_matcher:public pkg_matcher
+class pkg_keep_matcher:public pkg_matcher_real
 {
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return cache[pkg].Keep();
   }
@@ -1173,7 +1399,8 @@ class pkg_keep_matcher:public pkg_matcher
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     if(cache[pkg].Keep())
       return new unitary_result(_("Keep"));
@@ -1187,13 +1414,14 @@ class pkg_keep_matcher:public pkg_matcher
  *  packages; it also matches package versions corresponding to
  *  removing a package.
  */
-class pkg_virtual_matcher:public pkg_matcher
+class pkg_virtual_matcher:public pkg_matcher_real
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return ver.end();
   }
@@ -1201,7 +1429,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     if(!ver.end())
       return NULL;
@@ -1212,13 +1441,14 @@ public:
 
 /** Matches the currently installed version of a package.
  */
-class pkg_installed_matcher:public pkg_matcher
+class pkg_installed_matcher:public pkg_matcher_real
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return !pkg.CurrentVer().end() && ver == pkg.CurrentVer();
   }
@@ -1226,7 +1456,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     if(pkg.CurrentVer().end() || ver != pkg.CurrentVer())
       return NULL;
@@ -1235,14 +1466,15 @@ public:
   }
 };
 
-class pkg_essential_matcher:public pkg_matcher
+class pkg_essential_matcher:public pkg_matcher_real
 // Matches essential packages
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return
       (pkg->Flags&pkgCache::Flag::Essential)==pkgCache::Flag::Essential ||
@@ -1252,23 +1484,25 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    if(!matches(pkg, ver, cache, records))
+    if(!matches(pkg, ver, cache, records, stack))
       return NULL;
     else
       return new unitary_result(_("Essential"));
   }
 };
 
-class pkg_configfiles_matcher:public pkg_matcher
+class pkg_configfiles_matcher:public pkg_matcher_real
 // Matches a package which was removed but has config files remaining
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return pkg->CurrentState==pkgCache::State::ConfigFiles;
   }
@@ -1277,7 +1511,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     if(pkg->CurrentState == pkgCache::State::ConfigFiles)
       return new unitary_result(_("Config Files Remain"));
@@ -1287,10 +1522,10 @@ public:
 };
 
 // Matches packages with a dependency on the given pattern.
-class pkg_dep_matcher:public pkg_matcher
+class pkg_dep_matcher:public pkg_matcher_real
 {
 private:
-  pkg_matcher *pattern;
+  pkg_matcher_real *pattern;
   pkgCache::Dep::DepType type;
 
   /** If \b true, only broken dependencies will be matched. */
@@ -1298,7 +1533,7 @@ private:
 
 public:
   pkg_dep_matcher(pkgCache::Dep::DepType _type,
-		  pkg_matcher *_pattern,
+		  pkg_matcher_real *_pattern,
 		  bool _broken)
     :pattern(_pattern), type(_type), broken(_broken)
   {
@@ -1308,7 +1543,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     eassert(!pkg.end());
     if(ver.end())
@@ -1331,13 +1567,13 @@ public:
 
 	    // See if a versionless match works,.
 	    if(dep.TargetPkg().VersionList().end() &&
-	       pattern->matches(dep.TargetPkg(), dep.TargetPkg().VersionList(), cache, records))
+	       pattern->matches(dep.TargetPkg(), dep.TargetPkg().VersionList(), cache, records, stack))
 	      return true;
 
 	    for(pkgCache::VerIterator i=dep.TargetPkg().VersionList(); !i.end(); i++)
 	      if(_system->VS->CheckDep(i.VerStr(), dep->CompareOp, dep.TargetVer()))
 		{
-		  if(pattern->matches(dep.TargetPkg(), i, cache, records))
+		  if(pattern->matches(dep.TargetPkg(), i, cache, records, stack))
 		    return true;
 		}
 	  }
@@ -1349,7 +1585,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     eassert(!pkg.end());
     if(ver.end())
@@ -1373,7 +1610,7 @@ public:
 	    // See if a versionless match works,.
 	    if(dep.TargetPkg().VersionList().end())
 	      {
-		pkg_match_result *r = pattern->get_match(dep.TargetPkg(), dep.TargetPkg().VersionList(), cache, records);
+		pkg_match_result *r = pattern->get_match(dep.TargetPkg(), dep.TargetPkg().VersionList(), cache, records, stack);
 
 		if(r)
 		  return new result_pair(r, dep_match(dep));
@@ -1382,7 +1619,7 @@ public:
 	    for(pkgCache::VerIterator i=dep.TargetPkg().VersionList(); !i.end(); i++)
 	      if(_system->VS->CheckDep(i.VerStr(), dep->CompareOp, dep.TargetVer()))
 		{
-		  pkg_match_result *r = pattern->get_match(dep.TargetPkg(), i, cache, records);
+		  pkg_match_result *r = pattern->get_match(dep.TargetPkg(), i, cache, records, stack);
 
 		  if(r)
 		    return new result_pair(r, dep_match(dep));
@@ -1394,11 +1631,11 @@ public:
   }
 };
 
-class pkg_or_matcher:public pkg_matcher
+class pkg_or_matcher:public pkg_matcher_real
 {
-  pkg_matcher *left,*right;
+  pkg_matcher_real *left,*right;
 public:
-  pkg_or_matcher(pkg_matcher *_left, pkg_matcher *_right)
+  pkg_or_matcher(pkg_matcher_real *_left, pkg_matcher_real *_right)
     :left(_left),right(_right)
   {
   }
@@ -1406,43 +1643,47 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
-    return left->matches(pkg, ver, cache, records) ||
-      right->matches(pkg, ver, cache, records);
+    return left->matches(pkg, ver, cache, records, stack) ||
+      right->matches(pkg, ver, cache, records, stack);
   }
 
   bool matches(const pkgCache::PkgIterator &pkg,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
-    return left->matches(pkg, cache, records) ||
-      right->matches(pkg, cache, records);
+    return left->matches(pkg, cache, records, stack) ||
+      right->matches(pkg, cache, records, stack);
   }
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    pkg_match_result *lr = left->get_match(pkg, ver, cache, records);
+    pkg_match_result *lr = left->get_match(pkg, ver, cache, records, stack);
 
     if(lr != NULL)
       return lr;
     else
-      return right->get_match(pkg, ver, cache, records);
+      return right->get_match(pkg, ver, cache, records, stack);
   }
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    pkg_match_result *lr = left->get_match(pkg, cache, records);
+    pkg_match_result *lr = left->get_match(pkg, cache, records, stack);
 
     if(lr != NULL)
       return lr;
     else
-      return right->get_match(pkg, cache, records);
+      return right->get_match(pkg, cache, records, stack);
   }
 
   ~pkg_or_matcher()
@@ -1452,11 +1693,11 @@ public:
   }
 };
 
-class pkg_and_matcher:public pkg_matcher
+class pkg_and_matcher:public pkg_matcher_real
 {
-  pkg_matcher *left,*right;
+  pkg_matcher_real *left,*right;
 public:
-  pkg_and_matcher(pkg_matcher *_left, pkg_matcher *_right)
+  pkg_and_matcher(pkg_matcher_real *_left, pkg_matcher_real *_right)
     :left(_left),right(_right)
   {
   }
@@ -1464,31 +1705,34 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
-    return left->matches(pkg, ver, cache, records) &&
-      right->matches(pkg, ver, cache, records);
+    return left->matches(pkg, ver, cache, records, stack) &&
+      right->matches(pkg, ver, cache, records, stack);
   }
 
   bool matches(const pkgCache::PkgIterator &pkg,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
-    return left->matches(pkg, cache, records) &&
-      right->matches(pkg, cache, records);
+    return left->matches(pkg, cache, records, stack) &&
+      right->matches(pkg, cache, records, stack);
   }
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    pkg_match_result *r1 = left->get_match(pkg, ver, cache, records);
+    pkg_match_result *r1 = left->get_match(pkg, ver, cache, records, stack);
 
     if(r1 == NULL)
       return NULL;
 
-    pkg_match_result *r2 = right->get_match(pkg, ver, cache, records);
+    pkg_match_result *r2 = right->get_match(pkg, ver, cache, records, stack);
 
     if(r2 == NULL)
       {
@@ -1501,14 +1745,15 @@ public:
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    pkg_match_result *r1 = left->get_match(pkg, cache, records);
+    pkg_match_result *r1 = left->get_match(pkg, cache, records, stack);
 
     if(r1 == NULL)
       return NULL;
 
-    pkg_match_result *r2 = right->get_match(pkg, cache, records);
+    pkg_match_result *r2 = right->get_match(pkg, cache, records, stack);
 
     if(r2 == NULL)
       {
@@ -1526,11 +1771,11 @@ public:
   }
 };
 
-class pkg_not_matcher:public pkg_matcher
+class pkg_not_matcher:public pkg_matcher_real
 {
-  pkg_matcher *child;
+  pkg_matcher_real *child;
 public:
-  pkg_not_matcher(pkg_matcher *_child)
+  pkg_not_matcher(pkg_matcher_real *_child)
     :child(_child)
   {
   }
@@ -1538,16 +1783,18 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
-    return !child->matches(pkg, ver, cache, records);
+    return !child->matches(pkg, ver, cache, records, stack);
   }
 
   bool matches(const pkgCache::PkgIterator &pkg,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
-    return !child->matches(pkg, cache, records);
+    return !child->matches(pkg, cache, records, stack);
   }
 
   // Eh, there isn't really a good choice about what to return here...
@@ -1555,9 +1802,10 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    pkg_match_result *child_match = child->get_match(pkg, ver, cache, records);
+    pkg_match_result *child_match = child->get_match(pkg, ver, cache, records, stack);
 
     if(child_match == NULL)
       return new empty_match_result;
@@ -1570,9 +1818,10 @@ public:
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    pkg_match_result *child_match = child->get_match(pkg, cache, records);
+    pkg_match_result *child_match = child->get_match(pkg, cache, records, stack);
 
     if(child_match == NULL)
       return new empty_match_result;
@@ -1587,11 +1836,11 @@ public:
 };
 
 /** Widen the search to include all versions of every package. */
-class pkg_widen_matcher : public pkg_matcher
+class pkg_widen_matcher : public pkg_matcher_real
 {
-  pkg_matcher *pattern;
+  pkg_matcher_real *pattern;
 public:
-  pkg_widen_matcher(pkg_matcher *_pattern)
+  pkg_widen_matcher(pkg_matcher_real *_pattern)
     : pattern(_pattern)
   {
   }
@@ -1603,42 +1852,46 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
-    return pattern->matches(pkg, cache, records);
+    return pattern->matches(pkg, cache, records, stack);
   }
 
   bool matches(const pkgCache::PkgIterator &pkg,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
-    return pattern->matches(pkg, cache, records);
+    return pattern->matches(pkg, cache, records, stack);
   }
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    return pattern->get_match(pkg, cache, records);
+    return pattern->get_match(pkg, cache, records, stack);
   }
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    return pattern->get_match(pkg, cache, records);
+    return pattern->get_match(pkg, cache, records, stack);
   }
 };
 
 /** Narrow the search to versions that match a pattern. */
-class pkg_select_matcher : public pkg_matcher
+class pkg_select_matcher : public pkg_matcher_real
 {
-  pkg_matcher *filter;
-  pkg_matcher *pattern;
+  pkg_matcher_real *filter;
+  pkg_matcher_real *pattern;
 public:
-  pkg_select_matcher(pkg_matcher *_filter,
-		     pkg_matcher *_pattern)
+  pkg_select_matcher(pkg_matcher_real *_filter,
+		     pkg_matcher_real *_pattern)
     : filter(_filter), pattern(_pattern)
   {
   }
@@ -1652,26 +1905,28 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
-    return filter->matches(pkg, ver, cache, records) &&
-      pattern->matches(pkg, ver, cache, records);
+    return filter->matches(pkg, ver, cache, records, stack) &&
+      pattern->matches(pkg, ver, cache, records, stack);
   }
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    if(filter->matches(pkg, ver, cache, records))
-      return pattern->get_match(pkg, ver, cache, records);
+    if(filter->matches(pkg, ver, cache, records, stack))
+      return pattern->get_match(pkg, ver, cache, records, stack);
     else
       return NULL;
   }
 };
 
 // Matches packages that were garbage-collected.
-class pkg_garbage_matcher:public pkg_matcher
+class pkg_garbage_matcher:public pkg_matcher_real
 {
 public:
   pkg_garbage_matcher() {}
@@ -1679,7 +1934,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     if(ver.end())
       return false;
@@ -1690,9 +1946,10 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    if(!matches(pkg, ver, cache, records))
+    if(!matches(pkg, ver, cache, records, stack))
       return NULL;
     else
       return new unitary_result(_("Garbage"));
@@ -1700,7 +1957,7 @@ public:
 };
 
 // A dummy matcher that matches any package.
-class pkg_true_matcher:public pkg_matcher
+class pkg_true_matcher:public pkg_matcher_real
 {
 public:
   pkg_true_matcher() {}
@@ -1708,7 +1965,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return true;
   }
@@ -1716,14 +1974,15 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     return new empty_match_result;
   }
 };
 
 // A dummy matcher that matches no packages.
-class pkg_false_matcher:public pkg_matcher
+class pkg_false_matcher:public pkg_matcher_real
 {
 public:
   pkg_false_matcher() {}
@@ -1731,7 +1990,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return false;
   }
@@ -1739,7 +1999,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     return NULL;
   }
@@ -1749,10 +2010,10 @@ public:
 // on them by a package matching a given pattern.
 //
 // Traces through Provided packages as well.
-class pkg_revdep_matcher:public pkg_matcher
+class pkg_revdep_matcher:public pkg_matcher_real
 {
   pkgCache::Dep::DepType type;
-  pkg_matcher *pattern;
+  pkg_matcher_real *pattern;
 
   /** If \b true, only install-broken dependencies will cause a
    *  match.
@@ -1761,7 +2022,7 @@ class pkg_revdep_matcher:public pkg_matcher
 
 public:
   pkg_revdep_matcher(pkgCache::Dep::DepType _type,
-		     pkg_matcher *_pattern,
+		     pkg_matcher_real *_pattern,
 		     bool _broken)
     :type(_type), pattern(_pattern), broken(_broken)
   {
@@ -1775,7 +2036,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     // Check direct dependencies.
     for(pkgCache::DepIterator d=pkg.RevDependsList(); !d.end(); ++d)
@@ -1794,7 +2056,7 @@ public:
 	   (!d.TargetVer() || (!ver.end() &&
 			       _system->VS->CheckDep(ver.VerStr(), d->CompareOp, d.TargetVer()))) &&
 	   pattern->matches(d.ParentPkg(), d.ParentVer(),
-			    cache, records))
+			    cache, records, stack))
 	  return true;
       }
 
@@ -1818,7 +2080,7 @@ public:
 	      // Only unversioned dependencies can match here.
 	      if(d->Type==type && !d.TargetVer() &&
 		 pattern->matches(d.ParentPkg(), d.ParentVer(),
-				  cache, records))
+				  cache, records, stack))
 		return true;
 	    }
 	}
@@ -1834,7 +2096,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     // Check direct dependencies.
     for(pkgCache::DepIterator d=pkg.RevDependsList(); !d.end(); ++d)
@@ -1855,7 +2118,8 @@ public:
 	  {
 	    pkg_match_result *r = pattern->get_match(d.ParentPkg(),
 						     d.ParentVer(),
-						     cache, records);
+						     cache, records,
+						     stack);
 
 	    if(r != NULL)
 	      return new result_pair(r, dep_match(d));
@@ -1884,7 +2148,8 @@ public:
 
 		  pkg_match_result *r = pattern->get_match(d.ParentPkg(),
 							   d.ParentVer(),
-							   cache, records);
+							   cache, records,
+							   stack);
 		  if(r != NULL)
 		    return new result_pair(r, dep_match(d));
 		}
@@ -1899,11 +2164,11 @@ public:
 /** Matches packages that provide a package that matches the given
  *  pattern.
  */
-class pkg_provides_matcher:public pkg_matcher
+class pkg_provides_matcher:public pkg_matcher_real
 {
-  pkg_matcher *pattern;
+  pkg_matcher_real *pattern;
 public:
-  pkg_provides_matcher(pkg_matcher *_pattern)
+  pkg_provides_matcher(pkg_matcher_real *_pattern)
     :pattern(_pattern)
   {
   }
@@ -1916,7 +2181,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     if(ver.end())
       return false;
@@ -1924,7 +2190,7 @@ public:
     for(pkgCache::PrvIterator p=ver.ProvidesList(); !p.end(); ++p)
       {
 	// Assumes no provided version.
-	if(pattern->matches(p.ParentPkg(), cache, records))
+	if(pattern->matches(p.ParentPkg(), cache, records, stack))
 	  return true;
       }
 
@@ -1934,7 +2200,8 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     if(ver.end())
       return NULL;
@@ -1942,7 +2209,7 @@ public:
     for(pkgCache::PrvIterator p=ver.ProvidesList(); !p.end(); ++p)
       {
 	pkg_match_result *r = pattern->get_match(p.ParentPkg(), pkgCache::VerIterator(cache),
-						 cache, records);
+						 cache, records, stack);
 
 	if(r != NULL)
 	  return new result_pair(r, new unitary_result(_("Provides")));
@@ -1955,11 +2222,11 @@ public:
 /** Matches packages which are provided by a package that fits the
  *  given pattern.
  */
-class pkg_revprv_matcher:public pkg_matcher
+class pkg_revprv_matcher:public pkg_matcher_real
 {
-  pkg_matcher *pattern;
+  pkg_matcher_real *pattern;
 public:
-  pkg_revprv_matcher(pkg_matcher *_pattern)
+  pkg_revprv_matcher(pkg_matcher_real *_pattern)
     :pattern(_pattern) 
   {
   }
@@ -1972,11 +2239,12 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     for(pkgCache::PrvIterator p=pkg.ProvidesList(); !p.end(); ++p)
       {
-	if(pattern->matches(p.OwnerPkg(), p.OwnerVer(), cache, records))
+	if(pattern->matches(p.OwnerPkg(), p.OwnerVer(), cache, records, stack))
 	  return true;
       }
 
@@ -1986,13 +2254,15 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     for(pkgCache::PrvIterator p=pkg.ProvidesList(); !p.end(); ++p)
       {
 	pkg_match_result *r = pattern->get_match(p.OwnerPkg(),
 						 p.OwnerVer(),
-						 cache, records);
+						 cache, records,
+						 stack);
 
 	if(r != NULL)
 	  return new result_pair(r,
@@ -2010,7 +2280,7 @@ public:
 //
 // Note that the notion of "importantness" is affected by the current
 // settings!
-class pkg_norevdep_matcher:public pkg_matcher
+class pkg_norevdep_matcher:public pkg_matcher_real
 {
 public:
   pkg_norevdep_matcher()
@@ -2020,7 +2290,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     if(ver.end())
       return false;
@@ -2044,9 +2315,10 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    if(!matches(pkg, ver, cache, records))
+    if(!matches(pkg, ver, cache, records, stack))
       return NULL;
     else
       return new unitary_result(_("No reverse dependencies"));
@@ -2055,7 +2327,7 @@ public:
 
 // Matches (non-virtual) packages which no installed package declares
 // a dependency of the given type on.
-class pkg_norevdep_type_matcher:public pkg_matcher
+class pkg_norevdep_type_matcher:public pkg_matcher_real
 {
   pkgCache::Dep::DepType type; // Which type to match
 public:
@@ -2067,7 +2339,8 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     if(ver.end())
       return false;
@@ -2091,22 +2364,24 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    if(!matches(pkg, ver, cache, records))
+    if(!matches(pkg, ver, cache, records, stack))
       return NULL;
     else
       return new unitary_result(pkgCache::DepType(type));
   }
 };
 
-class pkg_new_matcher:public pkg_matcher
+class pkg_new_matcher:public pkg_matcher_real
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     // Don't match virtual packages.
     if(pkg.VersionList().end())
@@ -2118,22 +2393,24 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    if(!matches(pkg, ver, cache, records))
+    if(!matches(pkg, ver, cache, records, stack))
       return NULL;
     else
       return new unitary_result(_("New Package"));
   }
 };
 
-class pkg_upgradable_matcher:public pkg_matcher
+class pkg_upgradable_matcher:public pkg_matcher_real
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return !pkg.CurrentVer().end() && cache[pkg].Upgradable();
   }
@@ -2141,22 +2418,24 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    if(!matches(pkg, ver, cache, records))
+    if(!matches(pkg, ver, cache, records, stack))
       return NULL;
     else
       return new unitary_result(_("Upgradable"));
   }
 };
 
-class pkg_obsolete_matcher : public pkg_matcher
+class pkg_obsolete_matcher : public pkg_matcher_real
 {
 public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     return pkg_obsolete(pkg);
   }
@@ -2164,20 +2443,21 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    if(!matches(pkg, ver, cache, records))
+    if(!matches(pkg, ver, cache, records, stack))
       return NULL;
     else
       return new unitary_result(_("Obsolete"));
   }
 };
 
-class pkg_all_matcher : public pkg_matcher
+class pkg_all_matcher : public pkg_matcher_real
 {
-  pkg_matcher *sub_matcher;
+  pkg_matcher_real *sub_matcher;
 public:
-  pkg_all_matcher(pkg_matcher *_sub_matcher)
+  pkg_all_matcher(pkg_matcher_real *_sub_matcher)
     : sub_matcher(_sub_matcher)
   {
   }
@@ -2190,19 +2470,21 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
-    return sub_matcher->matches(pkg, ver, cache, records);
+    return sub_matcher->matches(pkg, ver, cache, records, stack);
   }
 
   bool matches(const pkgCache::PkgIterator &pkg,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     for(pkgCache::VerIterator ver = pkg.VersionList();
 	!ver.end(); ++ver)
       {
-	if(!sub_matcher->matches(pkg, ver, cache, records))
+	if(!sub_matcher->matches(pkg, ver, cache, records, stack))
 	   return false;
       }
 
@@ -2212,9 +2494,10 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    return sub_matcher->get_match(pkg, ver, cache, records);
+    return sub_matcher->get_match(pkg, ver, cache, records, stack);
   }
 
   // This will somewhat arbitrarily return the string associated with
@@ -2223,7 +2506,8 @@ public:
   // later in the search expression.
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     pkg_match_result *tmp = NULL;
 
@@ -2231,7 +2515,7 @@ public:
 	!ver.end(); ++ver)
       {
 	delete tmp;
-	tmp = sub_matcher->get_match(pkg, ver, cache, records);
+	tmp = sub_matcher->get_match(pkg, ver, cache, records, stack);
 	if(tmp == NULL)
 	  return tmp;
       }
@@ -2240,11 +2524,11 @@ public:
   }
 };
 
-class pkg_any_matcher : public pkg_matcher
+class pkg_any_matcher : public pkg_matcher_real
 {
-  pkg_matcher *sub_matcher;
+  pkg_matcher_real *sub_matcher;
 public:
-  pkg_any_matcher(pkg_matcher *_sub_matcher)
+  pkg_any_matcher(pkg_matcher_real *_sub_matcher)
     : sub_matcher(_sub_matcher)
   {
   }
@@ -2257,19 +2541,21 @@ public:
   bool matches(const pkgCache::PkgIterator &pkg,
 	       const pkgCache::VerIterator &ver,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
-    return sub_matcher->matches(pkg, ver, cache, records);
+    return sub_matcher->matches(pkg, ver, cache, records, stack);
   }
 
   bool matches(const pkgCache::PkgIterator &pkg,
 	       aptitudeDepCache &cache,
-	       pkgRecords &records)
+	       pkgRecords &records,
+	       match_stack &stack)
   {
     for(pkgCache::VerIterator ver = pkg.VersionList();
 	!ver.end(); ++ver)
       {
-	if(sub_matcher->matches(pkg, ver, cache, records))
+	if(sub_matcher->matches(pkg, ver, cache, records, stack))
 	   return true;
       }
 
@@ -2279,24 +2565,239 @@ public:
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
-    return sub_matcher->get_match(pkg, ver, cache, records);
+    return sub_matcher->get_match(pkg, ver, cache, records, stack);
   }
 
   pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
 			      aptitudeDepCache &cache,
-			      pkgRecords &records)
+			      pkgRecords &records,
+			      match_stack &stack)
   {
     for(pkgCache::VerIterator ver = pkg.VersionList();
 	!ver.end(); ++ver)
       {
-	pkg_match_result *tmp = sub_matcher->get_match(pkg, ver, cache, records);
+	pkg_match_result *tmp = sub_matcher->get_match(pkg, ver, cache, records, stack);
 	if(tmp != NULL)
 	  return tmp;
       }
 
     return NULL;
+  }
+};
+
+// A restricted binding operator reminiscent of lambda.  I say
+// "restricted" because its argument may only range over packages,
+// hence it is not computationally complete.  I think that anyone who
+// decides not to implement a lambda calculus when it's a natural
+// place to go should explain himself, so here are my reasons:
+//
+//  (a) it would significantly complicate the interface to this
+//      module; the data type accepted by pkg_matcher would probably
+//      have to become some sort of disjoint sum type (perhaps making
+//      the pkg_matcher a Visitor on values).
+//
+//  (b) it would raise the possibility of non-terminating searches,
+//      which would require complexity at the UI level (searches would
+//      have to be run in a background thread, like the resolver, and
+//      the user would have to be able to cancel a search that was
+//      going nowhere).
+//
+// It's called an "explicit" matcher because it allows the user to
+// explicitly specify which package is the target of a matcher.
+class pkg_explicit_matcher : public pkg_matcher_real
+{
+  pkg_matcher_real *sub_matcher;
+
+  class stack_pusher
+  {
+    match_stack &stack;
+
+  public:
+    stack_pusher(match_stack &_stack, const stack_value &val)
+      : stack(_stack)
+    {
+      stack.push_back(val);
+    }
+
+    ~stack_pusher()
+    {
+      // The size should always be non-zero, but avoid blowing up if
+      // it's not.
+      if(stack.size() > 0)
+	stack.pop_back();
+    }
+  };
+
+public:
+  pkg_explicit_matcher(pkg_matcher_real *_sub_matcher)
+    : sub_matcher(_sub_matcher)
+  {
+  }
+
+  ~pkg_explicit_matcher()
+  {
+    delete sub_matcher;
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records,
+	       match_stack &stack)
+  {
+    stack_pusher pusher(stack, stack_value::version(pkg, ver));
+    return sub_matcher->matches(pkg, ver, cache, records, stack);
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records,
+			      match_stack &stack)
+  {
+    stack_pusher pusher(stack, stack_value::version(pkg, ver));
+    return sub_matcher->get_match(pkg, cache, records, stack);
+  }
+
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records,
+	       match_stack &stack)
+  {
+    stack_pusher pusher(stack, stack_value::package(pkg));
+    return sub_matcher->matches(pkg, cache, records, stack);
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records,
+			      match_stack &stack)
+  {
+    stack_pusher pusher(stack, stack_value::package(pkg));
+    return sub_matcher->get_match(pkg, cache, records, stack);
+  }
+};
+
+/** \brief Bind the first argument of the given matcher.
+ *
+ *  This returns a matcher that ignores the input value and
+ *  instead uses the value stored at the given location on the
+ *  stack.  It's more or less equivalent to
+ *
+ *     lambda x . lambda f . lambda y . f x
+ */
+class pkg_bind_matcher : public pkg_matcher_real
+{
+  pkg_matcher_real *sub_matcher;
+  match_stack::size_type variable;
+
+  bool matches(aptitudeDepCache &cache,
+	       pkgRecords &records,
+	       match_stack &stack) const
+  {
+    eassert(variable >= 0 && variable < stack.size());
+    return stack[variable].visit_matches(sub_matcher, cache, records, stack);
+  }
+
+  pkg_match_result *get_match(aptitudeDepCache &cache,
+			      pkgRecords &records,
+			      match_stack &stack) const
+  {
+    eassert(variable >= 0 && variable < stack.size());
+    return stack[variable].visit_get_match(sub_matcher, cache, records, stack);
+  }
+
+
+public:
+  /** \brief Create a new bind matcher.
+   *
+   *  \param _sub_matcher  the matcher whose argument is to be bound.
+   *  \param _variable     the stack variable (referred to by its De
+   *                       Bruijn numeral) that will be bound to the
+   *                       sub-matcher's first argument.
+   */
+  pkg_bind_matcher(pkg_matcher_real *_sub_matcher,
+		   int _variable)
+    : sub_matcher(_sub_matcher),
+      variable(_variable)
+  {
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records,
+	       match_stack &stack)
+  {
+    return matches(cache, records, stack);
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records,
+			      match_stack &stack)
+  {
+    return get_match(cache, records, stack);
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records,
+	       match_stack &stack)
+  {
+    return matches(cache, records, stack);
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records,
+			      match_stack &stack)
+  {
+    return get_match(cache, records, stack);
+  }
+};
+
+/** \brief Match packages that correspond to the entry at the
+ *  given stack position.
+ *
+ * If the value is a package, match any version of that package or no
+ * version.  If the value is a version, match just that version.
+ */
+class pkg_equal_matcher : public pkg_matcher_real
+{
+  match_stack::size_type variable;
+
+public:
+  pkg_equal_matcher(match_stack::size_type _variable)
+    : variable(_variable)
+  {
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records,
+	       match_stack &stack)
+  {
+    eassert(variable >= 0 && variable < stack.size());
+    return stack[variable].is_match_for(stack_value::version(pkg, ver));
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records,
+			      match_stack &stack)
+  {
+    eassert(variable >= 0 && variable < stack.size());
+    return stack[variable].is_match_for(stack_value::version(pkg, ver))
+      ? new empty_match_result
+      : NULL;
   }
 };
 
@@ -2355,7 +2856,7 @@ pkgCache::Dep::DepType parse_deptype(const string &s)
 // Ideally this would parse the string and return an action type, but
 // purging isn't a separate type to the matcher.  Maybe instead there
 // should be a separate enum for the action matcher's modes?
-pkg_matcher *make_action_matcher(const std::string &action_str)
+pkg_matcher_real *make_action_matcher(const std::string &action_str)
 {
   // Match packages to be installed
   if(!strcasecmp(action_str.c_str(), "install"))
@@ -2391,11 +2892,6 @@ pkg_matcher *make_action_matcher(const std::string &action_str)
 			       action_str.c_str());
 }
 
-
-pkg_matcher *parse_condition_list(string::const_iterator &start,
-				  const string::const_iterator &end,
-				  const vector<const char *> &terminators,
-				  bool match_descriptions);
 
 static
 std::string parse_literal_string_tail(string::const_iterator &start,
@@ -2506,6 +3002,13 @@ std::string parse_substr(string::const_iterator &start,
 }
 
 
+void parse_whitespace(string::const_iterator &start,
+		      const string::const_iterator &end)
+{
+  while(start != end && isspace(*start))
+    ++start;
+}
+
 void parse_required_character(string::const_iterator &start,
 			      const string::const_iterator &end,
 			      char c)
@@ -2558,15 +3061,16 @@ struct parse_method<string>
 };
 
 template<>
-struct parse_method<pkg_matcher *>
+struct parse_method<pkg_matcher_real *>
 {
-  pkg_matcher *operator()(string::const_iterator &start,
-			  const string::const_iterator &end,
-			  const std::vector<const char *> &terminators,
-			  bool search_descriptions,
-			  bool wide_context) const
+  pkg_matcher_real *operator()(string::const_iterator &start,
+			       const string::const_iterator &end,
+			       const std::vector<const char *> &terminators,
+			       bool search_descriptions,
+			       bool wide_context,
+			       const parse_environment &name_context) const
   {
-    return parse_condition_list(start, end, terminators, search_descriptions, wide_context);
+    return parse_condition_list(start, end, terminators, search_descriptions, wide_context, name_context);
   }
 };
 
@@ -2576,10 +3080,11 @@ T *parse_unary_matcher(string::const_iterator &start,
 		       const std::vector<const char *> &terminators,
 		       bool search_descriptions,
 		       bool wide_context,
+		       const parse_environment &name_context,
 		       const parse_method<A1> &parse1 = parse_method<A1>())
 {
   parse_open_paren(start, end);
-  A1 a1(parse1(start, end, terminators, search_descriptions, wide_context));
+  A1 a1(parse1(start, end, terminators, search_descriptions, wide_context, name_context));
   parse_close_paren(start, end);
 
   return new T(a1);
@@ -2604,6 +3109,7 @@ T *parse_binary_matcher(string::const_iterator &start,
 			const std::vector<const char *> &terminators,
 			bool search_descriptions,
 			bool wide_context,
+			const parse_environment &name_context,
 			const parse_method<A1> &parse1 = parse_method<A1>(),
 			const parse_method<A2> &parse2 = parse_method<A2>())
 {
@@ -2611,9 +3117,9 @@ T *parse_binary_matcher(string::const_iterator &start,
   add_new_terminator(",", terminators_plus_comma);
 
   parse_open_paren(start, end);
-  A1 a1(parse1(start, end, terminators_plus_comma, search_descriptions, wide_context));
+  A1 a1(parse1(start, end, terminators_plus_comma, search_descriptions, wide_context, name_context));
   parse_comma(start, end);
-  A2 a2(parse2(start, end, terminators, search_descriptions, wide_context));
+  A2 a2(parse2(start, end, terminators, search_descriptions, wide_context, name_context));
   parse_close_paren(start, end);
 
   return new T(a1, a2);
@@ -2629,57 +3135,76 @@ string parse_string_match_args(string::const_iterator &start,
   return substr;
 }
 
-pkg_matcher *parse_pkg_matcher_args(string::const_iterator &start,
-				    const string::const_iterator &end,
-				    const std::vector<const char *> &terminators,
-				    bool search_descriptions, bool wide_context)
+pkg_matcher_real *parse_pkg_matcher_args(string::const_iterator &start,
+					 const string::const_iterator &end,
+					 const std::vector<const char *> &terminators,
+					 bool search_descriptions, bool wide_context,
+					 const parse_environment &name_context)
 {
   parse_open_paren(start, end);
-  auto_ptr<pkg_matcher> m(parse_condition_list(start, end, terminators, search_descriptions, wide_context));
+  auto_ptr<pkg_matcher_real> m(parse_condition_list(start, end, terminators, search_descriptions, wide_context, name_context));
   parse_close_paren(start, end);
 
   return m.release();
 }
 
-pkg_matcher *parse_optional_pkg_matcher_args(string::const_iterator &start,
-					     const string::const_iterator &end,
-					     const std::vector<const char *> terminators,
-					     bool search_descriptions,
-					     bool wide_context)
+pkg_matcher_real *parse_optional_pkg_matcher_args(string::const_iterator &start,
+						  const string::const_iterator &end,
+						  const std::vector<const char *> terminators,
+						  bool search_descriptions,
+						  bool wide_context,
+						  const parse_environment &name_context)
 {
   while(start != end && isspace(*start))
     ++start;
 
   if(start != end && *start == '(')
-    return parse_pkg_matcher_args(start, end, terminators, search_descriptions, wide_context);
+    return parse_pkg_matcher_args(start, end, terminators, search_descriptions, wide_context, name_context);
   else
     return NULL;
 }
 
-pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
-					       const string::const_iterator &end,
-					       const vector<const char *> &terminators,
-					       bool search_descriptions,
-					       bool wide_context)
+/** \brief Find the index of the given bound variable. */
+pkg_matcher_real::match_stack::size_type
+get_variable_index(const string &bound_variable,
+		   const parse_environment &name_context)
 {
-  // The name is considered to be the next sequence of non-whitespace
-  // characters that are not an open paren.
+  int idx = name_context.get(bound_variable, -1);
+  if(idx == -1)
+    throw CompilationException("Unknown variable \"%s\".",
+			       bound_variable.c_str());
+  else
+    return idx;
+}
 
-  while(start != end && isspace(*start))
-    ++start;
+/** \brief Return a matcher that may or may not have a rebound
+ *  variable.
+ *
+ *  If bound_variable is an empty string, just returns matcher.
+ *  Otherwise, looks up bound_variable in the local environment
+ *  (throwing a CompilationException if the lookup fails) and
+ *  generates a pkg_bind_matcher that wraps the given matcher.
+ */
+pkg_matcher_real *maybe_bind(const string &bound_variable,
+			     pkg_matcher_real *matcher,
+			     const parse_environment &name_context)
+{
+  if(bound_variable.empty())
+    return matcher;
+  else
+    return new pkg_bind_matcher(matcher,
+				get_variable_index(bound_variable,
+						   name_context));
+}
 
-  string raw_name;
-  string lower_case_name;
-  while(start != end && *start != '(' && *start != '!' &&
-	*start != '|' && *start != ')' && *start != '?' &&
-	*start != '~' && !isspace(*start) &&
-	!terminate(start, end, terminators))
-    {
-      raw_name += *start;
-      lower_case_name += tolower(*start);
-      ++start;
-    }
-
+pkg_matcher_real *parse_matcher_args(const string &matcher_name,
+				     string::const_iterator &start,
+				     const string::const_iterator &end,
+				     const vector<const char *> &terminators,
+				     bool search_descriptions,
+				     bool wide_context,
+				     const parse_environment &name_context)
+{
   {
     // This block parses the following forms:
     //
@@ -2696,32 +3221,32 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
     bool reverse = false;
     std::string suffix;
 
-    if(std::string(lower_case_name, 0, broken_prefix.size()) == broken_prefix)
+    if(std::string(matcher_name, 0, broken_prefix.size()) == broken_prefix)
       {
 	broken = true;
 
-	if(std::string(lower_case_name, broken_prefix.size(), reverse_prefix.size()) == reverse_prefix)
+	if(std::string(matcher_name, broken_prefix.size(), reverse_prefix.size()) == reverse_prefix)
 	  {
 	    reverse = true;
-	    suffix = std::string(lower_case_name, broken_prefix.size() + reverse_prefix.size());
+	    suffix = std::string(matcher_name, broken_prefix.size() + reverse_prefix.size());
 	  }
 	else
-	  suffix = std::string(lower_case_name, broken_prefix.size());
+	  suffix = std::string(matcher_name, broken_prefix.size());
       }
-    else if(std::string(lower_case_name, 0, reverse_prefix.size()) == reverse_prefix)
+    else if(std::string(matcher_name, 0, reverse_prefix.size()) == reverse_prefix)
       {
 	reverse = true;
 
-	if(std::string(lower_case_name, reverse_prefix.size(), broken_prefix.size()) == broken_prefix)
+	if(std::string(matcher_name, reverse_prefix.size(), broken_prefix.size()) == broken_prefix)
 	  {
 	    broken = true;
-	    suffix = std::string(lower_case_name, broken_prefix.size() + reverse_prefix.size());
+	    suffix = std::string(matcher_name, broken_prefix.size() + reverse_prefix.size());
 	  }
 	else
-	  suffix = std::string(lower_case_name, reverse_prefix.size());
+	  suffix = std::string(matcher_name, reverse_prefix.size());
       }
     else
-      suffix = lower_case_name;
+      suffix = matcher_name;
 
     const pkgCache::Dep::DepType deptype = parse_deptype(suffix);
 
@@ -2736,7 +3261,8 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 	  return new pkg_revprv_matcher(parse_pkg_matcher_args(start, end,
 							       terminators,
 							       search_descriptions,
-							       false));
+							       false,
+							       name_context));
 	else if(broken || reverse)
 	  throw CompilationException(_("Unknown dependency type: %s"),
 				     suffix.c_str());
@@ -2749,10 +3275,11 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 	if(reverse)
 	  {
 	    // broken-reverse-TYPE(term) and reverse-broken-TYPE(term)
-	    pkg_matcher *m(parse_pkg_matcher_args(start, end,
-						  terminators,
-						  search_descriptions,
-						  false));
+	    pkg_matcher_real *m(parse_pkg_matcher_args(start, end,
+						       terminators,
+						       search_descriptions,
+						       false,
+						       name_context));
 
 	    return new pkg_revdep_matcher(deptype, m, broken);
 	  }
@@ -2760,9 +3287,9 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 	  {
 	    // broken-TYPE and broken-TYPE(term) in the first branch,
 	    // TYPE(term) in the second.
-	    auto_ptr<pkg_matcher> m(broken
-				    ? parse_optional_pkg_matcher_args(start, end, terminators, search_descriptions, false)
-				    : parse_pkg_matcher_args(start, end, terminators, search_descriptions, false));
+	    auto_ptr<pkg_matcher_real> m(broken
+					 ? parse_optional_pkg_matcher_args(start, end, terminators, search_descriptions, false, name_context)
+					 : parse_pkg_matcher_args(start, end, terminators, search_descriptions, false, name_context));
 
 	    if(m.get() != NULL)
 	      return new pkg_dep_matcher(deptype, m.release(), broken);
@@ -2788,7 +3315,7 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       if(found != string::npos)
 	test_name.erase(0, found + 1);
 
-      if(lower_case_name == test_name)
+      if(matcher_name == test_name)
 	{
 	  type = it->type;
 	  found = true;
@@ -2806,7 +3333,7 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 	  *name_to_check_it = tolower(*name_to_check_it);
 	}
 
-      if(lower_case_name == name_to_check)
+      if(matcher_name == name_to_check)
 	{
 	  type = it->type;
 	  found = true;
@@ -2815,7 +3342,7 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
 
   if(!found)
     throw CompilationException(_("Unknown matcher type \"%s\"."),
-			       raw_name.c_str());
+			       matcher_name.c_str());
 
   switch(type)
     {
@@ -2825,16 +3352,16 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
       if(!wide_context)
 	throw CompilationException(_("The ?all matcher must be used in a \"wide\" context (a top-level context, or a context enclosed by ?widen)."));
       else
-	return new pkg_all_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false));
+	return new pkg_all_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false, name_context));
     case matcher_type_and:
-      return parse_binary_matcher<pkg_and_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions, wide_context);
+      return parse_binary_matcher<pkg_and_matcher, pkg_matcher_real *, pkg_matcher_real *>(start, end, terminators, search_descriptions, wide_context, name_context);
     case matcher_type_any:
       if(!wide_context)
 	throw CompilationException(_("The ?%s matcher must be used in a \"wide\" context (a top-level context, or a context enclosed by ?widen)."),
-				   lower_case_name.c_str());
+				   matcher_name.c_str());
       else
-	return new pkg_all_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false));
-      return new pkg_any_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false));
+	return new pkg_all_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false, name_context));
+      return new pkg_any_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false, name_context));
     case matcher_type_archive:
       return new pkg_archive_matcher(parse_string_match_args(start, end));
     case matcher_type_automatic:
@@ -2858,19 +3385,19 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
     case matcher_type_name:
       return new pkg_name_matcher(parse_string_match_args(start, end));
     case matcher_type_narrow:
-      return parse_binary_matcher<pkg_select_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions, false);
+      return parse_binary_matcher<pkg_select_matcher, pkg_matcher_real *, pkg_matcher_real *>(start, end, terminators, search_descriptions, false, name_context);
     case matcher_type_new:
       return new pkg_new_matcher;
     case matcher_type_not:
-      return new pkg_not_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, wide_context));
+      return new pkg_not_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, wide_context, name_context));
     case matcher_type_obsolete:
       return new pkg_obsolete_matcher;
     case matcher_type_or:
-      return parse_binary_matcher<pkg_or_matcher, pkg_matcher*, pkg_matcher*>(start, end, terminators, search_descriptions, wide_context);
+      return parse_binary_matcher<pkg_or_matcher, pkg_matcher_real *, pkg_matcher_real *>(start, end, terminators, search_descriptions, wide_context, name_context);
     case matcher_type_origin:
       return new pkg_origin_matcher(parse_string_match_args(start, end));
     case matcher_type_provides:
-      return parse_unary_matcher<pkg_provides_matcher, pkg_matcher*>(start, end, terminators, search_descriptions, false);
+      return parse_unary_matcher<pkg_provides_matcher, pkg_matcher_real *>(start, end, terminators, search_descriptions, false, name_context);
     case matcher_type_section:
       return new pkg_section_matcher(parse_string_match_args(start, end));
     case matcher_type_tag:
@@ -2882,7 +3409,7 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
     case matcher_type_version:
       return make_package_version_matcher(parse_string_match_args(start, end));
     case matcher_type_widen:
-      return new pkg_widen_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, true));
+      return new pkg_widen_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, true, name_context));
     case matcher_type_virtual:
       return new pkg_virtual_matcher;
     default:
@@ -2891,11 +3418,140 @@ pkg_matcher *parse_function_style_matcher_tail(string::const_iterator &start,
     }
 }
 
-pkg_matcher *parse_atom(string::const_iterator &start,
-			const string::const_iterator &end,
-			const vector<const char *> &terminators,
-			bool search_descriptions,
-			bool wide_context)
+pkg_matcher_real *parse_function_style_matcher_tail(string::const_iterator &start,
+						    const string::const_iterator &end,
+						    const vector<const char *> &terminators,
+						    bool search_descriptions,
+						    bool wide_context,
+						    const parse_environment &name_context)
+{
+  if(*start == '=')
+    {
+      ++start;
+
+      parse_whitespace(start, end);
+
+      string bound_variable;
+      while(start != end && *start != '(' && *start != '!' &&
+	    *start != '|' && *start != ')' && *start != '?' &&
+	    *start != '~' && *start != ':' && !isspace(*start) &&
+	    !terminate(start, end, terminators))
+	{
+	  bound_variable.push_back(*start);
+	  ++start;
+	}
+
+
+      if(bound_variable.empty())
+	throw CompilationException("Unexpected end of pattern following ?=%s (expected a variable name).",
+				   bound_variable.c_str());
+      else
+	return new pkg_equal_matcher(get_variable_index(bound_variable,
+							name_context));
+    }
+  // Parse a lambda form as "??" <variable-name> ":" condition-list.
+  else if(*start == '?')
+    {
+      ++start;
+
+      parse_whitespace(start, end);
+
+      string bound_variable;
+      while(start != end && *start != '(' && *start != '!' &&
+	    *start != '|' && *start != ')' && *start != '?' &&
+	    *start != '~' && *start != ':' && !isspace(*start) &&
+	    !terminate(start, end, terminators))
+	{
+	  bound_variable.push_back(*start);
+	  ++start;
+	}
+
+      parse_whitespace(start, end);
+
+      if(start == end)
+	throw CompilationException("Unexpected end of pattern following ??%s (expected \":\" followed by a search term).",
+				   bound_variable.c_str());
+      else if(*start != ':')
+	throw CompilationException("Unexpected '%c' following ??%s (expected \":\" followed by a search term).",
+				   *start, bound_variable.c_str());
+
+      ++start;
+
+      parse_whitespace(start, end);
+
+      // Variables are case-insensitive and normalized to lower-case.
+      for(std::string::iterator it = bound_variable.begin();
+	  it != bound_variable.end(); ++it)
+	*it = tolower(*it);
+
+      // Bind the name to the index that the variable will have in the
+      // stack (counting from the bottom of the stack to the top).
+      parse_environment name_context2(parse_environment::bind(name_context,
+							      bound_variable,
+							      name_context.size()));
+      std::auto_ptr<pkg_matcher_real> m(parse_condition_list(start, end,
+							     terminators,
+							     search_descriptions,
+							     wide_context,
+							     name_context2));
+
+      return new pkg_explicit_matcher(m.release());
+    }
+
+  // The name is considered to be the next sequence of non-whitespace
+  // characters that are not an open paren.
+
+  while(start != end && isspace(*start))
+    ++start;
+
+  string raw_name;
+  string lower_case_name;
+  string bound_variable;
+  while(start != end && *start != '(' && *start != '!' &&
+	*start != '|' && *start != ')' && *start != '?' &&
+	*start != '~' && !isspace(*start) &&
+	!terminate(start, end, terminators))
+    {
+      if(*start == ':')
+	{
+	  if(!bound_variable.empty())
+	    throw CompilationException("Unexpected ':' following \"?%s:%s\".",
+				       bound_variable.c_str(), raw_name.c_str());
+	  else
+	    {
+	      bound_variable = raw_name;
+	      for(string::iterator it = bound_variable.begin();
+		  it != bound_variable.end(); ++it)
+		*it = tolower(*it);
+	      raw_name.clear();
+	      lower_case_name.clear();
+	    }
+	}
+      else
+	{
+	  raw_name += *start;
+	  lower_case_name += tolower(*start);
+	}
+      ++start;
+    }
+
+  return maybe_bind(bound_variable,
+		    parse_matcher_args(lower_case_name,
+				       start,
+				       end,
+				       terminators,
+				       search_descriptions,
+				       wide_context,
+				       name_context),
+		    name_context);
+}
+
+pkg_matcher_real *parse_atom(string::const_iterator &start,
+			     const string::const_iterator &end,
+			     const vector<const char *> &terminators,
+			     bool search_descriptions,
+			     bool wide_context,
+			     const parse_environment &name_context)
 {
   std::string substr;
 
@@ -2910,17 +3566,19 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 	  ++start;
 	  return new pkg_not_matcher(parse_atom(start, end, terminators,
 						search_descriptions,
-						wide_context));
+						wide_context,
+						name_context));
 	}
       else if(*start == '(')
 	// Recur into the list, losing the extra terminators (they are
 	// treated normally until the closing paren)
 	{
 	  ++start;
-	  auto_ptr<pkg_matcher> lst(parse_condition_list(start, end,
-							 vector<const char *>(),
-							 search_descriptions,
-							 wide_context));
+	  auto_ptr<pkg_matcher_real> lst(parse_condition_list(start, end,
+							      vector<const char *>(),
+							      search_descriptions,
+							      wide_context,
+							      name_context));
 
 	  if(!(start != end && *start == ')'))
 	    throw CompilationException(_("Unmatched '('"));
@@ -2934,7 +3592,7 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 	{
 	  ++start;
 	  return parse_function_style_matcher_tail(start, end, terminators, search_descriptions,
-						   wide_context);
+						   wide_context, name_context);
 	}
       else if(*start == '~')
 	{
@@ -2948,8 +3606,8 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		return new pkg_name_matcher("~");
 	      else
 		{
-		  auto_ptr<pkg_matcher> name(new pkg_name_matcher("~"));
-		  auto_ptr<pkg_matcher> desc(new pkg_description_matcher(substr));
+		  auto_ptr<pkg_matcher_real> name(new pkg_name_matcher("~"));
+		  auto_ptr<pkg_matcher_real> desc(new pkg_description_matcher(substr));
 
 		  return new pkg_or_matcher(name.release(),
 					    desc.release());
@@ -2998,12 +3656,13 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		case 'C':
 		case 'W':
 		  {
-		    auto_ptr<pkg_matcher> m(parse_atom(start,
-						       end,
-						       terminators,
-						       search_descriptions,
-						       search_flag == 'W'));
-		    
+		    auto_ptr<pkg_matcher_real> m(parse_atom(start,
+							    end,
+							    terminators,
+							    search_descriptions,
+							    search_flag == 'W',
+							    name_context));
+
 		    switch(search_flag)
 		      {
 		      case 'C':
@@ -3016,17 +3675,19 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		  }
 		case 'S':
 		  {
-		    auto_ptr<pkg_matcher> filter(parse_atom(start,
-							    end,
-							    terminators,
-							    search_descriptions,
-							    false));
+		    auto_ptr<pkg_matcher_real> filter(parse_atom(start,
+								 end,
+								 terminators,
+								 search_descriptions,
+								 false,
+								 name_context));
 
-		    auto_ptr<pkg_matcher> pattern(parse_atom(start,
-							     end,
-							     terminators,
-							     search_descriptions,
-							     false));
+		    auto_ptr<pkg_matcher_real> pattern(parse_atom(start,
+								  end,
+								  terminators,
+								  search_descriptions,
+								  false,
+								  name_context));
 
 		    return new pkg_select_matcher(filter.release(), pattern.release());
 		  }
@@ -3075,9 +3736,9 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 		    if(do_provides && broken)
 		      throw CompilationException(_("Provides: cannot be broken"));
 
-		    auto_ptr<pkg_matcher> m(parse_atom(start, end, terminators,
-						       search_descriptions,
-						       false));
+		    auto_ptr<pkg_matcher_real> m(parse_atom(start, end, terminators,
+							    search_descriptions,
+							    false, name_context));
 
 		    switch(search_flag)
 		      {
@@ -3179,8 +3840,8 @@ pkg_matcher *parse_atom(string::const_iterator &start,
 	  else
 	    {
 	      substr = parse_substr(start, end, terminators, true);
-	      auto_ptr<pkg_matcher> name(new pkg_name_matcher(substr));
-	      auto_ptr<pkg_matcher> desc(new pkg_description_matcher(substr));
+	      auto_ptr<pkg_matcher_real> name(new pkg_name_matcher(substr));
+	      auto_ptr<pkg_matcher_real> desc(new pkg_description_matcher(substr));
 
 	      return new pkg_or_matcher(name.release(),
 					desc.release());
@@ -3192,27 +3853,29 @@ pkg_matcher *parse_atom(string::const_iterator &start,
   throw CompilationException(_("Can't search for \"\""));
 }
 
-pkg_matcher *parse_and_group(string::const_iterator &start,
-			     const string::const_iterator &end,
-			     const vector<const char *> &terminators,
-			     bool search_descriptions,
-			     bool wide_context)
+pkg_matcher_real *parse_and_group(string::const_iterator &start,
+				  const string::const_iterator &end,
+				  const vector<const char *> &terminators,
+				  bool search_descriptions,
+				  bool wide_context,
+				  const parse_environment &name_context)
 {
-  auto_ptr<pkg_matcher> rval(NULL);
+  auto_ptr<pkg_matcher_real> rval(NULL);
   while(start != end && isspace(*start))
     ++start;
 
   while(start != end && *start != '|' && *start != ')' &&
 	!terminate(start, end, terminators))
     {
-      auto_ptr<pkg_matcher> atom(parse_atom(start, end, terminators,
-					    search_descriptions,
-					    wide_context));
+      auto_ptr<pkg_matcher_real> atom(parse_atom(start, end, terminators,
+						 search_descriptions,
+						 wide_context,
+						 name_context));
 
       if(rval.get() == NULL)
 	rval = atom;
       else
-	rval = auto_ptr<pkg_matcher>(new pkg_and_matcher(rval.release(), atom.release()));
+	rval = auto_ptr<pkg_matcher_real>(new pkg_and_matcher(rval.release(), atom.release()));
 
       while(start != end && isspace(*start))
 	++start;
@@ -3224,14 +3887,17 @@ pkg_matcher *parse_and_group(string::const_iterator &start,
   return rval.release();
 }
 
-pkg_matcher *parse_condition_list(string::const_iterator &start,
-				  const string::const_iterator &end,
-				  const vector<const char *> &terminators,
-				  bool search_descriptions,
-				  bool wide_context)
+pkg_matcher_real *parse_condition_list(string::const_iterator &start,
+				       const string::const_iterator &end,
+				       const vector<const char *> &terminators,
+				       bool search_descriptions,
+				       bool wide_context,
+				       const parse_environment &name_context)
 {
-  auto_ptr<pkg_matcher> grp(parse_and_group(start, end, terminators,
-					    search_descriptions, wide_context));
+  auto_ptr<pkg_matcher_real> grp(parse_and_group(start, end, terminators,
+						 search_descriptions,
+						 wide_context,
+						 name_context));
 
   while(start != end && isspace(*start))
     ++start;
@@ -3241,9 +3907,10 @@ pkg_matcher *parse_condition_list(string::const_iterator &start,
       if(start != end && *start == '|')
 	{
 	  ++start;
-	  auto_ptr<pkg_matcher> grp2(parse_condition_list(start, end, terminators,
-							  search_descriptions,
-							  wide_context));
+	  auto_ptr<pkg_matcher_real> grp2(parse_condition_list(start, end, terminators,
+							       search_descriptions,
+							       wide_context,
+							       name_context));
 
 	  return new pkg_or_matcher(grp.release(), grp2.release());
 	}
@@ -3258,6 +3925,8 @@ pkg_matcher *parse_condition_list(string::const_iterator &start,
   // If there's no second element in the condition list, return its
   // head.
   return grp.release();
+}
+
 }
 
 pkg_matcher *parse_pattern(string::const_iterator &start,
@@ -3276,9 +3945,10 @@ pkg_matcher *parse_pattern(string::const_iterator &start,
 
   try
     {
-      auto_ptr<pkg_matcher> rval(parse_condition_list(start, end, terminators,
-						      search_descriptions,
-						      true));
+      auto_ptr<pkg_matcher_real> rval(parse_condition_list(start, end, terminators,
+							   search_descriptions,
+							   true,
+							   parse_environment()));
 
       while(start != end && isspace(*start))
 	++start;
@@ -3295,4 +3965,121 @@ pkg_matcher *parse_pattern(string::const_iterator &start,
 
       return NULL;
     }
+}
+
+
+bool apply_matcher(pkg_matcher *matcher,
+		   const pkgCache::PkgIterator &pkg,
+		   const pkgCache::VerIterator &ver,
+		   aptitudeDepCache &cache,
+		   pkgRecords &records)
+{
+  pkg_matcher_real *real_matcher(dynamic_cast<pkg_matcher_real *>(matcher));
+  eassert(real_matcher != NULL);
+
+  pkg_matcher_real::match_stack stack;
+  return real_matcher->matches(pkg, ver, cache, records, stack);
+}
+
+
+
+/** \return a match result, or \b NULL if there is no match.  It's
+ *  the caller's responsibility to delete this.
+ */
+pkg_match_result *get_match(pkg_matcher *matcher,
+			    const pkgCache::PkgIterator &pkg,
+			    const pkgCache::VerIterator &ver,
+			    aptitudeDepCache &cache,
+			    pkgRecords &records)
+{
+  pkg_matcher_real *real_matcher(dynamic_cast<pkg_matcher_real *>(matcher));
+  eassert(real_matcher != NULL);
+
+  pkg_matcher_real::match_stack stack;
+  return real_matcher->get_match(pkg, ver, cache, records, stack);
+}
+
+/** See whether this matches a versionless package.  This applies
+ *  the matcher to every version of the package and returns \b true
+ *  if any version is matched.
+ */
+bool apply_matcher(pkg_matcher *matcher,
+		   const pkgCache::PkgIterator &pkg,
+		   aptitudeDepCache &cache,
+		   pkgRecords &records)
+{
+  pkg_matcher_real *real_matcher(dynamic_cast<pkg_matcher_real *>(matcher));
+  eassert(real_matcher != NULL);
+
+  pkg_matcher_real::match_stack stack;
+  return real_matcher->matches(pkg, cache, records, stack);
+}
+
+/** Get a match result for a versionless package.  This applies the
+ *  matcher to each version of the package, returning \b NULL if
+ *  none matches or the first match found otherwise.
+ */
+pkg_match_result *get_match(pkg_matcher *matcher,
+			    const pkgCache::PkgIterator &pkg,
+			    aptitudeDepCache &cache,
+			    pkgRecords &records)
+{
+  pkg_matcher_real *real_matcher(dynamic_cast<pkg_matcher_real *>(matcher));
+  eassert(real_matcher != NULL);
+
+  pkg_matcher_real::match_stack stack;
+  return real_matcher->get_match(pkg, cache, records, stack);
+}
+
+class pkg_const_matcher : public pkg_matcher_real
+{
+  pkgCache::PkgIterator match_pkg;
+
+  class const_name_result : public pkg_match_result
+  {
+    std::string name_group;
+  public:
+    const_name_result(const std::string &_name_group)
+      : name_group(_name_group)
+    {
+    }
+
+    unsigned int num_groups() { return 1; }
+    const std::string &group(unsigned int n) { return name_group; }
+  };
+public:
+  pkg_const_matcher(const pkgCache::PkgIterator &_match_pkg)
+    : match_pkg(_match_pkg)
+  {
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records,
+	       match_stack &stack)
+  {
+    return pkg == match_pkg;
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records,
+			      match_stack &stack)
+  {
+    if(pkg == match_pkg)
+      return new const_name_result(pkg.Name());
+    else
+      return NULL;
+  }
+};
+
+pkg_matcher *make_const_matcher(const pkgCache::PkgIterator &pkg)
+{
+  return new pkg_const_matcher(pkg);
+}
+
+
+}
 }

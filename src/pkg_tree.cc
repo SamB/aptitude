@@ -1,6 +1,6 @@
 // pkg_tree.cc
 //
-//  Copyright 1999-2005, 2007 Daniel Burrows
+//  Copyright 1999-2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -54,6 +54,8 @@ namespace cwidget
   using namespace widgets;
 }
 
+namespace match = aptitude::matching;
+
 cw::config::keybindings *pkg_tree::bindings=NULL;
 
 cw::editline::history_list pkg_tree::limit_history, pkg_tree::grouping_history,
@@ -75,7 +77,7 @@ pkg_tree::pkg_tree(const std::string &def_grouping,
    limitstr(def_limit)
 {
   if(!limitstr.empty())
-    limit=parse_pattern(cw::util::transcode(limitstr));
+    limit = match::parse_pattern(cw::util::transcode(limitstr));
 }
 
 pkg_tree::pkg_tree(const std::string &def_grouping,
@@ -88,7 +90,7 @@ pkg_tree::pkg_tree(const std::string &def_grouping,
    limitstr(cw::util::transcode(aptcfg->Find(PACKAGE "::Pkg-Display-Limit", "")))
 {
   if(!limitstr.empty())
-    limit=parse_pattern(cw::util::transcode(limitstr));
+    limit = match::parse_pattern(cw::util::transcode(limitstr));
 }
 
 void pkg_tree::handle_cache_close()
@@ -191,7 +193,7 @@ bool pkg_tree::build_tree(OpProgress &progress)
 	  if(i.VersionList().end() && i.ProvidesList().end())
 	    continue;
 
-	  if((!limit) || limit->matches(i, *apt_cache_file, *apt_package_records))
+	  if((!limit) || match::apply_matcher(limit, i, *apt_cache_file, *apt_package_records))
 	    {
 	      empty=false;
 	      grouper->add_package(i, mytree);
@@ -228,10 +230,10 @@ bool pkg_tree::build_tree()
 
 void pkg_tree::set_limit(const std::wstring &_limit)
 {
-  pkg_matcher *old_limit=limit;
+  match::pkg_matcher *old_limit = limit;
   std::wstring old_limitstr=limitstr;
 
-  pkg_matcher *new_limit=parse_pattern(cw::util::transcode(_limit));
+  match::pkg_matcher *new_limit = match::parse_pattern(cw::util::transcode(_limit));
   if(_limit.empty() || new_limit)
     {
       limit=new_limit;

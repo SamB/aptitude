@@ -52,6 +52,8 @@ using namespace std;
 
 namespace cw = cwidget;
 
+namespace match = aptitude::matching;
+
 pkg_grouppolicy_factory::~pkg_grouppolicy_factory()
 {
 }
@@ -491,11 +493,11 @@ void pkg_grouppolicy_status::add_package(const pkgCache::PkgIterator &pkg,
 /*****************************************************************************/
 class pkg_grouppolicy_filter:public pkg_grouppolicy
 {
-  pkg_matcher *filter;
+  match::pkg_matcher *filter;
 
   pkg_grouppolicy *chain;
 public:
-  pkg_grouppolicy_filter(pkg_grouppolicy_factory *_chain, pkg_matcher *_filter,
+  pkg_grouppolicy_filter(pkg_grouppolicy_factory *_chain, match::pkg_matcher *_filter,
 			 pkg_signal *_sig, desc_signal *_desc_sig)
     :pkg_grouppolicy(_sig, _desc_sig),
      filter(_filter),
@@ -505,7 +507,7 @@ public:
 
   virtual void add_package(const pkgCache::PkgIterator &pkg, pkg_subtree *root)
   {
-    if(filter->matches(pkg, *apt_cache_file, *apt_package_records))
+    if(match::apply_matcher(filter, pkg, *apt_cache_file, *apt_package_records))
       chain->add_package(pkg, root);
   }
 
@@ -1127,7 +1129,7 @@ private:
   subtree_map subtrees;
 
   wstring substitute(const wstring &s,
-		     pkg_match_result *res)
+		     match::pkg_match_result *res)
   {
     wstring rval;
 
@@ -1231,7 +1233,7 @@ public:
     for(vector<match_pair>::const_iterator i = subgroups.begin();
 	i != subgroups.end(); ++i)
 	{
-	  pkg_match_result *res = i->matcher->get_match(pkg, *apt_cache_file, *apt_package_records);
+	  match::pkg_match_result *res = match::get_match(i->matcher, pkg, *apt_cache_file, *apt_package_records);
 	  if(res != NULL)
 	    {
 	      if(i->passthrough)

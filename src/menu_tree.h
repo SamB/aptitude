@@ -1,6 +1,6 @@
 // menu_tree.h                                      -*-c++-*-
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -28,7 +28,14 @@
 
 #include <cwidget/widgets/tree.h>
 
-class pkg_matcher;
+namespace aptitude
+{
+  namespace matching
+  {
+    class pkg_matcher;
+  }
+}
+
 class pkg_tree_node;
 class solution_item;
 class undo_group;
@@ -60,7 +67,7 @@ class menu_tree:public cwidget::widgets::tree, public menu_redirect
   solution_item *solution_selection();
 
   /** A precompiled matcher representing the last search that was performed. */
-  pkg_matcher *last_search_matcher;
+  aptitude::matching::pkg_matcher *last_search_matcher;
 
   /** The string that was compiled to produce the above matcher. */
   std::wstring last_search_term;

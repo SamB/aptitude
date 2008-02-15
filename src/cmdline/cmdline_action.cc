@@ -200,6 +200,8 @@ bool cmdline_applyaction(string s,
 			 int verbose,
 			 bool allow_auto)
 {
+  using namespace aptitude::matching;
+
   bool rval=true;
 
   cmdline_version_source source=cmdline_version_cand;
@@ -260,7 +262,7 @@ bool cmdline_applyaction(string s,
 	{
 	  // Maybe they misspelled the package name?
 	  pkgvector possible;
-	  pkg_matcher *m=parse_pattern(package);
+	  pkg_matcher *m = parse_pattern(package);
 
 	  if(!m)
 	    {
@@ -273,7 +275,7 @@ bool cmdline_applyaction(string s,
 	  for(pkgCache::PkgIterator j=(*apt_cache_file)->PkgBegin();
 	      !j.end(); ++j)
 	    {
-	      if(!(j.VersionList().end() && j.ProvidesList().end()) && m->matches(j, *apt_cache_file, *apt_package_records))
+	      if(!(j.VersionList().end() && j.ProvidesList().end()) && apply_matcher(m, j, *apt_cache_file, *apt_package_records))
 		possible.push_back(j);
 	    }
 
@@ -303,7 +305,7 @@ bool cmdline_applyaction(string s,
 	      for(pkgCache::PkgIterator j=(*apt_cache_file)->PkgBegin();
 		  !j.end(); ++j)
 		{
-		  if(m->matches(j, *apt_cache_file, *apt_package_records))
+		  if(apply_matcher(m, j, *apt_cache_file, *apt_package_records))
 		    possible.push_back(j);
 		}
 
@@ -330,7 +332,7 @@ bool cmdline_applyaction(string s,
     }
   else
     {
-      pkg_matcher *m=parse_pattern(package.c_str());
+      pkg_matcher *m = parse_pattern(package.c_str());
       if(!m)
 	{
 	  _error->DumpErrors();
@@ -342,7 +344,7 @@ bool cmdline_applyaction(string s,
 	{
 	  pkgCache::VerIterator testver;
 
-	  if(m->matches(pkg, *apt_cache_file, *apt_package_records))
+	  if(apply_matcher(m, pkg, *apt_cache_file, *apt_package_records))
 	    rval=cmdline_applyaction(action, pkg,
 				     to_install, to_hold, to_remove, to_purge,
 				     verbose, source,

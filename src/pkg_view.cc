@@ -1,6 +1,6 @@
 // pkg_view.cc
 //
-//  Copyright 2000-2005, 2007 Daniel Burrows
+//  Copyright 2000-2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -64,6 +64,8 @@ namespace cwidget
 {
   using namespace widgets;
 }
+
+namespace match = aptitude::matching;
 
 class pkg_handling_label:public cw::label
 {
@@ -191,8 +193,8 @@ public:
 	return;
       }
 
-    std::vector<pkg_matcher *> search_leaves;
-    search_leaves.push_back(parse_pattern("~i!~M"));
+    std::vector<match::pkg_matcher *> search_leaves;
+    search_leaves.push_back(match::parse_pattern("~i!~M"));
     try
       {
 	bool success = false;
@@ -204,12 +206,12 @@ public:
       }
     catch(...)
       {
-	for(std::vector<pkg_matcher *>::const_iterator it
+	for(std::vector<match::pkg_matcher *>::const_iterator it
 	      = search_leaves.begin(); it != search_leaves.end(); ++it)
 	  delete *it;
       }
 
-    for(std::vector<pkg_matcher *>::const_iterator it
+    for(std::vector<match::pkg_matcher *>::const_iterator it
 	  = search_leaves.begin(); it != search_leaves.end(); ++it)
       delete *it;
   }

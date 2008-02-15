@@ -1,6 +1,6 @@
 // menu_tree.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -42,31 +42,37 @@ namespace cwidget
 {
   using namespace widgets;
 }
+namespace match = aptitude::matching;
 
 cw::editline::history_list menu_tree::search_history;
 
 class pkg_matcher_search:public cw::tree_search_func
 {
-  pkg_matcher *matcher;
+  match::pkg_matcher *matcher;
 public:
-  pkg_matcher_search(pkg_matcher *_matcher):matcher(_matcher) {}
+  pkg_matcher_search(match::pkg_matcher *_matcher)
+    : matcher(_matcher)
+  {
+  }
 
   bool operator()(const cw::treeitem &item)
   {
     // EWW
     const pkg_item *pitem=dynamic_cast<const pkg_item *>(&item);
     if(pitem)
-      return matcher->matches(pitem->get_package(),
-			      *apt_cache_file,
-			      *apt_package_records);
+      return match::apply_matcher(matcher,
+				  pitem->get_package(),
+				  *apt_cache_file,
+				  *apt_package_records);
     else {
       const pkg_ver_item *pvitem=dynamic_cast<const pkg_ver_item *>(&item);
 
       if(pvitem)
-	return matcher->matches(pvitem->get_package(),
-				pvitem->get_version(),
-				*apt_cache_file,
-				*apt_package_records);
+	return match::apply_matcher(matcher,
+				    pvitem->get_package(),
+				    pvitem->get_version(),
+				    *apt_cache_file,
+				    *apt_package_records);
       else
 	return false;
     }
@@ -329,7 +335,7 @@ void menu_tree::do_search(std::wstring s, bool backward)
     {
       delete last_search_matcher;
       last_search_term=s;
-      last_search_matcher=parse_pattern(cw::util::transcode(s));
+      last_search_matcher = match::parse_pattern(cw::util::transcode(s));
     }
 
   if(doing_incsearch)
@@ -362,7 +368,7 @@ void menu_tree::do_incsearch(std::wstring s, bool backward)
       pre_incsearch_selected=get_selection();
     }
 
-  pkg_matcher *m=parse_pattern(cw::util::transcode(s), false, false);
+  match::pkg_matcher *m = match::parse_pattern(cw::util::transcode(s), false, false);
 
   set_selection(pre_incsearch_selected);
 

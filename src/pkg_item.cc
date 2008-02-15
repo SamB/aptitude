@@ -1,6 +1,6 @@
 // pkg_item.cc
 //
-// Copyright 1999-2005, 2007 Daniel Burrows
+// Copyright 1999-2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -481,9 +481,9 @@ void pkg_item::dispatch_mouse(short id, int x, mmask_t bstate, cw::tree *owner)
 
 bool pkg_item::matches(const string &s) const
 {
-  return pkg_matches(s, package, visible_version(),
-		     *apt_cache_file,
-		     *apt_package_records);
+  return aptitude::matching::pkg_matches(s, package, visible_version(),
+					 *apt_cache_file,
+					 *apt_package_records);
 }
 
 pkgCache::VerIterator pkg_item::visible_version(const pkgCache::PkgIterator &pkg)

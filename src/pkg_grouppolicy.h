@@ -1,6 +1,6 @@
 // pkg_grouppolicy.h       -*-c++-*-
 //
-//  Copyright 1999-2002, 2005, 2007 Daniel Burrows
+//  Copyright 1999-2002, 2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -61,7 +61,13 @@ typedef sigc::signal2<void,
 typedef sigc::signal1<void, std::wstring> desc_signal;
 
 class pkg_subtree;
-class pkg_matcher;
+namespace aptitude
+{
+  namespace matching
+  {
+    class pkg_matcher;
+  }
+}
 
 class pkg_grouppolicy
 {
@@ -181,9 +187,9 @@ class pkg_grouppolicy_filter_factory:public pkg_grouppolicy_factory
 {
   pkg_grouppolicy_factory *chain;
 
-  pkg_matcher *filter;
+  aptitude::matching::pkg_matcher *filter;
 public:
-  pkg_grouppolicy_filter_factory(pkg_matcher *_filter,
+  pkg_grouppolicy_filter_factory(aptitude::matching::pkg_matcher *_filter,
 				 pkg_grouppolicy_factory *_chain)
     :chain(_chain), filter(_filter) {}
 
@@ -292,11 +298,11 @@ class pkg_grouppolicy_matchers_factory:public pkg_grouppolicy_factory
 public:
   struct match_pair
   {
-    pkg_matcher *matcher;
+    aptitude::matching::pkg_matcher *matcher;
     std::wstring tree_name;
     bool passthrough;
 
-    match_pair(pkg_matcher *_matcher,
+    match_pair(aptitude::matching::pkg_matcher *_matcher,
 	       const std::wstring &_tree_name,
 	       bool _passthrough)
       :matcher(_matcher), tree_name(_tree_name), passthrough(_passthrough)

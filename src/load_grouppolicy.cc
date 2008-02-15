@@ -43,6 +43,7 @@
 
 using namespace std;
 namespace cw = cwidget;
+namespace match = aptitude::matching;
 
 class GroupParseException
 {
@@ -433,11 +434,11 @@ public:
 
     if(is_missing)
       {
-	pkg_matcher *m = parse_pattern("~T");
+	match::pkg_matcher *m = match::parse_pattern("~T");
 	begin = begin2;
 	++begin;
 
-	return new policy_node1<pkg_grouppolicy_filter_factory, pkg_matcher *>(m);
+	return new policy_node1<pkg_grouppolicy_filter_factory, match::pkg_matcher *>(m);
       }
     else
       {
@@ -445,8 +446,8 @@ public:
 	terminators.push_back(",");
 	terminators.push_back(")");
 
-	auto_ptr<pkg_matcher> m(parse_pattern(begin, end, terminators,
-					      false, true, false));
+	auto_ptr<match::pkg_matcher> m(match::parse_pattern(begin, end, terminators,
+							    false, true, false));
 
 	if(m.get() == NULL)
 	  throw GroupParseException(_("Unable to parse pattern at '%s'"),
@@ -461,7 +462,7 @@ public:
 	    if(begin != end)
 	      ++begin;
 
-	    return new policy_node1<pkg_grouppolicy_filter_factory, pkg_matcher *>(m.release());
+	    return new policy_node1<pkg_grouppolicy_filter_factory, match::pkg_matcher *>(m.release());
 	  }
       }
   }
@@ -602,9 +603,9 @@ class pattern_policy_parser : public group_policy_parser
 
 	    const string::const_iterator begin0 = begin;
 
-	    auto_ptr<pkg_matcher> matcher(parse_pattern(begin, end,
-							terminators,
-							false, true, false));
+	    auto_ptr<match::pkg_matcher> matcher(match::parse_pattern(begin, end,
+								      terminators,
+								      false, true, false));
 
 	    bool passthrough = false;
 
