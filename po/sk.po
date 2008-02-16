@@ -2,16 +2,16 @@
 # Copyright (C) 2005 THE aptitude'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Aptitude package.
 # Stanislav Valášek <valasek@fastmail.fm>, 2005.
-# Peter Mann <Peter.Mann@tuke.sk>, 2006 - este su nutne gramaticke opravy
-#
+# Peter Mann <Peter.Mann@tuke.sk>, 2006.
+# Ivan Masár <helix84@centrum.sk>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-30 19:56-0800\n"
-"PO-Revision-Date: 2006-11-30 21:49+0100\n"
-"Last-Translator: Peter Mann <Peter.Mann@tuke.sk>\n"
+"PO-Revision-Date: 2008-02-15 12:47+0100\n"
+"Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,37 +25,38 @@ msgid ""
 "%BDefault:%b %s\n"
 "%BValue:%b   %s\n"
 msgstr ""
+"%BVoľba:%b  %s\n"
+"%BŠtandardne:%b %s\n"
+"%BHodnota:%b   %s\n"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
 msgid "True"
-msgstr ""
+msgstr "Áno"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
-#, fuzzy
 msgid "False"
-msgstr "Zavrieť"
+msgstr "Nie"
 
 #: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:392
-#, fuzzy
 msgid "%BOption:%b  "
-msgstr "Voľby"
+msgstr "%BVoľba:%b  "
 
 #: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:394
 msgid "%BDefault:%b "
-msgstr ""
+msgstr "%BŠtandardne:%b "
 
 #: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:396
 msgid "%BValue:%b   "
-msgstr ""
+msgstr "%BHodnota:%b   "
 
 #: src/apt_config_treeitems.cc:278
 #, c-format
 msgid "Editing \"%ls\""
-msgstr ""
+msgstr "Upravuje sa „%ls“"
 
 #: src/apt_config_treeitems.cc:400
 msgid "%BChoice:%b  "
-msgstr ""
+msgstr "%BVoľba:%b  "
 
 #: src/apt_options.cc:160
 msgid "Display some available commands at the top of the screen"
@@ -66,21 +67,24 @@ msgid ""
 "If this option is enabled, a brief summary of some of the most important "
 "aptitude commands will appear beneath the menu bar."
 msgstr ""
+"Ak je táto voľba zapnutá, pod ponukou sa objaví stručné zhrnutie "
+"najdôležitejších príkazov aptitude."
 
 #: src/apt_options.cc:165
-#, fuzzy
 msgid "Hide the menu bar when it is not being used"
-msgstr "Skryť menu, pokiaľ sa nepoužíva"
+msgstr "Skryť ponuku, pokiaľ sa nepoužíva"
 
 #: src/apt_options.cc:166
 msgid ""
 "If this option is enabled, the menu bar will only appear when it has been "
 "activated by pressing the menu key."
 msgstr ""
+"Ak je táto voľba zapnutá, ponuka sa bude zobrazovať iba po aktivácii pomocou "
+"klávesu ponuka."
 
 #: src/apt_options.cc:170
 msgid "Use a minibuffer-style prompt when possible"
-msgstr "Používať výzvy v štýle 'minibufferu', ak je to možné"
+msgstr "Používať výzvy v štýle „minibufferu“, ak je to možné"
 
 #: src/apt_options.cc:171
 msgid ""
@@ -88,6 +92,8 @@ msgid ""
 "bottom of the screen.  If not, prompts will be displayed as pop-up dialog "
 "boxes."
 msgstr ""
+"Ak je táto voľba zapnutá, výzvy sa zobrazia v jednom riadku na spodku "
+"obrazovky. Ak nie, výzvy sa zobrazia ako dialógové okná."
 
 #: src/apt_options.cc:176
 msgid "Show partial search results (incremental search)"
@@ -99,6 +105,9 @@ msgid ""
 "list as you type them.  This is convenient, but may slow the program down, "
 "particularly on older computers."
 msgstr ""
+"Ak je táto voľba zapnutá, aptitude bude hľadať v balíku počas toho ako "
+"píšete. To môže byť pohodlné, ale spomaľuje to program, obzvlášť na starších "
+"počítačoch."
 
 #: src/apt_options.cc:183
 msgid "Closing the last view exits the program"
@@ -110,6 +119,9 @@ msgid ""
 "(package lists, package details, etc) have been closed.  Otherwise, aptitude "
 "will continue running until you select 'Quit' from the Actions menu."
 msgstr ""
+"Ak je táto voľba zapnutá, aptitude sa ukončí po zatvorení všetkých pohľadov "
+"(zoznamy balíkov, podrobnosti balíka atď.). Inak bude aptitude pokračovať v "
+"behu až kým ho neukončíte voľbou „Ukončiť“ z ponuky „Akcie“."
 
 #: src/apt_options.cc:190
 msgid "Prompt for confirmation at exit"
@@ -120,6 +132,8 @@ msgid ""
 "If this option is enabled, aptitude will not terminate until you confirm "
 "that you really want to quit."
 msgstr ""
+"Ak je táto voľba zapnutá, aptitude sa neukončí, pokým nepotvrdíte, že chcete "
+"naozaj skončiť."
 
 #: src/apt_options.cc:195
 msgid "Pause after downloading files"
@@ -130,6 +144,8 @@ msgid ""
 "This option controls whether aptitude will wait for confirmation after a "
 "download before it goes ahead and installs packages."
 msgstr ""
+"Táto voľba určuje, či bude aptitude čakať na potvrdenie po stiahnutí pred "
+"inštaláciou balíkov."
 
 #: src/apt_options.cc:199
 msgid "Never"
@@ -140,6 +156,8 @@ msgid ""
 "Never wait for the user after downloading packages: always begin the "
 "installation immediately."
 msgstr ""
+"Nikdy nečakať na reakciu používateľa po stiahnutí balíkov: vždy okamžite "
+"začať s inštaláciou."
 
 #: src/apt_options.cc:201
 msgid "When an error occurs"
@@ -150,6 +168,8 @@ msgid ""
 "Wait for confirmation if an error occurred during the download.  If there "
 "were no errors, begin installing packages immediately."
 msgstr ""
+"Čakať na potvrdenie ak sa počas sťahovania vyskytla chyba: Ak sa nevyskytla "
+"chyba, okamžite začať s inštaláciou."
 
 #: src/apt_options.cc:203
 msgid "Always"
@@ -160,6 +180,8 @@ msgid ""
 "Always wait for the user to confirm the download before proceeding with the "
 "installation."
 msgstr ""
+"Čakať na potvrdenie používateľa po stiahnutí balíkov predtým, než sa bude "
+"pokračovať s inštaláciou."
 
 #: src/apt_options.cc:206
 msgid "Use a 'status-line' download indicator for all downloads"
@@ -170,6 +192,8 @@ msgid ""
 "If this option is enabled, aptitude will display the status of ongoing "
 "downloads at the bottom of the screen, rather than opening a new view."
 msgstr ""
+"Ak je táto voľba zapnutá, aptitude bude zobrazovať stav prebiehajúcich "
+"sťahovaní na spodku obrazovky namiesto toho, aby otváral nový pohľad."
 
 #: src/apt_options.cc:211
 msgid "Display the extended description area by default"
@@ -181,6 +205,9 @@ msgid ""
 "of the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
+"Ak je táto voľba zapnutá, oblasť pre dlhý popis (na spodku obrazovky) v "
+"zozname balíkov bude viditeľná pri štarte programu; inak bude na začiatku "
+"skrytá."
 
 #: src/apt_options.cc:217
 msgid "Advance to the next item after changing the state of a package"
@@ -192,6 +219,8 @@ msgid ""
 "instance, installing or removing it) will move the selection to the next "
 "package in the list."
 msgstr ""
+"Ak je táto voľba zapnutá, po vykonaní akcie s balíkom (napr. inštalácia "
+"alebo odstránenie) sa presunie výber na nasledujúci balík v zozname."
 
 #: src/apt_options.cc:223
 msgid "Automatically show why packages are broken"
@@ -203,6 +232,8 @@ msgid ""
 "dependencies will automatically display the dependencies that are "
 "unfulfilled in the lower pane of the display."
 msgstr ""
+"Ak je táto voľba zapnutá, vysvietenie balíka s požkodenými závislosťami "
+"automaticky zobrazí nesplnené závislosti v spodnom okne obrazovky."
 
 #: src/apt_options.cc:230
 msgid "The default grouping method for package views"
@@ -213,6 +244,8 @@ msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
 msgstr ""
+"Táto voľba určuje ako aptitude organizuje zoznam balíkov. Informácie o "
+"určení metódy zoskupovania nájdete v používateľskej príručke aptitude."
 
 #: src/apt_options.cc:235
 msgid "The default display-limit for package views"
@@ -224,6 +257,8 @@ msgid ""
 "specified by this option.  See the aptitude user's manual for detailed "
 "information about searches."
 msgstr ""
+"Štandardne sa na túto hodnotu nastaví limit zobrazenia každého balíka. "
+"Podrobnosti o hľadaní nájdete v používateľskej príručke aptitude."
 
 #: src/apt_options.cc:241
 msgid "The display format for package views"
@@ -235,6 +270,8 @@ msgid ""
 "the aptitude user's manual for information on how to specify a display "
 "format."
 msgstr ""
+"Táto voľba určuje ako aptitude formátuje riadky zoznamu balíkov. Informácie "
+"o určení formátu zobrazovania nájdete v používateľskej príručke aptitude."
 
 #: src/apt_options.cc:248
 msgid "The display format for the status line"
@@ -246,6 +283,9 @@ msgid ""
 "the package list and the lower pane).  See the aptitude user's manual for "
 "information on how to specify a display format."
 msgstr ""
+"Táto voľba určuje ako aptitude formátuje stavový riadok (riadok medzi "
+"zoznamom balíkov a spodným oknom). Informácie o určení formátu zobrazovania "
+"nájdete v používateľskej príručke aptitude."
 
 #: src/apt_options.cc:256
 msgid "The display format for the header line"
@@ -257,6 +297,9 @@ msgid ""
 "the package list).  See the aptitude user's manual for information on how to "
 "specify a display format."
 msgstr ""
+"Táto voľba určuje ako aptitude formátuje riadok hlavičky (riadok nad "
+"zoznamom balíkov). Informácie o určení formátu zobrazovania nájdete v "
+"používateľskej príručke aptitude."
 
 #: src/apt_options.cc:267
 msgid "Automatically upgrade installed packages"
@@ -267,6 +310,8 @@ msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
 msgstr ""
+"Ak je táto voľba zapnutá, aptitude pri spustení vyberie všetky "
+"aktualizovateľné balíky na aktualizáciu."
 
 #: src/apt_options.cc:272
 msgid "Remove obsolete package files after downloading new package lists"
@@ -278,6 +323,9 @@ msgid ""
 "delete from the package cache any package files that can no longer be "
 "downloaded from any archive in sources.list."
 msgstr ""
+"Ak je táto voľba zapnutá, po každom spustení inštalácie aptitude zmaže z "
+"cache balíkov súbory, ktoré nie je možné stiahnuť zo zdrojov uvedených v "
+"sources.list."
 
 #: src/apt_options.cc:278
 msgid "URL to use to download changelogs"
@@ -289,6 +337,9 @@ msgid ""
 "the Debian Web site.  You should only need to change this if the changelogs "
 "move to a different URL."
 msgstr ""
+"Táto voľba určuje šablónu, ktorá sa používa na sťahovanie záznamov zmien "
+"(changelog) z webstránky Debian. Túto voľbu by bolo nutné zmeniť iba ak by "
+"sa zoznamy zmien presunuli na iný URL."
 
 #: src/apt_options.cc:285
 msgid "Display a preview of what will be done before doing it"
@@ -299,23 +350,27 @@ msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
 msgstr ""
+"Ak je táto voľba zapnutá, pri spustení inštalácie vám aptitude zobrazí "
+"zhrnutie akcií, ktoré sa chystí vykonať."
 
 #: src/apt_options.cc:292
 msgid ""
 "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr ""
-"Zabudnúť zoznam \"nových\" balíkov pri každej aktualizácii zoznamu balíkov"
+"Zabudnúť zoznam „nových“ balíkov pri každej aktualizácii zoznamu balíkov"
 
 #: src/apt_options.cc:293
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
 msgstr ""
+"Ak je táto voľba zapnutá, aptitude vyčistí zoznam nových balíkov potom, čo "
+"aktualizujete zoznamy balíkov (napr. stlačením „u“)."
 
 #: src/apt_options.cc:298
 msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
-msgstr "Zabudnúť zoznam \"nových\" balíkov pri každom (od)inštalovaní balíkov"
+msgstr "Zabudnúť zoznam „nových“ balíkov pri každom (od)inštalovaní balíkov"
 
 #: src/apt_options.cc:299
 msgid ""
@@ -323,12 +378,14 @@ msgid ""
 "after you perform an install run or install or remove packages from the "
 "command-line."
 msgstr ""
+"Ak je táto voľba zapnutá, aptitude vyčistí zoznam nových balíkov potom, čo "
+"spustíte inštaláciu alebo odstránenie balíkov z príkazového riadka."
 
 #: src/apt_options.cc:305
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
-"Nezobrazovať varovanie, ak je prvá zmena vykonaná v režime iba na čítanie"
+"Nezobrazovať upozornenie, ak je prvá zmena vykonaná v režime iba na čítanie"
 
 #: src/apt_options.cc:306
 msgid ""
@@ -336,6 +393,8 @@ msgid ""
 "modify the state of a package if you do not have permissions to apply the "
 "change to the system."
 msgstr ""
+"Ak táto voľba %Bnie je%b zapnutá, aptitude zobrazí upozornenie, keď zmeníte "
+"stav balíka a nemáte oprávnenie vykonať zmeny v systéme."
 
 #: src/apt_options.cc:312
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -349,6 +408,10 @@ msgid ""
 "installing packages as a non-root user.  You will be given the option to log "
 "in as root and perform the action with root privileges."
 msgstr ""
+"Ak je táto voľba zapnutá, aptitude vás upozorní ak sa pokúsite vykonať "
+"akciu, na ktorú nemáte oprávnenie: napr. inštaláciu balíkov ak nie ste "
+"prihlásený ako root. Budete mať možnosť prihlásiť sa ako root a vykonať "
+"akciu s oprávnením root."
 
 #: src/apt_options.cc:322
 msgid "File to log actions into"
@@ -361,6 +424,10 @@ msgid ""
 "character ('%B|%b'), the remainder of the name will be interpreted as a "
 "shell command that is to receive the log on standard input."
 msgstr ""
+"Keď inštalujete alebo ostraňujete balíky, do tohto súboru sa zapíše "
+"zhrnutie, čo aptitude robí. Ak je prvý znak názvu súboru znak rúry („%B|%"
+"b“), zvyšok názvu sa interpretuje ako príkaz shellu, ktorý má prijať záznam "
+"na štandardnom vstupe."
 
 #: src/apt_options.cc:335
 msgid "Automatically resolve dependencies of a package when it is selected"
@@ -373,6 +440,10 @@ msgid ""
 "installation.  This is much faster than the built-in dependency resolver, "
 "but may produce suboptimal results or fail entirely in some scenarios."
 msgstr ""
+"Ak je táto voľba zapnutá, aptitude použije jednoduchú heuristiku na riešenie "
+"závislostí každého balíka, ktorý označíte na inštaláciu. Toto je oveľa "
+"rýchlejšie ako zabudované riešenie závislostí, no môže poskytovať "
+"suboptimálne riešenia alebo v niektorých prípadoch úplne zlyhať."
 
 #: src/apt_options.cc:344
 msgid "Automatically fix broken packages before installing or removing"
@@ -386,11 +457,13 @@ msgid ""
 "suggestion of the problem resolver.  Otherwise, aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
+"Ak je táto voľba zapnutá a vykonáte inštaláciu, keď sú niektoré balíky "
+"pokazené, aptitude automaticky použije aktuálny návrh riešenia problému. "
+"Inak vám dá aptitude možnosť vybrať riešenie problému pokazených závislostí."
 
 #: src/apt_options.cc:352
-#, fuzzy
 msgid "Install recommended packages automatically"
-msgstr "Automaticky inštalovať Odporúčané balíky"
+msgstr "Automaticky inštalovať odporúčané balíky"
 
 #: src/apt_options.cc:353
 msgid ""
@@ -402,6 +475,13 @@ msgid ""
 "enabled, packages that are recommended by an installed package will not be "
 "automatically removed."
 msgstr ""
+"Ak je táto voľba zapnutá a „automatické riešenie závislostí“ je tiež "
+"zapnuté, aptitude sa pokúsi nainštalovať odporúčania novo inštalovaných "
+"balíkov okrem ich vyslovených závislostí. Navrhované balíky sa nebudú "
+"automaticky inštalovať.\n"
+"Ak je táto voľba zapnutá a „automaticky odstrániť nepoužívané balíky“ je "
+"tiež zapnuté, balíky, ktoré odporúča inštalovaný balík nebudú automaticky "
+"odstránené."
 
 #: src/apt_options.cc:365
 msgid "Remove unused packages automatically"
@@ -417,10 +497,16 @@ msgid ""
 "is enabled, automatically installed packages will not be removed if any "
 "installed package recommends them."
 msgstr ""
+"Ak je táto voľba zapnutá, balíky, ktoré sú automaticky inštalované a na "
+"ktorých nezávisí žiadny manuálne inštalovaný balík, sa odstránia zo systému. "
+"Zrušenie odstránenia označí balík ako manuálne nainštalovaný.\n"
+"Ak je táto voľba zapnutá a „automaticky inštalovať odporúčané balíky“ je "
+"tiež zapnuté, automaticky nainštalované balíky sa neodstránia ak ich "
+"odporúča akýkoľvek inštalovaný balík."
 
 #: src/apt_options.cc:377
 msgid "Packages that should never be automatically removed"
-msgstr ""
+msgstr "Balíky, ktoré sa nikdy nemajú automaticky odstrániť"
 
 #: src/apt_options.cc:378
 msgid ""
@@ -428,30 +514,33 @@ msgid ""
 "installed package depends on them: they will never be targeted for removal "
 "as unused packages."
 msgstr ""
+"Balíky zodpovedajúce tomuto vyhľadávaciemu vzoru sa budú vždy považovať ako "
+"keby na nich závisel inštalovaný balík: nikdy nebudú cieľom odstránenia ako "
+"nepoužívané."
 
 #: src/broken_indicator.cc:123
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Examine"
-msgstr "%s: Vyskúšať"
+msgstr "%ls: Vyskúšať"
 
 #: src/broken_indicator.cc:132
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Apply"
-msgstr "%s: Použiť"
+msgstr "%ls: Použiť"
 
 #: src/broken_indicator.cc:137
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Next"
-msgstr "%s: Ďalší"
+msgstr "%ls: Ďalší"
 
 #: src/broken_indicator.cc:143
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Previous"
-msgstr "%s: Predchádzajúci"
+msgstr "%ls: Predchádzajúci"
 
 #: src/broken_indicator.cc:238
 msgid "Dependency resolution disabled."
-msgstr ""
+msgstr "Riešenie závislostí je vypnuté."
 
 #: src/broken_indicator.cc:249
 msgid "Unable to resolve dependencies."
@@ -459,7 +548,7 @@ msgstr "Nedajú sa vyriešiť závislosti."
 
 #: src/broken_indicator.cc:260
 msgid "Fatal error in resolver"
-msgstr ""
+msgstr "Závažná chyba pri riešení závislostí"
 
 #: src/broken_indicator.cc:272
 #, c-format
@@ -524,8 +613,8 @@ msgid ""
 "Note: \"%s\", providing the virtual package\n"
 "      \"%s\", is already installed.\n"
 msgstr ""
-"Poznámka: \"%s\", poskytujúci virtuálny balík\n"
-"          \"%s\", je už nainštalovaný.\n"
+"Poznámka: „%s“, poskytujúci virtuálny balík\n"
+"          „%s“, je už nainštalovaný.\n"
 
 #: src/cmdline/cmdline_action.cc:47
 #, c-format
@@ -533,8 +622,8 @@ msgid ""
 "Note: \"%s\", providing the virtual package\n"
 "      \"%s\", is already going to be installed.\n"
 msgstr ""
-"Poznámka: \"%s\", poskytujúci virtuálny balík\n"
-"          \"%s\", sa už bude inštalovať.\n"
+"Poznámka: „%s“, poskytujúci virtuálny balík\n"
+"          „%s“, sa už bude inštalovať.\n"
 
 #: src/cmdline/cmdline_action.cc:65
 #, c-format
@@ -542,13 +631,13 @@ msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
 "real package and no package provides it.\n"
 msgstr ""
-"\"%s\" existuje v databáze balíkov, ale nie je reálny a\n"
+"„%s“ existuje v databáze balíkov, ale nie je reálny a\n"
 "žiadny balík ho neposkytuje.\n"
 
 #: src/cmdline/cmdline_action.cc:71
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
-msgstr "\"%s\" je virtuálny balík poskytovaný:\n"
+msgstr "„%s“ je virtuálny balík; poskytuje ho:\n"
 
 #: src/cmdline/cmdline_action.cc:74
 #, c-format
@@ -561,8 +650,8 @@ msgid ""
 "Note: selecting \"%s\" instead of the\n"
 "      virtual package \"%s\"\n"
 msgstr ""
-"Poznámka: je zvolený \"%s\" namiesto\n"
-"          virtuálneho balíka \"%s\"\n"
+"Poznámka: je zvolený „%s“ namiesto\n"
+"          virtuálneho balíka „%s“\n"
 
 #: src/cmdline/cmdline_action.cc:97
 #, c-format
@@ -594,7 +683,7 @@ msgstr ""
 #: src/cmdline/cmdline_action.cc:214
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
-msgstr "Poznámka: na inštaláciu je zvolená úloha \"%s: %s\"\n"
+msgstr "Poznámka: na inštaláciu je zvolená úloha „%s: %s“\n"
 
 #: src/cmdline/cmdline_action.cc:244
 #, c-format
@@ -602,13 +691,13 @@ msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
 msgstr ""
-"Verziu balíka môžete zadať iba príkazom 'install' alebo príkazom 'forbid-"
-"version'.\n"
+"Verziu balíka môžete zadať iba príkazom „install“ alebo príkazom „forbid-"
+"version“.\n"
 
 #: src/cmdline/cmdline_action.cc:252
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
-msgstr "Archív balíka môžete zadať iba príkazom 'install'.\n"
+msgstr "Archív balíka môžete zadať iba príkazom „install“.\n"
 
 #: src/cmdline/cmdline_action.cc:286
 #, c-format
@@ -616,8 +705,8 @@ msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
 "packages contain \"%s\" in their name.\n"
 msgstr ""
-"Nenašiel sa balík \"%s\" a viac než 40\n"
-"balíkov obsahuje \"%s\" vo svojom názve.\n"
+"Nenašiel sa balík „%s“ a viac než 40\n"
+"balíkov obsahuje „%s“ vo svojom názve.\n"
 
 #: src/cmdline/cmdline_action.cc:289
 #, c-format
@@ -625,13 +714,13 @@ msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
 "packages contain \"%s\" in their name:\n"
 msgstr ""
-"Nenašiel sa balík \"%s\", ale nasledujúce balíky\n"
-"obsahujú \"%s\" vo svojom názve:\n"
+"Nenašiel sa balík „%s“, ale nasledujúce balíky\n"
+"obsahujú „%s“ vo svojom názve:\n"
 
 #: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
-msgstr "Nenašiel sa balík, ktorého názov alebo popis sa zhoduje s \"%s\"\n"
+msgstr "Nenašiel sa balík, ktorého názov alebo popis zodpovedá „%s“\n"
 
 #: src/cmdline/cmdline_action.cc:315
 #, c-format
@@ -639,8 +728,8 @@ msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
 "packages contain \"%s\" in their description.\n"
 msgstr ""
-"Nenašiel sa balík vyhovujúci \"%s\" a viac než 40\n"
-"balíkov obsahuje \"%s\" vo svojom popise.\n"
+"Nenašiel sa balík zodpovedajúci „%s“ a viac než 40\n"
+"balíkov obsahuje „%s“ vo svojom popise.\n"
 
 #: src/cmdline/cmdline_action.cc:318
 #, c-format
@@ -648,17 +737,17 @@ msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
 "packages contain \"%s\" in their description:\n"
 msgstr ""
-"Nenašiel sa balík vyhovujúci \"%s\", ale nasledujúce balíky\n"
-"obsahujú \"%s\" vo svojom popise:\n"
+"Nenašiel sa balík zodpovedajúci „%s“, ale nasledujúce balíky\n"
+"obsahujú „%s“ vo svojom popise:\n"
 
 #: src/cmdline/cmdline_action.cc:438
 #, c-format
 msgid "Bad action character '%c'\n"
-msgstr "Chybná akcia '%c'\n"
+msgstr "Chybná akcia „%c“\n"
 
 #: src/cmdline/cmdline_changelog.cc:209
 msgid "Can't execute sensible-pager, is this a working Debian system?"
-msgstr "Nedá sa spustiť sensible-pager - je tento Debian vôbec funkčný?"
+msgstr "Nedá sa spustiť sensible-pager - je tento systém Debian funkčný?"
 
 #: src/cmdline/cmdline_changelog.cc:265
 #, c-format
@@ -671,9 +760,9 @@ msgid "Couldn't find a changelog for %s"
 msgstr "Nedá sa nájsť zoznam zmien balíka %s"
 
 #: src/cmdline/cmdline_clean.cc:29
-#, fuzzy, c-format
+#, c-format
 msgid "E: The clean command takes no arguments\n"
-msgstr "E: Príkaz update neakceptuje žiadne argumenty\n"
+msgstr "E: Príkaz clean neakceptuje žiadne argumenty\n"
 
 #: src/cmdline/cmdline_clean.cc:58
 #, c-format
@@ -686,9 +775,9 @@ msgid "Del %s %s [%sB]\n"
 msgstr "Zmazaný %s %s [%sB]\n"
 
 #: src/cmdline/cmdline_clean.cc:111
-#, fuzzy, c-format
+#, c-format
 msgid "E: The autoclean command takes no arguments\n"
-msgstr "E: Príkaz update neakceptuje žiadne argumenty\n"
+msgstr "E: Príkaz autoclean neakceptuje žiadne argumenty\n"
 
 #: src/cmdline/cmdline_clean.cc:148
 #, c-format
@@ -707,7 +796,7 @@ msgstr "Nesprávna operácia %s"
 
 #: src/cmdline/cmdline_do_action.cc:146
 msgid "Unexpected pattern argument following \"keep-all\""
-msgstr "Neočakávaný vzor nasledujúci za \"keep-all\""
+msgstr "Neočakávaný vzor nasledujúci za „keep-all“"
 
 #: src/cmdline/cmdline_do_action.cc:263 src/cmdline/cmdline_simulate.cc:31
 #: src/cmdline/cmdline_upgrade.cc:230 src/main.cc:552
@@ -728,7 +817,7 @@ msgstr "Nedá sa načítať zoznam zdrojov"
 #: src/cmdline/cmdline_download.cc:70
 #, c-format
 msgid "Can't find a package named \"%s\""
-msgstr "Nedá sa nájsť balík nazvaný \"%s\""
+msgstr "Nedá sa nájsť balík nazvaný „%s“"
 
 #: src/cmdline/cmdline_download.cc:80
 #, c-format
@@ -740,9 +829,9 @@ msgstr ""
 "zastaralý balík."
 
 #: src/cmdline/cmdline_forget_new.cc:25
-#, fuzzy, c-format
+#, c-format
 msgid "E: The forget-new command takes no arguments\n"
-msgstr "E: Príkaz update neakceptuje žiadne argumenty\n"
+msgstr "E: Príkaz forget-new neakceptuje žiadne argumenty\n"
 
 #: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
@@ -795,9 +884,8 @@ msgid "Couldn't read list of sources"
 msgstr "Nedá sa načítať zoznam zdrojov"
 
 #: src/cmdline/cmdline_prompt.cc:205
-#, fuzzy
 msgid "Config files"
-msgstr "konfiguračné súbory"
+msgstr "Konfiguračné súbory"
 
 #: src/cmdline/cmdline_prompt.cc:299 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
@@ -874,9 +962,8 @@ msgid "The following packages will be upgraded:"
 msgstr "Nasledujúce balíky sa aktualizujú:"
 
 #: src/cmdline/cmdline_prompt.cc:341
-#, fuzzy
 msgid "The following partially installed packages will be configured:"
-msgstr "Nasledujúce balíky sa aktualizujú:"
+msgstr "Nasledujúce čiastočne nainštalované balíky sa nakonfigurujú:"
 
 #: src/cmdline/cmdline_prompt.cc:396
 #, c-format
@@ -904,7 +991,7 @@ msgstr "Som si vedomý, že je to zlý nápad"
 #: src/cmdline/cmdline_prompt.cc:420
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
-msgstr "Na pokračovanie napíšte frázu \"%s\":\n"
+msgstr "Ak chcete pokračovať, napíšte „%s“:\n"
 
 #: src/cmdline/cmdline_prompt.cc:462
 #, c-format
@@ -918,7 +1005,7 @@ msgid ""
 msgstr ""
 "UPOZORNENIE: nainštalujú sa nasledovné verzie nedôveryhodných balíkov!\n"
 "\n"
-"Nedôveryhodné balíky môžu ohroziť bezpečnosť Vášho systému.\n"
+"Nedôveryhodné balíky môžu ohroziť bezpečnosť vášho systému.\n"
 "S inštaláciou by ste mali pokračovať iba vtedy, ak ste si naozaj\n"
 "istý tým, čo chcete urobiť.\n"
 "\n"
@@ -930,16 +1017,15 @@ msgid ""
 "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 msgstr ""
 "*** UPOZORNENIE ***   Ignorujú sa uvedené pravidlá dôvery, pretože\n"
-"                      %s::CmdLine::Ignore-Trust-Violations je 'zapnuté'!\n"
+"                      %s::CmdLine::Ignore-Trust-Violations je „zapnuté“!\n"
 
 #: src/cmdline/cmdline_prompt.cc:483
-#, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
 "*** UPOZORNENIE ***   Ignorujú sa uvedené pravidlá dôvery, pretože\n"
-"                      %s::CmdLine::Ignore-Trust-Violations je 'zapnuté'!\n"
+"                      Apt::Get::AllowUnauthenticated je „zapnuté“!\n"
 
 #: src/cmdline/cmdline_prompt.cc:489
 msgid "Yes"
@@ -957,12 +1043,12 @@ msgstr "Chcete ignorovať toto upozornenie a napriek tomu pokračovať?\n"
 #: src/cmdline/cmdline_prompt.cc:494
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
-msgstr "Na pokračovanie napíšte frázu \"%s\"; na ukončenie zadajte \"%s\": "
+msgstr "Ak chcete pokračovať, napíšte „%s“; ak ukončiť, zadajte „%s“: "
 
 #: src/cmdline/cmdline_prompt.cc:508
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
-msgstr "Nerozoznaný vstup.  Zadajte buď  \"%s\" alebo \"%s\".\n"
+msgstr "Nerozpoznaný vstup.  Zadajte buď  „%s“ alebo „%s“.\n"
 
 #: src/cmdline/cmdline_prompt.cc:616
 #, c-format
@@ -1022,20 +1108,20 @@ msgstr "Po rozbalení sa uvoľní %sB.\n"
 #: src/cmdline/cmdline_prompt.cc:678
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
-msgstr "Nie je čo zobraziť -- zadajte názvy balíkov na riadok za 'i'.\n"
+msgstr "Nie je čo zobraziť -- zadajte názvy balíkov na riadok za „i“.\n"
 
 #: src/cmdline/cmdline_prompt.cc:684
 msgid "Press Return to continue."
-msgstr "Na pokračovanie stlačte Enter."
+msgstr "Pokračovanie stlačením klávesu Enter."
 
 #: src/cmdline/cmdline_prompt.cc:695
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
-msgstr "Nenašli sa žiadne balíky -- zadajte názvy balíkov na riadok za 'c'.\n"
+msgstr "Nenašli sa žiadne balíky -- zadajte názvy balíkov na riadok za „c“.\n"
 
 #: src/cmdline/cmdline_prompt.cc:699
 msgid "Press Return to continue"
-msgstr "Na pokračovanie stlačte Enter"
+msgstr "Pokračovanie stlačením klávesu Enter"
 
 #: src/cmdline/cmdline_prompt.cc:709
 #, c-format
@@ -1043,6 +1129,8 @@ msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify."
 msgstr ""
+"Neboli nájdené žiadne balíky -- zadajte nula alebo viac koreňov vyhľadávania "
+"nasedovaných balíkom, ktorý sa má posúdiť."
 
 #: src/cmdline/cmdline_prompt.cc:732
 #, c-format
@@ -1073,7 +1161,7 @@ msgid ""
 "the 'i'"
 msgstr ""
 "zobraziť informácie o jednom alebo viacerých balíkoch; názvy balíkov by mali "
-"nasledovať za 'i'"
+"nasledovať za „i“"
 
 #: src/cmdline/cmdline_prompt.cc:744
 #, c-format
@@ -1086,7 +1174,7 @@ msgid ""
 "follow the 'c'"
 msgstr ""
 "zobraziť Debian záznamy zmien jedného alebo viacerých balíkov; názvy balíkov "
-"by mali nasledovať za 'c'"
+"by mali nasledovať za „c“"
 
 #: src/cmdline/cmdline_prompt.cc:748
 #, c-format
@@ -1125,6 +1213,8 @@ msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
 msgstr ""
+"pokus o nájdenie dôvodu na inštaláciu jednotlivého balíka alebo vysvetlenie, "
+"prečo by inštalovanie jedného balíka malo viesť k inštalácii iného balíka."
 
 #: src/cmdline/cmdline_prompt.cc:765
 #, c-format
@@ -1134,6 +1224,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:767
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
+"spustiť automatické riešenie závislostí na vyriešenie pokazených závislostí."
 
 #: src/cmdline/cmdline_prompt.cc:769
 #, c-format
@@ -1158,41 +1249,41 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:781 src/cmdline/cmdline_resolver.cc:200
 msgid "'+' to install packages"
-msgstr "'+' na inštaláciu balíkov"
+msgstr "„+“ na inštaláciu balíkov"
 
 #: src/cmdline/cmdline_prompt.cc:784 src/cmdline/cmdline_resolver.cc:202
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
-"'+M' na inštaláciu balíkov a ich okamžité označenie ako automaticky "
+"„+M“ na inštaláciu balíkov a ich okamžité označenie ako automaticky "
 "inštalované"
 
 #: src/cmdline/cmdline_prompt.cc:786 src/cmdline/cmdline_resolver.cc:204
 msgid "'-' to remove packages"
-msgstr "'-' na odstránenie balíkov"
+msgstr "„-“ na odstránenie balíkov"
 
 #: src/cmdline/cmdline_prompt.cc:788 src/cmdline/cmdline_resolver.cc:206
 msgid "'_' to purge packages"
-msgstr "'_' na zabudnutie balíkov"
+msgstr "„_“ na zabudnutie balíkov"
 
 #: src/cmdline/cmdline_prompt.cc:790 src/cmdline/cmdline_resolver.cc:208
 msgid "'=' to place packages on hold"
-msgstr "'=' na ponechanie balíkov v aktuálnej verzii"
+msgstr "„=“ na ponechanie balíkov v aktuálnej verzii"
 
 #: src/cmdline/cmdline_prompt.cc:792 src/cmdline/cmdline_resolver.cc:210
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
-"':' na uchovanie balíkov v ich aktuálnom stave bez zmeny ich stavu na "
+"„:“ na uchovanie balíkov v ich aktuálnom stave bez zmeny ich stavu na "
 "Ponechať"
 
 #: src/cmdline/cmdline_prompt.cc:794 src/cmdline/cmdline_resolver.cc:212
 msgid "'&M' to mark packages as automatically installed"
-msgstr "'&M' na označenie balíkov ako automatiky inštalovaných"
+msgstr "„&M“ na označenie balíkov ako automatiky inštalovaných"
 
 #: src/cmdline/cmdline_prompt.cc:796 src/cmdline/cmdline_resolver.cc:214
 msgid "'&m' to mark packages as manually installed"
-msgstr "'&m' na označenie balíkov ako manuálne inštalovaných"
+msgstr "„&m“ na označenie balíkov ako manuálne inštalovaných"
 
 #: src/cmdline/cmdline_prompt.cc:800
 msgid "Commands:"
@@ -1203,6 +1294,8 @@ msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
 msgstr ""
+"aptitude sa nepodarilo nájsť riešenie týchto závislostí.  Môžete ich sami "
+"vyriešiť ručne alebo ukončiť napísaním „n“."
 
 #: src/cmdline/cmdline_prompt.cc:910
 msgid "Do you want to continue? [Y/n/?] "
@@ -1210,18 +1303,20 @@ msgstr "Chcete pokračovať? [Y/n/?] "
 
 #: src/cmdline/cmdline_prompt.cc:911
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
-msgstr ""
+msgstr "Riešiť tieto poškodené závislosti ručne? [N/+/-/_/:/?] "
 
 #: src/cmdline/cmdline_prompt.cc:929
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
-"Chybná odpoveď. Zadajte platný príkaz alebo '?' na zobrazenie pomocníka.\n"
+"Chybná odpoveď. Zadajte platný príkaz alebo zobrazte pomocníka zadaním „?“.\n"
 
 #: src/cmdline/cmdline_prompt.cc:935
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
 msgstr ""
+"Zadajte príkaz správy balíkov (ako „+ balík“ na inštaláciu balíka), „R“ pre "
+"pokus o automatické riešenie závislostí alebo „N“ pre prerušenie."
 
 #: src/cmdline/cmdline_prompt.cc:966
 #, c-format
@@ -1337,7 +1432,7 @@ msgstr "presun na predchádzajúce riešenie"
 msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
-msgstr ""
+msgstr "prepnúť medzi obsahom riešenia a vysvetlením riešenia"
 
 #: src/cmdline/cmdline_resolver.cc:192
 msgid "examine the solution in the visual user interface"
@@ -1388,22 +1483,22 @@ msgstr "Chybná odpoveď.  Prosím zadajte číslo v rozsahu 1 až %d."
 #: src/cmdline/cmdline_resolver.cc:260
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
-msgstr "Očakáva sa aspoň jeden pár balík/verzia nasledovaný '%c'"
+msgstr "Očakáva sa aspoň jeden pár balík/verzia nasledovaný „%c“"
 
 #: src/cmdline/cmdline_resolver.cc:274
 #, c-format
 msgid "Expected a version after \"%s\""
-msgstr "Očakávaná verzia po \"%s\""
+msgstr "Po „%s“ sa očakávala verzia"
 
 #: src/cmdline/cmdline_resolver.cc:284
 #, c-format
 msgid "No such package \"%s\""
-msgstr "Neexistuje balík \"%s\""
+msgstr "Neexistuje balík „%s“"
 
 #: src/cmdline/cmdline_resolver.cc:300
 #, c-format
 msgid "%s has no version named \"%s\""
-msgstr "%s nemá žiadnu verziu nazvanú \"%s\""
+msgstr "%s nemá žiadnu verziu nazvanú „%s“"
 
 #: src/cmdline/cmdline_resolver.cc:317
 #, c-format
@@ -1451,10 +1546,12 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+"Mali by byť vyriešené konflikty, ale riešenie konfliktov je vypnuté.\n"
+"   (%s::ProblemResolver::StepLimit = 0)\n"
 
 #: src/cmdline/cmdline_resolver.cc:512
 msgid "I want to resolve dependencies, but no dependency resolver was created."
-msgstr ""
+msgstr "Chcem vyriešiť konflikty, ale riešenie konfliktov nebolo vytvorené."
 
 #: src/cmdline/cmdline_resolver.cc:525 src/solution_dialog.cc:127
 msgid "Resolving dependencies..."
@@ -1496,7 +1593,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:755
 msgid "Invalid response; please enter 'y' or 'n'."
-msgstr "Chybná odpoveď; prosím zadajte 'y' alebo 'n'."
+msgstr "Chybná odpoveď; prosím zadajte „y“ alebo „n“."
 
 #: src/cmdline/cmdline_resolver.cc:764
 msgid "Unable to resolve dependencies!  Giving up..."
@@ -1511,6 +1608,8 @@ msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
+"*** CHYBA: hľadanie ukončila závažná vynimka.  Môžete pokračovať\n"
+"           v hľadaní, ale niektoré riešenia budú nedostupné."
 
 #: src/cmdline/cmdline_search.cc:121
 #, c-format
@@ -1555,11 +1654,11 @@ msgstr "nenainštalovaný (ponechané konfiguračné súbory)"
 
 #: src/cmdline/cmdline_show.cc:203
 msgid "awaiting trigger processing by other package(s)"
-msgstr ""
+msgstr "očakáva sa spracovanie spúšťača iným balíkom"
 
 #: src/cmdline/cmdline_show.cc:205
 msgid "awaiting trigger processing"
-msgstr ""
+msgstr "očakáva sa spracovanie spúšťača"
 
 #: src/cmdline/cmdline_show.cc:208 src/pkg_columnizer.cc:257
 #: src/pkg_ver_item.cc:237
@@ -1730,7 +1829,7 @@ msgstr "Koliduje s"
 
 #: src/cmdline/cmdline_show.cc:429
 msgid "Breaks"
-msgstr ""
+msgstr "Kazí"
 
 #: src/cmdline/cmdline_show.cc:431
 msgid "Replaces"
@@ -1752,7 +1851,7 @@ msgstr "Popis: "
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:106
 #: src/pkg_view.cc:250
 msgid "Homepage: "
-msgstr ""
+msgstr "Domovská stránka:"
 
 #: src/cmdline/cmdline_show.cc:542
 #, c-format
@@ -1784,24 +1883,24 @@ msgid "E: The update command takes no arguments\n"
 msgstr "E: Príkaz update neakceptuje žiadne argumenty\n"
 
 #: src/cmdline/cmdline_upgrade.cc:98
-#, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (resolver timed out)."
-msgstr "Nemožnosť vyriešenia závislostí!  Ukončuje sa..."
+msgstr ""
+"Nedajú sa vyriešiť závislosti aktualizácie (čas pre riešenie závislostí "
+"vypršal)."
 
 #: src/cmdline/cmdline_upgrade.cc:104
-#, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
-msgstr "Nemožnosť vyriešenia závislostí!  Ukončuje sa..."
+msgstr "Nedajú sa vyriešiť závislosti aktualizácie (nebolo nájdené riešenie)."
 
 #: src/cmdline/cmdline_upgrade.cc:110
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
-msgstr "Nedajú sa vyriešiť závislosti."
+msgstr "Nedajú sa vyriešiť závislosti aktualizácie (%s)."
 
 #: src/cmdline/cmdline_upgrade.cc:136
-#, fuzzy, c-format
+#, c-format
 msgid "E: The %s command takes no arguments\n"
-msgstr "E: Príkaz update neakceptuje žiadne argumenty\n"
+msgstr "E: Príkaz %s neakceptuje žiadne argumenty\n"
 
 #: src/cmdline/cmdline_util.cc:121
 #, c-format
@@ -1816,12 +1915,12 @@ msgstr "K balíku %s nebola nájdená žiadna aktuálna alebo kandidátska verzi
 #: src/cmdline/cmdline_util.cc:138
 #, c-format
 msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
-msgstr "Nedá sa nájsť archív \"%s\" balíka \"%s\"\n"
+msgstr "Nedá sa nájsť archív „%s“ balíka „%s“\n"
 
 #: src/cmdline/cmdline_util.cc:148
 #, c-format
 msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
-msgstr "Nedá sa nájsť verzia \"%s\" balíka \"%s\"\n"
+msgstr "Nedá sa nájsť verzia „%s“ balíka „%s“\n"
 
 #: src/cmdline/cmdline_util.cc:154
 #, c-format
@@ -1837,134 +1936,135 @@ msgstr "Nemôžete naraz zadať archív a verziu balíka\n"
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%d poškodený [%+d]"
+msgstr[1] "%d poškodené [%+d]"
+msgstr[2] "%d poškodených [%+d]"
 
 #: src/cmdline/cmdline_util.cc:283
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%d aktualizácia [%+d]"
+msgstr[1] "%d aktualizácie [%+d]"
+msgstr[2] "%d aktualizácií [%+d]"
 
 #: src/cmdline/cmdline_util.cc:297
 #, c-format
 msgid "%d new [%+d]"
 msgid_plural "%d new [%+d]"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%d new [%+d]"
+msgstr[1] "%d nové [%+d]"
+msgstr[2] "%d nových [%+d]"
 
 #: src/cmdline/cmdline_util.cc:308
 #, c-format
 msgid "There are now %F."
-msgstr ""
+msgstr "Momentálne je %F."
 
 #: src/cmdline/cmdline_why.cc:419
-#, fuzzy, c-format
+#, c-format
 msgid "Install(%s)"
-msgstr "Inštalovať"
+msgstr "Inštalovať(%s)"
 
 #: src/cmdline/cmdline_why.cc:421
-#, fuzzy, c-format
+#, c-format
 msgid "Remove(%s)"
-msgstr "Odstrániť"
+msgstr "Odstrániť(%s)"
 
 #: src/cmdline/cmdline_why.cc:423
-#, fuzzy, c-format
+#, c-format
 msgid "Install(%s provides %s)"
-msgstr "Inštaluje sa %s %s (%s)"
+msgstr "Inštaluje sa(%s poskytuje %s)"
 
 #: src/cmdline/cmdline_why.cc:427
-#, fuzzy, c-format
+#, c-format
 msgid "Remove(%s provides %s)"
-msgstr "Odstránenie %F [%s (%s)]"
+msgstr "Odstránenie(%s poskytuje %s)"
 
 #: src/cmdline/cmdline_why.cc:602
 #, c-format
 msgid "    ++ Examining %F\n"
-msgstr ""
+msgstr "    ++ Skúma sa %F\n"
 
 #: src/cmdline/cmdline_why.cc:612
 msgid "    ++   --> skipping, not a conflict\n"
-msgstr ""
+msgstr "    ++   --> preskakuje sa, nie je v konflikte\n"
 
 #: src/cmdline/cmdline_why.cc:622
 msgid "    ++   --> skipping conflict\n"
-msgstr ""
+msgstr "    ++   --> preskakuje sa konflikt\n"
 
 #: src/cmdline/cmdline_why.cc:630
 msgid "    ++   --> skipping, not relevant according to params\n"
-msgstr ""
+msgstr "    ++   --> preskakuje sa, podľa parametrov nie je relevantný\n"
 
 #: src/cmdline/cmdline_why.cc:637
 msgid "    ++   --> skipping, parent is not the selected version\n"
-msgstr ""
+msgstr "    ++   --> preskakuje sa, rodič nie je zvolenej verzie\n"
 
 #: src/cmdline/cmdline_why.cc:666
 msgid "    ++   --> ENQUEUING\n"
-msgstr ""
+msgstr "    ++   --> ZARAĎUJE SA DO FRONTU\n"
 
 #: src/cmdline/cmdline_why.cc:673
 msgid "    ++   --> skipping, version check failed\n"
-msgstr ""
+msgstr "    ++   --> preskakuje sa, kontrola verzie zlyhala\n"
 
 #: src/cmdline/cmdline_why.cc:691
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
-msgstr ""
+msgstr "    ++   --> ZARAĎUJE SA DO FRONTU %s poskytuje %s\n"
 
 #: src/cmdline/cmdline_why.cc:822
 #, c-format
 msgid "Starting search with parameters %ls\n"
-msgstr ""
+msgstr "Začína sa vyhľadávanie s parametrami %ls\n"
 
 #: src/cmdline/cmdline_why.cc:1042
 msgid "Skipping this solution, I've already seen it.\n"
-msgstr ""
+msgstr "Toto riešenie preskakujem, už som ho videl.\n"
 
 #: src/cmdline/cmdline_why.cc:1054
 #, c-format
 msgid "The package \"%s\" is a starting point of the search.\n"
-msgstr ""
+msgstr "Balík „%s“ je počiatkom vyhľadávania.\n"
 
 #: src/cmdline/cmdline_why.cc:1113
 #, c-format
 msgid "No justification for removing %s could be constructed.\n"
-msgstr ""
+msgstr "Nebolo možné vytvoriť žiadne zdôvodnenie pre odstránenie %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1115
 #, c-format
 msgid "No justification for %s could be constructed.\n"
-msgstr ""
+msgstr "Nebolo možné vytvoriť žiadne zdôvodnenie pre %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1160 src/cmdline/cmdline_why.cc:1186
 #: src/cmdline/cmdline_why.cc:1248
-#, fuzzy, c-format
+#, c-format
 msgid "No package named \"%s\" exists."
-msgstr "Nedá sa nájsť balík nazvaný \"%s\""
+msgstr "Balík s názvom „%s“ neexistuje."
 
 #: src/cmdline/cmdline_why.cc:1194
-#, fuzzy
 msgid "Unable to parse some match patterns."
-msgstr "Nedá sa spracovať vzor %s"
+msgstr "Nebolo možné spracovať niektoré vzory."
 
 #: src/cmdline/cmdline_why.cc:1221
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""
+"%s: tento príkaz vyžaduje aspoň jeden argument (balík, ktorý sa má "
+"preskúmať)."
 
 #: src/cmdline/cmdline_why.cc:1270
-#, fuzzy, c-format
+#, c-format
 msgid "The package \"%s\" is manually installed.\n"
-msgstr "'&m' na označenie balíkov ako manuálne inštalovaných"
+msgstr "Balík „%s“ je nainštalovaný manuálne.\n"
 
 #: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
 #, c-format
 msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Vložte do mechaniky \"%s\" disk nazvaný \"%s\""
+msgstr "Vložte do mechaniky „%s“ disk s názvom „%s“"
 
 #: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
 msgid "Hit "
@@ -2045,13 +2145,12 @@ msgstr "Neexistujú žiadne informácie o hierarchii"
 #: src/edit_pkg_hier.cc:294
 #, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "\"%s\" sa nedá otvoriť na zápis"
+msgstr "Nie je možné otvoriť „%s“ na zápis"
 
 #: src/edit_pkg_hier.cc:339
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
-"Nemožnosť nájdenia Vášho domovského priečinka, ukladanie do /tmp/"
-"function_pkgs!"
+"Nie je možné nájsť váš domovský priečinok, ukladá sa do /tmp/function_pkgs!"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2071,12 +2170,13 @@ msgid "Fetched %sB in %s (%sB/s)\n"
 msgstr "Stiahnuté %sB za %s (%s/B/s)\n"
 
 #: src/generic/apt/acqprogress.cc:296
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press [Enter].\n"
 msgstr ""
-"Výmena média: Do mechaniky '%s' vložte disk nazvaný '%s' a stlačte enter\n"
+"Výmena nosiča: Do mechaniky „%s“ vložte disk s názvom „%s“ a stlačte "
+"[Enter].\n"
 
 #: src/generic/apt/aptcache.cc:294
 msgid "Can't open Aptitude extended state file"
@@ -2104,7 +2204,7 @@ msgstr "Zapisujú sa rozšírené stavové informácie"
 #: src/generic/apt/aptcache.cc:655
 #, c-format
 msgid "Internal buffer overflow on package \"%s\" while writing state file"
-msgstr "Pri zápise stavového súboru pretiekol interný buffer na balíku \"%s\""
+msgstr "Pri zápise stavového súboru pretiekol interný buffer na balíku „%s“"
 
 #: src/generic/apt/aptcache.cc:664
 msgid "Couldn't write state file"
@@ -2166,6 +2266,9 @@ msgid ""
 "option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
 "Recommends' instead or removing this setting."
 msgstr ""
+"Systémový konfiguračný súbor (%s) obsahuje nastavenie zastaralej voľby "
+"„Aptitude::Recommends-Important“; zvážte namiesto toho nastavenie „APT::"
+"Install-Recommends“ alebo odstránenie tejto voľby."
 
 #: src/generic/apt/apt.cc:259
 #, c-format
@@ -2183,7 +2286,7 @@ msgid ""
 "Could not lock the cache file.  Opening in read-only mode; any changes you "
 "make to the states of packages will NOT be preserved!"
 msgstr ""
-"Nedá sa uzamknúť dočasný súbor cache. Otvára sa v móde iba na čítanie; "
+"Nedá sa uzamknúť dočasný súbor cache. Otvára sa v režime iba na čítanie; "
 "všetky vykonané zmeny stavov balíkov NEBUDÚ uchované!"
 
 #: src/generic/apt/download_install_manager.cc:56
@@ -2203,9 +2306,9 @@ msgid "Internal error: couldn't generate list of packages to download"
 msgstr "Vnútorná chyba: nedá sa vytvoriť zoznam balíkov na stiahnutie"
 
 #: src/generic/apt/download_install_manager.cc:123
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to fetch %s: %s"
-msgstr "zlyhalo premenovanie %s na %s"
+msgstr "Nepodarilo sa stiahnuť %s: %s"
 
 #: src/generic/apt/download_install_manager.cc:129
 msgid "Unable to correct for unavailable packages"
@@ -2227,12 +2330,12 @@ msgstr "Nedá sa čítať zoznam zdrojov balíkov"
 #: src/generic/apt/download_update_manager.cc:214
 #, c-format
 msgid "fork() failed: %s"
-msgstr ""
+msgstr "fork() zlyhal: %s"
 
 #: src/generic/apt/download_update_manager.cc:261
 #, c-format
 msgid "waitpid() failed: %s"
-msgstr ""
+msgstr "waitpid() zlyhal: %s"
 
 #: src/generic/apt/download_update_manager.cc:285
 msgid "Couldn't clean out list directories"
@@ -2244,11 +2347,11 @@ msgstr "Nedá sa znovu zostaviť vyrovnávacia pamäť balíkov"
 
 #: src/generic/apt/download_update_manager.cc:312
 msgid "The debtags command must not be an empty string."
-msgstr ""
+msgstr "Príkaz debtags nesmie byť prázdny reťazec."
 
 #: src/generic/apt/download_update_manager.cc:316
 msgid "The debtags command must be an absolute path."
-msgstr ""
+msgstr "Príkaz debtags musí byť absolútna cesta."
 
 #: src/generic/apt/download_update_manager.cc:325
 #, c-format
@@ -2256,48 +2359,52 @@ msgid ""
 "The debtags command (%s) does not exist; perhaps you need to install the "
 "debtags package?"
 msgstr ""
+"Príkaz debtags (%s) neexistuje; môžno je potrebné nainštalovať balík debtags?"
 
 #: src/generic/apt/download_update_manager.cc:328
 #, c-format
 msgid "The debtags command (%s) cannot be executed: %s"
-msgstr ""
+msgstr "Príkaz debtags (%s) nie je možné spustiť: %s"
 
 #: src/generic/apt/download_update_manager.cc:333
-#, fuzzy
 msgid "Updating debtags database..."
-msgstr "Vytvára sa databáza značiek"
+msgstr "Aktualizuje sa databáza debtags ..."
 
 #: src/generic/apt/download_update_manager.cc:350
 msgid "(core dumped)"
-msgstr ""
+msgstr "(odtlačok jadra bol zapísaný)"
 
 #: src/generic/apt/download_update_manager.cc:352
 #, c-format
 msgid "The debtags update process (%s %s) was killed by signal %d%s."
-msgstr ""
+msgstr "Proces aktualizácie debtags (%s %s) bol zabitý signálom %d%s."
 
 #: src/generic/apt/download_update_manager.cc:359
 #, c-format
 msgid "The debtags update process (%s %s) exited abnormally (code %d)."
-msgstr ""
+msgstr "Proces aktualizácie debtags (%s %s) skončil nenormálne (kód %d)."
 
 #: src/generic/apt/download_update_manager.cc:365
 #, c-format
 msgid ""
 "The debtags update process (%s %s) exited in an unexpected way (status %d)."
 msgstr ""
+"Proces aktualizácie debtags (%s %s) skončil neočakávaným spôsobom (status %"
+"d)."
 
 #: src/generic/apt/download_update_manager.cc:370
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Updating the debtags database (%s %s) failed (perhaps debtags is not "
 "installed?): %s"
-msgstr "Zlyhalo nahranie debtags slovníka, nie je snáď debtags nainštalovaný?"
+msgstr ""
+"Aktualizácia databázy debtags  (%s %s) zlyhala (žeby nebol debtags "
+"nainštalovaný?): %s"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to stat %s."
-msgstr "Nedá sa otvoriť \"%s\""
+msgstr "Nie je možné spustiť „%s“."
 
 #: src/generic/apt/log.cc:54
 #, c-format
@@ -2387,7 +2494,7 @@ msgstr "PONECHANIE, ZÁVISLOSTI"
 
 #: src/generic/apt/log.cc:133
 msgid "UNCONFIGURED"
-msgstr ""
+msgstr "NENAKONFIGUROVANÝ"
 
 #: src/generic/apt/log.cc:136
 msgid "????????"
@@ -2498,9 +2605,8 @@ msgid "Upgradable"
 msgstr "Aktualizovateľné"
 
 #: src/generic/apt/matchers.cc:2040
-#, fuzzy
 msgid "Obsolete"
-msgstr "Zastaráva"
+msgstr "Zastaralý"
 
 #: src/generic/apt/matchers.cc:2166
 #, c-format
@@ -2509,12 +2615,12 @@ msgstr "Neukončený znakový reťazec po  %s"
 
 #: src/generic/apt/matchers.cc:2226
 msgid "Unmatched '('"
-msgstr "Nepárová '('"
+msgstr "„(“ bez náprotivku"
 
 #: src/generic/apt/matchers.cc:2361 src/generic/apt/matchers.cc:2434
 #, c-format
 msgid "Unknown dependency type: %s"
-msgstr "Neznáma závislosť: %s"
+msgstr "Neznámy typ závislosti: %s"
 
 #: src/generic/apt/matchers.cc:2367
 msgid "Provides: cannot be broken"
@@ -2537,7 +2643,7 @@ msgstr "Neznámy vzor: %c"
 
 #: src/generic/apt/matchers.cc:2520
 msgid "Can't search for \"\""
-msgstr "Nedá sa hľadať \"\""
+msgstr "Nie je možné hľadať „“"
 
 #: src/generic/apt/matchers.cc:2548
 msgid "Unexpected empty expression"
@@ -2549,7 +2655,7 @@ msgstr "Zle vytvorený výraz"
 
 #: src/generic/apt/matchers.cc:2610
 msgid "Unexpected ')'"
-msgstr "Neočakávaná ')'"
+msgstr "Neočakávaná „)“"
 
 #: src/generic/apt/pkg_acqfile.cc:50
 #, c-format
@@ -2575,7 +2681,7 @@ msgstr "Súbor zmien %s"
 #: src/generic/apt/pkg_hier.cc:28 src/generic/apt/pkg_hier.cc:49
 #, c-format
 msgid "Warning: group %s is involved in a cycle"
-msgstr "Varovanie: skupina %s je časťou kruhu"
+msgstr "Upozornenie: skupina %s je časťou kruhovej závislosti"
 
 #: src/generic/apt/pkg_hier.cc:143
 #, c-format
@@ -2621,12 +2727,12 @@ msgstr "Načítavajú sa popisy úloh"
 #: src/generic/util/temp.cc:150
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
-msgstr "Zlyhalo vytvorenie dočasného adresára zo šablóny \"%s\": %s"
+msgstr "Zlyhalo vytvorenie dočasného adresára zo šablóny „%s“: %s"
 
 #: src/generic/util/temp.cc:99
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to delete temporary directory \"%s\""
-msgstr "Nedá sa odstrániť adresár \"%s\""
+msgstr "Nedá sa odstrániť dočasný adresár „%s“"
 
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
@@ -2635,98 +2741,98 @@ msgstr "Neznáma chyba"
 #: src/generic/util/util.cc:273
 #, c-format
 msgid "Unable to stat \"%s\""
-msgstr "Nedá sa otvoriť \"%s\""
+msgstr "Nie je možné vykonať stat() na „%s“"
 
 #: src/generic/util/util.cc:279
 #, c-format
 msgid "Unable to remove \"%s\""
-msgstr "Nedá sa odstrániť \"%s\""
+msgstr "Nie je možné odstrániť „%s“"
 
 #: src/generic/util/util.cc:289
 #, c-format
 msgid "Unable to list files in \"%s\""
-msgstr "Nedajú sa zobraziť súbory v \"%s\""
+msgstr "Nedajú sa zobraziť súbory v „%s“"
 
 #: src/generic/util/util.cc:306
 #, c-format
 msgid "Failure closing directory \"%s\""
-msgstr "Chyba pri zatváraní adresára \"%s\""
+msgstr "Chyba pri zatváraní adresára „%s“"
 
 #: src/generic/util/util.cc:312
 #, c-format
 msgid "Unable to remove directory \"%s\""
-msgstr "Nedá sa odstrániť adresár \"%s\""
+msgstr "Nie je možné odstrániť adresár „%s“"
 
 #: src/load_config.cc:48
 #, c-format
 msgid "Unrecognized color name \"%s\""
-msgstr "Nerozpoznaný názov farby \"%s\""
+msgstr "Nerozpoznaný názov farby „%s“"
 
 #: src/load_config.cc:75
 #, c-format
 msgid "Unrecognized attribute name \"%s\""
-msgstr "Nerozpoznaný názov atribútu \"%s\""
+msgstr "Nerozpoznaný názov atribútu „%s“"
 
 #: src/load_config.cc:113
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid entry in style definition group: \"%s\""
-msgstr "Nesprávny záznam v skupine definícií štýlu: \"%s\""
+msgstr "Nesprávny záznam v skupine definícií štýlu: „%s“"
 
 #: src/load_config.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid tagless entry in style definition group: \"%s\""
-msgstr "Nesprávny neoznačkovaný záznam v skupine definícií štýlu: \"%s\""
+msgstr "Nesprávny neoznačkovaný záznam v skupine definícií štýlu: „%s“"
 
 #: src/load_config.cc:127
 msgid "The default color may only be used as a background."
 msgstr "Štandardná farba môže byť použitá iba ako pozadie."
 
 #: src/load_config.cc:144
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown style attribute %s"
 msgstr "Neznámy atribút štýlu %s"
 
 #: src/load_config.cc:167 src/load_config.cc:169
 #, c-format
 msgid "Invalid entry in keybinding group: \"%s\""
-msgstr "Chybný záznam v skupine klávesových skratiek: \"%s\""
+msgstr "Chybný záznam v skupine klávesových skratiek: „%s“"
 
 #: src/load_config.cc:184
 #, c-format
 msgid "Ignoring invalid keybinding \"%s\" -> \"%s\""
-msgstr "Ignoruje sa neplatné viazanie klávesu \"%s\" -> \"%s\""
+msgstr "Ignoruje sa neplatná väzba klávesu „%s“ -> „%s“"
 
 #: src/load_grouppolicy.cc:257
 #, c-format
 msgid "Expected policy identifier, got '%c'"
-msgstr "Očakávaný identifikátor pravidla,  zadané '%c'"
+msgstr "Očakával sa identifikátor pravidla,  zadané „%c“"
 
 #: src/load_grouppolicy.cc:269
 #, c-format
 msgid "Expected ',' or '(', got '%c'"
-msgstr "Očakávané ',' alebo '(', zadané '%c'"
+msgstr "Očakávala sa „,“ alebo „(“, zadané „%c“"
 
 #: src/load_grouppolicy.cc:276
 #, c-format
 msgid "Unknown grouping policy \"%s\""
-msgstr "Neznáme zoskupovacie pravidlo \"%s\""
+msgstr "Neznáme zoskupovacie pravidlo „%s“"
 
 #: src/load_grouppolicy.cc:283
 #, c-format
 msgid "Terminal policy \"%s\" should be the last policy in the list"
-msgstr "Pravidlo terminálu \"%s\" by malo byť posledným pravidlom v zozname"
+msgstr "Pravidlo terminálu „%s“ by malo byť posledným pravidlom v zozname"
 
 #: src/load_grouppolicy.cc:370
-#, fuzzy, c-format
+#, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
-msgstr "Chybný názov sekcie '%s' (použite 'none', 'topdir' alebo 'subdir')"
+msgstr "Chybný názov sekcie „%s“ (použite „none“, „topdir“ alebo „subdir“)"
 
 #: src/load_grouppolicy.cc:380
 #, c-format
 msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
 msgstr ""
-"Chybné nastavenie passthrough '%s' (použite 'passthrough' alebo "
-"'nopassthrough')"
+"Chybné nastavenie passthrough „%s“ (použite „passthrough“ alebo "
+"„nopassthrough“)"
 
 #: src/load_grouppolicy.cc:385
 msgid "Too many arguments to by-section grouping policy"
@@ -2738,12 +2844,12 @@ msgstr "Zoskupovanie podľa statusu nepoužíva žiadne argumenty"
 
 #: src/load_grouppolicy.cc:415
 msgid "Expected '(' after 'filter'"
-msgstr "Po 'filter' sa očakáva '('"
+msgstr "Po „filter“ sa očakáva „(“"
 
 #: src/load_grouppolicy.cc:452
 #, c-format
 msgid "Unable to parse pattern at '%s'"
-msgstr "Nedá sa spracovať vzor na '%s'"
+msgstr "Nie je možné spracovať vzor na „%s“"
 
 #: src/load_grouppolicy.cc:457
 msgid "Exactly one filter must be provided as an argument to a filter policy"
@@ -2751,7 +2857,7 @@ msgstr "Ako argument pravidla filtra musí byť zadaný práve jeden parameter"
 
 #: src/load_grouppolicy.cc:476
 msgid "By-mode grouping policies take no arguments"
-msgstr "Zoskupovanie podľa módu nepoužíva žiadne argumenty"
+msgstr "Zoskupovanie podľa režimu nepoužíva žiadne argumenty"
 
 #: src/load_grouppolicy.cc:487
 msgid "First-character grouping policies take no arguments"
@@ -2779,30 +2885,30 @@ msgstr "Pravidlo na zoskupovanie vzorov očakáva maximálne jeden parameter"
 
 #: src/load_grouppolicy.cc:580
 msgid "Expected '(' after 'pattern'"
-msgstr "Po 'pattern' sa očakáva '('"
+msgstr "Po „pattern“ sa očakáva „(“"
 
 #: src/load_grouppolicy.cc:588
 msgid "Missing arguments to 'pattern'"
-msgstr "Chýbajúce argumenty pre 'pattern'"
+msgstr "Chýbajúce argumenty pre „pattern“"
 
 #: src/load_grouppolicy.cc:612
 #, c-format
 msgid "Unable to parse pattern after \"%s\""
-msgstr "Nedá sa spracovať vzor po \"%s\""
+msgstr "Nedá sa spracovať vzor po „%s“"
 
 #: src/load_grouppolicy.cc:634
 #, c-format
 msgid "Unexpectedly empty tree title after \"%s\""
-msgstr "Neočakávaný prázdny nadpis v strome po \"%s\""
+msgstr "Neočakávaný prázdny nadpis v strome po „%s“"
 
 #: src/load_grouppolicy.cc:653
-#, fuzzy, c-format
+#, c-format
 msgid "Expected ',' or ')' following '||', got '%s'"
-msgstr "Očakávané ',' alebo '(', zadané '%c'"
+msgstr "Očakávalo sa „,“ alebo „(“, zadané „%s“"
 
 #: src/load_grouppolicy.cc:665
 msgid "Unmatched '(' in pattern grouping policy"
-msgstr "Nepárová '(' v popise zoskupovacieho pravidla"
+msgstr "Nepárová „(“ v popise zoskupovacieho pravidla"
 
 #: src/load_pkgview.cc:64
 msgid "Couldn't parse layout: No column format specified for static item"
@@ -2816,7 +2922,7 @@ msgstr "Nedá sa spracovať rozloženie: chyba kódovania v popise stĺpca"
 #: src/load_pkgview.cc:118
 #, c-format
 msgid "Couldn't parse layout: unknown view item type \"%s\""
-msgstr "Nedá sa spracovať rozloženie: neznámy typ položky pohľadu \"%s\""
+msgstr "Nedá sa spracovať rozloženie: neznámy typ položky pohľadu „%s“"
 
 #: src/load_pkgview.cc:125 src/load_pkgview.cc:133
 msgid "Couldn't parse layout: no row number specified"
@@ -2833,7 +2939,7 @@ msgstr "Nedá sa spracovať rozloženie: nie je zadaná výška"
 #: src/load_pkgview.cc:180 src/load_pkgview.cc:198
 #, c-format
 msgid "Unknown alignment type '%s'"
-msgstr "Neznámy typ zarovnania '%s'"
+msgstr "Neznámy typ zarovnania „%s“"
 
 #: src/load_sortpolicy.cc:51
 msgid "By-name sorting policies take no arguments"
@@ -2857,22 +2963,22 @@ msgstr "Neplatný názov triediaceho mechanizmu"
 
 #: src/load_sortpolicy.cc:166
 msgid "Unmatched '(' in sorting policy description"
-msgstr "Nepárová '(' v popisu triediaceho mechanizmu"
+msgstr "Nepárová „(“ v popise triediaceho mechanizmu"
 
 #: src/load_sortpolicy.cc:193
 #, c-format
 msgid "Invalid sorting policy type '%s'"
-msgstr "Neplatný triediaci mechanizmus '%s'"
+msgstr "Neplatný triediaci mechanizmus „%s“"
 
 #: src/main.cc:86
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
-msgstr "Chyba pri dekódovaní multi-bajtového reťazca po \"%ls\""
+msgstr "Chyba pri dekódovaní multi-bajtového reťazca po „%ls“"
 
 #: src/main.cc:95
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
-msgstr "Chyba pri dekódovaní široko-bajtového reťazca po \"%s\""
+msgstr "Chyba pri dekódovaní široko-bajtového reťazca po „%s“"
 
 #: src/main.cc:103
 #, c-format
@@ -2910,12 +3016,12 @@ msgstr "verzia libsigc++: %s\n"
 #: src/main.cc:115
 #, c-format
 msgid "Ept support enabled.\n"
-msgstr ""
+msgstr "Podpora Ept zapnutá.\n"
 
 #: src/main.cc:117
 #, c-format
 msgid "Ept support disabled.\n"
-msgstr ""
+msgstr "Podpora Ept vypnutá.\n"
 
 #: src/main.cc:124
 #, c-format
@@ -2985,23 +3091,23 @@ msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - Stiahne zoznamy nových/aktualizovateľných balíkov\n"
 
 #: src/main.cc:142
-#, fuzzy, c-format
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
-msgstr " upgrade      - Vykoná bezpečnú aktualizáciu\n"
+msgstr " safe-upgrade - Vykoná bezpečnú aktualizáciu\n"
 
 #: src/main.cc:143
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr ""
-" dist-upgrade - Vykoná aktualizáciu, pri ktorej možno nainštaluje a odstráni "
+" full-upgrade - Vykoná aktualizáciu, pri ktorej možno nainštaluje a odstráni "
 "balíky\n"
 
 #: src/main.cc:144
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
-msgstr " forget-new   - Zabudne, ktoré balíky sú \"nové\"\n"
+msgstr " forget-new   - Zabudne, ktoré balíky sú „nové“\n"
 
 #: src/main.cc:145
 #, c-format
@@ -3074,7 +3180,7 @@ msgstr " -P             Vždy vyžaduje potvrdenie akciou\n"
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr ""
-" -y             Na jednoduché áno/nie otázky odpovie automaticky 'áno'\n"
+" -y             Na jednoduché áno/nie otázky odpovie automaticky „áno“\n"
 
 #: src/main.cc:159
 #, c-format
@@ -3145,7 +3251,7 @@ msgstr ""
 #: src/main.cc:169
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
-msgstr " -o kľúč=hodn   Nastaví konfiguračnú voľbu nazvanú 'kľúč'\n"
+msgstr " -o kľúč=hodn   Nastaví konfiguračnú voľbu nazvanú „kľúč“\n"
 
 #: src/main.cc:170
 #, c-format
@@ -3202,7 +3308,7 @@ msgstr "Môžete zadať iba jednu z volieb -u a -i\n"
 #: src/main.cc:437
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
-msgstr "-u a -i nemôžu byť použité v riadkovom móde (napr. s 'install')"
+msgstr "-u a -i nemôžu byť použité v riadkovom režime (napr. s „install“)"
 
 #: src/main.cc:458
 msgid "-u and -i may not be specified with a command"
@@ -3211,7 +3317,7 @@ msgstr "-u a -i nemôžu byť použité spoločne s príkazom"
 #: src/main.cc:545
 #, c-format
 msgid "Unknown command \"%s\"\n"
-msgstr "Neznámy príkaz \"%s\"\n"
+msgstr "Neznámy príkaz „%s“\n"
 
 #: src/main.cc:557 src/main.cc:606
 #, c-format
@@ -3250,12 +3356,12 @@ msgstr "Prehral"
 #: src/mine/cmine.cc:173 src/mine/cmine.cc:217
 #, c-format
 msgid "Could not open file \"%s\""
-msgstr "Nedá sa otvoriť súbor \"%s\""
+msgstr "Nie je možné otvoriť súbor „%s“"
 
 #: src/mine/cmine.cc:188
 #, c-format
 msgid "Could not load game from %s"
-msgstr "Nedá sa nahrať hra z %s"
+msgstr "Nie je možné nahrať hru z %s"
 
 #: src/mine/cmine.cc:299
 msgid "Setup custom game"
@@ -3632,9 +3738,9 @@ msgid "HN too long"
 msgstr "Príliš dlhý názov počítača"
 
 #: src/pkg_columnizer.cc:673 src/pkg_columnizer.cc:682
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to transcode package display format after \"%ls\""
-msgstr "Nedá sa previesť formátu zobrazenia balíka po \"%ls\""
+msgstr "Nedá sa prekódovať formát zobrazenia balíka po „%ls“"
 
 #: src/pkg_columnizer.cc:689
 msgid "Internal error: Default column string is unparsable"
@@ -3674,8 +3780,8 @@ msgid ""
 msgstr ""
 "Nové balíky\n"
 " Tieto balíky boli pridané do Debianu odvtedy, ako ste naposledy vymazali "
-"zoznam \"nových\" balíkov. (Na vymazanie tohto zoznamu vyberte z menu Akcie "
-"položku \"Zabudnúť nové balíky\".)"
+"zoznam „nových“ balíkov. (Na vymazanie tohto zoznamu vyberte z ponuky Akcie "
+"položku „Zabudnúť nové balíky“.)"
 
 #: src/pkg_grouppolicy.cc:421
 msgid ""
@@ -3824,15 +3930,14 @@ msgstr ""
 " Tieto balíky budú aktualizované na novšiu verziu."
 
 #: src/pkg_grouppolicy.cc:633
-#, fuzzy
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
 "made to complete their installation."
 msgstr ""
-"Balíky automaticky inštalované na splnenie závislostí\n"
-" Tieto balíky budú automaticky nainštalované, pretože sú vyžadované inými "
-"balíkmi, ktoré ste vybrali na inštaláciu."
+"Balíky čiastočne inštalované\n"
+" Tieto balíky nie sú plne nainštalované a nakonfigurované; vykoná sa pokus o "
+"dokončenie inštalácie."
 
 #: src/pkg_grouppolicy.cc:748
 msgid "unknown"
@@ -3880,7 +3985,7 @@ msgid ""
 "s' if you are."
 msgstr ""
 "%s je nutný balík!%n%nSte si istý, že ho chcete odstrániť?%nAk áno, napíšte "
-"'%s'."
+"„%s“."
 
 #: src/pkg_item.cc:229 src/pkg_ver_item.cc:663 src/solution_item.cc:298
 #, c-format
@@ -3966,9 +4071,8 @@ msgid "Enter the new package sorting mechanism for this display: "
 msgstr "Triediaci mechanizmus: "
 
 #: src/pkg_view.cc:159
-#, fuzzy
 msgid "Couldn't cw::util::transcode column definition"
-msgstr "Nedá sa previesť definícia stĺpca"
+msgstr "Nie je možné vykonať cw::util::transcode definície stĺpca"
 
 #: src/pkg_view.cc:166
 msgid "Couldn't parse column definition"
@@ -4013,7 +4117,7 @@ msgstr "koliduje s"
 
 #: src/reason_fragment.cc:41
 msgid "breaks"
-msgstr ""
+msgstr "pokazí"
 
 #: src/reason_fragment.cc:43
 msgid "replaces"
@@ -4122,9 +4226,8 @@ msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b sa aktualizuje z verzie %B%s%b na verziu %B%s%b."
 
 #: src/reason_fragment.cc:447
-#, fuzzy
 msgid "%B%s%b is only partly installed; its installation will be completed."
-msgstr "%s nie je nainštalovaný, preto sa nepreinštaluje.\n"
+msgstr "%B%s%b je iba čiastočne nainštalovaný; jeho inštalácia sa dokončí."
 
 #: src/reason_fragment.cc:479
 msgid ""
@@ -4322,7 +4425,7 @@ msgstr "Znížiť verziu %F [%s (%s) -> %s (%s)]"
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"
-msgstr "VAROVANIE"
+msgstr "UPOZORNENIE"
 
 #: src/trust.cc:20
 msgid ""
@@ -4331,7 +4434,8 @@ msgid ""
 "system."
 msgstr ""
 "%F: Táto verzia %s je z %Bnedôveryhodného zdroja%b!  Inštaláciou tohto "
-"balíka môžete dovoliť zákernému jedincovi poškodiť alebo riadiť Váš systém."
+"balíka môžete dovoliť zákernému jedincovi zmocniť sa vášho systému alebo ho "
+"poškodiť."
 
 #: src/ui.cc:227
 msgid "Er, there aren't any errors, this shouldn't have happened.."
@@ -4351,9 +4455,9 @@ msgid ""
 "subsequent changes will not be saved unless you stop all other running apt-"
 "based programs and select \"Become root\" from the Actions menu."
 msgstr ""
-"VAROVANIE: dočasná pamäť balíkov je otvorená v móde iba na čítanie!  Táto "
-"zmena a všetky nasledujúce zmeny nebudú uložené, pokiaľ neukončíte všetky "
-"apt programy a nevyberiete \"Stať sa rootom\" z menu Akcie."
+"UPOZORNENIE: dočasná pamäť balíkov je otvorená v režime iba na čítanie!  "
+"Táto zmena a všetky nasledujúce zmeny nebudú uložené, pokiaľ neukončíte "
+"všetky apt programy a nevyberiete „Stať sa rootom“ z ponuky Akcie."
 
 #: src/ui.cc:337
 msgid "Never display this message again."
@@ -4370,12 +4474,12 @@ msgstr "Už ste root!"
 
 #: src/ui.cc:429
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
-msgstr ""
+msgstr "neplatný Get-Root-Command; malo by začínať su: alebo sudo:"
 
 #: src/ui.cc:436
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
-msgstr ""
+msgstr "neplatný Get-Root-Command; malo by začínať su: alebo sudo:, nie %s:"
 
 #: src/ui.cc:559
 msgid ""
@@ -4391,13 +4495,12 @@ msgid "Really quit Aptitude?"
 msgstr "Skutočne ukončiť Aptitude?"
 
 #: src/ui.cc:693 src/ui.cc:695
-#, fuzzy
 msgid "Preferences"
-msgstr "Predzávisí na"
+msgstr "Nastavenia"
 
 #: src/ui.cc:694 src/ui.cc:2259
 msgid "Change the behavior of aptitude"
-msgstr ""
+msgstr "Zmeniť správanie aptitude"
 
 #: src/ui.cc:730
 msgid "Really discard your personal settings and reload the defaults?"
@@ -4432,19 +4535,17 @@ msgid ""
 "conditions; see 'license' for details."
 msgstr ""
 "Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%nna aptitude sa "
-"nevzťahuje %BABSOLÚTNE ŽIADNA ZÁRUKA%b; podrobnosti nájdete v menu Pomoc, "
-"'licencia'. Toto je slobodný softvér a budeme radi, ak ho budete pod "
-"určitými podmienkami šíriť ďalej; podrobnosti viď 'licencia'."
+"nevzťahuje %BABSOLÚTNE ŽIADNA ZÁRUKA%b; podrobnosti nájdete v ponuke Pomoc, "
+"„licencia“. Toto je slobodný softvér a budeme radi, ak ho budete pod "
+"určitými podmienkami šíriť ďalej; podrobnosti nájdete v „licencia“."
 
 #: src/ui.cc:1018 src/ui.cc:1020
-#, fuzzy
 msgid "License"
-msgstr "^Licencia"
+msgstr "Licencia"
 
 #: src/ui.cc:1019 src/ui.cc:2351
-#, fuzzy
 msgid "View the terms under which you may copy and distribute aptitude"
-msgstr "Zobrazí podmienky, za ktorých môžete program šíriť"
+msgstr "Zobrazí podmienky, za ktorých môžete aptitude kopírovať a šíriť"
 
 #: src/ui.cc:1033
 msgid "help.txt"
@@ -4456,11 +4557,11 @@ msgstr "Kódovanie help.txt|UTF-8"
 
 #: src/ui.cc:1046
 msgid "Online Help"
-msgstr ""
+msgstr "Online pomocník"
 
 #: src/ui.cc:1047
 msgid "View a brief introduction to aptitude"
-msgstr ""
+msgstr "Zobraziť stručný úvod do aptitude"
 
 #: src/ui.cc:1048 src/ui.cc:2498
 msgid "Help"
@@ -4487,18 +4588,16 @@ msgid "Manual"
 msgstr "Manuálne"
 
 #: src/ui.cc:1077 src/ui.cc:1079
-#, fuzzy
 msgid "FAQ"
-msgstr "^FAQ"
+msgstr "FAQ"
 
 #: src/ui.cc:1078 src/ui.cc:2343
 msgid "View a list of frequently asked questions"
 msgstr "Zobrazí zoznam často kladených otázok"
 
 #: src/ui.cc:1087 src/ui.cc:1089
-#, fuzzy
 msgid "News"
-msgstr "^Novinky"
+msgstr "Novinky"
 
 #: src/ui.cc:1088 src/ui.cc:2347
 msgid "View the important changes made in each version of "
@@ -4530,8 +4629,8 @@ msgid ""
 msgstr ""
 "Zdá sa, že predchádzajúca verzia aptitude po sebe zanechala súbory v %s.  "
 "Tieto sú pravdepodobne zbytočné a môžete ich bezpečne odstrániť.%n%nChcete "
-"odstrániť tento adresár a celý jeho obsah?  Ak si zvolíte \"Nie\", táto "
-"správa sa už nebude zobrazovať."
+"odstrániť tento adresár a celý jeho obsah?  Ak si zvolíte „Nie“, táto správa "
+"sa už nebude zobrazovať."
 
 #: src/ui.cc:1169
 msgid "Downloading packages"
@@ -4552,8 +4651,8 @@ msgid ""
 "should only proceed with the installation if you are certain that this is "
 "what you want to do.%n%n"
 msgstr ""
-"%BVAROVANIE%b: nainštalujú sa nasledujúce nedôveryhodné verzie balíkov!%n%"
-"nNedôveryhodné balíky môžu %Bznížiť bezpečnosť Vášho systému%b.  S "
+"%BUPOZORNENIE%b: nainštalujú sa nasledujúce nedôveryhodné verzie balíkov!%n%"
+"nNedôveryhodné balíky môžu %Bznížiť bezpečnosť vášho systému%b.  S "
 "inštaláciou by ste mali pokračovať iba v prípade, ak ste si istý tým, čo "
 "chcete urobiť.%n%n"
 
@@ -4587,8 +4686,8 @@ msgid ""
 "Ran out of time while trying to resolve dependencies (press \"%s\" to try "
 "harder)"
 msgstr ""
-"Počas riešenia závislostí sa presiahol čas (stlačte \"%s\" na dôkladnejšie "
-"hľadanie)"
+"Počas riešenia závislostí bol prekročený čas (dôkladnejšie hľadanie spustíte "
+"stlačením „%s“)"
 
 #: src/ui.cc:1401
 msgid ""
@@ -4615,7 +4714,7 @@ msgid ""
 msgstr ""
 "Žiadne balíky sa nebudú inštalovať, odstráňovať alebo aktualizovať.  "
 "Niektoré balíky by sa síce mohli aktualizovať, ale nezvolili ste ich "
-"aktualizáciu. Aktualizáciu môžete vykonať klávesom \"U\"."
+"aktualizáciu. Aktualizáciu môžete vykonať klávesom „U“."
 
 #: src/ui.cc:1502 src/ui.cc:1619
 msgid "Deleting obsolete downloaded files"
@@ -4736,7 +4835,7 @@ msgstr "^Zabudnúť nové balíky"
 
 #: src/ui.cc:2086
 msgid "Forget which packages are \"new\""
-msgstr "Zabudne, ktoré balíky sú \"nové\""
+msgstr "Zabudne, ktoré balíky sú „nové“"
 
 #: src/ui.cc:2089
 msgid "Canc^el pending actions"
@@ -4784,12 +4883,12 @@ msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
 msgstr ""
-"Na prepnutie na užívateľa root spusťte 'su'; toto  reštartuje program, ale "
-"Vaše nastavenia sa zachovajú"
+"Na používateľa root sa môžete prepnúť spustením „su“; týmto reštartujete "
+"program, ale vaše nastavenia sa zachovajú"
 
 #: src/ui.cc:2117
 msgid "^Quit"
-msgstr "Koniec"
+msgstr "Ukončiť"
 
 #: src/ui.cc:2118
 msgid "Exit the program"
@@ -4882,8 +4981,8 @@ msgid ""
 "Forbid the candidate version of the selected package from being installed; "
 "newer versions of the package will be installed as usual"
 msgstr ""
-"Zakázať, aby sa kandidátska verzia balíka nainštalovala; novšie verzie "
-"balíka sa budú inštalovať ako zvyčajne"
+"Zakáže inštalovanie kandidátskej verzie balíka; novšie verzie balíka sa budú "
+"inštalovať ako zvyčajne"
 
 #: src/ui.cc:2166
 msgid "I^nformation"
@@ -4907,7 +5006,7 @@ msgstr "^Vyskúšať Riešenie"
 
 #: src/ui.cc:2179
 msgid "Examine the currently selected solution to the dependency problems."
-msgstr "Preskúšať aktuálne označené riešenie problémov so závislosťami."
+msgstr "Preskúša aktuálne označené riešenie problémov so závislosťami."
 
 #: src/ui.cc:2182
 msgid "Apply ^Solution"
@@ -4915,7 +5014,7 @@ msgstr "Použiť ^Riešenie"
 
 #: src/ui.cc:2183
 msgid "Perform the actions contained in the currently selected solution."
-msgstr "Vykonaj akcie, ktoré sú zahrnuté v aktuálne zvolenom riešení."
+msgstr "Vykoná akcie, ktoré sú zahrnuté v aktuálne zvolenom riešení."
 
 #: src/ui.cc:2186
 msgid "^Next Solution"
@@ -4923,7 +5022,7 @@ msgstr "Ďalšie Rieše^nia"
 
 #: src/ui.cc:2187
 msgid "Select the next solution to the dependency problems."
-msgstr "Zvoliť ďalšie riešenie problémov so závislosťami."
+msgstr "Zvolí ďalšie riešenie problémov so závislosťami."
 
 #: src/ui.cc:2190
 msgid "^Previous Solution"
@@ -4931,7 +5030,7 @@ msgstr "^Predchádzajúce Riešenie"
 
 #: src/ui.cc:2191
 msgid "Select the previous solution to the dependency problems."
-msgstr "Zvoľ predchádzajúce riešenie problémov so závislosťami."
+msgstr "Zvolí predchádzajúce riešenie problémov so závislosťami."
 
 #: src/ui.cc:2194
 msgid "^First Solution"
@@ -4939,7 +5038,7 @@ msgstr "^Prvé Riešenie"
 
 #: src/ui.cc:2195
 msgid "Select the first solution to the dependency problems."
-msgstr "Zvoliť prvé riešenie problémov so závislosťami."
+msgstr "Zvolí prvé riešenie problémov so závislosťami."
 
 #: src/ui.cc:2198
 msgid "^Last Solution"
@@ -4950,7 +5049,7 @@ msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
 msgstr ""
-"Zvoliť posledné riešenie problémov so závislosťami, ktoré bolo doteraz "
+"Zvolí posledné riešenie problémov so závislosťami, ktoré bolo doteraz "
 "vygenerované."
 
 #: src/ui.cc:2205
@@ -4959,7 +5058,7 @@ msgstr "Prepnúť ^Zamietnuté"
 
 #: src/ui.cc:2206
 msgid "Toggle whether the currently selected action is rejected."
-msgstr "Prepnúť, či je aktuálne zvolená akcia zamietnutá."
+msgstr "Prepína, či je aktuálne zvolená akcia zamietnutá."
 
 #: src/ui.cc:2210
 msgid "Toggle ^Approved"
@@ -4967,7 +5066,7 @@ msgstr "Prepnúť ^Schválené"
 
 #: src/ui.cc:2211
 msgid "Toggle whether the currently selected action is approved."
-msgstr "Prepnúť, či je aktuálne zvolená akcia schválená."
+msgstr "Prepnína, či je aktuálne zvolená akcia schválená."
 
 #: src/ui.cc:2215
 msgid "^View Target"
@@ -4975,7 +5074,7 @@ msgstr "^Zobraziť Cieľ"
 
 #: src/ui.cc:2216
 msgid "View the package which will be affected by the selected action"
-msgstr "Zobraziť balíky, ktorých sa bude týkať zvolená akcia"
+msgstr "Zobrazí balíky, ktorých sa bude týkať zvolená akcia"
 
 #: src/ui.cc:2224
 msgid "^Find"
@@ -4983,7 +5082,7 @@ msgstr "Hľadať"
 
 #: src/ui.cc:2225
 msgid "Search forwards"
-msgstr "Hľadať dopredu"
+msgstr "Hľadá dopredu"
 
 #: src/ui.cc:2228
 msgid "^Find Backwards"
@@ -4991,7 +5090,7 @@ msgstr "^Hľadaj Spätne"
 
 #: src/ui.cc:2229
 msgid "Search backwards"
-msgstr "Hľadať spätne"
+msgstr "Hľadá spätne"
 
 #: src/ui.cc:2232
 msgid "Find ^Again"
@@ -5002,14 +5101,12 @@ msgid "Repeat the last search"
 msgstr "Zopakuje posledné hľadanie"
 
 #: src/ui.cc:2236
-#, fuzzy
 msgid "Find Again ^Backwards"
-msgstr "^Hľadaj Spätne"
+msgstr "Hľadať znova Spätne"
 
 #: src/ui.cc:2237
-#, fuzzy
 msgid "Repeat the last search in the opposite direction"
-msgstr "Zopakuje posledné hľadanie"
+msgstr "Zopakuje posledné hľadanie v opačnom smere"
 
 #: src/ui.cc:2241
 msgid "^Limit Display"
@@ -5036,9 +5133,8 @@ msgid "Find the next package with unsatisfied dependencies"
 msgstr "Hľadá ďalší balík s nesplnenými závislosťami"
 
 #: src/ui.cc:2258
-#, fuzzy
 msgid "^Preferences"
-msgstr "Predzávisí na"
+msgstr "Nastavenia"
 
 #: src/ui.cc:2263
 msgid "^UI options"
@@ -5046,7 +5142,7 @@ msgstr "Nastavenie zobrazenia"
 
 #: src/ui.cc:2264
 msgid "Change the settings which affect the user interface"
-msgstr "Zmení nastavenia, ktoré ovplyvňujú užívateľské rozhranie"
+msgstr "Zmení nastavenia, ktoré ovplyvňujú používateľské rozhranie"
 
 #: src/ui.cc:2267
 msgid "^Dependency handling"
@@ -5113,7 +5209,7 @@ msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
 msgstr ""
-"Zobraziť balíky, ktoré je odporúčané inštalovať, ale aktuálne nie sú "
+"Zobrazí balíky, ktoré je odporúčané inštalovať, ale momentálne nie sú "
 "nainštalované."
 
 #: src/ui.cc:2312
@@ -5122,7 +5218,7 @@ msgstr "Nový ^Plochý Zoznam Balíkov"
 
 #: src/ui.cc:2313
 msgid "View all the packages on the system in a single uncategorized list"
-msgstr "Zobraziť všetky balíky v systéme ako jeden nekategorizovaný zoznam"
+msgstr "Zobrazí všetky balíky v systéme ako jeden nekategorizovaný zoznam"
 
 #: src/ui.cc:2316
 msgid "New ^Debtags Browser"
@@ -5130,7 +5226,7 @@ msgstr "Nový ^Debtags Prehliadač"
 
 #: src/ui.cc:2318
 msgid "Browse packages using Debtags data"
-msgstr "Prehliadať balíky s použitím debtags"
+msgstr "Prehliada balíky s použitím debtags"
 
 #: src/ui.cc:2321
 msgid "New Categorical ^Browser"
@@ -5158,11 +5254,11 @@ msgstr "Zobrazí on-line pomoc"
 
 #: src/ui.cc:2338
 msgid "User's ^Manual"
-msgstr "Používateľský ^manuál"
+msgstr "Používateľská príručka"
 
 #: src/ui.cc:2339
 msgid "View the detailed program manual"
-msgstr "Zobrazí podrobný manuál tohto programu"
+msgstr "Zobrazí podrobnú príručku tohto programu"
 
 #: src/ui.cc:2342
 msgid "^FAQ"
