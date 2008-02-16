@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.3-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-01-29 19:30-0800\n"
-"PO-Revision-Date: 2008-01-27 15:49+0800\n"
+"POT-Creation-Date: 2008-01-30 19:56-0800\n"
+"PO-Revision-Date: 2008-02-15 21:49+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -315,11 +315,11 @@ msgstr "用于下载变更日志的 URL"
 #: src/apt_options.cc:279
 msgid ""
 "This option controls the template that's used to download changelogs from "
-"the Debian Web site.  You should only need to change this if the URL of the "
-"package archive changes."
+"the Debian Web site.  You should only need to change this if the changelogs "
+"move to a different URL."
 msgstr ""
-"此选项控制用来从 Debian 网站下载更新日志的模板。您仅需要在软件包档案的 URL 改"
-"变时修改这个选项。"
+"此选项控制用来从 Debian 网站下载更新日志的模板。您仅需要在更新日志移动到不同"
+"的 URL 时修改这个选项。"
 
 #: src/apt_options.cc:285
 msgid "Display a preview of what will be done before doing it"
@@ -829,7 +829,6 @@ msgid "Couldn't read list of sources"
 msgstr "无法读取软件包源列表"
 
 #: src/cmdline/cmdline_prompt.cc:205
-#, fuzzy
 msgid "Config files"
 msgstr "配置文件"
 
@@ -2179,7 +2178,7 @@ msgid ""
 "Recommends' instead or removing this setting."
 msgstr ""
 "系统配置文件(%s)包含废弃选项“Aptitude::Recommends-Important”的设置；请考虑使"
-"用“APT::Install-Recommends”或移出此设置。"
+"用“APT::Install-Recommends”或移除此设置。"
 
 #: src/generic/apt/apt.cc:259
 #, c-format
@@ -2238,12 +2237,12 @@ msgstr "无法读取软件包源列表"
 #: src/generic/apt/download_update_manager.cc:214
 #, c-format
 msgid "fork() failed: %s"
-msgstr ""
+msgstr "fork() 失败：%s"
 
 #: src/generic/apt/download_update_manager.cc:261
 #, c-format
 msgid "waitpid() failed: %s"
-msgstr ""
+msgstr "waitpid() 失败：%s"
 
 #: src/generic/apt/download_update_manager.cc:285
 msgid "Couldn't clean out list directories"
@@ -2255,55 +2254,54 @@ msgstr "无法重建软件包缓存"
 
 #: src/generic/apt/download_update_manager.cc:312
 msgid "The debtags command must not be an empty string."
-msgstr ""
+msgstr "debtags 命令不能是空字符串。"
 
 #: src/generic/apt/download_update_manager.cc:316
 msgid "The debtags command must be an absolute path."
-msgstr ""
+msgstr "debtags 命令必须是绝对路径。"
 
 #: src/generic/apt/download_update_manager.cc:325
 #, c-format
 msgid ""
 "The debtags command (%s) does not exist; perhaps you need to install the "
 "debtags package?"
-msgstr ""
+msgstr "debtags 命令(%s)不存在；也许您需要安装 debtags 软件包？"
 
 #: src/generic/apt/download_update_manager.cc:328
 #, c-format
 msgid "The debtags command (%s) cannot be executed: %s"
-msgstr ""
+msgstr "debtags 命令(%s)无法执行：%s"
 
 #: src/generic/apt/download_update_manager.cc:333
-#, fuzzy
 msgid "Updating debtags database..."
-msgstr "创建标签数据库"
+msgstr "正在更新 debtags 数据库..."
 
 #: src/generic/apt/download_update_manager.cc:350
 msgid "(core dumped)"
-msgstr ""
+msgstr "(已生成 core 文件)"
 
 #: src/generic/apt/download_update_manager.cc:352
 #, c-format
 msgid "The debtags update process (%s %s) was killed by signal %d%s."
-msgstr ""
+msgstr "debtags 更新进程(%s %s)被信号 %d%s 杀掉。"
 
 #: src/generic/apt/download_update_manager.cc:359
 #, c-format
 msgid "The debtags update process (%s %s) exited abnormally (code %d)."
-msgstr ""
+msgstr "debtags 更新进程(%s %s)非正常退出(代码 %d)。"
 
 #: src/generic/apt/download_update_manager.cc:365
 #, c-format
 msgid ""
 "The debtags update process (%s %s) exited in an unexpected way (status %d)."
-msgstr ""
+msgstr "debtags 更新进程(%s %s)出乎预料地退出(状态 %d)。"
 
 #: src/generic/apt/download_update_manager.cc:370
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Updating the debtags database (%s %s) failed (perhaps debtags is not "
 "installed?): %s"
-msgstr "无法读取 debtags 关键词表，可能没有安装 debtags？"
+msgstr "更新 debtags 数据库(%s %s)失败(可能没有安装 debtags？)：%s"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
 #, c-format
@@ -2617,7 +2615,6 @@ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgstr "无法读取 debtags 关键词表，可能没有安装 debtags？"
 
 #: src/generic/apt/tasks.cc:278
-"没有可用的 debtags 数据，也许您需要安装 debtags 并运行“debtags update”？"
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "无法打开 /usr/share/tasksel/debian-tasks.desc"
 
