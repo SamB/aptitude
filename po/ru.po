@@ -1,17 +1,17 @@
-# translation of aptitude_po_ru.po to Russian
+# translation of ru.po to Russian
 # This file is distributed under the same license as the aptitude package.
 # Copyright (C) 2004 THE aptitude'S COPYRIGHT HOLDER.
 #
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2004.
 # Yuriy Talakan' <yt@amur.elektra.ru>, 2004.
 # Dmitry Beloglazov <dm-guest@alioth.debian.org>, 2004.
-# Yuri Kozlov <kozlov.y@gmail.com>, 2004, 2005, 2006, 2007.
+# Yuri Kozlov <kozlov.y@gmail.com>, 2004, 2005, 2006, 2007, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.4.6.1-1.1-next\n"
+"Project-Id-Version: 0.4.10-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-30 19:56-0800\n"
-"PO-Revision-Date: 2007-11-15 21:24+0300\n"
+"PO-Revision-Date: 2008-02-14 21:10+0300\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -27,37 +27,38 @@ msgid ""
 "%BDefault:%b %s\n"
 "%BValue:%b   %s\n"
 msgstr ""
+"%BПараметр:%b     %s\n"
+"%BПо умолчанию:%b %s\n"
+"%BЗначение:%b     %s\n"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
 msgid "True"
-msgstr ""
+msgstr "True"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
-#, fuzzy
 msgid "False"
-msgstr "Закрыть"
+msgstr "False"
 
 #: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:392
-#, fuzzy
 msgid "%BOption:%b  "
-msgstr "Параметры"
+msgstr "%BПараметр:%b     "
 
 #: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:394
 msgid "%BDefault:%b "
-msgstr ""
+msgstr "%BПо умолчанию:%b "
 
 #: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:396
 msgid "%BValue:%b   "
-msgstr ""
+msgstr "%BЗначение:%b     "
 
 #: src/apt_config_treeitems.cc:278
 #, c-format
 msgid "Editing \"%ls\""
-msgstr ""
+msgstr "Редактируется \"%ls\""
 
 #: src/apt_config_treeitems.cc:400
 msgid "%BChoice:%b  "
-msgstr ""
+msgstr "%BВыбор:%b        "
 
 #: src/apt_options.cc:160
 msgid "Display some available commands at the top of the screen"
@@ -338,6 +339,10 @@ msgstr "URL для загрузки списков изменений"
 
 #: src/apt_options.cc:279
 #, fuzzy
+#| msgid ""
+#| "This option controls the template that's used to download changelogs from "
+#| "the Debian Web site.  You should only need to change this if the URL of "
+#| "the package archive changes."
 msgid ""
 "This option controls the template that's used to download changelogs from "
 "the Debian Web site.  You should only need to change this if the changelogs "
@@ -459,6 +464,12 @@ msgstr ""
 "Автоматически исправлять сломанные пакеты перед установкой или удалением"
 
 #: src/apt_options.cc:345
+#, fuzzy
+#| msgid ""
+#| "If this option is enabled, and you perform an install run while some "
+#| "packages are broken, aptitude will automatically apply the current "
+#| "suggestion of the problem resolver.  Otherwise,aptitude will prompt you "
+#| "for a solution to the broken dependencies."
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
@@ -475,6 +486,15 @@ msgid "Install recommended packages automatically"
 msgstr "Автоматически устанавливать рекомендуемые пакеты"
 
 #: src/apt_options.cc:353
+#, fuzzy
+#| msgid ""
+#| "If this option is enabled  and \"automatically resolve dependencies\" is "
+#| "also enabled, aptitude will attempt to install the recommendations of "
+#| "newly installed packages in addition to their outright dependencies.  "
+#| "Suggestions will not be automatically installed.\n"
+#| "If this option is enabled and \"Remove unused packages automatically\" is "
+#| "enabled, packages that are recommended by an installed package will not "
+#| "automatically be removed."
 msgid ""
 "If this option is enabled and \"automatically resolve dependencies\" is also "
 "enabled, aptitude will attempt to install the recommendations of newly "
@@ -527,28 +547,28 @@ msgstr ""
 "помечаться для удаления как неиспользуемые пакеты."
 
 #: src/broken_indicator.cc:123
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Examine"
-msgstr "%s: Рассмотреть"
+msgstr "%ls: Рассмотреть"
 
 #: src/broken_indicator.cc:132
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Apply"
-msgstr "%s: Применить"
+msgstr "%ls: Применить"
 
 #: src/broken_indicator.cc:137
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Next"
-msgstr "%s: Следующий"
+msgstr "%ls: Следующий"
 
 #: src/broken_indicator.cc:143
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Previous"
-msgstr "%s: Предыдущий"
+msgstr "%ls: Предыдущий"
 
 #: src/broken_indicator.cc:238
 msgid "Dependency resolution disabled."
-msgstr ""
+msgstr "Разрешение зависимостей выключено."
 
 #: src/broken_indicator.cc:249
 msgid "Unable to resolve dependencies."
@@ -893,6 +913,7 @@ msgstr "Не удалось прочесть список источников"
 
 #: src/cmdline/cmdline_prompt.cc:205
 #, fuzzy
+#| msgid "config-files"
 msgid "Config files"
 msgstr "config-files"
 
@@ -1230,13 +1251,15 @@ msgstr ""
 "установка одного пакета должна привести к установке другого пакета."
 
 #: src/cmdline/cmdline_prompt.cc:765
-#, fuzzy, c-format
+#, c-format
 msgid "r: %F"
-msgstr "y: %F"
+msgstr "r: %F"
 
 #: src/cmdline/cmdline_prompt.cc:767
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
+"запустить автоматический решатель зависимостей для исправление сломанных "
+"зависимостей."
 
 #: src/cmdline/cmdline_prompt.cc:769
 #, c-format
@@ -1303,14 +1326,16 @@ msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
 msgstr ""
+"aptitude не удалось найти решение для этих зависимостей. Вы можете разрешить "
+"это вручную или нажмите 'н', чтобы выйти."
 
 #: src/cmdline/cmdline_prompt.cc:910
 msgid "Do you want to continue? [Y/n/?] "
-msgstr "Хотите продолжить? [Д/н/?] "
+msgstr "Хотите продолжить? [Y/n/?] "
 
 #: src/cmdline/cmdline_prompt.cc:911
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
-msgstr ""
+msgstr "Будете разбираться с зависимостями вручную? [N/+/-/_/:/?] "
 
 #: src/cmdline/cmdline_prompt.cc:929
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
@@ -1321,6 +1346,9 @@ msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
 msgstr ""
+"Введите команду для действия над пакетом (например, '+ пакет' -- для "
+"установки пакет), 'R' -- для автоматического разрешения зависимостей или 'N' "
+"-- чтобы прервать."
 
 #: src/cmdline/cmdline_prompt.cc:966
 #, c-format
@@ -1551,10 +1579,14 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+"Проблема с зависимостями решаема, но разрешение проблем с выключено.\n"
+"   (%s::ProblemResolver::StepLimit = 0)\n"
 
 #: src/cmdline/cmdline_resolver.cc:512
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
+"Можно было бы решить зависимости, но решатель проблем с зависимостями не "
+"создан."
 
 #: src/cmdline/cmdline_resolver.cc:525 src/solution_dialog.cc:127
 msgid "Resolving dependencies..."
@@ -1886,19 +1918,18 @@ msgid "E: The update command takes no arguments\n"
 msgstr "E: Команде update не нужны аргументы\n"
 
 #: src/cmdline/cmdline_upgrade.cc:98
-#, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (resolver timed out)."
-msgstr "Не удалось разрешить зависимости!  Ничего не получается..."
+msgstr ""
+"Не удалось разрешить зависимости для обновления (вышло время решателя)."
 
 #: src/cmdline/cmdline_upgrade.cc:104
-#, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
-msgstr "Не удалось разрешить зависимости!  Ничего не получается..."
+msgstr "Не удалось разрешить зависимости для обновления (решение не найдено)."
 
 #: src/cmdline/cmdline_upgrade.cc:110
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
-msgstr "Не удалось разрешить зависимости."
+msgstr "Не удалось разрешить зависимости для обновления (%s)."
 
 #: src/cmdline/cmdline_upgrade.cc:136
 #, c-format
@@ -1939,129 +1970,131 @@ msgstr "Вы не можете указать архив и версию пак�
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%d сломан [%+d]"
+msgstr[1] "%d сломано [%+d]"
+msgstr[2] "%d сломано [%+d]"
 
 #: src/cmdline/cmdline_util.cc:283
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%d обновлён [%+d]"
+msgstr[1] "%d обновлено [%+d]"
+msgstr[2] "%d обновлено [%+d]"
 
 #: src/cmdline/cmdline_util.cc:297
 #, c-format
 msgid "%d new [%+d]"
 msgid_plural "%d new [%+d]"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%d новый [%+d]"
+msgstr[1] "%d новых [%+d]"
+msgstr[2] "%d новых [%+d]"
 
 #: src/cmdline/cmdline_util.cc:308
 #, c-format
 msgid "There are now %F."
-msgstr ""
+msgstr "Теперь есть %F."
 
 #: src/cmdline/cmdline_why.cc:419
-#, fuzzy, c-format
+#, c-format
 msgid "Install(%s)"
-msgstr "Установить"
+msgstr "Установить(%s)"
 
 #: src/cmdline/cmdline_why.cc:421
-#, fuzzy, c-format
+#, c-format
 msgid "Remove(%s)"
-msgstr "Удалить"
+msgstr "Удалить(%s)"
 
 #: src/cmdline/cmdline_why.cc:423
-#, fuzzy, c-format
+#, c-format
 msgid "Install(%s provides %s)"
-msgstr "Устанавливается %s %s (%s)"
+msgstr "Установить(%s предоставляет %s)"
 
 #: src/cmdline/cmdline_why.cc:427
-#, fuzzy, c-format
+#, c-format
 msgid "Remove(%s provides %s)"
-msgstr "Удалить %F [%s (%s)]"
+msgstr "Удалить(%s предоставляет %s)"
 
 #: src/cmdline/cmdline_why.cc:602
 #, c-format
 msgid "    ++ Examining %F\n"
-msgstr ""
+msgstr "    ++ Рассматривается %F\n"
 
 #: src/cmdline/cmdline_why.cc:612
 msgid "    ++   --> skipping, not a conflict\n"
-msgstr ""
+msgstr "    ++   --> пропускается, нет конфликта\n"
 
 #: src/cmdline/cmdline_why.cc:622
 msgid "    ++   --> skipping conflict\n"
-msgstr ""
+msgstr "    ++   --> пропускается, конфликт\n"
 
 #: src/cmdline/cmdline_why.cc:630
 msgid "    ++   --> skipping, not relevant according to params\n"
-msgstr ""
+msgstr "    ++   --> пропускается, не подходит по параметрам\n"
 
 #: src/cmdline/cmdline_why.cc:637
 msgid "    ++   --> skipping, parent is not the selected version\n"
-msgstr ""
+msgstr "    ++   --> пропускается, у родителя не та версия\n"
 
 #: src/cmdline/cmdline_why.cc:666
 msgid "    ++   --> ENQUEUING\n"
-msgstr ""
+msgstr "    ++   --> ПОСТАНОВКА В ОЧЕРЕДЬ\n"
 
 #: src/cmdline/cmdline_why.cc:673
+#, fuzzy
+#| msgid "    ++   --> skipping, version check failed.\n"
 msgid "    ++   --> skipping, version check failed\n"
-msgstr ""
+msgstr "    ++   --> пропускается, неудача при проверке версии.\n"
 
 #: src/cmdline/cmdline_why.cc:691
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
-msgstr ""
+msgstr "    ++   --> ПОСТАНОВКА В ОЧЕРЕДЬ %s Предоставляет %s\n"
 
 #: src/cmdline/cmdline_why.cc:822
 #, c-format
 msgid "Starting search with parameters %ls\n"
-msgstr ""
+msgstr "Начало поиска с параметрами %ls\n"
 
 #: src/cmdline/cmdline_why.cc:1042
 msgid "Skipping this solution, I've already seen it.\n"
-msgstr ""
+msgstr "Пропускаем это решение, оно уже было.\n"
 
 #: src/cmdline/cmdline_why.cc:1054
 #, c-format
 msgid "The package \"%s\" is a starting point of the search.\n"
-msgstr ""
+msgstr "Пакет \"%s\" является начальной точкой отчёта поиска.\n"
 
 #: src/cmdline/cmdline_why.cc:1113
 #, c-format
 msgid "No justification for removing %s could be constructed.\n"
-msgstr ""
+msgstr "Невозможно найти обоснование для удаления %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1115
 #, c-format
 msgid "No justification for %s could be constructed.\n"
-msgstr ""
+msgstr "Невозможно найти обоснование для %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1160 src/cmdline/cmdline_why.cc:1186
 #: src/cmdline/cmdline_why.cc:1248
-#, fuzzy, c-format
+#, c-format
 msgid "No package named \"%s\" exists."
-msgstr "Не удалось найти пакет, с именем \"%s\""
+msgstr "Пакета с именем \"%s\" не существует."
 
 #: src/cmdline/cmdline_why.cc:1194
-#, fuzzy
 msgid "Unable to parse some match patterns."
-msgstr "Не удалось проанализировать шаблон %s"
+msgstr "Не удалось проанализировать некоторые поисковые шаблоны."
 
 #: src/cmdline/cmdline_why.cc:1221
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""
+"%s: для этой команды нужен как минимум один аргумент (запрашиваемый пакет)."
 
 #: src/cmdline/cmdline_why.cc:1270
-#, fuzzy, c-format
+#, c-format
 msgid "The package \"%s\" is manually installed.\n"
-msgstr "'&m' пометить пакеты как установленные вручную"
+msgstr "Пакет \"%s\" установлен вручную.\n"
 
 #: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
 #, c-format
@@ -2374,6 +2407,7 @@ msgstr ""
 
 #: src/generic/apt/download_update_manager.cc:333
 #, fuzzy
+#| msgid "Building tag database"
 msgid "Updating debtags database..."
 msgstr "Построение базы данных тегов"
 
@@ -2399,15 +2433,16 @@ msgstr ""
 
 #: src/generic/apt/download_update_manager.cc:370
 #, fuzzy, c-format
+#| msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 msgid ""
 "Updating the debtags database (%s %s) failed (perhaps debtags is not "
 "installed?): %s"
 msgstr "Не удалось загрузить словарь debtags, возможно debtags не установлен?"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to stat %s."
-msgstr "Не удалось выполнить вызов stat \"%s\""
+msgstr "Не удалось выполнить вызов stat \"%s\"."
 
 #: src/generic/apt/log.cc:54
 #, c-format
@@ -2606,12 +2641,11 @@ msgstr "Новый пакет"
 
 #: src/generic/apt/matchers.cc:2017
 msgid "Upgradable"
-msgstr "Обновляем"
+msgstr "Обновляемый"
 
 #: src/generic/apt/matchers.cc:2040
-#, fuzzy
 msgid "Obsolete"
-msgstr "Устаревшие"
+msgstr "Устаревший"
 
 #: src/generic/apt/matchers.cc:2166
 #, c-format
@@ -2734,9 +2768,9 @@ msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "Не удалось создать временный каталог из шаблона \"%s\": %s"
 
 #: src/generic/util/temp.cc:99
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to delete temporary directory \"%s\""
-msgstr "Не удалось удалить каталог \"%s\""
+msgstr "Не удалось удалить временный каталог \"%s\""
 
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
@@ -2779,13 +2813,15 @@ msgstr "Нераспознанно название атрибута \"%s\""
 
 #: src/load_config.cc:113
 #, fuzzy, c-format
+#| msgid "Invalid entry in cw::style definition group: \"%s\""
 msgid "Invalid entry in style definition group: \"%s\""
-msgstr "Неправильный элемент в группе определения стиля: \"%s\""
+msgstr "Неправильный элемент в описываемой группе cw::style: \"%s\""
 
 #: src/load_config.cc:115
 #, fuzzy, c-format
+#| msgid "Invalid tagless entry in cw::style definition group: \"%s\""
 msgid "Invalid tagless entry in style definition group: \"%s\""
-msgstr "Неправильный бестеговый элемент в группе определения цвета: \"%s\""
+msgstr "Неправильный бестеговый элемент в описываемой группе cw::style: \"%s\""
 
 #: src/load_config.cc:127
 msgid "The default color may only be used as a background."
@@ -2793,8 +2829,9 @@ msgstr "Цвет по умолчанию можно настроить толь�
 
 #: src/load_config.cc:144
 #, fuzzy, c-format
+#| msgid "Unknown cw::style attribute %s"
 msgid "Unknown style attribute %s"
-msgstr "Неизвестный атрибут стиля: %s"
+msgstr "Неизвестный атрибут в cw::style: %s"
 
 #: src/load_config.cc:167 src/load_config.cc:169
 #, c-format
@@ -2828,6 +2865,7 @@ msgstr "Завершающее правило \"%s\" должно быть по�
 
 #: src/load_grouppolicy.cc:370
 #, fuzzy, c-format
+#| msgid "Bad section name '%s' (use 'none', 'topdir', or 'subdir')"
 msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
 msgstr "Неверное имя секции '%s' (можно 'none', 'topdir' или 'subdir')"
 
@@ -3186,7 +3224,7 @@ msgstr " -P             Всегда спрашивать подтвержден
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
-msgstr " -y             Предполагать ответ 'yes' на простой вопрос yes/no\n"
+msgstr " -y             Предполагать ответ 'да' на простой вопрос да/нет\n"
 
 #: src/main.cc:159
 #, c-format
@@ -3752,8 +3790,11 @@ msgstr "HN слишком длинна"
 
 #: src/pkg_columnizer.cc:673 src/pkg_columnizer.cc:682
 #, fuzzy, c-format
+#| msgid "Unable to cw::util::transcode package display format after \"%ls\""
 msgid "Unable to transcode package display format after \"%ls\""
-msgstr "Не удалось перекодировать формат отображения пакета после \"%ls\""
+msgstr ""
+"Не удалось выполнить cw::util::transcode для формата отображения пакета "
+"после \"%ls\""
 
 #: src/pkg_columnizer.cc:689
 msgid "Internal error: Default column string is unparsable"
@@ -4086,9 +4127,8 @@ msgid "Enter the new package sorting mechanism for this display: "
 msgstr "Введите новый механизм сортировки пакетов для этого вида: "
 
 #: src/pkg_view.cc:159
-#, fuzzy
 msgid "Couldn't cw::util::transcode column definition"
-msgstr "Не удалось перекодировать определение колонки"
+msgstr "Не удалось выполнить cw::util::transcode над определением колонки"
 
 #: src/pkg_view.cc:166
 msgid "Couldn't parse column definition"
@@ -5345,774 +5385,6 @@ msgstr "Загрузить Changelog"
 #~ msgid "virtual/virtual"
 #~ msgstr "виртуальных/виртуальных"
 
-#, fuzzy
-#~ msgid "You must resolve these dependencies before continuing."
-#~ msgstr "Не удалось разрешить зависимости!  Ничего не получается..."
-
-#~ msgid "UI options"
-#~ msgstr "Настройки интерфейса"
-
-#~ msgid "Dependency handling"
-#~ msgstr "Работа с зависимостями"
-
-#~ msgid "Miscellaneous"
-#~ msgstr "Разное"
-
-#~ msgid "UNSATISFIED"
-#~ msgstr "НЕУДОВЛЕТВОРЕНО"
-
-#~ msgid "Tags"
-#~ msgstr "Теги"
-
-#~ msgid "Continue"
-#~ msgstr "Продолжить"
-
-#~ msgid "Abort"
-#~ msgstr "Прервать"
-
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "Недостаточно ресурсов для создания потока"
-
-#~ msgid "Search for: "
-#~ msgstr "Поиск: "
-
-#~ msgid "%i/%i mines  %d %s"
-#~ msgstr "%i/%i мин  %d %s"
-
-#~ msgid "    %s in %d %s"
-#~ msgstr "    %s в %d %s"
-
-#~ msgid "The board height must be a positive integer"
-#~ msgstr "Высота доски должна задаваться положительным числом"
-
-#~ msgid "The board width must be a positive integer"
-#~ msgstr "Ширина доски должна задаваться положительным числом"
-
-#~ msgid "Invalid mine count; please enter a positive integer"
-#~ msgstr "Неправильное число мин; введите положительное целое число"
-
-#~ msgid "You have won."
-#~ msgstr "Вы выиграли."
-
-#~ msgid "You lose!"
-#~ msgstr "Вы проиграли!"
-
-#~ msgid ""
-#~ "Packages which set up your computer to perform a particular task\n"
-#~ " Packages in the 'Tasks' section contain no files; they merely depend "
-#~ "upon other packages. These packages provide an easy way to select a "
-#~ "predefined set of packages for a specialized task."
+#~ msgid "View the terms under which you may copy and distribute aptiutde"
 #~ msgstr ""
-#~ "Пакеты, которые установлены на вашем компьютере, выполняют определённые "
-#~ "задачи\n"
-#~ " Пакеты в разделе 'Задачи' не содержат файлов; они просто зависят от "
-#~ "других пакетов. Эти пакеты предлагают лёгкий путь выбора заранее "
-#~ "определённых наборов пакетов для специфических задач."
-
-#~ msgid ""
-#~ "Packages with no declared section\n"
-#~ " No section is given for these packages. Perhaps there is an error in the "
-#~ "Packages file?"
-#~ msgstr ""
-#~ "Пакеты с необъявленным разделом\n"
-#~ " В этих пакетах не указан раздел. Возможно, это ошибка в файле Packages?"
-
-#~ msgid ""
-#~ "Administrative utilities (install software, manage users, etc)\n"
-#~ " Packages in the 'admin' section allow you to perform administrative "
-#~ "tasks such as installing software, managing users, configuring and "
-#~ "monitoring your system, examining network traffic, and so on."
-#~ msgstr ""
-#~ "Утилиты администрирования (установка ПО, управл. пользователями, и т.д.)\n"
-#~ " Пакеты в разделе 'admin' позволяют вам выполнять административные "
-#~ "задачи, такие как установка программ, управление пользователями, "
-#~ "настройка и мониторинг вашей системы, анализ сетевого трафика и так далее."
-
-#~ msgid ""
-#~ "Packages converted from foreign formats (rpm, tgz, etc)\n"
-#~ " Packages in the 'alien' section were created by the 'alien' program from "
-#~ "a non-Debian package format such as RPM"
-#~ msgstr ""
-#~ "Пакеты, преобразованные из других форматов (rpm, tgz и т.д.)\n"
-#~ " Пакеты в разделе'alien' созданы программой 'alien' из пакетов не-Debian "
-#~ "формата,таким как RPM"
-
-#~ msgid ""
-#~ "The Debian base system\n"
-#~ " Packages in the 'base' section are part of the initial system "
-#~ "installation."
-#~ msgstr ""
-#~ "Базовая система Debian \n"
-#~ " Пакеты в разделе 'base' являются частью начальной установки системы."
-
-#~ msgid ""
-#~ "Programs for faxmodems and other communication devices\n"
-#~ " Packages in the 'comm' section are used to control modems and other "
-#~ "hardware communications devices. This includes software to control "
-#~ "faxmodems (for instance, PPP for dial-up internet connections and "
-#~ "programs originally written for that purpose, such as zmodem/kermit), as "
-#~ "well as software to control cellular phones, interface with FidoNet, and "
-#~ "run a BBS."
-#~ msgstr ""
-#~ "Программы для факс-модемов и других устройств связи\n"
-#~ " Пакеты в разделе 'comm' используются для управления модемами и другой "
-#~ "аппаратурой связи. Сюда включены программы для управления факс-модемами"
-#~ "(например, PPP для соединения с Интернет и программы изначально "
-#~ "написанные для работы с протоколами zmodem/kermit), сотовыми телефонами, "
-#~ "интерфейс с FidoNet и для запуска BBS."
-
-#~ msgid ""
-#~ "Utilities and programs for software development\n"
-#~ " Packages in the 'devel' section are used to write new software and work "
-#~ "on existing software. Non-programmers who do not compile their own "
-#~ "software probably do not need much software from this section.\n"
-#~ " .\n"
-#~ " It includes compilers, debugging tools, programmer's editors, source "
-#~ "processing tools, and other things related to software development."
-#~ msgstr ""
-#~ "Утилиты и программы для разработки ПО\n"
-#~ " Пакеты в разделе 'devel' используются для написания нового программного "
-#~ "обеспечения и работы над существующим программным обеспечением. Не-"
-#~ "программистам, которым не нужно компилировать свои собственные программы, "
-#~ "вероятно нужно немного программ из этого раздела.\n"
-#~ " .\n"
-#~ " Сюда включены компиляторы, средства отладки, редакторы для "
-#~ "программирования, утилиты обработки исходного кода и другие вещи, "
-#~ "относящиеся к разработке программного обеспечения."
-
-#~ msgid ""
-#~ "Documentation and specialized programs for viewing documentation\n"
-#~ " Packages in the 'doc' section document parts of the Debian system, or "
-#~ "are viewers for documentation formats."
-#~ msgstr ""
-#~ "Документация и специальные программы просмотра документации\n"
-#~ " Пакеты в разделе 'doc' документируют части системы Debian или содержат "
-#~ "программы просмотра документов в различных форматах."
-
-#~ msgid ""
-#~ "Text editors and word processors\n"
-#~ " Packages in the 'editors' section allow you to edit plain ASCII text. "
-#~ "These are not necessarily word processors, although some word processors "
-#~ "may be found in this section."
-#~ msgstr ""
-#~ "Текстовые редакторы и текстовые процессоры\n"
-#~ " Пакеты в раздела 'editors' позволяют вам редактировать простой ASCII "
-#~ "текст. Для этого не нужно текстовых процессоров, хотя несколько текстовых "
-#~ "процессоров можно найти в этом разделе."
-
-#~ msgid ""
-#~ "Programs for working with circuits and electronics\n"
-#~ " Packages in the 'electronics' section include circuit design tools, "
-#~ "simulators and assemblers for microcontrollers, and other related "
-#~ "software."
-#~ msgstr ""
-#~ "Программы для работы со схемами и электроникой\n"
-#~ " Пакеты в разделе 'electronics' содержат инструменты разработки схем, "
-#~ "симуляторы и ассемблеры для микроконтроллеров и другое программное "
-#~ "обеспечение по этой теме."
-
-#~ msgid ""
-#~ "Programs for embedded systems\n"
-#~ " Packages in the 'embedded' section are meant to run on embedded devices. "
-#~ "Embedded devices are specialized hardware devices with much less power "
-#~ "than a typical desktop system: for instance, a PDA, a cell phone, or a "
-#~ "Tivo."
-#~ msgstr ""
-#~ "Программы для встроенных систем\n"
-#~ " Пакеты в разделе 'embedded' предназначены для запуска на встроенных "
-#~ "устройствах. Встроенные устройства -- это специализированные аппаратные "
-#~ "устройства с намного меньшим потреблением электроэнергии чем обычные "
-#~ "настольные системы: например PDA, мобильный телефон или Tivo."
-
-#~ msgid ""
-#~ "The GNOME Desktop System\n"
-#~ " GNOME is a collection of software which provides an easy-to-use desktop "
-#~ "environment for Linux.  Packages in the 'gnome' section are part of the "
-#~ "GNOME environment or closely integrated into it."
-#~ msgstr ""
-#~ "Настольная система GNOME\n"
-#~ " GNOME это набор программ, которые предоставляют лёгкую в использовании "
-#~ "настольную среду для Linux. Пакеты в разделе 'gnome' являются частью "
-#~ "среды GNOME или тесно с ней связаны."
-
-#~ msgid ""
-#~ "Games, toys, and fun programs\n"
-#~ " Packages in the 'games' section are meant primarily for entertainment."
-#~ msgstr ""
-#~ "Игры, развлечения и забавные программы\n"
-#~ " Пакеты в разделе 'games' предназначены, главным образом для .развлечения."
-
-#~ msgid ""
-#~ "Utilities to create, view, and edit graphics files\n"
-#~ " Packages in the 'graphics' section include viewers for image files, "
-#~ "image processing and manipulation software, software to interact with "
-#~ "graphics hardware (such as video cards, scanners, and digital cameras), "
-#~ "and programming tools for handling graphics."
-#~ msgstr ""
-#~ "Утилиты для создания, просмотра и редактирования графических файлов\n"
-#~ " Пакеты в разделе 'graphics' содержат программы просмотра графических "
-#~ "файлов, обработки и манипулирования изображениями, программное "
-#~ "обеспечение для взаимодействия с графическим аппаратным обеспечением "
-#~ "(таким как видеокарты, сканеры и цифровые камеры), и инструменты "
-#~ "программиста для работы с графикой."
-
-#~ msgid ""
-#~ "Software for ham radio operators\n"
-#~ " Packages in the 'hamradio' section are meant primarily for ham radio "
-#~ "operators."
-#~ msgstr ""
-#~ "Программное обеспечение для операторов ham radio\n"
-#~ " Пакеты в разделе 'hamradio' предназначены для, главным образом для ham "
-#~ "radio операторов."
-
-#~ msgid ""
-#~ "Interpreters for interpreted languages\n"
-#~ " Packages in the 'interpreters' section include interpreters for "
-#~ "languages like Python, Perl, and Ruby, and libraries for these same "
-#~ "languages."
-#~ msgstr ""
-#~ "Интерпретаторы интерпретируемых языков\n"
-#~ " Пакеты в разделе 'interpreters' содержат интерпретаторы языков, таких "
-#~ "как Python, Perl, и Ruby, и библиотеки этих же языков."
-
-#~ msgid ""
-#~ "The KDE Desktop System\n"
-#~ " KDE is a collection of software which provides an easy-to-use desktop "
-#~ "environment for Linux.  Packages in the 'kde' section are part of the KDE "
-#~ "environment or closely integrated into it."
-#~ msgstr ""
-#~ "Настольная система KDE\n"
-#~ " KDE это набор программ, которые предоставляют лёгкую в использовании "
-#~ "настольную среду для Linux. Пакеты в разделе 'kde' являются частью среды "
-#~ "KDE или тесно с ней связаны."
-
-#~ msgid ""
-#~ "Development files for libraries\n"
-#~ " Packages in the 'libdevel' section contain files required for building "
-#~ "programs that use libraries in the 'libs' section.  You don't need "
-#~ "packages from this section unless you want to compile software yourself."
-#~ msgstr ""
-#~ "Файлы библиотек для разработки\n"
-#~ " Пакеты в разделе 'libdevel' содержат файлы, необходимые для сборки "
-#~ "программ, которые используют библиотеки из раздела 'libs'. Вам не нужны "
-#~ "пакеты из этого раздела, если вы не хотите сами компилировать программы."
-
-#~ msgid ""
-#~ "Collections of software routines\n"
-#~ " Packages in the 'libs' section provide necessary functionality for other "
-#~ "software on the computer. With very few exceptions, you should not need "
-#~ "to explicitly install a package from this section; the package system "
-#~ "will install them as required to fulfill dependencies."
-#~ msgstr ""
-#~ "Библиотеки подпрограмм\n"
-#~ " Пакеты в раздела 'libs' предоставляют необходимую функциональность для "
-#~ "других программ на компьютере. За некоторым исключением, вам не нужно "
-#~ "явно устанавливать пакеты из этого раздела; система обработки пакетов "
-#~ "будет сама устанавливать их как того требуют зависимости."
-
-#~ msgid ""
-#~ "Perl interpreter and libraries\n"
-#~ " Packages in the 'perl' section provide the Perl programming language and "
-#~ "many third-party libraries for it. Unless you are a Perl programmer, you "
-#~ "don't need to install packages from this section explicitly; the package "
-#~ "system will install them if they are required."
-#~ msgstr ""
-#~ "Интерпретатор Perl и библиотеки\n"
-#~ " Пакеты в разделе 'perl' предоставляют язык программирования Perl и много "
-#~ "сторонних библиотек для него. Если вы не программист на Perl, то вам не "
-#~ "нужно явно устанавливать пакеты из этого раздела; система обработки "
-#~ "пакетов будет устанавливать их по мере необходимости."
-
-#~ msgid ""
-#~ "Python interpreter and libraries\n"
-#~ " Packages in the 'python' section provide the Python programming language "
-#~ "and many third-party libraries for it. Unless you are a Python "
-#~ "programmer, you don't need to install packages from this section "
-#~ "explicitly; the package system will install them if they are required."
-#~ msgstr ""
-#~ "Интерпретатор Python и библиотеки\n"
-#~ " Пакеты в разделе 'python' предоставляют язык программирования Python и "
-#~ "много сторонних библиотек для него. Если вы не программист на Python, то "
-#~ "вам не нужно явно устанавливать пакеты из этого раздела; система "
-#~ "обработки пакетов будет устанавливать их по мере необходимости."
-
-#~ msgid ""
-#~ "Programs to write, send, and route email messages\n"
-#~ " Packages in the 'mail' section include mail readers, mail transport "
-#~ "daemons, mailing list software, and spam filters, as well as various "
-#~ "other software related to electronic mail."
-#~ msgstr ""
-#~ "Программы для написания, отправки и перенаправления сообщений электронной "
-#~ "почты\n"
-#~ " Пакеты в разделе 'mail' содержат программы для чтения почты, демоны "
-#~ "передачи почты, программы работы со списками рассылки и спам фильтры, а "
-#~ "также всё остальное ПО относящееся к электронной почте."
-
-#~ msgid ""
-#~ "Numeric analysis and other mathematics-related software\n"
-#~ " Packages in the 'math' section include calculators, languages for "
-#~ "mathematical computation (similar to Mathematica), symbolic algebra "
-#~ "packages, and programs to visualize mathematical objects."
-#~ msgstr ""
-#~ "Численный анализ и другое математическое ПО\n"
-#~ " Пакеты в разделе 'math' содержат калькуляторы, языки для математических "
-#~ "вычислений (подобных Mathematica), пакеты булевой алгебры и программы "
-#~ "визуализации математических объектов."
-
-#~ msgid ""
-#~ "Miscellaneous software\n"
-#~ " Packages in the 'misc' section have too unusual a function to be "
-#~ "classified."
-#~ msgstr ""
-#~ "Различное программное обеспечение\n"
-#~ " Пакеты в разделе 'misc' выполняют слишком необычные функции, чтобы их "
-#~ "классифицировать."
-
-#~ msgid ""
-#~ "Programs to connect to and provide various services\n"
-#~ " Packages in the 'net' section include clients and servers for many "
-#~ "protocols, tools to manipulate and debug low-level network protocols, IM "
-#~ "systems, and other network-related software."
-#~ msgstr ""
-#~ "Программы для подключения и предоставления различных сервисов\n"
-#~ " Пакеты в разделе 'net' содержат клиенты и серверы многих протоколов, "
-#~ "инструменты для управления и отладки низкоуровневых сетевых протоколов,IM "
-#~ "системы, другое сетевое ПО."
-
-#~ msgid ""
-#~ "Usenet clients and servers\n"
-#~ " Packages in the 'news' section are related to the Usenet distributed "
-#~ "news system.  They include news readers and news servers."
-#~ msgstr ""
-#~ "Клиенты и серверы Usenet\n"
-#~ " Пакеты в разделе 'news' относятся к системе распространения новостей "
-#~ "Usenet. К ним относятся программы чтения почты и серверы новостей."
-
-#~ msgid ""
-#~ "Obsolete libraries\n"
-#~ " Packages in the 'oldlibs' section are obsolete and should not be used by "
-#~ "new software.  They are provided for compatibility reasons, or because "
-#~ "software distributed by Debian still requires them.\n"
-#~ " .\n"
-#~ " With very few exceptions, you should not need to explicitly install a "
-#~ "package from this section; the package system will install them as "
-#~ "required to fulfill dependencies."
-#~ msgstr ""
-#~ "Устаревшие библиотеки\n"
-#~ " Пакеты в разделе 'oldlibs' устарели и не должны больше использоваться "
-#~ "новым программным обеспечением. Они предоставлены для совместимости или "
-#~ "потому что ПО распространяемому Debian они ещё нужны.\n"
-#~ " .\n"
-#~ "За некоторым исключением, вам не нужно явно устанавливать пакеты из этого "
-#~ "раздела; система обработки пакетов будет сама устанавливать их как того "
-#~ "требуют зависимости."
-
-#~ msgid ""
-#~ "Emulators and software to read foreign filesystems\n"
-#~ " Packages in the 'otherosfs' section emulate hardware and operating "
-#~ "systems and provide tools for transferring data between different "
-#~ "operating systems and hardware platforms. (for instance, utilities to "
-#~ "read DOS floppies, and utilities to communicate with Palm Pilots)\n"
-#~ " .\n"
-#~ " It is worth noting that CD burning software is included in THIS section."
-#~ msgstr ""
-#~ "Эмуляторы и ПО для чтения чужих файловых систем\n"
-#~ " Пакеты в разделе 'otherosfs' эмулируют аппаратуру и операционные системы "
-#~ "и предоставляют инструменты для передачи данных между различными "
-#~ "операционными системами и аппаратными платформами. (например, утилиты "
-#~ "чтения дискет DOS, и утилиты для связи с Palm Pilots)\n"
-#~ " .\n"
-#~ "Стоит упомянуть, что ПО для записи CD включено в ЭТОТ раздел."
-
-#~ msgid ""
-#~ "Software for scientific work\n"
-#~ " Packages in the 'science' section include tools for astronomy, biology, "
-#~ "and chemistry, as well as other science-related software."
-#~ msgstr ""
-#~ "ПО для научных работ\n"
-#~ " Пакеты в разделе 'science' содержат инструменты для астрономии, биологии "
-#~ "и химии, а также другое ПО, относящееся к науке."
-
-#~ msgid ""
-#~ "Command shells and alternative console environments\n"
-#~ " Packages in the 'shells' section include programs providing a command-"
-#~ "line interface."
-#~ msgstr ""
-#~ "Командные оболочки и альтернативные консольные среды\n"
-#~ " Пакеты в разделе 'shells' содержат программы, предоставляющие интерфейс "
-#~ "командной строки."
-
-#~ msgid ""
-#~ "Utilities to play and record sound\n"
-#~ " Packages in the 'sound' section include sound players, recorders, and "
-#~ "encoders for many formats, mixers and volume controls, MIDI sequencers "
-#~ "and programs to generate musical notation, drivers for sound hardware, "
-#~ "and sound processing software."
-#~ msgstr ""
-#~ "Утилиты для воспроизведения и записи звука\n"
-#~ " Пакеты в разделе 'sound' содержат звуковые проигрыватели, программы "
-#~ "записи и кодирования звука для многих форматов, микшеры и регуляторы "
-#~ "громкости, MIDI секвенсеры и программы генерации нотной записи, драйверы "
-#~ "для звуковых устройств и ПО для обработки звука."
-
-#~ msgid ""
-#~ "The TeX typesetting system\n"
-#~ " Packages in the 'tex' section are related to TeX, a system for producing "
-#~ "high-quality typeset output.  They include TeX itself, TeX packages, "
-#~ "editors designed for TeX, utilities to convert TeX and TeX output files "
-#~ "to various formats, TeX fonts, and other software related to TeX."
-#~ msgstr ""
-#~ "Типографская система TeX\n"
-#~ " Пакеты в разделе 'tex' относятся к TeX, системе для производства печати "
-#~ "типографского качества. Сюда входит сам TeX, пакеты TeX, редакторы,"
-#~ "разработанные для TeX, утилиты преобразования TeX и файлов вывода TeX в "
-#~ "различные форматы, шрифты TeX и другое ПО, относящееся к TeX."
-
-#~ msgid ""
-#~ "Text processing utilities\n"
-#~ " Packages in the 'text' section include text filters and processors, "
-#~ "spelling checkers, dictionary programs, utilities to convert between "
-#~ "character encodings and text file formats (eg, Unix and DOS), text "
-#~ "formatters and pretty-printers, and other software which operates on "
-#~ "plain text."
-#~ msgstr ""
-#~ "Утилиты обработки текста\n"
-#~ " Пакеты в разделе 'text' содержат фильтры и процессоры обработки текста, "
-#~ "проверку орфографии, словари, утилиты преобразования между кодировками, "
-#~ "форматами файлов (например, Unix иDOS), утилиты форматирования текста и "
-#~ "вывода на печать, и другое ПО, обрабатывающее простой текст."
-
-#~ msgid ""
-#~ "Various system utilities\n"
-#~ " Packages in the 'utils' section are utilities whose purpose is too "
-#~ "unique to be classified."
-#~ msgstr ""
-#~ "Различные системные утилиты\n"
-#~ " Пакеты в разделе 'utils' содержат утилиты для разных задача, которые "
-#~ "трудно классифицировать."
-
-#~ msgid ""
-#~ "Web browsers, servers, proxies, and other tools\n"
-#~ " Packages in the 'web' section include Web browsers, Web servers and "
-#~ "proxies, software to write CGI scripts or Web-based programs, pre-written "
-#~ "Web-based programs, and other software related to the World Wide Web."
-#~ msgstr ""
-#~ "Веб браузеры, сервера, прокси и другие инструменты\n"
-#~ " Пакеты в разделе 'web' содержат Веб браузеры, Веб сервера и прокси,"
-#~ "программы для написания сценариев CGI  или программ для Веб, уже "
-#~ "написанные программы для Веб и другое ПО относящееся к World Wide Web."
-
-#~ msgid ""
-#~ "The X window system and related software\n"
-#~ " Packages in the 'x11' section include the core packages for the X window "
-#~ "system, window managers, utility programs for X, and miscellaneous "
-#~ "programs with an X GUI which were placed here because they didn't fit "
-#~ "anywhere else."
-#~ msgstr ""
-#~ "X window system и ПО для неё\n"
-#~ " Пакеты в разделе 'x11' содержат базовые пакеты для X window system, "
-#~ "оконные менеджеры, программные утилиты для X, и разнообразные программы с "
-#~ "графическим интерфейсом пользователя под X, размещённые здесь, потому что "
-#~ "они не попали в другой раздел."
-
-#~ msgid ""
-#~ "Programs which depend on software not in Debian\n"
-#~ " Packages in the 'contrib' section are not part of Debian.\n"
-#~ " .\n"
-#~ " These packages are Free Software, but they depend on software which is "
-#~ "not part of Debian.  This may be because it is not Free Software, but is "
-#~ "packaged in the non-free section of the archive, because Debian cannot "
-#~ "distribute it at all, or (in rare cases) because no-one has packaged it "
-#~ "yet.\n"
-#~ " .\n"
-#~ " For more information about what Debian considers to be Free Software, "
-#~ "see http://www.debian.org/social_contract#guidelines"
-#~ msgstr ""
-#~ "Программы, которые зависят от ПО, не являющегося частью Debian\n"
-#~ " Пакеты в разделе 'contrib' не являются частью Debian.\n"
-#~ " .\n"
-#~ " Эти пакеты являются Свободным ПО, но они зависят от программ, которые не "
-#~ "являются частью Debian. Это может быть из-за того что, они не являются "
-#~ "Свободным ПО, но имеются в разделе non-free , т.к. Debian совсем не имеет "
-#~ "прав их распространять, или (в редких случаях) потому что ещё не собраны "
-#~ "в пакет.\n"
-#~ " .\n"
-#~ " Более подробно о том, как в Debian решают Свободное ПО или нет, смотрите "
-#~ "здесьhttp://www.debian.org/social_contract#guidelines"
-
-#~ msgid ""
-#~ "The main Debian archive\n"
-#~ " The Debian distribution consists of packages from the 'main' section. "
-#~ "Every package in 'main' is Free Software.\n"
-#~ " .\n"
-#~ " For more information about what Debian considers to be Free Software, "
-#~ "see http://www.debian.org/social_contract#guidelines"
-#~ msgstr ""
-#~ "Главный архив Debian\n"
-#~ " Дистрибутив Debian состоит из пакетов раздела 'main'. Каждый пакет в "
-#~ "'main' является Свободным ПО.\n"
-#~ " .\n"
-#~ " Более подробно о том, как в Debian решают Свободное ПО или нет, смотрите "
-#~ "здесьhttp://www.debian.org/social_contract#guidelines"
-
-#~ msgid ""
-#~ "Programs stored outside the US due to export controls\n"
-#~ " Packages in 'non-US' likely contain cryptography; a few implement "
-#~ "patented algorithms. Because of this, they cannot be exported from the "
-#~ "United States, and hence are stored on a server in the \"free world\".\n"
-#~ " .\n"
-#~ " Note: the Debian Project is currently merging cryptographic software "
-#~ "into the US-based archives after consulting with legal experts about "
-#~ "recent changes in export policies. Most packages which were formerly "
-#~ "found in this section, therefore, are now in 'main'."
-#~ msgstr ""
-#~ "Программы, размещённые за пределами США, из-за контроля за экспортом\n"
-#~ " Пакеты в разделе 'non-US' вероятней всего содержат реализацию нескольких "
-#~ "запатентованных алгоритмов шифрования. По этой причине, они не могут "
-#~ "экспортироваться за пределы США, и следовательно размещаются на сервере в "
-#~ "\"свободном мире\".\n"
-#~ " .\n"
-#~ " Замечание: Проект Debian в данный момент объединил программы шифрования "
-#~ "с архивами расположенными в США после консультации с юристами экспертами "
-#~ "в новых изменениях экспортных правил. Большинство пакетов, которые ранее "
-#~ "были в этом разделе, теперь в 'main'."
-
-#~ msgid ""
-#~ "Programs which are not free software\n"
-#~ " Packages in the 'non-free' section are not part of Debian.\n"
-#~ " .\n"
-#~ " These packages fail to meet one or more of the requirements of the "
-#~ "Debian Free Software Guidelines (see below). You should read the license "
-#~ "of programs in this section to be sure that you are allowed to use them "
-#~ "in the way you intend.\n"
-#~ " .\n"
-#~ " For more information about what Debian considers to be Free Software, "
-#~ "see http://www.debian.org/social_contract#guidelines"
-#~ msgstr ""
-#~ "Программы, не являющиеся Свободным ПО\n"
-#~ " Пакеты в разделе 'non-free' не являются частью Debian.\n"
-#~ " .\n"
-#~ " Эти пакеты не удовлетворяют одному или нескольким критериям Debian по "
-#~ "определению Свободного ПО (смотрите ниже). Вы должны прочитать лицензию "
-#~ "на программы из этого раздела, чтобы убедиться, что вам позволено "
-#~ "использовать их так как вы хотите.\n"
-#~ " .\n"
-#~ " Более подробно о том, как в Debian решают Свободное ПО или нет, смотрите "
-#~ "здесь http://www.debian.org/social_contract#guidelines"
-
-#~ msgid ""
-#~ "Virtual packages\n"
-#~ " These packages do not exist; they are names other packages use to "
-#~ "require or provide some functionality."
-#~ msgstr ""
-#~ "Виртуальные пакеты\n"
-#~ " Эти пакеты не существуют; они указывают на другие пакеты, которые нужно "
-#~ "использовать или которые предоставляют схожие функции."
-
-#~ msgid ""
-#~ "Packages which are recommended by other packages\n"
-#~ " These packages are not strictly required, but they may be necessary to "
-#~ "provide full functionality in some other programs that you are installing "
-#~ "or upgrading."
-#~ msgstr ""
-#~ "Пакеты, которые рекомендуются другими пакетами\n"
-#~ " Эти пакеты необязательны для полноценной работы вашей системы, но они "
-#~ "могут расширить функциональность некоторых программ, которые у вас уже "
-#~ "установлены."
-
-#~ msgid ""
-#~ "Packages which are suggested by other packages\n"
-#~ " These packages are not required in order to make your system function "
-#~ "properly, but they may provide enhanced functionality for some programs "
-#~ "that you are currently installing."
-#~ msgstr ""
-#~ "Пакеты, которые предлагаются другими пакетами\n"
-#~ " Эти пакеты не обязательны для полноценной работы вашей системы, но они "
-#~ "могут расширить функциональность некоторых программ, которые у вас уже "
-#~ "установлены."
-
-#~ msgid "UNCATEGORIZED"
-#~ msgstr "БЕЗ КАТЕГОРИИ"
-
-#~ msgid "End-user"
-#~ msgstr "Пользователь"
-
-#~ msgid "Servers"
-#~ msgstr "Серверы"
-
-#~ msgid "Development"
-#~ msgstr "Разработка"
-
-#~ msgid "Localization"
-#~ msgstr "Локализация"
-
-#~ msgid "Hardware Support"
-#~ msgstr "Поддержка оборудования"
-
-#~ msgid "Unrecognized tasks"
-#~ msgstr "Нераспознанные задачи"
-
-#~ msgid ""
-#~ "\n"
-#~ " Tasks are groups of packages which provide an easy way to select a "
-#~ "predefined set of packages for a particular purpose."
-#~ msgstr ""
-#~ "\n"
-#~ " Задачи -- это группы пакетов, которые предоставляют простой путь выбора "
-#~ "предопределённого набора пакетов для некоторой цели."
-
-#~ msgid "Bad number in format string: %ls"
-#~ msgstr "Неправильное число в формате строки: %ls"
-
-#~ msgid "Match indices must be 1 or greater, not \"%s\""
-#~ msgstr "Индекс совпадения должен быть 1 или больше, а не \"%s\""
-
-#~ msgid "Match index %ls is too large; available groups are (%s)"
-#~ msgstr "Индекс совпадения %ls слишком большой; доступные группы (%s)"
-
-#~ msgid "TAGLESS PACKAGES"
-#~ msgstr "НЕТЕГИРОВАННЫЕ ПАКЕТЫ"
-
-#~ msgid ""
-#~ "\n"
-#~ " These packages have not yet been classified in debtags."
-#~ msgstr ""
-#~ "\n"
-#~ " Эти пакеты пока не классифицированы в debtags."
-
-#~ msgid "Versions"
-#~ msgstr "Версии"
-
-#~ msgid "All Packages"
-#~ msgstr "Все пакеты"
-
-#~ msgid "No packages matched the pattern \"%ls\"."
-#~ msgstr "Нет пакетов, попадающих под шаблон \"%ls\"."
-
-#~ msgid "Enter the new package tree limit: "
-#~ msgstr "Введите новый ограничитель дерева пакетов: "
-
-#~ msgid "%s depends upon %s"
-#~ msgstr "%s зависит от %s"
-
-#~ msgid "%s pre-depends upon %s"
-#~ msgstr "%s сначала зависит от %s"
-
-#~ msgid "%s suggests %s"
-#~ msgstr "%s предлагает %s"
-
-#~ msgid "%s recommends %s"
-#~ msgstr "%s рекомендует %s"
-
-#~ msgid "%s conflicts with %s"
-#~ msgstr "%s конфликтует с %s"
-
-#~ msgid "%s breaks %s"
-#~ msgstr "%s ломает %s"
-
-#~ msgid "%s replaces %s"
-#~ msgstr "%s замещает %s"
-
-#~ msgid "%s obsoletes %s"
-#~ msgstr "%s делает устаревшим %s"
-
-#~ msgid "%s conflicts with %s [provided by %s %s]"
-#~ msgstr "%s конфликтует с %s [предоставлено %s %s]"
-
-#~ msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
-#~ msgstr "-> Невозможно решить оставление зависимости \"%s рекомендует %s\"."
-
-#~ msgid "The following actions will resolve this dependency:"
-#~ msgstr "Следующие действия разрешат зависимость:"
-
-#~ msgid "Remove the following packages:"
-#~ msgstr "Удалить следующие пакеты:"
-
-#~ msgid "Keep the following packages at their current version:"
-#~ msgstr "Сохранить для следующих пакетов их текущие версии:"
-
-#~ msgid "Install the following packages:"
-#~ msgstr "Установить следующие пакеты:"
-
-#~ msgid "Upgrade the following packages:"
-#~ msgstr "Обновить следующие пакеты:"
-
-#~ msgid "Downgrade the following packages:"
-#~ msgstr "Установить более старую версию для следующих пакетов:"
-
-#~ msgid "Leave the following recommendations unresolved:"
-#~ msgstr "Оставить следующие рекомендации нерешёнными:"
-
-#~ msgid "No broken packages."
-#~ msgstr "Нет неработоспособных пакетов."
-
-#~ msgid "Search for:"
-#~ msgstr "Поиск:"
-
-#~ msgid "Really Continue"
-#~ msgstr "Действительно продолжить"
-
-#~ msgid "Abort Installation"
-#~ msgstr "Отменить установку"
-
-#~ msgid "Become root"
-#~ msgstr "Стать суперпользователем"
-
-#~ msgid "Don't become root"
-#~ msgstr "Не становиться суперпользователем"
-
-#~ msgid ""
-#~ "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/"
-#~ "Remove Pkgs"
-#~ msgstr ""
-#~ "%ls: Меню  %ls: Помощь  %ls: Выход  %ls: Обновить  %ls: Загруз/Устан/Удал "
-#~ "пкт"
-
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "Маркер форматирования с отсутствующим кодом формата"
-
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Неверное число строке формата: '%ls'"
-
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Пропущено число параметров в строке формата"
-
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "Число параметров должно быть 1 или более, а не %ld"
-
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Неизвестный код форматирования '%lc'"
-
-#~ msgid "Bad format parameter"
-#~ msgstr "Недопустимый параметр формата"
-
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Не удалось проанализировать описание ключа: %ls"
-
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Неправильный пустая привязка клавиш"
-
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
-#~ msgstr ""
-#~ "Управляющие модификаторы не могут быть использованы с непечатными "
-#~ "символами"
-
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "Ой!  Получен сигнал SIGTERM, выход..\n"
-
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "Ой!  Получен сигнал SIGSEGV, выход..\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "Ой!  Получен сигнал SIGABRT, выход..\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "Ой!  Получен сигнал SIGQUIT, выход..\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr ""
-#~ "Не удалось загрузить имя файла: строка %ls не является многобайтовой."
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "САМЫЙ ВЕРХНИЙ УРОВЕНЬ"
+#~ "Показать условия, на которых можно копировать и распространять aptitude"
