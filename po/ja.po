@@ -165,7 +165,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-30 19:56-0800\n"
-"PO-Revision-Date: 2008-02-19 04:19+0900\n"
+"PO-Revision-Date: 2008-02-19 04:39+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -206,7 +206,7 @@ msgstr "%B値:%b         "
 #: src/apt_config_treeitems.cc:278
 #, c-format
 msgid "Editing \"%ls\""
-msgstr "「%ls」を編集中"
+msgstr "「%ls」の編集"
 
 #: src/apt_config_treeitems.cc:400
 msgid "%BChoice:%b  "
@@ -214,7 +214,7 @@ msgstr "%B選んだ選択肢:%b  "
 
 #: src/apt_options.cc:160
 msgid "Display some available commands at the top of the screen"
-msgstr "利用可能なコマンドの一部をスクリーン最上部に表示します"
+msgstr "利用可能なコマンドの一部をスクリーン最上部に表示する"
 
 #: src/apt_options.cc:161
 msgid ""
@@ -226,7 +226,7 @@ msgstr ""
 
 #: src/apt_options.cc:165
 msgid "Hide the menu bar when it is not being used"
-msgstr "使用時以外はメニューバーを隠します"
+msgstr "使用時以外はメニューバーを非表示にする"
 
 #: src/apt_options.cc:166
 msgid ""
@@ -238,7 +238,7 @@ msgstr ""
 
 #: src/apt_options.cc:170
 msgid "Use a minibuffer-style prompt when possible"
-msgstr "可能な場合はミニバッファ形式のプロンプトを使います"
+msgstr "可能な場合はミニバッファ形式のプロンプトを使用する"
 
 #: src/apt_options.cc:171
 msgid ""
@@ -252,7 +252,7 @@ msgstr ""
 
 #: src/apt_options.cc:176
 msgid "Show partial search results (incremental search)"
-msgstr "部分検索結果を表示します (インクリメンタルサーチ)"
+msgstr "部分的な入力で検索結果を表示する (インクリメンタルサーチ)"
 
 #: src/apt_options.cc:177
 msgid ""
@@ -266,7 +266,7 @@ msgstr ""
 
 #: src/apt_options.cc:183
 msgid "Closing the last view exits the program"
-msgstr "最後の画面を閉じたときにプログラムを終了します"
+msgstr "最後の画面を閉じたときにプログラムを終了する"
 
 #: src/apt_options.cc:184
 msgid ""
@@ -280,7 +280,7 @@ msgstr ""
 
 #: src/apt_options.cc:190
 msgid "Prompt for confirmation at exit"
-msgstr "終了時にプロンプトで確認をおこないます"
+msgstr "終了時にプロンプトで確認する"
 
 #: src/apt_options.cc:191
 msgid ""
@@ -304,7 +304,7 @@ msgstr ""
 
 #: src/apt_options.cc:199
 msgid "Never"
-msgstr "行いません"
+msgstr "しない"
 
 #: src/apt_options.cc:200
 msgid ""
@@ -316,7 +316,7 @@ msgstr ""
 
 #: src/apt_options.cc:201
 msgid "When an error occurs"
-msgstr "エラー時のみ行います"
+msgstr "エラー発生時のみする"
 
 #: src/apt_options.cc:202
 msgid ""
@@ -328,7 +328,7 @@ msgstr ""
 
 #: src/apt_options.cc:203
 msgid "Always"
-msgstr "常に行います"
+msgstr "常にする"
 
 #: src/apt_options.cc:204
 msgid ""
@@ -340,7 +340,7 @@ msgstr ""
 
 #: src/apt_options.cc:206
 msgid "Use a 'status-line' download indicator for all downloads"
-msgstr "すべてのダウンロードの進行状況をステータスラインに表示します"
+msgstr "すべてのダウンロードの進行状況をステータスラインに表示する"
 
 #: src/apt_options.cc:207
 msgid ""
@@ -367,7 +367,7 @@ msgstr ""
 
 #: src/apt_options.cc:217
 msgid "Advance to the next item after changing the state of a package"
-msgstr "パッケージのステータスの変更後に次の項目に進みます"
+msgstr "パッケージのステータスの変更後に次の項目に進む"
 
 #: src/apt_options.cc:218
 msgid ""
@@ -381,7 +381,7 @@ msgstr ""
 
 #: src/apt_options.cc:223
 msgid "Automatically show why packages are broken"
-msgstr "パッケージの依存関係が壊れている理由を自動的に表示します"
+msgstr "パッケージの依存関係が壊れている理由を自動的に表示する"
 
 #: src/apt_options.cc:224
 msgid ""
@@ -463,7 +463,7 @@ msgstr ""
 
 #: src/apt_options.cc:267
 msgid "Automatically upgrade installed packages"
-msgstr "インストール済みのパッケージを自動的に更新します"
+msgstr "インストール済みパッケージを自動的に更新する"
 
 #: src/apt_options.cc:268
 msgid ""
@@ -476,8 +476,8 @@ msgstr ""
 #: src/apt_options.cc:272
 msgid "Remove obsolete package files after downloading new package lists"
 msgstr ""
-"新しいパッケージ一覧のダウンロード後に、廃止されたパッケージファイルを削除し"
-"ます"
+"新しいパッケージ一覧のダウンロード後に、廃止されたパッケージファイルを削除す"
+"る"
 
 #: src/apt_options.cc:273
 msgid ""
@@ -505,7 +505,7 @@ msgstr ""
 
 #: src/apt_options.cc:285
 msgid "Display a preview of what will be done before doing it"
-msgstr "行おうとしていることのプレビューを事前に表示します"
+msgstr "実行内容のプレビューを事前に表示する"
 
 #: src/apt_options.cc:286
 msgid ""
@@ -521,7 +521,7 @@ msgid ""
 "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr ""
 "パッケージ一覧を更新したときには常に、どのパッケージが「新規」かの情報を消去"
-"します"
+"する"
 
 #: src/apt_options.cc:293
 msgid ""
@@ -536,7 +536,7 @@ msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr ""
 "パッケージのインストールまたは削除をおこなったときには常に、どのパッケージが"
-"「新規」かの情報を消去します"
+"「新規」かの情報を消去する"
 
 #: src/apt_options.cc:299
 msgid ""
@@ -551,7 +551,7 @@ msgstr ""
 #: src/apt_options.cc:305
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
-msgstr "読み取り専用モードで最初に変更がなされたときに警告を表示します"
+msgstr "読み取り専用モードで最初に変更がなされたときに警告を表示する"
 
 #: src/apt_options.cc:306
 msgid ""
@@ -564,8 +564,7 @@ msgstr ""
 
 #: src/apt_options.cc:312
 msgid "Warn when attempting to perform a privileged action as a non-root user"
-msgstr ""
-"root 以外のユーザが特権の必要なアクションを行おうとしたときに警告します"
+msgstr "root 以外のユーザが特権の必要なアクションを行おうとしたときに警告する"
 
 #: src/apt_options.cc:313
 msgid ""
@@ -597,7 +596,7 @@ msgstr ""
 
 #: src/apt_options.cc:335
 msgid "Automatically resolve dependencies of a package when it is selected"
-msgstr "パッケージ選択時に自動的に依存関係を解決します"
+msgstr "パッケージ選択時に自動的に依存関係を解決する"
 
 #: src/apt_options.cc:336
 msgid ""
@@ -613,8 +612,7 @@ msgstr ""
 
 #: src/apt_options.cc:344
 msgid "Automatically fix broken packages before installing or removing"
-msgstr ""
-"インストールや削除の前に、依存関係の壊れたパッケージを自動的に修復します"
+msgstr "インストールや削除の前に、依存関係の壊れたパッケージを自動的に修復する"
 
 #: src/apt_options.cc:345
 msgid ""
@@ -630,7 +628,7 @@ msgstr ""
 
 #: src/apt_options.cc:352
 msgid "Install recommended packages automatically"
-msgstr "推奨パッケージを自動的にインストールします"
+msgstr "推奨パッケージを自動的にインストールする"
 
 # It would be better to insert "automatically resolve dependncies" and
 # "Remove unused packages automatically" as variables.
@@ -644,18 +642,18 @@ msgid ""
 "enabled, packages that are recommended by an installed package will not be "
 "automatically removed."
 msgstr ""
-"このオプションと「パッケージ選択時に自動的に依存関係を解決します」をともに有"
-"効にすると、aptitude は、新しくインストールするパッケージが完全に依存するパッ"
+"このオプションと「パッケージ選択時に自動的に依存関係を解決する」をともに有効"
+"にすると、aptitude は、新しくインストールするパッケージが完全に依存するパッ"
 "ケージだけでなく、新しくインストールするパッケージが推奨するパッケージもイン"
 "ストールしようとします。新しくインストールするパッケージが提案するパッケージ"
 "は、自動的にはインストールされません。\n"
-"このオプションと「使われていないパッケージを自動的に削除します」をともに有効"
-"にすると、何らかのインストール済みパッケージに推奨されている場合、パッケージ"
-"は自動的には削除されません。"
+"このオプションと「使われていないパッケージを自動的に削除する」をともに有効に"
+"すると、何らかのインストール済みパッケージに推奨されている場合、パッケージは"
+"自動的には削除されません。"
 
 #: src/apt_options.cc:365
 msgid "Remove unused packages automatically"
-msgstr "使われていないパッケージを自動的に削除します"
+msgstr "使われていないパッケージを自動的に削除する"
 
 # It would be better to insert "Install recommended packages automatically"
 # as a variable.
@@ -673,9 +671,9 @@ msgstr ""
 "動でインストールされたパッケージが依存していないものは、システムから削除され"
 "ます。削除を取り消すと、手動でインストールされたというフラグがそのパッケージ"
 "につきます。\n"
-"このオプションと「推奨パッケージを自動的にインストールします」をともに有効に"
-"すると、自動的にインストールされたパッケージであっても、何らかのインストール"
-"済みパッケージに推奨されている場合は、パッケージは自動的には削除されません。"
+"このオプションと「推奨パッケージを自動的にインストールする」をともに有効にす"
+"ると、自動的にインストールされたパッケージであっても、何らかのインストール済"
+"みパッケージに推奨されている場合は、パッケージは自動的には削除されません。"
 
 #: src/apt_options.cc:377
 msgid "Packages that should never be automatically removed"
