@@ -165,7 +165,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-30 19:56-0800\n"
-"PO-Revision-Date: 2006-11-04 15:34+0900\n"
+"PO-Revision-Date: 2008-02-19 04:19+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -179,38 +179,38 @@ msgid ""
 "%BDefault:%b %s\n"
 "%BValue:%b   %s\n"
 msgstr ""
+"%Bオプション:%b %s\n"
+"%Bデフォルト:%b %s\n"
+"%B値:%b         %s\n"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
 msgid "True"
-msgstr ""
+msgstr "はい"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
-#, fuzzy
 msgid "False"
-msgstr "閉じる"
+msgstr "いいえ"
 
-# * Menu item on the first line.
 #: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:392
-#, fuzzy
 msgid "%BOption:%b  "
-msgstr "オプション"
+msgstr "%Bオプション:%b "
 
 #: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:394
 msgid "%BDefault:%b "
-msgstr ""
+msgstr "%Bデフォルト:%b "
 
 #: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:396
 msgid "%BValue:%b   "
-msgstr ""
+msgstr "%B値:%b         "
 
 #: src/apt_config_treeitems.cc:278
 #, c-format
 msgid "Editing \"%ls\""
-msgstr ""
+msgstr "「%ls」を編集中"
 
 #: src/apt_config_treeitems.cc:400
 msgid "%BChoice:%b  "
-msgstr ""
+msgstr "%B選んだ選択肢:%b  "
 
 #: src/apt_options.cc:160
 msgid "Display some available commands at the top of the screen"
@@ -221,9 +221,10 @@ msgid ""
 "If this option is enabled, a brief summary of some of the most important "
 "aptitude commands will appear beneath the menu bar."
 msgstr ""
+"このオプションを有効にすると、aptitude の最重要コマンドのうちいくつかの概要が"
+"メニューバーの下に現れます。"
 
 #: src/apt_options.cc:165
-#, fuzzy
 msgid "Hide the menu bar when it is not being used"
 msgstr "使用時以外はメニューバーを隠します"
 
@@ -232,6 +233,8 @@ msgid ""
 "If this option is enabled, the menu bar will only appear when it has been "
 "activated by pressing the menu key."
 msgstr ""
+"このオプションを有効にすると、メニューキーを押してアクティブにしたときのみ、"
+"メニューバーが現れるようになります"
 
 #: src/apt_options.cc:170
 msgid "Use a minibuffer-style prompt when possible"
@@ -243,6 +246,9 @@ msgid ""
 "bottom of the screen.  If not, prompts will be displayed as pop-up dialog "
 "boxes."
 msgstr ""
+"このオプションを有効にすると、プロンプトはスクリーン最下部に 1 行で表示されま"
+"す。無効にすると、プロンプトはポップアップダイアログボックスとして表示されま"
+"す。"
 
 #: src/apt_options.cc:176
 msgid "Show partial search results (incremental search)"
@@ -254,6 +260,9 @@ msgid ""
 "list as you type them.  This is convenient, but may slow the program down, "
 "particularly on older computers."
 msgstr ""
+"このオプションを有効にすると、文字を入力するたびに aptitude がパッケージ一覧"
+"において検索を実行します。この機能は便利ですが、特に古いコンピュータではプロ"
+"グラムの動作が遅くなってしまう可能性があります。"
 
 #: src/apt_options.cc:183
 msgid "Closing the last view exits the program"
@@ -265,6 +274,9 @@ msgid ""
 "(package lists, package details, etc) have been closed.  Otherwise, aptitude "
 "will continue running until you select 'Quit' from the Actions menu."
 msgstr ""
+"このオプションを有効にすると、すべての画面 (パッケージ一覧やパッケージ詳細画"
+"面など) を閉じたときに aptitude の動作が停止します。無効にすると、アクション"
+"メニューから「終了」を選択するまで aptitude は動作し続けます。"
 
 #: src/apt_options.cc:190
 msgid "Prompt for confirmation at exit"
@@ -275,6 +287,8 @@ msgid ""
 "If this option is enabled, aptitude will not terminate until you confirm "
 "that you really want to quit."
 msgstr ""
+"このオプションを有効にすると、aptitude は、本当に終了したいのかを確認してから"
+"プログラムを終了するようになります。"
 
 #: src/apt_options.cc:195
 msgid "Pause after downloading files"
@@ -285,6 +299,8 @@ msgid ""
 "This option controls whether aptitude will wait for confirmation after a "
 "download before it goes ahead and installs packages."
 msgstr ""
+"このオプションを用いると、パッケージのダウンロード後、インストールへと進む前"
+"に確認を求めるか否か、調整できます。"
 
 #: src/apt_options.cc:199
 msgid "Never"
@@ -295,6 +311,8 @@ msgid ""
 "Never wait for the user after downloading packages: always begin the "
 "installation immediately."
 msgstr ""
+"パッケージのダウンロード後にユーザに確認を求めません。常に、そのままインス"
+"トールを始めます。"
 
 #: src/apt_options.cc:201
 msgid "When an error occurs"
@@ -305,6 +323,8 @@ msgid ""
 "Wait for confirmation if an error occurred during the download.  If there "
 "were no errors, begin installing packages immediately."
 msgstr ""
+"ダウンロード中にエラーが発生した場合に確認を求めます。エラーが発生しなかった"
+"場合はそのままパッケージのインストールを始めます。"
 
 #: src/apt_options.cc:203
 msgid "Always"
@@ -315,6 +335,8 @@ msgid ""
 "Always wait for the user to confirm the download before proceeding with the "
 "installation."
 msgstr ""
+"インストールへと進む前に、毎回、ダウンロードの内容についてユーザに確認を求め"
+"ます。"
 
 #: src/apt_options.cc:206
 msgid "Use a 'status-line' download indicator for all downloads"
@@ -325,6 +347,8 @@ msgid ""
 "If this option is enabled, aptitude will display the status of ongoing "
 "downloads at the bottom of the screen, rather than opening a new view."
 msgstr ""
+"このオプションを有効にすると、aptitude は、新しい画面を開いてではなくスクリー"
+"ン最下部に、進行中のダウンロードの状況を表示するようになります。"
 
 #: src/apt_options.cc:211
 msgid "Display the extended description area by default"
@@ -336,6 +360,10 @@ msgid ""
 "of the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
+"このオプションを有効にすると、プログラムを起動したときに、パッケージ一覧にお"
+"いてパッケージ説明詳細版を表示する領域 (スクリーンの下半分) を表示するように"
+"なります。無効にすると、パッケージ説明詳細版を表示する領域は、初期状態では非"
+"表示となります。"
 
 #: src/apt_options.cc:217
 msgid "Advance to the next item after changing the state of a package"
@@ -347,6 +375,9 @@ msgid ""
 "instance, installing or removing it) will move the selection to the next "
 "package in the list."
 msgstr ""
+"このオプションを有効にすると、パッケージに対して何らかのアクション (例えばイ"
+"ンストールや削除) を実行した際に、一覧内の次のパッケージへと自動的に移るよう"
+"になります。"
 
 #: src/apt_options.cc:223
 msgid "Automatically show why packages are broken"
@@ -358,6 +389,8 @@ msgid ""
 "dependencies will automatically display the dependencies that are "
 "unfulfilled in the lower pane of the display."
 msgstr ""
+"このオプションを有効にすると、依存関係の壊れたパッケージをハイライトした際"
+"に、満たされていない依存関係を画面の下半分に自動的に表示するようになります。"
 
 #: src/apt_options.cc:230
 msgid "The default grouping method for package views"
@@ -368,6 +401,9 @@ msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
 msgstr ""
+"このオプションを用いると、aptitude のパッケージ一覧においてパッケージをグルー"
+"プにまとめる方法を調整できます。分類方法の指定のしかたに関する情報は "
+"aptitude ユーザマニュアルを参照してください。"
 
 #: src/apt_options.cc:235
 msgid "The default display-limit for package views"
@@ -379,6 +415,9 @@ msgid ""
 "specified by this option.  See the aptitude user's manual for detailed "
 "information about searches."
 msgstr ""
+"デフォルトでは、各パッケージ画面の表示制限は、このオプションに設定された値と"
+"なります。パッケージの検索に関する情報は aptitude ユーザマニュアルを参照して"
+"ください。"
 
 #: src/apt_options.cc:241
 msgid "The display format for package views"
@@ -390,6 +429,9 @@ msgid ""
 "the aptitude user's manual for information on how to specify a display "
 "format."
 msgstr ""
+"このオプションを用いると、aptitude のパッケージ一覧における各行のフォーマット"
+"を調整できます。表示フォーマットの指定方法に関する情報は aptitude ユーザマ"
+"ニュアルを参照してください。"
 
 #: src/apt_options.cc:248
 msgid "The display format for the status line"
@@ -401,6 +443,9 @@ msgid ""
 "the package list and the lower pane).  See the aptitude user's manual for "
 "information on how to specify a display format."
 msgstr ""
+"このオプションを用いると、aptitude のステータスライン (パッケージ一覧と画面の"
+"下半分を隔てる行) のフォーマットを調整できます。表示フォーマットの指定方法に"
+"関する情報は aptitude ユーザマニュアルを参照してください。"
 
 #: src/apt_options.cc:256
 msgid "The display format for the header line"
@@ -412,6 +457,9 @@ msgid ""
 "the package list).  See the aptitude user's manual for information on how to "
 "specify a display format."
 msgstr ""
+"このオプションを用いると、aptitude のヘッダライン (パッケージ一覧の上の行) の"
+"フォーマットを調整できます。表示フォーマットの指定方法に関する情報は "
+"aptitude ユーザマニュアルを参照してください。"
 
 #: src/apt_options.cc:267
 msgid "Automatically upgrade installed packages"
@@ -422,6 +470,8 @@ msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
 msgstr ""
+"このオプションを有効にすると、aptitude は起動時に、更新可能なパッケージをすべ"
+"て更新対象として選択するようになります。"
 
 #: src/apt_options.cc:272
 msgid "Remove obsolete package files after downloading new package lists"
@@ -435,6 +485,9 @@ msgid ""
 "delete from the package cache any package files that can no longer be "
 "downloaded from any archive in sources.list."
 msgstr ""
+"このオプションを有効にすると、aptitude は、インストールの実行後に毎回、"
+"sources.list に含まれているどのアーカイブからももうダウンロードできないパッ"
+"ケージファイルを、すべてパッケージキャッシュから削除するようになります。"
 
 #: src/apt_options.cc:278
 msgid "URL to use to download changelogs"
@@ -446,6 +499,9 @@ msgid ""
 "the Debian Web site.  You should only need to change this if the changelogs "
 "move to a different URL."
 msgstr ""
+"このオプションを用いると、Debian のウェブサイトから変更履歴をダウンロードする"
+"のに用いられるテンプレートを調整できます。設定の変更が必要になるのは、変更履"
+"歴 (changelog) ファイルの URL が変更になったときのみでしょう。"
 
 #: src/apt_options.cc:285
 msgid "Display a preview of what will be done before doing it"
@@ -456,6 +512,9 @@ msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
 msgstr ""
+"このオプションを有効にすると、インストールを実行するよう aptitude に命令した"
+"ときに、aptitude はまず、実行しようとしているアクションの要約を表示するように"
+"なります。\n"
 
 #: src/apt_options.cc:292
 msgid ""
@@ -469,6 +528,8 @@ msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
 msgstr ""
+"このオプションを有効にすると、(例えば 'u' を押して) パッケージ一覧を更新した"
+"後に、aptitude が新規パッケージの一覧を消去するようになります。"
 
 #: src/apt_options.cc:298
 msgid ""
@@ -483,6 +544,9 @@ msgid ""
 "after you perform an install run or install or remove packages from the "
 "command-line."
 msgstr ""
+"このオプションを有効にすると、ビジュアルインタフェースでの「インストールの実"
+"行」やコマンドラインからのパッケージのインストール・削除の実行の後に、"
+"aptitude が新規パッケージの一覧を消去するようになります。"
 
 #: src/apt_options.cc:305
 msgid ""
@@ -495,6 +559,8 @@ msgid ""
 "modify the state of a package if you do not have permissions to apply the "
 "change to the system."
 msgstr ""
+"このオプションを有効に%Bしない%bと、システムに変更を加える権限がない場合に、"
+"パッケージの状態を変更したときに aptitude が警告を発します。"
 
 #: src/apt_options.cc:312
 msgid "Warn when attempting to perform a privileged action as a non-root user"
@@ -508,6 +574,10 @@ msgid ""
 "installing packages as a non-root user.  You will be given the option to log "
 "in as root and perform the action with root privileges."
 msgstr ""
+"このオプションを有効にすると、実行権限のないアクション (例: root 以外のユーザ"
+"によるパッケージのインストール) を実行しようとしたときに aptitude が警告を発"
+"するようになります。そして、root としてログインして root 権限でアクションを実"
+"行するか、選択可能になります。"
 
 #: src/apt_options.cc:322
 msgid "File to log actions into"
@@ -520,6 +590,10 @@ msgid ""
 "character ('%B|%b'), the remainder of the name will be interpreted as a "
 "shell command that is to receive the log on standard input."
 msgstr ""
+"パッケージのインストールや削除を行った際に、aptitude の実行内容の要約がこの"
+"ファイルに書き込まれます。ファイル名の 1 文字目がパイプ文字 ('%B|%b') の場"
+"合、その後の部分は、ログを標準入力から受け取るシェルコマンドとして解釈されま"
+"す。"
 
 #: src/apt_options.cc:335
 msgid "Automatically resolve dependencies of a package when it is selected"
@@ -532,6 +606,10 @@ msgid ""
 "installation.  This is much faster than the built-in dependency resolver, "
 "but may produce suboptimal results or fail entirely in some scenarios."
 msgstr ""
+"このオプションを有効にすると、aptitude は単純な経験則を使用して、インストール"
+"対象としてフラグをつけた各パッケージの依存関係を直ちに解決するようになりま"
+"す。こちらのほうが組み込みの依存関係解決ツールよりも遥かに高速ですが、場合に"
+"よっては最適でない結果となったり、完全に失敗したりする可能性もあります。"
 
 #: src/apt_options.cc:344
 msgid "Automatically fix broken packages before installing or removing"
@@ -545,12 +623,17 @@ msgid ""
 "suggestion of the problem resolver.  Otherwise, aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
+"このオプションを有効にすると、依存関係が壊れているパッケージがある状態でイン"
+"ストールの実行をしたときに、aptitude は、依存関係解決ツールが提案する解決方法"
+"のうち選択中のものを自動的に適用するようになります。無効にすると、aptitude "
+"は、壊れた依存関係の解決用のプロンプトを表示します。"
 
 #: src/apt_options.cc:352
-#, fuzzy
 msgid "Install recommended packages automatically"
 msgstr "推奨パッケージを自動的にインストールします"
 
+# It would be better to insert "automatically resolve dependncies" and
+# "Remove unused packages automatically" as variables.
 #: src/apt_options.cc:353
 msgid ""
 "If this option is enabled and \"automatically resolve dependencies\" is also "
@@ -561,11 +644,21 @@ msgid ""
 "enabled, packages that are recommended by an installed package will not be "
 "automatically removed."
 msgstr ""
+"このオプションと「パッケージ選択時に自動的に依存関係を解決します」をともに有"
+"効にすると、aptitude は、新しくインストールするパッケージが完全に依存するパッ"
+"ケージだけでなく、新しくインストールするパッケージが推奨するパッケージもイン"
+"ストールしようとします。新しくインストールするパッケージが提案するパッケージ"
+"は、自動的にはインストールされません。\n"
+"このオプションと「使われていないパッケージを自動的に削除します」をともに有効"
+"にすると、何らかのインストール済みパッケージに推奨されている場合、パッケージ"
+"は自動的には削除されません。"
 
 #: src/apt_options.cc:365
 msgid "Remove unused packages automatically"
 msgstr "使われていないパッケージを自動的に削除します"
 
+# It would be better to insert "Install recommended packages automatically"
+# as a variable.
 #: src/apt_options.cc:366
 msgid ""
 "If this option is enabled, packages that are automatically installed and "
@@ -576,10 +669,17 @@ msgid ""
 "is enabled, automatically installed packages will not be removed if any "
 "installed package recommends them."
 msgstr ""
+"このオプションを有効にすると、自動的にインストールされたパッケージのうち、手"
+"動でインストールされたパッケージが依存していないものは、システムから削除され"
+"ます。削除を取り消すと、手動でインストールされたというフラグがそのパッケージ"
+"につきます。\n"
+"このオプションと「推奨パッケージを自動的にインストールします」をともに有効に"
+"すると、自動的にインストールされたパッケージであっても、何らかのインストール"
+"済みパッケージに推奨されている場合は、パッケージは自動的には削除されません。"
 
 #: src/apt_options.cc:377
 msgid "Packages that should never be automatically removed"
-msgstr ""
+msgstr "絶対に自動的には削除すべきでないパッケージ"
 
 #: src/apt_options.cc:378
 msgid ""
@@ -587,6 +687,10 @@ msgid ""
 "installed package depends on them: they will never be targeted for removal "
 "as unused packages."
 msgstr ""
+"この検索パターンにマッチするパッケージは常に、何らかのインストール済みパッ"
+"ケージに依存されているとして扱われます。つまり、この検索パターンにマッチする"
+"パッケージが、使用されていないパッケージとして削除対象になることはありませ"
+"ん。"
 
 #: src/broken_indicator.cc:123
 #, fuzzy, c-format
