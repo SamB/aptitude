@@ -161,6 +161,23 @@
 #
 # flag
 # status
+#
+# Some function arguments good to know
+# ====================================
+#
+# src/ui.cc
+# ---------
+#
+# * add_menu(*info, &name, &menu_description)
+#   * menu_description: Item name in the menu line.
+# * setup_fileview(&filename, *encoding, &menudesc, &longmenudesc, &tabdesc)
+#   * menudesc: Item name in the "View" menu.
+#   * longmenudesc: Item description in the "View" menu.
+#   * tabdesc: Tab name.
+# * add_main_widget(&w, &menuref, &menudesc, &tabdesc)
+#   * menuref: Item name in the "View" menu.
+#   * menudesc: Menu item description.
+#   * tabdesc: Tab name and menu item name.
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
@@ -4808,12 +4825,10 @@ msgstr "キャッシュを読み込んでいます"
 msgid "Really quit Aptitude?"
 msgstr "本当に Aptitude を終了しますか?"
 
-# Notes: Tab name
 #: src/ui.cc:693 src/ui.cc:695
 msgid "Preferences"
 msgstr "設定"
 
-# Notes: Tab description in the "View" menu, Menu item description
 #: src/ui.cc:694 src/ui.cc:2259
 msgid "Change the behavior of aptitude"
 msgstr "aptitude の振舞いを変更します"
@@ -4831,17 +4846,14 @@ msgstr "パッケージ"
 msgid "View available packages and choose actions to perform"
 msgstr "利用可能なパッケージを表示し、実行するアクションを選択します"
 
-# * Message used as 'menuref' for the add_main_widget.
 #: src/ui.cc:864
 msgid "Recommended Packages"
 msgstr "推奨パッケージ"
 
-# * Message used as 'menudesc' for the add_main_widget.
 #: src/ui.cc:865
 msgid "View packages that it is recommended that you install"
 msgstr "インストールするよう推奨されているパッケージを表示します"
 
-# * Message used as 'tabdesc' for the add_main_widget.
 #: src/ui.cc:866
 msgid "Recommendations"
 msgstr "推奨"
@@ -4858,12 +4870,10 @@ msgstr ""
 "トはフリーソフトウェアで、ライセンスに従って再配布してかまいません。詳しくは"
 "「ライセンス」を参照してください"
 
-# Notes: Tab name
 #: src/ui.cc:1018 src/ui.cc:1020
 msgid "License"
 msgstr "ライセンス"
 
-# Notes: Tab description in the "View" menu, Menu item description
 #: src/ui.cc:1019 src/ui.cc:2351
 msgid "View the terms under which you may copy and distribute aptitude"
 msgstr "aptitude のコピーや配布を行う際に従うべき条件を表示します"
@@ -4876,17 +4886,14 @@ msgstr "help-ja.txt"
 msgid "Encoding of help.txt|UTF-8"
 msgstr "Encoding of help-ja.txt|UTF-8"
 
-# Notes: Tab name in the "View" menu
 #: src/ui.cc:1046
 msgid "Online Help"
 msgstr "オンラインヘルプ"
 
-# * Description of an item.
 #: src/ui.cc:1047
 msgid "View a brief introduction to aptitude"
 msgstr "aptitude の使い方に関する簡単な手引きを表示します"
 
-# * Menu item on the first line.
 #: src/ui.cc:1048 src/ui.cc:2498
 msgid "Help"
 msgstr "ヘルプ"
@@ -4913,12 +4920,10 @@ msgstr "aptitude の完全なユーザマニュアルを表示します"
 msgid "Manual"
 msgstr "マニュアル"
 
-# * Item.
 #: src/ui.cc:1077 src/ui.cc:1079
 msgid "FAQ"
 msgstr "FAQ"
 
-# * Description of an item.
 #: src/ui.cc:1078 src/ui.cc:2343
 msgid "View a list of frequently asked questions"
 msgstr "よくある質問の一覧を表示します"
@@ -4928,7 +4933,6 @@ msgid "News"
 msgstr "お知らせ"
 
 # FIXME: Wrongly gettextized message!
-# * Description of an item.
 #: src/ui.cc:1088 src/ui.cc:2347
 msgid "View the important changes made in each version of "
 msgstr "それぞれのバージョンでの重要な変更点を表示します"
@@ -5074,7 +5078,6 @@ msgstr ""
 msgid "Minesweeper"
 msgstr "マインスイーパ"
 
-# * Description of an item.
 #: src/ui.cc:1549 src/ui.cc:2110
 msgid "Waste time trying to find mines"
 msgstr "地雷探しにかまけます"
