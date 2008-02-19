@@ -140,6 +140,7 @@
 # 5. MISCELLANEOUS
 # ----------------
 #
+# behavior                振舞い
 # Changelog               変更履歴
 # debtags vocabulary      debtags 定義集
 # disk space              ディスク領域
@@ -165,7 +166,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-30 19:56-0800\n"
-"PO-Revision-Date: 2008-02-19 04:59+0900\n"
+"PO-Revision-Date: 2008-02-19 21:13+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -4784,11 +4785,15 @@ msgstr "既に root になっています!"
 #: src/ui.cc:429
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
 msgstr ""
+"Get-Root-Command の設定値が不正です。設定値は su: または sudo: で始めてくださ"
+"い"
 
 #: src/ui.cc:436
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr ""
+"Get-Root-Command の設定値が不正です。設定値は %s ではなく su: または sudo: で"
+"始めてください"
 
 #: src/ui.cc:559
 msgid ""
@@ -4803,14 +4808,15 @@ msgstr "キャッシュを読み込んでいます"
 msgid "Really quit Aptitude?"
 msgstr "本当に Aptitude を終了しますか?"
 
+# Notes: Tab name
 #: src/ui.cc:693 src/ui.cc:695
-#, fuzzy
 msgid "Preferences"
-msgstr "事前依存"
+msgstr "設定"
 
+# Notes: Tab description in the "View" menu, Menu item description
 #: src/ui.cc:694 src/ui.cc:2259
 msgid "Change the behavior of aptitude"
-msgstr ""
+msgstr "aptitude の振舞いを変更します"
 
 #: src/ui.cc:730
 msgid "Really discard your personal settings and reload the defaults?"
@@ -4852,17 +4858,15 @@ msgstr ""
 "トはフリーソフトウェアで、ライセンスに従って再配布してかまいません。詳しくは"
 "「ライセンス」を参照してください"
 
-# * Item.
+# Notes: Tab name
 #: src/ui.cc:1018 src/ui.cc:1020
-#, fuzzy
 msgid "License"
-msgstr "ライセンス (^L)"
+msgstr "ライセンス"
 
-# * Description of an item.
+# Notes: Tab description in the "View" menu, Menu item description
 #: src/ui.cc:1019 src/ui.cc:2351
-#, fuzzy
 msgid "View the terms under which you may copy and distribute aptitude"
-msgstr "プログラムをコピーする際などの条件を表示します"
+msgstr "aptitude のコピーや配布を行う際に従うべき条件を表示します"
 
 #: src/ui.cc:1033
 msgid "help.txt"
@@ -4872,13 +4876,15 @@ msgstr "help-ja.txt"
 msgid "Encoding of help.txt|UTF-8"
 msgstr "Encoding of help-ja.txt|UTF-8"
 
+# Notes: Tab name in the "View" menu
 #: src/ui.cc:1046
 msgid "Online Help"
-msgstr ""
+msgstr "オンラインヘルプ"
 
+# * Description of an item.
 #: src/ui.cc:1047
 msgid "View a brief introduction to aptitude"
-msgstr ""
+msgstr "aptitude の使い方に関する簡単な手引きを表示します"
 
 # * Menu item on the first line.
 #: src/ui.cc:1048 src/ui.cc:2498
@@ -4909,9 +4915,8 @@ msgstr "マニュアル"
 
 # * Item.
 #: src/ui.cc:1077 src/ui.cc:1079
-#, fuzzy
 msgid "FAQ"
-msgstr "FAQ (^F)"
+msgstr "FAQ"
 
 # * Description of an item.
 #: src/ui.cc:1078 src/ui.cc:2343
@@ -4919,9 +4924,8 @@ msgid "View a list of frequently asked questions"
 msgstr "よくある質問の一覧を表示します"
 
 #: src/ui.cc:1087 src/ui.cc:1089
-#, fuzzy
 msgid "News"
-msgstr "お知らせ (^N)"
+msgstr "お知らせ"
 
 # * Description of an item.
 #: src/ui.cc:1088 src/ui.cc:2347
@@ -5494,15 +5498,13 @@ msgstr "最後におこなった検索を繰り返します"
 
 # * Item.
 #: src/ui.cc:2236
-#, fuzzy
 msgid "Find Again ^Backwards"
-msgstr "上を検索 (^F)"
+msgstr "前の検索を逆方向に繰り返す (^B)"
 
 # * Description of an item.
 #: src/ui.cc:2237
-#, fuzzy
 msgid "Repeat the last search in the opposite direction"
-msgstr "最後におこなった検索を繰り返します"
+msgstr "最後におこなった検索を逆方向に繰り返します"
 
 # * Item.
 #: src/ui.cc:2241
@@ -5534,10 +5536,10 @@ msgstr "壊れた依存関係を検索 (^B)"
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "解決できない依存関係がある、次のパッケージを探します"
 
+# * Item.
 #: src/ui.cc:2258
-#, fuzzy
 msgid "^Preferences"
-msgstr "事前依存"
+msgstr "設定 (^P)"
 
 # * Item.
 #: src/ui.cc:2263
