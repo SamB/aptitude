@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: 0.4.10-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-30 19:56-0800\n"
-"PO-Revision-Date: 2008-02-14 21:10+0300\n"
+"PO-Revision-Date: 2008-02-19 20:44+0300\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -338,19 +338,14 @@ msgid "URL to use to download changelogs"
 msgstr "URL для загрузки списков изменений"
 
 #: src/apt_options.cc:279
-#, fuzzy
-#| msgid ""
-#| "This option controls the template that's used to download changelogs from "
-#| "the Debian Web site.  You should only need to change this if the URL of "
-#| "the package archive changes."
 msgid ""
 "This option controls the template that's used to download changelogs from "
 "the Debian Web site.  You should only need to change this if the changelogs "
 "move to a different URL."
 msgstr ""
 "Эта опция контролирует шаблон, который используется для загрузки списка "
-"изменений с веб-сайта Debian. Её нужно менять только если изменился URL "
-"архива пакетов."
+"изменений с веб-сайта Debian. Её нужно менять только, если изменился URL "
+"списка изменений."
 
 #: src/apt_options.cc:285
 msgid "Display a preview of what will be done before doing it"
@@ -464,21 +459,15 @@ msgstr ""
 "Автоматически исправлять сломанные пакеты перед установкой или удалением"
 
 #: src/apt_options.cc:345
-#, fuzzy
-#| msgid ""
-#| "If this option is enabled, and you perform an install run while some "
-#| "packages are broken, aptitude will automatically apply the current "
-#| "suggestion of the problem resolver.  Otherwise,aptitude will prompt you "
-#| "for a solution to the broken dependencies."
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
 "suggestion of the problem resolver.  Otherwise, aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
-"Если эта опция включена и вы запускаете установку имя сломанные пакеты, "
+"Если эта опция включена и вы запускаете установку имея сломанные пакеты, "
 "aptitude автоматически применит имеющиеся предложения по решению проблемы от "
-"решателя. Иначе aptitude предложит вам решение с проблемой сломанных "
+"решателя. Иначе aptitude предложит вам решение проблемы сломанных "
 "зависимостей."
 
 #: src/apt_options.cc:352
@@ -486,15 +475,6 @@ msgid "Install recommended packages automatically"
 msgstr "Автоматически устанавливать рекомендуемые пакеты"
 
 #: src/apt_options.cc:353
-#, fuzzy
-#| msgid ""
-#| "If this option is enabled  and \"automatically resolve dependencies\" is "
-#| "also enabled, aptitude will attempt to install the recommendations of "
-#| "newly installed packages in addition to their outright dependencies.  "
-#| "Suggestions will not be automatically installed.\n"
-#| "If this option is enabled and \"Remove unused packages automatically\" is "
-#| "enabled, packages that are recommended by an installed package will not "
-#| "automatically be removed."
 msgid ""
 "If this option is enabled and \"automatically resolve dependencies\" is also "
 "enabled, aptitude will attempt to install the recommendations of newly "
@@ -506,9 +486,9 @@ msgid ""
 msgstr ""
 "Если эта опция и опция \"автоматически разрешать зависимости\" включены, "
 "aptitude попытается установить рекомендуемые к новым устанавливаемым пакетам "
-"вместе с их зависимостями. Предложения не будут автоматически установлены.\n"
+"вместе с их зависимостями. Предложения не будут автоматически установлены. "
 "Если эта опция и опция \"автоматически удалять неиспользуемые пакеты\" "
-"включены, то пакеты, рекомендуемые устанавливаемым пакетом не будут "
+"включены, то пакеты, рекомендуемые устанавливаемым пакетом, не будут "
 "автоматически удалены."
 
 #: src/apt_options.cc:365
@@ -912,10 +892,8 @@ msgid "Couldn't read list of sources"
 msgstr "Не удалось прочесть список источников"
 
 #: src/cmdline/cmdline_prompt.cc:205
-#, fuzzy
-#| msgid "config-files"
 msgid "Config files"
-msgstr "config-files"
+msgstr "Конфигурационные файлы"
 
 #: src/cmdline/cmdline_prompt.cc:299 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
@@ -2041,10 +2019,8 @@ msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> ПОСТАНОВКА В ОЧЕРЕДЬ\n"
 
 #: src/cmdline/cmdline_why.cc:673
-#, fuzzy
-#| msgid "    ++   --> skipping, version check failed.\n"
 msgid "    ++   --> skipping, version check failed\n"
-msgstr "    ++   --> пропускается, неудача при проверке версии.\n"
+msgstr "    ++   --> пропускается, неудача при проверке версии\n"
 
 #: src/cmdline/cmdline_why.cc:691
 #, c-format
@@ -2298,7 +2274,7 @@ msgstr ""
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
 #: src/generic/apt/apt.cc:173
 msgid "Localized defaults|"
-msgstr ""
+msgstr "aptitude-defaults.ru"
 
 #: src/generic/apt/apt.cc:192
 #, c-format
@@ -2307,6 +2283,9 @@ msgid ""
 "option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
 "Recommends' instead or removing this setting."
 msgstr ""
+"Системный конфигурационный файл (%s) содержит настройку устаревшей опции "
+"'Aptitude::Recommends-Important'; используйте вместо неё 'APT::Install-"
+"Recommends', или удалите совсем."
 
 #: src/generic/apt/apt.cc:259
 #, c-format
@@ -2370,12 +2349,12 @@ msgstr "Не удалось прочитать список источников
 #: src/generic/apt/download_update_manager.cc:214
 #, c-format
 msgid "fork() failed: %s"
-msgstr ""
+msgstr "вызов fork() завершился неудачно: %s"
 
 #: src/generic/apt/download_update_manager.cc:261
 #, c-format
 msgid "waitpid() failed: %s"
-msgstr ""
+msgstr "вызов waitpid() завершился неудачно: %s"
 
 #: src/generic/apt/download_update_manager.cc:285
 msgid "Couldn't clean out list directories"
@@ -2387,11 +2366,11 @@ msgstr "Не удалось перестроить кеш пакетов"
 
 #: src/generic/apt/download_update_manager.cc:312
 msgid "The debtags command must not be an empty string."
-msgstr ""
+msgstr "Команда debtags не должна быть пустой строкой."
 
 #: src/generic/apt/download_update_manager.cc:316
 msgid "The debtags command must be an absolute path."
-msgstr ""
+msgstr "Команда debtags должна быть указана абсолютным путём."
 
 #: src/generic/apt/download_update_manager.cc:325
 #, c-format
@@ -2399,45 +2378,47 @@ msgid ""
 "The debtags command (%s) does not exist; perhaps you need to install the "
 "debtags package?"
 msgstr ""
+"Команда debtags (%s) не существует; возможно вам нужно установить пакет "
+"debtags?"
 
 #: src/generic/apt/download_update_manager.cc:328
 #, c-format
 msgid "The debtags command (%s) cannot be executed: %s"
-msgstr ""
+msgstr "Команда debtags (%s) не может быть выполнена: %s"
 
 #: src/generic/apt/download_update_manager.cc:333
-#, fuzzy
-#| msgid "Building tag database"
 msgid "Updating debtags database..."
-msgstr "Построение базы данных тегов"
+msgstr "Обновление базы данных debtags..."
 
 #: src/generic/apt/download_update_manager.cc:350
 msgid "(core dumped)"
-msgstr ""
+msgstr "(создан файл core)"
 
 #: src/generic/apt/download_update_manager.cc:352
 #, c-format
 msgid "The debtags update process (%s %s) was killed by signal %d%s."
-msgstr ""
+msgstr "Процесс обновления debtags (%s %s) завершён по сигналу %d%s."
 
 #: src/generic/apt/download_update_manager.cc:359
 #, c-format
 msgid "The debtags update process (%s %s) exited abnormally (code %d)."
-msgstr ""
+msgstr "Процесс обновления debtags (%s %s) завершён аварийно (код %d)."
 
 #: src/generic/apt/download_update_manager.cc:365
 #, c-format
 msgid ""
 "The debtags update process (%s %s) exited in an unexpected way (status %d)."
 msgstr ""
+"Процесс обновления debtags (%s %s) завершён неожиданным путём (статус %d)."
 
 #: src/generic/apt/download_update_manager.cc:370
-#, fuzzy, c-format
-#| msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
+#, c-format
 msgid ""
 "Updating the debtags database (%s %s) failed (perhaps debtags is not "
 "installed?): %s"
-msgstr "Не удалось загрузить словарь debtags, возможно debtags не установлен?"
+msgstr ""
+"Обновление базы данных debtags (%s %s) завершилось неудачно (возможно, не "
+"установлен пакет debtags?): %s"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
 #, c-format
@@ -2812,26 +2793,23 @@ msgid "Unrecognized attribute name \"%s\""
 msgstr "Нераспознанно название атрибута \"%s\""
 
 #: src/load_config.cc:113
-#, fuzzy, c-format
-#| msgid "Invalid entry in cw::style definition group: \"%s\""
+#, c-format
 msgid "Invalid entry in style definition group: \"%s\""
-msgstr "Неправильный элемент в описываемой группе cw::style: \"%s\""
+msgstr "Неправильный элемент в группе задания стиля: \"%s\""
 
 #: src/load_config.cc:115
-#, fuzzy, c-format
-#| msgid "Invalid tagless entry in cw::style definition group: \"%s\""
+#, c-format
 msgid "Invalid tagless entry in style definition group: \"%s\""
-msgstr "Неправильный бестеговый элемент в описываемой группе cw::style: \"%s\""
+msgstr "Неправильный бестеговый элемент в группе задания стиля: \"%s\""
 
 #: src/load_config.cc:127
 msgid "The default color may only be used as a background."
 msgstr "Цвет по умолчанию можно настроить только для фона."
 
 #: src/load_config.cc:144
-#, fuzzy, c-format
-#| msgid "Unknown cw::style attribute %s"
+#, c-format
 msgid "Unknown style attribute %s"
-msgstr "Неизвестный атрибут в cw::style: %s"
+msgstr "Неизвестный атрибут стиля %s"
 
 #: src/load_config.cc:167 src/load_config.cc:169
 #, c-format
@@ -2864,10 +2842,10 @@ msgid "Terminal policy \"%s\" should be the last policy in the list"
 msgstr "Завершающее правило \"%s\" должно быть последним правилом в списке"
 
 #: src/load_grouppolicy.cc:370
-#, fuzzy, c-format
-#| msgid "Bad section name '%s' (use 'none', 'topdir', or 'subdir')"
+#, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
-msgstr "Неверное имя секции '%s' (можно 'none', 'topdir' или 'subdir')"
+msgstr ""
+"Неверное имя секции '%s' (можно 'none', 'topdir', 'subdir' или 'subdirs')"
 
 #: src/load_grouppolicy.cc:380
 #, c-format
@@ -3060,12 +3038,12 @@ msgstr "Версия libsigc++: %s\n"
 #: src/main.cc:115
 #, c-format
 msgid "Ept support enabled.\n"
-msgstr ""
+msgstr "Поддержка ept включена.\n"
 
 #: src/main.cc:117
 #, c-format
 msgid "Ept support disabled.\n"
-msgstr ""
+msgstr "Поддержка ept выключена.\n"
 
 #: src/main.cc:124
 #, c-format
@@ -3789,12 +3767,10 @@ msgid "HN too long"
 msgstr "HN слишком длинна"
 
 #: src/pkg_columnizer.cc:673 src/pkg_columnizer.cc:682
-#, fuzzy, c-format
-#| msgid "Unable to cw::util::transcode package display format after \"%ls\""
+#, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr ""
-"Не удалось выполнить cw::util::transcode для формата отображения пакета "
-"после \"%ls\""
+"Не удалось выполнить преобразование формата отображения пакета после \"%ls\""
 
 #: src/pkg_columnizer.cc:689
 msgid "Internal error: Default column string is unparsable"
@@ -5375,16 +5351,3 @@ msgstr "Загрузка Changelog"
 #: src/view_changelog.cc:243
 msgid "Download Changelog"
 msgstr "Загрузить Changelog"
-
-#~ msgid "Tasks/Tasks"
-#~ msgstr "Задачи/Задачи"
-
-#~ msgid "Unknown/Unknown"
-#~ msgstr "Неизвестно/Неизвестно"
-
-#~ msgid "virtual/virtual"
-#~ msgstr "виртуальных/виртуальных"
-
-#~ msgid "View the terms under which you may copy and distribute aptiutde"
-#~ msgstr ""
-#~ "Показать условия, на которых можно копировать и распространять aptitude"
