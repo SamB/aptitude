@@ -706,7 +706,7 @@ static void cmdline_parse_why(string response)
   splitws(response, arguments, 1, response.size());
 
   if(arguments.empty())
-    printf(_("No packages found -- enter zero or more roots of the search followed by the package to justify."));
+    printf(_("No packages found -- enter zero or more roots of the search followed by the package to justify.\n"));
   else
     {
       bool success;
