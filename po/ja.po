@@ -183,7 +183,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-30 19:56-0800\n"
-"PO-Revision-Date: 2008-02-19 21:13+0900\n"
+"PO-Revision-Date: 2008-02-20 03:58+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -941,9 +941,9 @@ msgid "Couldn't find a changelog for %s"
 msgstr "%s の変更履歴が見つかりません"
 
 #: src/cmdline/cmdline_clean.cc:29
-#, fuzzy, c-format
+#, c-format
 msgid "E: The clean command takes no arguments\n"
-msgstr "エラー: update コマンドは引数をとりません\n"
+msgstr "エラー: clean コマンドは引数をとりません\n"
 
 #: src/cmdline/cmdline_clean.cc:58
 #, c-format
@@ -956,9 +956,9 @@ msgid "Del %s %s [%sB]\n"
 msgstr "削除 %s %s [%sB]\n"
 
 #: src/cmdline/cmdline_clean.cc:111
-#, fuzzy, c-format
+#, c-format
 msgid "E: The autoclean command takes no arguments\n"
-msgstr "エラー: update コマンドは引数をとりません\n"
+msgstr "エラー: autoclean コマンドは引数をとりません\n"
 
 #: src/cmdline/cmdline_clean.cc:148
 #, c-format
@@ -1011,9 +1011,9 @@ msgstr ""
 "ジか、もしくは廃止されたパッケージではありませんか?"
 
 #: src/cmdline/cmdline_forget_new.cc:25
-#, fuzzy, c-format
+#, c-format
 msgid "E: The forget-new command takes no arguments\n"
-msgstr "エラー: update コマンドは引数をとりません\n"
+msgstr "エラー: forget-new コマンドは引数をとりません\n"
 
 #: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
@@ -1067,7 +1067,6 @@ msgid "Couldn't read list of sources"
 msgstr "パッケージ入手先一覧を読み込めませんでした"
 
 #: src/cmdline/cmdline_prompt.cc:205
-#, fuzzy
 msgid "Config files"
 msgstr "設定ファイル"
 
@@ -1147,9 +1146,8 @@ msgid "The following packages will be upgraded:"
 msgstr "以下のパッケージが更新されます:"
 
 #: src/cmdline/cmdline_prompt.cc:341
-#, fuzzy
 msgid "The following partially installed packages will be configured:"
-msgstr "以下のパッケージが更新されます:"
+msgstr "以下の、インストールが完了していないパッケージが設定されます:"
 
 #: src/cmdline/cmdline_prompt.cc:396
 #, c-format
@@ -1209,12 +1207,11 @@ msgstr ""
 "              なっているので、これらの信頼侵害を無視しています!\n"
 
 #: src/cmdline/cmdline_prompt.cc:483
-#, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
-"*** 警告***   %s::Cmdline::Ignore-Trust-Violations が 'true' と\n"
+"*** 警告***   Apt::Get::AllowUnauthenticated が 'true' と\n"
 "              なっているので、これらの信頼侵害を無視しています!\n"
 
 #: src/cmdline/cmdline_prompt.cc:489
@@ -1316,17 +1313,20 @@ msgstr ""
 msgid "Press Return to continue"
 msgstr "続けるには Return を押してください"
 
+# TRANSLATION-FIXME: こんな感じ?
 #: src/cmdline/cmdline_prompt.cc:709
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify."
 msgstr ""
+"パッケージが見つかりません -- 根拠とするパッケージを必要に応じて入力し、それ"
+"に続けて、説明したいパッケージを入力してください。"
 
 #: src/cmdline/cmdline_prompt.cc:732
 #, c-format
 msgid "y: %F"
-msgstr ""
+msgstr "y: %F"
 
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:734
@@ -1336,7 +1336,7 @@ msgstr "インストールを続行します"
 #: src/cmdline/cmdline_prompt.cc:736
 #, c-format
 msgid "n: %F"
-msgstr ""
+msgstr "n: %F"
 
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:738
@@ -1346,7 +1346,7 @@ msgstr "中断して終了します"
 #: src/cmdline/cmdline_prompt.cc:740
 #, c-format
 msgid "i: %F"
-msgstr ""
+msgstr "i: %F"
 
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:742
@@ -1360,7 +1360,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:744
 #, c-format
 msgid "c: %F"
-msgstr ""
+msgstr "c: %F"
 
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:746
@@ -1374,7 +1374,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:748
 #, c-format
 msgid "d: %F"
-msgstr ""
+msgstr "d: %F"
 
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:750
@@ -1384,7 +1384,7 @@ msgstr "依存関係情報を表示する・しないを切り替えます"
 #: src/cmdline/cmdline_prompt.cc:752
 #, c-format
 msgid "s: %F"
-msgstr ""
+msgstr "s: %F"
 
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:754
@@ -1394,7 +1394,7 @@ msgstr "パッケージサイズ変更を表示する・しないを切り替え
 #: src/cmdline/cmdline_prompt.cc:756
 #, c-format
 msgid "v: %F"
-msgstr ""
+msgstr "v: %F"
 
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:758
@@ -1404,27 +1404,32 @@ msgstr "バージョン番号を表示する・しないを切り替えます"
 #: src/cmdline/cmdline_prompt.cc:760
 #, c-format
 msgid "w: %F"
-msgstr ""
+msgstr "w: %F"
 
+# * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:762
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
 msgstr ""
+"あるパッケージをインストールする理由を見つけようとしたり、あるパッケージのイ"
+"ンストールが何故別のパッケージのインストールに繋がるのかを説明しようとしたり"
+"します。"
 
 #: src/cmdline/cmdline_prompt.cc:765
 #, c-format
 msgid "r: %F"
-msgstr ""
+msgstr "r: %F"
 
+# * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:767
 msgid "run the automatic dependency resolver to fix the broken dependencies."
-msgstr ""
+msgstr "依存関係自動解決ツールを用いて、壊れた依存関係を修正します。"
 
 #: src/cmdline/cmdline_prompt.cc:769
 #, c-format
 msgid "e: %F"
-msgstr ""
+msgstr "e: %F"
 
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:771
@@ -1488,6 +1493,9 @@ msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
 msgstr ""
+"aptitude はこれらの依存関係の解決方法を見つけることができませんでした。依存関"
+"係を自分の力で手動で解決してもかまいませんし、'n' を入力して終了してもかまい"
+"ません。"
 
 #: src/cmdline/cmdline_prompt.cc:910
 msgid "Do you want to continue? [Y/n/?] "
@@ -1495,7 +1503,7 @@ msgstr "続けますか? [Y/n/?] "
 
 #: src/cmdline/cmdline_prompt.cc:911
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
-msgstr ""
+msgstr "これらの依存関係を手動で解決しますか? [N/+/-/_/:/?] "
 
 #: src/cmdline/cmdline_prompt.cc:929
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
@@ -1507,6 +1515,9 @@ msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
 msgstr ""
+"パッケージ管理コマンド (例: パッケージのインストールの場合は '+ <パッケージ名"
+">') を入力してください。または、依存関係自動解決ツールを使ってみる場合は 'R' "
+"を、中断する場合は 'N' を、入力してください。"
 
 #: src/cmdline/cmdline_prompt.cc:966
 #, c-format
@@ -1623,11 +1634,12 @@ msgstr "次の解決方法に移動します"
 msgid "move to the previous solution"
 msgstr "前の解決方法に移動します"
 
+# * Case: 'o'
 #: src/cmdline/cmdline_resolver.cc:190
 msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
-msgstr ""
+msgstr "解決方法の内容と説明を切り替えます"
 
 # * Case: 'e'
 #: src/cmdline/cmdline_resolver.cc:192
@@ -1745,10 +1757,12 @@ msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
+"依存関係を解決したいのですが、依存関係解決機能が無効になっています。\n"
+"   (%s::ProblemResolver::StepLimit = 0)\n"
 
 #: src/cmdline/cmdline_resolver.cc:512
 msgid "I want to resolve dependencies, but no dependency resolver was created."
-msgstr ""
+msgstr "依存関係を解決したいのですが、依存関係解決ツールを作成できません。"
 
 #: src/cmdline/cmdline_resolver.cc:525 src/solution_dialog.cc:127
 msgid "Resolving dependencies..."
@@ -1805,6 +1819,8 @@ msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
+"*** エラー: 致命的な例外が発生して検索が中断しました。検索を続行する\n"
+"            ことは可能ですが、一部の解決方法には到達できません。"
 
 #: src/cmdline/cmdline_search.cc:121
 #, c-format
@@ -1849,11 +1865,11 @@ msgstr "インストールされていません (設定ファイルは残って�
 
 #: src/cmdline/cmdline_show.cc:203
 msgid "awaiting trigger processing by other package(s)"
-msgstr ""
+msgstr "他のパッケージによるトリガー処理を待っています"
 
 #: src/cmdline/cmdline_show.cc:205
 msgid "awaiting trigger processing"
-msgstr ""
+msgstr "トリガー処理を待っています"
 
 #: src/cmdline/cmdline_show.cc:208 src/pkg_columnizer.cc:257
 #: src/pkg_ver_item.cc:237
@@ -2022,9 +2038,10 @@ msgstr "提案"
 msgid "Conflicts"
 msgstr "競合"
 
+# TRANSLATION-FIXME: こうするしかない?
 #: src/cmdline/cmdline_show.cc:429
 msgid "Breaks"
-msgstr ""
+msgstr "破損"
 
 #: src/cmdline/cmdline_show.cc:431
 msgid "Replaces"
@@ -2046,7 +2063,7 @@ msgstr "説明: "
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:106
 #: src/pkg_view.cc:250
 msgid "Homepage: "
-msgstr ""
+msgstr "ホームページ: "
 
 #: src/cmdline/cmdline_show.cc:542
 #, c-format
@@ -2078,24 +2095,25 @@ msgid "E: The update command takes no arguments\n"
 msgstr "エラー: update コマンドは引数をとりません\n"
 
 #: src/cmdline/cmdline_upgrade.cc:98
-#, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (resolver timed out)."
-msgstr "依存関係を解決できません! 諦めています..."
+msgstr ""
+"更新のための依存関係の解決ができません (依存関係解決ツールがタイムアウトにな"
+"りました)。"
 
 #: src/cmdline/cmdline_upgrade.cc:104
-#, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
-msgstr "依存関係を解決できません! 諦めています..."
+msgstr ""
+"更新のための依存関係の解決ができません (解決方法が見つかりませんでした)。"
 
 #: src/cmdline/cmdline_upgrade.cc:110
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
-msgstr "依存関係を解決できませんでした。"
+msgstr "更新のための依存関係の解決ができません (%s)。"
 
 #: src/cmdline/cmdline_upgrade.cc:136
-#, fuzzy, c-format
+#, c-format
 msgid "E: The %s command takes no arguments\n"
-msgstr "エラー: update コマンドは引数をとりません\n"
+msgstr "エラー: %s コマンドは引数をとりません\n"
 
 #: src/cmdline/cmdline_util.cc:121
 #, c-format
@@ -2132,24 +2150,24 @@ msgstr "パッケージのアーカイブとバージョンを同時には指定
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
-msgstr[0] ""
+msgstr[0] "依存関係破損が %d 個 [%+d]"
 
 #: src/cmdline/cmdline_util.cc:283
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
-msgstr[0] ""
+msgstr[0] "更新が %d 個 [%+d]"
 
 #: src/cmdline/cmdline_util.cc:297
 #, c-format
 msgid "%d new [%+d]"
 msgid_plural "%d new [%+d]"
-msgstr[0] ""
+msgstr[0] "新規が %d 個 [%+d]"
 
 #: src/cmdline/cmdline_util.cc:308
 #, c-format
 msgid "There are now %F."
-msgstr ""
+msgstr "現在、%F あります。"
 
 #: src/cmdline/cmdline_why.cc:419
 #, fuzzy, c-format
