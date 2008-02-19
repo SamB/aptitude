@@ -1085,7 +1085,7 @@ static void do_help_news()
   setup_fileview(HELPDIR "/NEWS",
 		 NULL,
 		 _("News"),
-		 _("View the important changes made in each version of " PACKAGE),
+		 ssprintf(_("View the important changes made in each version of %s"), PACKAGE),
 		 _("News"));
 }
 
@@ -2344,7 +2344,7 @@ cw::menu_info help_menu_info[]={
 	       sigc::ptr_fun(do_help_faq)),
 
   cw::menu_info(cw::menu_info::MENU_ITEM, N_("^News"), NULL,
-	       N_("View the important changes made in each version of " PACKAGE),
+	       ssprintf(N_("View the important changes made in each version of %s"), PACKAGE),
 	       sigc::ptr_fun(do_help_news)),
 
   cw::menu_info(cw::menu_info::MENU_ITEM, N_("^License"), NULL,
