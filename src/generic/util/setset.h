@@ -252,7 +252,7 @@ public:
 
   setset(size_type n,
 	 const Compare &comparer = Compare())
-    :sets_by_key(n, comparer)
+    :sets_by_key(comparer)
   {
   }
 
@@ -309,23 +309,7 @@ template<typename Key, typename Val,
 	 typename Compare = std::less<Key> >
 class mapset
 {
-  struct key_compare
-  {
-    Compare cmp;
-  public:
-    key_equal_to(const Compare &_cmp)
-      :cmp(_cmp)
-    {
-    }
-
-    size_t operator()(const std::pair<Key, Val> &p1,
-		      const std::pair<Key, Val> &p2) const
-    {
-      return cmp(p1, p2);
-    }
-  };
-
-  typedef setset<std::pair<Key, Val>, key_compare,
+  typedef setset<std::pair<Key, Val>,
 		 imm::key_compare<Key, Val, Compare> > mapset_type;
 
   mapset_type S;
