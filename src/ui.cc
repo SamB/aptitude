@@ -1,6 +1,6 @@
 // ui.cc
 //
-//   Copyright 2000-2007 Daniel Burrows <dburrows@debian.org>
+//   Copyright 2000-2008 Daniel Burrows <dburrows@debian.org>
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -2344,7 +2344,7 @@ cw::menu_info help_menu_info[]={
 	       sigc::ptr_fun(do_help_faq)),
 
   cw::menu_info(cw::menu_info::MENU_ITEM, N_("^News"), NULL,
-	       ssprintf(N_("View the important changes made in each version of %s"), PACKAGE),
+		ssprintf(N_("View the important changes made in each version of %s"), PACKAGE).c_str(),
 	       sigc::ptr_fun(do_help_news)),
 
   cw::menu_info(cw::menu_info::MENU_ITEM, N_("^License"), NULL,
