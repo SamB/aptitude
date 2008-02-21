@@ -367,66 +367,44 @@ namespace
     matcher_type type;
   };
 
-  // ForTranslators: these strings can be translated to allow your
-  // users to specify match terms in their native tongue.  Each is
-  // translated using the usual rule for pipe-tagged messages, so you
-  // can just delete the pipe (|) and everything preceding it in your
-  // translation.  Your translation should be a single word containing
-  // only normal letters and hyphens, so that it fits into the grammar
-  // of match terms, and your translation for one search term should
-  // not be identical to the English version of any search term.  For
-  // instance, the translation of "Matcher Type|and" in German might
-  // be "und".
-  //
-  // Important: the English words are the canonical names for match
-  // terms and will always be accepted *in preference to* any
-  // translation, in order to ensure that scripts and user
-  // instructions can use the English names without fear that the
-  // meanings will change with the locale.  For this reason you should
-  // ensure that your translation of a name is *not* the same as one
-  // of the English names, or it will have no effect.
-  //
-  // That is: if you translate "Matcher Type|false" to "description",
-  // "description" would still produce a description matcher, not a
-  // false matcher, because the English meaning takes precedence.
   const matcher_info matcher_types[] =
   {
-    { N_("Matcher Type|action"), matcher_type_action },
-    { N_("Matcher Type|all-versions"), matcher_type_all },
-    { N_("Matcher Type|and"), matcher_type_and },
-    { N_("Matcher Type|any-version"), matcher_type_any },
-    { N_("Matcher Type|archive"), matcher_type_archive },
-    { N_("Matcher Type|automatic"), matcher_type_automatic },
-    { N_("Matcher Type|broken"), matcher_type_broken },
-    { N_("Matcher Type|configfiles"), matcher_type_configfiles },
-    { N_("Matcher Type|description"), matcher_type_description },
-    { N_("Matcher Type|essential"), matcher_type_essential },
-    { N_("Matcher Type|false"), matcher_type_false },
+    { "action", matcher_type_action },
+    { "all-versions", matcher_type_all },
+    { "and", matcher_type_and },
+    { "any-version", matcher_type_any },
+    { "archive", matcher_type_archive },
+    { "automatic", matcher_type_automatic },
+    { "broken", matcher_type_broken },
+    { "configfiles", matcher_type_configfiles },
+    { "description", matcher_type_description },
+    { "essential", matcher_type_essential },
+    { "false", matcher_type_false },
     // ForTranslators: As in the sentence "for x = 5, do BLAH".
-    { N_("Matcher Type|for"), matcher_type_for },
-    { N_("Matcher Type|garbage"), matcher_type_garbage },
-    { N_("Matcher Type|installed"), matcher_type_installed },
-    { N_("Matcher Type|maintainer"), matcher_type_maintainer },
-    { N_("Matcher Type|name"), matcher_type_name },
+    { "for", matcher_type_for },
+    { "garbage", matcher_type_garbage },
+    { "installed", matcher_type_installed },
+    { "maintainer", matcher_type_maintainer },
+    { "name", matcher_type_name },
     /* ForTranslators: Opposite of widen. Search for "widen" in this file for details. */
-    { N_("Matcher Type|narrow"), matcher_type_narrow },
-    { N_("Matcher Type|new"), matcher_type_new },
-    { N_("Matcher Type|not"), matcher_type_not },
-    { N_("Matcher Type|obsolete"), matcher_type_obsolete },
-    { N_("Matcher Type|or"), matcher_type_or },
+    { "narrow", matcher_type_narrow },
+    { "new", matcher_type_new },
+    { "not", matcher_type_not },
+    { "obsolete", matcher_type_obsolete },
+    { "or", matcher_type_or },
     /* ForTranslators: This specifies who is providing this archive. In the case of Debian the
        string will read 'Debian'. Other providers may use their own string, such as
        "Ubuntu" or "Xandros". */
-    { N_("Matcher Type|origin"), matcher_type_origin },
-    { N_("Matcher Type|provides"), matcher_type_provides },
-    { N_("Matcher Type|section"), matcher_type_section },
-    { N_("Matcher Type|tag"), matcher_type_tag },
-    { N_("Matcher Type|true"), matcher_type_true },
-    { N_("Matcher Type|upgradable"), matcher_type_upgradable },
-    { N_("Matcher Type|version"), matcher_type_version },
-    { N_("Matcher Type|virtual"), matcher_type_virtual },
+    { "origin", matcher_type_origin },
+    { "provides", matcher_type_provides },
+    { "section", matcher_type_section },
+    { "tag", matcher_type_tag },
+    { "true", matcher_type_true },
+    { "upgradable", matcher_type_upgradable },
+    { "version", matcher_type_version },
+    { "virtual", matcher_type_virtual },
     /* ForTranslators: Opposite of narrow. Search for "widen" in this file for details. */
-    { N_("Matcher Type|widen"), matcher_type_widen }
+    { "widen", matcher_type_widen }
   };
 }
 
@@ -3392,30 +3370,7 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
       !found && (unsigned)(it - matcher_types) < (sizeof(matcher_types) / sizeof(matcher_types[0]));
       ++it)
     {
-      string test_name = it->name;
-      string::size_type found = test_name.find('|');
-      if(found != string::npos)
-	test_name.erase(0, found + 1);
-
-      if(matcher_name == test_name)
-	{
-	  type = it->type;
-	  found = true;
-	}
-    }
-
-  for(const matcher_info *it = matcher_types;
-      !found && (unsigned)(it - matcher_types) < (sizeof(matcher_types) / sizeof(matcher_types[0]));
-      ++it)
-    {
-      string name_to_check(P_(it->name));
-      for(std::string::iterator name_to_check_it = name_to_check.begin();
-	  name_to_check_it != name_to_check.end(); ++name_to_check_it)
-	{
-	  *name_to_check_it = tolower(*name_to_check_it);
-	}
-
-      if(matcher_name == name_to_check)
+      if(matcher_name == it->name)
 	{
 	  type = it->type;
 	  found = true;
