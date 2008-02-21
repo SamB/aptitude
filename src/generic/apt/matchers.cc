@@ -367,12 +367,23 @@ namespace
   };
 
   // ForTranslators: these strings can be translated to allow your
-  // users to specify match terms in their native tongue.  However,
-  // the English words are the canonical names for match terms and
-  // will always be accepted *in preference to* any translation, in
-  // order to ensure that scripts and user instructions can use the
-  // English names without fear that the meanings will change with the
-  // locale.
+  // users to specify match terms in their native tongue.  Each is
+  // translated using the usual rule for pipe-tagged messages, so you
+  // can just delete the pipe (|) and everything preceding it in your
+  // translation.  Your translation should be a single word containing
+  // only normal letters and hyphens, so that it fits into the grammar
+  // of match terms, and your translation for one search term should
+  // not be identical to the English version of any search term.  For
+  // instance, the translation of "Matcher Type|and" in German might
+  // be "und".
+  //
+  // Important: the English words are the canonical names for match
+  // terms and will always be accepted *in preference to* any
+  // translation, in order to ensure that scripts and user
+  // instructions can use the English names without fear that the
+  // meanings will change with the locale.  For this reason you should
+  // ensure that your translation of a name is *not* the same as one
+  // of the English names, or it will have no effect.
   //
   // That is: if you translate "Matcher Type|false" to "description",
   // "description" would still produce a description matcher, not a
@@ -394,11 +405,15 @@ namespace
     { N_("Matcher Type|installed"), matcher_type_installed },
     { N_("Matcher Type|maintainer"), matcher_type_maintainer },
     { N_("Matcher Type|name"), matcher_type_name },
+    /* ForTranslators: Opposite of widen. Search for "?widen" in this file for details. */
     { N_("Matcher Type|narrow"), matcher_type_narrow },
     { N_("Matcher Type|new"), matcher_type_new },
     { N_("Matcher Type|not"), matcher_type_not },
     { N_("Matcher Type|obsolete"), matcher_type_obsolete },
     { N_("Matcher Type|or"), matcher_type_or },
+    /* ForTranslators: This specifies who is providing this archive. In the case of Debian the
+       string will read 'Debian'. Other providers may use their own string, such as
+       "Ubuntu" or "Xandros". */
     { N_("Matcher Type|origin"), matcher_type_origin },
     { N_("Matcher Type|provides"), matcher_type_provides },
     { N_("Matcher Type|section"), matcher_type_section },
@@ -407,6 +422,7 @@ namespace
     { N_("Matcher Type|upgradable"), matcher_type_upgradable },
     { N_("Matcher Type|version"), matcher_type_version },
     { N_("Matcher Type|virtual"), matcher_type_virtual },
+    /* ForTranslators: Opposite of narrow. Search for "?widen" in this file for details. */
     { N_("Matcher Type|widen"), matcher_type_widen }
   };
 }
@@ -3017,7 +3033,7 @@ void parse_required_character(string::const_iterator &start,
     ++start;
 
   if(start == end)
-    throw CompilationException(_("Unexpected end of match pattern (expected '%c')."),
+    throw CompilationException(_("Match pattern ends unexpectedly (expected '%c')."),
 			       c);
   else if(*start != c)
     throw CompilationException(_("Expected '%c', got '%c'."),
@@ -3341,7 +3357,7 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
     }
 
   if(!found)
-    throw CompilationException(_("Unknown matcher type \"%s\"."),
+    throw CompilationException(_("Unknown matcher type: \"%s\"."),
 			       matcher_name.c_str());
 
   switch(type)
@@ -3350,15 +3366,19 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
       return make_action_matcher(parse_string_match_args(start, end));
     case matcher_type_all:
       if(!wide_context)
-	throw CompilationException(_("The ?all matcher must be used in a \"wide\" context (a top-level context, or a context enclosed by ?widen)."));
+	throw CompilationException(_("The ?%s matcher must be used in a \"wide\" context (a top-level context, or a context enclosed by ?widen)."),
+				   matcher_name.c_str());
       else
 	return new pkg_all_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false, name_context));
     case matcher_type_and:
       return parse_binary_matcher<pkg_and_matcher, pkg_matcher_real *, pkg_matcher_real *>(start, end, terminators, search_descriptions, wide_context, name_context);
     case matcher_type_any:
       if(!wide_context)
-	throw CompilationException(_("The ?%s matcher must be used in a \"wide\" context (a top-level context, or a context enclosed by ?widen)."),
-				   matcher_name.c_str());
+	throw CompilationException(_("The ?%s matcher must be used in a \"wide\" context (a top-level context, or a context enclosed by ?%s)."),
+				   matcher_name.c_str(),
+				   // TODO: should this be the translated
+				   // form of ?widen?
+				   "widen");
       else
 	return new pkg_all_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false, name_context));
       return new pkg_any_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false, name_context));
@@ -3413,7 +3433,11 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
     case matcher_type_virtual:
       return new pkg_virtual_matcher;
     default:
-      throw CompilationException(_("Unexpected matcher type %d encountered."),
+      // This represents an internal error: it should never happen and
+      // won't be comprehensible to the user, so there's no point in
+      // translating it (if it does happen they should report the
+      // literal message to me).
+      throw CompilationException("Unexpected matcher type %d encountered.",
 				 type);
     }
 }
