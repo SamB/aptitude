@@ -271,7 +271,7 @@ static void reject_or_mandate_version(const string &s,
 
       if(in.eof())
 	{
-	  cerr << ssprintf(_("Expected a version or \"UNINST\" after \"%s\""), pkgname.c_str()) << endl;
+	  cerr << ssprintf(_("Expected a version or \"%2$s\" after \"%1$s\""), pkgname.c_str(), "UNINST") << endl;
 	  return;
 	}
 
