@@ -27,7 +27,7 @@
 //                      := CONDITION-ATOM
 //  CONDITION-ATOM := '(' CONDITION-LIST ')'
 //                 |  '!' CONDITION-ATOM
-//                 |  '??' variable-name ':' CONDITION-LIST
+//                 |  '?for' variable-name ':' CONDITION-LIST
 //                 |  '?=' variable-name
 //                 |  '?' (variable-name ':')?  condition-name '(' arguments... ')'
 //                 |  '~'field-id <string>
@@ -336,6 +336,7 @@ namespace
       matcher_type_description,
       matcher_type_essential,
       matcher_type_false,
+      matcher_type_for,
       matcher_type_garbage,
       matcher_type_installed,
       matcher_type_maintainer,
@@ -401,6 +402,8 @@ namespace
     { N_("Matcher Type|description"), matcher_type_description },
     { N_("Matcher Type|essential"), matcher_type_essential },
     { N_("Matcher Type|false"), matcher_type_false },
+    // ForTranslators: As in the sentence "for x = 5, do BLAH".
+    { N_("Matcher Type|for"), matcher_type_for },
     { N_("Matcher Type|garbage"), matcher_type_garbage },
     { N_("Matcher Type|installed"), matcher_type_installed },
     { N_("Matcher Type|maintainer"), matcher_type_maintainer },
@@ -3193,6 +3196,69 @@ get_variable_index(const string &bound_variable,
     return idx;
 }
 
+/** \brief Parse the tail of a lambda form.
+ *
+ *  The full lambda form is:
+ *
+ *    ?for <variable>: CONDITION-LIST
+ *
+ *  This function assumes that "?for" has been parsed, so it parses:
+ *
+ *  <variable>: CONDITION-LIST
+ */
+pkg_matcher_real *parse_explicit_matcher(const std::string &matcher_name,
+					 string::const_iterator &start,
+					 const string::const_iterator &end,
+					 const std::vector<const char *> &terminators,
+					 bool search_descriptions,
+					 bool wide_context,
+					 const parse_environment &name_context)
+{
+  parse_whitespace(start, end);
+
+  string bound_variable;
+  while(start != end && *start != '(' && *start != '!' &&
+	*start != '|' && *start != ')' && *start != '?' &&
+	*start != '~' && *start != ':' && !isspace(*start) &&
+	!terminate(start, end, terminators))
+    {
+      bound_variable.push_back(*start);
+      ++start;
+    }
+
+  parse_whitespace(start, end);
+
+  if(start == end)
+    throw CompilationException("Unexpected end of pattern following ?%s %s (expected \":\" followed by a search term).",
+			       matcher_name.c_str(),
+			       bound_variable.c_str());
+  else if(*start != ':')
+    throw CompilationException("Unexpected '%c' following ?%s %s (expected \":\" followed by a search term).",
+			       *start, matcher_name.c_str(), bound_variable.c_str());
+
+  ++start;
+
+  parse_whitespace(start, end);
+
+  // Variables are case-insensitive and normalized to lower-case.
+  for(std::string::iterator it = bound_variable.begin();
+      it != bound_variable.end(); ++it)
+    *it = tolower(*it);
+
+  // Bind the name to the index that the variable will have in the
+  // stack (counting from the bottom of the stack to the top).
+  parse_environment name_context2(parse_environment::bind(name_context,
+							  bound_variable,
+							  name_context.size()));
+  std::auto_ptr<pkg_matcher_real> m(parse_condition_list(start, end,
+							 terminators,
+							 search_descriptions,
+							 wide_context,
+							 name_context2));
+
+  return new pkg_explicit_matcher(m.release());
+}
+
 /** \brief Return a matcher that may or may not have a rebound
  *  variable.
  *
@@ -3399,6 +3465,8 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
       return new pkg_essential_matcher;
     case matcher_type_false:
       return new pkg_false_matcher;
+    case matcher_type_for:
+      return parse_explicit_matcher(matcher_name, start, end, terminators, search_descriptions, wide_context, name_context);
     case matcher_type_garbage:
       return new pkg_garbage_matcher;
     case matcher_type_installed:
@@ -3475,54 +3543,6 @@ pkg_matcher_real *parse_function_style_matcher_tail(string::const_iterator &star
       else
 	return new pkg_equal_matcher(get_variable_index(bound_variable,
 							name_context));
-    }
-  // Parse a lambda form as "??" <variable-name> ":" condition-list.
-  else if(*start == '?')
-    {
-      ++start;
-
-      parse_whitespace(start, end);
-
-      string bound_variable;
-      while(start != end && *start != '(' && *start != '!' &&
-	    *start != '|' && *start != ')' && *start != '?' &&
-	    *start != '~' && *start != ':' && !isspace(*start) &&
-	    !terminate(start, end, terminators))
-	{
-	  bound_variable.push_back(*start);
-	  ++start;
-	}
-
-      parse_whitespace(start, end);
-
-      if(start == end)
-	throw CompilationException("Unexpected end of pattern following ??%s (expected \":\" followed by a search term).",
-				   bound_variable.c_str());
-      else if(*start != ':')
-	throw CompilationException("Unexpected '%c' following ??%s (expected \":\" followed by a search term).",
-				   *start, bound_variable.c_str());
-
-      ++start;
-
-      parse_whitespace(start, end);
-
-      // Variables are case-insensitive and normalized to lower-case.
-      for(std::string::iterator it = bound_variable.begin();
-	  it != bound_variable.end(); ++it)
-	*it = tolower(*it);
-
-      // Bind the name to the index that the variable will have in the
-      // stack (counting from the bottom of the stack to the top).
-      parse_environment name_context2(parse_environment::bind(name_context,
-							      bound_variable,
-							      name_context.size()));
-      std::auto_ptr<pkg_matcher_real> m(parse_condition_list(start, end,
-							     terminators,
-							     search_descriptions,
-							     wide_context,
-							     name_context2));
-
-      return new pkg_explicit_matcher(m.release());
     }
 
   // The name is considered to be the next sequence of non-whitespace
