@@ -405,7 +405,7 @@ namespace
     { N_("Matcher Type|installed"), matcher_type_installed },
     { N_("Matcher Type|maintainer"), matcher_type_maintainer },
     { N_("Matcher Type|name"), matcher_type_name },
-    /* ForTranslators: Opposite of widen. Search for "?widen" in this file for details. */
+    /* ForTranslators: Opposite of widen. Search for "widen" in this file for details. */
     { N_("Matcher Type|narrow"), matcher_type_narrow },
     { N_("Matcher Type|new"), matcher_type_new },
     { N_("Matcher Type|not"), matcher_type_not },
@@ -422,7 +422,7 @@ namespace
     { N_("Matcher Type|upgradable"), matcher_type_upgradable },
     { N_("Matcher Type|version"), matcher_type_version },
     { N_("Matcher Type|virtual"), matcher_type_virtual },
-    /* ForTranslators: Opposite of narrow. Search for "?widen" in this file for details. */
+    /* ForTranslators: Opposite of narrow. Search for "widen" in this file for details. */
     { N_("Matcher Type|widen"), matcher_type_widen }
   };
 }
@@ -3366,8 +3366,11 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
       return make_action_matcher(parse_string_match_args(start, end));
     case matcher_type_all:
       if(!wide_context)
-	throw CompilationException(_("The ?%s matcher must be used in a \"wide\" context (a top-level context, or a context enclosed by ?widen)."),
-				   matcher_name.c_str());
+	/* ForTranslators: Question marks ("?") are used as prefix for function names.
+	   Leave the question marks attached to the string placeholders. */
+	throw CompilationException(_("The ?%s matcher must be used in a \"wide\" context (a top-level context, or a context enclosed by ?%s)."),
+				   matcher_name.c_str(),
+				   "widen");
       else
 	return new pkg_all_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false, name_context));
     case matcher_type_and:
