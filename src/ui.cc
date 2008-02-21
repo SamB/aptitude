@@ -99,9 +99,7 @@
 #include <generic/util/util.h>
 
 #include "dep_item.h"
-#include "download_bar.h"
 #include "download_list.h"
-#include "download_screen.h"
 #include "menu_tree.h"
 #include "pkg_columnizer.h"
 #include "pkg_grouppolicy.h"

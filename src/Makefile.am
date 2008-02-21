@@ -34,14 +34,10 @@ aptitude_SOURCES= 	\
 	defaults.h	\
 	dep_item.cc	\
 	dep_item.h	\
-	download_bar.h	\
-	download_bar.cc	\
 	download_item.h	\
 	download_item.cc\
 	download_list.h \
 	download_list.cc \
-	download_screen.h\
-	download_screen.cc\
 	download_thread.h\
 	download_thread.cc\
 	edit_pkg_hier.h	\

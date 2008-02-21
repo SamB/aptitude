@@ -1,6 +1,6 @@
 // view_changelog.cc
 //
-//   Copyright (C) 2004-2005, 2007 Daniel Burrows
+//   Copyright (C) 2004-2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -26,7 +26,6 @@
 #include <cwidget/widgets/text_layout.h>
 
 #include "changelog_parse.h"
-#include "download_bar.h"
 #include "menu_redirect.h"
 #include "menu_text_layout.h"
 #include "ui.h"
