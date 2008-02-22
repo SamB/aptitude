@@ -331,6 +331,7 @@ namespace
       matcher_type_any,
       matcher_type_archive,
       matcher_type_automatic,
+      matcher_type_bind,
       matcher_type_broken,
       matcher_type_configfiles,
       matcher_type_description,
@@ -375,6 +376,7 @@ namespace
     { "any-version", matcher_type_any },
     { "archive", matcher_type_archive },
     { "automatic", matcher_type_automatic },
+    { "bind", matcher_type_bind },
     { "broken", matcher_type_broken },
     { "configfiles", matcher_type_configfiles },
     { "description", matcher_type_description },
@@ -3410,6 +3412,31 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
       return new pkg_archive_matcher(parse_string_match_args(start, end));
     case matcher_type_automatic:
       return new pkg_auto_matcher;
+    case matcher_type_bind:
+      {
+	parse_whitespace(start, end);
+	parse_open_paren(start, end);
+
+	std::vector<const char *> new_terminators;
+	new_terminators.push_back(")");
+	new_terminators.push_back(",");
+	std::string variable_name = parse_substr(start, end, new_terminators, true);
+	int idx = get_variable_index(variable_name, name_context);
+
+	parse_whitespace(start, end);
+	parse_comma(start, end);
+	parse_whitespace(start, end);
+
+	// Remove the comma we pushed at the end of this list, since
+	// it's no longer a terminator.
+	new_terminators.pop_back();
+
+	pkg_matcher_real *m = parse_condition_list(start, end, new_terminators, search_descriptions, wide_context, name_context);
+	parse_whitespace(start, end);
+	parse_close_paren(start, end);
+
+	return new pkg_bind_matcher(m, idx);
+      }
     case matcher_type_broken:
       return new pkg_broken_matcher;
     case matcher_type_configfiles:
