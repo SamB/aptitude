@@ -4125,6 +4125,112 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</para>
       </note>
 
+      <section id='secExplicitMatchers'>
+	<title>Explicit search targets</title>
+
+	<para>
+	  Some particularly complex searches can be expressed in
+	  &aptitude; using <firstterm>explicit targets</firstterm>.
+	  In normal search expressions, there is no way to refer to
+	  the package or version that is currently being tested.  For
+	  instance, suppose that you want to search for all packages
+	  <replaceable>P</replaceable> that depend on a second package
+	  <replaceable>Q</replaceable> such that
+	  <replaceable>Q</replaceable> recommends
+	  <replaceable>P</replaceable>.  Clearly you need to start out
+	  with a <literal>?depends(...)</literal> matcher.  But the
+	  term filling in the <literal>...</literal> needs to somehow
+	  select packages that are identical to the one being matched
+	  against <literal>?depends</literal>.  When describing the
+	  goal above, I dealt with this by giving the packages names,
+	  calling them <replaceable>P</replaceable> and
+	  <replaceable>Q</replaceable>; matchers with explicit targets
+	  do exactly the same thing.
+	  <footnote>
+	    <para>
+	      Astute readers will note that this is essentially a way
+	      to explicitly name the variable in the &lambda;-terms
+	      corresponding to the matcher.  A typical matcher would
+	      have the form <quote>&lambda;
+	      <replaceable>x</replaceable>
+	      . name-equals(<replaceable>x</replaceable>,
+	      <replaceable>pattern</replaceable>)</quote>; giving this
+	      an explicit target makes <replaceable>x</replaceable>
+	      visible in the search language.
+	    </para>
+	  </footnote>
+	</para>
+
+	<para>
+	  An explicit target is introduced by the <link
+	  linkend='searchFor'><literal>?for</literal></link> matcher:
+	</para>
+
+	<figure>
+	  <title>Syntax of the <literal>?for</literal> matcher</title>
+
+	  <synopsis><literal>?for <replaceable>variable</replaceable>: <replaceable>term</replaceable></literal></synopsis>
+	</figure>
+
+	<para>
+	  This behaves exactly like <replaceable>term</replaceable>,
+	  but <replaceable>variable</replaceable> can be used within
+	  <replaceable>term</replaceable> to refer to the package or
+	  version that <replaceable>term</replaceable> is being
+	  matched against.  You can use
+	  <replaceable>variable</replaceable> in two ways:
+	</para>
+
+	<orderedlist>
+	  <listitem>
+	    <para>
+	      The matcher <link
+	      linkend='searchEqual'><literal>?=<replaceable>variable</replaceable></literal></link>
+	      will match exactly the package or version indicated by
+	      the given variable.  Specifically: if the corresponding
+	      <literal>?for</literal> matcher is limited to a
+	      particular version, then <literal>?=</literal> will
+	      match either that version (if <literal>?=</literal> is
+	      limited) or the whole package; otherwise it will match
+	      any version of the package.
+	    </para>
+
+	    <para>
+	      See <xref linkend='exampleSearchEqual'/> for an example
+	      of how to use <literal>?=</literal>.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      The matcher <link
+	      linkend='searchBind'><literal>?bind(<replaceable>variable</replaceable>,
+	      <replaceable>term</replaceable>)</literal></link> will
+	      match any package or version if the value of
+	      <replaceable>variable</replaceable> matches against
+	      <replaceable>term</replaceable>.
+	    </para>
+
+	    <para>
+	      For <literal>?</literal>-style matchers, a shorthand
+	      form is available.  The expression
+	      <literal>?bind(<replaceable>variable</replaceable>,
+	      ?<replaceable>matcher</replaceable><optional>(<replaceable>args</replaceable>)</optional>)</literal>
+	      can be replaced by
+	      <literal>?<replaceable>variable</replaceable>:<replaceable>matcher</replaceable>(<replaceable>args</replaceable>)</literal>.
+	    </para>
+
+	    <para>
+	      See <xref linkend='exampleSearchBind'/> for an example
+	      of how to use <literal>?bind</literal>.
+	    </para>
+	  </listitem>
+	</orderedlist>
+      </section>
+
+      <section id='secSearchTermReference'>
+	<title>Search Term Reference</title>
+
       <para>
 	The following types of terms are available:
       </para>
@@ -4149,6 +4255,44 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		<quote><literal>~napti~ntude</literal></quote>.
 	      </para>
 	    </note>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry id='searchEqual'>
+	  <term><literal>?=<replaceable>variable</replaceable></literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches packages that correspond to the value of
+	      <replaceable>variable</replaceable>, which must be bound
+	      by an enclosing <link
+	      linkend='searchFor'><literal>?for</literal></link>.  For
+	      instance, <literal>?for x: ?depends( ?recommends( ?=x )
+	      )</literal> will match any package that depends on a
+	      package which recommends it.
+	    </para>
+
+	    <para>
+	      For instance, the following search expression matches
+	      packages that conflict with themselves:
+	    </para>
+
+	    <example id='exampleSearchEqual'>
+	      <title>
+		Use of the <literal>?=</literal> matcher.
+	      </title>
+
+	      <para>
+		<literal>
+		  ?for x: ?conflicts(?=x)
+		</literal>
+	      </para>
+	    </example>
+
+	    <para>
+	      See <xref linkend='secExplicitMatchers'/> for more
+	      information.
+	    </para>
 	  </listitem>
 	</varlistentry>
 
@@ -4341,6 +4485,49 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
+	<varlistentry id='searchBind'>
+	  <term>
+	    <literal>?bind(<replaceable>variable</replaceable>,
+	    <replaceable>term</replaceable>)</literal>,
+	    <literal>?<replaceable>variable</replaceable>:<replaceable>matcher-name</replaceable><optional>(<replaceable>args</replaceable>)</optional></literal>
+	  </term>
+
+	  <listitem>
+	    <para>
+	      Matches any package or version if the given
+	      <replaceable>term</replaceable> matches the package or
+	      version bound to <replaceable>variable</replaceable>,
+	      which must be defined in an enclosing <link
+	      linkend='searchFor'><literal>?for</literal></link>.
+	    </para>
+
+
+	    <para>
+	      For instance, the following search expression will match
+	      any package <literal>x</literal> such that
+	      <literal>x</literal> depends on a package
+	      <literal>y</literal> which in turn depends on a package
+	      <literal>z</literal> such that <literal>x</literal> also
+	      depends directly on <literal>z</literal>.
+	    </para>
+
+	    <example id='exampleSearchBind'>
+	      <title>Use of the <literal>?bind</literal> matcher</title>
+
+	      <para>
+		<literal>
+		  ?for x: ?depends(?depends(?for z: ?x:depends(?=z)))
+		</literal>
+	      </para>
+	    </example>
+
+	    <para>
+	      See <xref linkend='secExplicitMatchers'/> for more
+	      information.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
 	<varlistentry>
 	  <term><literal>?broken</literal>, <literal>~b</literal></term>
 
@@ -4476,6 +4663,51 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <literal>?true</literal>.
 		</para>
 	      </footnote>
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry id='searchFor'>
+	  <term><literal>?for <replaceable>variable</replaceable>: <replaceable>term</replaceable></literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches <replaceable>term</replaceable>, but the given
+	      <replaceable>variable</replaceable> may be used inside
+	      <replaceable>term</replaceable> to refer to the package
+	      or package version this matcher applies to.
+	    </para>
+
+	    <para>
+	      You can use <replaceable>variable</replaceable> in two
+	      ways.  To apply a <literal>?</literal>-style matcher to
+	      the variable, write
+	      <literal>?<replaceable>variable</replaceable>:<replaceable>matcher-name</replaceable>(<replaceable>args</replaceable>)</literal>;
+	      for instance, <literal>?x:depends(apt)</literal>.  In
+	      addition, the term
+	      <literal>?=<replaceable>variable</replaceable></literal>
+	      will select any package or version that matches the
+	      value of the given <replaceable>variable</replaceable>.
+	    </para>
+
+	    <para>
+	      For instance, the following matcher will match any package
+	      <literal>x</literal> that both depends and recommends a
+	      second package <literal>y</literal>.
+	    </para>
+
+	    <example id='exampleSearchFor'>
+	      <title>Use of the <literal>?for</literal> matcher</title>
+	      <para>
+		<literal>
+		  ?for x: ?depends( ?for y: ?x:recommends( ?=y ) )
+		</literal>
+	      </para>
+	    </example>
+
+	    <para>
+	      See <xref linkend='secExplicitMatchers'/> for more
+	      information.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -4840,6 +5072,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
       </variablelist>
+      </section>
     </section>
 
     <section id='secConfig'>
