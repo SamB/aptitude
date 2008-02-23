@@ -3406,8 +3406,7 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
 				   // form of ?widen?
 				   "widen");
       else
-	return new pkg_all_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false, name_context));
-      return new pkg_any_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false, name_context));
+	return new pkg_any_matcher(parse_pkg_matcher_args(start, end, terminators, search_descriptions, false, name_context));
     case matcher_type_archive:
       return new pkg_archive_matcher(parse_string_match_args(start, end));
     case matcher_type_automatic:
