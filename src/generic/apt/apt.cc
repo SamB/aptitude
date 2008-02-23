@@ -393,7 +393,7 @@ void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
 				  false, status_fname);
 
       if(!open_failed)
-	_error->Warning(_("Could not lock the cache file.  Opening in read-only mode; any changes you make to the states of packages will NOT be preserved!"));
+	_error->Warning(_("Could not lock the cache file; this usually means that dpkg or another apt tool is already installing packages.  Opening in read-only mode; any changes you make to the states of packages will NOT be preserved!"));
     }
 
   if(open_failed)
