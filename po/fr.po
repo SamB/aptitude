@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-02-21 07:27-0800\n"
-"PO-Revision-Date: 2008-02-22 22:47+0100\n"
+"PO-Revision-Date: 2008-02-23 09:45+0100\n"
 "Last-Translator: Christian Perrier <bubulle@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -4215,21 +4215,21 @@ msgstr ""
 #: src/pkg_grouppolicy.cc:1172
 #, c-format
 msgid "Bad number in format string: %ls"
-msgstr ""
+msgstr "Nombre non valable dans la chaîne de formatage : %ls"
 
 #: src/pkg_grouppolicy.cc:1181
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
-msgstr ""
+msgstr "Les indices de correspondance doivent être supérieurs ou égaux à 1, pas « %s »"
 
 #: src/pkg_grouppolicy.cc:1199
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
-msgstr ""
+msgstr "Index de correspondance %ls trop grand ; les groupes disponibles sont (%s)"
 
 #: src/pkg_grouppolicy.cc:1470
 msgid "TAGLESS PACKAGES"
-msgstr ""
+msgstr "PAQUETS NON MARQUÉS"
 
 #: src/pkg_grouppolicy.cc:1471
 msgid ""
@@ -4237,6 +4237,8 @@ msgid ""
 " These packages have not yet been classified in debtags, or the debtags "
 "database is not present (installing debtags may correct this problem)."
 msgstr ""
+"\n"
+" Ces paquets n'ont pas encore été classés avec debtags ou bien la base de données de debtags n'est pas disponible (l'installation du paquet debtags pourrait corriger ce problème)."
 
 #: src/pkg_grouppolicy.cc:1504
 msgid "MISSING TAG"
@@ -4265,9 +4267,8 @@ msgid "Packages which depend on %s"
 msgstr "Paquets dépendants de %s"
 
 #: src/pkg_info_screen.cc:157
-#, fuzzy
 msgid "Versions"
-msgstr "Version : "
+msgstr "Versions"
 
 #: src/pkg_item.cc:61
 msgid "Yes, I am aware this is a very bad idea"
@@ -4355,9 +4356,8 @@ msgid "Hierarchy Editor"
 msgstr "Éditeur de hiérarchie"
 
 #: src/pkg_tree.cc:175
-#, fuzzy
 msgid "All Packages"
-msgstr "Paquets"
+msgstr "Tous les paquets"
 
 #: src/pkg_tree.cc:188 src/pkg_tree.cc:203
 msgid "Building view"
@@ -4366,12 +4366,11 @@ msgstr "Construction de la vue"
 #: src/pkg_tree.cc:246
 #, c-format
 msgid "No packages matched the pattern \"%ls\"."
-msgstr ""
+msgstr "Aucun paquet ne correspond au motif « %ls »."
 
 #: src/pkg_tree.cc:268
-#, fuzzy
 msgid "Enter the new package tree limit: "
-msgstr "Entrez le nouveau mécanisme de tri des paquets pour cet affichage : "
+msgstr "Entrez la nouvelle limite pour l'arbre des paquets : "
 
 #: src/pkg_tree.cc:302
 msgid "Enter the new package grouping mechanism for this display: "
@@ -4660,49 +4659,49 @@ msgid "Close"
 msgstr "Fermer"
 
 #: src/solution_fragment.cc:106
-#, fuzzy, c-format
+#, c-format
 msgid "%s depends upon %s"
-msgstr "dépend de"
+msgstr "%s dépend de %s"
 
 #: src/solution_fragment.cc:109
-#, fuzzy, c-format
+#, c-format
 msgid "%s pre-depends upon %s"
-msgstr "pré-dépend de "
+msgstr "%s pré-dépend de %s"
 
 #: src/solution_fragment.cc:112
-#, fuzzy, c-format
+#, c-format
 msgid "%s suggests %s"
-msgstr "suggère"
+msgstr "%s suggère %s"
 
 #: src/solution_fragment.cc:115 src/solution_item.cc:602
-#, fuzzy, c-format
+#, c-format
 msgid "%s recommends %s"
-msgstr "recommande"
+msgstr "%s recommande %s"
 
 #: src/solution_fragment.cc:118
-#, fuzzy, c-format
+#, c-format
 msgid "%s conflicts with %s"
-msgstr "est en conflit avec"
+msgstr "%s est en conflit avec %s"
 
 #: src/solution_fragment.cc:121
-#, fuzzy, c-format
+#, c-format
 msgid "%s breaks %s"
-msgstr "casse"
+msgstr "%s casse %s"
 
 #: src/solution_fragment.cc:124
-#, fuzzy, c-format
+#, c-format
 msgid "%s replaces %s"
-msgstr "remplace"
+msgstr "%s remplace %s"
 
 #: src/solution_fragment.cc:127
-#, fuzzy, c-format
+#, c-format
 msgid "%s obsoletes %s"
-msgstr "rend obsolète"
+msgstr "%s rend obsolète %s"
 
 #: src/solution_fragment.cc:140
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
-msgstr ""
+msgstr "%s est en conflit avec %s [fourni par %s %s]"
 
 #: src/solution_fragment.cc:150
 #, c-format
@@ -4784,49 +4783,41 @@ msgid "Downgrade %F [%s (%s) -> %s (%s)]"
 msgstr "Réinstaller %F à une version antérieure [%s (%s) -> %s (%s)]"
 
 #: src/solution_item.cc:606
-#, fuzzy, c-format
+#, c-format
 msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
-msgstr "Laisser les dépendances suivantes non satisfaites :%n"
+msgstr "-> Laisser les dépendances « %s recommande %s » non satisfaites."
 
 #: src/solution_screen.cc:157
-#, fuzzy
 msgid "The following actions will resolve this dependency:"
-msgstr "Les actions suivantes permettront de résoudre ces dépendances :"
+msgstr "Les actions suivantes permettront de résoudre ces dépendances  :"
 
 #: src/solution_screen.cc:243
-#, fuzzy
 msgid "Remove the following packages:"
-msgstr "%BSupprimer%b les paquets suivants :%n"
+msgstr "Supprimer les paquets suivants :"
 
 #: src/solution_screen.cc:254
-#, fuzzy
 msgid "Keep the following packages at their current version:"
-msgstr "%BConserver%b les paquets suivants dans leur version actuelle :%n"
+msgstr "Conserver les paquets suivants dans leur version actuelle :"
 
 #: src/solution_screen.cc:265
-#, fuzzy
 msgid "Install the following packages:"
-msgstr "%BInstaller%b les paquets suivants :%n"
+msgstr "Installer les paquets suivants :"
 
 #: src/solution_screen.cc:276
-#, fuzzy
 msgid "Upgrade the following packages:"
-msgstr "%BMettre à jour%b les paquets suivants :%n"
+msgstr "Mettre à jour les paquets suivants :"
 
 #: src/solution_screen.cc:287
-#, fuzzy
 msgid "Downgrade the following packages:"
-msgstr "%BRéinstaller à une version antérieure%b les paquets suivants :%n"
+msgstr "Réinstaller à une version antérieure les paquets suivants :"
 
 #: src/solution_screen.cc:300
-#, fuzzy
 msgid "Leave the following recommendations unresolved:"
-msgstr "Laisser les dépendances suivantes non satisfaites :%n"
+msgstr "Laisser les dépendances suivantes non satisfaites :"
 
 #: src/solution_screen.cc:480
-#, fuzzy
 msgid "No broken packages."
-msgstr "« - » pour supprimer des paquets"
+msgstr "Pas de paquets cassés."
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"
@@ -4855,9 +4846,8 @@ msgid "W:"
 msgstr "W :"
 
 #: src/ui.cc:247
-#, fuzzy
 msgid "Search for:"
-msgstr "Rechercher en avant"
+msgstr "Rechercher :"
 
 #: src/ui.cc:329
 msgid ""
@@ -5018,9 +5008,9 @@ msgid "News"
 msgstr "Nouvelles"
 
 #: src/ui.cc:1086 src/ui.cc:2345
-#, fuzzy, c-format
+#, c-format
 msgid "View the important changes made in each version of %s"
-msgstr "Afficher les modifications importantes de chaque version de "
+msgstr "Afficher les modifications importantes de chaque version de %s"
 
 #: src/ui.cc:1093
 #, c-format
@@ -5081,14 +5071,12 @@ msgid "  %S*%N %s [version %s]%n"
 msgstr "  %S*%N %s [version %s]%n"
 
 #: src/ui.cc:1217
-#, fuzzy
 msgid "Really Continue"
-msgstr " Voulez-vous vraiment quitter Aptitude ? "
+msgstr "Vraiment continuer"
 
 #: src/ui.cc:1219
-#, fuzzy
 msgid "Abort Installation"
-msgstr "Non installé"
+msgstr "Abandonner l'installation"
 
 #: src/ui.cc:1281
 msgid "Preview of package installation"
@@ -5129,14 +5117,12 @@ msgstr ""
 "administrateur ?"
 
 #: src/ui.cc:1402 src/ui.cc:1535
-#, fuzzy
 msgid "Become root"
-msgstr "Devenir ^administrateur"
+msgstr "Devenir superutilisateur"
 
 #: src/ui.cc:1404 src/ui.cc:1537
-#, fuzzy
 msgid "Don't become root"
-msgstr "Devenir ^administrateur"
+msgstr "Ne pas devenir superutilisateur"
 
 #: src/ui.cc:1409 src/ui.cc:1542
 msgid "A package-list update or install run is already taking place."
@@ -5742,6 +5728,8 @@ msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
 "Pkgs"
 msgstr ""
+"%ls: Menu  %ls: Aide  %ls: Quitter  %ls: MAJ  %ls: Téléch./Install./Suppr. "
+"Paqts"
 
 #: src/ui.cc:2906
 msgid "yes_key"
