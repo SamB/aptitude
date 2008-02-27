@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.2.15.5\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-02-21 07:27-0800\n"
-"PO-Revision-Date: 2008-02-19 16:04+0100\n"
+"PO-Revision-Date: 2008-02-23 19:47+0100\n"
 "Last-Translator: Jens Seidel <jensseidel@users.sf.net>\n"
 "Language-Team: Debian German <debian-l10n-german@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -1170,13 +1170,13 @@ msgid "Press Return to continue"
 msgstr "Drücken Sie zum Fortsetzen die Eingabetaste"
 
 #: src/cmdline/cmdline_prompt.cc:709
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify.\n"
 msgstr ""
-"Keine Pakete gefunden -- geben Sie Null oder mehrere Wurzeln der Suche "
-"gefolgt vom Paket ein."
+"Keine Pakete gefunden -- geben Sie null oder mehrere Wurzeln der Suche "
+"gefolgt vom Paket ein.\n"
 
 #: src/cmdline/cmdline_prompt.cc:732
 #, c-format
@@ -1544,9 +1544,9 @@ msgid "Expected at least one package/version pair following '%c'"
 msgstr "Erwartete zumindest ein Paket/Version-Paar auf »%c« folgend"
 
 #: src/cmdline/cmdline_resolver.cc:274
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
-msgstr "Erwartete eine Version oder »UNINST« nach »%s«"
+msgstr "Erwartete eine Version oder »%s« nach »%s«"
 
 #: src/cmdline/cmdline_resolver.cc:284
 #, c-format
@@ -2743,7 +2743,7 @@ msgstr "Veraltet"
 #: src/generic/apt/matchers.cc:2888
 #, c-format
 msgid "Unknown action type: %s"
-msgstr "Unbekannter Aktionstyp %s"
+msgstr "Unbekannter Aktionstyp: %s"
 
 #: src/generic/apt/matchers.cc:2929
 #, c-format
@@ -2751,7 +2751,7 @@ msgid "Unterminated literal string after %s"
 msgstr "Nicht begrenzter String nach %s"
 
 #: src/generic/apt/matchers.cc:3017
-#, fuzzy, c-format
+#, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr "Unerwartetes Ende des Suchmusters (erwartete »%c«)."
 
@@ -2774,13 +2774,13 @@ msgstr "Unbekanntes Schlüsselwort: »%s«."
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
 #: src/generic/apt/matchers.cc:3392 src/generic/apt/matchers.cc:3401
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
 "a context enclosed by ?%s)."
 msgstr ""
 "Das Schlüsselwort ?%s muss im Kontext von »wide« verwendet werden (einem "
-"übergeordneten Kontext oder einem in »?widen« eingeschlossenen Kontext)."
+"übergeordneten Kontext oder einem in »?%s« eingeschlossenen Kontext)."
 
 #: src/generic/apt/matchers.cc:3586
 msgid "Unmatched '('"
@@ -5067,11 +5067,10 @@ msgid "News"
 msgstr "Neuigkeiten"
 
 #: src/ui.cc:1086 src/ui.cc:2345
-#, fuzzy, c-format
+#, c-format
 msgid "View the important changes made in each version of %s"
 msgstr ""
-"Die wichtigen Änderungen anzeigen, die in jeder Version vorgenommen wurden "
-"in "
+"Die wichtigen Änderungen anzeigen, die in jeder Version von %s vorgenommen wurden"
 
 #: src/ui.cc:1093
 #, c-format
@@ -6462,10 +6461,6 @@ msgstr "Herunterladen des Changelogs"
 #~ msgid "virtual/virtual"
 #~ msgstr "virtuell/virtuell"
 
-#, fuzzy
-#~ msgid "You must resolve these dependencies before continuing."
-#~ msgstr "Abhängigkeiten können nicht aufgelöst werden! Gebe auf ..."
-
 #~ msgid "Not enough resources to create thread"
 #~ msgstr "Nicht genügend Ressourcen um einen Thread zu erzeugen"
 
@@ -6531,11 +6526,6 @@ msgstr "Herunterladen des Changelogs"
 #~ msgstr ""
 #~ "Nicht verwendete Pakete nicht automatisch entfernen,\n"
 #~ "die auf dieses Muster passen:"
-
-#, fuzzy
-#~ msgid ""
-#~ "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
-#~ msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
 
 #~ msgid "view an explanation of the changes in the solution"
 #~ msgstr "eine Erläuterung der Änderungen in der Lösung anzeigen"
