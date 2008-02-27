@@ -4183,6 +4183,22 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  against the versions of the package that actually satisfy a
 	  dependency.
 	</para>
+
+	<para>
+	  It matters which versions are checked, because some patterns
+	  will match one version but not another.  For instance, the
+	  pattern <link
+	  linkend='searchInstalled'><literal>?installed</literal></link>
+	  will only match the version of the package (if any) that is
+	  currently installed.  Similarly, the pattern <link
+	  linkend='searchMaintainer'><literal>?maintainer(<replaceable>maintainer</replaceable>)</literal></link>
+	  will only match versions that have the given maintainer.
+	  Normally all versions of a package have the same maintainer,
+	  but this is not always the case; in fact, any search pattern
+	  that examines the fields of a package (other than its name,
+	  of course) will behave this way, because all the fields of a
+	  package can change between versions.
+	</para>
       </section>
 
       <section id='secExplicitMatchers'>
