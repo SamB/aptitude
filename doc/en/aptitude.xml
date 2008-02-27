@@ -4045,85 +4045,146 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	matches package versions.  Finally, any additional parameters
 	to the search term are placed in parentheses (see the
 	documentation of individual terms for more information on
-	this).  Some search terms can be written using
-	<quote>short</quote> forms, which consist of a tilde
-	(<quote>~</quote>) followed by a single character that
-	identifies the term, and finally the arguments (if any) to the
-	term.  For instance, the short form of
-	<literal>?name(aptitude)</literal> is <literal>~n
-	aptitude</literal>.
+	this).
       </para>
 
-      <para>
-	By default, patterns are checked against all versions of the
-	package.  However, some patterns will restrict which versions
-	are tested.  For instance, the <link
-	linkend='searchDep'><literal>?depends</literal></link> pattern
-	takes another pattern as an argument, and matches any package
-	that depends on another package matching that pattern.  In
-	this case, only package versions that satisfy the dependency
-	will be tested against.  The versions that are used to test
-	for a match will only change in match terms that have a
-	subterm (like <link
-	linkend='searchDep'><literal>?depends</literal></link>).
-      </para>
+      <section>
+	<title>Searching for strings</title>
 
-      <para>
-	Most textual searches (for package names, descriptions, etc)
-	are performed using case-insensitive <ulink
-	url='http://sitescooper.org/tao_regexps.html'>regular
-	expressions</ulink>.  This means that you must
-	backslash-escape regular expression metacharacters
-	<footnote>
-	  <para>
-	    Regular expression metacharacters include:
-	    <quote>+</quote>, <quote>-</quote>, <quote>.</quote>,
-	    <quote>(</quote>, <quote>)</quote>, <quote>|</quote>,
-	    <quote>[</quote>, <quote>]</quote>, <quote>^</quote>,
-	    <quote>$</quote>, and <quote>?</quote>.  Note that some of
-	    these are also &aptitude; metacharacters, so if you want
-	    to type (for instance) a literal <quote>|</quote>, it must
-	    be double-escaped: <quote><literal>\~|</literal></quote>.
-	  </para>
-	</footnote>
-	in searches (for instance, to find <quote>g++</quote>, you should use the
-	pattern <quote>g\+\+</quote>).
-      </para>
-
-      <para>
-	In the short forms of terms, <quote>whitespace</quote> -- that
-	is, space characters, tabs, and so on -- separates terms but
-	is otherwise ignored by &aptitude;.  To include whitespace (or
-	other special characters) in a term, you can either place a
-	tilde in front of it (as in <literal>Debian~
-	Project</literal>) or place quotation marks around it (as in
-	<literal>"Debian Project"</literal> or even <literal>Debian"
-	"Project</literal>).  Inside a quoted string, the backslash
-	character (<quote>\</quote>) can be used to cancel the special
-	meaning of the quotation mark: for instance,
-	<literal>~d"\"email"</literal> will match any package whose
-	description contains a quotation mark followed immediately by
-	<literal>email</literal>.
-	<footnote>
-	  <para>
-	    The backslash escapes <literal>\\</literal>,
-	    <literal>\n</literal>, and <literal>\t</literal> are also
-	    available.
-	  </para>
-	</footnote>
-      </para>
-
-      <note>
 	<para>
-	  The above comments on whitespace apply only to the
-	  <quote>short</quote> forms of terms, such as
-	  <literal>~d"Debian Project"</literal>.  While you
-	  <emphasis>may</emphasis> write <literal>?description("Debian
-	  Project")</literal>, this is not required;
-	  <literal>?description(Debian Project)</literal> produces
-	  exactly the same matcher as the previous two options.
+	  Many search terms take a string as a parameter and match it
+	  against one or more fields of a package.  Strings can be
+	  entered either with or without double quotes
+	  (<quote><literal>"</literal></quote>), so both
+	  <quote><literal>?name(scorch)</literal></quote> and
+	  <quote><literal>?name("scorch")</literal></quote> will
+	  perform the same search.
 	</para>
-      </note>
+
+	<para>
+	  If you enter a <quote>bare</quote> string, one not
+	  surrounded by double quotes, then &aptitude; will consider
+	  the string to have <quote>ended</quote> when it encounters
+	  the closing parenthesis or the comma before a second
+	  argument to the matcher.
+	  <footnote>
+	    <para>
+	      &aptitude; will only treat the comma as special if there
+	      is a second argument, so (for instance)
+	      <quote><literal>?name(apt,itude)</literal></quote>
+	      searches for the string
+	      <quote><literal>apt,itude</literal></quote> in the
+	      <literal>Name</literal> field of packages.
+	    </para>
+
+	    <para>
+	      While this behavior is well-defined, it may be
+	      surprising; I recommend using quoted strings for any
+	      matcher that contains metacharacters.
+	    </para>
+	  </footnote>
+	  To remove the special meaning of these characters, place a
+	  tilde (<quote><literal>~</literal></quote>) directly before
+	  them.  For instance, <literal>?description(etc))</literal>
+	  is a syntax error, because the first <literal>)</literal>
+	  ends the <literal>?description</literal> term, and the
+	  second <literal>)</literal> does not match anything.  In
+	  contrast, <literal>?description(etc~))</literal> matches any
+	  package whose description contains the text
+	  <quote><literal>etc)</literal></quote>.  There are
+	  additional considerations if you are using the shorthand
+	  notation for a term; see <xref
+	  linkend='secSearchShorthand'/> for details.
+	</para>
+
+	<para>
+	  Most textual searches (for package names, descriptions, etc)
+	  are performed using case-insensitive <ulink
+	  url='http://sitescooper.org/tao_regexps.html'>regular
+	  expressions</ulink>.  This means that you must
+	  backslash-escape regular expression metacharacters
+	  <footnote>
+	    <para>
+	      Regular expression metacharacters include:
+	      <quote>+</quote>, <quote>-</quote>, <quote>.</quote>,
+	      <quote>(</quote>, <quote>)</quote>, <quote>|</quote>,
+	      <quote>[</quote>, <quote>]</quote>, <quote>^</quote>,
+	      <quote>$</quote>, and <quote>?</quote>.  Note that some
+	      of these are also &aptitude; metacharacters, so if you
+	      want to type (for instance) a literal <quote>|</quote>,
+	      it must be double-escaped:
+	      <quote><literal>\~|</literal></quote>.
+	    </para>
+	  </footnote>
+	  in searches (for instance, to find <quote>g++</quote>, you
+	  should use the pattern <quote>g\+\+</quote>).
+	</para>
+      </section>
+
+      <section id='secSearchShorthand'>
+	<title>Shorthand for search terms</title>
+
+	<para>
+	  Some search terms can be written using <quote>short</quote>
+	  forms, which consist of a tilde
+	  (<quote><literal>~</literal></quote>) followed by a single
+	  character that identifies the term, and finally the
+	  arguments (if any) to the term.  For instance, the short
+	  form of <literal>?name(aptitude)</literal> is <literal>~n
+	  aptitude</literal>.
+	</para>
+
+	<para>
+	  When writing a term using its short term,
+	  <quote>whitespace</quote> -- that is, space characters,
+	  tabs, and so on -- will break the term off and start a new
+	  term.  For instance, <quote><literal>~mDaniel
+	  Burrows</literal></quote> will match any package whose
+	  maintainer field contains
+	  <quote><literal>Daniel</literal></quote> and whose name
+	  contains <quote><literal>Burrows</literal></quote>.  To
+	  include whitespace characters in the search expression, you
+	  can either place a tilde in front of it (as in
+	  <literal>Daniel~ Burrows</literal>) or place quotation marks
+	  around it (as in <literal>"Debian Project"</literal> or even
+	  <literal>Debian" "Project</literal>).  Inside a quoted
+	  string, the backslash character (<quote>\</quote>) can be
+	  used to cancel the special meaning of the quotation mark:
+	  for instance, <literal>~d"\"email"</literal> will match any
+	  package whose description contains a quotation mark followed
+	  immediately by <literal>email</literal>.
+	  <footnote>
+	    <para>
+	      The backslash escapes <literal>\\</literal>,
+	      <literal>\n</literal>, and <literal>\t</literal> are also
+	      available.
+	    </para>
+	  </footnote>
+	</para>
+
+	<para>
+	  <xref linkend='tableSearchTermQuickGuide'/> lists the short
+	  form of each search term.
+	</para>
+      </section>
+
+      <section>
+	<title>Searches and Versions</title>
+
+	<para>
+	  By default, patterns are checked against all versions of the
+	  package.  However, some patterns will restrict which
+	  versions are tested.  For instance, the <link
+	  linkend='searchDep'><literal>?depends</literal></link>
+	  pattern takes another pattern as an argument, and matches
+	  any package that depends on another package matching that
+	  pattern.  In this case, only package versions that satisfy
+	  the dependency will be tested against.  The versions that
+	  are used to test for a match will only change in match terms
+	  that have a subterm (like <link
+	  linkend='searchDep'><literal>?depends</literal></link>).
+	</para>
+      </section>
 
       <section id='secExplicitMatchers'>
 	<title>Explicit search targets</title>
@@ -4231,11 +4292,424 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
       <section id='secSearchTermReference'>
 	<title>Search Term Reference</title>
 
-      <para>
-	The following types of terms are available:
-      </para>
+	<para>
+	  <xref linkend='tableSearchTermQuickGuide'/> provides a brief
+	  summary of all the search terms provided by aptitude.  A
+	  full description of each term can be found <link
+	  linkend='searchTermReferenceList'>below</link>.
+	</para>
 
-      <variablelist>
+	<table id='tableSearchTermQuickGuide'>
+	  <title>Quick guide to search terms</title>
+
+	  <tgroup cols='3'>
+	    <thead>
+	      <row>
+		<entry>Long form</entry>
+		<entry>Short form</entry>
+		<entry>Description</entry>
+	      </row>
+	    </thead>
+
+	    <tbody>
+	      <row>
+		<entry>
+		  <literal><link
+		  linkend='searchEqual'>?=<replaceable>variable</replaceable></link></literal>
+		</entry>
+		<entry/>
+		<entry>
+		  Select the package bound to
+		  <replaceable>variable</replaceable>; see <xref
+		  linkend='secExplicitMatchers'/>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchNot'>?not(<replaceable>term</replaceable>)</link></literal></entry>
+		<entry><literal>!<replaceable>term</replaceable></literal></entry>
+		<entry>
+		  Select any package that does not match
+		  <replaceable>term</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry>
+		  <literal><link linkend='searchAction'>?action</link>(<replaceable>action</replaceable>)</literal>
+		</entry>
+		<entry>~a<replaceable>action</replaceable></entry>
+		<entry>
+		  Select packages that have been marked for the given
+		  <replaceable>action</replaceable> (e.g.,
+		  <quote><literal>install</literal></quote> or
+		  <quote><literal>upgrade</literal></quote>).
+		</entry>
+	      </row>
+
+	      <row>
+		<entry>
+		  <literal><link linkend='searchAllVersions'>?all-versions</link>(<replaceable>term</replaceable>)</literal>
+		</entry>
+		<entry/>
+		<entry>
+		  Select packages whose versions all match
+		  <replaceable>term</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry>
+		  <literal><link linkend='searchAnd'>?and</link>(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>
+		</entry>
+		<entry><replaceable>term1</replaceable> <replaceable>term2</replaceable></entry>
+		<entry>
+		  Select any package that matches both
+		  <replaceable>term1</replaceable> and
+		  <replaceable>term2</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchAnyVersion'>?any-version</link>(<replaceable>term</replaceable>)</literal></entry>
+		<entry/>
+		<entry>
+		  Select packages for which at least one version
+		  matches <replaceable>term</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry>
+		  <literal><link linkend='searchArchive'>?archive</link>(<replaceable>archive</replaceable>)</literal>
+		</entry>
+		<entry>
+		  <literal>~A<replaceable>archive</replaceable></literal>
+		</entry>
+		<entry>
+		  Select packages from the given archive (such as
+		  <quote><literal>unstable</literal></quote>).
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchAutomatic'>?automatic</link></literal></entry>
+		<entry><literal>~M</literal></entry>
+		<entry>
+		  Select packages that were automatically installed.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchBind'>?bind</link>(<replaceable>variable</replaceable>, <replaceable>term</replaceable>)</literal></entry>
+		<entry>
+		  <literal>?<replaceable>variable</replaceable>:<replaceable>matcher-name</replaceable><optional>(<replaceable>args</replaceable>)</optional></literal>
+		</entry>
+		<entry>
+		  Selects anything if
+		  <replaceable>variable</replaceable> matches
+		  <replaceable>term</replaceable>; see <xref
+		  linkend='secExplicitMatchers'/>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchBroken'>?broken</link></literal></entry>
+		<entry><literal>~b</literal></entry>
+		<entry>
+		  Select packages that have a broken dependency.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchBrokenType'>?broken-<replaceable>depType</replaceable></link></literal></entry>
+		<entry><literal>~B<replaceable>depType</replaceable></literal></entry>
+		<entry>
+		  Select package that have a broken dependency of the
+		  given <replaceable>depType</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchBrokenTypeTerm'>?broken-<replaceable>depType</replaceable></link>(<replaceable>term</replaceable>)</literal></entry>
+		<entry><literal>~DB<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></entry>
+		<entry>
+		  Select packages that have a broken dependency of the
+		  given <replaceable>depType</replaceable> matching
+		  <replaceable>term</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchReverseBrokenDep'>?broken-reverse-<replaceable>depType</replaceable>(<replaceable>term</replaceable>)</link></literal></entry>
+		<entry><literal>~RB<option><replaceable>depType</replaceable>:</option><replaceable>term</replaceable></literal></entry>
+		<entry>
+		  Select packages that a package matching
+		  <replaceable>term</replaceable> declares a broken
+		  dependency of type <replaceable>depType</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry>
+		  <literal><link linkend='searchConflicts'>?conflicts</link>(<replaceable>term</replaceable>)</literal>
+		</entry>
+		<entry><literal>~C<replaceable>term</replaceable></literal></entry>
+		<entry>
+		  Select packages that conflict with a package
+		  matching <replaceable>term</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchConfigFiles'>?configfiles</link></literal></entry>
+		<entry><literal>~c</literal></entry>
+		<entry>
+		  Select packages that were removed but not purged.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchDep'>?<replaceable>depType</replaceable></link></literal></entry>
+		<entry><literal>~D<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></entry>
+		<entry>
+		  Match packages that declare a dependency of type
+		  <replaceable>depType</replaceable> on a package
+		  matching <replaceable>term</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchDescription'>?description</link>(<replaceable>description</replaceable>)</literal></entry>
+		<entry><literal>~d<replaceable>description</replaceable></literal></entry>
+		<entry>
+		  Select packages whose description matches
+		  <replaceable>description</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchEssential'>?essential</link></literal></entry>
+		<entry><literal>?essential</literal></entry>
+		<entry>
+		  Select essential packages, those with
+		  <literal>Essential: yes</literal> in their control
+		  files.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchFalse'>?false</link></literal></entry>
+		<entry><literal>~F</literal></entry>
+		<entry>
+		  Select no packages.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchFor'>?for</link> <replaceable>variable</replaceable>: <replaceable>term</replaceable></literal></entry>
+		<entry/>
+		<entry>
+		  Select packages that match
+		  <replaceable>term</replaceable> with
+		  <replaceable>variable</replaceable> bound to the
+		  package being matched; see <xref
+		  linkend='secExplicitMatchers'/>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchGarbage'>?garbage</link></literal></entry>
+		<entry><literal>~g</literal></entry>
+		<entry>
+		  Select packages that are not required by any manually
+		  installed package.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchInstalled'>?installed</link></literal></entry>
+		<entry><literal>~i</literal></entry>
+		<entry>Select installed packages.</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchMaintainer'>?maintainer</link>(<replaceable>maintainer</replaceable>)</literal></entry>
+		<entry><literal>~m<replaceable>maintainer</replaceable></literal></entry>
+		<entry>
+		  Select packages maintained by
+		  <replaceable>maintainer</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchNarrow'>?narrow</link>(<replaceable>filter</replaceable>, <replaceable>term</replaceable>)</literal></entry>
+		<entry><literal>~S <replaceable>filter</replaceable> <replaceable>term</replaceable></literal></entry>
+		<entry>
+		  Select packages for which a single version matches
+		  both <replaceable>filter</replaceable> and
+		  <replaceable>term</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchTermName'>?name</link>(<replaceable>name</replaceable>)</literal></entry>
+		<entry><literal>~n<replaceable>name</replaceable></literal>, <literal><replaceable>name</replaceable></literal></entry>
+		<entry>
+		  Select packages with the given <replaceable>name</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchNew'>?new</link></literal></entry>
+		<entry><literal>~N</literal></entry>
+		<entry>
+		  Select new packages.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchObsolete'>?obsolete</link></literal></entry>
+		<entry><literal>~o</literal></entry>
+		<entry>
+		  Match installed packages that cannot be downloaded.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchOr'>?or</link>(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal></entry>
+		<entry><literal><replaceable>term1</replaceable> | <replaceable>term2</replaceable></literal></entry>
+		<entry>
+		  Select packages that match
+		  <replaceable>term1</replaceable>,
+		  <replaceable>term2</replaceable>, or both.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchOrigin'>?origin</link>(<replaceable>origin</replaceable>)</literal></entry>
+		<entry><literal>~O<replaceable>origin</replaceable></literal></entry>
+		<entry>
+		  Select packages with the given
+		  <replaceable>origin</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchProvides'>?provides</link>(<replaceable>term</replaceable>)</literal></entry>
+		<entry><literal>~P<replaceable>term</replaceable></literal></entry>
+		<entry>
+		  Select packages that provide a package matching
+		  <replaceable>term</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchPriority'>?priority</link>(<replaceable>priority</replaceable>)</literal></entry>
+		<entry><literal>~p<replaceable>priority</replaceable></literal></entry>
+		<entry>
+		  Select packages with the given <replaceable>priority</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchReverseDep'>?reverse-<replaceable>depType</replaceable></link>(<replaceable>term</replaceable>)</literal></entry>
+		<entry><literal>~R<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></entry>
+		<entry>
+		  Select packages that a package matching
+		  <replaceable>term</replaceable> declares a
+		  dependency of type <replaceable>depType</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchReverseBrokenDep'>?reverse-broken-<replaceable>depType</replaceable>(<replaceable>term</replaceable>)</link></literal></entry>
+		<entry><literal>~RB<option><replaceable>depType</replaceable>:</option><replaceable>term</replaceable></literal></entry>
+		<entry>
+		  Select packages that a package matching
+		  <replaceable>term</replaceable> declares a broken
+		  dependency of type <replaceable>depType</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchSection'>?section</link></literal>(<replaceable>section</replaceable>)</entry>
+		<entry><literal>~s<replaceable>section</replaceable></literal></entry>
+		<entry>
+		  Select packages in the given <replaceable>section</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchTag'>?tag</link>(<replaceable>tag</replaceable>)</literal></entry>
+		<entry><literal>~G<replaceable>tag</replaceable></literal></entry>
+		<entry>
+		  Select packages that have the given debtags
+		  <replaceable>tag</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchTrue'>?true</link></literal></entry>
+		<entry><literal>~T</literal></entry>
+		<entry>
+		  Select all packages.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchTask'>?task(<replaceable>task</replaceable>)</link></literal></entry>
+		<entry><literal>~t<replaceable>task</replaceable></literal></entry>
+		<entry>
+		  Select packages that are in the given
+		  <replaceable>task</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchUpgradable'>?upgradable</link></literal></entry>
+		<entry><literal>~U</literal></entry>
+		<entry>
+		  Select packages that are installed and can be
+		  upgraded.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchTermVersion'>?version</link>(<replaceable>version</replaceable>)</literal></entry>
+		<entry><literal>~V<replaceable>version</replaceable></literal></entry>
+		<entry>
+		  Select packages whose version matches
+		  <replaceable>version</replaceable> (special values:
+		  <literal>CURRENT</literal>,
+		  <literal>CANDIDATE</literal>, and
+		  <literal>TARGET</literal>).
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchVirtual'>?virtual</link></literal></entry>
+		<entry><literal>~v</literal></entry>
+		<entry>
+		  Select virtual packages.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal><link linkend='searchWiden'>?widen</link>(<replaceable>term</replaceable>)</literal></entry>
+		<entry><literal>~W<replaceable>term</replaceable></literal></entry>
+		<entry>
+		  Select versions for which
+		  <replaceable>term</replaceable> matches any version
+		  of the corresponding package, discarding local
+		  version restrictions.
+		</entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+
+      <variablelist id='searchTermReferenceList'>
 	<varlistentry>
 	  <term><replaceable>name</replaceable></term>
 
@@ -4296,7 +4770,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchNot'>
 	  <term><literal>?not(<replaceable>term</replaceable>)</literal>, <literal>!<replaceable>term</replaceable></literal></term>
 
 	  <listitem>
@@ -4317,7 +4791,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchAnd'>
 	  <term><literal>?and(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>, <replaceable>term1</replaceable> <replaceable>term2</replaceable></term>
 
 	  <listitem>
@@ -4329,7 +4803,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchOr'>
 	  <term><literal>?or(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>, <literal><replaceable>term1</replaceable> | <replaceable>term2</replaceable></literal></term>
 
 	  <listitem>
@@ -4363,7 +4837,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchAction'>
 	  <term><literal>?action(<replaceable>action</replaceable>)</literal>, <literal>~a<replaceable>action</replaceable></literal></term>
 
 	  <listitem>
@@ -4460,7 +4934,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchArchive'>
 	  <term><literal>?archive(<replaceable>archive</replaceable>)</literal>, <literal>~A<replaceable>archive</replaceable></literal></term>
 
 	  <listitem>
@@ -4475,7 +4949,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchAutomatic'>
 	  <term><literal>?automatic</literal>, <literal>~M</literal></term>
 
 	  <listitem>
@@ -4528,7 +5002,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchBroken'>
 	  <term><literal>?broken</literal>, <literal>~b</literal></term>
 
 	  <listitem>
@@ -4540,13 +5014,13 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchBrokenType'>
-	  <term><literal>?broken-<replaceable>type</replaceable></literal>, <literal>~B<replaceable>type</replaceable></literal></term>
+	  <term><literal>?broken-<replaceable>depType</replaceable></literal>, <literal>~B<replaceable>depType</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
 	      Matches packages which have an unfulfilled (<quote>broken</quote>)
-	      dependency of the given <replaceable>type</replaceable>.
-	      <replaceable>type</replaceable> can be
+	      dependency of the given <replaceable>depType</replaceable>.
+	      <replaceable>depType</replaceable> can be
 	      <quote><literal>depends</literal></quote>,
 	      <quote><literal>predepends</literal></quote>,
 	      <quote><literal>recommends</literal></quote>,
@@ -4558,15 +5032,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry id='searchBroken'>
-	  <term><literal>?broken-<replaceable>type</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>~DB<optional><replaceable>type</replaceable>:</optional><replaceable>term</replaceable></literal></term>
+	<varlistentry id='searchBrokenTypeTerm'>
+	  <term><literal>?broken-<replaceable>depType</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>~DB<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
 	      Matches packages with an unsatisfied dependency of type
-	      <replaceable>type</replaceable> on a package matching
+	      <replaceable>depType</replaceable> on a package matching
 	      <replaceable>term</replaceable>.
-	      <replaceable>type</replaceable> may any one of the
+	      <replaceable>depType</replaceable> may any one of the
 	      dependency types listed in <link
 	      linkend='searchBrokenType'>the documentation of
 	      <literal>?broken</literal></link>.
@@ -4574,7 +5048,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchConflicts'>
 	  <term><literal>?conflicts(<replaceable>term</replaceable>)</literal>, <literal>~C<replaceable>term</replaceable></literal></term>
 
 	  <listitem>
@@ -4588,7 +5062,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchConfigFiles'>
 	  <term><literal>?configfiles</literal>, <literal>~c</literal></term>
 
 	  <listitem>
@@ -4601,36 +5075,36 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchDep'>
-	  <term><literal>?<replaceable>type</replaceable></literal>, <literal>~D<optional><replaceable>type</replaceable>:</optional><replaceable>term</replaceable></literal></term>
+	  <term><literal>?<replaceable>depType</replaceable></literal>, <literal>~D<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
-	      <replaceable>type</replaceable> may be any one of the
+	      <replaceable>depType</replaceable> may be any one of the
 	      dependency types given in <link
 	      linkend='searchBrokenType'>the documentation of
-	      <literal>?broken-<replaceable>type</replaceable></literal></link>,
+	      <literal>?broken-<replaceable>depType</replaceable></literal></link>,
 	      as well as <literal>provides</literal>: for instance,
 	      <literal>?depends(libpng3)</literal> will match any
 	      package that depends on <literal>libpng3</literal>.  If
 	      the short form (<literal>~D</literal>) is used and
-	      <replaceable>type</replaceable> is not present, it
+	      <replaceable>depType</replaceable> is not present, it
 	      defaults to <literal>depends</literal>.
 	    </para>
 
 	    <para>
-	      If <replaceable>type</replaceable> is
+	      If <replaceable>depType</replaceable> is
 	      <quote><literal>provides</literal></quote>, matches
 	      packages that provide a package matching
 	      <replaceable>term</replaceable> (the equivalent of <link
 	      linkend='searchProvides'><literal>?provides</literal></link>).
 	      Otherwise, matches packages which declare a dependency
-	      of type <replaceable>type</replaceable> upon a package
+	      of type <replaceable>depType</replaceable> upon a package
 	      version which matches <replaceable>term</replaceable>.
 	    </para>
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchDescription'>
 	  <term><literal>?description(<replaceable>description</replaceable>)</literal>, <literal>~d<replaceable>description</replaceable></literal></term>
 
 	  <listitem>
@@ -4641,7 +5115,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchEssential'>
 	  <term><literal>?essential</literal>, <literal>~E</literal></term>
 
 	  <listitem>
@@ -4651,7 +5125,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchFalse'>
 	  <term><literal>?false</literal>, <literal>~F</literal></term>
 
 	  <listitem>
@@ -4712,7 +5186,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchGarbage'>
 	  <term><literal>?garbage</literal>, <literal>~g</literal></term>
 
 	  <listitem>
@@ -4724,7 +5198,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchInstalled'>
 	  <term><literal>?installed</literal>, <literal>~i</literal></term>
 
 	  <listitem>
@@ -4739,7 +5213,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchMaintainer'>
 	  <term><literal>?maintainer(<replaceable>maintainer</replaceable>)</literal>, <literal>~m<replaceable>maintainer</replaceable></literal></term>
 
 	  <listitem>
@@ -4771,16 +5245,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
-	  <term><literal>?new</literal>, <literal>~N</literal></term>
-
-	  <listitem>
-	    <para>
-	      Matches packages which are <quote>new</quote>.
-	    </para>
-	  </listitem>
-	</varlistentry>
-
 	<varlistentry id="searchTermName">
 	  <term><literal>?name(<replaceable>name</replaceable>)</literal>, <literal>~n<replaceable>name</replaceable></literal></term>
 
@@ -4795,7 +5259,17 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchNew'>
+	  <term><literal>?new</literal>, <literal>~N</literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches packages which are <quote>new</quote>.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry id='searchObsolete'>
 	  <term>
 	    <literal>?obsolete</literal>, <literal>~o</literal>
 	  </term>
@@ -4810,7 +5284,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchOrigin'>
 	  <term><literal>?origin(<replaceable>origin</replaceable>)</literal>, <literal>~O<replaceable>origin</replaceable></literal></term>
 
 	  <listitem>
@@ -4840,8 +5314,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
-	  <term><literal>~p<replaceable>priority</replaceable></literal></term>
+	<varlistentry id='searchPriority'>
+	  <term><literal>?priority(<replaceable>priority</replaceable>)</literal>, <literal>~p<replaceable>priority</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
@@ -4859,55 +5333,55 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
-	  <term><literal>?reverse-<replaceable>type</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>~R<optional><replaceable>type</replaceable>:</optional><replaceable>term</replaceable></literal></term>
+	<varlistentry id='searchReverseDep'>
+	  <term><literal>?reverse-<replaceable>depType</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>~R<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
-	      <replaceable>type</replaceable> may be either
+	      <replaceable>depType</replaceable> may be either
 	      <quote><literal>provides</literal></quote> or one of the
 	      dependency types given in <link
 	      linkend='searchBrokenType'>the documentation of
-	      <literal>?broken-<replaceable>type</replaceable></literal></link>.
-	      If <replaceable>type</replaceable> is not present, it
+	      <literal>?broken-<replaceable>depType</replaceable></literal></link>.
+	      If <replaceable>depType</replaceable> is not present, it
 	      defaults to <literal>depends</literal>.
 	    </para>
 
 	    <para>
-	      If <replaceable>type</replaceable> is
+	      If <replaceable>depType</replaceable> is
 	      <quote><literal>provides</literal></quote>, matches
 	      packages whose name is provided by a package version
 	      matching <replaceable>term</replaceable>.  Otherwise,
 	      matches packages which a package version matching
 	      <replaceable>term</replaceable> declares a dependency of
-	      type <replaceable>type</replaceable> upon.
+	      type <replaceable>depType</replaceable> upon.
 	    </para>
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
-	  <term><literal>?reverse-broken-<replaceable>type</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>?broken-reverse-<replaceable>type</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>~RB<optional><replaceable>type</replaceable>:</optional><replaceable>term</replaceable></literal></term>
+	<varlistentry id='searchReverseBrokenDep'>
+	  <term><literal>?reverse-broken-<replaceable>depType</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>?broken-reverse-<replaceable>depType</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>~RB<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
-	      <replaceable>type</replaceable> may be either
+	      <replaceable>depType</replaceable> may be either
 	      <quote><literal>provides</literal></quote> or one of the
 	      dependency types given in <link
 	      linkend='searchBrokenType'>the documentation of
 	      <literal>~B</literal></link>.  If
-	      <replaceable>type</replaceable> is not present, it
+	      <replaceable>depType</replaceable> is not present, it
 	      defaults to <literal>depends</literal>.
 	    </para>
 
 	    <para>
 	      Matches packages which a package version matching
 	      <replaceable>term</replaceable> declares an unsatisfied
-	      dependency of type <replaceable>type</replaceable> upon.
+	      dependency of type <replaceable>depType</replaceable> upon.
 	    </para>
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchSection'>
 	  <term>
 	    <literal>?section(<replaceable>section</replaceable>)</literal>, <literal>~s<replaceable>section</replaceable></literal>
 	  </term>
@@ -4920,7 +5394,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchTag'>
 	  <term><literal>?tag(<replaceable>tag</replaceable>)</literal>, <literal>~G<replaceable>tag</replaceable></literal></term>
 
 	  <listitem>
@@ -4939,7 +5413,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchTrue'>
 	  <term>
 	    <literal>?true</literal>, <literal>~T</literal>
 	  </term>
@@ -4968,7 +5442,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchUpgradable'>
 	  <term>
 	    <literal>?upgradable</literal>, <literal>~U</literal>
 	  </term>
@@ -5035,7 +5509,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
-	<varlistentry>
+	<varlistentry id='searchVirtual'>
 	  <term>
 	    <literal>?virtual</literal>, <literal>~v</literal>
 	  </term>
