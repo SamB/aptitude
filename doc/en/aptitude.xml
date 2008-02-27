@@ -4174,15 +4174,14 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	<para>
 	  By default, patterns are checked against all versions of the
 	  package.  However, some patterns will restrict which
-	  versions are tested.  For instance, the <link
-	  linkend='searchDep'><literal>?depends</literal></link>
-	  pattern takes another pattern as an argument, and matches
-	  any package that depends on another package matching that
-	  pattern.  In this case, only package versions that satisfy
-	  the dependency will be tested against.  The versions that
-	  are used to test for a match will only change in match terms
-	  that have a subterm (like <link
-	  linkend='searchDep'><literal>?depends</literal></link>).
+	  versions are tested.  For instance, the search term
+	  <literal><link
+	  linkend='searchDep'>?depends</link>(<replaceable>pattern</replaceable>)</literal>
+	  will select any package that depends on a package matching
+	  <replaceable>pattern</replaceable>.  However,
+	  <replaceable>pattern</replaceable> will only be checked
+	  against the versions of the package that actually satisfy a
+	  dependency.
 	</para>
       </section>
 
