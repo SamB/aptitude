@@ -12,8 +12,8 @@ dist_bin_SCRIPTS = aptitude-create-state-bundle aptitude-run-state-bundle
 
 MANPAGE_LOCALES=gl it pl
 
-TLMANPAGES = $(wildcard aptitude.??.8)
-TLHELPTXTS = help.txt $(wildcard help-??.txt) $(wildcard help-??_??.txt)
+TLMANPAGES = $(wildcard $(srcdir)/aptitude.??.8)
+TLHELPTXTS = help.txt $(wildcard $(srcdir)/help-??.txt) $(wildcard $(srcdir)/help-??_??.txt)
 EXTRA_DIST = config.rpath  ChangeLog.SVN Doxyfile.in FAQ README.i18n README.SMART-POINTERS README.THREADS README.VSCREEN aptitude-hackers-guide.txt aclocal.m4 \
 	function_groups function_pkgs aptitude-defaults \
 	$(TLMANPAGES) $(TLHELPTXTS)
