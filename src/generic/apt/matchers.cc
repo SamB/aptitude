@@ -348,6 +348,7 @@ namespace
       matcher_type_obsolete,
       matcher_type_or,
       matcher_type_origin,
+      matcher_type_priority,
       matcher_type_provides,
       matcher_type_section,
       matcher_type_tag,
@@ -398,6 +399,7 @@ namespace
        string will read 'Debian'. Other providers may use their own string, such as
        "Ubuntu" or "Xandros". */
     { "origin", matcher_type_origin },
+    { "priority", matcher_type_priority },
     { "provides", matcher_type_provides },
     { "section", matcher_type_section },
     { "tag", matcher_type_tag },
@@ -3000,6 +3002,34 @@ std::string parse_substr(string::const_iterator &start,
   return rval;
 }
 
+pkgCache::State::VerPriority parse_priority(const string &substr)
+{
+  const char *s=substr.c_str();
+
+  if(strcasecmp(s, "important") == 0 ||
+     (apt_cache_file &&
+      strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Important)) == 0))
+    return pkgCache::State::Important;
+  else if(strcasecmp(s, "required") == 0 ||
+	  (apt_cache_file &&
+	   strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Required)) == 0))
+    return pkgCache::State::Required;
+  else if(strcasecmp(s, "standard") == 0 ||
+	  (apt_cache_file &&
+	   strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Standard)) == 0))
+    return pkgCache::State::Standard;
+  else if(strcasecmp(s, "optional") == 0 ||
+	  (apt_cache_file &&
+	   strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Optional)) == 0))
+    return pkgCache::State::Optional;
+  else if(strcasecmp(s, "extra") == 0 ||
+	  (apt_cache_file &&
+	   strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Extra)) == 0))
+    return pkgCache::State::Extra;
+  else
+    throw CompilationException(_("Unknown priority %s"),
+			       substr.c_str());
+}
 
 void parse_whitespace(string::const_iterator &start,
 		      const string::const_iterator &end)
@@ -3468,6 +3498,8 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
       return parse_binary_matcher<pkg_or_matcher, pkg_matcher_real *, pkg_matcher_real *>(start, end, terminators, search_descriptions, wide_context, name_context);
     case matcher_type_origin:
       return new pkg_origin_matcher(parse_string_match_args(start, end));
+    case matcher_type_priority:
+      return new pkg_priority_matcher(parse_priority(parse_string_match_args(start, end)));
     case matcher_type_provides:
       return parse_unary_matcher<pkg_provides_matcher, pkg_matcher_real *>(start, end, terminators, search_descriptions, false, name_context);
     case matcher_type_section:
@@ -3815,37 +3847,7 @@ pkg_matcher_real *parse_atom(string::const_iterator &start,
 		    case 'O':
 		      return new pkg_origin_matcher(substr);
 		    case 'p':
-		      {
-			pkgCache::State::VerPriority type;
-
-			const char *s=substr.c_str();
-
-			if(strcasecmp(s, "important") == 0 ||
-			   (apt_cache_file &&
-			    strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Important)) == 0))
-			  type=pkgCache::State::Important;
-			else if(strcasecmp(s, "required") == 0 ||
-				(apt_cache_file &&
-				 strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Required)) == 0))
-			  type=pkgCache::State::Required;
-			else if(strcasecmp(s, "standard") == 0 ||
-				(apt_cache_file &&
-				 strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Standard)) == 0))
-			  type=pkgCache::State::Standard;
-			else if(strcasecmp(s, "optional") == 0 ||
-				(apt_cache_file &&
-				 strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Optional)) == 0))
-			  type=pkgCache::State::Optional;
-			else if(strcasecmp(s, "extra") == 0 ||
-				(apt_cache_file &&
-				 strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Extra)) == 0))
-			  type=pkgCache::State::Extra;
-			else
-			  throw CompilationException(_("Unknown priority %s"),
-						     substr.c_str());
-
-			return new pkg_priority_matcher(type);
-		      }
+		      return new pkg_priority_matcher(parse_priority(substr));
 		    case 's':
 		      return new pkg_section_matcher(substr);
 		    case 't':
