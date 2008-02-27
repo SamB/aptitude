@@ -4245,14 +4245,14 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	<figure>
 	  <title>Syntax of the <literal>?for</literal> matcher</title>
 
-	  <synopsis><literal>?for <replaceable>variable</replaceable>: <replaceable>term</replaceable></literal></synopsis>
+	  <synopsis><literal>?for <replaceable>variable</replaceable>: <replaceable>pattern</replaceable></literal></synopsis>
 	</figure>
 
 	<para>
-	  This behaves exactly like <replaceable>term</replaceable>,
+	  This behaves exactly like <replaceable>pattern</replaceable>,
 	  but <replaceable>variable</replaceable> can be used within
-	  <replaceable>term</replaceable> to refer to the package or
-	  version that <replaceable>term</replaceable> is being
+	  <replaceable>pattern</replaceable> to refer to the package or
+	  version that <replaceable>pattern</replaceable> is being
 	  matched against.  You can use
 	  <replaceable>variable</replaceable> in two ways:
 	</para>
@@ -4281,10 +4281,10 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      The matcher <link
 	      linkend='searchBind'><literal>?bind(<replaceable>variable</replaceable>,
-	      <replaceable>term</replaceable>)</literal></link> will
+	      <replaceable>pattern</replaceable>)</literal></link> will
 	      match any package or version if the value of
 	      <replaceable>variable</replaceable> matches against
-	      <replaceable>term</replaceable>.
+	      <replaceable>pattern</replaceable>.
 	    </para>
 
 	    <para>
@@ -4341,11 +4341,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchNot'>?not(<replaceable>term</replaceable>)</link></literal></entry>
-		<entry><literal>!<replaceable>term</replaceable></literal></entry>
+		<entry><literal><link linkend='searchNot'>?not(<replaceable>pattern</replaceable>)</link></literal></entry>
+		<entry><literal>!<replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select any package that does not match
-		  <replaceable>term</replaceable>.
+		  <replaceable>pattern</replaceable>.
 		</entry>
 	      </row>
 
@@ -4364,12 +4364,12 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <row>
 		<entry>
-		  <literal><link linkend='searchAllVersions'>?all-versions</link>(<replaceable>term</replaceable>)</literal>
+		  <literal><link linkend='searchAllVersions'>?all-versions</link>(<replaceable>pattern</replaceable>)</literal>
 		</entry>
 		<entry/>
 		<entry>
 		  Select packages whose versions all match
-		  <replaceable>term</replaceable>.
+		  <replaceable>pattern</replaceable>.
 		</entry>
 	      </row>
 
@@ -4386,11 +4386,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchAnyVersion'>?any-version</link>(<replaceable>term</replaceable>)</literal></entry>
+		<entry><literal><link linkend='searchAnyVersion'>?any-version</link>(<replaceable>pattern</replaceable>)</literal></entry>
 		<entry/>
 		<entry>
 		  Select packages for which at least one version
-		  matches <replaceable>term</replaceable>.
+		  matches <replaceable>pattern</replaceable>.
 		</entry>
 	      </row>
 
@@ -4416,14 +4416,14 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchBind'>?bind</link>(<replaceable>variable</replaceable>, <replaceable>term</replaceable>)</literal></entry>
+		<entry><literal><link linkend='searchBind'>?bind</link>(<replaceable>variable</replaceable>, <replaceable>pattern</replaceable>)</literal></entry>
 		<entry>
 		  <literal>?<replaceable>variable</replaceable>:<replaceable>matcher-name</replaceable><optional>(<replaceable>args</replaceable>)</optional></literal>
 		</entry>
 		<entry>
 		  Selects anything if
 		  <replaceable>variable</replaceable> matches
-		  <replaceable>term</replaceable>; see <xref
+		  <replaceable>pattern</replaceable>; see <xref
 		  linkend='secExplicitMatchers'/>.
 		</entry>
 	      </row>
@@ -4446,33 +4446,33 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchBrokenTypeTerm'>?broken-<replaceable>depType</replaceable></link>(<replaceable>term</replaceable>)</literal></entry>
-		<entry><literal>~DB<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></entry>
+		<entry><literal><link linkend='searchBrokenTypeTerm'>?broken-<replaceable>depType</replaceable></link>(<replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>~DB<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages that have a broken dependency of the
 		  given <replaceable>depType</replaceable> matching
-		  <replaceable>term</replaceable>.
+		  <replaceable>pattern</replaceable>.
 		</entry>
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchReverseBrokenDep'>?broken-reverse-<replaceable>depType</replaceable>(<replaceable>term</replaceable>)</link></literal></entry>
-		<entry><literal>~RB<option><replaceable>depType</replaceable>:</option><replaceable>term</replaceable></literal></entry>
+		<entry><literal><link linkend='searchReverseBrokenDep'>?broken-reverse-<replaceable>depType</replaceable>(<replaceable>pattern</replaceable>)</link></literal></entry>
+		<entry><literal>~RB<option><replaceable>depType</replaceable>:</option><replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages that a package matching
-		  <replaceable>term</replaceable> declares a broken
+		  <replaceable>pattern</replaceable> declares a broken
 		  dependency of type <replaceable>depType</replaceable>.
 		</entry>
 	      </row>
 
 	      <row>
 		<entry>
-		  <literal><link linkend='searchConflicts'>?conflicts</link>(<replaceable>term</replaceable>)</literal>
+		  <literal><link linkend='searchConflicts'>?conflicts</link>(<replaceable>pattern</replaceable>)</literal>
 		</entry>
-		<entry><literal>~C<replaceable>term</replaceable></literal></entry>
+		<entry><literal>~C<replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages that conflict with a package
-		  matching <replaceable>term</replaceable>.
+		  matching <replaceable>pattern</replaceable>.
 		</entry>
 	      </row>
 
@@ -4486,11 +4486,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <row>
 		<entry><literal><link linkend='searchDep'>?<replaceable>depType</replaceable></link></literal></entry>
-		<entry><literal>~D<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></entry>
+		<entry><literal>~D<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Match packages that declare a dependency of type
 		  <replaceable>depType</replaceable> on a package
-		  matching <replaceable>term</replaceable>.
+		  matching <replaceable>pattern</replaceable>.
 		</entry>
 	      </row>
 
@@ -4522,11 +4522,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchFor'>?for</link> <replaceable>variable</replaceable>: <replaceable>term</replaceable></literal></entry>
+		<entry><literal><link linkend='searchFor'>?for</link> <replaceable>variable</replaceable>: <replaceable>pattern</replaceable></literal></entry>
 		<entry/>
 		<entry>
 		  Select packages that match
-		  <replaceable>term</replaceable> with
+		  <replaceable>pattern</replaceable> with
 		  <replaceable>variable</replaceable> bound to the
 		  package being matched; see <xref
 		  linkend='secExplicitMatchers'/>.
@@ -4558,12 +4558,12 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchNarrow'>?narrow</link>(<replaceable>filter</replaceable>, <replaceable>term</replaceable>)</literal></entry>
-		<entry><literal>~S <replaceable>filter</replaceable> <replaceable>term</replaceable></literal></entry>
+		<entry><literal><link linkend='searchNarrow'>?narrow</link>(<replaceable>filter</replaceable>, <replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>~S <replaceable>filter</replaceable> <replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages for which a single version matches
 		  both <replaceable>filter</replaceable> and
-		  <replaceable>term</replaceable>.
+		  <replaceable>pattern</replaceable>.
 		</entry>
 	      </row>
 
@@ -4611,11 +4611,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchProvides'>?provides</link>(<replaceable>term</replaceable>)</literal></entry>
-		<entry><literal>~P<replaceable>term</replaceable></literal></entry>
+		<entry><literal><link linkend='searchProvides'>?provides</link>(<replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>~P<replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages that provide a package matching
-		  <replaceable>term</replaceable>.
+		  <replaceable>pattern</replaceable>.
 		</entry>
 	      </row>
 
@@ -4628,21 +4628,21 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchReverseDep'>?reverse-<replaceable>depType</replaceable></link>(<replaceable>term</replaceable>)</literal></entry>
-		<entry><literal>~R<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></entry>
+		<entry><literal><link linkend='searchReverseDep'>?reverse-<replaceable>depType</replaceable></link>(<replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>~R<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages that a package matching
-		  <replaceable>term</replaceable> declares a
+		  <replaceable>pattern</replaceable> declares a
 		  dependency of type <replaceable>depType</replaceable>.
 		</entry>
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchReverseBrokenDep'>?reverse-broken-<replaceable>depType</replaceable>(<replaceable>term</replaceable>)</link></literal></entry>
-		<entry><literal>~RB<option><replaceable>depType</replaceable>:</option><replaceable>term</replaceable></literal></entry>
+		<entry><literal><link linkend='searchReverseBrokenDep'>?reverse-broken-<replaceable>depType</replaceable>(<replaceable>pattern</replaceable>)</link></literal></entry>
+		<entry><literal>~RB<option><replaceable>depType</replaceable>:</option><replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages that a package matching
-		  <replaceable>term</replaceable> declares a broken
+		  <replaceable>pattern</replaceable> declares a broken
 		  dependency of type <replaceable>depType</replaceable>.
 		</entry>
 	      </row>
@@ -4711,11 +4711,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchWiden'>?widen</link>(<replaceable>term</replaceable>)</literal></entry>
-		<entry><literal>~W<replaceable>term</replaceable></literal></entry>
+		<entry><literal><link linkend='searchWiden'>?widen</link>(<replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>~W<replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select versions for which
-		  <replaceable>term</replaceable> matches any version
+		  <replaceable>pattern</replaceable> matches any version
 		  of the corresponding package, discarding local
 		  version restrictions.
 		</entry>
@@ -4786,12 +4786,12 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchNot'>
-	  <term><literal>?not(<replaceable>term</replaceable>)</literal>, <literal>!<replaceable>term</replaceable></literal></term>
+	  <term><literal>?not(<replaceable>pattern</replaceable>)</literal>, <literal>!<replaceable>pattern</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
 	      Matches packages which do <emphasis>not</emphasis> match
-	      the term <replaceable>term</replaceable>.  For instance,
+	      the term <replaceable>pattern</replaceable>.  For instance,
 	      <quote><literal>!~b</literal></quote> selects packages that are not
 	      <quote>broken</quote>.
 	    </para>
@@ -4839,11 +4839,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry>
-	  <term><literal>(<replaceable>term</replaceable>)</literal></term>
+	  <term><literal>(<replaceable>pattern</replaceable>)</literal></term>
 
 	  <listitem>
 	    <para>
-	      Matches <replaceable>term</replaceable>.  For instance,
+	      Matches <replaceable>pattern</replaceable>.  For instance,
 	      <quote><literal>opengl (perl|python)</literal></quote>
 	      matches any package whose name contains
 	      <literal>opengl</literal>, and also contains either
@@ -4887,14 +4887,14 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchAllVersions'>
-	  <term><literal>?all-versions(<replaceable>term</replaceable>)</literal></term>
+	  <term><literal>?all-versions(<replaceable>pattern</replaceable>)</literal></term>
 
 	  <listitem>
 	    <para>
 	      Matches any package whose versions all match the given
 	      expression.  Each version of a package will be
 	      separately tested against
-	      <replaceable>term</replaceable>, and the package will
+	      <replaceable>pattern</replaceable>, and the package will
 	      match if all of its versions match.  Packages without
 	      versions, such as virtual packages, will always be
 	      matched by this search term.
@@ -4914,7 +4914,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchAnyVersion'>
-	  <term><literal>?any-version(<replaceable>term</replaceable>)</literal></term>
+	  <term><literal>?any-version(<replaceable>pattern</replaceable>)</literal></term>
 
 	  <listitem>
 	    <para>
@@ -4977,14 +4977,14 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	<varlistentry id='searchBind'>
 	  <term>
 	    <literal>?bind(<replaceable>variable</replaceable>,
-	    <replaceable>term</replaceable>)</literal>,
+	    <replaceable>pattern</replaceable>)</literal>,
 	    <literal>?<replaceable>variable</replaceable>:<replaceable>matcher-name</replaceable><optional>(<replaceable>args</replaceable>)</optional></literal>
 	  </term>
 
 	  <listitem>
 	    <para>
 	      Matches any package or version if the given
-	      <replaceable>term</replaceable> matches the package or
+	      <replaceable>pattern</replaceable> matches the package or
 	      version bound to <replaceable>variable</replaceable>,
 	      which must be defined in an enclosing <link
 	      linkend='searchFor'><literal>?for</literal></link>.
@@ -5048,13 +5048,13 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchBrokenTypeTerm'>
-	  <term><literal>?broken-<replaceable>depType</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>~DB<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></term>
+	  <term><literal>?broken-<replaceable>depType</replaceable>(<replaceable>pattern</replaceable>)</literal>, <literal>~DB<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
 	      Matches packages with an unsatisfied dependency of type
 	      <replaceable>depType</replaceable> on a package matching
-	      <replaceable>term</replaceable>.
+	      <replaceable>pattern</replaceable>.
 	      <replaceable>depType</replaceable> may any one of the
 	      dependency types listed in <link
 	      linkend='searchBrokenType'>the documentation of
@@ -5064,12 +5064,12 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchConflicts'>
-	  <term><literal>?conflicts(<replaceable>term</replaceable>)</literal>, <literal>~C<replaceable>term</replaceable></literal></term>
+	  <term><literal>?conflicts(<replaceable>pattern</replaceable>)</literal>, <literal>~C<replaceable>pattern</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
 	      Matches packages which conflict with a package matching
-	      the given <replaceable>term</replaceable>.  For
+	      the given <replaceable>pattern</replaceable>.  For
 	      instance, <quote><literal>~C~mdburrows@debian.org</literal></quote>
 	      matches any package which conflicts with a package I
 	      maintain.
@@ -5090,7 +5090,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchDep'>
-	  <term><literal>?<replaceable>depType</replaceable></literal>, <literal>~D<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></term>
+	  <term><literal>?<replaceable>depType</replaceable></literal>, <literal>~D<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
@@ -5110,11 +5110,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      If <replaceable>depType</replaceable> is
 	      <quote><literal>provides</literal></quote>, matches
 	      packages that provide a package matching
-	      <replaceable>term</replaceable> (the equivalent of <link
+	      <replaceable>pattern</replaceable> (the equivalent of <link
 	      linkend='searchProvides'><literal>?provides</literal></link>).
 	      Otherwise, matches packages which declare a dependency
 	      of type <replaceable>depType</replaceable> upon a package
-	      version which matches <replaceable>term</replaceable>.
+	      version which matches <replaceable>pattern</replaceable>.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -5157,13 +5157,13 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchFor'>
-	  <term><literal>?for <replaceable>variable</replaceable>: <replaceable>term</replaceable></literal></term>
+	  <term><literal>?for <replaceable>variable</replaceable>: <replaceable>pattern</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
-	      Matches <replaceable>term</replaceable>, but the given
+	      Matches <replaceable>pattern</replaceable>, but the given
 	      <replaceable>variable</replaceable> may be used inside
-	      <replaceable>term</replaceable> to refer to the package
+	      <replaceable>pattern</replaceable> to refer to the package
 	      or package version this matcher applies to.
 	    </para>
 
@@ -5244,7 +5244,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	<varlistentry id='searchNarrow'>
 	  <term>
-	    <literal>?narrow(<replaceable>filter</replaceable>, <replaceable>term</replaceable>)</literal>, <literal>~S <replaceable>filter</replaceable> <replaceable>term</replaceable></literal>
+	    <literal>?narrow(<replaceable>filter</replaceable>, <replaceable>pattern</replaceable>)</literal>, <literal>~S <replaceable>filter</replaceable> <replaceable>pattern</replaceable></literal>
 	  </term>
 
 	  <listitem>
@@ -5253,9 +5253,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      versions matching <replaceable>filter</replaceable>.  In
 	      particular, it matches any package version which matches
 	      both <replaceable>filter</replaceable> and
-	      <replaceable>term</replaceable>.  The string value of
+	      <replaceable>pattern</replaceable>.  The string value of
 	      the match is the string value of
-	      <replaceable>term</replaceable>.
+	      <replaceable>pattern</replaceable>.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -5315,12 +5315,12 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id="searchProvides">
-	  <term><literal>?provides(<replaceable>term</replaceable>)</literal>, <literal>~P<replaceable>term</replaceable></literal></term>
+	  <term><literal>?provides(<replaceable>pattern</replaceable>)</literal>, <literal>~P<replaceable>pattern</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
 	      Matches package versions which provide a package that
-	      matches the <replaceable>term</replaceable>.  For
+	      matches the <replaceable>pattern</replaceable>.  For
 	      instance,
 	      <quote><literal>~Pmail-transport-agent</literal></quote>
 	      will match all the packages that provide
@@ -5349,7 +5349,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchReverseDep'>
-	  <term><literal>?reverse-<replaceable>depType</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>~R<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></term>
+	  <term><literal>?reverse-<replaceable>depType</replaceable>(<replaceable>pattern</replaceable>)</literal>, <literal>~R<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
@@ -5366,16 +5366,16 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      If <replaceable>depType</replaceable> is
 	      <quote><literal>provides</literal></quote>, matches
 	      packages whose name is provided by a package version
-	      matching <replaceable>term</replaceable>.  Otherwise,
+	      matching <replaceable>pattern</replaceable>.  Otherwise,
 	      matches packages which a package version matching
-	      <replaceable>term</replaceable> declares a dependency of
+	      <replaceable>pattern</replaceable> declares a dependency of
 	      type <replaceable>depType</replaceable> upon.
 	    </para>
 	  </listitem>
 	</varlistentry>
 
 	<varlistentry id='searchReverseBrokenDep'>
-	  <term><literal>?reverse-broken-<replaceable>depType</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>?broken-reverse-<replaceable>depType</replaceable>(<replaceable>term</replaceable>)</literal>, <literal>~RB<optional><replaceable>depType</replaceable>:</optional><replaceable>term</replaceable></literal></term>
+	  <term><literal>?reverse-broken-<replaceable>depType</replaceable>(<replaceable>pattern</replaceable>)</literal>, <literal>?broken-reverse-<replaceable>depType</replaceable>(<replaceable>pattern</replaceable>)</literal>, <literal>~RB<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
@@ -5390,7 +5390,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	    <para>
 	      Matches packages which a package version matching
-	      <replaceable>term</replaceable> declares an unsatisfied
+	      <replaceable>pattern</replaceable> declares an unsatisfied
 	      dependency of type <replaceable>depType</replaceable> upon.
 	    </para>
 	  </listitem>
@@ -5543,7 +5543,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	<varlistentry id='searchWiden'>
 	  <term>
-	    <literal>?widen(<replaceable>term</replaceable>)</literal>, <literal>~W<replaceable>term</replaceable></literal> 
+	    <literal>?widen(<replaceable>pattern</replaceable>)</literal>, <literal>~W<replaceable>pattern</replaceable></literal> 
 	  </term>
 
 	  <listitem>
@@ -5553,9 +5553,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      (such as <link
 	      linkend='searchDep'><literal>?depends</literal></link>),
 	      these limits are dropped.  Thus,
-	      <literal>?widen(<replaceable>term</replaceable>)</literal>
+	      <literal>?widen(<replaceable>pattern</replaceable>)</literal>
 	      matches a package version if
-	      <replaceable>term</replaceable> matches
+	      <replaceable>pattern</replaceable> matches
 	      <emphasis>any</emphasis> version of that package.
 	    </para>
 	  </listitem>
