@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-02-21 07:27-0800\n"
+"POT-Creation-Date: 2008-02-26 22:27-0800\n"
 "PO-Revision-Date: 2005-11-28 01:17+0200\n"
 "Last-Translator: Darius Žitkevičius <skystis@splius.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -1644,7 +1644,7 @@ msgid "State"
 msgstr "Būsena"
 
 #: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:436
-#: src/generic/apt/matchers.cc:2266
+#: src/generic/apt/matchers.cc:2270
 msgid "Provided by"
 msgstr "Pateikė"
 
@@ -1751,7 +1751,7 @@ msgid "Obsoletes"
 msgstr "Nurašo"
 
 #: src/cmdline/cmdline_show.cc:435 src/cmdline/cmdline_why.cc:148
-#: src/generic/apt/matchers.cc:2212
+#: src/generic/apt/matchers.cc:2216
 msgid "Provides"
 msgstr "Pateikia"
 
@@ -1896,7 +1896,7 @@ msgstr ""
 msgid "Candidate"
 msgstr "KandVer"
 
-#: src/cmdline/cmdline_why.cc:299 src/generic/apt/matchers.cc:1373
+#: src/cmdline/cmdline_why.cc:299 src/generic/apt/matchers.cc:1377
 msgid "Install"
 msgstr "Įdiegti"
 
@@ -2248,9 +2248,11 @@ msgid "Unable to replace %s with new configuration file"
 msgstr "Negaliu pakeisti bylos %s nauja konfigūracijos byla"
 
 #: src/generic/apt/apt.cc:396
+#, fuzzy
 msgid ""
-"Could not lock the cache file.  Opening in read-only mode; any changes you "
-"make to the states of packages will NOT be preserved!"
+"Could not lock the cache file; this usually means that dpkg or another apt "
+"tool is already installing packages.  Opening in read-only mode; any changes "
+"you make to the states of packages will NOT be preserved!"
 msgstr ""
 "Nepavyko užrakinti krepšio bylos.  Atidaromas tik skaitymui; bet kokie "
 "paketų būsenos pakeitimai NEBUS išsaugoti!"
@@ -2479,166 +2481,166 @@ msgstr ""
 "\n"
 "Žurnalas užbaigtas.\n"
 
-#: src/generic/apt/matchers.cc:1122
+#: src/generic/apt/matchers.cc:1126
 msgid "Automatically Installed"
 msgstr "Automatiškai įdiegtas"
 
-#: src/generic/apt/matchers.cc:1150 src/generic/apt/matchers.cc:1357
+#: src/generic/apt/matchers.cc:1154 src/generic/apt/matchers.cc:1361
 msgid "Broken"
 msgstr "Blogas"
 
-#: src/generic/apt/matchers.cc:1355
+#: src/generic/apt/matchers.cc:1359
 msgid "Unchanged"
 msgstr "Nekeistas"
 
-#: src/generic/apt/matchers.cc:1359
+#: src/generic/apt/matchers.cc:1363
 msgid "Remove [unused]"
 msgstr "Pašalinti [nenaudojama]"
 
-#: src/generic/apt/matchers.cc:1361
+#: src/generic/apt/matchers.cc:1365
 msgid "Hold [auto]"
 msgstr "Sulaikyti [auto]"
 
-#: src/generic/apt/matchers.cc:1363
+#: src/generic/apt/matchers.cc:1367
 msgid "Install [auto]"
 msgstr "Įdiegti [auto]"
 
-#: src/generic/apt/matchers.cc:1365
+#: src/generic/apt/matchers.cc:1369
 msgid "Remove [auto]"
 msgstr "Šalinti [auto]"
 
-#: src/generic/apt/matchers.cc:1367
+#: src/generic/apt/matchers.cc:1371
 msgid "Downgrade"
 msgstr "Sendinti"
 
-#: src/generic/apt/matchers.cc:1369
+#: src/generic/apt/matchers.cc:1373
 msgid "Hold"
 msgstr "Sulaikyti"
 
-#: src/generic/apt/matchers.cc:1371
+#: src/generic/apt/matchers.cc:1375
 msgid "Reinstall"
 msgstr "Įdiegti iš naujo"
 
-#: src/generic/apt/matchers.cc:1375
+#: src/generic/apt/matchers.cc:1379
 msgid "Remove"
 msgstr "Šalinti"
 
-#: src/generic/apt/matchers.cc:1377
+#: src/generic/apt/matchers.cc:1381
 msgid "Upgrade"
 msgstr "atnaujinti"
 
-#: src/generic/apt/matchers.cc:1403
+#: src/generic/apt/matchers.cc:1407
 msgid "Keep"
 msgstr "Palikti"
 
-#: src/generic/apt/matchers.cc:1435
+#: src/generic/apt/matchers.cc:1439
 msgid "Virtual"
 msgstr "Virtualus"
 
-#: src/generic/apt/matchers.cc:1462
+#: src/generic/apt/matchers.cc:1466
 msgid "Installed"
 msgstr "Įdiegtas"
 
-#: src/generic/apt/matchers.cc:1490
+#: src/generic/apt/matchers.cc:1494
 msgid "Essential"
 msgstr "Esminis"
 
-#: src/generic/apt/matchers.cc:1515
+#: src/generic/apt/matchers.cc:1519
 msgid "Config Files Remain"
 msgstr "Likusios konfigūracijos bylos"
 
-#: src/generic/apt/matchers.cc:1952
+#: src/generic/apt/matchers.cc:1956
 msgid "Garbage"
 msgstr "Šlamštas"
 
-#: src/generic/apt/matchers.cc:2321
+#: src/generic/apt/matchers.cc:2325
 msgid "No reverse dependencies"
 msgstr "Nėra atvirkštinių priklausomybių"
 
-#: src/generic/apt/matchers.cc:2399
+#: src/generic/apt/matchers.cc:2403
 msgid "New Package"
 msgstr "Naujaspaketas"
 
-#: src/generic/apt/matchers.cc:2424
+#: src/generic/apt/matchers.cc:2428
 msgid "Upgradable"
 msgstr "Atnaujinamas"
 
-#: src/generic/apt/matchers.cc:2449
+#: src/generic/apt/matchers.cc:2453
 #, fuzzy
 msgid "Obsolete"
 msgstr "Nurašo"
 
-#: src/generic/apt/matchers.cc:2888
+#: src/generic/apt/matchers.cc:2892
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Nežinomas veiksmo tipas: %s"
 
-#: src/generic/apt/matchers.cc:2929
+#: src/generic/apt/matchers.cc:2933
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "Neuždarytas reiškinys po %s"
 
-#: src/generic/apt/matchers.cc:3017
+#: src/generic/apt/matchers.cc:3030
+#, c-format
+msgid "Unknown priority %s"
+msgstr "Nežinomas prioritetas: %s"
+
+#: src/generic/apt/matchers.cc:3049
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr ""
 
-#: src/generic/apt/matchers.cc:3020
+#: src/generic/apt/matchers.cc:3052
 #, fuzzy, c-format
 msgid "Expected '%c', got '%c'."
 msgstr "Tikėtasi ',' arba '(', gauta '%c'"
 
-#: src/generic/apt/matchers.cc:3327 src/generic/apt/matchers.cc:3733
-#: src/generic/apt/matchers.cc:3776
+#: src/generic/apt/matchers.cc:3359 src/generic/apt/matchers.cc:3791
+#: src/generic/apt/matchers.cc:3834
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Nežinomas priklausomybės tipas: %s"
 
-#: src/generic/apt/matchers.cc:3381
+#: src/generic/apt/matchers.cc:3413
 #, fuzzy, c-format
 msgid "Unknown matcher type: \"%s\"."
 msgstr "Nežinomas derinio tipas: %c"
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
-#: src/generic/apt/matchers.cc:3392 src/generic/apt/matchers.cc:3401
+#: src/generic/apt/matchers.cc:3424 src/generic/apt/matchers.cc:3433
 #, c-format
 msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
 "a context enclosed by ?%s)."
 msgstr ""
 
-#: src/generic/apt/matchers.cc:3586
+#: src/generic/apt/matchers.cc:3644
 msgid "Unmatched '('"
 msgstr "Neatitikęs „(“"
 
-#: src/generic/apt/matchers.cc:3739
+#: src/generic/apt/matchers.cc:3797
 msgid "Provides: cannot be broken"
 msgstr "Pateikia: negali būti sugadintas"
 
-#: src/generic/apt/matchers.cc:3818
-#, c-format
-msgid "Unknown priority %s"
-msgstr "Nežinomas prioritetas: %s"
-
-#: src/generic/apt/matchers.cc:3832
+#: src/generic/apt/matchers.cc:3860
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Nežinomas derinio tipas: %c"
 
-#: src/generic/apt/matchers.cc:3855
+#: src/generic/apt/matchers.cc:3883
 msgid "Can't search for \"\""
 msgstr "Negalima ieškoti \"\""
 
-#: src/generic/apt/matchers.cc:3887
+#: src/generic/apt/matchers.cc:3915
 msgid "Unexpected empty expression"
 msgstr "Netikėtas tuščias reiškinys"
 
-#: src/generic/apt/matchers.cc:3920
+#: src/generic/apt/matchers.cc:3948
 msgid "Badly formed expression"
 msgstr "Blogai suformuotas reiškinys"
 
-#: src/generic/apt/matchers.cc:3959
+#: src/generic/apt/matchers.cc:3987
 msgid "Unexpected ')'"
 msgstr "Netikėtas „)“"
 

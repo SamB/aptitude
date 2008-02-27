@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-02-21 07:27-0800\n"
+"POT-Creation-Date: 2008-02-26 22:27-0800\n"
 "PO-Revision-Date: 2006-10-22 16:18+0300\n"
 "Last-Translator: Ossama M. Khayat <okhayat@yahoo.com>\n"
 "Language-Team: Arabic <support@arabeyes.org>\n"
@@ -1636,7 +1636,7 @@ msgid "State"
 msgstr "الوضع"
 
 #: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:436
-#: src/generic/apt/matchers.cc:2266
+#: src/generic/apt/matchers.cc:2270
 msgid "Provided by"
 msgstr "توفّرها"
 
@@ -1743,7 +1743,7 @@ msgid "Obsoletes"
 msgstr "يُلغي"
 
 #: src/cmdline/cmdline_show.cc:435 src/cmdline/cmdline_why.cc:148
-#: src/generic/apt/matchers.cc:2212
+#: src/generic/apt/matchers.cc:2216
 msgid "Provides"
 msgstr "يُوفّر"
 
@@ -1890,7 +1890,7 @@ msgstr ""
 msgid "Candidate"
 msgstr "CandVer"
 
-#: src/cmdline/cmdline_why.cc:299 src/generic/apt/matchers.cc:1373
+#: src/cmdline/cmdline_why.cc:299 src/generic/apt/matchers.cc:1377
 msgid "Install"
 msgstr "تثبيت"
 
@@ -2234,9 +2234,11 @@ msgid "Unable to replace %s with new configuration file"
 msgstr "تعذر استبدال %s بملف التهيئة الجديد"
 
 #: src/generic/apt/apt.cc:396
+#, fuzzy
 msgid ""
-"Could not lock the cache file.  Opening in read-only mode; any changes you "
-"make to the states of packages will NOT be preserved!"
+"Could not lock the cache file; this usually means that dpkg or another apt "
+"tool is already installing packages.  Opening in read-only mode; any changes "
+"you make to the states of packages will NOT be preserved!"
 msgstr ""
 "تعذر قفل ملف المخزن. سيتم فتحه بوضع القراءة فقط;أي تغييرات سوف تقوم بها على "
 "حالة الحزم لن يتم حفظها!"
@@ -2462,166 +2464,166 @@ msgstr ""
 "\n"
 "اكتمل التسجيل.\n"
 
-#: src/generic/apt/matchers.cc:1122
+#: src/generic/apt/matchers.cc:1126
 msgid "Automatically Installed"
 msgstr "مُثبّتة تلقائياً"
 
-#: src/generic/apt/matchers.cc:1150 src/generic/apt/matchers.cc:1357
+#: src/generic/apt/matchers.cc:1154 src/generic/apt/matchers.cc:1361
 msgid "Broken"
 msgstr "معطوب"
 
-#: src/generic/apt/matchers.cc:1355
+#: src/generic/apt/matchers.cc:1359
 msgid "Unchanged"
 msgstr "لم يتغير"
 
-#: src/generic/apt/matchers.cc:1359
+#: src/generic/apt/matchers.cc:1363
 msgid "Remove [unused]"
 msgstr "إزالة [غير مستخدم]"
 
-#: src/generic/apt/matchers.cc:1361
+#: src/generic/apt/matchers.cc:1365
 msgid "Hold [auto]"
 msgstr "إبقاء [آلياً]"
 
-#: src/generic/apt/matchers.cc:1363
+#: src/generic/apt/matchers.cc:1367
 msgid "Install [auto]"
 msgstr "تثبيت [آلياً]"
 
-#: src/generic/apt/matchers.cc:1365
+#: src/generic/apt/matchers.cc:1369
 msgid "Remove [auto]"
 msgstr "إزالة [آلياً]"
 
-#: src/generic/apt/matchers.cc:1367
+#: src/generic/apt/matchers.cc:1371
 msgid "Downgrade"
 msgstr "تثبيط"
 
-#: src/generic/apt/matchers.cc:1369
+#: src/generic/apt/matchers.cc:1373
 msgid "Hold"
 msgstr "إبقاء"
 
-#: src/generic/apt/matchers.cc:1371
+#: src/generic/apt/matchers.cc:1375
 msgid "Reinstall"
 msgstr "إعادة التثبيت"
 
-#: src/generic/apt/matchers.cc:1375
+#: src/generic/apt/matchers.cc:1379
 msgid "Remove"
 msgstr "إزالة"
 
-#: src/generic/apt/matchers.cc:1377
+#: src/generic/apt/matchers.cc:1381
 msgid "Upgrade"
 msgstr "ترقية"
 
-#: src/generic/apt/matchers.cc:1403
+#: src/generic/apt/matchers.cc:1407
 msgid "Keep"
 msgstr "إبقاء"
 
-#: src/generic/apt/matchers.cc:1435
+#: src/generic/apt/matchers.cc:1439
 msgid "Virtual"
 msgstr "وهمي"
 
-#: src/generic/apt/matchers.cc:1462
+#: src/generic/apt/matchers.cc:1466
 msgid "Installed"
 msgstr "مُثبّتة"
 
-#: src/generic/apt/matchers.cc:1490
+#: src/generic/apt/matchers.cc:1494
 msgid "Essential"
 msgstr "أساسية"
 
-#: src/generic/apt/matchers.cc:1515
+#: src/generic/apt/matchers.cc:1519
 msgid "Config Files Remain"
 msgstr "تبقى ملفات التهيئة"
 
-#: src/generic/apt/matchers.cc:1952
+#: src/generic/apt/matchers.cc:1956
 msgid "Garbage"
 msgstr "قمامة"
 
-#: src/generic/apt/matchers.cc:2321
+#: src/generic/apt/matchers.cc:2325
 msgid "No reverse dependencies"
 msgstr "لا معتمدات راجعة"
 
-#: src/generic/apt/matchers.cc:2399
+#: src/generic/apt/matchers.cc:2403
 msgid "New Package"
 msgstr "حزمة جديدة"
 
-#: src/generic/apt/matchers.cc:2424
+#: src/generic/apt/matchers.cc:2428
 msgid "Upgradable"
 msgstr "قابلة للترقية"
 
-#: src/generic/apt/matchers.cc:2449
+#: src/generic/apt/matchers.cc:2453
 #, fuzzy
 msgid "Obsolete"
 msgstr "يُلغي"
 
-#: src/generic/apt/matchers.cc:2888
+#: src/generic/apt/matchers.cc:2892
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "نوع عمل مجهول: %s"
 
-#: src/generic/apt/matchers.cc:2929
+#: src/generic/apt/matchers.cc:2933
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "سلسلة أحرف غير منهاة بعد %s"
 
-#: src/generic/apt/matchers.cc:3017
+#: src/generic/apt/matchers.cc:3030
+#, c-format
+msgid "Unknown priority %s"
+msgstr "أولوية مجهولة %s"
+
+#: src/generic/apt/matchers.cc:3049
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr ""
 
-#: src/generic/apt/matchers.cc:3020
+#: src/generic/apt/matchers.cc:3052
 #, fuzzy, c-format
 msgid "Expected '%c', got '%c'."
 msgstr "توقع ',' أو '('، عثر على '%c'"
 
-#: src/generic/apt/matchers.cc:3327 src/generic/apt/matchers.cc:3733
-#: src/generic/apt/matchers.cc:3776
+#: src/generic/apt/matchers.cc:3359 src/generic/apt/matchers.cc:3791
+#: src/generic/apt/matchers.cc:3834
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "نوع معتمد مجهول: %s"
 
-#: src/generic/apt/matchers.cc:3381
+#: src/generic/apt/matchers.cc:3413
 #, fuzzy, c-format
 msgid "Unknown matcher type: \"%s\"."
 msgstr "نوع صيغة مجهول: %c"
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
-#: src/generic/apt/matchers.cc:3392 src/generic/apt/matchers.cc:3401
+#: src/generic/apt/matchers.cc:3424 src/generic/apt/matchers.cc:3433
 #, c-format
 msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
 "a context enclosed by ?%s)."
 msgstr ""
 
-#: src/generic/apt/matchers.cc:3586
+#: src/generic/apt/matchers.cc:3644
 msgid "Unmatched '('"
 msgstr "'(' غير مُطابق"
 
-#: src/generic/apt/matchers.cc:3739
+#: src/generic/apt/matchers.cc:3797
 msgid "Provides: cannot be broken"
 msgstr "توفّر: لا يمكن أن تعطب"
 
-#: src/generic/apt/matchers.cc:3818
-#, c-format
-msgid "Unknown priority %s"
-msgstr "أولوية مجهولة %s"
-
-#: src/generic/apt/matchers.cc:3832
+#: src/generic/apt/matchers.cc:3860
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "نوع صيغة مجهول: %c"
 
-#: src/generic/apt/matchers.cc:3855
+#: src/generic/apt/matchers.cc:3883
 msgid "Can't search for \"\""
 msgstr "تعذر البحث عن \"\""
 
-#: src/generic/apt/matchers.cc:3887
+#: src/generic/apt/matchers.cc:3915
 msgid "Unexpected empty expression"
 msgstr "صيغة فارغة غير متوقعة"
 
-#: src/generic/apt/matchers.cc:3920
+#: src/generic/apt/matchers.cc:3948
 msgid "Badly formed expression"
 msgstr "صيغة مشكلة بشكل سيء"
 
-#: src/generic/apt/matchers.cc:3959
+#: src/generic/apt/matchers.cc:3987
 msgid "Unexpected ')'"
 msgstr "')' غير متوقع"
 

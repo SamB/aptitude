@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-02-21 07:27-0800\n"
+"POT-Creation-Date: 2008-02-26 22:27-0800\n"
 "PO-Revision-Date: 2008-02-23 21:47+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -1753,7 +1753,7 @@ msgid "State"
 msgstr "Tình trạng"
 
 #: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:436
-#: src/generic/apt/matchers.cc:2266
+#: src/generic/apt/matchers.cc:2270
 msgid "Provided by"
 msgstr "Cung cấp bởi"
 
@@ -1861,7 +1861,7 @@ msgid "Obsoletes"
 msgstr "Làm cũ"
 
 #: src/cmdline/cmdline_show.cc:435 src/cmdline/cmdline_why.cc:148
-#: src/generic/apt/matchers.cc:2212
+#: src/generic/apt/matchers.cc:2216
 msgid "Provides"
 msgstr "Cung cấp"
 
@@ -2001,7 +2001,7 @@ msgstr "Hiện_thời"
 msgid "Candidate"
 msgstr "Ứng_cử"
 
-#: src/cmdline/cmdline_why.cc:299 src/generic/apt/matchers.cc:1373
+#: src/cmdline/cmdline_why.cc:299 src/generic/apt/matchers.cc:1377
 msgid "Install"
 msgstr "Cài"
 
@@ -2351,9 +2351,11 @@ msgid "Unable to replace %s with new configuration file"
 msgstr "Không thể thay thế %s bằng tập tin cấu hình mới"
 
 #: src/generic/apt/apt.cc:396
+#, fuzzy
 msgid ""
-"Could not lock the cache file.  Opening in read-only mode; any changes you "
-"make to the states of packages will NOT be preserved!"
+"Could not lock the cache file; this usually means that dpkg or another apt "
+"tool is already installing packages.  Opening in read-only mode; any changes "
+"you make to the states of packages will NOT be preserved!"
 msgstr ""
 "Không thể khoá tập tin bộ nhớ tạm. Đang mở trong chế độ chỉ đọc: thay đổi "
 "nào bạn làm trong tình trạng gói nào sẽ KHÔNG được lưu."
@@ -2589,128 +2591,133 @@ msgstr ""
 "\n"
 "Ghi lưu xong.\n"
 
-#: src/generic/apt/matchers.cc:1122
+#: src/generic/apt/matchers.cc:1126
 msgid "Automatically Installed"
 msgstr "Đã cài đặt tự động"
 
-#: src/generic/apt/matchers.cc:1150 src/generic/apt/matchers.cc:1357
+#: src/generic/apt/matchers.cc:1154 src/generic/apt/matchers.cc:1361
 msgid "Broken"
 msgstr "Bị hỏng"
 
-#: src/generic/apt/matchers.cc:1355
+#: src/generic/apt/matchers.cc:1359
 msgid "Unchanged"
 msgstr "Chưa đổi"
 
-#: src/generic/apt/matchers.cc:1359
+#: src/generic/apt/matchers.cc:1363
 msgid "Remove [unused]"
 msgstr "Bỏ [không dùng]"
 
-#: src/generic/apt/matchers.cc:1361
+#: src/generic/apt/matchers.cc:1365
 msgid "Hold [auto]"
 msgstr "Giữ lại [tự động]"
 
-#: src/generic/apt/matchers.cc:1363
+#: src/generic/apt/matchers.cc:1367
 msgid "Install [auto]"
 msgstr "Cài [tự động]"
 
-#: src/generic/apt/matchers.cc:1365
+#: src/generic/apt/matchers.cc:1369
 msgid "Remove [auto]"
 msgstr "Bỏ [tự động]"
 
-#: src/generic/apt/matchers.cc:1367
+#: src/generic/apt/matchers.cc:1371
 msgid "Downgrade"
 msgstr "Hạ cấp"
 
-#: src/generic/apt/matchers.cc:1369
+#: src/generic/apt/matchers.cc:1373
 msgid "Hold"
 msgstr "Giữ lại"
 
-#: src/generic/apt/matchers.cc:1371
+#: src/generic/apt/matchers.cc:1375
 msgid "Reinstall"
 msgstr "Cài lại"
 
-#: src/generic/apt/matchers.cc:1375
+#: src/generic/apt/matchers.cc:1379
 msgid "Remove"
 msgstr "Bỏ"
 
-#: src/generic/apt/matchers.cc:1377
+#: src/generic/apt/matchers.cc:1381
 msgid "Upgrade"
 msgstr "Nâng cấp"
 
-#: src/generic/apt/matchers.cc:1403
+#: src/generic/apt/matchers.cc:1407
 msgid "Keep"
 msgstr "Giữ"
 
-#: src/generic/apt/matchers.cc:1435
+#: src/generic/apt/matchers.cc:1439
 msgid "Virtual"
 msgstr "Ảo"
 
-#: src/generic/apt/matchers.cc:1462
+#: src/generic/apt/matchers.cc:1466
 msgid "Installed"
 msgstr "Đã cài"
 
-#: src/generic/apt/matchers.cc:1490
+#: src/generic/apt/matchers.cc:1494
 msgid "Essential"
 msgstr "Chủ yếu"
 
-#: src/generic/apt/matchers.cc:1515
+#: src/generic/apt/matchers.cc:1519
 msgid "Config Files Remain"
 msgstr "Tập tin cấu hình còn lại"
 
-#: src/generic/apt/matchers.cc:1952
+#: src/generic/apt/matchers.cc:1956
 msgid "Garbage"
 msgstr "Rác"
 
-#: src/generic/apt/matchers.cc:2321
+#: src/generic/apt/matchers.cc:2325
 msgid "No reverse dependencies"
 msgstr "Không có quan hệ phụ thuộc ngược"
 
-#: src/generic/apt/matchers.cc:2399
+#: src/generic/apt/matchers.cc:2403
 msgid "New Package"
 msgstr "Gói mới"
 
-#: src/generic/apt/matchers.cc:2424
+#: src/generic/apt/matchers.cc:2428
 msgid "Upgradable"
 msgstr "Nâng cấp được"
 
-#: src/generic/apt/matchers.cc:2449
+#: src/generic/apt/matchers.cc:2453
 msgid "Obsolete"
 msgstr "Cũ"
 
-#: src/generic/apt/matchers.cc:2888
+#: src/generic/apt/matchers.cc:2892
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Không rõ kiểu hành động: %s"
 
-#: src/generic/apt/matchers.cc:2929
+#: src/generic/apt/matchers.cc:2933
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "Có chuỗi nghĩa chữ chưa chấm dứt nằm sau %s"
 
-#: src/generic/apt/matchers.cc:3017
+#: src/generic/apt/matchers.cc:3030
+#, c-format
+msgid "Unknown priority %s"
+msgstr "Không rõ ưu tiên %s"
+
+#: src/generic/apt/matchers.cc:3049
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr "Mẫu khớp kết thúc bất thường (đợi « %c »)."
 
-#: src/generic/apt/matchers.cc:3020
+#: src/generic/apt/matchers.cc:3052
 #, c-format
 msgid "Expected '%c', got '%c'."
 msgstr "Đợi « %c », còn nhận « %c »."
 
-#: src/generic/apt/matchers.cc:3327 src/generic/apt/matchers.cc:3733
-#: src/generic/apt/matchers.cc:3776
+#: src/generic/apt/matchers.cc:3359 src/generic/apt/matchers.cc:3791
+#: src/generic/apt/matchers.cc:3834
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Không rõ kiểu quan hệ phụ thuộc: %s"
 
-#: src/generic/apt/matchers.cc:3381
+#: src/generic/apt/matchers.cc:3413
 #, c-format
 msgid "Unknown matcher type: \"%s\"."
 msgstr "Không rõ kiểu hình mẫu : « %s »"
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
-#: src/generic/apt/matchers.cc:3392 src/generic/apt/matchers.cc:3401
+#: src/generic/apt/matchers.cc:3424 src/generic/apt/matchers.cc:3433
 #, c-format
 msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
@@ -2719,37 +2726,32 @@ msgstr ""
 "Ký hiệu khớp ?%s phải được dùng trong ngữ cảnh « rộng » (một ngữ cảnh cấp "
 "đầu, hoặc một ngữ cảnh nằm giữa ?%s)."
 
-#: src/generic/apt/matchers.cc:3586
+#: src/generic/apt/matchers.cc:3644
 msgid "Unmatched '('"
 msgstr "Có dấu « ( » riêng lẻ"
 
-#: src/generic/apt/matchers.cc:3739
+#: src/generic/apt/matchers.cc:3797
 msgid "Provides: cannot be broken"
 msgstr "Cung cấp: không thể ngắt"
 
-#: src/generic/apt/matchers.cc:3818
-#, c-format
-msgid "Unknown priority %s"
-msgstr "Không rõ ưu tiên %s"
-
-#: src/generic/apt/matchers.cc:3832
+#: src/generic/apt/matchers.cc:3860
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Không rõ kiểu hình mẫu : %c"
 
-#: src/generic/apt/matchers.cc:3855
+#: src/generic/apt/matchers.cc:3883
 msgid "Can't search for \"\""
 msgstr "Không thể tìm kiếm «  »"
 
-#: src/generic/apt/matchers.cc:3887
+#: src/generic/apt/matchers.cc:3915
 msgid "Unexpected empty expression"
 msgstr "Biểu thức rỗng bất thường"
 
-#: src/generic/apt/matchers.cc:3920
+#: src/generic/apt/matchers.cc:3948
 msgid "Badly formed expression"
 msgstr "Biểu thức dạng sai"
 
-#: src/generic/apt/matchers.cc:3959
+#: src/generic/apt/matchers.cc:3987
 msgid "Unexpected ')'"
 msgstr "Dấu « ) » bất thường"
 
