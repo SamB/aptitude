@@ -74,6 +74,61 @@
   <!ENTITY help-license "<menuchoice><guimenu>Help</guimenu><guimenuitem>License</guimenuitem></menuchoice>">
 
 
+  <!-- By convention, the entity &Sterm; generates ?term with a link
+       to the documentation of ?term. -->
+  <!ENTITY Sequal "<literal><link linkend='searchEqual'>?=</link></literal>">
+  <!ENTITY Snot "<literal><link linkend='searchNot'>?not</link></literal>">
+  <!ENTITY Sand "<literal><link linkend='searchAnd'>?and</link></literal>">
+  <!ENTITY Sor "<literal><link linkend='searchOr'>?or</link></literal>">
+  <!ENTITY Saction "<literal><link linkend='searchAction'>?action</link></literal>">
+  <!ENTITY Sall-versions "<literal><link linkend='searchAllVersions'>?all-versions</link></literal>">
+  <!ENTITY Sany-version "<literal><link linkend='searchAnyVersion'>?any-version</link></literal>">
+  <!ENTITY Sarchive "<literal><link linkend='searchArchive'>?archive</link></literal>">
+  <!ENTITY Sautomatic "<literal><link linkend='searchAutomatic'>?automatic</link></literal>">
+  <!ENTITY Sbind "<literal><link linkend='searchBind'>?bind</link></literal>">
+  <!ENTITY Sbroken "<literal><link linkend='searchBroken'>?broken</link></literal>">
+  <!ENTITY Sbroken-type "<literal><link linkend='searchBrokenType'>?broken-<replaceable>depType</replaceable></link></literal>">
+  <!ENTITY Sbroken-type-term "<literal><link linkend='searchBrokenTypeTerm'>?broken-<replaceable>depType</replaceable></link></literal>">
+  <!ENTITY Sbroken-reverse-dep "<literal><link linkend='searchReverseBrokenDep'>?broken-reverse-<replaceable>depType</replaceable></link></literal>">
+  <!ENTITY Sconflicts "<literal><link linkend='searchConflicts'>?conflicts</link></literal>">
+  <!ENTITY Sconfig-files "<literal><link linkend='searchConfigFiles'>?configfiles</link></literal>">
+  <!ENTITY Sdep "<literal><link linkend='searchDep'>?<replaceable>depType</replaceable></link></literal>">
+
+  <!ENTITY Sdepends "<literal><link linkend='searchDep'>?depends</link></literal>">
+  <!ENTITY Srecommends "<literal><link linkend='searchDep'>?recommends</link></literal>">
+  <!ENTITY Ssuggests "<literal><link linkend='searchDep'>?suggests</link></literal>">
+
+  <!ENTITY Sdescription "<literal><link linkend='searchDescription'>?description</link></literal>">
+  <!ENTITY Sessential "<literal><link linkend='searchEssential'>?essential</link></literal>">
+  <!ENTITY Sfalse "<literal><link linkend='searchFalse'>?false</link></literal>">
+  <!ENTITY Sfor "<literal><link linkend='searchFor'>?for</link></literal>">
+  <!ENTITY Sgarbage "<literal><link linkend='searchGarbage'>?garbage</link></literal>">
+  <!ENTITY Sinstalled "<literal><link linkend='searchInstalled'>?installed</link></literal>">
+  <!ENTITY Smaintainer "<literal><link linkend='searchMaintainer'>?maintainer</link></literal>">
+  <!ENTITY Snarrow "<literal><link linkend='searchNarrow'>?narrow</link></literal>">
+  <!ENTITY Sname "<literal><link linkend='searchTermName'>?name</link></literal>">
+  <!ENTITY Snew "<literal><link linkend='searchNew'>?new</link></literal>">
+  <!ENTITY Sobsolete "<literal><link linkend='searchObsolete'>?obsolete</link></literal>">
+  <!ENTITY Sorigin "<literal><link linkend='searchOrigin'>?origin</link></literal>">
+  <!ENTITY Sprovides "<literal><link linkend='searchProvides'>?provides</link></literal>">
+  <!ENTITY Spriority "<literal><link linkend='searchPriority'>?priority</link></literal>">
+  <!ENTITY Sreverse-dep "<literal><link linkend='searchReverseDep'>?reverse-<replaceable>depType</replaceable></link></literal>">
+
+  <!ENTITY Sreverse-depends "<literal><link linkend='searchReverseDep'>?reverse-depends</link></literal>">
+  <!ENTITY Sreverse-recommends "<literal><link linkend='searchReverseDep'>?reverse-recommends</link></literal>">
+  <!ENTITY Sreverse-suggests "<literal><link linkend='searchReverseDep'>?reverse-suggests</link></literal>">
+
+  <!ENTITY Sreverse-broken-dep "<literal><link linkend='searchReverseBrokenDep'>?reverse-broken-<replaceable>depType</replaceable></link></literal>">
+  <!ENTITY Ssection "<literal><link linkend='searchSection'>?section</link></literal>">
+  <!ENTITY Stag "<literal><link linkend='searchTag'>?tag</link></literal>">
+  <!ENTITY Strue "<literal><link linkend='searchTrue'>?true</link></literal>">
+  <!ENTITY Stask "<literal><link linkend='searchTask'>?task</link></literal>">
+  <!ENTITY Supgradable "<literal><link linkend='searchUpgradable'>?upgradable</link></literal>">
+  <!ENTITY Sversion "<literal><link linkend='searchTermVersion'>?version</link></literal>">
+  <!ENTITY Svirtual "<literal><link linkend='searchVirtual'>?virtual</link></literal>">
+  <!ENTITY Swiden "<literal><link linkend='searchWiden'>?widen</link></literal>">
+
+
   <!ENTITY manpage SYSTEM "manpage.xml">
 ]>
 
@@ -4038,14 +4093,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	they match all of its terms.  Terms generally start with a
 	question mark (<quote>?</quote>), followed by the name of the
 	match term, which describes the search that the term performs:
-	for instance, the term <link
-	linkend="searchTermName"><literal>?name</literal></link>
-	matches package names, while the term <link
-	linkend="searchTermVersion"><literal>?version</literal></link>
-	matches package versions.  Finally, any additional parameters
-	to the search term are placed in parentheses (see the
-	documentation of individual terms for more information on
-	this).
+	for instance, the term &Sname; matches package names, while
+	the term &Sversion; matches package versions.  Finally, any
+	additional parameters to the search term are placed in
+	parentheses (see the documentation of individual terms for
+	more information on this).
       </para>
 
       <section>
@@ -4055,9 +4107,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  Many search terms take a string as a parameter and match it
 	  against one or more fields of a package.  Strings can be
 	  entered either with or without double quotes
-	  (<quote><literal>"</literal></quote>), so both
-	  <quote><literal>?name(scorch)</literal></quote> and
-	  <quote><literal>?name("scorch")</literal></quote> will
+	  (<quote><literal>"</literal></quote>), so
+	  <quote><literal>&Sname;(scorch)</literal></quote> and
+	  <quote><literal>&Sname;("scorch")</literal></quote> will
 	  perform the same search.
 	</para>
 
@@ -4071,7 +4123,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      &aptitude; will only treat the comma as special if there
 	      is a second argument, so (for instance)
-	      <quote><literal>?name(apt,itude)</literal></quote>
+	      <quote><literal>&Sname;(apt,itude)</literal></quote>
 	      searches for the string
 	      <quote><literal>apt,itude</literal></quote> in the
 	      <literal>Name</literal> field of packages.
@@ -4085,11 +4137,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </footnote>
 	  To remove the special meaning of these characters, place a
 	  tilde (<quote><literal>~</literal></quote>) directly before
-	  them.  For instance, <literal>?description(etc))</literal>
+	  them.  For instance, <literal>&Sdescription;(etc))</literal>
 	  is a syntax error, because the first <literal>)</literal>
-	  ends the <literal>?description</literal> term, and the
+	  ends the &Sdescription; term, and the
 	  second <literal>)</literal> does not match anything.  In
-	  contrast, <literal>?description(etc~))</literal> matches any
+	  contrast, <literal>&Sdescription;(etc~))</literal> matches any
 	  package whose description contains the text
 	  <quote><literal>etc)</literal></quote>.  There are
 	  additional considerations if you are using the shorthand
@@ -4130,7 +4182,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  (<quote><literal>~</literal></quote>) followed by a single
 	  character that identifies the term, and finally the
 	  arguments (if any) to the term.  For instance, the short
-	  form of <literal>?name(aptitude)</literal> is <literal>~n
+	  form of <literal>&Sname;(aptitude)</literal> is <literal>~n
 	  aptitude</literal>.
 	</para>
 
@@ -4176,8 +4228,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  the package matches the pattern.  However, some patterns
 	  will restrict their subterms to only match against some
 	  versions of a package.  For instance, the search term
-	  <literal><link
-	  linkend='searchDep'>?depends</link>(<replaceable>pattern</replaceable>)</literal>
+	  <literal>&Sdepends;(<replaceable>pattern</replaceable>)</literal>
 	  will select any package that depends on a package matching
 	  <replaceable>pattern</replaceable>.  However,
 	  <replaceable>pattern</replaceable> will only be checked
@@ -4186,23 +4237,21 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  depends on <literal>bar (>= 3.0)</literal> and versions
 	  <literal>2.0</literal>, <literal>3.0</literal>, and
 	  <literal>4.0</literal> of <literal>bar</literal> are
-	  available, then in the search pattern <literal><link
-	  linkend='searchDep'>?depends</link>(<link
-	  linkend='searchVersion'>?version</link>(2\.0))</literal>,
-	  only versions <literal>3.0</literal> and
-	  <literal>4.0</literal> will be tested against
-	  <literal>?version(2\.0)</literal>, and hence
-	  <literal>foo</literal> will not be found by this search.
+	  available, then in the search pattern
+	  <literal>&Sdepends;(&Sversion;(2\.0))</literal>, only
+	  versions <literal>3.0</literal> and <literal>4.0</literal>
+	  will be tested against <literal>&Sversion;(2\.0)</literal>,
+	  and hence <literal>foo</literal> will not be found by this
+	  search.
 	</para>
 
 	<para>
 	  It matters which versions are checked because, as in the
 	  example above, some patterns will match one version but not
-	  another.  For instance, the pattern <link
-	  linkend='searchInstalled'><literal>?installed</literal></link>
-	  will only match the version of the package (if any) that is
-	  currently installed.  Similarly, the pattern <link
-	  linkend='searchMaintainer'><literal>?maintainer</literal>(<replaceable>maintainer</replaceable>)</link>
+	  another.  For instance, the pattern &Sinstalled; will only
+	  match the version of the package (if any) that is currently
+	  installed.  Similarly, the pattern
+	  <literal>&Smaintainer;(<replaceable>maintainer</replaceable>)</literal>
 	  will only match versions that have the given
 	  <replaceable>maintainer</replaceable>.  Normally all
 	  versions of a package have the same maintainer, but this is
@@ -4230,19 +4279,17 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    For example: suppose that version <literal>3.0-1</literal>
 	    of the package <literal>aardvark</literal> is installed,
 	    but that version <literal>4.0-1</literal> is available.
-	    Then the search expression <literal><link
-	    linkend='searchVersion'>?version</link>(4\.0-1)<link
-	    linkend='searchInstalled'>?installed</link></literal>
-	    matches <literal>aardvark</literal>, because
-	    <literal>?version(4\.0-1)</literal> matches against
+	    Then the search expression
+	    <literal>&Sversion;(4\.0-1)&Sinstalled;</literal> matches
+	    <literal>aardvark</literal>, because
+	    <literal>&Sversion;(4\.0-1)</literal> matches against
 	    version <literal>4.0-1</literal> of
-	    <literal>aardvark</literal>, while
-	    <literal>?installed</literal> matches against version
-	    <literal>3.0-1</literal>.  On the other hand, this
-	    expression <emphasis>does not</emphasis> match against all
-	    the versions of <literal>aardvark</literal>, because no
-	    single version is installed and also has a version number
-	    of <literal>4.0-1</literal>.
+	    <literal>aardvark</literal>, while &Sinstalled; matches
+	    against version <literal>3.0-1</literal>.  On the other
+	    hand, this expression <emphasis>does not</emphasis> match
+	    against all the versions of <literal>aardvark</literal>,
+	    because no single version is installed and also has a
+	    version number of <literal>4.0-1</literal>.
 	  </para>
 	</note>
 
@@ -4264,10 +4311,10 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <replaceable>Q</replaceable> such that
 	  <replaceable>Q</replaceable> recommends
 	  <replaceable>P</replaceable>.  Clearly you need to start out
-	  with a <literal>?depends(...)</literal> matcher.  But the
+	  with a <literal>&Sdepends;(...)</literal> matcher.  But the
 	  term filling in the <literal>...</literal> needs to somehow
 	  select packages that are identical to the one being matched
-	  against <literal>?depends</literal>.  When describing the
+	  against <literal>&Sdepends;</literal>.  When describing the
 	  goal above, I dealt with this by giving the packages names,
 	  calling them <replaceable>P</replaceable> and
 	  <replaceable>Q</replaceable>; matchers with explicit targets
@@ -4288,12 +4335,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</para>
 
 	<para>
-	  An explicit target is introduced by the <link
-	  linkend='searchFor'><literal>?for</literal></link> matcher:
+	  An explicit target is introduced by the &Sfor; matcher:
 	</para>
 
 	<figure>
-	  <title>Syntax of the <literal>?for</literal> matcher</title>
+	  <title>Syntax of the &Sfor; matcher</title>
 
 	  <synopsis><literal>?for <replaceable>variable</replaceable>: <replaceable>pattern</replaceable></literal></synopsis>
 	</figure>
@@ -4310,29 +4356,26 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	<orderedlist>
 	  <listitem>
 	    <para>
-	      The matcher <link
-	      linkend='searchEqual'><literal>?=<replaceable>variable</replaceable></literal></link>
-	      will match exactly the package or version indicated by
-	      the given variable.  Specifically: if the corresponding
-	      <literal>?for</literal> matcher is limited to a
-	      particular version, then <literal>?=</literal> will
-	      match either that version (if <literal>?=</literal> is
-	      limited) or the whole package; otherwise it will match
-	      any version of the package.
+	      The matcher &Sequal; will match exactly the package or
+	      version indicated by the given variable.  Specifically:
+	      if the corresponding &Sfor; matcher is limited to a
+	      particular version, then &Sequal; will match either that
+	      version (if &Sequal; is limited) or the whole package;
+	      otherwise it will match any version of the package.
 	    </para>
 
 	    <para>
 	      See <xref linkend='exampleSearchEqual'/> for an example
-	      of how to use <literal>?=</literal>.
+	      of how to use &Sequal;.
 	    </para>
 	  </listitem>
 
 	  <listitem>
 	    <para>
-	      The matcher <link
-	      linkend='searchBind'><literal>?bind(<replaceable>variable</replaceable>,
-	      <replaceable>pattern</replaceable>)</literal></link> will
-	      match any package or version if the value of
+	      The matcher
+	      <literal>&Sbind;(<replaceable>variable</replaceable>,
+	      <replaceable>pattern</replaceable>)</literal> will match
+	      any package or version if the value of
 	      <replaceable>variable</replaceable> matches against
 	      <replaceable>pattern</replaceable>.
 	    </para>
@@ -4340,7 +4383,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      For <literal>?</literal>-style matchers, a shorthand
 	      form is available.  The expression
-	      <literal>?bind(<replaceable>variable</replaceable>,
+	      <literal>&Sbind;(<replaceable>variable</replaceable>,
 	      ?<replaceable>matcher</replaceable><optional>(<replaceable>args</replaceable>)</optional>)</literal>
 	      can be replaced by
 	      <literal>?<replaceable>variable</replaceable>:<replaceable>matcher</replaceable>(<replaceable>args</replaceable>)</literal>.
@@ -4379,8 +4422,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <tbody>
 	      <row>
 		<entry>
-		  <literal><link
-		  linkend='searchEqual'>?=<replaceable>variable</replaceable></link></literal>
+		  <literal>&Sequal;<replaceable>variable</replaceable></literal>
 		</entry>
 		<entry/>
 		<entry>
@@ -4391,7 +4433,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchNot'>?not(</link><replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>&Snot;(<replaceable>pattern</replaceable>)</literal></entry>
 		<entry><literal>!<replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select any package that does not match
@@ -4401,7 +4443,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <row>
 		<entry>
-		  <literal><link linkend='searchAction'>?action</link>(<replaceable>action</replaceable>)</literal>
+		  <literal>&Saction;(<replaceable>action</replaceable>)</literal>
 		</entry>
 		<entry>~a<replaceable>action</replaceable></entry>
 		<entry>
@@ -4414,7 +4456,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <row>
 		<entry>
-		  <literal><link linkend='searchAllVersions'>?all-versions</link>(<replaceable>pattern</replaceable>)</literal>
+		  <literal>&Sall-versions;(<replaceable>pattern</replaceable>)</literal>
 		</entry>
 		<entry/>
 		<entry>
@@ -4425,7 +4467,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <row>
 		<entry>
-		  <literal><link linkend='searchAnd'>?and</link>(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>
+		  <literal>&Sand;(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>
 		</entry>
 		<entry><replaceable>term1</replaceable> <replaceable>term2</replaceable></entry>
 		<entry>
@@ -4436,7 +4478,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchAnyVersion'>?any-version</link>(<replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>&Sany-version;(<replaceable>pattern</replaceable>)</literal></entry>
 		<entry/>
 		<entry>
 		  Select packages for which at least one version
@@ -4446,7 +4488,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <row>
 		<entry>
-		  <literal><link linkend='searchArchive'>?archive</link>(<replaceable>archive</replaceable>)</literal>
+		  <literal>&Sarchive;(<replaceable>archive</replaceable>)</literal>
 		</entry>
 		<entry>
 		  <literal>~A<replaceable>archive</replaceable></literal>
@@ -4458,7 +4500,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchAutomatic'>?automatic</link></literal></entry>
+		<entry><literal>&Sautomatic;</literal></entry>
 		<entry><literal>~M</literal></entry>
 		<entry>
 		  Select packages that were automatically installed.
@@ -4466,7 +4508,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchBind'>?bind</link>(<replaceable>variable</replaceable>, <replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>&Sbind;(<replaceable>variable</replaceable>, <replaceable>pattern</replaceable>)</literal></entry>
 		<entry>
 		  <literal>?<replaceable>variable</replaceable>:<replaceable>matcher-name</replaceable><optional>(<replaceable>args</replaceable>)</optional></literal>
 		</entry>
@@ -4479,7 +4521,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchBroken'>?broken</link></literal></entry>
+		<entry><literal>&Sbroken;</literal></entry>
 		<entry><literal>~b</literal></entry>
 		<entry>
 		  Select packages that have a broken dependency.
@@ -4487,7 +4529,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchBrokenType'>?broken-<replaceable>depType</replaceable></link></literal></entry>
+		<entry><literal>&Sbroken-type;</literal></entry>
 		<entry><literal>~B<replaceable>depType</replaceable></literal></entry>
 		<entry>
 		  Select package that have a broken dependency of the
@@ -4496,7 +4538,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchBrokenTypeTerm'>?broken-<replaceable>depType</replaceable></link>(<replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>&Sbroken-type-term;(<replaceable>pattern</replaceable>)</literal></entry>
 		<entry><literal>~DB<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages that have a broken dependency of the
@@ -4506,7 +4548,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchReverseBrokenDep'>?broken-reverse-<replaceable>depType</replaceable></link>(<replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>&Sbroken-reverse-dep;(<replaceable>pattern</replaceable>)</literal></entry>
 		<entry><literal>~RB<option><replaceable>depType</replaceable>:</option><replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages that a package matching
@@ -4517,7 +4559,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <row>
 		<entry>
-		  <literal><link linkend='searchConflicts'>?conflicts</link>(<replaceable>pattern</replaceable>)</literal>
+		  <literal>&Sconflicts;(<replaceable>pattern</replaceable>)</literal>
 		</entry>
 		<entry><literal>~C<replaceable>pattern</replaceable></literal></entry>
 		<entry>
@@ -4527,7 +4569,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchConfigFiles'>?configfiles</link></literal></entry>
+		<entry><literal>&Sconfig-files;</literal></entry>
 		<entry><literal>~c</literal></entry>
 		<entry>
 		  Select packages that were removed but not purged.
@@ -4535,7 +4577,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchDep'>?<replaceable>depType</replaceable></link>(<replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>&Sdep;(<replaceable>pattern</replaceable>)</literal></entry>
 		<entry><literal>~D<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Match packages that declare a dependency of type
@@ -4545,7 +4587,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchDescription'>?description</link>(<replaceable>description</replaceable>)</literal></entry>
+		<entry><literal>&Sdescription;(<replaceable>description</replaceable>)</literal></entry>
 		<entry><literal>~d<replaceable>description</replaceable></literal></entry>
 		<entry>
 		  Select packages whose description matches
@@ -4554,8 +4596,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchEssential'>?essential</link></literal></entry>
-		<entry><literal>?essential</literal></entry>
+		<entry><literal>&Sessential;</literal></entry>
+		<entry><literal>~E</literal></entry>
 		<entry>
 		  Select essential packages, those with
 		  <literal>Essential: yes</literal> in their control
@@ -4564,7 +4606,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchFalse'>?false</link></literal></entry>
+		<entry><literal>&Sfalse;</literal></entry>
 		<entry><literal>~F</literal></entry>
 		<entry>
 		  Select no packages.
@@ -4572,7 +4614,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchFor'>?for</link> <replaceable>variable</replaceable>: <replaceable>pattern</replaceable></literal></entry>
+		<entry><literal>&Sfor; <replaceable>variable</replaceable>: <replaceable>pattern</replaceable></literal></entry>
 		<entry/>
 		<entry>
 		  Select packages that match
@@ -4584,7 +4626,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchGarbage'>?garbage</link></literal></entry>
+		<entry><literal>&Sgarbage;</literal></entry>
 		<entry><literal>~g</literal></entry>
 		<entry>
 		  Select packages that are not required by any manually
@@ -4593,13 +4635,13 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchInstalled'>?installed</link></literal></entry>
+		<entry><literal>&Sinstalled;</literal></entry>
 		<entry><literal>~i</literal></entry>
 		<entry>Select installed packages.</entry>
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchMaintainer'>?maintainer</link>(<replaceable>maintainer</replaceable>)</literal></entry>
+		<entry><literal>&Smaintainer;(<replaceable>maintainer</replaceable>)</literal></entry>
 		<entry><literal>~m<replaceable>maintainer</replaceable></literal></entry>
 		<entry>
 		  Select packages maintained by
@@ -4608,7 +4650,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchNarrow'>?narrow</link>(<replaceable>filter</replaceable>, <replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>&Snarrow;(<replaceable>filter</replaceable>, <replaceable>pattern</replaceable>)</literal></entry>
 		<entry><literal>~S <replaceable>filter</replaceable> <replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages for which a single version matches
@@ -4618,7 +4660,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchTermName'>?name</link>(<replaceable>name</replaceable>)</literal></entry>
+		<entry><literal>&Sname;(<replaceable>name</replaceable>)</literal></entry>
 		<entry><literal>~n<replaceable>name</replaceable></literal>, <literal><replaceable>name</replaceable></literal></entry>
 		<entry>
 		  Select packages with the given <replaceable>name</replaceable>.
@@ -4626,7 +4668,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchNew'>?new</link></literal></entry>
+		<entry><literal>&Snew;</literal></entry>
 		<entry><literal>~N</literal></entry>
 		<entry>
 		  Select new packages.
@@ -4634,7 +4676,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchObsolete'>?obsolete</link></literal></entry>
+		<entry><literal>&Sobsolete;</literal></entry>
 		<entry><literal>~o</literal></entry>
 		<entry>
 		  Match installed packages that cannot be downloaded.
@@ -4642,7 +4684,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchOr'>?or</link>(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal></entry>
+		<entry><literal>&Sor;(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal></entry>
 		<entry><literal><replaceable>term1</replaceable> | <replaceable>term2</replaceable></literal></entry>
 		<entry>
 		  Select packages that match
@@ -4652,7 +4694,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchOrigin'>?origin</link>(<replaceable>origin</replaceable>)</literal></entry>
+		<entry><literal>&Sorigin;(<replaceable>origin</replaceable>)</literal></entry>
 		<entry><literal>~O<replaceable>origin</replaceable></literal></entry>
 		<entry>
 		  Select packages with the given
@@ -4661,7 +4703,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchProvides'>?provides</link>(<replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>&Sprovides;(<replaceable>pattern</replaceable>)</literal></entry>
 		<entry><literal>~P<replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages that provide a package matching
@@ -4670,7 +4712,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchPriority'>?priority</link>(<replaceable>priority</replaceable>)</literal></entry>
+		<entry><literal>&Spriority;(<replaceable>priority</replaceable>)</literal></entry>
 		<entry><literal>~p<replaceable>priority</replaceable></literal></entry>
 		<entry>
 		  Select packages with the given <replaceable>priority</replaceable>.
@@ -4678,7 +4720,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchReverseDep'>?reverse-<replaceable>depType</replaceable></link>(<replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>&Sreverse-dep;(<replaceable>pattern</replaceable>)</literal></entry>
 		<entry><literal>~R<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages that a package matching
@@ -4688,7 +4730,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchReverseBrokenDep'>?reverse-broken-<replaceable>depType</replaceable></link>(<replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>&Sreverse-broken-dep;(<replaceable>pattern</replaceable>)</literal></entry>
 		<entry><literal>~RB<option><replaceable>depType</replaceable>:</option><replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select packages that a package matching
@@ -4698,7 +4740,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchSection'>?section</link></literal>(<replaceable>section</replaceable>)</entry>
+		<entry><literal>&Ssection;</literal>(<replaceable>section</replaceable>)</entry>
 		<entry><literal>~s<replaceable>section</replaceable></literal></entry>
 		<entry>
 		  Select packages in the given <replaceable>section</replaceable>.
@@ -4706,7 +4748,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchTag'>?tag</link>(<replaceable>tag</replaceable>)</literal></entry>
+		<entry><literal>&Stag;(<replaceable>tag</replaceable>)</literal></entry>
 		<entry><literal>~G<replaceable>tag</replaceable></literal></entry>
 		<entry>
 		  Select packages that have the given debtags
@@ -4715,7 +4757,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchTrue'>?true</link></literal></entry>
+		<entry><literal>&Strue;</literal></entry>
 		<entry><literal>~T</literal></entry>
 		<entry>
 		  Select all packages.
@@ -4723,7 +4765,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchTask'>?task</link>(<replaceable>task</replaceable>)</literal></entry>
+		<entry><literal>&Stask;(<replaceable>task</replaceable>)</literal></entry>
 		<entry><literal>~t<replaceable>task</replaceable></literal></entry>
 		<entry>
 		  Select packages that are in the given
@@ -4732,7 +4774,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchUpgradable'>?upgradable</link></literal></entry>
+		<entry><literal>&Supgradable;</literal></entry>
 		<entry><literal>~U</literal></entry>
 		<entry>
 		  Select packages that are installed and can be
@@ -4741,7 +4783,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchTermVersion'>?version</link>(<replaceable>version</replaceable>)</literal></entry>
+		<entry><literal>&Sversion;(<replaceable>version</replaceable>)</literal></entry>
 		<entry><literal>~V<replaceable>version</replaceable></literal></entry>
 		<entry>
 		  Select packages whose version matches
@@ -4753,7 +4795,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchVirtual'>?virtual</link></literal></entry>
+		<entry><literal>&Svirtual;</literal></entry>
 		<entry><literal>~v</literal></entry>
 		<entry>
 		  Select virtual packages.
@@ -4761,7 +4803,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchWiden'>?widen</link>(<replaceable>pattern</replaceable>)</literal></entry>
+		<entry><literal>&Swiden;(<replaceable>pattern</replaceable>)</literal></entry>
 		<entry><literal>~W<replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Select versions for which
@@ -4804,12 +4846,10 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      Matches packages that correspond to the value of
 	      <replaceable>variable</replaceable>, which must be bound
-	      by an enclosing <link
-	      linkend='searchFor'><literal>?for</literal></link>.  For
-	      instance, <literal>?for x: ?depends( ?recommends( ?=x )
-	      )</literal> will match any package
-	      <replaceable>x</replaceable> that depends on a package
-	      which recommends <replaceable>x</replaceable>.
+	      by an enclosing &Sfor;.  For instance, <literal>&Sfor; x:
+	      &Sdepends;( &Srecommends;( ?=x ) )</literal> will match any
+	      package <replaceable>x</replaceable> that depends on a
+	      package which recommends <replaceable>x</replaceable>.
 	    </para>
 
 	    <para>
@@ -4824,7 +4864,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <para>
 		<literal>
-		  ?for x: ?conflicts(?=x)
+		  &Sfor; x: &Sconflicts;(?=x)
 		</literal>
 	      </para>
 	    </example>
@@ -4954,12 +4994,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      This term may not be used in a context in which the
 	      versions to match against have already been narrowed,
-	      such as within <link
-	      linkend='searchDep'><literal>?depends</literal></link>
-	      or <link
-	      linkend='searchNarrow'><literal>?narrow</literal></link>.
-	      However, it may always be used within <link
-	      linkend='searchWiden'><literal>?widen</literal></link>.
+	      such as within &Sdepends; or &Snarrow;.  However, it may
+	      always be used within &Swiden;.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -4970,30 +5006,24 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <listitem>
 	    <para>
 	      Matches a package if any one of its versions matches the
-	      enclosed term.  This is the dual to <link
-	      linkend='searchAllVersions'><literal>?all-versions</literal></link>.
+	      enclosed term.  This is the dual to &Sall-versions;.
 	    </para>
 
 	    <para>
 	      This term may not be used in a context in which the
 	      versions to match against have already been narrowed,
-	      such as within <link
-	      linkend='searchDep'><literal>?depends</literal></link>
-	      or <link
-	      linkend='searchNarrow'><literal>?narrow</literal></link>.
-	      However, it may always be used within <link
-	      linkend='searchWiden'><literal>?widen</literal></link>.
+	      such as within &Sdepends; or &Snarrow;.  However, it may
+	      always be used within &Swiden;.
 	    </para>
 
 	    <note>
 	      <para>
-		This term is closely related to <link
-		linkend='searchNarrow'><literal>?narrow</literal></link>.
+		This term is closely related to &Snarrow;.
 		In fact,
 		<literal>?any-version(<replaceable>term1</replaceable>
 		<replaceable>term2</replaceable>)</literal> is exactly
 		the same as
-		<literal>?narrow(<replaceable>term1</replaceable>,
+		<literal>&Snarrow;(<replaceable>term1</replaceable>,
 		<replaceable>term2</replaceable>)</literal>.
 	      </para>
 	    </note>
@@ -5037,8 +5067,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      Matches any package or version if the given
 	      <replaceable>pattern</replaceable> matches the package or
 	      version bound to <replaceable>variable</replaceable>,
-	      which must be defined in an enclosing <link
-	      linkend='searchFor'><literal>?for</literal></link>.
+	      which must be defined in an enclosing &Sfor;.
 	    </para>
 
 
@@ -5056,7 +5085,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <para>
 		<literal>
-		  ?for x: ?depends(?depends(?for z: ?x:depends(?=z)))
+		  &Sfor; x: &Sdepends;(&Sdepends;(&Sfor; z: ?x:<link linkend='searchDep'>depends</link>(&Sequal;z)))
 		</literal>
 	      </para>
 	    </example>
@@ -5106,10 +5135,10 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      Matches packages with an unsatisfied dependency of type
 	      <replaceable>depType</replaceable> on a package matching
 	      <replaceable>pattern</replaceable>.
-	      <replaceable>depType</replaceable> may any one of the
+	      <replaceable>depType</replaceable> may be any one of the
 	      dependency types listed in <link
 	      linkend='searchBrokenType'>the documentation of
-	      <literal>?broken</literal></link>.
+	      <literal>?broken-<replaceable>depType</replaceable></literal></link>.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -5141,7 +5170,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchDep'>
-	  <term><literal>?<replaceable>depType</replaceable></literal>, <literal>~D<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></term>
+	  <term><literal>?<replaceable>depType</replaceable>(<replaceable>patterm</replaceable>)</literal>, <literal>~D<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
@@ -5150,7 +5179,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      linkend='searchBrokenType'>the documentation of
 	      <literal>?broken-<replaceable>depType</replaceable></literal></link>,
 	      as well as <literal>provides</literal>: for instance,
-	      <literal>?depends(libpng3)</literal> will match any
+	      <literal>&Sdepends;(libpng3)</literal> will match any
 	      package that depends on <literal>libpng3</literal>.  If
 	      the short form (<literal>~D</literal>) is used and
 	      <replaceable>depType</replaceable> is not present, it
@@ -5161,11 +5190,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      If <replaceable>depType</replaceable> is
 	      <quote><literal>provides</literal></quote>, matches
 	      packages that provide a package matching
-	      <replaceable>pattern</replaceable> (the equivalent of <link
-	      linkend='searchProvides'><literal>?provides</literal></link>).
-	      Otherwise, matches packages which declare a dependency
-	      of type <replaceable>depType</replaceable> upon a package
-	      version which matches <replaceable>pattern</replaceable>.
+	      <replaceable>pattern</replaceable> (the equivalent of
+	      &Sprovides;).  Otherwise, matches packages which declare
+	      a dependency of type <replaceable>depType</replaceable>
+	      upon a package version which matches
+	      <replaceable>pattern</replaceable>.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -5199,8 +5228,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      This term does not match any package.
 	      <footnote>
 		<para>
-		  This is provided largely for symmetry with
-		  <literal>?true</literal>.
+		  This is provided largely for symmetry with &Strue;.
 		</para>
 	      </footnote>
 	    </para>
@@ -5223,9 +5251,10 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      ways.  To apply a <literal>?</literal>-style matcher to
 	      the variable, write
 	      <literal>?<replaceable>variable</replaceable>:<replaceable>matcher-name</replaceable>(<replaceable>args</replaceable>)</literal>;
-	      for instance, <literal>?x:depends(apt)</literal>.  In
+	      for instance, <literal>?x:<link
+	      linkend='searchDep'>depends</link>(apt)</literal>.  In
 	      addition, the term
-	      <literal>?=<replaceable>variable</replaceable></literal>
+	      <literal>&Sequal;<replaceable>variable</replaceable></literal>
 	      will select any package or version that matches the
 	      value of the given <replaceable>variable</replaceable>.
 	    </para>
@@ -5240,7 +5269,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <title>Use of the <literal>?for</literal> matcher</title>
 	      <para>
 		<literal>
-		  ?for x: ?depends( ?for y: ?x:recommends( ?=y ) )
+		  ?for x: &Sdepends;( ?for y: ?x:<link linkend='searchDep'>recommends</link>( &Sequal;y ) )
 		</literal>
 	      </para>
 	    </example>
@@ -5487,7 +5516,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <listitem>
 	    <para>
 	      This term matches any package.  For instance,
-	      <quote><literal>~i?provides(?true)</literal></quote>
+	      <quote><literal>&Sinstalled;&Sprovides;(&Strue;)</literal></quote>
 	      matches installed packages which are provided by any
 	      package.
 	    </para>
@@ -5601,10 +5630,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      <quote>Widens</quote> the match: if the versions to
 	      match against have been limited by an enclosing matcher
-	      (such as <link
-	      linkend='searchDep'><literal>?depends</literal></link>),
-	      these limits are dropped.  Thus,
-	      <literal>?widen(<replaceable>pattern</replaceable>)</literal>
+	      (such as &Sdepends;), these limits are dropped.  Thus,
+	      <literal>&Swiden;(<replaceable>pattern</replaceable>)</literal>
 	      matches a package version if
 	      <replaceable>pattern</replaceable> matches
 	      <emphasis>any</emphasis> version of that package.
