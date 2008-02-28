@@ -121,7 +121,10 @@ namespace
     catch(NoMoreTime)
       {
 	if(last_sol)
-	  (*apt_cache_file)->apply_solution(last_sol, NULL);
+	  {
+	    std::cout << _("The resolver timed out after producing a solution; some possible upgrades might not be performed.");
+	    (*apt_cache_file)->apply_solution(last_sol, NULL);
+	  }
 	else
 	  {
 	    if(verbose > 0)
