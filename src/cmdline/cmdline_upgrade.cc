@@ -86,28 +86,72 @@ namespace
 
     setup_resolver_for_safe_upgrade(no_new_installs);
 
+    generic_solution<aptitude_universe> last_sol;
     try
       {
 	generic_solution<aptitude_universe> sol = calculate_current_solution();
-	(*apt_cache_file)->apply_solution(sol, NULL);
+	last_sol = sol;
+	bool first = true;
+	typedef imm::map<aptitude_resolver_package,
+	  generic_solution<aptitude_universe>::action> actions_map;
+	while(!(!first &&
+		last_sol &&
+		sol.get_actions() == last_sol.get_actions() &&
+		sol.get_unresolved_soft_deps() == last_sol.get_unresolved_soft_deps()))
+	  {
+	    first = false;
+	    // Mandate everything in this solution, then ask for the
+	    // next solution.  The goal is to try to find the best
+	    // solution, not just some solution, but to preserve our
+	    // previous decisions in order to avoid thrashing around
+	    // between alternatives.
+	    for(actions_map::const_iterator it = sol.get_actions().begin();
+		it != sol.get_actions().end(); ++it)
+	      resman->mandate_version(it->second.ver);
+	    last_sol = sol;
+	    sol = calculate_current_solution();
+	  }
+
+	// Internal error that should never happen, but try to survive
+	// if it does.
+	_error->Warning("The resolver unexpectedly produced the same result twice.");
+	(*apt_cache_file)->apply_solution(last_sol, NULL);
       }
     // If anything goes wrong, we give up (silently if verbosity is disabled).
     catch(NoMoreTime)
       {
-	if(verbose > 0)
-	  std::cout << _("Unable to resolve dependencies for the upgrade (resolver timed out).");
+	if(last_sol)
+	  (*apt_cache_file)->apply_solution(last_sol, NULL);
+	else
+	  {
+	    if(verbose > 0)
+	      std::cout << _("Unable to resolve dependencies for the upgrade (the resolver timed out).");
+	  }
 	return false;
       }
     catch(NoMoreSolutions)
       {
-	if(verbose > 0)
-	  std::cout << _("Unable to resolve dependencies for the upgrade (no solution found).");
+	if(last_sol)
+	  (*apt_cache_file)->apply_solution(last_sol, NULL);
+	else
+	  {
+	    if(verbose > 0)
+	      std::cout << _("Unable to resolve dependencies for the upgrade (no solution found).");
+	  }
 	return false;
       }
     catch(const cw::util::Exception &e)
       {
-	if(verbose > 0)
-	  std::cout << cw::util::ssprintf(_("Unable to resolve dependencies for the upgrade (%s)."), e.errmsg().c_str());
+	if(last_sol)
+	  {
+	    (*apt_cache_file)->apply_solution(last_sol, NULL);
+	    std::cout << cw::util::ssprintf(_("Dependency resolution incomplete (%s); some possible upgrades might not be performed."), e.errmsg().c_str());
+	  }
+	else
+	  {
+	    if(verbose > 0)
+	      std::cout << cw::util::ssprintf(_("Unable to resolve dependencies for the upgrade (%s)."), e.errmsg().c_str());
+	  }
 	return false;
       }
 
