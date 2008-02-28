@@ -333,7 +333,7 @@ namespace
       matcher_type_automatic,
       matcher_type_bind,
       matcher_type_broken,
-      matcher_type_configfiles,
+      matcher_type_config_files,
       matcher_type_description,
       matcher_type_essential,
       matcher_type_false,
@@ -379,7 +379,7 @@ namespace
     { "automatic", matcher_type_automatic },
     { "bind", matcher_type_bind },
     { "broken", matcher_type_broken },
-    { "configfiles", matcher_type_configfiles },
+    { "config-files", matcher_type_config_files },
     { "description", matcher_type_description },
     { "essential", matcher_type_essential },
     { "false", matcher_type_false },
@@ -3468,7 +3468,7 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
       }
     case matcher_type_broken:
       return new pkg_broken_matcher;
-    case matcher_type_configfiles:
+    case matcher_type_config_files:
       return new pkg_configfiles_matcher;
     case matcher_type_description:
       return new pkg_description_matcher(parse_string_match_args(start, end));
