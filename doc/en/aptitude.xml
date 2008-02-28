@@ -4172,33 +4172,83 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	<title>Searches and Versions</title>
 
 	<para>
-	  By default, patterns are checked against all versions of the
-	  package.  However, some patterns will restrict which
-	  versions are tested.  For instance, the search term
+	  By default, a pattern matches a package if any version of
+	  the package matches the pattern.  However, some patterns
+	  will restrict their subterms to only match against some
+	  versions of a package.  For instance, the search term
 	  <literal><link
 	  linkend='searchDep'>?depends</link>(<replaceable>pattern</replaceable>)</literal>
 	  will select any package that depends on a package matching
 	  <replaceable>pattern</replaceable>.  However,
 	  <replaceable>pattern</replaceable> will only be checked
 	  against the versions of the package that actually satisfy a
-	  dependency.
+	  dependency.  This means that if <literal>foo</literal>
+	  depends on <literal>bar (>= 3.0)</literal> and versions
+	  <literal>2.0</literal>, <literal>3.0</literal>, and
+	  <literal>4.0</literal> of <literal>bar</literal> are
+	  available, then in the search pattern <literal><link
+	  linkend='searchDep'>?depends</link>(<link
+	  linkend='searchVersion'>?version</link>(2\.0))</literal>,
+	  only versions <literal>3.0</literal> and
+	  <literal>4.0</literal> will be tested against
+	  <literal>?version(2\.0)</literal>, and hence
+	  <literal>foo</literal> will not be found by this search.
 	</para>
 
 	<para>
-	  It matters which versions are checked, because some patterns
-	  will match one version but not another.  For instance, the
-	  pattern <link
+	  It matters which versions are checked because, as in the
+	  example above, some patterns will match one version but not
+	  another.  For instance, the pattern <link
 	  linkend='searchInstalled'><literal>?installed</literal></link>
 	  will only match the version of the package (if any) that is
 	  currently installed.  Similarly, the pattern <link
-	  linkend='searchMaintainer'><literal>?maintainer(<replaceable>maintainer</replaceable>)</literal></link>
-	  will only match versions that have the given maintainer.
-	  Normally all versions of a package have the same maintainer,
-	  but this is not always the case; in fact, any search pattern
-	  that examines the fields of a package (other than its name,
-	  of course) will behave this way, because all the fields of a
+	  linkend='searchMaintainer'><literal>?maintainer</literal>(<replaceable>maintainer</replaceable>)</link>
+	  will only match versions that have the given
+	  <replaceable>maintainer</replaceable>.  Normally all
+	  versions of a package have the same maintainer, but this is
+	  not always the case; in fact, any search pattern that
+	  examines the fields of a package (other than its name, of
+	  course) will behave this way, because all the fields of a
 	  package can change between versions.
 	</para>
+
+	<note>
+	  <para>
+	    There is a subtle, but important, distinction between
+	    matching a pattern against a package, and matching it
+	    against all the versions of that package.  When a pattern
+	    is matched against a package, each of its terms is matched
+	    against the package, and so each term will match if
+	    <emphasis>any</emphasis> version of the package matches.
+	    In contrast, when a pattern is matched against each
+	    version of a package, it will successfully match if it
+	    matches when all its subterms are matched against the
+	    <emphasis>same</emphasis> version of the package.
+	  </para>
+
+	  <para>
+	    For example: suppose that version <literal>3.0-1</literal>
+	    of the package <literal>aardvark</literal> is installed,
+	    but that version <literal>4.0-1</literal> is available.
+	    Then the search expression <literal><link
+	    linkend='searchVersion'>?version</link>(4\.0-1)<link
+	    linkend='searchInstalled'>?installed</link></literal>
+	    matches <literal>aardvark</literal>, because
+	    <literal>?version(4\.0-1)</literal> matches against
+	    version <literal>4.0-1</literal> of
+	    <literal>aardvark</literal>, while
+	    <literal>?installed</literal> matches against version
+	    <literal>3.0-1</literal>.  On the other hand, this
+	    expression <emphasis>does not</emphasis> match against all
+	    the versions of <literal>aardvark</literal>, because no
+	    single version is installed and also has a version number
+	    of <literal>4.0-1</literal>.
+	  </para>
+	</note>
+
+	<!-- TODO: I'd like to have a table of how matchers restrict
+             their sub-matchers, but I can't figure out how to
+             succinctly describe some matchers. -->
       </section>
 
       <section id='secExplicitMatchers'>
@@ -4485,7 +4535,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal><link linkend='searchDep'>?<replaceable>depType</replaceable></link></literal></entry>
+		<entry><literal><link linkend='searchDep'>?<replaceable>depType</replaceable></link>(<replaceable>pattern</replaceable>)</literal></entry>
 		<entry><literal>~D<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></entry>
 		<entry>
 		  Match packages that declare a dependency of type
