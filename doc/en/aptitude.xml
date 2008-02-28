@@ -1255,7 +1255,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	    package; third, a bar appears at the bottom of the screen
 	    with a suggestion on how to solve the problem.  To quickly
 	    find broken packages in the package list, you can press
-	    <keycap>b</keycap> or search for <literal>~b</literal>.
+	    <keycap>b</keycap> or search for &Sbroken;.
 	  </para>
 
 	  <note>
@@ -2518,8 +2518,7 @@ Abort.</screen>
 
 		    <entry>
 		      Find the next broken package.  This is
-		      equivalent to searching for
-		      <literal>~b</literal>.
+		      equivalent to searching for &Sbroken;.
 		    </entry>
 		  </row>
 		</tbody>
@@ -4831,9 +4830,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <note>
 	      <para>
 		To match packages whose names contain several
-		different substrings, use the <literal>~n</literal>
-		matcher (described below); for instance,
-		<quote><literal>~napti~ntude</literal></quote>.
+		different substrings, use the &name; matcher
+		(described below); for instance,
+		<quote><literal>&name;(apti)&name;(tude)</literal></quote>.
 	      </para>
 	    </note>
 	  </listitem>
@@ -4882,9 +4881,10 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <listitem>
 	    <para>
 	      Matches packages which do <emphasis>not</emphasis> match
-	      the term <replaceable>pattern</replaceable>.  For instance,
-	      <quote><literal>!~b</literal></quote> selects packages that are not
-	      <quote>broken</quote>.
+	      the term <replaceable>pattern</replaceable>.  For
+	      instance,
+	      <quote><literal>?not(&Sbroken;)</literal></quote>
+	      selects packages that are not <quote>broken</quote>.
 	    </para>
 
 	    <note>
@@ -4968,11 +4968,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      Note that this only tests whether an action is actually
 	      queued up to be performed on a package, not whether it
 	      <emphasis>could</emphasis> be performed.  Thus, for
-	      instance, <literal>~aupgrade</literal> matches exactly
-	      those packages that you have already decided to upgrade,
-	      not packages which <emphasis>could</emphasis> be
-	      upgraded in the future (for that, use
-	      <literal>~U</literal>).
+	      instance, <literal>&Saction;(upgrade)</literal> matches
+	      exactly those packages that you have already decided to
+	      upgrade, not packages which <emphasis>could</emphasis>
+	      be upgraded in the future (for that, use
+	      <literal>&Supgradable;</literal>).
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -5038,9 +5038,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      Matches package versions which are available from an
 	      archive that matches the regular expression
 	      <replaceable>archive</replaceable>.  For instance,
-	      <quote><literal>~Atesting</literal></quote> matches any
-	      package available from the <literal>testing</literal>
-	      archive.
+	      <quote><literal>?archive(testing)</literal></quote>
+	      matches any package available from the
+	      <literal>testing</literal> archive.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -5150,7 +5150,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      Matches packages which conflict with a package matching
 	      the given <replaceable>pattern</replaceable>.  For
-	      instance, <quote><literal>~C~mdburrows@debian.org</literal></quote>
+	      instance,
+	      <quote><literal>?conflicts(&Smaintainer;(dburrows@debian.org))</literal></quote>
 	      matches any package which conflicts with a package I
 	      maintain.
 	    </para>
@@ -5316,8 +5317,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      Matches packages whose Maintainer field matches the
 	      regular expression
 	      <replaceable>maintainer</replaceable>.  For instance,
-	      <quote><literal>~mjoeyh</literal></quote> will find all packages
-	      maintained by Joey Hess.
+	      <quote><literal>&Smaintainer;(joeyh)</literal></quote>
+	      will find all packages maintained by Joey Hess.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -5348,8 +5349,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      Matches packages whose name matches the regular
 	      expression <replaceable>name</replaceable>.  For
 	      instance, most of the packages that match
-	      <quote><literal>~n^lib</literal></quote> are libraries of one sort or
-	      another.
+	      <quote><literal>&Sname;(^lib)</literal></quote> are
+	      libraries of one sort or another.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -5387,9 +5388,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      Matches package versions whose origin matches the
 	      regular expression <replaceable>origin</replaceable>.
 	      For instance,
-	      <quote><literal>!~Odebian</literal></quote> will find
-	      any unofficial packages on your system (packages not
-	      from the Debian archive).
+	      <quote><literal>!?origin(debian)</literal></quote> will
+	      find any unofficial packages on your system (packages
+	      not from the Debian archive).
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -5402,7 +5403,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      Matches package versions which provide a package that
 	      matches the <replaceable>pattern</replaceable>.  For
 	      instance,
-	      <quote><literal>~Pmail-transport-agent</literal></quote>
+	      <quote><literal>?provides(mail-transport-agent)</literal></quote>
 	      will match all the packages that provide
 	      <quote><literal>mail-transport-agent</literal></quote>.
 	    </para>
@@ -5421,8 +5422,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <literal>optional</literal>,
 	      <literal>required</literal>, or
 	      <literal>standard</literal>.  For instance,
-	      <quote><literal>~prequired</literal></quote> matches
-	      packages whose priority is
+	      <quote><literal>?priority(required)</literal></quote>
+	      matches packages whose priority is
 	      <quote><literal>required</literal></quote>.
 	    </para>
 	  </listitem>
@@ -5463,8 +5464,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <quote><literal>provides</literal></quote> or one of the
 	      dependency types given in <link
 	      linkend='searchBrokenType'>the documentation of
-	      <literal>~B</literal></link>.  If
-	      <replaceable>depType</replaceable> is not present, it
+	      <literal>?broken-<replaceable>depType</replaceable></literal></link>.
+	      If <replaceable>depType</replaceable> is not present, it
 	      defaults to <literal>depends</literal>.
 	    </para>
 
@@ -5497,8 +5498,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      Matches packages whose Tag field matches the regular
 	      expression <replaceable>tag</replaceable>.  For
 	      instance, the pattern
-	      <literal>~Ggame::strategy</literal> would match strategy
-	      games.
+	      <literal>?tag(game::strategy)</literal> would match
+	      strategy games.
 	    </para>
 
 	    <para>
@@ -5561,8 +5562,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      the regular expression
 	      <replaceable>version</replaceable>, with the exceptions
 	      noted below.  For instance,
-	      <quote><literal>~Vdebian</literal></quote> matches
-	      packages whose version contains
+	      <quote><literal>?version(debian)</literal></quote>
+	      matches packages whose version contains
 	      <quote><literal>debian</literal></quote>.
 	    </para>
 
@@ -5614,9 +5615,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      Matches any package which is purely virtual: that is,
 	      its name is provided by a package or mentioned in a
 	      dependency, but no package of that name exists.  For
-	      instance, <quote><literal>~v!~P~T</literal></quote> matches packages
-	      which are virtual and are not provided by any package:
-	      ie, packages which are depended upon but do not exist.
+	      instance,
+	      <quote><literal>?vortial!&Sprovides;(&Strue;)</literal></quote>
+	      matches packages which are virtual and are not provided
+	      by any package: ie, packages which are depended upon but
+	      do not exist.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -6230,10 +6233,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		</para>
 
 		<para>
-		  For instance, <literal>pattern(~m => \1)</literal>
-		  will group packages according to their Maintainer
-		  field.  The policy <literal>pattern(~m)</literal>
-		  will do the same thing, as the absent
+		  For instance, <literal>pattern(&Smaintainer;() =>
+		  \1)</literal> will group packages according to their
+		  Maintainer field.  The policy
+		  <literal>pattern(&Smaintainer;())</literal> will do
+		  the same thing, as the absent
 		  <replaceable>title</replaceable> defaults to
 		  <literal>\1</literal>.
 		</para>
@@ -6247,12 +6251,12 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  into the tree at the same level as the
 		  <literal>pattern</literal> grouping, rather than
 		  being placed in subtrees.  For instance,
-		  <literal>pattern(~aremove => Packages Being Removed,
-		  ~T ||)</literal> will place packages that are being
-		  removed into a subtree, and place all the other
-		  packages at the current level.  Any later grouping
-		  policies will apply to both sets of packages, of
-		  course.
+		  <literal>pattern(&Saction;(remove) => Packages Being
+		  Removed, &Strue; ||)</literal> will place packages
+		  that are being removed into a subtree, and place all
+		  the other packages at the current level.  Any later
+		  grouping policies will apply to both sets of
+		  packages, of course.
 		</para>
 
 		<para>
