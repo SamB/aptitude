@@ -4757,8 +4757,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      by an enclosing <link
 	      linkend='searchFor'><literal>?for</literal></link>.  For
 	      instance, <literal>?for x: ?depends( ?recommends( ?=x )
-	      )</literal> will match any package that depends on a
-	      package which recommends it.
+	      )</literal> will match any package
+	      <replaceable>x</replaceable> that depends on a package
+	      which recommends <replaceable>x</replaceable>.
 	    </para>
 
 	    <para>
