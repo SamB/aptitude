@@ -100,15 +100,19 @@ namespace
 		sol.get_unresolved_soft_deps() == last_sol.get_unresolved_soft_deps()))
 	  {
 	    first = false;
-	    // Mandate everything in this solution, then ask for the
-	    // next solution.  The goal is to try to find the best
-	    // solution, not just some solution, but to preserve our
-	    // previous decisions in order to avoid thrashing around
-	    // between alternatives.
+	    // Mandate all the upgrades and installs in this solution,
+	    // then ask for the next solution.  The goal is to try to
+	    // find the best solution, not just some solution, but to
+	    // preserve our previous decisions in order to avoid
+	    // thrashing around between alternatives.
 	    for(actions_map::const_iterator it = sol.get_actions().begin();
 		it != sol.get_actions().end(); ++it)
-	      resman->mandate_version(it->second.ver);
+	      {
+		if(it->second.ver.get_ver() != it->second.ver.get_pkg().CurrentVer())
+		  resman->mandate_version(it->second.ver);
+	      }
 	    last_sol = sol;
+	    resman->select_next_solution();
 	    sol = calculate_current_solution();
 	  }
 
@@ -131,24 +135,28 @@ namespace
 	  {
 	    std::cout << _("The resolver timed out after producing a solution; some possible upgrades might not be performed.");
 	    (*apt_cache_file)->apply_solution(last_sol, NULL);
+	    return true;
 	  }
 	else
 	  {
 	    if(verbose > 0)
 	      std::cout << _("Unable to resolve dependencies for the upgrade (the resolver timed out).");
+	    return false;
 	  }
-	return false;
       }
     catch(NoMoreSolutions)
       {
 	if(last_sol)
-	  (*apt_cache_file)->apply_solution(last_sol, NULL);
+	  {
+	    (*apt_cache_file)->apply_solution(last_sol, NULL);
+	    return true;
+	  }
 	else
 	  {
 	    if(verbose > 0)
 	      std::cout << _("Unable to resolve dependencies for the upgrade (no solution found).");
+	    return false;
 	  }
-	return false;
       }
     catch(const cw::util::Exception &e)
       {
@@ -156,13 +164,14 @@ namespace
 	  {
 	    (*apt_cache_file)->apply_solution(last_sol, NULL);
 	    std::cout << cw::util::ssprintf(_("Dependency resolution incomplete (%s); some possible upgrades might not be performed."), e.errmsg().c_str());
+	    return true;
 	  }
 	else
 	  {
 	    if(verbose > 0)
 	      std::cout << cw::util::ssprintf(_("Unable to resolve dependencies for the upgrade (%s)."), e.errmsg().c_str());
+	    return false;
 	  }
-	return false;
       }
 
     return true;
