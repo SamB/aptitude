@@ -114,7 +114,14 @@ namespace
 
 	// Internal error that should never happen, but try to survive
 	// if it does.
-	_error->Warning("The resolver unexpectedly produced the same result twice.");
+	std::cout << "*** Internal error: the resolver unexpectedly produced the same result twice."
+		  << std::endl
+		  << "Previous iteration was:" << std::endl;
+	last_sol.dump(std::cout, true);
+	std::cout << std::endl << "Current iteration was:" << std::endl;
+	sol.dump(std::cout, true);
+	std::cout << std::endl;
+
 	(*apt_cache_file)->apply_solution(last_sol, NULL);
       }
     // If anything goes wrong, we give up (silently if verbosity is disabled).
