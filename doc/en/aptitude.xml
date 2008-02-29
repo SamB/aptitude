@@ -4117,7 +4117,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  surrounded by double quotes, then &aptitude; will consider
 	  the string to have <quote>ended</quote> when it encounters
 	  the closing parenthesis or the comma before a second
-	  argument to the matcher.
+	  argument to the search term.
 	  <footnote>
 	    <para>
 	      &aptitude; will only treat the comma as special if there
@@ -4131,7 +4131,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      While this behavior is well-defined, it may be
 	      surprising; I recommend using quoted strings for any
-	      matcher that contains metacharacters.
+	      pattern that contains characters that could have a
+	      special meaning.
 	    </para>
 	  </footnote>
 	  To remove the special meaning of these characters, place a
@@ -4310,19 +4311,19 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <replaceable>Q</replaceable> such that
 	  <replaceable>Q</replaceable> recommends
 	  <replaceable>P</replaceable>.  Clearly you need to start out
-	  with a <literal>&Sdepends;(...)</literal> matcher.  But the
+	  with a <literal>&Sdepends;(...)</literal> term.  But the
 	  term filling in the <literal>...</literal> needs to somehow
 	  select packages that are identical to the one being matched
 	  against <literal>&Sdepends;</literal>.  When describing the
 	  goal above, I dealt with this by giving the packages names,
 	  calling them <replaceable>P</replaceable> and
-	  <replaceable>Q</replaceable>; matchers with explicit targets
+	  <replaceable>Q</replaceable>; terms with explicit targets
 	  do exactly the same thing.
 	  <footnote>
 	    <para>
 	      Astute readers will note that this is essentially a way
 	      to explicitly name the variable in the &lambda;-terms
-	      corresponding to the matcher.  A typical matcher would
+	      corresponding to the term.  A typical term would
 	      have the form <quote>&lambda;
 	      <replaceable>x</replaceable>
 	      . name-equals(<replaceable>x</replaceable>,
@@ -4334,11 +4335,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</para>
 
 	<para>
-	  An explicit target is introduced by the &Sfor; matcher:
+	  An explicit target is introduced by the &Sfor; term:
 	</para>
 
 	<figure>
-	  <title>Syntax of the &Sfor; matcher</title>
+	  <title>Syntax of the &Sfor; term</title>
 
 	  <synopsis><literal>?for <replaceable>variable</replaceable>: <replaceable>pattern</replaceable></literal></synopsis>
 	</figure>
@@ -4355,9 +4356,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	<orderedlist>
 	  <listitem>
 	    <para>
-	      The matcher &Sequal; will match exactly the package or
+	      The term &Sequal; will match exactly the package or
 	      version indicated by the given variable.  Specifically:
-	      if the corresponding &Sfor; matcher is limited to a
+	      if the corresponding &Sfor; term is limited to a
 	      particular version, then &Sequal; will match either that
 	      version (if &Sequal; is limited) or the whole package;
 	      otherwise it will match any version of the package.
@@ -4371,7 +4372,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	  <listitem>
 	    <para>
-	      The matcher
+	      The term
 	      <literal>&Sbind;(<replaceable>variable</replaceable>,
 	      <replaceable>pattern</replaceable>)</literal> will match
 	      any package or version if the value of
@@ -4380,12 +4381,12 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    </para>
 
 	    <para>
-	      For <literal>?</literal>-style matchers, a shorthand
+	      For <literal>?</literal>-style terms, a shorthand
 	      form is available.  The expression
 	      <literal>&Sbind;(<replaceable>variable</replaceable>,
-	      ?<replaceable>matcher</replaceable><optional>(<replaceable>args</replaceable>)</optional>)</literal>
+	      ?<replaceable>term</replaceable><optional>(<replaceable>args</replaceable>)</optional>)</literal>
 	      can be replaced by
-	      <literal>?<replaceable>variable</replaceable>:<replaceable>matcher</replaceable>(<replaceable>args</replaceable>)</literal>.
+	      <literal>?<replaceable>variable</replaceable>:<replaceable>term</replaceable>(<replaceable>args</replaceable>)</literal>.
 	    </para>
 
 	    <para>
@@ -4509,7 +4510,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <row>
 		<entry><literal>&Sbind;(<replaceable>variable</replaceable>, <replaceable>pattern</replaceable>)</literal></entry>
 		<entry>
-		  <literal>?<replaceable>variable</replaceable>:<replaceable>matcher-name</replaceable><optional>(<replaceable>args</replaceable>)</optional></literal>
+		  <literal>?<replaceable>variable</replaceable>:<replaceable>term-name</replaceable><optional>(<replaceable>args</replaceable>)</optional></literal>
 		</entry>
 		<entry>
 		  Selects anything if
@@ -4830,7 +4831,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <note>
 	      <para>
 		To match packages whose names contain several
-		different substrings, use the &name; matcher
+		different substrings, use the &name; term
 		(described below); for instance,
 		<quote><literal>&name;(apti)&name;(tude)</literal></quote>.
 	      </para>
@@ -4858,7 +4859,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	    <example id='exampleSearchEqual'>
 	      <title>
-		Use of the <literal>?=</literal> matcher.
+		Use of the <literal>?=</literal> term.
 	      </title>
 
 	      <para>
@@ -5059,7 +5060,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <term>
 	    <literal>?bind(<replaceable>variable</replaceable>,
 	    <replaceable>pattern</replaceable>)</literal>,
-	    <literal>?<replaceable>variable</replaceable>:<replaceable>matcher-name</replaceable><optional>(<replaceable>args</replaceable>)</optional></literal>
+	    <literal>?<replaceable>variable</replaceable>:<replaceable>term-name</replaceable><optional>(<replaceable>args</replaceable>)</optional></literal>
 	  </term>
 
 	  <listitem>
@@ -5081,7 +5082,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    </para>
 
 	    <example id='exampleSearchBind'>
-	      <title>Use of the <literal>?bind</literal> matcher</title>
+	      <title>Use of the <literal>?bind</literal> term</title>
 
 	      <para>
 		<literal>
@@ -5244,14 +5245,14 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      Matches <replaceable>pattern</replaceable>, but the given
 	      <replaceable>variable</replaceable> may be used inside
 	      <replaceable>pattern</replaceable> to refer to the package
-	      or package version this matcher applies to.
+	      or package version this term to.
 	    </para>
 
 	    <para>
 	      You can use <replaceable>variable</replaceable> in two
-	      ways.  To apply a <literal>?</literal>-style matcher to
+	      ways.  To apply a <literal>?</literal>-style term to
 	      the variable, write
-	      <literal>?<replaceable>variable</replaceable>:<replaceable>matcher-name</replaceable>(<replaceable>args</replaceable>)</literal>;
+	      <literal>?<replaceable>variable</replaceable>:<replaceable>term-name</replaceable>(<replaceable>args</replaceable>)</literal>;
 	      for instance, <literal>?x:<link
 	      linkend='searchDep'>depends</link>(apt)</literal>.  In
 	      addition, the term
@@ -5261,13 +5262,13 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    </para>
 
 	    <para>
-	      For instance, the following matcher will match any package
+	      For instance, the following term will match any package
 	      <literal>x</literal> that both depends and recommends a
 	      second package <literal>y</literal>.
 	    </para>
 
 	    <example id='exampleSearchFor'>
-	      <title>Use of the <literal>?for</literal> matcher</title>
+	      <title>Use of the <literal>?for</literal> term</title>
 	      <para>
 		<literal>
 		  ?for x: &Sdepends;( ?for y: ?x:<link linkend='searchDep'>recommends</link>( &Sequal;y ) )
@@ -5632,7 +5633,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <listitem>
 	    <para>
 	      <quote>Widens</quote> the match: if the versions to
-	      match against have been limited by an enclosing matcher
+	      match against have been limited by an enclosing term
 	      (such as &Sdepends;), these limits are dropped.  Thus,
 	      <literal>&Swiden;(<replaceable>pattern</replaceable>)</literal>
 	      matches a package version if
