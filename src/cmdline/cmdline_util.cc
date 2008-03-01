@@ -357,3 +357,8 @@ download_manager::result cmdline_do_download(download_manager *m,
 
   return finish_res;
 }
+
+bool cmdline_is_search_pattern(const std::string &s)
+{
+  return s.find_first_of("~?") != s.npos;
+}

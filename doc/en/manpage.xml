@@ -22,7 +22,7 @@
 
     <legalnotice>
       <para>
-	Copyright 2004-2007 Daniel Burrows.
+	Copyright 2004-2008 Daniel Burrows.
       </para>
 
       <para>
@@ -178,9 +178,10 @@
 	    Install one or more packages.  The packages should be
 	    listed after the <quote>install</quote> command; if a
 	    package name contains a tilde character
-	    (<quote><literal>~</literal></quote>), it will be
-	    treated as a search pattern and every package matching
-	    the pattern will be installed (see the section <link
+	    (<quote><literal>~</literal></quote>) or a question mark
+	    (<quote><literal>?</literal></quote>), it will be treated
+	    as a search pattern and every package matching the pattern
+	    will be installed (see the section <link
 	    linkend='secSearchPatterns'><quote>Search
 	    Patterns</quote></link> in the &aptitude; reference
 	    manual).
@@ -551,15 +552,15 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 
 	<listitem>
 	  <para>
-	    Displays detailed information about one or more
-	    packages, listed following the search command.  If a
-	    package name contains a tilde character
-	    (<quote><literal>~</literal></quote>), it will be
-	    treated as a search pattern and all matching packages
-	    will be displayed (see the section <quote><link
-	    linkend='secSearchPatterns'>Search
-	    Patterns</link></quote> in the &aptitude; reference
-	    manual).
+	    Displays detailed information about one or more packages,
+	    listed following the search command.  If a package name
+	    contains a tilde character
+	    (<quote><literal>~</literal></quote>) or a question mark
+	    (<quote><literal>?</literal></quote>), it will be treated
+	    as a search pattern and all matching packages will be
+	    displayed (see the section <quote><link
+	    linkend='secSearchPatterns'>Search Patterns</link></quote>
+	    in the &aptitude; reference manual).
 	  </para>
 
 	  <para>
@@ -644,9 +645,11 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    patterns; that is, the first package in the chain it
 	    prints will be a package matching the pattern in question.
 	    The patterns are considered to be package names unless
-	    they contain a tilde character (<literal>~</literal>), in
-	    which case they are treated as search patterns (see the
-	    section <quote><link linkend='secSearchPatterns'>Search
+	    they contain a tilde character
+	    (<quote><literal>~</literal></quote>) or a question mark
+	    (<quote><literal>?</literal></quote>), in which case they
+	    are treated as search patterns (see the section
+	    <quote><link linkend='secSearchPatterns'>Search
 	    Patterns</link></quote> in the &aptitude; reference
 	    manual).
 	  </para>

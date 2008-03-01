@@ -48,9 +48,12 @@
 #include <sys/stat.h>
 
 #include <cwidget/generic/util/eassert.h>
+#include <cwidget/generic/util/ssprintf.h>
 
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/mem_fun.h>
+
+namespace cw = cwidget;
 
 using namespace std;
 
@@ -226,6 +229,94 @@ void aptitudeDepCache::set_read_only(bool new_read_only)
   read_only = new_read_only;
 }
 
+namespace
+{
+  // User tag syntax:
+  // 
+  // Tag-List ::= Tag+
+  // Tag      ::= regexp([^[:space:]]) | regexp("([^\\"]|\\.)")
+  bool parse_user_tag(std::string &out,
+		      const char *&start, const char *end,
+		      const std::string &package_name)
+  {
+    const char * const initial_start = start;
+    while(start != end && isspace(*start))
+      ++start;
+
+    if(start == end)
+      return false;
+    else if(*start != '"')
+      {
+	while(start != end && !isspace(*start))
+	  {
+	    out += *start;
+	    ++start;
+	  }
+	return true;
+      }
+    else
+      {
+	++start;
+	while(start != end && *start != '"')
+	  {
+	    if(*start == '\\')
+	      {
+		++start;
+		if(start == end)
+		  return _error->Error(_("Error parsing a user-tag for the package %s: unexpected end-of-line following %s."),
+				       package_name.c_str(),
+				       (std::string("\"") + std::string(initial_start, start)).c_str());
+		else
+		  {
+		    out += *start;
+		    ++start;
+		  }
+	      }
+	    else
+	      {
+		out += *start;
+		++start;
+	      }
+	  }
+
+	if(start == end)
+	  return _error->Error(_("Unterminated '\"' in the user-tags list of the package %s."),
+			       package_name.c_str());
+	else
+	  {
+	    ++start;
+	    return true;
+	  }
+      }
+  }
+}
+
+void aptitudeDepCache::parse_user_tags(std::set<user_tag> &tags,
+				       const char *&start, const char *end,
+				       const std::string &package_name)
+{
+  while(start != end)
+    {
+      while(start != end && isspace(*start))
+	++start;
+
+      std::string tag;
+      parse_user_tag(tag, start, end, package_name);
+
+      typedef std::map<std::string, user_tag_reference>::const_iterator
+	user_tags_index_iterator;
+      user_tags_index_iterator found = user_tags_index.find(tag);
+      if(found == user_tags_index.end())
+	{
+	  user_tag_reference loc(user_tags.size());
+	  user_tags.push_back(tag);
+	  std::pair<user_tags_index_iterator, bool> tmp(user_tags_index.insert(std::make_pair(tag, loc)));
+	  found = tmp.first;
+	}
+      tags.insert(user_tag(found->second));
+    }
+}
+
 bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 					    bool do_initselections,
 					    const char *status_fname)
@@ -250,10 +341,12 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
   // Should this not go under Dir:: ?  I'm not sure..
   delete package_states;
   package_states=new aptitude_state[Head().PackageCount];
+  user_tags.clear();
   for(unsigned int i=0; i<Head().PackageCount; i++)
     {
       package_states[i].new_package=true;
       package_states[i].reinstall=false;
+      package_states[i].user_tags.clear();
       package_states[i].remove_reason=manual;
       package_states[i].selection_state = pkgCache::State::Unknown;
       package_states[i].previously_auto_package = false;
@@ -313,7 +406,8 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
       bool do_dselect=aptcfg->FindB(PACKAGE "::Track-Dselect-State", true);
       while(tagfile.Step(section))
 	{
-	  PkgIterator pkg=FindPkg(section.FindS("Package"));
+	  std::string package_name(section.FindS("Package"));
+	  PkgIterator pkg = FindPkg(package_name);
 	  if(!pkg.end() && !pkg.VersionList().end())
 	    // Silently ignore unknown packages and packages with no actual
 	    // version.
@@ -357,6 +451,13 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 		    section.FindI("Dselect-State", pkg->SelectedState);
 	      pkg_state.candver=candver;
 	      pkg_state.forbidver=section.FindS("ForbidVer");
+
+	      {
+		const char *start, *end;
+		if(section.Find("User-Tags", start, end))
+		  parse_user_tags(pkg_state.user_tags, start, end,
+				  package_name);
+	      }
 
 	      if(do_dselect && pkg->SelectedState != last_dselect_state)
 		{
@@ -616,8 +717,6 @@ bool aptitudeDepCache::save_selection_list(OpProgress &prog,
 	  {
 	    StateCache &state=(*this)[i];
 	    aptitude_state &estate=get_ext_state(i);
-	    char buf[400];
-	    int len;
 
 	    string forbidstr=!estate.forbidver.empty()
 	      ? "ForbidVer: "+estate.forbidver+"\n":"";
@@ -638,28 +737,75 @@ bool aptitudeDepCache::save_selection_list(OpProgress &prog,
 		GetCandidateVer(i).VerStr() != estate.candver))
 	      tailstr = "Version: " + estate.candver + "\n";
 
-	    len=snprintf(buf,
-			 400,
-			 "Package: %s\nUnseen: %s\nState: %i\nDselect-State: %i\nRemove-Reason: %i\n%s%s%s%s\n",
-			 i.Name(),
-			 estate.new_package?"yes":"no",
-			 estate.selection_state,
-			 i->SelectedState,
-			 estate.remove_reason,
-			 upgradestr.c_str(),
-			 autostr.c_str(),
-			 forbidstr.c_str(),
-			 tailstr.c_str());
-	    if(len>=399)
+	    // Build the list of usertags for this package.
+	    std::string user_tags;
+	    if(!estate.user_tags.empty())
 	      {
-		_error->Error(_("Internal buffer overflow on package \"%s\" while writing state file"), i.Name());
-		newstate.Close();
+		user_tags = "User-Tags: ";
 
-		if(!status_fname)
-		  unlink((statefile+".new").c_str());
-		return false;
+		// Put the usertags in sorted order so we get
+		// predictable outputs.
+		std::vector<std::string> tmp;
+		tmp.reserve(estate.user_tags.size());
+
+		for(std::set<user_tag>::const_iterator it
+		      = estate.user_tags.begin(); it != estate.user_tags.end(); ++it)
+		  tmp.push_back(deref_user_tag(*it));
+
+		std::sort(tmp.begin(), tmp.end());
+
+		bool first = true;
+		// Append user tags to the field, using double-quotes
+		// if the tag contains spaces or double-quotes.
+		for(std::vector<std::string>::const_iterator it = tmp.begin();
+		    it != tmp.end(); ++it)
+		  {
+		    if(first)
+		      first = false;
+		    else
+		      user_tags.push_back(' ');
+
+		    if(it->find_first_of(" \"\\") != std::string::npos)
+		      {
+			user_tags.push_back('"');
+			for(std::string::const_iterator tag_it = it->begin();
+			    tag_it != it->end(); ++tag_it)
+			  {
+			    switch(*tag_it)
+			      {
+			      case '"':
+			      case '\\':
+				user_tags.push_back('\\');
+				user_tags.push_back(*tag_it);
+				break;
+			      default:
+				user_tags.push_back(*tag_it);
+				break;
+			      }
+			  }
+			user_tags.push_back('"');
+		      }
+		    else
+		      user_tags.insert(user_tags.size(), *it);
+		  }
+
+		user_tags.push_back('\n');
 	      }
-	    if(newstate.Failed() || !newstate.Write(buf, len))
+
+	    using cw::util::ssprintf;
+	    std::string line(ssprintf("Package: %s\nUnseen: %s\nState: %i\nDselect-State: %i\nRemove-Reason: %i\n%s%s%s%s%s\n",
+				      i.Name(),
+				      estate.new_package?"yes":"no",
+				      estate.selection_state,
+				      i->SelectedState,
+				      estate.remove_reason,
+				      upgradestr.c_str(),
+				      autostr.c_str(),
+				      forbidstr.c_str(),
+				      user_tags.c_str(),
+				      tailstr.c_str()));
+
+	    if(newstate.Failed() || !newstate.Write(line.c_str(), line.size()))
 	      {
 		_error->Error(_("Couldn't write state file"));
 		newstate.Close();
@@ -1149,6 +1295,112 @@ void aptitudeDepCache::mark_auto_installed(const PkgIterator &Pkg,
   dirty=true;
 
   MarkAuto(Pkg, set_auto);
+}
+
+// Undoers for the tag manipulators below.
+namespace
+{
+  class attach_user_tag_undoer : public undoable
+  {
+    aptitudeDepCache *parent;
+    pkgCache::PkgIterator pkg;
+    std::string tag;
+
+  public:
+    attach_user_tag_undoer(aptitudeDepCache *_parent,
+		      const pkgCache::PkgIterator &_pkg,
+		      const std::string &_tag)
+      : parent(_parent), pkg(_pkg), tag(_tag)
+    {
+    }
+
+    void undo()
+    {
+      parent->detach_user_tag(pkg, tag, NULL);
+    }
+  };
+
+  class detach_user_tag_undoer : public undoable
+  {
+    aptitudeDepCache *parent;
+    pkgCache::PkgIterator pkg;
+    std::string tag;
+
+  public:
+    detach_user_tag_undoer(aptitudeDepCache *_parent,
+			   const pkgCache::PkgIterator &_pkg,
+			   const std::string &_tag)
+      : parent(_parent), pkg(_pkg), tag(_tag)
+    {
+    }
+
+    void undo()
+    {
+      parent->attach_user_tag(pkg, tag, NULL);
+    }
+  };
+}
+
+void aptitudeDepCache::attach_user_tag(const PkgIterator &pkg,
+				       const std::string &tag,
+				       undo_group *undo)
+{
+  if(read_only && !read_only_permission())
+    {
+      if(group_level == 0)
+	read_only_fail();
+      return;
+    }
+
+  // Find the tag in our cache or add it.
+  typedef std::map<std::string, user_tag_reference>::const_iterator index_ref;
+  index_ref found = user_tags_index.find(tag);
+
+  if(found == user_tags_index.end())
+    {
+      user_tag_reference loc = user_tags.size();
+      user_tags.push_back(tag);
+      std::pair<index_ref, bool> tmp(user_tags_index.insert(std::make_pair(tag, loc)));
+      found = tmp.first;
+    }
+
+  std::pair<std::set<user_tag>::const_iterator, bool> insert_result =
+    get_ext_state(pkg).user_tags.insert(user_tag(found->second));
+
+  if(insert_result.second)
+    {
+      dirty = true;
+      if(undo != NULL)
+	undo->add_item(new attach_user_tag_undoer(this, pkg, tag));
+    }
+}
+
+void aptitudeDepCache::detach_user_tag(const PkgIterator &pkg,
+				       const std::string &tag,
+				       undo_group *undo)
+{
+  if(read_only && !read_only_permission())
+    {
+      if(group_level == 0)
+	read_only_fail();
+      return;
+    }
+
+  std::map<std::string, user_tag_reference>::const_iterator found =
+    user_tags_index.find(tag);
+
+  if(found == user_tags_index.end())
+    return;
+
+  std::set<user_tag>::size_type num_erased =
+    get_ext_state(pkg).user_tags.erase(user_tag(found->second));
+
+  if(num_erased > 0)
+    {
+      dirty = true;
+      if(undo != NULL)
+	undo->add_item(new detach_user_tag_undoer(this, pkg, tag));
+    }
 }
 
 bool aptitudeDepCache::all_upgrade(bool with_autoinst, undo_group *undo)

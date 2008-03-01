@@ -354,6 +354,7 @@ namespace
       matcher_type_tag,
       matcher_type_true,
       matcher_type_upgradable,
+      matcher_type_user_tag,
       matcher_type_version,
       matcher_type_virtual,
       matcher_type_widen
@@ -405,6 +406,7 @@ namespace
     { "tag", matcher_type_tag },
     { "true", matcher_type_true },
     { "upgradable", matcher_type_upgradable },
+    { "user-tag", matcher_type_user_tag },
     { "version", matcher_type_version },
     { "virtual", matcher_type_virtual },
     /* ForTranslators: Opposite of narrow. Search for "widen" in this file for details. */
@@ -558,6 +560,7 @@ class pkg_string_matcher : public pkg_matcher_real
     pattern_group_initialized=true;
   }
 
+public:
   class match_result : public pkg_match_result
   {
     // well, it's pretty much necessary to copy all the groups anyway
@@ -577,7 +580,7 @@ class pkg_string_matcher : public pkg_matcher_real
     unsigned int num_groups() {return matches.size();}
     const string &group(unsigned int n) {return matches[n];}
   };
-public:
+
   pkg_string_matcher (const string &_pattern)
     :pattern_nogroup_initialized(false),
      pattern_group_initialized(false)
@@ -604,7 +607,7 @@ public:
     return !regexec(&pattern_nogroup, s, 0, NULL, 0);
   }
 
-  pkg_match_result *get_string_match(const char *s)
+  match_result *get_string_match(const char *s)
   {
     // ew.  You need a hard limit here.
     regmatch_t matches[30];
@@ -989,6 +992,71 @@ public:
       }
 
     return NULL;
+  }
+};
+
+class pkg_user_tag_matcher : public pkg_string_matcher
+{
+  std::map<aptitudeDepCache::user_tag,
+	   match_result *> cached_matches;
+
+  match_result *noncopy_get_match(const pkgCache::PkgIterator &pkg,
+				  aptitudeDepCache &cache)
+  {
+    const std::set<aptitudeDepCache::user_tag> &user_tags =
+      cache.get_ext_state(pkg).user_tags;
+
+    for(std::set<aptitudeDepCache::user_tag>::const_iterator it =
+	  user_tags.begin(); it != user_tags.end(); ++it)
+      {
+	std::map<aptitudeDepCache::user_tag, match_result *>::const_iterator
+	  found = cached_matches.find(*it);
+
+	if(found != cached_matches.end() && found->second != NULL)
+	  return found->second;
+
+	match_result *result = get_string_match(cache.deref_user_tag(*it).c_str());
+	cached_matches[*it] = result;
+	if(result != NULL)
+	  return result;
+      }
+
+    return NULL;
+  }
+public:
+  pkg_user_tag_matcher(const std::string &s)
+    : pkg_string_matcher(s)
+    
+  {
+  }
+
+  ~pkg_user_tag_matcher()
+  {
+    for(std::map<aptitudeDepCache::user_tag, match_result *>::const_iterator it
+	  = cached_matches.begin(); it != cached_matches.end(); ++it)
+      delete it->second;
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records,
+	       match_stack &stack)
+  {
+    return noncopy_get_match(pkg, cache) != NULL;
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records,
+			      match_stack &stack)
+  {
+    match_result *rval = noncopy_get_match(pkg, cache);
+    if(rval == NULL)
+      return NULL;
+    else
+      return new match_result(*rval);
   }
 };
 
@@ -3510,6 +3578,8 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
       return new pkg_true_matcher;
     case matcher_type_upgradable:
       return new pkg_upgradable_matcher;
+    case matcher_type_user_tag:
+      return new pkg_user_tag_matcher(parse_string_match_args(start, end));
     case matcher_type_version:
       return make_package_version_matcher(parse_string_match_args(start, end));
     case matcher_type_widen:

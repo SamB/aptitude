@@ -1,6 +1,6 @@
 // desc_parse.cc
 //
-//  Copyright 2004-2007 Daniel Burrows
+//  Copyright 2004-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -296,10 +296,10 @@ cw::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
   const set<tag> * const s(get_tags(pkg));
 #endif
 
+  vector<cw::fragment *> rval;
   if(s != NULL && !s->empty())
     {
       vector<cw::fragment *> tags;
-
       for(set<tag>::const_iterator i = s->begin(); i != s->end(); ++i)
 	{
 #ifdef HAVE_EPT
@@ -313,11 +313,30 @@ cw::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
 
       wstring tagstitle = W_("Tags");
 
-      return cw::fragf("%ls: %F",
-		   tagstitle.c_str(),
-		   indentbox(0, wcswidth(tagstitle.c_str(), tagstitle.size())+2,
+      rval.push_back(cw::fragf("%ls: %F",
+			       tagstitle.c_str(),
+			       indentbox(0, wcswidth(tagstitle.c_str(), tagstitle.size())+2,
+					 wrapbox(cw::join_fragments(tags, L", ")))));
+    }
+
+  typedef aptitudeDepCache::user_tag user_tag;
+  const set<user_tag> &user_tags((*apt_cache_file)->get_ext_state(pkg).user_tags);
+  if(!user_tags.empty())
+    {
+      vector<cw::fragment *> tags;
+      for(set<user_tag>::const_iterator it = user_tags.begin();
+	  it != user_tags.end(); ++it)
+	{
+	  tags.push_back(cw::text_fragment((*apt_cache_file)->deref_user_tag(*it)));
+	}
+
+      wstring title = W_("User Tags");
+      rval.push_back(dropbox(cw::fragf("%ls: ", title.c_str()),
 			     wrapbox(cw::join_fragments(tags, L", "))));
     }
+
+  if(!rval.empty())
+    return cw::join_fragments(rval, L"\n");
   else
     return NULL;
 }
