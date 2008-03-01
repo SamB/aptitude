@@ -10,6 +10,8 @@
 // For download_manager::result
 #include <generic/apt/download_manager.h>
 
+#include <string>
+
 void cmdline_show_pkglist(pkgvector &items);
 void cmdline_show_stringlist(strvector &items);
 
@@ -59,5 +61,15 @@ bool cmdline_parse_source(const string &input,
  */
 download_manager::result cmdline_do_download(download_manager *m,
 					     int verbose);
+
+/** \brief Test whether a string looks like a search pattern.
+ *
+ *  \param s  the string to test.
+ *
+ *  Looks for tildes and question marks.
+ *
+ *  \return \b true if the string qualifies as a search pattern.
+ */
+bool cmdline_is_search_pattern(const std::string &s);
 
 #endif // CMDLINE_UTIL_H

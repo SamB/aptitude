@@ -22,6 +22,7 @@
 
 #include "cmdline_common.h"
 #include "cmdline_show.h"
+#include "cmdline_util.h"
 
 #include <aptitude.h>
 
@@ -1113,7 +1114,7 @@ bool interpret_why_args(const std::vector<std::string> &args,
     {
       // If there isn't a tilde, treat it as an exact package name.
       pkg_matcher *m = NULL;
-      if(it->find('~') == std::string::npos)
+      if(!cmdline_is_search_pattern(*it))
 	{
 	  pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*it);
 	  if(pkg.end())

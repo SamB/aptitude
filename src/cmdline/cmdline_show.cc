@@ -530,7 +530,7 @@ bool do_cmdline_show(string s, int verbose)
       sourcestr = default_release;
     }
 
-  bool is_pattern=(name.find('~')!=name.npos);
+  bool is_pattern = cmdline_is_search_pattern(name);
   pkgCache::PkgIterator pkg;
 
   if(!is_pattern)

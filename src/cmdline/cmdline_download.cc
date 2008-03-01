@@ -50,7 +50,7 @@ int cmdline_download(int argc, char *argv[])
 
   for(int i=1; i<argc; ++i)
     // FIXME: use the same logic as pkgaction here.
-    if(!strchr(argv[i], '~'))
+    if(!cmdline_is_search_pattern(argv[i]))
       {
 	cmdline_version_source source;
 	string name, sourcestr;

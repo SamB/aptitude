@@ -255,7 +255,7 @@ bool cmdline_applyaction(string s,
       return false;
     }
 
-  if(package.find('~')==package.npos)
+  if(!cmdline_is_search_pattern(package))
     {
       pkgCache::PkgIterator pkg=(*apt_cache_file)->FindPkg(package.c_str());
       if(pkg.end())
