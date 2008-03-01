@@ -8,7 +8,7 @@
 // own file (I think..apt doesn't have hooks for adding stuff..) containing
 // that information, properly lock/unlock it, etc.
 //
-//  Copyright 1999-2005, 2007 Daniel Burrows
+//  Copyright 1999-2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -39,6 +39,8 @@
 #include <sigc++/trackable.h>
 
 #include <iostream>
+#include <map>
+#include <set>
 #include <vector>
 
 class undoable;
@@ -49,11 +51,38 @@ template<typename PackageUniverse> class generic_solution;
 
 class aptitudeDepCache:public pkgDepCache, public sigc::trackable
 {
+  typedef int user_tag_reference;
+
 public:
   /** This is a general enum that's used for several purposes by the
    *  extended state.  Not every value is valid in every case.
    */
   enum changed_reason {manual, user_auto, libapt, from_resolver, unused};
+
+  /** \brief An opaque type used to store references into the
+   *  user-tags list.
+   *
+   *  We only store one copy of each tag string, to save space.
+   */
+  class user_tag
+  {
+    friend class aptitudeDepCache;
+    user_tag_reference tag_num;
+    explicit user_tag(const user_tag_reference &_tag_num) : tag_num(_tag_num)
+    {
+    }
+
+  public:
+    bool operator==(const user_tag &other) const
+    {
+      return tag_num == other.tag_num;
+    }
+
+    bool operator<(const user_tag &other) const
+    {
+      return tag_num < other.tag_num;
+    }
+  };
 
   /** This structure augments the basic depCache state structure to
    *  support special aptitude features.
@@ -78,6 +107,9 @@ public:
      *  If this string is empty, no "forbid" qualifier is in place.
      */
     std::string forbidver;
+
+    /** \brief Stores the tags attached to this package by the user. */
+    std::set<user_tag> user_tags;
 
     /** If the package is going to be removed, this gives the reason
      *  for the removal.
@@ -204,8 +236,35 @@ public:
 
     friend class aptitudeDepCache;
   };
+
+  const std::string &deref_user_tag(const user_tag &tag) const
+  {
+    return user_tags[tag.tag_num];
+  }
 private:
+  void parse_user_tags(std::set<user_tag> &tags,
+		       const char *&start, const char *end,
+		       const std::string &package_name);
+
   aptitude_state *package_states;
+  // To speed the program up and save memory, I only store one copy of
+  // each distinct tag, and keep a reference to this list.  The list
+  // is not managed especially intelligently: if you repeatedly add
+  // and remove never-before-seen tags to a package, it will grow
+  // without bound.  I don't consider this a problem, because users
+  // are unlikely to add "very many" (say, more than a few hundred)
+  // tags in a single session.  If it does become a problem, tags can
+  // be reference-counted, at the expense of maintaining an explicit
+  // free list.
+  std::vector<std::string> user_tags;
+  // Stores the reference corresponding to each string.
+  std::map<std::string, user_tag_reference> user_tags_index;
+  // Read a set of user tags from the given string region
+  // and write the tags into the index and into the given
+  // set of tags.
+  void parse_usertags(std::set<user_tag_reference> &tags,
+		      const char *&start, const char *end);
+
   int lock;
   // The lock on the extra-info file.
   int group_level;
@@ -354,6 +413,24 @@ public:
   void mark_auto_installed(const PkgIterator &pkg,
 			   bool set_auto,
 			   undo_group *undo);
+
+  /** \brief Attach a tag to a package.
+   *
+   *  The tag will be added to the user_tags member of the package's
+   *  extended state.
+   */
+  void attach_tag(const PkgIterator &pkg, const std::string &tag,
+		  undo_group *undo);
+
+  /** \brief Remove a tag from a package.
+   *
+   *  The tag will be removed from the user_tags member of the
+   *  package's extended state.  If it isn't already present, nothing
+   *  will happen.
+   */
+  void detach_tag(const PkgIterator &pkg, const std::string &tag,
+		  undo_group *undo);
+
   // Marks the given package as having been autoinstalled (so it will be
   // removed automatically) or having been installed manually.
 
