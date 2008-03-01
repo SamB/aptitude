@@ -56,6 +56,7 @@
 #include <cmdline/cmdline_show.h>
 #include <cmdline/cmdline_update.h>
 #include <cmdline/cmdline_upgrade.h>
+#include <cmdline/cmdline_user_tag.h>
 #include <cmdline/cmdline_why.h>
 
 #include <sigc++/functors/ptr_fun.h>
@@ -508,6 +509,10 @@ int main(int argc, char *argv[])
 				   showvers, showdeps, showsize,
 				   visual_preview, always_prompt,
 				   queue_only, verbose);
+	  else if(!strcasecmp(argv[optind], "add-user-tag") ||
+		  !strcasecmp(argv[optind], "remove-user-tag"))
+	    return aptitude::cmdline::cmdline_user_tag(argc - optind, argv + optind,
+						       quiet, verbose);
 	  else if(!strcasecmp(argv[optind], "download"))
 	    return cmdline_download(argc-optind, argv+optind);
 	  else if(!strcasecmp(argv[optind], "changelog"))
