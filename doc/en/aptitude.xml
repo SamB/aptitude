@@ -124,6 +124,7 @@
   <!ENTITY Strue "<literal><link linkend='searchTrue'>?true</link></literal>">
   <!ENTITY Stask "<literal><link linkend='searchTask'>?task</link></literal>">
   <!ENTITY Supgradable "<literal><link linkend='searchUpgradable'>?upgradable</link></literal>">
+  <!ENTITY Suser-tag "<literal><link linkend='searchUserTag'>?user-tag</link></literal>">
   <!ENTITY Sversion "<literal><link linkend='searchTermVersion'>?version</link></literal>">
   <!ENTITY Svirtual "<literal><link linkend='searchVirtual'>?virtual</link></literal>">
   <!ENTITY Swiden "<literal><link linkend='searchWiden'>?widen</link></literal>">
@@ -4783,6 +4784,16 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
+		<entry><literal>&Suser-tag;</literal></entry>
+		<entry/>
+		<entry>
+		  Select packages that are marked with a user-tag
+		  matching the regular expression
+		  <replaceable>user-tag</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
 		<entry><literal>&Sversion;(<replaceable>version</replaceable>)</literal></entry>
 		<entry><literal>~V<replaceable>version</replaceable></literal></entry>
 		<entry>
@@ -5548,6 +5559,20 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      This term matches any installed package which can be
 	      upgraded.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry id='searchUserTag'>
+	  <term>
+	    <literal>?user-tag(<replaceable>tag</replaceable>)</literal>
+	  </term>
+
+	  <listitem>
+	    <para>
+	      This term matches any package that is marked with a
+	      user-tag matching the regular expression
+	      <replaceable>tag</replaceable>.
 	    </para>
 	  </listitem>
 	</varlistentry>

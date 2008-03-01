@@ -117,6 +117,21 @@
       <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
 
       <group choice='req'>
+	<arg choice='plain'>add-user-tag</arg>
+	<arg choice='plain'>remove-user-tag</arg>
+      </group>
+
+      <arg choice='plain'><replaceable>tag</replaceable></arg>
+
+      <arg choice='plain' rep='repeat'><replaceable>packages</replaceable></arg>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+      <command>aptitude</command>
+
+      <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
+
+      <group choice='req'>
 	<arg choice='plain'>why</arg>
 	<arg choice='plain'>why-not</arg>
       </group>
@@ -590,6 +605,20 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 	    will be displayed.  If the verbosity level is 2 or
 	    greater, the select version or versions will be displayed
 	    once for each archive in which they are found.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry id='cmdlineAddOrRemoveUserTags'>
+	<term><literal>add-user-tag</literal>, <literal>remove-user-tag</literal></term>
+
+	<listitem>
+	  <para>
+	    Adds a user tag to or removes a user tag from the selected
+	    group of packages.  User tags are attached to a package by
+	    name and can be matched using the <link
+	    linkend='searchUserTag'><literal>?user-tag</literal></link>
+	    matcher.
 	  </para>
 	</listitem>
       </varlistentry>
