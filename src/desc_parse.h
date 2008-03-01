@@ -39,6 +39,9 @@ cwidget::fragment *make_desc_fragment(const std::wstring &desc);
 
 /** \return a cwidget::fragment listing the tags of the given package, or \b
  *  NULL if there are no tags.
+ *
+ *  The global cache, apt_cache_file, should be available when you
+ *  call this routine.
  */
 cwidget::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg);
 
