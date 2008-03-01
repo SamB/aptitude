@@ -354,7 +354,7 @@ namespace
       matcher_type_tag,
       matcher_type_true,
       matcher_type_upgradable,
-      matcher_type_usertag,
+      matcher_type_user_tag,
       matcher_type_version,
       matcher_type_virtual,
       matcher_type_widen
@@ -406,7 +406,7 @@ namespace
     { "tag", matcher_type_tag },
     { "true", matcher_type_true },
     { "upgradable", matcher_type_upgradable },
-    { "user-tag", matcher_type_usertag },
+    { "user-tag", matcher_type_user_tag },
     { "version", matcher_type_version },
     { "virtual", matcher_type_virtual },
     /* ForTranslators: Opposite of narrow. Search for "widen" in this file for details. */
@@ -995,7 +995,7 @@ public:
   }
 };
 
-class pkg_usertag_matcher : public pkg_string_matcher
+class pkg_user_tag_matcher : public pkg_string_matcher
 {
   std::map<aptitudeDepCache::user_tag,
 	   match_result *> cached_matches;
@@ -1024,13 +1024,13 @@ class pkg_usertag_matcher : public pkg_string_matcher
     return NULL;
   }
 public:
-  pkg_usertag_matcher(const std::string &s)
+  pkg_user_tag_matcher(const std::string &s)
     : pkg_string_matcher(s)
     
   {
   }
 
-  ~pkg_usertag_matcher()
+  ~pkg_user_tag_matcher()
   {
     for(std::map<aptitudeDepCache::user_tag, match_result *>::const_iterator it
 	  = cached_matches.begin(); it != cached_matches.end(); ++it)
@@ -3578,6 +3578,8 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
       return new pkg_true_matcher;
     case matcher_type_upgradable:
       return new pkg_upgradable_matcher;
+    case matcher_type_user_tag:
+      return new pkg_user_tag_matcher(parse_string_match_args(start, end));
     case matcher_type_version:
       return make_package_version_matcher(parse_string_match_args(start, end));
     case matcher_type_widen:
