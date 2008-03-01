@@ -783,6 +783,7 @@ bool aptitudeDepCache::save_selection_list(OpProgress &prog,
 				break;
 			      }
 			  }
+			user_tags.push_back('"');
 		      }
 		    else
 		      user_tags.insert(user_tags.size(), *it);
@@ -1299,14 +1300,14 @@ void aptitudeDepCache::mark_auto_installed(const PkgIterator &Pkg,
 // Undoers for the tag manipulators below.
 namespace
 {
-  class attach_tag_undoer : public undoable
+  class attach_user_tag_undoer : public undoable
   {
     aptitudeDepCache *parent;
     pkgCache::PkgIterator pkg;
     std::string tag;
 
   public:
-    attach_tag_undoer(aptitudeDepCache *_parent,
+    attach_user_tag_undoer(aptitudeDepCache *_parent,
 		      const pkgCache::PkgIterator &_pkg,
 		      const std::string &_tag)
       : parent(_parent), pkg(_pkg), tag(_tag)
@@ -1315,35 +1316,42 @@ namespace
 
     void undo()
     {
-      parent->detach_tag(pkg, tag, NULL);
+      parent->detach_user_tag(pkg, tag, NULL);
     }
   };
 
-  class detach_tag_undoer : public undoable
+  class detach_user_tag_undoer : public undoable
   {
     aptitudeDepCache *parent;
     pkgCache::PkgIterator pkg;
     std::string tag;
 
   public:
-    detach_tag_undoer(aptitudeDepCache *_parent,
-		      const pkgCache::PkgIterator &_pkg,
-		      const std::string &_tag)
+    detach_user_tag_undoer(aptitudeDepCache *_parent,
+			   const pkgCache::PkgIterator &_pkg,
+			   const std::string &_tag)
       : parent(_parent), pkg(_pkg), tag(_tag)
     {
     }
 
     void undo()
     {
-      parent->attach_tag(pkg, tag, NULL);
+      parent->attach_user_tag(pkg, tag, NULL);
     }
   };
 }
 
-void aptitudeDepCache::attach_tag(const PkgIterator &pkg,
-				  const std::string &tag,
-				  undo_group *undo)
+void aptitudeDepCache::attach_user_tag(const PkgIterator &pkg,
+				       const std::string &tag,
+				       undo_group *undo)
 {
+  if(read_only && !read_only_permission())
+    {
+      if(group_level == 0)
+	read_only_fail();
+      return;
+    }
+
   // Find the tag in our cache or add it.
   typedef std::map<std::string, user_tag_reference>::const_iterator index_ref;
   index_ref found = user_tags_index.find(tag);
@@ -1359,16 +1367,25 @@ void aptitudeDepCache::attach_tag(const PkgIterator &pkg,
   std::pair<std::set<user_tag>::const_iterator, bool> insert_result =
     get_ext_state(pkg).user_tags.insert(user_tag(found->second));
 
-  if(undo != NULL && insert_result.second)
+  if(insert_result.second)
     {
-      undo->add_item(new attach_tag_undoer(this, pkg, tag));
+      dirty = true;
+      if(undo != NULL)
+	undo->add_item(new attach_user_tag_undoer(this, pkg, tag));
     }
 }
 
-void aptitudeDepCache::detach_tag(const PkgIterator &pkg,
-				  const std::string &tag,
-				  undo_group *undo)
+void aptitudeDepCache::detach_user_tag(const PkgIterator &pkg,
+				       const std::string &tag,
+				       undo_group *undo)
 {
+  if(read_only && !read_only_permission())
+    {
+      if(group_level == 0)
+	read_only_fail();
+      return;
+    }
+
   std::map<std::string, user_tag_reference>::const_iterator found =
     user_tags_index.find(tag);
 
@@ -1378,9 +1395,11 @@ void aptitudeDepCache::detach_tag(const PkgIterator &pkg,
   std::set<user_tag>::size_type num_erased =
     get_ext_state(pkg).user_tags.erase(user_tag(found->second));
 
-  if(undo == NULL && num_erased > 0)
+  if(num_erased > 0)
     {
-      undo->add_item(new detach_tag_undoer(this, pkg, tag));
+      dirty = true;
+      if(undo != NULL)
+	undo->add_item(new detach_user_tag_undoer(this, pkg, tag));
     }
 }
 
