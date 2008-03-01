@@ -248,7 +248,10 @@ namespace
     else if(*start != '"')
       {
 	while(start != end && !isspace(*start))
-	  out += *start;
+	  {
+	    out += *start;
+	    ++start;
+	  }
 	return true;
       }
     else
