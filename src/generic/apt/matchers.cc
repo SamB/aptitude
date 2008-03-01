@@ -406,7 +406,7 @@ namespace
     { "tag", matcher_type_tag },
     { "true", matcher_type_true },
     { "upgradable", matcher_type_upgradable },
-    { "usertag", matcher_type_usertag },
+    { "user-tag", matcher_type_usertag },
     { "version", matcher_type_version },
     { "virtual", matcher_type_virtual },
     /* ForTranslators: Opposite of narrow. Search for "widen" in this file for details. */
