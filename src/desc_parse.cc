@@ -327,7 +327,8 @@ cw::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
       for(set<user_tag>::const_iterator it = user_tags.begin();
 	  it != user_tags.end(); ++it)
 	{
-	  tags.push_back(cw::text_fragment((*apt_cache_file)->deref_user_tag(*it)));
+	  tags.push_back(cw::text_fragment((*apt_cache_file)->deref_user_tag(*it),
+					   cw::style_attrs_on(A_BOLD)));
 	}
 
       wstring title = W_("User Tags");
