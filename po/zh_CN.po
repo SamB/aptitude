@@ -8,10 +8,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude 0.4.3-1\n"
+"Project-Id-Version: aptitude 0.4.10-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-02-26 22:27-0800\n"
-"PO-Revision-Date: 2008-02-15 21:49+0800\n"
+"PO-Revision-Date: 2008-03-03 15:06+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -537,9 +537,8 @@ msgid "Internal error: unexpected null solution."
 msgstr "内部错误：意料之外的空解决方案。"
 
 #: src/broken_indicator.cc:366
-#, fuzzy
 msgid "Suggest keeping all packages at their current version."
-msgstr "保持下列软件包于其当前版本："
+msgstr "建议保持所有软件包于其当前版本。"
 
 #: src/broken_indicator.cc:374
 #, c-format
@@ -1086,11 +1085,11 @@ msgid "Press Return to continue"
 msgstr "按回车继续"
 
 #: src/cmdline/cmdline_prompt.cc:709
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify.\n"
-msgstr "未发现软件包 -- 请输入0个或多个搜索内容再接着输入要搜索的软件包。"
+msgstr "未发现软件包 -- 请输入0个或多个搜索内容再接着输入要搜索的软件包。\n"
 
 #: src/cmdline/cmdline_prompt.cc:732
 #, c-format
@@ -1429,9 +1428,9 @@ msgid "Expected at least one package/version pair following '%c'"
 msgstr "在“%c”后需要至少一个软件包/版本对"
 
 #: src/cmdline/cmdline_resolver.cc:274
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
-msgstr "在“%s”之后的一个预料中的版本"
+msgstr "预期在“%2$s”之后得到版本或“%1$s”"
 
 #: src/cmdline/cmdline_resolver.cc:284
 #, c-format
@@ -1897,27 +1896,24 @@ msgid "There are now %F."
 msgstr "现在是 %F 。"
 
 #: src/cmdline/cmdline_why.cc:268
-#, fuzzy
 msgid "dep_level"
-msgstr "删除"
+msgstr "依赖级"
 
 #: src/cmdline/cmdline_why.cc:274
-#, fuzzy
 msgid "DependsOnly"
-msgstr "依赖于"
+msgstr "仅依赖"
 
 #: src/cmdline/cmdline_why.cc:288
 msgid "version_selection"
-msgstr ""
+msgstr "版本选择"
 
 #: src/cmdline/cmdline_why.cc:293
 msgid "Current"
-msgstr ""
+msgstr "当前"
 
 #: src/cmdline/cmdline_why.cc:296
-#, fuzzy
 msgid "Candidate"
-msgstr "候选版本"
+msgstr "候选"
 
 #: src/cmdline/cmdline_why.cc:299 src/generic/apt/matchers.cc:1377
 msgid "Install"
@@ -1925,15 +1921,13 @@ msgstr "安装"
 
 #: src/cmdline/cmdline_why.cc:307
 msgid "allow_choices"
-msgstr ""
+msgstr "允许的选择"
 
 #: src/cmdline/cmdline_why.cc:310
-#, fuzzy
 msgid "true"
 msgstr "真"
 
 #: src/cmdline/cmdline_why.cc:312
-#, fuzzy
 msgid "false"
 msgstr "假"
 
@@ -2099,9 +2093,8 @@ msgid " [ %i%% ]"
 msgstr " [ %i%% ]"
 
 #: src/download_list.cc:266
-#, fuzzy
 msgid "Downloading... "
-msgstr "正在下载..."
+msgstr "正在下载... "
 
 #: src/download_list.cc:342
 #, c-format
@@ -2240,7 +2233,7 @@ msgstr "您可能需要更新软件包列表来解决缺少这些文件的问题
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
 #: src/generic/apt/apt.cc:173
 msgid "Localized defaults|"
-msgstr "aptitude-defaults.zh_CN"
+msgstr "aptitude-defaults"
 
 #: src/generic/apt/apt.cc:192
 #, c-format
@@ -2263,14 +2256,13 @@ msgid "Unable to replace %s with new configuration file"
 msgstr "无法用新的配置文件代替 %s"
 
 #: src/generic/apt/apt.cc:396
-#, fuzzy
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
 "you make to the states of packages will NOT be preserved!"
 msgstr ""
-"无法锁定缓存文件。正在以只读方式打开；您对软件包状态所作的任何改变都不会被保"
-"存！"
+"无法锁定缓存文件；这通常意味着 dpkg 或另一个 apt 工具已经在安装软件包。正在以"
+"只读方式打开；您对软件包状态所作的任何改变都“不会”被保存！"
 
 #: src/generic/apt/download_install_manager.cc:56
 msgid ""
@@ -2597,12 +2589,12 @@ msgstr "未知的优先级：%s"
 #: src/generic/apt/matchers.cc:3049
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
-msgstr ""
+msgstr "匹配模式异常结束(预期为'%c')。"
 
 #: src/generic/apt/matchers.cc:3052
-#, fuzzy, c-format
+#, c-format
 msgid "Expected '%c', got '%c'."
-msgstr "需要“,”或“(”，却得到“%c”"
+msgstr "预期得到“%c”，却得到“%c”。"
 
 #: src/generic/apt/matchers.cc:3359 src/generic/apt/matchers.cc:3791
 #: src/generic/apt/matchers.cc:3834
@@ -2611,9 +2603,9 @@ msgid "Unknown dependency type: %s"
 msgstr "未知依赖类型：%s"
 
 #: src/generic/apt/matchers.cc:3413
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown matcher type: \"%s\"."
-msgstr "未知的模式类型：%c"
+msgstr "未知的匹配器类型：“%s”。"
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
@@ -2623,6 +2615,7 @@ msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
 "a context enclosed by ?%s)."
 msgstr ""
+"?%s 匹配器必须在“宽”上下文中使用(顶层上下文，或者被 ?%s 包含的上下文)。"
 
 #: src/generic/apt/matchers.cc:3644
 msgid "Unmatched '('"
@@ -4034,6 +4027,9 @@ msgid ""
 " These packages have not yet been classified in debtags, or the debtags "
 "database is not present (installing debtags may correct this problem)."
 msgstr ""
+"\n"
+"这些软件包还没有在 debtags 中文类，或者 debtags 数据库不存在(安装 debtags 也"
+"许能修正这个问题)。"
 
 #: src/pkg_grouppolicy.cc:1504
 msgid "MISSING TAG"
@@ -4763,9 +4759,9 @@ msgid "News"
 msgstr "新闻"
 
 #: src/ui.cc:1086 src/ui.cc:2345
-#, fuzzy, c-format
+#, c-format
 msgid "View the important changes made in each version of %s"
-msgstr "查看该程序每一版本中所做的重大修改"
+msgstr "查看 %s 每一版本中所做的重大修改"
 
 #: src/ui.cc:1093
 #, c-format
