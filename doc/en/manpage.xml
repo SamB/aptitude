@@ -615,10 +615,22 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 	<listitem>
 	  <para>
 	    Adds a user tag to or removes a user tag from the selected
-	    group of packages.  User tags are attached to a package by
-	    name and can be matched using the <link
-	    linkend='searchUserTag'><literal>?user-tag</literal></link>
-	    matcher.
+	    group of packages.  If a package name contains a tilde
+	    (<quote><literal>~</literal></quote>) or question mark
+	    (<quote><literal>?</literal></quote>), it is treated as a
+	    search pattern and the tag is added to or removed from all
+	    the packages that match the pattern (see the section
+	    <quote><link linkend='secSearchPatterns'>Search
+	    Patterns</link></quote> in the &aptitude; reference
+	    manual).
+	  </para>
+
+	  <para>
+	    User tags are arbitrary strings associated with a package.
+	    They can be used with the <link
+	    linkend='searchUserTag'><literal>?user-tag(<replaceable>tag</replaceable>)</literal></link>
+	    search term, which will select all the packages that have
+	    a user tag matching <replaceable>tag</replaceable>.
 	  </para>
 	</listitem>
       </varlistentry>
