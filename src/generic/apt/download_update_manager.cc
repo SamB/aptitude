@@ -238,12 +238,13 @@ namespace
 	    close(fdnullout);
 	  }
 
-	char **argv = new char*[args.size()];
+	char **argv = new char*[args.size() + 1];
 	for(std::vector<std::string>::size_type i = 0;
 	    i < args.size(); ++i)
 	  {
 	    argv[i] = const_cast<char *>(args[i].c_str());
 	  }
+	argv[args.size()] = NULL;
 
 	exit(execv(command.c_str(), argv));
       }
