@@ -231,6 +231,9 @@ namespace
     int num_new = 0;
     int num_broken = 0;
 
+    if(apt_cache_file == NULL)
+      return stats(0, 0, 0);
+
     for(pkgCache::PkgIterator p = (*apt_cache_file)->PkgBegin();
 	!p.end(); ++p)
       {
