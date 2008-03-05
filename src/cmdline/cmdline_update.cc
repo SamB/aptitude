@@ -42,11 +42,10 @@ int cmdline_update(int argc, char *argv[], int verbose)
       return -1;
     }
 
-  if(_error->PendingError())
-    // Don't exit if there's an error: it probably means that there
-    // was a problem loading the package lists, so go ahead and try to
-    // download new ones.
-    _error->DumpErrors();
+  // Don't exit if there's an error: it probably means that there
+  // was a problem loading the package lists, so go ahead and try to
+  // download new ones.
+  _error->DumpErrors();
 
   download_update_manager m;
   m.pre_autoclean_hook.connect(sigc::ptr_fun(print_autoclean_msg));

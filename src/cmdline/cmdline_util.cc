@@ -25,6 +25,8 @@
 #include <sigc++/bind.h>
 #include <sigc++/functors/ptr_fun.h>
 
+#include <apt-pkg/error.h>
+
 namespace cw = cwidget;
 
 namespace
@@ -331,11 +333,17 @@ download_manager::result cmdline_do_download(download_manager *m,
       // already loaded, and loads the cache with a minimum of frills
       // otherwise.
       OpProgress tmpProgress;
+      // Dump errors so we don't spuriously think we failed.
+      _error->DumpErrors();
       apt_load_cache(&tmpProgress, false, NULL);
       initial_stats = compute_apt_stats();
     }
 
   std::auto_ptr<download_signal_log> log(gen_cmdline_download_progress());
+
+  // Dump errors here because prepare() might check for pending errors
+  // and think something failed.
+  _error->DumpErrors();
 
   if(!m->prepare(progress, *log.get(), log.get()))
     return download_manager::failure;
