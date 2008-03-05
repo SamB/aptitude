@@ -98,13 +98,16 @@ namespace aptitude
      *                   warnings about being unable to resolve
      *                   deps).
      *  \param no_new_installs  If true, packages not currently
-     *                          on the system will not be installed
-     *                          and packages will not be automatically
+     *                          on the system will not be installed.
+     *  \param no_new_upgrades  If true, packages not currently
+     *                          flagged for upgrade will not be
      *                          upgraded.
      *
      *  \return \b true iff a solution was found and applied.
      */
-    bool safe_resolve_deps(int verbose, bool no_new_installs);
+    bool safe_resolve_deps(int verbose,
+			   bool no_new_installs,
+			   bool no_new_upgrades);
   }
 }
 

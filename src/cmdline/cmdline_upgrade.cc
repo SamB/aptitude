@@ -87,7 +87,7 @@ int cmdline_upgrade(int argc, char *argv[],
   if(verbose > 0)
     show_broken();
 
-  if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs))
+  if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, true))
     {
       {
 	aptitudeDepCache::action_group action_group(*apt_cache_file);

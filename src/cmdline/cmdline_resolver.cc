@@ -820,7 +820,7 @@ namespace aptitude
       // Essentialy this means (1) forbid it from removing any package,
       // and (2) only install the default candidate version of a package
       // or the current version.
-      void setup_safe_resolver(bool no_new_installs)
+      void setup_safe_resolver(bool no_new_installs, bool no_new_upgrades)
       {
 	if(!resman->resolver_exists())
 	  return;
@@ -848,8 +848,22 @@ namespace aptitude
 	    for(pkgCache::VerIterator v = p.VersionList();
 		!v.end(); ++v)
 	      {
+		// For our purposes, all half-unpacked etc states are
+		// installed.
+		const bool p_is_installed =
+		  p->CurrentState != pkgCache::State::NotInstalled &&
+		  p->CurrentState != pkgCache::State::ConfigFiles;
+
+		const bool p_will_install =
+		  (*apt_cache_file)[p].Install();
+
 		if(v != p.CurrentVer() &&
-		   (no_new_installs || v != (*apt_cache_file)[p].CandidateVerIter(*apt_cache_file)))
+		   // Disallow installing not-installed packages that
+		   // aren't marked for installation if
+		   // no_new_installs is set.
+		   ((!p_is_installed && !p_will_install && no_new_installs) ||
+		    (p_is_installed && p_will_install && no_new_upgrades) ||
+		    v != (*apt_cache_file)[p].CandidateVerIter(*apt_cache_file)))
 		  {
 		    aptitude_resolver_version
 		      p_v(p, v, *apt_cache_file);
@@ -864,12 +878,12 @@ namespace aptitude
 
     // Take the first solution we can compute, returning false if we
     // failed to find a solution.
-    bool safe_resolve_deps(int verbose, bool no_new_installs)
+    bool safe_resolve_deps(int verbose, bool no_new_installs, bool no_new_upgrades)
     {
       if(!resman->resolver_exists())
 	return true;
 
-      setup_safe_resolver(no_new_installs);
+      setup_safe_resolver(no_new_installs, no_new_upgrades);
 
       generic_solution<aptitude_universe> last_sol;
       try
