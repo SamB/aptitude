@@ -34,6 +34,7 @@ int cmdline_do_action(int argc, char *argv[],
 		      bool assume_yes, bool download_only, bool fix_broken,
 		      bool showvers, bool showdeps, bool showsize,
 		      bool visual_preview, bool always_prompt,
+		      const std::vector<aptitude::cmdline::tag_application> &user_tags,
 		      bool queue_only, int verbose)
 {
   _error->DumpErrors();
@@ -244,6 +245,8 @@ int cmdline_do_action(int argc, char *argv[],
 			    !fix_broken);
   else if(queue_only)
     {
+      aptitude::cmdline::apply_user_tags(user_tags);
+
       if(!(*apt_cache_file)->save_selection_list(progress))
 	{
 	  _error->DumpErrors();
@@ -263,6 +266,8 @@ int cmdline_do_action(int argc, char *argv[],
 	  printf(_("Abort.\n"));
 	  return 0;
 	}
+
+      aptitude::cmdline::apply_user_tags(user_tags);
 
       download_install_manager m(download_only);
 

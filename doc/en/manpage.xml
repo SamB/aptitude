@@ -862,6 +862,60 @@ i A texlive-latex-extra Conflicts textopo</screen>
       </varlistentry>
 
       <varlistentry>
+	<term><literal>--add-user-tag <replaceable>tag</replaceable></literal></term>
+
+	<listitem>
+	  <para>
+	    For <literal>full-upgrade</literal>,
+	    <literal>forbid-version</literal>,
+	    <literal>hold</literal>, <literal>install</literal>,
+	    <literal>keep-all</literal>, <literal>markauto</literal>,
+	    <literal>unmarkauto</literal>, <literal>purge</literal>,
+	    <literal>reinstall</literal>, <literal>remove</literal>,
+	    <literal>unhold</literal>, and
+	    <literal>unmarkauto</literal>: add the user tag
+	    <replaceable>tag</replaceable> to all packages that are
+	    installed, removed, or upgraded by this command as if with
+	    the <link
+	    linkend='cmdlineAddOrRemoveUserTags'><literal>add-user-tag</literal></link>
+	    command.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--add-user-tag-to <replaceable>tag</replaceable>,<replaceable>pattern</replaceable></literal></term>
+
+	<listitem>
+	  <para>
+	    For <literal>full-upgrade</literal>,
+	    <literal>forbid-version</literal>,
+	    <literal>hold</literal>, <literal>install</literal>,
+	    <literal>keep-all</literal>, <literal>markauto</literal>,
+	    <literal>unmarkauto</literal>, <literal>purge</literal>,
+	    <literal>reinstall</literal>, <literal>remove</literal>,
+	    <literal>unhold</literal>, and
+	    <literal>unmarkauto</literal>: add the user tag
+	    <replaceable>tag</replaceable> to all packages that match
+	    <replaceable>pattern</replaceable> as if with the <link
+	    linkend='cmdlineAddOrRemoveUserTags'><literal>add-user-tag</literal></link>
+	    command.  The pattern is a search pattern as described in
+	    the section <quote><link
+	    linkend='secSearchPatterns'>Search Patterns</link></quote>
+	    in the &aptitude; reference manual.
+	  </para>
+
+	  <para>
+	    For instance, <literal>aptitude safe-upgrade
+	    --add-user-tag-to "new-installs,?action(install)</literal>
+	    will add the tag <literal>new-installs</literal> to all
+	    the packages installed by the
+	    <literal>safe-upgrade</literal> command.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
 	<term><literal>-d</literal>, <literal>--download-only</literal></term>
 
 	<listitem>
@@ -1025,6 +1079,62 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	  <para>
 	    This corresponds to the configuration option <literal><link
 	    linkend='configSimulate'>Aptitude::Simulate</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+
+      <varlistentry>
+	<term><literal>--remove-user-tag <replaceable>tag</replaceable></literal></term>
+
+	<listitem>
+	  <para>
+	    For <literal>full-upgrade</literal>,
+	    <literal>forbid-version</literal>,
+	    <literal>hold</literal>, <literal>install</literal>,
+	    <literal>keep-all</literal>, <literal>markauto</literal>,
+	    <literal>unmarkauto</literal>, <literal>purge</literal>,
+	    <literal>reinstall</literal>, <literal>remove</literal>,
+	    <literal>unhold</literal>, and
+	    <literal>unmarkauto</literal>: remove the user tag
+	    <replaceable>tag</replaceable> from all packages that are
+	    installed, removed, or upgraded by this command as if with
+	    the <link
+	    linkend='cmdlineAddOrRemoveUserTags'><literal>add-user-tag</literal></link>
+	    command.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--remove-user-tag-from <replaceable>tag</replaceable>,<replaceable>pattern</replaceable></literal></term>
+
+	<listitem>
+	  <para>
+	    For <literal>full-upgrade</literal>,
+	    <literal>forbid-version</literal>,
+	    <literal>hold</literal>, <literal>install</literal>,
+	    <literal>keep-all</literal>, <literal>markauto</literal>,
+	    <literal>unmarkauto</literal>, <literal>purge</literal>,
+	    <literal>reinstall</literal>, <literal>remove</literal>,
+	    <literal>unhold</literal>, and
+	    <literal>unmarkauto</literal>: remove the user tag
+	    <replaceable>tag</replaceable> from all packages that match
+	    <replaceable>pattern</replaceable> as if with the <link
+	    linkend='cmdlineAddOrRemoveUserTags'><literal>remove-user-tag</literal></link>
+	    command.  The pattern is a search pattern as described in
+	    the section <quote><link
+	    linkend='secSearchPatterns'>Search Patterns</link></quote>
+	    in the &aptitude; reference manual.
+	  </para>
+
+	  <para>
+	    For instance, <literal>aptitude safe-upgrade
+	    --remove-user-tag-from
+	    "not-upgraded,?action(upgrade)"</literal> will remove the
+	    <literal>not-upgraded</literal> tag from all packages that
+	    the <literal>safe-upgrade</literal> command is able to
+	    upgrade.
 	  </para>
 	</listitem>
       </varlistentry>

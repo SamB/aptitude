@@ -72,4 +72,61 @@ download_manager::result cmdline_do_download(download_manager *m,
  */
 bool cmdline_is_search_pattern(const std::string &s);
 
+namespace aptitude
+{
+  namespace matching
+  {
+    class pkg_matcher;
+  }
+
+  namespace cmdline
+  {
+    /** \brief Represents a user request to add or remove a user-tag.
+     *
+     *  This corresponds to the command-line arguments --add-user-tag,
+     *  --remove-user-tag, --add-user-tag-to, and
+     *  --remove-user-tag-from.
+     */
+    class tag_application
+    {
+      bool is_add;
+      std::string tag;
+      matching::pkg_matcher *matcher; // or NULL for implicit matchers.
+
+    public:
+      tag_application(bool _is_add,
+		      const std::string &_tag,
+		      matching::pkg_matcher *_matcher)
+      {
+	is_add = _is_add;
+	tag = _tag;
+	matcher = _matcher;
+      }
+
+      bool get_is_add() const { return is_add; }
+      const std::string &get_tag() const { return tag; }
+      matching::pkg_matcher *get_matcher() const { return matcher; }
+    };
+
+    /** \brief Apply explicit and implicit user-tags to packages.
+     *
+     *  Explicit tags are applied where their associated matcher holds;
+     *  implicit tags are applied to packages that the user requested (as
+     *  indicated in to_installed et al) and for which the requested
+     *  action is being performed.
+     *
+     *  \param tags The actions requested by the user; they will be
+     *              applied in turn to each package, so later actions
+     *              will override earlier ones.
+     *
+     *  \param to_upgrade The packages that the user asked to have upgraded.
+     *  \param to_install The packages that the user asked to have installed.
+     *  \param to_hold The package that the user asked to have held back.
+     *  \param to_remove The packages that the user asked to have removed.
+     *  \param to_purge The packages that the user asked to have purged.
+     */
+    void apply_user_tags(const std::vector<tag_application> &user_tags);
+  }
+}
+
 #endif // CMDLINE_UTIL_H

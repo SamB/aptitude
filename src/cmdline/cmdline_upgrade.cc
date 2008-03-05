@@ -183,6 +183,7 @@ int cmdline_upgrade(int argc, char *argv[],
 		    bool no_new_installs,
 		    bool assume_yes, bool download_only,
 		    bool showvers, bool showdeps, bool showsize,
+		    const std::vector<aptitude::cmdline::tag_application> &user_tags,
 		    bool visual_preview,
 		    bool always_prompt, bool queue_only,
 		    int verbose)
@@ -277,6 +278,8 @@ int cmdline_upgrade(int argc, char *argv[],
 			    false);
   else if(queue_only)
     {
+      aptitude::cmdline::apply_user_tags(user_tags);
+
       if(!(*apt_cache_file)->save_selection_list(progress))
 	return -1;
       else
@@ -284,7 +287,6 @@ int cmdline_upgrade(int argc, char *argv[],
     }
   else
     {
-
       if(!cmdline_do_prompt(true, to_install, to_hold, to_remove,
 			    to_purge, showvers, showdeps, showsize,
 			    always_prompt, verbose,
@@ -293,6 +295,8 @@ int cmdline_upgrade(int argc, char *argv[],
 	  printf(_("Abort.\n"));
 	  return 0;
 	}
+
+      aptitude::cmdline::apply_user_tags(user_tags);
 
       download_install_manager m(download_only);
       int rval =
