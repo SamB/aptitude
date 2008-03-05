@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-02-26 22:27-0800\n"
-"PO-Revision-Date: 2008-03-02 21:54+0000\n"
+"PO-Revision-Date: 2008-03-05 21:24+0000\n"
 "Last-Translator: Miguel Figueiredo <elmig@debianPT.org>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
 "MIME-Version: 1.0\n"
@@ -341,19 +341,14 @@ msgid "URL to use to download changelogs"
 msgstr "URL a utilizar para fazer a transferência dos 'changelogs'"
 
 #: src/apt_options.cc:279
-#, fuzzy
-#| msgid ""
-#| "This option controls the template that's used to download changelogs from "
-#| "the Debian Web site.  You should only need to change this if the URL of "
-#| "the package archive changes."
 msgid ""
 "This option controls the template that's used to download changelogs from "
 "the Debian Web site.  You should only need to change this if the changelogs "
 "move to a different URL."
 msgstr ""
-"Esta opção controla o modelo que é utilizado para fazer a transferência dos "
-"'changelogs' a partir do site Debian.  Só deverá ter de alterar isto se o "
-"URL do arquivo de pacotes mudar."
+"Esta opção controla o modelo que é utilizado para transferir os 'changelogs' "
+"do website Debian.  Só terá de alterar isto se os 'changelogs' mudarem para "
+"outro URL."
 
 #: src/apt_options.cc:285
 msgid "Display a preview of what will be done before doing it"
@@ -544,14 +539,12 @@ msgstr ""
 "para serem removidos como os pacotes não utilizados."
 
 #: src/apt_options.cc:495
-#, fuzzy
 msgid "UI options"
-msgstr "^UI Opções da interface"
+msgstr "Opções UI"
 
 #: src/apt_options.cc:497
-#, fuzzy
 msgid "Dependency handling"
-msgstr "Lidar com ^Dependências"
+msgstr "Lidar com dependências"
 
 #: src/apt_options.cc:499 src/pkg_grouppolicy.cc:995
 msgid "Miscellaneous"
@@ -600,10 +593,8 @@ msgid "Internal error: unexpected null solution."
 msgstr "Erro interno: solução nula não esperada."
 
 #: src/broken_indicator.cc:366
-#, fuzzy
-#| msgid "Keep the following packages at their current version:"
 msgid "Suggest keeping all packages at their current version."
-msgstr "Manter os seguintes pacotes na sua versão actual:"
+msgstr "Sugerir manter todos os pacotes na sua versão actual."
 
 #: src/broken_indicator.cc:374
 #, c-format
@@ -930,10 +921,8 @@ msgid "Couldn't read list of sources"
 msgstr "Não foi possível ler a lista das fontes"
 
 #: src/cmdline/cmdline_prompt.cc:205
-#, fuzzy
-#| msgid "config-files"
 msgid "Config files"
-msgstr "ficheiros-de-configuração"
+msgstr "Ficheiros de configuração"
 
 #: src/cmdline/cmdline_prompt.cc:299 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
@@ -1178,16 +1167,13 @@ msgid "Press Return to continue"
 msgstr "Carregue em Return (Enter) para continuar"
 
 #: src/cmdline/cmdline_prompt.cc:709
-#, fuzzy, c-format
-#| msgid ""
-#| "No packages found -- enter zero or more roots of the search followed by "
-#| "the package to justify."
+#, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify.\n"
 msgstr ""
 "Não foram encontrados pacotes -- introduza zero ou mais raizes da procura "
-"seguido do pacote a justificar."
+"seguido do pacote a justificar.\n"
 
 #: src/cmdline/cmdline_prompt.cc:732
 #, c-format
@@ -1545,10 +1531,9 @@ msgid "Expected at least one package/version pair following '%c'"
 msgstr "É esperado pelo menos um par pacote/versão seguindo '%c'"
 
 #: src/cmdline/cmdline_resolver.cc:274
-#, fuzzy, c-format
-#| msgid "Expected a version after \"%s\""
+#, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
-msgstr "Esperava uma versão após \"%s\""
+msgstr "Esperava uma versão ou \"%s\" após \"%s\""
 
 #: src/cmdline/cmdline_resolver.cc:284
 #, c-format
@@ -2026,30 +2011,24 @@ msgid "There are now %F."
 msgstr "Agora existem %F."
 
 #: src/cmdline/cmdline_why.cc:268
-#, fuzzy
-#| msgid "delete"
 msgid "dep_level"
-msgstr "remover"
+msgstr "dep_level"
 
 #: src/cmdline/cmdline_why.cc:274
-#, fuzzy
-#| msgid "Depends"
 msgid "DependsOnly"
-msgstr "Dependente de"
+msgstr "DependeApenas"
 
 #: src/cmdline/cmdline_why.cc:288
 msgid "version_selection"
-msgstr ""
+msgstr "escolha_de_versão"
 
 #: src/cmdline/cmdline_why.cc:293
 msgid "Current"
-msgstr ""
+msgstr "Actual"
 
 #: src/cmdline/cmdline_why.cc:296
-#, fuzzy
-#| msgid "CandVer"
 msgid "Candidate"
-msgstr "VerCand"
+msgstr "Candidato"
 
 #: src/cmdline/cmdline_why.cc:299 src/generic/apt/matchers.cc:1377
 msgid "Install"
@@ -2057,19 +2036,15 @@ msgstr "Instalar"
 
 #: src/cmdline/cmdline_why.cc:307
 msgid "allow_choices"
-msgstr ""
+msgstr "permitir_escohas"
 
 #: src/cmdline/cmdline_why.cc:310
-#, fuzzy
-#| msgid "True"
 msgid "true"
-msgstr "Verdadeiro"
+msgstr "verdadeiro"
 
 #: src/cmdline/cmdline_why.cc:312
-#, fuzzy
-#| msgid "False"
 msgid "false"
-msgstr "Falso"
+msgstr "falso"
 
 #: src/cmdline/cmdline_why.cc:421
 #, c-format
@@ -2236,10 +2211,8 @@ msgid " [ %i%% ]"
 msgstr " [ %i%% ]"
 
 #: src/download_list.cc:266
-#, fuzzy
-#| msgid "Downloading..."
 msgid "Downloading... "
-msgstr "A transferir..."
+msgstr "A transferir... "
 
 #: src/download_list.cc:342
 #, c-format
@@ -2388,7 +2361,7 @@ msgstr ""
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
 #: src/generic/apt/apt.cc:173
 msgid "Localized defaults|"
-msgstr ""
+msgstr "Pré-definições traduzidas|"
 
 #: src/generic/apt/apt.cc:192
 #, c-format
@@ -2414,18 +2387,15 @@ msgid "Unable to replace %s with new configuration file"
 msgstr "Não foi possível substituir %s pelo novo ficheiro de configuração"
 
 #: src/generic/apt/apt.cc:396
-#, fuzzy
-#| msgid ""
-#| "Could not lock the cache file.  Opening in read-only mode; any changes "
-#| "you make to the states of packages will NOT be preserved!"
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
 "you make to the states of packages will NOT be preserved!"
 msgstr ""
-"Não pode obter acesso exclusivo ao ficheiro de cache.  A abrir em modo de "
-"leitura; quaisquer alterações que faça aos estados dos pacotes NÃO serão "
-"preservadas!"
+"Não pode obter acesso exclusivo ao ficheiro de cache; isto normalmente "
+"significa que o dpkg ou outra ferramenta do apt já está a instalar pacotes.  "
+"A abrir em modo de leitura; quaisquer alterações que faça aos estados dos "
+"pacotes NÃO serão preservadas!"
 
 #: src/generic/apt/download_install_manager.cc:56
 msgid ""
@@ -2471,12 +2441,12 @@ msgstr "Não foi possível ler a lista de fontes de pacotes"
 #: src/generic/apt/download_update_manager.cc:214
 #, c-format
 msgid "fork() failed: %s"
-msgstr ""
+msgstr "fork() falhou: %s"
 
 #: src/generic/apt/download_update_manager.cc:261
 #, c-format
 msgid "waitpid() failed: %s"
-msgstr ""
+msgstr "waitpid() falhou: %s"
 
 #: src/generic/apt/download_update_manager.cc:285
 msgid "Couldn't clean out list directories"
@@ -2488,64 +2458,63 @@ msgstr "Não foi possível reconstruir a cache de pacotes"
 
 #: src/generic/apt/download_update_manager.cc:312
 msgid "The debtags command must not be an empty string."
-msgstr ""
+msgstr "O comando debtags não pode ser uma string vazia."
 
 #: src/generic/apt/download_update_manager.cc:316
 msgid "The debtags command must be an absolute path."
-msgstr ""
+msgstr "O comando debtags tem de ser um caminho absoluto."
 
 #: src/generic/apt/download_update_manager.cc:325
-#, fuzzy, c-format
-#| msgid ""
-#| "No debtags data available, perhaps you need to install debtags and run "
-#| "'debtags update'?"
+#, c-format
 msgid ""
 "The debtags command (%s) does not exist; perhaps you need to install the "
 "debtags package?"
 msgstr ""
-"Não estão disponíveis dados debtag, talvez você tenha de instalar o debtags "
-"e correr 'debtags update'?"
+"Não existe o comando debtags (%s); talvez você tenha de instalar o pacote "
+"debtags?"
 
 #: src/generic/apt/download_update_manager.cc:328
 #, c-format
 msgid "The debtags command (%s) cannot be executed: %s"
-msgstr ""
+msgstr "O comando (%s) do debtags não pode ser executado: %s"
 
 #: src/generic/apt/download_update_manager.cc:333
-#, fuzzy
-#| msgid "Building tag database"
 msgid "Updating debtags database..."
-msgstr "A construir a base de dados de tags"
+msgstr "A actualizar a base de dados de debtags..."
 
 #: src/generic/apt/download_update_manager.cc:350
 msgid "(core dumped)"
-msgstr ""
+msgstr "(core dumped)"
 
 #: src/generic/apt/download_update_manager.cc:352
 #, c-format
 msgid "The debtags update process (%s %s) was killed by signal %d%s."
 msgstr ""
+"O processo de actualização de debtags (%s %s) foi morto pelo sinal %d%s."
 
 #: src/generic/apt/download_update_manager.cc:359
 #, c-format
 msgid "The debtags update process (%s %s) exited abnormally (code %d)."
 msgstr ""
+"O processo de actualização de debtags (%s %s) terminou anormalmente (código %"
+"d)."
 
 #: src/generic/apt/download_update_manager.cc:365
 #, c-format
 msgid ""
 "The debtags update process (%s %s) exited in an unexpected way (status %d)."
 msgstr ""
+"O processo de actualização de debtags (%s %s) terminou de uma forma não "
+"esperada (status %d)."
 
 #: src/generic/apt/download_update_manager.cc:370
-#, fuzzy, c-format
-#| msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
+#, c-format
 msgid ""
 "Updating the debtags database (%s %s) failed (perhaps debtags is not "
 "installed?): %s"
 msgstr ""
-"Não foi possível carregar o vocabulário debtags, talvez o debtags não esteja "
-"instalado?"
+"A actualização da base de dados debtags falhou (%s %s) (talvez o debtags não "
+"esteja instalado?): %s"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
 #, c-format
@@ -2768,13 +2737,12 @@ msgstr "Prioridade desconhecida %s"
 #: src/generic/apt/matchers.cc:3049
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
-msgstr ""
+msgstr "O padrão a coincidir termina inesperadamente (esperado '%c')."
 
 #: src/generic/apt/matchers.cc:3052
-#, fuzzy, c-format
-#| msgid "Expected ',' or '(', got '%c'"
+#, c-format
 msgid "Expected '%c', got '%c'."
-msgstr "Esperado ',' ou '('', obtido '%c'"
+msgstr "Esperado '%c', obtido '%c'."
 
 #: src/generic/apt/matchers.cc:3359 src/generic/apt/matchers.cc:3791
 #: src/generic/apt/matchers.cc:3834
@@ -2783,10 +2751,9 @@ msgid "Unknown dependency type: %s"
 msgstr "Tipo de dependência desconhecida: %s"
 
 #: src/generic/apt/matchers.cc:3413
-#, fuzzy, c-format
-#| msgid "Unknown pattern type: %c"
+#, c-format
 msgid "Unknown matcher type: \"%s\"."
-msgstr "Tipo de padrão desconhecido: %c"
+msgstr "Tipo de padrão a coincidir desconhecido: \"%s\"."
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
@@ -2796,6 +2763,8 @@ msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
 "a context enclosed by ?%s)."
 msgstr ""
+"O padrão a coincidir ?%s tem de ser utilizado num contexto \"lato\" (um "
+"contexto de nível de topo, ou um contexto fechado por ?%s)."
 
 #: src/generic/apt/matchers.cc:3644
 msgid "Unmatched '('"
@@ -4287,6 +4256,10 @@ msgid ""
 " These packages have not yet been classified in debtags, or the debtags "
 "database is not present (installing debtags may correct this problem)."
 msgstr ""
+"\n"
+"Estes pacotes ainda não foram classificados no debtags, ou a base de dados "
+"do debtags não está presente (instalar o debtags poderá corrigir este "
+"problema)."
 
 #: src/pkg_grouppolicy.cc:1504
 msgid "MISSING TAG"
@@ -4734,9 +4707,9 @@ msgid "%s conflicts with %s"
 msgstr "%s em conflito com %s"
 
 #: src/solution_fragment.cc:121
-#, fuzzy, c-format
+#, c-format
 msgid "%s breaks %s"
-msgstr "%s substitui %s"
+msgstr "%s estraga %s"
 
 #: src/solution_fragment.cc:124
 #, c-format
@@ -5057,10 +5030,9 @@ msgid "News"
 msgstr "Novidades"
 
 #: src/ui.cc:1086 src/ui.cc:2345
-#, fuzzy, c-format
-#| msgid "View the important changes made in each version of "
+#, c-format
 msgid "View the important changes made in each version of %s"
-msgstr "Ver as alterações importantes feitas em cada versão de "
+msgstr "Ver as alterações importantes feitas em cada versão de %s"
 
 #: src/ui.cc:1093
 #, c-format
