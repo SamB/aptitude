@@ -349,25 +349,25 @@ download_update_manager::finish(pkgAcquire::RunResult res,
 	      if(WCOREDUMP(status))
 		coredumpstr = std::string(" ") + _("(core dumped)");
 #endif
-	      _error->Warning(_("The debtags update process (%s %s) was killed by signal %d%s."),
+	      _error->Warning(_("The debtags update process (%s update %s) was killed by signal %d%s."),
 			      debtags.c_str(), debtags_options.c_str(), WTERMSIG(status),
 			      coredumpstr.c_str());
 	    }
 	  else if(WIFEXITED(status))
 	    {
 	      if(WEXITSTATUS(status) != 0)
-		_error->Warning(_("The debtags update process (%s %s) exited abnormally (code %d)."),
+		_error->Warning(_("The debtags update process (%s update %s) exited abnormally (code %d)."),
 				debtags.c_str(), debtags_options.c_str(), WEXITSTATUS(status));
 	    }
 	  else
 	    // This should never happen, but if it does something is
 	    // wrong.
-	    _error->Warning(_("The debtags update process (%s %s) exited in an unexpected way (status %d)."),
+	    _error->Warning(_("The debtags update process (%s update %s) exited in an unexpected way (status %d)."),
 			    debtags.c_str(), debtags_options.c_str(), status);
 	}
       catch(cw::util::Exception &e)
 	{
-	  _error->Warning(_("Updating the debtags database (%s %s) failed (perhaps debtags is not installed?): %s"),
+	  _error->Warning(_("Updating the debtags database (%s update %s) failed (perhaps debtags is not installed?): %s"),
 			  debtags.c_str(), debtags_options.c_str(), e.errmsg().c_str());
 	}
 
