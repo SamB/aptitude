@@ -1,6 +1,6 @@
 // cmdline_resolver.h                              -*-c++-*-
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -87,5 +87,25 @@ bool cmdline_resolve_deps(pkgset &to_install,
 			  bool assume_yes,
 			  bool force_no_change,
 			  int verbose);
+
+namespace aptitude
+{
+  namespace cmdline
+  {
+    /** \brief Try to resolve packages without removing anything.
+     *
+     *  \param verbose   The verbosity level (increase to get more
+     *                   warnings about being unable to resolve
+     *                   deps).
+     *  \param no_new_installs  If true, packages not currently
+     *                          on the system will not be installed
+     *                          and packages will not be automatically
+     *                          upgraded.
+     *
+     *  \return \b true iff a solution was found and applied.
+     */
+    bool safe_resolve_deps(int verbose, bool no_new_installs);
+  }
+}
 
 #endif // CMDLINE_RESOLVER_H
