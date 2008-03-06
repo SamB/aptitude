@@ -882,8 +882,9 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    For instance, <literal>aptitude safe-upgrade
 	    --add-user-tag-to "new-installs,?action(install)</literal>
 	    will add the tag <literal>new-installs</literal> to all
-	    the packages installed by the
-	    <literal>safe-upgrade</literal> command.
+	    the packages installed by the <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    command.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -898,7 +899,7 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	  linkend='configAlwaysUseSafeResolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
 	  is set to <literal>true</literal>), allow the dependency
 	  resolver to install upgrades for packages even if <link
-	  linkend='configSafeResolverNoNewUpgrades'><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></link>
+	  linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></link>
 	  is set.
 	</listitem>
       </varlistentry>
@@ -908,16 +909,16 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
 	<listitem>
 	  Allow the <link
-	  linkend='cmdlineSafeUpgrade'><literal>safe-upgrade</literal></link>
+	  linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
 	  command to install new packages; when the safe resolver is
 	  being used (i.e., <link
 	  linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
 	  was passed or <link
-	  linkend='configAlwaysUseSafeResolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
+	  linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
 	  is set to <literal>true</literal>), allow the dependency
 	  resolver to install new packages.  This option takes effect
 	  even if <link
-	  linkend='configSafeResolverNoNewInstalls'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
+	  linkend='configSafe-Resolver-No-New-Installs'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
 	  is true.
 	</listitem>
       </varlistentry>
@@ -1023,8 +1024,11 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	  <para>
 	    This option can be used to force the use of the full
 	    resolver even when <link
-	    linkend='configAlwaysUseSafeResolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
-	    is true.
+	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
+	    is true.  The <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    command never uses the full resolver and does not accept
+	    the <literal>--full-resolver</literal> option.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1048,10 +1052,10 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	  When the safe resolver is being used (i.e., <link
 	  linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
 	  was passed or <link
-	  linkend='configAlwaysUseSafeResolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
+	  linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
 	  is set to <literal>true</literal>), allow the dependency
 	  resolver to install new packages even if <link
-	  linkend='configSafeResolverNoNewUpgrades'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
+	  linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
 	  is set.
 	</listitem>
       </varlistentry>
@@ -1069,7 +1073,7 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    is being used (i.e., <link
 	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
 	    was passed or <link
-	    linkend='configAlwaysUseSafeResolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
+	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
 	    is set to <literal>true</literal>), forbid the dependency
 	    resolver from installing new packages.  This option takes
 	    effect even if <link
@@ -1220,8 +1224,9 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    --remove-user-tag-from
 	    "not-upgraded,?action(upgrade)"</literal> will remove the
 	    <literal>not-upgraded</literal> tag from all packages that
-	    the <literal>safe-upgrade</literal> command is able to
-	    upgrade.
+	    the <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    command is able to upgrade.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1236,10 +1241,11 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    resolver attempts to preserve as many of your choices as
 	    possible; it will never remove a package or install a
 	    version of a package other than the package's default
-	    candidate version.  It is the same algorithm used in
-	    <literal>safe-upgrade</literal>; indeed, <literal>aptitude
-	    --safe-resolver full-upgrade</literal> is equivalent to
-	    <literal>aptitude safe-upgrade</literal>.  Because
+	    candidate version.  It is the same algorithm used in <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>;
+	    indeed, <literal>aptitude --safe-resolver
+	    full-upgrade</literal> is equivalent to <literal>aptitude
+	    safe-upgrade</literal>.  Because
 	    <literal>safe-upgrade</literal> always uses the safe
 	    resolver, it does not accept the
 	    <literal>--safe-resolver</literal> flag.
@@ -1248,15 +1254,9 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	  <para>
 	    This option is equivalent to setting the configuration
 	    variable <link
-	    linkend='configAlwaysUseSafeResolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
+	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
 	    to <literal>true</literal>.
 	  </para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<listitem>
-	  <para>
 	</listitem>
       </varlistentry>
 

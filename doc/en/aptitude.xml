@@ -9165,6 +9165,19 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configAlways-Use-Safe-Resolver'>
+	      <seg><literal>Aptitude::Always-Use-Safe-Resolver</literal></seg>
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		If this option is <literal>true</literal>, aptitude's
+		command-line actions will always use a
+		<quote>safe</quote> dependency resolver, as if <link
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+		had been passed on the command line.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configAutoclean-After-Update'>
 	      <seg><literal>Aptitude::Autoclean-After-Update</literal></seg>
 	      <seg><literal>false</literal></seg>
@@ -9400,6 +9413,37 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		the version of a package that is being installed
 		or removed.  This is equivalent to the
 		<literal>-V</literal> command-line option.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configSafe-Resolver-No-New-Installs'>
+	      <seg><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		If this option is enabled, then when the
+		<quote>safe</quote> dependency resolver has been
+		activated via <link
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
+		the resolver will not be allowed to install packages
+		that are not currently installed.  This is similar to
+		<link
+		linkend='configCmdLineSafeUpgradeNoNewInstalls'><literal>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</literal></link>,
+		but applies only to command-line actions other than
+		<link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configSafe-Resolver-No-New-Upgrades'>
+	      <seg><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		If this option is enabled, then when the
+		<quote>safe</quote> dependency resolver has been
+		activated via <link
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
+		the resolver will not be allowed to resolve
+		dependencies by upgrading packages.
 	      </seg>
 	    </seglistitem>
 
