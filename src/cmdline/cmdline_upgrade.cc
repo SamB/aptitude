@@ -26,163 +26,12 @@
 #include <apt-pkg/packagemanager.h>
 #include <apt-pkg/progress.h>
 
-#include <cwidget/generic/util/ssprintf.h>
-
-namespace cw = cwidget;
-
-namespace
-{
-  // Set up aptitude's internal resolver for a 'safe' upgrade.
-  // Essentialy this means (1) forbid it from removing any package,
-  // and (2) only install the default candidate version of a package
-  // or the current version.
-  void setup_resolver_for_safe_upgrade(bool no_new_installs)
-  {
-    if(!resman->resolver_exists())
-      return;
-
-    resman->reset_resolver();
-
-    resman->set_debug(aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Debug", false));
-
-    for(pkgCache::PkgIterator p = (*apt_cache_file)->PkgBegin();
-	!p.end(); ++p)
-      {
-	// Forbid the resolver from removing installed packages.
-	if(!p.CurrentVer().end())
-	  {
-	    aptitude_resolver_version
-	      remove_p(p,
-		       pkgCache::VerIterator(*apt_cache_file),
-		       *apt_cache_file);
-
-	    resman->reject_version(remove_p);
-	  }
-
-	// Forbid all real versions that aren't the current version or
-	// the candidate version.
-	for(pkgCache::VerIterator v = p.VersionList();
-	    !v.end(); ++v)
-	  {
-	    if(v != p.CurrentVer() &&
-	       (no_new_installs || v != (*apt_cache_file)[p].CandidateVerIter(*apt_cache_file)))
-	      {
-		aptitude_resolver_version
-		  p_v(p, v, *apt_cache_file);
-		resman->reject_version(p_v);
-	      }
-	  }
-      }
-
-    cmdline_dump_resolver();
-  }
-
-  // Take the first solution we can compute, returning false if we
-  // failed to find a solution.
-  bool safe_upgrade_resolve_deps(int verbose, bool no_new_installs)
-  {
-    if(!resman->resolver_exists())
-      return true;
-
-    setup_resolver_for_safe_upgrade(no_new_installs);
-
-    generic_solution<aptitude_universe> last_sol;
-    try
-      {
-	generic_solution<aptitude_universe> sol = calculate_current_solution();
-	last_sol = sol;
-	bool first = true;
-	typedef imm::map<aptitude_resolver_package,
-	  generic_solution<aptitude_universe>::action> actions_map;
-	while(!(!first &&
-		last_sol &&
-		sol.get_actions() == last_sol.get_actions() &&
-		sol.get_unresolved_soft_deps() == last_sol.get_unresolved_soft_deps()))
-	  {
-	    first = false;
-	    // Mandate all the upgrades and installs in this solution,
-	    // then ask for the next solution.  The goal is to try to
-	    // find the best solution, not just some solution, but to
-	    // preserve our previous decisions in order to avoid
-	    // thrashing around between alternatives.
-	    for(actions_map::const_iterator it = sol.get_actions().begin();
-		it != sol.get_actions().end(); ++it)
-	      {
-		if(it->second.ver.get_ver() != it->second.ver.get_pkg().CurrentVer())
-		  resman->mandate_version(it->second.ver);
-	      }
-	    last_sol = sol;
-	    resman->select_next_solution();
-	    sol = calculate_current_solution();
-	  }
-
-	// Internal error that should never happen, but try to survive
-	// if it does.
-	std::cout << "*** Internal error: the resolver unexpectedly produced the same result twice."
-		  << std::endl
-		  << "Previous iteration was:" << std::endl;
-	last_sol.dump(std::cout, true);
-	std::cout << std::endl << "Current iteration was:" << std::endl;
-	sol.dump(std::cout, true);
-	std::cout << std::endl;
-
-	(*apt_cache_file)->apply_solution(last_sol, NULL);
-      }
-    // If anything goes wrong, we give up (silently if verbosity is disabled).
-    catch(NoMoreTime)
-      {
-	if(last_sol)
-	  {
-	    std::cout << _("The resolver timed out after producing a solution; some possible upgrades might not be performed.");
-	    (*apt_cache_file)->apply_solution(last_sol, NULL);
-	    return true;
-	  }
-	else
-	  {
-	    if(verbose > 0)
-	      std::cout << _("Unable to resolve dependencies for the upgrade (the resolver timed out).");
-	    return false;
-	  }
-      }
-    catch(NoMoreSolutions)
-      {
-	if(last_sol)
-	  {
-	    (*apt_cache_file)->apply_solution(last_sol, NULL);
-	    return true;
-	  }
-	else
-	  {
-	    if(verbose > 0)
-	      std::cout << _("Unable to resolve dependencies for the upgrade (no solution found).");
-	    return false;
-	  }
-      }
-    catch(const cw::util::Exception &e)
-      {
-	if(last_sol)
-	  {
-	    (*apt_cache_file)->apply_solution(last_sol, NULL);
-	    std::cout << cw::util::ssprintf(_("Dependency resolution incomplete (%s); some possible upgrades might not be performed."), e.errmsg().c_str());
-	    return true;
-	  }
-	else
-	  {
-	    if(verbose > 0)
-	      std::cout << cw::util::ssprintf(_("Unable to resolve dependencies for the upgrade (%s)."), e.errmsg().c_str());
-	    return false;
-	  }
-      }
-
-    return true;
-  }
-}
-
 int cmdline_upgrade(int argc, char *argv[],
 		    const char *status_fname, bool simulate,
 		    bool no_new_installs,
 		    bool assume_yes, bool download_only,
 		    bool showvers, bool showdeps, bool showsize,
+		    const std::vector<aptitude::cmdline::tag_application> &user_tags,
 		    bool visual_preview,
 		    bool always_prompt, bool queue_only,
 		    int verbose)
@@ -238,7 +87,7 @@ int cmdline_upgrade(int argc, char *argv[],
   if(verbose > 0)
     show_broken();
 
-  if(!safe_upgrade_resolve_deps(verbose, no_new_installs))
+  if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, true))
     {
       {
 	aptitudeDepCache::action_group action_group(*apt_cache_file);
@@ -277,6 +126,8 @@ int cmdline_upgrade(int argc, char *argv[],
 			    false);
   else if(queue_only)
     {
+      aptitude::cmdline::apply_user_tags(user_tags);
+
       if(!(*apt_cache_file)->save_selection_list(progress))
 	return -1;
       else
@@ -284,7 +135,6 @@ int cmdline_upgrade(int argc, char *argv[],
     }
   else
     {
-
       if(!cmdline_do_prompt(true, to_install, to_hold, to_remove,
 			    to_purge, showvers, showdeps, showsize,
 			    always_prompt, verbose,
@@ -293,6 +143,8 @@ int cmdline_upgrade(int argc, char *argv[],
 	  printf(_("Abort.\n"));
 	  return 0;
 	}
+
+      aptitude::cmdline::apply_user_tags(user_tags);
 
       download_install_manager m(download_only);
       int rval =

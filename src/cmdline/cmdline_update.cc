@@ -1,6 +1,6 @@
 // cmdline_update.cc
 //
-//   Copyright (C) 2004-2007 Daniel Burrows
+//   Copyright (C) 2004-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -42,11 +42,10 @@ int cmdline_update(int argc, char *argv[], int verbose)
       return -1;
     }
 
-  if(_error->PendingError())
-    {
-      _error->DumpErrors();
-      return -1;
-    }
+  // Don't exit if there's an error: it probably means that there
+  // was a problem loading the package lists, so go ahead and try to
+  // download new ones.
+  _error->DumpErrors();
 
   download_update_manager m;
   m.pre_autoclean_hook.connect(sigc::ptr_fun(print_autoclean_msg));

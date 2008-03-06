@@ -16,6 +16,7 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_manager.h>
 #include <generic/apt/download_signal_log.h>
+#include <generic/apt/matchers.h>
 
 #include <cwidget/fragment.h>
 #include <cwidget/toplevel.h>
@@ -23,6 +24,8 @@
 
 #include <sigc++/bind.h>
 #include <sigc++/functors/ptr_fun.h>
+
+#include <apt-pkg/error.h>
 
 namespace cw = cwidget;
 
@@ -230,6 +233,9 @@ namespace
     int num_new = 0;
     int num_broken = 0;
 
+    if(apt_cache_file == NULL)
+      return stats(0, 0, 0);
+
     for(pkgCache::PkgIterator p = (*apt_cache_file)->PkgBegin();
 	!p.end(); ++p)
       {
@@ -327,11 +333,17 @@ download_manager::result cmdline_do_download(download_manager *m,
       // already loaded, and loads the cache with a minimum of frills
       // otherwise.
       OpProgress tmpProgress;
+      // Dump errors so we don't spuriously think we failed.
+      _error->DumpErrors();
       apt_load_cache(&tmpProgress, false, NULL);
       initial_stats = compute_apt_stats();
     }
 
   std::auto_ptr<download_signal_log> log(gen_cmdline_download_progress());
+
+  // Dump errors here because prepare() might check for pending errors
+  // and think something failed.
+  _error->DumpErrors();
 
   if(!m->prepare(progress, *log.get(), log.get()))
     return download_manager::failure;
@@ -361,4 +373,50 @@ download_manager::result cmdline_do_download(download_manager *m,
 bool cmdline_is_search_pattern(const std::string &s)
 {
   return s.find_first_of("~?") != s.npos;
+}
+
+namespace aptitude
+{
+  namespace cmdline
+  {
+    void apply_user_tags(const std::vector<tag_application> &user_tags)
+    {
+      using namespace matching;
+      for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin();
+	  !pkg.end(); ++pkg)
+	{
+	  for(std::vector<tag_application>::const_iterator it = 
+		user_tags.begin(); it != user_tags.end(); ++it)
+	    {
+	      bool applicable = false;
+	      if(it->get_matcher() != NULL)
+		{
+		  if(matching::apply_matcher(it->get_matcher(), pkg,
+				   *apt_cache_file,
+				   *apt_package_records))
+		    applicable = true;
+		}
+	      else
+		{
+		  const pkgDepCache::StateCache &state = (*apt_cache_file)[pkg];
+		  // Perhaps we should somehow filter out automatic
+		  // changes here, but that's hard and might be
+		  // unpredictable (which would make the user sad).
+		  // Instead we just add the tag to all packages that
+		  // are being modified.
+		  if(!state.Keep())
+		    applicable = true;
+		}
+
+	      if(applicable)
+		{
+		  if(it->get_is_add())
+		    (*apt_cache_file)->attach_user_tag(pkg, it->get_tag(), NULL);
+		  else
+		    (*apt_cache_file)->detach_user_tag(pkg, it->get_tag(), NULL);
+		}
+	    }
+	}
+    }
+  }
 }

@@ -34,6 +34,7 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
+#include <generic/apt/matchers.h>
 
 #include <generic/problemresolver/exceptions.h>
 
@@ -183,7 +184,11 @@ enum {
   OPTION_QUEUE_ONLY,
   OPTION_PURGE_UNUSED,
   OPTION_ALLOW_UNTRUSTED,
-  OPTION_NO_NEW_INSTALLS
+  OPTION_NO_NEW_INSTALLS,
+  OPTION_ADD_USER_TAG,
+  OPTION_ADD_USER_TAG_TO,
+  OPTION_REMOVE_USER_TAG,
+  OPTION_REMOVE_USER_TAG_FROM
 };
 int getopt_result;
 
@@ -209,6 +214,10 @@ option opts[]={
   {"visual-preview", 0, &getopt_result, OPTION_VISUAL_PREVIEW},
   {"schedule-only", 0, &getopt_result, OPTION_QUEUE_ONLY},
   {"purge-unused", 0, &getopt_result, OPTION_PURGE_UNUSED},
+  {"add-user-tag", 1, &getopt_result, OPTION_ADD_USER_TAG},
+  {"add-user-tag-to", 1, &getopt_result, OPTION_ADD_USER_TAG_TO},
+  {"remove-user-tag", 1, &getopt_result, OPTION_REMOVE_USER_TAG},
+  {"remove-user-tag-from", 1, &getopt_result, OPTION_REMOVE_USER_TAG_FROM},
   {0,0,0,0}
 };
 
@@ -250,6 +259,7 @@ int main(int argc, char *argv[])
   int verbose=aptcfg->FindI(PACKAGE "::CmdLine::Verbose", 0);
   bool seen_quiet = false;
   int quiet = 0;
+  std::vector<aptitude::cmdline::tag_application> user_tags;
 
   int curopt;
   // The last option seen
@@ -399,6 +409,43 @@ int main(int argc, char *argv[])
 	    case OPTION_PURGE_UNUSED:
 	      aptcfg->Set(PACKAGE "::Purge-Unused", "true");
 	      break;
+	    case OPTION_ADD_USER_TAG:
+	    case OPTION_REMOVE_USER_TAG:
+	      {
+		using aptitude::cmdline::tag_application;
+		const bool is_add = (getopt_result == OPTION_ADD_USER_TAG);
+		user_tags.push_back(tag_application(is_add, optarg, NULL));
+		break;
+	      }
+	    case OPTION_ADD_USER_TAG_TO:
+	    case OPTION_REMOVE_USER_TAG_FROM:
+	      {
+		using aptitude::cmdline::tag_application;
+		const bool is_add = (getopt_result == OPTION_ADD_USER_TAG);
+		const std::string arg = optarg;
+		const std::string::size_type splitloc = arg.find(',');
+		if(splitloc == arg.npos)
+		  {
+		    fprintf(stderr, _("No comma following tag name \"%s\"."), arg.c_str());
+		    return -1;
+		  }
+		else
+		  {
+		    const std::string patternstr(arg, splitloc + 1);
+		    const std::vector<const char *> terminators;
+		    aptitude::matching::pkg_matcher *m =
+		      aptitude::matching::parse_pattern(patternstr,
+							terminators);
+
+		    if(m == NULL)
+		      {
+			_error->DumpErrors();
+			return -1;
+		      }
+
+		    user_tags.push_back(tag_application(is_add, optarg, m));
+		  }
+	      }
 	    default:
 	      fprintf(stderr, "%s",
 		      _("WEIRDNESS: unknown option code received\n"));
@@ -499,6 +546,7 @@ int main(int argc, char *argv[])
 				     simulate, assume_yes, download_only,
 				     fix_broken, showvers, showdeps, showsize,
 				     visual_preview, always_prompt,
+				     user_tags,
 				     queue_only, verbose);
 	  else if(!strcasecmp(argv[optind], "safe-upgrade") ||
 		  !strcasecmp(argv[optind], "upgrade"))
@@ -507,6 +555,7 @@ int main(int argc, char *argv[])
 				   no_new_installs,
 				   assume_yes, download_only,
 				   showvers, showdeps, showsize,
+				   user_tags,
 				   visual_preview, always_prompt,
 				   queue_only, verbose);
 	  else if(!strcasecmp(argv[optind], "add-user-tag") ||
