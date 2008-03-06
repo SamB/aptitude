@@ -34,6 +34,8 @@ int cmdline_do_action(int argc, char *argv[],
 		      bool assume_yes, bool download_only, bool fix_broken,
 		      bool showvers, bool showdeps, bool showsize,
 		      bool visual_preview, bool always_prompt,
+		      bool safe_resolver,
+		      bool no_new_installs, bool no_new_upgrades,
 		      const std::vector<aptitude::cmdline::tag_application> &user_tags,
 		      bool queue_only, int verbose)
 {
@@ -122,7 +124,8 @@ int cmdline_do_action(int argc, char *argv[],
 
 	}
 
-      (*apt_cache_file)->mark_all_upgradable(true, false, NULL);
+      bool use_autoinst = !safe_resolver;
+      (*apt_cache_file)->mark_all_upgradable(use_autoinst, false, NULL);
     }
   /*else if(argc==1 && default_action==cmdline_install)
     {
@@ -210,7 +213,10 @@ int cmdline_do_action(int argc, char *argv[],
 
       // If we have auto-install turned on, do a second run over all
       // the packages being installed to blindly resolve their deps.
-      const bool do_autoinstall = aptcfg->FindB(PACKAGE "::Auto-Install", true);
+      // Note that we skip auto-install if the safe resolver is turned
+      // on, on the grounds that auto-install will remove packages for
+      // Conflicts too.
+      const bool do_autoinstall = !safe_resolver && aptcfg->FindB(PACKAGE "::Auto-Install", true);
       const int num_passes = do_autoinstall ? 2 : 1;
       for(int pass = 0; pass < num_passes; ++pass)
 	{
@@ -232,6 +238,15 @@ int cmdline_do_action(int argc, char *argv[],
 	}
     }
   }
+
+  if(safe_resolver)
+    {
+      if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, no_new_upgrades))
+	{
+	  fprintf(stderr, _("Unable to safely resolve dependencies, try running with --full-resolver.\n"));
+	  return -1;
+	}
+    }
 
   if(visual_preview)
     {
