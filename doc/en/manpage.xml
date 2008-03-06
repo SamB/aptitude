@@ -833,33 +833,6 @@ i A texlive-latex-extra Conflicts textopo</screen>
     </para>
 
     <variablelist>
-      <varlistentry>
-	<term><literal>--allow-untrusted</literal></term>
-
-	<listitem>
-	  Install packages from untrusted sources without prompting.
-	  You should only use this if you know what you are doing, as
-	  it could easily compromise your system's security.
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><literal>-D</literal>, <literal>--show-deps</literal></term>
-
-	<listitem>
-	  <para>
-	    For commands that will install or remove packages
-	    (<literal>install</literal>, <link
-	    linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>,
-	    etc), show brief explanations of automatic installations
-	    and removals.
-	  </para>
-
-	  <para>
-	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Show-Deps'>Aptitude::CmdLine::Show-Deps</link></literal>.
-	  </para>
-	</listitem>
-      </varlistentry>
 
       <varlistentry>
 	<term><literal>--add-user-tag <replaceable>tag</replaceable></literal></term>
@@ -911,6 +884,34 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    will add the tag <literal>new-installs</literal> to all
 	    the packages installed by the
 	    <literal>safe-upgrade</literal> command.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--allow-untrusted</literal></term>
+
+	<listitem>
+	  Install packages from untrusted sources without prompting.
+	  You should only use this if you know what you are doing, as
+	  it could easily compromise your system's security.
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-D</literal>, <literal>--show-deps</literal></term>
+
+	<listitem>
+	  <para>
+	    For commands that will install or remove packages
+	    (<literal>install</literal>, <link
+	    linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>,
+	    etc), show brief explanations of automatic installations
+	    and removals.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Show-Deps'>Aptitude::CmdLine::Show-Deps</link></literal>.
 	  </para>
 	</listitem>
       </varlistentry>
