@@ -1011,13 +1011,20 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	<listitem>
 	  <para>
 	    When package dependency problems are encountered, use the
-	    <quote>full</quote> resolver to solve them.  Unlike the
-	    <quote>safe</quote> resolver activated by <link
+	    default <quote>full</quote> resolver to solve them.
+	    Unlike the <quote>safe</quote> resolver activated by <link
 	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
 	    the full resolver will happily remove packages to fulfill
 	    dependencies.  It can resolve more situations than the
-	    safe algorithm, but its solutions are not always what one
-	    might want.
+	    safe algorithm, but its solutions are more likely to be
+	    undesirable.
+	  </para>
+
+	  <para>
+	    This option can be used to force the use of the full
+	    resolver even when <link
+	    linkend='configAlwaysUseSafeResolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
+	    is true.
 	  </para>
 	</listitem>
       </varlistentry>
