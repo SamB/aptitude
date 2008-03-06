@@ -383,7 +383,7 @@ int main(int argc, char *argv[])
 
 	    // note that if eqloc!=s.npos, s.size()>0
 	    if(eqloc==s.npos || eqloc==s.size()-1)
-	      fprintf(stderr, _("-o requires an argument of the form key=value, got %s"), optarg);
+	      fprintf(stderr, _("-o requires an argument of the form key=value, got %s\n"), optarg);
 	    else
 	      {
 		string key(s, 0, eqloc), value(s, eqloc+1);
@@ -472,7 +472,7 @@ int main(int argc, char *argv[])
 		const std::string::size_type splitloc = arg.find(',');
 		if(splitloc == arg.npos)
 		  {
-		    fprintf(stderr, _("No comma following tag name \"%s\"."), arg.c_str());
+		    fprintf(stderr, _("No comma following tag name \"%s\".\n"), arg.c_str());
 		    return -1;
 		  }
 		else
@@ -527,7 +527,7 @@ int main(int argc, char *argv[])
 
   if((update_only || install_only) && optind!=argc)
     {
-      fprintf(stderr, "%s",
+      fprintf(stderr, "%s\n",
 	      _("-u and -i may not be specified in command-line mode (eg, with 'install')"));
       usage();
       exit(1);
@@ -548,7 +548,7 @@ int main(int argc, char *argv[])
 
 	  if(update_only || install_only)
 	    {
-	      fprintf(stderr, "%s",
+	      fprintf(stderr, "%s\n",
 		      _("-u and -i may not be specified with a command"));
 	      usage();
 	      exit(1);
@@ -674,7 +674,7 @@ int main(int argc, char *argv[])
 
 	  std::string backtrace = e.get_backtrace();
 	  if(!backtrace.empty())
-	    fprintf(stderr, _("Backtrace:\n%s"), backtrace.c_str());
+	    fprintf(stderr, _("Backtrace:\n%s\n"), backtrace.c_str());
 	  return -1;
 	}
     }
@@ -723,7 +723,7 @@ int main(int argc, char *argv[])
 
       std::string backtrace = e.get_backtrace();
       if(!backtrace.empty())
-	fprintf(stderr, _("Backtrace:\n%s"), backtrace.c_str());
+	fprintf(stderr, _("Backtrace:\n%s\n"), backtrace.c_str());
       return -1;
     }
 
