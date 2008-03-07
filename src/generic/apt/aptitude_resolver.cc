@@ -53,6 +53,18 @@ aptitude_resolver::get_keep_all_solution() const
   return keep_all_solution;
 }
 
+bool aptitude_resolver::is_break_hold(const aptitude_resolver::version &v) const
+{
+  const aptitude_resolver::package p(v.get_package());
+  const aptitudeDepCache::aptitude_state &state=get_universe().get_cache()->get_ext_state(p.get_pkg());
+
+  return
+    !p.get_pkg().CurrentVer().end() &&
+    v != p.current_version() &&
+    (state.selection_state == pkgCache::State::Hold ||
+     (!v.get_ver().end() && state.forbidver == v.get_ver().VerStr()));
+}
+
 void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 					  int remove_score, int keep_score,
 					  int install_score, int upgrade_score,
@@ -122,10 +134,9 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	    //  - it follows that this is a non-default version.
 	    add_version_score(v, non_default_score);
 
-	  if(!p.get_pkg().CurrentVer().end() &&
-	     v != p.current_version() &&
-	     (state.selection_state == pkgCache::State::Hold ||
-	      (!v.get_ver().end() && state.forbidver == v.get_ver().VerStr())))
+	  // This logic is slightly duplicated in resolver_manger.cc,
+	  // but it's not trivial to merge.
+	  if(is_break_hold(v))
 	    {
 	      add_version_score(v, break_hold_score);
 	      if(!allow_break_holds_and_forbids)

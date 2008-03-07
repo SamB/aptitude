@@ -54,6 +54,11 @@ public:
 		    int resolution_score,
 		    aptitudeDepCache *cache);
 
+  /** \brief Return \b true if the given version will break a hold or
+   *  install a forbidden version.
+   */
+  bool is_break_hold(const version &v) const;
+
   /** Assign scores to all packages and all package versions according
    *  to its arguments.  All scores are assigned with add_score, so
    *  this can be easily combined with other policies.

@@ -1210,6 +1210,37 @@ void resolver_manager::resolver_manipulation(const T &t,
   state_changed();
 }
 
+void resolver_manager::reject_break_holds()
+{
+  cwidget::threads::mutex::lock l(mutex);
+  background_suspender bs(*this);
+
+  std::auto_ptr<undo_group> undo(new undo_group);
+
+  for(aptitude_universe::package_iterator pi = resolver->get_universe().packages_begin();
+      !pi.end(); ++pi)
+    {
+      const aptitude_universe::package p = *pi;
+
+      for(aptitude_universe::package::version_iterator vi = p.versions_begin(); !vi.end(); ++vi)
+	{
+	  const aptitude_universe::version v = *vi;
+	  if(resolver->is_break_hold(v))
+	    {
+	      actions_since_last_solution.push_back(resolver_interaction::RejectVersion(v));
+	      reject_version(v);
+	    }
+	}
+    }
+
+  if(!undo->empty())
+    undos->add_item(undo.release());
+
+  l.release();
+  bs.unsuspend();
+  state_changed();
+}
+
 void resolver_manager::reject_version(const aptitude_resolver_version &ver)
 {
   resolver_manipulation(ver, &aptitude_resolver::reject_version,

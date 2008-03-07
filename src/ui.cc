@@ -1979,6 +1979,22 @@ void do_apply_solution()
     }
 }
 
+namespace
+{
+  bool do_reject_break_holds_enabled()
+  {
+    return resman != NULL && resman->resolver_exists();
+  }
+
+  void do_reject_break_holds()
+  {
+    if(!do_reject_break_holds_enabled())
+      beep();
+    else
+      resman->reject_break_holds();
+  }
+}
+
 static void do_nullify_solver(cw::widget_ref *solver)
 {
   *solver = NULL;
@@ -2214,6 +2230,14 @@ cw::menu_info resolver_menu[] = {
 	       "InfoScreen", N_("View the package which will be affected by the selected action"),
 	       sigc::hide_return(resolver_view_target.make_slot()),
 	       resolver_view_target_enabled.make_slot()),
+
+  cw::menu_info::MENU_SEPARATOR,
+
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("Reject Breaking ^Holds"),
+		"RejectBreakHolds",
+		N_("Reject all actions that would change the state of held packages or install forbidden versions"),
+		sigc::ptr_fun(&do_reject_break_holds),
+		sigc::ptr_fun(&do_reject_break_holds_enabled)),
 
   cw::menu_info::MENU_END
 };

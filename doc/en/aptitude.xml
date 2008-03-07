@@ -44,6 +44,7 @@
   <!ENTITY resolver-reject "<menuchoice><shortcut><keycap>r</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>Toggle Rejected</guimenuitem></menuchoice>">
   <!ENTITY resolver-approve "<menuchoice><shortcut><keycap>a</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>Toggle Approved</guimenuitem></menuchoice>">
   <!ENTITY resolver-view-target "<menuchoice><shortcut><keycap>Enter</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>View Target</guimenuitem></menuchoice>">
+  <!ENTITY resolver-reject-break-holds "<menuchoice><guimenu>Resolver</guimenu><guimenuitem>Reject Breaking Holds</guimenuitem></menuchoice>">
 
   <!ENTITY search-find "<menuchoice><shortcut><keycap>/</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find</guimenuitem></menuchoice>">
   <!ENTITY search-find-back "<menuchoice><shortcut><keycap>\</keycap></shortcut><guimenu>Search</guimenu><guimenuitem>Find Backwards</guimenuitem></menuchoice>">
@@ -2432,6 +2433,21 @@ Abort.</screen>
 		      information about the package which is affected
 		      by the currently selected action (see <xref
 		      linkend='secResolver'/>).
+		    </entry>
+		  </row>
+
+		  <row id='menuResolverRejectBreakHolds'>
+		    <entry>&resolver-reject-break-holds;</entry>
+
+		    <entry>
+		      Reject (as if with &resolver-reject;) all
+		      actions that would break a hold on a package or
+		      install a forbidden version.  These actions are
+		      rejected by default unless <link
+		      linkend='configProblemResolver-Allow-Break-Holds'><literal>Aptitude::ProblemResolver::Allow-Break-Holds</literal></link>
+		      is set to <literal>true</literal>, but this menu
+		      item allows you to reject them manually at any
+		      time.
 		    </entry>
 		  </row>
 		</tbody>
@@ -7215,6 +7231,16 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		<entry><literal>Q</literal></entry>
 		<entry>
 		  Quit the entire program.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal>RejectBreakHolds</literal></entry>
+		<entry></entry>
+		<entry>
+		  Reject all resolver actions that would break a hold;
+		  equivalent to <link
+		  linkend='menuResolverRejectBreakHolds'>&resolver-reject-break-holds;</link>.
 		</entry>
 	      </row>
 
