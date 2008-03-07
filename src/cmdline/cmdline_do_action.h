@@ -12,6 +12,10 @@ int cmdline_do_action(int argc, char *argv[],
 		      bool assume_yes, bool download_only, bool fix_broken,
 		      bool showvers, bool showdeps, bool showsize,
 		      bool visual_preview, bool always_prompt,
+		      bool safe_resolver,
+		      // Two options for the safe resolver, if
+		      // it's enabled:
+		      bool no_new_installs, bool no_new_upgrades,
 		      const std::vector<aptitude::cmdline::tag_application> &user_tags,
 		      bool queue_only,
 		      int verbose);

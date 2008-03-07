@@ -833,33 +833,6 @@ i A texlive-latex-extra Conflicts textopo</screen>
     </para>
 
     <variablelist>
-      <varlistentry>
-	<term><literal>--allow-untrusted</literal></term>
-
-	<listitem>
-	  Install packages from untrusted sources without prompting.
-	  You should only use this if you know what you are doing, as
-	  it could easily compromise your system's security.
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><literal>-D</literal>, <literal>--show-deps</literal></term>
-
-	<listitem>
-	  <para>
-	    For commands that will install or remove packages
-	    (<literal>install</literal>, <link
-	    linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>,
-	    etc), show brief explanations of automatic installations
-	    and removals.
-	  </para>
-
-	  <para>
-	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Show-Deps'>Aptitude::CmdLine::Show-Deps</link></literal>.
-	  </para>
-	</listitem>
-      </varlistentry>
 
       <varlistentry>
 	<term><literal>--add-user-tag <replaceable>tag</replaceable></literal></term>
@@ -911,6 +884,68 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    will add the tag <literal>new-installs</literal> to all
 	    the packages installed by the
 	    <literal>safe-upgrade</literal> command.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--allow-new-upgrades</literal></term>
+
+	<listitem>
+	  When the safe resolver is being used (i.e., <link
+	  linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+	  was passed or <link
+	  linkend='configAlwaysUseSafeResolver'><literal>Aptitude::Always-Use-SafeResolver</literal></link>
+	  is set to <literal>true</literal>), allow the dependency
+	  resolver to install upgrades for packages even if <link
+	  linkend='configSafeResolverNoNewUpgrades'><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></link>
+	  is set.
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--allow-new-installs</literal></term>
+
+	<listitem>
+	  Allow the <link
+	  linkend='cmdlineSafeUpgrade'><literal>safe-upgrade</literal></link>
+	  command to install new packages; when the safe resolver is
+	  being used (i.e., <link
+	  linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+	  was passed or <link
+	  linkend='configAlwaysUseSafeResolver'><literal>Aptitude::Always-Use-SafeResolver</literal></link>
+	  is set to <literal>true</literal>), allow the dependency
+	  resolver to install new packages.  This option takes effect
+	  even if <link
+	  linkend='configSafeResolverNoNewInstalls'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
+	  is true.
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--allow-untrusted</literal></term>
+
+	<listitem>
+	  Install packages from untrusted sources without prompting.
+	  You should only use this if you know what you are doing, as
+	  it could easily compromise your system's security.
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-D</literal>, <literal>--show-deps</literal></term>
+
+	<listitem>
+	  <para>
+	    For commands that will install or remove packages
+	    (<literal>install</literal>, <link
+	    linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>,
+	    etc), show brief explanations of automatic installations
+	    and removals.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Show-Deps'>Aptitude::CmdLine::Show-Deps</link></literal>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -970,6 +1005,23 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	</listitem>
       </varlistentry>
 
+      <varlistentry id='cmdlineFullResolver'>
+	<term><literal>--full-resolver</literal></term>
+
+	<listitem>
+	  <para>
+	    When package dependency problems are encountered, use the
+	    <quote>full</quote> resolver to solve them.  Unlike the
+	    <quote>safe</quote> resolver activated by <link
+	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
+	    the full resolver will happily remove packages to fulfill
+	    dependencies.  It can resolve more situations than the
+	    safe algorithm, but its solutions are not always what one
+	    might want.
+	  </para>
+	</listitem>
+      </varlistentry>
+
       <varlistentry>
 	<term>
 	  <literal>-h</literal>, <literal>--help</literal>
@@ -982,6 +1034,21 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	</listitem>
       </varlistentry>
 
+      <varlistentry>
+	<term><literal>--no-new-upgrades</literal></term>
+
+	<listitem>
+	  When the safe resolver is being used (i.e., <link
+	  linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+	  was passed or <link
+	  linkend='configAlwaysUseSafeResolver'><literal>Aptitude::Always-Use-SafeResolver</literal></link>
+	  is set to <literal>true</literal>), allow the dependency
+	  resolver to install new packages even if <link
+	  linkend='configSafeResolverNoNewUpgrades'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
+	  is set.
+	</listitem>
+      </varlistentry>
+
       <varlistentry id='cmdlineOptionSafeUpgradeNoNewInstalls'>
 	<term>
 	  <literal>--no-new-installs</literal>
@@ -989,10 +1056,23 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
 	<listitem>
 	  <para>
-	    If present, causes <link
+	    Prevent <link
 	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
-	    to not install any new packages.  This mimics the
-	    historical behavior of <command>apt-get upgrade</command>.
+	    from installing any new packages; when the safe resolver
+	    is being used (i.e., <link
+	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+	    was passed or <link
+	    linkend='configAlwaysUseSafeResolver'><literal>Aptitude::Always-Use-SafeResolver</literal></link>
+	    is set to <literal>true</literal>), forbid the dependency
+	    resolver from installing new packages.  This option takes
+	    effect even if <link
+	    linkend='configSafeResolverNoNewInstalls'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
+	    is true.
+	  </para>
+
+	  <para>
+	    This mimics the historical behavior of <command>apt-get
+	    upgrade</command>.
 	  </para>
 
 	  <para>
@@ -1136,6 +1216,40 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    the <literal>safe-upgrade</literal> command is able to
 	    upgrade.
 	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry id='cmdlineSafeResolver'>
+	<term><literal>--safe-resolver</literal></term>
+
+	<listitem>
+	  <para>
+	    When package dependency problems are encountered, use a
+	    <quote>safe</quote> algorithm to solve them.  This
+	    resolver attempts to preserve as many of your choices as
+	    possible; it will never remove a package or install a
+	    version of a package other than the package's default
+	    candidate version.  It is the same algorithm used in
+	    <literal>safe-upgrade</literal>; indeed, <literal>aptitude
+	    --safe-resolver full-upgrade</literal> is equivalent to
+	    <literal>aptitude safe-upgrade</literal>.  Because
+	    <literal>safe-upgrade</literal> always uses the safe
+	    resolver, it does not accept the
+	    <literal>--safe-resolver</literal> flag.
+	  </para>
+
+	  <para>
+	    This option is equivalent to setting the configuration
+	    variable <link
+	    linkend='configAlwaysUseSafeResolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
+	    to <literal>true</literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<listitem>
+	  <para>
 	</listitem>
       </varlistentry>
 

@@ -185,10 +185,15 @@ enum {
   OPTION_PURGE_UNUSED,
   OPTION_ALLOW_UNTRUSTED,
   OPTION_NO_NEW_INSTALLS,
+  OPTION_NO_NEW_UPGRADES,
+  OPTION_ALLOW_NEW_INSTALLS,
+  OPTION_ALLOW_NEW_UPGRADES,
   OPTION_ADD_USER_TAG,
   OPTION_ADD_USER_TAG_TO,
   OPTION_REMOVE_USER_TAG,
-  OPTION_REMOVE_USER_TAG_FROM
+  OPTION_REMOVE_USER_TAG_FROM,
+  OPTION_SAFE_RESOLVER,
+  OPTION_FULL_RESOLVER
 };
 int getopt_result;
 
@@ -211,6 +216,11 @@ option opts[]={
   {"sort", 1, NULL, 'O'},
   {"target-release", 1, NULL, 't'},
   {"no-new-installs", 0, &getopt_result, OPTION_NO_NEW_INSTALLS},
+  {"no-new-upgrades", 0, &getopt_result, OPTION_NO_NEW_UPGRADES},
+  {"allow-new-installs", 0, &getopt_result, OPTION_ALLOW_NEW_INSTALLS},
+  {"allow-new-upgrades", 0, &getopt_result, OPTION_ALLOW_NEW_UPGRADES},
+  {"safe-resolver", 0, &getopt_result, OPTION_SAFE_RESOLVER},
+  {"full-resolver", 0, &getopt_result, OPTION_FULL_RESOLVER},
   {"visual-preview", 0, &getopt_result, OPTION_VISUAL_PREVIEW},
   {"schedule-only", 0, &getopt_result, OPTION_QUEUE_ONLY},
   {"purge-unused", 0, &getopt_result, OPTION_PURGE_UNUSED},
@@ -250,7 +260,20 @@ int main(int argc, char *argv[])
   bool update_only=false, install_only=false, queue_only=false;
   bool assume_yes=aptcfg->FindB(PACKAGE "::CmdLine::Assume-Yes", false);
   bool fix_broken=aptcfg->FindB(PACKAGE "::CmdLine::Fix-Broken", false);
-  bool no_new_installs = aptcfg->FindB(PACKAGE "::CmdLine::Safe-Upgrade::No-New-Installs", false);
+  bool safe_upgrade_no_new_installs = aptcfg->FindB(PACKAGE "::CmdLine::Safe-Upgrade::No-New-Installs", false);
+  bool safe_resolver_no_new_installs = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Installs", false);
+  bool safe_resolver_no_new_upgrades = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Upgrades", false);
+  bool always_use_safe_resolver = aptcfg->FindB(PACKAGE "::Always-Use-Safe-Resolver", false);
+  bool safe_resolver_option = false;
+  bool full_resolver_option = false;
+
+  // This tracks whether we got a --*-new-installs command-line
+  // argument, so we can present a useful warning message to the user
+  // if it's not applicable.
+  bool saw_new_installs_option = false;
+  // Same for --*-new-upgrades
+  bool saw_new_upgrades_option = false;
+
   bool showvers=aptcfg->FindB(PACKAGE "::CmdLine::Show-Versions", false);
   bool showdeps=aptcfg->FindB(PACKAGE "::CmdLine::Show-Deps", false);
   bool showsize=aptcfg->FindB(PACKAGE "::CmdLine::Show-Size-Changes", false);
@@ -360,7 +383,7 @@ int main(int argc, char *argv[])
 
 	    // note that if eqloc!=s.npos, s.size()>0
 	    if(eqloc==s.npos || eqloc==s.size()-1)
-	      fprintf(stderr, _("-o requires an argument of the form key=value, got %s"), optarg);
+	      fprintf(stderr, _("-o requires an argument of the form key=value, got %s\n"), optarg);
 	    else
 	      {
 		string key(s, 0, eqloc), value(s, eqloc+1);
@@ -398,7 +421,30 @@ int main(int argc, char *argv[])
 	      aptcfg->Set(PACKAGE "::CmdLine::Ignore-Trust-Violations", true);
 	      break;
 	    case OPTION_NO_NEW_INSTALLS:
-	      no_new_installs = true;
+	      safe_upgrade_no_new_installs = true;
+	      safe_resolver_no_new_installs = true;
+	      saw_new_installs_option = true;
+	      break;
+	    case OPTION_ALLOW_NEW_INSTALLS:
+	      safe_upgrade_no_new_installs = false;
+	      safe_resolver_no_new_installs = false;
+	      saw_new_installs_option = true;
+	      break;
+	    case OPTION_NO_NEW_UPGRADES:
+	      safe_resolver_no_new_upgrades = true;
+	      saw_new_upgrades_option = false;
+	      break;
+	    case OPTION_ALLOW_NEW_UPGRADES:
+	      safe_resolver_no_new_upgrades = false;
+	      saw_new_upgrades_option = false;
+	      break;
+	    case OPTION_SAFE_RESOLVER:
+	      always_use_safe_resolver = true;
+	      safe_resolver_option = true;
+	      break;
+	    case OPTION_FULL_RESOLVER:
+	      always_use_safe_resolver = false;
+	      full_resolver_option = true;
 	      break;
 	    case OPTION_VISUAL_PREVIEW:
 	      visual_preview=true;	      
@@ -426,7 +472,7 @@ int main(int argc, char *argv[])
 		const std::string::size_type splitloc = arg.find(',');
 		if(splitloc == arg.npos)
 		  {
-		    fprintf(stderr, _("No comma following tag name \"%s\"."), arg.c_str());
+		    fprintf(stderr, _("No comma following tag name \"%s\".\n"), arg.c_str());
 		    return -1;
 		  }
 		else
@@ -481,7 +527,7 @@ int main(int argc, char *argv[])
 
   if((update_only || install_only) && optind!=argc)
     {
-      fprintf(stderr, "%s",
+      fprintf(stderr, "%s\n",
 	      _("-u and -i may not be specified in command-line mode (eg, with 'install')"));
       usage();
       exit(1);
@@ -502,11 +548,14 @@ int main(int argc, char *argv[])
 
 	  if(update_only || install_only)
 	    {
-	      fprintf(stderr, "%s",
+	      fprintf(stderr, "%s\n",
 		      _("-u and -i may not be specified with a command"));
 	      usage();
 	      exit(1);
 	    }
+
+	  // TODO: warn the user if they passed --full-resolver to
+	  // something other than "upgrade" or do_action.
 
 	  if(!strcasecmp(argv[optind], "update"))
 	    return cmdline_update(argc-optind, argv+optind, verbose);
@@ -541,23 +590,36 @@ int main(int argc, char *argv[])
 		   (!strcasecmp(argv[optind], "forbid-version")) ||
 		   (!strcasecmp(argv[optind], "keep")) ||
 		   (!strcasecmp(argv[optind], "keep-all")) )
-	    return cmdline_do_action(argc-optind, argv+optind,
-				     status_fname,
-				     simulate, assume_yes, download_only,
-				     fix_broken, showvers, showdeps, showsize,
-				     visual_preview, always_prompt,
-				     user_tags,
-				     queue_only, verbose);
+	    {
+	      return cmdline_do_action(argc-optind, argv+optind,
+				       status_fname,
+				       simulate, assume_yes, download_only,
+				       fix_broken, showvers, showdeps, showsize,
+				       visual_preview, always_prompt,
+				       always_use_safe_resolver,
+				       safe_resolver_no_new_installs, safe_resolver_no_new_upgrades,
+				       user_tags,
+				       queue_only, verbose);
+	    }
 	  else if(!strcasecmp(argv[optind], "safe-upgrade") ||
 		  !strcasecmp(argv[optind], "upgrade"))
-	    return cmdline_upgrade(argc-optind, argv+optind,
-				   status_fname, simulate,
-				   no_new_installs,
-				   assume_yes, download_only,
-				   showvers, showdeps, showsize,
-				   user_tags,
-				   visual_preview, always_prompt,
-				   queue_only, verbose);
+	    {
+	      if(full_resolver_option || safe_resolver_option)
+		{
+		  fprintf(stderr, _("The options --safe-resolver and --full-resolver are not meaningful\nfor %s, which always uses the safe resolver.\n"),
+			  argv[optind]);
+		  return -1;
+		}
+
+	      return cmdline_upgrade(argc-optind, argv+optind,
+				     status_fname, simulate,
+				     safe_upgrade_no_new_installs,
+				     assume_yes, download_only,
+				     showvers, showdeps, showsize,
+				     user_tags,
+				     visual_preview, always_prompt,
+				     queue_only, verbose);
+	    }
 	  else if(!strcasecmp(argv[optind], "add-user-tag") ||
 		  !strcasecmp(argv[optind], "remove-user-tag"))
 	    return aptitude::cmdline::cmdline_user_tag(argc - optind, argv + optind,
@@ -612,7 +674,7 @@ int main(int argc, char *argv[])
 
 	  std::string backtrace = e.get_backtrace();
 	  if(!backtrace.empty())
-	    fprintf(stderr, _("Backtrace:\n%s"), backtrace.c_str());
+	    fprintf(stderr, _("Backtrace:\n%s\n"), backtrace.c_str());
 	  return -1;
 	}
     }
@@ -661,7 +723,7 @@ int main(int argc, char *argv[])
 
       std::string backtrace = e.get_backtrace();
       if(!backtrace.empty())
-	fprintf(stderr, _("Backtrace:\n%s"), backtrace.c_str());
+	fprintf(stderr, _("Backtrace:\n%s\n"), backtrace.c_str());
       return -1;
     }
 
