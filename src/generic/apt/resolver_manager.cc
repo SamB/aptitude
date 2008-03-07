@@ -745,7 +745,8 @@ void resolver_manager::create_resolver()
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::UpgradeScore", 0),
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::NonDefaultScore", -40),
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::EssentialRemoveScore", -100000),
-			      aptcfg->FindI(PACKAGE "::ProblemResolver::BreakHoldScore", -300));
+			      aptcfg->FindI(PACKAGE "::ProblemResolver::BreakHoldScore", -300),
+			      aptcfg->FindB(PACKAGE "::ProblemResolver::Allow-Break-Holds", false));
 
   resolver->add_priority_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::ImportantScore", 5),
 				aptcfg->FindI(PACKAGE "::ProblemResolver::RequiredScore", 4),

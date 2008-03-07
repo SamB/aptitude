@@ -88,12 +88,17 @@ public:
    *
    * \param break_hold_score an additional modification applied to
    * solutions that break a hold or violate a forbidding.
+   *
+   * \param allow_break_holds_and_forbids   if false, versions that
+   * would break a package hold or install a forbidden version are
+   * rejected up-front.
    */
   void add_action_scores(int preserve_score, int auto_score,
 			 int remove_score, int keep_score,
 			 int install_score, int upgrade_score,
 			 int non_default_score, int essential_remove,
-			 int break_hold_score);
+			 int break_hold_score,
+			 bool allow_break_holds_and_forbids);
 
   /** Score packages/versions according to their priorities.  Normally
    *  you want important>=required>=standard>=optional>=extra.

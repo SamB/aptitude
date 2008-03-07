@@ -57,7 +57,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 					  int remove_score, int keep_score,
 					  int install_score, int upgrade_score,
 					  int non_default_score, int essential_remove,
-					  int break_hold_score)
+					  int break_hold_score,
+					  bool allow_break_holds_and_forbids)
 {
   // Should I stick with APT iterators instead?  This is a bit more
   // convenient, though..
@@ -111,20 +112,25 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		  else
 		    add_version_score(v, upgrade_score);
 		}
-
-	      if(!p.get_pkg().CurrentVer().end() &&
-		 (state.selection_state == pkgCache::State::Hold ||
-		  state.forbidver == v.get_ver().VerStr()))
-		add_version_score(v, break_hold_score);
 	    }
 	  else
 	    // We know that:
-	    //  - this version wasn't requrested by the user
+	    //  - this version wasn't requested by the user
 	    //  - it's not the current version
 	    //  - it's not the candidate version
 	    //  - it's not a removal
 	    //  - it follows that this is a non-default version.
 	    add_version_score(v, non_default_score);
+
+	  if(!p.get_pkg().CurrentVer().end() &&
+	     v != p.current_version() &&
+	     (state.selection_state == pkgCache::State::Hold ||
+	      (!v.get_ver().end() && state.forbidver == v.get_ver().VerStr())))
+	    {
+	      add_version_score(v, break_hold_score);
+	      if(!allow_break_holds_and_forbids)
+		reject_version(v);
+	    }
 
 	  // In addition, add the essential-removal score:
 	  if((p.get_pkg()->Flags & pkgCache::Flag::Essential) &&

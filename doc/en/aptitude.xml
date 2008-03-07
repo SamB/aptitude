@@ -3670,7 +3670,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	</para>
 
 	<para>
-	  To reject a solution, highlight it and press
+	  To reject an action, highlight it and press
 	  <keycap>r</keycap>; the rejection can be cancelled by
 	  pressing <keycap>r</keycap> again.  Similarly, select an
 	  action and press <keycap>a</keycap> to approve it.  You can
@@ -3679,6 +3679,22 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  any solutions that were ignored will be available the next
 	  time that you generate a new solution.
 	</para>
+
+	<note>
+	  <para>
+	    By default, the resolver rejects actions that change the
+	    state of held packages, or that install forbidden versions
+	    of packages.  You can override these rejections, thus
+	    allowing the hold or forbidding to be automatically
+	    overridden, in the same way that you would override any
+	    other rejection.  Setting the configuration option <link
+	    linkend='configProblemResolver-Allow-Break-Holds'><literal>Aptitude::ProblemResolver::Allow-Break-Holds</literal></link>
+	    to <literal>true</literal> will disable this behavior,
+	    meaning that the resolver will always break holds (albeit
+	    at a penalty, see <link
+	    linkend='configProblemResolver-BreakHoldScore'><literal>Aptitude::ProblemResolver::BreakHoldScore</literal></link>).
+	  </para>
+	</note>
 
 	<para>
 	  Rejected actions are colored red and marked with an
@@ -9427,7 +9443,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		the resolver will not be allowed to install packages
 		that are not currently installed.  This is similar to
 		<link
-		linkend='configCmdLineSafeUpgradeNoNewInstalls'><literal>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</literal></link>,
+		linkend='configCmdLine-Safe-Upgrade-No-New-Installs'><literal>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</literal></link>,
 		but applies only to command-line actions other than
 		<link
 		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>.
@@ -9762,12 +9778,31 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configProblemResolver-Allow-Break-Holds'>
+	      <seg><literal>Aptitude::ProblemResolver::Allow-Break-Holds</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		If this option is set to <literal>true</literal>, the
+		problem resolver will consider breaking package holds
+		or installing forbidden versions in order to resolve a
+		dependency.  If it is set to <literal>false</literal>,
+		these actions will be rejected by default, although
+		you can always enable them manually (see <xref
+		linkend='secResolver'/>).
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configProblemResolver-BreakHoldScore'>
 	      <seg><literal>Aptitude::ProblemResolver::BreakHoldScore</literal></seg>
 	      <seg><literal>-300</literal></seg>
 	      <seg>
 		How much to reward or penalize solutions that change
-		the state of a held package.
+		the state of a held package or install a forbidden
+		version.  Note that unless <link
+		linkend='configProblemResolver-Allow-Break-Holds'><literal>Aptitude::ProblemResolver::Allow-Break-Holds</literal></link>
+		is set to true, the resolver will never break a hold
+		or install a forbidden version unless it has explicit
+		permission from the user.
 	      </seg>
 	    </seglistitem>
 
