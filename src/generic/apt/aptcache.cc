@@ -1923,3 +1923,22 @@ pkgDepCache::InRootSetFunc *aptitudeDepCache::GetRootSetFunc()
       return superFunc;
     }
 }
+
+bool aptitudeDepCache::AutoInstOk(const PkgIterator &pkg,
+				  const VerIterator &ver,
+				  const DepIterator &dep)
+{
+  const aptitude_state &estate = get_ext_state(pkg);
+
+  // Don't break holds.
+  if(estate.selection_state == pkgCache::State::Hold &&
+     ver != pkg.CurrentVer())
+    return false;
+
+  // Don't install forbidden versions.
+  if(!ver.end() && estate.forbidver == ver.VerStr())
+    return false;
+
+  // Everything else is A-OK.
+  return true;
+}

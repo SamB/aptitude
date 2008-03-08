@@ -520,6 +520,16 @@ public:
 
   // @}
 
+  /** \brief If my AutoInstOk patch is included, this is used to
+   *  control how MarkInstall recurs.
+   *
+   *  Held packages are never modified and forbidden versions aren't
+   *  installed.
+   */
+  bool AutoInstOk(const PkgIterator &pkg,
+		  const VerIterator &ver,
+		  const DepIterator &dep);
+
   virtual ~aptitudeDepCache();
 };
 
