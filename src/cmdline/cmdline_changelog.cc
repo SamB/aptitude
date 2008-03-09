@@ -26,69 +26,9 @@
 
 using namespace std;
 
-/** Represents the information needed to retrieve a changelog. */
-struct changelog_entity
+namespace
 {
-  /** The name of the source package. */
-  std::string pkg;
-
-  /** The name of the source version. */
-  std::string ver;
-
-  /** The section of the package. */
-  std::string section;
-
-  /** Initializes the empty entity: all the members are 0-length
-   *  strings.
-   */
-  changelog_entity():pkg(), ver(), section()
-  {
-  }
-
-  changelog_entity(const std::string &_pkg,
-		   const std::string &_ver,
-		   const std::string &_section)
-    :pkg(_pkg), ver(_ver), section(_section)
-  {
-  }
-
-  changelog_entity &operator=(const changelog_entity &other)
-  {
-    pkg = other.pkg;
-    ver = other.ver;
-    section = other.section;
-  }
-};
-
-/** Find a source record in the given set of source records
- *  corresponding to the package pkg, version ver.
- *
- *  \param records the source records object
- *  \param pkg the package name to match on
- *  \param ver the version string to match on
- *
- *  \return a matching changelog entity, or the empty entity if no
- *  such entity exists.
- */
-changelog_entity find_src_ver(pkgSourceList &list,
-			      const std::string &pkg,
-			      const std::string &ver)
-{
-  pkgSrcRecords records(list);
-  records.Restart();
-
-  pkgSrcRecords :: Parser *parser = records.Find(pkg.c_str());
-
-  while(parser != NULL && parser->Version() != ver)
-    parser = records.Find(pkg.c_str());
-
-  if(parser == NULL)
-    return changelog_entity();
-  else
-    return changelog_entity(pkg, ver, parser->Section());
-}
-
-static void set_name(temp::name n, temp::name *target)
+void set_name(temp::name n, temp::name *target)
 {
   *target = n;
 }
@@ -145,59 +85,6 @@ temp::name changelog_by_version(const std::string &pkg,
   else
     return rval;
 }
-
-/** Find a source record in the given set of source records
- *  corresponding to the given package and archive.
- *
- *  IMPORTANT: You should dump errors before starting this routine; it
- *  assumes that there are no pending errors.
- *
- *  \param records the source records object
- *  \param pkg the package name to match on
- *  \param ver the version string to match on
- *
- *  \return a matching changelog entity, or the empty entity
- *  ("","","") if no such entity exists.
- */
-
-// Based heavily on pkgSrcRecords.
-changelog_entity find_src_archive(pkgSourceList &list,
-				  const std::string &pkg,
-				  const std::string &archive)
-{
-  for(pkgSourceList::const_iterator i = list.begin(); i!=list.end(); ++i)
-    {
-      if((*i)->GetDist() != archive)
-	continue;
-
-      vector<pkgIndexFile *> *indexes = (*i)->GetIndexFiles();
-
-      for(vector<pkgIndexFile *> :: const_iterator j = indexes->begin();
-	  j != indexes->end(); ++j)
-	{
-	  auto_ptr<pkgSrcRecords :: Parser> p((*j)->CreateSrcParser());
-
-	  if(_error->PendingError())
-	    return changelog_entity();
-	  if(p.get() != 0)
-	    {
-	      // Step through the file until we reach the end or find
-	      // the package:
-	      while(p.get()->Step() == true)
-		{
-		  if(_error->PendingError() == true)
-		    return changelog_entity();
-
-		  if(p.get()->Package() == pkg)
-		    return changelog_entity(pkg,
-					    p.get()->Version(),
-					    p.get()->Section());
-		}
-	    }
-	}
-    }
-
-  return changelog_entity();
 }
 
 bool do_cmdline_changelog(const vector<string> &packages)
@@ -242,7 +129,9 @@ bool do_cmdline_changelog(const vector<string> &packages)
 
       temp::name filename;
 
-      // For real packages/versions, we can do a sanity check.
+      // For real packages/versions, we can do a sanity check on the
+      // version and warn the user if it looks like it doesn't have a
+      // corresponding source package.
       if(!pkg.end())
 	{
 	  pkgCache::VerIterator ver=cmdline_find_ver(pkg,
@@ -267,75 +156,78 @@ bool do_cmdline_changelog(const vector<string> &packages)
 		}
 	    }
 
-	  if(ver.end() && source == cmdline_version_version)
-	    filename = changelog_by_version(package, sourcestr);
+	  aptitude::cmdline::source_package p =
+	    aptitude::cmdline::find_source_package(package,
+						   source,
+						   sourcestr);
+
+	  download_manager *m = NULL;
+	  if(!p.valid())
+	    {
+	      m = get_changelog_from_source(p.get_package(),
+					    p.get_version(),
+					    p.get_section(),
+					    pkg.Name(),
+					    sigc::bind(sigc::ptr_fun(&set_name), &filename));
+	    }
 	  else
 	    {
-	      download_manager *m = get_changelog(ver,
-						  sigc::bind(sigc::ptr_fun(&set_name), &filename));
-	      if(m != NULL)
-		{
-		  cmdline_do_download(m, 0);
-		  delete m;
-		}
+	      // Fall back to string-based guessing.
+	      if(ver.end() && source == cmdline_version_version)
+		filename = changelog_by_version(package, sourcestr);
+	      else
+		m = get_changelog(ver,
+				  sigc::bind(sigc::ptr_fun(&set_name), &filename));
+	    }
+
+	  if(m != NULL)
+	    {
+	      cmdline_do_download(m, 0);
+	      delete m;
 	    }
 	}
       else
 	{
-	  changelog_entity ent;
+	  aptitude::cmdline::source_package p =
+	    aptitude::cmdline::find_source_package(package,
+						   source,
+						   sourcestr);
 
-	  switch(source)
+	  download_manager *m = NULL;
+
+	  if(p.valid())
+	    m = get_changelog_from_source(p.get_package(),
+					  p.get_version(),
+					  p.get_section(),
+					  p.get_package(),
+					  sigc::bind(sigc::ptr_fun(&set_name), &filename));
+	  else
 	    {
-	    case cmdline_version_cand:
-	      // In this case, pull the first one we see (not very
-	      // elegant, but finding the actual candidate is a bit
-	      // hard)
-	      {
-		pkgSrcRecords r(*apt_source_list);
+	      // If the user didn't specify a version or selected a
+	      // candidate and we couldn't find anything, we have no
+	      // recourse.  But if they passed a version number, we
+	      // can fall back to just blindly guessing that the
+	      // version exists.
 
-		pkgSrcRecords :: Parser *p(r.Find(package.c_str()));
-		while(p != NULL && p->Package() != package)
-		  p = r.Find(package.c_str());
+	      switch(source)
+		{
+		case cmdline_version_cand:
+		  break;
 
-		if(p != NULL)
-		  ent = changelog_entity(package, p->Version(),
-					 p->Section());
-	      }
+		case cmdline_version_archive:
+		  break;
 
-	      break;
-
-	    case cmdline_version_archive:
-	      _error->DumpErrors();
-	      ent = find_src_archive(*apt_source_list,
-				     package, sourcestr);
-
-	      break;
-
-	    case cmdline_version_version:
-	      ent = find_src_ver(*apt_source_list, package, sourcestr);
-
-	      if(ent.pkg.empty())
-		filename = changelog_by_version(package, sourcestr);
-
-	      break;
+		case cmdline_version_version:
+		  filename = changelog_by_version(package, sourcestr);
+		  break;
+		}
 	    }
 
-
-	  if(!filename.valid() && !ent.pkg.empty())
+	  if(!filename.valid() && m != NULL)
 	    {
-	      download_manager *m
-		= get_changelog_from_source(ent.pkg,
-					    ent.ver,
-					    ent.section,
-					    ent.pkg,
-					    sigc::bind(sigc::ptr_fun(&set_name), &filename));
+	      cmdline_do_download(m, 0);
 
-	      if(m != NULL)
-		{
-		  cmdline_do_download(m, 0);
-
-		  delete m;
-		}
+	      delete m;
 	    }
 	}
 

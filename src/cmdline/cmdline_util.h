@@ -12,6 +12,8 @@
 
 #include <string>
 
+#include <apt-pkg/srcrecords.h>
+
 void cmdline_show_pkglist(pkgvector &items);
 void cmdline_show_stringlist(strvector &items);
 
@@ -81,6 +83,74 @@ namespace aptitude
 
   namespace cmdline
   {
+    /** \brief Hack to handle memory management of apt source parsers.
+     *
+     *  apt parsers belong to the source-list class they are
+     *  instantiated by.  This makes it tricky to safely return them
+     *  from any routine.  Rather than play games with carefully
+     *  managing their use, I just use this class: a safe,
+     *  copy-constructable object holding all the information stored
+     *  by a source package.
+     */
+    class source_package
+    {
+      std::string package;
+      std::string version;
+      std::string maintainer;
+      std::string section;
+      std::vector<std::string> binaries;
+      std::vector<pkgSrcRecords::Parser::BuildDepRec> build_deps;
+
+    public:
+      source_package();
+      source_package(pkgSrcRecords::Parser *parser);
+
+      /** \return \b true if this represents a real source package.
+       *
+       *  Invalid packages are analogous to NULL returns.
+       */
+      bool valid() const { return !package.empty(); }
+
+      const std::string &get_package() const { return package; }
+      const std::string &get_version() const { return version; }
+      const std::string &get_maintainer() const { return maintainer; }
+      const std::string &get_section() const { return section; }
+      const std::vector<std::string> &get_binaries() const { return binaries; }
+      const std::vector<pkgSrcRecords::Parser::BuildDepRec> &get_build_deps() const { return build_deps; }
+    };
+
+    /** Find a source record in the given set of source records
+     *  corresponding to the given package and archive.
+     *
+     *  \param records the source records object
+     *  \param pkg the package name to match on
+     *  \param ver the version string to match on
+     *
+     *  \return the source record, or an invalid package if none is
+     *  found.
+     */
+    source_package find_source_by_archive(const std::string &pkg,
+					  const std::string &archive);
+
+    /** \brief Interpret a source-package specification from
+     *  the command line.
+     *
+     *  \brief package   the name of the package to search for.
+     *                   If this is a binary package, then that
+     *                   package's source is used; otherwise
+     *                   the list of source packages is searched.
+     *  \brief version_source   how to find the source version
+     *                          (implicit, candidate, or archive)
+     *  \brief version_source_string    which source version
+     *                                  to use.
+     *
+     *  \return the located source record, or an invalid package if
+     *  unsuccessful.
+     */
+    source_package find_source_package(const std::string &package,
+				       cmdline_version_source version_source,
+				       const std::string &version_source_string);
+
     /** \brief Represents a user request to add or remove a user-tag.
      *
      *  This corresponds to the command-line arguments --add-user-tag,
