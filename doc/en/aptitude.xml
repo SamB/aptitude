@@ -4758,9 +4758,10 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		<entry><literal>&Sreverse-dep;(<replaceable>pattern</replaceable>)</literal></entry>
 		<entry><literal>~R<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></entry>
 		<entry>
-		  Select packages that a package matching
-		  <replaceable>pattern</replaceable> declares a
-		  dependency of type <replaceable>depType</replaceable>.
+		  Select packages that are the targets of a dependency
+		  of type <replaceable>depType</replaceable> declared
+		  by a package matching
+		  <replaceable>pattern</replaceable>.
 		</entry>
 	      </row>
 
