@@ -121,6 +121,7 @@
 
   <!ENTITY Sreverse-broken-dep "<literal><link linkend='searchReverseBrokenDep'>?reverse-broken-<replaceable>depType</replaceable></link></literal>">
   <!ENTITY Ssection "<literal><link linkend='searchSection'>?section</link></literal>">
+  <!ENTITY Ssource-package "<literal><link linkend='searchSourcePackage'>?source-package</link></literal>">
   <!ENTITY Stag "<literal><link linkend='searchTag'>?tag</link></literal>">
   <!ENTITY Strue "<literal><link linkend='searchTrue'>?true</link></literal>">
   <!ENTITY Stask "<literal><link linkend='searchTask'>?task</link></literal>">
@@ -4781,6 +4782,16 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
+		<entry><literal>&Ssource-package;(<replaceable>name</replaceable>)</literal></entry>
+		<entry/>
+		<entry>
+		  Select packages whose source package name matches
+		  the regular expression
+		  <replaceable>name</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
 		<entry><literal>&Stag;(<replaceable>tag</replaceable>)</literal></entry>
 		<entry><literal>~G<replaceable>tag</replaceable></literal></entry>
 		<entry>
@@ -5530,6 +5541,19 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <para>
 	      Matches packages whose section matches the regular
 	      expression <replaceable>section</replaceable>.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry id='searchSourcePackage'>
+	  <term>
+	    <literal>?source-package(<replaceable>name</replaceable>)</literal>
+	  </term>
+
+	  <listitem>
+	    <para>
+	      Matches packages whose source package name matches the
+	      regular expression <replaceable>name</replaceable>.
 	    </para>
 	  </listitem>
 	</varlistentry>

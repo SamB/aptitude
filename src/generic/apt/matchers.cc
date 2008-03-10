@@ -351,6 +351,7 @@ namespace
       matcher_type_priority,
       matcher_type_provides,
       matcher_type_section,
+      matcher_type_source_package,
       matcher_type_tag,
       matcher_type_true,
       matcher_type_upgradable,
@@ -403,6 +404,7 @@ namespace
     { "priority", matcher_type_priority },
     { "provides", matcher_type_provides },
     { "section", matcher_type_section },
+    { "source-package", matcher_type_source_package },
     { "tag", matcher_type_tag },
     { "true", matcher_type_true },
     { "upgradable", matcher_type_upgradable },
@@ -1160,6 +1162,79 @@ public:
 	if(!cur.end() && cur.Archive())
 	  {
 	    pkg_match_result *r = get_string_match(cur.Archive());
+
+	    if(r != NULL)
+	      return r;
+	  }
+      }
+
+    return NULL;
+  }
+};
+
+class pkg_source_package_matcher : public pkg_string_matcher
+{
+public:
+  pkg_source_package_matcher(const string &s) : pkg_string_matcher(s)
+  {
+  }
+
+  bool matches(const pkgCache::PkgIterator &pkg,
+	       const pkgCache::VerIterator &ver,
+	       aptitudeDepCache &cache,
+	       pkgRecords &records,
+	       match_stack &stack)
+  {
+    if(ver.end() || ver.FileList().end())
+      return false;
+
+    bool checked_real_package = false;
+    for(pkgCache::VerFileIterator f = ver.FileList(); !f.end(); ++f)
+      {
+	pkgRecords::Parser &p = records.Lookup(f);
+
+	if(p.SourcePkg().empty())
+	  {
+	    if(!checked_real_package)
+	      {
+		if(string_matches(pkg.Name()))
+		  return true;
+	      }
+	  }
+	else if(string_matches(p.SourcePkg().c_str()))
+	  return true;
+      }
+
+    return false;
+  }
+
+  pkg_match_result *get_match(const pkgCache::PkgIterator &pkg,
+			      const pkgCache::VerIterator &ver,
+			      aptitudeDepCache &cache,
+			      pkgRecords &records,
+			      match_stack &stack)
+  {
+    if(ver.end() || ver.FileList().end())
+      return false;
+
+    bool checked_real_package = false;
+    for(pkgCache::VerFileIterator f = ver.FileList(); !f.end(); ++f)
+      {
+	pkgRecords::Parser &p = records.Lookup(f);
+
+	if(p.SourcePkg().empty())
+	  {
+	    if(!checked_real_package)
+	      {
+		pkg_match_result *r = get_string_match(pkg.Name());
+
+		if(r != NULL)
+		  return r;
+	      }
+	  }
+	else
+	  {
+	    pkg_match_result *r = get_string_match(p.SourcePkg().c_str());
 
 	    if(r != NULL)
 	      return r;
@@ -3572,6 +3647,8 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
       return parse_unary_matcher<pkg_provides_matcher, pkg_matcher_real *>(start, end, terminators, search_descriptions, false, name_context);
     case matcher_type_section:
       return new pkg_section_matcher(parse_string_match_args(start, end));
+    case matcher_type_source_package:
+      return new pkg_source_package_matcher(parse_string_match_args(start, end));
     case matcher_type_tag:
       return new pkg_tag_matcher(parse_string_match_args(start, end));
     case matcher_type_true:
