@@ -26,6 +26,11 @@
 #include <sigc++/functors/ptr_fun.h>
 
 #include <apt-pkg/error.h>
+#include <apt-pkg/indexfile.h>
+#include <apt-pkg/metaindex.h>
+#include <apt-pkg/pkgsystem.h>
+#include <apt-pkg/sourcelist.h>
+#include <apt-pkg/version.h>
 
 namespace cw = cwidget;
 
@@ -379,6 +384,173 @@ namespace aptitude
 {
   namespace cmdline
   {
+    namespace
+    {
+      source_package find_source_package(const std::string &source_name,
+					 const std::string &source_version)
+      {
+	if(apt_source_list == NULL)
+	  return NULL;
+
+	pkgSrcRecords records(*apt_source_list);
+	records.Restart();
+
+	pkgSrcRecords::Parser *parser = records.Find(source_name.c_str());
+	while(parser != NULL && parser->Version() != source_version)
+	  parser = records.Find(source_name.c_str());
+
+	return parser;
+      }
+
+      // Find the most recent source package for the given name.
+      source_package find_source_package(const std::string &source_name)
+      {
+	if(apt_source_list == NULL)
+	  return NULL;
+
+	pkgSrcRecords records(*apt_source_list);
+	records.Restart();
+
+	pkgSrcRecords::Parser *parser = records.Find(source_name.c_str());
+	source_package rval = parser;
+
+	while(parser != NULL)
+	  {
+	    if(_system->VS->CmpVersion(rval.get_version(), parser->Version()) < 0)
+	      rval = parser;
+	    parser = records.Find(source_name.c_str());
+	  }
+
+	return rval;
+      }
+    }
+
+    source_package::source_package()
+    {
+    }
+
+    source_package::source_package(pkgSrcRecords::Parser *parser)
+    {
+      if(parser != NULL)
+	{
+	  package = parser->Package();
+	  version = parser->Version();
+	  maintainer = parser->Maintainer();
+	  section = parser->Section();
+
+	  if(parser->Binaries() != NULL)
+	    {
+	      for(const char **b = parser->Binaries(); *b != NULL; ++b)
+		binaries.push_back(*b);
+	    }
+
+	  parser->BuildDepends(build_deps, false);
+	}
+    }
+
+    source_package find_source_by_archive(const std::string &source_name,
+					  const std::string &archive)
+    {
+      if(apt_source_list == NULL)
+	return NULL;
+
+      for(pkgSourceList::const_iterator i = apt_source_list->begin();
+	  i != apt_source_list->end(); ++i)
+	{
+	  if((*i)->GetDist() != archive)
+	    continue;
+
+	  vector<pkgIndexFile *> *indexes = (*i)->GetIndexFiles();
+
+	  for(vector<pkgIndexFile *>::const_iterator j = indexes->begin();
+	      j != indexes->end(); ++j)
+	    {
+	      std::auto_ptr<pkgSrcRecords::Parser> p((*j)->CreateSrcParser());
+
+	      if(_error->PendingError())
+		return source_package();
+	      if(p.get() != 0)
+		{
+		  // Step through the file until we reach the end or find
+		  // the package:
+		  while(p.get()->Step() == true)
+		    {
+		      if(_error->PendingError() == true)
+			return source_package();
+
+		      if(p.get()->Package() == source_name)
+			return source_package(p.get());
+		    }
+		}
+	    }
+	}
+
+      return source_package();
+    }
+
+    source_package find_source_package(const std::string &package,
+				       cmdline_version_source version_source,
+				       const std::string &version_source_string_orig)
+    {
+      // This will be set below to the package archive if necessary.
+      std::string version_source_string(version_source_string_orig);
+      if(apt_cache_file == NULL || apt_package_records == NULL || apt_source_list == NULL)
+	return NULL;
+
+      string default_release = aptcfg->Find("APT::Default-Release");
+      if(version_source == cmdline_version_cand && !default_release.empty())
+	{
+	  version_source        = cmdline_version_archive;
+	  version_source_string = default_release;
+	}
+
+      pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(package);
+
+      source_package rval;
+
+      if(!pkg.end())
+	{
+	  pkgCache::VerIterator ver = cmdline_find_ver(pkg,
+						       version_source,
+						       version_source_string);
+
+	  if(!ver.end() && version_source == cmdline_version_version)
+	    {
+	      // Use the version's declared source package and version.
+	      pkgRecords::Parser &rec =
+		apt_package_records->Lookup(ver.FileList());
+
+	      std::string source_package_name =
+		rec.SourcePkg().empty() ? ver.ParentPkg().Name() : rec.SourcePkg();
+	      std::string source_version =
+		rec.SourceVer().empty() ? ver.VerStr() : rec.SourceVer();
+
+	      rval = find_source_package(source_package_name, source_version);
+	    }
+	}
+
+      if(!rval.valid())
+	{
+	  switch(version_source)
+	    {
+	    case cmdline_version_cand:
+	      rval = find_source_package(package);
+	      break;
+
+	    case cmdline_version_archive:
+	      _error->DumpErrors();
+	      rval = find_source_by_archive(package, version_source_string);
+	      break;
+
+	    case cmdline_version_version:
+	      rval = find_source_package(package, version_source_string);
+	      break;
+	    }
+	}
+
+      return rval;
+    }
+
     void apply_user_tags(const std::vector<tag_application> &user_tags)
     {
       using namespace matching;
