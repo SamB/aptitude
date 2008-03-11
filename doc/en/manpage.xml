@@ -96,6 +96,8 @@
 	<arg choice='plain'>show</arg>
 	<arg choice='plain'>unhold</arg>
 	<arg choice='plain'>unmarkauto</arg>
+	<arg choice='plain'>build-dep</arg>
+	<arg choice='plain'>build-depends</arg>
       </group>
 
       <arg choice='plain' rep='repeat'><replaceable>packages</replaceable></arg>
@@ -384,6 +386,31 @@
 	    linkend='secAutoInstall'>Managing Automatically
 	    Installed Packages</link></quote> in the &aptitude;
 	    reference manual.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>build-depends</literal>, <literal>build-dep</literal></term>
+
+	<listitem>
+	  <para>
+	    Satisfy the build-dependencies of a package.  Each package
+	    name may be a source package, in which case the build
+	    dependencies of that source package are installed;
+	    otherwise, binary packages are found in the same way as
+	    for the <quote><literal>install</literal></quote> command,
+	    and the build-dependencies of the source packages that
+	    build those binary packages are satisfied.
+	  </para>
+
+	  <para>
+	    If the command-line parameter
+	    <literal>--arch-only</literal> is present, only
+	    architecture-dependent build dependencies (i.e., not
+	    <literal>Build-Depends-Indep</literal> or
+	    <literal>Build-Conflicts-Indep</literal>) will be
+	    obeyed.
 	  </para>
 	</listitem>
       </varlistentry>

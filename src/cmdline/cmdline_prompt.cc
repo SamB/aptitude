@@ -794,6 +794,8 @@ static void prompt_help(ostream &out, bool show_resolver_key)
 				    cw::fragf(_("'&M' to mark packages as automatically installed"))));
   fragments.push_back(flowindentbox(0, 4,
 				    cw::fragf(_("'&m' to mark packages as manually installed"))));
+  fragments.push_back(flowindentbox(0, 4,
+				    cw::fragf(_("'&BD' to install the build-dependencies of a package."))));
 
   cw::fragment *f = indentbox(2, 2, cw::sequence_fragment(fragments));
 
@@ -813,7 +815,9 @@ bool cmdline_do_prompt(bool as_upgrade,
 		       bool always_prompt,
 		       int verbose,
 		       bool assume_yes,
-		       bool force_no_change)
+		       bool force_no_change,
+		       pkgPolicy &policy,
+		       bool arch_only)
 {
   bool exit=false;
   bool rval=true;
@@ -848,7 +852,9 @@ bool cmdline_do_prompt(bool as_upgrade,
 				       to_purge,
 				       assume_yes,
 				       force_no_change,
-				       verbose))
+				       verbose,
+				       policy,
+				       arch_only))
 		{
 		  have_broken = true;
 		  use_internal_resolver = false;
@@ -998,7 +1004,8 @@ bool cmdline_do_prompt(bool as_upgrade,
 		case ':':
 		case '&':
 		  cmdline_parse_action(response, to_install, to_hold,
-				       to_remove, to_purge, verbose, true);
+				       to_remove, to_purge, verbose,
+				       policy, arch_only, true);
 		  break;
 		case 'E':
 		  ui_preview();

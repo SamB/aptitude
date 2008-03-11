@@ -20,6 +20,7 @@
 
 #include <apt-pkg/algorithms.h>
 #include <apt-pkg/error.h>
+#include <apt-pkg/policy.h>
 #include <apt-pkg/progress.h>
 
 using namespace std;
@@ -37,6 +38,7 @@ int cmdline_do_action(int argc, char *argv[],
 		      bool safe_resolver,
 		      bool no_new_installs, bool no_new_upgrades,
 		      const std::vector<aptitude::cmdline::tag_application> &user_tags,
+		      bool arch_only,
 		      bool queue_only, int verbose)
 {
   _error->DumpErrors();
@@ -71,6 +73,9 @@ int cmdline_do_action(int argc, char *argv[],
     default_action=cmdline_unmarkauto;
   else if(!strcasecmp(argv[0], "forbid-version"))
     default_action=cmdline_forbid_version;
+  else if(!strcasecmp(argv[0], "build-depends") ||
+	  !strcasecmp(argv[0], "build-dep"))
+    default_action = cmdline_build_depends;
   else
     {
       // Should never happen.
@@ -108,6 +113,9 @@ int cmdline_do_action(int argc, char *argv[],
       _error->DumpErrors();
       return -1;
     }
+
+  pkgPolicy policy(&(*apt_cache_file)->GetCache());
+  ReadPinFile(policy);
 
   pkgset to_upgrade, to_install, to_hold, to_remove, to_purge;
 
@@ -191,6 +199,16 @@ int cmdline_do_action(int argc, char *argv[],
 		action = cmdline_keep;
 		target = std::string(argv[i], 0, tmp);
 		break;
+	      case 'D':
+		// "&BD" for installing build depends.
+		if(tmp >= 2 &&
+		   argv[i][tmp - 1] == 'B' &&
+		   argv[i][tmp - 2] == '&')
+		  {
+		    action = cmdline_build_depends;
+		    target = std::string(argv[i], 0, strlen(argv[i]) - 3);
+		  }
+		break;
 	      case 'm':
 	      case 'M':
 		if(tmp > 0 && argv[i][tmp - 1] == '&')
@@ -233,7 +251,7 @@ int cmdline_do_action(int argc, char *argv[],
 	    {
 	      cmdline_applyaction(it->second, it->first,
 				  to_install, to_hold, to_remove, to_purge,
-				  verbose, pass > 0);
+				  verbose, policy, arch_only, pass > 0);
 	    }
 	}
     }
@@ -257,7 +275,8 @@ int cmdline_do_action(int argc, char *argv[],
     return cmdline_simulate(dist_upgrade, to_install, to_hold, to_remove, to_purge,
 			    showvers, showdeps, showsize,
 			    always_prompt, verbose, assume_yes,
-			    !fix_broken);
+			    !fix_broken,
+			    policy, arch_only);
   else if(queue_only)
     {
       aptitude::cmdline::apply_user_tags(user_tags);
@@ -276,7 +295,8 @@ int cmdline_do_action(int argc, char *argv[],
 			    to_install, to_hold, to_remove, to_purge,
 			    showvers, showdeps, showsize,
 			    always_prompt, verbose, assume_yes,
-			    !fix_broken))
+			    !fix_broken,
+			    policy, arch_only))
 	{
 	  printf(_("Abort.\n"));
 	  return 0;

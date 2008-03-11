@@ -15,8 +15,193 @@
 #include <apt-pkg/algorithms.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/pkgcache.h>
+#include <apt-pkg/pkgsystem.h>
+#include <apt-pkg/policy.h>
+#include <apt-pkg/version.h>
 
 #include <stdlib.h>
+
+
+namespace
+{
+  bool cmdline_do_build_depends(const string &pkg,
+				cmdline_version_source version_source,
+				const string &version_source_string,
+				bool arch_only,
+				pkgPolicy &policy,
+				pkgset &to_install, pkgset &to_hold,
+				pkgset &to_remove, pkgset &to_purge,
+				int verbose,
+				bool allow_auto)
+  {
+    aptitude::cmdline::source_package sourcepkg =
+      aptitude::cmdline::find_source_package(pkg,
+					     version_source,
+					     version_source_string);
+
+    if(!sourcepkg.valid())
+      {
+	printf(_("Unable to find the source package for \"%s\".\n"),
+	       pkg.c_str());
+	return false;
+      }
+
+    if(apt_cache_file == NULL)
+      {
+	// Should never happen.
+	printf("Sanity-check failed: apt_cache_file should not be NULL here.\n");
+	return false;
+      }
+
+    bool rval = true;
+    bool last_was_or = false;
+    typedef pkgSrcRecords::Parser::BuildDepRec BuildDepRec;
+    typedef std::vector<BuildDepRec> BuildDepList;
+    for(BuildDepList::const_iterator it = sourcepkg.get_build_deps().begin();
+	it != sourcepkg.get_build_deps().end(); ++it)
+      {
+	bool is_conflict = (it->Type == pkgSrcRecords::Parser::BuildConflictIndep ||
+			    it->Type == pkgSrcRecords::Parser::BuildConflict);
+
+	if(!arch_only && (it->Type == pkgSrcRecords::Parser::BuildDependIndep ||
+			  it->Type == pkgSrcRecords::Parser::BuildConflictIndep))
+	  continue;
+
+	BuildDepList::const_iterator or_group_start = it;
+
+	// Find the bounds of the OR group.
+	while((it->Op & pkgCache::Dep::Or) != 0)
+	  ++it;
+
+	bool ok = true;
+	if(!is_conflict)
+	  {
+	    // Walk over the OR group and see if it's satisfied.
+	    //
+	    // NB: if two build-deps require incompatible versions
+	    // of the same package, we'll just get confused.
+	    bool satisfied = false;
+	    for(BuildDepList::const_iterator it2 = or_group_start;
+		!satisfied && it2 <= it; ++it2)
+	      {
+		pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(it2->Package);
+		if(!pkg.end())
+		  {
+		    pkgCache::VerIterator ver = pkg.CurrentVer();
+		    if(!ver.end() &&
+		       _system->VS->CheckDep(ver.VerStr(),
+					     it2->Op,
+					     it2->Version.c_str()))
+		       satisfied = true;
+		  }
+	      }
+
+	    if(!satisfied)
+	      {
+		for(BuildDepList::const_iterator it2 = or_group_start;
+		    !satisfied && it2 <= it; ++it2)
+		  {
+		    pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(it2->Package);
+		    if(!pkg.end())
+		      {
+			int best_priority;
+			pkgCache::VerIterator best_ver;
+			for(pkgCache::VerIterator ver = pkg.VersionList();
+			    !ver.end(); ++ver)
+			  {
+			    if(!_system->VS->CheckDep(ver.VerStr(), it->Op, it->Version.c_str()))
+			      continue;
+
+			    for(pkgCache::VerFileIterator vf = ver.FileList();
+				!vf.end(); ++vf)
+			      {
+				const int priority = policy.GetPriority(vf.File());
+				if(best_ver.end() || best_priority < priority)
+				  {
+				    best_ver = ver;
+				    best_priority = priority;
+				  }
+			      }
+			  }
+
+			if(!best_ver.end())
+			  {
+			    cmdline_applyaction(cmdline_install,
+						pkg,
+						to_install, to_hold,
+						to_remove, to_purge,
+						verbose,
+						cmdline_version_version,
+						best_ver.VerStr(),
+						policy,
+						arch_only,
+						allow_auto);
+			    satisfied = true;
+			  }
+		      }
+		  }
+
+		if(!satisfied)
+		  ok = false;
+	      }
+	  }
+	else // if(!is_conflict); now we're satisfying a conflict.
+	  {
+	    for(BuildDepList::const_iterator it2 = or_group_start;
+		it2 <= it; ++it2)
+	      {
+		pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(it2->Package);
+		if(!pkg.end())
+		  {
+		    pkgCache::VerIterator ver = pkg.CurrentVer();
+		    if(!ver.end() &&
+		       _system->VS->CheckDep(ver.VerStr(),
+					     it2->Op,
+					     it2->Version.c_str()))
+		      {
+			cmdline_applyaction(cmdline_remove,
+					    pkg,
+					    to_install, to_hold,
+					    to_remove, to_purge,
+					    verbose,
+					    cmdline_version_cand,
+					    std::string(),
+					    policy,
+					    arch_only,
+					    allow_auto);
+		      }
+		  }
+	      }
+	  }
+
+	if(!ok)
+	  {
+	    rval = false;
+
+	    std::string build_dep_description = pkgSrcRecords::Parser::BuildDepType(it->Type);;
+	    for(BuildDepList::const_iterator it2 = or_group_start;
+		it2 <= it; ++it2)
+	      {
+		if(it2 != or_group_start)
+		  build_dep_description += " | ";
+		build_dep_description += it2->Package;
+		if((it2->Op & ~pkgCache::Dep::Or) != pkgCache::Dep::NoOp)
+		  {
+		    build_dep_description += " (";
+		    build_dep_description += pkgCache::CompType(it2->Type);
+		    build_dep_description += " ";
+		    build_dep_description += it2->Version;
+		    build_dep_description += ")";
+		  }
+	      }
+	    printf(_("Unable to satisfy the build-depends %s: ."),
+		   build_dep_description.c_str());
+	  }
+      }
+
+    return rval;
+  }
+}
 
 bool cmdline_applyaction(cmdline_pkgaction_type action,
 			 pkgCache::PkgIterator pkg,
@@ -25,6 +210,8 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 			 int verbose,
 			 cmdline_version_source source,
 			 const string &sourcestr,
+			 pkgPolicy &policy,
+			 bool arch_only,
 			 bool allow_auto)
 {
   // Handle virtual packages.
@@ -185,6 +372,16 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 	    (*apt_cache_file)->forbid_upgrade(pkg, candver.VerStr(), NULL);
 	}
       break;
+    case cmdline_build_depends:
+      return cmdline_do_build_depends(pkg.Name(),
+				      source,
+				      sourcestr,
+				      arch_only,
+				      policy,
+				      to_install, to_hold,
+				      to_remove, to_purge,
+				      verbose,
+				      allow_auto);
     default:
       fprintf(stderr, "Internal error: impossible pkgaction type\n");
       abort();
@@ -198,6 +395,7 @@ bool cmdline_applyaction(string s,
 			 pkgset &to_install, pkgset &to_hold,
 			 pkgset &to_remove, pkgset &to_purge,
 			 int verbose,
+			 pkgPolicy &policy, bool arch_only,
 			 bool allow_auto)
 {
   using namespace aptitude::matching;
@@ -227,7 +425,9 @@ bool cmdline_applyaction(string s,
 	      rval=cmdline_applyaction(action, pkg,
 				       to_install, to_hold, to_remove, to_purge,
 				       verbose, source,
-				       sourcestr, allow_auto) && rval;
+				       sourcestr,
+				       policy, arch_only,
+				       allow_auto) && rval;
 	}
 
       // break out.
@@ -241,7 +441,8 @@ bool cmdline_applyaction(string s,
   if(source == cmdline_version_version &&
      action != cmdline_install &&
      action != cmdline_forbid_version &&
-     action != cmdline_installauto)
+     action != cmdline_installauto &&
+     action != cmdline_build_depends)
     {
       printf(_("You can only specify a package version with an 'install' command or a 'forbid-version' command.\n"));
       return false;
@@ -249,7 +450,8 @@ bool cmdline_applyaction(string s,
 
   if(source == cmdline_version_archive &&
      action != cmdline_install &&
-     action != cmdline_installauto)
+     action != cmdline_installauto &&
+     action != cmdline_build_depends)
     {
       printf(_("You can only specify a package archive with an 'install' command.\n"));
       return false;
@@ -260,6 +462,18 @@ bool cmdline_applyaction(string s,
       pkgCache::PkgIterator pkg=(*apt_cache_file)->FindPkg(package.c_str());
       if(pkg.end())
 	{
+	  // Assume the user asked for a source package.
+	  if(action == cmdline_build_depends)
+	    return cmdline_do_build_depends(package,
+					    source,
+					    sourcestr,
+					    arch_only,
+					    policy,
+					    to_install, to_hold,
+					    to_remove, to_purge,
+					    verbose,
+					    allow_auto);
+
 	  // Maybe they misspelled the package name?
 	  pkgvector possible;
 	  pkg_matcher *m = parse_pattern(package);
@@ -325,10 +539,10 @@ bool cmdline_applyaction(string s,
 	  return false;
 	}
 
-      rval=cmdline_applyaction(action, pkg,
-			       to_install, to_hold, to_remove, to_purge,
-			       verbose, source,
-			       sourcestr, allow_auto);
+      rval = cmdline_applyaction(action, pkg,
+				 to_install, to_hold, to_remove, to_purge,
+				 verbose, source,
+				 sourcestr, policy, arch_only, allow_auto);
     }
   else
     {
@@ -345,10 +559,12 @@ bool cmdline_applyaction(string s,
 	  pkgCache::VerIterator testver;
 
 	  if(apply_matcher(m, pkg, *apt_cache_file, *apt_package_records))
-	    rval=cmdline_applyaction(action, pkg,
-				     to_install, to_hold, to_remove, to_purge,
-				     verbose, source,
-				     sourcestr, allow_auto) && rval;
+	    rval = cmdline_applyaction(action, pkg,
+				       to_install, to_hold, to_remove, to_purge,
+				       verbose, source,
+				       sourcestr,
+				       policy, arch_only,
+				       allow_auto) && rval;
 	}
 
       delete m;
@@ -398,6 +614,18 @@ static bool parse_action_str(const string &s,
 	  if(loc<s.size())
 	    switch(s[loc])
 	      {
+	      case 'B':
+		// &BD to install build-deps.
+		++loc;
+		if(loc < s.size() && s[loc] == 'D')
+		  {
+		    action = cmdline_build_depends;
+		    ++loc;
+		  }
+		else
+		  return false;
+
+		break;
 	      case 'M':
 		action=cmdline_markauto;
 		++loc;
@@ -423,6 +651,7 @@ void cmdline_parse_action(string s,
 			  pkgset &to_install, pkgset &to_hold,
 			  pkgset &to_remove, pkgset &to_purge,
 			  int verbose,
+			  pkgPolicy &policy, bool arch_only,
 			  bool allow_auto)
 {
   string::size_type loc=0;
@@ -457,7 +686,8 @@ void cmdline_parse_action(string s,
 	      if(!cmdline_applyaction(pkgname, action,
 				      to_install, to_hold,
 				      to_remove, to_purge,
-				      verbose, allow_auto))
+				      verbose, policy,
+				      arch_only, allow_auto))
 		return;
 	    }
 	}

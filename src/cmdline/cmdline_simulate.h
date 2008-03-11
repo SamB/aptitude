@@ -7,6 +7,8 @@
 
 #include "cmdline_common.h"
 
+class pkgPolicy;
+
 /** Simulate an install run.  to_install and friends are meant to be
  *  the sets the user explicitly selected (so the prompt can be
  *  displayed only when extra stuff is added or removed).
@@ -26,6 +28,9 @@
  *  \param fornce_no_change if \b true, make an effort to avoid
  *                          undoing the user's explicit requests as
  *                          given in to_install et al.
+ *  \param policy  the policy object used to look up version priorities.
+ *  \param arch_only   if \b true, architecture-independent build-dependencies
+ *                     will be ignored when the user installs build-dependencies.
  */
 
 int cmdline_simulate(bool as_upgrade,
@@ -33,7 +38,8 @@ int cmdline_simulate(bool as_upgrade,
 		     pkgset &to_purge,
 		     bool showvers, bool showdeps, bool showsize,
 		     bool always_prompt, int verbose,
-		     bool assume_yes, bool force_no_change);
+		     bool assume_yes, bool force_no_change,
+		     pkgPolicy &policy, bool arch_only);
 
 
 #endif // CMDLINE_SIMULATE_H

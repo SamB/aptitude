@@ -17,6 +17,7 @@ int cmdline_do_action(int argc, char *argv[],
 		      // it's enabled:
 		      bool no_new_installs, bool no_new_upgrades,
 		      const std::vector<aptitude::cmdline::tag_application> &user_tags,
+		      bool arch_only,
 		      bool queue_only,
 		      int verbose);
 

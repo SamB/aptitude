@@ -9,6 +9,8 @@
 
 #include <cwidget/generic/util/exception.h>
 
+class pkgPolicy;
+
 /** Thrown when we get EOF on stdin.  Should never be thrown
  *  to the cwidget::toplevel.
  */
@@ -40,6 +42,10 @@ public:
  *  \param force_no_change if \b true, try extra-hard to preserve
  *                         the user's explicit requests (as
  *                         specified in to_install et al)
+ *  \param policy a policy object, used to look up version priorities.
+ *  \param arch_only if \b true, when the user asks to have build-dependencies
+ *  for a package installed, only the architecture-dependent dependencies
+ *  will be considered.
  *
  *  \throws StdinEOFException
  */
@@ -54,7 +60,9 @@ bool cmdline_do_prompt(bool as_upgrade,
 		       bool always_prompt,
 		       int verbose,
 		       bool assume_yes,
-		       bool force_no_change);
+		       bool force_no_change,
+		       pkgPolicy &policy,
+		       bool arch_only);
 
 /** Prompt for a single line of input from the user.
  *

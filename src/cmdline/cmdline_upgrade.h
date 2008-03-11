@@ -16,6 +16,7 @@ int cmdline_upgrade(int argc, char *argv[],
 		    bool showvers, bool showdeps, bool showsize,
 		    const std::vector<aptitude::cmdline::tag_application> &user_tags,
 		    bool visual_preview, bool always_prompt,
-		    bool queue_only, int verbose);
+		    bool arch_only, bool queue_only,
+		    int verbose);
 
 #endif // CMDLINE_UPGRADE_H

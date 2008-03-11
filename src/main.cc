@@ -193,7 +193,9 @@ enum {
   OPTION_REMOVE_USER_TAG,
   OPTION_REMOVE_USER_TAG_FROM,
   OPTION_SAFE_RESOLVER,
-  OPTION_FULL_RESOLVER
+  OPTION_FULL_RESOLVER,
+  OPTION_ARCH_ONLY,
+  OPTION_NOT_ARCH_ONLY
 };
 int getopt_result;
 
@@ -228,6 +230,8 @@ option opts[]={
   {"add-user-tag-to", 1, &getopt_result, OPTION_ADD_USER_TAG_TO},
   {"remove-user-tag", 1, &getopt_result, OPTION_REMOVE_USER_TAG},
   {"remove-user-tag-from", 1, &getopt_result, OPTION_REMOVE_USER_TAG_FROM},
+  {"arch-only", 0, &getopt_result, OPTION_ARCH_ONLY},
+  {"not-arch-only", 0, &getopt_result, OPTION_NOT_ARCH_ONLY},
   {0,0,0,0}
 };
 
@@ -256,6 +260,7 @@ int main(int argc, char *argv[])
   bool simulate = aptcfg->FindB(PACKAGE "::CmdLine::Simulate", false) ||
     aptcfg->FindB(PACKAGE "::Simulate", false);
   bool download_only=aptcfg->FindB(PACKAGE "::CmdLine::Download-Only", false);;
+  bool arch_only = aptcfg->FindB("Apt::Get::Arch-Only", false);
 
   bool update_only=false, install_only=false, queue_only=false;
   bool assume_yes=aptcfg->FindB(PACKAGE "::CmdLine::Assume-Yes", false);
@@ -492,6 +497,12 @@ int main(int argc, char *argv[])
 		    user_tags.push_back(tag_application(is_add, optarg, m));
 		  }
 	      }
+	    case OPTION_NOT_ARCH_ONLY:
+	      arch_only = false;
+	      break;
+	    case OPTION_ARCH_ONLY:
+	      arch_only = true;
+	      break;
 	    default:
 	      fprintf(stderr, "%s",
 		      _("WEIRDNESS: unknown option code received\n"));
@@ -589,7 +600,9 @@ int main(int argc, char *argv[])
 		   (!strcasecmp(argv[optind], "unmarkauto")) ||
 		   (!strcasecmp(argv[optind], "forbid-version")) ||
 		   (!strcasecmp(argv[optind], "keep")) ||
-		   (!strcasecmp(argv[optind], "keep-all")) )
+		   (!strcasecmp(argv[optind], "keep-all")) ||
+		   (!strcasecmp(argv[optind], "build-dep")) ||
+		   (!strcasecmp(argv[optind], "build-depends")))
 	    {
 	      return cmdline_do_action(argc-optind, argv+optind,
 				       status_fname,
@@ -599,7 +612,7 @@ int main(int argc, char *argv[])
 				       always_use_safe_resolver,
 				       safe_resolver_no_new_installs, safe_resolver_no_new_upgrades,
 				       user_tags,
-				       queue_only, verbose);
+				       arch_only, queue_only, verbose);
 	    }
 	  else if(!strcasecmp(argv[optind], "safe-upgrade") ||
 		  !strcasecmp(argv[optind], "upgrade"))
@@ -618,7 +631,7 @@ int main(int argc, char *argv[])
 				     showvers, showdeps, showsize,
 				     user_tags,
 				     visual_preview, always_prompt,
-				     queue_only, verbose);
+				     arch_only, queue_only, verbose);
 	    }
 	  else if(!strcasecmp(argv[optind], "add-user-tag") ||
 		  !strcasecmp(argv[optind], "remove-user-tag"))

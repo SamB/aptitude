@@ -24,6 +24,7 @@
 #include <apt-pkg/depcache.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/packagemanager.h>
+#include <apt-pkg/policy.h>
 #include <apt-pkg/progress.h>
 
 int cmdline_upgrade(int argc, char *argv[],
@@ -33,8 +34,8 @@ int cmdline_upgrade(int argc, char *argv[],
 		    bool showvers, bool showdeps, bool showsize,
 		    const std::vector<aptitude::cmdline::tag_application> &user_tags,
 		    bool visual_preview,
-		    bool always_prompt, bool queue_only,
-		    int verbose)
+		    bool always_prompt, bool arch_only,
+		    bool queue_only, int verbose)
 {
   pkgset to_install, to_hold, to_remove, to_purge;
 
@@ -51,6 +52,9 @@ int cmdline_upgrade(int argc, char *argv[],
 
   OpTextProgress progress(aptcfg->FindI("Quiet", 0));
   apt_init(&progress, false, status_fname);
+
+  pkgPolicy policy(&(*apt_cache_file)->GetCache());
+  ReadPinFile(policy);
 
   if(_error->PendingError())
     {
@@ -123,7 +127,8 @@ int cmdline_upgrade(int argc, char *argv[],
     return cmdline_simulate(true, to_install, to_hold, to_remove, to_purge,
 			    showvers, showdeps, showsize,
 			    always_prompt, verbose, assume_yes,
-			    false);
+			    false,
+			    policy, arch_only);
   else if(queue_only)
     {
       aptitude::cmdline::apply_user_tags(user_tags);
@@ -138,7 +143,8 @@ int cmdline_upgrade(int argc, char *argv[],
       if(!cmdline_do_prompt(true, to_install, to_hold, to_remove,
 			    to_purge, showvers, showdeps, showsize,
 			    always_prompt, verbose,
-			    assume_yes, false))
+			    assume_yes, false,
+			    policy, arch_only))
 	{
 	  printf(_("Abort.\n"));
 	  return 0;

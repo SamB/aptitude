@@ -579,7 +579,9 @@ bool cmdline_resolve_deps(pkgset &to_install,
 			  pkgset &to_purge,
 			  bool assume_yes,
 			  bool force_no_change,
-			  int verbose)
+			  int verbose,
+			  pkgPolicy &policy,
+			  bool arch_only)
 {
   bool story_is_default = aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Show-Steps", false);
 
@@ -690,7 +692,8 @@ bool cmdline_resolve_deps(pkgset &to_install,
 		    /// \todo Maybe only do auto-installation of dependencies
 		    /// after the parse?
 		    cmdline_parse_action(response, to_install, to_hold,
-					 to_remove, to_purge, verbose, false);
+					 to_remove, to_purge, verbose,
+					 policy, arch_only, false);
 		    modified_pkgs=true;
 		    break;
 		    // Undocumented debug feature:

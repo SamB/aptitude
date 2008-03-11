@@ -27,6 +27,8 @@
 #include <generic/problemresolver/solution.h>
 class aptitude_universe;
 
+class pkgPolicy;
+
 /** \brief Compute the current solution with a command-line-appropriate
  *  UI.
  *
@@ -79,6 +81,10 @@ void cmdline_dump_resolver();
  *  heavily bias the resolver against changing any packages in the
  *  supplied sets.
  *  \param verbose the verbosity level set by the user
+ *
+ *  \param policy the package policy object used to look up priorities.
+ *  \param arch_only if \b true, architecture-independent build-dependencies
+ *  are ignored.
  */
 bool cmdline_resolve_deps(pkgset &to_install,
 			  pkgset &to_hold,
@@ -86,7 +92,9 @@ bool cmdline_resolve_deps(pkgset &to_install,
 			  pkgset &to_purge,
 			  bool assume_yes,
 			  bool force_no_change,
-			  int verbose);
+			  int verbose,
+			  pkgPolicy &policy,
+			  bool arch_only);
 
 namespace aptitude
 {

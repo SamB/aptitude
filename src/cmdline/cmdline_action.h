@@ -7,6 +7,8 @@
 
 #include "cmdline_common.h"
 
+class pkgPolicy;
+
 /// \todo The command-line state should probably be encapsulated
 /// as an object.
 
@@ -45,6 +47,13 @@
  *  \param sourcestr The string associated with the version source, or
  *  "" if there is no associated string.
  *
+ *  \param policy A current policy object (passed as a parameter to
+ *  avoid creating a separate one for each action).
+ *
+ *  \param arch_only If \b true, when packages' build-depends are
+ *  satisfied, only architecture-dependent build depends are used;
+ *  Build-Depends-Indep and Build-Conflicts-Indep lines are ignored.
+ *
  *  \param allow_auto If \b false, auto-installation of dependencies
  *  will be disabled regardless of the value of Auto-Install.
  */
@@ -55,6 +64,8 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 			 int verbose,
 			 cmdline_version_source source,
 			 const string &sourcestr,
+			 pkgPolicy &policy,
+			 bool arch_only,
 			 bool allow_auto);
 
 /** \brief Apply the given command-line action to the given package,
@@ -83,6 +94,13 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
  *  \param verbose The verbosity level at which this command should
  *  operate.
  *
+ *  \param policy A current policy object (passed as a parameter to
+ *  avoid creating a separate one for each action).
+ *
+ *  \param arch_only If \b true, when packages' build-depends are
+ *  satisfied, only architecture-dependent build depends are used;
+ *  Build-Depends-Indep and Build-Conflicts-Indep lines are ignored.
+ *
  *  \param allow_auto If \b false, auto-installation of dependencies
  *  will be disabled regardless of the value of Auto-Install.
  */
@@ -90,7 +108,9 @@ bool cmdline_applyaction(string s,
 			 cmdline_pkgaction_type action,
 			 pkgset &to_install, pkgset &to_hold,
 			 pkgset &to_remove, pkgset &to_purge,
-			 int verbose, bool allow_auto);
+			 int verbose,
+			 pkgPolicy &policy, bool arch_only,
+			 bool allow_auto);
 
 /** \brief Parses a list of actions and executes them.
  *
@@ -118,12 +138,21 @@ bool cmdline_applyaction(string s,
  *  \param verbose The verbosity level at which this command should
  *  operate.
  *
+ *  \param policy A current policy object (passed as a parameter to
+ *  avoid creating a separate one for each action).
+ *
+ *  \param arch_only If \b true, when packages' build-depends are
+ *  satisfied, only architecture-dependent build depends are used;
+ *  Build-Depends-Indep and Build-Conflicts-Indep lines are ignored.
+ *
  *  \param allow_auto If \b false, auto-installation of dependencies
  *  will be disabled regardless of the value of Auto-Install.
  */
 void cmdline_parse_action(string s,
 			  pkgset &to_install, pkgset &to_hold,
 			  pkgset &to_remove, pkgset &to_purge,
-			  int verbose, bool allow_auto);
+			  int verbose,
+			  pkgPolicy &policy, bool arch_only,
+			  bool allow_auto);
 
 #endif // CMDLINE_ACTION_H
