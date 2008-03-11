@@ -505,27 +505,63 @@ namespace aptitude
 	}
 
       pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(package);
+      std::string source_package_name = package;
 
       source_package rval;
 
+      // First look for a source of the given name.
+      switch(version_source)
+	{
+	case cmdline_version_cand:
+	  rval = find_source_package(source_package_name);
+	  break;
+
+	case cmdline_version_archive:
+	  _error->DumpErrors();
+	  rval = find_source_by_archive(source_package_name, version_source_string);
+	  break;
+
+	case cmdline_version_version:
+	  rval = find_source_package(source_package_name, version_source_string);
+	  break;
+	}
+
+      if(rval.valid())
+	return rval;
+
+      // If no source of that name exists, try to find a real package
+      // and use its source.
       if(!pkg.end())
 	{
 	  pkgCache::VerIterator ver = cmdline_find_ver(pkg,
 						       version_source,
 						       version_source_string);
 
-	  if(!ver.end() && version_source == cmdline_version_version)
+	  if(!ver.end())
 	    {
-	      // Use the version's declared source package and version.
 	      pkgRecords::Parser &rec =
 		apt_package_records->Lookup(ver.FileList());
 
-	      std::string source_package_name =
-		rec.SourcePkg().empty() ? ver.ParentPkg().Name() : rec.SourcePkg();
-	      std::string source_version =
-		rec.SourceVer().empty() ? ver.VerStr() : rec.SourceVer();
+	      if(!rec.SourcePkg().empty())
+		source_package_name = rec.SourcePkg();
 
-	      rval = find_source_package(source_package_name, source_version);
+	      if(version_source == cmdline_version_version)
+		{
+		  const std::string source_version =
+		    rec.SourceVer().empty() ? ver.VerStr() : rec.SourceVer();
+
+		  rval = find_source_package(source_package_name, source_version);
+		}
+	    }
+	  // Last-ditch effort: if no matching version was found but
+	  // a source package can be found, use that and try again below.
+	  else if(!pkg.VersionList().end())
+	    {
+	      pkgRecords::Parser &rec =
+		apt_package_records->Lookup(pkg.VersionList().FileList());
+
+	      if(!rec.SourcePkg().empty())
+		source_package_name = rec.SourcePkg();
 	    }
 	}
 
@@ -534,16 +570,16 @@ namespace aptitude
 	  switch(version_source)
 	    {
 	    case cmdline_version_cand:
-	      rval = find_source_package(package);
+	      rval = find_source_package(source_package_name);
 	      break;
 
 	    case cmdline_version_archive:
 	      _error->DumpErrors();
-	      rval = find_source_by_archive(package, version_source_string);
+	      rval = find_source_by_archive(source_package_name, version_source_string);
 	      break;
 
 	    case cmdline_version_version:
-	      rval = find_source_package(package, version_source_string);
+	      rval = find_source_package(source_package_name, version_source_string);
 	      break;
 	    }
 	}
