@@ -218,18 +218,22 @@ namespace
     int num_broken;
     int num_upgradable;
     int num_new;
+    std::set<pkgCache::PkgIterator> obsolete;
 
   public:
-    stats(int _num_broken, int _num_upgradable, int _num_new)
+    stats(int _num_broken, int _num_upgradable, int _num_new,
+	  const std::set<pkgCache::PkgIterator> &_obsolete)
       : num_broken(_num_broken),
 	num_upgradable(_num_upgradable),
-	num_new(_num_new)
+	num_new(_num_new),
+	obsolete(_obsolete)
     {
     }
 
     int get_num_broken() const { return num_broken; }
     int get_num_upgradable() const { return num_upgradable; }
     int get_num_new() const { return num_new; }
+    const std::set<pkgCache::PkgIterator> &get_obsolete() const { return obsolete; }
   };
 
   stats compute_apt_stats()
@@ -237,13 +241,17 @@ namespace
     int num_upgradable = 0;
     int num_new = 0;
     int num_broken = 0;
+    std::set<pkgCache::PkgIterator> obsolete;
 
     if(apt_cache_file == NULL)
-      return stats(0, 0, 0);
+      return stats(0, 0, 0, obsolete);
 
     for(pkgCache::PkgIterator p = (*apt_cache_file)->PkgBegin();
 	!p.end(); ++p)
       {
+	if(pkg_obsolete(p))
+	  obsolete.insert(p);
+
 	const pkgDepCache::StateCache &state = (*apt_cache_file)[p];
 	const aptitudeDepCache::aptitude_state &estate =
 	  (*apt_cache_file)->get_ext_state(p);
@@ -260,7 +268,7 @@ namespace
 	  ++num_new;
       }
 
-    return stats(num_broken, num_upgradable, num_new);
+    return stats(num_broken, num_upgradable, num_new, obsolete);
   }
 
   void show_stats_change(stats initial, stats final,
@@ -314,10 +322,39 @@ namespace
 	fragments.push_back(cw::text_fragment(change));
       }
 
+    std::vector<cw::fragment *> output_fragments;
     if(fragments.size() > 0)
+      output_fragments.push_back(fragf(_("There are now %F."),
+				       cw::join_fragments(fragments, L", ")));
+
+    std::vector<pkgCache::PkgIterator> new_obsolete;
+    std::set_difference(final.get_obsolete().begin(), final.get_obsolete().end(),
+			initial.get_obsolete().begin(), initial.get_obsolete().end(),
+			std::back_insert_iterator<std::vector<pkgCache::PkgIterator> >(new_obsolete));
+    const int obsolete_list_limit = aptcfg->FindI(PACKAGE "::Max-Obsolete-List-Length", 50);
+    if(new_obsolete.size() > obsolete_list_limit)
       {
-	cw::fragment *f = fragf(_("There are now %F."),
-				cw::join_fragments(fragments, L", "));
+	output_fragments.push_back(cw::fragf(ngettext("There is %d newly obsolete package.",
+						      "There are %d newly obsolete packages.",
+						      new_obsolete.size()),
+					     new_obsolete.size()));
+      }
+    else if(new_obsolete.size() > 0)
+      {
+	std::vector<cw::fragment *> package_name_fragments;
+	for(std::vector<pkgCache::PkgIterator>::const_iterator it =
+	      new_obsolete.begin(); it != new_obsolete.end(); ++it)
+	  package_name_fragments.push_back(cw::text_fragment(it->Name()));
+	output_fragments.push_back(cw::dropbox(cw::fragf(ngettext("There is %d newly obsolete package: ",
+								  "There are %d newly obsolete packages: ",
+								  new_obsolete.size()),
+							 new_obsolete.size()),
+					       wrapbox(cw::join_fragments(package_name_fragments, L", "))));
+      }
+
+    if(output_fragments.size() > 0)
+      {
+	cw::fragment *f = join_fragments(output_fragments, L"\n");
 
 	update_screen_width();
 	std::cout << f->layout(screen_width, screen_width, cw::style());
@@ -329,7 +366,7 @@ namespace
 download_manager::result cmdline_do_download(download_manager *m,
 					     int verbose)
 {
-  stats initial_stats(0, 0, 0);
+  stats initial_stats(0, 0, 0, std::set<pkgCache::PkgIterator>());
   OpTextProgress progress(aptcfg->FindI("Quiet", 0));
 
   if(aptcfg->FindI("Quiet", 0) == 0)
@@ -362,7 +399,7 @@ download_manager::result cmdline_do_download(download_manager *m,
     }
   while(finish_res == download_manager::do_again);
 
-  stats final_stats(0, 0, 0);
+  stats final_stats(0, 0, 0, std::set<pkgCache::PkgIterator>());
   if(aptcfg->FindI("Quiet", 0) == 0)
     {
       OpProgress tmpProgress;
