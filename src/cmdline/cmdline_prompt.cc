@@ -586,7 +586,11 @@ static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 	  lists[pkg_remove].push_back(pkg);
 	  break;
 	case pkg_auto_hold:
-	  if(as_upgrade)
+	  if(as_upgrade && to_install.find(pkg) != to_install.end())
+	    lists[pkg_hold].push_back(pkg);
+	  break;
+	case pkg_hold:
+	  if(to_install.find(pkg) != to_install.end())
 	    lists[pkg_hold].push_back(pkg);
 	  break;
 	case pkg_unchanged:
