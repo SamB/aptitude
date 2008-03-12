@@ -32,6 +32,8 @@
 #include <apt-pkg/sourcelist.h>
 #include <apt-pkg/version.h>
 
+#include <algorithm>
+
 namespace cw = cwidget;
 
 namespace
