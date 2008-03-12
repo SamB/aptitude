@@ -380,6 +380,29 @@ option_item dependency_options[]={
 		 "depends on them: they will never be targeted "
 		 "for removal as unused packages."),
 	      PACKAGE "::Keep-Unused-Pattern", ""),
+  option_item(N_("Allow dependency resolutions that break holds or forbids"),
+	      N_("If this option is enabled, then whenever aptitude "
+		 "solves a dependency problem, it will consider "
+		 "modifying held packages, or installing forbidden "
+		 "package versions.  With this option disabled, these "
+		 "solutions will be rejected by default."
+		 "\n"
+		 "NOTE: At present, this restriction only applies to situations "
+		 "in which aptitude's dependency resolver (the red bar "
+		 "at the bottom of the screen) is activated.  aptitude "
+		 "will still break holds when automatically installing "
+		 "the dependencies of a package that has just been "
+		 "selected for installation or upgrade, due to apt bug "
+		 "#470035."),
+	      PACKAGE "::ProblemResolver::Allow-Break-Holds", false),
+  option_item(N_("Don't warn about the obsolete \"Recommends-Important\" option."),
+	      N_("If the configuration option %BRecommends-Important%b "
+                 "is set in the system configuration file, aptitude "
+                 "will warn you about it on start-up.  Enable this option "
+		 "to skip this warning (for instance, if your apt "
+		 "configuration is shared with a system that has an "
+		 "older version of aptitude installed)."),
+	      PACKAGE "::Dont-Warn-About-Recommends-Important", false),
   option_item()
 };
 
