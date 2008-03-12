@@ -21,6 +21,9 @@
 
 #include <stdlib.h>
 
+#include <cwidget/generic/util/transcode.h>
+
+namespace cw = cwidget;
 
 namespace
 {
@@ -476,24 +479,14 @@ bool cmdline_applyaction(string s,
 
 	  // Maybe they misspelled the package name?
 	  pkgvector possible;
-	  pkg_matcher *m = parse_pattern(package);
-
-	  if(!m)
-	    {
-	      _error->Error("Badly formed pattern %s", package.c_str());
-	      _error->DumpErrors();
-
-	      return false;
-	    }
 
 	  for(pkgCache::PkgIterator j=(*apt_cache_file)->PkgBegin();
 	      !j.end(); ++j)
 	    {
-	      if(!(j.VersionList().end() && j.ProvidesList().end()) && apply_matcher(m, j, *apt_cache_file, *apt_package_records))
+	      if(!(j.VersionList().end() && j.ProvidesList().end()) &&
+		 strstr(j.Name(), package.c_str()) != NULL)
 		possible.push_back(j);
 	    }
-
-	  delete m;
 
 	  if(!possible.empty())
 	    {
@@ -508,22 +501,20 @@ bool cmdline_applyaction(string s,
 	    }
 	  else
 	    {
-	      m=parse_pattern("~d"+s);
-
-	      if(!m)
-		{
-		  _error->DumpErrors();
-		  return false;
-		}
-
 	      for(pkgCache::PkgIterator j=(*apt_cache_file)->PkgBegin();
 		  !j.end(); ++j)
 		{
-		  if(apply_matcher(m, j, *apt_cache_file, *apt_package_records))
-		    possible.push_back(j);
+		  for(pkgCache::VerIterator v = j.VersionList();
+		      !v.end(); ++v)
+		    {
+		      std::wstring desc = get_long_description(v, apt_package_records);
+		      if(desc.find(cw::util::transcode(package)) != desc.npos)
+			{
+			  possible.push_back(j);
+			  break;
+			}
+		    }
 		}
-
-	      delete m;
 
 	      if(possible.empty())
 		printf(_("Couldn't find any package whose name or description matched \"%s\"\n"), package.c_str());
