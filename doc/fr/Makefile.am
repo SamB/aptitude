@@ -5,6 +5,9 @@ SUBDIRS=images
 EXTRA_DIST=fixman
 LANGCODE=fr
 MANPAGE=aptitude.$(LANGCODE).8
+# How much of the manual is actually translated.
+PERCENT_TRANSLATED=50
+MANPAGE_PERCENT_TRANSLATED=60
 
 IMAGES = $(wildcard images/*.png)
 
@@ -41,10 +44,10 @@ doc-stamp: doc-html-stamp doc-css-stamp $(README) $(MANPAGE)
 	touch doc-stamp
 
 aptitude.xml: $(srcdir)/../en/aptitude.xml $(srcdir)/../po4a/po/$(LANGCODE).po $(srcdir)/../po4a/add_$(LANGCODE)/addendum.1.$(LANGCODE)
-	po4a-translate -M utf-8 -f docbook -m $(srcdir)/../en/aptitude.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l aptitude.xml
+	po4a-translate -k $(PERCENT_TRANSLATED) -M utf-8 -f docbook -m $(srcdir)/../en/aptitude.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l aptitude.xml
 
 manpage.xml: $(srcdir)/../en/manpage.xml $(srcdir)/../po4a/po/$(LANGCODE).po $(srcdir)/../po4a/add_$(LANGCODE)/addendum.1.$(LANGCODE)
-	po4a-translate -k 60 -M utf-8 -f docbook -m $(srcdir)/../en/manpage.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l manpage.xml
+	po4a-translate -k $(MANPAGE_PERCENT_TRANSLATED) -M utf-8 -f docbook -m $(srcdir)/../en/manpage.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l manpage.xml
 
 $(MANPAGE): aptitude.xml manpage.xml $(srcdir)/../aptitude-man.xsl
 	-rm -fr output-man

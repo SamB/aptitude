@@ -8,6 +8,8 @@ MANPAGE=aptitude.$(LANGCODE).8
 # Automake automagically distributes README without asking..
 README=README.$(LANGCODE)
 XMLSOURCES=aptitude.xml manpage.xml
+PERCENT_TRANSLATED=30
+MANPAGE_PERCENT_TRANSLATED=40
 
 # Put documentation in /usr/share/doc/aptitude (by default)
 docdir=$(datadir)/doc/$(PACKAGE)
@@ -42,10 +44,10 @@ doc-stamp: doc-html-stamp doc-css-stamp $(README) $(MANPAGE)
 	touch doc-stamp
 
 aptitude.xml: $(srcdir)/../en/aptitude.xml $(srcdir)/../po4a/po/$(LANGCODE).po 
-	po4a-translate -M utf-8 -f docbook -m $(srcdir)/../en/aptitude.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l aptitude.xml -k 50
+	po4a-translate -M utf-8 -f docbook -m $(srcdir)/../en/aptitude.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l aptitude.xml -k $(PERCENT_TRANSLATED)
 
 manpage.xml: $(srcdir)/../en/manpage.xml $(srcdir)/../po4a/po/$(LANGCODE).po
-	po4a-translate -k 60 -M utf-8 -f docbook -m $(srcdir)/../en/manpage.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l manpage.xml
+	po4a-translate -k $(MANPAGE_PERCENT_TRANSLATED) -M utf-8 -f docbook -m $(srcdir)/../en/manpage.xml -p $(srcdir)/../po4a/po/$(LANGCODE).po -l manpage.xml
 
 db2latex: doc-db2latex-stamp
 
