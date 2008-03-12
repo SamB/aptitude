@@ -1945,7 +1945,7 @@ Resolve these dependencies by hand? [N/+/-/_/:/?]</screen>
 	resolve the broken dependencies (type <userinput>?</userinput>
 	for a full list of the available commands).  Type
 	<userinput>n</userinput> or press <keycap>enter</keycap> to
-	quit the program:
+	quit &aptitude;:
       </para>
 
 <screen>Resolve these dependencies by hand? [N/+/-/_/:/?] n
@@ -2167,7 +2167,7 @@ Abort.</screen>
 		  <row>
 		    <entry>&actions-quit;</entry>
 		    <entry>
-		      Quit the program, saving any changes to package
+		      Quit &aptitude;, saving any changes to package
 		      states.
 		    </entry>
 		  </row>
@@ -2197,7 +2197,7 @@ Abort.</screen>
 		    <entry>&undo-undo;</entry>
 		    <entry>
 		      Cancel the effect of the last change to a
-		      package's state, up to the last time the program
+		      package's state, up to the last time &aptitude;
 		      was started, the package list was updated, or an
 		      install run was performed.
 		    </entry>
@@ -6029,7 +6029,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg>The length of <quote>&VERSION;</quote>.</seg>
 	      <seg>No</seg>
 	      <seg>
-		Outputs the version of the program, currently
+		Outputs the version of &aptitude; that is running,
+		currently
 		<quote><computeroutput>&VERSION;</computeroutput></quote>.
 	      </seg>
 	    </seglistitem>
@@ -6037,10 +6038,10 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <seglistitem>
 	      <seg><literal>%N</literal></seg>
 	      <seg>Program Name</seg>
-	      <seg>The length of the program name.</seg>
+	      <seg>The length of the name.</seg>
 	      <seg>No</seg>
 	      <seg>
-		Outputs the program name; usually
+		Outputs the name of the program; usually
 		<quote><computeroutput>aptitude</computeroutput></quote>.
 	      </seg>
 	    </seglistitem>
@@ -7450,7 +7451,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		<entry><literal>Undo</literal></entry>
 		<entry><literal>C-_,C-u</literal></entry>
 		<entry>
-		  Cancels the last action, up to when the program was
+		  Cancels the last action, up to when &aptitude; was
 		  started OR the last time you update the package
 		  lists or installed packages.
 		</entry>
@@ -7808,12 +7809,12 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	<para>
 	  In addition to binding keys globally, it is possible to
 	  change key bindings for one particular part (or
-	  <firstterm>domain</firstterm>) of the program: for instance,
+	  <firstterm>domain</firstterm>) of &aptitude;: for instance,
 	  to make Tab the equivalent of the right arrow key in menu
 	  bars, set
 	  <literal>Aptitude::UI::Keybindings::Menubar::Right</literal>
-	  to <quote><literal>tab,right</literal></quote>.  The following domains
-	  are available:
+	  to <quote><literal>tab,right</literal></quote>.  The
+	  following domains are available:
 	</para>
 
 	<informaltable colsep='0' frame='all'>
@@ -9186,7 +9187,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	    <listitem>
 	      <para>
-		Default values built into the program.
+		Default values built into &aptitude;.
 	      </para>
 	    </listitem>
 	  </orderedlist>
@@ -9367,7 +9368,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg><literal>Aptitude::CmdLine::Ignore-Trust-Violations</literal></seg>
 	      <seg><literal>false</literal></seg>
 	      <seg>
-		In command-line mode, causes the program to ignore the
+		In command-line mode, causes &aptitude; to ignore the
 		installation of <link linkend='secTrust'>untrusted
 		packages</link>.  This is a synonym for
 		<literal>Apt::Get::AllowUnauthenticated</literal>.
@@ -9548,7 +9549,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		instead.</emphasis> In command-line mode, causes
 		&aptitude; to just display the actions that would be
 		performed (rather than actually performing them); in
-		the visual interface, causes the program to start in
+		the visual interface, causes &aptitude; to start in
 		read-only mode regardless of whether you are &root; or
 		not.  This is equivalent to the <literal>-s</literal>
 		command-line option.
@@ -9797,9 +9798,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		that it cannot acquire a lock, this is
 		<emphasis>not</emphasis> because the lock file needs
 		to be deleted.  fcntl locks are managed by the kernel
-		and will be destroyed when the program terminates;
-		failure to acquire the lock means that another running
-		program is using it!
+		and will be destroyed when the program holding them
+		terminates; failure to acquire the lock means that
+		another running program is using it!
 	      </seg>
 	    </seglistitem>
 
@@ -10074,14 +10075,14 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		The maximum number of <quote>steps</quote> which
 		should be performed by the problem resolver on each
 		attempt to find a solution to a dependency problem.
-		Decreasing this number will make the program
+		Decreasing this number will make &aptitude;
 		<quote>give up</quote> sooner; increasing it will
 		permit the search for a solution to consume much more
 		time and memory before it is aborted.  Setting
 		<literal>StepLimit</literal> to 0 will disable the
 		problem resolver entirely.  The default value is large
 		enough to accomodate commonly encountered situations,
-		while preventing the program from <quote>blowing
+		while preventing &aptitude; from <quote>blowing
 		up</quote> if an overly complicated problem is
 		encountered.  (note: this applies only to command-line
 		searches; in the visual interface, the resolver will
@@ -10267,7 +10268,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		In command-line mode, causes &aptitude; to just
 		display the actions that would be performed (rather
 		than actually performing them); in the visual
-		interface, causes the program to start in read-only
+		interface, causes &aptitude; to start in read-only
 		mode regardless of whether you are &root; or not.
 		This is equivalent to the <literal>-s</literal>
 		command-line option.
@@ -10310,7 +10311,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg>
 		If this option is <literal>false</literal>, &aptitude;
 		will display a warning the first time that you attempt
-		to modify package states while the program is in
+		to modify package states while &aptitude; is in
 		read-only mode.
 	      </seg>
 	    </seglistitem>
@@ -11192,10 +11193,12 @@ Minesweeper                                   Minesweeper    Lost in 2388 second
 
 	<answer>
 	  <para>
-	    When a program running in an xterm is using the mouse, the
-	    xterm disables text selection.  However, you can override
-	    this behavior and perform a selection by holding the
-	    <keycap>Shift</keycap> key down.
+	    Normally, you cannot select text in an xterm while a
+	    program running in that terminal (such as &aptitude;) is
+	    using the mouse.  However, you can override this behavior
+	    and perform a selection by holding the
+	    <keycap>Shift</keycap> key down while you click on the
+	    terminal.
 	  </para>
 	</answer>
       </qandaentry>
