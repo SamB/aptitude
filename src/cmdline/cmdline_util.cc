@@ -334,10 +334,10 @@ namespace
     const int obsolete_list_limit = aptcfg->FindI(PACKAGE "::Max-Obsolete-List-Length", 50);
     if(new_obsolete.size() > obsolete_list_limit)
       {
-	output_fragments.push_back(cw::fragf(ngettext("There is %d newly obsolete package.",
-						      "There are %d newly obsolete packages.",
-						      new_obsolete.size()),
-					     new_obsolete.size()));
+	output_fragments.push_back(cw::text_fragment(ssprintf(ngettext("There is %d newly obsolete package.",
+								       "There are %d newly obsolete packages.",
+								       new_obsolete.size()),
+							      new_obsolete.size())));
       }
     else if(new_obsolete.size() > 0)
       {
@@ -345,10 +345,10 @@ namespace
 	for(std::vector<pkgCache::PkgIterator>::const_iterator it =
 	      new_obsolete.begin(); it != new_obsolete.end(); ++it)
 	  package_name_fragments.push_back(cw::text_fragment(it->Name()));
-	output_fragments.push_back(cw::dropbox(cw::fragf(ngettext("There is %d newly obsolete package: ",
-								  "There are %d newly obsolete packages: ",
-								  new_obsolete.size()),
-							 new_obsolete.size()),
+	output_fragments.push_back(cw::dropbox(cw::text_fragment(ssprintf(ngettext("There is %d newly obsolete package: ",
+										   "There are %d newly obsolete packages: ",
+										   new_obsolete.size()),
+									  (int)new_obsolete.size())),
 					       wrapbox(cw::join_fragments(package_name_fragments, L", "))));
       }
 
