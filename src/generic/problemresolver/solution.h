@@ -25,45 +25,7 @@
 #include <iostream>
 #include <generic/util/immset.h>
 
-/** Represents the current score weights for a resolver.  Used to
- *  calculate scores at the time a solution is instantiated.
- */
-struct solution_weights
-{
-  /** How much to reward long and/or broken solutions.  Typically
-   *  negative to penalize such things, or 0 to ignore them.
-   */
-  int step_score, broken_score, unfixed_soft_score;
-
-
-  /** How much to reward real solutions -- solutions that fix all
-   *  dependencies.  Make this big to immediately pick them up, or
-   *  small to ignore "bad" solutions (at the risk of running out of
-   *  time if no better solution pops up).
-   */
-  int full_solution_score;
-
-  /** The scores to apply to individual package versions.
-   */
-  int *version_scores;
-
-  solution_weights(int _step_score, int _broken_score,
-		   int _unfixed_soft_score, int _full_solution_score,
-		   unsigned long num_versions)
-    :step_score(_step_score), broken_score(_broken_score),
-     unfixed_soft_score(_unfixed_soft_score),
-     full_solution_score(_full_solution_score),
-     version_scores(new int[num_versions])
-  {
-    for(unsigned long i = 0; i < num_versions; ++i)
-      version_scores[i] = 0;
-  }
-
-  ~solution_weights()
-  {
-    delete[] version_scores;
-  }
-};
+class solution_weights;
 
 /** Represents a partial or complete solution to a dependency
  *  problem.  Solutions are transparently refcounted to save on
@@ -305,20 +267,7 @@ public:
   /** Generate the root node for a search in the given universe. */
   static generic_solution root_node(const imm::set<dep> &initial_broken,
 				    const PackageUniverse &universe,
-				    const solution_weights &weights)
-  {
-    int score = initial_broken.size() * weights.broken_score;
-
-    if(initial_broken.empty())
-      score += weights.full_solution_score;
-
-    return generic_solution(new solution_rep(imm::map<package, action>(),
-					     initial_broken,
-					     imm::set<dep>(),
-					     imm::map<version, dep>(),
-					     score,
-					     0));
-  }
+				    const solution_weights &weights);
 
   /** Generate a successor to the given solution.
    *
@@ -621,9 +570,71 @@ public:
 }; // End solution wrapper
 
 
+/** Represents the current score weights for a resolver.  Used to
+ *  calculate scores at the time a solution is instantiated.
+ */
+struct solution_weights
+{
+  /** How much to reward long and/or broken solutions.  Typically
+   *  negative to penalize such things, or 0 to ignore them.
+   */
+  int step_score, broken_score, unfixed_soft_score;
+
+
+  /** How much to reward real solutions -- solutions that fix all
+   *  dependencies.  Make this big to immediately pick them up, or
+   *  small to ignore "bad" solutions (at the risk of running out of
+   *  time if no better solution pops up).
+   */
+  int full_solution_score;
+
+  /** The scores to apply to individual package versions.
+   */
+  int *version_scores;
+
+  solution_weights(int _step_score, int _broken_score,
+		   int _unfixed_soft_score, int _full_solution_score,
+		   unsigned long num_versions)
+    :step_score(_step_score), broken_score(_broken_score),
+     unfixed_soft_score(_unfixed_soft_score),
+     full_solution_score(_full_solution_score),
+     version_scores(new int[num_versions])
+  {
+    for(unsigned long i = 0; i < num_versions; ++i)
+      version_scores[i] = 0;
+  }
+
+  ~solution_weights()
+  {
+    delete[] version_scores;
+  }
+};
+
+
+/** Generate the root node for a search in the given universe. */
+template<typename PackageUniverse>
+inline generic_solution<PackageUniverse>
+generic_solution<PackageUniverse>::root_node(const imm::set<dep> &initial_broken,
+					     const PackageUniverse &universe,
+					     const solution_weights &weights)
+{
+  int score = initial_broken.size() * weights.broken_score;
+
+  if(initial_broken.empty())
+    score += weights.full_solution_score;
+
+  return generic_solution(new solution_rep(imm::map<package, action>(),
+					   initial_broken,
+					   imm::set<dep>(),
+					   imm::map<version, dep>(),
+					   score,
+					   0));
+}
+
+
 template<typename PackageUniverse>
 template<typename a_iter, typename u_iter>
-generic_solution<PackageUniverse>
+inline generic_solution<PackageUniverse>
 generic_solution<PackageUniverse>::successor(const generic_solution &s,
 					     const a_iter &abegin,
 					     const a_iter &aend,
