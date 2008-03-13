@@ -1,6 +1,6 @@
 // solution.h                                             -*-c++-*-
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -332,132 +332,7 @@ public:
 				    const u_iter &ubegin,
 				    const u_iter &uend,
 				    const PackageUniverse &universe,
-				    const solution_weights &weights)
-  {
-    // NB: as I fully expect to move to a scheme of shared-memory
-    // sets/maps, the implicit copies here will go away eventually.
-    imm::set<dep> broken_deps = s.get_broken();
-    imm::map<package, action> actions = s.get_actions();
-    imm::map<version, dep> forbidden_versions = s.get_forbidden_versions();
-    imm::set<dep> unresolved_soft_deps = s.get_unresolved_soft_deps();
-    int action_score = s.get_action_score();
-
-    // Add notes about unresolved dependencies
-    for(u_iter ui = ubegin; ui != uend; ++ui)
-      {
-	const dep &d = *ui;
-
-	eassert(broken_deps.contains(d));
-	broken_deps.erase(d);
-	unresolved_soft_deps.insert(d);
-      }
-
-    for(a_iter ai = abegin; ai != aend; ++ai)
-      {
-	const action &a = *ai;
-	eassert(!actions.domain_contains(a.ver.get_package()));
-	eassert(a.ver != a.ver.get_package().current_version());
-
-	actions.put(a.ver.get_package(), a);
-
-	action_score += weights.step_score;
-	action_score += weights.version_scores[a.ver.get_id()];
-	action_score -= weights.version_scores[a.ver.get_package().current_version().get_id()];
-
-	if(a.from_dep_source)
-	  {
-	    for(typename dep::solver_iterator si = a.d.solvers_begin();
-		!si.end(); ++si)
-	      forbidden_versions.put(*si, a.d);
-	  }
-
-
-
-	// Update the set of broken dependencies, trying to re-use as
-	// much of the former set as possible.
-	version old_version=s.version_of(a.ver.get_package());
-	solution_map_wrapper tmpsol(actions);
-
-	// Check reverse deps of the old version
-	for(typename version::revdep_iterator rdi=old_version.revdeps_begin();
-	    !rdi.end(); ++rdi)
-	  {
-	    dep rd = *rdi;
-
-	    if((rd).broken_under(tmpsol))
-	      {
-		if(!unresolved_soft_deps.contains(rd))
-		  broken_deps.insert(rd);
-	      }
-	    else
-	      {
-		broken_deps.erase(rd);
-		unresolved_soft_deps.erase(rd);
-	      }
-	  }
-
-	// Check reverse deps of the new version
-	//
-	// Because reverse deps of a version might be fixed by its
-	// removal, we need to check brokenness and insert or erase as
-	// appropriate.
-	for(typename version::revdep_iterator rdi = a.ver.revdeps_begin();
-	    !rdi.end(); ++rdi)
-	  {
-	    dep rd = *rdi;
-
-	    if((rd).broken_under(tmpsol))
-	      {
-		if(!unresolved_soft_deps.contains(rd))
-		  broken_deps.insert(rd);
-	      }
-	    else
-	      {
-		broken_deps.erase(rd);
-		unresolved_soft_deps.erase(rd);
-	      }
-	  }
-
-	// Remove all forward deps of the old version (they're
-	// automagically fixed)
-	for(typename version::dep_iterator di=old_version.deps_begin();
-	    !di.end(); ++di)
-	  {
-	    dep d = *di;
-
-	    broken_deps.erase(d);
-	    unresolved_soft_deps.erase(d);
-	  }
-
-	// Check forward deps of the new version (no need to erase
-	// non-broken dependencies since they're automatically
-	// non-broken at the start)
-	for(typename version::dep_iterator di=a.ver.deps_begin();
-	    !di.end(); ++di)
-	  {
-	    dep d = *di;
-
-	    if(!unresolved_soft_deps.contains(d) &&
-	       (d).broken_under(tmpsol))
-	      broken_deps.insert(d);
-	  }
-      }
-
-
-    int score
-      = action_score + broken_deps.size()*weights.broken_score
-      + unresolved_soft_deps.size()*weights.unfixed_soft_score;
-
-    if(broken_deps.empty())
-      score += weights.full_solution_score;
-
-    return generic_solution(new solution_rep(actions,
-					     broken_deps,
-					     unresolved_soft_deps,
-					     forbidden_versions,
-					     score,
-					     action_score));
-  }
+				    const solution_weights &weights);
 
   ~generic_solution()
   {
@@ -744,5 +619,140 @@ public:
     }
   };
 }; // End solution wrapper
+
+
+template<typename PackageUniverse>
+template<typename a_iter, typename u_iter>
+generic_solution<PackageUniverse>
+generic_solution<PackageUniverse>::successor(const generic_solution &s,
+					     const a_iter &abegin,
+					     const a_iter &aend,
+					     const u_iter &ubegin,
+					     const u_iter &uend,
+					     const PackageUniverse &universe,
+					     const solution_weights &weights)
+{
+  imm::set<dep> broken_deps = s.get_broken();
+  imm::map<package, action> actions = s.get_actions();
+  imm::map<version, dep> forbidden_versions = s.get_forbidden_versions();
+  imm::set<dep> unresolved_soft_deps = s.get_unresolved_soft_deps();
+  int action_score = s.get_action_score();
+
+  // Add notes about unresolved dependencies
+  for(u_iter ui = ubegin; ui != uend; ++ui)
+    {
+      const dep &d = *ui;
+
+      eassert(broken_deps.contains(d));
+      broken_deps.erase(d);
+      unresolved_soft_deps.insert(d);
+    }
+
+  for(a_iter ai = abegin; ai != aend; ++ai)
+    {
+      const action &a = *ai;
+      eassert(!actions.domain_contains(a.ver.get_package()));
+      eassert(a.ver != a.ver.get_package().current_version());
+
+      actions.put(a.ver.get_package(), a);
+
+      action_score += weights.step_score;
+      action_score += weights.version_scores[a.ver.get_id()];
+      action_score -= weights.version_scores[a.ver.get_package().current_version().get_id()];
+
+      if(a.from_dep_source)
+	{
+	  for(typename dep::solver_iterator si = a.d.solvers_begin();
+	      !si.end(); ++si)
+	    forbidden_versions.put(*si, a.d);
+	}
+
+
+
+      // Update the set of broken dependencies, trying to re-use as
+      // much of the former set as possible.
+      version old_version=s.version_of(a.ver.get_package());
+      solution_map_wrapper tmpsol(actions);
+
+      // Check reverse deps of the old version
+      for(typename version::revdep_iterator rdi=old_version.revdeps_begin();
+	  !rdi.end(); ++rdi)
+	{
+	  dep rd = *rdi;
+
+	  if((rd).broken_under(tmpsol))
+	    {
+	      if(!unresolved_soft_deps.contains(rd))
+		broken_deps.insert(rd);
+	    }
+	  else
+	    {
+	      broken_deps.erase(rd);
+	      unresolved_soft_deps.erase(rd);
+	    }
+	}
+
+      // Check reverse deps of the new version
+      //
+      // Because reverse deps of a version might be fixed by its
+      // removal, we need to check brokenness and insert or erase as
+      // appropriate.
+      for(typename version::revdep_iterator rdi = a.ver.revdeps_begin();
+	  !rdi.end(); ++rdi)
+	{
+	  dep rd = *rdi;
+
+	  if((rd).broken_under(tmpsol))
+	    {
+	      if(!unresolved_soft_deps.contains(rd))
+		broken_deps.insert(rd);
+	    }
+	  else
+	    {
+	      broken_deps.erase(rd);
+	      unresolved_soft_deps.erase(rd);
+	    }
+	}
+
+      // Remove all forward deps of the old version (they're
+      // automagically fixed)
+      for(typename version::dep_iterator di=old_version.deps_begin();
+	  !di.end(); ++di)
+	{
+	  dep d = *di;
+
+	  broken_deps.erase(d);
+	  unresolved_soft_deps.erase(d);
+	}
+
+      // Check forward deps of the new version (no need to erase
+      // non-broken dependencies since they're automatically
+      // non-broken at the start)
+      for(typename version::dep_iterator di=a.ver.deps_begin();
+	  !di.end(); ++di)
+	{
+	  dep d = *di;
+
+	  if(!unresolved_soft_deps.contains(d) &&
+	     (d).broken_under(tmpsol))
+	    broken_deps.insert(d);
+	}
+    }
+
+
+  int score
+    = action_score + broken_deps.size()*weights.broken_score
+    + unresolved_soft_deps.size()*weights.unfixed_soft_score;
+
+  if(broken_deps.empty())
+    score += weights.full_solution_score;
+
+  return generic_solution(new solution_rep(actions,
+					   broken_deps,
+					   unresolved_soft_deps,
+					   forbidden_versions,
+					   score,
+					   action_score));
+}
 
 #endif // SOLUTION_H
