@@ -1,6 +1,6 @@
 // immset.h                                     -*-c++-*-
 //
-//   Copyright (C) 2005-2006 Daniel Burrows
+//   Copyright (C) 2005-2006, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -1011,6 +1011,21 @@ namespace imm
     void dump(std::ostream &out) const
     {
       contents.dump(out);
+    }
+
+    /** \brief Return \b true if each binding is related under
+     *  compare to a binding in other of an equivalent key.
+     */
+    template<typename BindingCmp>
+    bool is_supermap_of_under(const map &other,
+			      const BindingCmp &compare = BindingCmp()) const
+    {
+      return contents.contains(other.contents, compare);
+    }
+
+    bool is_supermap_of(const map &other)
+    {
+      return contents.contains(other.contents, std::equal_to<std::pair<Key, Val> >());
     }
 
     bool domain_intersects(const map &other) const

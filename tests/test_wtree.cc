@@ -1,6 +1,6 @@
 // test_wtree.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -746,6 +746,159 @@ do  { \
     assertNotContains(t, s1);
     assertContains(t, s2);
     assertNotContains(t, s3);
+  }
+
+#define assertNotSupermap(a, b) \
+  do { \
+    if(a.is_supermap_of(b)) \
+      { \
+        std::ostringstream out; \
+        out << a << " unexpectedly is a supermap of " << b << ":"\
+            << std::endl; \
+        a.dump(out); \
+        b.dump(out); \
+        CPPUNIT_FAIL(out.str()); \
+      } \
+     } while(0)
+
+#define assertSupermap(a, b) \
+  do { \
+    if(!a.is_supermap_of(b)) \
+      { \
+        std::ostringstream out; \
+        out << a << " unexpectedly is not a supermap of " << b << ":"\
+            << std::endl; \
+        a.dump(out); \
+        b.dump(out); \
+        CPPUNIT_FAIL(out.str()); \
+      } \
+     } while(0)
+
+  void testSupermap()
+  {
+    map<int, int> s1;
+    map<int, int> s2;
+    map<int, int> s3;
+
+    s1.put(5, 6);
+
+    s2.put(6, 2);
+    s2.put(8, 10);
+
+    s3.put(10, 3);
+    s3.put(5, 7);
+
+    map<int, int> t;
+
+    assertSupermap(s1, t);
+    assertSupermap(s2, t);
+    assertSupermap(s3, t);
+    assertNotSupermap(t, s1);
+    assertNotSupermap(t, s2);
+    assertNotSupermap(t, s3);
+
+
+
+    t.put(5, 2);
+
+    assertNotSupermap(s1, t);
+    assertNotSupermap(s2, t);
+    assertNotSupermap(s3, t);
+    assertNotSupermap(t, s1);
+    assertNotSupermap(t, s2);
+    assertNotSupermap(t, s3);
+
+
+    t.put(5, 6);
+
+    assertSupermap(s1, t);
+    assertNotSupermap(s2, t);
+    assertNotSupermap(s3, t);
+    assertSupermap(t, s1);
+    assertNotSupermap(t, s2);
+    assertNotSupermap(t, s3);
+
+
+    t.put(5, 7);
+
+    assertNotSupermap(s1, t);
+    assertNotSupermap(s2, t);
+    assertSupermap(s3, t);
+    assertNotSupermap(t, s1);
+    assertNotSupermap(t, s2);
+    assertNotSupermap(t, s3);
+
+
+    t.put(10, 3);
+    t.put(5, 6);
+
+    assertNotSupermap(s1, t);
+    assertNotSupermap(s2, t);
+    assertNotSupermap(s3, t);
+    assertNotSupermap(t, s1);
+    assertNotSupermap(t, s2);
+    assertNotSupermap(t, s3);
+
+    t.put(5, 7);
+    t.put(10, 3);
+
+    assertNotSupermap(s1, t);
+    assertNotSupermap(s2, t);
+    assertSupermap(s3, t);
+    assertSupermap(t, s1);
+    assertNotSupermap(t, s2);
+    assertSupermap(t, s3);
+
+    t.put(6, 2);
+
+
+    assertNotSupermap(s1, t);
+    assertNotSupermap(s2, t);
+    assertNotSupermap(s3, t);
+    assertSupermap(t, s1);
+    assertNotSupermap(t, s2);
+    assertSupermap(t, s3);
+
+    t.erase(5);
+
+    assertNotSupermap(s1, t);
+    assertNotSupermap(s2, t);
+    assertNotSupermap(s3, t);
+    assertNotSupermap(t, s1);
+    assertNotSupermap(t, s2);
+    assertNotSupermap(t, s3);
+
+
+    t.put(9, 100);
+
+
+    assertNotSupermap(s1, t);
+    assertNotSupermap(s2, t);
+    assertNotSupermap(s3, t);
+    assertNotSupermap(t, s1);
+    assertNotSupermap(t, s2);
+    assertNotSupermap(t, s3);
+
+
+    t.put(8, 10);
+
+    assertNotSupermap(s1, t);
+    assertNotSupermap(s2, t);
+    assertNotSupermap(s3, t);
+    assertNotSupermap(t, s1);
+    assertSupermap(t, s2);
+    assertNotSupermap(t, s3);
+
+
+    t.erase(9);
+
+
+    assertNotSupermap(s1, t);
+    assertNotSupermap(s2, t);
+    assertNotSupermap(s3, t);
+    assertNotSupermap(t, s1);
+    assertSupermap(t, s2);
+    assertNotSupermap(t, s3);
   }
 
   void generalWTreeTest()
