@@ -1593,6 +1593,43 @@ i A texlive-latex-extra Conflicts textopo</screen>
     </variablelist>
   </refsect1>
 
+
+  <refsect1>
+    <title>Files</title>
+
+    <variablelist>
+      <varlistentry>
+	<term><filename>/var/lib/aptitude/pkgstates</filename></term>
+	<listitem>
+	  <para>
+	    The file in which stored package states and some package
+	    flags are stored.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <filename>/etc/apt/apt.conf</filename>,
+	  <filename>/etc/apt/apt.conf.d/*</filename>,
+	  <filename>~/.aptitude/config</filename>
+	</term>
+	<listitem>
+	  <para>
+	    The configuration files for &aptitude;.
+	    <filename>~/.aptitude/config</filename> overrides
+	    <filename>/etc/apt/apt.conf</filename>.  See
+	    <citerefentry><refentrytitle>apt.conf</refentrytitle><manvolnum>5</manvolnum></citerefentry>
+	    for documentation of the format and contents of these
+	    files.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+
   <refsect1>
     <title>See Also</title>
 
