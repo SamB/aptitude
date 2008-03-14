@@ -1,6 +1,6 @@
 // solution_screen.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -158,16 +158,21 @@ cw::subtree_generic *make_dep_solvers_tree(const aptitude_resolver_dep &d)
 
   root->add_child(resolvers);
 
-  for(aptitude_resolver_package::version_iterator
-	vi = d.get_source().get_package().versions_begin(); !vi.end(); ++vi)
-    if(*vi != d.get_source())
-      {
-	aptitude_solution::action act(*vi, d, true, 0);
+  // Soft dependencies (i.e., Recommends) can't be "fixed" by removing
+  // or upgrading the depending package.
+  if(!d.is_soft())
+    {
+      for(aptitude_resolver_package::version_iterator
+	    vi = d.get_source().get_package().versions_begin(); !vi.end(); ++vi)
+	if(*vi != d.get_source())
+	  {
+	    aptitude_solution::action act(*vi, d, true, 0);
 
-	resolvers->add_child(new solution_act_item(act,
-						   sigc::slot1<void, cw::fragment *>(),
-						   sigc::slot1<void, aptitude_resolver_dep>()));
-      }
+	    resolvers->add_child(new solution_act_item(act,
+						       sigc::slot1<void, cw::fragment *>(),
+						       sigc::slot1<void, aptitude_resolver_dep>()));
+	  }
+    }
 
   for(aptitude_resolver_dep::solver_iterator
 	si = d.solvers_begin(); !si.end(); ++si)

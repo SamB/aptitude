@@ -2116,21 +2116,33 @@ private:
     typename imm::map<package, action>::node
       source_found = s.get_actions().lookup(source.get_package());
 
-    // Try moving the source, if it is legal to do so
-    if(source_found.isValid())
-      insert_conflictor(conflict, action(source, d, false, -1));
-    else
+    // Try moving the source, if it is legal to do so.
+    //
+    // The source is not moved for soft deps: these model Recommends,
+    // and experience has shown that users find it disturbing to have
+    // packages upgraded or removed due to their recommendations.
+    //
+    // Note that a conflictor is never generated for the source if the
+    // dep is soft, since there's no logical dependency in that case
+    // between the source being in the working solution and the
+    // dependency being unsatisfiable.
+    if(!d.is_soft())
       {
-	eassert_on_2objs_soln(source == source.get_package().current_version(),
-			      source,
-			      source.get_package().current_version(),
-			      s);
+	if(source_found.isValid())
+	  insert_conflictor(conflict, action(source, d, false, -1));
+	else
+	  {
+	    eassert_on_2objs_soln(source == source.get_package().current_version(),
+				  source,
+				  source.get_package().current_version(),
+				  s);
 
-	for(typename package::version_iterator vi = source.get_package().versions_begin();
-	    !vi.end(); ++vi)
-	  if(*vi != source)
-	    generate_single_successor(s, d, *vi, true, conflict, generator,
-				      visited_packages);
+	    for(typename package::version_iterator vi = source.get_package().versions_begin();
+		!vi.end(); ++vi)
+	      if(*vi != source)
+		generate_single_successor(s, d, *vi, true, conflict, generator,
+					  visited_packages);
+	  }
       }
 
     // Now try installing each target of the dependency.
