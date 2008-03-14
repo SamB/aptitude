@@ -614,7 +614,7 @@ private:
   // Information regarding the weight given to various parameters;
   // packaged up in a struct so it can be easily used by the solution
   // constructors.
-  solution_weights weights;
+  solution_weights<PackageUniverse> weights;
 
   /** Solutions whose score is smaller than this value will be
    *  discarded rather than being enqueued.
@@ -1935,7 +1935,7 @@ private:
 			const a_iter &abegin, const a_iter &aend,
 			const u_iter &ubegin, const u_iter &uend,
 			const PackageUniverse &universe,
-			const solution_weights &weights) const
+			const solution_weights<PackageUniverse> &weights) const
     {
       target.push_back(solution::successor(s,
 					   abegin, aend,
@@ -1981,7 +1981,7 @@ private:
 			const a_iter &abegin, const a_iter &aend,
 			const u_iter &ubegin, const u_iter &uend,
 			const PackageUniverse &universe,
-			const solution_weights &weights) const
+			const solution_weights<PackageUniverse> &weights) const
     {
       ++count;
     }
@@ -2471,6 +2471,19 @@ public:
     return weights.version_scores[ver.get_id()];
   }
 
+  /** \brief Add a score to all solutions that install the given
+   *  collection of versions.
+   *
+   *  Note that this does not mean "all solutions that result in the
+   *  given set of versions being installed".  The versions must be
+   *  newly installed in the solution; if any version is the current
+   *  version of its package, this call has no effect.
+   */
+  void add_joint_score(const imm::set<version> &versions, int score)
+  {
+    weights.add_joint_score(versions, score);
+  }
+
   /** Reject future solutions containing this version.
    */
   void reject_version(const version &ver, undo_group *undo = NULL)
@@ -2952,6 +2965,20 @@ public:
 	    out << " >" << std::endl;
 	  }
       }
+
+    for(typename std::vector<std::pair<imm::set<version>, int> >::const_iterator it =
+	  weights.get_joint_scores_list().begin();
+	it != weights.get_joint_scores_list().end(); ++it)
+      {
+	out << "  SCORE { ";
+	for(typename imm::set<version>::const_iterator vIt = it->first.begin();
+	    vIt != it->first.end(); ++vIt)
+	  {
+	    out << *vIt << " ";
+	  }
+	out << "} " << it->second << std::endl;
+      }
+
     out << "}" << std::endl;
   }
 };

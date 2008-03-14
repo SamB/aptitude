@@ -1,6 +1,6 @@
 // test_resolver.cc                       -*-c++-*-
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -93,6 +93,7 @@ class ResolverTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testActionCompare);
   CPPUNIT_TEST(testSolutionCompare);
   CPPUNIT_TEST(testRejections);
+  CPPUNIT_TEST(testJointScores);
   CPPUNIT_TEST(testDropSolutionSupersets);
 
   CPPUNIT_TEST_SUITE_END();
@@ -183,7 +184,7 @@ private:
     CPPUNIT_ASSERT(!di.end());
     dummy_universe::dep d2 = *di;
 
-    solution_weights weights(0, 0, 0, 0, u.get_version_count());
+    solution_weights<dummy_universe_ref> weights(0, 0, 0, 0, u.get_version_count());
 
     imm::set<dummy_universe::dep> u_broken;
     for(dummy_universe::broken_dep_iterator bi = u.broken_begin();
@@ -307,6 +308,88 @@ private:
     catch(NoMoreSolutions)
       {
 	CPPUNIT_FAIL("Expected at least one solution, got none.");
+      }
+  }
+
+  // Check that joint scores work.
+  void testJointScores()
+  {
+    typedef dummy_universe_ref::package package;
+    typedef dummy_universe_ref::version version;
+    typedef dummy_universe_ref::dep dep;
+    typedef dummy_solution::action action;
+
+    dummy_universe_ref u = parseUniverse(dummy_universe_2);
+    dummy_resolver r(10, -300, -100, 10000000, 0, 500, u);
+    r.set_debug(true);
+    // Score the combination of b, v1 and a, v2 highly.
+    package a = u.find_package("a");
+    package b = u.find_package("b");
+    package c = u.find_package("c");
+    version av2 = a.version_from_name("v2");
+    version bv1 = b.version_from_name("v1");
+    version bv2 = b.version_from_name("v2");
+    version cv2 = c.version_from_name("v2");
+
+    imm::set<version> action_pair, action_pair2;
+    action_pair.insert(av2);
+    action_pair.insert(bv1);
+    action_pair2.insert(bv2);
+    action_pair2.insert(cv2);
+
+    const int test_score = 100000;
+    const int test_score2 = -200000;
+    r.add_joint_score(action_pair, test_score);
+    r.add_joint_score(action_pair2, test_score2);
+
+    bool saw_one_positive = false;
+    bool saw_one_negative = false;
+    bool saw_one_positive2 = false;
+    while(1)
+      {
+	try
+	  {
+	    dummy_solution sol = r.find_next_solution(1000000, NULL);
+
+	    if(sol.version_of(a) == av2 &&
+	       sol.version_of(b) == bv1)
+	      {
+		saw_one_positive = true;
+		// Check that we *don't* apply the joint score in
+		// this case, since b starts out at v1.
+		CPPUNIT_ASSERT_EQUAL((int)(sol.get_actions().size()) * r.get_step_score() + r.get_full_solution_score(),
+				     sol.get_score());
+	      }
+	    else if(sol.version_of(b) == bv2 &&
+		    sol.version_of(c) == cv2)
+	      {
+		saw_one_positive2 = true;
+		saw_one_negative = true;
+		CPPUNIT_ASSERT_EQUAL(test_score2 + ((int)sol.get_actions().size()) * r.get_step_score() + r.get_full_solution_score(),
+				     sol.get_score());
+	      }
+	    else
+	      {
+		saw_one_negative = true;
+		CPPUNIT_ASSERT_EQUAL((int)(sol.get_actions().size() * r.get_step_score()) + r.get_full_solution_score(),
+				     sol.get_score());
+	      }
+	  }
+	catch(NoMoreTime&)
+	  {
+	    CPPUNIT_FAIL("Unable to solve the solution in the ridiculous amount of time I allocated.");
+	  }
+	catch(NoMoreSolutions&)
+	  {
+	    if(!saw_one_positive)
+	      CPPUNIT_FAIL("Expected at least one solution containing a, version 2 and b, version 1");
+	    else if(!saw_one_negative)
+	      CPPUNIT_FAIL("Expected at least one solution containing a, version 1 or b, version 2");
+	    else if(!saw_one_positive2)
+	      CPPUNIT_FAIL("Expected at least one solution containing b, version 2 and c, version 2");
+
+	    break;
+	  }
       }
   }
 

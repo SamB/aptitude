@@ -1,6 +1,6 @@
 // test.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -32,10 +32,13 @@
 #include <vector>
 
 #include <cwidget/generic/util/eassert.h>
+#include <cwidget/generic/util/ssprintf.h>
 
 #include <string.h>
 
 using namespace std;
+
+namespace cw = cwidget;
 
 // To make things easier, the tests are specified as plaintext files.
 // The syntax is quite simple: it consists of whitespace-separated
@@ -50,11 +53,78 @@ using namespace std;
 //
 // TEST ::= "TEST" step_score broken_score "{" SCORE ... "}" "EXPECT" "(" SOLN ... ")"
 // SCORE ::= "SCORE" pkgname "<" vername1 score1 ... ">"
+//        |  "SCORE" { (pkgname vername)* } score
 // SOLN ::= step_count "ANY"
 //       |  step_count "<" pkgname1 vername1 ... ">"
 //
 // The second DEP form is a Conflicts, and is implicitly converted to
 // dependency form internally.
+
+namespace
+{
+  dummy_universe_ref::package parse_package(istream &f,
+					    dummy_universe_ref universe)
+  {
+    f >> ws;
+    if(f.eof())
+      throw ParseError("Expected package name, got EOF");
+
+    string package;
+
+    f >> package >> ws;
+
+    return universe.find_package(package);
+  }
+
+  dummy_universe_ref::version parse_version(istream &f,
+					    dummy_universe_ref universe)
+  {
+    dummy_universe_ref::package package = parse_package(f, universe);
+
+    f >> ws;
+
+    if(f.eof())
+      throw ParseError("Expected version name, got EOF.");
+
+    string version;
+    f >> version >> ws;
+
+    return package.version_from_name(version);
+  }
+
+  void parse_expected(istream &f, const std::string &expected)
+  {
+    f >> ws;
+
+    if(f.eof())
+      throw ParseError(cw::util::ssprintf("Expected %s, got EOF.", expected.c_str()));
+
+    string s;
+    f >> s >> ws;
+
+    if(s != expected)
+      throw ParseError(cw::util::ssprintf("Expected %s, got %s.",
+					  expected.c_str(),
+					  s.c_str()));
+  }
+
+  imm::set<dummy_universe_ref::version> parse_version_set_tail(istream &f,
+							       dummy_universe_ref universe)
+  {
+    imm::set<dummy_universe_ref::version> rval;
+    f >> ws;
+    while(f.peek() != '}')
+      {
+	rval.insert(parse_version(f, universe));
+
+	f >> ws;
+      }
+
+    parse_expected(f, "}");
+
+    return rval;
+  }
+}
 
 /** Reads the list of scores into the resolver. */
 void read_scores(istream &f,
@@ -67,6 +137,11 @@ void read_scores(istream &f,
 
   while(f)
     {
+      f >> ws;
+
+      if(f.eof())
+	throw ParseError("Expected '}' or SCORE, got EOF");
+
       string s;
 
       f >> s >> ws;
@@ -82,47 +157,64 @@ void read_scores(istream &f,
 
 	  f >> pkgname >> ws;
 
-	  dummy_universe::package pkg=universe.find_package(pkgname);
-
-	  if(f.eof())
-	    throw ParseError("Expected '<' following package name, got EOF");
-
-	  f >> s >> ws;
-
-	  if(s != "<")
-	    throw ParseError("Expected '<' following package name, got "+s);
-
-	  if(f.eof())
-	    throw ParseError("Expected '>' or version name, got EOF");
-
-	  while(f)
+	  if(pkgname == "{")
 	    {
-	      string vername;
+	      imm::set<dummy_universe_ref::version> joint_set = parse_version_set_tail(f, universe);
+
 	      int score;
-
-	      f >> vername >> ws;
-
-	      if(vername == ">")
-		break;
-
-	      dummy_universe::version ver=pkg.version_from_name(vername);
+	      f >> ws;
 
 	      if(f.eof())
 		throw ParseError("Expected score, got EOF");
 
 	      f >> score >> ws;
 
+	      if(!f)
+		throw ParseError("Error parsing the score of a joint score set.");
+
+	      resolver.add_joint_score(joint_set, score);
+	    }
+	  else
+	    {
+	      dummy_universe::package pkg=universe.find_package(pkgname);
+
+	      if(f.eof())
+		throw ParseError("Expected '<' following package name, got EOF");
+
+	      f >> s >> ws;
+
+	      if(s != "<")
+		throw ParseError("Expected '<' following package name, got "+s);
+
 	      if(f.eof())
 		throw ParseError("Expected '>' or version name, got EOF");
 
-	      if(!f)
-		throw ParseError("Error reading score of " + pkgname + " " + vername);
+	      while(f)
+		{
+		  string vername;
+		  int score;
 
-	      resolver.set_version_score(ver, score);
+		  f >> vername >> ws;
+
+		  if(vername == ">")
+		    break;
+
+		  dummy_universe::version ver=pkg.version_from_name(vername);
+
+		  if(f.eof())
+		    throw ParseError("Expected score, got EOF");
+
+		  f >> score >> ws;
+
+		  if(f.eof())
+		    throw ParseError("Expected '>' or version name, got EOF");
+
+		  if(!f)
+		    throw ParseError("Error reading score of " + pkgname + " " + vername);
+
+		  resolver.set_version_score(ver, score);
+		}
 	    }
-
-	  if(f.eof())
-	    throw ParseError("Expected '}' or SCORE, got EOF");
 	}
       else
 	throw ParseError("Expected 'SCORE' or '}', got "+s);

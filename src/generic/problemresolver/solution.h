@@ -23,8 +23,11 @@
 #define SOLUTION_H
 
 #include <iostream>
+#include <map>
+
 #include <generic/util/immset.h>
 
+template<typename PackageUniverse>
 class solution_weights;
 
 /** Represents a partial or complete solution to a dependency
@@ -267,7 +270,7 @@ public:
   /** Generate the root node for a search in the given universe. */
   static generic_solution root_node(const imm::set<dep> &initial_broken,
 				    const PackageUniverse &universe,
-				    const solution_weights &weights);
+				    const solution_weights<PackageUniverse> &weights);
 
   /** Generate a successor to the given solution.
    *
@@ -281,7 +284,7 @@ public:
 				    const u_iter &ubegin,
 				    const u_iter &uend,
 				    const PackageUniverse &universe,
-				    const solution_weights &weights);
+				    const solution_weights<PackageUniverse> &weights);
 
   ~generic_solution()
   {
@@ -573,8 +576,32 @@ public:
 /** Represents the current score weights for a resolver.  Used to
  *  calculate scores at the time a solution is instantiated.
  */
+template<typename  PackageUniverse>
 struct solution_weights
 {
+  typedef typename PackageUniverse::package package;
+  typedef typename PackageUniverse::version version;
+  typedef typename PackageUniverse::dep dep;
+  typedef typename generic_solution<PackageUniverse>::action action;
+
+  /** \brief Represents a score assigned to a collection of actions. */
+  class joint_score
+  {
+    imm::map<package, action> actions;
+    int score;
+
+  public:
+    joint_score(const imm::map<package, action> &_actions, int _score)
+      : actions(_actions), score(_score)
+    {
+    }
+
+    const imm::map<package, action> &get_actions() const { return actions; }
+    int get_score() const { return score; }
+  };
+
+  typedef std::map<action, std::vector<joint_score> > joint_score_set;
+
   /** How much to reward long and/or broken solutions.  Typically
    *  negative to penalize such things, or 0 to ignore them.
    */
@@ -592,6 +619,21 @@ struct solution_weights
    */
   int *version_scores;
 
+private:
+  /** \brief Scores that apply to simultaneous collections of
+   *  versions.
+   */
+  joint_score_set joint_scores;
+
+  /** \brief A list of the joint scores added to this
+   *  set of weights, in order.
+   *
+   *  Each entry is a pair of the versions that are affected to and
+   *  the score to add.
+   */
+  std::vector<std::pair<imm::set<version>, int> > joint_scores_list;
+
+public:
   solution_weights(int _step_score, int _broken_score,
 		   int _unfixed_soft_score, int _full_solution_score,
 		   unsigned long num_versions)
@@ -608,15 +650,86 @@ struct solution_weights
   {
     delete[] version_scores;
   }
+
+private:
+  class build_joint_score_action_set
+  {
+    imm::map<package, action> &output;
+    bool &any_is_current;
+  public:
+    build_joint_score_action_set(imm::map<package, action> &_output,
+				 bool &_any_is_current)
+      : output(_output), any_is_current(_any_is_current)
+    {
+    }
+
+    void operator()(const version &version) const
+    {
+      if(version == version.get_package().current_version())
+	any_is_current = true;
+
+      output.put(version.get_package(),
+		 action(version, dep(), false, 0));
+    }
+  };
+
+  class add_to_joint_scores
+  {
+    typedef typename solution_weights<PackageUniverse>::joint_score joint_score;
+    typedef typename solution_weights<PackageUniverse>::joint_score_set joint_score_set;
+    typedef typename generic_solution<PackageUniverse>::action action;
+
+    joint_score_set &s;
+    joint_score score;
+  public:
+    add_to_joint_scores(joint_score_set &_s, const joint_score &_score)
+      : s(_s), score(_score)
+    {
+    }
+
+    void operator()(const std::pair<package, action> &entry) const
+    {
+      const typename joint_score_set::iterator found =
+	s.find(entry.second);
+
+      if(found == s.end())
+	s[entry.second].push_back(score);
+      else
+	found->second.push_back(score);
+    }
+  };
+
+public:
+  void add_joint_score(const imm::set<version> &versions, int score)
+  {
+    // Build a map internally: it's easier to compare a map to another
+    // map than to compare it to a set.  (could be fixed by allowing
+    // disjoint sets to be compared under inclusion with an
+    // appropriate cross-compare)
+    imm::map<package, action> actions_map;
+    bool any_is_current = false;
+    versions.for_each(build_joint_score_action_set(actions_map,
+						   any_is_current));
+
+    if(any_is_current)
+      return;
+
+    joint_scores_list.push_back(std::make_pair(versions, score));
+
+    actions_map.for_each(add_to_joint_scores(joint_scores,
+					     typename solution_weights<PackageUniverse>::joint_score(actions_map, score)));
+  }
+
+  const joint_score_set &get_joint_scores() const { return joint_scores; }
+  const std::vector<std::pair<imm::set<version>, int> > &
+  get_joint_scores_list() const { return joint_scores_list; }
 };
 
-
-/** Generate the root node for a search in the given universe. */
 template<typename PackageUniverse>
 inline generic_solution<PackageUniverse>
 generic_solution<PackageUniverse>::root_node(const imm::set<dep> &initial_broken,
 					     const PackageUniverse &universe,
-					     const solution_weights &weights)
+					     const solution_weights<PackageUniverse> &weights)
 {
   int score = initial_broken.size() * weights.broken_score;
 
@@ -641,7 +754,7 @@ generic_solution<PackageUniverse>::successor(const generic_solution &s,
 					     const u_iter &ubegin,
 					     const u_iter &uend,
 					     const PackageUniverse &universe,
-					     const solution_weights &weights)
+					     const solution_weights<PackageUniverse> &weights)
 {
   imm::set<dep> broken_deps = s.get_broken();
   imm::map<package, action> actions = s.get_actions();
@@ -670,6 +783,22 @@ generic_solution<PackageUniverse>::successor(const generic_solution &s,
       action_score += weights.step_score;
       action_score += weights.version_scores[a.ver.get_id()];
       action_score -= weights.version_scores[a.ver.get_package().current_version().get_id()];
+
+      // Look for joint score constraints triggered by adding this
+      // action.
+      const typename solution_weights<PackageUniverse>::joint_score_set::const_iterator
+	joint_scores_found = weights.get_joint_scores().find(a);
+      if(joint_scores_found != weights.get_joint_scores().end())
+	{
+	  typedef typename solution_weights<PackageUniverse>::joint_score joint_score;
+	  for(typename std::vector<joint_score>::const_iterator it =
+		joint_scores_found->second.begin();
+	      it != joint_scores_found->second.end(); ++it)
+	    {
+	      if(actions.is_supermap_of(it->get_actions()))
+		action_score += it->get_score();
+	    }
+	}
 
       if(a.from_dep_source)
 	{
@@ -749,7 +878,6 @@ generic_solution<PackageUniverse>::successor(const generic_solution &s,
 	    broken_deps.insert(d);
 	}
     }
-
 
   int score
     = action_score + broken_deps.size()*weights.broken_score
