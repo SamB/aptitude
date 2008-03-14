@@ -1019,3 +1019,49 @@ std::wstring get_long_description(const pkgCache::VerIterator &ver,
     return cwidget::util::transcode(records->Lookup(df).LongDesc());
 #endif
 }
+
+bool is_full_replacement(const pkgCache::DepIterator &dep)
+{
+  if(dep.end())
+    return false;
+
+  if(dep->Type != pkgCache::Dep::Replaces)
+    return false;
+
+  if((dep->CompareOp & ~pkgCache::Dep::Or) != pkgCache::Dep::NoOp)
+    return false;
+
+  pkgCache::PkgIterator target = const_cast<pkgCache::DepIterator &>(dep).TargetPkg();
+
+  // Check whether the parent of the dep provides this target and
+  // conflicts with it.
+
+  bool found_provides = false;
+
+  for(pkgCache::PrvIterator prv = const_cast<pkgCache::DepIterator &>(dep).ParentVer().ProvidesList();
+      !found_provides && !prv.end(); ++prv)
+    {
+      if(prv.ParentPkg() == target)
+	found_provides = true;
+    }
+
+  if(!found_provides)
+    return false;
+
+  bool found_conflicts = false;
+
+  for(pkgCache::DepIterator possible_conflict = const_cast<pkgCache::DepIterator &>(dep).ParentVer().DependsList();
+      !found_conflicts && !possible_conflict.end(); ++possible_conflict)
+    {
+      if(possible_conflict->Type == pkgCache::Dep::Conflicts &&
+	 (possible_conflict->CompareOp & ~pkgCache::Dep::Or) == pkgCache::Dep::NoOp &&
+	 possible_conflict.TargetPkg() == target)
+	found_conflicts = true;
+    }
+
+  if(!found_conflicts)
+    return false;
+
+
+  return true;
+}

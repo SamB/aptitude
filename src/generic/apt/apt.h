@@ -1,6 +1,6 @@
 // apt.h  -*-c++-*-
 //
-//  Copyright 1999-2002, 2004-2005, 2007 Daniel Burrows
+//  Copyright 1999-2002, 2004-2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -269,6 +269,20 @@ inline bool is_conflict(unsigned char type)
 inline bool is_conflict(pkgCache::Dep::DepType type)
 {
   return is_conflict(static_cast<unsigned char>(type));
+}
+
+namespace aptitude
+{
+  namespace apt
+  {
+    /** \return \b true if the given dependency is a Replaces dependency
+     *  and participates in a conflicts/provides/replaces relationship.
+     *
+     *  Note that replaces and conflicts relationships without a
+     *  version aren't considered; should they be?
+     */
+    bool is_full_replacement(const pkgCache::DepIterator &dep);
+  }
 }
 
 #endif
