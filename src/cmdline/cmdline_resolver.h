@@ -28,6 +28,31 @@
 class aptitude_universe;
 
 class pkgPolicy;
+namespace aptitude
+{
+  namespace cmdline
+  {
+    /** \brief Represents the termination state of the
+     *  command-line resolver.
+     */
+    enum cmdline_resolver_result
+      {
+	/** \brief The resolver produced and applied a solution
+	 *  to the broken dependencies.
+	 */
+	resolver_success,
+	/** \brief The resolver encountered a fatal (possibly
+	 *  internal) error or was cancelled by the user; the caller
+	 *  should fall back to manual resolution.
+	 */
+	resolver_incomplete,
+	/** \brief The user asked to quit (i.e., pressed "q");
+	 *  the caller should terminate the program.
+	 */
+	resolver_user_exit
+      };
+  }
+}
 
 /** \brief Compute the current solution with a command-line-appropriate
  *  UI.
@@ -86,15 +111,16 @@ void cmdline_dump_resolver();
  *  \param arch_only if \b true, architecture-independent build-dependencies
  *  are ignored.
  */
-bool cmdline_resolve_deps(pkgset &to_install,
-			  pkgset &to_hold,
-			  pkgset &to_remove,
-			  pkgset &to_purge,
-			  bool assume_yes,
-			  bool force_no_change,
-			  int verbose,
-			  pkgPolicy &policy,
-			  bool arch_only);
+aptitude::cmdline::cmdline_resolver_result
+cmdline_resolve_deps(pkgset &to_install,
+		     pkgset &to_hold,
+		     pkgset &to_remove,
+		     pkgset &to_purge,
+		     bool assume_yes,
+		     bool force_no_change,
+		     int verbose,
+		     pkgPolicy &policy,
+		     bool arch_only);
 
 namespace aptitude
 {

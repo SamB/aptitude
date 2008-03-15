@@ -573,15 +573,16 @@ aptitude_solution calculate_current_solution()
     return res.sol;
 }
 
-bool cmdline_resolve_deps(pkgset &to_install,
-			  pkgset &to_hold,
-			  pkgset &to_remove,
-			  pkgset &to_purge,
-			  bool assume_yes,
-			  bool force_no_change,
-			  int verbose,
-			  pkgPolicy &policy,
-			  bool arch_only)
+aptitude::cmdline::cmdline_resolver_result
+cmdline_resolve_deps(pkgset &to_install,
+		     pkgset &to_hold,
+		     pkgset &to_remove,
+		     pkgset &to_purge,
+		     bool assume_yes,
+		     bool force_no_change,
+		     int verbose,
+		     pkgPolicy &policy,
+		     bool arch_only)
 {
   bool story_is_default = aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Show-Steps", false);
 
@@ -652,7 +653,7 @@ bool cmdline_resolve_deps(pkgset &to_install,
 		    break;
 		  case 'Q':
 		    cout << _("Abandoning all efforts to resolve these dependencies.") << endl;
-		    return false;
+		    return aptitude::cmdline::resolver_user_exit;
 		  case 'O':
 		    {
 		      story_is_default = !story_is_default;
@@ -750,11 +751,11 @@ bool cmdline_resolve_deps(pkgset &to_install,
 			  {
 			    // ignore and continue looping.
 			  }
-			// NoMoreExceptions flows to the outer catch.
+			// NoMoreException flows to the outer catch.
 			break;
 		      case 'N':
 			cout << _("Abandoning all efforts to resolve these dependencies.") << endl;
-			return false;
+			return aptitude::cmdline::resolver_incomplete;
 		      default:
 			cout << _("Invalid response; please enter 'y' or 'n'.") << endl;
 		      }
@@ -766,7 +767,7 @@ bool cmdline_resolve_deps(pkgset &to_install,
 	    if(resman->generated_solution_count()==0)
 	      {
 		cout << _("Unable to resolve dependencies!  Giving up...") << endl;
-		return false;
+		return aptitude::cmdline::resolver_incomplete;
 	      }
 	    else
 	      {
@@ -786,7 +787,7 @@ bool cmdline_resolve_deps(pkgset &to_install,
 	catch(const CmdlineSearchDisabledException &e)
 	  {
 	    cout << e.errmsg();
-	    return false;
+	    return aptitude::cmdline::resolver_incomplete;
 	  }
 	catch(cwidget::util::Exception &e)
 	  {
@@ -796,7 +797,7 @@ bool cmdline_resolve_deps(pkgset &to_install,
 		 << e.errmsg();
 
 	    if(resman->generated_solution_count() == 0)
-	      return false;
+	      return aptitude::cmdline::resolver_incomplete;
 	    else
 	      {
 		cout << endl << endl;
@@ -809,7 +810,7 @@ bool cmdline_resolve_deps(pkgset &to_install,
 	  }
     }
 
-  return true;
+  return aptitude::cmdline::resolver_success;
 }
 
 

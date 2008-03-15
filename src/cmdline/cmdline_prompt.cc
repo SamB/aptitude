@@ -850,18 +850,26 @@ bool cmdline_do_prompt(bool as_upgrade,
 	{
 	  if(use_internal_resolver)
 	    {
-	      if(!cmdline_resolve_deps(to_install,
-				       to_hold,
-				       to_remove,
-				       to_purge,
-				       assume_yes,
-				       force_no_change,
-				       verbose,
-				       policy,
-				       arch_only))
+	      switch(cmdline_resolve_deps(to_install,
+					  to_hold,
+					  to_remove,
+					  to_purge,
+					  assume_yes,
+					  force_no_change,
+					  verbose,
+					  policy,
+					  arch_only))
 		{
+		case aptitude::cmdline::resolver_success:
+		  break;
+		case aptitude::cmdline::resolver_incomplete:
 		  have_broken = true;
 		  use_internal_resolver = false;
+		  break;
+		case aptitude::cmdline::resolver_user_exit:
+		  exit = true;
+		  rval = false;
+		  break;
 		}
 
 	      if(first && assume_yes)
@@ -873,10 +881,13 @@ bool cmdline_do_prompt(bool as_upgrade,
 		  exit = true;
 		}
 
-	      // Re-display the preview so the user can see any changes
-	      // the resolver made.
-	      cmdline_show_preview(true, to_install, to_hold, to_remove,
-				   showvers, showdeps, showsize, verbose);
+	      if(!exit)
+		{
+		  // Re-display the preview so the user can see any
+		  // changes the resolver made.
+		  cmdline_show_preview(true, to_install, to_hold, to_remove,
+				       showvers, showdeps, showsize, verbose);
+		}
 	    }
 	  else
 	    // The internal resolver is disabled, fall back to manual
