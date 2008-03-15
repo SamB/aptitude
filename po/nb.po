@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_nb\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-15 12:39-0700\n"
+"POT-Creation-Date: 2008-03-15 13:09-0700\n"
 "PO-Revision-Date: 2008-01-03 21:08+0100\n"
 "Last-Translator: Hans Fredrik Nordhaug <hans@nordhaug.priv.no>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
@@ -1496,16 +1496,18 @@ msgstr ""
 "kjør den automatisk avhengighetsløseren for å fikse ødelagte avhengigheter."
 
 #: src/cmdline/cmdline_resolver.cc:198
+#, fuzzy
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
-"occur."
+"occur.  Enter UNINST instead of a version to reject removing the package."
 msgstr ""
 "avvis de gitte pakkeversjonene, ikke vis noen løsninger der de forekommer."
 
 #: src/cmdline/cmdline_resolver.cc:200
+#, fuzzy
 msgid ""
-"accept the given package versions; display only solutions in which they "
-"occur."
+"accept the given package versions (; display only solutions in which they "
+"occur.  Enter UNINST instead of a version to accept removing the package."
 msgstr "godta de gitte pakkeversjonene, vis bare løsninger der de forekommer."
 
 #: src/cmdline/cmdline_resolver.cc:202

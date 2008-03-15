@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.2.15.5\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-15 12:39-0700\n"
+"POT-Creation-Date: 2008-03-15 13:09-0700\n"
 "PO-Revision-Date: 2008-02-23 19:47+0100\n"
 "Last-Translator: Jens Seidel <jensseidel@users.sf.net>\n"
 "Language-Team: Debian German <debian-l10n-german@lists.debian.org>\n"
@@ -1550,17 +1550,19 @@ msgstr ""
 "Abhängigkeiten zu korrigieren."
 
 #: src/cmdline/cmdline_resolver.cc:198
+#, fuzzy
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
-"occur."
+"occur.  Enter UNINST instead of a version to reject removing the package."
 msgstr ""
 "die gegebenen Paketversionen zurückweisen; keine Lösungen anzeigen, in denen "
 "sie auftreten."
 
 #: src/cmdline/cmdline_resolver.cc:200
+#, fuzzy
 msgid ""
-"accept the given package versions; display only solutions in which they "
-"occur."
+"accept the given package versions (; display only solutions in which they "
+"occur.  Enter UNINST instead of a version to accept removing the package."
 msgstr ""
 "die gegebenen Paketversionen akzeptieren; nur Lösungen anzeigen, in denen "
 "sie auftreten."
