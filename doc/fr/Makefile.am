@@ -7,7 +7,7 @@ LANGCODE=fr
 MANPAGE=aptitude.$(LANGCODE).8
 # How much of the manual is actually translated.
 PERCENT_TRANSLATED=50
-MANPAGE_PERCENT_TRANSLATED=60
+MANPAGE_PERCENT_TRANSLATED=40
 
 IMAGES = $(wildcard images/*.png)
 
