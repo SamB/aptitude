@@ -9924,6 +9924,17 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configProblemResolver-FullReplacementScore'>
+	      <seg><literal>Aptitude::ProblemResolver::FullReplacementScore</literal></seg>
+	      <seg><literal>500</literal></seg>
+
+	      <seg>
+		Removing a package and installing another package that
+		fully replaces it (i.e., conflicts with it, replaces
+		it, and provides it) is assigned this score.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configProblemResolver-ImportantScore'>
 	      <seg><literal>Aptitude::ProblemResolver::ImportantScore</literal></seg>
 	      <seg><literal>5</literal></seg>
@@ -10136,6 +10147,16 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		compressed archive of a trace directory; it will take
 		less space than the trace directory and is suitable
 		for transmission over a network.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configProblemResolver-UndoFullReplacementScore'>
+	      <seg><literal>Aptitude::ProblemResolver::UndoFullReplacementScore</literal></seg>
+	      <seg><literal>-500</literal></seg>
+	      <seg>
+		Installing a package and removing another package that
+		fully replaces it (i.e., conflicts with it, replaces
+		it, and provides it) is assigned this score.
 	      </seg>
 	    </seglistitem>
 

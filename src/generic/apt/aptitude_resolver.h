@@ -47,6 +47,12 @@ class aptitude_resolver:public generic_problem_resolver<aptitude_universe>
 {
   imm::map<package, action> keep_all_solution;
 
+  void add_full_replacement_score(const pkgCache::VerIterator &src,
+				  const pkgCache::PkgIterator &real_target,
+				  const pkgCache::VerIterator &provider,
+				  int full_replacement_score,
+				  int undo_full_replacement_score);
+
 public:
   aptitude_resolver(int step_score, int broken_score,
 		    int unfixed_soft_score,
@@ -91,6 +97,13 @@ public:
    * removal of an essential package (typically used to deep-six such
    * solutions by, eg, setting it to -100000)
    *
+   * \param full_replacement_score the score for removing a package p
+   * and installing a package that fully replaces p (i.e., conflicts,
+   * provides, and replaces it).
+   *
+   * \param undo_full_replacement_score the score for installing a
+   * package p and removing a package that fully replaces p.
+   *
    * \param break_hold_score an additional modification applied to
    * solutions that break a hold or violate a forbidding.
    *
@@ -102,6 +115,8 @@ public:
 			 int remove_score, int keep_score,
 			 int install_score, int upgrade_score,
 			 int non_default_score, int essential_remove,
+			 int full_replacement_score,
+			 int undo_full_replacement_score,
 			 int break_hold_score,
 			 bool allow_break_holds_and_forbids);
 
