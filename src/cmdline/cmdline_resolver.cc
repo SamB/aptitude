@@ -166,6 +166,7 @@ static void resolver_help(ostream &out)
 				".: %F"
 				"o: %F"
 				"e: %F"
+				"x: %F"
 				"r pkg ver ...: %F%n"
 				"a pkg ver ...: %F%n"
 				"<ACTION> pkg... : %F%n"
@@ -191,6 +192,8 @@ static void resolver_help(ostream &out)
 					    cw::fragf(_("toggle between the contents of the solution and an explanation of the solution"))),
 			      flowindentbox(0, 3,
 					    cw::fragf(_("examine the solution in the visual user interface"))),
+			      flowindentbox(0, 3,
+					    cw::fragf(_("abort automatic dependency resolution; resolve dependencies by hand instead"))),
 			      flowindentbox(0, 3,
 					    cw::fragf(_("reject the given package versions; don't display any solutions in which they occur."))),
 			      flowindentbox(0, 3,
@@ -654,6 +657,9 @@ cmdline_resolve_deps(pkgset &to_install,
 		  case 'Q':
 		    cout << _("Abandoning all efforts to resolve these dependencies.") << endl;
 		    return aptitude::cmdline::resolver_user_exit;
+		  case 'X':
+		    cout << _("Abandoning automatic dependency resolution and reverting to manual resolution.") << endl;
+		    return aptitude::cmdline::resolver_incomplete;
 		  case 'O':
 		    {
 		      story_is_default = !story_is_default;
