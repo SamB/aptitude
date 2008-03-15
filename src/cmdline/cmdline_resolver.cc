@@ -757,7 +757,7 @@ cmdline_resolve_deps(pkgset &to_install,
 			  {
 			    // ignore and continue looping.
 			  }
-			// NoMoreException flows to the outer catch.
+			// NoMoreSolutions flows to the outer catch.
 			break;
 		      case 'N':
 			cout << _("Abandoning all efforts to resolve these dependencies.") << endl;
