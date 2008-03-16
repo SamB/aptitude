@@ -1,3 +1,291 @@
+[3/15/2008]
+Version 0.4.11                              "When you're tired of
+                                             being beat with a stick,
+               				     you're tired of Debian."
+
+- New features:
+
+  * Search terms can be named with words instead of single-character
+    flags.  Each new-style search expression starts with a question
+    mark ("?"), followed by the name of the matcher; for instance,
+    "?obsolete" is equivalent to the old-style expression "~o".  At
+    the command-line, package names containing question marks are
+    treated as search expressions, just like package names containing
+    tildes ("~") are.
+
+    The old-style syntax is still present and works just like it did
+    previously.  See the reference manual for complete documentation
+    of the new syntax.
+
+    This will hopefully make the search syntax more memorable and make
+    it clearer what a given search expression actually does.  In
+    addition, this opens up the possibility of greatly expanding the
+    number of search patterns supported by aptitude (the requirement
+    to choose a meaningful and unique single character had become a
+    major limiting factor in the ability to add new search terms).
+
+  * New search terms:
+
+    + ?source-package(expr) matches packages whose source package matches
+                            the given regular expresion.
+    + ?source-version(expr) matches packages whose source version matches
+      			    the given regular expression.
+    + ?all-versions(expr)   matches a package if expr matches all versions
+                            of that package.
+    + ?any-version(expr)    matches a package if expr matches any single
+                            version of that package.
+    + ?user-tag(pattern)    matches a package if it has an attached
+                            user-tag matching the given regexp (see below).
+    + ?for var: expr        binds var inside expr to the package or
+                            version being tested.
+    + ?bind(var, expr)      matches anything if the package or version
+                            bound to var matches expr.
+    + ?=var                 matches the package or version bound to
+                            var by an enclosing ?for.
+
+    For instance, "?for x: ?depends(?recommends(?=x))" will match any
+    package X that depends on a package that recommends X.
+
+  * aptitude now supports attaching arbitrary strings to packages,
+    known as "user tags" (to distinguish them from debtags tags).  The
+    following commands will manipulate user tags:
+
+      aptitude add-user-tag    tag package...
+      aptitude remove-user-tag tag package...
+
+    Each of these commands will add user tags to or remove them from
+    one or more packages (possibly selected using search expressions).
+    In addition, all command-line actions that modify package state
+    now take the following optional arguments:
+
+      --add-user-tag         TAG
+      --add-user-tag-to      TAG PATTERN
+      --remove-user-tag      TAG
+      --remove-user-tag-from TAG PATTERN
+
+    The variants that take a PATTERN will add tags to or remove tags
+    from any packages that match the given PATTERN. (e.g.:
+    "--add-user-tag-to installed-for-build-dep ?action(install)").
+    The variants that do not take a PATTERN will affect any package
+    that is being modified (this is equivalent to using the pattern
+    "?not(?action(keep))").
+
+    The ?user-tag(tag) matcher will select packages with a tag
+    matching the given regular expression.  User tags also show up at
+    the end of package descriptions, next to the list of debtags tags
+    for a package.
+
+  * All command-line actions that modify package state now accept the
+    arguments --safe-resolver and --full-resolver.  --safe-resolver
+    forces the command to use the same resolver logic as
+    --safe-upgrade (e.g., "aptitude install --safe-resolver exim4" to
+    install exim4 as long as it can be installed without removing any
+    packages).  --safe-resolver can be enabled in the config file by
+    setting Aptitude::Always-Use-Safe-Resolver to "true"; passing
+    --full-resolver will override this configuration option.
+
+    The option --no-new-installs and the new option --no-new-upgrades
+    will control whether the safe resolver attempts to install new
+    packages or upgrade installed packages.
+
+    Future versions of aptitude will enable this logic in the curses
+    UI as well, but I haven't decided how it should be exposed yet.
+
+  * The aptitude dependency resolver will now refuse to adjust held
+    packages or install forbidden versions unless you manually allow
+    it to.  This behavior can be disabled by setting
+    Aptitude::ProblemResolver::Allow-Break-Holds to "false".
+
+    aptitude will still break holds when packages are being
+    automatically installed; there is a pending patch against apt that
+    eliminates this behavior.
+
+  * The aptitude dependency resolver will add a bonus to solutions
+    that remove a package and install another package that fully
+    replaces it by declaring a conflicts/provides/replaces
+    relationship. (Closes: #466374)
+
+  * aptitude now has a "build-dep" command that will install
+    build-dependencies from the command-line. (Closes: #243317)
+
+  * A new "subdirs" variant of the section grouping policy is
+    introduced in this release, courtesy of Paul Donahue, and is
+    enabled by default.  This will behave just like the old sectioning
+    policy, except that if a section has several components (for
+    instance, games/arcade/space), they will all be realized as tree
+    levels in aptitude.
+
+    A side effect of this change is that section descriptions are no
+    longer hard-coded in the source (see the documentation of
+    Aptitude::Sections::Descriptions).
+
+  * Command-line updates in aptitude will now list packages that are
+    newly obsolete.  This doesn't work when a source is removed and
+    all its packages become obsolete, for technical reasons.
+
+  * aptitude now uses libept to handle debtags information instead of
+    a slow and wrong internal implementation. (Closes: #397652,
+    #406201) "aptitude update" will merge new package information into
+    the debtags database automatically by running "debtags update --local".
+
+- Bug fixes:
+
+  + Cosmetic and UI bugs:
+
+    * The curses interface now uses a spinner to indicate download
+      progress, since the percentage measurement can't be made correct
+      in the current apt model.
+
+    * Remove some stray cw:: strings that made it into user-visible
+      messages (thanks to Jacobo Tarrio for pointing them out).
+
+    * Interpret %-escapes in the descriptions of configuration options
+      instead of displaying them to the user; thanks to Jens Seidel
+      for pointing this out.
+
+    * At the command-line prompt, don't list packages that aren't
+      being upgraded unless the user tried to upgrade them.  e.g.,
+      "aptitude install foo" will no longer spew the entire list of
+      pending upgrades to the terminal.
+
+    * When displaying dependencies or version numbers at the
+      command-line (i.e., -D or -V are passed), add an extra space
+      between packages, to make it a little more obvious which tags
+      "belong" to which package.
+
+    * If the resolver is allowed to produce the solution 'cancel all
+      actions' (i.e., "Aptitude::ProblemResolver::Discard-Null-Solution"
+      is false), the brief indicator in the UI will say that it cancels
+      all the pending actions instead of counting its component actions.
+
+    * When displaying the packages that could satisfy a versioned
+      dependency, don't list packages that provide the package name
+      unless they declare a versioned provides that matches the
+      dependency's version restriction. (Closes: #464131)
+
+    * Don't try to generate and then parse a matcher when searching
+      for packages that look like what the user typed; instead, write
+      explicit code to compare against package names and descriptions.
+
+      This allows aptitude to find similar package names even if the
+      corresponding command-line argument is an invalid search pattern
+      (without having to write complex escaping logic); e.g.,
+      "aptitude install +5" does something sensible instead of
+      printing a confusing error message.
+
+    * If the user enters "q" during command-line dependency
+      resolution, quit the program instead of falling back to manual
+      resolution; manual resolution is only used if automatic
+      resolution hits a fatal error or if the user requests it by
+      typing "x".
+
+  + Translation bugs:
+
+    * Generate POTFILES.in automatically, so it stays up-to-date
+      without requiring manual intervention.
+
+    * Flag W_() as a translation marker; failure to do this caused a
+      lot of strings to be incorrectly left out of the translation
+      files; pointed out by Jens Seidel.
+
+    * Fix translation of strings displayed by the options editor (they
+      weren't getting translated at all); thanks to Jens Seidel for
+      reporting this.
+
+  + Minor bugs:
+
+    * Fix task handling in the case that different versions of a
+      package are in different tasks. (Closes: #459348)
+
+    * "safe-upgrade" will now attempt to automatically maximize the
+      upgrade.  Hopefully this will eliminate the situation where you
+      run "aptitude safe-upgrade" and then discover that there are
+      still some upgradable packages.
+
+  + Crashes and serious errors:
+
+    * aptitude will now build with g++ 4.3, assuming that
+      4.3-compatible versions of cwidget and sigc++ are installed.
+      (Closes: #452204, #452540)
+
+    * Reduce the translation percent threshold for the various
+      versions of the manual until it compiles. (Closes: #470054)
+
+    * aptitude now uses Apt::Install-Recommends instead of
+      Aptitude::Recommends-Important to control whether
+      recommendations are automatically installed.  (Closes: #458189,
+      #448561) Old configurations will be migrated to the new
+      configuration option, if possible.
+
+      Among other things, this means that --without-recommends works
+      again (it was broken when recommends handling moved to apt).
+
+    * Ensure the resolver state is always synchronized with the
+      package cache, eliminating some cases where the resolver would
+      break or produce wrong answers. (Closes: #421395, #432411)
+
+    * Don't crash at the command-line when displaying the version
+      numbers of packages being removed that don't have an
+      installation candidate; also, the version display for removed
+      packages is now meaningful. (Closes: #459336)
+
+    * Don't crash at the command-line when displaying the version
+      numbers of packages in the ConfigFiles state that are being
+      purged; instead, display "Config Files" as the removed
+      version. (Closes: #461669)
+
+      As a side note: the code in question has been adjusted to be
+      robust against bad version pointers, and should display "??"
+      instead.  If you see this, it's a bug, but at least aptitude
+      won't crash in this case.
+
+    * Don't crash in "aptitude update" when the package lists can't be
+      parsed for some reason; instead just go ahead and download new
+      ones. (Closes: #468751)
+
+  + Documentation bugs:
+
+    * Fix the documented default keybinding for PrevPage.
+
+    * The documentation of searching has been substantially rewritten,
+      and is hopefully much more useful now.  In particular, there's
+      more information about how versions are handled, and a concise
+      table listing all the search expressions supported by aptitude.
+
+    * Document some of the files aptitude uses in a FILES section in
+      the manpage (Closes: #470839).
+
+  + Translation updates:
+
+    * Basque
+
+    * French
+
+       - Christian Perrier: Fix the use of quote in the French
+         translation (Closes: #460808).
+
+    * Galician
+
+    * German (thanks to Jens Seidel)
+
+    * Japanese (thanks to Noritada Kobayashi)
+
+    * Norwegian Bokmål
+
+    * Portuguese
+
+    * Romanian (thanks to Eddy Petrișor)
+
+    * Russian
+
+    * Simplified Chinese
+
+    * Slovak
+
+    * Spanish
+
+    * Vietnamese
+
 [12/15/2007]
 Version 0.4.10                              "Oscillating Reindeer"
 
