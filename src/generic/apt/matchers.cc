@@ -145,7 +145,7 @@ public:
   public:
     static stack_value package(const pkgCache::PkgIterator &pkg)
     {
-      return stack_value(package_value, pkg, pkgCache::VerIterator());
+      return stack_value(package_value, pkg, pkgCache::VerIterator(*const_cast<pkgCache::PkgIterator &>(pkg).Cache()));
     }
 
     static stack_value version(const pkgCache::PkgIterator &pkg,
