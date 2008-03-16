@@ -95,6 +95,8 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
   bool target_installed = (target->CurrentState != pkgCache::State::NotInstalled &&
 			   target->CurrentState != pkgCache::State::ConfigFiles);
 
+  pkgDepCache * const cache = get_universe().get_cache();
+
   if(!target_installed)
     {
       // If the target isn't installed and the source isn't installed,
@@ -125,11 +127,11 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 	      imm::set<aptitude_universe::version> s;
 
 	      s.insert(aptitude_universe::version(src.ParentPkg(),
-						  pkgCache::VerIterator(),
-						  get_universe().get_cache()));
+						  pkgCache::VerIterator(*cache),
+						  cache));
 	      s.insert(aptitude_universe::version(target,
 						  target_ver,
-						  get_universe().get_cache()));
+						  cache));
 
 	      add_joint_score(s, undo_full_replacement_score);
 	    }
@@ -149,8 +151,8 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
       if(src_installed)
 	{
 	  add_version_score(aptitude_universe::version(target,
-						       pkgCache::VerIterator(),
-						       get_universe().get_cache()),
+						       pkgCache::VerIterator(*cache),
+						       cache),
 			    full_replacement_score);
 
 	  // If we are working through a provides, find all versions
@@ -164,7 +166,7 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 		  if(version_provides(target_ver, real_target))
 		    add_version_score(aptitude_universe::version(target,
 								 target_ver,
-								 get_universe().get_cache()),
+								 cache),
 				      full_replacement_score);
 		}
 	    }
@@ -176,10 +178,10 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 
 	    s.insert(aptitude_universe::version(src.ParentPkg(),
 						src,
-						get_universe().get_cache()));
+						cache));
 	    s.insert(aptitude_universe::version(target,
-						pkgCache::VerIterator(),
-						get_universe().get_cache()));
+						pkgCache::VerIterator(*cache),
+						cache));
 
 	    add_joint_score(s, full_replacement_score);
 	  }
@@ -198,10 +200,10 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 
 		      s.insert(aptitude_universe::version(src.ParentPkg(),
 							  src,
-							  get_universe().get_cache()));
+							  cache));
 		      s.insert(aptitude_universe::version(target,
 							  target_ver,
-							  get_universe().get_cache()));
+							  cache));
 
 		      add_joint_score(s, full_replacement_score);
 		    }
@@ -314,7 +316,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			  replaced_packages.insert(target);
 			  add_full_replacement_score(v.get_ver(),
 						     target,
-						     pkgCache::VerIterator(),
+						     pkgCache::VerIterator(*get_universe().get_cache()),
 						     full_replacement_score,
 						     undo_full_replacement_score);
 			}
