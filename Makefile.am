@@ -35,8 +35,8 @@ install-data-local:
 	  $(INSTALL_DATA) $(srcdir)/aptitude.$$l.8 $(DESTDIR)$(mandir)/$$l/man8/aptitude.8; \
 	done
 
-uninstall-local:
-	rm -fr $(DESTDIR)$(STATEDIR)
+#uninstall-local:
+#rm -fr $(DESTDIR)$(STATEDIR)
 # Is -r a good idea here?
 
 
