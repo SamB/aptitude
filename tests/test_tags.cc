@@ -1,6 +1,6 @@
 // Tester for the tag parser.
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -17,6 +17,12 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+
+#ifndef HAVE_EPT
 
 #include <cppunit/extensions/HelperMacros.h>
 
@@ -235,3 +241,5 @@ const char *TagTest::tagLists[] = {
 const char *TagTest::tagListLast="  a  :: b";
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TagTest);
+
+#endif
