@@ -17,6 +17,7 @@ TLHELPTXTS = help.txt $(wildcard $(srcdir)/help-??.txt) $(wildcard $(srcdir)/hel
 EXTRA_DIST = config.rpath  ChangeLog.SVN Doxyfile.in FAQ README.i18n README.SMART-POINTERS README.THREADS README.VSCREEN aptitude-hackers-guide.txt aclocal.m4 \
 	function_groups function_pkgs aptitude-defaults \
 	section-descriptions \
+	aptitude-defaults.de \
 	$(TLMANPAGES) $(TLHELPTXTS)
 
 pkgdatadir=$(datadir)/$(PACKAGE)
