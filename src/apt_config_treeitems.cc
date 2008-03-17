@@ -271,6 +271,7 @@ namespace aptitude
 	  void set_text(const std::wstring &text)
 	  {
 	    aptcfg->Set(item, cw::util::transcode(text));
+	    apt_dumpcfg(PACKAGE);
 	  }
 
 	  void edit()
