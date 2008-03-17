@@ -10,14 +10,13 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-03-15 13:09-0700\n"
-"PO-Revision-Date: 2008-02-15 12:47+0100\n"
+"PO-Revision-Date: 2008-03-17 15:59+0100\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 
 #: src/apt_config_treeitems.cc:99
 msgid ""
@@ -520,7 +519,7 @@ msgstr ""
 
 #: src/apt_options.cc:383
 msgid "Allow dependency resolutions that break holds or forbids"
-msgstr ""
+msgstr "Umožniť riešenie závislostí, ktoré pokazí podržané alebo zakázané"
 
 #: src/apt_options.cc:384
 msgid ""
@@ -534,10 +533,18 @@ msgid ""
 "the dependencies of a package that has just been selected for installation "
 "or upgrade, due to apt bug #470035."
 msgstr ""
+"Ak je táto voľba zapnutá, aptitude vždy pri riešení problému zváži zmenu "
+"podržaných balíkov a inštaláciu zakázaných balíkov. Ak je táto voľba "
+"vypnutá, tieto riešenia budú štandardne odmietnuté.\n"
+"POZN.: V súčasnosti sa toto obmedzenie týka iba situácií, v ktorých je "
+"aktívne riešenie závislostí aptitude (červený panel na spodku obrazovky). "
+"aptitude aj tak poruší podržanie pri automatickej inštalácii závislostí "
+"balíka, ktorý bol práve vybraný na inštaláciu alebo aktualizáciu, kvôli "
+"chybe apt #470035."
 
 #: src/apt_options.cc:398
 msgid "Don't warn about the obsolete \"Recommends-Important\" option."
-msgstr ""
+msgstr "Neupozornňovať na zastaralú voľbu „Recommends-Important“"
 
 #: src/apt_options.cc:399
 msgid ""
@@ -546,14 +553,16 @@ msgid ""
 "this option to skip this warning (for instance, if your apt configuration is "
 "shared with a system that has an older version of aptitude installed)."
 msgstr ""
+"Ak je v systémovom konfiguračnom súbore nastavená voľba %BRecommends-"
+"Important%b, aptitude vás pri spustení upozorní.  Zapnutím tejto voľby "
+"preskočíte toto upozornenie (napr. ak zdieľate konfiguráciu apt so systémom, "
+"ktorý má nainštalovanú staršiu verziu aptitude)."
 
 #: src/apt_options.cc:518
-#, fuzzy
 msgid "UI options"
-msgstr "Nastavenie zobrazenia"
+msgstr "Nastavenie rozhrania"
 
 #: src/apt_options.cc:520
-#, fuzzy
 msgid "Dependency handling"
 msgstr "Správa závislostí"
 
@@ -604,9 +613,8 @@ msgid "Internal error: unexpected null solution."
 msgstr "Interná chyba: neočakávané prázdne riešenie."
 
 #: src/broken_indicator.cc:366
-#, fuzzy
 msgid "Suggest keeping all packages at their current version."
-msgstr "Ponechať nasledujúce balíčky v ich aktuálnych verziách:"
+msgstr "Navrhovať ponechanie všetkých balíkov v ich aktuálnych verziách."
 
 #: src/broken_indicator.cc:374
 #, c-format
@@ -657,14 +665,14 @@ msgid "Suggest %F"
 msgstr "Navrhuje %F"
 
 #: src/cmdline/cmdline_action.cc:47
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find the source package for \"%s\".\n"
-msgstr "Nedá sa nájsť archív „%s“ balíka „%s“\n"
+msgstr "Nie je možné nájsť zdrojový archív balíka „%s“\n"
 
 #: src/cmdline/cmdline_action.cc:200
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to satisfy the build-depends %s: ."
-msgstr "Nedajú sa zobraziť súbory v „%s“"
+msgstr "Nie je možné uspokojiť závislosti pre zostavenie „%s“: ."
 
 #: src/cmdline/cmdline_action.cc:230
 #, c-format
@@ -858,10 +866,12 @@ msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Neočakávaný vzor nasledujúci za „keep-all“"
 
 #: src/cmdline/cmdline_do_action.cc:264
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
-msgstr "Nedajú sa vyriešiť závislosti aktualizácie (%s)."
+msgstr ""
+"Nie je možné bezpečne vyriešiť závislosti, skúste spustiť s voľbou --full-"
+"resolver.\n"
 
 #: src/cmdline/cmdline_do_action.cc:301 src/cmdline/cmdline_simulate.cc:33
 #: src/cmdline/cmdline_upgrade.cc:149 src/main.cc:681
@@ -1189,13 +1199,13 @@ msgid "Press Return to continue"
 msgstr "Pokračovanie stlačením klávesu Enter"
 
 #: src/cmdline/cmdline_prompt.cc:713
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify.\n"
 msgstr ""
 "Neboli nájdené žiadne balíky -- zadajte nula alebo viac koreňov vyhľadávania "
-"nasedovaných balíkom, ktorý sa má posúdiť."
+"nasedovaných balíkom, ktorý sa má posúdiť.\n"
 
 #: src/cmdline/cmdline_prompt.cc:736
 #, c-format
@@ -1352,7 +1362,7 @@ msgstr "„&m“ na označenie balíkov ako manuálne inštalovaných"
 
 #: src/cmdline/cmdline_prompt.cc:802
 msgid "'&BD' to install the build-dependencies of a package."
-msgstr ""
+msgstr "„&BD“ nainštaluje závislosti pre zostavenie balíka."
 
 #: src/cmdline/cmdline_prompt.cc:806
 msgid "Commands:"
@@ -1469,12 +1479,12 @@ msgid "Resolver state successfully written!"
 msgstr "Stav riešenia úspešne uložený!"
 
 #: src/cmdline/cmdline_resolver.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
-"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:182
@@ -1508,29 +1518,25 @@ msgid "examine the solution in the visual user interface"
 msgstr "skúsiť riešenie v grafickom používateľskom prostredí"
 
 #: src/cmdline/cmdline_resolver.cc:196
-#, fuzzy
 msgid ""
 "abort automatic dependency resolution; resolve dependencies by hand instead"
-msgstr ""
-"spustiť automatické riešenie závislostí na vyriešenie pokazených závislostí."
+msgstr "zrušiť automatické riešenie závislostí; riešiť závislosti ručne"
 
 #: src/cmdline/cmdline_resolver.cc:198
-#, fuzzy
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur.  Enter UNINST instead of a version to reject removing the package."
 msgstr ""
-"zamietnuť ponúknuté verzie balíkov; nezobrazovať žiadne riešenia, v ktorých "
-"sa vyskytujú"
+"odmietnuť ponúknuté verzie balíkov; nezobrazovať žiadne riešenia, v ktorých "
+"sa vyskytujú. Zadaním UNINST namiesto verzie prijmete odstránenie balíka"
 
 #: src/cmdline/cmdline_resolver.cc:200
-#, fuzzy
 msgid ""
 "accept the given package versions (; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package."
 msgstr ""
 "akceptovať ponúknuté verzie balíkov; zobrazovať iba riešenia, v ktorých sa "
-"vyskytujú"
+"vyskytujú. Zadaním UNINST namiesto verzie prijmete odstránenie balíka"
 
 #: src/cmdline/cmdline_resolver.cc:202
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -1564,9 +1570,9 @@ msgid "Expected at least one package/version pair following '%c'"
 msgstr "Očakáva sa aspoň jeden pár balík/verzia nasledovaný „%c“"
 
 #: src/cmdline/cmdline_resolver.cc:278
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
-msgstr "Po „%s“ sa očakávala verzia"
+msgstr "Očakávala verzia „%s“ po „%s“"
 
 #: src/cmdline/cmdline_resolver.cc:288
 #, c-format
@@ -1658,6 +1664,7 @@ msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr ""
+"Opustenie automatického riešenia závislostí a návrat k ručnému riešeniu."
 
 #: src/cmdline/cmdline_resolver.cc:691
 msgid "The following commands are available:"
@@ -1701,14 +1708,15 @@ msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
+"Čas na riešenie vypršal potom, čo riešenie závislostí došlo k riešeniu; "
+"niektoré možné aktualizácie sa nemusia vykonať."
 
 #: src/cmdline/cmdline_resolver.cc:952
-#, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
-"Nedajú sa vyriešiť závislosti aktualizácie (čas pre riešenie závislostí "
-"vypršal)."
+"Nie je možné vyriešiť závislosti aktualizácie (čas vyhradený pre riešenie "
+"závislostí vypršal)."
 
 #: src/cmdline/cmdline_resolver.cc:966
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
@@ -1720,6 +1728,8 @@ msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
+"Riešenie závislostí nebolo dokončené (%s); niektoré možné aktualizácie sa "
+"nemusia vykonať."
 
 #: src/cmdline/cmdline_resolver.cc:981
 #, c-format
@@ -2003,24 +2013,24 @@ msgid "E: The %s command takes no arguments\n"
 msgstr "E: Príkaz %s neakceptuje žiadne argumenty\n"
 
 #: src/cmdline/cmdline_user_tag.cc:51
-#, fuzzy, c-format
+#, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
-msgstr "Nedá sa nájsť verzia „%s“ balíka „%s“\n"
+msgstr "Pridáva sa používateľská značka „%s“ do balíka „%s“\n"
 
 #: src/cmdline/cmdline_user_tag.cc:58
-#, fuzzy, c-format
+#, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
-msgstr "Nedá sa nájsť verzia „%s“ balíka „%s“\n"
+msgstr "Odstraňuje sa používateľská značka „%s“ z balíka „%s“\n"
 
 #: src/cmdline/cmdline_user_tag.cc:88
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
-msgstr ""
+msgstr "%s: príliš málo parametrov; očakával sa aspoň názov značky a balíka.\n"
 
 #: src/cmdline/cmdline_user_tag.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "No such package \"%s\".\n"
-msgstr "Neexistuje balík „%s“"
+msgstr "Neexistuje balík „%s“.\n"
 
 #: src/cmdline/cmdline_util.cc:131
 #, c-format
@@ -2085,40 +2095,37 @@ msgstr "Momentálne je %F."
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Existuje %d novo zastaralý balík."
+msgstr[1] "Existujú %d novo zastaralé balíky."
+msgstr[2] "Existuje %d novo zastaralých balíkov."
 
 #: src/cmdline/cmdline_util.cc:354
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Existuje %d novo zastaralý balík:"
+msgstr[1] "Existujú %d novo zastaralé balíky:"
+msgstr[2] "Existuje %d novo zastaralých balíkov:"
 
 #: src/cmdline/cmdline_why.cc:269
-#, fuzzy
 msgid "dep_level"
-msgstr "odstrániť"
+msgstr "dep_level"
 
 #: src/cmdline/cmdline_why.cc:275
-#, fuzzy
 msgid "DependsOnly"
-msgstr "Závisí na"
+msgstr "IbaZávisí"
 
 #: src/cmdline/cmdline_why.cc:289
 msgid "version_selection"
-msgstr ""
+msgstr "výber_verzie"
 
 #: src/cmdline/cmdline_why.cc:294
 msgid "Current"
-msgstr ""
+msgstr "Aktuálne"
 
 #: src/cmdline/cmdline_why.cc:297
-#, fuzzy
 msgid "Candidate"
-msgstr "DostVer"
+msgstr "Kandidát"
 
 #: src/cmdline/cmdline_why.cc:300 src/generic/apt/matchers.cc:1595
 msgid "Install"
@@ -2126,17 +2133,15 @@ msgstr "Inštalovať"
 
 #: src/cmdline/cmdline_why.cc:308
 msgid "allow_choices"
-msgstr ""
+msgstr "umožniť_voľby"
 
 #: src/cmdline/cmdline_why.cc:311
-#, fuzzy
 msgid "true"
-msgstr "Áno"
+msgstr "áno"
 
 #: src/cmdline/cmdline_why.cc:313
-#, fuzzy
 msgid "false"
-msgstr "Nie"
+msgstr "nie"
 
 #: src/cmdline/cmdline_why.cc:422
 #, c-format
@@ -2251,9 +2256,8 @@ msgid "Tags"
 msgstr "Značky"
 
 #: src/desc_parse.cc:334
-#, fuzzy
 msgid "User Tags"
-msgstr "Značky"
+msgstr "Používateľské značky"
 
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
@@ -2307,9 +2311,8 @@ msgid " [ %i%% ]"
 msgstr " [ %i%% ]"
 
 #: src/download_list.cc:266
-#, fuzzy
 msgid "Downloading... "
-msgstr "Sťahuje sa ..."
+msgstr "Sťahuje sa..."
 
 #: src/download_list.cc:342
 #, c-format
@@ -2378,11 +2381,13 @@ msgid ""
 "Error parsing a user-tag for the package %s: unexpected end-of-line "
 "following %s."
 msgstr ""
+"Chyba pri syntaktickej analýze používateľskej značky balíka %s: neočakávaný "
+"koniec riadka po %s."
 
 #: src/generic/apt/aptcache.cc:283
-#, fuzzy, c-format
+#, c-format
 msgid "Unterminated '\"' in the user-tags list of the package %s."
-msgstr "Neukončený znakový reťazec po  %s"
+msgstr "Neukončený „\"“ v zozname používateľských značiek balíka %s"
 
 #: src/generic/apt/aptcache.cc:387
 msgid "Can't open Aptitude extended state file"
@@ -2483,14 +2488,14 @@ msgid "Unable to replace %s with new configuration file"
 msgstr "%s sa nedá nahradiť novým konfiguračným súborom"
 
 #: src/generic/apt/apt.cc:396
-#, fuzzy
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
 "you make to the states of packages will NOT be preserved!"
 msgstr ""
-"Nedá sa uzamknúť dočasný súbor cache. Otvára sa v režime iba na čítanie; "
-"všetky vykonané zmeny stavov balíkov NEBUDÚ uchované!"
+"Nedá sa uzamknúť dočasný súbor cache. To zvyčajne znamená, že dpkg alebo iný "
+"nástroj apt už inštaluje balíky. Otvára sa v režime iba na čítanie; žiadne "
+"vykonané zmeny stavov balíkov NEBUDÚ uchované!"
 
 #: src/generic/apt/download_install_manager.cc:56
 msgid ""
@@ -2578,32 +2583,34 @@ msgid "(core dumped)"
 msgstr "(odtlačok jadra bol zapísaný)"
 
 #: src/generic/apt/download_update_manager.cc:353
-#, fuzzy, c-format
+#, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
-msgstr "Proces aktualizácie debtags (%s %s) bol zabitý signálom %d%s."
+msgstr ""
+"Proces aktualizácie debtags (%s aktualizácia %s) bol zabitý signálom %d%s."
 
 #: src/generic/apt/download_update_manager.cc:360
-#, fuzzy, c-format
+#, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
-msgstr "Proces aktualizácie debtags (%s %s) skončil nenormálne (kód %d)."
+msgstr ""
+"Proces aktualizácie debtags (%s aktualizácia %s) skončil nenormálne (kód %d)."
 
 #: src/generic/apt/download_update_manager.cc:366
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
 "(status %d)."
 msgstr ""
-"Proces aktualizácie debtags (%s %s) skončil neočakávaným spôsobom (status %"
-"d)."
+"Proces aktualizácie debtags (%s aktualizácia %s) skončil neočakávaným "
+"spôsobom (status %d)."
 
 #: src/generic/apt/download_update_manager.cc:371
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
 "installed?): %s"
 msgstr ""
-"Aktualizácia databázy debtags  (%s %s) zlyhala (žeby nebol debtags "
-"nainštalovaný?): %s"
+"Aktualizácia databázy debtags  (%s aktualizácia %s) zlyhala (žeby nebol "
+"debtags nainštalovaný?): %s"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
 #, c-format
@@ -2826,12 +2833,12 @@ msgstr "Neznáma priorita: %s"
 #: src/generic/apt/matchers.cc:3267
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
-msgstr ""
+msgstr "Vyhľadávací vzor neočakávane končí (očakávalo sa „%c“)."
 
 #: src/generic/apt/matchers.cc:3270
-#, fuzzy, c-format
+#, c-format
 msgid "Expected '%c', got '%c'."
-msgstr "Očakávala sa „,“ alebo „(“, zadané „%c“"
+msgstr "Očakávala sa „%c“, zadané „%c“"
 
 #: src/generic/apt/matchers.cc:3577 src/generic/apt/matchers.cc:4015
 #: src/generic/apt/matchers.cc:4058
@@ -2840,9 +2847,9 @@ msgid "Unknown dependency type: %s"
 msgstr "Neznámy typ závislosti: %s"
 
 #: src/generic/apt/matchers.cc:3631
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown matcher type: \"%s\"."
-msgstr "Neznámy vzor: %c"
+msgstr "Neznámy typ vzoru: „%s“"
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
@@ -2852,6 +2859,8 @@ msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
 "a context enclosed by ?%s)."
 msgstr ""
+"Vyhľadávanie ?%s sa musí použiť v kontexte „wide“ (kontext najvyššej úrovne "
+"alebo kontext uzavretý v ?%s)."
 
 #: src/generic/apt/matchers.cc:3868
 msgid "Unmatched '('"
@@ -3518,14 +3527,14 @@ msgid "Expected a number after -q=, got %s\n"
 msgstr "Po -q= sa očakáva číslo, zadané bolo %s\n"
 
 #: src/main.cc:391
-#, fuzzy, c-format
+#, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
-msgstr "-o vyžaduje argument v tvare kľúč=hodnota, zadané bolo %s"
+msgstr "-o vyžaduje argument v tvare kľúč=hodnota, zadané bolo %s\n"
 
 #: src/main.cc:480
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
-msgstr ""
+msgstr "Chýba čiarka po názve značky „%s“.\n"
 
 #: src/main.cc:508 src/main.cc:517
 msgid "WEIRDNESS: unknown option code received\n"
@@ -3550,6 +3559,8 @@ msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
 "for %s, which always uses the safe resolver.\n"
 msgstr ""
+"Voľby --safe-resolver a --full-resolver nedávajú zmysel\n"
+"pre %s, ktorý vždy používa bezpečné riešenie závislostí.\n"
 
 #: src/main.cc:674
 #, c-format
@@ -3562,13 +3573,13 @@ msgid "Uncaught exception: %s\n"
 msgstr "Neodchytená výnimka: %s\n"
 
 #: src/main.cc:690 src/main.cc:739
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Backtrace:\n"
 "%s\n"
 msgstr ""
 "Výpis:\n"
-"%s"
+"%s\n"
 
 #: src/menu_text_layout.cc:43 src/menu_tree.cc:220 src/view_changelog.cc:60
 msgid "Search for: "
@@ -4304,6 +4315,9 @@ msgid ""
 " These packages have not yet been classified in debtags, or the debtags "
 "database is not present (installing debtags may correct this problem)."
 msgstr ""
+"\n"
+" Tieto balíky neboli v debtags klasifikované alebo databáza debtags nie je "
+"prítomná (to môžete napraviť nainštalovaním debtags)."
 
 #: src/pkg_grouppolicy.cc:1504
 msgid "MISSING TAG"
@@ -4740,9 +4754,9 @@ msgid "%s conflicts with %s"
 msgstr "%s koliduje s %s"
 
 #: src/solution_fragment.cc:121
-#, fuzzy, c-format
+#, c-format
 msgid "%s breaks %s"
-msgstr "%s nahrádza %s"
+msgstr "%s kazí %s"
 
 #: src/solution_fragment.cc:124
 #, c-format
@@ -5056,9 +5070,9 @@ msgid "News"
 msgstr "Novinky"
 
 #: src/ui.cc:1086 src/ui.cc:2369
-#, fuzzy, c-format
+#, c-format
 msgid "View the important changes made in each version of %s"
-msgstr "Zobrazí dôležité zmeny v každej verzii "
+msgstr "Zobrazí dôležité zmeny v každej verzii %s"
 
 #: src/ui.cc:1093
 #, c-format
@@ -5547,13 +5561,15 @@ msgstr "Zobrazí balíky, ktorých sa bude týkať zvolená akcia"
 
 #: src/ui.cc:2236
 msgid "Reject Breaking ^Holds"
-msgstr ""
+msgstr "Odmietnuť porušenie ^Podržania"
 
 #: src/ui.cc:2238
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
 msgstr ""
+"Odmietne všetky činnosti, ktoré by zmenili stav podržaných balíkov alebo "
+"nainštalovali zakázané verzie"
 
 #: src/ui.cc:2246
 msgid "^Find"
