@@ -18,6 +18,8 @@ libcmdline_a_SOURCES=\
 	cmdline_download.h \
 	cmdline_dump_resolver.cc \
 	cmdline_dump_resolver.h \
+	cmdline_extract_cache_subset.cc \
+	cmdline_extract_cache_subset.h \
 	cmdline_forget_new.cc \
 	cmdline_forget_new.h \
 	cmdline_moo.cc \

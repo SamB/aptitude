@@ -106,6 +106,15 @@
     <cmdsynopsis>
       <command>aptitude</command>
 
+      <arg choice='plain'>extract-cache-subset</arg>
+
+      <arg choice='plain'><replaceable>output-directory</replaceable></arg>
+      <arg choice='plain' rep='repeat'><replaceable>packages</replaceable></arg>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+      <command>aptitude</command>
+
       <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
 
       <arg choice='plain'>search</arg>
@@ -831,6 +840,29 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    the package name; you can select the version from a
 	    particular archive by appending <literal>/<replaceable>archive</replaceable></literal> to
 	    the package name.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>extract-cache-subset</literal></term>
+
+	<listitem>
+	  <para>
+	    Extract a subset of the package cache to the specified
+	    directory.  If no packages are listed, the entire package
+	    cache is copied; otherwise only the entries corresponding
+	    to the named packages are copied.  Each package name may
+	    be a search pattern, and all the packages matching that
+	    pattern will be selected (see the section <quote><link
+	    linkend='secSearchPatterns'>Search Patterns</link></quote>
+	    in the &aptitude; reference manual).  Any existing package
+	    lists in the output directory will be overwritten.
+	  </para>
+
+	  <para>
+	    Dependencies in binary package stanzas will be rewritten
+	    to remove references to packages not in the selected set.
 	  </para>
 	</listitem>
       </varlistentry>
