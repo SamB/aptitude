@@ -8,10 +8,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude 0.4.10-1\n"
+"Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-03-15 13:09-0700\n"
-"PO-Revision-Date: 2008-03-03 15:06+0800\n"
+"PO-Revision-Date: 2008-03-18 12:55+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -484,7 +484,7 @@ msgstr ""
 
 #: src/apt_options.cc:383
 msgid "Allow dependency resolutions that break holds or forbids"
-msgstr ""
+msgstr "允许破华保持或禁止的依赖关系解决方案"
 
 #: src/apt_options.cc:384
 msgid ""
@@ -498,10 +498,15 @@ msgid ""
 "the dependencies of a package that has just been selected for installation "
 "or upgrade, due to apt bug #470035."
 msgstr ""
+"如果开启此选项，那么无论何时 aptitude 解决依赖关系问题，它会考虑修改被保持的"
+"软件包，或者安装禁止的软件包版本。若禁止此选项，这些解决方案默认会被拒绝。\n"
+"注意：目前，这个限制只适用于 aptitude 的依赖关系解决器(屏幕底端的红条)被开启"
+"时。aptitude 仍然会在自动安装被选择安装或升级软件包的依赖是破坏保持规则，原因"
+"请见 apt bug #470035。"
 
 #: src/apt_options.cc:398
 msgid "Don't warn about the obsolete \"Recommends-Important\" option."
-msgstr ""
+msgstr "不要警告废弃的“Recommends-Important”选项。"
 
 #: src/apt_options.cc:399
 msgid ""
@@ -510,6 +515,9 @@ msgid ""
 "this option to skip this warning (for instance, if your apt configuration is "
 "shared with a system that has an older version of aptitude installed)."
 msgstr ""
+"如果在系统配置文件中设置配置选项 %BRecommends-Important%b，aptitude 会在启动"
+"时警告您。开启此选项会跳过这个警告(例如，如果您的 apt 配置是与一个安装了旧版"
+"本的 aptitude 的系统共享时)。"
 
 #: src/apt_options.cc:518
 msgid "UI options"
@@ -608,14 +616,14 @@ msgid "Suggest %F"
 msgstr "建议 %F"
 
 #: src/cmdline/cmdline_action.cc:47
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find the source package for \"%s\".\n"
-msgstr "无法找到存档“%s”，该存档用于软件包“%s”\n"
+msgstr "无法找到“%s”的源代码包。\n"
 
 #: src/cmdline/cmdline_action.cc:200
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to satisfy the build-depends %s: ."
-msgstr "无法列出“%s”中的文件"
+msgstr "无法安装编译依赖 %s： 。"
 
 #: src/cmdline/cmdline_action.cc:230
 #, c-format
@@ -623,8 +631,8 @@ msgid ""
 "Note: \"%s\", providing the virtual package\n"
 "      \"%s\", is already installed.\n"
 msgstr ""
-"注意：提供虚拟软件包“%2$s”\n"
-"      的“%1$s”已经被安装。\n"
+"注意：“%s”，提供虚拟软件包\n"
+"      “%s”，并且已经被安装。\n"
 
 #: src/cmdline/cmdline_action.cc:237
 #, c-format
@@ -632,8 +640,8 @@ msgid ""
 "Note: \"%s\", providing the virtual package\n"
 "      \"%s\", is already going to be installed.\n"
 msgstr ""
-"注意：提供虚拟软件包“%2$s”\n"
-"      的“%1$s”已经被选择即将安装。\n"
+"注意：“%s”，提供虚拟软件包\n"
+"      “%s”，已经即将被安装。\n"
 
 #: src/cmdline/cmdline_action.cc:255
 #, c-format
@@ -803,10 +811,10 @@ msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "在参数“keep-all”之后有意料之外的模式"
 
 #: src/cmdline/cmdline_do_action.cc:264
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
-msgstr "无法解决此更新的依赖关系(%s)。"
+msgstr "无法安全解决依赖关系，请尝试使用 --full-resolver 来运行。\n"
 
 #: src/cmdline/cmdline_do_action.cc:301 src/cmdline/cmdline_simulate.cc:33
 #: src/cmdline/cmdline_upgrade.cc:149 src/main.cc:681
@@ -1281,7 +1289,7 @@ msgstr "按'm'将软件包标记为手动安装"
 
 #: src/cmdline/cmdline_prompt.cc:802
 msgid "'&BD' to install the build-dependencies of a package."
-msgstr ""
+msgstr "'&BD' 以安装软件包的编译依赖。"
 
 #: src/cmdline/cmdline_prompt.cc:806
 msgid "Commands:"
@@ -1396,13 +1404,13 @@ msgid "Resolver state successfully written!"
 msgstr "成功写入依赖关系解决状态！"
 
 #: src/cmdline/cmdline_resolver.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
-"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr 包 版本 ...: %F%na 包 版本 ...: %F%n<动"
-"作> 包... : %F%n%F%F%F%F%F%F%F%F"
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr 包 版本 ...: %F%na 包 版本 ...: %F%"
+"n<动作> 包... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:182
 msgid "accept the proposed changes"
@@ -1435,24 +1443,25 @@ msgid "examine the solution in the visual user interface"
 msgstr "检查用户可视界面中的设置方案"
 
 #: src/cmdline/cmdline_resolver.cc:196
-#, fuzzy
 msgid ""
 "abort automatic dependency resolution; resolve dependencies by hand instead"
-msgstr "运行自动依赖解决器来修正被破坏的依赖关系。"
+msgstr "终止自动依赖解决关系；请手动解决依赖关系。"
 
 #: src/cmdline/cmdline_resolver.cc:198
-#, fuzzy
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur.  Enter UNINST instead of a version to reject removing the package."
-msgstr "拒绝给定的软件包版本；不显示任何包括它们的解决方案。"
+msgstr ""
+"拒绝给定的软件包版本；不显示任何包括它们的解决方案。请输入 UNINST 而不是版本"
+"以拒绝移除此软件包。"
 
 #: src/cmdline/cmdline_resolver.cc:200
-#, fuzzy
 msgid ""
 "accept the given package versions (; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package."
-msgstr "接受给定的软件包版本；仅显示包括它们的解决方案。"
+msgstr ""
+"接受给定的软件包版本 (; 仅显示包括它们的解决方案。请输入 UNINST 而不是版本以"
+"接受移除软件包。"
 
 #: src/cmdline/cmdline_resolver.cc:202
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -1578,7 +1587,7 @@ msgstr "放弃解决这些依赖关系的全部努力。"
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
-msgstr ""
+msgstr "放弃自动依赖解决方案并恢复到手动解决方案。"
 
 #: src/cmdline/cmdline_resolver.cc:691
 msgid "The following commands are available:"
@@ -1620,13 +1629,12 @@ msgstr ""
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
-msgstr ""
+msgstr "解决器在产生解决方案时超时；一些可能的升级也许不会进行。"
 
 #: src/cmdline/cmdline_resolver.cc:952
-#, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
-msgstr "未能解决此升级的依赖关系(解决器超时)。"
+msgstr "未能为此升级解决依赖关系(解决器超时)。"
 
 #: src/cmdline/cmdline_resolver.cc:966
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
@@ -1637,7 +1645,7 @@ msgstr "未能解决此升级的依赖关系(未找到解决方案)。"
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
-msgstr ""
+msgstr "依赖解决方案不完整(%s)；一些可能的升级也许不会进行。"
 
 #: src/cmdline/cmdline_resolver.cc:981
 #, c-format
@@ -1921,24 +1929,24 @@ msgid "E: The %s command takes no arguments\n"
 msgstr "E: %s 命令不接受任何参数\n"
 
 #: src/cmdline/cmdline_user_tag.cc:51
-#, fuzzy, c-format
+#, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
-msgstr "无法找到“%s”版本的软件包“%s”\n"
+msgstr "添加用户标签“%s”到软件包“%s”。\n"
 
 #: src/cmdline/cmdline_user_tag.cc:58
-#, fuzzy, c-format
+#, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
-msgstr "无法找到“%s”版本的软件包“%s”\n"
+msgstr "将用户标签“%s”移除出软件包“%s”。\n"
 
 #: src/cmdline/cmdline_user_tag.cc:88
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
-msgstr ""
+msgstr "%s: 参数太少；期待至少一个标签名称和一个软件包名称。\n"
 
 #: src/cmdline/cmdline_user_tag.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "No such package \"%s\".\n"
-msgstr "没有这个软件包“%s”"
+msgstr "没有这个软件包“%s”。\n"
 
 #: src/cmdline/cmdline_util.cc:131
 #, c-format
@@ -1997,13 +2005,13 @@ msgstr "现在是 %F 。"
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
-msgstr[0] ""
+msgstr[0] "有 %d 个新被废弃的软件包。"
 
 #: src/cmdline/cmdline_util.cc:354
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
-msgstr[0] ""
+msgstr[0] "有 %d 个新被废弃的软件包："
 
 #: src/cmdline/cmdline_why.cc:269
 msgid "dep_level"
@@ -2152,9 +2160,8 @@ msgid "Tags"
 msgstr "标签"
 
 #: src/desc_parse.cc:334
-#, fuzzy
 msgid "User Tags"
-msgstr "标签"
+msgstr "用户标签"
 
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
@@ -2274,12 +2281,12 @@ msgstr "更换介质：请将标签为“%s”的磁盘插入驱动器“%s”�
 msgid ""
 "Error parsing a user-tag for the package %s: unexpected end-of-line "
 "following %s."
-msgstr ""
+msgstr "解析软件包 %s 的用户标签时出错：%s 后有意外的行结束符。"
 
 #: src/generic/apt/aptcache.cc:283
-#, fuzzy, c-format
+#, c-format
 msgid "Unterminated '\"' in the user-tags list of the package %s."
-msgstr "无法对 %s 之后的未结束的文字字符串"
+msgstr "软件包 %s 的用户标签列表有未结束的'\"'。"
 
 #: src/generic/apt/aptcache.cc:387
 msgid "Can't open Aptitude extended state file"
@@ -2469,28 +2476,28 @@ msgid "(core dumped)"
 msgstr "(已生成 core 文件)"
 
 #: src/generic/apt/download_update_manager.cc:353
-#, fuzzy, c-format
+#, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
-msgstr "debtags 更新进程(%s %s)被信号 %d%s 杀掉。"
+msgstr "debtags 更新进程(%s update %s)被信号 %d%s 杀掉。"
 
 #: src/generic/apt/download_update_manager.cc:360
-#, fuzzy, c-format
+#, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
-msgstr "debtags 更新进程(%s %s)非正常退出(代码 %d)。"
+msgstr "debtags 更新进程(%s update %s)非正常退出(代码 %d)。"
 
 #: src/generic/apt/download_update_manager.cc:366
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
 "(status %d)."
-msgstr "debtags 更新进程(%s %s)出乎预料地退出(状态 %d)。"
+msgstr "debtags 更新进程(%s update %s)出乎预料地退出(状态 %d)。"
 
 #: src/generic/apt/download_update_manager.cc:371
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
 "installed?): %s"
-msgstr "更新 debtags 数据库(%s %s)失败(可能没有安装 debtags？)：%s"
+msgstr "更新 debtags 数据库(%s update %s)失败(可能没有安装 debtags？)：%s"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
 #, c-format
@@ -3387,14 +3394,14 @@ msgid "Expected a number after -q=, got %s\n"
 msgstr "在 -q= 之后需要一个数字，但却得到 %s\n"
 
 #: src/main.cc:391
-#, fuzzy, c-format
+#, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
-msgstr "-o 要求参数格式为 key=val，接受到 %s"
+msgstr "-o 要求参数格式为 key=val，却接受到 %s\n"
 
 #: src/main.cc:480
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
-msgstr ""
+msgstr "标签名“%s”后没有逗号。\n"
 
 #: src/main.cc:508 src/main.cc:517
 msgid "WEIRDNESS: unknown option code received\n"
@@ -3419,6 +3426,8 @@ msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
 "for %s, which always uses the safe resolver.\n"
 msgstr ""
+"选项 --safe-resolver 和 --full-resolver 对 %s 没有意义，它总是使用安全解析"
+"器。\n"
 
 #: src/main.cc:674
 #, c-format
@@ -3431,13 +3440,13 @@ msgid "Uncaught exception: %s\n"
 msgstr "未知的例外：%s\n"
 
 #: src/main.cc:690 src/main.cc:739
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Backtrace:\n"
 "%s\n"
 msgstr ""
 "回溯：\n"
-"%s"
+"%s\n"
 
 #: src/menu_text_layout.cc:43 src/menu_tree.cc:220 src/view_changelog.cc:60
 msgid "Search for: "
@@ -5361,13 +5370,13 @@ msgstr "查看会被所选的动作影响的软件包"
 
 #: src/ui.cc:2236
 msgid "Reject Breaking ^Holds"
-msgstr ""
+msgstr "拒绝破坏 ^Holds"
 
 #: src/ui.cc:2238
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
-msgstr ""
+msgstr "拒绝所有会改变保持软件包或安装禁止版本的动作。"
 
 #: src/ui.cc:2246
 msgid "^Find"
