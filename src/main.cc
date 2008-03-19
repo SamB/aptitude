@@ -50,6 +50,7 @@
 #include <cmdline/cmdline_do_action.h>
 #include <cmdline/cmdline_download.h>
 #include <cmdline/cmdline_dump_resolver.h>
+#include <cmdline/cmdline_extract_cache_subset.h>
 #include <cmdline/cmdline_forget_new.h>
 #include <cmdline/cmdline_moo.h>
 #include <cmdline/cmdline_prompt.h>
@@ -637,6 +638,9 @@ int main(int argc, char *argv[])
 		  !strcasecmp(argv[optind], "remove-user-tag"))
 	    return aptitude::cmdline::cmdline_user_tag(argc - optind, argv + optind,
 						       quiet, verbose);
+	  else if(!strcasecmp(argv[optind], "extract-cache-subset"))
+	    return aptitude::cmdline::extract_cache_subset(argc - optind,
+							   argv + optind);
 	  else if(!strcasecmp(argv[optind], "download"))
 	    return cmdline_download(argc-optind, argv+optind);
 	  else if(!strcasecmp(argv[optind], "changelog"))
