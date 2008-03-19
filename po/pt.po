@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-03-15 13:09-0700\n"
-"PO-Revision-Date: 2008-03-05 21:24+0000\n"
+"PO-Revision-Date: 2008-03-19 10:57+0000\n"
 "Last-Translator: Miguel Figueiredo <elmig@debianPT.org>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
 "MIME-Version: 1.0\n"
@@ -541,6 +541,8 @@ msgstr ""
 #: src/apt_options.cc:383
 msgid "Allow dependency resolutions that break holds or forbids"
 msgstr ""
+"Permitir resoluções de dependências que estraguem a manutenção ou proibição "
+"de pacotes"
 
 #: src/apt_options.cc:384
 msgid ""
@@ -554,10 +556,19 @@ msgid ""
 "the dependencies of a package that has just been selected for installation "
 "or upgrade, due to apt bug #470035."
 msgstr ""
+"Se esta opção estiver activa, então sempre que o aptitude resolver um "
+"problema de dependências, irá considerar modificar os pacotes mantidos, ou "
+"instalar versões proibidas de pacotes.  Com esta opção desactivada, estas "
+"soluções serão rejeitadas.\n"
+"NOTA: Neste momento, esta restrição apenas se aplica a situações nas quais o "
+"solucionador de dependências do aptitude (a barra vermelha no fundo do ecrã) "
+"esteja activado.  Devido ao bug #470035 o aptitude irá à mesma estragar os "
+"mantidos quando instalar automaticamente dependências de um pacote que tenha "
+"acabado de ser escolhido para instalação ou actualização."
 
 #: src/apt_options.cc:398
 msgid "Don't warn about the obsolete \"Recommends-Important\" option."
-msgstr ""
+msgstr "Não avisar acerca da opção obsoleta \"Recommends-Important\"."
 
 #: src/apt_options.cc:399
 msgid ""
@@ -566,6 +577,11 @@ msgid ""
 "this option to skip this warning (for instance, if your apt configuration is "
 "shared with a system that has an older version of aptitude installed)."
 msgstr ""
+"Se a opção de configuração %BRecommends-Important%b estiver definida no "
+"ficheiro de configuração do sistema, o aptitude irá alertá-lo disso no "
+"arranque.  Active esta opção para saltar este alerta (por exemplo, se a "
+"configuração do seu apt for partilhada com um sistema que tenha instalado "
+"uma versão mais antiga do aptitude)."
 
 #: src/apt_options.cc:518
 msgid "UI options"
@@ -669,15 +685,14 @@ msgid "Suggest %F"
 msgstr "Sugere %F"
 
 #: src/cmdline/cmdline_action.cc:47
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find the source package for \"%s\".\n"
-msgstr ""
-"Não foi possível encontrar um repositório \"%s\" para o pacote \"%s\"\n"
+msgstr "Não foi possível encontrar o pacote de código-fonte para \"%s\".\n"
 
 #: src/cmdline/cmdline_action.cc:200
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to satisfy the build-depends %s: ."
-msgstr "Não foi possível listar os ficheiros em \"%s\""
+msgstr "Não foi possível satisfazer as dependências de compilação %s: ."
 
 #: src/cmdline/cmdline_action.cc:230
 #, c-format
@@ -877,10 +892,12 @@ msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Argumento de padrão não esperado a seguir a \"keep-all\""
 
 #: src/cmdline/cmdline_do_action.cc:264
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
-msgstr "Não foi possível resolver as dependências para a actualização (%s)."
+msgstr ""
+"Não foi possível resolver as dependências de forma segura, tente correr com\n"
+"--full-resolver.\n"
 
 #: src/cmdline/cmdline_do_action.cc:301 src/cmdline/cmdline_simulate.cc:33
 #: src/cmdline/cmdline_upgrade.cc:149 src/main.cc:681
@@ -1374,7 +1391,7 @@ msgstr "'&m' para marcar pacotes como manualmente instalados"
 
 #: src/cmdline/cmdline_prompt.cc:802
 msgid "'&BD' to install the build-dependencies of a package."
-msgstr ""
+msgstr "'&BD' para instalar as dependências de compilação de um pacote."
 
 #: src/cmdline/cmdline_prompt.cc:806
 msgid "Commands:"
@@ -1493,12 +1510,12 @@ msgid "Resolver state successfully written!"
 msgstr "Estado do resolvedor escrito com sucesso!"
 
 #: src/cmdline/cmdline_resolver.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
-"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %fr: pkg ver ...: %F%na pkg ver ...: %F%"
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACÇÃO> pkg... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:182
@@ -1532,29 +1549,29 @@ msgid "examine the solution in the visual user interface"
 msgstr "examinar a solução no interface visual do utilizador"
 
 #: src/cmdline/cmdline_resolver.cc:196
-#, fuzzy
 msgid ""
 "abort automatic dependency resolution; resolve dependencies by hand instead"
 msgstr ""
-"correr o resolvedor de dependências para corrigir os pacotes problemáticos."
+"abortar a resolução de dependências automática; em vz disso resolver as "
+"dependências à mão"
 
 #: src/cmdline/cmdline_resolver.cc:198
-#, fuzzy
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur.  Enter UNINST instead of a version to reject removing the package."
 msgstr ""
 "rejeitar as versões do pacote dadas; não mostrar quaisquer soluções nas "
-"quais ocorram."
+"quais ocorram. Introduza UNINST em vez da versão para rejeitar a remoção do "
+"pacote"
 
 #: src/cmdline/cmdline_resolver.cc:200
-#, fuzzy
 msgid ""
 "accept the given package versions (; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package."
 msgstr ""
 "aceitar as versões do pacote dadas; mostrar apenas soluções nas quais estas "
-"ocorram."
+"ocorram.  Introduza UNINST em vez de uma versão para aceitar remover o "
+"pacote."
 
 #: src/cmdline/cmdline_resolver.cc:202
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -1687,6 +1704,8 @@ msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr ""
+"A abandonar a resolução automática de dependências e a voltar à resolução "
+"manual."
 
 #: src/cmdline/cmdline_resolver.cc:691
 msgid "The following commands are available:"
@@ -1731,14 +1750,15 @@ msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
+"O solucionador ultrapassou o tempo após produzir uma solução; poderão não "
+"feitos algumas actualizações possíveis."
 
 #: src/cmdline/cmdline_resolver.cc:952
-#, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
-"Não foi possível resolver dependências para a actualização (a resolução de "
-"dependências esgotou o tempo)."
+"Não foi possível resolver dependências para a actualização (o solucionador "
+"esgotou o tempo)."
 
 #: src/cmdline/cmdline_resolver.cc:966
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
@@ -1751,6 +1771,8 @@ msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
+"Resolução de dependências incompleta (%s); algumas actualizações possíveis "
+"poderão não ser executadas."
 
 #: src/cmdline/cmdline_resolver.cc:981
 #, c-format
@@ -2034,24 +2056,26 @@ msgid "E: The %s command takes no arguments\n"
 msgstr "E: O comando %s não leva argumentos\n"
 
 #: src/cmdline/cmdline_user_tag.cc:51
-#, fuzzy, c-format
+#, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
-msgstr "Não foi possível encontrar uma versão \"%s\" para o pacote \"%s\"\n"
+msgstr "A acrescentar o 'tag' \"%s\" ao pacote \"%s\".\n"
 
 #: src/cmdline/cmdline_user_tag.cc:58
-#, fuzzy, c-format
+#, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
-msgstr "Não foi possível encontrar uma versão \"%s\" para o pacote \"%s\"\n"
+msgstr "A remover o 'tag' \"%s\" do pacote \"%s\".\n"
 
 #: src/cmdline/cmdline_user_tag.cc:88
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
 msgstr ""
+"%s: argumentos insuficientes; esperado pelo menos um nome de 'tag' e um "
+"pacote.\n"
 
 #: src/cmdline/cmdline_user_tag.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "No such package \"%s\".\n"
-msgstr "Pacote \"%s\" não existe"
+msgstr "O pacote \"%s\" não existe.\n"
 
 #: src/cmdline/cmdline_util.cc:131
 #, c-format
@@ -2114,15 +2138,15 @@ msgstr "Agora existem %F."
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Existe %d pacote obsoleto."
+msgstr[1] "Existem %d pacotes obsoletos."
 
 #: src/cmdline/cmdline_util.cc:354
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Existe %d novo pacote obsoleto: "
+msgstr[1] "Existem %d novos pacotes obsoletos: "
 
 #: src/cmdline/cmdline_why.cc:269
 msgid "dep_level"
@@ -2274,9 +2298,8 @@ msgid "Tags"
 msgstr "Tags"
 
 #: src/desc_parse.cc:334
-#, fuzzy
 msgid "User Tags"
-msgstr "Tags"
+msgstr "Tags do Utilizador"
 
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
@@ -2400,11 +2423,13 @@ msgid ""
 "Error parsing a user-tag for the package %s: unexpected end-of-line "
 "following %s."
 msgstr ""
+"Erro a interpretar um 'tag' de utilizador para o pacote %s: fim de linha "
+"inesperado a seguir a %s."
 
 #: src/generic/apt/aptcache.cc:283
-#, fuzzy, c-format
+#, c-format
 msgid "Unterminated '\"' in the user-tags list of the package %s."
-msgstr "String literal não terminada após %s"
+msgstr "'\"' não terminado na lista de 'tags' do utilizador do pacote %s."
 
 #: src/generic/apt/aptcache.cc:387
 msgid "Can't open Aptitude extended state file"
@@ -2612,35 +2637,36 @@ msgid "(core dumped)"
 msgstr "(core dumped)"
 
 #: src/generic/apt/download_update_manager.cc:353
-#, fuzzy, c-format
+#, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr ""
-"O processo de actualização de debtags (%s %s) foi morto pelo sinal %d%s."
+"O processo de actualização de debtags (%s actualiza %s) foi morto pelo sinal "
+"%d%s."
 
 #: src/generic/apt/download_update_manager.cc:360
-#, fuzzy, c-format
+#, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
-"O processo de actualização de debtags (%s %s) terminou anormalmente (código %"
-"d)."
+"O processo de actualização de debtags (%s actualiza %s) terminou "
+"anormalmente (código %d)."
 
 #: src/generic/apt/download_update_manager.cc:366
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
 "(status %d)."
 msgstr ""
-"O processo de actualização de debtags (%s %s) terminou de uma forma não "
-"esperada (status %d)."
+"O processo de actualização de debtags (%s actualiza %s) terminou de uma "
+"forma não esperada (status %d)."
 
 #: src/generic/apt/download_update_manager.cc:371
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
 "installed?): %s"
 msgstr ""
-"A actualização da base de dados debtags falhou (%s %s) (talvez o debtags não "
-"esteja instalado?): %s"
+"A actualização da base de dados debtags falhou (%s actualiza %s) (talvez o "
+"debtags não esteja instalado?): %s"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
 #, c-format
@@ -3594,14 +3620,14 @@ msgid "Expected a number after -q=, got %s\n"
 msgstr "Esperava um número após -q=, foi obtido %s\n"
 
 #: src/main.cc:391
-#, fuzzy, c-format
+#, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
-msgstr "-o necessita de um argumento na forma chave=valor, foi obtido %s"
+msgstr "-o necessita de um argumento na forma chave=valor, foi obtido %s\n"
 
 #: src/main.cc:480
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
-msgstr ""
+msgstr "Nenhuma vírgula a seguir o nome do 'tag' \"%s\".\n"
 
 #: src/main.cc:508 src/main.cc:517
 msgid "WEIRDNESS: unknown option code received\n"
@@ -3628,6 +3654,8 @@ msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
 "for %s, which always uses the safe resolver.\n"
 msgstr ""
+"As opções --safe-resolver e --full-resolver não têm significado para\n"
+"%s, que utiliza sempre o resolver seguro.\n"
 
 #: src/main.cc:674
 #, c-format
@@ -3640,13 +3668,13 @@ msgid "Uncaught exception: %s\n"
 msgstr "Excepção não tratada: %s\n"
 
 #: src/main.cc:690 src/main.cc:739
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Backtrace:\n"
 "%s\n"
 msgstr ""
 "Backtrace:\n"
-"%s"
+"%s\n"
 
 #: src/menu_text_layout.cc:43 src/menu_tree.cc:220 src/view_changelog.cc:60
 msgid "Search for: "
@@ -5671,13 +5699,15 @@ msgstr "Ver o pacote que será afectado pela acção seleccionada"
 
 #: src/ui.cc:2236
 msgid "Reject Breaking ^Holds"
-msgstr ""
+msgstr "Rejeitar Estragar ^Holds (Mantidos)"
 
 #: src/ui.cc:2238
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
 msgstr ""
+"Rejeitar todas as acções que alterariam o estado dos pacotes mantidos ou "
+"instalariam versões proibidas."
 
 #: src/ui.cc:2246
 msgid "^Find"
