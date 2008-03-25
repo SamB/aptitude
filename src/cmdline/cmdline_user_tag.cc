@@ -48,6 +48,7 @@ namespace aptitude
 	  {
 	  case action_add:
 	    if(verbose > 0)
+				// Sometimes also "user-tag" is used!
 	      printf(_("Adding user tag \"%s\" to the package \"%s\".\n"),
 		     tag.c_str(), pkg.Name());
 

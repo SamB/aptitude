@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.2.15.5\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-03-15 13:09-0700\n"
-"PO-Revision-Date: 2008-02-23 19:47+0100\n"
+"PO-Revision-Date: 2008-03-25 16:07+0100\n"
 "Last-Translator: Jens Seidel <jensseidel@users.sf.net>\n"
 "Language-Team: Debian German <debian-l10n-german@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -534,7 +534,8 @@ msgstr ""
 
 #: src/apt_options.cc:383
 msgid "Allow dependency resolutions that break holds or forbids"
-msgstr ""
+msgstr "Erlaube Abhängigkeitsauflösungen, die Paketzurückhaltungen oder "
+"-verbote ignorieren"
 
 #: src/apt_options.cc:384
 msgid ""
@@ -548,10 +549,20 @@ msgid ""
 "the dependencies of a package that has just been selected for installation "
 "or upgrade, due to apt bug #470035."
 msgstr ""
+"Falls diese Option aktiviert ist, wird aptitude bei der Auflösung einer "
+"Abhängigkeit immer in Betracht ziehen, zurückgehaltene Pakete zu modifizieren "
+"oder verbotene Paketversionen zu installieren. Falls diese Option deaktiviert "
+"ist, werden diese Lösungen standardmäßig zurückgewiesen.\n"
+"ACHTUNG: Zurzeit wird diese Einschränkung nur beachtet, wenn aptitudes "
+"Abhängigkeitsauflöser (der rote Balken am unteren Ende des Bildschirms) "
+"aktiviert ist. aptitude wird weiterhin Zurückhaltungen ignorieren, wenn "
+"die Abhängigkeiten eines Paketes, das gerade für die Installation oder "
+"Aktualisierung ausgewählt wurde, automatisch installiert werden. Dies ist "
+"Fehler #470035."
 
 #: src/apt_options.cc:398
 msgid "Don't warn about the obsolete \"Recommends-Important\" option."
-msgstr ""
+msgstr "Nicht über die veraltete Option »Recommends-Important« warnen."
 
 #: src/apt_options.cc:399
 msgid ""
@@ -560,6 +571,10 @@ msgid ""
 "this option to skip this warning (for instance, if your apt configuration is "
 "shared with a system that has an older version of aptitude installed)."
 msgstr ""
+"Falls die Konfigurationsoption %BRecommends-Important%b in der Systemkonfigurationsdatei "
+"gesetzt ist, wird aptitude darüber beim Start warnen. Aktivieren Sie diese Option, "
+"um die Warnung zu unterdrücken (zum Beispiel falls Ihre APT-Konfiguration mit "
+"einem System geteilt wird, das eine ältere Version von aptitude installiert hat)."
 
 #: src/apt_options.cc:518
 msgid "UI options"
@@ -664,14 +679,14 @@ msgid "Suggest %F"
 msgstr "Schlage %F vor"
 
 #: src/cmdline/cmdline_action.cc:47
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find the source package for \"%s\".\n"
-msgstr "Kann kein Archiv »%s« für das Paket »%s« finden\n"
+msgstr "Kann das Quellpaket zu »%s« nicht finden.\n"
 
 #: src/cmdline/cmdline_action.cc:200
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to satisfy the build-depends %s: ."
-msgstr "Konnte Dateien in »%s« nicht auflisten"
+msgstr "Kann die Bauabhängigkeiten »%s« nicht auflösen."
 
 #: src/cmdline/cmdline_action.cc:230
 #, c-format
@@ -874,10 +889,11 @@ msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Unerwartetes Musterargument folgt »keep-all«"
 
 #: src/cmdline/cmdline_do_action.cc:264
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
-msgstr "Kann Abhängigkeiten für die Aktualisierung nicht auflösen (%s)!"
+msgstr "Kann Abhängigkeiten nicht sicher auflösen, versuchen Sie es mit der "
+"Option --full-resolver.\n"
 
 #: src/cmdline/cmdline_do_action.cc:301 src/cmdline/cmdline_simulate.cc:33
 #: src/cmdline/cmdline_upgrade.cc:149 src/main.cc:681
@@ -1380,7 +1396,7 @@ msgstr "»&m« zum Markieren von Paketen als manuell installiert"
 
 #: src/cmdline/cmdline_prompt.cc:802
 msgid "'&BD' to install the build-dependencies of a package."
-msgstr ""
+msgstr "»&BD« zum Installieren der Bauabhängigkeiten eines Pakets."
 
 #: src/cmdline/cmdline_prompt.cc:806
 msgid "Commands:"
@@ -1500,12 +1516,12 @@ msgid "Resolver state successfully written!"
 msgstr "Auflösungsstatus wurde erfolgreich geschrieben!"
 
 #: src/cmdline/cmdline_resolver.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
-"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<AKTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:182
@@ -1520,7 +1536,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:186
 msgid "give up and quit the program"
-msgstr "aufgeben und das Programm verlassen"
+msgstr "Aufgeben und das Programm verlassen"
 
 #: src/cmdline/cmdline_resolver.cc:188
 msgid "move to the next solution"
@@ -1539,33 +1555,32 @@ msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:194
 msgid "examine the solution in the visual user interface"
-msgstr "prüfen der Lösung in der grafischen Benutzeroberfläche"
+msgstr "Prüfen der Lösung in der grafischen Benutzeroberfläche"
 
 #: src/cmdline/cmdline_resolver.cc:196
-#, fuzzy
 msgid ""
 "abort automatic dependency resolution; resolve dependencies by hand instead"
 msgstr ""
-"starten Sie den automatischen Abhängigkeitsauflöser, um die kaputten "
-"Abhängigkeiten zu korrigieren."
+"Beenden der automatischen Abhängigkeitsauflösung; lösen Sie kaputte "
+"Abhängigkeiten stattdessen manuell auf"
 
 #: src/cmdline/cmdline_resolver.cc:198
-#, fuzzy
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur.  Enter UNINST instead of a version to reject removing the package."
 msgstr ""
 "die gegebenen Paketversionen zurückweisen; keine Lösungen anzeigen, in denen "
-"sie auftreten."
+"sie auftreten. Geben Sie UNINST statt einer Version ein, falls das Paket nicht "
+"entfernt werden soll."
 
 #: src/cmdline/cmdline_resolver.cc:200
-#, fuzzy
 msgid ""
 "accept the given package versions (; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package."
 msgstr ""
 "die gegebenen Paketversionen akzeptieren; nur Lösungen anzeigen, in denen "
-"sie auftreten."
+"sie auftreten. Geben Sie UNINST statt einer Version ein, falls das Paket "
+"entfernt werden kann."
 
 #: src/cmdline/cmdline_resolver.cc:202
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -1700,6 +1715,8 @@ msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr ""
+"Abbruch der automatischen Abhängigkeitsauflösung und zurück zu manueller "
+"Auflösung."
 
 #: src/cmdline/cmdline_resolver.cc:691
 msgid "The following commands are available:"
@@ -1745,13 +1762,14 @@ msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
+"Es kam zu einer Zeitüberschreitung im Auflöser, nachdem eine Lösung gefunden "
+"wurde. Einige mögliche Aktualisierungen könnten nicht durchgeführt worden sein."
 
 #: src/cmdline/cmdline_resolver.cc:952
-#, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
-"Abhängigkeiten für die Aktualisierung können nicht aufgelöst werden (Zeit "
+"Abhängigkeiten für die Aktualisierung konnten nicht aufgelöst werden (Zeit "
 "lief beim Auflösen ab)!"
 
 #: src/cmdline/cmdline_resolver.cc:966
@@ -1766,6 +1784,8 @@ msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
+"Die Abhängigkeitsauflösung ist unvollständig (%s). Einige mögliche "
+"Aktualisierungen könnten nicht durchgeführt worden sein."
 
 #: src/cmdline/cmdline_resolver.cc:981
 #, c-format
@@ -2049,24 +2069,24 @@ msgid "E: The %s command takes no arguments\n"
 msgstr "F: Der »%s«-Befehl nimmt keine Argumente\n"
 
 #: src/cmdline/cmdline_user_tag.cc:51
-#, fuzzy, c-format
+#, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
-msgstr "Kann keine Version »%s« des Pakets »%s« finden\n"
+msgstr "Füge Benutzermarke »%s« zum Paket »%s« hinzu.\n"
 
 #: src/cmdline/cmdline_user_tag.cc:58
-#, fuzzy, c-format
+#, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
-msgstr "Kann keine Version »%s« des Pakets »%s« finden\n"
+msgstr "Entferne Benutzermarke »%s« vom Paket »%s«.\n"
 
 #: src/cmdline/cmdline_user_tag.cc:88
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
-msgstr ""
+msgstr "%s: zu wenig Argumente; erwartete zumindest einen Markennamen und ein Paket.\n"
 
 #: src/cmdline/cmdline_user_tag.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "No such package \"%s\".\n"
-msgstr "Kein solches Paket »%s«"
+msgstr "Kein solches Paket »%s«.\n"
 
 #: src/cmdline/cmdline_util.cc:131
 #, c-format
@@ -2130,15 +2150,15 @@ msgstr "Es gibt nun %F."
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Es gibt %d neues veraltetes Paket."
+msgstr[1] "Es gibt %d neue veraltete Pakete."
 
 #: src/cmdline/cmdline_util.cc:354
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Es gibt %d neues veraltetes Paket: "
+msgstr[1] "Es gibt %d neue veraltete Pakete: "
 
 #: src/cmdline/cmdline_why.cc:269
 msgid "dep_level"
@@ -2293,9 +2313,8 @@ msgid "Tags"
 msgstr "Marken"
 
 #: src/desc_parse.cc:334
-#, fuzzy
 msgid "User Tags"
-msgstr "Marken"
+msgstr "Benutzermarken"
 
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
@@ -2419,11 +2438,13 @@ msgid ""
 "Error parsing a user-tag for the package %s: unexpected end-of-line "
 "following %s."
 msgstr ""
+"Fehler beim Einlesen einer Benutzermarke für das Paket %s: unerwartetes "
+"Zeilenende nach %s."
 
 #: src/generic/apt/aptcache.cc:283
-#, fuzzy, c-format
+#, c-format
 msgid "Unterminated '\"' in the user-tags list of the package %s."
-msgstr "Nicht begrenzter String nach %s"
+msgstr "Nicht begrenztes »\"« in der Liste der Benutzermarken des Pakets %s."
 
 #: src/generic/apt/aptcache.cc:387
 msgid "Can't open Aptitude extended state file"
@@ -2530,14 +2551,14 @@ msgid "Unable to replace %s with new configuration file"
 msgstr "Konnte %s nicht durch neue Konfigurationsdatei ersetzen"
 
 #: src/generic/apt/apt.cc:396
-#, fuzzy
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
 "you make to the states of packages will NOT be preserved!"
 msgstr ""
-"Konnte die Cache-Datei nicht sperren. Öffne sie im Nur-Lesen-Modus. Alle "
-"Änderungen die Sie am Status von Paketen durchführen, werden NICHT gemerkt!"
+"Konnte die Cache-Datei nicht sperren. Das bedeutet in der Regel, dass dpkg oder "
+"ein anderes APT-Werkzeug bereits Pakete installiert. Öffne sie im Nur-Lesen-Modus. Alle "
+"Änderungen, die Sie am Status von Paketen durchführen, werden NICHT gemerkt!"
 
 #: src/generic/apt/download_install_manager.cc:56
 msgid ""
@@ -2633,35 +2654,35 @@ msgid "(core dumped)"
 msgstr "(Coredump erzeugt)"
 
 #: src/generic/apt/download_update_manager.cc:353
-#, fuzzy, c-format
+#, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr ""
-"Der debtags-Aktualisierungsprozess (%s %s) wurde durch das Signal %d%s "
+"Der debtags-Aktualisierungsprozess (%s update %s) wurde durch das Signal %d%s "
 "beendet."
 
 #: src/generic/apt/download_update_manager.cc:360
-#, fuzzy, c-format
+#, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
-"Der debtags-Aktualisierungsprozess (%s %s) wurde mit einem Fehler beendet "
+"Der debtags-Aktualisierungsprozess (%s update %s) wurde mit einem Fehler beendet "
 "(Code %d)."
 
 #: src/generic/apt/download_update_manager.cc:366
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
 "(status %d)."
 msgstr ""
-"Der debtags-Aktualisierungsprozess (%s %s) wurde auf unerwartete Weise "
+"Der debtags-Aktualisierungsprozess (%s update %s) wurde auf unerwartete Weise "
 "beendet (Status %d)."
 
 #: src/generic/apt/download_update_manager.cc:371
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
 "installed?): %s"
 msgstr ""
-"Die Aktualisierung der debtags-Datenbank (%s %s) schlug fehl (vielleicht ist "
+"Die Aktualisierung der debtags-Datenbank (%s update %s) schlug fehl (vielleicht ist "
 "debtags nicht installiert?): %s"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
@@ -3070,7 +3091,7 @@ msgstr "Ungültiger Eintrag in Stildefinitionsgruppe: »%s«"
 #: src/load_config.cc:115
 #, c-format
 msgid "Invalid tagless entry in style definition group: \"%s\""
-msgstr "Ungültiger Eintrag ohne Tag in Stildefinitionsgruppe: »%s«"
+msgstr "Ungültiger Eintrag ohne Marke in Stildefinitionsgruppe: »%s«"
 
 #: src/load_config.cc:127
 msgid "The default color may only be used as a background."
@@ -3172,7 +3193,7 @@ msgstr "»Aufgabe« Gruppierungsregeln haben keine Argumente"
 
 #: src/load_grouppolicy.cc:566
 msgid "Expected no more than one argument to a tag grouping policy"
-msgstr "Erwartete nicht mehr als ein Argument für eine »Tag«-Gruppierungsregel"
+msgstr "Erwartete nicht mehr als ein Argument für eine Marken-Gruppierungsregel"
 
 #: src/load_grouppolicy.cc:581
 msgid "Expected '(' after 'pattern'"
@@ -3592,14 +3613,14 @@ msgid "Expected a number after -q=, got %s\n"
 msgstr "Nach -q= wurde eine Nummer erwartet, nicht %s\n"
 
 #: src/main.cc:391
-#, fuzzy, c-format
+#, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
-msgstr "-o erfordert ein Argument der Form schlüssel=wert, erhielt »%s«"
+msgstr "-o erfordert ein Argument der Form Schlüssel=Wert, erhielt »%s«\n"
 
 #: src/main.cc:480
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
-msgstr ""
+msgstr "Kein Komma nach der Marke »%s«.\n"
 
 #: src/main.cc:508 src/main.cc:517
 msgid "WEIRDNESS: unknown option code received\n"
@@ -3626,6 +3647,8 @@ msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
 "for %s, which always uses the safe resolver.\n"
 msgstr ""
+"Die Optionen --safe-resolver und --full-resolver sind nicht sinnvoll\n"
+"für %s, was immer den sicheren Auflöser verwendet.\n"
 
 #: src/main.cc:674
 #, c-format
@@ -3638,13 +3661,13 @@ msgid "Uncaught exception: %s\n"
 msgstr "Nicht gefangene Ausnahme: %s\n"
 
 #: src/main.cc:690 src/main.cc:739
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Backtrace:\n"
 "%s\n"
 msgstr ""
 "Backtrace:\n"
-"%s"
+"%s\n"
 
 #: src/menu_text_layout.cc:43 src/menu_tree.cc:220 src/view_changelog.cc:60
 msgid "Search for: "
@@ -3950,7 +3973,7 @@ msgstr "Auto"
 
 #: src/pkg_columnizer.cc:103
 msgid "Tag"
-msgstr "Mark"
+msgstr "Marke"
 
 #: src/pkg_columnizer.cc:106
 msgid "ProgName"
@@ -4407,7 +4430,7 @@ msgstr "Trefferindex %ls ist zu groß; verfügbare Gruppen sind (%s)"
 
 #: src/pkg_grouppolicy.cc:1470
 msgid "TAGLESS PACKAGES"
-msgstr "PAKETE OHNE TAGS"
+msgstr "PAKETE OHNE MARKEN"
 
 #: src/pkg_grouppolicy.cc:1471
 msgid ""
@@ -4422,7 +4445,7 @@ msgstr ""
 
 #: src/pkg_grouppolicy.cc:1504
 msgid "MISSING TAG"
-msgstr "FEHLENDES TAG"
+msgstr "FEHLENDE MARKE"
 
 #: src/pkg_info_screen.cc:130
 msgid "Compressed size: "
@@ -4686,11 +4709,11 @@ msgstr ""
 
 #: src/reason_fragment.cc:399
 msgid "%B%s%b is currently installed."
-msgstr "%B%s%b ist zur Zeit installiert."
+msgstr "%B%s%b ist zurzeit installiert."
 
 #: src/reason_fragment.cc:405
 msgid "%B%s%b is not currently installed."
-msgstr "%B%s%b ist zur Zeit nicht installiert."
+msgstr "%B%s%b ist zurzeit nicht installiert."
 
 #: src/reason_fragment.cc:413
 msgid "Some dependencies of %B%s%b are not satisfied:"
@@ -5714,13 +5737,15 @@ msgstr "Das Paket anzeigen, das von der gewählten Aktion betroffen sein wird"
 
 #: src/ui.cc:2236
 msgid "Reject Breaking ^Holds"
-msgstr ""
+msgstr "Ablehnen verletzender ^Zurückhaltungen"
 
 #: src/ui.cc:2238
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
 msgstr ""
+"Alle Aktionen ablehnen, die den Status zurückgehaltener Pakete "
+"ändern oder verbotene Versionen installieren würden"
 
 #: src/ui.cc:2246
 msgid "^Find"

@@ -16,7 +16,7 @@ docdir=$(datadir)/doc/$(PACKAGE)
 
 localemandir=$(mandir)/$(LANGCODE)
 
-# Automake automagically distributes README without asking..
+# Automake automagically distributes README without asking
 README=README.$(LANGCODE)
 
 if USE_PO4A

@@ -197,7 +197,7 @@ namespace
 		    build_dep_description += ")";
 		  }
 	      }
-	    printf(_("Unable to satisfy the build-depends %s: ."),
+	    printf(_("Unable to satisfy the build-depends: %s."),
 		   build_dep_description.c_str());
 	  }
       }
