@@ -114,22 +114,22 @@ namespace aptitude
       }
 
       // Build a successor of this node.
-      justification successor(const target &target,
+      justification successor(const target &new_target,
 			      const pkgCache::DepIterator &dep) const
       {
 	imm::set<action> new_actions(actions);
 	new_actions.insert(action(dep, new_actions.size()));
 
-	return justification(the_target, new_actions);
+	return justification(new_target, new_actions);
       }
 
-      justification successor(const justification &target,
+      justification successor(const target &new_target,
 			      const pkgCache::PrvIterator &prv) const
       {
 	imm::set<action> new_actions(actions);
 	new_actions.insert(action(prv, new_actions.size()));
 
-	return justification(the_target, new_actions);
+	return justification(new_target, new_actions);
       }
 
       cwidget::fragment *description() const;
