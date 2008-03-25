@@ -66,33 +66,13 @@ namespace
       return p1->ID < p2->ID;
     }
   };
+}
 
-  // Represents a single step in a justification.  This means that
-  // we either follow a dependency or a Provides.
-  //
-  // NB: the only reason for tagging with the id is because I don't
-  // want massive copying, and I'm lazy, so I want to reuse immsets
-  // instead of writing a proper singly linked, refcounted list type.
-  class justify_action
+namespace aptitude
+{
+  namespace why
   {
-    pkgCache::DepIterator dep;
-    pkgCache::PrvIterator prv;
-    int id;
-
-  public:
-    justify_action(const pkgCache::DepIterator &_dep,
-	   int _id)
-      : dep(_dep), id(_id)
-    {
-    }
-
-    justify_action(const pkgCache::PrvIterator &_prv,
-		   int _id)
-      : prv(_prv), id(_id)
-    {
-    }
-
-    cw::style get_style() const
+    cw::style action::get_style() const
     {
       pkgCache::PkgIterator pkg;
       if(!dep.end())
@@ -103,7 +83,7 @@ namespace
       return pkg_item::pkg_style(pkg, false);
     }
 
-    cw::fragment *description_column1_fragment() const
+    cw::fragment *action::description_column1_fragment() const
     {
       pkgCache::VerIterator ver;
       if(!dep.end())
@@ -141,7 +121,7 @@ namespace
       return cw::text_fragment(rval);
     }
 
-    cw::fragment *description_column2_fragment() const
+    cw::fragment *action::description_column2_fragment() const
     {
       if(!dep.end())
 	return cw::text_fragment(const_cast<pkgCache::DepIterator &>(dep).DepType());
@@ -149,7 +129,7 @@ namespace
 	return cw::text_fragment(_("Provides"));
     }
 
-    cw::fragment *description_column3_fragment() const
+    cw::fragment *action::description_column3_fragment() const
     {
       // Q: can I use a std::string and cw::util::transcode on the way out instead?
       if(!dep.end())
@@ -162,15 +142,15 @@ namespace
 	return cw::text_fragment(const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name());
     }
 
-    cw::fragment *description_fragment() const
+    cw::fragment *action::description_fragment() const
     {
       return cw::fragf("%F %F %F",
-		   description_column1_fragment(),
-		   description_column2_fragment(),
-		   description_column3_fragment());
+		       description_column1_fragment(),
+		       description_column2_fragment(),
+		       description_column3_fragment());
     }
 
-    bool operator<(const justify_action &other) const
+    bool action::operator<(const action &other) const
     {
       typedef pkgCache::Dependency Dependency;
       typedef pkgCache::Provides Provides;
@@ -202,68 +182,8 @@ namespace
       else
 	return false;
     }
-  };
 
-  class justify_node;
-
-  class search_params
-  {
-  public:
-    enum VersionSelection { Current, Candidate, Install };
-    enum DepLevel { DependsOnly, Recommends, Suggests };
-
-  private:
-    VersionSelection version_selection;
-    DepLevel dep_level;
-    bool allow_choices;
-
-  public:
-    search_params(VersionSelection _version_selection,
-		  DepLevel _dep_level,
-		  bool _allow_choices)
-      : version_selection(_version_selection),
-	dep_level(_dep_level),
-	allow_choices(_allow_choices)
-    {
-    }
-
-    bool should_follow_dep(const pkgCache::DepIterator &dep) const
-    {
-      switch(dep->Type)
-	{
-	case pkgCache::Dep::Depends:
-	case pkgCache::Dep::PreDepends:
-	case pkgCache::Dep::Conflicts:
-	case pkgCache::Dep::DpkgBreaks:
-	  return true;
-	case pkgCache::Dep::Recommends:
-	  return dep_level == Recommends || dep_level == Suggests;
-	case pkgCache::Dep::Suggests:
-	  return dep_level == Suggests;
-	default:
-	  return false;
-	}
-    }
-
-    pkgCache::VerIterator selected_version(const pkgCache::PkgIterator &pkg) const
-    {
-      switch(version_selection)
-	{
-	case Current:
-	  return pkg.CurrentVer();
-	case Candidate:
-	  return (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
-	case Install:
-	  return (*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
-	default:
-	  fprintf(stderr, "Unknown version selection, something is very wrong.\n");
-	  return pkg.CurrentVer();
-	}
-    }
-
-    bool get_allow_choices() const { return allow_choices; }
-
-    std::wstring description() const
+    std::wstring search_params::description() const
     {
       std::wstring rval(L"{ ");
       rval += W_("dep_level");
@@ -315,206 +235,13 @@ namespace
       rval += L" }";
       return rval;
     }
-  };
 
-  /** Represents something that can be justified.  This is the tail of
-   *  a justification deduction and also used to input targets.
-   */
-  class justify_target
-  {
-    // The three possible states are:
-    //
-    // pkg.end() and ver.end() are false
-    //      => this is a specific package version.
-    // pkg.end() is false, ver.end() is true, is_provided_name is true
-    //      => this is a provided package name.
-    // pkg.end() is false, ver.end() is true, is_provided_name is false
-    //      => this is a package removal.
-
-    // An Install node represents the installation of a package.
-    //
-    // A Remove node represents the removal of a package.
-    //
-    // A ProvidesInstall node indicates that something that provides
-    // the package name is being installed.
-    //
-    // A ProvidesRemove node indicates that something that provides
-    // the package name is being removed.
-    enum NodeType { InstallType, RemoveType, ProvidesInstall, ProvidesRemove };
-
-    NodeType node_type;
-    // The package on which to operate; since we uniformly take one of
-    // the three package targets, there isn't a need to store a
-    // version.
-    pkgCache::PkgIterator pkg;
-    // The provides is stored so we can use the ProvideVersion.
-    pkgCache::PrvIterator prv;
-
-    justify_target(const pkgCache::PkgIterator &_pkg,
-		   const pkgCache::PrvIterator &_prv,
-		   NodeType _node_type)
-      : pkg(_pkg), prv(_prv), node_type(_node_type)
-    {
-    }
-
-    justify_target(const pkgCache::PkgIterator &_pkg,
-		   NodeType _node_type)
-      : pkg(_pkg), node_type(_node_type)
-    {
-    }
-
-    static justify_target Provide(const pkgCache::PkgIterator &pkg,
-				  const pkgCache::PrvIterator &prv,
-				  bool provided_is_removed)
-    {
-      NodeType tp = provided_is_removed ? ProvidesRemove : ProvidesInstall;
-      return justify_target(pkg, prv, tp);
-    }
-
-  public:
-    /** Returns the package that should be marked as "visited"
-     *  to restrict future searches. (since the search never visits
-     *  two different versions of the same package, this is OK)
-     */
-    pkgCache::PkgIterator get_visited_package() const
-    {
-      return pkg;
-    }
-
-    pkgCache::PrvIterator get_provides() const
-    {
-      return prv;
-    }
-
-    /** \brief Return true if this is a ProvidesInstall or ProvidesRemove node. */
-    bool is_provides() const
-    {
-      return node_type == ProvidesInstall || node_type == ProvidesRemove;
-    }
-
-    /** \brief Return true if this is a Remove or ProvidesRemove node. */
-    bool is_remove() const
-    {
-      return node_type == RemoveType || node_type == ProvidesRemove;
-    }
-
-    // Use the implicit operator==.
-    //
-    // bool operator==(const justify_target &other) const;
-
-    static justify_target Install(const pkgCache::PkgIterator &pkg)
-    {
-      return justify_target(pkg, InstallType);
-    }
-
-    static justify_target Remove(const pkgCache::PkgIterator &pkg)
-    {
-      return justify_target(pkg, RemoveType);
-    }
-
-    cw::fragment *description() const
-    {
-      pkgCache::PkgIterator &mpkg = const_cast<pkgCache::PkgIterator &>(pkg);
-
-      switch(node_type)
-	{
-	case InstallType:
-	  return cw::fragf(_("Install(%s)"), mpkg.Name());
-	case RemoveType:
-	  return cw::fragf(_("Remove(%s)"), mpkg.Name());
-	case ProvidesInstall:
-	  return cw::fragf(_("Install(%s provides %s)"),
-		       const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
-		       mpkg.Name());
-	case ProvidesRemove:
-	  return cw::fragf(_("Remove(%s provides %s)"),
-		       const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
-		       mpkg.Name());
-	}
-    }
-
-    /** \brief Push the successors of this target onto the head of a queue.
-     *
-     *  The successors of a node are the actions that could have generated
-     *  it (installing this package, installing this provides).
-     *
-     *  \param parent the parent of any new search nodes that are generated.
-     *  \param output the queue onto which the successors should be loaded.
-     *  \param params the parameters of the search (these control
-     *                which dependencies get followed).
-     */
-    void generate_successors(const justify_node &parent,
-			     std::deque<justify_node> &output,
-			     const search_params &params,
-			     int verbosity) const;
-  };
-
-  // Represents a full forward or reverse justification for the
-  // installation of the given package/version.  The justification may
-  // terminate on either a package version, a provided package name,
-  // or the removal of a package.
-  class justify_node
-  {
-    justify_target target;
-    imm::set<justify_action> actions;
-
-    justify_node(const justify_target &_target,
-		 const imm::set<justify_action> &_actions)
-      : target(_target), actions(_actions)
-    {
-    }
-  public:
-    // Create a node with an empty history rooted at the given target.
-    justify_node(const justify_target &_target)
-      : target(_target)
-    {
-    }
-
-    const justify_target &get_target() const
-    {
-      return target;
-    }
-
-    const imm::set<justify_action> &get_actions() const
-    {
-      return actions;
-    }
-
-    // Generate all the successors of this node (Q: could I lift
-    // justify_target::generate_successors into this class?  It feels
-    // like it makes more sense to have the smarts in here)
-    void generate_successors(std::deque<justify_node> &output,
-			     const search_params &params,
-			     int verbosity) const
-    {
-      target.generate_successors(*this, output, params, verbosity);
-    }
-
-    // Build a successor of this node.
-    justify_node successor(const justify_target &target,
-			   const pkgCache::DepIterator &dep) const
-    {
-      imm::set<justify_action> new_actions(actions);
-      new_actions.insert(justify_action(dep, new_actions.size()));
-
-      return justify_node(target, new_actions);
-    }
-
-    justify_node successor(const justify_target &target,
-			   const pkgCache::PrvIterator &prv) const
-    {
-      imm::set<justify_action> new_actions(actions);
-      new_actions.insert(justify_action(prv, new_actions.size()));
-
-      return justify_node(target, new_actions);
-    }
-
-    cw::fragment *description() const
+    cw::fragment *justification::description() const
     {
       std::vector<cw::fragment *> rval;
-      rval.push_back(cw::fragf("%F\n", target.description()));
+      rval.push_back(cw::fragf("%F\n", the_target.description()));
       std::vector<cw::fragment *> col1_entries, col2_entries, col3_entries;
-      for(imm::set<justify_action>::const_iterator it = actions.begin();
+      for(imm::set<action>::const_iterator it = actions.begin();
 	  it != actions.end(); ++it)
 	{
 	  col1_entries.push_back(cw::hardwrapbox(cw::fragf("%F | \n", it->description_column1_fragment())));
@@ -527,13 +254,12 @@ namespace
       std::vector<fragment_column_entry> columns;
       columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, col1_entries));
       columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL)),
-      columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, col2_entries));
+	columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, col2_entries));
       columns.push_back(fragment_column_entry(false, false, 1, fragment_column_entry::top, NULL)),
-      columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, col3_entries));
+	columns.push_back(fragment_column_entry(false, true, 0, fragment_column_entry::top, col3_entries));
       rval.push_back(fragment_columns(columns));
       return cw::sequence_fragment(rval);
     }
-  };
 
   cw::fragment *print_dep(pkgCache::DepIterator dep)
   {
@@ -551,11 +277,31 @@ namespace
 		   dep.TargetPkg().Name());
   }
 
+  cw::fragment *target::description() const
+  {
+    pkgCache::PkgIterator &mpkg = const_cast<pkgCache::PkgIterator &>(pkg);
 
-  void justify_target::generate_successors(const justify_node &parent,
-					   std::deque<justify_node> &output,
-					   const search_params &params,
-					   int verbosity) const
+    switch(type)
+      {
+      case InstallType:
+	return cw::fragf(_("Install(%s)"), mpkg.Name());
+      case RemoveType:
+	return cw::fragf(_("Remove(%s)"), mpkg.Name());
+      case ProvidesInstall:
+	return cw::fragf(_("Install(%s provides %s)"),
+			 const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
+			 mpkg.Name());
+      case ProvidesRemove:
+	return cw::fragf(_("Remove(%s provides %s)"),
+			 const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
+			 mpkg.Name());
+      }
+  }
+
+  void target::generate_successors(const justification &parent,
+				   std::deque<justification> &output,
+				   const search_params &params,
+				   int verbosity) const
   {
     // The reverse successors of an install node are all the revdeps
     // of the package, minus conflicts and deps from versions that
@@ -667,8 +413,8 @@ namespace
 	  {
 	    if(verbosity > 1)
 	      std::cout << _("    ++   --> ENQUEUING\n");
-	    justify_target target(Install(dep.ParentPkg()));
-	    output.push_back(parent.successor(target, dep));
+	    target the_target(Install(dep.ParentPkg()));
+	    output.push_back(parent.successor(the_target, dep));
 	  }
 	else
 	  {
@@ -694,19 +440,20 @@ namespace
 		  std::cout << ssprintf(_("    ++   --> ENQUEUING %s Provides %s\n"),
 					prv.OwnerPkg().Name(),
 					prv.ParentPkg().Name());
-		justify_target target(Provide(prv.ParentPkg(), prv, is_remove()));
-		output.push_back(parent.successor(target, prv));
+		target the_target(Provide(prv.ParentPkg(), prv, is_remove()));
+		output.push_back(parent.successor(the_target, prv));
 	      }
 	  }
       }
   }
 
-
+    namespace
+    {
   class justification_search
   {
     // The central queue.  Nodes are inserted at the back and removed
     // from the front.
-    std::deque<justify_node> q;
+    std::deque<justification> q;
 
     std::vector<pkg_matcher *> leaves;
 
@@ -752,9 +499,9 @@ namespace
     {
       // Prime the pump.
       if(search_for_removal)
-	q.push_back(justify_node(justify_target::Remove(root)));
+	q.push_back(justification(target::Remove(root)));
       else
-	q.push_back(justify_node(justify_target::Install(root)));
+	q.push_back(justification(target::Install(root)));
     }
 
     justification_search(const justification_search &other)
@@ -806,9 +553,9 @@ namespace
      *
      *  \return true if a justification was found, false otherwise.
      */
-    bool next(std::vector<justify_action> &output)
+    bool next(std::vector<action> &output)
     {
-      std::vector<justify_action> tmp;
+      std::vector<action> tmp;
       bool reached_leaf = false;
 
       if(seen_packages == NULL)
@@ -831,7 +578,7 @@ namespace
 	{
 	  // NB: could avoid this copy, but I'd have to move the
 	  // pop_front() into all execution branches.  Not worth it.
-	  const justify_node front(q.front());
+	  const justification front(q.front());
 	  q.pop_front();
 
 
@@ -883,6 +630,8 @@ namespace
       return reached_leaf;
     }
   };
+    }
+  }
 }
 
 cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
@@ -891,6 +640,8 @@ cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 		 bool root_is_removal,
 		 bool &success)
 {
+  using namespace aptitude::why;
+
   std::vector<cw::fragment *> rval;
   success = true;
 
@@ -986,8 +737,8 @@ cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
   // might not perfectly eliminate results that appear identical if
   // multiple versions of something are available; needs more work to
   // do that)
-  std::set<std::vector<justify_action> > seen_results;
-  std::vector<justify_action> results;
+  std::set<std::vector<action> > seen_results;
+  std::vector<action> results;
   bool first = true;
 
   for(std::vector<search_params>::const_iterator it = searches.begin();
@@ -1017,7 +768,7 @@ cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 	  else
 	    {
 	      std::vector<cw::fragment *> col1_entries, col2_entries, col3_entries;
-	      for(std::vector<justify_action>::const_iterator it = results.begin();
+	      for(std::vector<action>::const_iterator it = results.begin();
 		  it != results.end(); ++it)
 		{
 		  col1_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column1_fragment()),
