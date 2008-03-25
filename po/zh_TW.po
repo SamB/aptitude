@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-15 13:09-0700\n"
+"POT-Creation-Date: 2008-03-25 19:16+0100\n"
 "PO-Revision-Date: 2006-10-21 22:43+0800\n"
 "Last-Translator: Asho Yeh <asho@debian.org.tw>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -32,25 +32,25 @@ msgstr ""
 msgid "False"
 msgstr "關閉"
 
-#: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:392
+#: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:393
 #, fuzzy
 msgid "%BOption:%b  "
 msgstr "選項"
 
-#: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:394
+#: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:395
 msgid "%BDefault:%b "
 msgstr ""
 
-#: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:396
+#: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:397
 msgid "%BValue:%b   "
 msgstr ""
 
-#: src/apt_config_treeitems.cc:278
+#: src/apt_config_treeitems.cc:279
 #, c-format
 msgid "Editing \"%ls\""
 msgstr ""
 
-#: src/apt_config_treeitems.cc:400
+#: src/apt_config_treeitems.cc:401
 msgid "%BChoice:%b  "
 msgstr ""
 
@@ -557,7 +557,7 @@ msgstr "無法找到 \"%s\" 套件的歸檔 \"%s\"\n"
 
 #: src/cmdline/cmdline_action.cc:200
 #, fuzzy, c-format
-msgid "Unable to satisfy the build-depends %s: ."
+msgid "Unable to satisfy the build-depends: %s."
 msgstr "無法列出“%s”中的檔案"
 
 #: src/cmdline/cmdline_action.cc:230
@@ -754,7 +754,7 @@ msgid ""
 msgstr "無法解決相依關係。"
 
 #: src/cmdline/cmdline_do_action.cc:301 src/cmdline/cmdline_simulate.cc:33
-#: src/cmdline/cmdline_upgrade.cc:149 src/main.cc:681
+#: src/cmdline/cmdline_upgrade.cc:149 src/main.cc:685
 #, c-format
 msgid "Abort.\n"
 msgstr "關於。\n"
@@ -780,6 +780,24 @@ msgid ""
 "No downloadable files for %s version %s; perhaps it is a local or obsolete "
 "package?"
 msgstr "%s 版本 %s 沒有可以下載的檔案; 也許這是一個本地或廢除的套件？"
+
+#: src/cmdline/cmdline_extract_cache_subset.cc:43
+#, c-format
+msgid ""
+"extract-cache-entries: at least one argument is required (the directory\n"
+"to which to write files.\n"
+msgstr ""
+
+#: src/cmdline/cmdline_extract_cache_subset.cc:77
+#: src/cmdline/cmdline_user_tag.cc:116
+#, fuzzy, c-format
+msgid "No such package \"%s\".\n"
+msgstr "無此套件“%s”"
+
+#: src/cmdline/cmdline_extract_cache_subset.cc:115
+#, c-format
+msgid "No packages were selected by the given search pattern; nothing to do.\n"
+msgstr ""
 
 #: src/cmdline/cmdline_forget_new.cc:25
 #, fuzzy, c-format
@@ -981,11 +999,13 @@ msgstr ""
 "*** 警告 ***  忽略這些信任違背，因為\n"
 "                 %s::CmdLine::Ignore-Trust-Violations 的值為“真”！\n"
 
-#: src/cmdline/cmdline_prompt.cc:489
+#: src/cmdline/cmdline_prompt.cc:489 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Yes"
 
-#: src/cmdline/cmdline_prompt.cc:489
+#: src/cmdline/cmdline_prompt.cc:489 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "No"
 
@@ -1190,37 +1210,37 @@ msgstr ""
 "您也可以對將要實施的動作進行修改。方法是，輸入一個動作字元後輸入一個或者多個"
 "套件的名稱(或者模式)。該動作將被實施到您所選擇的全部套件。下列動作可供選擇："
 
-#: src/cmdline/cmdline_prompt.cc:785 src/cmdline/cmdline_resolver.cc:204
+#: src/cmdline/cmdline_prompt.cc:785 src/cmdline/cmdline_resolver.cc:205
 msgid "'+' to install packages"
 msgstr "按'+'鍵來安裝套件"
 
-#: src/cmdline/cmdline_prompt.cc:788 src/cmdline/cmdline_resolver.cc:206
+#: src/cmdline/cmdline_prompt.cc:788 src/cmdline/cmdline_resolver.cc:207
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr "按'+M'安裝套件並且立即將它們標記為已安裝狀態"
 
-#: src/cmdline/cmdline_prompt.cc:790 src/cmdline/cmdline_resolver.cc:208
+#: src/cmdline/cmdline_prompt.cc:790 src/cmdline/cmdline_resolver.cc:209
 msgid "'-' to remove packages"
 msgstr "按'-'移除套件"
 
-#: src/cmdline/cmdline_prompt.cc:792 src/cmdline/cmdline_resolver.cc:210
+#: src/cmdline/cmdline_prompt.cc:792 src/cmdline/cmdline_resolver.cc:211
 msgid "'_' to purge packages"
 msgstr "按'_'清除套件"
 
-#: src/cmdline/cmdline_prompt.cc:794 src/cmdline/cmdline_resolver.cc:212
+#: src/cmdline/cmdline_prompt.cc:794 src/cmdline/cmdline_resolver.cc:213
 msgid "'=' to place packages on hold"
 msgstr "“=”將套件置於保持狀態"
 
-#: src/cmdline/cmdline_prompt.cc:796 src/cmdline/cmdline_resolver.cc:214
+#: src/cmdline/cmdline_prompt.cc:796 src/cmdline/cmdline_resolver.cc:215
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "按':'將維持套件當前狀態但是並不將其置於保持狀態"
 
-#: src/cmdline/cmdline_prompt.cc:798 src/cmdline/cmdline_resolver.cc:216
+#: src/cmdline/cmdline_prompt.cc:798 src/cmdline/cmdline_resolver.cc:217
 msgid "'&M' to mark packages as automatically installed"
 msgstr "按'&M'將套件標記為自動安裝"
 
-#: src/cmdline/cmdline_prompt.cc:800 src/cmdline/cmdline_resolver.cc:218
+#: src/cmdline/cmdline_prompt.cc:800 src/cmdline/cmdline_resolver.cc:219
 msgid "'&m' to mark packages as manually installed"
 msgstr "按'm'將套件標記為手動安裝"
 
@@ -1322,18 +1342,18 @@ msgstr ""
 "變動大小將不會顯示\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:712
+#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:713
 #: src/generic/apt/apt.cc:287
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "無法打開 %s 以寫入"
 
-#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:717
+#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:718
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "將相依關係解決狀態寫入檔案 %s 時發生錯誤"
 
-#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:719
+#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:720
 msgid "Resolver state successfully written!"
 msgstr "成功寫入每依關係解決狀態！"
 
@@ -1388,196 +1408,197 @@ msgid ""
 "occur.  Enter UNINST instead of a version to reject removing the package."
 msgstr "拒絕給定的套件版本；不顯示任何包括它們的解決方案。"
 
-#: src/cmdline/cmdline_resolver.cc:200
+#. ForTranslators: "(;" is ...???? A smiley?
+#: src/cmdline/cmdline_resolver.cc:201
 #, fuzzy
 msgid ""
 "accept the given package versions (; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package."
 msgstr "接受給定的套件版本；僅顯示包括它們的解決方案。"
 
-#: src/cmdline/cmdline_resolver.cc:202
+#: src/cmdline/cmdline_resolver.cc:203
 msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr "修改所列套件的狀態，這裡“動作”為下列項之一："
 
-#: src/cmdline/cmdline_resolver.cc:220
+#: src/cmdline/cmdline_resolver.cc:221
 msgid ""
 "Adjustments will cause the current solution to be discarded and recalculated "
 "as necessary."
 msgstr "修改將導致當前解決方案被放棄或者必須重新計算。"
 
-#: src/cmdline/cmdline_resolver.cc:234
+#: src/cmdline/cmdline_resolver.cc:235
 #, c-format
 msgid "The version %s is available in the following archives:"
 msgstr "在下列檔案中版本 %s 已經可用了:"
 
-#: src/cmdline/cmdline_resolver.cc:242
+#: src/cmdline/cmdline_resolver.cc:243
 #, c-format
 msgid "Select the version of %s that should be used: "
 msgstr "選擇要被使用的 %s 的版本號："
 
-#: src/cmdline/cmdline_resolver.cc:249
+#: src/cmdline/cmdline_resolver.cc:250
 #, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
 msgstr "錯誤回應。請輸入一個介於1和%d的數字。"
 
-#: src/cmdline/cmdline_resolver.cc:264
+#: src/cmdline/cmdline_resolver.cc:265
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
 msgstr "在“%c”後需要至少一個套件/版本對"
 
-#: src/cmdline/cmdline_resolver.cc:278
+#: src/cmdline/cmdline_resolver.cc:279
 #, fuzzy, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
 msgstr "在“%s”之後的一個預期版本"
 
-#: src/cmdline/cmdline_resolver.cc:288
+#: src/cmdline/cmdline_resolver.cc:289
 #, c-format
 msgid "No such package \"%s\""
 msgstr "無此套件“%s”"
 
-#: src/cmdline/cmdline_resolver.cc:304
+#: src/cmdline/cmdline_resolver.cc:305
 #, c-format
 msgid "%s has no version named \"%s\""
 msgstr "%s 沒有“%s”這樣一個版本"
 
-#: src/cmdline/cmdline_resolver.cc:321
+#: src/cmdline/cmdline_resolver.cc:322
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr "同意移除 %s"
 
-#: src/cmdline/cmdline_resolver.cc:324
+#: src/cmdline/cmdline_resolver.cc:325
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr "同意安裝 %s 的 %s 版本(%s)"
 
-#: src/cmdline/cmdline_resolver.cc:334
+#: src/cmdline/cmdline_resolver.cc:335
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr "放棄移除 %s"
 
-#: src/cmdline/cmdline_resolver.cc:337
+#: src/cmdline/cmdline_resolver.cc:338
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr "放棄安裝 %s 的 %s 版本(%s)"
 
-#: src/cmdline/cmdline_resolver.cc:350
+#: src/cmdline/cmdline_resolver.cc:351
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr "不再要求刪除 %s"
 
-#: src/cmdline/cmdline_resolver.cc:353
+#: src/cmdline/cmdline_resolver.cc:354
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr "不再要求安裝 %s 的 %s 版本(%s)"
 
-#: src/cmdline/cmdline_resolver.cc:362
+#: src/cmdline/cmdline_resolver.cc:363
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr "要求移除 %s"
 
-#: src/cmdline/cmdline_resolver.cc:365
+#: src/cmdline/cmdline_resolver.cc:366
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "要求安裝 %s 的 %s 版本(%s)"
 
-#: src/cmdline/cmdline_resolver.cc:507
+#: src/cmdline/cmdline_resolver.cc:508
 #, c-format
 msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:516
+#: src/cmdline/cmdline_resolver.cc:517
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:529 src/solution_dialog.cc:127
+#: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
 #: src/solution_screen.cc:519
 msgid "Resolving dependencies..."
 msgstr "相依賴關係分析中..."
 
-#: src/cmdline/cmdline_resolver.cc:561 src/solution_screen.cc:515
+#: src/cmdline/cmdline_resolver.cc:562 src/solution_screen.cc:515
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgstr "打開：%d；關閉；%d；defer: %d; 衝突；%d"
 
-#: src/cmdline/cmdline_resolver.cc:614
+#: src/cmdline/cmdline_resolver.cc:615
 msgid "The following actions will resolve these dependencies:"
 msgstr "以下動作會解決這些相依問題:"
 
-#: src/cmdline/cmdline_resolver.cc:631
+#: src/cmdline/cmdline_resolver.cc:632
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "是否接受該解決方案？[Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:658 src/cmdline/cmdline_resolver.cc:763
+#: src/cmdline/cmdline_resolver.cc:659 src/cmdline/cmdline_resolver.cc:764
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "放棄解決這些相依關係的全部努力。"
 
-#: src/cmdline/cmdline_resolver.cc:661
+#: src/cmdline/cmdline_resolver.cc:662
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:691
+#: src/cmdline/cmdline_resolver.cc:692
 msgid "The following commands are available:"
 msgstr "下列命令可選："
 
-#: src/cmdline/cmdline_resolver.cc:709
+#: src/cmdline/cmdline_resolver.cc:710
 msgid "File to write resolver state to: "
 msgstr "將相依關係解決狀態寫入檔案："
 
-#: src/cmdline/cmdline_resolver.cc:724
+#: src/cmdline/cmdline_resolver.cc:725
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "錯誤回應。請輸入以下任一個指令："
 
-#: src/cmdline/cmdline_resolver.cc:737
+#: src/cmdline/cmdline_resolver.cc:738
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "在分配的時間內未找到解決方案。加把勁再試試？[Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:766
+#: src/cmdline/cmdline_resolver.cc:767
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "錯誤回應。請輸入“y”或“n”。"
 
-#: src/cmdline/cmdline_resolver.cc:775
+#: src/cmdline/cmdline_resolver.cc:776
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "未能解決相依關係！放棄..."
 
-#: src/cmdline/cmdline_resolver.cc:781
+#: src/cmdline/cmdline_resolver.cc:782
 msgid "*** No more solutions available ***"
 msgstr "*** 沒有更多的解決方案了 ***"
 
-#: src/cmdline/cmdline_resolver.cc:800
+#: src/cmdline/cmdline_resolver.cc:801
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:945
+#: src/cmdline/cmdline_resolver.cc:946
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:952
+#: src/cmdline/cmdline_resolver.cc:953
 #, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr "未能解決相依關係！放棄..."
 
-#: src/cmdline/cmdline_resolver.cc:966
+#: src/cmdline/cmdline_resolver.cc:967
 #, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr "未能解決相依關係！放棄..."
 
-#: src/cmdline/cmdline_resolver.cc:975
+#: src/cmdline/cmdline_resolver.cc:976
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:981
+#: src/cmdline/cmdline_resolver.cc:982
 #, fuzzy, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "無法解決相依關係。"
@@ -1786,11 +1807,11 @@ msgstr "Depends"
 msgid "PreDepends"
 msgstr "PreDepends"
 
-#: src/cmdline/cmdline_show.cc:423 src/cmdline/cmdline_why.cc:278
+#: src/cmdline/cmdline_show.cc:423 src/cmdline/cmdline_why.cc:198
 msgid "Recommends"
 msgstr "推薦"
 
-#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:281
+#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:201
 msgid "Suggests"
 msgstr "建議"
 
@@ -1810,7 +1831,7 @@ msgstr "替換"
 msgid "Obsoletes"
 msgstr "過期檔案"
 
-#: src/cmdline/cmdline_show.cc:435 src/cmdline/cmdline_why.cc:149
+#: src/cmdline/cmdline_show.cc:435 src/cmdline/cmdline_why.cc:129
 #: src/generic/apt/matchers.cc:2434
 msgid "Provides"
 msgstr "提供"
@@ -1858,25 +1879,20 @@ msgstr "E: update 指令不接受任何參數\n"
 msgid "E: The %s command takes no arguments\n"
 msgstr "E: update 指令不接受任何參數\n"
 
-#: src/cmdline/cmdline_user_tag.cc:51
+#: src/cmdline/cmdline_user_tag.cc:52
 #, fuzzy, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
 msgstr "無法找到版本為 \"%s\" 的 \"%s\" 套件\n"
 
-#: src/cmdline/cmdline_user_tag.cc:58
+#: src/cmdline/cmdline_user_tag.cc:59
 #, fuzzy, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
 msgstr "無法找到版本為 \"%s\" 的 \"%s\" 套件\n"
 
-#: src/cmdline/cmdline_user_tag.cc:88
+#: src/cmdline/cmdline_user_tag.cc:89
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
 msgstr ""
-
-#: src/cmdline/cmdline_user_tag.cc:115
-#, fuzzy, c-format
-msgid "No such package \"%s\".\n"
-msgstr "無此套件“%s”"
 
 #: src/cmdline/cmdline_util.cc:131
 #, c-format
@@ -1943,141 +1959,141 @@ msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] ""
 
-#: src/cmdline/cmdline_why.cc:269
+#: src/cmdline/cmdline_why.cc:189
 #, fuzzy
 msgid "dep_level"
 msgstr "刪除"
 
-#: src/cmdline/cmdline_why.cc:275
+#: src/cmdline/cmdline_why.cc:195
 #, fuzzy
 msgid "DependsOnly"
 msgstr "Depends"
 
-#: src/cmdline/cmdline_why.cc:289
+#: src/cmdline/cmdline_why.cc:209
 msgid "version_selection"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:294
+#: src/cmdline/cmdline_why.cc:214
 msgid "Current"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:297
+#: src/cmdline/cmdline_why.cc:217
 #, fuzzy
 msgid "Candidate"
 msgstr "候選版本"
 
-#: src/cmdline/cmdline_why.cc:300 src/generic/apt/matchers.cc:1595
+#: src/cmdline/cmdline_why.cc:220 src/generic/apt/matchers.cc:1595
 msgid "Install"
 msgstr "安裝"
 
-#: src/cmdline/cmdline_why.cc:308
+#: src/cmdline/cmdline_why.cc:228
 msgid "allow_choices"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:311
+#: src/cmdline/cmdline_why.cc:231
 msgid "true"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:313
+#: src/cmdline/cmdline_why.cc:233
 #, fuzzy
 msgid "false"
 msgstr "關閉"
 
-#: src/cmdline/cmdline_why.cc:422
+#: src/cmdline/cmdline_why.cc:287
 #, fuzzy, c-format
 msgid "Install(%s)"
 msgstr "安裝"
 
-#: src/cmdline/cmdline_why.cc:424
+#: src/cmdline/cmdline_why.cc:289
 #, fuzzy, c-format
 msgid "Remove(%s)"
 msgstr "移除"
 
-#: src/cmdline/cmdline_why.cc:426
+#: src/cmdline/cmdline_why.cc:291
 #, fuzzy, c-format
 msgid "Install(%s provides %s)"
 msgstr "正在安裝 %s %s (%s)"
 
-#: src/cmdline/cmdline_why.cc:430
+#: src/cmdline/cmdline_why.cc:295
 #, fuzzy, c-format
 msgid "Remove(%s provides %s)"
 msgstr "刪除 %F [%s (%s)]"
 
-#: src/cmdline/cmdline_why.cc:605
+#: src/cmdline/cmdline_why.cc:351
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:615
+#: src/cmdline/cmdline_why.cc:361
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:625
+#: src/cmdline/cmdline_why.cc:371
 msgid "    ++   --> skipping conflict\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:633
+#: src/cmdline/cmdline_why.cc:379
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:640
+#: src/cmdline/cmdline_why.cc:386
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:669
+#: src/cmdline/cmdline_why.cc:415
 msgid "    ++   --> ENQUEUING\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:676
+#: src/cmdline/cmdline_why.cc:422
 msgid "    ++   --> skipping, version check failed\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:694
+#: src/cmdline/cmdline_why.cc:440
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:825
+#: src/cmdline/cmdline_why.cc:572
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1003
+#: src/cmdline/cmdline_why.cc:754
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1015
+#: src/cmdline/cmdline_why.cc:766
 #, c-format
 msgid "The package \"%s\" is a starting point of the search.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1074
+#: src/cmdline/cmdline_why.cc:825
 #, c-format
 msgid "No justification for removing %s could be constructed.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1076
+#: src/cmdline/cmdline_why.cc:827
 #, c-format
 msgid "No justification for %s could be constructed.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1121 src/cmdline/cmdline_why.cc:1147
-#: src/cmdline/cmdline_why.cc:1209
+#: src/cmdline/cmdline_why.cc:872 src/cmdline/cmdline_why.cc:898
+#: src/cmdline/cmdline_why.cc:960
 #, fuzzy, c-format
 msgid "No package named \"%s\" exists."
 msgstr "無法找到任何套件的名稱 \"%s\""
 
-#: src/cmdline/cmdline_why.cc:1155
+#: src/cmdline/cmdline_why.cc:906
 #, fuzzy
 msgid "Unable to parse some match patterns."
 msgstr "無法分析模式 %s"
 
-#: src/cmdline/cmdline_why.cc:1182
+#: src/cmdline/cmdline_why.cc:933
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1231
+#: src/cmdline/cmdline_why.cc:982
 #, fuzzy, c-format
 msgid "The package \"%s\" is manually installed.\n"
 msgstr "按'm'將套件標記為手動安裝"
@@ -2098,6 +2114,28 @@ msgstr "標簽"
 #, fuzzy
 msgid "User Tags"
 msgstr "標簽"
+
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "請將標號為“%s”的磁碟插入驅動器“%s”"
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "已有 "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "正在下載 "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "已取得 "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "正在下載..."
 
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
@@ -2123,19 +2161,20 @@ msgstr "已下載 %sB，耗時 %s (%sB/s)。"
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%n某些檔案無法下載。"
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "繼續"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "取消"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "總進度："
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ]  (%sB/s, 剩下 %s)"
@@ -2155,12 +2194,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "正在下載..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "請將標號為“%s”的磁碟插入驅動器“%s”"
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "放棄"
 
@@ -2171,6 +2205,11 @@ msgstr "[忽略]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[錯誤]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "下載%sB，耗時 %ss (%sB/s)。"
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2184,10 +2223,6 @@ msgstr "無法開啟“%s”寫入"
 #: src/edit_pkg_hier.cc:339
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr "無法查閱您的主目錄，儲存到 /tmp/function_pkgs！"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "已有 "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2412,24 +2447,30 @@ msgstr "建立標簽資料庫"
 msgid "(core dumped)"
 msgstr ""
 
-#: src/generic/apt/download_update_manager.cc:353
+#. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
+#: src/generic/apt/download_update_manager.cc:354
 #, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr ""
 
-#: src/generic/apt/download_update_manager.cc:360
+#. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
+#. PS: indentation sucks!
+#. PS2: Daniel, please unfuzzy such translations (added "update") yourself!
+#: src/generic/apt/download_update_manager.cc:364
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
 
-#: src/generic/apt/download_update_manager.cc:366
+#. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
+#: src/generic/apt/download_update_manager.cc:371
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
 "(status %d)."
 msgstr ""
 
-#: src/generic/apt/download_update_manager.cc:371
+#. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
+#: src/generic/apt/download_update_manager.cc:377
 #, fuzzy, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
@@ -2793,6 +2834,10 @@ msgstr "無法刪除目錄“%s”"
 msgid "Unknown error"
 msgstr "未知錯誤"
 
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "沒有足夠的資源來建立執行緒"
+
 #: src/generic/util/util.cc:273
 #, c-format
 msgid "Unable to stat \"%s\""
@@ -3022,27 +3067,27 @@ msgstr "排序策略描述中不匹配的“(”"
 msgid "Invalid sorting policy type '%s'"
 msgstr "無效的排序策略類型“%s”"
 
-#: src/main.cc:88
+#: src/main.cc:89
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr "無法對“%ls”之後的多字元字串進行解碼"
 
-#: src/main.cc:97
+#: src/main.cc:98
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr "無法對“%s”之後的寬字串進行解碼"
 
-#: src/main.cc:105
+#: src/main.cc:106
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr "%s %s 編譯於 %s %s\n"
 
-#: src/main.cc:108
+#: src/main.cc:109
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr "編譯器：g++ %s\n"
 
-#: src/main.cc:111
+#: src/main.cc:112
 #, c-format
 msgid ""
 "\n"
@@ -3051,7 +3096,7 @@ msgstr ""
 "\n"
 "NCurses 版本：%s\n"
 
-#: src/main.cc:113
+#: src/main.cc:114
 #, c-format
 msgid ""
 "\n"
@@ -3060,32 +3105,32 @@ msgstr ""
 "\n"
 "Curses 版本：%s\n"
 
-#: src/main.cc:115
+#: src/main.cc:116
 #, c-format
 msgid "libsigc++ version: %s\n"
 msgstr "libsigc++ 版本：%s\n"
 
-#: src/main.cc:117
+#: src/main.cc:118
 #, c-format
 msgid "Ept support enabled.\n"
 msgstr ""
 
-#: src/main.cc:119
+#: src/main.cc:120
 #, c-format
 msgid "Ept support disabled.\n"
 msgstr ""
 
-#: src/main.cc:126
+#: src/main.cc:127
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "用法： aptitude [-s 檔案名] [-u|-i]"
 
-#: src/main.cc:128
+#: src/main.cc:129
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "       aptitude [選項] <動作> ..."
 
-#: src/main.cc:130
+#: src/main.cc:131
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -3094,285 +3139,285 @@ msgstr ""
 "  動作 (如果未指定，aptitude 將進入交互模式)：\n"
 "\n"
 
-#: src/main.cc:131
+#: src/main.cc:132
 #, c-format
 msgid " install      - Install/upgrade packages\n"
 msgstr " install      - 安裝/升級套件\n"
 
-#: src/main.cc:132
+#: src/main.cc:133
 #, c-format
 msgid " remove       - Remove packages\n"
 msgstr " remove       - 移除套件\n"
 
-#: src/main.cc:133
+#: src/main.cc:134
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr " purge        - 移除套件並刪除其配置檔案\n"
 
-#: src/main.cc:134
+#: src/main.cc:135
 #, c-format
 msgid " hold         - Place packages on hold\n"
 msgstr " hold         - 將套件置於保持狀態\n"
 
-#: src/main.cc:135
+#: src/main.cc:136
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
 msgstr " unhold       - 取消對一個套件的保持命令\n"
 
-#: src/main.cc:136
+#: src/main.cc:137
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
 msgstr " markauto     - 將套件標記為自動安裝\n"
 
-#: src/main.cc:137
+#: src/main.cc:138
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr " unmarkauto   - 將套件標記為手動安裝\n"
 
-#: src/main.cc:142
+#: src/main.cc:143
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
 "version.\n"
 msgstr "禁制版本 - 禁止 aptitude 升級特定的套件版本。\n"
 
-#: src/main.cc:143
+#: src/main.cc:144
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - 下載新/可升級套件列表\n"
 
-#: src/main.cc:144
+#: src/main.cc:145
 #, fuzzy, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr " upgrade      - 執行一次安全的升級\n"
 
-#: src/main.cc:145
+#: src/main.cc:146
 #, fuzzy, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr " dist-upgrade - 執行升級，可能會安裝和移除套件\n"
 
-#: src/main.cc:146
+#: src/main.cc:147
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr " forget-new   - 忽略哪些套件是“新”的\n"
 
-#: src/main.cc:147
+#: src/main.cc:148
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr " search       - 按名稱 和/或 表達式搜尋套件\n"
 
-#: src/main.cc:148
+#: src/main.cc:149
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr " show         - 顯示套件細節資訊\n"
 
-#: src/main.cc:149
+#: src/main.cc:150
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr " clean        - 刪除已下載的套件檔案\n"
 
-#: src/main.cc:150
+#: src/main.cc:151
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr " autoclean    - 刪除舊的已下載套件檔案\n"
 
-#: src/main.cc:151
+#: src/main.cc:152
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr " 更改紀錄    - 見識套件的更改紀錄\n"
 
-#: src/main.cc:152
+#: src/main.cc:153
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr " download     - 下載套件的 .deb 檔案\n"
 
-#: src/main.cc:153
+#: src/main.cc:154
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
 msgstr " reinstall    - 下載並(可能)重新安裝一個現在已經安裝了的套件\n"
 
-#: src/main.cc:155
+#: src/main.cc:156
 #, c-format
 msgid "  Options:\n"
 msgstr "  選項：\n"
 
-#: src/main.cc:156
+#: src/main.cc:157
 #, c-format
 msgid " -h             This help text\n"
 msgstr " -h             此求助純文字\n"
 
-#: src/main.cc:157
+#: src/main.cc:158
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr " -s             模擬動作，但是並不真正執行。\n"
 
-#: src/main.cc:158
+#: src/main.cc:159
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr " -d             僅僅下載套件，不安裝或者移除任何東西。\n"
 
-#: src/main.cc:159
+#: src/main.cc:160
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr " -P             總是提示確認執行動作\n"
 
-#: src/main.cc:160
+#: src/main.cc:161
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr " -y             假設對簡單的 是/否 問題回答“是”\n"
 
-#: src/main.cc:161
+#: src/main.cc:162
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual\n"
 msgstr " -F 格式        指定顯示搜尋結果的格式；參見手冊\n"
 
-#: src/main.cc:162
+#: src/main.cc:163
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr " -O 次序        指定如何排列顯示搜尋結果；參見手冊\n"
 
-#: src/main.cc:163
+#: src/main.cc:164
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr " -w 寬度        指定顯示搜尋結果的格式寬度\n"
 
-#: src/main.cc:164
+#: src/main.cc:165
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr " -f             積極地嘗試修復損壞的套件。\n"
 
-#: src/main.cc:165
+#: src/main.cc:166
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             顯示就要安裝的套件版本。\n"
 
-#: src/main.cc:166
+#: src/main.cc:167
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D             顯示自動改變的套件的依賴關係\n"
 
-#: src/main.cc:167
+#: src/main.cc:168
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    顯示每個套件的安裝尺寸的變化。\n"
 
-#: src/main.cc:168
+#: src/main.cc:169
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr " -v             顯示附加訊息。(可能會提供多次) \n"
 
-#: src/main.cc:169
+#: src/main.cc:170
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
 msgstr " -t [release]   設置將要安裝的套件的發布版本\n"
 
-#: src/main.cc:170
+#: src/main.cc:171
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
 msgstr " -q            在命令行狀態下，不顯示進度。\n"
 
-#: src/main.cc:171
+#: src/main.cc:172
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr " -o key=val     直接指定名稱為 'key' 的設定選項\n"
 
-#: src/main.cc:172
+#: src/main.cc:173
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies\n"
 msgstr " --with(out)-recommends\t指定是否將推薦(建議)處理為強依賴關係。\n"
 
-#: src/main.cc:173
+#: src/main.cc:174
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr " -S fname       從檔案名中讀取 aptitude 的延伸狀態資訊。\n"
 
-#: src/main.cc:174
+#: src/main.cc:175
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             開始執行時下載新的套件列表。\n"
 
-#: src/main.cc:175
+#: src/main.cc:176
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             開始執行時執行安裝。\n"
 
-#: src/main.cc:177
+#: src/main.cc:178
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  這個 aptitude 無超級牛力。\n"
 
-#: src/main.cc:358
+#: src/main.cc:359
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "在 -q= 之後需要一個數字\n"
 
-#: src/main.cc:367
+#: src/main.cc:368
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "在 -q= 之後需要一個數字，但卻得到 %s\n"
 
-#: src/main.cc:391
+#: src/main.cc:392
 #, fuzzy, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o 需要一個參數如 key=value, 得 %s"
 
-#: src/main.cc:480
+#: src/main.cc:481
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr ""
 
-#: src/main.cc:508 src/main.cc:517
+#: src/main.cc:509 src/main.cc:518
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "詭異：收到未知的選項代碼\n"
 
-#: src/main.cc:534
+#: src/main.cc:535
 msgid "Only one of -u and -i may be specified\n"
 msgstr "選項 -u 和 -i 只能指定一個\n"
 
-#: src/main.cc:542
+#: src/main.cc:543
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr "選項 -u 和 -i 不能在命令行模式中指定 (例如，和“install”一起)"
 
-#: src/main.cc:563
+#: src/main.cc:564
 msgid "-u and -i may not be specified with a command"
 msgstr "選項 -u 和 -i 不能在和一個命令一起指定 "
 
-#: src/main.cc:622
+#: src/main.cc:623
 #, c-format
 msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
 "for %s, which always uses the safe resolver.\n"
 msgstr ""
 
-#: src/main.cc:674
+#: src/main.cc:678
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "未知的命令“%s”\n"
 
-#: src/main.cc:686 src/main.cc:735
+#: src/main.cc:690 src/main.cc:739
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "未知的例外：%s\n"
 
-#: src/main.cc:690 src/main.cc:739
+#: src/main.cc:694 src/main.cc:743
 #, fuzzy, c-format
 msgid ""
 "Backtrace:\n"
@@ -3458,6 +3503,8 @@ msgid "Number of mines: "
 msgstr "地雷數量："
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "確定"
 
@@ -5532,11 +5579,11 @@ msgid ""
 "Pkgs"
 msgstr "%ls：選單  %ls：幫助  %ls：退出  %ls：更新  %ls：下載/安裝/移除套件"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5561,17 +5608,80 @@ msgstr "正在下載更改紀錄"
 msgid "Download Changelog"
 msgstr "下載更動記錄"
 
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "格式化裝置缺少格式化代碼"
+
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "格式字串裡有錯誤的數字：%ls"
+
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "格式化字串中缺少參數號碼"
+
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "參數號碼必須為 1 或更大，而不是 %ld"
+
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "未知的格式代碼：%lc"
+
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "錯誤的格式參數"
+
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "無法解析按鍵說明：%ls"
+
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "無效的快速鍵設定"
+
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr "對不起，控制編輯器可能不能使用不可列印的字元"
+
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "哎唷! 得到 SIGTERM, 垂死中..\n"
+
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "哎唷! 得到 SIGSEGV, 垂死中..\n"
+
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "哎唷! 得到 SIGABRT, 垂死中..\n"
+
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "哎唷! 得到 SIGQUIT, 垂死中..\n"
+
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr "無法讀取檔案名：字符串“%ls”無法用多字節字符表示。"
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "最上層"
+
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr "寫入狀態檔案時包“%s”發生內部緩沖溢出"
-
-#~ msgid "Downloading "
-#~ msgstr "正在下載 "
-
-#~ msgid "Got "
-#~ msgstr "已取得 "
-
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "下載%sB，耗時 %ss (%sB/s)。"
 
 #~ msgid "Tasks/Tasks"
 #~ msgstr "作業/作業"
@@ -5585,9 +5695,6 @@ msgstr "下載更動記錄"
 #, fuzzy
 #~ msgid "You must resolve these dependencies before continuing."
 #~ msgstr "未能解決相依關係！放棄..."
-
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "沒有足夠的資源來建立執行緒"
 
 #~ msgid ""
 #~ "Packages which set up your computer to perform a particular task\n"
@@ -6059,52 +6166,6 @@ msgstr "下載更動記錄"
 #~ msgstr ""
 #~ "\n"
 #~ "這些套件還沒有用 debtags 分類。"
-
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "格式化裝置缺少格式化代碼"
-
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "格式字串裡有錯誤的數字：%ls"
-
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "格式化字串中缺少參數號碼"
-
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "參數號碼必須為 1 或更大，而不是 %ld"
-
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "未知的格式代碼：%lc"
-
-#~ msgid "Bad format parameter"
-#~ msgstr "錯誤的格式參數"
-
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "無法解析按鍵說明：%ls"
-
-#~ msgid "Invalid null keybinding"
-#~ msgstr "無效的快速鍵設定"
-
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
-#~ msgstr "對不起，控制編輯器可能不能使用不可列印的字元"
-
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "哎唷! 得到 SIGTERM, 垂死中..\n"
-
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "哎唷! 得到 SIGSEGV, 垂死中..\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "哎唷! 得到 SIGABRT, 垂死中..\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "哎唷! 得到 SIGQUIT, 垂死中..\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr "無法讀取檔案名：字符串“%ls”無法用多字節字符表示。"
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "最上層"
 
 #~ msgid "Don't automatically remove unused packages matching this filter"
 #~ msgstr "不自動移除符合此過濾器的未用套件"

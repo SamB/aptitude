@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-15 13:09-0700\n"
+"POT-Creation-Date: 2008-03-25 19:16+0100\n"
 "PO-Revision-Date: 2006-09-03 09:36-0700\n"
 "Last-Translator: Priti Patil <prithisd@gmail.com>\n"
 "Language-Team:  Marathi, janabhaaratii, C-DAC, Mumbai, India "
@@ -33,25 +33,25 @@ msgstr ""
 msgid "False"
 msgstr "बंद करा"
 
-#: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:392
+#: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:393
 #, fuzzy
 msgid "%BOption:%b  "
 msgstr "पर्याय"
 
-#: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:394
+#: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:395
 msgid "%BDefault:%b "
 msgstr ""
 
-#: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:396
+#: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:397
 msgid "%BValue:%b   "
 msgstr ""
 
-#: src/apt_config_treeitems.cc:278
+#: src/apt_config_treeitems.cc:279
 #, c-format
 msgid "Editing \"%ls\""
 msgstr ""
 
-#: src/apt_config_treeitems.cc:400
+#: src/apt_config_treeitems.cc:401
 msgid "%BChoice:%b  "
 msgstr ""
 
@@ -565,7 +565,7 @@ msgstr "पॅकेज \"%s\"साठी फाइलसंच \"%s\"शोध
 
 #: src/cmdline/cmdline_action.cc:200
 #, fuzzy, c-format
-msgid "Unable to satisfy the build-depends %s: ."
+msgid "Unable to satisfy the build-depends: %s."
 msgstr "\"%s\"मधल्या फाइल्स सांगण्यास  असमर्थ"
 
 #: src/cmdline/cmdline_action.cc:230
@@ -764,7 +764,7 @@ msgid ""
 msgstr "अवलंबित्वे दूर करण्यास असमर्थ"
 
 #: src/cmdline/cmdline_do_action.cc:301 src/cmdline/cmdline_simulate.cc:33
-#: src/cmdline/cmdline_upgrade.cc:149 src/main.cc:681
+#: src/cmdline/cmdline_upgrade.cc:149 src/main.cc:685
 #, c-format
 msgid "Abort.\n"
 msgstr "वििच्छेद करा \n"
@@ -794,6 +794,24 @@ msgid ""
 msgstr ""
 "%sआवृत्ती %sसाठी डाउनलोड करता येण्यासारख्या फाइल्स नाहीत, कदाचित ते स्थानिक किंवा "
 "कालबाह्य पॅकेज असावे?"
+
+#: src/cmdline/cmdline_extract_cache_subset.cc:43
+#, c-format
+msgid ""
+"extract-cache-entries: at least one argument is required (the directory\n"
+"to which to write files.\n"
+msgstr ""
+
+#: src/cmdline/cmdline_extract_cache_subset.cc:77
+#: src/cmdline/cmdline_user_tag.cc:116
+#, fuzzy, c-format
+msgid "No such package \"%s\".\n"
+msgstr "\"%s\"सारखे कोणतेही पॅकेज नाही"
+
+#: src/cmdline/cmdline_extract_cache_subset.cc:115
+#, c-format
+msgid "No packages were selected by the given search pattern; nothing to do.\n"
+msgstr ""
 
 #: src/cmdline/cmdline_forget_new.cc:25
 #, fuzzy, c-format
@@ -993,11 +1011,13 @@ msgstr ""
 "**धोक्याची सूचना*** ह्या विश्वास उल्लंघनाकडे दुर्लक्ष करीत आहे, कारण \n"
 "%s::CmdLine::दुर्लक्ष करा - विश्वास-उल्लंघने हे 'सत्य' आहे !\n"
 
-#: src/cmdline/cmdline_prompt.cc:489
+#: src/cmdline/cmdline_prompt.cc:489 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "होय"
 
-#: src/cmdline/cmdline_prompt.cc:489
+#: src/cmdline/cmdline_prompt.cc:489 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "नाही"
 
@@ -1205,38 +1225,38 @@ msgstr ""
 "कृती अक्षर व त्यानंतर एक किंवा अधिक पॅकेज नावे (किंवा नमुने)टाइप करा. तुमच्या सूचीतील सर्व "
 "पॅकेजेसना कृती लागू केली जाईल.पुढील कृती उपलब्ध आहेतः"
 
-#: src/cmdline/cmdline_prompt.cc:785 src/cmdline/cmdline_resolver.cc:204
+#: src/cmdline/cmdline_prompt.cc:785 src/cmdline/cmdline_resolver.cc:205
 msgid "'+' to install packages"
 msgstr "'+'पॅकेजेस संस्थापित करण्यासाठी"
 
-#: src/cmdline/cmdline_prompt.cc:788 src/cmdline/cmdline_resolver.cc:206
+#: src/cmdline/cmdline_prompt.cc:788 src/cmdline/cmdline_resolver.cc:207
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M'पॅकेजेस संस्थापित करणे व त्यावर स्वयंचलितपणे संस्थापित असा तात्काळ झेंडा लावणे यासाठी"
 
-#: src/cmdline/cmdline_prompt.cc:790 src/cmdline/cmdline_resolver.cc:208
+#: src/cmdline/cmdline_prompt.cc:790 src/cmdline/cmdline_resolver.cc:209
 msgid "'-' to remove packages"
 msgstr "'-'पॅकेजेस काढून टाकण्यासाठी"
 
-#: src/cmdline/cmdline_prompt.cc:792 src/cmdline/cmdline_resolver.cc:210
+#: src/cmdline/cmdline_prompt.cc:792 src/cmdline/cmdline_resolver.cc:211
 msgid "'_' to purge packages"
 msgstr "'-'पॅकेजेस शुध्द,साफ करण्यासाठी"
 
-#: src/cmdline/cmdline_prompt.cc:794 src/cmdline/cmdline_resolver.cc:212
+#: src/cmdline/cmdline_prompt.cc:794 src/cmdline/cmdline_resolver.cc:213
 msgid "'=' to place packages on hold"
 msgstr "'=' पॅकेजेसना तसेच थांबवून ठेवण्यासाठी"
 
-#: src/cmdline/cmdline_prompt.cc:796 src/cmdline/cmdline_resolver.cc:214
+#: src/cmdline/cmdline_prompt.cc:796 src/cmdline/cmdline_resolver.cc:215
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "':'पॅकेजेसना तसेच थांबवून न ठेवता त्यांच्या सद्यस्थितीत ठेवण्यसाठी"
 
-#: src/cmdline/cmdline_prompt.cc:798 src/cmdline/cmdline_resolver.cc:216
+#: src/cmdline/cmdline_prompt.cc:798 src/cmdline/cmdline_resolver.cc:217
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M'स्वयंचलितपणे संस्थापित अशी खूण पॅकेजेसवर करण्यासाठी"
 
-#: src/cmdline/cmdline_prompt.cc:800 src/cmdline/cmdline_resolver.cc:218
+#: src/cmdline/cmdline_prompt.cc:800 src/cmdline/cmdline_resolver.cc:219
 msgid "'&m' to mark packages as manually installed"
 msgstr " '&M'हाताने (माणसाकडून) संस्थापित अशी खूण पॅकेजेस करण्यासाठी"
 
@@ -1338,18 +1358,18 @@ msgstr ""
 "आकारातील बदल दाखवले जाणार नाहित.\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:712
+#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:713
 #: src/generic/apt/apt.cc:287
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "लिहिण्याकरता (लिखाणाकरता) %s उघडण्यास असमर्थ."
 
-#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:717
+#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:718
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "%sला उत्तरे देणारी स्थिती लिहिताना चूक"
 
-#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:719
+#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:720
 msgid "Resolver state successfully written!"
 msgstr "उत्तरे देणारी स्थिती यशस्वीपणे लिहिली आहे !"
 
@@ -1404,7 +1424,8 @@ msgid ""
 "occur.  Enter UNINST instead of a version to reject removing the package."
 msgstr "दिलेल्या पॅकेज आवृत्त्या नाकारा,ज्या उत्तरांत त्या दिसतात ती प्रदर्शित करू नका"
 
-#: src/cmdline/cmdline_resolver.cc:200
+#. ForTranslators: "(;" is ...???? A smiley?
+#: src/cmdline/cmdline_resolver.cc:201
 #, fuzzy
 msgid ""
 "accept the given package versions (; display only solutions in which they "
@@ -1412,190 +1433,190 @@ msgid ""
 msgstr ""
 "दिलेल्या पॅकेज आवृत्त्या स्वीकारा,ज्या उत्तरांत त्या दिसतात ती उत्तरे फक्त प्रदर्शित करा"
 
-#: src/cmdline/cmdline_resolver.cc:202
+#: src/cmdline/cmdline_resolver.cc:203
 msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr "कृती जिथे ह्यापैकी एखादी असेल, तिथे सूचित पॅकेजेसची स्थिती जुळवून घ्या"
 
-#: src/cmdline/cmdline_resolver.cc:220
+#: src/cmdline/cmdline_resolver.cc:221
 msgid ""
 "Adjustments will cause the current solution to be discarded and recalculated "
 "as necessary."
 msgstr "जुळवून घेण्यामुळे सद्य उत्तर टाकून देण्यात येईल व आवश्यकतेनुसार पुर्नगणना करण्यात येईल."
 
-#: src/cmdline/cmdline_resolver.cc:234
+#: src/cmdline/cmdline_resolver.cc:235
 #, c-format
 msgid "The version %s is available in the following archives:"
 msgstr "%s आवृत्ती पुढील फाइलसंचात उपलब्ध आहेः "
 
-#: src/cmdline/cmdline_resolver.cc:242
+#: src/cmdline/cmdline_resolver.cc:243
 #, c-format
 msgid "Select the version of %s that should be used: "
 msgstr "%sची जी आवृत्ती वापरायची आहे, ती निवडाः"
 
-#: src/cmdline/cmdline_resolver.cc:249
+#: src/cmdline/cmdline_resolver.cc:250
 #, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
 msgstr "अवैध प्रतिसाद. कृपया १ व %d यामध्ये एक पूर्णांक प्रविष्ट करा."
 
-#: src/cmdline/cmdline_resolver.cc:264
+#: src/cmdline/cmdline_resolver.cc:265
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
 msgstr "%cनंतर किमान एक पॅकेज / आ्वृत्तीची जोडी अपेक्षित आहे."
 
-#: src/cmdline/cmdline_resolver.cc:278
+#: src/cmdline/cmdline_resolver.cc:279
 #, fuzzy, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
 msgstr "\"%s\"नंतर एक आवृत्ती अपेक्षित आहे"
 
-#: src/cmdline/cmdline_resolver.cc:288
+#: src/cmdline/cmdline_resolver.cc:289
 #, c-format
 msgid "No such package \"%s\""
 msgstr "\"%s\"सारखे कोणतेही पॅकेज नाही"
 
-#: src/cmdline/cmdline_resolver.cc:304
+#: src/cmdline/cmdline_resolver.cc:305
 #, c-format
 msgid "%s has no version named \"%s\""
 msgstr "%s मध्ये \"%s\" नावाची कोणतीही आवृत्ती नाही "
 
-#: src/cmdline/cmdline_resolver.cc:321
+#: src/cmdline/cmdline_resolver.cc:322
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr "%sकाढून टाकण्यास परवानगी (अनुमती) देत आहे."
 
-#: src/cmdline/cmdline_resolver.cc:324
+#: src/cmdline/cmdline_resolver.cc:325
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr "%s आवृत्ती %s(%s) च्या संस्थापनास परवानगी (अनुमती) देत आहे."
 
-#: src/cmdline/cmdline_resolver.cc:334
+#: src/cmdline/cmdline_resolver.cc:335
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr "%s काढून टाकण्यास नकार देत आहे"
 
-#: src/cmdline/cmdline_resolver.cc:337
+#: src/cmdline/cmdline_resolver.cc:338
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr "%s आवृत्ती %s (%s) च्या संस्थापनास नकार देत आहे."
 
-#: src/cmdline/cmdline_resolver.cc:350
+#: src/cmdline/cmdline_resolver.cc:351
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr "%sकाढून टाकण्याची यापुढे गरज नाही"
 
-#: src/cmdline/cmdline_resolver.cc:353
+#: src/cmdline/cmdline_resolver.cc:354
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr "%s ची आवृत्ती  %s (%s)संस्थापित करण्याची यापुढे गरज नाही."
 
-#: src/cmdline/cmdline_resolver.cc:362
+#: src/cmdline/cmdline_resolver.cc:363
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr "%sकाढ्ून टाकण्याची गरज आहे"
 
-#: src/cmdline/cmdline_resolver.cc:365
+#: src/cmdline/cmdline_resolver.cc:366
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "%sची आवृत्ती %s (%s)संस्थापित करण्याची गरज आहे."
 
-#: src/cmdline/cmdline_resolver.cc:507
+#: src/cmdline/cmdline_resolver.cc:508
 #, c-format
 msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:516
+#: src/cmdline/cmdline_resolver.cc:517
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:529 src/solution_dialog.cc:127
+#: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
 #: src/solution_screen.cc:519
 msgid "Resolving dependencies..."
 msgstr "अवलंबितं रिझाॅल्व करत आहे"
 
-#: src/cmdline/cmdline_resolver.cc:561 src/solution_screen.cc:515
+#: src/cmdline/cmdline_resolver.cc:562 src/solution_screen.cc:515
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgstr "उघडा %d; बंद केलेः%d; लांबणीवर टाका (प्रलंबित ठेवा)ः %d विरोध (बेबनाव)ः %d "
 
-#: src/cmdline/cmdline_resolver.cc:614
+#: src/cmdline/cmdline_resolver.cc:615
 msgid "The following actions will resolve these dependencies:"
 msgstr "ही अवलंबित्वे पुढील कृतींमुळे दूर होतीलः"
 
-#: src/cmdline/cmdline_resolver.cc:631
+#: src/cmdline/cmdline_resolver.cc:632
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "हे उत्तर स्वीकारायचे का? (हो/ नाही/सोडा/?)"
 
-#: src/cmdline/cmdline_resolver.cc:658 src/cmdline/cmdline_resolver.cc:763
+#: src/cmdline/cmdline_resolver.cc:659 src/cmdline/cmdline_resolver.cc:764
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "ही अवलंबित्वे दूर करण्याच्या सर्व प्रयत्नांचा त्याग करत आहे."
 
-#: src/cmdline/cmdline_resolver.cc:661
+#: src/cmdline/cmdline_resolver.cc:662
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:691
+#: src/cmdline/cmdline_resolver.cc:692
 msgid "The following commands are available:"
 msgstr "पुढील आज्ञा उपलब्ध आहेत."
 
-#: src/cmdline/cmdline_resolver.cc:709
+#: src/cmdline/cmdline_resolver.cc:710
 msgid "File to write resolver state to: "
 msgstr "   ला उत्तरे देणारी स्थिती लिहिण्यासाठी फाइलः"
 
-#: src/cmdline/cmdline_resolver.cc:724
+#: src/cmdline/cmdline_resolver.cc:725
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "अवैध प्रतिसाद ;कृपया पुढीलपैकी एक आज्ञा प्रविष्ट करा ः"
 
-#: src/cmdline/cmdline_resolver.cc:737
+#: src/cmdline/cmdline_resolver.cc:738
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "नेमून दिलेल्या वेळात कोणतेही उत्तर मिळाले नाही. अधिक कसोशीने प्रयत्न करू का? (हो/ नाही)"
 
-#: src/cmdline/cmdline_resolver.cc:766
+#: src/cmdline/cmdline_resolver.cc:767
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "अवैध प्रतिसाद ;कृपया हो किंवा नाही प्रविष्ट करा"
 
-#: src/cmdline/cmdline_resolver.cc:775
+#: src/cmdline/cmdline_resolver.cc:776
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "अवलंबित्वे दूर करण्यास असमर्थ !सोडून देत आहे"
 
-#: src/cmdline/cmdline_resolver.cc:781
+#: src/cmdline/cmdline_resolver.cc:782
 msgid "*** No more solutions available ***"
 msgstr "***आणखी उत्तरे उपलब्ध नाहीत***"
 
-#: src/cmdline/cmdline_resolver.cc:800
+#: src/cmdline/cmdline_resolver.cc:801
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:945
+#: src/cmdline/cmdline_resolver.cc:946
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:952
+#: src/cmdline/cmdline_resolver.cc:953
 #, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr "अवलंबित्वे दूर करण्यास असमर्थ !सोडून देत आहे"
 
-#: src/cmdline/cmdline_resolver.cc:966
+#: src/cmdline/cmdline_resolver.cc:967
 #, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr "अवलंबित्वे दूर करण्यास असमर्थ !सोडून देत आहे"
 
-#: src/cmdline/cmdline_resolver.cc:975
+#: src/cmdline/cmdline_resolver.cc:976
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:981
+#: src/cmdline/cmdline_resolver.cc:982
 #, fuzzy, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "अवलंबित्वे दूर करण्यास असमर्थ"
@@ -1804,11 +1825,11 @@ msgstr "अवलंबून आहे"
 msgid "PreDepends"
 msgstr "पूर्वावलंबित आहे"
 
-#: src/cmdline/cmdline_show.cc:423 src/cmdline/cmdline_why.cc:278
+#: src/cmdline/cmdline_show.cc:423 src/cmdline/cmdline_why.cc:198
 msgid "Recommends"
 msgstr "शिफारस आहे"
 
-#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:281
+#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:201
 msgid "Suggests"
 msgstr "सुचवत आहे (सुचवतो)"
 
@@ -1828,7 +1849,7 @@ msgstr "च्या जागी बदलत आहे"
 msgid "Obsoletes"
 msgstr "कालबाह्य ठरवत आहे"
 
-#: src/cmdline/cmdline_show.cc:435 src/cmdline/cmdline_why.cc:149
+#: src/cmdline/cmdline_show.cc:435 src/cmdline/cmdline_why.cc:129
 #: src/generic/apt/matchers.cc:2434
 msgid "Provides"
 msgstr "पुरवीत आहे"
@@ -1876,25 +1897,20 @@ msgstr "E:अद्ययावत करा ही आज्ञा कोणत
 msgid "E: The %s command takes no arguments\n"
 msgstr "E:अद्ययावत करा ही आज्ञा कोणतेही विवाद विधान घेत नाही \n"
 
-#: src/cmdline/cmdline_user_tag.cc:51
+#: src/cmdline/cmdline_user_tag.cc:52
 #, fuzzy, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
 msgstr " \"%s\"पॅकेजसाठी आवृत्ती\"%s\" शोेधण्यात असमर्थ\n"
 
-#: src/cmdline/cmdline_user_tag.cc:58
+#: src/cmdline/cmdline_user_tag.cc:59
 #, fuzzy, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
 msgstr " \"%s\"पॅकेजसाठी आवृत्ती\"%s\" शोेधण्यात असमर्थ\n"
 
-#: src/cmdline/cmdline_user_tag.cc:88
+#: src/cmdline/cmdline_user_tag.cc:89
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
 msgstr ""
-
-#: src/cmdline/cmdline_user_tag.cc:115
-#, fuzzy, c-format
-msgid "No such package \"%s\".\n"
-msgstr "\"%s\"सारखे कोणतेही पॅकेज नाही"
 
 #: src/cmdline/cmdline_util.cc:131
 #, c-format
@@ -1963,141 +1979,141 @@ msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] ""
 
-#: src/cmdline/cmdline_why.cc:269
+#: src/cmdline/cmdline_why.cc:189
 #, fuzzy
 msgid "dep_level"
 msgstr "गाळून टाका"
 
-#: src/cmdline/cmdline_why.cc:275
+#: src/cmdline/cmdline_why.cc:195
 #, fuzzy
 msgid "DependsOnly"
 msgstr "अवलंबून आहे"
 
-#: src/cmdline/cmdline_why.cc:289
+#: src/cmdline/cmdline_why.cc:209
 msgid "version_selection"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:294
+#: src/cmdline/cmdline_why.cc:214
 msgid "Current"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:297
+#: src/cmdline/cmdline_why.cc:217
 #, fuzzy
 msgid "Candidate"
 msgstr "CandVer"
 
-#: src/cmdline/cmdline_why.cc:300 src/generic/apt/matchers.cc:1595
+#: src/cmdline/cmdline_why.cc:220 src/generic/apt/matchers.cc:1595
 msgid "Install"
 msgstr "संस्थापित करा"
 
-#: src/cmdline/cmdline_why.cc:308
+#: src/cmdline/cmdline_why.cc:228
 msgid "allow_choices"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:311
+#: src/cmdline/cmdline_why.cc:231
 msgid "true"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:313
+#: src/cmdline/cmdline_why.cc:233
 #, fuzzy
 msgid "false"
 msgstr "बंद करा"
 
-#: src/cmdline/cmdline_why.cc:422
+#: src/cmdline/cmdline_why.cc:287
 #, fuzzy, c-format
 msgid "Install(%s)"
 msgstr "संस्थापित करा"
 
-#: src/cmdline/cmdline_why.cc:424
+#: src/cmdline/cmdline_why.cc:289
 #, fuzzy, c-format
 msgid "Remove(%s)"
 msgstr "काढून टाका"
 
-#: src/cmdline/cmdline_why.cc:426
+#: src/cmdline/cmdline_why.cc:291
 #, fuzzy, c-format
 msgid "Install(%s provides %s)"
 msgstr "%s %s(%s)संस्थापित करत आहे."
 
-#: src/cmdline/cmdline_why.cc:430
+#: src/cmdline/cmdline_why.cc:295
 #, fuzzy, c-format
 msgid "Remove(%s provides %s)"
 msgstr "%F (%s (%s)) काढून टाका"
 
-#: src/cmdline/cmdline_why.cc:605
+#: src/cmdline/cmdline_why.cc:351
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:615
+#: src/cmdline/cmdline_why.cc:361
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:625
+#: src/cmdline/cmdline_why.cc:371
 msgid "    ++   --> skipping conflict\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:633
+#: src/cmdline/cmdline_why.cc:379
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:640
+#: src/cmdline/cmdline_why.cc:386
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:669
+#: src/cmdline/cmdline_why.cc:415
 msgid "    ++   --> ENQUEUING\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:676
+#: src/cmdline/cmdline_why.cc:422
 msgid "    ++   --> skipping, version check failed\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:694
+#: src/cmdline/cmdline_why.cc:440
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:825
+#: src/cmdline/cmdline_why.cc:572
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1003
+#: src/cmdline/cmdline_why.cc:754
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1015
+#: src/cmdline/cmdline_why.cc:766
 #, c-format
 msgid "The package \"%s\" is a starting point of the search.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1074
+#: src/cmdline/cmdline_why.cc:825
 #, c-format
 msgid "No justification for removing %s could be constructed.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1076
+#: src/cmdline/cmdline_why.cc:827
 #, c-format
 msgid "No justification for %s could be constructed.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1121 src/cmdline/cmdline_why.cc:1147
-#: src/cmdline/cmdline_why.cc:1209
+#: src/cmdline/cmdline_why.cc:872 src/cmdline/cmdline_why.cc:898
+#: src/cmdline/cmdline_why.cc:960
 #, fuzzy, c-format
 msgid "No package named \"%s\" exists."
 msgstr "\"%s\"नावाचे पॅकेज सापडत नाही"
 
-#: src/cmdline/cmdline_why.cc:1155
+#: src/cmdline/cmdline_why.cc:906
 #, fuzzy
 msgid "Unable to parse some match patterns."
 msgstr "%sनमुन्यातील लहान परस्परसंबध (पार्स) दाखवण्यास असमर्थ"
 
-#: src/cmdline/cmdline_why.cc:1182
+#: src/cmdline/cmdline_why.cc:933
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1231
+#: src/cmdline/cmdline_why.cc:982
 #, fuzzy, c-format
 msgid "The package \"%s\" is manually installed.\n"
 msgstr " '&M'हाताने (माणसाकडून) संस्थापित अशी खूण पॅकेजेस करण्यासाठी"
@@ -2118,6 +2134,28 @@ msgstr "टॅग्ज (खुणेच्या पट्ट्या)"
 #, fuzzy
 msgid "User Tags"
 msgstr "टॅग्ज (खुणेच्या पट्ट्या)"
+
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "\"%s\"ड्राइव्हमध्ये \"%s\"नावाचे लेबल असलेली तबकडी कृपया आत घाला."
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "मारा"
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "डाउनलोडिंग (उतरवून घेत आहे)"
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "मिळाले"
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "डाउनलोडिंग (उतरवून घेत आहे)"
 
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
@@ -2143,19 +2181,20 @@ msgstr " %s (%sB/s)मधील  %sBउतरवून घेतले.(डा�
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nकाही फाइल्स यशस्वीपणे उतरवून घेतल्या गेल्या नाहीत."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "पुढे सुरु ठेवा"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "रद्द करा."
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "एकूण प्रगती"
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr "[ %i%% ] (%sB/s, %s उरले आहे)"
@@ -2175,12 +2214,7 @@ msgstr "[ %i%% ]"
 msgid "Downloading... "
 msgstr "डाउनलोडिंग (उतरवून घेत आहे)"
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "\"%s\"ड्राइव्हमध्ये \"%s\"नावाचे लेबल असलेली तबकडी कृपया आत घाला."
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "विच्छेद करा"
 
@@ -2191,6 +2225,11 @@ msgstr "[IGNORED]((दुर्लक्ष केले)"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[ERROR] (चूक)"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "%ss (%sB/s) मधील %sB उतरवून घेतले(डाउनलोड केले)"
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2206,10 +2245,6 @@ msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "तुमच्या गृहसंचयिकेवर (आरंभ संचयिकेवर) नजर टाकण्यास असमर्थ,/tmp/"
 "function_pkgs!             मध्ये जतन करीत आहे"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "मारा"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2444,24 +2479,30 @@ msgstr "टॅग (खुणेचे चिन्ह) माहितीसं�
 msgid "(core dumped)"
 msgstr ""
 
-#: src/generic/apt/download_update_manager.cc:353
+#. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
+#: src/generic/apt/download_update_manager.cc:354
 #, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr ""
 
-#: src/generic/apt/download_update_manager.cc:360
+#. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
+#. PS: indentation sucks!
+#. PS2: Daniel, please unfuzzy such translations (added "update") yourself!
+#: src/generic/apt/download_update_manager.cc:364
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
 
-#: src/generic/apt/download_update_manager.cc:366
+#. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
+#: src/generic/apt/download_update_manager.cc:371
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
 "(status %d)."
 msgstr ""
 
-#: src/generic/apt/download_update_manager.cc:371
+#. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
+#: src/generic/apt/download_update_manager.cc:377
 #, fuzzy, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
@@ -2825,6 +2866,10 @@ msgstr "\"%S\"  संचयिका काढून टाकण्यास �
 msgid "Unknown error"
 msgstr "अज्ञात त्रुटी"
 
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "दोरा निर्माण करण्यासाठी पुरेसे उद्गमस्त्रोत नाहीत"
+
 #: src/generic/util/util.cc:273
 #, fuzzy, c-format
 msgid "Unable to stat \"%s\""
@@ -3062,27 +3107,27 @@ msgstr "न जुळणारे '('वर्गवारी धोरण व�
 msgid "Invalid sorting policy type '%s'"
 msgstr "अवैध वर्गवारी धोरण प्रकार '%s'"
 
-#: src/main.cc:88
+#: src/main.cc:89
 #, fuzzy, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr "\"%|s\"नंतर बहुूबाइट अक्षरसंचाचे कोडसंकेत उलगडू शकत नाही."
 
-#: src/main.cc:97
+#: src/main.cc:98
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr "\"%s\"नंतर रुंद-अक्षर अक्षरसंचाचे कोडसंकेत उलगडू शकत नाही."
 
-#: src/main.cc:105
+#: src/main.cc:106
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr "%s %s चे संकलन %s %sकडे केले\n"
 
-#: src/main.cc:108
+#: src/main.cc:109
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr " संकलक :g++%s\n"
 
-#: src/main.cc:111
+#: src/main.cc:112
 #, c-format
 msgid ""
 "\n"
@@ -3091,7 +3136,7 @@ msgstr ""
 "\n"
 "%sआवृत्तीचा N अपशब्द सुनवतो \n"
 
-#: src/main.cc:113
+#: src/main.cc:114
 #, c-format
 msgid ""
 "\n"
@@ -3100,32 +3145,32 @@ msgstr ""
 "\n"
 " आवृत्तीला आपशब्द सुनवतो :%s\n"
 
-#: src/main.cc:115
+#: src/main.cc:116
 #, c-format
 msgid "libsigc++ version: %s\n"
 msgstr "libsigc++आवृत्ती : %s\n"
 
-#: src/main.cc:117
+#: src/main.cc:118
 #, c-format
 msgid "Ept support enabled.\n"
 msgstr ""
 
-#: src/main.cc:119
+#: src/main.cc:120
 #, c-format
 msgid "Ept support disabled.\n"
 msgstr ""
 
-#: src/main.cc:126
+#: src/main.cc:127
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr " उपयोग ः नैसर्गिक कल [-S fname] [-u|-i]  "
 
-#: src/main.cc:128
+#: src/main.cc:129
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "नैसर्गिक कल (पर्याय) < कृती >----"
 
-#: src/main.cc:130
+#: src/main.cc:131
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -3134,60 +3179,60 @@ msgstr ""
 "कृती (काहीच नमूद केले नसल्यास, कल परस्परसहभागी पध्दत प्रविष्ट करेल)ः:\n"
 "\n"
 
-#: src/main.cc:131
+#: src/main.cc:132
 #, c-format
 msgid " install      - Install/upgrade packages\n"
 msgstr "संस्थापित करा - पॅकेजेस संस्थापित करा / सुधारित आवृत्ती काढा \n"
 
-#: src/main.cc:132
+#: src/main.cc:133
 #, c-format
 msgid " remove       - Remove packages\n"
 msgstr "काढून टाका - पॅकेजेस काढून टाका\n"
 
-#: src/main.cc:133
+#: src/main.cc:134
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr "शुध्द व साफ करा - पॅकेजेस व त्यांच्या संरचना फाइल्स काढून टाका\n"
 
-#: src/main.cc:134
+#: src/main.cc:135
 #, c-format
 msgid " hold         - Place packages on hold\n"
 msgstr "तसेच धरून ठेवा - पॅकेजेस तशीच धरून ठेवा\n"
 
-#: src/main.cc:135
+#: src/main.cc:136
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
 msgstr "धरून ठेवू नका - पॅकेजसाठीची धरून ठेवा आज्ञा रद्द करा\n"
 
-#: src/main.cc:136
+#: src/main.cc:137
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
 msgstr "स्वयंची खूण करा - पॅकेजेस स्वयंचलितपणे संस्थापित झाल्याची खूण करा \n"
 
-#: src/main.cc:137
+#: src/main.cc:138
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr "स्वयंची खूण करू नका - पॅकेजेस हाताने संस्थापित झाल्याची खूण करा\n"
 
-#: src/main.cc:142
+#: src/main.cc:143
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
 "version.\n"
 msgstr "निषिध्द -आवृत्ती -प्रवृत्तीला विशिष्ट पॅकेजची सुधारित आवृत्ती काढण्यास मनाई करा \n"
 
-#: src/main.cc:143
+#: src/main.cc:144
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr ""
 "अद्ययावत करा - नवीन /दर्जा वाढवण्याक्षम पॅकेजेसच्या सूची उतरवून घ्या (डाउनलोड करा)\n"
 
-#: src/main.cc:144
+#: src/main.cc:145
 #, fuzzy, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr "सुधारित आवृत्ती काढा (दर्जा वाढवा) - सुरक्षित सुधारित आवृत्ती काढा \n"
 
-#: src/main.cc:145
+#: src/main.cc:146
 #, fuzzy, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
@@ -3196,43 +3241,43 @@ msgstr ""
 "dist-सुधारित आवृत्ती काढा - सुधारित आवृत्ती काढा, शक्यतर पॅकेजेस संस्थापित करणारी व काढून "
 "टाकणारी \n"
 
-#: src/main.cc:146
+#: src/main.cc:147
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr "नवीन विसरून जा - कोणती पॅकेजेस \"new(नवीन)\" आहेत ता विसरून जा \n"
 
-#: src/main.cc:147
+#: src/main.cc:148
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr "शोधा - पॅकेजसाठी नावानुसार आणि / किंवा अभिव्यक्तीनुसार शोध घ्या \n"
 
-#: src/main.cc:148
+#: src/main.cc:149
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr "दाखवा - पॅकेजविषयीची तपशीलवार (विस्तृत) माहिती प्रदर्शित करा \n"
 
-#: src/main.cc:149
+#: src/main.cc:150
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr ""
 "स्वच्छ करा (साफ करा) - उतरवून घेतलेल्या (डाउललोड केलेल्या) पॅकेज फाइल्स खोडून टाका\n"
 
-#: src/main.cc:150
+#: src/main.cc:151
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr "स्वयंसफाई करा - जुन्या उतरवून घेतलेल्या पॅकेज फाइल्स खोडून टाका\n"
 
-#: src/main.cc:151
+#: src/main.cc:152
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr "बदलनोंद - पॅकेजमधील बदलनोंदीचे दृश्य दाखवा\n"
 
-#: src/main.cc:152
+#: src/main.cc:153
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr "डाउनलोड करा (उतरवून घ्या) - पॅकेजसाठी .debफाइल उतरवून घ्या \n"
 
-#: src/main.cc:153
+#: src/main.cc:154
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -3240,22 +3285,22 @@ msgid ""
 msgstr ""
 "पुनर्संस्थापित  करा - सध्या संस्थापित केलेले पॅकेज उतरवून घ्या व(शक्य तर)पुनर्संस्थापित करा \n"
 
-#: src/main.cc:155
+#: src/main.cc:156
 #, c-format
 msgid "  Options:\n"
 msgstr "पर्याय ः \n"
 
-#: src/main.cc:156
+#: src/main.cc:157
 #, c-format
 msgid " -h             This help text\n"
 msgstr "-hहे मजकुरासाठी मदत करते \n"
 
-#: src/main.cc:157
+#: src/main.cc:158
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr "-s   कृतींची नक्कल करते, परंतु प्रत्यक्षात त्या कृती करत नाही.\n"
 
-#: src/main.cc:158
+#: src/main.cc:159
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
@@ -3263,18 +3308,18 @@ msgstr ""
 "-d पॅकेजेस फक्त डाउनलोड करते (उतरवून घेते), संस्थापित करीत नाही किंवा काहीही काढून टाकत "
 "नाही.\n"
 
-#: src/main.cc:159
+#: src/main.cc:160
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr "-p   खात्री करून घेण्यासाठी किंवा कृतींसाठी नेहमीच तत्पर \n"
 
-#: src/main.cc:160
+#: src/main.cc:161
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr "-y   साध्या होय /नाही प्रश्नांसाठी उत्तर होय आहे असे गृहीत धरा \n"
 
-#: src/main.cc:161
+#: src/main.cc:162
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
@@ -3283,46 +3328,46 @@ msgstr ""
 "-f   विहित नमुना शोध निकाल प्रदर्शित करण्यासाठी विहित नमुना नमूद करा, माहीती पुस्तक "
 "पहा.\n"
 
-#: src/main.cc:162
+#: src/main.cc:163
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr "-O आदेश शोधनिकालांची वर्गवारी कशी करावी ते नमूद करा, माहितीपुस्तक पहा, \n"
 
-#: src/main.cc:163
+#: src/main.cc:164
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr "-w शोधनिकाल नमुन्यात मांडण्यासाठी दृश्यमाध्यमाची रूंदी नमूद करा.\n"
 
-#: src/main.cc:164
+#: src/main.cc:165
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr "-f  भंगलेली पॅकेजेस दुरूस्त करण्याचा जोरदार प्रयत्न करा.\n"
 
-#: src/main.cc:165
+#: src/main.cc:166
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr "  -V   पॅकेजेसच्या कोणत्या आवृत्त्या संस्थापित करायच्या आहेत ते दाखवा.\n"
 
-#: src/main.cc:166
+#: src/main.cc:167
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr "-D स्वयंचलितपणे बदललेल्या पॅकेजेसची परावलंबित्वे दाखवा.\n"
 
-#: src/main.cc:167
+#: src/main.cc:168
 #, fuzzy, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr "-Z\t\t प्रत्येक पॅकेजच्या संस्थापित आकारात झालेला बदल दाखवा \n"
 
-#: src/main.cc:168
+#: src/main.cc:169
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr "-V  अतिरिक्त माहिती प्रदर्शित करा. (अनेक वेळा ती पुरवली जाऊ शकते) \n"
 
-#: src/main.cc:169
+#: src/main.cc:170
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
@@ -3330,19 +3375,19 @@ msgstr ""
 "-t  (मुक्त करण्यात येणारी आवृत्ती) ज्यातून पॅकेजेस संस्थापित करायची आहेत, ती आवृत्ती निश्चित "
 "(स्थापित) करा \n"
 
-#: src/main.cc:170
+#: src/main.cc:171
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
 msgstr "-q आज्ञा-रेखा प्रकारात, वाढीव प्रगती निदर्शक दाबून ठेवा. \n"
 
-#: src/main.cc:171
+#: src/main.cc:172
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr "-o key=val (कळ =मूल्य) key नावाचा संरचना पर्याय थेट स्थापित करा \n"
 
-#: src/main.cc:172
+#: src/main.cc:173
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -3351,81 +3396,81 @@ msgstr ""
 "--with(out)-recommends\t शिफारशींना जोरदार परावलंबित्वे म्हणून वागवावे की नाही ते "
 "स्पष्ट करा \n"
 
-#: src/main.cc:173
+#: src/main.cc:174
 #, fuzzy, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr "-S fname: fname मधून कल विस्तारित स्थिती माहिती वाचा .\n"
 
-#: src/main.cc:174
+#: src/main.cc:175
 #, fuzzy, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr "-u   ः संगणक सुरू केल्यावर नवीन पॅकेज सूची डाउनलोड करा (उतरवून घ्या) \n"
 
-#: src/main.cc:175
+#: src/main.cc:176
 #, fuzzy, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr "-i  संगणक सुरू केल्यावर संस्थापन प्रोग्राम (आज्ञावली) सुरू करा.\n"
 
-#: src/main.cc:177
+#: src/main.cc:178
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "ह्या प्रवृत्तीत सुपर काऊ पॅावर्स (श्रेष्ठ गाय शक्ती) नाहीत.\n"
 
-#: src/main.cc:358
+#: src/main.cc:359
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "-q नंतर एक क्रमंाक अपेक्षित आहे.\n"
 
-#: src/main.cc:367
+#: src/main.cc:368
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "-q नंतर एक क्रमंाक अपेक्षित आहे. %sे मिळाले \n"
 
-#: src/main.cc:391
+#: src/main.cc:392
 #, fuzzy, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr " कळ=मूल्य स्वरूपाचे विधान -O ला हवे आहे,%s मिळाले."
 
-#: src/main.cc:480
+#: src/main.cc:481
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr ""
 
-#: src/main.cc:508 src/main.cc:517
+#: src/main.cc:509 src/main.cc:518
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "गूढता ः अज्ञात पर्याय संकेत मिळाला.\n"
 
-#: src/main.cc:534
+#: src/main.cc:535
 msgid "Only one of -u and -i may be specified\n"
 msgstr "-u व -i पैकी फक्त एकच नमूद करता येईल. \n"
 
-#: src/main.cc:542
+#: src/main.cc:543
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr "आज्ञा-रेखा प्रकारात -u व-i नमूद करणारही नाहीत(उदा.'संस्थापित करा' सह)"
 
-#: src/main.cc:563
+#: src/main.cc:564
 msgid "-u and -i may not be specified with a command"
 msgstr "आज्ञेसोबत  -u व -i नमूद केले नसेलही "
 
-#: src/main.cc:622
+#: src/main.cc:623
 #, c-format
 msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
 "for %s, which always uses the safe resolver.\n"
 msgstr ""
 
-#: src/main.cc:674
+#: src/main.cc:678
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "अज्ञात आज्ञा  \"%s\"\n"
 
-#: src/main.cc:686 src/main.cc:735
+#: src/main.cc:690 src/main.cc:739
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr " न पकडलेला अपवाद ः %s\n"
 
-#: src/main.cc:690 src/main.cc:739
+#: src/main.cc:694 src/main.cc:743
 #, fuzzy, c-format
 msgid ""
 "Backtrace:\n"
@@ -3509,6 +3554,8 @@ msgid "Number of mines: "
 msgstr "खाणींची संख्या ः"
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "ठीक आहे."
 
@@ -5638,11 +5685,11 @@ msgstr ""
 "%ls: मेनु  %ls: मदत  %ls: बाहेर  %ls: पुढील आवृत्तीत  %ls: डाउनलोड / संस्थापन / काढुन "
 "टाकणे  पॅकेजेस"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "हो की कळं"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "नाही की"
 
@@ -5667,18 +5714,81 @@ msgstr "चेंजलाॅग डाऊनलोड होत आहे."
 msgid "Download Changelog"
 msgstr "डाऊनलोड चेंजलाॅग"
 
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "न सापडलेल्या स्वरुप संकेत मार्कर"
+
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "फाॅरमॅट स्ट्रिंग (स्वरुप अक्षरसंच) '%ls' मध्ये चूकीचा वाईट आकडा."
+
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "फाॅरमॅट स्ट्रिंग (स्वरुप अक्षरसंच) मध्ये मूल्य आकडा ठरवला आहे."
+
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "मूल्य आकडे १ किंवा अधिक असावा आणि %ld नाही."
+
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "'%lc' संकेत अज्ञात परिचीत फाॅरमॅटींग (स्वरुप)"
+
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "चूकीचे स्वरुप मूल्य"
+
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "कळ वर्णन मिळवता येत नाही: %ls"
+
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "अवैध नल (शून्य) की जोड"
+
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr "क्षमस्व, प्रिंट न होणाऱ्या अक्षरांबरोबर कंट्रोल माॅडीफायर्स वापरता येणार नाहीत."
+
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "अोह !SIGTERM सापडले, ---जात आहे\n"
+
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr " अोह!SIGSEGV सापडले,---जात आहे \n"
+
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr " अोह!SIGABRT सापडले,--- जात आहे\n"
+
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr " अोह!SIGQUIT सापडले,---जात आहे\n"
+
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr "फाईलनाव उरवण्यात असमर्थ ः अक्षरसंच %ls ला मल्टीबाईट रुप नाही. "
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "वरची पायरी"
+
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""
 #~ "स्थिती फाइल लिहित असता पॅकेज \"%s\"वरील अंतर्गत अनामत (बफर)स्मृती भरुन वाहून गेली "
-
-#~ msgid "Downloading "
-#~ msgstr "डाउनलोडिंग (उतरवून घेत आहे)"
-
-#~ msgid "Got "
-#~ msgstr "मिळाले"
-
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "%ss (%sB/s) मधील %sB उतरवून घेतले(डाउनलोड केले)"
 
 #~ msgid "Tasks/Tasks"
 #~ msgstr "कामे कामे"
@@ -5692,9 +5802,6 @@ msgstr "डाऊनलोड चेंजलाॅग"
 #, fuzzy
 #~ msgid "You must resolve these dependencies before continuing."
 #~ msgstr "अवलंबित्वे दूर करण्यास असमर्थ !सोडून देत आहे"
-
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "दोरा निर्माण करण्यासाठी पुरेसे उद्गमस्त्रोत नाहीत"
 
 #~ msgid ""
 #~ "Packages which set up your computer to perform a particular task\n"
@@ -6205,52 +6312,6 @@ msgstr "डाऊनलोड चेंजलाॅग"
 #~ msgstr ""
 #~ "\n"
 #~ "ह्या पॅकेजेसचे अजून debtagsमध्ये वर्गीकरण केलेले नाही."
-
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "न सापडलेल्या स्वरुप संकेत मार्कर"
-
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "फाॅरमॅट स्ट्रिंग (स्वरुप अक्षरसंच) '%ls' मध्ये चूकीचा वाईट आकडा."
-
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "फाॅरमॅट स्ट्रिंग (स्वरुप अक्षरसंच) मध्ये मूल्य आकडा ठरवला आहे."
-
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "मूल्य आकडे १ किंवा अधिक असावा आणि %ld नाही."
-
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "'%lc' संकेत अज्ञात परिचीत फाॅरमॅटींग (स्वरुप)"
-
-#~ msgid "Bad format parameter"
-#~ msgstr "चूकीचे स्वरुप मूल्य"
-
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "कळ वर्णन मिळवता येत नाही: %ls"
-
-#~ msgid "Invalid null keybinding"
-#~ msgstr "अवैध नल (शून्य) की जोड"
-
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
-#~ msgstr "क्षमस्व, प्रिंट न होणाऱ्या अक्षरांबरोबर कंट्रोल माॅडीफायर्स वापरता येणार नाहीत."
-
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "अोह !SIGTERM सापडले, ---जात आहे\n"
-
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr " अोह!SIGSEGV सापडले,---जात आहे \n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr " अोह!SIGABRT सापडले,--- जात आहे\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr " अोह!SIGQUIT सापडले,---जात आहे\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr "फाईलनाव उरवण्यात असमर्थ ः अक्षरसंच %ls ला मल्टीबाईट रुप नाही. "
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "वरची पायरी"
 
 #~ msgid "Don't automatically remove unused packages matching this filter"
 #~ msgstr "ह्या गाळणीशी जुळणारी, न वापरलेली पॅकेजेस स्वयंचलित प्रकारे काढून टाकू नका."
