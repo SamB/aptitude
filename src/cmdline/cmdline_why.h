@@ -218,14 +218,6 @@ namespace aptitude
       {
       }
 
-      static target Provide(const pkgCache::PkgIterator &pkg,
-			    const pkgCache::PrvIterator &prv,
-			    bool provided_is_removed)
-      {
-	Type tp = provided_is_removed ? ProvidesRemove : ProvidesInstall;
-	return target(pkg, prv, tp);
-      }
-
     public:
       /** Returns the package that should be marked as "visited"
        *  to restrict future searches. (since the search never visits
@@ -265,6 +257,14 @@ namespace aptitude
       // Use the implicit operator==.
       //
       // bool operator==(const target &other) const;
+
+      static target Provide(const pkgCache::PkgIterator &pkg,
+			    const pkgCache::PrvIterator &prv,
+			    bool provided_is_removed)
+      {
+	Type tp = provided_is_removed ? ProvidesRemove : ProvidesInstall;
+	return target(pkg, prv, tp);
+      }
 
       static target Install(const pkgCache::PkgIterator &pkg)
       {
@@ -340,75 +340,22 @@ namespace aptitude
       bool operator<(const action &other) const;
     };
 
-    // Represents a full forward or reverse justification for the
-    // installation of the given package/version.  The justification
-    // may terminate on either a package version, a provided package
-    // name, or the removal of a package.
-    //
-    // This is the same class that's used within the algorithm.
-    // Arguably it would be cleaner to replace this and "action" with
-    // external classes that hide some representation details and bits
-    // of the algorithm that are currently leaked; however, this is a
-    // first step towards exposing the algorithm directly, and better
-    // than nothing.
-    class justification
-    {
-      target the_target;
-      imm::set<action> actions;
-
-      justification(const target &_the_target,
-		    const imm::set<action> &_actions)
-	: the_target(_the_target), actions(_actions)
-      {
-      }
-    public:
-      // Create a node with an empty history rooted at the given target.
-      justification(const target &_the_target)
-	: the_target(_the_target)
-      {
-      }
-
-      const target &get_target() const
-      {
-	return the_target;
-      }
-
-      const imm::set<action> &get_actions() const
-      {
-	return actions;
-      }
-
-      // Generate all the successors of this node (Q: could I lift
-      // justify_target::generate_successors into this class?  It feels
-      // like it makes more sense to have the smarts in here)
-      void generate_successors(std::deque<justification> &output,
-			       const search_params &params,
-			       int verbosity) const
-      {
-	the_target.generate_successors(*this, output, params, verbosity);
-      }
-
-      // Build a successor of this node.
-      justification successor(const target &target,
-			      const pkgCache::DepIterator &dep) const
-      {
-	imm::set<action> new_actions(actions);
-	new_actions.insert(action(dep, new_actions.size()));
-
-	return justification(the_target, new_actions);
-      }
-
-      justification successor(const justification &target,
-			      const pkgCache::PrvIterator &prv) const
-      {
-	imm::set<action> new_actions(actions);
-	new_actions.insert(action(prv, new_actions.size()));
-
-	return justification(the_target, new_actions);
-      }
-
-      cwidget::fragment *description() const;
-    };
+    /** \brief Search for a justification for an action.
+     *
+     *  \param target    the action to justify.
+     *  \param leaves    matchers selecting the packages to build a
+     *                   justification from.
+     *  \param params    the parameters of the search.
+     *  \param output    where the justification is stored.
+     *
+     *  \return \b true if a justification could be constructed,
+     *          \b false otherwise.
+     */
+    bool find_justification(const target &target,
+			    const std::vector<aptitude::matching::pkg_matcher *> leaves,
+			    const search_params &params,
+			    bool find_all,
+			    std::vector<std::vector<action> > &output);
   }
 }
 

@@ -72,6 +72,69 @@ namespace aptitude
 {
   namespace why
   {
+    // Represents a full forward or reverse justification for the
+    // installation of the given package/version.  The justification
+    // may terminate on either a package version, a provided package
+    // name, or the removal of a package.
+    class justification
+    {
+      target the_target;
+      imm::set<action> actions;
+
+      justification(const target &_the_target,
+		    const imm::set<action> &_actions)
+	: the_target(_the_target), actions(_actions)
+      {
+      }
+    public:
+      // Create a node with an empty history rooted at the given target.
+      justification(const target &_the_target)
+	: the_target(_the_target)
+      {
+      }
+
+      const target &get_target() const
+      {
+	return the_target;
+      }
+
+      const imm::set<action> &get_actions() const
+      {
+	return actions;
+      }
+
+      // Generate all the successors of this node (Q: could I lift
+      // justify_target::generate_successors into this class?  It feels
+      // like it makes more sense to have the smarts in here)
+      void generate_successors(std::deque<justification> &output,
+			       const search_params &params,
+			       int verbosity) const
+      {
+	the_target.generate_successors(*this, output, params, verbosity);
+      }
+
+      // Build a successor of this node.
+      justification successor(const target &target,
+			      const pkgCache::DepIterator &dep) const
+      {
+	imm::set<action> new_actions(actions);
+	new_actions.insert(action(dep, new_actions.size()));
+
+	return justification(the_target, new_actions);
+      }
+
+      justification successor(const justification &target,
+			      const pkgCache::PrvIterator &prv) const
+      {
+	imm::set<action> new_actions(actions);
+	new_actions.insert(action(prv, new_actions.size()));
+
+	return justification(the_target, new_actions);
+      }
+
+      cwidget::fragment *description() const;
+    };
+
     cw::style action::get_style() const
     {
       pkgCache::PkgIterator pkg;
@@ -487,8 +550,7 @@ namespace aptitude
      *                suggests/recommends to be important.
      */
     justification_search(const std::vector<pkg_matcher *> &_leaves,
-			 const pkgCache::PkgIterator &root,
-			 bool search_for_removal,
+			 const target &root,
 			 const search_params &_params,
 			 int _verbosity)
       : leaves(_leaves),
@@ -498,10 +560,7 @@ namespace aptitude
 	verbosity(_verbosity)
     {
       // Prime the pump.
-      if(search_for_removal)
-	q.push_back(justification(target::Remove(root)));
-      else
-	q.push_back(justification(target::Install(root)));
+      q.push_back(justification(root));
     }
 
     justification_search(const justification_search &other)
@@ -631,6 +690,34 @@ namespace aptitude
     }
   };
     }
+
+    bool find_justification(const target &target,
+			    const std::vector<aptitude::matching::pkg_matcher *> leaves,
+			    const search_params &params,
+			    bool find_all,
+			    std::vector<std::vector<action> > &output)
+    {
+      justification_search search(leaves, target, params, 0);
+
+      std::vector<std::vector<action> > rval;
+      std::vector<action> tmp;
+
+      int i = 0;
+
+      while((i == 0 || find_all) && search.next(tmp))
+	{
+	  rval.push_back(std::vector<action>());
+	  rval.back().swap(tmp);
+	}
+
+      if(rval.size() > 0)
+	{
+	  output.swap(rval);
+	  return true;
+	}
+      else
+	return false;
+    }
   }
 }
 
@@ -744,7 +831,8 @@ cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
   for(std::vector<search_params>::const_iterator it = searches.begin();
       it != searches.end(); ++it)
     {
-      justification_search search(leaves, root, root_is_removal, *it, verbosity);
+      target goal = root_is_removal ? target::Remove(root) : target::Install(root);
+      justification_search search(leaves, goal, *it, verbosity);
 
       while(search.next(results))
 	{
