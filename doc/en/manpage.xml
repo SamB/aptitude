@@ -1433,6 +1433,25 @@ i A texlive-latex-extra Conflicts textopo</screen>
       </varlistentry>
 
       <varlistentry>
+	<term><literal>-W</literal>, <literal>--show-why</literal></term>
+
+	<listitem>
+	  <para>
+	    Show which manually installed package requires each
+	    automatically installed package.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option
+	    <literal><link
+	    linkend='configCmdLine-Show-Why'>Aptitude::CmdLine::Show-Why</link></literal>
+	    and displays the same information that is computed by
+	    <literal>aptitude why</literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
 	<term><literal>-v</literal>, <literal>--verbose</literal></term>
 
 	<listitem>

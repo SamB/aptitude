@@ -31,7 +31,8 @@ int cmdline_upgrade(int argc, char *argv[],
 		    const char *status_fname, bool simulate,
 		    bool no_new_installs,
 		    bool assume_yes, bool download_only,
-		    bool showvers, bool showdeps, bool showsize,
+		    bool showvers, bool showdeps,
+		    bool showsize, bool showwhy,
 		    const std::vector<aptitude::cmdline::tag_application> &user_tags,
 		    bool visual_preview,
 		    bool always_prompt, bool arch_only,
@@ -125,7 +126,7 @@ int cmdline_upgrade(int argc, char *argv[],
     }
   else if(simulate)
     return cmdline_simulate(true, to_install, to_hold, to_remove, to_purge,
-			    showvers, showdeps, showsize,
+			    showvers, showdeps, showsize, showwhy,
 			    always_prompt, verbose, assume_yes,
 			    false,
 			    policy, arch_only);
@@ -141,7 +142,8 @@ int cmdline_upgrade(int argc, char *argv[],
   else
     {
       if(!cmdline_do_prompt(true, to_install, to_hold, to_remove,
-			    to_purge, showvers, showdeps, showsize,
+			    to_purge, showvers, showdeps,
+			    showsize, showwhy,
 			    always_prompt, verbose,
 			    assume_yes, false,
 			    policy, arch_only))

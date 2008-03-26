@@ -327,6 +327,15 @@ namespace aptitude
       {
       }
 
+      /** \return the dependency followed by this action, or an
+       *  end iterator if this action follows a Provides.
+       */
+      pkgCache::DepIterator get_dep() const { return dep; }
+      /** \return the Provides followed by this action, or an
+       *  end iterator if this action follows a depends.
+       */
+      pkgCache::PrvIterator get_prv() const { return prv; }
+
       cwidget::style get_style() const;
 
       cwidget::fragment *description_column1_fragment() const;
