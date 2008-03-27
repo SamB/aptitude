@@ -356,7 +356,14 @@ namespace aptitude
 	return std::set<ept::debtags::Tag>();
 
       // TODO: handle !hasData() here.
-      return debtagsDB->getTagsOfItem(pkg.Name());
+      try
+	{
+	  return debtagsDB->getTagsOfItem(pkg.Name());
+	}
+      catch(std::exception &ex)
+	{
+	  return std::set<ept::debtags::Tag>();
+	}
     }
   }
 }
