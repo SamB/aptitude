@@ -1437,16 +1437,47 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
 	<listitem>
 	  <para>
-	    Show which manually installed package requires each
-	    automatically installed package.
+	    In the preview displayed before packages are installed or
+	    removed, show which manually installed package requires
+	    each automatically installed package.  For instance:
+	  </para>
+
+	  <para><screen>$ aptitude --show-why install mediawiki
+...
+The following NEW packages will be installed:
+  libapache2-mod-php5{a} (for mediawiki)  mediawiki  php5{a} (for mediawiki)
+  php5-cli{a} (for mediawiki)  php5-common{a} (for mediawiki)
+  php5-mysql{a} (for mediawiki)</screen></para>
+
+          <para>
+	    When combined with <literal>-v</literal> or a non-zero
+	    value for <link
+	    linkend='configCmdLineVerbose'><literal>Aptitude::CmdLine::Verbose</literal></link>,
+	    this displays the entire chain of dependencies that lead
+	    each package to be installed.  For instance:
+	  </para>
+
+	  <para><screen>$ aptitude -v --show-why install libdb4.2-dev
+The following NEW packages will be installed:
+  libdb4.2{a} (libdb4.2-dev D: libdb4.2)  libdb4.2-dev
+The following packages will be REMOVED:
+  libdb4.4-dev{a} (libdb4.2-dev C: libdb-dev P&lt;- libdb-dev)</screen></para>
+
+          <para>
+	    This option will also describe why packages are being
+	    removed, as shown above.  In this example,
+	    <systemitem>libdb4.2-dev</systemitem> conflicts with
+	    <systemitem>libdb-dev</systemitem>, which is provided by
+	    <systemitem>libdb-dev</systemitem>.
 	  </para>
 
 	  <para>
-	    This corresponds to the configuration option
+	    This argument corresponds to the configuration option
 	    <literal><link
 	    linkend='configCmdLine-Show-Why'>Aptitude::CmdLine::Show-Why</link></literal>
 	    and displays the same information that is computed by
-	    <literal>aptitude why</literal>.
+	    <literal>aptitude why</literal> and <literal>aptitude
+	    why-not</literal>.
 	  </para>
 	</listitem>
       </varlistentry>
