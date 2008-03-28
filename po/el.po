@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_el\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-25 19:16+0100\n"
+"POT-Creation-Date: 2008-03-27 19:39-0700\n"
 "PO-Revision-Date: 2006-12-18 09:26+0200\n"
 "Last-Translator: quad-nrg.net <galaxico@quad-nrg.net>\n"
 "Language-Team: Greek <en@li.org>\n"
@@ -776,23 +776,23 @@ msgstr "Θα απελευθερώσει %sB χώρο στο δίσκο\n"
 msgid "Freed %sB of disk space\n"
 msgstr "Ελευθερώθηκαν %sB χώρου στο δίσκο\n"
 
-#: src/cmdline/cmdline_do_action.cc:82
+#: src/cmdline/cmdline_do_action.cc:83
 #, c-format
 msgid "Invalid operation %s"
 msgstr "Ακυρη λειτουργία %s"
 
-#: src/cmdline/cmdline_do_action.cc:158
+#: src/cmdline/cmdline_do_action.cc:159
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Απρόσμενο "
 
-#: src/cmdline/cmdline_do_action.cc:264
+#: src/cmdline/cmdline_do_action.cc:265
 #, fuzzy, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
 msgstr "Αδύνατη η ικανοποίηση των εξαρτήσεων"
 
-#: src/cmdline/cmdline_do_action.cc:301 src/cmdline/cmdline_simulate.cc:33
-#: src/cmdline/cmdline_upgrade.cc:149 src/main.cc:685
+#: src/cmdline/cmdline_do_action.cc:303 src/cmdline/cmdline_simulate.cc:35
+#: src/cmdline/cmdline_upgrade.cc:151 src/main.cc:692
 #, c-format
 msgid "Abort.\n"
 msgstr "Εγκατάλειψη.\n"
@@ -889,110 +889,124 @@ msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr ""
 "Τι είναι;  Είναι ένα ελεφαντοειδές πλάσμα που το τρώει ένα φίδι, φυσικά.\n"
 
-#: src/cmdline/cmdline_prompt.cc:41
+#: src/cmdline/cmdline_prompt.cc:42
 msgid "Unexpected end-of-file on standard input"
 msgstr "Απρόσμενο τέλος-αρχείου στην στάνταρ είσοδο"
 
-#: src/cmdline/cmdline_prompt.cc:60
+#: src/cmdline/cmdline_prompt.cc:61
 msgid "Couldn't read list of sources"
 msgstr "Αδύνατη η ανάγνωση του καταλόγου των πηγών"
 
-#: src/cmdline/cmdline_prompt.cc:205
+#. ForTranslators: %s is replaced with a comma-delimited list
+#. of package names.
+#: src/cmdline/cmdline_prompt.cc:209
+#, c-format
+msgid "(for %s)"
+msgid_plural "(for %s)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/cmdline/cmdline_prompt.cc:282 src/cmdline/cmdline_show.cc:435
+#: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
+msgid "Provides"
+msgstr "Παρέχει"
+
+#: src/cmdline/cmdline_prompt.cc:415
 #, fuzzy
 msgid "Config files"
 msgstr "αρχεία ρυθμίσεων"
 
-#: src/cmdline/cmdline_prompt.cc:299 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:519 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "αλλά θα εγκατασταθεί το %s."
 
-#: src/cmdline/cmdline_prompt.cc:302 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:522 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "αλλά το %s είναι εγκατεστημένο και εξαιρείται."
 
-#: src/cmdline/cmdline_prompt.cc:305 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:525 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "αλλά το %s είναι εγκατεστημένο."
 
-#: src/cmdline/cmdline_prompt.cc:309 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:529 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "αλλά δεν είναι εγκατάστασιμο"
 
-#: src/cmdline/cmdline_prompt.cc:313 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:533 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " το οποίο είναι ένα εικονικό πακέτο."
 
-#: src/cmdline/cmdline_prompt.cc:316 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:536 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " ή"
 
-#: src/cmdline/cmdline_prompt.cc:330
+#: src/cmdline/cmdline_prompt.cc:550
 msgid "The following packages are BROKEN:"
 msgstr "Τα ακόλουθα πακέτα είναι ΕΛΑΤΤΩΜΑΤΙΚΑ:"
 
-#: src/cmdline/cmdline_prompt.cc:331
+#: src/cmdline/cmdline_prompt.cc:551
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Τα ακόλουθα πακέτα δεν χρειάζονται και θα ΑΦΑΙΡΕΘΟΥΝ:"
 
-#: src/cmdline/cmdline_prompt.cc:332
+#: src/cmdline/cmdline_prompt.cc:552
 msgid "The following packages have been automatically kept back:"
 msgstr "Τα ακόλουθα πακέτα εξαιρέθηκαν αυτόματα:"
 
-#: src/cmdline/cmdline_prompt.cc:333
+#: src/cmdline/cmdline_prompt.cc:553
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Τα ακόλουθα ΝΕΑ πακέτα θα εγκατασταθούν αυτόματα:"
 
-#: src/cmdline/cmdline_prompt.cc:334
+#: src/cmdline/cmdline_prompt.cc:554
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Τα ακόλουθα πακέτα θα ΑΦΑΙΡΕΘΟΥΝ αυτόματα:"
 
-#: src/cmdline/cmdline_prompt.cc:335
+#: src/cmdline/cmdline_prompt.cc:555
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Τα ακόλουθα πακέτα θα ΥΠΟΒΑΘΜΙΣΤΟΥΝ αυτόματα:"
 
-#: src/cmdline/cmdline_prompt.cc:336
+#: src/cmdline/cmdline_prompt.cc:556
 msgid "The following packages have been kept back:"
 msgstr "Τα ακόλουθα πακέτα έχουν εξαιρεθεί:"
 
-#: src/cmdline/cmdline_prompt.cc:337
+#: src/cmdline/cmdline_prompt.cc:557
 msgid "The following packages will be REINSTALLED:"
 msgstr "Τα ακόλουθα πακέτα θα ΕΠΑΝΕΓΚΑΤΑΣΤΑΘΟΥΝ:"
 
-#: src/cmdline/cmdline_prompt.cc:338
+#: src/cmdline/cmdline_prompt.cc:558
 msgid "The following NEW packages will be installed:"
 msgstr "Τα ακόλουθα ΝΕΑ πακέτα θα εγκατασταθούν:"
 
-#: src/cmdline/cmdline_prompt.cc:339
+#: src/cmdline/cmdline_prompt.cc:559
 msgid "The following packages will be REMOVED:"
 msgstr "Τα ακόλουθα πακέτα θα ΑΦΑΙΡΕΘΟΥΝ:"
 
-#: src/cmdline/cmdline_prompt.cc:340
+#: src/cmdline/cmdline_prompt.cc:560
 msgid "The following packages will be upgraded:"
 msgstr "Τα ακόλουθα πακέτα θα αναβαθμιστούν:"
 
-#: src/cmdline/cmdline_prompt.cc:341
+#: src/cmdline/cmdline_prompt.cc:561
 #, fuzzy
 msgid "The following partially installed packages will be configured:"
 msgstr "Τα ακόλουθα πακέτα θα αναβαθμιστούν:"
 
-#: src/cmdline/cmdline_prompt.cc:396
+#: src/cmdline/cmdline_prompt.cc:616
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Τα ακόλουθα ΑΠΑΡΑΙΤΗΤΑ πακέτα θα ΑΦΑΙΡΕΘΟΥΝ!\n"
 
-#: src/cmdline/cmdline_prompt.cc:405
+#: src/cmdline/cmdline_prompt.cc:625
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr ""
 "Τα ακόλουθα ΑΠΑΡΑΙΤΗΤΑ πακέτα θα γίνουν ΕΛΑΤΩΜΑΤΙΚΑ από αυτή την ενέργεια:\n"
 
-#: src/cmdline/cmdline_prompt.cc:415
+#: src/cmdline/cmdline_prompt.cc:635
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1001,16 +1015,16 @@ msgstr ""
 "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Αυτή η ενέργεια θα προξενήσει δυσλειτουργίες στο σύστημα!\n"
 "         ΜΗΝ συνεχίσετε εκτός αν γνωρίζετε ΑΚΡΙΒΩΣ τι κάνετε!\n"
 
-#: src/cmdline/cmdline_prompt.cc:417
+#: src/cmdline/cmdline_prompt.cc:637
 msgid "I am aware that this is a very bad idea"
 msgstr "Ναι γνωρίζω ότι είναι μια πολύ κακή ιδέα"
 
-#: src/cmdline/cmdline_prompt.cc:420
+#: src/cmdline/cmdline_prompt.cc:640
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Για να συνεχίσετε, πληκτρολογήστε την φράση \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:462
+#: src/cmdline/cmdline_prompt.cc:682
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1028,7 +1042,7 @@ msgstr ""
 "για αυτό θέλετε\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:474
+#: src/cmdline/cmdline_prompt.cc:694
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1038,7 +1052,7 @@ msgstr ""
 "η παράμετρος\n"
 "                  %s::CmdLine::Ignore-Trust-Violations είναι 'αληθής'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:483
+#: src/cmdline/cmdline_prompt.cc:703
 #, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1048,139 +1062,137 @@ msgstr ""
 "η παράμετρος\n"
 "                  %s::CmdLine::Ignore-Trust-Violations είναι 'αληθής'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:489 src/vscreen/vs_util.cc:194
-#: src/vscreen/vs_util.cc:232
+#: src/cmdline/cmdline_prompt.cc:709
 msgid "Yes"
 msgstr "Ναι"
 
-#: src/cmdline/cmdline_prompt.cc:489 src/vscreen/vs_util.cc:195
-#: src/vscreen/vs_util.cc:233
+#: src/cmdline/cmdline_prompt.cc:709
 msgid "No"
 msgstr "Οχι"
 
-#: src/cmdline/cmdline_prompt.cc:493
+#: src/cmdline/cmdline_prompt.cc:713
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr ""
 "Θέλετε να αγνοήσετε αυτήν την προειδοποίηση και να προχωρήσετε\n"
 "ούτως ή άλλως;\n"
 
-#: src/cmdline/cmdline_prompt.cc:494
+#: src/cmdline/cmdline_prompt.cc:714
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "Για να συνεχίσετε, δώστε \"%s\", για να εγκαταλείψετε, \"%s\": "
 
-#: src/cmdline/cmdline_prompt.cc:508
+#: src/cmdline/cmdline_prompt.cc:728
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Μη αναγνωρίσιμη είσοδος. Δώστε είτε \"%s\" ή \"%s\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:620
+#: src/cmdline/cmdline_prompt.cc:843
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Τα ακόλουθα πακέτα είναι ΠΡΟΤΕΙΝΟΜΕΝΑ αλλά ΔΕΝ θα εγκατασταθούν:\n"
 
-#: src/cmdline/cmdline_prompt.cc:626
+#: src/cmdline/cmdline_prompt.cc:849
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Τα ακόλουθα πακέτα είναι ΠΡΟΤΕΙΝΟΜΕΝΑ αλλά ΔΕΝ θα εγκατασταθούν:\n"
 
-#: src/cmdline/cmdline_prompt.cc:631
+#: src/cmdline/cmdline_prompt.cc:854
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Δεν θα εγκατασταθούν, αναβαθμιστούν ή αφαιρεθούν πακέτα.\n"
 
-#: src/cmdline/cmdline_prompt.cc:633
+#: src/cmdline/cmdline_prompt.cc:856
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu πακέτα αναβαθμίζονται, %lu νεο-εγκατεστημένα, "
 
-#: src/cmdline/cmdline_prompt.cc:637
+#: src/cmdline/cmdline_prompt.cc:860
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu επενεγκατεστημένα, "
 
-#: src/cmdline/cmdline_prompt.cc:639
+#: src/cmdline/cmdline_prompt.cc:862
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu υποβαθμισμένα, "
 
-#: src/cmdline/cmdline_prompt.cc:641
+#: src/cmdline/cmdline_prompt.cc:864
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu για αφαίρεση και %lu δεν αναβαθμίστηκαν.\n"
 
-#: src/cmdline/cmdline_prompt.cc:648
+#: src/cmdline/cmdline_prompt.cc:871
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Χρειάζεται να κατεβούν %sB/%sB αρχείων. "
 
-#: src/cmdline/cmdline_prompt.cc:651
+#: src/cmdline/cmdline_prompt.cc:874
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Χρειάζεται να κατεβούν %sB αρχείων. "
 
-#: src/cmdline/cmdline_prompt.cc:658
+#: src/cmdline/cmdline_prompt.cc:881
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Μετά την αποσυμπίεση θα χρησιμοποιηθούν %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:661
+#: src/cmdline/cmdline_prompt.cc:884
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Μετά την αποσυμπίεση θα ελευθερωθούν %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:682
+#: src/cmdline/cmdline_prompt.cc:905
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr ""
 "Δεν υπάρχουν πακέτα για εμφάνιση -- δώστε τα ονόματα των πακέτων μετά το "
 "'i'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:688
+#: src/cmdline/cmdline_prompt.cc:911
 msgid "Press Return to continue."
 msgstr "Πατήστε Return για συνέχεια"
 
-#: src/cmdline/cmdline_prompt.cc:699
+#: src/cmdline/cmdline_prompt.cc:922
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "Δεν βρέθηκαν πακέτα -- γράψτε τα ονόματα των πακέτων μετά το 'c'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:703
+#: src/cmdline/cmdline_prompt.cc:926
 msgid "Press Return to continue"
 msgstr "Πατήστε Return για συνέχεια "
 
-#: src/cmdline/cmdline_prompt.cc:713
+#: src/cmdline/cmdline_prompt.cc:936
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:736
+#: src/cmdline/cmdline_prompt.cc:959
 #, c-format
 msgid "y: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:738
+#: src/cmdline/cmdline_prompt.cc:961
 msgid "continue with the installation"
 msgstr "συνεχίστε με την εγκατάσταση"
 
-#: src/cmdline/cmdline_prompt.cc:740
+#: src/cmdline/cmdline_prompt.cc:963
 #, c-format
 msgid "n: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:742
+#: src/cmdline/cmdline_prompt.cc:965
 msgid "abort and quit"
 msgstr "εγκατάλειψη και έξοδος από το πρόγραμμα"
 
-#: src/cmdline/cmdline_prompt.cc:744
+#: src/cmdline/cmdline_prompt.cc:967
 #, c-format
 msgid "i: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:746
+#: src/cmdline/cmdline_prompt.cc:969
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -1188,12 +1200,12 @@ msgstr ""
 "εμφάνιση πληροφορίας για ένα ή περισσότερα πακέτα; τα ονόματα των πακέτων "
 "πρέπει να ακολουθούν το 'i'"
 
-#: src/cmdline/cmdline_prompt.cc:748
+#: src/cmdline/cmdline_prompt.cc:971
 #, c-format
 msgid "c: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:750
+#: src/cmdline/cmdline_prompt.cc:973
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1201,63 +1213,63 @@ msgstr ""
 "εμφάνιση των αρχείων αλλαγών του Debian για ένα ή περισσότερα πακέτα; τα "
 "ονόματα των πακέτων θα πρέπει να ακολουθούν το 'c'"
 
-#: src/cmdline/cmdline_prompt.cc:752
+#: src/cmdline/cmdline_prompt.cc:975
 #, c-format
 msgid "d: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:754
+#: src/cmdline/cmdline_prompt.cc:977
 msgid "toggle the display of dependency information"
 msgstr "εναλλαγή επιλογής εμφάνισης της πληροφορίας εξαρτήσεων"
 
-#: src/cmdline/cmdline_prompt.cc:756
+#: src/cmdline/cmdline_prompt.cc:979
 #, c-format
 msgid "s: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:758
+#: src/cmdline/cmdline_prompt.cc:981
 msgid "toggle the display of changes in package sizes"
 msgstr "εναλλαγή επιλογής εμφάνισης των αλλαγών στο μέγεθος των πακέτων"
 
-#: src/cmdline/cmdline_prompt.cc:760
+#: src/cmdline/cmdline_prompt.cc:983
 #, c-format
 msgid "v: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:762
+#: src/cmdline/cmdline_prompt.cc:985
 msgid "toggle the display of version numbers"
 msgstr "εναλλαγή επιλογής εμφάνισης των αριθμών έκδοσης"
 
-#: src/cmdline/cmdline_prompt.cc:764
+#: src/cmdline/cmdline_prompt.cc:987
 #, c-format
 msgid "w: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:766
+#: src/cmdline/cmdline_prompt.cc:989
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:769
+#: src/cmdline/cmdline_prompt.cc:992
 #, c-format
 msgid "r: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:771
+#: src/cmdline/cmdline_prompt.cc:994
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:773
+#: src/cmdline/cmdline_prompt.cc:996
 #, c-format
 msgid "e: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:775
+#: src/cmdline/cmdline_prompt.cc:998
 msgid "enter the full visual interface"
 msgstr "είσοδος στο εντελώς οπτικό interface"
 
-#: src/cmdline/cmdline_prompt.cc:778
+#: src/cmdline/cmdline_prompt.cc:1001
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1270,78 +1282,78 @@ msgstr ""
 "Η ενέργεια αυτή θα εφαρμοστεί σε όλα τα πακέτα που έχετε βάλει στη λίστα. Οι "
 "ακόλουθες ενέργειες είναι διαθέσιμες:"
 
-#: src/cmdline/cmdline_prompt.cc:785 src/cmdline/cmdline_resolver.cc:205
+#: src/cmdline/cmdline_prompt.cc:1008 src/cmdline/cmdline_resolver.cc:205
 msgid "'+' to install packages"
 msgstr "'+' για εγκατάσταση πακέτων"
 
-#: src/cmdline/cmdline_prompt.cc:788 src/cmdline/cmdline_resolver.cc:207
+#: src/cmdline/cmdline_prompt.cc:1011 src/cmdline/cmdline_resolver.cc:207
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' για εγκατάσταση πακέτων και την άμεση σήμανσή τους σαν αυτόματα "
 "εγκατεστημμένων"
 
-#: src/cmdline/cmdline_prompt.cc:790 src/cmdline/cmdline_resolver.cc:209
+#: src/cmdline/cmdline_prompt.cc:1013 src/cmdline/cmdline_resolver.cc:209
 msgid "'-' to remove packages"
 msgstr "'-' αφαίρεση πακέτων"
 
-#: src/cmdline/cmdline_prompt.cc:792 src/cmdline/cmdline_resolver.cc:211
+#: src/cmdline/cmdline_prompt.cc:1015 src/cmdline/cmdline_resolver.cc:211
 msgid "'_' to purge packages"
 msgstr "'_' για πλήρη αφαίρεση πακέτων"
 
-#: src/cmdline/cmdline_prompt.cc:794 src/cmdline/cmdline_resolver.cc:213
+#: src/cmdline/cmdline_prompt.cc:1017 src/cmdline/cmdline_resolver.cc:213
 msgid "'=' to place packages on hold"
 msgstr "'=' διατήρηση των πακέτων σε αναμονή"
 
-#: src/cmdline/cmdline_prompt.cc:796 src/cmdline/cmdline_resolver.cc:215
+#: src/cmdline/cmdline_prompt.cc:1019 src/cmdline/cmdline_resolver.cc:215
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 "';' διατήρηση των πακέτων στην τωρινή τους κατάσταση χωρίς την τοποθέτησή "
 "τους σε αναμονή"
 
-#: src/cmdline/cmdline_prompt.cc:798 src/cmdline/cmdline_resolver.cc:217
+#: src/cmdline/cmdline_prompt.cc:1021 src/cmdline/cmdline_resolver.cc:217
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' επισήμανση πακέτων σαν αυτόματα εγκατεστημμένων"
 
-#: src/cmdline/cmdline_prompt.cc:800 src/cmdline/cmdline_resolver.cc:219
+#: src/cmdline/cmdline_prompt.cc:1023 src/cmdline/cmdline_resolver.cc:219
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' επισήμανση πακέτων σαν χειροκίνητα εγκατεστημμένων"
 
-#: src/cmdline/cmdline_prompt.cc:802
+#: src/cmdline/cmdline_prompt.cc:1025
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:806
+#: src/cmdline/cmdline_prompt.cc:1029
 msgid "Commands:"
 msgstr "Επιβάλλει:"
 
-#: src/cmdline/cmdline_prompt.cc:913
+#: src/cmdline/cmdline_prompt.cc:1138
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:931
+#: src/cmdline/cmdline_prompt.cc:1156
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Θέλετε να συνεχίσετε ; [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:932
+#: src/cmdline/cmdline_prompt.cc:1157
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:950
+#: src/cmdline/cmdline_prompt.cc:1175
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Ακυρη απάντηση.  Παρακαλώ εισάγετε μια έγκυρη εντολή ή '?' για βοήθεια.\n"
 
-#: src/cmdline/cmdline_prompt.cc:956
+#: src/cmdline/cmdline_prompt.cc:1181
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:987
+#: src/cmdline/cmdline_prompt.cc:1212
 #, c-format
 msgid ""
 "\n"
@@ -1352,7 +1364,7 @@ msgstr ""
 "Θα εμφανιστούν πληροφορίες εξαρτήσεων.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:989
+#: src/cmdline/cmdline_prompt.cc:1214
 #, c-format
 msgid ""
 "\n"
@@ -1363,7 +1375,7 @@ msgstr ""
 "Δεν θα εμφανιστούν πληροφορίες εξαρτήσεων.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:995
+#: src/cmdline/cmdline_prompt.cc:1220
 #, c-format
 msgid ""
 "\n"
@@ -1374,7 +1386,7 @@ msgstr ""
 "Θα εμφανιστούν πληροφορίες εκδόσεων.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:997
+#: src/cmdline/cmdline_prompt.cc:1222
 #, c-format
 msgid ""
 "\n"
@@ -1385,7 +1397,7 @@ msgstr ""
 "Δεν θα εμφανιστούν πληροφορίες εκδόσεων.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1002
+#: src/cmdline/cmdline_prompt.cc:1227
 #, c-format
 msgid ""
 "\n"
@@ -1396,7 +1408,7 @@ msgstr ""
 "Θα εμφανιστούν πληροφορίες αλλαγής μεγεθών.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1004
+#: src/cmdline/cmdline_prompt.cc:1229
 #, c-format
 msgid ""
 "\n"
@@ -1884,11 +1896,11 @@ msgstr "Εξαρτάται"
 msgid "PreDepends"
 msgstr "ΠροΕξαρτάται"
 
-#: src/cmdline/cmdline_show.cc:423 src/cmdline/cmdline_why.cc:198
+#: src/cmdline/cmdline_show.cc:423 src/cmdline/cmdline_why.cc:261
 msgid "Recommends"
 msgstr "Συνιστά"
 
-#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:201
+#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:264
 msgid "Suggests"
 msgstr "Προτείνει"
 
@@ -1907,11 +1919,6 @@ msgstr "Αντικαθιστά"
 #: src/cmdline/cmdline_show.cc:433
 msgid "Obsoletes"
 msgstr "Αχρηστεύει"
-
-#: src/cmdline/cmdline_show.cc:435 src/cmdline/cmdline_why.cc:129
-#: src/generic/apt/matchers.cc:2434
-msgid "Provides"
-msgstr "Παρέχει"
 
 #: src/cmdline/cmdline_show.cc:439 src/pkg_info_screen.cc:101
 msgid "Description: "
@@ -1932,12 +1939,12 @@ msgstr "Αδύνατος ο εντοπισμός του πακέτου %s"
 msgid "Unable to parse pattern %s"
 msgstr "Αδύνατο το parse του προτύπου %s"
 
-#: src/cmdline/cmdline_simulate.cc:39
+#: src/cmdline/cmdline_simulate.cc:41
 #, c-format
 msgid "Would download/install/remove packages.\n"
 msgstr "Θα κατεβούν/εγκατασταθούν/αφαιρεθούν πακέτα.\n"
 
-#: src/cmdline/cmdline_simulate.cc:50
+#: src/cmdline/cmdline_simulate.cc:52
 msgid "Internal Error, Ordering didn't finish"
 msgstr "Εσωτερικό Σφάλμα, Η ταξινόμηση δεν τελείωσε"
 
@@ -1951,7 +1958,7 @@ msgstr "Διαγράφονται τα απαρχαιωμένα μεταφορτ�
 msgid "E: The update command takes no arguments\n"
 msgstr "E: Η εντολή update δεν παίρνει ορίσματα\n"
 
-#: src/cmdline/cmdline_upgrade.cc:49
+#: src/cmdline/cmdline_upgrade.cc:50
 #, fuzzy, c-format
 msgid "E: The %s command takes no arguments\n"
 msgstr "E: Η εντολή update δεν παίρνει ορίσματα\n"
@@ -2041,141 +2048,141 @@ msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_why.cc:189
+#: src/cmdline/cmdline_why.cc:252
 #, fuzzy
 msgid "dep_level"
 msgstr "διαγραφή"
 
-#: src/cmdline/cmdline_why.cc:195
+#: src/cmdline/cmdline_why.cc:258
 #, fuzzy
 msgid "DependsOnly"
 msgstr "Εξαρτάται"
 
-#: src/cmdline/cmdline_why.cc:209
+#: src/cmdline/cmdline_why.cc:272
 msgid "version_selection"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:214
+#: src/cmdline/cmdline_why.cc:277
 msgid "Current"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:217
+#: src/cmdline/cmdline_why.cc:280
 #, fuzzy
 msgid "Candidate"
 msgstr "ΕγκΥποψ"
 
-#: src/cmdline/cmdline_why.cc:220 src/generic/apt/matchers.cc:1595
+#: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
 msgid "Install"
 msgstr "Εγκατάσταση"
 
-#: src/cmdline/cmdline_why.cc:228
+#: src/cmdline/cmdline_why.cc:291
 msgid "allow_choices"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:231
+#: src/cmdline/cmdline_why.cc:294
 msgid "true"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:233
+#: src/cmdline/cmdline_why.cc:296
 #, fuzzy
 msgid "false"
 msgstr "Κλείσιμο"
 
-#: src/cmdline/cmdline_why.cc:287
+#: src/cmdline/cmdline_why.cc:350
 #, fuzzy, c-format
 msgid "Install(%s)"
 msgstr "Εγκατάσταση"
 
-#: src/cmdline/cmdline_why.cc:289
+#: src/cmdline/cmdline_why.cc:352
 #, fuzzy, c-format
 msgid "Remove(%s)"
 msgstr "Αφαίρεση"
 
-#: src/cmdline/cmdline_why.cc:291
+#: src/cmdline/cmdline_why.cc:354
 #, fuzzy, c-format
 msgid "Install(%s provides %s)"
 msgstr "Εγκατάσταση %s %s (%s)"
 
-#: src/cmdline/cmdline_why.cc:295
+#: src/cmdline/cmdline_why.cc:358
 #, fuzzy, c-format
 msgid "Remove(%s provides %s)"
 msgstr "Αφαίρεση του %F [%s (%s)]"
 
-#: src/cmdline/cmdline_why.cc:351
+#: src/cmdline/cmdline_why.cc:414
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:361
+#: src/cmdline/cmdline_why.cc:424
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:371
+#: src/cmdline/cmdline_why.cc:434
 msgid "    ++   --> skipping conflict\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:379
+#: src/cmdline/cmdline_why.cc:442
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:386
+#: src/cmdline/cmdline_why.cc:449
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:415
+#: src/cmdline/cmdline_why.cc:478
 msgid "    ++   --> ENQUEUING\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:422
+#: src/cmdline/cmdline_why.cc:485
 msgid "    ++   --> skipping, version check failed\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:440
+#: src/cmdline/cmdline_why.cc:503
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:572
+#: src/cmdline/cmdline_why.cc:631
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:754
+#: src/cmdline/cmdline_why.cc:842
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:766
+#: src/cmdline/cmdline_why.cc:854
 #, c-format
 msgid "The package \"%s\" is a starting point of the search.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:825
+#: src/cmdline/cmdline_why.cc:913
 #, c-format
 msgid "No justification for removing %s could be constructed.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:827
+#: src/cmdline/cmdline_why.cc:915
 #, c-format
 msgid "No justification for %s could be constructed.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:872 src/cmdline/cmdline_why.cc:898
-#: src/cmdline/cmdline_why.cc:960
+#: src/cmdline/cmdline_why.cc:960 src/cmdline/cmdline_why.cc:986
+#: src/cmdline/cmdline_why.cc:1048
 #, fuzzy, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Δεν βρέθηκε πακέτο με όνομα \"%s\""
 
-#: src/cmdline/cmdline_why.cc:906
+#: src/cmdline/cmdline_why.cc:994
 #, fuzzy
 msgid "Unable to parse some match patterns."
 msgstr "Αδύνατο το parse του προτύπου %s"
 
-#: src/cmdline/cmdline_why.cc:933
+#: src/cmdline/cmdline_why.cc:1021
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:982
+#: src/cmdline/cmdline_why.cc:1070
 #, fuzzy, c-format
 msgid "The package \"%s\" is manually installed.\n"
 msgstr "'&m' επισήμανση πακέτων σαν χειροκίνητα εγκατεστημμένων"
@@ -2196,28 +2203,6 @@ msgstr "Ετικέτες"
 #, fuzzy
 msgid "User Tags"
 msgstr "Ετικέτες"
-
-#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Παρακαλώ εισάγετε το δίσκο με ετικέτα \"%s\" στη μονάδα CD-ROM \"%s\"."
-
-#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Επιτυχία "
-
-#: src/download_bar.cc:83
-msgid "Downloading "
-msgstr "Μεταφόρτωση του "
-
-#: src/download_bar.cc:94
-msgid "Got "
-msgstr "Μεταφορτώθηκε το "
-
-#: src/download_bar.cc:144
-#, fuzzy
-msgid "Downloading..."
-msgstr "Μεταφόρτωση..."
 
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
@@ -2243,20 +2228,19 @@ msgstr "Μεταφορτώθηκαν %sB σε %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nΜερικά πακέτα δεν κατέβηκαν επιτυχώς."
 
-#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
+#: src/download_list.cc:98 src/download_list.cc:347
 msgid "Continue"
 msgstr "Συνέχεια"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
-#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Ακύρωση"
 
-#: src/download_list.cc:216 src/download_screen.cc:209
+#: src/download_list.cc:216
 msgid "Total Progress: "
 msgstr "Συνολική Πρόοδος: "
 
-#: src/download_list.cc:244 src/download_screen.cc:224
+#: src/download_list.cc:244
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, απομένουν %s)"
@@ -2276,7 +2260,12 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "Μεταφόρτωση..."
 
-#: src/download_list.cc:349 src/download_screen.cc:73
+#: src/download_list.cc:342
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Παρακαλώ εισάγετε το δίσκο με ετικέτα \"%s\" στη μονάδα CD-ROM \"%s\"."
+
+#: src/download_list.cc:349
 msgid "Abort"
 msgstr "Εγκατάλειψη"
 
@@ -2287,11 +2276,6 @@ msgstr "[ΑΓΝΟΟΥΝΤΑΙ]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[ΣΦΑΛΜΑ]"
-
-#: src/download_screen.cc:188
-#, c-format
-msgid "Downloaded %sB in %ss (%sB/s)."
-msgstr "Εγινε μεταφόρτωση %sB σε %ss (%sB/s)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2307,6 +2291,10 @@ msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "Δεν μπόρεσα να βρω τον προσωπικό σας κατάλογο, σώζω στο αρχείο /tmp/"
 "function_pkgs!"
+
+#: src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Επιτυχία "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2938,10 +2926,6 @@ msgstr "Αδύνατη η διαγραφή του καταλόγου \"%s\""
 msgid "Unknown error"
 msgstr "Αγνωστο σφάλμα"
 
-#: src/generic/util/threads.cc:32
-msgid "Not enough resources to create thread"
-msgstr "Ανεπαρκείς πηγές για την δημιουργία νήματος"
-
 #: src/generic/util/util.cc:273
 #, c-format
 msgid "Unable to stat \"%s\""
@@ -3511,63 +3495,63 @@ msgstr "-i             Εκτέλεση μιας εγκατάστασης κατ
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  Αυτό το APT έχει Δυνάμεις ΥπερΑγελάδας.\n"
 
-#: src/main.cc:359
+#: src/main.cc:361
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "Περίμενα έναν αριθμό μετά το -q=\n"
 
-#: src/main.cc:368
+#: src/main.cc:370
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "Περίμενα έναν αριθμό μετά το -q=, έλαβα %s\n"
 
-#: src/main.cc:392
+#: src/main.cc:394
 #, fuzzy, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o απαιτεί μια παράμετρο της μορφής key=value, έλαβε %s"
 
-#: src/main.cc:481
+#: src/main.cc:486
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr ""
 
-#: src/main.cc:509 src/main.cc:518
+#: src/main.cc:514 src/main.cc:523
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "ΠΑΡΑΞΕΝΟ: ελήφθη άγνωστος κώδικας παράμετρου\n"
 
-#: src/main.cc:535
+#: src/main.cc:540
 msgid "Only one of -u and -i may be specified\n"
 msgstr "Μόνο ένα από το -u και i μπορούν να οριστούν\n"
 
-#: src/main.cc:543
+#: src/main.cc:548
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
 "το -u και -i δεν μπορεί να οριστούν στη λειτουργία γραμμής εντολών(π.χ. με "
 "το 'install')"
 
-#: src/main.cc:564
+#: src/main.cc:569
 msgid "-u and -i may not be specified with a command"
 msgstr "το -u και -i δεν μπορούν να οριστούν στην ίδια εντολή"
 
-#: src/main.cc:623
+#: src/main.cc:629
 #, c-format
 msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
 "for %s, which always uses the safe resolver.\n"
 msgstr ""
 
-#: src/main.cc:678
+#: src/main.cc:685
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Αγνωστη εντολή \"%s\"\n"
 
-#: src/main.cc:690 src/main.cc:739
+#: src/main.cc:697 src/main.cc:746
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Uncaught exception: %s\n"
 
-#: src/main.cc:694 src/main.cc:743
+#: src/main.cc:701 src/main.cc:750
 #, fuzzy, c-format
 msgid ""
 "Backtrace:\n"
@@ -3653,8 +3637,6 @@ msgid "Number of mines: "
 msgstr "Αριθμός ναρκών: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
-#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
-#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Εντάξει"
 
@@ -5839,11 +5821,11 @@ msgstr ""
 "%ls: Μενού %ls: Βοήθεια %ls: Έξοδος %ls: Ενημέρωση %ls:Κατέβασμα/Εγκατάσταση/"
 "Αφαίρεση πακέτων"
 
-#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
+#: src/ui.cc:2930
 msgid "yes_key"
 msgstr "Ν"
 
-#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
+#: src/ui.cc:2931
 msgid "no_key"
 msgstr "Ο"
 
@@ -5868,82 +5850,73 @@ msgstr "Μεταφόρτωση Αρχείου Αλλαγών"
 msgid "Download Changelog"
 msgstr "Κατέβασμα Αρχείου Αλλαγών"
 
-#: src/vscreen/config/column_definition.cc:105
-#: src/vscreen/config/column_definition.cc:123
-msgid "Formatting marker with missing format code"
-msgstr "Διαμόρφωση του marker με απωλεσθέντα κωδικό διαμόρφωσης"
+#~ msgid "Downloading "
+#~ msgstr "Μεταφόρτωση του "
 
-#: src/vscreen/config/column_definition.cc:132
-#: src/vscreen/config/column_definition.cc:178
-#, c-format
-msgid "Bad number in format string: '%ls'"
-msgstr "Λάθος αριθμός στην συμβολοσειρά διαμόρφωσης: '%ls'"
+#~ msgid "Got "
+#~ msgstr "Μεταφορτώθηκε το "
 
-#: src/vscreen/config/column_definition.cc:160
-msgid "Missing parameter number in format string"
-msgstr "Απουσιάζει αριθμός παράμετρου στην συμβολοσειρά διαμόρφωσης"
+#, fuzzy
+#~ msgid "Downloading..."
+#~ msgstr "Μεταφόρτωση..."
 
-#: src/vscreen/config/column_definition.cc:185
-#, c-format
-msgid "Parameter numbers must be 1 or greater, not %ld"
-msgstr ""
-"Οι αριθμοί της παραμέτρου πρέπει να είναι ίσοι ή μεγαλύτεροι από 1, όχι %ld"
+#~ msgid "Downloaded %sB in %ss (%sB/s)."
+#~ msgstr "Εγινε μεταφόρτωση %sB σε %ss (%sB/s)."
 
-#: src/vscreen/config/column_definition.cc:211
-#, c-format
-msgid "Unknown formatting code '%lc'"
-msgstr "Άγνωστος κωδικός διαμόρφωσης: '%lc'"
+#~ msgid "Not enough resources to create thread"
+#~ msgstr "Ανεπαρκείς πηγές για την δημιουργία νήματος"
 
-#: src/vscreen/config/column_definition.cc:261
-msgid "Bad format parameter"
-msgstr "Λανθασμένη παράμετρος διαμόρφωσης"
+#~ msgid "Formatting marker with missing format code"
+#~ msgstr "Διαμόρφωση του marker με απωλεσθέντα κωδικό διαμόρφωσης"
 
-#: src/vscreen/config/keybindings.cc:333
-#, c-format
-msgid "Cannot parse key description: %ls"
-msgstr "Αδυναμία parse της περιγραφής κλειδιού: %ls"
+#~ msgid "Bad number in format string: '%ls'"
+#~ msgstr "Λάθος αριθμός στην συμβολοσειρά διαμόρφωσης: '%ls'"
 
-#: src/vscreen/config/keybindings.cc:343
-msgid "Invalid null keybinding"
-msgstr "Μη έγκυρη κενή δέσμευση απόδοσης πλήκτρων"
+#~ msgid "Missing parameter number in format string"
+#~ msgstr "Απουσιάζει αριθμός παράμετρου στην συμβολοσειρά διαμόρφωσης"
 
-#: src/vscreen/config/keybindings.cc:351
-msgid "Sorry, control modifiers may not be used with unprintable characters"
-msgstr ""
-"Λυπάμαι, τροποποιητές ελέγχου δεν θα πρέπει να χρησιμοποιούνται με μη "
-"εκτυπώσιμους χαρακτήρες"
+#~ msgid "Parameter numbers must be 1 or greater, not %ld"
+#~ msgstr ""
+#~ "Οι αριθμοί της παραμέτρου πρέπει να είναι ίσοι ή μεγαλύτεροι από 1, όχι %"
+#~ "ld"
 
-#: src/vscreen/vscreen.cc:125
-#, c-format
-msgid "Ouch!  Got SIGTERM, dying..\n"
-msgstr "Ωχ!  Έλαβα το σήμα SIGTERM, έφυγα..\n"
+#~ msgid "Unknown formatting code '%lc'"
+#~ msgstr "Άγνωστος κωδικός διαμόρφωσης: '%lc'"
 
-#: src/vscreen/vscreen.cc:128
-#, c-format
-msgid "Ouch!  Got SIGSEGV, dying..\n"
-msgstr "Ωχ!  Έλαβα το σήμα SIGSEGV, έφυγα..\n"
+#~ msgid "Bad format parameter"
+#~ msgstr "Λανθασμένη παράμετρος διαμόρφωσης"
 
-#: src/vscreen/vscreen.cc:131
-#, c-format
-msgid "Ouch!  Got SIGABRT, dying..\n"
-msgstr "Ωχ!  Έλαβα το σήμα SIGABRT, έφυγα..\n"
+#~ msgid "Cannot parse key description: %ls"
+#~ msgstr "Αδυναμία parse της περιγραφής κλειδιού: %ls"
 
-#: src/vscreen/vscreen.cc:134
-#, c-format
-msgid "Ouch!  Got SIGQUIT, dying..\n"
-msgstr "Ωχ!  Έλαβα το σήμα SIGQUIT, έφυγα..\n"
+#~ msgid "Invalid null keybinding"
+#~ msgstr "Μη έγκυρη κενή δέσμευση απόδοσης πλήκτρων"
 
-#: src/vscreen/vs_pager.cc:439
-#, c-format
-msgid ""
-"Unable to load filename: the string %ls has no multibyte representation."
-msgstr ""
-"Αδυναμία φόρτωσης ονόματος αρχείου: η συμβολοσειρά %ls δεν έχει αναπαράσταση "
-"multibyte."
+#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
+#~ msgstr ""
+#~ "Λυπάμαι, τροποποιητές ελέγχου δεν θα πρέπει να χρησιμοποιούνται με μη "
+#~ "εκτυπώσιμους χαρακτήρες"
 
-#: src/vscreen/vs_tree.cc:942
-msgid "TOP LEVEL"
-msgstr "ΚΟΡΥΦΑΙΟ ΕΠΙΠΕΔΟ"
+#~ msgid "Ouch!  Got SIGTERM, dying..\n"
+#~ msgstr "Ωχ!  Έλαβα το σήμα SIGTERM, έφυγα..\n"
+
+#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
+#~ msgstr "Ωχ!  Έλαβα το σήμα SIGSEGV, έφυγα..\n"
+
+#~ msgid "Ouch!  Got SIGABRT, dying..\n"
+#~ msgstr "Ωχ!  Έλαβα το σήμα SIGABRT, έφυγα..\n"
+
+#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
+#~ msgstr "Ωχ!  Έλαβα το σήμα SIGQUIT, έφυγα..\n"
+
+#~ msgid ""
+#~ "Unable to load filename: the string %ls has no multibyte representation."
+#~ msgstr ""
+#~ "Αδυναμία φόρτωσης ονόματος αρχείου: η συμβολοσειρά %ls δεν έχει "
+#~ "αναπαράσταση multibyte."
+
+#~ msgid "TOP LEVEL"
+#~ msgstr "ΚΟΡΥΦΑΙΟ ΕΠΙΠΕΔΟ"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""
