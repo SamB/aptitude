@@ -254,7 +254,7 @@ static void init_vocabulary()
 
   if(!F.IsOpen())
     {
-      _error->Warning(_("Unable to load debtags vocabulary, perhaps debtags is not installed?"));
+      //_error->Warning(_("Unable to load debtags vocabulary, perhaps debtags is not installed?"));
       // Fail silently; debtags need not be installed.
       return;
     }
