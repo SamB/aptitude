@@ -105,7 +105,26 @@ static string reason_string_list(set<reason> &reasons)
 
 namespace
 {
-  std::string roots_string(const pkgCache::PkgIterator &pkg)
+  // Sort action vectors by the name of the package in the first
+  // action.
+  struct compare_first_action
+  {
+    typedef aptitude::why::action action;
+    bool operator()(const std::vector<action> &reason1,
+		    const std::vector<action> &reason2)
+    {
+      if(reason1.empty())
+	return !reason2.empty();
+      else if(reason2.empty())
+	return false;
+      else
+	return strcmp(reason1.front().get_dep().ParentPkg().Name(),
+		      reason2.front().get_dep().ParentPkg().Name());
+    }
+  };
+
+  std::string roots_string(const pkgCache::PkgIterator &pkg,
+			   int verbose)
   {
     using namespace aptitude::why;
     pkgDepCache::StateCache &state((*apt_cache_file)[pkg]);
@@ -150,45 +169,136 @@ namespace
     if(reasons.size() == 0)
       return "";
 
-    std::set<std::string> root_names;
-    for(std::vector<std::vector<action> >::const_iterator it =
-	  reasons.begin(); it != reasons.end(); ++it)
+    if(verbose == 0)
       {
-	// Shouldn't happen, but deal anyway.
-	if(it->empty())
-	  continue; // Generate an internal error here?
+	std::set<std::string> root_names;
+	for(std::vector<std::vector<action> >::const_iterator it =
+	      reasons.begin(); it != reasons.end(); ++it)
+	  {
+	    // Shouldn't happen, but deal anyway.
+	    if(it->empty())
+	      continue; // Generate an internal error here?
 
-	const action &act(it->front());
+	    const action &act(it->front());
 
-	eassert(!act.get_dep().end());
+	    eassert(!act.get_dep().end());
 
-	if(!act.get_dep().end())
-	  root_names.insert(act.get_dep().ParentPkg().Name());
+	    if(!act.get_dep().end())
+	      root_names.insert(act.get_dep().ParentPkg().Name());
+	  }
+
+	if(root_names.empty())
+	  return "";
+
+	std::string rval;
+
+	bool first = true;
+	for(std::set<std::string>::const_iterator it = root_names.begin();
+	    it != root_names.end(); ++it)
+	  {
+	    if(first)
+	      first = false;
+	    else
+	      rval += ", ";
+
+	    rval += *it;
+	  }
+
+	// ForTranslators: %s is replaced with a comma-delimited list
+	// of package names.
+	return ssprintf(ngettext("(for %s)",
+				 "(for %s)",
+				 root_names.size()),
+			rval.c_str());
       }
-
-    if(root_names.empty())
-      return "";
-
-    std::string rval;
-
-    bool first = true;
-    for(std::set<std::string>::const_iterator it = root_names.begin();
-	it != root_names.end(); ++it)
+    else
       {
-	if(first)
-	  first = false;
-	else
-	  rval += ", ";
+	// If we're being verbose, display whole chains leading to
+	// each target.
 
-	rval += *it;
+	if(reasons.empty())
+	  return "";
+
+	std::string rval;
+	bool first = true;
+	std::sort(reasons.begin(), reasons.end(), compare_first_action());
+	rval += "(";
+	for(std::vector<std::vector<action> >::const_iterator it =
+	      reasons.begin(); it != reasons.end(); ++it)
+	
+	  {
+	    if(it->empty())
+	      continue;
+
+	    if(first)
+	      first = false;
+	    else
+	      rval += ", ";
+
+	    bool first_action = true;
+	    for(std::vector<action>::const_iterator aIt = it->begin();
+		aIt != it->end(); ++aIt)
+	      {
+		if(!first_action)
+		  rval += " ";
+
+		if(!aIt->get_dep().end())
+		  {
+		    const pkgCache::DepIterator &dep(aIt->get_dep());
+
+		    if(first_action)
+		      {
+			rval += const_cast<pkgCache::DepIterator &>(dep).ParentPkg().Name();
+			rval += " ";
+		      }
+
+		    std::string dep_type = const_cast<pkgCache::DepIterator &>(dep).DepType();
+		    rval += cw::util::transcode(cw::util::transcode(dep_type).substr(0, 1));
+		    rval += ": ";
+
+		    rval += const_cast<pkgCache::DepIterator &>(dep).TargetPkg().Name();
+
+		    // Display versioned deps if we're really being
+		    // verbose.
+		    if(verbose > 1 && ((dep->CompareOp & ~pkgCache::Dep::Or) != pkgCache::Dep::NoOp))
+		      {
+			rval += " (";
+			rval += const_cast<pkgCache::DepIterator &>(dep).CompType();
+			rval += " ";
+			rval += dep.TargetVer();
+			rval += ")";
+		      }
+		  }
+		else
+		  {
+		    const pkgCache::PrvIterator &prv(aIt->get_prv());
+		    eassert(!prv.end());
+
+		    if(first_action)
+		      {
+			rval += const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name();
+		      }
+
+		    rval += cw::util::transcode(cw::util::transcode(_("Provides")).substr(0, 1));
+		    rval += "<- ";
+
+		    rval += const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name();
+		    if(verbose > 1 && prv.ProvideVersion() != NULL)
+		      {
+			rval += " (";
+			rval += prv.ProvideVersion();
+			rval += ")";
+		      }
+		  }
+
+		first_action = false;
+	      }
+
+	    rval += ")";
+	  }
+
+	return rval;
       }
-
-    // ForTranslators: %s is replaced with a comma-delimited list
-    // of package names.
-    return ssprintf(ngettext("(for %s)",
-			     "(for %s)",
-			     root_names.size()),
-		    rval.c_str());
   }
 }
 
@@ -199,6 +309,7 @@ namespace
  *  removed, or held.
  *
  *  \param items the set of items to examine
+ *  \param verbose controls various aspects of how verbose the list is.
  *  \param showvers if \b true, display version numbers as appropriate
  *  \param showdeps if \b true, display the packages that depend on
  *                  automatically installed packages.
@@ -210,6 +321,7 @@ namespace
  *                  installed package.
  */
 static void cmdline_show_instinfo(pkgvector &items,
+				  int verbose,
 				  bool showvers,
 				  bool showdeps,
 				  bool showsize,
@@ -331,7 +443,7 @@ static void cmdline_show_instinfo(pkgvector &items,
 
       if(showwhy)
 	{
-	  std::string whystring(roots_string(*i));
+	  std::string whystring(roots_string(*i, verbose));
 	  if(!whystring.empty())
 	    {
 	      s += " ";
@@ -717,6 +829,7 @@ static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 
 	  printf("%s\n", _(cmdline_action_descriptions[i]));
 	  cmdline_show_instinfo(lists[i],
+				verbose,
 				showvers, showdeps, showsize,
 				i == pkg_remove ||
 				i == pkg_auto_remove ||
@@ -728,13 +841,13 @@ static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
   if(quiet == 0 && !recommended.empty())
     {
       printf(_("The following packages are RECOMMENDED but will NOT be installed:\n"));
-      cmdline_show_instinfo(recommended, showvers, showdeps, showsize, false, showwhy);
+      cmdline_show_instinfo(recommended, verbose, showvers, showdeps, showsize, false, showwhy);
     }
 
   if(verbose>0 && !suggested.empty())
     {
       printf(_("The following packages are SUGGESTED but will NOT be installed:\n"));
-      cmdline_show_instinfo(suggested, showvers, showdeps, showsize, false, showwhy);
+      cmdline_show_instinfo(suggested, verbose, showvers, showdeps, showsize, false, showwhy);
     }
 
   if(all_empty)
