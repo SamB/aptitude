@@ -14,17 +14,18 @@ MANPAGE_LOCALES=gl it pl
 
 TLMANPAGES = $(wildcard $(srcdir)/aptitude.??.8)
 TLHELPTXTS = help.txt $(wildcard $(srcdir)/help-??.txt) $(wildcard $(srcdir)/help-??_??.txt)
+TLDEFAULTS = $(wildcard aptitude-defaults.??)
 EXTRA_DIST = config.rpath  ChangeLog.SVN Doxyfile.in FAQ README.i18n README.SMART-POINTERS README.THREADS README.VSCREEN aptitude-hackers-guide.txt aclocal.m4 \
 	function_groups function_pkgs aptitude-defaults \
 	section-descriptions \
-	aptitude-defaults.de \
+	$(TLDEFAULTS) \
 	$(TLMANPAGES) $(TLHELPTXTS)
 
 pkgdatadir=$(datadir)/$(PACKAGE)
 
 pkgdata_DATA = $(TLHELPTXTS) COPYING NEWS FAQ \
 	function_groups function_pkgs aptitude-defaults section-descriptions \
-	aptitude-defaults.de
+	$(TLDEFAULTS)
 
 install-data-local:
 	[ -d $(DESTDIR)$(STATEDIR) ] || $(mkinstalldirs) $(DESTDIR)$(STATEDIR)
