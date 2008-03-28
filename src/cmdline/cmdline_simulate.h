@@ -22,6 +22,7 @@ class pkgPolicy;
  *  \param showvers \b true to show version information in the preview.
  *  \param showdeps \b true to show dependency information in the preview.
  *  \param showsize \b true to show size information in the preview.
+ *  \param showwhy  \b true to show root causes in the preview.
  *  \param verbose the current verbosity level
  *  \param assume_yes if \b true, assume the user entered "yes"
  *                    at the prompt.
@@ -36,7 +37,8 @@ class pkgPolicy;
 int cmdline_simulate(bool as_upgrade,
 		     pkgset &to_install, pkgset &to_hold, pkgset &to_remove,
 		     pkgset &to_purge,
-		     bool showvers, bool showdeps, bool showsize,
+		     bool showvers, bool showdeps,
+		     bool showsize, bool showwhy,
 		     bool always_prompt, int verbose,
 		     bool assume_yes, bool force_no_change,
 		     pkgPolicy &policy, bool arch_only);

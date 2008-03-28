@@ -215,6 +215,7 @@ option opts[]={
   {"verbose", 0, NULL, 'v'},
   {"show-versions", 0, NULL, 'V'},
   {"show-deps", 0, NULL, 'D'},
+  {"show-why", 0, NULL, 'W'},
   {"prompt", 0, NULL, 'P'},
   {"sort", 1, NULL, 'O'},
   {"target-release", 1, NULL, 't'},
@@ -283,6 +284,7 @@ int main(int argc, char *argv[])
   bool showvers=aptcfg->FindB(PACKAGE "::CmdLine::Show-Versions", false);
   bool showdeps=aptcfg->FindB(PACKAGE "::CmdLine::Show-Deps", false);
   bool showsize=aptcfg->FindB(PACKAGE "::CmdLine::Show-Size-Changes", false);
+  bool showwhy = aptcfg->FindB(PACKAGE "::CmdLine::Show-Why", false);
   bool visual_preview=aptcfg->FindB(PACKAGE "::CmdLine::Visual-Preview", false);
   bool always_prompt=aptcfg->FindB(PACKAGE "::CmdLine::Always-Prompt", false);
   int verbose=aptcfg->FindI(PACKAGE "::CmdLine::Verbose", 0);
@@ -409,6 +411,9 @@ int main(int argc, char *argv[])
 	  break;
 	case 'Z': // ew
 	  showsize=true;
+	  break;
+	case 'W':
+	  showwhy = true;
 	  break;
 	case 'P':
 	  always_prompt=true;
@@ -608,7 +613,8 @@ int main(int argc, char *argv[])
 	      return cmdline_do_action(argc-optind, argv+optind,
 				       status_fname,
 				       simulate, assume_yes, download_only,
-				       fix_broken, showvers, showdeps, showsize,
+				       fix_broken, showvers, showdeps,
+				       showsize, showwhy,
 				       visual_preview, always_prompt,
 				       always_use_safe_resolver,
 				       safe_resolver_no_new_installs, safe_resolver_no_new_upgrades,
@@ -629,7 +635,8 @@ int main(int argc, char *argv[])
 				     status_fname, simulate,
 				     safe_upgrade_no_new_installs,
 				     assume_yes, download_only,
-				     showvers, showdeps, showsize,
+				     showvers, showdeps,
+				     showsize, showwhy,
 				     user_tags,
 				     visual_preview, always_prompt,
 				     arch_only, queue_only, verbose);

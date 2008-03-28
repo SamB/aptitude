@@ -33,7 +33,8 @@ using namespace std;
 int cmdline_do_action(int argc, char *argv[],
 		      const char *status_fname, bool simulate,
 		      bool assume_yes, bool download_only, bool fix_broken,
-		      bool showvers, bool showdeps, bool showsize,
+		      bool showvers, bool showdeps,
+		      bool showsize, bool showwhy,
 		      bool visual_preview, bool always_prompt,
 		      bool safe_resolver,
 		      bool no_new_installs, bool no_new_upgrades,
@@ -273,7 +274,8 @@ int cmdline_do_action(int argc, char *argv[],
     }
   else if(simulate)
     return cmdline_simulate(dist_upgrade, to_install, to_hold, to_remove, to_purge,
-			    showvers, showdeps, showsize,
+			    showvers, showdeps,
+			    showsize, showwhy,
 			    always_prompt, verbose, assume_yes,
 			    !fix_broken,
 			    policy, arch_only);
@@ -293,7 +295,7 @@ int cmdline_do_action(int argc, char *argv[],
     {
       if(!cmdline_do_prompt(dist_upgrade,
 			    to_install, to_hold, to_remove, to_purge,
-			    showvers, showdeps, showsize,
+			    showvers, showdeps, showsize, showwhy,
 			    always_prompt, verbose, assume_yes,
 			    !fix_broken,
 			    policy, arch_only))

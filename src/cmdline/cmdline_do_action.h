@@ -10,7 +10,8 @@
 int cmdline_do_action(int argc, char *argv[],
 		      const char *status_fname, bool simulate,
 		      bool assume_yes, bool download_only, bool fix_broken,
-		      bool showvers, bool showdeps, bool showsize,
+		      bool showvers, bool showdeps,
+		      bool showsize, bool showwhy,
 		      bool visual_preview, bool always_prompt,
 		      bool safe_resolver,
 		      // Two options for the safe resolver, if

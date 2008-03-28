@@ -9508,6 +9508,23 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configCmdLine-Show-Why'>
+	      <seg><literal>Aptitude::CmdLine::Show-Why</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		In command-line mode, if this option is
+		<literal>true</literal>, &aptitude; will display the
+		manually installed packages that require each
+		automatically installed package, or the manually
+		installed packages that cause a conflict with each
+		automatically removed package.  This is equivalent to
+		the <literal>-W</literal> command-line option and
+		displays the same information you can access via
+		<literal>aptitude why</literal> or by pressing
+		<keycap>i</keycap> in a package list.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configSafe-Resolver-No-New-Installs'>
 	      <seg><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></seg>
 	      <seg><literal>false</literal></seg>

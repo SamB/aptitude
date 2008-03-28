@@ -19,14 +19,16 @@
 int cmdline_simulate(bool as_upgrade,
 		     pkgset &to_install, pkgset &to_hold, pkgset &to_remove,
 		     pkgset &to_purge,
-		     bool showvers, bool showdeps, bool showsize,
+		     bool showvers, bool showdeps,
+		     bool showsize, bool showwhy,
 		     bool always_prompt, int verbose,
 		     bool assume_yes, bool force_no_change,
 		     pkgPolicy &policy, bool arch_only)
 {
   if(!cmdline_do_prompt(as_upgrade,
 			to_install, to_hold, to_remove, to_purge,
-			showvers, showdeps, showsize, always_prompt, verbose,
+			showvers, showdeps, showsize, showwhy,
+			always_prompt, verbose,
 			assume_yes, force_no_change,
 			policy, arch_only))
     {

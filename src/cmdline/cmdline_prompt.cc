@@ -18,6 +18,7 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_signal_log.h>
 #include <generic/apt/infer_reason.h>
+#include <generic/apt/matchers.h>
 
 #include <generic/util/util.h>
 
@@ -102,6 +103,205 @@ static string reason_string_list(set<reason> &reasons)
   return s;
 }
 
+namespace
+{
+  // Sort action vectors by the name of the package in the first
+  // action.
+  struct compare_first_action
+  {
+    typedef aptitude::why::action action;
+    bool operator()(const std::vector<action> &reason1,
+		    const std::vector<action> &reason2)
+    {
+      if(reason1.empty())
+	return !reason2.empty();
+      else if(reason2.empty())
+	return false;
+      else
+	return strcmp(reason1.front().get_dep().ParentPkg().Name(),
+		      reason2.front().get_dep().ParentPkg().Name());
+    }
+  };
+
+  std::string roots_string(const pkgCache::PkgIterator &pkg,
+			   int verbose)
+  {
+    using namespace aptitude::why;
+    pkgDepCache::StateCache &state((*apt_cache_file)[pkg]);
+
+    // Don't show anything for packages that are kept back or are
+    // manually installed.
+    if(state.Keep() ||
+       (state.Install() && ((state.Flags & pkgCache::Flag::Auto) == 0)))
+      return "";
+
+    target t(state.Install() ? target::Install(pkg) : target::Remove(pkg));
+    std::vector<aptitude::matching::pkg_matcher *> leaves;
+    leaves.push_back(aptitude::matching::parse_pattern("?not(?automatic)"));
+
+    std::vector<std::vector<action> > reasons;
+
+    std::vector<search_params> params;
+    params.push_back(search_params(search_params::Install,
+				   search_params::DependsOnly,
+				   false));
+    params.push_back(search_params(search_params::Install,
+				   search_params::DependsOnly,
+				   true));
+    params.push_back(search_params(search_params::Install,
+				   search_params::Recommends,
+				   false));
+    params.push_back(search_params(search_params::Install,
+				   search_params::Recommends,
+				   true));
+
+    for(std::vector<search_params>::const_iterator it = params.begin();
+	it != params.end(); ++it)
+      {
+	if(find_justification(t,
+			      leaves,
+			      *it,
+			      true,
+			      reasons))
+	  break;
+      }
+
+    if(reasons.size() == 0)
+      return "";
+
+    if(verbose == 0)
+      {
+	std::set<std::string> root_names;
+	for(std::vector<std::vector<action> >::const_iterator it =
+	      reasons.begin(); it != reasons.end(); ++it)
+	  {
+	    // Shouldn't happen, but deal anyway.
+	    if(it->empty())
+	      continue; // Generate an internal error here?
+
+	    const action &act(it->front());
+
+	    eassert(!act.get_dep().end());
+
+	    if(!act.get_dep().end())
+	      root_names.insert(act.get_dep().ParentPkg().Name());
+	  }
+
+	if(root_names.empty())
+	  return "";
+
+	std::string rval;
+
+	bool first = true;
+	for(std::set<std::string>::const_iterator it = root_names.begin();
+	    it != root_names.end(); ++it)
+	  {
+	    if(first)
+	      first = false;
+	    else
+	      rval += ", ";
+
+	    rval += *it;
+	  }
+
+	// ForTranslators: %s is replaced with a comma-delimited list
+	// of package names.
+	return ssprintf(ngettext("(for %s)",
+				 "(for %s)",
+				 root_names.size()),
+			rval.c_str());
+      }
+    else
+      {
+	// If we're being verbose, display whole chains leading to
+	// each target.
+
+	if(reasons.empty())
+	  return "";
+
+	std::string rval;
+	bool first = true;
+	std::sort(reasons.begin(), reasons.end(), compare_first_action());
+	rval += "(";
+	for(std::vector<std::vector<action> >::const_iterator it =
+	      reasons.begin(); it != reasons.end(); ++it)
+	
+	  {
+	    if(it->empty())
+	      continue;
+
+	    if(first)
+	      first = false;
+	    else
+	      rval += ", ";
+
+	    bool first_action = true;
+	    for(std::vector<action>::const_iterator aIt = it->begin();
+		aIt != it->end(); ++aIt)
+	      {
+		if(!first_action)
+		  rval += " ";
+
+		if(!aIt->get_dep().end())
+		  {
+		    const pkgCache::DepIterator &dep(aIt->get_dep());
+
+		    if(first_action)
+		      {
+			rval += const_cast<pkgCache::DepIterator &>(dep).ParentPkg().Name();
+			rval += " ";
+		      }
+
+		    std::string dep_type = const_cast<pkgCache::DepIterator &>(dep).DepType();
+		    rval += cw::util::transcode(cw::util::transcode(dep_type).substr(0, 1));
+		    rval += ": ";
+
+		    rval += const_cast<pkgCache::DepIterator &>(dep).TargetPkg().Name();
+
+		    // Display versioned deps if we're really being
+		    // verbose.
+		    if(verbose > 1 && ((dep->CompareOp & ~pkgCache::Dep::Or) != pkgCache::Dep::NoOp))
+		      {
+			rval += " (";
+			rval += const_cast<pkgCache::DepIterator &>(dep).CompType();
+			rval += " ";
+			rval += dep.TargetVer();
+			rval += ")";
+		      }
+		  }
+		else
+		  {
+		    const pkgCache::PrvIterator &prv(aIt->get_prv());
+		    eassert(!prv.end());
+
+		    if(first_action)
+		      {
+			rval += const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name();
+		      }
+
+		    rval += cw::util::transcode(cw::util::transcode(_("Provides")).substr(0, 1));
+		    rval += "<- ";
+
+		    rval += const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name();
+		    if(verbose > 1 && prv.ProvideVersion() != NULL)
+		      {
+			rval += " (";
+			rval += prv.ProvideVersion();
+			rval += ")";
+		      }
+		  }
+
+		first_action = false;
+	      }
+
+	    rval += ")";
+	  }
+
+	return rval;
+      }
+  }
+}
+
 /** Prints a description of a list of packages, with annotations
  *  reflecting how or why they will be changed.
  *
@@ -109,14 +309,24 @@ static string reason_string_list(set<reason> &reasons)
  *  removed, or held.
  *
  *  \param items the set of items to examine
- *  \param showvers if true, display version numbers as appropriate
- *  \param showsize if true, display the change in each package's size
+ *  \param verbose controls various aspects of how verbose the list is.
+ *  \param showvers if \b true, display version numbers as appropriate
+ *  \param showdeps if \b true, display the packages that depend on
+ *                  automatically installed packages.
+ *  \param showsize if \b true, display the change in each package's size
+ *  \param showpurge if \b true, display flags indicating which packages
+ *                   are being purged.
+ *  \param showwhy  if \b true, infer and display the set of manually
+ *                  installed packages that depend on each automatically
+ *                  installed package.
  */
 static void cmdline_show_instinfo(pkgvector &items,
+				  int verbose,
 				  bool showvers,
 				  bool showdeps,
 				  bool showsize,
-				  bool showpurge)
+				  bool showpurge,
+				  bool showwhy)
 {
   sort(items.begin(), items.end(), pkg_byname_compare);
   strvector output;
@@ -231,7 +441,17 @@ static void cmdline_show_instinfo(pkgvector &items,
 	  s+=reason_string_list(reasons);
 	}
 
-      if(showvers || showsize || showdeps)
+      if(showwhy)
+	{
+	  std::string whystring(roots_string(*i, verbose));
+	  if(!whystring.empty())
+	    {
+	      s += " ";
+	      s += whystring;
+	    }
+	}
+
+      if(showvers || showsize || showdeps || showwhy)
 	s += ' ';
 
       output.push_back(s);
@@ -524,7 +744,8 @@ static bool prompt_trust()
  */
 static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 				 pkgset &to_hold, pkgset &to_remove,
-				 bool showvers, bool showdeps, bool showsize,
+				 bool showvers, bool showdeps,
+				 bool showsize, bool showwhy,
 				 int verbose)
 {
   const int quiet = aptcfg->FindI("Quiet", 0);
@@ -608,23 +829,25 @@ static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 
 	  printf("%s\n", _(cmdline_action_descriptions[i]));
 	  cmdline_show_instinfo(lists[i],
+				verbose,
 				showvers, showdeps, showsize,
 				i == pkg_remove ||
 				i == pkg_auto_remove ||
-				i == pkg_unused_remove);
+				i == pkg_unused_remove,
+				showwhy);
 	}
     }
 
   if(quiet == 0 && !recommended.empty())
     {
       printf(_("The following packages are RECOMMENDED but will NOT be installed:\n"));
-      cmdline_show_instinfo(recommended, showvers, showdeps, showsize, false);
+      cmdline_show_instinfo(recommended, verbose, showvers, showdeps, showsize, false, showwhy);
     }
 
   if(verbose>0 && !suggested.empty())
     {
       printf(_("The following packages are SUGGESTED but will NOT be installed:\n"));
-      cmdline_show_instinfo(suggested, showvers, showdeps, showsize, false);
+      cmdline_show_instinfo(suggested, verbose, showvers, showdeps, showsize, false, showwhy);
     }
 
   if(all_empty)
@@ -816,6 +1039,7 @@ bool cmdline_do_prompt(bool as_upgrade,
 		       bool showvers,
 		       bool showdeps,
 		       bool showsize,
+		       bool showwhy,
 		       bool always_prompt,
 		       int verbose,
 		       bool assume_yes,
@@ -841,7 +1065,7 @@ bool cmdline_do_prompt(bool as_upgrade,
       // If we're only doing what the user asked and it's OK to go
       // ahead, we can break out immediately.
       if(!cmdline_show_preview(true, to_install, to_hold, to_remove,
-			       showvers, showdeps, showsize, verbose) &&
+			       showvers, showdeps, showsize, showwhy, verbose) &&
 	 first &&
 	 !always_prompt &&
 	 (*apt_cache_file)->BrokenCount()==0)
@@ -886,7 +1110,8 @@ bool cmdline_do_prompt(bool as_upgrade,
 		  // Re-display the preview so the user can see any
 		  // changes the resolver made.
 		  cmdline_show_preview(true, to_install, to_hold, to_remove,
-				       showvers, showdeps, showsize, verbose);
+				       showvers, showdeps, showsize, showwhy,
+				       verbose);
 		}
 	    }
 	  else

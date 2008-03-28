@@ -1,6 +1,6 @@
 // tags.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -338,7 +338,16 @@ namespace aptitude
 	  initialized_reset_signal = true;
 	}
 
-      debtagsDB = new ept::debtags::Debtags;
+      try
+	{
+	  debtagsDB = new ept::debtags::Debtags;
+	}
+      catch(std::exception &ex)
+	{
+	  // If debtags failed to initialize, just leave it
+	  // uninitialized.
+	  debtagsDB = NULL;
+	}
     }
 
     const std::set<ept::debtags::Tag> get_tags(const pkgCache::PkgIterator &pkg)
@@ -347,7 +356,14 @@ namespace aptitude
 	return std::set<ept::debtags::Tag>();
 
       // TODO: handle !hasData() here.
-      return debtagsDB->getTagsOfItem(pkg.Name());
+      try
+	{
+	  return debtagsDB->getTagsOfItem(pkg.Name());
+	}
+      catch(std::exception &ex)
+	{
+	  return std::set<ept::debtags::Tag>();
+	}
     }
   }
 }
