@@ -311,7 +311,7 @@ int main(int argc, char *argv[])
     aptcfg->Set(PACKAGE "::Delete-Unused-Pattern", "");
 
   // Read the arguments:
-  while((curopt=getopt_long(argc, argv, "DVZvhS:uiF:w:sO:fdyPt:q::Rro:", opts, NULL))!=-1)
+  while((curopt=getopt_long(argc, argv, "DVZWvhS:uiF:w:sO:fdyPt:q::Rro:", opts, NULL))!=-1)
     {
       switch(curopt)
 	{
