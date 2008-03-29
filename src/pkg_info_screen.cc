@@ -26,6 +26,7 @@
 #include "pkg_info_screen.h"
 
 #include <cwidget/fragment.h>
+#include <cwidget/generic/util/ssprintf.h>
 #include <cwidget/widgets/layout_item.h>
 
 #include "dep_item.h"
@@ -157,7 +158,8 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
   setup_package_deps<pkg_subtree>(pkg, ver, revtree, sig, true);
   tree->add_child(revtree);
 
-  pkg_vertree_generic *newtree=new pkg_vertree_generic(W_("Versions"), true);
+  pkg_vertree_generic *newtree =
+    new pkg_vertree_generic(cw::util::swsprintf(W_("Versions of %s").c_str(), pkg.Name()), true);
   setup_package_versions(pkg, newtree, sig);
   tree->add_child(newtree);
 }
