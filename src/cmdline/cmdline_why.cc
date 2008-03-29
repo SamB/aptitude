@@ -954,9 +954,9 @@ cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
       success = false;
 
       if(root_is_removal)
-	return cw::fragf(_("No justification for removing %s could be constructed.\n"), root.Name());
+	return cw::fragf(_("Unable to find a reason to remove %s.\n"), root.Name());
       else
-	return cw::fragf(_("No justification for %s could be constructed.\n"), root.Name());
+	return cw::fragf(_("Unable to find a reason to install %s.\n"), root.Name());
     }
   else
     return cw::sequence_fragment(rval);
