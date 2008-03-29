@@ -33,6 +33,7 @@
   <!ENTITY package-markmanual "<menuchoice><shortcut><keycap>m</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Mark Manual</guimenuitem></menuchoice>">
   <!ENTITY package-forbid "<menuchoice><shortcut><keycap>F</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Forbid Version</guimenuitem></menuchoice>">
   <!ENTITY package-information "<menuchoice><shortcut><keycap>enter</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Information</guimenuitem></menuchoice>">
+  <!ENTITY package-cycle-information "<menuchoice><shortcut><keycap>i</keycap></shortcut><guimenu>Package</guimenu><guimenuitem>Cycle Information</guimenuitem></menuchoice>">
   <!ENTITY package-changelog "<menuchoice><shortcut><keycap>C</keycap></shortcut><guimenu>package</guimenu><guimenuitem>Changelog</guimenuitem></menuchoice>">
 
   <!ENTITY resolver-examine "<menuchoice><shortcut><keycap>e</keycap></shortcut><guimenu>Resolver</guimenu><guimenuitem>Examine Solution</guimenuitem></menuchoice>">
@@ -2313,6 +2314,22 @@ Abort.</screen>
 		      the currently selected package, such as the
 		      packages it depends upon, the packages which
 		      depend upon it, and its available versions.
+		    </entry>
+		  </row>
+
+		  <row>
+		    <entry>&package-cycle-information;</entry>
+
+		    <entry>
+		      When browsing the package list, cycles through
+		      the information that can be displayed in the
+		      information area (the lower half of the
+		      display).  The information area can display the
+		      long description of the selected package (its
+		      default behavior), a summary of the dependencies
+		      related to the package, or an analysis of which
+		      other packages require or suggest the selected
+		      package.
 		    </entry>
 		  </row>
 

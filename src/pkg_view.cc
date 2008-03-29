@@ -497,6 +497,46 @@ public:
 
 typedef cw::util::ref_ptr<info_area_multiplex> info_area_multiplex_ref;
 
+namespace
+{
+  bool view_is_active(cw::widget_ref view)
+  {
+    cw::util::ref_ptr<cw::container> owner = view->get_owner();
+
+    while(owner.valid())
+      {
+	if(owner->get_active_widget() != view)
+	  return false;
+
+	view = owner;
+	owner = view->get_owner();
+      }
+
+    return true;
+  }
+
+  bool do_info_multiplex_cycle_information_active(cw::widget &valveBare)
+  {
+    cw::widget_ref valve(&valveBare);
+    return view_is_active(valve);
+  }
+
+  bool do_info_multiplex_cycle_information(cw::widget &valveBare,
+					   info_area_multiplex &multiplexBare)
+  {
+    cw::widget_ref valve(&valveBare);
+    info_area_multiplex_ref multiplex(&multiplexBare);
+
+    if(!view_is_active(valve))
+      return false;
+    else
+      {
+	multiplex->cycle();
+	return true;
+      }
+  }
+}
+
 cw::widget_ref make_package_view(list<package_view_item> &format,
 				const cw::widget_ref &mainwidget,
 				menu_redirect *menu_handler,
@@ -605,6 +645,9 @@ cw::widget_ref make_package_view(list<package_view_item> &format,
 	    mainwidget->connect_key("EditHier", &cw::config::global_bindings,
 				    sigc::bind(sigc::mem_fun(*rval.unsafe_get_ref(), &cw::table::focus_widget_bare),
 					       m.weak_ref()));
+
+	    package_cycle_information_enabled.connect(sigc::bind(sigc::ptr_fun(do_info_multiplex_cycle_information_active), rval.weak_ref()));
+	    package_cycle_information.connect(sigc::bind(sigc::ptr_fun(do_info_multiplex_cycle_information), rval.weak_ref(), m.weak_ref()));
 
 	    e->hidden_sig.connect(sigc::bind(sigc::mem_fun(*rval.unsafe_get_ref(), &cw::table::focus_widget_bare),
 					     mainwidget.weak_ref()));

@@ -106,6 +106,12 @@ extern sigc::signal0<bool, cwidget::util::accumulate_or> package_information_ena
 /** Emitted for Package -> Package Information. */
 extern sigc::signal0<bool, cwidget::util::accumulate_or> package_information;
 
+/** Tests whether Package -> Cycle Information is enabled. */
+extern sigc::signal0<bool, cwidget::util::accumulate_or> package_cycle_information_enabled;
+
+/** Emitted for Package -> Cycle Information. */
+extern sigc::signal0<bool, cwidget::util::accumulate_or> package_cycle_information;
+
 /** Tests whether Package -> Changelog is enabled. */
 extern sigc::signal0<bool, cwidget::util::accumulate_or> package_changelog_enabled;
 

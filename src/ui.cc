@@ -155,6 +155,7 @@ sigc::signal0<void> package_states_changed;
 sigc::signal0<bool, cw::util::accumulate_or> package_menu_enabled;
 sigc::signal0<bool, cw::util::accumulate_or> package_forbid_enabled;
 sigc::signal0<bool, cw::util::accumulate_or> package_information_enabled;
+sigc::signal0<bool, cw::util::accumulate_or> package_cycle_information_enabled;
 sigc::signal0<bool, cw::util::accumulate_or> package_changelog_enabled;
 
 sigc::signal0<bool, cw::util::accumulate_or> find_search_enabled;
@@ -174,6 +175,7 @@ sigc::signal0<bool, cw::util::accumulate_or> package_mark_auto;
 sigc::signal0<bool, cw::util::accumulate_or> package_unmark_auto;
 sigc::signal0<bool, cw::util::accumulate_or> package_forbid;
 sigc::signal0<bool, cw::util::accumulate_or> package_information;
+sigc::signal0<bool, cw::util::accumulate_or> package_cycle_information;
 sigc::signal0<bool, cw::util::accumulate_or> package_changelog;
 
 sigc::signal0<bool, cw::util::accumulate_or> resolver_toggle_rejected;
@@ -2181,6 +2183,10 @@ cw::menu_info package_menu[]={
 	       N_("Display more information about the selected package"),
 	       sigc::hide_return(package_information.make_slot()),
 	       package_information_enabled.make_slot()),
+  cw::menu_info(cw::menu_info::MENU_ITEM, N_("C^ycle Package Information"), "DescriptionCycle",
+		N_("Cycle through the modes of the package information area: it can show the package's long description, a summary of its dependency status, or an analysis of why the package is required."),
+		sigc::hide_return(package_cycle_information.make_slot()),
+		package_cycle_information_enabled.make_slot()),
   cw::menu_info(cw::menu_info::MENU_ITEM, N_("^Changelog"), "Changelog",
 	       N_("Display the Debian changelog of the selected package"),
 	       sigc::hide_return(package_changelog.make_slot()),
