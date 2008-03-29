@@ -323,8 +323,9 @@ download_update_manager::finish(pkgAcquire::RunResult res,
     {
       int errnum = errno;
       if(errnum == ENOENT)
-	_error->Warning(_("The debtags command (%s) does not exist; perhaps you need to install the debtags package?"),
-			debtags.c_str());
+	// Fail silently instead of annoying the user over and over.
+	;  //_error->Warning(_("The debtags command (%s) does not exist; perhaps you need to install the debtags package?"),
+                            //debtags.c_str());
       else
 	_error->Error(_("The debtags command (%s) cannot be executed: %s"),
 		      debtags.c_str(), cw::util::sstrerror(errnum).c_str());
