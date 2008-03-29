@@ -142,16 +142,16 @@ namespace
     std::vector<std::vector<action> > reasons;
 
     std::vector<search_params> params;
-    params.push_back(search_params(search_params::Install,
+    params.push_back(search_params(search_params::InstallNotCurrent,
 				   search_params::DependsOnly,
 				   false));
-    params.push_back(search_params(search_params::Install,
+    params.push_back(search_params(search_params::InstallNotCurrent,
 				   search_params::DependsOnly,
 				   true));
-    params.push_back(search_params(search_params::Install,
+    params.push_back(search_params(search_params::InstallNotCurrent,
 				   search_params::Recommends,
 				   false));
-    params.push_back(search_params(search_params::Install,
+    params.push_back(search_params(search_params::InstallNotCurrent,
 				   search_params::Recommends,
 				   true));
 

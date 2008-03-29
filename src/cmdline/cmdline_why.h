@@ -89,7 +89,23 @@ namespace aptitude
        *  are being installed, or that packages are at their install
        *  versions.
        */
-      enum VersionSelection { Current, Candidate, Install };
+      enum VersionSelection
+	{
+	  Current,
+	  Candidate,
+	  Install,
+	  /** \brief When following dependencies, only follow
+	   *  dependencies that apply to the to-be-installed version
+	   *  of the package and not to the current version (if any).
+	   *
+	   *  In other words: if a package is being upgraded, only
+	   *  follow versioned dependencies that would have forced the
+	   *  upgrade; otherwise behave as normal.  This is used by
+	   *  the command-line prompt code to produce reasonable
+	   *  output for auto-upgraded packages.
+	   */
+	  InstallNotCurrent
+	};
       /** \brief Indicates which dependencies should be considered.
        *
        *  All dependenies of the given type and all stronger
@@ -151,10 +167,22 @@ namespace aptitude
 	  case Candidate:
 	    return (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
 	  case Install:
+	  case InstallNotCurrent:
 	    return (*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
 	  default:
 	    _error->Error("Unknown version selection, something is very wrong.");
 	    return pkg.CurrentVer();
+	  }
+      }
+
+      bool get_only_not_current() const
+      {
+	switch(version_selection)
+	  {
+	  case InstallNotCurrent:
+	    return true;
+	  default:
+	    return false;
 	  }
       }
 

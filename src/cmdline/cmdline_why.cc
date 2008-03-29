@@ -282,6 +282,9 @@ namespace aptitude
 	case Install:
 	  rval += W_("Install");
 	  break;
+	case InstallNotCurrent:
+	  rval += W_("InstallNotCurrent");
+	  break;
 	default:
 	  rval += L"???";
 	  break;
@@ -448,6 +451,47 @@ namespace aptitude
 	    if(verbosity > 1)
 	      std::cout << _("    ++   --> skipping, parent is not the selected version\n");
 	    continue;
+	  }
+
+	if(params.get_only_not_current())
+	  {
+	    bool satisfied_by_current = false;
+
+	    // Skip this dep if it's satisfied by the package's
+	    // current version.
+	    if(is_provides())
+	      {
+		pkgCache::VerIterator provider_current = get_provides().OwnerPkg().CurrentVer();
+		for(pkgCache::PrvIterator prv = provider_current.ProvidesList();
+		    !satisfied_by_current && !prv.end(); ++prv)
+		  {
+		    if(dep.TargetVer() == NULL ||
+		       (prv.ProvideVersion() != NULL &&
+			_system->VS->CheckDep(prv.ProvideVersion(),
+					      dep->CompareOp,
+					      dep.TargetVer())))
+		      satisfied_by_current = true;
+		  }
+	      }
+	    else
+	      {
+		pkgCache::VerIterator current = dep.TargetPkg().CurrentVer();
+		if(!current.end())
+		  {
+		    if(dep.TargetVer() == NULL ||
+		       _system->VS->CheckDep(current.VerStr(),
+					     dep->CompareOp,
+					     dep.TargetVer()))
+		      satisfied_by_current = true;
+		  }
+	      }
+
+	    if(satisfied_by_current)
+	      {
+		if(verbosity > 1)
+		  std::cout << _("    ++   --> skipping, the dep is satisfied by the current version\n");
+		continue;
+	      }
 	  }
 
 	const char *ver_to_check;
