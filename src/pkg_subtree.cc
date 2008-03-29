@@ -24,6 +24,7 @@
 #include <generic/apt/apt.h>
 
 #include <cwidget/generic/util/ssprintf.h>
+#include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/tree.h>
 
 #include "aptitude.h"
@@ -155,7 +156,9 @@ void pkg_subtree::do_highlighted_changed(bool highlighted)
 	  if(num_packages_known)
 	    {
 	      const std::wstring numstr =
-		swsprintf(W_("This group contains %d packages.").c_str(),
+		swsprintf(cw::util::transcode(ngettext("This group contains %d package.",
+						       "This group contains %d packages.",
+						       num_packages)).c_str(),
 			  num_packages);
 	      if(description.empty())
 		(*info_signal)(swsprintf(L"\n %ls", numstr.c_str()));
