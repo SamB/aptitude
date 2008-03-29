@@ -357,10 +357,12 @@ void pkg_grouppolicy_section::add_package(const pkgCache::PkgIterator &pkg,
 		  if(desc.find(L'\n') != desc.npos)
 		    newtree = new pkg_subtree(cw::util::transcode(section) + L" - " + wstring(desc, 0, desc.find('\n')), desc, get_desc_sig());
 		  else
-		    newtree = new pkg_subtree(cw::util::transcode(section) + desc);
+		    newtree = new pkg_subtree(cw::util::transcode(section) + desc,
+					      L"", get_desc_sig());
 		}
 	      else
-		newtree = new pkg_subtree(cw::util::transcode(section));
+		newtree = new pkg_subtree(cw::util::transcode(section),
+					  L"", get_desc_sig());
 
 	      // Generate a new sub-grouping-policy, and insert it
 	      // into the map with the new tree.
@@ -683,7 +685,8 @@ public:
 	string treename;
 	treename+=firstchar;
 
-	pkg_subtree *newtree=new pkg_subtree(cw::util::transcode(treename));
+	pkg_subtree *newtree=new pkg_subtree(cw::util::transcode(treename),
+					     L"", get_desc_sig());
 	pkg_grouppolicy *newchild=chain->instantiate(get_sig(),
 						     get_desc_sig());
 	children[firstchar].first=newchild;
@@ -777,7 +780,10 @@ public:
 	  default                        : order=6; break;
 	  };
 
-	pkg_subtree *newtree=new pkg_subtree_with_order(cw::util::transcode(buf), order);
+	pkg_subtree *newtree=new pkg_subtree_with_order(cw::util::transcode(buf),
+							L"",
+							get_desc_sig(),
+							order);
 	pkg_grouppolicy *newchild=chain->instantiate(get_sig(),
 						     get_desc_sig());
 	children[priority].first=newchild;
@@ -876,7 +882,7 @@ public:
       {
 	if(!uncategorized)
 	  {
-	    uncategorized=new pkg_subtree(W_("UNCATEGORIZED"));
+	    uncategorized=new pkg_subtree(W_("UNCATEGORIZED"), L"", desc_sig);
 	    uncategorized_policy=chain->instantiate(sig, desc_sig);
 	    root->add_child(uncategorized);
 	    uncategorized->set_num_packages_parent(root);
@@ -890,7 +896,8 @@ public:
   {
     nodedata *data=(nodedata *) parent_data;
 
-    pkg_subtree *newtree=new pkg_subtree(cw::util::transcode(group->description));
+    pkg_subtree *newtree=new pkg_subtree(cw::util::transcode(group->description),
+					 L"", desc_sig);
     pkg_grouppolicy *newpolicy=chain->instantiate(sig, desc_sig);
 
     nodedata *rval=new nodedata(newpolicy, newtree);
@@ -1079,7 +1086,7 @@ void pkg_grouppolicy_task::add_package(const pkgCache::PkgIterator &pkg,
 		    break;
 		  }
 
-	      sectiontree=new pkg_subtree(sectiondesc);
+	      sectiontree = new pkg_subtree(sectiondesc, L"", get_desc_sig());
 	      section_children[section]=sectiontree;
 	      tasks_subtree->add_child(sectiontree);
 	      sectiontree->set_num_packages_parent(tasks_subtree);
@@ -1277,7 +1284,7 @@ public:
 		found->second.policy->add_package(pkg, found->second.tree);
 	      else
 		{
-		  pkg_subtree *tree = new pkg_subtree(title);
+		  pkg_subtree *tree = new pkg_subtree(title, L"", get_desc_sig());
 		  pkg_grouppolicy *policy = chain->instantiate(get_sig(),
 							       get_desc_sig());
 		  root->add_child(tree);
