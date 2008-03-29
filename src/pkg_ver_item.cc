@@ -1,6 +1,6 @@
 // pkg_ver_item.cc
 //
-//  Copyright 1999-2005, 2007 Daniel Burrows
+//  Copyright 1999-2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@
 #include <generic/apt/apt_undo_group.h>
 #include <generic/apt/config_signal.h>
 
+#include <cwidget/generic/util/ssprintf.h>
 #include <cwidget/toplevel.h>
 #include <cwidget/widgets/multiplex.h>
 
@@ -436,6 +437,14 @@ public:
   void add_package(const pkgCache::PkgIterator &pkg, pkg_subtree *root);
 };
 
+void pkg_vertree_generic::paint(cwidget::widgets::tree *win,
+				int y, bool hierarchical,
+				const cwidget::style &st)
+{
+  const std::wstring text(cw::util::swsprintf(L"%ls (%d)", name.c_str(), num_versions));
+  cwidget::widgets::subtree<pkg_ver_item, versort>::paint(win, y, hierarchical, text);
+}
+
 void setup_package_versions(const pkgCache::PkgIterator &pkg, pkg_vertree *tree, pkg_signal *sig)
 {
   for(pkgCache::VerIterator i=pkg.VersionList(); !i.end(); i++)
@@ -452,10 +461,16 @@ void setup_package_versions(const pkgCache::PkgIterator &pkg, pkg_vertree *tree,
 void setup_package_versions(const pkgCache::PkgIterator &pkg, pkg_vertree_generic *tree, pkg_signal *sig)
 {
   for(pkgCache::VerIterator i=pkg.VersionList(); !i.end(); i++)
-    tree->add_child(new pkg_ver_item(i, sig));
+    {
+      tree->add_child(new pkg_ver_item(i, sig));
+      tree->inc_num_versions();
+    }
 
   for(pkgCache::PrvIterator i=pkg.ProvidesList(); !i.end(); i++)
-    tree->add_child(new pkg_ver_item(i.OwnerVer(), sig, true));
+    {
+      tree->add_child(new pkg_ver_item(i.OwnerVer(), sig, true));
+      tree->inc_num_versions();
+    }
 
   std::auto_ptr<pkg_sortpolicy> sorter(pkg_sortpolicy_ver(0, false));
   pkg_sortpolicy_wrapper wrap(sorter.get());
@@ -468,6 +483,9 @@ void pkg_grouppolicy_ver::add_package(const pkgCache::PkgIterator &pkg,
   pkg_vertree *newtree=new pkg_vertree(pkg, get_sig());
 
   root->add_child(newtree);
+  root->inc_num_packages();
+  // NB: we do *not* include the number of versions of the package in
+  // the count of packages in the root.
 
   setup_package_versions(pkg, newtree, get_sig());
 }

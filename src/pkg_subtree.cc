@@ -1,6 +1,6 @@
 // pkg_subtree.cc
 //
-//  Copyright 1999-2005, 2007 Daniel Burrows
+//  Copyright 1999-2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,10 @@
 
 #include <generic/apt/apt.h>
 
+#include <cwidget/generic/util/ssprintf.h>
 #include <cwidget/widgets/tree.h>
+
+#include "aptitude.h"
 
 namespace cw = cwidget;
 namespace cwidget
@@ -34,7 +37,15 @@ namespace cwidget
 void pkg_subtree::paint(cw::tree *win, int y, bool hierarchical,
 			const cw::style &st)
 {
-  cw::subtree<pkg_tree_node>::paint(win, y, hierarchical, name);
+  std::wstring name_to_paint;
+  if(num_packages_known)
+    name_to_paint = cw::util::swsprintf(L"%ls (%d)",
+					name.c_str(),
+					num_packages);
+  else
+    name_to_paint = name;
+
+  cw::subtree<pkg_tree_node>::paint(win, y, hierarchical, name_to_paint);
 }
 
 const wchar_t *pkg_subtree::tag()
@@ -111,12 +122,51 @@ void pkg_subtree::set_auto(bool isauto, undo_group *undo)
     (*i)->set_auto(isauto, undo);
 }
 
+void pkg_subtree::inc_num_packages()
+{
+  if(num_packages_known)
+    {
+      ++num_packages;
+      if(num_packages_parent != NULL)
+	num_packages_parent->inc_num_packages();
+    }
+}
+
+void pkg_subtree::clear_num_packages()
+{
+  num_packages_known = false;
+  num_packages = -1;
+}
+
+void pkg_subtree::set_num_packages(int num)
+{
+  num_packages_known = true;
+  num_packages = num;
+}
+
 void pkg_subtree::do_highlighted_changed(bool highlighted)
 {
+  using cw::util::swsprintf;
+
   if(highlighted)
     {
       if(info_signal)
-	(*info_signal)(description);
+	{
+	  if(num_packages_known)
+	    {
+	      const std::wstring numstr =
+		swsprintf(W_("This group contains %d packages.").c_str(),
+			  num_packages);
+	      if(description.empty())
+		(*info_signal)(swsprintf(L"\n %ls", numstr.c_str()));
+	      else
+		(*info_signal)(swsprintf(L"%ls\n .\n %ls",
+					 description.c_str(),
+					 numstr.c_str()));
+	    }
+	  else
+	    (*info_signal)(description);
+	}
     }
   else
     {

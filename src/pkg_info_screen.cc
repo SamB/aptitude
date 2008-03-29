@@ -1,6 +1,6 @@
 // pkg_info_screen.cc
 //
-//  Copyright 2000-2002, 2004-2005, 2007 Daniel Burrows
+//  Copyright 2000-2002, 2004-2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -143,7 +143,10 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
 	  pkg_subtree *prvtree=new pkg_subtree(cw::util::transcode(buf));
 
 	  for(pkgCache::PrvIterator prv=ver.ProvidesList(); !prv.end(); ++prv)
-	    prvtree->add_child(new pkg_item(prv.ParentPkg(), sig));
+	    {
+	      prvtree->add_child(new pkg_item(prv.ParentPkg(), sig));
+	      prvtree->inc_num_packages();
+	    }
 
 	  tree->add_child(prvtree);
 	}

@@ -1,6 +1,6 @@
 // pkg_ver_item.h (This is -*-c++-*-)
 //
-//  Copyright 1999-2002, 2004-2005, 2007 Daniel Burrows
+//  Copyright 1999-2002, 2004-2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -146,12 +146,18 @@ typedef pkg_item_with_subtree<pkg_ver_item, versort> pkg_vertree;
 class pkg_vertree_generic:public cwidget::widgets::subtree<pkg_ver_item, versort>
 {
   std::wstring name;
+  int num_versions;
 public:
-  pkg_vertree_generic(std::wstring _name, bool _expanded):cwidget::widgets::subtree<pkg_ver_item, versort>(_expanded),name(_name) {}
-  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const cwidget::style &st)
-  {cwidget::widgets::subtree<pkg_ver_item, versort>::paint(win, y, hierarchical, name);}
+  pkg_vertree_generic(std::wstring _name, bool _expanded)
+    : cwidget::widgets::subtree<pkg_ver_item, versort>(_expanded),
+      name(_name),
+      num_versions(0)
+  {
+  }
+  void paint(cwidget::widgets::tree *win, int y, bool hierarchical, const cwidget::style &st);
   const wchar_t *tag() {return name.c_str();}
   const wchar_t *label() {return name.c_str();}
+  void inc_num_versions() { ++num_versions; }
 };
 
 // The following policy will make each package given to it into a

@@ -1,6 +1,6 @@
 // dep_item.cc
 //
-//  Copyright 1999-2005 Daniel Burrows
+//  Copyright 1999-2005, 2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -66,6 +66,8 @@ public:
 pkg_depitem::pkg_depitem(pkgCache::DepIterator &first, pkg_signal *sig):
   pkg_subtree(L""),firstdep(first),available(false)
 {
+  clear_num_packages();
+
   pkgCache::DepIterator start,end;
   first.GlobOr(start,end);
 
@@ -95,6 +97,7 @@ pkg_depitem::pkg_depitem(pkgCache::DepIterator &first, pkg_signal *sig):
 	  {
 	    available=true;
 	    add_child(new pkg_ver_item(i, sig, is_or));
+	    inc_num_packages();
 	  }
 
       for(pkgCache::PrvIterator i=start.TargetPkg().ProvidesList(); !i.end(); i++)
@@ -102,6 +105,7 @@ pkg_depitem::pkg_depitem(pkgCache::DepIterator &first, pkg_signal *sig):
 	  {
 	    available=true;
 	    add_child(new pkg_ver_item(i.OwnerVer(), sig, true));
+	    inc_num_packages();
 	  }
 
       if(start==end)
@@ -192,6 +196,9 @@ public:
 									     get_sig());
 
     root->add_child(newtree);
+    // The count for the containing tree is only increased by 1, not
+    // by the number of dependencies of this tree.
+    root->inc_num_packages();
 
     setup_package_deps<pkg_item_with_generic_subtree>(pkg,
 						      pkg.CurrentVer(),
@@ -233,6 +240,26 @@ pkg_dep_screen::pkg_dep_screen(const pkgCache::PkgIterator &pkg,
 
 typedef std::map<string, pkg_subtree *> tree_map;
 
+// Used to ensure that pkg_subtrees containing reverse deps
+// get a proper count; reverse deps are also created using
+// pkg_item_with_subtree objects, which can't accumulate counts.
+template<typename parent_type>
+struct set_num_packages_parent_if_pkg_subtree
+{
+  void operator()(pkg_subtree *child, parent_type *parent) const
+  {
+  }
+};
+
+template<>
+struct set_num_packages_parent_if_pkg_subtree<pkg_subtree>
+{
+  void operator()(pkg_subtree *child, pkg_subtree *parent) const
+  {
+    child->set_num_packages_parent(parent);
+  }
+};
+
 template<class tree_type>
 void setup_package_deps(const pkgCache::PkgIterator &pkg,
 			const pkgCache::VerIterator &ver,
@@ -269,15 +296,25 @@ void setup_package_deps(const pkgCache::PkgIterator &pkg,
 				    true);
 	  subtrees[D.DepType()]=subtree;
 	  tree->add_child(subtree);
+
+	  // For reverse dependency items, the subtrees contain the
+	  // package versions that depend on the selected package.  So
+	  // it makes sense to collect their count at the top level.
+	  if(reverse)
+	    set_num_packages_parent_if_pkg_subtree<tree_type>()(subtree, tree);
 	}
       else
 	subtree=found->second;
 
       if(!reverse)
-	subtree->add_child(new pkg_depitem(D, sig));
+	{
+	  subtree->add_child(new pkg_depitem(D, sig));
+	  subtree->inc_num_packages();
+	}
       else
 	{
 	  subtree->add_child(new pkg_ver_item(D.ParentVer(), sig, true));
+	  subtree->inc_num_packages();
 	  D++;
 	}
     }
@@ -304,6 +341,7 @@ void setup_package_deps(const pkgCache::PkgIterator &pkg,
 		  subtree=found->second;
 
 		subtree->add_child(new pkg_ver_item(D.ParentVer(), sig, true));
+		subtree->inc_num_packages();
 	      }
 	  }
       }

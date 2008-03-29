@@ -97,6 +97,7 @@ public:
   virtual void add_package(const pkgCache::PkgIterator &i, pkg_subtree *root)
     {
       root->add_child(new pkg_item(i, get_sig()));
+      root->inc_num_packages();
     }
 };
 
@@ -372,6 +373,7 @@ void pkg_grouppolicy_section::add_package(const pkgCache::PkgIterator &pkg,
 	      sections[section_id].second = newtree;
 
 	      current_root->add_child(newtree);
+	      newtree->set_num_packages_parent(current_root);
 	    }
 	  current_root=sections[section_id].second;
 	} while(!done);
@@ -485,6 +487,7 @@ void pkg_grouppolicy_status::add_package(const pkgCache::PkgIterator &pkg,
       children[section].first=chain->instantiate(get_sig(), get_desc_sig());
       children[section].second=newtree;
       root->add_child(newtree);
+      newtree->set_num_packages_parent(root);
     }
 
   children[section].first->add_package(pkg, children[section].second);
@@ -563,6 +566,7 @@ public:
 							    group,
 							    true);
 	    root->add_child(newtree);
+	    newtree->set_num_packages_parent(root);
 	    children[group].first=chain->instantiate(get_sig(),
 						     get_desc_sig());
 	    children[group].second=newtree;
@@ -583,6 +587,7 @@ public:
 							    num_pkg_action_states,
 							    true);
 	    root->add_child(newtree);
+	    newtree->set_num_packages_parent(root);
 	    recommended_child.first=chain->instantiate(get_sig(),
 						       get_desc_sig());
 	    recommended_child.second=newtree;
@@ -603,6 +608,7 @@ public:
 							    num_pkg_action_states+1,
 							    false);
 	    root->add_child(newtree);
+	    newtree->set_num_packages_parent(root);
 	    suggested_child.first=chain->instantiate(get_sig(),
 						     get_desc_sig());
 	    suggested_child.second=newtree;
@@ -683,6 +689,7 @@ public:
 	children[firstchar].first=newchild;
 	children[firstchar].second=newtree;
 	root->add_child(newtree);
+	newtree->set_num_packages_parent(root);
 
 	newchild->add_package(pkg, newtree);
       }
@@ -776,6 +783,7 @@ public:
 	children[priority].first=newchild;
 	children[priority].second=newtree;
 	root->add_child(newtree);
+	newtree->set_num_packages_parent(root);
 
 	newchild->add_package(pkg, newtree);
       }
@@ -871,6 +879,7 @@ public:
 	    uncategorized=new pkg_subtree(W_("UNCATEGORIZED"));
 	    uncategorized_policy=chain->instantiate(sig, desc_sig);
 	    root->add_child(uncategorized);
+	    uncategorized->set_num_packages_parent(root);
 	  }
 
 	uncategorized_policy->add_package(pkg, uncategorized);
@@ -888,9 +897,15 @@ public:
     data_out_there.push_back(rval);
 
     if(data)
-      data->second->add_child(newtree);
+      {
+	data->second->add_child(newtree);
+	newtree->set_num_packages_parent(data->second);
+      }
     else
-      root->add_child(newtree);
+      {
+	root->add_child(newtree);
+	newtree->set_num_packages_parent(root);
+      }
 
     return rval;
   }
@@ -1047,6 +1062,7 @@ void pkg_grouppolicy_task::add_package(const pkgCache::PkgIterator &pkg,
 	      tasks_subtree=new pkg_subtree(W_("Tasks"),
 					    W_("\n Tasks are groups of packages which provide an easy way to select a predefined set of packages for a particular purpose."), get_desc_sig());
 	      root->add_child(tasks_subtree);
+	      tasks_subtree->set_num_packages_parent(root);
 	    }
 
 	  subtree_map::iterator sectionfound=section_children.find(section);
@@ -1066,6 +1082,7 @@ void pkg_grouppolicy_task::add_package(const pkgCache::PkgIterator &pkg,
 	      sectiontree=new pkg_subtree(sectiondesc);
 	      section_children[section]=sectiontree;
 	      tasks_subtree->add_child(sectiontree);
+	      sectiontree->set_num_packages_parent(tasks_subtree);
 	    }
 	  else
 	    sectiontree=sectionfound->second;
@@ -1082,11 +1099,16 @@ void pkg_grouppolicy_task::add_package(const pkgCache::PkgIterator &pkg,
 	  task_children[*i]=newtree;
 
 	  sectiontree->add_child(newtree);
+	  newtree->set_num_packages_parent(sectiontree);
 
 	  newtree->add_child(new pkg_item(pkg, get_sig()));
+	  newtree->inc_num_packages();
 	}
       else
-	found->second->add_child(new pkg_item(pkg, get_sig()));
+	{
+	  found->second->add_child(new pkg_item(pkg, get_sig()));
+	  found->second->inc_num_packages();
+	}
     }
 }
 
@@ -1259,6 +1281,7 @@ public:
 		  pkg_grouppolicy *policy = chain->instantiate(get_sig(),
 							       get_desc_sig());
 		  root->add_child(tree);
+		  tree->set_num_packages_parent(root);
 
 		  subtrees[title]=subtree_pair(policy, tree);
 
@@ -1382,6 +1405,7 @@ public:
 				      cw::util::transcode(desc),
 				      get_desc_sig());
 	    root->add_child(subtree);
+	    subtree->set_num_packages_parent(root);
 	    subpolicy = chain->instantiate(get_sig(),
 					   get_desc_sig());
 
@@ -1471,6 +1495,7 @@ public:
 					    W_("\n These packages have not yet been classified in debtags, or the debtags database is not present (installing debtags may correct this problem)."),
 					    get_desc_sig());
 	    root->add_child(untagged_tree);
+	    untagged_tree->set_num_packages_parent(root);
 
 	    untagged_policy = chain->instantiate(get_sig(), get_desc_sig());
 	  }
@@ -1533,6 +1558,7 @@ public:
 					cw::util::transcode(desc),
 					get_desc_sig());
 	    root->add_child(tagtree);
+	    tagtree->set_num_packages_parent(root);
 	    tagchildren = new tagmap;
 
 	    children[thisfacet] = pair<tagmap *, pkg_subtree *>(tagchildren, tagtree);
@@ -1571,6 +1597,7 @@ public:
 					get_desc_sig());
 
 	    tagtree->add_child(subtree);
+	    subtree->set_num_packages_parent(tagtree);
 	    subpolicy = chain->instantiate(get_sig(), get_desc_sig());
 
 	    (*tagchildren)[thistag] = pair<pkg_grouppolicy *, pkg_subtree *>(subpolicy, subtree);

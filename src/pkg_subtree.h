@@ -1,6 +1,6 @@
 // pkg_subtree.h (this is -*-c++-*-)
 //
-//  Copyright 1999-2002, 2004-2005, 2007 Daniel Burrows
+//  Copyright 1999-2002, 2004-2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,6 +33,10 @@ class pkg_subtree:public cwidget::widgets::subtree<pkg_tree_node>,
   std::wstring description; // This is like a Description: field.
 
   sigc::signal1<void, std::wstring> *info_signal;
+  pkg_subtree *num_packages_parent;
+
+  bool num_packages_known;
+  int num_packages;
 
   void do_highlighted_changed(bool highlighted);
 protected:
@@ -42,14 +46,18 @@ public:
 	      sigc::signal1<void, std::wstring> *_info_signal=NULL,
 	      bool _expanded=false):
     cwidget::widgets::subtree<pkg_tree_node>(_expanded), name(_name),
-    description(_description), info_signal(_info_signal)
+    description(_description), info_signal(_info_signal),
+    num_packages_parent(NULL),
+    num_packages_known(true), num_packages(0)
   {
     highlighted_changed.connect(sigc::mem_fun(this, &pkg_subtree::do_highlighted_changed));
   }
 
   pkg_subtree(std::wstring _name, bool _expanded):
     cwidget::widgets::subtree<pkg_tree_node>(_expanded), name(_name),
-    description(L""), info_signal(NULL)
+    description(L""), info_signal(NULL),
+    num_packages_parent(NULL),
+    num_packages_known(true), num_packages(0)
   {
     highlighted_changed.connect(sigc::mem_fun(this, &pkg_subtree::do_highlighted_changed));
   }
@@ -67,6 +75,32 @@ public:
   virtual void reinstall(undo_group *undo);
   virtual void set_auto(bool isauto, undo_group *undo);
 
+  /** \brief Set the parent of this tree for the purposes of package counting.
+   *
+   *  When inc_num_packages() is called on this tree, it's also called
+   *  on the parent.
+   */
+  void set_num_packages_parent(pkg_subtree *new_parent)
+  {
+    num_packages_parent = new_parent;
+  }
+
+  /** \brief Increment the number of packages in this tree and
+   *  in the parent (if any).
+   *
+   *  Has no effect if num_packages_known is false.
+   */
+  void inc_num_packages();
+  /** \brief Discard all information about how many packages
+   *  this subtree contains.
+   */
+  void clear_num_packages();
+  /** \brief Set the number of packages that this subtree
+   *  contains.
+   */
+  void set_num_packages(int num);
+  bool get_num_packages_known() const { return num_packages_known; }
+  int get_num_packages() const { return num_packages; }
   std::wstring get_name() {return name;}
   std::wstring get_description() {return description;}
 
