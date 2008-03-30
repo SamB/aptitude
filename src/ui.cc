@@ -2372,7 +2372,7 @@ cw::menu_info help_menu_info[]={
 	       sigc::ptr_fun(do_help_faq)),
 
   cw::menu_info(cw::menu_info::MENU_ITEM, N_("^News"), NULL,
-		ssprintf(N_("View the important changes made in each version of %s"), PACKAGE).c_str(),
+		N_("View the important changes made in each version of " PACKAGE),
 	       sigc::ptr_fun(do_help_news)),
 
   cw::menu_info(cw::menu_info::MENU_ITEM, N_("^License"), NULL,
