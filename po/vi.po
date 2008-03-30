@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-03-29 07:58+0100\n"
-"PO-Revision-Date: 2008-03-29 23:20+1030\n"
+"PO-Revision-Date: 2008-03-30 22:08+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -2300,18 +2300,14 @@ msgid "Hit "
 msgstr "Lần ghé "
 
 #: src/download_bar.cc:83
-#, fuzzy
-#| msgid "Downloading... "
 msgid "Downloading "
-msgstr "Đang tải về..."
+msgstr "Đang tải về"
 
 #: src/download_bar.cc:94
 msgid "Got "
-msgstr ""
+msgstr "Nhận được"
 
 #: src/download_bar.cc:144
-#, fuzzy
-#| msgid "Downloading... "
 msgid "Downloading..."
 msgstr "Đang tải về..."
 
@@ -2385,10 +2381,9 @@ msgid "[ERROR]"
 msgstr "[LỖI]"
 
 #: src/download_screen.cc:188
-#, fuzzy, c-format
-#| msgid "Downloaded %sB in %s (%sB/s)."
+#, c-format
 msgid "Downloaded %sB in %ss (%sB/s)."
-msgstr "Đã tải về %sB trong %s (%sB/g)."
+msgstr "Đã tải về %sB trong %sg (%sB/g)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -3040,7 +3035,7 @@ msgstr "Lỗi không rõ"
 
 #: src/generic/util/threads.cc:32
 msgid "Not enough resources to create thread"
-msgstr ""
+msgstr "Không đủ tài nguyên để tạo mạch"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -5923,82 +5918,75 @@ msgstr "Tải về Bản ghi đổi"
 #: src/vscreen/config/column_definition.cc:105
 #: src/vscreen/config/column_definition.cc:123
 msgid "Formatting marker with missing format code"
-msgstr ""
+msgstr "Dấu đang định thiếu mã định dạng"
 
 #: src/vscreen/config/column_definition.cc:132
 #: src/vscreen/config/column_definition.cc:178
-#, fuzzy, c-format
-#| msgid "Bad number in format string: %ls"
+#, c-format
 msgid "Bad number in format string: '%ls'"
-msgstr "Chuỗi định dạng chứa số sai: %ls"
+msgstr "Chuỗi định dạng chứa số sai: « %ls »"
 
 #: src/vscreen/config/column_definition.cc:160
-#, fuzzy
-#| msgid "Bad number in format string: %ls"
 msgid "Missing parameter number in format string"
-msgstr "Chuỗi định dạng chứa số sai: %ls"
+msgstr "Chuỗi định dạng thiếu số tham số"
 
 #: src/vscreen/config/column_definition.cc:185
-#, fuzzy, c-format
-#| msgid "Match indices must be 1 or greater, not \"%s\""
+#, c-format
 msgid "Parameter numbers must be 1 or greater, not %ld"
-msgstr "Chỉ số khớp phải là 1 hoặc lớn hơn, không phải « %s »"
+msgstr "Số tham số phải là 1 hoặc lớn hơn, không phải %ld"
 
 #: src/vscreen/config/column_definition.cc:211
-#, fuzzy, c-format
-#| msgid "Unknown pattern type: %c"
+#, c-format
 msgid "Unknown formatting code '%lc'"
-msgstr "Không rõ kiểu hình mẫu : %c"
+msgstr "Không rõ mã định dạng « %lc »"
 
 #: src/vscreen/config/column_definition.cc:261
 msgid "Bad format parameter"
-msgstr ""
+msgstr "Tham số định dạng sai"
 
 #: src/vscreen/config/keybindings.cc:333
-#, fuzzy, c-format
-#| msgid "Reading task descriptions"
+#, c-format
 msgid "Cannot parse key description: %ls"
-msgstr "Đang đọc các mô tả tác vụ"
+msgstr "Không thể phân tích mô tả khoá: %ls"
 
 #: src/vscreen/config/keybindings.cc:343
-#, fuzzy
-#| msgid "Invalid entry in keybinding group: \"%s\""
 msgid "Invalid null keybinding"
-msgstr "Gặp mục nhập không hợp lệ trong nhóm tổ hợp phím: « %s »"
+msgstr "Tổ hợp phím vô giá trị không hợp lệ"
 
 #: src/vscreen/config/keybindings.cc:351
 msgid "Sorry, control modifiers may not be used with unprintable characters"
 msgstr ""
+"Tiếc là không cho phép dùng bộ sửa đổi điều khiển cùng với ký tự không thể in"
 
 #: src/vscreen/vscreen.cc:125
 #, c-format
 msgid "Ouch!  Got SIGTERM, dying..\n"
-msgstr ""
+msgstr "Ôi ! Nhận được tín hiệu SIGTERM nên chết...\n"
 
 #: src/vscreen/vscreen.cc:128
 #, c-format
 msgid "Ouch!  Got SIGSEGV, dying..\n"
-msgstr ""
+msgstr "Ôi ! Nhận được tín hiệu SIGSEGV nên chết...\n"
 
 #: src/vscreen/vscreen.cc:131
 #, c-format
 msgid "Ouch!  Got SIGABRT, dying..\n"
-msgstr ""
+msgstr "Ôi ! Nhận được tín hiệu SIGABRT nên chết...\n"
 
 #: src/vscreen/vscreen.cc:134
 #, c-format
 msgid "Ouch!  Got SIGQUIT, dying..\n"
-msgstr ""
+msgstr "Ôi ! Nhận được tín hiệu SIGQUIT nên chết...\n"
 
 #: src/vscreen/vs_pager.cc:439
 #, c-format
 msgid ""
 "Unable to load filename: the string %ls has no multibyte representation."
-msgstr ""
+msgstr "Không thể nạp tên tập tin: chuỗi %ls không chứa đồ đại diện đa byte."
 
 #: src/vscreen/vs_tree.cc:942
 msgid "TOP LEVEL"
-msgstr ""
+msgstr "CẤP ĐẦU"
 
 #~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 #~ msgstr ""
