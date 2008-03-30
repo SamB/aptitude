@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-03-29 07:58+0100\n"
-"PO-Revision-Date: 2008-03-18 12:55+0800\n"
+"PO-Revision-Date: 2008-03-30 13:26+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -621,9 +621,9 @@ msgid "Unable to find the source package for \"%s\".\n"
 msgstr "无法找到“%s”的源代码包。\n"
 
 #: src/cmdline/cmdline_action.cc:200
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to satisfy the build-depends: %s."
-msgstr "无法安装编译依赖 %s： 。"
+msgstr "无法满足编译依赖：%s。"
 
 #: src/cmdline/cmdline_action.cc:230
 #, c-format
@@ -849,7 +849,7 @@ msgstr "%s 版本 %s 没有可下载的文件；也许它是一个本地软件�
 msgid ""
 "extract-cache-entries: at least one argument is required (the directory\n"
 "to which to write files.\n"
-msgstr ""
+msgstr "提取缓冲条目：需要至少一个参数(需要写入文件的目录)\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:77
 #: src/cmdline/cmdline_user_tag.cc:116
@@ -860,7 +860,7 @@ msgstr "没有这个软件包“%s”。\n"
 #: src/cmdline/cmdline_extract_cache_subset.cc:115
 #, c-format
 msgid "No packages were selected by the given search pattern; nothing to do.\n"
-msgstr ""
+msgstr "所给的搜索模式未找到软件包；无事可做。\n"
 
 #: src/cmdline/cmdline_forget_new.cc:25
 #, c-format
@@ -922,7 +922,7 @@ msgstr "无法读取软件包源列表"
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
-msgstr[0] ""
+msgstr[0] "(用于 %s)"
 
 #: src/cmdline/cmdline_prompt.cc:282 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
@@ -2205,9 +2205,8 @@ msgid "Got "
 msgstr "已取得 "
 
 #: src/download_bar.cc:144
-#, fuzzy
 msgid "Downloading..."
-msgstr "正在下载... "
+msgstr "正在下载..."
 
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
