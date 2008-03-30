@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_eu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2008-03-01 10:50+0100\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <Librezale@librezale.org>\n"
@@ -1133,11 +1133,13 @@ msgstr ""
 "*** ABISUA ***   Fidagarritasun-bortxaketei ez ikusi egiten. Zergatia:\n"
 "                  Apt::Get::AllowUnauthenticated 'egia' baita!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Bai"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "Ez"
 
@@ -2282,6 +2284,29 @@ msgstr "Etiketak"
 msgid "User Tags"
 msgstr "Etiketak"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Sartu \"%s\" etiketadun diskoa \"%s\" unitatean"
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Atzituta "
+
+#: src/download_bar.cc:83
+#, fuzzy
+msgid "Downloading "
+msgstr "Deskargatzen..."
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr ""
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "Deskargatzen..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2306,19 +2331,20 @@ msgstr "%sB deskargatuta - %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nFitxategi batzuk ez dira ongi deskargatu."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Jarraitu"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Utzi"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Progresioa guztira: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %% %i ] (%sB/s, %s falta)"
@@ -2337,12 +2363,7 @@ msgstr " [ %% %i ]"
 msgid "Downloading... "
 msgstr "Deskargatzen..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Sartu \"%s\" etiketadun diskoa \"%s\" unitatean"
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "Abortatu"
 
@@ -2353,6 +2374,11 @@ msgstr "[EZ IKUSI EGINDA]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[ERROREA]"
+
+#: src/download_screen.cc:188
+#, fuzzy, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "%sB deskargatuta - %s (%sB/s)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2366,10 +2392,6 @@ msgstr "Ezin izan da \"%s\" idazteko ireki"
 #: src/edit_pkg_hier.cc:339
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr "Ezin da etxeko direktorioa aurkitu, '/tmp/function_pkgs'-en gordetzen!"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Atzituta "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2983,10 +3005,6 @@ msgstr ""
 msgid "Building tag database"
 msgstr "Etiketen datu-basea eraikitzen"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr "Ezin da debtags hiztegia eskuratu, agian debtags ez dago instalaturik?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Ezin da ireki /usr/share/tasksel/debian-tasks.desc"
@@ -3010,6 +3028,10 @@ msgstr "Ezinda \"%s\" aldiroko direktorioa ezabatu."
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Errore ezezaguna"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr ""
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3714,6 +3736,8 @@ msgid "Number of mines: "
 msgstr "Mina kopurua: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Ados"
 
@@ -5874,11 +5898,11 @@ msgstr ""
 "%ls: Menua  %ls:  Laguntza  %ls: Irten %ls:  Eguneratu  %ls:  Deskargatu/"
 "Instalatu/Kendu paketeak"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5904,41 +5928,83 @@ msgstr "Aldaketen egunkaria deskargatzen"
 msgid "Download Changelog"
 msgstr "Deskargatu erregistro aldaketak"
 
-#, fuzzy
-#~ msgid "Downloading "
-#~ msgstr "Deskargatzen..."
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "Deskargatzen..."
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, fuzzy, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Okerreko zenbakia formatu katean: %ls"
 
+#: src/vscreen/config/column_definition.cc:160
 #, fuzzy
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "%sB deskargatuta - %s (%sB/s)."
+msgid "Missing parameter number in format string"
+msgstr "Okerreko zenbakia formatu katean: %ls"
 
-#, fuzzy
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Okerreko zenbakia formatu katean: %ls"
+#: src/vscreen/config/column_definition.cc:185
+#, fuzzy, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "Parekatze indizea 1 edo handiago izan behar da; ezin da \"%s\" izan"
 
-#, fuzzy
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Okerreko zenbakia formatu katean: %ls"
+#: src/vscreen/config/column_definition.cc:211
+#, fuzzy, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Eredu-mota ezezaguna: %c"
 
-#, fuzzy
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "Parekatze indizea 1 edo handiago izan behar da; ezin da \"%s\" izan"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Eredu-mota ezezaguna: %c"
+#: src/vscreen/config/keybindings.cc:333
+#, fuzzy, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Ataza azalpenak irakurtzen"
 
+#: src/vscreen/config/keybindings.cc:343
 #, fuzzy
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Ataza azalpenak irakurtzen"
+msgid "Invalid null keybinding"
+msgstr "Sarrera baliogabea laster-teklen taldean: \"%s\""
 
-#, fuzzy
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Sarrera baliogabea laster-teklen taldean: \"%s\""
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr ""
+
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr ""
+
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr ""
+
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr ""
+
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr ""
+
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
+#~ msgstr ""
+#~ "Ezin da debtags hiztegia eskuratu, agian debtags ez dago instalaturik?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""

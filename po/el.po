@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_el\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2006-12-18 09:26+0200\n"
 "Last-Translator: quad-nrg.net <galaxico@quad-nrg.net>\n"
 "Language-Team: Greek <en@li.org>\n"
@@ -1062,11 +1062,13 @@ msgstr ""
 "η παράμετρος\n"
 "                  %s::CmdLine::Ignore-Trust-Violations είναι 'αληθής'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Ναι"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "Οχι"
 
@@ -2204,6 +2206,28 @@ msgstr "Ετικέτες"
 msgid "User Tags"
 msgstr "Ετικέτες"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Παρακαλώ εισάγετε το δίσκο με ετικέτα \"%s\" στη μονάδα CD-ROM \"%s\"."
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Επιτυχία "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "Μεταφόρτωση του "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "Μεταφορτώθηκε το "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "Μεταφόρτωση..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2228,19 +2252,20 @@ msgstr "Μεταφορτώθηκαν %sB σε %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nΜερικά πακέτα δεν κατέβηκαν επιτυχώς."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Συνέχεια"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Ακύρωση"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Συνολική Πρόοδος: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, απομένουν %s)"
@@ -2260,12 +2285,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "Μεταφόρτωση..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Παρακαλώ εισάγετε το δίσκο με ετικέτα \"%s\" στη μονάδα CD-ROM \"%s\"."
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "Εγκατάλειψη"
 
@@ -2276,6 +2296,11 @@ msgstr "[ΑΓΝΟΟΥΝΤΑΙ]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[ΣΦΑΛΜΑ]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "Εγινε μεταφόρτωση %sB σε %ss (%sB/s)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2291,10 +2316,6 @@ msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "Δεν μπόρεσα να βρω τον προσωπικό σας κατάλογο, σώζω στο αρχείο /tmp/"
 "function_pkgs!"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Επιτυχία "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2896,12 +2917,6 @@ msgstr "Βρέθηκαν πολλαπλές περιγραφές για την �
 msgid "Building tag database"
 msgstr "Δημιουργία βάσης των ετικετών"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
-"Δεν μπορώ να φορτώσω το λεξικό του debtags, πιθανά το debtags να μην είναι "
-"εγκατεστημένο;"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Αδύνατο το άνοιγμα του /usr/share/tasksel/debian-tasks.desc"
@@ -2925,6 +2940,10 @@ msgstr "Αδύνατη η διαγραφή του καταλόγου \"%s\""
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Αγνωστο σφάλμα"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "Ανεπαρκείς πηγές για την δημιουργία νήματος"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3637,6 +3656,8 @@ msgid "Number of mines: "
 msgstr "Αριθμός ναρκών: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Εντάξει"
 
@@ -5821,11 +5842,11 @@ msgstr ""
 "%ls: Μενού %ls: Βοήθεια %ls: Έξοδος %ls: Ενημέρωση %ls:Κατέβασμα/Εγκατάσταση/"
 "Αφαίρεση πακέτων"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "Ν"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "Ο"
 
@@ -5850,73 +5871,87 @@ msgstr "Μεταφόρτωση Αρχείου Αλλαγών"
 msgid "Download Changelog"
 msgstr "Κατέβασμα Αρχείου Αλλαγών"
 
-#~ msgid "Downloading "
-#~ msgstr "Μεταφόρτωση του "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "Διαμόρφωση του marker με απωλεσθέντα κωδικό διαμόρφωσης"
 
-#~ msgid "Got "
-#~ msgstr "Μεταφορτώθηκε το "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Λάθος αριθμός στην συμβολοσειρά διαμόρφωσης: '%ls'"
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "Μεταφόρτωση..."
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "Απουσιάζει αριθμός παράμετρου στην συμβολοσειρά διαμόρφωσης"
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "Εγινε μεταφόρτωση %sB σε %ss (%sB/s)."
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr ""
+"Οι αριθμοί της παραμέτρου πρέπει να είναι ίσοι ή μεγαλύτεροι από 1, όχι %ld"
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "Ανεπαρκείς πηγές για την δημιουργία νήματος"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Άγνωστος κωδικός διαμόρφωσης: '%lc'"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "Διαμόρφωση του marker με απωλεσθέντα κωδικό διαμόρφωσης"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "Λανθασμένη παράμετρος διαμόρφωσης"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Λάθος αριθμός στην συμβολοσειρά διαμόρφωσης: '%ls'"
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Αδυναμία parse της περιγραφής κλειδιού: %ls"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Απουσιάζει αριθμός παράμετρου στην συμβολοσειρά διαμόρφωσης"
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "Μη έγκυρη κενή δέσμευση απόδοσης πλήκτρων"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+"Λυπάμαι, τροποποιητές ελέγχου δεν θα πρέπει να χρησιμοποιούνται με μη "
+"εκτυπώσιμους χαρακτήρες"
+
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Ωχ!  Έλαβα το σήμα SIGTERM, έφυγα..\n"
+
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Ωχ!  Έλαβα το σήμα SIGSEGV, έφυγα..\n"
+
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Ωχ!  Έλαβα το σήμα SIGABRT, έφυγα..\n"
+
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Ωχ!  Έλαβα το σήμα SIGQUIT, έφυγα..\n"
+
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+"Αδυναμία φόρτωσης ονόματος αρχείου: η συμβολοσειρά %ls δεν έχει αναπαράσταση "
+"multibyte."
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "ΚΟΡΥΦΑΙΟ ΕΠΙΠΕΔΟ"
+
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 #~ msgstr ""
-#~ "Οι αριθμοί της παραμέτρου πρέπει να είναι ίσοι ή μεγαλύτεροι από 1, όχι %"
-#~ "ld"
-
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Άγνωστος κωδικός διαμόρφωσης: '%lc'"
-
-#~ msgid "Bad format parameter"
-#~ msgstr "Λανθασμένη παράμετρος διαμόρφωσης"
-
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Αδυναμία parse της περιγραφής κλειδιού: %ls"
-
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Μη έγκυρη κενή δέσμευση απόδοσης πλήκτρων"
-
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
-#~ msgstr ""
-#~ "Λυπάμαι, τροποποιητές ελέγχου δεν θα πρέπει να χρησιμοποιούνται με μη "
-#~ "εκτυπώσιμους χαρακτήρες"
-
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "Ωχ!  Έλαβα το σήμα SIGTERM, έφυγα..\n"
-
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "Ωχ!  Έλαβα το σήμα SIGSEGV, έφυγα..\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "Ωχ!  Έλαβα το σήμα SIGABRT, έφυγα..\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "Ωχ!  Έλαβα το σήμα SIGQUIT, έφυγα..\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr ""
-#~ "Αδυναμία φόρτωσης ονόματος αρχείου: η συμβολοσειρά %ls δεν έχει "
-#~ "αναπαράσταση multibyte."
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "ΚΟΡΥΦΑΙΟ ΕΠΙΠΕΔΟ"
+#~ "Δεν μπορώ να φορτώσω το λεξικό του debtags, πιθανά το debtags να μην "
+#~ "είναι εγκατεστημένο;"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""

@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2005-03-30 16:02+0800\n"
 "Last-Translator: Ryan Escarez <rescarez@gmail.com>\n"
 "Language-Team: Tagalog <debian-tl@banwa.upm.edu.ph>\n"
@@ -1040,11 +1040,13 @@ msgid ""
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Oo"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "Hindi"
 
@@ -2176,6 +2178,28 @@ msgstr "Tag"
 msgid "User Tags"
 msgstr "Tag"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Paki insert ang disc na may label \"%s\" sa loob ng drive \"%s\""
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Tumama "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "Kinukuha "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "Nakuha "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "Kinukuha..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2200,19 +2224,20 @@ msgstr "Nakuha %sB ng %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr ""
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Magpatuloy"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Kanselahin"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Pangkalahatan progreso: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, %s natitira)"
@@ -2232,12 +2257,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "Kinukuha..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Paki insert ang disc na may label \"%s\" sa loob ng drive \"%s\""
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 #, fuzzy
 msgid "Abort"
 msgstr "Hintuin.\n"
@@ -2249,6 +2269,11 @@ msgstr "[HAYAAN]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[ERROR]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "Nakuha %sB sa %ss (%sB/s)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2262,10 +2287,6 @@ msgstr "Hindi mabuksan para masulatan"
 #: src/edit_pkg_hier.cc:339
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Tumama "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2876,10 +2897,6 @@ msgstr "Maraming deskripsyon ang nakita para sa grupo %s, hayaan ang isa"
 msgid "Building tag database"
 msgstr ""
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Hindi mabuksan ang /usr/share/tasksel/debian-tasks.desc"
@@ -2904,6 +2921,10 @@ msgstr "Hindi ma-buksan ang %s para sulatan"
 #, fuzzy
 msgid "Unknown error"
 msgstr "Hindi kilala"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr ""
 
 #: src/generic/util/util.cc:273
 #, fuzzy, c-format
@@ -3624,6 +3645,8 @@ msgid "Number of mines: "
 msgstr "Bilang ng mines: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Ok"
 
@@ -5851,11 +5874,11 @@ msgid ""
 msgstr ""
 "%s: Menu  %s: Tulong %s: Quit %s: Apdeyt  %s: Kumuha/Instol/Tanggal ng Pkt"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "o"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "h"
 
@@ -5882,42 +5905,78 @@ msgstr "Kinukuha ang Changelog"
 msgid "Download Changelog"
 msgstr "Kinukuha ang Changelog"
 
-#~ msgid "Downloading "
-#~ msgstr "Kinukuha "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr ""
 
-#~ msgid "Got "
-#~ msgstr "Nakuha "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr ""
 
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr ""
+
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr ""
+
+#: src/vscreen/config/column_definition.cc:211
+#, fuzzy, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Di-kilalang anyo ng pattern: %c"
+
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr ""
+
+#: src/vscreen/config/keybindings.cc:333
+#, fuzzy, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Binabasa ang deskripsyon na gagawin"
+
+#: src/vscreen/config/keybindings.cc:343
 #, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "Kinukuha..."
+msgid "Invalid null keybinding"
+msgstr "Hindi-valid entry sa grupo ng keybinding: \"%s\""
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "Nakuha %sB sa %ss (%sB/s)."
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Di-kilalang anyo ng pattern: %c"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Aray!  Nakatanggap ng SIGTERM, namamatay..\n"
 
-#, fuzzy
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Binabasa ang deskripsyon na gagawin"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Aray!  Nakatanggap ng SIGSEGV, namamatay..\n"
 
-#, fuzzy
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Hindi-valid entry sa grupo ng keybinding: \"%s\""
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Aray!  Nakatanggap ng SIGABRT, namamatay..\n"
 
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "Aray!  Nakatanggap ng SIGTERM, namamatay..\n"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Aray!  Nakatanggap ng SIGQUIT, namamatay..\n"
 
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "Aray!  Nakatanggap ng SIGSEGV, namamatay..\n"
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
 
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "Aray!  Nakatanggap ng SIGABRT, namamatay..\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "Aray!  Nakatanggap ng SIGQUIT, namamatay..\n"
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr ""
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""

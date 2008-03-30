@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.10-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2008-02-19 20:44+0300\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
@@ -1136,11 +1136,13 @@ msgstr ""
 "*** ПРЕДУПРЕЖДЕНИЕ ***   Игнорирование этих надёжных противоречий, так как\n"
 "                  Apt::Get::AllowUnauthenticated установлено в 'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Да"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "Нет"
 
@@ -2293,6 +2295,28 @@ msgstr "Тег"
 msgid "User Tags"
 msgstr "Тег"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Вставьте диск, помеченный как \"%s\" в привод \"%s\""
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Из кеша: "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "Загрузка "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "Получен "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "Загрузка..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2317,19 +2341,20 @@ msgstr "Загружено %sБ в %s (%sБ/с)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nНесколько файлов не удалось загрузить."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr ""
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Отменить"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Всего: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sБ/с, %s осталось)"
@@ -2349,12 +2374,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "Загрузка..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Вставьте диск, помеченный как \"%s\" в привод \"%s\""
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 #, fuzzy
 msgid "Abort"
 msgstr "Прервать.\n"
@@ -2366,6 +2386,11 @@ msgstr "[ИГНОРИРОВАННО]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[ОШИБКА]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "Загружено %sБ в %ss (%sБ/с)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2380,10 +2405,6 @@ msgstr "Не удалось открыть \"%s\" для записи"
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "Не удалось обнаружить ваш домашний каталог, сохранение в /tmp/function_pkgs!"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Из кеша: "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2986,10 +3007,6 @@ msgstr "Найдено несколько описаний для группы %
 msgid "Building tag database"
 msgstr "Построение базы данных тегов"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr "Не удалось загрузить словарь debtags, возможно debtags не установлен?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Не удаётся открыть /usr/share/tasksel/debian-tasks.desc"
@@ -3013,6 +3030,10 @@ msgstr "Не удалось удалить временный каталог \"%
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Неизвестная ошибка"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr ""
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3710,6 +3731,8 @@ msgid "Number of mines: "
 msgstr "Количество мин: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Ok"
 
@@ -5853,11 +5876,11 @@ msgid ""
 "Pkgs"
 msgstr ""
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5882,30 +5905,82 @@ msgstr "Загрузка Changelog"
 msgid "Download Changelog"
 msgstr "Загрузить Changelog"
 
-#~ msgid "Downloading "
-#~ msgstr "Загрузка "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr ""
 
-#~ msgid "Got "
-#~ msgstr "Получен "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr ""
 
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr ""
+
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr ""
+
+#: src/vscreen/config/column_definition.cc:211
+#, fuzzy, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Неизвестный тип шаблона: %c"
+
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr ""
+
+#: src/vscreen/config/keybindings.cc:333
+#, fuzzy, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Чтение описаний задач"
+
+#: src/vscreen/config/keybindings.cc:343
 #, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "Загрузка..."
+msgid "Invalid null keybinding"
+msgstr "Неправильный элемент в группе привязки клавиш: \"%s\""
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "Загружено %sБ в %ss (%sБ/с)."
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Неизвестный тип шаблона: %c"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Чтение описаний задач"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Неправильный элемент в группе привязки клавиш: \"%s\""
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr ""
+
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr ""
+
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr ""
+
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
+#~ msgstr ""
+#~ "Не удалось загрузить словарь debtags, возможно debtags не установлен?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""

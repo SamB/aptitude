@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_0.2.13-2\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2006-04-20 08:19+0200\n"
 "Last-Translator: Aleix Badia i Bosch <a.badia@callusdigital.org>\n"
 "Language-Team: Catalan <debian-l10n-catalan@lists.debian.org>\n"
@@ -1046,11 +1046,13 @@ msgstr ""
 "*** Avís ***   S'estan ignorant les violacions de fiabilitat perquè\n"
 "              %s::CmdLine::Ignore-Trust-Violations és 'cert'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Sí"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "No"
 
@@ -2185,6 +2187,28 @@ msgstr "Marcadors"
 msgid "User Tags"
 msgstr "Marcadors"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Introduïu el disc etiquetat com a \"%s\" a la unitat \"%s\""
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Prem"
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "S'està baixant"
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "Obtingut/s "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "S'està baixant..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2209,19 +2233,20 @@ msgstr "Baixats %sB en %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nAlguns fitxers no s'ha descarregat satisfactòriament."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Continua"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Cancel·la"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Progrés total: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, %s restant)"
@@ -2241,12 +2266,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "S'està baixant..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Introduïu el disc etiquetat com a \"%s\" a la unitat \"%s\""
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "Abandona"
 
@@ -2257,6 +2277,11 @@ msgstr "[Ignorat]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[Error]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "Baixats %sB en %ss (%sB/s)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2272,10 +2297,6 @@ msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "No s'ha pogut cercar el vostre directori d'usuari, s'està desant a /tmp/"
 "function_pkgs!"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Prem"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2886,12 +2907,6 @@ msgstr ""
 msgid "Building tag database"
 msgstr "S'està generant la base de dades de marcadors"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
-"No s'ha pogut carregar el vocabular debtags, potser el debtags no està "
-"instal·lat?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "No s'ha pogut obrir /usr/share/tasksel/debian-tasks.desc"
@@ -2916,6 +2931,10 @@ msgstr "No s'ha pogut suprimir el directori \"%s\""
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Error desconegut"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "No es disposa de suficients recursos per crear el fil"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3625,6 +3644,8 @@ msgid "Number of mines: "
 msgstr "Nombre de mines: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "D'acord"
 
@@ -5819,11 +5840,11 @@ msgstr ""
 "%ls: Menú  %ls: Ajuda  %ls: Surt  %ls: Actualitza  %ls: Descarrega/Instal·la/"
 "Suprimeix Paquets"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5851,71 +5872,86 @@ msgstr "S'està baixant el registre de modificacions"
 msgid "Download Changelog"
 msgstr "Descarrega el registre de modificacions"
 
-#~ msgid "Downloading "
-#~ msgstr "S'està baixant"
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "S'està formatant el marcador amb el codi del format absent"
 
-#~ msgid "Got "
-#~ msgstr "Obtingut/s "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Número erroni en la cadena de format: '%ls'"
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "S'està baixant..."
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "Número de paràmetre absent en la cadena de format"
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "Baixats %sB en %ss (%sB/s)."
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "El nombres dels paràmetres han de ser 1 o superior, no %ld"
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "No es disposa de suficients recursos per crear el fil"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "El codi de formatat '%lc' és desconegut"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "S'està formatant el marcador amb el codi del format absent"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "Paràmetre de format erroni"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Número erroni en la cadena de format: '%ls'"
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "No s'ha pogut analitzar la descripció de la tecla: %ls"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Número de paràmetre absent en la cadena de format"
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "L'assignació de tecla nul·la no és vàlida"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "El nombres dels paràmetres han de ser 1 o superior, no %ld"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+"Perdoneu, els modificadors de control no s'haurien d'utilitzar amb caràcters "
+"no imprimibles"
 
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "El codi de formatat '%lc' és desconegut"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Uix!  s'ha obtingut un SIGTERM, s'està morint..\n"
 
-#~ msgid "Bad format parameter"
-#~ msgstr "Paràmetre de format erroni"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Uix!  s'ha obtingut un SIGSEGV, s'està morint\n"
 
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "No s'ha pogut analitzar la descripció de la tecla: %ls"
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Uix!  s'ha obtingut un SIGABRT, s'està morint\n"
 
-#~ msgid "Invalid null keybinding"
-#~ msgstr "L'assignació de tecla nul·la no és vàlida"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Uix!  s'ha obtingut un SIGQUIT, s'està morint..\n"
 
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+" No s'ha pogut carregar el fitxer: la cadena %ls no té representació "
+"multibyte,"
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "NIVELL MÀXIM"
+
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 #~ msgstr ""
-#~ "Perdoneu, els modificadors de control no s'haurien d'utilitzar amb "
-#~ "caràcters no imprimibles"
-
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "Uix!  s'ha obtingut un SIGTERM, s'està morint..\n"
-
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "Uix!  s'ha obtingut un SIGSEGV, s'està morint\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "Uix!  s'ha obtingut un SIGABRT, s'està morint\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "Uix!  s'ha obtingut un SIGQUIT, s'està morint..\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr ""
-#~ " No s'ha pogut carregar el fitxer: la cadena %ls no té representació "
-#~ "multibyte,"
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "NIVELL MÀXIM"
+#~ "No s'ha pogut carregar el vocabular debtags, potser el debtags no està "
+#~ "instal·lat?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""

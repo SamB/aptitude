@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
-"PO-Revision-Date: 2008-03-29 07:54+0100\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
+"PO-Revision-Date: 2008-03-30 09:37+0200\n"
 "Last-Translator: Christian Perrier <bubulle@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -1016,7 +1016,7 @@ msgstr "Impossible de lire la liste des sources"
 msgid "(for %s)"
 msgid_plural "(for %s)"
 msgstr[0] "(pour %s)"
-msgstr[1] "(pour %s)"
+msgstr[1] "pour %s)"
 
 #: src/cmdline/cmdline_prompt.cc:282 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
@@ -1170,11 +1170,13 @@ msgstr ""
 "*** ATTENTION *** violations de ces clauses de confiance ignorées parce que\n"
 "                  Apt::Get::AllowUnauthenticated a la valeur « true ».\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Oui"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "Non"
 
@@ -2330,6 +2332,27 @@ msgstr "Étiquettes"
 msgid "User Tags"
 msgstr "Étiquettes utilisateur"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Veuillez insérer le disque dont le nom est « %s » dans le lecteur « %s »"
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Atteint "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "Téléchargement "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "Reçu "
+
+#: src/download_bar.cc:144
+msgid "Downloading..."
+msgstr "Téléchargement..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2354,19 +2377,20 @@ msgstr " %so téléchargés en %s (%so/s) "
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nCertains fichiers n'ont pas été téléchargés avec succès."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Continuer"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Abandonner"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "État d'avancement : "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%so/s, il reste %s)"
@@ -2385,12 +2409,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "Téléchargement..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Veuillez insérer le disque dont le nom est « %s » dans le lecteur « %s »"
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "Abandon"
 
@@ -2401,6 +2420,11 @@ msgstr "[IGNORÉ]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[ERREUR]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "%so téléchargés en %ss (%so/s) "
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2416,10 +2440,6 @@ msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "Votre répertoire personnel est introuvable, enregistrement dans /tmp/"
 "function_pkgs !"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Atteint "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -3040,12 +3060,6 @@ msgstr ""
 msgid "Building tag database"
 msgstr "Construction de la base de données des étiquettes"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
-"Impossible de charger le vocabulaire de debtags, le paquet debtags est-il "
-"installé ?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Impossible d'ouvrir /usr/share/tasksel/debian-tasks.desc"
@@ -3069,6 +3083,10 @@ msgstr "Impossible de supprimer le répertoire temporaire « %s »"
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Erreur inconnue"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "Pas assez de ressources pour créer la tâche (« thread »)"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3776,6 +3794,8 @@ msgid "Number of mines: "
 msgstr "Nombre de mines : "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Continuer"
 
@@ -5952,11 +5972,11 @@ msgstr ""
 "%ls: Menu  %ls: Aide  %ls: Quitter  %ls: MAJ  %ls: Téléch./Install./Suppr. "
 "Paqts"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "o"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5982,4 +6002,81 @@ msgstr "Téléchargement du fichier « Changelog »"
 #: src/view_changelog.cc:242
 msgid "Download Changelog"
 msgstr "Téléchargement du fichier « Changelog »"
+
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "Formatage du marqueur avec le code manquant de formatage"
+
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Nombre incorrect dans la chaîne de formatage : « %ls »"
+
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "Paramètre manquant dans la chaîne de formatage"
+
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr ""
+"Les nombres passés en paramètre doivent être supérieurs ou égaux à 1, pas « %"
+"ld »"
+
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Code de formatage inconnu : « %lc »"
+
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "Paramètre de formatage incorrect"
+
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Impossible d'analyser la description de touche : %ls"
+
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "Affectation de touche vide non valable"
+
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+"Les modificateurs de contrôle ne peuvent pas être utilisés avec des "
+"caractères non imprimables"
+
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Signal SIGTERM reçu. Interruption...\n"
+
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Signal SIGSEV reçu. Interruption...\n"
+
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Signal SIGABRT reçu. Interruption...\n"
+
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Signal SIGQUIT reçu. Interruption...\n"
+
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid "Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+"Impossible de charger le nom de fichier : la chaîne « %ls » n'a pas de "
+"représentation multi-octets."
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "NIVEAU SUPÉRIEUR"
 

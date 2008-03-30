@@ -42,7 +42,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.0\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2006-10-19 23:41+0200\n"
 "Last-Translator: Danilo Piazzalunga <danilopiazza@gmail.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -1074,11 +1074,13 @@ msgstr ""
 "*** ATTENZIONE ***  Installazione di pacchetti non sicuri permessa perché\n"
 "                    %s::CmdLine::Ignore-Trust-Violations vale «true»\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Sì"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "No"
 
@@ -2207,6 +2209,31 @@ msgstr "Tag"
 msgid "User Tags"
 msgstr "Tag"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Inserire il disco chiamato «%s» nell'unità «%s»"
+
+# NdT: Indica che il file (Packages, Release, Sources) è già stato scaricato
+# e se ne possiede la copia aggiornata. Lo lascerei non tradotto perché è una
+# sorta di «cache hit».
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Hit "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "Scaricamento "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "Ricevuto "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "Scaricamento..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2231,19 +2258,20 @@ msgstr "Scaricato %sB in %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nImpossibile scaricare alcuni file."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Continua"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Annulla"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Avanzamento totale: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, %s alla fine)"
@@ -2263,12 +2291,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "Scaricamento..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Inserire il disco chiamato «%s» nell'unità «%s»"
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "Uscita"
 
@@ -2279,6 +2302,11 @@ msgstr "[IGNORATO]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[ERRORE]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "Scaricato %sB in %ss (%sB/s)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2293,13 +2321,6 @@ msgstr "Impossibile aprire %s in scrittura"
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "Impossibile determinare la directory home, salvato su /tmp/function_pkgs"
-
-# NdT: Indica che il file (Packages, Release, Sources) è già stato scaricato
-# e se ne possiede la copia aggiornata. Lo lascerei non tradotto perché è una
-# sorta di «cache hit».
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Hit "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2906,12 +2927,6 @@ msgstr ""
 msgid "Building tag database"
 msgstr "Costruzione del database dei tag"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
-"Impossibile caricare il vocabolario di debtags: forse debtags non è "
-"installato"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Impossibile aprire /usr/share/tasksel/debian-tasks.desc"
@@ -2935,6 +2950,10 @@ msgstr "Impossibile rimuovere la directory «%s»"
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Errore sconosciuto"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "Risorse insufficienti per creare un thread"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3643,6 +3662,8 @@ msgid "Number of mines: "
 msgstr "Numero di mine: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Ok"
 
@@ -5833,12 +5854,12 @@ msgstr ""
 "Rimuovi"
 
 # Put the appropriate key for Y/N choices here (lower case)
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "s"
 
 # Put the appropriate key for Y/N choices here (lower case)
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5863,70 +5884,85 @@ msgstr "Scaricamento del changelog"
 msgid "Download Changelog"
 msgstr "Scarica il changelog"
 
-#~ msgid "Downloading "
-#~ msgstr "Scaricamento "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "Marcatore di formato senza codice di formato"
 
-#~ msgid "Got "
-#~ msgstr "Ricevuto "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Numero non valido nella stringa di formato «%ls»"
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "Scaricamento..."
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "Manca il numero del parametro nella stringa di formato"
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "Scaricato %sB in %ss (%sB/s)."
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "Il numero del parametro deve essere maggiore o uguale a 1, non %ld"
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "Risorse insufficienti per creare un thread"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Codice di formato «%lc» sconosciuto"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "Marcatore di formato senza codice di formato"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "Parametro di formato non valido"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Numero non valido nella stringa di formato «%ls»"
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Impossibile analizzare la descrizione del tasto «%ls»"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Manca il numero del parametro nella stringa di formato"
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "Le assegnazioni dei tasti non possono essere vuote"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "Il numero del parametro deve essere maggiore o uguale a 1, non %ld"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+"Il modificatore Control non può essere usato con caratteri non stampabili"
 
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Codice di formato «%lc» sconosciuto"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Ricevuto il segnale SIGTERM. Uscita immediata.\n"
 
-#~ msgid "Bad format parameter"
-#~ msgstr "Parametro di formato non valido"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Ricevuto il segnale SIGSEGV. Uscita immediata.\n"
 
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Impossibile analizzare la descrizione del tasto «%ls»"
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Ricevuto il segnale SIGABRT. Uscita immediata.\n"
 
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Le assegnazioni dei tasti non possono essere vuote"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Ricevuto il segnale SIGQUIT. Uscita immediata.\n"
 
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+"Impossibile caricare il file: la stringa %ls non ha una rappresentazione "
+"multibyte."
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "LIVELLO SUPERIORE"
+
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 #~ msgstr ""
-#~ "Il modificatore Control non può essere usato con caratteri non stampabili"
-
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "Ricevuto il segnale SIGTERM. Uscita immediata.\n"
-
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "Ricevuto il segnale SIGSEGV. Uscita immediata.\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "Ricevuto il segnale SIGABRT. Uscita immediata.\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "Ricevuto il segnale SIGQUIT. Uscita immediata.\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr ""
-#~ "Impossibile caricare il file: la stringa %ls non ha una rappresentazione "
-#~ "multibyte."
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "LIVELLO SUPERIORE"
+#~ "Impossibile caricare il vocabolario di debtags: forse debtags non è "
+#~ "installato"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""

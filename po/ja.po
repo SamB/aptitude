@@ -182,7 +182,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2008-02-20 03:58+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
@@ -1313,11 +1313,13 @@ msgstr ""
 "*** 警告***   Apt::Get::AllowUnauthenticated が 'true' と\n"
 "              なっているので、これらの信頼侵害を無視しています!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Yes"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "No"
 
@@ -2483,6 +2485,28 @@ msgstr "タグ"
 msgid "User Tags"
 msgstr "タグ"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "\"%s\" というラベルのディスクを \"%s\" ドライブに入れてください"
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "発見 "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "ダウンロード中 "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "取得 "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "ダウンロード中..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2507,19 +2531,20 @@ msgstr "%sB を %s 秒でダウンロードしました (%sB/s)。"
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nいくつかのファイルはダウンロードできませんでした。"
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "続行"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "全体の進行状況: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/秒, 残り %s 秒)"
@@ -2539,12 +2564,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "ダウンロード中..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "\"%s\" というラベルのディスクを \"%s\" ドライブに入れてください"
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "中断"
 
@@ -2555,6 +2575,11 @@ msgstr "[無視]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[エラー]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "%sB を %s 秒でダウンロードしました (%sB/s)。"
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2569,10 +2594,6 @@ msgstr "\"%s\" を書き込み可能な状態で開けませんでした"
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "ホームディレクトリが調べられないので、/tmp/function_pkgs に保存しています!"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "発見 "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -3197,12 +3218,6 @@ msgstr "分類 %s に関する記述が複数見つかりました。一つを�
 msgid "Building tag database"
 msgstr "タグのデータベースを構築しています"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
-"debtags 定義集をロードできません。debtags がインストールされていないのではな"
-"いでしょうか?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "/usr/share/tasksel/debian-tasks.desc が開けません"
@@ -3226,6 +3241,10 @@ msgstr "ディレクトリを削除できません: \"%s\""
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "不明なエラーです"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "スレッドを作成するのに十分なリソースがありません"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3988,6 +4007,8 @@ msgid "Number of mines: "
 msgstr "地雷の数: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "OK"
 
@@ -6273,11 +6294,11 @@ msgstr ""
 "%ls: メニュー  %ls: ヘルプ  %ls: 終了  %ls: 更新  %ls: パッケージの 取得/導"
 "入/削除 "
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -6302,69 +6323,83 @@ msgstr "変更履歴をダウンロードしています"
 msgid "Download Changelog"
 msgstr "変更履歴をダウンロードしました"
 
-#~ msgid "Downloading "
-#~ msgstr "ダウンロード中 "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "フォーマット記号にフォーマットコードが入っていません"
 
-#~ msgid "Got "
-#~ msgstr "取得 "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "フォーマット文字列中に不正な数字があります: '%ls'"
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "ダウンロード中..."
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "フォーマット文字列中にパラメタ番号がありません"
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "%sB を %s 秒でダウンロードしました (%sB/s)。"
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "パラメタ番号は 1 以上でなければいけません。%ld は不適です"
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "スレッドを作成するのに十分なリソースがありません"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "フォーマットコードが不明です: '%lc'"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "フォーマット記号にフォーマットコードが入っていません"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "不正なフォーマットパラメタです"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "フォーマット文字列中に不正な数字があります: '%ls'"
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "キーの記述をパースできません: %ls"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "フォーマット文字列中にパラメタ番号がありません"
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "不正な null キーバインドです"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "パラメタ番号は 1 以上でなければいけません。%ld は不適です"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr "すみません。コントロール修飾子は印字不能文字と一緒には使えません"
 
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "フォーマットコードが不明です: '%lc'"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "痛い! SIGTERM を受け取りました。死亡……\n"
 
-#~ msgid "Bad format parameter"
-#~ msgstr "不正なフォーマットパラメタです"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "痛い! SIGSEGV を受け取りました。死亡……\n"
 
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "キーの記述をパースできません: %ls"
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "痛い! SIGABRT を受け取りました。死亡……\n"
 
-#~ msgid "Invalid null keybinding"
-#~ msgstr "不正な null キーバインドです"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "痛い! SIGQUIT を受け取りました。死亡……\n"
 
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
-#~ msgstr "すみません。コントロール修飾子は印字不能文字と一緒には使えません"
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+"ファイル名をロードできません。文字列 %ls にはマルチバイトの表現がありません。"
 
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "痛い! SIGTERM を受け取りました。死亡……\n"
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "トップレベル"
 
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "痛い! SIGSEGV を受け取りました。死亡……\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "痛い! SIGABRT を受け取りました。死亡……\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "痛い! SIGQUIT を受け取りました。死亡……\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 #~ msgstr ""
-#~ "ファイル名をロードできません。文字列 %ls にはマルチバイトの表現がありませ"
-#~ "ん。"
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "トップレベル"
+#~ "debtags 定義集をロードできません。debtags がインストールされていないのでは"
+#~ "ないでしょうか?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""

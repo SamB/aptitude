@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.4\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2006-11-05 15:47+0200\n"
 "Last-Translator: Jaakko Kangasharju <ashar@iki.fi>\n"
 "Language-Team: Jaakko Kangasharju <ashar@iki.fi>\n"
@@ -1031,11 +1031,13 @@ msgstr ""
 "*** VAROITUS ***   Sivuutan luottamuspuutteet koska\n"
 "                   %s::CmdLine::Ignore-Trust-Violations on 'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Kyllä"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "Ei"
 
@@ -2160,6 +2162,28 @@ msgstr "Merkit"
 msgid "User Tags"
 msgstr "Merkit"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Aseta levyke nimeltä \"%s\" asemaan \"%s\""
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Löytyi "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "Nouto: "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "Noudettu: "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "Noudan..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2184,19 +2208,20 @@ msgstr "Noudin %sB ajassa %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nJoidenkin tiedostojen nouto epäonnistui."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Jatka"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Edistyminen: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, %s jäljellä)"
@@ -2216,12 +2241,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "Noudan..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Aseta levyke nimeltä \"%s\" asemaan \"%s\""
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "Keskeytä"
 
@@ -2232,6 +2252,11 @@ msgstr "[SIVUUTETTU]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[VIRHE]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "Noudin %sB ajassa %ss (%sB/s)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2245,10 +2270,6 @@ msgstr "En pysty kirjoittamaan tiedostoon \"%s\""
 #: src/edit_pkg_hier.cc:339
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr "En pääse kotihakemistoosi, tallennan tiedostoon /tmp/function_pkgs!"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Löytyi "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2839,10 +2860,6 @@ msgstr "Ryhmällä %s on yli yksi kuvaus, sivuutan yhden"
 msgid "Building tag database"
 msgstr "Rakennan merkkitietokantaa"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr "Debtags-varaston lataus epäonnistui, onko debtags asennettu?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "En pystynyt avaamaan tiedostoa /usr/share/tasksel/debian-tasks.desc"
@@ -2866,6 +2883,10 @@ msgstr "En pysty poistamaan hakemistoa \"%s\""
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Tuntematon virhe"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "Resursseja ei ole tarpeeksi säikeen luontiin"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3544,6 +3565,8 @@ msgid "Number of mines: "
 msgstr "Miinojen lukumäärä: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Ok"
 
@@ -5700,11 +5723,11 @@ msgid ""
 msgstr ""
 "%ls: Valikko  %ls: Apu  %ls: Lopeta  %ls: Päivitä  %ls: Nouda/Asenna/Poista"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5729,69 +5752,81 @@ msgstr "Noudan muutoslokia"
 msgid "Download Changelog"
 msgstr "Nouda muutosloki"
 
-#~ msgid "Downloading "
-#~ msgstr "Nouto: "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "Muotoilupaikka ilman muotoilumerkkiä"
 
-#~ msgid "Got "
-#~ msgstr "Noudettu: "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Virheellinen luku muotoilussa '%ls'"
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "Noudan..."
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "Puuttuva luku muotoilussa"
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "Noudin %sB ajassa %ss (%sB/s)."
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "Annettujen lukujen on oltava vähintään 1, %ld ei käy"
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "Resursseja ei ole tarpeeksi säikeen luontiin"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Tuntematon muotoilusääntö: '%lc'"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "Muotoilupaikka ilman muotoilumerkkiä"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "Virheellinen muotoilu"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Virheellinen luku muotoilussa '%ls'"
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "En ymmärrä näppäinkuvausta %ls"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Puuttuva luku muotoilussa"
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "Virheellinen tyhjä näppäinsidonta"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "Annettujen lukujen on oltava vähintään 1, %ld ei käy"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr "Valitan, tulostumattomille merkeille ei voi antaa Control-määrettä"
 
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Tuntematon muotoilusääntö: '%lc'"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Auts!  Tuli SIGTERM, kuolen..\n"
 
-#~ msgid "Bad format parameter"
-#~ msgstr "Virheellinen muotoilu"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Auts!  Tuli SIGSEGV, kuolen..\n"
 
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "En ymmärrä näppäinkuvausta %ls"
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Auts!  Tuli SIGABRT, kuolen..\n"
 
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Virheellinen tyhjä näppäinsidonta"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Auts!  Tuli SIGQUIT, kuolen..\n"
 
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
-#~ msgstr "Valitan, tulostumattomille merkeille ei voi antaa Control-määrettä"
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+"Tiedostonimen lataus epäonnistui: merkkijonolla %ls ei ole monitavuesitystä."
 
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "Auts!  Tuli SIGTERM, kuolen..\n"
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "YLIN TASO"
 
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "Auts!  Tuli SIGSEGV, kuolen..\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "Auts!  Tuli SIGABRT, kuolen..\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "Auts!  Tuli SIGQUIT, kuolen..\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr ""
-#~ "Tiedostonimen lataus epäonnistui: merkkijonolla %ls ei ole "
-#~ "monitavuesitystä."
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "YLIN TASO"
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
+#~ msgstr "Debtags-varaston lataus epäonnistui, onko debtags asennettu?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""

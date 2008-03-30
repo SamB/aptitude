@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_nb\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2008-01-03 21:08+0100\n"
 "Last-Translator: Hans Fredrik Nordhaug <hans@nordhaug.priv.no>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
@@ -1108,11 +1108,13 @@ msgstr ""
 "*** ADVARSEL ***  Ignorerer disse tillitsbruddene fordi \n"
 "                  Apt::Get::AllowUnauthenticated er «true»!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Ja"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "Nei"
 
@@ -2250,6 +2252,28 @@ msgstr "Merker"
 msgid "User Tags"
 msgstr "Merker"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Sett inn CD-en merket med «%s» i stasjonen «%s»"
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Treff "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "Laster ned "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "Fikk "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "Laster ned ..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2274,19 +2298,20 @@ msgstr "Lasta ned %sB på %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nNoen filer ble ikke vellykket lastet ned."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Fortsett"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Totalt utført: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, %s igjen)"
@@ -2306,12 +2331,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "Laster ned ..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Sett inn CD-en merket med «%s» i stasjonen «%s»"
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "Avbryt"
 
@@ -2322,6 +2342,11 @@ msgstr "[IGNORERT]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[FEIL]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "Lasta ned %sB på %ss (%sB/s)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2335,10 +2360,6 @@ msgstr "Klarte ikke å åpne «%s» for skriving"
 #: src/edit_pkg_hier.cc:339
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr "Klarer ikke slå opp din hjemmemappe, lagrer til /tmp/function_pkgs!"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Treff "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2932,11 +2953,6 @@ msgstr "Flere beskrivelser er funnet for gruppe %s, ignorerer en"
 msgid "Building tag database"
 msgstr "Bygger merke-databasen"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
-"Klarer ikke laste ordlista til debtags, kanskje debtags ikke er installert?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Klarer ikke å åpne /usr/share/tasksel/debian-tasks.desc"
@@ -2960,6 +2976,10 @@ msgstr "Klarte ikke å fjerne den midlertidige katalogen «%s»"
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Ukjent feil"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "Ikke nok ressurser til å opprette en tråd"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3644,6 +3664,8 @@ msgid "Number of mines: "
 msgstr "Antall miner: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Ok"
 
@@ -5797,11 +5819,11 @@ msgstr ""
 "%ls: Meny  %ls: Hjelp  %ls: Avslutt  %ls: Oppdater  %ls: Last ned/installer/"
 "slett pakker"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "j"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5826,70 +5848,84 @@ msgstr "Laster ned endringslogg"
 msgid "Download Changelog"
 msgstr "Last ned endringslogg"
 
-#~ msgid "Downloading "
-#~ msgstr "Laster ned "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "Formatteringsmarkør mangler formatkode"
 
-#~ msgid "Got "
-#~ msgstr "Fikk "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Feil tall i formatstreng: «%ls»"
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "Laster ned ..."
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "Manglende parametertall i formatstreng"
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "Lasta ned %sB på %ss (%sB/s)."
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "Parametertall må være 1 eller større, ikke %ld"
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "Ikke nok ressurser til å opprette en tråd"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Ukjent formatteringskode: «%lc»"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "Formatteringsmarkør mangler formatkode"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "Feil formatparameter"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Feil tall i formatstreng: «%ls»"
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Kan ikke tolke tastebeskrivelse: %ls"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Manglende parametertall i formatstreng"
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "Ugyldig tom tastebinding"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "Parametertall må være 1 eller større, ikke %ld"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+"Beklager, modifikatortaster kan ikke brukes med tegn som ikke kan skrives"
 
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Ukjent formatteringskode: «%lc»"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Au!  Fikk signalet SIGTERM, avslutter ... \n"
 
-#~ msgid "Bad format parameter"
-#~ msgstr "Feil formatparameter"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Au!  Fikk signalet SIGSEGV, avslutter ... \n"
 
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Kan ikke tolke tastebeskrivelse: %ls"
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Au!  Fikk signalet SIGABRT, avslutter ... \n"
 
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Ugyldig tom tastebinding"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Au!  Fikk signalet SIGQUIT, avslutter ... \n"
 
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+"Klarer ikke laste filnavnet: strengen %ls har ingen flerbyte-representasjon."
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "ØVERSTE NIVÅ"
+
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 #~ msgstr ""
-#~ "Beklager, modifikatortaster kan ikke brukes med tegn som ikke kan skrives"
-
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "Au!  Fikk signalet SIGTERM, avslutter ... \n"
-
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "Au!  Fikk signalet SIGSEGV, avslutter ... \n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "Au!  Fikk signalet SIGABRT, avslutter ... \n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "Au!  Fikk signalet SIGQUIT, avslutter ... \n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr ""
-#~ "Klarer ikke laste filnavnet: strengen %ls har ingen flerbyte-"
-#~ "representasjon."
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "ØVERSTE NIVÅ"
+#~ "Klarer ikke laste ordlista til debtags, kanskje debtags ikke er "
+#~ "installert?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr "Intern bufferoverflyt på pakke «%s» under skriving av tilstandsfil"

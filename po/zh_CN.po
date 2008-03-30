@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2008-03-18 12:55+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
@@ -1072,11 +1072,13 @@ msgstr ""
 "*** 警告 ***  忽略这些违反信任机制的问题，因为\n"
 "              Apt::Get::AllowUnauthenticated 的值为“真”！\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "是"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "否"
 
@@ -2185,6 +2187,28 @@ msgstr "标签"
 msgid "User Tags"
 msgstr "用户标签"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "请将标号为“%s”的磁盘插入驱动器“%s”"
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "命中 "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "正在下载 "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "已取得 "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "正在下载... "
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2209,19 +2233,20 @@ msgstr "已下载 %sB，耗时 %s (%sB/s)。"
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%n某些文件无法下载。"
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "继续"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "取消"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "总进度："
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ]  (%sB/s, 剩下 %s)"
@@ -2240,12 +2265,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "正在下载... "
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "请将标号为“%s”的磁盘插入驱动器“%s”"
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "放弃"
 
@@ -2256,6 +2276,11 @@ msgstr "[忽略]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[错误]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "下载%sB，耗时 %ss (%sB/s)。"
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2269,10 +2294,6 @@ msgstr "无法打开“%s”以写入"
 #: src/edit_pkg_hier.cc:339
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr "无法查阅您的主目录，保存到 /tmp/function_pkgs！"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "命中 "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2856,10 +2877,6 @@ msgstr "发现组 %s 的多个描述，忽略其中一个"
 msgid "Building tag database"
 msgstr "创建标签数据库"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr "无法读取 debtags 关键词表，可能没有安装 debtags？"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "无法打开 /usr/share/tasksel/debian-tasks.desc"
@@ -2883,6 +2900,10 @@ msgstr "无法删除临时目录“%s”"
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "未知错误"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "没有足够的资源来创建线程"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3553,6 +3574,8 @@ msgid "Number of mines: "
 msgstr "地雷数量："
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "确定"
 
@@ -5627,11 +5650,11 @@ msgid ""
 "Pkgs"
 msgstr "%ls：菜单  %ls：帮助  %ls：退出  %ls：更新  %ls：下载/安装/删除软件包"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5656,67 +5679,80 @@ msgstr "正在下载变更日志"
 msgid "Download Changelog"
 msgstr "下载变更日志"
 
-#~ msgid "Downloading "
-#~ msgstr "正在下载 "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "格式化装置缺少格式化代码"
 
-#~ msgid "Got "
-#~ msgstr "已取得 "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "格式字符串里有错误的数字：%ls"
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "正在下载... "
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "格式化字串中缺少参数号码"
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "下载%sB，耗时 %ss (%sB/s)。"
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "参数号码必须为 1 或更大，而不是 %ld"
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "没有足够的资源来创建线程"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "未知的格式代码：%lc"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "格式化装置缺少格式化代码"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "错误的格式参数"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "格式字符串里有错误的数字：%ls"
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "无法解析键位说明：%ls"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "格式化字串中缺少参数号码"
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "无效的空快捷键绑定"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "参数号码必须为 1 或更大，而不是 %ld"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr "对不起，控制编辑器可能不能使用不可打印的字符"
 
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "未知的格式代码：%lc"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "啊！接收到 SIGTERM 信号，正在退出..\n"
 
-#~ msgid "Bad format parameter"
-#~ msgstr "错误的格式参数"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "啊！接收到 SIGSEGV 信号，正在退出..\n"
 
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "无法解析键位说明：%ls"
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "啊！接收到 SIGABRT 信号，正在退出..\n"
 
-#~ msgid "Invalid null keybinding"
-#~ msgstr "无效的空快捷键绑定"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "啊！接收到 SIGQUIT 信号，正在退出..\n"
 
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
-#~ msgstr "对不起，控制编辑器可能不能使用不可打印的字符"
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr "无法读取文件名：字符串“%ls”无法用多字节字符表示。"
 
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "啊！接收到 SIGTERM 信号，正在退出..\n"
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "顶层"
 
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "啊！接收到 SIGSEGV 信号，正在退出..\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "啊！接收到 SIGABRT 信号，正在退出..\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "啊！接收到 SIGQUIT 信号，正在退出..\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr "无法读取文件名：字符串“%ls”无法用多字节字符表示。"
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "顶层"
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
+#~ msgstr "无法读取 debtags 关键词表，可能没有安装 debtags？"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr "写入状态文件时包“%s”发生内部缓冲溢出"

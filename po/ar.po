@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2006-10-22 16:18+0300\n"
 "Last-Translator: Ossama M. Khayat <okhayat@yahoo.com>\n"
 "Language-Team: Arabic <support@arabeyes.org>\n"
@@ -1035,11 +1035,13 @@ msgstr ""
 "                   الخيار %s::CmdLine::Ignore-Trust-Violations محدد بالقيمة "
 "'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "نعم"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "لا"
 
@@ -2162,6 +2164,28 @@ msgstr "علامات"
 msgid "User Tags"
 msgstr "علامات"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "رجاء إدخال القرص المُعنون \"%s\" في السواقة \"%s\""
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "زيارة "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "تحميل "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "حُصل على "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "جاري التحميل..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2186,19 +2210,20 @@ msgstr "تم تنزيل %s بايت خلال %s (%s بايت/ثانية)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nلم يتم تنزيل بعض الملفات بنجاح."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "استمرار"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "إلغاء"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "التقدّم الكلي: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%s بايت/ثانية، %s متبقية)"
@@ -2218,12 +2243,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "جاري التحميل..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "رجاء إدخال القرص المُعنون \"%s\" في السواقة \"%s\""
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "إجهاض"
 
@@ -2234,6 +2254,11 @@ msgstr "[متجاهَل]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[خطأ]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "تم تنزيل %s بايت خلال %ss (%s بايت/ثانية)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2248,10 +2273,6 @@ msgstr "تعذر فتح \"%s\" للكتابة"
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "تعذر التعرف على مكان دليلك الموطن، لذا سيتم الحفظ في /tmp/function_pkgs!"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "زيارة "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2837,10 +2858,6 @@ msgstr "عُثر على عدّة أوصاف للمجموعة %s، تجاهل أ�
 msgid "Building tag database"
 msgstr "بناء قاعدة بيانات العلامات"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr "تعذر تحميل معجم debtags، ربما debtags غير مثبت؟"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "تعذر فتح /usr/share/tasksel/debian-tasks.desc"
@@ -2864,6 +2881,10 @@ msgstr "تعذرت إزالة الدليل \"%s\""
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "خطأ مجهول"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "ليست هناك موارد كافية لإنشاء عملية thread"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3538,6 +3559,8 @@ msgid "Number of mines: "
 msgstr "عدد الألغام: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "موافق"
 
@@ -5638,11 +5661,11 @@ msgid ""
 msgstr ""
 "%ls: قائمة  %ls: مساعدة  %ls: خروج  %ls: تحديث  %ls: تحميل/تثبيت/إزالة حزم"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5667,67 +5690,80 @@ msgstr "تنزيل سجل التغيير"
 msgid "Download Changelog"
 msgstr "تنزيل سجل التغيير"
 
-#~ msgid "Downloading "
-#~ msgstr "تحميل "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "علامة تنسيق مع رمز نسق مفقود"
 
-#~ msgid "Got "
-#~ msgstr "حُصل على "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "رقم سيء على صيغى سلسلة: '%ls'"
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "جاري التحميل..."
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "رقم المُعطى ناقص في سلسة أحرف النسق"
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "تم تنزيل %s بايت خلال %ss (%s بايت/ثانية)."
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "أرقام المُعطى يجب أن تكون 1 أو أكثر، وليس %ld"
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "ليست هناك موارد كافية لإنشاء عملية thread"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "رمز تنسيق مجهول: '%lc'"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "علامة تنسيق مع رمز نسق مفقود"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "مُعطى نسق سيء"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "رقم سيء على صيغى سلسلة: '%ls'"
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "تعذر إعراب وصف المفتاح: %ls"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "رقم المُعطى ناقص في سلسة أحرف النسق"
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "ربط أحرف فارغ غير صالح"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "أرقام المُعطى يجب أن تكون 1 أو أكثر، وليس %ld"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr "عذراً، لا يمكن استخدام مُعدِّلات التحكم مع الأحرف الغير قابلة للطباعة"
 
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "رمز تنسيق مجهول: '%lc'"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "أخ!  قابلت إشارة إنهاء SIGTERM، جاري التنفيذ..\n"
 
-#~ msgid "Bad format parameter"
-#~ msgstr "مُعطى نسق سيء"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "أخ!  قابلت إشارة SIGSEGV، جاري التنفيذ..\n"
 
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "تعذر إعراب وصف المفتاح: %ls"
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "آخ!  قابلت إشارة إجهاض SIGABRT، جاري التنفيذ..\n"
 
-#~ msgid "Invalid null keybinding"
-#~ msgstr "ربط أحرف فارغ غير صالح"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "آخ!  قابلت إشارة خروج SIGQUIT، جاري التنفيذ..\n"
 
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
-#~ msgstr "عذراً، لا يمكن استخدام مُعدِّلات التحكم مع الأحرف الغير قابلة للطباعة"
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr "تعذر تحميل اسم الملف: السلسلة %ls لا تملك صورة multibyte."
 
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "أخ!  قابلت إشارة إنهاء SIGTERM، جاري التنفيذ..\n"
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "المستوى الأعلى"
 
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "أخ!  قابلت إشارة SIGSEGV، جاري التنفيذ..\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "آخ!  قابلت إشارة إجهاض SIGABRT، جاري التنفيذ..\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "آخ!  قابلت إشارة خروج SIGQUIT، جاري التنفيذ..\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr "تعذر تحميل اسم الملف: السلسلة %ls لا تملك صورة multibyte."
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "المستوى الأعلى"
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
+#~ msgstr "تعذر تحميل معجم debtags، ربما debtags غير مثبت؟"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr "حصل فيض في المخزن الداخلي \"%s\" أثناء كتابة ملف الحالة"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2008-03-19 10:57+0000\n"
 "Last-Translator: Miguel Figueiredo <elmig@debianPT.org>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
@@ -1161,11 +1161,13 @@ msgstr ""
 " *** AVISO ***   A ignorar estas violações de confiança porque\n"
 "                 Apt::Get::AllowUnauthenticated é 'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Sim"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "Não"
 
@@ -2324,6 +2326,28 @@ msgstr "Tags"
 msgid "User Tags"
 msgstr "Tags do Utilizador"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Por favor insira o disco com o nome \"%s\" no leitor \"%s\""
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Atingiu "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "A transferir "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "Obteve "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "A transferir... "
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2348,19 +2372,20 @@ msgstr "Transferidos %sB em %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nAlguns ficheiros não foram transferidos com sucesso."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Continuar"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Progresso Total: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, faltam %s)"
@@ -2379,12 +2404,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "A transferir... "
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Por favor insira o disco com o nome \"%s\" no leitor \"%s\""
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "Abortar"
 
@@ -2395,6 +2415,11 @@ msgstr "[IGNORADO]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[ERRO]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "Transferidos %sB em %ss (%sB/s)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2409,10 +2434,6 @@ msgstr "Não foi possível abrir \"%s\" para escrita"
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "Não foi possível ver o seu directório home, a gravar para /tmp/function_pkgs!"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Atingiu "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -3034,12 +3055,6 @@ msgstr ""
 msgid "Building tag database"
 msgstr "A construir a base de dados de tags"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
-"Não foi possível carregar o vocabulário debtags, talvez o debtags não esteja "
-"instalado?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Não foi possível abrir /usr/share/tasksel/debian-tasks.desc"
@@ -3064,6 +3079,10 @@ msgstr "Não foi possível remover o directório temporário \"%s\""
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Erro desconhecido"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "Sem recursos suficientes para criar thread"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3782,6 +3801,8 @@ msgid "Number of mines: "
 msgstr "Número de minas: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Ok"
 
@@ -5965,11 +5986,11 @@ msgstr ""
 "%ls: Menu  %ls: Ajuda  %ls: Sair  %ls: Actualizar  %ls: Download/Instalar/"
 "Remover "
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "s"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5994,71 +6015,86 @@ msgstr "A efectuar a transferência do registo de alterações"
 msgid "Download Changelog"
 msgstr "Transferência do 'Changelog'"
 
-#~ msgid "Downloading "
-#~ msgstr "A transferir "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "Marcador de formatação com código de formato em falta"
 
-#~ msgid "Got "
-#~ msgstr "Obteve "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Número errado na string de formato: '%ls'"
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "A transferir... "
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "Falta número de parâmetro na string de formato"
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "Transferidos %sB em %ss (%sB/s)."
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "Números de parâmetro têm de ser 1 ou superior, não %ld"
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "Sem recursos suficientes para criar thread"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Código de formatação desconhecido: '%lc'"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "Marcador de formatação com código de formato em falta"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "Parâmetro de formato errado"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Número errado na string de formato: '%ls'"
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Não pode processar a descrição chave: %ls"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Falta número de parâmetro na string de formato"
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "Combinação de teclas nula inválida"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "Números de parâmetro têm de ser 1 ou superior, não %ld"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+"Desculpe, modificadores de controle não podem ser utilizados com caracteres "
+"não imprimíveis"
 
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Código de formatação desconhecido: '%lc'"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Ouch!  Recebi um SIGTERM, a morrer ..\n"
 
-#~ msgid "Bad format parameter"
-#~ msgstr "Parâmetro de formato errado"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Ouch ! Recebi um SIGSEV, a morrer..\n"
 
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Não pode processar a descrição chave: %ls"
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Ouch ! Recebi um SIGABRT, a morrer ..\n"
 
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Combinação de teclas nula inválida"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Ouch ! Recebi um SIGQUIT, a morrer..\n"
 
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+"Não foi possível carregar um nome de ficheiro: a string %ls não tem "
+"representação multibyte."
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "NÍVEL de TOPO"
+
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 #~ msgstr ""
-#~ "Desculpe, modificadores de controle não podem ser utilizados com "
-#~ "caracteres não imprimíveis"
-
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "Ouch!  Recebi um SIGTERM, a morrer ..\n"
-
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "Ouch ! Recebi um SIGSEV, a morrer..\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "Ouch ! Recebi um SIGABRT, a morrer ..\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "Ouch ! Recebi um SIGQUIT, a morrer..\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr ""
-#~ "Não foi possível carregar um nome de ficheiro: a string %ls não tem "
-#~ "representação multibyte."
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "NÍVEL de TOPO"
+#~ "Não foi possível carregar o vocabulário debtags, talvez o debtags não "
+#~ "esteja instalado?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""

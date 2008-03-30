@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2006-09-03 09:36-0700\n"
 "Last-Translator: Priti Patil <prithisd@gmail.com>\n"
 "Language-Team:  Marathi, janabhaaratii, C-DAC, Mumbai, India "
@@ -1024,11 +1024,13 @@ msgstr ""
 "**धोक्याची सूचना*** ह्या विश्वास उल्लंघनाकडे दुर्लक्ष करीत आहे, कारण \n"
 "%s::CmdLine::दुर्लक्ष करा - विश्वास-उल्लंघने हे 'सत्य' आहे !\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "होय"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "नाही"
 
@@ -2141,6 +2143,28 @@ msgstr "टॅग्ज (खुणेच्या पट्ट्या)"
 msgid "User Tags"
 msgstr "टॅग्ज (खुणेच्या पट्ट्या)"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "\"%s\"ड्राइव्हमध्ये \"%s\"नावाचे लेबल असलेली तबकडी कृपया आत घाला."
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "मारा"
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "डाउनलोडिंग (उतरवून घेत आहे)"
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "मिळाले"
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "डाउनलोडिंग (उतरवून घेत आहे)"
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2165,19 +2189,20 @@ msgstr " %s (%sB/s)मधील  %sBउतरवून घेतले.(डा�
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nकाही फाइल्स यशस्वीपणे उतरवून घेतल्या गेल्या नाहीत."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "पुढे सुरु ठेवा"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "रद्द करा."
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "एकूण प्रगती"
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr "[ %i%% ] (%sB/s, %s उरले आहे)"
@@ -2197,12 +2222,7 @@ msgstr "[ %i%% ]"
 msgid "Downloading... "
 msgstr "डाउनलोडिंग (उतरवून घेत आहे)"
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "\"%s\"ड्राइव्हमध्ये \"%s\"नावाचे लेबल असलेली तबकडी कृपया आत घाला."
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "विच्छेद करा"
 
@@ -2213,6 +2233,11 @@ msgstr "[IGNORED]((दुर्लक्ष केले)"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[ERROR] (चूक)"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "%ss (%sB/s) मधील %sB उतरवून घेतले(डाउनलोड केले)"
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2228,10 +2253,6 @@ msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "तुमच्या गृहसंचयिकेवर (आरंभ संचयिकेवर) नजर टाकण्यास असमर्थ,/tmp/"
 "function_pkgs!             मध्ये जतन करीत आहे"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "मारा"
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2825,10 +2846,6 @@ msgstr "गट =%s साठी अनेक वर्णने सापडल�
 msgid "Building tag database"
 msgstr "टॅग (खुणेचे चिन्ह) माहितीसंचाची बांधणी करीत आहे."
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr "debtags शब्दसंपदा भरती करण्यास असमर्थ, कदाचित debtagsसंस्थापित केला नसावा ?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "/usr/share/tasksel/debian-tasks.descउघडण्यास असमर्थ."
@@ -2852,6 +2869,10 @@ msgstr "\"%S\"  संचयिका काढून टाकण्यास �
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "अज्ञात त्रुटी"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "दोरा निर्माण करण्यासाठी पुरेसे उद्गमस्त्रोत नाहीत"
 
 #: src/generic/util/util.cc:273
 #, fuzzy, c-format
@@ -3537,6 +3558,8 @@ msgid "Number of mines: "
 msgstr "खाणींची संख्या ः"
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "ठीक आहे."
 
@@ -5666,11 +5689,11 @@ msgstr ""
 "%ls: मेनु  %ls: मदत  %ls: बाहेर  %ls: पुढील आवृत्तीत  %ls: डाउनलोड / संस्थापन / काढुन "
 "टाकणे  पॅकेजेस"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "हो की कळं"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "नाही की"
 
@@ -5695,67 +5718,81 @@ msgstr "चेंजलाॅग डाऊनलोड होत आहे."
 msgid "Download Changelog"
 msgstr "डाऊनलोड चेंजलाॅग"
 
-#~ msgid "Downloading "
-#~ msgstr "डाउनलोडिंग (उतरवून घेत आहे)"
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "न सापडलेल्या स्वरुप संकेत मार्कर"
 
-#~ msgid "Got "
-#~ msgstr "मिळाले"
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "फाॅरमॅट स्ट्रिंग (स्वरुप अक्षरसंच) '%ls' मध्ये चूकीचा वाईट आकडा."
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "डाउनलोडिंग (उतरवून घेत आहे)"
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "फाॅरमॅट स्ट्रिंग (स्वरुप अक्षरसंच) मध्ये मूल्य आकडा ठरवला आहे."
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "%ss (%sB/s) मधील %sB उतरवून घेतले(डाउनलोड केले)"
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "मूल्य आकडे १ किंवा अधिक असावा आणि %ld नाही."
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "दोरा निर्माण करण्यासाठी पुरेसे उद्गमस्त्रोत नाहीत"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "'%lc' संकेत अज्ञात परिचीत फाॅरमॅटींग (स्वरुप)"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "न सापडलेल्या स्वरुप संकेत मार्कर"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "चूकीचे स्वरुप मूल्य"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "फाॅरमॅट स्ट्रिंग (स्वरुप अक्षरसंच) '%ls' मध्ये चूकीचा वाईट आकडा."
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "कळ वर्णन मिळवता येत नाही: %ls"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "फाॅरमॅट स्ट्रिंग (स्वरुप अक्षरसंच) मध्ये मूल्य आकडा ठरवला आहे."
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "अवैध नल (शून्य) की जोड"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "मूल्य आकडे १ किंवा अधिक असावा आणि %ld नाही."
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr "क्षमस्व, प्रिंट न होणाऱ्या अक्षरांबरोबर कंट्रोल माॅडीफायर्स वापरता येणार नाहीत."
 
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "'%lc' संकेत अज्ञात परिचीत फाॅरमॅटींग (स्वरुप)"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "अोह !SIGTERM सापडले, ---जात आहे\n"
 
-#~ msgid "Bad format parameter"
-#~ msgstr "चूकीचे स्वरुप मूल्य"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr " अोह!SIGSEGV सापडले,---जात आहे \n"
 
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "कळ वर्णन मिळवता येत नाही: %ls"
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr " अोह!SIGABRT सापडले,--- जात आहे\n"
 
-#~ msgid "Invalid null keybinding"
-#~ msgstr "अवैध नल (शून्य) की जोड"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr " अोह!SIGQUIT सापडले,---जात आहे\n"
 
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
-#~ msgstr "क्षमस्व, प्रिंट न होणाऱ्या अक्षरांबरोबर कंट्रोल माॅडीफायर्स वापरता येणार नाहीत."
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr "फाईलनाव उरवण्यात असमर्थ ः अक्षरसंच %ls ला मल्टीबाईट रुप नाही. "
 
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "अोह !SIGTERM सापडले, ---जात आहे\n"
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "वरची पायरी"
 
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr " अोह!SIGSEGV सापडले,---जात आहे \n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr " अोह!SIGABRT सापडले,--- जात आहे\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr " अोह!SIGQUIT सापडले,---जात आहे\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr "फाईलनाव उरवण्यात असमर्थ ः अक्षरसंच %ls ला मल्टीबाईट रुप नाही. "
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "वरची पायरी"
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
+#~ msgstr ""
+#~ "debtags शब्दसंपदा भरती करण्यास असमर्थ, कदाचित debtagsसंस्थापित केला नसावा ?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""

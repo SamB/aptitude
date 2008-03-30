@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_0.4.6.1-1.1_nl\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2007-10-19 20:36+0200\n"
 "Last-Translator: Frans Pop <elendil@planet.nl>\n"
 "Language-Team: Dutch <debian-l10n-dutch@lists.debian.org>\n"
@@ -1046,11 +1046,13 @@ msgstr ""
 "*** WAARSCHUWING *** Deze vertrouwensschendingen worden genegeerd omdat\n"
 "                     Apt::Get::AllowUnauthenticated 'true' is!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Ja"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "Nee"
 
@@ -2192,6 +2194,28 @@ msgstr "Tags"
 msgid "User Tags"
 msgstr "Tags"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Plaats de schijf met opschrift \"%s\" in het station \"%s\""
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Geraakt: "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "Ophalen van "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "Gehaald: "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "Bezig met ophalen..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2216,19 +2240,20 @@ msgstr "%sB opgehaald in %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nEnkele bestanden zijn niet succesvol gedownload."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Ga verder"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Totale voortgang: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, %s overblijvend)"
@@ -2248,12 +2273,7 @@ msgstr "[ %i%% ]"
 msgid "Downloading... "
 msgstr "Bezig met ophalen..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Plaats de schijf met opschrift \"%s\" in het station \"%s\""
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "Breek af"
 
@@ -2264,6 +2284,11 @@ msgstr "[GENEGEERD]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[FOUT]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "%sB opgehaald in %ss (%sB/s)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2277,10 +2302,6 @@ msgstr "Kon \"%s\" niet openen om te schrijven"
 #: src/edit_pkg_hier.cc:339
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr "Kan uw thuismap niet opzoeken, bewaren in /tmp/function_pkgs!"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Geraakt: "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2885,11 +2906,6 @@ msgstr "Meerdere beschrijvingen gevonden voor groep %s, één wordt genegeerd"
 msgid "Building tag database"
 msgstr "Opbouwen van tagdatabase"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr ""
-"Kan debtags-woordenschat niet laden, misschien is debtags niet geïnstalleerd?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Kan /usr/share/tasksel/debian-task.desc niet openen"
@@ -2913,6 +2929,10 @@ msgstr "Kan map \"%s\" niet verwijderen"
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Onbekende fout"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "Niet genoeg bronnen om thread aan te maken"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3614,6 +3634,8 @@ msgid "Number of mines: "
 msgstr "Aantal mijnen: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Ok"
 
@@ -5796,11 +5818,11 @@ msgstr ""
 "%ls: Menu  %ls: Help  %ls: Afsluiten  %ls: Bijwerken  %ls: Ophalen/Inst./"
 "Verw. Pakketten"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "ja-toets"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "nee-toets"
 
@@ -5825,71 +5847,85 @@ msgstr "Changelog wordt opgehaald"
 msgid "Download Changelog"
 msgstr "Changelog Ophalen"
 
-#~ msgid "Downloading "
-#~ msgstr "Ophalen van "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "Opmaakaanduider zonder opmaakcode"
 
-#~ msgid "Got "
-#~ msgstr "Gehaald: "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Ongeldig getal in formaatstring: '%ls'"
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "Bezig met ophalen..."
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "Ontbrekend parametergetal in formaatstring"
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "%sB opgehaald in %ss (%sB/s)."
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "Parametergetallen moeten groter of gelijk zijn aan 1, niet %ld"
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "Niet genoeg bronnen om thread aan te maken"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Onbekende opmaakcode '%lc'"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "Opmaakaanduider zonder opmaakcode"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "Onjuiste opmaakparameter"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Ongeldig getal in formaatstring: '%ls'"
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Kan sleutelbeschrijving %ls niet ontleden"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Ontbrekend parametergetal in formaatstring"
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "Ongeldige null sleutelbinding"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "Parametergetallen moeten groter of gelijk zijn aan 1, niet %ld"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+"Sorry, controlemodificatoren mogen niet gebruikt worden met niet-printbare "
+"karakters"
 
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Onbekende opmaakcode '%lc'"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Kuch! Kreeg SIGTERM, stervend..\n"
 
-#~ msgid "Bad format parameter"
-#~ msgstr "Onjuiste opmaakparameter"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Kuch! Kreeg SIGSEGV, stervend..\n"
 
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Kan sleutelbeschrijving %ls niet ontleden"
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Kuch! Kreeg SIGABRT, stervend..\n"
 
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Ongeldige null sleutelbinding"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Kuch! Kreeg SIGQUIT, stervend..\n"
 
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+"Kan bestandsnaam niet laden; de string %ls heeft geen multibyte-voorstelling."
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "TOP NIVEAU"
+
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 #~ msgstr ""
-#~ "Sorry, controlemodificatoren mogen niet gebruikt worden met niet-"
-#~ "printbare karakters"
-
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "Kuch! Kreeg SIGTERM, stervend..\n"
-
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "Kuch! Kreeg SIGSEGV, stervend..\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "Kuch! Kreeg SIGABRT, stervend..\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "Kuch! Kreeg SIGQUIT, stervend..\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr ""
-#~ "Kan bestandsnaam niet laden; de string %ls heeft geen multibyte-"
-#~ "voorstelling."
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "TOP NIVEAU"
+#~ "Kan debtags-woordenschat niet laden, misschien is debtags niet "
+#~ "geïnstalleerd?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""

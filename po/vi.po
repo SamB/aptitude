@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2008-02-23 21:47+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -1117,11 +1117,13 @@ msgstr ""
 "••• CẢNH BÁO   Đang bỏ qua những việc vi pham sự tin vì\n"
 "              Apt::Get::AllowUnauthenticated là 'true' (đúng) •••\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Có"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "Không"
 
@@ -2267,6 +2269,29 @@ msgstr "Thẻ"
 msgid "User Tags"
 msgstr "Thẻ"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Hãy nạp đĩa có nhãn « %s » vào ổ « %s »"
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Lần ghé "
+
+#: src/download_bar.cc:83
+#, fuzzy
+msgid "Downloading "
+msgstr "Đang tải về..."
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr ""
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "Đang tải về..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2291,19 +2316,20 @@ msgstr "Đã tải về %sB trong %s (%sB/g)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nMột số tập tin chưa được tải về thành công."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Tiếp tục"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Thôi"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Tổng tiến hành: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/g, %s còn lại)"
@@ -2323,12 +2349,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "Đang tải về..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Hãy nạp đĩa có nhãn « %s » vào ổ « %s »"
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "Hủy bỏ"
 
@@ -2339,6 +2360,11 @@ msgstr "[ĐÃ BỎ QUA]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[LỖI]"
+
+#: src/download_screen.cc:188
+#, fuzzy, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "Đã tải về %sB trong %s (%sB/g)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2353,10 +2379,6 @@ msgstr "Không thể mở « %s » để ghi"
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "Không thể tra cứu thư mục chính của bạn nên lưu vào « /tmp/function_pkgs »."
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Lần ghé "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2962,10 +2984,6 @@ msgstr "Gặp nhiều mô tả cho nhóm %s nên bỏ qua một điều"
 msgid "Building tag database"
 msgstr "Đang xây dựng cơ sở dữ liệu thẻ"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr "Không thể nạp tự vựng debtags, có thể vì debtags chưa cài đặt không?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Không thể mở tập tin « /usr/share/tasksel/debian-tasks.desc »"
@@ -2989,6 +3007,10 @@ msgstr "Không thể xoá thư mục tạm thời « %s »"
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Lỗi không rõ"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr ""
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3685,6 +3707,8 @@ msgid "Number of mines: "
 msgstr "Số mìn: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "OK"
 
@@ -5832,11 +5856,11 @@ msgstr ""
 "%ls: Trình đơn  %ls: Trợ giúp  %ls: Thoát  %ls: Cập nhật  %ls: Tải về/Cài "
 "đặt/Bỏ gói"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "c"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "k"
 
@@ -5861,41 +5885,83 @@ msgstr "Đang tải về Bản ghi đổi"
 msgid "Download Changelog"
 msgstr "Tải về Bản ghi đổi"
 
-#, fuzzy
-#~ msgid "Downloading "
-#~ msgstr "Đang tải về..."
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "Đang tải về..."
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, fuzzy, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Chuỗi định dạng chứa số sai: %ls"
 
+#: src/vscreen/config/column_definition.cc:160
 #, fuzzy
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "Đã tải về %sB trong %s (%sB/g)."
+msgid "Missing parameter number in format string"
+msgstr "Chuỗi định dạng chứa số sai: %ls"
 
-#, fuzzy
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Chuỗi định dạng chứa số sai: %ls"
+#: src/vscreen/config/column_definition.cc:185
+#, fuzzy, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "Chỉ số khớp phải là 1 hoặc lớn hơn, không phải « %s »"
 
-#, fuzzy
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Chuỗi định dạng chứa số sai: %ls"
+#: src/vscreen/config/column_definition.cc:211
+#, fuzzy, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Không rõ kiểu hình mẫu : %c"
 
-#, fuzzy
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "Chỉ số khớp phải là 1 hoặc lớn hơn, không phải « %s »"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Không rõ kiểu hình mẫu : %c"
+#: src/vscreen/config/keybindings.cc:333
+#, fuzzy, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Đang đọc các mô tả tác vụ"
 
+#: src/vscreen/config/keybindings.cc:343
 #, fuzzy
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Đang đọc các mô tả tác vụ"
+msgid "Invalid null keybinding"
+msgstr "Gặp mục nhập không hợp lệ trong nhóm tổ hợp phím: « %s »"
 
-#, fuzzy
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Gặp mục nhập không hợp lệ trong nhóm tổ hợp phím: « %s »"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr ""
+
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr ""
+
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr ""
+
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr ""
+
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr ""
+
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
+#~ msgstr ""
+#~ "Không thể nạp tự vựng debtags, có thể vì debtags chưa cài đặt không?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr "Tràn bộ đệm nội bộ trên gói « %s » trong khi ghi tâp tin tình trạng"

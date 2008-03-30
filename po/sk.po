@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2008-03-17 15:59+0100\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -1135,11 +1135,13 @@ msgstr ""
 "*** UPOZORNENIE ***   Ignorujú sa uvedené pravidlá dôvery, pretože\n"
 "                      Apt::Get::AllowUnauthenticated je „zapnuté“!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Áno"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "Nie"
 
@@ -2283,6 +2285,28 @@ msgstr "Značky"
 msgid "User Tags"
 msgstr "Používateľské značky"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Vložte do mechaniky „%s“ disk s názvom „%s“"
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Cieľ "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "Sťahuje sa "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "Máme "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "Sťahuje sa..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2307,19 +2331,20 @@ msgstr "Stiahnuté %sB za %s (%s/B/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nNiektoré súbory sa nestiahli úspešne."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Pokračovať"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "Zrušiť"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Celkový postup:"
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, %s ostáva)"
@@ -2338,12 +2363,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "Sťahuje sa..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Vložte do mechaniky „%s“ disk s názvom „%s“"
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "Prerušiť"
 
@@ -2354,6 +2374,11 @@ msgstr "[IGNOROVANÝ]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[CHYBA]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "Stiahnuté %sB za %ss (%sB/s)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2368,10 +2393,6 @@ msgstr "Nie je možné otvoriť „%s“ na zápis"
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr ""
 "Nie je možné nájsť váš domovský priečinok, ukladá sa do /tmp/function_pkgs!"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "Cieľ "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2974,10 +2995,6 @@ msgstr "Na skupinu %s existuje viac popisov, niektoré sa ignorujú"
 msgid "Building tag database"
 msgstr "Vytvára sa databáza značiek"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr "Zlyhalo nahranie debtags slovníka, nie je snáď debtags nainštalovaný?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "Nedá sa otvoriť /usr/share/tasksel/debian-tasks.desc"
@@ -3001,6 +3018,10 @@ msgstr "Nedá sa odstrániť dočasný adresár „%s“"
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Neznáma chyba"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "Nedostatok zdrojov na vytvorenie vlákna"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3688,6 +3709,8 @@ msgid "Number of mines: "
 msgstr "Počet mín:"
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Ok"
 
@@ -5826,11 +5849,11 @@ msgstr ""
 "%ls: Menu  %ls: Pomoc  %ls: Koniec  %ls: Aktualizácia  %ls: Stiahnuť/"
 "Inštalovať/Odstrániť"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5855,70 +5878,84 @@ msgstr "Sťahuje sa záznam zmien (changelog)"
 msgid "Download Changelog"
 msgstr "Stiahnuť Changelog"
 
-#~ msgid "Downloading "
-#~ msgstr "Sťahuje sa "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "Formátovacia značka s chýbajúcim kódom formátovania"
 
-#~ msgid "Got "
-#~ msgstr "Máme "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Nesprávne číslo vo formátovacom reťazci: '%ls'"
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "Sťahuje sa..."
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "Chýbajúce číslo parametra vo formátovacom reťazci"
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "Stiahnuté %sB za %ss (%sB/s)."
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "Číslo parametra musí byť 1 alebo väčšie, nie %ld"
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "Nedostatok zdrojov na vytvorenie vlákna"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Neznámy formátovací kód '%lc'"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "Formátovacia značka s chýbajúcim kódom formátovania"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "Nesprávny formát parametra"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Nesprávne číslo vo formátovacom reťazci: '%ls'"
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Nedá sa spracovať popis kľúča : %ls"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Chýbajúce číslo parametra vo formátovacom reťazci"
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "Nesprávne null prepojenie klávesu"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "Číslo parametra musí byť 1 alebo väčšie, nie %ld"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+"Prepáčte, kontrolné modifikátory sa nesmú použiť s netlačiteľnými znakmi"
 
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Neznámy formátovací kód '%lc'"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Au!  Dostali sme SIGTERM, program sa ukončuje..\n"
 
-#~ msgid "Bad format parameter"
-#~ msgstr "Nesprávny formát parametra"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Au!  Dostali sme SIGSEGV, program sa ukončuje..\n"
 
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Nedá sa spracovať popis kľúča : %ls"
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Au!  Dostali sme SIGABRT, program sa ukončuje..\n"
 
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Nesprávne null prepojenie klávesu"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Au!  Dostali sme SIGQUIT, program sa ukončuje..\n"
 
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr ""
+"Nedá sa načítať názov súboru: reťazec %ls nemá žiadnu multibajtovú "
+"reprezentáciu."
+
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "NAJVYŠŠIA ÚROVEŇ"
+
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 #~ msgstr ""
-#~ "Prepáčte, kontrolné modifikátory sa nesmú použiť s netlačiteľnými znakmi"
-
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "Au!  Dostali sme SIGTERM, program sa ukončuje..\n"
-
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "Au!  Dostali sme SIGSEGV, program sa ukončuje..\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "Au!  Dostali sme SIGABRT, program sa ukončuje..\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "Au!  Dostali sme SIGQUIT, program sa ukončuje..\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr ""
-#~ "Nedá sa načítať názov súboru: reťazec %ls nemá žiadnu multibajtovú "
-#~ "reprezentáciu."
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "NAJVYŠŠIA ÚROVEŇ"
+#~ "Zlyhalo nahranie debtags slovníka, nie je snáď debtags nainštalovaný?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr "Pri zápise stavového súboru pretiekol interný buffer na balíku „%s“"

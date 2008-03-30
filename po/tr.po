@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-27 19:39-0700\n"
+"POT-Creation-Date: 2008-03-29 07:58+0100\n"
 "PO-Revision-Date: 2006-10-18 02:07+0300\n"
 "Last-Translator: Erçin EKER <ercin.eker@linux.org.tr>\n"
 "Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -1026,11 +1026,13 @@ msgstr ""
 "                  %s::CmdLine::Ignore-Trust-Violations 'true' olarak "
 "ayarlanmış!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:194
+#: src/vscreen/vs_util.cc:232
 msgid "Yes"
 msgstr "Evet"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:709 src/vscreen/vs_util.cc:195
+#: src/vscreen/vs_util.cc:233
 msgid "No"
 msgstr "Hayır"
 
@@ -2149,6 +2151,28 @@ msgstr "Etiketler"
 msgid "User Tags"
 msgstr "Etiketler"
 
+#: src/download_bar.cc:55 src/download_list.cc:342 src/download_screen.cc:62
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Lütfen \"%2$s\" sürücüsüne \"%1$s\" diskini yerleştirin"
+
+#: src/download_bar.cc:72 src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "İsabet "
+
+#: src/download_bar.cc:83
+msgid "Downloading "
+msgstr "İndiriliyor "
+
+#: src/download_bar.cc:94
+msgid "Got "
+msgstr "Alındı "
+
+#: src/download_bar.cc:144
+#, fuzzy
+msgid "Downloading..."
+msgstr "İndiriliyor..."
+
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
 #, c-format
@@ -2173,19 +2197,20 @@ msgstr "%sB %s de indirildi (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nBazı dosyalar indirilemedi."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:347 src/download_screen.cc:70
 msgid "Continue"
 msgstr "Devam"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/vscreen/vs_util.cc:345
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:216 src/download_screen.cc:209
 msgid "Total Progress: "
 msgstr "Toplam İlerleme: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:244 src/download_screen.cc:224
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, %s kaldı)"
@@ -2205,12 +2230,7 @@ msgstr " [ %i%% ]"
 msgid "Downloading... "
 msgstr "İndiriliyor..."
 
-#: src/download_list.cc:342
-#, c-format
-msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Lütfen \"%2$s\" sürücüsüne \"%1$s\" diskini yerleştirin"
-
-#: src/download_list.cc:349
+#: src/download_list.cc:349 src/download_screen.cc:73
 msgid "Abort"
 msgstr "İptal"
 
@@ -2221,6 +2241,11 @@ msgstr "[YOK SAYILDI]"
 #: src/download_list.cc:413
 msgid "[ERROR]"
 msgstr "[HATA]"
+
+#: src/download_screen.cc:188
+#, c-format
+msgid "Downloaded %sB in %ss (%sB/s)."
+msgstr "İndirildi: %2$ss'de %1$sB (%3$sB/s)."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2234,10 +2259,6 @@ msgstr "\"%s\" yazma amacıyla açılamadı"
 #: src/edit_pkg_hier.cc:339
 msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgstr "Ev klasörünüz belirlenedi, /tmp/function_pkgs olarak kaydediliyor!"
-
-#: src/generic/apt/acqprogress.cc:65
-msgid "Hit "
-msgstr "İsabet "
 
 #: src/generic/apt/acqprogress.cc:89
 msgid "Get:"
@@ -2826,10 +2847,6 @@ msgstr "%s için birden fazla tanım bulundu, biri yok sayılıyor"
 msgid "Building tag database"
 msgstr "Etiket veritabanı oluşturuluyor"
 
-#: src/generic/apt/tags.cc:257
-msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-msgstr "Debtags sözlüğü yüklenemiyor, debtags kurulu olmayabilir mi?"
-
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "/usr/share/tasksel/debian-tasks.desc açılamıyor"
@@ -2853,6 +2870,10 @@ msgstr "\"%s\" klasörü silinemiyor"
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
 msgstr "Bilinmeyen hata"
+
+#: src/generic/util/threads.cc:32
+msgid "Not enough resources to create thread"
+msgstr "Başlık oluşturmak için yeterli kaynak yok"
 
 #: src/generic/util/util.cc:273
 #, c-format
@@ -3538,6 +3559,8 @@ msgid "Number of mines: "
 msgstr "Mayın adedi: "
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:280 src/ui.cc:352
+#: src/vscreen/vs_util.cc:108 src/vscreen/vs_util.cc:121
+#: src/vscreen/vs_util.cc:304 src/vscreen/vs_util.cc:344
 msgid "Ok"
 msgstr "Tamam"
 
@@ -5686,11 +5709,11 @@ msgstr ""
 "%ls: Menü  %ls: Yardım  %ls: Çık  %ls: Güncelle  %ls: Paketleri İndir/Kur/"
 "Kaldır"
 
-#: src/ui.cc:2930
+#: src/ui.cc:2930 src/vscreen/vscreen.cc:727
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2931
+#: src/ui.cc:2931 src/vscreen/vscreen.cc:728
 msgid "no_key"
 msgstr "n"
 
@@ -5716,69 +5739,81 @@ msgstr "Changelog İndiriliyor"
 msgid "Download Changelog"
 msgstr "Changelog'u İndir"
 
-#~ msgid "Downloading "
-#~ msgstr "İndiriliyor "
+#: src/vscreen/config/column_definition.cc:105
+#: src/vscreen/config/column_definition.cc:123
+msgid "Formatting marker with missing format code"
+msgstr "Biçim işaretleyicisinden sonra biçim kodu unutulmuş"
 
-#~ msgid "Got "
-#~ msgstr "Alındı "
+#: src/vscreen/config/column_definition.cc:132
+#: src/vscreen/config/column_definition.cc:178
+#, c-format
+msgid "Bad number in format string: '%ls'"
+msgstr "Biçim dizgisinde hatalı sayı: '%ls'"
 
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "İndiriliyor..."
+#: src/vscreen/config/column_definition.cc:160
+msgid "Missing parameter number in format string"
+msgstr "Biçim dizgisinde sayı unutulmuş"
 
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "İndirildi: %2$ss'de %1$sB (%3$sB/s)."
+#: src/vscreen/config/column_definition.cc:185
+#, c-format
+msgid "Parameter numbers must be 1 or greater, not %ld"
+msgstr "Parametre numaraları 1 ya da daha büyük olmalı, %ld değil"
 
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "Başlık oluşturmak için yeterli kaynak yok"
+#: src/vscreen/config/column_definition.cc:211
+#, c-format
+msgid "Unknown formatting code '%lc'"
+msgstr "Bilinmeyen biçim kodu: '%lc'"
 
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "Biçim işaretleyicisinden sonra biçim kodu unutulmuş"
+#: src/vscreen/config/column_definition.cc:261
+msgid "Bad format parameter"
+msgstr "Kötü parametre biçimi"
 
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Biçim dizgisinde hatalı sayı: '%ls'"
+#: src/vscreen/config/keybindings.cc:333
+#, c-format
+msgid "Cannot parse key description: %ls"
+msgstr "Anahtar tanımlayıcı ayrıştırılamıyor: %ls"
 
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Biçim dizgisinde sayı unutulmuş"
+#: src/vscreen/config/keybindings.cc:343
+msgid "Invalid null keybinding"
+msgstr "Geçersiz boş tuş eşlemi"
 
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "Parametre numaraları 1 ya da daha büyük olmalı, %ld değil"
+#: src/vscreen/config/keybindings.cc:351
+msgid "Sorry, control modifiers may not be used with unprintable characters"
+msgstr ""
+"Üzgünüm, denetim değiştiricileri yazdırılamaz karakterler ile kullanılamaz"
 
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Bilinmeyen biçim kodu: '%lc'"
+#: src/vscreen/vscreen.cc:125
+#, c-format
+msgid "Ouch!  Got SIGTERM, dying..\n"
+msgstr "Annee! Sırtımdan SIGTERM'lendim, ölüyorum...\n"
 
-#~ msgid "Bad format parameter"
-#~ msgstr "Kötü parametre biçimi"
+#: src/vscreen/vscreen.cc:128
+#, c-format
+msgid "Ouch!  Got SIGSEGV, dying..\n"
+msgstr "Annee! Sırtımdan SIGSEGV'lendim, ölüyorum...\n"
 
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Anahtar tanımlayıcı ayrıştırılamıyor: %ls"
+#: src/vscreen/vscreen.cc:131
+#, c-format
+msgid "Ouch!  Got SIGABRT, dying..\n"
+msgstr "Annee! Sırtımdan SIGABRT'lendim, ölüyorum...\n"
 
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Geçersiz boş tuş eşlemi"
+#: src/vscreen/vscreen.cc:134
+#, c-format
+msgid "Ouch!  Got SIGQUIT, dying..\n"
+msgstr "Annee! Sırtımdan SIGQUIT'lendim, ölüyorum..\n"
 
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
-#~ msgstr ""
-#~ "Üzgünüm, denetim değiştiricileri yazdırılamaz karakterler ile kullanılamaz"
+#: src/vscreen/vs_pager.cc:439
+#, c-format
+msgid ""
+"Unable to load filename: the string %ls has no multibyte representation."
+msgstr "Dosya ismi yüklenemiyor: %ls dizgisi çoklu bayt gösterimi içermiyor."
 
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "Annee! Sırtımdan SIGTERM'lendim, ölüyorum...\n"
+#: src/vscreen/vs_tree.cc:942
+msgid "TOP LEVEL"
+msgstr "EN ÜST SEVİYE"
 
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "Annee! Sırtımdan SIGSEGV'lendim, ölüyorum...\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "Annee! Sırtımdan SIGABRT'lendim, ölüyorum...\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "Annee! Sırtımdan SIGQUIT'lendim, ölüyorum..\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr ""
-#~ "Dosya ismi yüklenemiyor: %ls dizgisi çoklu bayt gösterimi içermiyor."
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "EN ÜST SEVİYE"
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
+#~ msgstr "Debtags sözlüğü yüklenemiyor, debtags kurulu olmayabilir mi?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr "\"%s\" paketinde durum dosyası yazılırken iç tampon taşması"
