@@ -1,3 +1,96 @@
+[3/30/2008]
+Version 0.4.11.1                            "No, no, fool, I said bring
+                                             me the FLUFFY Bunny
+                                             Slippers of EXTREME
+                                             Dismemberment, not the
+                                             EXTREME Bunny Slippers
+                                             of FLUFFY dismemberment!
+                                             Does an evil overlord have
+                                             to do everything himself
+                                             around here?"
+
+- New features:
+
+  * The command-line argument --show-why will cause all installation
+    and removal commands to display a brief summary of the
+    dependencies related to an installation or removal.  For instance:
+
+        The following NEW packages will be installed:
+          libboost-iostreams1.34.1{a} (for wesnoth)  wesnoth
+          wesnoth-data{a} (for wesnoth)  wesnoth-music{a} (for wesnoth)
+
+    Note that wesnoth-music is a dependency of wesnoth-data, not
+    wesnoth.  --show-why displays the manually installed package
+    behind each automatic installation.  If -v is passed on the
+    command-line, it displays the entire chain of dependencies leading
+    to each manual package.
+
+    --show-why also handles upgrades:
+
+        The following packages will be upgraded:
+          klibc-utils  libklibc (for klibc-utils)
+
+    --show-why by the capabilities of the logic behind "aptitude why".
+    Although libklibc might be the package that was originally marked
+    for upgrade, --show-why has no knowledge of this fact: it just
+    knows that klibc-utils requires libklibc.
+
+  * In the ncurses interface, added a menu entry to cycle the display
+    in the lower pane (equivalent to pressing "i" but more
+    discoverable).
+
+  * The ncurses interface now displays the number of packages in a
+    tree next to the tree header, and in the information area when the
+    header is highlighted.
+
+  * The header for the list of versions in the ncurses interface now
+    reads "Versions of <package>" instead of just "Versions".
+
+  * A new extract-cache-subset command that will create a reduced copy
+    of the package cache, removing all but a given list of packages
+    and all references to packages not in the list.  It's intended
+    for, e.g., generating test cases for package managers.
+
+- Bug fixes:
+
+  + Crashes and serious errors:
+
+    * Handle exceptions thrown by the Debtags constructor (e.g., when
+      debtags has been purged and there are no data files) instead of
+      just crashing.  (Closes: #472695)
+
+    * Eliminate a case where we would access uninitialized memory
+      while starting up, found thanks to valgrind.
+
+  + Cosmetic and UI bugs:
+
+    * Correct the documentation within the on-line help of how to
+      leave the on-line help (it was never updated when the help went
+      from being a dialog to being a top-level view).
+
+    * Correctly save changes to string configuration options.
+      (Closes: #471315)
+
+    * Don't print an error on startup when debtags isn't
+      installed. (Closes: #472678)
+
+    * Use less technical language when "why" fails to find a
+      derivation for "A transitively requires B".
+
+    * Eliminated some cases where description signals for tree
+      headings weren't being connected.  These weren't noticable in
+      the past because in most cases, the heading had no description
+      anyway.
+
+- Translation updates:
+
+  * The aptitude-defaults.* files are now installed to
+    /usr/share/aptitude. (Closes: #472625)
+
+  * Simplified Chinese (Closes: #458162, #473363).
+
+  * Vietnamese (Closes: #473229)
+
 [3/15/2008]
 Version 0.4.11                              "When you're tired of
                                              being beat with a stick,
