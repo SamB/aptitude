@@ -30,10 +30,10 @@ Version 0.4.11.1                            "No, no, fool, I said bring
         The following packages will be upgraded:
           klibc-utils  libklibc (for klibc-utils)
 
-    --show-why by the capabilities of the logic behind "aptitude why".
-    Although libklibc might be the package that was originally marked
-    for upgrade, --show-why has no knowledge of this fact: it just
-    knows that klibc-utils requires libklibc.
+    --show-why is limited to the capabilities of the logic behind
+    "aptitude why".  Although libklibc might be the package that was
+    originally marked for upgrade, --show-why has no knowledge of this
+    fact: it just knows that klibc-utils requires libklibc.
 
   * In the ncurses interface, added a menu entry to cycle the display
     in the lower pane (equivalent to pressing "i" but more
