@@ -952,14 +952,16 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	<term><literal>--allow-new-upgrades</literal></term>
 
 	<listitem>
-	  When the safe resolver is being used (i.e., <link
-	  linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
-	  was passed or <link
-	  linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
-	  is set to <literal>true</literal>), allow the dependency
-	  resolver to install upgrades for packages even if <link
-	  linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></link>
-	  is set.
+	  <para>
+	    When the safe resolver is being used (i.e., <link
+	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+	    was passed or <link
+	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
+	    is set to <literal>true</literal>), allow the dependency
+	    resolver to install upgrades for packages even if <link
+	    linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></link>
+	    is set.
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -967,18 +969,20 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	<term><literal>--allow-new-installs</literal></term>
 
 	<listitem>
-	  Allow the <link
-	  linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
-	  command to install new packages; when the safe resolver is
-	  being used (i.e., <link
-	  linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
-	  was passed or <link
-	  linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
-	  is set to <literal>true</literal>), allow the dependency
-	  resolver to install new packages.  This option takes effect
-	  even if <link
-	  linkend='configSafe-Resolver-No-New-Installs'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
-	  is true.
+	  <para>
+	    Allow the <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    command to install new packages; when the safe resolver is
+	    being used (i.e., <link
+	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+	    was passed or <link
+	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
+	    is set to <literal>true</literal>), allow the dependency
+	    resolver to install new packages.  This option takes
+	    effect even if <link
+	    linkend='configSafe-Resolver-No-New-Installs'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
+	    is true.
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -986,9 +990,11 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	<term><literal>--allow-untrusted</literal></term>
 
 	<listitem>
-	  Install packages from untrusted sources without prompting.
-	  You should only use this if you know what you are doing, as
-	  it could easily compromise your system's security.
+	  <para>
+	    Install packages from untrusted sources without prompting.
+	    You should only use this if you know what you are doing,
+	    as it could easily compromise your system's security.
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -1108,14 +1114,16 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	<term><literal>--no-new-upgrades</literal></term>
 
 	<listitem>
-	  When the safe resolver is being used (i.e., <link
-	  linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
-	  was passed or <link
-	  linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
-	  is set to <literal>true</literal>), allow the dependency
-	  resolver to install new packages even if <link
-	  linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
-	  is set.
+	  <para>
+	    When the safe resolver is being used (i.e., <link
+	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+	    was passed or <link
+	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
+	    is set to <literal>true</literal>), allow the dependency
+	    resolver to install new packages even if <link
+	    linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
+	    is set.
+	  </para>
 	</listitem>
       </varlistentry>
 
@@ -1452,7 +1460,7 @@ The following NEW packages will be installed:
           <para>
 	    When combined with <literal>-v</literal> or a non-zero
 	    value for <link
-	    linkend='configCmdLineVerbose'><literal>Aptitude::CmdLine::Verbose</literal></link>,
+	    linkend='configCmdLine-Verbose'><literal>Aptitude::CmdLine::Verbose</literal></link>,
 	    this displays the entire chain of dependencies that lead
 	    each package to be installed.  For instance:
 	  </para>
