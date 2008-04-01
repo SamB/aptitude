@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-03-30 12:35-0700\n"
-"PO-Revision-Date: 2008-03-30 22:08+1030\n"
+"PO-Revision-Date: 2008-04-01 17:39+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -2163,9 +2163,8 @@ msgid "Install"
 msgstr "Cài"
 
 #: src/cmdline/cmdline_why.cc:286
-#, fuzzy
 msgid "InstallNotCurrent"
-msgstr "Đã cài"
+msgstr "Cài_cũ"
 
 #: src/cmdline/cmdline_why.cc:294
 msgid "allow_choices"
@@ -2221,9 +2220,9 @@ msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> bỏ qua, cha không phải phiên bản đã chọn\n"
 
 #: src/cmdline/cmdline_why.cc:492
-#, fuzzy
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
-msgstr "    ++   --> bỏ qua, cha không phải phiên bản đã chọn\n"
+msgstr ""
+"    ++   --> bỏ qua, quan hệ phụ thuộc được thỏa bởi phiên bản hiện thời\n"
 
 #: src/cmdline/cmdline_why.cc:522
 msgid "    ++   --> ENQUEUING\n"
@@ -2253,14 +2252,14 @@ msgid "The package \"%s\" is a starting point of the search.\n"
 msgstr "Gói « %s » là điểm bắt đầu tìm kiếm.\n"
 
 #: src/cmdline/cmdline_why.cc:957
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to remove %s.\n"
-msgstr "Không tìm thấy giải pháp để dụng."
+msgstr "Không tìm thấy lý do cần gỡ bỏ %s.\n"
 
 #: src/cmdline/cmdline_why.cc:959
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to install %s.\n"
-msgstr "Không tìm thấy giải pháp để dụng."
+msgstr "Không tìm thấy lý do cần cài đặt %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1004 src/cmdline/cmdline_why.cc:1030
 #: src/cmdline/cmdline_why.cc:1092
@@ -4404,9 +4403,9 @@ msgid "Packages which depend on %s"
 msgstr "Các gói phụ thuộc vào %s"
 
 #: src/pkg_info_screen.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid "Versions of %s"
-msgstr "Phiên bản"
+msgstr "Phiên bản của %s"
 
 #: src/pkg_item.cc:61
 msgid "Yes, I am aware this is a very bad idea"
@@ -4498,7 +4497,7 @@ msgstr "Bộ sửa phân cấp"
 #, c-format
 msgid "This group contains %d package."
 msgid_plural "This group contains %d packages."
-msgstr[0] ""
+msgstr[0] "Nhóm này chứa %d gói."
 
 #: src/pkg_tree.cc:175
 msgid "All Packages"
@@ -5553,7 +5552,7 @@ msgstr "Hiển thị thông tin thêm về gói đã chọn"
 
 #: src/ui.cc:2186
 msgid "C^ycle Package Information"
-msgstr ""
+msgstr "^Quay lại thông tin gói"
 
 #: src/ui.cc:2187
 msgid ""
@@ -5561,6 +5560,9 @@ msgid ""
 "package's long description, a summary of its dependency status, or an "
 "analysis of why the package is required."
 msgstr ""
+"Quay lại qua các chế độ của vùng thông tin gói: nó có thể hiển thị mô tả dài "
+"về gói, một bản tóm tắt về trạng thái phụ thuộc của nó, hoặc sự phân tích về "
+"lý do cần thiết gói đó."
 
 #: src/ui.cc:2190
 msgid "^Changelog"
@@ -5848,9 +5850,8 @@ msgid "^News"
 msgstr "Ti^n tức"
 
 #: src/ui.cc:2375
-#, fuzzy
 msgid "View the important changes made in each version of "
-msgstr "Xem những thay đổi quan trọng được làm trong mỗi phiên bản của %s"
+msgstr "Xem những thay đổi quan trọng được làm trong mỗi phiên bản của "
 
 #: src/ui.cc:2378
 msgid "^License"
