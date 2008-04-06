@@ -96,7 +96,7 @@ and what the caveats are.
       generally works as you expect.  To enforce the use of ref_ptr,
       all widget constructors are protected; static ::create methods
       are provided to actually allocate a new widget.  Because the
-      vscreen_widget class initializes its reference count to 1, the
+      cwidget::widget class initializes its reference count to 1, the
       ::create method should explicitly decref() its return value; see
       the existing ::create routines for examples.
 
@@ -119,7 +119,7 @@ and what the caveats are.
 
     - Beware sigc::bind.  sigc::bind is an easy way to create bad
       circularities; moreover, it's actually unsafe to bind a ref_ptr
-      as a slot argument.  The solution adopted in vscreen/ is to
+      as a slot argument.  The solution adopted in cwidget is to
       exploit sigc++ weak references.  If w is a ref_ptr, then rather
       than closing w, you should close over w.weak_ref().
 
@@ -131,10 +131,10 @@ and what the caveats are.
       a T&; the _bare method should simply instantiate a ref_ptr and
       call the main interface.  For instance,
 
-          void add_widget(const ref_ptr<vscreen_widget> &w);
-	  void add_widget_bare(vscreen_widget &w)
+          void add_widget(const ref_ptr<cwidget::widget> &w);
+	  void add_widget_bare(cwidget::widget &w)
 	  {
-	    add_widget(ref_ptr<vscreen_widget>(&w));
+	    add_widget(ref_ptr<cwidget::widget>(&w));
 	  }
 
       Obviously this is less than ideal, but it will work.  Be aware,

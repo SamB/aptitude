@@ -1,13 +1,13 @@
   The basic threading philosophy followed in aptitude can be
 summarized thus: "if you aren't sure it's safe, do it in the main
-thread".  The mechanism for doing so is vscreen_post_event
-(vscreen.cc), which places a callback object into the global event
-queue and wakes the main thread (if necessary).  You can also take a
-global lock to get the same effect...but it's really recommended that
-you use the event queue.
+thread".  The mechanism for doing so is cwidget::toplevel::post_event
+(cwidget/toplevel.h), which places a callback object into the global
+event queue and wakes the main thread (if necessary).  You can also
+take a global lock to get the same effect...but it's really
+recommended that you use the event queue.
 
   The actual threading constructs used are the pthread wrappers in
-src/generic/threads.h (and also src/generic/event_queue.h).
+cwidget/generic/threads.h (and also cwidget/generic/event_queue.h).
 
   Background threads are spawned to do long-running operations, but they
 generally only access data that is "owned" by the thread.  More
@@ -45,7 +45,7 @@ thread.
 
 Existing background threads:
 
-  * The vscreen library creates threads to handle keyboard input,
+  * The cwidget library creates threads to handle keyboard input,
     certain asynchronous signals, and timed events.  You generally
     don't need to worry about these.
 
