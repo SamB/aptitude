@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-03-30 12:35-0700\n"
-"PO-Revision-Date: 2008-03-20 05:27+0000\n"
+"PO-Revision-Date: 2008-04-07 10:30+0200\n"
 "Last-Translator: Jacobo Tarrío <jtarrio@debian.org>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -678,9 +678,9 @@ msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Non se puido atopar o paquete fonte para \"%s\".\n"
 
 #: src/cmdline/cmdline_action.cc:200
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to satisfy the build-depends: %s."
-msgstr "Non se puideron satisfacer as dependencias de compilación %s: ."
+msgstr "Non se puideron satisfacer as dependencias de compilación: %s."
 
 #: src/cmdline/cmdline_action.cc:230
 #, c-format
@@ -918,8 +918,10 @@ msgstr ""
 #, c-format
 msgid ""
 "extract-cache-entries: at least one argument is required (the directory\n"
-"to which to write files.\n"
+"to which to write files).\n"
 msgstr ""
+"extract-cache-entries: precísase de alomenos un argumento (o directorio no "
+"que gravar os ficheiros).\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:77
 #: src/cmdline/cmdline_user_tag.cc:116
@@ -931,6 +933,8 @@ msgstr "Non hai tal paquete \"%s\".\n"
 #, c-format
 msgid "No packages were selected by the given search pattern; nothing to do.\n"
 msgstr ""
+"Non se seleccionou ningún paquete co patrón de busca indicado; non hai nada "
+"que facer.\n"
 
 #: src/cmdline/cmdline_forget_new.cc:25
 #, c-format
@@ -992,8 +996,8 @@ msgstr "Non se puido ler a lista de orixes"
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(para %s)"
+msgstr[1] "(para %s)"
 
 #: src/cmdline/cmdline_prompt.cc:282 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
@@ -2173,9 +2177,8 @@ msgid "Install"
 msgstr "Instalar"
 
 #: src/cmdline/cmdline_why.cc:286
-#, fuzzy
 msgid "InstallNotCurrent"
-msgstr "Instalado"
+msgstr "InstalarNonActual"
 
 #: src/cmdline/cmdline_why.cc:294
 msgid "allow_choices"
@@ -2231,9 +2234,9 @@ msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> a omitir, o pai non é a versión seleccionada\n"
 
 #: src/cmdline/cmdline_why.cc:492
-#, fuzzy
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
-msgstr "    ++   --> a omitir, o pai non é a versión seleccionada\n"
+msgstr ""
+"    ++   --> a omitir, a dependencia queda satisfeita coa versión actual\n"
 
 #: src/cmdline/cmdline_why.cc:522
 msgid "    ++   --> ENQUEUING\n"
@@ -2263,14 +2266,14 @@ msgid "The package \"%s\" is a starting point of the search.\n"
 msgstr "O paquete \"%s\" é un punto inicial da busca.\n"
 
 #: src/cmdline/cmdline_why.cc:957
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to remove %s.\n"
-msgstr "Non se puido atopar unha solución para aplicar."
+msgstr "Non se puido atopar un motivo para eliminar %s.\n"
 
 #: src/cmdline/cmdline_why.cc:959
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to install %s.\n"
-msgstr "Non se puido atopar unha solución para aplicar."
+msgstr "Non se puido atopar un motivo para instalar %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1004 src/cmdline/cmdline_why.cc:1030
 #: src/cmdline/cmdline_why.cc:1092
@@ -4440,9 +4443,9 @@ msgid "Packages which depend on %s"
 msgstr "Paquetes que dependen de %s"
 
 #: src/pkg_info_screen.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid "Versions of %s"
-msgstr "Versións"
+msgstr "Versións de %s"
 
 #: src/pkg_item.cc:61
 msgid "Yes, I am aware this is a very bad idea"
@@ -4533,8 +4536,8 @@ msgstr "Editor de xerarquía"
 #, c-format
 msgid "This group contains %d package."
 msgid_plural "This group contains %d packages."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Este grupo contén %d paquete."
+msgstr[1] "Este grupo contén %d paquetes."
 
 #: src/pkg_tree.cc:175
 msgid "All Packages"
@@ -5599,7 +5602,7 @@ msgstr "Amosar máis información do paquete seleccionado"
 
 #: src/ui.cc:2186
 msgid "C^ycle Package Information"
-msgstr ""
+msgstr "Mái^s información dos paquetes"
 
 #: src/ui.cc:2187
 msgid ""
@@ -5607,6 +5610,9 @@ msgid ""
 "package's long description, a summary of its dependency status, or an "
 "analysis of why the package is required."
 msgstr ""
+"Pasar polos distintos modos da área de información dos paquetes: pode amosar "
+"a descrición longa do paquete, un resumo do estado das súas dependencias ou "
+"unha análise de por que o paquete é requirido."
 
 #: src/ui.cc:2190
 msgid "^Changelog"
@@ -5897,9 +5903,8 @@ msgid "^News"
 msgstr "^Novas"
 
 #: src/ui.cc:2375
-#, fuzzy
 msgid "View the important changes made in each version of "
-msgstr "Ver os cambios máis importantes en cada versión de %s"
+msgstr "Ver os cambios importantes en cada versión de "
 
 #: src/ui.cc:2378
 msgid "^License"
@@ -5976,9 +5981,8 @@ msgstr "Descargar rexistro de cambios"
 #~ msgid "Got "
 #~ msgstr "Rcb "
 
-#, fuzzy
 #~ msgid "Downloading..."
-#~ msgstr "A descargar... "
+#~ msgstr "A descargar..."
 
 #~ msgid "Downloaded %sB in %ss (%sB/s)."
 #~ msgstr "Descargáronse %sB en %ss (%sB/s)."
