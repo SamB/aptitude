@@ -1677,6 +1677,29 @@ private:
 
 	      return true;
 	    }
+
+	// Check whether a soft dependency is being left unresolved
+	// that this version could have satisfied and that's not
+	// approved-broken.
+	for(typename imm::set<dep>::const_iterator udi =
+	      s.get_unresolved_soft_deps().begin();
+	    udi != s.get_unresolved_soft_deps().end(); ++udi)
+	  {
+	    const dep ud(*udi);
+	    const bool is_approved_broken =
+	      user_approved_broken.find(ud) != user_approved_broken.end();
+	    if(!is_approved_broken && ud.solved_by(*ai))
+	      {
+		if(debug)
+		  {
+		    std::cout << ai->get_package().get_name() << " version " << ai->get_name() << " is avoided (by leaving " << ud << " unresolved) by the solution:" << std::endl;
+		    s.dump(std::cout);
+		    std::cout << std::endl;
+		  }
+
+		return true;
+	      }
+	  }
       }
 
     return false;
