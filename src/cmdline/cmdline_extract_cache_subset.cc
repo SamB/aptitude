@@ -40,7 +40,7 @@ namespace aptitude
     {
       if(argc < 2)
 	{
-	  fprintf(stderr, _("extract-cache-entries: at least one argument is required (the directory\nto which to write files.\n"));
+	  fprintf(stderr, _("extract-cache-entries: at least one argument is required (the directory\nto which to write files).\n"));
 	  return -1;
 	}
 
