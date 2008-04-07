@@ -894,6 +894,8 @@ namespace aptitude
       if(!resman->resolver_exists())
 	return true;
 
+      const bool debug = aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Debug", false);
+
       setup_safe_resolver(no_new_installs, no_new_upgrades);
 
       generic_solution<aptitude_universe> last_sol;
@@ -919,7 +921,20 @@ namespace aptitude
 		  it != sol.get_actions().end(); ++it)
 		{
 		  if(it->second.ver.get_ver() != it->second.ver.get_pkg().CurrentVer())
-		    resman->mandate_version(it->second.ver);
+		    {
+		      if(debug)
+			std::cout << "Mandating the upgrade or install " << it->second.ver
+				  << ", since it was produced as part of a solution."
+				  << std::endl;
+		      resman->mandate_version(it->second.ver);
+		    }
+		  else
+		    {
+		      if(debug)
+			std::cout << "Not mandating " << it->second.ver
+				  << ", since it is a hold."
+				  << std::endl;
+		    }
 		}
 	      last_sol = sol;
 	      resman->select_next_solution();
