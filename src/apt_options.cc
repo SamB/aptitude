@@ -208,8 +208,8 @@ option_item ui_options[]={
 		 "the status of ongoing downloads at the bottom of "
 		 "the screen, rather than opening a new view."),
 	      PACKAGE "::UI::Minibuf-Download-Bar", false),
-  option_item(N_("Display the extended description area by default"),
-	      N_("If this option is enabled, the long description "
+  option_item(N_("Display the information area by default"),
+	      N_("If this option is enabled, the information "
 		 "area (the pane at the bottom of the screen) in the "
 		 "package list will be visible when the program "
 		 "starts; otherwise, it will be initially hidden."),
