@@ -395,14 +395,6 @@ option_item dependency_options[]={
 		 "selected for installation or upgrade, due to apt bug "
 		 "#470035."),
 	      PACKAGE "::ProblemResolver::Allow-Break-Holds", false),
-  option_item(N_("Don't warn about the obsolete \"Recommends-Important\" option."),
-	      N_("If the configuration option %BRecommends-Important%b "
-                 "is set in the system configuration file, aptitude "
-                 "will warn you about it on start-up.  Enable this option "
-		 "to skip this warning (for instance, if your apt "
-		 "configuration is shared with a system that has an "
-		 "older version of aptitude installed)."),
-	      PACKAGE "::Dont-Warn-About-Recommends-Important", false),
   option_item()
 };
 
