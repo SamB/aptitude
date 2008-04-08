@@ -219,9 +219,10 @@ option_item ui_options[]={
 		 "of the screen listing the currently opened views."),
 	      PACKAGE "::UI::ViewTabs", true),
   option_item(N_("Display tabs for the information area"),
-	      N_("If this option is enabled, the information area (the "
-		 "pane at the bottom of the screen) will have tabs listing "
-		 "the views that can be displayed in it."),
+	      N_("If this option is enabled, tabs will appear at the top of "
+		 "the information area (the pane at the bottom of the screen) "
+		 "listing the different displays of information that can be "
+		 "viewed there."),
 	      PACKAGE "::UI::InfoAreaTabs", true),
   option_item(N_("Advance to the next item after changing the state of a package"),
 	      N_("If this option is enabled, then performing an "
