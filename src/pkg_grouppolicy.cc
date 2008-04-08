@@ -262,7 +262,8 @@ void pkg_grouppolicy_section::add_package(const pkgCache::PkgIterator &pkg,
       section=_("virtual");
       may_passthrough = true;
     }
-  else if(!pkg.VersionList().Section())
+  else if(!pkg.VersionList().Section() ||
+	  (*pkg.VersionList().Section()) == '\0')
     {
       section=_("Unknown");
       may_passthrough = true;

@@ -214,6 +214,16 @@ option_item ui_options[]={
 		 "package list will be visible when the program "
 		 "starts; otherwise, it will be initially hidden."),
 	      PACKAGE "::UI::Description-Visible-By-Default", true),
+  option_item(N_("Display tabs for the available views"),
+	      N_("If this option is enabled, tabs will appear at the top "
+		 "of the screen listing the currently opened views."),
+	      PACKAGE "::UI::ViewTabs", true),
+  option_item(N_("Display tabs for the information area"),
+	      N_("If this option is enabled, tabs will appear at the top of "
+		 "the information area (the pane at the bottom of the screen) "
+		 "listing the different displays of information that can be "
+		 "viewed there."),
+	      PACKAGE "::UI::InfoAreaTabs", true),
   option_item(N_("Advance to the next item after changing the state of a package"),
 	      N_("If this option is enabled, then performing an "
 		 "action on a package (for instance, installing or "
@@ -395,14 +405,6 @@ option_item dependency_options[]={
 		 "selected for installation or upgrade, due to apt bug "
 		 "#470035."),
 	      PACKAGE "::ProblemResolver::Allow-Break-Holds", false),
-  option_item(N_("Don't warn about the obsolete \"Recommends-Important\" option."),
-	      N_("If the configuration option %BRecommends-Important%b "
-                 "is set in the system configuration file, aptitude "
-                 "will warn you about it on start-up.  Enable this option "
-		 "to skip this warning (for instance, if your apt "
-		 "configuration is shared with a system that has an "
-		 "older version of aptitude installed)."),
-	      PACKAGE "::Dont-Warn-About-Recommends-Important", false),
   option_item()
 };
 

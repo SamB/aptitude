@@ -475,9 +475,9 @@ namespace aptitude
 	      }
 	    else
 	      {
-		pkgCache::VerIterator current = dep.TargetPkg().CurrentVer();
-		if(!current.end())
+		if((*apt_cache_file)[dep.TargetPkg()].Status != 2)
 		  {
+		    pkgCache::VerIterator current = dep.TargetPkg().CurrentVer();
 		    if(dep.TargetVer() == NULL ||
 		       _system->VS->CheckDep(current.VerStr(),
 					     dep->CompareOp,
