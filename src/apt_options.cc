@@ -214,6 +214,10 @@ option_item ui_options[]={
 		 "package list will be visible when the program "
 		 "starts; otherwise, it will be initially hidden."),
 	      PACKAGE "::UI::Description-Visible-By-Default", true),
+  option_item(N_("Display tabs for the available views"),
+	      N_("If this option is enabled, tabs will appear at the top "
+		 "of the screen listing the currently opened views."),
+	      PACKAGE "::UI::ViewTabs", true),
   option_item(N_("Display tabs for the information area"),
 	      N_("If this option is enabled, the information area (the "
 		 "pane at the bottom of the screen) will have tabs listing "
