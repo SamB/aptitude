@@ -535,6 +535,13 @@ namespace
 	return true;
       }
   }
+
+  void do_update_info_area_show_tabs(cw::widgets::multiplex &mBare)
+  {
+    cw::widgets::multiplex_ref m(&mBare);
+
+    m->set_show_tabs(aptcfg->FindB(PACKAGE "::UI::InfoAreaTabs", true));
+  }
 }
 
 cw::widget_ref make_package_view(list<package_view_item> &format,
@@ -655,10 +662,21 @@ cw::widget_ref make_package_view(list<package_view_item> &format,
 	    if(thetree.valid())
 	      e->commit_changes.connect(sigc::mem_fun(*thetree.unsafe_get_ref(), &cw::tree::line_down));
 
-	    m->add_visible_widget(e, false);
-	    m->add_visible_widget(wt, true);
-	    m->add_visible_widget(lt, true);
-	    m->add_visible_widget(why_table, true);
+	    m->add_widget(e, W_("Hierarchy Editor"));
+
+	    m->add_widget(wt, W_("Description"));
+	    wt->show_all();
+
+	    m->add_widget(lt, W_("Related Dependencies"));
+	    lt->show_all();
+
+	    m->add_widget(why_table, W_("Why Installed"));
+	    why_table->show_all();
+
+	    aptcfg->connect(PACKAGE "::UI::InfoAreaTabs",
+			    sigc::bind(sigc::ptr_fun(&do_update_info_area_show_tabs),
+				       m.weak_ref()));
+	    m->set_show_tabs(aptcfg->FindB(PACKAGE "::UI::InfoAreaTabs", true));
 
 	    if(show_reason_first)
 	      lt->show();
