@@ -697,12 +697,14 @@ cmdline_resolve_deps(pkgset &to_install,
 		  case '=':
 		  case '_':
 		  case ':':
-		    /// \todo Maybe only do auto-installation of dependencies
-		    /// after the parse?
-		    cmdline_parse_action(response, to_install, to_hold,
-					 to_remove, to_purge, verbose,
-					 policy, arch_only, false);
-		    modified_pkgs=true;
+		    {
+		      std::set<pkgCache::PkgIterator> seen_virtual_packages;
+		      cmdline_parse_action(response, seen_virtual_packages,
+					   to_install, to_hold,
+					   to_remove, to_purge, verbose,
+					   policy, arch_only, false);
+		      modified_pkgs=true;
+		    }
 		    break;
 		    // Undocumented debug feature:
 		  case '~':

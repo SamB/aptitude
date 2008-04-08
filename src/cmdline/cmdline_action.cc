@@ -28,6 +28,7 @@ namespace cw = cwidget;
 namespace
 {
   bool cmdline_do_build_depends(const string &pkg,
+				std::set<pkgCache::PkgIterator> &seen_virtual_packages,
 				cmdline_version_source version_source,
 				const string &version_source_string,
 				bool arch_only,
@@ -131,6 +132,7 @@ namespace
 			  {
 			    cmdline_applyaction(cmdline_install,
 						pkg,
+						seen_virtual_packages,
 						to_install, to_hold,
 						to_remove, to_purge,
 						verbose,
@@ -164,6 +166,7 @@ namespace
 		      {
 			cmdline_applyaction(cmdline_remove,
 					    pkg,
+					    seen_virtual_packages,
 					    to_install, to_hold,
 					    to_remove, to_purge,
 					    verbose,
@@ -208,6 +211,7 @@ namespace
 
 bool cmdline_applyaction(cmdline_pkgaction_type action,
 			 pkgCache::PkgIterator pkg,
+			 std::set<pkgCache::PkgIterator> &seen_virtual_packages,
 			 pkgset &to_install, pkgset &to_hold,
 			 pkgset &to_remove, pkgset &to_purge,
 			 int verbose,
@@ -222,23 +226,31 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
     {
       if(pkg.VersionList().end())
 	{
-	  for(pkgCache::PrvIterator prv=pkg.ProvidesList(); !prv.end(); ++prv)
+	  const bool seen_in_first_pass =
+	    seen_virtual_packages.find(pkg) != seen_virtual_packages.end();
+
+	  if(!seen_in_first_pass)
 	    {
-	      if(prv.OwnerPkg().CurrentVer()==prv.OwnerVer())
+	      for(pkgCache::PrvIterator prv=pkg.ProvidesList(); !prv.end(); ++prv)
 		{
-		  if(verbose>0)
-		    printf(_("Note: \"%s\", providing the virtual package\n      \"%s\", is already installed.\n"),
-			   prv.OwnerPkg().Name(), pkg.Name());
-		  return true;
-		}
-	      else if((*apt_cache_file)[prv.OwnerPkg()].InstVerIter(*apt_cache_file)==prv.OwnerVer())
-		{
-		  if(verbose>0)
-		    printf(_("Note: \"%s\", providing the virtual package\n      \"%s\", is already going to be installed.\n"),
-			   prv.OwnerPkg().Name(), pkg.Name());
-		  return true;
+		  if(prv.OwnerPkg().CurrentVer()==prv.OwnerVer())
+		    {
+		      if(verbose>0)
+			printf(_("Note: \"%s\", providing the virtual package\n      \"%s\", is already installed.\n"),
+			       prv.OwnerPkg().Name(), pkg.Name());
+		      return true;
+		    }
+		  else if((*apt_cache_file)[prv.OwnerPkg()].InstVerIter(*apt_cache_file)==prv.OwnerVer())
+		    {
+		      if(verbose>0)
+			printf(_("Note: \"%s\", providing the virtual package\n      \"%s\", is already going to be installed.\n"),
+			       prv.OwnerPkg().Name(), pkg.Name());
+		      return true;
+		    }
 		}
 	    }
+
+	  seen_virtual_packages.insert(pkg);
 
 	  // See if there's only one possible package to install.
 	  pkgvector cands;
@@ -252,24 +264,31 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 
 	  if(cands.size()==0)
 	    {
-	      printf(_("\"%s\" exists in the package database, but it is not a\nreal package and no package provides it.\n"),
+	      if(!seen_in_first_pass)
+		printf(_("\"%s\" exists in the package database, but it is not a\nreal package and no package provides it.\n"),
 		     pkg.Name());
 	      return false;
 	    }
 	  else if(cands.size()>1)
 	    {
-	      printf(_("\"%s\" is a virtual package provided by:\n"),
-		     pkg.Name());
-	      cmdline_show_pkglist(cands);
-	      printf(_("You must choose one to install.\n"));
+	      if(!seen_in_first_pass)
+		{
+		  printf(_("\"%s\" is a virtual package provided by:\n"),
+			 pkg.Name());
+		  cmdline_show_pkglist(cands);
+		  printf(_("You must choose one to install.\n"));
+		}
 	      return false;
 	    }
 	  else if(cands.size()==1)
-	      {
-		printf(_("Note: selecting \"%s\" instead of the\n      virtual package \"%s\"\n"),
-		       cands[0].Name(), pkg.Name());
-		pkg=cands[0];
-	      }
+	    {
+	      if(!seen_in_first_pass)
+		{
+		  printf(_("Note: selecting \"%s\" instead of the\n      virtual package \"%s\"\n"),
+			 cands[0].Name(), pkg.Name());
+		}
+	      pkg = cands[0];
+	    }
  	}
     }
 
@@ -377,6 +396,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
       break;
     case cmdline_build_depends:
       return cmdline_do_build_depends(pkg.Name(),
+				      seen_virtual_packages,
 				      source,
 				      sourcestr,
 				      arch_only,
@@ -394,6 +414,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 }
 
 bool cmdline_applyaction(string s,
+			 std::set<pkgCache::PkgIterator> &seen_virtual_packages,
 			 cmdline_pkgaction_type action,
 			 pkgset &to_install, pkgset &to_hold,
 			 pkgset &to_remove, pkgset &to_purge,
@@ -426,6 +447,7 @@ bool cmdline_applyaction(string s,
 	      i!=tasks->end(); ++i)
 	    if(*i==s)
 	      rval=cmdline_applyaction(action, pkg,
+				       seen_virtual_packages,
 				       to_install, to_hold, to_remove, to_purge,
 				       verbose, source,
 				       sourcestr,
@@ -468,6 +490,7 @@ bool cmdline_applyaction(string s,
 	  // Assume the user asked for a source package.
 	  if(action == cmdline_build_depends)
 	    return cmdline_do_build_depends(package,
+					    seen_virtual_packages,
 					    source,
 					    sourcestr,
 					    arch_only,
@@ -531,6 +554,7 @@ bool cmdline_applyaction(string s,
 	}
 
       rval = cmdline_applyaction(action, pkg,
+				 seen_virtual_packages,
 				 to_install, to_hold, to_remove, to_purge,
 				 verbose, source,
 				 sourcestr, policy, arch_only, allow_auto);
@@ -551,6 +575,7 @@ bool cmdline_applyaction(string s,
 
 	  if(apply_matcher(m, pkg, *apt_cache_file, *apt_package_records))
 	    rval = cmdline_applyaction(action, pkg,
+				       seen_virtual_packages,
 				       to_install, to_hold, to_remove, to_purge,
 				       verbose, source,
 				       sourcestr,
@@ -639,6 +664,7 @@ static bool parse_action_str(const string &s,
 }
 
 void cmdline_parse_action(string s,
+			  std::set<pkgCache::PkgIterator> &seen_virtual_packages,
 			  pkgset &to_install, pkgset &to_hold,
 			  pkgset &to_remove, pkgset &to_purge,
 			  int verbose,
@@ -674,7 +700,9 @@ void cmdline_parse_action(string s,
 	      while(loc<s.size() && !isspace(s[loc]))
 		pkgname+=s[loc++];
 
-	      if(!cmdline_applyaction(pkgname, action,
+	      if(!cmdline_applyaction(pkgname,
+				      seen_virtual_packages,
+				      action,
 				      to_install, to_hold,
 				      to_remove, to_purge,
 				      verbose, policy,

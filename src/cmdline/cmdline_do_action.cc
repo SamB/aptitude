@@ -237,6 +237,7 @@ int cmdline_do_action(int argc, char *argv[],
       // Conflicts too.
       const bool do_autoinstall = !safe_resolver && aptcfg->FindB(PACKAGE "::Auto-Install", true);
       const int num_passes = do_autoinstall ? 2 : 1;
+      std::set<pkgCache::PkgIterator> seen_virtual_packages;
       for(int pass = 0; pass < num_passes; ++pass)
 	{
 	  // Clear these to avoid undesirable interactions between the
@@ -250,7 +251,7 @@ int cmdline_do_action(int argc, char *argv[],
 	  for(std::vector<action_pair>::const_iterator it = actions.begin();
 	      it != actions.end(); ++it)
 	    {
-	      cmdline_applyaction(it->second, it->first,
+	      cmdline_applyaction(it->second, seen_virtual_packages, it->first,
 				  to_install, to_hold, to_remove, to_purge,
 				  verbose, policy, arch_only, pass > 0);
 	    }
