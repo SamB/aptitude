@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_km\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-04-07 21:11-0700\n"
+"POT-Creation-Date: 2008-04-07 21:44-0700\n"
 "PO-Revision-Date: 2006-10-06 11:24+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -1874,7 +1874,7 @@ msgid "Description: "
 msgstr "សេចក្ដីពណ៌នា ៖ "
 
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:252
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr ""
 
@@ -3669,7 +3669,7 @@ msgstr "ទំហំ Deb"
 msgid "Action"
 msgstr "អំពើ​"
 
-#: src/pkg_columnizer.cc:93 src/pkg_view.cc:667
+#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
 msgid "Description"
 msgstr "ពិពណ៌​នា​"
 
@@ -4277,7 +4277,7 @@ msgstr "ចុច​គ្រាប់ចុច​បញ្ចូល ដើម�
 msgid "Hierarchy editor"
 msgstr "កម្មវិធី​និពន្ធឋានានុក្រម"
 
-#: src/pkg_item.cc:462 src/pkg_view.cc:665
+#: src/pkg_item.cc:462 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "កម្មវិធី​និពន្ធ​ឋានានុក្រម"
 
@@ -4322,30 +4322,37 @@ msgstr "មិន​អាច​បម្លែង​អត្ថន័យ​ជ
 msgid "Couldn't parse column definition"
 msgstr "មិន​អាច​ញែក​អត្ថន័យ​ជួរឈរ​បាន​ឡើយ"
 
-#: src/pkg_view.cc:567
+#: src/pkg_view.cc:223
+#, fuzzy
+msgid ""
+"If you select a package, an explanation of why it should be installed or "
+"removed will appear in this space."
+msgstr "បើ​អ្នក​ជ្រើស​កញ្ចប់​មួយ សេចក្ដីពន្យល់​នៃ​ស្ថានភាព​បច្ចុប្បន្ន​របស់​វា នឹង​លេចឡើង​ត្រង់​នេះ ។"
+
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view ៖ កំហុស​ក្នុង​អាគុយម៉ង់ -- ធាតុ​ក្រាហ្វិក​ចម្បង​ពីរ ??"
 
-#: src/pkg_view.cc:573
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr "make_package_view ៖ កំហុស​នៅ​ក្នុង​អាគុយម៉ង់ -- បញ្ជី​ជួរឈរ​មិន​ត្រឹមត្រូវ សម្រាប់​ធាតុ​ថេរ"
 
-#: src/pkg_view.cc:670
+#: src/pkg_view.cc:678
 #, fuzzy
 msgid "Related Dependencies"
 msgstr "ដោះស្រាយ​ភាពអាស្រ័យ​"
 
-#: src/pkg_view.cc:673
+#: src/pkg_view.cc:681
 #, fuzzy
 msgid "Why Installed"
 msgstr "បាន​ដំឡើង"
 
-#: src/pkg_view.cc:692
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view ៖ អាគុយម៉ង់​មិន​ល្អ"
 
-#: src/pkg_view.cc:744
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view ៖ រក​មិន​ឃើញ​ធាតុ​ក្រាហ្វិក​ចម្បង"
 

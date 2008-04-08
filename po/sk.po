@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-04-07 21:11-0700\n"
+"POT-Creation-Date: 2008-04-07 21:44-0700\n"
 "PO-Revision-Date: 2008-03-17 15:59+0100\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -2019,7 +2019,7 @@ msgid "Description: "
 msgstr "Popis: "
 
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:252
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr "Domovská stránka:"
 
@@ -3848,7 +3848,7 @@ msgstr "VelBal"
 msgid "Action"
 msgstr "Akcia"
 
-#: src/pkg_columnizer.cc:93 src/pkg_view.cc:667
+#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
 msgid "Description"
 msgstr "Popis"
 
@@ -4463,7 +4463,7 @@ msgstr "Na pokračovanie stlačte enter.\n"
 msgid "Hierarchy editor"
 msgstr "Editor hierarchie"
 
-#: src/pkg_item.cc:462 src/pkg_view.cc:665
+#: src/pkg_item.cc:462 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "Editor Hierarchie"
 
@@ -4508,30 +4508,37 @@ msgstr "Nie je možné vykonať cw::util::transcode definície stĺpca"
 msgid "Couldn't parse column definition"
 msgstr "Nedá sa spracovať definícia stĺpca"
 
-#: src/pkg_view.cc:567
+#: src/pkg_view.cc:223
+#, fuzzy
+msgid ""
+"If you select a package, an explanation of why it should be installed or "
+"removed will appear in this space."
+msgstr "Ak si zvolíte balík, objaví sa tu popis jeho aktuálneho stavu."
+
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: chyba v argumentoch -- dva hlavné widgety??"
 
-#: src/pkg_view.cc:573
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr "make_package_view: chyba v argumentoch -- chybný zoznam stĺpcov"
 
-#: src/pkg_view.cc:670
+#: src/pkg_view.cc:678
 #, fuzzy
 msgid "Related Dependencies"
 msgstr "Riešiť Závislosti"
 
-#: src/pkg_view.cc:673
+#: src/pkg_view.cc:681
 #, fuzzy
 msgid "Why Installed"
 msgstr "Nainštalovaný"
 
-#: src/pkg_view.cc:692
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: chybný argument!"
 
-#: src/pkg_view.cc:744
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: nebol nájdený hlavný widget"
 

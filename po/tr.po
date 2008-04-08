@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-04-07 21:11-0700\n"
+"POT-Creation-Date: 2008-04-07 21:44-0700\n"
 "PO-Revision-Date: 2006-10-18 02:07+0300\n"
 "Last-Translator: Erçin EKER <ercin.eker@linux.org.tr>\n"
 "Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -1887,7 +1887,7 @@ msgid "Description: "
 msgstr "Tanım: "
 
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:252
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr ""
 
@@ -3695,7 +3695,7 @@ msgstr "DebBoyu"
 msgid "Action"
 msgstr "Eylem"
 
-#: src/pkg_columnizer.cc:93 src/pkg_view.cc:667
+#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
 msgid "Description"
 msgstr "Açıklama"
 
@@ -4314,7 +4314,7 @@ msgstr "Devam etmek için enter tuşuna basın.\n"
 msgid "Hierarchy editor"
 msgstr "Hiyerarşi düzenleyici"
 
-#: src/pkg_item.cc:462 src/pkg_view.cc:665
+#: src/pkg_item.cc:462 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "Hiyerarşi Düzenleyici"
 
@@ -4358,31 +4358,40 @@ msgstr "Sütun tanımı kod dönüşümü yapılamıyor"
 msgid "Couldn't parse column definition"
 msgstr "Sütun tanımlaması ayrıştırılamıyor"
 
-#: src/pkg_view.cc:567
+#: src/pkg_view.cc:223
+#, fuzzy
+msgid ""
+"If you select a package, an explanation of why it should be installed or "
+"removed will appear in this space."
+msgstr ""
+"Bir paket seçerseniz, şu andaki durumu ile ilgili bir açıklama burada "
+"görünecek."
+
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: ifadelerde hata -- iki ana pencere mi olacak??"
 
-#: src/pkg_view.cc:573
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: ifadelerde hata -- kalıcı öğe için yanlış kolon listesi"
 
-#: src/pkg_view.cc:670
+#: src/pkg_view.cc:678
 #, fuzzy
 msgid "Related Dependencies"
 msgstr "Bağımlılıkları çözümle"
 
-#: src/pkg_view.cc:673
+#: src/pkg_view.cc:681
 #, fuzzy
 msgid "Why Installed"
 msgstr "Kurulu"
 
-#: src/pkg_view.cc:692
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: hatalı ifade!"
 
-#: src/pkg_view.cc:744
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: Ana nesne bulunamadı"
 

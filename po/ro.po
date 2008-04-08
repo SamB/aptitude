@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ro\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-04-07 21:11-0700\n"
+"POT-Creation-Date: 2008-04-07 21:44-0700\n"
 "PO-Revision-Date: 2008-03-13 14:36+0200\n"
 "Last-Translator: Eddy Petrișor <eddy.petrisor@gmail.com>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
@@ -2059,7 +2059,7 @@ msgid "Description: "
 msgstr "Descriere: "
 
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:252
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr "Pagina de internet: "
 
@@ -3924,7 +3924,7 @@ msgstr "DimDeb"
 msgid "Action"
 msgstr "Acțiune"
 
-#: src/pkg_columnizer.cc:93 src/pkg_view.cc:667
+#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
 msgid "Description"
 msgstr "Descriere"
 
@@ -4547,7 +4547,7 @@ msgstr "Apasați Enter pentru a continua\n"
 msgid "Hierarchy editor"
 msgstr "Editor de ierarhie"
 
-#: src/pkg_item.cc:462 src/pkg_view.cc:665
+#: src/pkg_item.cc:462 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "Editor de ierarhie"
 
@@ -4592,32 +4592,41 @@ msgstr "Nu s-a putut efectua cw::util::transcode pe definiția coloanei"
 msgid "Couldn't parse column definition"
 msgstr "Nu s-a putut analiza definiția coloanei"
 
-#: src/pkg_view.cc:567
+#: src/pkg_view.cc:223
+#, fuzzy
+msgid ""
+"If you select a package, an explanation of why it should be installed or "
+"removed will appear in this space."
+msgstr ""
+"Dacă alegeți un pachet, o explicație a stării curente va apărea în acest "
+"spațiu."
+
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: eroare în argumente -- două widget-uri principale??"
 
-#: src/pkg_view.cc:573
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: eroare în argumente -- coloană nevalidă de listă pentru "
 "articol static"
 
-#: src/pkg_view.cc:670
+#: src/pkg_view.cc:678
 #, fuzzy
 msgid "Related Dependencies"
 msgstr "Rezolvare Dependențe"
 
-#: src/pkg_view.cc:673
+#: src/pkg_view.cc:681
 #, fuzzy
 msgid "Why Installed"
 msgstr "Instalat"
 
-#: src/pkg_view.cc:692
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: argument nevalid!"
 
-#: src/pkg_view.cc:744
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: nu s-a găsit nici un widget principal"
 

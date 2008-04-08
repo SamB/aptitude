@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.3.3\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-04-07 21:11-0700\n"
+"POT-Creation-Date: 2008-04-07 21:44-0700\n"
 "PO-Revision-Date: 2006-04-20 08:46+0200\n"
 "Last-Translator: Michal Politowski <l10n@mp.pl.eu.org>\n"
 "Language-Team: Polish\n"
@@ -1894,7 +1894,7 @@ msgid "Description: "
 msgstr "Opis: "
 
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:252
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr ""
 
@@ -3732,7 +3732,7 @@ msgstr "Plik"
 msgid "Action"
 msgstr "Akcja"
 
-#: src/pkg_columnizer.cc:93 src/pkg_view.cc:667
+#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
 msgid "Description"
 msgstr "Opis"
 
@@ -4351,7 +4351,7 @@ msgstr "Wci¶nij return.\n"
 msgid "Hierarchy editor"
 msgstr "Edytor hierarchii"
 
-#: src/pkg_item.cc:462 src/pkg_view.cc:665
+#: src/pkg_item.cc:462 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "Edytor hierarchii"
 
@@ -4397,32 +4397,40 @@ msgstr "Nie mo¿na przekodowaæ definicji kolumn"
 msgid "Couldn't parse column definition"
 msgstr "Nie mo¿na przetworzyæ definicji kolumn"
 
-#: src/pkg_view.cc:567
+#: src/pkg_view.cc:223
+#, fuzzy
+msgid ""
+"If you select a package, an explanation of why it should be installed or "
+"removed will appear in this space."
+msgstr ""
+"Po wybraniu pakietu zostanie tu wy¶wietlony opis jego bie¿±cego stanu. "
+
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: b³êdne argumenty -- dwa g³ówne elementy??"
 
-#: src/pkg_view.cc:573
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: b³êdne argumenty -- nieprawid³owa lista kolumn elementu "
 "statycznego"
 
-#: src/pkg_view.cc:670
+#: src/pkg_view.cc:678
 #, fuzzy
 msgid "Related Dependencies"
 msgstr "Rozwi±zywanie problemów"
 
-#: src/pkg_view.cc:673
+#: src/pkg_view.cc:681
 #, fuzzy
 msgid "Why Installed"
 msgstr "Zainstalowany"
 
-#: src/pkg_view.cc:692
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: b³êdny argument!"
 
-#: src/pkg_view.cc:744
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: brak g³ównego elementu"
 

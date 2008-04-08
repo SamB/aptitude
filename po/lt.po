@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-04-07 21:11-0700\n"
+"POT-Creation-Date: 2008-04-07 21:44-0700\n"
 "PO-Revision-Date: 2005-11-28 01:17+0200\n"
 "Last-Translator: Darius Žitkevičius <skystis@splius.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -1892,7 +1892,7 @@ msgid "Description: "
 msgstr "Aprašas: "
 
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:252
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr ""
 
@@ -3740,7 +3740,7 @@ msgstr "DebDyd"
 msgid "Action"
 msgstr "Veiksmas"
 
-#: src/pkg_columnizer.cc:93 src/pkg_view.cc:667
+#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
 msgid "Description"
 msgstr "Aprašymas"
 
@@ -4353,7 +4353,7 @@ msgstr "Norėdami tęsti spauskite ENTER.\n"
 msgid "Hierarchy editor"
 msgstr "Hierarchijos redaktorius"
 
-#: src/pkg_item.cc:462 src/pkg_view.cc:665
+#: src/pkg_item.cc:462 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "Hierarchijos redaktorius"
 
@@ -4399,32 +4399,39 @@ msgstr "Stulpelio aprašymas neiškoduotas"
 msgid "Couldn't parse column definition"
 msgstr "Nepavyko interpretuoti stulpelio aprašymo"
 
-#: src/pkg_view.cc:567
+#: src/pkg_view.cc:223
+#, fuzzy
+msgid ""
+"If you select a package, an explanation of why it should be installed or "
+"removed will appear in this space."
+msgstr "Pažymėjus paketą, šioje vietoje atsiras jo būsenos aprašymas."
+
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: klaida argumentuose -- du pagrindiniai elementai??"
 
-#: src/pkg_view.cc:573
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: klaida argumentuose -- blogas statinio elemento stulpelių "
 "sąrašas"
 
-#: src/pkg_view.cc:670
+#: src/pkg_view.cc:678
 #, fuzzy
 msgid "Related Dependencies"
 msgstr "Išspręsti priklausomybes"
 
-#: src/pkg_view.cc:673
+#: src/pkg_view.cc:681
 #, fuzzy
 msgid "Why Installed"
 msgstr "Įdiegtas"
 
-#: src/pkg_view.cc:692
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: blogas argumentas!"
 
-#: src/pkg_view.cc:744
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: nėra pagrindinio raktažodžio"
 

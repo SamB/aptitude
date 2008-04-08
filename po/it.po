@@ -42,7 +42,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.0\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-04-07 21:11-0700\n"
+"POT-Creation-Date: 2008-04-07 21:44-0700\n"
 "PO-Revision-Date: 2006-10-19 23:41+0200\n"
 "Last-Translator: Danilo Piazzalunga <danilopiazza@gmail.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -1934,7 +1934,7 @@ msgid "Description: "
 msgstr "Descrizione: "
 
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:252
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr ""
 
@@ -3802,7 +3802,7 @@ msgstr "DimDeb"
 msgid "Action"
 msgstr "Azione"
 
-#: src/pkg_columnizer.cc:93 src/pkg_view.cc:667
+#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
 msgid "Description"
 msgstr "Descrizione"
 
@@ -4435,7 +4435,7 @@ msgstr "Premere Invio per continuare.\n"
 msgid "Hierarchy editor"
 msgstr "Editor della gerarchia"
 
-#: src/pkg_item.cc:462 src/pkg_view.cc:665
+#: src/pkg_item.cc:462 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "Editor della gerarchia"
 
@@ -4480,32 +4480,41 @@ msgstr "Impossibile convertire la definizione delle colonne"
 msgid "Couldn't parse column definition"
 msgstr "Impossibile analizzare la definizione delle colonne"
 
-#: src/pkg_view.cc:567
+#: src/pkg_view.cc:223
+#, fuzzy
+msgid ""
+"If you select a package, an explanation of why it should be installed or "
+"removed will appear in this space."
+msgstr ""
+"Selezionando un pacchetto, una spiegazione del suo stato attuale appare in "
+"questo spazio."
+
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: errore negli argomenti (due widget principali)"
 
-#: src/pkg_view.cc:573
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: errore negli argomenti (elenco delle colonne non ammesso "
 "per un elemento statico)"
 
-#: src/pkg_view.cc:670
+#: src/pkg_view.cc:678
 #, fuzzy
 msgid "Related Dependencies"
 msgstr "Risoluzione delle dipendenze"
 
-#: src/pkg_view.cc:673
+#: src/pkg_view.cc:681
 #, fuzzy
 msgid "Why Installed"
 msgstr "Installato"
 
-#: src/pkg_view.cc:692
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: argomento non ammesso"
 
-#: src/pkg_view.cc:744
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: manca il widget principale"
 
