@@ -194,7 +194,9 @@ public:
       }
 
     std::vector<match::pkg_matcher *> search_leaves;
-    search_leaves.push_back(match::parse_pattern("~i!~M"));
+    // Search for package (versions) that are not automatically
+    // installed and that are or will be installed.
+    search_leaves.push_back(match::parse_pattern("?not(?automatic)?any-version(?or(?version(CANDIDATE)?action(install), ?version(CURRENT)?installed))"));
     try
       {
 	bool success = false;
