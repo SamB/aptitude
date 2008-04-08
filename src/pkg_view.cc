@@ -189,7 +189,7 @@ public:
   {
     if(pkg.end())
       {
-	set_fragment(cw::text_fragment(""));
+	set_no_package();
 	return;
       }
 
@@ -214,6 +214,11 @@ public:
     for(std::vector<match::pkg_matcher *>::const_iterator it
 	  = search_leaves.begin(); it != search_leaves.end(); ++it)
       delete *it;
+  }
+
+  void set_no_package()
+  {
+    set_fragment(wrapbox(cw::text_fragment(_("If you select a package, an explanation of why it should be installed or removed will appear in this space."))));
   }
 };
 typedef cw::util::ref_ptr<pkg_why_widget> pkg_why_widget_ref;
@@ -488,6 +493,7 @@ public:
 						    cw::newline_fragment(),
 						    nopackage(),
 						    NULL));
+	why->set_no_package();
 
 	description->move_to_top();
 	reasons->move_to_top();
