@@ -127,6 +127,7 @@ static void show_version()
 #else
   printf(_("\nCurses version: %s\n"), curses_version());
 #endif
+  printf(_("cwidget version: %s\n"), cwidget::version());
   printf(_("Apt version: %s"), pkgLibVersion);
 
   printf("\n");
