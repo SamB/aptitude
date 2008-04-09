@@ -223,7 +223,7 @@ option_item ui_options[]={
 		 "the information area (the pane at the bottom of the screen) "
 		 "listing the different displays of information that can be "
 		 "viewed there."),
-	      PACKAGE "::UI::InfoAreaTabs", true),
+	      PACKAGE "::UI::InfoAreaTabs", false),
   option_item(N_("Advance to the next item after changing the state of a package"),
 	      N_("If this option is enabled, then performing an "
 		 "action on a package (for instance, installing or "
