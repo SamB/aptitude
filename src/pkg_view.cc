@@ -548,7 +548,7 @@ namespace
   {
     cw::widgets::multiplex_ref m(&mBare);
 
-    m->set_show_tabs(aptcfg->FindB(PACKAGE "::UI::InfoAreaTabs", true));
+    m->set_show_tabs(aptcfg->FindB(PACKAGE "::UI::InfoAreaTabs", false));
   }
 }
 
@@ -684,7 +684,7 @@ cw::widget_ref make_package_view(list<package_view_item> &format,
 	    aptcfg->connect(PACKAGE "::UI::InfoAreaTabs",
 			    sigc::bind(sigc::ptr_fun(&do_update_info_area_show_tabs),
 				       m.weak_ref()));
-	    m->set_show_tabs(aptcfg->FindB(PACKAGE "::UI::InfoAreaTabs", true));
+	    m->set_show_tabs(aptcfg->FindB(PACKAGE "::UI::InfoAreaTabs", false));
 
 	    if(show_reason_first)
 	      lt->show();
