@@ -131,8 +131,8 @@ fi
 
 if [ "$APPEND" = 1 ]
 then
-    "$PROGRAM" "$@" -o "RootDir=$tempdir"
+    "$PROGRAM" "$@" -o "Dir=$tempdir" -o "Dir::State::status=$tempdir/var/lib/dpkg/status"
 else
 
-    "$PROGRAM" -o "RootDir=$tempdir" "$@"
+    "$PROGRAM" -o "Dir=$tempdir" -o "Dir::State::status=$tempdir/var/lib/dpkg/status" "$@"
 fi
