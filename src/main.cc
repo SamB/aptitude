@@ -111,26 +111,22 @@ static void show_version()
   printf("%s", _("Compiled against:\n"));
   printf(_("  apt version %d.%d.%d\n"),
 	 APT_PKG_MAJOR, APT_PKG_MINOR, APT_PKG_RELEASE);
+#ifndef NCURSES_VERSION
+  printf(_("  NCurses version: Unknown\n"));
+#else
   printf(_("  NCurses version %s\n"), NCURSES_VERSION);
-  // No indent on these messages to avoid fuzzying translations.
-  printf(_("libsigc++ version: %s\n"), SIGC_VERSION);
+#endif
+  printf(_("  libsigc++ version: %s\n"), SIGC_VERSION);
 #ifdef HAVE_EPT
-  printf(_("Ept support enabled.\n"));
+  printf(_("  Ept support enabled.\n"));
 #else
-  printf(_("Ept support disabled.\n"));
+  printf(_("  Ept support disabled.\n"));
 #endif
 
-  printf("%s", _("\nCurrent library versions:"));
-  // No indent on these messages to avoid fuzzying translations.
-#ifdef NCURSES_VERSION
-  printf(_("\nNCurses version: %s\n"), NCURSES_VERSION);
-#else
-  printf(_("\nCurses version: %s\n"), curses_version());
-#endif
-  printf(_("cwidget version: %s\n"), cwidget::version());
-  printf(_("Apt version: %s"), pkgLibVersion);
-
-  printf("\n");
+  printf("%s", _("\nCurrent library versions:\n"));
+  printf(_("  NCurses version: %s\n"), curses_version());
+  printf(_("  cwidget version: %s\n"), cwidget::version().c_str());
+  printf(_("  Apt version: %s\n"), pkgLibVersion);
 }
 
 static void usage()
