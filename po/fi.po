@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.4\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-04-07 21:44-0700\n"
+"POT-Creation-Date: 2008-04-11 08:56-0700\n"
 "PO-Revision-Date: 2006-11-05 15:47+0200\n"
 "Last-Translator: Jaakko Kangasharju <ashar@iki.fi>\n"
 "Language-Team: Jaakko Kangasharju <ashar@iki.fi>\n"
@@ -571,17 +571,17 @@ msgstr[1] "%d vanhennusta"
 msgid "Suggest %F"
 msgstr "Ehdotuksena %F"
 
-#: src/cmdline/cmdline_action.cc:47
+#: src/cmdline/cmdline_action.cc:48
 #, fuzzy, c-format
 msgid "Unable to find the source package for \"%s\".\n"
 msgstr "En löydä arkistoa \"%s\" paketille \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:200
+#: src/cmdline/cmdline_action.cc:203
 #, fuzzy, c-format
 msgid "Unable to satisfy the build-depends: %s."
 msgstr "En saa hakemiston \"%s\" tiedostoluetteloa"
 
-#: src/cmdline/cmdline_action.cc:230
+#: src/cmdline/cmdline_action.cc:239
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -590,7 +590,7 @@ msgstr ""
 "Huom: \"%s\", joka kattaa näennäispaketin\n"
 "      \"%s\", on jo asennettu.\n"
 
-#: src/cmdline/cmdline_action.cc:237
+#: src/cmdline/cmdline_action.cc:246
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -599,7 +599,7 @@ msgstr ""
 "Huom: \"%s\", joka kattaa näennäispaketin\n"
 "      \"%s\", on jo asennettavana.\n"
 
-#: src/cmdline/cmdline_action.cc:255
+#: src/cmdline/cmdline_action.cc:268
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -608,17 +608,17 @@ msgstr ""
 "\"%s\" löytyy pakettitietokannasta, mutta se ei ole\n"
 "oikea paketti eikä mikään paketti kata sitä.\n"
 
-#: src/cmdline/cmdline_action.cc:261
+#: src/cmdline/cmdline_action.cc:276
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" on näennäispaketti, jonka kattaa\n"
 
-#: src/cmdline/cmdline_action.cc:264
+#: src/cmdline/cmdline_action.cc:279
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Yksi on valittava asennettavaksi.\n"
 
-#: src/cmdline/cmdline_action.cc:269
+#: src/cmdline/cmdline_action.cc:287
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -627,38 +627,38 @@ msgstr ""
 "Huom: valitsen paketin \"%s\" enkä\n"
 "      näennäispakettia \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:287
+#: src/cmdline/cmdline_action.cc:306
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "Paketin %s pyydetty versio %s on jo asennettuna\n"
 
-#: src/cmdline/cmdline_action.cc:293
+#: src/cmdline/cmdline_action.cc:312
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "Pakettia %s ei ole asennettu, joten sitä ei asenneta uudelleen.\n"
 
-#: src/cmdline/cmdline_action.cc:300 src/cmdline/cmdline_action.cc:306
+#: src/cmdline/cmdline_action.cc:319 src/cmdline/cmdline_action.cc:325
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Pakettia %s ei ole asennettu, joten sitä ei poisteta\n"
 
-#: src/cmdline/cmdline_action.cc:324
+#: src/cmdline/cmdline_action.cc:343
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "Pakettia %s ei ole asennettu, joten päivitystä ei ole tarpeen estää\n"
 
-#: src/cmdline/cmdline_action.cc:326
+#: src/cmdline/cmdline_action.cc:345
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr ""
 "Paketti %s ei ole päivitettävissä, joten päivitystä ei ole tarpeen estää\n"
 
-#: src/cmdline/cmdline_action.cc:417
+#: src/cmdline/cmdline_action.cc:438
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Huom: valitsen tehtävän \"%s: %s\" asennettavaksi\n"
 
-#: src/cmdline/cmdline_action.cc:450
+#: src/cmdline/cmdline_action.cc:472
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -667,12 +667,12 @@ msgstr ""
 "Vain 'install'- ja 'forbid-version'-komennoille voi määrittää paketin "
 "version.\n"
 
-#: src/cmdline/cmdline_action.cc:459
+#: src/cmdline/cmdline_action.cc:481
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "Vain 'install'-komennolle voi määrittää paketin arkiston.\n"
 
-#: src/cmdline/cmdline_action.cc:495
+#: src/cmdline/cmdline_action.cc:518
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -681,7 +681,7 @@ msgstr ""
 "En löytänyt pakettia \"%s\" ja yli 40 paketin\n"
 "nimessä on merkkijono \"%s\".\n"
 
-#: src/cmdline/cmdline_action.cc:498
+#: src/cmdline/cmdline_action.cc:521
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -690,13 +690,13 @@ msgstr ""
 "En löytänyt pakettia \"%s\".  Näiden pakettien\n"
 "nimet sisältävät merkkijonon \"%s\":\n"
 
-#: src/cmdline/cmdline_action.cc:520
+#: src/cmdline/cmdline_action.cc:543
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "En löytänyt pakettia, jonka nimi tai kuvaus sisältäisi merkkijonon \"%s\".\n"
 
-#: src/cmdline/cmdline_action.cc:522
+#: src/cmdline/cmdline_action.cc:545
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -705,7 +705,7 @@ msgstr ""
 "En löytänyt pakettia, jonka nimi sisältäisi merkkijonon \"%s\"\n"
 "ja yli 40 paketin kuvaus sisältää merkkijonon \"%s\".\n"
 
-#: src/cmdline/cmdline_action.cc:525
+#: src/cmdline/cmdline_action.cc:548
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -714,7 +714,7 @@ msgstr ""
 "En löytänyt pakettia, jonka nimi sisältäisi merkkijonon \"%s\".\n"
 "Näiden pakettien kuvaus sisältää merkkijonon \"%s\":\n"
 
-#: src/cmdline/cmdline_action.cc:660
+#: src/cmdline/cmdline_action.cc:686
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Virheellinen komentomerkki '%c'\n"
@@ -774,14 +774,14 @@ msgstr "Virheellinen toiminto %s"
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "\"keep-all\":ia ei saa seurata kaava"
 
-#: src/cmdline/cmdline_do_action.cc:265
+#: src/cmdline/cmdline_do_action.cc:266
 #, fuzzy, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
 msgstr "Riippuvuuksien selvitys ei onnistunut."
 
-#: src/cmdline/cmdline_do_action.cc:303 src/cmdline/cmdline_simulate.cc:35
-#: src/cmdline/cmdline_upgrade.cc:151 src/main.cc:692
+#: src/cmdline/cmdline_do_action.cc:304 src/cmdline/cmdline_simulate.cc:35
+#: src/cmdline/cmdline_upgrade.cc:151 src/main.cc:700
 #, c-format
 msgid "Abort.\n"
 msgstr "Keskeytys.\n"
@@ -1392,18 +1392,18 @@ msgstr ""
 "Kokojen muutoksia ei näytetä.\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:713
+#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:715
 #: src/generic/apt/apt.cc:275
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "En pysty kirjoittamaan tiedostoon %s"
 
-#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:718
+#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:720
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Virhe kirjoitettaessa selvityksen tilatietoja tiedostoon %s"
 
-#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:720
+#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:722
 msgid "Resolver state successfully written!"
 msgstr "Ratkaisimen tila tallennettu!"
 
@@ -1585,7 +1585,7 @@ msgstr "Seuraavat toiminnot selvittävät nämä riippuvuudet:"
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Hyväksytkö tämän ratkaisun? [Kyllä=y/ei=n/lopeta=q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:659 src/cmdline/cmdline_resolver.cc:764
+#: src/cmdline/cmdline_resolver.cc:659 src/cmdline/cmdline_resolver.cc:766
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Lopetetaan yritykset ratkaista näitä riippuvuuksia."
 
@@ -1599,63 +1599,63 @@ msgstr ""
 msgid "The following commands are available:"
 msgstr "Käytettävissä olevat komennot:"
 
-#: src/cmdline/cmdline_resolver.cc:710
+#: src/cmdline/cmdline_resolver.cc:712
 msgid "File to write resolver state to: "
 msgstr "Mihin tiedostoon selvityksen tila tallennetaan? "
 
-#: src/cmdline/cmdline_resolver.cc:725
+#: src/cmdline/cmdline_resolver.cc:727
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Virheellinen syöte; anna jokin seuraavista komennoista:"
 
-#: src/cmdline/cmdline_resolver.cc:738
+#: src/cmdline/cmdline_resolver.cc:740
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Ratkaisua ei löytynyt annetun ajan sisällä.  Yritetäänkö pitempään? [Kyllä=y/"
 "ei=n]"
 
-#: src/cmdline/cmdline_resolver.cc:767
+#: src/cmdline/cmdline_resolver.cc:769
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Virheellinen syöte; kirjoita joko 'y' (kyllä) tai 'n' (ei)."
 
-#: src/cmdline/cmdline_resolver.cc:776
+#: src/cmdline/cmdline_resolver.cc:778
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Riippuvuuksien selvitys epäonnistui!  Luovutan..."
 
-#: src/cmdline/cmdline_resolver.cc:782
+#: src/cmdline/cmdline_resolver.cc:784
 msgid "*** No more solutions available ***"
 msgstr "*** Ei muita ratkaisuja ***"
 
-#: src/cmdline/cmdline_resolver.cc:801
+#: src/cmdline/cmdline_resolver.cc:803
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:961
+#: src/cmdline/cmdline_resolver.cc:963
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:968
+#: src/cmdline/cmdline_resolver.cc:970
 #, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr "Riippuvuuksien selvitys epäonnistui!  Luovutan..."
 
-#: src/cmdline/cmdline_resolver.cc:982
+#: src/cmdline/cmdline_resolver.cc:984
 #, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr "Riippuvuuksien selvitys epäonnistui!  Luovutan..."
 
-#: src/cmdline/cmdline_resolver.cc:991
+#: src/cmdline/cmdline_resolver.cc:993
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:997
+#: src/cmdline/cmdline_resolver.cc:999
 #, fuzzy, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Riippuvuuksien selvitys ei onnistunut."
@@ -1999,7 +1999,7 @@ msgstr[1] ""
 
 #: src/cmdline/cmdline_util.cc:331
 #, c-format
-msgid "There are now %F."
+msgid "Current status: %F."
 msgstr ""
 
 #: src/cmdline/cmdline_util.cc:342
@@ -3119,50 +3119,84 @@ msgstr "%s %s käännöspäiväys %s %s\n"
 msgid "Compiler: g++ %s\n"
 msgstr "Kääntäjä: g++ %s\n"
 
+#: src/main.cc:111
+#, fuzzy
+msgid "Compiled against:\n"
+msgstr "Kääntäjä: g++ %s\n"
+
 #: src/main.cc:112
-#, c-format
-msgid ""
-"\n"
-"NCurses version: %s\n"
+#, fuzzy, c-format
+msgid "  apt version %d.%d.%d\n"
+msgstr "Säilytä %F versiossa %s (%s)"
+
+#: src/main.cc:115
+#, fuzzy, c-format
+msgid "  NCurses version: Unknown\n"
 msgstr ""
 "\n"
 "NCurses-versio: %s\n"
 
-#: src/main.cc:114
+#: src/main.cc:117
+#, fuzzy, c-format
+msgid "  NCurses version %s\n"
+msgstr ""
+"\n"
+"NCurses-versio: %s\n"
+
+#: src/main.cc:119
+#, fuzzy, c-format
+msgid "  libsigc++ version: %s\n"
+msgstr "libsigc++-versio: %s\n"
+
+#: src/main.cc:121
 #, c-format
+msgid "  Ept support enabled.\n"
+msgstr ""
+
+#: src/main.cc:123
+#, c-format
+msgid "  Ept support disabled.\n"
+msgstr ""
+
+#: src/main.cc:126
+#, fuzzy
 msgid ""
 "\n"
-"Curses version: %s\n"
+"Current library versions:\n"
 msgstr ""
 "\n"
 "Curses-versio: %s\n"
 
-#: src/main.cc:116
-#, c-format
-msgid "libsigc++ version: %s\n"
+#: src/main.cc:127
+#, fuzzy, c-format
+msgid "  NCurses version: %s\n"
+msgstr ""
+"\n"
+"NCurses-versio: %s\n"
+
+#: src/main.cc:128
+#, fuzzy, c-format
+msgid "  cwidget version: %s\n"
 msgstr "libsigc++-versio: %s\n"
 
-#: src/main.cc:118
-#, c-format
-msgid "Ept support enabled.\n"
+#: src/main.cc:129
+#, fuzzy, c-format
+msgid "  Apt version: %s\n"
 msgstr ""
+"\n"
+"Curses-versio: %s\n"
 
-#: src/main.cc:120
-#, c-format
-msgid "Ept support disabled.\n"
-msgstr ""
-
-#: src/main.cc:127
+#: src/main.cc:135
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "Käyttö: aptitude [-S tnimi] [-u|-i]"
 
-#: src/main.cc:129
+#: src/main.cc:137
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "       aptitude [valitsimet] <toiminto> ..."
 
-#: src/main.cc:131
+#: src/main.cc:139
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -3172,42 +3206,42 @@ msgstr ""
 "tilaan):\n"
 "\n"
 
-#: src/main.cc:132
+#: src/main.cc:140
 #, c-format
 msgid " install      - Install/upgrade packages\n"
 msgstr " install      - Asenna tai päivitä paketteja\n"
 
-#: src/main.cc:133
+#: src/main.cc:141
 #, c-format
 msgid " remove       - Remove packages\n"
 msgstr " remove       - Poista paketteja\n"
 
-#: src/main.cc:134
+#: src/main.cc:142
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr " purge        - Poista paketteja asetustiedostoineen\n"
 
-#: src/main.cc:135
+#: src/main.cc:143
 #, c-format
 msgid " hold         - Place packages on hold\n"
 msgstr " hold         - Jäädytä paketteja\n"
 
-#: src/main.cc:136
+#: src/main.cc:144
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
 msgstr " unhold       - Peruuta paketin jäädytys\n"
 
-#: src/main.cc:137
+#: src/main.cc:145
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
 msgstr " markauto     - Merkitse paketteja automaattisesti asennetuiksi\n"
 
-#: src/main.cc:138
+#: src/main.cc:146
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr " unmarkauto   - Merkitse paketteja käsin asennetuiksi\n"
 
-#: src/main.cc:143
+#: src/main.cc:151
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
@@ -3216,59 +3250,59 @@ msgstr ""
 " forbid-version - Estä aptitudea päivittämästä pakettia määritettyyn "
 "versioon\n"
 
-#: src/main.cc:144
+#: src/main.cc:152
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - Nouda uusien ja päivitettävien pakettien luettelo\n"
 
-#: src/main.cc:145
+#: src/main.cc:153
 #, fuzzy, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr " upgrade       - Päivitä turvallisesti\n"
 
-#: src/main.cc:146
+#: src/main.cc:154
 #, fuzzy, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr " dist-upgrade  - Päivitä sallien pakettien asennukset ja poistot\n"
 
-#: src/main.cc:147
+#: src/main.cc:155
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr " forget-new   - Tyhjennä uusien pakettien ryhmä\n"
 
-#: src/main.cc:148
+#: src/main.cc:156
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr " search       - Etsi paketteja nimellä tai lausekkeella\n"
 
-#: src/main.cc:149
+#: src/main.cc:157
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr " show         - Näytä paketin yksityiskohtaiset tiedot\n"
 
-#: src/main.cc:150
+#: src/main.cc:158
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr " clean        - Poista noudetut pakettitiedostot\n"
 
-#: src/main.cc:151
+#: src/main.cc:159
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr " autoclean    - Poista vanhat noudetut pakettitiedostot\n"
 
-#: src/main.cc:152
+#: src/main.cc:160
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr " muutosloki   - Näytä paketin muutosloki\n"
 
-#: src/main.cc:153
+#: src/main.cc:161
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr " download     - Nouda pakettitiedosto\n"
 
-#: src/main.cc:154
+#: src/main.cc:162
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -3276,108 +3310,108 @@ msgid ""
 msgstr ""
 " reinstall    - Nouda ja (mahdollisesti) asenna uudelleen asennettu paketti\n"
 
-#: src/main.cc:156
+#: src/main.cc:164
 #, c-format
 msgid "  Options:\n"
 msgstr "  Valitsimet:\n"
 
-#: src/main.cc:157
+#: src/main.cc:165
 #, c-format
 msgid " -h             This help text\n"
 msgstr " -h             Tämä avustusteksti\n"
 
-#: src/main.cc:158
+#: src/main.cc:166
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr ""
 " -s             Tulosta suoritettavat toiminnot, mutta älä suorita niitä.\n"
 
-#: src/main.cc:159
+#: src/main.cc:167
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
 " -d             Älä asenna tai poista paketteja, ainoastaan nouda ne.\n"
 
-#: src/main.cc:160
+#: src/main.cc:168
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr " -P             Kysy aina varmistusta tai toimintoa\n"
 
-#: src/main.cc:161
+#: src/main.cc:169
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr " -y             Vastaa yksinkertaisiin kyllä/ei-kysymyksiin kyllä.\n"
 
-#: src/main.cc:162
+#: src/main.cc:170
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual\n"
 msgstr " -F muotoilu    Määritä hakutulosten näyttömuoto; katso käyttöopasta\n"
 
-#: src/main.cc:163
+#: src/main.cc:171
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr " -O järjestys   Määritä hakutulosten järjestys; katso käyttöopasta\n"
 
-#: src/main.cc:164
+#: src/main.cc:172
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr " -w leveys      Määritä näytön leveys hakutuloksia varten\n"
 
-#: src/main.cc:165
+#: src/main.cc:173
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr ""
 " -f             Yritä tosissaan korjata rikkinäisten pakettien "
 "riippuvuuksia.\n"
 
-#: src/main.cc:166
+#: src/main.cc:174
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             Näytä asennettavien pakettien versiot.\n"
 
-#: src/main.cc:167
+#: src/main.cc:175
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr ""
 " -D             Näytä automaattisesti muutettujen pakettien riippuvuudet.\n"
 
-#: src/main.cc:168
+#: src/main.cc:176
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    Näytä asennetun koon muutos jokaisesta paketista.\n"
 
-#: src/main.cc:169
+#: src/main.cc:177
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr " -v             Näytä lisätietoa (voidaan käyttää useita kertoja)\n"
 
-#: src/main.cc:170
+#: src/main.cc:178
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
 msgstr " -t [julkaisu]   Aseta julkaisu, josta paketit asennetaan\n"
 
-#: src/main.cc:171
+#: src/main.cc:179
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress "
 "indicators.\n"
 msgstr " -q             Älä näytä edistymistä komentoriviltä käytettäessä.\n"
 
-#: src/main.cc:172
+#: src/main.cc:180
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr " -o avain=arvo  Anna suoraan asetuksen 'avain' arvo\n"
 
-#: src/main.cc:173
+#: src/main.cc:181
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -3386,81 +3420,81 @@ msgstr ""
 " --with(out)-recommends\tMääritä, käsitelläänkö suosituksia\n"
 "                riippuvuuksina\n"
 
-#: src/main.cc:174
+#: src/main.cc:182
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr " -S tnimi: Lue aptituden laajennetut tilatiedot tiedostosta tnimi.\n"
 
-#: src/main.cc:175
+#: src/main.cc:183
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             Aloita pakettiluettelon päivitys käynnistettäessä.\n"
 
-#: src/main.cc:176
+#: src/main.cc:184
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             Näytä toimenpideruutu käynnistettäessä.\n"
 
-#: src/main.cc:178
+#: src/main.cc:186
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                      Tällä aptitudella ei ole Lehmävoimia.\n"
 
-#: src/main.cc:361
+#: src/main.cc:369
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "-q=:n jäljessä tarvitaan luku\n"
 
-#: src/main.cc:370
+#: src/main.cc:378
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "-q=:n jäljessä tarvitaan luku, oli %s\n"
 
-#: src/main.cc:394
+#: src/main.cc:402
 #, fuzzy, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o:n argumentin on oltava muotoa avain=arvo; se oli %s"
 
-#: src/main.cc:486
+#: src/main.cc:494
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr ""
 
-#: src/main.cc:514 src/main.cc:523
+#: src/main.cc:522 src/main.cc:531
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "OUTOA: tuntematon valitsin\n"
 
-#: src/main.cc:540
+#: src/main.cc:548
 msgid "Only one of -u and -i may be specified\n"
 msgstr "Valitsimia -u ja -i ei voi käyttää yhdessä\n"
 
-#: src/main.cc:548
+#: src/main.cc:556
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr "Valitsimia -u ja -i ei voi käyttää komentorivitoiminnoissa"
 
-#: src/main.cc:569
+#: src/main.cc:577
 msgid "-u and -i may not be specified with a command"
 msgstr "Valitsimia -u ja -i ei voi käyttää komennon kanssa"
 
-#: src/main.cc:629
+#: src/main.cc:637
 #, c-format
 msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
 "for %s, which always uses the safe resolver.\n"
 msgstr ""
 
-#: src/main.cc:685
+#: src/main.cc:693
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Tuntematon komento \"%s\"\n"
 
-#: src/main.cc:697 src/main.cc:746
+#: src/main.cc:705 src/main.cc:754
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Läpipäässyt poikkeus: %s\n"
 
-#: src/main.cc:701 src/main.cc:750
+#: src/main.cc:709 src/main.cc:758
 #, fuzzy, c-format
 msgid ""
 "Backtrace:\n"
@@ -3477,7 +3511,7 @@ msgstr "Etsi: "
 msgid "Search backwards for: "
 msgstr "Etsi taaksepäin: "
 
-#: src/mine/cmine.cc:114 src/mine/cmine.cc:156 src/ui.cc:1549
+#: src/mine/cmine.cc:114 src/mine/cmine.cc:156 src/ui.cc:1551
 msgid "Minesweeper"
 msgstr "Miinaharava"
 
@@ -3686,7 +3720,7 @@ msgstr "mine-help.txt-merkistö|ISO-8859-1"
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 
-#: src/pkg_columnizer.cc:88 src/ui.cc:2521
+#: src/pkg_columnizer.cc:88 src/ui.cc:2523
 msgid "Package"
 msgstr "Paketti"
 
@@ -4313,7 +4347,7 @@ msgstr ""
 msgid "Reconfiguring %s\n"
 msgstr "Asetan uudelleen pakettia %s\n"
 
-#: src/pkg_item.cc:445 src/ui.cc:1145
+#: src/pkg_item.cc:445 src/ui.cc:1147
 msgid "Press return to continue.\n"
 msgstr "Paina return jatkaaksesi.\n"
 
@@ -4904,7 +4938,7 @@ msgstr "Haluatko varmasti lopettaa?"
 msgid "Preferences"
 msgstr "Esiriippuvuudet"
 
-#: src/ui.cc:694 src/ui.cc:2287
+#: src/ui.cc:694 src/ui.cc:2289
 msgid "Change the behavior of aptitude"
 msgstr ""
 
@@ -4934,8 +4968,9 @@ msgid "Recommendations"
 msgstr "Suosittelut"
 
 #: src/ui.cc:970
+#, fuzzy
 msgid ""
-"Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with %"
+"Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
 "is free software, and you are welcome to redistribute it under certain "
 "conditions; see 'license' for details."
@@ -4945,82 +4980,82 @@ msgstr ""
 "Tämä on vapaa ohjelma, joten saat vapaasti levittää sitä tietyin "
 "rajoituksin; 'lisenssi' antaa tarkemmat tiedot (englanniksi)."
 
-#: src/ui.cc:1018 src/ui.cc:1020
+#: src/ui.cc:1020 src/ui.cc:1022
 #, fuzzy
 msgid "License"
 msgstr "^Lisenssi"
 
-#: src/ui.cc:1019 src/ui.cc:2379
+#: src/ui.cc:1021 src/ui.cc:2381
 #, fuzzy
 msgid "View the terms under which you may copy and distribute aptitude"
 msgstr "Näytä ohjelman kopiointiehdot"
 
-#: src/ui.cc:1033
+#: src/ui.cc:1035
 msgid "help.txt"
 msgstr "help-fi.txt"
 
-#: src/ui.cc:1035
+#: src/ui.cc:1037
 msgid "Encoding of help.txt|UTF-8"
 msgstr "help.txt-merkistö|UTF-8"
 
-#: src/ui.cc:1046
+#: src/ui.cc:1048
 msgid "Online Help"
 msgstr ""
 
-#: src/ui.cc:1047
+#: src/ui.cc:1049
 msgid "View a brief introduction to aptitude"
 msgstr ""
 
-#: src/ui.cc:1048 src/ui.cc:2526
+#: src/ui.cc:1050 src/ui.cc:2528
 msgid "Help"
 msgstr "Apu"
 
-#: src/ui.cc:1056
+#: src/ui.cc:1058
 msgid "README"
 msgstr "README.fi"
 
-#: src/ui.cc:1057
+#: src/ui.cc:1059
 msgid "Encoding of README|ISO_8859-1"
 msgstr "README-merkistö|ISO-8859-1"
 
-#: src/ui.cc:1068
+#: src/ui.cc:1070
 msgid "User's Manual"
 msgstr "Käyttöopas"
 
-#: src/ui.cc:1069
+#: src/ui.cc:1071
 msgid "Read the full user's manual of aptitude"
 msgstr "Näytä aptituden käyttöopas"
 
-#: src/ui.cc:1070
+#: src/ui.cc:1072
 msgid "Manual"
 msgstr "Opas"
 
-#: src/ui.cc:1077 src/ui.cc:1079
+#: src/ui.cc:1079 src/ui.cc:1081
 #, fuzzy
 msgid "FAQ"
 msgstr "^UKK"
 
-#: src/ui.cc:1078 src/ui.cc:2371
+#: src/ui.cc:1080 src/ui.cc:2373
 msgid "View a list of frequently asked questions"
 msgstr "Näytä usein kysyttyjä kysymyksiä vastauksineen"
 
-#: src/ui.cc:1087 src/ui.cc:1089
+#: src/ui.cc:1089 src/ui.cc:1091
 #, fuzzy
 msgid "News"
 msgstr "^Uutiset"
 
-#: src/ui.cc:1088
+#: src/ui.cc:1090
 #, fuzzy, c-format
 msgid "View the important changes made in each version of %s"
 msgstr "Näytä tärkeät muutokset, jotka on tehty kuhunkin versioon paketista "
 
-#: src/ui.cc:1095
+#: src/ui.cc:1097
 #, c-format
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr "Tilapäishakemiston poisto epäonnistui; sinun on poistettava %s itse."
 
-#: src/ui.cc:1100
+#: src/ui.cc:1102
 #, c-format
 msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
@@ -5029,7 +5064,7 @@ msgstr ""
 "En poista hakemistoa %s; tarkastele sen sisältämiä tiedostoja ja poista ne "
 "itse."
 
-#: src/ui.cc:1126
+#: src/ui.cc:1128
 #, c-format
 msgid ""
 "It appears that a previous version of aptitude left files behind in %s.  "
@@ -5042,19 +5077,19 @@ msgstr ""
 "poistaa tämän hakemiston sisältöineen?  Jos valitset \"Ei\", tätä viestiä ei "
 "näytetä uudestaan."
 
-#: src/ui.cc:1169
+#: src/ui.cc:1171
 msgid "Downloading packages"
 msgstr "Noudan paketteja"
 
-#: src/ui.cc:1170
+#: src/ui.cc:1172
 msgid "View the progress of the package download"
 msgstr "Seuraa pakettien noudon edistymistä"
 
-#: src/ui.cc:1171
+#: src/ui.cc:1173
 msgid "Package Download"
 msgstr "Pakettien nouto"
 
-#: src/ui.cc:1207
+#: src/ui.cc:1209
 msgid ""
 "%BWARNING%b: untrusted versions of the following packages will be installed!%"
 "n%nUntrusted packages could %Bcompromise your system's security%b.  You "
@@ -5066,39 +5101,39 @@ msgstr ""
 "turvallisuuden%b.  Sinun ei pitäisi jatkaa, ellet ole varma, että "
 "asennettavat versiot ovat kunnollisia.%n%n"
 
-#: src/ui.cc:1213
+#: src/ui.cc:1215
 msgid "  %S*%N %s [version %s]%n"
 msgstr "  %S*%N %s [versio %s]%n"
 
-#: src/ui.cc:1219
+#: src/ui.cc:1221
 msgid "Really Continue"
 msgstr "Jatka"
 
-#: src/ui.cc:1221
+#: src/ui.cc:1223
 msgid "Abort Installation"
 msgstr "Keskeytä asennus"
 
-#: src/ui.cc:1283
+#: src/ui.cc:1285
 msgid "Preview of package installation"
 msgstr "Pakettien asennuksen esikatselu"
 
-#: src/ui.cc:1284
+#: src/ui.cc:1286
 msgid "View and/or adjust the actions that will be performed"
 msgstr "Näytä toiminnot, jotka suoritetaan, ja muuta niitä"
 
-#: src/ui.cc:1285
+#: src/ui.cc:1287
 msgid "Preview"
 msgstr "Esikatselu"
 
-#: src/ui.cc:1341
+#: src/ui.cc:1343
 msgid "Some packages were broken and have been fixed:"
 msgstr "Jotkut paketit olivat rikki, mutta ovat nyt kunnossa:"
 
-#: src/ui.cc:1349
+#: src/ui.cc:1351
 msgid "No solution to these dependency problems exists!"
 msgstr "Näitä riippuvuusongelmia ei ole mahdollista ratkaista!"
 
-#: src/ui.cc:1355
+#: src/ui.cc:1357
 #, c-format
 msgid ""
 "Ran out of time while trying to resolve dependencies (press \"%s\" to try "
@@ -5107,7 +5142,7 @@ msgstr ""
 "Riippuvuuksien ratkaisuun annettu aika loppui (paina \"%s\" yrittääksesi "
 "pitempään)"
 
-#: src/ui.cc:1401
+#: src/ui.cc:1403
 msgid ""
 "Installing/removing packages requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
@@ -5115,23 +5150,23 @@ msgstr ""
 "Pakettien asentaminen ja poisto vaativat ylläpitäjän oikeudet, joita sinulla "
 "ei ole.  Haluatko vaihtaa root-tunnukselle?"
 
-#: src/ui.cc:1404 src/ui.cc:1537
+#: src/ui.cc:1406 src/ui.cc:1539
 msgid "Become root"
 msgstr "Vaihda root-tunnukselle"
 
-#: src/ui.cc:1406 src/ui.cc:1539
+#: src/ui.cc:1408 src/ui.cc:1541
 msgid "Don't become root"
 msgstr "Älä vaihda root-tunnukselle"
 
-#: src/ui.cc:1411 src/ui.cc:1544
+#: src/ui.cc:1413 src/ui.cc:1546
 msgid "A package-list update or install run is already taking place."
 msgstr "Asennus tai pakettiluettelon päivitys on jo käynnissä."
 
-#: src/ui.cc:1438
+#: src/ui.cc:1440
 msgid "No packages are scheduled to be installed, removed, or upgraded."
 msgstr "Mitään paketteja ei asenneta, päivitetä tai poisteta."
 
-#: src/ui.cc:1444
+#: src/ui.cc:1446
 msgid ""
 "No packages will be installed, removed or upgraded.  Some packages could be "
 "upgraded, but you have not chosen to upgrade them.  Type \"U\" to prepare an "
@@ -5140,23 +5175,23 @@ msgstr ""
 "Mitään paketteja ei asenneta, poisteta tai päivitetä.  Jotkin paketit olisi "
 "mahdollista päivittää.  Paina \"U\" päivittääksesi nämä."
 
-#: src/ui.cc:1502 src/ui.cc:1619
+#: src/ui.cc:1504 src/ui.cc:1621
 msgid "Deleting obsolete downloaded files"
 msgstr "Poistan vanhentuneita tiedostoja"
 
-#: src/ui.cc:1518
+#: src/ui.cc:1520
 msgid "Updating package lists"
 msgstr "Päivitän pakettiluetteloa"
 
-#: src/ui.cc:1519
+#: src/ui.cc:1521
 msgid "View the progress of the package list update"
 msgstr "Seuraa pakettiluettelon päivityksen edistymistä"
 
-#: src/ui.cc:1520
+#: src/ui.cc:1522
 msgid "List Update"
 msgstr "Luettelopäivitys"
 
-#: src/ui.cc:1534
+#: src/ui.cc:1536
 msgid ""
 "Updating the package lists requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
@@ -5164,142 +5199,142 @@ msgstr ""
 "Pakettiluettelon päivitys vaatii ylläpitäjän oikeudet, joita sinulla ei "
 "ole.  Haluatko vaihtaa root-tunnukselle?"
 
-#: src/ui.cc:1549 src/ui.cc:2126
+#: src/ui.cc:1551 src/ui.cc:2128
 msgid "Waste time trying to find mines"
 msgstr "Hukkaa aikaa etsimällä miinoja"
 
-#: src/ui.cc:1556 src/ui.cc:1616
+#: src/ui.cc:1558 src/ui.cc:1618
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "Puhdistusta ei voi tehdä noudon aikana"
 
-#: src/ui.cc:1559
+#: src/ui.cc:1561
 msgid "Deleting downloaded files"
 msgstr "Poistan noudettuja tiedostoja"
 
-#: src/ui.cc:1573
+#: src/ui.cc:1575
 msgid "Downloaded package files have been deleted"
 msgstr "Noudetut pakettitiedostot on poistettu"
 
-#: src/ui.cc:1613
+#: src/ui.cc:1615
 msgid "The apt cache file is not available; cannot auto-clean."
 msgstr ""
 "Apt:n pakettivarasto ei ole saatavilla; en voi poistaa vanhentuneita "
 "pakettitiedostoja"
 
-#: src/ui.cc:1639
+#: src/ui.cc:1641
 #, c-format
 msgid ""
 "Obsolete downloaded package files have been deleted, freeing %sB of disk "
 "space."
 msgstr "Vanhentuneet pakettitiedostot on poistettu, %sB levytilaa vapautui."
 
-#: src/ui.cc:1736
+#: src/ui.cc:1738
 msgid "No more solutions."
 msgstr "Ei muita ratkaisuja"
 
-#: src/ui.cc:1963
+#: src/ui.cc:1965
 msgid "Unable to find a solution to apply."
 msgstr "Toteutettavaa ratkaisua ei löytynyt."
 
-#: src/ui.cc:1969
+#: src/ui.cc:1971
 msgid "Ran out of time while trying to find a solution."
 msgstr "Ratkaisun etsintään annettu aika loppui."
 
-#: src/ui.cc:2029 src/ui.cc:2031
+#: src/ui.cc:2031 src/ui.cc:2033
 msgid "Resolve Dependencies"
 msgstr "Selvitä riippuvuudet"
 
-#: src/ui.cc:2030
+#: src/ui.cc:2032
 msgid "Search for solutions to unsatisfied dependencies"
 msgstr "Etsi ratkaisuja tyydyttämättömiin riippuvuuksiin"
 
-#: src/ui.cc:2042
+#: src/ui.cc:2044
 #, c-format
 msgid "Unable to open %ls"
 msgstr "En pysty avaamaan tiedostoa %ls"
 
-#: src/ui.cc:2048
+#: src/ui.cc:2050
 msgid "Error while dumping resolver state"
 msgstr "Selvityksen tilan tallennuksessa tapahtui virhe"
 
-#: src/ui.cc:2058
+#: src/ui.cc:2060
 msgid "File to which the resolver state should be dumped:"
 msgstr "Mihin tiedostoon selvityksen tila tallennetaan? "
 
-#: src/ui.cc:2088
+#: src/ui.cc:2090
 msgid "^Install/remove packages"
 msgstr "^Asenna/poista paketteja"
 
-#: src/ui.cc:2089
+#: src/ui.cc:2091
 msgid "Perform all pending installs and removals"
 msgstr "Suorita kaikki määritetyt asennukset ja poistot"
 
-#: src/ui.cc:2091
+#: src/ui.cc:2093
 msgid "^Update package list"
 msgstr "^Päivitä pakettiluettelo"
 
-#: src/ui.cc:2092
+#: src/ui.cc:2094
 msgid "Check for new versions of packages"
 msgstr "Päivitä saatavilla olevien pakettien luettelo"
 
-#: src/ui.cc:2096
+#: src/ui.cc:2098
 msgid "Mark Up^gradable"
 msgstr "^Merkitse päivitykset"
 
-#: src/ui.cc:2097
+#: src/ui.cc:2099
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr ""
 "Merkitse päivitettäväksi kaikki päivityskelpoiset ei-jäädytetyt paketit"
 
-#: src/ui.cc:2101
+#: src/ui.cc:2103
 msgid "^Forget new packages"
 msgstr "^Unohda uudet paketit"
 
-#: src/ui.cc:2102
+#: src/ui.cc:2104
 msgid "Forget which packages are \"new\""
 msgstr "Tyhjennä uusien pakettien ryhmä"
 
-#: src/ui.cc:2105
+#: src/ui.cc:2107
 msgid "Canc^el pending actions"
 msgstr "^Peruuta komennot"
 
-#: src/ui.cc:2106
+#: src/ui.cc:2108
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr "Peruuta kaikki määritetyt asennukset ja poistot"
 
-#: src/ui.cc:2109
+#: src/ui.cc:2111
 msgid "^Clean package cache"
 msgstr "Puhdista ^koko pakettivarasto"
 
-#: src/ui.cc:2110
+#: src/ui.cc:2112
 msgid "Delete package files which were previously downloaded"
 msgstr "Poista aiemmin noudetut pakettitiedostot"
 
-#: src/ui.cc:2113
+#: src/ui.cc:2115
 msgid "Clean ^obsolete files"
 msgstr "Puhdista ^vanhentuneet tiedostot"
 
-#: src/ui.cc:2114
+#: src/ui.cc:2116
 msgid "Delete package files which can no longer be downloaded"
 msgstr "Poista pakettitiedostot, joita ei enää voi noutaa"
 
-#: src/ui.cc:2120
+#: src/ui.cc:2122
 msgid "^Reload package cache"
 msgstr "Lataa ^pakettivarasto uudelleen"
 
-#: src/ui.cc:2121
+#: src/ui.cc:2123
 msgid "Reload the package cache"
 msgstr "Lataa pakettivarasto uudelleen muistiin."
 
-#: src/ui.cc:2125
+#: src/ui.cc:2127
 msgid "^Play Minesweeper"
 msgstr "Pelaa miina^haravaa"
 
-#: src/ui.cc:2130
+#: src/ui.cc:2132
 msgid "^Become root"
 msgstr "Vaihda ^root-tunnukselle"
 
-#: src/ui.cc:2131
+#: src/ui.cc:2133
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
@@ -5307,70 +5342,70 @@ msgstr ""
 "Vaihda root-tunnukselle komennolla 'su'.  Tämä käynnistää ohjelman "
 "uudelleen, mutta asetuksesi säilyvät nykyisellään."
 
-#: src/ui.cc:2133
+#: src/ui.cc:2135
 msgid "^Quit"
 msgstr "^Lopeta"
 
-#: src/ui.cc:2134
+#: src/ui.cc:2136
 msgid "Exit the program"
 msgstr "Poistu ohjelmasta"
 
-#: src/ui.cc:2140 src/ui.cc:2520
+#: src/ui.cc:2142 src/ui.cc:2522
 msgid "Undo"
 msgstr "Peruuta"
 
-#: src/ui.cc:2141
+#: src/ui.cc:2143
 msgid "Undo the last package operation or group of operations"
 msgstr "Peruuta viimeisin suoritettu toimi tai toimiryhmä"
 
-#: src/ui.cc:2149
+#: src/ui.cc:2151
 msgid "^Install"
 msgstr "^Asenna"
 
-#: src/ui.cc:2150
+#: src/ui.cc:2152
 msgid "Flag the currently selected package for installation or upgrade"
 msgstr "Merkitse valittu paketti asennettavaksi tai päivitettäväksi"
 
-#: src/ui.cc:2153
+#: src/ui.cc:2155
 msgid "^Remove"
 msgstr "^Poista"
 
-#: src/ui.cc:2154
+#: src/ui.cc:2156
 msgid "Flag the currently selected package for removal"
 msgstr "Merkitse valittu paketti poistettavaksi"
 
-#: src/ui.cc:2157
+#: src/ui.cc:2159
 msgid "^Purge"
 msgstr "^Siivoa"
 
-#: src/ui.cc:2158
+#: src/ui.cc:2160
 msgid ""
 "Flag the currently selected package and its configuration files for removal"
 msgstr "Merkitse valittu paketti asetustiedostoineen poistettavaksi"
 
-#: src/ui.cc:2161
+#: src/ui.cc:2163
 msgid "^Keep"
 msgstr "Pala^uta"
 
-#: src/ui.cc:2162
+#: src/ui.cc:2164
 msgid "Cancel any action on the selected package"
 msgstr "Peruuta valitulle paketille määritetyt toiminnot"
 
-#: src/ui.cc:2165
+#: src/ui.cc:2167
 msgid "^Hold"
 msgstr "^Jäädytä"
 
-#: src/ui.cc:2166
+#: src/ui.cc:2168
 msgid ""
 "Cancel any action on the selected package, and protect it from future "
 "upgrades"
 msgstr "Peruuta valitulle paketille määritetyt toiminnot ja estä sen päivitys"
 
-#: src/ui.cc:2169
+#: src/ui.cc:2171
 msgid "Mark ^Auto"
 msgstr "^Merkitse Automaatti"
 
-#: src/ui.cc:2170
+#: src/ui.cc:2172
 msgid ""
 "Mark the selected package as having been automatically installed; it will "
 "automatically be removed if no other packages depend on it"
@@ -5378,11 +5413,11 @@ msgstr ""
 "Merkitse valittu paketti automaattisesti asennetuksi; se poistetaan, jos "
 "mikään muu paketti ei riipu siitä"
 
-#: src/ui.cc:2173
+#: src/ui.cc:2175
 msgid "Mark ^Manual"
 msgstr "Merkitse ^Käsin"
 
-#: src/ui.cc:2174
+#: src/ui.cc:2176
 msgid ""
 "Mark the selected package as having been manually installed; it will not be "
 "removed unless you manually remove it"
@@ -5390,11 +5425,11 @@ msgstr ""
 "Merkitse valittu paketti käsin asennetuksi; sitä ei poisteta, ellet poista "
 "sitä käsin"
 
-#: src/ui.cc:2177
+#: src/ui.cc:2179
 msgid "^Forbid Version"
 msgstr "^Estä versio"
 
-#: src/ui.cc:2178
+#: src/ui.cc:2180
 msgid ""
 "Forbid the candidate version of the selected package from being installed; "
 "newer versions of the package will be installed as usual"
@@ -5402,249 +5437,249 @@ msgstr ""
 "Estä valitun paketin ehdolla olevan version asennus; paketin uudemmat "
 "versiot asennetaan normaalisti"
 
-#: src/ui.cc:2182
+#: src/ui.cc:2184
 msgid "I^nformation"
 msgstr "^Tiedot"
 
-#: src/ui.cc:2183
+#: src/ui.cc:2185
 msgid "Display more information about the selected package"
 msgstr "Näytä lisätietoa valitusta paketista"
 
-#: src/ui.cc:2186
+#: src/ui.cc:2188
 msgid "C^ycle Package Information"
 msgstr ""
 
-#: src/ui.cc:2187
+#: src/ui.cc:2189
 msgid ""
 "Cycle through the modes of the package information area: it can show the "
 "package's long description, a summary of its dependency status, or an "
 "analysis of why the package is required."
 msgstr ""
 
-#: src/ui.cc:2190
+#: src/ui.cc:2192
 msgid "^Changelog"
 msgstr "Muutos^loki"
 
-#: src/ui.cc:2191
+#: src/ui.cc:2193
 msgid "Display the Debian changelog of the selected package"
 msgstr "Näytä valitun paketin Debian-muutosloki"
 
-#: src/ui.cc:2198
+#: src/ui.cc:2200
 msgid "^Examine Solution"
 msgstr "^Näytä ratkaisu"
 
-#: src/ui.cc:2199
+#: src/ui.cc:2201
 msgid "Examine the currently selected solution to the dependency problems."
 msgstr "Näytä valittu riippuvuusongelmien ratkaisu."
 
-#: src/ui.cc:2202
+#: src/ui.cc:2204
 msgid "Apply ^Solution"
 msgstr "^Toteuta ratkaisu"
 
-#: src/ui.cc:2203
+#: src/ui.cc:2205
 msgid "Perform the actions contained in the currently selected solution."
 msgstr "Toteuta valitun ratkaisun toimenpiteet."
 
-#: src/ui.cc:2206
+#: src/ui.cc:2208
 msgid "^Next Solution"
 msgstr "^Seuraava ratkaisu"
 
-#: src/ui.cc:2207
+#: src/ui.cc:2209
 msgid "Select the next solution to the dependency problems."
 msgstr "Näytä seuraava ratkaisu riippuvuusongelmiin."
 
-#: src/ui.cc:2210
+#: src/ui.cc:2212
 msgid "^Previous Solution"
 msgstr "^Edellinen ratkaisu"
 
-#: src/ui.cc:2211
+#: src/ui.cc:2213
 msgid "Select the previous solution to the dependency problems."
 msgstr "Näytä edellinen ratkaisu riippuvuusongelmiin."
 
-#: src/ui.cc:2214
+#: src/ui.cc:2216
 msgid "^First Solution"
 msgstr "Ensimmäinen ^ratkaisu"
 
-#: src/ui.cc:2215
+#: src/ui.cc:2217
 msgid "Select the first solution to the dependency problems."
 msgstr "Näytä ensimmäinen ratkaisu riippuvuusongelmiin."
 
-#: src/ui.cc:2218
+#: src/ui.cc:2220
 msgid "^Last Solution"
 msgstr "^Viimeinen ratkaisu"
 
-#: src/ui.cc:2219
+#: src/ui.cc:2221
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
 msgstr "Näytä toistaiseksi viimeinen löydetty ratkaisu riippuvuusongelmiin."
 
-#: src/ui.cc:2225
+#: src/ui.cc:2227
 msgid "Toggle ^Rejected"
 msgstr "Hylkäys"
 
-#: src/ui.cc:2226
+#: src/ui.cc:2228
 msgid "Toggle whether the currently selected action is rejected."
 msgstr "Hylkää/älä hylkää valittua toimintoa."
 
-#: src/ui.cc:2230
+#: src/ui.cc:2232
 msgid "Toggle ^Approved"
 msgstr "^Hyväksyntä"
 
-#: src/ui.cc:2231
+#: src/ui.cc:2233
 msgid "Toggle whether the currently selected action is approved."
 msgstr "Hyväksy/älä hyväksy valittua toimintoa."
 
-#: src/ui.cc:2235
+#: src/ui.cc:2237
 msgid "^View Target"
 msgstr "^Näytä kohde"
 
-#: src/ui.cc:2236
+#: src/ui.cc:2238
 msgid "View the package which will be affected by the selected action"
 msgstr "Näytä paketti, johon valittu toiminto kohdistuu"
 
-#: src/ui.cc:2242
+#: src/ui.cc:2244
 msgid "Reject Breaking ^Holds"
 msgstr ""
 
-#: src/ui.cc:2244
+#: src/ui.cc:2246
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
 msgstr ""
 
-#: src/ui.cc:2252
+#: src/ui.cc:2254
 msgid "^Find"
 msgstr "^Etsi"
 
-#: src/ui.cc:2253
+#: src/ui.cc:2255
 msgid "Search forwards"
 msgstr "Etsi eteenpäin"
 
-#: src/ui.cc:2256
+#: src/ui.cc:2258
 msgid "^Find Backwards"
 msgstr "Etsi ^taaksepäin"
 
-#: src/ui.cc:2257
+#: src/ui.cc:2259
 msgid "Search backwards"
 msgstr "Etsi taaksepäin"
 
-#: src/ui.cc:2260
+#: src/ui.cc:2262
 msgid "Find ^Again"
 msgstr "Etsi ^Uudestaan"
 
-#: src/ui.cc:2261
+#: src/ui.cc:2263
 msgid "Repeat the last search"
 msgstr "Toista edellinen haku"
 
-#: src/ui.cc:2264
+#: src/ui.cc:2266
 #, fuzzy
 msgid "Find Again ^Backwards"
 msgstr "Etsi ^taaksepäin"
 
-#: src/ui.cc:2265
+#: src/ui.cc:2267
 #, fuzzy
 msgid "Repeat the last search in the opposite direction"
 msgstr "Toista edellinen haku"
 
-#: src/ui.cc:2269
+#: src/ui.cc:2271
 msgid "^Limit Display"
 msgstr "^Rajoita Näkymä"
 
-#: src/ui.cc:2270
+#: src/ui.cc:2272
 msgid "Apply a filter to the package list"
 msgstr "Rajoita näkyvien pakettien luetteloa suodattimella"
 
-#: src/ui.cc:2273
+#: src/ui.cc:2275
 msgid "^Un-Limit Display"
 msgstr "^Laajenna Näkymä"
 
-#: src/ui.cc:2274
+#: src/ui.cc:2276
 msgid "Remove the filter from the package list"
 msgstr "Poista pakettiluettelon suodatin"
 
-#: src/ui.cc:2278
+#: src/ui.cc:2280
 msgid "Find ^Broken"
 msgstr "^Hae rikkinäiset"
 
-#: src/ui.cc:2279
+#: src/ui.cc:2281
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "Etsi seuraava paketti, jonka riippuvuudet eivät ole kunnossa"
 
-#: src/ui.cc:2286
+#: src/ui.cc:2288
 #, fuzzy
 msgid "^Preferences"
 msgstr "Esiriippuvuudet"
 
-#: src/ui.cc:2291
+#: src/ui.cc:2293
 msgid "^UI options"
 msgstr "^Käyttöliittymä"
 
-#: src/ui.cc:2292
+#: src/ui.cc:2294
 msgid "Change the settings which affect the user interface"
 msgstr "Muuta käyttöliittymään vaikuttavia asetuksia"
 
-#: src/ui.cc:2295
+#: src/ui.cc:2297
 msgid "^Dependency handling"
 msgstr "^Riippuvuuksien käsittely"
 
-#: src/ui.cc:2296
+#: src/ui.cc:2298
 msgid "Change the settings which affect how package dependencies are handled"
 msgstr "Muuta pakettien riippuvuuksien käsittelyyn vaikuttavia asetuksia"
 
-#: src/ui.cc:2299
+#: src/ui.cc:2301
 msgid "^Miscellaneous"
 msgstr "^Sekalaista"
 
-#: src/ui.cc:2300
+#: src/ui.cc:2302
 msgid "Change miscellaneous program settings"
 msgstr "Muuta sekalaisia asetuksia"
 
-#: src/ui.cc:2306
+#: src/ui.cc:2308
 msgid "^Revert options"
 msgstr "^Palauta oletukset"
 
-#: src/ui.cc:2307
+#: src/ui.cc:2309
 msgid "Reset all settings to the system defaults"
 msgstr "Palauta kaikki asetukset ohjelman oletusasetuksiin"
 
-#: src/ui.cc:2318
+#: src/ui.cc:2320
 msgid "^Next"
 msgstr "^Seuraava"
 
-#: src/ui.cc:2319
+#: src/ui.cc:2321
 msgid "View next display"
 msgstr "Siirry seuraavaan näkymään"
 
-#: src/ui.cc:2322
+#: src/ui.cc:2324
 msgid "^Prev"
 msgstr "^Edellinen"
 
-#: src/ui.cc:2323
+#: src/ui.cc:2325
 msgid "View previous display"
 msgstr "Siirry edelliseen näkymään"
 
-#: src/ui.cc:2326
+#: src/ui.cc:2328
 msgid "^Close"
 msgstr "Su^lje"
 
-#: src/ui.cc:2327
+#: src/ui.cc:2329
 msgid "Close this display"
 msgstr "Sulje tämä näkymä"
 
-#: src/ui.cc:2332
+#: src/ui.cc:2334
 msgid "New Package ^View"
 msgstr "Uusi paketti^näkymä"
 
-#: src/ui.cc:2333
+#: src/ui.cc:2335
 msgid "Create a new default package view"
 msgstr "Luo uusi oletusnäkymä"
 
-#: src/ui.cc:2336
+#: src/ui.cc:2338
 msgid "Audit ^Recommendations"
 msgstr "Näytä ^suosittelut"
 
-#: src/ui.cc:2337
+#: src/ui.cc:2339
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
@@ -5652,92 +5687,92 @@ msgstr ""
 "Näytä paketit, joita suositellaan asennettaviksi, mutta joita ei ole vielä "
 "asennettu."
 
-#: src/ui.cc:2340
+#: src/ui.cc:2342
 msgid "New ^Flat Package List"
 msgstr "Uusi ^yksitasoinen pakettiluettelo"
 
-#: src/ui.cc:2341
+#: src/ui.cc:2343
 msgid "View all the packages on the system in a single uncategorized list"
 msgstr "Katsele kaikkia järjestelmän paketteja ilman luokitteluja"
 
-#: src/ui.cc:2344
+#: src/ui.cc:2346
 msgid "New ^Debtags Browser"
 msgstr "Uusi ^Debtags-selain"
 
-#: src/ui.cc:2346
+#: src/ui.cc:2348
 msgid "Browse packages using Debtags data"
 msgstr "Selaa paketteja Debtags-tietoja käyttäen"
 
-#: src/ui.cc:2349
+#: src/ui.cc:2351
 msgid "New Categorical ^Browser"
 msgstr "^Uusi luokkaselain"
 
-#: src/ui.cc:2351
+#: src/ui.cc:2353
 msgid "Browse packages by category"
 msgstr "Selaa paketteja luokittain"
 
-#: src/ui.cc:2359
+#: src/ui.cc:2361
 msgid "^About"
 msgstr "^Tietoja"
 
-#: src/ui.cc:2360
+#: src/ui.cc:2362
 msgid "View information about this program"
 msgstr "Tietoja tästä ohjelmasta"
 
-#: src/ui.cc:2363
+#: src/ui.cc:2365
 msgid "^Help"
 msgstr "^Pika-apu"
 
-#: src/ui.cc:2364
+#: src/ui.cc:2366
 msgid "View the on-line help"
 msgstr "Selaa sisäänrakennettua avustustekstiä"
 
-#: src/ui.cc:2366
+#: src/ui.cc:2368
 msgid "User's ^Manual"
 msgstr "^Käyttöopas"
 
-#: src/ui.cc:2367
+#: src/ui.cc:2369
 msgid "View the detailed program manual"
 msgstr "Näytä ohjelman varsinainen käyttöohje"
 
-#: src/ui.cc:2370
+#: src/ui.cc:2372
 msgid "^FAQ"
 msgstr "^UKK"
 
-#: src/ui.cc:2374
+#: src/ui.cc:2376
 msgid "^News"
 msgstr "^Uutiset"
 
-#: src/ui.cc:2375
+#: src/ui.cc:2377
 #, fuzzy
 msgid "View the important changes made in each version of "
 msgstr "Näytä tärkeät muutokset, jotka on tehty kuhunkin versioon paketista "
 
-#: src/ui.cc:2378
+#: src/ui.cc:2380
 msgid "^License"
 msgstr "^Lisenssi"
 
-#: src/ui.cc:2519
+#: src/ui.cc:2521
 msgid "Actions"
 msgstr "Toiminnot"
 
-#: src/ui.cc:2522
+#: src/ui.cc:2524
 msgid "Resolver"
 msgstr "Ratkaisin"
 
-#: src/ui.cc:2523
+#: src/ui.cc:2525
 msgid "Search"
 msgstr "Haku"
 
-#: src/ui.cc:2524
+#: src/ui.cc:2526
 msgid "Options"
 msgstr "Asetukset"
 
-#: src/ui.cc:2525
+#: src/ui.cc:2527
 msgid "Views"
 msgstr "Näkymät"
 
-#: src/ui.cc:2591
+#: src/ui.cc:2593
 #, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
@@ -5745,11 +5780,11 @@ msgid ""
 msgstr ""
 "%ls: Valikko  %ls: Apu  %ls: Lopeta  %ls: Päivitä  %ls: Nouda/Asenna/Poista"
 
-#: src/ui.cc:2936
+#: src/ui.cc:2938
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:2937
+#: src/ui.cc:2939
 msgid "no_key"
 msgstr "n"
 
