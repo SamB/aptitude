@@ -160,6 +160,11 @@ static void usage()
   printf(_(" changelog    - View a package's changelog\n"));
   printf(_(" download     - Download the .deb file for a package\n"));
   printf(_(" reinstall    - Download and (possibly) reinstall a currently installed package\n"));
+  printf(_(" why          - Show the manually installed packages that require a package, or\n"));
+  printf(_("              - why one or more packages would require the given package\n"));
+  printf(_(" why-not      - Show the manually installed packages that lead to a conflict\n"));
+  printf(_("                with the given package, or why one or more packages would\n"));
+  printf(_("                lead to a conflict with the given package if installed\n"));
   printf("\n");
   printf(_("  Options:\n"));
   printf(_(" -h             This help text\n"));
