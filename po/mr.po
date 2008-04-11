@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-04-11 08:56-0700\n"
+"POT-Creation-Date: 2008-04-11 09:13-0700\n"
 "PO-Revision-Date: 2006-09-03 09:36-0700\n"
 "Last-Translator: Priti Patil <prithisd@gmail.com>\n"
 "Language-Team:  Marathi, janabhaaratii, C-DAC, Mumbai, India "
@@ -776,7 +776,7 @@ msgid ""
 msgstr "अवलंबित्वे दूर करण्यास असमर्थ"
 
 #: src/cmdline/cmdline_do_action.cc:304 src/cmdline/cmdline_simulate.cc:35
-#: src/cmdline/cmdline_upgrade.cc:151 src/main.cc:700
+#: src/cmdline/cmdline_upgrade.cc:151 src/main.cc:702
 #, c-format
 msgid "Abort.\n"
 msgstr "वििच्छेद करा \n"
@@ -3233,25 +3233,25 @@ msgstr "स्वयंची खूण करा - पॅकेजेस स्
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr "स्वयंची खूण करू नका - पॅकेजेस हाताने संस्थापित झाल्याची खूण करा\n"
 
-#: src/main.cc:151
+#: src/main.cc:147
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
 "version.\n"
 msgstr "निषिध्द -आवृत्ती -प्रवृत्तीला विशिष्ट पॅकेजची सुधारित आवृत्ती काढण्यास मनाई करा \n"
 
-#: src/main.cc:152
+#: src/main.cc:148
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr ""
 "अद्ययावत करा - नवीन /दर्जा वाढवण्याक्षम पॅकेजेसच्या सूची उतरवून घ्या (डाउनलोड करा)\n"
 
-#: src/main.cc:153
+#: src/main.cc:149
 #, fuzzy, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr "सुधारित आवृत्ती काढा (दर्जा वाढवा) - सुरक्षित सुधारित आवृत्ती काढा \n"
 
-#: src/main.cc:154
+#: src/main.cc:150
 #, fuzzy, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
@@ -3260,43 +3260,43 @@ msgstr ""
 "dist-सुधारित आवृत्ती काढा - सुधारित आवृत्ती काढा, शक्यतर पॅकेजेस संस्थापित करणारी व काढून "
 "टाकणारी \n"
 
-#: src/main.cc:155
+#: src/main.cc:151
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr "नवीन विसरून जा - कोणती पॅकेजेस \"new(नवीन)\" आहेत ता विसरून जा \n"
 
-#: src/main.cc:156
+#: src/main.cc:152
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr "शोधा - पॅकेजसाठी नावानुसार आणि / किंवा अभिव्यक्तीनुसार शोध घ्या \n"
 
-#: src/main.cc:157
+#: src/main.cc:153
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr "दाखवा - पॅकेजविषयीची तपशीलवार (विस्तृत) माहिती प्रदर्शित करा \n"
 
-#: src/main.cc:158
+#: src/main.cc:154
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr ""
 "स्वच्छ करा (साफ करा) - उतरवून घेतलेल्या (डाउललोड केलेल्या) पॅकेज फाइल्स खोडून टाका\n"
 
-#: src/main.cc:159
+#: src/main.cc:155
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr "स्वयंसफाई करा - जुन्या उतरवून घेतलेल्या पॅकेज फाइल्स खोडून टाका\n"
 
-#: src/main.cc:160
+#: src/main.cc:156
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr "बदलनोंद - पॅकेजमधील बदलनोंदीचे दृश्य दाखवा\n"
 
-#: src/main.cc:161
+#: src/main.cc:157
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr "डाउनलोड करा (उतरवून घ्या) - पॅकेजसाठी .debफाइल उतरवून घ्या \n"
 
-#: src/main.cc:162
+#: src/main.cc:158
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -3304,22 +3304,54 @@ msgid ""
 msgstr ""
 "पुनर्संस्थापित  करा - सध्या संस्थापित केलेले पॅकेज उतरवून घ्या व(शक्य तर)पुनर्संस्थापित करा \n"
 
-#: src/main.cc:164
+#: src/main.cc:159
+#, fuzzy, c-format
+msgid ""
+" why          - Show the manually installed packages that require a package, "
+"or\n"
+msgstr "-Z\t\t प्रत्येक पॅकेजच्या संस्थापित आकारात झालेला बदल दाखवा \n"
+
+#: src/main.cc:160
+#, fuzzy, c-format
+msgid ""
+"              - why one or more packages would require the given package\n"
+msgstr "  -V   पॅकेजेसच्या कोणत्या आवृत्त्या संस्थापित करायच्या आहेत ते दाखवा.\n"
+
+#: src/main.cc:161
+#, c-format
+msgid ""
+" why-not      - Show the manually installed packages that lead to a "
+"conflict\n"
+msgstr ""
+
+#: src/main.cc:162
+#, c-format
+msgid ""
+"                with the given package, or why one or more packages would\n"
+msgstr ""
+
+#: src/main.cc:163
+#, fuzzy, c-format
+msgid ""
+"                lead to a conflict with the given package if installed\n"
+msgstr "  -V   पॅकेजेसच्या कोणत्या आवृत्त्या संस्थापित करायच्या आहेत ते दाखवा.\n"
+
+#: src/main.cc:165
 #, c-format
 msgid "  Options:\n"
 msgstr "पर्याय ः \n"
 
-#: src/main.cc:165
+#: src/main.cc:166
 #, c-format
 msgid " -h             This help text\n"
 msgstr "-hहे मजकुरासाठी मदत करते \n"
 
-#: src/main.cc:166
+#: src/main.cc:167
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr "-s   कृतींची नक्कल करते, परंतु प्रत्यक्षात त्या कृती करत नाही.\n"
 
-#: src/main.cc:167
+#: src/main.cc:168
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
@@ -3327,18 +3359,18 @@ msgstr ""
 "-d पॅकेजेस फक्त डाउनलोड करते (उतरवून घेते), संस्थापित करीत नाही किंवा काहीही काढून टाकत "
 "नाही.\n"
 
-#: src/main.cc:168
+#: src/main.cc:169
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr "-p   खात्री करून घेण्यासाठी किंवा कृतींसाठी नेहमीच तत्पर \n"
 
-#: src/main.cc:169
+#: src/main.cc:170
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr "-y   साध्या होय /नाही प्रश्नांसाठी उत्तर होय आहे असे गृहीत धरा \n"
 
-#: src/main.cc:170
+#: src/main.cc:171
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
@@ -3347,46 +3379,46 @@ msgstr ""
 "-f   विहित नमुना शोध निकाल प्रदर्शित करण्यासाठी विहित नमुना नमूद करा, माहीती पुस्तक "
 "पहा.\n"
 
-#: src/main.cc:171
+#: src/main.cc:172
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr "-O आदेश शोधनिकालांची वर्गवारी कशी करावी ते नमूद करा, माहितीपुस्तक पहा, \n"
 
-#: src/main.cc:172
+#: src/main.cc:173
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr "-w शोधनिकाल नमुन्यात मांडण्यासाठी दृश्यमाध्यमाची रूंदी नमूद करा.\n"
 
-#: src/main.cc:173
+#: src/main.cc:174
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr "-f  भंगलेली पॅकेजेस दुरूस्त करण्याचा जोरदार प्रयत्न करा.\n"
 
-#: src/main.cc:174
+#: src/main.cc:175
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr "  -V   पॅकेजेसच्या कोणत्या आवृत्त्या संस्थापित करायच्या आहेत ते दाखवा.\n"
 
-#: src/main.cc:175
+#: src/main.cc:176
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr "-D स्वयंचलितपणे बदललेल्या पॅकेजेसची परावलंबित्वे दाखवा.\n"
 
-#: src/main.cc:176
+#: src/main.cc:177
 #, fuzzy, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr "-Z\t\t प्रत्येक पॅकेजच्या संस्थापित आकारात झालेला बदल दाखवा \n"
 
-#: src/main.cc:177
+#: src/main.cc:178
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr "-V  अतिरिक्त माहिती प्रदर्शित करा. (अनेक वेळा ती पुरवली जाऊ शकते) \n"
 
-#: src/main.cc:178
+#: src/main.cc:179
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
@@ -3394,19 +3426,23 @@ msgstr ""
 "-t  (मुक्त करण्यात येणारी आवृत्ती) ज्यातून पॅकेजेस संस्थापित करायची आहेत, ती आवृत्ती निश्चित "
 "(स्थापित) करा \n"
 
-#: src/main.cc:179
-#, c-format
+#: src/main.cc:180
+#, fuzzy, c-format
 msgid ""
-" -q             In command-line mode, suppress the incremental progress "
-"indicators.\n"
+" -q             In command-line mode, suppress the incremental progress\n"
 msgstr "-q आज्ञा-रेखा प्रकारात, वाढीव प्रगती निदर्शक दाबून ठेवा. \n"
 
-#: src/main.cc:180
+#: src/main.cc:181
+#, fuzzy, c-format
+msgid "                indicators.\n"
+msgstr "-hहे मजकुरासाठी मदत करते \n"
+
+#: src/main.cc:182
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr "-o key=val (कळ =मूल्य) key नावाचा संरचना पर्याय थेट स्थापित करा \n"
 
-#: src/main.cc:181
+#: src/main.cc:183
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -3415,81 +3451,81 @@ msgstr ""
 "--with(out)-recommends\t शिफारशींना जोरदार परावलंबित्वे म्हणून वागवावे की नाही ते "
 "स्पष्ट करा \n"
 
-#: src/main.cc:182
+#: src/main.cc:184
 #, fuzzy, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr "-S fname: fname मधून कल विस्तारित स्थिती माहिती वाचा .\n"
 
-#: src/main.cc:183
+#: src/main.cc:185
 #, fuzzy, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr "-u   ः संगणक सुरू केल्यावर नवीन पॅकेज सूची डाउनलोड करा (उतरवून घ्या) \n"
 
-#: src/main.cc:184
+#: src/main.cc:186
 #, fuzzy, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr "-i  संगणक सुरू केल्यावर संस्थापन प्रोग्राम (आज्ञावली) सुरू करा.\n"
 
-#: src/main.cc:186
+#: src/main.cc:188
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "ह्या प्रवृत्तीत सुपर काऊ पॅावर्स (श्रेष्ठ गाय शक्ती) नाहीत.\n"
 
-#: src/main.cc:369
+#: src/main.cc:371
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "-q नंतर एक क्रमंाक अपेक्षित आहे.\n"
 
-#: src/main.cc:378
+#: src/main.cc:380
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "-q नंतर एक क्रमंाक अपेक्षित आहे. %sे मिळाले \n"
 
-#: src/main.cc:402
+#: src/main.cc:404
 #, fuzzy, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr " कळ=मूल्य स्वरूपाचे विधान -O ला हवे आहे,%s मिळाले."
 
-#: src/main.cc:494
+#: src/main.cc:496
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr ""
 
-#: src/main.cc:522 src/main.cc:531
+#: src/main.cc:524 src/main.cc:533
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "गूढता ः अज्ञात पर्याय संकेत मिळाला.\n"
 
-#: src/main.cc:548
+#: src/main.cc:550
 msgid "Only one of -u and -i may be specified\n"
 msgstr "-u व -i पैकी फक्त एकच नमूद करता येईल. \n"
 
-#: src/main.cc:556
+#: src/main.cc:558
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr "आज्ञा-रेखा प्रकारात -u व-i नमूद करणारही नाहीत(उदा.'संस्थापित करा' सह)"
 
-#: src/main.cc:577
+#: src/main.cc:579
 msgid "-u and -i may not be specified with a command"
 msgstr "आज्ञेसोबत  -u व -i नमूद केले नसेलही "
 
-#: src/main.cc:637
+#: src/main.cc:639
 #, c-format
 msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
 "for %s, which always uses the safe resolver.\n"
 msgstr ""
 
-#: src/main.cc:693
+#: src/main.cc:695
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "अज्ञात आज्ञा  \"%s\"\n"
 
-#: src/main.cc:705 src/main.cc:754
+#: src/main.cc:707 src/main.cc:756
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr " न पकडलेला अपवाद ः %s\n"
 
-#: src/main.cc:709 src/main.cc:758
+#: src/main.cc:711 src/main.cc:760
 #, fuzzy, c-format
 msgid ""
 "Backtrace:\n"

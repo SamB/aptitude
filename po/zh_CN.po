@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-04-11 08:56-0700\n"
+"POT-Creation-Date: 2008-04-11 09:13-0700\n"
 "PO-Revision-Date: 2008-03-30 13:26+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
@@ -833,7 +833,7 @@ msgid ""
 msgstr "无法安全解决依赖关系，请尝试使用 --full-resolver 来运行。\n"
 
 #: src/cmdline/cmdline_do_action.cc:304 src/cmdline/cmdline_simulate.cc:35
-#: src/cmdline/cmdline_upgrade.cc:151 src/main.cc:700
+#: src/cmdline/cmdline_upgrade.cc:151 src/main.cc:702
 #, c-format
 msgid "Abort.\n"
 msgstr "放弃。\n"
@@ -3259,169 +3259,205 @@ msgstr " markauto     - 将软件包标记为自动安装\n"
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr " unmarkauto   - 将软件包标记为手动安装\n"
 
-#: src/main.cc:151
+#: src/main.cc:147
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
 "version.\n"
 msgstr " forbid-version - 禁止 aptitude 升级到某一特定版本的软件包。\n"
 
-#: src/main.cc:152
+#: src/main.cc:148
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - 下载新/可升级软件包列表\n"
 
-#: src/main.cc:153
+#: src/main.cc:149
 #, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr " safe-upgrade - 执行一次安全的升级\n"
 
-#: src/main.cc:154
+#: src/main.cc:150
 #, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr " full-upgrade - 执行升级，可能会安装和卸载软件包\n"
 
-#: src/main.cc:155
+#: src/main.cc:151
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr " forget-new   - 忘记哪些软件包是“新”的\n"
 
-#: src/main.cc:156
+#: src/main.cc:152
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr " search       - 按名称 和/或 表达式搜索软件包\n"
 
-#: src/main.cc:157
+#: src/main.cc:153
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr " show       - 显示一个软件包的详细信息\n"
 
-#: src/main.cc:158
+#: src/main.cc:154
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr " clean        - 删除已下载的软件包文件\n"
 
-#: src/main.cc:159
+#: src/main.cc:155
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr " autoclean    - 删除旧的已下载软件包文件\n"
 
-#: src/main.cc:160
+#: src/main.cc:156
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr " changelog    - 查看一个软件包的变更日志\n"
 
-#: src/main.cc:161
+#: src/main.cc:157
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr " download     - 下载软件包的 .deb 文件\n"
 
-#: src/main.cc:162
+#: src/main.cc:158
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
 msgstr " reinstall    - 下载并(可能)重新安装一个现在已经安装了的软件包\n"
 
-#: src/main.cc:164
+#: src/main.cc:159
+#, fuzzy, c-format
+msgid ""
+" why          - Show the manually installed packages that require a package, "
+"or\n"
+msgstr " -Z\t\t    显示每个软件包的安装尺寸的变化。\n"
+
+#: src/main.cc:160
+#, fuzzy, c-format
+msgid ""
+"              - why one or more packages would require the given package\n"
+msgstr " -V             显示就要安装的软件包版本。\n"
+
+#: src/main.cc:161
+#, c-format
+msgid ""
+" why-not      - Show the manually installed packages that lead to a "
+"conflict\n"
+msgstr ""
+
+#: src/main.cc:162
+#, c-format
+msgid ""
+"                with the given package, or why one or more packages would\n"
+msgstr ""
+
+#: src/main.cc:163
+#, fuzzy, c-format
+msgid ""
+"                lead to a conflict with the given package if installed\n"
+msgstr " -V             显示就要安装的软件包版本。\n"
+
+#: src/main.cc:165
 #, c-format
 msgid "  Options:\n"
 msgstr "  选项：\n"
 
-#: src/main.cc:165
+#: src/main.cc:166
 #, c-format
 msgid " -h             This help text\n"
 msgstr " -h             此帮助文本\n"
 
-#: src/main.cc:166
+#: src/main.cc:167
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr " -s             模拟动作，但是并不真正执行。\n"
 
-#: src/main.cc:167
+#: src/main.cc:168
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr " -d             仅仅下载软件包，不安装或者卸载任何东西。\n"
 
-#: src/main.cc:168
+#: src/main.cc:169
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr " -P             总是提示确认执行动作\n"
 
-#: src/main.cc:169
+#: src/main.cc:170
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr " -y             假设对简单的 是/否 问题回答“是”\n"
 
-#: src/main.cc:170
+#: src/main.cc:171
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual\n"
 msgstr " -F 格式        指定显示搜索结果的格式；参见手册\n"
 
-#: src/main.cc:171
+#: src/main.cc:172
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr " -O 次序        指定如何排列显示搜索结果；参见手册\n"
 
-#: src/main.cc:172
+#: src/main.cc:173
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr " -w 宽度        指定显示搜索结果的格式宽度\n"
 
-#: src/main.cc:173
+#: src/main.cc:174
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr " -f             积极地尝试修复损坏的软件包。\n"
 
-#: src/main.cc:174
+#: src/main.cc:175
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             显示就要安装的软件包版本。\n"
 
-#: src/main.cc:175
+#: src/main.cc:176
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D             显示自动改变的软件包的依赖关系\n"
 
-#: src/main.cc:176
+#: src/main.cc:177
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    显示每个软件包的安装尺寸的变化。\n"
 
-#: src/main.cc:177
+#: src/main.cc:178
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr " -v             显示附加信息。(可能会提供多次) \n"
 
-#: src/main.cc:178
+#: src/main.cc:179
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
 msgstr " -t [release]   设置将要安装的软件包的发布版本\n"
 
-#: src/main.cc:179
-#, c-format
+#: src/main.cc:180
+#, fuzzy, c-format
 msgid ""
-" -q             In command-line mode, suppress the incremental progress "
-"indicators.\n"
+" -q             In command-line mode, suppress the incremental progress\n"
 msgstr " -q            在命令行状态下，不显示进度条。\n"
 
-#: src/main.cc:180
+#: src/main.cc:181
+#, fuzzy, c-format
+msgid "                indicators.\n"
+msgstr " -h             此帮助文本\n"
+
+#: src/main.cc:182
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr " -o key=val     直接设置名为“key”的配置选项\n"
 
-#: src/main.cc:181
+#: src/main.cc:183
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -3430,64 +3466,64 @@ msgstr ""
 " --with(out)-recommends\t指定是否将推荐(建议)处理为\n"
 "              强依赖关系。\n"
 
-#: src/main.cc:182
+#: src/main.cc:184
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr " -S fname       从文件名中读取aptitude的扩展状态信息。\n"
 
-#: src/main.cc:183
+#: src/main.cc:185
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             开始运行时下载新的软件包列表。\n"
 
-#: src/main.cc:184
+#: src/main.cc:186
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             开始运行时执行安装。\n"
 
-#: src/main.cc:186
+#: src/main.cc:188
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  这个 aptitude 没有超级牛力。\n"
 
-#: src/main.cc:369
+#: src/main.cc:371
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "在 -q= 之后需要一个数字\n"
 
-#: src/main.cc:378
+#: src/main.cc:380
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "在 -q= 之后需要一个数字，但却得到 %s\n"
 
-#: src/main.cc:402
+#: src/main.cc:404
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o 要求参数格式为 key=val，却接受到 %s\n"
 
-#: src/main.cc:494
+#: src/main.cc:496
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr "标签名“%s”后没有逗号。\n"
 
-#: src/main.cc:522 src/main.cc:531
+#: src/main.cc:524 src/main.cc:533
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "“诡异”：收到未知的选项代码\n"
 
-#: src/main.cc:548
+#: src/main.cc:550
 msgid "Only one of -u and -i may be specified\n"
 msgstr "选项 -u 和 -i 只能指定一个\n"
 
-#: src/main.cc:556
+#: src/main.cc:558
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr "选项 -u 和 -i 不能在命令行模式中指定 (例如，和“install”一起)"
 
-#: src/main.cc:577
+#: src/main.cc:579
 msgid "-u and -i may not be specified with a command"
 msgstr "选项 -u 和 -i 不能在和一个命令一起指定 "
 
-#: src/main.cc:637
+#: src/main.cc:639
 #, c-format
 msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
@@ -3496,17 +3532,17 @@ msgstr ""
 "选项 --safe-resolver 和 --full-resolver 对 %s 没有意义，它总是使用安全解析"
 "器。\n"
 
-#: src/main.cc:693
+#: src/main.cc:695
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "未知的命令“%s”\n"
 
-#: src/main.cc:705 src/main.cc:754
+#: src/main.cc:707 src/main.cc:756
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "未知的例外：%s\n"
 
-#: src/main.cc:709 src/main.cc:758
+#: src/main.cc:711 src/main.cc:760
 #, c-format
 msgid ""
 "Backtrace:\n"
