@@ -1,3 +1,80 @@
+[4/9/2008]
+Version 0.4.11.2                            "How far the sky,
+                                             how cold the night,
+                                             how still the flowing river.
+                                             How sharp the air --
+                                             so pure the light --
+                                             beneath Orion's quiver.
+                                             Beneath the frozen, staring,
+                                             starry sky we lay a-shiver."
+
+- New features:
+
+  * The information area can display tabs for the alternative views it
+    supports.  This is off by default because I found that it was too
+    intrusive (mainly because it appears between the short and the
+    long description of a package).  If cwidget gets the ability to
+    put tabs at the bottom of multiplex widgets, I might change this.
+
+- Documentation bugs:
+
+  * Fix several XML errors in the manpage source (Closes: #473722)
+
+- Bug fixes:
+
+  + Crashes and serious errors:
+
+    * Make the safe resolver not explode exponentially when new
+      Recommendations are present.
+
+      The root cause here was that the "mandate" mechanism the safe
+      resolver uses to ensure that it progresses monotonically towards
+      a solution doesn't work in the presence of Recommends, so the
+      resolver ended up exploring the entire space of possible
+      resolutions to packages' Recommendations.
+
+    * Don't crash if a package's Section is empty. (Closes: #474115)
+
+  + Cosmetic and UI bugs:
+
+    * The "why installed" information display in the package list will
+      now display an informative message when no package is selected,
+      the same way that the "related dependencies" display does.
+
+    * The "why installed" information display should work better for
+      newly installed packages now.
+
+    * "aptitude --version" prints more information about the libraries
+      it was compiled against.
+
+    * "Help -> About" prints a correct copyright date now.
+
+    * The status indicator has been rewritten so that it no longer
+      needs numeric conjugation (meaning it won't say "there are 1
+      update").  (Closes: #486186 and friends)
+
+    * "why" and "why-not" now appear in the list of commands in
+      "aptitude --help".
+
+  + Minor bugs:
+
+    * Use a 'latch' configuration option to migrate from
+      Recommends-Important, instead of just clobbering the old
+      option. (Closes: #473872)
+
+    * Treat packages that were removed but whose configuration files
+      remain on the system as if they're not installed in the output
+      of --show-why.
+
+      This fixes some cases where --show-why would hide the reasons
+      for some installations.
+
+- Translation updates:
+
+  * Galician (Closes: #474672)
+
+  * Vietnamese (Closes: #473719)
+
 [3/30/2008]
 Version 0.4.11.1                            "No, no, fool, I said bring
                                              me the FLUFFY Bunny
