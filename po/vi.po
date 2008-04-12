@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-30 12:35-0700\n"
+"POT-Creation-Date: 2008-04-07 21:44-0700\n"
 "PO-Revision-Date: 2008-04-01 17:39+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -192,23 +192,54 @@ msgstr ""
 "tải về đang chạy, hơn là mở ô xem mới."
 
 #: src/apt_options.cc:211
-msgid "Display the extended description area by default"
+#, fuzzy
+msgid "Display the information area by default"
 msgstr "Hiển thị vùng mô tả kéo dài theo mặc định"
 
 #: src/apt_options.cc:212
+#, fuzzy
 msgid ""
-"If this option is enabled, the long description area (the pane at the bottom "
-"of the screen) in the package list will be visible when the program starts; "
+"If this option is enabled, the information area (the pane at the bottom of "
+"the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
 "Bật tùy chọn này thì vùng mô tả dài (ô cửa sổ ở đáy màn hình) trong danh "
 "sách gói sẽ hiện rõ khi chương trình khởi chạy; không thì nó bị ẩn đầu tiên."
 
 #: src/apt_options.cc:217
+#, fuzzy
+msgid "Display tabs for the available views"
+msgstr "Định dạng hiển thị cho các ô xem gói"
+
+#: src/apt_options.cc:218
+#, fuzzy
+msgid ""
+"If this option is enabled, tabs will appear at the top of the screen listing "
+"the currently opened views."
+msgstr ""
+"Bật tùy chọn này thì aptitude hiển thị ở đáy màn hình trạng thái về các việc "
+"tải về đang chạy, hơn là mở ô xem mới."
+
+#: src/apt_options.cc:221
+#, fuzzy
+msgid "Display tabs for the information area"
+msgstr "Hiển thị thông tin thêm về gói đã chọn"
+
+#: src/apt_options.cc:222
+#, fuzzy
+msgid ""
+"If this option is enabled, tabs will appear at the top of the information "
+"area (the pane at the bottom of the screen) listing the different displays "
+"of information that can be viewed there."
+msgstr ""
+"Bật tùy chọn này thì vùng mô tả dài (ô cửa sổ ở đáy màn hình) trong danh "
+"sách gói sẽ hiện rõ khi chương trình khởi chạy; không thì nó bị ẩn đầu tiên."
+
+#: src/apt_options.cc:227
 msgid "Advance to the next item after changing the state of a package"
 msgstr "Tới mục kế tiếp sau khi thay đổi tình trạng của gói"
 
-#: src/apt_options.cc:218
+#: src/apt_options.cc:228
 msgid ""
 "If this option is enabled, then performing an action on a package (for "
 "instance, installing or removing it) will move the selection to the next "
@@ -217,11 +248,11 @@ msgstr ""
 "Bật tùy chọn này thì làm hành động với gói (chẳng hạn, cài đặt hay gỡ bỏ nó) "
 "sẽ di chuyển vùng chọn xuống gói kế tiếp trong danh sách."
 
-#: src/apt_options.cc:223
+#: src/apt_options.cc:233
 msgid "Automatically show why packages are broken"
 msgstr "Tự hiển thị lý do gói bị hỏng"
 
-#: src/apt_options.cc:224
+#: src/apt_options.cc:234
 msgid ""
 "If this option is enabled, then highlighting a package that has broken "
 "dependencies will automatically display the dependencies that are "
@@ -231,11 +262,11 @@ msgstr ""
 "động hiển thị trong ô cửa sổ bên dưới những tiêu chuẩn quan hệ phụ thuộc "
 "chưa thỏa."
 
-#: src/apt_options.cc:230
+#: src/apt_options.cc:240
 msgid "The default grouping method for package views"
 msgstr "Phương pháp nhóm lại mặc định cho các ô xem gói"
 
-#: src/apt_options.cc:231
+#: src/apt_options.cc:241
 msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
@@ -244,11 +275,11 @@ msgstr ""
 "tay người dùng của aptitude để tìm thông tin về cách ghi rõ phương pháp nhóm "
 "lại."
 
-#: src/apt_options.cc:235
+#: src/apt_options.cc:245
 msgid "The default display-limit for package views"
 msgstr "Giới hạn hiển thị mặc định cho các ô xem gói"
 
-#: src/apt_options.cc:236
+#: src/apt_options.cc:246
 msgid ""
 "By default, the limit of each package view will be set to the value "
 "specified by this option.  See the aptitude user's manual for detailed "
@@ -258,11 +289,11 @@ msgstr ""
 "ghi rõ. Xem sổ tay người dùng của aptitude để tìm thông tin chi tiết về việc "
 "tìm kiếm."
 
-#: src/apt_options.cc:241
+#: src/apt_options.cc:251
 msgid "The display format for package views"
 msgstr "Định dạng hiển thị cho các ô xem gói"
 
-#: src/apt_options.cc:242
+#: src/apt_options.cc:252
 msgid ""
 "This option controls how aptitude formats lines of the package list.  See "
 "the aptitude user's manual for information on how to specify a display "
@@ -272,11 +303,11 @@ msgstr ""
 "thế nào. Xem sổ tay người dùng của aptitude để tìm thông tin về cách ghi rõ "
 "định dạng hiển thị."
 
-#: src/apt_options.cc:248
+#: src/apt_options.cc:258
 msgid "The display format for the status line"
 msgstr "Định dạng hiển thị cho dòng trạng thái"
 
-#: src/apt_options.cc:249
+#: src/apt_options.cc:259
 msgid ""
 "This option controls how aptitude formats the status line (the line between "
 "the package list and the lower pane).  See the aptitude user's manual for "
@@ -286,11 +317,11 @@ msgstr ""
 "sổ tay người dùng của aptitude để tìm thông tin về cách ghi rõ định dạng "
 "hiển thị."
 
-#: src/apt_options.cc:256
+#: src/apt_options.cc:266
 msgid "The display format for the header line"
 msgstr "Định dạng hiển thị cho dòng đầu"
 
-#: src/apt_options.cc:257
+#: src/apt_options.cc:267
 msgid ""
 "This option controls how aptitude formats the header line (the line above "
 "the package list).  See the aptitude user's manual for information on how to "
@@ -300,11 +331,11 @@ msgstr ""
 "gói) như thế nào. Xem sổ tay người dùng của aptitude để tìm thông tin về "
 "cách ghi rõ định dạng hiển thị."
 
-#: src/apt_options.cc:267
+#: src/apt_options.cc:277
 msgid "Automatically upgrade installed packages"
 msgstr "Tự nâng cấp các gói đã cài đặt"
 
-#: src/apt_options.cc:268
+#: src/apt_options.cc:278
 msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
@@ -312,11 +343,11 @@ msgstr ""
 "Bật tùy chọn này thì khi khởi chạy, aptitude sẽ chọn tất cả các gói có thể "
 "nâng cấp được, để nâng cấp."
 
-#: src/apt_options.cc:272
+#: src/apt_options.cc:282
 msgid "Remove obsolete package files after downloading new package lists"
 msgstr "Gỡ bỏ các tập tin gói cũ sau khi tải về danh sách gói mới"
 
-#: src/apt_options.cc:273
+#: src/apt_options.cc:283
 msgid ""
 "If this option is enabled, then after every install run, aptitude will "
 "delete from the package cache any package files that can no longer be "
@@ -326,11 +357,11 @@ msgstr ""
 "xoá khỏi bộ nhớ tạm gói bất cứ tập tin gói nào không còn có thể tải được lại "
 "xuống kho lưu trong danh sách nguồn « sources.list »."
 
-#: src/apt_options.cc:278
+#: src/apt_options.cc:288
 msgid "URL to use to download changelogs"
 msgstr "Địa chỉ URL cần dùng để tải về các bản ghi thay đổi (ChangeLog)"
 
-#: src/apt_options.cc:279
+#: src/apt_options.cc:289
 msgid ""
 "This option controls the template that's used to download changelogs from "
 "the Debian Web site.  You should only need to change this if the changelogs "
@@ -340,11 +371,11 @@ msgstr ""
 "(changelog) xuống địa chỉ Web của Debian. Chỉ cần điều chỉnh tùy chọn này "
 "nếu các bản ghi thay đổi dọn đi sang một địa chỉ URL khác."
 
-#: src/apt_options.cc:285
+#: src/apt_options.cc:295
 msgid "Display a preview of what will be done before doing it"
 msgstr "Hiển thị ô xem thử việc trước khi làm nó"
 
-#: src/apt_options.cc:286
+#: src/apt_options.cc:296
 msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
@@ -352,12 +383,12 @@ msgstr ""
 "Bật tùy chọn này thì khi bạn yêu cầu aptitude thi hành tiến trình cài đặt, "
 "trước tiên nó sẽ hiển thị bản tóm tắt các hành động cần làm."
 
-#: src/apt_options.cc:292
+#: src/apt_options.cc:302
 msgid ""
 "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr "Quên gói nào là « mới » khi cập nhật danh sách gói"
 
-#: src/apt_options.cc:293
+#: src/apt_options.cc:303
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
@@ -365,12 +396,12 @@ msgstr ""
 "Bật tùy chọn này thì aptitude sẽ gột các gói mới khỏi danh sách sau khi bạn "
 "cập nhật các danh sách gói (v.d. bằng cách bấm phím « u »)."
 
-#: src/apt_options.cc:298
+#: src/apt_options.cc:308
 msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr "Quên gói nào là « mới » khi cài đặt hay gỡ bỏ gói"
 
-#: src/apt_options.cc:299
+#: src/apt_options.cc:309
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you perform an install run or install or remove packages from the "
@@ -379,14 +410,14 @@ msgstr ""
 "Bật tùy chọn này thì aptitude sẽ gột các gói mới khỏi danh sách sau khi bạn "
 "thi hành tiến trình cài đặt, hoặc cài đặt hoặc gỡ bỏ gói từ dòng lệnh."
 
-#: src/apt_options.cc:305
+#: src/apt_options.cc:315
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 "Không hiển thị cảnh báo khi việc thay đổi thứ nhất xảy ra trong chế độ chỉ "
 "đọc"
 
-#: src/apt_options.cc:306
+#: src/apt_options.cc:316
 msgid ""
 "If this option is %Bnot%b enabled, aptitude will display a warning when you "
 "modify the state of a package if you do not have permissions to apply the "
@@ -395,13 +426,13 @@ msgstr ""
 "%BKhông%b bật tùy chọn này thì aptitude sẽ hiển thị cảnh báo khi bạn sửa đổi "
 "tình trạng của gói còn không có quyền áp dụng thay đổi đó cho hệ thống."
 
-#: src/apt_options.cc:312
+#: src/apt_options.cc:322
 msgid "Warn when attempting to perform a privileged action as a non-root user"
 msgstr ""
 "Cảnh báo khi cố thực hiện việc có quyền chủ khi không phải đăng nhập với tư "
 "cách người chủ"
 
-#: src/apt_options.cc:313
+#: src/apt_options.cc:323
 msgid ""
 "If this option is enabled, aptitude will warn you when you attempt to "
 "perform an action which you do not have permission to do: for instance, "
@@ -413,11 +444,11 @@ msgstr ""
 "Lúc đó, bạn có tùy chọn đăng nhập với tư cách là người chủ rồi làm hành động "
 "với quyền người chủ."
 
-#: src/apt_options.cc:322
+#: src/apt_options.cc:332
 msgid "File to log actions into"
 msgstr "Tập tin vào đó cần ghi lưu các hành động"
 
-#: src/apt_options.cc:323
+#: src/apt_options.cc:333
 msgid ""
 "When you install or remove packages, a summary of what aptitude does will be "
 "written to this file.  If the first character of the file name is a pipe "
@@ -429,11 +460,11 @@ msgstr ""
 "lại của tên sẽ được giải thích là lệnh trình bao sẽ nhận bản ghi ở thiết bị "
 "nhập chuẩn."
 
-#: src/apt_options.cc:335
+#: src/apt_options.cc:345
 msgid "Automatically resolve dependencies of a package when it is selected"
 msgstr "Tự giải quyết quan hệ phụ thuộc của gói khi nó được chọn"
 
-#: src/apt_options.cc:336
+#: src/apt_options.cc:346
 msgid ""
 "If this option is enabled, aptitude will use a simple heuristic to "
 "immediately resolve the dependencies of each package you flag for "
@@ -446,11 +477,11 @@ msgstr ""
 "thể làm kết quả dưới tối ưu hoặc hoàn toàn không thành công trong một số "
 "trường hợp riêng."
 
-#: src/apt_options.cc:344
+#: src/apt_options.cc:354
 msgid "Automatically fix broken packages before installing or removing"
 msgstr "Tự sửa chữa các gói bị hỏng trước khi cài đặt hay gỡ bỏ"
 
-#: src/apt_options.cc:345
+#: src/apt_options.cc:355
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
@@ -462,11 +493,11 @@ msgstr ""
 "Không thì aptitude sẽ nhắc bạn giải quyết tiêu chuẩn quan hệ phụ thuộc chưa "
 "thỏa."
 
-#: src/apt_options.cc:352
+#: src/apt_options.cc:362
 msgid "Install recommended packages automatically"
 msgstr "Tự động cài đặt các gói đã khuyến khích"
 
-#: src/apt_options.cc:353
+#: src/apt_options.cc:363
 msgid ""
 "If this option is enabled and \"automatically resolve dependencies\" is also "
 "enabled, aptitude will attempt to install the recommendations of newly "
@@ -483,11 +514,11 @@ msgstr ""
 "Bật tùy chọn này, cũng bật tùy chọn « Tự động gỡ bỏ gói không dùng », thì "
 "không tự động gỡ bỏ gói khuyến khích bởi gói đã cài đặt."
 
-#: src/apt_options.cc:365
+#: src/apt_options.cc:375
 msgid "Remove unused packages automatically"
 msgstr "Tự gỡ bỏ các gói không dùng"
 
-#: src/apt_options.cc:366
+#: src/apt_options.cc:376
 msgid ""
 "If this option is enabled, packages that are automatically installed and "
 "that no manually installed package depends on will be removed from the "
@@ -503,11 +534,11 @@ msgstr ""
 "Bật tùy chọn này, cũng bật tùy chọn « Tự động cài đặt gói khuyến khích », thì "
 "không gỡ bỏ gói đã cài đặt tự động cũng khuyến khích bởi gói đã cài đặt."
 
-#: src/apt_options.cc:377
+#: src/apt_options.cc:387
 msgid "Packages that should never be automatically removed"
 msgstr "Gói không bao giờ nên bị gỡ bỏ tự động"
 
-#: src/apt_options.cc:378
+#: src/apt_options.cc:388
 msgid ""
 "Packages matching this search pattern will always be treated as if an "
 "installed package depends on them: they will never be targeted for removal "
@@ -516,13 +547,13 @@ msgstr ""
 "Gói tương ứng với chuỗi tìm kiếm này sẽ luôn luôn được xử lý như thế gói đã "
 "cài đặt có phụ thuộc vào nó : không bao giờ gỡ bỏ nó vì « gói không dùng »."
 
-#: src/apt_options.cc:383
+#: src/apt_options.cc:393
 msgid "Allow dependency resolutions that break holds or forbids"
 msgstr ""
 "Cho phép sự giải quyết quan hệ phụ thuộc mà làm hư tình trạng giữ lại hoặc "
 "cấm"
 
-#: src/apt_options.cc:384
+#: src/apt_options.cc:394
 msgid ""
 "If this option is enabled, then whenever aptitude solves a dependency "
 "problem, it will consider modifying held packages, or installing forbidden "
@@ -544,32 +575,15 @@ msgstr ""
 "cài đặt quan hệ phụ thuộc của một gói vừa mới được chọn để cài đặt hoặc nâng "
 "cấp, do lỗi apt #470035."
 
-#: src/apt_options.cc:398
-msgid "Don't warn about the obsolete \"Recommends-Important\" option."
-msgstr "Đừng cảnh báo về tùy chọn « Đề nghị-Quan trọng » quá cũ."
-
-#: src/apt_options.cc:399
-msgid ""
-"If the configuration option %BRecommends-Important%b is set in the system "
-"configuration file, aptitude will warn you about it on start-up.  Enable "
-"this option to skip this warning (for instance, if your apt configuration is "
-"shared with a system that has an older version of aptitude installed)."
-msgstr ""
-"Nếu tùy chọn cấu hình %BRecommends-Important%b (Đề nghị-Quan trọng) đã được "
-"đặt trong tập tin cấu hình của hệ thống, aptitude sẽ cảnh báo bạn về nó "
-"trong khi khởi chạy. Bật tùy chọn này để bỏ qua cảnh báo này (v.d. nếu cấu "
-"hình aptitude của bạn cũng được dùng chung với một hệ thống đang chạy phiên "
-"bản aptitude cũ hơn)."
-
-#: src/apt_options.cc:518
+#: src/apt_options.cc:520
 msgid "UI options"
 msgstr "Tùy chọn UI"
 
-#: src/apt_options.cc:520
+#: src/apt_options.cc:522
 msgid "Dependency handling"
 msgstr "Quản lý quan hệ phụ thuộc"
 
-#: src/apt_options.cc:522 src/pkg_grouppolicy.cc:1017
+#: src/apt_options.cc:524 src/pkg_grouppolicy.cc:1018
 msgid "Miscellaneous"
 msgstr "Linh tinh"
 
@@ -1498,7 +1512,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:713
-#: src/generic/apt/apt.cc:287
+#: src/generic/apt/apt.cc:275
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Không thể mở %s để ghi"
@@ -1748,7 +1762,7 @@ msgstr ""
 "*** LỖI: việc tìm bị hủy bỏ bởi ngoại lệ nghiệm trọng. Bạn vẫn còn có khả "
 "năng tiếp tục tìm, nhưng không thể tới một số phép giải riêng."
 
-#: src/cmdline/cmdline_resolver.cc:946
+#: src/cmdline/cmdline_resolver.cc:961
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
@@ -1756,20 +1770,20 @@ msgstr ""
 "Bộ giải quyệt đã quá hạn sau khi tạo một lời giải pháp; có lẽ sẽ không thực "
 "hiện một số tiến trình nâng cấp có thể."
 
-#: src/cmdline/cmdline_resolver.cc:953
+#: src/cmdline/cmdline_resolver.cc:968
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
 "Không thể giải quyết các quan hệ phụ thuộc cho tiến trình nâng cấp (bộ giải "
 "quyết đã quá hạn)."
 
-#: src/cmdline/cmdline_resolver.cc:967
+#: src/cmdline/cmdline_resolver.cc:982
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr ""
 "Không thể giải quyết các quan hệ phụ thuộc cho tiến trình nâng cấp (không "
 "tìm thấy giải pháp)."
 
-#: src/cmdline/cmdline_resolver.cc:976
+#: src/cmdline/cmdline_resolver.cc:991
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
@@ -1778,7 +1792,7 @@ msgstr ""
 "Tiến trình giải quyết quan hệ phụ thuộc chưa hoàn tất (%s) nên không thực "
 "hiện một số tiến trình nâng cấp có thể."
 
-#: src/cmdline/cmdline_resolver.cc:982
+#: src/cmdline/cmdline_resolver.cc:997
 #, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr ""
@@ -2018,7 +2032,7 @@ msgid "Description: "
 msgstr "Mô tả: "
 
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:252
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr "Trang chủ : "
 
@@ -2504,34 +2518,23 @@ msgstr ""
 #. indicated by translating "Localized defaults|" below to
 #. "aptitude-defaults.ww".  If you use this mechanism, you should
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
-#: src/generic/apt/apt.cc:173
+#: src/generic/apt/apt.cc:174
 msgid "Localized defaults|"
 msgstr "aptitude-defaults.vi"
 
-#: src/generic/apt/apt.cc:192
-#, c-format
-msgid ""
-"The system configuration file (%s) contains a setting for the obsolete "
-"option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
-"Recommends' instead or removing this setting."
-msgstr ""
-"Tập tin cấu hình hệ thống (%s) chứa một thiết lập về tùy chọn quá cũ « "
-"Aptitude::Recommends-Important »; hãy thay thế bằng tùy chọn « APT::Install-"
-"Recommends » hoặc đơn giản gỡ bỏ thiết lập cũ này."
-
-#: src/generic/apt/apt.cc:259
+#: src/generic/apt/apt.cc:247
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr ""
 "%s có khả năng đọc nhưng không có khả năng ghi nên không thể ghi tập tin cấu "
 "hình."
 
-#: src/generic/apt/apt.cc:297
+#: src/generic/apt/apt.cc:285
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Không thể thay thế %s bằng tập tin cấu hình mới"
 
-#: src/generic/apt/apt.cc:396
+#: src/generic/apt/apt.cc:384
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
@@ -3868,7 +3871,7 @@ msgstr "CỡDeb"
 msgid "Action"
 msgstr "Hành vi"
 
-#: src/pkg_columnizer.cc:93
+#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
 msgid "Description"
 msgstr "Mô tả"
 
@@ -4012,7 +4015,7 @@ msgid "none"
 msgstr "k0 có"
 
 #: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
-#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:267
+#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:268
 #: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
 #: src/pkg_ver_item.cc:348 src/pkg_ver_item.cc:382
 msgid "Unknown"
@@ -4081,15 +4084,15 @@ msgstr "Không thể chuyển mã của định dạng trình bày gói đi sau 
 msgid "Internal error: Default column string is unparsable"
 msgstr "Gặp lỗi nội bộ : không thể phân tích chuỗi cột mặc định"
 
-#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1069
+#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1070
 msgid "Tasks"
 msgstr "Tác vụ"
 
-#: src/pkg_grouppolicy.cc:282
+#: src/pkg_grouppolicy.cc:283
 msgid "main"
 msgstr "chính"
 
-#: src/pkg_grouppolicy.cc:424
+#: src/pkg_grouppolicy.cc:425
 msgid ""
 "Security Updates\n"
 " Security updates for these packages are available from security.debian.org."
@@ -4098,7 +4101,7 @@ msgstr ""
 " Bản cập nhật bảo mật cho những gói này sẵn sàng ở địa chỉ Web « security."
 "debian.org »."
 
-#: src/pkg_grouppolicy.cc:425
+#: src/pkg_grouppolicy.cc:426
 msgid ""
 "Upgradable Packages\n"
 " A newer version of these packages is available."
@@ -4106,7 +4109,7 @@ msgstr ""
 "Gói có khả năng nâng cấp\n"
 " Có phiên bản mới hơn của các gói này."
 
-#: src/pkg_grouppolicy.cc:426
+#: src/pkg_grouppolicy.cc:427
 msgid ""
 "New Packages\n"
 " These packages have been added to Debian since the last time you cleared "
@@ -4118,7 +4121,7 @@ msgstr ""
 "mới » (new) lần trước. Hãy chọn lệnh « Quên các gói mới » trong trình đơn « "
 "Hành động » để xóa trống danh sách này."
 
-#: src/pkg_grouppolicy.cc:427
+#: src/pkg_grouppolicy.cc:428
 msgid ""
 "Installed Packages\n"
 " These packages are currently installed on your computer."
@@ -4126,7 +4129,7 @@ msgstr ""
 "Gói đã cài đặt\n"
 " Những gói này hiện thời được càì đăt trên máy vi tính của bạn."
 
-#: src/pkg_grouppolicy.cc:428
+#: src/pkg_grouppolicy.cc:429
 msgid ""
 "Not Installed Packages\n"
 " These packages are not installed on your computer."
@@ -4134,7 +4137,7 @@ msgstr ""
 "Gói chưa cài\n"
 " Những gói này hiện thời không được cài đặt trên máy vi tính của bạn."
 
-#: src/pkg_grouppolicy.cc:429
+#: src/pkg_grouppolicy.cc:430
 msgid ""
 "Obsolete and Locally Created Packages\n"
 " These packages are currently installed on your computer, but they are not "
@@ -4146,7 +4149,7 @@ msgstr ""
 "không thể lấy chúng từ nguồn apt nào. Gói này có thể là cũ, được gỡ bỏ ra "
 "kho, hoặc có thể bạn tự xây dựng phiên bản riêng của nó."
 
-#: src/pkg_grouppolicy.cc:430
+#: src/pkg_grouppolicy.cc:431
 msgid ""
 "Virtual Packages\n"
 " These packages do not exist; they are names other packages use to require "
@@ -4156,7 +4159,7 @@ msgstr ""
 " Gói trong phần này không tồn tại: nó chỉ là tên được dùng bởi gói khác để "
 "yêu cầu hay cung cấp chức năng nào."
 
-#: src/pkg_grouppolicy.cc:583
+#: src/pkg_grouppolicy.cc:584
 msgid ""
 "Packages which are recommended by other packages\n"
 " These packages are not strictly required, but they may be necessary to "
@@ -4168,7 +4171,7 @@ msgstr ""
 "cung cấp chức năng đầy đủ trong một số chương trình khác mà bạn đang cài đặt "
 "hoặc nâng cấp."
 
-#: src/pkg_grouppolicy.cc:604
+#: src/pkg_grouppolicy.cc:605
 msgid ""
 "Packages which are suggested by other packages\n"
 " These packages are not required in order to make your system function "
@@ -4180,7 +4183,7 @@ msgstr ""
 "thể cung cấp chức năng tăng cường cho một số chương trình mà bạn đang cài "
 "đặt."
 
-#: src/pkg_grouppolicy.cc:632
+#: src/pkg_grouppolicy.cc:633
 msgid ""
 "Packages with unsatisfied dependencies\n"
 " The dependency requirements of these packages will be unmet after the "
@@ -4196,7 +4199,7 @@ msgstr ""
 " Cây này rất có thể ngụ ý là cái gì bị hỏng, hoặc trên hệ thống của ban hoặc "
 "trong kho Debian."
 
-#: src/pkg_grouppolicy.cc:633
+#: src/pkg_grouppolicy.cc:634
 msgid ""
 "Packages being removed because they are no longer used\n"
 " These packages are being deleted because they were automatically installed "
@@ -4208,7 +4211,7 @@ msgstr ""
 "kiện phụ thuộc, nhưng mà hành động đã định sẽ có kết quả là không có gói nào "
 "được cài đặt khai báo quan hệ phụ thuộc « quan trọng » trên chúng.\n"
 
-#: src/pkg_grouppolicy.cc:634
+#: src/pkg_grouppolicy.cc:635
 msgid ""
 "Packages being automatically held in their current state\n"
 " These packages could be upgraded, but they have been kept in their current "
@@ -4218,7 +4221,7 @@ msgstr ""
 " Những gói này có thể được nâng cấp, nhưng chúng đã được duy trì trong tình "
 "trạng hiện thời để tránh ngắt quan hệ phụ thuộc."
 
-#: src/pkg_grouppolicy.cc:635
+#: src/pkg_grouppolicy.cc:636
 msgid ""
 "Packages being automatically installed to satisfy dependencies\n"
 " These packages are being installed because they are required by another "
@@ -4228,7 +4231,7 @@ msgstr ""
 " Những gói này đang được cài đặt vì chúng cần thiết bởi một gói khác mà bạn "
 "đã chọn cài đặt."
 
-#: src/pkg_grouppolicy.cc:636
+#: src/pkg_grouppolicy.cc:637
 msgid ""
 "Packages being deleted due to unsatisfied dependencies\n"
 " These packages are being deleted because one or more of their dependencies "
@@ -4238,7 +4241,7 @@ msgstr ""
 " Những gói này đang được xoá vì một hay nhiều gói cần thiết (điều kiện phụ "
 "thuộc) cho chúng không còn sẵn sàng, hoặc vì gói khác xung đột với chúng."
 
-#: src/pkg_grouppolicy.cc:637
+#: src/pkg_grouppolicy.cc:638
 msgid ""
 "Packages to be downgraded\n"
 " An older version of these packages than is currently installed will be "
@@ -4248,7 +4251,7 @@ msgstr ""
 " Một phiên bản cũ của những gói này hơn điều hiện thời được cài đặt sẽ được "
 "cài đặt."
 
-#: src/pkg_grouppolicy.cc:638
+#: src/pkg_grouppolicy.cc:639
 msgid ""
 "Packages being held back\n"
 " These packages could be upgraded, but you have asked for them to be held at "
@@ -4258,7 +4261,7 @@ msgstr ""
 " Những gói này có thể được nâng cấp, nhưng mà bạn đã yêu cầu giữ lại chúng ở "
 "phiên bản hiện thời."
 
-#: src/pkg_grouppolicy.cc:639
+#: src/pkg_grouppolicy.cc:640
 msgid ""
 "Packages to be reinstalled\n"
 " These packages will be reinstalled."
@@ -4266,7 +4269,7 @@ msgstr ""
 "Gói sẽ được cài lại\n"
 " Những gói này sẽ được cài lại."
 
-#: src/pkg_grouppolicy.cc:640
+#: src/pkg_grouppolicy.cc:641
 msgid ""
 "Packages to be installed\n"
 " These packages have been manually selected for installation on your "
@@ -4275,7 +4278,7 @@ msgstr ""
 "Gói sẽ được cài\n"
 " Những gói này đã được chọn bằng tay để cài đặt vào máy tính này."
 
-#: src/pkg_grouppolicy.cc:641
+#: src/pkg_grouppolicy.cc:642
 msgid ""
 "Packages to be removed\n"
 " These packages have been manually selected for removal."
@@ -4283,7 +4286,7 @@ msgstr ""
 "Gói se được gỡ bỏ\n"
 " Những gói này đã được chọn bằng tay để gỡ bỏ."
 
-#: src/pkg_grouppolicy.cc:642
+#: src/pkg_grouppolicy.cc:643
 msgid ""
 "Packages to be upgraded\n"
 " These packages will be upgraded to a newer version."
@@ -4291,7 +4294,7 @@ msgstr ""
 "Gói sẽ được nâng cấp\n"
 " Những gói này sẽ được nâng cấp lên phiên bản mới hơn."
 
-#: src/pkg_grouppolicy.cc:643
+#: src/pkg_grouppolicy.cc:644
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
@@ -4300,44 +4303,44 @@ msgstr ""
 "Gói đã cài đặt bộ phận\n"
 " Những gói này chưa được cài đặt và cấu hình đầy đủ nên sẽ thử cài đặt xong."
 
-#: src/pkg_grouppolicy.cc:760
+#: src/pkg_grouppolicy.cc:761
 msgid "unknown"
 msgstr "không rõ"
 
-#: src/pkg_grouppolicy.cc:771
+#: src/pkg_grouppolicy.cc:772
 #, c-format
 msgid "Priority %s"
 msgstr "Ưu tiên %s"
 
-#: src/pkg_grouppolicy.cc:885
+#: src/pkg_grouppolicy.cc:886
 msgid "UNCATEGORIZED"
 msgstr "CHƯA PHÂN LOẠI"
 
-#: src/pkg_grouppolicy.cc:1012
+#: src/pkg_grouppolicy.cc:1013
 msgid "End-user"
 msgstr "Người dùng cuối"
 
-#: src/pkg_grouppolicy.cc:1013
+#: src/pkg_grouppolicy.cc:1014
 msgid "Servers"
 msgstr "Máy phục vụ"
 
-#: src/pkg_grouppolicy.cc:1014
+#: src/pkg_grouppolicy.cc:1015
 msgid "Development"
 msgstr "Phát triển"
 
-#: src/pkg_grouppolicy.cc:1015
+#: src/pkg_grouppolicy.cc:1016
 msgid "Localization"
 msgstr "Địa phương hoá"
 
-#: src/pkg_grouppolicy.cc:1016
+#: src/pkg_grouppolicy.cc:1017
 msgid "Hardware Support"
 msgstr "Hỗ trợ phần cứng"
 
-#: src/pkg_grouppolicy.cc:1018
+#: src/pkg_grouppolicy.cc:1019
 msgid "Unrecognized tasks"
 msgstr "Tác vụ không được nhận ra"
 
-#: src/pkg_grouppolicy.cc:1070
+#: src/pkg_grouppolicy.cc:1071
 msgid ""
 "\n"
 " Tasks are groups of packages which provide an easy way to select a "
@@ -4347,26 +4350,26 @@ msgstr ""
 " Tác vụ là nhóm các gói mà cung cấp một phương pháp dễ dàng để chọn một bộ "
 "gói đã định sẵn nhằm một mục đích cụ thể."
 
-#: src/pkg_grouppolicy.cc:1201
+#: src/pkg_grouppolicy.cc:1202
 #, c-format
 msgid "Bad number in format string: %ls"
 msgstr "Chuỗi định dạng chứa số sai: %ls"
 
-#: src/pkg_grouppolicy.cc:1210
+#: src/pkg_grouppolicy.cc:1211
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
 msgstr "Chỉ số khớp phải là 1 hoặc lớn hơn, không phải « %s »"
 
-#: src/pkg_grouppolicy.cc:1228
+#: src/pkg_grouppolicy.cc:1229
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
 msgstr "Chỉ số khớp %ls quá lớn; các nhóm sẵn sàng là (%s)"
 
-#: src/pkg_grouppolicy.cc:1501
+#: src/pkg_grouppolicy.cc:1502
 msgid "TAGLESS PACKAGES"
 msgstr "GÓI KHÔNG CÓ THẺ"
 
-#: src/pkg_grouppolicy.cc:1502
+#: src/pkg_grouppolicy.cc:1503
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags, or the debtags "
@@ -4376,7 +4379,7 @@ msgstr ""
 " Những gói này chưa được phân loại trong cơ sở dữ liệu debtags, hoặc không "
 "có cơ sở dữ liệu debtags (cài đặt debtags có thể sửa chữa vấn đề này)."
 
-#: src/pkg_grouppolicy.cc:1536
+#: src/pkg_grouppolicy.cc:1537
 msgid "MISSING TAG"
 msgstr "THIẾU THẺ"
 
@@ -4489,7 +4492,7 @@ msgstr "Bấm phím Return để tiếp tục.\n"
 msgid "Hierarchy editor"
 msgstr "Bộ sửa phân cấp"
 
-#: src/pkg_item.cc:462
+#: src/pkg_item.cc:462 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "Bộ sửa phân cấp"
 
@@ -4532,24 +4535,43 @@ msgstr "Không thể « cw::util::transcode » lời định nghĩa cột"
 msgid "Couldn't parse column definition"
 msgstr "Không thể phân tích lời định nghĩa cột"
 
-#: src/pkg_view.cc:560
+#: src/pkg_view.cc:223
+#, fuzzy
+msgid ""
+"If you select a package, an explanation of why it should be installed or "
+"removed will appear in this space."
+msgstr ""
+"Nếu bạn lựa chọn gói nào, một mô tả về tình trạng hiện thời của nó sẽ xuất "
+"hiện trong vùng này."
+
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr ""
 "make_package_view: (tạo ô xem gói) gặp lỗi trong đối số — hai ô điều khiển "
 "chính ?"
 
-#: src/pkg_view.cc:566
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: (tạo ô xem gói) gặp lỗi trong đối số -- danh sách cột sai "
 "cho mục tĩnh"
 
-#: src/pkg_view.cc:674
+#: src/pkg_view.cc:678
+#, fuzzy
+msgid "Related Dependencies"
+msgstr "Tháo gỡ quan hệ phụ thuộc"
+
+#: src/pkg_view.cc:681
+#, fuzzy
+msgid "Why Installed"
+msgstr "Đã cài"
+
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: (tạo ô xem gói) gặp đối số sai."
 
-#: src/pkg_view.cc:726
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr ""
 "make_package_view: (tạo ô xem gói) không tìm thấy ô điều khiển chính nào."
@@ -5914,6 +5936,30 @@ msgstr "Đang tải về Bản ghi đổi"
 #: src/view_changelog.cc:242
 msgid "Download Changelog"
 msgstr "Tải về Bản ghi đổi"
+
+#~ msgid "Don't warn about the obsolete \"Recommends-Important\" option."
+#~ msgstr "Đừng cảnh báo về tùy chọn « Đề nghị-Quan trọng » quá cũ."
+
+#~ msgid ""
+#~ "If the configuration option %BRecommends-Important%b is set in the system "
+#~ "configuration file, aptitude will warn you about it on start-up.  Enable "
+#~ "this option to skip this warning (for instance, if your apt configuration "
+#~ "is shared with a system that has an older version of aptitude installed)."
+#~ msgstr ""
+#~ "Nếu tùy chọn cấu hình %BRecommends-Important%b (Đề nghị-Quan trọng) đã "
+#~ "được đặt trong tập tin cấu hình của hệ thống, aptitude sẽ cảnh báo bạn về "
+#~ "nó trong khi khởi chạy. Bật tùy chọn này để bỏ qua cảnh báo này (v.d. nếu "
+#~ "cấu hình aptitude của bạn cũng được dùng chung với một hệ thống đang chạy "
+#~ "phiên bản aptitude cũ hơn)."
+
+#~ msgid ""
+#~ "The system configuration file (%s) contains a setting for the obsolete "
+#~ "option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
+#~ "Recommends' instead or removing this setting."
+#~ msgstr ""
+#~ "Tập tin cấu hình hệ thống (%s) chứa một thiết lập về tùy chọn quá cũ « "
+#~ "Aptitude::Recommends-Important »; hãy thay thế bằng tùy chọn « APT::"
+#~ "Install-Recommends » hoặc đơn giản gỡ bỏ thiết lập cũ này."
 
 #~ msgid "No justification for removing %s could be constructed.\n"
 #~ msgstr "Không có lý do gỡ bỏ %s.\n"

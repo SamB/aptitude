@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_km\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-30 12:35-0700\n"
+"POT-Creation-Date: 2008-04-07 21:44-0700\n"
 "PO-Revision-Date: 2006-10-06 11:24+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -170,174 +170,198 @@ msgid ""
 msgstr ""
 
 #: src/apt_options.cc:211
-msgid "Display the extended description area by default"
+#, fuzzy
+msgid "Display the information area by default"
 msgstr "បង្ហាញ​តំបន់​ពណ៌នា​បន្ថែម តាម​លំនាំដើម"
 
 #: src/apt_options.cc:212
 msgid ""
-"If this option is enabled, the long description area (the pane at the bottom "
-"of the screen) in the package list will be visible when the program starts; "
+"If this option is enabled, the information area (the pane at the bottom of "
+"the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
 
 #: src/apt_options.cc:217
+#, fuzzy
+msgid "Display tabs for the available views"
+msgstr "​ទ្រង់ទ្រាយ​បង្ហាញ​​ទិដ្ឋភាព​កញ្ចប់​"
+
+#: src/apt_options.cc:218
+msgid ""
+"If this option is enabled, tabs will appear at the top of the screen listing "
+"the currently opened views."
+msgstr ""
+
+#: src/apt_options.cc:221
+#, fuzzy
+msgid "Display tabs for the information area"
+msgstr "បង្ហាញ​ព័ត៌មាន​បន្ថែម​អំពី​កញ្ចប់​ដែល​បាន​ជ្រើ​ស"
+
+#: src/apt_options.cc:222
+msgid ""
+"If this option is enabled, tabs will appear at the top of the information "
+"area (the pane at the bottom of the screen) listing the different displays "
+"of information that can be viewed there."
+msgstr ""
+
+#: src/apt_options.cc:227
 msgid "Advance to the next item after changing the state of a package"
 msgstr "ផ្លាស់ទី​ទៅ​ធាតុ​បន្ទាប់ ក្រោយ​ពី​ផ្លាស់ប្ដូរ​ស្ថានភាព​របស់​កញ្ចប់​មួយ"
 
-#: src/apt_options.cc:218
+#: src/apt_options.cc:228
 msgid ""
 "If this option is enabled, then performing an action on a package (for "
 "instance, installing or removing it) will move the selection to the next "
 "package in the list."
 msgstr ""
 
-#: src/apt_options.cc:223
+#: src/apt_options.cc:233
 msgid "Automatically show why packages are broken"
 msgstr "បង្ហាញ​ដោយ​ស្វ័យប្រវត្តិពី​មូល​ហេតុ​ដែលធ្វើឲ្យ​កញ្ចប់​ខូច"
 
-#: src/apt_options.cc:224
+#: src/apt_options.cc:234
 msgid ""
 "If this option is enabled, then highlighting a package that has broken "
 "dependencies will automatically display the dependencies that are "
 "unfulfilled in the lower pane of the display."
 msgstr ""
 
-#: src/apt_options.cc:230
+#: src/apt_options.cc:240
 msgid "The default grouping method for package views"
 msgstr "វិធីសាស្ត្រ​ដាក់​ជា​ក្រុម​លំនាំដើម សម្រាប់​ទិដ្ឋភាព​កញ្ចប់"
 
-#: src/apt_options.cc:231
+#: src/apt_options.cc:241
 msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
 msgstr ""
 
-#: src/apt_options.cc:235
+#: src/apt_options.cc:245
 msgid "The default display-limit for package views"
 msgstr "ដែន​កំណត់​លំនាំដើម ដើម្បី​បង្ហាញ​កញ្ចប់"
 
-#: src/apt_options.cc:236
+#: src/apt_options.cc:246
 msgid ""
 "By default, the limit of each package view will be set to the value "
 "specified by this option.  See the aptitude user's manual for detailed "
 "information about searches."
 msgstr ""
 
-#: src/apt_options.cc:241
+#: src/apt_options.cc:251
 msgid "The display format for package views"
 msgstr "​ទ្រង់ទ្រាយ​បង្ហាញ​​ទិដ្ឋភាព​កញ្ចប់​"
 
-#: src/apt_options.cc:242
+#: src/apt_options.cc:252
 msgid ""
 "This option controls how aptitude formats lines of the package list.  See "
 "the aptitude user's manual for information on how to specify a display "
 "format."
 msgstr ""
 
-#: src/apt_options.cc:248
+#: src/apt_options.cc:258
 msgid "The display format for the status line"
 msgstr "​ទ្រង់ទ្រាយ​បង្ហាញ​​​បន្ទាត់​ស្ថានភាព"
 
-#: src/apt_options.cc:249
+#: src/apt_options.cc:259
 msgid ""
 "This option controls how aptitude formats the status line (the line between "
 "the package list and the lower pane).  See the aptitude user's manual for "
 "information on how to specify a display format."
 msgstr ""
 
-#: src/apt_options.cc:256
+#: src/apt_options.cc:266
 msgid "The display format for the header line"
 msgstr "ទ្រង់ទ្រាយ​បង្ហាញ​​បន្ទាត់​បឋមកថា"
 
-#: src/apt_options.cc:257
+#: src/apt_options.cc:267
 msgid ""
 "This option controls how aptitude formats the header line (the line above "
 "the package list).  See the aptitude user's manual for information on how to "
 "specify a display format."
 msgstr ""
 
-#: src/apt_options.cc:267
+#: src/apt_options.cc:277
 msgid "Automatically upgrade installed packages"
 msgstr "ធ្វើ​​កញ្ចប់​ដែល​បាន​ដំឡើងឲ្យ​ប្រសើរ ​ដោយ​ស្វ័យ​ប្រវត្តិ"
 
-#: src/apt_options.cc:268
+#: src/apt_options.cc:278
 msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
 msgstr ""
 
-#: src/apt_options.cc:272
+#: src/apt_options.cc:282
 msgid "Remove obsolete package files after downloading new package lists"
 msgstr "យក​ឯកសារ​បញ្ចប់​ដែលលែងប្រើ​ចេញ​ បន្ទាប់​ពី​ទាញយក​បញ្ជី​កញ្ចប់​ថ្មី"
 
-#: src/apt_options.cc:273
+#: src/apt_options.cc:283
 msgid ""
 "If this option is enabled, then after every install run, aptitude will "
 "delete from the package cache any package files that can no longer be "
 "downloaded from any archive in sources.list."
 msgstr ""
 
-#: src/apt_options.cc:278
+#: src/apt_options.cc:288
 msgid "URL to use to download changelogs"
 msgstr "URL ដែលត្រូវប្រើ​​ដើម្បី​ទាញ​យក​កំណត់​ហេតុ​ការ​ផ្លាស់ប្ដូរ"
 
-#: src/apt_options.cc:279
+#: src/apt_options.cc:289
 msgid ""
 "This option controls the template that's used to download changelogs from "
 "the Debian Web site.  You should only need to change this if the changelogs "
 "move to a different URL."
 msgstr ""
 
-#: src/apt_options.cc:285
+#: src/apt_options.cc:295
 msgid "Display a preview of what will be done before doing it"
 msgstr "បង្ហាញ​ទិដ្ឋភាព​ជាមុន​នៃ​អ្វី​ដែល​ត្រូវ​ធ្វើ មុន​នឹង​ធ្វើ​វា"
 
-#: src/apt_options.cc:286
+#: src/apt_options.cc:296
 msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
 msgstr ""
 
-#: src/apt_options.cc:292
+#: src/apt_options.cc:302
 msgid ""
 "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr "បំ​ភ្លេច​កញ្ចប់​ណាដែល​ \"ថ្មី\" នៅ​ពេល​ណា​ដែល​បញ្ជី​កញ្ចប់​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ទាន់សម័យ"
 
-#: src/apt_options.cc:293
+#: src/apt_options.cc:303
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
 msgstr ""
 
-#: src/apt_options.cc:298
+#: src/apt_options.cc:308
 msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr "បំភ្លេច​កញ្ចប់ណាដែល​ \"ថ្មី​\" ​នៅពេល​ណា​ដែល​កញ្ចប់​ត្រូវ​បាន​ដំឡើង ឬ យកចេញ"
 
-#: src/apt_options.cc:299
+#: src/apt_options.cc:309
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you perform an install run or install or remove packages from the "
 "command-line."
 msgstr ""
 
-#: src/apt_options.cc:305
+#: src/apt_options.cc:315
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr "កុំ​បង្ហាញ​ព្រមាន ពេល​ធ្វើការ​ផ្លាស់ប្ដូរ​លើក​ដំបូង​នៅ​ក្នុង​របៀប​បាន​តែ​អាន"
 
-#: src/apt_options.cc:306
+#: src/apt_options.cc:316
 msgid ""
 "If this option is %Bnot%b enabled, aptitude will display a warning when you "
 "modify the state of a package if you do not have permissions to apply the "
 "change to the system."
 msgstr ""
 
-#: src/apt_options.cc:312
+#: src/apt_options.cc:322
 msgid "Warn when attempting to perform a privileged action as a non-root user"
 msgstr "ព្រមាន ពេល​ប៉ុនប៉ង​អនុវត្ត​សកម្មភាព​មួយ​ដែល​ត្រូវការ​សិទ្ធិ​ជា root ក្នុង​នាម​ជា​អ្នក​ប្រើ​ធម្មតា"
 
-#: src/apt_options.cc:313
+#: src/apt_options.cc:323
 msgid ""
 "If this option is enabled, aptitude will warn you when you attempt to "
 "perform an action which you do not have permission to do: for instance, "
@@ -345,11 +369,11 @@ msgid ""
 "in as root and perform the action with root privileges."
 msgstr ""
 
-#: src/apt_options.cc:322
+#: src/apt_options.cc:332
 msgid "File to log actions into"
 msgstr "ឯកសារ​ដែលត្រូវ​ចុះ​កំណត់​ហេតុ​សកម្មភាព​ទៅ​ក្នុង"
 
-#: src/apt_options.cc:323
+#: src/apt_options.cc:333
 msgid ""
 "When you install or remove packages, a summary of what aptitude does will be "
 "written to this file.  If the first character of the file name is a pipe "
@@ -357,11 +381,11 @@ msgid ""
 "shell command that is to receive the log on standard input."
 msgstr ""
 
-#: src/apt_options.cc:335
+#: src/apt_options.cc:345
 msgid "Automatically resolve dependencies of a package when it is selected"
 msgstr "ដោះស្រាយ​ភាព​អាស្រ័យ​នៃ​កញ្ចប់​​ដោយ​ស្វ័យប្រវត្តិ ​​នៅ​ពេលជ្រើស​វា"
 
-#: src/apt_options.cc:336
+#: src/apt_options.cc:346
 msgid ""
 "If this option is enabled, aptitude will use a simple heuristic to "
 "immediately resolve the dependencies of each package you flag for "
@@ -369,11 +393,11 @@ msgid ""
 "but may produce suboptimal results or fail entirely in some scenarios."
 msgstr ""
 
-#: src/apt_options.cc:344
+#: src/apt_options.cc:354
 msgid "Automatically fix broken packages before installing or removing"
 msgstr "ជួសជុល​កញ្ចប់​ដែល​បាន​ខូច​ដោយ​ស្វ័យប្រវត្តិ ​មុន​ពេលដំឡើង​ ឬ យកចេញ​"
 
-#: src/apt_options.cc:345
+#: src/apt_options.cc:355
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
@@ -381,12 +405,12 @@ msgid ""
 "a solution to the broken dependencies."
 msgstr ""
 
-#: src/apt_options.cc:352
+#: src/apt_options.cc:362
 #, fuzzy
 msgid "Install recommended packages automatically"
 msgstr "ដំឡើង​កញ្ចប់​ដែល​បាន​ផ្តល់​អនុសាសន៍​ដោយស្វ័យប្រវត្តិ​"
 
-#: src/apt_options.cc:353
+#: src/apt_options.cc:363
 msgid ""
 "If this option is enabled and \"automatically resolve dependencies\" is also "
 "enabled, aptitude will attempt to install the recommendations of newly "
@@ -397,11 +421,11 @@ msgid ""
 "automatically removed."
 msgstr ""
 
-#: src/apt_options.cc:365
+#: src/apt_options.cc:375
 msgid "Remove unused packages automatically"
 msgstr "យក​កញ្ចប់​មិន​​ប្រើចេញ​​ដោយ​ស្វ័យប្រវត្តិ​"
 
-#: src/apt_options.cc:366
+#: src/apt_options.cc:376
 msgid ""
 "If this option is enabled, packages that are automatically installed and "
 "that no manually installed package depends on will be removed from the "
@@ -412,22 +436,22 @@ msgid ""
 "installed package recommends them."
 msgstr ""
 
-#: src/apt_options.cc:377
+#: src/apt_options.cc:387
 msgid "Packages that should never be automatically removed"
 msgstr ""
 
-#: src/apt_options.cc:378
+#: src/apt_options.cc:388
 msgid ""
 "Packages matching this search pattern will always be treated as if an "
 "installed package depends on them: they will never be targeted for removal "
 "as unused packages."
 msgstr ""
 
-#: src/apt_options.cc:383
+#: src/apt_options.cc:393
 msgid "Allow dependency resolutions that break holds or forbids"
 msgstr ""
 
-#: src/apt_options.cc:384
+#: src/apt_options.cc:394
 msgid ""
 "If this option is enabled, then whenever aptitude solves a dependency "
 "problem, it will consider modifying held packages, or installing forbidden "
@@ -440,29 +464,17 @@ msgid ""
 "or upgrade, due to apt bug #470035."
 msgstr ""
 
-#: src/apt_options.cc:398
-msgid "Don't warn about the obsolete \"Recommends-Important\" option."
-msgstr ""
-
-#: src/apt_options.cc:399
-msgid ""
-"If the configuration option %BRecommends-Important%b is set in the system "
-"configuration file, aptitude will warn you about it on start-up.  Enable "
-"this option to skip this warning (for instance, if your apt configuration is "
-"shared with a system that has an older version of aptitude installed)."
-msgstr ""
-
-#: src/apt_options.cc:518
+#: src/apt_options.cc:520
 #, fuzzy
 msgid "UI options"
 msgstr "ជម្រើស​ចំណុចប្រទាក់"
 
-#: src/apt_options.cc:520
+#: src/apt_options.cc:522
 #, fuzzy
 msgid "Dependency handling"
 msgstr "ការ​ដោះស្រាយ​ភាព​អាស្រ័យ"
 
-#: src/apt_options.cc:522 src/pkg_grouppolicy.cc:1017
+#: src/apt_options.cc:524 src/pkg_grouppolicy.cc:1018
 msgid "Miscellaneous"
 msgstr "ផ្សេងៗ​"
 
@@ -1369,7 +1381,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:713
-#: src/generic/apt/apt.cc:287
+#: src/generic/apt/apt.cc:275
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "មិន​អាច​បើក​ %s ដើម្បី​សរសេរ​បាន​ឡើយ"
@@ -1600,31 +1612,31 @@ msgid ""
 "           searching, but some solutions will be unreachable."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:946
+#: src/cmdline/cmdline_resolver.cc:961
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:953
+#: src/cmdline/cmdline_resolver.cc:968
 #, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr "មិន​អាច​ដោះស្រាយ​ភាព​អាស្រ័យ​បាន​ឡើយ ​!  កំពុង​បោះបង់ចោល​..."
 
-#: src/cmdline/cmdline_resolver.cc:967
+#: src/cmdline/cmdline_resolver.cc:982
 #, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr "មិន​អាច​ដោះស្រាយ​ភាព​អាស្រ័យ​បាន​ឡើយ ​!  កំពុង​បោះបង់ចោល​..."
 
-#: src/cmdline/cmdline_resolver.cc:976
+#: src/cmdline/cmdline_resolver.cc:991
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:982
+#: src/cmdline/cmdline_resolver.cc:997
 #, fuzzy, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "មិនអាច​ដោះស្រាយ​​ភាពអាស្រ័យ​បានឡើយ​ ។"
@@ -1862,7 +1874,7 @@ msgid "Description: "
 msgstr "សេចក្ដីពណ៌នា ៖ "
 
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:252
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr ""
 
@@ -2348,29 +2360,21 @@ msgstr "អ្នក​ប្រហែល​ជា​ត្រូវ​ធ្វ
 #. indicated by translating "Localized defaults|" below to
 #. "aptitude-defaults.ww".  If you use this mechanism, you should
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
-#: src/generic/apt/apt.cc:173
+#: src/generic/apt/apt.cc:174
 msgid "Localized defaults|"
 msgstr ""
 
-#: src/generic/apt/apt.cc:192
-#, c-format
-msgid ""
-"The system configuration file (%s) contains a setting for the obsolete "
-"option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
-"Recommends' instead or removing this setting."
-msgstr ""
-
-#: src/generic/apt/apt.cc:259
+#: src/generic/apt/apt.cc:247
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "%s គឺ​អាច​អាន​បាន ប៉ុន្តែ​មិន​អាច​សរសេរ​បាន ។ មិន​អាច​សរសេរ​ឯកសារ​កំណត់រចនាសម្ព័ន្ធ​បាន​ឡើយ ។"
 
-#: src/generic/apt/apt.cc:297
+#: src/generic/apt/apt.cc:285
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "មិន​អាច​ជំនួស %s ដោយ​ឯកសារ​កំណត់​រចនាសម្ព័ន្ធ​ថ្មី​បាន​ឡើយ"
 
-#: src/generic/apt/apt.cc:396
+#: src/generic/apt/apt.cc:384
 #, fuzzy
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
@@ -3665,7 +3669,7 @@ msgstr "ទំហំ Deb"
 msgid "Action"
 msgstr "អំពើ​"
 
-#: src/pkg_columnizer.cc:93
+#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
 msgid "Description"
 msgstr "ពិពណ៌​នា​"
 
@@ -3809,7 +3813,7 @@ msgid "none"
 msgstr "គ្មាន"
 
 #: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
-#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:267
+#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:268
 #: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
 #: src/pkg_ver_item.cc:348 src/pkg_ver_item.cc:382
 msgid "Unknown"
@@ -3878,15 +3882,15 @@ msgstr "មិន​អាច​បម្លែង​ទ្រង់ទ្រា
 msgid "Internal error: Default column string is unparsable"
 msgstr "កំហុស​ខាង​ក្នុង ៖ ខ្សែអក្សរ​ជួរឈរ​លំនាំដើម គឺ​មិន​អាច​ញែក​បាន​ឡើយ"
 
-#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1069
+#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1070
 msgid "Tasks"
 msgstr "ភារកិច្ច​"
 
-#: src/pkg_grouppolicy.cc:282
+#: src/pkg_grouppolicy.cc:283
 msgid "main"
 msgstr "ចាំបាច់"
 
-#: src/pkg_grouppolicy.cc:424
+#: src/pkg_grouppolicy.cc:425
 msgid ""
 "Security Updates\n"
 " Security updates for these packages are available from security.debian.org."
@@ -3894,7 +3898,7 @@ msgstr ""
 "ភាព​ទាន់សម័យ​ផ្នែក​សុវត្ថិភាព\n"
 " កញ្ចប់​ទាំងនេះ​មាន​ភាព​ទាន់សម័យ​ផ្នែក​សុវត្ថិភាព​ហើយ នៅ​ឯ security.debian.org ។"
 
-#: src/pkg_grouppolicy.cc:425
+#: src/pkg_grouppolicy.cc:426
 msgid ""
 "Upgradable Packages\n"
 " A newer version of these packages is available."
@@ -3902,7 +3906,7 @@ msgstr ""
 "កញ្ចប់​ដែល​អាច​ធ្វើ​ឲ្យ​ទាន់សម័យ​បាន\n"
 " កញ្ចប់​ទាំងនេះ​មាន​កំណែ​ថ្មី​ជាង​ហើយ ។"
 
-#: src/pkg_grouppolicy.cc:426
+#: src/pkg_grouppolicy.cc:427
 msgid ""
 "New Packages\n"
 " These packages have been added to Debian since the last time you cleared "
@@ -3913,7 +3917,7 @@ msgstr ""
 " កញ្ចប់​ទាំងនេះ​ត្រូវ​បាន​បន្ថែម​ទៅ​ដេបៀន តាំង​ពី​ពេល​ចុងក្រោយ​ដែល​អ្នក​ជម្រះ​បញ្ជី​របស់​កញ្ចប់ \"ថ្មី\" "
 "មកម្លេះ (ជ្រើស \"បំភ្លេច​កញ្ចប់​ថ្មី\" ពី​ម៉ឺនុយ​អំពើ ដើម្បី​ជម្រះ​បញ្ជី​នេះ) ។"
 
-#: src/pkg_grouppolicy.cc:427
+#: src/pkg_grouppolicy.cc:428
 msgid ""
 "Installed Packages\n"
 " These packages are currently installed on your computer."
@@ -3921,7 +3925,7 @@ msgstr ""
 "កញ្ចប់​បាន​ដំឡើង​\n"
 " កញ្ចប់​ទាំង​នេះ​បច្ចុប្បន្ន​បាន​ដំឡើង​លើ​កុំព្យួទ័រ​របស់​អ្នក​ ។"
 
-#: src/pkg_grouppolicy.cc:428
+#: src/pkg_grouppolicy.cc:429
 msgid ""
 "Not Installed Packages\n"
 " These packages are not installed on your computer."
@@ -3929,7 +3933,7 @@ msgstr ""
 "កញ្ចប់​មិន​បាន​ដំឡើង\n"
 " កញ្ចប់​ទាំងនេះ​មិន​ត្រូវ​បាន​ដំឡើង​ក្នុង​កុំព្យូទ័រ​របស់​អ្នក​ឡើយ ។"
 
-#: src/pkg_grouppolicy.cc:429
+#: src/pkg_grouppolicy.cc:430
 msgid ""
 "Obsolete and Locally Created Packages\n"
 " These packages are currently installed on your computer, but they are not "
@@ -3941,7 +3945,7 @@ msgstr ""
 "ឡើយ ។ ពួក​វា​ប្រហែល​ជា​ត្រូវ​បាន​គេ​លែង​ប្រើ​ហើយ និង ប្រហែល​ជា​ត្រូវ​បាន​យកចេញ​ពី​ប័ណ្ណសារ ឬ អ្នក​ប្រហែល​ជា​"
 "បង្កើត​វា​ដោយ​ខ្លួន​អ្នក ។"
 
-#: src/pkg_grouppolicy.cc:430
+#: src/pkg_grouppolicy.cc:431
 msgid ""
 "Virtual Packages\n"
 " These packages do not exist; they are names other packages use to require "
@@ -3951,7 +3955,7 @@ msgstr ""
 " កញ្ចប់​ទាំងនេះ​ពុំ​ទាន់​មាន​នៅ​ឡើយ​ទេ ។ ពួក​វា​ជា​ឈ្មោះកញ្ចប់​ផ្សេង​ទៀត ដែល​ប្រើ​ដើម្បី​ទាមទារ ឬ ផ្ដល់​នូវ​"
 "មុខងារ​មួយ​ចំនួន ។"
 
-#: src/pkg_grouppolicy.cc:583
+#: src/pkg_grouppolicy.cc:584
 msgid ""
 "Packages which are recommended by other packages\n"
 " These packages are not strictly required, but they may be necessary to "
@@ -3962,7 +3966,7 @@ msgstr ""
 "កញ្ចប់​ទាំងនេះមិន​ត្រូវ​បាន​ទាមទារ​ដាច់​ខាត​ឡើយ ប៉ុន្តែ​ពួក​វា​ប្រហែល​ជាចាំបាច់​ដើម្បី​ផ្តល់​មុខងារពេញ​លេញ​ក្នុ​"
 "ងកម្មវិធី​ដទៃទៀត​​​ដែល​អ្នក​កំពុង​ដំឡើង ឬ កំពុងធ្វើ​ឲ្យ​ប្រសើរ ។"
 
-#: src/pkg_grouppolicy.cc:604
+#: src/pkg_grouppolicy.cc:605
 msgid ""
 "Packages which are suggested by other packages\n"
 " These packages are not required in order to make your system function "
@@ -3973,7 +3977,7 @@ msgstr ""
 "កញ្ចប់​ទាំងអស់​នេះ​មិន​ត្រូវ​បាន​ទាមទារ ដើម្បី​ធ្វើ​ឲ្យ​ប្រព័ន្ធ​របស់​អ្នក​ដំណើរការ​ត្រឹមត្រូវ​ឡើយ ប៉ុន្តែ​ពួក​វា​ប្រហែល​"
 "ជាផ្តល់បន្ថែម​នូវ​មុខងារ​សម្រាប់​កម្មវិធី​ខ្លះៗ ដែល​អ្នក​កំពុង​តែ​ដំឡើង ។"
 
-#: src/pkg_grouppolicy.cc:632
+#: src/pkg_grouppolicy.cc:633
 msgid ""
 "Packages with unsatisfied dependencies\n"
 " The dependency requirements of these packages will be unmet after the "
@@ -3988,7 +3992,7 @@ msgstr ""
 " វត្តមាន​របស់​មែកធាង​នេះ ប្រហែល​ជា​បញ្ជាក់​អំពី​អ្វី​ដែល​ខូច នៅ​លើ​ប្រព័ន្ធ​របស់​អ្នក ឬ នៅ​ក្នុង​ប័ណ្ណសារ​"
 "ដេបៀន ។"
 
-#: src/pkg_grouppolicy.cc:633
+#: src/pkg_grouppolicy.cc:634
 msgid ""
 "Packages being removed because they are no longer used\n"
 " These packages are being deleted because they were automatically installed "
@@ -3999,7 +4003,7 @@ msgstr ""
 " កញ្ចប់​ទាំងនេះ​នឹង​ត្រូវ​បាន​លុប​ចេញ ព្រោះ​ពួក​វា​ត្រូវ​បាន​ដំឡើង​ដោយ​ស្វ័យប្រវត្តិ​រួច​ហើយ ដើម្បី​បំពេញ​តម្រូវការ​"
 "ភាព​អាស្រ័យ ។\n"
 
-#: src/pkg_grouppolicy.cc:634
+#: src/pkg_grouppolicy.cc:635
 msgid ""
 "Packages being automatically held in their current state\n"
 " These packages could be upgraded, but they have been kept in their current "
@@ -4009,7 +4013,7 @@ msgstr ""
 " កញ្ចប់​ទាំងនេះ​អាច​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រសើរ​បាន ប៉ុន្តែ​ស្ថានភាព​របស់​ពួកវា​នឹង​នៅ​ដដែល ដើម្បី​ចៀសវាង​កុំ​ឲ្យ​"
 "ខូចខាត​ភាព​អាស្រ័យ ។"
 
-#: src/pkg_grouppolicy.cc:635
+#: src/pkg_grouppolicy.cc:636
 msgid ""
 "Packages being automatically installed to satisfy dependencies\n"
 " These packages are being installed because they are required by another "
@@ -4019,7 +4023,7 @@ msgstr ""
 " កញ្ចប់​ទាំងនេះ​នឹង​ត្រូវ​បាន​ដំឡើង ព្រោះ​ពួកវា​ត្រូវ​បាន​ទាមទារដោយ​កញ្ចប់​ផ្សេង​ទៀត ដែល​អ្នក​បាន​ជ្រើស​ថា​"
 "ដំឡើង ។"
 
-#: src/pkg_grouppolicy.cc:636
+#: src/pkg_grouppolicy.cc:637
 msgid ""
 "Packages being deleted due to unsatisfied dependencies\n"
 " These packages are being deleted because one or more of their dependencies "
@@ -4029,7 +4033,7 @@ msgstr ""
 " កញ្ចប់​ទាំងនេះ​នឹង​ត្រូវ​បាន​លុប​ចេញ ព្រោះភាព​អាស្រ័យ​មួយ ឬ ច្រើន​របស់​ពួក​វា លែង​មាន​តទៅទៀត​ហើយ ឬ ព្រោះ​"
 "តែ​កញ្ចប់​ផ្សេង​ទៀត​បាន​ប៉ះទង្គិច​ជាមួយ​ពួកវា ។"
 
-#: src/pkg_grouppolicy.cc:637
+#: src/pkg_grouppolicy.cc:638
 msgid ""
 "Packages to be downgraded\n"
 " An older version of these packages than is currently installed will be "
@@ -4038,7 +4042,7 @@ msgstr ""
 "កញ្ចប់​ដែល​ត្រូវ​បន្ទាប\n"
 " កំណែ​ចាស់​របស់​កញ្ចប់​ទាំងនេះ នឹង​ត្រូវ​បាន​ដំឡើង ។"
 
-#: src/pkg_grouppolicy.cc:638
+#: src/pkg_grouppolicy.cc:639
 msgid ""
 "Packages being held back\n"
 " These packages could be upgraded, but you have asked for them to be held at "
@@ -4047,7 +4051,7 @@ msgstr ""
 "កញ្ចប់​ដែល​ត្រូវ​ទុក​មក​វិញ\n"
 " កញ្ចប់​ទាំងនេះ​មិន​អាច​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រសើរ​បាន​ឡើយ ប៉ុន្តែ​អ្នក​បាន​ស្នើសុំ​ឲ្យ​ទុក​ពួក​វា​នៅ​ដដែល ។"
 
-#: src/pkg_grouppolicy.cc:639
+#: src/pkg_grouppolicy.cc:640
 msgid ""
 "Packages to be reinstalled\n"
 " These packages will be reinstalled."
@@ -4055,7 +4059,7 @@ msgstr ""
 "កញ្ចប់​ដែល​ត្រូវ​ដំឡើង​ឡើង​វិញ\n"
 " កញ្ចប់​ទាំងនេះ​នឹង​ត្រូវ​បាន​ដំឡើង​ឡើង​វិញ ។"
 
-#: src/pkg_grouppolicy.cc:640
+#: src/pkg_grouppolicy.cc:641
 msgid ""
 "Packages to be installed\n"
 " These packages have been manually selected for installation on your "
@@ -4064,7 +4068,7 @@ msgstr ""
 "កញ្ចប់​ដែល​ត្រូវ​ដំឡើង\n"
 " កញ្ចប់​ទាំងនេះ​ត្រូវ​បាន​ជ្រើស​ដោយ​ដៃ ដើម្បី​ដំឡើង​ក្នុង​កុំព្យូទ័រ​របស់​អ្នក ។"
 
-#: src/pkg_grouppolicy.cc:641
+#: src/pkg_grouppolicy.cc:642
 msgid ""
 "Packages to be removed\n"
 " These packages have been manually selected for removal."
@@ -4072,7 +4076,7 @@ msgstr ""
 "កញ្ចប់​ត្រូវ​យកចេញ\n"
 " កញ្ចប់​ទាំងនេះ​ត្រូវ​បាន​ជ្រើស​ដោយ​ដៃ ដើម្បី​យកចេញ ។"
 
-#: src/pkg_grouppolicy.cc:642
+#: src/pkg_grouppolicy.cc:643
 msgid ""
 "Packages to be upgraded\n"
 " These packages will be upgraded to a newer version."
@@ -4080,7 +4084,7 @@ msgstr ""
 "កញ្ចប់​ត្រូវ​ធ្វើ​ឲ្យ​ប្រសើរ\n"
 " កញ្ចប់​ទាំងនេះ​នឹង​ត្រូវ​បាន​ធ្វើ​ឲ្យ​​ប្រសើរ ទៅ​ជា​កំណែ​ថ្មី​ជាង​នេះ ។"
 
-#: src/pkg_grouppolicy.cc:643
+#: src/pkg_grouppolicy.cc:644
 #, fuzzy
 msgid ""
 "Packages that are partially installed\n"
@@ -4091,44 +4095,44 @@ msgstr ""
 " កញ្ចប់​ទាំងនេះ​នឹង​ត្រូវ​បាន​ដំឡើង ព្រោះ​ពួកវា​ត្រូវ​បាន​ទាមទារដោយ​កញ្ចប់​ផ្សេង​ទៀត ដែល​អ្នក​បាន​ជ្រើស​ថា​"
 "ដំឡើង ។"
 
-#: src/pkg_grouppolicy.cc:760
+#: src/pkg_grouppolicy.cc:761
 msgid "unknown"
 msgstr "មិន​ស្គាល់"
 
-#: src/pkg_grouppolicy.cc:771
+#: src/pkg_grouppolicy.cc:772
 #, c-format
 msgid "Priority %s"
 msgstr "អាទិភាព %s"
 
-#: src/pkg_grouppolicy.cc:885
+#: src/pkg_grouppolicy.cc:886
 msgid "UNCATEGORIZED"
 msgstr "គ្មាន​ប្រភេទ"
 
-#: src/pkg_grouppolicy.cc:1012
+#: src/pkg_grouppolicy.cc:1013
 msgid "End-user"
 msgstr "អ្នក​ប្រើ​"
 
-#: src/pkg_grouppolicy.cc:1013
+#: src/pkg_grouppolicy.cc:1014
 msgid "Servers"
 msgstr "ម៉ាស៊ីន​បម្រើ"
 
-#: src/pkg_grouppolicy.cc:1014
+#: src/pkg_grouppolicy.cc:1015
 msgid "Development"
 msgstr "អភិវឌ្ឍន៍"
 
-#: src/pkg_grouppolicy.cc:1015
+#: src/pkg_grouppolicy.cc:1016
 msgid "Localization"
 msgstr "មូលដ្ឋានីយកម្ម​"
 
-#: src/pkg_grouppolicy.cc:1016
+#: src/pkg_grouppolicy.cc:1017
 msgid "Hardware Support"
 msgstr "ការគាំទ្រផ្នែករឹង"
 
-#: src/pkg_grouppolicy.cc:1018
+#: src/pkg_grouppolicy.cc:1019
 msgid "Unrecognized tasks"
 msgstr "ភារកិច្ច​មិន​ទទួលស្គាល់"
 
-#: src/pkg_grouppolicy.cc:1070
+#: src/pkg_grouppolicy.cc:1071
 msgid ""
 "\n"
 " Tasks are groups of packages which provide an easy way to select a "
@@ -4138,33 +4142,33 @@ msgstr ""
 " ភារកិច្ច​គឺ​ជា​ក្រុម​នៃ​កញ្ចប់ ដែល​ផ្ដល់​នូវ​មធ្យោបាយ​ងាយស្រួល​ក្នុង​ការ​ជ្រើស​សំណុំកញ្ចប់ ដែល​កំណត់​រួច​ជា​ស្រេច "
 "សម្រាប់​ការងារ​ជាក់លាក់​ណា​មួយ ។"
 
-#: src/pkg_grouppolicy.cc:1201
+#: src/pkg_grouppolicy.cc:1202
 #, c-format
 msgid "Bad number in format string: %ls"
 msgstr "លេខ​មិន​ត្រឹមត្រូវ​នៅ​ក្នុង​ខ្សែអក្សរ​ទ្រង់ទ្រាយ ៖ %ls"
 
-#: src/pkg_grouppolicy.cc:1210
+#: src/pkg_grouppolicy.cc:1211
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
 msgstr "សន្ទស្សន៍​ផ្គូផ្គង​ត្រូវ​តែ​ធំជាង ឬ ស្មើ 1 មិន​មែន \"%s\" ឡើយ"
 
-#: src/pkg_grouppolicy.cc:1228
+#: src/pkg_grouppolicy.cc:1229
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
 msgstr "សន្ទស្សន៍​ផ្គូផ្គង %ls ធំពេក​ហើយ ។ មាន​ក្រុម​ដូចជា (%s)"
 
-#: src/pkg_grouppolicy.cc:1501
+#: src/pkg_grouppolicy.cc:1502
 msgid "TAGLESS PACKAGES"
 msgstr "កញ្ចប់​គ្មាន​ស្លាក"
 
-#: src/pkg_grouppolicy.cc:1502
+#: src/pkg_grouppolicy.cc:1503
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags, or the debtags "
 "database is not present (installing debtags may correct this problem)."
 msgstr ""
 
-#: src/pkg_grouppolicy.cc:1536
+#: src/pkg_grouppolicy.cc:1537
 msgid "MISSING TAG"
 msgstr "ស្លាក​ដែល​បាត់"
 
@@ -4273,7 +4277,7 @@ msgstr "ចុច​គ្រាប់ចុច​បញ្ចូល ដើម�
 msgid "Hierarchy editor"
 msgstr "កម្មវិធី​និពន្ធឋានានុក្រម"
 
-#: src/pkg_item.cc:462
+#: src/pkg_item.cc:462 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "កម្មវិធី​និពន្ធ​ឋានានុក្រម"
 
@@ -4318,20 +4322,37 @@ msgstr "មិន​អាច​បម្លែង​អត្ថន័យ​ជ
 msgid "Couldn't parse column definition"
 msgstr "មិន​អាច​ញែក​អត្ថន័យ​ជួរឈរ​បាន​ឡើយ"
 
-#: src/pkg_view.cc:560
+#: src/pkg_view.cc:223
+#, fuzzy
+msgid ""
+"If you select a package, an explanation of why it should be installed or "
+"removed will appear in this space."
+msgstr "បើ​អ្នក​ជ្រើស​កញ្ចប់​មួយ សេចក្ដីពន្យល់​នៃ​ស្ថានភាព​បច្ចុប្បន្ន​របស់​វា នឹង​លេចឡើង​ត្រង់​នេះ ។"
+
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view ៖ កំហុស​ក្នុង​អាគុយម៉ង់ -- ធាតុ​ក្រាហ្វិក​ចម្បង​ពីរ ??"
 
-#: src/pkg_view.cc:566
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr "make_package_view ៖ កំហុស​នៅ​ក្នុង​អាគុយម៉ង់ -- បញ្ជី​ជួរឈរ​មិន​ត្រឹមត្រូវ សម្រាប់​ធាតុ​ថេរ"
 
-#: src/pkg_view.cc:674
+#: src/pkg_view.cc:678
+#, fuzzy
+msgid "Related Dependencies"
+msgstr "ដោះស្រាយ​ភាពអាស្រ័យ​"
+
+#: src/pkg_view.cc:681
+#, fuzzy
+msgid "Why Installed"
+msgstr "បាន​ដំឡើង"
+
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view ៖ អាគុយម៉ង់​មិន​ល្អ"
 
-#: src/pkg_view.cc:726
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view ៖ រក​មិន​ឃើញ​ធាតុ​ក្រាហ្វិក​ចម្បង"
 

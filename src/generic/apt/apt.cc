@@ -123,6 +123,7 @@ void apt_preinit()
 {
   // The old name for the recommends-should-be-automatically-installed
   // setting and the new one.
+  const char * const aptitudeIgnoreRecommendsImportant = PACKAGE "::Ignore-Recommends-Important";
   const char * const aptitudeRecommendsImportant = PACKAGE "::Recommends-Important";
   const char * const aptInstallRecommends = "APT::Install-Recommends";
 
@@ -176,22 +177,6 @@ void apt_preinit()
 
   pkgInitSystem(*_config, _system);
 
-  // Obviously this must come before we read user settings.
-  //
-  // Warn if things look shady, but let the user tell use they really
-  // know what they're doing.  (e.g., consider configuration systems
-  // that share settings between machines with different versions)
-  //
-  // Q: Is it better or worse to give the system config file name?
-  // Most of the time this message will indicate a problem there, but
-  // apt also sources /etc/apt/apt.conf.d/* on startup.  If the
-  // problem is in some other file and aptitude calls out
-  // /etc/apt/apt.conf, that would be rather confusing.
-  if(_config->Exists(aptitudeRecommendsImportant) &&
-     !_config->FindB(PACKAGE "::Dont-Warn-About-Recommends-Important", false))
-    _error->Warning(_("The system configuration file (%s) contains a setting for the obsolete option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-Recommends' instead or removing this setting."),
-		    _config->FindFile("Dir::Etc::main").c_str());
-
   // Allow a user-specific customization file.
   const char *HOME = getenv("HOME");
 
@@ -215,9 +200,11 @@ void apt_preinit()
 
   aptcfg=new signalling_config(user_config, _config, theme_config);
 
-  // Remove any old Recommends-Important setting by setting it to ""
-  // in ~/.aptitude/config.
-  if(aptcfg->Exists(aptitudeRecommendsImportant))
+  // If the user has a Recommends-Important setting and has allowed us
+  // to read it by seting Ignore-Recommends-Important to false,
+  // migrate it over and then set Ignore-Recommends-Important to true.
+  if(!aptcfg->FindB(aptitudeIgnoreRecommendsImportant, false) &&
+     aptcfg->Exists(aptitudeRecommendsImportant))
     {
       // If it was overridden to "false" and the system setting for
       // APT::Install-Recommends is "true", set the latter to "false"
@@ -225,7 +212,8 @@ void apt_preinit()
       if(!aptcfg->FindB(aptitudeRecommendsImportant, true) &&
 	 aptcfg->FindB(aptInstallRecommends, true))
 	aptcfg->Set(aptInstallRecommends, "false");
-      aptcfg->Set(aptitudeRecommendsImportant, "");
+
+      aptcfg->Set(aptitudeIgnoreRecommendsImportant, "true");
 
       apt_dumpcfg(PACKAGE);
     }

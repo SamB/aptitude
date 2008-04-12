@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_el\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-30 12:35-0700\n"
+"POT-Creation-Date: 2008-04-07 21:44-0700\n"
 "PO-Revision-Date: 2006-12-18 09:26+0200\n"
 "Last-Translator: quad-nrg.net <galaxico@quad-nrg.net>\n"
 "Language-Team: Greek <en@li.org>\n"
@@ -187,180 +187,204 @@ msgid ""
 msgstr ""
 
 #: src/apt_options.cc:211
-msgid "Display the extended description area by default"
+#, fuzzy
+msgid "Display the information area by default"
 msgstr "Εμφάνιση εκτεταμένου χώρου πληροφορίας εξ ορισμού"
 
 #: src/apt_options.cc:212
 msgid ""
-"If this option is enabled, the long description area (the pane at the bottom "
-"of the screen) in the package list will be visible when the program starts; "
+"If this option is enabled, the information area (the pane at the bottom of "
+"the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
 
 #: src/apt_options.cc:217
+#, fuzzy
+msgid "Display tabs for the available views"
+msgstr "Μορφή εμφάνισης για τις οθόνες πακέτων"
+
+#: src/apt_options.cc:218
+msgid ""
+"If this option is enabled, tabs will appear at the top of the screen listing "
+"the currently opened views."
+msgstr ""
+
+#: src/apt_options.cc:221
+#, fuzzy
+msgid "Display tabs for the information area"
+msgstr "Εμφάνισε περισσότερες πληροφορίες για το επιλεγμένο πακέτο"
+
+#: src/apt_options.cc:222
+msgid ""
+"If this option is enabled, tabs will appear at the top of the information "
+"area (the pane at the bottom of the screen) listing the different displays "
+"of information that can be viewed there."
+msgstr ""
+
+#: src/apt_options.cc:227
 msgid "Advance to the next item after changing the state of a package"
 msgstr ""
 "Μετακίνηση στο επόμενο στοιχείο μετά την αλλαγή κατάστασης ενός πακέτου"
 
-#: src/apt_options.cc:218
+#: src/apt_options.cc:228
 msgid ""
 "If this option is enabled, then performing an action on a package (for "
 "instance, installing or removing it) will move the selection to the next "
 "package in the list."
 msgstr ""
 
-#: src/apt_options.cc:223
+#: src/apt_options.cc:233
 msgid "Automatically show why packages are broken"
 msgstr "Αυτόματη εμφάνιση της αιτίας ύπαρξης ελαττωματικών πακέτων"
 
-#: src/apt_options.cc:224
+#: src/apt_options.cc:234
 msgid ""
 "If this option is enabled, then highlighting a package that has broken "
 "dependencies will automatically display the dependencies that are "
 "unfulfilled in the lower pane of the display."
 msgstr ""
 
-#: src/apt_options.cc:230
+#: src/apt_options.cc:240
 msgid "The default grouping method for package views"
 msgstr "Προκαθορισμένη μέθοδος ομαδοποίησης για τις οθόνες πακέτων"
 
-#: src/apt_options.cc:231
+#: src/apt_options.cc:241
 msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
 msgstr ""
 
-#: src/apt_options.cc:235
+#: src/apt_options.cc:245
 msgid "The default display-limit for package views"
 msgstr "Προκαθορισμένο όριο εμφάνισης για τις οθόνες πακέτων"
 
-#: src/apt_options.cc:236
+#: src/apt_options.cc:246
 msgid ""
 "By default, the limit of each package view will be set to the value "
 "specified by this option.  See the aptitude user's manual for detailed "
 "information about searches."
 msgstr ""
 
-#: src/apt_options.cc:241
+#: src/apt_options.cc:251
 msgid "The display format for package views"
 msgstr "Μορφή εμφάνισης για τις οθόνες πακέτων"
 
-#: src/apt_options.cc:242
+#: src/apt_options.cc:252
 msgid ""
 "This option controls how aptitude formats lines of the package list.  See "
 "the aptitude user's manual for information on how to specify a display "
 "format."
 msgstr ""
 
-#: src/apt_options.cc:248
+#: src/apt_options.cc:258
 msgid "The display format for the status line"
 msgstr "Μορφή εμφάνισης για τη γραμμή κατάστασης"
 
-#: src/apt_options.cc:249
+#: src/apt_options.cc:259
 msgid ""
 "This option controls how aptitude formats the status line (the line between "
 "the package list and the lower pane).  See the aptitude user's manual for "
 "information on how to specify a display format."
 msgstr ""
 
-#: src/apt_options.cc:256
+#: src/apt_options.cc:266
 msgid "The display format for the header line"
 msgstr "Μορφή εμφάνισης για τη γραμμή κεφαλίδας"
 
-#: src/apt_options.cc:257
+#: src/apt_options.cc:267
 msgid ""
 "This option controls how aptitude formats the header line (the line above "
 "the package list).  See the aptitude user's manual for information on how to "
 "specify a display format."
 msgstr ""
 
-#: src/apt_options.cc:267
+#: src/apt_options.cc:277
 msgid "Automatically upgrade installed packages"
 msgstr "Αυτόματη αναβάθμιση εγκατεστημένων πακέτων"
 
-#: src/apt_options.cc:268
+#: src/apt_options.cc:278
 msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
 msgstr ""
 
-#: src/apt_options.cc:272
+#: src/apt_options.cc:282
 msgid "Remove obsolete package files after downloading new package lists"
 msgstr "Αφαίρεση των απαρχαιωμένων λιστών πακέτων μετά τη μεταφόρτωση των νέων"
 
-#: src/apt_options.cc:273
+#: src/apt_options.cc:283
 msgid ""
 "If this option is enabled, then after every install run, aptitude will "
 "delete from the package cache any package files that can no longer be "
 "downloaded from any archive in sources.list."
 msgstr ""
 
-#: src/apt_options.cc:278
+#: src/apt_options.cc:288
 msgid "URL to use to download changelogs"
 msgstr "Διεύθυνση που θα χρησιμοποιηθεί για τη μεταφόρτωση των αρχείων αλλαγών"
 
-#: src/apt_options.cc:279
+#: src/apt_options.cc:289
 msgid ""
 "This option controls the template that's used to download changelogs from "
 "the Debian Web site.  You should only need to change this if the changelogs "
 "move to a different URL."
 msgstr ""
 
-#: src/apt_options.cc:285
+#: src/apt_options.cc:295
 msgid "Display a preview of what will be done before doing it"
 msgstr "Προεπισκόπηση των εργασιών πριν την διεκπεραίωσή τους"
 
-#: src/apt_options.cc:286
+#: src/apt_options.cc:296
 msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
 msgstr ""
 
-#: src/apt_options.cc:292
+#: src/apt_options.cc:302
 msgid ""
 "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr "Να αγνοούνται τα \"νέα\" πακέτα όταν ανανεώνονται οι λίστες πακέτων"
 
-#: src/apt_options.cc:293
+#: src/apt_options.cc:303
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
 msgstr ""
 
-#: src/apt_options.cc:298
+#: src/apt_options.cc:308
 msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr ""
 "Να αγνοούνται τα \"νέα\" πακέτα όταν εγκαθίστανται ή αφαιρούνται πακέτα"
 
-#: src/apt_options.cc:299
+#: src/apt_options.cc:309
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you perform an install run or install or remove packages from the "
 "command-line."
 msgstr ""
 
-#: src/apt_options.cc:305
+#: src/apt_options.cc:315
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 "Μη εμφάνιση προειδοποίησης όταν η πρώτη αλλαγή γίνεται σε κατάσταση μόνο-"
 "ανάγνωσης"
 
-#: src/apt_options.cc:306
+#: src/apt_options.cc:316
 msgid ""
 "If this option is %Bnot%b enabled, aptitude will display a warning when you "
 "modify the state of a package if you do not have permissions to apply the "
 "change to the system."
 msgstr ""
 
-#: src/apt_options.cc:312
+#: src/apt_options.cc:322
 msgid "Warn when attempting to perform a privileged action as a non-root user"
 msgstr ""
 "Να υπάρχει ειδοποίηση για κάθε απόπειρα εκτέλεσης προνομιακής εντολής ως "
 "απλός χρήστης"
 
-#: src/apt_options.cc:313
+#: src/apt_options.cc:323
 msgid ""
 "If this option is enabled, aptitude will warn you when you attempt to "
 "perform an action which you do not have permission to do: for instance, "
@@ -368,11 +392,11 @@ msgid ""
 "in as root and perform the action with root privileges."
 msgstr ""
 
-#: src/apt_options.cc:322
+#: src/apt_options.cc:332
 msgid "File to log actions into"
 msgstr "Αρχείο καταγραφής των εργασίων"
 
-#: src/apt_options.cc:323
+#: src/apt_options.cc:333
 msgid ""
 "When you install or remove packages, a summary of what aptitude does will be "
 "written to this file.  If the first character of the file name is a pipe "
@@ -380,11 +404,11 @@ msgid ""
 "shell command that is to receive the log on standard input."
 msgstr ""
 
-#: src/apt_options.cc:335
+#: src/apt_options.cc:345
 msgid "Automatically resolve dependencies of a package when it is selected"
 msgstr "Αυτόματη ανάλυση εξαρτήσεων ενός πακέτου όταν αυτό επιλέγεται"
 
-#: src/apt_options.cc:336
+#: src/apt_options.cc:346
 msgid ""
 "If this option is enabled, aptitude will use a simple heuristic to "
 "immediately resolve the dependencies of each package you flag for "
@@ -392,12 +416,12 @@ msgid ""
 "but may produce suboptimal results or fail entirely in some scenarios."
 msgstr ""
 
-#: src/apt_options.cc:344
+#: src/apt_options.cc:354
 msgid "Automatically fix broken packages before installing or removing"
 msgstr ""
 "Αυτόματη διόρθωση ελαττωματικών πακέτων πριν την εγκατάσταση ή αφαίρεση"
 
-#: src/apt_options.cc:345
+#: src/apt_options.cc:355
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
@@ -405,12 +429,12 @@ msgid ""
 "a solution to the broken dependencies."
 msgstr ""
 
-#: src/apt_options.cc:352
+#: src/apt_options.cc:362
 #, fuzzy
 msgid "Install recommended packages automatically"
 msgstr "Αυτόματη εγκατάσταση Συνιστώμενων πακέτων "
 
-#: src/apt_options.cc:353
+#: src/apt_options.cc:363
 msgid ""
 "If this option is enabled and \"automatically resolve dependencies\" is also "
 "enabled, aptitude will attempt to install the recommendations of newly "
@@ -421,11 +445,11 @@ msgid ""
 "automatically removed."
 msgstr ""
 
-#: src/apt_options.cc:365
+#: src/apt_options.cc:375
 msgid "Remove unused packages automatically"
 msgstr "Αυτόματη αφαίρεση αχρησιμοποιήτων πακέτων"
 
-#: src/apt_options.cc:366
+#: src/apt_options.cc:376
 msgid ""
 "If this option is enabled, packages that are automatically installed and "
 "that no manually installed package depends on will be removed from the "
@@ -436,22 +460,22 @@ msgid ""
 "installed package recommends them."
 msgstr ""
 
-#: src/apt_options.cc:377
+#: src/apt_options.cc:387
 msgid "Packages that should never be automatically removed"
 msgstr ""
 
-#: src/apt_options.cc:378
+#: src/apt_options.cc:388
 msgid ""
 "Packages matching this search pattern will always be treated as if an "
 "installed package depends on them: they will never be targeted for removal "
 "as unused packages."
 msgstr ""
 
-#: src/apt_options.cc:383
+#: src/apt_options.cc:393
 msgid "Allow dependency resolutions that break holds or forbids"
 msgstr ""
 
-#: src/apt_options.cc:384
+#: src/apt_options.cc:394
 msgid ""
 "If this option is enabled, then whenever aptitude solves a dependency "
 "problem, it will consider modifying held packages, or installing forbidden "
@@ -464,29 +488,17 @@ msgid ""
 "or upgrade, due to apt bug #470035."
 msgstr ""
 
-#: src/apt_options.cc:398
-msgid "Don't warn about the obsolete \"Recommends-Important\" option."
-msgstr ""
-
-#: src/apt_options.cc:399
-msgid ""
-"If the configuration option %BRecommends-Important%b is set in the system "
-"configuration file, aptitude will warn you about it on start-up.  Enable "
-"this option to skip this warning (for instance, if your apt configuration is "
-"shared with a system that has an older version of aptitude installed)."
-msgstr ""
-
-#: src/apt_options.cc:518
+#: src/apt_options.cc:520
 #, fuzzy
 msgid "UI options"
 msgstr "Επιλογές ^Περιβάλλοντος"
 
-#: src/apt_options.cc:520
+#: src/apt_options.cc:522
 #, fuzzy
 msgid "Dependency handling"
 msgstr "Διαχείριση Εξαρτήσεων"
 
-#: src/apt_options.cc:522 src/pkg_grouppolicy.cc:1017
+#: src/apt_options.cc:524 src/pkg_grouppolicy.cc:1018
 msgid "Miscellaneous"
 msgstr "Διάφορα"
 
@@ -1420,7 +1432,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:713
-#: src/generic/apt/apt.cc:287
+#: src/generic/apt/apt.cc:275
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Αδύνατο το άνοιγμα του %s για εγγραφή"
@@ -1663,31 +1675,31 @@ msgid ""
 "           searching, but some solutions will be unreachable."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:946
+#: src/cmdline/cmdline_resolver.cc:961
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:953
+#: src/cmdline/cmdline_resolver.cc:968
 #, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr "Αδυνατώ να επιλύσω τις εξαρτήσεις! Εγκαταλείπω..."
 
-#: src/cmdline/cmdline_resolver.cc:967
+#: src/cmdline/cmdline_resolver.cc:982
 #, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr "Αδυνατώ να επιλύσω τις εξαρτήσεις! Εγκαταλείπω..."
 
-#: src/cmdline/cmdline_resolver.cc:976
+#: src/cmdline/cmdline_resolver.cc:991
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:982
+#: src/cmdline/cmdline_resolver.cc:997
 #, fuzzy, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Αδύνατη η ικανοποίηση των εξαρτήσεων"
@@ -1925,7 +1937,7 @@ msgid "Description: "
 msgstr "Περιγραφή: "
 
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:252
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr ""
 
@@ -2419,31 +2431,23 @@ msgstr ""
 #. indicated by translating "Localized defaults|" below to
 #. "aptitude-defaults.ww".  If you use this mechanism, you should
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
-#: src/generic/apt/apt.cc:173
+#: src/generic/apt/apt.cc:174
 msgid "Localized defaults|"
 msgstr ""
 
-#: src/generic/apt/apt.cc:192
-#, c-format
-msgid ""
-"The system configuration file (%s) contains a setting for the obsolete "
-"option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
-"Recommends' instead or removing this setting."
-msgstr ""
-
-#: src/generic/apt/apt.cc:259
+#: src/generic/apt/apt.cc:247
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr ""
 "το %s είναι αναγνώσιμο αλλά όχι εγγράψιμο. Αδυναμία εγγραφής του αρχείου "
 "ρύθμισης."
 
-#: src/generic/apt/apt.cc:297
+#: src/generic/apt/apt.cc:285
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Αδύνατη η αντικατάσταση του %s με νέο αρχείο ρυθμίσεων"
 
-#: src/generic/apt/apt.cc:396
+#: src/generic/apt/apt.cc:384
 #, fuzzy
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
@@ -3794,7 +3798,7 @@ msgstr "ΜεγDeb"
 msgid "Action"
 msgstr "Ενέργεια"
 
-#: src/pkg_columnizer.cc:93
+#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
 msgid "Description"
 msgstr "Περιγραφή"
 
@@ -3938,7 +3942,7 @@ msgid "none"
 msgstr "κανένα"
 
 #: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
-#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:267
+#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:268
 #: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
 #: src/pkg_ver_item.cc:348 src/pkg_ver_item.cc:382
 msgid "Unknown"
@@ -4009,15 +4013,15 @@ msgid "Internal error: Default column string is unparsable"
 msgstr ""
 "Εσωτερικό σφάλμα: Αδύνατη η ανάλυση της προκαθορισμένης στήλης χαρακτήρων"
 
-#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1069
+#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1070
 msgid "Tasks"
 msgstr "Εργασίες"
 
-#: src/pkg_grouppolicy.cc:282
+#: src/pkg_grouppolicy.cc:283
 msgid "main"
 msgstr "κύριο"
 
-#: src/pkg_grouppolicy.cc:424
+#: src/pkg_grouppolicy.cc:425
 msgid ""
 "Security Updates\n"
 " Security updates for these packages are available from security.debian.org."
@@ -4026,7 +4030,7 @@ msgstr ""
 " Υπάρχουν διαθέσιμες αναβαθμίσεις ασφαλείας για αυτά τα πακέτα από το "
 "security.debian.org."
 
-#: src/pkg_grouppolicy.cc:425
+#: src/pkg_grouppolicy.cc:426
 msgid ""
 "Upgradable Packages\n"
 " A newer version of these packages is available."
@@ -4034,7 +4038,7 @@ msgstr ""
 "Αναβαθμιζόμενα Πακέτα\n"
 " Ειναι διαθέσιμη μια νεότερη έκδοση αυτού του πακέτου."
 
-#: src/pkg_grouppolicy.cc:426
+#: src/pkg_grouppolicy.cc:427
 msgid ""
 "New Packages\n"
 " These packages have been added to Debian since the last time you cleared "
@@ -4046,7 +4050,7 @@ msgstr ""
 "τη λίστα \"νέα\" πακέτα (επιλέξτε \" Ξέχασε τα νέα πακέτα\" από το μενού "
 "Ενέργειες για να καθαρίσετε αυτή τη λίστα)"
 
-#: src/pkg_grouppolicy.cc:427
+#: src/pkg_grouppolicy.cc:428
 msgid ""
 "Installed Packages\n"
 " These packages are currently installed on your computer."
@@ -4054,7 +4058,7 @@ msgstr ""
 "Εγκατεστημένα Πακέτα\n"
 " Αυτά τα πακέτα είναι εγκατεστημένα για την ώρα στον υπολογιστή σας."
 
-#: src/pkg_grouppolicy.cc:428
+#: src/pkg_grouppolicy.cc:429
 msgid ""
 "Not Installed Packages\n"
 " These packages are not installed on your computer."
@@ -4062,7 +4066,7 @@ msgstr ""
 "Μη Εγκατεστημένα Πακέτα\n"
 " Αυτά τα πακέτα δεν είναι εγκατεστημένα στον υπολογιστή σας"
 
-#: src/pkg_grouppolicy.cc:429
+#: src/pkg_grouppolicy.cc:430
 msgid ""
 "Obsolete and Locally Created Packages\n"
 " These packages are currently installed on your computer, but they are not "
@@ -4074,7 +4078,7 @@ msgstr ""
 "διαθέσιμα από καμία πηγή apt. Μπορεί να έχουν απαρχαιωθεί και αφαιρεθεί από "
 "την αρχειοθήκη, ή έχετε δημιουργήσει εσείς μια ιδιωτική έκδοση."
 
-#: src/pkg_grouppolicy.cc:430
+#: src/pkg_grouppolicy.cc:431
 msgid ""
 "Virtual Packages\n"
 " These packages do not exist; they are names other packages use to require "
@@ -4084,7 +4088,7 @@ msgstr ""
 " Αυτά τα πακέτα δεν υπάρχουν στην πραγματικότητα, είναι ονόματα τα οποία "
 "χρησιμοποιούν άλλα πακέτα, που απαιτούν ή παρέχουν κάποια λειτουργικότητα."
 
-#: src/pkg_grouppolicy.cc:583
+#: src/pkg_grouppolicy.cc:584
 msgid ""
 "Packages which are recommended by other packages\n"
 " These packages are not strictly required, but they may be necessary to "
@@ -4096,7 +4100,7 @@ msgstr ""
 "σας, αλλά συνήθως παρέχουν επιπλέον λειτουργικότητα σε άλλα προγράμματα που "
 "κάνετε εγκατάσταση ή αναβαθμίζετε."
 
-#: src/pkg_grouppolicy.cc:604
+#: src/pkg_grouppolicy.cc:605
 msgid ""
 "Packages which are suggested by other packages\n"
 " These packages are not required in order to make your system function "
@@ -4108,7 +4112,7 @@ msgstr ""
 "σας, αλλά συνήθως παρέχουν επιπλέον λειτουργικότητα σε προγράμματα που "
 "κάνετε εγκατάσταση."
 
-#: src/pkg_grouppolicy.cc:632
+#: src/pkg_grouppolicy.cc:633
 msgid ""
 "Packages with unsatisfied dependencies\n"
 " The dependency requirements of these packages will be unmet after the "
@@ -4124,7 +4128,7 @@ msgstr ""
 " Η πιθανότητα αυτή συνήθως υπονοεί ότι κάτι δεν πάει καλά, είτε με το "
 "σύστημά σας, είτε με την αρχειοθήκη του Debian."
 
-#: src/pkg_grouppolicy.cc:633
+#: src/pkg_grouppolicy.cc:634
 msgid ""
 "Packages being removed because they are no longer used\n"
 " These packages are being deleted because they were automatically installed "
@@ -4136,7 +4140,7 @@ msgstr ""
 "ικανοποιήσουν εξαρτήσεις, και από τη διαδικασία αυτή δεν θα προκύψει "
 "πρόβλημα από πακέτο που να θεωρεί τα πακέτα αυτά ως σημαντικά 'important'.\n"
 
-#: src/pkg_grouppolicy.cc:634
+#: src/pkg_grouppolicy.cc:635
 msgid ""
 "Packages being automatically held in their current state\n"
 " These packages could be upgraded, but they have been kept in their current "
@@ -4146,7 +4150,7 @@ msgstr ""
 " Αυτά τα πακέτα θα μπορούσαν να αναβαθμιστούν, αλλά κρατούνται στη τρέχουσα "
 "κατάστασή τους για να μην χαλάσουν εξαρτήσεις."
 
-#: src/pkg_grouppolicy.cc:635
+#: src/pkg_grouppolicy.cc:636
 msgid ""
 "Packages being automatically installed to satisfy dependencies\n"
 " These packages are being installed because they are required by another "
@@ -4156,7 +4160,7 @@ msgstr ""
 " Αυτά τα πακέτα εγκαθιστώνται επειδή τα απαιτεί κάποιο άλλο πακέτο που "
 "επιλέξατε για εγκατάσταση."
 
-#: src/pkg_grouppolicy.cc:636
+#: src/pkg_grouppolicy.cc:637
 msgid ""
 "Packages being deleted due to unsatisfied dependencies\n"
 " These packages are being deleted because one or more of their dependencies "
@@ -4166,7 +4170,7 @@ msgstr ""
 " Αυτά τα πακέτα διαγράφονται επειδή μια ή περισσότερες εξαρτήσεις τους δεν "
 "είναι πλέον διαθέσιμες, ή κάποιο άλλο πακέτο συγκρούεται με αυτά."
 
-#: src/pkg_grouppolicy.cc:637
+#: src/pkg_grouppolicy.cc:638
 msgid ""
 "Packages to be downgraded\n"
 " An older version of these packages than is currently installed will be "
@@ -4176,7 +4180,7 @@ msgstr ""
 " Θα εγκαταστήσετε μια παλαιότερη έκδοση ενός πακέτου από αυτή που έχετε "
 "εγκατεστημένη."
 
-#: src/pkg_grouppolicy.cc:638
+#: src/pkg_grouppolicy.cc:639
 msgid ""
 "Packages being held back\n"
 " These packages could be upgraded, but you have asked for them to be held at "
@@ -4186,7 +4190,7 @@ msgstr ""
 " Αυτά τα πακέτα θα μπορούσαν να αναβαθμιστούν, αλλά έχετε ζητήσει να "
 "κρατηθούν στην τρέχουσα έκδοση τους."
 
-#: src/pkg_grouppolicy.cc:639
+#: src/pkg_grouppolicy.cc:640
 msgid ""
 "Packages to be reinstalled\n"
 " These packages will be reinstalled."
@@ -4194,7 +4198,7 @@ msgstr ""
 "Πακέτα για επανεγκατάσταση\n"
 " Αυτά τα πακέτα θα επανεγκατασταθούν."
 
-#: src/pkg_grouppolicy.cc:640
+#: src/pkg_grouppolicy.cc:641
 msgid ""
 "Packages to be installed\n"
 " These packages have been manually selected for installation on your "
@@ -4203,7 +4207,7 @@ msgstr ""
 "Πακέτα για εγκατάσταση\n"
 " Έχετε επιλέξει αυτά τα πακέτα για εγκατάσταση στον υπολογιστή σας."
 
-#: src/pkg_grouppolicy.cc:641
+#: src/pkg_grouppolicy.cc:642
 msgid ""
 "Packages to be removed\n"
 " These packages have been manually selected for removal."
@@ -4211,7 +4215,7 @@ msgstr ""
 "Πακέτα για αφαίρεση\n"
 " Έχετε επιλέξει αυτά τα πακέτα για αφαίρεση από τον υπολογιστή σας."
 
-#: src/pkg_grouppolicy.cc:642
+#: src/pkg_grouppolicy.cc:643
 msgid ""
 "Packages to be upgraded\n"
 " These packages will be upgraded to a newer version."
@@ -4219,7 +4223,7 @@ msgstr ""
 "Πακέτα για αναβάθμιση\n"
 " Αυτά τα πακέτα θα αναβαθμιστούν σε νεώτερη έκδοση."
 
-#: src/pkg_grouppolicy.cc:643
+#: src/pkg_grouppolicy.cc:644
 #, fuzzy
 msgid ""
 "Packages that are partially installed\n"
@@ -4230,44 +4234,44 @@ msgstr ""
 " Αυτά τα πακέτα εγκαθιστώνται επειδή τα απαιτεί κάποιο άλλο πακέτο που "
 "επιλέξατε για εγκατάσταση."
 
-#: src/pkg_grouppolicy.cc:760
+#: src/pkg_grouppolicy.cc:761
 msgid "unknown"
 msgstr "άγνωστο"
 
-#: src/pkg_grouppolicy.cc:771
+#: src/pkg_grouppolicy.cc:772
 #, c-format
 msgid "Priority %s"
 msgstr "Προτεραιότητα %s"
 
-#: src/pkg_grouppolicy.cc:885
+#: src/pkg_grouppolicy.cc:886
 msgid "UNCATEGORIZED"
 msgstr "ΜΗ ΚΑΤΗΓΟΡΙΟΠΟΙΗΜΕΝΑ"
 
-#: src/pkg_grouppolicy.cc:1012
+#: src/pkg_grouppolicy.cc:1013
 msgid "End-user"
 msgstr "Τελικός χρήστης"
 
-#: src/pkg_grouppolicy.cc:1013
+#: src/pkg_grouppolicy.cc:1014
 msgid "Servers"
 msgstr "Εξυπηρετητές"
 
-#: src/pkg_grouppolicy.cc:1014
+#: src/pkg_grouppolicy.cc:1015
 msgid "Development"
 msgstr "Ανάπτυξη"
 
-#: src/pkg_grouppolicy.cc:1015
+#: src/pkg_grouppolicy.cc:1016
 msgid "Localization"
 msgstr "Τοπικοποίηση"
 
-#: src/pkg_grouppolicy.cc:1016
+#: src/pkg_grouppolicy.cc:1017
 msgid "Hardware Support"
 msgstr "Υποστήριξη Υλικού"
 
-#: src/pkg_grouppolicy.cc:1018
+#: src/pkg_grouppolicy.cc:1019
 msgid "Unrecognized tasks"
 msgstr "Μη αναγνωρίσιμες εργασίες"
 
-#: src/pkg_grouppolicy.cc:1070
+#: src/pkg_grouppolicy.cc:1071
 msgid ""
 "\n"
 " Tasks are groups of packages which provide an easy way to select a "
@@ -4277,35 +4281,35 @@ msgstr ""
 " Οι Εργασίες είναι ομάδες από πακέτα τα οποία παρέχουν έναν εύκολο τρόπο να "
 "προεπιλέξετε πακέτα για ένα συγκεκριμένο σκοπό."
 
-#: src/pkg_grouppolicy.cc:1201
+#: src/pkg_grouppolicy.cc:1202
 #, c-format
 msgid "Bad number in format string: %ls"
 msgstr "Λάθος αριθμός στην συμβολοσειρά μορφής: %ls"
 
-#: src/pkg_grouppolicy.cc:1210
+#: src/pkg_grouppolicy.cc:1211
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
 msgstr ""
 "Οι δείκτες ταιριάσματος πρέπει να είναι μεγαλύτεροι ή ίσοι από 1, όχι \"%s\""
 
-#: src/pkg_grouppolicy.cc:1228
+#: src/pkg_grouppolicy.cc:1229
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
 msgstr ""
 "Ο δείκτης ταιριάσματος %ls είναι πολύ μεγάλος, διαθέσιμες ομάδες είναι (%s)"
 
-#: src/pkg_grouppolicy.cc:1501
+#: src/pkg_grouppolicy.cc:1502
 msgid "TAGLESS PACKAGES"
 msgstr "ΠΑΚΕΤΑ ΧΩΡΙΣ ΕΤΙΚΕΤΤΕΣ"
 
-#: src/pkg_grouppolicy.cc:1502
+#: src/pkg_grouppolicy.cc:1503
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags, or the debtags "
 "database is not present (installing debtags may correct this problem)."
 msgstr ""
 
-#: src/pkg_grouppolicy.cc:1536
+#: src/pkg_grouppolicy.cc:1537
 msgid "MISSING TAG"
 msgstr "ΕΤΙΚΕΤΤΑ ΠΟΥ ΛΕΙΠΕΙ"
 
@@ -4417,7 +4421,7 @@ msgstr "Πατήστε enter για συνέχεια.\n"
 msgid "Hierarchy editor"
 msgstr "Επεξεργαστής Ιεραρχίας"
 
-#: src/pkg_item.cc:462
+#: src/pkg_item.cc:462 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "Επεξεργαστής Ιεραρχίας"
 
@@ -4462,21 +4466,40 @@ msgstr "Αδύνατη η μετακωδικοποίηση του ορισμού
 msgid "Couldn't parse column definition"
 msgstr "Αδύνατο το parse του ορισμού στήλης"
 
-#: src/pkg_view.cc:560
+#: src/pkg_view.cc:223
+#, fuzzy
+msgid ""
+"If you select a package, an explanation of why it should be installed or "
+"removed will appear in this space."
+msgstr ""
+"Αν επιλέξετε ένα πακέτο, θα εμφανιστεί η τρέχουσα κατάσταση του σε αυτόν τον "
+"χώρο."
+
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: σφάλμα στα ορίσματα -- two main widgets??"
 
-#: src/pkg_view.cc:566
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: σφάλμα στα ορίσματα -- bad column list for static item"
 
-#: src/pkg_view.cc:674
+#: src/pkg_view.cc:678
+#, fuzzy
+msgid "Related Dependencies"
+msgstr "Επίλυση Εξαρτήσεων"
+
+#: src/pkg_view.cc:681
+#, fuzzy
+msgid "Why Installed"
+msgstr "Εγκατεστημένο"
+
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: κακό όρισμα!"
 
-#: src/pkg_view.cc:726
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: no main widget found"
 

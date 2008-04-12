@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ro\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-30 12:35-0700\n"
+"POT-Creation-Date: 2008-04-07 21:44-0700\n"
 "PO-Revision-Date: 2008-03-13 14:36+0200\n"
 "Last-Translator: Eddy Petrișor <eddy.petrisor@gmail.com>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
@@ -200,13 +200,15 @@ msgstr ""
 "curente la baza ecranului, în loc să folosească o nouă vizualizare."
 
 #: src/apt_options.cc:211
-msgid "Display the extended description area by default"
+#, fuzzy
+msgid "Display the information area by default"
 msgstr "Afișează în mod implicit zona de descriere extinsă"
 
 #: src/apt_options.cc:212
+#, fuzzy
 msgid ""
-"If this option is enabled, the long description area (the pane at the bottom "
-"of the screen) in the package list will be visible when the program starts; "
+"If this option is enabled, the information area (the pane at the bottom of "
+"the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
 "Dacă se activează această opțiune, zona pentru descrierea lungă (vederea de "
@@ -214,10 +216,40 @@ msgstr ""
 "pornit programul; altfel, va fi inițial ascuns."
 
 #: src/apt_options.cc:217
+#, fuzzy
+msgid "Display tabs for the available views"
+msgstr "Formatul de afișare pentru vizualizările pachetelor"
+
+#: src/apt_options.cc:218
+#, fuzzy
+msgid ""
+"If this option is enabled, tabs will appear at the top of the screen listing "
+"the currently opened views."
+msgstr ""
+"Dacă se activează această opțiune, aptitude va afișa starea descărcărilor "
+"curente la baza ecranului, în loc să folosească o nouă vizualizare."
+
+#: src/apt_options.cc:221
+#, fuzzy
+msgid "Display tabs for the information area"
+msgstr "Afișează mai multe informații despre pachetul selectat"
+
+#: src/apt_options.cc:222
+#, fuzzy
+msgid ""
+"If this option is enabled, tabs will appear at the top of the information "
+"area (the pane at the bottom of the screen) listing the different displays "
+"of information that can be viewed there."
+msgstr ""
+"Dacă se activează această opțiune, zona pentru descrierea lungă (vederea de "
+"la baza ecranului) va fi vizibilă în lista de pachete, atunci când este "
+"pornit programul; altfel, va fi inițial ascuns."
+
+#: src/apt_options.cc:227
 msgid "Advance to the next item after changing the state of a package"
 msgstr "Avansează la următorul articol după schimbarea stării pachetului"
 
-#: src/apt_options.cc:218
+#: src/apt_options.cc:228
 msgid ""
 "If this option is enabled, then performing an action on a package (for "
 "instance, installing or removing it) will move the selection to the next "
@@ -227,11 +259,11 @@ msgstr ""
 "pentru un pachet (de exemplu, marcarea lui pentru instalare sau ștergere), "
 "cursorul se va muta la următorul pachet din listă."
 
-#: src/apt_options.cc:223
+#: src/apt_options.cc:233
 msgid "Automatically show why packages are broken"
 msgstr "Arată automat de ce pachetele sunt deteriorate"
 
-#: src/apt_options.cc:224
+#: src/apt_options.cc:234
 msgid ""
 "If this option is enabled, then highlighting a package that has broken "
 "dependencies will automatically display the dependencies that are "
@@ -241,11 +273,11 @@ msgstr ""
 "dependențe deteriorate, se vor afișa automat, în vederea inferioară a "
 "afișajului, dependențele care nu sunt satisfăcute."
 
-#: src/apt_options.cc:230
+#: src/apt_options.cc:240
 msgid "The default grouping method for package views"
 msgstr "Metoda de grupare implicită pentru vizualizarea pachetelor"
 
-#: src/apt_options.cc:231
+#: src/apt_options.cc:241
 msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
@@ -254,11 +286,11 @@ msgstr ""
 "pachete. A se vedea manualul utilizatorului pentru mai multe informații "
 "referitoare la metodele de grupare."
 
-#: src/apt_options.cc:235
+#: src/apt_options.cc:245
 msgid "The default display-limit for package views"
 msgstr "Limita de afișare implicită pentru vizualizările pachetelor"
 
-#: src/apt_options.cc:236
+#: src/apt_options.cc:246
 msgid ""
 "By default, the limit of each package view will be set to the value "
 "specified by this option.  See the aptitude user's manual for detailed "
@@ -268,11 +300,11 @@ msgstr ""
 "impusă de această opțiune. A se vedea manualul utilizatorului de aptitude "
 "pentru mai multe informații despre căutari."
 
-#: src/apt_options.cc:241
+#: src/apt_options.cc:251
 msgid "The display format for package views"
 msgstr "Formatul de afișare pentru vizualizările pachetelor"
 
-#: src/apt_options.cc:242
+#: src/apt_options.cc:252
 msgid ""
 "This option controls how aptitude formats lines of the package list.  See "
 "the aptitude user's manual for information on how to specify a display "
@@ -282,11 +314,11 @@ msgstr ""
 "de pachete. A se vedea manualul utilizatorului de aptitude pentru informații "
 "legate de felul în care se precizează un format de afișare.\t"
 
-#: src/apt_options.cc:248
+#: src/apt_options.cc:258
 msgid "The display format for the status line"
 msgstr "Formatul de afișare pentru linia de stare"
 
-#: src/apt_options.cc:249
+#: src/apt_options.cc:259
 msgid ""
 "This option controls how aptitude formats the status line (the line between "
 "the package list and the lower pane).  See the aptitude user's manual for "
@@ -297,11 +329,11 @@ msgstr ""
 "utilizatorului de aptitude pentru informații legate de felul în care se "
 "precizează un format de afișare."
 
-#: src/apt_options.cc:256
+#: src/apt_options.cc:266
 msgid "The display format for the header line"
 msgstr "Formatul de afișare pentru linia de antet"
 
-#: src/apt_options.cc:257
+#: src/apt_options.cc:267
 msgid ""
 "This option controls how aptitude formats the header line (the line above "
 "the package list).  See the aptitude user's manual for information on how to "
@@ -312,11 +344,11 @@ msgstr ""
 "utilizatorului de aptitude pentru informații legate de felul în care se "
 "precizează un format de afișare."
 
-#: src/apt_options.cc:267
+#: src/apt_options.cc:277
 msgid "Automatically upgrade installed packages"
 msgstr "Înnoiește automat pachetele instalate"
 
-#: src/apt_options.cc:268
+#: src/apt_options.cc:278
 msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
@@ -324,13 +356,13 @@ msgstr ""
 "Dacă se activează această opțiune, atunci, la pornire, aptitude va selecta "
 "pentru înnoire toate pachetele care pot fi înnoite."
 
-#: src/apt_options.cc:272
+#: src/apt_options.cc:282
 msgid "Remove obsolete package files after downloading new package lists"
 msgstr ""
 "Șterge fișierele cu pachetele învechite după descărcarea listelor cu noile "
 "pachete"
 
-#: src/apt_options.cc:273
+#: src/apt_options.cc:283
 msgid ""
 "If this option is enabled, then after every install run, aptitude will "
 "delete from the package cache any package files that can no longer be "
@@ -341,11 +373,11 @@ msgstr ""
 "orice fișiere-pachet care nu mai pot fi descărcate din nici una din arhivele "
 "precizate în sources.list."
 
-#: src/apt_options.cc:278
+#: src/apt_options.cc:288
 msgid "URL to use to download changelogs"
 msgstr "URL de folosit la descărcarea jurnalelor de modificări"
 
-#: src/apt_options.cc:279
+#: src/apt_options.cc:289
 msgid ""
 "This option controls the template that's used to download changelogs from "
 "the Debian Web site.  You should only need to change this if the changelogs "
@@ -355,12 +387,12 @@ msgstr ""
 "jurnalele de modificări de pe saitul Debian. Va trebui să schimbați aceasta "
 "doar dacă jurnalele se mută la o altă adresă."
 
-#: src/apt_options.cc:285
+#: src/apt_options.cc:295
 msgid "Display a preview of what will be done before doing it"
 msgstr ""
 "Afișează o previzualizare a ceea ce va fi făcut inainte de a fi executat"
 
-#: src/apt_options.cc:286
+#: src/apt_options.cc:296
 msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
@@ -369,14 +401,14 @@ msgstr ""
 "facă o instalare, aptitude va afișa mai întâi un sumar al acțiunilor ce "
 "urmează să fie făcute."
 
-#: src/apt_options.cc:292
+#: src/apt_options.cc:302
 msgid ""
 "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr ""
 "Uită care pachete sunt \"noi\" de câte ori listele cu pachete sunt "
 "actualizate"
 
-#: src/apt_options.cc:293
+#: src/apt_options.cc:303
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
@@ -385,14 +417,14 @@ msgstr ""
 "pachete (ex. prin apăsarea tastei „u”), aptitude va șterge lista de pachete "
 "noi."
 
-#: src/apt_options.cc:298
+#: src/apt_options.cc:308
 msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr ""
 "Uită care pachete sunt \"noi\" de câte ori pachetele sunt instalate sau "
 "șterse"
 
-#: src/apt_options.cc:299
+#: src/apt_options.cc:309
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you perform an install run or install or remove packages from the "
@@ -401,13 +433,13 @@ msgstr ""
 "Dacă se activează această opțiune, atunci, după o instalare sau ștergere "
 "dată din linia de comandă, aptitude va șterge lista de pachete noi."
 
-#: src/apt_options.cc:305
+#: src/apt_options.cc:315
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 "Nu afișează avertisment când prima schimbare este făcută în modul doar-citire"
 
-#: src/apt_options.cc:306
+#: src/apt_options.cc:316
 msgid ""
 "If this option is %Bnot%b enabled, aptitude will display a warning when you "
 "modify the state of a package if you do not have permissions to apply the "
@@ -417,13 +449,13 @@ msgstr ""
 "avertisment dacă nu aveți drepturi suficiente pentru a aplica schimbările "
 "asupra sistemului."
 
-#: src/apt_options.cc:312
+#: src/apt_options.cc:322
 msgid "Warn when attempting to perform a privileged action as a non-root user"
 msgstr ""
 "Avertizează când se încearcă folosirea unei acțiuni privilegiate de către un "
 "utilizator non-root"
 
-#: src/apt_options.cc:313
+#: src/apt_options.cc:323
 msgid ""
 "If this option is enabled, aptitude will warn you when you attempt to "
 "perform an action which you do not have permission to do: for instance, "
@@ -436,11 +468,11 @@ msgstr ""
 "se va oferi posibilitatea de a vă autentificați ca „root” și să efectuați "
 "acțiunea cu drepturi de root."
 
-#: src/apt_options.cc:322
+#: src/apt_options.cc:332
 msgid "File to log actions into"
 msgstr "Fișierul în care se vor înregistra acțiunile"
 
-#: src/apt_options.cc:323
+#: src/apt_options.cc:333
 msgid ""
 "When you install or remove packages, a summary of what aptitude does will be "
 "written to this file.  If the first character of the file name is a pipe "
@@ -452,11 +484,11 @@ msgstr ""
 "fișierului este caracterul „pipe” („%B|%b”), atunci restul numelui va fi "
 "interpretat ca fiind o comandă ce va primi jurnalul la intrarea standard."
 
-#: src/apt_options.cc:335
+#: src/apt_options.cc:345
 msgid "Automatically resolve dependencies of a package when it is selected"
 msgstr "Rezolvă automat dependențele unui pachet atunci când este selectat"
 
-#: src/apt_options.cc:336
+#: src/apt_options.cc:346
 msgid ""
 "If this option is enabled, aptitude will use a simple heuristic to "
 "immediately resolve the dependencies of each package you flag for "
@@ -468,11 +500,11 @@ msgstr ""
 "Acastă metodă este mult mai rapidă decât rezolvatorul intern, dar poate "
 "produce rezultate suboptime sau chiar să eșueze total, dependent de situație."
 
-#: src/apt_options.cc:344
+#: src/apt_options.cc:354
 msgid "Automatically fix broken packages before installing or removing"
 msgstr "Repară automat pachetele deteriorate înainte de instalare sau ștergere"
 
-#: src/apt_options.cc:345
+#: src/apt_options.cc:355
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
@@ -484,11 +516,11 @@ msgstr ""
 "în algoritmul de rezolvare a problemelor. Altfel, aptitude va aștepta să "
 "alegeți o soluție pentru dependențele corupte."
 
-#: src/apt_options.cc:352
+#: src/apt_options.cc:362
 msgid "Install recommended packages automatically"
 msgstr "Instalează automat pachetele recomandate"
 
-#: src/apt_options.cc:353
+#: src/apt_options.cc:363
 msgid ""
 "If this option is enabled and \"automatically resolve dependencies\" is also "
 "enabled, aptitude will attempt to install the recommendations of newly "
@@ -506,11 +538,11 @@ msgstr ""
 "nefolosite” este activată, pachetele care sunt recomandate cel puțin de un "
 "pachet instalat nu vor fi șterse automat."
 
-#: src/apt_options.cc:365
+#: src/apt_options.cc:375
 msgid "Remove unused packages automatically"
 msgstr "Șterge automat pachetele nefolosite"
 
-#: src/apt_options.cc:366
+#: src/apt_options.cc:376
 msgid ""
 "If this option is enabled, packages that are automatically installed and "
 "that no manually installed package depends on will be removed from the "
@@ -527,11 +559,11 @@ msgstr ""
 "recomandate” este activată, pachetele instalate automat, care sunt "
 "recomandate cel puțin de un pachet instalat, nu vor fi șterse automat."
 
-#: src/apt_options.cc:377
+#: src/apt_options.cc:387
 msgid "Packages that should never be automatically removed"
 msgstr "Pachete care n-ar trebui niciodată șterse automat"
 
-#: src/apt_options.cc:378
+#: src/apt_options.cc:388
 msgid ""
 "Packages matching this search pattern will always be treated as if an "
 "installed package depends on them: they will never be targeted for removal "
@@ -541,11 +573,11 @@ msgstr ""
 "ca și cum un pachet instalat depinde de ele: nu vor fi niciodată ținta "
 "ștergerilor pe motiv că sunt nefolosite."
 
-#: src/apt_options.cc:383
+#: src/apt_options.cc:393
 msgid "Allow dependency resolutions that break holds or forbids"
 msgstr ""
 
-#: src/apt_options.cc:384
+#: src/apt_options.cc:394
 msgid ""
 "If this option is enabled, then whenever aptitude solves a dependency "
 "problem, it will consider modifying held packages, or installing forbidden "
@@ -558,27 +590,15 @@ msgid ""
 "or upgrade, due to apt bug #470035."
 msgstr ""
 
-#: src/apt_options.cc:398
-msgid "Don't warn about the obsolete \"Recommends-Important\" option."
-msgstr ""
-
-#: src/apt_options.cc:399
-msgid ""
-"If the configuration option %BRecommends-Important%b is set in the system "
-"configuration file, aptitude will warn you about it on start-up.  Enable "
-"this option to skip this warning (for instance, if your apt configuration is "
-"shared with a system that has an older version of aptitude installed)."
-msgstr ""
-
-#: src/apt_options.cc:518
+#: src/apt_options.cc:520
 msgid "UI options"
 msgstr "Opțiuni pentru interfață"
 
-#: src/apt_options.cc:520
+#: src/apt_options.cc:522
 msgid "Dependency handling"
 msgstr "Manevrarea dependențelor"
 
-#: src/apt_options.cc:522 src/pkg_grouppolicy.cc:1017
+#: src/apt_options.cc:524 src/pkg_grouppolicy.cc:1018
 msgid "Miscellaneous"
 msgstr "Diverse"
 
@@ -1523,7 +1543,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:713
-#: src/generic/apt/apt.cc:287
+#: src/generic/apt/apt.cc:275
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Nu s-a putut deschide %s pentru scriere"
@@ -1774,13 +1794,13 @@ msgstr ""
 "           Puteți continua căutarea, însă unele soluții nu vor fi\n"
 "           găsite."
 
-#: src/cmdline/cmdline_resolver.cc:946
+#: src/cmdline/cmdline_resolver.cc:961
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:953
+#: src/cmdline/cmdline_resolver.cc:968
 #, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
@@ -1788,20 +1808,20 @@ msgstr ""
 "Nu se pot rezolva dependențele pentru actualizare (rezolvatorul nu a "
 "terminat la timp)."
 
-#: src/cmdline/cmdline_resolver.cc:967
+#: src/cmdline/cmdline_resolver.cc:982
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr ""
 "Nu se pot rezolva dependențele pentru actualizare (nu a fost găsită nici o "
 "soluție)."
 
-#: src/cmdline/cmdline_resolver.cc:976
+#: src/cmdline/cmdline_resolver.cc:991
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:982
+#: src/cmdline/cmdline_resolver.cc:997
 #, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Nu se pot rezolva dependențele pentru înnoire (%s)."
@@ -2039,7 +2059,7 @@ msgid "Description: "
 msgstr "Descriere: "
 
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:252
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr "Pagina de internet: "
 
@@ -2535,35 +2555,23 @@ msgstr ""
 #. indicated by translating "Localized defaults|" below to
 #. "aptitude-defaults.ww".  If you use this mechanism, you should
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
-#: src/generic/apt/apt.cc:173
+#: src/generic/apt/apt.cc:174
 msgid "Localized defaults|"
 msgstr "aptitude-defaults.ro"
 
-#: src/generic/apt/apt.cc:192
-#, c-format
-msgid ""
-"The system configuration file (%s) contains a setting for the obsolete "
-"option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
-"Recommends' instead or removing this setting."
-msgstr ""
-"Fișierul de configurare al sistemului (%s) contine o configurare penru "
-"opțiunea învechită 'Aptitude::Recommends-Important'; luați, mai degrabă, în "
-"calcul configurarea opțiunii 'APT::Install-Recommends' în loc să ștergeți "
-"această configurare."
-
-#: src/generic/apt/apt.cc:259
+#: src/generic/apt/apt.cc:247
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr ""
 "%s se poate citi, nu se poate scrie; nu se poate scrie fișierul de "
 "configurare."
 
-#: src/generic/apt/apt.cc:297
+#: src/generic/apt/apt.cc:285
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Nu se poate înlocui %s cu noul fișier de configurare"
 
-#: src/generic/apt/apt.cc:396
+#: src/generic/apt/apt.cc:384
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
@@ -3916,7 +3924,7 @@ msgstr "DimDeb"
 msgid "Action"
 msgstr "Acțiune"
 
-#: src/pkg_columnizer.cc:93
+#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
 msgid "Description"
 msgstr "Descriere"
 
@@ -4060,7 +4068,7 @@ msgid "none"
 msgstr "niciunul"
 
 #: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
-#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:267
+#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:268
 #: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
 #: src/pkg_ver_item.cc:348 src/pkg_ver_item.cc:382
 msgid "Unknown"
@@ -4129,15 +4137,15 @@ msgstr "Nu se poate transcoda formatul afișării pachetului după „%ls”"
 msgid "Internal error: Default column string is unparsable"
 msgstr "Eroare internă: Șirul implicit de coloană este neanalizabil"
 
-#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1069
+#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1070
 msgid "Tasks"
 msgstr "Sarcini"
 
-#: src/pkg_grouppolicy.cc:282
+#: src/pkg_grouppolicy.cc:283
 msgid "main"
 msgstr "principal"
 
-#: src/pkg_grouppolicy.cc:424
+#: src/pkg_grouppolicy.cc:425
 msgid ""
 "Security Updates\n"
 " Security updates for these packages are available from security.debian.org."
@@ -4146,7 +4154,7 @@ msgstr ""
 " Actualizările de securitate pentru aceste pachete sunt disponibile din "
 "security.debian.org"
 
-#: src/pkg_grouppolicy.cc:425
+#: src/pkg_grouppolicy.cc:426
 msgid ""
 "Upgradable Packages\n"
 " A newer version of these packages is available."
@@ -4154,7 +4162,7 @@ msgstr ""
 "Pachete ce pot fi înnoite\n"
 " O versiune mai nouă a acestor programe este disponibilă."
 
-#: src/pkg_grouppolicy.cc:426
+#: src/pkg_grouppolicy.cc:427
 msgid ""
 "New Packages\n"
 " These packages have been added to Debian since the last time you cleared "
@@ -4166,7 +4174,7 @@ msgstr ""
 "lista cu pachete \"noi\" (alegeți \"Uită de pachetele noi\" din meniul "
 "Acțiuni pentru a goli această listă)."
 
-#: src/pkg_grouppolicy.cc:427
+#: src/pkg_grouppolicy.cc:428
 msgid ""
 "Installed Packages\n"
 " These packages are currently installed on your computer."
@@ -4174,7 +4182,7 @@ msgstr ""
 "Pachete instalate\n"
 " Aceste pachete sunt instalate în momentul de față în calculator."
 
-#: src/pkg_grouppolicy.cc:428
+#: src/pkg_grouppolicy.cc:429
 msgid ""
 "Not Installed Packages\n"
 " These packages are not installed on your computer."
@@ -4182,7 +4190,7 @@ msgstr ""
 "Pachete neinstalate\n"
 " Aceste pachete nu sunt instalate în calculator."
 
-#: src/pkg_grouppolicy.cc:429
+#: src/pkg_grouppolicy.cc:430
 msgid ""
 "Obsolete and Locally Created Packages\n"
 " These packages are currently installed on your computer, but they are not "
@@ -4194,7 +4202,7 @@ msgstr ""
 "apt.  Ar putea fi învechite și scoase din arhivă, sau poate ați construit o "
 "versiune particulară pentru dvs."
 
-#: src/pkg_grouppolicy.cc:430
+#: src/pkg_grouppolicy.cc:431
 msgid ""
 "Virtual Packages\n"
 " These packages do not exist; they are names other packages use to require "
@@ -4204,7 +4212,7 @@ msgstr ""
 " Aceste pachete nu există, sunt doar nume pe care alte pachete obișnuiesc să "
 "le ceară sau furnizează anumite funcționalități."
 
-#: src/pkg_grouppolicy.cc:583
+#: src/pkg_grouppolicy.cc:584
 msgid ""
 "Packages which are recommended by other packages\n"
 " These packages are not strictly required, but they may be necessary to "
@@ -4215,7 +4223,7 @@ msgstr ""
 " Aceste pachete nu sunt strict necesare, dar ar putea fi necesare pentru "
 "completa funcționare a altor programe pe care le instalați sau înnoiți."
 
-#: src/pkg_grouppolicy.cc:604
+#: src/pkg_grouppolicy.cc:605
 msgid ""
 "Packages which are suggested by other packages\n"
 " These packages are not required in order to make your system function "
@@ -4227,7 +4235,7 @@ msgstr ""
 "sistemului, dar ar putea furniza funcționalități extinse pentru alte "
 "programe pe care le instalați în momentul de față."
 
-#: src/pkg_grouppolicy.cc:632
+#: src/pkg_grouppolicy.cc:633
 msgid ""
 "Packages with unsatisfied dependencies\n"
 " The dependency requirements of these packages will be unmet after the "
@@ -4243,7 +4251,7 @@ msgstr ""
 " Prezența acestei arborescențe indică faptul că ceva este deteriorat, fie în "
 "sistemul dvs., fie în arhiva Debian."
 
-#: src/pkg_grouppolicy.cc:633
+#: src/pkg_grouppolicy.cc:634
 msgid ""
 "Packages being removed because they are no longer used\n"
 " These packages are being deleted because they were automatically installed "
@@ -4255,7 +4263,7 @@ msgstr ""
 "îndeplinirea dependențelor, și acțiunea planificată va rezulta în "
 "neinstalarea pachetului declarând o 'importantă' dependență față de ele.\n"
 
-#: src/pkg_grouppolicy.cc:634
+#: src/pkg_grouppolicy.cc:635
 msgid ""
 "Packages being automatically held in their current state\n"
 " These packages could be upgraded, but they have been kept in their current "
@@ -4265,7 +4273,7 @@ msgstr ""
 " Aceste pachete ar putea fi înnoite, dar sunt ținute în starea curentă "
 "pentru a evita deteriorarea dependențelor."
 
-#: src/pkg_grouppolicy.cc:635
+#: src/pkg_grouppolicy.cc:636
 msgid ""
 "Packages being automatically installed to satisfy dependencies\n"
 " These packages are being installed because they are required by another "
@@ -4275,7 +4283,7 @@ msgstr ""
 " Aceste pachete sunt instalate deoarece sunt cerute de alte pachete pe care "
 "le-ați ales pentru instalare."
 
-#: src/pkg_grouppolicy.cc:636
+#: src/pkg_grouppolicy.cc:637
 msgid ""
 "Packages being deleted due to unsatisfied dependencies\n"
 " These packages are being deleted because one or more of their dependencies "
@@ -4286,7 +4294,7 @@ msgstr ""
 "nu mai sunt disponibile, sau pentru că alt pachet este în conflict cu "
 "acestea."
 
-#: src/pkg_grouppolicy.cc:637
+#: src/pkg_grouppolicy.cc:638
 msgid ""
 "Packages to be downgraded\n"
 " An older version of these packages than is currently installed will be "
@@ -4296,7 +4304,7 @@ msgstr ""
 " Se va instala o versiune mai veche a acestor pachete decât cea care este în "
 "momentul de față instalată."
 
-#: src/pkg_grouppolicy.cc:638
+#: src/pkg_grouppolicy.cc:639
 msgid ""
 "Packages being held back\n"
 " These packages could be upgraded, but you have asked for them to be held at "
@@ -4306,7 +4314,7 @@ msgstr ""
 " Aceste pachete ar putea fi înnoite, dat ați cerut să fie ținute în "
 "versiunea lor actuală."
 
-#: src/pkg_grouppolicy.cc:639
+#: src/pkg_grouppolicy.cc:640
 msgid ""
 "Packages to be reinstalled\n"
 " These packages will be reinstalled."
@@ -4314,7 +4322,7 @@ msgstr ""
 "Pachete de reinstalat\n"
 " Aceste pachete vor fi reinstalate."
 
-#: src/pkg_grouppolicy.cc:640
+#: src/pkg_grouppolicy.cc:641
 msgid ""
 "Packages to be installed\n"
 " These packages have been manually selected for installation on your "
@@ -4323,7 +4331,7 @@ msgstr ""
 "Pachete de instalat\n"
 " Aceste pachete au fost selectate manual pentru instalare."
 
-#: src/pkg_grouppolicy.cc:641
+#: src/pkg_grouppolicy.cc:642
 msgid ""
 "Packages to be removed\n"
 " These packages have been manually selected for removal."
@@ -4331,7 +4339,7 @@ msgstr ""
 "Pachete de șters\n"
 " Aceste pachete au fost selectate manual pentru ștergere."
 
-#: src/pkg_grouppolicy.cc:642
+#: src/pkg_grouppolicy.cc:643
 msgid ""
 "Packages to be upgraded\n"
 " These packages will be upgraded to a newer version."
@@ -4339,7 +4347,7 @@ msgstr ""
 "Pachete de înnoit\n"
 " Aceste pachete vor fi înnoite la o versiune mai nouă."
 
-#: src/pkg_grouppolicy.cc:643
+#: src/pkg_grouppolicy.cc:644
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
@@ -4349,44 +4357,44 @@ msgstr ""
 " Aceste pachete nu sunt complet instalate și configurate; se va încerca "
 "terminarea instalării lor."
 
-#: src/pkg_grouppolicy.cc:760
+#: src/pkg_grouppolicy.cc:761
 msgid "unknown"
 msgstr "necunoscut"
 
-#: src/pkg_grouppolicy.cc:771
+#: src/pkg_grouppolicy.cc:772
 #, c-format
 msgid "Priority %s"
 msgstr "Prioritate %s"
 
-#: src/pkg_grouppolicy.cc:885
+#: src/pkg_grouppolicy.cc:886
 msgid "UNCATEGORIZED"
 msgstr "NECATEGORIZAT"
 
-#: src/pkg_grouppolicy.cc:1012
+#: src/pkg_grouppolicy.cc:1013
 msgid "End-user"
 msgstr "Utilizator"
 
-#: src/pkg_grouppolicy.cc:1013
+#: src/pkg_grouppolicy.cc:1014
 msgid "Servers"
 msgstr "Servere"
 
-#: src/pkg_grouppolicy.cc:1014
+#: src/pkg_grouppolicy.cc:1015
 msgid "Development"
 msgstr "Dezvoltare"
 
-#: src/pkg_grouppolicy.cc:1015
+#: src/pkg_grouppolicy.cc:1016
 msgid "Localization"
 msgstr "Localizare"
 
-#: src/pkg_grouppolicy.cc:1016
+#: src/pkg_grouppolicy.cc:1017
 msgid "Hardware Support"
 msgstr "Suport dispozitive fizice"
 
-#: src/pkg_grouppolicy.cc:1018
+#: src/pkg_grouppolicy.cc:1019
 msgid "Unrecognized tasks"
 msgstr "Sarcini nerecunoscute"
 
-#: src/pkg_grouppolicy.cc:1070
+#: src/pkg_grouppolicy.cc:1071
 msgid ""
 "\n"
 " Tasks are groups of packages which provide an easy way to select a "
@@ -4396,27 +4404,27 @@ msgstr ""
 " Sarcinile sunt grupuri de pachete care furnizează o cale simplă de selecție "
 "a seturilor predefinite de pachete pentru un scop special."
 
-#: src/pkg_grouppolicy.cc:1201
+#: src/pkg_grouppolicy.cc:1202
 #, c-format
 msgid "Bad number in format string: %ls"
 msgstr "Număr invalid în șirul formatului: %ls"
 
-#: src/pkg_grouppolicy.cc:1210
+#: src/pkg_grouppolicy.cc:1211
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
 msgstr "Indicii de potrivire trebuie să fie 1 sau mai mare, nu \"%s\""
 
-#: src/pkg_grouppolicy.cc:1228
+#: src/pkg_grouppolicy.cc:1229
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
 msgstr ""
 "Indexul de potrivire %ls este prea mare; grupurile disponibile sunt (%s)"
 
-#: src/pkg_grouppolicy.cc:1501
+#: src/pkg_grouppolicy.cc:1502
 msgid "TAGLESS PACKAGES"
 msgstr "PACHETE FĂRĂ ETICHETE"
 
-#: src/pkg_grouppolicy.cc:1502
+#: src/pkg_grouppolicy.cc:1503
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags, or the debtags "
@@ -4427,7 +4435,7 @@ msgstr ""
 "debtags nu este prezentă (instalarea lui debtags ar putea corecta această "
 "problemă)."
 
-#: src/pkg_grouppolicy.cc:1536
+#: src/pkg_grouppolicy.cc:1537
 msgid "MISSING TAG"
 msgstr "ETICHETĂ LIPSĂ"
 
@@ -4539,7 +4547,7 @@ msgstr "Apasați Enter pentru a continua\n"
 msgid "Hierarchy editor"
 msgstr "Editor de ierarhie"
 
-#: src/pkg_item.cc:462
+#: src/pkg_item.cc:462 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "Editor de ierarhie"
 
@@ -4584,22 +4592,41 @@ msgstr "Nu s-a putut efectua cw::util::transcode pe definiția coloanei"
 msgid "Couldn't parse column definition"
 msgstr "Nu s-a putut analiza definiția coloanei"
 
-#: src/pkg_view.cc:560
+#: src/pkg_view.cc:223
+#, fuzzy
+msgid ""
+"If you select a package, an explanation of why it should be installed or "
+"removed will appear in this space."
+msgstr ""
+"Dacă alegeți un pachet, o explicație a stării curente va apărea în acest "
+"spațiu."
+
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: eroare în argumente -- două widget-uri principale??"
 
-#: src/pkg_view.cc:566
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: eroare în argumente -- coloană nevalidă de listă pentru "
 "articol static"
 
-#: src/pkg_view.cc:674
+#: src/pkg_view.cc:678
+#, fuzzy
+msgid "Related Dependencies"
+msgstr "Rezolvare Dependențe"
+
+#: src/pkg_view.cc:681
+#, fuzzy
+msgid "Why Installed"
+msgstr "Instalat"
+
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: argument nevalid!"
 
-#: src/pkg_view.cc:726
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: nu s-a găsit nici un widget principal"
 
@@ -5991,6 +6018,16 @@ msgstr "Descărcare registru de schimbări"
 #: src/view_changelog.cc:242
 msgid "Download Changelog"
 msgstr "Descărcare registru de modificări"
+
+#~ msgid ""
+#~ "The system configuration file (%s) contains a setting for the obsolete "
+#~ "option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
+#~ "Recommends' instead or removing this setting."
+#~ msgstr ""
+#~ "Fișierul de configurare al sistemului (%s) contine o configurare penru "
+#~ "opțiunea învechită 'Aptitude::Recommends-Important'; luați, mai degrabă, "
+#~ "în calcul configurarea opțiunii 'APT::Install-Recommends' în loc să "
+#~ "ștergeți această configurare."
 
 #~ msgid "No justification for removing %s could be constructed.\n"
 #~ msgstr "Nu s-a putut construi nici o justificare pentru ștergerea lui %s.\n"

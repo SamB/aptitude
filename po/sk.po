@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-03-30 12:35-0700\n"
+"POT-Creation-Date: 2008-04-07 21:44-0700\n"
 "PO-Revision-Date: 2008-03-17 15:59+0100\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -195,13 +195,15 @@ msgstr ""
 "sťahovaní na spodku obrazovky namiesto toho, aby otváral nový pohľad."
 
 #: src/apt_options.cc:211
-msgid "Display the extended description area by default"
+#, fuzzy
+msgid "Display the information area by default"
 msgstr "Štandardne zobrazovať rozšírenú oblasť na popis"
 
 #: src/apt_options.cc:212
+#, fuzzy
 msgid ""
-"If this option is enabled, the long description area (the pane at the bottom "
-"of the screen) in the package list will be visible when the program starts; "
+"If this option is enabled, the information area (the pane at the bottom of "
+"the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
 "Ak je táto voľba zapnutá, oblasť pre dlhý popis (na spodku obrazovky) v "
@@ -209,10 +211,40 @@ msgstr ""
 "skrytá."
 
 #: src/apt_options.cc:217
+#, fuzzy
+msgid "Display tabs for the available views"
+msgstr "Formát zobrazenia balíkov"
+
+#: src/apt_options.cc:218
+#, fuzzy
+msgid ""
+"If this option is enabled, tabs will appear at the top of the screen listing "
+"the currently opened views."
+msgstr ""
+"Ak je táto voľba zapnutá, aptitude bude zobrazovať stav prebiehajúcich "
+"sťahovaní na spodku obrazovky namiesto toho, aby otváral nový pohľad."
+
+#: src/apt_options.cc:221
+#, fuzzy
+msgid "Display tabs for the information area"
+msgstr "Zobrazí ďalšie informácie o zvolenom balíku"
+
+#: src/apt_options.cc:222
+#, fuzzy
+msgid ""
+"If this option is enabled, tabs will appear at the top of the information "
+"area (the pane at the bottom of the screen) listing the different displays "
+"of information that can be viewed there."
+msgstr ""
+"Ak je táto voľba zapnutá, oblasť pre dlhý popis (na spodku obrazovky) v "
+"zozname balíkov bude viditeľná pri štarte programu; inak bude na začiatku "
+"skrytá."
+
+#: src/apt_options.cc:227
 msgid "Advance to the next item after changing the state of a package"
 msgstr "Pri zmene stavu balíka automaticky prejsť na ďalšiu položku"
 
-#: src/apt_options.cc:218
+#: src/apt_options.cc:228
 msgid ""
 "If this option is enabled, then performing an action on a package (for "
 "instance, installing or removing it) will move the selection to the next "
@@ -221,11 +253,11 @@ msgstr ""
 "Ak je táto voľba zapnutá, po vykonaní akcie s balíkom (napr. inštalácia "
 "alebo odstránenie) sa presunie výber na nasledujúci balík v zozname."
 
-#: src/apt_options.cc:223
+#: src/apt_options.cc:233
 msgid "Automatically show why packages are broken"
 msgstr "Automaticky zobrazí, prečo sú balíky poškodené"
 
-#: src/apt_options.cc:224
+#: src/apt_options.cc:234
 msgid ""
 "If this option is enabled, then highlighting a package that has broken "
 "dependencies will automatically display the dependencies that are "
@@ -234,11 +266,11 @@ msgstr ""
 "Ak je táto voľba zapnutá, vysvietenie balíka s požkodenými závislosťami "
 "automaticky zobrazí nesplnené závislosti v spodnom okne obrazovky."
 
-#: src/apt_options.cc:230
+#: src/apt_options.cc:240
 msgid "The default grouping method for package views"
 msgstr "Štandardná metóda zoskupovania balíkov"
 
-#: src/apt_options.cc:231
+#: src/apt_options.cc:241
 msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
@@ -246,11 +278,11 @@ msgstr ""
 "Táto voľba určuje ako aptitude organizuje zoznam balíkov. Informácie o "
 "určení metódy zoskupovania nájdete v používateľskej príručke aptitude."
 
-#: src/apt_options.cc:235
+#: src/apt_options.cc:245
 msgid "The default display-limit for package views"
 msgstr "Štandardné obmedzenie na zobrazenie balíkov"
 
-#: src/apt_options.cc:236
+#: src/apt_options.cc:246
 msgid ""
 "By default, the limit of each package view will be set to the value "
 "specified by this option.  See the aptitude user's manual for detailed "
@@ -259,11 +291,11 @@ msgstr ""
 "Štandardne sa na túto hodnotu nastaví limit zobrazenia každého balíka. "
 "Podrobnosti o hľadaní nájdete v používateľskej príručke aptitude."
 
-#: src/apt_options.cc:241
+#: src/apt_options.cc:251
 msgid "The display format for package views"
 msgstr "Formát zobrazenia balíkov"
 
-#: src/apt_options.cc:242
+#: src/apt_options.cc:252
 msgid ""
 "This option controls how aptitude formats lines of the package list.  See "
 "the aptitude user's manual for information on how to specify a display "
@@ -272,11 +304,11 @@ msgstr ""
 "Táto voľba určuje ako aptitude formátuje riadky zoznamu balíkov. Informácie "
 "o určení formátu zobrazovania nájdete v používateľskej príručke aptitude."
 
-#: src/apt_options.cc:248
+#: src/apt_options.cc:258
 msgid "The display format for the status line"
 msgstr "Formát zobrazenia stavového riadku"
 
-#: src/apt_options.cc:249
+#: src/apt_options.cc:259
 msgid ""
 "This option controls how aptitude formats the status line (the line between "
 "the package list and the lower pane).  See the aptitude user's manual for "
@@ -286,11 +318,11 @@ msgstr ""
 "zoznamom balíkov a spodným oknom). Informácie o určení formátu zobrazovania "
 "nájdete v používateľskej príručke aptitude."
 
-#: src/apt_options.cc:256
+#: src/apt_options.cc:266
 msgid "The display format for the header line"
 msgstr "Formát zobrazenia hlavičky"
 
-#: src/apt_options.cc:257
+#: src/apt_options.cc:267
 msgid ""
 "This option controls how aptitude formats the header line (the line above "
 "the package list).  See the aptitude user's manual for information on how to "
@@ -300,11 +332,11 @@ msgstr ""
 "zoznamom balíkov). Informácie o určení formátu zobrazovania nájdete v "
 "používateľskej príručke aptitude."
 
-#: src/apt_options.cc:267
+#: src/apt_options.cc:277
 msgid "Automatically upgrade installed packages"
 msgstr "Automaticky aktualizovať inštalované balíky"
 
-#: src/apt_options.cc:268
+#: src/apt_options.cc:278
 msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
@@ -312,11 +344,11 @@ msgstr ""
 "Ak je táto voľba zapnutá, aptitude pri spustení vyberie všetky "
 "aktualizovateľné balíky na aktualizáciu."
 
-#: src/apt_options.cc:272
+#: src/apt_options.cc:282
 msgid "Remove obsolete package files after downloading new package lists"
 msgstr "Po stiahnutí nových zoznamov balíkov odstrániť staré súbory balíkov"
 
-#: src/apt_options.cc:273
+#: src/apt_options.cc:283
 msgid ""
 "If this option is enabled, then after every install run, aptitude will "
 "delete from the package cache any package files that can no longer be "
@@ -326,11 +358,11 @@ msgstr ""
 "cache balíkov súbory, ktoré nie je možné stiahnuť zo zdrojov uvedených v "
 "sources.list."
 
-#: src/apt_options.cc:278
+#: src/apt_options.cc:288
 msgid "URL to use to download changelogs"
 msgstr "URL na sťahovanie záznamov o zmenách"
 
-#: src/apt_options.cc:279
+#: src/apt_options.cc:289
 msgid ""
 "This option controls the template that's used to download changelogs from "
 "the Debian Web site.  You should only need to change this if the changelogs "
@@ -340,11 +372,11 @@ msgstr ""
 "(changelog) z webstránky Debian. Túto voľbu by bolo nutné zmeniť iba ak by "
 "sa zoznamy zmien presunuli na iný URL."
 
-#: src/apt_options.cc:285
+#: src/apt_options.cc:295
 msgid "Display a preview of what will be done before doing it"
 msgstr "Pred vlastnou akciou zobraziť, čo sa bude vykonávať"
 
-#: src/apt_options.cc:286
+#: src/apt_options.cc:296
 msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
@@ -352,13 +384,13 @@ msgstr ""
 "Ak je táto voľba zapnutá, pri spustení inštalácie vám aptitude zobrazí "
 "zhrnutie akcií, ktoré sa chystí vykonať."
 
-#: src/apt_options.cc:292
+#: src/apt_options.cc:302
 msgid ""
 "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr ""
 "Zabudnúť zoznam „nových“ balíkov pri každej aktualizácii zoznamu balíkov"
 
-#: src/apt_options.cc:293
+#: src/apt_options.cc:303
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
@@ -366,12 +398,12 @@ msgstr ""
 "Ak je táto voľba zapnutá, aptitude vyčistí zoznam nových balíkov potom, čo "
 "aktualizujete zoznamy balíkov (napr. stlačením „u“)."
 
-#: src/apt_options.cc:298
+#: src/apt_options.cc:308
 msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr "Zabudnúť zoznam „nových“ balíkov pri každom (od)inštalovaní balíkov"
 
-#: src/apt_options.cc:299
+#: src/apt_options.cc:309
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you perform an install run or install or remove packages from the "
@@ -380,13 +412,13 @@ msgstr ""
 "Ak je táto voľba zapnutá, aptitude vyčistí zoznam nových balíkov potom, čo "
 "spustíte inštaláciu alebo odstránenie balíkov z príkazového riadka."
 
-#: src/apt_options.cc:305
+#: src/apt_options.cc:315
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 "Nezobrazovať upozornenie, ak je prvá zmena vykonaná v režime iba na čítanie"
 
-#: src/apt_options.cc:306
+#: src/apt_options.cc:316
 msgid ""
 "If this option is %Bnot%b enabled, aptitude will display a warning when you "
 "modify the state of a package if you do not have permissions to apply the "
@@ -395,12 +427,12 @@ msgstr ""
 "Ak táto voľba %Bnie je%b zapnutá, aptitude zobrazí upozornenie, keď zmeníte "
 "stav balíka a nemáte oprávnenie vykonať zmeny v systéme."
 
-#: src/apt_options.cc:312
+#: src/apt_options.cc:322
 msgid "Warn when attempting to perform a privileged action as a non-root user"
 msgstr ""
 "Varovať pri pokuse o spustenie privilegovanej akcie ako obyčajný používateľ"
 
-#: src/apt_options.cc:313
+#: src/apt_options.cc:323
 msgid ""
 "If this option is enabled, aptitude will warn you when you attempt to "
 "perform an action which you do not have permission to do: for instance, "
@@ -412,11 +444,11 @@ msgstr ""
 "prihlásený ako root. Budete mať možnosť prihlásiť sa ako root a vykonať "
 "akciu s oprávnením root."
 
-#: src/apt_options.cc:322
+#: src/apt_options.cc:332
 msgid "File to log actions into"
 msgstr "Súbor na zaznamenávanie akcií"
 
-#: src/apt_options.cc:323
+#: src/apt_options.cc:333
 msgid ""
 "When you install or remove packages, a summary of what aptitude does will be "
 "written to this file.  If the first character of the file name is a pipe "
@@ -428,11 +460,11 @@ msgstr ""
 "b“), zvyšok názvu sa interpretuje ako príkaz shellu, ktorý má prijať záznam "
 "na štandardnom vstupe."
 
-#: src/apt_options.cc:335
+#: src/apt_options.cc:345
 msgid "Automatically resolve dependencies of a package when it is selected"
 msgstr "Pri zvolení balíka automaticky vyriešiť jeho závislosti"
 
-#: src/apt_options.cc:336
+#: src/apt_options.cc:346
 msgid ""
 "If this option is enabled, aptitude will use a simple heuristic to "
 "immediately resolve the dependencies of each package you flag for "
@@ -444,12 +476,12 @@ msgstr ""
 "rýchlejšie ako zabudované riešenie závislostí, no môže poskytovať "
 "suboptimálne riešenia alebo v niektorých prípadoch úplne zlyhať."
 
-#: src/apt_options.cc:344
+#: src/apt_options.cc:354
 msgid "Automatically fix broken packages before installing or removing"
 msgstr ""
 "Pred inštaláciou alebo odstránením automaticky opraviť poškodené balíky"
 
-#: src/apt_options.cc:345
+#: src/apt_options.cc:355
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
@@ -460,11 +492,11 @@ msgstr ""
 "pokazené, aptitude automaticky použije aktuálny návrh riešenia problému. "
 "Inak vám dá aptitude možnosť vybrať riešenie problému pokazených závislostí."
 
-#: src/apt_options.cc:352
+#: src/apt_options.cc:362
 msgid "Install recommended packages automatically"
 msgstr "Automaticky inštalovať odporúčané balíky"
 
-#: src/apt_options.cc:353
+#: src/apt_options.cc:363
 msgid ""
 "If this option is enabled and \"automatically resolve dependencies\" is also "
 "enabled, aptitude will attempt to install the recommendations of newly "
@@ -482,11 +514,11 @@ msgstr ""
 "tiež zapnuté, balíky, ktoré odporúča inštalovaný balík nebudú automaticky "
 "odstránené."
 
-#: src/apt_options.cc:365
+#: src/apt_options.cc:375
 msgid "Remove unused packages automatically"
 msgstr "Automaticky odstrániť nepoužívané balíky"
 
-#: src/apt_options.cc:366
+#: src/apt_options.cc:376
 msgid ""
 "If this option is enabled, packages that are automatically installed and "
 "that no manually installed package depends on will be removed from the "
@@ -503,11 +535,11 @@ msgstr ""
 "tiež zapnuté, automaticky nainštalované balíky sa neodstránia ak ich "
 "odporúča akýkoľvek inštalovaný balík."
 
-#: src/apt_options.cc:377
+#: src/apt_options.cc:387
 msgid "Packages that should never be automatically removed"
 msgstr "Balíky, ktoré sa nikdy nemajú automaticky odstrániť"
 
-#: src/apt_options.cc:378
+#: src/apt_options.cc:388
 msgid ""
 "Packages matching this search pattern will always be treated as if an "
 "installed package depends on them: they will never be targeted for removal "
@@ -517,11 +549,11 @@ msgstr ""
 "keby na nich závisel inštalovaný balík: nikdy nebudú cieľom odstránenia ako "
 "nepoužívané."
 
-#: src/apt_options.cc:383
+#: src/apt_options.cc:393
 msgid "Allow dependency resolutions that break holds or forbids"
 msgstr "Umožniť riešenie závislostí, ktoré pokazí podržané alebo zakázané"
 
-#: src/apt_options.cc:384
+#: src/apt_options.cc:394
 msgid ""
 "If this option is enabled, then whenever aptitude solves a dependency "
 "problem, it will consider modifying held packages, or installing forbidden "
@@ -542,31 +574,15 @@ msgstr ""
 "balíka, ktorý bol práve vybraný na inštaláciu alebo aktualizáciu, kvôli "
 "chybe apt #470035."
 
-#: src/apt_options.cc:398
-msgid "Don't warn about the obsolete \"Recommends-Important\" option."
-msgstr "Neupozornňovať na zastaralú voľbu „Recommends-Important“"
-
-#: src/apt_options.cc:399
-msgid ""
-"If the configuration option %BRecommends-Important%b is set in the system "
-"configuration file, aptitude will warn you about it on start-up.  Enable "
-"this option to skip this warning (for instance, if your apt configuration is "
-"shared with a system that has an older version of aptitude installed)."
-msgstr ""
-"Ak je v systémovom konfiguračnom súbore nastavená voľba %BRecommends-"
-"Important%b, aptitude vás pri spustení upozorní.  Zapnutím tejto voľby "
-"preskočíte toto upozornenie (napr. ak zdieľate konfiguráciu apt so systémom, "
-"ktorý má nainštalovanú staršiu verziu aptitude)."
-
-#: src/apt_options.cc:518
+#: src/apt_options.cc:520
 msgid "UI options"
 msgstr "Nastavenie rozhrania"
 
-#: src/apt_options.cc:520
+#: src/apt_options.cc:522
 msgid "Dependency handling"
 msgstr "Správa závislostí"
 
-#: src/apt_options.cc:522 src/pkg_grouppolicy.cc:1017
+#: src/apt_options.cc:524 src/pkg_grouppolicy.cc:1018
 msgid "Miscellaneous"
 msgstr "Rôzne"
 
@@ -1497,7 +1513,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:713
-#: src/generic/apt/apt.cc:287
+#: src/generic/apt/apt.cc:275
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "%s sa nedá otvoriť na zápis"
@@ -1737,7 +1753,7 @@ msgstr ""
 "*** CHYBA: hľadanie ukončila závažná vynimka.  Môžete pokračovať\n"
 "           v hľadaní, ale niektoré riešenia budú nedostupné."
 
-#: src/cmdline/cmdline_resolver.cc:946
+#: src/cmdline/cmdline_resolver.cc:961
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
@@ -1745,18 +1761,18 @@ msgstr ""
 "Čas na riešenie vypršal potom, čo riešenie závislostí došlo k riešeniu; "
 "niektoré možné aktualizácie sa nemusia vykonať."
 
-#: src/cmdline/cmdline_resolver.cc:953
+#: src/cmdline/cmdline_resolver.cc:968
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
 "Nie je možné vyriešiť závislosti aktualizácie (čas vyhradený pre riešenie "
 "závislostí vypršal)."
 
-#: src/cmdline/cmdline_resolver.cc:967
+#: src/cmdline/cmdline_resolver.cc:982
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr "Nedajú sa vyriešiť závislosti aktualizácie (nebolo nájdené riešenie)."
 
-#: src/cmdline/cmdline_resolver.cc:976
+#: src/cmdline/cmdline_resolver.cc:991
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
@@ -1765,7 +1781,7 @@ msgstr ""
 "Riešenie závislostí nebolo dokončené (%s); niektoré možné aktualizácie sa "
 "nemusia vykonať."
 
-#: src/cmdline/cmdline_resolver.cc:982
+#: src/cmdline/cmdline_resolver.cc:997
 #, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Nedajú sa vyriešiť závislosti aktualizácie (%s)."
@@ -2003,7 +2019,7 @@ msgid "Description: "
 msgstr "Popis: "
 
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:252
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr "Domovská stránka:"
 
@@ -2495,33 +2511,22 @@ msgstr "Na opravenie chýbajúcich súborov skúste aktualizovať zoznamy balík
 #. indicated by translating "Localized defaults|" below to
 #. "aptitude-defaults.ww".  If you use this mechanism, you should
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
-#: src/generic/apt/apt.cc:173
+#: src/generic/apt/apt.cc:174
 msgid "Localized defaults|"
 msgstr ""
 
-#: src/generic/apt/apt.cc:192
-#, c-format
-msgid ""
-"The system configuration file (%s) contains a setting for the obsolete "
-"option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
-"Recommends' instead or removing this setting."
-msgstr ""
-"Systémový konfiguračný súbor (%s) obsahuje nastavenie zastaralej voľby "
-"„Aptitude::Recommends-Important“; zvážte namiesto toho nastavenie „APT::"
-"Install-Recommends“ alebo odstránenie tejto voľby."
-
-#: src/generic/apt/apt.cc:259
+#: src/generic/apt/apt.cc:247
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr ""
 "%s je čitateľný ale nie zapisovateľný; nedá sa zapísať konfiguračný súbor."
 
-#: src/generic/apt/apt.cc:297
+#: src/generic/apt/apt.cc:285
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "%s sa nedá nahradiť novým konfiguračným súborom"
 
-#: src/generic/apt/apt.cc:396
+#: src/generic/apt/apt.cc:384
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
@@ -3843,7 +3848,7 @@ msgstr "VelBal"
 msgid "Action"
 msgstr "Akcia"
 
-#: src/pkg_columnizer.cc:93
+#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
 msgid "Description"
 msgstr "Popis"
 
@@ -3987,7 +3992,7 @@ msgid "none"
 msgstr "nič"
 
 #: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
-#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:267
+#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:268
 #: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
 #: src/pkg_ver_item.cc:348 src/pkg_ver_item.cc:382
 msgid "Unknown"
@@ -4056,15 +4061,15 @@ msgstr "Nedá sa prekódovať formát zobrazenia balíka po „%ls“"
 msgid "Internal error: Default column string is unparsable"
 msgstr "Vnútorná chyba: Štandardný reťazec stĺpca sa nedá spracovať"
 
-#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1069
+#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1070
 msgid "Tasks"
 msgstr "Úlohy"
 
-#: src/pkg_grouppolicy.cc:282
+#: src/pkg_grouppolicy.cc:283
 msgid "main"
 msgstr "hlavný"
 
-#: src/pkg_grouppolicy.cc:424
+#: src/pkg_grouppolicy.cc:425
 msgid ""
 "Security Updates\n"
 " Security updates for these packages are available from security.debian.org."
@@ -4073,7 +4078,7 @@ msgstr ""
 " Bezpečnostné aktualizácie týchto balíkov sú k dispozícií na security.debian."
 "org."
 
-#: src/pkg_grouppolicy.cc:425
+#: src/pkg_grouppolicy.cc:426
 msgid ""
 "Upgradable Packages\n"
 " A newer version of these packages is available."
@@ -4081,7 +4086,7 @@ msgstr ""
 "Aktualizovateľné balíky\n"
 " K týmto balíkom existuje novšia verzia."
 
-#: src/pkg_grouppolicy.cc:426
+#: src/pkg_grouppolicy.cc:427
 msgid ""
 "New Packages\n"
 " These packages have been added to Debian since the last time you cleared "
@@ -4093,7 +4098,7 @@ msgstr ""
 "zoznam „nových“ balíkov. (Na vymazanie tohto zoznamu vyberte z ponuky Akcie "
 "položku „Zabudnúť nové balíky“.)"
 
-#: src/pkg_grouppolicy.cc:427
+#: src/pkg_grouppolicy.cc:428
 msgid ""
 "Installed Packages\n"
 " These packages are currently installed on your computer."
@@ -4101,7 +4106,7 @@ msgstr ""
 "Inštalované balíky\n"
 " Tieto balíky máte inštalované na vašom počítači."
 
-#: src/pkg_grouppolicy.cc:428
+#: src/pkg_grouppolicy.cc:429
 msgid ""
 "Not Installed Packages\n"
 " These packages are not installed on your computer."
@@ -4109,7 +4114,7 @@ msgstr ""
 "Nenainštalované balíky\n"
 " Tieto balíky nie sú nainštalované na vašom počítači."
 
-#: src/pkg_grouppolicy.cc:429
+#: src/pkg_grouppolicy.cc:430
 msgid ""
 "Obsolete and Locally Created Packages\n"
 " These packages are currently installed on your computer, but they are not "
@@ -4121,7 +4126,7 @@ msgstr ""
 "zo zdrojov na apt. Buď už boli zastarané a boli odstránené z archívu, alebo "
 "ste si ich vytvorili sami."
 
-#: src/pkg_grouppolicy.cc:430
+#: src/pkg_grouppolicy.cc:431
 msgid ""
 "Virtual Packages\n"
 " These packages do not exist; they are names other packages use to require "
@@ -4131,7 +4136,7 @@ msgstr ""
 " Tieto balíky fyzicky neexistujú; sú to iba názvy, ktoré využívajú ostatné "
 "balíky vyžadujúce konkrétnu funkčnosť."
 
-#: src/pkg_grouppolicy.cc:583
+#: src/pkg_grouppolicy.cc:584
 msgid ""
 "Packages which are recommended by other packages\n"
 " These packages are not strictly required, but they may be necessary to "
@@ -4142,7 +4147,7 @@ msgstr ""
 " Tieto balíky nie sú nutne vyžadované, ale môžu byť nutné na plnú funkčnosť "
 "práve inštalovaných alebo aktualizovaných balíkov."
 
-#: src/pkg_grouppolicy.cc:604
+#: src/pkg_grouppolicy.cc:605
 msgid ""
 "Packages which are suggested by other packages\n"
 " These packages are not required in order to make your system function "
@@ -4153,7 +4158,7 @@ msgstr ""
 " Tieto balíky nie sú vyžadované na správnu funkčnosť systému, ale môžu "
 "rozšíriť možnosti niektorých programov, ktoré práve inštalujete."
 
-#: src/pkg_grouppolicy.cc:632
+#: src/pkg_grouppolicy.cc:633
 msgid ""
 "Packages with unsatisfied dependencies\n"
 " The dependency requirements of these packages will be unmet after the "
@@ -4168,7 +4173,7 @@ msgstr ""
 " Prítomnosť tohto stromu naznačuje, že je niečo divné vo vašom systéme alebo "
 "v archíve Debianu."
 
-#: src/pkg_grouppolicy.cc:633
+#: src/pkg_grouppolicy.cc:634
 msgid ""
 "Packages being removed because they are no longer used\n"
 " These packages are being deleted because they were automatically installed "
@@ -4179,7 +4184,7 @@ msgstr ""
 " Tieto balíky sú označené na odstránenie, pretože boli nainštalované "
 "automaticky kvôli závislostiam, ktoré už nie sú potrebné.\n"
 
-#: src/pkg_grouppolicy.cc:634
+#: src/pkg_grouppolicy.cc:635
 msgid ""
 "Packages being automatically held in their current state\n"
 " These packages could be upgraded, but they have been kept in their current "
@@ -4189,7 +4194,7 @@ msgstr ""
 " Tieto balíky môžu byť aktualizované na novšiu verziu, ale sú ponechané vo "
 "svojej pôvodnej verzií, aby sa neporušili závislosti."
 
-#: src/pkg_grouppolicy.cc:635
+#: src/pkg_grouppolicy.cc:636
 msgid ""
 "Packages being automatically installed to satisfy dependencies\n"
 " These packages are being installed because they are required by another "
@@ -4199,7 +4204,7 @@ msgstr ""
 " Tieto balíky budú automaticky nainštalované, pretože sú vyžadované inými "
 "balíkmi, ktoré ste vybrali na inštaláciu."
 
-#: src/pkg_grouppolicy.cc:636
+#: src/pkg_grouppolicy.cc:637
 msgid ""
 "Packages being deleted due to unsatisfied dependencies\n"
 " These packages are being deleted because one or more of their dependencies "
@@ -4209,7 +4214,7 @@ msgstr ""
 " Tieto balíky budú odstránené, pretože jedna alebo viac ich závislostí už "
 "nie je splnená, alebo pretože je s nimi iný balík v konflikte."
 
-#: src/pkg_grouppolicy.cc:637
+#: src/pkg_grouppolicy.cc:638
 msgid ""
 "Packages to be downgraded\n"
 " An older version of these packages than is currently installed will be "
@@ -4218,7 +4223,7 @@ msgstr ""
 "Balíky na degradáciu\n"
 " Tieto balíky budú nahradené svojou staršou verziou."
 
-#: src/pkg_grouppolicy.cc:638
+#: src/pkg_grouppolicy.cc:639
 msgid ""
 "Packages being held back\n"
 " These packages could be upgraded, but you have asked for them to be held at "
@@ -4228,7 +4233,7 @@ msgstr ""
 " Tieto balíky môžu byť aktualizované na novšiu verziu, ale vy ste požiadali "
 "o ich ponechanie v pôvodnej verzii."
 
-#: src/pkg_grouppolicy.cc:639
+#: src/pkg_grouppolicy.cc:640
 msgid ""
 "Packages to be reinstalled\n"
 " These packages will be reinstalled."
@@ -4236,7 +4241,7 @@ msgstr ""
 "Balíky k reinštalácií\n"
 " Tieto balíky budú preinštalované."
 
-#: src/pkg_grouppolicy.cc:640
+#: src/pkg_grouppolicy.cc:641
 msgid ""
 "Packages to be installed\n"
 " These packages have been manually selected for installation on your "
@@ -4245,7 +4250,7 @@ msgstr ""
 "Balíky na inštaláciu\n"
 " Tieto balíky ste vybrali na inštaláciu na svoj počítač."
 
-#: src/pkg_grouppolicy.cc:641
+#: src/pkg_grouppolicy.cc:642
 msgid ""
 "Packages to be removed\n"
 " These packages have been manually selected for removal."
@@ -4253,7 +4258,7 @@ msgstr ""
 "Balíky na odstránenie\n"
 " Tieto balíky ste vybrali na odstránenie zo systému."
 
-#: src/pkg_grouppolicy.cc:642
+#: src/pkg_grouppolicy.cc:643
 msgid ""
 "Packages to be upgraded\n"
 " These packages will be upgraded to a newer version."
@@ -4261,7 +4266,7 @@ msgstr ""
 "Balíky na aktualizáciu\n"
 " Tieto balíky budú aktualizované na novšiu verziu."
 
-#: src/pkg_grouppolicy.cc:643
+#: src/pkg_grouppolicy.cc:644
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
@@ -4271,44 +4276,44 @@ msgstr ""
 " Tieto balíky nie sú plne nainštalované a nakonfigurované; vykoná sa pokus o "
 "dokončenie inštalácie."
 
-#: src/pkg_grouppolicy.cc:760
+#: src/pkg_grouppolicy.cc:761
 msgid "unknown"
 msgstr "neznáma"
 
-#: src/pkg_grouppolicy.cc:771
+#: src/pkg_grouppolicy.cc:772
 #, c-format
 msgid "Priority %s"
 msgstr "Priorita %s"
 
-#: src/pkg_grouppolicy.cc:885
+#: src/pkg_grouppolicy.cc:886
 msgid "UNCATEGORIZED"
 msgstr "NEKATEGORIZOVANÉ"
 
-#: src/pkg_grouppolicy.cc:1012
+#: src/pkg_grouppolicy.cc:1013
 msgid "End-user"
 msgstr "Koncový používateľ"
 
-#: src/pkg_grouppolicy.cc:1013
+#: src/pkg_grouppolicy.cc:1014
 msgid "Servers"
 msgstr "Servery"
 
-#: src/pkg_grouppolicy.cc:1014
+#: src/pkg_grouppolicy.cc:1015
 msgid "Development"
 msgstr "Vývoj"
 
-#: src/pkg_grouppolicy.cc:1015
+#: src/pkg_grouppolicy.cc:1016
 msgid "Localization"
 msgstr "Lokalizácia"
 
-#: src/pkg_grouppolicy.cc:1016
+#: src/pkg_grouppolicy.cc:1017
 msgid "Hardware Support"
 msgstr "Hardvérová podpora"
 
-#: src/pkg_grouppolicy.cc:1018
+#: src/pkg_grouppolicy.cc:1019
 msgid "Unrecognized tasks"
 msgstr "Nezaradené úlohy"
 
-#: src/pkg_grouppolicy.cc:1070
+#: src/pkg_grouppolicy.cc:1071
 msgid ""
 "\n"
 " Tasks are groups of packages which provide an easy way to select a "
@@ -4318,26 +4323,26 @@ msgstr ""
 " Úlohy sú skupiny balíkov, ktoré ponúkajú jednoduchý spôsob na voľbu "
 "všetkých potrebných balíkov pre konkrétne použitie."
 
-#: src/pkg_grouppolicy.cc:1201
+#: src/pkg_grouppolicy.cc:1202
 #, c-format
 msgid "Bad number in format string: %ls"
 msgstr "Nesprávne číslo vo formáte reťazca: %ls"
 
-#: src/pkg_grouppolicy.cc:1210
+#: src/pkg_grouppolicy.cc:1211
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
 msgstr "Vzorové indexy musia byť 1 alebo väčšie, nie \"%s\""
 
-#: src/pkg_grouppolicy.cc:1228
+#: src/pkg_grouppolicy.cc:1229
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
 msgstr "Vzorový index %ls je príliš veľký; dostupné skupiny sú (%s)"
 
-#: src/pkg_grouppolicy.cc:1501
+#: src/pkg_grouppolicy.cc:1502
 msgid "TAGLESS PACKAGES"
 msgstr "NEOZNAČKOVANÉ BALÍKY"
 
-#: src/pkg_grouppolicy.cc:1502
+#: src/pkg_grouppolicy.cc:1503
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags, or the debtags "
@@ -4347,7 +4352,7 @@ msgstr ""
 " Tieto balíky neboli v debtags klasifikované alebo databáza debtags nie je "
 "prítomná (to môžete napraviť nainštalovaním debtags)."
 
-#: src/pkg_grouppolicy.cc:1536
+#: src/pkg_grouppolicy.cc:1537
 msgid "MISSING TAG"
 msgstr "CHÝBAJÚCA ZNAČKA"
 
@@ -4458,7 +4463,7 @@ msgstr "Na pokračovanie stlačte enter.\n"
 msgid "Hierarchy editor"
 msgstr "Editor hierarchie"
 
-#: src/pkg_item.cc:462
+#: src/pkg_item.cc:462 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "Editor Hierarchie"
 
@@ -4503,20 +4508,37 @@ msgstr "Nie je možné vykonať cw::util::transcode definície stĺpca"
 msgid "Couldn't parse column definition"
 msgstr "Nedá sa spracovať definícia stĺpca"
 
-#: src/pkg_view.cc:560
+#: src/pkg_view.cc:223
+#, fuzzy
+msgid ""
+"If you select a package, an explanation of why it should be installed or "
+"removed will appear in this space."
+msgstr "Ak si zvolíte balík, objaví sa tu popis jeho aktuálneho stavu."
+
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: chyba v argumentoch -- dva hlavné widgety??"
 
-#: src/pkg_view.cc:566
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr "make_package_view: chyba v argumentoch -- chybný zoznam stĺpcov"
 
-#: src/pkg_view.cc:674
+#: src/pkg_view.cc:678
+#, fuzzy
+msgid "Related Dependencies"
+msgstr "Riešiť Závislosti"
+
+#: src/pkg_view.cc:681
+#, fuzzy
+msgid "Why Installed"
+msgstr "Nainštalovaný"
+
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: chybný argument!"
 
-#: src/pkg_view.cc:726
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: nebol nájdený hlavný widget"
 
@@ -5877,6 +5899,29 @@ msgstr "Sťahuje sa záznam zmien (changelog)"
 #: src/view_changelog.cc:242
 msgid "Download Changelog"
 msgstr "Stiahnuť Changelog"
+
+#~ msgid "Don't warn about the obsolete \"Recommends-Important\" option."
+#~ msgstr "Neupozornňovať na zastaralú voľbu „Recommends-Important“"
+
+#~ msgid ""
+#~ "If the configuration option %BRecommends-Important%b is set in the system "
+#~ "configuration file, aptitude will warn you about it on start-up.  Enable "
+#~ "this option to skip this warning (for instance, if your apt configuration "
+#~ "is shared with a system that has an older version of aptitude installed)."
+#~ msgstr ""
+#~ "Ak je v systémovom konfiguračnom súbore nastavená voľba %BRecommends-"
+#~ "Important%b, aptitude vás pri spustení upozorní.  Zapnutím tejto voľby "
+#~ "preskočíte toto upozornenie (napr. ak zdieľate konfiguráciu apt so "
+#~ "systémom, ktorý má nainštalovanú staršiu verziu aptitude)."
+
+#~ msgid ""
+#~ "The system configuration file (%s) contains a setting for the obsolete "
+#~ "option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
+#~ "Recommends' instead or removing this setting."
+#~ msgstr ""
+#~ "Systémový konfiguračný súbor (%s) obsahuje nastavenie zastaralej voľby "
+#~ "„Aptitude::Recommends-Important“; zvážte namiesto toho nastavenie „APT::"
+#~ "Install-Recommends“ alebo odstránenie tejto voľby."
 
 #~ msgid "No justification for removing %s could be constructed.\n"
 #~ msgstr "Nebolo možné vytvoriť žiadne zdôvodnenie pre odstránenie %s.\n"

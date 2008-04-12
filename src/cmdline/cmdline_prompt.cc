@@ -1243,9 +1243,16 @@ bool cmdline_do_prompt(bool as_upgrade,
 		case '_':
 		case ':':
 		case '&':
-		  cmdline_parse_action(response, to_install, to_hold,
-				       to_remove, to_purge, verbose,
-				       policy, arch_only, true);
+		  {
+		    // Don't play 'which packages have we seen?' games
+		    // now. (should I do two passes like at the
+		    // command-line?)
+		    std::set<pkgCache::PkgIterator> seen_virtual_packages;
+		    cmdline_parse_action(response, seen_virtual_packages,
+					 to_install, to_hold,
+					 to_remove, to_purge, verbose,
+					 policy, arch_only, true);
+		  }
 		  break;
 		case 'E':
 		  ui_preview();

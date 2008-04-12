@@ -9684,21 +9684,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configDont-Warn-About-Recommends-Important'>
-	      <seg><literal>Aptitude::Dont-Warn-About-Recommends-Important</literal></seg>
-	      <seg><literal>false</literal></seg>
-
-	      <seg>
-		Normally &aptitude; will warn you on startup if the
-		obsolete option
-		<literal>Aptitude::Recommends-Important</literal> is
-		contained in the system configuration file.  This
-		option suppresses that warning if for some reason you
-		really need to set
-		<literal>Recommends-Important</literal>.
-	      </seg>
-	    </seglistitem>
-
 	    <seglistitem id='configForget-New-On-Install'>
 	      <seg><literal>Aptitude::Forget-New-On-Install</literal></seg>
 
@@ -9751,6 +9736,29 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		the name of the program that should be invoked;
 		remaining words are treated as arguments to that
 		program.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configIgnore-Recommends-Important'>
+	      <seg><literal>Aptitude::Ignore-Recommends-Important</literal></seg>
+
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		In previous versions of aptitude, the setting
+		<literal>Aptitude::Recommends-Important</literal>
+		caused recommendations to be installed automatically,
+		the same way that <literal><link
+		linkend='configAptInstallRecommends'>Apt::Install-Recommends</link></literal>
+		does today.  If this option is set to
+		<literal>false</literal> and
+		<literal>Aptitude::Recommends-Important</literal> is
+		also set to <literal>false</literal>, aptitude will
+		set <literal><link
+		linkend='configAptInstallRecommends'>Apt::Install-Recommends</link></literal>
+		to <literal>false</literal> and set
+		<literal>Aptitude::Ignore-Recommends-Important</literal>
+		to <literal>true</literal> on startup.
 	      </seg>
 	    </seglistitem>
 
@@ -10543,6 +10551,19 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		<quote>incremental</quote> searches: as you type
 		the search pattern, it will search for the next
 		package matching what you have typed so far.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configUIInfoAreaTabs'>
+	      <seg><literal>Aptitude::UI::InfoAreaTabs</literal></seg>
+
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		If this option is <literal>true</literal>, &aptitude;
+		will display tabs at the top of the information area
+		(the pane at the bottom of the screen) describing the
+		different modes the area can be set to.
 	      </seg>
 	    </seglistitem>
 
