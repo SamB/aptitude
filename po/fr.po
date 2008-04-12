@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-04-07 21:44-0700\n"
-"PO-Revision-Date: 2008-04-09 22:35+0200\n"
+"PO-Revision-Date: 2008-04-12 09:13+0200\n"
 "Last-Translator: Christian Perrier <bubulle@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -198,50 +198,41 @@ msgstr ""
 "en cours en bas de l'écran plutôt que d'ouvrir une nouvelle vue."
 
 #: src/apt_options.cc:211
-#, fuzzy
 msgid "Display the information area by default"
-msgstr "Afficher par défaut la zone de description étendue"
+msgstr "Afficher par défaut la zone d'information"
 
 #: src/apt_options.cc:212
-#, fuzzy
 msgid ""
 "If this option is enabled, the information area (the pane at the bottom of "
 "the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
-"Si cette option est activée, la zone de description longue (la boîte en bas "
+"Si cette option est activée, la zone d'information (la boîte en bas "
 "de l'écran) de la liste des paquets sera visible au démarrage du programme, "
 "sinon, elle sera cachée au départ."
 
 #: src/apt_options.cc:217
-#, fuzzy
 msgid "Display tabs for the available views"
-msgstr "Format d'affichage pour les vues des paquets"
+msgstr "Afficher les onglets pour les vues disponibles"
 
 #: src/apt_options.cc:218
-#, fuzzy
 msgid ""
 "If this option is enabled, tabs will appear at the top of the screen listing "
 "the currently opened views."
-msgstr ""
-"Si cette option est activée, aptitude affichera l'état des téléchargements "
-"en cours en bas de l'écran plutôt que d'ouvrir une nouvelle vue."
+msgstr "Si cette option est activée, des onglets apparaîtront en haut de l'écran pour rendre accessibles les vues disponibles."
 
 #: src/apt_options.cc:221
-#, fuzzy
 msgid "Display tabs for the information area"
-msgstr "Afficher plus d'informations sur le paquet sélectionné"
+msgstr "Afficher des onglets pour la zone d'information"
 
 #: src/apt_options.cc:222
-#, fuzzy
 msgid ""
 "If this option is enabled, tabs will appear at the top of the information "
 "area (the pane at the bottom of the screen) listing the different displays "
 "of information that can be viewed there."
 msgstr ""
-"Si cette option est activée, la zone de description longue (la boîte en bas "
-"de l'écran) de la liste des paquets sera visible au démarrage du programme, "
-"sinon, elle sera cachée au départ."
+"Si cette option est activée, des onglets apparaîtront en haut de la zone d'information (la boîte en bas "
+"de l'écran) pour lister les différentes informations qui peuvent y être affichées."
 
 #: src/apt_options.cc:227
 msgid "Advance to the next item after changing the state of a package"
@@ -4605,13 +4596,10 @@ msgid "Couldn't parse column definition"
 msgstr "Analyse de la définition de colonne impossible"
 
 #: src/pkg_view.cc:223
-#, fuzzy
 msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
-msgstr ""
-"Si vous sélectionnez un paquet, une explication de son état courant "
-"apparaîtra à cet endroit."
+msgstr "Si vous sélectionnez un paquet, une explication des raisons qui motivent son installation ou sa suppression apparaîtra à cet endroit."
 
 #: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
@@ -4626,14 +4614,12 @@ msgstr ""
 "pour une entrée statique"
 
 #: src/pkg_view.cc:678
-#, fuzzy
 msgid "Related Dependencies"
-msgstr "Résolution des dépendances"
+msgstr "Dépendances liées"
 
 #: src/pkg_view.cc:681
-#, fuzzy
 msgid "Why Installed"
-msgstr "Installé"
+msgstr "Pourquoi installé"
 
 #: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
@@ -6028,28 +6014,3 @@ msgstr "Téléchargement du fichier « Changelog »"
 msgid "Download Changelog"
 msgstr "Téléchargement du fichier « Changelog »"
 
-#~ msgid "Don't warn about the obsolete \"Recommends-Important\" option."
-#~ msgstr ""
-#~ "Ne pas avertir à propos de l'option obsolète « Recommends-Important »."
-
-#~ msgid ""
-#~ "If the configuration option %BRecommends-Important%b is set in the system "
-#~ "configuration file, aptitude will warn you about it on start-up.  Enable "
-#~ "this option to skip this warning (for instance, if your apt configuration "
-#~ "is shared with a system that has an older version of aptitude installed)."
-#~ msgstr ""
-#~ "Si l'option de configuration %BRecommends-Important%b est choisie dans le "
-#~ "fichier de configuration, aptitude émettra un avertissement à son "
-#~ "lancement. Si cette option est activée, cet avertissement ne sera pas "
-#~ "envoyé. Cela peut être utile dans le cas où le fichier de configuration "
-#~ "d'APT est partagé avec un système qui utilise une version plus ancienne "
-#~ "d'aptitude."
-
-#~ msgid ""
-#~ "The system configuration file (%s) contains a setting for the obsolete "
-#~ "option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
-#~ "Recommends' instead or removing this setting."
-#~ msgstr ""
-#~ "Le fichier de configuration du système (%s) comporte le réglage d'une "
-#~ "option obsolète « Aptitude::Recommends-Important ». Vous devriez la "
-#~ "remplacer par « APT::Install-Recommends » ou la supprimer."
