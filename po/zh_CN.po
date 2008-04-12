@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-04-11 09:13-0700\n"
-"PO-Revision-Date: 2008-03-30 13:26+0800\n"
+"PO-Revision-Date: 2008-04-13 00:10+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -183,11 +183,16 @@ msgstr ""
 
 #: src/apt_options.cc:211
 #, fuzzy
+#| msgid "Display the extended description area by default"
 msgid "Display the information area by default"
 msgstr "默认显示扩展描述区"
 
 #: src/apt_options.cc:212
 #, fuzzy
+#| msgid ""
+#| "If this option is enabled, the long description area (the pane at the "
+#| "bottom of the screen) in the package list will be visible when the "
+#| "program starts; otherwise, it will be initially hidden."
 msgid ""
 "If this option is enabled, the information area (the pane at the bottom of "
 "the screen) in the package list will be visible when the program starts; "
@@ -198,11 +203,15 @@ msgstr ""
 
 #: src/apt_options.cc:217
 #, fuzzy
+#| msgid "The display format for package views"
 msgid "Display tabs for the available views"
 msgstr "查看软件包的显示格式"
 
 #: src/apt_options.cc:218
 #, fuzzy
+#| msgid ""
+#| "If this option is enabled, aptitude will display the status of ongoing "
+#| "downloads at the bottom of the screen, rather than opening a new view."
 msgid ""
 "If this option is enabled, tabs will appear at the top of the screen listing "
 "the currently opened views."
@@ -212,11 +221,16 @@ msgstr ""
 
 #: src/apt_options.cc:221
 #, fuzzy
+#| msgid "Display more information about the selected package"
 msgid "Display tabs for the information area"
 msgstr "显示关于选定软件包上的更多信息"
 
 #: src/apt_options.cc:222
 #, fuzzy
+#| msgid ""
+#| "If this option is enabled, the long description area (the pane at the "
+#| "bottom of the screen) in the package list will be visible when the "
+#| "program starts; otherwise, it will be initially hidden."
 msgid ""
 "If this option is enabled, tabs will appear at the top of the information "
 "area (the pane at the bottom of the screen) listing the different displays "
@@ -1090,11 +1104,11 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:709
 msgid "Yes"
-msgstr "是"
+msgstr "Yes"
 
 #: src/cmdline/cmdline_prompt.cc:709
 msgid "No"
-msgstr "否"
+msgstr "No"
 
 #: src/cmdline/cmdline_prompt.cc:713
 #, c-format
@@ -2076,9 +2090,8 @@ msgid "Install"
 msgstr "安装"
 
 #: src/cmdline/cmdline_why.cc:286
-#, fuzzy
 msgid "InstallNotCurrent"
-msgstr "已安装"
+msgstr "已安装但不是最新版本"
 
 #: src/cmdline/cmdline_why.cc:294
 msgid "allow_choices"
@@ -2134,9 +2147,8 @@ msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> 跳过，父节点不是选定的版本\n"
 
 #: src/cmdline/cmdline_why.cc:492
-#, fuzzy
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
-msgstr "    ++   --> 跳过，父节点不是选定的版本\n"
+msgstr "    ++   --> 跳过，当前版本已满足依赖\n"
 
 #: src/cmdline/cmdline_why.cc:522
 msgid "    ++   --> ENQUEUING\n"
@@ -2166,14 +2178,14 @@ msgid "The package \"%s\" is a starting point of the search.\n"
 msgstr "“%s”是搜索的起点。\n"
 
 #: src/cmdline/cmdline_why.cc:957
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to remove %s.\n"
-msgstr "未能找到一个可以应用的解决方案。"
+msgstr "未能找到理由以移除 %s。\n"
 
 #: src/cmdline/cmdline_why.cc:959
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to install %s.\n"
-msgstr "未能找到一个可以应用的解决方案。"
+msgstr "未能找到理由以安装 %s。\n"
 
 #: src/cmdline/cmdline_why.cc:1004 src/cmdline/cmdline_why.cc:1030
 #: src/cmdline/cmdline_why.cc:1092
@@ -3140,16 +3152,21 @@ msgstr "编译器：g++ %s\n"
 
 #: src/main.cc:111
 #, fuzzy
+#| msgid "Compiler: g++ %s\n"
 msgid "Compiled against:\n"
 msgstr "编译器：g++ %s\n"
 
 #: src/main.cc:112
 #, fuzzy, c-format
+#| msgid "Keep %F at version %s (%s)"
 msgid "  apt version %d.%d.%d\n"
 msgstr "保持 %F 在版本 %s (%s)"
 
 #: src/main.cc:115
 #, fuzzy, c-format
+#| msgid ""
+#| "\n"
+#| "NCurses version: %s\n"
 msgid "  NCurses version: Unknown\n"
 msgstr ""
 "\n"
@@ -3157,6 +3174,9 @@ msgstr ""
 
 #: src/main.cc:117
 #, fuzzy, c-format
+#| msgid ""
+#| "\n"
+#| "NCurses version: %s\n"
 msgid "  NCurses version %s\n"
 msgstr ""
 "\n"
@@ -3164,21 +3184,27 @@ msgstr ""
 
 #: src/main.cc:119
 #, fuzzy, c-format
+#| msgid "libsigc++ version: %s\n"
 msgid "  libsigc++ version: %s\n"
 msgstr "libsigc++ 版本：%s\n"
 
 #: src/main.cc:121
 #, fuzzy, c-format
+#| msgid "Ept support enabled.\n"
 msgid "  Ept support enabled.\n"
 msgstr "Ept 支持已开启。\n"
 
 #: src/main.cc:123
 #, fuzzy, c-format
+#| msgid "Ept support disabled.\n"
 msgid "  Ept support disabled.\n"
 msgstr "Ept 支持已禁用\n"
 
 #: src/main.cc:126
 #, fuzzy
+#| msgid ""
+#| "\n"
+#| "Curses version: %s\n"
 msgid ""
 "\n"
 "Current library versions:\n"
@@ -3188,6 +3214,9 @@ msgstr ""
 
 #: src/main.cc:127
 #, fuzzy, c-format
+#| msgid ""
+#| "\n"
+#| "NCurses version: %s\n"
 msgid "  NCurses version: %s\n"
 msgstr ""
 "\n"
@@ -3195,11 +3224,15 @@ msgstr ""
 
 #: src/main.cc:128
 #, fuzzy, c-format
+#| msgid "libsigc++ version: %s\n"
 msgid "  cwidget version: %s\n"
 msgstr "libsigc++ 版本：%s\n"
 
 #: src/main.cc:129
 #, fuzzy, c-format
+#| msgid ""
+#| "\n"
+#| "Curses version: %s\n"
 msgid "  Apt version: %s\n"
 msgstr ""
 "\n"
@@ -3327,6 +3360,7 @@ msgstr " reinstall    - 下载并(可能)重新安装一个现在已经安装了
 
 #: src/main.cc:159
 #, fuzzy, c-format
+#| msgid " -Z             Show the change in installed size of each package.\n"
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
@@ -3334,6 +3368,8 @@ msgstr " -Z\t\t    显示每个软件包的安装尺寸的变化。\n"
 
 #: src/main.cc:160
 #, fuzzy, c-format
+#| msgid ""
+#| " -V             Show which versions of packages are to be installed.\n"
 msgid ""
 "              - why one or more packages would require the given package\n"
 msgstr " -V             显示就要安装的软件包版本。\n"
@@ -3353,6 +3389,8 @@ msgstr ""
 
 #: src/main.cc:163
 #, fuzzy, c-format
+#| msgid ""
+#| " -V             Show which versions of packages are to be installed.\n"
 msgid ""
 "                lead to a conflict with the given package if installed\n"
 msgstr " -V             显示就要安装的软件包版本。\n"
@@ -3443,12 +3481,16 @@ msgstr " -t [release]   设置将要安装的软件包的发布版本\n"
 
 #: src/main.cc:180
 #, fuzzy, c-format
+#| msgid ""
+#| " -q             In command-line mode, suppress the incremental progress "
+#| "indicators.\n"
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 msgstr " -q            在命令行状态下，不显示进度条。\n"
 
 #: src/main.cc:181
 #, fuzzy, c-format
+#| msgid " -h             This help text\n"
 msgid "                indicators.\n"
 msgstr " -h             此帮助文本\n"
 
@@ -4305,9 +4347,9 @@ msgid "Packages which depend on %s"
 msgstr "依赖于 %s 的软件包"
 
 #: src/pkg_info_screen.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid "Versions of %s"
-msgstr "版本号"
+msgstr "%s 的版本号"
 
 #: src/pkg_item.cc:61
 msgid "Yes, I am aware this is a very bad idea"
@@ -4396,7 +4438,7 @@ msgstr "层次编辑器"
 #, c-format
 msgid "This group contains %d package."
 msgid_plural "This group contains %d packages."
-msgstr[0] ""
+msgstr[0] "此组包含 %d 个软件包。"
 
 #: src/pkg_tree.cc:175
 msgid "All Packages"
@@ -4433,6 +4475,9 @@ msgstr "无法解析列定义"
 
 #: src/pkg_view.cc:223
 #, fuzzy
+#| msgid ""
+#| "If you select a package, an explanation of its current state will appear "
+#| "in this space."
 msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
@@ -4449,11 +4494,13 @@ msgstr "make_package_view: 参数错误 -- 静态项目的栏列表错误"
 
 #: src/pkg_view.cc:678
 #, fuzzy
+#| msgid "Resolve Dependencies"
 msgid "Related Dependencies"
 msgstr "解决依赖关系"
 
 #: src/pkg_view.cc:681
 #, fuzzy
+#| msgid "Installed"
 msgid "Why Installed"
 msgstr "已安装"
 
@@ -4959,6 +5006,11 @@ msgstr "推荐"
 
 #: src/ui.cc:970
 #, fuzzy
+#| msgid ""
+#| "Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with "
+#| "%BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  "
+#| "This is free software, and you are welcome to redistribute it under "
+#| "certain conditions; see 'license' for details."
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
@@ -5210,7 +5262,7 @@ msgstr "没有更多的解决方案了。"
 
 #: src/ui.cc:1965
 msgid "Unable to find a solution to apply."
-msgstr "未能找到一个可以应用的解决方案。"
+msgstr "未能找到解决方案以实施。"
 
 #: src/ui.cc:1971
 msgid "Ran out of time while trying to find a solution."
@@ -5416,7 +5468,7 @@ msgstr "显示关于选定软件包上的更多信息"
 
 #: src/ui.cc:2188
 msgid "C^ycle Package Information"
-msgstr ""
+msgstr "循环软件包信息"
 
 #: src/ui.cc:2189
 msgid ""
@@ -5424,6 +5476,8 @@ msgid ""
 "package's long description, a summary of its dependency status, or an "
 "analysis of why the package is required."
 msgstr ""
+"在软件包信息区域模式中循环：它可以显示软件包的长篇说明，依赖状态的概要，或者"
+"分析为什么该软件包是必须的。"
 
 #: src/ui.cc:2192
 msgid "^Changelog"
@@ -5708,9 +5762,8 @@ msgid "^News"
 msgstr "新闻(^N)"
 
 #: src/ui.cc:2377
-#, fuzzy
 msgid "View the important changes made in each version of "
-msgstr "查看 %s 每一版本中所做的重大修改"
+msgstr "查看其每一版本中所做的重大修改："
 
 #: src/ui.cc:2380
 msgid "^License"
@@ -5772,9 +5825,6 @@ msgstr "正在下载变更日志"
 msgid "Download Changelog"
 msgstr "下载变更日志"
 
-#~ msgid "There are now %F."
-#~ msgstr "现在是 %F 。"
-
 #~ msgid "Don't warn about the obsolete \"Recommends-Important\" option."
 #~ msgstr "不要警告废弃的“Recommends-Important”选项。"
 
@@ -5787,6 +5837,9 @@ msgstr "下载变更日志"
 #~ "如果在系统配置文件中设置配置选项 %BRecommends-Important%b，aptitude 会在启"
 #~ "动时警告您。开启此选项会跳过这个警告(例如，如果您的 apt 配置是与一个安装了"
 #~ "旧版本的 aptitude 的系统共享时)。"
+
+#~ msgid "There are now %F."
+#~ msgstr "现在是 %F 。"
 
 #~ msgid ""
 #~ "The system configuration file (%s) contains a setting for the obsolete "
@@ -5802,77 +5855,25 @@ msgstr "下载变更日志"
 #~ msgid "No justification for %s could be constructed.\n"
 #~ msgstr "无法创建 %s 的理由。\n"
 
-#~ msgid "Downloading "
-#~ msgstr "正在下载 "
-
-#~ msgid "Got "
-#~ msgstr "已取得 "
-
-#~ msgid "Downloading..."
-#~ msgstr "正在下载..."
-
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "下载%sB，耗时 %ss (%sB/s)。"
-
 #~ msgid ""
 #~ "The debtags command (%s) does not exist; perhaps you need to install the "
 #~ "debtags package?"
 #~ msgstr "debtags 命令(%s)不存在；也许您需要安装 debtags 软件包？"
-
-#~ msgid "Not enough resources to create thread"
-#~ msgstr "没有足够的资源来创建线程"
-
-#~ msgid "Formatting marker with missing format code"
-#~ msgstr "格式化装置缺少格式化代码"
-
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "格式字符串里有错误的数字：%ls"
-
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "格式化字串中缺少参数号码"
-
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "参数号码必须为 1 或更大，而不是 %ld"
-
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "未知的格式代码：%lc"
-
-#~ msgid "Bad format parameter"
-#~ msgstr "错误的格式参数"
-
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "无法解析键位说明：%ls"
-
-#~ msgid "Invalid null keybinding"
-#~ msgstr "无效的空快捷键绑定"
-
-#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
-#~ msgstr "对不起，控制编辑器可能不能使用不可打印的字符"
-
-#~ msgid "Ouch!  Got SIGTERM, dying..\n"
-#~ msgstr "啊！接收到 SIGTERM 信号，正在退出..\n"
-
-#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
-#~ msgstr "啊！接收到 SIGSEGV 信号，正在退出..\n"
-
-#~ msgid "Ouch!  Got SIGABRT, dying..\n"
-#~ msgstr "啊！接收到 SIGABRT 信号，正在退出..\n"
-
-#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
-#~ msgstr "啊！接收到 SIGQUIT 信号，正在退出..\n"
-
-#~ msgid ""
-#~ "Unable to load filename: the string %ls has no multibyte representation."
-#~ msgstr "无法读取文件名：字符串“%ls”无法用多字节字符表示。"
-
-#~ msgid "TOP LEVEL"
-#~ msgstr "顶层"
 
 #~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
 #~ msgstr "无法读取 debtags 关键词表，可能没有安装 debtags？"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr "写入状态文件时包“%s”发生内部缓冲溢出"
+
+#~ msgid "Downloading "
+#~ msgstr "正在下载 "
+
+#~ msgid "Got "
+#~ msgstr "已取得 "
+
+#~ msgid "Downloaded %sB in %ss (%sB/s)."
+#~ msgstr "下载%sB，耗时 %ss (%sB/s)。"
 
 #~ msgid "Tasks/Tasks"
 #~ msgstr "软件集/软件集"
@@ -5888,6 +5889,9 @@ msgstr "下载变更日志"
 
 #~ msgid "You must resolve these dependencies before continuing."
 #~ msgstr "您必须解决这些依赖关系才能继续。"
+
+#~ msgid "Not enough resources to create thread"
+#~ msgstr "没有足够的资源来创建线程"
 
 #~ msgid ""
 #~ "Packages which set up your computer to perform a particular task\n"
@@ -6359,6 +6363,52 @@ msgstr "下载变更日志"
 #~ msgstr ""
 #~ "\n"
 #~ "这些软件包还没有用 debtags 分类。"
+
+#~ msgid "Formatting marker with missing format code"
+#~ msgstr "格式化装置缺少格式化代码"
+
+#~ msgid "Bad number in format string: '%ls'"
+#~ msgstr "格式字符串里有错误的数字：%ls"
+
+#~ msgid "Missing parameter number in format string"
+#~ msgstr "格式化字串中缺少参数号码"
+
+#~ msgid "Parameter numbers must be 1 or greater, not %ld"
+#~ msgstr "参数号码必须为 1 或更大，而不是 %ld"
+
+#~ msgid "Unknown formatting code '%lc'"
+#~ msgstr "未知的格式代码：%lc"
+
+#~ msgid "Bad format parameter"
+#~ msgstr "错误的格式参数"
+
+#~ msgid "Cannot parse key description: %ls"
+#~ msgstr "无法解析键位说明：%ls"
+
+#~ msgid "Invalid null keybinding"
+#~ msgstr "无效的空快捷键绑定"
+
+#~ msgid "Sorry, control modifiers may not be used with unprintable characters"
+#~ msgstr "对不起，控制编辑器可能不能使用不可打印的字符"
+
+#~ msgid "Ouch!  Got SIGTERM, dying..\n"
+#~ msgstr "啊！接收到 SIGTERM 信号，正在退出..\n"
+
+#~ msgid "Ouch!  Got SIGSEGV, dying..\n"
+#~ msgstr "啊！接收到 SIGSEGV 信号，正在退出..\n"
+
+#~ msgid "Ouch!  Got SIGABRT, dying..\n"
+#~ msgstr "啊！接收到 SIGABRT 信号，正在退出..\n"
+
+#~ msgid "Ouch!  Got SIGQUIT, dying..\n"
+#~ msgstr "啊！接收到 SIGQUIT 信号，正在退出..\n"
+
+#~ msgid ""
+#~ "Unable to load filename: the string %ls has no multibyte representation."
+#~ msgstr "无法读取文件名：字符串“%ls”无法用多字节字符表示。"
+
+#~ msgid "TOP LEVEL"
+#~ msgstr "顶层"
 
 #~ msgid "Don't automatically remove unused packages matching this filter"
 #~ msgstr "不自动卸载匹配该过滤器的未用软件包"
