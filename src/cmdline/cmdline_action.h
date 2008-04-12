@@ -23,6 +23,17 @@ class pkgPolicy;
  *
  *  \param pkg The package whose state is to be modified.
  *
+ *  \param seen_virtual_packages The set of pure virtual packages that
+ *         have already been "seen".  If pkg is a pure virtual package
+ *         in this set, it will not be ignored even if a provider is
+ *         already installed or going to be installed.  If only one
+ *         package provides pkg, that package will be targeted by the
+ *         action; otherwise cmdline_applyaction will fail but not
+ *         print the usual error message.  The purpose of this option
+ *         is to improve the error messages that are printed on the
+ *         second pass, but more importantly to ensure that the
+ *         dependencies of virtual packages are installed. (bug #475006)
+ *
  *  \param to_install The set of packages that are currently marked
  *  to-be-installed; will be updated in accordance with the selected
  *  action.
@@ -59,6 +70,7 @@ class pkgPolicy;
  */
 bool cmdline_applyaction(cmdline_pkgaction_type action,
 			 pkgCache::PkgIterator pkg,
+			 std::set<pkgCache::PkgIterator> &seen_virtual_packages,
 			 pkgset &to_install, pkgset &to_hold,
 			 pkgset &to_remove, pkgset &to_purge,
 			 int verbose,
@@ -71,9 +83,24 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 /** \brief Apply the given command-line action to the given package,
  *  updating the command-line state appropriately.
  *
+ *  \param s The name of the package or the match pattern selecting the
+ *           packages whose state is to be modified.
+ *
  *  \param action The action to apply to the package.
  *
  *  \param pkg The package whose state is to be modified.
+ *
+ *  \param seen_virtual_packages The set of pure virtual packages that
+ *         have already been "seen".  If a pure virtual package in
+ *         this set is encountered, it will not be ignored even if a
+ *         provider is already installed or going to be installed.  If
+ *         only one package provides it, that package will be targeted
+ *         by the action; otherwise cmdline_applyaction will fail but
+ *         not print the usual error message.  The purpose of this
+ *         option is to improve the error messages that are printed on
+ *         the second pass, but more importantly to ensure that the
+ *         dependencies of virtual packages are installed. (bug
+ *         #475006)
  *
  *  \param to_install The set of packages that are currently marked
  *  to-be-installed; will be updated in accordance with the selected
@@ -105,6 +132,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
  *  will be disabled regardless of the value of Auto-Install.
  */
 bool cmdline_applyaction(string s,
+			 std::set<pkgCache::PkgIterator> &seen_virtual_packages,
 			 cmdline_pkgaction_type action,
 			 pkgset &to_install, pkgset &to_hold,
 			 pkgset &to_remove, pkgset &to_purge,
@@ -118,6 +146,18 @@ bool cmdline_applyaction(string s,
  *  point of the error will be executed regardless.
  *
  *  \param s The string to be parsed.
+ *
+ *  \param seen_virtual_packages The set of pure virtual packages that
+ *         have already been "seen".  If a pure virtual package in
+ *         this set is encountered, it will not be ignored even if a
+ *         provider is already installed or going to be installed.  If
+ *         only one package provides it, that package will be targeted
+ *         by the action; otherwise cmdline_applyaction will fail but
+ *         not print the usual error message.  The purpose of this
+ *         option is to improve the error messages that are printed on
+ *         the second pass, but more importantly to ensure that the
+ *         dependencies of virtual packages are installed. (bug
+ *         #475006)
  *
  *  \param to_install The set of packages that are currently marked
  *  to-be-installed; will be updated in accordance with the selected
@@ -149,6 +189,7 @@ bool cmdline_applyaction(string s,
  *  will be disabled regardless of the value of Auto-Install.
  */
 void cmdline_parse_action(string s,
+			  std::set<pkgCache::PkgIterator> &seen_virtual_packages,
 			  pkgset &to_install, pkgset &to_hold,
 			  pkgset &to_remove, pkgset &to_purge,
 			  int verbose,

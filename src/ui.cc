@@ -967,7 +967,9 @@ cw::widget_ref make_ver_screen(const pkgCache::PkgIterator &pkg)
 
 static void do_help_about()
 {
-  cw::fragment *f=cw::fragf(_("Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with %BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This is free software, and you are welcome to redistribute it under certain conditions; see 'license' for details."), VERSION);
+  cw::fragment *f = cw::fragf(_("Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n"
+				"%n"
+				"aptitude comes with %BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This is free software, and you are welcome to redistribute it under certain conditions; see 'license' for details."), VERSION);
 
   cw::widget_ref w=cw::dialogs::ok(wrapbox(f));
   w->show_all();

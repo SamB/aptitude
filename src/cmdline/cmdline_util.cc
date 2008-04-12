@@ -328,7 +328,7 @@ namespace
 
     std::vector<cw::fragment *> output_fragments;
     if(fragments.size() > 0)
-      output_fragments.push_back(fragf(_("There are now %F."),
+      output_fragments.push_back(fragf(_("Current status: %F."),
 				       cw::join_fragments(fragments, L", ")));
 
     std::cout << std::endl;

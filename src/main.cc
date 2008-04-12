@@ -108,17 +108,25 @@ static void show_version()
 #ifdef __GNUC__
   printf(_("Compiler: g++ %s\n"), __VERSION__);
 #endif
-#ifdef NCURSES_VERSION
-  printf(_("\nNCurses version: %s\n"), NCURSES_VERSION);
+  printf("%s", _("Compiled against:\n"));
+  printf(_("  apt version %d.%d.%d\n"),
+	 APT_PKG_MAJOR, APT_PKG_MINOR, APT_PKG_RELEASE);
+#ifndef NCURSES_VERSION
+  printf(_("  NCurses version: Unknown\n"));
 #else
-  printf(_("\nCurses version: %s\n"), curses_version());
+  printf(_("  NCurses version %s\n"), NCURSES_VERSION);
 #endif
-  printf(_("libsigc++ version: %s\n"), SIGC_VERSION);
+  printf(_("  libsigc++ version: %s\n"), SIGC_VERSION);
 #ifdef HAVE_EPT
-  printf(_("Ept support enabled.\n"));
+  printf(_("  Ept support enabled.\n"));
 #else
-  printf(_("Ept support disabled.\n"));
+  printf(_("  Ept support disabled.\n"));
 #endif
+
+  printf("%s", _("\nCurrent library versions:\n"));
+  printf(_("  NCurses version: %s\n"), curses_version());
+  printf(_("  cwidget version: %s\n"), cwidget::version().c_str());
+  printf(_("  Apt version: %s\n"), pkgLibVersion);
 }
 
 static void usage()
@@ -136,10 +144,6 @@ static void usage()
   printf(_(" unhold       - Cancel a hold command for a package\n"));
   printf(_(" markauto     - Mark packages as having been automatically installed\n"));
   printf(_(" unmarkauto   - Mark packages as having been manually installed\n"));
-  // This is out of line with the rest to avoid messing up
-  // translations.  Eventually all the usage information will move to
-  // a table-layout-based approach, which will avoid this sort of
-  // problem.
   printf(_(" forbid-version - Forbid aptitude from upgrading to a specific package version.\n"));
   printf(_(" update       - Download lists of new/upgradable packages\n"));
   printf(_(" safe-upgrade - Perform a safe upgrade\n"));
@@ -152,6 +156,11 @@ static void usage()
   printf(_(" changelog    - View a package's changelog\n"));
   printf(_(" download     - Download the .deb file for a package\n"));
   printf(_(" reinstall    - Download and (possibly) reinstall a currently installed package\n"));
+  printf(_(" why          - Show the manually installed packages that require a package, or\n"));
+  printf(_("              - why one or more packages would require the given package\n"));
+  printf(_(" why-not      - Show the manually installed packages that lead to a conflict\n"));
+  printf(_("                with the given package, or why one or more packages would\n"));
+  printf(_("                lead to a conflict with the given package if installed\n"));
   printf("\n");
   printf(_("  Options:\n"));
   printf(_(" -h             This help text\n"));
@@ -168,7 +177,8 @@ static void usage()
   printf(_(" -Z             Show the change in installed size of each package.\n"));
   printf(_(" -v             Display extra information. (may be supplied multiple times)\n"));
   printf(_(" -t [release]   Set the release from which packages should be installed\n"));
-  printf(_(" -q             In command-line mode, suppress the incremental progress indicators.\n"));
+  printf(_(" -q             In command-line mode, suppress the incremental progress\n"));
+  printf(_("                indicators.\n"));
   printf(_(" -o key=val     Directly set the configuration option named 'key'\n"));
   printf(_(" --with(out)-recommends	Specify whether or not to treat recommends as\n                strong dependencies\n"));
   printf(_(" -S fname       Read the aptitude extended status info from fname.\n"));

@@ -189,12 +189,14 @@ public:
   {
     if(pkg.end())
       {
-	set_fragment(cw::text_fragment(""));
+	set_no_package();
 	return;
       }
 
     std::vector<match::pkg_matcher *> search_leaves;
-    search_leaves.push_back(match::parse_pattern("~i!~M"));
+    // Search for package (versions) that are not automatically
+    // installed and that are or will be installed.
+    search_leaves.push_back(match::parse_pattern("?not(?automatic)?any-version(?or(?version(CANDIDATE)?action(install), ?version(CURRENT)?installed))"));
     try
       {
 	bool success = false;
@@ -214,6 +216,11 @@ public:
     for(std::vector<match::pkg_matcher *>::const_iterator it
 	  = search_leaves.begin(); it != search_leaves.end(); ++it)
       delete *it;
+  }
+
+  void set_no_package()
+  {
+    set_fragment(wrapbox(cw::text_fragment(_("If you select a package, an explanation of why it should be installed or removed will appear in this space."))));
   }
 };
 typedef cw::util::ref_ptr<pkg_why_widget> pkg_why_widget_ref;
@@ -488,6 +495,7 @@ public:
 						    cw::newline_fragment(),
 						    nopackage(),
 						    NULL));
+	why->set_no_package();
 
 	description->move_to_top();
 	reasons->move_to_top();
@@ -534,6 +542,13 @@ namespace
 	multiplex->cycle();
 	return true;
       }
+  }
+
+  void do_update_info_area_show_tabs(cw::widgets::multiplex &mBare)
+  {
+    cw::widgets::multiplex_ref m(&mBare);
+
+    m->set_show_tabs(aptcfg->FindB(PACKAGE "::UI::InfoAreaTabs", false));
   }
 }
 
@@ -655,10 +670,21 @@ cw::widget_ref make_package_view(list<package_view_item> &format,
 	    if(thetree.valid())
 	      e->commit_changes.connect(sigc::mem_fun(*thetree.unsafe_get_ref(), &cw::tree::line_down));
 
-	    m->add_visible_widget(e, false);
-	    m->add_visible_widget(wt, true);
-	    m->add_visible_widget(lt, true);
-	    m->add_visible_widget(why_table, true);
+	    m->add_widget(e, W_("Hierarchy Editor"));
+
+	    m->add_widget(wt, W_("Description"));
+	    wt->show_all();
+
+	    m->add_widget(lt, W_("Related Dependencies"));
+	    lt->show_all();
+
+	    m->add_widget(why_table, W_("Why Installed"));
+	    why_table->show_all();
+
+	    aptcfg->connect(PACKAGE "::UI::InfoAreaTabs",
+			    sigc::bind(sigc::ptr_fun(&do_update_info_area_show_tabs),
+				       m.weak_ref()));
+	    m->set_show_tabs(aptcfg->FindB(PACKAGE "::UI::InfoAreaTabs", false));
 
 	    if(show_reason_first)
 	      lt->show();
