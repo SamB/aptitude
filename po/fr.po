@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-04-11 09:13-0700\n"
-"PO-Revision-Date: 2008-03-30 20:20+0200\n"
+"PO-Revision-Date: 2008-04-12 19:00+0200\n"
 "Last-Translator: Christian Perrier <bubulle@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -3319,71 +3319,61 @@ msgid "Compiler: g++ %s\n"
 msgstr "Compilateur : g++ %s\n"
 
 #: src/main.cc:111
-#, fuzzy
 msgid "Compiled against:\n"
-msgstr "Compilateur : g++ %s\n"
+msgstr "Compilé avec :\n"
 
 #: src/main.cc:112
-#, fuzzy, c-format
+#, c-format
 msgid "  apt version %d.%d.%d\n"
-msgstr "Conserver %F à la version %s (%s)"
+msgstr "  version d'APT : %d %d %d\n"
 
 #: src/main.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: Unknown\n"
-msgstr ""
-"\n"
-"Version de NCurses : %s\n"
+msgstr "  version de NCurses : inconnue\n"
 
 #: src/main.cc:117
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version %s\n"
-msgstr ""
-"\n"
-"Version de NCurses : %s\n"
+msgstr "  version de NCurses : %s\n"
 
 #: src/main.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "  libsigc++ version: %s\n"
-msgstr "Version de libsigc++ : %s\n"
+msgstr "  version de libsigc++ : %s\n"
 
 #: src/main.cc:121
-#, fuzzy, c-format
+#, c-format
 msgid "  Ept support enabled.\n"
-msgstr "Gestion d'Ept activée.\n"
+msgstr "  gestion d'Ept activée.\n"
 
 #: src/main.cc:123
-#, fuzzy, c-format
+#, c-format
 msgid "  Ept support disabled.\n"
-msgstr "Gestion d'Ept désactivée.\n"
+msgstr "  gestion d'Ept désactivée.\n"
 
 #: src/main.cc:126
-#, fuzzy
 msgid ""
 "\n"
 "Current library versions:\n"
 msgstr ""
 "\n"
-"Version de Curses : %s\n"
+"versions des bibliothèques :\n"
 
 #: src/main.cc:127
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: %s\n"
-msgstr ""
-"\n"
-"Version de NCurses : %s\n"
+msgstr "  version de NCurses : %s\n"
 
 #: src/main.cc:128
-#, fuzzy, c-format
+#, c-format
 msgid "  cwidget version: %s\n"
-msgstr "Version de libsigc++ : %s\n"
+msgstr "  version de cwidget : %s\n"
 
 #: src/main.cc:129
-#, fuzzy, c-format
+#, c-format
 msgid "  Apt version: %s\n"
-msgstr ""
-"\n"
-"Version de Curses : %s\n"
+msgstr "  version d'APT : %s\n"
 
 #: src/main.cc:135
 #, c-format
@@ -3516,20 +3506,18 @@ msgstr ""
 "                installé\n"
 
 #: src/main.cc:159
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 msgstr ""
-" -Z             Afficher la modification de la taille de chacun des paquets\n"
-"                après installation.\n"
+" why          - Montrer les paquets installés manuellement qui ont besoin\n"
+"                d'un paquet, ou raison pour laquelle un ou plusieurs\n"
 
 #: src/main.cc:160
-#, fuzzy, c-format
-msgid ""
-"              - why one or more packages would require the given package\n"
-msgstr ""
-" -V             Afficher quelles versions des paquets vont être installées.\n"
+#, c-format
+msgid "              - why one or more packages would require the given package\n"
+msgstr "                paquets requièrent le paquet en question\n"
 
 #: src/main.cc:161
 #, c-format
@@ -3537,19 +3525,18 @@ msgid ""
 " why-not      - Show the manually installed packages that lead to a "
 "conflict\n"
 msgstr ""
+" why-not      - Montrer les paquets installés manuellement qui créent\n"
+"                un conflitavec le paquet en question, ou la raison\n"
 
 #: src/main.cc:162
 #, c-format
-msgid ""
-"                with the given package, or why one or more packages would\n"
-msgstr ""
+msgid "                with the given package, or why one or more packages would\n"
+msgstr "                pour laquelle un ou plusieurs paquets créeraient un\n"
 
 #: src/main.cc:163
-#, fuzzy, c-format
-msgid ""
-"                lead to a conflict with the given package if installed\n"
-msgstr ""
-" -V             Afficher quelles versions des paquets vont être installées.\n"
+#, c-format
+msgid "                lead to a conflict with the given package if installed\n"
+msgstr "                 conflit si le paquet en question était installé\n"
 
 #: src/main.cc:165
 #, c-format
@@ -3646,17 +3633,16 @@ msgstr ""
 "                installé\n"
 
 #: src/main.cc:180
-#, fuzzy, c-format
-msgid ""
-" -q             In command-line mode, suppress the incremental progress\n"
+#, c-format
+msgid " -q             In command-line mode, suppress the incremental progress\n"
 msgstr ""
 " -q             En mode ligne de commande, supprimer l'indicateur "
 "d'avancement.\n"
 
 #: src/main.cc:181
-#, fuzzy, c-format
+#, c-format
 msgid "                indicators.\n"
-msgstr " -h             Afficher ce texte d'aide\n"
+msgstr "                indicateurs.\n"
 
 #: src/main.cc:182
 #, c-format
@@ -5230,14 +5216,13 @@ msgid "Recommendations"
 msgstr "Recommandations"
 
 #: src/ui.cc:970
-#, fuzzy
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
 "is free software, and you are welcome to redistribute it under certain "
 "conditions; see 'license' for details."
 msgstr ""
-"Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%nAptitude est fourni %"
+"Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%nAptitude est fourni %"
 "BABSOLUMENT SANS AUCUNE GARANTIE%b ; pour plus de détails voir « licence » "
 "dans le menu d'Aide. Ceci est un logiciel libre et vous êtes encouragé à le "
 "redistribuer sous certaines conditions ; consulter la « licence » pour plus "
@@ -6088,7 +6073,4 @@ msgstr "Téléchargement du fichier « Changelog »"
 #: src/view_changelog.cc:242
 msgid "Download Changelog"
 msgstr "Téléchargement du fichier « Changelog »"
-
-#~ msgid "There are now %F."
-#~ msgstr "Il y a maintenant %F."
 
