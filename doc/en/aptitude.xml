@@ -572,9 +572,9 @@
 	    To build aptitude from the Mercurial repository, you must
 	    have the programs <systemitem>autoconf</systemitem> and
 	    <systemitem>automake</systemitem> installed.  Type
-	    <command>sh ./autogen.sh</command> to generate the files
-	    needed to compile &aptitude;, then execute
-	    <command>make</command> and <command>make
+	    <command>sh ./autogen.sh &amp;&amp; ./configure</command>
+	    to generate the files needed to compile &aptitude;, then
+	    execute <command>make</command> and <command>make
 	    install</command>.
 	  </para>
 	</section>
