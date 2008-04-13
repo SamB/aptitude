@@ -450,8 +450,35 @@
 	      <listitem>
 		<para>
 		  The <systemitem>libsigc++-2.0</systemitem> library,
-		  available from <ulink
+		  available in the package
+		  <systemitem>libsigc++-2.0-dev</systemitem> or from
+		  <ulink
 		  url='http://libsigc.sourceforge.net'></ulink>.
+		</para>
+	      </listitem>
+
+	      <listitem>
+		<para>
+		  The <systemitem>cwidget</systemitem> library,
+		  available in the package
+		  <systemitem>libcwidget-dev</systemitem> or from
+		  <ulink
+		  url='http://cwidget.alioth.debian.org'></ulink>.
+		</para>
+	      </listitem>
+
+	      <listitem>
+		<para>
+		  The <systemitem>gettext</systemitem> program, which
+		  should be included with your Linux distribution.
+		</para>
+	      </listitem>
+
+	      <listitem>
+		<para>
+		  A <systemitem>make</systemitem> tool, such as <ulink
+		  url='http://www.gnu.org/software/make'>GNU
+		  make</ulink>.
 		</para>
 	      </listitem>
 
@@ -572,9 +599,9 @@
 	    To build aptitude from the Mercurial repository, you must
 	    have the programs <systemitem>autoconf</systemitem> and
 	    <systemitem>automake</systemitem> installed.  Type
-	    <command>sh ./autogen.sh</command> to generate the files
-	    needed to compile &aptitude;, then execute
-	    <command>make</command> and <command>make
+	    <command>sh ./autogen.sh &amp;&amp; ./configure</command>
+	    to generate the files needed to compile &aptitude;, then
+	    execute <command>make</command> and <command>make
 	    install</command>.
 	  </para>
 	</section>
