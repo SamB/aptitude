@@ -156,11 +156,11 @@ static void usage()
   printf(_(" changelog    - View a package's changelog\n"));
   printf(_(" download     - Download the .deb file for a package\n"));
   printf(_(" reinstall    - Download and (possibly) reinstall a currently installed package\n"));
-  printf(_(" why          - Show the manually installed packages that require a package, or\n"));
-  printf(_("              - why one or more packages would require the given package\n"));
-  printf(_(" why-not      - Show the manually installed packages that lead to a conflict\n"));
-  printf(_("                with the given package, or why one or more packages would\n"));
-  printf(_("                lead to a conflict with the given package if installed\n"));
+  printf(_(" why          - Show the manually installed packages that require a package, or\n"
+           "              - why one or more packages would require the given package\n"));
+  printf(_(" why-not      - Show the manually installed packages that lead to a conflict\n"
+           "                with the given package, or why one or more packages would\n"
+           "                lead to a conflict with the given package if installed\n"));
   printf("\n");
   printf(_("  Options:\n"));
   printf(_(" -h             This help text\n"));
@@ -177,10 +177,11 @@ static void usage()
   printf(_(" -Z             Show the change in installed size of each package.\n"));
   printf(_(" -v             Display extra information. (may be supplied multiple times)\n"));
   printf(_(" -t [release]   Set the release from which packages should be installed\n"));
-  printf(_(" -q             In command-line mode, suppress the incremental progress\n"));
-  printf(_("                indicators.\n"));
+  printf(_(" -q             In command-line mode, suppress the incremental progress\n"
+           "                indicators.\n"));
   printf(_(" -o key=val     Directly set the configuration option named 'key'\n"));
-  printf(_(" --with(out)-recommends	Specify whether or not to treat recommends as\n                strong dependencies\n"));
+  printf(_(" --with(out)-recommends	Specify whether or not to treat recommends as\n"
+           "                strong dependencies\n"));
   printf(_(" -S fname       Read the aptitude extended status info from fname.\n"));
   printf(_(" -u             Download new package lists on startup.\n"));
   printf(_(" -i             Perform an install run on startup.\n"));
