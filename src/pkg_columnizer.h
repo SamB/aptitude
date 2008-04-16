@@ -17,14 +17,21 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  The rather hefty pkg_columnizer class and associated data (eg, info about
-// column sizes) lives here.
 
 #ifndef PKG_COLUMNIZER_H
 #define PKG_COLUMNIZER_H
 
 #include "pkg_item.h"
 #include <cwidget/config/column_definition.h>
+
+/** \brief pkg_columnizer class and associated data
+ *
+ * 
+ *  The rather hefty pkg_columnizer class and associated data (eg, info about
+ *  column sizes) lives here.
+ * 
+ *  \file pkg_columnizer.h
+ */
 
 class pkg_item::pkg_columnizer : public cwidget::config::column_generator
 {

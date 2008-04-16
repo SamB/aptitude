@@ -27,6 +27,9 @@
 
 #include <sigc++/slot.h>
 
+/** \file download_thread.h
+ */
+
 class download_manager;
 class download_signal_log;
 

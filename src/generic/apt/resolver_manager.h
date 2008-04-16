@@ -17,12 +17,7 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// A higher-level resolver interface.  This code is responsible for
-// maintaining a list of previously observed solutions, for passing
-// certain actions on to the underlying resolver (protecting users
-// from having to actually import the whole resolver definition), for
-// managing the resolver in the face of cache reloads and resets, and
-// for managing threaded access to the resolver.
+
 
 #ifndef RESOLVER_MANAGER_H
 #define RESOLVER_MANAGER_H
@@ -39,6 +34,19 @@
 #include <queue>
 #include <set>
 #include <vector>
+
+/** \brief A higher-level resolver interface
+ *
+ * 
+ *  A higher-level resolver interface. This code is responsible for
+ *  maintaining a list of previously observed solutions, for passing
+ *  certain actions on to the underlying resolver (protecting users
+ *  from having to actually import the whole resolver definition), for
+ *  managing the resolver in the face of cache reloads and resets, and
+ *  for managing threaded access to the resolver.
+ * 
+ *  \file resolver_manager.h
+ */
 
 class aptitude_universe;
 class aptitude_resolver_package;

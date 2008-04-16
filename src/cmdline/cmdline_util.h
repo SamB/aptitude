@@ -14,6 +14,9 @@
 
 #include <apt-pkg/srcrecords.h>
 
+/** \file cmdline_util.h
+ */
+
 void cmdline_show_pkglist(pkgvector &items);
 void cmdline_show_stringlist(strvector &items);
 

@@ -2,7 +2,6 @@
 //
 //  Copyright 2004 Daniel Burrows
 //
-// Code to convert a list of reasons to text fragments.
 
 #ifndef REASON_FRAGMENT_H
 #define REASON_FRAGMENT_H
@@ -10,6 +9,11 @@
 #include <apt-pkg/pkgcache.h>
 
 #include <generic/apt/infer_reason.h>
+
+/** \brief Code to convert a list of reasons to text fragments.
+ * 
+ *  \file reason_fragment.h
+ */
 
 namespace cwidget
 {

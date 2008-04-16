@@ -17,12 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-//  Classes that mediate between the configuration layer and the user
-//  interface layer.  Past versions of this file used multiple
-//  inheritance, but in order to handle memory management in an
-//  obvious and safe way, I modified this to explicitly make the
-//  UI-layer objects public members of the config-layer objects.  This
-//  is arguably cleaner anyway.
 
 #ifndef APT_CONFIG_WIDGETS_H
 #define APT_CONFIG_WIDGETS_H
@@ -35,6 +29,20 @@
 
 #include <string>
 #include <vector>
+
+/** \brief Classes that mediate between the configuration layer and the user
+ *  interface layer
+ *
+ * 
+ *  Classes that mediate between the configuration layer and the user
+ *  interface layer.  Past versions of this file used multiple
+ *  inheritance, but in order to handle memory management in an
+ *  obvious and safe way, I modified this to explicitly make the
+ *  UI-layer objects public members of the config-layer objects.  This
+ *  is arguably cleaner anyway.
+ * 
+ *  \file apt_config_widgets.h
+ */
 
 // This basically just provides a generic interface to commit changes
 // to apt options.

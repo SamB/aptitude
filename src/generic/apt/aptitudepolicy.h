@@ -2,8 +2,6 @@
 //
 //  Copyright 2001 Daniel Burrows
 //
-//  A policy class that allows Recommends and Suggests to be treated as
-// "always important", "important for new installs", or "never important".
 
 #ifndef APTITUDEPOLICY_H
 #define APTITUDEPOLICY_H
@@ -13,6 +11,12 @@
 #endif
 
 #include <apt-pkg/policy.h>
+
+/** \brief A policy class that allows Recommends and Suggests to be treated as
+ *  "always important", "important for new installs", or "never important".
+ * 
+ *  \file aptitudepolicy.h
+ */
 
 class aptitudePolicy:public pkgPolicy
 {

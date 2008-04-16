@@ -2,9 +2,6 @@
 //
 //  Copyright 2000,2001 Daniel Burrows
 //
-//  Global UI definitions and routines.  A lot of things here just provide a
-// single point for common actions so those actions can be customized later.
-// (eg, the progress-bar can appear in various forms)
 
 #ifndef UI_H
 #define UI_H
@@ -19,6 +16,16 @@
 #include <cwidget/generic/util/slotarg.h>
 
 #include <cwidget/widgets/editline.h> // Included for history support.
+
+/** \brief Global UI definitions and routines
+ *
+ * 
+ *  Global UI definitions and routines.  A lot of things here just provide a
+ *  single point for common actions so those actions can be customized later.
+ *  (eg, the progress-bar can appear in various forms)
+ * 
+ *  \file ui.h
+ */
 
 class OpProgress;
 

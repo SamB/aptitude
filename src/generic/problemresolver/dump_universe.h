@@ -22,6 +22,9 @@
 
 #include <iostream>
 
+/** \file dump_universe.h
+ */
+
 template<class PackageUniverse>
 void dump_universe(const PackageUniverse &world, std::ostream &out)
 {

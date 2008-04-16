@@ -17,7 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// A cwidget::widgets::tree augmented with the ability to act as a menu redirector.
 
 #ifndef MENU_TREE
 #define MENU_TREE
@@ -27,6 +26,11 @@
 #include <cwidget/widgets/editline.h>
 
 #include <cwidget/widgets/tree.h>
+
+/** \brief A cwidget::widgets::tree augmented with the ability to act as a menu redirector.
+ * 
+ *  \file menu_tree.h
+ */
 
 namespace aptitude
 {

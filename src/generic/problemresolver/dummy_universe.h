@@ -17,8 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// A package dependency universe that's not terribly efficient, but
-// easy to set up for testing.
 
 #ifndef DUMMY_UNIVERSE_H
 #define DUMMY_UNIVERSE_H
@@ -31,6 +29,15 @@
 
 #include <cwidget/generic/util/eassert.h>
 #include <cwidget/generic/util/exception.h>
+
+/** \brief A package dependency universe
+ *
+ * 
+ *  A package dependency universe that's not terribly efficient, but
+ *  easy to set up for testing.
+ * 
+ *  \file dummy_universe.h
+ */
 
 // An error type that's thrown when a name lookup fails.
 class NoSuchNameError : public cwidget::util::Exception

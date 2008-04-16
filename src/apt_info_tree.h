@@ -17,15 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-//  Abstracts a tree which displays information about a particular package (and
-// optionally version).  The only thing that's special about this class is
-// that it can sanely restore its state after the apt cache has been flushed.
-//
-//  IMPORTANT NOTE: this assumes that simply deleting its root will be enough
-// to avoid segfaults while the cache is not valid.  Children that need more
-// assurances should connect to cache_closed themselves.  (FIXME: add a hook
-// in this class to avoid spiralling numbers of signal connections?  Good or bad
-// idea?)
 
 #ifndef APT_INFO_TREE_H
 #define APT_INFO_TREE_H
@@ -34,6 +25,22 @@
 
 #include <apt-pkg/pkgcache.h>
 #include <string>
+
+/** \brief Abstracts a tree which displays information about a particular package
+ *
+ * 
+ *  Abstracts a tree which displays information about a particular package (and
+ *  optionally version).  The only thing that's special about this class is
+ *  that it can sanely restore its state after the apt cache has been flushed.
+ *
+ *  IMPORTANT NOTE: this assumes that simply deleting its root will be enough
+ *  to avoid segfaults while the cache is not valid.  Children that need more
+ *  assurances should connect to cache_closed themselves.  (FIXME: add a hook
+ *  in this class to avoid spiralling numbers of signal connections?  Good or bad
+ *  idea?)
+ * 
+ *  \file apt_info_tree.h
+ */
 
 class apt_info_tree:public apt_undo_tree
 {

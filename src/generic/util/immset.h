@@ -17,18 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// This file defines a class to represent immutable sets.  These sets
-// behave like std::set, except that their contents cannot be changed;
-// they have no erase() or insert() operators, and only
-// const_iterators [0].  This restriction allows immutable sets to be
-// implemented in a way that makes both copying and creating a new set
-// by adding an element very efficient (O(1) and O(lg n) respectively;
-// with std::set these are both O(n)).
-//
-// [0] this refers to the wtree_node class; imm::set is a wrapper
-// around a wtree_node pointer that emulates a mutative interface by
-// creating a new tree and modifying its encapsulated pointer to point
-// there instead.
 
 #ifndef IMMSET_H
 #define IMMSET_H
@@ -37,6 +25,25 @@
 #include <iostream>
 
 #include <vector>
+
+/** \brief A class to represent immutable sets
+ *
+ * 
+ *  This file defines a class to represent immutable sets.  These sets
+ *  behave like std::set, except that their contents cannot be changed;
+ *  they have no erase() or insert() operators, and only
+ *  const_iterators [0].  This restriction allows immutable sets to be
+ *  implemented in a way that makes both copying and creating a new set
+ *  by adding an element very efficient (O(1) and O(lg n) respectively;
+ *  with std::set these are both O(n)).
+ *  
+ *  [0] this refers to the wtree_node class; imm::set is a wrapper
+ *  around a wtree_node pointer that emulates a mutative interface by
+ *  creating a new tree and modifying its encapsulated pointer to point
+ *  there instead.
+ * 
+ *  \file immset.h
+ */
 
 namespace imm
 {

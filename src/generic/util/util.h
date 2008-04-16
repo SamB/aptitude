@@ -24,6 +24,9 @@
 #include <utility>
 #include <vector>
 
+/** \file util.h
+ */
+
 struct tm;
 
 // Strip whitespace from the beginning and end of a string.

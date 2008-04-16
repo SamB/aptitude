@@ -1,4 +1,4 @@
-// cmdline-prompt.h                     -*-c++-*-
+// cmdline_prompt.h                     -*-c++-*-
 //
 //  Copyright 2004 Daniel Burrows
 
@@ -8,6 +8,9 @@
 #include "cmdline_common.h"
 
 #include <cwidget/generic/util/exception.h>
+
+/** \file cmdline_prompt.h
+ */
 
 class pkgPolicy;
 

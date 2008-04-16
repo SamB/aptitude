@@ -17,7 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-//  A better download manager.  (..finally..)
 
 #ifndef DOWNLOAD_LIST_H
 #define DOWNLOAD_LIST_H
@@ -32,6 +31,14 @@
 #include <cwidget/widgets/widget.h>
 
 #include <time.h>
+
+/** \brief A download manager
+ *
+ * 
+ *  A better download manager.  (..finally..)
+ * 
+ *  \file download_list.h
+ */
 
 class download_signal_log;
 

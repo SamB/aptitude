@@ -17,7 +17,7 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  Routines to download a Debian changelog for a given package.
+
 
 #ifndef PKG_CHANGELOG_H
 #define PKG_CHANGELOG_H
@@ -29,6 +29,11 @@
 #include <apt-pkg/pkgcache.h>
 
 #include <sigc++/slot.h>
+
+/** \brief Routines to download a Debian changelog for a given package.
+ *
+ *  \file pkg_changelog.h
+ */
 
 class download_manager;
 

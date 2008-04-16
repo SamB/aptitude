@@ -1,13 +1,5 @@
 // aptcache.h  -*-c++-*-
 //
-//  Replacements for the Apt cache and dependency cache file classes.  Those
-// are lacking in a couple of crucial ways (eg: persistent state), so I
-// have to come up with my own set of routines.. :(
-//
-//  In order to track the appropriate package information, we must keep our
-// own file (I think..apt doesn't have hooks for adding stuff..) containing
-// that information, properly lock/unlock it, etc.
-//
 //  Copyright 1999-2005, 2007-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -42,6 +34,20 @@
 #include <map>
 #include <set>
 #include <vector>
+
+/** \brief Replacements for the Apt cache and dependency cache file classes
+ * 
+ * 
+ *  Replacements for the Apt cache and dependency cache file classes.  Those
+ *  are lacking in a couple of crucial ways (eg: persistent state), so I
+ *  have to come up with my own set of routines.. :(
+ *  
+ *  In order to track the appropriate package information, we must keep our
+ *  own file (I think..apt doesn't have hooks for adding stuff..) containing
+ *  that information, properly lock/unlock it, etc.
+ * 
+ * \file aptcache.h
+ */
 
 class undoable;
 class undo_group;

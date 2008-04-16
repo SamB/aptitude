@@ -7,6 +7,9 @@
 
 #include "cmdline_common.h"
 
+/** \file cmdline_simulate.h
+ */
+
 class pkgPolicy;
 
 /** Simulate an install run.  to_install and friends are meant to be

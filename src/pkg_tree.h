@@ -17,9 +17,7 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  Uses the cwidget::widgets::tree classes to display a tree containing packages.  A generic
-// version of this, suitable only for displaying the current state of the
-// package cache, is provided; it can be extended as needed.
+
 
 #ifndef PKG_TREE_H
 #define PKG_TREE_H
@@ -27,6 +25,16 @@
 #include "apt_undo_tree.h"
 
 #include <apt-pkg/pkgcache.h>
+
+/** \brief Uses the cwidget::widgets::tree classes to display a tree containing packages
+ *
+ * 
+ *  Uses the cwidget::widgets::tree classes to display a tree containing packages.  A generic
+ *  version of this, suitable only for displaying the current state of the
+ *  package cache, is provided; it can be extended as needed.
+ * 
+ *  \file pkg_tree.h
+ */
 
 class OpProgress;
 

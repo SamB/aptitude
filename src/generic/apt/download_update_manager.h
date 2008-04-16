@@ -26,6 +26,9 @@
 
 #include <sigc++/signal.h>
 
+/** \file download_update_manager.h
+ */
+
 class download_signal_log;
 
 /** A class that handles updating the package lists. */

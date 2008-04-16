@@ -1,23 +1,8 @@
-// pkg-hier.h               -*-c++-*-
+// pkg_hier.h               -*-c++-*-
 //
 //  Copyright 2001 Daniel Burrows
 //
-//  This file allows a "package hierarchy" as described in README.hier to
-// be loaded and constructed.  Any number of files can be read into the
-// database; then, the database is "realized" as a tree using two virtual
-// callback routines.  (you should override them in a subclass to get
-// any specific behavior you need)
-//
-//  Important note: once you start "realizing" the database, adding new
-// nodes via input_file results in undefined behavior.
-//
-//  Second important note: Mixing top-down and bottom-up realization results
-// in undefined behavior.
-//
-//  With the bottom-up realization, the caller may manually set a "seen"
-// flag on a group to make it appear to be a "root".  (the caller should
-// also set the node_data values if this is doine)  Also, for root nodes,
-// realize_* will be called with a NULL parent_data argument.
+
 
 #ifndef PKG_HIER_H
 #define PKG_HIER_H
@@ -31,6 +16,30 @@
 
 #include <string>
 #include <vector>
+
+/** \brief This file allows a "package hierarchy" as described in README.hier to
+ *  be loaded and constructed.
+ *
+ * 
+ *  This file allows a "package hierarchy" as described in README.hier to
+ *  be loaded and constructed.  Any number of files can be read into the
+ *  database; then, the database is "realized" as a tree using two virtual
+ *  callback routines.  (you should override them in a subclass to get
+ *  any specific behavior you need)
+ *  
+ *  Important note: once you start "realizing" the database, adding new
+ *  nodes via input_file results in undefined behavior.
+ *  
+ *  Second important note: Mixing top-down and bottom-up realization results
+ *  in undefined behavior.
+ *  
+ *  With the bottom-up realization, the caller may manually set a "seen"
+ *  flag on a group to make it appear to be a "root".  (the caller should
+ *  also set the node_data values if this is doine)  Also, for root nodes,
+ *  realize_* will be called with a NULL parent_data argument.
+ * 
+ *  \file pkg_hier.h
+ */
 
 class pkg_hier
 {

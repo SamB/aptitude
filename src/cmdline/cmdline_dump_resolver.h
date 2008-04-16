@@ -20,6 +20,9 @@
 #ifndef CMDLINE_DUMP_RESOLVER
 #define CMDLINE_DUMP_RESOLVER
 
+/** \file cmdline_dump_resolver.h
+ */
+
 int cmdline_dump_resolver(int argc, char *argv[], const char *status_fname);
 
 #endif

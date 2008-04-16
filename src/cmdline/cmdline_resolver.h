@@ -25,6 +25,10 @@
 // We need these two to declare get_current_solution().
 //#include <generic/apt/aptitude_resolver_universe.h>
 #include <generic/problemresolver/solution.h>
+
+/** \file cmdline_resolver.h
+ */
+
 class aptitude_universe;
 
 class pkgPolicy;

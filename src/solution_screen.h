@@ -22,6 +22,9 @@
 
 #include <cwidget/generic/util/ref_ptr.h>
 
+/** \file solution_screen.h
+ */
+
 class aptitude_universe;
 template<class PackageUniverse> class generic_solution;
 namespace cwidget

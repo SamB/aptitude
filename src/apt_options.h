@@ -2,10 +2,14 @@
 //
 //  Copyright 2000 Daniel Burrows
 //
-//  The main options dialog
 
 #ifndef APT_OPTIONS_H
 #define APT_OPTIONS_H
+
+/** \brief The main options dialog
+ * 
+ *  \file apt_options.h
+ */
 
 namespace cwidget
 {

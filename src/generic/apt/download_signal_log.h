@@ -17,9 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-//  A class that sits there emitting signals about the current
-// download status, and can be queried for specific info about that
-// status.
 
 #ifndef DOWNLOAD_SIGNAL_LOG_H
 #define DOWNLOAD_SIGNAL_LOG_H
@@ -30,6 +27,13 @@
 
 #include "aptitude.h"
 #include <cwidget/generic/util/ref_ptr.h>
+
+/** \brief A class that sits there emitting signals about the current
+ *  download status, and can be queried for specific info about that
+ *  status.
+ *
+ *  \file download_signal_log.h
+ */
 
 /** A download-signal log translates AcquireStatus calls into signals.
  *  Typically only one slot will be attached to each signal, but this

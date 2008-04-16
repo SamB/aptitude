@@ -17,7 +17,6 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  A tree item which represents a package.
 
 #ifndef PKG_ITEM_H
 #define PKG_ITEM_H
@@ -27,6 +26,11 @@
 #include <apt-pkg/pkgcache.h>
 
 #include <sigc++/signal.h>
+
+/** \brief A tree item which represents a package
+ * 
+ *  \file pkg_item.h
+ */
 
 /** A tree item which represents a package. */
 class pkg_item:public pkg_tree_node

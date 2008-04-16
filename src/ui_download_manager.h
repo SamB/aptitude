@@ -17,8 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// Glue code to go between the UI and the download manager/thread
-// stuff.
 
 #ifndef UI_DOWNLOAD_MANAGER_H
 #define UI_DOWNLOAD_MANAGER_H
@@ -31,6 +29,11 @@
 
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
+
+/** \brief  Glue code to go between the UI and the download manager/thread stuff
+ * 
+ *  \file ui_download_manager.h
+ */
 
 class download_manager;
 class download_signal_log;

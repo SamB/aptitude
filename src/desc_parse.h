@@ -24,6 +24,9 @@
 
 #include <apt-pkg/pkgcache.h>
 
+/** \file desc_parse.h
+ */
+
 namespace cwidget
 {
   class fragment;

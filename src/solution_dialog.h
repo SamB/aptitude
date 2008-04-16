@@ -17,10 +17,14 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// Display the current solution.
 
 #ifndef SOLUTION_DIALOG_H
 #define SOLUTION_DIALOG_H
+
+/** \brief Display the current solution
+ * 
+ *  \file solution_dialog.h
+ */
 
 namespace cwidget
 {

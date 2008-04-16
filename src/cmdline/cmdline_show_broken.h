@@ -5,6 +5,9 @@
 #ifndef CMDLINE_SHOW_BROKEN_H
 #define CMDLINE_SHOW_BROKEN_H
 
+/** \file cmdline_show_broken.h
+ */
+
 /** Shows a list of all broken packages together with their
  *  dependencies.  Similar to and based on the equivalent routine in
  *  apt-get.

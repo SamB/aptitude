@@ -17,10 +17,7 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  Argh.  It seems that it's pretty much necessary to have a central
-// repository for apt structures -- the cache in particular.  This is it.
-// No class wrapper because, well, the cache is already a class and you can't
-// open more than one at once, so there :)
+
 
 #ifndef APT_H
 #define APT_H
@@ -30,6 +27,17 @@
 #include <string.h>
 
 #include <utility>
+
+/** \brief Central repository for apt structures
+ *
+ * 
+ *  Argh.  It seems that it's pretty much necessary to have a central
+ *  repository for apt structures -- the cache in particular.  This is it.
+ *  No class wrapper because, well, the cache is already a class and you can't
+ *  open more than one at once, so there :)
+ * 
+ *  \file apt.h
+ */
 
 class OpProgress;
 class pkgRecords;

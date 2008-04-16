@@ -17,11 +17,16 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// Generates a (hopefully) unobtrusive hint about how to use the
-// problem resolver.
+
 
 #ifndef BROKEN_INDICATOR_H
 #define BROKEN_INDICATOR_H
+
+/** \brief Generates a (hopefully) unobtrusive hint about how to use the
+ *  problem resolver.
+ * 
+ *  \file broken_indicator.h
+ */
 
 namespace cwidget
 {

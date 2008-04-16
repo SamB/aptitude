@@ -7,6 +7,9 @@
 
 #include <string>
 
+/** \file load_sortpolicy.h
+ */
+
 class pkg_sortpolicy;
 
 pkg_sortpolicy *parse_sortpolicy(std::string s);

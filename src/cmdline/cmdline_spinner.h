@@ -17,12 +17,16 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-//  A generic spinner (for use with the background resolver).
 
 #ifndef CMDLINE_SPINNER_H
 #define CMDLINE_SPINNER_H
 
 #include <string>
+
+/** \brief A generic spinner (for use with the background resolver)
+ * 
+ *  \file cmdline_spinner.h
+ */
 
 /** A spinner for command-line output. */
 class cmdline_spinner

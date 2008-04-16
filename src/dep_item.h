@@ -17,7 +17,6 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  An dependency chart for a package.
 
 #ifndef DEP_ITEM_H
 #define DEP_ITEM_H
@@ -29,6 +28,11 @@
 #include "pkg_item.h"
 #include "pkg_subtree.h"
 #include "pkg_item_with_subtree.h"
+
+/** \brief A dependency chart for a package.
+ * 
+ *  \file dep_item.h
+ */
 
 // Inserts subtrees ("Depends", "Recommends", etc) for the package's
 // dependencies into the given tree.  You can template it to use either

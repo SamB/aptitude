@@ -7,6 +7,9 @@
 
 #include "cmdline_common.h"
 
+/** \file cmdline_action.h
+ */
+
 class pkgPolicy;
 
 /// \todo The command-line state should probably be encapsulated

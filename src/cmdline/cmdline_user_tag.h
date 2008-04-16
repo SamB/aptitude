@@ -20,6 +20,9 @@
 #ifndef CMDLINE_USER_TAG_H
 #define CMDLINE_USER_TAG_H
 
+/** \file cmdline_user_tag.h
+ */
+
 namespace aptitude
 {
   namespace cmdline

@@ -2,12 +2,16 @@
 //
 //  Copyright 2004 Daniel Burrows
 //
-//  Various routines dealing with messages about package trust.
 
 #ifndef TRUST_H
 #define TRUST_H
 
 #include <apt-pkg/pkgcache.h>
+
+/** \brief Various routines dealing with messages about package trust.
+ * 
+ *  \file trust.h
+ */
 
 namespace cwidget
 {

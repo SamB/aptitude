@@ -35,6 +35,9 @@
 
 #include <generic/util/immset.h>
 
+/** \file cmdline_why.h
+ */
+
 /** \brief Explain why a package is installed or conflicted against.
  *
  *  aptitude why A1 [A2 ...] B

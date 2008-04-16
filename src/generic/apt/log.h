@@ -17,10 +17,14 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-//  A routine to write aptitude's automatic installation log.
 
 #ifndef LOG_H
 #define LOG_H
+
+/** \brief A routine to write aptitude's automatic installation log.
+ *
+ *  \file log.h
+ */
 
 /** Look up the log file's location in the apt configuration, and
  *  write a log stanza to it.

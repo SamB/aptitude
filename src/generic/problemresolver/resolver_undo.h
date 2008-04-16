@@ -17,13 +17,20 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// Undo items related to the resolver.  (Q: these could be unified
-// into a single item based on slots or somesuch?)
 
 #ifndef RESOLVER_UNDO_H
 #define RESOLVER_UNDO_H
 
 #include <generic/util/undo.h>
+
+/** \brief Undo items related to the resolver
+ *
+ * 
+ * Undo items related to the resolver.  (Q: these could be unified
+ * into a single item based on slots or somesuch?)
+ * 
+ *  \file resolver_undo.h
+ */
 
 template<typename PackageUniverse>
 class generic_problem_resolver;

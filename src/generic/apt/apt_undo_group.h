@@ -7,6 +7,9 @@
 
 #include <generic/util/undo.h>
 
+/** \file apt_undo_group.h
+ */
+
 /** An undo group that will call begin_action_group() and
  *  end_action_group() on the apt cache.  The apt cache is accessed
  *  via the global variable apt_cache_file.

@@ -20,6 +20,9 @@
 #ifndef MUT_FUN_H
 #define MUT_FUN_H
 
+/** \file mut_fun.h
+ */
+
 /** A functor that assigns a value to a variable when it is
  *  triggered.
  */

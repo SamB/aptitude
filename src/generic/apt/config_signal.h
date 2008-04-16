@@ -1,36 +1,6 @@
 // config_signal.h			-*-c++-*-
 //
-//  A framework for signals that are based on the apt configuration
-// code.  This uses a thin wrapper around the apt Configuration class.
-//
-//  This works in large part because apt-pkg itself does not (thankfully)
-// modify configuration items after it is initialized.
-//
-//  Important note: this configuration class supports "transparent themes".
-//  If PACKAGE::Theme is set, Find*(key) operations will look up key,
-// followed by PACKAGE::Themes::(PACKAGE::theme)::key.
-//
-//  This only breaks for things that use Tree -- which means that such code
-// might need to explicitly understand themes in order to work.  That is: if
-// it is appropriate for two disparate hierarchies to be "merged", you have to
-// do this on your own.  The default Tree call simply uses the theme as
-// a backing store.
-//
-//  IMPORTANT NOTE: setting values in the PACKAGE::Themes hierarchy will
-// not trigger signal emission on "shadowing" nodes!  Because themes are
-// expected to be static, I do not think this is a big deal, but you should
-// be aware of it.
-//
-//  MORE IMPORTANT NOTE: Altering the value of PACKAGE::Theme will
-// not trigger ANY signal emission right now.  (this *will* be a nuisance
-// and I hope to change it eventually)
-//
-//
-//
-//  In order to allow only non-default options to be saved, this does the
-// following (hack :P ) -- it stores TWO configuration dictionaries, updating
-// BOTH whenever an option is set, but only saving from the user's.  (in
-// fact, it uses three -- ouch!)
+
 
 #ifndef CONFIG_SIGNAL_H
 #define CONFIG_SIGNAL_H
@@ -48,6 +18,42 @@
 
 #include <map>
 #include <vector>
+
+/** \brief A framework for signals that are based on the apt configuration code.
+ *
+ * 
+ *  This uses a thin wrapper around the apt Configuration class.
+ *
+ *  This works in large part because apt-pkg itself does not (thankfully)
+ *  modify configuration items after it is initialized.
+ *  
+ *  Important note: this configuration class supports "transparent themes".
+ *  If PACKAGE::Theme is set, Find*(key) operations will look up key,
+ *  followed by PACKAGE::Themes::(PACKAGE::theme)::key.
+ *  
+ *  This only breaks for things that use Tree -- which means that such code
+ *  might need to explicitly understand themes in order to work.  That is: if
+ *  it is appropriate for two disparate hierarchies to be "merged", you have to
+ *  do this on your own.  The default Tree call simply uses the theme as
+ *  a backing store.
+ *  
+ *  IMPORTANT NOTE: setting values in the PACKAGE::Themes hierarchy will
+ *  not trigger signal emission on "shadowing" nodes!  Because themes are
+ *  expected to be static, I do not think this is a big deal, but you should
+ *  be aware of it.
+ *  
+ *  MORE IMPORTANT NOTE: Altering the value of PACKAGE::Theme will
+ *  not trigger ANY signal emission right now.  (this *will* be a nuisance
+ *  and I hope to change it eventually)
+ *  
+ *  
+ *  In order to allow only non-default options to be saved, this does the
+ *  following (hack :P ) -- it stores TWO configuration dictionaries, updating
+ *  BOTH whenever an option is set, but only saving from the user's.  (in
+ *  fact, it uses three -- ouch!)
+ * 
+ * \file config_signal.h
+ */
 
 class signalling_config:public sigc::trackable
 {

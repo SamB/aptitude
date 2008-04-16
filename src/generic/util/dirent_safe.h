@@ -22,6 +22,9 @@
 
 #include <dirent.h>
 
+/** \file dirent_safe.h
+ */
+
 /** \brief A version of dirent that's safe to use with readdir_r
  *  across platforms.
  *

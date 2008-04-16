@@ -17,9 +17,6 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  Gathers information about a package into one
-// spot (pkg_grouppolicy_info_factory) and provides dedicated code to display
-// it (pkg_info_screen)
 
 #ifndef PKG_INFO_SCREEN_H
 #define PKG_INFO_SCREEN_H
@@ -30,6 +27,16 @@
 
 #include <apt-pkg/cacheiterators.h>
 #include <string>
+
+/** \brief Gathers package information and provides code to display it
+ *
+ * 
+ *  Gathers information about a package into one
+ *  spot (pkg_grouppolicy_info_factory) and provides dedicated code to display
+ *  it (pkg_info_screen)
+ * 
+ *  \file pkg_info_screen.h
+ */
 
 class pkg_grouppolicy_info_factory:public pkg_grouppolicy_factory
 {
