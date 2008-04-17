@@ -869,22 +869,27 @@ static void do_new_recommendations_view()
   p->destroy();
 }
 
-static void do_new_flat_view_with_new_bar()
+void do_new_flat_view(OpProgress &progress)
 {
-  progress_ref p = gen_progress_bar();
-
   pkg_grouppolicy_factory *grp = new pkg_grouppolicy_end_factory;
   pkg_tree_ref tree = pkg_tree::create("", grp);
   tree->set_limit(cw::util::transcode("!~v"));
 
   add_main_widget(make_default_view(tree,
-				    &tree->selected_signal,
-				    &tree->selected_desc_signal),
-		  _("Packages"),
-		  _("View available packages and choose actions to perform"),
-		  _("Packages"));
+                                    &tree->selected_signal,
+                                    &tree->selected_desc_signal),
+                  _("Packages"),
+                  _("View available packages and choose actions to perform"),
+                  _("Packages"));
 
-  tree->build_tree(*p.unsafe_get_ref());
+  tree->build_tree(progress);
+}
+
+// For signal connections.
+static void do_new_flat_view_with_new_bar()
+{
+  progress_ref p = gen_progress_bar();
+  do_new_flat_view(*p.unsafe_get_ref());
   p->destroy();
 }
 

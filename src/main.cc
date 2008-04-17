@@ -782,7 +782,11 @@ int main(int argc, char *argv[])
               (*apt_cache_file)->package_category_changed.connect(sigc::ptr_fun(cw::toplevel::update));
             }
 
-          do_new_package_view(*p.unsafe_get_ref());
+	  if(!aptcfg->FindB(PACKAGE "::UI::Flat-View-As-First-View", false))
+	    do_new_package_view(*p.unsafe_get_ref());
+	  else
+	    do_new_flat_view(*p.unsafe_get_ref());
+
           p->destroy();
           p = NULL;
 

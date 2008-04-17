@@ -356,6 +356,9 @@ void do_examine_solution();
 void do_new_package_view(OpProgress &progress);
 // Displays a new package-view.
 
+void do_new_flat_view(OpProgress &progress);
+// Displays a new flat-view.
+
 void do_package_run_or_show_preview();
 // Shows a preview if previews are enabled (and why would you disable them?),
 // otherwise does the same thing as install_or_remove_packages.
