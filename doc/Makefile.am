@@ -9,6 +9,6 @@ dist distdir: po4a-dist
 update-po: po4a-dist
 
 po4a-dist:
-	-@po4a -M utf-8 -k 0 po4a/po4a.cfg
+	-@cd $(srcdir) && po4a -M utf-8 -k 0 po4a/po4a.cfg
 
 endif
