@@ -536,8 +536,9 @@ int main(int argc, char *argv[])
 	}
     }
 
+  int curr_quiet = aptcfg->FindI("quiet", 0);
   if(quiet == 0 && !isatty(1))
-    aptcfg->SetNoUser("quiet", 1);
+    aptcfg->SetNoUser("quiet", std::max(curr_quiet, 1));
   else if(seen_quiet)
     aptcfg->SetNoUser("quiet", quiet);
 
