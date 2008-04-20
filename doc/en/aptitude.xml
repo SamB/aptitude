@@ -4178,6 +4178,40 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	more information on this).
       </para>
 
+      <note>
+	<para>
+	  Text with no leading <quote>?</quote> can also form a search
+	  pattern: &aptitude; will attempt to match it against package
+	  names.  However, because <quote>?</quote> is a regular
+	  expression metacharacter, &aptitude; will
+	  <emphasis>not</emphasis> recognize question marks as a
+	  terminator for these <quote>bare</quote> strings.  For
+	  instance, the search pattern
+	  <quote><literal>apt?name(python)</literal></quote> will not
+	  search for packages whose name contains both
+	  <quote><literal>apt</literal></quote> and
+	  <quote><literal>python</literal></quote>; instead, it will
+	  search for packages whose name matches the regular
+	  expression
+	  <quote><literal>apt?name(python)</literal></quote>.
+	</para>
+      </note>
+
+      <warning>
+	<para>
+	  The behavior of aptitude when given a search pattern without
+	  a leading <quote>?</quote> (or <quote>~</quote>) is provided
+	  as a convenience for interactive use and may change in
+	  future releases; scripts that invoke
+	  <literal>aptitude</literal> should explicitly name the
+	  search strategy they want to use.  That is, scripts should
+	  search for <quote><literal>&Sname;(coq)</literal></quote> or
+	  <quote><literal><link
+	  linkend='searchTermName'>~ncoq</link></literal></quote>
+	  rather than <quote><literal>coq</literal></quote>).
+	</para>
+      </warning>
+
       <section>
 	<title>Searching for strings</title>
 
@@ -4266,14 +4300,16 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</para>
 
 	<para>
-	  When writing a term using its short term,
-	  <quote>whitespace</quote> -- that is, space characters,
+	  When writing a term using its short form, tilde characters
+	  and <quote>whitespace</quote> -- that is, space characters,
 	  tabs, and so on -- will break the term off and start a new
 	  term.  For instance, <quote><literal>~mDaniel
 	  Burrows</literal></quote> will match any package whose
 	  maintainer field contains
 	  <quote><literal>Daniel</literal></quote> and whose name
-	  contains <quote><literal>Burrows</literal></quote>.  To
+	  contains <quote><literal>Burrows</literal></quote>, while
+	  <quote><literal>~i~napt</literal></quote> matches installed
+	  packages whose name contains <literal>apt</literal>.  To
 	  include whitespace characters in the search expression, you
 	  can either place a tilde in front of it (as in
 	  <literal>Daniel~ Burrows</literal>) or place quotation marks
@@ -4292,6 +4328,26 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    </para>
 	  </footnote>
 	</para>
+
+	<note>
+	  <para>
+	    Question marks (<quote><literal>?</literal></quote>) will
+	    <emphasis>not</emphasis> end the short form of a term,
+	    even if they are followed by the name of a search term.
+	    For instance,
+	    <quote><literal>~napt?priority(required)</literal></quote>
+	    will match all packages whose name matches the regular
+	    expression
+	    <quote><literal>apt?priority(required)</literal></quote>.
+	    To combine a short query term with a search term specified
+	    by name, add one or more spaces between the two terms, as
+	    in
+	    <quote><literal>~napt&nbsp;?priority(required)</literal></quote>,
+	    or place quotation marks around the text (if any)
+	    following the short form of a term, as in
+	    <quote><literal>~n"apt"?priority(required)</literal></quote>.
+	  </para>
+	</note>
 
 	<para>
 	  <xref linkend='tableSearchTermQuickGuide'/> lists the short
