@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-04-13 12:18+0200\n"
-"PO-Revision-Date: 2008-04-07 10:30+0200\n"
+"PO-Revision-Date: 2008-04-19 14:12+0100\n"
 "Last-Translator: Jacobo Tarrío <jtarrio@debian.org>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -194,50 +194,44 @@ msgstr ""
 "estean en proceso no fondo da pantalla, no canto de abrir unha nova vista."
 
 #: src/apt_options.cc:211
-#, fuzzy
 msgid "Display the information area by default"
-msgstr "Amosar a área de descrición estendida por defecto"
+msgstr "Amosar a área de información por defecto"
 
 #: src/apt_options.cc:212
-#, fuzzy
 msgid ""
 "If this option is enabled, the information area (the pane at the bottom of "
 "the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
-"Se se activa esta opción, a área de descrición longa (o panel no fondo da "
+"Se se activa esta opción, a área de información (o panel no fondo da "
 "pantalla) da lista de paquetes ha ser visible no inicio do programa; se non, "
-"ha estar oculto inicialmente."
+"ha estar oculta inicialmente."
 
 #: src/apt_options.cc:217
-#, fuzzy
 msgid "Display tabs for the available views"
-msgstr "Formato de visualización para as vistas de paquetes"
+msgstr "Amosar lingüetas para as vistas dispoñibles"
 
 #: src/apt_options.cc:218
-#, fuzzy
 msgid ""
 "If this option is enabled, tabs will appear at the top of the screen listing "
 "the currently opened views."
 msgstr ""
-"Se se activa esta opción, aptitude ha amosar o estado das descargas que "
-"estean en proceso no fondo da pantalla, no canto de abrir unha nova vista."
+"Se se activa esta opción, han aparecer lingüetas na cima da pantalla cunha "
+"lista das vistas abertas."
 
 #: src/apt_options.cc:221
-#, fuzzy
 msgid "Display tabs for the information area"
-msgstr "Amosar máis información do paquete seleccionado"
+msgstr "Amosar pestanas para a área de información"
 
 #: src/apt_options.cc:222
-#, fuzzy
 msgid ""
 "If this option is enabled, tabs will appear at the top of the information "
 "area (the pane at the bottom of the screen) listing the different displays "
 "of information that can be viewed there."
 msgstr ""
-"Se se activa esta opción, a área de descrición longa (o panel no fondo da "
-"pantalla) da lista de paquetes ha ser visible no inicio do programa; se non, "
-"ha estar oculto inicialmente."
+"Se se activa esta opción, han aparecer lingüetas na cima da área de "
+"información (o panel do fondo da pantalla) cunha lista dos distintos tipos "
+"de información que se poden amosar."
 
 #: src/apt_options.cc:227
 msgid "Advance to the next item after changing the state of a package"
@@ -2151,7 +2145,7 @@ msgstr[1] "%d novos [%+d]"
 #: src/cmdline/cmdline_util.cc:331
 #, c-format
 msgid "Current status: %F."
-msgstr ""
+msgstr "Estado actual: %F."
 
 #: src/cmdline/cmdline_util.cc:342
 #, c-format
@@ -3304,71 +3298,61 @@ msgid "Compiler: g++ %s\n"
 msgstr "Compilador: g++ %s\n"
 
 #: src/main.cc:111
-#, fuzzy
 msgid "Compiled against:\n"
-msgstr "Compilador: g++ %s\n"
+msgstr "Compilado contra:\n"
 
 #: src/main.cc:112
-#, fuzzy, c-format
+#, c-format
 msgid "  apt version %d.%d.%d\n"
-msgstr "Conservar %F na versión %s (%s)"
+msgstr "  apt versión %d.%d.%d\n"
 
 #: src/main.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: Unknown\n"
-msgstr ""
-"\n"
-"Versión de NCurses: %s\n"
+msgstr "  Versión de NCurses: Descoñecida\n"
 
 #: src/main.cc:117
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version %s\n"
-msgstr ""
-"\n"
-"Versión de NCurses: %s\n"
+msgstr "  Versión de NCurses: %s\n"
 
 #: src/main.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "  libsigc++ version: %s\n"
-msgstr "Versión de libsigc++: %s\n"
+msgstr "  Versión de libsigc++: %s\n"
 
 #: src/main.cc:121
-#, fuzzy, c-format
+#, c-format
 msgid "  Ept support enabled.\n"
-msgstr "Activouse o soporte de ept.\n"
+msgstr "  Soporte de ept activado.\n"
 
 #: src/main.cc:124
-#, fuzzy, c-format
+#, c-format
 msgid "  Ept support disabled.\n"
-msgstr "Desactivouse o soporte de ept.\n"
+msgstr "  Soporte de ept desactivado.\n"
 
 #: src/main.cc:127
-#, fuzzy
 msgid ""
 "\n"
 "Current library versions:\n"
 msgstr ""
 "\n"
-"Versión de Curses: %s\n"
+"Versións actuais das bibliotecas:\n"
 
 #: src/main.cc:128
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: %s\n"
-msgstr ""
-"\n"
-"Versión de NCurses: %s\n"
+msgstr "  Versión de NCurses: %s\n"
 
 #: src/main.cc:129
-#, fuzzy, c-format
+#, c-format
 msgid "  cwidget version: %s\n"
-msgstr "Versión de libsigc++: %s\n"
+msgstr "  Versión de cwidget: %s\n"
 
 #: src/main.cc:130
-#, fuzzy, c-format
+#, c-format
 msgid "  Apt version: %s\n"
-msgstr ""
-"\n"
-"Versión de Curses: %s\n"
+msgstr "  Versión de apt: %s\n"
 
 #: src/main.cc:136
 #, c-format
@@ -3497,12 +3481,15 @@ msgstr ""
 " reinstall    - Descargar e (tal vez) reinstalar un paquete xa instalado\n"
 
 #: src/main.cc:160
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package\n"
-msgstr " -Z             Amosar o cambio no tamaño instalado de cada paquete.\n"
+msgstr ""
+" why          - Amosar os paquetes instalados manualmente que requiren un\n"
+"                paquete, ou por que un ou máis paquetes habían requirir o\n"
+"                paquete indicado\n"
 
 #: src/main.cc:162
 #, c-format
@@ -3512,6 +3499,10 @@ msgid ""
 "                with the given package, or why one or more packages would\n"
 "                lead to a conflict with the given package if installed\n"
 msgstr ""
+" why-not      - Amosar os paquetes instalados manualmente que conducen a\n"
+"                un conflicto co paquete indicado, ou por que un ou máis\n"
+"                paquetes habían conducir a un conflicto co paquete indicado\n"
+"                se se instalaran\n"
 
 #: src/main.cc:166
 #, c-format
@@ -3609,7 +3600,7 @@ msgstr ""
 " -t [distro]    Indicar de que distribución hai que instalar os paquetes\n"
 
 #: src/main.cc:181
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
@@ -4628,13 +4619,12 @@ msgid "Couldn't parse column definition"
 msgstr "Non se puido analizar a definición da columna"
 
 #: src/pkg_view.cc:223
-#, fuzzy
 msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
 msgstr ""
-"Se escolle un paquete, ha aparecer nesta páxina unha explicación do seu "
-"estado actual."
+"Se escolle un paquete, ha aparecer neste espazo unha explicación de por que "
+"se debería instalar ou eliminar."
 
 #: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
@@ -4648,14 +4638,12 @@ msgstr ""
 "o elemento estático"
 
 #: src/pkg_view.cc:678
-#, fuzzy
 msgid "Related Dependencies"
-msgstr "Resolver dependencias"
+msgstr "Dependencias relacionadas:"
 
 #: src/pkg_view.cc:681
-#, fuzzy
 msgid "Why Installed"
-msgstr "Instalado"
+msgstr "Por que instalado"
 
 #: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
@@ -5192,17 +5180,16 @@ msgid "Recommendations"
 msgstr "Recomendacións"
 
 #: src/ui.cc:970
-#, fuzzy
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
 "is free software, and you are welcome to redistribute it under certain "
 "conditions; see 'license' for details."
 msgstr ""
-"Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude non ten %"
-"BNINGUNHA GARANTÍA%b; para obter máis detalles vexa a \"licencia\" no menú "
-"de Axuda. Isto é software libre, e anímaselle a redistribuílo baixo algunhas "
-"condicións; vexa a \"licencia\" para obter máis detalles."
+"Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude non ten %"
+"BNINGUNHA GARANTÍA%b; para obter máis detalles consulte a \"licencia\" no "
+"menú de Axuda. Isto é software libre, e anímaselle a redistribuílo baixo "
+"algunhas condicións; consulte a \"licencia\" para obter máis detalles."
 
 #: src/ui.cc:1020 src/ui.cc:1022
 msgid "License"
