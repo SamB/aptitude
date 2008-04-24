@@ -30,6 +30,7 @@
  *  Currently they just handle PkgIterator/VerIterator pairs and 
  *  a wrapper class integrates them with cwidget::widgets::tree.  If this can handle
  *  everything useful, I'd like to keep it as is, since it's simpler than the
+ *  alternatives.
  * 
  *  \file pkg_sortpolicy.h
  */
