@@ -17,7 +17,6 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  This item represents something that's in a download queue.
 
 #ifndef DOWNLOAD_ITEM_H
 #define DOWNLOAD_ITEM_H
@@ -25,6 +24,11 @@
 #include <apt-pkg/acquire-item.h>
 
 #include <cwidget/widgets/treeitem.h>
+
+/** \brief This item represents something that's in a download queue
+ * 
+ *  \file download_item.h
+ */
 
 class download_item:public cwidget::widgets::treeitem
 {

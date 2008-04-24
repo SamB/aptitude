@@ -17,13 +17,20 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// This class allows some signals to be "redirected" from the menu to
-// appropriate widgets.
 
 #ifndef MENU_REDIRECT_H
 #define MENU_REDIRECT_H
 
 #include <sigc++/trackable.h>
+
+/** \brief Provides signal redirection from menu to widgets
+ *
+ * 
+ *  This class allows some signals to be "redirected" from the menu to
+ *  appropriate widgets.
+ * 
+ *  \file menu_redirect.h
+ */
 
 class menu_redirect:virtual public sigc::trackable
 {

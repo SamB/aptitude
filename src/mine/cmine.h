@@ -2,22 +2,6 @@
 //
 //  Copyright 2000 Daniel Burrows
 //
-//  A Curses interface to Minesweeper, using the vscreen architecture.  The
-// idea is that it'll be possible to drop this into a vscreen-using program
-// and have it Just Work.  Currently vscreen is (aside from the manually
-// extracted code in this tree) only used in aptitude, but if I ever get
-// around to breaking it into its own library, this'll be useful.  Also, as
-// Caldera demonstrated, playing games while your packages are downloading has
-// a high reading on the Cool Useless Feature Scale :-)
-//
-//  (that's also the reason that there's room made for some stuff that's not
-// really accessible from the version I'm turning in -- in particular,
-// configuration of colors and keybindings.  To make use of them you really
-// need a configuration file, and I don't want to write a parser here..aptitude
-// just piggybacks on the apt configuration, so I don't really have a parser
-// from that that I can borrow either..hmmm..I think the apt parser is
-// public-domain, but I'm not sure how that interacts with our collaboration
-// policy :) )
 
 #ifndef CMINE_H
 #define CMINE_H
@@ -26,6 +10,29 @@
 
 #include <cwidget/widgets/minibuf_win.h>
 #include <cwidget/widgets/editline.h>
+
+/** \brief A Curses interface to Minesweeper, using the vscreen architecture
+ * 
+ * 
+ *  A Curses interface to Minesweeper, using the vscreen architecture.  The
+ *  idea is that it'll be possible to drop this into a vscreen-using program
+ *  and have it Just Work.  Currently vscreen is (aside from the manually
+ *  extracted code in this tree) only used in aptitude, but if I ever get
+ *  around to breaking it into its own library, this'll be useful.  Also, as
+ *  Caldera demonstrated, playing games while your packages are downloading has
+ *  a high reading on the Cool Useless Feature Scale :-)
+ *  
+ *  (that's also the reason that there's room made for some stuff that's not
+ *  really accessible from the version I'm turning in -- in particular,
+ *  configuration of colors and keybindings.  To make use of them you really
+ *  need a configuration file, and I don't want to write a parser here..aptitude
+ *  just piggybacks on the apt configuration, so I don't really have a parser
+ *  from that that I can borrow either..hmmm..I think the apt parser is
+ *  public-domain, but I'm not sure how that interacts with our collaboration
+ *  policy :) )
+ * 
+ * \file cmine.h
+ */
 
 namespace cwidget
 {

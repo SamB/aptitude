@@ -17,8 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// Code to support safely creating files in a temporary directory and
-// deleting the directory when finished.
 
 #ifndef TEMP_H
 #define TEMP_H
@@ -28,6 +26,12 @@
 #include <cwidget/generic/util/eassert.h>
 #include <cwidget/generic/util/exception.h>
 #include <cwidget/generic/threads/threads.h>
+
+/** \brief Code to support safely creating files in a temporary directory and
+ *  deleting the directory when finished.
+ * 
+ *  \file temp.h
+ */
 
 namespace temp
 {

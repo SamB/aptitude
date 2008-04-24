@@ -7,6 +7,9 @@
 
 #include <string>
 
+/** \file cmdline_search.h
+ */
+
 int cmdline_search(int argc, char *argv[], const char *status_fname,
 		   std::string display_format, std::string width, std::string sort);
 

@@ -2,10 +2,14 @@
 //
 //   Copyright 2004 Daniel Burrows
 //
-// The most important command-line action.
 
 #ifndef CMDLINE_MOO
 #define CMDLINE_MOO
+
+/** \brief The most important command-line action.
+ * 
+ *  \file cmdline_moo.h
+ */
 
 int cmdline_moo(int argc, char *argv[], int verbose);
 

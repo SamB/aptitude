@@ -8,6 +8,9 @@
 #include <string>
 #include <vector>
 
+/** \file cmdline_changelog.h
+ */
+
 /** \brief Display the changelog of each of the given package specifiers.
  *
  *  The specifiers are literal package names, with optional version/archive

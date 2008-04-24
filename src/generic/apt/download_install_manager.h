@@ -33,6 +33,9 @@
 #include <utility>
 #include <vector>
 
+/** \file download_install_manager.h
+ */
+
 /** Manages downloading and installing packages. */
 class download_install_manager : public download_manager
 {

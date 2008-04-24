@@ -9,6 +9,9 @@
 
 #include "apt.h"
 
+/** \file rev_dep_iterator.h
+ */
+
 /** An iterator that iterates over all reverse deps of a package,
  *  including those that are via a Provided package.
  */

@@ -1,18 +1,19 @@
 // -*- mode: cpp; mode: fold -*-
 // Description								/*{{{*/
 // $Id: acqprogress.h,v 1.1.2.1 2002/02/23 14:50:07 daniel Exp $
-/* ######################################################################
-
-   Acquire Progress - Command line progress meter 
-   
-   ##################################################################### */
 									/*}}}*/
+
 #ifndef ACQPROGRESS_H
 #define ACQPROGRESS_H
 
 #include <apt-pkg/acquire.h>
 #include <sigc++/slot.h>
 #include <sigc++/trackable.h>
+
+/** \brief Acquire Progress - Command line progress meter
+ *
+ *  \file acqprogress.h
+ */
 
 class download_signal_log;
 

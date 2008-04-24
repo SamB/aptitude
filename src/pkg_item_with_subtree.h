@@ -17,8 +17,6 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  A package item with an associated subtree.  More useful than you might
-// think ;-)
 
 #ifndef PKG_ITEM_WITH_SUBTREE_H
 #define PKG_ITEM_WITH_SUBTREE_H
@@ -30,6 +28,15 @@
 #include <cwidget/config/column_definition.h>
 #include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/subtree.h>
+
+/** \brief A package item with an associated subtree
+ *
+ * 
+ *  A package item with an associated subtree.  More useful than you might
+ *  think ;-)
+ * 
+ *  \file pkg_item_with_subtree.h
+ */
 
 template<class child, class sorter = cwidget::widgets::tag_sort_policy>
 class pkg_item_with_subtree:public cwidget::widgets::subtree<child, sorter>, public pkg_item

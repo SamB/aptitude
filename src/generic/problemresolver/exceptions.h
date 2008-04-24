@@ -22,6 +22,9 @@
 
 #include <cwidget/generic/util/exception.h>
 
+/** \file exceptions.h
+ */
+
 /** Generic errors in the problem resolver. */
 class ProblemResolverError : public cwidget::util::Exception {
 };

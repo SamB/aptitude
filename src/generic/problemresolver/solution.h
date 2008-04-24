@@ -27,6 +27,11 @@
 
 #include <generic/util/immset.h>
 
+/** \brief The solution class for the problem resolver.
+ * 
+ *  \file solution.h
+ */
+
 template<typename PackageUniverse>
 class solution_weights;
 

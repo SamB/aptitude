@@ -9,6 +9,9 @@
 
 #include <vector>
 
+/** \file cmdline_upgrade.h
+ */
+
 int cmdline_upgrade(int argc, char *argv[],
 		    const char *status_fname, bool simulate,
 		    bool no_new_installs,

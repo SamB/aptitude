@@ -17,12 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-//  Stuff to manage "package views" and a way to create them.  Package views
-// are a collection of information displays about a package laid out (by a
-// table in our case).  A package view definition has a spot in itself for a
-// "main" widget, which allows configurations to be shared between several
-// different screens (unfortunately, it prevents me from, eg, having two
-// separate package trees at once :-( )
 
 #ifndef PKG_VIEW_H
 #define PKG_VIEW_H
@@ -34,6 +28,19 @@
 
 #include <list>
 #include <string>
+
+/** \brief Stuff to manage "package views" and a way to create them
+ *
+ * 
+ *  Stuff to manage "package views" and a way to create them.  Package views
+ *  are a collection of information displays about a package laid out (by a
+ *  table in our case).  A package view definition has a spot in itself for a
+ *  "main" widget, which allows configurations to be shared between several
+ *  different screens (unfortunately, it prevents me from, eg, having two
+ *  separate package trees at once :-( )
+ * 
+ *  \file pkg_view.h
+ */
 
 class menu_redirect;
 class package_view_item;

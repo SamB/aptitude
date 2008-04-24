@@ -17,32 +17,6 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  Ok, this requires (a little) explanation -- basically, the idea is that
-// we need a flexible way to group (and filter) packages.  These classes
-// provide that.  A grouping policy knows what tree it should add things to,
-// and can add subtrees or packages at its own discretion.  A policy
-// *factory* is used as a way to chain policies together -- rather than
-// directly adding packages to trees they create, most packages will
-// instantiate (using a factory) a policy for each subtree.
-//
-//  In other words: say we want to group by top-level section, then by
-// subsection.  We create a pkg_groupsectionpolicy_factory with the
-// proper arguments to group by top-level section, with its 'chain' argument
-// set to another pkg_groupsectionpolicy_factory (which, however, groups
-// by subsection) with its chain argument set to a pkg_grouppolicy_end_factory.
-//
-//  Note that the policy classes are not themselves visible to the user,
-// simply to avoid unnecessary recompiles.  The factories are the only way
-// to get a policy class.
-//
-//  The factories could probably be functions/function pointers as well,
-// but classes are more flexible in this instance.
-//
-//  Because of the way factories and policies generally work you should never
-// destroy a factory before destroying the new objects created by it.
-
-// An abstract base class for objects containing the logic to sort packages
-// into groups
 
 #ifndef PKG_GROUPPOLICY_H
 #define PKG_GROUPPOLICY_H
@@ -51,6 +25,39 @@
 #include <sigc++/signal.h>
 
 #include <vector>
+
+/** \brief Provides a flexible way to group and filter packages
+ *
+ * 
+ *  Ok, this requires (a little) explanation -- basically, the idea is that
+ *  we need a flexible way to group (and filter) packages.  These classes
+ *  provide that.  A grouping policy knows what tree it should add things to,
+ *  and can add subtrees or packages at its own discretion.  A policy
+ *  *factory* is used as a way to chain policies together -- rather than
+ *  directly adding packages to trees they create, most packages will
+ *  instantiate (using a factory) a policy for each subtree.
+ *  
+ *  In other words: say we want to group by top-level section, then by
+ *  subsection.  We create a pkg_groupsectionpolicy_factory with the
+ *  proper arguments to group by top-level section, with its 'chain' argument
+ *  set to another pkg_groupsectionpolicy_factory (which, however, groups
+ *  by subsection) with its chain argument set to a pkg_grouppolicy_end_factory.
+ *  
+ *  Note that the policy classes are not themselves visible to the user,
+ *  simply to avoid unnecessary recompiles.  The factories are the only way
+ *  to get a policy class.
+ *  
+ *  The factories could probably be functions/function pointers as well,
+ *  but classes are more flexible in this instance.
+ *  
+ *  Because of the way factories and policies generally work you should never
+ *  destroy a factory before destroying the new objects created by it.
+ *  
+ *  An abstract base class for objects containing the logic to sort packages
+ *  into groups
+ * 
+ *  \file pkg_grouppolicy.h
+ */
 
 // Used to set the visible status if a package is available.
 typedef sigc::signal2<void,

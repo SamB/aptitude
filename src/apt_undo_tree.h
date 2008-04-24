@@ -17,13 +17,20 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// Extends the basic menu_tree with support for the APT undo queue.
-// NB: this really ought to be a mixin for menu_redirect..
 
 #ifndef APT_UNDO_TREE_H
 #define APT_UNDO_TREE_H
 
 #include "menu_tree.h"
+
+/** \brief Extends the basic menu_tree with support for the APT undo queue
+ *
+ * 
+ *  Extends the basic menu_tree with support for the APT undo queue.
+ *  NB: this really ought to be a mixin for menu_redirect..
+ * 
+ *  \file apt_undo_tree.h
+ */
 
 class apt_undo_tree : public menu_tree
 {

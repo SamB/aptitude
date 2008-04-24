@@ -3,7 +3,12 @@
 //  Copyright 2000 Masato Taruishi <taru@debian.org>,
 //                 Daniel Burrows <dburrows@debian.org>
 //
-//  common header
+
+/** \brief common header
+ *
+ * 
+ *  \file aptitude.h
+ */
 
 #ifndef APTITUDE_H
 #define APTITUDE_H

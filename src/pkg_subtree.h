@@ -17,7 +17,6 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  A subtree which contains packages (and other subtrees)
 
 #ifndef PKG_SUBTREE_H
 #define PKG_SUBTREE_H
@@ -25,6 +24,11 @@
 #include <cwidget/widgets/subtree.h>
 
 #include "pkg_node.h"
+
+/** \brief A subtree which contains packages (and other subtrees)
+ * 
+ *  \file pkg_subtree.h
+ */
 
 class pkg_subtree:public cwidget::widgets::subtree<pkg_tree_node>,
 		  public pkg_tree_node

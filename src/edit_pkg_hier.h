@@ -18,12 +18,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// This provides a convenient way to tweak the package hierarchy.  It lets
-// the user select which 'groups' a package appears in, then allows them to
-// save the changes to a file.
-//
-// Changes to the hierarchy are stored in GLOBAL VARIABLES.  Specifically,
-// the user_pkg_hier global variable.
 
 #ifndef EDIT_PKG_HIER
 #define EDIT_PKG_HIER
@@ -33,6 +27,19 @@
 #include <apt-pkg/pkgcache.h>
 
 #include <cwidget/widgets/tree.h>
+
+/** \brief Provides a convenient way to tweak the package hierarchy
+ *
+ * 
+ *  This provides a convenient way to tweak the package hierarchy.  It lets
+ *  the user select which 'groups' a package appears in, then allows them to
+ *  save the changes to a file.
+ *  
+ *  Changes to the hierarchy are stored in GLOBAL VARIABLES.  Specifically,
+ *  the user_pkg_hier global variable.
+ * 
+ *  \file edit_pkg_hier.h
+ */
 
 class hier_editor : public cwidget::widgets::tree
 {

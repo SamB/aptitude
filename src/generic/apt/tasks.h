@@ -2,13 +2,17 @@
 //
 //  Copyright 2001 Daniel Burrows
 //
-//  Handles parsing the list of tasks and getting the task of a given
-// package.
 
 #include <string>
 #include <set>
 #include <map>
 #include <apt-pkg/pkgcache.h>
+
+/** \brief Handles parsing the list of tasks and getting the task of a given
+ *  package.
+ * 
+ *  \file tasks.h
+ */
 
 class OpProgress;
 

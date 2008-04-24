@@ -17,8 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// Code to convert an aptitude resolver solution and some of its
-// individual components to fragments.
 
 #ifndef SOLUTION_FRAGMENT_H
 #define SOLUTION_FRAGMENT_H
@@ -30,6 +28,12 @@
 
 // So passing aptitude_solution::action to a function is legal
 #include <generic/apt/aptitude_resolver_universe.h>
+
+/** \brief Code to convert an aptitude resolver solution and some of its
+ *  individual components to fragments.
+ * 
+ *  \file solution_fragment.h
+ */
 
 namespace cwidget
 {

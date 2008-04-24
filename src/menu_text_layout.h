@@ -25,6 +25,9 @@
 #include <cwidget/widgets/editline.h>
 #include <cwidget/widgets/text_layout.h>
 
+/** \file menu_text_layout.h
+ */
+
 class menu_text_layout : public cwidget::widgets::text_layout, public menu_redirect
 {
   std::wstring last_search;

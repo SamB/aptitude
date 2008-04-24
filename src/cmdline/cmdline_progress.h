@@ -5,6 +5,9 @@
 #ifndef CMDLINE_PROGRESS_H
 #define CMDLINE_PROGRESS_H
 
+/** \file cmdline_progress.h
+ */
+
 class download_signal_log;
 
 download_signal_log *gen_cmdline_download_progress();

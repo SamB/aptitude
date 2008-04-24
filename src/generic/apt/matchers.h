@@ -17,8 +17,6 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  Provides support for complex string-based matching of packages.  Patterns
-// can be compiled for later use or used and discarded.
 
 #ifndef MATCHERS_H
 #define MATCHERS_H
@@ -28,6 +26,15 @@
 #include <vector>
 
 #include <apt-pkg/pkgcache.h>
+
+/** \brief Provides support for complex string-based matching of packages
+ *
+ * 
+ *  Provides support for complex string-based matching of packages. Patterns
+ *  can be compiled for later use or used and discarded.
+ * 
+ *  \file matchers.h
+ */
 
 class aptitudeDepCache;
 class pkgRecords;

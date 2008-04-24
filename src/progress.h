@@ -17,7 +17,6 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  A cwidget::widgets::widget that also acts as a progress bar.
 
 #ifndef VS_PROGRESS_H
 #define VS_PROGRESS_H
@@ -26,6 +25,11 @@
 #include <cwidget/widgets/widget.h>
 
 #include <apt-pkg/progress.h>
+
+/** \brief A cwidget::widgets::widget that also acts as a progress bar.
+ * 
+ *  \file progress.h
+ */
 
 class progress : public cwidget::widgets::widget, public OpProgress
 {

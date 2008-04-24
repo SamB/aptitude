@@ -18,21 +18,9 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// Glue code to make the resolver talk to the core aptitude classes.
+// 
 //
-// shootshootshoot...maybe I should just teach the core about
-// conflicts...anyway, if not, then I need to be much more careful how
-// I iterate over conflicts if an OR is involved (it should be
-// basically ignored)
-//
-// General comment on how the iterators are handled: basically the
-// technique is (generally) to have a normalize() routine that
-// advances the current iterator(s) to the next "interesting"
-// iterator.  For instance, broken_dep_iterator::normalize() moves to
-// the next broken dependency (sort of).  If the current iterator is
-// already interesting, nothing happens.  This is used on
-// initialization and in operator++ (after advancing the iterator a
-// single step manually).
+
 
 #ifndef APTITUDE_RESOLVER_H
 #define APTITUDE_RESOLVER_H
@@ -42,6 +30,26 @@
 #include <generic/problemresolver/problemresolver.h>
 
 #include <generic/util/immset.h>
+
+/** \brief Glue code to make the resolver talk to the core aptitude classes.
+ *
+ * 
+ *  shootshootshoot...maybe I should just teach the core about
+ *  conflicts...anyway, if not, then I need to be much more careful how
+ *  I iterate over conflicts if an OR is involved (it should be
+ *  basically ignored)
+ *  
+ *  General comment on how the iterators are handled: basically the
+ *  technique is (generally) to have a normalize() routine that
+ *  advances the current iterator(s) to the next "interesting"
+ *  iterator.  For instance, broken_dep_iterator::normalize() moves to
+ *  the next broken dependency (sort of).  If the current iterator is
+ *  already interesting, nothing happens.  This is used on
+ *  initialization and in operator++ (after advancing the iterator a
+ *  single step manually).
+ * 
+ *  \file aptitude_resolver.h
+ */
 
 class aptitude_resolver:public generic_problem_resolver<aptitude_universe>
 {

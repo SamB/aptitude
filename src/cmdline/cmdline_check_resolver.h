@@ -20,6 +20,9 @@
 #ifndef CMDLINE_CHECK_RESOLVER
 #define CMDLINE_CHECK_RESOLVER
 
+/** \file cmdline_check_resolver.h
+ */
+
 int cmdline_check_resolver(int argc, char *argv[], const char *status_fname);
 
 #endif

@@ -17,8 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-//  An abstract interface for download processes, and two
-//  implementations.
 
 #ifndef DOWNLOAD_MANAGER_H
 #define DOWNLOAD_MANAGER_H
@@ -27,6 +25,11 @@
 #include <apt-pkg/acquire.h>
 
 #include <sigc++/trackable.h>
+
+/** \brief An abstract interface for download processes, and two implementations.
+ *
+ *  \file download_manager.h
+ */ 
 
 class OpProgress;
 class download_signal_log;

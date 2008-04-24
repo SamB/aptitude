@@ -2,7 +2,6 @@
 //
 //   Copyright 2004 Daniel Burrows
 //
-// Stuff that doesn't particularly belong anywhere.
 
 #ifndef CMDLINE_COMMON_H
 #define CMDLINE_COMMON_H
@@ -12,6 +11,11 @@
 #include <set>
 #include <string>
 #include <vector>
+
+/** \brief Stuff that doesn't particularly belong anywhere.
+ * 
+ *  \file cmdline_common.h
+ */
 
 extern int screen_width;
 void update_screen_width(int foo=0);

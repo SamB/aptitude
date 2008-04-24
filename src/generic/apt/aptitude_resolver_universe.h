@@ -29,6 +29,9 @@
 #include "apt.h"
 #include "aptcache.h"
 
+/** \file aptitude_resolver_universe.h
+ */
+
 class aptitude_resolver_version;
 
 /** \brief Translates an APT package into the abstract realm.

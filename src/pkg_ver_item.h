@@ -17,7 +17,6 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  Let you create tree nodes which refer to a particular version of a package.
 
 #ifndef PKG_VER_ITEM_H
 #define PKG_VER_ITEM_H
@@ -37,6 +36,10 @@
 #include <apt-pkg/depcache.h>
 #include <apt-pkg/pkgsystem.h>
 
+/** \brief Let you create tree nodes which refer to a particular version of a package.
+ * 
+ *  \file pkg_ver_item.h
+ */
 
 class pkg_ver_columnizer:public pkg_item::pkg_columnizer
 {

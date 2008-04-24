@@ -20,6 +20,9 @@
 #ifndef CMDLINE_EXTRACT_CACHE_SUBSET_H
 #define CMDLINE_EXTRACT_CACHE_SUBSET_H
 
+/** \file cmdline_extract_cache_subset.h
+ */
+
 namespace aptitude
 {
   namespace cmdline

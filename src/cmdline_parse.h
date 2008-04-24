@@ -2,9 +2,6 @@
 //
 //  Copyright 2002 Daniel Burrows
 //
-//  Mad?  They said I was mad.  But I didn't listen.  I didn't have to...
-//
-//  Behold...the living horror of the object-oriented command-line parser!
 
 #ifndef CMDLINE_PARSE_H
 #define CMDLINE_PARSE_H
@@ -13,6 +10,16 @@
 #include <std::string>
 
 #include <sigc++/trackable.h>
+
+/** \brief A comand-line parser
+ *
+ * 
+ *  Mad?  They said I was mad.  But I didn't listen.  I didn't have to...
+ * 
+ *  Behold...the living horror of the object-oriented command-line parser!
+ * 
+ *  \file cmdline_parse.h
+ */
 
 // I'll parse arguments My Way, thank you.
 //

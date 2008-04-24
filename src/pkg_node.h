@@ -17,8 +17,7 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 //
-//  In the fine tradition of breaking header files up into their smallest
-// usable components..
+//  
 
 #ifndef PKG_NODE_H
 #define PKG_NODE_H
@@ -26,6 +25,15 @@
 #include "menu_redirect.h"
 
 #include <cwidget/widgets/treeitem.h>
+
+/** \brief Provides nodes related actions
+ *
+ * 
+ *  In the fine tradition of breaking header files up into their smallest
+ *  usable components..
+ * 
+ *  \file pkg_node.h
+ */
 
 class undo_group;
 namespace cwidget

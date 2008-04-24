@@ -17,7 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// A parser for tags.
 
 #ifndef TAGS_H
 #define TAGS_H
@@ -39,6 +38,11 @@
 #include <string>
 
 #include <apt-pkg/pkgcache.h>
+
+/** \brief A parser for tags.
+ * 
+ *  \file tags.h
+ */
 
 class OpProgress;
 

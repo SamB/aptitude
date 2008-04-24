@@ -32,9 +32,6 @@
 //  Boston, MA 02111-1307, USA.
 //
 //
-// Generic problem resolver (generic because I want to be able to do
-// regression-testing for once, if I can figure out how, and Packages
-// files make lousy regression-tests).
 
 #ifndef PROBLEMRESOLVER_H
 #define PROBLEMRESOLVER_H
@@ -57,6 +54,16 @@
 #include <cwidget/generic/util/eassert.h>
 
 #include <generic/util/dense_setset.h>
+
+/** \brief Generic problem resolver
+ *
+ * 
+ *  Generic problem resolver (generic because I want to be able to do
+ *  regression-testing for once, if I can figure out how, and Packages
+ *  files make lousy regression-tests).
+ * 
+ *  \file problemresolver.h
+ */
 
 template<typename Obj1, typename Obj2, typename Uni>
 inline void eassert_fail_on_2objs_soln(const std::string &file,

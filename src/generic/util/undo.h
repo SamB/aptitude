@@ -2,12 +2,17 @@
 //
 //  Copyright 2000 Daniel Burrows
 //
-//  A generic structure for undo information.
+//  
 
 #ifndef UNDO_H
 #define UNDO_H
 
 #include <list>
+
+/** \brief A generic structure for undo information.
+ * 
+ *  \file undo.h
+ */
 
 class undoable
 // represents an action which can be undone.

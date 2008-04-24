@@ -17,17 +17,22 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-//
-// Package sorting policies.  Currently they just handle PkgIterator/VerIterator
-// pairs and a wrapper class integrates them with cwidget::widgets::tree.  If this can handle
-// everything useful, I'd like to keep it as is, since it's simpler than the
-// alternatives.
 
 #ifndef PKG_SORTPOLICY_H
 #define PKG_SORTPOLICY_H
 
 #include <apt-pkg/pkgcache.h>
 #include <cwidget/widgets/treeitem.h>
+
+/** \brief Package sorting policies
+ *
+ * 
+ *  Currently they just handle PkgIterator/VerIterator pairs and 
+ *  a wrapper class integrates them with cwidget::widgets::tree.  If this can handle
+ *  everything useful, I'd like to keep it as is, since it's simpler than the
+ * 
+ *  \file pkg_sortpolicy.h
+ */
 
 class pkg_tree_node;
 

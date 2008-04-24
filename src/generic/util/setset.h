@@ -17,20 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// Efficient representation of sets-of-sets and sets-of-maps which can
-// be indexed by a subset/superset relation.  In particular, given a
-// set of sets SS and a set T, provides the operation "is there an
-// element S' of SS such that each element of S' stands in a relation
-// R to an equivalent element of T" as well as its dual.  (with R
-// being the universal relation, this is just a straight subset
-// relation, but other general types of subsumption are also posible)
-//
-// WARNING: this class is completely non-threadsafe.  Because
-// find_subset is very heavily used (over a million calls in many test
-// cases), it has a number of optimizations, including one that means
-// YOU MAY NOT HAVE MULTIPLE SIMULTANEOUS CALLERS OF FIND_SUBSET as it
-// uses pre-allocated data structures to speed up its operation (by a
-// factor of 3 or so).
 
 #ifndef SETSET_H
 #define SETSET_H
@@ -45,6 +31,27 @@
 #include "immset.h"
 
 #include <map>
+
+/** \brief Efficient representation of sets-of-sets and sets-of-maps
+ *
+ * 
+ *  Efficient representation of sets-of-sets and sets-of-maps which can
+ *  be indexed by a subset/superset relation.  In particular, given a
+ *  set of sets SS and a set T, provides the operation "is there an
+ *  element S' of SS such that each element of S' stands in a relation
+ *  R to an equivalent element of T" as well as its dual.  (with R
+ *  being the universal relation, this is just a straight subset
+ *  relation, but other general types of subsumption are also posible)
+ *  
+ *  WARNING: this class is completely non-threadsafe.  Because
+ *  find_subset is very heavily used (over a million calls in many test
+ *  cases), it has a number of optimizations, including one that means
+ *  YOU MAY NOT HAVE MULTIPLE SIMULTANEOUS CALLERS OF FIND_SUBSET as it
+ *  uses pre-allocated data structures to speed up its operation (by a
+ *  factor of 3 or so).
+ * 
+ *  \file setset.h
+ */
 
 /** Maintains a set of imm::sets of Val objects, arranged so that
  *  quick answers to the query "does the set S subsume any element of

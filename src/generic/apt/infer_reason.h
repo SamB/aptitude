@@ -1,7 +1,5 @@
 // infer_reason.h
 //
-//  Code for inferring why a package is in its current state.
-//
 //  Copyright 2004 Daniel Burrows
 
 #ifndef INFER_DEPS_H
@@ -10,6 +8,11 @@
 #include <set>
 
 #include <apt-pkg/pkgcache.h>
+
+/** \brief Code for inferring why a package is in its current state.
+ *
+ *  \file infer_reason.h
+ */
 
 /** A structure representing a package and a dependency of that
  *  package.  It is used below to return the reasons for a package's

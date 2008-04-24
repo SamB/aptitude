@@ -2,8 +2,6 @@
 //
 //  Copyright 2000 Daniel Burrows
 //
-//  Contains the information and routines necessary to play a game of
-// minesweeper.
 
 #ifndef BOARD_H
 #define BOARD_H
@@ -12,6 +10,12 @@
 #include <iostream>
 #include <cwidget/generic/util/eassert.h>
 #include <time.h>
+
+/** \brief Contains the information and routines necessary to play a game of
+ *  minesweeper
+ * 
+ *  \file board.h
+ */
 
 class mine_board
 // A 'dumb' class that just contains information necessary to manipulate the

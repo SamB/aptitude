@@ -22,6 +22,9 @@
 
 #include <apt-pkg/pkgcache.h>
 
+/** \file changelog_parse.h
+ */
+
 namespace cwidget
 {
   class fragment;

@@ -8,6 +8,9 @@
 #include <iosfwd>
 #include <string>
 
+/** \file cmdline_show.h
+ */
+
 namespace cwidget
 {
   class fragment_contents;

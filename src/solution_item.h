@@ -17,7 +17,6 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 //
-// Tree items that represent the contents of a solution.
 
 #ifndef SOLUTION_ITEM_H
 #define SOLUTION_ITEM_H
@@ -31,6 +30,11 @@
 #include <generic/problemresolver/solution.h>
 
 #include <cwidget/widgets/treeitem.h>
+
+/** \brief Tree items that represent the contents of a solution
+ * 
+ *  \file solution_item.h
+ */
 
 namespace cwidget
 {

@@ -7,6 +7,9 @@
 
 #include "cmdline_util.h"
 
+/** \file cmdline_do_action.h
+ */
+
 int cmdline_do_action(int argc, char *argv[],
 		      const char *status_fname, bool simulate,
 		      bool assume_yes, bool download_only, bool fix_broken,

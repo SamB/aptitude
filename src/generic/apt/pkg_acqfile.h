@@ -19,6 +19,9 @@
 
 #include <apt-pkg/acquire-item.h>
 
+/** \file pkg_acqfile.h
+ */
+
 /** Like pkgAcqArchive, but uses generic File objects to download to
  *  the cwd (and copies from file:/ URLs).
  */
