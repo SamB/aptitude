@@ -500,7 +500,7 @@ public:
   std::string errmsg() const { return msg; }
 };
 
-aptitude_solution calculate_current_solution()
+aptitude_solution calculate_current_solution(bool suppress_message)
 {
   const int step_limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
   if(step_limit <= 0)
@@ -527,7 +527,8 @@ aptitude_solution calculate_current_solution()
 
   cmdline_spinner spin(aptcfg->FindI("Quiet", 0));
 
-  std::cout << _("Resolving dependencies...") << std::endl;
+  if(!suppress_message)
+    std::cout << _("Resolving dependencies...") << std::endl;
 
   cwidget::threads::box<cmdline_resolver_continuation::resolver_result> retbox;
 
@@ -605,7 +606,7 @@ cmdline_resolve_deps(pkgset &to_install,
 	  {
 	    try
 	      {
-		aptitude_solution sol = calculate_current_solution();
+		aptitude_solution sol = calculate_current_solution(true);
 
 		if(_error->PendingError())
 		  _error->DumpErrors();
@@ -643,7 +644,7 @@ cmdline_resolve_deps(pkgset &to_install,
 		switch(toupper(response[loc]))
 		  {
 		  case 'Y':
-		    (*apt_cache_file)->apply_solution(calculate_current_solution(), NULL);
+		    (*apt_cache_file)->apply_solution(calculate_current_solution(true), NULL);
 		    modified_pkgs=true;
 		    break;
 		  case 'N':
@@ -753,7 +754,7 @@ cmdline_resolve_deps(pkgset &to_install,
 		      case 'Y':
 			try
 			  {
-			    calculate_current_solution();
+			    calculate_current_solution(false);
 			    done=true;
 			  }
 			catch(NoMoreTime)
@@ -903,7 +904,7 @@ namespace aptitude
       generic_solution<aptitude_universe> last_sol;
       try
 	{
-	  generic_solution<aptitude_universe> sol = calculate_current_solution();
+	  generic_solution<aptitude_universe> sol = calculate_current_solution(true);
 	  last_sol = sol;
 	  bool first = true;
 	  typedef imm::map<aptitude_resolver_package,
@@ -940,7 +941,7 @@ namespace aptitude
 		}
 	      last_sol = sol;
 	      resman->select_next_solution();
-	      sol = calculate_current_solution();
+	      sol = calculate_current_solution(false);
 	    }
 
 	  // Internal error that should never happen, but try to survive
