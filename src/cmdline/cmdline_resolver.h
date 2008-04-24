@@ -61,11 +61,14 @@ namespace aptitude
 /** \brief Compute the current solution with a command-line-appropriate
  *  UI.
  *
+ *  \param print_resolving_dependencies   if \b true, print a message
+ *  saying "Resolving dependencies..." before running the resolver.
+ *  This is used by safe-upgrade to suppress the message on subsequent
+ *  resolver runs.
+ *
  * \return the resolver manager's current solution; if it needs to be
  *          calculated first, run the calculation in the background
  *          and display a spinner in the foreground.
- *
- *  \return the current solution.
  *
  *  \note The exceptions are the same as the exceptions of the
  *  resolver manager's get_solution.
@@ -79,7 +82,7 @@ namespace aptitude
  *  \throw Exception if the background thread aborted with an exception.
  */
 
-generic_solution<aptitude_universe> calculate_current_solution();
+generic_solution<aptitude_universe> calculate_current_solution(bool print_resolving_dependencies);
 
 /** \brief Write the resolver state to a file as appropriate.
  *

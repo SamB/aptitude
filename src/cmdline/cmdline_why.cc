@@ -702,12 +702,21 @@ namespace aptitude
 	  bool &package_is_seen = seen_packages[frontid];
 	  if(package_is_seen)
 	    continue;
-	  package_is_seen = true;
+	  // Don't flag the starting package as "seen", since we want
+	  // to be able to find self-loops.
+	  if(!front.get_actions().empty())
+	    package_is_seen = true;
 
-	  // Test whether the front node is a leaf; if it is, return
-	  // it and quit.
+	  // If we've stepped at least once, test whether the front
+	  // node is a leaf; if it is, return it and quit.
+	  //
+	  // Checking that we stepped at least once (verified by
+	  // checking whether we have any actions in our result list)
+	  // ensures that we always return nontrivial answers (i.e.,
+	  // even if the target of the search matches a leaf pattern,
+	  // we'll keep looking past it).
 	  pkgCache::VerIterator frontver = params.selected_version(frontpkg);
-	  if(!frontver.end())
+	  if(!frontver.end() && !front.get_actions().empty())
 	    for(std::vector<pkg_matcher *>::const_iterator it = leaves.begin();
 		!reached_leaf && it != leaves.end(); ++it)
 	      {
@@ -889,16 +898,20 @@ cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 	  else
 	    seen_results.insert(results);
 
-	  if(first)
-	    first = false;
-	  else
-	    rval.push_back(cw::newline_fragment());
-
 	  if(results.empty())
-	    return cw::fragf(_("The package \"%s\" is a starting point of the search.\n"),
-			 root.Name());
+	    // This is a starting point of the search, but just keep
+	    // going and try to find other people who depend on it.
+	    // NB: this shouldn't be necessary (the search itself
+	    // should filter out empty results) but it's left in for
+	    // the sake of defensive programming.
+	    continue;
 	  else
 	    {
+	      if(first)
+		first = false;
+	      else
+		rval.push_back(cw::newline_fragment());
+
 	      std::vector<cw::fragment *> col1_entries, col2_entries, col3_entries;
 	      for(std::vector<action>::const_iterator it = results.begin();
 		  it != results.end(); ++it)
@@ -1106,17 +1119,7 @@ int cmdline_why(int argc, char *argv[],
       if(m == NULL)
 	parsing_arguments_failed = true;
       else
-	{
-	  matchers.push_back(m);
-	  if(!pkg.end() && apply_matcher(m, pkg, pkg.CurrentVer(),
-					 *apt_cache_file, *apt_package_records))
-	    {
-	      printf(_("The package \"%s\" is manually installed.\n"),
-		     pkg.Name());
-	      delete m;
-	      return 0;
-	    }
-	}
+	matchers.push_back(m);
     }
 
 

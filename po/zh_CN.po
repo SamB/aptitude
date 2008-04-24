@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-04-13 12:18+0200\n"
-"PO-Revision-Date: 2008-04-13 00:10+0800\n"
+"PO-Revision-Date: 2008-04-18 14:16+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -182,62 +182,40 @@ msgstr ""
 "视图。"
 
 #: src/apt_options.cc:211
-#, fuzzy
-#| msgid "Display the extended description area by default"
 msgid "Display the information area by default"
-msgstr "默认显示扩展描述区"
+msgstr "默认显示信息区域"
 
 #: src/apt_options.cc:212
-#, fuzzy
-#| msgid ""
-#| "If this option is enabled, the long description area (the pane at the "
-#| "bottom of the screen) in the package list will be visible when the "
-#| "program starts; otherwise, it will be initially hidden."
 msgid ""
 "If this option is enabled, the information area (the pane at the bottom of "
 "the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
-"如果开启该选项，软件列表中的长篇介绍区域(屏幕底端的窗格)会在程序启动时显示。"
-"否则，它在一开始会被隐藏。"
+"如果开启该选项，软件列表中的信息区域(屏幕底端的窗格)会在程序启动时显示。否"
+"则，它在一开始会被隐藏。"
 
 #: src/apt_options.cc:217
-#, fuzzy
-#| msgid "The display format for package views"
 msgid "Display tabs for the available views"
-msgstr "查看软件包的显示格式"
+msgstr "为可用视图显示选项卡"
 
 #: src/apt_options.cc:218
-#, fuzzy
-#| msgid ""
-#| "If this option is enabled, aptitude will display the status of ongoing "
-#| "downloads at the bottom of the screen, rather than opening a new view."
 msgid ""
 "If this option is enabled, tabs will appear at the top of the screen listing "
 "the currently opened views."
-msgstr ""
-"如果开启该选项， aptitude 会在屏幕底端显示正在进行的下载状态，而不是打开新的"
-"视图。"
+msgstr "如果开启该选项，列出当前开启的视图的选项卡会显示在屏幕顶端。"
 
 #: src/apt_options.cc:221
-#, fuzzy
-#| msgid "Display more information about the selected package"
 msgid "Display tabs for the information area"
-msgstr "显示关于选定软件包上的更多信息"
+msgstr "为信息区域显示选项卡"
 
 #: src/apt_options.cc:222
-#, fuzzy
-#| msgid ""
-#| "If this option is enabled, the long description area (the pane at the "
-#| "bottom of the screen) in the package list will be visible when the "
-#| "program starts; otherwise, it will be initially hidden."
 msgid ""
 "If this option is enabled, tabs will appear at the top of the information "
 "area (the pane at the bottom of the screen) listing the different displays "
 "of information that can be viewed there."
 msgstr ""
-"如果开启该选项，软件列表中的长篇介绍区域(屏幕底端的窗格)会在程序启动时显示。"
-"否则，它在一开始会被隐藏。"
+"如果开启该选项，会在信息区域的顶部(屏幕底端的窗格)显示选项卡，列出不同的信息"
+"显示以供查看。"
 
 #: src/apt_options.cc:227
 msgid "Advance to the next item after changing the state of a package"
@@ -2051,7 +2029,7 @@ msgstr[0] "%d 个新软件包 [%+d]"
 #: src/cmdline/cmdline_util.cc:331
 #, c-format
 msgid "Current status: %F."
-msgstr ""
+msgstr "当前状态：%F。"
 
 #: src/cmdline/cmdline_util.cc:342
 #, c-format
@@ -3151,92 +3129,61 @@ msgid "Compiler: g++ %s\n"
 msgstr "编译器：g++ %s\n"
 
 #: src/main.cc:111
-#, fuzzy
-#| msgid "Compiler: g++ %s\n"
 msgid "Compiled against:\n"
-msgstr "编译器：g++ %s\n"
+msgstr "所用编译器：\n"
 
 #: src/main.cc:112
-#, fuzzy, c-format
-#| msgid "Keep %F at version %s (%s)"
+#, c-format
 msgid "  apt version %d.%d.%d\n"
-msgstr "保持 %F 在版本 %s (%s)"
+msgstr "apt 版本 %d.%d.%d\n"
 
 #: src/main.cc:115
-#, fuzzy, c-format
-#| msgid ""
-#| "\n"
-#| "NCurses version: %s\n"
+#, c-format
 msgid "  NCurses version: Unknown\n"
-msgstr ""
-"\n"
-"NCurses 版本：%s\n"
+msgstr "  NCurses 版本：未知\n"
 
 #: src/main.cc:117
-#, fuzzy, c-format
-#| msgid ""
-#| "\n"
-#| "NCurses version: %s\n"
+#, c-format
 msgid "  NCurses version %s\n"
-msgstr ""
-"\n"
-"NCurses 版本：%s\n"
+msgstr "  NCurses 版本：%s\n"
 
 #: src/main.cc:119
-#, fuzzy, c-format
-#| msgid "libsigc++ version: %s\n"
+#, c-format
 msgid "  libsigc++ version: %s\n"
-msgstr "libsigc++ 版本：%s\n"
+msgstr "  libsigc++ 版本：%s\n"
 
 #: src/main.cc:121
-#, fuzzy, c-format
-#| msgid "Ept support enabled.\n"
+#, c-format
 msgid "  Ept support enabled.\n"
-msgstr "Ept 支持已开启。\n"
+msgstr "  Ept 支持已开启。\n"
 
 #: src/main.cc:124
-#, fuzzy, c-format
-#| msgid "Ept support disabled.\n"
+#, c-format
 msgid "  Ept support disabled.\n"
-msgstr "Ept 支持已禁用\n"
+msgstr "  Ept 支持已禁用\n"
 
 #: src/main.cc:127
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "Curses version: %s\n"
 msgid ""
 "\n"
 "Current library versions:\n"
 msgstr ""
 "\n"
-"Curses 版本：%s\n"
+"当前库版本：\n"
 
 #: src/main.cc:128
-#, fuzzy, c-format
-#| msgid ""
-#| "\n"
-#| "NCurses version: %s\n"
+#, c-format
 msgid "  NCurses version: %s\n"
-msgstr ""
-"\n"
-"NCurses 版本：%s\n"
+msgstr "  NCurses 版本：%s\n"
 
 #: src/main.cc:129
-#, fuzzy, c-format
-#| msgid "libsigc++ version: %s\n"
+#, c-format
 msgid "  cwidget version: %s\n"
-msgstr "libsigc++ 版本：%s\n"
+msgstr "  cwidget 版本：%s\n"
 
 #: src/main.cc:130
-#, fuzzy, c-format
-#| msgid ""
-#| "\n"
-#| "Curses version: %s\n"
+#, c-format
 msgid "  Apt version: %s\n"
-msgstr ""
-"\n"
-"Curses 版本：%s\n"
+msgstr "  Apt 版本：%s\n"
 
 #: src/main.cc:136
 #, c-format
@@ -3359,13 +3306,14 @@ msgid ""
 msgstr " reinstall    - 下载并(可能)重新安装一个现在已经安装了的软件包\n"
 
 #: src/main.cc:160
-#, fuzzy, c-format
-#| msgid " -Z             Show the change in installed size of each package.\n"
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
-"              - why one or more packages would require the given package\n"
-msgstr " -Z\t\t    显示每个软件包的安装尺寸的变化。\n"
+"                why one or more packages would require the given package\n"
+msgstr ""
+" 为什么       - 显示需要另一软件包的手动安装的软件包，或者\n"
+"                为什么一个或多个软件包需要给定的软件包\n"
 
 #: src/main.cc:162
 #, c-format
@@ -3375,6 +3323,9 @@ msgid ""
 "                with the given package, or why one or more packages would\n"
 "                lead to a conflict with the given package if installed\n"
 msgstr ""
+" 为什么不     - 显示导致与给定软件包包冲突的手动安装的包，或者为什么\n"
+"                如果安装一个或多个软件包会导致与给定软件包冲突\n"
+
 
 #: src/main.cc:166
 #, c-format
@@ -3461,14 +3412,11 @@ msgid ""
 msgstr " -t [release]   设置将要安装的软件包的发布版本\n"
 
 #: src/main.cc:181
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress "
-#| "indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
-msgstr " -q            在命令行状态下，不显示进度条。\n"
+msgstr " -q            在命令行状态下，不显示增量进度指示器\n"
 
 #: src/main.cc:183
 #, c-format
@@ -4450,14 +4398,12 @@ msgid "Couldn't parse column definition"
 msgstr "无法解析列定义"
 
 #: src/pkg_view.cc:223
-#, fuzzy
-#| msgid ""
-#| "If you select a package, an explanation of its current state will appear "
-#| "in this space."
 msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
-msgstr "如果您选择了一个软件包，其当前状态的描述将会出现在这片空间。"
+msgstr ""
+"如果您选择了一个软件包，那么为什么它需要被安装或移除的解释将会出现在这片空"
+"间。"
 
 #: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
@@ -4469,16 +4415,12 @@ msgid ""
 msgstr "make_package_view: 参数错误 -- 静态项目的栏列表错误"
 
 #: src/pkg_view.cc:678
-#, fuzzy
-#| msgid "Resolve Dependencies"
 msgid "Related Dependencies"
-msgstr "解决依赖关系"
+msgstr "相关依赖关系"
 
 #: src/pkg_view.cc:681
-#, fuzzy
-#| msgid "Installed"
 msgid "Why Installed"
-msgstr "已安装"
+msgstr "为什么已安装"
 
 #: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
@@ -4981,19 +4923,13 @@ msgid "Recommendations"
 msgstr "推荐"
 
 #: src/ui.cc:970
-#, fuzzy
-#| msgid ""
-#| "Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude comes with "
-#| "%BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  "
-#| "This is free software, and you are welcome to redistribute it under "
-#| "certain conditions; see 'license' for details."
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
 "is free software, and you are welcome to redistribute it under certain "
 "conditions; see 'license' for details."
 msgstr ""
-"Aptitude %s%n%n版权所有 2000-2005 Daniel Burrows。%n%n使用 Aptitude 软件%B无"
+"Aptitude %s%n%n版权所有 2000-2008 Daniel Burrows。%n%n使用 Aptitude 软件%B无"
 "任何担保%b；细节请查阅帮助菜单的“license”项。该软件是自由软件，欢迎您遵照某些"
 "条款分发该软件；细节请查阅“license”文件。"
 
@@ -5801,24 +5737,31 @@ msgstr "正在下载变更日志"
 msgid "Download Changelog"
 msgstr "下载变更日志"
 
-#, fuzzy
 #~| msgid ""
 #~| " -V             Show which versions of packages are to be installed.\n"
 #~ msgid ""
 #~ "              - why one or more packages would require the given package\n"
-#~ msgstr " -V             显示就要安装的软件包版本。\n"
+#~ msgstr "              - 为什么某个或者多个软件包需要给定的软件包\n"
 
-#, fuzzy
+#~ msgid ""
+#~ " why-not      - Show the manually installed packages that lead to a "
+#~ "conflict\n"
+#~ msgstr " 为什么不     - 显示导致冲突的手动安装的软件包\n"
+
+#~ msgid ""
+#~ "                with the given package, or why one or more packages "
+#~ "would\n"
+#~ msgstr "                与给定软件包，或者为什么一个或多个软件包将要\n"
+
 #~| msgid ""
 #~| " -V             Show which versions of packages are to be installed.\n"
 #~ msgid ""
 #~ "                lead to a conflict with the given package if installed\n"
-#~ msgstr " -V             显示就要安装的软件包版本。\n"
+#~ msgstr "                如果安装给定软件包将导致冲突\n"
 
-#, fuzzy
 #~| msgid " -h             This help text\n"
 #~ msgid "                indicators.\n"
-#~ msgstr " -h             此帮助文本\n"
+#~ msgstr "                指示器。\n"
 
 #~ msgid "Don't warn about the obsolete \"Recommends-Important\" option."
 #~ msgstr "不要警告废弃的“Recommends-Important”选项。"

@@ -157,7 +157,7 @@ static void usage()
   printf(_(" download     - Download the .deb file for a package\n"));
   printf(_(" reinstall    - Download and (possibly) reinstall a currently installed package\n"));
   printf(_(" why          - Show the manually installed packages that require a package, or\n"
-           "              - why one or more packages would require the given package\n"));
+           "                why one or more packages would require the given package\n"));
   printf(_(" why-not      - Show the manually installed packages that lead to a conflict\n"
            "                with the given package, or why one or more packages would\n"
            "                lead to a conflict with the given package if installed\n"));
@@ -536,10 +536,11 @@ int main(int argc, char *argv[])
 	}
     }
 
-  if(quiet == 0 && !isatty(1))
-    aptcfg->SetNoUser("quiet", 1);
-  else if(seen_quiet)
+  int curr_quiet = aptcfg->FindI("quiet", 0);
+  if(seen_quiet)
     aptcfg->SetNoUser("quiet", quiet);
+  if(quiet == 0 && !isatty(1))
+    aptcfg->SetNoUser("quiet", std::max(curr_quiet, 1));
 
   if(simulate)
     aptcfg->SetNoUser(PACKAGE "::Simulate", true);

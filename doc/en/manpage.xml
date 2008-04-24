@@ -676,7 +676,7 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 
 	<listitem>
 	  <para>
-	    Explains the reason that a particular package can or
+	    Explains the reason that a particular package should or
 	    cannot be installed on the system.
 	  </para>
 
@@ -699,10 +699,10 @@ p   kde           Depends    kdepim (>= 4:3.4.3)</screen>
 	    chain that installs the package named on the command line,
 	    as above.  Note that the dependency that aptitude produced
 	    in this case is only a suggestion.  This is because no
-	    package installed on my computer depends on or recommends
-	    the <systemitem>kdepim</systemitem> package; if a stronger
-	    dependency were available, aptitude would have displayed
-	    it.
+	    package currently installed on this computer depends on or
+	    recommends the <systemitem>kdepim</systemitem> package; if
+	    a stronger dependency were available, aptitude would have
+	    displayed it.
 	  </para>
 
 	  <para>
@@ -734,7 +734,8 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	  <para>
 	    If no patterns are present, then &aptitude; will search
 	    for dependency chains beginning at manually installed
-	    packages.
+	    packages.  This effectively shows the packages that have
+	    caused or would cause a given package to be installed.
 	  </para>
 
 	  <note>

@@ -375,7 +375,8 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
       (*apt_cache_file)->mark_keep(pkg, false, false, NULL);
       break;
     case cmdline_unhold:
-      (*apt_cache_file)->get_ext_state(pkg).selection_state = pkgCache::State::Install;
+      if((*apt_cache_file)[pkg].Keep())
+	(*apt_cache_file)->mark_keep(pkg, false, false, NULL);
       break;
     case cmdline_markauto:
       (*apt_cache_file)->mark_auto_installed(pkg, true, NULL);
