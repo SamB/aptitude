@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.2.15.5\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-04-13 17:00+0200\n"
-"PO-Revision-Date: 2008-04-13 18:00+0200\n"
+"POT-Creation-Date: 2008-05-05 13:22+0200\n"
+"PO-Revision-Date: 2008-05-05 13:24+0200\n"
 "Last-Translator: Jens Seidel <jensseidel@users.sf.net>\n"
 "Language-Team: Debian German <debian-l10n-german@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -775,12 +775,12 @@ msgstr ""
 "Paket %s kann nicht aktualisiert werden, kann also keine Aktualisierung "
 "verbieten\n"
 
-#: src/cmdline/cmdline_action.cc:438
+#: src/cmdline/cmdline_action.cc:439
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Hinweis: Wähle den Task »%s: %s« zur Installation aus\n"
 
-#: src/cmdline/cmdline_action.cc:472
+#: src/cmdline/cmdline_action.cc:473
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -789,13 +789,13 @@ msgstr ""
 "Sie können die Version eines Pakets nur bei einem »install«- oder »forbid-"
 "version«-Befehl angeben.\n"
 
-#: src/cmdline/cmdline_action.cc:481
+#: src/cmdline/cmdline_action.cc:482
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr ""
 "Sie können das Archiv eines Pakets nur bei einem »install«-Befehl angeben.\n"
 
-#: src/cmdline/cmdline_action.cc:518
+#: src/cmdline/cmdline_action.cc:519
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -804,7 +804,7 @@ msgstr ""
 "Konnte Paket »%s« nicht finden und mehr als 40 Pakete\n"
 "enthalten »%s« in ihrem Namen:\n"
 
-#: src/cmdline/cmdline_action.cc:521
+#: src/cmdline/cmdline_action.cc:522
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -813,13 +813,13 @@ msgstr ""
 "Konnte Paket »%s« nicht finden, aber die folgenden Pakete\n"
 "enthalten »%s« in ihrem Namen:\n"
 
-#: src/cmdline/cmdline_action.cc:543
+#: src/cmdline/cmdline_action.cc:544
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "Konnte kein Paket finden, dessen Name oder Beschreibung auf »%s« passt.\n"
 
-#: src/cmdline/cmdline_action.cc:545
+#: src/cmdline/cmdline_action.cc:546
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -828,7 +828,7 @@ msgstr ""
 "Konnte kein Paket finden, das auf »%s« passt, und mehr als 40\n"
 "Pakete enthalten »%s« in ihrer Beschreibung.\n"
 
-#: src/cmdline/cmdline_action.cc:548
+#: src/cmdline/cmdline_action.cc:549
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -837,7 +837,7 @@ msgstr ""
 "Konnte kein Paket finden, das auf »%s« passt, allerdings enthalten\n"
 "die folgenden Pakete »%s« in ihrer Beschreibung:\n"
 
-#: src/cmdline/cmdline_action.cc:686
+#: src/cmdline/cmdline_action.cc:687
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Ungültiger Befehlsbuchstabe '%c'\n"
@@ -909,7 +909,7 @@ msgstr ""
 "full-resolver.\n"
 
 #: src/cmdline/cmdline_do_action.cc:304 src/cmdline/cmdline_simulate.cc:35
-#: src/cmdline/cmdline_upgrade.cc:151 src/main.cc:703
+#: src/cmdline/cmdline_upgrade.cc:151 src/main.cc:704
 #, c-format
 msgid "Abort.\n"
 msgstr "Abbruch.\n"
@@ -944,7 +944,8 @@ msgid ""
 "extract-cache-entries: at least one argument is required (the directory\n"
 "to which to write files).\n"
 msgstr ""
-"extract-cache-entries: mindestens ein Argument wird benötigt (das Verzeichnis,\n"
+"extract-cache-entries: mindestens ein Argument wird benötigt (das "
+"Verzeichnis,\n"
 "in das Dateien geschrieben werden sollen).\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:77
@@ -956,7 +957,9 @@ msgstr "Kein solches Paket »%s«.\n"
 #: src/cmdline/cmdline_extract_cache_subset.cc:115
 #, c-format
 msgid "No packages were selected by the given search pattern; nothing to do.\n"
-msgstr "Keine Pakete wurden durch das gegebene Suchmuster ausgewählt; nichts ist zu tun.\n"
+msgstr ""
+"Keine Pakete wurden durch das gegebene Suchmuster ausgewählt; nichts ist zu "
+"tun.\n"
 
 #: src/cmdline/cmdline_forget_new.cc:25
 #, c-format
@@ -1547,18 +1550,18 @@ msgstr ""
 "Größenveränderungen werden nicht angezeigt.\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:715
+#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:716
 #: src/generic/apt/apt.cc:275
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "%s konnte nicht zum Schreiben geöffnet werden"
 
-#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:720
+#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:721
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Fehler beim Schreiben des Auflösungsstatus zu %s"
 
-#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:722
+#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:723
 msgid "Resolver state successfully written!"
 msgstr "Auflösungsstatus wurde erfolgreich geschrieben!"
 
@@ -1736,29 +1739,29 @@ msgstr ""
 "Ich möchte Abhängigkeiten auflösen, aber kein Abhängigkeitsauflöser wurde "
 "erzeugt."
 
-#: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
+#: src/cmdline/cmdline_resolver.cc:531 src/solution_dialog.cc:127
 #: src/solution_screen.cc:519
 msgid "Resolving dependencies..."
 msgstr "Löse Abhängigkeiten auf ..."
 
-#: src/cmdline/cmdline_resolver.cc:562 src/solution_screen.cc:515
+#: src/cmdline/cmdline_resolver.cc:563 src/solution_screen.cc:515
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgstr "offen: %d; geschlossen: %d; zurückgestellt: %d; Konflikte: %d"
 
-#: src/cmdline/cmdline_resolver.cc:615
+#: src/cmdline/cmdline_resolver.cc:616
 msgid "The following actions will resolve these dependencies:"
 msgstr "Die folgenden Aktionen werden diese Abhängigkeiten auflösen:"
 
-#: src/cmdline/cmdline_resolver.cc:632
+#: src/cmdline/cmdline_resolver.cc:633
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Diese Lösung akzeptieren? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:659 src/cmdline/cmdline_resolver.cc:766
+#: src/cmdline/cmdline_resolver.cc:660 src/cmdline/cmdline_resolver.cc:767
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Alle Anstrengungen diese Abhängigkeiten aufzulösen aufgegeben."
 
-#: src/cmdline/cmdline_resolver.cc:662
+#: src/cmdline/cmdline_resolver.cc:663
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
@@ -1766,37 +1769,37 @@ msgstr ""
 "Abbruch der automatischen Abhängigkeitsauflösung und zurück zu manueller "
 "Auflösung."
 
-#: src/cmdline/cmdline_resolver.cc:692
+#: src/cmdline/cmdline_resolver.cc:693
 msgid "The following commands are available:"
 msgstr "Die folgenden Kommandos sind verfügbar:"
 
-#: src/cmdline/cmdline_resolver.cc:712
+#: src/cmdline/cmdline_resolver.cc:713
 msgid "File to write resolver state to: "
 msgstr "Datei, in die der Auflösungsstatus geschrieben werden soll: "
 
-#: src/cmdline/cmdline_resolver.cc:727
+#: src/cmdline/cmdline_resolver.cc:728
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Ungültige Antwort. Bitte geben Sie eines der folgenden Kommandos ein:"
 
-#: src/cmdline/cmdline_resolver.cc:740
+#: src/cmdline/cmdline_resolver.cc:741
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Es wurde in der zugewiesenen Zeit keine Lösung gefunden. Stärker suchen? [Y/"
 "n]"
 
-#: src/cmdline/cmdline_resolver.cc:769
+#: src/cmdline/cmdline_resolver.cc:770
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Ungültige Antwort. Bitte geben Sie »y« oder »n« ein."
 
-#: src/cmdline/cmdline_resolver.cc:778
+#: src/cmdline/cmdline_resolver.cc:779
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Abhängigkeiten können nicht aufgelöst werden! Gebe auf ..."
 
-#: src/cmdline/cmdline_resolver.cc:784
+#: src/cmdline/cmdline_resolver.cc:785
 msgid "*** No more solutions available ***"
 msgstr "*** Keine weiteren Lösungen vorhanden ***"
 
-#: src/cmdline/cmdline_resolver.cc:803
+#: src/cmdline/cmdline_resolver.cc:804
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
@@ -1805,7 +1808,7 @@ msgstr ""
 "            Sie können weitersuchen, aber einige Lösungen werden\n"
 "            nicht erreichbar sein."
 
-#: src/cmdline/cmdline_resolver.cc:963
+#: src/cmdline/cmdline_resolver.cc:964
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
@@ -1814,20 +1817,20 @@ msgstr ""
 "wurde. Einige mögliche Aktualisierungen könnten nicht durchgeführt worden "
 "sein."
 
-#: src/cmdline/cmdline_resolver.cc:970
+#: src/cmdline/cmdline_resolver.cc:971
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
 "Abhängigkeiten für die Aktualisierung konnten nicht aufgelöst werden (Zeit "
 "lief beim Auflösen ab)!"
 
-#: src/cmdline/cmdline_resolver.cc:984
+#: src/cmdline/cmdline_resolver.cc:985
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr ""
 "Abhängigkeiten für die Aktualisierung können nicht aufgelöst werden (keine "
 "Lösung gefunden)!"
 
-#: src/cmdline/cmdline_resolver.cc:993
+#: src/cmdline/cmdline_resolver.cc:994
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
@@ -1836,7 +1839,7 @@ msgstr ""
 "Die Abhängigkeitsauflösung ist unvollständig (%s). Einige mögliche "
 "Aktualisierungen könnten nicht durchgeführt worden sein."
 
-#: src/cmdline/cmdline_resolver.cc:999
+#: src/cmdline/cmdline_resolver.cc:1000
 #, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Kann Abhängigkeiten für die Aktualisierung nicht auflösen (%s)!"
@@ -2309,45 +2312,35 @@ msgstr "    ++   --> ENQUEUING %s stellt %s bereit\n"
 msgid "Starting search with parameters %ls\n"
 msgstr "Starte Suche mit Parametern %ls\n"
 
-#: src/cmdline/cmdline_why.cc:886
+#: src/cmdline/cmdline_why.cc:895
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Überspringe diese Lösung. Ich habe sie bereits gesehen.\n"
 
-#: src/cmdline/cmdline_why.cc:898
-#, c-format
-msgid "The package \"%s\" is a starting point of the search.\n"
-msgstr "Das Paket »%s« ist ein Startpunkt der Suche.\n"
-
-#: src/cmdline/cmdline_why.cc:957
+#: src/cmdline/cmdline_why.cc:970
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Kann keinen Grund für die Entfernung von %s finden.\n"
 
-#: src/cmdline/cmdline_why.cc:959
+#: src/cmdline/cmdline_why.cc:972
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Kann keinen Grund für die Installation von %s finden.\n"
 
-#: src/cmdline/cmdline_why.cc:1004 src/cmdline/cmdline_why.cc:1030
-#: src/cmdline/cmdline_why.cc:1092
+#: src/cmdline/cmdline_why.cc:1017 src/cmdline/cmdline_why.cc:1043
+#: src/cmdline/cmdline_why.cc:1105
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Ein Paket namens »%s« existiert nicht!"
 
-#: src/cmdline/cmdline_why.cc:1038
+#: src/cmdline/cmdline_why.cc:1051
 msgid "Unable to parse some match patterns."
 msgstr "Einige Suchmuster konnten nicht verarbeitet werden."
 
-#: src/cmdline/cmdline_why.cc:1065
+#: src/cmdline/cmdline_why.cc:1078
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""
 "%s: dieses Kommando benötigt zumindest ein Argument (das abzufragende Paket)."
-
-#: src/cmdline/cmdline_why.cc:1114
-#, c-format
-msgid "The package \"%s\" is manually installed.\n"
-msgstr "Das Paket »%s« wurde manuell installiert.\n"
 
 #  If we can quickly prove that this is not satisfiable, tell
 #  the user that.  (specifically, if there are no available packages
@@ -3538,9 +3531,12 @@ msgid ""
 "                with the given package, or why one or more packages would\n"
 "                lead to a conflict with the given package if installed\n"
 msgstr ""
-" why-not        Anzeigen der manuell installierten Pakete, die zu einem Konflikt\n"
-"                mit dem gegebenen Paket führen, oder warum ein oder mehrere Pakete\n"
-"                zu einem Konflikt mit dem gegebenen Paket führen würden, falls installiert\n"
+" why-not        Anzeigen der manuell installierten Pakete, die zu einem "
+"Konflikt\n"
+"                mit dem gegebenen Paket führen, oder warum ein oder mehrere "
+"Pakete\n"
+"                zu einem Konflikt mit dem gegebenen Paket führen würden, "
+"falls installiert\n"
 
 #: src/main.cc:165
 #, c-format
@@ -3645,8 +3641,7 @@ msgstr ""
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
-msgstr ""
-" -q             Keine Fortschrittsanzeige im Kommandozeilenmodus.\n"
+msgstr " -q             Keine Fortschrittsanzeige im Kommandozeilenmodus.\n"
 
 #: src/main.cc:182
 #, c-format
@@ -3709,22 +3704,22 @@ msgstr "Kein Komma nach der Marke »%s«.\n"
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "MERKWÜRDIG: unbekannten Optionscode erhalten\n"
 
-#: src/main.cc:551
+#: src/main.cc:552
 msgid "Only one of -u and -i may be specified\n"
 msgstr "Es dürfen nur entweder -u oder -i angegeben werden\n"
 
-#: src/main.cc:559
+#: src/main.cc:560
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
 "-u und -i dürfen nicht im Kommandozeilenmodus verwendet werden (z.B. mit "
 "'install')"
 
-#: src/main.cc:580
+#: src/main.cc:581
 msgid "-u and -i may not be specified with a command"
 msgstr "-u und -i dürfen nicht mit einem Kommando verwendet werden"
 
-#: src/main.cc:640
+#: src/main.cc:641
 #, c-format
 msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
@@ -3733,17 +3728,17 @@ msgstr ""
 "Die Optionen --safe-resolver und --full-resolver sind nicht sinnvoll\n"
 "für %s, was immer den sicheren Auflöser verwendet.\n"
 
-#: src/main.cc:696
+#: src/main.cc:697
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Unbekanntes Kommando »%s«\n"
 
-#: src/main.cc:708 src/main.cc:757
+#: src/main.cc:709 src/main.cc:758
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Nicht gefangene Ausnahme: %s\n"
 
-#: src/main.cc:712 src/main.cc:761
+#: src/main.cc:713 src/main.cc:762
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -4698,8 +4693,8 @@ msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
 msgstr ""
-"Wenn Sie ein Paket auswählen, wird in diesem Bereich eine Erläuterung darüber "
-"erscheinen, warum es installiert oder entfernt werden soll."
+"Wenn Sie ein Paket auswählen, wird in diesem Bereich eine Erläuterung "
+"darüber erscheinen, warum es installiert oder entfernt werden soll."
 
 #: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
@@ -6065,11 +6060,8 @@ msgid "^News"
 msgstr "^Neuigkeiten"
 
 #: src/ui.cc:2377
-#, fuzzy
 msgid "View the important changes made in each version of "
-msgstr ""
-"Die wichtigen Änderungen anzeigen, die in jeder Version von %s vorgenommen "
-"wurden"
+msgstr "Anzeige der wichtigen Änderungen in jeder Version von "
 
 #: src/ui.cc:2380
 msgid "^License"
@@ -6136,6 +6128,12 @@ msgstr "Herunterladen des Changelogs"
 #: src/view_changelog.cc:242
 msgid "Download Changelog"
 msgstr "Herunterladen des Changelogs"
+
+#~ msgid "The package \"%s\" is a starting point of the search.\n"
+#~ msgstr "Das Paket »%s« ist ein Startpunkt der Suche.\n"
+
+#~ msgid "The package \"%s\" is manually installed.\n"
+#~ msgstr "Das Paket »%s« wurde manuell installiert.\n"
 
 #~ msgid "There are now %F."
 #~ msgstr "Es gibt nun %F."
