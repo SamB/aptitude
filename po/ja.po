@@ -88,6 +88,7 @@
 # Audit recommendation    推奨を監査
 # Cancel                  キャンセル / 取り消し
 # Close                   閉じる
+# Continue                先に進む
 # Display                 表示
 # Download                ダウンロード / 取得
 # Find                    検索
@@ -183,7 +184,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-04-13 12:18+0200\n"
-"PO-Revision-Date: 2008-02-20 03:58+0900\n"
+"PO-Revision-Date: 2008-05-14 16:46+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -816,7 +817,7 @@ msgstr "[%d(%d)/...] 依存関係を解決しています"
 #: src/broken_indicator.cc:311 src/solution_dialog.cc:140
 #: src/solution_screen.cc:542
 msgid "Internal error: unexpected null solution."
-msgstr "内部エラー: 想定外の null 解決方法です"
+msgstr "内部エラー: 解決方法が null になるのは想定外です"
 
 #: src/broken_indicator.cc:366
 #, fuzzy
@@ -1297,7 +1298,7 @@ msgstr "これが非常にまずい考えだとわかっています"
 #: src/cmdline/cmdline_prompt.cc:640
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
-msgstr "続行するには '%s' というフレーズを入力してください:\n"
+msgstr "先に進む場合は '%s' というフレーズを入力してください:\n"
 
 #: src/cmdline/cmdline_prompt.cc:682
 #, c-format
@@ -1337,11 +1338,11 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:709
 msgid "Yes"
-msgstr "Yes"
+msgstr "はい (Y)"
 
 #: src/cmdline/cmdline_prompt.cc:709
 msgid "No"
-msgstr "No"
+msgstr "いいえ (N)"
 
 #: src/cmdline/cmdline_prompt.cc:713
 #, c-format
@@ -1351,7 +1352,7 @@ msgstr "この警告を無視して意地でも先に進みますか?\n"
 #: src/cmdline/cmdline_prompt.cc:714
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
-msgstr "続行する場合は \"%s\" を、中断する場合は \"%s\" を、入力してください:"
+msgstr "先に進む場合は \"%s\" を、中断する場合は \"%s\" を、入力してください:"
 
 #: src/cmdline/cmdline_prompt.cc:728
 #, c-format
@@ -1422,7 +1423,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:911
 msgid "Press Return to continue."
-msgstr "続けるには Return を押してください。"
+msgstr "先に進む場合は Return を押してください。"
 
 #: src/cmdline/cmdline_prompt.cc:922
 #, c-format
@@ -1432,7 +1433,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:926
 msgid "Press Return to continue"
-msgstr "続けるには Return を押してください"
+msgstr "先に進む場合は Return を押してください"
 
 # TRANSLATION-FIXME: こんな感じ?
 #: src/cmdline/cmdline_prompt.cc:936
@@ -1452,7 +1453,7 @@ msgstr "y: %F"
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:961
 msgid "continue with the installation"
-msgstr "インストールを続行します"
+msgstr "インストールへと進みます"
 
 #: src/cmdline/cmdline_prompt.cc:963
 #, c-format
@@ -1624,7 +1625,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:1156
 msgid "Do you want to continue? [Y/n/?] "
-msgstr "続けますか? [Y/n/?] "
+msgstr "先に進みますか? [Y/n/?] "
 
 #: src/cmdline/cmdline_prompt.cc:1157
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
@@ -1902,7 +1903,7 @@ msgstr "依存関係を解決したいのですが、依存関係解決ツール
 #: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
 #: src/solution_screen.cc:519
 msgid "Resolving dependencies..."
-msgstr "依存関係を解決しています..."
+msgstr "依存関係を解決中..."
 
 #: src/cmdline/cmdline_resolver.cc:562 src/solution_screen.cc:515
 #, c-format
@@ -2540,7 +2541,7 @@ msgstr "%n%nいくつかのファイルはダウンロードできませんで�
 
 #: src/download_list.cc:98 src/download_list.cc:347
 msgid "Continue"
-msgstr "続行"
+msgstr "先に進む"
 
 #: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
 msgid "Cancel"
@@ -3135,7 +3136,7 @@ msgstr "対応する '(' がありません"
 
 #: src/generic/apt/matchers.cc:4021
 msgid "Provides: cannot be broken"
-msgstr "Provides: は破損することはありません"
+msgstr "Provides: が壊れることはありません"
 
 #: src/generic/apt/matchers.cc:4084
 #, c-format
@@ -3240,7 +3241,7 @@ msgstr "不明なエラーです"
 #: src/generic/util/util.cc:273
 #, c-format
 msgid "Unable to stat \"%s\""
-msgstr "\"%s\" の状態が分かりません"
+msgstr "\"%s\" の状態を取得できません"
 
 #: src/generic/util/util.cc:279
 #, c-format
@@ -3635,8 +3636,7 @@ msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
 "version.\n"
 msgstr ""
-" forbid-version - aptitude に特定のパッケージバージョンの更新を禁止させま"
-"す。\n"
+" forbid-version - aptitude に特定のパッケージバージョンの更新を禁止させます\n"
 
 # * Description of action in the commandline help.
 #: src/main.cc:149
@@ -3711,7 +3711,8 @@ msgid ""
 "package\n"
 msgstr ""
 " reinstall    - 現在インストールされているパッケージをダウンロードし (場合に"
-"よっては) 再インストールします\n"
+"よっ\n"
+"                ては) 再インストールします\n"
 
 # * Description of action in the commandline help.
 #: src/main.cc:160
@@ -4580,7 +4581,7 @@ msgid ""
 msgstr ""
 "依存関係が満たされていないために削除されるパッケージ\n"
 " これらのパッケージは削除予定です。それは、依存パッケージのうち一つ以上がもは"
-"や利用できないため、またはこれらと他のパッケージが衝突しているためです。"
+"や利用できないため、またはこれらと他のパッケージが競合しているためです。"
 
 #: src/pkg_grouppolicy.cc:638
 msgid ""
@@ -4826,7 +4827,7 @@ msgstr "%s を再設定しています\n"
 
 #: src/pkg_item.cc:445 src/ui.cc:1147
 msgid "Press return to continue.\n"
-msgstr "続けるには Return を押してください。\n"
+msgstr "先に進む場合は Return を押してください。\n"
 
 #: src/pkg_item.cc:462
 msgid "Hierarchy editor"
@@ -4963,7 +4964,8 @@ msgid ""
 "If you select a package, an explanation of its current state will appear in "
 "this space."
 msgstr ""
-"パッケージ選択時に、現在の状態に関する説明がこのスペースに表示されます。"
+"パッケージを選択すると、そのパッケージの現在の状態に関する説明がこの欄に表示"
+"されます。"
 
 #: src/reason_fragment.cc:370
 msgid ""
@@ -5589,11 +5591,11 @@ msgstr "  %S*%N %s [バージョン %s]%n"
 
 #: src/ui.cc:1221
 msgid "Really Continue"
-msgstr "続行"
+msgstr "本当に先に進む"
 
 #: src/ui.cc:1223
 msgid "Abort Installation"
-msgstr "インストールを破棄する"
+msgstr "インストールを中断する"
 
 #: src/ui.cc:1285
 msgid "Preview of package installation"
@@ -6480,7 +6482,7 @@ msgstr "変更履歴をダウンロードしました"
 #~ msgstr "キーの記述をパースできません: %ls"
 
 #~ msgid "Invalid null keybinding"
-#~ msgstr "不正な null キーバインドです"
+#~ msgstr "キーバインドが null になるのは想定外です"
 
 #~ msgid "Sorry, control modifiers may not be used with unprintable characters"
 #~ msgstr "すみません。コントロール修飾子は印字不能文字と一緒には使えません"
