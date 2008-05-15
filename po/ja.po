@@ -186,7 +186,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-04-13 12:18+0200\n"
-"PO-Revision-Date: 2008-05-15 22:41+0900\n"
+"PO-Revision-Date: 2008-05-16 03:35+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -1175,13 +1175,14 @@ msgstr "標準入力中に想定外のファイル終端記号が含まれてい
 msgid "Couldn't read list of sources"
 msgstr "パッケージ入手先一覧を読み込めませんでした"
 
+# TRANSLATION-FIXME: こんな感じ?
 #. ForTranslators: %s is replaced with a comma-delimited list
 #. of package names.
 #: src/cmdline/cmdline_prompt.cc:209
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
-msgstr[0] ""
+msgstr[0] "(理由: %s)"
 
 #: src/cmdline/cmdline_prompt.cc:282 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
@@ -2356,117 +2357,112 @@ msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] "新たに廃止されたパッケージが %d 個あります:"
 
 #: src/cmdline/cmdline_why.cc:252
-#, fuzzy
 msgid "dep_level"
-msgstr "削除"
+msgstr "依存レベル"
 
 #: src/cmdline/cmdline_why.cc:258
-#, fuzzy
 msgid "DependsOnly"
-msgstr "依存"
+msgstr "依存のみ"
 
 #: src/cmdline/cmdline_why.cc:272
 msgid "version_selection"
-msgstr ""
+msgstr "バージョン選択"
 
 #: src/cmdline/cmdline_why.cc:277
 msgid "Current"
-msgstr ""
+msgstr "現在"
 
 #: src/cmdline/cmdline_why.cc:280
-#, fuzzy
 msgid "Candidate"
-msgstr "候補版"
+msgstr "候補"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
 msgid "Install"
 msgstr "インストール"
 
 #: src/cmdline/cmdline_why.cc:286
-#, fuzzy
 msgid "InstallNotCurrent"
-msgstr "インストール済み"
+msgstr "現在以外をインストール"
 
 #: src/cmdline/cmdline_why.cc:294
 msgid "allow_choices"
-msgstr ""
+msgstr "選択してよいか"
 
 #: src/cmdline/cmdline_why.cc:297
-#, fuzzy
 msgid "true"
 msgstr "はい"
 
 #: src/cmdline/cmdline_why.cc:299
-#, fuzzy
 msgid "false"
 msgstr "いいえ"
 
 #: src/cmdline/cmdline_why.cc:353
-#, fuzzy, c-format
+#, c-format
 msgid "Install(%s)"
-msgstr "インストール"
+msgstr "インストール(%s)"
 
 #: src/cmdline/cmdline_why.cc:355
-#, fuzzy, c-format
+#, c-format
 msgid "Remove(%s)"
-msgstr "削除"
+msgstr "削除(%s)"
 
 #: src/cmdline/cmdline_why.cc:357
-#, fuzzy, c-format
+#, c-format
 msgid "Install(%s provides %s)"
-msgstr "%s %s (%s) をインストールしています"
+msgstr "インストール(%s 提供 %s)"
 
 #: src/cmdline/cmdline_why.cc:361
-#, fuzzy, c-format
+#, c-format
 msgid "Remove(%s provides %s)"
-msgstr "%F %s (%s) を削除する"
+msgstr "削除(%s 提供 %s)"
 
 #: src/cmdline/cmdline_why.cc:417
 #, c-format
 msgid "    ++ Examining %F\n"
-msgstr ""
+msgstr "    ++ 「%F」を検討します\n"
 
 #: src/cmdline/cmdline_why.cc:427
 msgid "    ++   --> skipping, not a conflict\n"
-msgstr ""
+msgstr "    ++   --> 無視します。競合ではありません\n"
 
 #: src/cmdline/cmdline_why.cc:437
 msgid "    ++   --> skipping conflict\n"
-msgstr ""
+msgstr "    ++   --> 競合は無視します\n"
 
 #: src/cmdline/cmdline_why.cc:445
 msgid "    ++   --> skipping, not relevant according to params\n"
-msgstr ""
+msgstr "    ++   --> 無視します。このパラメータの設定では無関係です\n"
 
 #: src/cmdline/cmdline_why.cc:452
 msgid "    ++   --> skipping, parent is not the selected version\n"
-msgstr ""
+msgstr "    ++   --> 無視します。親が選択されたバージョンではありません\n"
 
 #: src/cmdline/cmdline_why.cc:492
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr ""
+"    ++   --> 無視します。この依存関係は現在のバージョンで満たされています\n"
 
 #: src/cmdline/cmdline_why.cc:522
 msgid "    ++   --> ENQUEUING\n"
-msgstr ""
+msgstr "    ++   --> キューに投入します\n"
 
 #: src/cmdline/cmdline_why.cc:529
 msgid "    ++   --> skipping, version check failed\n"
-msgstr ""
+msgstr "    ++   --> 無視します。バージョンのチェックが失敗しました\n"
 
 #: src/cmdline/cmdline_why.cc:547
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
-msgstr ""
+msgstr "    ++   --> 「%s 提案 %s」をキューに投入します\n"
 
 #: src/cmdline/cmdline_why.cc:675
 #, c-format
 msgid "Starting search with parameters %ls\n"
-msgstr ""
+msgstr "以下のパラメータで検索を開始します: %ls\n"
 
 #: src/cmdline/cmdline_why.cc:886
 msgid "Skipping this solution, I've already seen it.\n"
-msgstr ""
+msgstr "この解決方法は無視します。これは既に現れました。\n"
 
 #: src/cmdline/cmdline_why.cc:898
 #, c-format
