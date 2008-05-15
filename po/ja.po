@@ -113,7 +113,8 @@
 #
 # action                  アクション
 # action character        アクション文字
-# dependency resolver     依存関係解決ツール
+# automatic dependency resolver   依存関係解決器
+# dependency resolver     依存関係解決器
 # extended state information    拡張状態情報
 # grouping mechanism      分類規則
 # grouping method         分類方法
@@ -127,8 +128,8 @@
 # package information area  パッケージ情報欄
 # package list            パッケージ一覧
 # package view            パッケージ画面
-# problem resolver        問題解決ツール
-# resolver                問題解決 / 解決ツール
+# problem resolver        依存関係解決器
+# resolver                問題解決 / 依存関係解決器
 # screen                  スクリーン
 # solution                解決方法
 # sorting mechanism       並び替え規則
@@ -143,6 +144,7 @@
 #
 # behavior                振舞い
 # Changelog               変更履歴
+# cycle                   切り替える
 # debtags database        debtags データベース
 # disk space              ディスク領域
 # enter                   入力する
@@ -184,7 +186,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-04-13 12:18+0200\n"
-"PO-Revision-Date: 2008-05-14 17:02+0900\n"
+"PO-Revision-Date: 2008-05-15 22:41+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -650,8 +652,8 @@ msgid ""
 msgstr ""
 "このオプションを有効にすると、aptitude は単純な経験則を使用して、インストール"
 "対象としてフラグをつけた各パッケージの依存関係を直ちに解決するようになりま"
-"す。こちらのほうが組み込みの依存関係解決ツールよりも遥かに高速ですが、場合に"
-"よっては最適でない結果となったり、完全に失敗したりする可能性もあります。"
+"す。こちらのほうが組み込みの依存関係解決器よりも遥かに高速ですが、場合によっ"
+"ては最適でない結果となったり、完全に失敗したりする可能性もあります。"
 
 #: src/apt_options.cc:354
 msgid "Automatically fix broken packages before installing or removing"
@@ -665,9 +667,9 @@ msgid ""
 "a solution to the broken dependencies."
 msgstr ""
 "このオプションを有効にすると、依存関係が壊れているパッケージがある状態でイン"
-"ストールの実行をしたときに、aptitude は、依存関係解決ツールが提案する解決方法"
-"のうち選択中のものを自動的に適用するようになります。無効にすると、aptitude "
-"は、壊れた依存関係の解決用のプロンプトを表示します。"
+"ストールの実行をしたときに、aptitude は、依存関係解決器が提案する解決方法のう"
+"ち選択中のものを自動的に適用するようになります。無効にすると、aptitude は、壊"
+"れた依存関係の解決用のプロンプトを表示します。"
 
 #: src/apt_options.cc:362
 msgid "Install recommended packages automatically"
@@ -753,9 +755,9 @@ msgstr ""
 "に、固定されたパッケージに関する変更や、禁止しているバージョンのパッケージの"
 "インストールを選択肢に含めるようになります。無効にすると、そのような解決方法"
 "はデフォルトでは拒否されるようになります。\n"
-"注意: 現在のところ、この制限は、aptitude の依存関係解決ツール (スクリーン最下"
-"部の赤いバー) が有効になっている場合のみに適用されます。apt のバグ #470035 の"
-"ため、現在のところ aptitude は、インストール対象や更新対象として選択したパッ"
+"注意: 現在のところ、この制限は、aptitude の依存関係解決器 (スクリーン最下部の"
+"赤いバー) が有効になっている場合のみに適用されます。apt のバグ #470035 のた"
+"め、現在のところ aptitude は、インストール対象や更新対象として選択したパッ"
 "ケージの依存関係に含まれるパッケージを自動的にインストールする場合は、固定を"
 "無視してしまいます。"
 
@@ -801,7 +803,7 @@ msgstr "依存関係を解決できませんでした。"
 
 #: src/broken_indicator.cc:263
 msgid "Fatal error in resolver"
-msgstr "依存関係解決ツールで致命的なエラーが発生しました"
+msgstr "依存関係解決器で致命的なエラーが発生しました"
 
 #: src/broken_indicator.cc:275
 #, c-format
@@ -1544,7 +1546,7 @@ msgstr "r: %F"
 # * Description of a command.
 #: src/cmdline/cmdline_prompt.cc:994
 msgid "run the automatic dependency resolver to fix the broken dependencies."
-msgstr "依存関係自動解決ツールを用いて、壊れた依存関係を修正します。"
+msgstr "依存関係解決器を用いて、壊れた依存関係を修正します。"
 
 #: src/cmdline/cmdline_prompt.cc:996
 #, c-format
@@ -1718,11 +1720,11 @@ msgstr "%s を書き込み可能な状態で開けません"
 #: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:720
 #, c-format
 msgid "Error writing resolver state to %s"
-msgstr "問題解決ツールの状態を %s に書き込む際にエラーが生じました"
+msgstr "依存関係解決器の状態を %s に書き込む際にエラーが生じました"
 
 #: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:722
 msgid "Resolver state successfully written!"
-msgstr "解決ツールの状態の書き込みに成功しました!"
+msgstr "依存関係解決器の状態の書き込みに成功しました!"
 
 #: src/cmdline/cmdline_resolver.cc:162
 #, c-format
@@ -1897,7 +1899,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:517
 msgid "I want to resolve dependencies, but no dependency resolver was created."
-msgstr "依存関係を解決したいのですが、依存関係解決ツールが作成されていません。"
+msgstr "依存関係を解決したいのですが、依存関係解決器が作成されていません。"
 
 #: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
 #: src/solution_screen.cc:519
@@ -1933,7 +1935,7 @@ msgstr "以下のコマンドが利用可能です:"
 
 #: src/cmdline/cmdline_resolver.cc:712
 msgid "File to write resolver state to: "
-msgstr "解決ツールの状態を書き込む出力ファイル: "
+msgstr "依存関係解決器の状態を書き込む出力ファイル: "
 
 #: src/cmdline/cmdline_resolver.cc:727
 msgid "Invalid response; please enter one of the following commands:"
@@ -1969,15 +1971,15 @@ msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
-"依存関係解決ツールが、解決方法の生成後にタイムアウトになりました。一部の更新"
-"が実行されなかった可能性があります。"
+"依存関係解決器が、解決方法の生成後にタイムアウトになりました。一部の更新が実"
+"行されなかった可能性があります。"
 
 #: src/cmdline/cmdline_resolver.cc:970
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
-"更新のための依存関係の解決ができません (依存関係解決ツールがタイムアウトにな"
-"りました)。"
+"更新のための依存関係の解決ができません (依存関係解決器がタイムアウトになりま"
+"した)。"
 
 #: src/cmdline/cmdline_resolver.cc:984
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
@@ -3972,7 +3974,7 @@ msgid ""
 msgstr ""
 "%s では、--safe-resolver や --full-resolver といったオプションをつけても無意"
 "味です。\n"
-"常に安全な依存関係解決ツールを使用するためです。\n"
+"常に安全な依存関係解決器を使用するためです。\n"
 
 #: src/main.cc:697
 #, c-format
@@ -5762,11 +5764,11 @@ msgstr "%ls を開けません"
 
 #: src/ui.cc:2050
 msgid "Error while dumping resolver state"
-msgstr "解決ツールの状態のダンプ中にエラーが生じました"
+msgstr "依存関係解決器の状態のダンプ中にエラーが生じました"
 
 #: src/ui.cc:2060
 msgid "File to which the resolver state should be dumped:"
-msgstr "解決ツールの状態をダンプする出力ファイル:"
+msgstr "依存関係解決器の状態をダンプする出力ファイル:"
 
 # * Item.
 #: src/ui.cc:2090
