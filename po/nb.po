@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: aptitude_nb\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-05-05 13:22+0200\n"
-"PO-Revision-Date: 2008-05-08 00:59+0200\n"
+"PO-Revision-Date: 2008-05-15 23:02+0200\n"
 "Last-Translator: Hans Fredrik Nordhaug <hans@nordhaug.priv.no>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -476,6 +476,10 @@ msgid ""
 "installation.  This is much faster than the built-in dependency resolver, "
 "but may produce suboptimal results or fail entirely in some scenarios."
 msgstr ""
+"Hvis dette valget er aktivert, vil aptitude bruke en enkel heuristikk for å "
+"øyeblikkelig løse avhengigheter for hver pakke som du har markert for "
+"installering. Dette er mye raskere enn den innebygde avhengighetsløseren, "
+"men kan gi uoptimale resultat eller feile totalt i enkelte sammenhenger."
 
 #: src/apt_options.cc:354
 msgid "Automatically fix broken packages before installing or removing"
@@ -488,6 +492,10 @@ msgid ""
 "suggestion of the problem resolver.  Otherwise, aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
+"Hvis dette valget er aktivert og du gjennomfører en installasjonsrunde mens "
+"noen pakker er ødelagte, vil aptitude bruke det gjeldende forslaget til "
+"løsning. Hvis ikke, vil aptitude spørre deg om en løsning for de ødelagte "
+"avhengighetene."
 
 #: src/apt_options.cc:362
 msgid "Install recommended packages automatically"
@@ -529,6 +537,9 @@ msgid ""
 "installed package depends on them: they will never be targeted for removal "
 "as unused packages."
 msgstr ""
+"Pakker som samsvarer med dette søkemønsteret vil alltid bli behandlet som om "
+"en installert pakke er avhengig av dem - de vil aldri bli satt til fjerning "
+"som andre ubrukte pakker."
 
 #: src/apt_options.cc:393
 msgid "Allow dependency resolutions that break holds or forbids"
@@ -2851,6 +2862,8 @@ msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
 "a context enclosed by ?%s)."
 msgstr ""
+"?%s-mønsteret må brukes in «vid» sammenheng (toppnivå eller en sammenheng "
+"omsluttet av ?%s)."
 
 #: src/generic/apt/matchers.cc:3868
 msgid "Unmatched '('"
@@ -3951,7 +3964,7 @@ msgstr "utløsere-forventet"
 
 #: src/pkg_columnizer.cc:262
 msgid "triggers-pending"
-msgstr "utløsere-kommende"
+msgstr "utløsere-utestående"
 
 #: src/pkg_columnizer.cc:265 src/pkg_columnizer.cc:549 src/pkg_ver_item.cc:240
 msgid "ERROR"
@@ -5097,11 +5110,11 @@ msgstr "Vis under hvilke betingelser du kan kopiere og distribuere aptitude"
 
 #: src/ui.cc:1035
 msgid "help.txt"
-msgstr "hjelp.txt"
+msgstr "help-nb.txt"
 
 #: src/ui.cc:1037
 msgid "Encoding of help.txt|UTF-8"
-msgstr "Tegnkoding for hjelp.txt|UTF-8"
+msgstr "Tegnkoding for help-nb.txt|UTF-8"
 
 #: src/ui.cc:1048
 msgid "Online Help"
@@ -5373,7 +5386,7 @@ msgstr "^installer/slett pakker"
 
 #: src/ui.cc:2091
 msgid "Perform all pending installs and removals"
-msgstr "Utfør alle ventende installeringer og slettinger"
+msgstr "Utfør alle utestående installeringer og slettinger"
 
 #: src/ui.cc:2093
 msgid "^Update package list"
@@ -5401,12 +5414,12 @@ msgstr "Glem hvilke pakker som er «nye»"
 
 #: src/ui.cc:2107
 msgid "Canc^el pending actions"
-msgstr "Kans^eller ventende handlinger"
+msgstr "Kans^eller utestående handlinger"
 
 #: src/ui.cc:2108
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr ""
-"Kanseller alle ventende installeringer, slettinger holdinger og "
+"Kanseller alle utestående installeringer, slettinger holdinger og "
 "oppgraderinger."
 
 #: src/ui.cc:2111
