@@ -161,8 +161,10 @@ bool do_cmdline_changelog(const vector<string> &packages)
 						   source,
 						   sourcestr);
 
+	  // Use the source package if one was found; otherwise try to
+	  // use an explicit version.
 	  download_manager *m = NULL;
-	  if(!p.valid())
+	  if(p.valid())
 	    {
 	      m = get_changelog_from_source(p.get_package(),
 					    p.get_version(),
