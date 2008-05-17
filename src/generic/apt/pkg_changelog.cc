@@ -1,6 +1,6 @@
 // pkg_changelog.cc
 //
-//  Copyright 2000, 2004-2005 Daniel Burrows
+//  Copyright 2000, 2004-2005, 2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -196,7 +196,10 @@ download_manager *get_changelog(pkgCache::VerIterator ver,
   string srcpkg =
     rec.SourcePkg().empty() ? ver.ParentPkg().Name() : rec.SourcePkg();
 
-  return get_changelog_from_source(srcpkg, ver.VerStr(),
+  const string sourcever =
+    rec.SourceVer().empty() ? ver.VerStr() : rec.SourceVer();
+
+  return get_changelog_from_source(srcpkg, sourcever,
 				   ver.Section(),
 				   ver.ParentPkg().Name(),
 				   k);
