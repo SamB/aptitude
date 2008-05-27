@@ -283,6 +283,8 @@ namespace
 			rval += const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name();
 		      }
 
+		    rval += " ";
+
 		    rval += cw::util::transcode(cw::util::transcode(_("Provides")).substr(0, 1));
 		    rval += "<- ";
 
