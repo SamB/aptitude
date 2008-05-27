@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-05-05 13:22+0200\n"
+"POT-Creation-Date: 2008-05-26 19:43-0700\n"
 "PO-Revision-Date: 2008-05-08 11:06+0200\n"
 "Last-Translator: Wiktor Wandachowicz <siryes@gmail.com>\n"
 "Language-Team: Polish <debian-l10n-polish@lists.debian.org>\n"
@@ -853,7 +853,7 @@ msgstr ""
 "%s nie jest oficjalnym pakietem Debiana. Nie można wyświetlić dziennika "
 "zmian."
 
-#: src/cmdline/cmdline_changelog.cc:235
+#: src/cmdline/cmdline_changelog.cc:237
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Nie znaleziono dziennika zmian pakietu %s"
@@ -1012,7 +1012,7 @@ msgstr "Nie można odczytać listy źródeł pakietów"
 
 #. ForTranslators: %s is replaced with a comma-delimited list
 #. of package names.
-#: src/cmdline/cmdline_prompt.cc:209
+#: src/cmdline/cmdline_prompt.cc:213
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
@@ -1020,104 +1020,104 @@ msgstr[0] "(dla %s)"
 msgstr[1] "(dla %s)"
 msgstr[2] "(dla %s)"
 
-#: src/cmdline/cmdline_prompt.cc:282 src/cmdline/cmdline_show.cc:435
+#: src/cmdline/cmdline_prompt.cc:288 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
 msgid "Provides"
 msgstr "Udostępnia"
 
-#: src/cmdline/cmdline_prompt.cc:415
+#: src/cmdline/cmdline_prompt.cc:421
 msgid "Config files"
 msgstr "Konfiguracja"
 
-#: src/cmdline/cmdline_prompt.cc:519 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:525 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "ale zaplanowana jest instalacja wersji %s."
 
-#: src/cmdline/cmdline_prompt.cc:522 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:528 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "ale wersja %s jest zainstalowana i zatrzymana."
 
-#: src/cmdline/cmdline_prompt.cc:525 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:531 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "ale zainstalowana jest wersja %s."
 
-#: src/cmdline/cmdline_prompt.cc:529 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:535 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "którego nie można zainstalować"
 
-#: src/cmdline/cmdline_prompt.cc:533 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:539 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " który jest pakietem wirtualnym."
 
-#: src/cmdline/cmdline_prompt.cc:536 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:542 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " lub"
 
-#: src/cmdline/cmdline_prompt.cc:550
+#: src/cmdline/cmdline_prompt.cc:556
 msgid "The following packages are BROKEN:"
 msgstr "Następujące pakiety mają NIESPEŁNIONE zależności:"
 
-#: src/cmdline/cmdline_prompt.cc:551
+#: src/cmdline/cmdline_prompt.cc:557
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Następujące pakiety nie są używane i zostaną USUNIĘTE:"
 
-#: src/cmdline/cmdline_prompt.cc:552
+#: src/cmdline/cmdline_prompt.cc:558
 msgid "The following packages have been automatically kept back:"
 msgstr "Następujące pakiety zostały automatycznie zatrzymane:"
 
-#: src/cmdline/cmdline_prompt.cc:553
+#: src/cmdline/cmdline_prompt.cc:559
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Następujące NOWE pakiety zostaną automatycznie zainstalowane:"
 
-#: src/cmdline/cmdline_prompt.cc:554
+#: src/cmdline/cmdline_prompt.cc:560
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Następujące pakiety zostaną automatycznie USUNIĘTE:"
 
-#: src/cmdline/cmdline_prompt.cc:555
+#: src/cmdline/cmdline_prompt.cc:561
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Następujące pakiety zostaną COFNIĘTE:"
 
-#: src/cmdline/cmdline_prompt.cc:556
+#: src/cmdline/cmdline_prompt.cc:562
 msgid "The following packages have been kept back:"
 msgstr "Następujące pakiety zostały zatrzymane:"
 
-#: src/cmdline/cmdline_prompt.cc:557
+#: src/cmdline/cmdline_prompt.cc:563
 msgid "The following packages will be REINSTALLED:"
 msgstr "Następujące pakiety zostaną PONOWNIE zainstalowane:"
 
-#: src/cmdline/cmdline_prompt.cc:558
+#: src/cmdline/cmdline_prompt.cc:564
 msgid "The following NEW packages will be installed:"
 msgstr "Następujące NOWE pakiety zostaną zainstalowane:"
 
-#: src/cmdline/cmdline_prompt.cc:559
+#: src/cmdline/cmdline_prompt.cc:565
 msgid "The following packages will be REMOVED:"
 msgstr "Następujące pakiety zostaną USUNIĘTE:"
 
-#: src/cmdline/cmdline_prompt.cc:560
+#: src/cmdline/cmdline_prompt.cc:566
 msgid "The following packages will be upgraded:"
 msgstr "Następujące pakiety zostaną zaktualizowane:"
 
-#: src/cmdline/cmdline_prompt.cc:561
+#: src/cmdline/cmdline_prompt.cc:567
 msgid "The following partially installed packages will be configured:"
 msgstr "Następujące częściowo zainstalowane pakiety zostaną skonfigurowane:"
 
-#: src/cmdline/cmdline_prompt.cc:616
+#: src/cmdline/cmdline_prompt.cc:622
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Następujące ISTOTNE pakiety zostaną USUNIĘTE!\n"
 
-#: src/cmdline/cmdline_prompt.cc:625
+#: src/cmdline/cmdline_prompt.cc:631
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "Następujące ISTOTNE pakiet będą miały NIESPEŁNIONE zależności:\n"
 
-#: src/cmdline/cmdline_prompt.cc:635
+#: src/cmdline/cmdline_prompt.cc:641
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1128,16 +1128,16 @@ msgstr ""
 
 # [pl_PL] było: "Zdaję sobie sprawę, że to bardzo zły pomysł", ale zostało
 # [pl_PL] zmienione aby umożliwić wpisanie tej frazy bez polskich znaków
-#: src/cmdline/cmdline_prompt.cc:637
+#: src/cmdline/cmdline_prompt.cc:643
 msgid "I am aware that this is a very bad idea"
 msgstr "Wiem, rozumiem, to bardzo kiepski koncept"
 
-#: src/cmdline/cmdline_prompt.cc:640
+#: src/cmdline/cmdline_prompt.cc:646
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Aby kontynuować napisz \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:682
+#: src/cmdline/cmdline_prompt.cc:688
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1153,7 +1153,7 @@ msgstr ""
 "Kontynuuj instalację tylko jeżeli dobrze wiesz co chcesz zrobić.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:694
+#: src/cmdline/cmdline_prompt.cc:700
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1162,7 +1162,7 @@ msgstr ""
 "*** UWAGA ***   Powyższe problemy zostaną zignorowane ponieważ parametr\n"
 "                %s::CmdLine::Ignore-Trust-Violations ma wartość 'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:703
+#: src/cmdline/cmdline_prompt.cc:709
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
@@ -1170,106 +1170,106 @@ msgstr ""
 "*** UWAGA ***   Powyższe problemy zostaną zignorowane ponieważ parametr\n"
 "                Apt::Get::AllowUnauthenticated ma wartość 'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:715
 msgid "Yes"
 msgstr "Tak"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:715
 msgid "No"
 msgstr "Nie"
 
-#: src/cmdline/cmdline_prompt.cc:713
+#: src/cmdline/cmdline_prompt.cc:719
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Zignorować ostrzeżenie i kontynuować?\n"
 
-#: src/cmdline/cmdline_prompt.cc:714
+#: src/cmdline/cmdline_prompt.cc:720
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "Aby kontynuować, napisz \"%s\", aby przerwać, napisz \"%s\": "
 
-#: src/cmdline/cmdline_prompt.cc:728
+#: src/cmdline/cmdline_prompt.cc:734
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Odpowiedź nie rozpoznana. Napisz \"%s\" lub \"%s\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:843
+#: src/cmdline/cmdline_prompt.cc:849
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Następujące pakiety POLECANE przez inne NIE zostaną zainstalowane:\n"
 
-#: src/cmdline/cmdline_prompt.cc:849
+#: src/cmdline/cmdline_prompt.cc:855
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Następujące pakiety SUGEROWANE przez inne NIE zostaną zainstalowane:\n"
 
-#: src/cmdline/cmdline_prompt.cc:854
+#: src/cmdline/cmdline_prompt.cc:860
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr ""
 "Nie zostaną zainstalowane, zaktualizowane ani usunięte żadne pakiety.\n"
 
-#: src/cmdline/cmdline_prompt.cc:856
+#: src/cmdline/cmdline_prompt.cc:862
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu pakietów aktualizowanych, %lu instalowanych, "
 
-#: src/cmdline/cmdline_prompt.cc:860
+#: src/cmdline/cmdline_prompt.cc:866
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu ponownie instalowanych, "
 
-#: src/cmdline/cmdline_prompt.cc:862
+#: src/cmdline/cmdline_prompt.cc:868
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu cofanych, "
 
-#: src/cmdline/cmdline_prompt.cc:864
+#: src/cmdline/cmdline_prompt.cc:870
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu do usunięcia i %lu nie aktualizowanych.\n"
 
-#: src/cmdline/cmdline_prompt.cc:871
+#: src/cmdline/cmdline_prompt.cc:877
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Do pobrania %sB/%sB archiwów. "
 
-#: src/cmdline/cmdline_prompt.cc:874
+#: src/cmdline/cmdline_prompt.cc:880
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Do pobrania %sB archiwów. "
 
-#: src/cmdline/cmdline_prompt.cc:881
+#: src/cmdline/cmdline_prompt.cc:887
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Zajęte po rozpakowaniu: %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:884
+#: src/cmdline/cmdline_prompt.cc:890
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Zwolnione po rozpakowaniu: %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:905
+#: src/cmdline/cmdline_prompt.cc:911
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr ""
 "Brak pakietów do wyświetlenia -- po poleceniu \"i\" należy podać nazwy "
 "pakietów.\n"
 
-#: src/cmdline/cmdline_prompt.cc:911
+#: src/cmdline/cmdline_prompt.cc:917
 msgid "Press Return to continue."
 msgstr "Wciśnij return."
 
-#: src/cmdline/cmdline_prompt.cc:922
+#: src/cmdline/cmdline_prompt.cc:928
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "Brak pakietów -- po poleceniu \"c\" należy podać nazwy pakietów.\n"
 
-#: src/cmdline/cmdline_prompt.cc:926
+#: src/cmdline/cmdline_prompt.cc:932
 msgid "Press Return to continue"
 msgstr "Wciśnij return"
 
-#: src/cmdline/cmdline_prompt.cc:936
+#: src/cmdline/cmdline_prompt.cc:942
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
@@ -1278,80 +1278,80 @@ msgstr ""
 "Brak pakietów -- należy podać zero lub więcej korzeni wyszukiwania oraz "
 "pakiet dla którego szukane jest uzasadnienie.\n"
 
-#: src/cmdline/cmdline_prompt.cc:959
+#: src/cmdline/cmdline_prompt.cc:965
 #, c-format
 msgid "y: %F"
 msgstr "t: %F"
 
-#: src/cmdline/cmdline_prompt.cc:961
+#: src/cmdline/cmdline_prompt.cc:967
 msgid "continue with the installation"
 msgstr "kontynuacja instalacji"
 
-#: src/cmdline/cmdline_prompt.cc:963
+#: src/cmdline/cmdline_prompt.cc:969
 #, c-format
 msgid "n: %F"
 msgstr "n: %F"
 
-#: src/cmdline/cmdline_prompt.cc:965
+#: src/cmdline/cmdline_prompt.cc:971
 msgid "abort and quit"
 msgstr "przerwanie instalacji, zakończenie programu"
 
-#: src/cmdline/cmdline_prompt.cc:967
+#: src/cmdline/cmdline_prompt.cc:973
 #, c-format
 msgid "i: %F"
 msgstr "i: %F"
 
-#: src/cmdline/cmdline_prompt.cc:969
+#: src/cmdline/cmdline_prompt.cc:975
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
 msgstr "wyświetlenie informacji o pakietach, ich nazwy należy podać po \"i\""
 
-#: src/cmdline/cmdline_prompt.cc:971
+#: src/cmdline/cmdline_prompt.cc:977
 #, c-format
 msgid "c: %F"
 msgstr "c: %F"
 
-#: src/cmdline/cmdline_prompt.cc:973
+#: src/cmdline/cmdline_prompt.cc:979
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
 msgstr ""
 "wyświetlenie dzienników zmian pakietów, ich nazwy należy podać po \"c\""
 
-#: src/cmdline/cmdline_prompt.cc:975
+#: src/cmdline/cmdline_prompt.cc:981
 #, c-format
 msgid "d: %F"
 msgstr "d: %F"
 
-#: src/cmdline/cmdline_prompt.cc:977
+#: src/cmdline/cmdline_prompt.cc:983
 msgid "toggle the display of dependency information"
 msgstr "przełączenie pokazywania zależności"
 
-#: src/cmdline/cmdline_prompt.cc:979
+#: src/cmdline/cmdline_prompt.cc:985
 #, c-format
 msgid "s: %F"
 msgstr "s: %F"
 
-#: src/cmdline/cmdline_prompt.cc:981
+#: src/cmdline/cmdline_prompt.cc:987
 msgid "toggle the display of changes in package sizes"
 msgstr "przełączenie pokazywania zmian rozmiarów pakietów"
 
-#: src/cmdline/cmdline_prompt.cc:983
+#: src/cmdline/cmdline_prompt.cc:989
 #, c-format
 msgid "v: %F"
 msgstr "v: %F"
 
-#: src/cmdline/cmdline_prompt.cc:985
+#: src/cmdline/cmdline_prompt.cc:991
 msgid "toggle the display of version numbers"
 msgstr "przełączenie pokazywania wersji"
 
-#: src/cmdline/cmdline_prompt.cc:987
+#: src/cmdline/cmdline_prompt.cc:993
 #, c-format
 msgid "w: %F"
 msgstr "w: %F"
 
-#: src/cmdline/cmdline_prompt.cc:989
+#: src/cmdline/cmdline_prompt.cc:995
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
@@ -1360,27 +1360,27 @@ msgstr ""
 "wyjaśnienia dlaczego instalacja jednego pakietu prowadzi do zainstalowania "
 "innego."
 
-#: src/cmdline/cmdline_prompt.cc:992
+#: src/cmdline/cmdline_prompt.cc:998
 #, c-format
 msgid "r: %F"
 msgstr "r: %F"
 
-#: src/cmdline/cmdline_prompt.cc:994
+#: src/cmdline/cmdline_prompt.cc:1000
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 "uruchomienie automatycznego rozwiązywania problemów w celu uzupełnienia "
 "niespełnionych zależności."
 
-#: src/cmdline/cmdline_prompt.cc:996
+#: src/cmdline/cmdline_prompt.cc:1002
 #, c-format
 msgid "e: %F"
 msgstr "e: %F"
 
-#: src/cmdline/cmdline_prompt.cc:998
+#: src/cmdline/cmdline_prompt.cc:1004
 msgid "enter the full visual interface"
 msgstr "przejście do interfejsu pełnoekranowego"
 
-#: src/cmdline/cmdline_prompt.cc:1001
+#: src/cmdline/cmdline_prompt.cc:1007
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1391,53 +1391,53 @@ msgstr ""
 "znak określający akcję, a po nim nazwy pakietów (lub wzorce). Akcja będzie "
 "dotyczyć wszystkich podanych pakietów. Dostępne są następujące akcje:"
 
-#: src/cmdline/cmdline_prompt.cc:1008 src/cmdline/cmdline_resolver.cc:205
+#: src/cmdline/cmdline_prompt.cc:1014 src/cmdline/cmdline_resolver.cc:205
 msgid "'+' to install packages"
 msgstr "\"+\": instalacja pakietów"
 
-#: src/cmdline/cmdline_prompt.cc:1011 src/cmdline/cmdline_resolver.cc:207
+#: src/cmdline/cmdline_prompt.cc:1017 src/cmdline/cmdline_resolver.cc:207
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "\"+M\": instalacja pakietów i oznaczenie ich jako zainstalowanych "
 "automatycznie"
 
-#: src/cmdline/cmdline_prompt.cc:1013 src/cmdline/cmdline_resolver.cc:209
+#: src/cmdline/cmdline_prompt.cc:1019 src/cmdline/cmdline_resolver.cc:209
 msgid "'-' to remove packages"
 msgstr "\"-\": usunięcie pakietów"
 
-#: src/cmdline/cmdline_prompt.cc:1015 src/cmdline/cmdline_resolver.cc:211
+#: src/cmdline/cmdline_prompt.cc:1021 src/cmdline/cmdline_resolver.cc:211
 msgid "'_' to purge packages"
 msgstr "\"_\": wyczyszczenie pakietów"
 
-#: src/cmdline/cmdline_prompt.cc:1017 src/cmdline/cmdline_resolver.cc:213
+#: src/cmdline/cmdline_prompt.cc:1023 src/cmdline/cmdline_resolver.cc:213
 msgid "'=' to place packages on hold"
 msgstr "\"=\": zatrzymanie pakietów"
 
-#: src/cmdline/cmdline_prompt.cc:1019 src/cmdline/cmdline_resolver.cc:215
+#: src/cmdline/cmdline_prompt.cc:1025 src/cmdline/cmdline_resolver.cc:215
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 "\":\": pozostawienie pakietów w bieżącym stanie bez trwałego zatrzymywania "
 "ich"
 
-#: src/cmdline/cmdline_prompt.cc:1021 src/cmdline/cmdline_resolver.cc:217
+#: src/cmdline/cmdline_prompt.cc:1027 src/cmdline/cmdline_resolver.cc:217
 msgid "'&M' to mark packages as automatically installed"
 msgstr "\"&M\": oznaczenie pakietów jako automatycznie zainstalowanych"
 
-#: src/cmdline/cmdline_prompt.cc:1023 src/cmdline/cmdline_resolver.cc:219
+#: src/cmdline/cmdline_prompt.cc:1029 src/cmdline/cmdline_resolver.cc:219
 msgid "'&m' to mark packages as manually installed"
 msgstr "\"&m\": oznaczenie pakietów jako ręcznie zainstalowanych"
 
-#: src/cmdline/cmdline_prompt.cc:1025
+#: src/cmdline/cmdline_prompt.cc:1031
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr "\"&BD\": instalacja zależności na czas budowania dla pakietu."
 
-#: src/cmdline/cmdline_prompt.cc:1029
+#: src/cmdline/cmdline_prompt.cc:1035
 msgid "Commands:"
 msgstr "Polecenia:"
 
-#: src/cmdline/cmdline_prompt.cc:1138
+#: src/cmdline/cmdline_prompt.cc:1144
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
@@ -1445,21 +1445,21 @@ msgstr ""
 "Nie udało się znaleźć rozwiązania dla tych zależności. Można spróbować "
 "uzupełnić zależności ręcznie lub wpisać \"n\" aby wyjść."
 
-#: src/cmdline/cmdline_prompt.cc:1156
+#: src/cmdline/cmdline_prompt.cc:1162
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Kontynuować? [T/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1157
+#: src/cmdline/cmdline_prompt.cc:1163
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr "Uzupełnić te zależności ręcznie? [N/+/-/_/:/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1175
+#: src/cmdline/cmdline_prompt.cc:1181
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Nieprawidłowe polecenie. Proszę podać polecenie, lub \"?\" dla uzyskania "
 "pomocy.\n"
 
-#: src/cmdline/cmdline_prompt.cc:1181
+#: src/cmdline/cmdline_prompt.cc:1187
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
@@ -1468,7 +1468,7 @@ msgstr ""
 "zainstalować pakiet), \"R\" aby spróbować automatycznie uzupełnić zależności "
 "lub \"N\" aby przerwać."
 
-#: src/cmdline/cmdline_prompt.cc:1212
+#: src/cmdline/cmdline_prompt.cc:1218
 #, c-format
 msgid ""
 "\n"
@@ -1479,7 +1479,7 @@ msgstr ""
 "Zależności będą pokazywane.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1214
+#: src/cmdline/cmdline_prompt.cc:1220
 #, c-format
 msgid ""
 "\n"
@@ -1490,7 +1490,7 @@ msgstr ""
 "Zależności nie będą pokazywane.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1220
+#: src/cmdline/cmdline_prompt.cc:1226
 #, c-format
 msgid ""
 "\n"
@@ -1501,7 +1501,7 @@ msgstr ""
 "Wersje będą pokazywane.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1222
+#: src/cmdline/cmdline_prompt.cc:1228
 #, c-format
 msgid ""
 "\n"
@@ -1512,7 +1512,7 @@ msgstr ""
 "Wersje nie będą pokazywane.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1227
+#: src/cmdline/cmdline_prompt.cc:1233
 #, c-format
 msgid ""
 "\n"
@@ -1523,7 +1523,7 @@ msgstr ""
 "Zmiany rozmiaru będą pokazywane.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1229
+#: src/cmdline/cmdline_prompt.cc:1235
 #, c-format
 msgid ""
 "\n"

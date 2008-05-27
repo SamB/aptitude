@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ro\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-04-13 12:18+0200\n"
+"POT-Creation-Date: 2008-05-26 19:43-0700\n"
 "PO-Revision-Date: 2008-03-13 14:36+0200\n"
 "Last-Translator: Eddy Petrișor <eddy.petrisor@gmail.com>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
@@ -778,12 +778,12 @@ msgstr "Pachetul %s nu este instalat, nu se poate interzice o înnoire\n"
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "Pachetul %s nu poate fi înnoit, nu se poate interzice o înnoire\n"
 
-#: src/cmdline/cmdline_action.cc:438
+#: src/cmdline/cmdline_action.cc:439
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Notă: alegerea sarcinii \"%s: %s\" pentru instalare\n"
 
-#: src/cmdline/cmdline_action.cc:472
+#: src/cmdline/cmdline_action.cc:473
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -792,12 +792,12 @@ msgstr ""
 "Puteți specifica o versiune de pachet doar cu comanda 'install' sau cu "
 "'forbid-version'.\n"
 
-#: src/cmdline/cmdline_action.cc:481
+#: src/cmdline/cmdline_action.cc:482
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "Puteți specifica o arhivă de pachet doar cu comanda 'install'.\n"
 
-#: src/cmdline/cmdline_action.cc:518
+#: src/cmdline/cmdline_action.cc:519
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -806,7 +806,7 @@ msgstr ""
 "Nu s-a putut găsi pachetul „%s”, și mai mult de 40 de\n"
 "pachete conțin „%s” în nume.\n"
 
-#: src/cmdline/cmdline_action.cc:521
+#: src/cmdline/cmdline_action.cc:522
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -815,14 +815,14 @@ msgstr ""
 "Nu s-a putut găsi pachetul „%s”. Totuși, următoarele\n"
 "pachete conțin „%s” în numele lor:\n"
 
-#: src/cmdline/cmdline_action.cc:543
+#: src/cmdline/cmdline_action.cc:544
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "Nu s-a putut găsi nici un pachet al cărui nume sau descriere să se\n"
 "potrivească cu „%s”\n"
 
-#: src/cmdline/cmdline_action.cc:545
+#: src/cmdline/cmdline_action.cc:546
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -831,7 +831,7 @@ msgstr ""
 "Nu s-a putut găsi nici un pachet care să se potrivească cu „%s”,\n"
 "și mai mult de 40 de pachete conțin „%s” în descrierea lor.\n"
 
-#: src/cmdline/cmdline_action.cc:548
+#: src/cmdline/cmdline_action.cc:549
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -840,7 +840,7 @@ msgstr ""
 "Nu s-a putut găsi nici un pachet care să se potrivească cu „%s”.\n"
 "Totuși, următoarele pachete conțin „%s” în descrierea lor:\n"
 
-#: src/cmdline/cmdline_action.cc:686
+#: src/cmdline/cmdline_action.cc:687
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Caracter de acțiune necorespunzător „%c”\n"
@@ -857,7 +857,7 @@ msgstr ""
 "%s nu este un pachet Debian oficial, nu se poate afișa jurnalul său de "
 "modificări."
 
-#: src/cmdline/cmdline_changelog.cc:235
+#: src/cmdline/cmdline_changelog.cc:237
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Nu s-a putut găsi un jurnal de modificări pentru %s"
@@ -1011,7 +1011,7 @@ msgstr "Nu s-a putut citi lista de surse"
 
 #. ForTranslators: %s is replaced with a comma-delimited list
 #. of package names.
-#: src/cmdline/cmdline_prompt.cc:209
+#: src/cmdline/cmdline_prompt.cc:213
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
@@ -1019,105 +1019,105 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/cmdline/cmdline_prompt.cc:282 src/cmdline/cmdline_show.cc:435
+#: src/cmdline/cmdline_prompt.cc:288 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
 msgid "Provides"
 msgstr "Furnizează"
 
-#: src/cmdline/cmdline_prompt.cc:415
+#: src/cmdline/cmdline_prompt.cc:421
 msgid "Config files"
 msgstr "Fișiere config"
 
-#: src/cmdline/cmdline_prompt.cc:519 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:525 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "dar %s e pe cale să fie instalat."
 
-#: src/cmdline/cmdline_prompt.cc:522 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:528 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "dar %s este instalat și este păstrat."
 
-#: src/cmdline/cmdline_prompt.cc:525 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:531 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "dar %s este instalat."
 
-#: src/cmdline/cmdline_prompt.cc:529 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:535 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "dar nu este instalabil"
 
-#: src/cmdline/cmdline_prompt.cc:533 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:539 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " care este un pachet virtual."
 
-#: src/cmdline/cmdline_prompt.cc:536 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:542 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr "sau"
 
-#: src/cmdline/cmdline_prompt.cc:550
+#: src/cmdline/cmdline_prompt.cc:556
 msgid "The following packages are BROKEN:"
 msgstr "Următoarele pachete sunt DETERIORATE:"
 
-#: src/cmdline/cmdline_prompt.cc:551
+#: src/cmdline/cmdline_prompt.cc:557
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Următoarele pachete sunt nefolosite și vor fi ȘTERSE:"
 
-#: src/cmdline/cmdline_prompt.cc:552
+#: src/cmdline/cmdline_prompt.cc:558
 msgid "The following packages have been automatically kept back:"
 msgstr "Următoarele pachete au fost automat păstrate:"
 
-#: src/cmdline/cmdline_prompt.cc:553
+#: src/cmdline/cmdline_prompt.cc:559
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Următoarele pachete NOI vor fi automat instalate:"
 
-#: src/cmdline/cmdline_prompt.cc:554
+#: src/cmdline/cmdline_prompt.cc:560
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Următoarele pachete vor fi automat ȘTERSE:"
 
-#: src/cmdline/cmdline_prompt.cc:555
+#: src/cmdline/cmdline_prompt.cc:561
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Următoarele pachete vor fi RETROGRADATE:"
 
-#: src/cmdline/cmdline_prompt.cc:556
+#: src/cmdline/cmdline_prompt.cc:562
 msgid "The following packages have been kept back:"
 msgstr "Următoarele pachete au fost păstrate:"
 
-#: src/cmdline/cmdline_prompt.cc:557
+#: src/cmdline/cmdline_prompt.cc:563
 msgid "The following packages will be REINSTALLED:"
 msgstr "Următoarele pachete vor fi REINSTALATE:"
 
-#: src/cmdline/cmdline_prompt.cc:558
+#: src/cmdline/cmdline_prompt.cc:564
 msgid "The following NEW packages will be installed:"
 msgstr "Următoarele pachete NOI vor fi instalate:"
 
-#: src/cmdline/cmdline_prompt.cc:559
+#: src/cmdline/cmdline_prompt.cc:565
 msgid "The following packages will be REMOVED:"
 msgstr "Următoarele pachete vor fi ȘTERSE:"
 
-#: src/cmdline/cmdline_prompt.cc:560
+#: src/cmdline/cmdline_prompt.cc:566
 msgid "The following packages will be upgraded:"
 msgstr "Următoarele pachete vor fi înnoite:"
 
-#: src/cmdline/cmdline_prompt.cc:561
+#: src/cmdline/cmdline_prompt.cc:567
 msgid "The following partially installed packages will be configured:"
 msgstr "Următoarele pachete instalate parțial vor fi configurate:"
 
-#: src/cmdline/cmdline_prompt.cc:616
+#: src/cmdline/cmdline_prompt.cc:622
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Următoarele pachete ESENȚIALE vor fi ȘTERSE!\n"
 
-#: src/cmdline/cmdline_prompt.cc:625
+#: src/cmdline/cmdline_prompt.cc:631
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr ""
 "Următoarele pachete ESENȚIALE se vor DETERIORA de către această acțiune:\n"
 
-#: src/cmdline/cmdline_prompt.cc:635
+#: src/cmdline/cmdline_prompt.cc:641
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1127,16 +1127,16 @@ msgstr ""
 "sistemului!\n"
 "           NU continuați decât dacă știți EXACT ce aveți de gând să faceți!\n"
 
-#: src/cmdline/cmdline_prompt.cc:637
+#: src/cmdline/cmdline_prompt.cc:643
 msgid "I am aware that this is a very bad idea"
 msgstr "Sunt conștient că asta este o idee proastă"
 
-#: src/cmdline/cmdline_prompt.cc:640
+#: src/cmdline/cmdline_prompt.cc:646
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Pentru a continua, tastați fraza „%s”:\n"
 
-#: src/cmdline/cmdline_prompt.cc:682
+#: src/cmdline/cmdline_prompt.cc:688
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1154,7 +1154,7 @@ msgstr ""
 "că vreți să faceți astfel.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:694
+#: src/cmdline/cmdline_prompt.cc:700
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1165,7 +1165,7 @@ msgstr ""
 "                  %s::CmdLine::Ignore-Trust-Violations este "
 "'true' (adevărat)!\n"
 
-#: src/cmdline/cmdline_prompt.cc:703
+#: src/cmdline/cmdline_prompt.cc:709
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
@@ -1173,107 +1173,107 @@ msgstr ""
 "*** ATENȚIE ***   Se ignoră aceste încălcări ale relațiilor de încredere\n"
 "                  deoarece Apt::Get::AllowUnauthenticated este activ !\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:715
 msgid "Yes"
 msgstr "Da"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:715
 msgid "No"
 msgstr "Nu"
 
-#: src/cmdline/cmdline_prompt.cc:713
+#: src/cmdline/cmdline_prompt.cc:719
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Vreți să ignorați acest avertisment și să continuați oricum?\n"
 
-#: src/cmdline/cmdline_prompt.cc:714
+#: src/cmdline/cmdline_prompt.cc:720
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr ""
 "Pentru a continua, introduceți „%s”; pentru a renunța, introduceți „%s”: "
 
-#: src/cmdline/cmdline_prompt.cc:728
+#: src/cmdline/cmdline_prompt.cc:734
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Intrare nerecunoscută.  Introduceți fie „%s” fie „%s”.\n"
 
-#: src/cmdline/cmdline_prompt.cc:843
+#: src/cmdline/cmdline_prompt.cc:849
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Următoarele pachete sunt RECOMANDATE dar NU vor fi instalate:\n"
 
-#: src/cmdline/cmdline_prompt.cc:849
+#: src/cmdline/cmdline_prompt.cc:855
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Următoarele pachete sunt SUGERATE dar NU vor fi instalate:\n"
 
-#: src/cmdline/cmdline_prompt.cc:854
+#: src/cmdline/cmdline_prompt.cc:860
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Nici un pachet nu va fi instalat, înnoit sau șters.\n"
 
-#: src/cmdline/cmdline_prompt.cc:856
+#: src/cmdline/cmdline_prompt.cc:862
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu pachete înnoite, %lu nou instalate, "
 
-#: src/cmdline/cmdline_prompt.cc:860
+#: src/cmdline/cmdline_prompt.cc:866
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu reinstalate, "
 
-#: src/cmdline/cmdline_prompt.cc:862
+#: src/cmdline/cmdline_prompt.cc:868
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu retrogradate, "
 
-#: src/cmdline/cmdline_prompt.cc:864
+#: src/cmdline/cmdline_prompt.cc:870
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu de șters și %lu neînnoite.\n"
 
-#: src/cmdline/cmdline_prompt.cc:871
+#: src/cmdline/cmdline_prompt.cc:877
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Este nevoie de %sB/%sB de arhive. "
 
-#: src/cmdline/cmdline_prompt.cc:874
+#: src/cmdline/cmdline_prompt.cc:880
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Este nevoie de %sB de arhive. "
 
-#: src/cmdline/cmdline_prompt.cc:881
+#: src/cmdline/cmdline_prompt.cc:887
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "După despachetare %sB vor fi folosiți.\n"
 
-#: src/cmdline/cmdline_prompt.cc:884
+#: src/cmdline/cmdline_prompt.cc:890
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "După despachetare %sB vor fi eliberați.\n"
 
-#: src/cmdline/cmdline_prompt.cc:905
+#: src/cmdline/cmdline_prompt.cc:911
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr ""
 "Nici un pachet de arătat -- introduceți numele pachetului pe o linie după "
 "'i'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:911
+#: src/cmdline/cmdline_prompt.cc:917
 msgid "Press Return to continue."
 msgstr "Apăsați Enter pentru a continua."
 
-#: src/cmdline/cmdline_prompt.cc:922
+#: src/cmdline/cmdline_prompt.cc:928
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr ""
 "Nici un pachet găsit -- introduceți numele pachetului pe o linie după 'c'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:926
+#: src/cmdline/cmdline_prompt.cc:932
 msgid "Press Return to continue"
 msgstr "Apăsați Enter pentru a continua"
 
-#: src/cmdline/cmdline_prompt.cc:936
+#: src/cmdline/cmdline_prompt.cc:942
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
@@ -1283,30 +1283,30 @@ msgstr ""
 "pentru căutare, urmate de pachetul de justificat.\n"
 
 # XXX: is 'y' translatable?
-#: src/cmdline/cmdline_prompt.cc:959
+#: src/cmdline/cmdline_prompt.cc:965
 #, c-format
 msgid "y: %F"
 msgstr "y: %F"
 
-#: src/cmdline/cmdline_prompt.cc:961
+#: src/cmdline/cmdline_prompt.cc:967
 msgid "continue with the installation"
 msgstr "continuă cu instalarea"
 
-#: src/cmdline/cmdline_prompt.cc:963
+#: src/cmdline/cmdline_prompt.cc:969
 #, c-format
 msgid "n: %F"
 msgstr "n: %F"
 
-#: src/cmdline/cmdline_prompt.cc:965
+#: src/cmdline/cmdline_prompt.cc:971
 msgid "abort and quit"
 msgstr "renunță și ieși"
 
-#: src/cmdline/cmdline_prompt.cc:967
+#: src/cmdline/cmdline_prompt.cc:973
 #, c-format
 msgid "i: %F"
 msgstr "i: %F"
 
-#: src/cmdline/cmdline_prompt.cc:969
+#: src/cmdline/cmdline_prompt.cc:975
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -1314,12 +1314,12 @@ msgstr ""
 "arată informații despre unul sau mai multe pachete; după „i” ar trebui să "
 "urmeze numele pachetelor"
 
-#: src/cmdline/cmdline_prompt.cc:971
+#: src/cmdline/cmdline_prompt.cc:977
 #, c-format
 msgid "c: %F"
 msgstr "c: %F"
 
-#: src/cmdline/cmdline_prompt.cc:973
+#: src/cmdline/cmdline_prompt.cc:979
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1327,39 +1327,39 @@ msgstr ""
 "arată jurnalul de modificări Debian ale unuia sau mai multor pachete; după "
 "„c” ar trebui să urmeze numele pachetelor"
 
-#: src/cmdline/cmdline_prompt.cc:975
+#: src/cmdline/cmdline_prompt.cc:981
 #, c-format
 msgid "d: %F"
 msgstr "d: %F"
 
-#: src/cmdline/cmdline_prompt.cc:977
+#: src/cmdline/cmdline_prompt.cc:983
 msgid "toggle the display of dependency information"
 msgstr "comută afișajul informațiilor de dependențe"
 
-#: src/cmdline/cmdline_prompt.cc:979
+#: src/cmdline/cmdline_prompt.cc:985
 #, c-format
 msgid "s: %F"
 msgstr "s: %F"
 
-#: src/cmdline/cmdline_prompt.cc:981
+#: src/cmdline/cmdline_prompt.cc:987
 msgid "toggle the display of changes in package sizes"
 msgstr "comută afișajul modificărilor de dimensiune ale pachetelor"
 
-#: src/cmdline/cmdline_prompt.cc:983
+#: src/cmdline/cmdline_prompt.cc:989
 #, c-format
 msgid "v: %F"
 msgstr "v: %F"
 
-#: src/cmdline/cmdline_prompt.cc:985
+#: src/cmdline/cmdline_prompt.cc:991
 msgid "toggle the display of version numbers"
 msgstr "comută afișajul numerelor de versiune"
 
-#: src/cmdline/cmdline_prompt.cc:987
+#: src/cmdline/cmdline_prompt.cc:993
 #, c-format
 msgid "w: %F"
 msgstr "w: %F"
 
-#: src/cmdline/cmdline_prompt.cc:989
+#: src/cmdline/cmdline_prompt.cc:995
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
@@ -1367,27 +1367,27 @@ msgstr ""
 "încearcă găsirea unui motiv pentru instalarea unui pachet sau explică de ce "
 "instalarea unui pachet duce la instalarea unui alt pachet."
 
-#: src/cmdline/cmdline_prompt.cc:992
+#: src/cmdline/cmdline_prompt.cc:998
 #, c-format
 msgid "r: %F"
 msgstr "r: %F"
 
-#: src/cmdline/cmdline_prompt.cc:994
+#: src/cmdline/cmdline_prompt.cc:1000
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 "rulează rezolvatorul automat de dependențe pentru a repara dependențele "
 "corupte."
 
-#: src/cmdline/cmdline_prompt.cc:996
+#: src/cmdline/cmdline_prompt.cc:1002
 #, c-format
 msgid "e: %F"
 msgstr "e: %F"
 
-#: src/cmdline/cmdline_prompt.cc:998
+#: src/cmdline/cmdline_prompt.cc:1004
 msgid "enter the full visual interface"
 msgstr "intră în interfața complet vizuală"
 
-#: src/cmdline/cmdline_prompt.cc:1001
+#: src/cmdline/cmdline_prompt.cc:1007
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1399,53 +1399,53 @@ msgstr ""
 "de pachete (sau căi).  Acțiunea va fi aplicată tuturor pachetelor pe care le-"
 "ați listat.  Sunt disponibile următoarele acțiuni:"
 
-#: src/cmdline/cmdline_prompt.cc:1008 src/cmdline/cmdline_resolver.cc:205
+#: src/cmdline/cmdline_prompt.cc:1014 src/cmdline/cmdline_resolver.cc:205
 msgid "'+' to install packages"
 msgstr "'+' pentru a instala pachete"
 
-#: src/cmdline/cmdline_prompt.cc:1011 src/cmdline/cmdline_resolver.cc:207
+#: src/cmdline/cmdline_prompt.cc:1017 src/cmdline/cmdline_resolver.cc:207
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' pentru a instala pachetele și a le marca imediat ca fiind instalate "
 "automat"
 
-#: src/cmdline/cmdline_prompt.cc:1013 src/cmdline/cmdline_resolver.cc:209
+#: src/cmdline/cmdline_prompt.cc:1019 src/cmdline/cmdline_resolver.cc:209
 msgid "'-' to remove packages"
 msgstr "'-' pentru a șterge pachete"
 
-#: src/cmdline/cmdline_prompt.cc:1015 src/cmdline/cmdline_resolver.cc:211
+#: src/cmdline/cmdline_prompt.cc:1021 src/cmdline/cmdline_resolver.cc:211
 msgid "'_' to purge packages"
 msgstr "'-' pentru a curăța pachete"
 
-#: src/cmdline/cmdline_prompt.cc:1017 src/cmdline/cmdline_resolver.cc:213
+#: src/cmdline/cmdline_prompt.cc:1023 src/cmdline/cmdline_resolver.cc:213
 msgid "'=' to place packages on hold"
 msgstr "'=' pentru a pune pachetele în așteptare"
 
-#: src/cmdline/cmdline_prompt.cc:1019 src/cmdline/cmdline_resolver.cc:215
+#: src/cmdline/cmdline_prompt.cc:1025 src/cmdline/cmdline_resolver.cc:215
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 "':' pentru a ține pachetele în starea lor curentă fără a le marca în "
 "așteptare"
 
-#: src/cmdline/cmdline_prompt.cc:1021 src/cmdline/cmdline_resolver.cc:217
+#: src/cmdline/cmdline_prompt.cc:1027 src/cmdline/cmdline_resolver.cc:217
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' pentru a marca pachetele ca fiind automat instalate"
 
-#: src/cmdline/cmdline_prompt.cc:1023 src/cmdline/cmdline_resolver.cc:219
+#: src/cmdline/cmdline_prompt.cc:1029 src/cmdline/cmdline_resolver.cc:219
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m'pentru a marca pachetele ca fiind instalate manual"
 
-#: src/cmdline/cmdline_prompt.cc:1025
+#: src/cmdline/cmdline_prompt.cc:1031
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1029
+#: src/cmdline/cmdline_prompt.cc:1035
 msgid "Commands:"
 msgstr "Comenzi:"
 
-#: src/cmdline/cmdline_prompt.cc:1138
+#: src/cmdline/cmdline_prompt.cc:1144
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
@@ -1453,21 +1453,21 @@ msgstr ""
 "aptitude nu a reușit să găsească o soluție pentru aceste dependențe. Puteți "
 "să le rezolvați dumneavoastră manual sau puteți scrie „n” pentru ieșire."
 
-#: src/cmdline/cmdline_prompt.cc:1156
+#: src/cmdline/cmdline_prompt.cc:1162
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Vreți să continuați? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1157
+#: src/cmdline/cmdline_prompt.cc:1163
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr "Se rezolvă manual aceste dependențe? [N/+/-/_/:/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1175
+#: src/cmdline/cmdline_prompt.cc:1181
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Răspunsul nu este valid. Introduceți o comandă validă sau „?” pentru "
 "ajutor.\n"
 
-#: src/cmdline/cmdline_prompt.cc:1181
+#: src/cmdline/cmdline_prompt.cc:1187
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
@@ -1476,7 +1476,7 @@ msgstr ""
 "a instala un pachet), „R” pentru a încerca rezolvarea automată a "
 "dependențelor, sau „N” pentru a abandona."
 
-#: src/cmdline/cmdline_prompt.cc:1212
+#: src/cmdline/cmdline_prompt.cc:1218
 #, c-format
 msgid ""
 "\n"
@@ -1487,7 +1487,7 @@ msgstr ""
 "Se vor afișa informațiile despre dependențe.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1214
+#: src/cmdline/cmdline_prompt.cc:1220
 #, c-format
 msgid ""
 "\n"
@@ -1498,7 +1498,7 @@ msgstr ""
 "Nu se vor afișa informațiile despre dependențe.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1220
+#: src/cmdline/cmdline_prompt.cc:1226
 #, c-format
 msgid ""
 "\n"
@@ -1509,7 +1509,7 @@ msgstr ""
 "Se vor afișa versiunile.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1222
+#: src/cmdline/cmdline_prompt.cc:1228
 #, c-format
 msgid ""
 "\n"
@@ -1520,7 +1520,7 @@ msgstr ""
 "Nu se vor afișa versiunile.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1227
+#: src/cmdline/cmdline_prompt.cc:1233
 #, c-format
 msgid ""
 "\n"
@@ -1531,7 +1531,7 @@ msgstr ""
 "Se vor afișa schimbările de dimensiune.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1229
+#: src/cmdline/cmdline_prompt.cc:1235
 #, c-format
 msgid ""
 "\n"
@@ -1542,18 +1542,18 @@ msgstr ""
 "Nu se vor afișa schimbările de dimensiune.\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:715
+#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:716
 #: src/generic/apt/apt.cc:275
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Nu s-a putut deschide %s pentru scriere"
 
-#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:720
+#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:721
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Eroare în timpul scrierii stării rezolvatorului în %s"
 
-#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:722
+#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:723
 msgid "Resolver state successfully written!"
 msgstr "Scrierea starii rezolvatorului a reușit!"
 
@@ -1728,64 +1728,64 @@ msgstr ""
 "Aptitude „vrea” să rezolve dependențele, dar nu s-a creat nici un rezolvator "
 "de dependențe."
 
-#: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
+#: src/cmdline/cmdline_resolver.cc:531 src/solution_dialog.cc:127
 #: src/solution_screen.cc:519
 msgid "Resolving dependencies..."
 msgstr "Se rezolvă dependențele..."
 
-#: src/cmdline/cmdline_resolver.cc:562 src/solution_screen.cc:515
+#: src/cmdline/cmdline_resolver.cc:563 src/solution_screen.cc:515
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgstr "deschis: %d; închis: %d; amânat: %d; conflict: %d"
 
-#: src/cmdline/cmdline_resolver.cc:615
+#: src/cmdline/cmdline_resolver.cc:616
 msgid "The following actions will resolve these dependencies:"
 msgstr "Următoarele acțiuni vor rezolva aceste dependențe:"
 
-#: src/cmdline/cmdline_resolver.cc:632
+#: src/cmdline/cmdline_resolver.cc:633
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Acceptați această soluție? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:659 src/cmdline/cmdline_resolver.cc:766
+#: src/cmdline/cmdline_resolver.cc:660 src/cmdline/cmdline_resolver.cc:767
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Se abandonează toate eforturile de a rezolva aceste dependențe."
 
-#: src/cmdline/cmdline_resolver.cc:662
+#: src/cmdline/cmdline_resolver.cc:663
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:692
+#: src/cmdline/cmdline_resolver.cc:693
 msgid "The following commands are available:"
 msgstr "Următoarele comenzi sunt disponibile:"
 
-#: src/cmdline/cmdline_resolver.cc:712
+#: src/cmdline/cmdline_resolver.cc:713
 msgid "File to write resolver state to: "
 msgstr "Fișierul de scris starea resolver: "
 
-#: src/cmdline/cmdline_resolver.cc:727
+#: src/cmdline/cmdline_resolver.cc:728
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Răspuns nevalabil; vă rog introduceți una din următoarele comenzi:"
 
-#: src/cmdline/cmdline_resolver.cc:740
+#: src/cmdline/cmdline_resolver.cc:741
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Nu s-a găsit nici o soluție în timpul acordat. Încerc mai hotărât? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:769
+#: src/cmdline/cmdline_resolver.cc:770
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Răspuns nevalabil; vă rog introduceți 'y' sau 'n'."
 
-#: src/cmdline/cmdline_resolver.cc:778
+#: src/cmdline/cmdline_resolver.cc:779
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Nu s-au putut rezolva dependențele! Se renunță..."
 
-#: src/cmdline/cmdline_resolver.cc:784
+#: src/cmdline/cmdline_resolver.cc:785
 msgid "*** No more solutions available ***"
 msgstr "*** Nu mai sunt soluții disponibile ***"
 
-#: src/cmdline/cmdline_resolver.cc:803
+#: src/cmdline/cmdline_resolver.cc:804
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
@@ -1794,13 +1794,13 @@ msgstr ""
 "           Puteți continua căutarea, însă unele soluții nu vor fi\n"
 "           găsite."
 
-#: src/cmdline/cmdline_resolver.cc:963
+#: src/cmdline/cmdline_resolver.cc:964
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:970
+#: src/cmdline/cmdline_resolver.cc:971
 #, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
@@ -1808,20 +1808,20 @@ msgstr ""
 "Nu se pot rezolva dependențele pentru actualizare (rezolvatorul nu a "
 "terminat la timp)."
 
-#: src/cmdline/cmdline_resolver.cc:984
+#: src/cmdline/cmdline_resolver.cc:985
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr ""
 "Nu se pot rezolva dependențele pentru actualizare (nu a fost găsită nici o "
 "soluție)."
 
-#: src/cmdline/cmdline_resolver.cc:993
+#: src/cmdline/cmdline_resolver.cc:994
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:999
+#: src/cmdline/cmdline_resolver.cc:1000
 #, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Nu se pot rezolva dependențele pentru înnoire (%s)."
@@ -2292,46 +2292,36 @@ msgstr "    ++   --> SE ADAUGĂ LA COADĂ %s Furnizează %s\n"
 msgid "Starting search with parameters %ls\n"
 msgstr "Se pornește căutarea cu parametrii %ls\n"
 
-#: src/cmdline/cmdline_why.cc:886
+#: src/cmdline/cmdline_why.cc:895
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Se omite această soluție, s-a mai vazut.\n"
 
-#: src/cmdline/cmdline_why.cc:898
-#, c-format
-msgid "The package \"%s\" is a starting point of the search.\n"
-msgstr "Pachetul „%s” este un punct de plecare pentru căutare.\n"
-
-#: src/cmdline/cmdline_why.cc:957
+#: src/cmdline/cmdline_why.cc:970
 #, fuzzy, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Nu se poate găsi o soluție de aplicat."
 
-#: src/cmdline/cmdline_why.cc:959
+#: src/cmdline/cmdline_why.cc:972
 #, fuzzy, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Nu se poate găsi o soluție de aplicat."
 
-#: src/cmdline/cmdline_why.cc:1004 src/cmdline/cmdline_why.cc:1030
-#: src/cmdline/cmdline_why.cc:1092
+#: src/cmdline/cmdline_why.cc:1017 src/cmdline/cmdline_why.cc:1043
+#: src/cmdline/cmdline_why.cc:1105
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Nu există nici un pachetul numit „%s”."
 
-#: src/cmdline/cmdline_why.cc:1038
+#: src/cmdline/cmdline_why.cc:1051
 msgid "Unable to parse some match patterns."
 msgstr "Nu s-au putut analiza unele modele de căutare."
 
-#: src/cmdline/cmdline_why.cc:1065
+#: src/cmdline/cmdline_why.cc:1078
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""
 "%s: această comandă are nevoie cel puțin de un argument (pachetul de "
 "interogat)."
-
-#: src/cmdline/cmdline_why.cc:1114
-#, c-format
-msgid "The package \"%s\" is manually installed.\n"
-msgstr "Pachetul „%s” este instalat manual.\n"
 
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
@@ -3355,12 +3345,12 @@ msgstr "Versiune libsigc++: %s\n"
 msgid "  Ept support enabled.\n"
 msgstr "Suportul pentru ept este activat.\n"
 
-#: src/main.cc:124
+#: src/main.cc:123
 #, fuzzy, c-format
 msgid "  Ept support disabled.\n"
 msgstr "Suportul pentru ept este dezactivat.\n"
 
-#: src/main.cc:127
+#: src/main.cc:126
 #, fuzzy
 msgid ""
 "\n"
@@ -3369,36 +3359,36 @@ msgstr ""
 "\n"
 "Versiune Curses: %s\n"
 
-#: src/main.cc:128
+#: src/main.cc:127
 #, fuzzy, c-format
 msgid "  NCurses version: %s\n"
 msgstr ""
 "\n"
 "Versiune NCurses: %s\n"
 
-#: src/main.cc:129
+#: src/main.cc:128
 #, fuzzy, c-format
 msgid "  cwidget version: %s\n"
 msgstr "Versiune libsigc++: %s\n"
 
-#: src/main.cc:130
+#: src/main.cc:129
 #, fuzzy, c-format
 msgid "  Apt version: %s\n"
 msgstr ""
 "\n"
 "Versiune Curses: %s\n"
 
-#: src/main.cc:136
+#: src/main.cc:135
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "Utilizare: aptitude [-S fnume] [-u|-i]"
 
-#: src/main.cc:138
+#: src/main.cc:137
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "        aptitude [opțiuni] <acțiune> ..."
 
-#: src/main.cc:140
+#: src/main.cc:139
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -3408,42 +3398,42 @@ msgstr ""
 "interactiv):\n"
 "\n"
 
-#: src/main.cc:141
+#: src/main.cc:140
 #, c-format
 msgid " install      - Install/upgrade packages\n"
 msgstr " install      - Instalează/înnoiește pachetele\n"
 
-#: src/main.cc:142
+#: src/main.cc:141
 #, c-format
 msgid " remove       - Remove packages\n"
 msgstr " remove       - Șterge pachetele\n"
 
-#: src/main.cc:143
+#: src/main.cc:142
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr " purge        - Curăță pachetele și fișierele lor de configurare\n"
 
-#: src/main.cc:144
+#: src/main.cc:143
 #, c-format
 msgid " hold         - Place packages on hold\n"
 msgstr " hold         - Pune pachetele în așteptare\n"
 
-#: src/main.cc:145
+#: src/main.cc:144
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
 msgstr " unhold       - Anulează comanda de reținere pentru un pachet\n"
 
-#: src/main.cc:146
+#: src/main.cc:145
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
 msgstr " markauto     - Marchează pachetele ca fiind automat instalate\n"
 
-#: src/main.cc:147
+#: src/main.cc:146
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr " unmarkauto   - Marchează pachetele ca fiind instalate manual\n"
 
-#: src/main.cc:148
+#: src/main.cc:147
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
@@ -3452,17 +3442,17 @@ msgstr ""
 " forbid-version - Interzice lui aptitude să înnoiască către o anumită "
 "versiune de pachet.\n"
 
-#: src/main.cc:149
+#: src/main.cc:148
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - Descarcă listele de pachete noi/posibil de înnoit\n"
 
-#: src/main.cc:150
+#: src/main.cc:149
 #, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr " safe-upgrade - Execută o înnoire sigură\n"
 
-#: src/main.cc:151
+#: src/main.cc:150
 #, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
@@ -3470,42 +3460,42 @@ msgid ""
 msgstr ""
 " full-upgrade - Execută o înnoire, posibil instalând și ștergând pachete\n"
 
-#: src/main.cc:152
+#: src/main.cc:151
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr " forget-new   - Uită de pachetele ce sunt \"noi\"\n"
 
-#: src/main.cc:153
+#: src/main.cc:152
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr " search       - Caută un pachet după nume și/sau expresie\n"
 
-#: src/main.cc:154
+#: src/main.cc:153
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr " show         - Afișează informații detaliate despre un pachet\n"
 
-#: src/main.cc:155
+#: src/main.cc:154
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr " clean        - Șterge fișierele pachetelor descărcate\n"
 
-#: src/main.cc:156
+#: src/main.cc:155
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr " autoclean    - Șterge vechile fișiere ale pachetelor descărcate\n"
 
-#: src/main.cc:157
+#: src/main.cc:156
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr " changelog    - Vizualizarea jurnalului de modificări al unui pachet\n"
 
-#: src/main.cc:158
+#: src/main.cc:157
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr " download     - Descarcă fișierul .deb pentru un pachet\n"
 
-#: src/main.cc:159
+#: src/main.cc:158
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -3514,7 +3504,7 @@ msgstr ""
 " reinstall    - Descarcă și reinstalează (pe cât posibil) un pachet instalat "
 "curent\n"
 
-#: src/main.cc:160
+#: src/main.cc:159
 #, fuzzy, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
@@ -3522,7 +3512,7 @@ msgid ""
 "                why one or more packages would require the given package\n"
 msgstr " -Z\t\tArată modificarea în dimensiune a fiecărui pachet instalat.\n"
 
-#: src/main.cc:162
+#: src/main.cc:161
 #, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
@@ -3531,34 +3521,34 @@ msgid ""
 "                lead to a conflict with the given package if installed\n"
 msgstr ""
 
-#: src/main.cc:166
+#: src/main.cc:165
 #, c-format
 msgid "  Options:\n"
 msgstr "  Opțiuni:\n"
 
-#: src/main.cc:167
+#: src/main.cc:166
 #, c-format
 msgid " -h             This help text\n"
 msgstr " -h             Acest text de ajutor\n"
 
-#: src/main.cc:168
+#: src/main.cc:167
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr " -s             Simulează acțiunea, dar n-o executa în realitate.\n"
 
-#: src/main.cc:169
+#: src/main.cc:168
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
 " -d             Doar descarcă pachetele, nu instala sau șterge nimic.\n"
 
-#: src/main.cc:170
+#: src/main.cc:169
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr " -P             Întodeauna cere confirmare pentru acțiuni\n"
 
-#: src/main.cc:171
+#: src/main.cc:170
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
@@ -3566,7 +3556,7 @@ msgstr ""
 " -y             Presupune că răspunsul la întrebările simple da/nu este "
 "'da'\n"
 
-#: src/main.cc:172
+#: src/main.cc:171
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
@@ -3575,7 +3565,7 @@ msgstr ""
 " -F format      Specifică un format pentru afișarea rezultatelor căutării; "
 "vezi manualul\n"
 
-#: src/main.cc:173
+#: src/main.cc:172
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
@@ -3583,7 +3573,7 @@ msgstr ""
 " -O ordine      Specifică modul în care rezultatele căutării să fie sortate; "
 "vezi manual\n"
 
-#: src/main.cc:174
+#: src/main.cc:173
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
@@ -3591,29 +3581,29 @@ msgstr ""
 " -w lățime      Specifică lățimea afișării pentru formatarea rezultatului de "
 "căutare\n"
 
-#: src/main.cc:175
+#: src/main.cc:174
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr ""
 " -f             Încerc în mod agresiv să repar pachetele deteriorate.\n"
 
-#: src/main.cc:176
+#: src/main.cc:175
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             Arată ce versiuni de pachete sunt instalate.\n"
 
-#: src/main.cc:177
+#: src/main.cc:176
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D             Arată dependențele pachetelor schimbate automat.\n"
 
-#: src/main.cc:178
+#: src/main.cc:177
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\tArată modificarea în dimensiune a fiecărui pachet instalat.\n"
 
-#: src/main.cc:179
+#: src/main.cc:178
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
@@ -3621,14 +3611,14 @@ msgstr ""
 " -v             Afișează informații suplimentare (poate fi folosită de mai "
 "multe ori)\n"
 
-#: src/main.cc:180
+#: src/main.cc:179
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
 msgstr ""
 " -t [producție] Impune producția din care pachetele ar trebui instalate\n"
 
-#: src/main.cc:181
+#: src/main.cc:180
 #, fuzzy, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
@@ -3637,13 +3627,13 @@ msgstr ""
 " -q             În modul linie de comandă, inhibați indicatoarele de "
 "evoluție incrementală.\n"
 
-#: src/main.cc:183
+#: src/main.cc:182
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr ""
 " -o key=val     Ajustează direct opțiunea de configurare numită 'key'\n"
 
-#: src/main.cc:184
+#: src/main.cc:183
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -3653,49 +3643,49 @@ msgstr ""
 "dependențe\n"
 "                puternice sau nu\n"
 
-#: src/main.cc:186
+#: src/main.cc:185
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr ""
 " -S fnume       Citește informațiile de stare extinsă aptitude din fișierul "
 "fnume.\n"
 
-#: src/main.cc:187
+#: src/main.cc:186
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             Descarcă listele cu pachetele noi la pornire.\n"
 
-#: src/main.cc:188
+#: src/main.cc:187
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             Execută comanda de instalare la pornire\n"
 
-#: src/main.cc:190
+#: src/main.cc:189
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                   Acest aptitude nu are puterile unei Super Vaci.\n"
 
-#: src/main.cc:373
+#: src/main.cc:372
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "Se așteaptă un număr după -q=\n"
 
-#: src/main.cc:382
+#: src/main.cc:381
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "Așteptat un număr după -q=, primit %s\n"
 
-#: src/main.cc:406
+#: src/main.cc:405
 #, fuzzy, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o necesită un argument de forma key=valoare, primit %s"
 
-#: src/main.cc:498
+#: src/main.cc:497
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr ""
 
-#: src/main.cc:526 src/main.cc:535
+#: src/main.cc:525 src/main.cc:534
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "CIUDĂȚENIE: primit cod opțiune necunoscut\n"
 
@@ -6070,6 +6060,12 @@ msgstr "Descărcare registru de schimbări"
 #: src/view_changelog.cc:242
 msgid "Download Changelog"
 msgstr "Descărcare registru de modificări"
+
+#~ msgid "The package \"%s\" is a starting point of the search.\n"
+#~ msgstr "Pachetul „%s” este un punct de plecare pentru căutare.\n"
+
+#~ msgid "The package \"%s\" is manually installed.\n"
+#~ msgstr "Pachetul „%s” este instalat manual.\n"
 
 #, fuzzy
 #~ msgid ""
