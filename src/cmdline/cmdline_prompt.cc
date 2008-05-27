@@ -181,7 +181,11 @@ namespace
 
 	    const action &act(it->front());
 
-	    eassert(!act.get_dep().end());
+	    // This can happen in the case of an impure virtual
+	    // package.  e.g., A is manually installed and B provides
+	    // A.
+	    if(act.get_dep().end())
+	      continue;
 
 	    if(!act.get_dep().end())
 	      root_names.insert(act.get_dep().ParentPkg().Name());
