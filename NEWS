@@ -1,3 +1,76 @@
+[5/26/2008]
+Version 0.4.11.3                            "Not looking back."
+
+- Crashes and serious errors:
+
+  * "unhold" should work now. (Closes: #477165)
+
+  * Fixed viewing changelogs at the command-line, which was almost
+    totally broken in recent releases. (Closes: #481458)
+
+  * Fix getting the changelogs of bin-nmued packages from the curses
+    interface. (Closes: #333468) For some reason when this was fixed
+    for the command-line mode, the equivalent change didn't make it
+    into the curses codebase.
+
+  * Don't die with an assertion error when --show-why is used in the
+    presence of impure virtual packages.
+
+- Cosmetic and UI bugs:
+
+  * Always be at least as quiet as the user requested; when aptitude
+    automatically enabled quietness if its output wasn't a TTY, it
+    could actually become less quiet than otherwise! (Closes: #476749)
+
+  * If the user asks for the justification of a manually installed
+    package, try to find a nontrivial answer (some other package that
+    requires it) instead of just telling them that it's already
+    installed. (Closes: #477038)
+
+  * Remove an incorrect hyphen in the output of --help. (Closes: #476835)
+
+  * When the resolver is run several times in a row without user
+    interaction (for instance, in "safe-upgrade"), only print
+    "Resolving dependencies..." once.
+
+  * When listing the complete chains of dependencies that are holding
+    a package on the system, show "A provided by B" as "A <-P B", not
+    "AP<- B".  (i.e., add a space after "A")
+
+- Build system fixes:
+
+  * VPATH should be supported better in doc/.
+
+  * Most files will generate Doxygen output now (they were missing
+    \file tags).
+
+- Documentation bugs:
+
+  * Clarify how aptitude's search language behaves in some syntactic
+    corner cases, like "~nname?installed": the "?" is part of the
+    string parameter to the first matcher, not the start of a new
+    match term "?installed".
+
+  * Change the documentation of "aptitude why": it shows why packages
+    should be installed, not why they can be installed, and be clearer
+    about what happens when "why" is called with a single argument.
+
+  * Fix the manpage to talk about Recommends-Important instead of
+    Install-Recommends. (Closes: #480533)
+
+- Translation updates:
+
+  * Brazilian Portuguese (Closes: #481007)
+  * Danish (Closes: #476732)
+  * French
+  * Galician (Closes: #476837)
+  * German (Closes: #476344)
+  * Japanese
+  * Norwegian Bokmal (Closes: #480063)
+  * Polish (Closes: #480062)
+  * Simplified Chinese (Closes: #475740)
+  * Vietnamese (Closes: #477295)
+
 [4/9/2008]
 Version 0.4.11.2                            "How far the sky,
                                              how cold the night,
