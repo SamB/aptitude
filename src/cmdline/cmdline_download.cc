@@ -13,6 +13,7 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_signal_log.h>
+#include <generic/apt/matchers.h>
 #include <generic/apt/pkg_acqfile.h>
 
 #include <apt-pkg/acquire.h>
@@ -49,40 +50,71 @@ int cmdline_download(int argc, char *argv[])
   string default_release = aptcfg->Find("APT::Default-Release");
 
   for(int i=1; i<argc; ++i)
-    // FIXME: use the same logic as pkgaction here.
-    if(!cmdline_is_search_pattern(argv[i]))
-      {
-	cmdline_version_source source;
-	string name, sourcestr;
+    {
+      cmdline_version_source source;
+      string name, sourcestr;
+      if(!cmdline_parse_source(argv[i], source, name, sourcestr))
+	continue;
 
-	if(!cmdline_parse_source(argv[i], source, name, sourcestr))
-	  continue;
+      if(source == cmdline_version_cand && !default_release.empty())
+	{
+	  source = cmdline_version_archive;
+	  sourcestr = default_release;
+	}
 
-	if(source == cmdline_version_cand && !default_release.empty())
-	  {
-	    source = cmdline_version_archive;
-	    sourcestr = default_release;
-	  }
+      std::vector<pkgCache::PkgIterator> packages;
 
-	pkgCache::PkgIterator pkg=(*apt_cache_file)->FindPkg(name);
-	if(pkg.end())
-	  {
-	    _error->Error(_("Can't find a package named \"%s\""), name.c_str());
+      if(!cmdline_is_search_pattern(name))
+	{
+	  pkgCache::PkgIterator pkg=(*apt_cache_file)->FindPkg(name);
+	  if(pkg.end())
+	    {
+	      _error->Error(_("Can't find a package named \"%s\""), name.c_str());
+	      continue;
+	    }
+
+	  packages.push_back(pkg);
+	}
+      else
+	{
+	  using namespace aptitude::matching;
+	  std::auto_ptr<pkg_matcher> m(parse_pattern(name.c_str()));
+	  if(m.get() == NULL)
+	    {
+	      _error->DumpErrors();
+	      return false;
+	    }
+
+	  for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin();
+	      !pkg.end(); ++pkg)
+	    {
+	      if(apply_matcher(m.get(), pkg, *apt_cache_file, *apt_package_records))
+		packages.push_back(pkg);
+	    }
+
+	  // Maybe there should be a warning here if packages is
+	  // empty?  TODO: think about it again when the string freeze
+	  // is lifted post-lenny.
+	}
+
+      for(std::vector<pkgCache::PkgIterator>::const_iterator it =
+	    packages.begin(); it != packages.end(); ++it)
+	{
+	  const pkgCache::PkgIterator pkg = *it;
+
+	  pkgCache::VerIterator ver=cmdline_find_ver(pkg, source, sourcestr);
+
+	  if(ver.end())
 	    continue;
-	  }
 
-	pkgCache::VerIterator ver=cmdline_find_ver(pkg, source, sourcestr);
+	  if(!ver.Downloadable())
+	    _error->Error(_("No downloadable files for %s version %s; perhaps it is a local or obsolete package?"),
+			  name.c_str(), ver.VerStr());
 
-	if(ver.end())
-	  continue;
-
-	if(!ver.Downloadable())
-	  _error->Error(_("No downloadable files for %s version %s; perhaps it is a local or obsolete package?"),
-			name.c_str(), ver.VerStr());
-
-	get_archive(&fetcher, &list, apt_package_records,
-		    ver, ".", filenames[pkg->ID]);
-      }
+	  get_archive(&fetcher, &list, apt_package_records,
+		      ver, ".", filenames[pkg->ID]);
+	}
+    }
 
   if(fetcher.Run()!=pkgAcquire::Continue)
     // We failed or were cancelled
