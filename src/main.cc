@@ -66,7 +66,7 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/init.h>
 
-#include "ui.h"
+#include "gtk/gui.h"
 
 #include "progress.h"
 #include "pkg_columnizer.h"

@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES=Makefile.in
 
-SUBDIRS=generic cmdline mine
+SUBDIRS=generic gtk cmdline mine
 
 localedir = $(datadir)/locale
 INCLUDES = -I$(top_builddir) -I$(srcdir) -I$(top_srcdir) -I$(top_srcdir)/src
@@ -8,7 +8,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 bin_PROGRAMS=aptitude
 
-LDADD=@LIBINTL@ cmdline/libcmdline.a mine/libcmine.a \
+LDADD=@LIBINTL@ gtk/libgtk.a cmdline/libcmdline.a mine/libcmine.a \
 	generic/util/libgeneric-util.a generic/apt/libgeneric-apt.a
 
 aptitude_SOURCES= 	\
