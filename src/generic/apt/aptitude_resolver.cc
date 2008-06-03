@@ -85,6 +85,21 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 						   int full_replacement_score,
 						   int undo_full_replacement_score)
 {
+  // Drop literal and indirect self-provides: allowing these would
+  // have the effect of giving a bonus to a random version of packages
+  // that "replace" themselves, which distorts the solutions produced
+  // by the resolver (Debian bug #483920).
+  if(provider.end())
+    {
+      if(src.ParentPkg() == real_target)
+	return;
+    }
+  else
+    {
+      if(src.ParentPkg() == provider.ParentPkg())
+	return;
+    }
+
   pkgCache::PkgIterator src_pkg = src.ParentPkg();
   bool src_installed = (src_pkg->CurrentState != pkgCache::State::NotInstalled &&
 			src_pkg->CurrentState != pkgCache::State::ConfigFiles) &&
