@@ -64,8 +64,10 @@ PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 
 PKG_CHECK_MODULES(CWIDGET, cwidget)
 
-CXXFLAGS="$CXXFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS $ept_CFLAGS"
-LIBS="$LIBS $SIGC_LIBS $CWIDGET_LIBS $ept_LIBS"
+PKG_CHECK_MODULES(GTKMM, gtkmm-2.4)
+
+CXXFLAGS="$CXXFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS $GTKMM_CFLAGS $ept_CFLAGS"
+LIBS="$LIBS $SIGC_LIBS $CWIDGET_LIBS $GTKMM_LIBS $ept_LIBS"
 AC_DEFINE_UNQUOTED(SIGC_VERSION, ["$(pkg-config --modversion sigc++-2.0)"], [The version of libsigc++ with which the program was compiled])
 
 dnl Checks for header files.
