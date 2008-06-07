@@ -70,6 +70,12 @@ bool cmdline_do_prompt(bool as_upgrade,
 		       pkgPolicy &policy,
 		       bool arch_only);
 
+bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
+			  pkgset &to_hold, pkgset &to_remove,
+			  bool showvers, bool showdeps,
+			  bool showsize, bool showwhy,
+			  int verbose);
+
 /** Prompt for a single line of input from the user.
  *
  *  \param prompt a message to display before reading input.
