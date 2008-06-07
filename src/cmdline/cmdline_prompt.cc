@@ -748,11 +748,11 @@ static bool prompt_trust()
  *  user are being installed/removed (eg, because of sticky states) and
  *  tell the caller to pause for confirmation.
  */
-static bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
-				 pkgset &to_hold, pkgset &to_remove,
-				 bool showvers, bool showdeps,
-				 bool showsize, bool showwhy,
-				 int verbose)
+bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
+			  pkgset &to_hold, pkgset &to_remove,
+			  bool showvers, bool showdeps,
+			  bool showsize, bool showwhy,
+			  int verbose)
 {
   const int quiet = aptcfg->FindI("Quiet", 0);
   bool all_empty=true;

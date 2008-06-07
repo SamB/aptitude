@@ -830,7 +830,14 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	<listitem>
 	  <para>
 	    Downloads the <literal>.deb</literal> file for the given
-	    package to the current directory.
+	    package to the current directory.  If a package name
+	    contains a tilde character
+	    (<quote><literal>~</literal></quote>) or a question mark
+	    (<quote><literal>?</literal></quote>), it will be treated
+	    as a search pattern and all the matching packages will be
+	    downloaded (see the section <quote><link
+	    linkend='secSearchPatterns'>Search Patterns</link></quote>
+	    in the &aptitude; reference manual).
 	  </para>
 
 	  <para>
@@ -999,6 +1006,48 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	</listitem>
       </varlistentry>
 
+      <varlistentry id='cmdlineOptionDisableColumns'>
+	<term><literal>--disable-columns</literal></term>
+
+	<listitem>
+	  <para>
+	    This option causes <literal>aptitude search</literal> to
+	    output its results without any special formatting.  In
+	    particular: normally &aptitude; will add whitespace or
+	    truncate search results in an attempt to fit its results
+	    into vertical <quote>columns</quote>.  With this flag,
+	    each line will be formed by replacing any format escapes
+	    in the format string with the correponding text; column
+	    widths will be ignored.
+	  </para>
+
+	  <para>
+	    For instance, the first few lines of output from <quote><literal>aptitude search -F '%p %V' --disable-columns libedataserver</literal></quote> might be:
+	  </para>
+
+	  <screen>disksearch 1.2.1-3
+hp-search-mac 0.1.3
+libbsearch-ruby 1.5-5
+libbsearch-ruby1.8 1.5-5
+libclass-dbi-abstractsearch-perl 0.07-2
+libdbix-fulltextsearch-perl 0.73-10</screen>
+
+          <para>
+            As in the above example,
+            <literal>--disable-columns</literal> is often useful in
+            combination with a custom display format set using the
+            command-line option <link
+            linkend='cmdlineOptionFormat'><literal>-F</literal></link>.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option
+	    <literal><link
+	    linkend='configCmdLine-Disable-Columns'>Aptitude::CmdLine::Disable-Columns</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
       <varlistentry>
 	<term><literal>-D</literal>, <literal>--show-deps</literal></term>
 
@@ -1048,6 +1097,12 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    for <replaceable>format</replaceable> will display a package's name,
 	    followed by its currently installed version and its
 	    available version (see the section <quote><link linkend='secDisplayFormat'>Customizing how packages are displayed</link></quote> in the &aptitude; reference manual for more information).
+	  </para>
+
+	  <para>
+	    The command-line option <link
+	    linkend='cmdlineOptionDisableColumns'><literal>--disable-columns</literal></link>
+	    is often useful in combination with <literal>-F</literal>.
 	  </para>
 
 	  <para>

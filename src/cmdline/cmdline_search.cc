@@ -27,8 +27,9 @@ using namespace std;
 namespace cw = cwidget;
 using cwidget::util::transcode;
 using namespace aptitude::matching;
+using namespace cwidget::config;
 
-class search_result_parameters : public cwidget::config::column_parameters
+class search_result_parameters : public column_parameters
 {
   pkg_match_result *r;
 public:
@@ -91,7 +92,8 @@ public:
 
 // FIXME: apt-cache does lots of tricks to make this fast.  Should I?
 int cmdline_search(int argc, char *argv[], const char *status_fname,
-		   string display_format, string width, string sort)
+		   string display_format, string width, string sort,
+		   bool disable_columns)
 {
   int real_width=-1;
 
@@ -123,7 +125,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
       return -1;
     }
 
-  cwidget::config::column_definition_list *columns =
+  column_definition_list *columns =
     parse_columns(wdisplay_format,
 		  pkg_item::pkg_columnizer::parse_column_type,
 		  pkg_item::pkg_columnizer::defaults);
@@ -201,15 +203,53 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
   for(vector<pair<pkgCache::PkgIterator, pkg_match_result *> >::iterator i=output.begin();
       i!=output.end(); ++i)
     {
-      cwidget::config::column_parameters *p =
+      column_parameters *p =
 	new search_result_parameters(i->second);
+      pkg_item::pkg_columnizer columnizer(i->first,
+					  i->first.VersionList(),
+					  *columns,
+					  0);
+      if(disable_columns)
+	{
+	  // Instantiate the format string without clipping or
+	  // expanding columns.
+	  //
+	  // TODO: this should move into cwidget in the future, as a new
+	  // mode of operation for layout_columns().
+	  std::wstring output;
 
-      printf("%ls\n",
-	     pkg_item::pkg_columnizer(i->first,
-				      i->first.VersionList(),
-				      *columns,
-				      0).layout_columns(real_width==-1?screen_width:real_width,
-							*p).c_str());
+	  for(column_definition_list::iterator it = columns->begin();
+	      it != columns->end();
+	      ++it)
+	    {
+	      if(it->type == column_definition::COLUMN_LITERAL)
+		output += it->arg;
+	      else
+		{
+		  eassert(it->type == column_definition::COLUMN_GENERATED ||
+			  it->type == column_definition::COLUMN_PARAM);
+
+		  if(it->type == column_definition::COLUMN_GENERATED)
+		    {
+		      cwidget::column_disposition disp = columnizer.setup_column(it->ival);
+		      output += disp.text;
+		    }
+		  else
+		    {
+		      if(p->param_count() <= it->ival)
+			output += L"###";
+		      else
+			output += p->get_param(it->ival);
+		    }
+		}
+	    }
+
+	  printf("%ls\n", output.c_str());
+	}
+      else
+	printf("%ls\n",
+	       columnizer.layout_columns(real_width==-1?screen_width:real_width,
+					 *p).c_str());
 
       // Note that this deletes the whole result, so we can't re-use
       // the list.

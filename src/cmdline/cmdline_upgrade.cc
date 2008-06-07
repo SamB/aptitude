@@ -89,8 +89,20 @@ int cmdline_upgrade(int argc, char *argv[],
   // resolver.
   (*apt_cache_file)->mark_all_upgradable(false, true, NULL);
 
-  if(verbose > 0)
-    show_broken();
+  if(verbose > 0 && (*apt_cache_file)->BrokenCount() > 0)
+    {
+      pkgset to_install, to_hold, to_remove;
+      cmdline_show_preview(true,
+			   to_install,
+			   to_hold,
+			   to_remove,
+			   showvers,
+			   showdeps,
+			   showsize,
+			   showwhy,
+			   verbose);
+      show_broken();
+    }
 
   if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, true))
     {
