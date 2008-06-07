@@ -19,7 +19,10 @@
 
 
 <xsl:template match="literal">
-  <xsl:apply-templates mode="bold" select="."/>
+  <xsl:call-template name="bold">
+    <xsl:with-param name="node" select="."/>
+    <xsl:with-param name="context" select="."/>
+  </xsl:call-template>
 </xsl:template>
 
 <xsl:param name="preferred.mediaobject.role">text</xsl:param>
