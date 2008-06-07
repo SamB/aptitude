@@ -9439,6 +9439,20 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configCmdLine-Disable-Columns'>
+	      <seg><literal>Aptitude::CmdLine::Disable-Columns</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		If this option is enabled, the results of command-line
+		searches (performed via <literal>aptitude
+		search</literal>) will not be formatted into
+		fixed-width columns or truncated to the screen width.
+		This is equivalent to the <link
+		linkend='cmdlineOptionDisableColumns'><literal>--disable-columns</literal></link>
+		command-line option.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configCmdLine-Download-Only'>
 	      <seg><literal>Aptitude::CmdLine::Download-Only</literal></seg>
 	      <seg><literal>false</literal></seg>
@@ -9629,8 +9643,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></seg>
 	      <seg><literal>false</literal></seg>
 	      <seg>
-		If this option is enabled, then when the
-		<quote>safe</quote> dependency resolver has been
+		If this option is <literal>true</literal>, then when
+		the <quote>safe</quote> dependency resolver has been
 		activated via <link
 		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
 		the resolver will not be allowed to install packages

@@ -207,7 +207,8 @@ enum {
   OPTION_SAFE_RESOLVER,
   OPTION_FULL_RESOLVER,
   OPTION_ARCH_ONLY,
-  OPTION_NOT_ARCH_ONLY
+  OPTION_NOT_ARCH_ONLY,
+  OPTION_DISABLE_COLUMNS
 };
 int getopt_result;
 
@@ -230,6 +231,7 @@ option opts[]={
   {"prompt", 0, NULL, 'P'},
   {"sort", 1, NULL, 'O'},
   {"target-release", 1, NULL, 't'},
+  {"disable-columns", 0, &getopt_result, OPTION_DISABLE_COLUMNS},
   {"no-new-installs", 0, &getopt_result, OPTION_NO_NEW_INSTALLS},
   {"no-new-upgrades", 0, &getopt_result, OPTION_NO_NEW_UPGRADES},
   {"allow-new-installs", 0, &getopt_result, OPTION_ALLOW_NEW_INSTALLS},
@@ -282,6 +284,7 @@ int main(int argc, char *argv[])
   bool safe_resolver_no_new_installs = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Installs", false);
   bool safe_resolver_no_new_upgrades = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Upgrades", false);
   bool always_use_safe_resolver = aptcfg->FindB(PACKAGE "::Always-Use-Safe-Resolver", false);
+  bool disable_columns = aptcfg->FindB(PACKAGE "::CmdLine::Disable-Columns", false);
   bool safe_resolver_option = false;
   bool full_resolver_option = false;
 
@@ -520,6 +523,9 @@ int main(int argc, char *argv[])
 	    case OPTION_ARCH_ONLY:
 	      arch_only = true;
 	      break;
+	    case OPTION_DISABLE_COLUMNS:
+	      disable_columns = true;
+	      break;
 	    default:
 	      fprintf(stderr, "%s",
 		      _("WEIRDNESS: unknown option code received\n"));
@@ -599,7 +605,8 @@ int main(int argc, char *argv[])
 	    return cmdline_search(argc-optind, argv+optind,
 				  status_fname,
 				  display_format, width,
-				  sort_policy);
+				  sort_policy,
+				  disable_columns);
 	  else if(!strcasecmp(argv[optind], "why"))
 	    return cmdline_why(argc - optind, argv + optind,
 			       status_fname, verbose, false);
