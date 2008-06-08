@@ -1,3 +1,41 @@
+[6/7/2008]
+Version 0.4.11.4                            "Turn down the suck."
+
+- New features:
+
+  * "aptitude download" now properly handles both patterns and things
+    like version specifiers that contain a tilde.
+
+  * New option "--disable-columns" to "search" that prevents aptitude
+    from trying to reformat its output into columns.  This should be
+    useful for people trying to call aptitude from scripts.
+    (Closes: #136874)
+
+- Crashes and serious errors:
+
+  * Fix a problem with assigning scores in the dependency resolver
+    that severely distorted the relative weights of packages.  If a
+    package conflicted with a virtual package that it also provided
+    and replaced, aptitude would randomly score some of its versions
+    as if they were full replacements of the current version.  This
+    could lead to surprising and wrong resolver outputs.
+    (Closes: #483920)
+
+- Documentation bugs:
+
+  * Fix some broken internal links.
+
+  * The manpage formatting of <literal> elements is correct now.
+    They're bolded, and literal file extensions don't get
+    misinterpreted as groff escapes.  (Closes: #473580)
+
+- Translation updates:
+
+  * Install defaults files for locales that contain an underscore,
+    like pt_BR. (Closes: #483620)
+
+  * Russian. (Closes: #483943)
+
 [5/26/2008]
 Version 0.4.11.3                            "Not looking back."
 
