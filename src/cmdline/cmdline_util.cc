@@ -88,7 +88,7 @@ void cmdline_show_stringlist(strvector &items)
 
   for(strvector::iterator i=items.begin(); i!=items.end(); ++i)
     {
-      if(loc+i->size()>screen_width-5)
+      if(loc + i->size() > (unsigned)(screen_width - 5))
 	{
 	  printf("\n  ");
 	  loc=2;
@@ -336,7 +336,7 @@ namespace
     std::set_difference(final.get_obsolete().begin(), final.get_obsolete().end(),
 			initial.get_obsolete().begin(), initial.get_obsolete().end(),
 			std::back_insert_iterator<std::vector<std::string> >(new_obsolete));
-    const int obsolete_list_limit = aptcfg->FindI(PACKAGE "::Max-Obsolete-List-Length", 50);
+    const unsigned int obsolete_list_limit = aptcfg->FindI(PACKAGE "::Max-Obsolete-List-Length", 50);
     if(new_obsolete.size() > obsolete_list_limit)
       {
 	output_fragments.push_back(cw::text_fragment(ssprintf(ngettext("There is %d newly obsolete package.",
@@ -559,6 +559,11 @@ namespace aptitude
 	  rval = find_source_package(source_package_name);
 	  break;
 
+	case cmdline_version_curr_or_cand:
+	  break;
+	  // Do this later since we need to refer to the installed
+	  // version.
+
 	case cmdline_version_archive:
 	  _error->DumpErrors();
 	  rval = find_source_by_archive(source_package_name, version_source_string);
@@ -595,6 +600,13 @@ namespace aptitude
 
 		  rval = find_source_package(source_package_name, source_version);
 		}
+	      else if(version_source == cmdline_version_curr_or_cand)
+		{
+		  const std::string source_version =
+		    rec.SourceVer().empty() ? ver.VerStr() : rec.SourceVer();		  
+
+		  rval = find_source_package(source_package_name, source_version);
+		}
 	    }
 	  // Last-ditch effort: if no matching version was found but
 	  // a source package can be found, use that and try again below.
@@ -615,6 +627,9 @@ namespace aptitude
 	    case cmdline_version_cand:
 	      rval = find_source_package(source_package_name);
 	      break;
+
+	    case cmdline_version_curr_or_cand:
+	      break; // We would have tried already if it was possible.
 
 	    case cmdline_version_archive:
 	      _error->DumpErrors();
