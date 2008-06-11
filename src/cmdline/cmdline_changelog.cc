@@ -205,6 +205,9 @@ bool do_cmdline_changelog(const vector<string> &packages)
 					  sigc::bind(sigc::ptr_fun(&set_name), &filename));
 	  else
 	    {
+	      // We couldn't find a real or source package with the
+	      // given name and version.
+	      //
 	      // If the user didn't specify a version or selected a
 	      // candidate and we couldn't find anything, we have no
 	      // recourse.  But if they passed a version number, we
@@ -214,6 +217,9 @@ bool do_cmdline_changelog(const vector<string> &packages)
 	      switch(source)
 		{
 		case cmdline_version_cand:
+		  break;
+
+		case cmdline_version_curr_or_cand:
 		  break;
 
 		case cmdline_version_archive:
