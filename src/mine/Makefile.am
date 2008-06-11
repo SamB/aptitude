@@ -1,7 +1,7 @@
 MAINTAINERCLEANFILES=Makefile.in
 
 localedir = $(datadir)/locale
-INCLUDES = -Wall @WERROR@ -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src
+INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 LDADD = @LIBINTL@
 SWEEPERHELPTXTS = mine-help.txt $(wildcard mine-help-??.txt)

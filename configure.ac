@@ -281,13 +281,14 @@ AC_ARG_ENABLE(docs,
 	fi,
 	DOCDIRS=doc)
 
+CXXFLAGS="$CXXFLAGS -Wall $WERROR"
+
 AC_SUBST(SRCDIRS)
 AC_SUBST(DOCDIRS)
 
 AC_DEFINE_UNQUOTED(STATEDIR, "$STATEDIR", [The location of aptitude's state files])
 AC_DEFINE_UNQUOTED(LOCKFILE, "$LOCKFILE", [The location of the lock to prevent simultaneous aptitude instances])
 AC_SUBST(STATEDIR)
-AC_SUBST(WERROR)
 
 AC_TYPE_SIZE_T
 
