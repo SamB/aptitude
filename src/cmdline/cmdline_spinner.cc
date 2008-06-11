@@ -56,7 +56,7 @@ void cmdline_spinner::display() const
   std::string out(msg, 0, screen_width - 2);
 
   out.append(screen_width - 1 - out.size(), ' ');
-  if(out.size() < screen_width)
+  if(out.size() < (unsigned)screen_width)
     out += spin_char();
 
   std::cout << '\r' << out << std::flush;
