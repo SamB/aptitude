@@ -639,6 +639,7 @@ namespace aptitude
 	    seen_packages[i] = other.seen_packages[i];
 	}
       first_iteration = other.first_iteration;
+      return *this;
     }
 
     ~justification_search()
