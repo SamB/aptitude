@@ -145,6 +145,8 @@ namespace aptitude
 
       if(!all_ok)
 	return 2;
+
+      return 0;
     }
   }
 }
