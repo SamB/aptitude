@@ -87,7 +87,7 @@ temp::name changelog_by_version(const std::string &pkg,
 }
 }
 
-bool do_cmdline_changelog(const vector<string> &packages)
+void do_cmdline_changelog(const vector<string> &packages)
 {
   const char *pager="/usr/bin/sensible-pager";
 
