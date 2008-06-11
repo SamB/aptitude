@@ -58,7 +58,6 @@ namespace
       }
 
     bool rval = true;
-    bool last_was_or = false;
     typedef pkgSrcRecords::Parser::BuildDepRec BuildDepRec;
     typedef std::vector<BuildDepRec> BuildDepList;
     for(BuildDepList::const_iterator it = sourcepkg.get_build_deps().begin();
