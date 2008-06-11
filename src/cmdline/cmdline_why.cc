@@ -361,6 +361,8 @@ namespace aptitude
 	return cw::fragf(_("Remove(%s provides %s)"),
 			 const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
 			 mpkg.Name());
+      default:
+	return cw::text_fragment("Internal error: bad target node type.");
       }
   }
 
