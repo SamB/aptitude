@@ -246,7 +246,7 @@ static pkgCache::VerIterator choose_version(const vector<pkgCache::VerIterator> 
       istringstream in(response);
       in >> ws >> i >> ws;
 
-      if(!in || !in.eof() || i < 1 || i > choices.size())
+      if(!in || !in.eof() || i < 1 || i > (signed)choices.size())
 	cerr << ssprintf(_("Invalid response.  Please enter an integer between 1 and %d."), choices.size()) << endl;
       else
 	return choices[i];
@@ -649,7 +649,7 @@ cmdline_resolve_deps(pkgset &to_install,
 		    break;
 		  case 'N':
 		    {
-		      int curr_count = resman->generated_solution_count();
+		      unsigned int curr_count = resman->generated_solution_count();
 
 		      if(curr_count>0)
 			while(resman->get_selected_solution() < curr_count)
