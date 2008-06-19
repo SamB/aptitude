@@ -309,9 +309,13 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	    }
 
 	  // In addition, add the essential-removal score:
-	  if((p.get_pkg()->Flags & pkgCache::Flag::Essential) &&
+	  if((p.get_pkg()->Flags & (pkgCache::Flag::Essential |
+				    pkgCache::Flag::Important)) &&
 	     v.get_ver().end())
-	    add_version_score(v, essential_remove);
+	    {
+	      add_version_score(v, essential_remove);
+	      reject_version(v);
+	    }
 
 	  // Look for a conflicts/provides/replaces.
 	  if(!v.get_ver().end())
