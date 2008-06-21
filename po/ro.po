@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ro\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-07 16:48-0700\n"
+"POT-Creation-Date: 2008-06-21 10:49-0700\n"
 "PO-Revision-Date: 2008-03-13 14:36+0200\n"
 "Last-Translator: Eddy Petrișor <eddy.petrisor@gmail.com>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
@@ -701,12 +701,12 @@ msgstr "Sugerează %F"
 msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Nu s-a putut găsi o arhivă „%s” pentru pachetul „%s”\n"
 
-#: src/cmdline/cmdline_action.cc:203
+#: src/cmdline/cmdline_action.cc:202
 #, fuzzy, c-format
 msgid "Unable to satisfy the build-depends: %s."
 msgstr "Nu se pot afișa fișierele din „%s”"
 
-#: src/cmdline/cmdline_action.cc:239
+#: src/cmdline/cmdline_action.cc:238
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -715,7 +715,7 @@ msgstr ""
 "Notă: „%s”, furnizează pachetul virtual\n"
 "      „%s”, este deja instalat.\n"
 
-#: src/cmdline/cmdline_action.cc:246
+#: src/cmdline/cmdline_action.cc:245
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -724,7 +724,7 @@ msgstr ""
 "Notă: „%s”, furnizează pachetul virtual\n"
 "      „%s”, este deja pe cale să fie instalat.\n"
 
-#: src/cmdline/cmdline_action.cc:268
+#: src/cmdline/cmdline_action.cc:267
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -733,17 +733,17 @@ msgstr ""
 "„%s” există în baza de date a pachetelor, dar nu este\n"
 "un pachet adevărat și nici un pachet nu-l furnizează.\n"
 
-#: src/cmdline/cmdline_action.cc:276
+#: src/cmdline/cmdline_action.cc:275
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "„%s” este un pachet virtual furnizat de:\n"
 
-#: src/cmdline/cmdline_action.cc:279
+#: src/cmdline/cmdline_action.cc:278
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Trebuie să alegeți unul pentru instalare.\n"
 
-#: src/cmdline/cmdline_action.cc:287
+#: src/cmdline/cmdline_action.cc:286
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -752,38 +752,38 @@ msgstr ""
 "Notă: se alege „%s” în locul\n"
 "      pachetului virtual „%s”\n"
 
-#: src/cmdline/cmdline_action.cc:306
+#: src/cmdline/cmdline_action.cc:305
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s este deja instalat cu versiunea cerută (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:312
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr ""
 "%s nu este instalat în momentul de față, astfel încât nu va fi reinstalat.\n"
 
-#: src/cmdline/cmdline_action.cc:319 src/cmdline/cmdline_action.cc:325
+#: src/cmdline/cmdline_action.cc:318 src/cmdline/cmdline_action.cc:324
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Pachetul %s nu este instalat, astfel încât nu va fi șters\n"
 
-#: src/cmdline/cmdline_action.cc:343
+#: src/cmdline/cmdline_action.cc:342
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "Pachetul %s nu este instalat, nu se poate interzice o înnoire\n"
 
-#: src/cmdline/cmdline_action.cc:345
+#: src/cmdline/cmdline_action.cc:344
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "Pachetul %s nu poate fi înnoit, nu se poate interzice o înnoire\n"
 
-#: src/cmdline/cmdline_action.cc:439
+#: src/cmdline/cmdline_action.cc:438
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Notă: alegerea sarcinii \"%s: %s\" pentru instalare\n"
 
-#: src/cmdline/cmdline_action.cc:473
+#: src/cmdline/cmdline_action.cc:472
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -792,12 +792,12 @@ msgstr ""
 "Puteți specifica o versiune de pachet doar cu comanda 'install' sau cu "
 "'forbid-version'.\n"
 
-#: src/cmdline/cmdline_action.cc:482
+#: src/cmdline/cmdline_action.cc:481
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "Puteți specifica o arhivă de pachet doar cu comanda 'install'.\n"
 
-#: src/cmdline/cmdline_action.cc:519
+#: src/cmdline/cmdline_action.cc:518
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -806,7 +806,7 @@ msgstr ""
 "Nu s-a putut găsi pachetul „%s”, și mai mult de 40 de\n"
 "pachete conțin „%s” în nume.\n"
 
-#: src/cmdline/cmdline_action.cc:522
+#: src/cmdline/cmdline_action.cc:521
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -815,14 +815,14 @@ msgstr ""
 "Nu s-a putut găsi pachetul „%s”. Totuși, următoarele\n"
 "pachete conțin „%s” în numele lor:\n"
 
-#: src/cmdline/cmdline_action.cc:544
+#: src/cmdline/cmdline_action.cc:543
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "Nu s-a putut găsi nici un pachet al cărui nume sau descriere să se\n"
 "potrivească cu „%s”\n"
 
-#: src/cmdline/cmdline_action.cc:546
+#: src/cmdline/cmdline_action.cc:545
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -831,7 +831,7 @@ msgstr ""
 "Nu s-a putut găsi nici un pachet care să se potrivească cu „%s”,\n"
 "și mai mult de 40 de pachete conțin „%s” în descrierea lor.\n"
 
-#: src/cmdline/cmdline_action.cc:549
+#: src/cmdline/cmdline_action.cc:548
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -840,7 +840,7 @@ msgstr ""
 "Nu s-a putut găsi nici un pachet care să se potrivească cu „%s”.\n"
 "Totuși, următoarele pachete conțin „%s” în descrierea lor:\n"
 
-#: src/cmdline/cmdline_action.cc:687
+#: src/cmdline/cmdline_action.cc:686
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Caracter de acțiune necorespunzător „%c”\n"
@@ -857,7 +857,7 @@ msgstr ""
 "%s nu este un pachet Debian oficial, nu se poate afișa jurnalul său de "
 "modificări."
 
-#: src/cmdline/cmdline_changelog.cc:237
+#: src/cmdline/cmdline_changelog.cc:243
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Nu s-a putut găsi un jurnal de modificări pentru %s"
@@ -1826,12 +1826,12 @@ msgstr ""
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Nu se pot rezolva dependențele pentru înnoire (%s)."
 
-#: src/cmdline/cmdline_search.cc:124
+#: src/cmdline/cmdline_search.cc:125
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr "eșuare iconv a lui %s.\n"
 
-#: src/cmdline/cmdline_search.cc:141
+#: src/cmdline/cmdline_search.cc:142
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr "căutare: Trebuie să furnizați cel puțin un termen de căutare\n"
@@ -2248,75 +2248,75 @@ msgstr "Instalare(%s furnizează %s)"
 msgid "Remove(%s provides %s)"
 msgstr "Ștergere(%s furnizează %s)"
 
-#: src/cmdline/cmdline_why.cc:417
+#: src/cmdline/cmdline_why.cc:419
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr "    ++ Se examinează %F\n"
 
-#: src/cmdline/cmdline_why.cc:427
+#: src/cmdline/cmdline_why.cc:429
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr "    ++   --> se omite, nu este conflict\n"
 
-#: src/cmdline/cmdline_why.cc:437
+#: src/cmdline/cmdline_why.cc:439
 msgid "    ++   --> skipping conflict\n"
 msgstr "    ++   --> se omite conflictul\n"
 
-#: src/cmdline/cmdline_why.cc:445
+#: src/cmdline/cmdline_why.cc:447
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr "    ++   --> se omite, nu este relevant conform cu parametri\n"
 
-#: src/cmdline/cmdline_why.cc:452
+#: src/cmdline/cmdline_why.cc:454
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> se omite, părintele nu este versiunea selectată\n"
 
-#: src/cmdline/cmdline_why.cc:492
+#: src/cmdline/cmdline_why.cc:494
 #, fuzzy
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr "    ++   --> se omite, părintele nu este versiunea selectată\n"
 
-#: src/cmdline/cmdline_why.cc:522
+#: src/cmdline/cmdline_why.cc:524
 msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> SE ADAUGĂ LA COADĂ\n"
 
-#: src/cmdline/cmdline_why.cc:529
+#: src/cmdline/cmdline_why.cc:531
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> se omite, verificarea versiunii a eșuat\n"
 
-#: src/cmdline/cmdline_why.cc:547
+#: src/cmdline/cmdline_why.cc:549
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr "    ++   --> SE ADAUGĂ LA COADĂ %s Furnizează %s\n"
 
-#: src/cmdline/cmdline_why.cc:675
+#: src/cmdline/cmdline_why.cc:678
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "Se pornește căutarea cu parametrii %ls\n"
 
-#: src/cmdline/cmdline_why.cc:895
+#: src/cmdline/cmdline_why.cc:898
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Se omite această soluție, s-a mai vazut.\n"
 
-#: src/cmdline/cmdline_why.cc:970
+#: src/cmdline/cmdline_why.cc:973
 #, fuzzy, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Nu se poate găsi o soluție de aplicat."
 
-#: src/cmdline/cmdline_why.cc:972
+#: src/cmdline/cmdline_why.cc:975
 #, fuzzy, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Nu se poate găsi o soluție de aplicat."
 
-#: src/cmdline/cmdline_why.cc:1017 src/cmdline/cmdline_why.cc:1043
-#: src/cmdline/cmdline_why.cc:1105
+#: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
+#: src/cmdline/cmdline_why.cc:1108
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Nu există nici un pachetul numit „%s”."
 
-#: src/cmdline/cmdline_why.cc:1051
+#: src/cmdline/cmdline_why.cc:1054
 msgid "Unable to parse some match patterns."
 msgstr "Nu s-au putut analiza unele modele de căutare."
 
-#: src/cmdline/cmdline_why.cc:1078
+#: src/cmdline/cmdline_why.cc:1081
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-07 16:48-0700\n"
+"POT-Creation-Date: 2008-06-21 10:49-0700\n"
 "PO-Revision-Date: 2008-04-22 19:08+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -670,12 +670,12 @@ msgstr "Đề nghị %F"
 msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Không tìm thấy gói nguồn cho « %s ».\n"
 
-#: src/cmdline/cmdline_action.cc:203
+#: src/cmdline/cmdline_action.cc:202
 #, c-format
 msgid "Unable to satisfy the build-depends: %s."
 msgstr "Không thể thỏa các quan hệ phụ thuộc khi xây dựng: %s"
 
-#: src/cmdline/cmdline_action.cc:239
+#: src/cmdline/cmdline_action.cc:238
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -684,7 +684,7 @@ msgstr ""
 "Ghi chú : « %s », nếu gói ảo « %s »\n"
 "      đã được cài đặt.\n"
 
-#: src/cmdline/cmdline_action.cc:246
+#: src/cmdline/cmdline_action.cc:245
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -693,7 +693,7 @@ msgstr ""
 "Ghi chú : « %s », nếu gói ảo « %s »\n"
 "      sẽ được cài đặt.\n"
 
-#: src/cmdline/cmdline_action.cc:268
+#: src/cmdline/cmdline_action.cc:267
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -702,17 +702,17 @@ msgstr ""
 "« %s » nằm trong cơ sở dữ liệu gói, nhưng mà\n"
 "nó không phải là gói thật, và không có gói khác cung cấp nó\n"
 
-#: src/cmdline/cmdline_action.cc:276
+#: src/cmdline/cmdline_action.cc:275
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "« %s » là gói ảo được cung cấp bởi:\n"
 
-#: src/cmdline/cmdline_action.cc:279
+#: src/cmdline/cmdline_action.cc:278
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Bạn phải chọn một gói cần cài.\n"
 
-#: src/cmdline/cmdline_action.cc:287
+#: src/cmdline/cmdline_action.cc:286
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -721,37 +721,37 @@ msgstr ""
 "Ghi chú : đang lựa chọn « %s » thay cho\n"
 "      gói ảo « %s »\n"
 
-#: src/cmdline/cmdline_action.cc:306
+#: src/cmdline/cmdline_action.cc:305
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "« %s » đã được cài đặt ở phiên bản đã yêu cầu (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:312
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "Chưa cài đặt « %s » nên sẽ không cài lại nó.\n"
 
-#: src/cmdline/cmdline_action.cc:319 src/cmdline/cmdline_action.cc:325
+#: src/cmdline/cmdline_action.cc:318 src/cmdline/cmdline_action.cc:324
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Chưa cài đặt gói « %s » nên sẽ không gỡ bỏ nó\n"
 
-#: src/cmdline/cmdline_action.cc:343
+#: src/cmdline/cmdline_action.cc:342
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "Chưa cài đặt gói « %s » nên không thể cấm nâng cấp\n"
 
-#: src/cmdline/cmdline_action.cc:345
+#: src/cmdline/cmdline_action.cc:344
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "Không thể nâng cấp gói « %s » nên không thể cấm nâng cấp\n"
 
-#: src/cmdline/cmdline_action.cc:439
+#: src/cmdline/cmdline_action.cc:438
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Ghi chú : đang lựa chọn gói « %s: %s » để cài đặt\n"
 
-#: src/cmdline/cmdline_action.cc:473
+#: src/cmdline/cmdline_action.cc:472
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -760,13 +760,13 @@ msgstr ""
 "Bạn có thể ghi rõ phiên bản gói chỉ bằng lệnh « install » (cài đặt) hoặc lệnh "
 "« forbid-version » (cấm phiên bản).\n"
 
-#: src/cmdline/cmdline_action.cc:482
+#: src/cmdline/cmdline_action.cc:481
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr ""
 "Bạn có thể ghi rõ phiên bản kho gói chỉ bằng lệnh « install » (cài đặt).\n"
 
-#: src/cmdline/cmdline_action.cc:519
+#: src/cmdline/cmdline_action.cc:518
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -775,7 +775,7 @@ msgstr ""
 "Không tìm thấy gói « %s »,\n"
 "và hơn 40 gói có tên chứa « %s ».\n"
 
-#: src/cmdline/cmdline_action.cc:522
+#: src/cmdline/cmdline_action.cc:521
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -784,12 +784,12 @@ msgstr ""
 "Không tìm thấy gói « %s ».\n"
 "Tuy nhiên, những gói sau có tên chứa « %s »:\n"
 
-#: src/cmdline/cmdline_action.cc:544
+#: src/cmdline/cmdline_action.cc:543
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr "Không tìm thấy gói nào có tên hay mô tả khớp với « %s »\n"
 
-#: src/cmdline/cmdline_action.cc:546
+#: src/cmdline/cmdline_action.cc:545
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -798,7 +798,7 @@ msgstr ""
 "Không tìm thấy gói khớp với « %s »,\n"
 "và hơn 40 gói có mô tả chứa « %s ».\n"
 
-#: src/cmdline/cmdline_action.cc:549
+#: src/cmdline/cmdline_action.cc:548
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -807,7 +807,7 @@ msgstr ""
 "Không tìm thấy gói khớp với « %s ».\n"
 "Tuy nhiên, những gói sau có mô tả chứa « %s ».\n"
 
-#: src/cmdline/cmdline_action.cc:687
+#: src/cmdline/cmdline_action.cc:686
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Ký tự hành động sai « %c »\n"
@@ -825,7 +825,7 @@ msgstr ""
 "%s không phải là gói Debian chính thức nên không thể hiển thị bản ghi các "
 "thay đổi (ChangeLog) của nó."
 
-#: src/cmdline/cmdline_changelog.cc:237
+#: src/cmdline/cmdline_changelog.cc:243
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Không tìm thấy bản ghi các thay đổi cho « %s »"
@@ -1792,12 +1792,12 @@ msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr ""
 "Không thể giải quyết các quan hệ phụ thuộc cho tiến trình nâng cấp (%s)."
 
-#: src/cmdline/cmdline_search.cc:124
+#: src/cmdline/cmdline_search.cc:125
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr "việc iconv « %s » bị lỗi.\n"
 
-#: src/cmdline/cmdline_search.cc:141
+#: src/cmdline/cmdline_search.cc:142
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr "tìm kiếm: bạn phải cung cấp ít nhất một từ tìm kiếm\n"
@@ -2206,75 +2206,75 @@ msgstr "Cài(%s cung cấp %s)"
 msgid "Remove(%s provides %s)"
 msgstr "Bỏ(%s cung cấp %s"
 
-#: src/cmdline/cmdline_why.cc:417
+#: src/cmdline/cmdline_why.cc:419
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr "    ++ Đang kiểm tra %F\n"
 
-#: src/cmdline/cmdline_why.cc:427
+#: src/cmdline/cmdline_why.cc:429
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr "    ++   --> đang bỏ qua, không phải xung đột\n"
 
-#: src/cmdline/cmdline_why.cc:437
+#: src/cmdline/cmdline_why.cc:439
 msgid "    ++   --> skipping conflict\n"
 msgstr "    ++   --> đang bỏ qua xung đột\n"
 
-#: src/cmdline/cmdline_why.cc:445
+#: src/cmdline/cmdline_why.cc:447
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr "    ++   --> đang bỏ qua, không thích hợp tùy theo tham số\n"
 
-#: src/cmdline/cmdline_why.cc:452
+#: src/cmdline/cmdline_why.cc:454
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> bỏ qua, cha không phải phiên bản đã chọn\n"
 
-#: src/cmdline/cmdline_why.cc:492
+#: src/cmdline/cmdline_why.cc:494
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr ""
 "    ++   --> bỏ qua, quan hệ phụ thuộc được thỏa bởi phiên bản hiện thời\n"
 
-#: src/cmdline/cmdline_why.cc:522
+#: src/cmdline/cmdline_why.cc:524
 msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> ĐANG XẾP HÀNG\n"
 
-#: src/cmdline/cmdline_why.cc:529
+#: src/cmdline/cmdline_why.cc:531
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> đang bỏ qua, lỗi kiểm tra phiên bản\n"
 
-#: src/cmdline/cmdline_why.cc:547
+#: src/cmdline/cmdline_why.cc:549
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr "    ++   --> ĐANG XẾP HÀNG %s cung cấp %s\n"
 
-#: src/cmdline/cmdline_why.cc:675
+#: src/cmdline/cmdline_why.cc:678
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "Đang khởi chạy tiến trình tìm kiếm với tham số %ls\n"
 
-#: src/cmdline/cmdline_why.cc:895
+#: src/cmdline/cmdline_why.cc:898
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Đang bỏ qua giải pháp này, đã xử lý.\n"
 
-#: src/cmdline/cmdline_why.cc:970
+#: src/cmdline/cmdline_why.cc:973
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Không tìm thấy lý do cần gỡ bỏ %s.\n"
 
-#: src/cmdline/cmdline_why.cc:972
+#: src/cmdline/cmdline_why.cc:975
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Không tìm thấy lý do cần cài đặt %s.\n"
 
-#: src/cmdline/cmdline_why.cc:1017 src/cmdline/cmdline_why.cc:1043
-#: src/cmdline/cmdline_why.cc:1105
+#: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
+#: src/cmdline/cmdline_why.cc:1108
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Không có gói tên « %s » tồn tại."
 
-#: src/cmdline/cmdline_why.cc:1051
+#: src/cmdline/cmdline_why.cc:1054
 msgid "Unable to parse some match patterns."
 msgstr "Không thể phân tích một số mẫu khớp."
 
-#: src/cmdline/cmdline_why.cc:1078
+#: src/cmdline/cmdline_why.cc:1081
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr "%s: lệnh này cần thiết ít nhất một đối số (gói cần truy cập)."

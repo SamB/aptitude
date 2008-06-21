@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-07 16:48-0700\n"
+"POT-Creation-Date: 2008-06-21 10:49-0700\n"
 "PO-Revision-Date: 2008-04-19 14:12+0100\n"
 "Last-Translator: Jacobo Tarrío <jtarrio@debian.org>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -686,12 +686,12 @@ msgstr "Suxestión: %F"
 msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Non se puido atopar o paquete fonte para \"%s\".\n"
 
-#: src/cmdline/cmdline_action.cc:203
+#: src/cmdline/cmdline_action.cc:202
 #, c-format
 msgid "Unable to satisfy the build-depends: %s."
 msgstr "Non se puideron satisfacer as dependencias de compilación: %s."
 
-#: src/cmdline/cmdline_action.cc:239
+#: src/cmdline/cmdline_action.cc:238
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -700,7 +700,7 @@ msgstr ""
 "Nota: \"%s\", que fornece o paquete virtual\n"
 "      \"%s\", xa está instalado.\n"
 
-#: src/cmdline/cmdline_action.cc:246
+#: src/cmdline/cmdline_action.cc:245
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -709,7 +709,7 @@ msgstr ""
 "Nota: \"%s\", que fornece o paquete virtual\n"
 "      \"%s\", xa se vai instalar.\n"
 
-#: src/cmdline/cmdline_action.cc:268
+#: src/cmdline/cmdline_action.cc:267
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -718,17 +718,17 @@ msgstr ""
 "\"%s\" existe na base de datos de paquetes, pero non é un\n"
 "paquete de verdade e ningún paquete o fornece.\n"
 
-#: src/cmdline/cmdline_action.cc:276
+#: src/cmdline/cmdline_action.cc:275
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" é un paquete virtual fornecido por:\n"
 
-#: src/cmdline/cmdline_action.cc:279
+#: src/cmdline/cmdline_action.cc:278
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Debe escoller un para instalar.\n"
 
-#: src/cmdline/cmdline_action.cc:287
+#: src/cmdline/cmdline_action.cc:286
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -737,37 +737,37 @@ msgstr ""
 "Nota: escóllese \"%s\" no canto do\n"
 "      paquete virtual \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:306
+#: src/cmdline/cmdline_action.cc:305
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s xa está instalado na versión solicitada (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:312
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s non está instalado agora, así que non se ha reinstalar.\n"
 
-#: src/cmdline/cmdline_action.cc:319 src/cmdline/cmdline_action.cc:325
+#: src/cmdline/cmdline_action.cc:318 src/cmdline/cmdline_action.cc:324
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "O paquete %s non está instalado, así que non se ha eliminar\n"
 
-#: src/cmdline/cmdline_action.cc:343
+#: src/cmdline/cmdline_action.cc:342
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "O paquete %s non está instlado; non se pode impedir a actualización\n"
 
-#: src/cmdline/cmdline_action.cc:345
+#: src/cmdline/cmdline_action.cc:344
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "O paquete %s non é actualizable; non se pode impedir a actualización\n"
 
-#: src/cmdline/cmdline_action.cc:439
+#: src/cmdline/cmdline_action.cc:438
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Nota: escóllese a tarefa \"%s: %s\" para instalación\n"
 
-#: src/cmdline/cmdline_action.cc:473
+#: src/cmdline/cmdline_action.cc:472
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -776,12 +776,12 @@ msgstr ""
 "Só se pode especificar unha versión dun paquete coas ordes \"install\" ou "
 "\"forbid-version\".\n"
 
-#: src/cmdline/cmdline_action.cc:482
+#: src/cmdline/cmdline_action.cc:481
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "Só se pode especificar un arquivo de paquete coa orde \"install\".\n"
 
-#: src/cmdline/cmdline_action.cc:519
+#: src/cmdline/cmdline_action.cc:518
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -790,7 +790,7 @@ msgstr ""
 "Non se puido atopar o paquete \"%s\", e hai máis de 40\n"
 "paquetes con \"%s\" nos seus nomes.\n"
 
-#: src/cmdline/cmdline_action.cc:522
+#: src/cmdline/cmdline_action.cc:521
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -799,13 +799,13 @@ msgstr ""
 "Non se puido atopar o paquete \"%s\". Nembargantes, os\n"
 "seguintes paquetes conteñen \"%s\" nos seus nomes:\n"
 
-#: src/cmdline/cmdline_action.cc:544
+#: src/cmdline/cmdline_action.cc:543
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "Non atopou ningún paquete cun nome ou descrición que encaixen con \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:546
+#: src/cmdline/cmdline_action.cc:545
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -814,7 +814,7 @@ msgstr ""
 "Non se puido atopar ningún paquete que encaixe con \"%s\", e máis de 40\n"
 "paquetes conteñen \"%s\" na súa descrición.\n"
 
-#: src/cmdline/cmdline_action.cc:549
+#: src/cmdline/cmdline_action.cc:548
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -823,7 +823,7 @@ msgstr ""
 "Non se puido atopar ningún paquete que encaixe con \"%s\". Nembargantes,\n"
 "os seguintes paquetes conteñen \"%s\" na súa descrición:\n"
 
-#: src/cmdline/cmdline_action.cc:687
+#: src/cmdline/cmdline_action.cc:686
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Caracter de acción \"%c\" incorrecto\n"
@@ -841,7 +841,7 @@ msgstr ""
 "%s non é un paquete Debian oficial; non se pode amosar o seu rexistro de "
 "cambios."
 
-#: src/cmdline/cmdline_changelog.cc:237
+#: src/cmdline/cmdline_changelog.cc:243
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Non se puido atopar o rexistro de cambios de %s"
@@ -1803,12 +1803,12 @@ msgstr ""
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Non se puideron resolver as dependencias para a actualización (%s)."
 
-#: src/cmdline/cmdline_search.cc:124
+#: src/cmdline/cmdline_search.cc:125
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr "Fallou a codificación de %s.\n"
 
-#: src/cmdline/cmdline_search.cc:141
+#: src/cmdline/cmdline_search.cc:142
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr "busca: Debe fornecer alomenos un termo de busca\n"
@@ -2221,75 +2221,75 @@ msgstr "Instalar(%s fornece %s)"
 msgid "Remove(%s provides %s)"
 msgstr "Eliminar(%s fornece %s)"
 
-#: src/cmdline/cmdline_why.cc:417
+#: src/cmdline/cmdline_why.cc:419
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr "    ++ A examinar %F\n"
 
-#: src/cmdline/cmdline_why.cc:427
+#: src/cmdline/cmdline_why.cc:429
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr "    ++   --> a omitir, non é un conflicto\n"
 
-#: src/cmdline/cmdline_why.cc:437
+#: src/cmdline/cmdline_why.cc:439
 msgid "    ++   --> skipping conflict\n"
 msgstr "    ++   --> a omitir o conflicto\n"
 
-#: src/cmdline/cmdline_why.cc:445
+#: src/cmdline/cmdline_why.cc:447
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr "    ++   --> a omitir, non é relevante de acordo cos parámetros\n"
 
-#: src/cmdline/cmdline_why.cc:452
+#: src/cmdline/cmdline_why.cc:454
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> a omitir, o pai non é a versión seleccionada\n"
 
-#: src/cmdline/cmdline_why.cc:492
+#: src/cmdline/cmdline_why.cc:494
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr ""
 "    ++   --> a omitir, a dependencia queda satisfeita coa versión actual\n"
 
-#: src/cmdline/cmdline_why.cc:522
+#: src/cmdline/cmdline_why.cc:524
 msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> A INTRODUCIR NA COLA\n"
 
-#: src/cmdline/cmdline_why.cc:529
+#: src/cmdline/cmdline_why.cc:531
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> a omitir, a comprobación de versión fallou\n"
 
-#: src/cmdline/cmdline_why.cc:547
+#: src/cmdline/cmdline_why.cc:549
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr "    ++   --> A INTRODUCIR NA COLA %s Fornece %s\n"
 
-#: src/cmdline/cmdline_why.cc:675
+#: src/cmdline/cmdline_why.cc:678
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "A iniciar a busca con parámetros %ls\n"
 
-#: src/cmdline/cmdline_why.cc:895
+#: src/cmdline/cmdline_why.cc:898
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "A omitir esta solución, xa apareceu antes.\n"
 
-#: src/cmdline/cmdline_why.cc:970
+#: src/cmdline/cmdline_why.cc:973
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Non se puido atopar un motivo para eliminar %s.\n"
 
-#: src/cmdline/cmdline_why.cc:972
+#: src/cmdline/cmdline_why.cc:975
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Non se puido atopar un motivo para instalar %s.\n"
 
-#: src/cmdline/cmdline_why.cc:1017 src/cmdline/cmdline_why.cc:1043
-#: src/cmdline/cmdline_why.cc:1105
+#: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
+#: src/cmdline/cmdline_why.cc:1108
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Non existe ningún paquete chamado \"%s\"."
 
-#: src/cmdline/cmdline_why.cc:1051
+#: src/cmdline/cmdline_why.cc:1054
 msgid "Unable to parse some match patterns."
 msgstr "Non se puideron analizar algúns patróns de busca."
 
-#: src/cmdline/cmdline_why.cc:1078
+#: src/cmdline/cmdline_why.cc:1081
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""

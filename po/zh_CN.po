@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-07 16:48-0700\n"
+"POT-Creation-Date: 2008-06-21 10:49-0700\n"
 "PO-Revision-Date: 2008-04-18 14:16+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
@@ -628,12 +628,12 @@ msgstr "建议 %F"
 msgid "Unable to find the source package for \"%s\".\n"
 msgstr "无法找到“%s”的源代码包。\n"
 
-#: src/cmdline/cmdline_action.cc:203
+#: src/cmdline/cmdline_action.cc:202
 #, c-format
 msgid "Unable to satisfy the build-depends: %s."
 msgstr "无法满足编译依赖：%s。"
 
-#: src/cmdline/cmdline_action.cc:239
+#: src/cmdline/cmdline_action.cc:238
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -642,7 +642,7 @@ msgstr ""
 "注意：“%s”，提供虚拟软件包\n"
 "      “%s”，并且已经被安装。\n"
 
-#: src/cmdline/cmdline_action.cc:246
+#: src/cmdline/cmdline_action.cc:245
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -651,7 +651,7 @@ msgstr ""
 "注意：“%s”，提供虚拟软件包\n"
 "      “%s”，已经即将被安装。\n"
 
-#: src/cmdline/cmdline_action.cc:268
+#: src/cmdline/cmdline_action.cc:267
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -660,66 +660,66 @@ msgstr ""
 "“%s”存在于软件包数据库中，但是它不是一个真实的软件\n"
 "包，而且没有其它软件包提供该软件包。\n"
 
-#: src/cmdline/cmdline_action.cc:276
+#: src/cmdline/cmdline_action.cc:275
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "“%s”是一个虚拟软件包，提供者：\n"
 
-#: src/cmdline/cmdline_action.cc:279
+#: src/cmdline/cmdline_action.cc:278
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "您必须选择一个来安装。\n"
 
-#: src/cmdline/cmdline_action.cc:287
+#: src/cmdline/cmdline_action.cc:286
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
 "      virtual package \"%s\"\n"
 msgstr "注意：选择“%s”而不是虚拟软件包“%s”\n"
 
-#: src/cmdline/cmdline_action.cc:306
+#: src/cmdline/cmdline_action.cc:305
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s 的 (%s) 版本已经按要求安装了\n"
 
-#: src/cmdline/cmdline_action.cc:312
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s 目前未被安装，所以它不会被重新安装。\n"
 
-#: src/cmdline/cmdline_action.cc:319 src/cmdline/cmdline_action.cc:325
+#: src/cmdline/cmdline_action.cc:318 src/cmdline/cmdline_action.cc:324
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "软件包 %s 并未安装，所以不删除\n"
 
-#: src/cmdline/cmdline_action.cc:343
+#: src/cmdline/cmdline_action.cc:342
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "软件包 %s 并未安装，不能禁止升级\n"
 
-#: src/cmdline/cmdline_action.cc:345
+#: src/cmdline/cmdline_action.cc:344
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "软件包 %s 是不可升级的，不能设为禁止升级\n"
 
-#: src/cmdline/cmdline_action.cc:439
+#: src/cmdline/cmdline_action.cc:438
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "注意：选择软件集“%s：%s”安装\n"
 
-#: src/cmdline/cmdline_action.cc:473
+#: src/cmdline/cmdline_action.cc:472
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
 msgstr "您只能在“install”或“forbid-version”命令中指定一个软件包的版本。\n"
 
-#: src/cmdline/cmdline_action.cc:482
+#: src/cmdline/cmdline_action.cc:481
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "在“安装”命令中您只能指定一个软件包的存档\n"
 
-#: src/cmdline/cmdline_action.cc:519
+#: src/cmdline/cmdline_action.cc:518
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -728,7 +728,7 @@ msgstr ""
 "无法找到软件包“%s”，同时有超过40个软件包名称\n"
 "中包含“%s”。\n"
 
-#: src/cmdline/cmdline_action.cc:522
+#: src/cmdline/cmdline_action.cc:521
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -737,12 +737,12 @@ msgstr ""
 "无法找到软件包“%s”。然而下列软件包名称中\n"
 "包含“%s”。\n"
 
-#: src/cmdline/cmdline_action.cc:544
+#: src/cmdline/cmdline_action.cc:543
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr "无法找到任何名称或者描述中匹配“%s”的软件包\n"
 
-#: src/cmdline/cmdline_action.cc:546
+#: src/cmdline/cmdline_action.cc:545
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -751,7 +751,7 @@ msgstr ""
 "无法找到任何软件包匹配“%s”，同时有超过40个软件包\n"
 "其描述中包含“%s”。\n"
 
-#: src/cmdline/cmdline_action.cc:549
+#: src/cmdline/cmdline_action.cc:548
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -760,7 +760,7 @@ msgstr ""
 "无法找到任何软件包匹配“%s”。然而下列软件包的描述中\n"
 "包含“%s”：\n"
 
-#: src/cmdline/cmdline_action.cc:687
+#: src/cmdline/cmdline_action.cc:686
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "非法的动作字符“%c”\n"
@@ -774,7 +774,7 @@ msgstr "无法执行 sensible-pager，这是一个正常运行的 Debian 系统�
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr "%s 不是官方 Debian 软件包，无法显示其变更日志。"
 
-#: src/cmdline/cmdline_changelog.cc:237
+#: src/cmdline/cmdline_changelog.cc:243
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "无法找到 %s 的变更日志"
@@ -1692,12 +1692,12 @@ msgstr "依赖解决方案不完整(%s)；一些可能的升级也许不会进�
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "无法解决此更新的依赖关系(%s)。"
 
-#: src/cmdline/cmdline_search.cc:124
+#: src/cmdline/cmdline_search.cc:125
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr "用 iconv 转换 %s 失败。\n"
 
-#: src/cmdline/cmdline_search.cc:141
+#: src/cmdline/cmdline_search.cc:142
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr "查找：您必须提供至少一个查找项\n"
@@ -2103,74 +2103,74 @@ msgstr "安装(%s 提供了 %s)"
 msgid "Remove(%s provides %s)"
 msgstr "移除(%s 提供了 %s)"
 
-#: src/cmdline/cmdline_why.cc:417
+#: src/cmdline/cmdline_why.cc:419
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr "    ++ 正在检查 %F\n"
 
-#: src/cmdline/cmdline_why.cc:427
+#: src/cmdline/cmdline_why.cc:429
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr "    ++   --> 跳过，不是冲突\n"
 
-#: src/cmdline/cmdline_why.cc:437
+#: src/cmdline/cmdline_why.cc:439
 msgid "    ++   --> skipping conflict\n"
 msgstr "    ++   --> 跳过冲突\n"
 
-#: src/cmdline/cmdline_why.cc:445
+#: src/cmdline/cmdline_why.cc:447
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr "    ++   --> 跳过，根据参数它不相关\n"
 
-#: src/cmdline/cmdline_why.cc:452
+#: src/cmdline/cmdline_why.cc:454
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> 跳过，父节点不是选定的版本\n"
 
-#: src/cmdline/cmdline_why.cc:492
+#: src/cmdline/cmdline_why.cc:494
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr "    ++   --> 跳过，当前版本已满足依赖\n"
 
-#: src/cmdline/cmdline_why.cc:522
+#: src/cmdline/cmdline_why.cc:524
 msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> 加入队列\n"
 
-#: src/cmdline/cmdline_why.cc:529
+#: src/cmdline/cmdline_why.cc:531
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> 跳过，版本检查失败\n"
 
-#: src/cmdline/cmdline_why.cc:547
+#: src/cmdline/cmdline_why.cc:549
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr "    ++   --> 加入队列 %s 提供了 %s\n"
 
-#: src/cmdline/cmdline_why.cc:675
+#: src/cmdline/cmdline_why.cc:678
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "开始搜索参数 %ls\n"
 
-#: src/cmdline/cmdline_why.cc:895
+#: src/cmdline/cmdline_why.cc:898
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "跳过这个解决方案，我已经看过了。\n"
 
-#: src/cmdline/cmdline_why.cc:970
+#: src/cmdline/cmdline_why.cc:973
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "未能找到理由以移除 %s。\n"
 
-#: src/cmdline/cmdline_why.cc:972
+#: src/cmdline/cmdline_why.cc:975
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "未能找到理由以安装 %s。\n"
 
-#: src/cmdline/cmdline_why.cc:1017 src/cmdline/cmdline_why.cc:1043
-#: src/cmdline/cmdline_why.cc:1105
+#: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
+#: src/cmdline/cmdline_why.cc:1108
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "名称为“%s”的软件包的软件包不存在。"
 
-#: src/cmdline/cmdline_why.cc:1051
+#: src/cmdline/cmdline_why.cc:1054
 msgid "Unable to parse some match patterns."
 msgstr "无法分析某些匹配模式"
 
-#: src/cmdline/cmdline_why.cc:1078
+#: src/cmdline/cmdline_why.cc:1081
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr "%s：这个命令要求至少一个参数(要查询的软件包)。"

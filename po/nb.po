@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_nb\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-07 16:48-0700\n"
+"POT-Creation-Date: 2008-06-21 10:49-0700\n"
 "PO-Revision-Date: 2008-05-15 23:02+0200\n"
 "Last-Translator: Hans Fredrik Nordhaug <hans@nordhaug.priv.no>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
@@ -664,12 +664,12 @@ msgstr "Foreslå %F"
 msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Klarte ikke finne kildepakken for «%s».\n"
 
-#: src/cmdline/cmdline_action.cc:203
+#: src/cmdline/cmdline_action.cc:202
 #, c-format
 msgid "Unable to satisfy the build-depends: %s."
 msgstr "Klarte ikke tilfredsstille byggeavhengighetene: «%s»."
 
-#: src/cmdline/cmdline_action.cc:239
+#: src/cmdline/cmdline_action.cc:238
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -678,7 +678,7 @@ msgstr ""
 "Merk: «%s», tilbyr den virtuelle pakken\n"
 "      «%s», er allerede installert.\n"
 
-#: src/cmdline/cmdline_action.cc:246
+#: src/cmdline/cmdline_action.cc:245
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -687,7 +687,7 @@ msgstr ""
 "Merk: «%s», tilbyr den virtuelle pakken\n"
 "      «%s», står allerede på tur til å bli installert.\n"
 
-#: src/cmdline/cmdline_action.cc:268
+#: src/cmdline/cmdline_action.cc:267
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -696,17 +696,17 @@ msgstr ""
 "«%s» eksisterer i pakkedatabasen, men det er ingen\n"
 "virkelig pakke og ingen pakker trenger den.\n"
 
-#: src/cmdline/cmdline_action.cc:276
+#: src/cmdline/cmdline_action.cc:275
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "«%s» er en virtuell pakke som behøves av:\n"
 
-#: src/cmdline/cmdline_action.cc:279
+#: src/cmdline/cmdline_action.cc:278
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Du må velge en som skal installeres.\n"
 
-#: src/cmdline/cmdline_action.cc:287
+#: src/cmdline/cmdline_action.cc:286
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -715,37 +715,37 @@ msgstr ""
 "Merk: Ved å velge «%s» istedenfor\n"
 "      den virtuelle pakken «%s»\n"
 
-#: src/cmdline/cmdline_action.cc:306
+#: src/cmdline/cmdline_action.cc:305
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s er allerede installert og er av den ønskede versjonen (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:312
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s er ikke installert nå, så den blir ikke re-installert.\n"
 
-#: src/cmdline/cmdline_action.cc:319 src/cmdline/cmdline_action.cc:325
+#: src/cmdline/cmdline_action.cc:318 src/cmdline/cmdline_action.cc:324
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Pakke %s er ikke installert, så den blir ikke fjernet\n"
 
-#: src/cmdline/cmdline_action.cc:343
+#: src/cmdline/cmdline_action.cc:342
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "Pakke %s er ikke installert, kan ikke forby oppgradering\n"
 
-#: src/cmdline/cmdline_action.cc:345
+#: src/cmdline/cmdline_action.cc:344
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "Pakke %s kan ikke oppgraderes, kan ikke forby oppgradering\n"
 
-#: src/cmdline/cmdline_action.cc:439
+#: src/cmdline/cmdline_action.cc:438
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Merk: Velg oppgaven «%s: %s» for installasjon\n"
 
-#: src/cmdline/cmdline_action.cc:473
+#: src/cmdline/cmdline_action.cc:472
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -754,12 +754,12 @@ msgstr ""
 "Du kan bare oppgi en pakkeversjon med en «install»-kommando eller en «forby-"
 "versjon»-kommando.\n"
 
-#: src/cmdline/cmdline_action.cc:482
+#: src/cmdline/cmdline_action.cc:481
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "Du kan bare oppgi et pakkearkiv med en «install»-kommando.\n"
 
-#: src/cmdline/cmdline_action.cc:519
+#: src/cmdline/cmdline_action.cc:518
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -768,7 +768,7 @@ msgstr ""
 "Klarte ikke å finne pakken «%s», og mer enn 40\n"
 "pakker har «%s» i navnet.\n"
 
-#: src/cmdline/cmdline_action.cc:522
+#: src/cmdline/cmdline_action.cc:521
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -777,12 +777,12 @@ msgstr ""
 "Klarte ikke å finne pakken «%s». Men disse pakkene\n"
 "har «%s» i navnet:\n"
 
-#: src/cmdline/cmdline_action.cc:544
+#: src/cmdline/cmdline_action.cc:543
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr "Fant ingen pakke med et navn eller en beskrivelse som passer med «%s»\n"
 
-#: src/cmdline/cmdline_action.cc:546
+#: src/cmdline/cmdline_action.cc:545
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -791,7 +791,7 @@ msgstr ""
 "Fant ingen pakke som passer med «%s», og mer enn 40\n"
 "pakker har «%s» i beskrivelsen.\n"
 
-#: src/cmdline/cmdline_action.cc:549
+#: src/cmdline/cmdline_action.cc:548
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -800,7 +800,7 @@ msgstr ""
 "Fant ingen pakke som passer med «%s». Men disse pakkene\n"
 "har «%s» i beskrivelsen:\n"
 
-#: src/cmdline/cmdline_action.cc:687
+#: src/cmdline/cmdline_action.cc:686
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Feil handlingstegn «%c»\n"
@@ -815,7 +815,7 @@ msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr ""
 "%s er ikke en offisiell Debian-pakke, dens endringslogg kan ikke vises."
 
-#: src/cmdline/cmdline_changelog.cc:237
+#: src/cmdline/cmdline_changelog.cc:243
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Klatre ikke finne en endringslogg for %s"
@@ -1769,12 +1769,12 @@ msgstr ""
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Klarte ikke å løse opp avhengigheter for oppgraderingen (%s)."
 
-#: src/cmdline/cmdline_search.cc:124
+#: src/cmdline/cmdline_search.cc:125
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr "iconv av %s mislyktes.\n"
 
-#: src/cmdline/cmdline_search.cc:141
+#: src/cmdline/cmdline_search.cc:142
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr "søk: Du må oppgi minst ett søkeord\n"
@@ -2185,76 +2185,76 @@ msgstr "Installerer(%s skaffer %s)"
 msgid "Remove(%s provides %s)"
 msgstr "Fjern(%s skaffer %s)"
 
-#: src/cmdline/cmdline_why.cc:417
+#: src/cmdline/cmdline_why.cc:419
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr "    ++ Undersøker %F\n"
 
-#: src/cmdline/cmdline_why.cc:427
+#: src/cmdline/cmdline_why.cc:429
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr "    ++   --> hopper over, ingen konflikt\n"
 
-#: src/cmdline/cmdline_why.cc:437
+#: src/cmdline/cmdline_why.cc:439
 msgid "    ++   --> skipping conflict\n"
 msgstr "    ++   --> hopper over konflikt\n"
 
-#: src/cmdline/cmdline_why.cc:445
+#: src/cmdline/cmdline_why.cc:447
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr "    ++   --> hopper over, ikke relevant i følge parametre\n"
 
-#: src/cmdline/cmdline_why.cc:452
+#: src/cmdline/cmdline_why.cc:454
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> hopper over, forelder er ikke den valgte versjonen\n"
 
-#: src/cmdline/cmdline_why.cc:492
+#: src/cmdline/cmdline_why.cc:494
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr ""
 "    ++   --> hopper over, kravet er tilfredsstilt av den gjeldende "
 "versjonen\n"
 
-#: src/cmdline/cmdline_why.cc:522
+#: src/cmdline/cmdline_why.cc:524
 msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> SETTER INN I KØA\n"
 
-#: src/cmdline/cmdline_why.cc:529
+#: src/cmdline/cmdline_why.cc:531
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> hopper over, versjonssjekk feilet\n"
 
-#: src/cmdline/cmdline_why.cc:547
+#: src/cmdline/cmdline_why.cc:549
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr "    ++   --> SETTER INN I KØA %s tilbyr %s\n"
 
-#: src/cmdline/cmdline_why.cc:675
+#: src/cmdline/cmdline_why.cc:678
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "Starter søk med parametrene %ls\n"
 
-#: src/cmdline/cmdline_why.cc:895
+#: src/cmdline/cmdline_why.cc:898
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Hopper over denne løsningen, jeg har allerede sett den.\n"
 
-#: src/cmdline/cmdline_why.cc:970
+#: src/cmdline/cmdline_why.cc:973
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Klarte ikke finne en grunn til å slette %s.\n"
 
-#: src/cmdline/cmdline_why.cc:972
+#: src/cmdline/cmdline_why.cc:975
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Klarte ikke finne en grunn til å installere %s.\n"
 
-#: src/cmdline/cmdline_why.cc:1017 src/cmdline/cmdline_why.cc:1043
-#: src/cmdline/cmdline_why.cc:1105
+#: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
+#: src/cmdline/cmdline_why.cc:1108
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Ingen pakke kalt «%s» eksisterer."
 
-#: src/cmdline/cmdline_why.cc:1051
+#: src/cmdline/cmdline_why.cc:1054
 msgid "Unable to parse some match patterns."
 msgstr "Klarte ikke å tolke noen treffmønster."
 
-#: src/cmdline/cmdline_why.cc:1078
+#: src/cmdline/cmdline_why.cc:1081
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""
