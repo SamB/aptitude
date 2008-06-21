@@ -5,6 +5,7 @@
 #include "cmdline_search.h"
 
 #include "cmdline_common.h"
+#include "cmdline_util.h"
 
 #include <aptitude.h>
 #include <load_sortpolicy.h>
@@ -210,42 +211,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
 					  *columns,
 					  0);
       if(disable_columns)
-	{
-	  // Instantiate the format string without clipping or
-	  // expanding columns.
-	  //
-	  // TODO: this should move into cwidget in the future, as a new
-	  // mode of operation for layout_columns().
-	  std::wstring output;
-
-	  for(column_definition_list::iterator it = columns->begin();
-	      it != columns->end();
-	      ++it)
-	    {
-	      if(it->type == column_definition::COLUMN_LITERAL)
-		output += it->arg;
-	      else
-		{
-		  eassert(it->type == column_definition::COLUMN_GENERATED ||
-			  it->type == column_definition::COLUMN_PARAM);
-
-		  if(it->type == column_definition::COLUMN_GENERATED)
-		    {
-		      cwidget::column_disposition disp = columnizer.setup_column(it->ival);
-		      output += disp.text;
-		    }
-		  else
-		    {
-		      if(p->param_count() <= it->ival)
-			output += L"###";
-		      else
-			output += p->get_param(it->ival);
-		    }
-		}
-	    }
-
-	  printf("%ls\n", output.c_str());
-	}
+	printf("%ls\n", aptitude::cmdline::de_columnize(*columns, columnizer, *p).c_str());
       else
 	printf("%ls\n",
 	       columnizer.layout_columns(real_width==-1?screen_width:real_width,

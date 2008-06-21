@@ -7,6 +7,9 @@
 
 #include "cmdline_common.h"
 
+// Ew: for column_definition_list.
+#include <cwidget/config/column_definition.h>
+
 // For download_manager::result
 #include <generic/apt/download_manager.h>
 
@@ -199,6 +202,20 @@ namespace aptitude
      *  \param to_purge The packages that the user asked to have purged.
      */
     void apply_user_tags(const std::vector<tag_application> &user_tags);
+
+    /** \brief Render a cwidget column list without columns.
+     *
+     *  Static columns are rendered literally; variant columns are
+     *  rendered with their natural width.
+     *
+     *  \param columns     the column definitions giving the output format
+     *  \param columnizer  a thunk providing values for variant columns
+     *  \param p           any side parameters (e.g., search results) for
+     *                     the columnizer to use
+     */
+    std::wstring de_columnize(const cwidget::config::column_definition_list &columns,
+			      cwidget::config::column_generator &columnizer,
+			      cwidget::config::column_parameters &p);
   }
 }
 

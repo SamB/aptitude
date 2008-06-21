@@ -684,5 +684,44 @@ namespace aptitude
 	    }
 	}
     }
+
+    std::wstring de_columnize(const cwidget::config::column_definition_list &columns,
+			      cwidget::config::column_generator &columnizer,
+			      cwidget::config::column_parameters &p)
+    {
+      using namespace cwidget::config;
+
+      // TODO: this should move into cwidget in the future, as a new
+      // mode of operation for layout_columns().
+      std::wstring output;
+
+      for(column_definition_list::const_iterator it = columns.begin();
+	  it != columns.end();
+	  ++it)
+	{
+	  if(it->type == column_definition::COLUMN_LITERAL)
+	    output += it->arg;
+	  else
+	    {
+	      eassert(it->type == column_definition::COLUMN_GENERATED ||
+		      it->type == column_definition::COLUMN_PARAM);
+
+	      if(it->type == column_definition::COLUMN_GENERATED)
+		{
+		  cwidget::column_disposition disp = columnizer.setup_column(it->ival);
+		  output += disp.text;
+		}
+	      else
+		{
+		  if(p.param_count() <= it->ival)
+		    output += L"###";
+		  else
+		    output += p.get_param(it->ival);
+		}
+	    }
+	}
+
+      return output;
+    }
   }
 }
