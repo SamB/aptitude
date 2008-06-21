@@ -1,3 +1,33 @@
+[6/21/2008]
+Version 0.4.11.5                            "A tisket, a tasket"
+
+- Bug fixes:
+
+  + Crashes and serious errors:
+
+    * aptitude will no longer suggest removing Essential packages to
+      fulfill dependencies unless you explicitly allow it to.  Also,
+      removing apt (if it is allowed) will be scored as if apt were an
+      Essential package, meaning that it should show up last in any
+      list of solutions. (Closes: #486748)
+
+  + Minor bugs:
+
+    * "aptitude add-user-tag" and "aptitude remove-user-tag" will
+      return 0 instead of a random value when they succeed.
+
+  + Translation updates:
+
+    * Dutch (Closes: #486858)
+
+- Internal changes:
+
+  * Consistently build with -Wall -Werror (it wasn't being used in all
+    subdirectories of the code).
+
+  * Clean up various minor and potential bugs turned up by increasing
+    the warning level.
+
 [6/7/2008]
 Version 0.4.11.4                            "Turn down the suck."
 
