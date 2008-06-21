@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ro\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-06-21 10:49-0700\n"
-"PO-Revision-Date: 2008-03-13 14:36+0200\n"
+"PO-Revision-Date: 2008-06-13 23:17+0300\n"
 "Last-Translator: Eddy Petrișor <eddy.petrisor@gmail.com>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -200,50 +200,44 @@ msgstr ""
 "curente la baza ecranului, în loc să folosească o nouă vizualizare."
 
 #: src/apt_options.cc:211
-#, fuzzy
 msgid "Display the information area by default"
-msgstr "Afișează în mod implicit zona de descriere extinsă"
+msgstr "Afișează în mod implicit zona de informare"
 
 #: src/apt_options.cc:212
-#, fuzzy
 msgid ""
 "If this option is enabled, the information area (the pane at the bottom of "
 "the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
-"Dacă se activează această opțiune, zona pentru descrierea lungă (vederea de "
-"la baza ecranului) va fi vizibilă în lista de pachete, atunci când este "
-"pornit programul; altfel, va fi inițial ascuns."
+"Dacă se activează această opțiune, zona de informare (vederea de la baza "
+"ecranului) va fi vizibilă în lista de pachete, atunci când este pornit "
+"programul; altfel, va fi inițial ascuns."
 
 #: src/apt_options.cc:217
-#, fuzzy
 msgid "Display tabs for the available views"
-msgstr "Formatul de afișare pentru vizualizările pachetelor"
+msgstr "Afișează taburi pentru vizualizările disponibile"
 
 #: src/apt_options.cc:218
-#, fuzzy
 msgid ""
 "If this option is enabled, tabs will appear at the top of the screen listing "
 "the currently opened views."
 msgstr ""
-"Dacă se activează această opțiune, aptitude va afișa starea descărcărilor "
-"curente la baza ecranului, în loc să folosească o nouă vizualizare."
+"Dacă se activează această opțiune, se vor afișa taburi în partea de sus a "
+"ecranului, afișând vizualizările deschise."
 
 #: src/apt_options.cc:221
-#, fuzzy
 msgid "Display tabs for the information area"
-msgstr "Afișează mai multe informații despre pachetul selectat"
+msgstr "Afișează taburi pentru zona de informare"
 
 #: src/apt_options.cc:222
-#, fuzzy
 msgid ""
 "If this option is enabled, tabs will appear at the top of the information "
 "area (the pane at the bottom of the screen) listing the different displays "
 "of information that can be viewed there."
 msgstr ""
-"Dacă se activează această opțiune, zona pentru descrierea lungă (vederea de "
-"la baza ecranului) va fi vizibilă în lista de pachete, atunci când este "
-"pornit programul; altfel, va fi inițial ascuns."
+"Dacă se activează această opțiune, vor apărea taburi în partea de sus a "
+"zonei de informare (vederea de la baza ecranului) în care vor fi vizibile "
+"diferitele vizualizări de informații care pot afișate acolo."
 
 #: src/apt_options.cc:227
 msgid "Advance to the next item after changing the state of a package"
@@ -576,6 +570,7 @@ msgstr ""
 #: src/apt_options.cc:393
 msgid "Allow dependency resolutions that break holds or forbids"
 msgstr ""
+"Permite rezolvări de dependențe care ignoră păstrările sau interdicțiile"
 
 #: src/apt_options.cc:394
 msgid ""
@@ -589,6 +584,15 @@ msgid ""
 "the dependencies of a package that has just been selected for installation "
 "or upgrade, due to apt bug #470035."
 msgstr ""
+"Dacă se activează această opțiune, atunci aptitude, oricând rezolvă o "
+"problemă de dependențe, va lua în considerare modificarea pachetelor "
+"păstrate sau instalarea de versiuni interzise ale pachetelor. Dacă se "
+"dezactivează această opțiune, aceste soluții vor fi implicit refuzate.\n"
+"NOTĂ: În prezent, această restricție se aplică situațiilor în care "
+"rezolvatorul lui aptitude (bara roșie de la baza ecranului) este activat. "
+"Totuși, datorită problemei nr.470035 a lui apt, aptitude va ignora păstrarea "
+"atunci când instalează automat dependențele unui pachet care tocmai a fost "
+"selectat să fie instalat sau înnoit."
 
 #: src/apt_options.cc:520
 msgid "UI options"
@@ -646,7 +650,7 @@ msgstr "Eroare internă: soluție nulă neașteptată"
 
 #: src/broken_indicator.cc:366
 msgid "Suggest keeping all packages at their current version."
-msgstr "Sugerează păstrarea tuturor pachetelor la versiunile lor curente."
+msgstr "Sugerează ținerea tuturor pachetelor la versiunile lor curente."
 
 #: src/broken_indicator.cc:374
 #, c-format
@@ -697,14 +701,14 @@ msgid "Suggest %F"
 msgstr "Sugerează %F"
 
 #: src/cmdline/cmdline_action.cc:48
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find the source package for \"%s\".\n"
-msgstr "Nu s-a putut găsi o arhivă „%s” pentru pachetul „%s”\n"
+msgstr "Nu s-a putut găsi pachetul sursă pentru „%s”.\n"
 
 #: src/cmdline/cmdline_action.cc:202
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to satisfy the build-depends: %s."
-msgstr "Nu se pot afișa fișierele din „%s”"
+msgstr "Nu se pot satisface dependențele la compilare: %s."
 
 #: src/cmdline/cmdline_action.cc:238
 #, c-format
@@ -902,10 +906,11 @@ msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Cale argument neașteptat după „keep-all”"
 
 #: src/cmdline/cmdline_do_action.cc:266
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
-msgstr "Nu se pot rezolva dependențele pentru înnoire (%s)."
+msgstr ""
+"Nu se pot rezolva dependențele, încercați să rulați cu --full-resolver.\n"
 
 #: src/cmdline/cmdline_do_action.cc:304 src/cmdline/cmdline_simulate.cc:35
 #: src/cmdline/cmdline_upgrade.cc:163 src/main.cc:711
@@ -943,17 +948,21 @@ msgid ""
 "extract-cache-entries: at least one argument is required (the directory\n"
 "to which to write files).\n"
 msgstr ""
+"extract-cache-entries: este necesar cel puțin un argument (directorul în\n"
+" care să se scrie fișierele).\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:77
 #: src/cmdline/cmdline_user_tag.cc:116
-#, fuzzy, c-format
+#, c-format
 msgid "No such package \"%s\".\n"
-msgstr "Nu există pachetul „%s”"
+msgstr "Nu există pachetul „%s”.\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:115
 #, c-format
 msgid "No packages were selected by the given search pattern; nothing to do.\n"
 msgstr ""
+"Cu șablonul de căutare dat nu s-a selectat nici un pachet; nu-i nimic de "
+"făcut.\n"
 
 #: src/cmdline/cmdline_forget_new.cc:25
 #, c-format
@@ -1015,9 +1024,9 @@ msgstr "Nu s-a putut citi lista de surse"
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "(pentru %s)"
+msgstr[1] "(pentru %s)"
+msgstr[2] "(pentru %s)"
 
 #: src/cmdline/cmdline_prompt.cc:288 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
@@ -1420,14 +1429,14 @@ msgstr "'-' pentru a curăța pachete"
 
 #: src/cmdline/cmdline_prompt.cc:1023 src/cmdline/cmdline_resolver.cc:213
 msgid "'=' to place packages on hold"
-msgstr "'=' pentru a pune pachetele în așteptare"
+msgstr "'=' pentru a păstra pachete"
 
 #: src/cmdline/cmdline_prompt.cc:1025 src/cmdline/cmdline_resolver.cc:215
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
-"':' pentru a ține pachetele în starea lor curentă fără a le marca în "
-"așteptare"
+"':' pentru a ține pachetele în starea lor curentă fără a le marca pentru "
+"păstrare"
 
 #: src/cmdline/cmdline_prompt.cc:1027 src/cmdline/cmdline_resolver.cc:217
 msgid "'&M' to mark packages as automatically installed"
@@ -1439,7 +1448,7 @@ msgstr "'&m'pentru a marca pachetele ca fiind instalate manual"
 
 #: src/cmdline/cmdline_prompt.cc:1031
 msgid "'&BD' to install the build-dependencies of a package."
-msgstr ""
+msgstr "'&BD' pentru instalarea dependențelor de compilare ale unui pachet."
 
 #: src/cmdline/cmdline_prompt.cc:1035
 msgid "Commands:"
@@ -1558,21 +1567,21 @@ msgid "Resolver state successfully written!"
 msgstr "Scrierea starii rezolvatorului a reușit!"
 
 #: src/cmdline/cmdline_resolver.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
-"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
-"n<ACȚIUNE> pkg... : %F%n%F%F%F%F%F%F%F%F"
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pac ver ...: %F%na pac ver ...: %F%"
+"n<ACȚIUNE> pac... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:182
 msgid "accept the proposed changes"
-msgstr "acceptă modificărilor propuse"
+msgstr "acceptă modificările propuse"
 
 #: src/cmdline/cmdline_resolver.cc:184
 msgid "reject the proposed changes and search for another solution"
-msgstr "respinge modificările propuse și căută o soluție alternativă"
+msgstr "refuză modificările propuse și căută o soluție alternativă"
 
 #: src/cmdline/cmdline_resolver.cc:186
 msgid "give up and quit the program"
@@ -1597,31 +1606,27 @@ msgid "examine the solution in the visual user interface"
 msgstr "examinează soluția în interfața vizuală"
 
 #: src/cmdline/cmdline_resolver.cc:196
-#, fuzzy
 msgid ""
 "abort automatic dependency resolution; resolve dependencies by hand instead"
 msgstr ""
-"rulează rezolvatorul automat de dependențe pentru a repara dependențele "
-"corupte."
+"abandonează rezolvatorul automat de dependențe; rezolvă manual dependențele"
 
 #: src/cmdline/cmdline_resolver.cc:198
-#, fuzzy
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur.  Enter UNINST instead of a version to reject removing the package."
 msgstr ""
-"respinge versiunile date ale pachetelor; nu se afișează nici o soluție în "
-"care ele apar."
+"refuză versiunile date ale pachetelor; nu se afișează nici o soluție în care "
+"apar. UNINST, în loc de o versiune, refuză ștergerea pachetului."
 
 #. ForTranslators: "(;" is ...???? A smiley?
 #: src/cmdline/cmdline_resolver.cc:201
-#, fuzzy
 msgid ""
 "accept the given package versions (; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package."
 msgstr ""
 "acceptă versiunile date ale pachetelor; afișează doar soluțiile în care ele "
-"apar."
+"apar. UNINST, în loc de o versiune, acceptă ștergerea pachetului."
 
 #: src/cmdline/cmdline_resolver.cc:203
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -1755,6 +1760,8 @@ msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr ""
+"Se abandonează rezolvarea automată a dependențelor și se revine la "
+"rezolvarea manuală."
 
 #: src/cmdline/cmdline_resolver.cc:693
 msgid "The following commands are available:"
@@ -1799,14 +1806,15 @@ msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
+"Timpul acordat rezolvatorului după producerea unei soluții; se poate ca "
+"unele înnoiri posibile să nu se efectuate."
 
 #: src/cmdline/cmdline_resolver.cc:971
-#, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
-"Nu se pot rezolva dependențele pentru actualizare (rezolvatorul nu a "
-"terminat la timp)."
+"Nu se pot rezolva dependențele pentru înnoire (rezolvatorul nu a terminat în "
+"timp util)."
 
 #: src/cmdline/cmdline_resolver.cc:985
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
@@ -1820,6 +1828,8 @@ msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
+"Rezolvare incompletă a dependențelor (%s); se poate ca unele înnoiri "
+"posibile să nu fie efectuate."
 
 #: src/cmdline/cmdline_resolver.cc:1000
 #, c-format
@@ -2098,19 +2108,20 @@ msgid "E: The %s command takes no arguments\n"
 msgstr "E: Comanda „%s” nu are argumente\n"
 
 #: src/cmdline/cmdline_user_tag.cc:52
-#, fuzzy, c-format
+#, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
-msgstr "Nu s-a putut găsi o versiune „%s” pentru pachetul „%s”\n"
+msgstr "Se adaugă eticheta de utilizator „%s” pachetului „%s”.\n"
 
 #: src/cmdline/cmdline_user_tag.cc:59
-#, fuzzy, c-format
+#, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
-msgstr "Nu s-a putut găsi o versiune „%s” pentru pachetul „%s”\n"
+msgstr "Se șterge eticheta de utilizator „%s” pachetului „%s”.\n"
 
 #: src/cmdline/cmdline_user_tag.cc:89
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
 msgstr ""
+"%s: prea puține argumente; se aștepta cel puțin o etichetă și un pachet.\n"
 
 #: src/cmdline/cmdline_util.cc:131
 #, c-format
@@ -2169,23 +2180,23 @@ msgstr[2] "%d noi [%+d]"
 #: src/cmdline/cmdline_util.cc:331
 #, c-format
 msgid "Current status: %F."
-msgstr ""
+msgstr "Starea curentă: %F."
 
 #: src/cmdline/cmdline_util.cc:342
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Există %d nou pachet învechit."
+msgstr[1] "Există %d noi pachete învechite."
+msgstr[2] "Există %d de noi pachete învechite."
 
 #: src/cmdline/cmdline_util.cc:354
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Există %d nou pachet învechit: "
+msgstr[1] "Există %d noi pachete învechite: "
+msgstr[2] "Există %d de noi pachete învechite: "
 
 #: src/cmdline/cmdline_why.cc:252
 msgid "dep_level"
@@ -2201,20 +2212,19 @@ msgstr "select_versiune"
 
 #: src/cmdline/cmdline_why.cc:277
 msgid "Current"
-msgstr "Curent"
+msgstr "Curentă"
 
 #: src/cmdline/cmdline_why.cc:280
 msgid "Candidate"
-msgstr "Candidat"
+msgstr "Candidată"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
 msgid "Install"
 msgstr "Instalare"
 
 #: src/cmdline/cmdline_why.cc:286
-#, fuzzy
 msgid "InstallNotCurrent"
-msgstr "Instalat"
+msgstr "InstalareNuCeaCurentă"
 
 #: src/cmdline/cmdline_why.cc:294
 msgid "allow_choices"
@@ -2270,9 +2280,9 @@ msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> se omite, părintele nu este versiunea selectată\n"
 
 #: src/cmdline/cmdline_why.cc:494
-#, fuzzy
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
-msgstr "    ++   --> se omite, părintele nu este versiunea selectată\n"
+msgstr ""
+"    ++   --> se omite, dependența este satisfăcută de versiunea curentă\n"
 
 #: src/cmdline/cmdline_why.cc:524
 msgid "    ++   --> ENQUEUING\n"
@@ -2297,14 +2307,14 @@ msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Se omite această soluție, s-a mai vazut.\n"
 
 #: src/cmdline/cmdline_why.cc:973
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to remove %s.\n"
-msgstr "Nu se poate găsi o soluție de aplicat."
+msgstr "Nu se poate găsi un motiv pentru ștergerea lui %s.\n"
 
 #: src/cmdline/cmdline_why.cc:975
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to install %s.\n"
-msgstr "Nu se poate găsi o soluție de aplicat."
+msgstr "Nu se poate găsi o un motiv pentru instalarea lui %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
 #: src/cmdline/cmdline_why.cc:1108
@@ -2336,9 +2346,8 @@ msgid "Tags"
 msgstr "Etichete"
 
 #: src/desc_parse.cc:334
-#, fuzzy
 msgid "User Tags"
-msgstr "Etichete"
+msgstr "Etichete de utilizator"
 
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
@@ -2463,11 +2472,13 @@ msgid ""
 "Error parsing a user-tag for the package %s: unexpected end-of-line "
 "following %s."
 msgstr ""
+"Eroare în timpul analizei unei etichete de utilizator pentru pachetul %s: "
+"sfârșit de linie neașteptat după %s."
 
 #: src/generic/apt/aptcache.cc:283
-#, fuzzy, c-format
+#, c-format
 msgid "Unterminated '\"' in the user-tags list of the package %s."
-msgstr "Șir literal neterminat după %s"
+msgstr "„\"” neterminat în lista de etichete de utilizator a pachetului %s."
 
 #: src/generic/apt/aptcache.cc:387
 msgid "Can't open Aptitude extended state file"
@@ -2652,41 +2663,41 @@ msgstr "(fișierul core a fost scris)"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #: src/generic/apt/download_update_manager.cc:355
-#, fuzzy, c-format
+#, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr ""
-"Procesul de actualizare al lui debtags (%s %s) a fost terminat de semnalul %d"
-"%s."
+"Procesul de actualizare al lui debtags (%s update %s) a fost omorât de "
+"semnalul %d%s."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #. PS: indentation sucks!
 #. PS2: Daniel, please unfuzzy such translations (added "update") yourself!
 #: src/generic/apt/download_update_manager.cc:365
-#, fuzzy, c-format
+#, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
-"Procesul de actualizare al lui debtags (%s %s) a ieșit în mod anormal (cod %"
-"s)."
+"Procesul de actualizare al lui debtags (%s update %s) a ieșit în mod anormal "
+"(cod %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #: src/generic/apt/download_update_manager.cc:372
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
 "(status %d)."
 msgstr ""
-"Procesul de actualizare al lui debtags (%s %s) a ieșit într-un mod "
-"neașteptat (stare %s)."
+"Procesul de actualizare al lui debtags (%s update %s) a ieșit într-un mod "
+"neașteptat (stare %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #: src/generic/apt/download_update_manager.cc:378
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
 "installed?): %s"
 msgstr ""
-"Actualizarea bazei de date debtags (%s %s) a eșuat (poate debtags nu este "
-"instalat?): %s"
+"Actualizarea bazei de date debtags (%s update %s) a eșuat (poate că debtags "
+"nu este instalat?): %s"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
 #, c-format
@@ -3312,71 +3323,61 @@ msgid "Compiler: g++ %s\n"
 msgstr "Compilator: g++ %s\n"
 
 #: src/main.cc:111
-#, fuzzy
 msgid "Compiled against:\n"
-msgstr "Compilator: g++ %s\n"
+msgstr "Compilat cu:\n"
 
 #: src/main.cc:112
-#, fuzzy, c-format
+#, c-format
 msgid "  apt version %d.%d.%d\n"
-msgstr "Se păstrează %F la versiunea %s (%s)"
+msgstr "  apt, versiunea %d.%d.%d\n"
 
 #: src/main.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: Unknown\n"
-msgstr ""
-"\n"
-"Versiune NCurses: %s\n"
+msgstr "  NCurses, versiunea: necunoscută\n"
 
 #: src/main.cc:117
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version %s\n"
-msgstr ""
-"\n"
-"Versiune NCurses: %s\n"
+msgstr "  NCurses, versiunea: %s\n"
 
 #: src/main.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "  libsigc++ version: %s\n"
-msgstr "Versiune libsigc++: %s\n"
+msgstr "  libsigc++, versiunea: %s\n"
 
 #: src/main.cc:121
-#, fuzzy, c-format
+#, c-format
 msgid "  Ept support enabled.\n"
-msgstr "Suportul pentru ept este activat.\n"
+msgstr "  Suportul pentru ept este activat.\n"
 
 #: src/main.cc:123
-#, fuzzy, c-format
+#, c-format
 msgid "  Ept support disabled.\n"
-msgstr "Suportul pentru ept este dezactivat.\n"
+msgstr "  Suportul pentru ept este dezactivat.\n"
 
 #: src/main.cc:126
-#, fuzzy
 msgid ""
 "\n"
 "Current library versions:\n"
 msgstr ""
 "\n"
-"Versiune Curses: %s\n"
+"Versiunile curente ale bibliotecilor:\n"
 
 #: src/main.cc:127
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: %s\n"
-msgstr ""
-"\n"
-"Versiune NCurses: %s\n"
+msgstr "  NCurses, versiunea: %s\n"
 
 #: src/main.cc:128
-#, fuzzy, c-format
+#, c-format
 msgid "  cwidget version: %s\n"
-msgstr "Versiune libsigc++: %s\n"
+msgstr "  cwidget, versiunea: %s\n"
 
 #: src/main.cc:129
-#, fuzzy, c-format
+#, c-format
 msgid "  Apt version: %s\n"
-msgstr ""
-"\n"
-"Versiune Curses: %s\n"
+msgstr "  Apt, versiunea: %s\n"
 
 #: src/main.cc:135
 #, c-format
@@ -3416,12 +3417,12 @@ msgstr " purge        - Curăță pachetele și fișierele lor de configurare\n"
 #: src/main.cc:143
 #, c-format
 msgid " hold         - Place packages on hold\n"
-msgstr " hold         - Pune pachetele în așteptare\n"
+msgstr " hold         - Pune pachetele în starea „păstrează”\n"
 
 #: src/main.cc:144
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
-msgstr " unhold       - Anulează comanda de reținere pentru un pachet\n"
+msgstr " unhold       - Anulează comanda de păstrare pentru un pachet\n"
 
 #: src/main.cc:145
 #, c-format
@@ -3505,12 +3506,14 @@ msgstr ""
 "curent\n"
 
 #: src/main.cc:159
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package\n"
-msgstr " -Z\t\tArată modificarea în dimensiune a fiecărui pachet instalat.\n"
+msgstr ""
+" why          - Arată pachetele instalate manual care „cer” un pachet, sau\n"
+"                de ce unul sau mai multe pachete ar „cere” pachetul dat\n"
 
 #: src/main.cc:161
 #, c-format
@@ -3520,6 +3523,12 @@ msgid ""
 "                with the given package, or why one or more packages would\n"
 "                lead to a conflict with the given package if installed\n"
 msgstr ""
+" why-not      - Arată pachetele instalate manual care duc la un ead to a "
+"conflict\n"
+"      cu thehetul dat, sau de ce unul sau mai multe whyhete ar\n"
+"                duce lldun \n"
+"      cu    hetul dat, dacă e       atad to a conflict with the given "
+"package if installed\n"
 
 #: src/main.cc:165
 #, c-format
@@ -3619,13 +3628,13 @@ msgstr ""
 " -t [producție] Impune producția din care pachetele ar trebui instalate\n"
 
 #: src/main.cc:180
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
 msgstr ""
-" -q             În modul linie de comandă, inhibați indicatoarele de "
-"evoluție incrementală.\n"
+" -q             În modul linie de comandă, inhibă indicatoarele de progres\n"
+"                incrementale.\n"
 
 #: src/main.cc:182
 #, c-format
@@ -3676,14 +3685,15 @@ msgid "Expected a number after -q=, got %s\n"
 msgstr "Așteptat un număr după -q=, primit %s\n"
 
 #: src/main.cc:408
-#, fuzzy, c-format
+#, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
-msgstr "-o necesită un argument de forma key=valoare, primit %s"
+msgstr "-o necesită un argument de forma cheie=valoare, s-a primit %s\n"
 
 #: src/main.cc:500
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr ""
+"Nici o virgulă după numele de etichtă „os” following tag name \"%s\".\n"
 
 #: src/main.cc:531 src/main.cc:540
 msgid "WEIRDNESS: unknown option code received\n"
@@ -3710,6 +3720,8 @@ msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
 "for %s, which always uses the safe resolver.\n"
 msgstr ""
+"Opțiunile --safe-resolver și --full-resolver nu au sens pentru\n"
+"%s, care folosește mereu revolvatorul sigur.\n"
 
 #: src/main.cc:704
 #, c-format
@@ -3722,13 +3734,13 @@ msgid "Uncaught exception: %s\n"
 msgstr "Excepție nedetectată: %s\n"
 
 #: src/main.cc:720 src/main.cc:769
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Backtrace:\n"
 "%s\n"
 msgstr ""
 "Stiva de apeluri:\n"
-"%s"
+"%s\n"
 
 #: src/menu_text_layout.cc:43 src/menu_tree.cc:220 src/view_changelog.cc:60
 msgid "Search for: "
@@ -4072,7 +4084,7 @@ msgstr "EROARE"
 
 #: src/pkg_columnizer.cc:312 src/pkg_ver_item.cc:298
 msgid "hold"
-msgstr "ține"
+msgstr "păstrează"
 
 #: src/pkg_columnizer.cc:315
 msgid "forbidden upgrade"
@@ -4352,7 +4364,7 @@ msgid ""
 "their current version."
 msgstr ""
 "Pachete ținute\n"
-" Aceste pachete ar putea fi înnoite, dat ați cerut să fie ținute în "
+" Aceste pachete ar putea fi înnoite, dat ați cerut să fie ținute la "
 "versiunea lor actuală."
 
 #: src/pkg_grouppolicy.cc:640
@@ -4503,9 +4515,9 @@ msgid "Packages which depend on %s"
 msgstr "Pachete ce depind de %s"
 
 #: src/pkg_info_screen.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid "Versions of %s"
-msgstr "Versiuni"
+msgstr "Versiunile lui %s"
 
 #: src/pkg_item.cc:61
 msgid "Yes, I am aware this is a very bad idea"
@@ -4596,9 +4608,9 @@ msgstr "Editor de ierarhie"
 #, c-format
 msgid "This group contains %d package."
 msgid_plural "This group contains %d packages."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Acest grup conține %d pachet."
+msgstr[1] "Acest grup conține %d pachete."
+msgstr[2] "Acest grup conține %d de pachete."
 
 #: src/pkg_tree.cc:175
 msgid "All Packages"
@@ -4634,13 +4646,12 @@ msgid "Couldn't parse column definition"
 msgstr "Nu s-a putut analiza definiția coloanei"
 
 #: src/pkg_view.cc:223
-#, fuzzy
 msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
 msgstr ""
-"Dacă alegeți un pachet, o explicație a stării curente va apărea în acest "
-"spațiu."
+"Dacă alegeți un pachet, în acest spațiu va apărea o explicație a motivului "
+"pentru care acesta ar trebui să fie instalat sau șters."
 
 #: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
@@ -4654,14 +4665,12 @@ msgstr ""
 "articol static"
 
 #: src/pkg_view.cc:678
-#, fuzzy
 msgid "Related Dependencies"
-msgstr "Rezolvare Dependențe"
+msgstr "Dependențe conexe"
 
 #: src/pkg_view.cc:681
-#, fuzzy
 msgid "Why Installed"
-msgstr "Instalat"
+msgstr "De ce instalat"
 
 #: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
@@ -5198,15 +5207,14 @@ msgid "Recommendations"
 msgstr "Recomandări"
 
 #: src/ui.cc:970
-#, fuzzy
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
 "is free software, and you are welcome to redistribute it under certain "
 "conditions; see 'license' for details."
 msgstr ""
-"Aptitude %s%n%nCopyright 2000 Daniel Burrows.%n%naptitude nu are %BNICI UN "
-"FEL DE GARANȚIE%b; pentru detalii vedeți 'licența' în meniul de ajutor.  "
+"Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude nu are %BNICI "
+"UN FEL DE GARANȚIE%b; pentru detalii vedeți „Licența” în meniul „Ajutor”.  "
 "Acesta este program liber, și sunteți binevenit să-l redistribuiți în "
 "anumite condiții; vedeți 'licența' pentru detalii."
 
@@ -5528,8 +5536,8 @@ msgstr "^Marchează ce se poate înnoi"
 #: src/ui.cc:2099
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr ""
-"Marchează toate pachetele ce ar putea fi înnoite care nu sunt reținute "
-"pentru înnoire"
+"Marchează toate pachetele ce ar putea fi înnoite care nu sunt ținute la "
+"înnoire"
 
 #: src/ui.cc:2103
 msgid "^Forget new packages"
@@ -5546,7 +5554,7 @@ msgstr "A^nularea acțiunilor în desfășurare"
 #: src/ui.cc:2108
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr ""
-"Anulează toate instalările, ștergerile, reținerile și înoirile în curs."
+"Anulează toate instalările, ștergerile, păstrările și înoirile în curs."
 
 #: src/ui.cc:2111
 msgid "^Clean package cache"
@@ -5641,7 +5649,7 @@ msgstr "Anulează orice acțiune pentru pachetul selectat"
 
 #: src/ui.cc:2167
 msgid "^Hold"
-msgstr "^Reține"
+msgstr "^Păstrează"
 
 #: src/ui.cc:2168
 msgid ""
@@ -5697,7 +5705,7 @@ msgstr "Afișează mai multe informații despre pachetul selectat"
 
 #: src/ui.cc:2188
 msgid "C^ycle Package Information"
-msgstr ""
+msgstr "Ciclează informațiile despre pachet"
 
 #: src/ui.cc:2189
 msgid ""
@@ -5705,6 +5713,9 @@ msgid ""
 "package's long description, a summary of its dependency status, or an "
 "analysis of why the package is required."
 msgstr ""
+"Ciclează prin modurile zonei de informare: poate afișa descrierea lungă a "
+"pachetului, un sumar a stării dependențelor lui sau o analiză a motivului "
+"pentru care pachetul e „cerut”."
 
 #: src/ui.cc:2192
 msgid "^Changelog"
@@ -5791,13 +5802,15 @@ msgstr "Vizualizarea pachetului care va fi afectat de acțiunea selectată"
 
 #: src/ui.cc:2244
 msgid "Reject Breaking ^Holds"
-msgstr ""
+msgstr "Refuză ^ignorarea păstrărilor"
 
 #: src/ui.cc:2246
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
 msgstr ""
+"Refuză toate acținile care ar schimba starea pachetelor păstrate sau care ar "
+"instala versiuni interzise"
 
 #: src/ui.cc:2254
 msgid "^Find"
@@ -5994,9 +6007,8 @@ msgid "^News"
 msgstr "^Noutăți"
 
 #: src/ui.cc:2377
-#, fuzzy
 msgid "View the important changes made in each version of "
-msgstr "Afișează schimbările importante făcute în fiecare versiune a lui %s"
+msgstr "Afișează schimbările importante făcute în fiecare versiune a lui "
 
 #: src/ui.cc:2380
 msgid "^License"
@@ -6735,3 +6747,7 @@ msgstr "Descărcare registru de modificări"
 
 #~ msgid "view an explanation of the changes in the solution"
 #~ msgstr "vizualizare în soluție o detaliere a modificărilor"
+
+#~ msgid "Don't warn about the obsolete \"Recommends-Important\" option."
+#~ msgstr ""
+#~ "Nu avertiza în legătură cu opțiunea învechită „Recommends-Important”."
