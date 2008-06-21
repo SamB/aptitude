@@ -45,6 +45,11 @@ string StdinEOFException::errmsg() const
 struct fetchinfo
 {
   double FetchBytes, FetchPBytes, DebBytes;
+
+  fetchinfo()
+    : FetchBytes(0), FetchPBytes(0), DebBytes(0)
+  {
+  }
 };
 
 static bool pkg_byname_compare(const pkgCache::PkgIterator &a, const pkgCache::PkgIterator &b)

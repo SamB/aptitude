@@ -107,7 +107,7 @@ namespace
 		    pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(it2->Package);
 		    if(!pkg.end())
 		      {
-			int best_priority;
+			int best_priority = -1;
 			pkgCache::VerIterator best_ver;
 			for(pkgCache::VerIterator ver = pkg.VersionList();
 			    !ver.end(); ++ver)
