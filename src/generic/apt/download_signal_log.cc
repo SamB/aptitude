@@ -1,6 +1,6 @@
 // download_signal_log.cc
 //
-//   Copyright (C) 2001, 2005 Daniel Burrows
+//   Copyright (C) 2001, 2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -18,8 +18,6 @@
 //   Boston, MA 02111-1307, USA.
 
 #include "download_signal_log.h"
-
-#include <cwidget/widgets/widget.h>
 
 #include <sigc++/adaptors/bind.h>
 
