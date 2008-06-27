@@ -236,7 +236,7 @@ static pkgCache::VerIterator choose_version(const vector<pkgCache::VerIterator> 
 
   for(vector<pkgCache::VerIterator>::size_type i = 0;
       i < choices.size(); ++i)
-    cout << ssprintf(" (%d) %s", i+1, archives_text(choices[i]).c_str()) << endl;
+    cout << ssprintf(" (%d) %s", (int)(i+1), archives_text(choices[i]).c_str()) << endl;
 
   while(1)
     {
