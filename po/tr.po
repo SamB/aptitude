@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-21 10:49-0700\n"
+"POT-Creation-Date: 2008-06-21 11:47-0700\n"
 "PO-Revision-Date: 2006-10-18 02:07+0300\n"
 "Last-Translator: Erçin EKER <ercin.eker@linux.org.tr>\n"
 "Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -872,118 +872,118 @@ msgstr "Bu da ne? Yılan tarafından yenen bir fil tabii ki.\n"
 msgid "Unexpected end-of-file on standard input"
 msgstr "Standart girdide beklenmeyen dosya sonu"
 
-#: src/cmdline/cmdline_prompt.cc:61
+#: src/cmdline/cmdline_prompt.cc:66
 msgid "Couldn't read list of sources"
 msgstr "Kaynak listesi okunamıyor"
 
 #. ForTranslators: %s is replaced with a comma-delimited list
 #. of package names.
-#: src/cmdline/cmdline_prompt.cc:213
+#: src/cmdline/cmdline_prompt.cc:218
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
 msgstr[0] ""
 
-#: src/cmdline/cmdline_prompt.cc:288 src/cmdline/cmdline_show.cc:435
+#: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
 msgid "Provides"
 msgstr "Sağladığı"
 
-#: src/cmdline/cmdline_prompt.cc:421
+#: src/cmdline/cmdline_prompt.cc:426
 #, fuzzy
 msgid "Config files"
 msgstr "yapılandırma dosyaları"
 
-#: src/cmdline/cmdline_prompt.cc:525 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:530 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "fakat %s kurulacak."
 
-#: src/cmdline/cmdline_prompt.cc:528 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:533 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "fakat %s kurulu ve tutulacak."
 
-#: src/cmdline/cmdline_prompt.cc:531 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:536 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "fakat %s kurulu."
 
-#: src/cmdline/cmdline_prompt.cc:535 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:540 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "fakat kurulabilir değil"
 
-#: src/cmdline/cmdline_prompt.cc:539 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:544 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " sanal bir paket."
 
-#: src/cmdline/cmdline_prompt.cc:542 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:547 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " ya da"
 
-#: src/cmdline/cmdline_prompt.cc:556
+#: src/cmdline/cmdline_prompt.cc:561
 msgid "The following packages are BROKEN:"
 msgstr "Aşağıdaki paketler BOZUK:"
 
-#: src/cmdline/cmdline_prompt.cc:557
+#: src/cmdline/cmdline_prompt.cc:562
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Aşağıdaki paketler kullanılmıyor ve KALDIRILACAK:"
 
-#: src/cmdline/cmdline_prompt.cc:558
+#: src/cmdline/cmdline_prompt.cc:563
 msgid "The following packages have been automatically kept back:"
 msgstr "Aşağıdaki paketler otomatik olarak korunacak:"
 
-#: src/cmdline/cmdline_prompt.cc:559
+#: src/cmdline/cmdline_prompt.cc:564
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Aşağıdaki YENİ paketler otomatik olarak kurulacak:"
 
-#: src/cmdline/cmdline_prompt.cc:560
+#: src/cmdline/cmdline_prompt.cc:565
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Aşağıdaki paketler otomatik olarak KALDIRILACAK:"
 
-#: src/cmdline/cmdline_prompt.cc:561
+#: src/cmdline/cmdline_prompt.cc:566
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Aşağıdaki paketlerin ÖNCEKİ SÜRÜMLERİ yüklenecek:  "
 
-#: src/cmdline/cmdline_prompt.cc:562
+#: src/cmdline/cmdline_prompt.cc:567
 msgid "The following packages have been kept back:"
 msgstr "Aşağıdaki paketler otomatik olarak korundu:"
 
-#: src/cmdline/cmdline_prompt.cc:563
+#: src/cmdline/cmdline_prompt.cc:568
 msgid "The following packages will be REINSTALLED:"
 msgstr "Aşağıdaki paketler otomatik olarak YENİDEN KURULDU:"
 
-#: src/cmdline/cmdline_prompt.cc:564
+#: src/cmdline/cmdline_prompt.cc:569
 msgid "The following NEW packages will be installed:"
 msgstr "Aşağıdaki YENİ paketler otomatik olarak kurulacak:"
 
-#: src/cmdline/cmdline_prompt.cc:565
+#: src/cmdline/cmdline_prompt.cc:570
 msgid "The following packages will be REMOVED:"
 msgstr "Aşağıdaki paketler KALDIRILACAK:"
 
-#: src/cmdline/cmdline_prompt.cc:566
+#: src/cmdline/cmdline_prompt.cc:571
 msgid "The following packages will be upgraded:"
 msgstr "Aşağıdaki paketler yükseltilecek:"
 
-#: src/cmdline/cmdline_prompt.cc:567
+#: src/cmdline/cmdline_prompt.cc:572
 #, fuzzy
 msgid "The following partially installed packages will be configured:"
 msgstr "Aşağıdaki paketler yükseltilecek:"
 
-#: src/cmdline/cmdline_prompt.cc:622
+#: src/cmdline/cmdline_prompt.cc:627
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Aşağıdaki TEMEL paketler KALDIRILACAK!\n"
 
-#: src/cmdline/cmdline_prompt.cc:631
+#: src/cmdline/cmdline_prompt.cc:636
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "Bu işlem aşağıdaki TEMEL paketleri BOZACAK:\n"
 
-#: src/cmdline/cmdline_prompt.cc:641
+#: src/cmdline/cmdline_prompt.cc:646
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -992,16 +992,16 @@ msgstr ""
 "UYARI: Bu işlemi gerçekleştirmek sisteminize zarar verebilir!\n"
 "       TAM OLARAK ne yaptığınızdan emin olmadan DEVAM ETMEYİN!\n"
 
-#: src/cmdline/cmdline_prompt.cc:643
+#: src/cmdline/cmdline_prompt.cc:648
 msgid "I am aware that this is a very bad idea"
 msgstr "Bunun kötü bir fikir olduğunun farkındayım"
 
-#: src/cmdline/cmdline_prompt.cc:646
+#: src/cmdline/cmdline_prompt.cc:651
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Devam etmek için, \"%s\" ifadesini girin :\n"
 
-#: src/cmdline/cmdline_prompt.cc:688
+#: src/cmdline/cmdline_prompt.cc:693
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1018,7 +1018,7 @@ msgstr ""
 "devam etmelisiniz.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:700
+#: src/cmdline/cmdline_prompt.cc:705
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1028,7 +1028,7 @@ msgstr ""
 "                  %s::CmdLine::Ignore-Trust-Violations 'true' olarak "
 "ayarlanmış!\n"
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:714
 #, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1038,137 +1038,137 @@ msgstr ""
 "                  %s::CmdLine::Ignore-Trust-Violations 'true' olarak "
 "ayarlanmış!\n"
 
-#: src/cmdline/cmdline_prompt.cc:715
+#: src/cmdline/cmdline_prompt.cc:720
 msgid "Yes"
 msgstr "Evet"
 
-#: src/cmdline/cmdline_prompt.cc:715
+#: src/cmdline/cmdline_prompt.cc:720
 msgid "No"
 msgstr "Hayır"
 
-#: src/cmdline/cmdline_prompt.cc:719
+#: src/cmdline/cmdline_prompt.cc:724
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Bu uyarıyı göz ardı ederek yine de devam etmek ister misiniz?\n"
 
-#: src/cmdline/cmdline_prompt.cc:720
+#: src/cmdline/cmdline_prompt.cc:725
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "Devam etmek için \"%s\"; çıkmak için \"%s\" girin: "
 
-#: src/cmdline/cmdline_prompt.cc:734
+#: src/cmdline/cmdline_prompt.cc:739
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Tanınmayan girdi.  Ya \"%s\" ya da \"%s\" girin.\n"
 
-#: src/cmdline/cmdline_prompt.cc:849
+#: src/cmdline/cmdline_prompt.cc:854
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Aşağıdaki paketlerin kurulması ÖNERİLDİ, fakat KURULMAYACAK:\n"
 
-#: src/cmdline/cmdline_prompt.cc:855
+#: src/cmdline/cmdline_prompt.cc:860
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Aşağıdaki paketlerin kurulması TEKLİF EDİLDİ, fakat kurulmayacak:\n"
 
-#: src/cmdline/cmdline_prompt.cc:860
+#: src/cmdline/cmdline_prompt.cc:865
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Hiçbir paket kurulmayacak, yükseltilmeyecek ya da kaldırılmayacak.\n"
 
-#: src/cmdline/cmdline_prompt.cc:862
+#: src/cmdline/cmdline_prompt.cc:867
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu paket yükseltildi, %lu yeni kuruldu, "
 
-#: src/cmdline/cmdline_prompt.cc:866
+#: src/cmdline/cmdline_prompt.cc:871
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu yeniden kuruldu, "
 
-#: src/cmdline/cmdline_prompt.cc:868
+#: src/cmdline/cmdline_prompt.cc:873
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu eski sürümü yüklendi,"
 
-#: src/cmdline/cmdline_prompt.cc:870
+#: src/cmdline/cmdline_prompt.cc:875
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu kaldırıldı, %lu yükseltilmedi.\n"
 
-#: src/cmdline/cmdline_prompt.cc:877
+#: src/cmdline/cmdline_prompt.cc:882
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Arşivden %sB/%sB alınacak."
 
-#: src/cmdline/cmdline_prompt.cc:880
+#: src/cmdline/cmdline_prompt.cc:885
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Arşivlerden %sB veri alınacak."
 
-#: src/cmdline/cmdline_prompt.cc:887
+#: src/cmdline/cmdline_prompt.cc:892
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Paketler açıldıktan sonra %sB yer kullanılacak.\n"
 
-#: src/cmdline/cmdline_prompt.cc:890
+#: src/cmdline/cmdline_prompt.cc:895
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Paketler açıldıktan sonra %sB serbest kalacak.\n"
 
-#: src/cmdline/cmdline_prompt.cc:911
+#: src/cmdline/cmdline_prompt.cc:916
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr ""
 "Gösterilecek paket yok -- 'i'ye bastıktan sonra çıkan satıra paket "
 "isimlerini girin.\n"
 
-#: src/cmdline/cmdline_prompt.cc:917
+#: src/cmdline/cmdline_prompt.cc:922
 msgid "Press Return to continue."
 msgstr "Devam etmek için Enter tuşuna basın."
 
-#: src/cmdline/cmdline_prompt.cc:928
+#: src/cmdline/cmdline_prompt.cc:933
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr ""
 "Paket bulunamadı -- 'c'ye bastıktan sonra çıkan satıra paket isimlerini "
 "girin.\n"
 
-#: src/cmdline/cmdline_prompt.cc:932
+#: src/cmdline/cmdline_prompt.cc:937
 msgid "Press Return to continue"
 msgstr "Devam etmek için Enter tuşuna basın."
 
-#: src/cmdline/cmdline_prompt.cc:942
+#: src/cmdline/cmdline_prompt.cc:947
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:965
+#: src/cmdline/cmdline_prompt.cc:970
 #, c-format
 msgid "y: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:967
+#: src/cmdline/cmdline_prompt.cc:972
 msgid "continue with the installation"
 msgstr "kurulum ile devam et"
 
-#: src/cmdline/cmdline_prompt.cc:969
+#: src/cmdline/cmdline_prompt.cc:974
 #, c-format
 msgid "n: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:971
+#: src/cmdline/cmdline_prompt.cc:976
 msgid "abort and quit"
 msgstr "iptal et ve çık"
 
-#: src/cmdline/cmdline_prompt.cc:973
+#: src/cmdline/cmdline_prompt.cc:978
 #, c-format
 msgid "i: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:975
+#: src/cmdline/cmdline_prompt.cc:980
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -1176,12 +1176,12 @@ msgstr ""
 "bir ya da daha çok paket hakkında bilgi göster; paket isimleri 'i'yi takip "
 "etmeli"
 
-#: src/cmdline/cmdline_prompt.cc:977
+#: src/cmdline/cmdline_prompt.cc:982
 #, c-format
 msgid "c: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:979
+#: src/cmdline/cmdline_prompt.cc:984
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1189,63 +1189,63 @@ msgstr ""
 "bir ya da daha çok paketin Debian değişiklik güncesini göster; paket "
 "isimleri 'c'yi takip etmeli"
 
-#: src/cmdline/cmdline_prompt.cc:981
+#: src/cmdline/cmdline_prompt.cc:986
 #, c-format
 msgid "d: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:983
+#: src/cmdline/cmdline_prompt.cc:988
 msgid "toggle the display of dependency information"
 msgstr "bağımlılık bilgisi görünümünü değiştir"
 
-#: src/cmdline/cmdline_prompt.cc:985
+#: src/cmdline/cmdline_prompt.cc:990
 #, c-format
 msgid "s: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:987
+#: src/cmdline/cmdline_prompt.cc:992
 msgid "toggle the display of changes in package sizes"
 msgstr "paket boyutundaki değişim görünümünü değiştir"
 
-#: src/cmdline/cmdline_prompt.cc:989
+#: src/cmdline/cmdline_prompt.cc:994
 #, c-format
 msgid "v: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:991
+#: src/cmdline/cmdline_prompt.cc:996
 msgid "toggle the display of version numbers"
 msgstr "sürüm numaraları görünümünü değiştir"
 
-#: src/cmdline/cmdline_prompt.cc:993
+#: src/cmdline/cmdline_prompt.cc:998
 #, c-format
 msgid "w: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:995
+#: src/cmdline/cmdline_prompt.cc:1000
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:998
+#: src/cmdline/cmdline_prompt.cc:1003
 #, c-format
 msgid "r: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1000
+#: src/cmdline/cmdline_prompt.cc:1005
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1002
+#: src/cmdline/cmdline_prompt.cc:1007
 #, c-format
 msgid "e: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1004
+#: src/cmdline/cmdline_prompt.cc:1009
 msgid "enter the full visual interface"
 msgstr "tam görsel arayüze geç"
 
-#: src/cmdline/cmdline_prompt.cc:1007
+#: src/cmdline/cmdline_prompt.cc:1012
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1256,75 +1256,75 @@ msgstr ""
 "daha fazla paket isminden (veya parçası) sonra bir eylem karakteri girin. "
 "Eylem belirttiğiniz paketler üstünde işleme sokulacaktır. Mevcut eylemler: "
 
-#: src/cmdline/cmdline_prompt.cc:1014 src/cmdline/cmdline_resolver.cc:205
+#: src/cmdline/cmdline_prompt.cc:1019 src/cmdline/cmdline_resolver.cc:205
 msgid "'+' to install packages"
 msgstr "Paket kurmak için '+'"
 
-#: src/cmdline/cmdline_prompt.cc:1017 src/cmdline/cmdline_resolver.cc:207
+#: src/cmdline/cmdline_prompt.cc:1022 src/cmdline/cmdline_resolver.cc:207
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "Paketleri kurmak ve hemen otomatik kuruldu olarak işaretlemek için '+M'"
 
-#: src/cmdline/cmdline_prompt.cc:1019 src/cmdline/cmdline_resolver.cc:209
+#: src/cmdline/cmdline_prompt.cc:1024 src/cmdline/cmdline_resolver.cc:209
 msgid "'-' to remove packages"
 msgstr "Paket kaldırmak için '-'"
 
-#: src/cmdline/cmdline_prompt.cc:1021 src/cmdline/cmdline_resolver.cc:211
+#: src/cmdline/cmdline_prompt.cc:1026 src/cmdline/cmdline_resolver.cc:211
 msgid "'_' to purge packages"
 msgstr "Paketi temizlemek için '_'"
 
-#: src/cmdline/cmdline_prompt.cc:1023 src/cmdline/cmdline_resolver.cc:213
+#: src/cmdline/cmdline_prompt.cc:1028 src/cmdline/cmdline_resolver.cc:213
 msgid "'=' to place packages on hold"
 msgstr "Paketi tutmak için '='"
 
-#: src/cmdline/cmdline_prompt.cc:1025 src/cmdline/cmdline_resolver.cc:215
+#: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:215
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "paketleri mevcut duruma sabitlemek için ':'"
 
-#: src/cmdline/cmdline_prompt.cc:1027 src/cmdline/cmdline_resolver.cc:217
+#: src/cmdline/cmdline_prompt.cc:1032 src/cmdline/cmdline_resolver.cc:217
 msgid "'&M' to mark packages as automatically installed"
 msgstr "Paketi otomatik kurulmuş olarak işaretlemek için'&M'"
 
-#: src/cmdline/cmdline_prompt.cc:1029 src/cmdline/cmdline_resolver.cc:219
+#: src/cmdline/cmdline_prompt.cc:1034 src/cmdline/cmdline_resolver.cc:219
 msgid "'&m' to mark packages as manually installed"
 msgstr "Paketleri elle kurulmuş olarak işaretlemek için '&m'"
 
-#: src/cmdline/cmdline_prompt.cc:1031
+#: src/cmdline/cmdline_prompt.cc:1036
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1035
+#: src/cmdline/cmdline_prompt.cc:1040
 msgid "Commands:"
 msgstr "Komutlar:"
 
-#: src/cmdline/cmdline_prompt.cc:1144
+#: src/cmdline/cmdline_prompt.cc:1149
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1162
+#: src/cmdline/cmdline_prompt.cc:1167
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Devam etmek istiyor musunuz? [Y/n/?]"
 
-#: src/cmdline/cmdline_prompt.cc:1163
+#: src/cmdline/cmdline_prompt.cc:1168
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1181
+#: src/cmdline/cmdline_prompt.cc:1186
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Geçersiz cevap.  Lütfen geçerli bir komut girin ya da yardım için '?'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:1187
+#: src/cmdline/cmdline_prompt.cc:1192
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1218
+#: src/cmdline/cmdline_prompt.cc:1223
 #, c-format
 msgid ""
 "\n"
@@ -1335,7 +1335,7 @@ msgstr ""
 "Bağımlılık bilgisi gösterilecek.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1220
+#: src/cmdline/cmdline_prompt.cc:1225
 #, c-format
 msgid ""
 "\n"
@@ -1346,7 +1346,7 @@ msgstr ""
 "Bağımlılık bilgisi gösterilmeyecek.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1226
+#: src/cmdline/cmdline_prompt.cc:1231
 #, c-format
 msgid ""
 "\n"
@@ -1357,7 +1357,7 @@ msgstr ""
 "Sürümler gösterilecek.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1228
+#: src/cmdline/cmdline_prompt.cc:1233
 #, c-format
 msgid ""
 "\n"
@@ -1368,7 +1368,7 @@ msgstr ""
 "Sürümler gösterilmeyecek.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1233
+#: src/cmdline/cmdline_prompt.cc:1238
 #, c-format
 msgid ""
 "\n"
@@ -1379,7 +1379,7 @@ msgstr ""
 "Boyut değişiklikleri gösterilecek.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1235
+#: src/cmdline/cmdline_prompt.cc:1240
 #, c-format
 msgid ""
 "\n"
