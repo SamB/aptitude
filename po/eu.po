@@ -1,21 +1,22 @@
-# translation of aptitude_po_eu.po to Euskara
+# translation of aptitude_po_eu.po to Basque
 # translation of aptitude to Euskara
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Inaki Larranaga Murgotio <dooteo@euskalgnu.org>, 2005.
 # Piarres Beobide <pi@beobide.net>, 2006, 2007, 2008.
+# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_eu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-06-21 11:47-0700\n"
-"PO-Revision-Date: 2008-03-01 10:50+0100\n"
-"Last-Translator: Piarres Beobide <pi@beobide.net>\n"
-"Language-Team: Euskara <Librezale@librezale.org>\n"
+"PO-Revision-Date: 2008-05-05 22:00+0200\n"
+"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
+"Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: KBabel 1.11.4\n"
 
 #: src/apt_config_treeitems.cc:99
@@ -25,7 +26,7 @@ msgid ""
 "%BValue:%b   %s\n"
 msgstr ""
 "%BAukera:%b  %s\n"
-"%BLehenespena:%b %s\n"
+"%BLehenetsia:%b %s\n"
 "%BBalioa:%b   %s\n"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
@@ -196,50 +197,43 @@ msgstr ""
 "pantailaren behekaldean ikuspegi berri bat ireki beharrean."
 
 #: src/apt_options.cc:211
-#, fuzzy
 msgid "Display the information area by default"
-msgstr "Bistaratu azalpen eremua zabaldua lehenespenez"
+msgstr "Bistaratu informazio-area lehenespenez"
 
 #: src/apt_options.cc:212
-#, fuzzy
 msgid ""
 "If this option is enabled, the information area (the pane at the bottom of "
 "the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
-"Aukera hau gaiturik badago programa hasieran pakete zerrendako azalpen luze "
-"eremua (pantaila behekaldeko panela) bistaraziko da; bestela hasieran "
-"ezkutaturik egongo da."
+"Aukera hau gaitzen bada, programa hasieran pakete zerrendako informazio-area "
+"(pantaila behealdeko panela) bistaratuko da; bestela hasieran ezkutaturik "
+"egongo da."
 
 #: src/apt_options.cc:217
-#, fuzzy
 msgid "Display tabs for the available views"
-msgstr "Pakete-ikuspegietako bistaratze-formatua"
+msgstr "Bistaratu ikuspegi erabilgarrien fitxak"
 
 #: src/apt_options.cc:218
-#, fuzzy
 msgid ""
 "If this option is enabled, tabs will appear at the top of the screen listing "
 "the currently opened views."
 msgstr ""
-"Aukera hau gaiturik badago aptitude deskargen egoera bistaraziko du "
-"pantailaren behekaldean ikuspegi berri bat ireki beharrean."
+"Aukera hau gaitzen bada, unean irekita dauden ikuspegien zerrenda duen "
+"pantailaren goian agertuko dira fitxak."
 
 #: src/apt_options.cc:221
-#, fuzzy
 msgid "Display tabs for the information area"
-msgstr "Bistaratu hautatutako paketeari buruzko informazio xehea"
+msgstr "Bistaratu informazio-arearen fitxak"
 
 #: src/apt_options.cc:222
-#, fuzzy
 msgid ""
 "If this option is enabled, tabs will appear at the top of the information "
 "area (the pane at the bottom of the screen) listing the different displays "
 "of information that can be viewed there."
 msgstr ""
-"Aukera hau gaiturik badago programa hasieran pakete zerrendako azalpen luze "
-"eremua (pantaila behekaldeko panela) bistaraziko da; bestela hasieran "
-"ezkutaturik egongo da."
+"Aukera hau gaita egonez gero, fitxak informazio-arearen goian (pantailako "
+"behealdeko panelean) agertzen dira."
 
 #: src/apt_options.cc:227
 msgid "Advance to the next item after changing the state of a package"
@@ -567,6 +561,8 @@ msgstr ""
 #: src/apt_options.cc:393
 msgid "Allow dependency resolutions that break holds or forbids"
 msgstr ""
+"Baimendu mantenimenduak edo debekuak apurtzen dituzten mendekotasun "
+"bereizmenak"
 
 #: src/apt_options.cc:394
 msgid ""
@@ -580,6 +576,15 @@ msgid ""
 "the dependencies of a package that has just been selected for installation "
 "or upgrade, due to apt bug #470035."
 msgstr ""
+"Aukera hau gaitzen bada, nahiz eta aptitude-k mendekotasun arazoa ebatzi, "
+"mantendutako paketea eraldatzea, edo paketearen debekatutako bertsioa "
+"instalatzea erabaki lezake. Aukera hau desgaitzen bada, irtenbide hauek "
+"ezetsi egingo dira lehenetsi gisa.\n"
+"OHARRA: hau idaztean, murriztapen hauek aptitude-ren mendekotasun-ebazlea "
+"(pantailaren behealdeko barra gorria) aktibatuta dagoenean soilik aplikatzen "
+"dira. Aptitude-k mantendutako paketeak honda ditzake, bertsio-berritzeko edo "
+"instalatzeko hautatu den pakete baten mendekotasunak automatikoki "
+"instalatzean (470035. akatsaren ondorioz)."
 
 #: src/apt_options.cc:520
 msgid "UI options"
@@ -683,14 +688,14 @@ msgid "Suggest %F"
 msgstr "%F iradokitzen du"
 
 #: src/cmdline/cmdline_action.cc:48
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find the source package for \"%s\".\n"
-msgstr "Ezin da aurkitu \"%s\" artxiboa, \"%s\" paketearentzat\n"
+msgstr "Ezin da \"%s\"-(r)en iturburuko paketea aurkitu.\n"
 
 #: src/cmdline/cmdline_action.cc:202
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to satisfy the build-depends: %s."
-msgstr "Ezin da %s(e)n fitxategiak zerrendatu"
+msgstr "Ezin da eraikitze-mendekotasuna bete: %s."
 
 #: src/cmdline/cmdline_action.cc:238
 #, c-format
@@ -888,10 +893,12 @@ msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Ustegabeko eredu-argumentua \"keep-all\"en ondoren"
 
 #: src/cmdline/cmdline_do_action.cc:266
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
-msgstr "Ezin dira bertsio-berritzerako mendekotasunak ebatzi (%s)."
+msgstr ""
+"Ezin da mendekotasunak segurtasunez ebatzi, saiatu --full-resolver  "
+"aukerarekin.\n"
 
 #: src/cmdline/cmdline_do_action.cc:304 src/cmdline/cmdline_simulate.cc:35
 #: src/cmdline/cmdline_upgrade.cc:163 src/main.cc:711
@@ -929,17 +936,20 @@ msgid ""
 "extract-cache-entries: at least one argument is required (the directory\n"
 "to which to write files).\n"
 msgstr ""
+"extract-cache-entries: gutxienez argumentu bat behar da\n"
+"(fitxategiak gordeko diren direktorioak).\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:77
 #: src/cmdline/cmdline_user_tag.cc:116
-#, fuzzy, c-format
+#, c-format
 msgid "No such package \"%s\".\n"
-msgstr "Ez dago \"%s\" bezalako paketerik"
+msgstr "Ez dago \"%s\" bezalako paketerik.\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:115
 #, c-format
 msgid "No packages were selected by the given search pattern; nothing to do.\n"
 msgstr ""
+"Ez da paketerik hautatu emandako bilaketako ereduan; ezin da ezer egin.\n"
 
 #: src/cmdline/cmdline_forget_new.cc:25
 #, c-format
@@ -1001,8 +1011,8 @@ msgstr "Ezin izan da iturburu-zerrenda irakurri"
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(%s)"
+msgstr[1] "(%s)"
 
 #: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
@@ -1414,7 +1424,7 @@ msgstr "'&m' markatu eskuz instalaturik izan diren paketeak"
 
 #: src/cmdline/cmdline_prompt.cc:1036
 msgid "'&BD' to install the build-dependencies of a package."
-msgstr ""
+msgstr "'&BD' pakete baten eraikitzeko mendekotasunak instalatzeko."
 
 #: src/cmdline/cmdline_prompt.cc:1040
 msgid "Commands:"
@@ -1531,13 +1541,13 @@ msgid "Resolver state successfully written!"
 msgstr "Ebazpen-egoera ongi idatzi da."
 
 #: src/cmdline/cmdline_resolver.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
-"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkt bert ...: %F%na pkt bert ...: %F%"
-"n<ACTION> pkt... : %F%n%F%F%F%F%F%F%F%F"
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkt bert ...: %F%na pkt bert ...: %"
+"F%n<EKINTZA> pkt... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:182
 msgid "accept the proposed changes"
@@ -1570,30 +1580,28 @@ msgid "examine the solution in the visual user interface"
 msgstr "aztertu irtenbidea erabiltzaile-interfazean"
 
 #: src/cmdline/cmdline_resolver.cc:196
-#, fuzzy
 msgid ""
 "abort automatic dependency resolution; resolve dependencies by hand instead"
 msgstr ""
-"exekutatu mendekotasun konpontzaile automatikoa apurtutako mendekotasunak "
-"konpontzeko"
+"abortatu mendekotasun konpontzaile automatikoa; apurtutako mendekotasunak "
+"eskuz konpondu"
 
 #: src/cmdline/cmdline_resolver.cc:198
-#, fuzzy
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur.  Enter UNINST instead of a version to reject removing the package."
 msgstr ""
-"ezetsi emandako paketeen bertsioak: ez erakutsi agertzen direnen irtenbideak"
+"ezetsi emandako paketeen bertsioak: ez erakutsi agertzen direnen irtenbideak "
+"Sartu UNINST bertsioaren ordez paketea kentzea bertan behera uzteko."
 
 #. ForTranslators: "(;" is ...???? A smiley?
 #: src/cmdline/cmdline_resolver.cc:201
-#, fuzzy
 msgid ""
 "accept the given package versions (; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package."
 msgstr ""
 "onartu emandako paketeen bertsioak: erakutsi agertzen direnen irtenbideak "
-"soilik"
+"soilik. Sartu UNINST bertsioaren ordez paketea kentzea berresteko."
 
 #: src/cmdline/cmdline_resolver.cc:203
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -1725,6 +1733,8 @@ msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr ""
+"Mendekotasun konpontzaile automatikoa bertan behera uzten, eta eskuzko "
+"konponketara itzultzen."
 
 #: src/cmdline/cmdline_resolver.cc:693
 msgid "The following commands are available:"
@@ -1767,13 +1777,14 @@ msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
+"Ebazpenaren denbora-muga iraungituta; zenbait bertsio-berritzea ez dira "
+"landuko."
 
 #: src/cmdline/cmdline_resolver.cc:971
-#, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
-"Ezin dira bertsio-berritzerako mendekotasunak ebatzi (ebaztea denboraz kanpo "
+"Ezin dira bertsio-berritzeko mendekotasunak ebatzi (ebaztea denboraz kanpo "
 "geratu da)"
 
 #: src/cmdline/cmdline_resolver.cc:985
@@ -1788,6 +1799,8 @@ msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
+"Mendekotasunaren ebazpena osatu gabea (%s); baliteke bertsio-berritze batzuk "
+"ez lantzea."
 
 #: src/cmdline/cmdline_resolver.cc:1000
 #, c-format
@@ -2066,19 +2079,21 @@ msgid "E: The %s command takes no arguments\n"
 msgstr "E: %s komandoak ez du argumenturik hartzen\n"
 
 #: src/cmdline/cmdline_user_tag.cc:52
-#, fuzzy, c-format
+#, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
-msgstr "Ezin da aurkitu \"%s\" bertsioa, \"%s\" paketearentzat\n"
+msgstr "Erabiltzailearen \"%s\" etiketa \"%s\" paketeari gehitzen.\n"
 
 #: src/cmdline/cmdline_user_tag.cc:59
-#, fuzzy, c-format
+#, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
-msgstr "Ezin da aurkitu \"%s\" bertsioa, \"%s\" paketearentzat\n"
+msgstr "Erabiltzailearen \"%s\" etiketa \"%s\" paketetik kentzen.\n"
 
 #: src/cmdline/cmdline_user_tag.cc:89
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
 msgstr ""
+"%s: argumentu gutxiegi; gutxienez izenaren etiketa eta pakete bat espero "
+"ziren.\n"
 
 #: src/cmdline/cmdline_util.cc:131
 #, c-format
@@ -2134,21 +2149,21 @@ msgstr[1] "%d berri [%+d]"
 #: src/cmdline/cmdline_util.cc:331
 #, c-format
 msgid "Current status: %F."
-msgstr ""
+msgstr "Uneko egoera: %F."
 
 #: src/cmdline/cmdline_util.cc:342
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Zaharkitu berri den pakete %d dago."
+msgstr[1] "Zaharkitu berri diren %d pakete daude."
 
 #: src/cmdline/cmdline_util.cc:354
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Zaharkitu berri den pakete %d dago: "
+msgstr[1] "Zaharkitu berri diren %d pakete daude: "
 
 #: src/cmdline/cmdline_why.cc:252
 msgid "dep_level"
@@ -2175,9 +2190,8 @@ msgid "Install"
 msgstr "Instalatu"
 
 #: src/cmdline/cmdline_why.cc:286
-#, fuzzy
 msgid "InstallNotCurrent"
-msgstr "Instalatuta"
+msgstr "InstalatuEzUnekoa"
 
 #: src/cmdline/cmdline_why.cc:294
 msgid "allow_choices"
@@ -2233,9 +2247,8 @@ msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> baztertzen, parent ez da hautatutako bertsioa\n"
 
 #: src/cmdline/cmdline_why.cc:494
-#, fuzzy
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
-msgstr "    ++   --> baztertzen, parent ez da hautatutako bertsioa\n"
+msgstr "    ++   --> saltatzen, mend. uneko bertsioan beteta\n"
 
 #: src/cmdline/cmdline_why.cc:524
 msgid "    ++   --> ENQUEUING\n"
@@ -2260,14 +2273,14 @@ msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Konponbidea alde batetara uzten. Dagoeneko ikusi dut.\n"
 
 #: src/cmdline/cmdline_why.cc:973
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to remove %s.\n"
-msgstr "Ezin izan da irtenbiderik aurkitu aplikatzeko."
+msgstr "Ezin da arrazoirik aurkitu %s kentzeko.\n"
 
 #: src/cmdline/cmdline_why.cc:975
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to install %s.\n"
-msgstr "Ezin izan da irtenbiderik aurkitu aplikatzeko."
+msgstr "Ezin da arrazoirik aurkitu %s instalatzeko.\n"
 
 #: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
 #: src/cmdline/cmdline_why.cc:1108
@@ -2298,9 +2311,8 @@ msgid "Tags"
 msgstr "Etiketak"
 
 #: src/desc_parse.cc:334
-#, fuzzy
 msgid "User Tags"
-msgstr "Etiketak"
+msgstr "Erabiltzailearen etiketak"
 
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
@@ -2423,11 +2435,15 @@ msgid ""
 "Error parsing a user-tag for the package %s: unexpected end-of-line "
 "following %s."
 msgstr ""
+"Errorea %s paketearen erabiltzailearen etiketa analizatzean: ustegabeko "
+"lerro amaiera %s-rekin."
 
 #: src/generic/apt/aptcache.cc:283
-#, fuzzy, c-format
+#, c-format
 msgid "Unterminated '\"' in the user-tags list of the package %s."
-msgstr "Amaitu gabeko kate literala %s(r)en ondoren"
+msgstr ""
+"Amaitu gabeko komatxoa '\"' %s paketearen erabiltzailearen etiketen "
+"zerrendan."
 
 #: src/generic/apt/aptcache.cc:387
 msgid "Can't open Aptitude extended state file"
@@ -2611,38 +2627,37 @@ msgstr "(core-a iraulia)"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #: src/generic/apt/download_update_manager.cc:355
-#, fuzzy, c-format
+#, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
-msgstr "Debtags bertsio-berritze prozesua (%s %s) %d%s seinaleak akabatu du."
+msgstr "Debtags eguneratze prozesua (%s update %s) %d%s seinaleak akabatu du."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #. PS: indentation sucks!
 #. PS2: Daniel, please unfuzzy such translations (added "update") yourself!
 #: src/generic/apt/download_update_manager.cc:365
-#, fuzzy, c-format
+#, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
-"Debtags bertsio-berritze prozesua (%s %s) era arraro batean irten da (%d "
+"Debtags eguneratze prozesua (%s update %s) era arraro batean irten da (%d "
 "kodea)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #: src/generic/apt/download_update_manager.cc:372
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
 "(status %d)."
 msgstr ""
-"Debtags bertsio-berritze prozesua (%s %s) era espero gabe batetan irten da (%"
-"d egoera)"
+"Debtags eguneratze prozesua (%s update %s) ustegabean irten da (%d egoera)"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #: src/generic/apt/download_update_manager.cc:378
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
 "installed?): %s"
 msgstr ""
-"Debtags datubase bertsio-berritzeak (%s %s) huts egin du (agian debtags ez "
+"Debtags datubasea eguneratzeak (%s update %s) huts egin du (agian debtags ez "
 "dago instalaturik?): %s"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
@@ -3269,71 +3284,61 @@ msgid "Compiler: g++ %s\n"
 msgstr "Konpilatzailea: g++ %s\n"
 
 #: src/main.cc:111
-#, fuzzy
 msgid "Compiled against:\n"
-msgstr "Konpilatzailea: g++ %s\n"
+msgstr "Honekin konpilatuta:\n"
 
 #: src/main.cc:112
-#, fuzzy, c-format
+#, c-format
 msgid "  apt version %d.%d.%d\n"
-msgstr "Mantendu %F %s bertsioan (%s)"
+msgstr "  apt bertsioa %d.%d.%d\n"
 
 #: src/main.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: Unknown\n"
-msgstr ""
-"\n"
-"Ncurses bertsioa: %s\n"
+msgstr "  Ncurses bertsioa: ezezaguna\n"
 
 #: src/main.cc:117
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version %s\n"
-msgstr ""
-"\n"
-"Ncurses bertsioa: %s\n"
+msgstr "  Ncurses bertsioa: %s\n"
 
 #: src/main.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "  libsigc++ version: %s\n"
-msgstr "libsigc++ bertsioa: %s\n"
+msgstr "  libsigc++ bertsioa: %s\n"
 
 #: src/main.cc:121
-#, fuzzy, c-format
+#, c-format
 msgid "  Ept support enabled.\n"
-msgstr "Ept euskarria gaituta\n"
+msgstr "  Ept euskarria gaituta\n"
 
 #: src/main.cc:123
-#, fuzzy, c-format
+#, c-format
 msgid "  Ept support disabled.\n"
-msgstr "Ept euskarria ezgaituta\n"
+msgstr "  Ept euskarria desgaituta\n"
 
 #: src/main.cc:126
-#, fuzzy
 msgid ""
 "\n"
 "Current library versions:\n"
 msgstr ""
 "\n"
-"Curses bertsioa: %s\n"
+"Uneko liburutegien bertsioak:\n"
 
 #: src/main.cc:127
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: %s\n"
-msgstr ""
-"\n"
-"Ncurses bertsioa: %s\n"
+msgstr "  Ncurses bertsioa: %s\n"
 
 #: src/main.cc:128
-#, fuzzy, c-format
+#, c-format
 msgid "  cwidget version: %s\n"
-msgstr "libsigc++ bertsioa: %s\n"
+msgstr "  cwidget bertsioa: %s\n"
 
 #: src/main.cc:129
-#, fuzzy, c-format
+#, c-format
 msgid "  Apt version: %s\n"
-msgstr ""
-"\n"
-"Curses bertsioa: %s\n"
+msgstr "  Apt bertsioa: %s\n"
 
 #: src/main.cc:135
 #, c-format
@@ -3462,17 +3467,20 @@ msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
 msgstr ""
-"berrinstalatu - Instalaturik dagoen paketea deskargatu eta (posibleki) "
+" reinstall - Instalaturik dagoen paketea deskargatu eta (posibleki) "
 "berrinstalatu\n"
 
 #: src/main.cc:159
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package\n"
 msgstr ""
-" -Z\t\t    Erakutsi pakete bakoitzaren instalatutako tamainaren aldaketa.\n"
+" why          - Erakutsi eskuz instalatutako paketeak (pakete bat \n"
+"                   behar dutena) edo\n"
+"                zergatik pakete batek edo gehiagok behar duten emandako "
+"paketea\n"
 
 #: src/main.cc:161
 #, c-format
@@ -3482,6 +3490,11 @@ msgid ""
 "                with the given package, or why one or more packages would\n"
 "                lead to a conflict with the given package if installed\n"
 msgstr ""
+" why-not      - Erakutsi eskuz instalatutako paketeak eta emandako\n"
+"                     paketearekin gatazkan sar daitezkeenak\n"
+"                     edo zergatik pakete bat edo gehiago gatazkan sartuko\n"
+"                     diren emandako paketearekin (azken hau instalatzen "
+"bada)\n"
 
 #: src/main.cc:165
 #, c-format
@@ -3578,13 +3591,13 @@ msgid ""
 msgstr " -t [release]   Ezarri zein banaketatatik instalatuko diren paketeak\n"
 
 #: src/main.cc:180
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
 msgstr ""
-" -q             Komando-lerro moduan, progresio-gehikuntzaren adierazlea "
-"kentzen du.\n"
+" -q             Komando-lerro moduan, progresio-gehikuntzaren adierazlea\n"
+"                 kentzen du.\n"
 
 #: src/main.cc:182
 #, c-format
@@ -3633,14 +3646,14 @@ msgid "Expected a number after -q=, got %s\n"
 msgstr "q= -ren ondoren zenbaki bat espero zen, %s eskuratu da\n"
 
 #: src/main.cc:408
-#, fuzzy, c-format
+#, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
-msgstr "-o aukerak key=balioa formako argumentua behar du, %s lortu da"
+msgstr "-o aukerak gakoa=balioa formako argumentua behar du, %s lortu da\n"
 
 #: src/main.cc:500
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
-msgstr ""
+msgstr "Ez dago komarik \"%s\" etiketa-izenaren ostean.\n"
 
 #: src/main.cc:531 src/main.cc:540
 msgid "WEIRDNESS: unknown option code received\n"
@@ -3666,6 +3679,8 @@ msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
 "for %s, which always uses the safe resolver.\n"
 msgstr ""
+"--safe-resolver eta --full-resolver aukerak ez dira esanguratsuak\n"
+"%s-(e)ntzako, ebazpen segurua erabiltzen duelako beti.\n"
 
 #: src/main.cc:704
 #, c-format
@@ -3678,13 +3693,13 @@ msgid "Uncaught exception: %s\n"
 msgstr "Salbuespena: %s\n"
 
 #: src/main.cc:720 src/main.cc:769
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Backtrace:\n"
 "%s\n"
 msgstr ""
 "Aztarna:\n"
-"%s"
+"%s\n"
 
 #: src/menu_text_layout.cc:43 src/menu_tree.cc:220 src/view_changelog.cc:60
 msgid "Search for: "
@@ -4460,9 +4475,9 @@ msgid "Packages which depend on %s"
 msgstr "Honen mendeko paketeak: %s"
 
 #: src/pkg_info_screen.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid "Versions of %s"
-msgstr "Bertsioak"
+msgstr "%s(r)en bertsioak"
 
 #: src/pkg_item.cc:61
 msgid "Yes, I am aware this is a very bad idea"
@@ -4553,8 +4568,8 @@ msgstr "Hierarkia-editorea"
 #, c-format
 msgid "This group contains %d package."
 msgid_plural "This group contains %d packages."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Talde honek pakete %d du."
+msgstr[1] "Talde honek %d pakete ditu."
 
 #: src/pkg_tree.cc:175
 msgid "All Packages"
@@ -4590,13 +4605,12 @@ msgid "Couldn't parse column definition"
 msgstr "Ezin izan da analizatu zutabearen definizioa"
 
 #: src/pkg_view.cc:223
-#, fuzzy
 msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
 msgstr ""
-"Pakete bat hautatzen baduzu, paketearen uneko egoeraren azalpen bat agertuko "
-"da hemen."
+"Pakete bat hautatzen baduzu, zergatik instalatu edo kendu behar den buruzko "
+"azalpena agertuko da leku honetan."
 
 #: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
@@ -4610,14 +4624,12 @@ msgstr ""
 "estatikoarentzat"
 
 #: src/pkg_view.cc:678
-#, fuzzy
 msgid "Related Dependencies"
-msgstr "Ebatzi mendekotasunak"
+msgstr "Zerikusia duten mendekotasunak"
 
 #: src/pkg_view.cc:681
-#, fuzzy
 msgid "Why Installed"
-msgstr "Instalatuta"
+msgstr "Zergatik instalatuta"
 
 #: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
@@ -5150,16 +5162,15 @@ msgid "Recommendations"
 msgstr "Gomendioak:"
 
 #: src/ui.cc:970
-#, fuzzy
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
 "is free software, and you are welcome to redistribute it under certain "
 "conditions; see 'license' for details."
 msgstr ""
-"Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%naptitude GUZTIZ "
-"GARANATIARIK GABE banatzen da, xehetasunak Laguntza menuko lizentzia ikusi "
-"ditzazkezu. Hau Software librea da eta zenbait egoeratan (lizentzia ikusi "
+"Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude %bBERMERIK "
+"GABE%b banatzen da, xehetasunak Laguntza menuko lizentzia ikusi ditzazkezu. "
+"Hau Software librea da eta zenbait egoeratan (lizentzia ikusi "
 "xehetasunetarako) banatzeko aukera duzu."
 
 #: src/ui.cc:1020 src/ui.cc:1022
@@ -5635,7 +5646,7 @@ msgstr "Bistaratu hautatutako paketeari buruzko informazio xehea"
 
 #: src/ui.cc:2188
 msgid "C^ycle Package Information"
-msgstr ""
+msgstr "Paketearen informazioaren ^begizta"
 
 #: src/ui.cc:2189
 msgid ""
@@ -5643,6 +5654,9 @@ msgid ""
 "package's long description, a summary of its dependency status, or an "
 "analysis of why the package is required."
 msgstr ""
+"Paketearen informazio-arearen moduetan zehar aldatzen joan: paketearen "
+"azalpen luzea erakutsi dezake, bere mendekotasun egoeraren laburpena, edo "
+"paketea zergatik den beharrezkoa."
 
 #: src/ui.cc:2192
 msgid "^Changelog"
@@ -5728,13 +5742,15 @@ msgstr "Ikusi paketea hautatutako ekintzak eragingo diona"
 
 #: src/ui.cc:2244
 msgid "Reject Breaking ^Holds"
-msgstr ""
+msgstr "Ezetsi hondatutako ^mantendutakoak"
 
 #: src/ui.cc:2246
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
 msgstr ""
+"Ezetsi mantendutako paketeen egoera aldatuko luketen edo debekatutako "
+"bertsioak instalatuko lituzketen ekintza guztiak."
 
 #: src/ui.cc:2254
 msgid "^Find"
@@ -5930,9 +5946,8 @@ msgid "^News"
 msgstr "^Berriak"
 
 #: src/ui.cc:2377
-#, fuzzy
 msgid "View the important changes made in each version of "
-msgstr "Ikusi %s-ren bertsio bakoitzean eginiko aldaketa garrantzitsuak."
+msgstr "Ikusi honakoaren bertsio bakoitzean eginiko aldaketa garrantzitsuak"
 
 #: src/ui.cc:2380
 msgid "^License"
@@ -6002,85 +6017,3 @@ msgstr "Deskargatu erregistro aldaketak"
 
 #~ msgid "The package \"%s\" is manually installed.\n"
 #~ msgstr "\"%s\" paketea eskuz instalaturik dago.\n"
-
-#, fuzzy
-#~ msgid ""
-#~ "              - why one or more packages would require the given package\n"
-#~ msgstr " -V             Erakutsi paketeen zein bertsio instalatuko diren.\n"
-
-#, fuzzy
-#~ msgid ""
-#~ "                lead to a conflict with the given package if installed\n"
-#~ msgstr " -V             Erakutsi paketeen zein bertsio instalatuko diren.\n"
-
-#, fuzzy
-#~ msgid "                indicators.\n"
-#~ msgstr " -h             Laguntza-testu hau\n"
-
-#~ msgid "There are now %F."
-#~ msgstr "Hemen orain %F daude."
-
-#~ msgid ""
-#~ "The system configuration file (%s) contains a setting for the obsolete "
-#~ "option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
-#~ "Recommends' instead or removing this setting."
-#~ msgstr ""
-#~ "Sistema konfigurazio fitxategiak (%s) 'Aptitude::Recommends-Important' "
-#~ "ekintza zaharraren ezarpena bat du; 'APT::Install-Recommends' ezarri edo "
-#~ "ezarpen hau kendu."
-
-#~ msgid "No justification for removing %s could be constructed.\n"
-#~ msgstr "Ezin da justifikaziorik eraiki %s ezabatzeko.\n"
-
-#~ msgid "No justification for %s could be constructed.\n"
-#~ msgstr "Ezin da justifikaziorik eraiki %s-renztat.\n"
-
-#, fuzzy
-#~ msgid "Downloading "
-#~ msgstr "Deskargatzen..."
-
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "Deskargatzen..."
-
-#, fuzzy
-#~ msgid "Downloaded %sB in %ss (%sB/s)."
-#~ msgstr "%sB deskargatuta - %s (%sB/s)."
-
-#~ msgid ""
-#~ "The debtags command (%s) does not exist; perhaps you need to install the "
-#~ "debtags package?"
-#~ msgstr ""
-#~ "debtags komandoa (%s) ez dago, agian debtags paketea instalatu behar duzu?"
-
-#, fuzzy
-#~ msgid "Bad number in format string: '%ls'"
-#~ msgstr "Okerreko zenbakia formatu katean: %ls"
-
-#, fuzzy
-#~ msgid "Missing parameter number in format string"
-#~ msgstr "Okerreko zenbakia formatu katean: %ls"
-
-#, fuzzy
-#~ msgid "Parameter numbers must be 1 or greater, not %ld"
-#~ msgstr "Parekatze indizea 1 edo handiago izan behar da; ezin da \"%s\" izan"
-
-#, fuzzy
-#~ msgid "Unknown formatting code '%lc'"
-#~ msgstr "Eredu-mota ezezaguna: %c"
-
-#, fuzzy
-#~ msgid "Cannot parse key description: %ls"
-#~ msgstr "Ataza azalpenak irakurtzen"
-
-#, fuzzy
-#~ msgid "Invalid null keybinding"
-#~ msgstr "Sarrera baliogabea laster-teklen taldean: \"%s\""
-
-#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-#~ msgstr ""
-#~ "Ezin da debtags hiztegia eskuratu, agian debtags ez dago instalaturik?"
-
-#~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
-#~ msgstr ""
-#~ "Barneko buffer-gainezkatzea \"%s\" paketean egoera-fitxategia idaztean"
