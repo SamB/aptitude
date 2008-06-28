@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-06-21 11:47-0700\n"
-"PO-Revision-Date: 2008-03-19 10:57+0000\n"
+"PO-Revision-Date: 2008-05-20 19:47+0100\n"
 "Last-Translator: Miguel Figueiredo <elmig@debianPT.org>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
 "MIME-Version: 1.0\n"
@@ -196,51 +196,44 @@ msgstr ""
 "vista."
 
 #: src/apt_options.cc:211
-#, fuzzy
 msgid "Display the information area by default"
-msgstr "Por pré-definição exibir a área de descrição extendida"
+msgstr "Por pré-definição exibir a área de informação"
 
 #: src/apt_options.cc:212
-#, fuzzy
 msgid ""
 "If this option is enabled, the information area (the pane at the bottom of "
 "the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
-"Se esta opção estiver activa, a área de descrição longa (na área na zona "
-"inferior do ecrã) na lista de pacotes será visível quando o programa "
-"começar; caso contrário, inicialmente estará escondido."
+"Se esta opção estiver activa, a área de informação (na área na zona inferior "
+"do ecrã) na lista de pacotes será visível quando o programa começar; caso "
+"contrário, inicialmente estará escondido."
 
 #: src/apt_options.cc:217
-#, fuzzy
 msgid "Display tabs for the available views"
-msgstr "O formato de exibição para vistas de pacotes"
+msgstr "Mostrar separadores para as vistas disponíveis"
 
 #: src/apt_options.cc:218
-#, fuzzy
 msgid ""
 "If this option is enabled, tabs will appear at the top of the screen listing "
 "the currently opened views."
 msgstr ""
-"Se esta opção estiver activa, o aptitude irá mostrar o estado das "
-"transferências a decorrer na zona inferior do ecrã, em vez de abrir uma nova "
-"vista."
+"Se esta opção estiver activa, irão aparecer separadores no topo do ecrã "
+"listando as vistas actualmente abertas."
 
 #: src/apt_options.cc:221
-#, fuzzy
 msgid "Display tabs for the information area"
-msgstr "Mostrar mais informações acerca do pacote seleccionado"
+msgstr "Mostrar separadores para a área de informações"
 
 #: src/apt_options.cc:222
-#, fuzzy
 msgid ""
 "If this option is enabled, tabs will appear at the top of the information "
 "area (the pane at the bottom of the screen) listing the different displays "
 "of information that can be viewed there."
 msgstr ""
-"Se esta opção estiver activa, a área de descrição longa (na área na zona "
-"inferior do ecrã) na lista de pacotes será visível quando o programa "
-"começar; caso contrário, inicialmente estará escondido."
+"Se esta opção estiver activa, irá aparecer um separador no topo da área de "
+"informações (a área na zona inferior do ecrã) listando as diferentes vistas "
+"de informação que podem ser istas lá."
 
 #: src/apt_options.cc:227
 msgid "Advance to the next item after changing the state of a package"
@@ -706,9 +699,9 @@ msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Não foi possível encontrar o pacote de código-fonte para \"%s\".\n"
 
 #: src/cmdline/cmdline_action.cc:202
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to satisfy the build-depends: %s."
-msgstr "Não foi possível satisfazer as dependências de compilação %s: ."
+msgstr "Não foi possível satisfazer as dependências de compilação %s."
 
 #: src/cmdline/cmdline_action.cc:238
 #, c-format
@@ -951,6 +944,8 @@ msgid ""
 "extract-cache-entries: at least one argument is required (the directory\n"
 "to which to write files).\n"
 msgstr ""
+"extract-cache-entries: é necessário pelo menos um argumento (o directório\n"
+"para onde escrever os ficheiros).\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:77
 #: src/cmdline/cmdline_user_tag.cc:116
@@ -962,6 +957,7 @@ msgstr "O pacote \"%s\" não existe.\n"
 #, c-format
 msgid "No packages were selected by the given search pattern; nothing to do.\n"
 msgstr ""
+"Não foram escolhidos pacotes pelo dado padrão de procura: nada a fazer.\n"
 
 #: src/cmdline/cmdline_forget_new.cc:25
 #, c-format
@@ -1203,12 +1199,12 @@ msgstr "Entrada não reconhecida.  Introduza ou \"%s\" ou \"%s\".\n"
 #: src/cmdline/cmdline_prompt.cc:854
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
-msgstr "Os seguintes pacotes estão RECOMENDADOS mas NÃO serão instalados:\n"
+msgstr "Os seguintes pacotes são RECOMENDADOS mas NÃO serão instalados:\n"
 
 #: src/cmdline/cmdline_prompt.cc:860
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
-msgstr "Os seguintes pacotes estão SUGERIDOS mas NÃO serão instalados:\n"
+msgstr "Os seguintes pacotes são SUGERIDOS mas NÃO serão instalados:\n"
 
 #: src/cmdline/cmdline_prompt.cc:865
 #, c-format
@@ -2151,15 +2147,15 @@ msgstr "Não pode especificar um arquivo e uma versão para um pacote\n"
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
-msgstr[0] "%d estragou [%+d]"
-msgstr[1] "%d estragaram [%+d]"
+msgstr[0] "%d estrago [%+d]"
+msgstr[1] "%d estragados [%+d]"
 
 #: src/cmdline/cmdline_util.cc:306
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
-msgstr[0] "%d actualiza [%+d]"
-msgstr[1] "%d actualizam [%+d]"
+msgstr[0] "%d actualização [%+d]"
+msgstr[1] "%d actualizações [%+d]"
 
 #: src/cmdline/cmdline_util.cc:320
 #, c-format
@@ -2171,7 +2167,7 @@ msgstr[1] "%d novos [%+d]"
 #: src/cmdline/cmdline_util.cc:331
 #, c-format
 msgid "Current status: %F."
-msgstr ""
+msgstr "Estado actual: %F."
 
 #: src/cmdline/cmdline_util.cc:342
 #, c-format
@@ -2271,9 +2267,10 @@ msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> a ultrapassar, o pai não está na versão escolhida\n"
 
 #: src/cmdline/cmdline_why.cc:494
-#, fuzzy
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
-msgstr "    ++   --> a ultrapassar, o pai não está na versão escolhida\n"
+msgstr ""
+"    ++   --> a ultrapassar, a dependência está satisfeita pela versão "
+"actual\n"
 
 #: src/cmdline/cmdline_why.cc:524
 msgid "    ++   --> ENQUEUING\n"
@@ -2298,14 +2295,14 @@ msgid "Skipping this solution, I've already seen it.\n"
 msgstr "A ultrapassar esta solução, eu já a vi.\n"
 
 #: src/cmdline/cmdline_why.cc:973
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to remove %s.\n"
-msgstr "Não foi possível encontrar uma solução para aplicar."
+msgstr "Não foi possível encontrar uma razão para remover %s.\n"
 
 #: src/cmdline/cmdline_why.cc:975
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to install %s.\n"
-msgstr "Não foi possível encontrar uma solução para aplicar."
+msgstr "Não foi possível encontrar uma razão para instalar %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
 #: src/cmdline/cmdline_why.cc:1108
@@ -3322,71 +3319,61 @@ msgid "Compiler: g++ %s\n"
 msgstr "Compilador: g++ %s\n"
 
 #: src/main.cc:111
-#, fuzzy
 msgid "Compiled against:\n"
-msgstr "Compilador: g++ %s\n"
+msgstr "Compilado com:\n"
 
 #: src/main.cc:112
-#, fuzzy, c-format
+#, c-format
 msgid "  apt version %d.%d.%d\n"
-msgstr "Manter %F na versão %s (%s)"
+msgstr "  apt versão %d.%d.%d\n"
 
 #: src/main.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: Unknown\n"
-msgstr ""
-"\n"
-"Versão do NCurses: %s\n"
+msgstr "  NCurses versão: Desconhecida\n"
 
 #: src/main.cc:117
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version %s\n"
-msgstr ""
-"\n"
-"Versão do NCurses: %s\n"
+msgstr " NCurses versão %s\n"
 
 #: src/main.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "  libsigc++ version: %s\n"
-msgstr "versão de libsigc++: %s\n"
+msgstr "  libsigc++ versão: %s\n"
 
 #: src/main.cc:121
-#, fuzzy, c-format
+#, c-format
 msgid "  Ept support enabled.\n"
-msgstr "Activado suporte para Ept.\n"
+msgstr "  Activado suporte para Ept.\n"
 
 #: src/main.cc:123
-#, fuzzy, c-format
+#, c-format
 msgid "  Ept support disabled.\n"
-msgstr "Suporte para Ept desactivado.\n"
+msgstr "  Suporte para Ept desactivado.\n"
 
 #: src/main.cc:126
-#, fuzzy
 msgid ""
 "\n"
 "Current library versions:\n"
 msgstr ""
 "\n"
-"Versão do Curses: %s\n"
+"Versões das bibliotecas actuais:\n"
 
 #: src/main.cc:127
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: %s\n"
-msgstr ""
-"\n"
-"Versão do NCurses: %s\n"
+msgstr "  NCurses versão: %s\n"
 
 #: src/main.cc:128
-#, fuzzy, c-format
+#, c-format
 msgid "  cwidget version: %s\n"
-msgstr "versão de libsigc++: %s\n"
+msgstr "  cwidget versão: %s\n"
 
 #: src/main.cc:129
-#, fuzzy, c-format
+#, c-format
 msgid "  Apt version: %s\n"
-msgstr ""
-"\n"
-"Versão do Curses: %s\n"
+msgstr "  Apt versão: %s\n"
 
 #: src/main.cc:135
 #, c-format
@@ -3518,13 +3505,16 @@ msgstr ""
 "actualmente instalado\n"
 
 #: src/main.cc:159
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package\n"
 msgstr ""
-" -Z             Mostrar a alteração no tamanho instalado de cada pacote.\n"
+" why          - Mostrar os pacotes instalados manualmente que necessitem "
+"dum\n"
+"                pacote, ou porque um ou mais pacotes necessitariam dum dado "
+"pacote\n"
 
 #: src/main.cc:161
 #, c-format
@@ -3534,6 +3524,8 @@ msgid ""
 "                with the given package, or why one or more packages would\n"
 "                lead to a conflict with the given package if installed\n"
 msgstr ""
+" why-not      - Mostrar os pacotes instalados manualmente que levam a um\n"
+"                conflito com o dito pacote, se instalado\n"
 
 #: src/main.cc:165
 #, c-format
@@ -3636,13 +3628,13 @@ msgstr ""
 " -t [release]   Define de que distribuição os pacotes devem ser instalados\n"
 
 #: src/main.cc:180
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
 msgstr ""
-" -q             No modo de linha de comandos, suprimir os indicadores "
-"incrementais de progresso.\n"
+" -q             No modo de linha de comandos, suprimir os "
+"indicadores                 incrementais de progresso.\n"
 
 #: src/main.cc:182
 #, c-format
@@ -4525,9 +4517,9 @@ msgid "Packages which depend on %s"
 msgstr "Pacotes que dependem de %s"
 
 #: src/pkg_info_screen.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid "Versions of %s"
-msgstr "Versões"
+msgstr "Versões de %s"
 
 #: src/pkg_item.cc:61
 msgid "Yes, I am aware this is a very bad idea"
@@ -4655,13 +4647,12 @@ msgid "Couldn't parse column definition"
 msgstr "Não foi possível processar a definição de coluna"
 
 #: src/pkg_view.cc:223
-#, fuzzy
 msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
 msgstr ""
-"Se seleccionar um pacote, uma explicação de seu estado actual aparecerá "
-"neste espaço."
+"Se escolher um pacote, neste espaço aparece uma explicação porque deve ser "
+"instalado ou removido."
 
 #: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
@@ -4675,14 +4666,12 @@ msgstr ""
 "itens estáticos"
 
 #: src/pkg_view.cc:678
-#, fuzzy
 msgid "Related Dependencies"
-msgstr "Resolver Dependências."
+msgstr "Dependências Relacionadas"
 
 #: src/pkg_view.cc:681
-#, fuzzy
 msgid "Why Installed"
-msgstr "Instalado"
+msgstr "Porquê Instalado"
 
 #: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
@@ -5222,14 +5211,13 @@ msgid "Recommendations"
 msgstr "Recomendações"
 
 #: src/ui.cc:970
-#, fuzzy
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
 "is free software, and you are welcome to redistribute it under certain "
 "conditions; see 'license' for details."
 msgstr ""
-"Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%nO aptitude é fornecido "
+"Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%nO aptitude é fornecido "
 "%BSEM ABSOLUTAMENTE NENHUMA GARANTIA%b; para detalhes veja 'licença' no menu "
 "Ajuda.  Isto é software livre, e você é encorajado a redistribuí-lo sob "
 "certas condições; veja a 'licença' para detalhes."
@@ -6014,9 +6002,8 @@ msgid "^News"
 msgstr "^Novidades"
 
 #: src/ui.cc:2377
-#, fuzzy
 msgid "View the important changes made in each version of "
-msgstr "Ver as alterações importantes feitas em cada versão de %s"
+msgstr "Ver as alterações importantes feitas em cada versão de "
 
 #: src/ui.cc:2380
 msgid "^License"
@@ -6080,11 +6067,54 @@ msgstr "A efectuar a transferência do registo de alterações"
 msgid "Download Changelog"
 msgstr "Transferência do 'Changelog'"
 
+#~ msgid "Unable to resolve dependencies for the upgrade (resolver timed out)."
+#~ msgstr ""
+#~ "Não foi possível resolver dependências para a actualização (a resolução "
+#~ "de dependências esgotou o tempo)."
+
 #~ msgid "The package \"%s\" is a starting point of the search.\n"
 #~ msgstr "O pacote \"%s\" é um ponto de inicio da pesquisa.\n"
 
 #~ msgid "The package \"%s\" is manually installed.\n"
 #~ msgstr "O pacote \"%s\" está instalado manualmente.\n"
+
+#~ msgid "Got "
+#~ msgstr "Obteve "
+
+#~ msgid "Downloading..."
+#~ msgstr "A fazer download..."
+
+#, fuzzy
+#~ msgid ""
+#~ "The system configuration file (%s) contains a setting for the obsolete "
+#~ "option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
+#~ "Recommends' instead or removing this setting."
+#~ msgstr ""
+#~ "#-#-#-#-#  pt.po (aptitude)  #-#-#-#-#\n"
+#~ "O ficheiro (%s) de configuração do sistema contém uma definição para a "
+#~ "opção obsoleta 'Aptitude::Recommends-Important'; em vez disso considere "
+#~ "definir 'APT::Install-Recommends' ou remova esta configuração.\n"
+#~ "#-#-#-#-#  pt.po (aptitude)  #-#-#-#-#\n"
+#~ "O ficheiro de configuração do sistema (%s) contém uma definição para a "
+#~ "opção obsoleta 'Aptitude::Recommends-Important'; em vez disso considere "
+#~ "definir 'APT::Install-Recommends' ou remova esta configuração."
+
+#, fuzzy
+#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
+#~ msgstr ""
+#~ "#-#-#-#-#  pt.po (aptitude)  #-#-#-#-#\n"
+#~ "Não foi possível carregar o vocabulário debtags, talvez o debtags não  "
+#~ "esteja instalado?\n"
+#~ "#-#-#-#-#  pt.po (aptitude)  #-#-#-#-#\n"
+#~ "Não foi possível carregar o vocabulário debtags, talvez o debtags não "
+#~ "esteja instalado?"
+
+#~ msgid ""
+#~ "No debtags data available, perhaps you need to install debtags and run "
+#~ "'debtags update'?"
+#~ msgstr ""
+#~ "Estão disponíveis dados debtag, talvez você tenha de instalar o debtags e "
+#~ "correr 'debtags update'?"
 
 #, fuzzy
 #~ msgid ""
@@ -6122,15 +6152,6 @@ msgstr "Transferência do 'Changelog'"
 #~ "configuração do seu apt for partilhada com um sistema que tenha instalado "
 #~ "uma versão mais antiga do aptitude)."
 
-#~ msgid ""
-#~ "The system configuration file (%s) contains a setting for the obsolete "
-#~ "option 'Aptitude::Recommends-Important'; consider setting 'APT::Install-"
-#~ "Recommends' instead or removing this setting."
-#~ msgstr ""
-#~ "O ficheiro de configuração do sistema (%s) contém uma definição para a "
-#~ "opção obsoleta 'Aptitude::Recommends-Important'; em vez disso considere "
-#~ "definir 'APT::Install-Recommends' ou remova esta configuração."
-
 #~ msgid "No justification for removing %s could be constructed.\n"
 #~ msgstr "Não pode ser construida nenhuma justificação para remover %s.\n"
 
@@ -6139,13 +6160,6 @@ msgstr "Transferência do 'Changelog'"
 
 #~ msgid "Downloading "
 #~ msgstr "A transferir "
-
-#~ msgid "Got "
-#~ msgstr "Obteve "
-
-#, fuzzy
-#~ msgid "Downloading..."
-#~ msgstr "A transferir... "
 
 #~ msgid "Downloaded %sB in %ss (%sB/s)."
 #~ msgstr "Transferidos %sB em %ss (%sB/s)."
@@ -6209,11 +6223,6 @@ msgstr "Transferência do 'Changelog'"
 
 #~ msgid "TOP LEVEL"
 #~ msgstr "NÍVEL de TOPO"
-
-#~ msgid "Unable to load debtags vocabulary, perhaps debtags is not installed?"
-#~ msgstr ""
-#~ "Não foi possível carregar o vocabulário debtags, talvez o debtags não "
-#~ "esteja instalado?"
 
 #~ msgid "Internal buffer overflow on package \"%s\" while writing state file"
 #~ msgstr ""
