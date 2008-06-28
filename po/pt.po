@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-06-21 11:47-0700\n"
-"PO-Revision-Date: 2008-05-20 19:47+0100\n"
+"PO-Revision-Date: 2008-06-28 08:32+0100\n"
 "Last-Translator: Miguel Figueiredo <elmig@debianPT.org>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1019,8 +1019,8 @@ msgstr "Não foi possível ler a lista das fontes"
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(para %s)"
+msgstr[1] " (para %s)"
 
 #: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
@@ -1614,8 +1614,8 @@ msgid ""
 "accept the given package versions (; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package."
 msgstr ""
-"aceitar as versões do pacote dadas; mostrar apenas soluções nas quais estas "
-"ocorram.  Introduza UNINST em vez de uma versão para aceitar remover o "
+"aceitar as versões do pacote dadas (; mostrar apenas soluções nas quais "
+"estas ocorram.  Introduza UNINST em vez de uma versão para aceitar remover o "
 "pacote."
 
 #: src/cmdline/cmdline_resolver.cc:203
@@ -2208,9 +2208,8 @@ msgid "Install"
 msgstr "Instalar"
 
 #: src/cmdline/cmdline_why.cc:286
-#, fuzzy
 msgid "InstallNotCurrent"
-msgstr "Instalado"
+msgstr "InstalarNãoActuais"
 
 #: src/cmdline/cmdline_why.cc:294
 msgid "allow_choices"
@@ -2657,8 +2656,8 @@ msgstr "(core dumped)"
 #, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr ""
-"O processo de actualização de debtags (%s actualiza %s) foi morto pelo sinal "
-"%d%s."
+"O processo de actualização de debtags (%s update %s) foi morto pelo sinal %d%"
+"s."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #. PS: indentation sucks!
@@ -2667,8 +2666,8 @@ msgstr ""
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
-"O processo de actualização de debtags (%s actualiza %s) terminou "
-"anormalmente (código %d)."
+"O processo de actualização de debtags (%s update %s) terminou anormalmente "
+"(código %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #: src/generic/apt/download_update_manager.cc:372
@@ -2677,8 +2676,8 @@ msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
 "(status %d)."
 msgstr ""
-"O processo de actualização de debtags (%s actualiza %s) terminou de uma "
-"forma não esperada (status %d)."
+"O processo de actualização de debtags (%s update %s) terminou de uma forma "
+"não esperada (status %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #: src/generic/apt/download_update_manager.cc:378
@@ -2687,7 +2686,7 @@ msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
 "installed?): %s"
 msgstr ""
-"A actualização da base de dados debtags falhou (%s actualiza %s) (talvez o "
+"A actualização da base de dados debtags falhou (%s update %s) (talvez o "
 "debtags não esteja instalado?): %s"
 
 #: src/generic/apt/dump_packages.cc:539 src/generic/apt/dump_packages.cc:629
@@ -4610,8 +4609,8 @@ msgstr "Editor de Hierarquia"
 #, c-format
 msgid "This group contains %d package."
 msgid_plural "This group contains %d packages."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Este grupo contém %d pacote."
+msgstr[1] "Este grupo contém %d pacotes."
 
 #: src/pkg_tree.cc:175
 msgid "All Packages"
@@ -5700,7 +5699,7 @@ msgstr "Mostrar mais informações acerca do pacote seleccionado"
 
 #: src/ui.cc:2188
 msgid "C^ycle Package Information"
-msgstr ""
+msgstr "^y Percorrer Informação de Pacote"
 
 #: src/ui.cc:2189
 msgid ""
@@ -5708,6 +5707,9 @@ msgid ""
 "package's long description, a summary of its dependency status, or an "
 "analysis of why the package is required."
 msgstr ""
+"Percorrer os modos da área de informação de pacote: pode mostrar a descrição "
+"longa do pacote, um sumário do estado das suas dependências, ou uma análise "
+"acerca da razão porque o pacote é necessário."
 
 #: src/ui.cc:2192
 msgid "^Changelog"
