@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-21 11:47-0700\n"
+"POT-Creation-Date: 2008-06-28 09:18-0700\n"
 "PO-Revision-Date: 2006-10-18 02:07+0300\n"
 "Last-Translator: Erçin EKER <ercin.eker@linux.org.tr>\n"
 "Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -1567,9 +1567,10 @@ msgstr ""
 msgid "Resolving dependencies..."
 msgstr "Bağımlılıklar çözüleniyor..."
 
-#: src/cmdline/cmdline_resolver.cc:563 src/solution_screen.cc:515
-#, c-format
-msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#: src/cmdline/cmdline_resolver.cc:563
+#, fuzzy, c-format
+#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "açık: %d; kapalı: %d; ertele: %d; çakışma: %d"
 
 #: src/cmdline/cmdline_resolver.cc:616
@@ -4847,6 +4848,11 @@ msgstr "Aşağıdaki önerilenleri çözümlenmemiş bırak:"
 #: src/solution_screen.cc:485
 msgid "No broken packages."
 msgstr "Kırık paket yok."
+
+#: src/solution_screen.cc:515
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr "açık: %d; kapalı: %d; ertele: %d; çakışma: %d"
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"

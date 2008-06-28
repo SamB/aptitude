@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-21 11:47-0700\n"
+"POT-Creation-Date: 2008-06-28 09:18-0700\n"
 "PO-Revision-Date: 2008-03-17 15:59+0100\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -1692,9 +1692,10 @@ msgstr "Chcem vyriešiť konflikty, ale riešenie konfliktov nebolo vytvorené."
 msgid "Resolving dependencies..."
 msgstr "Riešenie závislostí..."
 
-#: src/cmdline/cmdline_resolver.cc:563 src/solution_screen.cc:515
-#, c-format
-msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#: src/cmdline/cmdline_resolver.cc:563
+#, fuzzy, c-format
+#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "otvorené: %d; uzavreté: %d; odložené: %d; konfliktné: %d"
 
 #: src/cmdline/cmdline_resolver.cc:616
@@ -4988,6 +4989,11 @@ msgstr "Ponechať nasledujúce návrhy nevyriešené:"
 #: src/solution_screen.cc:485
 msgid "No broken packages."
 msgstr "Žiadne poškodené balíky"
+
+#: src/solution_screen.cc:515
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr "otvorené: %d; uzavreté: %d; odložené: %d; konfliktné: %d"
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"

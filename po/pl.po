@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-21 11:47-0700\n"
+"POT-Creation-Date: 2008-06-28 09:18-0700\n"
 "PO-Revision-Date: 2008-05-08 11:06+0200\n"
 "Last-Translator: Wiktor Wandachowicz <siryes@gmail.com>\n"
 "Language-Team: Polish <debian-l10n-polish@lists.debian.org>\n"
@@ -1721,9 +1721,10 @@ msgstr ""
 msgid "Resolving dependencies..."
 msgstr "Uzupełnianie niespełnionych zależności..."
 
-#: src/cmdline/cmdline_resolver.cc:563 src/solution_screen.cc:515
-#, c-format
-msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#: src/cmdline/cmdline_resolver.cc:563
+#, fuzzy, c-format
+#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "otwarte: %d; zamknięte: %d; odroczone: %d; konflikty: %d"
 
 #: src/cmdline/cmdline_resolver.cc:616
@@ -5049,6 +5050,11 @@ msgstr "Pozostawienie następujących problemów z zależnościami:"
 #: src/solution_screen.cc:485
 msgid "No broken packages."
 msgstr "Brak pakietów z niespełnionymi zależnościami."
+
+#: src/solution_screen.cc:515
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr "otwarte: %d; zamknięte: %d; odroczone: %d; konflikty: %d"
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"

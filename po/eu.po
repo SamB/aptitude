@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_eu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-21 11:47-0700\n"
+"POT-Creation-Date: 2008-06-28 09:18-0700\n"
 "PO-Revision-Date: 2008-05-05 22:00+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -1711,9 +1711,10 @@ msgstr ""
 msgid "Resolving dependencies..."
 msgstr "Mendekotasunak ebazten..."
 
-#: src/cmdline/cmdline_resolver.cc:563 src/solution_screen.cc:515
-#, c-format
-msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#: src/cmdline/cmdline_resolver.cc:563
+#, fuzzy, c-format
+#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "ireki: %d; itxita: %d; geroratua: %d; gatazka: %d"
 
 #: src/cmdline/cmdline_resolver.cc:616
@@ -5048,6 +5049,11 @@ msgstr "Utzi hurrengo gomendioak konpondu gabe:"
 #: src/solution_screen.cc:485
 msgid "No broken packages."
 msgstr "Ez dago hautsitako paketerik."
+
+#: src/solution_screen.cc:515
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr "ireki: %d; itxita: %d; geroratua: %d; gatazka: %d"
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"

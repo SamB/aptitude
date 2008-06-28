@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_el\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-21 11:47-0700\n"
+"POT-Creation-Date: 2008-06-28 09:18-0700\n"
 "PO-Revision-Date: 2006-12-18 09:26+0200\n"
 "Last-Translator: quad-nrg.net <galaxico@quad-nrg.net>\n"
 "Language-Team: Greek <en@li.org>\n"
@@ -1618,9 +1618,10 @@ msgstr ""
 msgid "Resolving dependencies..."
 msgstr "Επίλυση εξαρτήσεων..."
 
-#: src/cmdline/cmdline_resolver.cc:563 src/solution_screen.cc:515
-#, c-format
-msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#: src/cmdline/cmdline_resolver.cc:563
+#, fuzzy, c-format
+#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "ανοιχτό: %d; κλειστό: %d; αποτροπή: %d; σύγκρουση: %d"
 
 #: src/cmdline/cmdline_resolver.cc:616
@@ -4958,6 +4959,11 @@ msgstr "Άφησε τις ακόλουθες συστάσεις ανεπίλυτ
 #: src/solution_screen.cc:485
 msgid "No broken packages."
 msgstr "Δεν υπάρχουν \"σπασμένα\" πακέτα."
+
+#: src/solution_screen.cc:515
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr "ανοιχτό: %d; κλειστό: %d; αποτροπή: %d; σύγκρουση: %d"
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-21 11:47-0700\n"
+"POT-Creation-Date: 2008-06-28 09:18-0700\n"
 "PO-Revision-Date: 2008-04-18 14:16+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
@@ -1606,9 +1606,10 @@ msgstr "我想解决依赖关系，但没有创建依赖关系解决器"
 msgid "Resolving dependencies..."
 msgstr "依赖关系分析中..."
 
-#: src/cmdline/cmdline_resolver.cc:563 src/solution_screen.cc:515
-#, c-format
-msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#: src/cmdline/cmdline_resolver.cc:563
+#, fuzzy, c-format
+#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "打开：%d；关闭；%d；defer: %d; 冲突；%d"
 
 #: src/cmdline/cmdline_resolver.cc:616
@@ -4804,6 +4805,11 @@ msgstr " 不解决下列推荐的软件包："
 #: src/solution_screen.cc:485
 msgid "No broken packages."
 msgstr "无破损的软件包。"
+
+#: src/solution_screen.cc:515
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr "打开：%d；关闭；%d；defer: %d; 冲突；%d"
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"

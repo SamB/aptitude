@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-21 11:47-0700\n"
+"POT-Creation-Date: 2008-06-28 09:18-0700\n"
 "PO-Revision-Date: 2008-05-13 00:27-0300\n"
 "Last-Translator: Felipe Augusto van de Wiel (faw) <faw@debian.org>\n"
 "Language-Team: Brazilian Portuguese <debian-l10n-portuguese@lists.debian."
@@ -1724,9 +1724,10 @@ msgstr ""
 msgid "Resolving dependencies..."
 msgstr "Resolvendo dependências..."
 
-#: src/cmdline/cmdline_resolver.cc:563 src/solution_screen.cc:515
-#, c-format
-msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#: src/cmdline/cmdline_resolver.cc:563
+#, fuzzy, c-format
+#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "aberto: %d; fechado: %d; atrasado: %d; conflito: %d"
 
 #: src/cmdline/cmdline_resolver.cc:616
@@ -5067,6 +5068,11 @@ msgstr "Manter as recomendações a seguir não resolvidas:"
 #: src/solution_screen.cc:485
 msgid "No broken packages."
 msgstr "Nenhum pacote quebrado."
+
+#: src/solution_screen.cc:515
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr "aberto: %d; fechado: %d; atrasado: %d; conflito: %d"
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"

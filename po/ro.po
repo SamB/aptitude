@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ro\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-21 11:47-0700\n"
+"POT-Creation-Date: 2008-06-28 09:18-0700\n"
 "PO-Revision-Date: 2008-06-13 23:17+0300\n"
 "Last-Translator: Eddy Petrișor <eddy.petrisor@gmail.com>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
@@ -1738,9 +1738,10 @@ msgstr ""
 msgid "Resolving dependencies..."
 msgstr "Se rezolvă dependențele..."
 
-#: src/cmdline/cmdline_resolver.cc:563 src/solution_screen.cc:515
-#, c-format
-msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#: src/cmdline/cmdline_resolver.cc:563
+#, fuzzy, c-format
+#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "deschis: %d; închis: %d; amânat: %d; conflict: %d"
 
 #: src/cmdline/cmdline_resolver.cc:616
@@ -5090,6 +5091,11 @@ msgstr "Se lasă nerezolvate următoarele recomandări:"
 #: src/solution_screen.cc:485
 msgid "No broken packages."
 msgstr "Nici un pachet deteriorat."
+
+#: src/solution_screen.cc:515
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr "deschis: %d; închis: %d; amânat: %d; conflict: %d"
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"
