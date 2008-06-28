@@ -247,7 +247,7 @@ static pkgCache::VerIterator choose_version(const vector<pkgCache::VerIterator> 
       in >> ws >> i >> ws;
 
       if(!in || !in.eof() || i < 1 || i > (signed)choices.size())
-	cerr << ssprintf(_("Invalid response.  Please enter an integer between 1 and %d."), choices.size()) << endl;
+	cerr << ssprintf(_("Invalid response.  Please enter an integer between 1 and %d."), (int)choices.size()) << endl;
       else
 	return choices[i];
     }
@@ -560,7 +560,7 @@ aptitude_solution calculate_current_solution(bool suppress_message)
 	{
 	  resolver_manager::state state = resman->state_snapshot();
 
-	  spin.set_msg(ssprintf(_("open: %d; closed: %d; defer: %d; conflict: %d"),
+	  spin.set_msg(ssprintf(_("open: %zd; closed: %zd; defer: %zd; conflict: %zd"),
 				state.open_size, state.closed_size,
 				state.deferred_size, state.conflicts_size));
 	  spin.display();

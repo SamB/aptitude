@@ -342,7 +342,7 @@ namespace
 	output_fragments.push_back(cw::text_fragment(ssprintf(ngettext("There is %d newly obsolete package.",
 								       "There are %d newly obsolete packages.",
 								       new_obsolete.size()),
-							      new_obsolete.size())));
+							      (int)new_obsolete.size())));
       }
     else if(new_obsolete.size() > 0)
       {
