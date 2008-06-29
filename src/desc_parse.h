@@ -53,12 +53,20 @@ namespace aptitude
     /** \brief The type tag of elements. */
     enum element_type
       {
+	/** \brief Indicates that an element represents a blank line
+	 *  between paragraphs.
+	 *
+	 *  The cwidget and command-line frontends need this because
+	 *  vertical whitespace in these environments is dished out in
+	 *  rather large quanta and user expectations are quite
+	 *  specific.  Other frontends may want to experiment with
+	 *  looser inter-paragraph spacing (ignoring this element
+	 *  type).
+	 */
+	blank_line,
 	/** \brief Indicates that an element represents a paragraph of text.
 	 *
-	 *  Paragraphs should be word-wrapped, and adjacent paragraphs
-	 *  should be separated by vertical whitespace.  Paragraphs
-	 *  with empty string data insert vertical whitespace and no
-	 *  text at all.
+	 *  Paragraphs should be word-wrapped.
 	 */
 	paragraph,
 	/** \brief Indicates that an element represents literally formatted text.
@@ -109,6 +117,13 @@ namespace aptitude
       --refcount;
       if(refcount == 0)
 	delete this;
+    }
+
+    static cwidget::util::ref_ptr<description_element>
+    make_blank_line()
+    {
+      return new description_element(blank_line, std::wstring(),
+				     std::vector<cwidget::util::ref_ptr<description_element> >());
     }
 
     static cwidget::util::ref_ptr<description_element>
