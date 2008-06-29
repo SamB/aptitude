@@ -27,6 +27,8 @@ libgeneric_apt_a_SOURCES = \
         apt_undo_group.h    \
         config_signal.cc    \
         config_signal.h     \
+	desc_parse.cc       \
+	desc_parse.h        \
 	download_manager.cc \
 	download_manager.h  \
 	download_install_manager.cc \

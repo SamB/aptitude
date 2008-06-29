@@ -14,8 +14,8 @@ LDADD=@LIBINTL@ cmdline/libcmdline.a mine/libcmine.a \
 aptitude_SOURCES= 	\
 	aptitude.h	\
 	main.cc		\
-	desc_parse.cc   \
-	desc_parse.h    \
+	desc_render.cc   \
+	desc_render.h    \
 	apt_config_treeitems.cc \
 	apt_config_treeitems.h  \
 	apt_config_widgets.cc \

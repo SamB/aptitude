@@ -21,7 +21,7 @@
 
 #include "aptitude.h"
 
-#include "desc_parse.h"
+#include "desc_render.h"
 #include "edit_pkg_hier.h"
 #include "menu_redirect.h"
 #include "pkg_columnizer.h"
