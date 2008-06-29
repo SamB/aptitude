@@ -1,4 +1,4 @@
-// main.cc  (neé testscr.cc)
+// main.cc  (neÃ© testscr.cc)
 //
 //  Copyright 1999-2008 Daniel Burrows
 //
@@ -72,6 +72,7 @@
 #include "pkg_columnizer.h"
 #include "pkg_grouppolicy.h"
 #include "pkg_view.h"
+#include "ui.h"
 
 namespace cw = cwidget;
 
@@ -210,7 +211,9 @@ enum {
   OPTION_NO_SHOW_RESOLVER_ACTIONS,
   OPTION_ARCH_ONLY,
   OPTION_NOT_ARCH_ONLY,
-  OPTION_DISABLE_COLUMNS
+  OPTION_DISABLE_COLUMNS,
+  OPTION_GUI,
+  OPTION_NO_GUI
 };
 int getopt_result;
 
@@ -251,6 +254,8 @@ option opts[]={
   {"remove-user-tag-from", 1, &getopt_result, OPTION_REMOVE_USER_TAG_FROM},
   {"arch-only", 0, &getopt_result, OPTION_ARCH_ONLY},
   {"not-arch-only", 0, &getopt_result, OPTION_NOT_ARCH_ONLY},
+  {"gui", 0, &getopt_result, OPTION_GUI},
+  {"no-gui", 0, &getopt_result, OPTION_NO_GUI},
   {0,0,0,0}
 };
 
@@ -311,6 +316,9 @@ int main(int argc, char *argv[])
   bool seen_quiet = false;
   int quiet = 0;
   std::vector<aptitude::cmdline::tag_application> user_tags;
+
+  // TODO: this should be a configuration option.
+  bool gui = true;
 
   int curopt;
   // The last option seen
@@ -486,7 +494,7 @@ int main(int argc, char *argv[])
 	      full_resolver_option = true;
 	      break;
 	    case OPTION_VISUAL_PREVIEW:
-	      visual_preview=true;	      
+	      visual_preview=true;
 	      break;
 	    case OPTION_QUEUE_ONLY:
 	      queue_only=true;
@@ -539,6 +547,12 @@ int main(int argc, char *argv[])
 	      break;
 	    case OPTION_DISABLE_COLUMNS:
 	      disable_columns = true;
+	      break;
+	    case OPTION_GUI:
+	      gui = true;
+	      break;
+	    case OPTION_NO_GUI:
+	      gui = false;
 	      break;
 	    default:
 	      fprintf(stderr, "%s",
@@ -737,53 +751,61 @@ int main(int argc, char *argv[])
 	}
     }
 
-  ui_init();
-
-  try
+  if(gui)
     {
-      progress_ref p=gen_progress_bar();
-      // We can avoid reading in the package lists in the case that
-      // we're about to update them (since they'd be closed and
-      // reloaded anyway).  Obviously we still need them for installs,
-      // since we have to get information about what to install from
-      // somewhere...
-      if(!update_only)
-	apt_init(p.unsafe_get_ref(), true, status_fname);
-      if(status_fname)
-	free(status_fname);
-      check_apt_errors();
-
-      file_quit.connect(sigc::ptr_fun(cw::toplevel::exitmain));
-
-      if(apt_cache_file)
-	{
-	  (*apt_cache_file)->package_state_changed.connect(sigc::ptr_fun(cw::toplevel::update));
-	  (*apt_cache_file)->package_category_changed.connect(sigc::ptr_fun(cw::toplevel::update));
-	}
-
-      do_new_package_view(*p.unsafe_get_ref());
-      p->destroy();
-      p = NULL;
-
-      if(update_only)
-	do_update_lists();
-      else if(install_only)
-	do_package_run_or_show_preview();
-      //install_or_remove_packages();
-
-      ui_main();
+      gui::main(argc, argv);
+      return 0;
     }
-  catch(const cwidget::util::Exception &e)
+  else
     {
-      cw::toplevel::shutdown();
+      ui_init();
 
-      fprintf(stderr, _("Uncaught exception: %s\n"), e.errmsg().c_str());
+      try
+        {
+          progress_ref p=gen_progress_bar();
+          // We can avoid reading in the package lists in the case that
+          // we're about to update them (since they'd be closed and
+          // reloaded anyway).  Obviously we still need them for installs,
+          // since we have to get information about what to install from
+          // somewhere...
+          if(!update_only)
+            apt_init(p.unsafe_get_ref(), true, status_fname);
+          if(status_fname)
+            free(status_fname);
+          check_apt_errors();
 
-      std::string backtrace = e.get_backtrace();
-      if(!backtrace.empty())
-	fprintf(stderr, _("Backtrace:\n%s\n"), backtrace.c_str());
-      return -1;
+          file_quit.connect(sigc::ptr_fun(cw::toplevel::exitmain));
+
+          if(apt_cache_file)
+            {
+              (*apt_cache_file)->package_state_changed.connect(sigc::ptr_fun(cw::toplevel::update));
+              (*apt_cache_file)->package_category_changed.connect(sigc::ptr_fun(cw::toplevel::update));
+            }
+
+          do_new_package_view(*p.unsafe_get_ref());
+          p->destroy();
+          p = NULL;
+
+          if(update_only)
+            do_update_lists();
+          else if(install_only)
+            do_package_run_or_show_preview();
+          //install_or_remove_packages();
+
+          ui_main();
+        }
+      catch(const cwidget::util::Exception &e)
+        {
+          cw::toplevel::shutdown();
+
+          fprintf(stderr, _("Uncaught exception: %s\n"), e.errmsg().c_str());
+
+          std::string backtrace = e.get_backtrace();
+          if(!backtrace.empty())
+            fprintf(stderr, _("Backtrace:\n%s\n"), backtrace.c_str());
+          return -1;
+        }
+
+      return 0;
     }
-
-  return 0;
 }
