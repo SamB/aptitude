@@ -169,6 +169,24 @@ namespace aptitude
     }
   };
   typedef cwidget::util::ref_ptr<description_element> description_element_ref;
+
+  /** \brief Render a list of elements as a cwidget fragment.
+   *
+   *  \param elements   the list of description elements to be rendered.
+   */
+  cwidget::fragment *make_desc_fragment(const std::vector<description_element_ref> &elements);
+
+  /** \brief Parse a description-style string.
+   *
+   *  \param desc the raw text of the description.  The short
+   *  description (i.e., everything up to and including the first
+   *  newline) will be stripped from this string before it is parsed.
+   *
+   *  \param output the output list; all the top-level elements of the
+   *  parsed description will be pushed onto the end of this vector.
+   */
+  void parse_desc(const std::wstring &desc,
+		  std::vector<description_element_ref> &output);
 }
 
 /** Parses the given description string according to the standard
@@ -176,6 +194,8 @@ namespace aptitude
  *
  *  \param desc a Description tag to parse
  *  \return a cwidget::fragment representing that description
+ *
+ *  This just invokes aptitude::parse_desc() and aptitude::make_desc_fragment().
  */
 cwidget::fragment *make_desc_fragment(const std::wstring &desc);
 

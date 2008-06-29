@@ -76,13 +76,12 @@ namespace cw = cwidget;
  *
  *  \return the new cw::fragment.
  */
-static cw::fragment *make_level_fragment(const wstring &desc,
-					 unsigned int level,
-					 wstring::size_type indent,
-					 wstring::size_type &start,
-					 bool recognize_bullets)
+static void make_level_fragment(const wstring &desc,
+				wstring::size_type indent,
+				wstring::size_type &start,
+				bool recognize_bullets,
+				std::vector<aptitude::description_element_ref> &output)
 {
-  vector<cw::fragment*> fragments;
   bool first=true;
 
   while(start<desc.size())
@@ -121,7 +120,7 @@ static cw::fragment *make_level_fragment(const wstring &desc,
       // space; other full stops are treated as part of a paragraph.
       if(nspaces == 1 && desc[loc] == '.')
 	{
-	  fragments.push_back(cw::newline_fragment());
+	  output.push_back(aptitude::description_element::make_blank_line());
 
 	  while(loc < desc.size() && desc[loc] != L'\n')
 	    ++loc;
@@ -162,24 +161,17 @@ static cw::fragment *make_level_fragment(const wstring &desc,
 	      {
 		// Start a list item (i.e., an indented region).
 
-		wstring bullet;
-		bullet+=(L"*+-"[level%3]);
-
 		start = loc2 + 2;
 
-		cw::fragment *item_contents =
-		  make_level_fragment(desc,
-				      level+1,
-				      nspaces2 + 2,
-				      start,
-				      recognize_bullets);
+		std::vector<aptitude::description_element_ref> item_contents;
 
-		fragments.push_back(cw::style_fragment(cw::text_fragment(bullet),
-							    cw::get_style("Bullet")));
-		fragments.push_back(cw::indentbox(1,
-						       (level+1)*2,
-						       item_contents));
+		make_level_fragment(desc,
+				    nspaces2 + 2,
+				    start,
+				    recognize_bullets,
+				    item_contents);
 
+		output.push_back(aptitude::description_element::make_bullet_list(item_contents));
 	      }
 	    else
 	      {
@@ -187,8 +179,7 @@ static cw::fragment *make_level_fragment(const wstring &desc,
 		while(loc+amt<desc.size() && desc[loc+amt]!=L'\n')
 		  ++amt;
 
-		// Hard-wrap AS REQUIRED BY POLICY.
-		fragments.push_back(cw::hardwrapbox(cw::text_fragment(wstring(desc, loc, amt))));
+		output.push_back(aptitude::description_element::make_literal(wstring(desc, loc, amt)));
 
 		loc+=amt;
 		if(loc<desc.size())
@@ -248,34 +239,96 @@ static cw::fragment *make_level_fragment(const wstring &desc,
 		cont=false;
 	    } while(cont);
 
-	    fragments.push_back(wrapbox(cw::text_fragment(par)));
+	    output.push_back(aptitude::description_element::make_paragraph(par));
 	  }
 	}
     }
+}
 
-  return cw::sequence_fragment(fragments);
+namespace aptitude
+{
+  namespace
+  {
+    cw::fragment *make_desc_fragment(const std::vector<description_element_ref> &elements,
+				     int level)
+    {
+      std::vector<cw::fragment *> fragments;
+
+      for(std::vector<description_element_ref>::const_iterator it = elements.begin();
+	  it != elements.end(); ++it)
+	{
+	  const description_element_ref &elt(*it);
+
+	  switch(elt->get_type())
+	    {
+	    case description_element::blank_line:
+	      fragments.push_back(cw::newline_fragment());
+	      break;
+	    case description_element::paragraph:
+	      fragments.push_back(wrapbox(cw::text_fragment(elt->get_string())));
+	      break;
+	    case description_element::literal:
+	      fragments.push_back(cw::hardwrapbox(cw::text_fragment(elt->get_string())));
+	      break;
+	    case description_element::bullet_list:
+	      {
+		wstring bullet;
+		bullet.push_back(L"*+-"[level%3]);
+
+		cw::fragment *item_contents(make_desc_fragment(elt->get_elements(),
+							       level + 1));
+
+		fragments.push_back(cw::style_fragment(cw::text_fragment(bullet),
+						       cw::get_style("Bullet")));
+		fragments.push_back(cw::indentbox(1,
+						  (level + 1) * 2,
+						  item_contents));
+	      }
+	      break;
+	    }
+	}
+
+      return cw::sequence_fragment(fragments);
+    }
+  }
+
+  cw::fragment *make_desc_fragment(const std::vector<description_element_ref> &elements)
+  {
+    return make_desc_fragment(elements, 0);
+  }
+
+  void parse_desc(const std::wstring &desc,
+		  std::vector<description_element_ref> &output)
+  {
+    wstring::size_type loc = 0;
+
+    // Skip the short description
+    while(loc < desc.size() && desc[loc]!=L'\n')
+      ++loc;
+
+    if(loc < desc.size()) // Skip the '\n'
+      ++loc;
+
+    // Skip leading whitespace on the first line if there is any.
+    if(loc<desc.size() && desc[loc] == L' ')
+      ++loc;
+
+    // The initial indentation level is 1 because in a Packages file,
+    // all Description lines get at least one character of indentation
+    // and we want to strip that off.
+    make_level_fragment(desc, 1, loc,
+			aptcfg->FindB(PACKAGE "::Parse-Description-Bullets",
+				      true),
+			output);
+  }
 }
 
 cw::fragment *make_desc_fragment(const wstring &desc)
 {
-  wstring::size_type loc=0;
-  vector<cw::fragment*> fragments;
+  std::vector<aptitude::description_element_ref> elements;
+  aptitude::parse_desc(desc, elements);
 
-  // Skip the short description
-  while(loc<desc.size() && desc[loc]!=L'\n')
-    ++loc;
-
-  if(loc<desc.size()) // Skip the '\n'
-    ++loc;
-
-  // Skip leading whitespace on the first line if there is any.
-  if(loc<desc.size() && desc[loc] == L' ')
-    ++loc;
-
-  // Note that the starting amount of indentation is 1...
-  return make_level_fragment(desc, 0, 1, loc,
-			     aptcfg->FindB(PACKAGE "::Parse-Description-Bullets",
-					   true));
+  return aptitude::make_desc_fragment(elements);
 }
 
 
