@@ -110,21 +110,24 @@ namespace aptitude
 	delete this;
     }
 
-    static description_element make_paragraph(const std::wstring &text)
+    static cwidget::util::ref_ptr<description_element>
+    make_paragraph(const std::wstring &text)
     {
-      return description_element(paragraph, text,
-				 std::vector<cwidget::util::ref_ptr<description_element> >());
+      return new description_element(paragraph, text,
+				     std::vector<cwidget::util::ref_ptr<description_element> >());
     }
 
-    static description_element make_literal(const std::wstring &text)
+    static cwidget::util::ref_ptr<description_element>
+    make_literal(const std::wstring &text)
     {
-      return description_element(literal, text,
-				 std::vector<cwidget::util::ref_ptr<description_element> >());
+      return new description_element(literal, text,
+				     std::vector<cwidget::util::ref_ptr<description_element> >());
     }
 
-    static description_element make_bullet_list(const std::vector<cwidget::util::ref_ptr<description_element> > &elements)
+    static cwidget::util::ref_ptr<description_element>
+    make_bullet_list(const std::vector<cwidget::util::ref_ptr<description_element> > &elements)
     {
-      return description_element(bullet_list, std::wstring(), elements);
+      return new description_element(bullet_list, std::wstring(), elements);
     }
 
     /** \brief Retrieve the type tag of this element. */
