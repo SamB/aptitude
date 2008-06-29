@@ -90,7 +90,8 @@ namespace aptitude
 			const std::vector<cwidget::util::ref_ptr<description_element> > &_list_payload)
       : type(_type),
 	string_payload(_string_payload),
-	list_payload(_list_payload)
+	list_payload(_list_payload),
+	refcount(1)
     {
     }
 
