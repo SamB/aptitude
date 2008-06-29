@@ -81,12 +81,12 @@ namespace aptitude
 
     element_type type;
 
-    std::string string_payload;
+    std::wstring string_payload;
     std::vector<cwidget::util::ref_ptr<description_element> > list_payload;
 
     int refcount;
 
-    description_element(element_type _type, const std::string &_string_payload,
+    description_element(element_type _type, const std::wstring &_string_payload,
 			const std::vector<cwidget::util::ref_ptr<description_element> > &_list_payload)
       : type(_type),
 	string_payload(_string_payload),
@@ -110,13 +110,13 @@ namespace aptitude
 	delete this;
     }
 
-    static description_element make_paragraph(const std::string &text)
+    static description_element make_paragraph(const std::wstring &text)
     {
       return description_element(paragraph, text,
 				 std::vector<cwidget::util::ref_ptr<description_element> >());
     }
 
-    static description_element make_literal(const std::string &text)
+    static description_element make_literal(const std::wstring &text)
     {
       return description_element(literal, text,
 				 std::vector<cwidget::util::ref_ptr<description_element> >());
@@ -124,7 +124,7 @@ namespace aptitude
 
     static description_element make_bullet_list(const std::vector<cwidget::util::ref_ptr<description_element> > &elements)
     {
-      return description_element(bullet_list, std::string(), elements);
+      return description_element(bullet_list, std::wstring(), elements);
     }
 
     /** \brief Retrieve the type tag of this element. */
@@ -133,7 +133,7 @@ namespace aptitude
      *
      *  It is an error to invoke this routine on any other element type.
      */
-    const std::string &get_string() const
+    const std::wstring &get_string() const
     {
       eassert(type == paragraph || type == literal);
       return string_payload;
