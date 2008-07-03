@@ -279,9 +279,37 @@ download_update_manager::finish(pkgAcquire::RunResult res,
   if(res != pkgAcquire::Continue)
     return failure;
 
+  bool transientNetworkFailure = true;
+  result rval = success;
+
+  // We need to claim that the download failed if any source failed,
+  // and invoke Finished() on any failed items.  Also, we shouldn't
+  // clean the package lists if any individual item failed because it
+  // makes users grumpy (see Debian bugs #201842 and #479620).
+  //
+  // See also apt-get.cc.
+  for(pkgAcquire::ItemIterator it = fetcher->ItemsBegin();
+      it != fetcher->ItemsEnd(); ++it)
+    {
+      if((*it)->Status == pkgAcquire::Item::StatDone)
+	continue;
+
+      (*it)->Finished();
+
+      if((*it)->Status == pkgAcquire::Item::StatTransientNetworkError)
+	{
+	  transientNetworkFailure = true;
+	  continue;
+	}
+
+      // Q: should I display an error message for this source?
+      rval = failure;
+    }
+
   // Clean old stuff out
-  if(fetcher->Clean(aptcfg->FindDir("Dir::State::lists")) == false ||
-     fetcher->Clean(aptcfg->FindDir("Dir::State::lists")+"partial/") == false)
+  if(rval == success && !transientNetworkFailure &&
+     (fetcher->Clean(aptcfg->FindDir("Dir::State::lists")) == false ||
+      fetcher->Clean(aptcfg->FindDir("Dir::State::lists")+"partial/") == false))
     {
       _error->Error(_("Couldn't clean out list directories"));
       return failure;
@@ -386,27 +414,6 @@ download_update_manager::finish(pkgAcquire::RunResult res,
 
   if(need_forget_new || need_autoclean)
     apt_load_cache(&progress, true);
-
-  result rval = success;
-
-  // We need to claim that the download failed if any source failed,
-  // and invoke Finished() on any failed items.
-  //
-  // See also apt-get.cc.
-  for(pkgAcquire::ItemIterator it = fetcher->ItemsBegin();
-      it != fetcher->ItemsEnd(); ++it)
-    {
-      if((*it)->Status == pkgAcquire::Item::StatDone)
-	continue;
-
-      (*it)->Finished();
-
-      if((*it)->Status == pkgAcquire::Item::StatTransientNetworkError)
-	continue;
-
-      // Q: should I display an error message for this source?
-      rval = failure;
-    }
 
   if(apt_cache_file != NULL && need_forget_new)
     {
