@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-28 09:18-0700\n"
+"POT-Creation-Date: 2008-07-04 09:13-0700\n"
 "PO-Revision-Date: 2008-04-22 19:08+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -1693,6 +1693,7 @@ msgid "Resolving dependencies..."
 msgstr "Đang tháo gỡ các quan hệ phụ thuộc..."
 
 #: src/cmdline/cmdline_resolver.cc:563
+#, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "mở: %zd; tắt: %zd; hoãn: %zd; xung đột: %zd"
 
@@ -2577,37 +2578,37 @@ msgstr "fork() bị lỗi: %s"
 msgid "waitpid() failed: %s"
 msgstr "waitpid() bị lỗi: %s"
 
-#: src/generic/apt/download_update_manager.cc:286
+#: src/generic/apt/download_update_manager.cc:314
 msgid "Couldn't clean out list directories"
 msgstr "Không thể xóa sạch các thư mục danh sách"
 
-#: src/generic/apt/download_update_manager.cc:298
+#: src/generic/apt/download_update_manager.cc:326
 msgid "Couldn't rebuild package cache"
 msgstr "Không thể xây dựng lại bộ nhớ tạm gói"
 
-#: src/generic/apt/download_update_manager.cc:313
+#: src/generic/apt/download_update_manager.cc:341
 msgid "The debtags command must not be an empty string."
 msgstr "Câu lệnh debtags không thể là một chuỗi rỗng."
 
-#: src/generic/apt/download_update_manager.cc:317
+#: src/generic/apt/download_update_manager.cc:345
 msgid "The debtags command must be an absolute path."
 msgstr "Câu lệnh debtags phải là một đường dẫn tuyệt đối."
 
-#: src/generic/apt/download_update_manager.cc:330
+#: src/generic/apt/download_update_manager.cc:358
 #, c-format
 msgid "The debtags command (%s) cannot be executed: %s"
 msgstr "Câu lệnh debtags (%s) không thể được thực hiện: %s"
 
-#: src/generic/apt/download_update_manager.cc:335
+#: src/generic/apt/download_update_manager.cc:363
 msgid "Updating debtags database..."
 msgstr "Đang cập nhật cơ sở dữ liệu thẻ debtags..."
 
-#: src/generic/apt/download_update_manager.cc:352
+#: src/generic/apt/download_update_manager.cc:380
 msgid "(core dumped)"
 msgstr "(lõi bị đổ)"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:355
+#: src/generic/apt/download_update_manager.cc:383
 #, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr ""
@@ -2616,14 +2617,14 @@ msgstr ""
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #. PS: indentation sucks!
 #. PS2: Daniel, please unfuzzy such translations (added "update") yourself!
-#: src/generic/apt/download_update_manager.cc:365
+#: src/generic/apt/download_update_manager.cc:393
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
 "Tiến trình cập nhật debtags (%s cập nhật %s) đã thoát bất thường (mã %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:372
+#: src/generic/apt/download_update_manager.cc:400
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
@@ -2633,7 +2634,7 @@ msgstr ""
 "(trạng thái %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:378
+#: src/generic/apt/download_update_manager.cc:406
 #, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "

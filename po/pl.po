@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-28 09:18-0700\n"
+"POT-Creation-Date: 2008-07-04 09:13-0700\n"
 "PO-Revision-Date: 2008-05-08 11:06+0200\n"
 "Last-Translator: Wiktor Wandachowicz <siryes@gmail.com>\n"
 "Language-Team: Polish <debian-l10n-polish@lists.debian.org>\n"
@@ -1722,6 +1722,7 @@ msgid "Resolving dependencies..."
 msgstr "Uzupełnianie niespełnionych zależności..."
 
 #: src/cmdline/cmdline_resolver.cc:563
+#, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "otwarte: %zd; zamknięte: %zd; odroczone: %zd; konflikty: %zd"
 
@@ -2606,37 +2607,37 @@ msgstr "wywołanie fork() zawiodło: %s"
 msgid "waitpid() failed: %s"
 msgstr "wywołanie waitpid() zawiodło: %s"
 
-#: src/generic/apt/download_update_manager.cc:286
+#: src/generic/apt/download_update_manager.cc:314
 msgid "Couldn't clean out list directories"
 msgstr "Nie można wyczyścić katalogów z listami"
 
-#: src/generic/apt/download_update_manager.cc:298
+#: src/generic/apt/download_update_manager.cc:326
 msgid "Couldn't rebuild package cache"
 msgstr "Nie można przebudować informacji o pakietach"
 
-#: src/generic/apt/download_update_manager.cc:313
+#: src/generic/apt/download_update_manager.cc:341
 msgid "The debtags command must not be an empty string."
 msgstr "Polecenie debtags nie może być pustym ciągiem znaków."
 
-#: src/generic/apt/download_update_manager.cc:317
+#: src/generic/apt/download_update_manager.cc:345
 msgid "The debtags command must be an absolute path."
 msgstr "Polecenie debtags musi być ścieżką absolutną."
 
-#: src/generic/apt/download_update_manager.cc:330
+#: src/generic/apt/download_update_manager.cc:358
 #, c-format
 msgid "The debtags command (%s) cannot be executed: %s"
 msgstr "Polecenie debtags (%s) nie może zostać wykonane: %s"
 
-#: src/generic/apt/download_update_manager.cc:335
+#: src/generic/apt/download_update_manager.cc:363
 msgid "Updating debtags database..."
 msgstr "Budowanie bazy debtags..."
 
-#: src/generic/apt/download_update_manager.cc:352
+#: src/generic/apt/download_update_manager.cc:380
 msgid "(core dumped)"
 msgstr "(zrzut pamięci)"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:355
+#: src/generic/apt/download_update_manager.cc:383
 #, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr ""
@@ -2646,7 +2647,7 @@ msgstr ""
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #. PS: indentation sucks!
 #. PS2: Daniel, please unfuzzy such translations (added "update") yourself!
-#: src/generic/apt/download_update_manager.cc:365
+#: src/generic/apt/download_update_manager.cc:393
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
@@ -2654,7 +2655,7 @@ msgstr ""
 "(kod %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:372
+#: src/generic/apt/download_update_manager.cc:400
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
@@ -2664,7 +2665,7 @@ msgstr ""
 "(status %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:378
+#: src/generic/apt/download_update_manager.cc:406
 #, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "

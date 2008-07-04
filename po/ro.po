@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ro\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-06-28 09:18-0700\n"
+"POT-Creation-Date: 2008-07-04 09:13-0700\n"
 "PO-Revision-Date: 2008-06-13 23:17+0300\n"
 "Last-Translator: Eddy Petrișor <eddy.petrisor@gmail.com>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
@@ -1739,6 +1739,7 @@ msgid "Resolving dependencies..."
 msgstr "Se rezolvă dependențele..."
 
 #: src/cmdline/cmdline_resolver.cc:563
+#, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "deschis: %zd; închis: %zd; amânat: %zd; conflict: %zd"
 
@@ -2631,37 +2632,37 @@ msgstr "fork() a eșuat: %s"
 msgid "waitpid() failed: %s"
 msgstr "waitpid() a eșuat: %s"
 
-#: src/generic/apt/download_update_manager.cc:286
+#: src/generic/apt/download_update_manager.cc:314
 msgid "Couldn't clean out list directories"
 msgstr "Nu s-a putut curăța directoarele cu liste"
 
-#: src/generic/apt/download_update_manager.cc:298
+#: src/generic/apt/download_update_manager.cc:326
 msgid "Couldn't rebuild package cache"
 msgstr "Nu s-a putut reconstrui cache-ul pachetelor"
 
-#: src/generic/apt/download_update_manager.cc:313
+#: src/generic/apt/download_update_manager.cc:341
 msgid "The debtags command must not be an empty string."
 msgstr "Comanda debtags nu trebuie să fie șirul vid."
 
-#: src/generic/apt/download_update_manager.cc:317
+#: src/generic/apt/download_update_manager.cc:345
 msgid "The debtags command must be an absolute path."
 msgstr "Comanda debtags trebuie să fie o cale absolută."
 
-#: src/generic/apt/download_update_manager.cc:330
+#: src/generic/apt/download_update_manager.cc:358
 #, c-format
 msgid "The debtags command (%s) cannot be executed: %s"
 msgstr "Comanda debtags (%s) nu poate fi executată: %s"
 
-#: src/generic/apt/download_update_manager.cc:335
+#: src/generic/apt/download_update_manager.cc:363
 msgid "Updating debtags database..."
 msgstr "Se actualizează baza de date debtags..."
 
-#: src/generic/apt/download_update_manager.cc:352
+#: src/generic/apt/download_update_manager.cc:380
 msgid "(core dumped)"
 msgstr "(fișierul core a fost scris)"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:355
+#: src/generic/apt/download_update_manager.cc:383
 #, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr ""
@@ -2671,7 +2672,7 @@ msgstr ""
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
 #. PS: indentation sucks!
 #. PS2: Daniel, please unfuzzy such translations (added "update") yourself!
-#: src/generic/apt/download_update_manager.cc:365
+#: src/generic/apt/download_update_manager.cc:393
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
@@ -2679,7 +2680,7 @@ msgstr ""
 "(cod %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:372
+#: src/generic/apt/download_update_manager.cc:400
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
@@ -2689,7 +2690,7 @@ msgstr ""
 "neașteptat (stare %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:378
+#: src/generic/apt/download_update_manager.cc:406
 #, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
