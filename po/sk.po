@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-07-04 09:13-0700\n"
-"PO-Revision-Date: 2008-03-17 15:59+0100\n"
+"PO-Revision-Date: 2008-07-02 01:54+0100\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -195,50 +195,43 @@ msgstr ""
 "sťahovaní na spodku obrazovky namiesto toho, aby otváral nový pohľad."
 
 #: src/apt_options.cc:211
-#, fuzzy
 msgid "Display the information area by default"
-msgstr "Štandardne zobrazovať rozšírenú oblasť na popis"
+msgstr "Štandardne zobrazovať informačnú oblasť"
 
 #: src/apt_options.cc:212
-#, fuzzy
 msgid ""
 "If this option is enabled, the information area (the pane at the bottom of "
 "the screen) in the package list will be visible when the program starts; "
 "otherwise, it will be initially hidden."
 msgstr ""
-"Ak je táto voľba zapnutá, oblasť pre dlhý popis (na spodku obrazovky) v "
-"zozname balíkov bude viditeľná pri štarte programu; inak bude na začiatku "
-"skrytá."
+"Ak je táto voľba zapnutá, informačná oblasť (na spodku obrazovky) v zozname "
+"balíkov bude viditeľná pri štarte programu; inak bude na začiatku skrytá."
 
 #: src/apt_options.cc:217
-#, fuzzy
 msgid "Display tabs for the available views"
-msgstr "Formát zobrazenia balíkov"
+msgstr "Zobraziť záložky dostupných pohľadov"
 
 #: src/apt_options.cc:218
-#, fuzzy
 msgid ""
 "If this option is enabled, tabs will appear at the top of the screen listing "
 "the currently opened views."
 msgstr ""
-"Ak je táto voľba zapnutá, aptitude bude zobrazovať stav prebiehajúcich "
-"sťahovaní na spodku obrazovky namiesto toho, aby otváral nový pohľad."
+"Ak je táto voľba zapnutá, na vrchu obrazovky sa zobrazia záložky so zoznamom "
+"momentálne otvorených pohľadov."
 
 #: src/apt_options.cc:221
-#, fuzzy
 msgid "Display tabs for the information area"
-msgstr "Zobrazí ďalšie informácie o zvolenom balíku"
+msgstr "Zobraziť záložky informačnej oblasti"
 
 #: src/apt_options.cc:222
-#, fuzzy
 msgid ""
 "If this option is enabled, tabs will appear at the top of the information "
 "area (the pane at the bottom of the screen) listing the different displays "
 "of information that can be viewed there."
 msgstr ""
-"Ak je táto voľba zapnutá, oblasť pre dlhý popis (na spodku obrazovky) v "
-"zozname balíkov bude viditeľná pri štarte programu; inak bude na začiatku "
-"skrytá."
+"Ak je táto voľba zapnutá, na vrchu informačnej oblasti (na spodku obrazovky) "
+"sa objavia záložky so zoznamom rozličných zobrazovacích režimov, ktoré je "
+"možné použiť."
 
 #: src/apt_options.cc:227
 msgid "Advance to the next item after changing the state of a package"
@@ -686,9 +679,9 @@ msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Nie je možné nájsť zdrojový archív balíka „%s“\n"
 
 #: src/cmdline/cmdline_action.cc:202
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to satisfy the build-depends: %s."
-msgstr "Nie je možné uspokojiť závislosti pre zostavenie „%s“: ."
+msgstr "Nie je možné uspokojiť závislosti pre zostavenie: %s."
 
 #: src/cmdline/cmdline_action.cc:238
 #, c-format
@@ -1693,10 +1686,9 @@ msgid "Resolving dependencies..."
 msgstr "Riešenie závislostí..."
 
 #: src/cmdline/cmdline_resolver.cc:563
-#, fuzzy, c-format
-#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
-msgstr "otvorené: %d; uzavreté: %d; odložené: %d; konfliktné: %d"
+msgstr "otvorené: %zd; uzavreté: %zd; odložené: %zd; konfliktné: %zd"
 
 #: src/cmdline/cmdline_resolver.cc:616
 msgid "The following actions will resolve these dependencies:"
@@ -2130,7 +2122,7 @@ msgstr[2] "%d nových [%+d]"
 #: src/cmdline/cmdline_util.cc:331
 #, c-format
 msgid "Current status: %F."
-msgstr ""
+msgstr "Aktuálny stav: %F."
 
 #: src/cmdline/cmdline_util.cc:342
 #, c-format
@@ -2173,9 +2165,8 @@ msgid "Install"
 msgstr "Inštalovať"
 
 #: src/cmdline/cmdline_why.cc:286
-#, fuzzy
 msgid "InstallNotCurrent"
-msgstr "Nainštalovaný"
+msgstr "InštNieAktuálny"
 
 #: src/cmdline/cmdline_why.cc:294
 msgid "allow_choices"
@@ -2231,9 +2222,8 @@ msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> preskakuje sa, rodič nie je zvolenej verzie\n"
 
 #: src/cmdline/cmdline_why.cc:494
-#, fuzzy
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
-msgstr "    ++   --> preskakuje sa, rodič nie je zvolenej verzie\n"
+msgstr "    ++   --> preskakuje sa, závislosť uspokojuje aktuálna verzia\n"
 
 #: src/cmdline/cmdline_why.cc:524
 msgid "    ++   --> ENQUEUING\n"
@@ -2258,14 +2248,14 @@ msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Toto riešenie preskakujem, už som ho videl.\n"
 
 #: src/cmdline/cmdline_why.cc:973
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to remove %s.\n"
-msgstr "Nedá sa nájsť potvrdené riešenie"
+msgstr "Nebol nájdený dôvod na odstránenie %s.\n"
 
 #: src/cmdline/cmdline_why.cc:975
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to install %s.\n"
-msgstr "Nedá sa nájsť potvrdené riešenie"
+msgstr "Nebol nájdený dôvod na inštaláciu %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
 #: src/cmdline/cmdline_why.cc:1108
@@ -2504,7 +2494,7 @@ msgstr "Na opravenie chýbajúcich súborov skúste aktualizovať zoznamy balík
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
 #: src/generic/apt/apt.cc:174
 msgid "Localized defaults|"
-msgstr ""
+msgstr "aptitude-defaults.sk"
 
 #: src/generic/apt/apt.cc:247
 #, c-format
@@ -3249,71 +3239,61 @@ msgid "Compiler: g++ %s\n"
 msgstr "Kompilátor: g++ %s\n"
 
 #: src/main.cc:111
-#, fuzzy
 msgid "Compiled against:\n"
-msgstr "Kompilátor: g++ %s\n"
+msgstr "Preložené voči:\n"
 
 #: src/main.cc:112
-#, fuzzy, c-format
+#, c-format
 msgid "  apt version %d.%d.%d\n"
-msgstr "Ponechať %F vo verzii %s (%s)"
+msgstr "  Verzia apt %d.%d.%d\n"
 
 #: src/main.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: Unknown\n"
-msgstr ""
-"\n"
-"Verzia ncurses: %s\n"
+msgstr "  Verzia NCurses: Neznáma\n"
 
 #: src/main.cc:117
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version %s\n"
-msgstr ""
-"\n"
-"Verzia ncurses: %s\n"
+msgstr "  Verzia NCurses %s\n"
 
 #: src/main.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "  libsigc++ version: %s\n"
-msgstr "verzia libsigc++: %s\n"
+msgstr "  verzia libsigc++: %s\n"
 
 #: src/main.cc:121
-#, fuzzy, c-format
+#, c-format
 msgid "  Ept support enabled.\n"
-msgstr "Podpora Ept zapnutá.\n"
+msgstr "  Podpora Ept zapnutá.\n"
 
 #: src/main.cc:123
-#, fuzzy, c-format
+#, c-format
 msgid "  Ept support disabled.\n"
-msgstr "Podpora Ept vypnutá.\n"
+msgstr "  Podpora Ept vypnutá.\n"
 
 #: src/main.cc:126
-#, fuzzy
 msgid ""
 "\n"
 "Current library versions:\n"
 msgstr ""
 "\n"
-"Verzia curses: %s\n"
+"Aktuálne verzie knižníc:\n"
 
 #: src/main.cc:127
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: %s\n"
-msgstr ""
-"\n"
-"Verzia ncurses: %s\n"
+msgstr "  Verzia NCurses: %s\n"
 
 #: src/main.cc:128
-#, fuzzy, c-format
+#, c-format
 msgid "  cwidget version: %s\n"
-msgstr "verzia libsigc++: %s\n"
+msgstr "  Verzia cwidget: %s\n"
 
 #: src/main.cc:129
-#, fuzzy, c-format
+#, c-format
 msgid "  Apt version: %s\n"
-msgstr ""
-"\n"
-"Verzia curses: %s\n"
+msgstr "  Verzia Apt: %s\n"
 
 #: src/main.cc:135
 #, c-format
@@ -3441,12 +3421,15 @@ msgstr ""
 "nainštalovaný balík\n"
 
 #: src/main.cc:159
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package\n"
-msgstr " -Z\t\t    Zobrazí zmenu v nainštalovanej veľkosti každého balíka.\n"
+msgstr ""
+" why          - Zobrazí ručne nainštalované balíky, ktoré vyžadujú balík "
+"alebo\n"
+"                prečo by jeden alebo viac balíkov vyžadovalo daný balík\n"
 
 #: src/main.cc:161
 #, c-format
@@ -3456,6 +3439,10 @@ msgid ""
 "                with the given package, or why one or more packages would\n"
 "                lead to a conflict with the given package if installed\n"
 msgstr ""
+" why-not      - Zobrazí ručne nainštalované balíky, ktoré vedú ku konfliktu\n"
+"                s daným balíkom alebo prečo by jeden či viac balíkov viedlo "
+"ku\n"
+"                konfliktu s daným balíkom, keby bol nainštalovaný\n"
 
 #: src/main.cc:165
 #, c-format
@@ -3549,7 +3536,7 @@ msgstr ""
 "balíky\n"
 
 #: src/main.cc:180
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
@@ -3985,11 +3972,11 @@ msgstr "konfiguračné súbory"
 
 #: src/pkg_columnizer.cc:260
 msgid "triggers-awaited"
-msgstr ""
+msgstr "triggers-awaited"
 
 #: src/pkg_columnizer.cc:262
 msgid "triggers-pending"
-msgstr ""
+msgstr "triggers-pending"
 
 #: src/pkg_columnizer.cc:265 src/pkg_columnizer.cc:549 src/pkg_ver_item.cc:240
 msgid "ERROR"
@@ -4421,9 +4408,9 @@ msgid "Packages which depend on %s"
 msgstr "Balíky, ktoré závisia na %s"
 
 #: src/pkg_info_screen.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid "Versions of %s"
-msgstr "Verzie"
+msgstr "Verzie %s"
 
 #: src/pkg_item.cc:61
 msgid "Yes, I am aware this is a very bad idea"
@@ -4513,9 +4500,9 @@ msgstr "Editor Hierarchie"
 #, c-format
 msgid "This group contains %d package."
 msgid_plural "This group contains %d packages."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Táto skupina obsahuje %d balík."
+msgstr[1] "Táto skupina obsahuje %d balíky."
+msgstr[2] "Táto skupina obsahuje %d balíkov."
 
 #: src/pkg_tree.cc:175
 msgid "All Packages"
@@ -4551,11 +4538,12 @@ msgid "Couldn't parse column definition"
 msgstr "Nedá sa spracovať definícia stĺpca"
 
 #: src/pkg_view.cc:223
-#, fuzzy
 msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
-msgstr "Ak si zvolíte balík, objaví sa tu popis jeho aktuálneho stavu."
+msgstr ""
+"Ak si zvolíte balík, objaví sa tu popis, prečo by mal byť nainštalovaný "
+"alebo odstránený."
 
 #: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
@@ -4567,14 +4555,12 @@ msgid ""
 msgstr "make_package_view: chyba v argumentoch -- chybný zoznam stĺpcov"
 
 #: src/pkg_view.cc:678
-#, fuzzy
 msgid "Related Dependencies"
-msgstr "Riešiť Závislosti"
+msgstr "Súvisiace závislosti"
 
 #: src/pkg_view.cc:681
-#, fuzzy
 msgid "Why Installed"
-msgstr "Nainštalovaný"
+msgstr "Prečo nainštalovaný"
 
 #: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
@@ -5104,14 +5090,13 @@ msgid "Recommendations"
 msgstr "Odporúčania"
 
 #: src/ui.cc:970
-#, fuzzy
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
 "is free software, and you are welcome to redistribute it under certain "
 "conditions; see 'license' for details."
 msgstr ""
-"Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%nna aptitude sa "
+"Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%nna aptitude sa "
 "nevzťahuje %BABSOLÚTNE ŽIADNA ZÁRUKA%b; podrobnosti nájdete v ponuke Pomoc, "
 "„licencia“. Toto je slobodný softvér a budeme radi, ak ho budete pod "
 "určitými podmienkami šíriť ďalej; podrobnosti nájdete v „licencia“."
@@ -5584,7 +5569,7 @@ msgstr "Zobrazí ďalšie informácie o zvolenom balíku"
 
 #: src/ui.cc:2188
 msgid "C^ycle Package Information"
-msgstr ""
+msgstr "C^yklovať informácie o balíkoch"
 
 #: src/ui.cc:2189
 msgid ""
@@ -5592,6 +5577,9 @@ msgid ""
 "package's long description, a summary of its dependency status, or an "
 "analysis of why the package is required."
 msgstr ""
+"Dokola prechádzať režimami informačnej oblasti balíkov: môže sa zobrazovať "
+"dlhý popis balíka, zhrnutie stavu závislosti alebo analýza prečo je balík "
+"potrebný."
 
 #: src/ui.cc:2192
 msgid "^Changelog"
@@ -5882,9 +5870,8 @@ msgid "^News"
 msgstr "^Novinky"
 
 #: src/ui.cc:2377
-#, fuzzy
 msgid "View the important changes made in each version of "
-msgstr "Zobrazí dôležité zmeny v každej verzii %s"
+msgstr "Zobrazí dôležité zmeny v každej verzii"
 
 #: src/ui.cc:2380
 msgid "^License"
