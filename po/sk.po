@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-07-04 09:13-0700\n"
-"PO-Revision-Date: 2008-07-02 01:54+0100\n"
+"PO-Revision-Date: 2008-07-09 20:43+0200\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -918,6 +918,8 @@ msgid ""
 "extract-cache-entries: at least one argument is required (the directory\n"
 "to which to write files).\n"
 msgstr ""
+"extract-cache-entries: vyžaduje sa aspoň jeden argument (adresár,\n"
+"do ktorého sa majú zapisovať súbory).\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:77
 #: src/cmdline/cmdline_user_tag.cc:116
@@ -928,7 +930,7 @@ msgstr "Neexistuje balík „%s“.\n"
 #: src/cmdline/cmdline_extract_cache_subset.cc:115
 #, c-format
 msgid "No packages were selected by the given search pattern; nothing to do.\n"
-msgstr ""
+msgstr "Zadanému vzoru nevyhovujú žiadne balíky; niet čo robiť.\n"
 
 #: src/cmdline/cmdline_forget_new.cc:25
 #, c-format
@@ -991,9 +993,9 @@ msgstr "Nedá sa načítať zoznam zdrojov"
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "(pre %s)"
+msgstr[1] "(pre %s)"
+msgstr[2] "(pre %s)"
 
 #: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
@@ -1252,7 +1254,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:970
 #, c-format
 msgid "y: %F"
-msgstr ""
+msgstr "y: %F"
 
 #: src/cmdline/cmdline_prompt.cc:972
 msgid "continue with the installation"
@@ -1261,7 +1263,7 @@ msgstr "pokračovať v inštalovaní"
 #: src/cmdline/cmdline_prompt.cc:974
 #, c-format
 msgid "n: %F"
-msgstr ""
+msgstr "n: %F"
 
 #: src/cmdline/cmdline_prompt.cc:976
 msgid "abort and quit"
@@ -1270,7 +1272,7 @@ msgstr "prerušiť a skončiť"
 #: src/cmdline/cmdline_prompt.cc:978
 #, c-format
 msgid "i: %F"
-msgstr ""
+msgstr "i: %F"
 
 #: src/cmdline/cmdline_prompt.cc:980
 msgid ""
@@ -1283,7 +1285,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:982
 #, c-format
 msgid "c: %F"
-msgstr ""
+msgstr "c: %F"
 
 #: src/cmdline/cmdline_prompt.cc:984
 msgid ""
@@ -1296,7 +1298,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:986
 #, c-format
 msgid "d: %F"
-msgstr ""
+msgstr "d: %F"
 
 #: src/cmdline/cmdline_prompt.cc:988
 msgid "toggle the display of dependency information"
@@ -1305,7 +1307,7 @@ msgstr "prepnúť zobrazenie informácií o závislostiach"
 #: src/cmdline/cmdline_prompt.cc:990
 #, c-format
 msgid "s: %F"
-msgstr ""
+msgstr "s: %F"
 
 #: src/cmdline/cmdline_prompt.cc:992
 msgid "toggle the display of changes in package sizes"
@@ -1314,7 +1316,7 @@ msgstr "prepnúť zobrazenie zmien vo veľkostiach balíčkov"
 #: src/cmdline/cmdline_prompt.cc:994
 #, c-format
 msgid "v: %F"
-msgstr ""
+msgstr "v: %F"
 
 #: src/cmdline/cmdline_prompt.cc:996
 msgid "toggle the display of version numbers"
@@ -1323,7 +1325,7 @@ msgstr "prepnúť zobrazenie čísel verzií"
 #: src/cmdline/cmdline_prompt.cc:998
 #, c-format
 msgid "w: %F"
-msgstr ""
+msgstr "w: %F"
 
 #: src/cmdline/cmdline_prompt.cc:1000
 msgid ""
@@ -1336,7 +1338,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:1003
 #, c-format
 msgid "r: %F"
-msgstr ""
+msgstr "r: %F"
 
 #: src/cmdline/cmdline_prompt.cc:1005
 msgid "run the automatic dependency resolver to fix the broken dependencies."
@@ -1346,7 +1348,7 @@ msgstr ""
 #: src/cmdline/cmdline_prompt.cc:1007
 #, c-format
 msgid "e: %F"
-msgstr ""
+msgstr "e: %F"
 
 #: src/cmdline/cmdline_prompt.cc:1009
 msgid "enter the full visual interface"
@@ -3851,7 +3853,7 @@ msgstr "Zadajte názov súboru na uloženie:"
 
 #: src/mine/cmine.cc:684
 msgid "mine-help.txt"
-msgstr "mine-help-cs.txt"
+msgstr "mine-help-sk.txt"
 
 #: src/mine/cmine.cc:686
 msgid "Encoding of mine-help.txt|UTF-8"
@@ -5111,7 +5113,7 @@ msgstr "Zobrazí podmienky, za ktorých môžete aptitude kopírovať a šíriť
 
 #: src/ui.cc:1035
 msgid "help.txt"
-msgstr "help-cs.txt"
+msgstr "help-sk.txt"
 
 #: src/ui.cc:1037
 msgid "Encoding of help.txt|UTF-8"
