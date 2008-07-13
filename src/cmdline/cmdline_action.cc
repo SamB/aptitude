@@ -292,7 +292,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
     }
 
   pkgCache::VerIterator ver=pkg.CurrentVer();
-  if(action==cmdline_install)
+  if(action==cmdline_install || action == cmdline_installauto)
     ver=cmdline_find_ver(pkg, source, sourcestr);
 
   switch(action)
