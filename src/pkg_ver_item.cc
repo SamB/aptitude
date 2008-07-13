@@ -92,6 +92,8 @@ cw::column_disposition pkg_ver_columnizer::setup_column(const pkgCache::VerItera
 	    }
 	  return cw::column_disposition(buf,0);
 	}
+      else
+	return cw::column_disposition("", 0);
 
     case installed_size:
       if(ver.end())
