@@ -1,11 +1,11 @@
 #ifndef GUI_H_
 #define GUI_H_
 
-#undef OK
-#include <gtkmm.h>
+namespace gui
+{
 
-void gui_init();
+  void main(int argc, char *argv[]);
 
-void gui_main();
+}
 
 #endif /*GUI_H_*/
