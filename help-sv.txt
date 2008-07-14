@@ -1,7 +1,7 @@
                             Hjälp för Aptitude
 
-  Använd piltangenterna och PageUp/PageDown för att se denna hjälp, tryck 
-                  Return eller Enter för att lämna den.
+       Använd piltangenterna och PageUp/PageDown för att se denna hjälp,
+                       tryck 'q' för att lämna den.
 
   Följande tangenter är tillgängliga som standard i aptitudes informations-
     vyer.  Andra tangenter är också tillgängliga, se README för en lista.
@@ -9,14 +9,28 @@
   "q":          Avsluta.
   "?":          Visa denna skärm.
 
-  "f":		Töm listan av "nya" paket ("f" för "forget" (glömma)).
+  "f":          Töm listan av "nya" paket ("f" för "forget" (glömma)).
 
-  Up eller "k":   Flytta texten uppåt.    
-  Down eller "j": Flytta texten nedåt. 
-  "^":            Flytta valet till föräldern för aktuell post.
-  Enter:          Expandera eller minska en grupp av paket.
-  "[":            Expandera en grupp av paket och alla dess undergrupper.
-  "]":            Förminska en grupp och alla dess undergrupper.
+  Uppil eller
+  "k":             Flytta markeringen uppåt.
+  Nedpil eller
+  "j":             Flytta markeringen nedåt.
+  Page-Up eller
+  ctrl+b:          Flytta markeringen en skärmbild uppåt.
+  Page-Down eller
+  ctrl+f:          Flytta markeringen en skärmbild nedåt.
+  Home eller
+  ctrl+a:          Flytta markeringen till det första paketet i listan.
+  End eller
+  ctrl+e:          Flytta markeringen till det sista paketet i listan.
+  "^":             Flytta valet till föräldern för aktuell post.
+  Enter:           Expandera eller minska en grupp av paket.
+  "[":             Expandera en grupp av paket och alla dess undergrupper.
+  "]":             Förminska en grupp och alla dess undergrupper.
+
+  ctrl+t:       Aktiver eller avaktivera menyn.
+  "F6":         Flytta till nästa flik i huvudvyn.
+  "F7":         Flytta till föregående flik i huvudvyn.
 
   Enter:        Se information om ett paket.
   "C":          Visa ändringsloggen för ett paket.
@@ -24,7 +38,7 @@
                 status för tillbakahållning.
   "-":          Ta bort ett paket.
   "=":          Håll kvar ett paket i nuvarande version för att undvika 
-                uppgradering.
+                framtida uppgradering.
   ":":          Håll kvar ett paket i nuvarande version. Kommer inte att 
                 undvika framtida uppgraderingar.
   "_":          Ställ in att ett paket och all dess konfiguration tas bort.
@@ -42,10 +56,12 @@
   "g":          Genomför alla tänkta installationer, borttagningar och 
                 uppgraderingar.
 
-  Control-u:    Ångra den senaste åtgärden eller grupp av åtgärder.
+  ctrl+u:       Ångra den senaste åtgärden eller grupp av åtgärder.
   "/":          Genomför en sökning.  (på namnet av paketet som standard;
                 se README/Användarhandboken för mer information).
-  "\":          Upprepa senaste sökningen.
+  "\":          Sök bakåt.
+  "n":          Upprepa senaste sökningen.
+  "N":          Upprepa senaste sökningen, fast åt motsatt håll.
   "b":          Sök efter nästa trasiga paket.
 
   "v":          Visa tillgängliga versioner av ett paket.
@@ -53,9 +69,32 @@
   "r":          Visa paketen som är beroende av ett angivet paket.
 
   "D":          Visa eller dölj rutan med paketinformation.
-  "a":		Rulla uppåt i rutan med paketinformation.
-  "z":		Rulla nedåt i rutan med paketinformation.
+  "a":          Rulla uppåt i rutan med paketinformation.
+  "z":          Rulla nedåt i rutan med paketinformation.
   "i":          Bläddra igenom paketinformationsvyerna.
+
+  ",":          Visa föregående lösning för beroenden.
+  ".":          Visa nästa lösning för beroenden, skapar ny lösning.
+  "<":          Visa det första lösningsförslaget.
+  ">":          Visa det sista lösningsförslaget.
+
+    I den interaktiva beroendelösaren:
+  "a":          Godkänn en åtgärd; detta medför att den alltid väljs 
+                framför andra alternativ, upprepa för att ta bort 
+                godkännande.
+  "r":          Avvisa en åtgärd; detta medför att åtgärden aldrig väljs, 
+                upprepa för att ta bort avvisande.
+
+
+  Paket i paketlistan visas i standardutförande som nedan:
+idA   libsmbclient                             -2220kB 3.0.25a-1  3.0.25a-2
+
+  De tre bokstäverna till vänster visar nuvarande status för paketet. Det 
+första tecknet är staus-flaggan, nummer två är åtgärds-flaggan och nummer 
+tre är automatiskt-flaggan. Nästa del är namnet på paketet, sen följer 
+förändringen i diskanvändning och slutligen nuvarande och tillgängliga 
+versionnummer för paketet.
+
 
   Flaggan "tillstånd" som visas för ett paket har följande möjliga värden:
 
@@ -78,3 +117,11 @@
    r - installera om
    u - uppgrada
    F - den tillgängliga uppgraderingen har förbjudits via "F"
+
+  Om "A" visas så indikerar det att paketet installerades automatiskt och
+kommer att tas bort om inga andra paket beror av det.
+
+
+  I exemplet ovan är libsmbclient ett automatiskt installerat paket. Det
+kan uppgraderas från version 3.0.25a-1 till version 3.0.25a-2 men kommer
+istället att tas bort  och frigör därmed 2220 kilobyte på hårddisken.
