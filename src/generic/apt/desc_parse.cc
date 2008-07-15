@@ -22,15 +22,9 @@
 #include "desc_parse.h"
 
 #include "aptitude.h"
-#include "ui.h"
 
-#include <generic/apt/apt.h>
-#include <generic/apt/config_signal.h>
-#include <generic/apt/tags.h>
-
-#include <cwidget/fragment.h>
-#include <cwidget/generic/util/transcode.h>
-#include <cwidget/config/colors.h>
+#include "apt.h" // For aptcfg.
+#include "config_signal.h" // For aptcfg.
 
 using namespace std;
 
@@ -76,13 +70,12 @@ namespace cw = cwidget;
  *
  *  \return the new cw::fragment.
  */
-static cw::fragment *make_level_fragment(const wstring &desc,
-					 unsigned int level,
-					 wstring::size_type indent,
-					 wstring::size_type &start,
-					 bool recognize_bullets)
+static void make_level_fragment(const wstring &desc,
+				wstring::size_type indent,
+				wstring::size_type &start,
+				bool recognize_bullets,
+				std::vector<aptitude::description_element_ref> &output)
 {
-  vector<cw::fragment*> fragments;
   bool first=true;
 
   while(start<desc.size())
@@ -121,7 +114,7 @@ static cw::fragment *make_level_fragment(const wstring &desc,
       // space; other full stops are treated as part of a paragraph.
       if(nspaces == 1 && desc[loc] == '.')
 	{
-	  fragments.push_back(cw::newline_fragment());
+	  output.push_back(aptitude::description_element::make_blank_line());
 
 	  while(loc < desc.size() && desc[loc] != L'\n')
 	    ++loc;
@@ -162,24 +155,17 @@ static cw::fragment *make_level_fragment(const wstring &desc,
 	      {
 		// Start a list item (i.e., an indented region).
 
-		wstring bullet;
-		bullet+=(L"*+-"[level%3]);
-
 		start = loc2 + 2;
 
-		cw::fragment *item_contents =
-		  make_level_fragment(desc,
-				      level+1,
-				      nspaces2 + 2,
-				      start,
-				      recognize_bullets);
+		std::vector<aptitude::description_element_ref> item_contents;
 
-		fragments.push_back(cw::style_fragment(cw::text_fragment(bullet),
-							    cw::get_style("Bullet")));
-		fragments.push_back(cw::indentbox(1,
-						       (level+1)*2,
-						       item_contents));
+		make_level_fragment(desc,
+				    nspaces2 + 2,
+				    start,
+				    recognize_bullets,
+				    item_contents);
 
+		output.push_back(aptitude::description_element::make_bullet_list(item_contents));
 	      }
 	    else
 	      {
@@ -187,8 +173,7 @@ static cw::fragment *make_level_fragment(const wstring &desc,
 		while(loc+amt<desc.size() && desc[loc+amt]!=L'\n')
 		  ++amt;
 
-		// Hard-wrap AS REQUIRED BY POLICY.
-		fragments.push_back(cw::hardwrapbox(cw::text_fragment(wstring(desc, loc, amt))));
+		output.push_back(aptitude::description_element::make_literal(wstring(desc, loc, amt)));
 
 		loc+=amt;
 		if(loc<desc.size())
@@ -248,96 +233,36 @@ static cw::fragment *make_level_fragment(const wstring &desc,
 		cont=false;
 	    } while(cont);
 
-	    fragments.push_back(wrapbox(cw::text_fragment(par)));
+	    output.push_back(aptitude::description_element::make_paragraph(par));
 	  }
 	}
     }
-
-  return cw::sequence_fragment(fragments);
 }
 
-cw::fragment *make_desc_fragment(const wstring &desc)
+namespace aptitude
 {
-  wstring::size_type loc=0;
-  vector<cw::fragment*> fragments;
+  void parse_desc(const std::wstring &desc,
+		  std::vector<description_element_ref> &output)
+  {
+    wstring::size_type loc = 0;
 
-  // Skip the short description
-  while(loc<desc.size() && desc[loc]!=L'\n')
-    ++loc;
+    // Skip the short description
+    while(loc < desc.size() && desc[loc]!=L'\n')
+      ++loc;
 
-  if(loc<desc.size()) // Skip the '\n'
-    ++loc;
+    if(loc < desc.size()) // Skip the '\n'
+      ++loc;
 
-  // Skip leading whitespace on the first line if there is any.
-  if(loc<desc.size() && desc[loc] == L' ')
-    ++loc;
+    // Skip leading whitespace on the first line if there is any.
+    if(loc<desc.size() && desc[loc] == L' ')
+      ++loc;
 
-  // Note that the starting amount of indentation is 1...
-  return make_level_fragment(desc, 0, 1, loc,
-			     aptcfg->FindB(PACKAGE "::Parse-Description-Bullets",
-					   true));
-}
-
-
-cw::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
-{
-  if(pkg.end())
-    return NULL;
-
-#ifdef HAVE_EPT
-  typedef ept::debtags::Tag tag;
-  using aptitude::apt::get_tags;
-#endif
-
-#ifdef HAVE_EPT
-  const set<tag> realS(get_tags(pkg));
-  const set<tag> * const s(&realS);
-#else
-  const set<tag> * const s(get_tags(pkg));
-#endif
-
-  vector<cw::fragment *> rval;
-  if(s != NULL && !s->empty())
-    {
-      vector<cw::fragment *> tags;
-      for(set<tag>::const_iterator i = s->begin(); i != s->end(); ++i)
-	{
-#ifdef HAVE_EPT
-	  std::string name(i->fullname());
-#else
-	  const std::string name(i->str());
-#endif
-
-	  tags.push_back(cw::text_fragment(name, cw::style_attrs_on(A_BOLD)));
-	}
-
-      wstring tagstitle = W_("Tags");
-
-      rval.push_back(cw::fragf("%ls: %F",
-			       tagstitle.c_str(),
-			       indentbox(0, wcswidth(tagstitle.c_str(), tagstitle.size())+2,
-					 wrapbox(cw::join_fragments(tags, L", ")))));
-    }
-
-  typedef aptitudeDepCache::user_tag user_tag;
-  const set<user_tag> &user_tags((*apt_cache_file)->get_ext_state(pkg).user_tags);
-  if(!user_tags.empty())
-    {
-      vector<cw::fragment *> tags;
-      for(set<user_tag>::const_iterator it = user_tags.begin();
-	  it != user_tags.end(); ++it)
-	{
-	  tags.push_back(cw::text_fragment((*apt_cache_file)->deref_user_tag(*it),
-					   cw::style_attrs_on(A_BOLD)));
-	}
-
-      wstring title = W_("User Tags");
-      rval.push_back(dropbox(cw::fragf("%ls: ", title.c_str()),
-			     wrapbox(cw::join_fragments(tags, L", "))));
-    }
-
-  if(!rval.empty())
-    return cw::join_fragments(rval, L"\n");
-  else
-    return NULL;
+    // The initial indentation level is 1 because in a Packages file,
+    // all Description lines get at least one character of indentation
+    // and we want to strip that off.
+    make_level_fragment(desc, 1, loc,
+			aptcfg->FindB(PACKAGE "::Parse-Description-Bullets",
+				      true),
+			output);
+  }
 }

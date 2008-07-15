@@ -30,7 +30,7 @@
 #include <cwidget/widgets/layout_item.h>
 
 #include "dep_item.h"
-#include "desc_parse.h"
+#include "desc_render.h"
 #include "pkg_item_with_subtree.h"
 #include "pkg_subtree.h"
 #include "pkg_ver_item.h"

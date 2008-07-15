@@ -5,7 +5,7 @@
 #include "cmdline_show.h"
 
 #include <aptitude.h>
-#include <desc_parse.h>
+#include <desc_render.h>
 
 #include "cmdline_common.h"
 #include "cmdline_util.h"

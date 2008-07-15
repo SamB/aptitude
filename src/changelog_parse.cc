@@ -1,6 +1,6 @@
 // changelog_parse.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -22,7 +22,7 @@
 
 #include "changelog_parse.h"
 
-#include "desc_parse.h"
+#include "desc_render.h"
 
 #include <apt-pkg/fileutl.h>
 #include <apt-pkg/pkgsystem.h>
