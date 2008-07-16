@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <glade-interface>
-  <requires-version lib="gtk+" version="2.12"/>
   <widget class="GtkWindow" id="main_window">
     <property name="width_request">800</property>
     <property name="height_request">600</property>
@@ -149,7 +148,27 @@
             <child>
               <widget class="GtkToolButton" id="main_toolbutton_dashboard">
                 <property name="visible">True</property>
+                <property name="label" translatable="yes">Dashboard</property>
                 <property name="stock_id">gtk-home</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkSeparatorToolItem" id="toolbutton1">
+                <property name="visible">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="main_toolbutton_update">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Update</property>
+                <property name="stock_id">gtk-refresh</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
