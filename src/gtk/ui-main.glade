@@ -201,9 +201,10 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="label2">
+              <widget class="GtkTreeView" id="main_download_treeview">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">This is the download view</property>
+                <property name="can_focus">True</property>
+                <property name="headers_clickable">True</property>
               </widget>
               <packing>
                 <property name="position">1</property>
