@@ -85,6 +85,7 @@ namespace gui
   {
     private:
       Gtk::ToolButton * pToolButtonDashboard;
+      Gtk::ToolButton * pToolButtonPackages;
       Gtk::ToolButton * pToolButtonUpdate;
       Gtk::ProgressBar * pProgressBar;
       Gtk::Statusbar * pStatusBar;

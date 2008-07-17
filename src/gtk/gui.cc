@@ -53,6 +53,40 @@ namespace gui
       Gtk::Main::iteration();
   }
 
+  class guiOpProgress : public OpProgress
+  { // must derive to read protected member..
+    private:
+      float sanitizePercentFraction(float percent)
+      {
+        float rval = percent / 100;
+        if (percent < 0)
+          rval = 0;
+        if (percent > 1)
+          rval = 1;
+        return rval;
+      }
+    public:
+      ~guiOpProgress()
+      {
+        pMainWindow->get_progress_bar()->set_text("");
+        pMainWindow->get_progress_bar()->set_fraction(0);
+      }
+      void Update()
+      {
+        if (CheckChange(0.25))
+        {
+          pMainWindow->get_progress_bar()->set_text(Op);
+          pMainWindow->get_progress_bar()->set_fraction(sanitizePercentFraction(Percent));
+          gtk_update();
+        }
+      }
+  };
+
+  guiOpProgress * gen_progress_bar()
+  {
+    return new guiOpProgress;
+  }
+
   Tab::Tab(TabType _type, const Glib::ustring &_label,
 	   const Glib::RefPtr<Gnome::Glade::Xml> &_xml, const std::string &widgetName)
     : type(_type), label(_label),
@@ -96,9 +130,9 @@ namespace gui
       Gtk::TreeView * pDownloadTreeView;
 
       DownloadTab(const Glib::ustring &label)
-	: Tab(Download, label,
-	      Gnome::Glade::Xml::create(glade_main_file, "main_download_scrolledwindow"),
-	      "main_download_scrolledwindow")
+        : Tab(Download, label,
+              Gnome::Glade::Xml::create(glade_main_file, "main_download_scrolledwindow"),
+              "main_download_scrolledwindow")
       {
         get_xml()->get_widget("main_download_treeview", pDownloadTreeView);
         get_widget()->show();
@@ -116,6 +150,209 @@ namespace gui
         pDownloadTreeView->set_model(download_store);
       }
   };
+
+  class PackageColumns : public Gtk::TreeModel::ColumnRecord
+  {
+    public:
+      Gtk::TreeModelColumn<pkgCache::PkgIterator> PkgIterator;
+      Gtk::TreeModelColumn<pkgCache::VerIterator> VerIterator;
+      Gtk::TreeModelColumn<Glib::ustring> CurrentStatus;
+      Gtk::TreeModelColumn<Glib::ustring> SelectedStatus;
+      Gtk::TreeModelColumn<Glib::ustring> Name;
+      Gtk::TreeModelColumn<Glib::ustring> Section;
+      Gtk::TreeModelColumn<Glib::ustring> Version;
+
+      PackageColumns()
+      {
+        add(PkgIterator);
+        add(VerIterator);
+        add(CurrentStatus);
+        add(SelectedStatus);
+        add(Name);
+        add(Section);
+        add(Version);
+      }
+  };
+
+  class PackageTab : public Tab
+  {
+    public:
+      Glib::RefPtr<Gtk::ListStore> package_store;
+      PackageColumns package_columns;
+      Gtk::TreeView * pPackageTreeView;
+      Gtk::TextView * pPackageTextView;
+
+      PackageTab(const Glib::ustring &label)
+        : Tab(Packages, label,
+              Gnome::Glade::Xml::create(glade_main_file, "main_package_vpaned"),
+              "main_package_vpaned")
+      {
+        get_xml()->get_widget("main_package_textview", pPackageTextView);
+        get_xml()->get_widget("main_package_treeview", pPackageTreeView);
+        get_widget()->show();
+        createstore();
+        pPackageTreeView->append_column(_("Current Status"), package_columns.CurrentStatus);
+        pPackageTreeView->get_column(0)->set_sort_column(package_columns.CurrentStatus);
+        pPackageTreeView->append_column(_("Selected Status"), package_columns.SelectedStatus);
+        pPackageTreeView->get_column(1)->set_sort_column(package_columns.SelectedStatus);
+        pPackageTreeView->append_column(_("Name"), package_columns.Name);
+        pPackageTreeView->get_column(2)->set_sort_column(package_columns.Name);
+        pPackageTreeView->append_column(_("Section"), package_columns.Section);
+        pPackageTreeView->get_column(3)->set_sort_column(package_columns.Section);
+        pPackageTreeView->append_column(_("Version"), package_columns.Version);
+      }
+      void createstore()
+      {
+        package_store = Gtk::ListStore::create(package_columns);
+        pPackageTreeView->set_model(package_store);
+        pPackageTreeView->set_search_column(package_columns.Name);
+      }
+  };
+
+  string current_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  {
+    if(!ver.end() && ver != pkg.CurrentVer())
+      return "p";
+
+    switch(pkg->CurrentState)
+      {
+      case pkgCache::State::NotInstalled:
+        return "p";
+      case pkgCache::State::UnPacked:
+        return "u";
+      case pkgCache::State::HalfConfigured:
+        return "C";
+      case pkgCache::State::HalfInstalled:
+        return "H";
+      case pkgCache::State::ConfigFiles:
+        return "c";
+  #ifdef APT_HAS_TRIGGERS
+      case pkgCache::State::TriggersAwaited:
+        return "W";
+      case pkgCache::State::TriggersPending:
+        return "T";
+  #endif
+      case pkgCache::State::Installed:
+        return "i";
+      default:
+        return "E";
+      }
+  }
+
+  string selected_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  {
+    aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
+    aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
+    pkgCache::VerIterator candver=state.CandidateVerIter(*apt_cache_file);
+
+    string selected_state = string();
+    if (state.Status != 2
+        && (*apt_cache_file)->get_ext_state(pkg).selection_state
+            == pkgCache::State::Hold && !state.InstBroken())
+      selected_state += "h";
+    if (state.Upgradable() && !pkg.CurrentVer().end() && !candver.end()
+        && candver.VerStr() == estate.forbidver)
+      selected_state += "F";
+    if (state.Delete())
+      selected_state += ((state.iFlags & pkgDepCache::Purge) ? "p" : "d");
+    if (state.InstBroken())
+      selected_state += "B";
+    if (state.NewInstall())
+      selected_state += "i";
+    if (state.iFlags & pkgDepCache::ReInstall)
+      selected_state += "r";
+    if (state.Upgrade())
+      selected_state += "u";
+    return selected_state;
+  }
+
+  void display_desc(PackageTab * tab)
+  {
+    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = tab->pPackageTreeView->get_selection();
+    if(refSelection)
+    {
+      Gtk::TreeModel::iterator iter = refSelection->get_selected();
+      if(iter)
+      {
+        pkgCache::PkgIterator pkg = (*iter)[tab->package_columns.PkgIterator];
+        pkgCache::VerIterator ver = pkg.VersionList();
+        if (ver)
+        {
+          pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
+          string misc = ssprintf("%s%s\n"
+              "%s%s\n"
+              "%s%s\n"
+              "%s%s\n"
+              "%s%s\n"
+              "%s%s\n"
+              "%s%s\n",
+              _("Name: "), pkg.Name(),
+              _("Priority: "),pkgCache::VerIterator(ver).PriorityType()?pkgCache::VerIterator(ver).PriorityType():_("Unknown"),
+              _("Section: "),pkg.Section()?pkg.Section():_("Unknown"),
+              _("Maintainer: "),rec.Maintainer().c_str(),
+              _("Compressed size: "), SizeToStr(ver->Size).c_str(),
+              _("Uncompressed size: "), SizeToStr(ver->InstalledSize).c_str(),
+              _("Source Package: "),
+              rec.SourcePkg().empty()?pkg.Name():rec.SourcePkg().c_str());
+          string desc = cwidget::util::transcode(get_long_description(ver, apt_package_records), "UTF-8");
+          tab->pPackageTextView->get_buffer()->set_text(misc + _("Description: ") + desc);
+        }
+        else
+        {
+          tab->pPackageTextView->get_buffer()->set_text(ssprintf("%s%s\n", _("Name: "), pkg.Name()));
+        }
+      }
+    }
+  }
+
+  void populate_package_tab(guiOpProgress &progress, PackageTab * tab, bool limited)
+  {
+    int num=0;
+    int total=(*apt_cache_file)->Head().PackageCount;
+    tab->createstore();
+
+    //aptitude::matching::pkg_matcher *limit = aptitude::matching::parse_pattern(pPackageSearchLimit->get_text());
+
+    for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin(); !pkg.end(); pkg++)
+      {
+        progress.OverallProgress(num, total, 1, _("Building view"));
+
+        ++num;
+        if (num%5000 == 0)
+        {
+          pMainWindow->get_progress_bar()->pulse();
+          gtk_update();
+        }
+
+        // Filter useless packages up-front.
+        if(pkg.VersionList().end() && pkg.ProvidesList().end())
+          continue;
+
+        if (/*!limited || aptitude::matching::apply_matcher(limit, pkg, *apt_cache_file, *apt_package_records)*/true)
+          {
+            for (pkgCache::VerIterator ver = pkg.VersionList(); ver.end() == false; ver++)
+              {
+                Gtk::TreeModel::iterator iter = tab->package_store->append();
+                Gtk::TreeModel::Row row = *iter;
+
+                row[tab->package_columns.PkgIterator] = pkg;
+                row[tab->package_columns.VerIterator] = ver;
+                row[tab->package_columns.CurrentStatus] = current_state_string(pkg, ver);
+                row[tab->package_columns.SelectedStatus] = selected_state_string(pkg, ver);
+                row[tab->package_columns.Name] = pkg.Name()?pkg.Name():"";
+                row[tab->package_columns.Section] = pkg.Section()?pkg.Section():"";
+                row[tab->package_columns.Version] = ver.VerStr();
+
+                if (want_to_quit)
+                  return;
+              }
+          }
+      }
+    gtk_update();
+    tab->package_store->set_sort_column(tab->package_columns.Name, Gtk::SORT_ASCENDING);
+    gtk_update();
+    progress.OverallProgress(total, total, 1,  _("Building view"));
+  }
 
   int TabsManager::next_position(TabType type)
   {
@@ -172,44 +409,21 @@ namespace gui
   DownloadTab * tab_add_download()
   {
     DownloadTab * tab = new DownloadTab("truc download");
-
     int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
     pMainWindow->get_notebook()->set_current_page(new_page_idx);
     return tab;
   }
 
-  class guiOpProgress : public OpProgress
-  { // must derive to read protected member..
-    private:
-      float sanitizePercentFraction(float percent)
-      {
-        float rval = percent / 100;
-        if (percent < 0)
-          rval = 0;
-        if (percent > 1)
-          rval = 1;
-        return rval;
-      }
-    public:
-      ~guiOpProgress()
-      {
-        pMainWindow->get_progress_bar()->set_text("");
-        pMainWindow->get_progress_bar()->set_fraction(0);
-      }
-      void Update()
-      {
-        if (CheckChange(0.25))
-        {
-          pMainWindow->get_progress_bar()->set_text(Op);
-          pMainWindow->get_progress_bar()->set_fraction(sanitizePercentFraction(Percent));
-          gtk_update();
-        }
-      }
-  };
-
-  guiOpProgress * gen_progress_bar()
+  /**
+   * Adds a package tab to the interface.
+   * TODO: Get this one out of here!
+   */
+  PackageTab * tab_add_package()
   {
-    return new guiOpProgress;
+    PackageTab * tab = new PackageTab("truc package");
+    int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
+    pMainWindow->get_notebook()->set_current_page(new_page_idx);
+    return tab;
   }
 
   void check_apt_errors()
@@ -334,12 +548,23 @@ namespace gui
     do_update_lists(tab);
   }
 
+  void do_packages()
+  {
+    PackageTab * tab = tab_add_package();
+    guiOpProgress * p = gen_progress_bar();
+    populate_package_tab(*p, tab, false);
+    delete p;
+  }
+
   AptitudeWindow::AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::Window(cobject)
   {
     refXml->get_widget_derived("main_notebook", pNotebook);
 
     refGlade->get_widget("main_toolbutton_dashboard", pToolButtonDashboard);
     pToolButtonDashboard->signal_clicked().connect(&do_dashboard);
+
+    refGlade->get_widget("main_toolbutton_packages", pToolButtonPackages);
+    pToolButtonPackages->signal_clicked().connect(&do_packages);
 
     refGlade->get_widget("main_toolbutton_update", pToolButtonUpdate);
     pToolButtonUpdate->signal_clicked().connect(&do_update);
