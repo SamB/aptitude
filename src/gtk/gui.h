@@ -24,19 +24,27 @@ namespace gui
   class Tab
   {
     private:
-      Glib::ustring label;
       TabType type;
-    protected:
-      void set_type(TabType type);
+      Glib::ustring label;
+      Glib::RefPtr<Gnome::Glade::Xml> xml;
+      Gtk::Widget * widget;
+
     public:
-      Gtk::Widget * pWidget;
-      /**
-       * Glade::Xml derived widget constructor.
+      /** \brief Construct a new tab.
+       *
+       *  \param _type The type of the new tab.
+       *  \param _label The label of the new tab.
+       *  \param _xml  The XML object from which to take the widget
+       *               of the new tab.
+       *  \param widgetName  The name of the new tab's associated
+       *                     widget within the given XML tree.
        */
-      Tab();
-      void set_label(Glib::ustring label);
-      Glib::ustring get_label();
-      TabType get_type();
+      Tab(TabType _type, const Glib::ustring &_label,
+	  const Glib::RefPtr<Gnome::Glade::Xml> &_xml, const std::string &widgetName);
+      Glib::ustring get_label() { return label; }
+      TabType get_type() { return type; }
+      Gtk::Widget * get_widget() const { return widget; }
+      const Glib::RefPtr<Gnome::Glade::Xml> &get_xml() { return xml; }
   };
 
   /**
@@ -78,14 +86,18 @@ namespace gui
     private:
       Gtk::ToolButton * pToolButtonDashboard;
       Gtk::ToolButton * pToolButtonUpdate;
-    public:
       Gtk::ProgressBar * pProgressBar;
       Gtk::Statusbar * pStatusBar;
       TabsManager * pNotebook;
+    public:
       /**
        * Glade::Xml derived widget constructor.
        */
       AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)/* : Gtk::Window(cobject)*/;
+
+    Gtk::ProgressBar * get_progress_bar() const { return pProgressBar; }
+    Gtk::Statusbar * get_status_bar() const { return pStatusBar; }
+    TabsManager * get_notebook() const { return pNotebook; }
   };
 
   void main(int argc, char *argv[]);

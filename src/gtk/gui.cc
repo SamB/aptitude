@@ -53,41 +53,23 @@ namespace gui
       Gtk::Main::iteration();
   }
 
-  Tab::Tab()
+  Tab::Tab(TabType _type, const Glib::ustring &_label,
+	   const Glib::RefPtr<Gnome::Glade::Xml> &_xml, const std::string &widgetName)
+    : type(_type), label(_label),
+      xml(_xml), widget(NULL)
   {
-    label = "";
-    type = Dashboard;
-  }
-
-  void Tab::set_type(TabType type)
-  {
-    this->type = type;
-  }
-
-  void Tab::set_label(Glib::ustring label)
-  {
-    this->label = label;
-  }
-
-  Glib::ustring Tab::get_label()
-  {
-    return label;
-  }
-
-  TabType Tab::get_type()
-  {
-    return type;
+    xml->get_widget(widgetName, widget);
   }
 
   class DashboardTab : public Tab
   {
     public:
-      DashboardTab()
+      DashboardTab(Glib::ustring label)
+	: Tab(Dashboard, label,
+	      Gnome::Glade::Xml::create(glade_main_file, "label1"),
+	      "label1")
       {
-        set_type(Dashboard);
-        Glib::RefPtr<Gnome::Glade::Xml> refLocalXml = Gnome::Glade::Xml::create(glade_main_file, "label1");
-        refLocalXml->get_widget("label1", pWidget);
-        pWidget->show();
+        get_widget()->show();
       }
   };
 
@@ -112,13 +94,14 @@ namespace gui
       Glib::RefPtr<Gtk::ListStore> download_store;
       DownloadColumns download_columns;
       Gtk::TreeView * pDownloadTreeView;
-      DownloadTab()
+
+      DownloadTab(const Glib::ustring &label)
+	: Tab(Download, label,
+	      Gnome::Glade::Xml::create(glade_main_file, "main_download_scrolledwindow"),
+	      "main_download_scrolledwindow")
       {
-        set_type(Download);
-        Glib::RefPtr<Gnome::Glade::Xml> refLocalXml = Gnome::Glade::Xml::create(glade_main_file, "main_download_scrolledwindow");
-        refLocalXml->get_widget("main_download_scrolledwindow", pWidget);
-        refLocalXml->get_widget("main_download_treeview", pDownloadTreeView);
-        pWidget->show();
+        get_xml()->get_widget("main_download_treeview", pDownloadTreeView);
+        get_widget()->show();
         createstore();
         pDownloadTreeView->append_column(_("URI"), download_columns.URI);
         pDownloadTreeView->get_column(0)->set_sort_column(download_columns.URI);
@@ -160,12 +143,12 @@ namespace gui
       // No more than one Dashboard at once
       if (number_of(Dashboard) == 0)
       {
-        rval = insert_page(*(tab.pWidget), _("Dashboard"), 0);
+        rval = insert_page(*(tab.get_widget()), _("Dashboard"), 0);
       }
       break;
       // TODO: handle other kinds of tabs
     default:
-      rval = insert_page(*(tab.pWidget), "generic tab: " + tab.get_label(), next_position(tab.get_type()));
+      rval = insert_page(*(tab.get_widget()), "generic tab: " + tab.get_label(), next_position(tab.get_type()));
       }
     return rval;
   }
@@ -176,9 +159,9 @@ namespace gui
    */
   DashboardTab * tab_add_dashboard()
   {
-    DashboardTab * tab = new DashboardTab();
-    tab->set_label("truc dashboard");
-    pMainWindow->pNotebook->set_current_page(pMainWindow->pNotebook->append_page(*tab));
+    DashboardTab * tab = new DashboardTab("truc dashboard");
+    int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
+    pMainWindow->get_notebook()->set_current_page(new_page_idx);
     return tab;
   }
 
@@ -188,9 +171,10 @@ namespace gui
    */
   DownloadTab * tab_add_download()
   {
-    DownloadTab * tab = new DownloadTab();
-    tab->set_label("truc download");
-    pMainWindow->pNotebook->set_current_page(pMainWindow->pNotebook->append_page(*tab));
+    DownloadTab * tab = new DownloadTab("truc download");
+
+    int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
+    pMainWindow->get_notebook()->set_current_page(new_page_idx);
     return tab;
   }
 
@@ -209,15 +193,15 @@ namespace gui
     public:
       ~guiOpProgress()
       {
-        pMainWindow->pProgressBar->set_text("");
-        pMainWindow->pProgressBar->set_fraction(0);
+        pMainWindow->get_progress_bar()->set_text("");
+        pMainWindow->get_progress_bar()->set_fraction(0);
       }
       void Update()
       {
         if (CheckChange(0.25))
         {
-          pMainWindow->pProgressBar->set_text(Op);
-          pMainWindow->pProgressBar->set_fraction(sanitizePercentFraction(Percent));
+          pMainWindow->get_progress_bar()->set_text(Op);
+          pMainWindow->get_progress_bar()->set_fraction(sanitizePercentFraction(Percent));
           gtk_update();
         }
       }
@@ -259,8 +243,8 @@ namespace gui
       {
         pkgAcquireStatus::Pulse(Owner);
         if (TotalItems != 0)
-          pMainWindow->pProgressBar->set_fraction(((float)CurrentItems)/((float)TotalItems));
-        pMainWindow->pProgressBar->set_text(ssprintf("%lu of %lu done", CurrentItems, TotalItems));
+          pMainWindow->get_progress_bar()->set_fraction(((float)CurrentItems)/((float)TotalItems));
+        pMainWindow->get_progress_bar()->set_text(ssprintf("%lu of %lu done", CurrentItems, TotalItems));
         gtk_update();
         return !want_to_quit;
       }
@@ -272,8 +256,8 @@ namespace gui
       {
         std::cout << Itm.Description << std::endl;
 
-        pMainWindow->pStatusBar->pop(0);
-        pMainWindow->pStatusBar->push(Itm.Description, 0);
+        pMainWindow->get_status_bar()->pop(0);
+        pMainWindow->get_status_bar()->push(Itm.Description, 0);
 
         Gtk::TreeModel::iterator iter = tab->download_store->append();
         Gtk::TreeModel::Row row = *iter;
@@ -317,12 +301,12 @@ namespace gui
       {
         if (getuid()==0)
           {
-            pMainWindow->pProgressBar->set_text("Updating..");
-            pMainWindow->pProgressBar->set_fraction(0);
+            pMainWindow->get_progress_bar()->set_text("Updating..");
+            pMainWindow->get_progress_bar()->set_fraction(0);
             tab->download_store->clear();
             really_do_update_lists(tab);
-            pMainWindow->pProgressBar->set_fraction(0);
-            pMainWindow->pStatusBar->pop(0);
+            pMainWindow->get_progress_bar()->set_fraction(0);
+            pMainWindow->get_status_bar()->pop(0);
           }
         else
           {
