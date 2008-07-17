@@ -1,6 +1,73 @@
 <?xml version="1.0"?>
 <glade-interface>
-  <requires-version lib="gtk+" version="2.12"/>
+  <widget class="GtkMenu" id="main_packages_context">
+    <property name="visible">True</property>
+    <child>
+      <widget class="GtkImageMenuItem" id="main_packages_context_install">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Install</property>
+        <property name="use_underline">True</property>
+        <child internal-child="image">
+          <widget class="GtkImage" id="menu-item-image2">
+            <property name="visible">True</property>
+            <property name="stock">gtk-add</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+    <child>
+      <widget class="GtkImageMenuItem" id="main_packages_context_remove">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Remove</property>
+        <property name="use_underline">True</property>
+        <child internal-child="image">
+          <widget class="GtkImage" id="menu-item-image1">
+            <property name="visible">True</property>
+            <property name="stock">gtk-remove</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+    <child>
+      <widget class="GtkImageMenuItem" id="main_packages_context_purge">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Purge</property>
+        <property name="use_underline">True</property>
+        <child internal-child="image">
+          <widget class="GtkImage" id="menu-item-image3">
+            <property name="visible">True</property>
+            <property name="stock">gtk-delete</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+    <child>
+      <widget class="GtkImageMenuItem" id="main_packages_context_keep">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Keep</property>
+        <property name="use_underline">True</property>
+        <child internal-child="image">
+          <widget class="GtkImage" id="menu-item-image4">
+            <property name="visible">True</property>
+            <property name="stock">gtk-media-rewind</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+    <child>
+      <widget class="GtkImageMenuItem" id="main_packages_context_hold">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Hold</property>
+        <property name="use_underline">True</property>
+        <child internal-child="image">
+          <widget class="GtkImage" id="menu-item-image5">
+            <property name="visible">True</property>
+            <property name="stock">gtk-media-pause</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+  </widget>
   <widget class="GtkWindow" id="main_window">
     <property name="width_request">800</property>
     <property name="height_request">600</property>
@@ -239,7 +306,7 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkVPaned" id="main_package_vpaned">
+              <widget class="GtkVPaned" id="main_packages_vpaned">
                 <property name="can_focus">True</property>
                 <child>
                   <widget class="GtkScrolledWindow" id="scrolledwindow1">
@@ -248,7 +315,7 @@
                     <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                     <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                     <child>
-                      <widget class="GtkTreeView" id="main_package_treeview">
+                      <widget class="GtkTreeView" id="main_packages_treeview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="headers_clickable">True</property>
@@ -267,7 +334,7 @@
                     <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                     <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                     <child>
-                      <widget class="GtkTextView" id="main_package_textview">
+                      <widget class="GtkTextView" id="main_packages_textview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                       </widget>

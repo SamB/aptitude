@@ -7,6 +7,8 @@
 #include <gtkmm.h>
 #include <libglademm/xml.h>
 
+#include <generic/apt/apt.h>
+
 namespace gui
 {
 
@@ -45,6 +47,80 @@ namespace gui
       TabType get_type() { return type; }
       Gtk::Widget * get_widget() const { return widget; }
       const Glib::RefPtr<Gnome::Glade::Xml> &get_xml() { return xml; }
+  };
+
+  class PackagesTab;
+
+  /**
+   * The PackagesMarker marks packages belonging to a PackagesTab
+   */
+  class PackagesMarker
+  {
+    private:
+      PackagesTab * tab;
+    public:
+      /** \brief Construct a packages marker for tab.
+       *
+       *  \param tab The tab on which the marking takes place.
+       */
+      PackagesMarker(PackagesTab * tab);
+      void install();
+      void remove();
+      void purge();
+      void keep();
+      void hold();
+  };
+
+  /**
+   * The context menu for packages in PackagesTab
+   */
+  class PackagesContextMenu
+  {
+    private:
+      Gtk::Menu * pMenu;
+      Gtk::ImageMenuItem * pMenuInstall;
+      Gtk::ImageMenuItem * pMenuRemove;
+      Gtk::ImageMenuItem * pMenuPurge;
+      Gtk::ImageMenuItem * pMenuKeep;
+      Gtk::ImageMenuItem * pMenuHold;
+      PackagesTab * tab;
+      PackagesMarker * marker;
+    public:
+      /** \brief Construct a context menu for tab.
+       *
+       *  \param tab The tab who owns the context menu.
+       *  \param marker The marker to use to execute the actions.
+       */
+    PackagesContextMenu(PackagesTab * tab, PackagesMarker * marker);
+    Gtk::Menu * get_menu() const { return pMenu; }
+  };
+
+  class PackagesColumns : public Gtk::TreeModel::ColumnRecord
+  {
+    public:
+      Gtk::TreeModelColumn<pkgCache::PkgIterator> PkgIterator;
+      Gtk::TreeModelColumn<pkgCache::VerIterator> VerIterator;
+      Gtk::TreeModelColumn<Glib::ustring> CurrentStatus;
+      Gtk::TreeModelColumn<Glib::ustring> SelectedStatus;
+      Gtk::TreeModelColumn<Glib::ustring> Name;
+      Gtk::TreeModelColumn<Glib::ustring> Section;
+      Gtk::TreeModelColumn<Glib::ustring> Version;
+
+      PackagesColumns();
+  };
+
+  class PackagesTab : public Tab
+  {
+    public:
+      Glib::RefPtr<Gtk::ListStore> packages_store;
+      PackagesColumns packages_columns;
+      Gtk::TreeView * pPackagesTreeView;
+      Gtk::TextView * pPackagesTextView;
+      PackagesContextMenu * pPackagesContextMenu;
+      PackagesMarker * pPackagesMarker;
+      PackagesTab(const Glib::ustring &label);
+      void createstore();
+      void on_button_press_event(GdkEventButton* event);
   };
 
   /**
