@@ -17,19 +17,22 @@ namespace gui
   };
 
   /**
-   * A Tab is a widget with some metadata for inserting into the notebook.
+   * A Tab contains a widget and some metadata for inserting into the notebook.
    */
-  class Tab : public Gtk::Widget
+  class Tab
   {
     private:
       Glib::ustring label;
       TabType type;
+    protected:
+      void set_type(TabType type);
     public:
+      Gtk::Widget * pWidget;
       /**
        * Glade::Xml derived widget constructor.
        */
-      Tab(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-      void set_metadata(Glib::ustring new_label, TabType new_type);
+      Tab();
+      void set_label(Glib::ustring label);
       Glib::ustring get_label();
       TabType get_type();
   };

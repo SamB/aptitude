@@ -186,7 +186,6 @@
             <property name="can_focus">True</property>
             <child>
               <widget class="GtkLabel" id="label1">
-                <property name="visible">True</property>
                 <property name="label" translatable="yes">This is the dashboard</property>
               </widget>
             </child>
@@ -201,10 +200,17 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkTreeView" id="main_download_treeview">
-                <property name="visible">True</property>
+              <widget class="GtkScrolledWindow" id="main_download_scrolledwindow">
                 <property name="can_focus">True</property>
-                <property name="headers_clickable">True</property>
+                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <child>
+                  <widget class="GtkTreeView" id="main_download_treeview">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="headers_clickable">True</property>
+                  </widget>
+                </child>
               </widget>
               <packing>
                 <property name="position">1</property>
@@ -223,7 +229,6 @@
             </child>
             <child>
               <widget class="GtkLabel" id="label3">
-                <property name="visible">True</property>
                 <property name="label" translatable="yes">This is the package tree</property>
               </widget>
               <packing>
@@ -243,7 +248,6 @@
             </child>
             <child>
               <widget class="GtkLabel" id="label4">
-                <property name="visible">True</property>
                 <property name="label" translatable="yes">This is the package view</property>
               </widget>
               <packing>
@@ -263,7 +267,6 @@
             </child>
             <child>
               <widget class="GtkLabel" id="label5">
-                <property name="visible">True</property>
                 <property name="label" translatable="yes">This is the preview view</property>
               </widget>
               <packing>
@@ -283,7 +286,6 @@
             </child>
             <child>
               <widget class="GtkLabel" id="label6">
-                <property name="visible">True</property>
                 <property name="label" translatable="yes">This is the resolver view</property>
               </widget>
               <packing>

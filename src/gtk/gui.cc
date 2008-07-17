@@ -53,17 +53,20 @@ namespace gui
       Gtk::Main::iteration();
   }
 
-  Tab::Tab(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) :
-    Gtk::Widget(cobject)
+  Tab::Tab()
   {
     label = "";
     type = Dashboard;
   }
 
-  void Tab::set_metadata(Glib::ustring new_label, TabType new_type)
+  void Tab::set_type(TabType type)
   {
-    label = new_label;
-    type = new_type;
+    this->type = type;
+  }
+
+  void Tab::set_label(Glib::ustring label)
+  {
+    this->label = label;
   }
 
   Glib::ustring Tab::get_label()
@@ -75,6 +78,18 @@ namespace gui
   {
     return type;
   }
+
+  class DashboardTab : public Tab
+  {
+    public:
+      DashboardTab()
+      {
+        set_type(Dashboard);
+        Glib::RefPtr<Gnome::Glade::Xml> refLocalXml = Gnome::Glade::Xml::create(glade_main_file, "label1");
+        refLocalXml->get_widget("label1", pWidget);
+        pWidget->show();
+      }
+  };
 
   class DownloadColumns : public Gtk::TreeModel::ColumnRecord
   {
@@ -97,10 +112,13 @@ namespace gui
       Glib::RefPtr<Gtk::ListStore> download_store;
       DownloadColumns download_columns;
       Gtk::TreeView * pDownloadTreeView;
-      DownloadTab(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) :
-        Tab(cobject, refGlade)
+      DownloadTab()
       {
-        refGlade->get_widget("main_download_treeview", pDownloadTreeView);
+        set_type(Download);
+        Glib::RefPtr<Gnome::Glade::Xml> refLocalXml = Gnome::Glade::Xml::create(glade_main_file, "main_download_scrolledwindow");
+        refLocalXml->get_widget("main_download_scrolledwindow", pWidget);
+        refLocalXml->get_widget("main_download_treeview", pDownloadTreeView);
+        pWidget->show();
         createstore();
         pDownloadTreeView->append_column(_("URI"), download_columns.URI);
         pDownloadTreeView->get_column(0)->set_sort_column(download_columns.URI);
@@ -142,12 +160,12 @@ namespace gui
       // No more than one Dashboard at once
       if (number_of(Dashboard) == 0)
       {
-        rval = insert_page(tab, _("Dashboard"), 0);
+        rval = insert_page(*(tab.pWidget), _("Dashboard"), 0);
       }
       break;
       // TODO: handle other kinds of tabs
     default:
-      rval = insert_page(tab, "generic tab: " + tab.get_label(), next_position(tab.get_type()));
+      rval = insert_page(*(tab.pWidget), "generic tab: " + tab.get_label(), next_position(tab.get_type()));
       }
     return rval;
   }
@@ -156,13 +174,12 @@ namespace gui
    * Adds a dashboard tab to the interface.
    * TODO: Get this one out of here!
    */
-  void tab_add_dashboard()
+  DashboardTab * tab_add_dashboard()
   {
-    Tab * tab;
-    Glib::RefPtr<Gnome::Glade::Xml> refLocalXml = Gnome::Glade::Xml::create(glade_main_file, "label1");
-    refLocalXml->get_widget_derived("label1", tab);
-    tab->set_metadata("truc", Dashboard);
+    DashboardTab * tab = new DashboardTab();
+    tab->set_label("truc dashboard");
     pMainWindow->pNotebook->set_current_page(pMainWindow->pNotebook->append_page(*tab));
+    return tab;
   }
 
   /**
@@ -171,10 +188,8 @@ namespace gui
    */
   DownloadTab * tab_add_download()
   {
-    DownloadTab * tab;
-    Glib::RefPtr<Gnome::Glade::Xml> refLocalXml = Gnome::Glade::Xml::create(glade_main_file, "main_download_treeview");
-    refLocalXml->get_widget_derived("main_download_treeview", tab);
-    tab->set_metadata("truc download", Download);
+    DownloadTab * tab = new DownloadTab();
+    tab->set_label("truc download");
     pMainWindow->pNotebook->set_current_page(pMainWindow->pNotebook->append_page(*tab));
     return tab;
   }
@@ -236,9 +251,9 @@ namespace gui
     private:
       DownloadTab * tab;
     public:
-      guiPkgAcquireStatus(DownloadTab * new_tab)
+      guiPkgAcquireStatus(DownloadTab * tab)
       {
-        tab = new_tab;
+        this->tab = tab;
       }
       bool Pulse(pkgAcquire *Owner)
       {
@@ -324,6 +339,11 @@ namespace gui
           << std::endl;
   }
 
+  void do_dashboard()
+  {
+    /*DashboardTab * tab = */tab_add_dashboard();
+  }
+
   void do_update()
   {
     DownloadTab * tab = tab_add_download();
@@ -333,10 +353,13 @@ namespace gui
   AptitudeWindow::AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::Window(cobject)
   {
     refXml->get_widget_derived("main_notebook", pNotebook);
+
     refGlade->get_widget("main_toolbutton_dashboard", pToolButtonDashboard);
-    pToolButtonDashboard->signal_clicked().connect(&tab_add_dashboard);
+    pToolButtonDashboard->signal_clicked().connect(&do_dashboard);
+
     refGlade->get_widget("main_toolbutton_update", pToolButtonUpdate);
     pToolButtonUpdate->signal_clicked().connect(&do_update);
+
     refGlade->get_widget("main_progressbar", pProgressBar);
     refGlade->get_widget("main_statusbar", pStatusBar);
     pStatusBar->push("Aptitude-gtk v2", 0);
