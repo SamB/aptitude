@@ -1,73 +1,5 @@
 <?xml version="1.0"?>
 <glade-interface>
-  <widget class="GtkMenu" id="main_packages_context">
-    <property name="visible">True</property>
-    <child>
-      <widget class="GtkImageMenuItem" id="main_packages_context_install">
-        <property name="visible">True</property>
-        <property name="label" translatable="yes">Install</property>
-        <property name="use_underline">True</property>
-        <child internal-child="image">
-          <widget class="GtkImage" id="menu-item-image2">
-            <property name="visible">True</property>
-            <property name="stock">gtk-add</property>
-          </widget>
-        </child>
-      </widget>
-    </child>
-    <child>
-      <widget class="GtkImageMenuItem" id="main_packages_context_remove">
-        <property name="visible">True</property>
-        <property name="label" translatable="yes">Remove</property>
-        <property name="use_underline">True</property>
-        <child internal-child="image">
-          <widget class="GtkImage" id="menu-item-image1">
-            <property name="visible">True</property>
-            <property name="stock">gtk-remove</property>
-          </widget>
-        </child>
-      </widget>
-    </child>
-    <child>
-      <widget class="GtkImageMenuItem" id="main_packages_context_purge">
-        <property name="visible">True</property>
-        <property name="label" translatable="yes">Purge</property>
-        <property name="use_underline">True</property>
-        <child internal-child="image">
-          <widget class="GtkImage" id="menu-item-image3">
-            <property name="visible">True</property>
-            <property name="stock">gtk-delete</property>
-          </widget>
-        </child>
-      </widget>
-    </child>
-    <child>
-      <widget class="GtkImageMenuItem" id="main_packages_context_keep">
-        <property name="visible">True</property>
-        <property name="label" translatable="yes">Keep</property>
-        <property name="use_underline">True</property>
-        <child internal-child="image">
-          <widget class="GtkImage" id="menu-item-image4">
-            <property name="visible">True</property>
-            <property name="stock">gtk-media-rewind</property>
-          </widget>
-        </child>
-      </widget>
-    </child>
-    <child>
-      <widget class="GtkImageMenuItem" id="main_packages_context_hold">
-        <property name="visible">True</property>
-        <property name="label" translatable="yes">Hold</property>
-        <property name="use_underline">True</property>
-        <child internal-child="image">
-          <widget class="GtkImage" id="menu-item-image5">
-            <property name="visible">True</property>
-            <property name="stock">gtk-media-pause</property>
-          </widget>
-        </child>
-      </widget>
-    </child>
-  </widget>
   <widget class="GtkWindow" id="main_window">
     <property name="width_request">800</property>
     <property name="height_request">600</property>
@@ -295,9 +227,32 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="main_notebook_label_download">
+              <widget class="GtkHBox" id="main_notebook_download_label_hbox">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Download</property>
+                <child>
+                  <widget class="GtkLabel" id="main_notebook_download_label">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Download</property>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="main_notebook_download_close">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="response_id">0</property>
+                    <child>
+                      <widget class="GtkImage" id="image1">
+                        <property name="visible">True</property>
+                        <property name="stock">gtk-close</property>
+                        <property name="icon_size">1</property>
+                      </widget>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
                 <property name="position">1</property>
@@ -351,9 +306,32 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="main_notebook_label_packages">
+              <widget class="GtkHBox" id="main_notebook_packages_label_hbox">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Packages</property>
+                <child>
+                  <widget class="GtkLabel" id="main_notebook_label_packages">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Packages</property>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="main_notebook_packages_close">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="response_id">0</property>
+                    <child>
+                      <widget class="GtkImage" id="image2">
+                        <property name="visible">True</property>
+                        <property name="stock">gtk-close</property>
+                        <property name="icon_size">1</property>
+                      </widget>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
                 <property name="position">2</property>
@@ -461,6 +439,74 @@
             <property name="expand">False</property>
             <property name="position">4</property>
           </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkMenu" id="main_packages_context">
+    <property name="visible">True</property>
+    <child>
+      <widget class="GtkImageMenuItem" id="main_packages_context_install">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Install</property>
+        <property name="use_underline">True</property>
+        <child internal-child="image">
+          <widget class="GtkImage" id="menu-item-image2">
+            <property name="visible">True</property>
+            <property name="stock">gtk-add</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+    <child>
+      <widget class="GtkImageMenuItem" id="main_packages_context_remove">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Remove</property>
+        <property name="use_underline">True</property>
+        <child internal-child="image">
+          <widget class="GtkImage" id="menu-item-image1">
+            <property name="visible">True</property>
+            <property name="stock">gtk-remove</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+    <child>
+      <widget class="GtkImageMenuItem" id="main_packages_context_purge">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Purge</property>
+        <property name="use_underline">True</property>
+        <child internal-child="image">
+          <widget class="GtkImage" id="menu-item-image3">
+            <property name="visible">True</property>
+            <property name="stock">gtk-delete</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+    <child>
+      <widget class="GtkImageMenuItem" id="main_packages_context_keep">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Keep</property>
+        <property name="use_underline">True</property>
+        <child internal-child="image">
+          <widget class="GtkImage" id="menu-item-image4">
+            <property name="visible">True</property>
+            <property name="stock">gtk-media-rewind</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+    <child>
+      <widget class="GtkImageMenuItem" id="main_packages_context_hold">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Hold</property>
+        <property name="use_underline">True</property>
+        <child internal-child="image">
+          <widget class="GtkImage" id="menu-item-image5">
+            <property name="visible">True</property>
+            <property name="stock">gtk-media-pause</property>
+          </widget>
         </child>
       </widget>
     </child>

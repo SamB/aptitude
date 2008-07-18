@@ -504,20 +504,37 @@ namespace gui
   int TabsManager::append_page(Tab& tab)
   {
     int rval;
+    // TODO: Should do something about this. Create a dedicated toplevel for these widgets.
+    Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_notebook_download_label_hbox");
+    Gtk::HBox * label_widget;
+    refGlade->get_widget("main_notebook_download_label_hbox", label_widget);
+    Gtk::Label * label_label;
+    refGlade->get_widget("main_notebook_download_label", label_label);
+    Gtk::Button * label_button;
+    refGlade->get_widget("main_notebook_download_close", label_button);
+    // Maybe we should create a close() method on the Tab so it can clean itself up or make a destructor.
+    label_button->signal_pressed().connect(sigc::bind(sigc::mem_fun(this, &TabsManager::remove_page), tab));
     switch (tab.get_type())
       {
     case Dashboard:
       // No more than one Dashboard at once
       if (number_of(Dashboard) == 0)
       {
-        rval = insert_page(*(tab.get_widget()), _("Dashboard"), 0);
+        label_label->set_text(_("Dashboard"));
+        rval = insert_page(*(tab.get_widget()), *(label_widget), 0);
       }
       break;
       // TODO: handle other kinds of tabs
     default:
-      rval = insert_page(*(tab.get_widget()), "generic tab: " + tab.get_label(), next_position(tab.get_type()));
+      label_label->set_text("generic tab: " + tab.get_label());
+      rval = insert_page(*(tab.get_widget()), *(label_widget), next_position(tab.get_type()));
       }
     return rval;
+  }
+
+  void TabsManager::remove_page(Tab& tab)
+  {
+    Gtk::Notebook::remove_page(*(tab.get_widget()));
   }
 
   /**
