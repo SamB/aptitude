@@ -183,13 +183,25 @@ public:
      */
     pkgDepCache::ActionGroup *parent_group;
 
+    std::set<pkgCache::PkgIterator> *changed_packages;
+
     aptitudeDepCache &cache;
 
     undo_group *group;
 
     action_group(const action_group &other);
   public:
-    action_group(aptitudeDepCache &cache, undo_group *group = NULL);
+    /** \brief Create a new action group.
+     *
+     *  \param cache  The package cache on which to act.
+     *  \param group  The undo group to add changes to, or NULL to not remember
+     *                changes.
+     *  \param _changed_packages   A set to which the packages whose state
+     *                             changed will be added, or NULL for no
+     *                             set.
+     */
+    action_group(aptitudeDepCache &cache, undo_group *group = NULL,
+		 std::set<pkgCache::PkgIterator> *_changed_packages = NULL);
 
     ~action_group();
   };
@@ -304,7 +316,9 @@ private:
   // This makes the **ASSUMPTION** that if the target's tables aren't
   // NULL, they're properly sized..
 
-  void cleanup_after_change(undo_group *undo, bool alter_stickies=true);
+  void cleanup_after_change(undo_group *undo,
+			    std::set<pkgCache::PkgIterator> *changed_packages,
+			    bool alter_stickies=true);
   // Finds anything that magically changed and creates an undo item for it..
   // If alter_stickies is false, sticky states will be left alone.  (hack :( )
 
@@ -324,7 +338,8 @@ private:
    */
   void sweep();
   void begin_action_group();
-  void end_action_group(undo_group *undo);
+  void end_action_group(undo_group *undo,
+			std::set<pkgCache::PkgIterator> *changed_packages);
 public:
   /** Create a new depcache from the given cache and policy.  By
    *  default, the depcache is readonly if and only if it is not

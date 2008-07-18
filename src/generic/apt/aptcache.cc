@@ -170,8 +170,11 @@ public:
   }
 };
 
-aptitudeDepCache::action_group::action_group(aptitudeDepCache &cache, undo_group *group)
+aptitudeDepCache::action_group::action_group(aptitudeDepCache &cache,
+					     undo_group *group,
+					     std::set<pkgCache::PkgIterator> *_changed_packages)
   : parent_group(new pkgDepCache::ActionGroup(cache)),
+    changed_packages(_changed_packages),
     cache(cache), group(group)
 {
   cache.begin_action_group();
@@ -182,7 +185,7 @@ aptitudeDepCache::action_group::~action_group()
   // Force the parent to mark-and-sweep first.
   delete parent_group;
 
-  cache.end_action_group(group);
+  cache.end_action_group(group, changed_packages);
 }
 
 aptitudeDepCache::aptitudeDepCache(pkgCache *Cache, Policy *Plcy)
@@ -933,7 +936,9 @@ undoable *aptitudeDepCache::state_restorer(PkgIterator pkg, StateCache &state, a
 			ext_state.forbidver, this);
 }
 
-void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickies)
+void aptitudeDepCache::cleanup_after_change(undo_group *undo,
+					    std::set<pkgCache::PkgIterator> *changed_packages,
+					    bool alter_stickies)
   // Finds any packages whose states have changed and: (a) updates the
   // selected_state if it's not already updated; (b) adds an item to the
   // undo group.
@@ -941,7 +946,8 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
   // We get here with NULL backup_state in certain very early failures
   // (e.g., when someone else is holding a lock).  In this case we
   // don't know what the previous state was, so we can't possibly
-  // build a collection of undoers to return to it.
+  // build a collection of undoers to return to it or find out which
+  // packages changed relative to it.
   if(backup_state.PkgState == NULL ||
      backup_state.DepState == NULL ||
      backup_state.AptitudeState == NULL)
@@ -1006,6 +1012,9 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
 		  break;
 		}
 	    }
+
+	  if(changed_packages)
+	    changed_packages->insert(pkg);
 
 	  if(undo)
 	    undo->add_item(state_restorer(pkg,
@@ -1625,7 +1634,8 @@ void aptitudeDepCache::begin_action_group()
   group_level++;
 }
 
-void aptitudeDepCache::end_action_group(undo_group *undo)
+void aptitudeDepCache::end_action_group(undo_group *undo,
+					std::set<pkgCache::PkgIterator> *changed_packages)
 {
   eassert(group_level>0);
 
@@ -1642,7 +1652,7 @@ void aptitudeDepCache::end_action_group(undo_group *undo)
 
       sweep();
 
-      cleanup_after_change(undo);
+      cleanup_after_change(undo, changed_packages);
 
       duplicate_cache(&backup_state);
 
