@@ -23,10 +23,11 @@ namespace gui
   /**
    * This is a list of packages actions.
    * TODO: This probably already exist. Find it.
+   * FIXME: Description shouldn't be here.
    */
   enum PackagesAction
   {
-    Install, Remove, Purge, Keep, Hold
+    Install, Remove, Purge, Keep, Hold, Description
   };
 
   /**
@@ -120,9 +121,12 @@ namespace gui
     private:
       // FIXME: Hack..
       PackagesContextMenu * pPackagesContextMenu;
+      bool in_PackagesTab;
+      PackagesMarker * marker;
     public:
       PackagesView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
       void link_to_context_menu(PackagesContextMenu * context_menu);
+      void link_to_marker(PackagesMarker * marker);
       bool on_button_press_event(GdkEventButton* event);
   };
 

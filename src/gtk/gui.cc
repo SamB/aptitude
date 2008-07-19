@@ -209,42 +209,34 @@ namespace gui
     return selected_state;
   }
 
-  void display_desc(PackagesTab * tab)
+  // FIXME: Shouldn't this take a tab and a package rather than duplicating code to read the selection?
+  //        Maybe this should be called by PackagesMarker::select.
+  void display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver, PackagesTab * tab)
   {
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = tab->pPackagesTreeView->get_selection();
-    if(refSelection)
+    if (ver)
     {
-      Gtk::TreeModel::iterator iter = refSelection->get_selected();
-      if(iter)
-      {
-        pkgCache::PkgIterator pkg = (*iter)[tab->packages_columns.PkgIterator];
-        pkgCache::VerIterator ver = pkg.VersionList();
-        if (ver)
-        {
-          pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
-          string misc = ssprintf("%s%s\n"
-              "%s%s\n"
-              "%s%s\n"
-              "%s%s\n"
-              "%s%s\n"
-              "%s%s\n"
-              "%s%s\n",
-              _("Name: "), pkg.Name(),
-              _("Priority: "),pkgCache::VerIterator(ver).PriorityType()?pkgCache::VerIterator(ver).PriorityType():_("Unknown"),
+      pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
+      string misc = ssprintf("%s%s\n"
+          "%s%s\n"
+          "%s%s\n"
+          "%s%s\n"
+          "%s%s\n"
+          "%s%s\n"
+          "%s%s\n",
+          _("Name: "), pkg.Name(),
+          _("Priority: "),pkgCache::VerIterator(ver).PriorityType()?pkgCache::VerIterator(ver).PriorityType():_("Unknown"),
               _("Section: "),pkg.Section()?pkg.Section():_("Unknown"),
-              _("Maintainer: "),rec.Maintainer().c_str(),
-              _("Compressed size: "), SizeToStr(ver->Size).c_str(),
-              _("Uncompressed size: "), SizeToStr(ver->InstalledSize).c_str(),
-              _("Source Package: "),
-              rec.SourcePkg().empty()?pkg.Name():rec.SourcePkg().c_str());
-          string desc = cwidget::util::transcode(get_long_description(ver, apt_package_records), "UTF-8");
-          tab->pPackagesTextView->get_buffer()->set_text(misc + _("Description: ") + desc);
-        }
-        else
-        {
-          tab->pPackagesTextView->get_buffer()->set_text(ssprintf("%s%s\n", _("Name: "), pkg.Name()));
-        }
-      }
+                  _("Maintainer: "),rec.Maintainer().c_str(),
+                  _("Compressed size: "), SizeToStr(ver->Size).c_str(),
+                  _("Uncompressed size: "), SizeToStr(ver->InstalledSize).c_str(),
+                  _("Source Package: "),
+                  rec.SourcePkg().empty()?pkg.Name():rec.SourcePkg().c_str());
+      string desc = cwidget::util::transcode(get_long_description(ver, apt_package_records), "UTF-8");
+      tab->pPackagesTextView->get_buffer()->set_text(misc + _("Description: ") + desc);
+    }
+    else
+    {
+      tab->pPackagesTextView->get_buffer()->set_text(ssprintf("%s%s\n", _("Name: "), pkg.Name()));
     }
   }
 
@@ -286,6 +278,9 @@ namespace gui
         (*apt_cache_file)->mark_delete(pkg, false, true, undo);
         std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
         break;
+      case Description:
+        display_desc(pkg, ver, tab);
+        break;
       }
     }
   }
@@ -297,6 +292,7 @@ namespace gui
     dispatch(pkg, ver, action);
   }
 
+  // TODO: This should maybe rather take a general functor than going through an exhaustive enum
   void PackagesMarker::select(PackagesAction action)
   {
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = tab->pPackagesTreeView->get_selection();
@@ -337,13 +333,20 @@ namespace gui
 
   PackagesView::PackagesView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::TreeView(cobject)
   {
-    ;;
+    in_PackagesTab = true;
   }
 
   // FIXME: Hack...
   void PackagesView::link_to_context_menu(PackagesContextMenu * context_menu)
   {
     pPackagesContextMenu = context_menu;
+  }
+
+  // FIXME: Hack...
+  void PackagesView::link_to_marker(PackagesMarker * marker)
+  {
+    this->marker = marker;
+    in_PackagesTab = true;
   }
 
   bool PackagesView::on_button_press_event(GdkEventButton* event)
@@ -363,7 +366,12 @@ namespace gui
       //Call base class, to allow normal handling,
       //such as allowing the row to be selected by the right-click:
       return_value = Gtk::TreeView::on_button_press_event(event);
-      //display_desc();
+      // TODO: The general behavior of the description display isn't right.
+      //       We should display the LAST selected package in case of multiple selection.
+      if (in_PackagesTab)
+      {
+        marker->select(Description);
+      }
     }
     return return_value;
   }
@@ -378,6 +386,8 @@ namespace gui
     createstore();
 
     pPackagesMarker = new PackagesMarker(this);
+    // FIXME: Hack...
+    pPackagesTreeView->link_to_marker(pPackagesMarker);
     pPackagesContextMenu = new PackagesContextMenu(this, pPackagesMarker);
     // FIXME: Hack...
     pPackagesTreeView->link_to_context_menu(pPackagesContextMenu);
@@ -405,6 +415,8 @@ namespace gui
     pPackagesTreeView->set_search_column(packages_columns.Name);
   }
 
+  // TODO: Shouldn't we populate a ListStore/TreeModel rather then a PackageTab?
+  //       or would that be too low-level?
   void populate_packages_tab(guiOpProgress &progress, PackagesTab * tab, bool limited)
   {
     int num=0;
