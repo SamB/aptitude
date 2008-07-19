@@ -253,105 +253,56 @@ namespace gui
     this->tab = tab;
   }
 
-  void PackagesMarker::install()
+  void PackagesMarker::dispatch(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver, PackagesAction action)
   {
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = tab->pPackagesTreeView->get_selection();
-    if (refSelection)
+    if (!ver.end())
     {
-      Gtk::TreeModel::iterator iter = refSelection->get_selected();
-      if (iter)
+      switch(action)
       {
-        pkgCache::PkgIterator pkg = (*iter)[tab->packages_columns.PkgIterator];
-        pkgCache::VerIterator ver = (*iter)[tab->packages_columns.VerIterator];
-        if (!ver.end())
-        {
-          std::cout << "selected for install : " << pkg.Name() << " (" << ver.VerStr() << ") , status from "
-              << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->set_candidate_version(ver, undo);
-          (*apt_cache_file)->mark_install(pkg, true, false, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        }
+      case Install:
+        std::cout << "selected for install : " << pkg.Name() << " (" << ver.VerStr() << ") , status from "
+            << selected_state_string(pkg, pkg.VersionList());
+        (*apt_cache_file)->set_candidate_version(ver, undo);
+        (*apt_cache_file)->mark_install(pkg, true, false, undo);
+        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        break;
+      case Remove:
+        std::cout << "selected for remove : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+        (*apt_cache_file)->mark_delete(pkg, false, false, undo);
+        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        break;
+      case Purge:
+        std::cout << "selected for purge : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+        (*apt_cache_file)->mark_delete(pkg, true, false, undo);
+        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        break;
+      case Keep:
+        std::cout << "selected for keep : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+        (*apt_cache_file)->mark_keep(pkg, false, false, undo);
+        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        break;
+      case Hold:
+        std::cout << "selected for hold : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+        (*apt_cache_file)->mark_delete(pkg, false, true, undo);
+        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        break;
       }
     }
   }
 
-  void PackagesMarker::remove()
+  void PackagesMarker::callback(const Gtk::TreeModel::iterator& iter, PackagesAction action)
   {
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = tab->pPackagesTreeView->get_selection();
-    if(refSelection)
-    {
-      Gtk::TreeModel::iterator iter = refSelection->get_selected();
-      if(iter)
-      {
-        pkgCache::PkgIterator pkg = (*iter)[tab->packages_columns.PkgIterator];
-        pkgCache::VerIterator ver = (*iter)[tab->packages_columns.VerIterator];
-        if (!ver.end())
-        {
-          std::cout << "selected for remove : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->mark_delete(pkg, false, false, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        }
-      }
-    }
+    pkgCache::PkgIterator pkg = (*iter)[tab->packages_columns.PkgIterator];
+    pkgCache::VerIterator ver = (*iter)[tab->packages_columns.VerIterator];
+    dispatch(pkg, ver, action);
   }
 
-  void PackagesMarker::purge()
+  void PackagesMarker::select(PackagesAction action)
   {
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = tab->pPackagesTreeView->get_selection();
     if(refSelection)
     {
-      Gtk::TreeModel::iterator iter = refSelection->get_selected();
-      if(iter)
-      {
-        pkgCache::PkgIterator pkg = (*iter)[tab->packages_columns.PkgIterator];
-        pkgCache::VerIterator ver = (*iter)[tab->packages_columns.VerIterator];
-        if (!ver.end())
-        {
-          std::cout << "selected for purge : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->mark_delete(pkg, true, false, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        }
-      }
-    }
-  }
-
-  void PackagesMarker::keep()
-  {
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = tab->pPackagesTreeView->get_selection();
-    if(refSelection)
-    {
-      Gtk::TreeModel::iterator iter = refSelection->get_selected();
-      if(iter)
-      {
-        pkgCache::PkgIterator pkg = (*iter)[tab->packages_columns.PkgIterator];
-        pkgCache::VerIterator ver = (*iter)[tab->packages_columns.VerIterator];
-        if (!ver.end())
-        {
-          std::cout << "selected for keep : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->mark_keep(pkg, false, false, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        }
-      }
-    }
-  }
-
-  void PackagesMarker::hold()
-  {
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = tab->pPackagesTreeView->get_selection();
-    if(refSelection)
-    {
-      Gtk::TreeModel::iterator iter = refSelection->get_selected();
-      if(iter)
-      {
-        pkgCache::PkgIterator pkg = (*iter)[tab->packages_columns.PkgIterator];
-        pkgCache::VerIterator ver = (*iter)[tab->packages_columns.VerIterator];
-        if (!ver.end())
-        {
-          std::cout << "selected for hold : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->mark_delete(pkg, false, true, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        }
-      }
+      refSelection->selected_foreach_iter(sigc::bind(sigc::mem_fun(*this, &PackagesMarker::callback), action));
     }
   }
 
@@ -362,15 +313,15 @@ namespace gui
     Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_packages_context");
     refGlade->get_widget("main_packages_context", pMenu);
     refGlade->get_widget("main_packages_context_install", pMenuInstall);
-    pMenuInstall->signal_activate().connect(sigc::mem_fun(*marker, &PackagesMarker::install));
+    pMenuInstall->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Install));
     refGlade->get_widget("main_packages_context_remove", pMenuRemove);
-    pMenuRemove->signal_activate().connect(sigc::mem_fun(*marker, &PackagesMarker::remove));
+    pMenuRemove->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Remove));
     refGlade->get_widget("main_packages_context_purge", pMenuPurge);
-    pMenuPurge->signal_activate().connect(sigc::mem_fun(*marker, &PackagesMarker::purge));
+    pMenuPurge->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Purge));
     refGlade->get_widget("main_packages_context_keep", pMenuKeep);
-    pMenuKeep->signal_activate().connect(sigc::mem_fun(*marker, &PackagesMarker::keep));
+    pMenuKeep->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Keep));
     refGlade->get_widget("main_packages_context_hold", pMenuHold);
-    pMenuHold->signal_activate().connect(sigc::mem_fun(*marker, &PackagesMarker::hold));
+    pMenuHold->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Hold));
   }
 
   PackagesColumns::PackagesColumns()
@@ -384,17 +335,52 @@ namespace gui
     add(Version);
   }
 
+  PackagesView::PackagesView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::TreeView(cobject)
+  {
+    ;;
+  }
+
+  // FIXME: Hack...
+  void PackagesView::link_to_context_menu(PackagesContextMenu * context_menu)
+  {
+    pPackagesContextMenu = context_menu;
+  }
+
+  bool PackagesView::on_button_press_event(GdkEventButton* event)
+  {
+    bool return_value = true;
+
+    if ((event->type == GDK_BUTTON_PRESS) && (event->button == 3))
+    {
+      //Base class not called because we don't want to deselect...
+      //TODO: This has the side effect that the select+context_menu action
+      //      with one right-click won't work, which should.
+      //      We need information about the selection.
+      pPackagesContextMenu->get_menu()->popup(event->button, event->time);
+    }
+    else if ((event->type == GDK_BUTTON_PRESS) && (event->button == 1))
+    {
+      //Call base class, to allow normal handling,
+      //such as allowing the row to be selected by the right-click:
+      return_value = Gtk::TreeView::on_button_press_event(event);
+      //display_desc();
+    }
+    return return_value;
+  }
+
   PackagesTab::PackagesTab(const Glib::ustring &label) :
     Tab(Packages, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_vpaned"), "main_packages_vpaned")
   {
     get_xml()->get_widget("main_packages_textview", pPackagesTextView);
-    get_xml()->get_widget("main_packages_treeview", pPackagesTreeView);
+    get_xml()->get_widget_derived("main_packages_treeview", pPackagesTreeView);
     get_widget()->show();
 
     createstore();
 
     pPackagesMarker = new PackagesMarker(this);
     pPackagesContextMenu = new PackagesContextMenu(this, pPackagesMarker);
+    // FIXME: Hack...
+    pPackagesTreeView->link_to_context_menu(pPackagesContextMenu);
 
     pPackagesTreeView->append_column(_("Current Status"), packages_columns.CurrentStatus);
     pPackagesTreeView->get_column(0)->set_sort_column(packages_columns.CurrentStatus);
@@ -405,7 +391,11 @@ namespace gui
     pPackagesTreeView->append_column(_("Section"), packages_columns.Section);
     pPackagesTreeView->get_column(3)->set_sort_column(packages_columns.Section);
     pPackagesTreeView->append_column(_("Version"), packages_columns.Version);
-    pPackagesTreeView->signal_button_press_event().connect_notify(sigc::mem_fun(*this, &PackagesTab::on_button_press_event));
+
+    //pPackagesTreeView->signal_button_press_event().connect_notify(sigc::mem_fun(*this, &PackagesTab::on_button_press_event));
+
+    // TODO: There should be a way to do this in Glade maybe.
+    pPackagesTreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
   }
 
   void PackagesTab::createstore()
@@ -413,26 +403,6 @@ namespace gui
     packages_store = Gtk::ListStore::create(packages_columns);
     pPackagesTreeView->set_model(packages_store);
     pPackagesTreeView->set_search_column(packages_columns.Name);
-  }
-
-  void PackagesTab::on_button_press_event(GdkEventButton* event)
-  {
-    //Call base class, to allow normal handling,
-    //such as allowing the row to be selected by the right-click:
-    //pPackagesTreeView->on_button_press_event(event);
-
-    //Then do our custom stuff:
-    if ((event->type == GDK_BUTTON_PRESS) && (event->button == 3))
-    {
-      std::cout << "right button clicked" << std::endl;
-      pPackagesContextMenu->get_menu()->popup(event->button, event->time);
-    }
-    else if ((event->type == GDK_BUTTON_PRESS) && (event->button == 1))
-    {
-      //display_desc();
-    }
-
-    //return return_value;
   }
 
   void populate_packages_tab(guiOpProgress &progress, PackagesTab * tab, bool limited)
@@ -457,7 +427,7 @@ namespace gui
         // Filter useless packages up-front.
         if(pkg.VersionList().end() && pkg.ProvidesList().end())
           continue;
-
+        // TODO: put back the limiting
         if (/*!limited || aptitude::matching::apply_matcher(limit, pkg, *apt_cache_file, *apt_packages_records)*/true)
           {
             for (pkgCache::VerIterator ver = pkg.VersionList(); ver.end() == false; ver++)

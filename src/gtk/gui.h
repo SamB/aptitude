@@ -21,6 +21,15 @@ namespace gui
   };
 
   /**
+   * This is a list of packages actions.
+   * TODO: This probably already exist. Find it.
+   */
+  enum PackagesAction
+  {
+    Install, Remove, Purge, Keep, Hold
+  };
+
+  /**
    * A Tab contains a widget and some metadata for inserting into the notebook.
    */
   class Tab
@@ -30,7 +39,6 @@ namespace gui
       Glib::ustring label;
       Glib::RefPtr<Gnome::Glade::Xml> xml;
       Gtk::Widget * widget;
-
     public:
       /** \brief Construct a new tab.
        *
@@ -58,17 +66,15 @@ namespace gui
   {
     private:
       PackagesTab * tab;
+      void dispatch(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver, PackagesAction action);
+      void callback(const Gtk::TreeModel::iterator& iter, PackagesAction action);
     public:
       /** \brief Construct a packages marker for tab.
        *
        *  \param tab The tab on which the marking takes place.
        */
       PackagesMarker(PackagesTab * tab);
-      void install();
-      void remove();
-      void purge();
-      void keep();
-      void hold();
+      void select(PackagesAction action);
   };
 
   /**
@@ -109,18 +115,28 @@ namespace gui
       PackagesColumns();
   };
 
+  class PackagesView : public Gtk::TreeView
+  {
+    private:
+      // FIXME: Hack..
+      PackagesContextMenu * pPackagesContextMenu;
+    public:
+      PackagesView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+      void link_to_context_menu(PackagesContextMenu * context_menu);
+      bool on_button_press_event(GdkEventButton* event);
+  };
+
   class PackagesTab : public Tab
   {
     public:
       Glib::RefPtr<Gtk::ListStore> packages_store;
       PackagesColumns packages_columns;
-      Gtk::TreeView * pPackagesTreeView;
+      PackagesView * pPackagesTreeView;
       Gtk::TextView * pPackagesTextView;
       PackagesContextMenu * pPackagesContextMenu;
       PackagesMarker * pPackagesMarker;
       PackagesTab(const Glib::ustring &label);
       void createstore();
-      void on_button_press_event(GdkEventButton* event);
   };
 
   /**
