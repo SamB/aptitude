@@ -55,34 +55,31 @@ namespace gui
       Gtk::Main::iteration();
   }
 
-  class guiOpProgress : public OpProgress
-  { // must derive to read protected member..
-    private:
-      float sanitizePercentFraction(float percent)
-      {
-        float rval = percent / 100;
-        if (percent < 0)
-          rval = 0;
-        if (percent > 1)
-          rval = 1;
-        return rval;
-      }
-    public:
-      ~guiOpProgress()
-      {
-        pMainWindow->get_progress_bar()->set_text("");
-        pMainWindow->get_progress_bar()->set_fraction(0);
-      }
-      void Update()
-      {
-        if (CheckChange(0.25))
-        {
-          pMainWindow->get_progress_bar()->set_text(Op);
-          pMainWindow->get_progress_bar()->set_fraction(sanitizePercentFraction(Percent));
-          gtk_update();
-        }
-      }
-  };
+  float guiOpProgress::sanitizePercentFraction(float percent)
+  {
+    float rval = percent / 100;
+    if (percent < 0)
+      rval = 0;
+    if (percent > 1)
+      rval = 1;
+    return rval;
+  }
+
+  guiOpProgress::~guiOpProgress()
+  {
+    pMainWindow->get_progress_bar()->set_text("");
+    pMainWindow->get_progress_bar()->set_fraction(0);
+  }
+
+  void guiOpProgress::Update()
+  {
+    if (CheckChange(0.25))
+    {
+      pMainWindow->get_progress_bar()->set_text(Op);
+      pMainWindow->get_progress_bar()->set_fraction(sanitizePercentFraction(Percent));
+      gtk_update();
+    }
+  }
 
   guiOpProgress * gen_progress_bar()
   {
@@ -253,32 +250,77 @@ namespace gui
       switch(action)
       {
       case Install:
-        std::cout << "selected for install : " << pkg.Name() << " (" << ver.VerStr() << ") , status from "
-            << selected_state_string(pkg, pkg.VersionList());
-        (*apt_cache_file)->set_candidate_version(ver, undo);
-        (*apt_cache_file)->mark_install(pkg, true, false, undo);
-        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        break;
+      {
+        std::set<pkgCache::PkgIterator> changed_packages;
+        {
+          aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
+          std::cout << "selected for install : " << pkg.Name() << " (" << ver.VerStr() << ") , status from "
+          << selected_state_string(pkg, pkg.VersionList());
+          (*apt_cache_file)->set_candidate_version(ver, undo);
+          (*apt_cache_file)->mark_install(pkg, true, false, undo);
+          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        }
+        guiOpProgress * p = gen_progress_bar();
+        refresh_packages_tab(*p, tab, changed_packages);
+        delete p;
+      }
+      break;
       case Remove:
-        std::cout << "selected for remove : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-        (*apt_cache_file)->mark_delete(pkg, false, false, undo);
-        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        break;
+      {
+        std::set<pkgCache::PkgIterator> changed_packages;
+        {
+          aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
+          std::cout << "selected for remove : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+          (*apt_cache_file)->mark_delete(pkg, false, false, undo);
+          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        }
+        guiOpProgress * p = gen_progress_bar();
+        refresh_packages_tab(*p, tab, changed_packages);
+        delete p;
+      }
+      break;
       case Purge:
-        std::cout << "selected for purge : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-        (*apt_cache_file)->mark_delete(pkg, true, false, undo);
-        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        break;
+      {
+        std::set<pkgCache::PkgIterator> changed_packages;
+        {
+          aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
+          std::cout << "selected for purge : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+          (*apt_cache_file)->mark_delete(pkg, true, false, undo);
+          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        }
+        guiOpProgress * p = gen_progress_bar();
+        refresh_packages_tab(*p, tab, changed_packages);
+        delete p;
+      }
+      break;
       case Keep:
-        std::cout << "selected for keep : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-        (*apt_cache_file)->mark_keep(pkg, false, false, undo);
-        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        break;
+      {
+        std::set<pkgCache::PkgIterator> changed_packages;
+        {
+          aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
+          std::cout << "selected for keep : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+          (*apt_cache_file)->mark_keep(pkg, false, false, undo);
+          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        }
+        guiOpProgress * p = gen_progress_bar();
+        refresh_packages_tab(*p, tab, changed_packages);
+        delete p;
+      }
+      break;
       case Hold:
-        std::cout << "selected for hold : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-        (*apt_cache_file)->mark_delete(pkg, false, true, undo);
-        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        break;
+      {
+        std::set<pkgCache::PkgIterator> changed_packages;
+        {
+          aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
+          std::cout << "selected for hold : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+          (*apt_cache_file)->mark_delete(pkg, false, true, undo);
+          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        }
+        guiOpProgress * p = gen_progress_bar();
+        refresh_packages_tab(*p, tab, changed_packages);
+        delete p;
+      }
+      break;
       case Description:
         display_desc(pkg, ver, tab);
         break;
@@ -439,11 +481,11 @@ namespace gui
         progress.OverallProgress(num, total, 1, _("Building view"));
 
         ++num;
-        if (num%5000 == 0)
+        /*if (num%5000 == 0)
         {
           pMainWindow->get_progress_bar()->pulse();
           gtk_update();
-        }
+        }*/
 
         // Filter useless packages up-front.
         if(pkg.VersionList().end() && pkg.ProvidesList().end())
@@ -473,6 +515,47 @@ namespace gui
       }
     gtk_update();
     tab->packages_store->set_sort_column(tab->packages_columns.Name, Gtk::SORT_ASCENDING);
+    gtk_update();
+    progress.OverallProgress(total, total, 1,  _("Building view"));
+  }
+
+  // TODO: Shouldn't we populate a ListStore/TreeModel rather then a PackageTab?
+  //       or would that be too low-level?
+  void refresh_packages_tab(guiOpProgress &progress, PackagesTab * tab, std::set<pkgCache::PkgIterator> changed_packages)
+  {
+    int num=0;
+    int total=changed_packages.size();
+
+    for(std::set<pkgCache::PkgIterator>::iterator pkg = changed_packages.begin(); pkg != changed_packages.end(); pkg++)
+      {
+        progress.OverallProgress(num, total, 1, _("Building view"));
+
+        ++num;
+        /*if (num%10 == 0)
+        {
+          pMainWindow->get_progress_bar()->pulse();
+          gtk_update();
+        }*/
+
+        for (std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>::iterator reverse_iter =
+          tab->reverse_packages_store->find(*pkg);
+        reverse_iter != tab->reverse_packages_store->end(); reverse_iter++)
+          {
+            Gtk::TreeModel::iterator iter = reverse_iter->second;
+            Gtk::TreeModel::Row row = *iter;
+            pkgCache::PkgIterator pkg = row[tab->packages_columns.PkgIterator];
+            pkgCache::VerIterator ver = row[tab->packages_columns.VerIterator];
+
+            row[tab->packages_columns.CurrentStatus] = current_state_string(pkg, ver);
+            row[tab->packages_columns.SelectedStatus] = selected_state_string(pkg, ver);
+            row[tab->packages_columns.Name] = pkg.Name()?pkg.Name():"";
+            row[tab->packages_columns.Section] = pkg.Section()?pkg.Section():"";
+            row[tab->packages_columns.Version] = ver.VerStr();
+
+            if (want_to_quit)
+              return;
+          }
+      }
     gtk_update();
     progress.OverallProgress(total, total, 1,  _("Building view"));
   }

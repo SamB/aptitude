@@ -30,6 +30,15 @@ namespace gui
     Install, Remove, Purge, Keep, Hold, Description
   };
 
+  class guiOpProgress : public OpProgress
+  { // must derive to read protected member..
+    private:
+      float sanitizePercentFraction(float percent);
+    public:
+      ~guiOpProgress();
+      void Update();
+  };
+
   /**
    * A Tab contains a widget and some metadata for inserting into the notebook.
    */
@@ -144,6 +153,8 @@ namespace gui
       void create_store();
       void create_reverse_store();
   };
+
+  void refresh_packages_tab(guiOpProgress &progress, PackagesTab * tab, std::set<pkgCache::PkgIterator> changed_packages);
 
   /**
    * This is a custom widget that handles placement of tabs
