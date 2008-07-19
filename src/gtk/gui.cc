@@ -536,10 +536,13 @@ namespace gui
           pMainWindow->get_progress_bar()->pulse();
           gtk_update();
         }*/
+        std::pair<std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>::iterator,
+        std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>::iterator> reverse_range =
+                  tab->reverse_packages_store->equal_range(*pkg);
 
         for (std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>::iterator reverse_iter =
-          tab->reverse_packages_store->find(*pkg);
-        reverse_iter != tab->reverse_packages_store->end(); reverse_iter++)
+          reverse_range.first;
+        reverse_iter != reverse_range.second; reverse_iter++)
           {
             Gtk::TreeModel::iterator iter = reverse_iter->second;
             Gtk::TreeModel::Row row = *iter;
