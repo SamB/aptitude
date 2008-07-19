@@ -30,6 +30,8 @@ namespace gui
     Install, Remove, Purge, Keep, Hold, Description
   };
 
+  typedef std::pair<pkgCache::PkgIterator, pkgCache::VerIterator> PkgVerIterator;
+
   /**
    * A Tab contains a widget and some metadata for inserting into the notebook.
    */
@@ -134,13 +136,15 @@ namespace gui
   {
     public:
       Glib::RefPtr<Gtk::ListStore> packages_store;
+      std::map<PkgVerIterator, Gtk::TreeModel::iterator> * reverse_packages_store;
       PackagesColumns packages_columns;
       PackagesView * pPackagesTreeView;
       Gtk::TextView * pPackagesTextView;
       PackagesContextMenu * pPackagesContextMenu;
       PackagesMarker * pPackagesMarker;
       PackagesTab(const Glib::ustring &label);
-      void createstore();
+      void create_store();
+      void create_reverse_store();
   };
 
   /**

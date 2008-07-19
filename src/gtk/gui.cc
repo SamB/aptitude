@@ -5,6 +5,7 @@
 #include "gui.h"
 
 #include <vector>
+#include <map>
 
 #include "aptitude.h"
 
@@ -383,7 +384,7 @@ namespace gui
     get_xml()->get_widget_derived("main_packages_treeview", pPackagesTreeView);
     get_widget()->show();
 
-    createstore();
+    create_store();
 
     pPackagesMarker = new PackagesMarker(this);
     // FIXME: Hack...
@@ -401,18 +402,25 @@ namespace gui
     pPackagesTreeView->append_column(_("Section"), packages_columns.Section);
     pPackagesTreeView->get_column(3)->set_sort_column(packages_columns.Section);
     pPackagesTreeView->append_column(_("Version"), packages_columns.Version);
-
+    Gtk::ListStore::create(packages_columns);
+        pPackagesTreeView->set_model(packages_store);
+        pPackagesTreeView->set_search_column(packages_columns.Name);
     //pPackagesTreeView->signal_button_press_event().connect_notify(sigc::mem_fun(*this, &PackagesTab::on_button_press_event));
 
     // TODO: There should be a way to do this in Glade maybe.
     pPackagesTreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
   }
 
-  void PackagesTab::createstore()
+  void PackagesTab::create_store()
   {
     packages_store = Gtk::ListStore::create(packages_columns);
     pPackagesTreeView->set_model(packages_store);
     pPackagesTreeView->set_search_column(packages_columns.Name);
+  }
+
+  void PackagesTab::create_reverse_store()
+  {
+    reverse_packages_store = new std::map<PkgVerIterator, Gtk::TreeModel::iterator>;
   }
 
   // TODO: Shouldn't we populate a ListStore/TreeModel rather then a PackageTab?
@@ -421,7 +429,8 @@ namespace gui
   {
     int num=0;
     int total=(*apt_cache_file)->Head().PackageCount;
-    tab->createstore();
+    tab->create_store();
+    tab->create_reverse_store();
 
     //aptitude::matching::pkg_matcher *limit = aptitude::matching::parse_pattern(pPackageSearchLimit->get_text());
 
