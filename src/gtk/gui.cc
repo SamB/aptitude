@@ -420,7 +420,7 @@ namespace gui
 
   void PackagesTab::create_reverse_store()
   {
-    reverse_packages_store = new std::map<PkgVerIterator, Gtk::TreeModel::iterator>;
+    reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
   }
 
   // TODO: Shouldn't we populate a ListStore/TreeModel rather then a PackageTab?
@@ -455,6 +455,8 @@ namespace gui
               {
                 Gtk::TreeModel::iterator iter = tab->packages_store->append();
                 Gtk::TreeModel::Row row = *iter;
+
+                tab->reverse_packages_store->insert(std::make_pair(pkg, iter));
 
                 row[tab->packages_columns.PkgIterator] = pkg;
                 row[tab->packages_columns.VerIterator] = ver;
