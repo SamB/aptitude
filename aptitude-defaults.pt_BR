@@ -1,6 +1,12 @@
 // -*-c++-*-
 //
 // This file defines the names of sections known by aptitude for pt_BR.
+//
+// Due to bug #260446, double-quotes (") cannot be backslash-escaped.
+// For this reason, aptitude treats adjacent pairs of apostrophese('')
+// as double-quotes: that is, the string "''" in a section description
+// will be rendered as one double quote.  No other characters are
+// affected by this behavior.
 
 Aptitude::Sections
 {
