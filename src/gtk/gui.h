@@ -210,6 +210,7 @@ namespace gui
       Gtk::ToolButton * pToolButtonDashboard;
       Gtk::ToolButton * pToolButtonPackages;
       Gtk::ToolButton * pToolButtonUpdate;
+      Gtk::ImageMenuItem * pMenuFileExit;
       Gtk::ProgressBar * pProgressBar;
       Gtk::Statusbar * pStatusBar;
       TabsManager * pNotebook;

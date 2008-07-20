@@ -37,6 +37,7 @@ typedef generic_solution<aptitude_universe> aptitude_solution;
 namespace gui
 {
   //This is a list of global and unique base widgets and other related stuff
+  Gtk::Main * pKit;
   Glib::RefPtr<Gnome::Glade::Xml> refXml;
   AptitudeWindow * pMainWindow;
   std::string glade_main_file;
@@ -102,7 +103,7 @@ namespace gui
     Gtk::Button * label_button;
     refGlade->get_widget("main_notebook_download_close", label_button);
     // Maybe we should create a close() method on the Tab so it can clean itself up or make a destructor.
-    label_button->signal_pressed().connect(sigc::bind(sigc::mem_fun(*(pMainWindow->get_notebook()), &TabsManager::remove_page), *this));
+    label_button->signal_clicked().connect(sigc::bind(sigc::mem_fun(*(pMainWindow->get_notebook()), &TabsManager::remove_page), *this));
     if (_label != "")
     {
       label_label->set_text(_label);
@@ -523,11 +524,11 @@ namespace gui
         progress.OverallProgress(num, total, 1, _("Building view"));
 
         ++num;
-        /*if (num%5000 == 0)
+        if (num % 1000 == 0)
         {
-          pMainWindow->get_progress_bar()->pulse();
           gtk_update();
-        }*/
+          pMainWindow->get_progress_bar()->pulse();
+        }
 
         // Filter useless packages up-front.
         if(pkg.VersionList().end() && pkg.ProvidesList().end())
@@ -549,9 +550,6 @@ namespace gui
                 row[tab->packages_columns.Name] = pkg.Name()?pkg.Name():"";
                 row[tab->packages_columns.Section] = pkg.Section()?pkg.Section():"";
                 row[tab->packages_columns.Version] = ver.VerStr();
-
-                if (want_to_quit)
-                  return;
               }
           }
       }
@@ -573,11 +571,11 @@ namespace gui
         progress.OverallProgress(num, total, 1, _("Building view"));
 
         ++num;
-        /*if (num%10 == 0)
+        if (num % 10 == 0)
         {
-          pMainWindow->get_progress_bar()->pulse();
           gtk_update();
-        }*/
+          pMainWindow->get_progress_bar()->pulse();
+        }
         std::pair<std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>::iterator,
         std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>::iterator> reverse_range =
                   tab->reverse_packages_store->equal_range(*pkg);
@@ -814,6 +812,18 @@ namespace gui
     delete p;
   }
 
+  bool do_want_quit()
+  {
+    want_to_quit = true;
+    return false;
+  }
+
+  void do_quit()
+  {
+    do_want_quit();
+    pKit->quit();
+  }
+
   AptitudeWindow::AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::Window(cobject)
   {
     refGlade->get_widget_derived("main_notebook", pNotebook);
@@ -827,6 +837,10 @@ namespace gui
     refGlade->get_widget("main_toolbutton_update", pToolButtonUpdate);
     pToolButtonUpdate->signal_clicked().connect(&do_update);
 
+    // TODO: Give this a proper name.
+    refGlade->get_widget("imagemenuitem5", pMenuFileExit);
+    pMenuFileExit->signal_activate().connect(&do_quit);
+
     refGlade->get_widget("main_progressbar", pProgressBar);
     refGlade->get_widget("main_statusbar", pStatusBar);
     pStatusBar->push("Aptitude-gtk v2", 0);
@@ -834,7 +848,8 @@ namespace gui
 
   void main(int argc, char *argv[])
   {
-    Gtk::Main kit(argc, argv);
+    pKit = new Gtk::Main(argc, argv);
+    Gtk::Main::signal_quit().connect(&do_want_quit);
     // Use the basename of argv0 to find the Glade file.
     // TODO: note that the .glade file will ultimately
     //       go to /usr/share/aptitude/glade or something,
