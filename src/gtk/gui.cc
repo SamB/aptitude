@@ -92,6 +92,30 @@ namespace gui
       xml(_xml), widget(NULL)
   {
     xml->get_widget(widgetName, widget);
+
+    // TODO: Should do something about this. Create a dedicated toplevel for these widgets.
+    Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_notebook_download_label_hbox");
+    //Gtk::HBox * label_widget;
+    refGlade->get_widget("main_notebook_download_label_hbox", label_widget);
+    //Gtk::Label * label_label;
+    refGlade->get_widget("main_notebook_download_label", label_label);
+    Gtk::Button * label_button;
+    refGlade->get_widget("main_notebook_download_close", label_button);
+    // Maybe we should create a close() method on the Tab so it can clean itself up or make a destructor.
+    label_button->signal_pressed().connect(sigc::bind(sigc::mem_fun(*(pMainWindow->get_notebook()), &TabsManager::remove_page), *this));
+    if (_label != "")
+    {
+      label_label->set_text(_label);
+    }
+    else
+    {
+      label_label->set_text("generic tab: " + label);
+    }
+  }
+
+  void Tab::set_label(Glib::ustring label)
+  {
+    this->label_label->set_text(label);
   }
 
   class DashboardTab : public Tab
@@ -420,10 +444,15 @@ namespace gui
   }
 
   PackagesTab::PackagesTab(const Glib::ustring &label) :
-    Tab(Packages, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_vpaned"), "main_packages_vpaned")
+    Tab(Packages, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_vbox"), "main_packages_vbox")
   {
     get_xml()->get_widget("main_packages_textview", pPackagesTextView);
     get_xml()->get_widget_derived("main_packages_treeview", pPackagesTreeView);
+    get_xml()->get_widget("main_notebook_packages_limit_entry", pLimitEntry);
+    pLimitEntry->signal_activate().connect(sigc::mem_fun(*this, &PackagesTab::populate_model));
+    get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
+    pLimitButton->signal_clicked().connect(sigc::mem_fun(*this, &PackagesTab::populate_model));
+
     get_widget()->show();
 
     create_store();
@@ -447,7 +476,6 @@ namespace gui
     Gtk::ListStore::create(packages_columns);
         pPackagesTreeView->set_model(packages_store);
         pPackagesTreeView->set_search_column(packages_columns.Name);
-    //pPackagesTreeView->signal_button_press_event().connect_notify(sigc::mem_fun(*this, &PackagesTab::on_button_press_event));
 
     // TODO: There should be a way to do this in Glade maybe.
     pPackagesTreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
@@ -465,16 +493,30 @@ namespace gui
     reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
   }
 
+  void PackagesTab::populate_model()
+  {
+    guiOpProgress * p = gen_progress_bar();
+    populate_packages_tab(*p, this, pLimitEntry->get_text());
+    set_label(_("Packages: ") + pLimitEntry->get_text());
+    delete p;
+  }
+
   // TODO: Shouldn't we populate a ListStore/TreeModel rather then a PackageTab?
   //       or would that be too low-level?
-  void populate_packages_tab(guiOpProgress &progress, PackagesTab * tab, bool limited)
+  // TODO: This function should be PackagesTab::populate_model()
+  void populate_packages_tab(guiOpProgress &progress, PackagesTab * tab, Glib::ustring limit)
   {
     int num=0;
     int total=(*apt_cache_file)->Head().PackageCount;
+    bool limited = false;
     tab->create_store();
     tab->create_reverse_store();
-
-    //aptitude::matching::pkg_matcher *limit = aptitude::matching::parse_pattern(pPackageSearchLimit->get_text());
+    aptitude::matching::pkg_matcher * limiter = NULL;
+    if (limit != "")
+    {
+      limited = true;
+      limiter = aptitude::matching::parse_pattern(limit);
+    }
 
     for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin(); !pkg.end(); pkg++)
       {
@@ -491,7 +533,7 @@ namespace gui
         if(pkg.VersionList().end() && pkg.ProvidesList().end())
           continue;
         // TODO: put back the limiting
-        if (/*!limited || aptitude::matching::apply_matcher(limit, pkg, *apt_cache_file, *apt_packages_records)*/true)
+        if (!limited || aptitude::matching::apply_matcher(limiter, pkg, *apt_cache_file, *apt_package_records))
           {
             for (pkgCache::VerIterator ver = pkg.VersionList(); ver.end() == false; ver++)
               {
@@ -583,30 +625,18 @@ namespace gui
   int TabsManager::append_page(Tab& tab)
   {
     int rval;
-    // TODO: Should do something about this. Create a dedicated toplevel for these widgets.
-    Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_notebook_download_label_hbox");
-    Gtk::HBox * label_widget;
-    refGlade->get_widget("main_notebook_download_label_hbox", label_widget);
-    Gtk::Label * label_label;
-    refGlade->get_widget("main_notebook_download_label", label_label);
-    Gtk::Button * label_button;
-    refGlade->get_widget("main_notebook_download_close", label_button);
-    // Maybe we should create a close() method on the Tab so it can clean itself up or make a destructor.
-    label_button->signal_pressed().connect(sigc::bind(sigc::mem_fun(this, &TabsManager::remove_page), tab));
     switch (tab.get_type())
       {
     case Dashboard:
       // No more than one Dashboard at once
       if (number_of(Dashboard) == 0)
       {
-        label_label->set_text(_("Dashboard"));
-        rval = insert_page(*(tab.get_widget()), *(label_widget), 0);
+        rval = insert_page(*(tab.get_widget()), *(tab.get_label_widget()), 0);
       }
       break;
       // TODO: handle other kinds of tabs
     default:
-      label_label->set_text("generic tab: " + tab.get_label());
-      rval = insert_page(*(tab.get_widget()), *(label_widget), next_position(tab.get_type()));
+      rval = insert_page(*(tab.get_widget()), *(tab.get_label_widget()), next_position(tab.get_type()));
       }
     return rval;
   }
@@ -634,7 +664,8 @@ namespace gui
    */
   DownloadTab * tab_add_download()
   {
-    DownloadTab * tab = new DownloadTab("truc download");
+    // TODO: *Tab Constructors should also get to decide tab labels
+    DownloadTab * tab = new DownloadTab(_("Download:"));
     int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
     pMainWindow->get_notebook()->set_current_page(new_page_idx);
     return tab;
@@ -646,7 +677,8 @@ namespace gui
    */
   PackagesTab * tab_add_packages()
   {
-    PackagesTab * tab = new PackagesTab("truc packages");
+    // TODO: *Tab Constructors should also get to decide tab labels
+    PackagesTab * tab = new PackagesTab(_("Packages:"));
     int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
     pMainWindow->get_notebook()->set_current_page(new_page_idx);
     return tab;
@@ -778,7 +810,7 @@ namespace gui
   {
     PackagesTab * tab = tab_add_packages();
     guiOpProgress * p = gen_progress_bar();
-    populate_packages_tab(*p, tab, false);
+    populate_packages_tab(*p, tab, "");
     delete p;
   }
 

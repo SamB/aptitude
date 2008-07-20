@@ -48,6 +48,8 @@ namespace gui
       TabType type;
       Glib::ustring label;
       Glib::RefPtr<Gnome::Glade::Xml> xml;
+      Gtk::Label * label_label;
+      Gtk::Widget * label_widget;
       Gtk::Widget * widget;
     public:
       /** \brief Construct a new tab.
@@ -62,6 +64,8 @@ namespace gui
       Tab(TabType _type, const Glib::ustring &_label,
 	  const Glib::RefPtr<Gnome::Glade::Xml> &_xml, const std::string &widgetName);
       Glib::ustring get_label() { return label; }
+      Gtk::Widget * get_label_widget() { return label_widget; }
+      void set_label(Glib::ustring);
       TabType get_type() { return type; }
       Gtk::Widget * get_widget() const { return widget; }
       const Glib::RefPtr<Gnome::Glade::Xml> &get_xml() { return xml; }
@@ -149,10 +153,15 @@ namespace gui
       Gtk::TextView * pPackagesTextView;
       PackagesContextMenu * pPackagesContextMenu;
       PackagesMarker * pPackagesMarker;
+      Gtk::Entry * pLimitEntry;
+      Gtk::Button * pLimitButton;
       PackagesTab(const Glib::ustring &label);
       void create_store();
       void create_reverse_store();
+      void populate_model();
   };
+
+  void populate_packages_tab(guiOpProgress &progress, PackagesTab * tab, Glib::ustring limit = "");
 
   void refresh_packages_tab(guiOpProgress &progress, PackagesTab * tab, std::set<pkgCache::PkgIterator> changed_packages);
 
