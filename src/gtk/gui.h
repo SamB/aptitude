@@ -161,6 +161,24 @@ namespace gui
       void populate_model();
   };
 
+  // TODO: This needs to share more code with PackagesTab.
+  //       A PreviewTab is really only a PackagesTab without the limiting and with a TreeStore.
+  class PreviewTab : public Tab
+  {
+    public:
+      Glib::RefPtr<Gtk::TreeStore> packages_store;
+      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store;
+      PackagesColumns packages_columns;
+      PackagesView * pPackagesTreeView;
+      Gtk::TextView * pPackagesTextView;
+      PackagesContextMenu * pPackagesContextMenu;
+      PackagesMarker * pPackagesMarker;
+      PreviewTab(const Glib::ustring &label);
+      void create_store();
+      void create_reverse_store();
+      void populate_model();
+  };
+
   void populate_packages_tab(guiOpProgress &progress, PackagesTab * tab, Glib::ustring limit = "");
 
   void refresh_packages_tab(guiOpProgress &progress, PackagesTab * tab, std::set<pkgCache::PkgIterator> changed_packages);
@@ -208,8 +226,9 @@ namespace gui
   {
     private:
       Gtk::ToolButton * pToolButtonDashboard;
-      Gtk::ToolButton * pToolButtonPackages;
       Gtk::ToolButton * pToolButtonUpdate;
+      Gtk::ToolButton * pToolButtonPackages;
+      Gtk::ToolButton * pToolButtonPreview;
       Gtk::ImageMenuItem * pMenuFileExit;
       Gtk::ProgressBar * pProgressBar;
       Gtk::Statusbar * pStatusBar;

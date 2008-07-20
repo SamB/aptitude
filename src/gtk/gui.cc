@@ -465,9 +465,9 @@ namespace gui
     // FIXME: Hack...
     pPackagesTreeView->link_to_context_menu(pPackagesContextMenu);
 
-    pPackagesTreeView->append_column(_("Current Status"), packages_columns.CurrentStatus);
+    pPackagesTreeView->append_column(_("C"), packages_columns.CurrentStatus);
     pPackagesTreeView->get_column(0)->set_sort_column(packages_columns.CurrentStatus);
-    pPackagesTreeView->append_column(_("Selected Status"), packages_columns.SelectedStatus);
+    pPackagesTreeView->append_column(_("S"), packages_columns.SelectedStatus);
     pPackagesTreeView->get_column(1)->set_sort_column(packages_columns.SelectedStatus);
     pPackagesTreeView->append_column(_("Name"), packages_columns.Name);
     pPackagesTreeView->get_column(2)->set_sort_column(packages_columns.Name);
@@ -499,6 +499,106 @@ namespace gui
     guiOpProgress * p = gen_progress_bar();
     populate_packages_tab(*p, this, pLimitEntry->get_text());
     set_label(_("Packages: ") + pLimitEntry->get_text());
+    delete p;
+  }
+
+  PreviewTab::PreviewTab(const Glib::ustring &label) :
+    Tab(Preview, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_hpaned"), "main_packages_hpaned")
+  {
+    get_xml()->get_widget("main_packages_textview", pPackagesTextView);
+    get_xml()->get_widget_derived("main_packages_treeview", pPackagesTreeView);
+
+    get_widget()->show();
+
+    create_store();
+    /*
+    pPackagesMarker = new PackagesMarker(this);
+    // FIXME: Hack...
+    pPackagesTreeView->link_to_marker(pPackagesMarker);
+    pPackagesContextMenu = new PackagesContextMenu(this, pPackagesMarker);
+    // FIXME: Hack...
+    pPackagesTreeView->link_to_context_menu(pPackagesContextMenu);
+    */
+    pPackagesTreeView->append_column(_("C"), packages_columns.CurrentStatus);
+    pPackagesTreeView->get_column(0)->set_sort_column(packages_columns.CurrentStatus);
+    pPackagesTreeView->append_column(_("S"), packages_columns.SelectedStatus);
+    pPackagesTreeView->get_column(1)->set_sort_column(packages_columns.SelectedStatus);
+    pPackagesTreeView->append_column(_("Name"), packages_columns.Name);
+    pPackagesTreeView->get_column(2)->set_sort_column(packages_columns.Name);
+    pPackagesTreeView->append_column(_("Section"), packages_columns.Section);
+    pPackagesTreeView->get_column(3)->set_sort_column(packages_columns.Section);
+    pPackagesTreeView->append_column(_("Version"), packages_columns.Version);
+    Gtk::ListStore::create(packages_columns);
+        pPackagesTreeView->set_model(packages_store);
+        pPackagesTreeView->set_search_column(packages_columns.Name);
+
+    // TODO: There should be a way to do this in Glade maybe.
+    pPackagesTreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
+  }
+
+  void PreviewTab::create_store()
+  {
+    packages_store = Gtk::TreeStore::create(packages_columns);
+    pPackagesTreeView->set_model(packages_store);
+    pPackagesTreeView->set_search_column(packages_columns.Name);
+  }
+
+  void PreviewTab::create_reverse_store()
+  {
+    reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
+  }
+
+  void PreviewTab::populate_model()
+  {
+    guiOpProgress * p = gen_progress_bar();
+
+    int num=0;
+    int total=(*apt_cache_file)->Head().PackageCount;
+    create_store();
+    create_reverse_store();
+
+    for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin(); !pkg.end(); pkg++)
+    {
+      p->OverallProgress(num, total, 1, _("Building view"));
+
+      ++num;
+      if (num % 1000 == 0)
+      {
+        gtk_update();
+        pMainWindow->get_progress_bar()->pulse();
+      }
+
+      // Filter useless packages up-front.
+      if(pkg.VersionList().end() && pkg.ProvidesList().end())
+        continue;
+      // TODO: put back the limiting
+      for (pkgCache::VerIterator ver = pkg.VersionList(); ver.end() == false; ver++)
+      {
+        // FIXME: This is ugly. We should handle group policies the same way the TUI does.
+        if(selected_state_string(pkg, ver) == "")
+          continue;
+
+        Gtk::TreeModel::iterator iter = packages_store->append();
+        Gtk::TreeModel::Row row = *iter;
+
+        reverse_packages_store->insert(std::make_pair(pkg, iter));
+
+        row[packages_columns.PkgIterator] = pkg;
+        row[packages_columns.VerIterator] = ver;
+        row[packages_columns.CurrentStatus] = current_state_string(pkg, ver);
+        row[packages_columns.SelectedStatus] = selected_state_string(pkg, ver);
+        row[packages_columns.Name] = pkg.Name()?pkg.Name():"";
+        row[packages_columns.Section] = pkg.Section()?pkg.Section():"";
+        row[packages_columns.Version] = ver.VerStr();
+      }
+    }
+    gtk_update();
+    packages_store->set_sort_column(packages_columns.Name, Gtk::SORT_ASCENDING);
+    gtk_update();
+    p->OverallProgress(total, total, 1,  _("Building view"));
+
+
+    set_label(_("Preview: "));
     delete p;
   }
 
@@ -682,6 +782,20 @@ namespace gui
     return tab;
   }
 
+  /**
+   * Adds a packages tab to the interface.
+   * TODO: Get this one out of here!
+   * TODO: There's too much copy-pasting going on here.
+   */
+  PreviewTab * tab_add_preview()
+  {
+    // TODO: *Tab Constructors should also get to decide tab labels
+    PreviewTab * tab = new PreviewTab(_("Preview:"));
+    int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
+    pMainWindow->get_notebook()->set_current_page(new_page_idx);
+    return tab;
+  }
+
   void check_apt_errors()
   {
     string currerr, tag;
@@ -812,6 +926,12 @@ namespace gui
     delete p;
   }
 
+  void do_preview()
+  {
+    PreviewTab * tab = tab_add_preview();
+    tab->populate_model();
+  }
+
   bool do_want_quit()
   {
     want_to_quit = true;
@@ -831,8 +951,14 @@ namespace gui
     refGlade->get_widget("main_toolbutton_dashboard", pToolButtonDashboard);
     pToolButtonDashboard->signal_clicked().connect(&do_dashboard);
 
+    refGlade->get_widget("main_toolbutton_update", pToolButtonUpdate);
+    pToolButtonUpdate->signal_clicked().connect(&do_update);
+
     refGlade->get_widget("main_toolbutton_packages", pToolButtonPackages);
     pToolButtonPackages->signal_clicked().connect(&do_packages);
+
+    refGlade->get_widget("main_toolbutton_preview", pToolButtonPreview);
+    pToolButtonPreview->signal_clicked().connect(&do_preview);
 
     refGlade->get_widget("main_toolbutton_update", pToolButtonUpdate);
     pToolButtonUpdate->signal_clicked().connect(&do_update);
