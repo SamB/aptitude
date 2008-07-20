@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.2.15.5\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-07-04 09:13-0700\n"
-"PO-Revision-Date: 2008-05-05 13:24+0200\n"
+"PO-Revision-Date: 2008-07-20 16:42+0200\n"
 "Last-Translator: Jens Seidel <jensseidel@users.sf.net>\n"
 "Language-Team: Debian German <debian-l10n-german@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -430,7 +430,7 @@ msgid ""
 "change to the system."
 msgstr ""
 "Falls diese Option %Bnicht%b aktiviert ist, wird aptitude eine Warnung "
-"anzeigen, wenn Sie den Status eines Paketes modifizieren, falls Sie nicht "
+"anzeigen, wenn Sie den Status eines Paketes modifizieren, obwohl Sie nicht "
 "die Rechte haben, Änderungen am System vorzunehmen."
 
 #: src/apt_options.cc:322
@@ -447,7 +447,7 @@ msgstr ""
 "Falls diese Option aktiviert ist, wird aptitude Sie warnen, wenn Sie "
 "versuchen, eine Aktion auszulösen, für die Sie nicht die Rechte haben, zum "
 "Beispiel die Installation von Paketen als nicht-root-Benutzer. Ihnen wird "
-"die Möglichkeit geboten, sich als root-anzumelden und die Aktion mit root-"
+"die Möglichkeit geboten, sich als root anzumelden und die Aktion mit root-"
 "Rechten ausführen."
 
 #: src/apt_options.cc:332
@@ -744,7 +744,7 @@ msgid ""
 "      virtual package \"%s\"\n"
 msgstr ""
 "Hinweis: Wähle »%s« anstelle des\n"
-"      virtuellen Pakets »%s«.\n"
+"         virtuellen Pakets »%s«.\n"
 
 #: src/cmdline/cmdline_action.cc:305
 #, c-format
@@ -863,7 +863,7 @@ msgstr "Konnte kein Änderungsprotokoll für »%s« finden"
 #: src/cmdline/cmdline_clean.cc:29
 #, c-format
 msgid "E: The clean command takes no arguments\n"
-msgstr "F: Der »clean«-Befehl nimmt keine Argumente\n"
+msgstr "F: Der »clean«-Befehl akzeptiert keine Argumente\n"
 
 #: src/cmdline/cmdline_clean.cc:58
 #, c-format
@@ -878,7 +878,7 @@ msgstr "Lösche %s %s [%sB]\n"
 #: src/cmdline/cmdline_clean.cc:111
 #, c-format
 msgid "E: The autoclean command takes no arguments\n"
-msgstr "F: Der »autoclean«-Befehl nimmt keine Argumente\n"
+msgstr "F: Der »autoclean«-Befehl akzeptiert keine Argumente\n"
 
 #: src/cmdline/cmdline_clean.cc:148
 #, c-format
@@ -964,7 +964,7 @@ msgstr ""
 #: src/cmdline/cmdline_forget_new.cc:25
 #, c-format
 msgid "E: The forget-new command takes no arguments\n"
-msgstr "F: Der »forget-new«-Befehl nimmt keine Argumente\n"
+msgstr "F: Der »forget-new«-Befehl akzeptiert keine Argumente\n"
 
 #: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
@@ -1163,7 +1163,7 @@ msgstr ""
 "gefährden.\n"
 "Sie sollten nur dann mit der Installation fortfahren, wenn Sie sicher sind, "
 "dass\n"
-"dies das ist, was Sie wollen.\n"
+"Sie dies wirklich wollen.\n"
 "\n"
 
 #: src/cmdline/cmdline_prompt.cc:705
@@ -1655,7 +1655,7 @@ msgstr "Die Version %s ist in den folgenden Archiven verfügbar:"
 #: src/cmdline/cmdline_resolver.cc:243
 #, c-format
 msgid "Select the version of %s that should be used: "
-msgstr "Wählen Sie die Version von %s die verwendet werden soll: "
+msgstr "Wählen Sie die Version von %s, die verwendet werden soll: "
 
 #: src/cmdline/cmdline_resolver.cc:250
 #, c-format
@@ -1736,7 +1736,7 @@ msgstr ""
 #: src/cmdline/cmdline_resolver.cc:517
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
-"Ich möchte Abhängigkeiten auflösen, aber kein Abhängigkeitsauflöser wurde "
+"Ich möchte Abhängigkeiten auflösen, aber es wurde kein Abhängigkeitsauflöser "
 "erzeugt."
 
 #: src/cmdline/cmdline_resolver.cc:531 src/solution_dialog.cc:127
@@ -1759,7 +1759,7 @@ msgstr "Diese Lösung akzeptieren? [Y/n/q/?] "
 
 #: src/cmdline/cmdline_resolver.cc:660 src/cmdline/cmdline_resolver.cc:767
 msgid "Abandoning all efforts to resolve these dependencies."
-msgstr "Alle Anstrengungen diese Abhängigkeiten aufzulösen aufgegeben."
+msgstr "Alle Anstrengungen, diese Abhängigkeiten aufzulösen, aufgegeben."
 
 #: src/cmdline/cmdline_resolver.cc:663
 msgid ""
@@ -1784,7 +1784,7 @@ msgstr "Ungültige Antwort. Bitte geben Sie eines der folgenden Kommandos ein:"
 #: src/cmdline/cmdline_resolver.cc:741
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
-"Es wurde in der zugewiesenen Zeit keine Lösung gefunden. Stärker suchen? [Y/"
+"Es wurde in der zugewiesenen Zeit keine Lösung gefunden. Intensiver suchen? [Y/"
 "n]"
 
 #: src/cmdline/cmdline_resolver.cc:770
@@ -1822,13 +1822,13 @@ msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
 "Abhängigkeiten für die Aktualisierung konnten nicht aufgelöst werden (Zeit "
-"lief beim Auflösen ab)!"
+"lief beim Auflösen ab)."
 
 #: src/cmdline/cmdline_resolver.cc:985
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr ""
 "Abhängigkeiten für die Aktualisierung können nicht aufgelöst werden (keine "
-"Lösung gefunden)!"
+"Lösung gefunden)."
 
 #: src/cmdline/cmdline_resolver.cc:994
 #, c-format
@@ -2108,12 +2108,12 @@ msgstr "Lösche veraltete heruntergeladene Dateien\n"
 #: src/cmdline/cmdline_update.cc:41
 #, c-format
 msgid "E: The update command takes no arguments\n"
-msgstr "F: Der »update«-Befehl nimmt keine Argumente\n"
+msgstr "F: Der »update«-Befehl akzeptiert keine Argumente\n"
 
 #: src/cmdline/cmdline_upgrade.cc:50
 #, c-format
 msgid "E: The %s command takes no arguments\n"
-msgstr "F: Der »%s«-Befehl nimmt keine Argumente\n"
+msgstr "F: Der »%s«-Befehl akzeptiert keine Argumente\n"
 
 #: src/cmdline/cmdline_user_tag.cc:52
 #, c-format
@@ -2285,7 +2285,7 @@ msgstr "    ++   --> überspringe, nicht relevant laut Parametern\n"
 # TODO: parent??
 #: src/cmdline/cmdline_why.cc:454
 msgid "    ++   --> skipping, parent is not the selected version\n"
-msgstr "    ++   --> überspringe, Vater ist nicht die gewählte Version\n"
+msgstr "    ++   --> überspringe, Elternversion ist nicht die gewählte Version\n"
 
 # TODO: parent??
 #: src/cmdline/cmdline_why.cc:494
@@ -2330,7 +2330,7 @@ msgstr "Kann keinen Grund für die Installation von %s finden.\n"
 #: src/cmdline/cmdline_why.cc:1108
 #, c-format
 msgid "No package named \"%s\" exists."
-msgstr "Ein Paket namens »%s« existiert nicht!"
+msgstr "Ein Paket namens »%s« existiert nicht."
 
 #: src/cmdline/cmdline_why.cc:1054
 msgid "Unable to parse some match patterns."
@@ -2555,7 +2555,7 @@ msgstr ""
 #: src/generic/apt/aptcache.cc:1783
 msgid "You may want to update the package lists to correct these missing files"
 msgstr ""
-"Sie wollen vielleicht die Paketlisten aktualisieren um die fehlenden Dateien "
+"Sie sollten vielleicht die Paketlisten aktualisieren, um die fehlenden Dateien "
 "zu ergänzen"
 
 #. ForTranslators: Set this string to the name of a configuration
@@ -2593,7 +2593,7 @@ msgstr ""
 "Konnte die Cache-Datei nicht sperren. Das bedeutet in der Regel, dass dpkg "
 "oder ein anderes APT-Werkzeug bereits Pakete installiert. Öffne sie im Nur-"
 "Lesen-Modus. Alle Änderungen, die Sie am Status von Paketen durchführen, "
-"werden NICHT gemerkt!"
+"werden VERLOREN gehen!"
 
 #: src/generic/apt/download_install_manager.cc:56
 msgid ""
@@ -2726,7 +2726,7 @@ msgstr "Konnte %s nicht mit stat abfragen."
 #: src/generic/apt/log.cc:54
 #, c-format
 msgid "Unable to open %s to log actions"
-msgstr "%s konnte nicht geöffnet werden um Aktionen zu protokollieren"
+msgstr "%s konnte nicht geöffnet werden, um Aktionen zu protokollieren"
 
 #: src/generic/apt/log.cc:66
 #, c-format
@@ -2784,7 +2784,7 @@ msgstr "INSTALLIEREN"
 
 #: src/generic/apt/log.cc:112
 msgid "REINSTALL"
-msgstr "NEUINST."
+msgstr "ERNEUT INST."
 
 #: src/generic/apt/log.cc:115
 msgid "HOLD"
@@ -2872,7 +2872,7 @@ msgstr "Zurückhalten"
 
 #: src/generic/apt/matchers.cc:1593
 msgid "Reinstall"
-msgstr "Neuinstallieren"
+msgstr "Erneut installieren"
 
 #: src/generic/apt/matchers.cc:1597
 msgid "Remove"
@@ -3132,7 +3132,7 @@ msgstr "Unbekanntes Stilattribut %s"
 #: src/load_config.cc:167 src/load_config.cc:169
 #, c-format
 msgid "Invalid entry in keybinding group: \"%s\""
-msgstr "Ungültiger Eintrag in Tastaturbelegungsgruppe »%s«"
+msgstr "Ungültiger Eintrag in Tastenzuweisungsgruppe »%s«"
 
 #: src/load_config.cc:184
 #, c-format
@@ -3580,15 +3580,15 @@ msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual\n"
 msgstr ""
-" -F format      Format für die Suchergebnisse angeben; vgl. Anleitung\n"
+" -F format      Format für die Suchergebnisse angeben; vgl. das Handbuch\n"
 
 #: src/main.cc:172
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr ""
-" -O order       Wie die Suchergebnisse sortiert werden sollen; vgl. "
-"Anleitung\n"
+" -O order       Wie die Suchergebnisse sortiert werden sollen; vgl. das "
+"Handbuch\n"
 
 #: src/main.cc:173
 #, c-format
@@ -4625,7 +4625,7 @@ msgstr ""
 #: src/pkg_item.cc:435
 #, c-format
 msgid "Reconfiguring %s\n"
-msgstr "Neukonfigurieren von %s\n"
+msgstr "Erneutes Konfigurieren von %s\n"
 
 #: src/pkg_item.cc:445 src/ui.cc:1147
 msgid "Press return to continue.\n"
@@ -5140,7 +5140,7 @@ msgstr "Die folgenden Empfehlungen unaufgelöst lassen:"
 
 #: src/solution_screen.cc:485
 msgid "No broken packages."
-msgstr "Keine kaputten Paketen."
+msgstr "Keine kaputten Pakete."
 
 #: src/solution_screen.cc:515
 #, c-format
@@ -5211,7 +5211,7 @@ msgstr "Ungültiges Get-Root-Command; es sollte mit su: oder sudo: starten"
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr ""
-"Ungültiges Get-Root-Command; es sollte mit su: oder sudo: starten nicht %s:"
+"Ungültiges Get-Root-Command; es sollte mit su: oder sudo: starten, nicht %s:"
 
 #: src/ui.cc:559
 msgid ""
@@ -5396,7 +5396,7 @@ msgstr ""
 "%BWARNUNG%b: nichtvertrauenswürdige Versionen der folgenden Pakete werden "
 "installiert!%n%nNichtvertrauenswürdige Pakete könnten %Bdie Sicherheit Ihres "
 "Systems gefährden%b. Sie sollten nur dann mit der Installation fortfahren, "
-"wenn Sie sicher sind, dass dies das ist, was Sie wollen.%n%n"
+"wenn Sie sicher sind, dass Sie dies wirklich wollen.%n%n"
 
 #: src/ui.cc:1215
 msgid "  %S*%N %s [version %s]%n"
@@ -5437,7 +5437,7 @@ msgid ""
 "harder)"
 msgstr ""
 "Während des Versuchs, die Abhängigkeiten aufzulösen, lief die Zeit ab "
-"(drücken Sie »%s« um es stärker zu probieren)"
+"(drücken Sie »%s«, um es intensiver zu probieren)"
 
 #: src/ui.cc:1403
 msgid ""
@@ -5558,11 +5558,11 @@ msgstr "%ls konnte nicht geöffnet werden"
 
 #: src/ui.cc:2050
 msgid "Error while dumping resolver state"
-msgstr "Fehler beim Ausgaben des Auflösungsstatus"
+msgstr "Fehler beim Ausgeben des Auflösungsstatus"
 
 #: src/ui.cc:2060
 msgid "File to which the resolver state should be dumped:"
-msgstr "Datei in welche der Auflösungsstatus gesichert werden soll:"
+msgstr "Datei, in welche der Auflösungsstatus gesichert werden soll:"
 
 #: src/ui.cc:2090
 msgid "^Install/remove packages"
@@ -5647,7 +5647,7 @@ msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
 msgstr ""
-"»su« ausführen um root zu werden. Dies wird das Programm neu starten, aber "
+"»su« ausführen, um root zu werden. Dies wird das Programm neu starten, aber "
 "Ihre Einstellungen werden erhalten bleiben"
 
 #: src/ui.cc:2135
@@ -5768,7 +5768,7 @@ msgid ""
 "analysis of why the package is required."
 msgstr ""
 "Wechselt durch die Modi des Paketinformationsbereichs: Es kann die lange "
-"Beschreibung eines Pakets anzeigen, eine Zusammenfassung dessen "
+"Beschreibung eines Pakets angezeigt werden, eine Zusammenfassung dessen "
 "Abhängigkeitsstatus und eine Analyse, warum das Paket benötigt wird."
 
 #: src/ui.cc:2192
@@ -5882,7 +5882,7 @@ msgstr "^Rückwärts suchen"
 
 #: src/ui.cc:2259
 msgid "Search backwards"
-msgstr "Rückwärts suche"
+msgstr "Rückwärts suchen"
 
 #: src/ui.cc:2262
 msgid "Find ^Again"
@@ -6025,7 +6025,7 @@ msgstr "Pakete nach Debtags-Daten anzeigen"
 
 #: src/ui.cc:2351
 msgid "New Categorical ^Browser"
-msgstr "Neuen Kategorie-^Browser"
+msgstr "Neuer Kategorie-^Browser"
 
 #: src/ui.cc:2353
 msgid "Browse packages by category"
