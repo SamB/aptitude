@@ -72,6 +72,7 @@ namespace gui
   };
 
   class PackagesTab;
+  class PackagesView;
 
   /**
    * The PackagesMarker marks packages belonging to a PackagesTab
@@ -79,7 +80,7 @@ namespace gui
   class PackagesMarker
   {
     private:
-      PackagesTab * tab;
+      PackagesView * view;
       void dispatch(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver, PackagesAction action);
       void callback(const Gtk::TreeModel::iterator& iter, PackagesAction action);
     public:
@@ -87,7 +88,7 @@ namespace gui
        *
        *  \param tab The tab on which the marking takes place.
        */
-      PackagesMarker(PackagesTab * tab);
+      PackagesMarker(PackagesView * view);
       void select(PackagesAction action);
   };
 
@@ -103,16 +104,14 @@ namespace gui
       Gtk::ImageMenuItem * pMenuPurge;
       Gtk::ImageMenuItem * pMenuKeep;
       Gtk::ImageMenuItem * pMenuHold;
-      PackagesTab * tab;
-      PackagesMarker * marker;
     public:
       /** \brief Construct a context menu for tab.
        *
        *  \param tab The tab who owns the context menu.
        *  \param marker The marker to use to execute the actions.
        */
-    PackagesContextMenu(PackagesTab * tab, PackagesMarker * marker);
-    Gtk::Menu * get_menu() const { return pMenu; }
+    PackagesContextMenu(PackagesView * view);
+    Gtk::Menu * get_menu() const { return pMenu; };
   };
 
   class PackagesColumns : public Gtk::TreeModel::ColumnRecord
@@ -129,57 +128,71 @@ namespace gui
       PackagesColumns();
   };
 
-  class PackagesView : public Gtk::TreeView
+  class PackagesTreeView : public Gtk::TreeView
+  {
+    public:
+      PackagesTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+      bool on_button_press_event(GdkEventButton* event);
+  };
+
+  class PackagesView
   {
     private:
-      // FIXME: Hack..
-      PackagesContextMenu * pPackagesContextMenu;
-      bool in_PackagesTab;
+      PackagesTreeView * treeview;
+      PackagesColumns * packages_columns;
+      Glib::RefPtr<Gtk::TreeModel> packages_store;
+      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store;
+      PackagesContextMenu * context;
       PackagesMarker * marker;
     public:
-      PackagesView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-      void link_to_context_menu(PackagesContextMenu * context_menu);
-      void link_to_marker(PackagesMarker * marker);
-      bool on_button_press_event(GdkEventButton* event);
+      PackagesView(Glib::RefPtr<Gtk::TreeModel> packages_store,
+          std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
+      void refresh_packages_view(std::set<pkgCache::PkgIterator> changed_packages);
+      void update_stores(Glib::RefPtr<Gtk::ListStore> packages_store, std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
+      void update_stores(Glib::RefPtr<Gtk::TreeStore> packages_store, std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
+      sigc::signal<pkgCache::PkgIterator, pkgCache::VerIterator> signal_on_package_selection;
+      PackagesTreeView * get_treeview() { return treeview; };
+      PackagesColumns * get_packages_columns() { return packages_columns; };
+      PackagesMarker * get_marker() { return marker; };
+      Glib::RefPtr<Gtk::TreeModel> get_packages_store() { return packages_store; };
+      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_packages_store() { return reverse_packages_store; };
   };
 
   class PackagesTab : public Tab
   {
-    public:
-      Glib::RefPtr<Gtk::ListStore> packages_store;
-      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store;
-      PackagesColumns packages_columns;
-      PackagesView * pPackagesTreeView;
+    private:
+      PackagesView * pPackagesView;
       Gtk::TextView * pPackagesTextView;
-      PackagesContextMenu * pPackagesContextMenu;
-      PackagesMarker * pPackagesMarker;
       Gtk::Entry * pLimitEntry;
       Gtk::Button * pLimitButton;
+    public:
       PackagesTab(const Glib::ustring &label);
-      void create_store();
-      void create_reverse_store();
-      void populate_model();
+      Glib::RefPtr<Gtk::ListStore> create_store();
+      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * create_reverse_store();
+      void repopulate_model();
+      void populate_model(Glib::RefPtr<Gtk::ListStore> packages_store, std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
+      PackagesView * get_packages_view() { return pPackagesView; };
   };
 
   // TODO: This needs to share more code with PackagesTab.
-  //       A PreviewTab is really only a PackagesTab without the limiting and with a TreeStore.
+  //       A PreviewTab is really a PackagesTab with a TreeStore.
   class PreviewTab : public Tab
   {
-    public:
-      Glib::RefPtr<Gtk::TreeStore> packages_store;
-      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store;
-      PackagesColumns packages_columns;
-      PackagesView * pPackagesTreeView;
+    private:
+      PackagesView * pPackagesView;
       Gtk::TextView * pPackagesTextView;
-      PackagesContextMenu * pPackagesContextMenu;
-      PackagesMarker * pPackagesMarker;
+      Gtk::Entry * pLimitEntry;
+      Gtk::Button * pLimitButton;
+    public:
       PreviewTab(const Glib::ustring &label);
-      void create_store();
-      void create_reverse_store();
-      void populate_model();
+      Glib::RefPtr<Gtk::TreeStore> create_store();
+      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * create_reverse_store();
+      void repopulate_model();
+      void populate_model(Glib::RefPtr<Gtk::TreeStore> packages_store, std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
+      PackagesView * get_packages_view() { return pPackagesView; };
   };
 
-  void populate_packages_tab(guiOpProgress &progress, PackagesTab * tab, Glib::ustring limit = "");
+  void populate_packages_tab(guiOpProgress &progress, PackagesView * view, Glib::ustring limit = "");
 
   void refresh_packages_tab(guiOpProgress &progress, PackagesTab * tab, std::set<pkgCache::PkgIterator> changed_packages);
 
