@@ -145,8 +145,10 @@ namespace gui
       PackagesContextMenu * context;
       PackagesMarker * marker;
     public:
-      PackagesView(Glib::RefPtr<Gtk::TreeModel> packages_store,
-          std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
+      PackagesView(PackagesTab * tab, sigc::bound_mem_functor3<void, PackagesTab,
+          PackagesColumns,
+          Glib::RefPtr<Gtk::ListStore>,
+          std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> *> populate);
       void refresh_packages_view(std::set<pkgCache::PkgIterator> changed_packages);
       void update_stores(Glib::RefPtr<Gtk::ListStore> packages_store, std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
       void update_stores(Glib::RefPtr<Gtk::TreeStore> packages_store, std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
@@ -170,7 +172,9 @@ namespace gui
       Glib::RefPtr<Gtk::ListStore> create_store();
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * create_reverse_store();
       void repopulate_model();
-      void populate_model(Glib::RefPtr<Gtk::ListStore> packages_store, std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
+      void populate_model(PackagesColumns packages_columns,
+          Glib::RefPtr<Gtk::ListStore> packages_store,
+          std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
       PackagesView * get_packages_view() { return pPackagesView; };
   };
 
@@ -188,7 +192,9 @@ namespace gui
       Glib::RefPtr<Gtk::TreeStore> create_store();
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * create_reverse_store();
       void repopulate_model();
-      void populate_model(Glib::RefPtr<Gtk::TreeStore> packages_store, std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
+      void populate_model(PackagesColumns packages_columns,
+          Glib::RefPtr<Gtk::ListStore> packages_store,
+          std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
       PackagesView * get_packages_view() { return pPackagesView; };
   };
 
