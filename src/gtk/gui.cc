@@ -665,11 +665,16 @@ namespace gui
       pPackagesTextView->get_buffer()->set_text(ssprintf("%s%s\n", _("Name: "), pkg.Name()));
     }
   }
-
   class PreviewTabGenerator : public PackagesTreeModelGenerator
   {
     Glib::RefPtr<Gtk::TreeStore> store;
     PackagesColumns *packages_columns;
+
+    // \todo Swiped from pkg_grouppolicy_mode; should be pushed into
+    // low-level code.
+    const static char * const child_names[];
+
+    std::map<int, Gtk::TreeStore::iterator> state_trees;
 
   private:
     PreviewTabGenerator(PackagesColumns *_packages_columns)
@@ -695,22 +700,36 @@ namespace gui
     void add(const pkgCache::PkgIterator &pkg, const pkgCache::VerIterator &ver,
 	     std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
     {
-      // FIXME: This is ugly. We should handle group policies the same way the TUI does.
-      if(selected_state_string(pkg, ver) == "")
-	return;
+      int group = find_pkg_state(pkg, *apt_cache_file);
+      if(group != pkg_unchanged)
+	{
+	  const std::map<int, Gtk::TreeModel::iterator>::const_iterator found =
+	    state_trees.find(group);
 
-      Gtk::TreeModel::iterator iter = store->append();
-      Gtk::TreeModel::Row row = *iter;
+	  Gtk::TreeModel::iterator tree;
+	  if(found == state_trees.end())
+	    {
+	      tree = store->append();
+	      Gtk::TreeModel::Row tree_row = *tree;
+	      tree_row[packages_columns->Name] = _(child_names[group]);
+	      state_trees[group] = tree;
+	    }
+	  else
+	    tree = found->second;
 
-      reverse_packages_store->insert(std::make_pair(pkg, iter));
+	  Gtk::TreeModel::iterator iter = store->append(tree->children());
+	  Gtk::TreeModel::Row row = *iter;
 
-      row[packages_columns->PkgIterator] = pkg;
-      row[packages_columns->VerIterator] = ver;
-      row[packages_columns->CurrentStatus] = current_state_string(pkg, ver);
-      row[packages_columns->SelectedStatus] = selected_state_string(pkg, ver);
-      row[packages_columns->Name] = pkg.Name()?pkg.Name():"";
-      row[packages_columns->Section] = pkg.Section()?pkg.Section():"";
-      row[packages_columns->Version] = ver.VerStr();
+	  reverse_packages_store->insert(std::make_pair(pkg, iter));
+
+	  row[packages_columns->PkgIterator] = pkg;
+	  row[packages_columns->VerIterator] = ver;
+	  row[packages_columns->CurrentStatus] = current_state_string(pkg, ver);
+	  row[packages_columns->SelectedStatus] = selected_state_string(pkg, ver);
+	  row[packages_columns->Name] = pkg.Name()?pkg.Name():"";
+	  row[packages_columns->Section] = pkg.Section()?pkg.Section():"";
+	  row[packages_columns->Version] = ver.VerStr();
+	}
     }
 
     void finish()
@@ -724,6 +743,25 @@ namespace gui
     }
   };
 
+
+  // \todo This is proof-of-concept only; the child_names list should
+  // be in common code.
+  const char * const PreviewTabGenerator::child_names[num_pkg_action_states]=
+    {
+      N_("Packages with unsatisfied dependencies\n The dependency requirements of these packages will be unmet after the install is complete.\n .\n The presence of this tree probably indicates that something is broken, either on your system or in the Debian archive."),
+      N_("Packages being removed because they are no longer used\n These packages are being deleted because they were automatically installed to fulfill dependencies, and the planned action will result in no installed package declaring an 'important' dependency on them.\n"),
+      N_("Packages being automatically held in their current state\n These packages could be upgraded, but they have been kept in their current state to avoid breaking dependencies."),
+      N_("Packages being automatically installed to satisfy dependencies\n These packages are being installed because they are required by another package you have chosen for installation."),
+      N_("Packages being deleted due to unsatisfied dependencies\n These packages are being deleted because one or more of their dependencies is no longer available, or because another package conflicts with them."),
+      N_("Packages to be downgraded\n An older version of these packages than is currently installed will be installed."),
+      N_("Packages being held back\n These packages could be upgraded, but you have asked for them to be held at their current version."),
+      N_("Packages to be reinstalled\n These packages will be reinstalled."),
+      N_("Packages to be installed\n These packages have been manually selected for installation on your computer."),
+      N_("Packages to be removed\n These packages have been manually selected for removal."),
+      N_("Packages to be upgraded\n These packages will be upgraded to a newer version."),
+      N_("Packages that are partially installed\n These packages are not fully installed and configured; an attempt will be made to complete their installation."),
+    };
+
   PreviewTab::PreviewTab(const Glib::ustring &label) :
     Tab(Preview, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_vbox"), "main_packages_vbox")
   {
@@ -736,6 +774,7 @@ namespace gui
     pPackagesView = new PackagesView(sigc::ptr_fun(PreviewTabGenerator::create), get_xml());;
 
     pPackagesView->signal_on_package_selection.connect(sigc::mem_fun(*this, &PreviewTab::display_desc));
+    pPackagesView->get_treeview()->expand_all();
 
     get_widget()->show();
   }
