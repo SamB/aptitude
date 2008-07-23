@@ -389,12 +389,72 @@ namespace gui
     return return_value;
   }
 
-  PackagesView::PackagesView(build_store_func build_store,
+  PackagesTreeModelGenerator::~PackagesTreeModelGenerator()
+  {
+  }
+
+
+  Glib::RefPtr<Gtk::TreeModel>
+  PackagesView::build_store(const GeneratorK & generatorK,
+			    PackagesColumns *packages_columns,
+			    std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store,
+			    Glib::ustring limit)
+  {
+    std::auto_ptr<PackagesTreeModelGenerator>
+      generator(generatorK(packages_columns));
+
+    guiOpProgress * p = gen_progress_bar();
+
+    int num=0;
+    int total=(*apt_cache_file)->Head().PackageCount;
+    bool limited = false;
+    aptitude::matching::pkg_matcher * limiter = NULL;
+    if (limit != "")
+    {
+      limiter = aptitude::matching::parse_pattern(limit);
+      limited = (limiter != NULL);
+    }
+
+    for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin(); !pkg.end(); pkg++)
+      {
+        p->OverallProgress(num, total, 1, _("Building view"));
+
+        ++num;
+        if (num % 1000 == 0)
+        {
+          gtk_update();
+          pMainWindow->get_progress_bar()->pulse();
+        }
+
+        // Filter useless packages up-front.
+        if(pkg.VersionList().end() && pkg.ProvidesList().end())
+          continue;
+        // TODO: put back the limiting
+        if (!limited || aptitude::matching::apply_matcher(limiter, pkg, *apt_cache_file, *apt_package_records))
+          {
+            for (pkgCache::VerIterator ver = pkg.VersionList(); ver.end() == false; ver++)
+              {
+		generator->add(pkg, ver, reverse_packages_store);
+              }
+          }
+      }
+    gtk_update();
+    generator->finish();
+    gtk_update();
+
+    p->OverallProgress(total, total, 1,  _("Building view"));
+    delete p;
+
+    return generator->get_model();
+  }
+
+  PackagesView::PackagesView(const GeneratorK &_generatorK,
 			     Glib::RefPtr<Gnome::Glade::Xml> refGlade)
   {
     refGlade->get_widget_derived("main_packages_treeview", treeview);
 
-    this->build_store = build_store;
+    generatorK = _generatorK;
+
     packages_columns = new PackagesColumns();
     marker = new PackagesMarker(this);
     context = new PackagesContextMenu(this);
@@ -414,7 +474,8 @@ namespace gui
     treeview->set_search_column(packages_columns->Name);
 
     reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
-    packages_store = build_store(packages_columns,
+    packages_store = build_store(generatorK,
+				 packages_columns,
 				 reverse_packages_store,
 				 "");
 
@@ -422,6 +483,10 @@ namespace gui
 
     // TODO: There should be a way to do this in Glade maybe.
     treeview->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
+  }
+
+  PackagesView::~PackagesView()
+  {
   }
 
   void PackagesView::context_menu_handler(GdkEventButton * event)
@@ -432,7 +497,7 @@ namespace gui
   void PackagesView::relimit_packages_view(Glib::ustring limit)
   {
     reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
-    packages_store = build_store(packages_columns, reverse_packages_store, limit);
+    packages_store = build_store(generatorK, packages_columns, reverse_packages_store, limit);
     treeview->set_model(packages_store);
   }
 
@@ -489,6 +554,67 @@ namespace gui
     delete p;
   }
 
+
+  class PackagesTabGenerator : public PackagesTreeModelGenerator
+  {
+    Glib::RefPtr<Gtk::ListStore> store;
+    PackagesColumns *packages_columns;
+
+  private:
+    PackagesTabGenerator(PackagesColumns *_packages_columns)
+    {
+      packages_columns = _packages_columns;
+      store = Gtk::ListStore::create(*packages_columns);
+    }
+
+  public:
+    /** \brief Create a preview tab generator.
+     *
+     *  \param packages_columns  The columns of the new store.
+     *
+     *  \note This is mainly a workaround for the fact that either
+     *  sigc++ doesn't provide convenience functors for constructors
+     *  or I can't find them.
+     */
+    static PackagesTabGenerator *create(PackagesColumns *packages_columns)
+    {
+      return new PackagesTabGenerator(packages_columns);
+    }
+
+    void init(PackagesColumns *_packages_columns)
+    {
+      packages_columns = _packages_columns;
+      store = Gtk::ListStore::create(*packages_columns);
+    }
+
+    void add(const pkgCache::PkgIterator &pkg, const pkgCache::VerIterator &ver,
+	     std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
+    {
+      Gtk::TreeModel::iterator iter = store->append();
+      Gtk::TreeModel::Row row = *iter;
+
+      reverse_packages_store->insert(std::make_pair(pkg, iter));
+
+      row[packages_columns->PkgIterator] = pkg;
+      row[packages_columns->VerIterator] = ver;
+      row[packages_columns->CurrentStatus] = current_state_string(pkg, ver);
+      row[packages_columns->SelectedStatus] = selected_state_string(pkg, ver);
+      row[packages_columns->Name] = pkg.Name()?pkg.Name():"";
+      row[packages_columns->Section] = pkg.Section()?pkg.Section():"";
+      row[packages_columns->Version] = ver.VerStr();
+    }
+
+    void finish()
+    {
+      store->set_sort_column(packages_columns->Name, Gtk::SORT_ASCENDING);
+    }
+
+    Glib::RefPtr<Gtk::TreeModel> get_model()
+    {
+      return store;
+    }
+  };
+
   PackagesTab::PackagesTab(const Glib::ustring &label) :
     Tab(Packages, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_vbox"), "main_packages_vbox")
   {
@@ -498,7 +624,7 @@ namespace gui
     get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
     pLimitButton->signal_clicked().connect(sigc::mem_fun(*this, &PackagesTab::repopulate_model));
 
-    pPackagesView = new PackagesView(sigc::ptr_fun(PackagesTab::build_store), get_xml());
+    pPackagesView = new PackagesView(sigc::ptr_fun(PackagesTabGenerator::create), get_xml());
 
     pPackagesView->signal_on_package_selection.connect(sigc::mem_fun(*this, &PackagesTab::display_desc));
 
@@ -509,69 +635,6 @@ namespace gui
   {
     pPackagesView->relimit_packages_view(pLimitEntry->get_text());
     set_label(_("Packages: ") + pLimitEntry->get_text());
-  }
-
-  Glib::RefPtr<Gtk::TreeModel>
-  PackagesTab::build_store(PackagesColumns * packages_columns,
-			   std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store,
-			   Glib::ustring limit)
-  {
-    Glib::RefPtr<Gtk::ListStore> rval = Gtk::ListStore::create(*packages_columns);
-
-    guiOpProgress * p = gen_progress_bar();
-
-    int num=0;
-    int total=(*apt_cache_file)->Head().PackageCount;
-    bool limited = false;
-    aptitude::matching::pkg_matcher * limiter = NULL;
-    if (limit != "")
-    {
-      limited = true;
-      limiter = aptitude::matching::parse_pattern(limit);
-    }
-
-    for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin(); !pkg.end(); pkg++)
-      {
-        p->OverallProgress(num, total, 1, _("Building view"));
-
-        ++num;
-        if (num % 1000 == 0)
-        {
-          gtk_update();
-          pMainWindow->get_progress_bar()->pulse();
-        }
-
-        // Filter useless packages up-front.
-        if(pkg.VersionList().end() && pkg.ProvidesList().end())
-          continue;
-        // TODO: put back the limiting
-        if (!limited || aptitude::matching::apply_matcher(limiter, pkg, *apt_cache_file, *apt_package_records))
-          {
-            for (pkgCache::VerIterator ver = pkg.VersionList(); ver.end() == false; ver++)
-              {
-                Gtk::TreeModel::iterator iter = rval->append();
-                Gtk::TreeModel::Row row = *iter;
-
-                reverse_packages_store->insert(std::make_pair(pkg, iter));
-
-                row[packages_columns->PkgIterator] = pkg;
-                row[packages_columns->VerIterator] = ver;
-                row[packages_columns->CurrentStatus] = current_state_string(pkg, ver);
-                row[packages_columns->SelectedStatus] = selected_state_string(pkg, ver);
-                row[packages_columns->Name] = pkg.Name()?pkg.Name():"";
-                row[packages_columns->Section] = pkg.Section()?pkg.Section():"";
-                row[packages_columns->Version] = ver.VerStr();
-              }
-          }
-      }
-    gtk_update();
-    rval->set_sort_column(packages_columns->Name, Gtk::SORT_ASCENDING);
-    gtk_update();
-
-    p->OverallProgress(total, total, 1,  _("Building view"));
-    delete p;
-
-    return rval;
   }
 
   void PackagesTab::display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
@@ -603,6 +666,64 @@ namespace gui
     }
   }
 
+  class PreviewTabGenerator : public PackagesTreeModelGenerator
+  {
+    Glib::RefPtr<Gtk::TreeStore> store;
+    PackagesColumns *packages_columns;
+
+  private:
+    PreviewTabGenerator(PackagesColumns *_packages_columns)
+    {
+      packages_columns = _packages_columns;
+      store = Gtk::TreeStore::create(*packages_columns);
+    }
+
+  public:
+    /** \brief Create a preview tab generator.
+     *
+     *  \param packages_columns  The columns of the new store.
+     *
+     *  \note This is mainly a workaround for the fact that either
+     *  sigc++ doesn't provide convenience functors for constructors
+     *  or I can't find them.
+     */
+    static PreviewTabGenerator *create(PackagesColumns *packages_columns)
+    {
+      return new PreviewTabGenerator(packages_columns);
+    }
+
+    void add(const pkgCache::PkgIterator &pkg, const pkgCache::VerIterator &ver,
+	     std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
+    {
+      // FIXME: This is ugly. We should handle group policies the same way the TUI does.
+      if(selected_state_string(pkg, ver) == "")
+	return;
+
+      Gtk::TreeModel::iterator iter = store->append();
+      Gtk::TreeModel::Row row = *iter;
+
+      reverse_packages_store->insert(std::make_pair(pkg, iter));
+
+      row[packages_columns->PkgIterator] = pkg;
+      row[packages_columns->VerIterator] = ver;
+      row[packages_columns->CurrentStatus] = current_state_string(pkg, ver);
+      row[packages_columns->SelectedStatus] = selected_state_string(pkg, ver);
+      row[packages_columns->Name] = pkg.Name()?pkg.Name():"";
+      row[packages_columns->Section] = pkg.Section()?pkg.Section():"";
+      row[packages_columns->Version] = ver.VerStr();
+    }
+
+    void finish()
+    {
+      store->set_sort_column(packages_columns->Name, Gtk::SORT_ASCENDING);
+    }
+
+    Glib::RefPtr<Gtk::TreeModel> get_model()
+    {
+      return store;
+    }
+  };
+
   PreviewTab::PreviewTab(const Glib::ustring &label) :
     Tab(Preview, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_vbox"), "main_packages_vbox")
   {
@@ -612,7 +733,7 @@ namespace gui
     get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
     pLimitButton->signal_clicked().connect(sigc::mem_fun(*this, &PreviewTab::repopulate_model));
 
-    pPackagesView = new PackagesView(sigc::ptr_fun(PreviewTab::build_store), get_xml());;
+    pPackagesView = new PackagesView(sigc::ptr_fun(PreviewTabGenerator::create), get_xml());;
 
     pPackagesView->signal_on_package_selection.connect(sigc::mem_fun(*this, &PreviewTab::display_desc));
 
@@ -623,72 +744,6 @@ namespace gui
   {
     pPackagesView->relimit_packages_view(pLimitEntry->get_text());
     set_label(_("Preview: ") + pLimitEntry->get_text());
-  }
-
-  Glib::RefPtr<Gtk::TreeModel>
-  PreviewTab::build_store(PackagesColumns * packages_columns,
-			  std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store,
-			  Glib::ustring limit)
-  {
-    Glib::RefPtr<Gtk::TreeStore> rval = Gtk::TreeStore::create(*packages_columns);
-
-    guiOpProgress * p = gen_progress_bar();
-
-    int num=0;
-    int total=(*apt_cache_file)->Head().PackageCount;
-    bool limited = false;
-    aptitude::matching::pkg_matcher * limiter = NULL;
-    if (limit != "")
-    {
-      limited = true;
-      limiter = aptitude::matching::parse_pattern(limit);
-    }
-
-    for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin(); !pkg.end(); pkg++)
-      {
-        p->OverallProgress(num, total, 1, _("Building view"));
-
-        ++num;
-        if (num % 1000 == 0)
-        {
-          gtk_update();
-          pMainWindow->get_progress_bar()->pulse();
-        }
-
-        // Filter useless packages up-front.
-        if(pkg.VersionList().end() && pkg.ProvidesList().end())
-          continue;
-        // TODO: put back the limiting
-        if (!limited || aptitude::matching::apply_matcher(limiter, pkg, *apt_cache_file, *apt_package_records))
-          {
-            for (pkgCache::VerIterator ver = pkg.VersionList(); ver.end() == false; ver++)
-              {
-                // FIXME: This is ugly. We should handle group policies the same way the TUI does.
-                if(selected_state_string(pkg, ver) == "")
-                  continue;
-                Gtk::TreeModel::iterator iter = rval->append();
-                Gtk::TreeModel::Row row = *iter;
-
-                reverse_packages_store->insert(std::make_pair(pkg, iter));
-
-                row[packages_columns->PkgIterator] = pkg;
-                row[packages_columns->VerIterator] = ver;
-                row[packages_columns->CurrentStatus] = current_state_string(pkg, ver);
-                row[packages_columns->SelectedStatus] = selected_state_string(pkg, ver);
-                row[packages_columns->Name] = pkg.Name()?pkg.Name():"";
-                row[packages_columns->Section] = pkg.Section()?pkg.Section():"";
-                row[packages_columns->Version] = ver.VerStr();
-              }
-          }
-      }
-    gtk_update();
-    rval->set_sort_column(packages_columns->Name, Gtk::SORT_ASCENDING);
-    gtk_update();
-
-    p->OverallProgress(total, total, 1,  _("Building view"));
-    delete p;
-
-    return rval;
   }
 
   void PreviewTab::display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
