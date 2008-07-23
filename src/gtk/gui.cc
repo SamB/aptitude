@@ -261,12 +261,14 @@ namespace gui
     }
   }
 
-  PackagesMarker::PackagesMarker(PackagesView * view)
+  template <class TreeModel_Type>
+  PackagesMarker<TreeModel_Type>::PackagesMarker(PackagesView<TreeModel_Type> * view)
   {
     this->view = view;
   }
 
-  void PackagesMarker::dispatch(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver, PackagesAction action)
+  template <class TreeModel_Type>
+  void PackagesMarker<TreeModel_Type>::dispatch(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver, PackagesAction action)
   {
     if (!ver.end())
     {
@@ -340,7 +342,8 @@ namespace gui
     }
   }
 
-  void PackagesMarker::callback(const Gtk::TreeModel::iterator& iter, PackagesAction action)
+  template <class TreeModel_Type>
+  void PackagesMarker<TreeModel_Type>::callback(const Gtk::TreeModel::iterator& iter, PackagesAction action)
   {
     pkgCache::PkgIterator pkg = (*iter)[view->get_packages_columns()->PkgIterator];
     pkgCache::VerIterator ver = (*iter)[view->get_packages_columns()->VerIterator];
@@ -348,7 +351,8 @@ namespace gui
   }
 
   // TODO: This should maybe rather take a general functor than going through an exhaustive enum
-  void PackagesMarker::select(PackagesAction action)
+  template <class TreeModel_Type>
+  void PackagesMarker<TreeModel_Type>::select(PackagesAction action)
   {
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = view->get_treeview()->get_selection();
     if(refSelection)
@@ -357,21 +361,22 @@ namespace gui
     }
   }
 
-  PackagesContextMenu::PackagesContextMenu(PackagesView * view)
+  template <class TreeModel_Type>
+  PackagesContextMenu<TreeModel_Type>::PackagesContextMenu(PackagesView<TreeModel_Type> * view)
   {
-    PackagesMarker * marker = view->get_marker();
+    PackagesMarker<TreeModel_Type> * marker = view->get_marker();
     Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_packages_context");
     refGlade->get_widget("main_packages_context", pMenu);
     refGlade->get_widget("main_packages_context_install", pMenuInstall);
-    pMenuInstall->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Install));
+    pMenuInstall->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker<TreeModel_Type>::select), Install));
     refGlade->get_widget("main_packages_context_remove", pMenuRemove);
-    pMenuRemove->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Remove));
+    pMenuRemove->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker<TreeModel_Type>::select), Remove));
     refGlade->get_widget("main_packages_context_purge", pMenuPurge);
-    pMenuPurge->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Purge));
+    pMenuPurge->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker<TreeModel_Type>::select), Purge));
     refGlade->get_widget("main_packages_context_keep", pMenuKeep);
-    pMenuKeep->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Keep));
+    pMenuKeep->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker<TreeModel_Type>::select), Keep));
     refGlade->get_widget("main_packages_context_hold", pMenuHold);
-    pMenuHold->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Hold));
+    pMenuHold->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker<TreeModel_Type>::select), Hold));
   }
 
   PackagesColumns::PackagesColumns()
@@ -417,17 +422,18 @@ namespace gui
     return return_value;
   }
 
-  PackagesView::PackagesView(PackagesTab * tab,
-      sigc::bound_mem_functor3<void, PackagesTab,
-        PackagesColumns,
-        Glib::RefPtr<Gtk::ListStore>,
-        std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> *> populate)
+  template <class TreeModel_Type>
+  PackagesView<TreeModel_Type>::PackagesView(void (*populate)(PackagesColumns *,
+        Glib::RefPtr<TreeModel_Type>,
+        std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> *,
+        Glib::ustring limit),
+        Glib::RefPtr<Gnome::Glade::Xml> refGlade)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_packages_treeview");
     refGlade->get_widget_derived("main_packages_treeview", treeview);
 
-    marker = new PackagesMarker(this);
-    context = new PackagesContextMenu(this);
+    packages_columns = new PackagesColumns();
+    marker = new PackagesMarker<TreeModel_Type>(this);
+    context = new PackagesContextMenu<TreeModel_Type>(this);
 
     treeview->append_column(_("C"), packages_columns->CurrentStatus);
     treeview->get_column(0)->set_sort_column(packages_columns->CurrentStatus);
@@ -440,7 +446,11 @@ namespace gui
     treeview->append_column(_("Version"), packages_columns->Version);
     treeview->set_search_column(packages_columns->Name);
 
-    populate(packages_columns, packages_store, reverse_packages_store);
+    packages_store = TreeModel_Type::create(*packages_columns);
+    reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
+
+    (*populate)(packages_columns, packages_store, reverse_packages_store, "");
+    std::cout << "columns:" << packages_store->get_n_columns() << std::endl;
 
     treeview->set_model(packages_store);
 
@@ -448,13 +458,16 @@ namespace gui
     treeview->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
   }
 
-  void PackagesView::update_stores(Glib::RefPtr<Gtk::ListStore> packages_store, std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
+  template <class TreeModel_Type>
+  void PackagesView<TreeModel_Type>::relimit_packages_view(Glib::ustring limit)
   {
     this->packages_store = packages_store;
     this->reverse_packages_store = reverse_packages_store;
   }
 
-  void PackagesView::update_stores(Glib::RefPtr<Gtk::TreeStore> packages_store, std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
+  template <class TreeModel_Type>
+  void PackagesView<TreeModel_Type>::update_stores(Glib::RefPtr<TreeModel_Type> packages_store,
+      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
   {
     this->packages_store = packages_store;
     this->reverse_packages_store = reverse_packages_store;
@@ -462,7 +475,8 @@ namespace gui
 
   // TODO: Shouldn't we populate a ListStore/TreeModel rather then a PackageTab?
   //       or would that be too low-level?
-  void PackagesView::refresh_packages_view(std::set<pkgCache::PkgIterator> changed_packages)
+  template <class TreeModel_Type>
+  void PackagesView<TreeModel_Type>::refresh_packages_view(std::set<pkgCache::PkgIterator> changed_packages)
   {
     guiOpProgress * p = gen_progress_bar();
     int num=0;
@@ -509,40 +523,30 @@ namespace gui
   PackagesTab::PackagesTab(const Glib::ustring &label) :
     Tab(Packages, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_vbox"), "main_packages_vbox")
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_packages_vbox");
-    refGlade->get_widget("main_packages_textview", pPackagesTextView);
-    refGlade->get_widget("main_notebook_packages_limit_entry", pLimitEntry);
+    get_xml()->get_widget("main_packages_textview", pPackagesTextView);
+    get_xml()->get_widget("main_notebook_packages_limit_entry", pLimitEntry);
     pLimitEntry->signal_activate().connect(sigc::mem_fun(*this, &PackagesTab::repopulate_model));
-    refGlade->get_widget("main_notebook_packages_limit_button", pLimitButton);
+    get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
     pLimitButton->signal_clicked().connect(sigc::mem_fun(*this, &PackagesTab::repopulate_model));
 
-    pPackagesView = new PackagesView(this, sigc::mem_fun(*this, &PackagesTab::populate_model));
+    pPackagesView = new PackagesView<Gtk::ListStore>(&PackagesTab_populate_model, get_xml());
 
     get_widget()->show();
   }
 
-  Glib::RefPtr<Gtk::ListStore> PackagesTab::create_store()
-  {
-    return Gtk::ListStore::create(*(pPackagesView->get_packages_columns()));
-  }
-
-  std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * PackagesTab::create_reverse_store()
-  {
-    return new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
-  }
-
   void PackagesTab::repopulate_model()
   {
-    /*Glib::RefPtr<Gtk::ListStore> packages_store = create_store();
-    std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store = create_reverse_store();
-    populate_model(packages_store, reverse_packages_store);
-    pPackagesView->update_stores(packages_store, reverse_packages_store);*/
+    pPackagesView->relimit_packages_view(pLimitEntry->get_text());
+    set_label(_("Packages: ") + pLimitEntry->get_text());
   }
 
-  void PackagesTab::populate_model(PackagesColumns packages_columns, Glib::RefPtr<Gtk::ListStore> packages_store, std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
+  void PackagesTab_populate_model(PackagesColumns * packages_columns,
+      Glib::RefPtr<Gtk::ListStore> packages_store,
+      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store,
+      Glib::ustring limit)
   {
     guiOpProgress * p = gen_progress_bar();
-    Glib::ustring limit = pLimitEntry->get_text();
+
     int num=0;
     int total=(*apt_cache_file)->Head().PackageCount;
     bool limited = false;
@@ -577,65 +581,51 @@ namespace gui
 
                 reverse_packages_store->insert(std::make_pair(pkg, iter));
 
-                row[packages_columns.PkgIterator] = pkg;
-                row[packages_columns.VerIterator] = ver;
-                row[packages_columns.CurrentStatus] = current_state_string(pkg, ver);
-                row[packages_columns.SelectedStatus] = selected_state_string(pkg, ver);
-                row[packages_columns.Name] = pkg.Name()?pkg.Name():"";
-                row[packages_columns.Section] = pkg.Section()?pkg.Section():"";
-                row[packages_columns.Version] = ver.VerStr();
+                row[packages_columns->PkgIterator] = pkg;
+                row[packages_columns->VerIterator] = ver;
+                row[packages_columns->CurrentStatus] = current_state_string(pkg, ver);
+                row[packages_columns->SelectedStatus] = selected_state_string(pkg, ver);
+                row[packages_columns->Name] = pkg.Name()?pkg.Name():"";
+                row[packages_columns->Section] = pkg.Section()?pkg.Section():"";
+                row[packages_columns->Version] = ver.VerStr();
               }
           }
       }
     gtk_update();
-    packages_store->set_sort_column(packages_columns.Name, Gtk::SORT_ASCENDING);
+    packages_store->set_sort_column(packages_columns->Name, Gtk::SORT_ASCENDING);
     gtk_update();
 
-
-
     p->OverallProgress(total, total, 1,  _("Building view"));
-
-    set_label(_("Packages: ") + pLimitEntry->get_text());
     delete p;
   }
 
   PreviewTab::PreviewTab(const Glib::ustring &label) :
     Tab(Preview, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_vbox"), "main_packages_vbox")
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_packages_vbox");
-    refGlade->get_widget("main_packages_textview", pPackagesTextView);
-    refGlade->get_widget("main_notebook_packages_limit_entry", pLimitEntry);
+    get_xml()->get_widget("main_packages_textview", pPackagesTextView);
+    get_xml()->get_widget("main_notebook_packages_limit_entry", pLimitEntry);
     pLimitEntry->signal_activate().connect(sigc::mem_fun(*this, &PreviewTab::repopulate_model));
-    refGlade->get_widget("main_notebook_packages_limit_button", pLimitButton);
+    get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
     pLimitButton->signal_clicked().connect(sigc::mem_fun(*this, &PreviewTab::repopulate_model));
 
-    pPackagesView = new PackagesView(this, sigc::mem_fun(*this, &PreviewTab::populate_model));
+    pPackagesView = new PackagesView<Gtk::TreeStore>(&PreviewTab_populate_model, get_xml());;
 
     get_widget()->show();
   }
 
-  Glib::RefPtr<Gtk::TreeStore> PreviewTab::create_store()
-  {
-    return Gtk::TreeStore::create(*(pPackagesView->get_packages_columns()));
-  }
-
-  std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * PreviewTab::create_reverse_store()
-  {
-    return new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
-  }
-
   void PreviewTab::repopulate_model()
   {
-    /*Glib::RefPtr<Gtk::TreeStore> packages_store = create_store();
-    std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store = create_reverse_store();
-    populate_model(packages_store, reverse_packages_store);
-    pPackagesView->update_stores(packages_store, reverse_packages_store);*/
+    pPackagesView->relimit_packages_view(pLimitEntry->get_text());
+    set_label(_("Preview: ") + pLimitEntry->get_text());
   }
 
-  void PreviewTab::populate_model(PackagesColumns packages_columns, Glib::RefPtr<Gtk::ListStore> packages_store, std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
+  void PreviewTab_populate_model(PackagesColumns * packages_columns,
+      Glib::RefPtr<Gtk::TreeStore> packages_store,
+      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store,
+      Glib::ustring limit)
   {
     guiOpProgress * p = gen_progress_bar();
-    Glib::ustring limit = pLimitEntry->get_text();
+
     int num=0;
     int total=(*apt_cache_file)->Head().PackageCount;
     bool limited = false;
@@ -673,25 +663,21 @@ namespace gui
 
                 reverse_packages_store->insert(std::make_pair(pkg, iter));
 
-                row[packages_columns.PkgIterator] = pkg;
-                row[packages_columns.VerIterator] = ver;
-                row[packages_columns.CurrentStatus] = current_state_string(pkg, ver);
-                row[packages_columns.SelectedStatus] = selected_state_string(pkg, ver);
-                row[packages_columns.Name] = pkg.Name()?pkg.Name():"";
-                row[packages_columns.Section] = pkg.Section()?pkg.Section():"";
-                row[packages_columns.Version] = ver.VerStr();
+                row[packages_columns->PkgIterator] = pkg;
+                row[packages_columns->VerIterator] = ver;
+                row[packages_columns->CurrentStatus] = current_state_string(pkg, ver);
+                row[packages_columns->SelectedStatus] = selected_state_string(pkg, ver);
+                row[packages_columns->Name] = pkg.Name()?pkg.Name():"";
+                row[packages_columns->Section] = pkg.Section()?pkg.Section():"";
+                row[packages_columns->Version] = ver.VerStr();
               }
           }
       }
     gtk_update();
-    packages_store->set_sort_column(packages_columns.Name, Gtk::SORT_ASCENDING);
+    packages_store->set_sort_column(packages_columns->Name, Gtk::SORT_ASCENDING);
     gtk_update();
 
-
-
     p->OverallProgress(total, total, 1,  _("Building view"));
-
-    set_label(_("Preview: ") + pLimitEntry->get_text());
     delete p;
   }
 
