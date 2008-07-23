@@ -411,7 +411,7 @@ namespace gui
     {
       //Call base class, to allow normal handling,
       //such as allowing the row to be selected by the right-click:
-      return_value = Gtk::TreeView::on_button_press_event(event);
+      //return_value = Gtk::TreeView::on_button_press_event(event);
       // TODO: The general behavior of the description display isn't right.
       //       We should display the LAST selected package in case of multiple selection.
       /*if (in_PackagesTab)
@@ -431,6 +431,7 @@ namespace gui
   {
     refGlade->get_widget_derived("main_packages_treeview", treeview);
 
+    this->populate = populate;
     packages_columns = new PackagesColumns();
     marker = new PackagesMarker<TreeModel_Type>(this);
     context = new PackagesContextMenu<TreeModel_Type>(this);
@@ -450,7 +451,6 @@ namespace gui
     reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
 
     (*populate)(packages_columns, packages_store, reverse_packages_store, "");
-    std::cout << "columns:" << packages_store->get_n_columns() << std::endl;
 
     treeview->set_model(packages_store);
 
@@ -461,8 +461,10 @@ namespace gui
   template <class TreeModel_Type>
   void PackagesView<TreeModel_Type>::relimit_packages_view(Glib::ustring limit)
   {
-    this->packages_store = packages_store;
-    this->reverse_packages_store = reverse_packages_store;
+    packages_store = TreeModel_Type::create(*packages_columns);
+    reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
+    (*populate)(packages_columns, packages_store, reverse_packages_store, limit);
+    treeview->set_model(packages_store);
   }
 
   template <class TreeModel_Type>
