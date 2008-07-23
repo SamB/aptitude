@@ -135,6 +135,8 @@ namespace gui
     public:
       PackagesTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
       bool on_button_press_event(GdkEventButton* event);
+      sigc::signal<void, GdkEventButton*> signal_context_menu;
+      sigc::signal<void> signal_selection;
   };
 
   template <class TreeModel_Type>
@@ -157,12 +159,13 @@ namespace gui
           std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> *,
           Glib::ustring limit),
           Glib::RefPtr<Gnome::Glade::Xml> refGlade);
+      void context_menu_handler(GdkEventButton * event);
       void refresh_packages_view(std::set<pkgCache::PkgIterator> changed_packages);
       void relimit_packages_view(Glib::ustring limit);
       void update_stores(Glib::RefPtr<TreeModel_Type> packages_store,
           std::multimap<pkgCache::PkgIterator,
           Gtk::TreeModel::iterator> * reverse_packages_store);
-      sigc::signal<pkgCache::PkgIterator, pkgCache::VerIterator> signal_on_package_selection;
+      sigc::signal<void, pkgCache::PkgIterator, pkgCache::VerIterator> signal_on_package_selection;
       PackagesTreeView * get_treeview() { return treeview; };
       PackagesColumns * get_packages_columns() { return packages_columns; };
       PackagesMarker<TreeModel_Type> * get_marker() { return marker; };
@@ -185,6 +188,7 @@ namespace gui
       void populate_model(PackagesColumns packages_columns,
           Glib::RefPtr<Gtk::ListStore> packages_store,
           std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
+      void display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
       PackagesView<Gtk::ListStore> * get_packages_view() { return pPackagesView; };
   };
 
@@ -211,6 +215,7 @@ namespace gui
       void populate_model(PackagesColumns packages_columns,
           Glib::RefPtr<Gtk::ListStore> packages_store,
           std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store);
+      void display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
       PackagesView<Gtk::TreeStore> * get_packages_view() { return pPackagesView; };
   };
 

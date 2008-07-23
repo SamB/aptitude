@@ -232,35 +232,6 @@ namespace gui
     return selected_state;
   }
 
-  void display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver, Gtk::TextView * textview)
-  {
-    if (ver)
-    {
-      pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
-      string misc = ssprintf("%s%s\n"
-          "%s%s\n"
-          "%s%s\n"
-          "%s%s\n"
-          "%s%s\n"
-          "%s%s\n"
-          "%s%s\n",
-          _("Name: "), pkg.Name(),
-          _("Priority: "),pkgCache::VerIterator(ver).PriorityType()?pkgCache::VerIterator(ver).PriorityType():_("Unknown"),
-              _("Section: "),pkg.Section()?pkg.Section():_("Unknown"),
-                  _("Maintainer: "),rec.Maintainer().c_str(),
-                  _("Compressed size: "), SizeToStr(ver->Size).c_str(),
-                  _("Uncompressed size: "), SizeToStr(ver->InstalledSize).c_str(),
-                  _("Source Package: "),
-                  rec.SourcePkg().empty()?pkg.Name():rec.SourcePkg().c_str());
-      string desc = cwidget::util::transcode(get_long_description(ver, apt_package_records), "UTF-8");
-      textview->get_buffer()->set_text(misc + _("Description: ") + desc);
-    }
-    else
-    {
-      textview->get_buffer()->set_text(ssprintf("%s%s\n", _("Name: "), pkg.Name()));
-    }
-  }
-
   template <class TreeModel_Type>
   PackagesMarker<TreeModel_Type>::PackagesMarker(PackagesView<TreeModel_Type> * view)
   {
@@ -336,6 +307,9 @@ namespace gui
         view->refresh_packages_view(changed_packages);
       }
       break;
+      case Description:
+        view->signal_on_package_selection(pkg, ver);
+      break;
       default:
       break;
       }
@@ -406,18 +380,16 @@ namespace gui
       //      with one right-click won't work, which should.
       //      We need information about the selection.
       //context->get_menu()->popup(event->button, event->time);
+      signal_context_menu(event);
     }
     else if ((event->type == GDK_BUTTON_PRESS) && (event->button == 1))
     {
       //Call base class, to allow normal handling,
       //such as allowing the row to be selected by the right-click:
-      //return_value = Gtk::TreeView::on_button_press_event(event);
+      return_value = Gtk::TreeView::on_button_press_event(event);
       // TODO: The general behavior of the description display isn't right.
       //       We should display the LAST selected package in case of multiple selection.
-      /*if (in_PackagesTab)
-      {
-        marker->select(Description);
-      }*/
+      signal_selection();
     }
     return return_value;
   }
@@ -435,6 +407,9 @@ namespace gui
     packages_columns = new PackagesColumns();
     marker = new PackagesMarker<TreeModel_Type>(this);
     context = new PackagesContextMenu<TreeModel_Type>(this);
+
+    treeview->signal_context_menu.connect(sigc::mem_fun(*this, &PackagesView::context_menu_handler));
+    treeview->signal_selection.connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker<TreeModel_Type>::select), Description));
 
     treeview->append_column(_("C"), packages_columns->CurrentStatus);
     treeview->get_column(0)->set_sort_column(packages_columns->CurrentStatus);
@@ -456,6 +431,12 @@ namespace gui
 
     // TODO: There should be a way to do this in Glade maybe.
     treeview->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
+  }
+
+  template <class TreeModel_Type>
+  void PackagesView<TreeModel_Type>::context_menu_handler(GdkEventButton * event)
+  {
+    context->get_menu()->popup(event->button, event->time);
   }
 
   template <class TreeModel_Type>
@@ -533,6 +514,8 @@ namespace gui
 
     pPackagesView = new PackagesView<Gtk::ListStore>(&PackagesTab_populate_model, get_xml());
 
+    pPackagesView->signal_on_package_selection.connect(sigc::mem_fun(*this, &PackagesTab::display_desc));
+
     get_widget()->show();
   }
 
@@ -601,6 +584,35 @@ namespace gui
     delete p;
   }
 
+  void PackagesTab::display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  {
+    if (ver)
+    {
+      pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
+      string misc = ssprintf("%s%s\n"
+          "%s%s\n"
+          "%s%s\n"
+          "%s%s\n"
+          "%s%s\n"
+          "%s%s\n"
+          "%s%s\n",
+          _("Name: "), pkg.Name(),
+          _("Priority: "),pkgCache::VerIterator(ver).PriorityType()?pkgCache::VerIterator(ver).PriorityType():_("Unknown"),
+              _("Section: "),pkg.Section()?pkg.Section():_("Unknown"),
+                  _("Maintainer: "),rec.Maintainer().c_str(),
+                  _("Compressed size: "), SizeToStr(ver->Size).c_str(),
+                  _("Uncompressed size: "), SizeToStr(ver->InstalledSize).c_str(),
+                  _("Source Package: "),
+                  rec.SourcePkg().empty()?pkg.Name():rec.SourcePkg().c_str());
+      string desc = cwidget::util::transcode(get_long_description(ver, apt_package_records), "UTF-8");
+      pPackagesTextView->get_buffer()->set_text(misc + _("Description: ") + desc);
+    }
+    else
+    {
+      pPackagesTextView->get_buffer()->set_text(ssprintf("%s%s\n", _("Name: "), pkg.Name()));
+    }
+  }
+
   PreviewTab::PreviewTab(const Glib::ustring &label) :
     Tab(Preview, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_vbox"), "main_packages_vbox")
   {
@@ -611,6 +623,8 @@ namespace gui
     pLimitButton->signal_clicked().connect(sigc::mem_fun(*this, &PreviewTab::repopulate_model));
 
     pPackagesView = new PackagesView<Gtk::TreeStore>(&PreviewTab_populate_model, get_xml());;
+
+    pPackagesView->signal_on_package_selection.connect(sigc::mem_fun(*this, &PreviewTab::display_desc));
 
     get_widget()->show();
   }
@@ -681,6 +695,35 @@ namespace gui
 
     p->OverallProgress(total, total, 1,  _("Building view"));
     delete p;
+  }
+
+  void PreviewTab::display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  {
+    if (ver)
+    {
+      pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
+      string misc = ssprintf("%s%s\n"
+          "%s%s\n"
+          "%s%s\n"
+          "%s%s\n"
+          "%s%s\n"
+          "%s%s\n"
+          "%s%s\n",
+          _("Name: "), pkg.Name(),
+          _("Priority: "),pkgCache::VerIterator(ver).PriorityType()?pkgCache::VerIterator(ver).PriorityType():_("Unknown"),
+              _("Section: "),pkg.Section()?pkg.Section():_("Unknown"),
+                  _("Maintainer: "),rec.Maintainer().c_str(),
+                  _("Compressed size: "), SizeToStr(ver->Size).c_str(),
+                  _("Uncompressed size: "), SizeToStr(ver->InstalledSize).c_str(),
+                  _("Source Package: "),
+                  rec.SourcePkg().empty()?pkg.Name():rec.SourcePkg().c_str());
+      string desc = cwidget::util::transcode(get_long_description(ver, apt_package_records), "UTF-8");
+      pPackagesTextView->get_buffer()->set_text(misc + _("Description: ") + desc);
+    }
+    else
+    {
+      pPackagesTextView->get_buffer()->set_text(ssprintf("%s%s\n", _("Name: "), pkg.Name()));
+    }
   }
 
   int TabsManager::next_position(TabType type)
