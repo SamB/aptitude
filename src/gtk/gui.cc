@@ -43,6 +43,11 @@ namespace gui
   std::string glade_main_file;
   undo_group * undo;
 
+  /**
+   * Signal called when a package status change happens, usually when marking it.
+   * Used by PackagesView for global updating.
+   * TODO: Check if it doesn't already exists.
+   */
   sigc::signal<void, std::set<pkgCache::PkgIterator> > signal_on_changed_packages;
 
   // True if a download or package-list update is proceeding.  This hopefully will
@@ -243,75 +248,48 @@ namespace gui
   {
     if (!ver.end())
     {
-      switch(action)
-      {
-      case Install:
+      if (action >= Install && action <= Hold)
       {
         std::set<pkgCache::PkgIterator> changed_packages;
         {
           aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
-          std::cout << "selected for install : " << pkg.Name() << " (" << ver.VerStr() << ") , status from "
-          << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->set_candidate_version(ver, undo);
-          (*apt_cache_file)->mark_install(pkg, true, false, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+          switch(action)
+          {
+          case Install:
+            std::cout << "selected for install : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+            (*apt_cache_file)->set_candidate_version(ver, undo);
+            (*apt_cache_file)->mark_install(pkg, true, false, undo);
+            std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+            break;
+          case Remove:
+            std::cout << "selected for remove : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+            (*apt_cache_file)->mark_delete(pkg, false, false, undo);
+            std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+            break;
+          case Purge:
+            std::cout << "selected for purge : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+            (*apt_cache_file)->mark_delete(pkg, true, false, undo);
+            std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+            break;
+          case Keep:
+            std::cout << "selected for keep : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+            (*apt_cache_file)->mark_keep(pkg, false, false, undo);
+            std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+            break;
+          case Hold:
+            std::cout << "selected for hold : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+            (*apt_cache_file)->mark_delete(pkg, false, true, undo);
+            std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+            break;
+          default:
+            break;
+          }
         }
         signal_on_changed_packages(changed_packages);
       }
-      break;
-      case Remove:
+      else
       {
-        std::set<pkgCache::PkgIterator> changed_packages;
-        {
-          aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
-          std::cout << "selected for remove : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->mark_delete(pkg, false, false, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        }
-        signal_on_changed_packages(changed_packages);
-      }
-      break;
-      case Purge:
-      {
-        std::set<pkgCache::PkgIterator> changed_packages;
-        {
-          aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
-          std::cout << "selected for purge : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->mark_delete(pkg, true, false, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        }
-        signal_on_changed_packages(changed_packages);
-      }
-      break;
-      case Keep:
-      {
-        std::set<pkgCache::PkgIterator> changed_packages;
-        {
-          aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
-          std::cout << "selected for keep : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->mark_keep(pkg, false, false, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        }
-        signal_on_changed_packages(changed_packages);
-      }
-      break;
-      case Hold:
-      {
-        std::set<pkgCache::PkgIterator> changed_packages;
-        {
-          aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
-          std::cout << "selected for hold : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->mark_delete(pkg, false, true, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-        }
-        signal_on_changed_packages(changed_packages);
-      }
-      break;
-      case Description:
         view->signal_on_package_selection(pkg, ver);
-      break;
-      default:
-      break;
       }
     }
   }
@@ -852,52 +830,13 @@ namespace gui
   }
 
   /**
-   * Adds a dashboard tab to the interface.
+   * Adds a Tab_Type tab to the interface.
    * TODO: Get this one out of here!
    */
-  DashboardTab * tab_add_dashboard()
+  template <class Tab_Type>
+  Tab_Type * tab_add(Glib::ustring label)
   {
-    DashboardTab * tab = new DashboardTab("truc dashboard");
-    int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
-    pMainWindow->get_notebook()->set_current_page(new_page_idx);
-    return tab;
-  }
-
-  /**
-   * Adds a download tab to the interface.
-   * TODO: Get this one out of here!
-   */
-  DownloadTab * tab_add_download()
-  {
-    // TODO: *Tab Constructors should also get to decide tab labels
-    DownloadTab * tab = new DownloadTab(_("Download:"));
-    int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
-    pMainWindow->get_notebook()->set_current_page(new_page_idx);
-    return tab;
-  }
-
-  /**
-   * Adds a packages tab to the interface.
-   * TODO: Get this one out of here!
-   */
-  PackagesTab * tab_add_packages()
-  {
-    // TODO: *Tab Constructors should also get to decide tab labels
-    PackagesTab * tab = new PackagesTab(_("Packages:"));
-    int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
-    pMainWindow->get_notebook()->set_current_page(new_page_idx);
-    return tab;
-  }
-
-  /**
-   * Adds a packages tab to the interface.
-   * TODO: Get this one out of here!
-   * TODO: There's too much copy-pasting going on here.
-   */
-  PreviewTab * tab_add_preview()
-  {
-    // TODO: *Tab Constructors should also get to decide tab labels
-    PreviewTab * tab = new PreviewTab(_("Preview:"));
+    Tab_Type * tab = new Tab_Type(label);
     int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
     pMainWindow->get_notebook()->set_current_page(new_page_idx);
     return tab;
@@ -1016,23 +955,23 @@ namespace gui
 
   void do_dashboard()
   {
-    /*DashboardTab * tab = */tab_add_dashboard();
+    /*DashboardTab * tab = */tab_add<DashboardTab>(_("Dashboard:"));
   }
 
   void do_update()
   {
-    DownloadTab * tab = tab_add_download();
+    DownloadTab * tab = tab_add<DownloadTab>(_("Download:"));
     do_update_lists(tab);
   }
 
   void do_packages()
   {
-    /*PackagesTab * tab = */tab_add_packages();
+    /*PackagesTab * tab = */tab_add<PackagesTab>(_("Packages:"));
   }
 
   void do_preview()
   {
-    /*PreviewTab * tab = */tab_add_preview();
+    /*PreviewTab * tab = */tab_add<PreviewTab>(_("Preview:"));
   }
 
   bool do_want_quit()
@@ -1062,9 +1001,6 @@ namespace gui
 
     refGlade->get_widget("main_toolbutton_preview", pToolButtonPreview);
     pToolButtonPreview->signal_clicked().connect(&do_preview);
-
-    refGlade->get_widget("main_toolbutton_update", pToolButtonUpdate);
-    pToolButtonUpdate->signal_clicked().connect(&do_update);
 
     // TODO: Give this a proper name.
     refGlade->get_widget("imagemenuitem5", pMenuFileExit);
