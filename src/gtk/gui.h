@@ -229,9 +229,6 @@ namespace gui
       void context_menu_handler(GdkEventButton * event);
       void refresh_packages_view(std::set<pkgCache::PkgIterator> changed_packages);
       void relimit_packages_view(Glib::ustring limit);
-      void update_stores(Glib::RefPtr<Gtk::TreeModel> packages_store,
-			 std::multimap<pkgCache::PkgIterator,
-			               Gtk::TreeModel::iterator> * reverse_packages_store);
       sigc::signal<void, pkgCache::PkgIterator, pkgCache::VerIterator> signal_on_package_selection;
       PackagesTreeView * get_treeview() { return treeview; };
       PackagesColumns * get_packages_columns() { return packages_columns; };

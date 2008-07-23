@@ -43,6 +43,8 @@ namespace gui
   std::string glade_main_file;
   undo_group * undo;
 
+  sigc::signal<void, std::set<pkgCache::PkgIterator> > signal_on_changed_packages;
+
   // True if a download or package-list update is proceeding.  This hopefully will
   // avoid the nasty possibility of collisions between them.
   // FIXME: uses implicit locking -- if multithreading happens, should use a mutex
@@ -254,7 +256,7 @@ namespace gui
           (*apt_cache_file)->mark_install(pkg, true, false, undo);
           std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
         }
-        view->refresh_packages_view(changed_packages);
+        signal_on_changed_packages(changed_packages);
       }
       break;
       case Remove:
@@ -266,7 +268,7 @@ namespace gui
           (*apt_cache_file)->mark_delete(pkg, false, false, undo);
           std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
         }
-        view->refresh_packages_view(changed_packages);
+        signal_on_changed_packages(changed_packages);
       }
       break;
       case Purge:
@@ -278,7 +280,7 @@ namespace gui
           (*apt_cache_file)->mark_delete(pkg, true, false, undo);
           std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
         }
-        view->refresh_packages_view(changed_packages);
+        signal_on_changed_packages(changed_packages);
       }
       break;
       case Keep:
@@ -290,7 +292,7 @@ namespace gui
           (*apt_cache_file)->mark_keep(pkg, false, false, undo);
           std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
         }
-        view->refresh_packages_view(changed_packages);
+        signal_on_changed_packages(changed_packages);
       }
       break;
       case Hold:
@@ -302,7 +304,7 @@ namespace gui
           (*apt_cache_file)->mark_delete(pkg, false, true, undo);
           std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
         }
-        view->refresh_packages_view(changed_packages);
+        signal_on_changed_packages(changed_packages);
       }
       break;
       case Description:
@@ -461,6 +463,7 @@ namespace gui
 
     treeview->signal_context_menu.connect(sigc::mem_fun(*this, &PackagesView::context_menu_handler));
     treeview->signal_selection.connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Description));
+    signal_on_changed_packages.connect(sigc::mem_fun(*this, &PackagesView::refresh_packages_view));
 
     treeview->append_column(_("C"), packages_columns->CurrentStatus);
     treeview->get_column(0)->set_sort_column(packages_columns->CurrentStatus);
@@ -501,15 +504,6 @@ namespace gui
     treeview->set_model(packages_store);
   }
 
-  void PackagesView::update_stores(Glib::RefPtr<Gtk::TreeModel> packages_store,
-				   std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
-  {
-    this->packages_store = packages_store;
-    this->reverse_packages_store = reverse_packages_store;
-  }
-
-  // TODO: Shouldn't we populate a ListStore/TreeModel rather then a PackageTab?
-  //       or would that be too low-level?
   void PackagesView::refresh_packages_view(std::set<pkgCache::PkgIterator> changed_packages)
   {
     guiOpProgress * p = gen_progress_bar();
@@ -665,6 +659,7 @@ namespace gui
       pPackagesTextView->get_buffer()->set_text(ssprintf("%s%s\n", _("Name: "), pkg.Name()));
     }
   }
+
   class PreviewTabGenerator : public PackagesTreeModelGenerator
   {
     Glib::RefPtr<Gtk::TreeStore> store;
@@ -782,6 +777,7 @@ namespace gui
   void PreviewTab::repopulate_model()
   {
     pPackagesView->relimit_packages_view(pLimitEntry->get_text());
+    pPackagesView->get_treeview()->expand_all();
     set_label(_("Preview: ") + pLimitEntry->get_text());
   }
 
