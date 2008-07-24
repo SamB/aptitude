@@ -8,6 +8,9 @@
 #include <libglademm/xml.h>
 
 #include <generic/apt/apt.h>
+#include <generic/apt/aptitude_resolver_universe.h>
+#include <generic/apt/resolver_manager.h>
+#include <generic/problemresolver/solution.h>
 
 #include <sigc++/slot.h>
 
@@ -19,7 +22,7 @@ namespace gui
    */
   enum TabType
   {
-    Dashboard, Download, Packages, Info, Preview, Resolver
+    Dashboard, Download, Packages, Info, Preview, Resolver, InstallRemove
   };
 
   /**
@@ -75,6 +78,27 @@ namespace gui
 
   class PackagesTab;
   class PackagesView;
+
+  class DownloadColumns : public Gtk::TreeModel::ColumnRecord
+  {
+    public:
+      Gtk::TreeModelColumn<Glib::ustring> URI;
+      Gtk::TreeModelColumn<Glib::ustring> Description;
+      Gtk::TreeModelColumn<Glib::ustring> ShortDesc;
+
+      DownloadColumns();
+  };
+
+  class DownloadTab : public Tab
+  {
+    public:
+      Glib::RefPtr<Gtk::ListStore> download_store;
+      DownloadColumns download_columns;
+      Gtk::TreeView * pDownloadTreeView;
+
+      DownloadTab(const Glib::ustring &label);
+      void createstore();
+  };
 
   /**
    * The PackagesMarker marks packages belonging to a PackagesTab
@@ -253,12 +277,6 @@ namespace gui
       PackagesView * get_packages_view() { return pPackagesView; };
   };
 
-  // FIXME: Stopgap solution to the functor issue.
-  /*void PackagesTab_populate_model(PackagesColumns * packages_columns,
-      Glib::RefPtr<Gtk::ListStore> packages_store,
-      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store,
-      Glib::ustring limit);*/
-
   // TODO: This needs to share more code with PackagesTab.
   //       A PreviewTab is really a PackagesTab with a TreeStore.
   class PreviewTab : public Tab
@@ -277,11 +295,57 @@ namespace gui
       PackagesView * get_packages_view() { return pPackagesView; };
   };
 
-  // FIXME: Stopgap solution to the functor issue.
-  /*void PreviewTab_populate_model(PackagesColumns * packages_columns,
-      Glib::RefPtr<Gtk::TreeStore> packages_store,
-      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store,
-      Glib::ustring limit);*/
+  class ResolverColumns : public Gtk::TreeModel::ColumnRecord
+  {
+    public:
+      Gtk::TreeModelColumn<pkgCache::PkgIterator> PkgIterator;
+      Gtk::TreeModelColumn<pkgCache::VerIterator> VerIterator;
+      Gtk::TreeModelColumn<Glib::ustring> Name;
+      Gtk::TreeModelColumn<Glib::ustring> Action;
+
+      ResolverColumns();
+  };
+
+  class ResolverView : public Gtk::TreeView
+  {
+    public:
+      Glib::RefPtr<Gtk::TreeStore> resolver_store;
+      ResolverColumns resolver_columns;
+
+      ResolverView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+      void createstore();
+  };
+
+  class ResolverTab : public Tab
+  {
+    private:
+      typedef generic_solution<aptitude_universe> aptitude_solution;
+
+      ResolverView * pResolverView;
+      Gtk::Label * pResolverStatus;
+      Gtk::Button * pResolverPrevious;
+      Gtk::Button * pResolverNext;
+      Gtk::Button * pResolverApply;
+
+      aptitude_solution sol;
+      resolver_manager::state state;
+
+      std::string archives_text(const pkgCache::VerIterator &ver);
+      std::string dep_targets(const pkgCache::DepIterator &start);
+      std::wstring dep_text(const pkgCache::DepIterator &d);
+      bool do_previous_solution_enabled();
+      void do_previous_solution();
+      bool do_next_solution_enabled();
+      void do_next_solution();
+      bool do_apply_solution_enabled_from_state(const resolver_manager::state &state);
+      void do_apply_solution();
+    public:
+      ResolverTab(const Glib::ustring &label);
+      Glib::RefPtr<Gtk::TreeStore> create_store();
+      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * create_reverse_store();
+      void repopulate_model();
+      ResolverView * get_packages_view() { return pResolverView; };
+  };
 
   /**
    * This is a custom widget that handles placement of tabs
@@ -329,6 +393,8 @@ namespace gui
       Gtk::ToolButton * pToolButtonUpdate;
       Gtk::ToolButton * pToolButtonPackages;
       Gtk::ToolButton * pToolButtonPreview;
+      Gtk::ToolButton * pToolButtonResolver;
+      Gtk::ToolButton * pToolButtonInstallRemove;
       Gtk::ImageMenuItem * pMenuFileExit;
       Gtk::ProgressBar * pProgressBar;
       Gtk::Statusbar * pStatusBar;

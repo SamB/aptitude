@@ -262,6 +262,26 @@
                 <property name="expand">False</property>
               </packing>
             </child>
+            <child>
+              <widget class="GtkToolButton" id="main_toolbutton_resolver">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Resolver</property>
+                <property name="stock_id">gtk-dialog-info</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="main_toolbutton_installremove">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Install/Remove</property>
+                <property name="stock_id">gtk-apply</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="expand">False</property>
@@ -548,9 +568,9 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkVBox" id="main_solution_vbox">
+              <widget class="GtkVBox" id="main_resolver_vbox">
                 <child>
-                  <widget class="GtkTreeView" id="main_solution_treeview">
+                  <widget class="GtkTreeView" id="main_resolver_treeview">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="headers_clickable">True</property>
@@ -649,7 +669,7 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="hbox1">
+          <widget class="GtkHBox" id="hbox3">
             <property name="height_request">24</property>
             <property name="visible">True</property>
             <child>

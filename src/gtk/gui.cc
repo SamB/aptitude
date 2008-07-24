@@ -32,8 +32,6 @@
 
 #include <cwidget/generic/util/transcode.h>
 
-typedef generic_solution<aptitude_universe> aptitude_solution;
-
 namespace gui
 {
   //This is a list of global and unique base widgets and other related stuff
@@ -138,48 +136,135 @@ namespace gui
       }
   };
 
-  class DownloadColumns : public Gtk::TreeModel::ColumnRecord
-  {
+  class guiPkgAcquireStatus : public pkgAcquireStatus
+  { // must also derive to read protected members..
+    private:
+      DownloadTab * tab;
     public:
-      Gtk::TreeModelColumn<Glib::ustring> URI;
-      Gtk::TreeModelColumn<Glib::ustring> Description;
-      Gtk::TreeModelColumn<Glib::ustring> ShortDesc;
-
-      DownloadColumns()
+      guiPkgAcquireStatus(DownloadTab * tab)
       {
-        add(URI);
-        add(ShortDesc);
-        add(Description);
+        this->tab = tab;
+      }
+      bool Pulse(pkgAcquire *Owner)
+      {
+        pkgAcquireStatus::Pulse(Owner);
+        if (TotalItems != 0)
+          pMainWindow->get_progress_bar()->set_fraction(((float)CurrentItems)/((float)TotalItems));
+        pMainWindow->get_progress_bar()->set_text(ssprintf("%lu of %lu done", CurrentItems, TotalItems));
+        gtk_update();
+        return !want_to_quit;
+      }
+      bool MediaChange(std::string, std::string)
+      {
+        return false;
+      }
+      void Fetch(pkgAcquire::ItemDesc &Itm)
+      {
+        std::cout << Itm.Description << std::endl;
+
+        pMainWindow->get_status_bar()->pop(0);
+        pMainWindow->get_status_bar()->push(Itm.Description, 0);
+
+        Gtk::TreeModel::iterator iter = tab->download_store->append();
+        Gtk::TreeModel::Row row = *iter;
+        row[tab->download_columns.URI] = Itm.URI;
+        row[tab->download_columns.ShortDesc] = Itm.ShortDesc;
+        row[tab->download_columns.Description] = Itm.Description;
+        gtk_update();
       }
   };
 
-  class DownloadTab : public Tab
+  DownloadColumns::DownloadColumns()
   {
-    public:
-      Glib::RefPtr<Gtk::ListStore> download_store;
-      DownloadColumns download_columns;
-      Gtk::TreeView * pDownloadTreeView;
+    add(URI);
+    add(ShortDesc);
+    add(Description);
+  }
 
-      DownloadTab(const Glib::ustring &label)
-        : Tab(Download, label,
-              Gnome::Glade::Xml::create(glade_main_file, "main_download_scrolledwindow"),
-              "main_download_scrolledwindow")
+  DownloadTab::DownloadTab(const Glib::ustring &label)
+    : Tab(Download, label,
+          Gnome::Glade::Xml::create(glade_main_file, "main_download_scrolledwindow"),
+          "main_download_scrolledwindow")
+  {
+    get_xml()->get_widget("main_download_treeview", pDownloadTreeView);
+    get_widget()->show();
+    createstore();
+    pDownloadTreeView->append_column(_("URI"), download_columns.URI);
+    pDownloadTreeView->get_column(0)->set_sort_column(download_columns.URI);
+    pDownloadTreeView->append_column(_("Description"), download_columns.Description);
+    pDownloadTreeView->get_column(1)->set_sort_column(download_columns.Description);
+    pDownloadTreeView->append_column(_("Short Description"), download_columns.ShortDesc);
+    pDownloadTreeView->get_column(2)->set_sort_column(download_columns.ShortDesc);
+  }
+
+  void DownloadTab::createstore()
+  {
+    download_store = Gtk::ListStore::create(download_columns);
+    pDownloadTreeView->set_model(download_store);
+  }
+
+  class UpdateTab : public DownloadTab
+  {
+    private:
+    void really_do_update_lists()
+    {
+      download_update_manager *m = new download_update_manager;
+
+      // downloading now I suppose ?
+      guiOpProgress progress;
+      guiPkgAcquireStatus acqlog(this);
+      acqlog.Update = true;
+      acqlog.MorePulses = true;
+      if (m->prepare(progress, acqlog, NULL))
+        {
+          std::cout << "m->prepare succeeded" << std::endl;
+        }
+      else
+        {
+          std::cout << "m->prepare failed" << std::endl;
+          return;
+        }
+      acqlog.Update = true;
+      acqlog.MorePulses = true;
+      m->do_download(100);
+      m->finish(pkgAcquire::Continue, progress);
+      guiOpProgress * p = gen_progress_bar();
+      apt_load_cache(p, true, NULL);
+      delete p;
+    }
+    public:
+      UpdateTab(Glib::ustring &label)
+      : DownloadTab(label)
       {
-        get_xml()->get_widget("main_download_treeview", pDownloadTreeView);
-        get_widget()->show();
-        createstore();
-        pDownloadTreeView->append_column(_("URI"), download_columns.URI);
-        pDownloadTreeView->get_column(0)->set_sort_column(download_columns.URI);
-        pDownloadTreeView->append_column(_("Description"), download_columns.Description);
-        pDownloadTreeView->get_column(1)->set_sort_column(download_columns.Description);
-        pDownloadTreeView->append_column(_("Short Description"), download_columns.ShortDesc);
-        pDownloadTreeView->get_column(2)->set_sort_column(download_columns.ShortDesc);
+        ;;
       }
-      void createstore()
-      {
-        download_store = Gtk::ListStore::create(download_columns);
-        pDownloadTreeView->set_model(download_store);
-      }
+    void do_update_lists()
+    {
+      if (!active_download)
+        {
+          if (getuid()==0)
+            {
+              pMainWindow->get_progress_bar()->set_text("Updating..");
+              pMainWindow->get_progress_bar()->set_fraction(0);
+              download_store->clear();
+              really_do_update_lists();
+              pMainWindow->get_progress_bar()->set_fraction(0);
+              pMainWindow->get_status_bar()->pop(0);
+            }
+          else
+            {
+              Gtk::MessageDialog dialog(*pMainWindow,
+                  "There's a problem with you not being root...", false,
+                  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+              dialog.set_secondary_text("You're supposed to be a super-user to be allowed to break stuff you know ?");
+
+              dialog.run();
+            }
+        }
+      else
+        std::cout << "A package-list update or install run is already taking place."
+            << std::endl;
+    }
   };
 
   string current_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
@@ -409,7 +494,6 @@ namespace gui
         // Filter useless packages up-front.
         if(pkg.VersionList().end() && pkg.ProvidesList().end())
           continue;
-        // TODO: put back the limiting
         if (!limited || aptitude::matching::apply_matcher(limiter, pkg, *apt_cache_file, *apt_package_records))
           {
             for (pkgCache::VerIterator ver = pkg.VersionList(); ver.end() == false; ver++)
@@ -671,38 +755,38 @@ namespace gui
     }
 
     void add(const pkgCache::PkgIterator &pkg, const pkgCache::VerIterator &ver,
-	     std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
+             std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
     {
       int group = find_pkg_state(pkg, *apt_cache_file);
       if(group != pkg_unchanged)
-	{
-	  const std::map<int, Gtk::TreeModel::iterator>::const_iterator found =
-	    state_trees.find(group);
+        {
+          const std::map<int, Gtk::TreeModel::iterator>::const_iterator found =
+            state_trees.find(group);
 
-	  Gtk::TreeModel::iterator tree;
-	  if(found == state_trees.end())
-	    {
-	      tree = store->append();
-	      Gtk::TreeModel::Row tree_row = *tree;
-	      tree_row[packages_columns->Name] = _(child_names[group]);
-	      state_trees[group] = tree;
-	    }
-	  else
-	    tree = found->second;
+          Gtk::TreeModel::iterator tree;
+          if(found == state_trees.end())
+            {
+              tree = store->append();
+              Gtk::TreeModel::Row tree_row = *tree;
+              tree_row[packages_columns->Name] = _(child_names[group]);
+              state_trees[group] = tree;
+            }
+          else
+            tree = found->second;
 
-	  Gtk::TreeModel::iterator iter = store->append(tree->children());
-	  Gtk::TreeModel::Row row = *iter;
+          Gtk::TreeModel::iterator iter = store->append(tree->children());
+          Gtk::TreeModel::Row row = *iter;
 
-	  reverse_packages_store->insert(std::make_pair(pkg, iter));
+          reverse_packages_store->insert(std::make_pair(pkg, iter));
 
-	  row[packages_columns->PkgIterator] = pkg;
-	  row[packages_columns->VerIterator] = ver;
-	  row[packages_columns->CurrentStatus] = current_state_string(pkg, ver);
-	  row[packages_columns->SelectedStatus] = selected_state_string(pkg, ver);
-	  row[packages_columns->Name] = pkg.Name()?pkg.Name():"";
-	  row[packages_columns->Section] = pkg.Section()?pkg.Section():"";
-	  row[packages_columns->Version] = ver.VerStr();
-	}
+          row[packages_columns->PkgIterator] = pkg;
+          row[packages_columns->VerIterator] = ver;
+          row[packages_columns->CurrentStatus] = current_state_string(pkg, ver);
+          row[packages_columns->SelectedStatus] = selected_state_string(pkg, ver);
+          row[packages_columns->Name] = pkg.Name()?pkg.Name():"";
+          row[packages_columns->Section] = pkg.Section()?pkg.Section():"";
+          row[packages_columns->Version] = ver.VerStr();
+        }
     }
 
     void finish()
@@ -788,6 +872,464 @@ namespace gui
     }
   }
 
+  ResolverColumns::ResolverColumns()
+  {
+    add(PkgIterator);
+    add(VerIterator);
+    add(Name);
+    add(Action);
+  }
+
+
+  ResolverView::ResolverView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+  : Gtk::TreeView(cobject) //Calls the base class constructor
+  {
+    createstore();
+    append_column(_("Name"), resolver_columns.Name);
+    get_column(0)->set_sort_column(resolver_columns.Name);
+    append_column(_("Action"), resolver_columns.Action);
+    get_column(1)->set_sort_column(resolver_columns.Action);
+  }
+
+  void ResolverView::createstore()
+  {
+    resolver_store = Gtk::TreeStore::create(resolver_columns);
+    set_model(resolver_store);
+    set_search_column(resolver_columns.Name);
+  }
+
+  ResolverTab::ResolverTab(const Glib::ustring &label) :
+    Tab(Resolver, label, Gnome::Glade::Xml::create(glade_main_file, "main_resolver_vbox"), "main_resolver_vbox")
+  {
+    get_xml()->get_widget("main_resolver_status", pResolverStatus);
+    get_xml()->get_widget("main_resolver_previous", pResolverPrevious);
+    pResolverPrevious->signal_clicked().connect(sigc::mem_fun(*this, &ResolverTab::do_previous_solution));
+    get_xml()->get_widget("main_resolver_next", pResolverNext);
+    pResolverNext->signal_clicked().connect(sigc::mem_fun(*this, &ResolverTab::do_next_solution));
+    get_xml()->get_widget("main_resolver_apply", pResolverApply);
+    pResolverApply->signal_clicked().connect(sigc::mem_fun(*this, &ResolverTab::do_apply_solution));
+
+    get_xml()->get_widget_derived("main_resolver_treeview", pResolverView);
+    state = resman->state_snapshot();
+    if (state.resolver_exists && state.selected_solution >= 0)
+      {
+      sol = resman->get_solution(resman->get_selected_solution(), 5000);
+      repopulate_model();
+      }
+
+    get_widget()->show();
+  }
+
+  string ResolverTab::archives_text(const pkgCache::VerIterator &ver)
+  {
+    string rval;
+
+    bool is_first = true;
+
+    for(pkgCache::VerFileIterator vf=ver.FileList(); !vf.end(); ++vf)
+      {
+        if(is_first)
+          is_first = false;
+        else
+          rval += ", ";
+
+        if(vf.File().Archive())
+          rval += vf.File().Archive();
+        else
+          rval += _("<NULL>");
+      }
+
+    return rval;
+  }
+
+  std::string ResolverTab::dep_targets(const pkgCache::DepIterator &start)
+  {
+    std::string rval;
+
+    bool is_first = true;
+
+    eassert(!start.end());
+
+    for(pkgCache::DepIterator d = start; !d.end(); ++d)
+      {
+        if(is_first)
+          is_first = false;
+        else
+          rval += " | ";
+
+        rval += d.TargetPkg().Name();
+
+        if(d.TargetVer())
+          {
+            rval += " (";
+            rval += d.CompType();
+            rval += " ";
+            rval += d.TargetVer();
+            rval += ")";
+          }
+
+        if((d->CompareOp & pkgCache::Dep::Or) == 0)
+          break;
+      }
+
+    return rval;
+  }
+
+  std::wstring ResolverTab::dep_text(const pkgCache::DepIterator &d)
+  {
+    const char *name = const_cast<pkgCache::DepIterator &>(d).ParentPkg().Name();
+
+    std::string targets = dep_targets(d);
+
+    switch(d->Type)
+      {
+      case pkgCache::Dep::Depends:
+        return swsprintf(W_("%s depends upon %s").c_str(),
+                         name, targets.c_str());
+      case pkgCache::Dep::PreDepends:
+        return swsprintf(W_("%s pre-depends upon %s").c_str(),
+                         name, targets.c_str());
+      case pkgCache::Dep::Suggests:
+        return swsprintf(W_("%s suggests %s").c_str(),
+                         name, targets.c_str());
+      case pkgCache::Dep::Recommends:
+        return swsprintf(W_("%s recommends %s").c_str(),
+                         name, targets.c_str());
+      case pkgCache::Dep::Conflicts:
+        return swsprintf(W_("%s conflicts with %s").c_str(),
+                         name, targets.c_str());
+      case pkgCache::Dep::DpkgBreaks:
+        return swsprintf(W_("%s breaks %s").c_str(),
+                         name, targets.c_str());
+      case pkgCache::Dep::Replaces:
+        return swsprintf(W_("%s replaces %s").c_str(),
+                                   name, targets.c_str());
+      case pkgCache::Dep::Obsoletes:
+        return swsprintf(W_("%s obsoletes %s").c_str(),
+                                   name, targets.c_str());
+      default:
+        abort();
+      }
+  }
+
+  void ResolverTab::repopulate_model()
+  {
+    // Bin packages according to what will happen to them.
+    vector<pkgCache::PkgIterator> remove_packages;
+    vector<pkgCache::PkgIterator> keep_packages;
+    vector<pkgCache::VerIterator> install_packages;
+    vector<pkgCache::VerIterator> downgrade_packages;
+    vector<pkgCache::VerIterator> upgrade_packages;
+
+    for(imm::map<aptitude_universe::package,
+          generic_solution<aptitude_universe>::action>::const_iterator i=sol.get_actions().begin();
+        i!=sol.get_actions().end(); ++i)
+      {
+        pkgCache::PkgIterator pkg=i->first.get_pkg();
+        pkgCache::VerIterator curver=pkg.CurrentVer();
+        pkgCache::VerIterator newver=i->second.ver.get_ver();
+
+        if(curver.end())
+          {
+            if(newver.end())
+              keep_packages.push_back(pkg);
+            else
+              install_packages.push_back(newver);
+          }
+        else if(newver.end())
+          remove_packages.push_back(pkg);
+        else if(newver == curver)
+          keep_packages.push_back(pkg);
+        else
+          {
+            int cmp=_system->VS->CmpVersion(curver.VerStr(),
+                                            newver.VerStr());
+
+            // The versions shouldn't be equal -- otherwise
+            // something is majorly wrong.
+            // eassert(cmp!=0);
+            //
+            // The above is not true: consider, eg, the case of a
+            // locally compiled package and a standard package.
+
+            /** \todo indicate "sidegrades" separately? */
+            if(cmp<=0)
+              upgrade_packages.push_back(newver);
+            else if(cmp>0)
+              downgrade_packages.push_back(newver);
+          }
+      }
+
+    sort(remove_packages.begin(), remove_packages.end(), pkg_name_lt());
+    sort(keep_packages.begin(), keep_packages.end(), pkg_name_lt());
+    sort(install_packages.begin(), install_packages.end(), ver_name_lt());
+    sort(downgrade_packages.begin(), downgrade_packages.end(), ver_name_lt());
+    sort(upgrade_packages.begin(), upgrade_packages.end(), ver_name_lt());
+
+    pResolverView->resolver_store->clear();
+
+    if(!remove_packages.empty())
+      {
+        Gtk::TreeModel::iterator parent_iter = pResolverView->resolver_store->append();
+        Gtk::TreeModel::Row parent_row = *parent_iter;
+        parent_row[pResolverView->resolver_columns.Name] = _("Remove the following packages:");
+        for(vector<pkgCache::PkgIterator>::const_iterator i=remove_packages.begin();
+            i!=remove_packages.end(); ++i)
+        {
+          Gtk::TreeModel::iterator iter = pResolverView->resolver_store->append(parent_row.children());
+          Gtk::TreeModel::Row row = *iter;
+          row[pResolverView->resolver_columns.Name] = i->Name();
+          row[pResolverView->resolver_columns.Action] = "";
+        }
+      }
+
+    if(!install_packages.empty())
+      {
+        Gtk::TreeModel::iterator parent_iter = pResolverView->resolver_store->append();
+        Gtk::TreeModel::Row parent_row = *parent_iter;
+        parent_row[pResolverView->resolver_columns.Name] = _("Install the following packages:");
+        for(vector<pkgCache::VerIterator>::const_iterator i=install_packages.begin();
+            i!=install_packages.end(); ++i)
+        {
+          Gtk::TreeModel::iterator iter = pResolverView->resolver_store->append(parent_row.children());
+          Gtk::TreeModel::Row row = *iter;
+          row[pResolverView->resolver_columns.Name] = i->ParentPkg().Name();
+          row[pResolverView->resolver_columns.Action] = ssprintf("[%s (%s)]",
+              i->VerStr(),
+              archives_text(*i).c_str());
+        }
+      }
+
+    if(!keep_packages.empty())
+      {
+        Gtk::TreeModel::iterator parent_iter = pResolverView->resolver_store->append();
+        Gtk::TreeModel::Row parent_row = *parent_iter;
+        parent_row[pResolverView->resolver_columns.Name] = _("Keep the following packages:");
+        for(vector<pkgCache::PkgIterator>::const_iterator i=keep_packages.begin();
+            i!=keep_packages.end(); ++i)
+          {
+            Gtk::TreeModel::iterator iter = pResolverView->resolver_store->append(parent_row.children());
+            Gtk::TreeModel::Row row = *iter;
+            if(i->CurrentVer().end())
+            {
+              row[pResolverView->resolver_columns.Name] = i->Name();
+              row[pResolverView->resolver_columns.Action] = ssprintf("[%s]",
+                  _("Not Installed"));
+            }
+            else
+            {
+              row[pResolverView->resolver_columns.Name] = i->Name();
+              row[pResolverView->resolver_columns.Action] = ssprintf("[%s (%s)]",
+                  i->CurrentVer().VerStr(),
+                  archives_text(i->CurrentVer()).c_str());
+            }
+          }
+      }
+
+    if(!upgrade_packages.empty())
+      {
+        Gtk::TreeModel::iterator parent_iter = pResolverView->resolver_store->append();
+        Gtk::TreeModel::Row parent_row = *parent_iter;
+        parent_row[pResolverView->resolver_columns.Name] = _("Upgrade the following packages:");
+        for(vector<pkgCache::VerIterator>::const_iterator i=upgrade_packages.begin();
+            i!=upgrade_packages.end(); ++i)
+        {
+          Gtk::TreeModel::iterator iter = pResolverView->resolver_store->append(parent_row.children());
+          Gtk::TreeModel::Row row = *iter;
+          row[pResolverView->resolver_columns.Name] = i->ParentPkg().Name();
+          row[pResolverView->resolver_columns.Action] = ssprintf("[%s (%s) -> %s (%s)]",
+              i->ParentPkg().CurrentVer().VerStr(),
+              archives_text(i->ParentPkg().CurrentVer()).c_str(),
+              i->VerStr(),
+              archives_text(*i).c_str());
+        }
+      }
+
+    if(!downgrade_packages.empty())
+      {
+        Gtk::TreeModel::iterator parent_iter = pResolverView->resolver_store->append();
+        Gtk::TreeModel::Row parent_row = *parent_iter;
+        parent_row[pResolverView->resolver_columns.Name] = _("Downgrade the following packages:");
+        for(vector<pkgCache::VerIterator>::const_iterator i=downgrade_packages.begin();
+            i!=downgrade_packages.end(); ++i)
+        {
+          Gtk::TreeModel::iterator iter = pResolverView->resolver_store->append(parent_row.children());
+          Gtk::TreeModel::Row row = *iter;
+          row[pResolverView->resolver_columns.Name] = i->ParentPkg().Name();
+          row[pResolverView->resolver_columns.Action] = ssprintf("[%s (%s) -> %s (%s)]",
+              i->ParentPkg().CurrentVer().VerStr(),
+              archives_text(i->ParentPkg().CurrentVer()).c_str(),
+              i->VerStr(),
+              archives_text(*i).c_str());
+        }
+      }
+
+    const imm::set<aptitude_universe::dep> &unresolved = sol.get_unresolved_soft_deps();
+
+    if(!unresolved.empty())
+      {
+      Gtk::TreeModel::iterator parent_iter = pResolverView->resolver_store->append();
+      Gtk::TreeModel::Row parent_row = *parent_iter;
+      parent_row[pResolverView->resolver_columns.Name] = _("Leave the following dependencies unresolved:");
+        for(imm::set<aptitude_universe::dep>::const_iterator i = unresolved.begin();
+            i != unresolved.end(); ++i)
+        {
+          Gtk::TreeModel::iterator iter = pResolverView->resolver_store->append(parent_row.children());
+          Gtk::TreeModel::Row row = *iter;
+          row[pResolverView->resolver_columns.Name] = cwidget::util::transcode(dep_text((*i).get_dep()).c_str(), "UTF-8");
+          row[pResolverView->resolver_columns.Action] = "";
+        }
+      }
+
+    pResolverView->expand_all();
+    state = resman->state_snapshot();
+    pResolverStatus->set_text(ssprintf("solution %d of %d (score: %d)", state.selected_solution + 1, state.generated_solutions, sol.get_score()));
+  }
+
+  bool ResolverTab::do_previous_solution_enabled()
+  {
+    if (resman == NULL)
+      return false;
+
+    state = resman->state_snapshot();
+
+    return state.selected_solution > 0;
+  }
+
+  void ResolverTab::do_previous_solution()
+  {
+    if (!do_previous_solution_enabled())
+      //beep();
+      std::cout << "beep!" << std::endl;
+    else
+      resman->select_previous_solution();
+      std::cout << "Resolver: previous selected" << std::endl;
+      state = resman->state_snapshot();
+      sol = resman->get_solution(resman->get_selected_solution(), 5000);
+      repopulate_model();
+  }
+
+  bool ResolverTab::do_next_solution_enabled()
+  {
+    if (resman == NULL)
+      return false;
+
+    state = resman->state_snapshot();
+
+    return state.selected_solution < state.generated_solutions && !(state.selected_solution + 1
+        == state.generated_solutions && state.solutions_exhausted);
+  }
+
+  void ResolverTab::do_next_solution()
+  {
+    if (!do_next_solution_enabled())
+      //beep();
+      std::cout << "beep!" << std::endl;
+    else
+    {
+      // If an error was encountered, pressing "next solution"
+      // skips it.
+      resman->discard_error_information();
+      resman->select_next_solution();
+      std::cout << "Resolver: next selected" << std::endl;
+      sol = resman->get_solution(resman->get_selected_solution(), 5000);
+      repopulate_model();
+    }
+  }
+
+  bool ResolverTab::do_apply_solution_enabled_from_state(const resolver_manager::state &state)
+  {
+    return
+      state.resolver_exists &&
+      state.selected_solution >= 0 &&
+      state.selected_solution < state.generated_solutions;
+  }
+
+  void ResolverTab::do_apply_solution()
+  {
+    if (!apt_cache_file)
+      return;
+
+    state = resman->state_snapshot();
+
+    if (!do_apply_solution_enabled_from_state(state))
+    {
+      //beep();
+      std::cout << "beep!" << std::endl;
+      return;
+    }
+    else
+    {
+      undo_group *undo = new apt_undo_group;
+      try
+      {
+        std::set<pkgCache::PkgIterator> changed_packages;
+        {
+          aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
+          (*apt_cache_file)->apply_solution(resman->get_solution(resman->get_selected_solution(), 5000), undo);
+          pResolverView->resolver_store->clear();
+        }
+        signal_on_changed_packages(changed_packages);
+        std::cout << "Resolver: selected solution applied" << std::endl;
+      }
+      catch (NoMoreSolutions)
+      {
+        Gtk::MessageDialog dialog(*pMainWindow, _("Unable to find a solution to apply."), false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+        dialog.run();
+      }
+      catch (NoMoreTime)
+      {
+        Gtk::MessageDialog dialog(*pMainWindow, _("Ran out of time while trying to find a solution."), false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+        dialog.run();
+      }
+
+      if (!undo->empty())
+      {
+        apt_undos->add_item(undo);
+        //package_states_changed();
+      }
+      else
+        delete undo;
+    }
+  }
+
+  class InstallRemoveTab : public DownloadTab
+  {
+    public:
+      InstallRemoveTab(Glib::ustring &label)
+      : DownloadTab(label)
+      {
+        ;;
+      }
+      void install_or_remove_packages()
+      {
+        download_install_manager *m = new download_install_manager(false);
+
+        guiOpProgress progress;
+        guiPkgAcquireStatus acqlog(this);
+        acqlog.Update = true;
+        acqlog.MorePulses = true;
+        if (m->prepare(progress, acqlog, NULL))
+          {
+            std::cout << "m->prepare succeeded" << std::endl;
+          }
+        else
+          {
+          std::cout << "m->prepare failed" << std::endl;
+            return;
+          }
+        acqlog.Update = true;
+        acqlog.MorePulses = true;
+        download_store->clear();
+        m->do_download(100);
+        m->finish(pkgAcquire::Continue, progress);
+        Gtk::MessageDialog dialog(*pMainWindow, "Install run finished", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK,
+            true);
+        dialog.set_secondary_text("It may or may not have worked. Who knows?");
+        dialog.run();
+      }
+  };
+
   int TabsManager::next_position(TabType type)
   {
     // TODO: implement something more elaborate and workflow-wise intuitive
@@ -860,99 +1402,6 @@ namespace gui
     }
   }
 
-  class guiPkgAcquireStatus : public pkgAcquireStatus
-  { // must also derive to read protected members..
-    private:
-      DownloadTab * tab;
-    public:
-      guiPkgAcquireStatus(DownloadTab * tab)
-      {
-        this->tab = tab;
-      }
-      bool Pulse(pkgAcquire *Owner)
-      {
-        pkgAcquireStatus::Pulse(Owner);
-        if (TotalItems != 0)
-          pMainWindow->get_progress_bar()->set_fraction(((float)CurrentItems)/((float)TotalItems));
-        pMainWindow->get_progress_bar()->set_text(ssprintf("%lu of %lu done", CurrentItems, TotalItems));
-        gtk_update();
-        return !want_to_quit;
-      }
-      bool MediaChange(std::string, std::string)
-      {
-        return false;
-      }
-      void Fetch(pkgAcquire::ItemDesc &Itm)
-      {
-        std::cout << Itm.Description << std::endl;
-
-        pMainWindow->get_status_bar()->pop(0);
-        pMainWindow->get_status_bar()->push(Itm.Description, 0);
-
-        Gtk::TreeModel::iterator iter = tab->download_store->append();
-        Gtk::TreeModel::Row row = *iter;
-        row[tab->download_columns.URI] = Itm.URI;
-        row[tab->download_columns.ShortDesc] = Itm.ShortDesc;
-        row[tab->download_columns.Description] = Itm.Description;
-        gtk_update();
-      }
-  };
-
-  void really_do_update_lists(DownloadTab * tab)
-  {
-    download_update_manager *m = new download_update_manager;
-
-    // downloading now I suppose ?
-    guiOpProgress progress;
-    guiPkgAcquireStatus acqlog(tab);
-    acqlog.Update = true;
-    acqlog.MorePulses = true;
-    if (m->prepare(progress, acqlog, NULL))
-      {
-        std::cout << "m->prepare succeeded" << std::endl;
-      }
-    else
-      {
-        std::cout << "m->prepare failed" << std::endl;
-        return;
-      }
-    acqlog.Update = true;
-    acqlog.MorePulses = true;
-    m->do_download(100);
-    m->finish(pkgAcquire::Continue, progress);
-    guiOpProgress * p = gen_progress_bar();
-    apt_load_cache(p, true, NULL);
-    delete p;
-  }
-
-  void do_update_lists(DownloadTab * tab)
-  {
-    if (!active_download)
-      {
-        if (getuid()==0)
-          {
-            pMainWindow->get_progress_bar()->set_text("Updating..");
-            pMainWindow->get_progress_bar()->set_fraction(0);
-            tab->download_store->clear();
-            really_do_update_lists(tab);
-            pMainWindow->get_progress_bar()->set_fraction(0);
-            pMainWindow->get_status_bar()->pop(0);
-          }
-        else
-          {
-            Gtk::MessageDialog dialog(*pMainWindow,
-                "There's a problem with you not being root...", false,
-                Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
-            dialog.set_secondary_text("You're supposed to be a super-user to be allowed to break stuff you know ?");
-
-            dialog.run();
-          }
-      }
-    else
-      std::cout << "A package-list update or install run is already taking place."
-          << std::endl;
-  }
-
   void do_dashboard()
   {
     /*DashboardTab * tab = */tab_add<DashboardTab>(_("Dashboard:"));
@@ -960,8 +1409,8 @@ namespace gui
 
   void do_update()
   {
-    DownloadTab * tab = tab_add<DownloadTab>(_("Download:"));
-    do_update_lists(tab);
+    UpdateTab * tab = tab_add<UpdateTab>(_("Update:"));
+    tab->do_update_lists();
   }
 
   void do_packages()
@@ -972,6 +1421,17 @@ namespace gui
   void do_preview()
   {
     /*PreviewTab * tab = */tab_add<PreviewTab>(_("Preview:"));
+  }
+
+  void do_resolver()
+  {
+    /*PreviewTab * tab = */tab_add<ResolverTab>(_("Resolver:"));
+  }
+
+  void do_installremove()
+  {
+    InstallRemoveTab * tab = tab_add<InstallRemoveTab>(_("Install/Remove:"));
+    tab->install_or_remove_packages();
   }
 
   bool do_want_quit()
@@ -1001,6 +1461,12 @@ namespace gui
 
     refGlade->get_widget("main_toolbutton_preview", pToolButtonPreview);
     pToolButtonPreview->signal_clicked().connect(&do_preview);
+
+    refGlade->get_widget("main_toolbutton_resolver", pToolButtonResolver);
+    pToolButtonResolver->signal_clicked().connect(&do_resolver);
+
+    refGlade->get_widget("main_toolbutton_installremove", pToolButtonInstallRemove);
+    pToolButtonInstallRemove->signal_clicked().connect(&do_installremove);
 
     // TODO: Give this a proper name.
     refGlade->get_widget("imagemenuitem5", pMenuFileExit);
