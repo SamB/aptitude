@@ -1402,6 +1402,44 @@ namespace gui
     }
   }
 
+
+  void do_mark_upgradable()
+  {
+    if(apt_cache_file)
+    {
+      std::set<pkgCache::PkgIterator> changed_packages;
+      {
+        aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
+        undo_group *undo=new apt_undo_group;
+
+        (*apt_cache_file)->mark_all_upgradable(true, true, undo);
+
+        if(!undo->empty())
+          apt_undos->add_item(undo);
+        else
+          delete undo;
+      }
+      signal_on_changed_packages(changed_packages);
+    }
+  }
+
+  void do_keep_all()
+  {
+    std::auto_ptr<undo_group> undo(new apt_undo_group);
+    std::set<pkgCache::PkgIterator> changed_packages;
+    {
+      aptitudeDepCache::action_group group(*apt_cache_file, undo.get(), &changed_packages);
+
+      for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin();
+          !i.end(); ++i)
+        (*apt_cache_file)->mark_keep(i, false, false, undo.get());
+
+      if(!undo.get()->empty())
+        apt_undos->add_item(undo.release());
+    }
+    signal_on_changed_packages(changed_packages);
+  }
+
   void do_dashboard()
   {
     /*DashboardTab * tab = */tab_add<DashboardTab>(_("Dashboard:"));
@@ -1468,8 +1506,13 @@ namespace gui
     refGlade->get_widget("main_toolbutton_installremove", pToolButtonInstallRemove);
     pToolButtonInstallRemove->signal_clicked().connect(&do_installremove);
 
-    // TODO: Give this a proper name.
-    refGlade->get_widget("imagemenuitem5", pMenuFileExit);
+    refGlade->get_widget("menu_do_mark_upgradable", pMenuFileMarkUpgradable);
+    pMenuFileMarkUpgradable->signal_activate().connect(&do_mark_upgradable);
+
+    refGlade->get_widget("menu_do_keep_all", pMenuFileKeepAll);
+    pMenuFileKeepAll->signal_activate().connect(&do_keep_all);
+
+    refGlade->get_widget("menu_do_quit", pMenuFileExit);
     pMenuFileExit->signal_activate().connect(&do_quit);
 
     refGlade->get_widget("main_progressbar", pProgressBar);

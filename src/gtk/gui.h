@@ -395,7 +395,19 @@ namespace gui
       Gtk::ToolButton * pToolButtonPreview;
       Gtk::ToolButton * pToolButtonResolver;
       Gtk::ToolButton * pToolButtonInstallRemove;
+
+      Gtk::ImageMenuItem * pMenuFilePackageRun;
+      Gtk::ImageMenuItem * pMenuFileUpdateLists;
+      Gtk::ImageMenuItem * pMenuFileMarkUpgradable;
+      Gtk::ImageMenuItem * pMenuFileForgetNew;
+      Gtk::ImageMenuItem * pMenuFileKeepAll;
+      Gtk::ImageMenuItem * pMenuFileClean;
+      Gtk::ImageMenuItem * pMenuFileAutoclean;
+      Gtk::ImageMenuItem * pMenuFileReloadCache;
+      Gtk::ImageMenuItem * pMenuFileSweep;
+      Gtk::ImageMenuItem * pMenuFileSuToRoot;
       Gtk::ImageMenuItem * pMenuFileExit;
+
       Gtk::ProgressBar * pProgressBar;
       Gtk::Statusbar * pStatusBar;
       TabsManager * pNotebook;
