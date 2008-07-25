@@ -335,42 +335,37 @@ namespace gui
     {
       if (action >= Install && action <= Hold)
       {
-        std::set<pkgCache::PkgIterator> changed_packages;
+        switch(action)
         {
-          aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
-          switch(action)
-          {
-          case Install:
-            std::cout << "selected for install : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-            (*apt_cache_file)->set_candidate_version(ver, undo);
-            (*apt_cache_file)->mark_install(pkg, true, false, undo);
-            std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-            break;
-          case Remove:
-            std::cout << "selected for remove : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-            (*apt_cache_file)->mark_delete(pkg, false, false, undo);
-            std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-            break;
-          case Purge:
-            std::cout << "selected for purge : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-            (*apt_cache_file)->mark_delete(pkg, true, false, undo);
-            std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-            break;
-          case Keep:
-            std::cout << "selected for keep : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-            (*apt_cache_file)->mark_keep(pkg, false, false, undo);
-            std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-            break;
-          case Hold:
-            std::cout << "selected for hold : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-            (*apt_cache_file)->mark_delete(pkg, false, true, undo);
-            std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-            break;
-          default:
-            break;
-          }
+        case Install:
+          std::cout << "selected for install : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+          (*apt_cache_file)->set_candidate_version(ver, undo);
+          (*apt_cache_file)->mark_install(pkg, true, false, undo);
+          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+          break;
+        case Remove:
+          std::cout << "selected for remove : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+          (*apt_cache_file)->mark_delete(pkg, false, false, undo);
+          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+          break;
+        case Purge:
+          std::cout << "selected for purge : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+          (*apt_cache_file)->mark_delete(pkg, true, false, undo);
+          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+          break;
+        case Keep:
+          std::cout << "selected for keep : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+          (*apt_cache_file)->mark_keep(pkg, false, false, undo);
+          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+          break;
+        case Hold:
+          std::cout << "selected for hold : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+          (*apt_cache_file)->mark_delete(pkg, false, true, undo);
+          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+          break;
+        default:
+          break;
         }
-        signal_on_changed_packages(changed_packages);
       }
       else
       {
@@ -392,7 +387,23 @@ namespace gui
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = view->get_treeview()->get_selection();
     if(refSelection)
     {
-      refSelection->selected_foreach_iter(sigc::bind(sigc::mem_fun(*this, &PackagesMarker::callback), action));
+      Gtk::TreeSelection::ListHandle_Path path_list = refSelection->get_selected_rows();
+      std::list<Gtk::TreeModel::iterator> iter_list;
+      for (Gtk::TreeSelection::ListHandle_Path::iterator path = path_list.begin();
+        path != path_list.end(); path++)
+      {
+        iter_list.push_back(view->get_packages_store()->get_iter(*path));
+      }
+      std::set<pkgCache::PkgIterator> changed_packages;
+      {
+        aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
+        while (!iter_list.empty())
+        {
+          callback(iter_list.front(), action);
+          iter_list.pop_front();
+        }
+      }
+      signal_on_changed_packages(changed_packages);
     }
   }
 
