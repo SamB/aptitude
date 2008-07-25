@@ -333,43 +333,36 @@ namespace gui
   {
     if (!ver.end())
     {
-      if (action >= Install && action <= Hold)
+      switch(action)
       {
-        switch(action)
-        {
-        case Install:
-          std::cout << "selected for install : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->set_candidate_version(ver, undo);
-          (*apt_cache_file)->mark_install(pkg, true, false, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-          break;
-        case Remove:
-          std::cout << "selected for remove : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->mark_delete(pkg, false, false, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-          break;
-        case Purge:
-          std::cout << "selected for purge : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->mark_delete(pkg, true, false, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-          break;
-        case Keep:
-          std::cout << "selected for keep : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->mark_keep(pkg, false, false, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-          break;
-        case Hold:
-          std::cout << "selected for hold : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
-          (*apt_cache_file)->mark_delete(pkg, false, true, undo);
-          std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
-          break;
-        default:
-          break;
-        }
-      }
-      else
-      {
-        view->signal_on_package_selection(pkg, ver);
+      case Install:
+        std::cout << "selected for install : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+        (*apt_cache_file)->set_candidate_version(ver, undo);
+        (*apt_cache_file)->mark_install(pkg, true, false, undo);
+        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        break;
+      case Remove:
+        std::cout << "selected for remove : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+        (*apt_cache_file)->mark_delete(pkg, false, false, undo);
+        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        break;
+      case Purge:
+        std::cout << "selected for purge : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+        (*apt_cache_file)->mark_delete(pkg, true, false, undo);
+        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        break;
+      case Keep:
+        std::cout << "selected for keep : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+        (*apt_cache_file)->mark_keep(pkg, false, false, undo);
+        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        break;
+      case Hold:
+        std::cout << "selected for hold : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
+        (*apt_cache_file)->mark_delete(pkg, false, true, undo);
+        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
+        break;
+      default:
+        break;
       }
     }
   }
@@ -693,9 +686,29 @@ namespace gui
 
     pPackagesView = new PackagesView(sigc::ptr_fun(PackagesTabGenerator::create), get_xml());
 
-    pPackagesView->signal_on_package_selection.connect(sigc::mem_fun(*this, &PackagesTab::display_desc));
+    pPackagesView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
+    pPackagesView->get_treeview()->signal_cursor_changed().connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
 
     get_widget()->show();
+  }
+
+  // TODO: Should be moved into PackagesView for use with PackagesView::signal_on_package_selection.
+  void PackagesTab::activated_package_handler()
+  {
+    Gtk::TreeModel::Path path;
+    Gtk::TreeViewColumn * focus_column;
+    pPackagesView->get_treeview()->get_cursor(path, focus_column);
+    if (pPackagesView->get_treeview()->get_selection()->is_selected(path))
+    {
+      Gtk::TreeModel::iterator iter = pPackagesView->get_packages_store()->get_iter(path);
+      pkgCache::PkgIterator pkg = (*iter)[pPackagesView->get_packages_columns()->PkgIterator];
+      pkgCache::VerIterator ver = (*iter)[pPackagesView->get_packages_columns()->VerIterator];
+      display_desc(pkg, ver);
+    }
+    else
+    {
+      pPackagesTextView->get_buffer()->set_text("");
+    }
   }
 
   void PackagesTab::repopulate_model()
@@ -841,10 +854,30 @@ namespace gui
 
     pPackagesView = new PackagesView(sigc::ptr_fun(PreviewTabGenerator::create), get_xml());;
 
-    pPackagesView->signal_on_package_selection.connect(sigc::mem_fun(*this, &PreviewTab::display_desc));
+    pPackagesView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PreviewTab::activated_package_handler));
+
     pPackagesView->get_treeview()->expand_all();
 
     get_widget()->show();
+  }
+
+  // TODO: Should be moved into PackagesView for use with PackagesView::signal_on_package_selection.
+  void PreviewTab::activated_package_handler()
+  {
+    Gtk::TreeModel::Path path;
+    Gtk::TreeViewColumn * focus_column;
+    pPackagesView->get_treeview()->get_cursor(path, focus_column);
+    if (pPackagesView->get_treeview()->get_selection()->is_selected(path))
+    {
+      Gtk::TreeModel::iterator iter = pPackagesView->get_packages_store()->get_iter(path);
+      pkgCache::PkgIterator pkg = (*iter)[pPackagesView->get_packages_columns()->PkgIterator];
+      pkgCache::VerIterator ver = (*iter)[pPackagesView->get_packages_columns()->VerIterator];
+      display_desc(pkg, ver);
+    }
+    else
+    {
+      pPackagesTextView->get_buffer()->set_text("");
+    }
   }
 
   void PreviewTab::repopulate_model()

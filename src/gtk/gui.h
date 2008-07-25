@@ -253,7 +253,8 @@ namespace gui
       void context_menu_handler(GdkEventButton * event);
       void refresh_packages_view(std::set<pkgCache::PkgIterator> changed_packages);
       void relimit_packages_view(Glib::ustring limit);
-      sigc::signal<void, pkgCache::PkgIterator, pkgCache::VerIterator> signal_on_package_selection;
+      // TODO: Not used yet, should be used in place of PackagesTab::activate_package_handler();
+      //sigc::signal<void, pkgCache::PkgIterator, pkgCache::VerIterator> signal_on_package_selection;
       PackagesTreeView * get_treeview() { return treeview; };
       PackagesColumns * get_packages_columns() { return packages_columns; };
       PackagesMarker * get_marker() { return marker; };
@@ -272,6 +273,7 @@ namespace gui
       PackagesTab(const Glib::ustring &label);
       Glib::RefPtr<Gtk::ListStore> create_store();
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * create_reverse_store();
+      void activated_package_handler();
       void repopulate_model();
       void display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
       PackagesView * get_packages_view() { return pPackagesView; };
@@ -290,6 +292,7 @@ namespace gui
       PreviewTab(const Glib::ustring &label);
       Glib::RefPtr<Gtk::TreeStore> create_store();
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * create_reverse_store();
+      void activated_package_handler();
       void repopulate_model();
       void display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
       PackagesView * get_packages_view() { return pPackagesView; };
