@@ -1,4 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--Generated with glade3 3.4.5 on Thu Jul 24 20:36:24 2008 -->
 <glade-interface>
   <widget class="GtkMenu" id="main_packages_context">
     <property name="visible">True</property>
@@ -563,8 +565,8 @@
                 <property name="label" translatable="yes">Dashboard</property>
               </widget>
               <packing>
-                <property name="tab_fill">False</property>
                 <property name="type">tab</property>
+                <property name="tab_fill">False</property>
               </packing>
             </child>
             <child>
@@ -613,9 +615,9 @@
                 </child>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">1</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -697,6 +699,7 @@
                           <widget class="GtkTextView" id="main_packages_textview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="editable">False</property>
                             <property name="wrap_mode">GTK_WRAP_WORD_CHAR</property>
                           </widget>
                         </child>
@@ -745,9 +748,9 @@
                 </child>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">2</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -764,9 +767,9 @@
                 <property name="label" translatable="yes">Info</property>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">3</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -802,6 +805,7 @@
                       <widget class="GtkTextView" id="main_preview_textview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="editable">False</property>
                         <property name="wrap_mode">GTK_WRAP_WORD_CHAR</property>
                       </widget>
                     </child>
@@ -822,9 +826,9 @@
                 <property name="label" translatable="yes">Preview</property>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">4</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -908,9 +912,9 @@
                 <property name="label" translatable="yes">Resolver</property>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">5</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
           </widget>
@@ -922,6 +926,7 @@
           <widget class="GtkTextView" id="main_notify_textview">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="editable">False</property>
           </widget>
           <packing>
             <property name="expand">False</property>
