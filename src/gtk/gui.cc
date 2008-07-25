@@ -895,7 +895,9 @@ namespace gui
 
   void PreviewTab::display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
-    if (ver)
+    if(pkg.end())
+      pPackagesTextView->get_buffer()->set_text("");
+    else if (!ver.end())
     {
       pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
       string misc = ssprintf("%s%s\n"
