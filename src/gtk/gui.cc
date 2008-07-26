@@ -61,12 +61,12 @@ namespace gui
       Gtk::Main::iteration();
   }
 
-  float guiOpProgress::sanitizePercentFraction(float percent)
+  double guiOpProgress::sanitizePercentFraction(float percent)
   {
-    float rval = percent / 100;
-    if (percent < 0)
+    double rval = (double)percent / 100;
+    if (rval < 0)
       rval = 0;
-    if (percent > 1)
+    if (rval > 1)
       rval = 1;
     return rval;
   }
@@ -79,7 +79,7 @@ namespace gui
 
   void guiOpProgress::Update()
   {
-    if (CheckChange(0.25))
+    if (CheckChange(0.02))
     {
       pMainWindow->get_progress_bar()->set_text(Op);
       pMainWindow->get_progress_bar()->set_fraction(sanitizePercentFraction(Percent));
@@ -489,11 +489,6 @@ namespace gui
         p->OverallProgress(num, total, 1, _("Building view"));
 
         ++num;
-        if (num % 1000 == 0)
-        {
-          gtk_update();
-          pMainWindow->get_progress_bar()->pulse();
-        }
 
         // Filter useless packages up-front.
         if(pkg.VersionList().end() && pkg.ProvidesList().end())
@@ -506,11 +501,24 @@ namespace gui
               }
           }
       }
-    gtk_update();
-    generator->finish();
-    gtk_update();
 
-    p->OverallProgress(total, total, 1,  _("Building view"));
+    p->OverallProgress(total, total, 1,  _("Finalizing view"));
+
+    Glib::Timer * time = new Glib::Timer::Timer();
+    Glib::Thread * sort_thread = Glib::Thread::create(sigc::mem_fun(*generator, &PackagesTreeModelGenerator::finish), true);
+    while(!generator->finished)
+    {
+      if(time->elapsed() > 0.05)
+      {
+        time->reset();
+        pMainWindow->get_progress_bar()->pulse();
+        gtk_update();
+      }
+    }
+    sort_thread->join();
+
+    //generator->finish();
+
     delete p;
 
     return generator->get_model();
@@ -581,11 +589,7 @@ namespace gui
         p->OverallProgress(num, total, 1, _("Building view"));
 
         ++num;
-        if (num % 10 == 0)
-        {
-          gtk_update();
-          pMainWindow->get_progress_bar()->pulse();
-        }
+
         std::pair<std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>::iterator,
         std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>::iterator> reverse_range =
                   reverse_packages_store->equal_range(*pkg);
@@ -623,6 +627,8 @@ namespace gui
   private:
     PackagesTabGenerator(PackagesColumns *_packages_columns)
     {
+      // FIXME: Hack while finding a nonblocking thread join.
+      finished = false;
       packages_columns = _packages_columns;
       store = Gtk::ListStore::create(*packages_columns);
     }
@@ -639,12 +645,6 @@ namespace gui
     static PackagesTabGenerator *create(PackagesColumns *packages_columns)
     {
       return new PackagesTabGenerator(packages_columns);
-    }
-
-    void init(PackagesColumns *_packages_columns)
-    {
-      packages_columns = _packages_columns;
-      store = Gtk::ListStore::create(*packages_columns);
     }
 
     void add(const pkgCache::PkgIterator &pkg, const pkgCache::VerIterator &ver,
@@ -667,6 +667,8 @@ namespace gui
     void finish()
     {
       store->set_sort_column(packages_columns->Name, Gtk::SORT_ASCENDING);
+      // FIXME: Hack while finding a nonblocking thread join.
+      finished = true;
     }
 
     Glib::RefPtr<Gtk::TreeModel> get_model()
@@ -760,6 +762,8 @@ namespace gui
   private:
     PreviewTabGenerator(PackagesColumns *_packages_columns)
     {
+      // FIXME: Hack while finding a nonblocking thread join.
+      finished = false;
       packages_columns = _packages_columns;
       store = Gtk::TreeStore::create(*packages_columns);
     }
@@ -816,6 +820,8 @@ namespace gui
     void finish()
     {
       store->set_sort_column(packages_columns->Name, Gtk::SORT_ASCENDING);
+      // FIXME: Hack while finding a nonblocking thread join.
+      finished = true;
     }
 
     Glib::RefPtr<Gtk::TreeModel> get_model()
@@ -1339,11 +1345,37 @@ namespace gui
 
   class InstallRemoveTab : public DownloadTab
   {
+    // FIXME: Hack while finding a nonblocking thread join or something else.
+    bool finished;
     public:
       InstallRemoveTab(Glib::ustring &label)
       : DownloadTab(label)
       {
-        ;;
+        // FIXME: Hack while finding a nonblocking thread join or something else.
+        finished = false;
+      }
+      void handle_result(pkgPackageManager::OrderResult result)
+      {
+        Gtk::MessageDialog dialog(*pMainWindow, "Install run finished", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK,
+            true);
+        switch(result)
+        {
+        case pkgPackageManager::Completed:
+          dialog.set_secondary_text("Successfully completed!");
+          break;
+        case pkgPackageManager::Incomplete:
+          dialog.set_secondary_text("Partially completed!");
+          break;
+        case pkgPackageManager::Failed:
+          dialog.set_secondary_text("Failed!");
+          break;
+        }
+        dialog.run();
+      }
+      void handle_install(download_install_manager *m, OpProgress &progress)
+      {
+        m->finish(pkgAcquire::Continue, progress);
+        finished = true;
       }
       void install_or_remove_packages()
       {
@@ -1365,12 +1397,26 @@ namespace gui
         acqlog.Update = true;
         acqlog.MorePulses = true;
         download_store->clear();
+
         m->do_download(100);
-        m->finish(pkgAcquire::Continue, progress);
-        Gtk::MessageDialog dialog(*pMainWindow, "Install run finished", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK,
-            true);
-        dialog.set_secondary_text("It may or may not have worked. Who knows?");
-        dialog.run();
+
+        // FIXME: Hack while finding a nonblocking thread join or something else.
+        Glib::Timer * time = new Glib::Timer::Timer();
+        Glib::Thread * install_thread =
+          Glib::Thread::create(sigc::bind(sigc::mem_fun(*this, &InstallRemoveTab::handle_install), m, progress), true);
+        m->post_install_hook.connect(sigc::mem_fun(*this, &InstallRemoveTab::handle_result));
+        while(!finished)
+        {
+          if(time->elapsed() > 0.05)
+          {
+            time->reset();
+            pMainWindow->get_progress_bar()->pulse();
+            gtk_update();
+          }
+        }
+        install_thread->join();
+
+        //m->finish(pkgAcquire::Continue, progress);
       }
   };
 
@@ -1566,6 +1612,7 @@ namespace gui
 
   void main(int argc, char *argv[])
   {
+    Glib::thread_init();
     pKit = new Gtk::Main(argc, argv);
     Gtk::Main::signal_quit().connect(&do_want_quit);
     // Use the basename of argv0 to find the Glade file.

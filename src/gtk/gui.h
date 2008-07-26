@@ -38,7 +38,7 @@ namespace gui
   class guiOpProgress : public OpProgress
   { // must derive to read protected member..
     private:
-      float sanitizePercentFraction(float percent);
+      double sanitizePercentFraction(float percent);
     public:
       ~guiOpProgress();
       void Update();
@@ -163,6 +163,8 @@ namespace gui
   class PackagesTreeModelGenerator
   {
   public:
+    // FIXME: Hack while finding a nonblocking thread join.
+    bool finished;
     virtual ~PackagesTreeModelGenerator();
 
     /** \brief Add the given package and version to this tree view.
