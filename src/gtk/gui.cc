@@ -1564,6 +1564,11 @@ namespace gui
     tab->install_or_remove_packages();
   }
 
+  void do_sweep()
+  {
+    system("/usr/games/gnomine&");
+  }
+
   bool do_want_quit()
   {
     want_to_quit = true;
@@ -1603,6 +1608,9 @@ namespace gui
 
     refGlade->get_widget("menu_do_keep_all", pMenuFileKeepAll);
     pMenuFileKeepAll->signal_activate().connect(&do_keep_all);
+
+    refGlade->get_widget("menu_do_sweep", pMenuFileSweep);
+    pMenuFileSweep->signal_activate().connect(&do_sweep);
 
     refGlade->get_widget("menu_do_quit", pMenuFileExit);
     pMenuFileExit->signal_activate().connect(&do_quit);
