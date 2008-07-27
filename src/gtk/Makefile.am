@@ -4,4 +4,18 @@ noinst_LIBRARIES=libgtk.a
 
 libgtk_a_SOURCES=\
 	gui.cc \
-	gui.h
+	gui.h \
+	progress.cc \
+	progress.h \
+	tab.cc \
+	tab.h \
+	resolver.cc \
+	resolver.h \
+	download.cc \
+	download.h \
+	packagesview.cc \
+	packagesview.h \
+	packagestab.cc \
+	packagestab.h \
+	previewtab.cc \
+	previewtab.h
