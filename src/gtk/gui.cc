@@ -79,7 +79,7 @@ namespace gui
 
   void guiOpProgress::Update()
   {
-    if (CheckChange(0.02))
+    if (CheckChange(0.1))
     {
       pMainWindow->get_progress_bar()->set_text(Op);
       pMainWindow->get_progress_bar()->set_fraction(sanitizePercentFraction(Percent));
@@ -170,6 +170,7 @@ namespace gui
         row[tab->download_columns.URI] = Itm.URI;
         row[tab->download_columns.ShortDesc] = Itm.ShortDesc;
         row[tab->download_columns.Description] = Itm.Description;
+        tab->get_treeview()->scroll_to_row(tab->get_download_store()->get_path(iter));
         gtk_update();
       }
   };
@@ -181,26 +182,40 @@ namespace gui
     add(Description);
   }
 
+  template <class ColumnType>
+  int DownloadTab::append_column(Glib::ustring title,
+      Gtk::TreeViewColumn * treeview_column,
+      Gtk::TreeModelColumn<ColumnType>& model_column,
+      int size)
+  {
+    treeview_column = new Gtk::TreeViewColumn(title, model_column);
+    treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
+    treeview_column->set_fixed_width(size);
+    treeview_column->set_resizable(true);
+    treeview_column->set_reorderable(true);
+    treeview_column->set_sort_column(model_column);
+    return treeview->append_column(*treeview_column);
+  }
+
   DownloadTab::DownloadTab(const Glib::ustring &label)
     : Tab(Download, label,
           Gnome::Glade::Xml::create(glade_main_file, "main_download_scrolledwindow"),
           "main_download_scrolledwindow")
   {
-    get_xml()->get_widget("main_download_treeview", pDownloadTreeView);
-    get_widget()->show();
+    get_xml()->get_widget("main_download_treeview", treeview);
     createstore();
-    pDownloadTreeView->append_column(_("URI"), download_columns.URI);
-    pDownloadTreeView->get_column(0)->set_sort_column(download_columns.URI);
-    pDownloadTreeView->append_column(_("Description"), download_columns.Description);
-    pDownloadTreeView->get_column(1)->set_sort_column(download_columns.Description);
-    pDownloadTreeView->append_column(_("Short Description"), download_columns.ShortDesc);
-    pDownloadTreeView->get_column(2)->set_sort_column(download_columns.ShortDesc);
+
+    append_column(Glib::ustring(_("URI")), URI, download_columns.URI, 400);
+    append_column(Glib::ustring(_("Short Description")), ShortDesc, download_columns.ShortDesc, 100);
+    append_column(Glib::ustring(_("Description")), Description, download_columns.Description, 200);
+
+    get_widget()->show();
   }
 
   void DownloadTab::createstore()
   {
     download_store = Gtk::ListStore::create(download_columns);
-    pDownloadTreeView->set_model(download_store);
+    treeview->set_model(download_store);
   }
 
   class UpdateTab : public DownloadTab
@@ -504,16 +519,12 @@ namespace gui
 
     p->OverallProgress(total, total, 1,  _("Finalizing view"));
 
-    Glib::Timer * time = new Glib::Timer::Timer();
     Glib::Thread * sort_thread = Glib::Thread::create(sigc::mem_fun(*generator, &PackagesTreeModelGenerator::finish), true);
     while(!generator->finished)
     {
-      if(time->elapsed() > 0.05)
-      {
-        time->reset();
-        pMainWindow->get_progress_bar()->pulse();
-        gtk_update();
-      }
+      pMainWindow->get_progress_bar()->pulse();
+      gtk_update();
+      Glib::usleep(100000);
     }
     sort_thread->join();
 
@@ -522,6 +533,21 @@ namespace gui
     delete p;
 
     return generator->get_model();
+  }
+
+  template <class ColumnType>
+  int PackagesView::append_column(Glib::ustring title,
+      Gtk::TreeViewColumn * treeview_column,
+      Gtk::TreeModelColumn<ColumnType>& model_column,
+      int size)
+  {
+    treeview_column = new Gtk::TreeViewColumn(title, model_column);
+    treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
+    treeview_column->set_fixed_width(size);
+    treeview_column->set_resizable(true);
+    treeview_column->set_reorderable(true);
+    treeview_column->set_sort_column(model_column);
+    return treeview->append_column(*treeview_column);
   }
 
   PackagesView::PackagesView(const GeneratorK &_generatorK,
@@ -539,15 +565,12 @@ namespace gui
     treeview->signal_selection.connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Description));
     signal_on_changed_packages.connect(sigc::mem_fun(*this, &PackagesView::refresh_packages_view));
 
-    treeview->append_column(_("C"), packages_columns->CurrentStatus);
-    treeview->get_column(0)->set_sort_column(packages_columns->CurrentStatus);
-    treeview->append_column(_("S"), packages_columns->SelectedStatus);
-    treeview->get_column(1)->set_sort_column(packages_columns->SelectedStatus);
-    treeview->append_column(_("Name"), packages_columns->Name);
-    treeview->get_column(2)->set_sort_column(packages_columns->Name);
-    treeview->append_column(_("Section"), packages_columns->Section);
-    treeview->get_column(3)->set_sort_column(packages_columns->Section);
-    treeview->append_column(_("Version"), packages_columns->Version);
+    append_column(Glib::ustring(_("C")), CurrentStatus, packages_columns->CurrentStatus, 32);
+    append_column(Glib::ustring(_("S")), SelectedStatus, packages_columns->SelectedStatus, 32);
+    append_column(Glib::ustring(_("Name")), Name, packages_columns->Name, 200);
+    append_column(Glib::ustring(_("Section")), Section, packages_columns->Section, 80);
+    append_column(Glib::ustring(_("Version")), Version, packages_columns->Version, 80);
+
     treeview->set_search_column(packages_columns->Name);
 
     reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
@@ -932,15 +955,27 @@ namespace gui
     add(Action);
   }
 
+  template <class ColumnType>
+  int ResolverView::append_column(Glib::ustring title,
+      Gtk::TreeViewColumn * treeview_column,
+      Gtk::TreeModelColumn<ColumnType>& model_column,
+      int size)
+  {
+    treeview_column = new Gtk::TreeViewColumn(title, model_column);
+    treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
+    treeview_column->set_fixed_width(size);
+    treeview_column->set_resizable(true);
+    treeview_column->set_reorderable(true);
+    treeview_column->set_sort_column(model_column);
+    return Gtk::TreeView::append_column(*treeview_column);
+  }
 
   ResolverView::ResolverView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
   : Gtk::TreeView(cobject) //Calls the base class constructor
   {
     createstore();
-    append_column(_("Name"), resolver_columns.Name);
-    get_column(0)->set_sort_column(resolver_columns.Name);
-    append_column(_("Action"), resolver_columns.Action);
-    get_column(1)->set_sort_column(resolver_columns.Action);
+    append_column(Glib::ustring(_("Name")), Name, resolver_columns.Name, 200);
+    append_column(Glib::ustring(_("Action")), Section, resolver_columns.Action, 200);
   }
 
   void ResolverView::createstore()
@@ -1403,18 +1438,14 @@ namespace gui
         m->do_download(100);
 
         // FIXME: Hack while finding a nonblocking thread join or something else.
-        Glib::Timer * time = new Glib::Timer::Timer();
         Glib::Thread * install_thread =
           Glib::Thread::create(sigc::bind(sigc::mem_fun(*this, &InstallRemoveTab::handle_install), m, progress), true);
         m->post_install_hook.connect(sigc::mem_fun(*this, &InstallRemoveTab::handle_result));
         while(!finished)
         {
-          if(time->elapsed() > 0.05)
-          {
-            time->reset();
-            pMainWindow->get_progress_bar()->pulse();
-            gtk_update();
-          }
+          pMainWindow->get_progress_bar()->pulse();
+          gtk_update();
+          Glib::usleep(100000);
         }
         install_thread->join();
 
@@ -1622,6 +1653,7 @@ namespace gui
 
   void main(int argc, char *argv[])
   {
+    Glib::init();
     Glib::thread_init();
     pKit = new Gtk::Main(argc, argv);
     Gtk::Main::signal_quit().connect(&do_want_quit);

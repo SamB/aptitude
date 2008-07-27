@@ -91,13 +91,25 @@ namespace gui
 
   class DownloadTab : public Tab
   {
+    private:
+      Gtk::TreeViewColumn * URI;
+      Gtk::TreeViewColumn * ShortDesc;
+      Gtk::TreeViewColumn * Description;
+      template <class ColumnType>
+      int append_column(Glib::ustring title,
+          Gtk::TreeViewColumn * treeview_column,
+          Gtk::TreeModelColumn<ColumnType>& model_column,
+          int size);
     public:
       Glib::RefPtr<Gtk::ListStore> download_store;
       DownloadColumns download_columns;
-      Gtk::TreeView * pDownloadTreeView;
+      Gtk::TreeView * treeview;
 
       DownloadTab(const Glib::ustring &label);
       void createstore();
+
+      Glib::RefPtr<Gtk::ListStore> get_download_store() { return download_store; };
+      Gtk::TreeView * get_treeview() { return treeview; };
   };
 
   /**
@@ -241,6 +253,16 @@ namespace gui
 						      PackagesColumns *packages_columns,
 						      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store,
 						      Glib::ustring limit);
+      Gtk::TreeViewColumn * CurrentStatus;
+      Gtk::TreeViewColumn * SelectedStatus;
+      Gtk::TreeViewColumn * Name;
+      Gtk::TreeViewColumn * Section;
+      Gtk::TreeViewColumn * Version;
+      template <class ColumnType>
+      int append_column(Glib::ustring title,
+          Gtk::TreeViewColumn * treeview_column,
+          Gtk::TreeModelColumn<ColumnType>& model_column,
+          int size);
     public:
       /** \brief Construct a new packages view.
        *
@@ -313,6 +335,14 @@ namespace gui
 
   class ResolverView : public Gtk::TreeView
   {
+    private:
+      Gtk::TreeViewColumn * Name;
+      Gtk::TreeViewColumn * Section;
+      template <class ColumnType>
+      int append_column(Glib::ustring title,
+          Gtk::TreeViewColumn * treeview_column,
+          Gtk::TreeModelColumn<ColumnType>& model_column,
+          int size);
     public:
       Glib::RefPtr<Gtk::TreeStore> resolver_store;
       ResolverColumns resolver_columns;
