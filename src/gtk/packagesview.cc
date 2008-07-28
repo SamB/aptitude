@@ -319,7 +319,8 @@ namespace gui
   }
 
   PackagesView::PackagesView(const GeneratorK &_generatorK,
-                             Glib::RefPtr<Gnome::Glade::Xml> refGlade)
+                             Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+                             Glib::ustring limit)
   {
     refGlade->get_widget_derived("main_packages_treeview", treeview);
 
@@ -346,7 +347,7 @@ namespace gui
     packages_store = build_store(generatorK,
                                  packages_columns,
                                  reverse_packages_store,
-                                 "");
+                                 limit);
 
     treeview->set_model(packages_store);
 

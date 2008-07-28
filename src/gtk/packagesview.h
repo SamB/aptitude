@@ -210,7 +210,8 @@ namespace gui
        *                     the widgets for this view.
        */
       PackagesView(const GeneratorK &_generatorK,
-                   Glib::RefPtr<Gnome::Glade::Xml> refGlade);
+                   Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+                   Glib::ustring limit = "");
       ~PackagesView();
       void context_menu_handler(GdkEventButton * event);
       void row_activated_package_handler(const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
