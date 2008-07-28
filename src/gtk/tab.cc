@@ -29,8 +29,6 @@
 
 namespace gui
 {
-  //std::string glade_main_file;
-  //AptitudeWindow * pMainWindow;
 
   Tab::Tab(TabType _type, const Glib::ustring &_label,
            const Glib::RefPtr<Gnome::Glade::Xml> &_xml, const std::string &widgetName)

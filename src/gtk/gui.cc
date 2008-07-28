@@ -144,8 +144,14 @@ namespace gui
             }
         }
       else
-        std::cout << "A package-list update or install run is already taking place."
-            << std::endl;
+      {
+        Gtk::MessageDialog dialog(*pMainWindow,
+            "Na...", false,
+            Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+        dialog.set_secondary_text("A package-list update or install run is already taking place.");
+
+        dialog.run();
+      }
     }
   };
 
