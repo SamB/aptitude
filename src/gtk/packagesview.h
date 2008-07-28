@@ -44,7 +44,7 @@ namespace gui
    */
   enum PackagesAction
   {
-    Install, Remove, Purge, Keep, Hold, Description
+    Install, Remove, Purge, Keep, Hold
   };
 
   std::string current_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);

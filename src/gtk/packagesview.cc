@@ -331,7 +331,6 @@ namespace gui
     context = new PackagesContextMenu(this);
 
     treeview->signal_context_menu.connect(sigc::mem_fun(*this, &PackagesView::context_menu_handler));
-    treeview->signal_selection.connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Description));
     treeview->signal_row_activated().connect(sigc::mem_fun(*this, &PackagesView::row_activated_package_handler));
     signal_on_changed_packages.connect(sigc::mem_fun(*this, &PackagesView::refresh_packages_view));
 
