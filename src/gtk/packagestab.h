@@ -29,7 +29,6 @@
 #include <apt-pkg/pkgcache.h>
 
 #include <gtk/tab.h>
-//#include <gtk/packagesview.h>
 
 namespace gui
 {
@@ -44,8 +43,6 @@ namespace gui
       Gtk::Button * pLimitButton;
     public:
       PackagesTab(const Glib::ustring &label);
-      Glib::RefPtr<Gtk::ListStore> create_store();
-      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * create_reverse_store();
       void activated_package_handler();
       void repopulate_model();
       void display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);

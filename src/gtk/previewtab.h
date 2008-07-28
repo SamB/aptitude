@@ -45,8 +45,6 @@ namespace gui
       Gtk::Button * pLimitButton;
     public:
       PreviewTab(const Glib::ustring &label);
-      Glib::RefPtr<Gtk::TreeStore> create_store();
-      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * create_reverse_store();
       void activated_package_handler();
       void repopulate_model();
       void display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);

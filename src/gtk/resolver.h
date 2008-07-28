@@ -92,8 +92,6 @@ namespace gui
       void do_apply_solution();
     public:
       ResolverTab(const Glib::ustring &label);
-      Glib::RefPtr<Gtk::TreeStore> create_store();
-      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * create_reverse_store();
       void repopulate_model();
       ResolverView * get_packages_view() { return pResolverView; };
   };

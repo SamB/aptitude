@@ -156,12 +156,11 @@ namespace gui
   };
 
   InfoTab::InfoTab(Glib::ustring label)
-  : Tab(Info, label,
-      Gnome::Glade::Xml::create(glade_main_file, "main_info_textview"), "main_info_textview")
-      {
+  : Tab(Info, label, Gnome::Glade::Xml::create(glade_main_file, "main_info_scrolledwindow"), "main_info_scrolledwindow")
+  {
     get_xml()->get_widget("main_info_textview", textview);
     get_widget()->show();
-      }
+  }
 
   void InfoTab::disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
