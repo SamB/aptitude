@@ -264,12 +264,20 @@ namespace gui
         if(pkg.VersionList().end() && pkg.ProvidesList().end())
           continue;
         if (!limited || aptitude::matching::apply_matcher(limiter, pkg, *apt_cache_file, *apt_package_records))
+        {
+          pkgCache::VerIterator ver;
+          if(!pkg.CurrentVer().end())
           {
-            for (pkgCache::VerIterator ver = pkg.VersionList(); ver.end() == false; ver++)
-              {
-                generator->add(pkg, ver, reverse_packages_store);
-              }
+            ver = pkg.CurrentVer();
+            generator->add(pkg, ver, reverse_packages_store);
           }
+          else
+          {
+            ver=(*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
+            if (!ver.end())
+              generator->add(pkg, ver, reverse_packages_store);
+          }
+        }
       }
 
     p->OverallProgress(total, total, 1,  _("Finalizing view"));
