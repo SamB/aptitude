@@ -106,10 +106,12 @@ namespace gui
         return;
       acqlog.Update = true;
       acqlog.MorePulses = true;
-      m->do_download(100);
       download_manager::result result = download_manager::do_again;
       while (result == download_manager::do_again)
+      {
+        m->do_download(100);
         result = m->finish(pkgAcquire::Continue, progress);
+      }
       guiOpProgress * p = gen_progress_bar();
       apt_load_cache(p, true, NULL);
       delete p;
@@ -188,7 +190,10 @@ namespace gui
       {
         download_manager::result result = download_manager::do_again;
         while (result == download_manager::do_again)
+        {
+          m->do_download(100);
           result = m->finish(pkgAcquire::Continue, progress);
+        }
         finished = true;
       }
       void install_or_remove_packages()
@@ -204,9 +209,6 @@ namespace gui
         acqlog.Update = true;
         acqlog.MorePulses = true;
         download_store->clear();
-
-        m->do_download(100);
-
         // FIXME: Hack while finding a nonblocking thread join or something else.
         Glib::Thread * install_thread =
           Glib::Thread::create(sigc::bind(sigc::mem_fun(*this, &InstallRemoveTab::handle_install), m, progress), true);
