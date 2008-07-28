@@ -18,4 +18,6 @@ libgtk_a_SOURCES=\
 	packagestab.cc \
 	packagestab.h \
 	previewtab.cc \
-	previewtab.h
+	previewtab.h \
+	info.h \
+	info.cc

@@ -756,8 +756,10 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="label4">
-                <property name="label" translatable="yes">This is the package view</property>
+              <widget class="GtkTextView" id="main_info_textview">
+                <property name="can_focus">True</property>
+                <property name="editable">False</property>
+                <property name="wrap_mode">GTK_WRAP_WORD</property>
               </widget>
               <packing>
                 <property name="position">3</property>

@@ -54,6 +54,8 @@ namespace gui
 
   void gtk_update();
 
+  template <class Tab_Type> Tab_Type * tab_add(Glib::ustring label);
+
   /**
    * This is the main Aptitude custom window widget.
    */

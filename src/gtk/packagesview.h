@@ -213,6 +213,7 @@ namespace gui
                    Glib::RefPtr<Gnome::Glade::Xml> refGlade);
       ~PackagesView();
       void context_menu_handler(GdkEventButton * event);
+      void row_activated_package_handler(const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
       void refresh_packages_view(std::set<pkgCache::PkgIterator> changed_packages);
       void relimit_packages_view(Glib::ustring limit);
       // TODO: Not used yet, should be used in place of PackagesTab::activate_package_handler();

@@ -31,6 +31,7 @@
 #include <generic/apt/matchers.h>
 
 #include <gtk/gui.h>
+#include <gtk/info.h>
 #include <gtk/progress.h>
 
 namespace gui
@@ -221,9 +222,13 @@ namespace gui
       //Call base class, to allow normal handling,
       //such as allowing the row to be selected by the right-click:
       return_value = Gtk::TreeView::on_button_press_event(event);
-      // TODO: The general behavior of the description display isn't right.
-      //       We should display the LAST selected package in case of multiple selection.
       signal_selection();
+    }
+    else if ((event->type == GDK_2BUTTON_PRESS) && (event->button == 1))
+    {
+      //Call base class, to allow normal handling,
+      //such as allowing the regular signals to be emitted:
+      return_value = Gtk::TreeView::on_button_press_event(event);
     }
     return return_value;
   }
@@ -326,6 +331,7 @@ namespace gui
 
     treeview->signal_context_menu.connect(sigc::mem_fun(*this, &PackagesView::context_menu_handler));
     treeview->signal_selection.connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Description));
+    treeview->signal_row_activated().connect(sigc::mem_fun(*this, &PackagesView::row_activated_package_handler));
     signal_on_changed_packages.connect(sigc::mem_fun(*this, &PackagesView::refresh_packages_view));
 
     append_column(Glib::ustring(_("C")), CurrentStatus, packages_columns->CurrentStatus, 32);
@@ -355,6 +361,15 @@ namespace gui
   void PackagesView::context_menu_handler(GdkEventButton * event)
   {
     context->get_menu()->popup(event->button, event->time);
+  }
+
+  void PackagesView::row_activated_package_handler(const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
+  {
+      Gtk::TreeModel::iterator iter = packages_store->get_iter(path);
+      pkgCache::PkgIterator pkg = (*iter)[packages_columns->PkgIterator];
+      pkgCache::VerIterator ver = (*iter)[packages_columns->VerIterator];
+      InfoTab * infotab = tab_add<InfoTab>(_("Info:"));
+      infotab->disp_package(pkg, ver);
   }
 
   void PackagesView::relimit_packages_view(Glib::ustring limit)

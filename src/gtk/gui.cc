@@ -47,6 +47,7 @@
 #include <gtk/tab.h>
 #include <gtk/resolver.h>
 #include <gtk/download.h>
+#include <gtk/info.h>
 #include <gtk/packagestab.h>
 #include <gtk/previewtab.h>
 
@@ -284,6 +285,9 @@ namespace gui
     pMainWindow->get_notebook()->set_current_page(new_page_idx);
     return tab;
   }
+
+  // Workaround for the linker to see the InfoTab specialization of the template.
+  template InfoTab * tab_add(Glib::ustring label);
 
   void do_dashboard()
   {
