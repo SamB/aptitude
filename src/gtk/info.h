@@ -30,11 +30,14 @@
 
 namespace gui
 {
+  class PackagesView;
 
   class InfoTab : public Tab
   {
     private:
       Gtk::TextView * textview;
+      PackagesView * pVersionsView;
+      PackagesView * pDependsView;
     public:
       InfoTab(Glib::ustring label);
       void disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
