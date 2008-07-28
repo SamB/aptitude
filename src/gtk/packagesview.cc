@@ -369,8 +369,11 @@ namespace gui
       Gtk::TreeModel::iterator iter = packages_store->get_iter(path);
       pkgCache::PkgIterator pkg = (*iter)[packages_columns->PkgIterator];
       pkgCache::VerIterator ver = (*iter)[packages_columns->VerIterator];
-      InfoTab * infotab = tab_add<InfoTab>(_("Info:"));
-      infotab->disp_package(pkg, ver);
+      if (pkg && ver)
+      {
+        InfoTab * infotab = tab_add<InfoTab>(_("Info:"));
+        infotab->disp_package(pkg, ver);
+      }
   }
 
   void PackagesView::relimit_packages_view(Glib::ustring limit)

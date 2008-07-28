@@ -177,7 +177,7 @@ namespace gui
 
     pDependsView = new PackagesView(sigc::ptr_fun(DependsViewGenerator::create),
         Gnome::Glade::Xml::create(glade_main_file, "main_packages_treeview"),
-        "~n"+Glib::ustring(pkg.Name()));
+        "~n^"+Glib::ustring(pkg.Name())+"$");
 
     buffer->insert_with_tag(buffer->end(), "\nDependencies:\n", refTagMatch);
     Glib::RefPtr<Gtk::TextChildAnchor> DependsViewAnchor = buffer->create_child_anchor(buffer->end());
@@ -185,7 +185,7 @@ namespace gui
 
     pVersionsView = new PackagesView(sigc::ptr_fun(VersionsViewGenerator::create),
         Gnome::Glade::Xml::create(glade_main_file, "main_packages_treeview"),
-        "~n"+Glib::ustring(pkg.Name()));
+        "~n^"+Glib::ustring(pkg.Name())+"$");
 
     buffer->insert_with_tag(buffer->end(), "\nVersions:\n", refTagMatch);
     Glib::RefPtr<Gtk::TextChildAnchor> VersionsViewAnchor = buffer->create_child_anchor(buffer->end());
