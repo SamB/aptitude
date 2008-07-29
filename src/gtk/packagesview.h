@@ -95,6 +95,7 @@ namespace gui
     public:
       Gtk::TreeModelColumn<pkgCache::PkgIterator> PkgIterator;
       Gtk::TreeModelColumn<pkgCache::VerIterator> VerIterator;
+      Gtk::TreeModelColumn<Glib::ustring> BgColor;
       Gtk::TreeModelColumn<Glib::ustring> CurrentStatus;
       Gtk::TreeModelColumn<Glib::ustring> SelectedStatus;
       Gtk::TreeModelColumn<Glib::ustring> Name;

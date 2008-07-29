@@ -95,6 +95,33 @@ namespace gui
     return selected_state;
   }
 
+
+  string selected_state_color(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  {
+    aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
+    aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
+    pkgCache::VerIterator candver=state.CandidateVerIter(*apt_cache_file);
+
+    if (state.Status != 2
+        && (*apt_cache_file)->get_ext_state(pkg).selection_state
+            == pkgCache::State::Hold && !state.InstBroken())
+      return "dark red";
+    if (state.Upgradable() && !pkg.CurrentVer().end() && !candver.end()
+        && candver.VerStr() == estate.forbidver)
+      return "dark red";
+    if (state.Delete())
+      return ((state.iFlags & pkgDepCache::Purge) ? "dark red" : "red");
+    if (state.InstBroken())
+      return "dark red";
+    if (state.NewInstall())
+      return "green";
+    if (state.iFlags & pkgDepCache::ReInstall)
+      return "dark green";
+    if (state.Upgrade())
+      return "yellow";
+    return "white";
+  }
+
   PackagesMarker::PackagesMarker(PackagesView * view)
   {
     this->view = view;
@@ -192,6 +219,7 @@ namespace gui
   {
     add(PkgIterator);
     add(VerIterator);
+    add(BgColor);
     add(CurrentStatus);
     add(SelectedStatus);
     add(Name);
@@ -205,6 +233,9 @@ namespace gui
   {
     row[PkgIterator] = pkg;
     row[VerIterator] = ver;
+
+    row[BgColor] = (!pkg.end() && !ver.end())
+      ? selected_state_color(pkg, ver) : "white";
 
     row[CurrentStatus] = (!pkg.end() && !ver.end())
       ? current_state_string(pkg, ver) : "";
@@ -351,6 +382,8 @@ namespace gui
       int size)
   {
     treeview_column = new Gtk::TreeViewColumn(title, model_column);
+    Gtk::CellRenderer* treeview_cellrenderer = treeview_column->get_first_cell_renderer();
+    treeview_column->add_attribute(treeview_cellrenderer->property_cell_background(), packages_columns->BgColor);
     treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
     treeview_column->set_fixed_width(size);
     treeview_column->set_resizable(true);
