@@ -117,7 +117,7 @@ namespace gui
       delete p;
     }
     public:
-      UpdateTab(Glib::ustring &label)
+      UpdateTab(const Glib::ustring &label)
       : DownloadTab(label)
       {
         ;;
@@ -163,7 +163,7 @@ namespace gui
     bool finished;
     bool in_dpkg;
     public:
-      InstallRemoveTab(Glib::ustring &label)
+      InstallRemoveTab(const Glib::ustring &label)
       : DownloadTab(label)
       {
         // FIXME: Hack while finding a nonblocking thread join or something else.
