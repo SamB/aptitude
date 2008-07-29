@@ -330,13 +330,7 @@ namespace gui
     std::auto_ptr<PackagesTreeModelGenerator>
       generator(generatorK(packages_columns));
 
-    guiOpProgress * p = gen_progress_bar();
-
-    p->OverallProgress(0, 1, 1, _("Building view"));
-
     generator->add(pkg, ver, reverse_packages_store);
-
-    p->OverallProgress(1, 1, 1,  _("Finalizing view"));
 
     Glib::Thread * sort_thread = Glib::Thread::create(sigc::mem_fun(*generator, &PackagesTreeModelGenerator::finish), true);
     while(!generator->finished)
@@ -346,10 +340,6 @@ namespace gui
       Glib::usleep(100000);
     }
     sort_thread->join();
-
-    //generator->finish();
-
-    delete p;
 
     return generator->get_model();
   }
