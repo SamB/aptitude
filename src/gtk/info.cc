@@ -79,11 +79,11 @@ namespace gui
 
         row[packages_columns->PkgIterator] = dep.TargetPkg();
         row[packages_columns->VerIterator] = dep.TargetPkg().CurrentVer();
-        row[packages_columns->CurrentStatus] = dep.TargetPkg().CurrentVer()?current_state_string(dep.TargetPkg(), dep.TargetPkg().CurrentVer()):"";
-        row[packages_columns->SelectedStatus] = dep.TargetPkg().CurrentVer()?selected_state_string(dep.TargetPkg(), dep.TargetPkg().CurrentVer()):"";
+        row[packages_columns->CurrentStatus] = dep.TargetPkg().CurrentVer().end()?current_state_string(dep.TargetPkg(), dep.TargetPkg().CurrentVer()):"";
+        row[packages_columns->SelectedStatus] = dep.TargetPkg().CurrentVer().end()?selected_state_string(dep.TargetPkg(), dep.TargetPkg().CurrentVer()):"";
         row[packages_columns->Name] = dep.TargetPkg().Name()?dep.TargetPkg().Name():"";
         row[packages_columns->Section] = dep.TargetPkg().Section()?dep.TargetPkg().Section():"";
-        row[packages_columns->Version] = dep.TargetVer()?dep.TargetVer():"";
+        row[packages_columns->Version] = dep.TargetVer().end()?dep.TargetVer():"";
       }
     }
 
