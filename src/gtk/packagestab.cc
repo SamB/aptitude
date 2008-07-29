@@ -103,6 +103,8 @@ namespace gui
 
     pPackagesView = new PackagesView(sigc::ptr_fun(PackagesTabGenerator::create), get_xml());
 
+    pPackagesView->get_treeview()->set_fixed_height_mode(true);
+
     pPackagesView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
     pPackagesView->get_treeview()->signal_cursor_changed().connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
 
