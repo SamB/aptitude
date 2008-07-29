@@ -161,12 +161,14 @@ namespace gui
   {
     // FIXME: Hack while finding a nonblocking thread join or something else.
     bool finished;
+    bool in_dpkg;
     public:
       InstallRemoveTab(Glib::ustring &label)
       : DownloadTab(label)
       {
         // FIXME: Hack while finding a nonblocking thread join or something else.
         finished = false;
+        in_dpkg = false;
       }
       void handle_result(pkgPackageManager::OrderResult result)
       {
@@ -192,7 +194,9 @@ namespace gui
         while (result == download_manager::do_again)
         {
           m->do_download(100);
+          in_dpkg = true;
           result = m->finish(pkgAcquire::Continue, progress);
+          in_dpkg = false;
         }
         finished = true;
       }
@@ -215,7 +219,8 @@ namespace gui
         m->post_install_hook.connect(sigc::mem_fun(*this, &InstallRemoveTab::handle_result));
         while(!finished)
         {
-          pMainWindow->get_progress_bar()->pulse();
+          if (in_dpkg)
+            pMainWindow->get_progress_bar()->pulse();
           gtk_update();
           Glib::usleep(100000);
         }

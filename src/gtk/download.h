@@ -43,6 +43,7 @@ namespace gui
       bool Pulse(pkgAcquire *Owner);
       bool MediaChange(std::string, std::string);
       void Fetch(pkgAcquire::ItemDesc &Itm);
+      void Stop();
   };
 
   class DownloadColumns : public Gtk::TreeModel::ColumnRecord

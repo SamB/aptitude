@@ -27,6 +27,7 @@
 #include <generic/util/util.h>
 
 #include <gui.h>
+#include <apt-pkg/strutl.h>
 
 
 namespace gui
@@ -41,8 +42,10 @@ namespace gui
   {
     pkgAcquireStatus::Pulse(Owner);
     if (TotalItems != 0)
-      pMainWindow->get_progress_bar()->set_fraction(((float)CurrentItems)/((float)TotalItems));
-    pMainWindow->get_progress_bar()->set_text(ssprintf("%lu of %lu done", CurrentItems, TotalItems));
+      pMainWindow->get_progress_bar()->set_fraction(((float)(CurrentBytes+CurrentItems))/((float)(TotalBytes+TotalItems)));
+    pMainWindow->get_progress_bar()->set_text(ssprintf("%lu of %lu done",
+        CurrentItems, TotalItems)+" ("+SizeToStr(CurrentBytes)+" of "+SizeToStr(TotalBytes)
+        +" at "+SizeToStr(CurrentCPS)+"/s, "+TimeToStr(((TotalBytes - CurrentBytes)/CurrentCPS))+" left)");
     gtk_update();
     return !want_to_quit;
   }
@@ -64,6 +67,11 @@ namespace gui
     row[tab->download_columns.Description] = Itm.Description;
     tab->get_treeview()->scroll_to_row(tab->get_download_store()->get_path(iter));
     gtk_update();
+  }
+
+  void guiPkgAcquireStatus::Stop()
+  {
+    pMainWindow->get_progress_bar()->set_text("Download done");
   }
 
   DownloadColumns::DownloadColumns()
