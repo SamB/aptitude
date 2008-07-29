@@ -173,7 +173,8 @@ namespace gui
       PackagesContextMenu * context;
       PackagesMarker * marker;
       GeneratorK generatorK;
-
+      void init(const GeneratorK &_generatorK,
+                                   Glib::RefPtr<Gnome::Glade::Xml> refGlade);
       /** \brief Build the tree model using the given generator.
        *
        *  This adds all packages that pass the current limit to the
@@ -191,6 +192,24 @@ namespace gui
                                                       PackagesColumns *packages_columns,
                                                       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store,
                                                       Glib::ustring limit);
+
+      /** \brief Build the tree model using the given generator for a single package version.
+       *
+       *  This adds one package version to the generator.
+       *
+       *  \param  generatorK         A function that constructs a generator
+       *                             to use in building the new store.
+       *  \param  packages_columns   The columns of the new store.
+       *  \param  reverse_packages_store  A multimap to be filled with the
+       *                                  location of each package iterator
+       *                                  in the generated store.
+       *  \param  pkg                The package to add.
+       *  \param  ver                The version to add.
+       */
+      static Glib::RefPtr<Gtk::TreeModel> build_store_single(const GeneratorK &generatorK,
+                                                             PackagesColumns *packages_columns,
+                                                             std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store,
+                                                             pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
       Gtk::TreeViewColumn * CurrentStatus;
       Gtk::TreeViewColumn * SelectedStatus;
       Gtk::TreeViewColumn * Name;
@@ -208,10 +227,24 @@ namespace gui
        *                     object used to build the model.
        *  \param refGlade    The XML tree containing
        *                     the widgets for this view.
+       *  \param  limit      The limit pattern for the current view.
        */
       PackagesView(const GeneratorK &_generatorK,
                    Glib::RefPtr<Gnome::Glade::Xml> refGlade,
                    Glib::ustring limit = "");
+    public:
+      /** \brief Construct a new packages view.
+       *
+       *  \param _generatorK A constructor for the callback
+       *                     object used to build the model.
+       *  \param refGlade    The XML tree containing
+       *                     the widgets for this view.
+       *  \param  pkg        The package to add.
+       *  \param  ver        The version to add.
+       */
+      PackagesView(const GeneratorK &_generatorK,
+                   Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+                   pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
       ~PackagesView();
       void context_menu_handler(GdkEventButton * event);
       void row_activated_package_handler(const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);

@@ -303,6 +303,39 @@ namespace gui
     return generator->get_model();
   }
 
+  Glib::RefPtr<Gtk::TreeModel>
+  PackagesView::build_store_single(const GeneratorK & generatorK,
+                                   PackagesColumns *packages_columns,
+                                   std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store,
+                                   pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  {
+    std::auto_ptr<PackagesTreeModelGenerator>
+      generator(generatorK(packages_columns));
+
+    guiOpProgress * p = gen_progress_bar();
+
+    p->OverallProgress(0, 1, 1, _("Building view"));
+
+    generator->add(pkg, ver, reverse_packages_store);
+
+    p->OverallProgress(1, 1, 1,  _("Finalizing view"));
+
+    Glib::Thread * sort_thread = Glib::Thread::create(sigc::mem_fun(*generator, &PackagesTreeModelGenerator::finish), true);
+    while(!generator->finished)
+    {
+      pMainWindow->get_progress_bar()->pulse();
+      gtk_update();
+      Glib::usleep(100000);
+    }
+    sort_thread->join();
+
+    //generator->finish();
+
+    delete p;
+
+    return generator->get_model();
+  }
+
   template <class ColumnType>
   int PackagesView::append_column(Glib::ustring title,
       Gtk::TreeViewColumn * treeview_column,
@@ -318,9 +351,8 @@ namespace gui
     return treeview->append_column(*treeview_column);
   }
 
-  PackagesView::PackagesView(const GeneratorK &_generatorK,
-                             Glib::RefPtr<Gnome::Glade::Xml> refGlade,
-                             Glib::ustring limit)
+  void PackagesView::init(const GeneratorK &_generatorK,
+                          Glib::RefPtr<Gnome::Glade::Xml> refGlade)
   {
     refGlade->get_widget_derived("main_packages_treeview", treeview);
 
@@ -342,16 +374,34 @@ namespace gui
 
     treeview->set_search_column(packages_columns->Name);
 
+    // TODO: There should be a way to do this in Glade maybe.
+    treeview->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
+  }
+
+  PackagesView::PackagesView(const GeneratorK &_generatorK,
+                             Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+                             Glib::ustring limit)
+  {
+    init(_generatorK, refGlade);
     reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
     packages_store = build_store(generatorK,
                                  packages_columns,
                                  reverse_packages_store,
                                  limit);
-
     treeview->set_model(packages_store);
+  }
 
-    // TODO: There should be a way to do this in Glade maybe.
-    treeview->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
+  PackagesView::PackagesView(const GeneratorK &_generatorK,
+                             Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+                             pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  {
+    init(_generatorK, refGlade);
+    reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
+    packages_store = build_store_single(generatorK,
+                                        packages_columns,
+                                        reverse_packages_store,
+                                        pkg, ver);
+    treeview->set_model(packages_store);
   }
 
   PackagesView::~PackagesView()
