@@ -38,6 +38,7 @@ namespace gui
   // Local forward declarations:
   class AptitudeWindow;
   class TabsManager;
+  class Tab;
 
   //This is a list of global and unique base widgets and other related stuff
   extern AptitudeWindow * pMainWindow;
@@ -54,7 +55,7 @@ namespace gui
 
   void gtk_update();
 
-  template <class Tab_Type> Tab_Type * tab_add(Glib::ustring label);
+  void tab_add(Tab *tab);
 
   /**
    * This is the main Aptitude custom window widget.

@@ -370,7 +370,8 @@ namespace gui
       pkgCache::VerIterator ver = (*iter)[packages_columns->VerIterator];
       if (pkg && ver)
       {
-        InfoTab * infotab = tab_add<InfoTab>(_("Info:"));
+        InfoTab * infotab = new InfoTab(_("Info:"));
+	tab_add(infotab);
         infotab->disp_package(pkg, ver);
       }
   }

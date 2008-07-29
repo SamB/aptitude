@@ -290,47 +290,43 @@ namespace gui
    * Adds a Tab_Type tab to the interface.
    * TODO: Get this one out of here!
    */
-  template <class Tab_Type>
-  Tab_Type * tab_add(Glib::ustring label)
+  void tab_add(Tab *tab)
   {
-    Tab_Type * tab = new Tab_Type(label);
     int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
     pMainWindow->get_notebook()->set_current_page(new_page_idx);
-    return tab;
   }
-
-  // Workaround for the linker to see the InfoTab specialization of the template.
-  template InfoTab * tab_add(Glib::ustring label);
 
   void do_dashboard()
   {
-    /*DashboardTab * tab = */tab_add<DashboardTab>(_("Dashboard:"));
+    tab_add(new DashboardTab(_("Dashboard:")));
   }
 
   void do_update()
   {
-    UpdateTab * tab = tab_add<UpdateTab>(_("Update:"));
+    UpdateTab * tab = new UpdateTab(_("Update"));
+    tab_add(tab);
     tab->do_update_lists();
   }
 
   void do_packages()
   {
-    /*PackagesTab * tab = */tab_add<PackagesTab>(_("Packages:"));
+    tab_add(new PackagesTab(_("Packages:")));
   }
 
   void do_preview()
   {
-    /*PreviewTab * tab = */tab_add<PreviewTab>(_("Preview:"));
+    tab_add(new PreviewTab(_("Preview:")));
   }
 
   void do_resolver()
   {
-    /*PreviewTab * tab = */tab_add<ResolverTab>(_("Resolver:"));
+    tab_add(new ResolverTab(_("Resolver:")));
   }
 
   void do_installremove()
   {
-    InstallRemoveTab * tab = tab_add<InstallRemoveTab>(_("Install/Remove:"));
+    InstallRemoveTab * tab = new InstallRemoveTab(_("Install/Remove:"));
+    tab_add(tab);
     tab->install_or_remove_packages();
   }
 
