@@ -102,6 +102,17 @@ namespace gui
       Gtk::TreeModelColumn<Glib::ustring> Version;
 
       PackagesColumns();
+
+      /** \brief Fill in the contents of a tree-model row for the given
+       *  package/version pair.
+       *
+       *  \param row    The row to fill in; any existing values will be overwritten.
+       *  \param pkg    The package to display in this row.
+       *  \param ver    The version to display in this row.
+       */
+      void fill_row(Gtk::TreeModel::Row &row,
+		    const pkgCache::PkgIterator &pkg,
+		    const pkgCache::VerIterator &ver) const;
   };
 
   /** \brief Interface for generating tree-views.

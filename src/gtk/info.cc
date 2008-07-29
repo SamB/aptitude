@@ -77,13 +77,7 @@ namespace gui
 
         reverse_packages_store->insert(std::make_pair(dep.TargetPkg(), iter));
 
-        row[packages_columns->PkgIterator] = dep.TargetPkg();
-        row[packages_columns->VerIterator] = dep.TargetPkg().CurrentVer();
-        row[packages_columns->CurrentStatus] = dep.TargetPkg().CurrentVer().end()?current_state_string(dep.TargetPkg(), dep.TargetPkg().CurrentVer()):"";
-        row[packages_columns->SelectedStatus] = dep.TargetPkg().CurrentVer().end()?selected_state_string(dep.TargetPkg(), dep.TargetPkg().CurrentVer()):"";
-        row[packages_columns->Name] = dep.TargetPkg().Name()?dep.TargetPkg().Name():"";
-        row[packages_columns->Section] = dep.TargetPkg().Section()?dep.TargetPkg().Section():"";
-        row[packages_columns->Version] = dep.TargetVer().end()?dep.TargetVer():"";
+	packages_columns->fill_row(row, dep.TargetPkg(), dep.TargetPkg().CurrentVer());
       }
     }
 
@@ -138,13 +132,7 @@ namespace gui
 
         reverse_packages_store->insert(std::make_pair(currpkg, iter));
 
-        row[packages_columns->PkgIterator] = currpkg;
-        row[packages_columns->VerIterator] = ver;
-        row[packages_columns->CurrentStatus] = current_state_string(currpkg, ver);
-        row[packages_columns->SelectedStatus] = selected_state_string(currpkg, ver);
-        row[packages_columns->Name] = currpkg.Name()?currpkg.Name():"";
-        row[packages_columns->Section] = currpkg.Section()?currpkg.Section():"";
-        row[packages_columns->Version] = ver.VerStr();
+	packages_columns->fill_row(row, currpkg, ver);
       }
     }
 

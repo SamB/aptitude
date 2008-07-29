@@ -199,6 +199,24 @@ namespace gui
     add(Version);
   }
 
+  void PackagesColumns::fill_row(Gtk::TreeModel::Row &row,
+				 const pkgCache::PkgIterator &pkg,
+				 const pkgCache::VerIterator &ver) const
+  {
+    row[PkgIterator] = pkg;
+    row[VerIterator] = ver;
+
+    row[CurrentStatus] = (!pkg.end() && !ver.end())
+      ? current_state_string(pkg, ver) : "";
+
+    row[SelectedStatus] = (!pkg.end() && !ver.end())
+      ? selected_state_string(pkg, ver) : "";
+
+    row[Name] = (!pkg.end() && pkg.Name()) ? pkg.Name() : "";
+    row[Section] = (!pkg.end() && pkg.Section()) ? pkg.Section() : "";
+    row[Version] = (!ver.end() && ver.VerStr()) ? ver.VerStr() : "";
+  }
+
   PackagesTreeView::PackagesTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::TreeView(cobject)
   {
     ;;
@@ -458,11 +476,7 @@ namespace gui
             pkgCache::PkgIterator pkg = row[packages_columns->PkgIterator];
             pkgCache::VerIterator ver = row[packages_columns->VerIterator];
 
-            row[packages_columns->CurrentStatus] = current_state_string(pkg, ver);
-            row[packages_columns->SelectedStatus] = selected_state_string(pkg, ver);
-            row[packages_columns->Name] = pkg.Name()?pkg.Name():"";
-            row[packages_columns->Section] = pkg.Section()?pkg.Section():"";
-            row[packages_columns->Version] = ver.VerStr();
+	    packages_columns->fill_row(row, pkg, ver);
 
             if (want_to_quit)
               return;
