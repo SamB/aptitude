@@ -227,11 +227,27 @@ namespace gui
       Gtk::TreeViewColumn * Name;
       Gtk::TreeViewColumn * Section;
       Gtk::TreeViewColumn * Version;
+
+      /** \brief Sets up generic column properties that don't have to do
+       *  with creating the renderer.
+       */
+      void setup_column_properties(Gtk::TreeViewColumn *treeview_column,
+				   int size);
+
+      /** \brief Creates a column with a default renderer. */
       template <class ColumnType>
-      int append_column(Glib::ustring title,
-          Gtk::TreeViewColumn * treeview_column,
-          Gtk::TreeModelColumn<ColumnType>& model_column,
+      int append_column(const Glib::ustring &title,
+          Gtk::TreeViewColumn *treeview_column,
+          Gtk::TreeModelColumn<ColumnType> &model_column,
           int size);
+
+      /** \brief Creates a column that uses the given model column as
+       *  Pango markup.
+       */
+      int append_markup_column(const Glib::ustring &title,
+			       Gtk::TreeViewColumn *treeview_column,
+			       Gtk::TreeModelColumn<Glib::ustring> &model_column,
+			       int size);
     public:
       /** \brief Construct a new packages view.
        *

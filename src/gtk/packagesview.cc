@@ -34,6 +34,9 @@
 #include <gtk/info.h>
 #include <gtk/progress.h>
 
+#include <cwidget/generic/util/ssprintf.h>
+#include <cwidget/generic/util/transcode.h>
+
 namespace gui
 {
   undo_group * undo;
@@ -246,7 +249,27 @@ namespace gui
     row[SelectedStatus] = (!pkg.end() && !ver.end())
       ? selected_state_string(pkg, ver) : "";
 
-    row[Name] = (!pkg.end() && pkg.Name()) ? pkg.Name() : "";
+    if(pkg.end())
+      row[Name] = "";
+    else
+      {
+	using cwidget::util::ssprintf;
+	using cwidget::util::transcode;
+
+	Glib::ustring safe_name = Glib::Markup::escape_text(pkg.Name());
+	if(ver.end())
+	  row[Name] = ssprintf("<b>%s</b>", safe_name.c_str());
+	else
+	  {
+	    Glib::ustring safe_description =
+	      Glib::Markup::escape_text(transcode(get_short_description(ver,
+									apt_package_records),
+						  "UTF-8"));
+	    row[Name] =
+	      ssprintf("<b>%s</b>\n<span size=\"smaller\">%s</span>",
+		       safe_name.c_str(), safe_description.c_str());
+	  }
+      }
     row[Section] = (!pkg.end() && pkg.Section()) ? pkg.Section() : "";
     row[Version] = (!ver.end() && ver.VerStr()) ? ver.VerStr() : "";
   }
@@ -371,20 +394,42 @@ namespace gui
     return generator->get_model();
   }
 
-  template <class ColumnType>
-  int PackagesView::append_column(Glib::ustring title,
-      Gtk::TreeViewColumn * treeview_column,
-      Gtk::TreeModelColumn<ColumnType>& model_column,
-      int size)
+  void PackagesView::setup_column_properties(Gtk::TreeViewColumn *treeview_column,
+					     int size)
   {
-    treeview_column = new Gtk::TreeViewColumn(title, model_column);
     Gtk::CellRenderer* treeview_cellrenderer = treeview_column->get_first_cell_renderer();
     treeview_column->add_attribute(treeview_cellrenderer->property_cell_background(), packages_columns->BgColor);
     treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
     treeview_column->set_fixed_width(size);
     treeview_column->set_resizable(true);
     treeview_column->set_reorderable(true);
+  }
+
+  template <class ColumnType>
+  int PackagesView::append_column(const Glib::ustring &title,
+				  Gtk::TreeViewColumn *treeview_column,
+				  Gtk::TreeModelColumn<ColumnType> &model_column,
+				  int size)
+  {
+    treeview_column = new Gtk::TreeViewColumn(title, model_column);
+    setup_column_properties(treeview_column, size);
     treeview_column->set_sort_column(model_column);
+    return treeview->append_column(*treeview_column);
+  }
+
+  int PackagesView::append_markup_column(const Glib::ustring &title,
+					 Gtk::TreeViewColumn *treeview_column,
+					 Gtk::TreeModelColumn<Glib::ustring> &model_column,
+					 int size)
+  {
+    Gtk::CellRendererText *renderer = new Gtk::CellRendererText;
+    treeview_column = new Gtk::TreeViewColumn(title, *renderer);
+    treeview_column->add_attribute(renderer->property_markup(),
+				   model_column);
+    // TODO: this will work for now, but ideally we would have a
+    // second, un-marked-up column that we use to sort.
+    treeview_column->set_sort_column(model_column);
+    setup_column_properties(treeview_column, size);
     return treeview->append_column(*treeview_column);
   }
 
@@ -405,9 +450,10 @@ namespace gui
 
     append_column(Glib::ustring(_("C")), CurrentStatus, packages_columns->CurrentStatus, 32);
     append_column(Glib::ustring(_("S")), SelectedStatus, packages_columns->SelectedStatus, 32);
-    append_column(Glib::ustring(_("Name")), Name, packages_columns->Name, 200);
+    append_markup_column(Glib::ustring(_("Name")), Name, packages_columns->Name, 200);
     append_column(Glib::ustring(_("Section")), Section, packages_columns->Section, 80);
     append_column(Glib::ustring(_("Version")), Version, packages_columns->Version, 80);
+
 
     treeview->set_search_column(packages_columns->Name);
 
