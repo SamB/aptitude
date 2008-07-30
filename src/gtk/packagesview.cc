@@ -451,6 +451,19 @@ namespace gui
     append_column(Glib::ustring(_("C")), CurrentStatus, packages_columns->CurrentStatus, 32);
     append_column(Glib::ustring(_("S")), SelectedStatus, packages_columns->SelectedStatus, 32);
     append_markup_column(Glib::ustring(_("Name")), Name, packages_columns->Name, 200);
+    {
+      Gtk::CellRenderer *renderer = treeview->get_column_cell_renderer(treeview->get_columns().size() - 1);
+      if(renderer == NULL)
+	std::cerr << "Why don't I have a renderer when I just added one?" << std::endl;
+      else
+	{
+	  Gtk::CellRendererText *renderer_text = dynamic_cast<Gtk::CellRendererText *>(renderer);
+	  if(renderer_text == NULL)
+	    std::cerr << "Why don't I have a text renderer when I just added one?" << std::endl;
+	  else
+	    renderer_text->property_ellipsize() = Pango::ELLIPSIZE_END;
+	}
+    }
     append_column(Glib::ustring(_("Section")), Section, packages_columns->Section, 80);
     append_column(Glib::ustring(_("Version")), Version, packages_columns->Version, 80);
 
