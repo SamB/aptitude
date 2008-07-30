@@ -68,6 +68,7 @@ namespace gui
       }
   }
 
+  // TODO: For some reason, strings do not reflect individual packages status
   string selected_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
     aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
@@ -95,7 +96,8 @@ namespace gui
     return selected_state;
   }
 
-
+  // TODO: For some reason, color codes do not reflect individual packages status
+  //       Or should we try putting multiple colors ?
   string selected_state_color(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
     aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
@@ -363,14 +365,7 @@ namespace gui
 
     generator->add(pkg, ver, reverse_packages_store);
 
-    Glib::Thread * sort_thread = Glib::Thread::create(sigc::mem_fun(*generator, &PackagesTreeModelGenerator::finish), true);
-    while(!generator->finished)
-    {
-      pMainWindow->get_progress_bar()->pulse();
-      gtk_update();
-      Glib::usleep(100000);
-    }
-    sort_thread->join();
+    generator->finish();
 
     return generator->get_model();
   }
