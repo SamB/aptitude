@@ -82,7 +82,7 @@ namespace gui
             {
               tree = store->append();
               Gtk::TreeModel::Row tree_row = *tree;
-              tree_row[packages_columns->Name] = _(child_names[group]);
+              packages_columns->fill_header(tree_row, _(child_names[group]));
               state_trees[group] = tree;
             }
           else

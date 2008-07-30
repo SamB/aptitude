@@ -116,9 +116,17 @@ namespace gui
        *                             coloring and selected status display)
        */
       void fill_row(Gtk::TreeModel::Row &row,
-		    const pkgCache::PkgIterator &pkg,
-		    const pkgCache::VerIterator &ver,
-		    bool version_specific = false) const;
+                    const pkgCache::PkgIterator &pkg,
+                    const pkgCache::VerIterator &ver,
+                    bool version_specific = false) const;
+      /** \brief Fill in the contents of a tree-model row for a header.
+       *
+       *  \param row                 The row to fill in; any existing values
+       *                             will be overwritten.
+       *  \param text                The text content of the header.
+       */
+      void fill_header(Gtk::TreeModel::Row &row,
+                       Glib::ustring text) const;
   };
 
   /** \brief Interface for generating tree-views.

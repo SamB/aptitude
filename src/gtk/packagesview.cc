@@ -306,9 +306,9 @@ namespace gui
   }
 
   void PackagesColumns::fill_row(Gtk::TreeModel::Row &row,
-				 const pkgCache::PkgIterator &pkg,
-				 const pkgCache::VerIterator &ver,
-				 bool version_specific) const
+                                 const pkgCache::PkgIterator &pkg,
+                                 const pkgCache::VerIterator &ver,
+                                 bool version_specific) const
   {
     row[PkgIterator] = pkg;
     row[VerIterator] = ver;
@@ -341,25 +341,45 @@ namespace gui
       row[Name] = "";
     else
       {
-	using cwidget::util::ssprintf;
-	using cwidget::util::transcode;
+        using cwidget::util::ssprintf;
+        using cwidget::util::transcode;
 
-	Glib::ustring safe_name = Glib::Markup::escape_text(pkg.Name());
-	if(ver.end())
-	  row[Name] = ssprintf("<b>%s</b>", safe_name.c_str());
-	else
-	  {
-	    Glib::ustring safe_description =
-	      Glib::Markup::escape_text(transcode(get_short_description(ver,
-									apt_package_records),
-						  "UTF-8"));
-	    row[Name] =
-	      ssprintf("<b>%s</b>\n<span size=\"smaller\">%s</span>",
-		       safe_name.c_str(), safe_description.c_str());
-	  }
+        Glib::ustring safe_name = Glib::Markup::escape_text(pkg.Name());
+        if(ver.end())
+          row[Name] = ssprintf("<b>%s</b>", safe_name.c_str());
+        else
+          {
+            Glib::ustring safe_description =
+              Glib::Markup::escape_text(transcode(get_short_description(ver,
+                                                                        apt_package_records),
+                                                  "UTF-8"));
+            row[Name] =
+              ssprintf("<b>%s</b>\n<span size=\"smaller\">%s</span>",
+                       safe_name.c_str(), safe_description.c_str());
+          }
       }
     row[Section] = (!pkg.end() && pkg.Section()) ? pkg.Section() : "";
     row[Version] = (!ver.end() && ver.VerStr()) ? ver.VerStr() : "";
+  }
+
+  void PackagesColumns::fill_header(Gtk::TreeModel::Row &row,
+                                    Glib::ustring text) const
+  {
+    row[PkgIterator] = pkgCache::PkgIterator();
+    row[VerIterator] = pkgCache::VerIterator();
+
+    row[BgColor] = "light yellow"; // Say we want blue header..
+    row[BgSet] = true; // We do want to put color in there, yes.
+
+    row[CurrentStatus] = ""; // dummy
+
+    row[SelectedStatus] = ""; // dummy
+
+    // This is the content of the header
+    row[Name] = "<span size=\"large\">"+text+"</span>";
+
+    row[Section] = ""; // dummy
+    row[Version] = ""; // dummy
   }
 
   PackagesTreeView::PackagesTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::TreeView(cobject)
