@@ -81,7 +81,7 @@ namespace gui
 
   int TabsManager::append_page(Tab& tab)
   {
-    int rval;
+    int rval = 0;
     switch (tab.get_type())
       {
     case Dashboard:
