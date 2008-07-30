@@ -190,7 +190,7 @@ namespace gui
 
     void finish()
     {
-      store->set_sort_column(packages_columns->Name, Gtk::SORT_ASCENDING);
+      store->set_sort_column(packages_columns->Version, Gtk::SORT_ASCENDING);
       // FIXME: Hack while finding a nonblocking thread join.
       finished = true;
     }
@@ -245,7 +245,7 @@ namespace gui
 
     void finish()
     {
-      store->set_sort_column(packages_columns->Name, Gtk::SORT_ASCENDING);
+      store->set_sort_column(packages_columns->Version, Gtk::SORT_ASCENDING);
       // FIXME: Hack while finding a nonblocking thread join.
       finished = true;
     }
