@@ -140,30 +140,20 @@ namespace gui
       switch(action)
       {
       case Install:
-        std::cout << "selected for install : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
         (*apt_cache_file)->set_candidate_version(ver, undo);
         (*apt_cache_file)->mark_install(pkg, true, false, undo);
-        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
         break;
       case Remove:
-        std::cout << "selected for remove : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
         (*apt_cache_file)->mark_delete(pkg, false, false, undo);
-        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
         break;
       case Purge:
-        std::cout << "selected for purge : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
         (*apt_cache_file)->mark_delete(pkg, true, false, undo);
-        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
         break;
       case Keep:
-        std::cout << "selected for keep : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
         (*apt_cache_file)->mark_keep(pkg, false, false, undo);
-        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
         break;
       case Hold:
-        std::cout << "selected for hold : " << pkg.Name() << " (" << ver.VerStr() << ") , status from " << selected_state_string(pkg, pkg.VersionList());
         (*apt_cache_file)->mark_delete(pkg, false, true, undo);
-        std::cout << " to " << selected_state_string(pkg, ver) << std::endl;
         break;
       default:
         break;
