@@ -41,7 +41,7 @@ namespace gui
 {
   class DependsViewGenerator : public PackagesTreeModelGenerator
   {
-    Glib::RefPtr<Gtk::ListStore> store;
+    Glib::RefPtr<Gtk::TreeStore> store;
     PackagesColumns *packages_columns;
 
   private:
@@ -50,7 +50,7 @@ namespace gui
       // FIXME: Hack while finding a nonblocking thread join.
       finished = false;
       packages_columns = _packages_columns;
-      store = Gtk::ListStore::create(*packages_columns);
+      store = Gtk::TreeStore::create(*packages_columns);
     }
 
   public:
@@ -70,14 +70,121 @@ namespace gui
     void add(const pkgCache::PkgIterator &currpkg, const pkgCache::VerIterator &currver,
              std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
     {
-      for (pkgCache::DepIterator dep = currver.DependsList(); dep.end() == false; dep++)
+      for(pkgCache::DepIterator dep = currver.DependsList();
+      !dep.end(); ++dep)
       {
-        Gtk::TreeModel::iterator iter = store->append();
-        Gtk::TreeModel::Row row = *iter;
+        pkgCache::DepIterator start, end;
+        surrounding_or(dep, start, end);
+        bool first = true;
 
-        reverse_packages_store->insert(std::make_pair(dep.TargetPkg(), iter));
+        Gtk::TreeModel::iterator tree;
+        Gtk::TreeModel::Row row;
 
-	packages_columns->fill_row(row, dep.TargetPkg(), dep.TargetPkg().CurrentVer());
+        for(pkgCache::DepIterator todisp = start;
+        todisp != end; ++todisp)
+        {
+          Gtk::TreeModel::iterator tree2;
+          Gtk::TreeModel::Row row2;
+
+          const bool is_or_continuation = !first;
+          first = false;
+
+          if(!is_or_continuation)
+          {
+            tree = store->append();
+            row = *tree;
+            packages_columns->fill_row(row, pkgCache::PkgIterator(), pkgCache::VerIterator());
+            row[packages_columns->Name] = Glib::ustring(todisp.DepType()) + ": " + Glib::ustring(todisp.TargetPkg().Name());
+          }
+          else
+          {
+            row[packages_columns->Name] = row[packages_columns->Name] + " | " + Glib::ustring(todisp.ParentPkg().Name());
+          }
+
+          tree2 = store->append(tree->children());
+          row2 = *tree2;
+
+          packages_columns->fill_row(row2, pkgCache::PkgIterator(), pkgCache::VerIterator());
+
+          row2[packages_columns->Name] = todisp.TargetPkg().Name();
+
+          if(todisp->CompareOp != pkgCache::Dep::NoOp &&
+              todisp.TargetVer() != NULL)
+          {
+            row2[packages_columns->Version] = Glib::ustring(todisp.CompType())+" "+Glib::ustring(todisp.TargetVer());
+          }
+          else
+          {
+            row2[packages_columns->Version] = "N/A";
+          }
+
+          bool resolvable = false;
+
+          // Insert the various resolutions of this dep.  First direct
+          // resolutions:
+          {
+            std::vector<pkgCache::VerIterator> direct_resolutions;
+            for(pkgCache::VerIterator ver = todisp.TargetPkg().VersionList();
+            !ver.end(); ++ver)
+            {
+              if(_system->VS->CheckDep(ver.VerStr(), todisp->CompareOp, todisp.TargetVer()))
+              {
+                resolvable = true;
+                direct_resolutions.push_back(ver);
+              }
+            }
+
+            if(!direct_resolutions.empty())
+            {
+              for(std::vector<pkgCache::VerIterator>::const_iterator it = direct_resolutions.begin();
+              it != direct_resolutions.end(); ++it)
+              {
+                Gtk::TreeModel::iterator tree3 = store->append(tree2->children());
+                Gtk::TreeModel::Row row3 = *tree3;
+                reverse_packages_store->insert(std::make_pair(it->ParentPkg(), tree3));
+                packages_columns->fill_row(row3, it->ParentPkg(), *it);
+              }
+            }
+          }
+
+          // Check for resolutions through virtual deps.
+          {
+            std::vector<pkgCache::VerIterator> virtual_resolutions;
+
+            for(pkgCache::PrvIterator prv = todisp.TargetPkg().ProvidesList();
+            !prv.end(); ++prv)
+            {
+              if(_system->VS->CheckDep(prv.ProvideVersion(), todisp->CompareOp, todisp.TargetVer()))
+              {
+                resolvable = true;
+                virtual_resolutions.push_back(currver);
+              }
+            }
+
+
+            if(!virtual_resolutions.empty())
+            {
+              for(std::vector<pkgCache::VerIterator>::const_iterator it = virtual_resolutions.begin();
+              it != virtual_resolutions.end(); ++it)
+              {
+                Gtk::TreeModel::iterator tree3 = store->append(tree2->children());
+                Gtk::TreeModel::Row row3 = *tree3;
+                reverse_packages_store->insert(std::make_pair(it->ParentPkg(), tree3));
+                packages_columns->fill_row(row3, it->ParentPkg(), *it);
+              }
+            }
+          }
+
+          if(!resolvable)
+          {
+            Gtk::TreeModel::iterator tree3 = store->append(tree2->children());
+            Gtk::TreeModel::Row row3 = *tree3;
+
+            packages_columns->fill_row(row3, pkgCache::PkgIterator(), pkgCache::VerIterator());
+
+            row3[packages_columns->Name] = "Not available";
+          }
+        }
       }
     }
 
@@ -320,13 +427,16 @@ namespace gui
     buffer->insert_with_tag(buffer->end(), "Package: " + Glib::ustring(pkg.Name()), refTagMatch);
     buffer->insert(buffer->end(), "\nVersion: " + Glib::ustring(ver.VerStr()));
 
+    buffer->insert_with_tag(buffer->end(), "\nDependencies:\n", refTagMatch);
+
+    // Disabling this for now
+    //insert_deps(ver, buffer, buffer->end());
+
     pDependsView = new PackagesView(sigc::ptr_fun(DependsViewGenerator::create),
         Gnome::Glade::Xml::create(glade_main_file, "main_packages_treeview"),
         pkg, ver);
-
-    buffer->insert_with_tag(buffer->end(), "\nDependencies:\n", refTagMatch);
-
-    insert_deps(ver, buffer, buffer->end());
+    pDependsView->get_treeview()->get_column(0)->set_fixed_width(80);
+    pDependsView->get_treeview()->expand_all();
 
     Glib::RefPtr<Gtk::TextChildAnchor> DependsViewAnchor = buffer->create_child_anchor(buffer->end());
     textview->add_child_at_anchor(*(pDependsView->get_treeview()), DependsViewAnchor);
