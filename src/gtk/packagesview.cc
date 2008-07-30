@@ -72,7 +72,7 @@ namespace gui
   }
 
   // TODO: For some reason, strings do not reflect individual packages status
-  string selected_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  string selected_package_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
     aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
     aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
@@ -99,9 +99,50 @@ namespace gui
     return selected_state;
   }
 
+  string selected_version_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  {
+    aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
+    aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
+    pkgCache::VerIterator candver=state.CandidateVerIter(*apt_cache_file);
+
+    string selected_state = string();
+
+    if(ver.end())
+      return selected_state;
+    // Rest of the show :
+
+    if(state.Status!=2 && estate.selection_state==pkgCache::State::Hold && !state.NowBroken())
+      selected_state += "h";
+    else if(ver.VerStr() == estate.forbidver)
+      selected_state += "F";
+    else if(state.Delete())
+      selected_state += (state.iFlags&pkgDepCache::Purge)?"p":"d";
+    else if(state.InstBroken() && state.InstVerIter(*apt_cache_file)==ver)
+      selected_state += "B";
+    else if(state.NewInstall())
+    {
+      if(candver==ver)
+        selected_state += "i";
+    }
+    else if(state.iFlags&pkgDepCache::ReInstall)
+    {
+      if(ver.ParentPkg().CurrentVer()==ver)
+        selected_state += "i";
+    }
+    else if(state.Upgrade())
+    {
+      if(ver.ParentPkg().CurrentVer()==ver)
+        selected_state += "d";
+      else if(candver==ver)
+        selected_state += "i";
+      selected_state += "u";
+    }
+    return selected_state;
+  }
+
   // TODO: For some reason, color codes do not reflect individual packages status
   //       Or should we try putting multiple colors ?
-  string selected_state_color(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  string selected_package_state_color(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
     aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
     aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
@@ -110,7 +151,7 @@ namespace gui
     if (state.Status != 2
         && (*apt_cache_file)->get_ext_state(pkg).selection_state
             == pkgCache::State::Hold && !state.InstBroken())
-      return "#FFDDDD";
+      return "#FFCCCC";
     if (state.Upgradable() && !pkg.CurrentVer().end() && !candver.end()
         && candver.VerStr() == estate.forbidver)
       // FIXME: does this really deserve its own color?
@@ -118,13 +159,53 @@ namespace gui
     if (state.Delete())
       return ((state.iFlags & pkgDepCache::Purge) ? "#FFBBFF" : "#FFEEFF");
     if (state.InstBroken())
-      return "#FFDDDD";
+      return "#FFCCCC";
     if (state.NewInstall())
-      return "#EEFFEE";
+      return "#DDFFDD";
     if (state.Install() && (state.iFlags & pkgDepCache::ReInstall))
       return "#BBFFBB";
     if (state.Upgrade())
-      return "#EEEEFF";
+      return "#DDDDFF";
+    return "white";
+  }
+
+  string selected_version_state_color(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  {
+    aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
+    aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
+    pkgCache::VerIterator candver=state.CandidateVerIter(*apt_cache_file);
+
+    if(ver.end())
+      return "white";
+
+    if(state.Status!=2 && estate.selection_state==pkgCache::State::Hold && !state.NowBroken())
+      return "#FFCCCC"; // hold
+    else if(ver.VerStr() == estate.forbidver)
+      // FIXME: does this really deserve its own color?
+      return "dark red"; // forbid
+    else if(state.Delete())
+      return ((state.iFlags&pkgDepCache::Purge) ? "#FFBBFF" /* purge */ : "#FFEEFF" /* remove */);
+    else if(state.InstBroken() && state.InstVerIter(*apt_cache_file)==ver)
+      return "#FFCCCC"; // broken
+    else if(state.NewInstall())
+    {
+      if(candver==ver)
+        return "#DDFFDD"; // install
+    }
+    else if(state.iFlags&pkgDepCache::ReInstall)
+    {
+      if(ver.ParentPkg().CurrentVer()==ver)
+        return "#DDFFDD"; // install
+    }
+    else if(state.Upgrade())
+    {
+      if(ver.ParentPkg().CurrentVer()==ver)
+        return "#FFEEFF"; // remove
+      else if(candver==ver)
+        return "#DDFFDD"; // install
+    }
+
+    // Make sure we return something
     return "white";
   }
 
@@ -215,6 +296,7 @@ namespace gui
   {
     add(PkgIterator);
     add(VerIterator);
+    add(BgSet);
     add(BgColor);
     add(CurrentStatus);
     add(SelectedStatus);
@@ -225,19 +307,35 @@ namespace gui
 
   void PackagesColumns::fill_row(Gtk::TreeModel::Row &row,
 				 const pkgCache::PkgIterator &pkg,
-				 const pkgCache::VerIterator &ver) const
+				 const pkgCache::VerIterator &ver,
+				 bool version_specific) const
   {
     row[PkgIterator] = pkg;
     row[VerIterator] = ver;
 
-    row[BgColor] = (!pkg.end() && !ver.end())
-      ? selected_state_color(pkg, ver) : "white";
+    if (!pkg.end() && !ver.end())
+      {
+      if (version_specific)
+        row[BgColor] = selected_version_state_color(pkg, ver);
+      else
+        row[BgColor] = selected_package_state_color(pkg, ver);
+      }
+    else
+      row[BgColor] = "white";
+    row[BgSet] = (row[BgColor] != "white");
 
     row[CurrentStatus] = (!pkg.end() && !ver.end())
       ? current_state_string(pkg, ver) : "";
 
-    row[SelectedStatus] = (!pkg.end() && !ver.end())
-      ? selected_state_string(pkg, ver) : "";
+      if (!pkg.end() && !ver.end())
+        {
+        if (version_specific)
+          row[SelectedStatus] = selected_version_state_string(pkg, ver);
+        else
+          row[SelectedStatus] = selected_package_state_string(pkg, ver);
+        }
+      else
+        row[SelectedStatus] = "";
 
     if(pkg.end())
       row[Name] = "";
@@ -388,6 +486,7 @@ namespace gui
 					     int size)
   {
     Gtk::CellRenderer* treeview_cellrenderer = treeview_column->get_first_cell_renderer();
+    treeview_column->add_attribute(treeview_cellrenderer->property_cell_background_set(), packages_columns->BgSet);
     treeview_column->add_attribute(treeview_cellrenderer->property_cell_background(), packages_columns->BgColor);
     treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
     treeview_column->set_fixed_width(size);

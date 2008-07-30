@@ -95,6 +95,7 @@ namespace gui
     public:
       Gtk::TreeModelColumn<pkgCache::PkgIterator> PkgIterator;
       Gtk::TreeModelColumn<pkgCache::VerIterator> VerIterator;
+      Gtk::TreeModelColumn<bool> BgSet;
       Gtk::TreeModelColumn<Glib::ustring> BgColor;
       Gtk::TreeModelColumn<Glib::ustring> CurrentStatus;
       Gtk::TreeModelColumn<Glib::ustring> SelectedStatus;
@@ -107,13 +108,17 @@ namespace gui
       /** \brief Fill in the contents of a tree-model row for the given
        *  package/version pair.
        *
-       *  \param row    The row to fill in; any existing values will be overwritten.
-       *  \param pkg    The package to display in this row.
-       *  \param ver    The version to display in this row.
+       *  \param row                 The row to fill in; any existing values
+       *                             will be overwritten.
+       *  \param pkg                 The package to display in this row.
+       *  \param ver                 The version to display in this row.
+       *  \param version_specific    The row is version specific (influences
+       *                             coloring and selected status display)
        */
       void fill_row(Gtk::TreeModel::Row &row,
 		    const pkgCache::PkgIterator &pkg,
-		    const pkgCache::VerIterator &ver) const;
+		    const pkgCache::VerIterator &ver,
+		    bool version_specific = false) const;
   };
 
   /** \brief Interface for generating tree-views.
