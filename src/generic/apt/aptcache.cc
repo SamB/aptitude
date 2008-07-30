@@ -955,6 +955,10 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo,
 
   for(pkgCache::PkgIterator pkg=PkgBegin(); !pkg.end(); pkg++)
     {
+      // Set to true if we should signal that this package's visible
+      // state changed.
+      bool visibly_changed = false;
+
       if(PkgState[pkg->ID].Mode!=backup_state.PkgState[pkg->ID].Mode ||
 	 (PkgState[pkg->ID].Flags & pkgCache::Flag::Auto) != (backup_state.PkgState[pkg->ID].Flags & pkgCache::Flag::Auto) ||
 	 package_states[pkg->ID].selection_state!=backup_state.AptitudeState[pkg->ID].selection_state ||
@@ -1013,14 +1017,27 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo,
 		}
 	    }
 
-	  if(changed_packages)
-	    changed_packages->insert(pkg);
+	  visibly_changed = true;
 
 	  if(undo)
 	    undo->add_item(state_restorer(pkg,
 					  backup_state.PkgState[pkg->ID],
 					  backup_state.AptitudeState[pkg->ID]));
 	}
+      // Detect things like broken-ness and other changes that
+      // shouldn't trigger undo but might trigger updating the
+      // package's display.
+      else if(PkgState[pkg->ID].Flags != backup_state.PkgState[pkg->ID].Flags ||
+	      PkgState[pkg->ID].DepState != backup_state.PkgState[pkg->ID].DepState ||
+	      PkgState[pkg->ID].CandidateVer != backup_state.PkgState[pkg->ID].CandidateVer ||
+	      PkgState[pkg->ID].Marked != backup_state.PkgState[pkg->ID].Marked ||
+	      PkgState[pkg->ID].Garbage != backup_state.PkgState[pkg->ID].Garbage ||
+	      package_states[pkg->ID].user_tags != backup_state.AptitudeState[pkg->ID].user_tags ||
+	      package_states[pkg->ID].new_package != backup_state.AptitudeState[pkg->ID].new_package)
+	visibly_changed = true;
+
+      if(visibly_changed && changed_packages != NULL)
+	changed_packages->insert(pkg);
     }
 }
 
