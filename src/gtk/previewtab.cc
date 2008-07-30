@@ -142,6 +142,7 @@ namespace gui
 
     pPackagesView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PreviewTab::activated_package_handler));
 
+    pPackagesView->get_treeview()->get_column(0)->set_fixed_width(70);
     pPackagesView->get_treeview()->expand_all();
 
     get_widget()->show();

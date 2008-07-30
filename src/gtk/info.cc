@@ -444,6 +444,7 @@ namespace gui
     pVersionsView = new PackagesView(sigc::ptr_fun(VersionsViewGenerator::create),
         Gnome::Glade::Xml::create(glade_main_file, "main_packages_treeview"),
         pkg, ver);
+    pVersionsView->get_treeview()->get_column(2)->set_fixed_width(248);
 
     buffer->insert_with_tag(buffer->end(), "\nVersions:\n", refTagMatch);
     Glib::RefPtr<Gtk::TextChildAnchor> VersionsViewAnchor = buffer->create_child_anchor(buffer->end());
