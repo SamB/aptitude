@@ -70,13 +70,10 @@ namespace gui
 
       reverse_packages_store->insert(std::make_pair(pkg, iter));
 
-      row[packages_columns->PkgIterator] = pkg;
-      row[packages_columns->VerIterator] = ver;
-      row[packages_columns->CurrentStatus] = current_state_string(pkg, ver);
-      row[packages_columns->SelectedStatus] = selected_state_string(pkg, ver);
-      row[packages_columns->Name] = pkg.Name()?pkg.Name():"";
-      row[packages_columns->Section] = pkg.Section()?pkg.Section():"";
-      row[packages_columns->Version] = ver.VerStr();
+      // TODO: fill_row() really should have an overload that creates
+      // a row just for a package.  This would, e.g., change which
+      // version is displayed and change how the color is calculated.
+      packages_columns->fill_row(row, pkg, ver);
     }
 
     void finish()
