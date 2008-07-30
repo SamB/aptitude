@@ -107,20 +107,21 @@ namespace gui
     if (state.Status != 2
         && (*apt_cache_file)->get_ext_state(pkg).selection_state
             == pkgCache::State::Hold && !state.InstBroken())
-      return "dark red";
+      return "#FFDDDD";
     if (state.Upgradable() && !pkg.CurrentVer().end() && !candver.end()
         && candver.VerStr() == estate.forbidver)
+      // FIXME: does this really deserve its own color?
       return "dark red";
     if (state.Delete())
-      return ((state.iFlags & pkgDepCache::Purge) ? "dark red" : "red");
+      return ((state.iFlags & pkgDepCache::Purge) ? "#FFBBFF" : "#FFEEFF");
     if (state.InstBroken())
-      return "dark red";
+      return "#FFDDDD";
     if (state.NewInstall())
-      return "green";
-    if (state.iFlags & pkgDepCache::ReInstall)
-      return "dark green";
+      return "#EEFFEE";
+    if (state.Install() && (state.iFlags & pkgDepCache::ReInstall))
+      return "#BBFFBB";
     if (state.Upgrade())
-      return "yellow";
+      return "#EEEEFF";
     return "white";
   }
 
