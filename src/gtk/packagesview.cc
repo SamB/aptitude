@@ -455,7 +455,7 @@ namespace gui
       Gtk::TreeModel::iterator iter = packages_store->get_iter(path);
       pkgCache::PkgIterator pkg = (*iter)[packages_columns->PkgIterator];
       pkgCache::VerIterator ver = (*iter)[packages_columns->VerIterator];
-      if (pkg && ver)
+      if (!pkg.end() && !ver.end())
       {
         InfoTab * infotab = new InfoTab(_("Info:"));
 	tab_add(infotab);
