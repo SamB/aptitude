@@ -193,7 +193,6 @@ namespace gui
     private:
       PackagesTreeView * treeview;
       PackagesColumns * packages_columns;
-      Glib::RefPtr<Gtk::TreeModel> packages_store;
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store;
       PackagesContextMenu * context;
       PackagesMarker * marker;
@@ -298,7 +297,7 @@ namespace gui
       PackagesTreeView * get_treeview() { return treeview; };
       PackagesColumns * get_packages_columns() { return packages_columns; };
       PackagesMarker * get_marker() { return marker; };
-      Glib::RefPtr<Gtk::TreeModel> get_packages_store() { return packages_store; };
+    Glib::RefPtr<Gtk::TreeModel> get_packages_store() { return treeview->get_model(); };
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_packages_store() { return reverse_packages_store; };
   };
 

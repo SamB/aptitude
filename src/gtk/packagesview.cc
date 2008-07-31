@@ -617,10 +617,11 @@ namespace gui
     reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
     if(!limit.empty())
       {
-	packages_store = build_store(generatorK,
-				     packages_columns,
-				     reverse_packages_store,
-				     limit);
+	Glib::RefPtr<Gtk::TreeModel> packages_store =
+	  build_store(generatorK,
+		      packages_columns,
+		      reverse_packages_store,
+		      limit);
 	treeview->set_model(packages_store);
       }
   }
@@ -631,10 +632,11 @@ namespace gui
   {
     init(_generatorK, refGlade);
     reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
-    packages_store = build_store_single(generatorK,
-                                        packages_columns,
-                                        reverse_packages_store,
-                                        pkg, ver);
+    Glib::RefPtr<Gtk::TreeModel> packages_store =
+      build_store_single(generatorK,
+			 packages_columns,
+			 reverse_packages_store,
+			 pkg, ver);
     treeview->set_model(packages_store);
   }
 
@@ -649,7 +651,7 @@ namespace gui
 
   void PackagesView::row_activated_package_handler(const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
   {
-      Gtk::TreeModel::iterator iter = packages_store->get_iter(path);
+      Gtk::TreeModel::iterator iter = get_packages_store()->get_iter(path);
       pkgCache::PkgIterator pkg = (*iter)[packages_columns->PkgIterator];
       pkgCache::VerIterator ver = (*iter)[packages_columns->VerIterator];
       if (!pkg.end() && !ver.end())
@@ -663,7 +665,8 @@ namespace gui
   void PackagesView::relimit_packages_view(Glib::ustring limit)
   {
     reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
-    packages_store = build_store(generatorK, packages_columns, reverse_packages_store, limit);
+    Glib::RefPtr<Gtk::TreeModel> packages_store =
+      build_store(generatorK, packages_columns, reverse_packages_store, limit);
     treeview->set_model(packages_store);
   }
 
