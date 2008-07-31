@@ -100,6 +100,21 @@ namespace gui
 
     pPackagesView = new PackagesView(sigc::ptr_fun(PackagesTabGenerator::create), get_xml());
 
+    // Ask the user to enter a search pattern.
+    //
+    // TODO: a similar message should appear when a search produces no
+    // matches.
+    {
+      Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*pPackagesView->get_packages_columns());
+
+      Gtk::TreeModel::iterator iter = store->append();
+      Gtk::TreeModel::Row row = *iter;
+      pPackagesView->get_packages_columns()->fill_header(row,
+							 "Enter a search and click \"Find\" to display packages.");
+
+      pPackagesView->get_treeview()->set_model(store);
+    }
+
     pPackagesView->get_treeview()->set_fixed_height_mode(true);
 
     pPackagesView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));

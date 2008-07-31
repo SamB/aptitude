@@ -616,11 +616,14 @@ namespace gui
   {
     init(_generatorK, refGlade);
     reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
-    packages_store = build_store(generatorK,
-                                 packages_columns,
-                                 reverse_packages_store,
-                                 limit);
-    treeview->set_model(packages_store);
+    if(!limit.empty())
+      {
+	packages_store = build_store(generatorK,
+				     packages_columns,
+				     reverse_packages_store,
+				     limit);
+	treeview->set_model(packages_store);
+      }
   }
 
   PackagesView::PackagesView(const GeneratorK &_generatorK,

@@ -264,6 +264,8 @@ namespace gui
     public:
       /** \brief Construct a new packages view.
        *
+       *  The store will not be initialized if _limit is not set.
+       *
        *  \param _generatorK A constructor for the callback
        *                     object used to build the model.
        *  \param refGlade    The XML tree containing
