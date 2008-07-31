@@ -183,8 +183,6 @@ public:
      */
     pkgDepCache::ActionGroup *parent_group;
 
-    std::set<pkgCache::PkgIterator> *changed_packages;
-
     aptitudeDepCache &cache;
 
     undo_group *group;
@@ -196,12 +194,8 @@ public:
      *  \param cache  The package cache on which to act.
      *  \param group  The undo group to add changes to, or NULL to not remember
      *                changes.
-     *  \param _changed_packages   A set to which the packages whose state
-     *                             changed will be added, or NULL for no
-     *                             set.
      */
-    action_group(aptitudeDepCache &cache, undo_group *group = NULL,
-		 std::set<pkgCache::PkgIterator> *_changed_packages = NULL);
+    action_group(aptitudeDepCache &cache, undo_group *group = NULL);
 
     ~action_group();
   };
@@ -338,8 +332,7 @@ private:
    */
   void sweep();
   void begin_action_group();
-  void end_action_group(undo_group *undo,
-			std::set<pkgCache::PkgIterator> *changed_packages);
+  void end_action_group(undo_group *undo);
 public:
   /** Create a new depcache from the given cache and policy.  By
    *  default, the depcache is readonly if and only if it is not
@@ -516,6 +509,11 @@ public:
    *  changed.
    */
   sigc::signal0<void> package_state_changed;
+
+  /** \brief This signal is emitted when any changes to a package's state
+   *  that might need to trigger a redraw of that package take place.
+   */
+  sigc::signal1<void, const std::set<pkgCache::PkgIterator> *> package_states_changed;
 
   // Emitted when a package's categorization is potentially changed.
   // (in particular, when package "new" states are forgotten)

@@ -58,13 +58,6 @@ namespace gui
   Gtk::Main * pKit;
   AptitudeWindow * pMainWindow;
 
-  /**
-   * Signal called when a package status change happens, usually when marking it.
-   * Used by PackagesView for global updating.
-   * TODO: Check if it doesn't already exists.
-   */
-  sigc::signal<void, std::set<pkgCache::PkgIterator> > signal_on_changed_packages;
-
   // True if a download or package-list update is proceeding.  This hopefully will
   // avoid the nasty possibility of collisions between them.
   // FIXME: uses implicit locking -- if multithreading happens, should use a mutex
@@ -253,37 +246,29 @@ namespace gui
   {
     if(apt_cache_file)
     {
-      std::set<pkgCache::PkgIterator> changed_packages;
-      {
-        aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
-        undo_group *undo=new apt_undo_group;
+      aptitudeDepCache::action_group group(*apt_cache_file, NULL);
+      undo_group *undo=new apt_undo_group;
 
-        (*apt_cache_file)->mark_all_upgradable(true, true, undo);
+      (*apt_cache_file)->mark_all_upgradable(true, true, undo);
 
-        if(!undo->empty())
-          apt_undos->add_item(undo);
-        else
-          delete undo;
-      }
-      signal_on_changed_packages(changed_packages);
+      if(!undo->empty())
+	apt_undos->add_item(undo);
+      else
+	delete undo;
     }
   }
 
   void do_keep_all()
   {
     std::auto_ptr<undo_group> undo(new apt_undo_group);
-    std::set<pkgCache::PkgIterator> changed_packages;
-    {
-      aptitudeDepCache::action_group group(*apt_cache_file, undo.get(), &changed_packages);
+    aptitudeDepCache::action_group group(*apt_cache_file, undo.get());
 
-      for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin();
-          !i.end(); ++i)
-        (*apt_cache_file)->mark_keep(i, false, false, undo.get());
+    for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin();
+	!i.end(); ++i)
+      (*apt_cache_file)->mark_keep(i, false, false, undo.get());
 
-      if(!undo.get()->empty())
-        apt_undos->add_item(undo.release());
-    }
-    signal_on_changed_packages(changed_packages);
+    if(!undo.get()->empty())
+      apt_undos->add_item(undo.release());
   }
 
   /**

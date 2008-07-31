@@ -199,6 +199,10 @@ namespace gui
       GeneratorK generatorK;
       void init(const GeneratorK &_generatorK,
                                    Glib::RefPtr<Gnome::Glade::Xml> refGlade);
+
+      void on_cache_closed();
+      void on_cache_reloaded();
+
       /** \brief Build the tree model using the given generator.
        *
        *  This adds all packages that pass the current limit to the
@@ -290,7 +294,7 @@ namespace gui
       ~PackagesView();
       void context_menu_handler(GdkEventButton * event);
       void row_activated_package_handler(const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
-      void refresh_packages_view(std::set<pkgCache::PkgIterator> changed_packages);
+      void refresh_packages_view(const std::set<pkgCache::PkgIterator> *changed_packages);
       void relimit_packages_view(Glib::ustring limit);
       // TODO: Not used yet, should be used in place of PackagesTab::activate_package_handler();
       //sigc::signal<void, pkgCache::PkgIterator, pkgCache::VerIterator> signal_on_package_selection;

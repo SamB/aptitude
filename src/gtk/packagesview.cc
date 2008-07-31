@@ -261,16 +261,12 @@ namespace gui
       {
         iter_list.push_back(view->get_packages_store()->get_iter(*path));
       }
-      std::set<pkgCache::PkgIterator> changed_packages;
-      {
-        aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
-        while (!iter_list.empty())
+      aptitudeDepCache::action_group group(*apt_cache_file, NULL);
+      while (!iter_list.empty())
         {
           callback(iter_list.front(), action);
           iter_list.pop_front();
         }
-      }
-      signal_on_changed_packages(changed_packages);
     }
   }
 
@@ -556,6 +552,20 @@ namespace gui
     return treeview->append_column(*treeview_column);
   }
 
+  void PackagesView::on_cache_closed()
+  {
+    // TODO: throw away all the model rows here?
+  }
+
+  void PackagesView::on_cache_reloaded()
+  {
+    if(apt_cache_file != NULL)
+      (*apt_cache_file)->package_states_changed.connect(sigc::mem_fun(*this, &PackagesView::refresh_packages_view));
+    // TODO: we should rebuild the display, but we can't do that
+    // without more information about what we were displaying.  Maybe
+    // we should just rely on the tab to trigger a rebuild.
+  }
+
   void PackagesView::init(const GeneratorK &_generatorK,
                           Glib::RefPtr<Gnome::Glade::Xml> refGlade)
   {
@@ -569,7 +579,10 @@ namespace gui
 
     treeview->signal_context_menu.connect(sigc::mem_fun(*this, &PackagesView::context_menu_handler));
     treeview->signal_row_activated().connect(sigc::mem_fun(*this, &PackagesView::row_activated_package_handler));
-    signal_on_changed_packages.connect(sigc::mem_fun(*this, &PackagesView::refresh_packages_view));
+    if(apt_cache_file != NULL)
+      (*apt_cache_file)->package_states_changed.connect(sigc::mem_fun(*this, &PackagesView::refresh_packages_view));
+    cache_closed.connect(sigc::mem_fun(*this, &PackagesView::on_cache_closed));
+    cache_reloaded.connect(sigc::mem_fun(*this, &PackagesView::on_cache_reloaded));
 
     append_column(Glib::ustring(_("C")), CurrentStatus, packages_columns->CurrentStatus, 32);
     append_column(Glib::ustring(_("S")), SelectedStatus, packages_columns->SelectedStatus, 32);
@@ -670,13 +683,13 @@ namespace gui
     treeview->set_model(packages_store);
   }
 
-  void PackagesView::refresh_packages_view(std::set<pkgCache::PkgIterator> changed_packages)
+  void PackagesView::refresh_packages_view(const std::set<pkgCache::PkgIterator> *changed_packages)
   {
     guiOpProgress * p = gen_progress_bar();
     int num=0;
-    int total=changed_packages.size();
+    int total = changed_packages->size();
 
-    for(std::set<pkgCache::PkgIterator>::iterator pkg = changed_packages.begin(); pkg != changed_packages.end(); pkg++)
+    for(std::set<pkgCache::PkgIterator>::iterator pkg = changed_packages->begin(); pkg != changed_packages->end(); pkg++)
       {
         p->OverallProgress(num, total, 1, _("Building view"));
 

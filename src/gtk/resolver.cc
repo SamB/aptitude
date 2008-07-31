@@ -439,13 +439,9 @@ namespace gui
       undo_group *undo = new apt_undo_group;
       try
       {
-        std::set<pkgCache::PkgIterator> changed_packages;
-        {
-          aptitudeDepCache::action_group group(*apt_cache_file, NULL, &changed_packages);
-          (*apt_cache_file)->apply_solution(resman->get_solution(resman->get_selected_solution(), 5000), undo);
-          pResolverView->resolver_store->clear();
-        }
-        signal_on_changed_packages(changed_packages);
+	aptitudeDepCache::action_group group(*apt_cache_file, NULL);
+	(*apt_cache_file)->apply_solution(resman->get_solution(resman->get_selected_solution(), 5000), undo);
+	pResolverView->resolver_store->clear();
         std::cout << "Resolver: selected solution applied" << std::endl;
       }
       catch (NoMoreSolutions)

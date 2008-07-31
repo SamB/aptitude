@@ -171,10 +171,8 @@ public:
 };
 
 aptitudeDepCache::action_group::action_group(aptitudeDepCache &cache,
-					     undo_group *group,
-					     std::set<pkgCache::PkgIterator> *_changed_packages)
+					     undo_group *group)
   : parent_group(new pkgDepCache::ActionGroup(cache)),
-    changed_packages(_changed_packages),
     cache(cache), group(group)
 {
   cache.begin_action_group();
@@ -185,7 +183,7 @@ aptitudeDepCache::action_group::~action_group()
   // Force the parent to mark-and-sweep first.
   delete parent_group;
 
-  cache.end_action_group(group, changed_packages);
+  cache.end_action_group(group);
 }
 
 aptitudeDepCache::aptitudeDepCache(pkgCache *Cache, Policy *Plcy)
@@ -1651,9 +1649,10 @@ void aptitudeDepCache::begin_action_group()
   group_level++;
 }
 
-void aptitudeDepCache::end_action_group(undo_group *undo,
-					std::set<pkgCache::PkgIterator> *changed_packages)
+void aptitudeDepCache::end_action_group(undo_group *undo)
 {
+  std::set<pkgCache::PkgIterator> changed_packages;
+
   eassert(group_level>0);
 
   if(group_level==1)
@@ -1669,11 +1668,12 @@ void aptitudeDepCache::end_action_group(undo_group *undo,
 
       sweep();
 
-      cleanup_after_change(undo, changed_packages);
+      cleanup_after_change(undo, &changed_packages);
 
       duplicate_cache(&backup_state);
 
       package_state_changed();
+      package_states_changed(&changed_packages);
     }
 
   group_level--;

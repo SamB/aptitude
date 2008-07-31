@@ -46,13 +46,6 @@ namespace gui
   extern std::string glade_main_file;
   extern bool want_to_quit;
 
-  /**
-   * Signal called when a package status change happens, usually when marking it.
-   * Used by PackagesView for global updating.
-   * TODO: Check if it doesn't already exists.
-   */
-  extern sigc::signal<void, std::set<pkgCache::PkgIterator> > signal_on_changed_packages;
-
   void gtk_update();
 
   void tab_add(Tab *tab);
