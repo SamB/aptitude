@@ -38,10 +38,6 @@ namespace gui
       Gtk::TextView * textview;
       PackagesView * pVersionsView;
       PackagesView * pDependsView;
-
-      void insert_deps(pkgCache::VerIterator ver,
-		       const Glib::RefPtr<Gtk::TextBuffer> &buffer,
-		       Gtk::TextBuffer::iterator where);
     public:
       InfoTab(Glib::ustring label);
       void disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);

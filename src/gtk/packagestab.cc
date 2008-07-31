@@ -95,7 +95,7 @@ namespace gui
     get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
     pLimitButton->signal_clicked().connect(sigc::mem_fun(*this, &PackagesTab::repopulate_model));
 
-    pPackagesView = new PackagesView(sigc::ptr_fun(PackagesTabGenerator::create), get_xml());
+    pPackagesView = new PackagesView(sigc::ptr_fun(PackagesTabGenerator::create), get_xml(), "main_packages_treeview");
 
     // Ask the user to enter a search pattern.
     //

@@ -256,161 +256,10 @@ namespace gui
   };
 
   InfoTab::InfoTab(Glib::ustring label)
-  : Tab(Info, label, Gnome::Glade::Xml::create(glade_main_file, "main_info_scrolledwindow"), "main_info_scrolledwindow")
+  : Tab(Info, label, Gnome::Glade::Xml::create(glade_main_file, "main_info_hpaned"), "main_info_hpaned")
   {
     get_xml()->get_widget("main_info_textview", textview);
     get_widget()->show();
-  }
-
-  void InfoTab::insert_deps(pkgCache::VerIterator ver,
-			    const Glib::RefPtr<Gtk::TextBuffer> &buffer,
-			    Gtk::TextBuffer::iterator where)
-  {
-    const std::string bullet = cwidget::util::transcode(L"\x2022 ");
-
-    Glib::RefPtr<Gtk::TextBuffer::Tag> dependency_head = Gtk::TextBuffer::Tag::create();
-    dependency_head->property_pixels_above_lines() = 10;
-    buffer->get_tag_table()->add(dependency_head);
-
-    Glib::RefPtr<Gtk::TextBuffer::Tag> or_continuation = Gtk::TextBuffer::Tag::create();
-    or_continuation->property_indent() = 5;
-    buffer->get_tag_table()->add(or_continuation);
-
-    Glib::RefPtr<Gtk::TextBuffer::Tag> dep_resolution = Gtk::TextBuffer::Tag::create();
-    dep_resolution->property_indent() = 40;
-    buffer->get_tag_table()->add(dep_resolution);
-
-    Glib::RefPtr<Gtk::TextBuffer::Tag> dep_resolution_item = Gtk::TextBuffer::Tag::create();
-    dep_resolution_item->property_indent() = 60;
-    buffer->get_tag_table()->add(dep_resolution_item);
-
-    Glib::RefPtr<Gtk::TextBuffer::Tag> dep_resolution_item_end = Gtk::TextBuffer::Tag::create();
-    dep_resolution_item->property_indent() = 60;
-    dep_resolution_item_end->property_pixels_below_lines() = 10;
-    buffer->get_tag_table()->add(dep_resolution_item_end);
-
-    for(pkgCache::DepIterator dep = ver.DependsList();
-	!dep.end(); ++dep)
-      {
-	pkgCache::DepIterator start, end;
-	surrounding_or(dep, start, end);
-	bool first = true;
-
-	for(pkgCache::DepIterator todisp = start;
-	    todisp != end; ++todisp)
-	{
-	  const bool is_or_continuation = !first;
-	  first = false;
-
-	  Glib::RefPtr<Gtk::TextBuffer::Tag> head_tag =
-	    is_or_continuation ? or_continuation : dependency_head;
-
-	  if(!is_or_continuation)
-	    {
-	      where = buffer->insert_with_tag(where, todisp.ParentPkg().Name(), head_tag);
-	      where = buffer->insert_with_tag(where, " ", head_tag);
-	      where = buffer->insert_with_tag(where, todisp.DepType(), head_tag);
-	      where = buffer->insert_with_tag(where, " ", head_tag);
-	    }
-	  else
-	    where = buffer->insert_with_tag(where, " or ", head_tag);
-
-
-
-	  std::string targetstr = todisp.TargetPkg().Name();
-	  if(todisp->CompareOp != pkgCache::Dep::NoOp &&
-	     todisp.TargetVer() != NULL)
-	    {
-	      targetstr += "(";
-	      targetstr += todisp.CompType();
-	      targetstr += " ";
-	      targetstr += todisp.TargetVer();
-	      targetstr += ")";
-	    }
-
-	  where = buffer->insert_with_tag(where, targetstr.c_str(), head_tag);
-	  where = buffer->insert(where, "\n");
-
-	  bool resolvable = false;
-
-	  // Insert the various resolutions of this dep.  First direct
-	  // resolutions:
-	  {
-	    std::vector<pkgCache::VerIterator> direct_resolutions;
-	    for(pkgCache::VerIterator ver = todisp.TargetPkg().VersionList();
-		!ver.end(); ++ver)
-	      {
-		if(_system->VS->CheckDep(ver.VerStr(), todisp->CompareOp, todisp.TargetVer()))
-		  {
-		    resolvable = true;
-		    direct_resolutions.push_back(ver);
-		  }
-	      }
-
-	    if(!direct_resolutions.empty())
-	      {
-		using cwidget::util::ssprintf;
-		where = buffer->insert_with_tag(where,
-					       ssprintf(_("Versions of %s satisfying this dependency:\n"),
-							todisp.TargetPkg().Name()),
-					       dep_resolution);
-
-		for(std::vector<pkgCache::VerIterator>::const_iterator it = direct_resolutions.begin();
-		    it != direct_resolutions.end(); ++it)
-		  {
-		    where = buffer->insert_with_tag(where, bullet, dep_resolution_item);
-
-		    where = buffer->insert_with_tag(where, it->VerStr(), dep_resolution_item);
-		    where = buffer->insert_with_tag(where, "\n", dep_resolution_item);
-		  }
-	      }
-	  }
-
-	  // Check for resolutions through virtual deps.
-	  {
-	    std::vector<pkgCache::VerIterator> virtual_resolutions;
-
-	    for(pkgCache::PrvIterator prv = todisp.TargetPkg().ProvidesList();
-		!prv.end(); ++prv)
-	      {
-		if(_system->VS->CheckDep(prv.ProvideVersion(), todisp->CompareOp, todisp.TargetVer()))
-		  {
-		    resolvable = true;
-		    virtual_resolutions.push_back(ver);
-		  }
-	      }
-
-
-	    if(!virtual_resolutions.empty())
-	      {
-		using cwidget::util::ssprintf;
-		where = buffer->insert_with_tag(where,
-						ssprintf(_("Packages providing %s:\n"),
-							 targetstr.c_str()),
-						dep_resolution);
-
-		for(std::vector<pkgCache::VerIterator>::const_iterator it = virtual_resolutions.begin();
-		    it != virtual_resolutions.end(); ++it)
-		  {
-		    where = buffer->insert_with_tag(where, bullet, dep_resolution_item);
-		    where = buffer->insert_with_tag(where, it->ParentPkg().Name(), dep_resolution_item);
-		    where = buffer->insert_with_tag(where, " ", dep_resolution_item);
-		    where = buffer->insert_with_tag(where, it->VerStr(), dep_resolution_item);
-		    where = buffer->insert_with_tag(where, "\n", dep_resolution_item);
-		  }
-	      }
-	  }
-
-	  if(!resolvable)
-	    {
-	      using cwidget::util::ssprintf;
-	      where = buffer->insert_with_tag(where,
-					      ssprintf(_("%s is not available.\n"),
-						       targetstr.c_str()),
-					      dep_resolution_item);
-	    }
-	}
-      }
   }
 
   void InfoTab::disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
@@ -426,29 +275,21 @@ namespace gui
     buffer->insert_with_tag(buffer->end(), "Package: " + Glib::ustring(pkg.Name()), refTagMatch);
     buffer->insert(buffer->end(), "\nVersion: " + Glib::ustring(ver.VerStr()));
 
-    buffer->insert_with_tag(buffer->end(), "\nDependencies:\n", refTagMatch);
-
-    // Disabling this for now
-    //insert_deps(ver, buffer, buffer->end());
-
-    pDependsView = new PackagesView(sigc::ptr_fun(DependsViewGenerator::create),
-        Gnome::Glade::Xml::create(glade_main_file, "main_packages_treeview"),
-        pkg, ver);
-    pDependsView->get_treeview()->get_column(0)->set_fixed_width(80);
-    pDependsView->get_treeview()->expand_all();
-
-    Glib::RefPtr<Gtk::TextChildAnchor> DependsViewAnchor = buffer->create_child_anchor(buffer->end());
-    textview->add_child_at_anchor(*(pDependsView->get_treeview()), DependsViewAnchor);
-
     pVersionsView = new PackagesView(sigc::ptr_fun(VersionsViewGenerator::create),
         Gnome::Glade::Xml::create(glade_main_file, "main_packages_treeview"),
-        pkg, ver);
-    pVersionsView->get_treeview()->get_column(2)->set_fixed_width(248);
+        "main_packages_treeview", pkg, ver);
+    pVersionsView->get_treeview()->get_column(2)->set_fixed_width(154);
 
     buffer->insert_with_tag(buffer->end(), "\nVersions:\n", refTagMatch);
     Glib::RefPtr<Gtk::TextChildAnchor> VersionsViewAnchor = buffer->create_child_anchor(buffer->end());
     textview->add_child_at_anchor(*(pVersionsView->get_treeview()), VersionsViewAnchor);
 
+
+    pDependsView = new PackagesView(sigc::ptr_fun(DependsViewGenerator::create),
+        get_xml(), "main_info_dependsview", pkg, ver);
+    pDependsView->get_treeview()->get_column(0)->set_fixed_width(80);
+    pDependsView->get_treeview()->get_column(2)->set_fixed_width(280);
+    pDependsView->get_treeview()->expand_all();
   }
 
 }

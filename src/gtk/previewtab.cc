@@ -138,11 +138,12 @@ namespace gui
     get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
     pLimitButton->signal_clicked().connect(sigc::mem_fun(*this, &PreviewTab::repopulate_model));
 
-    pPackagesView = new PackagesView(sigc::ptr_fun(PreviewTabGenerator::create), get_xml());;
+    pPackagesView = new PackagesView(sigc::ptr_fun(PreviewTabGenerator::create), get_xml(), "main_packages_treeview");;
 
     pPackagesView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PreviewTab::activated_package_handler));
 
     pPackagesView->get_treeview()->get_column(0)->set_fixed_width(70);
+    pPackagesView->get_treeview()->get_column(2)->set_fixed_width(240);
 
     // A PreviewTab should be fully populated by default
     repopulate_model();

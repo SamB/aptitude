@@ -167,7 +167,8 @@ namespace gui
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store;
       GeneratorK generatorK;
       void init(const GeneratorK &_generatorK,
-                                   Glib::RefPtr<Gnome::Glade::Xml> refGlade);
+                Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+                Glib::ustring gladename);
 
       void on_cache_closed();
       void on_cache_reloaded();
@@ -252,10 +253,12 @@ namespace gui
        *                     object used to build the model.
        *  \param refGlade    The XML tree containing
        *                     the widgets for this view.
+       *  \param gladename   The Glade name of the widget.
        *  \param  limit      The limit pattern for the current view.
        */
       PackagesView(const GeneratorK &_generatorK,
                    Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+                   Glib::ustring gladename,
                    Glib::ustring limit = "");
     public:
       /** \brief Construct a new packages view.
@@ -264,11 +267,13 @@ namespace gui
        *                     object used to build the model.
        *  \param refGlade    The XML tree containing
        *                     the widgets for this view.
+       *  \param gladename   The Glade name of the widget.
        *  \param  pkg        The package to add.
        *  \param  ver        The version to add.
        */
       PackagesView(const GeneratorK &_generatorK,
                    Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+                   Glib::ustring gladename,
                    pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
       ~PackagesView();
       void context_menu_handler(GdkEventButton * event);

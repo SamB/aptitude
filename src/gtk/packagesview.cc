@@ -631,9 +631,10 @@ namespace gui
   }
 
   void PackagesView::init(const GeneratorK &_generatorK,
-                          Glib::RefPtr<Gnome::Glade::Xml> refGlade)
+                          Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+                          Glib::ustring gladename)
   {
-    refGlade->get_widget_derived("main_packages_treeview", treeview);
+    refGlade->get_widget_derived(gladename, treeview);
 
     generatorK = _generatorK;
 
@@ -686,9 +687,10 @@ namespace gui
 
   PackagesView::PackagesView(const GeneratorK &_generatorK,
                              Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+                             Glib::ustring gladename,
                              Glib::ustring limit)
   {
-    init(_generatorK, refGlade);
+    init(_generatorK, refGlade, gladename);
     reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
     if(!limit.empty())
       {
@@ -703,9 +705,10 @@ namespace gui
 
   PackagesView::PackagesView(const GeneratorK &_generatorK,
                              Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+                             Glib::ustring gladename,
                              pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
-    init(_generatorK, refGlade);
+    init(_generatorK, refGlade, gladename);
     reverse_packages_store = new std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>;
     Glib::RefPtr<Gtk::TreeModel> packages_store =
       build_store_single(generatorK,
