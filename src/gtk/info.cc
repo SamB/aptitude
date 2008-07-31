@@ -98,7 +98,7 @@ namespace gui
           }
           else
           {
-            row[packages_columns->Name] = row[packages_columns->Name] + " | " + Glib::ustring(todisp.ParentPkg().Name());
+            row[packages_columns->Name] = row[packages_columns->Name] + " | " + Glib::ustring(todisp.TargetPkg().Name());
           }
 
           tree2 = store->append(tree->children());
