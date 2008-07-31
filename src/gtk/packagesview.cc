@@ -71,8 +71,7 @@ namespace gui
       }
   }
 
-  // TODO: For some reason, strings do not reflect individual packages status
-  string selected_package_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  string selected_package_state_string(pkgCache::PkgIterator pkg)
   {
     aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
     aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
@@ -99,6 +98,7 @@ namespace gui
     return selected_state;
   }
 
+  // TODO: This maybe should be merged with the previous function as an overload
   string selected_version_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
     aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
@@ -140,9 +140,7 @@ namespace gui
     return selected_state;
   }
 
-  // TODO: For some reason, color codes do not reflect individual packages status
-  //       Or should we try putting multiple colors ?
-  string selected_package_state_color(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  string selected_package_state_color(pkgCache::PkgIterator pkg)
   {
     aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
     aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
@@ -169,6 +167,7 @@ namespace gui
     return "white";
   }
 
+  // TODO: This maybe should be merged with the previous function as an overload
   string selected_version_state_color(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
     aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
@@ -321,7 +320,7 @@ namespace gui
       if (version_specific)
         row[BgColor] = selected_version_state_color(pkg, ver);
       else
-        row[BgColor] = selected_package_state_color(pkg, ver);
+        row[BgColor] = selected_package_state_color(pkg);
       }
     else
       row[BgColor] = "white";
@@ -335,7 +334,7 @@ namespace gui
         if (version_specific)
           row[SelectedStatus] = selected_version_state_string(pkg, ver);
         else
-          row[SelectedStatus] = selected_package_state_string(pkg, ver);
+          row[SelectedStatus] = selected_package_state_string(pkg);
         }
       else
         row[SelectedStatus] = "";

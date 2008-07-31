@@ -70,9 +70,6 @@ namespace gui
 
       reverse_packages_store->insert(std::make_pair(pkg, iter));
 
-      // TODO: fill_row() really should have an overload that creates
-      // a row just for a package.  This would, e.g., change which
-      // version is displayed and change how the color is calculated.
       packages_columns->fill_row(row, pkg, ver);
     }
 

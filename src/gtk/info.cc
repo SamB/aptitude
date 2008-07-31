@@ -93,8 +93,7 @@ namespace gui
           {
             tree = store->append();
             row = *tree;
-            packages_columns->fill_row(row, pkgCache::PkgIterator(), pkgCache::VerIterator());
-            row[packages_columns->Name] = Glib::ustring(todisp.DepType()) + ": " + Glib::ustring(todisp.TargetPkg().Name());
+            packages_columns->fill_header(row, Glib::ustring(todisp.DepType()) + ": " + Glib::ustring(todisp.TargetPkg().Name()));
           }
           else
           {
@@ -104,9 +103,7 @@ namespace gui
           tree2 = store->append(tree->children());
           row2 = *tree2;
 
-          packages_columns->fill_row(row2, pkgCache::PkgIterator(), pkgCache::VerIterator());
-
-          row2[packages_columns->Name] = todisp.TargetPkg().Name();
+          packages_columns->fill_header(row2, todisp.TargetPkg().Name());
 
           if(todisp->CompareOp != pkgCache::Dep::NoOp &&
               todisp.TargetVer() != NULL)
@@ -142,7 +139,7 @@ namespace gui
                 Gtk::TreeModel::iterator tree3 = store->append(tree2->children());
                 Gtk::TreeModel::Row row3 = *tree3;
                 reverse_packages_store->insert(std::make_pair(it->ParentPkg(), tree3));
-                packages_columns->fill_row(row3, it->ParentPkg(), *it, true);
+                packages_columns->fill_row(row3, it->ParentPkg(), *it);
               }
             }
           }
@@ -180,6 +177,8 @@ namespace gui
             Gtk::TreeModel::iterator tree3 = store->append(tree2->children());
             Gtk::TreeModel::Row row3 = *tree3;
 
+            // This should call something like fill_header,
+            // but it's not really a header, so we're keeping this for now.
             packages_columns->fill_row(row3, pkgCache::PkgIterator(), pkgCache::VerIterator());
 
             row3[packages_columns->Name] = "Not available";
