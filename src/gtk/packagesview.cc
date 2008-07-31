@@ -208,18 +208,14 @@ namespace gui
     return "white";
   }
 
-  PackagesMarker::PackagesMarker(PackagesView * view)
-  {
-    this->view = view;
-  }
-
-  void PackagesMarker::dispatch(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver, PackagesAction action)
+  void dispatch_action(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver, PackagesAction action)
   {
     if (!ver.end())
     {
       switch(action)
       {
       case Install:
+      case Upgrade:
         (*apt_cache_file)->set_candidate_version(ver, undo);
         (*apt_cache_file)->mark_install(pkg, true, false, undo);
         break;
@@ -241,17 +237,10 @@ namespace gui
     }
   }
 
-  void PackagesMarker::callback(const Gtk::TreeModel::iterator& iter, PackagesAction action)
-  {
-    pkgCache::PkgIterator pkg = (*iter)[view->get_packages_columns()->PkgIterator];
-    pkgCache::VerIterator ver = (*iter)[view->get_packages_columns()->VerIterator];
-    dispatch(pkg, ver, action);
-  }
-
   // TODO: This should maybe rather take a general functor than going through an exhaustive enum
-  void PackagesMarker::select(PackagesAction action)
+  void PackagesView::apply_action_to_selected(PackagesAction action) const
   {
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = view->get_treeview()->get_selection();
+    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = get_treeview()->get_selection();
     if(refSelection)
     {
       Gtk::TreeSelection::ListHandle_Path path_list = refSelection->get_selected_rows();
@@ -259,32 +248,110 @@ namespace gui
       for (Gtk::TreeSelection::ListHandle_Path::iterator path = path_list.begin();
         path != path_list.end(); path++)
       {
-        iter_list.push_back(view->get_packages_store()->get_iter(*path));
+        iter_list.push_back(get_packages_store()->get_iter(*path));
       }
       aptitudeDepCache::action_group group(*apt_cache_file, NULL);
       while (!iter_list.empty())
         {
-          callback(iter_list.front(), action);
+	  Gtk::TreeModel::iterator iter = iter_list.front();
+	  const pkgCache::PkgIterator pkg = (*iter)[get_packages_columns()->PkgIterator];
+	  const pkgCache::VerIterator ver = (*iter)[get_packages_columns()->VerIterator];
+	  dispatch_action(pkg, ver, action);
+
           iter_list.pop_front();
         }
     }
   }
 
-  PackagesContextMenu::PackagesContextMenu(PackagesView * view)
+  namespace
   {
-    PackagesMarker * marker = view->get_marker();
-    Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_packages_context");
-    refGlade->get_widget("main_packages_context", pMenu);
-    refGlade->get_widget("main_packages_context_install", pMenuInstall);
-    pMenuInstall->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Install));
-    refGlade->get_widget("main_packages_context_remove", pMenuRemove);
-    pMenuRemove->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Remove));
-    refGlade->get_widget("main_packages_context_purge", pMenuPurge);
-    pMenuPurge->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Purge));
-    refGlade->get_widget("main_packages_context_keep", pMenuKeep);
-    pMenuKeep->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Keep));
-    refGlade->get_widget("main_packages_context_hold", pMenuHold);
-    pMenuHold->signal_activate().connect(sigc::bind(sigc::mem_fun(*marker, &PackagesMarker::select), Hold));
+    void add_menu_item(Gtk::Menu *menu,
+		       Glib::ustring label,
+		       Gtk::StockID icon,
+		       sigc::slot0<void> callback)
+    {
+      Gtk::Image *image = new Gtk::Image(icon, Gtk::ICON_SIZE_MENU);
+      Gtk::MenuItem *item = new Gtk::ImageMenuItem(*image,
+						   label);
+      menu->append(*item);
+      item->signal_activate().connect(callback);
+      item->show_all();
+    }
+  }
+
+  Gtk::Menu *
+  PackagesView::get_menu(const std::set<PackagesAction> &actions,
+			 sigc::slot1<void, PackagesAction> callback) const
+  {
+    Gtk::Menu *rval(new Gtk::Menu);
+
+    if(actions.find(Upgrade) != actions.end())
+      {
+	if(actions.find(Install) != actions.end())
+	  add_menu_item(rval, "Install/Upgrade", Gtk::Stock::ADD,
+			sigc::bind(callback, Install));
+	else
+	  add_menu_item(rval, "Upgrade", Gtk::Stock::GO_UP,
+			sigc::bind(callback, Install));
+      }
+    else if(actions.find(Install) != actions.end())
+      add_menu_item(rval, "Install", Gtk::Stock::ADD,
+		    sigc::bind(callback, Install));
+
+    if(actions.find(Remove) != actions.end())
+      add_menu_item(rval, "Remove", Gtk::Stock::REMOVE,
+		    sigc::bind(callback, Remove));
+
+    if(actions.find(Purge) != actions.end())
+      add_menu_item(rval, "Purge", Gtk::Stock::CLEAR,
+		    sigc::bind(callback, Purge));
+
+    if(actions.find(Keep) != actions.end())
+      add_menu_item(rval, "Keep", Gtk::Stock::MEDIA_PAUSE,
+		    sigc::bind(callback, Keep));
+
+    if(actions.find(Hold) != actions.end())
+      add_menu_item(rval, "Hold", Gtk::Stock::MEDIA_REWIND,
+		    sigc::bind(callback, Hold));
+
+    return rval;
+  }
+
+  namespace
+  {
+    void add_actions(const pkgCache::PkgIterator &pkg,
+		     std::set<PackagesAction> &actions)
+    {
+      // Defensiveness.
+      if(pkg.end())
+	return;
+
+      pkgDepCache::StateCache state = (*apt_cache_file)[pkg];
+
+      if(state.Status == 2 && !state.Install())
+	actions.insert(Install);
+
+      if(state.Status == 1 && !state.Install())
+	actions.insert(Upgrade);
+
+      if(state.Status != 2 && !(state.Delete() &&
+				((state.iFlags & pkgDepCache::Purge) == 0)))
+	actions.insert(Remove);
+
+      if((state.Status != 2 ||
+	  (state.Status == 2 && pkg->CurrentState == pkgCache::State::ConfigFiles)) &&
+	 !(state.Delete() &&
+	   ((state.iFlags & pkgDepCache::Purge) != 0)))
+	actions.insert(Purge);
+
+      if(!state.Keep())
+	actions.insert(Keep);
+
+      if((*apt_cache_file)->get_ext_state(pkg).selection_state == pkgCache::State::Hold)
+	actions.insert(Keep);
+      else
+	actions.insert(Hold);
+    }
   }
 
   PackagesColumns::PackagesColumns()
@@ -574,8 +641,6 @@ namespace gui
     generatorK = _generatorK;
 
     packages_columns = new PackagesColumns();
-    marker = new PackagesMarker(this);
-    context = new PackagesContextMenu(this);
 
     treeview->signal_context_menu.connect(sigc::mem_fun(*this, &PackagesView::context_menu_handler));
     treeview->signal_row_activated().connect(sigc::mem_fun(*this, &PackagesView::row_activated_package_handler));
@@ -659,7 +724,26 @@ namespace gui
 
   void PackagesView::context_menu_handler(GdkEventButton * event)
   {
-    context->get_menu()->popup(event->button, event->time);
+    Glib::RefPtr<Gtk::TreeView::Selection> selected = get_treeview()->get_selection();
+    if(selected)
+      {
+	std::set<PackagesAction> actions;
+
+	Gtk::TreeSelection::ListHandle_Path selected_rows = selected->get_selected_rows();
+	for (Gtk::TreeSelection::ListHandle_Path::iterator path = selected_rows.begin();
+	     path != selected_rows.end(); ++path)
+	  {
+	    Gtk::TreeModel::iterator iter = get_packages_store()->get_iter(*path);
+	    add_actions((*iter)[get_packages_columns()->PkgIterator],
+			actions);
+	  }
+
+	if(!actions.empty())
+	  {
+	    get_menu(actions, sigc::mem_fun(this,
+					    &PackagesView::apply_action_to_selected))->popup(event->button, event->time);
+	  }
+      }
   }
 
   void PackagesView::row_activated_package_handler(const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)

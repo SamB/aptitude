@@ -37,58 +37,23 @@ namespace gui
 
   class PackagesView;
 
-  /**
-   * This is a list of packages actions.
-   * TODO: This probably already exist. Find it.
-   * FIXME: Description shouldn't be here.
-   */
   enum PackagesAction
-  {
-    Install, Remove, Purge, Keep, Hold
-  };
+    {
+      /** \brief A synonym for Install.
+       *
+       *  This is used when building menus to decide whether to label
+       *  the Install menu item "Install", "Upgrade", or
+       *  "Install/Upgrade".
+       */
+      Upgrade,
+      Install, Remove, Purge, Keep, Hold
+    };
+
+  void dispatch_action(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver, PackagesAction action);
+
 
   std::string current_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
   std::string selected_state_string(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
-
-  /**
-   * The PackagesMarker marks packages belonging to a PackagesTab
-   */
-  class PackagesMarker
-  {
-    private:
-      PackagesView * view;
-      void dispatch(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver, PackagesAction action);
-      void callback(const Gtk::TreeModel::iterator& iter, PackagesAction action);
-    public:
-      /** \brief Construct a packages marker for tab.
-       *
-       *  \param tab The tab on which the marking takes place.
-       */
-      PackagesMarker(PackagesView * view);
-      void select(PackagesAction action);
-  };
-
-  /**
-   * The context menu for packages in PackagesTab
-   */
-  class PackagesContextMenu
-  {
-    private:
-      Gtk::Menu * pMenu;
-      Gtk::ImageMenuItem * pMenuInstall;
-      Gtk::ImageMenuItem * pMenuRemove;
-      Gtk::ImageMenuItem * pMenuPurge;
-      Gtk::ImageMenuItem * pMenuKeep;
-      Gtk::ImageMenuItem * pMenuHold;
-    public:
-      /** \brief Construct a context menu for tab.
-       *
-       *  \param tab The tab who owns the context menu.
-       *  \param marker The marker to use to execute the actions.
-       */
-    PackagesContextMenu(PackagesView * view);
-    Gtk::Menu * get_menu() const { return pMenu; };
-  };
 
   class PackagesColumns : public Gtk::TreeModel::ColumnRecord
   {
@@ -194,8 +159,6 @@ namespace gui
       PackagesTreeView * treeview;
       PackagesColumns * packages_columns;
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store;
-      PackagesContextMenu * context;
-      PackagesMarker * marker;
       GeneratorK generatorK;
       void init(const GeneratorK &_generatorK,
                                    Glib::RefPtr<Gnome::Glade::Xml> refGlade);
@@ -264,6 +227,16 @@ namespace gui
 			       Gtk::TreeViewColumn *treeview_column,
 			       Gtk::TreeModelColumn<Glib::ustring> &model_column,
 			       int size);
+
+
+      /** \brief Build a menu of package actions. */
+      Gtk::Menu *
+      get_menu(const std::set<PackagesAction> &actions,
+	       sigc::slot1<void, PackagesAction> callback) const;
+
+      /** \brief Apply the given action to all the currently selected packages. */
+      void apply_action_to_selected(PackagesAction action) const;
+
     public:
       /** \brief Construct a new packages view.
        *
@@ -300,7 +273,6 @@ namespace gui
       //sigc::signal<void, pkgCache::PkgIterator, pkgCache::VerIterator> signal_on_package_selection;
       PackagesTreeView * get_treeview() const { return treeview; };
       PackagesColumns * get_packages_columns() const { return packages_columns; };
-      PackagesMarker * get_marker() const { return marker; }
     Glib::RefPtr<Gtk::TreeModel> get_packages_store() const { return treeview->get_model(); };
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_packages_store() { return reverse_packages_store; };
   };
