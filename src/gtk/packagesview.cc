@@ -360,7 +360,6 @@ namespace gui
       }
     row[Section] = (!pkg.end() && pkg.Section()) ? pkg.Section() : "";
 
-    row[Version] = (!ver.end() && ver.VerStr()) ? ver.VerStr() : "";
     if (!ver.end())
     {
       row[Version] = Glib::Markup::escape_text(ver.VerStr());
