@@ -391,7 +391,7 @@ namespace gui
     row[SelectedStatus] = ""; // dummy
 
     // This is the content of the header
-    row[Name] = "<span size=\"large\">"+text+"</span>";
+    row[Name] = "<span size=\"large\">" + Glib::Markup::escape_text(text) + "</span>";
 
     row[Section] = ""; // dummy
     row[Version] = ""; // dummy
