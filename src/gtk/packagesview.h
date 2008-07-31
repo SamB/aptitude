@@ -298,10 +298,10 @@ namespace gui
       void relimit_packages_view(Glib::ustring limit);
       // TODO: Not used yet, should be used in place of PackagesTab::activate_package_handler();
       //sigc::signal<void, pkgCache::PkgIterator, pkgCache::VerIterator> signal_on_package_selection;
-      PackagesTreeView * get_treeview() { return treeview; };
-      PackagesColumns * get_packages_columns() { return packages_columns; };
-      PackagesMarker * get_marker() { return marker; };
-    Glib::RefPtr<Gtk::TreeModel> get_packages_store() { return treeview->get_model(); };
+      PackagesTreeView * get_treeview() const { return treeview; };
+      PackagesColumns * get_packages_columns() const { return packages_columns; };
+      PackagesMarker * get_marker() const { return marker; }
+    Glib::RefPtr<Gtk::TreeModel> get_packages_store() const { return treeview->get_model(); };
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_packages_store() { return reverse_packages_store; };
   };
 
