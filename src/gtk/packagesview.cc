@@ -310,6 +310,9 @@ namespace gui
                                  const pkgCache::VerIterator &ver,
                                  bool version_specific) const
   {
+    using cwidget::util::ssprintf;
+    using cwidget::util::transcode;
+
     row[PkgIterator] = pkg;
     row[VerIterator] = ver;
 
@@ -341,9 +344,6 @@ namespace gui
       row[Name] = "";
     else
       {
-        using cwidget::util::ssprintf;
-        using cwidget::util::transcode;
-
         Glib::ustring safe_name = Glib::Markup::escape_text(pkg.Name());
         if(ver.end())
           row[Name] = ssprintf("<b>%s</b>", safe_name.c_str());
@@ -359,7 +359,23 @@ namespace gui
           }
       }
     row[Section] = (!pkg.end() && pkg.Section()) ? pkg.Section() : "";
+
     row[Version] = (!ver.end() && ver.VerStr()) ? ver.VerStr() : "";
+    if (!ver.end())
+    {
+      row[Version] = Glib::Markup::escape_text(ver.VerStr());
+      if (!version_specific)
+      {
+        aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
+        pkgCache::VerIterator candver=state.CandidateVerIter(*apt_cache_file);
+        if (state.Upgrade() || state.Downgrade())
+        {
+          row[Version] = row[Version] + "\n<i>" + Glib::Markup::escape_text(candver.VerStr()) + "</i>";
+        }
+      }
+    }
+    else
+      row[Version] = "";
   }
 
   void PackagesColumns::fill_header(Gtk::TreeModel::Row &row,
@@ -574,7 +590,7 @@ namespace gui
 	}
     }
     append_column(Glib::ustring(_("Section")), Section, packages_columns->Section, 80);
-    append_column(Glib::ustring(_("Version")), Version, packages_columns->Version, 80);
+    append_markup_column(Glib::ustring(_("Version")), Version, packages_columns->Version, 80);
 
 
     treeview->set_search_column(packages_columns->Name);
