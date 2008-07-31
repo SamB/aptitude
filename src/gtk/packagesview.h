@@ -49,6 +49,12 @@ namespace gui
       Install, Remove, Purge, Keep, Hold
     };
 
+  /** \brief Add actions that "make sense" for the given package to
+   *  the given set.
+   */
+  void add_actions(const pkgCache::PkgIterator &pkg,
+		   std::set<PackagesAction> &actions);
+
   void dispatch_action(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver, PackagesAction action);
 
 

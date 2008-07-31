@@ -317,41 +317,38 @@ namespace gui
     return rval;
   }
 
-  namespace
+  void add_actions(const pkgCache::PkgIterator &pkg,
+		   std::set<PackagesAction> &actions)
   {
-    void add_actions(const pkgCache::PkgIterator &pkg,
-		     std::set<PackagesAction> &actions)
-    {
-      // Defensiveness.
-      if(pkg.end())
-	return;
+    // Defensiveness.
+    if(pkg.end())
+      return;
 
-      pkgDepCache::StateCache state = (*apt_cache_file)[pkg];
+    pkgDepCache::StateCache state = (*apt_cache_file)[pkg];
 
-      if(state.Status == 2 && !state.Install())
-	actions.insert(Install);
+    if(state.Status == 2 && !state.Install())
+      actions.insert(Install);
 
-      if(state.Status == 1 && !state.Install())
-	actions.insert(Upgrade);
+    if(state.Status == 1 && !state.Install())
+      actions.insert(Upgrade);
 
-      if(state.Status != 2 && !(state.Delete() &&
-				((state.iFlags & pkgDepCache::Purge) == 0)))
-	actions.insert(Remove);
+    if(state.Status != 2 && !(state.Delete() &&
+			      ((state.iFlags & pkgDepCache::Purge) == 0)))
+      actions.insert(Remove);
 
-      if((state.Status != 2 ||
-	  (state.Status == 2 && pkg->CurrentState == pkgCache::State::ConfigFiles)) &&
-	 !(state.Delete() &&
-	   ((state.iFlags & pkgDepCache::Purge) != 0)))
-	actions.insert(Purge);
+    if((state.Status != 2 ||
+	(state.Status == 2 && pkg->CurrentState == pkgCache::State::ConfigFiles)) &&
+       !(state.Delete() &&
+	 ((state.iFlags & pkgDepCache::Purge) != 0)))
+      actions.insert(Purge);
 
-      if(!state.Keep())
-	actions.insert(Keep);
+    if(!state.Keep())
+      actions.insert(Keep);
 
-      if((*apt_cache_file)->get_ext_state(pkg).selection_state == pkgCache::State::Hold)
-	actions.insert(Keep);
-      else
-	actions.insert(Hold);
-    }
+    if((*apt_cache_file)->get_ext_state(pkg).selection_state == pkgCache::State::Hold)
+      actions.insert(Keep);
+    else
+      actions.insert(Hold);
   }
 
   PackagesColumns::PackagesColumns()
