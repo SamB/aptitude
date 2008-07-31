@@ -574,7 +574,7 @@ namespace gui
 
     append_column(Glib::ustring(_("C")), CurrentStatus, packages_columns->CurrentStatus, 32);
     append_column(Glib::ustring(_("S")), SelectedStatus, packages_columns->SelectedStatus, 32);
-    append_markup_column(Glib::ustring(_("Name")), Name, packages_columns->Name, 200);
+    append_markup_column(Glib::ustring(_("Name")), Name, packages_columns->Name, 350);
     {
       Gtk::CellRenderer *renderer = treeview->get_column_cell_renderer(treeview->get_columns().size() - 1);
       if(renderer == NULL)
@@ -588,7 +588,6 @@ namespace gui
 	    renderer_text->property_ellipsize() = Pango::ELLIPSIZE_END;
 	}
     }
-    append_column(Glib::ustring(_("Section")), Section, packages_columns->Section, 80);
     append_markup_column(Glib::ustring(_("Version")), Version, packages_columns->Version, 80);
 
 
