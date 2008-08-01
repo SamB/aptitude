@@ -154,7 +154,7 @@ namespace gui
               if(_system->VS->CheckDep(prv.ProvideVersion(), todisp->CompareOp, todisp.TargetVer()))
               {
                 resolvable = true;
-                virtual_resolutions.push_back(currver);
+                virtual_resolutions.push_back(prv.OwnerVer());
               }
             }
 
