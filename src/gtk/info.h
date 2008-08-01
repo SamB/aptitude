@@ -1,4 +1,4 @@
-// info.cc             -*-c++-*-
+// info.h             -*-c++-*-
 //
 //  Copyright 1999-2008 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
