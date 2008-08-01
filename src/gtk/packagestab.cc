@@ -19,7 +19,9 @@
 //  Boston, MA 02111-1307, USA.
 
 #include "packagestab.h"
+
 #include "aptitude.h"
+#include "info.h"
 
 #undef OK
 #include <gtkmm.h>
@@ -164,6 +166,10 @@ namespace gui
 	textBuffer->insert_with_tag(textBuffer->end(),
 				    pkg.Name(),
 				    nameTag);
+	textBuffer->insert(textBuffer->end(), " ");
+	add_hyperlink(textBuffer, textBuffer->end(), "(more info...)",
+		      sigc::bind(sigc::ptr_fun(&InfoTab::show_tab),
+				 pkg, ver));
 	textBuffer->insert(textBuffer->end(), "\n");
 
 	// TODO: insert a horizontal rule here (how?)
