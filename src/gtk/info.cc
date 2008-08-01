@@ -264,16 +264,36 @@ namespace gui
 
   void InfoTab::disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
-    Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();
+    Glib::RefPtr<Gtk::TextBuffer> textBuffer = textview->get_buffer();
     set_label("Info: " + Glib::ustring(pkg.Name()));
 
-    Glib::RefPtr<Gtk::TextBuffer::Tag> refTagMatch = Gtk::TextBuffer::Tag::create();
-    refTagMatch->property_scale() = 2;
+    Glib::RefPtr<Gtk::TextBuffer::Tag> nameTag = textBuffer->create_tag();
+    nameTag->property_size() = 20 * Pango::SCALE;
 
-    buffer->get_tag_table()->add(refTagMatch);
+    Glib::RefPtr<Gtk::TextBuffer::Tag> fieldNameTag = textBuffer->create_tag();
+    fieldNameTag->property_weight() = 2 * Pango::SCALE;
 
-    buffer->insert_with_tag(buffer->end(), "Package: " + Glib::ustring(pkg.Name()), refTagMatch);
-    buffer->insert(buffer->end(), "\nVersion: " + Glib::ustring(ver.VerStr()));
+    textBuffer->insert_with_tag(textBuffer->end(), pkg.Name(), nameTag);
+    textBuffer->insert(textBuffer->end(), "\n");
+
+    // TODO: insert a horizontal rule here (how?)
+
+    textBuffer->insert(textBuffer->end(), "\n");
+
+    //pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
+
+    textBuffer->insert_with_tag(textBuffer->end(), _("Version: "), fieldNameTag);
+    textBuffer->insert(textBuffer->end(), ver.VerStr());
+
+    textBuffer->insert(textBuffer->end(), "\n");
+    textBuffer->insert(textBuffer->end(), "\n");
+
+    std::wstring longdesc = get_long_description(ver, apt_package_records);
+
+    textBuffer->insert_with_tag(textBuffer->end(), _("Description: "), fieldNameTag);
+
+    textBuffer->insert(textBuffer->end(), cwidget::util::transcode(longdesc, "UTF-8"));
+
 
     pVersionsView = new PackagesView(sigc::ptr_fun(VersionsViewGenerator::create),
         get_xml(), "main_info_versionsview", pkg, ver);
