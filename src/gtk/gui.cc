@@ -281,6 +281,53 @@ namespace gui
     pMainWindow->get_notebook()->set_current_page(new_page_idx);
   }
 
+  namespace
+  {
+    bool do_hyperlink_callback(const Glib::RefPtr<Glib::Object> &event_object,
+			       GdkEvent *event,
+			       const Gtk::TextBuffer::iterator &iter,
+			       sigc::slot0<void> link_action)
+    {
+      // TODO: draw a nice "box" / change the style on
+      // GDK_BUTTON_PRESS.
+      switch(event->type)
+	{
+	case GDK_BUTTON_RELEASE:
+	  {
+	    if(event->button.button == 1)
+	      link_action();
+	  }
+	default:
+	  break;
+	}
+
+      return false;
+    }
+  }
+
+  // TODO: make the mouse cursor change on hyperlinks.  The only
+  // advice I can find on how to do this is to connect a signal to the
+  // TextView that examines all the tags under the mouse and sets the
+  // pointer depending on whether it finds a special one; otherwise it
+  // sets the cursor to "edit". (in our case this would involve
+  // dynamic_casting each tag to a derived class that implements a
+  // "get_cursor()" method) This is gross and will require our own
+  // special version of TextView, but OTOH it should work pretty well.
+  void add_hyperlink(const Glib::RefPtr<Gtk::TextBuffer> &buffer,
+		     Gtk::TextBuffer::iterator where,
+		     const Glib::ustring &link_text,
+		     const sigc::slot0<void> &link_action)
+  {
+    Glib::RefPtr<Gtk::TextBuffer::Tag> tag = buffer->create_tag();
+
+    tag->property_foreground() = "#3030FF";
+    tag->property_underline() = Pango::UNDERLINE_SINGLE;
+    tag->signal_event().connect(sigc::bind(sigc::ptr_fun(do_hyperlink_callback),
+					   link_action));
+
+    buffer->insert_with_tag(where, link_text, tag);
+  }
+
   void do_dashboard()
   {
     tab_add(new DashboardTab(_("Dashboard:")));

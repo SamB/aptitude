@@ -50,6 +50,19 @@ namespace gui
 
   void tab_add(Tab *tab);
 
+  /** \brief Add a hyperlink to a Gtk::TextBuffer.
+   *
+   *  \param buffer      The buffer to which the link should be added.
+   *  \param where       The location in the buffer at which the link should be added.
+   *  \param link_text   The text that the user will see (will be
+   *                     displayed in a standard "link style").
+   *  \param link_action A callback invoked when the user clicks the link.
+   */
+  void add_hyperlink(const Glib::RefPtr<Gtk::TextBuffer> &buffer,
+		     Gtk::TextBuffer::iterator where,
+		     const Glib::ustring &link_text,
+		     const sigc::slot0<void> &link_action);
+
   /**
    * This is the main Aptitude custom window widget.
    */
