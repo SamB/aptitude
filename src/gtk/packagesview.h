@@ -68,8 +68,7 @@ namespace gui
       Gtk::TreeModelColumn<pkgCache::VerIterator> VerIterator;
       Gtk::TreeModelColumn<bool> BgSet;
       Gtk::TreeModelColumn<Glib::ustring> BgColor;
-      Gtk::TreeModelColumn<Glib::ustring> CurrentStatus;
-      Gtk::TreeModelColumn<Glib::ustring> SelectedStatus;
+      Gtk::TreeModelColumn<Glib::ustring> Status;
       Gtk::TreeModelColumn<Glib::ustring> Name;
       Gtk::TreeModelColumn<Glib::ustring> Section;
       Gtk::TreeModelColumn<Glib::ustring> Version;
@@ -208,8 +207,7 @@ namespace gui
                                                              PackagesColumns *packages_columns,
                                                              std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store,
                                                              pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
-      Gtk::TreeViewColumn * CurrentStatus;
-      Gtk::TreeViewColumn * SelectedStatus;
+      Gtk::TreeViewColumn * Status;
       Gtk::TreeViewColumn * Name;
       Gtk::TreeViewColumn * Section;
       Gtk::TreeViewColumn * Version;

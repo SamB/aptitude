@@ -372,8 +372,7 @@ namespace gui
     add(VerIterator);
     add(BgSet);
     add(BgColor);
-    add(CurrentStatus);
-    add(SelectedStatus);
+    add(Status);
     add(Name);
     add(Section);
     add(Version);
@@ -401,18 +400,15 @@ namespace gui
       row[BgColor] = "white";
     row[BgSet] = (row[BgColor] != "white");
 
-    row[CurrentStatus] = (!pkg.end() && !ver.end())
-      ? current_state_string(pkg, ver) : "";
-
       if (!pkg.end() && !ver.end())
         {
         if (version_specific)
-          row[SelectedStatus] = selected_version_state_string(pkg, ver);
+          row[Status] = current_state_string(pkg, ver) + selected_version_state_string(pkg, ver);
         else
-          row[SelectedStatus] = selected_package_state_string(pkg);
+          row[Status] = current_state_string(pkg, ver) + selected_package_state_string(pkg);
         }
       else
-        row[SelectedStatus] = "";
+        row[Status] = current_state_string(pkg, ver);
 
     if(pkg.end())
       row[Name] = "";
@@ -460,9 +456,7 @@ namespace gui
     row[BgColor] = "light yellow"; // Say we want blue header..
     row[BgSet] = true; // We do want to put color in there, yes.
 
-    row[CurrentStatus] = ""; // dummy
-
-    row[SelectedStatus] = ""; // dummy
+    row[Status] = ""; // dummy
 
     // This is the content of the header
     row[Name] = "<span size=\"large\">" + Glib::Markup::escape_text(text) + "</span>";
@@ -662,8 +656,7 @@ namespace gui
     cache_closed.connect(sigc::mem_fun(*this, &PackagesView::on_cache_closed));
     cache_reloaded.connect(sigc::mem_fun(*this, &PackagesView::on_cache_reloaded));
 
-    append_column(Glib::ustring(_("C")), CurrentStatus, packages_columns->CurrentStatus, 32);
-    append_column(Glib::ustring(_("S")), SelectedStatus, packages_columns->SelectedStatus, 32);
+    append_column(Glib::ustring(_("Status")), Status, packages_columns->Status, 32);
     append_markup_column(Glib::ustring(_("Name")), Name, packages_columns->Name, 350);
     {
       Gtk::CellRenderer *renderer = treeview->get_column_cell_renderer(treeview->get_columns().size() - 1);

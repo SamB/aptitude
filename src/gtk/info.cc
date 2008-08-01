@@ -298,12 +298,12 @@ namespace gui
 
     pVersionsView = new PackagesView(sigc::ptr_fun(VersionsViewGenerator::create),
         get_xml(), "main_info_versionsview", pkg, ver);
-    pVersionsView->get_treeview()->get_column(2)->set_fixed_width(154);
+    pVersionsView->get_treeview()->get_column(1)->set_fixed_width(154);
 
     pDependsView = new PackagesView(sigc::ptr_fun(DependsViewGenerator::create),
         get_xml(), "main_info_dependsview", pkg, ver);
     pDependsView->get_treeview()->get_column(0)->set_fixed_width(80);
-    pDependsView->get_treeview()->get_column(2)->set_fixed_width(280);
+    pDependsView->get_treeview()->get_column(1)->set_fixed_width(280);
     Gtk::TreeModel::Children dependsChildren = pDependsView->get_treeview()->get_model()->children();
     for(Gtk::TreeModel::iterator it = dependsChildren.begin();
 	it != dependsChildren.end(); ++it)
