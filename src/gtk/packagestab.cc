@@ -167,7 +167,7 @@ namespace gui
 				    pkg.Name(),
 				    nameTag);
 	textBuffer->insert(textBuffer->end(), " ");
-	add_hyperlink(textBuffer, textBuffer->end(), "(more info...)",
+	add_hyperlink(textBuffer, textBuffer->end(), _("(more info...)"),
 		      sigc::bind(sigc::ptr_fun(&InfoTab::show_tab),
 				 pkg, ver));
 	textBuffer->insert(textBuffer->end(), "\n");
