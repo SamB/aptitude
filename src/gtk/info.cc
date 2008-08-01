@@ -303,7 +303,6 @@ namespace gui
         get_xml(), "main_info_dependsview", pkg, ver);
     pDependsView->get_treeview()->get_column(0)->set_fixed_width(80);
     pDependsView->get_treeview()->get_column(2)->set_fixed_width(280);
-    pDependsView->get_treeview()->expand_all();
   }
 
 }
