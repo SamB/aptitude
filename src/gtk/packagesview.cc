@@ -307,9 +307,12 @@ namespace gui
 	  add_menu_item(rval, "Upgrade", Gtk::Stock::GO_UP,
 			sigc::bind(callback, Install));
       }
+    else if(actions.find(Downgrade) != actions.end())
+      add_menu_item(rval, "Downgrade", Gtk::Stock::GO_DOWN,
+                    sigc::bind(callback, Install));
     else if(actions.find(Install) != actions.end())
       add_menu_item(rval, "Install", Gtk::Stock::ADD,
-		    sigc::bind(callback, Install));
+                    sigc::bind(callback, Install));
     else
       add_menu_item(rval, "Install/Upgrade", Gtk::Stock::ADD); // Insensitive
 
@@ -346,6 +349,9 @@ namespace gui
 
     if(state.Status == 1 && !state.Install())
       actions.insert(Upgrade);
+
+    if(state.Status == -1 && !state.Install())
+      actions.insert(Downgrade);
 
     if(state.Status != 2 && !(state.Delete() &&
 			      ((state.iFlags & pkgDepCache::Purge) == 0)))

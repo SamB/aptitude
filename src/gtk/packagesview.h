@@ -45,7 +45,7 @@ namespace gui
        *  the Install menu item "Install", "Upgrade", or
        *  "Install/Upgrade".
        */
-      Upgrade,
+      Upgrade, Downgrade,
       Install, Remove, Purge, Keep, Hold
     };
 
