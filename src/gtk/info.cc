@@ -90,15 +90,16 @@ namespace gui
           first = false;
 
           if(!is_or_continuation)
-          {
-            tree = store->append();
-            row = *tree;
-            packages_columns->fill_header(row, Glib::ustring(todisp.DepType()) + ": " + Glib::ustring(todisp.TargetPkg().Name()));
-          }
+            {
+              tree = store->append();
+              row = *tree;
+              packages_columns->fill_header(row, Glib::ustring(todisp.DepType()) + ": ");
+              row[packages_columns->Name] =row[packages_columns->Name] + Glib::ustring(todisp.TargetPkg().Name());
+            }
           else
-          {
-            row[packages_columns->Name] = row[packages_columns->Name] + " | " + Glib::ustring(todisp.TargetPkg().Name());
-          }
+            {
+              row[packages_columns->Name] =row[packages_columns->Name]+ " | " + Glib::ustring(todisp.TargetPkg().Name());
+            }
 
           tree2 = store->append(tree->children());
           row2 = *tree2;
