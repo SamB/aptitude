@@ -276,14 +276,8 @@ namespace gui
     buffer->insert(buffer->end(), "\nVersion: " + Glib::ustring(ver.VerStr()));
 
     pVersionsView = new PackagesView(sigc::ptr_fun(VersionsViewGenerator::create),
-        Gnome::Glade::Xml::create(glade_main_file, "main_packages_treeview"),
-        "main_packages_treeview", pkg, ver);
+        get_xml(), "main_info_versionsview", pkg, ver);
     pVersionsView->get_treeview()->get_column(2)->set_fixed_width(154);
-
-    buffer->insert_with_tag(buffer->end(), "\nVersions:\n", refTagMatch);
-    Glib::RefPtr<Gtk::TextChildAnchor> VersionsViewAnchor = buffer->create_child_anchor(buffer->end());
-    textview->add_child_at_anchor(*(pVersionsView->get_treeview()), VersionsViewAnchor);
-
 
     pDependsView = new PackagesView(sigc::ptr_fun(DependsViewGenerator::create),
         get_xml(), "main_info_dependsview", pkg, ver);
