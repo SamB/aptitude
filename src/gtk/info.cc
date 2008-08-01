@@ -34,6 +34,7 @@
 
 #include <gtk/gui.h>
 #include <gtk/packagesview.h>
+#include <gtk/description.h>
 
 #include <cwidget/generic/util/ssprintf.h>
 
@@ -268,13 +269,20 @@ namespace gui
     Glib::RefPtr<Gtk::TextBuffer> textBuffer = textview->get_buffer();
     set_label("Info: " + Glib::ustring(pkg.Name()));
 
+    PackagesDescription desc(pkg, ver);
+
     Glib::RefPtr<Gtk::TextBuffer::Tag> nameTag = textBuffer->create_tag();
     nameTag->property_size() = 20 * Pango::SCALE;
 
     Glib::RefPtr<Gtk::TextBuffer::Tag> fieldNameTag = textBuffer->create_tag();
     fieldNameTag->property_weight() = 2 * Pango::SCALE;
 
-    textBuffer->insert_with_tag(textBuffer->end(), pkg.Name(), nameTag);
+    textBuffer->insert_with_tag(textBuffer->end(),
+        desc.Name(),
+        nameTag);
+
+    textBuffer->insert(textBuffer->end(), "\n");
+    textBuffer->insert(textBuffer->end(), desc.ShortDescription());
     textBuffer->insert(textBuffer->end(), "\n");
 
     // TODO: insert a horizontal rule here (how?)
@@ -284,7 +292,7 @@ namespace gui
     //pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
 
     textBuffer->insert_with_tag(textBuffer->end(), _("Version: "), fieldNameTag);
-    textBuffer->insert(textBuffer->end(), ver.VerStr());
+    textBuffer->insert(textBuffer->end(), desc.Version());
 
     textBuffer->insert(textBuffer->end(), "\n");
     textBuffer->insert(textBuffer->end(), "\n");
@@ -293,8 +301,7 @@ namespace gui
 
     textBuffer->insert_with_tag(textBuffer->end(), _("Description: "), fieldNameTag);
 
-    textBuffer->insert(textBuffer->end(), cwidget::util::transcode(longdesc, "UTF-8"));
-
+    textBuffer->insert(textBuffer->end(), desc.LongDescription());
 
     pVersionsView = new PackagesView(sigc::ptr_fun(VersionsViewGenerator::create),
         get_xml(), "main_info_versionsview", pkg, ver);
