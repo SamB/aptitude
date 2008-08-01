@@ -139,7 +139,7 @@ namespace gui
                 Gtk::TreeModel::iterator tree3 = store->append(tree2->children());
                 Gtk::TreeModel::Row row3 = *tree3;
                 reverse_packages_store->insert(std::make_pair(it->ParentPkg(), tree3));
-                packages_columns->fill_row(row3, it->ParentPkg(), *it);
+                packages_columns->fill_row(row3, it->ParentPkg(), *it, true);
               }
             }
           }
