@@ -108,7 +108,7 @@ namespace gui
           if(todisp->CompareOp != pkgCache::Dep::NoOp &&
               todisp.TargetVer() != NULL)
           {
-            row2[packages_columns->Version] = Glib::ustring(todisp.CompType())+" "+Glib::ustring(todisp.TargetVer());
+            row2[packages_columns->Version] = Glib::Markup::escape_text(Glib::ustring(todisp.CompType())+" "+Glib::ustring(todisp.TargetVer()));
           }
           else
           {
