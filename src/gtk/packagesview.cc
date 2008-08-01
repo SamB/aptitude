@@ -266,16 +266,29 @@ namespace gui
   namespace
   {
     void add_menu_item(Gtk::Menu *menu,
-		       Glib::ustring label,
-		       Gtk::StockID icon,
-		       sigc::slot0<void> callback)
+                       Glib::ustring label,
+                       Gtk::StockID icon,
+                       sigc::slot0<void> callback,
+                       bool sensitive = true)
     {
       Gtk::Image *image = new Gtk::Image(icon, Gtk::ICON_SIZE_MENU);
-      Gtk::MenuItem *item = new Gtk::ImageMenuItem(*image,
-						   label);
+      Gtk::MenuItem *item = new Gtk::ImageMenuItem(*image, label);
       menu->append(*item);
-      item->signal_activate().connect(callback);
+
+      if (sensitive)
+        item->signal_activate().connect(callback);
+      else
+        item->set_sensitive(false);
+
       item->show_all();
+    }
+
+    // for convenience
+    void add_menu_item(Gtk::Menu *menu,
+                       Glib::ustring label,
+                       Gtk::StockID icon)
+    {
+      add_menu_item(menu, label, icon, sigc::slot0<void>(), false);
     }
   }
 
@@ -297,22 +310,24 @@ namespace gui
     else if(actions.find(Install) != actions.end())
       add_menu_item(rval, "Install", Gtk::Stock::ADD,
 		    sigc::bind(callback, Install));
+    else
+      add_menu_item(rval, "Install/Upgrade", Gtk::Stock::ADD); // Insensitive
 
-    if(actions.find(Remove) != actions.end())
-      add_menu_item(rval, "Remove", Gtk::Stock::REMOVE,
-		    sigc::bind(callback, Remove));
+    add_menu_item(rval, "Remove", Gtk::Stock::REMOVE,
+                  sigc::bind(callback, Remove),
+                  actions.find(Remove) != actions.end());
 
-    if(actions.find(Purge) != actions.end())
-      add_menu_item(rval, "Purge", Gtk::Stock::CLEAR,
-		    sigc::bind(callback, Purge));
+    add_menu_item(rval, "Purge", Gtk::Stock::CLEAR,
+                  sigc::bind(callback, Purge),
+                  actions.find(Purge) != actions.end());
 
-    if(actions.find(Keep) != actions.end())
-      add_menu_item(rval, "Keep", Gtk::Stock::MEDIA_PAUSE,
-		    sigc::bind(callback, Keep));
+    add_menu_item(rval, "Keep", Gtk::Stock::MEDIA_REWIND,
+                  sigc::bind(callback, Keep),
+                  actions.find(Keep) != actions.end());
 
-    if(actions.find(Hold) != actions.end())
-      add_menu_item(rval, "Hold", Gtk::Stock::MEDIA_REWIND,
-		    sigc::bind(callback, Hold));
+    add_menu_item(rval, "Hold", Gtk::Stock::MEDIA_PAUSE,
+                  sigc::bind(callback, Hold),
+                  actions.find(Hold) != actions.end());
 
     return rval;
   }
