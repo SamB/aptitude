@@ -767,11 +767,7 @@ namespace gui
       pkgCache::PkgIterator pkg = (*iter)[packages_columns->PkgIterator];
       pkgCache::VerIterator ver = (*iter)[packages_columns->VerIterator];
       if (!pkg.end() && !ver.end())
-      {
-        InfoTab * infotab = new InfoTab(_("Info:"));
-	tab_add(infotab);
-        infotab->disp_package(pkg, ver);
-      }
+	InfoTab::show_tab(pkg, ver);
   }
 
   void PackagesView::relimit_packages_view(Glib::ustring limit)

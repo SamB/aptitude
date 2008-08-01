@@ -41,6 +41,12 @@ namespace gui
     public:
       InfoTab(Glib::ustring label);
       void disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
+
+      /** \brief Convenience function to create and display a new tab
+       *  showing the given package and version.
+       */
+      static void show_tab(const pkgCache::PkgIterator &pkg,
+			   const pkgCache::VerIterator &ver);
   };
 
 }
