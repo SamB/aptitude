@@ -482,12 +482,32 @@ namespace gui
 
     if ((event->type == GDK_BUTTON_PRESS) && (event->button == 3))
     {
-      //Base class not called because we don't want to deselect...
-      //TODO: This has the side effect that the select+context_menu action
-      //      with one right-click won't work, which should.
-      //      We need information about the selection.
-      //context->get_menu()->popup(event->button, event->time);
-      signal_context_menu(event);
+      Gtk::TreeModel::Path path;
+      Gtk::TreeViewColumn *column;
+      int cell_x;
+      int cell_y;
+
+      if(get_path_at_pos(round(event->x), round(event->y),
+			 path, column,
+			 cell_x, cell_y))
+	{
+	  // If this row isn't already selected, change the selection
+	  // to just it.
+	  Glib::RefPtr<Gtk::TreeView::Selection> selection = get_selection();
+
+	  // We could try letting the user expand the selection by
+	  // holding a shift key down.  I decided not to because I
+	  // couldn't figure out an obviously right semantics for it,
+	  // so I figured behaving the same way all the time was the
+	  // best shot at following the Principle of Least Surprise.
+	  if(!selection->is_selected(path))
+	    {
+	      selection->unselect_all();
+	      selection->select(path);
+	    }
+
+	  signal_context_menu(event);
+	}
     }
     else if ((event->type == GDK_BUTTON_PRESS) && (event->button == 1))
     {
