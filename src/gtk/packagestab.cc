@@ -32,7 +32,7 @@
 
 #include <gtk/gui.h>
 #include <gtk/packagesview.h>
-#include <gtk/description.h>
+#include <gtk/packageinformation.h>
 
 namespace gui
 {
@@ -158,7 +158,7 @@ namespace gui
       }
     else
       {
-        PackagesDescription desc(pkg, ver);
+        PackageInformation info(pkg, ver);
 
 	Glib::RefPtr<Gtk::TextBuffer::Tag> nameTag = textBuffer->create_tag();
 	nameTag->property_size() = 20 * Pango::SCALE;
@@ -167,14 +167,14 @@ namespace gui
 	fieldNameTag->property_weight() = 2 * Pango::SCALE;
 
 	textBuffer->insert_with_tag(textBuffer->end(),
-				    desc.Name(),
+				    info.Name(),
 				    nameTag);
 	textBuffer->insert(textBuffer->end(), " ");
 	add_hyperlink(textBuffer, textBuffer->end(), _("(more info...)"),
 		      sigc::bind(sigc::ptr_fun(&InfoTab::show_tab),
 				 pkg, ver));
 	textBuffer->insert(textBuffer->end(), "\n");
-        textBuffer->insert(textBuffer->end(), desc.ShortDescription());
+        textBuffer->insert(textBuffer->end(), info.ShortDescription());
         textBuffer->insert(textBuffer->end(), "\n");
 
 	// TODO: insert a horizontal rule here (how?)
@@ -186,7 +186,7 @@ namespace gui
 	    //pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
 
 	    textBuffer->insert_with_tag(textBuffer->end(), _("Version: "), fieldNameTag);
-	    textBuffer->insert(textBuffer->end(), desc.Version());
+	    textBuffer->insert(textBuffer->end(), info.Version());
 
 	    textBuffer->insert(textBuffer->end(), "\n");
 	    textBuffer->insert(textBuffer->end(), "\n");
@@ -195,7 +195,7 @@ namespace gui
 
 	    textBuffer->insert_with_tag(textBuffer->end(), _("Description: "), fieldNameTag);
 
-	    textBuffer->insert(textBuffer->end(), desc.LongDescription());
+	    textBuffer->insert(textBuffer->end(), info.LongDescription());
 	  }
 	else
 	  {

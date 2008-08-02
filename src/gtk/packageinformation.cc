@@ -20,7 +20,7 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 
-#include "description.h"
+#include "packageinformation.h"
 #include "aptitude.h"
 
 #include <string>
@@ -93,7 +93,7 @@ namespace gui
     }
   }
 
-  PackagesDescription::PackagesDescription(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  PackageInformation::PackageInformation(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
     pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
 

@@ -36,7 +36,7 @@ namespace gui
    *
    *  \todo Is this class really necessary / useful?
    */
-  class PackagesDescription
+  class PackageInformation
   {
     private:
       std::string name;
@@ -50,7 +50,7 @@ namespace gui
       std::string short_description;
       std::string long_description;
   public:
-      PackagesDescription(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
+      PackageInformation(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
       std::string Name() const { return name; }
       std::string Version() const { return version; }
       std::string Priority() const { return priority; }

@@ -13,12 +13,12 @@ libgtk_a_SOURCES=\
 	resolver.h \
 	download.cc \
 	download.h \
-	description.cc \
-	description.h \
 	packagesview.cc \
 	packagesview.h \
 	packagestab.cc \
 	packagestab.h \
+	packageinformation.cc \
+	packageinformation.h \
 	previewtab.cc \
 	previewtab.h \
 	info.h \
