@@ -216,6 +216,7 @@ namespace gui
       {
       case Install:
       case Upgrade:
+      case Downgrade:
         (*apt_cache_file)->set_candidate_version(ver, undo);
         (*apt_cache_file)->mark_install(pkg, true, false, undo);
         break;
@@ -414,7 +415,7 @@ namespace gui
           row[Status] = current_state_string(pkg, ver) + selected_package_state_string(pkg);
         }
       else
-        row[Status] = current_state_string(pkg, ver);
+        row[Status] = "";
 
     if(pkg.end())
       row[Name] = "";
