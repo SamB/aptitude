@@ -283,6 +283,15 @@ namespace gui
         desc.Name(),
         nameTag);
 
+    textBuffer->insert_with_tag(textBuffer->end(),
+        " ",
+        nameTag);
+
+
+    textBuffer->insert_with_tag(textBuffer->end(),
+        desc.Version(),
+        nameTag);
+
     textBuffer->insert(textBuffer->end(), "\n");
     textBuffer->insert(textBuffer->end(), desc.ShortDescription());
     textBuffer->insert(textBuffer->end(), "\n");
@@ -293,10 +302,6 @@ namespace gui
 
     //pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
 
-    textBuffer->insert_with_tag(textBuffer->end(), _("Version: "), fieldNameTag);
-    textBuffer->insert(textBuffer->end(), desc.Version());
-
-    textBuffer->insert(textBuffer->end(), "\n");
     textBuffer->insert(textBuffer->end(), "\n");
 
     std::wstring longdesc = get_long_description(ver, apt_package_records);
