@@ -54,13 +54,15 @@ namespace gui
 	  switch(elt->get_type())
 	    {
 	    case aptitude::description_element::blank_line:
-	      out.append("\n");
+	      out.push_back('\n');
 	      break;
 	    case aptitude::description_element::paragraph:
 	      out.append(transcode(elt->get_string(), "UTF-8"));
+	      out.push_back('\n');
 	      break;
 	    case aptitude::description_element::literal:
 	      out.append(transcode(elt->get_string(), "UTF-8"));
+	      out.push_back('\n');
 	      break;
 	    case aptitude::description_element::bullet_list:
 	      {
@@ -71,6 +73,14 @@ namespace gui
 			       level + 1,
 			       out);
 
+		// Separate list items, unless there's a preceding
+		// blank line.  The condition is a hack to avoid
+		// appending too many blank lines when closing out a
+		// description.
+		if(!(out.size() >= 2 &&
+		     out[out.size() - 1] == '\n' &&
+		     out[out.size() - 2] == '\n'))
+		  out.push_back('\n');
 	      }
 	      break;
 	    }
