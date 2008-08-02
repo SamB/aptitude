@@ -95,17 +95,19 @@ namespace gui
               tree = store->append();
               row = *tree;
               packages_columns->fill_header(row, Glib::ustring(todisp.DepType()) + ": ");
-              row[packages_columns->Name] =row[packages_columns->Name] + Glib::ustring(todisp.TargetPkg().Name());
+              row[packages_columns->Status] = "\t"+cwidget::util::transcode(L"\x2022 ");
+              row[packages_columns->Name] = row[packages_columns->Name] + Glib::ustring(todisp.TargetPkg().Name());
             }
           else
             {
-              row[packages_columns->Name] =row[packages_columns->Name]+ " | " + Glib::ustring(todisp.TargetPkg().Name());
+              row[packages_columns->Name] = row[packages_columns->Name]+ " | " + Glib::ustring(todisp.TargetPkg().Name());
             }
 
           tree2 = store->append(tree->children());
           row2 = *tree2;
 
           packages_columns->fill_header(row2, todisp.TargetPkg().Name());
+          row2[packages_columns->Status] = "\t-";
 
           if(todisp->CompareOp != pkgCache::Dep::NoOp &&
               todisp.TargetVer() != NULL)
