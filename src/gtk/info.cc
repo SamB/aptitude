@@ -313,6 +313,14 @@ namespace gui
     pVersionsView = new PackagesView(sigc::ptr_fun(VersionsViewGenerator::create),
         get_xml(), "main_info_versionsview", pkg, ver);
     pVersionsView->get_treeview()->get_column(1)->set_fixed_width(154);
+    pVersionsView->get_treeview()->get_selection()->set_mode(Gtk::SELECTION_BROWSE);
+    {
+      Gtk::TreeModel::Children entries = pVersionsView->get_treeview()->get_model()->children();
+      for(Gtk::TreeModel::Children::const_iterator it = entries.begin();
+	  it != entries.end(); ++it)
+	if(ver == (*it)[pVersionsView->get_packages_columns()->VerIterator])
+	  pVersionsView->get_treeview()->get_selection()->select(it);
+    }
 
     pDependsView = new PackagesView(sigc::ptr_fun(DependsViewGenerator::create),
         get_xml(), "main_info_dependsview", pkg, ver);
