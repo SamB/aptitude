@@ -40,6 +40,11 @@ namespace gui
 {
   namespace
   {
+    /** \todo This should spit text into a TextBuffer and use
+     *  indentation tags to align bullets (so that paragraphs wrap
+     *  properly).  Ideally the text of a bulleted item should align
+     *  with the text *following* the bullet.
+     */
     void make_desc_text(const std::vector<aptitude::description_element_ref> &elements,
 			int level,
 			std::string &out)
