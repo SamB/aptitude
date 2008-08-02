@@ -28,7 +28,14 @@
 
 namespace gui
 {
-
+  /** \brief A convenience class that collects all the code to extract
+   *  package information.
+   *
+   *  \todo This should really be "PackageInformation" since the
+   *  description is only one thing it does.
+   *
+   *  \todo Is this class really necessary / useful?
+   */
   class PackagesDescription
   {
     private:
@@ -42,14 +49,7 @@ namespace gui
       std::string source_package;
       std::string short_description;
       std::string long_description;
-      std::wstring make_desc_fragment(const std::vector<aptitude::description_element_ref> &elements,
-                                     int level);
-      void make_level_fragment(const std::wstring &desc,
-                                      std::wstring::size_type indent,
-                                      std::wstring::size_type &start,
-                                      bool recognize_bullets,
-                                      std::vector<aptitude::description_element_ref> &output);
-      public:
+  public:
       PackagesDescription(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
       std::string Name() const { return name; }
       std::string Version() const { return version; }
