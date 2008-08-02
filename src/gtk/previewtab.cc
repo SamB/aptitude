@@ -30,6 +30,8 @@
 
 #include <gtk/gui.h>
 #include <gtk/packagesview.h>
+#include <gtk/info.h>
+#include <gtk/description.h>
 
 namespace gui
 {
@@ -181,33 +183,59 @@ namespace gui
 
   void PreviewTab::display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
+    Glib::RefPtr<Gtk::TextBuffer> textBuffer = Gtk::TextBuffer::create();
+
     if(pkg.end())
-      pPackagesTextView->get_buffer()->set_text("");
-    else if (!ver.end())
-    {
-      pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
-      string misc = ssprintf("%s%s\n"
-          "%s%s\n"
-          "%s%s\n"
-          "%s%s\n"
-          "%s%s\n"
-          "%s%s\n"
-          "%s%s\n",
-          _("Name: "), pkg.Name(),
-          _("Priority: "),pkgCache::VerIterator(ver).PriorityType()?pkgCache::VerIterator(ver).PriorityType():_("Unknown"),
-              _("Section: "),pkg.Section()?pkg.Section():_("Unknown"),
-                  _("Maintainer: "),rec.Maintainer().c_str(),
-                  _("Compressed size: "), SizeToStr(ver->Size).c_str(),
-                  _("Uncompressed size: "), SizeToStr(ver->InstalledSize).c_str(),
-                  _("Source Package: "),
-                  rec.SourcePkg().empty()?pkg.Name():rec.SourcePkg().c_str());
-      string desc = cwidget::util::transcode(get_long_description(ver, apt_package_records), "UTF-8");
-      pPackagesTextView->get_buffer()->set_text(misc + _("Description: ") + desc);
-    }
+      {
+        textBuffer->set_text("");
+      }
     else
-    {
-      pPackagesTextView->get_buffer()->set_text(ssprintf("%s%s\n", _("Name: "), pkg.Name()));
-    }
+      {
+        PackagesDescription desc(pkg, ver);
+
+        Glib::RefPtr<Gtk::TextBuffer::Tag> nameTag = textBuffer->create_tag();
+        nameTag->property_size() = 20 * Pango::SCALE;
+
+        Glib::RefPtr<Gtk::TextBuffer::Tag> fieldNameTag = textBuffer->create_tag();
+        fieldNameTag->property_weight() = 2 * Pango::SCALE;
+
+        textBuffer->insert_with_tag(textBuffer->end(),
+                                    desc.Name(),
+                                    nameTag);
+        textBuffer->insert(textBuffer->end(), " ");
+        add_hyperlink(textBuffer, textBuffer->end(), _("(more info...)"),
+                      sigc::bind(sigc::ptr_fun(&InfoTab::show_tab),
+                                 pkg, ver));
+        textBuffer->insert(textBuffer->end(), "\n");
+        textBuffer->insert(textBuffer->end(), desc.ShortDescription());
+        textBuffer->insert(textBuffer->end(), "\n");
+
+        // TODO: insert a horizontal rule here (how?)
+
+        textBuffer->insert(textBuffer->end(), "\n");
+
+        if (ver)
+          {
+            //pkgRecords::Parser &rec=apt_package_records->Lookup(ver.FileList());
+
+            textBuffer->insert_with_tag(textBuffer->end(), _("Version: "), fieldNameTag);
+            textBuffer->insert(textBuffer->end(), desc.Version());
+
+            textBuffer->insert(textBuffer->end(), "\n");
+            textBuffer->insert(textBuffer->end(), "\n");
+
+            std::wstring longdesc = get_long_description(ver, apt_package_records);
+
+            textBuffer->insert_with_tag(textBuffer->end(), _("Description: "), fieldNameTag);
+
+            textBuffer->insert(textBuffer->end(), desc.LongDescription());
+          }
+        else
+          {
+          }
+      }
+
+    pPackagesTextView->set_buffer(textBuffer);
   }
 
 }

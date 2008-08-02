@@ -24,6 +24,7 @@
 #include <string>
 
 #include <apt-pkg/pkgcache.h>
+#include <generic/apt/desc_parse.h>
 
 namespace gui
 {
@@ -41,7 +42,14 @@ namespace gui
       std::string source_package;
       std::string short_description;
       std::string long_description;
-    public:
+      std::wstring make_desc_fragment(const std::vector<aptitude::description_element_ref> &elements,
+                                     int level);
+      void make_level_fragment(const std::wstring &desc,
+                                      std::wstring::size_type indent,
+                                      std::wstring::size_type &start,
+                                      bool recognize_bullets,
+                                      std::vector<aptitude::description_element_ref> &output);
+      public:
       PackagesDescription(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
       std::string Name() const { return name; }
       std::string Version() const { return version; }
