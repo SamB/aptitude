@@ -217,7 +217,6 @@ namespace gui
       case Install:
       case Upgrade:
       case Downgrade:
-        (*apt_cache_file)->set_candidate_version(ver, undo);
         (*apt_cache_file)->mark_install(pkg, true, false, undo);
         break;
       case Remove:
