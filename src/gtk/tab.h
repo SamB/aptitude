@@ -40,7 +40,7 @@ namespace gui
   /**
    * A Tab contains a widget and some metadata for inserting into the notebook.
    */
-  class Tab
+  class Tab : public sigc::trackable
   {
     private:
       TabType type;
