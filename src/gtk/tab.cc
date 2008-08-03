@@ -53,7 +53,8 @@ namespace gui
     Gtk::Button * label_button;
     refGlade->get_widget("main_notebook_download_close", label_button);
     // Maybe we should create a close() method on the Tab so it can clean itself up or make a destructor.
-    label_button->signal_clicked().connect(sigc::bind(sigc::mem_fun(*(pMainWindow->get_notebook()), &TabsManager::remove_page), this));
+    label_button->signal_clicked().connect(sigc::bind(sigc::mem_fun(*(pMainWindow->get_notebook()), &TabsManager::remove_page),
+						      sigc::ref(*this)));
 
     get_widget()->set_data(tab_property, this);
 
@@ -93,29 +94,29 @@ namespace gui
     signal_page_removed().connect(sigc::mem_fun(this, &TabsManager::page_removed));
   }
 
-  int TabsManager::append_page(Tab *tab)
+  int TabsManager::append_page(Tab &tab)
   {
     int rval = 0; 
-    switch (tab->get_type())
+    switch (tab.get_type())
       {
     case Dashboard:
       // No more than one Dashboard at once
       if (number_of(Dashboard) == 0)
       {
-        rval = insert_page(*(tab->get_widget()), *(tab->get_label_widget()), 0);
+        rval = insert_page(*(tab.get_widget()), *(tab.get_label_widget()), 0);
       }
       break;
       // TODO: handle other kinds of tabs
     default:
-      rval = insert_page(*(tab->get_widget()), *(tab->get_label_widget()), next_position(tab->get_type()));
+      rval = insert_page(*(tab.get_widget()), *(tab.get_label_widget()), next_position(tab.get_type()));
       }
 
     return rval;
   }
 
-  void TabsManager::remove_page(Tab *tab)
+  void TabsManager::remove_page(Tab &tab)
   {
-    Gtk::Notebook::remove_page(*(tab->get_widget()));
+    Gtk::Notebook::remove_page(*(tab.get_widget()));
   }
 
   void TabsManager::page_removed(Gtk::Widget *widget, int page)

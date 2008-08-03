@@ -118,12 +118,12 @@ namespace gui
        * @param tab tab to append
        * @return position of the appended tab
        */
-      int append_page(Tab *tab);
+      int append_page(Tab &tab);
       /**
        * Remove a tab from the notebook
        * @param tab tab to remove
        */
-      void remove_page(Tab *tab);
+      void remove_page(Tab &tab);
   };
 
 }
