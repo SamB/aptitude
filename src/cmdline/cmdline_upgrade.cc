@@ -29,7 +29,7 @@
 
 int cmdline_upgrade(int argc, char *argv[],
 		    const char *status_fname, bool simulate,
-		    bool no_new_installs,
+		    bool no_new_installs, bool show_resolver_actions,
 		    bool assume_yes, bool download_only,
 		    bool showvers, bool showdeps,
 		    bool showsize, bool showwhy,
@@ -104,7 +104,7 @@ int cmdline_upgrade(int argc, char *argv[],
       show_broken();
     }
 
-  if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, true))
+  if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, true, show_resolver_actions))
     {
       {
 	aptitudeDepCache::action_group action_group(*apt_cache_file);
