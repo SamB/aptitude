@@ -171,11 +171,11 @@ namespace gui
     void update_package_button_states(pkgCache::PkgIterator pkg,
 				      // Covers installation, upgrades, and
 				      // downgrades.
-				      Gtk::Button *installButton,
-				      Gtk::Button *removeButton,
-				      Gtk::Button *purgeButton,
-				      Gtk::Button *keepButton,
-				      Gtk::Button *holdButton)
+				      Gtk::Button &installButton,
+				      Gtk::Button &removeButton,
+				      Gtk::Button &purgeButton,
+				      Gtk::Button &keepButton,
+				      Gtk::Button &holdButton)
     {
       using cwidget::util::ssprintf;
 
@@ -191,83 +191,83 @@ namespace gui
       // Don't show the user the option to install the package unless
       // it might at some point be installable.
       if(candver.end() || state.Status == 0)
-	installButton->hide();
+	installButton.hide();
       else
 	{
-	  installButton->show();
+	  installButton.show();
 
 	  if(state.Status == 1)
 	    {
-	      installButton->set_label(ssprintf(_("Upgrade to %s version %s"),
-						pkg.Name(),
-						candver.VerStr()));
-	      installButton->set_image(*manage(new Gtk::Image(Gtk::Stock::GO_UP,
-							      Gtk::ICON_SIZE_BUTTON)));
+	      installButton.set_label(ssprintf(_("Upgrade to %s version %s"),
+					       pkg.Name(),
+					       candver.VerStr()));
+	      installButton.set_image(*manage(new Gtk::Image(Gtk::Stock::GO_UP,
+							     Gtk::ICON_SIZE_BUTTON)));
 	    }
 	  else if(state.Status == 2)
 	    {
-	      installButton->set_label(ssprintf(_("Install %s version %s"),
-						pkg.Name(),
-						candver.VerStr()));
-	      installButton->set_image(*manage(new Gtk::Image(Gtk::Stock::ADD,
-							      Gtk::ICON_SIZE_BUTTON)));
+	      installButton.set_label(ssprintf(_("Install %s version %s"),
+					       pkg.Name(),
+					       candver.VerStr()));
+	      installButton.set_image(*manage(new Gtk::Image(Gtk::Stock::ADD,
+							     Gtk::ICON_SIZE_BUTTON)));
 	    }
 	  else if(state.Status == -1)
 	    {
-	      installButton->set_label(ssprintf(_("Downgrade to %s version %s"),
-						pkg.Name(),
-						candver.VerStr()));
-	      installButton->set_image(*manage(new Gtk::Image(Gtk::Stock::GO_DOWN,
-							      Gtk::ICON_SIZE_BUTTON)));
+	      installButton.set_label(ssprintf(_("Downgrade to %s version %s"),
+					       pkg.Name(),
+					       candver.VerStr()));
+	      installButton.set_image(*manage(new Gtk::Image(Gtk::Stock::GO_DOWN,
+							     Gtk::ICON_SIZE_BUTTON)));
 	    }
 	}
 
       if(state.Keep())
 	{
 	  if((*apt_cache_file)->get_ext_state(pkg).selection_state == pkgCache::State::Hold)
-	    keepButton->set_label(ssprintf(_("Don't hold %s at its current version."),
-					   pkg.Name()));
+	    keepButton.set_label(ssprintf(_("Don't hold %s at its current version."),
+					  pkg.Name()));
 	  else
-	    keepButton->set_label(ssprintf(_("Cancel any actions on %s."), pkg.Name()));
+	    keepButton.set_label(ssprintf(_("Cancel any actions on %s."), pkg.Name()));
 	}
       else if(state.Delete())
 	{
 	  if(state.iFlags & pkgDepCache::Purge)
-	    keepButton->set_label(ssprintf(_("Cancel the purge of %s."), pkg.Name()));
+	    keepButton.set_label(ssprintf(_("Cancel the purge of %s."), pkg.Name()));
 	  else
-	    keepButton->set_label(ssprintf(_("Cancel the removal of %s."), pkg.Name()));
+	    keepButton.set_label(ssprintf(_("Cancel the removal of %s."), pkg.Name()));
 	}
       else if(state.Install())
 	{
 	  if(state.Status == 1)
-	    keepButton->set_label(ssprintf(_("Cancel the upgrade of %s."), pkg.Name()));
+	    keepButton.set_label(ssprintf(_("Cancel the upgrade of %s."), pkg.Name()));
 	  else if(state.Status == 2)
-	    keepButton->set_label(ssprintf(_("Cancel the installation of %s."), pkg.Name()));
+	    keepButton.set_label(ssprintf(_("Cancel the installation of %s."), pkg.Name()));
 	  else if(state.Status == -1)
-	    keepButton->set_label(ssprintf(_("Cancel the downgrade of %s."), pkg.Name()));
+	    keepButton.set_label(ssprintf(_("Cancel the downgrade of %s."), pkg.Name()));
 	  else if(state.Status == 1 && (state.iFlags & pkgDepCache::ReInstall))
-	    keepButton->set_label(ssprintf(_("Cancel the reinstallation of %s."), pkg.Name()));
+	    keepButton.set_label(ssprintf(_("Cancel the reinstallation of %s."), pkg.Name()));
 	  else
-	    keepButton->set_label(ssprintf(_("Cancel any actions on %s."), pkg.Name()));
+	    keepButton.set_label(ssprintf(_("Cancel any actions on %s."), pkg.Name()));
 	}
       else
-	keepButton->set_label(ssprintf(_("Cancel any actions on %s."), pkg.Name()));
+	keepButton.set_label(ssprintf(_("Cancel any actions on %s."), pkg.Name()));
 
       // If the package isn't installed, the "remove" and "purge"
       // buttons shouldn't appear, since they're never going to be
       // available.
-      removeButton->property_visible() = (state.Status != 2);
-      purgeButton->property_visible() = (state.Status != 2);
+      removeButton.property_visible() = (state.Status != 2);
+      purgeButton.property_visible() = (state.Status != 2);
 
-      installButton->property_sensitive() =
+      installButton.property_sensitive() =
 	(actions.find(Upgrade) != actions.end() ||
 	 actions.find(Downgrade) != actions.end() ||
 	 actions.find(Install) != actions.end());
 
-      removeButton->property_sensitive() = (actions.find(Remove) != actions.end());
-      purgeButton->property_sensitive() = (actions.find(Purge) != actions.end());
-      keepButton->property_sensitive() = (actions.find(Keep) != actions.end());
-      holdButton->property_sensitive() = (actions.find(Hold) != actions.end());
+      removeButton.property_sensitive() = (actions.find(Remove) != actions.end());
+      purgeButton.property_sensitive() = (actions.find(Purge) != actions.end());
+      keepButton.property_sensitive() = (actions.find(Keep) != actions.end());
+      holdButton.property_sensitive() = (actions.find(Hold) != actions.end());
     }
 
     // TODO: it would be nice to fold the arguments into a single
@@ -279,11 +279,11 @@ namespace gui
 					    pkgCache::PkgIterator pkg,
 					    // Covers installation, upgrades, and
 					    // downgrades.
-					    Gtk::Button *installButton,
-					    Gtk::Button *removeButton,
-					    Gtk::Button *purgeButton,
-					    Gtk::Button *keepButton,
-					    Gtk::Button *holdButton)
+					    Gtk::Button &installButton,
+					    Gtk::Button &removeButton,
+					    Gtk::Button &purgeButton,
+					    Gtk::Button &keepButton,
+					    Gtk::Button &holdButton)
     {
       if(changed_packages != NULL &&
 	 changed_packages->find(pkg) != changed_packages->end())
@@ -386,15 +386,17 @@ namespace gui
 
 	button_box->show_all();
 	update_package_button_states(pkg,
-				     installButton,
-				     removeButton,
-				     purgeButton,
-				     keepButton,
-				     holdButton);
+				     *installButton,
+				     *removeButton,
+				     *purgeButton,
+				     *keepButton,
+				     *holdButton);
 
 	pPackagesTextView->add_child_at_anchor(*button_box, button_box_anchor);
 
-	(*apt_cache_file)->package_states_changed.connect(sigc::bind(sigc::ptr_fun(&maybe_update_package_button_states), pkg, installButton, removeButton, purgeButton, keepButton, holdButton));
+	// Note the use of sigc::ref to ensure this connection is
+	// removed when the buttons are destroyed.
+	(*apt_cache_file)->package_states_changed.connect(sigc::bind(sigc::ptr_fun(&maybe_update_package_button_states), pkg, sigc::ref(*installButton), sigc::ref(*removeButton), sigc::ref(*purgeButton), sigc::ref(*keepButton), sigc::ref(*holdButton)));
       }
   }
 
