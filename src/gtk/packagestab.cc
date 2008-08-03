@@ -376,12 +376,12 @@ namespace gui
 						 pkg, ver, Purge);
 	Gtk::Button *keepButton = insert_button(button_box,
 						"The user should not see this text.",
-						Gtk::Stock::MEDIA_PAUSE,
+						Gtk::Stock::MEDIA_REWIND,
 						pkg, ver, Keep);
 	Gtk::Button *holdButton = insert_button(button_box,
 						ssprintf(_("Hold %s at its current version."),
 							 pkg.Name()),
-						Gtk::Stock::MEDIA_REWIND,
+						Gtk::Stock::MEDIA_PAUSE,
 						pkg, ver, Hold);
 
 	button_box->show_all();
