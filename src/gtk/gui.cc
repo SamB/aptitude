@@ -463,6 +463,15 @@ namespace gui
     refXml = Gnome::Glade::Xml::create(glade_main_file);
   }
 
+  namespace
+  {
+    void do_apt_init()
+    {
+      std::auto_ptr<guiOpProgress> p(gen_progress_bar());
+      apt_init(p.get(), true, NULL);
+    }
+  }
+
   void main(int argc, char *argv[])
   {
     Glib::init();
@@ -471,14 +480,12 @@ namespace gui
     Gtk::Main::signal_quit().connect(&do_want_quit);
     init_glade(argc, argv);
 
-    refXml->get_widget_derived("main_window", pMainWindow);
+    // Postpone apt_init until we enter the main loop, so we get a GUI
+    // progress bar.
+    Glib::signal_idle().connect(sigc::bind_return(sigc::ptr_fun(&do_apt_init),
+						  false));
 
-    guiOpProgress * p=gen_progress_bar();
-    char *status_fname=NULL;
-    apt_init(p, true, status_fname);
-    if(status_fname)
-      free(status_fname);
-    delete p;
+    refXml->get_widget_derived("main_window", pMainWindow);
 
     //This is the loop
     Gtk::Main::run(*pMainWindow);
