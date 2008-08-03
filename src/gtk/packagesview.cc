@@ -271,8 +271,8 @@ namespace gui
                        sigc::slot0<void> callback,
                        bool sensitive = true)
     {
-      Gtk::Image *image = new Gtk::Image(icon, Gtk::ICON_SIZE_MENU);
-      Gtk::MenuItem *item = new Gtk::ImageMenuItem(*image, label);
+      Gtk::Image *image = manage(new Gtk::Image(icon, Gtk::ICON_SIZE_MENU));
+      Gtk::MenuItem *item = manage(new Gtk::ImageMenuItem(*image, label));
       menu->append(*item);
 
       if (sensitive)
@@ -296,7 +296,7 @@ namespace gui
   PackagesView::get_menu(const std::set<PackagesAction> &actions,
 			 sigc::slot1<void, PackagesAction> callback) const
   {
-    Gtk::Menu *rval(new Gtk::Menu);
+    Gtk::Menu *rval(manage(new Gtk::Menu));
 
     if(actions.find(Upgrade) != actions.end())
       {
@@ -629,7 +629,7 @@ namespace gui
 				  Gtk::TreeModelColumn<ColumnType> &model_column,
 				  int size)
   {
-    treeview_column = new Gtk::TreeViewColumn(title, model_column);
+    treeview_column = manage(new Gtk::TreeViewColumn(title, model_column));
     setup_column_properties(treeview_column, size);
     treeview_column->set_sort_column(model_column);
     return treeview->append_column(*treeview_column);
@@ -640,8 +640,8 @@ namespace gui
 					 Gtk::TreeModelColumn<Glib::ustring> &model_column,
 					 int size)
   {
-    Gtk::CellRendererText *renderer = new Gtk::CellRendererText;
-    treeview_column = new Gtk::TreeViewColumn(title, *renderer);
+    Gtk::CellRendererText *renderer = manage(new Gtk::CellRendererText);
+    treeview_column = manage(new Gtk::TreeViewColumn(title, *renderer));
     treeview_column->add_attribute(renderer->property_markup(),
 				   model_column);
     // TODO: this will work for now, but ideally we would have a

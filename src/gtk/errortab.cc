@@ -89,8 +89,8 @@ namespace gui
     get_xml()->get_widget("errors_treeview", errors_treeview);
 
     {
-      Gtk::CellRendererPixbuf *icon_renderer = new Gtk::CellRendererPixbuf;
-      Gtk::TreeViewColumn *icon_column = new Gtk::TreeViewColumn("", *icon_renderer);
+      Gtk::CellRendererPixbuf *icon_renderer = manage(new Gtk::CellRendererPixbuf);
+      Gtk::TreeViewColumn *icon_column = manage(new Gtk::TreeViewColumn("", *icon_renderer));
       icon_column->add_attribute(icon_renderer->property_stock_id(),
 				 store.get_icon_column());
       errors_treeview->append_column(*icon_column);
@@ -99,10 +99,10 @@ namespace gui
     errors_treeview->append_column("Time", store.get_datetime_column());
 
     {
-      Gtk::CellRendererText *text_renderer = new Gtk::CellRendererText;
+      Gtk::CellRendererText *text_renderer = manage(new Gtk::CellRendererText);
       text_renderer->property_ellipsize() = Pango::ELLIPSIZE_END;
 
-      Gtk::TreeViewColumn *error_column = new Gtk::TreeViewColumn("Error", *text_renderer);
+      Gtk::TreeViewColumn *error_column = manage(new Gtk::TreeViewColumn("Error", *text_renderer));
       error_column->add_attribute(text_renderer->property_text(), store.get_text_column());
       errors_treeview->append_column(*error_column);
     }

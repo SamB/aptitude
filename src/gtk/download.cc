@@ -87,7 +87,7 @@ namespace gui
       Gtk::TreeModelColumn<ColumnType>& model_column,
       int size)
   {
-    treeview_column = new Gtk::TreeViewColumn(title, model_column);
+    treeview_column = manage(new Gtk::TreeViewColumn(title, model_column));
     treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
     treeview_column->set_fixed_width(size);
     treeview_column->set_resizable(true);

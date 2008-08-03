@@ -503,5 +503,8 @@ namespace gui
 
     //This is the loop
     Gtk::Main::run(*pMainWindow);
+
+    delete pMainWindow;
+    delete pKit;
   }
 }
