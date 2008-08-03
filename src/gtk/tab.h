@@ -79,6 +79,12 @@ namespace gui
       Gtk::Widget * get_widget() const { return widget; }
       const Glib::RefPtr<Gnome::Glade::Xml> &get_xml() { return xml; }
 
+      /** \brief A signal invoked when the tab's "close" button is clicked.
+       *
+       *  The TabManager uses this to actually close the tab.
+       */
+      sigc::signal0<void> close_clicked;
+
       /** \brief A signal invoked when the tab is closed in the notebook. */
       sigc::signal0<void> closed;
   };

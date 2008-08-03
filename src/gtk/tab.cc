@@ -53,8 +53,7 @@ namespace gui
     Gtk::Button * label_button;
     refGlade->get_widget("main_notebook_download_close", label_button);
     // Maybe we should create a close() method on the Tab so it can clean itself up or make a destructor.
-    label_button->signal_clicked().connect(sigc::bind(sigc::mem_fun(*(pMainWindow->get_notebook()), &TabsManager::remove_page),
-						      sigc::ref(*this)));
+    label_button->signal_clicked().connect(close_clicked.make_slot());
 
     get_widget()->set_data(tab_property, this);
 
@@ -110,6 +109,9 @@ namespace gui
     default:
       rval = insert_page(*(tab.get_widget()), *(tab.get_label_widget()), next_position(tab.get_type()));
       }
+
+    tab.close_clicked.connect(sigc::bind(sigc::mem_fun(*this, (void (Gtk::Notebook::*)(Gtk::Widget&))&Gtk::Notebook::remove_page),
+					 sigc::ref(*tab.get_widget())));
 
     return rval;
   }
