@@ -421,6 +421,19 @@ namespace gui
 	Glib::signal_idle().connect(sigc::bind_return(sigc::mem_fun(*this, &AptitudeWindow::show_apt_errors),
 						      false));
       }
+
+    // We need to be shown before we become not-sensitive, or GDK gets
+    // cranky and spits out warnings.
+    show();
+
+    // Use a big global lock to keep the user from shooting themselves
+    // while the cache is loading.
+    if(!apt_cache_file)
+      set_sensitive(false);
+    cache_closed.connect(sigc::bind(sigc::mem_fun(*this, &Gtk::Widget::set_sensitive),
+				    false));
+    cache_reloaded.connect(sigc::bind(sigc::mem_fun(*this, &Gtk::Widget::set_sensitive),
+				      true));
   }
 
   void AptitudeWindow::apt_error_tab_destroyed()
