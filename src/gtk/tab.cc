@@ -29,6 +29,13 @@
 
 namespace gui
 {
+  namespace
+  {
+    /** \brief The named property we use to attach a tab pointer to
+     *  its main widget for inspection or deletion.
+     */
+    Glib::Quark tab_property("aptitude-tab-manager-tab-object");
+  }
 
   Tab::Tab(TabType _type, const Glib::ustring &_label,
            const Glib::RefPtr<Gnome::Glade::Xml> &_xml, const std::string &widgetName)
@@ -46,7 +53,10 @@ namespace gui
     Gtk::Button * label_button;
     refGlade->get_widget("main_notebook_download_close", label_button);
     // Maybe we should create a close() method on the Tab so it can clean itself up or make a destructor.
-    label_button->signal_clicked().connect(sigc::bind(sigc::mem_fun(*(pMainWindow->get_notebook()), &TabsManager::remove_page), *this));
+    label_button->signal_clicked().connect(sigc::bind(sigc::mem_fun(*(pMainWindow->get_notebook()), &TabsManager::remove_page), this));
+
+    get_widget()->set_data(tab_property, this);
+
     if (_label != "")
     {
       label_label->set_text(_label);
@@ -55,6 +65,10 @@ namespace gui
     {
       label_label->set_text("generic tab: " + label);
     }
+  }
+
+  Tab::~Tab()
+  {
   }
 
   void Tab::set_label(Glib::ustring label)
@@ -79,30 +93,35 @@ namespace gui
     ;;
   }
 
-  int TabsManager::append_page(Tab& tab)
+  int TabsManager::append_page(Tab *tab)
   {
-    // FIXME: we must save a pointer to the tab or we'll leak memory
-    // and possibly cause havoc.
-    int rval = 0;
-    switch (tab.get_type())
+    int rval = 0; 
+    switch (tab->get_type())
       {
     case Dashboard:
       // No more than one Dashboard at once
       if (number_of(Dashboard) == 0)
       {
-        rval = insert_page(*(tab.get_widget()), *(tab.get_label_widget()), 0);
+        rval = insert_page(*(tab->get_widget()), *(tab->get_label_widget()), 0);
       }
       break;
       // TODO: handle other kinds of tabs
     default:
-      rval = insert_page(*(tab.get_widget()), *(tab.get_label_widget()), next_position(tab.get_type()));
+      rval = insert_page(*(tab->get_widget()), *(tab->get_label_widget()), next_position(tab->get_type()));
       }
+
     return rval;
   }
 
-  void TabsManager::remove_page(Tab& tab)
+  void TabsManager::remove_page(Tab *tab)
   {
-    Gtk::Notebook::remove_page(*(tab.get_widget()));
+    Gtk::Notebook::remove_page(*(tab->get_widget()));
   }
 
+  void TabsManager::page_removed(Gtk::Widget *widget, int page)
+  {
+    Tab *tab = (Tab*)widget->get_data(tab_property);
+
+    delete tab;
+  }
 }

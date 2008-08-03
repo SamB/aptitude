@@ -264,7 +264,7 @@ namespace gui
 
   void AptitudeWindow::tab_add(Tab *tab)
   {
-    int new_page_idx = get_notebook()->append_page(*tab);
+    int new_page_idx = get_notebook()->append_page(tab);
     get_notebook()->set_current_page(new_page_idx);
   }
 

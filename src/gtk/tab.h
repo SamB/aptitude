@@ -38,7 +38,11 @@ namespace gui
   };
 
   /**
-   * A Tab contains a widget and some metadata for inserting into the notebook.
+   * \brief A Tab contains a widget and some metadata for inserting into the notebook.
+   *
+   *  \todo To delete tabs, we rely on the clicked() signal from the
+   *  close button.  This is not ideal, because the underlying widget
+   *  could be deleted some other way.  
    */
   class Tab : public sigc::trackable
   {
@@ -49,6 +53,12 @@ namespace gui
       Gtk::Label * label_label;
       Gtk::Widget * label_widget;
       Gtk::Widget * widget;
+
+      /** \brief Tabs are not copy-constructible.
+       *
+       *  Copy-constructing a tab could lead to confusion when it's deleted.
+       */
+      Tab(const Tab &);
     public:
       /** \brief Construct a new tab.
        *
@@ -61,6 +71,7 @@ namespace gui
        */
       Tab(TabType _type, const Glib::ustring &_label,
           const Glib::RefPtr<Gnome::Glade::Xml> &_xml, const std::string &widgetName);
+      virtual ~Tab();
       Glib::ustring get_label() { return label; }
       Gtk::Widget * get_label_widget() { return label_widget; }
       void set_label(Glib::ustring);
@@ -87,6 +98,13 @@ namespace gui
        * @return number of tabs of this type
        */
       int number_of(TabType type);
+
+      /** Called when a page is removed from the notebook.
+       *
+       *  Technically this doesn't need to be a member, but
+       *  it might be useful in some future expansions.
+       */
+      void page_removed(Gtk::Widget *widget, int page);
     public:
       /**
        * Glade::Xml derived widget constructor.
@@ -97,12 +115,12 @@ namespace gui
        * @param tab tab to append
        * @return position of the appended tab
        */
-      int append_page(Tab& tab);
+      int append_page(Tab *tab);
       /**
        * Remove a tab from the notebook
        * @param tab tab to remove
        */
-      void remove_page(Tab& tab);
+      void remove_page(Tab *tab);
   };
 
 }
