@@ -277,8 +277,13 @@ namespace gui
    */
   void tab_add(Tab *tab)
   {
-    int new_page_idx = pMainWindow->get_notebook()->append_page(*tab);
-    pMainWindow->get_notebook()->set_current_page(new_page_idx);
+    pMainWindow->tab_add(tab);
+  }
+
+  void AptitudeWindow::tab_add(Tab *tab)
+  {
+    int new_page_idx = get_notebook()->append_page(*tab);
+    get_notebook()->set_current_page(new_page_idx);
   }
 
   namespace

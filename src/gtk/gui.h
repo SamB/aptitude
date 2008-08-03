@@ -48,6 +48,7 @@ namespace gui
 
   void gtk_update();
 
+  /** \brief Invoke tab_add on pMainWindow. */
   void tab_add(Tab *tab);
 
   /** \brief Add a hyperlink to a Gtk::TextBuffer.
@@ -100,6 +101,9 @@ namespace gui
     Gtk::ProgressBar * get_progress_bar() const { return pProgressBar; }
     Gtk::Statusbar * get_status_bar() const { return pStatusBar; }
     TabsManager * get_notebook() const { return pNotebook; }
+
+    /** \brief Add a tab to the main notebook of this window. */
+    void tab_add(Tab *tab);
   };
 
   void main(int argc, char *argv[]);
