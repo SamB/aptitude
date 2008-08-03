@@ -448,6 +448,7 @@ namespace gui
     else
       {
 	activeErrorTab = new ErrorTab("Errors", errorStore);
+	activeErrorTab->closed.connect(sigc::mem_fun(this, &AptitudeWindow::apt_error_tab_closed));
 	tab_add(activeErrorTab);
       }
   }
