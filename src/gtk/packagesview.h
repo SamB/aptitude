@@ -242,6 +242,9 @@ namespace gui
       /** \brief Apply the given action to all the currently selected packages. */
       void apply_action_to_selected(PackagesAction action) const;
 
+      // Make PackagesView not copy-constructable.
+      PackagesView(const PackagesView &other);
+
     public:
       /** \brief Construct a new packages view.
        *
