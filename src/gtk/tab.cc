@@ -123,10 +123,14 @@ namespace gui
 
   void TabsManager::page_removed(Gtk::Widget *widget, int page)
   {
-    Tab *tab = (Tab*)widget->get_data(tab_property);
+    if(widget != NULL)
+      {
+	Tab *tab = (Tab*)widget->get_data(tab_property);
 
-    tab->closed();
+	if(tab != NULL)
+	  tab->closed();
 
-    delete tab;
+	delete tab;
+      }
   }
 }
