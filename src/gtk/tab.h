@@ -78,6 +78,9 @@ namespace gui
       TabType get_type() { return type; }
       Gtk::Widget * get_widget() const { return widget; }
       const Glib::RefPtr<Gnome::Glade::Xml> &get_xml() { return xml; }
+
+      /** \brief A signal invoked when the tab is closed in the notebook. */
+      sigc::signal0<void> closed;
   };
 
   /**

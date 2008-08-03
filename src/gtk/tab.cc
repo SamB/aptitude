@@ -122,6 +122,8 @@ namespace gui
   {
     Tab *tab = (Tab*)widget->get_data(tab_property);
 
+    tab->closed();
+
     delete tab;
   }
 }
