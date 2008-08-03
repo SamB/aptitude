@@ -84,7 +84,18 @@ namespace gui
 
   int TabsManager::number_of(TabType type)
   {
-    return 0;
+    int count = 0;
+
+    for(int i = 0; i < get_n_pages(); ++i)
+      {
+	Gtk::Widget *page = get_nth_page(i);
+	Tab *tab = (Tab*)page->get_data(tab_property);
+
+	if(tab != NULL && tab->get_type() == type)
+	  ++count;
+      }
+
+    return count;
   }
 
   TabsManager::TabsManager(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) :
