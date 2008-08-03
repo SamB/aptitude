@@ -23,6 +23,8 @@
 
 #include <apt-pkg/error.h>
 
+#include <generic/util/util.h>
+
 #include "gui.h"
 
 namespace gui
@@ -55,21 +57,18 @@ namespace gui
 
 	Glib::ustring icon = is_error ? Gtk::Stock::DIALOG_ERROR.id
 	                              : Gtk::Stock::DIALOG_WARNING.id;
-	// NB: the time that we assign might not be quite when the
-	// error was generated, but it should be "close enough".  (it
-	// would be cool to stamp errors with their exact generation
-	// time, but probably pointless)
-	Glib::TimeVal now;
-	now.assign_current_time();
-	Glib::Date now_date;
-	now_date.set_time(now);
-	Glib::ustring now_string = now_date.format_string("%c");
+
+	time_t curtime = time(NULL);
+	tm ltime;
+	std::string now;
+	if(localtime_r(&curtime, &ltime) != NULL)
+	  now = sstrftime("%c", &ltime);
 
 	Gtk::TreeModel::iterator it = store->append();
 	Gtk::TreeModel::Row row = *it;
 
 	row[icon_column] = icon;
-	row[datetime_column] = now_string;
+	row[datetime_column] = now;
 	row[text_column] = msg;
       }
 
