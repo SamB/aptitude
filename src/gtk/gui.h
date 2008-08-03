@@ -102,8 +102,9 @@ namespace gui
       // errors-view.
       ErrorTab *activeErrorTab;
 
-      // Nulls out the error tab when it's destroyed.
-      void apt_error_tab_destroyed();
+      // Nulls out the error tab when it's closed.
+      void apt_error_tab_closed();
+
     public:
       /**
        * Glade::Xml derived widget constructor.

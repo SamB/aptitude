@@ -436,7 +436,7 @@ namespace gui
 				      true));
   }
 
-  void AptitudeWindow::apt_error_tab_destroyed()
+  void AptitudeWindow::apt_error_tab_closed()
   {
     activeErrorTab = NULL;
   }
@@ -447,7 +447,7 @@ namespace gui
       activeErrorTab->show();
     else
       {
-	activeErrorTab = new ErrorTab("Errors", errorStore, &activeErrorTab);
+	activeErrorTab = new ErrorTab("Errors", errorStore);
 	tab_add(activeErrorTab);
       }
   }
