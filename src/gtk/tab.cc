@@ -90,7 +90,7 @@ namespace gui
   TabsManager::TabsManager(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) :
     Gtk::Notebook(cobject)
   {
-    ;;
+    signal_page_removed().connect(sigc::mem_fun(this, &TabsManager::page_removed));
   }
 
   int TabsManager::append_page(Tab *tab)
