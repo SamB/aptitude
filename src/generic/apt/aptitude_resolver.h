@@ -33,11 +33,6 @@
 
 /** \brief Glue code to make the resolver talk to the core aptitude classes.
  *
- * 
- *  shootshootshoot...maybe I should just teach the core about
- *  conflicts...anyway, if not, then I need to be much more careful how
- *  I iterate over conflicts if an OR is involved (it should be
- *  basically ignored)
  *  
  *  General comment on how the iterators are handled: basically the
  *  technique is (generally) to have a normalize() routine that
@@ -51,6 +46,14 @@
  *  \file aptitude_resolver.h
  */
 
+namespace aptitude
+{
+  namespace matching
+  {
+    class pkg_matcher;
+  }
+}
+
 class aptitude_resolver:public generic_problem_resolver<aptitude_universe>
 {
   imm::map<package, action> keep_all_solution;
@@ -62,10 +65,117 @@ class aptitude_resolver:public generic_problem_resolver<aptitude_universe>
 				  int undo_full_replacement_score);
 
 public:
+  class resolver_hint
+  {
+  public:
+    /** \brief The type of hint represented by this object. */
+    enum hint_type
+      {
+	/** \brief A hint that one or more package versions should be
+	 *  rejected.
+	 */
+	reject,
+	/** \brief A hint that one or more package versions should be
+	 *   mandated.
+	 */
+	mandate,
+	/** \brief A hint that one or more package versions should
+	 *  have their scores adjusted by some amount.
+	 */
+	tweak_score
+      };
+
+  private:
+    hint_type type;
+    int score;
+    aptitude::matching::pkg_matcher *target;
+    std::string version;
+
+    resolver_hint(hint_type _type, int _score,
+		  aptitude::matching::pkg_matcher *_target,
+		  const std::string &_version)
+      : type(_type), score(_score), target(_target), version(_version)
+    {
+    }
+
+  public:
+    resolver_hint()
+      : type((hint_type)-1), score(-1), target(NULL), version()
+    {
+    }
+
+    ~resolver_hint();
+
+    /** \brief Create a hint that rejects a version or versions of a package. */
+    static resolver_hint make_reject(aptitude::matching::pkg_matcher *target,
+				     const std::string &version)
+    {
+      return resolver_hint(reject, 0, target, version);
+    }
+
+    /** \brief Create a hint that mandates a version or versions of a package. */
+    static resolver_hint make_mandate(aptitude::matching::pkg_matcher *target,
+				      const std::string &version)
+    {
+      return resolver_hint(mandate, 0, target, version);
+    }
+
+    /** \brief Create a hint that adjust the score of a package. */
+    static resolver_hint make_tweak_score(aptitude::matching::pkg_matcher *target,
+					  const std::string &version,
+					  int score)
+    {
+      return resolver_hint(tweak_score, score, target, version);
+    }
+
+    /** \brief Parse a resolver hint definition.
+     *
+     *  Definitions have the form ACTION TARGET [VERSION].  ACTION is
+     *  either a number (which will be added to the score of the
+     *  selected version), or the special strings "reject" or
+     *  "accept".  If TARGET is a match pattern (specifically, if the
+     *  portion of the remaining string that parses as a match pattern
+     *  includes a question mark or tilde), then it will be treated as
+     *  such; otherwise it is the name of the package to match.
+     *  VERSION is the version of TARGET that is to be tweaked.  If
+     *  VERSION is not present, all versions of the package (except
+     *  the removal version) that match TARGET will be selected.  If
+     *  VERSION has the form "/<archive>" then the version of the
+     *  package from that archive will be selected.  If VERSION is
+     *  ":UNINST" then the not-installed version of the package will be
+     *  selected.
+     */
+    static resolver_hint parse(const std::string &definition);
+
+    /** \brief Get the type of this hint.
+     *
+     *  \sa hint_type
+     */
+    hint_type get_type() const { return type; }
+
+    /** \brief For score-tweaking hints, get the number of points to be
+     *  added to the version's score.
+     */
+    int get_score() const { return score; }
+
+    /** \brief Return the pattern identifying the package or packages
+     *  to be adjusted.
+     */
+    aptitude::matching::pkg_matcher *get_target() const { return target; }
+
+    /** \brief Return the version selected by this hint.
+     *
+     *  \todo Perhaps this should just test whether a version matches
+     *  instead?
+     */
+    const std::string &get_version() const { return version; }
+  };
+
   aptitude_resolver(int step_score, int broken_score,
 		    int unfixed_soft_score,
 		    int infinity, int max_successors,
 		    int resolution_score,
+		    const std::vector<resolver_hint> &hints,
 		    aptitudeDepCache *cache);
 
   /** \brief Return \b true if the given version will break a hold or

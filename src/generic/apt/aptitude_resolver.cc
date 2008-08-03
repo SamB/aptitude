@@ -21,15 +21,55 @@
 
 #include "config_signal.h"
 
+#include <apt-pkg/error.h>
+
+#include <aptitude.h>
+#include <generic/apt/matchers.h>
+
+aptitude_resolver::resolver_hint aptitude_resolver::resolver_hint::parse(const std::string &hint)
+{
+  std::string action;
+  std::string::const_iterator start = hint.begin();
+
+  while(start != hint.end() && isspace(*start))
+    ++start;
+
+  if(start == hint.end())
+    {
+      _error->Error(_("Invalid hint: expected an action, but found nothing."));
+      // Return what?
+    }
+
+  while(start != hint.end() && !isspace(*start))
+    break;
+
+  return resolver_hint();
+}
+
+aptitude_resolver::resolver_hint::~resolver_hint()
+{
+  delete target;
+}
+
 aptitude_resolver::aptitude_resolver(int step_score,
 				     int broken_score,
 				     int unfixed_soft_score,
 				     int infinity,
 				     int max_successors,
 				     int resolution_score,
+				     const std::vector<resolver_hint> &hints,
 				     aptitudeDepCache *cache)
   :generic_problem_resolver<aptitude_universe>(step_score, broken_score, unfixed_soft_score, infinity, max_successors, resolution_score, aptitude_universe(cache))
 {
+  using aptitude::matching::pkg_matcher;
+  std::vector<pkg_matcher *> hint_matchers;
+  for(std::vector<resolver_hint>::const_iterator it = hints.begin();
+      it != hints.end(); ++it)
+    {
+      //const aptitude::matching::pkg_matcher *pattern = it->get_target();
+
+    }
+
   set_remove_stupid(aptcfg->FindB(PACKAGE "::ProblemResolver::Remove-Stupid-Pairs", true));
 
   for(pkgCache::PkgIterator i = cache->PkgBegin(); !i.end(); ++i)
