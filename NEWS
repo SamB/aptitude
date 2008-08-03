@@ -1,3 +1,32 @@
+[8/3/2008]
+Version 0.4.11.9                            "This message brought to you
+                                             courtesy of the Friends of
+					     Poland society."
+
+- Bug fixes:
+
+  + Minor bugs:
+
+    * Don't annoy every Polish user with a warning about a badly
+      formed string in the aptitude-defaults configuration file.  Also
+      added some documentation for translators telling them about the
+      pitfall that led to this bug happening. (Closes: #483459)
+
+    * Fix some case fallthroughs that would cause the wrong
+      information to appear in the "archive" (%t) column for virtual
+      packages.
+
+    * Correctly handle install-and-mark-auto commands that are
+      targeted at a particular version, like "install foo/testing+M".
+      Previously aptitude would completely ignore the archive in this
+      case.
+
+- Translation fixes:
+
+  + German
+  + Slovak
+  + Swedish (Closes: #490782, #490818)
+
 [7/4/2008]
 Version 0.4.11.8                            "Happy Fireworks Day."
 
