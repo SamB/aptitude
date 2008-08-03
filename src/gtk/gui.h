@@ -33,6 +33,8 @@
 
 #include <apt-pkg/pkgcache.h>
 
+#include "errortab.h"
+
 namespace gui
 {
   // Local forward declarations:
@@ -92,11 +94,28 @@ namespace gui
       Gtk::ProgressBar * pProgressBar;
       Gtk::Statusbar * pStatusBar;
       TabsManager * pNotebook;
+
+      // The "global" singleton for storing apt errors.
+      ErrorStore errorStore;
+
+      // If this is not NULL, it points at the currently active
+      // errors-view.
+      ErrorTab *activeErrorTab;
+
+      // Nulls out the error tab when it's destroyed.
+      void apt_error_tab_destroyed();
     public:
       /**
        * Glade::Xml derived widget constructor.
        */
       AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)/* : Gtk::Window(cobject)*/;
+
+    /** \brief Show the apt errors tab.
+     *
+     *  \todo This manually handles finding the active tab if there is
+     *  one; perhaps this logic should be part of the tab manager?
+     */
+    void show_apt_errors();
 
     Gtk::ProgressBar * get_progress_bar() const { return pProgressBar; }
     Gtk::Statusbar * get_status_bar() const { return pStatusBar; }

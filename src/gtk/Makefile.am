@@ -5,6 +5,8 @@ noinst_LIBRARIES=libgtk.a
 libgtk_a_SOURCES=\
 	download.cc \
 	download.h \
+	errortab.cc \
+	errortab.h \
 	gui.cc \
 	gui.h \
 	info.cc \

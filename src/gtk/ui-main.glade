@@ -1,4 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--Generated with glade3 3.4.5 on Sat Aug  2 23:09:02 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="width_request">800</property>
@@ -375,6 +377,19 @@
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_Views</property>
                 <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu5">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkMenuItem" id="menu_view_apt_errors">
+                        <property name="visible">True</property>
+                        <property name="tooltip" translatable="yes">View errors that have occurred in the apt system since the program was started.</property>
+                        <property name="label" translatable="yes">View apt _errors</property>
+                        <property name="use_underline">True</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
               </widget>
             </child>
             <child>
@@ -495,8 +510,8 @@
                 <property name="label" translatable="yes">Dashboard</property>
               </widget>
               <packing>
-                <property name="tab_fill">False</property>
                 <property name="type">tab</property>
+                <property name="tab_fill">False</property>
               </packing>
             </child>
             <child>
@@ -546,9 +561,9 @@
                 </child>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">1</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -681,9 +696,9 @@
                 </child>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">2</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -786,8 +801,8 @@
                         <property name="label" translatable="yes">Dependencies</property>
                       </widget>
                       <packing>
-                        <property name="tab_fill">False</property>
                         <property name="type">tab</property>
+                        <property name="tab_fill">False</property>
                       </packing>
                     </child>
                     <child>
@@ -815,9 +830,9 @@
                         <property name="label" translatable="yes">Changelog</property>
                       </widget>
                       <packing>
+                        <property name="type">tab</property>
                         <property name="position">1</property>
                         <property name="tab_fill">False</property>
-                        <property name="type">tab</property>
                       </packing>
                     </child>
                     <child>
@@ -844,9 +859,9 @@
                         <property name="label" translatable="yes">Files</property>
                       </widget>
                       <packing>
+                        <property name="type">tab</property>
                         <property name="position">2</property>
                         <property name="tab_fill">False</property>
-                        <property name="type">tab</property>
                       </packing>
                     </child>
                     <child>
@@ -864,9 +879,9 @@
                         <property name="label" translatable="yes">Popcon</property>
                       </widget>
                       <packing>
+                        <property name="type">tab</property>
                         <property name="position">3</property>
                         <property name="tab_fill">False</property>
-                        <property name="type">tab</property>
                       </packing>
                     </child>
                     <child>
@@ -884,9 +899,9 @@
                         <property name="label" translatable="yes">Tags</property>
                       </widget>
                       <packing>
+                        <property name="type">tab</property>
                         <property name="position">4</property>
                         <property name="tab_fill">False</property>
-                        <property name="type">tab</property>
                       </packing>
                     </child>
                   </widget>
@@ -906,9 +921,9 @@
                 <property name="label" translatable="yes">Info</property>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">3</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -965,9 +980,9 @@
                 <property name="label" translatable="yes">Preview</property>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">4</property>
                 <property name="tab_fill">False</property>
-                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -1051,8 +1066,46 @@
                 <property name="label" translatable="yes">Resolver</property>
               </widget>
               <packing>
+                <property name="type">tab</property>
                 <property name="position">5</property>
                 <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkScrolledWindow" id="errors_scrolledwindow">
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <child>
+                  <widget class="GtkTreeView" id="errors_treeview">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="headers_clickable">True</property>
+                    <property name="rules_hint">True</property>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">6</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="label5">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Errors</property>
+              </widget>
+              <packing>
+                <property name="type">tab</property>
+                <property name="position">6</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+              <packing>
                 <property name="type">tab</property>
               </packing>
             </child>

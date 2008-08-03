@@ -81,6 +81,8 @@ namespace gui
 
   int TabsManager::append_page(Tab& tab)
   {
+    // FIXME: we must save a pointer to the tab or we'll leak memory
+    // and possibly cause havoc.
     int rval = 0;
     switch (tab.get_type())
       {

@@ -34,7 +34,7 @@ namespace gui
    */
   enum TabType
   {
-    Dashboard, Download, Packages, Info, Preview, Resolver, InstallRemove
+    Dashboard, Download, Packages, Info, Preview, Resolver, InstallRemove, Error
   };
 
   /**

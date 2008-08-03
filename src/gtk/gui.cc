@@ -223,24 +223,6 @@ namespace gui
       }
   };
 
-  void check_apt_errors()
-  {
-    string currerr, tag;
-    while (!_error->empty())
-    {
-      bool iserr = _error->PopMessage(currerr);
-      if (iserr)
-        tag = "E:";
-      else
-        tag = "W:";
-
-      Gtk::MessageDialog dialog(*pMainWindow, "There's a problem with apt...", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK,
-          true);
-      dialog.set_secondary_text(tag + currerr);
-      dialog.run();
-    }
-  }
-
 
   void do_mark_upgradable()
   {
@@ -418,16 +400,50 @@ namespace gui
     refGlade->get_widget("menu_do_quit", pMenuFileExit);
     pMenuFileExit->signal_activate().connect(&do_quit);
 
+    {
+      Gtk::MenuItem *menu_view_apt_errors;
+      refGlade->get_widget("menu_view_apt_errors", menu_view_apt_errors);
+      menu_view_apt_errors->signal_activate().connect(sigc::mem_fun(this, &AptitudeWindow::show_apt_errors));
+    }
+
     refGlade->get_widget("main_progressbar", pProgressBar);
     refGlade->get_widget("main_statusbar", pStatusBar);
     pStatusBar->push("Aptitude-gtk v2", 0);
+
+    activeErrorTab = NULL;
+    errorStore.error_added.connect(sigc::mem_fun(*this, &AptitudeWindow::show_apt_errors));
+    if(!errorStore.get_model()->children().empty())
+      {
+	// Show the apt error tab in the idle callback so we don't
+	// kill ourselves.  The problem is that the global pointer to
+	// this window isn't set up yet and show_apt_errors() expects
+	// to be able to find it (ew).
+	Glib::signal_idle().connect(sigc::bind_return(sigc::mem_fun(*this, &AptitudeWindow::show_apt_errors),
+						      false));
+      }
+  }
+
+  void AptitudeWindow::apt_error_tab_destroyed()
+  {
+    activeErrorTab = NULL;
+  }
+
+  void AptitudeWindow::show_apt_errors()
+  {
+    if(activeErrorTab != NULL)
+      activeErrorTab->show();
+    else
+      {
+	activeErrorTab = new ErrorTab("Errors", errorStore, &activeErrorTab);
+	tab_add(activeErrorTab);
+      }
   }
 
   void init_glade(int argc, char *argv[])
   {
     // Use the basename of argv0 to find the Glade file.
     // TODO: note that the .glade file will ultimately
-    //       go to /usr/share/aptitude/glade or something,
+    //       go to /usr/share/aptitude/glawith referede or something,
     //       so a more general solution will be needed.
     std::string argv0(argv[0]);
     std::string argv0_path;
@@ -457,15 +473,11 @@ namespace gui
 
     refXml->get_widget_derived("main_window", pMainWindow);
 
-    // TODO: this is unnecessary if consume_errors is connected for the GUI.
-    check_apt_errors();
-
     guiOpProgress * p=gen_progress_bar();
     char *status_fname=NULL;
     apt_init(p, true, status_fname);
     if(status_fname)
       free(status_fname);
-    check_apt_errors();
     delete p;
 
     //This is the loop
