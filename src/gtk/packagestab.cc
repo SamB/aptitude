@@ -344,6 +344,10 @@ namespace gui
 	    textBuffer->insert_with_tag(textBuffer->end(), _("Description: "), fieldNameTag);
 
 	    textBuffer->insert(textBuffer->end(), info.LongDescription());
+
+	    textBuffer->insert(textBuffer->end(), "\n");
+	    add_debtags(textBuffer, textBuffer->end(),
+			pkg, fieldNameTag);
 	  }
 	else
 	  {

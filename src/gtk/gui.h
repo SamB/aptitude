@@ -60,11 +60,29 @@ namespace gui
    *  \param link_text   The text that the user will see (will be
    *                     displayed in a standard "link style").
    *  \param link_action A callback invoked when the user clicks the link.
+   *
+   *  \return an iterator pointing to the end of the newly inserted text.
    */
-  void add_hyperlink(const Glib::RefPtr<Gtk::TextBuffer> &buffer,
-		     Gtk::TextBuffer::iterator where,
-		     const Glib::ustring &link_text,
-		     const sigc::slot0<void> &link_action);
+  Gtk::TextBuffer::iterator add_hyperlink(const Glib::RefPtr<Gtk::TextBuffer> &buffer,
+					  Gtk::TextBuffer::iterator where,
+					  const Glib::ustring &link_text,
+					  const sigc::slot0<void> &link_action);
+
+  /** \brief Insert the tags of the given package into a TextBuffer.
+   *
+   *  Each tag will be a link that pops up a new packages view.
+   *
+   *  \param buffer The buffer into which the tags should be inserted.
+   *  \param pkg    The package whose tags should be displayed.
+   *  \param headerTag  A text-tag used to display the header that
+   *                    leads off the tag list.
+   *
+   *  \return an iterator pointing to the end of the newly inserted text.
+   */
+  Gtk::TextBuffer::iterator add_debtags(const Glib::RefPtr<Gtk::TextBuffer> &buffer,
+					Gtk::TextBuffer::iterator where,
+					const pkgCache::PkgIterator &pkg,
+					const Glib::RefPtr<Gtk::TextBuffer::Tag> &headerTag);
 
   /**
    * This is the main Aptitude custom window widget.

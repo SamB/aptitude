@@ -25,6 +25,7 @@
 #include "gui.h"
 
 #include "aptitude.h"
+#include "packagesview.h"
 
 #include <map>
 
@@ -38,6 +39,7 @@
 #include <generic/apt/apt_undo_group.h>
 #include <generic/apt/download_install_manager.h>
 #include <generic/apt/download_update_manager.h>
+#include <generic/apt/tags.h>
 
 #include <sigc++/signal.h>
 
@@ -300,10 +302,10 @@ namespace gui
   // dynamic_casting each tag to a derived class that implements a
   // "get_cursor()" method) This is gross and will require our own
   // special version of TextView, but OTOH it should work pretty well.
-  void add_hyperlink(const Glib::RefPtr<Gtk::TextBuffer> &buffer,
-		     Gtk::TextBuffer::iterator where,
-		     const Glib::ustring &link_text,
-		     const sigc::slot0<void> &link_action)
+  Gtk::TextBuffer::iterator add_hyperlink(const Glib::RefPtr<Gtk::TextBuffer> &buffer,
+					  Gtk::TextBuffer::iterator where,
+					  const Glib::ustring &link_text,
+					  const sigc::slot0<void> &link_action)
   {
     Glib::RefPtr<Gtk::TextBuffer::Tag> tag = buffer->create_tag();
 
@@ -312,7 +314,66 @@ namespace gui
     tag->signal_event().connect(sigc::bind(sigc::ptr_fun(do_hyperlink_callback),
 					   link_action));
 
-    buffer->insert_with_tag(where, link_text, tag);
+    return buffer->insert_with_tag(where, link_text, tag);
+  }
+
+  namespace
+  {
+    void make_debtags_tab(const std::string &tag)
+    {
+      PackagesTab *tab = new PackagesTab("Tag " + tag);
+      tab_add(tab);
+      tab->get_packages_view()->relimit_packages_view("?tag(^" + tag + "$)");
+    }
+  }
+
+  Gtk::TextBuffer::iterator add_debtags(const Glib::RefPtr<Gtk::TextBuffer> &buffer,
+					Gtk::TextBuffer::iterator where,
+					const pkgCache::PkgIterator &pkg,
+					const Glib::RefPtr<Gtk::TextBuffer::Tag> &headerTag)
+  {
+    if(pkg.end())
+      return where;
+
+#ifdef HAVE_EPT
+    typedef ept::debtags::Tag tag;
+    using aptitude::apt::get_tags;
+
+    const std::set<tag> realS(get_tags(pkg));
+    const std::set<tag> * const s(&realS);
+#else
+    const std::set<tag> * const s(get_tags(pkg));
+#endif
+
+    if(s != NULL && !s->empty())
+      {
+	bool first = true;
+	where = buffer->insert_with_tag(where,
+					ssprintf(_("Tags of %s:\n"), pkg.Name()),
+					headerTag);
+	// TODO: indent all the tags.
+	for(std::set<tag>::const_iterator it = s->begin();
+	    it != s->end(); ++it)
+	  {
+#ifdef HAVE_EPT
+	    const std::string name(it->fullname());
+#else
+	    const std::string name(it->str());
+#endif
+
+	    if(first)
+	      first = false;
+	    else
+	      where = buffer->insert(where, ", ");
+
+	    where = add_hyperlink(buffer, where,
+				  name,
+				  sigc::bind(sigc::ptr_fun(&make_debtags_tab),
+					     name));
+	  }
+      }
+
+    return where;
   }
 
   void do_dashboard()
