@@ -34,6 +34,8 @@
 #include <gtk/packagesview.h>
 #include <gtk/packageinformation.h>
 
+#include <cwidget/generic/util/ssprintf.h>
+
 namespace gui
 {
 
@@ -148,6 +150,147 @@ namespace gui
     set_label(_("Packages: ") + pLimitEntry->get_text());
   }
 
+  namespace
+  {
+    Glib::RefPtr<Gtk::Button> insert_button(Gtk::Container *parent,
+					    const Glib::ustring &buttonText,
+					    Gtk::StockID stockId,
+					    pkgCache::PkgIterator pkg,
+					    pkgCache::VerIterator ver,
+					    PackagesAction action)
+    {
+      Gtk::Button *button = new Gtk::Button(buttonText);
+      button->set_image(*new Gtk::Image(stockId, Gtk::ICON_SIZE_BUTTON));
+      button->signal_clicked().connect(sigc::bind(sigc::ptr_fun(&dispatch_action),
+						  pkg, ver, action));
+
+      parent->add(*button);
+      return Glib::RefPtr<Gtk::Button>(button);
+    }
+
+    void update_package_button_states(pkgCache::PkgIterator pkg,
+				      // Covers installation, upgrades, and
+				      // downgrades.
+				      Glib::RefPtr<Gtk::Button> installButton,
+				      Glib::RefPtr<Gtk::Button> removeButton,
+				      Glib::RefPtr<Gtk::Button> purgeButton,
+				      Glib::RefPtr<Gtk::Button> keepButton,
+				      Glib::RefPtr<Gtk::Button> holdButton)
+    {
+      using cwidget::util::ssprintf;
+
+      if(pkg.end())
+	return;
+
+      std::set<PackagesAction> actions;
+      add_actions(pkg, actions);
+
+      pkgDepCache::StateCache &state = (*apt_cache_file)[pkg];
+      pkgCache::VerIterator candver = state.CandidateVerIter(*apt_cache_file);
+
+      // Don't show the user the option to install the package unless
+      // it might at some point be installable.
+      if(candver.end() || state.Status == 0)
+	installButton->hide();
+      else
+	{
+	  installButton->show();
+
+	  if(state.Status == 1)
+	    {
+	      installButton->set_label(ssprintf(_("Upgrade to %s version %s"),
+						pkg.Name(),
+						candver.VerStr()));
+	      installButton->set_image(*new Gtk::Image(Gtk::Stock::GO_UP,
+						       Gtk::ICON_SIZE_BUTTON));
+	    }
+	  else if(state.Status == 2)
+	    {
+	      installButton->set_label(ssprintf(_("Install %s version %s"),
+						pkg.Name(),
+						candver.VerStr()));
+	      installButton->set_image(*new Gtk::Image(Gtk::Stock::ADD,
+						       Gtk::ICON_SIZE_BUTTON));
+	    }
+	  else if(state.Status == -1)
+	    {
+	      installButton->set_label(ssprintf(_("Downgrade to %s version %s"),
+						pkg.Name(),
+						candver.VerStr()));
+	      installButton->set_image(*new Gtk::Image(Gtk::Stock::GO_DOWN,
+						       Gtk::ICON_SIZE_BUTTON));
+	    }
+	}
+
+      if(state.Keep())
+	{
+	  if((*apt_cache_file)->get_ext_state(pkg).selection_state == pkgCache::State::Hold)
+	    keepButton->set_label(ssprintf(_("Don't hold %s at its current version."),
+					   pkg.Name()));
+	  else
+	    keepButton->set_label(ssprintf(_("Cancel any actions on %s."), pkg.Name()));
+	}
+      else if(state.Delete())
+	{
+	  if(state.iFlags & pkgDepCache::Purge)
+	    keepButton->set_label(ssprintf(_("Cancel the purge of %s."), pkg.Name()));
+	  else
+	    keepButton->set_label(ssprintf(_("Cancel the removal of %s."), pkg.Name()));
+	}
+      else if(state.Install())
+	{
+	  if(state.Status == 1)
+	    keepButton->set_label(ssprintf(_("Cancel the upgrade of %s."), pkg.Name()));
+	  else if(state.Status == 2)
+	    keepButton->set_label(ssprintf(_("Cancel the installation of %s."), pkg.Name()));
+	  else if(state.Status == -1)
+	    keepButton->set_label(ssprintf(_("Cancel the downgrade of %s."), pkg.Name()));
+	  else if(state.Status == 1 && (state.iFlags & pkgDepCache::ReInstall))
+	    keepButton->set_label(ssprintf(_("Cancel the reinstallation of %s."), pkg.Name()));
+	  else
+	    keepButton->set_label(ssprintf(_("Cancel any actions on %s."), pkg.Name()));
+	}
+      else
+	keepButton->set_label(ssprintf(_("Cancel any actions on %s."), pkg.Name()));
+
+      // If the package isn't installed, the "remove" and "purge"
+      // buttons shouldn't appear, since they're never going to be
+      // available.
+      removeButton->property_visible() = (state.Status != 2);
+      purgeButton->property_visible() = (state.Status != 2);
+
+      installButton->property_sensitive() =
+	(actions.find(Upgrade) != actions.end() ||
+	 actions.find(Downgrade) != actions.end() ||
+	 actions.find(Install) != actions.end());
+
+      removeButton->property_sensitive() = (actions.find(Remove) != actions.end());
+      purgeButton->property_sensitive() = (actions.find(Purge) != actions.end());
+      keepButton->property_sensitive() = (actions.find(Keep) != actions.end());
+      holdButton->property_sensitive() = (actions.find(Hold) != actions.end());
+    }
+
+    void maybe_update_package_button_states(const std::set<pkgCache::PkgIterator> *changed_packages,
+					    pkgCache::PkgIterator pkg,
+					    // Covers installation, upgrades, and
+					    // downgrades.
+					    Glib::RefPtr<Gtk::Button> installButton,
+					    Glib::RefPtr<Gtk::Button> removeButton,
+					    Glib::RefPtr<Gtk::Button> purgeButton,
+					    Glib::RefPtr<Gtk::Button> keepButton,
+					    Glib::RefPtr<Gtk::Button> holdButton)
+    {
+      if(changed_packages != NULL &&
+	 changed_packages->find(pkg) != changed_packages->end())
+	update_package_button_states(pkg,
+				     installButton,
+				     removeButton,
+				     purgeButton,
+				     keepButton,
+				     holdButton);
+    }
+  }
+
   void PackagesTab::display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
     Glib::RefPtr<Gtk::TextBuffer> textBuffer = Gtk::TextBuffer::create();
@@ -203,6 +346,51 @@ namespace gui
       }
 
     pPackagesTextView->set_buffer(textBuffer);
+
+    // This all has to be done after we set the buffer anyway.
+    //
+    // TODO: better layout is probably good.  Is it?
+    if(!pkg.end())
+      {
+	textBuffer->insert(textBuffer->end(), "\n");
+	Glib::RefPtr<Gtk::TextBuffer::ChildAnchor> button_box_anchor =
+	  textBuffer->create_child_anchor(textBuffer->end());
+
+	Gtk::ButtonBox *button_box = new Gtk::VButtonBox;
+
+	Glib::RefPtr<Gtk::Button> installButton = insert_button(button_box,
+								"The user should never see this text.", Gtk::Stock::DIALOG_ERROR,
+								pkg, ver, Install);
+	Glib::RefPtr<Gtk::Button> removeButton = insert_button(button_box,
+							       ssprintf(_("Remove %s"), pkg.Name()),
+							       Gtk::Stock::REMOVE,
+							       pkg, ver, Remove);
+	Glib::RefPtr<Gtk::Button> purgeButton = insert_button(button_box,
+							      ssprintf(_("Purge %s"), pkg.Name()),
+							      Gtk::Stock::CLEAR,
+							      pkg, ver, Purge);
+	Glib::RefPtr<Gtk::Button> keepButton = insert_button(button_box,
+							     "The user should not see this text.",
+							     Gtk::Stock::MEDIA_PAUSE,
+							     pkg, ver, Keep);
+	Glib::RefPtr<Gtk::Button> holdButton = insert_button(button_box,
+							     ssprintf(_("Hold %s at its current version."),
+								      pkg.Name()),
+							     Gtk::Stock::MEDIA_REWIND,
+							     pkg, ver, Hold);
+
+	button_box->show_all();
+	update_package_button_states(pkg,
+				     installButton,
+				     removeButton,
+				     purgeButton,
+				     keepButton,
+				     holdButton);
+
+	pPackagesTextView->add_child_at_anchor(*button_box, button_box_anchor);
+
+	(*apt_cache_file)->package_states_changed.connect(sigc::bind(sigc::ptr_fun(&maybe_update_package_button_states), pkg, installButton, removeButton, purgeButton, keepButton, holdButton));
+      }
   }
 
 }
