@@ -152,12 +152,12 @@ namespace gui
 
   namespace
   {
-    Glib::RefPtr<Gtk::Button> insert_button(Gtk::Container *parent,
-					    const Glib::ustring &buttonText,
-					    Gtk::StockID stockId,
-					    pkgCache::PkgIterator pkg,
-					    pkgCache::VerIterator ver,
-					    PackagesAction action)
+    Gtk::Button *insert_button(Gtk::Container *parent,
+			       const Glib::ustring &buttonText,
+			       Gtk::StockID stockId,
+			       pkgCache::PkgIterator pkg,
+			       pkgCache::VerIterator ver,
+			       PackagesAction action)
     {
       Gtk::Button *button = new Gtk::Button(buttonText);
       button->set_image(*new Gtk::Image(stockId, Gtk::ICON_SIZE_BUTTON));
@@ -165,17 +165,17 @@ namespace gui
 						  pkg, ver, action));
 
       parent->add(*button);
-      return Glib::RefPtr<Gtk::Button>(button);
+      return button;
     }
 
     void update_package_button_states(pkgCache::PkgIterator pkg,
 				      // Covers installation, upgrades, and
 				      // downgrades.
-				      Glib::RefPtr<Gtk::Button> installButton,
-				      Glib::RefPtr<Gtk::Button> removeButton,
-				      Glib::RefPtr<Gtk::Button> purgeButton,
-				      Glib::RefPtr<Gtk::Button> keepButton,
-				      Glib::RefPtr<Gtk::Button> holdButton)
+				      Gtk::Button *installButton,
+				      Gtk::Button *removeButton,
+				      Gtk::Button *purgeButton,
+				      Gtk::Button *keepButton,
+				      Gtk::Button *holdButton)
     {
       using cwidget::util::ssprintf;
 
@@ -270,15 +270,20 @@ namespace gui
       holdButton->property_sensitive() = (actions.find(Hold) != actions.end());
     }
 
+    // TODO: it would be nice to fold the arguments into a single
+    // parameter.  The reason this isn't done is that I want the
+    // connection to "go away" when the buttons are destroyed; in
+    // order for that to work I have to bind directly to the pointers
+    // (sigc++ will detect that they implement sigc::trackable).
     void maybe_update_package_button_states(const std::set<pkgCache::PkgIterator> *changed_packages,
 					    pkgCache::PkgIterator pkg,
 					    // Covers installation, upgrades, and
 					    // downgrades.
-					    Glib::RefPtr<Gtk::Button> installButton,
-					    Glib::RefPtr<Gtk::Button> removeButton,
-					    Glib::RefPtr<Gtk::Button> purgeButton,
-					    Glib::RefPtr<Gtk::Button> keepButton,
-					    Glib::RefPtr<Gtk::Button> holdButton)
+					    Gtk::Button *installButton,
+					    Gtk::Button *removeButton,
+					    Gtk::Button *purgeButton,
+					    Gtk::Button *keepButton,
+					    Gtk::Button *holdButton)
     {
       if(changed_packages != NULL &&
 	 changed_packages->find(pkg) != changed_packages->end())
@@ -358,26 +363,26 @@ namespace gui
 
 	Gtk::ButtonBox *button_box = new Gtk::VButtonBox;
 
-	Glib::RefPtr<Gtk::Button> installButton = insert_button(button_box,
-								"The user should never see this text.", Gtk::Stock::DIALOG_ERROR,
-								pkg, ver, Install);
-	Glib::RefPtr<Gtk::Button> removeButton = insert_button(button_box,
-							       ssprintf(_("Remove %s"), pkg.Name()),
-							       Gtk::Stock::REMOVE,
-							       pkg, ver, Remove);
-	Glib::RefPtr<Gtk::Button> purgeButton = insert_button(button_box,
-							      ssprintf(_("Purge %s"), pkg.Name()),
-							      Gtk::Stock::CLEAR,
-							      pkg, ver, Purge);
-	Glib::RefPtr<Gtk::Button> keepButton = insert_button(button_box,
-							     "The user should not see this text.",
-							     Gtk::Stock::MEDIA_PAUSE,
-							     pkg, ver, Keep);
-	Glib::RefPtr<Gtk::Button> holdButton = insert_button(button_box,
-							     ssprintf(_("Hold %s at its current version."),
-								      pkg.Name()),
-							     Gtk::Stock::MEDIA_REWIND,
-							     pkg, ver, Hold);
+	Gtk::Button *installButton = insert_button(button_box,
+						   "The user should never see this text.", Gtk::Stock::DIALOG_ERROR,
+						   pkg, ver, Install);
+	Gtk::Button *removeButton = insert_button(button_box,
+						  ssprintf(_("Remove %s"), pkg.Name()),
+						  Gtk::Stock::REMOVE,
+						  pkg, ver, Remove);
+	Gtk::Button *purgeButton = insert_button(button_box,
+						 ssprintf(_("Purge %s"), pkg.Name()),
+						 Gtk::Stock::CLEAR,
+						 pkg, ver, Purge);
+	Gtk::Button *keepButton = insert_button(button_box,
+						"The user should not see this text.",
+						Gtk::Stock::MEDIA_PAUSE,
+						pkg, ver, Keep);
+	Gtk::Button *holdButton = insert_button(button_box,
+						ssprintf(_("Hold %s at its current version."),
+							 pkg.Name()),
+						Gtk::Stock::MEDIA_REWIND,
+						pkg, ver, Hold);
 
 	button_box->show_all();
 	update_package_button_states(pkg,
