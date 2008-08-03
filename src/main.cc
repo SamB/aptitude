@@ -206,6 +206,8 @@ enum {
   OPTION_REMOVE_USER_TAG_FROM,
   OPTION_SAFE_RESOLVER,
   OPTION_FULL_RESOLVER,
+  OPTION_SHOW_RESOLVER_ACTIONS,
+  OPTION_NO_SHOW_RESOLVER_ACTIONS,
   OPTION_ARCH_ONLY,
   OPTION_NOT_ARCH_ONLY,
   OPTION_DISABLE_COLUMNS
@@ -238,6 +240,8 @@ option opts[]={
   {"allow-new-upgrades", 0, &getopt_result, OPTION_ALLOW_NEW_UPGRADES},
   {"safe-resolver", 0, &getopt_result, OPTION_SAFE_RESOLVER},
   {"full-resolver", 0, &getopt_result, OPTION_FULL_RESOLVER},
+  {"show-resolver-actions", 0, &getopt_result, OPTION_SHOW_RESOLVER_ACTIONS},
+  {"no-show-resolver-actions", 0, &getopt_result, OPTION_NO_SHOW_RESOLVER_ACTIONS},
   {"visual-preview", 0, &getopt_result, OPTION_VISUAL_PREVIEW},
   {"schedule-only", 0, &getopt_result, OPTION_QUEUE_ONLY},
   {"purge-unused", 0, &getopt_result, OPTION_PURGE_UNUSED},
@@ -281,8 +285,10 @@ int main(int argc, char *argv[])
   bool assume_yes=aptcfg->FindB(PACKAGE "::CmdLine::Assume-Yes", false);
   bool fix_broken=aptcfg->FindB(PACKAGE "::CmdLine::Fix-Broken", false);
   bool safe_upgrade_no_new_installs = aptcfg->FindB(PACKAGE "::CmdLine::Safe-Upgrade::No-New-Installs", false);
+  bool safe_upgrade_show_resolver_actions = aptcfg->FindB(PACKAGE "::CmdLine::Safe-Upgrade::Show-Resolver-Actions", false);
   bool safe_resolver_no_new_installs = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Installs", false);
   bool safe_resolver_no_new_upgrades = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Upgrades", false);
+  bool safe_resolver_show_resolver_actions = aptcfg->FindB(PACKAGE "::Safe-Resolver::Show-Resolver-Actions", false);
   bool always_use_safe_resolver = aptcfg->FindB(PACKAGE "::Always-Use-Safe-Resolver", false);
   bool disable_columns = aptcfg->FindB(PACKAGE "::CmdLine::Disable-Columns", false);
   bool safe_resolver_option = false;
@@ -444,6 +450,14 @@ int main(int argc, char *argv[])
 	      exit(0);
 	    case OPTION_ALLOW_UNTRUSTED:
 	      aptcfg->Set(PACKAGE "::CmdLine::Ignore-Trust-Violations", true);
+	      break;
+	    case OPTION_SHOW_RESOLVER_ACTIONS:
+	      safe_resolver_show_resolver_actions = true;
+	      safe_upgrade_show_resolver_actions = true;
+	      break;
+	    case OPTION_NO_SHOW_RESOLVER_ACTIONS:
+	      safe_resolver_show_resolver_actions = false;
+	      safe_upgrade_show_resolver_actions = false;
 	      break;
 	    case OPTION_NO_NEW_INSTALLS:
 	      safe_upgrade_no_new_installs = true;
@@ -635,7 +649,7 @@ int main(int argc, char *argv[])
 				       fix_broken, showvers, showdeps,
 				       showsize, showwhy,
 				       visual_preview, always_prompt,
-				       always_use_safe_resolver,
+				       always_use_safe_resolver, safe_resolver_show_resolver_actions,
 				       safe_resolver_no_new_installs, safe_resolver_no_new_upgrades,
 				       user_tags,
 				       arch_only, queue_only, verbose);
@@ -653,6 +667,7 @@ int main(int argc, char *argv[])
 	      return cmdline_upgrade(argc-optind, argv+optind,
 				     status_fname, simulate,
 				     safe_upgrade_no_new_installs,
+				     safe_upgrade_show_resolver_actions,
 				     assume_yes, download_only,
 				     showvers, showdeps,
 				     showsize, showwhy,

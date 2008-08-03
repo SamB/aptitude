@@ -1,6 +1,6 @@
-// desc_parse.h                                     -*-c++-*-
+// desc_render.h                                     -*-c++-*-
 //
-//   Copyright 2004-2005 Daniel Burrows
+//   Copyright 2004-2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -17,14 +17,19 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
-#ifndef DESC_PARSE_H
-#define DESC_PARSE_H
+#ifndef DESC_RENDER_H
+#define DESC_RENDER_H
 
 #include <string>
+#include <vector>
 
 #include <apt-pkg/pkgcache.h>
 
-/** \file desc_parse.h
+#include <cwidget/generic/util/ref_ptr.h>
+
+#include <generic/apt/desc_parse.h>
+
+/** \file desc_render.h
  */
 
 namespace cwidget
@@ -32,11 +37,22 @@ namespace cwidget
   class fragment;
 }
 
+namespace aptitude
+{
+  /** \brief Render a list of elements as a cwidget fragment.
+   *
+   *  \param elements   the list of description elements to be rendered.
+   */
+  cwidget::fragment *make_desc_fragment(const std::vector<description_element_ref> &elements);
+}
+
 /** Parses the given description string according to the standard
  *  formatting rules.
  *
  *  \param desc a Description tag to parse
  *  \return a cwidget::fragment representing that description
+ *
+ *  This just invokes aptitude::parse_desc() and aptitude::make_desc_fragment().
  */
 cwidget::fragment *make_desc_fragment(const std::wstring &desc);
 

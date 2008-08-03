@@ -143,12 +143,16 @@ namespace aptitude
      *  \param no_new_upgrades  If true, packages not currently
      *                          flagged for upgrade will not be
      *                          upgraded.
+     *  \param show_story  If true, an explanation of the arrived-at
+     *                     solution as a sequence of dependency
+     *                     resolutions will be displayed.
      *
      *  \return \b true iff a solution was found and applied.
      */
     bool safe_resolve_deps(int verbose,
 			   bool no_new_installs,
-			   bool no_new_upgrades);
+			   bool no_new_upgrades,
+			   bool show_story);
   }
 }
 

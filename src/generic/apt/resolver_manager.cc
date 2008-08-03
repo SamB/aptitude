@@ -735,6 +735,7 @@ void resolver_manager::create_resolver()
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::Infinity", 1000000),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::Max-Successors", 0),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::ResolutionScore", 50),
+				 std::vector<aptitude_resolver::resolver_hint>(),
 				 cache);
 
   resolver->add_action_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::PreserveManualScore", 60),

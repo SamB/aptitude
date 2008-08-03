@@ -36,7 +36,7 @@ int cmdline_do_action(int argc, char *argv[],
 		      bool showvers, bool showdeps,
 		      bool showsize, bool showwhy,
 		      bool visual_preview, bool always_prompt,
-		      bool safe_resolver,
+		      bool safe_resolver, bool safe_resolver_show_actions,
 		      bool no_new_installs, bool no_new_upgrades,
 		      const std::vector<aptitude::cmdline::tag_application> &user_tags,
 		      bool arch_only,
@@ -261,7 +261,7 @@ int cmdline_do_action(int argc, char *argv[],
 
   if(safe_resolver)
     {
-      if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, no_new_upgrades))
+      if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, no_new_upgrades, safe_resolver_show_actions))
 	{
 	  fprintf(stderr, _("Unable to safely resolve dependencies, try running with --full-resolver.\n"));
 	  return -1;
