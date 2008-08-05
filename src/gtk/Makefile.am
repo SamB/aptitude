@@ -19,6 +19,8 @@ libgtk_a_SOURCES=\
 	packagestab.h \
 	packagesview.cc \
 	packagesview.h \
+	pkgview.cc \
+	pkgview.h \
 	previewtab.cc \
 	previewtab.h \
 	progress.cc \

@@ -39,58 +39,6 @@
 namespace gui
 {
 
-  class PackagesTabGenerator : public PackagesTreeModelGenerator
-  {
-    Glib::RefPtr<Gtk::ListStore> store;
-    PackagesColumns *packages_columns;
-
-  private:
-    PackagesTabGenerator(PackagesColumns *_packages_columns)
-    {
-      // FIXME: Hack while finding a nonblocking thread join.
-      finished = false;
-      packages_columns = _packages_columns;
-      store = Gtk::ListStore::create(*packages_columns);
-    }
-
-  public:
-    /** \brief Create a preview tab generator.
-     *
-     *  \param packages_columns  The columns of the new store.
-     *
-     *  \note This is mainly a workaround for the fact that either
-     *  sigc++ doesn't provide convenience functors for constructors
-     *  or I can't find them.
-     */
-    static PackagesTabGenerator *create(PackagesColumns *packages_columns)
-    {
-      return new PackagesTabGenerator(packages_columns);
-    }
-
-    void add(const pkgCache::PkgIterator &pkg, const pkgCache::VerIterator &ver,
-             std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
-    {
-      Gtk::TreeModel::iterator iter = store->append();
-      Gtk::TreeModel::Row row = *iter;
-
-      reverse_packages_store->insert(std::make_pair(pkg, iter));
-
-      packages_columns->fill_row(row, pkg, ver);
-    }
-
-    void finish()
-    {
-      store->set_sort_column(packages_columns->Name, Gtk::SORT_ASCENDING);
-      // FIXME: Hack while finding a nonblocking thread join.
-      finished = true;
-    }
-
-    Glib::RefPtr<Gtk::TreeModel> get_model()
-    {
-      return store;
-    }
-  };
-
   PackagesTab::PackagesTab(const Glib::ustring &label) :
     Tab(Packages, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_hpaned"), "main_packages_hpaned")
   {
