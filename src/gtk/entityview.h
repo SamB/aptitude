@@ -54,7 +54,7 @@ namespace gui
 
   public:
     refcounted_base() : refcount(0) { }
-    ~refcounted_base();
+    virtual ~refcounted_base();
 
     void incref() { ++refcount; }
     void decref()
