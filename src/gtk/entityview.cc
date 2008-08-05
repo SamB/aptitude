@@ -30,30 +30,47 @@
 
 namespace gui
 {
-
-  class DummyEntity : public Entity
+  Entity::~Entity()
   {
-    void fill_row(Gtk::TreeModel::Row &row)
-    {
-      ;;
-    }
-    pkgCache::PkgIterator get_pkg()
-    {
-      return pkgCache::PkgIterator();
-    }
-    pkgCache::VerIterator get_ver()
-    {
-      return pkgCache::VerIterator();
-    }
-    void add_actions(std::set<PackagesAction> &actions)
-    {
-      ;;
-    }
-    void dispatch_action(PackagesAction action)
-    {
-      ;;
-    }
-  };
+  }
+
+  refcounted_base::~refcounted_base()
+  {
+  }
+
+  void HeaderEntity::fill_row(const EntityColumns *cols, Gtk::TreeModel::Row &row)
+  {
+    row[cols->EntObject] = this;
+
+    row[cols->BgColor] = "light yellow"; // Say we want blue header..
+    row[cols->BgSet] = true; // We do want to put color in there, yes.
+
+    row[cols->Status] = ""; // dummy
+
+    // This is the content of the header
+    // TODO: Maybe we should delegate the markup to the caller
+    row[cols->Name] = "<span size=\"large\">" + Glib::Markup::escape_text(text) + "</span>";
+
+    row[cols->Version] = ""; // dummy
+  }
+
+  void HeaderEntity::activated(const Gtk::TreeModel::Path &path,
+			       const Gtk::TreeViewColumn *column,
+			       const EntityView *view)
+  {
+  }
+
+  void HeaderEntity::add_packages(std::set<pkgCache::PkgIterator> &packages)
+  {
+  }
+
+  void HeaderEntity::add_actions(std::set<PackagesAction> &actions)
+  {
+  }
+
+  void HeaderEntity::dispatch_action(PackagesAction action)
+  {
+  }
 
   EntityColumns::EntityColumns()
   {
@@ -120,18 +137,10 @@ namespace gui
     return return_value;
   }
 
-  void EntityTreeModelGenerator::dump_stores(EntityView * entview)
-  {
-    entview->swap_stores(std::make_pair(store, revstore));
-  }
-
-  void EntityView::init(EntityTreeModelGenerator * generator,
-                        Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+  void EntityView::init(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
                         Glib::ustring gladename)
   {
     refGlade->get_widget_derived(gladename, tree);
-
-    this->generator = generator;
 
     tree->signal_context_menu.connect(sigc::mem_fun(*this, &EntityView::context_menu_handler));
     tree->signal_row_activated().connect(sigc::mem_fun(*this, &EntityView::row_activated_handler));
@@ -140,8 +149,8 @@ namespace gui
     cache_closed.connect(sigc::mem_fun(*this, &EntityView::on_cache_closed));
     cache_reloaded.connect(sigc::mem_fun(*this, &EntityView::on_cache_reloaded));
 
-    append_column(Glib::ustring(_("Status")), Status, cols->Status, 32);
-    append_markup_column(Glib::ustring(_("Name")), Name, cols->Name, 350);
+    append_column(Glib::ustring(_("Status")), Status, cols.Status, 32);
+    append_markup_column(Glib::ustring(_("Name")), Name, cols.Name, 350);
     {
       Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
       if(renderer == NULL)
@@ -155,7 +164,7 @@ namespace gui
             renderer_text->property_ellipsize() = Pango::ELLIPSIZE_END;
         }
     }
-    append_markup_column(Glib::ustring(_("Version")), Version, cols->Version, 80);
+    append_markup_column(Glib::ustring(_("Version")), Version, cols.Version, 80);
     {
       Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
       if(renderer == NULL)
@@ -170,7 +179,7 @@ namespace gui
         }
     }
 
-    tree->set_search_column(cols->Name);
+    tree->set_search_column(cols.Name);
 
     // TODO: There should be a way to do this in Glade maybe.
     tree->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
@@ -194,8 +203,8 @@ namespace gui
                                              int size)
   {
     Gtk::CellRenderer* treeview_cellrenderer = treeview_column->get_first_cell_renderer();
-    treeview_column->add_attribute(treeview_cellrenderer->property_cell_background_set(), cols->BgSet);
-    treeview_column->add_attribute(treeview_cellrenderer->property_cell_background(), cols->BgColor);
+    treeview_column->add_attribute(treeview_cellrenderer->property_cell_background_set(), cols.BgSet);
+    treeview_column->add_attribute(treeview_cellrenderer->property_cell_background(), cols.BgColor);
     treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
     treeview_column->set_fixed_width(size);
     treeview_column->set_resizable(true);
@@ -215,9 +224,9 @@ namespace gui
   }
 
   int EntityView::append_markup_column(const Glib::ustring &title,
-                                         Gtk::TreeViewColumn *treeview_column,
-                                         Gtk::TreeModelColumn<Glib::ustring> &model_column,
-                                         int size)
+				       Gtk::TreeViewColumn *treeview_column,
+				       Gtk::TreeModelColumn<Glib::ustring> &model_column,
+				       int size)
   {
     Gtk::CellRendererText *renderer = manage(new Gtk::CellRendererText);
     treeview_column = manage(new Gtk::TreeViewColumn(title, *renderer));
@@ -230,8 +239,29 @@ namespace gui
     return tree->append_column(*treeview_column);
   }
 
+  void EntityView::refresh_view(const std::set<pkgCache::PkgIterator> *changed_packages)
+  {
+    for(std::set<pkgCache::PkgIterator>::iterator pkg = changed_packages->begin(); pkg != changed_packages->end(); pkg++)
+      {
+        std::pair<std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>::iterator,
+        std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>::iterator> reverse_range =
+	  get_reverse_store()->equal_range(*pkg);
+
+        for (std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator>::iterator reverse_iter =
+          reverse_range.first;
+        reverse_iter != reverse_range.second; reverse_iter++)
+          {
+            Gtk::TreeModel::iterator iter = reverse_iter->second;
+            Gtk::TreeModel::Row row = *iter;
+	    cwidget::util::ref_ptr<Entity> ent = row[get_columns()->EntObject];
+	    ent->fill_row(get_columns(), row);
+          }
+      }
+  }
+
   void EntityView::apply_action_to_selected(PackagesAction action)
   {
+    Glib::RefPtr<Gtk::TreeModel> model = get_model();
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = get_treeview()->get_selection();
     if(refSelection)
     {
@@ -240,13 +270,13 @@ namespace gui
       for (Gtk::TreeSelection::ListHandle_Path::iterator path = path_list.begin();
         path != path_list.end(); path++)
       {
-        iter_list.push_back(store->get_iter(*path));
+        iter_list.push_back(model->get_iter(*path));
       }
       aptitudeDepCache::action_group group(*apt_cache_file, NULL);
       while (!iter_list.empty())
         {
           Gtk::TreeModel::iterator iter = iter_list.front();
-          Entity * ent = (*iter)[cols->EntObject];
+	  cwidget::util::ref_ptr<Entity> ent = (*iter)[cols.EntObject];
           ent->dispatch_action(action);
 
           iter_list.pop_front();
@@ -254,35 +284,87 @@ namespace gui
     }
   }
 
-  void EntityView::fill_header(Gtk::TreeModel::Row &row,
-                                    Glib::ustring text)
+  EntityView::EntityView(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+			 Glib::ustring gladename)
   {
-    row[cols->EntObject] = new DummyEntity();
-
-    row[cols->BgColor] = "light yellow"; // Say we want blue header..
-    row[cols->BgSet] = true; // We do want to put color in there, yes.
-
-    row[cols->Status] = ""; // dummy
-
-    // This is the content of the header
-    // TODO: Maybe we should delegate the markup to the caller
-    row[cols->Name] = "<span size=\"large\">" + Glib::Markup::escape_text(text) + "</span>";
-
-    row[cols->Version] = ""; // dummy
+    init(refGlade, gladename);
   }
 
-  EntityView::EntityView(EntityTreeModelGenerator * generator,
-                             Glib::RefPtr<Gnome::Glade::Xml> refGlade,
-                             Glib::ustring gladename,
-                             Glib::ustring limit)
+  namespace
   {
-    init(generator, refGlade, gladename);
-    if(!limit.empty())
-      relimit_view(generator, limit);
+    void add_menu_item(Gtk::Menu *menu,
+                       Glib::ustring label,
+                       Gtk::StockID icon,
+                       sigc::slot0<void> callback,
+                       bool sensitive = true)
+    {
+      Gtk::Image *image = manage(new Gtk::Image(icon, Gtk::ICON_SIZE_MENU));
+      Gtk::MenuItem *item = manage(new Gtk::ImageMenuItem(*image, label));
+      menu->append(*item);
+
+      if (sensitive)
+        item->signal_activate().connect(callback);
+      else
+        item->set_sensitive(false);
+
+      item->show_all();
+    }
+
+    // for convenience
+    void add_menu_item(Gtk::Menu *menu,
+                       Glib::ustring label,
+                       Gtk::StockID icon)
+    {
+      add_menu_item(menu, label, icon, sigc::slot0<void>(), false);
+    }
+  }
+
+  Gtk::Menu *
+  EntityView::get_menu(const std::set<PackagesAction> &actions,
+		       const sigc::slot1<void, PackagesAction> &callback) const
+  {
+    Gtk::Menu *rval(manage(new Gtk::Menu));
+
+    if(actions.find(Upgrade) != actions.end())
+      {
+	if(actions.find(Install) != actions.end())
+	  add_menu_item(rval, "Install/Upgrade", Gtk::Stock::ADD,
+			sigc::bind(callback, Install));
+	else
+	  add_menu_item(rval, "Upgrade", Gtk::Stock::GO_UP,
+			sigc::bind(callback, Install));
+      }
+    else if(actions.find(Downgrade) != actions.end())
+      add_menu_item(rval, "Downgrade", Gtk::Stock::GO_DOWN,
+                    sigc::bind(callback, Install));
+    else if(actions.find(Install) != actions.end())
+      add_menu_item(rval, "Install", Gtk::Stock::ADD,
+                    sigc::bind(callback, Install));
+    else
+      add_menu_item(rval, "Install/Upgrade", Gtk::Stock::ADD); // Insensitive
+
+    add_menu_item(rval, "Remove", Gtk::Stock::REMOVE,
+                  sigc::bind(callback, Remove),
+                  actions.find(Remove) != actions.end());
+
+    add_menu_item(rval, "Purge", Gtk::Stock::CLEAR,
+                  sigc::bind(callback, Purge),
+                  actions.find(Purge) != actions.end());
+
+    add_menu_item(rval, "Keep", Gtk::Stock::MEDIA_REWIND,
+                  sigc::bind(callback, Keep),
+                  actions.find(Keep) != actions.end());
+
+    add_menu_item(rval, "Hold", Gtk::Stock::MEDIA_PAUSE,
+                  sigc::bind(callback, Hold),
+                  actions.find(Hold) != actions.end());
+
+    return rval;
   }
 
   void EntityView::context_menu_handler(GdkEventButton * event)
   {
+    Glib::RefPtr<Gtk::TreeModel> model = get_model();
     Glib::RefPtr<Gtk::TreeView::Selection> selected = tree->get_selection();
     if(selected)
       {
@@ -292,8 +374,8 @@ namespace gui
         for (Gtk::TreeSelection::ListHandle_Path::iterator path = selected_rows.begin();
              path != selected_rows.end(); ++path)
           {
-            Gtk::TreeModel::iterator iter = store->get_iter(*path);
-            Entity * ent = (*iter)[cols->EntObject];
+            Gtk::TreeModel::iterator iter = model->get_iter(*path);
+	    cwidget::util::ref_ptr<Entity> ent = (*iter)[cols.EntObject];
             ent->add_actions(actions);
           }
 
@@ -307,25 +389,44 @@ namespace gui
 
   EntityView::~EntityView()
   {
-    // TODO: Auto-generated destructor stub
   }
 
   void EntityView::row_activated_handler(const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
   {
-      Gtk::TreeModel::iterator iter = store->get_iter(path);
-      Entity * ent = (*iter)[cols->EntObject];
-      pkgCache::VerIterator ver = ent->get_ver();
-      pkgCache::PkgIterator pkg = ent->get_pkg();
-
-      if (!pkg.end() && !ver.end())
-        InfoTab::show_tab(pkg, ver);
+      Gtk::TreeModel::iterator iter = get_model()->get_iter(path);
+      cwidget::util::ref_ptr<Entity> ent = (*iter)[cols.EntObject];
+      ent->activated(path, column, this);
   }
 
-  void EntityView::relimit_view(EntityTreeModelGenerator * generator, Glib::ustring limit)
+  namespace
   {
-    generator->build_store(limit);
-    generator->dump_stores(this);
-    tree->set_model(store);
+    bool add_entity_to_revstore(const Gtk::TreeModel::iterator &iter,
+				const Glib::RefPtr<Gtk::TreeModel> &model,
+				const EntityColumns *columns,
+				std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> *revstore)
+    {
+      std::set<pkgCache::PkgIterator> packages;
+
+      const Gtk::TreeModel::Row &row = *iter;
+
+      cwidget::util::ref_ptr<Entity> ent = row[columns->EntObject];
+      ent->add_packages(packages);
+
+      for(std::set<pkgCache::PkgIterator>::const_iterator it = packages.begin();
+	  it != packages.end(); ++it)
+	revstore->insert(std::pair<pkgCache::PkgIterator, Gtk::TreeModel::iterator>(*it, iter));
+
+      return false;
+    }
   }
 
+  void EntityView::set_model(const Glib::RefPtr<Gtk::TreeModel> &model)
+  {
+    revstore.clear();
+    model->foreach_iter(sigc::bind(sigc::ptr_fun(add_entity_to_revstore),
+				   model,
+				   get_columns(),
+				   get_reverse_store()));
+    get_treeview()->set_model(model);
+  }
 }

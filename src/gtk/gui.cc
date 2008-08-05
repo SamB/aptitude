@@ -25,7 +25,6 @@
 #include "gui.h"
 
 #include "aptitude.h"
-#include "packagesview.h"
 
 #include <map>
 
@@ -323,7 +322,7 @@ namespace gui
     {
       PackagesTab *tab = new PackagesTab("Tag " + tag);
       tab_add(tab);
-      tab->get_packages_view()->relimit_packages_view("?tag(^" + tag + "$)");
+      tab->get_pkg_view()->set_limit("?tag(^" + tag + "$)");
     }
   }
 

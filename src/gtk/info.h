@@ -28,18 +28,20 @@
 
 #include <gtk/tab.h>
 
+#include <cwidget/generic/util/ref_ptr.h>
+
 namespace gui
 {
-  class PackagesView;
+  class EntityView;
 
   class InfoTab : public Tab
   {
     private:
       Gtk::TextView * textview;
-      PackagesView * pVersionsView;
-      PackagesView * pDependsView;
+      cwidget::util::ref_ptr<EntityView> pVersionsView;
+      cwidget::util::ref_ptr<EntityView> pDependsView;
     public:
-      InfoTab(Glib::ustring label);
+      InfoTab(const Glib::ustring &label);
       void disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
 
       /** \brief Convenience function to create and display a new tab

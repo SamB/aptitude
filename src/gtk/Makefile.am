@@ -17,8 +17,6 @@ libgtk_a_SOURCES=\
 	packageinformation.h \
 	packagestab.cc \
 	packagestab.h \
-	packagesview.cc \
-	packagesview.h \
 	pkgview.cc \
 	pkgview.h \
 	previewtab.cc \

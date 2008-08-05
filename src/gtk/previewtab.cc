@@ -31,91 +31,64 @@
 #include <gtk/gui.h>
 #include <gtk/info.h>
 #include <gtk/packageinformation.h>
-#include <gtk/packagesview.h>
+#include <gtk/pkgview.h>
 
 namespace gui
 {
-
-  class PreviewTabGenerator : public PackagesTreeModelGenerator
+  PreviewView::Generator::Generator(const EntityColumns *_entity_columns)
   {
-    Glib::RefPtr<Gtk::TreeStore> store;
-    PackagesColumns *packages_columns;
+    entity_columns = _entity_columns;
+    store = Gtk::TreeStore::create(*entity_columns);
+  }
 
-    // \todo Swiped from pkg_grouppolicy_mode; should be pushed into
-    // low-level code.
-    const static char * const child_names[];
+  PreviewView::Generator *PreviewView::Generator::create(const EntityColumns *entity_columns)
+  {
+    return new Generator(entity_columns);
+  }
 
-    std::map<int, Gtk::TreeStore::iterator> state_trees;
+  void PreviewView::Generator::add(const pkgCache::PkgIterator &pkg)
+  {
+    int group = find_pkg_state(pkg, *apt_cache_file);
+    if(group != pkg_unchanged)
+      {
+	const std::map<int, Gtk::TreeModel::iterator>::const_iterator found =
+	  state_trees.find(group);
 
-  private:
-    PreviewTabGenerator(PackagesColumns *_packages_columns)
-    {
-      // FIXME: Hack while finding a nonblocking thread join.
-      finished = false;
-      packages_columns = _packages_columns;
-      store = Gtk::TreeStore::create(*packages_columns);
-    }
+	Gtk::TreeModel::iterator tree;
+	if(found == state_trees.end())
+	  {
+	    tree = store->append();
+	    Gtk::TreeModel::Row tree_row = *tree;
+	    (new HeaderEntity(_(child_names[group])))->fill_row(entity_columns, tree_row);
+	    state_trees[group] = tree;
+	  }
+	else
+	  tree = found->second;
 
-  public:
-    /** \brief Create a preview tab generator.
-     *
-     *  \param packages_columns  The columns of the new store.
-     *
-     *  \note This is mainly a workaround for the fact that either
-     *  sigc++ doesn't provide convenience functors for constructors
-     *  or I can't find them.
-     */
-    static PreviewTabGenerator *create(PackagesColumns *packages_columns)
-    {
-      return new PreviewTabGenerator(packages_columns);
-    }
+	Gtk::TreeModel::iterator iter = store->append(tree->children());
+	Gtk::TreeModel::Row row = *iter;
 
-    void add(const pkgCache::PkgIterator &pkg, const pkgCache::VerIterator &ver,
-             std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
-    {
-      int group = find_pkg_state(pkg, *apt_cache_file);
-      if(group != pkg_unchanged)
-        {
-          const std::map<int, Gtk::TreeModel::iterator>::const_iterator found =
-            state_trees.find(group);
+	PkgEntity *entity = new PkgEntity(pkg);
+	entity->fill_row(entity_columns, row);
+      }
+  }
 
-          Gtk::TreeModel::iterator tree;
-          if(found == state_trees.end())
-            {
-              tree = store->append();
-              Gtk::TreeModel::Row tree_row = *tree;
-              packages_columns->fill_header(tree_row, _(child_names[group]));
-              state_trees[group] = tree;
-            }
-          else
-            tree = found->second;
+  void PreviewView::Generator::finish()
+  {
+    store->set_sort_column(entity_columns->Name, Gtk::SORT_ASCENDING);
+    // FIXME: Hack while finding a nonblocking thread join.
+    finished = true;
+  }
 
-          Gtk::TreeModel::iterator iter = store->append(tree->children());
-          Gtk::TreeModel::Row row = *iter;
-
-          reverse_packages_store->insert(std::make_pair(pkg, iter));
-
-	  packages_columns->fill_row(row, pkg, ver);
-        }
-    }
-
-    void finish()
-    {
-      store->set_sort_column(packages_columns->Name, Gtk::SORT_ASCENDING);
-      // FIXME: Hack while finding a nonblocking thread join.
-      finished = true;
-    }
-
-    Glib::RefPtr<Gtk::TreeModel> get_model()
-    {
-      return store;
-    }
-  };
+  Glib::RefPtr<Gtk::TreeModel> PreviewView::Generator::get_model()
+  {
+    return store;
+  }
 
 
   // \todo This is proof-of-concept only; the child_names list should
   // be in common code.
-  const char * const PreviewTabGenerator::child_names[num_pkg_action_states]=
+  const char * const PreviewView::Generator::child_names[num_pkg_action_states]=
     {
       N_("Packages with unsatisfied dependencies\n The dependency requirements of these packages will be unmet after the install is complete.\n .\n The presence of this tree probably indicates that something is broken, either on your system or in the Debian archive."),
       N_("Packages being removed because they are no longer used\n These packages are being deleted because they were automatically installed to fulfill dependencies, and the planned action will result in no installed package declaring an 'important' dependency on them.\n"),
@@ -131,6 +104,16 @@ namespace gui
       N_("Packages that are partially installed\n These packages are not fully installed and configured; an attempt will be made to complete their installation."),
     };
 
+  PreviewView::PreviewView(const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
+			   const Glib::ustring &gladename,
+			   const Glib::ustring &limit)
+    : PkgViewBase(sigc::ptr_fun(&Generator::create),
+		  refGlade,
+		  gladename,
+		  limit)
+  {
+  }
+
   PreviewTab::PreviewTab(const Glib::ustring &label) :
     Tab(Preview, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_hpaned"), "main_packages_hpaned")
   {
@@ -140,17 +123,18 @@ namespace gui
     get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
     pLimitButton->signal_clicked().connect(sigc::mem_fun(*this, &PreviewTab::repopulate_model));
 
-    pPackagesView = new PackagesView(sigc::ptr_fun(PreviewTabGenerator::create), get_xml(), "main_packages_treeview");;
+    using cwidget::util::ref_ptr;
+    pPkgView = ref_ptr<PreviewView>(new PreviewView(get_xml(), "main_packages_treeview"));
 
-    pPackagesView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PreviewTab::activated_package_handler));
+    pPkgView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PreviewTab::activated_package_handler));
 
-    pPackagesView->get_treeview()->get_column(0)->set_fixed_width(70);
-    pPackagesView->get_treeview()->get_column(1)->set_fixed_width(240);
+    pPkgView->get_treeview()->get_column(0)->set_fixed_width(70);
+    pPkgView->get_treeview()->get_column(1)->set_fixed_width(240);
 
     // A PreviewTab should be fully populated by default
     repopulate_model();
 
-    pPackagesView->get_treeview()->expand_all();
+    pPkgView->get_treeview()->expand_all();
 
     get_widget()->show();
   }
@@ -160,13 +144,12 @@ namespace gui
   {
     Gtk::TreeModel::Path path;
     Gtk::TreeViewColumn * focus_column;
-    pPackagesView->get_treeview()->get_cursor(path, focus_column);
-    if (pPackagesView->get_treeview()->get_selection()->is_selected(path))
+    pPkgView->get_treeview()->get_cursor(path, focus_column);
+    if (pPkgView->get_treeview()->get_selection()->is_selected(path))
     {
-      Gtk::TreeModel::iterator iter = pPackagesView->get_packages_store()->get_iter(path);
-      pkgCache::PkgIterator pkg = (*iter)[pPackagesView->get_packages_columns()->PkgIterator];
-      pkgCache::VerIterator ver = (*iter)[pPackagesView->get_packages_columns()->VerIterator];
-      display_desc(pkg, ver);
+      Gtk::TreeModel::iterator iter = pPkgView->get_model()->get_iter(path);
+      cwidget::util::ref_ptr<Entity> ent = (*iter)[pPkgView->get_columns()->EntObject];
+      display_desc(ent);
     }
     else
     {
@@ -176,16 +159,27 @@ namespace gui
 
   void PreviewTab::repopulate_model()
   {
-    pPackagesView->relimit_packages_view(pLimitEntry->get_text());
-    pPackagesView->get_treeview()->expand_all();
+    pPkgView->set_limit(pLimitEntry->get_text());
+    pPkgView->get_treeview()->expand_all();
     set_label(_("Preview: ") + pLimitEntry->get_text());
   }
 
-  void PreviewTab::display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  void PreviewTab::display_desc(const cwidget::util::ref_ptr<Entity> &ent)
   {
+    cwidget::util::ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
+
+    pkgCache::PkgIterator pkg;
+    pkgCache::VerIterator ver;
+
+    if(pkg_ent.valid())
+      {
+	pkg = pkg_ent->get_pkg();
+	ver = pkg_ent->get_ver();
+      }
+
     Glib::RefPtr<Gtk::TextBuffer> textBuffer = Gtk::TextBuffer::create();
 
-    if(pkg.end())
+    if(!pkg_ent.valid() || pkg.end())
       {
         textBuffer->set_text("");
       }

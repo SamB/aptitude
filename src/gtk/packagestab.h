@@ -30,14 +30,17 @@
 
 #include <gtk/tab.h>
 
+#include <cwidget/generic/util/ref_ptr.h>
+
 namespace gui
 {
-  class PackagesView;
+  class PkgView;
+  class Entity;
 
   class PackagesTab : public Tab
   {
     private:
-      PackagesView * pPackagesView;
+      cwidget::util::ref_ptr<PkgView> pPkgView;
       Gtk::TextView * pPackagesTextView;
       Gtk::Entry * pLimitEntry;
       Gtk::Button * pLimitButton;
@@ -45,8 +48,8 @@ namespace gui
       PackagesTab(const Glib::ustring &label);
       void activated_package_handler();
       void repopulate_model();
-      void display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
-      PackagesView * get_packages_view() { return pPackagesView; };
+      void display_desc(const cwidget::util::ref_ptr<Entity> &ent);
+      const cwidget::util::ref_ptr<PkgView> &get_pkg_view() const { return pPkgView; }
   };
 
 }

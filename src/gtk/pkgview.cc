@@ -125,12 +125,14 @@ namespace gui
     return "white";
   }
 
-  void PkgEntity::fill_row(Gtk::TreeModel::Row &row)
+  void PkgEntity::fill_row(const EntityColumns *cols, Gtk::TreeModel::Row &row)
   {
     using cwidget::util::ssprintf;
     using cwidget::util::transcode;
 
     pkgCache::VerIterator ver = get_ver();
+
+    row[cols->EntObject] = this;
 
     row[cols->BgColor] = selected_package_state_color();
     row[cols->BgSet] = true;
@@ -163,18 +165,16 @@ namespace gui
       row[cols->Version] = "";
   }
 
-  pkgCache::PkgIterator PkgEntity::get_pkg()
+  void PkgEntity::activated(const Gtk::TreeModel::Path &path,
+			    const Gtk::TreeViewColumn *column,
+			    const EntityView *view)
   {
-    return pkg;
+    InfoTab::show_tab(get_pkg(), get_ver());
   }
 
-  // TODO: We should cache this result.
-  pkgCache::VerIterator PkgEntity::get_ver()
+  void PkgEntity::add_packages(std::set<pkgCache::PkgIterator> &packages)
   {
-    if(!pkg.CurrentVer().end())
-      return pkg.CurrentVer();
-    else
-      return (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
+    packages.insert(pkg);
   }
 
   void PkgEntity::add_actions(std::set<PackagesAction> &actions)
@@ -215,6 +215,7 @@ namespace gui
 
   void PkgEntity::dispatch_action(PackagesAction action)
   {
+    undo_group *undo = new undo_group;
     pkgCache::VerIterator ver = get_ver();
     if (!ver.end())
     {
@@ -241,12 +242,135 @@ namespace gui
         break;
       }
     }
+
+    if(undo->empty())
+      delete undo;
+    else
+      apt_undos->add_item(undo);
   }
 
-  PkgEntity::PkgEntity(EntityColumns * cols)
+  pkgCache::VerIterator PkgEntity::get_ver() const
   {
-    this->cols = cols;
-    this->pkg = pkg;
+    pkgCache::VerIterator ver = (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
+    if(ver.end())
+      ver = pkg.CurrentVer();
+
+    if(ver.end())
+      ver = pkg.VersionList();
+
+    return ver;
   }
 
+  PkgTreeModelGenerator::~PkgTreeModelGenerator()
+  {
+  }
+
+  PkgViewBase::PkgViewBase(const sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> generatorK,
+			   const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
+			   const Glib::ustring &gladename,
+			   const Glib::ustring &_limit)
+    : EntityView(refGlade, gladename)
+  {
+    generator = generatorK(get_columns());
+    limit = _limit;
+  }
+
+  PkgViewBase::~PkgViewBase()
+  {
+    delete generator;
+  }
+
+  void PkgViewBase::rebuild_store()
+  {
+    guiOpProgress * p = gen_progress_bar();
+
+    int num=0;
+    int total=(*apt_cache_file)->Head().PackageCount;
+    bool limited = false;
+    aptitude::matching::pkg_matcher * limiter = NULL;
+    if (limit != "")
+    {
+      limiter = aptitude::matching::parse_pattern(limit);
+      limited = (limiter != NULL);
+    }
+
+    for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin(); !pkg.end(); pkg++)
+      {
+        p->OverallProgress(num, total, 1, _("Building view"));
+
+        ++num;
+
+        // Filter useless packages up-front.
+        if(pkg.VersionList().end() && pkg.ProvidesList().end())
+          continue;
+        if (!limited || aptitude::matching::apply_matcher(limiter, pkg, *apt_cache_file, *apt_package_records))
+        {
+	  generator->add(pkg);
+        }
+      }
+
+    p->OverallProgress(total, total, 1,  _("Finalizing view"));
+
+    Glib::Thread * sort_thread = Glib::Thread::create(sigc::mem_fun(*generator, &PkgTreeModelGenerator::finish), true);
+    while(!generator->finished)
+    {
+      pMainWindow->get_progress_bar()->pulse();
+      gtk_update();
+      Glib::usleep(100000);
+    }
+    sort_thread->join();
+
+    //generator->finish();
+
+    delete p;
+
+    set_model(generator->get_model());
+  }
+
+  void PkgViewBase::set_limit(const Glib::ustring &_limit)
+  {
+    limit = _limit;
+    rebuild_store();
+  }
+
+  PkgView::Generator::Generator(const EntityColumns *_columns)
+    : columns(_columns)
+  {
+    store = Gtk::ListStore::create(*columns);
+  }
+
+  PkgView::Generator *PkgView::Generator::create(const EntityColumns *columns)
+  {
+    return new Generator(columns);
+  }
+
+  void PkgView::Generator::add(const pkgCache::PkgIterator &pkg)
+  {
+    Gtk::TreeModel::iterator iter = store->append();
+    Gtk::TreeModel::Row row = *iter;
+    PkgEntity *ent = new PkgEntity(pkg);
+    ent->fill_row(columns, row);
+  }
+
+  void PkgView::Generator::finish()
+  {
+    store->set_sort_column(columns->Name, Gtk::SORT_ASCENDING);
+    // FIXME: Hack while finding a nonblocking thread join.
+    finished = true;
+  }
+
+  Glib::RefPtr<Gtk::TreeModel> PkgView::Generator::get_model()
+  {
+    return store;
+  }
+
+  PkgView::PkgView(const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
+		   const Glib::ustring &gladename,
+		   const Glib::ustring &limit)
+    : PkgViewBase(sigc::ptr_fun(&Generator::create),
+		  refGlade,
+		  gladename,
+		  limit)
+  {
+  }
 }

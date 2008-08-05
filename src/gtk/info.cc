@@ -31,48 +31,170 @@
 #include <apt-pkg/version.h>
 
 #include <gtk/gui.h>
-
-#include <gtk/gui.h>
+#include <gtk/entityview.h>
 #include <gtk/packageinformation.h>
-#include <gtk/packagesview.h>
 
 #include <cwidget/generic/util/ssprintf.h>
 
 namespace gui
 {
-  class DependsViewGenerator : public PackagesTreeModelGenerator
+  namespace
   {
-    Glib::RefPtr<Gtk::TreeStore> store;
-    PackagesColumns *packages_columns;
-
-  private:
-    DependsViewGenerator(PackagesColumns *_packages_columns)
+    class VersionEntity : public Entity
     {
-      // FIXME: Hack while finding a nonblocking thread join.
-      finished = false;
-      packages_columns = _packages_columns;
-      store = Gtk::TreeStore::create(*packages_columns);
-    }
+      pkgCache::VerIterator ver;
 
-  public:
-    /** \brief Create a preview tab generator.
-     *
-     *  \param packages_columns  The columns of the new store.
-     *
-     *  \note This is mainly a workaround for the fact that either
-     *  sigc++ doesn't provide convenience functors for constructors
-     *  or I can't find them.
-     */
-    static DependsViewGenerator *create(PackagesColumns *packages_columns)
-    {
-      return new DependsViewGenerator(packages_columns);
-    }
+    public:
+      VersionEntity(const pkgCache::VerIterator &_ver)
+	: ver(_ver)
+      {
+      }
 
-    void add(const pkgCache::PkgIterator &currpkg, const pkgCache::VerIterator &currver,
-             std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
+      const pkgCache::VerIterator &get_ver() const { return ver; }
+
+      void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row)
+      {
+	row[columns->EntObject] = this;
+
+	// \todo fill in status, color, etc sensibly.
+	row[columns->BgSet] = false;
+	row[columns->BgColor] = "";
+	row[columns->Status] = "";
+	row[columns->Name] = ver.ParentPkg().Name();
+	row[columns->Version] = ver.VerStr();
+      }
+
+      void add_packages(std::set<pkgCache::PkgIterator> &packages)
+      {
+	packages.insert(ver.ParentPkg());
+      }
+
+      void activated(const Gtk::TreeModel::Path &path,
+		     const Gtk::TreeViewColumn *column,
+		     const EntityView *view)
+      {
+	InfoTab::show_tab(ver.ParentPkg(), ver);
+      }
+
+      void add_actions(std::set<PackagesAction> &actions)
+      {
+	// \todo We should have version-specific actions.
+      }
+
+      void dispatch_action(PackagesAction action)
+      {
+	// \todo We should handle actions in a version-specific way.
+	// (e.g., "install" can be "upgrade" or "downgrade" on the
+	// package)
+      }
+    };
+
+    class NotAvailableEntity : public Entity
     {
-      for(pkgCache::DepIterator dep = currver.DependsList();
-      !dep.end(); ++dep)
+      Glib::ustring text;
+    public:
+      NotAvailableEntity(const Glib::ustring &_text) : text(_text) { }
+
+      void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row)
+      {
+	row[columns->EntObject] = EntityRef(this);
+
+	row[columns->BgSet] = true;
+	row[columns->BgColor] = "#FFA0A0";
+	row[columns->Status] = "";
+	row[columns->Name] = text;
+	row[columns->Version] = "";
+      }
+
+      void add_packages(std::set<pkgCache::PkgIterator> &packages)
+      {
+      }
+
+      void activated(const Gtk::TreeModel::Path &path,
+		     const Gtk::TreeViewColumn *column,
+		     const EntityView *view)
+      {
+      }
+
+      void add_actions(std::set<PackagesAction> &actions)
+      {
+      }
+
+      void dispatch_action(PackagesAction action)
+      {
+      }
+    };
+
+    class DependencyEntity : public HeaderEntity
+    {
+    public:
+      DependencyEntity(pkgCache::DepIterator dep)
+	: HeaderEntity("")
+      {
+	Glib::ustring text = dep.DepType();
+	text += ": ";
+	do
+	  {
+	    text += dep.TargetPkg().Name();
+	    if((dep->CompareOp & (~pkgCache::Dep::Or)) != pkgCache::Dep::NoOp &&
+	       dep.TargetVer() != NULL)
+	      {
+		text += " (";
+		text += dep.CompType();
+		text += " ";
+		text += dep.TargetVer();
+		text += ")";
+	      }
+
+	    if(dep->CompareOp & pkgCache::Dep::Or)
+	      text += " | ";
+
+	    ++dep;
+	  } while(dep->CompareOp & pkgCache::Dep::Or);
+
+	set_text(text);
+      }
+
+      void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row)
+      {
+	HeaderEntity::fill_row(columns, row);
+	row[columns->Status] = "\t"+cwidget::util::transcode(L"\x2022 ");
+	// TODO: set the color according to whether the dependency is
+	// broken.  Need backend support for detecting changes to
+	// dependency state first.
+      }
+    };
+
+    class DependencyResolverEntity : public HeaderEntity
+    {
+      Glib::ustring version_text;
+
+    public:
+      DependencyResolverEntity(const Glib::ustring &package_text,
+			       const Glib::ustring &_version_text)
+	: HeaderEntity(package_text), version_text(_version_text)
+      {
+      }
+
+      void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row)
+      {
+	HeaderEntity::fill_row(columns, row);
+	row[columns->Status] = "\t-";
+	row[columns->Version] = version_text;
+      }
+    };
+
+    // Build a tree of dependencies for the given package version.
+    Glib::RefPtr<Gtk::TreeModel> make_depends_tree(const EntityColumns *columns,
+						   const pkgCache::VerIterator &ver)
+    {
+      Glib::RefPtr<Gtk::TreeStore> store = Gtk::TreeStore::create(*columns);
+
+      if(ver.end())
+	return store;
+
+      pkgCache::DepIterator dep = ver.DependsList();
+      while(!dep.end())
       {
         pkgCache::DepIterator start, end;
         surrounding_or(dep, start, end);
@@ -82,7 +204,7 @@ namespace gui
         Gtk::TreeModel::Row row;
 
         for(pkgCache::DepIterator todisp = start;
-        todisp != end; ++todisp)
+	    todisp != end; ++todisp)
         {
           Gtk::TreeModel::iterator tree2;
           Gtk::TreeModel::Row row2;
@@ -94,30 +216,27 @@ namespace gui
             {
               tree = store->append();
               row = *tree;
-              packages_columns->fill_header(row, Glib::ustring(todisp.DepType()) + ": ");
-              row[packages_columns->Status] = "\t"+cwidget::util::transcode(L"\x2022 ");
-              row[packages_columns->Name] = row[packages_columns->Name] + Glib::ustring(todisp.TargetPkg().Name());
-            }
-          else
-            {
-              row[packages_columns->Name] = row[packages_columns->Name]+ " | " + Glib::ustring(todisp.TargetPkg().Name());
+	      Entity *ent = new DependencyEntity(todisp);
+	      ent->fill_row(columns, row);
             }
 
           tree2 = store->append(tree->children());
           row2 = *tree2;
 
-          packages_columns->fill_header(row2, todisp.TargetPkg().Name());
-          row2[packages_columns->Status] = "\t-";
+	  Glib::ustring version_text;
 
           if(todisp->CompareOp != pkgCache::Dep::NoOp &&
               todisp.TargetVer() != NULL)
           {
-            row2[packages_columns->Version] = Glib::Markup::escape_text(Glib::ustring(todisp.CompType())+" "+Glib::ustring(todisp.TargetVer()));
+            version_text = Glib::Markup::escape_text(Glib::ustring(todisp.CompType())+" "+Glib::ustring(todisp.TargetVer()));
           }
           else
           {
-            row2[packages_columns->Version] = "N/A";
+            version_text = "N/A";
           }
+
+	  (new DependencyResolverEntity(todisp.TargetPkg().Name(),
+					version_text))->fill_row(columns, row2);
 
           bool resolvable = false;
 
@@ -142,8 +261,7 @@ namespace gui
               {
                 Gtk::TreeModel::iterator tree3 = store->append(tree2->children());
                 Gtk::TreeModel::Row row3 = *tree3;
-                reverse_packages_store->insert(std::make_pair(it->ParentPkg(), tree3));
-                packages_columns->fill_row(row3, it->ParentPkg(), *it, true);
+		(new VersionEntity(*it))->fill_row(columns, row3);
               }
             }
           }
@@ -170,8 +288,7 @@ namespace gui
               {
                 Gtk::TreeModel::iterator tree3 = store->append(tree2->children());
                 Gtk::TreeModel::Row row3 = *tree3;
-                reverse_packages_store->insert(std::make_pair(it->ParentPkg(), tree3));
-                packages_columns->fill_row(row3, it->ParentPkg(), *it, true);
+		(new VersionEntity(*it))->fill_row(columns, row3);
               }
             }
           }
@@ -181,85 +298,38 @@ namespace gui
             Gtk::TreeModel::iterator tree3 = store->append(tree2->children());
             Gtk::TreeModel::Row row3 = *tree3;
 
-            // This should call something like fill_header,
-            // but it's not really a header, so we're keeping this for now.
-            packages_columns->fill_row(row3, pkgCache::PkgIterator(), pkgCache::VerIterator());
-
-            row3[packages_columns->Name] = "Not available";
+	    (new NotAvailableEntity(_("Not available")))->fill_row(columns, row3);
           }
         }
+
+	dep = end;
       }
-    }
 
-    void finish()
-    {
-      store->set_sort_column(packages_columns->Version, Gtk::SORT_ASCENDING);
-      // FIXME: Hack while finding a nonblocking thread join.
-      finished = true;
-    }
-
-    Glib::RefPtr<Gtk::TreeModel> get_model()
-    {
+      store->set_sort_column(columns->Version, Gtk::SORT_ASCENDING);
       return store;
     }
-  };
 
-  class VersionsViewGenerator : public PackagesTreeModelGenerator
-  {
-    Glib::RefPtr<Gtk::ListStore> store;
-    PackagesColumns *packages_columns;
-
-  private:
-    VersionsViewGenerator(PackagesColumns *_packages_columns)
+    Glib::RefPtr<Gtk::TreeModel> make_version_list(const EntityColumns *columns,
+						   const pkgCache::PkgIterator &pkg)
     {
-      // FIXME: Hack while finding a nonblocking thread join.
-      finished = false;
-      packages_columns = _packages_columns;
-      store = Gtk::ListStore::create(*packages_columns);
-    }
+      Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*columns);
 
-  public:
-    /** \brief Create a preview tab generator.
-     *
-     *  \param packages_columns  The columns of the new store.
-     *
-     *  \note This is mainly a workaround for the fact that either
-     *  sigc++ doesn't provide convenience functors for constructors
-     *  or I can't find them.
-     */
-    static VersionsViewGenerator *create(PackagesColumns *packages_columns)
-    {
-      return new VersionsViewGenerator(packages_columns);
-    }
-
-    void add(const pkgCache::PkgIterator &currpkg, const pkgCache::VerIterator &currver,
-             std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * reverse_packages_store)
-    {
-      for (pkgCache::VerIterator ver = currpkg.VersionList(); ver.end() == false; ver++)
+      for (pkgCache::VerIterator ver = pkg.VersionList(); ver.end() == false; ver++)
       {
         Gtk::TreeModel::iterator iter = store->append();
         Gtk::TreeModel::Row row = *iter;
 
-        reverse_packages_store->insert(std::make_pair(currpkg, iter));
-
-	packages_columns->fill_row(row, currpkg, ver, true);
+	(new VersionEntity(ver))->fill_row(columns, row);
       }
-    }
 
-    void finish()
-    {
-      store->set_sort_column(packages_columns->Version, Gtk::SORT_ASCENDING);
-      // FIXME: Hack while finding a nonblocking thread join.
-      finished = true;
-    }
-
-    Glib::RefPtr<Gtk::TreeModel> get_model()
-    {
+      // \todo Sort according to version number, not according to
+      // version string. (see apt-pkg/version.h)
+      store->set_sort_column(columns->Version, Gtk::SORT_ASCENDING);
       return store;
     }
-  };
+  }
 
-  InfoTab::InfoTab(Glib::ustring label)
+  InfoTab::InfoTab(const Glib::ustring &label)
   : Tab(Info, label, Gnome::Glade::Xml::create(glade_main_file, "main_info_hpaned"), "main_info_hpaned")
   {
     get_xml()->get_widget("main_info_textview", textview);
@@ -310,20 +380,27 @@ namespace gui
 
     textBuffer->insert(textBuffer->end(), info.LongDescription());
 
-    pVersionsView = new PackagesView(sigc::ptr_fun(VersionsViewGenerator::create),
-        get_xml(), "main_info_versionsview", pkg, ver);
+    using cwidget::util::ref_ptr;
+    pVersionsView = ref_ptr<EntityView>(new EntityView(get_xml(),
+						       "main_info_versionsview"));
+    pVersionsView->set_model(make_version_list(pVersionsView->get_columns(), pkg));
     pVersionsView->get_treeview()->get_column(1)->set_fixed_width(154);
     pVersionsView->get_treeview()->get_selection()->set_mode(Gtk::SELECTION_BROWSE);
     {
       Gtk::TreeModel::Children entries = pVersionsView->get_treeview()->get_model()->children();
       for(Gtk::TreeModel::Children::const_iterator it = entries.begin();
 	  it != entries.end(); ++it)
-	if(ver == (*it)[pVersionsView->get_packages_columns()->VerIterator])
-	  pVersionsView->get_treeview()->get_selection()->select(it);
+	{
+	  using cwidget::util::ref_ptr;
+	  ref_ptr<Entity> ent = (*it)[pVersionsView->get_columns()->EntObject];
+	  ref_ptr<VersionEntity> ver_ent = ent.dyn_downcast<VersionEntity>();
+          if(ver_ent.valid() && ver == ver_ent->get_ver())
+	    pVersionsView->get_treeview()->get_selection()->select(it);
+	}
     }
 
-    pDependsView = new PackagesView(sigc::ptr_fun(DependsViewGenerator::create),
-        get_xml(), "main_info_dependsview", pkg, ver);
+    pDependsView = ref_ptr<EntityView>(new EntityView(get_xml(), "main_info_dependsview"));
+    pDependsView->set_model(make_depends_tree(pDependsView->get_columns(), ver));
     pDependsView->get_treeview()->get_column(0)->set_fixed_width(80);
     pDependsView->get_treeview()->get_column(1)->set_fixed_width(280);
     Gtk::TreeModel::Children dependsChildren = pDependsView->get_treeview()->get_model()->children();

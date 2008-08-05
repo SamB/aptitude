@@ -30,16 +30,46 @@
 
 #include <gtk/tab.h>
 
+#include <cwidget/generic/util/ref_ptr.h>
+
+#include "pkgview.h"
+
 namespace gui
 {
-  class PackagesView;
+  /** \brief A tree-view that displays a preview of which actions are
+   *  to be performed.
+   */
+  class PreviewView : public PkgViewBase
+  {
+  public:
+    class Generator : public PkgTreeModelGenerator
+    {
+      Glib::RefPtr<Gtk::TreeStore> store;
+      const EntityColumns *entity_columns;
 
-  // TODO: This needs to share more code with PackagesTab.
-  //       A PreviewTab is really a PackagesTab with a TreeStore.
+      // \todo Swiped from pkg_grouppolicy_mode; should be pushed into
+      // low-level code.
+      const static char * const child_names[];
+
+      std::map<int, Gtk::TreeStore::iterator> state_trees;
+    public:
+      Generator(const EntityColumns *columns);
+      static Generator *create(const EntityColumns *columns);
+
+      void add(const pkgCache::PkgIterator &pkg);
+      void finish();
+      Glib::RefPtr<Gtk::TreeModel> get_model();
+    };
+
+    PreviewView(const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
+		const Glib::ustring &gladename,
+		const Glib::ustring &limit = "");
+  };
+
   class PreviewTab : public Tab
   {
     private:
-      PackagesView * pPackagesView;
+      cwidget::util::ref_ptr<PreviewView> pPkgView;
       Gtk::TextView * pPackagesTextView;
       Gtk::Entry * pLimitEntry;
       Gtk::Button * pLimitButton;
@@ -47,8 +77,8 @@ namespace gui
       PreviewTab(const Glib::ustring &label);
       void activated_package_handler();
       void repopulate_model();
-      void display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);
-      PackagesView * get_packages_view() { return pPackagesView; };
+      void display_desc(const cwidget::util::ref_ptr<Entity> &ent);
+      const cwidget::util::ref_ptr<PreviewView> &get_pkg_view() const { return pPkgView; };
   };
 
 }

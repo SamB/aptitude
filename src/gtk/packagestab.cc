@@ -31,8 +31,8 @@
 #include <generic/util/util.h>
 
 #include <gtk/gui.h>
-#include <gtk/packagesview.h>
 #include <gtk/packageinformation.h>
+#include <gtk/pkgview.h>
 
 #include <cwidget/generic/util/ssprintf.h>
 
@@ -48,27 +48,27 @@ namespace gui
     get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
     pLimitButton->signal_clicked().connect(sigc::mem_fun(*this, &PackagesTab::repopulate_model));
 
-    pPackagesView = new PackagesView(sigc::ptr_fun(PackagesTabGenerator::create), get_xml(), "main_packages_treeview");
+    using cwidget::util::ref_ptr;
+    pPkgView = ref_ptr<PkgView>(new PkgView(get_xml(), "main_packages_treeview"));
 
     // Ask the user to enter a search pattern.
     //
     // TODO: a similar message should appear when a search produces no
     // matches.
     {
-      Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*pPackagesView->get_packages_columns());
+      Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*pPkgView->get_columns());
 
       Gtk::TreeModel::iterator iter = store->append();
       Gtk::TreeModel::Row row = *iter;
-      pPackagesView->get_packages_columns()->fill_header(row,
-							 "Enter a search and click \"Find\" to display packages.");
+      (new HeaderEntity(_("Enter a search and click \"Find\" to display packages.")))->fill_row(pPkgView->get_columns(), row);
 
-      pPackagesView->get_treeview()->set_model(store);
+      pPkgView->set_model(store);
     }
 
-    pPackagesView->get_treeview()->set_fixed_height_mode(true);
+    pPkgView->get_treeview()->set_fixed_height_mode(true);
 
-    pPackagesView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
-    pPackagesView->get_treeview()->signal_cursor_changed().connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
+    pPkgView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
+    pPkgView->get_treeview()->signal_cursor_changed().connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
 
     get_widget()->show();
   }
@@ -78,13 +78,14 @@ namespace gui
   {
     Gtk::TreeModel::Path path;
     Gtk::TreeViewColumn * focus_column;
-    pPackagesView->get_treeview()->get_cursor(path, focus_column);
-    if (pPackagesView->get_treeview()->get_selection()->is_selected(path))
+    pPkgView->get_treeview()->get_cursor(path, focus_column);
+    if (pPkgView->get_treeview()->get_selection()->is_selected(path))
     {
-      Gtk::TreeModel::iterator iter = pPackagesView->get_packages_store()->get_iter(path);
-      pkgCache::PkgIterator pkg = (*iter)[pPackagesView->get_packages_columns()->PkgIterator];
-      pkgCache::VerIterator ver = (*iter)[pPackagesView->get_packages_columns()->VerIterator];
-      display_desc(pkg, ver);
+      Gtk::TreeModel::iterator iter = pPkgView->get_model()->get_iter(path);
+      using cwidget::util::ref_ptr;
+      ref_ptr<Entity> ent = (*iter)[pPkgView->get_columns()->EntObject];
+      ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
+      display_desc(ent);
     }
     else
     {
@@ -94,7 +95,7 @@ namespace gui
 
   void PackagesTab::repopulate_model()
   {
-    pPackagesView->relimit_packages_view(pLimitEntry->get_text());
+    pPkgView->set_limit(pLimitEntry->get_text());
     set_label(_("Packages: ") + pLimitEntry->get_text());
   }
 
@@ -103,20 +104,19 @@ namespace gui
     Gtk::Button *insert_button(Gtk::Container *parent,
 			       const Glib::ustring &buttonText,
 			       Gtk::StockID stockId,
-			       pkgCache::PkgIterator pkg,
-			       pkgCache::VerIterator ver,
+			       const cwidget::util::ref_ptr<Entity> &entity,
 			       PackagesAction action)
     {
       Gtk::Button *button = manage(new Gtk::Button(buttonText));
       button->set_image(*manage(new Gtk::Image(stockId, Gtk::ICON_SIZE_BUTTON)));
-      button->signal_clicked().connect(sigc::bind(sigc::ptr_fun(&dispatch_action),
-						  pkg, ver, action));
+      button->signal_clicked().connect(sigc::bind(sigc::mem_fun(entity.unsafe_get_ref(), &Entity::dispatch_action),
+						  action));
 
       parent->add(*button);
       return button;
     }
 
-    void update_package_button_states(pkgCache::PkgIterator pkg,
+    void update_package_button_states(Entity &entBare,
 				      // Covers installation, upgrades, and
 				      // downgrades.
 				      Gtk::Button &installButton,
@@ -126,12 +126,22 @@ namespace gui
 				      Gtk::Button &holdButton)
     {
       using cwidget::util::ssprintf;
+      cwidget::util::ref_ptr<Entity> ent(&entBare);
+      cwidget::util::ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
+      pkgCache::PkgIterator pkg;
+      pkgCache::VerIterator ver;
 
-      if(pkg.end())
+      if(pkg_ent.valid())
+	{
+	  pkg = pkg_ent->get_pkg();
+	  ver = pkg_ent->get_ver();
+	}
+
+      if(!pkg_ent.valid() || pkg.end())
 	return;
 
       std::set<PackagesAction> actions;
-      add_actions(pkg, actions);
+      ent->add_actions(actions);
 
       pkgDepCache::StateCache &state = (*apt_cache_file)[pkg];
       pkgCache::VerIterator candver = state.CandidateVerIter(*apt_cache_file);
@@ -224,7 +234,7 @@ namespace gui
     // order for that to work I have to bind directly to the pointers
     // (sigc++ will detect that they implement sigc::trackable).
     void maybe_update_package_button_states(const std::set<pkgCache::PkgIterator> *changed_packages,
-					    pkgCache::PkgIterator pkg,
+					    Entity &entBare,
 					    // Covers installation, upgrades, and
 					    // downgrades.
 					    Gtk::Button &installButton,
@@ -233,9 +243,13 @@ namespace gui
 					    Gtk::Button &keepButton,
 					    Gtk::Button &holdButton)
     {
-      if(changed_packages != NULL &&
-	 changed_packages->find(pkg) != changed_packages->end())
-	update_package_button_states(pkg,
+      cwidget::util::ref_ptr<Entity> ent(&entBare);
+      cwidget::util::ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
+
+      if(pkg_ent.valid() &&
+	 changed_packages != NULL &&
+	 changed_packages->find(pkg_ent->get_pkg()) != changed_packages->end())
+	update_package_button_states(entBare,
 				     installButton,
 				     removeButton,
 				     purgeButton,
@@ -244,11 +258,22 @@ namespace gui
     }
   }
 
-  void PackagesTab::display_desc(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
+  void PackagesTab::display_desc(const cwidget::util::ref_ptr<Entity> &ent)
   {
     Glib::RefPtr<Gtk::TextBuffer> textBuffer = Gtk::TextBuffer::create();
 
-    if(pkg.end())
+    cwidget::util::ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
+    pkgCache::PkgIterator pkg;
+    pkgCache::VerIterator ver;
+
+    if(pkg_ent.valid())
+      {
+	pkg = pkg_ent->get_pkg();
+	ver = pkg_ent->get_ver();
+      }
+
+    // \todo We should gracefully handle missing versions.
+    if(!pkg_ent.valid() || pkg.end() || ver.end())
       {
 	textBuffer->set_text("");
       }
@@ -317,27 +342,27 @@ namespace gui
 
 	Gtk::Button *installButton = insert_button(button_box,
 						   "The user should never see this text.", Gtk::Stock::DIALOG_ERROR,
-						   pkg, ver, Install);
+						   ent, Install);
 	Gtk::Button *removeButton = insert_button(button_box,
 						  ssprintf(_("Remove %s"), pkg.Name()),
 						  Gtk::Stock::REMOVE,
-						  pkg, ver, Remove);
+						  ent, Remove);
 	Gtk::Button *purgeButton = insert_button(button_box,
 						 ssprintf(_("Purge %s"), pkg.Name()),
 						 Gtk::Stock::CLEAR,
-						 pkg, ver, Purge);
+						 ent, Purge);
 	Gtk::Button *keepButton = insert_button(button_box,
 						"The user should not see this text.",
 						Gtk::Stock::MEDIA_REWIND,
-						pkg, ver, Keep);
+						ent, Keep);
 	Gtk::Button *holdButton = insert_button(button_box,
 						ssprintf(_("Hold %s at its current version."),
 							 pkg.Name()),
 						Gtk::Stock::MEDIA_PAUSE,
-						pkg, ver, Hold);
+						ent, Hold);
 
 	button_box->show_all();
-	update_package_button_states(pkg,
+	update_package_button_states(*ent.unsafe_get_ref(),
 				     *installButton,
 				     *removeButton,
 				     *purgeButton,
@@ -346,9 +371,9 @@ namespace gui
 
 	pPackagesTextView->add_child_at_anchor(*button_box, button_box_anchor);
 
-	// Note the use of sigc::ref to ensure this connection is
-	// removed when the buttons are destroyed.
-	(*apt_cache_file)->package_states_changed.connect(sigc::bind(sigc::ptr_fun(&maybe_update_package_button_states), pkg, sigc::ref(*installButton), sigc::ref(*removeButton), sigc::ref(*purgeButton), sigc::ref(*keepButton), sigc::ref(*holdButton)));
+	// Note the use of sigc::ref / ent.weak_ref() to ensure this
+	// connection is removed when the buttons are destroyed.
+	(*apt_cache_file)->package_states_changed.connect(sigc::bind(sigc::ptr_fun(&maybe_update_package_button_states), ent.weak_ref(), sigc::ref(*installButton), sigc::ref(*removeButton), sigc::ref(*purgeButton), sigc::ref(*keepButton), sigc::ref(*holdButton)));
       }
   }
 

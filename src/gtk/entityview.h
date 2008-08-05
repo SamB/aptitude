@@ -29,10 +29,10 @@
 
 #include <generic/apt/apt.h>
 
+#include <cwidget/generic/util/ref_ptr.h>
+
 namespace gui
 {
-  extern undo_group * undo;
-
   enum PackagesAction
   {
     /** \brief A synonym for Install.
@@ -47,13 +47,32 @@ namespace gui
   class EntityView;
   class EntityColumns;
 
-  class Entity
+  /** \brief A class meant to be wrapped in cwidget::ref_ptr objects. */
+  class refcounted_base : public sigc::trackable
   {
-    protected:
-      EntityColumns * cols;
+    mutable int refcount;
+
+  public:
+    refcounted_base() : refcount(0) { }
+    ~refcounted_base();
+
+    void incref() { ++refcount; }
+    void decref()
+    {
+      --refcount;
+      if(refcount == 0)
+	delete this;
+    }
+  };
+
+  class Entity : public refcounted_base
+  {
     public:
-      /** \brief Fill in the contents of a tree-model row for the given
-       *  package/version pair.
+      virtual ~Entity();
+
+      /** \brief Fill in the contents of a tree-model row for this entity.
+       *
+       *  The entity should be placed in the 
        *
        *  \param row                 The row to fill in; any existing values
        *                             will be overwritten.
@@ -62,18 +81,52 @@ namespace gui
        *  \param version_specific    The row is version specific (influences
        *                             coloring and selected status display)
        */
-      virtual void fill_row(Gtk::TreeModel::Row &row) = 0;
-      virtual pkgCache::PkgIterator get_pkg() = 0;
-      virtual pkgCache::VerIterator get_ver() = 0;
+      virtual void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row) = 0;
+
+      /** \brief Invoked when the row is double-clicked. */
+      virtual void activated(const Gtk::TreeModel::Path &path,
+			     const Gtk::TreeViewColumn *column,
+			     const EntityView *view) = 0;
+
+      /** \brief Retrieve the set of packages upon which this row depends.
+       *
+       *  This is the set of packages that should trigger a redraw of this
+       *  row when they change.
+       *
+       *  If this becomes a bottleneck, consider switching to vector or to
+       *  returning a single package.
+       */
+      virtual void add_packages(std::set<pkgCache::PkgIterator> &packages) = 0;
+
       virtual void add_actions(std::set<PackagesAction> &actions) = 0;
+
       virtual void dispatch_action(PackagesAction action) = 0;
+  };
+  typedef cwidget::util::ref_ptr<Entity> EntityRef;
+
+  /** \brief An entity that is responsible for a header row. */
+  class HeaderEntity : public Entity
+  {
+    Glib::ustring text;
+  public:
+    HeaderEntity(const Glib::ustring &_text) : text(_text) { }
+
+    void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row);
+    void add_packages(std::set<pkgCache::PkgIterator> &packages);
+    void activated(const Gtk::TreeModel::Path &path,
+		   const Gtk::TreeViewColumn *column,
+		   const EntityView *view);
+    void add_actions(std::set<PackagesAction> &actions);
+    void dispatch_action(PackagesAction action);
+
+    void set_text(const Glib::ustring &_text) { text = _text; }
   };
 
   // This is a base class. Views can add model columns by deriving it.
   class EntityColumns : public Gtk::TreeModel::ColumnRecord
   {
     public:
-      Gtk::TreeModelColumn<Entity*> EntObject;
+      Gtk::TreeModelColumn<EntityRef> EntObject;
       Gtk::TreeModelColumn<bool> BgSet;
       Gtk::TreeModelColumn<Glib::ustring> BgColor;
       Gtk::TreeModelColumn<Glib::ustring> Status;
@@ -92,61 +145,14 @@ namespace gui
       sigc::signal<void> signal_selection;
   };
 
-  /** \brief Interface for generating tree-views.
-   *
-   *  A tree-view generator takes each package that appears in the
-   *  current package view and places it into an encapsulated
-   *  Gtk::TreeModel.
-   */
-  class EntityTreeModelGenerator
-  {
-    private:
-      // FIXME: Hack while finding a nonblocking thread join.
-      Glib::RefPtr<Gtk::TreeModel> store;
-      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * revstore;
-    public:
-      //~EntityTreeModelGenerator();
-
-      /** \brief Retrieve the model associated with this generator.
-       *
-       *  The model will be filled in as add_package() is invoked.
-       *  Normally you should only use the model once it is entirely
-       *  filled in (to avoid unnecessary screen updates).
-       *
-       *  \return  The model built by this generator.
-       */
-      Glib::RefPtr<Gtk::TreeModel> get_store() const { return store; };
-
-      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_store() { return revstore; };
-
-      void dump_stores(EntityView * entview);
-
-      /** \brief Build the tree model using the given generator.
-       *
-       *  This adds all packages that pass the current limit to the
-       *  generator, one at a time.
-       *
-       *  \param  generatorK         A function that constructs a generator
-       *                             to use in building the new store.
-       *  \param  packages_columns   The columns of the new store.
-       *  \param  reverse_packages_store  A multimap to be filled with the
-       *                                  location of each package iterator
-       *                                  in the generated store.
-       *  \param  limit             The limit pattern for the current view.
-       */
-      virtual void build_store(Glib::ustring limit) = 0;
-  };
-
-  class EntityView
+  class EntityView : public refcounted_base
   {
     private:
       EntityTreeView * tree;
-      EntityColumns * cols;
-      EntityTreeModelGenerator * generator;
-      Glib::RefPtr<Gtk::TreeModel> store;
-      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * revstore;
-      void init(EntityTreeModelGenerator * generator,
-                Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+      EntityColumns cols;
+
+      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> revstore;
+      void init(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
                 Glib::ustring gladename);
 
       void on_cache_closed();
@@ -163,56 +169,49 @@ namespace gui
 
       /** \brief Creates a column with a default renderer. */
       template<class ColumnType>
-        int append_column(const Glib::ustring &title, Gtk::TreeViewColumn *treeview_column,
-            Gtk::TreeModelColumn<ColumnType> &model_column, int size);
+      int append_column(const Glib::ustring &title, Gtk::TreeViewColumn *treeview_column,
+			Gtk::TreeModelColumn<ColumnType> &model_column, int size);
 
       /** \brief Creates a column that uses the given model column as
        *  Pango markup.
        */
       int append_markup_column(const Glib::ustring &title, Gtk::TreeViewColumn *treeview_column,
-          Gtk::TreeModelColumn<Glib::ustring> &model_column, int size);
+			       Gtk::TreeModelColumn<Glib::ustring> &model_column, int size);
 
       /** \brief Build a menu of package actions. */
-      Gtk::Menu * get_menu(const std::set<PackagesAction> &actions, sigc::slot1<void, PackagesAction> callback);
+      Gtk::Menu * get_menu(const std::set<PackagesAction> &actions, const sigc::slot1<void, PackagesAction> &callback) const;
 
       /** \brief Apply the given action to all the currently selected packages. */
       void apply_action_to_selected(PackagesAction action);
 
+      void context_menu_handler(GdkEventButton * event);
+      void row_activated_handler(const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
     public:
-      /** \brief Fill in the contents of a tree-model row for a header.
-       *
-       *  \param row                 The row to fill in; any existing values
-       *                             will be overwritten.
-       *  \param text                The text content of the header.
-       */
-      void fill_header(Gtk::TreeModel::Row &row, Glib::ustring text);
-
       /** \brief Construct a new packages view.
        *
-       *  The store will not be initialized if _limit is not set.
-       *
-       *  \param _generatorK A constructor for the callback
-       *                     object used to build the model.
        *  \param refGlade    The XML tree containing
        *                     the widgets for this view.
        *  \param gladename   The Glade name of the widget.
-       *  \param  limit      The limit pattern for the current view.
        */
-      EntityView(EntityTreeModelGenerator * generator,
-                 Glib::RefPtr<Gnome::Glade::Xml> refGlade,
-                 Glib::ustring gladename,
-                 Glib::ustring limit = "");
-      ~EntityView();
-      void context_menu_handler(GdkEventButton * event);
-      void row_activated_handler(const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
+      EntityView(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+                 Glib::ustring gladename);
+      virtual ~EntityView();
+
+      // TODO: perhaps rebuild_store() should be a virtual function
+      // invoked when the global cache is reopened.  This would amount
+      // to a design decision that EntityViews are always dependent on
+      // the cache state, which I think will always be the case, but
+      // I'd like to wait on doing this.  Also, handling reloads
+      // properly could involve tab-level coordination anyway.  --
+      // dburrows 2008-08-05
+
       void refresh_view(const std::set<pkgCache::PkgIterator> *changed_packages);
-      void relimit_view(EntityTreeModelGenerator * generator, Glib::ustring limit);
       EntityTreeView * get_treeview() const { return tree; };
-      EntityColumns * get_columns() const { return cols; };
-      Glib::RefPtr<Gtk::TreeModel> get_store() const { return store; };
-      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_store() const { return revstore; };
-      void swap_stores(std::pair<Glib::RefPtr<Gtk::TreeModel>,
-          std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> *> stores);
+      const EntityColumns * get_columns() const { return &cols; };
+      Glib::RefPtr<Gtk::TreeModel> get_model() const { return get_treeview()->get_model(); };
+      const std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_store() const { return &revstore; };
+      std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_store() { return &revstore; };
+      void set_model(const Glib::RefPtr<Gtk::TreeModel> &model);
   };
 
 }
