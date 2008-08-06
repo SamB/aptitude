@@ -58,7 +58,7 @@ namespace gui
 
 	// \todo fill in status, color, etc sensibly.
 	row[columns->BgSet] = false;
-	row[columns->BgColor] = "";
+	row[columns->BgColor] = "white";
 	row[columns->Status] = "";
 	row[columns->Name] = ver.ParentPkg().Name();
 	row[columns->Version] = ver.VerStr();
