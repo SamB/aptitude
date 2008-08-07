@@ -42,7 +42,87 @@ namespace gui
   {
     class VersionEntity : public Entity
     {
+    private:
       pkgCache::VerIterator ver;
+
+      string current_state_string()
+      {
+        pkgCache::PkgIterator pkg = ver.ParentPkg();
+
+        if(!ver.end() && ver != pkg.CurrentVer())
+          return "p";
+
+        switch(pkg->CurrentState)
+          {
+          case pkgCache::State::NotInstalled:
+            return "p";
+          case pkgCache::State::UnPacked:
+            return "u";
+          case pkgCache::State::HalfConfigured:
+            return "C";
+          case pkgCache::State::HalfInstalled:
+            return "H";
+          case pkgCache::State::ConfigFiles:
+            return "c";
+      #ifdef APT_HAS_TRIGGERS
+          case pkgCache::State::TriggersAwaited:
+            return "W";
+          case pkgCache::State::TriggersPending:
+            return "T";
+      #endif
+          case pkgCache::State::Installed:
+            return "i";
+          default:
+            return "E";
+          }
+      }
+
+      // We output a flag/color pair
+      // TODO: choose more sensible colors?
+      std::pair<string,string> action_strings()
+      {
+        if(ver.end())
+          return std::make_pair("","white");
+
+        pkgCache::PkgIterator pkg = ver.ParentPkg();
+        aptitudeDepCache::StateCache &state = (*apt_cache_file)[pkg];
+        aptitudeDepCache::aptitude_state &estate = (*apt_cache_file)->get_ext_state(pkg);
+        pkgCache::VerIterator candver = state.CandidateVerIter(*apt_cache_file);
+
+        if(state.Status!=2 && estate.selection_state == pkgCache::State::Hold && !state.NowBroken())
+          return std::make_pair("h","gray");
+        else if(ver.VerStr() == estate.forbidver)
+          return std::make_pair("F","dim gray");
+        else if(state.Delete())
+          return (state.iFlags&pkgDepCache::Purge)?std::make_pair("p","sky blue"):std::make_pair("d","dark turquoise");
+        else if(state.InstBroken() && state.InstVerIter(*apt_cache_file) == ver)
+          return std::make_pair("B","orange red");
+        else if(state.NewInstall())
+          {
+            if(candver==ver)
+              return std::make_pair("i","green");
+            else
+              return std::make_pair("","white");
+          }
+        else if(state.iFlags & pkgDepCache::ReInstall)
+          {
+            if(ver.ParentPkg().CurrentVer() == ver)
+              return std::make_pair("i","yellow green");
+            else
+              return std::make_pair("","white");
+          }
+        else if(state.Upgrade())
+          {
+            if(ver.ParentPkg().CurrentVer() == ver)
+              return std::make_pair("d","orange");
+            else if(candver == ver)
+              return std::make_pair("i","green yellow");
+            else
+              return std::make_pair("","white");
+          }
+        else
+          return std::make_pair("","white");
+      }
 
     public:
       VersionEntity(const pkgCache::VerIterator &_ver)
@@ -55,11 +135,10 @@ namespace gui
       void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row)
       {
 	row[columns->EntObject] = this;
-
-	// \todo fill in status, color, etc sensibly.
-	row[columns->BgSet] = false;
-	row[columns->BgColor] = "white";
-	row[columns->Status] = "";
+        std::pair<string,string> action_strings_ = action_strings();
+	row[columns->BgSet] = (action_strings_.second != "white");
+	row[columns->BgColor] = action_strings_.second;
+	row[columns->Status] = current_state_string()+action_strings_.first;
 	row[columns->Name] = ver.ParentPkg().Name();
 	row[columns->Version] = ver.VerStr();
       }
