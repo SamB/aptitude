@@ -26,15 +26,17 @@
 #undef OK
 #include <gtkmm.h>
 
+#include <cwidget/generic/util/ssprintf.h>
+
 #include <apt-pkg/pkgcache.h>
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
 
+#include <generic/util/undo.h>
+
 #include <gtk/gui.h>
 #include <gtk/entityview.h>
 #include <gtk/packageinformation.h>
-
-#include <cwidget/generic/util/ssprintf.h>
 
 namespace gui
 {
@@ -157,14 +159,60 @@ namespace gui
 
       void add_actions(std::set<PackagesAction> &actions)
       {
-	// \todo We should have version-specific actions.
+        // This is all highly hackish
+        if(ver==ver.ParentPkg().CurrentVer())
+          {
+          actions.insert(Hold);
+          actions.insert(Purge);
+            if(!(*apt_cache_file)[ver.ParentPkg()].Keep())
+              actions.insert(Keep);
+
+            if((*apt_cache_file)[ver.ParentPkg()].iFlags&pkgDepCache::ReInstall)
+              actions.insert(Keep);
+            else
+              actions.insert(Remove);
+          }
+        else if(ver==(*apt_cache_file)[ver.ParentPkg()].CandidateVerIter(*apt_cache_file) && (*apt_cache_file)[ver.ParentPkg()].Install())
+          actions.insert(Keep);
+        else
+          {
+          if(!(*apt_cache_file)[ver.ParentPkg()].Keep())
+            actions.insert(Keep);
+          // TODO: what about downgrade ?
+          actions.insert(Upgrade);
+          }
       }
 
       void dispatch_action(PackagesAction action)
       {
-	// \todo We should handle actions in a version-specific way.
-	// (e.g., "install" can be "upgrade" or "downgrade" on the
-	// package)
+        undo_group *undo = new undo_group;
+        switch(action)
+        {
+        case Install:
+        case Upgrade:
+        case Downgrade:
+          (*apt_cache_file)->set_candidate_version(ver, undo);
+          (*apt_cache_file)->mark_install(ver.ParentPkg(), true, false, undo);
+          break;
+        case Remove:
+          (*apt_cache_file)->mark_delete(ver.ParentPkg(), false, false, undo);
+          break;
+        case Purge:
+          (*apt_cache_file)->mark_delete(ver.ParentPkg(), true, false, undo);
+          break;
+        case Keep:
+          (*apt_cache_file)->mark_keep(ver.ParentPkg(), false, false, undo);
+          break;
+        case Hold:
+          (*apt_cache_file)->mark_delete(ver.ParentPkg(), false, (*apt_cache_file)->get_ext_state(ver.ParentPkg()).selection_state!=pkgCache::State::Hold, undo);
+          break;
+        default:
+          break;
+        }
+        if(undo->empty())
+          delete undo;
+        else
+          apt_undos->add_item(undo);
       }
     };
 
