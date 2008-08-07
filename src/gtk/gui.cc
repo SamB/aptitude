@@ -320,8 +320,9 @@ namespace gui
   {
     void make_debtags_tab(const std::string &tag)
     {
-      PackagesTab *tab = new PackagesTab("Tag " + tag);
+      PackagesTab *tab = new PackagesTab("Packages: ?tag(^" + tag + "$)");
       tab_add(tab);
+      tab->get_limit_entry()->set_text("?tag(^" + tag + "$)");
       tab->get_pkg_view()->set_limit("?tag(^" + tag + "$)");
     }
   }

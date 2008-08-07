@@ -49,6 +49,7 @@ namespace gui
       void activated_package_handler();
       void repopulate_model();
       void display_desc(const cwidget::util::ref_ptr<Entity> &ent);
+      Gtk::Entry * get_limit_entry() const { return pLimitEntry; }
       const cwidget::util::ref_ptr<PkgView> &get_pkg_view() const { return pPkgView; }
   };
 
