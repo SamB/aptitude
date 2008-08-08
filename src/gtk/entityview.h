@@ -184,6 +184,12 @@ namespace gui
       int append_markup_column(const Glib::ustring &title, Gtk::TreeViewColumn *&treeview_column,
 			       Gtk::TreeModelColumn<Glib::ustring> &model_column, int size);
 
+      /** \brief A support function used to customize sort order in
+       *  trees that are sorted by version.
+       */
+      int compare_rows_by_version(const Gtk::TreeModel::iterator &row1,
+				  const Gtk::TreeModel::iterator &row2);
+
       /** \brief Build a menu of package actions. */
       Gtk::Menu * get_menu(const std::set<PackagesAction> &actions, const sigc::slot1<void, PackagesAction> &callback) const;
 
@@ -220,6 +226,16 @@ namespace gui
       Glib::RefPtr<Gtk::TreeModel> get_model() const { return get_treeview()->get_model(); };
       const std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_store() const { return &revstore; };
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_store() { return &revstore; };
+      /** \brief Attach a new model to this view.
+       *
+       *  \param model  The new model.
+       *
+       *  In addition to invoking set_model() on the tree-view, this
+       *  function builds reverse pointers into the model that are
+       *  used to refresh it after package states change, and also
+       *  sets up column-specific sorting functions (for instance,
+       *  sorting versions according to Debian policy).
+       */
       void set_model(const Glib::RefPtr<Gtk::TreeModel> &model);
   };
 

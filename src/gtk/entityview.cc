@@ -28,6 +28,9 @@
 
 #include <gtk/info.h>
 
+#include <apt-pkg/pkgsystem.h>
+#include <apt-pkg/version.h>
+
 namespace gui
 {
   Entity::~Entity()
@@ -244,6 +247,24 @@ namespace gui
     return tree->append_column(*treeview_column);
   }
 
+  int EntityView::compare_rows_by_version(const Gtk::TreeModel::iterator &row1,
+					  const Gtk::TreeModel::iterator &row2)
+  {
+    Glib::ustring version1 = (*row1)[cols.Version];
+    Glib::ustring version2 = (*row2)[cols.Version];
+
+    // Defensiveness: apt returns <, =, or > 0, but glibmm says we
+    // should return exactly -1, 0, or 1.
+    int apt_compare_result = _system->VS->CmpVersion(version1, version2);
+
+    if(apt_compare_result < 0)
+      return -1;
+    else if(apt_compare_result > 0)
+      return 1;
+    else
+      return 0;
+  }
+
   void EntityView::refresh_view(const std::set<pkgCache::PkgIterator> *changed_packages)
   {
     for(std::set<pkgCache::PkgIterator>::iterator pkg = changed_packages->begin(); pkg != changed_packages->end(); pkg++)
@@ -427,6 +448,10 @@ namespace gui
 
   void EntityView::set_model(const Glib::RefPtr<Gtk::TreeModel> &model)
   {
+    Glib::RefPtr<Gtk::TreeSortable> sortable = Glib::RefPtr<Gtk::TreeSortable>::cast_dynamic<Gtk::TreeModel>(model);
+    sortable->set_sort_func(get_columns()->Version,
+			    sigc::mem_fun(this, &EntityView::compare_rows_by_version));
+
     revstore.clear();
     model->foreach_iter(sigc::bind(sigc::ptr_fun(add_entity_to_revstore),
 				   model,
