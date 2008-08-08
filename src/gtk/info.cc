@@ -232,7 +232,7 @@ namespace gui
 	row[columns->BgSet] = true;
 	row[columns->BgColor] = "#FFA0A0";
 	row[columns->Status] = "";
-	row[columns->NameMarkup] = Glib::Markup::escape_text(text);
+	row[columns->NameMarkup] = text;
 	row[columns->VersionMarkup] = "";
 	row[columns->Name] = text;
 	row[columns->Version];
@@ -299,12 +299,14 @@ namespace gui
 
     class DependencyResolverEntity : public HeaderEntity
     {
+      Glib::ustring version_markup;
       Glib::ustring version_text;
 
     public:
       DependencyResolverEntity(const Glib::ustring &package_text,
+			       const Glib::ustring &_version_markup,
 			       const Glib::ustring &_version_text)
-	: HeaderEntity(package_text), version_text(_version_text)
+	: HeaderEntity(package_text), version_markup(_version_markup), version_text(_version_text)
       {
       }
 
@@ -312,7 +314,7 @@ namespace gui
       {
 	HeaderEntity::fill_row(columns, row);
 	row[columns->Status] = "\t-";
-	row[columns->VersionMarkup] = Glib::Markup::escape_text(version_text);
+	row[columns->VersionMarkup] = version_markup;
 	row[columns->Version] = version_text;
       }
     };
@@ -356,19 +358,22 @@ namespace gui
           tree2 = store->append(tree->children());
           row2 = *tree2;
 
-	  Glib::ustring version_text;
+	  Glib::ustring version_text, version_markup;
 
           if(todisp->CompareOp != pkgCache::Dep::NoOp &&
               todisp.TargetVer() != NULL)
           {
-            version_text = Glib::Markup::escape_text(Glib::ustring(todisp.CompType())+" "+Glib::ustring(todisp.TargetVer()));
+            version_markup = Glib::Markup::escape_text(Glib::ustring(todisp.CompType())+" "+Glib::ustring(todisp.TargetVer()));
+	    version_text = todisp.TargetVer();
           }
           else
           {
-            version_text = "N/A";
+            version_markup = "N/A";
+	    version_text = "N/A";
           }
 
 	  (new DependencyResolverEntity(todisp.TargetPkg().Name(),
+					version_markup,
 					version_text))->fill_row(columns, row2);
 
           bool resolvable = false;
