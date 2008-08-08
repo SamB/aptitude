@@ -208,9 +208,9 @@ namespace gui
       void refresh_view(const std::set<pkgCache::PkgIterator> *changed_packages);
       EntityTreeView * get_treeview() const { return tree; };
       const EntityColumns * get_columns() const { return &cols; };
-      const Gtk::TreeViewColumn *get_status_column() const { return Status; }
-      const Gtk::TreeViewColumn *get_name_column() const { return Name; }
-      const Gtk::TreeViewColumn *get_version_column() const { return Version; }
+      Gtk::TreeViewColumn *get_status_column() const { return Status; }
+      Gtk::TreeViewColumn *get_name_column() const { return Name; }
+      Gtk::TreeViewColumn *get_version_column() const { return Version; }
       Glib::RefPtr<Gtk::TreeModel> get_model() const { return get_treeview()->get_model(); };
       const std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_store() const { return &revstore; };
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_store() { return &revstore; };
