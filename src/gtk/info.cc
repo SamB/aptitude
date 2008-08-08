@@ -547,5 +547,6 @@ namespace gui
     InfoTab * infotab = new InfoTab(_("Info:"));
     tab_add(infotab);
     infotab->disp_package(pkg, ver);
+    cache_closed.connect(sigc::bind(sigc::ptr_fun(&tab_del), infotab));
   }
 }

@@ -273,6 +273,7 @@ namespace gui
   {
     generatorK = _generatorK;
     limit = _limit;
+    cache_reloaded.connect(sigc::mem_fun(*this, &PkgViewBase::rebuild_store));
   }
 
   PkgViewBase::~PkgViewBase()
