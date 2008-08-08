@@ -130,7 +130,13 @@ namespace gui
       Gtk::TreeModelColumn<bool> BgSet;
       Gtk::TreeModelColumn<Glib::ustring> BgColor;
       Gtk::TreeModelColumn<Glib::ustring> Status;
+      /** \brief The markup that's displayed in the "name" column. */
+      Gtk::TreeModelColumn<Glib::ustring> NameMarkup;
+      /** \brief The markup that's displayed in the "version" column. */
+      Gtk::TreeModelColumn<Glib::ustring> VersionMarkup;
+      /** \brief The string that the "name" column should be sorted on. */
       Gtk::TreeModelColumn<Glib::ustring> Name;
+      /** \brief The string that the "version" column should be sorted on. */
       Gtk::TreeModelColumn<Glib::ustring> Version;
 
       EntityColumns();

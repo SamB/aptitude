@@ -142,6 +142,8 @@ namespace gui
 	row[columns->BgSet] = (action_strings_.second != "white");
 	row[columns->BgColor] = action_strings_.second;
 	row[columns->Status] = current_state_string()+action_strings_.first;
+	row[columns->NameMarkup] = Glib::Markup::escape_text(ver.ParentPkg().Name());
+	row[columns->VersionMarkup] = Glib::Markup::escape_text(ver.VerStr());
 	row[columns->Name] = ver.ParentPkg().Name();
 	row[columns->Version] = ver.VerStr();
       }
@@ -230,8 +232,10 @@ namespace gui
 	row[columns->BgSet] = true;
 	row[columns->BgColor] = "#FFA0A0";
 	row[columns->Status] = "";
+	row[columns->NameMarkup] = Glib::Markup::escape_text(text);
+	row[columns->VersionMarkup] = "";
 	row[columns->Name] = text;
-	row[columns->Version] = "";
+	row[columns->Version];
       }
 
       void add_packages(std::set<pkgCache::PkgIterator> &packages)
@@ -308,6 +312,7 @@ namespace gui
       {
 	HeaderEntity::fill_row(columns, row);
 	row[columns->Status] = "\t-";
+	row[columns->VersionMarkup] = Glib::Markup::escape_text(version_text);
 	row[columns->Version] = version_text;
       }
     };

@@ -49,9 +49,12 @@ namespace gui
 
     // This is the content of the header
     // TODO: Maybe we should delegate the markup to the caller
-    row[cols->Name] = "<span size=\"large\">" + Glib::Markup::escape_text(text) + "</span>";
+    row[cols->NameMarkup] = "<span size=\"large\">" + Glib::Markup::escape_text(text) + "</span>";
 
-    row[cols->Version] = ""; // dummy
+    row[cols->VersionMarkup] = ""; // dummy
+
+    row[cols->Name] = text;
+    row[cols->Version] = "";
   }
 
   void HeaderEntity::activated(const Gtk::TreeModel::Path &path,
@@ -78,6 +81,8 @@ namespace gui
     add(BgSet);
     add(BgColor);
     add(Status);
+    add(NameMarkup);
+    add(VersionMarkup);
     add(Name);
     add(Version);
   }
@@ -150,7 +155,7 @@ namespace gui
     cache_reloaded.connect(sigc::mem_fun(*this, &EntityView::on_cache_reloaded));
 
     append_column(Glib::ustring(_("Status")), Status, cols.Status, 32);
-    append_markup_column(Glib::ustring(_("Name")), Name, cols.Name, 350);
+    append_markup_column(Glib::ustring(_("Name")), Name, cols.NameMarkup, 350);
     {
       Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
       if(renderer == NULL)
@@ -164,7 +169,7 @@ namespace gui
             renderer_text->property_ellipsize() = Pango::ELLIPSIZE_END;
         }
     }
-    append_markup_column(Glib::ustring(_("Version")), Version, cols.Version, 80);
+    append_markup_column(Glib::ustring(_("Version")), Version, cols.VersionMarkup, 80);
     {
       Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
       if(renderer == NULL)

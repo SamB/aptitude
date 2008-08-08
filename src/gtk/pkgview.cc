@@ -143,10 +143,10 @@ namespace gui
     if(ver.end())
       {
 	if(pkg.VersionList().end() && !pkg.ProvidesList().end())
-	  row[cols->Name] = ssprintf("<i><b>%s</b></i>\n<span size=\"smaller\"><i>Virtual package</i></span>",
-				     safe_name.c_str());
+	  row[cols->NameMarkup] = ssprintf("<i><b>%s</b></i>\n<span size=\"smaller\"><i>Virtual package</i></span>",
+					   safe_name.c_str());
 	else
-	  row[cols->Name] = ssprintf("<b>%s</b>", safe_name.c_str());
+	  row[cols->NameMarkup] = ssprintf("<b>%s</b>", safe_name.c_str());
       }
     else
       {
@@ -154,21 +154,24 @@ namespace gui
           Glib::Markup::escape_text(transcode(get_short_description(ver,
                                                                     apt_package_records),
                                               "UTF-8"));
-        row[cols->Name] =
+        row[cols->NameMarkup] =
           ssprintf("<b>%s</b>\n<span size=\"smaller\">%s</span>",
                    safe_name.c_str(), safe_description.c_str());
       }
 
     if (!ver.end())
     {
-      row[cols->Version] = Glib::Markup::escape_text(ver.VerStr());
+      row[cols->VersionMarkup] = Glib::Markup::escape_text(ver.VerStr());
       aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
       pkgCache::VerIterator candver=state.CandidateVerIter(*apt_cache_file);
       if (state.Upgrade() || state.Downgrade())
-        row[cols->Version] = row[cols->Version] + "\n<i>" + Glib::Markup::escape_text(candver.VerStr()) + "</i>";
+        row[cols->VersionMarkup] = row[cols->VersionMarkup] + "\n<i>" + Glib::Markup::escape_text(candver.VerStr()) + "</i>";
     }
     else
-      row[cols->Version] = "";
+      row[cols->VersionMarkup] = "";
+
+    row[cols->Name] = pkg.end() ? "" : pkg.Name();
+    row[cols->Version] = ver.end() ? "" : ver.VerStr();
   }
 
   void PkgEntity::activated(const Gtk::TreeModel::Path &path,
