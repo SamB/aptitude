@@ -213,7 +213,7 @@ namespace gui
 
   template <class ColumnType>
   int EntityView::append_column(const Glib::ustring &title,
-                                  Gtk::TreeViewColumn *treeview_column,
+                                  Gtk::TreeViewColumn *&treeview_column,
                                   Gtk::TreeModelColumn<ColumnType> &model_column,
                                   int size)
   {
@@ -224,7 +224,7 @@ namespace gui
   }
 
   int EntityView::append_markup_column(const Glib::ustring &title,
-				       Gtk::TreeViewColumn *treeview_column,
+				       Gtk::TreeViewColumn *&treeview_column,
 				       Gtk::TreeModelColumn<Glib::ustring> &model_column,
 				       int size)
   {
