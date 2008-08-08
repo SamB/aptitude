@@ -275,6 +275,8 @@ namespace gui
     limit = _limit;
     cache_closed.connect(sigc::mem_fun(*this, &PkgViewBase::do_cache_closed));
     cache_reloaded.connect(sigc::mem_fun(*this, &PkgViewBase::rebuild_store));
+
+    get_version_column()->set_visible(false);
   }
 
   PkgViewBase::~PkgViewBase()
@@ -382,6 +384,5 @@ namespace gui
 		  gladename,
 		  limit)
   {
-    get_version_column()->set_visible(false);
   }
 }

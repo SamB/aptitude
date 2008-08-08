@@ -334,7 +334,7 @@ namespace gui
     // TODO: better layout is probably good.  Is it?
     if(!pkg.end())
       {
-	textBuffer->insert(textBuffer->end(), "\n");
+	textBuffer->insert(textBuffer->end(), "\n\n");
 	Glib::RefPtr<Gtk::TextBuffer::ChildAnchor> button_box_anchor =
 	  textBuffer->create_child_anchor(textBuffer->end());
 
