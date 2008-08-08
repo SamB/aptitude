@@ -118,10 +118,10 @@ namespace gui
   class PkgViewBase : public EntityView
   {
     Glib::ustring limit;
-    PkgTreeModelGenerator *generator;
+    sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> generatorK;
 
   public:
-    PkgViewBase(const sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> generatorK,
+    PkgViewBase(const sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> _generatorK,
 		const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 		const Glib::ustring &gladename,
 		const Glib::ustring &limit = "");

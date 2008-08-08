@@ -265,23 +265,24 @@ namespace gui
   {
   }
 
-  PkgViewBase::PkgViewBase(const sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> generatorK,
+  PkgViewBase::PkgViewBase(const sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> _generatorK,
 			   const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 			   const Glib::ustring &gladename,
 			   const Glib::ustring &_limit)
     : EntityView(refGlade, gladename)
   {
-    generator = generatorK(get_columns());
+    generatorK = _generatorK;
     limit = _limit;
   }
 
   PkgViewBase::~PkgViewBase()
   {
-    delete generator;
   }
 
   void PkgViewBase::rebuild_store()
   {
+    std::auto_ptr<PkgTreeModelGenerator> generator(generatorK(get_columns()));
+
     guiOpProgress * p = gen_progress_bar();
 
     int num=0;
@@ -319,8 +320,6 @@ namespace gui
       Glib::usleep(100000);
     }
     sort_thread->join();
-
-    //generator->finish();
 
     delete p;
 
