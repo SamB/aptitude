@@ -53,6 +53,9 @@ namespace gui
   /** \brief Invoke tab_add on pMainWindow. */
   void tab_add(Tab *tab);
 
+  /** \brief Invoke tab_del on pMainWindow. */
+  void tab_del(Tab *tab);
+
   /** \brief Add a hyperlink to a Gtk::TextBuffer.
    *
    *  \param buffer      The buffer to which the link should be added.
@@ -142,6 +145,9 @@ namespace gui
 
     /** \brief Add a tab to the main notebook of this window. */
     void tab_add(Tab *tab);
+
+    /** \brief Remove a tab from the main notebook of this window. */
+    void tab_del(Tab *tab);
   };
 
   void main(int argc, char *argv[]);

@@ -263,10 +263,20 @@ namespace gui
     pMainWindow->tab_add(tab);
   }
 
+  void tab_del(Tab *tab)
+  {
+    pMainWindow->tab_del(tab);
+  }
+
   void AptitudeWindow::tab_add(Tab *tab)
   {
     int new_page_idx = get_notebook()->append_page(*tab);
     get_notebook()->set_current_page(new_page_idx);
+  }
+
+  void AptitudeWindow::tab_del(Tab *tab)
+  {
+    get_notebook()->remove_page(*tab);
   }
 
   namespace
