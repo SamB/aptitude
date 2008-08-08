@@ -141,7 +141,13 @@ namespace gui
 
     Glib::ustring safe_name = Glib::Markup::escape_text(pkg.Name());
     if(ver.end())
-      row[cols->Name] = ssprintf("<b>%s</b>", safe_name.c_str());
+      {
+	if(pkg.VersionList().end() && !pkg.ProvidesList().end())
+	  row[cols->Name] = ssprintf("<b>%s</b>\n<span size=\"smaller\"><i>Virtual package</i></span>",
+				     safe_name.c_str());
+	else
+	  row[cols->Name] = ssprintf("<b>%s</b>", safe_name.c_str());
+      }
     else
       {
         Glib::ustring safe_description =
