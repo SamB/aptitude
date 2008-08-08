@@ -258,6 +258,15 @@ namespace gui
     }
   }
 
+  struct compare_provider_lists_by_name
+  {
+    bool operator()(const std::pair<pkgCache::PkgIterator, std::vector<pkgCache::VerIterator> > &p1,
+		    const std::pair<pkgCache::PkgIterator, std::vector<pkgCache::VerIterator> > &p2) const
+    {
+      return strcmp(p1.first.Name(), p2.first.Name()) < 0;
+    }
+  };
+
   void PackagesTab::display_desc(const cwidget::util::ref_ptr<Entity> &ent)
   {
     Glib::RefPtr<Gtk::TextBuffer> textBuffer = Gtk::TextBuffer::create();
@@ -275,7 +284,60 @@ namespace gui
     // \todo We should gracefully handle missing versions.
     if(!pkg_ent.valid() || pkg.end() || ver.end())
       {
-	textBuffer->set_text("");
+	// \todo This should be a generic function in gui.h.  In fact,
+	// maybe the collation should be a generic function in
+	// generic/apt/apt.h.
+	if(pkg_ent.valid() && !pkg.end() && !pkg.ProvidesList().end())
+	  {
+	    textBuffer->insert(textBuffer->end(), ssprintf(_("%s is a virtual package provided by:\n"),
+							   pkg.Name()));
+	    // Collate the providers by the providing package.
+	    std::map<pkgCache::PkgIterator, std::vector<pkgCache::VerIterator> > providers;
+	    for(pkgCache::PrvIterator prv = pkg.ProvidesList(); !prv.end(); ++prv)
+	      {
+		providers[prv.OwnerPkg()].push_back(prv.OwnerVer());
+	      }
+
+	    // Put them in alphabetical order.
+	    std::vector<std::pair<pkgCache::PkgIterator, std::vector<pkgCache::VerIterator> > >
+	      provider_pairs(providers.begin(), providers.end());
+
+	    std::sort(provider_pairs.begin(), provider_pairs.end(),
+		      compare_provider_lists_by_name());
+
+	    for(std::vector<std::pair<pkgCache::PkgIterator, std::vector<pkgCache::VerIterator> > >::const_iterator
+		  it = provider_pairs.begin(); it != provider_pairs.end(); ++it)
+	      {
+		using cwidget::util::transcode;
+		textBuffer->insert(textBuffer->end(), transcode(L"\t\x2022 "));
+		add_hyperlink(textBuffer, textBuffer->end(),
+			      it->first.Name(),
+			      sigc::bind(sigc::ptr_fun(&InfoTab::show_tab),
+					 it->first,
+					 PkgEntity::get_ver(it->first)));
+
+		textBuffer->insert(textBuffer->end(), "  (");
+		bool first = true;
+		for(std::vector<pkgCache::VerIterator>::const_iterator verIt = it->second.begin();
+		    verIt != it->second.end(); ++verIt)
+		  {
+		    if(first)
+		      first = false;
+		    else
+		      textBuffer->insert(textBuffer->end(), ", ");
+
+		    add_hyperlink(textBuffer, textBuffer->end(),
+				  verIt->VerStr(),
+				  sigc::bind(sigc::ptr_fun(&InfoTab::show_tab),
+					     verIt->ParentPkg(),
+					     *verIt));
+		  }
+
+		textBuffer->insert(textBuffer->end(), ")\n");
+	      }
+	  }
+	else
+	  textBuffer->set_text("");
       }
     else
       {

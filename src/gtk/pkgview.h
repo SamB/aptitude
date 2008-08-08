@@ -67,6 +67,9 @@ namespace gui
       pkgCache::PkgIterator get_pkg() { return pkg; }
       /** \brief Get the version, if any, that should be displayed. */
       pkgCache::VerIterator get_ver() const;
+
+      /** \brief Get the version, if any, that would be displayed for the given package. */
+      static pkgCache::VerIterator get_ver(const pkgCache::PkgIterator &pkg);
   };
 
   /** \brief Interface for generating tree-views.

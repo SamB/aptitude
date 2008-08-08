@@ -249,7 +249,7 @@ namespace gui
       apt_undos->add_item(undo);
   }
 
-  pkgCache::VerIterator PkgEntity::get_ver() const
+  pkgCache::VerIterator PkgEntity::get_ver(const pkgCache::PkgIterator &pkg)
   {
     pkgCache::VerIterator ver = (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
     if(ver.end())
@@ -259,6 +259,11 @@ namespace gui
       ver = pkg.VersionList();
 
     return ver;
+  }
+
+  pkgCache::VerIterator PkgEntity::get_ver() const
+  {
+    return get_ver(pkg);
   }
 
   PkgTreeModelGenerator::~PkgTreeModelGenerator()
