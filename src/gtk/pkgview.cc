@@ -143,7 +143,7 @@ namespace gui
     if(ver.end())
       {
 	if(pkg.VersionList().end() && !pkg.ProvidesList().end())
-	  row[cols->Name] = ssprintf("<b>%s</b>\n<span size=\"smaller\"><i>Virtual package</i></span>",
+	  row[cols->Name] = ssprintf("<i><b>%s</b></i>\n<span size=\"smaller\"><i>Virtual package</i></span>",
 				     safe_name.c_str());
 	else
 	  row[cols->Name] = ssprintf("<b>%s</b>", safe_name.c_str());
