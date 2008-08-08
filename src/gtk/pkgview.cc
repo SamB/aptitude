@@ -273,11 +273,21 @@ namespace gui
   {
     generatorK = _generatorK;
     limit = _limit;
+    cache_closed.connect(sigc::mem_fun(*this, &PkgViewBase::do_cache_closed));
     cache_reloaded.connect(sigc::mem_fun(*this, &PkgViewBase::rebuild_store));
   }
 
   PkgViewBase::~PkgViewBase()
   {
+  }
+
+  void PkgViewBase::do_cache_closed()
+  {
+    Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*get_columns());
+    Gtk::TreeModel::iterator iter = store->append();
+    Gtk::TreeModel::Row row = *iter;
+    (new HeaderEntity(_("Cache reloading, please wait...")))->fill_row(get_columns(), row);
+    set_model(store);
   }
 
   void PkgViewBase::rebuild_store()

@@ -120,6 +120,8 @@ namespace gui
     Glib::ustring limit;
     sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> generatorK;
 
+    void do_cache_closed();
+
   public:
     PkgViewBase(const sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> _generatorK,
 		const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
