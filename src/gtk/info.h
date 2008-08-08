@@ -40,6 +40,12 @@ namespace gui
       Gtk::TextView * textview;
       cwidget::util::ref_ptr<EntityView> pVersionsView;
       cwidget::util::ref_ptr<EntityView> pDependsView;
+
+      std::string package_name;
+      std::string version_name;
+
+      void do_cache_closed();
+      void do_cache_reloaded();
     public:
       InfoTab(const Glib::ustring &label);
       void disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);

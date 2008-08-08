@@ -32,6 +32,7 @@
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
 
+#include <generic/apt/apt.h>
 #include <generic/util/undo.h>
 
 #include <gtk/gui.h>
@@ -461,11 +462,51 @@ namespace gui
   {
     get_xml()->get_widget("main_info_textview", textview);
     get_widget()->show();
+    cache_closed.connect(sigc::mem_fun(*this, &InfoTab::do_cache_closed));
+    cache_reloaded.connect(sigc::mem_fun(*this, &InfoTab::do_cache_reloaded));
+  }
+
+  void InfoTab::do_cache_closed()
+  {
+    // The package and version views will handle themselves; we just need to deal
+    // with the TextBuffer that shows the current package's state.
+    Glib::RefPtr<Gtk::TextBuffer> reloadingBuffer = Gtk::TextBuffer::create();
+    reloadingBuffer->insert(reloadingBuffer->end(), _("Please wait; reloading cache..."));
+    textview->set_buffer(reloadingBuffer);
+  }
+
+  void InfoTab::do_cache_reloaded()
+  {
+    pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(package_name);
+    if(pkg.end())
+      {
+	tab_del(this);
+	return;
+      }
+
+    pkgCache::VerIterator found_ver(*apt_cache_file);
+    for(pkgCache::VerIterator ver = pkg.VersionList();
+	found_ver.end() && !ver.end(); ++ver)
+      {
+	if(ver.VerStr() == version_name)
+	  found_ver = ver;
+      }
+
+    if(found_ver.end())
+      {
+	tab_del(this);
+	return;
+      }
+
+    disp_package(pkg, found_ver);
   }
 
   void InfoTab::disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
-    Glib::RefPtr<Gtk::TextBuffer> textBuffer = textview->get_buffer();
+    package_name = pkg.end() ? "" : pkg.Name();
+    version_name = ver.end() ? "" : ver.VerStr();
+
+    Glib::RefPtr<Gtk::TextBuffer> textBuffer = Gtk::TextBuffer::create();
     set_label("Info: " + Glib::ustring(pkg.Name()));
 
     PackageInformation info(pkg, ver);
@@ -507,6 +548,8 @@ namespace gui
 
     textBuffer->insert(textBuffer->end(), info.LongDescription());
 
+    textview->set_buffer(textBuffer);
+
     using cwidget::util::ref_ptr;
     pVersionsView = ref_ptr<EntityView>(new EntityView(get_xml(),
 						       "main_info_versionsview"));
@@ -547,6 +590,5 @@ namespace gui
     InfoTab * infotab = new InfoTab(_("Info:"));
     tab_add(infotab);
     infotab->disp_package(pkg, ver);
-    cache_closed.connect(sigc::bind(sigc::ptr_fun(&tab_del), infotab));
   }
 }
