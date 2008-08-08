@@ -382,5 +382,6 @@ namespace gui
 		  gladename,
 		  limit)
   {
+    get_version_column()->set_visible(false);
   }
 }
