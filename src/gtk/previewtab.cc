@@ -155,10 +155,7 @@ namespace gui
 
   void PreviewTab::status_button_clicked()
   {
-    // \todo Start a download for real.
-
-    Gtk::MessageDialog dlg("Now I would download and install packages if that was implemented.");
-    dlg.run();
+    do_installremove();
   }
 
   // TODO: Should be moved into PackagesView for use with PackagesView::signal_on_package_selection.
