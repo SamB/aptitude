@@ -440,7 +440,7 @@ namespace gui
   AptitudeWindow::AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::Window(cobject)
   {
     refGlade->get_widget_derived("main_notebook", pNotebook);
-    pNotebook->tab_selected.connect(sigc::mem_fun(this, &AptitudeWindow::do_tab_selected));
+    pNotebook->tab_status_button_changed.connect(sigc::mem_fun(this, &AptitudeWindow::do_tab_status_button_changed));
 
     refGlade->get_widget("main_toolbutton_dashboard", pToolButtonDashboard);
     pToolButtonDashboard->signal_clicked().connect(&do_dashboard);
@@ -526,7 +526,7 @@ namespace gui
       }
   }
 
-  void AptitudeWindow::do_tab_selected(Tab *tab)
+  void AptitudeWindow::do_tab_status_button_changed(Tab *tab)
   {
     bool status_button_visible = false, status_button_sensitive = false;
     Glib::ustring status_button_label;

@@ -130,7 +130,7 @@ namespace gui
       // Invoked when a new tab is selected in the notebook.
       // Used to update widgets in the main window that are linked
       // to the current tab (e.g., the status button).
-      void do_tab_selected(Tab *tab);
+      void do_tab_status_button_changed(Tab *tab);
 
       // Invoked when the status button is clicked.
       void do_status_button_clicked();

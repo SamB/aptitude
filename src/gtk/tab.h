@@ -144,6 +144,8 @@ namespace gui
       void page_removed(Gtk::Widget *widget, int page);
 
       void do_switch_page(GtkNotebookPage *page, guint page_idx);
+
+      void do_status_button_changed(Tab *tab);
     public:
       /**
        * Glade::Xml derived widget constructor.
@@ -164,8 +166,10 @@ namespace gui
       /** \brief Get the currently active tab. */
       Tab *get_current_tab();
 
-      /** \brief Emitted when a new tab is selected. */
-      sigc::signal1<void, Tab *> tab_selected;
+      /** \brief Emitted when a new tab is selected or when the
+       *  current tab's status button changes.
+       */
+      sigc::signal1<void, Tab *> tab_status_button_changed;
   };
 
 }
