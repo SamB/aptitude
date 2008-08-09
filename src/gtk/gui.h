@@ -162,6 +162,17 @@ namespace gui
 
   void main(int argc, char *argv[]);
 
+  /** \brief Start an install/remove run, as if it had been triggered
+   *  from the menu.
+   */
+  void do_installremove();
+
+  /** \return \b true if an install/remove run can be started. */
+  void do_installremove_allowed();
+
+  /** \brief Start a list update, as if it had been triggered from the menu.
+   */
+  void do_update();
 }
 
 #endif /*GUI_H_*/
