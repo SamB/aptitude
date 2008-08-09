@@ -114,6 +114,7 @@ namespace gui
 
       Gtk::ProgressBar * pProgressBar;
       Gtk::Statusbar * pStatusBar;
+      Gtk::Button *statusButton;
       TabsManager * pNotebook;
 
       // The "global" singleton for storing apt errors.
@@ -125,6 +126,14 @@ namespace gui
 
       // Nulls out the error tab when it's closed.
       void apt_error_tab_closed();
+
+      // Invoked when a new tab is selected in the notebook.
+      // Used to update widgets in the main window that are linked
+      // to the current tab (e.g., the status button).
+      void do_tab_selected(Tab *tab);
+
+      // Invoked when the status button is clicked.
+      void do_status_button_clicked();
 
     public:
       /**
@@ -141,6 +150,7 @@ namespace gui
 
     Gtk::ProgressBar * get_progress_bar() const { return pProgressBar; }
     Gtk::Statusbar * get_status_bar() const { return pStatusBar; }
+    Gtk::Button *get_status_button() const { return statusButton; }
     TabsManager * get_notebook() const { return pNotebook; }
 
     /** \brief Add a tab to the main notebook of this window. */

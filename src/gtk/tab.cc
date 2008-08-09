@@ -73,6 +73,21 @@ namespace gui
     this->label_label->set_text(label);
   }
 
+  void Tab::get_status_button(bool &visible,
+			      bool &sensitive,
+			      Glib::ustring &label,
+			      Gtk::Widget *&image)
+  {
+    visible = false;
+    sensitive = false;
+    label = "";
+    image = NULL;
+  }
+
+  void Tab::status_button_clicked()
+  {
+  }
+
   int TabsManager::next_position(TabType type)
   {
     // TODO: implement something more elaborate and workflow-wise intuitive
@@ -99,6 +114,7 @@ namespace gui
     Gtk::Notebook(cobject)
   {
     signal_page_removed().connect(sigc::mem_fun(this, &TabsManager::page_removed));
+    signal_switch_page().connect(sigc::mem_fun(this, &TabsManager::do_switch_page));
   }
 
   int TabsManager::append_page(Tab &tab)
@@ -140,5 +156,24 @@ namespace gui
 
 	delete tab;
       }
+  }
+
+  Tab *TabsManager::get_current_tab()
+  {
+    Gtk::Widget *current = get_nth_page(get_current_page());
+    if(current != NULL)
+      return (Tab *)current->get_data(tab_property);
+    else
+      return NULL;
+  }
+
+  void TabsManager::do_switch_page(GtkNotebookPage *page, guint page_idx)
+  {
+    Tab *tab = NULL;
+    Widget *next = get_nth_page(page_idx);
+    if(next != NULL)
+      tab = (Tab *)next->get_data(tab_property);
+
+    tab_selected(tab);
   }
 }

@@ -139,6 +139,28 @@ namespace gui
     get_widget()->show();
   }
 
+  void PreviewTab::get_status_button(bool &visible,
+				     bool &sensitive,
+				     Glib::ustring &label,
+				     Gtk::Widget *&image)
+  {
+    // \todo require the user to resolve outstanding dependencies
+    // first?
+    visible = true;
+    // Should make this non-sensitive if a download is already running.
+    sensitive = true;
+    label = "Install/Remove";
+    image = new Gtk::Image(Gtk::Stock::APPLY, Gtk::ICON_SIZE_BUTTON);
+  }
+
+  void PreviewTab::status_button_clicked()
+  {
+    // \todo Start a download for real.
+
+    Gtk::MessageDialog dlg("Now I would download and install packages if that was implemented.");
+    dlg.run();
+  }
+
   // TODO: Should be moved into PackagesView for use with PackagesView::signal_on_package_selection.
   void PreviewTab::activated_package_handler()
   {
