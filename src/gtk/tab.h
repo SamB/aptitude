@@ -42,7 +42,7 @@ namespace gui
    *
    *  \todo To delete tabs, we rely on the clicked() signal from the
    *  close button.  This is not ideal, because the underlying widget
-   *  could be deleted some other way.  
+   *  could be deleted some other way.
    */
   class Tab : public sigc::trackable
   {
@@ -51,6 +51,7 @@ namespace gui
       Glib::ustring label;
       Glib::RefPtr<Gnome::Glade::Xml> xml;
       Gtk::Label * label_label;
+      Gtk::Button * label_button;
       Gtk::Widget * label_widget;
       Gtk::Widget * widget;
 
@@ -74,6 +75,7 @@ namespace gui
       virtual ~Tab();
       Glib::ustring get_label() { return label; }
       Gtk::Widget * get_label_widget() { return label_widget; }
+      Gtk::Button * get_label_button() { return label_button; }
       void set_label(Glib::ustring);
       TabType get_type() { return type; }
       Gtk::Widget * get_widget() const { return widget; }

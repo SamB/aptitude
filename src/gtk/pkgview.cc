@@ -308,6 +308,7 @@ namespace gui
 
   void PkgViewBase::rebuild_store()
   {
+    store_reloading();
     std::auto_ptr<PkgTreeModelGenerator> generator(generatorK(get_columns()));
 
     guiOpProgress * p = gen_progress_bar();
@@ -351,6 +352,7 @@ namespace gui
     delete p;
 
     set_model(generator->get_model());
+    store_reloaded();
   }
 
   void PkgViewBase::set_limit(const Glib::ustring &_limit)

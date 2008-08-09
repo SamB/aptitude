@@ -126,6 +126,8 @@ namespace gui
     void do_cache_closed();
 
   public:
+    sigc::signal<void> store_reloading;
+    sigc::signal<void> store_reloaded;
     PkgViewBase(const sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> _generatorK,
 		const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 		const Glib::ustring &gladename,

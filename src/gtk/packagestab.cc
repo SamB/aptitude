@@ -51,6 +51,11 @@ namespace gui
     using cwidget::util::ref_ptr;
     pPkgView = ref_ptr<PkgView>(new PkgView(get_xml(), "main_packages_treeview"));
 
+    // TODO: We prevent the tab from closing itself, but we should rather make closing
+    //       the tab gracefully stop the generator from doing whatever it's doing
+    pPkgView->store_reloading.connect(sigc::bind(sigc::mem_fun(*get_label_button(), &Gtk::Widget::set_sensitive), false));
+    pPkgView->store_reloaded.connect(sigc::bind(sigc::mem_fun(*get_label_button(), &Gtk::Widget::set_sensitive), true));
+
     // Ask the user to enter a search pattern.
     //
     // TODO: a similar message should appear when a search produces no

@@ -46,11 +46,8 @@ namespace gui
 
     // TODO: Should do something about this. Create a dedicated toplevel for these widgets.
     Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_notebook_download_label_hbox");
-    //Gtk::HBox * label_widget;
     refGlade->get_widget("main_notebook_download_label_hbox", label_widget);
-    //Gtk::Label * label_label;
     refGlade->get_widget("main_notebook_download_label", label_label);
-    Gtk::Button * label_button;
     refGlade->get_widget("main_notebook_download_close", label_button);
     // Maybe we should create a close() method on the Tab so it can clean itself up or make a destructor.
     label_button->signal_clicked().connect(close_clicked.make_slot());
@@ -106,7 +103,7 @@ namespace gui
 
   int TabsManager::append_page(Tab &tab)
   {
-    int rval = 0; 
+    int rval = 0;
     switch (tab.get_type())
       {
     case Dashboard:
