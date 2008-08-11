@@ -112,7 +112,10 @@ int cmdline_upgrade(int argc, char *argv[],
 	// Reset all the package states.
 	for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin();
 	    !i.end(); ++i)
-	  (*apt_cache_file)->mark_keep(i, false, false, NULL);
+	  {
+	    bool held = (*apt_cache_file)->get_ext_state(i).selection_state == pkgCache::State::Hold;
+	    (*apt_cache_file)->mark_keep(i, false, held, NULL);
+	  }
       }
 
       // Use the apt 'upgrade' algorithm as a fallback against, e.g.,
