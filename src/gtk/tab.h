@@ -81,32 +81,6 @@ namespace gui
       Gtk::Widget * get_widget() const { return widget; }
       const Glib::RefPtr<Gnome::Glade::Xml> &get_xml() { return xml; }
 
-      /** \brief Invoked by the tab manager to determine the state of
-       *  the status button.
-       *
-       *  \param visible    Set to true if the status button should be visible.
-       *  \param sensitive  Set to true if the status button should be sensitive.
-       *  \param label      Set to the new label of the status button.
-       *  \param image      Set to the image of the status button or to NULL.
-       *                    The caller takes possession of this pointer and
-       *                    will destroy it.
-       *
-       *  The default implementation returns false, false, "", and NULL.
-       */
-      virtual void get_status_button(bool &visible,
-				     bool &sensitive,
-				     Glib::ustring &label,
-				     Gtk::Widget *&image);
-
-      /** \brief Invoked by the tab manager when the status button is clicked.
-       *
-       *  The default implementation does nothing.
-       */
-      virtual void status_button_clicked();
-
-      /** \brief Emitted when the result of get_status_button() may have changed. */
-      sigc::signal0<void> status_button_changed;
-
       /** \brief A signal invoked when the tab's "close" button is clicked.
        *
        *  The TabManager uses this to actually close the tab.

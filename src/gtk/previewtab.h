@@ -77,12 +77,6 @@ namespace gui
     public:
       PreviewTab(const Glib::ustring &label);
 
-      void get_status_button(bool &visible,
-			     bool &sensitive,
-			     Glib::ustring &label,
-			     Gtk::Widget *&image);
-      void status_button_clicked();
-
       void activated_package_handler();
       void repopulate_model();
       void display_desc(const cwidget::util::ref_ptr<Entity> &ent);

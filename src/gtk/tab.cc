@@ -73,21 +73,6 @@ namespace gui
     this->label_label->set_text(label);
   }
 
-  void Tab::get_status_button(bool &visible,
-			      bool &sensitive,
-			      Glib::ustring &label,
-			      Gtk::Widget *&image)
-  {
-    visible = false;
-    sensitive = false;
-    label = "";
-    image = NULL;
-  }
-
-  void Tab::status_button_clicked()
-  {
-  }
-
   int TabsManager::next_position(TabType type)
   {
     // TODO: implement something more elaborate and workflow-wise intuitive
@@ -134,18 +119,10 @@ namespace gui
       rval = insert_page(*(tab.get_widget()), *(tab.get_label_widget()), next_position(tab.get_type()));
       }
 
-    tab.status_button_changed.connect(sigc::bind(sigc::mem_fun(this, &TabsManager::do_status_button_changed),
-						 &tab));
     tab.close_clicked.connect(sigc::bind(sigc::mem_fun(*this, (void (Gtk::Notebook::*)(Gtk::Widget&))&Gtk::Notebook::remove_page),
 					 sigc::ref(*tab.get_widget())));
 
     return rval;
-  }
-
-  void TabsManager::do_status_button_changed(Tab *tab)
-  {
-    if(get_current_tab() == tab)
-      tab_status_button_changed(tab);
   }
 
   void TabsManager::remove_page(Tab &tab)

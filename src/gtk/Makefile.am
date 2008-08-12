@@ -13,6 +13,8 @@ libgtk_a_SOURCES=\
 	gui.h \
 	info.cc \
 	info.h \
+	notify.cc \
+	notify.h \
 	packageinformation.cc \
 	packageinformation.h \
 	packagestab.cc \

@@ -440,7 +440,6 @@ namespace gui
   AptitudeWindow::AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::Window(cobject)
   {
     refGlade->get_widget_derived("main_notebook", pNotebook);
-    pNotebook->tab_status_button_changed.connect(sigc::mem_fun(this, &AptitudeWindow::do_tab_status_button_changed));
 
     refGlade->get_widget("main_toolbutton_dashboard", pToolButtonDashboard);
     pToolButtonDashboard->signal_clicked().connect(&do_dashboard);
@@ -478,9 +477,11 @@ namespace gui
       menu_view_apt_errors->signal_activate().connect(sigc::mem_fun(this, &AptitudeWindow::show_apt_errors));
     }
 
+    refGlade->get_widget_derived("main_notify_rows", pNotifyView);
+    pNotebook->tab_status_button_changed.connect(sigc::mem_fun(*pNotifyView, &NotifyView::tab_changed));
+
     refGlade->get_widget("main_progressbar", pProgressBar);
     refGlade->get_widget("main_statusbar", pStatusBar);
-    refGlade->get_widget("main_statusbutton", statusButton);
     pStatusBar->push("Aptitude-gtk v2", 0);
 
     activeErrorTab = NULL;
@@ -507,6 +508,22 @@ namespace gui
 				    false));
     cache_reloaded.connect(sigc::bind(sigc::mem_fun(*this, &Gtk::Widget::set_sensitive),
 				      true));
+
+    {
+      // We're doing some testing here.
+      Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
+      buffer->set_text("This is a notification");
+      std::vector<Gtk::Button *> buttons;
+      Gtk::Button * button = new Gtk::Button("This is a button");
+      button->show();
+      buttons.push_back(button);
+      Notification notification(buffer, buttons);
+      notification.show();
+      pNotifyView->add_global_notification(&notification);
+    }
+
+    Gtk::Button button("Truc");
+    pNotifyView->get_rows()->pack_start(button, true, true, 0);
   }
 
   void AptitudeWindow::apt_error_tab_closed()
@@ -524,31 +541,6 @@ namespace gui
 	activeErrorTab->closed.connect(sigc::mem_fun(this, &AptitudeWindow::apt_error_tab_closed));
 	tab_add(activeErrorTab);
       }
-  }
-
-  void AptitudeWindow::do_tab_status_button_changed(Tab *tab)
-  {
-    bool status_button_visible = false, status_button_sensitive = false;
-    Glib::ustring status_button_label;
-    Gtk::Widget *status_button_image = NULL;
-    if(tab != NULL)
-      tab->get_status_button(status_button_visible,
-			     status_button_sensitive,
-			     status_button_label,
-			     status_button_image);
-
-
-    if(!status_button_visible)
-      statusButton->hide();
-
-    statusButton->set_sensitive(status_button_sensitive);
-    statusButton->set_label(status_button_label);
-    if(status_button_image)
-      status_button_image->set_manage();
-    statusButton->property_image() = status_button_image;
-
-    if(status_button_visible)
-      statusButton->show();
   }
 
   void init_glade(int argc, char *argv[])
