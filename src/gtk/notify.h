@@ -33,7 +33,7 @@ namespace gui
   class Notification : public Gtk::HBox
   {
     public:
-      Notification(const Glib::RefPtr<Gtk::TextBuffer>& buffer, std::vector<Gtk::Button *> buttons);
+      Notification(const Glib::RefPtr<Gtk::TextBuffer> buffer, std::vector<Gtk::Button *> buttons);
   };
 
   class NotifyView : public Gtk::VBox

@@ -28,17 +28,16 @@
 namespace gui
 {
 
-  Notification::Notification(const Glib::RefPtr<Gtk::TextBuffer>& buffer, std::vector<Gtk::Button *> buttons)
+  Notification::Notification(const Glib::RefPtr<Gtk::TextBuffer> buffer, std::vector<Gtk::Button *> buttons)
   {
-    Gtk::TextView textview;
-    textview.set_buffer(buffer);
-    textview.show();
-    pack_end(textview);
+    Gtk::TextView * textview = manage(new Gtk::TextView(buffer));
+    textview->show();
+    pack_start(*textview, true, true);
     for (std::vector<Gtk::Button *>::iterator button_iter = buttons.begin();
     button_iter != buttons.end(); button_iter++)
     {
       (*button_iter)->show();
-      pack_end(*(*button_iter));
+      pack_start(*manage(*button_iter), true, true);
     }
     // TODO: Also pack a close button
   }
