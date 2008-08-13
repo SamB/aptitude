@@ -137,6 +137,18 @@ namespace gui
     pPkgView->get_treeview()->expand_all();
 
     get_widget()->show();
+
+    {
+      // We're doing some testing here.
+      Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
+      buffer->set_text("This is a notification for a preview tab");
+      std::vector<Gtk::Button *> buttons;
+      Gtk::Button * button = new Gtk::Button("This is a button");
+      button->show();
+      buttons.push_back(button);
+      Notification * notification = new Notification(buffer, buttons);
+      pMainWindow->get_notifyview()->add_local_notification(notification, this);
+    }
   }
 
   // TODO: Should be moved into PackagesView for use with PackagesView::signal_on_package_selection.
