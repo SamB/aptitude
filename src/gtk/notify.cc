@@ -39,7 +39,9 @@ namespace gui
       (*button_iter)->show();
       pack_start(*manage(*button_iter), false, true);
     }
-    Gtk::Button * close_button = manage(new Gtk::Button("Close"));
+    Gtk::Button * close_button = manage(new Gtk::Button());
+    Gtk::Image * close_button_image = manage(new Gtk::Image(Gtk::Stock::CLOSE, Gtk::ICON_SIZE_MENU));
+    close_button->property_image() = close_button_image;
     close_button->signal_clicked().connect(close_clicked);
     close_button->show();
     pack_start(*close_button, false, true);
@@ -57,7 +59,7 @@ namespace gui
 
   void NotifyView::add_notification(Notification * notification)
   {
-    notification->close_clicked.connect(sigc::bind(sigc::mem_fun(*this, &NotifyView::remove_notification) ,notification));
+    notification->close_clicked.connect(sigc::bind(sigc::mem_fun(*this, &NotifyView::remove_notification), notification));
     notification->show();
     rows->pack_start(*notification);
   }
