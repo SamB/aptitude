@@ -34,7 +34,12 @@ namespace gui
    */
   enum TabType
   {
-    Dashboard, Download, Packages, Info, Preview, Resolver, InstallRemove, Error
+    Dashboard,
+    /** \brief A tab that provides support for finding dependency
+     *  chains linking two groups of packages.
+     */
+    DependencyChains,
+    Download, Packages, Info, Preview, Resolver, InstallRemove, Error
   };
 
   /**

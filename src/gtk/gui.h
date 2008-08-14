@@ -128,6 +128,8 @@ namespace gui
       // Nulls out the error tab when it's closed.
       void apt_error_tab_closed();
 
+      void show_dependency_chains_tab();
+
     public:
       /**
        * Glade::Xml derived widget constructor.

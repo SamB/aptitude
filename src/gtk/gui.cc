@@ -44,13 +44,14 @@
 
 #include <cwidget/generic/util/transcode.h>
 
-#include <gtk/progress.h>
-#include <gtk/tab.h>
-#include <gtk/resolver.h>
+#include <gtk/dependency_chains_tab.h>
 #include <gtk/download.h>
 #include <gtk/info.h>
 #include <gtk/packagestab.h>
 #include <gtk/previewtab.h>
+#include <gtk/progress.h>
+#include <gtk/resolver.h>
+#include <gtk/tab.h>
 
 namespace gui
 {
@@ -477,6 +478,12 @@ namespace gui
       menu_view_apt_errors->signal_activate().connect(sigc::mem_fun(this, &AptitudeWindow::show_apt_errors));
     }
 
+    {
+      Gtk::MenuItem *menu_view_dependency_chains;
+      refGlade->get_widget("menu_item_find_dependency_paths", menu_view_dependency_chains);
+      menu_view_dependency_chains->signal_activate().connect(sigc::mem_fun(this, &AptitudeWindow::show_dependency_chains_tab));
+    }
+
     refGlade->get_widget_derived("main_notify_rows", pNotifyView);
     pNotebook->tab_status_button_changed.connect(sigc::mem_fun(*pNotifyView, &NotifyView::tab_changed));
 
@@ -539,6 +546,11 @@ namespace gui
 	activeErrorTab->closed.connect(sigc::mem_fun(this, &AptitudeWindow::apt_error_tab_closed));
 	tab_add(activeErrorTab);
       }
+  }
+
+  void AptitudeWindow::show_dependency_chains_tab()
+  {
+    tab_add(new DependencyChainsTab("Find Dependency Chains"));
   }
 
   void init_glade(int argc, char *argv[])
