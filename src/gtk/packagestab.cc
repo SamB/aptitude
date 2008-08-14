@@ -44,7 +44,19 @@ namespace gui
 				    Gtk::Entry &search_entry,
 				    const sigc::slot0<void> &after_repopulate_hook)
     {
-      packages_view.set_limit(search_entry.get_text());
+      std::string search_term = search_entry.get_text();
+      packages_view.set_limit(search_term);
+
+      if(packages_view.get_model()->children().size() == 0)
+	{
+	  Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*packages_view.get_columns());
+
+	  Gtk::TreeModel::iterator iter = store->append();
+	  Gtk::TreeModel::Row row = *iter;
+	  (new HeaderEntity(ssprintf(_("No packages matched \"%s\"."), search_term.c_str())))->fill_row(packages_view.get_columns(), row);
+
+	  packages_view.set_model(store);
+	}
     }
   }
 
