@@ -37,8 +37,8 @@ namespace gui
   class PkgEntity : public Entity
   {
     private:
-      string current_state_string();
-      string selected_package_state_string();
+      std::pair<std::string, Gtk::StockID> current_state_columns();
+      std::pair<std::string, Gtk::StockID>  selected_package_state_columns();
       string selected_package_state_color();
       pkgCache::PkgIterator pkg;
 

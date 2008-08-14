@@ -129,7 +129,8 @@ namespace gui
       Gtk::TreeModelColumn<EntityRef> EntObject;
       Gtk::TreeModelColumn<bool> BgSet;
       Gtk::TreeModelColumn<Glib::ustring> BgColor;
-      Gtk::TreeModelColumn<Glib::ustring> Status;
+      Gtk::TreeModelColumn<Glib::ustring> CurrentStatusIcon;
+      Gtk::TreeModelColumn<Glib::ustring> SelectedStatusIcon;
       /** \brief The markup that's displayed in the "name" column. */
       Gtk::TreeModelColumn<Glib::ustring> NameMarkup;
       /** \brief The markup that's displayed in the "version" column. */

@@ -168,6 +168,34 @@ namespace gui
   /** \brief Start a list update, as if it had been triggered from the menu.
    */
   void do_update();
+
+  /** @{
+   *  Constants giving the textual and iconic representation of the
+   *  current and selected states of packages.
+   */
+
+  extern std::pair<std::string, Gtk::StockID> virtual_columns;
+  extern std::pair<std::string, Gtk::StockID> not_installed_columns;
+  extern std::pair<std::string, Gtk::StockID> unpacked_columns;
+  extern std::pair<std::string, Gtk::StockID> half_configured_columns;
+  extern std::pair<std::string, Gtk::StockID> half_installed_columns;
+  extern std::pair<std::string, Gtk::StockID> config_files_columns;
+  extern std::pair<std::string, Gtk::StockID> triggers_awaited_columns;
+  extern std::pair<std::string, Gtk::StockID> triggers_pending_columns;
+  extern std::pair<std::string, Gtk::StockID> installed_columns;
+  extern std::pair<std::string, Gtk::StockID> error_columns;
+
+  extern std::pair<std::string, Gtk::StockID> install_columns;
+  extern std::pair<std::string, Gtk::StockID> reinstall_columns;
+  extern std::pair<std::string, Gtk::StockID> upgrade_columns;
+  extern std::pair<std::string, Gtk::StockID> downgrade_columns;
+  extern std::pair<std::string, Gtk::StockID> remove_columns;
+  extern std::pair<std::string, Gtk::StockID> purge_columns;
+  extern std::pair<std::string, Gtk::StockID> hold_columns;
+  extern std::pair<std::string, Gtk::StockID> forbid_columns;
+  extern std::pair<std::string, Gtk::StockID> broken_columns;
+
+  /** @} */
 }
 
 #endif /*GUI_H_*/

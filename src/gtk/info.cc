@@ -48,44 +48,47 @@ namespace gui
     private:
       pkgCache::VerIterator ver;
 
-      string current_state_string()
+      std::pair<std::string, Gtk::StockID> current_state_columns()
       {
         pkgCache::PkgIterator pkg = ver.ParentPkg();
 
         if(!ver.end() && ver != pkg.CurrentVer())
-          return "p";
+          return virtual_columns;
+
+	if((*apt_cache_file)[pkg].NowBroken())
+	   return broken_columns;
 
         switch(pkg->CurrentState)
           {
           case pkgCache::State::NotInstalled:
-            return "p";
+            return not_installed_columns;
           case pkgCache::State::UnPacked:
-            return "u";
+            return unpacked_columns;
           case pkgCache::State::HalfConfigured:
-            return "C";
+            return half_configured_columns;
           case pkgCache::State::HalfInstalled:
-            return "H";
+            return half_installed_columns;
           case pkgCache::State::ConfigFiles:
-            return "c";
+            return config_files_columns;
       #ifdef APT_HAS_TRIGGERS
           case pkgCache::State::TriggersAwaited:
-            return "W";
+            return triggers_awaited_columns;
           case pkgCache::State::TriggersPending:
-            return "T";
+            return triggers_pending_columns;
       #endif
           case pkgCache::State::Installed:
-            return "i";
+            return installed_columns;
           default:
-            return "E";
+            return error_columns;
           }
       }
 
       // We output a flag/color pair
       // TODO: choose more sensible colors?
-      std::pair<string,string> action_strings()
+      std::pair<std::pair<std::string, Gtk::StockID>, std::string> action_row_info()
       {
         if(ver.end())
-          return std::make_pair("","white");
+          return std::make_pair(std::pair<std::string, Gtk::StockID>(),"white");
 
         pkgCache::PkgIterator pkg = ver.ParentPkg();
         aptitudeDepCache::StateCache &state = (*apt_cache_file)[pkg];
@@ -93,38 +96,40 @@ namespace gui
         pkgCache::VerIterator candver = state.CandidateVerIter(*apt_cache_file);
 
         if(state.Status!=2 && estate.selection_state == pkgCache::State::Hold && !state.NowBroken())
-          return std::make_pair("h","gray");
+          return std::make_pair(hold_columns, "gray");
         else if(ver.VerStr() == estate.forbidver)
-          return std::make_pair("F","dim gray");
+          return std::make_pair(forbid_columns, "dim gray");
         else if(state.Delete())
-          return (state.iFlags&pkgDepCache::Purge)?std::make_pair("p","sky blue"):std::make_pair("d","dark turquoise");
+          return (state.iFlags&pkgDepCache::Purge)
+	    ? std::make_pair(purge_columns,"sky blue")
+	    : std::make_pair(remove_columns, "dark turquoise");
         else if(state.InstBroken() && state.InstVerIter(*apt_cache_file) == ver)
-          return std::make_pair("B","orange red");
+          return std::make_pair(broken_columns, "orange red");
         else if(state.NewInstall())
           {
             if(candver==ver)
-              return std::make_pair("i","green");
+              return std::make_pair(install_columns, "green");
             else
-              return std::make_pair("","white");
+              return std::make_pair(std::pair<std::string, Gtk::StockID>(), "white");
           }
         else if(state.iFlags & pkgDepCache::ReInstall)
           {
             if(ver.ParentPkg().CurrentVer() == ver)
-              return std::make_pair("i","yellow green");
+              return std::make_pair(install_columns, "yellow green");
             else
-              return std::make_pair("","white");
+              return std::make_pair(std::pair<std::string, Gtk::StockID>(),"white");
           }
         else if(state.Upgrade())
           {
             if(ver.ParentPkg().CurrentVer() == ver)
-              return std::make_pair("d","orange");
+              return std::make_pair(remove_columns, "orange");
             else if(candver == ver)
-              return std::make_pair("i","green yellow");
+              return std::make_pair(install_columns, "green yellow");
             else
-              return std::make_pair("","white");
+              return std::make_pair(std::pair<std::string, Gtk::StockID>(), "white");
           }
         else
-          return std::make_pair("","white");
+          return std::make_pair(std::pair<std::string, Gtk::StockID>(), "white");
       }
 
     public:
@@ -138,10 +143,11 @@ namespace gui
       void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row)
       {
 	row[columns->EntObject] = this;
-        std::pair<string,string> action_strings_ = action_strings();
-	row[columns->BgSet] = (action_strings_.second != "white");
-	row[columns->BgColor] = action_strings_.second;
-	row[columns->Status] = current_state_string()+action_strings_.first;
+        std::pair<std::pair<std::string, Gtk::StockID>, std::string> row_info = action_row_info();
+	row[columns->BgSet] = (row_info.second != "white");
+	row[columns->BgColor] = row_info.second;
+	row[columns->CurrentStatusIcon] = current_state_columns().second.get_string();
+	row[columns->SelectedStatusIcon] = row_info.first.second.get_string();
 	row[columns->NameMarkup] = Glib::Markup::escape_text(ver.ParentPkg().Name());
 	row[columns->VersionMarkup] = Glib::Markup::escape_text(ver.VerStr());
 	row[columns->Name] = ver.ParentPkg().Name();
@@ -231,7 +237,8 @@ namespace gui
 
 	row[columns->BgSet] = true;
 	row[columns->BgColor] = "#FFA0A0";
-	row[columns->Status] = "";
+	row[columns->CurrentStatusIcon] = "";
+	row[columns->SelectedStatusIcon] = "";
 	row[columns->NameMarkup] = text;
 	row[columns->VersionMarkup] = "";
 	row[columns->Name] = text;
@@ -290,7 +297,7 @@ namespace gui
       void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row)
       {
 	HeaderEntity::fill_row(columns, row);
-	row[columns->Status] = "\t"+cwidget::util::transcode(L"\x2022 ");
+	row[columns->SelectedStatusIcon] = Gtk::Stock::YES.id;
 	// TODO: set the color according to whether the dependency is
 	// broken.  Need backend support for detecting changes to
 	// dependency state first.
@@ -313,7 +320,7 @@ namespace gui
       void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row)
       {
 	HeaderEntity::fill_row(columns, row);
-	row[columns->Status] = "\t-";
+	row[columns->SelectedStatusIcon] = Gtk::Stock::YES.id;
 	row[columns->VersionMarkup] = version_markup;
 	row[columns->Version] = version_text;
       }

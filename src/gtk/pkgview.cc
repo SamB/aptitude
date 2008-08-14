@@ -25,6 +25,8 @@
 #include <gtkmm.h>
 
 #include <apt-pkg/error.h>
+#include <apt-pkg/pkgsystem.h>
+#include <apt-pkg/version.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/apt_undo_group.h>
@@ -39,63 +41,74 @@
 
 namespace gui
 {
-  string PkgEntity::current_state_string()
+  std::pair<std::string, Gtk::StockID> PkgEntity::current_state_columns()
   {
     pkgCache::VerIterator ver = get_ver();
 
-    if(!ver.end() && ver != pkg.CurrentVer())
-      return "p";
+    if(ver.end())
+      return virtual_columns;
+
+    if((*apt_cache_file)[pkg].NowBroken())
+      return broken_columns;
 
     switch(pkg->CurrentState)
       {
       case pkgCache::State::NotInstalled:
-        return "p";
+        return not_installed_columns;
       case pkgCache::State::UnPacked:
-        return "u";
+        return unpacked_columns;
       case pkgCache::State::HalfConfigured:
-        return "C";
+        return half_configured_columns;
       case pkgCache::State::HalfInstalled:
-        return "H";
+        return half_installed_columns;
       case pkgCache::State::ConfigFiles:
-        return "c";
+        return config_files_columns;
   #ifdef APT_HAS_TRIGGERS
       case pkgCache::State::TriggersAwaited:
-        return "W";
+        return triggers_awaited_columns;
       case pkgCache::State::TriggersPending:
-        return "T";
+        return triggers_pending_columns;
   #endif
       case pkgCache::State::Installed:
-        return "i";
+        return installed_columns;
       default:
-        return "E";
+        return error_columns;
       }
   }
 
-  string PkgEntity::selected_package_state_string()
+  std::pair<std::string, Gtk::StockID> PkgEntity::selected_package_state_columns()
   {
     aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
     aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
     pkgCache::VerIterator candver=state.CandidateVerIter(*apt_cache_file);
 
-    string selected_state = string();
-    if (state.Status != 2
-        && (*apt_cache_file)->get_ext_state(pkg).selection_state
+    if(state.Status != 2
+       && (*apt_cache_file)->get_ext_state(pkg).selection_state
             == pkgCache::State::Hold && !state.InstBroken())
-      selected_state += "h";
-    if (state.Upgradable() && !pkg.CurrentVer().end() && !candver.end()
+      return hold_columns;
+    else if(state.Upgradable() && !pkg.CurrentVer().end() && !candver.end()
         && candver.VerStr() == estate.forbidver)
-      selected_state += "F";
-    if (state.Delete())
-      selected_state += ((state.iFlags & pkgDepCache::Purge) ? "p" : "d");
-    if (state.InstBroken())
-      selected_state += "B";
-    if (state.NewInstall())
-      selected_state += "i";
-    if (state.iFlags & pkgDepCache::ReInstall)
-      selected_state += "r";
-    if (state.Upgrade())
-      selected_state += "u";
-    return selected_state;
+      return forbid_columns;
+    else if(state.Delete())
+      return ((state.iFlags & pkgDepCache::Purge) ? purge_columns : remove_columns);
+    else if(state.InstBroken())
+      return broken_columns;
+    else if(state.NewInstall())
+      return install_columns;
+    else if(state.iFlags & pkgDepCache::ReInstall)
+      return reinstall_columns;
+    else if(state.Upgrade())
+      {
+	pkgCache::VerIterator currver = pkg.CurrentVer();
+	pkgCache::VerIterator instver = state.CandidateVerIter(*apt_cache_file);
+
+	if(_system->VS->CmpVersion(currver.VerStr(), instver.VerStr()) > 0)
+	  return downgrade_columns;
+	else
+	  return upgrade_columns;
+      }
+    else
+      return std::pair<std::string, Gtk::StockID>();
   }
 
   string PkgEntity::selected_package_state_color()
@@ -137,7 +150,8 @@ namespace gui
     row[cols->BgColor] = selected_package_state_color();
     row[cols->BgSet] = true;
 
-    row[cols->Status] = current_state_string() + selected_package_state_string();
+    row[cols->CurrentStatusIcon] = current_state_columns().second.get_string();
+    row[cols->SelectedStatusIcon] = selected_package_state_columns().second.get_string();
 
     Glib::ustring safe_name = Glib::Markup::escape_text(pkg.Name());
     if(ver.end())

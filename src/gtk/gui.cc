@@ -55,6 +55,29 @@
 
 namespace gui
 {
+  // \todo Some of these icon choices suck.
+  std::pair<std::string, Gtk::StockID> not_installed_columns("p", Gtk::Stock::CANCEL);
+  std::pair<std::string, Gtk::StockID> virtual_columns("p", Gtk::StockID());
+  std::pair<std::string, Gtk::StockID> unpacked_columns("u", Gtk::Stock::DIALOG_WARNING);
+  std::pair<std::string, Gtk::StockID> half_configured_columns("C", Gtk::Stock::DIALOG_WARNING);
+  std::pair<std::string, Gtk::StockID> half_installed_columns("H", Gtk::Stock::DIALOG_WARNING);
+  std::pair<std::string, Gtk::StockID> config_files_columns("c", Gtk::Stock::PROPERTIES);
+  std::pair<std::string, Gtk::StockID> triggers_awaited_columns("W", Gtk::Stock::DIALOG_WARNING);
+  std::pair<std::string, Gtk::StockID> triggers_pending_columns("T", Gtk::Stock::DIALOG_WARNING);
+  std::pair<std::string, Gtk::StockID> installed_columns("i", Gtk::Stock::APPLY);
+  std::pair<std::string, Gtk::StockID> error_columns("E", Gtk::Stock::DIALOG_ERROR);
+  
+  std::pair<std::string, Gtk::StockID> install_columns("i", Gtk::Stock::ADD);
+  std::pair<std::string, Gtk::StockID> reinstall_columns("r", Gtk::Stock::ADD);
+  std::pair<std::string, Gtk::StockID> upgrade_columns("u", Gtk::Stock::GO_UP);
+  std::pair<std::string, Gtk::StockID> downgrade_columns("u", Gtk::Stock::GO_DOWN);
+  std::pair<std::string, Gtk::StockID> remove_columns("d", Gtk::Stock::REMOVE);
+  std::pair<std::string, Gtk::StockID> purge_columns("p", Gtk::Stock::CLEAR);
+  std::pair<std::string, Gtk::StockID> hold_columns("h", Gtk::Stock::MEDIA_PAUSE);
+  std::pair<std::string, Gtk::StockID> forbid_columns("F", Gtk::Stock::STOP);
+  std::pair<std::string, Gtk::StockID> broken_columns("B", Gtk::Stock::DIALOG_ERROR);
+
+
   Glib::RefPtr<Gnome::Glade::Xml> refXml;
   std::string glade_main_file;
   Gtk::Main * pKit;

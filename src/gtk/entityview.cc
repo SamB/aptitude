@@ -48,7 +48,8 @@ namespace gui
     row[cols->BgColor] = "light yellow"; // Say we want blue header..
     row[cols->BgSet] = true; // We do want to put color in there, yes.
 
-    row[cols->Status] = ""; // dummy
+    row[cols->CurrentStatusIcon] = ""; // dummy
+    row[cols->SelectedStatusIcon] = ""; // dummy
 
     // This is the content of the header
     // TODO: Maybe we should delegate the markup to the caller
@@ -83,7 +84,8 @@ namespace gui
     add(EntObject);
     add(BgSet);
     add(BgColor);
-    add(Status);
+    add(CurrentStatusIcon);
+    add(SelectedStatusIcon);
     add(NameMarkup);
     add(VersionMarkup);
     add(Name);
@@ -157,7 +159,27 @@ namespace gui
     cache_closed.connect(sigc::mem_fun(*this, &EntityView::on_cache_closed));
     cache_reloaded.connect(sigc::mem_fun(*this, &EntityView::on_cache_reloaded));
 
-    append_column(Glib::ustring(_("Status")), Status, cols.Status, 32);
+    {
+      // \todo should the selected status icon have a dropdown menu?
+      // And how best to acheive that?
+      Gtk::CellRendererPixbuf *current_status_icon_renderer = manage(new Gtk::CellRendererPixbuf);
+      Gtk::CellRendererPixbuf *selected_status_icon_renderer = manage(new Gtk::CellRendererPixbuf);
+      Status = manage(new Gtk::TreeViewColumn("", *current_status_icon_renderer));
+      Status->pack_end(*selected_status_icon_renderer);
+
+      Status->add_attribute(current_status_icon_renderer->property_stock_id(),
+				   cols.CurrentStatusIcon);
+
+      Status->add_attribute(selected_status_icon_renderer->property_stock_id(),
+				   cols.SelectedStatusIcon);
+
+      setup_column_properties(Status, 64);
+      // Needs to be GROW_ONLY because otherwise it gets clipped in
+      // the preview display.
+      Status->set_sizing(Gtk::TREE_VIEW_COLUMN_GROW_ONLY);
+      tree->append_column(*Status);
+    }
+
     append_markup_column(Glib::ustring(_("Name")), Name, cols.NameMarkup, 350);
     {
       Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
