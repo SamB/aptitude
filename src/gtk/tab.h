@@ -29,6 +29,8 @@
 
 namespace gui
 {
+  class NotifyView;
+
   /**
    * This is a list of tab types.
    */
@@ -59,6 +61,7 @@ namespace gui
       Gtk::Button * label_button;
       Gtk::Widget * label_widget;
       Gtk::Widget * widget;
+      NotifyView * notifyview;
 
       /** \brief Tabs are not copy-constructible.
        *
@@ -84,6 +87,7 @@ namespace gui
       void set_label(Glib::ustring);
       TabType get_type() { return type; }
       Gtk::Widget * get_widget() const { return widget; }
+      NotifyView * get_notifyview() const { return notifyview; }
       const Glib::RefPtr<Gnome::Glade::Xml> &get_xml() { return xml; }
 
       /** \brief A signal invoked when the tab's "close" button is clicked.
