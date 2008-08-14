@@ -34,6 +34,7 @@ namespace gui
   {
     public:
       Notification(const Glib::RefPtr<Gtk::TextBuffer> buffer, std::vector<Gtk::Button *> buttons);
+      sigc::signal0<void> close_clicked;
   };
 
   /** \brief Stores a stack of global and tab-local notifications.
@@ -46,21 +47,10 @@ namespace gui
   {
     private:
       Gtk::VBox * rows;
-      // Stores all the notifications that are present in this view.
-      // Notifications
-      std::vector<std::pair<Tab *, Notification *> > notifications_map;
-      Tab * current_tab;
-
     public:
       NotifyView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
       ~NotifyView();
-      /** \brief Add a new global notification.
-       *
-       *  \param notification   The notification to add.
-       *  The NotifyView will take ownership of this pointer.
-       */
-      void add_global_notification(Notification * notification);
-      /** \brief Add a new tab-local notification.
+      /** \brief Add a new notification.
        *
        *  The notification is owned by this view after being added.
        *
@@ -70,13 +60,12 @@ namespace gui
        *  The notification will be displayed only when this tab is the
        *  currently active one in the main notebook.
        */
-      void add_local_notification(Notification * notification, Tab * tab);
+      void add_notification(Notification * notification, Tab * tab);
       /** \brief Remove a notification.
        *
        *  \param notification   The notification to remove.
        */
       void remove_notification(Notification * notification);
-      void tab_changed(Tab * tab);
       Gtk::VBox * get_rows() { return rows; };
   };
 

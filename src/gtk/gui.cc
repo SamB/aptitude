@@ -485,7 +485,6 @@ namespace gui
     }
 
     refGlade->get_widget_derived("main_notify_rows", pNotifyView);
-    pNotebook->tab_status_button_changed.connect(sigc::mem_fun(*pNotifyView, &NotifyView::tab_changed));
 
     refGlade->get_widget("main_progressbar", pProgressBar);
     refGlade->get_widget("main_statusbar", pStatusBar);
@@ -527,7 +526,7 @@ namespace gui
       buttons.push_back(button);
       buttons.push_back(button2);
       Notification * notification = new Notification(buffer, buttons);
-      pNotifyView->add_global_notification(notification);
+      pNotifyView->add_notification(notification);
     }
   }
 
