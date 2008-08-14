@@ -57,6 +57,8 @@ namespace gui
 
 	  packages_view.set_model(store);
 	}
+
+      after_repopulate_hook();
     }
   }
 
