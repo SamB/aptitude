@@ -210,9 +210,13 @@ namespace gui
   void EntityView::setup_column_properties(Gtk::TreeViewColumn *treeview_column,
                                              int size)
   {
-    Gtk::CellRenderer* treeview_cellrenderer = treeview_column->get_first_cell_renderer();
-    treeview_column->add_attribute(treeview_cellrenderer->property_cell_background_set(), cols.BgSet);
-    treeview_column->add_attribute(treeview_cellrenderer->property_cell_background(), cols.BgColor);
+    Glib::ListHandle<Gtk::CellRenderer *> renderers = treeview_column->get_cell_renderers();
+    for(Glib::ListHandle<Gtk::CellRenderer *>::const_iterator it  =
+	  renderers.begin(); it != renderers.end(); ++it)
+      {
+	treeview_column->add_attribute((*it)->property_cell_background_set(), cols.BgSet);
+	treeview_column->add_attribute((*it)->property_cell_background(), cols.BgColor);
+      }
     treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
     treeview_column->set_fixed_width(size);
     treeview_column->set_resizable(true);
