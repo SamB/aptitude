@@ -38,15 +38,50 @@
 
 namespace gui
 {
+  namespace
+  {
+    void repopulate_searchable_view(PkgView &packages_view,
+				    Gtk::Entry &search_entry,
+				    const sigc::slot0<void> &after_repopulate_hook)
+    {
+      packages_view.set_limit(search_entry.get_text());
+    }
+  }
+
+  void setup_searchable_view(Gtk::Entry *search_entry,
+			     Gtk::Button *search_button,
+			     const cwidget::util::ref_ptr<PkgView> packages_view,
+			     const sigc::slot0<void> &after_repopulate_hook)
+  {
+    sigc::slot0<void> repopulate_hook = sigc::bind(sigc::ptr_fun(&repopulate_searchable_view),
+						   packages_view.weak_ref(),
+						   sigc::ref(*search_entry),
+						   after_repopulate_hook);
+
+    search_entry->signal_activate().connect(repopulate_hook);
+    search_button->signal_activate().connect(repopulate_hook);
+
+    // Ask the user to enter a search pattern.
+    //
+    // TODO: a similar message should appear when a search produces no
+    // matches.
+    {
+      Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*packages_view->get_columns());
+
+      Gtk::TreeModel::iterator iter = store->append();
+      Gtk::TreeModel::Row row = *iter;
+      (new HeaderEntity(_("Enter a search and click \"Find\" to display packages.")))->fill_row(packages_view->get_columns(), row);
+
+      packages_view->set_model(store);
+    }
+  }
 
   PackagesTab::PackagesTab(const Glib::ustring &label) :
     Tab(Packages, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_hpaned"), "main_packages_hpaned")
   {
     get_xml()->get_widget("main_packages_textview", pPackagesTextView);
     get_xml()->get_widget("main_notebook_packages_limit_entry", pLimitEntry);
-    pLimitEntry->signal_activate().connect(sigc::mem_fun(*this, &PackagesTab::repopulate_model));
     get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
-    pLimitButton->signal_clicked().connect(sigc::mem_fun(*this, &PackagesTab::repopulate_model));
 
     using cwidget::util::ref_ptr;
     pPkgView = ref_ptr<PkgView>(new PkgView(get_xml(), "main_packages_treeview"));
@@ -56,19 +91,8 @@ namespace gui
     pPkgView->store_reloading.connect(sigc::bind(sigc::mem_fun(*get_label_button(), &Gtk::Widget::set_sensitive), false));
     pPkgView->store_reloaded.connect(sigc::bind(sigc::mem_fun(*get_label_button(), &Gtk::Widget::set_sensitive), true));
 
-    // Ask the user to enter a search pattern.
-    //
-    // TODO: a similar message should appear when a search produces no
-    // matches.
-    {
-      Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*pPkgView->get_columns());
-
-      Gtk::TreeModel::iterator iter = store->append();
-      Gtk::TreeModel::Row row = *iter;
-      (new HeaderEntity(_("Enter a search and click \"Find\" to display packages.")))->fill_row(pPkgView->get_columns(), row);
-
-      pPkgView->set_model(store);
-    }
+    setup_searchable_view(pLimitEntry, pLimitButton, pPkgView,
+			  sigc::mem_fun(this, &PackagesTab::after_repopulate_model));
 
     pPkgView->get_treeview()->set_fixed_height_mode(true);
 
@@ -98,9 +122,8 @@ namespace gui
     }
   }
 
-  void PackagesTab::repopulate_model()
+  void PackagesTab::after_repopulate_model()
   {
-    pPkgView->set_limit(pLimitEntry->get_text());
     set_label(_("Packages: ") + pLimitEntry->get_text());
   }
 

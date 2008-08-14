@@ -44,14 +44,34 @@ namespace gui
       Gtk::TextView * pPackagesTextView;
       Gtk::Entry * pLimitEntry;
       Gtk::Button * pLimitButton;
+
+      void after_repopulate_model();
     public:
       PackagesTab(const Glib::ustring &label);
       void activated_package_handler();
-      void repopulate_model();
       void display_desc(const cwidget::util::ref_ptr<Entity> &ent);
       Gtk::Entry * get_limit_entry() const { return pLimitEntry; }
       const cwidget::util::ref_ptr<PkgView> &get_pkg_view() const { return pPkgView; }
   };
+
+  /** \brief Set up a package view to be searchable.
+   *
+   *  Sets up signal connections so that the user can enter search
+   *  terms into a search entry to control the list of packages
+   *  displayed in a package view.
+   *
+   *  \param search_entry   The text entry where the user enters search terms.
+   *  \param search_button  The button the user presses to immediately search.
+   *  \param packages_view  The package list to manage; will initially be
+   *                        set to only contain a message asking the
+   *                        user to enter a search term.
+   *  \param after_repopulate_hook   A callback invoked after the tree is rebuilt
+   *                                 when the user enters a new search term.
+   */
+  void setup_searchable_view(Gtk::Entry *search_entry,
+			     Gtk::Button *search_button,
+			     const cwidget::util::ref_ptr<PkgView> packages_view,
+			     const sigc::slot0<void> &after_repopulate_hook);
 
 }
 
