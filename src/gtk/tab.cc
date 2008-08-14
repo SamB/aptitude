@@ -45,15 +45,14 @@ namespace gui
     : type(_type), label(_label),
       xml(_xml), widget(NULL)
   {
-    xml->get_widget(widgetName, widget);
-
     // This is a hack to reparent the tab widget into a VBox along with a NotifyView
     Gtk::VBox * vbox = manage(new Gtk::VBox());
-    widget->unparent();
-    widget->set_parent(*vbox);
+    xml->get_widget(widgetName, widget);
+    vbox->pack_start(*widget, true, true);
     Glib::RefPtr<Gnome::Glade::Xml> glade_notify = Gnome::Glade::Xml::create(glade_main_file, "main_notify_rows");
     glade_notify->get_widget_derived("main_notify_rows", notifyview);
-    vbox->pack_end(*notifyview, false, true);
+    vbox->pack_start(*notifyview, false, true);
+    widget->show();
     widget = vbox;
 
     {
