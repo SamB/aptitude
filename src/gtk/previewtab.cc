@@ -32,6 +32,7 @@
 #include <gtk/info.h>
 #include <gtk/packageinformation.h>
 #include <gtk/pkgview.h>
+#include <gtk/notify.h>
 
 namespace gui
 {
@@ -114,6 +115,28 @@ namespace gui
   {
   }
 
+  void PreviewTab::notify_installremove()
+  {
+    // TODO: Add a real "packages to install/remove ? && no conflicts ?" boolean for the test.
+    std::cout << "truc" << std::endl;
+    if(true)
+    {
+      Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
+      buffer->set_text("DL Size: "+SizeToStr((*apt_cache_file)->DebSize())+".");
+      std::vector<Gtk::Button *> buttons;
+      Gtk::Button * button = new Gtk::Button("Run install/remove");
+      button->signal_clicked().connect(sigc::ptr_fun(do_installremove));
+      button->show();
+      buttons.push_back(button);
+      notification_installremove = manage(new Notification(buffer, buttons));
+      get_notifyview()->add_notification(notification_installremove);
+    }
+    else
+    {
+      get_notifyview()->remove_notification(notification_installremove);
+    }
+  }
+
   PreviewTab::PreviewTab(const Glib::ustring &label) :
     Tab(Preview, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_hpaned"), "main_packages_hpaned")
   {
@@ -135,6 +158,9 @@ namespace gui
     repopulate_model();
 
     pPkgView->get_treeview()->expand_all();
+
+    notify_installremove();
+    (*apt_cache_file)->package_state_changed.connect(sigc::mem_fun(*this, &PreviewTab::notify_installremove));
 
     get_widget()->show();
 

@@ -515,19 +515,6 @@ namespace gui
     cache_reloaded.connect(sigc::bind(sigc::mem_fun(*this, &Gtk::Widget::set_sensitive),
 				      true));
 
-    {
-      // We're doing some testing here.
-      Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
-      buffer->set_text("This is a notification");
-      std::vector<Gtk::Button *> buttons;
-      Gtk::Button * button = new Gtk::Button("This is a button");
-      Gtk::Button * button2 = new Gtk::Button("This is another button");
-      button->show();
-      buttons.push_back(button);
-      buttons.push_back(button2);
-      Notification * notification = new Notification(buffer, buttons);
-      pNotifyView->add_notification(notification);
-    }
   }
 
   void AptitudeWindow::apt_error_tab_closed()

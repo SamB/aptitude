@@ -55,20 +55,6 @@ namespace gui
     widget->show();
     widget = vbox;
 
-    {
-      // We're doing some testing here.
-      Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
-      buffer->set_text("This is a tab notification");
-      std::vector<Gtk::Button *> buttons;
-      Gtk::Button * button = new Gtk::Button("This is a button");
-      Gtk::Button * button2 = new Gtk::Button("This is another button");
-      button->show();
-      buttons.push_back(button);
-      buttons.push_back(button2);
-      Notification * notification = new Notification(buffer, buttons);
-      notifyview->add_notification(notification);
-    }
-
     // TODO: Should do something about this. Create a dedicated toplevel for these widgets.
     Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_notebook_download_label_hbox");
     refGlade->get_widget("main_notebook_download_label_hbox", label_widget);

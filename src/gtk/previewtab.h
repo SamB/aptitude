@@ -36,6 +36,8 @@
 
 namespace gui
 {
+  class Notification;
+
   /** \brief A tree-view that displays a preview of which actions are
    *  to be performed.
    */
@@ -73,6 +75,9 @@ namespace gui
       Gtk::TextView * pPackagesTextView;
       Gtk::Entry * pLimitEntry;
       Gtk::Button * pLimitButton;
+
+      Notification * notification_installremove;
+      void notify_installremove();
 
     public:
       PreviewTab(const Glib::ustring &label);
