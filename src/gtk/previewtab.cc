@@ -115,27 +115,38 @@ namespace gui
   {
   }
 
-  void PreviewTab::notify_installremove()
+  class NotificationInstallRemove : public Notification
   {
-    // TODO: Add a real "packages to install/remove ? && no conflicts ?" boolean for the test.
-    std::cout << "truc" << std::endl;
-    if(true)
+    private:
+      Gtk::Button * button;
+    public:
+    NotificationInstallRemove() : Notification(false)
     {
-      Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
-      buffer->set_text("DL Size: "+SizeToStr((*apt_cache_file)->DebSize())+".");
-      std::vector<Gtk::Button *> buttons;
-      Gtk::Button * button = new Gtk::Button("Run install/remove");
+      button = new Gtk::Button("Run install/remove");
       button->signal_clicked().connect(sigc::ptr_fun(do_installremove));
-      button->show();
-      buttons.push_back(button);
-      notification_installremove = manage(new Notification(buffer, buttons));
-      get_notifyview()->add_notification(notification_installremove);
+      add_button(button);
+      update();
+      finalize();
     }
-    else
+    void update()
     {
-      get_notifyview()->remove_notification(notification_installremove);
+      buffer->set_text("DL Size: "+SizeToStr((*apt_cache_file)->DebSize())+".");
+      // FIXME: What should we test to know that the install queue will go smoothly ?
+      button->set_sensitive((*apt_cache_file)->BrokenCount() == 0);
+      // FIXME: What should we test to know that the install queue is non-empty ?
+      if ((*apt_cache_file)->DelCount() +
+          (*apt_cache_file)->InstCount() +
+          (*apt_cache_file)->BrokenCount() +
+          (*apt_cache_file)->BadCount() != 0)
+        {
+          show();
+        }
+      else
+        {
+          hide();
+        }
     }
-  }
+  };
 
   PreviewTab::PreviewTab(const Glib::ustring &label) :
     Tab(Preview, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_hpaned"), "main_packages_hpaned")
@@ -159,8 +170,10 @@ namespace gui
 
     pPkgView->get_treeview()->expand_all();
 
-    notify_installremove();
-    (*apt_cache_file)->package_state_changed.connect(sigc::mem_fun(*this, &PreviewTab::notify_installremove));
+    notification_installremove = manage(new NotificationInstallRemove());
+    get_notifyview()->add_notification(notification_installremove);
+    (*apt_cache_file)->package_state_changed.connect(
+        sigc::mem_fun(*notification_installremove, &NotificationInstallRemove::update));
 
     get_widget()->show();
 

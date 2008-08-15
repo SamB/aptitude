@@ -29,11 +29,24 @@
 namespace gui
 {
 
-  // This class doesn't do much, yet
+  // This is an abstract class for Notifications
   class Notification : public Gtk::HBox
   {
+    private:
+      bool onetimeuse;
+    protected:
+      Gtk::TextView * textview;
+      Glib::RefPtr<Gtk::TextBuffer> buffer;
+      void add_button(Gtk::Button *);
     public:
-      Notification(const Glib::RefPtr<Gtk::TextBuffer> buffer, std::vector<Gtk::Button *> buttons);
+      /** \brief Generates a permanent or one-time-use notification
+       *
+       * \param onetimeuse      If true, the notification is deleted on user
+       *                        close request and otherwise only hidden.
+       */
+      Notification(bool onetimeuse);
+      bool is_onetimeuse() { return onetimeuse; };
+      void finalize();
       sigc::signal0<void> close_clicked;
   };
 

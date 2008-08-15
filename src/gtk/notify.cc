@@ -23,22 +23,25 @@
 #include "notify.h"
 #include "aptitude.h"
 
-#include <iostream>
-
 namespace gui
 {
-
-  Notification::Notification(const Glib::RefPtr<Gtk::TextBuffer> buffer, std::vector<Gtk::Button *> buttons)
+  Notification::Notification(bool onetimeuse)
   {
-    Gtk::TextView * textview = manage(new Gtk::TextView(buffer));
-    textview->show();
+    this->onetimeuse = onetimeuse;
+    textview = manage(new Gtk::TextView());
+    buffer = textview->get_buffer();
     pack_start(*textview, true, true);
-    for (std::vector<Gtk::Button *>::iterator button_iter = buttons.begin();
-    button_iter != buttons.end(); button_iter++)
-    {
-      (*button_iter)->show();
-      pack_start(*manage(*button_iter), false, true);
-    }
+  }
+
+  void Notification::add_button(Gtk::Button * button)
+  {
+    button->show();
+    pack_start(*manage(button), false, true);
+  }
+
+  void Notification::finalize()
+  {
+    textview->show();
     Gtk::Button * close_button = manage(new Gtk::Button());
     Gtk::Image * close_button_image = manage(new Gtk::Image(Gtk::Stock::CLOSE, Gtk::ICON_SIZE_MENU));
     close_button->property_image() = close_button_image;
@@ -60,13 +63,19 @@ namespace gui
   void NotifyView::add_notification(Notification * notification)
   {
     notification->close_clicked.connect(sigc::bind(sigc::mem_fun(*this, &NotifyView::remove_notification), notification));
-    notification->show();
     rows->pack_start(*notification);
   }
 
   void NotifyView::remove_notification(Notification * notification)
   {
-    remove(*notification);
+    if (notification->is_onetimeuse())
+      {
+        remove(*notification);
+      }
+    else
+      {
+        notification->hide();
+      }
   }
 
 }
