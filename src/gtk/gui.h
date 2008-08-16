@@ -133,6 +133,11 @@ namespace gui
 
       void show_dependency_chains_tab();
 
+      // Register the resolver-sensitivity callback.
+      void update_resolver_sensitivity_callback();
+      // Update the resolver sensistivity.
+      void update_resolver_sensitivity();
+
     public:
       /**
        * Glade::Xml derived widget constructor.

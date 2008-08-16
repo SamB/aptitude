@@ -754,6 +754,24 @@ namespace gui
     cache_reloaded.connect(sigc::bind(sigc::mem_fun(*this, &Gtk::Widget::set_sensitive),
 				      true));
 
+    // When the cache is reloaded, attach to the new resolver-manager.
+    cache_reloaded.connect(sigc::mem_fun(*this, &AptitudeWindow::update_resolver_sensitivity_callback));
+    update_resolver_sensitivity_callback();
+  }
+
+  void AptitudeWindow::update_resolver_sensitivity_callback()
+  {
+    if(resman != NULL)
+      resman->state_changed.connect(sigc::mem_fun(*this, &AptitudeWindow::update_resolver_sensitivity));
+
+    update_resolver_sensitivity();
+  }
+
+  void AptitudeWindow::update_resolver_sensitivity()
+  {
+    bool resolver_exists = resman != NULL && resman->resolver_exists();
+
+    pToolButtonResolver->set_sensitive(resolver_exists);
   }
 
   void AptitudeWindow::apt_error_tab_closed()
