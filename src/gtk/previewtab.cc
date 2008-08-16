@@ -115,39 +115,6 @@ namespace gui
   {
   }
 
-  class NotificationInstallRemove : public Notification
-  {
-    private:
-      Gtk::Button * button;
-    public:
-    NotificationInstallRemove() : Notification(false)
-    {
-      button = new Gtk::Button("Run install/remove");
-      button->signal_clicked().connect(sigc::ptr_fun(do_installremove));
-      add_button(button);
-      update();
-      finalize();
-    }
-    void update()
-    {
-      buffer->set_text("DL Size: "+SizeToStr((*apt_cache_file)->DebSize())+".");
-      // FIXME: What should we test to know that the install queue will go smoothly ?
-      button->set_sensitive((*apt_cache_file)->BrokenCount() == 0);
-      // FIXME: What should we test to know that the install queue is non-empty ?
-      if ((*apt_cache_file)->DelCount() +
-          (*apt_cache_file)->InstCount() +
-          (*apt_cache_file)->BrokenCount() +
-          (*apt_cache_file)->BadCount() != 0)
-        {
-          show();
-        }
-      else
-        {
-          hide();
-        }
-    }
-  };
-
   PreviewTab::PreviewTab(const Glib::ustring &label) :
     Tab(Preview, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_hpaned"), "main_packages_hpaned")
   {
@@ -169,11 +136,6 @@ namespace gui
     repopulate_model();
 
     pPkgView->get_treeview()->expand_all();
-
-    notification_installremove = manage(new NotificationInstallRemove());
-    get_notifyview()->add_notification(notification_installremove);
-    (*apt_cache_file)->package_state_changed.connect(
-        sigc::mem_fun(*notification_installremove, &NotificationInstallRemove::update));
 
     get_widget()->show();
 

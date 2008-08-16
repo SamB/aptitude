@@ -68,8 +68,6 @@ namespace gui
 		const Glib::ustring &limit = "");
   };
 
-  class NotificationInstallRemove;
-
   class PreviewTab : public Tab
   {
     private:
@@ -77,9 +75,6 @@ namespace gui
       Gtk::TextView * pPackagesTextView;
       Gtk::Entry * pLimitEntry;
       Gtk::Button * pLimitButton;
-
-      NotificationInstallRemove * notification_installremove;
-      void notify_installremove();
 
     public:
       PreviewTab(const Glib::ustring &label);

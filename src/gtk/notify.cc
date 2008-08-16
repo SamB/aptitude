@@ -29,7 +29,6 @@ namespace gui
   {
     this->onetimeuse = onetimeuse;
     textview = manage(new Gtk::TextView());
-    buffer = textview->get_buffer();
     pack_start(*textview, true, true);
   }
 
@@ -48,6 +47,11 @@ namespace gui
     close_button->signal_clicked().connect(close_clicked);
     close_button->show();
     pack_start(*close_button, false, true);
+  }
+
+  void Notification::set_buffer(const Glib::RefPtr<Gtk::TextBuffer> &buffer)
+  {
+    textview->set_buffer(buffer);
   }
 
   NotifyView::NotifyView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::VBox(cobject)

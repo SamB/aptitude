@@ -34,10 +34,8 @@ namespace gui
   {
     private:
       bool onetimeuse;
-    protected:
+
       Gtk::TextView * textview;
-      Glib::RefPtr<Gtk::TextBuffer> buffer;
-      void add_button(Gtk::Button *);
     public:
       /** \brief Create a notification.
        *
@@ -47,6 +45,13 @@ namespace gui
        */
       Notification(bool onetimeuse);
       bool is_onetimeuse() { return onetimeuse; };
+      void add_button(Gtk::Button *);
+      void set_buffer(const Glib::RefPtr<Gtk::TextBuffer> &buffer);
+      /** \brief Add the elements of the notification that should appear to the
+       *  right-hand side of the text it displays.
+       *
+       *  For instance, this adds the close button.
+       */
       void finalize();
       sigc::signal0<void> close_clicked;
   };

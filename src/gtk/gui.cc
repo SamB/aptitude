@@ -337,6 +337,97 @@ namespace gui
     }
   }
 
+  
+
+  class NotificationInstallRemove : public Notification
+  {
+  private:
+    Gtk::Button *preview_button;
+    Gtk::Button *install_remove_button;
+    Gtk::Button *resolve_dependencies_button;
+
+    // Used to tell whether we need to update.
+    int last_broken_count;
+    int last_download_size;
+
+    void do_cache_reloaded()
+    {
+      if(apt_cache_file)
+	(*apt_cache_file)->package_state_changed.connect(sigc::mem_fun(*this, &NotificationInstallRemove::update));
+    }
+
+  public:
+    NotificationInstallRemove(AptitudeWindow *main_window)
+      : Notification(false)
+    {
+      last_broken_count = 0;
+      last_download_size = 0;
+
+      preview_button = new Gtk::Button(_("View changes"));
+      preview_button->signal_clicked().connect(sigc::mem_fun(main_window, &AptitudeWindow::do_preview));
+      add_button(preview_button);
+
+      resolve_dependencies_button = new Gtk::Button(_("Resolve dependencies"));
+      resolve_dependencies_button->signal_clicked().connect(sigc::mem_fun(main_window, &AptitudeWindow::do_resolver));
+      add_button(resolve_dependencies_button);
+
+      install_remove_button = new Gtk::Button(_("Apply changes"));
+      install_remove_button->signal_clicked().connect(sigc::ptr_fun(&do_installremove));
+      add_button(install_remove_button);
+
+      update();
+      finalize();
+
+      if(apt_cache_file)
+	(*apt_cache_file)->package_state_changed.connect(sigc::mem_fun(*this, &NotificationInstallRemove::update));
+
+      cache_reloaded.connect(sigc::mem_fun(*this, &NotificationInstallRemove::do_cache_reloaded));
+    }
+
+    void update()
+    {
+      int dl_size = apt_cache_file ? (*apt_cache_file)->DebSize() : 0;
+      int broken_count = apt_cache_file ? (*apt_cache_file)->BrokenCount() : 0;
+
+      if(dl_size == last_download_size && broken_count == last_broken_count)
+	return;
+
+      Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
+
+      if(broken_count > 0)
+	{
+	  Glib::RefPtr<Gtk::TextBuffer::Tag> broken_tag = buffer->create_tag();
+	  broken_tag->property_weight() = Pango::WEIGHT_BOLD;
+
+	  buffer->insert_with_tag(buffer->end(),
+				  ssprintf(_("%d packages are broken."),
+					   broken_count),
+				  broken_tag);
+	}
+
+      if(dl_size > 0)
+	{
+	  if(buffer->size() > 0)
+	    buffer->insert(buffer->end(), "\n");
+	  buffer->insert(buffer->end(),
+			 ssprintf(_("Download size: %sB."),
+				  SizeToStr(dl_size).c_str()));
+	}
+
+      bool something_is_broken = broken_count > 0;
+      bool download_planned =
+	apt_cache_file && ((*apt_cache_file)->InstCount() > 0 ||
+			   (*apt_cache_file)->DelCount() > 0);
+
+      install_remove_button->set_sensitive(download_planned && !something_is_broken);
+      resolve_dependencies_button->set_sensitive(something_is_broken);
+
+      property_visible() = !active_download && (download_planned || something_is_broken);
+
+      set_buffer(buffer);
+    }
+  };
+
   // TODO: make the mouse cursor change on hyperlinks.  The only
   // advice I can find on how to do this is to connect a signal to the
   // TextView that examines all the tags under the mouse and sets the
@@ -508,6 +599,8 @@ namespace gui
     }
 
     refGlade->get_widget_derived("main_notify_rows", pNotifyView);
+
+    pNotifyView->add_notification(Gtk::manage(new NotificationInstallRemove(this)));
 
     refGlade->get_widget("main_progressbar", pProgressBar);
     refGlade->get_widget("main_statusbar", pStatusBar);
