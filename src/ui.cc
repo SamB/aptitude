@@ -1803,28 +1803,7 @@ public:
 // BACKGROUND THREAD THIS WILL DEADLOCK IF BLOCKING IS TRUE! (see above for such a case)
 static void start_solution_calculation(bool blocking)
 {
-  resolver_manager::state state = resman->state_snapshot();
-
-  if(state.resolver_exists &&
-     state.selected_solution == state.generated_solutions &&
-     !state.solutions_exhausted &&
-     !state.background_thread_active &&
-     !state.background_thread_aborted)
-    {
-      const int selected = state.selected_solution;
-      const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
-      const int wait_steps = aptcfg->FindI(PACKAGE "::ProblemResolver::WaitSteps", 50);
-
-      if(limit > 0)
-	{
-	  interactive_continuation * const k = new interactive_continuation(resman);
-
-	  if(blocking)
-	    resman->get_solution_background_blocking(selected, limit, wait_steps, k);
-	  else
-	    resman->get_solution_background(selected, limit, k);
-	}
-    }
+  resman->maybe_start_solution_calculation(blocking, new interactive_continuation(resman));
 }
 
 static void do_connect_resolver_callback()

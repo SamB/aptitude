@@ -1443,3 +1443,32 @@ void resolver_manager::dump(ostream &out)
 
   out << "EXPECT ( " << aptcfg->FindI(PACKAGE "::Resolver::StepLimit", 5000) << " ANY )" << std::endl;
 }
+
+void resolver_manager::maybe_start_solution_calculation(bool blocking,
+							background_continuation *k)
+{
+  state st = state_snapshot();
+
+  if(st.resolver_exists &&
+     st.selected_solution == st.generated_solutions &&
+     !st.solutions_exhausted &&
+     !st.background_thread_active &&
+     !st.background_thread_aborted)
+    {
+      const int selected = st.selected_solution;
+      const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
+      const int wait_steps = aptcfg->FindI(PACKAGE "::ProblemResolver::WaitSteps", 50);
+
+      if(limit > 0)
+	{
+	  if(blocking)
+	    resman->get_solution_background_blocking(selected, limit, wait_steps, k);
+	  else
+	    resman->get_solution_background(selected, limit, k);
+	}
+      else
+	delete k;
+    }
+  else
+    delete k;
+}

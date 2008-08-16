@@ -689,6 +689,31 @@ public:
    */
   void select_previous_solution();
 
+  /** \brief Tells the background thread to start calculating
+   *  the next solution, if appropriate.
+   *
+   *  The thread will be started if all of the following are true:
+   *
+   *    1. There are broken packages.
+   *    2. The selected solution is the next solution to generate.
+   *    3. The solution set is not exhausted.
+   *    4. The background thread is not already active.
+   *    5. The background thread didn't abort with an error.
+   *
+   *  \param blocking    If \b true, the resolver will attempt to block
+   *                     and return immediately if a solution can be found
+   *                     in "a few" steps.
+   *  \param k           The continuation of the dependency resolver.
+   *                     It will be invoked (either in the foreground or
+   *                     in the background thread) when a solution is found.
+   *                     Ownership of this pointer is transfered to the
+   *                     resolver manager, which will delete it immediately
+   *                     if the thread isn't started, or after a solution is
+   *                     found otherwise.
+   */
+  void maybe_start_solution_calculation(bool blocking,
+					background_continuation *k);
+
   /** Tweak the resolver score of a particular package/version.  This
    *  requires that resolver_exists() and that the resolver is "fresh"
    *  (i.e., that next_solution() and current_solution() have never
