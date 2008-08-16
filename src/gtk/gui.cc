@@ -413,6 +413,8 @@ namespace gui
 	(*apt_cache_file)->package_state_changed.connect(sigc::mem_fun(*this, &BrokenPackagesNotification::update));
 
       cache_reloaded.connect(sigc::mem_fun(*this, &BrokenPackagesNotification::do_cache_reloaded));
+
+      set_color(Gdk::Color("#FFE0E0"));
     }
 
     void update()
