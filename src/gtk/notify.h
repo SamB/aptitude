@@ -44,6 +44,9 @@ namespace gui
        *                        it is only hidden.
        */
       Notification(bool onetimeuse);
+
+      /** \brief Create a notification with the given text and no buttons. */
+      Notification(const Glib::ustring &text, bool onetimeuse);
       bool is_onetimeuse() { return onetimeuse; };
       void add_button(Gtk::Button *);
       void set_buffer(const Glib::RefPtr<Gtk::TextBuffer> &buffer);

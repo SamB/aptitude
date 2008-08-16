@@ -32,6 +32,16 @@ namespace gui
     pack_start(*textview, true, true);
   }
 
+  Notification::Notification(const Glib::ustring &text, bool onetimeuse)
+  {
+    this->onetimeuse = onetimeuse;
+    Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
+    buffer->set_text(text);
+    textview = manage(new Gtk::TextView(buffer));
+    pack_start(*textview, true, true);
+    finalize();
+  }
+
   void Notification::add_button(Gtk::Button * button)
   {
     button->show();
