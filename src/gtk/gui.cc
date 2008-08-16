@@ -822,6 +822,9 @@ namespace gui
     Gtk::Main::signal_quit().connect(&do_want_quit);
     init_glade(argc, argv);
 
+    // Set up the resolver-triggering signals.
+    init_resolver();
+
     // Postpone apt_init until we enter the main loop, so we get a GUI
     // progress bar.
     Glib::signal_idle().connect(sigc::bind_return(sigc::ptr_fun(&do_apt_init),

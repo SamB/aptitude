@@ -78,24 +78,52 @@ namespace gui
       Gtk::Button * pResolverNext;
       Gtk::Button * pResolverApply;
 
-      aptitude_solution sol;
-      resolver_manager::state state;
+      // The last solution that was displayed, or invalid if there
+      // was no last solution.
+      //
+      // The sole purpose of this member is to avoid destroying and
+      // rebuilding the tree if the solution didn't actually change.
+      aptitude_solution last_sol;
 
       std::string archives_text(const pkgCache::VerIterator &ver);
       std::string dep_targets(const pkgCache::DepIterator &start);
       std::wstring dep_text(const pkgCache::DepIterator &d);
       bool do_previous_solution_enabled();
+      bool do_previous_solution_enabled_from_state(const resolver_manager::state &state);
       void do_previous_solution();
       bool do_next_solution_enabled();
+      bool do_next_solution_enabled_from_state(const resolver_manager::state &state);
       void do_next_solution();
       bool do_apply_solution_enabled_from_state(const resolver_manager::state &state);
       void do_apply_solution();
+
+      /** \brief Updates the tab with the given resolver state. */
+      void update_from_state(const resolver_manager::state &state);
+      /** \brief Updates the tab with the current resolver state.
+       *
+       *  This is connected to the global state-changed signal; in
+       *  functions that check or read the state before triggering an
+       *  update, invoke update(state) instead to ensure
+       *  consistency.
+       */
+      void update();
     public:
       ResolverTab(const Glib::ustring &label);
-      void repopulate_model();
       ResolverView * get_packages_view() { return pResolverView; };
   };
 
+  /** \brief Set up the global resolver tracker.
+   *
+   *  This is responsible for connecting up the signals that cause the
+   *  resolver to be automatically triggered when there are broken
+   *  packages, and for making sure that those signals are properly
+   *  destroyed and recreated when the cache is closed and reopened.
+   *  It should be called exactly once from main().
+   *
+   *  This also ensures that resman->state_changed() is triggered in
+   *  the main thread whenever new resolver solutions are available.
+   */
+  void init_resolver();
 }
 
 #endif /* RESOLVER_H_ */
