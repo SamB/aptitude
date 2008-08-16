@@ -308,6 +308,11 @@ namespace gui
     tab_add(new ResolverTab(_("Resolver:")));
   }
 
+  void AptitudeWindow::do_preview()
+  {
+    tab_add(new PreviewTab(_("Preview:")));
+  }
+
   namespace
   {
     bool do_hyperlink_callback(const Glib::RefPtr<Glib::Object> &event_object,
@@ -432,11 +437,6 @@ namespace gui
     tab_add(new PackagesTab(_("Packages:")));
   }
 
-  void do_preview()
-  {
-    tab_add(new PreviewTab(_("Preview:")));
-  }
-
   void do_installremove()
   {
     InstallRemoveTab * tab = new InstallRemoveTab(_("Install/Remove:"));
@@ -475,7 +475,7 @@ namespace gui
     pToolButtonPackages->signal_clicked().connect(&do_packages);
 
     refGlade->get_widget("main_toolbutton_preview", pToolButtonPreview);
-    pToolButtonPreview->signal_clicked().connect(&do_preview);
+    pToolButtonPreview->signal_clicked().connect(sigc::mem_fun(*this, &AptitudeWindow::do_preview));
 
     refGlade->get_widget("main_toolbutton_resolver", pToolButtonResolver);
     pToolButtonResolver->signal_clicked().connect(sigc::mem_fun(*this, &AptitudeWindow::do_resolver));

@@ -157,6 +157,9 @@ namespace gui
     /** \brief Open a resolver tab, as if it had been triggered from the menu.
      */
     void do_resolver();
+
+    /** \brief Open a preview tab, as if it had been triggered from the menu. */
+    void do_preview();
   };
 
   void main(int argc, char *argv[]);
