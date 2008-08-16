@@ -39,10 +39,11 @@ namespace gui
       Glib::RefPtr<Gtk::TextBuffer> buffer;
       void add_button(Gtk::Button *);
     public:
-      /** \brief Generates a permanent or one-time-use notification
+      /** \brief Create a notification.
        *
-       * \param onetimeuse      If true, the notification is deleted on user
-       *                        close request and otherwise only hidden.
+       * \param onetimeuse      If true, the notification is deleted when
+       *                        the user clicks the close button; otherwise
+       *                        it is only hidden.
        */
       Notification(bool onetimeuse);
       bool is_onetimeuse() { return onetimeuse; };
