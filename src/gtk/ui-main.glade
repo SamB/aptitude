@@ -307,13 +307,13 @@
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_do_keep">
                         <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Flag the currently selected package and its configuration files for removal</property>
+                        <property name="tooltip" translatable="yes">Cancel any pending installation, upgrade, or removal of the currently selected package, and remove any hold that was set on the package</property>
                         <property name="label" translatable="yes">_Keep</property>
                         <property name="use_underline">True</property>
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image21">
                             <property name="visible">True</property>
-                            <property name="stock">gtk-media-pause</property>
+                            <property name="stock">gtk-media-rewind</property>
                           </widget>
                         </child>
                       </widget>
@@ -327,7 +327,7 @@
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image22">
                             <property name="visible">True</property>
-                            <property name="stock">gtk-media-rewind</property>
+                            <property name="stock">gtk-media-pause</property>
                           </widget>
                         </child>
                       </widget>
@@ -341,7 +341,7 @@
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image23">
                             <property name="visible">True</property>
-                            <property name="stock">gtk-missing-image</property>
+                            <property name="stock">gtk-execute</property>
                           </widget>
                         </child>
                       </widget>
@@ -355,17 +355,23 @@
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image24">
                             <property name="visible">True</property>
-                            <property name="stock">gtk-missing-image</property>
+                            <property name="stock">gtk-select-color</property>
                           </widget>
                         </child>
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkMenuItem" id="menu_do_forbid">
+                      <widget class="GtkImageMenuItem" id="menu_do_forbid">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Forbid the candidate version of the selected package from being installed; newer versions of the package will be installed as usual</property>
                         <property name="label" translatable="yes">_Forbid Version</property>
                         <property name="use_underline">True</property>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="menu-item-image31">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-dialog-error</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                   </widget>
