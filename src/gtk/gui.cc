@@ -425,6 +425,8 @@ namespace gui
       property_visible() = !active_download && (download_planned || something_is_broken);
 
       set_buffer(buffer);
+      last_broken_count = broken_count;
+      last_download_size = dl_size;
     }
   };
 
