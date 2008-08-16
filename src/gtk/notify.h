@@ -54,8 +54,6 @@ namespace gui
   /** \brief Stores a stack of global and tab-local notifications.
    *
    *  Each notification is just a bunch of widgets packed into a box.
-   *  The boxes are stacked vertically, with global notifications
-   *  appearing below tab-local ones.
    */
   class NotifyView : public Gtk::VBox
   {
