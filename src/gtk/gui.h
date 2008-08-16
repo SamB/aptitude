@@ -153,6 +153,10 @@ namespace gui
 
     /** \brief Remove a tab from the main notebook of this window. */
     void tab_del(Tab *tab);
+
+    /** \brief Open a resolver tab, as if it had been triggered from the menu.
+     */
+    void do_resolver();
   };
 
   void main(int argc, char *argv[]);
