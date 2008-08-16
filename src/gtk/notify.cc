@@ -28,8 +28,11 @@ namespace gui
   Notification::Notification(bool onetimeuse)
   {
     this->onetimeuse = onetimeuse;
+    hbox = manage(new Gtk::HBox());
     textview = manage(new Gtk::TextView());
-    pack_start(*textview, true, true);
+    add(*hbox);
+    hbox->show();
+    hbox->pack_start(*textview, true, true);
   }
 
   Notification::Notification(const Glib::ustring &text, bool onetimeuse)
@@ -37,15 +40,18 @@ namespace gui
     this->onetimeuse = onetimeuse;
     Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
     buffer->set_text(text);
+    hbox = manage(new Gtk::HBox());
     textview = manage(new Gtk::TextView(buffer));
-    pack_start(*textview, true, true);
+    add(*hbox);
+    hbox->show();
+    hbox->pack_start(*textview, true, true);
     finalize();
   }
 
   void Notification::add_button(Gtk::Button * button)
   {
     button->show();
-    pack_start(*manage(button), false, true);
+    hbox->pack_start(*manage(button), false, true);
   }
 
   void Notification::finalize()
@@ -56,12 +62,20 @@ namespace gui
     close_button->property_image() = close_button_image;
     close_button->signal_clicked().connect(close_clicked);
     close_button->show();
-    pack_start(*close_button, false, true);
+    hbox->pack_start(*close_button, false, true);
   }
 
   void Notification::set_buffer(const Glib::RefPtr<Gtk::TextBuffer> &buffer)
   {
     textview->set_buffer(buffer);
+  }
+
+  void Notification::set_color(const Gdk::Color &color)
+  {
+    modify_base(Gtk::STATE_NORMAL, color);
+    textview->modify_base(Gtk::STATE_NORMAL, color);
+    modify_bg(Gtk::STATE_NORMAL, color);
+    textview->modify_bg(Gtk::STATE_NORMAL, color);
   }
 
   NotifyView::NotifyView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::VBox(cobject)

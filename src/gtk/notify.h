@@ -28,13 +28,17 @@
 
 namespace gui
 {
-
-  // This is an abstract class for Notifications
-  class Notification : public Gtk::HBox
+  /** \brief Basic notification class.
+   *
+   *  \note This derives from EventBox so that it can support changing
+   *  the color of the widget (you need a GdkWindow to do that).
+   */
+  class Notification : public Gtk::EventBox
   {
     private:
       bool onetimeuse;
 
+      Gtk::HBox *hbox;
       Gtk::TextView * textview;
     public:
       /** \brief Create a notification.
@@ -50,6 +54,8 @@ namespace gui
       bool is_onetimeuse() { return onetimeuse; };
       void add_button(Gtk::Button *);
       void set_buffer(const Glib::RefPtr<Gtk::TextBuffer> &buffer);
+      /** \brief Change the background color of this notification. */
+      void set_color(const Gdk::Color &color);
       /** \brief Add the elements of the notification that should appear to the
        *  right-hand side of the text it displays.
        *
