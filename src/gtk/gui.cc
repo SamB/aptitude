@@ -507,23 +507,59 @@ namespace gui
 	  if(buffer->size() > 0)
 	    buffer->insert(buffer->end(), "\n");
 
+	  Glib::RefPtr<Gtk::TextBuffer::Mark> start_msg_mark = buffer->create_mark(buffer->end());
+
 	  if(install_count > 0 && remove_count > 0)
 	    {
 	      buffer->insert(buffer->end(),
+			     // ForTranslators: any numbers in this
+			     // string will be displayed in a larger
+			     // font.
 			     ssprintf(_("%d packages to install; %d packages to remove."),
 				      install_count, remove_count));
 	    }
 	  else if(install_count > 0)
 	    {
 	      buffer->insert(buffer->end(),
+			     // ForTranslators: any numbers in this
+			     // string will be displayed in a larger
+			     // font.
 			     ssprintf(_("%d packages to install."),
 				      install_count));
 	    }
 	  else if(remove_count > 0)
 	    {
 	      buffer->insert(buffer->end(),
+			     // ForTranslators: any numbers in this
+			     // string will be displayed in a larger
+			     // font.
 			     ssprintf(_("%d packages to remove."),
 				      remove_count));
+	    }
+
+	  // HACK.  I want to make the numbers bigger, but I can't do
+	  // that above because of translation considerations (we
+	  // don't have a way of embedding markup into the string, so
+	  // the markup can't be part of the string).  Instead I just
+	  // magically know that the only digits in the string are the
+	  // relevant numbers.
+	  Gtk::TextBuffer::iterator start = buffer->get_iter_at_mark(start_msg_mark);
+	  Gtk::TextBuffer::iterator end = buffer->end();
+	  Glib::RefPtr<Gtk::TextBuffer::Tag> number_tag = buffer->create_tag();
+	  number_tag->property_scale() = Pango::SCALE_LARGE;
+
+	  while(start != end)
+	    {
+	      while(start != end && !isdigit(*start))
+		++start;
+
+	      if(start != end)
+		{
+		  Gtk::TextBuffer::iterator number_start = start;
+		  while(start != end && isdigit(*start))
+		    ++start;
+		  buffer->apply_tag(number_tag, number_start, start);
+		}
 	    }
 	}
 
