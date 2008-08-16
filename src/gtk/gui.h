@@ -160,6 +160,9 @@ namespace gui
 
     /** \brief Open a preview tab, as if it had been triggered from the menu. */
     void do_preview();
+
+    /** \brief Open a list of currently broken packages. */
+    void do_show_broken();
   };
 
   void main(int argc, char *argv[]);
