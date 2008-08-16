@@ -49,6 +49,9 @@ namespace gui
   extern std::string glade_main_file;
   extern bool want_to_quit;
 
+  /** \brief Dispatch the given thunk to the main loop. */
+  void post_event(const sigc::slot0<void> &thunk);
+
   void gtk_update();
 
   /** \brief Invoke tab_add on pMainWindow. */

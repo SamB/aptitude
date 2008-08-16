@@ -42,6 +42,7 @@
 
 #include <sigc++/signal.h>
 
+#include <cwidget/generic/threads/event_queue.h>
 #include <cwidget/generic/util/transcode.h>
 
 #include <gtk/dependency_chains_tab.h>
@@ -89,6 +90,37 @@ namespace gui
   //       instead.
   static bool active_download;
   bool want_to_quit = false;
+
+  namespace
+  {
+    // The Glib::dispatch mechanism only allows us to wake the main
+    // thread up; it doesn't allow us to pass actual information across
+    // the channel.  To hack this together, I borrow the event_queue
+    // abstraction from cwidget, and use a dispatcher for the sole
+    // purpose of waking the main thread up.
+    //
+    // I believe that putting sigc++ slots on this list should be OK:
+    // from the sigc++ code, it looks like they get passed by value, not
+    // by reference.  Once the slot is safely stuck into the list,
+    // everything should be OK.
+    cwidget::threads::event_queue<sigc::slot0<void> > background_events;
+    Glib::Dispatcher background_events_dispatcher;
+
+    void run_background_events()
+    {
+      sigc::slot0<void> f;
+      while(background_events.try_get(f))
+	{
+	  f();
+	}
+    }
+  }
+
+  void post_event(const sigc::slot0<void> &event)
+  {
+    background_events.put(event);
+    background_events_dispatcher();
+  }
 
   void gtk_update()
   {
@@ -783,6 +815,9 @@ namespace gui
   {
     Glib::init();
     Glib::thread_init();
+
+    background_events_dispatcher.connect(sigc::ptr_fun(&run_background_events));
+
     pKit = new Gtk::Main(argc, argv);
     Gtk::Main::signal_quit().connect(&do_want_quit);
     init_glade(argc, argv);
