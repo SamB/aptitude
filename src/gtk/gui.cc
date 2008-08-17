@@ -430,7 +430,9 @@ namespace gui
       broken_tag->property_weight() = Pango::WEIGHT_BOLD;
 
       buffer->insert_with_tag(buffer->end(),
-			      ssprintf(_("%d packages are broken."),
+			      ssprintf(ngettext(_("%d package is broken"),
+						_("%d packages are broken."),
+						broken_count),
 				       broken_count),
 			      broken_tag);
 
@@ -509,32 +511,33 @@ namespace gui
 
 	  Glib::RefPtr<Gtk::TextBuffer::Mark> start_msg_mark = buffer->create_mark(buffer->end());
 
-	  if(install_count > 0 && remove_count > 0)
+	  if(install_count > 0)
 	    {
 	      buffer->insert(buffer->end(),
 			     // ForTranslators: any numbers in this
 			     // string will be displayed in a larger
 			     // font.
-			     ssprintf(_("%d packages to install; %d packages to remove."),
-				      install_count, remove_count));
-	    }
-	  else if(install_count > 0)
-	    {
-	      buffer->insert(buffer->end(),
-			     // ForTranslators: any numbers in this
-			     // string will be displayed in a larger
-			     // font.
-			     ssprintf(_("%d packages to install."),
+			     ssprintf(ngettext(_("%d package to install"),
+					       _("%d packages to install"),
+					       install_count),
 				      install_count));
+
+	      if(remove_count > 0)
+		buffer->insert(buffer->end(), "; ");
 	    }
-	  else if(remove_count > 0)
+
+	  if(remove_count > 0)
 	    {
 	      buffer->insert(buffer->end(),
 			     // ForTranslators: any numbers in this
 			     // string will be displayed in a larger
 			     // font.
-			     ssprintf(_("%d packages to remove."),
+			     ssprintf(ngettext(_("%d package to remove"),
+					       _("%d packages to remove"),
+					       remove_count),
 				      remove_count));
+
+	      buffer->insert(buffer->end(), ".");
 	    }
 
 	  // HACK.  I want to make the numbers bigger, but I can't do
