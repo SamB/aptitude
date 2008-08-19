@@ -154,10 +154,16 @@ namespace gui
 
     tree->signal_context_menu.connect(sigc::mem_fun(*this, &EntityView::context_menu_handler));
     tree->signal_row_activated().connect(sigc::mem_fun(*this, &EntityView::row_activated_handler));
+    tree->set_column_drag_function(sigc::mem_fun(*this, &EntityView::column_drop_handler));
     if(apt_cache_file != NULL)
       (*apt_cache_file)->package_states_changed.connect(sigc::mem_fun(*this, &EntityView::refresh_view));
     cache_closed.connect(sigc::mem_fun(*this, &EntityView::on_cache_closed));
     cache_reloaded.connect(sigc::mem_fun(*this, &EntityView::on_cache_reloaded));
+
+    // Put in a dummy column for the expanders, so everything else
+    // lines up.
+    Expander = manage(new Gtk::TreeViewColumn(""));
+    tree->append_column(*Expander);
 
     {
       // \todo should the selected status icon have a dropdown menu?
@@ -443,6 +449,17 @@ namespace gui
   {
   }
 
+  bool EntityView::column_drop_handler(Gtk::TreeView *self, Gtk::TreeViewColumn *column,
+				       Gtk::TreeViewColumn *prev_column,
+				       Gtk::TreeViewColumn *next_column)
+  {
+    // Ensure that the expander column is always first.
+    if(column == Expander || next_column == Expander)
+      return false;
+
+    return true;
+  }
+
   void EntityView::row_activated_handler(const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column)
   {
       Gtk::TreeModel::iterator iter = get_model()->get_iter(path);
@@ -452,14 +469,17 @@ namespace gui
 
   namespace
   {
-    bool add_entity_to_revstore(const Gtk::TreeModel::iterator &iter,
-				const Glib::RefPtr<Gtk::TreeModel> &model,
-				const EntityColumns *columns,
-				std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> *revstore)
+    bool post_process_model(const Gtk::TreeModel::iterator &iter,
+			    const Glib::RefPtr<Gtk::TreeModel> &model,
+			    const EntityColumns *columns,
+			    std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> *revstore,
+			    bool *has_expandable_rows)
     {
       std::set<pkgCache::PkgIterator> packages;
 
       const Gtk::TreeModel::Row &row = *iter;
+
+      *has_expandable_rows = (*has_expandable_rows) || !row.children().empty();
 
       cwidget::util::ref_ptr<Entity> ent = row[columns->EntObject];
       ent->add_packages(packages);
@@ -479,10 +499,13 @@ namespace gui
 			    sigc::mem_fun(this, &EntityView::compare_rows_by_version));
 
     revstore.clear();
-    model->foreach_iter(sigc::bind(sigc::ptr_fun(add_entity_to_revstore),
+    bool has_expandable_rows = false;
+    model->foreach_iter(sigc::bind(sigc::ptr_fun(post_process_model),
 				   model,
 				   get_columns(),
-				   get_reverse_store()));
+				   get_reverse_store(),
+				   &has_expandable_rows));
+    Expander->set_visible(has_expandable_rows);
     get_treeview()->set_model(model);
   }
 }

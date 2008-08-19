@@ -165,6 +165,7 @@ namespace gui
       void on_cache_closed();
       void on_cache_reloaded();
 
+      Gtk::TreeViewColumn * Expander;
       Gtk::TreeViewColumn * Status;
       Gtk::TreeViewColumn * Name;
       Gtk::TreeViewColumn * Version;
@@ -198,6 +199,10 @@ namespace gui
       void apply_action_to_selected(PackagesAction action);
 
       void context_menu_handler(GdkEventButton * event);
+      /** \brief Enforces constraints on column order. */
+      bool column_drop_handler(Gtk::TreeView *self, Gtk::TreeViewColumn *column,
+			       Gtk::TreeViewColumn *prev_column,
+			       Gtk::TreeViewColumn *next_column);
       void row_activated_handler(const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
     public:
       /** \brief Construct a new packages view.
