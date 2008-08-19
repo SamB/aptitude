@@ -50,6 +50,7 @@ namespace gui
   {
     public:
       Gtk::TreeModelColumn<Glib::ustring> URI;
+      Gtk::TreeModelColumn<int> ProgressPerc;
       Gtk::TreeModelColumn<Glib::ustring> Description;
       Gtk::TreeModelColumn<Glib::ustring> ShortDesc;
 
@@ -60,6 +61,7 @@ namespace gui
   {
     private:
       Gtk::TreeViewColumn * URI;
+      Gtk::TreeViewColumn * ProgressPerc;
       Gtk::TreeViewColumn * ShortDesc;
       Gtk::TreeViewColumn * Description;
       template <class ColumnType>

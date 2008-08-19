@@ -63,6 +63,7 @@ namespace gui
     Gtk::TreeModel::iterator iter = tab->download_store->append();
     Gtk::TreeModel::Row row = *iter;
     row[tab->download_columns.URI] = Itm.URI;
+    row[tab->download_columns.ProgressPerc] = 42;
     row[tab->download_columns.ShortDesc] = Itm.ShortDesc;
     row[tab->download_columns.Description] = Itm.Description;
     tab->get_treeview()->scroll_to_row(tab->get_download_store()->get_path(iter));
@@ -77,6 +78,7 @@ namespace gui
   DownloadColumns::DownloadColumns()
   {
     add(URI);
+    add(ProgressPerc);
     add(ShortDesc);
     add(Description);
   }
@@ -104,7 +106,18 @@ namespace gui
     get_xml()->get_widget("main_download_treeview", treeview);
     createstore();
 
-    append_column(Glib::ustring(_("URI")), URI, download_columns.URI, 400);
+    append_column(Glib::ustring(_("URI")), URI, download_columns.URI, 350);
+
+    {
+      // Custom renderer to show a percentage progress bar
+      Gtk::CellRendererProgress* progress_renderer = Gtk::manage(new Gtk::CellRendererProgress);
+      ProgressPerc = manage(new Gtk::TreeViewColumn(_("Progress"), *progress_renderer));
+      ProgressPerc->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
+      ProgressPerc->set_fixed_width(100);
+      ProgressPerc->add_attribute(progress_renderer->property_value(), download_columns.ProgressPerc);
+      treeview->append_column(*ProgressPerc);
+    }
+
     append_column(Glib::ustring(_("Short Description")), ShortDesc, download_columns.ShortDesc, 100);
     append_column(Glib::ustring(_("Description")), Description, download_columns.Description, 200);
 
