@@ -26,9 +26,12 @@
 #undef OK
 #include <gtkmm.h>
 
+#include <map>
+
 #include <apt-pkg/acquire.h>
 
 #include <gtk/tab.h>
+#include <generic/apt/download_signal_log.h>
 
 namespace gui
 {
@@ -38,11 +41,18 @@ namespace gui
   { // must also derive to read protected members..
     private:
       DownloadTab * tab;
+
+      std::map<string, Gtk::TreeModel::iterator> item_map;
+      void update_workers(pkgAcquire *Owner);
+      void update_item(string URI, int progress, string status);
+      void maybe_new_item(pkgAcquire::ItemDesc &Itm);
+
     public:
       guiPkgAcquireStatus(DownloadTab * tab);
       bool Pulse(pkgAcquire *Owner);
       bool MediaChange(std::string, std::string);
       void Fetch(pkgAcquire::ItemDesc &Itm);
+      void Done(pkgAcquire::ItemDesc &Itm);
       void Stop();
   };
 
@@ -50,6 +60,7 @@ namespace gui
   {
     public:
       Gtk::TreeModelColumn<Glib::ustring> URI;
+      Gtk::TreeModelColumn<Glib::ustring> Status;
       Gtk::TreeModelColumn<int> ProgressPerc;
       Gtk::TreeModelColumn<Glib::ustring> Description;
       Gtk::TreeModelColumn<Glib::ustring> ShortDesc;
@@ -61,6 +72,7 @@ namespace gui
   {
     private:
       Gtk::TreeViewColumn * URI;
+      Gtk::TreeViewColumn * Status;
       Gtk::TreeViewColumn * ProgressPerc;
       Gtk::TreeViewColumn * ShortDesc;
       Gtk::TreeViewColumn * Description;

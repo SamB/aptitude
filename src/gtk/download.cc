@@ -28,10 +28,53 @@
 
 #include <gui.h>
 #include <apt-pkg/strutl.h>
+#include <apt-pkg/acquire-worker.h>
 
 
 namespace gui
 {
+  void guiPkgAcquireStatus::update_workers(pkgAcquire *Owner)
+  {
+    pkgAcquire::Worker *serf = Owner->WorkersBegin();
+    while (serf)
+    {
+      if (serf->CurrentItem)
+      {
+        pkgAcquire::ItemDesc * Item = serf->CurrentItem;
+        maybe_new_item(*Item);
+        // TODO: We should use convertPercent from progress.cc
+        if (serf->TotalSize != 0)
+          update_item(serf->CurrentItem->URI, 100 * serf->CurrentSize / serf->TotalSize, serf->Status);
+        else
+          update_item(serf->CurrentItem->URI, 0, serf->Status);
+      }
+      serf=Owner->WorkerStep(serf);
+    }
+  }
+
+  void guiPkgAcquireStatus::update_item(string URI, int progress, string status)
+  {
+    std::map<string, Gtk::TreeModel::iterator>::iterator item_iter = item_map.find(URI);
+    if (item_iter == item_map.end())
+      std::cout << "oops!"  << URI << std::endl;
+    Gtk::TreeModel::Row row = *(item_iter->second);
+    row[tab->download_columns.ProgressPerc] = progress;
+    row[tab->download_columns.Status] = status;
+  }
+
+  void guiPkgAcquireStatus::maybe_new_item(pkgAcquire::ItemDesc &Itm)
+  {
+    if (item_map.find(Itm.URI) == item_map.end())
+    {
+      Gtk::TreeModel::iterator store_iter = tab->download_store->append();
+      Gtk::TreeModel::Row row = *store_iter;
+      item_map.insert(std::make_pair(Itm.URI, store_iter));
+      row[tab->download_columns.URI] = Itm.URI;
+      row[tab->download_columns.ShortDesc] = Itm.ShortDesc;
+      row[tab->download_columns.Description] = Itm.Description;
+      tab->get_treeview()->scroll_to_row(tab->get_download_store()->get_path(store_iter));
+    }
+  }
 
   guiPkgAcquireStatus::guiPkgAcquireStatus(DownloadTab * tab)
   {
@@ -46,6 +89,7 @@ namespace gui
     pMainWindow->get_progress_bar()->set_text(ssprintf("%lu of %lu done",
         CurrentItems, TotalItems)+" ("+SizeToStr(CurrentBytes)+" of "+SizeToStr(TotalBytes)
         +" at "+SizeToStr(CurrentCPS)+"/s, "+TimeToStr(((TotalBytes - CurrentBytes)/CurrentCPS))+" left)");
+    update_workers(Owner);
     gtk_update();
     return !want_to_quit;
   }
@@ -57,27 +101,24 @@ namespace gui
 
   void guiPkgAcquireStatus::Fetch(pkgAcquire::ItemDesc &Itm)
   {
-    pMainWindow->get_status_bar()->pop(0);
-    pMainWindow->get_status_bar()->push(Itm.Description, 0);
+    maybe_new_item(Itm);
+    update_item(Itm.URI, 0, _("Fetch"));
+  }
 
-    Gtk::TreeModel::iterator iter = tab->download_store->append();
-    Gtk::TreeModel::Row row = *iter;
-    row[tab->download_columns.URI] = Itm.URI;
-    row[tab->download_columns.ProgressPerc] = 42;
-    row[tab->download_columns.ShortDesc] = Itm.ShortDesc;
-    row[tab->download_columns.Description] = Itm.Description;
-    tab->get_treeview()->scroll_to_row(tab->get_download_store()->get_path(iter));
-    gtk_update();
+  void guiPkgAcquireStatus::Done(pkgAcquire::ItemDesc &Itm)
+  {
+    update_item(Itm.URI, 100, _("Done"));
   }
 
   void guiPkgAcquireStatus::Stop()
   {
-    pMainWindow->get_progress_bar()->set_text("Download done");
+    //pMainWindow->get_progress_bar()->set_text("Download done");
   }
 
   DownloadColumns::DownloadColumns()
   {
     add(URI);
+    add(Status);
     add(ProgressPerc);
     add(ShortDesc);
     add(Description);
@@ -106,7 +147,8 @@ namespace gui
     get_xml()->get_widget("main_download_treeview", treeview);
     createstore();
 
-    append_column(Glib::ustring(_("URI")), URI, download_columns.URI, 350);
+    append_column(Glib::ustring(_("URI")), URI, download_columns.URI, 250);
+    append_column(Glib::ustring(_("Status")), Status, download_columns.Status, 100);
 
     {
       // Custom renderer to show a percentage progress bar
