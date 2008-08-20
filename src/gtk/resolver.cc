@@ -303,7 +303,7 @@ namespace gui
 	  }
 	else
 	  {
-	    std::string generation_info = ssprintf(_("open: %d; closed: %d; defer: %d; conflict: %d"),
+	    std::string generation_info = ssprintf(_("open: %ld; closed: %ld; defer: %ld; conflict: %ld"),
 						   state.open_size, state.closed_size,
 						   state.deferred_size, state.conflicts_size).c_str();
 	    std::string msg = _("Resolving dependencies...");
