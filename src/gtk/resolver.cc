@@ -303,9 +303,9 @@ namespace gui
 	  }
 	else
 	  {
-	    std::string generation_info = ssprintf(_("open: %ld; closed: %ld; defer: %ld; conflict: %ld"),
-						   state.open_size, state.closed_size,
-						   state.deferred_size, state.conflicts_size).c_str();
+	    std::string generation_info = ssprintf(_("open: %d; closed: %d; defer: %d; conflict: %d"),
+						   (int)state.open_size, (int)state.closed_size,
+						   (int)state.deferred_size, (int)state.conflicts_size).c_str();
 	    std::string msg = _("Resolving dependencies...");
 
 	    const Gtk::TreeModel::iterator parent_iter = store->append();
