@@ -73,7 +73,7 @@ namespace gui
 						   after_repopulate_hook);
 
     search_entry->signal_activate().connect(repopulate_hook);
-    search_button->signal_activate().connect(repopulate_hook);
+    search_button->signal_clicked().connect(repopulate_hook);
 
     // Ask the user to enter a search pattern.
     //
