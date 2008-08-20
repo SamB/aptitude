@@ -67,7 +67,7 @@ namespace gui
   std::pair<std::string, Gtk::StockID> triggers_pending_columns("T", Gtk::Stock::DIALOG_WARNING);
   std::pair<std::string, Gtk::StockID> installed_columns("i", Gtk::Stock::APPLY);
   std::pair<std::string, Gtk::StockID> error_columns("E", Gtk::Stock::DIALOG_ERROR);
-  
+
   std::pair<std::string, Gtk::StockID> install_columns("i", Gtk::Stock::ADD);
   std::pair<std::string, Gtk::StockID> reinstall_columns("r", Gtk::Stock::ADD);
   std::pair<std::string, Gtk::StockID> upgrade_columns("u", Gtk::Stock::GO_UP);
@@ -212,6 +212,7 @@ namespace gui
     // FIXME: Hack while finding a nonblocking thread join or something else.
     bool finished;
     bool in_dpkg;
+    pkgPackageManager::OrderResult result;
     public:
       InstallRemoveTab(const Glib::ustring &label)
       : DownloadTab(label)
@@ -222,21 +223,7 @@ namespace gui
       }
       void handle_result(pkgPackageManager::OrderResult result)
       {
-        Gtk::MessageDialog dialog(*pMainWindow, "Install run finished", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK,
-            true);
-        switch(result)
-        {
-        case pkgPackageManager::Completed:
-          dialog.set_secondary_text("Successfully completed!");
-          break;
-        case pkgPackageManager::Incomplete:
-          dialog.set_secondary_text("Partially completed!");
-          break;
-        case pkgPackageManager::Failed:
-          dialog.set_secondary_text("Failed!");
-          break;
-        }
-        dialog.run();
+        this->result = result;
       }
       void handle_install(download_install_manager *m, OpProgress &progress)
       {
@@ -275,6 +262,22 @@ namespace gui
           Glib::usleep(100000);
         }
         install_thread->join();
+
+        Gtk::MessageDialog dialog(*pMainWindow, "Install run finished",
+            false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+        switch(result)
+        {
+        case pkgPackageManager::Completed:
+          dialog.set_secondary_text("Successfully completed!");
+          break;
+        case pkgPackageManager::Incomplete:
+          dialog.set_secondary_text("Partially completed!");
+          break;
+        case pkgPackageManager::Failed:
+          dialog.set_secondary_text("Failed!");
+          break;
+        }
+        dialog.run();
 
         //m->finish(pkgAcquire::Continue, progress);
       }
