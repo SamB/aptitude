@@ -226,6 +226,7 @@ namespace gui
       void refresh_view(const std::set<pkgCache::PkgIterator> *changed_packages);
       EntityTreeView * get_treeview() const { return tree; };
       const EntityColumns * get_columns() const { return &cols; };
+      Gtk::TreeViewColumn *get_expander_column() const { return Expander; }
       Gtk::TreeViewColumn *get_status_column() const { return Status; }
       Gtk::TreeViewColumn *get_name_column() const { return Name; }
       Gtk::TreeViewColumn *get_version_column() const { return Version; }
