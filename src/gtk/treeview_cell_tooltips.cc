@@ -96,7 +96,7 @@ namespace gui
 	return false;
 
       treeview_cell_tooltip *cell_tooltip(get_column_tooltip(column));
-      if(tooltip == NULL)
+      if(cell_tooltip == NULL)
 	return false;
 
       Gtk::TreeModel::iterator iter = treeview.get_model()->get_iter(path);
