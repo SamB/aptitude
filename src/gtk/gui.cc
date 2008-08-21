@@ -279,6 +279,8 @@ namespace gui
         }
         dialog.run();
 
+        (*apt_cache_file)->package_state_changed();
+
         //m->finish(pkgAcquire::Continue, progress);
       }
   };
