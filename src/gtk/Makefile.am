@@ -30,4 +30,6 @@ libgtk_a_SOURCES=\
 	resolver.cc \
 	resolver.h \
 	tab.cc \
-	tab.h
+	tab.h \
+	treeview_cell_tooltips.cc \
+	treeview_cell_tooltips.h
