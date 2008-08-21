@@ -147,6 +147,12 @@ namespace gui
        *  instead of writing to a TextBuffer).
        */
       Gtk::TreeModelColumn<Glib::ustring> Description;
+      /** \brief The markup used to display the status column's "description" tooltip.
+       *
+       *  \todo  We should build a window showing both icons and the description
+       *  of each.
+       */
+      Gtk::TreeModelColumn<Glib::ustring> StatusDescriptionMarkup;
 
       EntityColumns();
   };

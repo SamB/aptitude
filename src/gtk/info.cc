@@ -142,12 +142,23 @@ namespace gui
 
       void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row)
       {
+	using cwidget::util::ssprintf;
+
 	row[columns->EntObject] = this;
         std::pair<entity_state_info, std::string> row_info = action_row_info();
 	row[columns->BgSet] = (row_info.second != "white");
 	row[columns->BgColor] = row_info.second;
-	row[columns->CurrentStatusIcon] = current_state_columns().get_icon().get_string();
+
+	entity_state_info current_state(current_state_columns());
+	row[columns->CurrentStatusIcon] = current_state.get_icon().get_string();
 	row[columns->SelectedStatusIcon] = row_info.first.get_icon().get_string();
+	row[columns->StatusDescriptionMarkup] =
+	  ssprintf("<b>%s:</b> %s\n<b>%s:</b> %s",
+		   _("Current status"),
+		   _(current_state.get_description().c_str()),
+		   _("Selected status"),
+		   _(row_info.first.get_description().c_str()));
+
 	row[columns->NameMarkup] = Glib::Markup::escape_text(ver.ParentPkg().Name());
 	row[columns->VersionMarkup] = Glib::Markup::escape_text(ver.VerStr());
 	row[columns->Name] = ver.ParentPkg().Name();

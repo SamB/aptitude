@@ -93,6 +93,7 @@ namespace gui
     add(Name);
     add(Version);
     add(Description);
+    add(StatusDescriptionMarkup);
   }
 
   EntityTreeView::EntityTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -190,6 +191,7 @@ namespace gui
       Status->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
       tree->append_column(*Status);
     }
+    set_markup_tooltip(tree, Status, cols.StatusDescriptionMarkup);
 
     append_markup_column(Glib::ustring(_("Name")), Name, cols.NameMarkup, 350);
     set_text_tooltip(tree, Name, cols.Description);

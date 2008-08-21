@@ -151,8 +151,16 @@ namespace gui
     row[cols->BgColor] = BgColor;
     row[cols->BgSet] = (BgColor != "white");
 
-    row[cols->CurrentStatusIcon] = current_state_columns().get_icon().get_string();
-    row[cols->SelectedStatusIcon] = selected_package_state_columns().get_icon().get_string();
+    entity_state_info current_state(current_state_columns());
+    entity_state_info selected_state(selected_package_state_columns());
+    row[cols->CurrentStatusIcon] = current_state.get_icon().get_string();
+    row[cols->SelectedStatusIcon] = selected_state.get_icon().get_string();
+    row[cols->StatusDescriptionMarkup] =
+      ssprintf("<b>%s:</b> %s\n<b>%s:</b> %s",
+	       _("Current status"),
+	       _(current_state.get_description().c_str()),
+	       _("Selected status"),
+	       _(selected_state.get_description().c_str()));
 
     Glib::ustring safe_name = Glib::Markup::escape_text(pkg.Name());
     if(ver.end())
