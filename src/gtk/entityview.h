@@ -139,6 +139,14 @@ namespace gui
       Gtk::TreeModelColumn<Glib::ustring> Name;
       /** \brief The string that the "version" column should be sorted on. */
       Gtk::TreeModelColumn<Glib::ustring> Version;
+      /** \brief The text used to display the name column's "description" tooltip.
+       *
+       *  \todo I'm tired, so this is just a proof-of-concept; it
+       *  should be actual markup, but that requires more work to do
+       *  right (read: a description renderer that outputs markup
+       *  instead of writing to a TextBuffer).
+       */
+      Gtk::TreeModelColumn<Glib::ustring> Description;
 
       EntityColumns();
   };

@@ -162,16 +162,21 @@ namespace gui
 					   safe_name.c_str());
 	else
 	  row[cols->NameMarkup] = ssprintf("<b>%s</b>", safe_name.c_str());
+
+	row[cols->Description] = "";
       }
     else
       {
+	std::string description(transcode(get_short_description(ver,
+								apt_package_records),
+					  "UTF-8"));
         Glib::ustring safe_description =
-          Glib::Markup::escape_text(transcode(get_short_description(ver,
-                                                                    apt_package_records),
-                                              "UTF-8"));
+          Glib::Markup::escape_text(description);
         row[cols->NameMarkup] =
           ssprintf("<b>%s</b>\n<span size=\"smaller\">%s</span>",
                    safe_name.c_str(), safe_description.c_str());
+
+	row[cols->Description] = description;
       }
 
     if (!ver.end())

@@ -31,6 +31,8 @@
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
 
+#include "treeview_cell_tooltips.h"
+
 namespace gui
 {
   Entity::~Entity()
@@ -90,6 +92,7 @@ namespace gui
     add(VersionMarkup);
     add(Name);
     add(Version);
+    add(Description);
   }
 
   EntityTreeView::EntityTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -189,6 +192,7 @@ namespace gui
     }
 
     append_markup_column(Glib::ustring(_("Name")), Name, cols.NameMarkup, 350);
+    set_text_tooltip(tree, Name, cols.Description);
     {
       Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
       if(renderer == NULL)
