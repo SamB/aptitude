@@ -163,6 +163,8 @@ namespace gui
     // Put in a dummy column for the expanders, so everything else
     // lines up.
     Expander = manage(new Gtk::TreeViewColumn(""));
+    setup_column_properties(Expander, 24);
+    Expander->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
     tree->append_column(*Expander);
 
     {
@@ -179,10 +181,10 @@ namespace gui
       Status->add_attribute(selected_status_icon_renderer->property_stock_id(),
 				   cols.SelectedStatusIcon);
 
-      setup_column_properties(Status, 64);
+      setup_column_properties(Status, 48);
       // Needs to be GROW_ONLY because otherwise it gets clipped in
       // the preview display.
-      Status->set_sizing(Gtk::TREE_VIEW_COLUMN_GROW_ONLY);
+      Status->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
       tree->append_column(*Status);
     }
 

@@ -129,9 +129,6 @@ namespace gui
 
     pPkgView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PreviewTab::activated_package_handler));
 
-    pPkgView->get_treeview()->get_column(0)->set_fixed_width(70);
-    pPkgView->get_treeview()->get_column(1)->set_fixed_width(240);
-
     // A PreviewTab should be fully populated by default
     repopulate_model();
 
