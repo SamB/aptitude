@@ -108,6 +108,11 @@ namespace gui
       Gtk::TreeModel::iterator iter = treeview.get_model()->get_iter(path);
       Gtk::TreeModel::Row row(*iter);
 
+      // Make sure the tooltip appears in the right place.
+      treeview.set_tooltip_cell(tooltip,
+				&path,
+				column,
+				NULL);
       return cell_tooltip->setup_tooltip(tooltip, row);
     }
   }
