@@ -88,11 +88,17 @@ namespace gui
 	// and use that fact.
 	return false;
 
+      // UNDOCUMENTED -- contrary to the documentation, the
+      // coordinates that get_path_at_post wants are *bin*
+      // coordinates, not widget coordinates.
+      int bin_window_x, bin_window_y;
+      treeview.convert_widget_to_bin_window_coords(x, y, bin_window_x, bin_window_y);
+
       // Find the current column.
       Gtk::TreeModel::Path path;
       Gtk::TreeViewColumn *column;
       int cell_x, cell_y;
-      if(!treeview.get_path_at_pos(x, y, path, column, cell_x, cell_y))
+      if(!treeview.get_path_at_pos(bin_window_x, bin_window_y, path, column, cell_x, cell_y))
 	return false;
 
       treeview_cell_tooltip *cell_tooltip(get_column_tooltip(column));
