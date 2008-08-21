@@ -147,8 +147,9 @@ namespace gui
 
     row[cols->EntObject] = this;
 
-    row[cols->BgColor] = selected_package_state_color();
-    row[cols->BgSet] = true;
+    string BgColor = selected_package_state_color();
+    row[cols->BgColor] = BgColor;
+    row[cols->BgSet] = (BgColor != "white");
 
     row[cols->CurrentStatusIcon] = current_state_columns().second.get_string();
     row[cols->SelectedStatusIcon] = selected_package_state_columns().second.get_string();
