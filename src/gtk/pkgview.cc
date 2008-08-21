@@ -41,7 +41,7 @@
 
 namespace gui
 {
-  std::pair<std::string, Gtk::StockID> PkgEntity::current_state_columns()
+  entity_state_info PkgEntity::current_state_columns()
   {
     pkgCache::VerIterator ver = get_ver();
 
@@ -76,7 +76,7 @@ namespace gui
       }
   }
 
-  std::pair<std::string, Gtk::StockID> PkgEntity::selected_package_state_columns()
+  entity_state_info PkgEntity::selected_package_state_columns()
   {
     aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
     aptitudeDepCache::aptitude_state &estate=(*apt_cache_file)->get_ext_state(pkg);
@@ -108,7 +108,7 @@ namespace gui
 	  return upgrade_columns;
       }
     else
-      return std::pair<std::string, Gtk::StockID>();
+      return entity_state_info();
   }
 
   string PkgEntity::selected_package_state_color()
@@ -151,8 +151,8 @@ namespace gui
     row[cols->BgColor] = BgColor;
     row[cols->BgSet] = (BgColor != "white");
 
-    row[cols->CurrentStatusIcon] = current_state_columns().second.get_string();
-    row[cols->SelectedStatusIcon] = selected_package_state_columns().second.get_string();
+    row[cols->CurrentStatusIcon] = current_state_columns().get_icon().get_string();
+    row[cols->SelectedStatusIcon] = selected_package_state_columns().get_icon().get_string();
 
     Glib::ustring safe_name = Glib::Markup::escape_text(pkg.Name());
     if(ver.end())

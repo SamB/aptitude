@@ -32,13 +32,15 @@
 
 #include <cwidget/generic/util/ref_ptr.h>
 
+#include "gui.h" // For entity_state_info.
+
 namespace gui
 {
   class PkgEntity : public Entity
   {
     private:
-      std::pair<std::string, Gtk::StockID> current_state_columns();
-      std::pair<std::string, Gtk::StockID>  selected_package_state_columns();
+      entity_state_info current_state_columns();
+      entity_state_info selected_package_state_columns();
       string selected_package_state_color();
       pkgCache::PkgIterator pkg;
 

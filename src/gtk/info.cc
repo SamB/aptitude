@@ -48,7 +48,7 @@ namespace gui
     private:
       pkgCache::VerIterator ver;
 
-      std::pair<std::string, Gtk::StockID> current_state_columns()
+      const entity_state_info &current_state_columns()
       {
         pkgCache::PkgIterator pkg = ver.ParentPkg();
 
@@ -85,10 +85,10 @@ namespace gui
 
       // We output a flag/color pair
       // TODO: choose more sensible colors?
-      std::pair<std::pair<std::string, Gtk::StockID>, std::string> action_row_info()
+      std::pair<const entity_state_info, std::string> action_row_info()
       {
         if(ver.end())
-          return std::make_pair(std::pair<std::string, Gtk::StockID>(),"white");
+          return std::make_pair(entity_state_info(), "white");
 
         pkgCache::PkgIterator pkg = ver.ParentPkg();
         aptitudeDepCache::StateCache &state = (*apt_cache_file)[pkg];
@@ -110,14 +110,14 @@ namespace gui
             if(candver==ver)
               return std::make_pair(install_columns, "green");
             else
-              return std::make_pair(std::pair<std::string, Gtk::StockID>(), "white");
+              return std::make_pair(entity_state_info(), "white");
           }
         else if(state.iFlags & pkgDepCache::ReInstall)
           {
             if(ver.ParentPkg().CurrentVer() == ver)
               return std::make_pair(install_columns, "yellow green");
             else
-              return std::make_pair(std::pair<std::string, Gtk::StockID>(),"white");
+              return std::make_pair(entity_state_info(),"white");
           }
         else if(state.Upgrade())
           {
@@ -126,10 +126,10 @@ namespace gui
             else if(candver == ver)
               return std::make_pair(install_columns, "green yellow");
             else
-              return std::make_pair(std::pair<std::string, Gtk::StockID>(), "white");
+              return std::make_pair(entity_state_info(), "white");
           }
         else
-          return std::make_pair(std::pair<std::string, Gtk::StockID>(), "white");
+          return std::make_pair(entity_state_info(), "white");
       }
 
     public:
@@ -143,11 +143,11 @@ namespace gui
       void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row)
       {
 	row[columns->EntObject] = this;
-        std::pair<std::pair<std::string, Gtk::StockID>, std::string> row_info = action_row_info();
+        std::pair<entity_state_info, std::string> row_info = action_row_info();
 	row[columns->BgSet] = (row_info.second != "white");
 	row[columns->BgColor] = row_info.second;
-	row[columns->CurrentStatusIcon] = current_state_columns().second.get_string();
-	row[columns->SelectedStatusIcon] = row_info.first.second.get_string();
+	row[columns->CurrentStatusIcon] = current_state_columns().get_icon().get_string();
+	row[columns->SelectedStatusIcon] = row_info.first.get_icon().get_string();
 	row[columns->NameMarkup] = Glib::Markup::escape_text(ver.ParentPkg().Name());
 	row[columns->VersionMarkup] = Glib::Markup::escape_text(ver.VerStr());
 	row[columns->Name] = ver.ParentPkg().Name();

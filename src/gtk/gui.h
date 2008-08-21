@@ -192,26 +192,47 @@ namespace gui
    *  current and selected states of packages.
    */
 
-  extern std::pair<std::string, Gtk::StockID> virtual_columns;
-  extern std::pair<std::string, Gtk::StockID> not_installed_columns;
-  extern std::pair<std::string, Gtk::StockID> unpacked_columns;
-  extern std::pair<std::string, Gtk::StockID> half_configured_columns;
-  extern std::pair<std::string, Gtk::StockID> half_installed_columns;
-  extern std::pair<std::string, Gtk::StockID> config_files_columns;
-  extern std::pair<std::string, Gtk::StockID> triggers_awaited_columns;
-  extern std::pair<std::string, Gtk::StockID> triggers_pending_columns;
-  extern std::pair<std::string, Gtk::StockID> installed_columns;
-  extern std::pair<std::string, Gtk::StockID> error_columns;
+  /** \brief Represents information about a state that the packag can be in. */
+  class entity_state_info
+  {
+    std::string flag;
+    Gtk::StockID icon;
 
-  extern std::pair<std::string, Gtk::StockID> install_columns;
-  extern std::pair<std::string, Gtk::StockID> reinstall_columns;
-  extern std::pair<std::string, Gtk::StockID> upgrade_columns;
-  extern std::pair<std::string, Gtk::StockID> downgrade_columns;
-  extern std::pair<std::string, Gtk::StockID> remove_columns;
-  extern std::pair<std::string, Gtk::StockID> purge_columns;
-  extern std::pair<std::string, Gtk::StockID> hold_columns;
-  extern std::pair<std::string, Gtk::StockID> forbid_columns;
-  extern std::pair<std::string, Gtk::StockID> broken_columns;
+  public:
+    entity_state_info()
+      : flag(), icon()
+    {
+    }
+
+    entity_state_info(const std::string &_flag, const Gtk::StockID &_icon)
+      : flag(_flag), icon(_icon)
+    {
+    }
+
+    const std::string &get_flag() const { return flag; }
+    const Gtk::StockID &get_icon() const { return icon; }
+  };
+
+  extern const entity_state_info virtual_columns;
+  extern const entity_state_info not_installed_columns;
+  extern const entity_state_info unpacked_columns;
+  extern const entity_state_info half_configured_columns;
+  extern const entity_state_info half_installed_columns;
+  extern const entity_state_info config_files_columns;
+  extern const entity_state_info triggers_awaited_columns;
+  extern const entity_state_info triggers_pending_columns;
+  extern const entity_state_info installed_columns;
+  extern const entity_state_info error_columns;
+
+  extern const entity_state_info install_columns;
+  extern const entity_state_info reinstall_columns;
+  extern const entity_state_info upgrade_columns;
+  extern const entity_state_info downgrade_columns;
+  extern const entity_state_info remove_columns;
+  extern const entity_state_info purge_columns;
+  extern const entity_state_info hold_columns;
+  extern const entity_state_info forbid_columns;
+  extern const entity_state_info broken_columns;
 
   /** @} */
 }
