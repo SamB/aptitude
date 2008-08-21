@@ -57,26 +57,26 @@
 namespace gui
 {
   // \todo Some of these icon choices suck.
-  const entity_state_info not_installed_columns("p", Gtk::StockID());
-  const entity_state_info virtual_columns("p", Gtk::StockID());
-  const entity_state_info unpacked_columns("u", Gtk::Stock::DIALOG_WARNING);
-  const entity_state_info half_configured_columns("C", Gtk::Stock::DIALOG_WARNING);
-  const entity_state_info half_installed_columns("H", Gtk::Stock::DIALOG_WARNING);
-  const entity_state_info config_files_columns("c", Gtk::Stock::PROPERTIES);
-  const entity_state_info triggers_awaited_columns("W", Gtk::Stock::DIALOG_WARNING);
-  const entity_state_info triggers_pending_columns("T", Gtk::Stock::DIALOG_WARNING);
-  const entity_state_info installed_columns("i", Gtk::Stock::HARDDISK);
-  const entity_state_info error_columns("E", Gtk::Stock::DIALOG_ERROR);
+  const entity_state_info not_installed_columns("p", N_("Not installed"), Gtk::StockID());
+  const entity_state_info virtual_columns("p", N_("Virtual"), Gtk::StockID());
+  const entity_state_info unpacked_columns("u", N_("Unpacked"), Gtk::Stock::DIALOG_WARNING);
+  const entity_state_info half_configured_columns("C", N_("Half-configured"), Gtk::Stock::DIALOG_WARNING);
+  const entity_state_info half_installed_columns("H", N_("Half-installed"), Gtk::Stock::DIALOG_WARNING);
+  const entity_state_info config_files_columns("c", N_("Configuration files and data remain"), Gtk::Stock::PROPERTIES);
+  const entity_state_info triggers_awaited_columns("W", N_("Triggers awaited"), Gtk::Stock::DIALOG_WARNING);
+  const entity_state_info triggers_pending_columns("T", N_("Triggers pending"), Gtk::Stock::DIALOG_WARNING);
+  const entity_state_info installed_columns("i", N_("Installed"), Gtk::Stock::HARDDISK);
+  const entity_state_info error_columns("E", "Internal Error (bad state)", Gtk::Stock::DIALOG_ERROR);
 
-  const entity_state_info install_columns("i", Gtk::Stock::ADD);
-  const entity_state_info reinstall_columns("r", Gtk::Stock::ADD);
-  const entity_state_info upgrade_columns("u", Gtk::Stock::GO_UP);
-  const entity_state_info downgrade_columns("u", Gtk::Stock::GO_DOWN);
-  const entity_state_info remove_columns("d", Gtk::Stock::REMOVE);
-  const entity_state_info purge_columns("p", Gtk::Stock::CLEAR);
-  const entity_state_info hold_columns("h", Gtk::Stock::MEDIA_PAUSE);
-  const entity_state_info forbid_columns("F", Gtk::Stock::STOP);
-  const entity_state_info broken_columns("B", Gtk::Stock::DIALOG_ERROR);
+  const entity_state_info install_columns("i", N_("Install"), Gtk::Stock::ADD);
+  const entity_state_info reinstall_columns("r", N_("Reinstall"), Gtk::Stock::ADD);
+  const entity_state_info upgrade_columns("u", N_("Upgrade"), Gtk::Stock::GO_UP);
+  const entity_state_info downgrade_columns("u", N_("Downgrade"), Gtk::Stock::GO_DOWN);
+  const entity_state_info remove_columns("d", N_("Remove"), Gtk::Stock::REMOVE);
+  const entity_state_info purge_columns("p", N_("Remove and purge configuration/data"), Gtk::Stock::CLEAR);
+  const entity_state_info hold_columns("h", N_("Hold (don't uprgade)"), Gtk::Stock::MEDIA_PAUSE);
+  const entity_state_info forbid_columns("F", N_("Forbidden version"), Gtk::Stock::STOP);
+  const entity_state_info broken_columns("B", N_("Unsatisfied dependencies"), Gtk::Stock::DIALOG_ERROR);
 
 
   Glib::RefPtr<Gnome::Glade::Xml> refXml;

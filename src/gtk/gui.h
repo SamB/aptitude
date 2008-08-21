@@ -196,20 +196,24 @@ namespace gui
   class entity_state_info
   {
     std::string flag;
+    std::string description;
     Gtk::StockID icon;
 
   public:
     entity_state_info()
-      : flag(), icon()
+      : flag(), description(), icon()
     {
     }
 
-    entity_state_info(const std::string &_flag, const Gtk::StockID &_icon)
-      : flag(_flag), icon(_icon)
+    entity_state_info(const std::string &_flag,
+		      const std::string &_description,
+		      const Gtk::StockID &_icon)
+      : flag(_flag), description(_description), icon(_icon)
     {
     }
 
     const std::string &get_flag() const { return flag; }
+    const std::string &get_description() const { return description; }
     const Gtk::StockID &get_icon() const { return icon; }
   };
 
