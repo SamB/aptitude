@@ -50,7 +50,7 @@ namespace gui
     public:
       guiPkgAcquireStatus(DownloadTab * tab);
       bool Pulse(pkgAcquire *Owner);
-      bool MediaChange(std::string, std::string);
+      bool MediaChange(string media, string drive);
       void Fetch(pkgAcquire::ItemDesc &Itm);
       void Done(pkgAcquire::ItemDesc &Itm);
       void Stop();

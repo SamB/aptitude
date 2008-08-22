@@ -94,9 +94,29 @@ namespace gui
     return !want_to_quit;
   }
 
-  bool guiPkgAcquireStatus::MediaChange(std::string, std::string)
+  bool guiPkgAcquireStatus::MediaChange(string media, string drive)
   {
-    return false;
+    const Glib::ustring msg = _("Change media");
+    Gtk::Dialog dialog(msg, *pMainWindow, true, true);
+    Gtk::Label label(ssprintf(_("Please insert the disc labeled \"%s\" into the drive \"%s\""),
+        media.c_str(), drive.c_str()));
+    dialog.get_vbox()->pack_end(label, true, true, 0);
+    dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
+    dialog.add_button(_("Abort"), Gtk::RESPONSE_CANCEL);
+    int result = dialog.run();
+    switch(result)
+    {
+      case(Gtk::RESPONSE_OK):
+      {
+        return true;
+        break;
+      }
+      default:
+      {
+        return false;
+        break;
+      }
+    }
   }
 
   void guiPkgAcquireStatus::Fetch(pkgAcquire::ItemDesc &Itm)
