@@ -103,20 +103,7 @@ namespace gui
     dialog.get_vbox()->pack_end(label, true, true, 0);
     dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
     dialog.add_button(_("Abort"), Gtk::RESPONSE_CANCEL);
-    int result = dialog.run();
-    switch(result)
-    {
-      case(Gtk::RESPONSE_OK):
-      {
-        return true;
-        break;
-      }
-      default:
-      {
-        return false;
-        break;
-      }
-    }
+    return dialog.run() == Gtk::RESPONSE_OK;
   }
 
   void guiPkgAcquireStatus::Fetch(pkgAcquire::ItemDesc &Itm)
