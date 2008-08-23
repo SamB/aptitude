@@ -319,10 +319,9 @@ void run_test_file(istream &f, bool show_world)
 	  int broken_score;
 	  int unfixed_soft_score;
 	  int infinity;
-	  int max_successors;
 	  int goal_score;
 
-	  f >> step_score >> broken_score >> unfixed_soft_score >> infinity >> max_successors >> goal_score;
+	  f >> step_score >> broken_score >> unfixed_soft_score >> infinity >> goal_score;
 
 	  if(f.eof())
 	    throw ParseError("Expected '{' following broken_score, got EOF");
@@ -337,7 +336,7 @@ void run_test_file(istream &f, bool show_world)
 
 	  dummy_resolver resolver(step_score, broken_score,
 				  unfixed_soft_score,
-				  infinity, max_successors,
+				  infinity,
 				  goal_score, universe);
 
 	  resolver.set_debug(true);

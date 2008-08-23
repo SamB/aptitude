@@ -295,7 +295,7 @@ private:
   void testRejections()
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_1);
-    dummy_resolver r(10, -300, -100, 100000, 0, 50000, u);
+    dummy_resolver r(10, -300, -100, 100000, 50000, u);
 
     r.reject_version(u.find_package("a").version_from_name("v3"));
     r.reject_version(u.find_package("b").version_from_name("v3"));
@@ -320,7 +320,7 @@ private:
     typedef dummy_solution::action action;
 
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
-    dummy_resolver r(10, -300, -100, 10000000, 0, 500, u);
+    dummy_resolver r(10, -300, -100, 10000000, 500, u);
     r.set_debug(true);
     // Score the combination of b, v1 and a, v2 highly.
     package a = u.find_package("a");
@@ -399,7 +399,7 @@ private:
   void testDropSolutionSupersets()
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
-    dummy_resolver r(10, -300, -100, 100000, 0, 50000, u);
+    dummy_resolver r(10, -300, -100, 100000, 50000, u);
 
     dummy_universe::package a = u.find_package("a");
     dummy_universe::version av1 = a.version_from_name("v1");

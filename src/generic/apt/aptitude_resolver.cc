@@ -55,11 +55,10 @@ aptitude_resolver::aptitude_resolver(int step_score,
 				     int broken_score,
 				     int unfixed_soft_score,
 				     int infinity,
-				     int max_successors,
 				     int resolution_score,
 				     const std::vector<resolver_hint> &hints,
 				     aptitudeDepCache *cache)
-  :generic_problem_resolver<aptitude_universe>(step_score, broken_score, unfixed_soft_score, infinity, max_successors, resolution_score, aptitude_universe(cache))
+  :generic_problem_resolver<aptitude_universe>(step_score, broken_score, unfixed_soft_score, infinity, resolution_score, aptitude_universe(cache))
 {
   using aptitude::matching::pkg_matcher;
   std::vector<pkg_matcher *> hint_matchers;

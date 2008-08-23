@@ -733,7 +733,6 @@ void resolver_manager::create_resolver()
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::BrokenScore", -100),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::UnfixedSoftScore", -200),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::Infinity", 1000000),
-				 aptcfg->FindI(PACKAGE "::ProblemResolver::Max-Successors", 0),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::ResolutionScore", 50),
 				 std::vector<aptitude_resolver::resolver_hint>(),
 				 cache);
@@ -1438,7 +1437,6 @@ void resolver_manager::dump(ostream &out)
       << resolver->get_broken_score() << " "
       << resolver->get_unresolved_soft_dep_score() << " "
       << resolver->get_infinity() << " "
-      << resolver->get_max_successors() << " "
       << resolver->get_full_solution_score() << " ";
 
   resolver->dump_scores(out);

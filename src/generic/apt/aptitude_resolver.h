@@ -173,7 +173,7 @@ public:
 
   aptitude_resolver(int step_score, int broken_score,
 		    int unfixed_soft_score,
-		    int infinity, int max_successors,
+		    int infinity,
 		    int resolution_score,
 		    const std::vector<resolver_hint> &hints,
 		    aptitudeDepCache *cache);

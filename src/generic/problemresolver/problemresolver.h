@@ -2384,7 +2384,7 @@ public:
    */
   generic_problem_resolver(int _step_score, int _broken_score,
 			   int _unfixed_soft_score,
-			   int infinity, unsigned int _max_successors,
+			   int infinity,
 			   int _full_solution_score,
 			   const PackageUniverse &_universe)
     :weights(_step_score, _broken_score, _unfixed_soft_score,
@@ -2423,7 +2423,6 @@ public:
   int get_broken_score() {return weights.broken_score;}
   int get_unresolved_soft_dep_score() {return weights.unfixed_soft_score;}
   int get_infinity() {return -minimum_score;}
-  int get_max_successors() {return 0;}
   int get_full_solution_score() {return weights.full_solution_score;}
 
   /** Enables or disables debugging.  Debugging is initially
