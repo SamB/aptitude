@@ -58,6 +58,9 @@ namespace cwidget
   using namespace widgets;
 }
 
+// ForTranslators: This string is a confirmation message, which users
+// (especially CJK users) should be able to input without input
+// methods.  Please include nothing but ASCII characters.
 static const char *confirm_str=N_("Yes, I am aware this is a very bad idea");
 
 static void try_delete_essential(wstring s,

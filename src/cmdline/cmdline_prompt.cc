@@ -717,7 +717,10 @@ static bool prompt_trust()
 	}
 
 
-      const string okstr=_("Yes"), abortstr=_("No");
+      // ForTranslators: This string is a confirmation message, which
+      // users (especially CJK users) should be able to input without
+      // input methods.  Please include nothing but ASCII characters.
+      const string okstr=_("YES"), abortstr=_("NO");
 
       while(1)
 	{
