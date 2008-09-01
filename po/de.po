@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.2.15.5\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-07-04 09:13-0700\n"
+"POT-Creation-Date: 2008-08-03 13:57-0700\n"
 "PO-Revision-Date: 2008-07-21 10:48+0200\n"
 "Last-Translator: Jens Seidel <jensseidel@users.sf.net>\n"
 "Language-Team: Debian German <debian-l10n-german@lists.debian.org>\n"
@@ -1784,8 +1784,8 @@ msgstr "Ungültige Antwort. Bitte geben Sie eines der folgenden Kommandos ein:"
 #: src/cmdline/cmdline_resolver.cc:741
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
-"Es wurde in der zugewiesenen Zeit keine Lösung gefunden. Intensiver suchen? [Y/"
-"n]"
+"Es wurde in der zugewiesenen Zeit keine Lösung gefunden. Intensiver suchen? "
+"[Y/n]"
 
 #: src/cmdline/cmdline_resolver.cc:770
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -1869,7 +1869,7 @@ msgid "not installed"
 msgstr "nicht installiert"
 
 #: src/cmdline/cmdline_show.cc:194 src/pkg_columnizer.cc:249
-#: src/pkg_ver_item.cc:230
+#: src/pkg_ver_item.cc:232
 msgid "unpacked"
 msgstr "entpackt"
 
@@ -1894,7 +1894,7 @@ msgid "awaiting trigger processing"
 msgstr "warte auf eine Auslösebearbeitung"
 
 #: src/cmdline/cmdline_show.cc:208 src/pkg_columnizer.cc:257
-#: src/pkg_ver_item.cc:238
+#: src/pkg_ver_item.cc:240
 msgid "installed"
 msgstr "Installiert"
 
@@ -2285,7 +2285,8 @@ msgstr "    ++   --> überspringe, nicht relevant laut Parametern\n"
 # TODO: parent??
 #: src/cmdline/cmdline_why.cc:454
 msgid "    ++   --> skipping, parent is not the selected version\n"
-msgstr "    ++   --> überspringe, Elternversion ist nicht die gewählte Version\n"
+msgstr ""
+"    ++   --> überspringe, Elternversion ist nicht die gewählte Version\n"
 
 # TODO: parent??
 #: src/cmdline/cmdline_why.cc:494
@@ -2555,8 +2556,8 @@ msgstr ""
 #: src/generic/apt/aptcache.cc:1783
 msgid "You may want to update the package lists to correct these missing files"
 msgstr ""
-"Sie sollten vielleicht die Paketlisten aktualisieren, um die fehlenden Dateien "
-"zu ergänzen"
+"Sie sollten vielleicht die Paketlisten aktualisieren, um die fehlenden "
+"Dateien zu ergänzen"
 
 #. ForTranslators: Set this string to the name of a configuration
 #. file in $pkgdatadir/aptitude that overrides defaults for your
@@ -4073,8 +4074,8 @@ msgstr "PlatzVerb"
 msgid "DownloadSize"
 msgstr "DownloadGröß"
 
-#: src/pkg_columnizer.cc:138 src/pkg_columnizer.cc:150 src/pkg_ver_item.cc:102
-#: src/pkg_ver_item.cc:167
+#: src/pkg_columnizer.cc:138 src/pkg_columnizer.cc:150 src/pkg_ver_item.cc:104
+#: src/pkg_ver_item.cc:169
 msgid "<N/A>"
 msgstr "<N/V>"
 
@@ -4086,19 +4087,19 @@ msgstr "<keine>"
 msgid "virtual"
 msgstr "virtuell"
 
-#: src/pkg_columnizer.cc:244 src/pkg_ver_item.cc:217 src/pkg_ver_item.cc:225
+#: src/pkg_columnizer.cc:244 src/pkg_ver_item.cc:219 src/pkg_ver_item.cc:227
 msgid "purged"
 msgstr "vollständig gelöscht"
 
-#: src/pkg_columnizer.cc:251 src/pkg_ver_item.cc:232
+#: src/pkg_columnizer.cc:251 src/pkg_ver_item.cc:234
 msgid "half-config"
 msgstr "halb-konfig"
 
-#: src/pkg_columnizer.cc:253 src/pkg_ver_item.cc:234
+#: src/pkg_columnizer.cc:253 src/pkg_ver_item.cc:236
 msgid "half-install"
 msgstr "halb-install"
 
-#: src/pkg_columnizer.cc:255 src/pkg_ver_item.cc:236
+#: src/pkg_columnizer.cc:255 src/pkg_ver_item.cc:238
 msgid "config-files"
 msgstr "Konfig-Dateien"
 
@@ -4110,11 +4111,11 @@ msgstr "Auslöser erwartet"
 msgid "triggers-pending"
 msgstr "Auslöser aktiv"
 
-#: src/pkg_columnizer.cc:265 src/pkg_columnizer.cc:549 src/pkg_ver_item.cc:240
+#: src/pkg_columnizer.cc:265 src/pkg_columnizer.cc:551 src/pkg_ver_item.cc:242
 msgid "ERROR"
 msgstr "FEHLER"
 
-#: src/pkg_columnizer.cc:312 src/pkg_ver_item.cc:298
+#: src/pkg_columnizer.cc:312 src/pkg_ver_item.cc:300
 msgid "hold"
 msgstr "zurückhalten"
 
@@ -4126,16 +4127,16 @@ msgstr "verbotene Aktualisierung"
 msgid "purge"
 msgstr "vollständig entfernen"
 
-#: src/pkg_columnizer.cc:317 src/pkg_ver_item.cc:322
+#: src/pkg_columnizer.cc:317 src/pkg_ver_item.cc:324
 msgid "delete"
 msgstr "löschen"
 
-#: src/pkg_columnizer.cc:319 src/pkg_ver_item.cc:220 src/pkg_ver_item.cc:304
+#: src/pkg_columnizer.cc:319 src/pkg_ver_item.cc:222 src/pkg_ver_item.cc:306
 msgid "broken"
 msgstr "kaputt"
 
-#: src/pkg_columnizer.cc:321 src/pkg_ver_item.cc:308 src/pkg_ver_item.cc:315
-#: src/pkg_ver_item.cc:324
+#: src/pkg_columnizer.cc:321 src/pkg_ver_item.cc:310 src/pkg_ver_item.cc:317
+#: src/pkg_ver_item.cc:326
 msgid "install"
 msgstr "install"
 
@@ -4147,44 +4148,44 @@ msgstr "neuinst."
 msgid "upgrade"
 msgstr "aktualis."
 
-#: src/pkg_columnizer.cc:327 src/pkg_columnizer.cc:329 src/pkg_ver_item.cc:310
-#: src/pkg_ver_item.cc:317 src/pkg_ver_item.cc:326 src/pkg_ver_item.cc:329
+#: src/pkg_columnizer.cc:327 src/pkg_columnizer.cc:329 src/pkg_ver_item.cc:312
+#: src/pkg_ver_item.cc:319 src/pkg_ver_item.cc:328 src/pkg_ver_item.cc:331
 msgid "none"
 msgstr "nichts"
 
 #: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
 #: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:268
 #: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
-#: src/pkg_ver_item.cc:348 src/pkg_ver_item.cc:382
+#: src/pkg_ver_item.cc:350 src/pkg_ver_item.cc:384
 msgid "Unknown"
 msgstr "Unbekannt"
 
 #. ForTranslators: Imp = Important
-#: src/pkg_columnizer.cc:361 src/pkg_ver_item.cc:357
+#: src/pkg_columnizer.cc:361 src/pkg_ver_item.cc:359
 msgid "Imp"
 msgstr "Wic"
 
 #. ForTranslators: Req = Required
-#: src/pkg_columnizer.cc:363 src/pkg_ver_item.cc:360
+#: src/pkg_columnizer.cc:363 src/pkg_ver_item.cc:362
 msgid "Req"
 msgstr "Ben"
 
 #. ForTranslators: Std = Standard
-#: src/pkg_columnizer.cc:365 src/pkg_ver_item.cc:363
+#: src/pkg_columnizer.cc:365 src/pkg_ver_item.cc:365
 msgid "Std"
 msgstr "Std"
 
 #. ForTranslators: Opt = Optional
-#: src/pkg_columnizer.cc:367 src/pkg_ver_item.cc:366
+#: src/pkg_columnizer.cc:367 src/pkg_ver_item.cc:368
 msgid "Opt"
 msgstr "Opt"
 
 #. ForTranslators: Xtr = Extra
-#: src/pkg_columnizer.cc:369 src/pkg_ver_item.cc:369
+#: src/pkg_columnizer.cc:369 src/pkg_ver_item.cc:371
 msgid "Xtr"
 msgstr "Ext"
 
-#: src/pkg_columnizer.cc:371 src/pkg_ver_item.cc:371
+#: src/pkg_columnizer.cc:371 src/pkg_ver_item.cc:373
 msgid "ERR"
 msgstr "FEH"
 
@@ -4210,16 +4211,16 @@ msgstr "DL-Größe: %sB"
 
 #  Panic
 #. ForTranslators: Hostname
-#: src/pkg_columnizer.cc:501
+#: src/pkg_columnizer.cc:503
 msgid "HN too long"
 msgstr "HN zu lang"
 
-#: src/pkg_columnizer.cc:673 src/pkg_columnizer.cc:682
+#: src/pkg_columnizer.cc:675 src/pkg_columnizer.cc:684
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr "Kann Anzeigeformat nach »%ls« nicht konvertieren"
 
-#: src/pkg_columnizer.cc:689
+#: src/pkg_columnizer.cc:691
 msgid "Internal error: Default column string is unparsable"
 msgstr "Interner Fehler: Standard-Spalten-Zeichenkette nicht interpretierbar"
 
@@ -4566,12 +4567,12 @@ msgstr ""
 "wollen?%nDann geben Sie '%s' ein."
 
 # ummmm...
-#: src/pkg_item.cc:229 src/pkg_ver_item.cc:681 src/solution_item.cc:298
+#: src/pkg_item.cc:229 src/pkg_ver_item.cc:683 src/solution_item.cc:298
 #, c-format
 msgid "Information about %s"
 msgstr "Informationen über %s"
 
-#: src/pkg_item.cc:231 src/pkg_ver_item.cc:683 src/solution_item.cc:296
+#: src/pkg_item.cc:231 src/pkg_ver_item.cc:685 src/solution_item.cc:296
 #, c-format
 msgid "%s info"
 msgstr "%s-Informationen"
@@ -4586,27 +4587,27 @@ msgstr "Verfügbare Versionen von %s"
 msgid "%s versions"
 msgstr "%s Versionen"
 
-#: src/pkg_item.cc:342 src/pkg_ver_item.cc:711
+#: src/pkg_item.cc:342 src/pkg_ver_item.cc:713
 #, c-format
 msgid "Dependencies of %s"
 msgstr "Abhängigkeiten von %s"
 
-#: src/pkg_item.cc:344 src/pkg_ver_item.cc:713
+#: src/pkg_item.cc:344 src/pkg_ver_item.cc:715
 #, c-format
 msgid "%s deps"
 msgstr "%s Abhängigkeiten"
 
-#: src/pkg_item.cc:355 src/pkg_ver_item.cc:723
+#: src/pkg_item.cc:355 src/pkg_ver_item.cc:725
 #, c-format
 msgid "Packages depending on %s"
 msgstr "Pakete, die von %s abhängen"
 
-#: src/pkg_item.cc:357 src/pkg_ver_item.cc:725
+#: src/pkg_item.cc:357 src/pkg_ver_item.cc:727
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s inverse Abhängigkeiten"
 
-#: src/pkg_item.cc:407 src/pkg_ver_item.cc:773
+#: src/pkg_item.cc:407 src/pkg_ver_item.cc:775
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "Einen Fehler in %s melden:\n"

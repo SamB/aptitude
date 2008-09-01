@@ -236,7 +236,7 @@ void pkg_grouppolicy_section::init_section_descriptions()
 	  const std::string desc = Curr->Value;
 	  const std::string final_desc = unquote_section_description(desc);;
 
-	  section_descriptions[Curr->Tag] = cw::util::transcode(final_desc);
+	  section_descriptions[Curr->Tag] = cw::util::transcode(final_desc, "UTF-8");
 	}
     }
 

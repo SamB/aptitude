@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_nb\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-07-04 09:13-0700\n"
-"PO-Revision-Date: 2008-05-15 23:02+0200\n"
+"POT-Creation-Date: 2008-08-03 13:57-0700\n"
+"PO-Revision-Date: 2008-09-01 15:03+0200\n"
 "Last-Translator: Hans Fredrik Nordhaug <hans@nordhaug.priv.no>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -511,6 +511,13 @@ msgid ""
 "enabled, packages that are recommended by an installed package will not be "
 "automatically removed."
 msgstr ""
+"Hvis dette valget og «Finn pakke-avhengighetene automatisk» er aktivert "
+"samtidig, vil aptitude prøve å installere anbefalingene fra nylig "
+"installerte pakker i tillegg til deres direkte avhengigheter. Foreslåtte "
+"pakker blir ikke automatisk installert.\n"
+"Hvis dette valget og «Fjern ubrukte pakker automatisk» er aktivert "
+"samtidig, vil pakker som er anbefalt av en installert pakke ikke bli "
+"automatisk slettet."
 
 #: src/apt_options.cc:375
 msgid "Remove unused packages automatically"
@@ -526,6 +533,12 @@ msgid ""
 "is enabled, automatically installed packages will not be removed if any "
 "installed package recommends them."
 msgstr ""
+"Hvis dette valget er aktivert, vil pakker som er automatisk installert og "
+"som ingen manuelt installerte pakker avhenger av, bli fjernet fra systemet. "
+"Avbryting av fjerningen vil merke pakken som manuelt installert.\n"
+"Hvis dette valget og «Installer anbefalte pakker automatisk» er aktivert "
+"samtidig, vil automatisk installerte pakker ikke bli fjernet hvis noen "
+"installerte pakker anbefaler dem."
 
 #: src/apt_options.cc:387
 msgid "Packages that should never be automatically removed"
@@ -557,6 +570,14 @@ msgid ""
 "the dependencies of a package that has just been selected for installation "
 "or upgrade, due to apt bug #470035."
 msgstr ""
+"Hvis dette valget er aktivert, vil aptitude når den løser et "
+"avhengighetsproblem, vurdere å endre holdte pakker eller installere "
+"forbudte pakkeversjoner. Hvis dette valget er deaktivert, vil disse "
+"løsningene bli avvist som standard.\n"
+"MERK: For øyeblikket gjelder bare denne begrensningen i situasjoner hvor "
+"aptitudes avhengighetsløser er aktivert. aptitude vil fortsatt bryte holdte "
+"når den automatisk installerer avhengighetene for en pakke som nettopp har "
+"blitt valgt for installering eller oppgradering, på grunn av apt feil #470035."
 
 #: src/apt_options.cc:520
 msgid "UI options"
@@ -981,8 +1002,8 @@ msgstr "Klarte ikke å lese kildelista"
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(for %s)"
+msgstr[1] "(for %s)"
 
 #: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
@@ -1676,10 +1697,9 @@ msgid "Resolving dependencies..."
 msgstr "Løser opp avhengigheter ..."
 
 #: src/cmdline/cmdline_resolver.cc:563
-#, fuzzy, c-format
-#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
-msgstr "åpen: %d; lukket: %d; utsatt: %d; konflikt: %d"
+msgstr "åpen: %zd; lukket: %zd; utsatt: %zd; konflikt: %zd"
 
 #: src/cmdline/cmdline_resolver.cc:616
 msgid "The following actions will resolve these dependencies:"
@@ -1795,7 +1815,7 @@ msgid "not installed"
 msgstr "ikke installert"
 
 #: src/cmdline/cmdline_show.cc:194 src/pkg_columnizer.cc:249
-#: src/pkg_ver_item.cc:230
+#: src/pkg_ver_item.cc:232
 msgid "unpacked"
 msgstr "utpakket"
 
@@ -1820,7 +1840,7 @@ msgid "awaiting trigger processing"
 msgstr "venter på utløserprosessering"
 
 #: src/cmdline/cmdline_show.cc:208 src/pkg_columnizer.cc:257
-#: src/pkg_ver_item.cc:238
+#: src/pkg_ver_item.cc:240
 msgid "installed"
 msgstr "installert"
 
@@ -3840,7 +3860,7 @@ msgstr "Skriv inn navnet på fila som skal lagres: "
 
 #: src/mine/cmine.cc:684
 msgid "mine-help.txt"
-msgstr "mine-hjelp.txt"
+msgstr "mine-help.txt"
 
 #: src/mine/cmine.cc:686
 msgid "Encoding of mine-help.txt|UTF-8"
@@ -3930,8 +3950,8 @@ msgstr "DiskBruk"
 msgid "DownloadSize"
 msgstr "NedlastingsStr"
 
-#: src/pkg_columnizer.cc:138 src/pkg_columnizer.cc:150 src/pkg_ver_item.cc:102
-#: src/pkg_ver_item.cc:167
+#: src/pkg_columnizer.cc:138 src/pkg_columnizer.cc:150 src/pkg_ver_item.cc:104
+#: src/pkg_ver_item.cc:169
 msgid "<N/A>"
 msgstr "<I/T>"
 
@@ -3943,19 +3963,19 @@ msgstr "<ingen>"
 msgid "virtual"
 msgstr "virtuell"
 
-#: src/pkg_columnizer.cc:244 src/pkg_ver_item.cc:217 src/pkg_ver_item.cc:225
+#: src/pkg_columnizer.cc:244 src/pkg_ver_item.cc:219 src/pkg_ver_item.cc:227
 msgid "purged"
 msgstr "Helt slettet"
 
-#: src/pkg_columnizer.cc:251 src/pkg_ver_item.cc:232
+#: src/pkg_columnizer.cc:251 src/pkg_ver_item.cc:234
 msgid "half-config"
 msgstr "halv-oppsett"
 
-#: src/pkg_columnizer.cc:253 src/pkg_ver_item.cc:234
+#: src/pkg_columnizer.cc:253 src/pkg_ver_item.cc:236
 msgid "half-install"
 msgstr "halv-inst"
 
-#: src/pkg_columnizer.cc:255 src/pkg_ver_item.cc:236
+#: src/pkg_columnizer.cc:255 src/pkg_ver_item.cc:238
 msgid "config-files"
 msgstr "oppsettsfiler"
 
@@ -3967,11 +3987,11 @@ msgstr "utløsere-forventet"
 msgid "triggers-pending"
 msgstr "utløsere-utestående"
 
-#: src/pkg_columnizer.cc:265 src/pkg_columnizer.cc:549 src/pkg_ver_item.cc:240
+#: src/pkg_columnizer.cc:265 src/pkg_columnizer.cc:551 src/pkg_ver_item.cc:242
 msgid "ERROR"
 msgstr "FEIL"
 
-#: src/pkg_columnizer.cc:312 src/pkg_ver_item.cc:298
+#: src/pkg_columnizer.cc:312 src/pkg_ver_item.cc:300
 msgid "hold"
 msgstr "behold"
 
@@ -3983,16 +4003,16 @@ msgstr "forbudt oppgradering"
 msgid "purge"
 msgstr "slett helt"
 
-#: src/pkg_columnizer.cc:317 src/pkg_ver_item.cc:322
+#: src/pkg_columnizer.cc:317 src/pkg_ver_item.cc:324
 msgid "delete"
 msgstr "slett"
 
-#: src/pkg_columnizer.cc:319 src/pkg_ver_item.cc:220 src/pkg_ver_item.cc:304
+#: src/pkg_columnizer.cc:319 src/pkg_ver_item.cc:222 src/pkg_ver_item.cc:306
 msgid "broken"
 msgstr "ødelagt"
 
-#: src/pkg_columnizer.cc:321 src/pkg_ver_item.cc:308 src/pkg_ver_item.cc:315
-#: src/pkg_ver_item.cc:324
+#: src/pkg_columnizer.cc:321 src/pkg_ver_item.cc:310 src/pkg_ver_item.cc:317
+#: src/pkg_ver_item.cc:326
 msgid "install"
 msgstr "installer"
 
@@ -4004,44 +4024,44 @@ msgstr "installer på nytt"
 msgid "upgrade"
 msgstr "oppgrader"
 
-#: src/pkg_columnizer.cc:327 src/pkg_columnizer.cc:329 src/pkg_ver_item.cc:310
-#: src/pkg_ver_item.cc:317 src/pkg_ver_item.cc:326 src/pkg_ver_item.cc:329
+#: src/pkg_columnizer.cc:327 src/pkg_columnizer.cc:329 src/pkg_ver_item.cc:312
+#: src/pkg_ver_item.cc:319 src/pkg_ver_item.cc:328 src/pkg_ver_item.cc:331
 msgid "none"
 msgstr "ingen"
 
 #: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
 #: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:268
 #: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
-#: src/pkg_ver_item.cc:348 src/pkg_ver_item.cc:382
+#: src/pkg_ver_item.cc:350 src/pkg_ver_item.cc:384
 msgid "Unknown"
 msgstr "Ukjent"
 
 #. ForTranslators: Imp = Important
-#: src/pkg_columnizer.cc:361 src/pkg_ver_item.cc:357
+#: src/pkg_columnizer.cc:361 src/pkg_ver_item.cc:359
 msgid "Imp"
 msgstr "Vikt"
 
 #. ForTranslators: Req = Required
-#: src/pkg_columnizer.cc:363 src/pkg_ver_item.cc:360
+#: src/pkg_columnizer.cc:363 src/pkg_ver_item.cc:362
 msgid "Req"
 msgstr "Krav"
 
 #. ForTranslators: Std = Standard
-#: src/pkg_columnizer.cc:365 src/pkg_ver_item.cc:363
+#: src/pkg_columnizer.cc:365 src/pkg_ver_item.cc:365
 msgid "Std"
 msgstr "Std"
 
 #. ForTranslators: Opt = Optional
-#: src/pkg_columnizer.cc:367 src/pkg_ver_item.cc:366
+#: src/pkg_columnizer.cc:367 src/pkg_ver_item.cc:368
 msgid "Opt"
 msgstr "Valgfri"
 
 #. ForTranslators: Xtr = Extra
-#: src/pkg_columnizer.cc:369 src/pkg_ver_item.cc:369
+#: src/pkg_columnizer.cc:369 src/pkg_ver_item.cc:371
 msgid "Xtr"
 msgstr "Xtr"
 
-#: src/pkg_columnizer.cc:371 src/pkg_ver_item.cc:371
+#: src/pkg_columnizer.cc:371 src/pkg_ver_item.cc:373
 msgid "ERR"
 msgstr "FEIL"
 
@@ -4066,16 +4086,16 @@ msgid "DL Size: %sB"
 msgstr "DL størrelse: %sB"
 
 #. ForTranslators: Hostname
-#: src/pkg_columnizer.cc:501
+#: src/pkg_columnizer.cc:503
 msgid "HN too long"
 msgstr "HN er for lang"
 
-#: src/pkg_columnizer.cc:673 src/pkg_columnizer.cc:682
+#: src/pkg_columnizer.cc:675 src/pkg_columnizer.cc:684
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr "Klarte ikke konvertere pakkevisningsformatet etter «%ls»"
 
-#: src/pkg_columnizer.cc:689
+#: src/pkg_columnizer.cc:691
 msgid "Internal error: Default column string is unparsable"
 msgstr "Intern feil: Standard kolonnestreng er uleselig"
 
@@ -4419,12 +4439,12 @@ msgstr ""
 "%s er en grunnleggende pakke!%n%nEr du sikker på at du vil fjerne den?%"
 "nSkriv «%s» hvis du er sikker."
 
-#: src/pkg_item.cc:229 src/pkg_ver_item.cc:681 src/solution_item.cc:298
+#: src/pkg_item.cc:229 src/pkg_ver_item.cc:683 src/solution_item.cc:298
 #, c-format
 msgid "Information about %s"
 msgstr "Informasjon om %s"
 
-#: src/pkg_item.cc:231 src/pkg_ver_item.cc:683 src/solution_item.cc:296
+#: src/pkg_item.cc:231 src/pkg_ver_item.cc:685 src/solution_item.cc:296
 #, c-format
 msgid "%s info"
 msgstr "%s-informasjon"
@@ -4439,27 +4459,27 @@ msgstr "Tilgjengelige versjoner av %s"
 msgid "%s versions"
 msgstr "%s-versjoner"
 
-#: src/pkg_item.cc:342 src/pkg_ver_item.cc:711
+#: src/pkg_item.cc:342 src/pkg_ver_item.cc:713
 #, c-format
 msgid "Dependencies of %s"
 msgstr "Avhengigheter av %s"
 
-#: src/pkg_item.cc:344 src/pkg_ver_item.cc:713
+#: src/pkg_item.cc:344 src/pkg_ver_item.cc:715
 #, c-format
 msgid "%s deps"
 msgstr "%s avhengigheter"
 
-#: src/pkg_item.cc:355 src/pkg_ver_item.cc:723
+#: src/pkg_item.cc:355 src/pkg_ver_item.cc:725
 #, c-format
 msgid "Packages depending on %s"
 msgstr "Pakker som er avhengige av %s"
 
-#: src/pkg_item.cc:357 src/pkg_ver_item.cc:725
+#: src/pkg_item.cc:357 src/pkg_ver_item.cc:727
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s omvendte avhengigheter"
 
-#: src/pkg_item.cc:407 src/pkg_ver_item.cc:773
+#: src/pkg_item.cc:407 src/pkg_ver_item.cc:775
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "Rapporterer en feil i %s:\n"
@@ -4495,8 +4515,8 @@ msgstr "Hierarki-redigering"
 #, c-format
 msgid "This group contains %d package."
 msgid_plural "This group contains %d packages."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Denne gruppa inneholder %d pakke."
+msgstr[1] "Denne gruppa inneholder %d pakker."
 
 #: src/pkg_tree.cc:175
 msgid "All Packages"
@@ -5084,7 +5104,7 @@ msgstr "Vis tilgjengelige pakker og velg hvilke handlinger du vil utføre"
 
 #: src/ui.cc:864
 msgid "Recommended Packages"
-msgstr "Anbefalte pakkere"
+msgstr "Anbefalte pakker"
 
 #: src/ui.cc:865
 msgid "View packages that it is recommended that you install"

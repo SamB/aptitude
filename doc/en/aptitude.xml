@@ -7,7 +7,7 @@
   <!ENTITY dselect '<command>dselect</command>'>
   <!ENTITY apt-get '<command>apt-get</command>'>
   <!ENTITY root '<systemitem class="username">root</systemitem>'>
-  <!ENTITY VERSION '0.4.11.8'>
+  <!ENTITY VERSION '0.4.11.9'>
 
   <!-- Shortcuts for menu commands: -->
 
@@ -143,7 +143,7 @@
 <author><personname><firstname>Daniel</firstname><surname>Burrows</surname></personname><email>dburrows@debian.org</email></author>
 
 <copyright>
-  <year>2004-2006</year>
+  <year>2004-2008</year>
   <holder>Daniel Burrows</holder>
 </copyright>
 
@@ -4162,7 +4162,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	patterns is to match packages by name, &aptitude; allows you
 	to create much more complex searches.  In addition to the
 	visual interface, some command-line operations can use search
-	terms; see <xref linkend='secReference'/> for details.
+	patterns; see <xref linkend='secReference'/> for details.
       </para>
 
       <para>
@@ -4175,7 +4175,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	the term &Sversion; matches package versions.  Finally, any
 	additional parameters to the search term are placed in
 	parentheses (see the documentation of individual terms for
-	more information on this).
+	details of what each term's parameters mean).
       </para>
 
       <note>
@@ -4184,8 +4184,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  pattern: &aptitude; will attempt to match it against package
 	  names.  However, because <quote>?</quote> is a regular
 	  expression metacharacter, &aptitude; will
-	  <emphasis>not</emphasis> recognize question marks as a
-	  terminator for these <quote>bare</quote> strings.  For
+	  <emphasis>not</emphasis> recognize question marks as
+	  terminators for these <quote>bare</quote> strings.  For
 	  instance, the search pattern
 	  <quote><literal>apt?name(python)</literal></quote> will not
 	  search for packages whose name contains both
@@ -4201,7 +4201,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	<para>
 	  The behavior of aptitude when given a search pattern without
 	  a leading <quote>?</quote> (or <quote>~</quote>) is provided
-	  as a convenience for interactive use and may change in
+	  as a convenience for interactive use and will change in
 	  future releases; scripts that invoke
 	  <literal>aptitude</literal> should explicitly name the
 	  search strategy they want to use.  That is, scripts should
@@ -4222,7 +4222,14 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  (<quote><literal>"</literal></quote>), so
 	  <quote><literal>&Sname;(scorch)</literal></quote> and
 	  <quote><literal>&Sname;("scorch")</literal></quote> will
-	  perform the same search.
+	  perform the same search.  If you enter a search string using
+	  double quotes, you can include a literal double-quote in the
+	  search string by placing a backslash
+	  (<quote><literal>\</literal></quote>) immediately before it:
+	  for instance,
+	  <quote><literal>&Sdescription;("\"easy\"")</literal></quote>
+	  will match any package whose description contains the string
+	  <quote><literal>"easy"</literal></quote>.
 	</para>
 
 	<para>
@@ -4250,12 +4257,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </footnote>
 	  To remove the special meaning of these characters, place a
 	  tilde (<quote><literal>~</literal></quote>) directly before
-	  them.  For instance, <literal>&Sdescription;(etc))</literal>
-	  is a syntax error, because the first <literal>)</literal>
-	  ends the &Sdescription; term, and the
-	  second <literal>)</literal> does not match anything.  In
-	  contrast, <literal>&Sdescription;(etc~))</literal> matches any
-	  package whose description contains the text
+	  them.  For instance,
+	  <quote><literal>&Sdescription;(etc))</literal></quote> is a
+	  syntax error, because the first
+	  <quote><literal>)</literal></quote> ends the &Sdescription;
+	  term, and the second <quote><literal>)</literal></quote>
+	  does not correspond to any
+	  <quote><literal>(</literal></quote>.  In contrast,
+	  <quote><literal>&Sdescription;(etc~))</literal></quote>
+	  matches any package whose description contains the text
 	  <quote><literal>etc)</literal></quote>.  There are
 	  additional considerations if you are using the shorthand
 	  notation for a term; see <xref
@@ -4266,23 +4276,58 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  Most textual searches (for package names, descriptions, etc)
 	  are performed using case-insensitive <ulink
 	  url='http://sitescooper.org/tao_regexps.html'>regular
-	  expressions</ulink>.  This means that you must
-	  backslash-escape regular expression metacharacters
+	  expressions</ulink>.  A regular expression will match
+	  against a field if any portion of the field matches the
+	  expression; for instance,
+	  <quote><literal>ogg[0-9]</literal></quote> will match
+	  <quote><literal>libogg5</literal></quote>,
+	  <quote><literal>ogg123</literal></quote>, and
+	  <quote><literal>theogg4u</literal></quote>.
+	  Some characters have a special meaning within regular
+	  expressions
 	  <footnote>
 	    <para>
-	      Regular expression metacharacters include:
-	      <quote>+</quote>, <quote>-</quote>, <quote>.</quote>,
-	      <quote>(</quote>, <quote>)</quote>, <quote>|</quote>,
-	      <quote>[</quote>, <quote>]</quote>, <quote>^</quote>,
-	      <quote>$</quote>, and <quote>?</quote>.  Note that some
-	      of these are also &aptitude; metacharacters, so if you
-	      want to type (for instance) a literal <quote>|</quote>,
-	      it must be double-escaped:
-	      <quote><literal>\~|</literal></quote>.
+	      Characters with a special meaning include:
+	      <quote><literal>+</literal></quote>,
+	      <quote><literal>-</literal></quote>,
+	      <quote><literal>.</literal></quote>,
+	      <quote><literal>(</literal></quote>,
+	      <quote><literal>)</literal></quote>,
+	      <quote><literal>|</literal></quote>,
+	      <quote><literal>[</literal></quote>,
+	      <quote><literal>]</literal></quote>,
+	      <quote><literal>^</literal></quote>,
+	      <quote><literal>$</literal></quote>, and
+	      <quote><literal>?</literal></quote>.  Note that some of
+	      these are also &aptitude; metacharacters, so if you want
+	      to type (for instance) a literal
+	      <quote><literal>|</literal></quote>, it must be
+	      double-escaped:
+	      <quote><literal>&Sdescription;(\~|)</literal></quote>
+	      will match packages whose description contains a
+	      vertical bar character
+	      (<quote><literal>|</literal></quote>).
 	    </para>
 	  </footnote>
-	  in searches (for instance, to find <quote>g++</quote>, you
-	  should use the pattern <quote>g\+\+</quote>).
+	  , so if you want to match them in searches you need to
+	  backslash-escape them: for instance, to find
+	  <quote><literal>g++</literal></quote>, you should use the
+	  pattern <quote><literal>g\+\+</literal></quote>.
+	</para>
+
+	<para>
+	  The characters <quote><literal>!</literal></quote> and
+	  <quote><literal>|</literal></quote> have special meanings
+	  within search patterns.  In order to include these
+	  characters in an unquoted string, you can place a tilde
+	  (<quote><literal>~</literal></quote>) directly before them.
+	  For instance, to match packages whose description contains
+	  either <quote>grand</quote> or <quote>oblique</quote>, use
+	  the pattern
+	  <quote><literal>&Sdescription;(grand~|oblique)</literal></quote>.
+	  However, you will probably find it more convenient to simply
+	  use a quoted string in these cases:
+	  <quote><literal>&Sdescription;("grand|oblique")</literal></quote>.
 	</para>
       </section>
 
@@ -4361,7 +4406,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	<para>
 	  By default, a pattern matches a package if any version of
 	  the package matches the pattern.  However, some patterns
-	  will restrict their subterms to only match against some
+	  will restrict their sub-patterns to only match against some
 	  versions of a package.  For instance, the search term
 	  <literal>&Sdepends;(<replaceable>pattern</replaceable>)</literal>
 	  will select any package that depends on a package matching
@@ -4396,6 +4441,25 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  package can change between versions.
 	</para>
 
+	<para>
+	  To test a pattern against all the versions of a package,
+	  even if the pattern would normally be tested against only
+	  some of the versions, use the &Swiden; term.  For instance,
+	  <literal>&Sdepends;(&Swiden;(&Sversion;(2\.0)))</literal>
+	  will match any package <replaceable>A</replaceable> that
+	  depends on a package <replaceable>B</replaceable>, where
+	  <replaceable>B</replaceable> has a version matching
+	  <literal>2.0</literal>, regardless of whether that version
+	  actually satisfies <replaceable>A</replaceable>'s
+	  dependency.  On the other hand, the &Snarrow; term restricts
+	  the versions that its sub-pattern is matched against:
+	  <literal>&Snarrow;(&Sinstalled;,
+	  &Sdepends;(&Sversion;(ubuntu)))</literal> will match any
+	  package whose installed version has a dependency that can be
+	  satisfied by a package whose version string contains
+	  <quote><literal>ubuntu</literal></quote>.
+	</para>
+
 	<note>
 	  <para>
 	    There is a subtle, but important, distinction between
@@ -4406,7 +4470,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <emphasis>any</emphasis> version of the package matches.
 	    In contrast, when a pattern is matched against each
 	    version of a package, it will successfully match if it
-	    matches when all its subterms are matched against the
+	    matches when all its terms are matched against the
 	    <emphasis>same</emphasis> version of the package.
 	  </para>
 
@@ -4602,13 +4666,13 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	      <row>
 		<entry>
-		  <literal>&Sand;(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>
+		  <literal>&Sand;(<replaceable>pattern1</replaceable>, <replaceable>pattern2</replaceable>)</literal>
 		</entry>
-		<entry><replaceable>term1</replaceable> <replaceable>term2</replaceable></entry>
+		<entry><replaceable>pattern1</replaceable> <replaceable>pattern2</replaceable></entry>
 		<entry>
 		  Select any package that matches both
-		  <replaceable>term1</replaceable> and
-		  <replaceable>term2</replaceable>.
+		  <replaceable>pattern1</replaceable> and
+		  <replaceable>pattern2</replaceable>.
 		</entry>
 	      </row>
 
@@ -4819,12 +4883,12 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
-		<entry><literal>&Sor;(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal></entry>
-		<entry><literal><replaceable>term1</replaceable> | <replaceable>term2</replaceable></literal></entry>
+		<entry><literal>&Sor;(<replaceable>pattern1</replaceable>, <replaceable>pattern2</replaceable>)</literal></entry>
+		<entry><literal><replaceable>pattern1</replaceable> | <replaceable>pattern2</replaceable></literal></entry>
 		<entry>
 		  Select packages that match
-		  <replaceable>term1</replaceable>,
-		  <replaceable>term2</replaceable>, or both.
+		  <replaceable>pattern1</replaceable>,
+		  <replaceable>pattern2</replaceable>, or both.
 		</entry>
 	      </row>
 
@@ -4997,9 +5061,13 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    <note>
 	      <para>
 		To match packages whose names contain several
-		different substrings, use the &Sname; term
-		(described below); for instance,
-		<quote><literal>&Sname;(apti)&Sname;(tude)</literal></quote>.
+		different substrings, use the &Sname; term (described
+		below); for instance,
+		<quote><literal>&Sname;(apti)&Sname;(tude)</literal></quote>
+		will match any package whose name contains
+		<emphasis>both</emphasis>
+		<quote><literal>apti</literal></quote> and
+		<quote><literal>tude</literal></quote>.
 	      </para>
 	    </note>
 	  </listitem>
@@ -5048,7 +5116,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <listitem>
 	    <para>
 	      Matches packages which do <emphasis>not</emphasis> match
-	      the term <replaceable>pattern</replaceable>.  For
+	      the pattern <replaceable>pattern</replaceable>.  For
 	      instance,
 	      <quote><literal>?not(&Sbroken;)</literal></quote>
 	      selects packages that are not <quote>broken</quote>.
@@ -5056,34 +5124,39 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	    <note>
 	      <para>
-		To include a <quote>!</quote> in a regular expression, it must be
-		<quote>escaped</quote> to prevent &aptitude; from considering it
-		part of a NOT term: <quote><literal>~!</literal></quote>.
+		To include a <quote>!</quote> in a search string, it
+		must be <quote>escaped</quote> by placing a tilde
+		(<quote><literal>~</literal></quote>) in front of it;
+		otherwise, &aptitude; will consider it to be part of a
+		<literal>?not</literal> term.  For instance, to select
+		packages whose description contains
+		<quote><literal>extra!</literal></quote>, use
+		<quote><literal>&Sdescription;(extra~!)</literal></quote>.
 	      </para>
 	    </note>
 	  </listitem>
 	</varlistentry>
 
 	<varlistentry id='searchAnd'>
-	  <term><literal>?and(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>, <replaceable>term1</replaceable> <replaceable>term2</replaceable></term>
+	  <term><literal>?and(<replaceable>pattern1</replaceable>, <replaceable>pattern2</replaceable>)</literal>, <replaceable>pattern1</replaceable> <replaceable>pattern2</replaceable></term>
 
 	  <listitem>
 	    <para>
 	      Matches packages that match both
-	      <replaceable>term1</replaceable> and
-	      <replaceable>term2</replaceable>.
+	      <replaceable>pattern1</replaceable> and
+	      <replaceable>pattern2</replaceable>.
 	    </para>
 	  </listitem>
 	</varlistentry>
 
 	<varlistentry id='searchOr'>
-	  <term><literal>?or(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>, <literal><replaceable>term1</replaceable> | <replaceable>term2</replaceable></literal></term>
+	  <term><literal>?or(<replaceable>pattern1</replaceable>, <replaceable>pattern2</replaceable>)</literal>, <literal><replaceable>pattern1</replaceable> | <replaceable>pattern2</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
 	      Matches packages that match either
-	      <replaceable>term1</replaceable> or
-	      <replaceable>term2</replaceable>.
+	      <replaceable>pattern1</replaceable> or
+	      <replaceable>pattern2</replaceable>.
 	    </para>
 
 	    <note>
@@ -5173,7 +5246,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <listitem>
 	    <para>
 	      Matches a package if any one of its versions matches the
-	      enclosed term.  This is the dual to &Sall-versions;.
+	      enclosed pattern.  This is the dual to &Sall-versions;.
 	    </para>
 
 	    <para>
@@ -5187,11 +5260,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <para>
 		This term is closely related to &Snarrow;.
 		In fact,
-		<literal>?any-version(<replaceable>term1</replaceable>
-		<replaceable>term2</replaceable>)</literal> is exactly
+		<literal>?any-version(<replaceable>pattern1</replaceable>
+		<replaceable>pattern2</replaceable>)</literal> is exactly
 		the same as
-		<literal>&Snarrow;(<replaceable>term1</replaceable>,
-		<replaceable>term2</replaceable>)</literal>.
+		<literal>&Snarrow;(<replaceable>pattern1</replaceable>,
+		<replaceable>pattern2</replaceable>)</literal>.
 	      </para>
 	    </note>
 	  </listitem>
@@ -5341,7 +5414,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</varlistentry>
 
 	<varlistentry id='searchDep'>
-	  <term><literal>?<replaceable>depType</replaceable>(<replaceable>patterm</replaceable>)</literal>, <literal>~D<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></term>
+	  <term><literal>?<replaceable>depType</replaceable>(<replaceable>pattern</replaceable>)</literal>, <literal>~D<optional><replaceable>depType</replaceable>:</optional><replaceable>pattern</replaceable></literal></term>
 
 	  <listitem>
 	    <para>
@@ -5530,7 +5603,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	  <listitem>
 	    <para>
-	      Matches packages which are <quote>new</quote>.
+	      Matches packages which are <quote>new</quote>: that is,
+	      they have been added to the archive since the last time
+	      the list of packages was cleared using &actions-forget;
+	      or the command-line action <literal><link
+	      linkend='cmdlineForgetNew'>forget-new</link></literal>.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -5826,7 +5903,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      its name is provided by a package or mentioned in a
 	      dependency, but no package of that name exists.  For
 	      instance,
-	      <quote><literal>?vortial!&Sprovides;(&Strue;)</literal></quote>
+	      <quote><literal>?virtual!&Sprovides;(&Strue;)</literal></quote>
 	      matches packages which are virtual and are not provided
 	      by any package: ie, packages which are depended upon but
 	      do not exist.
