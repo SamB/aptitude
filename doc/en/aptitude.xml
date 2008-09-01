@@ -6443,10 +6443,17 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  in the tree at all.
 		</para>
 
+		<example>
+		  <title>Use of <literal>pattern</literal> to group packages by their maintainer</title>
+
+		  <para>
+		    <literal>pattern(&Smaintainer;() => \1)</literal>
+		  </para>
+		</example>
+
 		<para>
-		  For instance, <literal>pattern(&Smaintainer;() =>
-		  \1)</literal> will group packages according to their
-		  Maintainer field.  The policy
+		  The example above will group packages according to
+		  their Maintainer field.  The policy
 		  <literal>pattern(&Smaintainer;())</literal> will do
 		  the same thing, as the absent
 		  <replaceable>title</replaceable> defaults to
@@ -6461,13 +6468,26 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <replaceable>pattern</replaceable> will be inserted
 		  into the tree at the same level as the
 		  <literal>pattern</literal> grouping, rather than
-		  being placed in subtrees.  For instance,
-		  <literal>pattern(&Saction;(remove) => Packages Being
-		  Removed, &Strue; ||)</literal> will place packages
-		  that are being removed into a subtree, and place all
-		  the other packages at the current level, grouped
-		  according to the policies that follow
-		  <literal>pattern</literal>.
+		  being placed in subtrees.
+		</para>
+
+		<example>
+		  <title>
+		    Use of <literal>pattern</literal> with some
+		    packages placed at the top level
+		  </title>
+
+		  <para>
+		    <literal>pattern(&Saction;(remove) => Packages
+		    Being Removed, &Strue; ||)</literal>
+		  </para>
+		</example>
+
+		<para>
+		  The example above will place packages that are being
+		  removed into a subtree, and place all the other
+		  packages at the current level, grouped according to
+		  the policies that follow <literal>pattern</literal>.
 		</para>
 
 		<para>
