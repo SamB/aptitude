@@ -1,19 +1,21 @@
 # Kurdish translation for aptitude
-# Copyright (c) (c) 2006 Canonical Ltd, and Rosetta Contributors 2006
+# Copyright (c) 2006 Canonical Ltd, and Rosetta Contributors 2006
 # This file is distributed under the same license as the aptitude package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2006.
 #
+# Erdal Ronahi <erdal dot ronahi at gmail dot com>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-08-03 13:57-0700\n"
-"PO-Revision-Date: 2006-09-16 21:03+0100\n"
-"Last-Translator: Erdal Ronahi <erdal.ronahi@gmail.com>\n"
-"Language-Team: Kurdish <ku@li.org>\n"
+"PO-Revision-Date: 2008-09-01 14:51+0200\n"
+"Last-Translator: Erdal Ronahi <erdal dot ronahi at gmail dot com>\n"
+"Language-Team: Kurdish <ubuntu-l10n-kur@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 0.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: src/apt_config_treeitems.cc:99
 msgid ""
@@ -24,12 +26,11 @@ msgstr ""
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
 msgid "True"
-msgstr ""
+msgstr "Rast"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
-#, fuzzy
 msgid "False"
-msgstr "Bigire"
+msgstr "Şaş"
 
 #: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:393
 msgid "%BOption:%b  "
@@ -37,11 +38,11 @@ msgstr ""
 
 #: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:395
 msgid "%BDefault:%b "
-msgstr ""
+msgstr "%BStandard:%b "
 
 #: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:397
 msgid "%BValue:%b   "
-msgstr ""
+msgstr "%BNirx:%b   "
 
 #: src/apt_config_treeitems.cc:279
 #, c-format
@@ -316,8 +317,7 @@ msgid ""
 msgstr ""
 
 #: src/apt_options.cc:302
-msgid ""
-"Forget which packages are \"new\" whenever the package lists are updated"
+msgid "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr ""
 
 #: src/apt_options.cc:303
@@ -327,8 +327,7 @@ msgid ""
 msgstr ""
 
 #: src/apt_options.cc:308
-msgid ""
-"Forget which packages are \"new\" whenever packages are installed or removed"
+msgid "Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr ""
 
 #: src/apt_options.cc:309
@@ -339,8 +338,7 @@ msgid ""
 msgstr ""
 
 #: src/apt_options.cc:315
-msgid ""
-"Do not display a warning when the first change is made in read-only mode"
+msgid "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 
 #: src/apt_options.cc:316
@@ -466,7 +464,7 @@ msgstr ""
 
 #: src/apt_options.cc:524 src/pkg_grouppolicy.cc:1018
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Curbecur"
 
 #: src/broken_indicator.cc:126
 #, c-format
@@ -474,19 +472,19 @@ msgid "%ls: Examine"
 msgstr ""
 
 #: src/broken_indicator.cc:135
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Apply"
-msgstr "%s: Bisepîne"
+msgstr "%ls: Bisepîne"
 
 #: src/broken_indicator.cc:140
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Next"
-msgstr "%s: Ya piştre"
+msgstr "%ls: Ya piştre"
 
 #: src/broken_indicator.cc:146
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Previous"
-msgstr "%s: Ya berê"
+msgstr "%ls: Ya berê"
 
 #: src/broken_indicator.cc:241
 msgid "Dependency resolution disabled."
@@ -515,47 +513,47 @@ msgid "Suggest keeping all packages at their current version."
 msgstr ""
 
 #: src/broken_indicator.cc:374
-#, fuzzy, c-format
+#, c-format
 msgid "%d install"
 msgid_plural "%d installs"
-msgstr[0] "sazkirî"
-msgstr[1] "sazkirî"
+msgstr[0] "%d sazkirin"
+msgstr[1] "%d sazkirin"
 
 #: src/broken_indicator.cc:384
-#, c-format
+#, fuzzy, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
-msgstr[0] ""
+msgstr[0] "%d rakirin"
 msgstr[1] ""
 
 #: src/broken_indicator.cc:394
-#, c-format
+#, fuzzy, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
-msgstr[0] ""
+msgstr[0] "%d bihêle"
 msgstr[1] ""
 
 #: src/broken_indicator.cc:404
 #, fuzzy, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
-msgstr[0] "Bilind bike"
-msgstr[1] "Bilind bike"
+msgstr[0] "%d bilindkirin"
+msgstr[1] "%d bilindkirin"
 
 #: src/broken_indicator.cc:414
-#, c-format
+#, fuzzy, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
-msgstr[0] ""
+msgstr[0] "%d nizmkirin"
 msgstr[1] ""
 
 #. ForTranslators: %F is replaced with a comma separated list such as
 #. "n1 installs, n2 removals", ...
 #.
 #: src/broken_indicator.cc:425
-#, fuzzy, c-format
+#, c-format
 msgid "Suggest %F"
-msgstr "Pêşniyar dike"
+msgstr "%F pêşniyar dike"
 
 #: src/cmdline/cmdline_action.cc:48
 #, c-format
@@ -740,8 +738,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_do_action.cc:266
 #, c-format
-msgid ""
-"Unable to safely resolve dependencies, try running with --full-resolver.\n"
+msgid "Unable to safely resolve dependencies, try running with --full-resolver.\n"
 msgstr ""
 
 #: src/cmdline/cmdline_do_action.cc:304 src/cmdline/cmdline_simulate.cc:35
@@ -781,9 +778,9 @@ msgstr ""
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:77
 #: src/cmdline/cmdline_user_tag.cc:116
-#, fuzzy, c-format
+#, c-format
 msgid "No such package \"%s\".\n"
-msgstr "Paketa Nû^"
+msgstr "Pakêteke wusa tune \"%s\".\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:115
 #, c-format
@@ -812,8 +809,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_moo.cc:22
 #, c-format
-msgid ""
-"Didn't I already tell you that there are no Easter Eggs in this program?\n"
+msgid "Didn't I already tell you that there are no Easter Eggs in this program?\n"
 msgstr ""
 
 #: src/cmdline/cmdline_moo.cc:25
@@ -847,10 +843,10 @@ msgstr ""
 #. ForTranslators: %s is replaced with a comma-delimited list
 #. of package names.
 #: src/cmdline/cmdline_prompt.cc:218
-#, c-format
+#, fuzzy, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
-msgstr[0] ""
+msgstr[0] "(ji bo %s)"
 msgstr[1] ""
 
 #: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
@@ -937,9 +933,8 @@ msgid "The following packages will be upgraded:"
 msgstr "Ev paket dê werin bilindkirin:"
 
 #: src/cmdline/cmdline_prompt.cc:572
-#, fuzzy
 msgid "The following partially installed packages will be configured:"
-msgstr "Ev paket dê werin bilindkirin:"
+msgstr "Ev paketên nîv-sazkirî dê werin mîhengkirin:"
 
 #: src/cmdline/cmdline_prompt.cc:627
 #, c-format
@@ -1203,8 +1198,7 @@ msgid "'+' to install packages"
 msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:1022 src/cmdline/cmdline_resolver.cc:207
-msgid ""
-"'+M' to install packages and immediately flag them as automatically installed"
+msgid "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:1024 src/cmdline/cmdline_resolver.cc:209
@@ -1220,8 +1214,7 @@ msgid "'=' to place packages on hold"
 msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:215
-msgid ""
-"':' to keep packages in their current state without placing them on hold"
+msgid "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:1032 src/cmdline/cmdline_resolver.cc:217
@@ -1377,8 +1370,7 @@ msgid "examine the solution in the visual user interface"
 msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:196
-msgid ""
-"abort automatic dependency resolution; resolve dependencies by hand instead"
+msgid "abort automatic dependency resolution; resolve dependencies by hand instead"
 msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:198
@@ -1559,8 +1551,7 @@ msgid ""
 msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:971
-msgid ""
-"Unable to resolve dependencies for the upgrade (the resolver timed out)."
+msgid "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:985
@@ -1651,30 +1642,30 @@ msgstr ""
 #: src/cmdline/cmdline_show.cc:240
 #, c-format
 msgid "%s; will be removed"
-msgstr ""
+msgstr "%s; dê were rakirin"
 
 #: src/cmdline/cmdline_show.cc:258
 #, c-format
 msgid "%s%s; will be downgraded [%s -> %s]"
-msgstr ""
+msgstr "%s%s; dê were nizmkirin [%s -> %s]"
 
 #: src/cmdline/cmdline_show.cc:261
 #, c-format
 msgid "%s%s; will be upgraded [%s -> %s]"
-msgstr ""
+msgstr "%s%s; dê were bilindkirin [%s -> %s]"
 
 #: src/cmdline/cmdline_show.cc:270
 msgid "not a real package"
-msgstr ""
+msgstr "pakêteke rastîn nîn e"
 
 #: src/cmdline/cmdline_show.cc:283
 msgid " [held]"
 msgstr ""
 
 #: src/cmdline/cmdline_show.cc:297
-#, fuzzy, c-format
+#, c-format
 msgid "%s; will be installed"
-msgstr "le %s dê were sazkirin."
+msgstr "%s; dê were sazkirin"
 
 #: src/cmdline/cmdline_show.cc:299
 #, c-format
@@ -1693,7 +1684,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_show.cc:348 src/cmdline/cmdline_show.cc:370
 msgid "Package: "
-msgstr "Paket: "
+msgstr "Pakêt: "
 
 #: src/cmdline/cmdline_show.cc:349 src/cmdline/cmdline_show.cc:378
 #: src/pkg_columnizer.cc:91
@@ -1757,7 +1748,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_show.cc:401
 msgid "Architecture: "
-msgstr ""
+msgstr "Mîmarî:"
 
 #: src/cmdline/cmdline_show.cc:403
 msgid "Compressed Size: "
@@ -1769,7 +1760,7 @@ msgstr "Navê dosiyê: "
 
 #: src/cmdline/cmdline_show.cc:407
 msgid "MD5sum: "
-msgstr ""
+msgstr "MD5sum: "
 
 #: src/cmdline/cmdline_show.cc:411 src/cmdline/cmdline_show.cc:414
 msgid "Archive"
@@ -1797,7 +1788,7 @@ msgstr "Di nakokî de ye"
 
 #: src/cmdline/cmdline_show.cc:429
 msgid "Breaks"
-msgstr ""
+msgstr "Dişikîne"
 
 #: src/cmdline/cmdline_show.cc:431
 msgid "Replaces"
@@ -1814,7 +1805,7 @@ msgstr "Rave: "
 #: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
 #: src/pkg_view.cc:259
 msgid "Homepage: "
-msgstr ""
+msgstr "Malper:"
 
 #: src/cmdline/cmdline_show.cc:542
 #, c-format
@@ -1919,7 +1910,7 @@ msgstr[1] ""
 #: src/cmdline/cmdline_util.cc:331
 #, c-format
 msgid "Current status: %F."
-msgstr ""
+msgstr "Rewşa niha: %F"
 
 #: src/cmdline/cmdline_util.cc:342
 #, c-format
@@ -1940,9 +1931,8 @@ msgid "dep_level"
 msgstr ""
 
 #: src/cmdline/cmdline_why.cc:258
-#, fuzzy
 msgid "DependsOnly"
-msgstr "Bindest e"
+msgstr ""
 
 #: src/cmdline/cmdline_why.cc:272
 msgid "version_selection"
@@ -1954,7 +1944,7 @@ msgstr ""
 
 #: src/cmdline/cmdline_why.cc:280
 msgid "Candidate"
-msgstr ""
+msgstr "Berendam"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
 msgid "Install"
@@ -1970,22 +1960,21 @@ msgstr ""
 
 #: src/cmdline/cmdline_why.cc:297
 msgid "true"
-msgstr ""
+msgstr "rast"
 
 #: src/cmdline/cmdline_why.cc:299
-#, fuzzy
 msgid "false"
-msgstr "Bigire"
+msgstr "şaş"
 
 #: src/cmdline/cmdline_why.cc:353
-#, fuzzy, c-format
+#, c-format
 msgid "Install(%s)"
-msgstr "Saz bike"
+msgstr "Sazkirin(%s)"
 
 #: src/cmdline/cmdline_why.cc:355
-#, fuzzy, c-format
+#, c-format
 msgid "Remove(%s)"
-msgstr "Rake"
+msgstr "Rakirin(%s)"
 
 #: src/cmdline/cmdline_why.cc:357
 #, c-format
@@ -2082,9 +2071,8 @@ msgid "Tags"
 msgstr "Etîket"
 
 #: src/desc_parse.cc:334
-#, fuzzy
 msgid "User Tags"
-msgstr "Etîket"
+msgstr "Etîketên Bikarhêner"
 
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
@@ -2138,7 +2126,6 @@ msgid " [ %i%% ]"
 msgstr ""
 
 #: src/download_list.cc:266
-#, fuzzy
 msgid "Downloading... "
 msgstr "Tê daxistin..."
 
@@ -2148,9 +2135,8 @@ msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
 msgstr ""
 
 #: src/download_list.cc:349
-#, fuzzy
 msgid "Abort"
-msgstr "Dev jê berde.\n"
+msgstr "Dev jê berdan"
 
 #: src/download_list.cc:407
 msgid "[IGNORED]"
@@ -2158,7 +2144,7 @@ msgstr ""
 
 #: src/download_list.cc:413
 msgid "[ERROR]"
-msgstr ""
+msgstr "[ÇEWTÎ]"
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2307,8 +2293,7 @@ msgid ""
 msgstr ""
 
 #: src/generic/apt/download_install_manager.cc:56
-msgid ""
-"The package cache is not available; unable to download and install packages."
+msgid "The package cache is not available; unable to download and install packages."
 msgstr ""
 
 #: src/generic/apt/download_install_manager.cc:76
@@ -2334,8 +2319,7 @@ msgid "A package failed to install.  Trying to recover:"
 msgstr ""
 
 #: src/generic/apt/download_install_manager.cc:180
-msgid ""
-"Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
+msgid "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr ""
 
 #: src/generic/apt/download_update_manager.cc:77
@@ -2456,12 +2440,12 @@ msgstr ""
 #: src/generic/apt/log.cc:89
 #, c-format
 msgid "[UPGRADE] %s %s -> %s\n"
-msgstr ""
+msgstr "[BILINDKIRIN] %s %s -> %s\n"
 
 #: src/generic/apt/log.cc:93
 #, c-format
 msgid "[DOWNGRADE] %s %s -> %s\n"
-msgstr ""
+msgstr "[NIZMKIRIN] %s %s -> %s\n"
 
 #: src/generic/apt/log.cc:103
 msgid "REMOVE"
@@ -2473,7 +2457,7 @@ msgstr "SAZ BIKE"
 
 #: src/generic/apt/log.cc:112
 msgid "REINSTALL"
-msgstr "JI NÛ VE SAZ BIKE"
+msgstr "JI NÛ VE SAZKIRIN"
 
 #: src/generic/apt/log.cc:115
 msgid "HOLD"
@@ -2550,7 +2534,7 @@ msgstr ""
 
 #: src/generic/apt/matchers.cc:1589
 msgid "Downgrade"
-msgstr ""
+msgstr "Nizmkirin"
 
 #: src/generic/apt/matchers.cc:1591
 msgid "Hold"
@@ -2566,11 +2550,11 @@ msgstr "Rake"
 
 #: src/generic/apt/matchers.cc:1599
 msgid "Upgrade"
-msgstr "Bilind bike"
+msgstr "Bilindkirin"
 
 #: src/generic/apt/matchers.cc:1625
 msgid "Keep"
-msgstr "Biparêze"
+msgstr "Parastin"
 
 #: src/generic/apt/matchers.cc:1657
 msgid "Virtual"
@@ -2578,11 +2562,11 @@ msgstr "Farazî"
 
 #: src/generic/apt/matchers.cc:1684
 msgid "Installed"
-msgstr ""
+msgstr "Sazkirî"
 
 #: src/generic/apt/matchers.cc:1712
 msgid "Essential"
-msgstr ""
+msgstr "Bingehîn"
 
 #: src/generic/apt/matchers.cc:1737
 msgid "Config Files Remain"
@@ -2598,16 +2582,15 @@ msgstr ""
 
 #: src/generic/apt/matchers.cc:2621
 msgid "New Package"
-msgstr "Paketa Nû^"
+msgstr "Paketa Nû"
 
 #: src/generic/apt/matchers.cc:2646
 msgid "Upgradable"
 msgstr ""
 
 #: src/generic/apt/matchers.cc:2671
-#, fuzzy
 msgid "Obsolete"
-msgstr "Nepêwîst dike"
+msgstr "Nepêwîst"
 
 #: src/generic/apt/matchers.cc:3110
 #, c-format
@@ -2692,8 +2675,7 @@ msgstr ""
 
 #: src/generic/apt/pkg_acqfile.cc:99
 #, c-format
-msgid ""
-"The package index files are corrupted. No Filename: field for package %s."
+msgid "The package index files are corrupted. No Filename: field for package %s."
 msgstr ""
 
 #: src/generic/apt/pkg_changelog.cc:151 src/view_changelog.cc:164
@@ -3021,9 +3003,9 @@ msgid "  NCurses version: Unknown\n"
 msgstr ""
 
 #: src/main.cc:117
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version %s\n"
-msgstr "%s guherto"
+msgstr "Guhertoya NCurses %s\n"
 
 #: src/main.cc:119
 #, c-format
@@ -3047,9 +3029,9 @@ msgid ""
 msgstr ""
 
 #: src/main.cc:127
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: %s\n"
-msgstr "%s guherto"
+msgstr "Guhertoya NCurses: %s\n"
 
 #: src/main.cc:128
 #, c-format
@@ -3057,9 +3039,9 @@ msgid "  cwidget version: %s\n"
 msgstr ""
 
 #: src/main.cc:129
-#, fuzzy, c-format
+#, c-format
 msgid "  Apt version: %s\n"
-msgstr "%s guherto"
+msgstr "Guhertoya Apt: %s\n"
 
 #: src/main.cc:135
 #, c-format
@@ -3213,8 +3195,7 @@ msgstr ""
 
 #: src/main.cc:168
 #, c-format
-msgid ""
-" -d             Only download packages, do not install or remove anything.\n"
+msgid " -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
 
 #: src/main.cc:169
@@ -3224,8 +3205,7 @@ msgstr ""
 
 #: src/main.cc:170
 #, c-format
-msgid ""
-" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+msgid " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr ""
 
 #: src/main.cc:171
@@ -3237,14 +3217,12 @@ msgstr ""
 
 #: src/main.cc:172
 #, c-format
-msgid ""
-" -O order       Specify how search results should be sorted; see the manual\n"
+msgid " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr ""
 
 #: src/main.cc:173
 #, c-format
-msgid ""
-" -w width       Specify the display width for formatting search results\n"
+msgid " -w width       Specify the display width for formatting search results\n"
 msgstr ""
 
 #: src/main.cc:174
@@ -3259,8 +3237,7 @@ msgstr ""
 
 #: src/main.cc:176
 #, c-format
-msgid ""
-" -D             Show the dependencies of automatically changed packages.\n"
+msgid " -D             Show the dependencies of automatically changed packages.\n"
 msgstr ""
 
 #: src/main.cc:177
@@ -3270,14 +3247,12 @@ msgstr ""
 
 #: src/main.cc:178
 #, c-format
-msgid ""
-" -v             Display extra information. (may be supplied multiple times)\n"
+msgid " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr ""
 
 #: src/main.cc:179
 #, c-format
-msgid ""
-" -t [release]   Set the release from which packages should be installed\n"
+msgid " -t [release]   Set the release from which packages should be installed\n"
 msgstr ""
 
 #: src/main.cc:180
@@ -3348,8 +3323,7 @@ msgid "Only one of -u and -i may be specified\n"
 msgstr ""
 
 #: src/main.cc:566
-msgid ""
-"-u and -i may not be specified in command-line mode (eg, with 'install')"
+msgid "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
 
 #: src/main.cc:587
@@ -3454,7 +3428,7 @@ msgstr ""
 
 #: src/mine/cmine.cc:307
 msgid "Number of mines: "
-msgstr ""
+msgstr "Hejmara mayînan"
 
 #: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:282 src/ui.cc:354
 msgid "Ok"
@@ -3482,15 +3456,15 @@ msgstr "Taybet"
 
 #: src/mine/cmine.cc:471
 msgid "You have won."
-msgstr ""
+msgstr "Tu biserketî."
 
 #: src/mine/cmine.cc:474
 msgid "You lose!"
-msgstr ""
+msgstr "Tu binketî!"
 
 #: src/mine/cmine.cc:479
 msgid "You die...  --More--"
-msgstr ""
+msgstr "Tu dimirî... --Zêdetir--"
 
 #: src/mine/cmine.cc:492
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
@@ -3513,8 +3487,7 @@ msgid "The dart was poisoned!  The poison was deadly...  --More--"
 msgstr ""
 
 #: src/mine/cmine.cc:508
-msgid ""
-"A little dart shoots out at you!  You are hit by a little dart!  --More--"
+msgid "A little dart shoots out at you!  You are hit by a little dart!  --More--"
 msgstr ""
 
 #: src/mine/cmine.cc:512
@@ -3598,7 +3571,7 @@ msgstr ""
 
 #: src/pkg_columnizer.cc:88 src/ui.cc:2523
 msgid "Package"
-msgstr ""
+msgstr "Pakêt"
 
 #: src/pkg_columnizer.cc:89
 msgid "InstSz"
@@ -3683,7 +3656,7 @@ msgstr ""
 
 #: src/pkg_columnizer.cc:180 src/pkg_columnizer.cc:191
 msgid "<none>"
-msgstr ""
+msgstr "<tune>"
 
 #: src/pkg_columnizer.cc:237 src/pkg_grouppolicy.cc:262
 msgid "virtual"
@@ -3715,45 +3688,45 @@ msgstr ""
 
 #: src/pkg_columnizer.cc:265 src/pkg_columnizer.cc:551 src/pkg_ver_item.cc:242
 msgid "ERROR"
-msgstr ""
+msgstr "ÇEWTÎ"
 
 #: src/pkg_columnizer.cc:312 src/pkg_ver_item.cc:300
 msgid "hold"
-msgstr ""
+msgstr "parastin"
 
 #: src/pkg_columnizer.cc:315
 msgid "forbidden upgrade"
-msgstr ""
+msgstr "bilindkirina qedexe"
 
 #: src/pkg_columnizer.cc:317
 msgid "purge"
-msgstr ""
+msgstr "tam rakirin"
 
 #: src/pkg_columnizer.cc:317 src/pkg_ver_item.cc:324
 msgid "delete"
-msgstr ""
+msgstr "jêbirin"
 
 #: src/pkg_columnizer.cc:319 src/pkg_ver_item.cc:222 src/pkg_ver_item.cc:306
 msgid "broken"
-msgstr ""
+msgstr "şikestî"
 
 #: src/pkg_columnizer.cc:321 src/pkg_ver_item.cc:310 src/pkg_ver_item.cc:317
 #: src/pkg_ver_item.cc:326
 msgid "install"
-msgstr ""
+msgstr "sazkirin"
 
 #: src/pkg_columnizer.cc:323
 msgid "reinstall"
-msgstr ""
+msgstr "dîsa sazkirin"
 
 #: src/pkg_columnizer.cc:325
 msgid "upgrade"
-msgstr ""
+msgstr "bilindkirin"
 
 #: src/pkg_columnizer.cc:327 src/pkg_columnizer.cc:329 src/pkg_ver_item.cc:312
 #: src/pkg_ver_item.cc:319 src/pkg_ver_item.cc:328 src/pkg_ver_item.cc:331
 msgid "none"
-msgstr ""
+msgstr "tune"
 
 #: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
 #: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:268
@@ -3827,7 +3800,7 @@ msgstr ""
 
 #: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1070
 msgid "Tasks"
-msgstr ""
+msgstr "Peywir"
 
 #: src/pkg_grouppolicy.cc:283
 msgid "main"
@@ -3844,6 +3817,8 @@ msgid ""
 "Upgradable Packages\n"
 " A newer version of these packages is available."
 msgstr ""
+"Pakêtên tên bilindkirin\n"
+" Guhartoyeke nûtir a van pakêtan amade ye."
 
 #: src/pkg_grouppolicy.cc:427
 msgid ""
@@ -3852,18 +3827,26 @@ msgid ""
 "the list of \"new\" packages (choose \"Forget new packages\" from the "
 "Actions menu to empty this list)."
 msgstr ""
+"Pakêtên Nû\n"
+" These packages have been added to Debian since the last time you cleared "
+"the list of \"new\" packages (choose \"Forget new packages\" from the "
+"Actions menu to empty this list)."
 
 #: src/pkg_grouppolicy.cc:428
 msgid ""
 "Installed Packages\n"
 " These packages are currently installed on your computer."
 msgstr ""
+"Pakêtên Sazkirî\n"
+" Ev pakêt niha di komputera te de sazkirî ne."
 
 #: src/pkg_grouppolicy.cc:429
 msgid ""
 "Not Installed Packages\n"
 " These packages are not installed on your computer."
 msgstr ""
+"Pakêtên Nesazkirî\n"
+" Ev pakêt di komputera te de ne sazkirî ne."
 
 #: src/pkg_grouppolicy.cc:430
 msgid ""
@@ -3879,6 +3862,9 @@ msgid ""
 " These packages do not exist; they are names other packages use to require "
 "or provide some functionality."
 msgstr ""
+"Pakêtên Farazî\n"
+" These packages do not exist; they are names other packages use to require "
+"or provide some functionality."
 
 #: src/pkg_grouppolicy.cc:584
 msgid ""
@@ -3999,21 +3985,20 @@ msgid "End-user"
 msgstr ""
 
 #: src/pkg_grouppolicy.cc:1014
-#, fuzzy
 msgid "Servers"
-msgstr "Ti car"
+msgstr "Pêşkêşkar"
 
 #: src/pkg_grouppolicy.cc:1015
 msgid "Development"
-msgstr ""
+msgstr "Pêşdebirin"
 
 #: src/pkg_grouppolicy.cc:1016
 msgid "Localization"
-msgstr ""
+msgstr "Wergerandin"
 
 #: src/pkg_grouppolicy.cc:1017
 msgid "Hardware Support"
-msgstr ""
+msgstr "Desteka Hişkalavê"
 
 #: src/pkg_grouppolicy.cc:1019
 msgid "Unrecognized tasks"
@@ -4066,7 +4051,7 @@ msgstr ""
 
 #: src/pkg_info_screen.cc:133
 msgid "Source Package: "
-msgstr ""
+msgstr "Pakêta Çavkaniyê:"
 
 #: src/pkg_info_screen.cc:143
 #, c-format
@@ -4079,9 +4064,9 @@ msgid "Packages which depend on %s"
 msgstr ""
 
 #: src/pkg_info_screen.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid "Versions of %s"
-msgstr "Guherto"
+msgstr "Guhertoyên %s"
 
 #: src/pkg_item.cc:61
 msgid "Yes, I am aware this is a very bad idea"
@@ -4171,9 +4156,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: src/pkg_tree.cc:175
-#, fuzzy
 msgid "All Packages"
-msgstr "Paket"
+msgstr "Hemû Pakêt"
 
 #: src/pkg_tree.cc:188 src/pkg_tree.cc:203
 msgid "Building view"
@@ -4215,8 +4199,7 @@ msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr ""
 
 #: src/pkg_view.cc:581
-msgid ""
-"make_package_view: error in arguments -- bad column list for static item"
+msgid "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 
 #: src/pkg_view.cc:678
@@ -4224,9 +4207,8 @@ msgid "Related Dependencies"
 msgstr ""
 
 #: src/pkg_view.cc:681
-#, fuzzy
 msgid "Why Installed"
-msgstr "sazkirî"
+msgstr "Çima sazkirî"
 
 #: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
@@ -4295,8 +4277,7 @@ msgid "%B%s%b will be automatically removed because of dependency errors:"
 msgstr ""
 
 #: src/reason_fragment.cc:378
-msgid ""
-"%B%s%b will be automatically installed to satisfy the following dependencies:"
+msgid "%B%s%b will be automatically installed to satisfy the following dependencies:"
 msgstr ""
 
 #: src/reason_fragment.cc:384 src/reason_fragment.cc:396
@@ -4358,8 +4339,7 @@ msgid "%B%s%b is only partly installed; its installation will be completed."
 msgstr ""
 
 #: src/reason_fragment.cc:487
-msgid ""
-"The following packages depend on %B%s%b and will be broken by its removal:"
+msgid "The following packages depend on %B%s%b and will be broken by its removal:"
 msgstr ""
 
 #: src/reason_fragment.cc:490
@@ -4403,11 +4383,11 @@ msgstr ""
 
 #: src/reason_fragment.cc:553
 msgid "upgraded"
-msgstr ""
+msgstr "bilindkirî"
 
 #: src/reason_fragment.cc:553
 msgid "downgraded"
-msgstr ""
+msgstr "nizimkirî"
 
 #: src/reason_fragment.cc:559
 msgid ""
@@ -4434,19 +4414,19 @@ msgstr ""
 
 #: src/solution_dialog.cc:105
 msgid "No packages are broken."
-msgstr ""
+msgstr "Pakêtên şikestî tune"
 
 #: src/solution_dialog.cc:114 src/solution_screen.cc:501
 msgid "No resolution found."
-msgstr ""
+msgstr "Çareserî nehat dîtin."
 
 #: src/solution_dialog.cc:183
 msgid "Previous"
-msgstr ""
+msgstr "Paşve"
 
 #: src/solution_dialog.cc:184
 msgid "Next"
-msgstr ""
+msgstr "Pêşve"
 
 #: src/solution_dialog.cc:185
 msgid "Apply"
@@ -4454,7 +4434,7 @@ msgstr "Bisepîne"
 
 #: src/solution_dialog.cc:186
 msgid "Close"
-msgstr "Bigire"
+msgstr "Girtin"
 
 #: src/solution_fragment.cc:106
 #, c-format
@@ -4467,19 +4447,19 @@ msgid "%s pre-depends upon %s"
 msgstr ""
 
 #: src/solution_fragment.cc:112
-#, fuzzy, c-format
+#, c-format
 msgid "%s suggests %s"
-msgstr "Pêşniyar dike"
+msgstr "%s %s'ê pêşniyar dike"
 
 #: src/solution_fragment.cc:115 src/solution_item.cc:602
-#, fuzzy, c-format
+#, c-format
 msgid "%s recommends %s"
-msgstr "Tawsiye dike"
+msgstr "%s %s tawsiye dike"
 
 #: src/solution_fragment.cc:118
 #, c-format
 msgid "%s conflicts with %s"
-msgstr ""
+msgstr "Nakokî nav %s û %s heye"
 
 #: src/solution_fragment.cc:121
 #, c-format
@@ -4487,14 +4467,14 @@ msgid "%s breaks %s"
 msgstr ""
 
 #: src/solution_fragment.cc:124
-#, fuzzy, c-format
+#, c-format
 msgid "%s replaces %s"
-msgstr "Dikevê şuna"
+msgstr "%s dikeve şuna %s"
 
 #: src/solution_fragment.cc:127
-#, fuzzy, c-format
+#, c-format
 msgid "%s obsoletes %s"
-msgstr "Nepêwîst dike"
+msgstr "%s %s'ê nepêwîst dike"
 
 #: src/solution_fragment.cc:140
 #, c-format
@@ -4504,12 +4484,12 @@ msgstr ""
 #: src/solution_fragment.cc:150
 #, c-format
 msgid "Removing %s"
-msgstr ""
+msgstr "%s tê rakirin"
 
 #: src/solution_fragment.cc:152
 #, c-format
 msgid "Installing %s %s (%s)"
-msgstr ""
+msgstr "%s %s (%s) tên sazkirin"
 
 #: src/solution_fragment.cc:221
 msgid "%BRemove%b the following packages:%n"
@@ -4543,27 +4523,27 @@ msgstr ""
 #: src/solution_fragment.cc:304
 #, c-format
 msgid "Score is %d"
-msgstr ""
+msgstr "Skor %d e"
 
 #: src/solution_item.cc:96
 #, c-format
 msgid "Remove %F [%s (%s)]"
-msgstr ""
+msgstr "%F [%s (%s)] rake"
 
 #: src/solution_item.cc:103
 #, c-format
 msgid "Install %F [%s (%s)]"
-msgstr ""
+msgstr "%F [%s (%s)] saz bike"
 
 #: src/solution_item.cc:111
 #, c-format
 msgid "Cancel the installation of %F"
-msgstr ""
+msgstr "Sazkirina %F betal bike"
 
 #: src/solution_item.cc:114
 #, c-format
 msgid "Cancel the removal of %F"
-msgstr ""
+msgstr "Rakirina %F betal bike"
 
 #: src/solution_item.cc:117
 #, c-format
@@ -4573,12 +4553,12 @@ msgstr ""
 #: src/solution_item.cc:125
 #, c-format
 msgid "Upgrade %F [%s (%s) -> %s (%s)]"
-msgstr ""
+msgstr "%F bilind bike [%s (%s) -> %s (%s)] "
 
 #: src/solution_item.cc:134
 #, c-format
 msgid "Downgrade %F [%s (%s) -> %s (%s)]"
-msgstr ""
+msgstr "%F  nizim bike [%s (%s) -> %s (%s)]"
 
 #: src/solution_item.cc:606
 #, c-format
@@ -4586,43 +4566,36 @@ msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
 msgstr ""
 
 #: src/solution_screen.cc:157
-#, fuzzy
 msgid "The following actions will resolve this dependency:"
-msgstr "Ev paket dê werin bilindkirin:"
+msgstr "Ev çalakî dê werin vê bindestiyê çareser bike:"
 
 #: src/solution_screen.cc:248
-#, fuzzy
 msgid "Remove the following packages:"
-msgstr "Ev paket ŞIKESTÎ ne:"
+msgstr "Ev paketan rake:"
 
 #: src/solution_screen.cc:259
-#, fuzzy
 msgid "Keep the following packages at their current version:"
-msgstr "Ev paket dê werin bilindkirin:"
+msgstr "Ev pakêtan di guhartoya xwe de bihêle:"
 
 #: src/solution_screen.cc:270
-#, fuzzy
 msgid "Install the following packages:"
-msgstr "Ev paket ŞIKESTÎ ne:"
+msgstr "Ev paketan saz bike:"
 
 #: src/solution_screen.cc:281
-#, fuzzy
 msgid "Upgrade the following packages:"
-msgstr "Ev paket ŞIKESTÎ ne:"
+msgstr "Ev paketan bilind bike:"
 
 #: src/solution_screen.cc:292
-#, fuzzy
 msgid "Downgrade the following packages:"
-msgstr "Ev paket ŞIKESTÎ ne:"
+msgstr "Ev paketan nizim bike:"
 
 #: src/solution_screen.cc:305
 msgid "Leave the following recommendations unresolved:"
 msgstr ""
 
 #: src/solution_screen.cc:485
-#, fuzzy
 msgid "No broken packages."
-msgstr "Paketa Nû^"
+msgstr "Pakêtên şikestî tune."
 
 #: src/solution_screen.cc:515
 #, c-format
@@ -4631,7 +4604,7 @@ msgstr ""
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"
-msgstr ""
+msgstr "HIŞYARÎ"
 
 #: src/trust.cc:20
 msgid ""
@@ -4668,8 +4641,7 @@ msgid "Never display this message again."
 msgstr ""
 
 #: src/ui.cc:383
-msgid ""
-"You may not modify the state of any package while a download is underway."
+msgid "You may not modify the state of any package while a download is underway."
 msgstr ""
 
 #: src/ui.cc:414
@@ -4686,13 +4658,12 @@ msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr ""
 
 #: src/ui.cc:559
-msgid ""
-"Subprocess exited with an error -- did you type your password correctly?"
+msgid "Subprocess exited with an error -- did you type your password correctly?"
 msgstr ""
 
 #: src/ui.cc:598
 msgid "Loading cache"
-msgstr ""
+msgstr "Pêşbîr tê barkirin"
 
 #: src/ui.cc:640
 msgid "Really quit Aptitude?"
@@ -4700,7 +4671,7 @@ msgstr ""
 
 #: src/ui.cc:693 src/ui.cc:695
 msgid "Preferences"
-msgstr ""
+msgstr "Vebijêrk"
 
 #: src/ui.cc:694 src/ui.cc:2289
 msgid "Change the behavior of aptitude"
@@ -4713,7 +4684,7 @@ msgstr ""
 #: src/ui.cc:834 src/ui.cc:836 src/ui.cc:883 src/ui.cc:885 src/ui.cc:904
 #: src/ui.cc:906 src/ui.cc:927 src/ui.cc:929
 msgid "Packages"
-msgstr "Paket"
+msgstr "Pakêt"
 
 #: src/ui.cc:835 src/ui.cc:884 src/ui.cc:905 src/ui.cc:928
 msgid "View available packages and choose actions to perform"
@@ -4721,7 +4692,7 @@ msgstr ""
 
 #: src/ui.cc:864
 msgid "Recommended Packages"
-msgstr ""
+msgstr "Pakêtên tawsiyekirî"
 
 #: src/ui.cc:865
 msgid "View packages that it is recommended that you install"
@@ -4729,7 +4700,7 @@ msgstr ""
 
 #: src/ui.cc:866
 msgid "Recommendations"
-msgstr ""
+msgstr "Tawsiye"
 
 #: src/ui.cc:970
 msgid ""
@@ -4740,9 +4711,8 @@ msgid ""
 msgstr ""
 
 #: src/ui.cc:1020 src/ui.cc:1022
-#, fuzzy
 msgid "License"
-msgstr "^Lîsans"
+msgstr "Lîsans"
 
 #: src/ui.cc:1021 src/ui.cc:2381
 msgid "View the terms under which you may copy and distribute aptitude"
@@ -4797,9 +4767,8 @@ msgid "View a list of frequently asked questions"
 msgstr ""
 
 #: src/ui.cc:1089 src/ui.cc:1091
-#, fuzzy
 msgid "News"
-msgstr "Nû"
+msgstr "Nûçe"
 
 #: src/ui.cc:1090
 #, c-format
@@ -4808,8 +4777,7 @@ msgstr ""
 
 #: src/ui.cc:1097
 #, c-format
-msgid ""
-"Unable to remove the old temporary directory; you should remove %s by hand."
+msgid "Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr ""
 
 #: src/ui.cc:1102
@@ -4838,7 +4806,7 @@ msgstr ""
 
 #: src/ui.cc:1173
 msgid "Package Download"
-msgstr ""
+msgstr "Daxistina Pakêtan"
 
 #: src/ui.cc:1209
 msgid ""
@@ -4853,9 +4821,8 @@ msgid "  %S*%N %s [version %s]%n"
 msgstr ""
 
 #: src/ui.cc:1221
-#, fuzzy
 msgid "Really Continue"
-msgstr "Bidomîne"
+msgstr "Bi Rastî Bidomîne"
 
 #: src/ui.cc:1223
 msgid "Abort Installation"
@@ -5016,9 +4983,8 @@ msgid "Check for new versions of packages"
 msgstr ""
 
 #: src/ui.cc:2098
-#, fuzzy
 msgid "Mark Up^gradable"
-msgstr "Bilind bike"
+msgstr ""
 
 #: src/ui.cc:2099
 msgid "Mark all upgradable packages which are not held for upgrade"
@@ -5066,11 +5032,11 @@ msgstr ""
 
 #: src/ui.cc:2127
 msgid "^Play Minesweeper"
-msgstr ""
+msgstr "^Minesweeper bileyîze"
 
 #: src/ui.cc:2132
 msgid "^Become root"
-msgstr ""
+msgstr "^Bibe root"
 
 #: src/ui.cc:2133
 msgid ""
@@ -5080,7 +5046,7 @@ msgstr ""
 
 #: src/ui.cc:2135
 msgid "^Quit"
-msgstr ""
+msgstr "^Derketin"
 
 #: src/ui.cc:2136
 msgid "Exit the program"
@@ -5096,7 +5062,7 @@ msgstr ""
 
 #: src/ui.cc:2151
 msgid "^Install"
-msgstr "^Saz bike"
+msgstr "^Sazkirin"
 
 #: src/ui.cc:2152
 msgid "Flag the currently selected package for installation or upgrade"
@@ -5104,7 +5070,7 @@ msgstr ""
 
 #: src/ui.cc:2155
 msgid "^Remove"
-msgstr "^Rake"
+msgstr "^Rakirin"
 
 #: src/ui.cc:2156
 msgid "Flag the currently selected package for removal"
@@ -5112,16 +5078,15 @@ msgstr ""
 
 #: src/ui.cc:2159
 msgid "^Purge"
-msgstr ""
+msgstr "^Tam rakirin"
 
 #: src/ui.cc:2160
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
+msgid "Flag the currently selected package and its configuration files for removal"
 msgstr ""
 
 #: src/ui.cc:2163
 msgid "^Keep"
-msgstr "^Biparêze"
+msgstr "Bi^hêle"
 
 #: src/ui.cc:2164
 msgid "Cancel any action on the selected package"
@@ -5129,7 +5094,7 @@ msgstr ""
 
 #: src/ui.cc:2167
 msgid "^Hold"
-msgstr ""
+msgstr "^Parastin"
 
 #: src/ui.cc:2168
 msgid ""
@@ -5169,7 +5134,7 @@ msgstr ""
 
 #: src/ui.cc:2184
 msgid "I^nformation"
-msgstr ""
+msgstr "^Agahî"
 
 #: src/ui.cc:2185
 msgid "Display more information about the selected package"
@@ -5280,7 +5245,7 @@ msgstr ""
 
 #: src/ui.cc:2254
 msgid "^Find"
-msgstr ""
+msgstr "^Lêgerîn"
 
 #: src/ui.cc:2255
 msgid "Search forwards"
@@ -5465,9 +5430,8 @@ msgid "^FAQ"
 msgstr ""
 
 #: src/ui.cc:2376
-#, fuzzy
 msgid "^News"
-msgstr "Nû"
+msgstr "^Nûçe"
 
 #: src/ui.cc:2377
 msgid "View the important changes made in each version of "
@@ -5483,7 +5447,7 @@ msgstr "Çalakî"
 
 #: src/ui.cc:2524
 msgid "Resolver"
-msgstr ""
+msgstr "Çareserî"
 
 #: src/ui.cc:2525
 msgid "Search"
@@ -5491,7 +5455,7 @@ msgstr "Lê bigere"
 
 #: src/ui.cc:2526
 msgid "Options"
-msgstr ""
+msgstr "Opsiyon"
 
 #: src/ui.cc:2527
 msgid "Views"
@@ -5503,19 +5467,21 @@ msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
 "Pkgs"
 msgstr ""
+"%ls: Menu %ls:Alîkarî %ls:Derketin %ls:Rojanekirin %ls:Daxistin/Sazkirin/Rakirina "
+"Pakêtan"
 
 #: src/ui.cc:2938
 msgid "yes_key"
-msgstr ""
+msgstr "e"
 
 #: src/ui.cc:2939
 msgid "no_key"
-msgstr ""
+msgstr "n"
 
 #: src/view_changelog.cc:165
 #, c-format
 msgid "%s changes"
-msgstr ""
+msgstr "%s guhartin"
 
 #: src/view_changelog.cc:166
 msgid "View the list of changes made to this Debian package."
