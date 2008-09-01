@@ -719,6 +719,13 @@ static bool prompt_trust()
 
       const string okstr=_("Yes"), abortstr=_("No");
 
+      // These strings are used to compare in a translation-invariant
+      // way, so that "yes" and "no" are always valid inputs; if the
+      // user can't enter the translated string for some reason,
+      // he/she can always enter the fallback strings.
+      const string fallback_okstr = "Yes";
+      const string fallback_abortstr = "No";
+
       while(1)
 	{
 	  printf(_("Do you want to ignore this warning and proceed anyway?\n"));
@@ -730,8 +737,13 @@ static bool prompt_trust()
 	  if(cin.eof())
 	    throw StdinEOFException();
 
-	  const bool is_ok=(strncasecmp(okstr.c_str(), buf, okstr.size())==0);
-	  const bool is_abort=(strncasecmp(abortstr.c_str(), buf, abortstr.size())==0);
+
+	  const bool is_ok =
+	    strncasecmp(okstr.c_str(), buf, okstr.size()) == 0 ||
+	    strncasecmp(fallback_okstr.c_str(), buf, fallback_okstr.size()) == 0;
+	  const bool is_abort =
+	    strncasecmp(abortstr.c_str(), buf, abortstr.size()) == 0 ||
+	    strncasecmp(fallback_abortstr.c_str(), buf, fallback_abortstr.size()) == 0;
 
 	  const bool rval=is_ok;
 
