@@ -78,15 +78,10 @@ namespace gui
       ~NotifyView();
       /** \brief Add a new notification.
        *
-       *  The notification is owned by this view after being added.
-       *
        *  \param notification   The notification to add.
        *  The NotifyView will take ownership of this pointer.
-       *  \param tab            The tab to add the notification for.
-       *  The notification will be displayed only when this tab is the
-       *  currently active one in the main notebook.
        */
-      void add_notification(Notification * notification, Tab * tab);
+      void add_notification(Notification * notification);
       /** \brief Remove a notification.
        *
        *  \param notification   The notification to remove.
