@@ -4,7 +4,8 @@ localedir = $(datadir)/locale
 INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 LDADD = @LIBINTL@
-SWEEPERHELPTXTS = mine-help.txt $(wildcard mine-help-??.txt)
+SWEEPERHELPTXTS = mine-help.txt $(wildcard $(srcdir)/mine-help-??.txt) \
+  $(wildcard $(srcdir)/mine-help-??_??.txt)
 
 noinst_LIBRARIES = libcmine.a
 
