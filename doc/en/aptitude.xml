@@ -6422,7 +6422,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    </varlistentry>
 
 	    <varlistentry>
-	      <term><synopsis>pattern(<replaceable>pattern</replaceable> <optional>=> <replaceable>title</replaceable></optional><optional>, ...</optional>)</synopsis></term>
+	      <term><synopsis>pattern(<replaceable>pattern</replaceable> <optional>=> <replaceable>title</replaceable></optional> <optional>{ <replaceable>policy</replaceable> }</optional> <optional>, ...</optional>)</synopsis></term>
 
 	      <listitem>
 		<para>
@@ -6437,7 +6437,10 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <replaceable>title</replaceable> will be replaced by
 		  the Nth result of the match.  If
 		  <replaceable>title</replaceable> is not present, it
-		  is assumed to be <literal>\1</literal>.
+		  is assumed to be <literal>\1</literal>.  Note that
+		  packages which do not match any
+		  <replaceable>pattern</replaceable>s will not appear
+		  in the tree at all.
 		</para>
 
 		<para>
@@ -6462,10 +6465,66 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <literal>pattern(&Saction;(remove) => Packages Being
 		  Removed, &Strue; ||)</literal> will place packages
 		  that are being removed into a subtree, and place all
-		  the other packages at the current level.  Any later
-		  grouping policies will apply to both sets of
-		  packages, of course.
+		  the other packages at the current level, grouped
+		  according to the policies that follow
+		  <literal>pattern</literal>.
 		</para>
+
+		<para>
+		  By default, all the packages that match each pattern
+		  are grouped according to the rules that follow the
+		  <literal>pattern</literal> policy.  To specify a
+		  different policy for some packages, write the policy
+		  in braces (<literal>{}</literal>) after the title of
+		  the group, after the <literal>||</literal>, or after
+		  the pattern if neither is present.  For instance:
+		</para>
+
+		<example id='examplePatternGroupingPolicyWithSubPolicies'>
+		  <title>
+		    Use of the <literal>pattern</literal> grouping policy with sub-policies
+		  </title>
+
+		  <para>
+		    <literal>pattern(&Saction;(remove) => Packages
+		    Being Removed {}, &Saction;(install) => Packages
+		    Being Installed, &Strue; || {status})</literal>
+		  </para>
+		</example>
+
+		<para>
+		  The policy in the above example has the following
+		  effects:
+		</para>
+
+		<itemizedlist>
+		  <listitem>
+		    <para>
+		      Packages that are being removed are placed into
+		      a subtree labeled <quote>Packages Being
+		      Removed</quote>; the grouping policy for this
+		      subtree is empty, so the packages are placed
+		      into a flat list.
+		    </para>
+		  </listitem>
+
+		  <listitem>
+		    <para>
+		      Packages that are being installed are placed
+		      into a subtree labeled <literal>Packages Being
+		      Installed</literal> and grouped according to the
+		      policies that follow <literal>pattern</literal>.
+		    </para>
+		  </listitem>
+
+		  <listitem>
+		    <para>
+		      All remaining packages are placed at the top
+		      level of the tree, grouped according to their
+		      status.
+		    </para>
+		  </listitem>
+		</itemizedlist>
 
 		<para>
 		  See <xref linkend='secSearchPatterns'/>

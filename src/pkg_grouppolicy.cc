@@ -1135,7 +1135,7 @@ pkg_grouppolicy_task_factory::~pkg_grouppolicy_task_factory()
 class pkg_grouppolicy_matchers : public pkg_grouppolicy
 {
 public:
-  typedef pkg_grouppolicy_matchers_factory::match_pair match_pair;
+  typedef pkg_grouppolicy_matchers_factory::match_entry match_entry;
 
   struct subtree_pair
   {
@@ -1154,7 +1154,7 @@ public:
 private:
   pkg_grouppolicy_factory *chain;
   pkg_grouppolicy *passthrough_policy;
-  const vector<match_pair> &subgroups;
+  const vector<match_entry> &subgroups;
   typedef map<wstring, subtree_pair> subtree_map;
   subtree_map subtrees;
 
@@ -1242,7 +1242,7 @@ private:
 public:
   pkg_grouppolicy_matchers(pkg_grouppolicy_factory *_chain,
 			   pkg_signal *_sig, desc_signal *_desc_sig,
-			   const vector<match_pair> &_subgroups)
+			   const vector<match_entry> &_subgroups)
         :pkg_grouppolicy(_sig, _desc_sig),
 	 chain(_chain), passthrough_policy(NULL),
 	 subgroups(_subgroups)
@@ -1260,17 +1260,20 @@ public:
   void add_package(const pkgCache::PkgIterator &pkg,
 		   pkg_subtree *root)
   {
-    for(vector<match_pair>::const_iterator i = subgroups.begin();
+    for(vector<match_entry>::const_iterator i = subgroups.begin();
 	i != subgroups.end(); ++i)
 	{
 	  match::pkg_match_result *res = match::get_match(i->matcher, pkg, *apt_cache_file, *apt_package_records);
 	  if(res != NULL)
 	    {
+	      pkg_grouppolicy_factory * const local_chain =
+		i->chain != NULL ? i->chain : chain;
+
 	      if(i->passthrough)
 		{
 		  if(passthrough_policy == NULL)
-		    passthrough_policy = chain->instantiate(get_sig(),
-							    get_desc_sig());
+		    passthrough_policy = local_chain->instantiate(get_sig(),
+								  get_desc_sig());
 		  passthrough_policy->add_package(pkg, root);
 		  break;
 		}
@@ -1286,8 +1289,8 @@ public:
 	      else
 		{
 		  pkg_subtree *tree = new pkg_subtree(title, L"", get_desc_sig());
-		  pkg_grouppolicy *policy = chain->instantiate(get_sig(),
-							       get_desc_sig());
+		  pkg_grouppolicy *policy = local_chain->instantiate(get_sig(),
+								     get_desc_sig());
 		  root->add_child(tree);
 		  tree->set_num_packages_parent(root);
 
@@ -1310,9 +1313,12 @@ pkg_grouppolicy *pkg_grouppolicy_matchers_factory :: instantiate(pkg_signal *sig
 
 pkg_grouppolicy_matchers_factory :: ~pkg_grouppolicy_matchers_factory()
 {
-  for(std::vector<match_pair>::const_iterator i = subgroups.begin();
+  for(std::vector<match_entry>::const_iterator i = subgroups.begin();
       i != subgroups.end(); ++i)
-    delete i->matcher;
+    {
+      delete i->matcher;
+      delete i->chain;
+    }
   delete chain;
 }
 

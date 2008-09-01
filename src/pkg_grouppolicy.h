@@ -298,21 +298,33 @@ public:
   virtual ~pkg_grouppolicy_task_factory();
 };
 
-// Groups packages using the given list of matchers/tree names.  Match
-// results can be substituted into tree names using \N notation.
+/** \brief Groups packages using the given list of matchers/tree names.
+ *
+ *  Match results can be substituted into tree names using \N
+ *  notation.  Each branch of the tree can have its own policy chain;
+ *  if none is specified, the default chain will be used.
+ */
 class pkg_grouppolicy_matchers_factory:public pkg_grouppolicy_factory
 {
 public:
-  struct match_pair
+  struct match_entry
   {
     aptitude::matching::pkg_matcher *matcher;
+    /** \brief A pointer to the specialized sub-factory for
+     *  this entry, or NULL to use the default chain.
+     */
+    pkg_grouppolicy_factory *chain;
     std::wstring tree_name;
     bool passthrough;
 
-    match_pair(aptitude::matching::pkg_matcher *_matcher,
-	       const std::wstring &_tree_name,
-	       bool _passthrough)
-      :matcher(_matcher), tree_name(_tree_name), passthrough(_passthrough)
+    match_entry(aptitude::matching::pkg_matcher *_matcher,
+		pkg_grouppolicy_factory *_chain,
+		const std::wstring &_tree_name,
+		bool _passthrough)
+      : matcher(_matcher),
+	chain(_chain),
+        tree_name(_tree_name),
+	passthrough(_passthrough)
     {
     }
   };
@@ -320,10 +332,10 @@ public:
 private:
   pkg_grouppolicy_factory *chain;
 
-  std::vector<match_pair> subgroups;
+  std::vector<match_entry> subgroups;
 public:
 
-  pkg_grouppolicy_matchers_factory(const std::vector<match_pair> &_subgroups,
+  pkg_grouppolicy_matchers_factory(const std::vector<match_entry> &_subgroups,
 				   pkg_grouppolicy_factory *_chain)
     :chain(_chain), subgroups(_subgroups)
   {
