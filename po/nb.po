@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: aptitude_nb\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-08-03 13:57-0700\n"
-"PO-Revision-Date: 2008-05-15 23:02+0200\n"
+"PO-Revision-Date: 2008-09-01 15:03+0200\n"
 "Last-Translator: Hans Fredrik Nordhaug <hans@nordhaug.priv.no>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -511,6 +511,13 @@ msgid ""
 "enabled, packages that are recommended by an installed package will not be "
 "automatically removed."
 msgstr ""
+"Hvis dette valget og «Finn pakke-avhengighetene automatisk» er aktivert "
+"samtidig, vil aptitude prøve å installere anbefalingene fra nylig "
+"installerte pakker i tillegg til deres direkte avhengigheter. Foreslåtte "
+"pakker blir ikke automatisk installert.\n"
+"Hvis dette valget og «Fjern ubrukte pakker automatisk» er aktivert "
+"samtidig, vil pakker som er anbefalt av en installert pakke ikke bli "
+"automatisk slettet."
 
 #: src/apt_options.cc:375
 msgid "Remove unused packages automatically"
@@ -526,6 +533,12 @@ msgid ""
 "is enabled, automatically installed packages will not be removed if any "
 "installed package recommends them."
 msgstr ""
+"Hvis dette valget er aktivert, vil pakker som er automatisk installert og "
+"som ingen manuelt installerte pakker avhenger av, bli fjernet fra systemet. "
+"Avbryting av fjerningen vil merke pakken som manuelt installert.\n"
+"Hvis dette valget og «Installer anbefalte pakker automatisk» er aktivert "
+"samtidig, vil automatisk installerte pakker ikke bli fjernet hvis noen "
+"installerte pakker anbefaler dem."
 
 #: src/apt_options.cc:387
 msgid "Packages that should never be automatically removed"
@@ -557,6 +570,14 @@ msgid ""
 "the dependencies of a package that has just been selected for installation "
 "or upgrade, due to apt bug #470035."
 msgstr ""
+"Hvis dette valget er aktivert, vil aptitude når den løser et "
+"avhengighetsproblem, vurdere å endre holdte pakker eller installere "
+"forbudte pakkeversjoner. Hvis dette valget er deaktivert, vil disse "
+"løsningene bli avvist som standard.\n"
+"MERK: For øyeblikket gjelder bare denne begrensningen i situasjoner hvor "
+"aptitudes avhengighetsløser er aktivert. aptitude vil fortsatt bryte holdte "
+"når den automatisk installerer avhengighetene for en pakke som nettopp har "
+"blitt valgt for installering eller oppgradering, på grunn av apt feil #470035."
 
 #: src/apt_options.cc:520
 msgid "UI options"
@@ -981,8 +1002,8 @@ msgstr "Klarte ikke å lese kildelista"
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(for %s)"
+msgstr[1] "(for %s)"
 
 #: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
@@ -1676,10 +1697,9 @@ msgid "Resolving dependencies..."
 msgstr "Løser opp avhengigheter ..."
 
 #: src/cmdline/cmdline_resolver.cc:563
-#, fuzzy, c-format
-#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
-msgstr "åpen: %d; lukket: %d; utsatt: %d; konflikt: %d"
+msgstr "åpen: %zd; lukket: %zd; utsatt: %zd; konflikt: %zd"
 
 #: src/cmdline/cmdline_resolver.cc:616
 msgid "The following actions will resolve these dependencies:"
@@ -3840,7 +3860,7 @@ msgstr "Skriv inn navnet på fila som skal lagres: "
 
 #: src/mine/cmine.cc:684
 msgid "mine-help.txt"
-msgstr "mine-hjelp.txt"
+msgstr "mine-help.txt"
 
 #: src/mine/cmine.cc:686
 msgid "Encoding of mine-help.txt|UTF-8"
@@ -4495,8 +4515,8 @@ msgstr "Hierarki-redigering"
 #, c-format
 msgid "This group contains %d package."
 msgid_plural "This group contains %d packages."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Denne gruppa inneholder %d pakke."
+msgstr[1] "Denne gruppa inneholder %d pakker."
 
 #: src/pkg_tree.cc:175
 msgid "All Packages"
@@ -5084,7 +5104,7 @@ msgstr "Vis tilgjengelige pakker og velg hvilke handlinger du vil utføre"
 
 #: src/ui.cc:864
 msgid "Recommended Packages"
-msgstr "Anbefalte pakkere"
+msgstr "Anbefalte pakker"
 
 #: src/ui.cc:865
 msgid "View packages that it is recommended that you install"
