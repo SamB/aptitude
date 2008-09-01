@@ -738,16 +738,14 @@ static bool prompt_trust()
 	    throw StdinEOFException();
 
 
-	  const bool is_ok =
-	    strncasecmp(okstr.c_str(), buf, okstr.size()) == 0 ||
-	    strncasecmp(fallback_okstr.c_str(), buf, fallback_okstr.size()) == 0;
-	  const bool is_abort =
-	    strncasecmp(abortstr.c_str(), buf, abortstr.size()) == 0 ||
-	    strncasecmp(fallback_abortstr.c_str(), buf, fallback_abortstr.size()) == 0;
+	  const bool is_ok =             strncasecmp(okstr.c_str(), buf, okstr.size()) == 0;
+	  const bool is_fallback_ok =    strncasecmp(fallback_okstr.c_str(), buf, fallback_okstr.size()) == 0;
+	  const bool is_abort =          strncasecmp(abortstr.c_str(), buf, abortstr.size()) == 0;
+	  const bool is_fallback_abort = strncasecmp(fallback_abortstr.c_str(), buf, fallback_abortstr.size()) == 0;
 
-	  const bool rval=is_ok;
+	  const bool rval = is_ok || (is_fallback_ok && !is_abort);
 
-	  if(!is_ok && !is_abort)
+	  if(!is_ok && !is_abort && !is_fallback_ok && !is_fallback_abort)
 	    printf(_("Unrecognized input.  Enter either \"%s\" or \"%s\".\n"), okstr.c_str(), abortstr.c_str());
 	  else
 	    return rval;
