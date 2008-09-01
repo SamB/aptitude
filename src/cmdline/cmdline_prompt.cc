@@ -720,7 +720,15 @@ static bool prompt_trust()
       // ForTranslators: This string is a confirmation message, which
       // users (especially CJK users) should be able to input without
       // input methods.  Please include nothing but ASCII characters.
-      const string okstr=_("YES"), abortstr=_("NO");
+      // The text preceding the pipe character (|) will be ignored and
+      // can be removed from your translation.
+      const string okstr    = P_("Go ahead and ignore the warning|Yes");
+      // ForTranslators: This string is a confirmation message, which
+      // users (especially CJK users) should be able to input without
+      // input methods.  Please include nothing but ASCII characters.
+      // The text preceding the pipe character (|) will be ignored and
+      // can be removed from your translation.
+      const string abortstr = P_("Abort instead of overriding the warning|No");
 
       while(1)
 	{
