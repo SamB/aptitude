@@ -338,10 +338,12 @@ public:
 		  args.push_back(string());
 	      }
 	  }
-      }
 
-    if(begin != end)
-      ++begin;
+	if(begin != end)
+	  ++begin;
+	else
+	  throw GroupParseException(_("Unmatched '(' in pattern grouping policy"));
+      }
 
     return create_node(args);
   }
