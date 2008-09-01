@@ -5237,25 +5237,28 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      which must be defined in an enclosing &Sfor;.
 	    </para>
 
-
-	    <para>
-	      For instance, the following search expression will match
-	      any package <literal>x</literal> such that
-	      <literal>x</literal> depends on a package
-	      <literal>y</literal> which in turn depends on a package
-	      <literal>z</literal> such that <literal>x</literal> also
-	      depends directly on <literal>z</literal>.
-	    </para>
-
 	    <example id='exampleSearchBind'>
 	      <title>Use of the <literal>?bind</literal> term</title>
 
 	      <para>
-		<literal>
-		  &Sfor; x: &Sdepends;(&Sdepends;(&Sfor; z: ?x:<link linkend='searchDep'>depends</link>(&Sequal;z)))
-		</literal>
+		<literal>&Sfor; x: &Sdepends;(&Sdepends;(&Sfor; z: ?bind(x, &Sdepends;(&Sequal;z))))</literal>
+	      </para>
+
+	      <para>
+		<literal>&Sfor; x: &Sdepends;(&Sdepends;(&Sfor; z: ?x:<link linkend='searchDep'>depends</link>(&Sequal;z)))</literal>
 	      </para>
 	    </example>
+
+	    <para>
+	      The two search patterns in the above example both match
+	      any package <literal>x</literal> such that
+	      <literal>x</literal> depends on a package
+	      <literal>y</literal> which in turn depends on a package
+	      <literal>z</literal> such that <literal>x</literal> also
+	      depends directly on <literal>z</literal>.  The first
+	      pattern uses <literal>?bind</literal> directly, while
+	      the second one uses an equivalent shorthand syntax.
+	    </para>
 
 	    <para>
 	      See <xref linkend='secExplicitMatchers'/> for more
