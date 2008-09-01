@@ -66,7 +66,9 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/init.h>
 
+#ifdef HAVE_GTK
 #include "gtk/gui.h"
+#endif
 
 #include "progress.h"
 #include "pkg_columnizer.h"
@@ -254,8 +256,10 @@ option opts[]={
   {"remove-user-tag-from", 1, &getopt_result, OPTION_REMOVE_USER_TAG_FROM},
   {"arch-only", 0, &getopt_result, OPTION_ARCH_ONLY},
   {"not-arch-only", 0, &getopt_result, OPTION_NOT_ARCH_ONLY},
+#ifdef HAVE_GTK
   {"gui", 0, &getopt_result, OPTION_GUI},
   {"no-gui", 0, &getopt_result, OPTION_NO_GUI},
+#endif
   {0,0,0,0}
 };
 
@@ -317,8 +321,10 @@ int main(int argc, char *argv[])
   int quiet = 0;
   std::vector<aptitude::cmdline::tag_application> user_tags;
 
+#ifdef HAVE_GTK
   // TODO: this should be a configuration option.
   bool gui = true;
+#endif
 
   int curopt;
   // The last option seen
@@ -548,12 +554,14 @@ int main(int argc, char *argv[])
 	    case OPTION_DISABLE_COLUMNS:
 	      disable_columns = true;
 	      break;
+#ifdef HAVE_GTK
 	    case OPTION_GUI:
 	      gui = true;
 	      break;
 	    case OPTION_NO_GUI:
 	      gui = false;
 	      break;
+#endif
 	    default:
 	      fprintf(stderr, "%s",
 		      _("WEIRDNESS: unknown option code received\n"));
@@ -751,12 +759,15 @@ int main(int argc, char *argv[])
 	}
     }
 
+#ifdef HAVE_GTK
   if(gui)
     {
       gui::main(argc, argv);
       return 0;
+      fprintf(stderr, "Internal error: the non-GTK+ build should never try to activate the GUI.");
     }
   else
+#endif
     {
       ui_init();
 
