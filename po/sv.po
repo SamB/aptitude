@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-02 08:29-0700\n"
+"POT-Creation-Date: 2008-09-02 08:30-0700\n"
 "PO-Revision-Date: 2008-07-14 21:03+0200\n"
 "Last-Translator: Martin Bagge <brother@bsnet.se>\n"
 "Language-Team: Swedish <debian-l10n-swedish@lists.debian.org>\n"
@@ -2205,7 +2205,7 @@ msgid "Candidate"
 msgstr "Kandidat"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
-#: src/gtk/gui.cc:71
+#: src/gtk/gui.cc:71 src/gtk/ui-main.glade:1403
 msgid "Install"
 msgstr "Installera"
 
@@ -2329,7 +2329,7 @@ msgstr "OTILLFREDSSTÄLLT"
 msgid "UNAVAILABLE"
 msgstr "OTILLGÄNGLIGT"
 
-#: src/desc_render.cc:133
+#: src/desc_render.cc:133 src/gtk/ui-main.glade:914
 msgid "Tags"
 msgstr "Taggar"
 
@@ -2826,7 +2826,7 @@ msgstr "Ta bort [auto]"
 msgid "Downgrade"
 msgstr "Nedgradera"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1591 src/gtk/ui-main.glade:1455
 msgid "Hold"
 msgstr "Håll kvar"
 
@@ -2835,6 +2835,7 @@ msgid "Reinstall"
 msgstr "Installera om"
 
 #: src/generic/apt/matchers.cc:1597 src/gtk/gui.cc:75
+#: src/gtk/ui-main.glade:1416
 msgid "Remove"
 msgstr "Ta bort"
 
@@ -2842,7 +2843,7 @@ msgstr "Ta bort"
 msgid "Upgrade"
 msgstr "Uppgradera"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1625 src/gtk/ui-main.glade:1442
 msgid "Keep"
 msgstr "Behåll"
 
@@ -3091,7 +3092,7 @@ msgstr "ingen"
 msgid "URI"
 msgstr ""
 
-#: src/gtk/download.cc:158
+#: src/gtk/download.cc:158 src/gtk/ui-main.glade:1019
 #, fuzzy
 #| msgid "State"
 msgid "Status"
@@ -3282,7 +3283,7 @@ msgstr ""
 msgid "Dashboard:"
 msgstr ""
 
-#: src/gtk/gui.cc:689
+#: src/gtk/gui.cc:689 src/gtk/ui-main.glade:459
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
@@ -3717,6 +3718,426 @@ msgstr "Kunde inte hitta en lösning att verkställa."
 #: src/gtk/resolver.cc:630 src/ui.cc:1955
 msgid "Ran out of time while trying to find a solution."
 msgstr "Fick slut på tid under försöket att hitta en lösning."
+
+#: src/gtk/ui-main.glade:17
+#, fuzzy
+#| msgid "False"
+msgid "_File"
+msgstr "Falskt"
+
+#: src/gtk/ui-main.glade:25 src/ui.cc:2075
+msgid "Perform all pending installs and removals"
+msgstr "Genomför alla väntande installationer och borttagningar"
+
+#: src/gtk/ui-main.glade:26
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/remove packages"
+msgstr "^Installera/Ta bort paket"
+
+#: src/gtk/ui-main.glade:39 src/ui.cc:2078
+msgid "Check for new versions of packages"
+msgstr "Leta efter nya versioner av paket"
+
+#: src/gtk/ui-main.glade:40
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update package list"
+msgstr "^Uppdatera paketlista"
+
+#: src/gtk/ui-main.glade:58 src/ui.cc:2083
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr ""
+"Markera alla uppgraderingsbara paket som inte hålls kvar för uppgradering"
+
+#: src/gtk/ui-main.glade:59
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "Markera upp^graderingsbar"
+
+#: src/gtk/ui-main.glade:72 src/ui.cc:2088
+msgid "Forget which packages are \"new\""
+msgstr "Glöm vilka paket som är \"nya\""
+
+#: src/gtk/ui-main.glade:73
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget new packages"
+msgstr "^Glöm nya paket"
+
+#: src/gtk/ui-main.glade:86 src/ui.cc:2092
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr ""
+"Avbryt alla väntande installationer, borttagningar, tillbakahållningar och "
+"uppgraderingar."
+
+#: src/gtk/ui-main.glade:87
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el pending actions"
+msgstr "Avbry^t väntande åtgärder"
+
+#: src/gtk/ui-main.glade:100 src/ui.cc:2096
+msgid "Delete package files which were previously downloaded"
+msgstr "Ta bort paketfiler som tidigare har hämtats"
+
+#: src/gtk/ui-main.glade:101
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "_Clean package cache"
+msgstr "^Rensa paketcachen"
+
+#: src/gtk/ui-main.glade:114 src/ui.cc:2100
+msgid "Delete package files which can no longer be downloaded"
+msgstr "Ta bort paketfiler som inte längre kan hämtas"
+
+#: src/gtk/ui-main.glade:115
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _obsolete files"
+msgstr "Rensa föråldra^de filer"
+
+#: src/gtk/ui-main.glade:133 src/ui.cc:2107
+msgid "Reload the package cache"
+msgstr "Läs om paketcachen"
+
+#: src/gtk/ui-main.glade:134
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload package cache"
+msgstr "^Läs om paketcache"
+
+#: src/gtk/ui-main.glade:147 src/ui.cc:1556 src/ui.cc:2112
+msgid "Waste time trying to find mines"
+msgstr "Slösa bort tid med att leta minor"
+
+#: src/gtk/ui-main.glade:148
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "^Spela Minröj"
+
+#: src/gtk/ui-main.glade:166 src/ui.cc:2117
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"Kör \"su\" för att bli root, detta kommer att starta om programmet men dina "
+"inställningar kommer att bevaras"
+
+#: src/gtk/ui-main.glade:167
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become root"
+msgstr "Bli root"
+
+#: src/gtk/ui-main.glade:180 src/ui.cc:2120
+msgid "Exit the program"
+msgstr "Avsluta programmet"
+
+#: src/gtk/ui-main.glade:181
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "A^vsluta"
+
+#: src/gtk/ui-main.glade:197
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/ui-main.glade:205 src/ui.cc:2127
+msgid "Undo the last package operation or group of operations"
+msgstr "Ångra den senaste paketåtgärden eller gruppoperationer"
+
+#: src/gtk/ui-main.glade:206 src/ui.cc:2126 src/ui.cc:2506
+msgid "Undo"
+msgstr "Ångra"
+
+#: src/gtk/ui-main.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/ui-main.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/ui-main.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/ui-main.glade:248
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "radera"
+
+#: src/gtk/ui-main.glade:260
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "Paket"
+
+#: src/gtk/ui-main.glade:268 src/ui.cc:2136
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "Flagga det valda paketet för installation eller uppgradering"
+
+#: src/gtk/ui-main.glade:269
+#, fuzzy
+#| msgid "Install"
+msgid "_Install"
+msgstr "Installera"
+
+#: src/gtk/ui-main.glade:282 src/ui.cc:2140
+msgid "Flag the currently selected package for removal"
+msgstr "Flagga det valda paketet för borttagning"
+
+#: src/gtk/ui-main.glade:283
+#, fuzzy
+#| msgid "Remove"
+msgid "_Remove"
+msgstr "Ta bort"
+
+#: src/gtk/ui-main.glade:296 src/ui.cc:2144
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr "Flagga det valda paketet och dess konfigurationsfiler för borttagning"
+
+#: src/gtk/ui-main.glade:297
+#, fuzzy
+#| msgid "^Purge"
+msgid "_Purge"
+msgstr "^Rensa"
+
+#: src/gtk/ui-main.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/ui-main.glade:311
+#, fuzzy
+#| msgid "Keep"
+msgid "_Keep"
+msgstr "Behåll"
+
+#: src/gtk/ui-main.glade:324 src/ui.cc:2152
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr ""
+"Avbryt alla åtgärder för det valda paketet och skydda det från framtida "
+"uppgraderingar"
+
+#: src/gtk/ui-main.glade:325
+#, fuzzy
+#| msgid "Hold"
+msgid "_Hold"
+msgstr "Håll kvar"
+
+#: src/gtk/ui-main.glade:338 src/ui.cc:2156
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"Markera det valda paketet som om det har installerats automatiskt, det "
+"kommer automatiskt tas bort om inga andra paket är beroende av det"
+
+#: src/gtk/ui-main.glade:339
+#, fuzzy
+#| msgid "Mark ^Auto"
+msgid "Mark _Auto"
+msgstr "Markera ^automatiskt"
+
+#: src/gtk/ui-main.glade:352 src/ui.cc:2160
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+"Markera det valda paketet som om det blivit manuellt installerat, det kommer "
+"inte att tas bort om inte du manuellt tar bort det"
+
+#: src/gtk/ui-main.glade:353
+#, fuzzy
+#| msgid "Mark ^Manual"
+msgid "Mark _Manual"
+msgstr "Markera ^manuell"
+
+#: src/gtk/ui-main.glade:366 src/ui.cc:2164
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"Förbjud den kandidatversionen av det valda paketet från att bli installerad, "
+"nyare versioner av paketet kommer att installeras som vanligt"
+
+#: src/gtk/ui-main.glade:367
+#, fuzzy
+#| msgid "^Forbid Version"
+msgid "_Forbid Version"
+msgstr "^Förbjud version"
+
+#: src/gtk/ui-main.glade:384
+#, fuzzy
+#| msgid "Views"
+msgid "_Views"
+msgstr "Vyer"
+
+#: src/gtk/ui-main.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/ui-main.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/ui-main.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/ui-main.glade:401
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Find _Dependency Chains"
+msgstr "Beroendehantering"
+
+#: src/gtk/ui-main.glade:412
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "Hjälp"
+
+#: src/gtk/ui-main.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/ui-main.glade:440 src/gtk/ui-main.glade:524
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:469 src/gtk/ui-main.glade:691 src/ui.cc:834
+#: src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909 src/ui.cc:911
+#: src/ui.cc:932 src/ui.cc:934
+msgid "Packages"
+msgstr "Paket"
+
+#: src/gtk/ui-main.glade:479 src/gtk/ui-main.glade:995 src/ui.cc:1292
+msgid "Preview"
+msgstr "Förhandsvisning"
+
+#: src/gtk/ui-main.glade:489 src/gtk/ui-main.glade:1081 src/ui.cc:2508
+msgid "Resolver"
+msgstr "Problemlösaren"
+
+#: src/gtk/ui-main.glade:499
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "Installerat"
+
+#: src/gtk/ui-main.glade:518
+msgid "This is the dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:555
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr "[Hämtat]"
+
+#: src/gtk/ui-main.glade:599 src/gtk/ui-main.glade:1144
+#: src/gtk/ui-main.glade:1237
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "Sök"
+
+#: src/gtk/ui-main.glade:619 src/gtk/ui-main.glade:1164
+#: src/gtk/ui-main.glade:1257
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/ui-main.glade:755
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:816
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "Beroenden för %s"
+
+#: src/gtk/ui-main.glade:845
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr "^Ändringslogg"
+
+#: src/gtk/ui-main.glade:874
+#, fuzzy
+#| msgid "False"
+msgid "Files"
+msgstr "Falskt"
+
+#: src/gtk/ui-main.glade:885
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:894
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:905
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "Taggar"
+
+#: src/gtk/ui-main.glade:936
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "nej"
+
+#: src/gtk/ui-main.glade:1028
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1043
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1058
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1110
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "Fel"
+
+#: src/gtk/ui-main.glade:1205
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1298
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1336
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Dependency Chain"
+msgstr "Beroendehantering"
+
+#: src/gtk/ui-main.glade:1429
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "^Rensa"
 
 #: src/load_config.cc:48
 #, c-format
@@ -5606,11 +6027,6 @@ msgstr ""
 "Verkligen förkasta dina personliga inställningar och läsa in "
 "standardinställningarna?"
 
-#: src/ui.cc:834 src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909
-#: src/ui.cc:911 src/ui.cc:932 src/ui.cc:934
-msgid "Packages"
-msgstr "Paket"
-
 #: src/ui.cc:835 src/ui.cc:882 src/ui.cc:910 src/ui.cc:933
 msgid "View available packages and choose actions to perform"
 msgstr "Visa tillgängliga paket och välj att genomföra åtgärder"
@@ -5778,10 +6194,6 @@ msgstr "Förhandsgranska paketinstallationen"
 msgid "View and/or adjust the actions that will be performed"
 msgstr "Visa och/eller justera åtgärderna som ska genomföras"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "Förhandsvisning"
-
 #: src/ui.cc:1348
 msgid "Some packages were broken and have been fixed:"
 msgstr "Vissa paket var trasiga och har rättats till:"
@@ -5859,10 +6271,6 @@ msgstr ""
 "Uppdatering av paketlistan kräver att du har administrativa rättigheter "
 "vilket du inte har för tillfället. Vill du byta till root-kontot?"
 
-#: src/ui.cc:1556 src/ui.cc:2112
-msgid "Waste time trying to find mines"
-msgstr "Slösa bort tid med att leta minor"
-
 #: src/ui.cc:1563 src/ui.cc:1623
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "Rensning under tiden en hämtning pågår är inte tillåtet"
@@ -5916,68 +6324,33 @@ msgstr "Fil i vilken problemlösaren ska dumpa sitt tillstånd:"
 msgid "^Install/remove packages"
 msgstr "^Installera/Ta bort paket"
 
-#: src/ui.cc:2075
-msgid "Perform all pending installs and removals"
-msgstr "Genomför alla väntande installationer och borttagningar"
-
 #: src/ui.cc:2077
 msgid "^Update package list"
 msgstr "^Uppdatera paketlista"
-
-#: src/ui.cc:2078
-msgid "Check for new versions of packages"
-msgstr "Leta efter nya versioner av paket"
 
 #: src/ui.cc:2082
 msgid "Mark Up^gradable"
 msgstr "Markera upp^graderingsbar"
 
-#: src/ui.cc:2083
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr ""
-"Markera alla uppgraderingsbara paket som inte hålls kvar för uppgradering"
-
 #: src/ui.cc:2087
 msgid "^Forget new packages"
 msgstr "^Glöm nya paket"
-
-#: src/ui.cc:2088
-msgid "Forget which packages are \"new\""
-msgstr "Glöm vilka paket som är \"nya\""
 
 #: src/ui.cc:2091
 msgid "Canc^el pending actions"
 msgstr "Avbry^t väntande åtgärder"
 
-#: src/ui.cc:2092
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr ""
-"Avbryt alla väntande installationer, borttagningar, tillbakahållningar och "
-"uppgraderingar."
-
 #: src/ui.cc:2095
 msgid "^Clean package cache"
 msgstr "^Rensa paketcachen"
-
-#: src/ui.cc:2096
-msgid "Delete package files which were previously downloaded"
-msgstr "Ta bort paketfiler som tidigare har hämtats"
 
 #: src/ui.cc:2099
 msgid "Clean ^obsolete files"
 msgstr "Rensa föråldra^de filer"
 
-#: src/ui.cc:2100
-msgid "Delete package files which can no longer be downloaded"
-msgstr "Ta bort paketfiler som inte längre kan hämtas"
-
 #: src/ui.cc:2106
 msgid "^Reload package cache"
 msgstr "^Läs om paketcache"
-
-#: src/ui.cc:2107
-msgid "Reload the package cache"
-msgstr "Läs om paketcachen"
 
 #: src/ui.cc:2111
 msgid "^Play Minesweeper"
@@ -5987,54 +6360,21 @@ msgstr "^Spela Minröj"
 msgid "^Become root"
 msgstr "^Bli root"
 
-#: src/ui.cc:2117
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-"Kör \"su\" för att bli root, detta kommer att starta om programmet men dina "
-"inställningar kommer att bevaras"
-
 #: src/ui.cc:2119
 msgid "^Quit"
 msgstr "A^vsluta"
-
-#: src/ui.cc:2120
-msgid "Exit the program"
-msgstr "Avsluta programmet"
-
-#: src/ui.cc:2126 src/ui.cc:2506
-msgid "Undo"
-msgstr "Ångra"
-
-#: src/ui.cc:2127
-msgid "Undo the last package operation or group of operations"
-msgstr "Ångra den senaste paketåtgärden eller gruppoperationer"
 
 #: src/ui.cc:2135
 msgid "^Install"
 msgstr "^Installera"
 
-#: src/ui.cc:2136
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr "Flagga det valda paketet för installation eller uppgradering"
-
 #: src/ui.cc:2139
 msgid "^Remove"
 msgstr "^Ta bort"
 
-#: src/ui.cc:2140
-msgid "Flag the currently selected package for removal"
-msgstr "Flagga det valda paketet för borttagning"
-
 #: src/ui.cc:2143
 msgid "^Purge"
 msgstr "^Rensa"
-
-#: src/ui.cc:2144
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr "Flagga det valda paketet och dess konfigurationsfiler för borttagning"
 
 #: src/ui.cc:2147
 msgid "^Keep"
@@ -6048,49 +6388,17 @@ msgstr "Avbryt alla åtgärder för det valda paketet"
 msgid "^Hold"
 msgstr "^Håll kvar"
 
-#: src/ui.cc:2152
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr ""
-"Avbryt alla åtgärder för det valda paketet och skydda det från framtida "
-"uppgraderingar"
-
 #: src/ui.cc:2155
 msgid "Mark ^Auto"
 msgstr "Markera ^automatiskt"
-
-#: src/ui.cc:2156
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
-msgstr ""
-"Markera det valda paketet som om det har installerats automatiskt, det "
-"kommer automatiskt tas bort om inga andra paket är beroende av det"
 
 #: src/ui.cc:2159
 msgid "Mark ^Manual"
 msgstr "Markera ^manuell"
 
-#: src/ui.cc:2160
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr ""
-"Markera det valda paketet som om det blivit manuellt installerat, det kommer "
-"inte att tas bort om inte du manuellt tar bort det"
-
 #: src/ui.cc:2163
 msgid "^Forbid Version"
 msgstr "^Förbjud version"
-
-#: src/ui.cc:2164
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
-msgstr ""
-"Förbjud den kandidatversionen av det valda paketet från att bli installerad, "
-"nyare versioner av paketet kommer att installeras som vanligt"
 
 #: src/ui.cc:2168
 msgid "I^nformation"
@@ -6413,10 +6721,6 @@ msgstr "^Licens"
 #: src/ui.cc:2505
 msgid "Actions"
 msgstr "Åtgärder"
-
-#: src/ui.cc:2508
-msgid "Resolver"
-msgstr "Problemlösaren"
 
 #: src/ui.cc:2509
 msgid "Search"

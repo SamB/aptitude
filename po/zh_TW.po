@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-02 08:29-0700\n"
+"POT-Creation-Date: 2008-09-02 08:30-0700\n"
 "PO-Revision-Date: 2006-10-21 22:43+0800\n"
 "Last-Translator: Asho Yeh <asho@debian.org.tw>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -2026,7 +2026,7 @@ msgid "Candidate"
 msgstr "候選版本"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
-#: src/gtk/gui.cc:71
+#: src/gtk/gui.cc:71 src/gtk/ui-main.glade:1403
 msgid "Install"
 msgstr "安裝"
 
@@ -2149,7 +2149,7 @@ msgstr "未滿足的"
 msgid "UNAVAILABLE"
 msgstr "不可用"
 
-#: src/desc_render.cc:133
+#: src/desc_render.cc:133 src/gtk/ui-main.glade:914
 msgid "Tags"
 msgstr "標簽"
 
@@ -2636,7 +2636,7 @@ msgstr "移除[自動]"
 msgid "Downgrade"
 msgstr "降級"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1591 src/gtk/ui-main.glade:1455
 msgid "Hold"
 msgstr "保持"
 
@@ -2645,6 +2645,7 @@ msgid "Reinstall"
 msgstr "重新安裝"
 
 #: src/generic/apt/matchers.cc:1597 src/gtk/gui.cc:75
+#: src/gtk/ui-main.glade:1416
 msgid "Remove"
 msgstr "移除"
 
@@ -2652,7 +2653,7 @@ msgstr "移除"
 msgid "Upgrade"
 msgstr "升級"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1625 src/gtk/ui-main.glade:1442
 msgid "Keep"
 msgstr "保留"
 
@@ -2897,7 +2898,7 @@ msgstr "無"
 msgid "URI"
 msgstr ""
 
-#: src/gtk/download.cc:158
+#: src/gtk/download.cc:158 src/gtk/ui-main.glade:1019
 #, fuzzy
 #| msgid "State"
 msgid "Status"
@@ -3083,7 +3084,7 @@ msgstr ""
 msgid "Dashboard:"
 msgstr ""
 
-#: src/gtk/gui.cc:689
+#: src/gtk/gui.cc:689 src/gtk/ui-main.glade:459
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
@@ -3505,6 +3506,409 @@ msgstr "未能找到一個可以應用的解決方案。"
 #: src/gtk/resolver.cc:630 src/ui.cc:1955
 msgid "Ran out of time while trying to find a solution."
 msgstr "尋找解決方案時用時已盡。"
+
+#: src/gtk/ui-main.glade:17
+#, fuzzy
+msgid "_File"
+msgstr "關閉"
+
+#: src/gtk/ui-main.glade:25 src/ui.cc:2075
+msgid "Perform all pending installs and removals"
+msgstr "執行所有等待執行的安裝和移除作業"
+
+#: src/gtk/ui-main.glade:26
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/remove packages"
+msgstr "安裝/移除套件(^I)"
+
+#: src/gtk/ui-main.glade:39 src/ui.cc:2078
+msgid "Check for new versions of packages"
+msgstr "正在檢查新版本的套件"
+
+#: src/gtk/ui-main.glade:40
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update package list"
+msgstr "更新套件列表(^U)"
+
+#: src/gtk/ui-main.glade:58 src/ui.cc:2083
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr "為所有未被保持現狀的套件加上升級標記"
+
+#: src/gtk/ui-main.glade:59
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "標記為可升級(^U)"
+
+#: src/gtk/ui-main.glade:72 src/ui.cc:2088
+msgid "Forget which packages are \"new\""
+msgstr "忽略哪些套件是 '新' 的"
+
+#: src/gtk/ui-main.glade:73
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget new packages"
+msgstr "忽略新套件(^F)"
+
+#: src/gtk/ui-main.glade:86 src/ui.cc:2092
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr "執行所有等待執行的安裝、移除、保持和升級作業。"
+
+#: src/gtk/ui-main.glade:87
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el pending actions"
+msgstr "取消待執行的動作(^E)"
+
+#: src/gtk/ui-main.glade:100 src/ui.cc:2096
+msgid "Delete package files which were previously downloaded"
+msgstr "刪除以前下載的套件檔案"
+
+#: src/gtk/ui-main.glade:101
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "_Clean package cache"
+msgstr "清除套件快取(^C)"
+
+#: src/gtk/ui-main.glade:114 src/ui.cc:2100
+msgid "Delete package files which can no longer be downloaded"
+msgstr "刪除無法再下載的套件檔案"
+
+#: src/gtk/ui-main.glade:115
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _obsolete files"
+msgstr "關閉過期檔案(^O)"
+
+#: src/gtk/ui-main.glade:133 src/ui.cc:2107
+msgid "Reload the package cache"
+msgstr "重新載入套件快取"
+
+#: src/gtk/ui-main.glade:134
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload package cache"
+msgstr "重新載入套件快取(^R)"
+
+#: src/gtk/ui-main.glade:147 src/ui.cc:1556 src/ui.cc:2112
+msgid "Waste time trying to find mines"
+msgstr "玩玩踩地雷來消磨時間"
+
+#: src/gtk/ui-main.glade:148
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "玩掃雷遊戲(^P)"
+
+#: src/gtk/ui-main.glade:166 src/ui.cc:2117
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr "執行 'su' 成為 root。這將重新啟動程式，但是您的設置將會被保存下來。"
+
+#: src/gtk/ui-main.glade:167
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become root"
+msgstr "變成 root(^B)"
+
+#: src/gtk/ui-main.glade:180 src/ui.cc:2120
+msgid "Exit the program"
+msgstr "退出此程序"
+
+#: src/gtk/ui-main.glade:181
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "退出(^Q)"
+
+#: src/gtk/ui-main.glade:197
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/ui-main.glade:205 src/ui.cc:2127
+msgid "Undo the last package operation or group of operations"
+msgstr "復原最近一次或者一組操作"
+
+#: src/gtk/ui-main.glade:206 src/ui.cc:2126 src/ui.cc:2506
+msgid "Undo"
+msgstr "復原"
+
+#: src/gtk/ui-main.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/ui-main.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/ui-main.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/ui-main.glade:248
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "刪除"
+
+#: src/gtk/ui-main.glade:260
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "套件"
+
+#: src/gtk/ui-main.glade:268 src/ui.cc:2136
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "標示安裝或升級現選的套件"
+
+#: src/gtk/ui-main.glade:269
+#, fuzzy
+#| msgid "Install"
+msgid "_Install"
+msgstr "安裝"
+
+#: src/gtk/ui-main.glade:282 src/ui.cc:2140
+msgid "Flag the currently selected package for removal"
+msgstr "標示移除現選的套件"
+
+#: src/gtk/ui-main.glade:283
+#, fuzzy
+#| msgid "Remove"
+msgid "_Remove"
+msgstr "移除"
+
+#: src/gtk/ui-main.glade:296 src/ui.cc:2144
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr "標示移除現選的套件與其設定檔"
+
+#: src/gtk/ui-main.glade:297
+#, fuzzy
+#| msgid "^Purge"
+msgid "_Purge"
+msgstr "清除(^P)"
+
+#: src/gtk/ui-main.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/ui-main.glade:311
+#, fuzzy
+#| msgid "Keep"
+msgid "_Keep"
+msgstr "保留"
+
+#: src/gtk/ui-main.glade:324 src/ui.cc:2152
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr "取消在選擇套件的任何指令，並保證未來也不升級"
+
+#: src/gtk/ui-main.glade:325
+#, fuzzy
+#| msgid "Hold"
+msgid "_Hold"
+msgstr "保持"
+
+#: src/gtk/ui-main.glade:338 src/ui.cc:2156
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr "標示自動安裝選擇的套件;如果沒有其他套件相依於上，它將會被自動移除"
+
+#: src/gtk/ui-main.glade:339
+#, fuzzy
+#| msgid "Mark ^Auto"
+msgid "Mark _Auto"
+msgstr "標示為自動(^A)"
+
+#: src/gtk/ui-main.glade:352 src/ui.cc:2160
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr "標示手動安裝選擇的套件;除非您手動移除，否則它將不會被移除"
+
+#: src/gtk/ui-main.glade:353
+#, fuzzy
+#| msgid "Mark ^Manual"
+msgid "Mark _Manual"
+msgstr "標示為手動處理(^M)"
+
+#: src/gtk/ui-main.glade:366 src/ui.cc:2164
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr "禁制安裝選擇套件的候選版本;新版本的套件將會像往常一樣被安裝"
+
+#: src/gtk/ui-main.glade:367
+#, fuzzy
+#| msgid "^Forbid Version"
+msgid "_Forbid Version"
+msgstr "禁制版本(^F)"
+
+#: src/gtk/ui-main.glade:384
+#, fuzzy
+#| msgid "Views"
+msgid "_Views"
+msgstr "查看"
+
+#: src/gtk/ui-main.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/ui-main.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/ui-main.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/ui-main.glade:401
+#, fuzzy
+msgid "Find _Dependency Chains"
+msgstr "處理依賴關係(^D)"
+
+#: src/gtk/ui-main.glade:412
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "求助"
+
+#: src/gtk/ui-main.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/ui-main.glade:440 src/gtk/ui-main.glade:524
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:469 src/gtk/ui-main.glade:691 src/ui.cc:834
+#: src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909 src/ui.cc:911
+#: src/ui.cc:932 src/ui.cc:934
+msgid "Packages"
+msgstr "套件"
+
+#: src/gtk/ui-main.glade:479 src/gtk/ui-main.glade:995 src/ui.cc:1292
+msgid "Preview"
+msgstr "預覽"
+
+#: src/gtk/ui-main.glade:489 src/gtk/ui-main.glade:1081 src/ui.cc:2508
+msgid "Resolver"
+msgstr "解除器"
+
+#: src/gtk/ui-main.glade:499
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "已安裝"
+
+#: src/gtk/ui-main.glade:518
+msgid "This is the dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:555
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr "[已下載]"
+
+#: src/gtk/ui-main.glade:599 src/gtk/ui-main.glade:1144
+#: src/gtk/ui-main.glade:1237
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "搜尋"
+
+#: src/gtk/ui-main.glade:619 src/gtk/ui-main.glade:1164
+#: src/gtk/ui-main.glade:1257
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/ui-main.glade:755
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:816
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "%s 的依賴關係"
+
+#: src/gtk/ui-main.glade:845
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr "變更紀錄(^C)"
+
+#: src/gtk/ui-main.glade:874
+#, fuzzy
+msgid "Files"
+msgstr "關閉"
+
+#: src/gtk/ui-main.glade:885
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:894
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:905
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "標簽"
+
+#: src/gtk/ui-main.glade:936
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "否"
+
+#: src/gtk/ui-main.glade:1028
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1043
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1058
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1110
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "錯誤 "
+
+#: src/gtk/ui-main.glade:1205
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1298
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1336
+#, fuzzy
+msgid "Dependency Chain"
+msgstr "處理依賴關係(^D)"
+
+#: src/gtk/ui-main.glade:1429
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "清除(^P)"
 
 #: src/load_config.cc:48
 #, c-format
@@ -5318,11 +5722,6 @@ msgstr ""
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr "真的要放棄您的個人設置並載入預設值嗎？"
 
-#: src/ui.cc:834 src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909
-#: src/ui.cc:911 src/ui.cc:932 src/ui.cc:934
-msgid "Packages"
-msgstr "套件"
-
 #: src/ui.cc:835 src/ui.cc:882 src/ui.cc:910 src/ui.cc:933
 msgid "View available packages and choose actions to perform"
 msgstr "查看可選套件以及選擇要執行的動作"
@@ -5487,10 +5886,6 @@ msgstr "預覽套件安裝"
 msgid "View and/or adjust the actions that will be performed"
 msgstr "檢視與/或調整即將執行的指令"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "預覽"
-
 #: src/ui.cc:1348
 msgid "Some packages were broken and have been fixed:"
 msgstr "某些毀斷的套件已經被修補！"
@@ -5561,10 +5956,6 @@ msgid ""
 msgstr ""
 "更新套件列表需要管理員權限，而您現在沒有這種權限。您想要進入 root 帳號嗎？"
 
-#: src/ui.cc:1556 src/ui.cc:2112
-msgid "Waste time trying to find mines"
-msgstr "玩玩踩地雷來消磨時間"
-
 #: src/ui.cc:1563 src/ui.cc:1623
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "在下載進行過程中不允許執行清除"
@@ -5617,65 +6008,33 @@ msgstr "傾印相依賴關係解決狀態的檔案："
 msgid "^Install/remove packages"
 msgstr "安裝/移除套件(^I)"
 
-#: src/ui.cc:2075
-msgid "Perform all pending installs and removals"
-msgstr "執行所有等待執行的安裝和移除作業"
-
 #: src/ui.cc:2077
 msgid "^Update package list"
 msgstr "更新套件列表(^U)"
-
-#: src/ui.cc:2078
-msgid "Check for new versions of packages"
-msgstr "正在檢查新版本的套件"
 
 #: src/ui.cc:2082
 msgid "Mark Up^gradable"
 msgstr "標記為可升級(^U)"
 
-#: src/ui.cc:2083
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr "為所有未被保持現狀的套件加上升級標記"
-
 #: src/ui.cc:2087
 msgid "^Forget new packages"
 msgstr "忽略新套件(^F)"
-
-#: src/ui.cc:2088
-msgid "Forget which packages are \"new\""
-msgstr "忽略哪些套件是 '新' 的"
 
 #: src/ui.cc:2091
 msgid "Canc^el pending actions"
 msgstr "取消待執行的動作(^E)"
 
-#: src/ui.cc:2092
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "執行所有等待執行的安裝、移除、保持和升級作業。"
-
 #: src/ui.cc:2095
 msgid "^Clean package cache"
 msgstr "清除套件快取(^C)"
-
-#: src/ui.cc:2096
-msgid "Delete package files which were previously downloaded"
-msgstr "刪除以前下載的套件檔案"
 
 #: src/ui.cc:2099
 msgid "Clean ^obsolete files"
 msgstr "關閉過期檔案(^O)"
 
-#: src/ui.cc:2100
-msgid "Delete package files which can no longer be downloaded"
-msgstr "刪除無法再下載的套件檔案"
-
 #: src/ui.cc:2106
 msgid "^Reload package cache"
 msgstr "重新載入套件快取(^R)"
-
-#: src/ui.cc:2107
-msgid "Reload the package cache"
-msgstr "重新載入套件快取"
 
 #: src/ui.cc:2111
 msgid "^Play Minesweeper"
@@ -5685,52 +6044,21 @@ msgstr "玩掃雷遊戲(^P)"
 msgid "^Become root"
 msgstr "變成 root(^B)"
 
-#: src/ui.cc:2117
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr "執行 'su' 成為 root。這將重新啟動程式，但是您的設置將會被保存下來。"
-
 #: src/ui.cc:2119
 msgid "^Quit"
 msgstr "退出(^Q)"
-
-#: src/ui.cc:2120
-msgid "Exit the program"
-msgstr "退出此程序"
-
-#: src/ui.cc:2126 src/ui.cc:2506
-msgid "Undo"
-msgstr "復原"
-
-#: src/ui.cc:2127
-msgid "Undo the last package operation or group of operations"
-msgstr "復原最近一次或者一組操作"
 
 #: src/ui.cc:2135
 msgid "^Install"
 msgstr "安裝(^I)"
 
-#: src/ui.cc:2136
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr "標示安裝或升級現選的套件"
-
 #: src/ui.cc:2139
 msgid "^Remove"
 msgstr "移除(^R)"
 
-#: src/ui.cc:2140
-msgid "Flag the currently selected package for removal"
-msgstr "標示移除現選的套件"
-
 #: src/ui.cc:2143
 msgid "^Purge"
 msgstr "清除(^P)"
-
-#: src/ui.cc:2144
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr "標示移除現選的套件與其設定檔"
 
 #: src/ui.cc:2147
 msgid "^Keep"
@@ -5744,41 +6072,17 @@ msgstr "取消選擇的套件上的任何動作"
 msgid "^Hold"
 msgstr "保留(^H)"
 
-#: src/ui.cc:2152
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr "取消在選擇套件的任何指令，並保證未來也不升級"
-
 #: src/ui.cc:2155
 msgid "Mark ^Auto"
 msgstr "標示為自動(^A)"
-
-#: src/ui.cc:2156
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
-msgstr "標示自動安裝選擇的套件;如果沒有其他套件相依於上，它將會被自動移除"
 
 #: src/ui.cc:2159
 msgid "Mark ^Manual"
 msgstr "標示為手動處理(^M)"
 
-#: src/ui.cc:2160
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr "標示手動安裝選擇的套件;除非您手動移除，否則它將不會被移除"
-
 #: src/ui.cc:2163
 msgid "^Forbid Version"
 msgstr "禁制版本(^F)"
-
-#: src/ui.cc:2164
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
-msgstr "禁制安裝選擇套件的候選版本;新版本的套件將會像往常一樣被安裝"
 
 #: src/ui.cc:2168
 msgid "I^nformation"
@@ -6096,10 +6400,6 @@ msgstr "許可證(^L)"
 #: src/ui.cc:2505
 msgid "Actions"
 msgstr "動作"
-
-#: src/ui.cc:2508
-msgid "Resolver"
-msgstr "解除器"
 
 #: src/ui.cc:2509
 msgid "Search"

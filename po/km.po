@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_km\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-02 08:29-0700\n"
+"POT-Creation-Date: 2008-09-02 08:30-0700\n"
 "PO-Revision-Date: 2006-10-06 11:24+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -2046,7 +2046,7 @@ msgid "Candidate"
 msgstr "កំណែសាកល្បង"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
-#: src/gtk/gui.cc:71
+#: src/gtk/gui.cc:71 src/gtk/ui-main.glade:1403
 msgid "Install"
 msgstr "ដំឡើង"
 
@@ -2169,7 +2169,7 @@ msgstr "មិនពេញចិត្ត"
 msgid "UNAVAILABLE"
 msgstr "មិនមាន"
 
-#: src/desc_render.cc:133
+#: src/desc_render.cc:133 src/gtk/ui-main.glade:914
 msgid "Tags"
 msgstr "ស្លាក"
 
@@ -2658,7 +2658,7 @@ msgstr "យក​ចេញ [ស្វ័យប្រវត្តិ]"
 msgid "Downgrade"
 msgstr "បន្ទាប​"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1591 src/gtk/ui-main.glade:1455
 msgid "Hold"
 msgstr "រង់ចាំ"
 
@@ -2667,6 +2667,7 @@ msgid "Reinstall"
 msgstr "ដំឡើង​ឡើង​វិញ​"
 
 #: src/generic/apt/matchers.cc:1597 src/gtk/gui.cc:75
+#: src/gtk/ui-main.glade:1416
 msgid "Remove"
 msgstr "យក​ចេញ"
 
@@ -2674,7 +2675,7 @@ msgstr "យក​ចេញ"
 msgid "Upgrade"
 msgstr "ធ្វើ​ឲ្យ​ប្រសើរ"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1625 src/gtk/ui-main.glade:1442
 msgid "Keep"
 msgstr "រក្សា"
 
@@ -2919,7 +2920,7 @@ msgstr "គ្មាន"
 msgid "URI"
 msgstr ""
 
-#: src/gtk/download.cc:158
+#: src/gtk/download.cc:158 src/gtk/ui-main.glade:1019
 #, fuzzy
 #| msgid "State"
 msgid "Status"
@@ -3105,7 +3106,7 @@ msgstr ""
 msgid "Dashboard:"
 msgstr ""
 
-#: src/gtk/gui.cc:689
+#: src/gtk/gui.cc:689 src/gtk/ui-main.glade:459
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
@@ -3531,6 +3532,417 @@ msgstr "មិន​អាច​រក​ដំណោះស្រាយ​ដើ
 #: src/gtk/resolver.cc:630 src/ui.cc:1955
 msgid "Ran out of time while trying to find a solution."
 msgstr "អស់​ពេល​ ខណៈ​ពេល​ព្យាយាម​រក​ដំណោះស្រាយ ។"
+
+#: src/gtk/ui-main.glade:17
+#, fuzzy
+msgid "_File"
+msgstr "បិទ​"
+
+#: src/gtk/ui-main.glade:25 src/ui.cc:2075
+msgid "Perform all pending installs and removals"
+msgstr "អនុវត្ត​ការ​ដំឡើង និង ការ​យកចេញ​ទាំងអស់ ដែល​មិន​ទាន់​សម្រេច"
+
+#: src/gtk/ui-main.glade:26
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/remove packages"
+msgstr "ដំឡើង​/យក​កញ្ចប់​ចេញ​"
+
+#: src/gtk/ui-main.glade:39 src/ui.cc:2078
+msgid "Check for new versions of packages"
+msgstr "ពិនិត្យរក​កំណែ​ថ្មី​របស់​កញ្ចប់"
+
+#: src/gtk/ui-main.glade:40
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update package list"
+msgstr "ធ្វើ​ឲ្យ​បញ្ជី​កញ្ចប់​ទាន់សម័យ"
+
+#: src/gtk/ui-main.glade:58 src/ui.cc:2083
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr "សម្គាល់​កញ្ចប់​ទាំងអស់​ដែល​អាច​ធ្វើ​ឲ្យ​ប្រសើរ​បាន"
+
+#: src/gtk/ui-main.glade:59
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "សម្គាល់​កញ្ចប់​ដែល​អាច​ធ្វើ​ឲ្យ​ប្រសើរ"
+
+#: src/gtk/ui-main.glade:72 src/ui.cc:2088
+msgid "Forget which packages are \"new\""
+msgstr "បំភ្លេច​កញ្ចប់​ដែល \"ថ្មី\""
+
+#: src/gtk/ui-main.glade:73
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget new packages"
+msgstr "បំភ្លេច​កញ្ចប់​ថ្មី"
+
+#: src/gtk/ui-main.glade:86 src/ui.cc:2092
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr "បោះបង់​ការ​ដំឡើង ការ​យកចេញ ការ​ទុក និង ធ្វើ​ឲ្យ​ប្រសើរ​ដែល​មិន​ទាន់​សម្រេច ។"
+
+#: src/gtk/ui-main.glade:87
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el pending actions"
+msgstr "បោះបង់​សកម្មភាព​ដែល​មិន​ទាន់​សម្រេច"
+
+#: src/gtk/ui-main.glade:100 src/ui.cc:2096
+msgid "Delete package files which were previously downloaded"
+msgstr "លុប​ឯកសារ​កញ្ចប់ ដែល​ត្រូវ​បាន​ទាញយក​ពី​មុន"
+
+#: src/gtk/ui-main.glade:101
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "_Clean package cache"
+msgstr "សម្អាត​ឃ្លាំងសម្ងាត់​កញ្ចប់"
+
+#: src/gtk/ui-main.glade:114 src/ui.cc:2100
+msgid "Delete package files which can no longer be downloaded"
+msgstr "លុប​ឯកសារ​កញ្ចប់ ដែល​លែង​ទាញយក"
+
+#: src/gtk/ui-main.glade:115
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _obsolete files"
+msgstr "សម្អាត​ឯកសារ​ដែល​លែងប្រើ"
+
+#: src/gtk/ui-main.glade:133 src/ui.cc:2107
+msgid "Reload the package cache"
+msgstr "ផ្ទុក​ឃ្លាំងសម្ងាត់​កញ្ចប់​ឡើង​វិញ"
+
+#: src/gtk/ui-main.glade:134
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload package cache"
+msgstr "ផ្ទុក​ឃ្លាំងសម្ងាត់​កញ្ចប់​ឡើង​វិញ"
+
+#: src/gtk/ui-main.glade:147 src/ui.cc:1556 src/ui.cc:2112
+msgid "Waste time trying to find mines"
+msgstr "ចំណាយពេល​រាវ​មីន"
+
+#: src/gtk/ui-main.glade:148
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "លេង​ល្បែង​ដោះមីន"
+
+#: src/gtk/ui-main.glade:166 src/ui.cc:2117
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"រត់ 'su' ដើម្បី​ក្លាយជា root ។ បន្ទាប់​មក​កម្មវិធី​នឹង​ត្រូវ​បាន​ចាប់ផ្ដើម​ឡើង​វិញ ប៉ុន្តែ​ការ​កំណត់​របស់​អ្នក​នឹង​"
+"ត្រូវ​បាន​ការពារ"
+
+#: src/gtk/ui-main.glade:167
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become root"
+msgstr "ក្លាយជា​ root"
+
+#: src/gtk/ui-main.glade:180 src/ui.cc:2120
+msgid "Exit the program"
+msgstr "ចេញពី​កម្មវិធី​"
+
+#: src/gtk/ui-main.glade:181
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "ចេញ"
+
+#: src/gtk/ui-main.glade:197
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/ui-main.glade:205 src/ui.cc:2127
+msgid "Undo the last package operation or group of operations"
+msgstr "មិន​ធ្វើ​ប្រតិបត្តិការ​ ឬ ក្រុម​ប្រតិបត្តិការ​ចុងក្រោយ ដែល​ទាក់ទង​នឹង​កញ្ចប់"
+
+#: src/gtk/ui-main.glade:206 src/ui.cc:2126 src/ui.cc:2506
+msgid "Undo"
+msgstr "មិន​ធ្វើ​វិញ"
+
+#: src/gtk/ui-main.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/ui-main.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/ui-main.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/ui-main.glade:248
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "លុប"
+
+#: src/gtk/ui-main.glade:260
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "កញ្ចប់​"
+
+#: src/gtk/ui-main.glade:268 src/ui.cc:2136
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "បោះទង់​សម្គាល់​កញ្ចប់​ដែល​បាន​ជ្រើស​បច្ចុប្បន្ន ដើម្បី​ដំឡើង ឬ ធ្វើ​ឲ្យ​ប្រសើរ"
+
+#: src/gtk/ui-main.glade:269
+#, fuzzy
+#| msgid "Install"
+msgid "_Install"
+msgstr "ដំឡើង"
+
+#: src/gtk/ui-main.glade:282 src/ui.cc:2140
+msgid "Flag the currently selected package for removal"
+msgstr "បោះទង់​សម្គាល់​កញ្ចប់​ដែល​បាន​ជ្រើស​បច្ចុប្បន្ន ដើម្បី​យកចេញ"
+
+#: src/gtk/ui-main.glade:283
+#, fuzzy
+#| msgid "Remove"
+msgid "_Remove"
+msgstr "យក​ចេញ"
+
+#: src/gtk/ui-main.glade:296 src/ui.cc:2144
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr "បោះទង់​សម្គាល់​កញ្ចប់ ដែល​បាន​ជ្រើស​បច្ចុប្បន្ន និង ឯកសារ​កំណត់​រចនាសម្ព័ន្ធ​របស់​វា ដើម្បី​យកចេញ"
+
+#: src/gtk/ui-main.glade:297
+#, fuzzy
+#| msgid "^Purge"
+msgid "_Purge"
+msgstr "លុប​បំបាត់"
+
+#: src/gtk/ui-main.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/ui-main.glade:311
+#, fuzzy
+#| msgid "Keep"
+msgid "_Keep"
+msgstr "រក្សា"
+
+#: src/gtk/ui-main.glade:324 src/ui.cc:2152
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr "បោះបង់​សកម្មភាព​នានា​ចំពោះ​កញ្ចប់​ដែល​បាន​ជ្រើស ហើយ​ការពារ​វា​កុំ​ឲ្យ​មាន​ការ​ធ្វើ​ឲ្យ​ប្រសើរ"
+
+#: src/gtk/ui-main.glade:325
+#, fuzzy
+#| msgid "Hold"
+msgid "_Hold"
+msgstr "រង់ចាំ"
+
+#: src/gtk/ui-main.glade:338 src/ui.cc:2156
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"សម្គាល់​កញ្ចប់​ដែល​បាន​ជ្រើស ថា​ត្រូវ​បាន​ដំឡើង​ដោយ​ស្វ័យប្រវត្តិ ។ វា​នឹង​ត្រូវ​បាន​យកចេញ​ដោយ​ស្វ័យប្រវត្តិ បើ​មិន​"
+"មាន​កញ្ចប់​ណា​មួយ​អាស្រ័យ​តាម​វា"
+
+#: src/gtk/ui-main.glade:339
+#, fuzzy
+#| msgid "Mark ^Auto"
+msgid "Mark _Auto"
+msgstr "សម្គាល់​ស្វ័យប្រវត្តិ"
+
+#: src/gtk/ui-main.glade:352 src/ui.cc:2160
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+"សម្គាល់​កញ្ចប់​ដែល​បាន​ជ្រើស ថា​ត្រូវ​បាន​ដំឡើង​ដោយ​ដៃ ។ វា​នឹង​មិន​ត្រូវ​បាន​យកចេញ​ឡើយ ទាល់​តែ​អ្នក​យកវា​ចេញ​"
+"ដោយ​ដៃ"
+
+#: src/gtk/ui-main.glade:353
+#, fuzzy
+#| msgid "Mark ^Manual"
+msgid "Mark _Manual"
+msgstr "សម្គាល់​ដោយ​ដៃ"
+
+#: src/gtk/ui-main.glade:366 src/ui.cc:2164
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"ហាមឃាត់​កំណែ​សាកល្បង​របស់​កញ្ចប់​ដែល​បាន​ជ្រើស ថា​កុំ​ឲ្យ​ដំឡើង ។ កំណែ​ថ្មី​ជាង​របស់​កញ្ចប់ នឹង​ត្រូវ​បាន​ដំឡើង​"
+"ធម្មតា"
+
+#: src/gtk/ui-main.glade:367
+#, fuzzy
+#| msgid "^Forbid Version"
+msgid "_Forbid Version"
+msgstr "ហាមឃាត់​កំណែ"
+
+#: src/gtk/ui-main.glade:384
+#, fuzzy
+#| msgid "Views"
+msgid "_Views"
+msgstr "មើល​"
+
+#: src/gtk/ui-main.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/ui-main.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/ui-main.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/ui-main.glade:401
+#, fuzzy
+msgid "Find _Dependency Chains"
+msgstr "ការ​ដោះស្រាយ​ភាព​អាស្រ័យ"
+
+#: src/gtk/ui-main.glade:412
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "ជំនួយ"
+
+#: src/gtk/ui-main.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/ui-main.glade:440 src/gtk/ui-main.glade:524
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:469 src/gtk/ui-main.glade:691 src/ui.cc:834
+#: src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909 src/ui.cc:911
+#: src/ui.cc:932 src/ui.cc:934
+msgid "Packages"
+msgstr "កញ្ចប់​"
+
+#: src/gtk/ui-main.glade:479 src/gtk/ui-main.glade:995 src/ui.cc:1292
+msgid "Preview"
+msgstr "មើល​ជា​​​មុន"
+
+#: src/gtk/ui-main.glade:489 src/gtk/ui-main.glade:1081 src/ui.cc:2508
+msgid "Resolver"
+msgstr "កម្មវិធី​ដោះស្រាយ"
+
+#: src/gtk/ui-main.glade:499
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "បាន​ដំឡើង"
+
+#: src/gtk/ui-main.glade:518
+msgid "This is the dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:555
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr "[បានទាញយក]"
+
+#: src/gtk/ui-main.glade:599 src/gtk/ui-main.glade:1144
+#: src/gtk/ui-main.glade:1237
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "ស្វែងរក"
+
+#: src/gtk/ui-main.glade:619 src/gtk/ui-main.glade:1164
+#: src/gtk/ui-main.glade:1257
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/ui-main.glade:755
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:816
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "ភាព​អាស្រ័យ​របស់ %s"
+
+#: src/gtk/ui-main.glade:845
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr "កំណត់​ហេតុ​ការ​ផ្លាស់ប្ដូរ"
+
+#: src/gtk/ui-main.glade:874
+#, fuzzy
+msgid "Files"
+msgstr "បិទ​"
+
+#: src/gtk/ui-main.glade:885
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:894
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:905
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "ស្លាក"
+
+#: src/gtk/ui-main.glade:936
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "ទេ"
+
+#: src/gtk/ui-main.glade:1028
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1043
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1058
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1110
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "Err "
+
+#: src/gtk/ui-main.glade:1205
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1298
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1336
+#, fuzzy
+msgid "Dependency Chain"
+msgstr "ការ​ដោះស្រាយ​ភាព​អាស្រ័យ"
+
+#: src/gtk/ui-main.glade:1429
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "លុប​បំបាត់"
 
 #: src/load_config.cc:48
 #, c-format
@@ -5361,11 +5773,6 @@ msgstr ""
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr "ពិត​ជាចង់​បោះ​ចោល​ការរៀបចំ​ផ្ទាល់​ខ្លួន​របស់​អ្នក​ ហើយ​ផ្ទុក​លំនាំដើម​ឡើង​វិញ​ឬ ?"
 
-#: src/ui.cc:834 src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909
-#: src/ui.cc:911 src/ui.cc:932 src/ui.cc:934
-msgid "Packages"
-msgstr "កញ្ចប់​"
-
 #: src/ui.cc:835 src/ui.cc:882 src/ui.cc:910 src/ui.cc:933
 msgid "View available packages and choose actions to perform"
 msgstr "មើល​កញ្ចប់​ដែល​មាន ហើយ​ជ្រើស​សកម្មភាព​ដើម្បី​អនុវត្ត"
@@ -5531,10 +5938,6 @@ msgstr "ទិដ្ឋភាព​របស់​ការ​ដំឡើង​
 msgid "View and/or adjust the actions that will be performed"
 msgstr "មើល និង/ឬ លៃតម្រូវ​សកម្មភាព ដែល​នឹង​ត្រូវ​អនុវត្ត"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "មើល​ជា​​​មុន"
-
 #: src/ui.cc:1348
 msgid "Some packages were broken and have been fixed:"
 msgstr "កញ្ចប់​ខ្លះ​បានខូច ហើយ​ក៏បាន​ជួសជុល​ផងដែរ​ ៖"
@@ -5607,10 +6010,6 @@ msgstr ""
 "ការ​ធ្វើ​ឲ្យ​បញ្ជី​កញ្ចប់​ទាន់សម័យ ត្រូវការ​សិទ្ធិ​ជា​អ្នក​គ្រប់គ្រង ដែល​បច្ចុប្បន្ន​អ្នក​មិន​មាន ។ តើ​អ្នក​ចង់​ប្ដូរ​ទៅ​"
 "គណនី root ឬ​ទេ ?"
 
-#: src/ui.cc:1556 src/ui.cc:2112
-msgid "Waste time trying to find mines"
-msgstr "ចំណាយពេល​រាវ​មីន"
-
 #: src/ui.cc:1563 src/ui.cc:1623
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "មិន​អនុញ្ញាត​ឲ្យ​សម្អាត​ឡើយ ខណៈពេល​កំពុង​តែ​ទាញយក"
@@ -5663,64 +6062,32 @@ msgstr "ឯកសារ​ដែល​ស្ថានភាព​កម្មវ
 msgid "^Install/remove packages"
 msgstr "ដំឡើង​/យក​កញ្ចប់​ចេញ​"
 
-#: src/ui.cc:2075
-msgid "Perform all pending installs and removals"
-msgstr "អនុវត្ត​ការ​ដំឡើង និង ការ​យកចេញ​ទាំងអស់ ដែល​មិន​ទាន់​សម្រេច"
-
 #: src/ui.cc:2077
 msgid "^Update package list"
 msgstr "ធ្វើ​ឲ្យ​បញ្ជី​កញ្ចប់​ទាន់សម័យ"
-
-#: src/ui.cc:2078
-msgid "Check for new versions of packages"
-msgstr "ពិនិត្យរក​កំណែ​ថ្មី​របស់​កញ្ចប់"
 
 #: src/ui.cc:2082
 msgid "Mark Up^gradable"
 msgstr "សម្គាល់​កញ្ចប់​ដែល​អាច​ធ្វើ​ឲ្យ​ប្រសើរ"
 
-#: src/ui.cc:2083
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr "សម្គាល់​កញ្ចប់​ទាំងអស់​ដែល​អាច​ធ្វើ​ឲ្យ​ប្រសើរ​បាន"
-
 #: src/ui.cc:2087
 msgid "^Forget new packages"
 msgstr "បំភ្លេច​កញ្ចប់​ថ្មី"
-
-#: src/ui.cc:2088
-msgid "Forget which packages are \"new\""
-msgstr "បំភ្លេច​កញ្ចប់​ដែល \"ថ្មី\""
 
 #: src/ui.cc:2091
 msgid "Canc^el pending actions"
 msgstr "បោះបង់​សកម្មភាព​ដែល​មិន​ទាន់​សម្រេច"
 
-#: src/ui.cc:2092
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "បោះបង់​ការ​ដំឡើង ការ​យកចេញ ការ​ទុក និង ធ្វើ​ឲ្យ​ប្រសើរ​ដែល​មិន​ទាន់​សម្រេច ។"
-
 #: src/ui.cc:2095
 msgid "^Clean package cache"
 msgstr "សម្អាត​ឃ្លាំងសម្ងាត់​កញ្ចប់"
-
-#: src/ui.cc:2096
-msgid "Delete package files which were previously downloaded"
-msgstr "លុប​ឯកសារ​កញ្ចប់ ដែល​ត្រូវ​បាន​ទាញយក​ពី​មុន"
 
 #: src/ui.cc:2099
 msgid "Clean ^obsolete files"
 msgstr "សម្អាត​ឯកសារ​ដែល​លែងប្រើ"
 
-#: src/ui.cc:2100
-msgid "Delete package files which can no longer be downloaded"
-msgstr "លុប​ឯកសារ​កញ្ចប់ ដែល​លែង​ទាញយក"
-
 #: src/ui.cc:2106
 msgid "^Reload package cache"
-msgstr "ផ្ទុក​ឃ្លាំងសម្ងាត់​កញ្ចប់​ឡើង​វិញ"
-
-#: src/ui.cc:2107
-msgid "Reload the package cache"
 msgstr "ផ្ទុក​ឃ្លាំងសម្ងាត់​កញ្ចប់​ឡើង​វិញ"
 
 #: src/ui.cc:2111
@@ -5731,54 +6098,21 @@ msgstr "លេង​ល្បែង​ដោះមីន"
 msgid "^Become root"
 msgstr "ក្លាយ​ជា​ root"
 
-#: src/ui.cc:2117
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-"រត់ 'su' ដើម្បី​ក្លាយជា root ។ បន្ទាប់​មក​កម្មវិធី​នឹង​ត្រូវ​បាន​ចាប់ផ្ដើម​ឡើង​វិញ ប៉ុន្តែ​ការ​កំណត់​របស់​អ្នក​នឹង​"
-"ត្រូវ​បាន​ការពារ"
-
 #: src/ui.cc:2119
 msgid "^Quit"
 msgstr "ចេញ"
-
-#: src/ui.cc:2120
-msgid "Exit the program"
-msgstr "ចេញពី​កម្មវិធី​"
-
-#: src/ui.cc:2126 src/ui.cc:2506
-msgid "Undo"
-msgstr "មិន​ធ្វើ​វិញ"
-
-#: src/ui.cc:2127
-msgid "Undo the last package operation or group of operations"
-msgstr "មិន​ធ្វើ​ប្រតិបត្តិការ​ ឬ ក្រុម​ប្រតិបត្តិការ​ចុងក្រោយ ដែល​ទាក់ទង​នឹង​កញ្ចប់"
 
 #: src/ui.cc:2135
 msgid "^Install"
 msgstr "ដំឡើង"
 
-#: src/ui.cc:2136
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr "បោះទង់​សម្គាល់​កញ្ចប់​ដែល​បាន​ជ្រើស​បច្ចុប្បន្ន ដើម្បី​ដំឡើង ឬ ធ្វើ​ឲ្យ​ប្រសើរ"
-
 #: src/ui.cc:2139
 msgid "^Remove"
 msgstr "យក​ចេញ"
 
-#: src/ui.cc:2140
-msgid "Flag the currently selected package for removal"
-msgstr "បោះទង់​សម្គាល់​កញ្ចប់​ដែល​បាន​ជ្រើស​បច្ចុប្បន្ន ដើម្បី​យកចេញ"
-
 #: src/ui.cc:2143
 msgid "^Purge"
 msgstr "លុប​បំបាត់"
-
-#: src/ui.cc:2144
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr "បោះទង់​សម្គាល់​កញ្ចប់ ដែល​បាន​ជ្រើស​បច្ចុប្បន្ន និង ឯកសារ​កំណត់​រចនាសម្ព័ន្ធ​របស់​វា ដើម្បី​យកចេញ"
 
 #: src/ui.cc:2147
 msgid "^Keep"
@@ -5792,47 +6126,17 @@ msgstr "បោះបង់​ចោល​សកម្មភាព​ចំពោ
 msgid "^Hold"
 msgstr "រង់ចាំ"
 
-#: src/ui.cc:2152
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr "បោះបង់​សកម្មភាព​នានា​ចំពោះ​កញ្ចប់​ដែល​បាន​ជ្រើស ហើយ​ការពារ​វា​កុំ​ឲ្យ​មាន​ការ​ធ្វើ​ឲ្យ​ប្រសើរ"
-
 #: src/ui.cc:2155
 msgid "Mark ^Auto"
 msgstr "សម្គាល់​ស្វ័យប្រវត្តិ"
-
-#: src/ui.cc:2156
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
-msgstr ""
-"សម្គាល់​កញ្ចប់​ដែល​បាន​ជ្រើស ថា​ត្រូវ​បាន​ដំឡើង​ដោយ​ស្វ័យប្រវត្តិ ។ វា​នឹង​ត្រូវ​បាន​យកចេញ​ដោយ​ស្វ័យប្រវត្តិ បើ​មិន​"
-"មាន​កញ្ចប់​ណា​មួយ​អាស្រ័យ​តាម​វា"
 
 #: src/ui.cc:2159
 msgid "Mark ^Manual"
 msgstr "សម្គាល់​ដោយ​ដៃ"
 
-#: src/ui.cc:2160
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr ""
-"សម្គាល់​កញ្ចប់​ដែល​បាន​ជ្រើស ថា​ត្រូវ​បាន​ដំឡើង​ដោយ​ដៃ ។ វា​នឹង​មិន​ត្រូវ​បាន​យកចេញ​ឡើយ ទាល់​តែ​អ្នក​យកវា​ចេញ​"
-"ដោយ​ដៃ"
-
 #: src/ui.cc:2163
 msgid "^Forbid Version"
 msgstr "ហាមឃាត់​កំណែ"
-
-#: src/ui.cc:2164
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
-msgstr ""
-"ហាមឃាត់​កំណែ​សាកល្បង​របស់​កញ្ចប់​ដែល​បាន​ជ្រើស ថា​កុំ​ឲ្យ​ដំឡើង ។ កំណែ​ថ្មី​ជាង​របស់​កញ្ចប់ នឹង​ត្រូវ​បាន​ដំឡើង​"
-"ធម្មតា"
 
 #: src/ui.cc:2168
 msgid "I^nformation"
@@ -6150,10 +6454,6 @@ msgstr "អាជ្ញាបណ្ណ"
 #: src/ui.cc:2505
 msgid "Actions"
 msgstr "សកម្មភាព​"
-
-#: src/ui.cc:2508
-msgid "Resolver"
-msgstr "កម្មវិធី​ដោះស្រាយ"
 
 #: src/ui.cc:2509
 msgid "Search"

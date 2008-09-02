@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-02 08:29-0700\n"
+"POT-Creation-Date: 2008-09-02 08:30-0700\n"
 "PO-Revision-Date: 2006-09-03 09:36-0700\n"
 "Last-Translator: Priti Patil <prithisd@gmail.com>\n"
 "Language-Team:  Marathi, janabhaaratii, C-DAC, Mumbai, India "
@@ -2046,7 +2046,7 @@ msgid "Candidate"
 msgstr "CandVer"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
-#: src/gtk/gui.cc:71
+#: src/gtk/gui.cc:71 src/gtk/ui-main.glade:1403
 msgid "Install"
 msgstr "संस्थापित करा"
 
@@ -2169,7 +2169,7 @@ msgstr "असमाधानी"
 msgid "UNAVAILABLE"
 msgstr "अनुपलब्ध"
 
-#: src/desc_render.cc:133
+#: src/desc_render.cc:133 src/gtk/ui-main.glade:914
 msgid "Tags"
 msgstr "टॅग्ज (खुणेच्या पट्ट्या)"
 
@@ -2668,7 +2668,7 @@ msgstr "काढून टाका (स्वयं)"
 msgid "Downgrade"
 msgstr "दर्जा कमी करा (निम्न आवृत्ती)"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1591 src/gtk/ui-main.glade:1455
 msgid "Hold"
 msgstr "धरून ठेवा"
 
@@ -2677,6 +2677,7 @@ msgid "Reinstall"
 msgstr "पुर्नसंस्थापित करा"
 
 #: src/generic/apt/matchers.cc:1597 src/gtk/gui.cc:75
+#: src/gtk/ui-main.glade:1416
 msgid "Remove"
 msgstr "काढून टाका"
 
@@ -2684,7 +2685,7 @@ msgstr "काढून टाका"
 msgid "Upgrade"
 msgstr "दर्जा उंचवा (पुढील सुधारित आवृत्ती)"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1625 src/gtk/ui-main.glade:1442
 msgid "Keep"
 msgstr "ठेवा"
 
@@ -2929,7 +2930,7 @@ msgstr "काहीही नाही"
 msgid "URI"
 msgstr ""
 
-#: src/gtk/download.cc:158
+#: src/gtk/download.cc:158 src/gtk/ui-main.glade:1019
 #, fuzzy
 #| msgid "State"
 msgid "Status"
@@ -3115,7 +3116,7 @@ msgstr ""
 msgid "Dashboard:"
 msgstr ""
 
-#: src/gtk/gui.cc:689
+#: src/gtk/gui.cc:689 src/gtk/ui-main.glade:459
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
@@ -3546,6 +3547,418 @@ msgstr "अप्लाय करण्यासाठी उत्तर शो
 #: src/gtk/resolver.cc:630 src/ui.cc:1955
 msgid "Ran out of time while trying to find a solution."
 msgstr "उत्तर शोधण्याचा प्रयत्न करताना वेळ निघुन गेली."
+
+#: src/gtk/ui-main.glade:17
+#, fuzzy
+msgid "_File"
+msgstr "बंद करा"
+
+#: src/gtk/ui-main.glade:25 src/ui.cc:2075
+msgid "Perform all pending installs and removals"
+msgstr "राहीलेली संस्थापने आणि काढून टाकणे पूर्ण करा"
+
+#: src/gtk/ui-main.glade:26
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/remove packages"
+msgstr "पॅकेजेस संस्थापन काढून टाका"
+
+#: src/gtk/ui-main.glade:39 src/ui.cc:2078
+msgid "Check for new versions of packages"
+msgstr "पॅकेजेसच्या नवीन आवृत्तींसाठी परिक्षण करा"
+
+#: src/gtk/ui-main.glade:40
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update package list"
+msgstr "पॅकेज यादी सुधारित आवृत्ती करा"
+
+#: src/gtk/ui-main.glade:58 src/ui.cc:2083
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr "पुढिल आवृत्तीत न करणारी , पुढिल आवृत्तीत पॅकेजेस चिन्हांकित करा."
+
+#: src/gtk/ui-main.glade:59
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "अप ग्रेडे्बल चिन्हांकीत करा"
+
+#: src/gtk/ui-main.glade:72 src/ui.cc:2088
+msgid "Forget which packages are \"new\""
+msgstr "कोणती पॅकेजेस नवीन आहेत ते विसरा"
+
+#: src/gtk/ui-main.glade:73
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget new packages"
+msgstr "नवीन पॅकेजेस विसरा"
+
+#: src/gtk/ui-main.glade:86 src/ui.cc:2092
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr "राहिलेली सगळी संस्थापने काढून टाकणे थांबवलेले सुधारित आवृत्तीत रद्द करा."
+
+#: src/gtk/ui-main.glade:87
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el pending actions"
+msgstr "कॅन्सल राहीलेल्या क्रिया"
+
+#: src/gtk/ui-main.glade:100 src/ui.cc:2096
+msgid "Delete package files which were previously downloaded"
+msgstr "आधिच डाऊनलोड केलेल्या पॅकेज फाईल्स काढून टाका."
+
+#: src/gtk/ui-main.glade:101
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "_Clean package cache"
+msgstr "स्वच्छ पॅकेज अस्थाई स्मृतीकोष."
+
+#: src/gtk/ui-main.glade:114 src/ui.cc:2100
+msgid "Delete package files which can no longer be downloaded"
+msgstr "डाउनलोड करता न येण्यासारखी पॅकेजेस काढून टाका"
+
+#: src/gtk/ui-main.glade:115
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _obsolete files"
+msgstr "सफाई कालबाह्य फाईल्स"
+
+#: src/gtk/ui-main.glade:133 src/ui.cc:2107
+msgid "Reload the package cache"
+msgstr "पॅकेजचा अस्थाई स्मृतीकोष पुनः स्थापित करा."
+
+#: src/gtk/ui-main.glade:134
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload package cache"
+msgstr "पुनःदाखल होणारी पॅकेज अस्थाई स्मृतीकोष"
+
+#: src/gtk/ui-main.glade:147 src/ui.cc:1556 src/ui.cc:2112
+msgid "Waste time trying to find mines"
+msgstr "माईन्स्् शोधण्यात वेळ व्यर्थ गेला ."
+
+#: src/gtk/ui-main.glade:148
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "माईनस्विपर खेळा."
+
+#: src/gtk/ui-main.glade:166 src/ui.cc:2117
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"मूळापर्यंत पोहोचण्यासाठी 'सू' चालवा. यामुळे तुमची रचना जतन राहून आज्ञावली पुन्हा सुरु होईल."
+
+#: src/gtk/ui-main.glade:167
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become root"
+msgstr "रुट व्हा"
+
+#: src/gtk/ui-main.glade:180 src/ui.cc:2120
+msgid "Exit the program"
+msgstr "आज्ञावलीतून बाहेर पडा"
+
+#: src/gtk/ui-main.glade:181
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "बाहेर पडा"
+
+#: src/gtk/ui-main.glade:197
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/ui-main.glade:205 src/ui.cc:2127
+msgid "Undo the last package operation or group of operations"
+msgstr "क्रियांचा समुह किंवा मागची पॅकेज क्रिया यांचा बदल रद्द करा"
+
+#: src/gtk/ui-main.glade:206 src/ui.cc:2126 src/ui.cc:2506
+msgid "Undo"
+msgstr "बदल रद्द करा"
+
+#: src/gtk/ui-main.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/ui-main.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/ui-main.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/ui-main.glade:248
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "गाळून टाका"
+
+#: src/gtk/ui-main.glade:260
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "पॅकेज"
+
+#: src/gtk/ui-main.glade:268 src/ui.cc:2136
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "आत्ता निवड केलेल्या पॅकेजला संस्थापनेसाठी किंवा पुढिल आवृत्तीत होण्यासाठी सुचित करा."
+
+#: src/gtk/ui-main.glade:269
+#, fuzzy
+#| msgid "Install"
+msgid "_Install"
+msgstr "संस्थापित करा"
+
+#: src/gtk/ui-main.glade:282 src/ui.cc:2140
+msgid "Flag the currently selected package for removal"
+msgstr "आत्ता निवड केलेल्या पॅकेजला काढून टाकण्यासाठी सूचित करा."
+
+#: src/gtk/ui-main.glade:283
+#, fuzzy
+#| msgid "Remove"
+msgid "_Remove"
+msgstr "काढून टाका"
+
+#: src/gtk/ui-main.glade:296 src/ui.cc:2144
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr ""
+"  आत्ता निवड केलेल्या पॅकेजला आणि त्याच्या संरचित फाईल्स ना काढून टाकण्यासाठी सूचित करा."
+
+#: src/gtk/ui-main.glade:297
+#, fuzzy
+#| msgid "^Purge"
+msgid "_Purge"
+msgstr "^स्वच्छ करा"
+
+#: src/gtk/ui-main.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/ui-main.glade:311
+#, fuzzy
+#| msgid "Keep"
+msgid "_Keep"
+msgstr "ठेवा"
+
+#: src/gtk/ui-main.glade:324 src/ui.cc:2152
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr ""
+"निवडलेल्या पॅकेजवरिल कुठलिही क्रिया रद्द करा आणि भविष्यात असं होण्यापासून त्याला वाचवा."
+
+#: src/gtk/ui-main.glade:325
+#, fuzzy
+#| msgid "Hold"
+msgid "_Hold"
+msgstr "धरून ठेवा"
+
+#: src/gtk/ui-main.glade:338 src/ui.cc:2156
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"निवड केलेल्या पॅकेजला आपोआप संरचित केलेले म्हणून चिन्हांकित करा.ह्या वर दुसरे कोणतेही पॅकेज "
+"अवलंबून नसेल तर ते आपोआप काढून टाकले जाईल."
+
+#: src/gtk/ui-main.glade:339
+#, fuzzy
+#| msgid "Mark ^Auto"
+msgid "Mark _Auto"
+msgstr "^ ला आपोआप म्हणून चिन्हांकीत करा."
+
+#: src/gtk/ui-main.glade:352 src/ui.cc:2160
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+" निवड केलेल्या पॅकेजला स्वतः संरचित केलेले म्हणून चिन्हांकित करातूम्ही स्वतः काढून टाकत नाही "
+"तोपर्यंत ते काढून टाकले जाणार नाही."
+
+#: src/gtk/ui-main.glade:353
+#, fuzzy
+#| msgid "Mark ^Manual"
+msgid "Mark _Manual"
+msgstr "^मदत चिन्हांकीत"
+
+#: src/gtk/ui-main.glade:366 src/ui.cc:2164
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"निवड केलेल्या पॅकेजची कॅंडीडेट आवृत्ती संरचित केलेले म्हणून फाॅरबीड करा,पॅकेजची नवीन आवृत्ती "
+"नेहमीप्रमाणे संरचित होईल. "
+
+#: src/gtk/ui-main.glade:367
+#, fuzzy
+#| msgid "^Forbid Version"
+msgid "_Forbid Version"
+msgstr "फाॅरबीड आवृृत्ती"
+
+#: src/gtk/ui-main.glade:384
+#, fuzzy
+#| msgid "Views"
+msgid "_Views"
+msgstr "दृष्ये"
+
+#: src/gtk/ui-main.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/ui-main.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/ui-main.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/ui-main.glade:401
+#, fuzzy
+msgid "Find _Dependency Chains"
+msgstr "डिपेंडन्सी हाताळणे"
+
+#: src/gtk/ui-main.glade:412
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "मदत"
+
+#: src/gtk/ui-main.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/ui-main.glade:440 src/gtk/ui-main.glade:524
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:469 src/gtk/ui-main.glade:691 src/ui.cc:834
+#: src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909 src/ui.cc:911
+#: src/ui.cc:932 src/ui.cc:934
+msgid "Packages"
+msgstr "पॅकेजेस"
+
+#: src/gtk/ui-main.glade:479 src/gtk/ui-main.glade:995 src/ui.cc:1292
+msgid "Preview"
+msgstr "पुन्हा बघा"
+
+#: src/gtk/ui-main.glade:489 src/gtk/ui-main.glade:1081 src/ui.cc:2508
+msgid "Resolver"
+msgstr "रिझाॅल्वर"
+
+#: src/gtk/ui-main.glade:499
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "संस्थापित केले"
+
+#: src/gtk/ui-main.glade:518
+msgid "This is the dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:555
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr "(डाउनलोडेड) (उतरवून घेतले)"
+
+#: src/gtk/ui-main.glade:599 src/gtk/ui-main.glade:1144
+#: src/gtk/ui-main.glade:1237
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "शोध"
+
+#: src/gtk/ui-main.glade:619 src/gtk/ui-main.glade:1164
+#: src/gtk/ui-main.glade:1257
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/ui-main.glade:755
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:816
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "%s ची परावलंबित्वे "
+
+#: src/gtk/ui-main.glade:845
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr "चेंजलाॅग"
+
+#: src/gtk/ui-main.glade:874
+#, fuzzy
+msgid "Files"
+msgstr "बंद करा"
+
+#: src/gtk/ui-main.glade:885
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:894
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:905
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "टॅग्ज (खुणेच्या पट्ट्या)"
+
+#: src/gtk/ui-main.glade:936
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "नाही"
+
+#: src/gtk/ui-main.glade:1028
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1043
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1058
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1110
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "Err"
+
+#: src/gtk/ui-main.glade:1205
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1298
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1336
+#, fuzzy
+msgid "Dependency Chain"
+msgstr "डिपेंडन्सी हाताळणे"
+
+#: src/gtk/ui-main.glade:1429
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "^स्वच्छ करा"
 
 #: src/load_config.cc:48
 #, c-format
@@ -5404,11 +5817,6 @@ msgstr ""
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr "खरचं तुमची रचना काढून टाकून मुलभूत दाखल करायचे का?"
 
-#: src/ui.cc:834 src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909
-#: src/ui.cc:911 src/ui.cc:932 src/ui.cc:934
-msgid "Packages"
-msgstr "पॅकेजेस"
-
 #: src/ui.cc:835 src/ui.cc:882 src/ui.cc:910 src/ui.cc:933
 msgid "View available packages and choose actions to perform"
 msgstr "उपलब्ध असणारी पॅकेजेस दाखवा आणि कृती निवडा"
@@ -5579,10 +5987,6 @@ msgstr "पॅकेज संस्थापने पुन्हा बघा
 msgid "View and/or adjust the actions that will be performed"
 msgstr "होणाऱ््या क्रिया बघा आणि  किंवा अनुकुल करा"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "पुन्हा बघा"
-
 #: src/ui.cc:1348
 msgid "Some packages were broken and have been fixed:"
 msgstr "काही पॅकेजेस तुटली होती पण ती जोडली आहेत"
@@ -5658,10 +6062,6 @@ msgstr ""
 "पॅकेज यादी सुधारित करण्यासाठी प्रबंधन परवाणगी असणे आवश्यक आहे, जी तुम्हाला आत्ता प्राप्त "
 "नाही.  तुम्हाला रुट अकाऊंट बदलायचा आहे का?"
 
-#: src/ui.cc:1556 src/ui.cc:2112
-msgid "Waste time trying to find mines"
-msgstr "माईन्स्् शोधण्यात वेळ व्यर्थ गेला ."
-
 #: src/ui.cc:1563 src/ui.cc:1623
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "डाऊनलोड होत असताना सफाई करणे परवाणगी प्राप्त नाही."
@@ -5714,65 +6114,33 @@ msgstr "रिझाॅल्वर स्थिती टाकता येई
 msgid "^Install/remove packages"
 msgstr "पॅकेजेस संस्थापन काढून टाका"
 
-#: src/ui.cc:2075
-msgid "Perform all pending installs and removals"
-msgstr "राहीलेली संस्थापने आणि काढून टाकणे पूर्ण करा"
-
 #: src/ui.cc:2077
 msgid "^Update package list"
 msgstr "पॅकेज यादी सुधारित आवृत्ती करा"
-
-#: src/ui.cc:2078
-msgid "Check for new versions of packages"
-msgstr "पॅकेजेसच्या नवीन आवृत्तींसाठी परिक्षण करा"
 
 #: src/ui.cc:2082
 msgid "Mark Up^gradable"
 msgstr "अप ग्रेडे्बल चिन्हांकीत करा"
 
-#: src/ui.cc:2083
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr "पुढिल आवृत्तीत न करणारी , पुढिल आवृत्तीत पॅकेजेस चिन्हांकित करा."
-
 #: src/ui.cc:2087
 msgid "^Forget new packages"
 msgstr "नवीन पॅकेजेस विसरा"
-
-#: src/ui.cc:2088
-msgid "Forget which packages are \"new\""
-msgstr "कोणती पॅकेजेस नवीन आहेत ते विसरा"
 
 #: src/ui.cc:2091
 msgid "Canc^el pending actions"
 msgstr "कॅन्सल राहीलेल्या क्रिया"
 
-#: src/ui.cc:2092
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "राहिलेली सगळी संस्थापने काढून टाकणे थांबवलेले सुधारित आवृत्तीत रद्द करा."
-
 #: src/ui.cc:2095
 msgid "^Clean package cache"
 msgstr "स्वच्छ पॅकेज अस्थाई स्मृतीकोष."
-
-#: src/ui.cc:2096
-msgid "Delete package files which were previously downloaded"
-msgstr "आधिच डाऊनलोड केलेल्या पॅकेज फाईल्स काढून टाका."
 
 #: src/ui.cc:2099
 msgid "Clean ^obsolete files"
 msgstr "सफाई कालबाह्य फाईल्स"
 
-#: src/ui.cc:2100
-msgid "Delete package files which can no longer be downloaded"
-msgstr "डाउनलोड करता न येण्यासारखी पॅकेजेस काढून टाका"
-
 #: src/ui.cc:2106
 msgid "^Reload package cache"
 msgstr "पुनःदाखल होणारी पॅकेज अस्थाई स्मृतीकोष"
-
-#: src/ui.cc:2107
-msgid "Reload the package cache"
-msgstr "पॅकेजचा अस्थाई स्मृतीकोष पुनः स्थापित करा."
 
 #: src/ui.cc:2111
 msgid "^Play Minesweeper"
@@ -5782,54 +6150,21 @@ msgstr "माईनस्विपर खेळा."
 msgid "^Become root"
 msgstr "रुट व्हा"
 
-#: src/ui.cc:2117
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-"मूळापर्यंत पोहोचण्यासाठी 'सू' चालवा. यामुळे तुमची रचना जतन राहून आज्ञावली पुन्हा सुरु होईल."
-
 #: src/ui.cc:2119
 msgid "^Quit"
 msgstr "बाहेर पडा"
-
-#: src/ui.cc:2120
-msgid "Exit the program"
-msgstr "आज्ञावलीतून बाहेर पडा"
-
-#: src/ui.cc:2126 src/ui.cc:2506
-msgid "Undo"
-msgstr "बदल रद्द करा"
-
-#: src/ui.cc:2127
-msgid "Undo the last package operation or group of operations"
-msgstr "क्रियांचा समुह किंवा मागची पॅकेज क्रिया यांचा बदल रद्द करा"
 
 #: src/ui.cc:2135
 msgid "^Install"
 msgstr "संस्थापना"
 
-#: src/ui.cc:2136
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr "आत्ता निवड केलेल्या पॅकेजला संस्थापनेसाठी किंवा पुढिल आवृत्तीत होण्यासाठी सुचित करा."
-
 #: src/ui.cc:2139
 msgid "^Remove"
 msgstr "काढून टाका"
 
-#: src/ui.cc:2140
-msgid "Flag the currently selected package for removal"
-msgstr "आत्ता निवड केलेल्या पॅकेजला काढून टाकण्यासाठी सूचित करा."
-
 #: src/ui.cc:2143
 msgid "^Purge"
 msgstr "^स्वच्छ करा"
-
-#: src/ui.cc:2144
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr ""
-"  आत्ता निवड केलेल्या पॅकेजला आणि त्याच्या संरचित फाईल्स ना काढून टाकण्यासाठी सूचित करा."
 
 #: src/ui.cc:2147
 msgid "^Keep"
@@ -5843,48 +6178,17 @@ msgstr " निवडलेल्या पॅकेजवरिल कुठल
 msgid "^Hold"
 msgstr "तात्पुरते थांबवा."
 
-#: src/ui.cc:2152
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr ""
-"निवडलेल्या पॅकेजवरिल कुठलिही क्रिया रद्द करा आणि भविष्यात असं होण्यापासून त्याला वाचवा."
-
 #: src/ui.cc:2155
 msgid "Mark ^Auto"
 msgstr "^ ला आपोआप म्हणून चिन्हांकीत करा."
-
-#: src/ui.cc:2156
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
-msgstr ""
-"निवड केलेल्या पॅकेजला आपोआप संरचित केलेले म्हणून चिन्हांकित करा.ह्या वर दुसरे कोणतेही पॅकेज "
-"अवलंबून नसेल तर ते आपोआप काढून टाकले जाईल."
 
 #: src/ui.cc:2159
 msgid "Mark ^Manual"
 msgstr "^मदत चिन्हांकीत"
 
-#: src/ui.cc:2160
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr ""
-" निवड केलेल्या पॅकेजला स्वतः संरचित केलेले म्हणून चिन्हांकित करातूम्ही स्वतः काढून टाकत नाही "
-"तोपर्यंत ते काढून टाकले जाणार नाही."
-
 #: src/ui.cc:2163
 msgid "^Forbid Version"
 msgstr "फाॅरबीड आवृृत्ती"
-
-#: src/ui.cc:2164
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
-msgstr ""
-"निवड केलेल्या पॅकेजची कॅंडीडेट आवृत्ती संरचित केलेले म्हणून फाॅरबीड करा,पॅकेजची नवीन आवृत्ती "
-"नेहमीप्रमाणे संरचित होईल. "
 
 #: src/ui.cc:2168
 msgid "I^nformation"
@@ -6202,10 +6506,6 @@ msgstr "^परवाना"
 #: src/ui.cc:2505
 msgid "Actions"
 msgstr "क्रिया"
-
-#: src/ui.cc:2508
-msgid "Resolver"
-msgstr "रिझाॅल्वर"
 
 #: src/ui.cc:2509
 msgid "Search"

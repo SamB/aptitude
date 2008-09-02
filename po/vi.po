@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-02 08:29-0700\n"
+"POT-Creation-Date: 2008-09-02 08:30-0700\n"
 "PO-Revision-Date: 2008-04-22 19:08+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -2197,7 +2197,7 @@ msgid "Candidate"
 msgstr "Ứng_cử"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
-#: src/gtk/gui.cc:71
+#: src/gtk/gui.cc:71 src/gtk/ui-main.glade:1403
 msgid "Install"
 msgstr "Cài"
 
@@ -2318,7 +2318,7 @@ msgstr "CHƯA ỔN"
 msgid "UNAVAILABLE"
 msgstr "KHÔNG CÓ SẴN"
 
-#: src/desc_render.cc:133
+#: src/desc_render.cc:133 src/gtk/ui-main.glade:914
 msgid "Tags"
 msgstr "Thẻ"
 
@@ -2827,7 +2827,7 @@ msgstr "Bỏ [tự động]"
 msgid "Downgrade"
 msgstr "Hạ cấp"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1591 src/gtk/ui-main.glade:1455
 msgid "Hold"
 msgstr "Giữ lại"
 
@@ -2836,6 +2836,7 @@ msgid "Reinstall"
 msgstr "Cài lại"
 
 #: src/generic/apt/matchers.cc:1597 src/gtk/gui.cc:75
+#: src/gtk/ui-main.glade:1416
 msgid "Remove"
 msgstr "Bỏ"
 
@@ -2843,7 +2844,7 @@ msgstr "Bỏ"
 msgid "Upgrade"
 msgstr "Nâng cấp"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1625 src/gtk/ui-main.glade:1442
 msgid "Keep"
 msgstr "Giữ"
 
@@ -3091,7 +3092,7 @@ msgstr "k0 có"
 msgid "URI"
 msgstr ""
 
-#: src/gtk/download.cc:158
+#: src/gtk/download.cc:158 src/gtk/ui-main.glade:1019
 #, fuzzy
 #| msgid "State"
 msgid "Status"
@@ -3282,7 +3283,7 @@ msgstr ""
 msgid "Dashboard:"
 msgstr ""
 
-#: src/gtk/gui.cc:689
+#: src/gtk/gui.cc:689 src/gtk/ui-main.glade:459
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
@@ -3715,6 +3716,424 @@ msgstr "Không tìm thấy giải pháp để dụng."
 #: src/gtk/resolver.cc:630 src/ui.cc:1955
 msgid "Ran out of time while trying to find a solution."
 msgstr "Hết thời gian khi cố gắng tìm giải pháp."
+
+#: src/gtk/ui-main.glade:17
+#, fuzzy
+#| msgid "False"
+msgid "_File"
+msgstr "Sai"
+
+#: src/gtk/ui-main.glade:25 src/ui.cc:2075
+msgid "Perform all pending installs and removals"
+msgstr "Thực hiện mọi việc cài đặt và gỡ bỏ bị hoãn"
+
+#: src/gtk/ui-main.glade:26
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/remove packages"
+msgstr "Cà^i/Bỏ gói"
+
+#: src/gtk/ui-main.glade:39 src/ui.cc:2078
+msgid "Check for new versions of packages"
+msgstr "Kiểm tra có phiên bản gói mới chưa"
+
+#: src/gtk/ui-main.glade:40
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update package list"
+msgstr "^Cập nhật danh sách gói"
+
+#: src/gtk/ui-main.glade:58 src/ui.cc:2083
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr ""
+"Đánh dấu mọi gói có khả năng nâng cấp mà không được giữ lại để nâng cấp"
+
+#: src/gtk/ui-main.glade:59
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "Nhãn Nân^g cấp được"
+
+#: src/gtk/ui-main.glade:72 src/ui.cc:2088
+msgid "Forget which packages are \"new\""
+msgstr "Quên những gói nào là « Mới »"
+
+#: src/gtk/ui-main.glade:73
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget new packages"
+msgstr "^Quên các gói mới"
+
+#: src/gtk/ui-main.glade:86 src/ui.cc:2092
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr "Thôi các việc cài đặt, gỡ bỏ, giữ lại và nâng cấp bị hoãn."
+
+#: src/gtk/ui-main.glade:87
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el pending actions"
+msgstr "^Thôi các hành động bị hoãn"
+
+#: src/gtk/ui-main.glade:100 src/ui.cc:2096
+msgid "Delete package files which were previously downloaded"
+msgstr "Xóa các tập tin gói đã tải về trước"
+
+#: src/gtk/ui-main.glade:101
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "_Clean package cache"
+msgstr "^Xóa bộ nhớ tạm gói"
+
+#: src/gtk/ui-main.glade:114 src/ui.cc:2100
+msgid "Delete package files which can no longer be downloaded"
+msgstr "Xóa các tập tin gói không còn tải về được"
+
+#: src/gtk/ui-main.glade:115
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _obsolete files"
+msgstr "Xóa các tập tin ^cũ"
+
+#: src/gtk/ui-main.glade:133 src/ui.cc:2107
+msgid "Reload the package cache"
+msgstr "Nạp lại bộ nhớ tạm gói"
+
+#: src/gtk/ui-main.glade:134
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload package cache"
+msgstr "Nạp ^lại bộ nhớ tạm gói"
+
+#: src/gtk/ui-main.glade:147 src/ui.cc:1556 src/ui.cc:2112
+msgid "Waste time trying to find mines"
+msgstr "Hoài phí thì giờ bằng cách cố gắng tìm mìn"
+
+#: src/gtk/ui-main.glade:148
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "Chơi Quét ^Mìn"
+
+#: src/gtk/ui-main.glade:166 src/ui.cc:2117
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"Hãy chạy lệnh « su » để trở thành người chủ: việc này sẽ khởi chạy lại chương "
+"trình, còn giữ lại các thiết lập của bạn"
+
+#: src/gtk/ui-main.glade:167
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become root"
+msgstr "Trở thành Người chủ"
+
+#: src/gtk/ui-main.glade:180 src/ui.cc:2120
+msgid "Exit the program"
+msgstr "Thoát khỏi chương trình"
+
+#: src/gtk/ui-main.glade:181
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "T^hoát"
+
+#: src/gtk/ui-main.glade:197
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/ui-main.glade:205 src/ui.cc:2127
+msgid "Undo the last package operation or group of operations"
+msgstr "Hồi lại thao tác (hay nhóm thao tác) gói cuối cùng"
+
+#: src/gtk/ui-main.glade:206 src/ui.cc:2126 src/ui.cc:2506
+msgid "Undo"
+msgstr "Hủy bước"
+
+#: src/gtk/ui-main.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/ui-main.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/ui-main.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/ui-main.glade:248
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "xóa"
+
+#: src/gtk/ui-main.glade:260
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "Gói"
+
+#: src/gtk/ui-main.glade:268 src/ui.cc:2136
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "Đánh dấu gói đã chọn hiện thời để cài đặt hoặc nâng cấp"
+
+#: src/gtk/ui-main.glade:269
+#, fuzzy
+#| msgid "Install"
+msgid "_Install"
+msgstr "Cài"
+
+#: src/gtk/ui-main.glade:282 src/ui.cc:2140
+msgid "Flag the currently selected package for removal"
+msgstr "Đánh dấu gói đã chọn hiện thời để gỡ bỏ"
+
+#: src/gtk/ui-main.glade:283
+#, fuzzy
+#| msgid "Remove"
+msgid "_Remove"
+msgstr "Bỏ"
+
+#: src/gtk/ui-main.glade:296 src/ui.cc:2144
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr "Đánh dấu gói đã chọn hiện thời và các tập tin câu hình nó để gỡ bỏ"
+
+#: src/gtk/ui-main.glade:297
+#, fuzzy
+#| msgid "^Purge"
+msgid "_Purge"
+msgstr "^Tẩy"
+
+#: src/gtk/ui-main.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/ui-main.glade:311
+#, fuzzy
+#| msgid "Keep"
+msgid "_Keep"
+msgstr "Giữ"
+
+#: src/gtk/ui-main.glade:324 src/ui.cc:2152
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr ""
+"Thôi hành động nào với gói được chọn, và bảo vệ nó chống các việc nâng cấp "
+"sau"
+
+#: src/gtk/ui-main.glade:325
+#, fuzzy
+#| msgid "Hold"
+msgid "_Hold"
+msgstr "Giữ lại"
+
+#: src/gtk/ui-main.glade:338 src/ui.cc:2156
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"Đánh dấu gói đã chọn « đã được cài đặt tự động »; nó sẽ được gỡ bỏ tự động "
+"nếu không có gói khác phụ thuộc vào nó."
+
+#: src/gtk/ui-main.glade:339
+#, fuzzy
+#| msgid "Mark ^Auto"
+msgid "Mark _Auto"
+msgstr "Nhãn ^Tự Động"
+
+#: src/gtk/ui-main.glade:352 src/ui.cc:2160
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+"Đánh dấu gói đã chọn « đã được cài đặt bằng tay »; nó sẽ không được gỡ bỏ trừ "
+"khi bạn tự gỡ bỏ nó bằng tay."
+
+#: src/gtk/ui-main.glade:353
+#, fuzzy
+#| msgid "Mark ^Manual"
+msgid "Mark _Manual"
+msgstr "Nhãn ^Bằng tay"
+
+#: src/gtk/ui-main.glade:366 src/ui.cc:2164
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"Cấm cài đặt phiên bản ứng cử của gói đã chọn; các phiên bản mới hơn sẽ được "
+"cài đặt như bình thường"
+
+#: src/gtk/ui-main.glade:367
+#, fuzzy
+#| msgid "^Forbid Version"
+msgid "_Forbid Version"
+msgstr "Cấm ^Phiên bản"
+
+#: src/gtk/ui-main.glade:384
+#, fuzzy
+#| msgid "Views"
+msgid "_Views"
+msgstr "Xem"
+
+#: src/gtk/ui-main.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/ui-main.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/ui-main.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/ui-main.glade:401
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Find _Dependency Chains"
+msgstr "Quản lý quan hệ phụ thuộc"
+
+#: src/gtk/ui-main.glade:412
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "Trợ giúp"
+
+#: src/gtk/ui-main.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/ui-main.glade:440 src/gtk/ui-main.glade:524
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:469 src/gtk/ui-main.glade:691 src/ui.cc:834
+#: src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909 src/ui.cc:911
+#: src/ui.cc:932 src/ui.cc:934
+msgid "Packages"
+msgstr "Gói"
+
+#: src/gtk/ui-main.glade:479 src/gtk/ui-main.glade:995 src/ui.cc:1292
+msgid "Preview"
+msgstr "Xem thử"
+
+#: src/gtk/ui-main.glade:489 src/gtk/ui-main.glade:1081 src/ui.cc:2508
+msgid "Resolver"
+msgstr "Bộ tháo gỡ"
+
+#: src/gtk/ui-main.glade:499
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "Đã cài"
+
+#: src/gtk/ui-main.glade:518
+msgid "This is the dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:555
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr "[Đã tải về]"
+
+#: src/gtk/ui-main.glade:599 src/gtk/ui-main.glade:1144
+#: src/gtk/ui-main.glade:1237
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "Tìm kiếm"
+
+#: src/gtk/ui-main.glade:619 src/gtk/ui-main.glade:1164
+#: src/gtk/ui-main.glade:1257
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/ui-main.glade:755
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:816
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "Phụ thuộc của %s"
+
+#: src/gtk/ui-main.glade:845
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr "^Bản ghi đổi"
+
+#: src/gtk/ui-main.glade:874
+#, fuzzy
+#| msgid "False"
+msgid "Files"
+msgstr "Sai"
+
+#: src/gtk/ui-main.glade:885
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:894
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:905
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "Thẻ"
+
+#: src/gtk/ui-main.glade:936
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "không"
+
+#: src/gtk/ui-main.glade:1028
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1043
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1058
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1110
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "Lỗi "
+
+#: src/gtk/ui-main.glade:1205
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1298
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1336
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Dependency Chain"
+msgstr "Quản lý quan hệ phụ thuộc"
+
+#: src/gtk/ui-main.glade:1429
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "^Tẩy"
 
 #: src/load_config.cc:48
 #, c-format
@@ -5605,11 +6024,6 @@ msgstr ""
 "Thật sự hủy các thiết lập cá nhân của bạn và nạp lại các giá trị mặc định "
 "không?"
 
-#: src/ui.cc:834 src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909
-#: src/ui.cc:911 src/ui.cc:932 src/ui.cc:934
-msgid "Packages"
-msgstr "Gói"
-
 #: src/ui.cc:835 src/ui.cc:882 src/ui.cc:910 src/ui.cc:933
 msgid "View available packages and choose actions to perform"
 msgstr "Xem các gói sẵn sàng và chọn hành động cần thực hiện"
@@ -5774,10 +6188,6 @@ msgstr "Xem thử việc cài gói"
 msgid "View and/or adjust the actions that will be performed"
 msgstr "Xem và/hay điều chỉnh những hành động cần thực hiện"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "Xem thử"
-
 #: src/ui.cc:1348
 msgid "Some packages were broken and have been fixed:"
 msgstr "Một số gói bị hỏng thì đã được sửa chữa:"
@@ -5853,10 +6263,6 @@ msgstr ""
 "Việc cập nhật danh sách gói cần thiết quyền truy cập quản trị, mà bạn hiện "
 "thời không có. Bạn có muốn chuyển đổi sang tài khoản người chủ phải không?"
 
-#: src/ui.cc:1556 src/ui.cc:2112
-msgid "Waste time trying to find mines"
-msgstr "Hoài phí thì giờ bằng cách cố gắng tìm mìn"
-
 #: src/ui.cc:1563 src/ui.cc:1623
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "Không cho phép xóa sạch trong khi tải về gì"
@@ -5911,66 +6317,33 @@ msgstr "Tập tin vào đó cần đổ tình trạng bộ tháo gỡ :"
 msgid "^Install/remove packages"
 msgstr "Cà^i/Bỏ gói"
 
-#: src/ui.cc:2075
-msgid "Perform all pending installs and removals"
-msgstr "Thực hiện mọi việc cài đặt và gỡ bỏ bị hoãn"
-
 #: src/ui.cc:2077
 msgid "^Update package list"
 msgstr "^Cập nhật danh sách gói"
-
-#: src/ui.cc:2078
-msgid "Check for new versions of packages"
-msgstr "Kiểm tra có phiên bản gói mới chưa"
 
 #: src/ui.cc:2082
 msgid "Mark Up^gradable"
 msgstr "Nhãn Nân^g cấp được"
 
-#: src/ui.cc:2083
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr ""
-"Đánh dấu mọi gói có khả năng nâng cấp mà không được giữ lại để nâng cấp"
-
 #: src/ui.cc:2087
 msgid "^Forget new packages"
 msgstr "^Quên các gói mới"
-
-#: src/ui.cc:2088
-msgid "Forget which packages are \"new\""
-msgstr "Quên những gói nào là « Mới »"
 
 #: src/ui.cc:2091
 msgid "Canc^el pending actions"
 msgstr "^Thôi các hành động bị hoãn"
 
-#: src/ui.cc:2092
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Thôi các việc cài đặt, gỡ bỏ, giữ lại và nâng cấp bị hoãn."
-
 #: src/ui.cc:2095
 msgid "^Clean package cache"
 msgstr "^Xóa bộ nhớ tạm gói"
-
-#: src/ui.cc:2096
-msgid "Delete package files which were previously downloaded"
-msgstr "Xóa các tập tin gói đã tải về trước"
 
 #: src/ui.cc:2099
 msgid "Clean ^obsolete files"
 msgstr "Xóa các tập tin ^cũ"
 
-#: src/ui.cc:2100
-msgid "Delete package files which can no longer be downloaded"
-msgstr "Xóa các tập tin gói không còn tải về được"
-
 #: src/ui.cc:2106
 msgid "^Reload package cache"
 msgstr "Nạp ^lại bộ nhớ tạm gói"
-
-#: src/ui.cc:2107
-msgid "Reload the package cache"
-msgstr "Nạp lại bộ nhớ tạm gói"
 
 #: src/ui.cc:2111
 msgid "^Play Minesweeper"
@@ -5980,54 +6353,21 @@ msgstr "Chơi Quét ^Mìn"
 msgid "^Become root"
 msgstr "Trở thành ^Người chủ"
 
-#: src/ui.cc:2117
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-"Hãy chạy lệnh « su » để trở thành người chủ: việc này sẽ khởi chạy lại chương "
-"trình, còn giữ lại các thiết lập của bạn"
-
 #: src/ui.cc:2119
 msgid "^Quit"
 msgstr "T^hoát"
-
-#: src/ui.cc:2120
-msgid "Exit the program"
-msgstr "Thoát khỏi chương trình"
-
-#: src/ui.cc:2126 src/ui.cc:2506
-msgid "Undo"
-msgstr "Hủy bước"
-
-#: src/ui.cc:2127
-msgid "Undo the last package operation or group of operations"
-msgstr "Hồi lại thao tác (hay nhóm thao tác) gói cuối cùng"
 
 #: src/ui.cc:2135
 msgid "^Install"
 msgstr "Cà^i"
 
-#: src/ui.cc:2136
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr "Đánh dấu gói đã chọn hiện thời để cài đặt hoặc nâng cấp"
-
 #: src/ui.cc:2139
 msgid "^Remove"
 msgstr "^Bỏ"
 
-#: src/ui.cc:2140
-msgid "Flag the currently selected package for removal"
-msgstr "Đánh dấu gói đã chọn hiện thời để gỡ bỏ"
-
 #: src/ui.cc:2143
 msgid "^Purge"
 msgstr "^Tẩy"
-
-#: src/ui.cc:2144
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr "Đánh dấu gói đã chọn hiện thời và các tập tin câu hình nó để gỡ bỏ"
 
 #: src/ui.cc:2147
 msgid "^Keep"
@@ -6041,49 +6381,17 @@ msgstr "Thôi hành động nào với gói được chọn"
 msgid "^Hold"
 msgstr "Giữ ^lại"
 
-#: src/ui.cc:2152
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr ""
-"Thôi hành động nào với gói được chọn, và bảo vệ nó chống các việc nâng cấp "
-"sau"
-
 #: src/ui.cc:2155
 msgid "Mark ^Auto"
 msgstr "Nhãn ^Tự Động"
-
-#: src/ui.cc:2156
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
-msgstr ""
-"Đánh dấu gói đã chọn « đã được cài đặt tự động »; nó sẽ được gỡ bỏ tự động "
-"nếu không có gói khác phụ thuộc vào nó."
 
 #: src/ui.cc:2159
 msgid "Mark ^Manual"
 msgstr "Nhãn ^Bằng tay"
 
-#: src/ui.cc:2160
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr ""
-"Đánh dấu gói đã chọn « đã được cài đặt bằng tay »; nó sẽ không được gỡ bỏ trừ "
-"khi bạn tự gỡ bỏ nó bằng tay."
-
 #: src/ui.cc:2163
 msgid "^Forbid Version"
 msgstr "Cấm ^Phiên bản"
-
-#: src/ui.cc:2164
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
-msgstr ""
-"Cấm cài đặt phiên bản ứng cử của gói đã chọn; các phiên bản mới hơn sẽ được "
-"cài đặt như bình thường"
 
 #: src/ui.cc:2168
 msgid "I^nformation"
@@ -6403,10 +6711,6 @@ msgstr "Giấ^y phép"
 #: src/ui.cc:2505
 msgid "Actions"
 msgstr "Hành vi"
-
-#: src/ui.cc:2508
-msgid "Resolver"
-msgstr "Bộ tháo gỡ"
 
 #: src/ui.cc:2509
 msgid "Search"

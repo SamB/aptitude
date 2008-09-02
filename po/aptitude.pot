@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-02 08:29-0700\n"
+"POT-Creation-Date: 2008-09-02 08:30-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1968,7 +1968,7 @@ msgid "Candidate"
 msgstr ""
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
-#: src/gtk/gui.cc:71
+#: src/gtk/gui.cc:71 src/gtk/ui-main.glade:1403
 msgid "Install"
 msgstr ""
 
@@ -2088,7 +2088,7 @@ msgstr ""
 msgid "UNAVAILABLE"
 msgstr ""
 
-#: src/desc_render.cc:133
+#: src/desc_render.cc:133 src/gtk/ui-main.glade:914
 msgid "Tags"
 msgstr ""
 
@@ -2564,7 +2564,7 @@ msgstr ""
 msgid "Downgrade"
 msgstr ""
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1591 src/gtk/ui-main.glade:1455
 msgid "Hold"
 msgstr ""
 
@@ -2573,6 +2573,7 @@ msgid "Reinstall"
 msgstr ""
 
 #: src/generic/apt/matchers.cc:1597 src/gtk/gui.cc:75
+#: src/gtk/ui-main.glade:1416
 msgid "Remove"
 msgstr ""
 
@@ -2580,7 +2581,7 @@ msgstr ""
 msgid "Upgrade"
 msgstr ""
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1625 src/gtk/ui-main.glade:1442
 msgid "Keep"
 msgstr ""
 
@@ -2817,7 +2818,7 @@ msgstr ""
 msgid "URI"
 msgstr ""
 
-#: src/gtk/download.cc:158
+#: src/gtk/download.cc:158 src/gtk/ui-main.glade:1019
 msgid "Status"
 msgstr ""
 
@@ -2959,7 +2960,7 @@ msgstr ""
 msgid "Dashboard:"
 msgstr ""
 
-#: src/gtk/gui.cc:689
+#: src/gtk/gui.cc:689 src/gtk/ui-main.glade:459
 msgid "Update"
 msgstr ""
 
@@ -3312,6 +3313,341 @@ msgstr ""
 
 #: src/gtk/resolver.cc:630 src/ui.cc:1955
 msgid "Ran out of time while trying to find a solution."
+msgstr ""
+
+#: src/gtk/ui-main.glade:17
+msgid "_File"
+msgstr ""
+
+#: src/gtk/ui-main.glade:25 src/ui.cc:2075
+msgid "Perform all pending installs and removals"
+msgstr ""
+
+#: src/gtk/ui-main.glade:26
+msgid "_Install/remove packages"
+msgstr ""
+
+#: src/gtk/ui-main.glade:39 src/ui.cc:2078
+msgid "Check for new versions of packages"
+msgstr ""
+
+#: src/gtk/ui-main.glade:40
+msgid "_Update package list"
+msgstr ""
+
+#: src/gtk/ui-main.glade:58 src/ui.cc:2083
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr ""
+
+#: src/gtk/ui-main.glade:59
+msgid "Mark Up_gradable"
+msgstr ""
+
+#: src/gtk/ui-main.glade:72 src/ui.cc:2088
+msgid "Forget which packages are \"new\""
+msgstr ""
+
+#: src/gtk/ui-main.glade:73
+msgid "_Forget new packages"
+msgstr ""
+
+#: src/gtk/ui-main.glade:86 src/ui.cc:2092
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr ""
+
+#: src/gtk/ui-main.glade:87
+msgid "Canc_el pending actions"
+msgstr ""
+
+#: src/gtk/ui-main.glade:100 src/ui.cc:2096
+msgid "Delete package files which were previously downloaded"
+msgstr ""
+
+#: src/gtk/ui-main.glade:101
+msgid "_Clean package cache"
+msgstr ""
+
+#: src/gtk/ui-main.glade:114 src/ui.cc:2100
+msgid "Delete package files which can no longer be downloaded"
+msgstr ""
+
+#: src/gtk/ui-main.glade:115
+msgid "Clean _obsolete files"
+msgstr ""
+
+#: src/gtk/ui-main.glade:133 src/ui.cc:2107
+msgid "Reload the package cache"
+msgstr ""
+
+#: src/gtk/ui-main.glade:134
+msgid "_Reload package cache"
+msgstr ""
+
+#: src/gtk/ui-main.glade:147 src/ui.cc:1556 src/ui.cc:2112
+msgid "Waste time trying to find mines"
+msgstr ""
+
+#: src/gtk/ui-main.glade:148
+msgid "_Play Minesweeper"
+msgstr ""
+
+#: src/gtk/ui-main.glade:166 src/ui.cc:2117
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+
+#: src/gtk/ui-main.glade:167
+msgid "_Become root"
+msgstr ""
+
+#: src/gtk/ui-main.glade:180 src/ui.cc:2120
+msgid "Exit the program"
+msgstr ""
+
+#: src/gtk/ui-main.glade:181
+msgid "_Quit"
+msgstr ""
+
+#: src/gtk/ui-main.glade:197
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/ui-main.glade:205 src/ui.cc:2127
+msgid "Undo the last package operation or group of operations"
+msgstr ""
+
+#: src/gtk/ui-main.glade:206 src/ui.cc:2126 src/ui.cc:2506
+msgid "Undo"
+msgstr ""
+
+#: src/gtk/ui-main.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/ui-main.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/ui-main.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/ui-main.glade:248
+msgid "gtk-delete"
+msgstr ""
+
+#: src/gtk/ui-main.glade:260
+msgid "_Package"
+msgstr ""
+
+#: src/gtk/ui-main.glade:268 src/ui.cc:2136
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr ""
+
+#: src/gtk/ui-main.glade:269
+msgid "_Install"
+msgstr ""
+
+#: src/gtk/ui-main.glade:282 src/ui.cc:2140
+msgid "Flag the currently selected package for removal"
+msgstr ""
+
+#: src/gtk/ui-main.glade:283
+msgid "_Remove"
+msgstr ""
+
+#: src/gtk/ui-main.glade:296 src/ui.cc:2144
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr ""
+
+#: src/gtk/ui-main.glade:297
+msgid "_Purge"
+msgstr ""
+
+#: src/gtk/ui-main.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/ui-main.glade:311
+msgid "_Keep"
+msgstr ""
+
+#: src/gtk/ui-main.glade:324 src/ui.cc:2152
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr ""
+
+#: src/gtk/ui-main.glade:325
+msgid "_Hold"
+msgstr ""
+
+#: src/gtk/ui-main.glade:338 src/ui.cc:2156
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+
+#: src/gtk/ui-main.glade:339
+msgid "Mark _Auto"
+msgstr ""
+
+#: src/gtk/ui-main.glade:352 src/ui.cc:2160
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+
+#: src/gtk/ui-main.glade:353
+msgid "Mark _Manual"
+msgstr ""
+
+#: src/gtk/ui-main.glade:366 src/ui.cc:2164
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+
+#: src/gtk/ui-main.glade:367
+msgid "_Forbid Version"
+msgstr ""
+
+#: src/gtk/ui-main.glade:384
+msgid "_Views"
+msgstr ""
+
+#: src/gtk/ui-main.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/ui-main.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/ui-main.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/ui-main.glade:401
+msgid "Find _Dependency Chains"
+msgstr ""
+
+#: src/gtk/ui-main.glade:412
+msgid "_Help"
+msgstr ""
+
+#: src/gtk/ui-main.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/ui-main.glade:440 src/gtk/ui-main.glade:524
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:469 src/gtk/ui-main.glade:691 src/ui.cc:834
+#: src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909 src/ui.cc:911
+#: src/ui.cc:932 src/ui.cc:934
+msgid "Packages"
+msgstr ""
+
+#: src/gtk/ui-main.glade:479 src/gtk/ui-main.glade:995 src/ui.cc:1292
+msgid "Preview"
+msgstr ""
+
+#: src/gtk/ui-main.glade:489 src/gtk/ui-main.glade:1081 src/ui.cc:2508
+msgid "Resolver"
+msgstr ""
+
+#: src/gtk/ui-main.glade:499
+msgid "Install/Remove"
+msgstr ""
+
+#: src/gtk/ui-main.glade:518
+msgid "This is the dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:555
+msgid "Download"
+msgstr ""
+
+#: src/gtk/ui-main.glade:599 src/gtk/ui-main.glade:1144
+#: src/gtk/ui-main.glade:1237
+msgid "Search:"
+msgstr ""
+
+#: src/gtk/ui-main.glade:619 src/gtk/ui-main.glade:1164
+#: src/gtk/ui-main.glade:1257
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/ui-main.glade:755
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:816
+msgid "Dependencies"
+msgstr ""
+
+#: src/gtk/ui-main.glade:845
+msgid "Changelog"
+msgstr ""
+
+#: src/gtk/ui-main.glade:874
+msgid "Files"
+msgstr ""
+
+#: src/gtk/ui-main.glade:885
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:894
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:905
+msgid "tags"
+msgstr ""
+
+#: src/gtk/ui-main.glade:936
+msgid "Info"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1028
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1043
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1058
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1110
+msgid "Errors"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1205
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1298
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1336
+msgid "Dependency Chain"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1429
+msgid "Purge"
 msgstr ""
 
 #: src/load_config.cc:48
@@ -5071,11 +5407,6 @@ msgstr ""
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr ""
 
-#: src/ui.cc:834 src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909
-#: src/ui.cc:911 src/ui.cc:932 src/ui.cc:934
-msgid "Packages"
-msgstr ""
-
 #: src/ui.cc:835 src/ui.cc:882 src/ui.cc:910 src/ui.cc:933
 msgid "View available packages and choose actions to perform"
 msgstr ""
@@ -5227,10 +5558,6 @@ msgstr ""
 msgid "View and/or adjust the actions that will be performed"
 msgstr ""
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr ""
-
 #: src/ui.cc:1348
 msgid "Some packages were broken and have been fixed:"
 msgstr ""
@@ -5297,10 +5624,6 @@ msgid ""
 "currently do not have.  Would you like to change to the root account?"
 msgstr ""
 
-#: src/ui.cc:1556 src/ui.cc:2112
-msgid "Waste time trying to find mines"
-msgstr ""
-
 #: src/ui.cc:1563 src/ui.cc:1623
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr ""
@@ -5353,64 +5676,32 @@ msgstr ""
 msgid "^Install/remove packages"
 msgstr ""
 
-#: src/ui.cc:2075
-msgid "Perform all pending installs and removals"
-msgstr ""
-
 #: src/ui.cc:2077
 msgid "^Update package list"
-msgstr ""
-
-#: src/ui.cc:2078
-msgid "Check for new versions of packages"
 msgstr ""
 
 #: src/ui.cc:2082
 msgid "Mark Up^gradable"
 msgstr ""
 
-#: src/ui.cc:2083
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr ""
-
 #: src/ui.cc:2087
 msgid "^Forget new packages"
-msgstr ""
-
-#: src/ui.cc:2088
-msgid "Forget which packages are \"new\""
 msgstr ""
 
 #: src/ui.cc:2091
 msgid "Canc^el pending actions"
 msgstr ""
 
-#: src/ui.cc:2092
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr ""
-
 #: src/ui.cc:2095
 msgid "^Clean package cache"
-msgstr ""
-
-#: src/ui.cc:2096
-msgid "Delete package files which were previously downloaded"
 msgstr ""
 
 #: src/ui.cc:2099
 msgid "Clean ^obsolete files"
 msgstr ""
 
-#: src/ui.cc:2100
-msgid "Delete package files which can no longer be downloaded"
-msgstr ""
-
 #: src/ui.cc:2106
 msgid "^Reload package cache"
-msgstr ""
-
-#: src/ui.cc:2107
-msgid "Reload the package cache"
 msgstr ""
 
 #: src/ui.cc:2111
@@ -5421,51 +5712,20 @@ msgstr ""
 msgid "^Become root"
 msgstr ""
 
-#: src/ui.cc:2117
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-
 #: src/ui.cc:2119
 msgid "^Quit"
-msgstr ""
-
-#: src/ui.cc:2120
-msgid "Exit the program"
-msgstr ""
-
-#: src/ui.cc:2126 src/ui.cc:2506
-msgid "Undo"
-msgstr ""
-
-#: src/ui.cc:2127
-msgid "Undo the last package operation or group of operations"
 msgstr ""
 
 #: src/ui.cc:2135
 msgid "^Install"
 msgstr ""
 
-#: src/ui.cc:2136
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr ""
-
 #: src/ui.cc:2139
 msgid "^Remove"
 msgstr ""
 
-#: src/ui.cc:2140
-msgid "Flag the currently selected package for removal"
-msgstr ""
-
 #: src/ui.cc:2143
 msgid "^Purge"
-msgstr ""
-
-#: src/ui.cc:2144
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
 msgstr ""
 
 #: src/ui.cc:2147
@@ -5480,40 +5740,16 @@ msgstr ""
 msgid "^Hold"
 msgstr ""
 
-#: src/ui.cc:2152
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr ""
-
 #: src/ui.cc:2155
 msgid "Mark ^Auto"
-msgstr ""
-
-#: src/ui.cc:2156
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
 msgstr ""
 
 #: src/ui.cc:2159
 msgid "Mark ^Manual"
 msgstr ""
 
-#: src/ui.cc:2160
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr ""
-
 #: src/ui.cc:2163
 msgid "^Forbid Version"
-msgstr ""
-
-#: src/ui.cc:2164
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
 msgstr ""
 
 #: src/ui.cc:2168
@@ -5827,10 +6063,6 @@ msgstr ""
 
 #: src/ui.cc:2505
 msgid "Actions"
-msgstr ""
-
-#: src/ui.cc:2508
-msgid "Resolver"
 msgstr ""
 
 #: src/ui.cc:2509

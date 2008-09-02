@@ -185,7 +185,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-02 08:29-0700\n"
+"POT-Creation-Date: 2008-09-02 08:30-0700\n"
 "PO-Revision-Date: 2008-05-16 03:35+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
@@ -2407,7 +2407,7 @@ msgid "Candidate"
 msgstr "候補"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
-#: src/gtk/gui.cc:71
+#: src/gtk/gui.cc:71 src/gtk/ui-main.glade:1403
 msgid "Install"
 msgstr "インストール"
 
@@ -2530,7 +2530,7 @@ msgstr "依存関係未解決"
 msgid "UNAVAILABLE"
 msgstr "入手不可能"
 
-#: src/desc_render.cc:133
+#: src/desc_render.cc:133 src/gtk/ui-main.glade:914
 msgid "Tags"
 msgstr "タグ"
 
@@ -3061,7 +3061,7 @@ msgstr "削除 [自動]"
 msgid "Downgrade"
 msgstr "ダウングレード"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1591 src/gtk/ui-main.glade:1455
 msgid "Hold"
 msgstr "固定"
 
@@ -3070,6 +3070,7 @@ msgid "Reinstall"
 msgstr "再インストール"
 
 #: src/generic/apt/matchers.cc:1597 src/gtk/gui.cc:75
+#: src/gtk/ui-main.glade:1416
 msgid "Remove"
 msgstr "削除"
 
@@ -3077,7 +3078,7 @@ msgstr "削除"
 msgid "Upgrade"
 msgstr "更新"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1625 src/gtk/ui-main.glade:1442
 msgid "Keep"
 msgstr "一時固定"
 
@@ -3327,7 +3328,7 @@ msgstr "なし"
 msgid "URI"
 msgstr ""
 
-#: src/gtk/download.cc:158
+#: src/gtk/download.cc:158 src/gtk/ui-main.glade:1019
 #, fuzzy
 #| msgid "State"
 msgid "Status"
@@ -3520,7 +3521,7 @@ msgid "Dashboard:"
 msgstr ""
 
 # * Message used as 'tablabel' for the ui_download_manager.
-#: src/gtk/gui.cc:689
+#: src/gtk/gui.cc:689 src/gtk/ui-main.glade:459
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
@@ -3956,6 +3957,462 @@ msgstr "適用する解決方法が見つかりません。"
 #: src/gtk/resolver.cc:630 src/ui.cc:1955
 msgid "Ran out of time while trying to find a solution."
 msgstr "解決方法を探そうとしましたがタイムアウトになりました。"
+
+#: src/gtk/ui-main.glade:17
+#, fuzzy
+#| msgid "False"
+msgid "_File"
+msgstr "いいえ"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:25 src/ui.cc:2075
+msgid "Perform all pending installs and removals"
+msgstr "実行されていないインストールや削除を実行します"
+
+# * Item.
+#: src/gtk/ui-main.glade:26
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/remove packages"
+msgstr "パッケージのインストール・削除 (^I)"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:39 src/ui.cc:2078
+msgid "Check for new versions of packages"
+msgstr "パッケージの新しいバージョンがないか確認します"
+
+# * Item.
+#: src/gtk/ui-main.glade:40
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update package list"
+msgstr "パッケージ一覧の更新 (^U)"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:58 src/ui.cc:2083
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr "更新時に固定されない更新可能パッケージすべてに印をつけます"
+
+# * Item.
+#: src/gtk/ui-main.glade:59
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "更新可能パッケージという印を添付 (^g)"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:72 src/ui.cc:2088
+msgid "Forget which packages are \"new\""
+msgstr "どのパッケージが「新規」かの情報を消去します"
+
+# * Item.
+#: src/gtk/ui-main.glade:73
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget new packages"
+msgstr "新規パッケージ一覧の消去 (^F)"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:86 src/ui.cc:2092
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr "実行されていないインストール・削除・固定・更新を取り消します。"
+
+#: src/gtk/ui-main.glade:87
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el pending actions"
+msgstr "未実行アクションの取り消し (^e)"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:100 src/ui.cc:2096
+msgid "Delete package files which were previously downloaded"
+msgstr "以前ダウンロードしたパッケージファイルを削除します"
+
+# * Item.
+#: src/gtk/ui-main.glade:101
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "_Clean package cache"
+msgstr "パッケージのキャッシュの消去 (^C)"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:114 src/ui.cc:2100
+msgid "Delete package files which can no longer be downloaded"
+msgstr "もはやダウンロードできないパッケージファイルを削除する"
+
+# * Item.
+#: src/gtk/ui-main.glade:115
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _obsolete files"
+msgstr "廃止されたファイルを一掃する (^o)"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:133 src/ui.cc:2107
+msgid "Reload the package cache"
+msgstr "パッケージのキャッシュを再度読み込みます"
+
+# * Item.
+#: src/gtk/ui-main.glade:134
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload package cache"
+msgstr "パッケージのキャッシュの再読み込み (^R)"
+
+#: src/gtk/ui-main.glade:147 src/ui.cc:1556 src/ui.cc:2112
+msgid "Waste time trying to find mines"
+msgstr "地雷探しにかまけます"
+
+# * Item.
+#: src/gtk/ui-main.glade:148
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "マインスイーパで遊ぶ (^P)"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:166 src/ui.cc:2117
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"root になるために 'su' を実行します。それによってプログラムは再起動されます"
+"が、現在の設定は保持されます"
+
+#: src/gtk/ui-main.glade:167
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become root"
+msgstr "root になる"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:180 src/ui.cc:2120
+msgid "Exit the program"
+msgstr "プログラムを終了します"
+
+# * Item.
+#: src/gtk/ui-main.glade:181
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "終了 (^Q)"
+
+#: src/gtk/ui-main.glade:197
+msgid "E_dit"
+msgstr ""
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:205 src/ui.cc:2127
+msgid "Undo the last package operation or group of operations"
+msgstr "最後におこなったパッケージ管理操作、または一連の操作を取り消します"
+
+# * Menu item on the first line.
+# * Item.
+#: src/gtk/ui-main.glade:206 src/ui.cc:2126 src/ui.cc:2506
+msgid "Undo"
+msgstr "取り消し"
+
+#: src/gtk/ui-main.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/ui-main.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/ui-main.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/ui-main.glade:248
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "削除"
+
+#: src/gtk/ui-main.glade:260
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "パッケージ"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:268 src/ui.cc:2136
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "現在選択中のパッケージに、インストールまたは更新用の印をつけます"
+
+#: src/gtk/ui-main.glade:269
+#, fuzzy
+#| msgid "Install"
+msgid "_Install"
+msgstr "インストール"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:282 src/ui.cc:2140
+msgid "Flag the currently selected package for removal"
+msgstr "現在選択中のパッケージに削除用の印をつけます"
+
+#: src/gtk/ui-main.glade:283
+#, fuzzy
+#| msgid "Remove"
+msgid "_Remove"
+msgstr "削除"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:296 src/ui.cc:2144
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr "現在選択中のパッケージとその設定ファイルに、削除用の印をつけます"
+
+# * Item.
+#: src/gtk/ui-main.glade:297
+#, fuzzy
+#| msgid "^Purge"
+msgid "_Purge"
+msgstr "完全削除 (^P)"
+
+#: src/gtk/ui-main.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/ui-main.glade:311
+#, fuzzy
+#| msgid "Keep"
+msgid "_Keep"
+msgstr "一時固定"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:324 src/ui.cc:2152
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr ""
+"選択中のパッケージへのあらゆるアクションを取り消し、今後の更新からも防ぎます"
+
+#: src/gtk/ui-main.glade:325
+#, fuzzy
+#| msgid "Hold"
+msgid "_Hold"
+msgstr "固定"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:338 src/ui.cc:2156
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"選択中のパッケージに、自動的にインストールされたという印をつけます。すると、"
+"それに依存するパッケージが他にない場合、パッケージは自動的に削除されるように"
+"なります"
+
+# * Item.
+#: src/gtk/ui-main.glade:339
+#, fuzzy
+#| msgid "Mark ^Auto"
+msgid "Mark _Auto"
+msgstr "自動的にインストールされたという印を添付 (^A)"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:352 src/ui.cc:2160
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+"選択中のパッケージに、手動でインストールされたという印をつけます。すると、手"
+"動で削除しない限りパッケージは削除されないようになります"
+
+# * Item.
+#: src/gtk/ui-main.glade:353
+#, fuzzy
+#| msgid "Mark ^Manual"
+msgid "Mark _Manual"
+msgstr "手動でインストールしたという印を添付 (^M)"
+
+# * Description of an item.
+#: src/gtk/ui-main.glade:366 src/ui.cc:2164
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"選択中のパッケージの、インストール候補となっているバージョンをインストールす"
+"るのを禁止します。つまり、パッケージのもっと新しいバージョンは通常どおりイン"
+"ストールされます"
+
+# * Item.
+#: src/gtk/ui-main.glade:367
+#, fuzzy
+#| msgid "^Forbid Version"
+msgid "_Forbid Version"
+msgstr "バージョンの禁止 (^F)"
+
+# * Menu item on the first line.
+#: src/gtk/ui-main.glade:384
+#, fuzzy
+#| msgid "Views"
+msgid "_Views"
+msgstr "表示"
+
+#: src/gtk/ui-main.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/ui-main.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/ui-main.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/ui-main.glade:401
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Find _Dependency Chains"
+msgstr "依存関係の処理"
+
+#: src/gtk/ui-main.glade:412
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "ヘルプ"
+
+#: src/gtk/ui-main.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/ui-main.glade:440 src/gtk/ui-main.glade:524
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:469 src/gtk/ui-main.glade:691 src/ui.cc:834
+#: src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909 src/ui.cc:911
+#: src/ui.cc:932 src/ui.cc:934
+msgid "Packages"
+msgstr "パッケージ"
+
+#: src/gtk/ui-main.glade:479 src/gtk/ui-main.glade:995 src/ui.cc:1292
+msgid "Preview"
+msgstr "プレビューする"
+
+# * Menu item on the first line.
+#: src/gtk/ui-main.glade:489 src/gtk/ui-main.glade:1081 src/ui.cc:2508
+msgid "Resolver"
+msgstr "問題解決"
+
+#: src/gtk/ui-main.glade:499
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "インストール済み"
+
+#: src/gtk/ui-main.glade:518
+msgid "This is the dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:555
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr "[ダウンロード済み]"
+
+# * Menu item on the first line.
+#: src/gtk/ui-main.glade:599 src/gtk/ui-main.glade:1144
+#: src/gtk/ui-main.glade:1237
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "検索"
+
+#: src/gtk/ui-main.glade:619 src/gtk/ui-main.glade:1164
+#: src/gtk/ui-main.glade:1257
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/ui-main.glade:755
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:816
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "%s の依存関係"
+
+# * Item.
+#: src/gtk/ui-main.glade:845
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr "変更履歴 (^C)"
+
+#: src/gtk/ui-main.glade:874
+#, fuzzy
+#| msgid "False"
+msgid "Files"
+msgstr "いいえ"
+
+#: src/gtk/ui-main.glade:885
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:894
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:905
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "タグ"
+
+#: src/gtk/ui-main.glade:936
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "no"
+
+#: src/gtk/ui-main.glade:1028
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1043
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1058
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1110
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "エラー "
+
+#: src/gtk/ui-main.glade:1205
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1298
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1336
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Dependency Chain"
+msgstr "依存関係の処理"
+
+# * Item.
+#: src/gtk/ui-main.glade:1429
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "完全削除 (^P)"
 
 #: src/load_config.cc:48
 #, c-format
@@ -5945,11 +6402,6 @@ msgstr "aptitude の振舞いを変更します"
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr "本当に個人設定を破棄してデフォルトの設定を読み込みなおしますか?"
 
-#: src/ui.cc:834 src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909
-#: src/ui.cc:911 src/ui.cc:932 src/ui.cc:934
-msgid "Packages"
-msgstr "パッケージ"
-
 #: src/ui.cc:835 src/ui.cc:882 src/ui.cc:910 src/ui.cc:933
 msgid "View available packages and choose actions to perform"
 msgstr "利用可能なパッケージを表示し、実行するアクションを選択します"
@@ -6117,10 +6569,6 @@ msgstr "インストールするパッケージをプレビューします"
 msgid "View and/or adjust the actions that will be performed"
 msgstr "実行するアクションの表示・調整をおこないます"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "プレビューする"
-
 #: src/ui.cc:1348
 msgid "Some packages were broken and have been fixed:"
 msgstr "一部のパッケージは依存関係が壊れていたので修復されました:"
@@ -6198,10 +6646,6 @@ msgid ""
 msgstr ""
 "パッケージ一覧の更新に必要な管理者権限が現在ありません。root になりますか?"
 
-#: src/ui.cc:1556 src/ui.cc:2112
-msgid "Waste time trying to find mines"
-msgstr "地雷探しにかまけます"
-
 #: src/ui.cc:1563 src/ui.cc:1623
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "ダウンロードが進行している間は廃止されたファイルの消去はできません"
@@ -6257,79 +6701,39 @@ msgstr "依存関係解決器の状態をダンプする出力ファイル:"
 msgid "^Install/remove packages"
 msgstr "パッケージのインストール・削除 (^I)"
 
-# * Description of an item.
-#: src/ui.cc:2075
-msgid "Perform all pending installs and removals"
-msgstr "実行されていないインストールや削除を実行します"
-
 # * Item.
 #: src/ui.cc:2077
 msgid "^Update package list"
 msgstr "パッケージ一覧の更新 (^U)"
-
-# * Description of an item.
-#: src/ui.cc:2078
-msgid "Check for new versions of packages"
-msgstr "パッケージの新しいバージョンがないか確認します"
 
 # * Item.
 #: src/ui.cc:2082
 msgid "Mark Up^gradable"
 msgstr "更新可能パッケージという印を添付 (^g)"
 
-# * Description of an item.
-#: src/ui.cc:2083
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr "更新時に固定されない更新可能パッケージすべてに印をつけます"
-
 # * Item.
 #: src/ui.cc:2087
 msgid "^Forget new packages"
 msgstr "新規パッケージ一覧の消去 (^F)"
 
-# * Description of an item.
-#: src/ui.cc:2088
-msgid "Forget which packages are \"new\""
-msgstr "どのパッケージが「新規」かの情報を消去します"
-
 #: src/ui.cc:2091
 msgid "Canc^el pending actions"
 msgstr "未実行アクションの取り消し (^e)"
-
-# * Description of an item.
-#: src/ui.cc:2092
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "実行されていないインストール・削除・固定・更新を取り消します。"
 
 # * Item.
 #: src/ui.cc:2095
 msgid "^Clean package cache"
 msgstr "パッケージのキャッシュの消去 (^C)"
 
-# * Description of an item.
-#: src/ui.cc:2096
-msgid "Delete package files which were previously downloaded"
-msgstr "以前ダウンロードしたパッケージファイルを削除します"
-
 # * Item.
 #: src/ui.cc:2099
 msgid "Clean ^obsolete files"
 msgstr "廃止されたファイルを一掃する (^o)"
 
-# * Description of an item.
-#: src/ui.cc:2100
-msgid "Delete package files which can no longer be downloaded"
-msgstr "もはやダウンロードできないパッケージファイルを削除する"
-
 # * Item.
 #: src/ui.cc:2106
 msgid "^Reload package cache"
 msgstr "パッケージのキャッシュの再読み込み (^R)"
-
-# * Description of an item.
-#: src/ui.cc:2107
-msgid "Reload the package cache"
-msgstr "パッケージのキャッシュを再度読み込みます"
 
 # * Item.
 #: src/ui.cc:2111
@@ -6341,66 +6745,25 @@ msgstr "マインスイーパで遊ぶ (^P)"
 msgid "^Become root"
 msgstr "root になる (^B)"
 
-# * Description of an item.
-#: src/ui.cc:2117
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-"root になるために 'su' を実行します。それによってプログラムは再起動されます"
-"が、現在の設定は保持されます"
-
 # * Item.
 #: src/ui.cc:2119
 msgid "^Quit"
 msgstr "終了 (^Q)"
-
-# * Description of an item.
-#: src/ui.cc:2120
-msgid "Exit the program"
-msgstr "プログラムを終了します"
-
-# * Menu item on the first line.
-# * Item.
-#: src/ui.cc:2126 src/ui.cc:2506
-msgid "Undo"
-msgstr "取り消し"
-
-# * Description of an item.
-#: src/ui.cc:2127
-msgid "Undo the last package operation or group of operations"
-msgstr "最後におこなったパッケージ管理操作、または一連の操作を取り消します"
 
 # * Item.
 #: src/ui.cc:2135
 msgid "^Install"
 msgstr "インストール (^I)"
 
-# * Description of an item.
-#: src/ui.cc:2136
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr "現在選択中のパッケージに、インストールまたは更新用の印をつけます"
-
 # * Item.
 #: src/ui.cc:2139
 msgid "^Remove"
 msgstr "削除 (^R)"
 
-# * Description of an item.
-#: src/ui.cc:2140
-msgid "Flag the currently selected package for removal"
-msgstr "現在選択中のパッケージに削除用の印をつけます"
-
 # * Item.
 #: src/ui.cc:2143
 msgid "^Purge"
 msgstr "完全削除 (^P)"
-
-# * Description of an item.
-#: src/ui.cc:2144
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr "現在選択中のパッケージとその設定ファイルに、削除用の印をつけます"
 
 # * Item.
 #: src/ui.cc:2147
@@ -6417,57 +6780,20 @@ msgstr "選択中のパッケージへのあらゆるアクションを取り消
 msgid "^Hold"
 msgstr "固定 (^H)"
 
-# * Description of an item.
-#: src/ui.cc:2152
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr ""
-"選択中のパッケージへのあらゆるアクションを取り消し、今後の更新からも防ぎます"
-
 # * Item.
 #: src/ui.cc:2155
 msgid "Mark ^Auto"
 msgstr "自動的にインストールされたという印を添付 (^A)"
-
-# * Description of an item.
-#: src/ui.cc:2156
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
-msgstr ""
-"選択中のパッケージに、自動的にインストールされたという印をつけます。すると、"
-"それに依存するパッケージが他にない場合、パッケージは自動的に削除されるように"
-"なります"
 
 # * Item.
 #: src/ui.cc:2159
 msgid "Mark ^Manual"
 msgstr "手動でインストールしたという印を添付 (^M)"
 
-# * Description of an item.
-#: src/ui.cc:2160
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr ""
-"選択中のパッケージに、手動でインストールされたという印をつけます。すると、手"
-"動で削除しない限りパッケージは削除されないようになります"
-
 # * Item.
 #: src/ui.cc:2163
 msgid "^Forbid Version"
 msgstr "バージョンの禁止 (^F)"
-
-# * Description of an item.
-#: src/ui.cc:2164
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
-msgstr ""
-"選択中のパッケージの、インストール候補となっているバージョンをインストールす"
-"るのを禁止します。つまり、パッケージのもっと新しいバージョンは通常どおりイン"
-"ストールされます"
 
 # * Item.
 #: src/ui.cc:2168
@@ -6864,11 +7190,6 @@ msgstr "ライセンス (^L)"
 #: src/ui.cc:2505
 msgid "Actions"
 msgstr "アクション"
-
-# * Menu item on the first line.
-#: src/ui.cc:2508
-msgid "Resolver"
-msgstr "問題解決"
 
 # * Menu item on the first line.
 #: src/ui.cc:2509

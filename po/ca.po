@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_0.2.13-2\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-02 08:29-0700\n"
+"POT-Creation-Date: 2008-09-02 08:30-0700\n"
 "PO-Revision-Date: 2006-04-20 08:19+0200\n"
 "Last-Translator: Aleix Badia i Bosch <a.badia@callusdigital.org>\n"
 "Language-Team: Catalan <debian-l10n-catalan@lists.debian.org>\n"
@@ -2090,7 +2090,7 @@ msgid "Candidate"
 msgstr "VerCand"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
-#: src/gtk/gui.cc:71
+#: src/gtk/gui.cc:71 src/gtk/ui-main.glade:1403
 msgid "Install"
 msgstr "Instal·la"
 
@@ -2213,7 +2213,7 @@ msgstr "No resoltes"
 msgid "UNAVAILABLE"
 msgstr "No disponible"
 
-#: src/desc_render.cc:133
+#: src/desc_render.cc:133 src/gtk/ui-main.glade:914
 msgid "Tags"
 msgstr "Marcadors"
 
@@ -2722,7 +2722,7 @@ msgstr "Suprimeix [auto]"
 msgid "Downgrade"
 msgstr "Desactualitza"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1591 src/gtk/ui-main.glade:1455
 msgid "Hold"
 msgstr "Congela"
 
@@ -2731,6 +2731,7 @@ msgid "Reinstall"
 msgstr "Reinstal·la"
 
 #: src/generic/apt/matchers.cc:1597 src/gtk/gui.cc:75
+#: src/gtk/ui-main.glade:1416
 msgid "Remove"
 msgstr "Suprimeix"
 
@@ -2738,7 +2739,7 @@ msgstr "Suprimeix"
 msgid "Upgrade"
 msgstr "Actualitza"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1625 src/gtk/ui-main.glade:1442
 msgid "Keep"
 msgstr "Manté"
 
@@ -2991,7 +2992,7 @@ msgstr "cap"
 msgid "URI"
 msgstr ""
 
-#: src/gtk/download.cc:158
+#: src/gtk/download.cc:158 src/gtk/ui-main.glade:1019
 #, fuzzy
 #| msgid "State"
 msgid "Status"
@@ -3177,7 +3178,7 @@ msgstr ""
 msgid "Dashboard:"
 msgstr ""
 
-#: src/gtk/gui.cc:689
+#: src/gtk/gui.cc:689 src/gtk/ui-main.glade:459
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
@@ -3607,6 +3608,427 @@ msgstr "No s'ha trobat una solució a aplicar."
 #: src/gtk/resolver.cc:630 src/ui.cc:1955
 msgid "Ran out of time while trying to find a solution."
 msgstr "S'ha superat el límit de temps en la cerca d'una solució."
+
+#: src/gtk/ui-main.glade:17
+#, fuzzy
+msgid "_File"
+msgstr "Tanca"
+
+#: src/gtk/ui-main.glade:25 src/ui.cc:2075
+msgid "Perform all pending installs and removals"
+msgstr "Realitza totes les instal·lacions i supressions pendents"
+
+#: src/gtk/ui-main.glade:26
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/remove packages"
+msgstr "^Instal·la/suprimeix els paquets"
+
+#: src/gtk/ui-main.glade:39 src/ui.cc:2078
+msgid "Check for new versions of packages"
+msgstr "Verifica si hi ha noves versions dels paquets"
+
+#: src/gtk/ui-main.glade:40
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update package list"
+msgstr "Act^ualitza la llista de paquets"
+
+#: src/gtk/ui-main.glade:58 src/ui.cc:2083
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr ""
+"Marca tots els paquets actualitzables que no estiguin congelats per a "
+"l'actualització"
+
+#: src/gtk/ui-main.glade:59
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "Marca com a ^actualitzable"
+
+#: src/gtk/ui-main.glade:72 src/ui.cc:2088
+msgid "Forget which packages are \"new\""
+msgstr "Oblida quins paquets són \"nous\""
+
+#: src/gtk/ui-main.glade:73
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget new packages"
+msgstr "^Oblida els paquets nous"
+
+#: src/gtk/ui-main.glade:86 src/ui.cc:2092
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr ""
+"Cancel·la totes les instal·lacions, supressions, congelacions i "
+"actualitzacions pendents."
+
+#: src/gtk/ui-main.glade:87
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el pending actions"
+msgstr "Canc^el·la pes accions pendents"
+
+#: src/gtk/ui-main.glade:100 src/ui.cc:2096
+msgid "Delete package files which were previously downloaded"
+msgstr "Suprimeix els fitxers dels paquets prèviament baixats"
+
+#: src/gtk/ui-main.glade:101
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "_Clean package cache"
+msgstr "Neteja la memòria ^cau dels paquets"
+
+#: src/gtk/ui-main.glade:114 src/ui.cc:2100
+msgid "Delete package files which can no longer be downloaded"
+msgstr "Suprimeix els fitxers dels paquets que no es podran tornar a baixar"
+
+#: src/gtk/ui-main.glade:115
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _obsolete files"
+msgstr "Neteja els fitxers ^obsolets"
+
+#: src/gtk/ui-main.glade:133 src/ui.cc:2107
+msgid "Reload the package cache"
+msgstr "Torna a carregar la memòria cau dels paquets"
+
+#: src/gtk/ui-main.glade:134
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload package cache"
+msgstr "^Recarrega la memòria cau dels paquets"
+
+#: src/gtk/ui-main.glade:147 src/ui.cc:1556 src/ui.cc:2112
+msgid "Waste time trying to find mines"
+msgstr "Perdeu el temps intentant trobar les mines"
+
+#: src/gtk/ui-main.glade:148
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "^Juga al busca mines"
+
+#: src/gtk/ui-main.glade:166 src/ui.cc:2117
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"Executeu l'ordre 'su' per ser superusuari; es reiniciarà el programa, però "
+"es mantindran els paràmetres personals."
+
+#: src/gtk/ui-main.glade:167
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become root"
+msgstr "Esdevé superusuari"
+
+#: src/gtk/ui-main.glade:180 src/ui.cc:2120
+msgid "Exit the program"
+msgstr "Surt del programa"
+
+#: src/gtk/ui-main.glade:181
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "Su^rt"
+
+#: src/gtk/ui-main.glade:197
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/ui-main.glade:205 src/ui.cc:2127
+msgid "Undo the last package operation or group of operations"
+msgstr "Desfés l'última operació o grup d'operacions del paquets"
+
+#: src/gtk/ui-main.glade:206 src/ui.cc:2126 src/ui.cc:2506
+msgid "Undo"
+msgstr "Desfés"
+
+#: src/gtk/ui-main.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/ui-main.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/ui-main.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/ui-main.glade:248
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "suprimeix"
+
+#: src/gtk/ui-main.glade:260
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "Paquet"
+
+#: src/gtk/ui-main.glade:268 src/ui.cc:2136
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr ""
+"Senyala els paquets seleccionats per a la corresponent instal·lació o "
+"actualització"
+
+#: src/gtk/ui-main.glade:269
+#, fuzzy
+#| msgid "Install"
+msgid "_Install"
+msgstr "Instal·la"
+
+#: src/gtk/ui-main.glade:282 src/ui.cc:2140
+msgid "Flag the currently selected package for removal"
+msgstr "Senyala els paquets seleccionats per a la corresponent supressió"
+
+#: src/gtk/ui-main.glade:283
+#, fuzzy
+#| msgid "Remove"
+msgid "_Remove"
+msgstr "Suprimeix"
+
+#: src/gtk/ui-main.glade:296 src/ui.cc:2144
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr ""
+"Senyala els paquets seleccionats i els fitxers de configuració relacionats "
+"per a la corresponents supressió"
+
+#: src/gtk/ui-main.glade:297
+#, fuzzy
+#| msgid "^Purge"
+msgid "_Purge"
+msgstr "^Purga"
+
+#: src/gtk/ui-main.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/ui-main.glade:311
+#, fuzzy
+#| msgid "Keep"
+msgid "_Keep"
+msgstr "Manté"
+
+#: src/gtk/ui-main.glade:324 src/ui.cc:2152
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr ""
+"Cancel·la qualsevol acció al paquet seleccionat i protegeix-lo de futures "
+"actualitzacions"
+
+#: src/gtk/ui-main.glade:325
+#, fuzzy
+#| msgid "Hold"
+msgid "_Hold"
+msgstr "Congela"
+
+#: src/gtk/ui-main.glade:338 src/ui.cc:2156
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"Marca els paquets seleccionats com a instal·lats automàticament;\n"
+"se suprimiran automàticament si cap paquet en depèn"
+
+#: src/gtk/ui-main.glade:339
+#, fuzzy
+#| msgid "Mark ^Auto"
+msgid "Mark _Auto"
+msgstr "Marca ^Automàtic"
+
+#: src/gtk/ui-main.glade:352 src/ui.cc:2160
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+"Marca els paquets seleccionats com a instal·lats manualment;\n"
+"no se suprimiran si no ho feu vosaltres manualment"
+
+#: src/gtk/ui-main.glade:353
+#, fuzzy
+#| msgid "Mark ^Manual"
+msgid "Mark _Manual"
+msgstr "Marca ^Manual"
+
+#: src/gtk/ui-main.glade:366 src/ui.cc:2164
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"Prohibeix la instal·lació de la versió candidata del paquet seleccionat;\n"
+"les noves versions del paquet s'instal·laran normalment"
+
+#: src/gtk/ui-main.glade:367
+#, fuzzy
+#| msgid "^Forbid Version"
+msgid "_Forbid Version"
+msgstr "^Prohibeix la versió"
+
+#: src/gtk/ui-main.glade:384
+#, fuzzy
+#| msgid "Views"
+msgid "_Views"
+msgstr "Vistes"
+
+#: src/gtk/ui-main.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/ui-main.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/ui-main.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/ui-main.glade:401
+#, fuzzy
+msgid "Find _Dependency Chains"
+msgstr "Gestió de les ^dependències"
+
+#: src/gtk/ui-main.glade:412
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "Ajuda"
+
+#: src/gtk/ui-main.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/ui-main.glade:440 src/gtk/ui-main.glade:524
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:469 src/gtk/ui-main.glade:691 src/ui.cc:834
+#: src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909 src/ui.cc:911
+#: src/ui.cc:932 src/ui.cc:934
+msgid "Packages"
+msgstr "Paquets"
+
+#: src/gtk/ui-main.glade:479 src/gtk/ui-main.glade:995 src/ui.cc:1292
+msgid "Preview"
+msgstr "Previsualització"
+
+#: src/gtk/ui-main.glade:489 src/gtk/ui-main.glade:1081 src/ui.cc:2508
+msgid "Resolver"
+msgstr "Sistema de resolució"
+
+#: src/gtk/ui-main.glade:499
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "Instal·lat"
+
+#: src/gtk/ui-main.glade:518
+msgid "This is the dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:555
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr " [Baixat]"
+
+#: src/gtk/ui-main.glade:599 src/gtk/ui-main.glade:1144
+#: src/gtk/ui-main.glade:1237
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "Cerca"
+
+#: src/gtk/ui-main.glade:619 src/gtk/ui-main.glade:1164
+#: src/gtk/ui-main.glade:1257
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/ui-main.glade:755
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:816
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "Dependències de %s"
+
+#: src/gtk/ui-main.glade:845
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr "Registre de modifi^cacions"
+
+#: src/gtk/ui-main.glade:874
+#, fuzzy
+msgid "Files"
+msgstr "Tanca"
+
+#: src/gtk/ui-main.glade:885
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:894
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:905
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "Marcadors"
+
+#: src/gtk/ui-main.glade:936
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "no"
+
+#: src/gtk/ui-main.glade:1028
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1043
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1058
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1110
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "Err "
+
+#: src/gtk/ui-main.glade:1205
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1298
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1336
+#, fuzzy
+msgid "Dependency Chain"
+msgstr "Gestió de les ^dependències"
+
+#: src/gtk/ui-main.glade:1429
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "^Purga"
 
 #: src/load_config.cc:48
 #, c-format
@@ -5528,11 +5950,6 @@ msgstr ""
 "Esteu segur de voler descartar els vostres paràmetres personals i utilitzar "
 "els predeterminats?"
 
-#: src/ui.cc:834 src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909
-#: src/ui.cc:911 src/ui.cc:932 src/ui.cc:934
-msgid "Packages"
-msgstr "Paquets"
-
 #: src/ui.cc:835 src/ui.cc:882 src/ui.cc:910 src/ui.cc:933
 msgid "View available packages and choose actions to perform"
 msgstr "Observeu els paquets disponibles i escolliu les accions a realitzar"
@@ -5707,10 +6124,6 @@ msgstr "Previsualització de la instal·lació de paquets"
 msgid "View and/or adjust the actions that will be performed"
 msgstr "Visualitza i/o ajusta les accions que es duran a terme"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "Previsualització"
-
 #: src/ui.cc:1348
 msgid "Some packages were broken and have been fixed:"
 msgstr "Alguns paquets contenien errors i s'han arreglat:"
@@ -5787,10 +6200,6 @@ msgstr ""
 "El procés d'actualitzar paquets precisa de privilegis d'administrador,els "
 "quals actualment no teniu. Voleu canviar al compte de superusuari?"
 
-#: src/ui.cc:1556 src/ui.cc:2112
-msgid "Waste time trying to find mines"
-msgstr "Perdeu el temps intentant trobar les mines"
-
 #: src/ui.cc:1563 src/ui.cc:1623
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr ""
@@ -5848,69 +6257,33 @@ msgstr "Fitxer on s'ha de volcar l'estat del sistema de resolució:"
 msgid "^Install/remove packages"
 msgstr "^Instal·la/suprimeix els paquets"
 
-#: src/ui.cc:2075
-msgid "Perform all pending installs and removals"
-msgstr "Realitza totes les instal·lacions i supressions pendents"
-
 #: src/ui.cc:2077
 msgid "^Update package list"
 msgstr "Act^ualitza la llista de paquets"
-
-#: src/ui.cc:2078
-msgid "Check for new versions of packages"
-msgstr "Verifica si hi ha noves versions dels paquets"
 
 #: src/ui.cc:2082
 msgid "Mark Up^gradable"
 msgstr "Marca com a ^actualitzable"
 
-#: src/ui.cc:2083
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr ""
-"Marca tots els paquets actualitzables que no estiguin congelats per a "
-"l'actualització"
-
 #: src/ui.cc:2087
 msgid "^Forget new packages"
 msgstr "^Oblida els paquets nous"
-
-#: src/ui.cc:2088
-msgid "Forget which packages are \"new\""
-msgstr "Oblida quins paquets són \"nous\""
 
 #: src/ui.cc:2091
 msgid "Canc^el pending actions"
 msgstr "Canc^el·la pes accions pendents"
 
-#: src/ui.cc:2092
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr ""
-"Cancel·la totes les instal·lacions, supressions, congelacions i "
-"actualitzacions pendents."
-
 #: src/ui.cc:2095
 msgid "^Clean package cache"
 msgstr "Neteja la memòria ^cau dels paquets"
-
-#: src/ui.cc:2096
-msgid "Delete package files which were previously downloaded"
-msgstr "Suprimeix els fitxers dels paquets prèviament baixats"
 
 #: src/ui.cc:2099
 msgid "Clean ^obsolete files"
 msgstr "Neteja els fitxers ^obsolets"
 
-#: src/ui.cc:2100
-msgid "Delete package files which can no longer be downloaded"
-msgstr "Suprimeix els fitxers dels paquets que no es podran tornar a baixar"
-
 #: src/ui.cc:2106
 msgid "^Reload package cache"
 msgstr "^Recarrega la memòria cau dels paquets"
-
-#: src/ui.cc:2107
-msgid "Reload the package cache"
-msgstr "Torna a carregar la memòria cau dels paquets"
 
 #: src/ui.cc:2111
 msgid "^Play Minesweeper"
@@ -5920,58 +6293,21 @@ msgstr "^Juga al busca mines"
 msgid "^Become root"
 msgstr "^Sigues superusuari"
 
-#: src/ui.cc:2117
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-"Executeu l'ordre 'su' per ser superusuari; es reiniciarà el programa, però "
-"es mantindran els paràmetres personals."
-
 #: src/ui.cc:2119
 msgid "^Quit"
 msgstr "Su^rt"
-
-#: src/ui.cc:2120
-msgid "Exit the program"
-msgstr "Surt del programa"
-
-#: src/ui.cc:2126 src/ui.cc:2506
-msgid "Undo"
-msgstr "Desfés"
-
-#: src/ui.cc:2127
-msgid "Undo the last package operation or group of operations"
-msgstr "Desfés l'última operació o grup d'operacions del paquets"
 
 #: src/ui.cc:2135
 msgid "^Install"
 msgstr "^Instal·la"
 
-#: src/ui.cc:2136
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr ""
-"Senyala els paquets seleccionats per a la corresponent instal·lació o "
-"actualització"
-
 #: src/ui.cc:2139
 msgid "^Remove"
 msgstr "Sup^rimeix"
 
-#: src/ui.cc:2140
-msgid "Flag the currently selected package for removal"
-msgstr "Senyala els paquets seleccionats per a la corresponent supressió"
-
 #: src/ui.cc:2143
 msgid "^Purge"
 msgstr "^Purga"
-
-#: src/ui.cc:2144
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr ""
-"Senyala els paquets seleccionats i els fitxers de configuració relacionats "
-"per a la corresponents supressió"
 
 #: src/ui.cc:2147
 msgid "^Keep"
@@ -5985,49 +6321,17 @@ msgstr "Cancel·la qualsevol acció al paquet seleccionat"
 msgid "^Hold"
 msgstr "Con^gela"
 
-#: src/ui.cc:2152
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr ""
-"Cancel·la qualsevol acció al paquet seleccionat i protegeix-lo de futures "
-"actualitzacions"
-
 #: src/ui.cc:2155
 msgid "Mark ^Auto"
 msgstr "Marca ^Automàtic"
-
-#: src/ui.cc:2156
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
-msgstr ""
-"Marca els paquets seleccionats com a instal·lats automàticament;\n"
-"se suprimiran automàticament si cap paquet en depèn"
 
 #: src/ui.cc:2159
 msgid "Mark ^Manual"
 msgstr "Marca ^Manual"
 
-#: src/ui.cc:2160
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr ""
-"Marca els paquets seleccionats com a instal·lats manualment;\n"
-"no se suprimiran si no ho feu vosaltres manualment"
-
 #: src/ui.cc:2163
 msgid "^Forbid Version"
 msgstr "^Prohibeix la versió"
-
-#: src/ui.cc:2164
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
-msgstr ""
-"Prohibeix la instal·lació de la versió candidata del paquet seleccionat;\n"
-"les noves versions del paquet s'instal·laran normalment"
 
 #: src/ui.cc:2168
 msgid "I^nformation"
@@ -6353,10 +6657,6 @@ msgstr "^Llicència"
 #: src/ui.cc:2505
 msgid "Actions"
 msgstr "Accions"
-
-#: src/ui.cc:2508
-msgid "Resolver"
-msgstr "Sistema de resolució"
 
 #: src/ui.cc:2509
 msgid "Search"

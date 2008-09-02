@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.4\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-02 08:29-0700\n"
+"POT-Creation-Date: 2008-09-02 08:30-0700\n"
 "PO-Revision-Date: 2006-11-05 15:47+0200\n"
 "Last-Translator: Jaakko Kangasharju <ashar@iki.fi>\n"
 "Language-Team: Jaakko Kangasharju <ashar@iki.fi>\n"
@@ -2065,7 +2065,7 @@ msgid "Candidate"
 msgstr "Ehd.ver"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
-#: src/gtk/gui.cc:71
+#: src/gtk/gui.cc:71 src/gtk/ui-main.glade:1403
 msgid "Install"
 msgstr "Asennus"
 
@@ -2188,7 +2188,7 @@ msgstr "TYYDYTTÄMÄTÖN"
 msgid "UNAVAILABLE"
 msgstr "EI SAATAVILLA"
 
-#: src/desc_render.cc:133
+#: src/desc_render.cc:133 src/gtk/ui-main.glade:914
 msgid "Tags"
 msgstr "Merkit"
 
@@ -2681,7 +2681,7 @@ msgstr "Poisto [autom]"
 msgid "Downgrade"
 msgstr "Vanhennus"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1591 src/gtk/ui-main.glade:1455
 msgid "Hold"
 msgstr "Jäädytys"
 
@@ -2690,6 +2690,7 @@ msgid "Reinstall"
 msgstr "Uudelleenasennus"
 
 #: src/generic/apt/matchers.cc:1597 src/gtk/gui.cc:75
+#: src/gtk/ui-main.glade:1416
 msgid "Remove"
 msgstr "Poisto"
 
@@ -2697,7 +2698,7 @@ msgstr "Poisto"
 msgid "Upgrade"
 msgstr "Päivitys"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1625 src/gtk/ui-main.glade:1442
 msgid "Keep"
 msgstr "Säilytys"
 
@@ -2943,7 +2944,7 @@ msgstr "ei mitään"
 msgid "URI"
 msgstr ""
 
-#: src/gtk/download.cc:158
+#: src/gtk/download.cc:158 src/gtk/ui-main.glade:1019
 #, fuzzy
 #| msgid "State"
 msgid "Status"
@@ -3129,7 +3130,7 @@ msgstr ""
 msgid "Dashboard:"
 msgstr ""
 
-#: src/gtk/gui.cc:689
+#: src/gtk/gui.cc:689 src/gtk/ui-main.glade:459
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
@@ -3555,6 +3556,418 @@ msgstr "Toteutettavaa ratkaisua ei löytynyt."
 #: src/gtk/resolver.cc:630 src/ui.cc:1955
 msgid "Ran out of time while trying to find a solution."
 msgstr "Ratkaisun etsintään annettu aika loppui."
+
+#: src/gtk/ui-main.glade:17
+#, fuzzy
+msgid "_File"
+msgstr "Lopeta"
+
+#: src/gtk/ui-main.glade:25 src/ui.cc:2075
+msgid "Perform all pending installs and removals"
+msgstr "Suorita kaikki määritetyt asennukset ja poistot"
+
+#: src/gtk/ui-main.glade:26
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/remove packages"
+msgstr "^Asenna/poista paketteja"
+
+#: src/gtk/ui-main.glade:39 src/ui.cc:2078
+msgid "Check for new versions of packages"
+msgstr "Päivitä saatavilla olevien pakettien luettelo"
+
+#: src/gtk/ui-main.glade:40
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update package list"
+msgstr "^Päivitä pakettiluettelo"
+
+#: src/gtk/ui-main.glade:58 src/ui.cc:2083
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr ""
+"Merkitse päivitettäväksi kaikki päivityskelpoiset ei-jäädytetyt paketit"
+
+#: src/gtk/ui-main.glade:59
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "^Merkitse päivitykset"
+
+#: src/gtk/ui-main.glade:72 src/ui.cc:2088
+msgid "Forget which packages are \"new\""
+msgstr "Tyhjennä uusien pakettien ryhmä"
+
+#: src/gtk/ui-main.glade:73
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget new packages"
+msgstr "^Unohda uudet paketit"
+
+#: src/gtk/ui-main.glade:86 src/ui.cc:2092
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr "Peruuta kaikki määritetyt asennukset ja poistot"
+
+#: src/gtk/ui-main.glade:87
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el pending actions"
+msgstr "^Peruuta komennot"
+
+#: src/gtk/ui-main.glade:100 src/ui.cc:2096
+msgid "Delete package files which were previously downloaded"
+msgstr "Poista aiemmin noudetut pakettitiedostot"
+
+#: src/gtk/ui-main.glade:101
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "_Clean package cache"
+msgstr "Puhdista ^koko pakettivarasto"
+
+#: src/gtk/ui-main.glade:114 src/ui.cc:2100
+msgid "Delete package files which can no longer be downloaded"
+msgstr "Poista pakettitiedostot, joita ei enää voi noutaa"
+
+#: src/gtk/ui-main.glade:115
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _obsolete files"
+msgstr "Puhdista ^vanhentuneet tiedostot"
+
+#: src/gtk/ui-main.glade:133 src/ui.cc:2107
+msgid "Reload the package cache"
+msgstr "Lataa pakettivarasto uudelleen muistiin."
+
+#: src/gtk/ui-main.glade:134
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload package cache"
+msgstr "Lataa ^pakettivarasto uudelleen"
+
+#: src/gtk/ui-main.glade:147 src/ui.cc:1556 src/ui.cc:2112
+msgid "Waste time trying to find mines"
+msgstr "Hukkaa aikaa etsimällä miinoja"
+
+#: src/gtk/ui-main.glade:148
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "Pelaa miina^haravaa"
+
+#: src/gtk/ui-main.glade:166 src/ui.cc:2117
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"Vaihda root-tunnukselle komennolla 'su'.  Tämä käynnistää ohjelman "
+"uudelleen, mutta asetuksesi säilyvät nykyisellään."
+
+#: src/gtk/ui-main.glade:167
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become root"
+msgstr "Vaihda root-tunnukselle"
+
+#: src/gtk/ui-main.glade:180 src/ui.cc:2120
+msgid "Exit the program"
+msgstr "Poistu ohjelmasta"
+
+#: src/gtk/ui-main.glade:181
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "^Lopeta"
+
+#: src/gtk/ui-main.glade:197
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/ui-main.glade:205 src/ui.cc:2127
+msgid "Undo the last package operation or group of operations"
+msgstr "Peruuta viimeisin suoritettu toimi tai toimiryhmä"
+
+#: src/gtk/ui-main.glade:206 src/ui.cc:2126 src/ui.cc:2506
+msgid "Undo"
+msgstr "Peruuta"
+
+#: src/gtk/ui-main.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/ui-main.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/ui-main.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/ui-main.glade:248
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "poistettu"
+
+#: src/gtk/ui-main.glade:260
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "Paketti"
+
+#: src/gtk/ui-main.glade:268 src/ui.cc:2136
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "Merkitse valittu paketti asennettavaksi tai päivitettäväksi"
+
+#: src/gtk/ui-main.glade:269
+#, fuzzy
+#| msgid "Install"
+msgid "_Install"
+msgstr "Asennus"
+
+#: src/gtk/ui-main.glade:282 src/ui.cc:2140
+msgid "Flag the currently selected package for removal"
+msgstr "Merkitse valittu paketti poistettavaksi"
+
+#: src/gtk/ui-main.glade:283
+#, fuzzy
+#| msgid "Remove"
+msgid "_Remove"
+msgstr "Poisto"
+
+#: src/gtk/ui-main.glade:296 src/ui.cc:2144
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr "Merkitse valittu paketti asetustiedostoineen poistettavaksi"
+
+#: src/gtk/ui-main.glade:297
+#, fuzzy
+#| msgid "^Purge"
+msgid "_Purge"
+msgstr "^Siivoa"
+
+#: src/gtk/ui-main.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/ui-main.glade:311
+#, fuzzy
+#| msgid "Keep"
+msgid "_Keep"
+msgstr "Säilytys"
+
+#: src/gtk/ui-main.glade:324 src/ui.cc:2152
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr "Peruuta valitulle paketille määritetyt toiminnot ja estä sen päivitys"
+
+#: src/gtk/ui-main.glade:325
+#, fuzzy
+#| msgid "Hold"
+msgid "_Hold"
+msgstr "Jäädytys"
+
+#: src/gtk/ui-main.glade:338 src/ui.cc:2156
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"Merkitse valittu paketti automaattisesti asennetuksi; se poistetaan, jos "
+"mikään muu paketti ei riipu siitä"
+
+#: src/gtk/ui-main.glade:339
+#, fuzzy
+#| msgid "Mark ^Auto"
+msgid "Mark _Auto"
+msgstr "^Merkitse Automaatti"
+
+#: src/gtk/ui-main.glade:352 src/ui.cc:2160
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+"Merkitse valittu paketti käsin asennetuksi; sitä ei poisteta, ellet poista "
+"sitä käsin"
+
+#: src/gtk/ui-main.glade:353
+#, fuzzy
+#| msgid "Mark ^Manual"
+msgid "Mark _Manual"
+msgstr "Merkitse ^Käsin"
+
+#: src/gtk/ui-main.glade:366 src/ui.cc:2164
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"Estä valitun paketin ehdolla olevan version asennus; paketin uudemmat "
+"versiot asennetaan normaalisti"
+
+#: src/gtk/ui-main.glade:367
+#, fuzzy
+#| msgid "^Forbid Version"
+msgid "_Forbid Version"
+msgstr "^Estä versio"
+
+#: src/gtk/ui-main.glade:384
+#, fuzzy
+#| msgid "Views"
+msgid "_Views"
+msgstr "Näkymät"
+
+#: src/gtk/ui-main.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/ui-main.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/ui-main.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/ui-main.glade:401
+#, fuzzy
+msgid "Find _Dependency Chains"
+msgstr "^Riippuvuuksien käsittely"
+
+#: src/gtk/ui-main.glade:412
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "Apu"
+
+#: src/gtk/ui-main.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/ui-main.glade:440 src/gtk/ui-main.glade:524
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:469 src/gtk/ui-main.glade:691 src/ui.cc:834
+#: src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909 src/ui.cc:911
+#: src/ui.cc:932 src/ui.cc:934
+msgid "Packages"
+msgstr "Paketit"
+
+#: src/gtk/ui-main.glade:479 src/gtk/ui-main.glade:995 src/ui.cc:1292
+msgid "Preview"
+msgstr "Esikatselu"
+
+#: src/gtk/ui-main.glade:489 src/gtk/ui-main.glade:1081 src/ui.cc:2508
+msgid "Resolver"
+msgstr "Ratkaisin"
+
+#: src/gtk/ui-main.glade:499
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "Asennettu"
+
+#: src/gtk/ui-main.glade:518
+msgid "This is the dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:555
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr "[Noudettu]"
+
+#: src/gtk/ui-main.glade:599 src/gtk/ui-main.glade:1144
+#: src/gtk/ui-main.glade:1237
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "Haku"
+
+#: src/gtk/ui-main.glade:619 src/gtk/ui-main.glade:1164
+#: src/gtk/ui-main.glade:1257
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/ui-main.glade:755
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:816
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "%s:n riippuvuudet"
+
+#: src/gtk/ui-main.glade:845
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr "Muutos^loki"
+
+#: src/gtk/ui-main.glade:874
+#, fuzzy
+msgid "Files"
+msgstr "Lopeta"
+
+#: src/gtk/ui-main.glade:885
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:894
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:905
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "Merkit"
+
+#: src/gtk/ui-main.glade:936
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "ei"
+
+#: src/gtk/ui-main.glade:1028
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1043
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1058
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1110
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "Virhe "
+
+#: src/gtk/ui-main.glade:1205
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1298
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1336
+#, fuzzy
+msgid "Dependency Chain"
+msgstr "^Riippuvuuksien käsittely"
+
+#: src/gtk/ui-main.glade:1429
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "^Siivoa"
 
 #: src/load_config.cc:48
 #, c-format
@@ -5437,11 +5850,6 @@ msgstr ""
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr "Haluatko varmasti hylätä omat asetuksesi ja korvata ne oletuksilla?"
 
-#: src/ui.cc:834 src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909
-#: src/ui.cc:911 src/ui.cc:932 src/ui.cc:934
-msgid "Packages"
-msgstr "Paketit"
-
 #: src/ui.cc:835 src/ui.cc:882 src/ui.cc:910 src/ui.cc:933
 msgid "View available packages and choose actions to perform"
 msgstr "Selaa saatavilla olevia paketteja ja suorita toimenpiteitä"
@@ -5612,10 +6020,6 @@ msgstr "Pakettien asennuksen esikatselu"
 msgid "View and/or adjust the actions that will be performed"
 msgstr "Näytä toiminnot, jotka suoritetaan, ja muuta niitä"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "Esikatselu"
-
 #: src/ui.cc:1348
 msgid "Some packages were broken and have been fixed:"
 msgstr "Jotkut paketit olivat rikki, mutta ovat nyt kunnossa:"
@@ -5690,10 +6094,6 @@ msgstr ""
 "Pakettiluettelon päivitys vaatii ylläpitäjän oikeudet, joita sinulla ei "
 "ole.  Haluatko vaihtaa root-tunnukselle?"
 
-#: src/ui.cc:1556 src/ui.cc:2112
-msgid "Waste time trying to find mines"
-msgstr "Hukkaa aikaa etsimällä miinoja"
-
 #: src/ui.cc:1563 src/ui.cc:1623
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "Puhdistusta ei voi tehdä noudon aikana"
@@ -5748,66 +6148,33 @@ msgstr "Mihin tiedostoon selvityksen tila tallennetaan? "
 msgid "^Install/remove packages"
 msgstr "^Asenna/poista paketteja"
 
-#: src/ui.cc:2075
-msgid "Perform all pending installs and removals"
-msgstr "Suorita kaikki määritetyt asennukset ja poistot"
-
 #: src/ui.cc:2077
 msgid "^Update package list"
 msgstr "^Päivitä pakettiluettelo"
-
-#: src/ui.cc:2078
-msgid "Check for new versions of packages"
-msgstr "Päivitä saatavilla olevien pakettien luettelo"
 
 #: src/ui.cc:2082
 msgid "Mark Up^gradable"
 msgstr "^Merkitse päivitykset"
 
-#: src/ui.cc:2083
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr ""
-"Merkitse päivitettäväksi kaikki päivityskelpoiset ei-jäädytetyt paketit"
-
 #: src/ui.cc:2087
 msgid "^Forget new packages"
 msgstr "^Unohda uudet paketit"
-
-#: src/ui.cc:2088
-msgid "Forget which packages are \"new\""
-msgstr "Tyhjennä uusien pakettien ryhmä"
 
 #: src/ui.cc:2091
 msgid "Canc^el pending actions"
 msgstr "^Peruuta komennot"
 
-#: src/ui.cc:2092
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Peruuta kaikki määritetyt asennukset ja poistot"
-
 #: src/ui.cc:2095
 msgid "^Clean package cache"
 msgstr "Puhdista ^koko pakettivarasto"
-
-#: src/ui.cc:2096
-msgid "Delete package files which were previously downloaded"
-msgstr "Poista aiemmin noudetut pakettitiedostot"
 
 #: src/ui.cc:2099
 msgid "Clean ^obsolete files"
 msgstr "Puhdista ^vanhentuneet tiedostot"
 
-#: src/ui.cc:2100
-msgid "Delete package files which can no longer be downloaded"
-msgstr "Poista pakettitiedostot, joita ei enää voi noutaa"
-
 #: src/ui.cc:2106
 msgid "^Reload package cache"
 msgstr "Lataa ^pakettivarasto uudelleen"
-
-#: src/ui.cc:2107
-msgid "Reload the package cache"
-msgstr "Lataa pakettivarasto uudelleen muistiin."
 
 #: src/ui.cc:2111
 msgid "^Play Minesweeper"
@@ -5817,54 +6184,21 @@ msgstr "Pelaa miina^haravaa"
 msgid "^Become root"
 msgstr "Vaihda ^root-tunnukselle"
 
-#: src/ui.cc:2117
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-"Vaihda root-tunnukselle komennolla 'su'.  Tämä käynnistää ohjelman "
-"uudelleen, mutta asetuksesi säilyvät nykyisellään."
-
 #: src/ui.cc:2119
 msgid "^Quit"
 msgstr "^Lopeta"
-
-#: src/ui.cc:2120
-msgid "Exit the program"
-msgstr "Poistu ohjelmasta"
-
-#: src/ui.cc:2126 src/ui.cc:2506
-msgid "Undo"
-msgstr "Peruuta"
-
-#: src/ui.cc:2127
-msgid "Undo the last package operation or group of operations"
-msgstr "Peruuta viimeisin suoritettu toimi tai toimiryhmä"
 
 #: src/ui.cc:2135
 msgid "^Install"
 msgstr "^Asenna"
 
-#: src/ui.cc:2136
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr "Merkitse valittu paketti asennettavaksi tai päivitettäväksi"
-
 #: src/ui.cc:2139
 msgid "^Remove"
 msgstr "^Poista"
 
-#: src/ui.cc:2140
-msgid "Flag the currently selected package for removal"
-msgstr "Merkitse valittu paketti poistettavaksi"
-
 #: src/ui.cc:2143
 msgid "^Purge"
 msgstr "^Siivoa"
-
-#: src/ui.cc:2144
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr "Merkitse valittu paketti asetustiedostoineen poistettavaksi"
 
 #: src/ui.cc:2147
 msgid "^Keep"
@@ -5878,47 +6212,17 @@ msgstr "Peruuta valitulle paketille määritetyt toiminnot"
 msgid "^Hold"
 msgstr "^Jäädytä"
 
-#: src/ui.cc:2152
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr "Peruuta valitulle paketille määritetyt toiminnot ja estä sen päivitys"
-
 #: src/ui.cc:2155
 msgid "Mark ^Auto"
 msgstr "^Merkitse Automaatti"
-
-#: src/ui.cc:2156
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
-msgstr ""
-"Merkitse valittu paketti automaattisesti asennetuksi; se poistetaan, jos "
-"mikään muu paketti ei riipu siitä"
 
 #: src/ui.cc:2159
 msgid "Mark ^Manual"
 msgstr "Merkitse ^Käsin"
 
-#: src/ui.cc:2160
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr ""
-"Merkitse valittu paketti käsin asennetuksi; sitä ei poisteta, ellet poista "
-"sitä käsin"
-
 #: src/ui.cc:2163
 msgid "^Forbid Version"
 msgstr "^Estä versio"
-
-#: src/ui.cc:2164
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
-msgstr ""
-"Estä valitun paketin ehdolla olevan version asennus; paketin uudemmat "
-"versiot asennetaan normaalisti"
 
 #: src/ui.cc:2168
 msgid "I^nformation"
@@ -6238,10 +6542,6 @@ msgstr "^Lisenssi"
 #: src/ui.cc:2505
 msgid "Actions"
 msgstr "Toiminnot"
-
-#: src/ui.cc:2508
-msgid "Resolver"
-msgstr "Ratkaisin"
 
 #: src/ui.cc:2509
 msgid "Search"

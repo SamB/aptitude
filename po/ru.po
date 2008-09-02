@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11.3-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-02 08:29-0700\n"
+"POT-Creation-Date: 2008-09-02 08:30-0700\n"
 "PO-Revision-Date: 2008-05-10 14:38+0400\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
@@ -2216,7 +2216,7 @@ msgid "Candidate"
 msgstr "Кандидат"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
-#: src/gtk/gui.cc:71
+#: src/gtk/gui.cc:71 src/gtk/ui-main.glade:1403
 msgid "Install"
 msgstr "Установить"
 
@@ -2338,7 +2338,7 @@ msgstr "НЕУДОВЛЕТВОРИТЕЛЬНЫЙ"
 msgid "UNAVAILABLE"
 msgstr "НЕДОСТУПНЫЙ"
 
-#: src/desc_render.cc:133
+#: src/desc_render.cc:133 src/gtk/ui-main.glade:914
 msgid "Tags"
 msgstr "Теги"
 
@@ -2841,7 +2841,7 @@ msgstr "Удалить [автоматически]"
 msgid "Downgrade"
 msgstr "Заменить на более старые"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1591 src/gtk/ui-main.glade:1455
 msgid "Hold"
 msgstr "Фиксировать"
 
@@ -2850,6 +2850,7 @@ msgid "Reinstall"
 msgstr "Переустановить"
 
 #: src/generic/apt/matchers.cc:1597 src/gtk/gui.cc:75
+#: src/gtk/ui-main.glade:1416
 msgid "Remove"
 msgstr "Удалить"
 
@@ -2857,7 +2858,7 @@ msgstr "Удалить"
 msgid "Upgrade"
 msgstr "Обновить"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1625 src/gtk/ui-main.glade:1442
 msgid "Keep"
 msgstr "Оставить"
 
@@ -3104,7 +3105,7 @@ msgstr "none"
 msgid "URI"
 msgstr ""
 
-#: src/gtk/download.cc:158
+#: src/gtk/download.cc:158 src/gtk/ui-main.glade:1019
 #, fuzzy
 #| msgid "State"
 msgid "Status"
@@ -3295,7 +3296,7 @@ msgstr ""
 msgid "Dashboard:"
 msgstr ""
 
-#: src/gtk/gui.cc:689
+#: src/gtk/gui.cc:689 src/gtk/ui-main.glade:459
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
@@ -3728,6 +3729,424 @@ msgstr "Не удалось найти решение, которое можно
 #: src/gtk/resolver.cc:630 src/ui.cc:1955
 msgid "Ran out of time while trying to find a solution."
 msgstr "Убьём время, пока ищется решение."
+
+#: src/gtk/ui-main.glade:17
+#, fuzzy
+#| msgid "False"
+msgid "_File"
+msgstr "False"
+
+#: src/gtk/ui-main.glade:25 src/ui.cc:2075
+msgid "Perform all pending installs and removals"
+msgstr "Выполнить все незаконченные установки и удаления"
+
+#: src/gtk/ui-main.glade:26
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/remove packages"
+msgstr "^Установить/удалить пакеты"
+
+#: src/gtk/ui-main.glade:39 src/ui.cc:2078
+msgid "Check for new versions of packages"
+msgstr "Проверить, есть ли новые версии пакетов"
+
+#: src/gtk/ui-main.glade:40
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update package list"
+msgstr "^Обновить список пакетов"
+
+#: src/gtk/ui-main.glade:58 src/ui.cc:2083
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr ""
+"Пометить все обновляемые пакеты, которые не зафиксированы от обновления"
+
+#: src/gtk/ui-main.glade:59
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "Пометить ^обновляемые"
+
+#: src/gtk/ui-main.glade:72 src/ui.cc:2088
+msgid "Forget which packages are \"new\""
+msgstr "Забыть о \"новых\" пакетах"
+
+#: src/gtk/ui-main.glade:73
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget new packages"
+msgstr "^Забыть о новых пакетах"
+
+#: src/gtk/ui-main.glade:86 src/ui.cc:2092
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr "Отменить все незаконченные установки, удаления, фиксации и обновления."
+
+#: src/gtk/ui-main.glade:87
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el pending actions"
+msgstr "Отменить все незаконченные действия"
+
+#: src/gtk/ui-main.glade:100 src/ui.cc:2096
+msgid "Delete package files which were previously downloaded"
+msgstr "Удалить ранее загруженные файлы пакетов"
+
+#: src/gtk/ui-main.glade:101
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "_Clean package cache"
+msgstr "^Очистить кеш пакетов"
+
+#: src/gtk/ui-main.glade:114 src/ui.cc:2100
+msgid "Delete package files which can no longer be downloaded"
+msgstr "Удалить файлы пакетов, которые больше никогда не будут загружены"
+
+#: src/gtk/ui-main.glade:115
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _obsolete files"
+msgstr "Очистить ^устаревшие файлы"
+
+#: src/gtk/ui-main.glade:133 src/ui.cc:2107
+msgid "Reload the package cache"
+msgstr "Перезагрузить кеш пакетов."
+
+#: src/gtk/ui-main.glade:134
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload package cache"
+msgstr "^Перезагрузить кеш пакетов"
+
+#: src/gtk/ui-main.glade:147 src/ui.cc:1556 src/ui.cc:2112
+msgid "Waste time trying to find mines"
+msgstr "Убьём время в поисках мин"
+
+#: src/gtk/ui-main.glade:148
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "^Играть в сапёра"
+
+#: src/gtk/ui-main.glade:166 src/ui.cc:2117
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"Запуск 'su', чтобы стать суперпользователем. Это приведёт к перезапуску "
+"программы, но ваши настройки будут сохранены"
+
+#: src/gtk/ui-main.glade:167
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become root"
+msgstr "Стать суперпользователем"
+
+#: src/gtk/ui-main.glade:180 src/ui.cc:2120
+msgid "Exit the program"
+msgstr "Завершить работу программы"
+
+#: src/gtk/ui-main.glade:181
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "^Выйти"
+
+#: src/gtk/ui-main.glade:197
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/ui-main.glade:205 src/ui.cc:2127
+msgid "Undo the last package operation or group of operations"
+msgstr "Отменить последнюю операцию с пакетом или группу операций"
+
+#: src/gtk/ui-main.glade:206 src/ui.cc:2126 src/ui.cc:2506
+msgid "Undo"
+msgstr "Откат"
+
+#: src/gtk/ui-main.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/ui-main.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/ui-main.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/ui-main.glade:248
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "delete"
+
+#: src/gtk/ui-main.glade:260
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "Пакет"
+
+#: src/gtk/ui-main.glade:268 src/ui.cc:2136
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "Пометить выделенный пакет для установки или обновления"
+
+#: src/gtk/ui-main.glade:269
+#, fuzzy
+#| msgid "Install"
+msgid "_Install"
+msgstr "Установить"
+
+#: src/gtk/ui-main.glade:282 src/ui.cc:2140
+msgid "Flag the currently selected package for removal"
+msgstr "Пометить выделенный пакет для удаления"
+
+#: src/gtk/ui-main.glade:283
+#, fuzzy
+#| msgid "Remove"
+msgid "_Remove"
+msgstr "Удалить"
+
+#: src/gtk/ui-main.glade:296 src/ui.cc:2144
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr "Пометить выделенный пакет для удаления вместе с его файлами настройки"
+
+#: src/gtk/ui-main.glade:297
+#, fuzzy
+#| msgid "^Purge"
+msgid "_Purge"
+msgstr "^Purge"
+
+#: src/gtk/ui-main.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/ui-main.glade:311
+#, fuzzy
+#| msgid "Keep"
+msgid "_Keep"
+msgstr "Оставить"
+
+#: src/gtk/ui-main.glade:324 src/ui.cc:2152
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr ""
+"Отменить любое действие над выделенным пакетом и защитить его от дальнейших "
+"обновлений"
+
+#: src/gtk/ui-main.glade:325
+#, fuzzy
+#| msgid "Hold"
+msgid "_Hold"
+msgstr "Фиксировать"
+
+#: src/gtk/ui-main.glade:338 src/ui.cc:2156
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"Отметить выделенные пакеты, как будто они были установлены автоматически; "
+"они будут автоматически удалены, если не останется пакетов, от них зависящих"
+
+#: src/gtk/ui-main.glade:339
+#, fuzzy
+#| msgid "Mark ^Auto"
+msgid "Mark _Auto"
+msgstr "Отметить ^Auto"
+
+#: src/gtk/ui-main.glade:352 src/ui.cc:2160
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+"Отметить выделенные пакеты, как будто они были установлены вручную; они не "
+"будут удалены, пока вы вручную не сделаете этого"
+
+#: src/gtk/ui-main.glade:353
+#, fuzzy
+#| msgid "Mark ^Manual"
+msgid "Mark _Manual"
+msgstr "Отметить ^Manual"
+
+#: src/gtk/ui-main.glade:366 src/ui.cc:2164
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"Запретить установку версии выделенного пакета; новые версии пакета будут "
+"устанавливаться как обычно"
+
+#: src/gtk/ui-main.glade:367
+#, fuzzy
+#| msgid "^Forbid Version"
+msgid "_Forbid Version"
+msgstr "^Forbid версию"
+
+#: src/gtk/ui-main.glade:384
+#, fuzzy
+#| msgid "Views"
+msgid "_Views"
+msgstr "Окна"
+
+#: src/gtk/ui-main.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/ui-main.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/ui-main.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/ui-main.glade:401
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Find _Dependency Chains"
+msgstr "Работа с зависимостями"
+
+#: src/gtk/ui-main.glade:412
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "Помощь"
+
+#: src/gtk/ui-main.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/ui-main.glade:440 src/gtk/ui-main.glade:524
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:469 src/gtk/ui-main.glade:691 src/ui.cc:834
+#: src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909 src/ui.cc:911
+#: src/ui.cc:932 src/ui.cc:934
+msgid "Packages"
+msgstr "Пакеты"
+
+#: src/gtk/ui-main.glade:479 src/gtk/ui-main.glade:995 src/ui.cc:1292
+msgid "Preview"
+msgstr "Предпросмотр"
+
+#: src/gtk/ui-main.glade:489 src/gtk/ui-main.glade:1081 src/ui.cc:2508
+msgid "Resolver"
+msgstr "Решатель"
+
+#: src/gtk/ui-main.glade:499
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "Установлен"
+
+#: src/gtk/ui-main.glade:518
+msgid "This is the dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:555
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr "[Загружено]"
+
+#: src/gtk/ui-main.glade:599 src/gtk/ui-main.glade:1144
+#: src/gtk/ui-main.glade:1237
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "Поиск"
+
+#: src/gtk/ui-main.glade:619 src/gtk/ui-main.glade:1164
+#: src/gtk/ui-main.glade:1257
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/ui-main.glade:755
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:816
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "Зависимости от %s"
+
+#: src/gtk/ui-main.glade:845
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr "^ChangeLog"
+
+#: src/gtk/ui-main.glade:874
+#, fuzzy
+#| msgid "False"
+msgid "Files"
+msgstr "False"
+
+#: src/gtk/ui-main.glade:885
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:894
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:905
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "Теги"
+
+#: src/gtk/ui-main.glade:936
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "нет"
+
+#: src/gtk/ui-main.glade:1028
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1043
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1058
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1110
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "Ош "
+
+#: src/gtk/ui-main.glade:1205
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1298
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1336
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Dependency Chain"
+msgstr "Работа с зависимостями"
+
+#: src/gtk/ui-main.glade:1429
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "^Purge"
 
 #: src/load_config.cc:48
 #, c-format
@@ -5614,11 +6033,6 @@ msgstr "Изменение поведения aptitude"
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr "Стереть все персональные настройки и загрузить значения по умолчанию?"
 
-#: src/ui.cc:834 src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909
-#: src/ui.cc:911 src/ui.cc:932 src/ui.cc:934
-msgid "Packages"
-msgstr "Пакеты"
-
 #: src/ui.cc:835 src/ui.cc:882 src/ui.cc:910 src/ui.cc:933
 msgid "View available packages and choose actions to perform"
 msgstr "Просмотр доступных пакетов и выбор желаемого действия"
@@ -5785,10 +6199,6 @@ msgstr "Обзор устанавливаемых пакетов"
 msgid "View and/or adjust the actions that will be performed"
 msgstr "Показать и/или выверить действия, которые будут выполнены"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "Предпросмотр"
-
 #: src/ui.cc:1348
 msgid "Some packages were broken and have been fixed:"
 msgstr "Некоторые неработоспособные пакеты были исправлены:"
@@ -5864,10 +6274,6 @@ msgstr ""
 "Для обновления списка пакетов требуются административные права, которыми вы "
 "в данный момент не обладаете. Получить права суперпользователя? "
 
-#: src/ui.cc:1556 src/ui.cc:2112
-msgid "Waste time trying to find mines"
-msgstr "Убьём время в поисках мин"
-
 #: src/ui.cc:1563 src/ui.cc:1623
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "Очистка во время процесса загрузки невозможна"
@@ -5922,66 +6328,33 @@ msgstr "Файл, в который будет сброшено состояни
 msgid "^Install/remove packages"
 msgstr "^Установить/удалить пакеты"
 
-#: src/ui.cc:2075
-msgid "Perform all pending installs and removals"
-msgstr "Выполнить все незаконченные установки и удаления"
-
 #: src/ui.cc:2077
 msgid "^Update package list"
 msgstr "^Обновить список пакетов"
-
-#: src/ui.cc:2078
-msgid "Check for new versions of packages"
-msgstr "Проверить, есть ли новые версии пакетов"
 
 #: src/ui.cc:2082
 msgid "Mark Up^gradable"
 msgstr "Пометить ^обновляемые"
 
-#: src/ui.cc:2083
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr ""
-"Пометить все обновляемые пакеты, которые не зафиксированы от обновления"
-
 #: src/ui.cc:2087
 msgid "^Forget new packages"
 msgstr "^Забыть о новых пакетах"
-
-#: src/ui.cc:2088
-msgid "Forget which packages are \"new\""
-msgstr "Забыть о \"новых\" пакетах"
 
 #: src/ui.cc:2091
 msgid "Canc^el pending actions"
 msgstr "Отменить все незаконченные действия"
 
-#: src/ui.cc:2092
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "Отменить все незаконченные установки, удаления, фиксации и обновления."
-
 #: src/ui.cc:2095
 msgid "^Clean package cache"
 msgstr "^Очистить кеш пакетов"
-
-#: src/ui.cc:2096
-msgid "Delete package files which were previously downloaded"
-msgstr "Удалить ранее загруженные файлы пакетов"
 
 #: src/ui.cc:2099
 msgid "Clean ^obsolete files"
 msgstr "Очистить ^устаревшие файлы"
 
-#: src/ui.cc:2100
-msgid "Delete package files which can no longer be downloaded"
-msgstr "Удалить файлы пакетов, которые больше никогда не будут загружены"
-
 #: src/ui.cc:2106
 msgid "^Reload package cache"
 msgstr "^Перезагрузить кеш пакетов"
-
-#: src/ui.cc:2107
-msgid "Reload the package cache"
-msgstr "Перезагрузить кеш пакетов."
 
 #: src/ui.cc:2111
 msgid "^Play Minesweeper"
@@ -5991,54 +6364,21 @@ msgstr "^Играть в сапёра"
 msgid "^Become root"
 msgstr "^Стать суперпользователем"
 
-#: src/ui.cc:2117
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-"Запуск 'su', чтобы стать суперпользователем. Это приведёт к перезапуску "
-"программы, но ваши настройки будут сохранены"
-
 #: src/ui.cc:2119
 msgid "^Quit"
 msgstr "^Выйти"
-
-#: src/ui.cc:2120
-msgid "Exit the program"
-msgstr "Завершить работу программы"
-
-#: src/ui.cc:2126 src/ui.cc:2506
-msgid "Undo"
-msgstr "Откат"
-
-#: src/ui.cc:2127
-msgid "Undo the last package operation or group of operations"
-msgstr "Отменить последнюю операцию с пакетом или группу операций"
 
 #: src/ui.cc:2135
 msgid "^Install"
 msgstr "^Install"
 
-#: src/ui.cc:2136
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr "Пометить выделенный пакет для установки или обновления"
-
 #: src/ui.cc:2139
 msgid "^Remove"
 msgstr "^Remove"
 
-#: src/ui.cc:2140
-msgid "Flag the currently selected package for removal"
-msgstr "Пометить выделенный пакет для удаления"
-
 #: src/ui.cc:2143
 msgid "^Purge"
 msgstr "^Purge"
-
-#: src/ui.cc:2144
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr "Пометить выделенный пакет для удаления вместе с его файлами настройки"
 
 #: src/ui.cc:2147
 msgid "^Keep"
@@ -6052,49 +6392,17 @@ msgstr "Отменить любое действие над выделенным
 msgid "^Hold"
 msgstr "^Hold"
 
-#: src/ui.cc:2152
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr ""
-"Отменить любое действие над выделенным пакетом и защитить его от дальнейших "
-"обновлений"
-
 #: src/ui.cc:2155
 msgid "Mark ^Auto"
 msgstr "Отметить ^Auto"
-
-#: src/ui.cc:2156
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
-msgstr ""
-"Отметить выделенные пакеты, как будто они были установлены автоматически; "
-"они будут автоматически удалены, если не останется пакетов, от них зависящих"
 
 #: src/ui.cc:2159
 msgid "Mark ^Manual"
 msgstr "Отметить ^Manual"
 
-#: src/ui.cc:2160
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr ""
-"Отметить выделенные пакеты, как будто они были установлены вручную; они не "
-"будут удалены, пока вы вручную не сделаете этого"
-
 #: src/ui.cc:2163
 msgid "^Forbid Version"
 msgstr "^Forbid версию"
-
-#: src/ui.cc:2164
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
-msgstr ""
-"Запретить установку версии выделенного пакета; новые версии пакета будут "
-"устанавливаться как обычно"
 
 #: src/ui.cc:2168
 msgid "I^nformation"
@@ -6415,10 +6723,6 @@ msgstr "^Лицензия"
 #: src/ui.cc:2505
 msgid "Actions"
 msgstr "Действия"
-
-#: src/ui.cc:2508
-msgid "Resolver"
-msgstr "Решатель"
 
 #: src/ui.cc:2509
 msgid "Search"

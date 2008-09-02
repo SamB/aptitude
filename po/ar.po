@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-02 08:29-0700\n"
+"POT-Creation-Date: 2008-09-02 08:30-0700\n"
 "PO-Revision-Date: 2006-10-22 16:18+0300\n"
 "Last-Translator: Ossama M. Khayat <okhayat@yahoo.com>\n"
 "Language-Team: Arabic <support@arabeyes.org>\n"
@@ -2067,7 +2067,7 @@ msgid "Candidate"
 msgstr "CandVer"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
-#: src/gtk/gui.cc:71
+#: src/gtk/gui.cc:71 src/gtk/ui-main.glade:1403
 msgid "Install"
 msgstr "تثبيت"
 
@@ -2190,7 +2190,7 @@ msgstr "غير مستوفى"
 msgid "UNAVAILABLE"
 msgstr "غير متوفر"
 
-#: src/desc_render.cc:133
+#: src/desc_render.cc:133 src/gtk/ui-main.glade:914
 msgid "Tags"
 msgstr "علامات"
 
@@ -2680,7 +2680,7 @@ msgstr "إزالة [آلياً]"
 msgid "Downgrade"
 msgstr "تثبيط"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1591 src/gtk/ui-main.glade:1455
 msgid "Hold"
 msgstr "إبقاء"
 
@@ -2689,6 +2689,7 @@ msgid "Reinstall"
 msgstr "إعادة التثبيت"
 
 #: src/generic/apt/matchers.cc:1597 src/gtk/gui.cc:75
+#: src/gtk/ui-main.glade:1416
 msgid "Remove"
 msgstr "إزالة"
 
@@ -2696,7 +2697,7 @@ msgstr "إزالة"
 msgid "Upgrade"
 msgstr "ترقية"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1625 src/gtk/ui-main.glade:1442
 msgid "Keep"
 msgstr "إبقاء"
 
@@ -2941,7 +2942,7 @@ msgstr "لاشيء"
 msgid "URI"
 msgstr ""
 
-#: src/gtk/download.cc:158
+#: src/gtk/download.cc:158 src/gtk/ui-main.glade:1019
 #, fuzzy
 #| msgid "State"
 msgid "Status"
@@ -3127,7 +3128,7 @@ msgstr ""
 msgid "Dashboard:"
 msgstr ""
 
-#: src/gtk/gui.cc:689
+#: src/gtk/gui.cc:689 src/gtk/ui-main.glade:459
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
@@ -3549,6 +3550,417 @@ msgstr "تعذر ايجاد حلّ للاستعمال."
 #: src/gtk/resolver.cc:630 src/ui.cc:1955
 msgid "Ran out of time while trying to find a solution."
 msgstr "نفذ الوقت أثناء محاولة البحث عن حل."
+
+#: src/gtk/ui-main.glade:17
+#, fuzzy
+msgid "_File"
+msgstr "إغلاق"
+
+#: src/gtk/ui-main.glade:25 src/ui.cc:2075
+msgid "Perform all pending installs and removals"
+msgstr "إجراء كل عمليات التثبيت والإزالة المؤخَّرة"
+
+#: src/gtk/ui-main.glade:26
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/remove packages"
+msgstr "^تثبيت/إزالة الحزم"
+
+#: src/gtk/ui-main.glade:39 src/ui.cc:2078
+msgid "Check for new versions of packages"
+msgstr "التحقق من وجود نسخ جديدة من الحزم"
+
+#: src/gtk/ui-main.glade:40
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update package list"
+msgstr "^تحديث لائحة الحزم"
+
+#: src/gtk/ui-main.glade:58 src/ui.cc:2083
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr "تعليم كل الحزم القابلة للترقية والتي ليست مبقاة للترقية"
+
+#: src/gtk/ui-main.glade:59
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "تعليم ال^قابلة للترقية"
+
+#: src/gtk/ui-main.glade:72 src/ui.cc:2088
+msgid "Forget which packages are \"new\""
+msgstr "نسيان أيّ الحزم هي \"جديدة\""
+
+#: src/gtk/ui-main.glade:73
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget new packages"
+msgstr "^نسيان الحزم الجديدة"
+
+#: src/gtk/ui-main.glade:86 src/ui.cc:2092
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr "إلغاء جميع التثبيتات، والإزالات، والإبقاءات، والترقيات المؤجلة."
+
+#: src/gtk/ui-main.glade:87
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el pending actions"
+msgstr "إل^غاء الأعمال المؤجلة"
+
+#: src/gtk/ui-main.glade:100 src/ui.cc:2096
+msgid "Delete package files which were previously downloaded"
+msgstr "حذف ملفات الحزم التي تم تنزيلها من قبل"
+
+#: src/gtk/ui-main.glade:101
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "_Clean package cache"
+msgstr "^تنظيف مخزن الحزم"
+
+#: src/gtk/ui-main.glade:114 src/ui.cc:2100
+msgid "Delete package files which can no longer be downloaded"
+msgstr "حذف ملفات الحزم التي لا يمكن تنزيلها بعد الآن"
+
+#: src/gtk/ui-main.glade:115
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _obsolete files"
+msgstr "حذف الملفاة ال^ملغية"
+
+#: src/gtk/ui-main.glade:133 src/ui.cc:2107
+msgid "Reload the package cache"
+msgstr "إعادة تحميل مخزن الحزم"
+
+#: src/gtk/ui-main.glade:134
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload package cache"
+msgstr "^إعادة تحميل مخزن الحزم"
+
+#: src/gtk/ui-main.glade:147 src/ui.cc:1556 src/ui.cc:2112
+msgid "Waste time trying to find mines"
+msgstr "إضاعة الوقت بمحاولة البحث عن الألغام"
+
+#: src/gtk/ui-main.glade:148
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "^لعب كانسة الألغام"
+
+#: src/gtk/ui-main.glade:166 src/ui.cc:2117
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"استخدم 'su' كي تصبح المستخدم root؛ سيقوم هذا بإعادة تشغيل البرنامج، ولكن "
+"سيتم الإبقاء على إعداداتك"
+
+#: src/gtk/ui-main.glade:167
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become root"
+msgstr "تحوُّل إلى root"
+
+#: src/gtk/ui-main.glade:180 src/ui.cc:2120
+msgid "Exit the program"
+msgstr "الخروج من البرنامج"
+
+#: src/gtk/ui-main.glade:181
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "^خروج"
+
+#: src/gtk/ui-main.glade:197
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/ui-main.glade:205 src/ui.cc:2127
+msgid "Undo the last package operation or group of operations"
+msgstr "التراجع عن آخر عملية حزمة أو مجموعة من العمليات"
+
+#: src/gtk/ui-main.glade:206 src/ui.cc:2126 src/ui.cc:2506
+msgid "Undo"
+msgstr "تراجع"
+
+#: src/gtk/ui-main.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/ui-main.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/ui-main.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/ui-main.glade:248
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "حذف"
+
+#: src/gtk/ui-main.glade:260
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "حزمة"
+
+#: src/gtk/ui-main.glade:268 src/ui.cc:2136
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "تعليم الحزمة المحددة حالياً للتثبيت أو الترقية"
+
+#: src/gtk/ui-main.glade:269
+#, fuzzy
+#| msgid "Install"
+msgid "_Install"
+msgstr "تثبيت"
+
+#: src/gtk/ui-main.glade:282 src/ui.cc:2140
+msgid "Flag the currently selected package for removal"
+msgstr "تعليم الحزمة المحددة حالياً للإزالة"
+
+#: src/gtk/ui-main.glade:283
+#, fuzzy
+#| msgid "Remove"
+msgid "_Remove"
+msgstr "إزالة"
+
+#: src/gtk/ui-main.glade:296 src/ui.cc:2144
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr "تعليم الحزمة المحددة حالياً وملفات تهيئتها للإزالة"
+
+#: src/gtk/ui-main.glade:297
+#, fuzzy
+#| msgid "^Purge"
+msgid "_Purge"
+msgstr "^إلغاء"
+
+#: src/gtk/ui-main.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/ui-main.glade:311
+#, fuzzy
+#| msgid "Keep"
+msgid "_Keep"
+msgstr "إبقاء"
+
+#: src/gtk/ui-main.glade:324 src/ui.cc:2152
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr "إلغاء أي عمل على الحزمة المحددة، وحمايتها من الترقيات المستقبليّة"
+
+#: src/gtk/ui-main.glade:325
+#, fuzzy
+#| msgid "Hold"
+msgid "_Hold"
+msgstr "إبقاء"
+
+#: src/gtk/ui-main.glade:338 src/ui.cc:2156
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"تحديد الحزمة المختارة على أنها ثُبتت تلقائيّاً؛ سوف يتم إزالتها إن لم تعتمد "
+"عليها أية حزمة أخرى"
+
+#: src/gtk/ui-main.glade:339
+#, fuzzy
+#| msgid "Mark ^Auto"
+msgid "Mark _Auto"
+msgstr "تحديد ^تلقائي"
+
+#: src/gtk/ui-main.glade:352 src/ui.cc:2160
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+"تعليم الحزمة المحدّدة على أنها ثُبتت يدويّاً؛ لن يتم إزالتها إلا إن قمت بذلك "
+"يدوياً"
+
+#: src/gtk/ui-main.glade:353
+#, fuzzy
+#| msgid "Mark ^Manual"
+msgid "Mark _Manual"
+msgstr "تحديد ^يدوي"
+
+#: src/gtk/ui-main.glade:366 src/ui.cc:2164
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"منع تثبيت النسخة المرشحة من الحزمة المحددة؛ أما النسخ الأجدد من الحزمة فسيتم "
+"تثبيتها كالعادة"
+
+#: src/gtk/ui-main.glade:367
+#, fuzzy
+#| msgid "^Forbid Version"
+msgid "_Forbid Version"
+msgstr "^منع النسخة"
+
+#: src/gtk/ui-main.glade:384
+#, fuzzy
+#| msgid "Views"
+msgid "_Views"
+msgstr "عروض"
+
+#: src/gtk/ui-main.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/ui-main.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/ui-main.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/ui-main.glade:401
+#, fuzzy
+msgid "Find _Dependency Chains"
+msgstr "إ^دارة المعتمدات"
+
+#: src/gtk/ui-main.glade:412
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "مساعدة"
+
+#: src/gtk/ui-main.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/ui-main.glade:440 src/gtk/ui-main.glade:524
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:469 src/gtk/ui-main.glade:691 src/ui.cc:834
+#: src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909 src/ui.cc:911
+#: src/ui.cc:932 src/ui.cc:934
+msgid "Packages"
+msgstr "الحزم"
+
+#: src/gtk/ui-main.glade:479 src/gtk/ui-main.glade:995 src/ui.cc:1292
+msgid "Preview"
+msgstr "معاينة"
+
+#: src/gtk/ui-main.glade:489 src/gtk/ui-main.glade:1081 src/ui.cc:2508
+msgid "Resolver"
+msgstr "مقدم الحلول"
+
+#: src/gtk/ui-main.glade:499
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "مُثبّتة"
+
+#: src/gtk/ui-main.glade:518
+msgid "This is the dashboard"
+msgstr ""
+
+#: src/gtk/ui-main.glade:555
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr "[مُنزل]"
+
+#: src/gtk/ui-main.glade:599 src/gtk/ui-main.glade:1144
+#: src/gtk/ui-main.glade:1237
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "بحث"
+
+#: src/gtk/ui-main.glade:619 src/gtk/ui-main.glade:1164
+#: src/gtk/ui-main.glade:1257
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/ui-main.glade:755
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:816
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "معتمدات %s"
+
+#: src/gtk/ui-main.glade:845
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr "^سجل التغيير"
+
+#: src/gtk/ui-main.glade:874
+#, fuzzy
+msgid "Files"
+msgstr "إغلاق"
+
+#: src/gtk/ui-main.glade:885
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:894
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/ui-main.glade:905
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "علامات"
+
+#: src/gtk/ui-main.glade:936
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "لا"
+
+#: src/gtk/ui-main.glade:1028
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1043
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1058
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1110
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "خطأ "
+
+#: src/gtk/ui-main.glade:1205
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1298
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/ui-main.glade:1336
+#, fuzzy
+msgid "Dependency Chain"
+msgstr "إ^دارة المعتمدات"
+
+#: src/gtk/ui-main.glade:1429
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "^إلغاء"
 
 #: src/load_config.cc:48
 #, c-format
@@ -5384,11 +5796,6 @@ msgstr ""
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr "حقاً تريد تجاهل إعادادات الشخصية وإعادة تحميل الافتراضيّات؟"
 
-#: src/ui.cc:834 src/ui.cc:836 src/ui.cc:881 src/ui.cc:883 src/ui.cc:909
-#: src/ui.cc:911 src/ui.cc:932 src/ui.cc:934
-msgid "Packages"
-msgstr "الحزم"
-
 #: src/ui.cc:835 src/ui.cc:882 src/ui.cc:910 src/ui.cc:933
 msgid "View available packages and choose actions to perform"
 msgstr "عرض الحزم المتوفرة واختيار الأعمال للقيام بها"
@@ -5556,10 +5963,6 @@ msgstr "معاينة تثبيت الحزم"
 msgid "View and/or adjust the actions that will be performed"
 msgstr "عرض و/أو تعديل الأعمال التي ستتم"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "معاينة"
-
 #: src/ui.cc:1348
 msgid "Some packages were broken and have been fixed:"
 msgstr "بعض الحزم كانت معطوبة وتمّ إصلاحها:"
@@ -5632,10 +6035,6 @@ msgstr ""
 "تحديث لوائح الحزم يتطلب صلاحيات إداريّة، والتي لا تملكها حاليّاً.  هل تود "
 "التغيّر إلى حساب المستخدم root؟"
 
-#: src/ui.cc:1556 src/ui.cc:2112
-msgid "Waste time trying to find mines"
-msgstr "إضاعة الوقت بمحاولة البحث عن الألغام"
-
 #: src/ui.cc:1563 src/ui.cc:1623
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "التنظيف أثناء القيام بالتنزيل غير مسموح به"
@@ -5689,65 +6088,33 @@ msgstr "الملف الذي يجب أن يستخدمه مقدم الحلول ل�
 msgid "^Install/remove packages"
 msgstr "^تثبيت/إزالة الحزم"
 
-#: src/ui.cc:2075
-msgid "Perform all pending installs and removals"
-msgstr "إجراء كل عمليات التثبيت والإزالة المؤخَّرة"
-
 #: src/ui.cc:2077
 msgid "^Update package list"
 msgstr "^تحديث لائحة الحزم"
-
-#: src/ui.cc:2078
-msgid "Check for new versions of packages"
-msgstr "التحقق من وجود نسخ جديدة من الحزم"
 
 #: src/ui.cc:2082
 msgid "Mark Up^gradable"
 msgstr "تعليم ال^قابلة للترقية"
 
-#: src/ui.cc:2083
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr "تعليم كل الحزم القابلة للترقية والتي ليست مبقاة للترقية"
-
 #: src/ui.cc:2087
 msgid "^Forget new packages"
 msgstr "^نسيان الحزم الجديدة"
-
-#: src/ui.cc:2088
-msgid "Forget which packages are \"new\""
-msgstr "نسيان أيّ الحزم هي \"جديدة\""
 
 #: src/ui.cc:2091
 msgid "Canc^el pending actions"
 msgstr "إل^غاء الأعمال المؤجلة"
 
-#: src/ui.cc:2092
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr "إلغاء جميع التثبيتات، والإزالات، والإبقاءات، والترقيات المؤجلة."
-
 #: src/ui.cc:2095
 msgid "^Clean package cache"
 msgstr "^تنظيف مخزن الحزم"
-
-#: src/ui.cc:2096
-msgid "Delete package files which were previously downloaded"
-msgstr "حذف ملفات الحزم التي تم تنزيلها من قبل"
 
 #: src/ui.cc:2099
 msgid "Clean ^obsolete files"
 msgstr "حذف الملفاة ال^ملغية"
 
-#: src/ui.cc:2100
-msgid "Delete package files which can no longer be downloaded"
-msgstr "حذف ملفات الحزم التي لا يمكن تنزيلها بعد الآن"
-
 #: src/ui.cc:2106
 msgid "^Reload package cache"
 msgstr "^إعادة تحميل مخزن الحزم"
-
-#: src/ui.cc:2107
-msgid "Reload the package cache"
-msgstr "إعادة تحميل مخزن الحزم"
 
 #: src/ui.cc:2111
 msgid "^Play Minesweeper"
@@ -5757,54 +6124,21 @@ msgstr "^لعب كانسة الألغام"
 msgid "^Become root"
 msgstr "^تحوّل إلى root"
 
-#: src/ui.cc:2117
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-"استخدم 'su' كي تصبح المستخدم root؛ سيقوم هذا بإعادة تشغيل البرنامج، ولكن "
-"سيتم الإبقاء على إعداداتك"
-
 #: src/ui.cc:2119
 msgid "^Quit"
 msgstr "^خروج"
-
-#: src/ui.cc:2120
-msgid "Exit the program"
-msgstr "الخروج من البرنامج"
-
-#: src/ui.cc:2126 src/ui.cc:2506
-msgid "Undo"
-msgstr "تراجع"
-
-#: src/ui.cc:2127
-msgid "Undo the last package operation or group of operations"
-msgstr "التراجع عن آخر عملية حزمة أو مجموعة من العمليات"
 
 #: src/ui.cc:2135
 msgid "^Install"
 msgstr "^تثبيت"
 
-#: src/ui.cc:2136
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr "تعليم الحزمة المحددة حالياً للتثبيت أو الترقية"
-
 #: src/ui.cc:2139
 msgid "^Remove"
 msgstr "إ^زالة"
 
-#: src/ui.cc:2140
-msgid "Flag the currently selected package for removal"
-msgstr "تعليم الحزمة المحددة حالياً للإزالة"
-
 #: src/ui.cc:2143
 msgid "^Purge"
 msgstr "^إلغاء"
-
-#: src/ui.cc:2144
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr "تعليم الحزمة المحددة حالياً وملفات تهيئتها للإزالة"
 
 #: src/ui.cc:2147
 msgid "^Keep"
@@ -5818,47 +6152,17 @@ msgstr "إلغاء أيّ عمل على الحزمة المحددة"
 msgid "^Hold"
 msgstr "إ^بقاء"
 
-#: src/ui.cc:2152
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr "إلغاء أي عمل على الحزمة المحددة، وحمايتها من الترقيات المستقبليّة"
-
 #: src/ui.cc:2155
 msgid "Mark ^Auto"
 msgstr "تحديد ^تلقائي"
-
-#: src/ui.cc:2156
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
-msgstr ""
-"تحديد الحزمة المختارة على أنها ثُبتت تلقائيّاً؛ سوف يتم إزالتها إن لم تعتمد "
-"عليها أية حزمة أخرى"
 
 #: src/ui.cc:2159
 msgid "Mark ^Manual"
 msgstr "تحديد ^يدوي"
 
-#: src/ui.cc:2160
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr ""
-"تعليم الحزمة المحدّدة على أنها ثُبتت يدويّاً؛ لن يتم إزالتها إلا إن قمت بذلك "
-"يدوياً"
-
 #: src/ui.cc:2163
 msgid "^Forbid Version"
 msgstr "^منع النسخة"
-
-#: src/ui.cc:2164
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
-msgstr ""
-"منع تثبيت النسخة المرشحة من الحزمة المحددة؛ أما النسخ الأجدد من الحزمة فسيتم "
-"تثبيتها كالعادة"
 
 #: src/ui.cc:2168
 msgid "I^nformation"
@@ -6176,10 +6480,6 @@ msgstr "^الرخصة"
 #: src/ui.cc:2505
 msgid "Actions"
 msgstr "أعمال"
-
-#: src/ui.cc:2508
-msgid "Resolver"
-msgstr "مقدم الحلول"
 
 #: src/ui.cc:2509
 msgid "Search"
