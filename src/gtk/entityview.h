@@ -28,6 +28,7 @@
 #include <libglademm/xml.h>
 
 #include <generic/apt/apt.h>
+#include <generic/util/refcounted_base.h>
 
 #include <cwidget/generic/util/ref_ptr.h>
 
@@ -47,25 +48,7 @@ namespace gui
   class EntityView;
   class EntityColumns;
 
-  /** \brief A class meant to be wrapped in cwidget::ref_ptr objects. */
-  class refcounted_base : public sigc::trackable
-  {
-    mutable int refcount;
-
-  public:
-    refcounted_base() : refcount(0) { }
-    virtual ~refcounted_base();
-
-    void incref() { ++refcount; }
-    void decref()
-    {
-      --refcount;
-      if(refcount == 0)
-	delete this;
-    }
-  };
-
-  class Entity : public refcounted_base
+  class Entity : public aptitude::util::refcounted_base
   {
     public:
       virtual ~Entity();
@@ -166,7 +149,7 @@ namespace gui
       sigc::signal<void> signal_selection;
   };
 
-  class EntityView : public refcounted_base
+  class EntityView : public aptitude::util::refcounted_base
   {
     private:
       EntityTreeView * tree;

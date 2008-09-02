@@ -39,10 +39,6 @@ namespace gui
   {
   }
 
-  refcounted_base::~refcounted_base()
-  {
-  }
-
   void HeaderEntity::fill_row(const EntityColumns *cols, Gtk::TreeModel::Row &row)
   {
     row[cols->EntObject] = this;

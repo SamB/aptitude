@@ -10,6 +10,8 @@ libgeneric_util_a_SOURCES = \
 	dirent_safe.h \
 	immset.h \
 	mut_fun.h \
+	refcounted_base.cc \
+	refcounted_base.h \
 	setset.h \
 	temp.cc \
 	temp.h \
