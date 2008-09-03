@@ -19,6 +19,9 @@
 
 /// \file pattern.h
 
+#ifndef PATTERN_H
+#define PATTERN_H
+
 #include <generic/util/refcounted_base.h>
 
 #include <generic/apt/apt.h>
@@ -1728,3 +1731,4 @@ namespace aptitude
   }
 }
 
+#endif
