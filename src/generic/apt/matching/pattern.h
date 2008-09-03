@@ -221,7 +221,7 @@ namespace aptitude
 	   *
 	   *  Matches packages by their action flag.
 	   *
-	   *  Fields: action_info, action_text.
+	   *  Fields: action_type, action_string.
 	   */
 	  action,
 	  /** \brief ?all-versions(PATTERN)
@@ -340,11 +340,6 @@ namespace aptitude
 	   *  Matches installed packages/versions.
 	   */
 	  installed,
-	  /** \brief ?action(keep)
-	   *
-	   *  Matches packages that no action is being taken on.
-	   */
-	  keep,
 	  /** \brief ?maintainer(PATTERN)
 	   *
 	   *  Matches packages by their Maintainer field.
@@ -578,19 +573,27 @@ namespace aptitude
 	}
       };
 
-      /** \brief Describes a package state that can be matched against.
-       */
-      struct action_info
-      {
-	/** \brief The state to match; similar to the states output by
-        *          find_pkg_state.
-        */
-	pkg_action_state state;
-	/** \brief If state is a removal state, indicates whether
-	 *  to only match packages that are being purged.
-	 */
-	bool require_purge;
-      };
+      /** \brief The actions that can be matched against. */
+      enum action_type
+	{
+	  /** \brief Match packages that are going to be installed. */
+	  action_install,
+	  /** \brief Match packages that are going to be upgraded. */
+	  action_upgrade,
+	  /** \brief Match packages that are going to be downgraded. */
+	  action_downgrade,
+	  /** \brief Match packages that are going to be removed (not purged). */
+	  action_remove,
+	  /** \brief Match packages that are going to be purged. */
+	  action_purge,
+	  /** \brief Match packages that are going to be reinstalled. */
+	  action_reinstall,
+	  /** \brief Match packages that are being held back. */
+	  action_hold,
+	  /** \brief Match packages that are not being modified. */
+	  action_keep
+	};
+
     private:
 
       // The type of this node.
@@ -620,8 +623,8 @@ namespace aptitude
 	// The stack position, if applicable.
 	size_t stack_position;
 
-	// The action information, if applicable.
-	action_info action;
+	// The action being selected, if applicable.
+	action_type action;
 
 	// The priority, if applicable.
 	pkgCache::State::VerPriority priority;
@@ -725,12 +728,11 @@ namespace aptitude
       }
 
       // Allocate a pattern that has package action information.
-      pattern(type _tp, pkg_action_state state, bool require_purge,
+      pattern(type _tp, action_type action_type,
 	      const std::string &_string_info)
 	: tp(_tp), string_info(_string_info)
       {
-	info.action.state = state;
-	info.action.require_purge = require_purge;
+	info.action = action_type;
       }
 
     public:
@@ -772,7 +774,7 @@ namespace aptitude
       /** \brief Retrieve the information associated with an ?action
        *  term.
        */
-      const action_info &get_action_action_info() const
+      const action_type get_action_action_type() const
       {
 	eassert(tp == action);
 
@@ -1173,18 +1175,6 @@ namespace aptitude
       static cwidget::util::ref_ptr<pattern> make_installed()
       {
 	return new pattern(installed);
-      }
-
-      // @}
-
-      /** \name keep term constructor */
-
-      // @{
-
-      /** \brief Create a ?action(keep) term. */
-      static cwidget::util::ref_ptr<pattern> make_keep()
-      {
-	return new pattern(keep);
       }
 
       // @}
