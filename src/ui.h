@@ -395,5 +395,6 @@ cwidget::widgets::widget_ref make_ver_screen(const pkgCache::PkgIterator &pkg);
 extern const char *default_pkgstatusdisplay;
 extern const char *default_pkgheaderdisplay;
 extern const char *default_grpstr;
+extern const char *confirm_delete_essential_str;
 
 #endif

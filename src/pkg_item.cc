@@ -58,13 +58,12 @@ namespace cwidget
   using namespace widgets;
 }
 
-static const char *confirm_str=N_("Yes, I am aware this is a very bad idea");
-
 static void try_delete_essential(wstring s,
 				 const pkgCache::PkgIterator pkg,
 				 bool purge)
 {
-  if(s==cw::util::transcode(_(confirm_str)))
+  if(s == cw::util::transcode(_(confirm_delete_essential_str)) ||
+     s == cw::util::transcode(confirm_delete_essential_str))
     {
       undo_group *grp=new apt_undo_group;
 
@@ -83,7 +82,7 @@ static void confirm_delete_essential(const pkgCache::PkgIterator &pkg,
   eassert((pkg->Flags&pkgCache::Flag::Essential)==pkgCache::Flag::Essential ||
 	 (pkg->Flags&pkgCache::Flag::Important)==pkgCache::Flag::Important);
 
-  cw::fragment *f=wrapbox(cw::fragf(_("%s is an essential package!%n%nAre you sure you want to remove it?%nType '%s' if you are."), pkg.Name(), _(confirm_str)));
+  cw::fragment *f=wrapbox(cw::fragf(_("%s is an essential package!%n%nAre you sure you want to remove it?%nType '%s' if you are."), pkg.Name(), _(confirm_delete_essential_str)));
 
   cw::widget_ref w=cw::dialogs::string(f,
 				   L"",
