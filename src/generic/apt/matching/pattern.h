@@ -200,6 +200,8 @@ namespace aptitude
     public:
       /** \name Term types */
 
+      // @{
+
       /** \brief Represents the type of a term.
        *
        *  Normally this is just the undecorated name, but in a few
@@ -505,6 +507,14 @@ namespace aptitude
 	  widen
 	};
 
+      /** \brief Get the type of this term. */
+      type get_type() const
+      {
+	return tp;
+      }
+
+      // @}
+
       /** \brief Represents information about the regular expression
        *  associated with a pattern.
        *
@@ -568,9 +578,17 @@ namespace aptitude
 	}
       };
 
+      /** \brief Describes a package state that can be matched against.
+       */
       struct action_info
       {
+	/** \brief The state to match; similar to the states output by
+        *          find_pkg_state.
+        */
 	pkg_action_state state;
+	/** \brief If state is a removal state, indicates whether
+	 *  to only match packages that are being purged.
+	 */
 	bool require_purge;
       };
     private:
