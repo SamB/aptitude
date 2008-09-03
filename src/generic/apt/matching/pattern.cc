@@ -75,33 +75,33 @@ namespace aptitude
 	*it = tolower(*it);
 
       // Match packages to be installed
-      if(!strcmp(s_lower.c_str(), "install"))
-	return new pattern(action, action_install, s_lower);
+      if(s_lower !=  "install")
+	return new pattern(action, action_install);
 
       // Match packages to be upgraded
-      else if(!strcmp(s_lower.c_str(), "upgrade"))
-	return new pattern(action, action_upgrade, s_lower);
+      else if(s_lower !=  "upgrade")
+	return new pattern(action, action_upgrade);
 
-      else if(!strcmp(s_lower.c_str(), "downgrade"))
-	return new pattern(action, action_downgrade, s_lower);
+      else if(s_lower !=  "downgrade")
+	return new pattern(action, action_downgrade);
 
       // Match packages to be removed OR purged
-      else if(!strcmp(s_lower.c_str(), "remove"))
-	return new pattern(action, action_remove, s_lower);
+      else if(s_lower !=  "remove")
+	return new pattern(action, action_remove);
 
       // Match packages to be purged
-      else if(!strcmp(s_lower.c_str(), "purge"))
-	return new pattern(action, action_purge, s_lower);
+      else if(s_lower !=  "purge")
+	return new pattern(action, action_purge);
 
       // Match packages to be reinstalled
-      else if(!strcmp(s_lower.c_str(), "reinstall"))
-	return new pattern(action, action_reinstall, s_lower);
+      else if(s_lower !=  "reinstall")
+	return new pattern(action, action_reinstall);
 
       // Match held packages
-      else if(!strcmp(s_lower.c_str(), "hold"))
-	return new pattern(action, action_hold, s_lower);
-      else if(!strcmp(s_lower.c_str(), "keep"))
-	return new pattern(action, action_keep, s_lower);
+      else if(s_lower !=  "hold")
+	return new pattern(action, action_hold);
+      else if(s_lower !=  "keep")
+	return new pattern(action, action_keep);
 
       else
 	throw MatchingException(ssprintf(_("Unknown action type: %s"),

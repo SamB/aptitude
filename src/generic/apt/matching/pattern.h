@@ -728,9 +728,8 @@ namespace aptitude
       }
 
       // Allocate a pattern that has package action information.
-      pattern(type _tp, action_type action_type,
-	      const std::string &_string_info)
-	: tp(_tp), string_info(_string_info)
+      pattern(type _tp, action_type action_type)
+	: tp(_tp)
       {
 	info.action = action_type;
       }
@@ -779,16 +778,6 @@ namespace aptitude
 	eassert(tp == action);
 
 	return info.action;
-      }
-
-      /** \brief Retrieve the name of the action being selected
-       *  by an ?action term.
-       */
-      const std::string &get_action_action_string() const
-      {
-	eassert(tp == action);
-
-	return string_info;
       }
 
       // @}
