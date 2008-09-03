@@ -27,6 +27,7 @@
 #include <apt-pkg/pkgcache.h>
 
 #include <gtk/tab.h>
+#include <gtk/changelog.h>
 
 #include <cwidget/generic/util/ref_ptr.h>
 
@@ -40,6 +41,7 @@ namespace gui
       Gtk::TextView * textview;
       cwidget::util::ref_ptr<EntityView> pVersionsView;
       cwidget::util::ref_ptr<EntityView> pDependsView;
+      ChangeLogView * changelogview;
 
       std::string package_name;
       std::string version_name;
