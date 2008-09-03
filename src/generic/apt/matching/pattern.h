@@ -692,6 +692,17 @@ namespace aptitude
 	info.stack_position = _stack_position;
       }
 
+      // Allocate a pattern that has stack position information
+      // and a pattern.
+      pattern(type _tp, size_t _stack_position,
+	      const std::string &_string_info,
+	      const cwidget::util::ref_ptr<pattern> &p)
+	: tp(_tp), string_info(_string_info)
+      {
+	info.stack_position = _stack_position;
+	sub_patterns.push_back(p);
+      }
+
       // Allocate a pattern that has package action information.
       pattern(type _tp, pkg_action_state state, bool require_purge,
 	      const std::string &_string_info)
@@ -836,7 +847,19 @@ namespace aptitude
       static cwidget::util::ref_ptr<pattern>
       make_and(Iter sub_patterns_begin, Iter sub_patterns_end)
       {
-	return new pattern(sub_patterns_begin, sub_patterns_end);
+	return new pattern(and_tp, sub_patterns_begin, sub_patterns_end);
+      }
+
+      /** \brief Create an ?and term.
+       *
+       *  \param container  An STL container holding the
+       *                    sub-patterns of the new term.
+       */
+      template<typename C>
+      static cwidget::util::ref_ptr<pattern>
+      make_and(const C &container)
+      {
+	return new pattern(and_tp, container.begin(), container.end());
       }
 
       /** \brief Retrieve the sub-patterns of an ?and term. */
@@ -858,12 +881,15 @@ namespace aptitude
        *  \param variable_name     The variable name to bind.
        *  \param p                 The pattern in which to
        *                           bind this variable.
+       *  \param variable_index    The index on the stack of the
+       *                           bound variable.
        */
       static cwidget::util::ref_ptr<pattern>
       make_bind(const std::string &variable_name,
+		size_t variable_index,
 		const cwidget::util::ref_ptr<pattern> &p)
       {
-	return new pattern(bind, p, variable_name);
+	return new pattern(bind, variable_index, variable_name, p);
       }
 
       /** \brief Retrieve the variable name of a ?bind term. */
@@ -1292,6 +1318,18 @@ namespace aptitude
 	return new pattern(or_tp, begin, end);
       }
 
+      /** \brief Create an ?or term.
+       *
+       *  \param container  An STL container holding the
+       *                    sub-patterns of the new term.
+       */
+      template<typename C>
+      static cwidget::util::ref_ptr<pattern>
+      make_or(const C &container)
+      {
+	return new pattern(or_tp, container.begin(), container.end());
+      }
+
       /** \brief Retrieve the sub-patterns of an ?or term. */
       const std::vector<cwidget::util::ref_ptr<pattern> > &
       get_or_patterns() const
@@ -1335,7 +1373,7 @@ namespace aptitude
        *
        *  \param s  The name of the priority to select.
        */
-      cwidget::util::ref_ptr<pattern> make_priority(const std::string &s);
+      static cwidget::util::ref_ptr<pattern> make_priority(const std::string &s);
 
       /** \brief Retrieve the priority field of a ?priority term. */
       pkgCache::State::VerPriority get_priority_priority() const
