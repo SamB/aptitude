@@ -370,6 +370,7 @@ AC_CONFIG_FILES([
 	src/cmdline/Makefile
 	src/generic/Makefile
 	src/generic/apt/Makefile
+	src/generic/apt/matching/Makefile
 	src/generic/problemresolver/Makefile
 	src/generic/util/Makefile
 	src/mine/Makefile
