@@ -11,4 +11,6 @@ libgeneric_matching_a_SOURCES = \
 	parse.cc	\
 	parse.h		\
 	pattern.cc	\
-	pattern.h
+	pattern.h	\
+	serialize.cc	\
+	serialize.h
