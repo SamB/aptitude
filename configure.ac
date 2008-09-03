@@ -64,13 +64,47 @@ PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 
 PKG_CHECK_MODULES(CWIDGET, cwidget)
 
-PKG_CHECK_MODULES(GLIBMM, glibmm-2.4)
+HAVE_GTK=1
+AC_ARG_ENABLE(gtk,
+	AS_HELP_STRING(--disable-gtk, [don't compile the GTK+/gtkmm frontend even if the appropriate libraries are available]),
+	[if test x$withval = xyes
+	 then
+	     HAVE_GTK=1
+	 else
+	     HAVE_GTK=
+	 fi])
 
-PKG_CHECK_MODULES(GTHREAD, gthread-2.0)
+WANT_HAVE_GTK=$HAVE_GTK
 
-PKG_CHECK_MODULES(GTKMM, gtkmm-2.4)
+dnl We always test all the libraries so that the user gets to see
+dnl which libraries are needed for GTK+.
+if test x$HAVE_GTK = x1
+then
+  AC_MSG_NOTICE([Testing for the libraries needed to build the GTK+ frontend.])
 
-PKG_CHECK_MODULES(LIBGLADEMM, libglademm-2.4)
+  PKG_CHECK_MODULES(GLIBMM, glibmm-2.4,,[HAVE_GTK=])
+  PKG_CHECK_MODULES(GTHREAD, gthread-2.0,,[HAVE_GTK=])
+  PKG_CHECK_MODULES(GTKMM, gtkmm-2.4,,[HAVE_GTK=])
+  PKG_CHECK_MODULES(LIBGLADEMM, libglademm-2.4,,[HAVE_GTK=])
+else
+  AC_MSG_NOTICE([Disabling the GTK+ frontend at your request (--disable-gtk).])
+fi
+
+if test x$WANT_HAVE_GTK = x1 && test x$HAVE_GTK != x1
+then
+  AC_MSG_WARN([Unable to find the necessary GTK+ libraries; disabling GTK+ support.])
+fi
+
+if test x$HAVE_GTK = x1
+then
+  AC_MSG_NOTICE([The GTK+ frontend will be built.])
+fi
+
+AM_CONDITIONAL([BUILD_GTK], [test x$HAVE_GTK = x1])
+if test x$HAVE_GTK = x1
+then
+  AC_DEFINE([HAVE_GTK], [], [Define if the GTK+ frontend is included in the build.])
+fi
 
 CXXFLAGS="$CXXFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS $GLIBMM_CFLAGS $GTHREAD_CFLAGS $GTKMM_CFLAGS $LIBGLADEMM_CFLAGS $ept_CFLAGS"
 LIBS="$LIBS $SIGC_LIBS $CWIDGET_LIBS $GLIBMM_LIBS $GTHREAD_LIBS $GTKMM_LIBS $LIBGLADEMM_LIBS $ept_LIBS"

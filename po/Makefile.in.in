@@ -104,7 +104,7 @@ stamp-po: $(srcdir)/$(DOMAIN).pot
 	}
 
 remake-potfiles:
-	(cd $(top_srcdir) && find src -name \*.cc -or -name \*.h | sort -u) > POTFILES.in
+	(cd $(top_srcdir) && find src -name \*.cc -or -name \*.h -or -name \*.glade | sort -u) > POTFILES.in
 
 POTFILES.in: remake-potfiles
 
