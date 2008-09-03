@@ -3,6 +3,8 @@ INCLUDES=-I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/i
 noinst_LIBRARIES=libgtk.a
 
 libgtk_a_SOURCES=\
+	changelog.cc \
+	changelog.h \
 	dependency_chains_tab.cc \
 	dependency_chains_tab.h \
 	download.cc \

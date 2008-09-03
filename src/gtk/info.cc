@@ -1,6 +1,6 @@
 // -*-c++-*-
 
-// info.h
+// info.cc
 //
 //  Copyright 1999-2008 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
@@ -610,6 +610,10 @@ namespace gui
 	Gtk::TreeModel::Path path = pDependsView->get_treeview()->get_model()->get_path(it);
 	pDependsView->get_treeview()->expand_row(path, false);
       }
+
+    // FIXME: This should only be processed when displayed
+    changelogview = new ChangeLogView(get_xml(), "main_info_changelogview");
+    changelogview->load_version(ver);
   }
 
   void InfoTab::show_tab(const pkgCache::PkgIterator &pkg,
