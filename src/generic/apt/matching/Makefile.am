@@ -8,9 +8,11 @@ LDADD = @LIBINTL@
 noinst_LIBRARIES = libgeneric-matching.a
 
 libgeneric_matching_a_SOURCES = \
-	parse.cc	\
-	parse.h		\
-	pattern.cc	\
-	pattern.h	\
-	serialize.cc	\
+	compare_patterns.cc	\
+	compare_patterns.h	\
+	parse.cc		\
+	parse.h			\
+	pattern.cc		\
+	pattern.h		\
+	serialize.cc		\
 	serialize.h
