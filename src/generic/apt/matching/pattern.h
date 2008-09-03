@@ -266,6 +266,8 @@ namespace aptitude
 	   *
 	   *  Matches packages with a particular type of broken
 	   *  dependency.
+	   *
+	   *  Fields: depends_type
 	   */
 	  broken_type,
 	  /** \brief ?version(CANDIDATE)
@@ -293,7 +295,7 @@ namespace aptitude
 	   *  Fields: depends_type, pattern, broken.
 	   */
 	  depends,
-	  /** \brief ?description
+	  /** \brief ?description(PATTERN)
 	   *
 	   *  Matches packages by their Description field.
 	   *
@@ -949,6 +951,16 @@ namespace aptitude
 	return new pattern(broken_type, deptype, true);
       }
 
+      /** \brief Retrieve the dependency type of a
+       *  ?broken-TYPE matcher.
+       */
+      pkgCache::Dep::DepType get_broken_type_depends_type() const
+      {
+	eassert(tp == broken_type);
+
+	return info.dep.deptype;
+      }
+
       // @}
 
       /** \name candidate_version term constructor. */
@@ -1128,6 +1140,20 @@ namespace aptitude
 						      const cwidget::util::ref_ptr<pattern> &p)
       {
 	return new pattern(for_tp, p, variable_name);
+      }
+
+      std::string get_for_variable_name() const
+      {
+	eassert(tp == for_tp);
+
+	return string_info;
+      }
+
+      const cwidget::util::ref_ptr<pattern> &get_for_pattern() const
+      {
+	eassert(tp == for_tp && sub_patterns.size() == 0);
+
+	return sub_patterns.front();
       }
 
       // @}
