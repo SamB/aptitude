@@ -339,7 +339,7 @@ namespace aptitude
 
 	  case pattern::name:
 	    serialize_regexp_term("name",
-				  p->get_maintainer_regex_info(),
+				  p->get_name_regex_info(),
 				  out);
 	    break;
 
