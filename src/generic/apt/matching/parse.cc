@@ -1390,17 +1390,26 @@ ref_ptr<pattern> parse_condition_list(string::const_iterator &start,
 
   parse_whitespace(start, end);
 
+  bool first = true;
+
   while(start != end && *start != ')' && !terminate(start, end, terminators))
     {
+      if(first)
+	first = false;
+      else
+	{
+	  if(*start == '|')
+	    ++start;
+	  else
+	    throw MatchingException(ssprintf(_("Badly formed expression: expected '|', got '%c'"),
+					     *start));
+	}
+
+
       grp.push_back(parse_and_group(start, end, terminators,
 				    search_descriptions,
 				    wide_context,
 				    name_context));
-
-      if(start != end && *start == '|')
-	++start;
-      else
-	throw MatchingException(_("Badly formed expression"));
 
       parse_whitespace(start, end);
     }
