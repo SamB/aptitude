@@ -60,6 +60,11 @@ namespace aptitude
 	}
     }
 
+    regex::~regex()
+    {
+      regfree(&r);
+    }
+
     bool regex::exec(const char *s, regmatch_t *matches, size_t num_matches,
 		     int eflags) const
     {
