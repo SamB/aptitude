@@ -24,8 +24,11 @@
 #include <generic/apt/matching/pattern.h>
 #include <generic/apt/matching/serialize.h>
 
+#include <cwidget/generic/util/ssprintf.h>
+
 using namespace aptitude::matching;
 using cwidget::util::ref_ptr;
+using cwidget::util::ssprintf;
 
 namespace
 {
@@ -160,7 +163,10 @@ public:
 	     test_patterns[j].expected_serialization)
 	    CPPUNIT_ASSERT_EQUAL(0, comparisons(i, j));
 	  else
-	    CPPUNIT_ASSERT(0 != comparisons(i, j));
+	    CPPUNIT_ASSERT_MESSAGE(ssprintf("Comparing %s to %s",
+					    serialize_pattern(test_patterns[i].expected_pattern).c_str(),
+					    serialize_pattern(test_patterns[j].expected_pattern).c_str()),
+			   0 != comparisons(i, j));
 	}
 
     // Antisymmetry.
@@ -171,9 +177,15 @@ public:
 	  const int ji = comparisons(j, i);
 
 	  if(ij < 0)
-	    CPPUNIT_ASSERT(ji > 0);
+	    CPPUNIT_ASSERT_MESSAGE(ssprintf("Comparing %s to %s",
+					    serialize_pattern(test_patterns[j].expected_pattern).c_str(),
+					    serialize_pattern(test_patterns[i].expected_pattern).c_str()),
+				   ji > 0);
 	  else if(ij > 0)
-	    CPPUNIT_ASSERT(ji < 0);
+	    CPPUNIT_ASSERT_MESSAGE(ssprintf("Comparing %s to %s",
+					    serialize_pattern(test_patterns[i].expected_pattern).c_str(),
+					    serialize_pattern(test_patterns[j].expected_pattern).c_str()),
+				   ji < 0);
 	  else
 	    CPPUNIT_ASSERT_EQUAL(test_patterns[i].expected_serialization,
 				 test_patterns[j].expected_serialization);
@@ -188,10 +200,16 @@ public:
 	    int ik = comparisons(i, k);
 
 	    if(ij <= 0 && jk <= 0)
-	      CPPUNIT_ASSERT(ik <= 0);
+	      CPPUNIT_ASSERT_MESSAGE(ssprintf("Comparing %s to %s",
+					      serialize_pattern(test_patterns[i].expected_pattern).c_str(),
+					      serialize_pattern(test_patterns[k].expected_pattern).c_str()),
+			     ik <= 0);
 
 	    if(ij >= 0 && jk >= 0)
-	      CPPUNIT_ASSERT(ik >= 0);
+	      CPPUNIT_ASSERT_MESSAGE(ssprintf("Comparing %s to %s",
+					      serialize_pattern(test_patterns[i].expected_pattern).c_str(),
+					      serialize_pattern(test_patterns[k].expected_pattern).c_str()),
+			     ik >= 0);
 	  }
   }
 
@@ -204,8 +222,11 @@ public:
 	ref_ptr<pattern> parsed(parse(test.input_pattern));
 	CPPUNIT_ASSERT(parsed.valid());
 
-	CPPUNIT_ASSERT_EQUAL(0, compare_patterns(parsed,
-						 test.expected_pattern));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE(ssprintf("Comparing %s to %s",
+					      serialize_pattern(parsed).c_str(),
+					      serialize_pattern(test.expected_pattern).c_str()),
+				     0, compare_patterns(parsed,
+							 test.expected_pattern));
       }
   }
 
@@ -247,9 +268,12 @@ public:
 	ref_ptr<pattern> parsed(parse(test.expected_serialization));
 	CPPUNIT_ASSERT(parsed.valid());
 
-	CPPUNIT_ASSERT_EQUAL(0,
-			     compare_patterns(parsed,
-					      test.expected_pattern));
+	CPPUNIT_ASSERT_EQUAL_MESSAGE(ssprintf("Comparing %s and %s",
+					      serialize_pattern(parsed).c_str(),
+					      serialize_pattern(test.expected_pattern).c_str()),
+				     0,
+				     compare_patterns(parsed,
+						      test.expected_pattern));
       }
   }
 };
