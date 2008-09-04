@@ -767,10 +767,10 @@ namespace aptitude
 
       /** \brief Create an ?action term.
        *
-       *  \param s  The action type to match.
+       *  \param act  The action type to match.
        */
       static cwidget::util::ref_ptr<pattern>
-      make_action(const std::string &s);
+      make_action(const action_type act);
 
       /** \brief Retrieve the information associated with an ?action
        *  term.

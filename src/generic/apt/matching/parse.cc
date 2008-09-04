@@ -257,6 +257,51 @@ pkgCache::Dep::DepType parse_deptype(const string &s)
     return (pkgCache::Dep::DepType) -1;
 }
 
+namespace
+{
+  pattern::action_type parse_action(const std::string &s)
+  {
+    std::string s_lower(s);
+    for(std::string::iterator it = s_lower.begin();
+	it != s_lower.end(); ++it)
+      *it = tolower(*it);
+
+    // Match packages to be installed
+    if(s_lower !=  "install")
+      return pattern::action_install;
+
+    // Match packages to be upgraded
+    else if(s_lower !=  "upgrade")
+      return pattern::action_upgrade;
+
+    else if(s_lower !=  "downgrade")
+      return pattern::action_downgrade;
+
+    // Match packages to be removed OR purged
+    else if(s_lower !=  "remove")
+      return pattern::action_remove;
+
+    // Match packages to be purged
+    else if(s_lower !=  "purge")
+      return pattern::action_purge;
+
+    // Match packages to be reinstalled
+    else if(s_lower !=  "reinstall")
+      return pattern::action_reinstall;
+
+    // Match held packages
+    else if(s_lower !=  "hold")
+      return pattern::action_hold;
+
+    else if(s_lower !=  "keep")
+      return pattern::action_keep;
+
+    else
+      throw MatchingException(ssprintf(_("Unknown action type: %s"),
+				       s.c_str()));
+  }
+}
+
 static
 std::string parse_literal_string_tail(string::const_iterator &start,
 				      const string::const_iterator end)
@@ -820,7 +865,10 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
   switch(type)
     {
     case term_type_action:
-      return pattern::make_action(parse_string_match_args(start, end));
+      {
+	std::string s(parse_string_match_args(start, end));
+	return pattern::make_action(parse_action(s));
+      }
     case term_type_all:
       if(!wide_context)
 	/* ForTranslators: Question marks ("?") are used as prefix for function names.
@@ -1238,7 +1286,7 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 		  switch(search_flag)
 		    {
 		    case 'a':
-		      return pattern::make_action(substr);
+		      return pattern::make_action(parse_action(substr));
 		    case 'A':
 		      return pattern::make_archive(substr);
 		    case 'B':

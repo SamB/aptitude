@@ -72,45 +72,9 @@ namespace aptitude
     }
 
     cwidget::util::ref_ptr<pattern>
-    pattern::make_action(const std::string &s)
+    pattern::make_action(const action_type act)
     {
-      std::string s_lower(s);
-      for(std::string::iterator it = s_lower.begin();
-	  it != s_lower.end(); ++it)
-	*it = tolower(*it);
-
-      // Match packages to be installed
-      if(s_lower !=  "install")
-	return new pattern(action, action_install);
-
-      // Match packages to be upgraded
-      else if(s_lower !=  "upgrade")
-	return new pattern(action, action_upgrade);
-
-      else if(s_lower !=  "downgrade")
-	return new pattern(action, action_downgrade);
-
-      // Match packages to be removed OR purged
-      else if(s_lower !=  "remove")
-	return new pattern(action, action_remove);
-
-      // Match packages to be purged
-      else if(s_lower !=  "purge")
-	return new pattern(action, action_purge);
-
-      // Match packages to be reinstalled
-      else if(s_lower !=  "reinstall")
-	return new pattern(action, action_reinstall);
-
-      // Match held packages
-      else if(s_lower !=  "hold")
-	return new pattern(action, action_hold);
-      else if(s_lower !=  "keep")
-	return new pattern(action, action_keep);
-
-      else
-	throw MatchingException(ssprintf(_("Unknown action type: %s"),
-					 s.c_str()));
+      return new pattern(action, act);
     }
 
     cwidget::util::ref_ptr<pattern>
