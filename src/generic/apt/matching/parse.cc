@@ -1376,7 +1376,10 @@ ref_ptr<pattern> parse_and_group(string::const_iterator &start,
   if(rval.empty())
     throw MatchingException(_("Unexpected empty expression"));
 
-  return pattern::make_and(rval);
+  if(rval.size() == 1)
+    return rval.front();
+  else
+    return pattern::make_and(rval);
 }
 
 ref_ptr<pattern> parse_condition_list(string::const_iterator &start,
