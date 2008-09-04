@@ -81,7 +81,7 @@ namespace aptitude
 	out.push_back('?');
 	out += name;
 	out.push_back('(');
-	serialize_pattern(p);
+	serialize_pattern(p, out);
 	out.push_back(')');
       }
 
