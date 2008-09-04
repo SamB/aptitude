@@ -32,12 +32,45 @@ namespace aptitude
 
 
     cwidget::util::ref_ptr<pattern>
-      parse_pattern(std::string::const_iterator &start,
-		    const std::string::const_iterator &end,
-		    const std::vector<const char *> &terminators,
-		    bool search_descriptions,
-		    bool flag_errors,
-		    bool require_full_parse);
+      parse(std::string::const_iterator &start,
+	    const std::string::const_iterator &end,
+	    const std::vector<const char *> &terminators,
+	    bool search_descriptions,
+	    bool flag_errors,
+	    bool require_full_parse);
+
+    inline cwidget::util::ref_ptr<pattern>
+      parse(const std::string &s,
+	    const std::vector<const char *> &terminators,
+	    bool search_descriptions,
+	    bool flag_errors,
+	    bool require_full_parse)
+    {
+      std::string::const_iterator start = s.begin();
+      return parse(start, s.end(),
+		   terminators,
+		   search_descriptions,
+		   flag_errors,
+		   require_full_parse);
+    }
+
+    inline cwidget::util::ref_ptr<pattern>
+      parse(const std::string &s,
+	    bool search_descriptions,
+	    bool flag_errors,
+	    bool require_full_parse)
+    {
+      return parse(s, std::vector<const char *>(),
+		   search_descriptions,
+		   flag_errors,
+		   require_full_parse);
+    }
+
+    inline cwidget::util::ref_ptr<pattern>
+      parse(const std::string &s)
+    {
+      return parse(s, false, true, true);
+    }
   }
 }
 

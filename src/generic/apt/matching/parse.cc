@@ -1411,12 +1411,12 @@ ref_ptr<pattern> parse_condition_list(string::const_iterator &start,
     return pattern::make_or(grp.begin(), grp.end());
 }
 
-ref_ptr<pattern> parse_pattern(string::const_iterator &start,
-			       const string::const_iterator &end,
-			       const std::vector<const char *> &terminators,
-			       bool search_descriptions,
-			       bool flag_errors,
-			       bool require_full_parse)
+ref_ptr<pattern> parse(string::const_iterator &start,
+		       const string::const_iterator &end,
+		       const std::vector<const char *> &terminators,
+		       bool search_descriptions,
+		       bool flag_errors,
+		       bool require_full_parse)
 {
   // Just filter blank strings out immediately.
   while(start != end && isspace(*start) && !terminate(start, end, terminators))
