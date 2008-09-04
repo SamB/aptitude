@@ -172,7 +172,7 @@ namespace aptitude
 			  int precedence)
       {
 	const int local_precedence = term_precedence(p);
-	if(local_precedence >= precedence)
+	if(local_precedence <= precedence)
 	  out.push_back('(');
 
 	switch(p->get_type())
@@ -474,7 +474,7 @@ namespace aptitude
 	    break;
 	  }
 
-	if(local_precedence >= precedence)
+	if(local_precedence <= precedence)
 	  out.push_back(')');
       }
     }
