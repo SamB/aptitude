@@ -57,28 +57,28 @@ namespace
     { "?archive(^asdf.*asdf$)", "?archive(\"^asdf.*asdf$\")",
       pattern::make_archive("^asdf.*asdf$") },
 
-    { "?action(install)", "?action(\"install\")",
+    { "?action(install)", "?action(install)",
       pattern::make_action(pattern::action_install) },
 
-    { "?action(upgrade)", "?action(\"upgrade\")",
+    { "?action(upgrade)", "?action(upgrade)",
       pattern::make_action(pattern::action_upgrade) },
 
-    { "?action(downgrade)", "?action(\"downgrade\")",
+    { "?action(downgrade)", "?action(downgrade)",
       pattern::make_action(pattern::action_downgrade) },
 
-    { "?action(remove)", "?action(\"remove\")",
+    { "?action(remove)", "?action(remove)",
       pattern::make_action(pattern::action_remove) },
 
-    { "?action(purge)", "?action(\"purge\")",
+    { "?action(purge)", "?action(purge)",
       pattern::make_action(pattern::action_purge) },
 
-    { "?action(reinstall)", "?action(\"reinstall\")",
+    { "?action(reinstall)", "?action(reinstall)",
       pattern::make_action(pattern::action_reinstall) },
 
-    { "?action(hold)", "?action(\"hold\")",
+    { "?action(hold)", "?action(hold)",
       pattern::make_action(pattern::action_hold) },
 
-    { "?action(keep)", "?action(\"keep\")",
+    { "?action(keep)", "?action(keep)",
       pattern::make_action(pattern::action_keep) },
 
     { "?all-versions(~nelba~|a~\"ble)", "?all-versions(?name(\"elba|a\\\"ble\"))",
