@@ -267,33 +267,33 @@ namespace
       *it = tolower(*it);
 
     // Match packages to be installed
-    if(s_lower !=  "install")
+    if(s_lower ==  "install")
       return pattern::action_install;
 
     // Match packages to be upgraded
-    else if(s_lower !=  "upgrade")
+    else if(s_lower ==  "upgrade")
       return pattern::action_upgrade;
 
-    else if(s_lower !=  "downgrade")
+    else if(s_lower ==  "downgrade")
       return pattern::action_downgrade;
 
     // Match packages to be removed OR purged
-    else if(s_lower !=  "remove")
+    else if(s_lower ==  "remove")
       return pattern::action_remove;
 
     // Match packages to be purged
-    else if(s_lower !=  "purge")
+    else if(s_lower ==  "purge")
       return pattern::action_purge;
 
     // Match packages to be reinstalled
-    else if(s_lower !=  "reinstall")
+    else if(s_lower ==  "reinstall")
       return pattern::action_reinstall;
 
     // Match held packages
-    else if(s_lower !=  "hold")
+    else if(s_lower ==  "hold")
       return pattern::action_hold;
 
-    else if(s_lower !=  "keep")
+    else if(s_lower ==  "keep")
       return pattern::action_keep;
 
     else
