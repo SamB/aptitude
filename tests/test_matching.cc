@@ -453,6 +453,36 @@ namespace
 
     { "~P ?true", "?provides(?true)",
       pattern::make_provides(pattern::make_true()) },
+
+    { "?priority(important)", "?priority(important)",
+      pattern::make_priority(pkgCache::State::Important) },
+
+    { "?priority(required)", "?priority(required)",
+      pattern::make_priority(pkgCache::State::Required) },
+
+    { "?priority(standard)", "?priority(standard)",
+      pattern::make_priority(pkgCache::State::Standard) },
+
+    { "?priority(optional)", "?priority(optional)",
+      pattern::make_priority(pkgCache::State::Optional) },
+
+    { "?priority(extra)", "?priority(extra)",
+      pattern::make_priority(pkgCache::State::Extra) },
+
+    { "~p  important", "?priority(important)",
+      pattern::make_priority(pkgCache::State::Important) },
+
+    { "~p  required", "?priority(required)",
+      pattern::make_priority(pkgCache::State::Required) },
+
+    { "~p  standard", "?priority(standard)",
+      pattern::make_priority(pkgCache::State::Standard) },
+
+    { "~p  optional", "?priority(optional)",
+      pattern::make_priority(pkgCache::State::Optional) },
+
+    { "~p  extra", "?priority(extra)",
+      pattern::make_priority(pkgCache::State::Extra) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
