@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-03 09:15-0700\n"
+"POT-Creation-Date: 2008-09-05 16:05+0200\n"
 "PO-Revision-Date: 2008-05-08 11:06+0200\n"
 "Last-Translator: Wiktor Wandachowicz <siryes@gmail.com>\n"
 "Language-Team: Polish <debian-l10n-polish@lists.debian.org>\n"
@@ -1021,7 +1021,7 @@ msgstr[1] "(dla %s)"
 msgstr[2] "(dla %s)"
 
 #: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
-#: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
+#: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2436
 msgid "Provides"
 msgstr "Udostępnia"
 
@@ -1391,41 +1391,41 @@ msgstr ""
 "znak określający akcję, a po nim nazwy pakietów (lub wzorce). Akcja będzie "
 "dotyczyć wszystkich podanych pakietów. Dostępne są następujące akcje:"
 
-#: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:205
+#: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:204
 msgid "'+' to install packages"
 msgstr "\"+\": instalacja pakietów"
 
-#: src/cmdline/cmdline_prompt.cc:1033 src/cmdline/cmdline_resolver.cc:207
+#: src/cmdline/cmdline_prompt.cc:1033 src/cmdline/cmdline_resolver.cc:206
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "\"+M\": instalacja pakietów i oznaczenie ich jako zainstalowanych "
 "automatycznie"
 
-#: src/cmdline/cmdline_prompt.cc:1035 src/cmdline/cmdline_resolver.cc:209
+#: src/cmdline/cmdline_prompt.cc:1035 src/cmdline/cmdline_resolver.cc:208
 msgid "'-' to remove packages"
 msgstr "\"-\": usunięcie pakietów"
 
-#: src/cmdline/cmdline_prompt.cc:1037 src/cmdline/cmdline_resolver.cc:211
+#: src/cmdline/cmdline_prompt.cc:1037 src/cmdline/cmdline_resolver.cc:210
 msgid "'_' to purge packages"
 msgstr "\"_\": wyczyszczenie pakietów"
 
-#: src/cmdline/cmdline_prompt.cc:1039 src/cmdline/cmdline_resolver.cc:213
+#: src/cmdline/cmdline_prompt.cc:1039 src/cmdline/cmdline_resolver.cc:212
 msgid "'=' to place packages on hold"
 msgstr "\"=\": zatrzymanie pakietów"
 
-#: src/cmdline/cmdline_prompt.cc:1041 src/cmdline/cmdline_resolver.cc:215
+#: src/cmdline/cmdline_prompt.cc:1041 src/cmdline/cmdline_resolver.cc:214
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 "\":\": pozostawienie pakietów w bieżącym stanie bez trwałego zatrzymywania "
 "ich"
 
-#: src/cmdline/cmdline_prompt.cc:1043 src/cmdline/cmdline_resolver.cc:217
+#: src/cmdline/cmdline_prompt.cc:1043 src/cmdline/cmdline_resolver.cc:216
 msgid "'&M' to mark packages as automatically installed"
 msgstr "\"&M\": oznaczenie pakietów jako automatycznie zainstalowanych"
 
-#: src/cmdline/cmdline_prompt.cc:1045 src/cmdline/cmdline_resolver.cc:219
+#: src/cmdline/cmdline_prompt.cc:1045 src/cmdline/cmdline_resolver.cc:218
 msgid "'&m' to mark packages as manually installed"
 msgstr "\"&m\": oznaczenie pakietów jako ręcznie zainstalowanych"
 
@@ -1534,18 +1534,18 @@ msgstr ""
 "Zmiany rozmiaru nie będą pokazywane.\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:716
+#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:715
 #: src/generic/apt/apt.cc:275
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Nie można otworzyć %s do zapisu"
 
-#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:721
+#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:720
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Błąd w czasie zapisu stanu rozwiązywania problemów do %s"
 
-#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:723
+#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:722
 msgid "Resolver state successfully written!"
 msgstr "Zapisano stan rozwiązywania problemów z zależnościami."
 
@@ -1603,8 +1603,7 @@ msgstr ""
 "odrzucenie podanych wersji; rozwiązania je zawierające nie będą proponowane. "
 "Podanie UNINST zamiast wersji spowoduje odrzucenie usunięcia pakietu."
 
-#. ForTranslators: "(;" is ...???? A smiley?
-#: src/cmdline/cmdline_resolver.cc:201
+#: src/cmdline/cmdline_resolver.cc:200
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package."
@@ -1613,11 +1612,11 @@ msgstr ""
 "zawierające.  Podanie UNINST zamiast wersji spowoduje akceptację usunięcia "
 "pakietu."
 
-#: src/cmdline/cmdline_resolver.cc:203
+#: src/cmdline/cmdline_resolver.cc:202
 msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr "zmiana stanu podanych pakietów; dostępne AKCJE:"
 
-#: src/cmdline/cmdline_resolver.cc:221
+#: src/cmdline/cmdline_resolver.cc:220
 msgid ""
 "Adjustments will cause the current solution to be discarded and recalculated "
 "as necessary."
@@ -1625,82 +1624,82 @@ msgstr ""
 "Wprowadzenie zmian spowoduje odrzucenie i ponowne przeliczenie bieżącego "
 "rozwiązania."
 
-#: src/cmdline/cmdline_resolver.cc:235
+#: src/cmdline/cmdline_resolver.cc:234
 #, c-format
 msgid "The version %s is available in the following archives:"
 msgstr "Wersja %s dostępna jest w następujących archiwach:"
 
-#: src/cmdline/cmdline_resolver.cc:243
+#: src/cmdline/cmdline_resolver.cc:242
 #, c-format
 msgid "Select the version of %s that should be used: "
 msgstr "Proszę podać, której wersji %s użyć: "
 
-#: src/cmdline/cmdline_resolver.cc:250
+#: src/cmdline/cmdline_resolver.cc:249
 #, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
 msgstr "Nieprawidłowa odpowiedź. Proszę wpisać liczbę od 1 do %d."
 
-#: src/cmdline/cmdline_resolver.cc:265
+#: src/cmdline/cmdline_resolver.cc:264
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
 msgstr "Po \"%c\" należy podać przynajmniej jeden pakiet i wersję"
 
-#: src/cmdline/cmdline_resolver.cc:279
+#: src/cmdline/cmdline_resolver.cc:278
 #, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
 msgstr "Oczekiwano wersji lub \"%s\" po \"%s\""
 
-#: src/cmdline/cmdline_resolver.cc:289
+#: src/cmdline/cmdline_resolver.cc:288
 #, c-format
 msgid "No such package \"%s\""
 msgstr "Brak pakietu \"%s\""
 
-#: src/cmdline/cmdline_resolver.cc:305
+#: src/cmdline/cmdline_resolver.cc:304
 #, c-format
 msgid "%s has no version named \"%s\""
 msgstr "%s nie ma wersji \"%s\""
 
-#: src/cmdline/cmdline_resolver.cc:322
+#: src/cmdline/cmdline_resolver.cc:321
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr "Zezwolenie na usunięcie %s"
 
-#: src/cmdline/cmdline_resolver.cc:325
+#: src/cmdline/cmdline_resolver.cc:324
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr "Zezwolenie na instalację %s w wersji %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:335
+#: src/cmdline/cmdline_resolver.cc:334
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr "Zakaz usuwania %s"
 
-#: src/cmdline/cmdline_resolver.cc:338
+#: src/cmdline/cmdline_resolver.cc:337
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr "Zakaz instalowania %s w wersji %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:351
+#: src/cmdline/cmdline_resolver.cc:350
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr "Odwołanie polecenia usunięcia %s"
 
-#: src/cmdline/cmdline_resolver.cc:354
+#: src/cmdline/cmdline_resolver.cc:353
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr "Odwołanie polecenia instalacji %s w wersji %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:363
+#: src/cmdline/cmdline_resolver.cc:362
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr "Polecenie usunięcia %s"
 
-#: src/cmdline/cmdline_resolver.cc:366
+#: src/cmdline/cmdline_resolver.cc:365
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "Polecenie instalacji %s w wersji %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:508
+#: src/cmdline/cmdline_resolver.cc:507
 #, c-format
 msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
@@ -1710,70 +1709,70 @@ msgstr ""
 "wyłączone.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 
-#: src/cmdline/cmdline_resolver.cc:517
+#: src/cmdline/cmdline_resolver.cc:516
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
 "Chciano uzupełnić niespełnione zależności, ale rozwiązywanie zależności nie "
 "zostało właściwie przygotowane."
 
-#: src/cmdline/cmdline_resolver.cc:531 src/solution_dialog.cc:127
+#: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
 #: src/solution_screen.cc:519
 msgid "Resolving dependencies..."
 msgstr "Uzupełnianie niespełnionych zależności..."
 
-#: src/cmdline/cmdline_resolver.cc:563
+#: src/cmdline/cmdline_resolver.cc:562
 #, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "otwarte: %zd; zamknięte: %zd; odroczone: %zd; konflikty: %zd"
 
-#: src/cmdline/cmdline_resolver.cc:616
+#: src/cmdline/cmdline_resolver.cc:615
 msgid "The following actions will resolve these dependencies:"
 msgstr "Następujące działania rozwiążą problemy z zależnościami:"
 
-#: src/cmdline/cmdline_resolver.cc:633
+#: src/cmdline/cmdline_resolver.cc:632
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Zaakceptować rozwiązanie? [T/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:660 src/cmdline/cmdline_resolver.cc:767
+#: src/cmdline/cmdline_resolver.cc:659 src/cmdline/cmdline_resolver.cc:766
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Porzucono próby rozwiązania problemów z zależnościami."
 
-#: src/cmdline/cmdline_resolver.cc:663
+#: src/cmdline/cmdline_resolver.cc:662
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr "Przejście z automatycznego rozwiązywania zależności do trybu ręcznego."
 
-#: src/cmdline/cmdline_resolver.cc:693
+#: src/cmdline/cmdline_resolver.cc:692
 msgid "The following commands are available:"
 msgstr "Dostępne są następujące polecenia:"
 
-#: src/cmdline/cmdline_resolver.cc:713
+#: src/cmdline/cmdline_resolver.cc:712
 msgid "File to write resolver state to: "
 msgstr "Plik do zapisu stanu rozwiązywania problemów: "
 
-#: src/cmdline/cmdline_resolver.cc:728
+#: src/cmdline/cmdline_resolver.cc:727
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Nieprawidłowa odpowiedź. Proszę podać jedno z następujących poleceń:"
 
-#: src/cmdline/cmdline_resolver.cc:741
+#: src/cmdline/cmdline_resolver.cc:740
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Nie znaleziono rozwiązań przed upływem limitu czasu. Próbować dalej? [T/n]"
 
-#: src/cmdline/cmdline_resolver.cc:770
+#: src/cmdline/cmdline_resolver.cc:769
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Nieprawidłowa odpowiedź. Proszę wpisać \"t\" lub \"n\"."
 
-#: src/cmdline/cmdline_resolver.cc:779
+#: src/cmdline/cmdline_resolver.cc:778
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Nie można rozwiązać problemów z zależnościami!  Rezygnacja..."
 
-#: src/cmdline/cmdline_resolver.cc:785
+#: src/cmdline/cmdline_resolver.cc:784
 msgid "*** No more solutions available ***"
 msgstr "*** Nie ma więcej rozwiązań ***"
 
-#: src/cmdline/cmdline_resolver.cc:804
+#: src/cmdline/cmdline_resolver.cc:803
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
@@ -1781,7 +1780,7 @@ msgstr ""
 "*** BŁĄD: wyszukiwanie przerwane przez krytyczny wyjątek. Można\n"
 "          kontynuować, ale niektóre rozwiązania będą niedostępne."
 
-#: src/cmdline/cmdline_resolver.cc:964
+#: src/cmdline/cmdline_resolver.cc:963
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
@@ -1789,20 +1788,20 @@ msgstr ""
 "Rozwiązywanie zależności mając rozwiązanie trwało za długo, niektóre "
 "aktualizacje mogą nie zostać wykonane."
 
-#: src/cmdline/cmdline_resolver.cc:971
+#: src/cmdline/cmdline_resolver.cc:970
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
 "Nie można rozwiązać problemów z zależnościami dla aktualizacji "
 "(rozwiązywanie zależności trwało za długo)."
 
-#: src/cmdline/cmdline_resolver.cc:985
+#: src/cmdline/cmdline_resolver.cc:984
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr ""
 "Nie można rozwiązać problemów z zależnościami dla aktualizacji (nie "
 "znaleziono rozwiązania)."
 
-#: src/cmdline/cmdline_resolver.cc:994
+#: src/cmdline/cmdline_resolver.cc:993
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
@@ -1811,7 +1810,7 @@ msgstr ""
 "Niekompletne rozwiązywanie zależności (%s); niektóre z możliwych "
 "aktualizacji mogą nie zostać wykonane."
 
-#: src/cmdline/cmdline_resolver.cc:1000
+#: src/cmdline/cmdline_resolver.cc:999
 #, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Nie można rozwiązać problemów z zależnościami dla aktualizacji (%s)."
@@ -1938,7 +1937,7 @@ msgid "State"
 msgstr "Stan"
 
 #: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:436
-#: src/generic/apt/matchers.cc:2488
+#: src/generic/apt/matchers.cc:2490
 msgid "Provided by"
 msgstr "Udostępniany przez"
 
@@ -2199,7 +2198,7 @@ msgstr "Bieżący"
 msgid "Candidate"
 msgstr "Kandydat"
 
-#: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
+#: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1597
 msgid "Install"
 msgstr "Do instalacji"
 
@@ -2645,9 +2644,7 @@ msgstr ""
 "s."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#. PS: indentation sucks!
-#. PS2: Daniel, please unfuzzy such translations (added "update") yourself!
-#: src/generic/apt/download_update_manager.cc:393
+#: src/generic/apt/download_update_manager.cc:391
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
@@ -2655,7 +2652,7 @@ msgstr ""
 "(kod %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:400
+#: src/generic/apt/download_update_manager.cc:398
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
@@ -2665,7 +2662,7 @@ msgstr ""
 "(status %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:406
+#: src/generic/apt/download_update_manager.cc:404
 #, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
@@ -2789,133 +2786,133 @@ msgstr ""
 "\n"
 "Dziennik zakończony.\n"
 
-#: src/generic/apt/matchers.cc:1344
+#: src/generic/apt/matchers.cc:1346
 msgid "Automatically Installed"
 msgstr "Zainstalowany automatycznie"
 
-#: src/generic/apt/matchers.cc:1372 src/generic/apt/matchers.cc:1579
+#: src/generic/apt/matchers.cc:1374 src/generic/apt/matchers.cc:1581
 msgid "Broken"
 msgstr "Niespełnione zależności"
 
-#: src/generic/apt/matchers.cc:1577
+#: src/generic/apt/matchers.cc:1579
 msgid "Unchanged"
 msgstr "Bez zmian"
 
-#: src/generic/apt/matchers.cc:1581
+#: src/generic/apt/matchers.cc:1583
 msgid "Remove [unused]"
 msgstr "Do usunięcia [nieużywany]"
 
-#: src/generic/apt/matchers.cc:1583
+#: src/generic/apt/matchers.cc:1585
 msgid "Hold [auto]"
 msgstr "Do zatrzymania [auto]"
 
-#: src/generic/apt/matchers.cc:1585
+#: src/generic/apt/matchers.cc:1587
 msgid "Install [auto]"
 msgstr "Do instalacji [auto]"
 
-#: src/generic/apt/matchers.cc:1587
+#: src/generic/apt/matchers.cc:1589
 msgid "Remove [auto]"
 msgstr "Do usunięcia [auto]"
 
-#: src/generic/apt/matchers.cc:1589
+#: src/generic/apt/matchers.cc:1591
 msgid "Downgrade"
 msgstr "Do cofnięcia"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1593
 msgid "Hold"
 msgstr "Do zatrzymania"
 
-#: src/generic/apt/matchers.cc:1593
+#: src/generic/apt/matchers.cc:1595
 msgid "Reinstall"
 msgstr "Do przeinstalowania"
 
-#: src/generic/apt/matchers.cc:1597
+#: src/generic/apt/matchers.cc:1599
 msgid "Remove"
 msgstr "Do usunięcia"
 
-#: src/generic/apt/matchers.cc:1599
+#: src/generic/apt/matchers.cc:1601
 msgid "Upgrade"
 msgstr "Do uaktualnienia"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1627
 msgid "Keep"
 msgstr "Do pozostawienia"
 
-#: src/generic/apt/matchers.cc:1657
+#: src/generic/apt/matchers.cc:1659
 msgid "Virtual"
 msgstr "Wirtualny"
 
-#: src/generic/apt/matchers.cc:1684
+#: src/generic/apt/matchers.cc:1686
 msgid "Installed"
 msgstr "Zainstalowany"
 
-#: src/generic/apt/matchers.cc:1712
+#: src/generic/apt/matchers.cc:1714
 msgid "Essential"
 msgstr "Istotny"
 
-#: src/generic/apt/matchers.cc:1737
+#: src/generic/apt/matchers.cc:1739
 msgid "Config Files Remain"
 msgstr "Pozostawiona konfiguracja"
 
-#: src/generic/apt/matchers.cc:2174
+#: src/generic/apt/matchers.cc:2176
 msgid "Garbage"
 msgstr "Śmieci"
 
-#: src/generic/apt/matchers.cc:2543
+#: src/generic/apt/matchers.cc:2545
 msgid "No reverse dependencies"
 msgstr "Nie wymagany"
 
-#: src/generic/apt/matchers.cc:2621
+#: src/generic/apt/matchers.cc:2623
 msgid "New Package"
 msgstr "Nowy"
 
-#: src/generic/apt/matchers.cc:2646
+#: src/generic/apt/matchers.cc:2648
 msgid "Upgradable"
 msgstr "Możliwe uaktualnienie"
 
-#: src/generic/apt/matchers.cc:2671
+#: src/generic/apt/matchers.cc:2673
 msgid "Obsolete"
 msgstr "Przestarzały"
 
-#: src/generic/apt/matchers.cc:3110
+#: src/generic/apt/matchers.cc:3112
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Nieznana akcja: %s"
 
-#: src/generic/apt/matchers.cc:3151
+#: src/generic/apt/matchers.cc:3153
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "Nie zakończony poprawnie tekst po \"%s\""
 
-#: src/generic/apt/matchers.cc:3248
+#: src/generic/apt/matchers.cc:3250
 #, c-format
 msgid "Unknown priority %s"
 msgstr "Nieznany priorytet: %s"
 
-#: src/generic/apt/matchers.cc:3267
+#: src/generic/apt/matchers.cc:3269
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr "Wzorzec dopasowania nieoczekiwanie zakończony (oczekiwano \"%c\")."
 
-#: src/generic/apt/matchers.cc:3270
+#: src/generic/apt/matchers.cc:3272
 #, c-format
 msgid "Expected '%c', got '%c'."
 msgstr "Oczekiwano \"%c\", a napotkano \"%c\""
 
-#: src/generic/apt/matchers.cc:3577 src/generic/apt/matchers.cc:4015
-#: src/generic/apt/matchers.cc:4058
+#: src/generic/apt/matchers.cc:3579 src/generic/apt/matchers.cc:4019
+#: src/generic/apt/matchers.cc:4062
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Nieznany typ zależności: %s"
 
-#: src/generic/apt/matchers.cc:3631
+#: src/generic/apt/matchers.cc:3633
 #, c-format
 msgid "Unknown matcher type: \"%s\"."
 msgstr "Nieznany typ dopasowania: \"%s\"."
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
-#: src/generic/apt/matchers.cc:3642 src/generic/apt/matchers.cc:3651
+#: src/generic/apt/matchers.cc:3644 src/generic/apt/matchers.cc:3653
 #, c-format
 msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
@@ -2924,32 +2921,32 @@ msgstr ""
 "Dopasowanie przez ?%s musi być użyte w \"szerszym\" kontekście (na "
 "najwyższym poziomie lub objętym przez ?%s)."
 
-#: src/generic/apt/matchers.cc:3868
+#: src/generic/apt/matchers.cc:3872
 msgid "Unmatched '('"
 msgstr "Niesparowany nawias '('"
 
-#: src/generic/apt/matchers.cc:4021
+#: src/generic/apt/matchers.cc:4025
 msgid "Provides: cannot be broken"
 msgstr "Udostępnia: nie może być niespełnione"
 
-#: src/generic/apt/matchers.cc:4084
+#: src/generic/apt/matchers.cc:4088
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Nieznany typ wzorca: %c"
 
-#: src/generic/apt/matchers.cc:4107
+#: src/generic/apt/matchers.cc:4111
 msgid "Can't search for \"\""
 msgstr "Nie można szukać \"\""
 
-#: src/generic/apt/matchers.cc:4139
+#: src/generic/apt/matchers.cc:4143
 msgid "Unexpected empty expression"
 msgstr "Niespodziewane puste wyrażenie"
 
-#: src/generic/apt/matchers.cc:4172
+#: src/generic/apt/matchers.cc:4176
 msgid "Badly formed expression"
 msgstr "Niepoprawne wyrażenie"
 
-#: src/generic/apt/matchers.cc:4211
+#: src/generic/apt/matchers.cc:4215
 msgid "Unexpected ')'"
 msgstr "Niespodziewany nawias ')'"
 

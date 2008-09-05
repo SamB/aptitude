@@ -185,7 +185,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-03 09:15-0700\n"
+"POT-Creation-Date: 2008-09-05 16:05+0200\n"
 "PO-Revision-Date: 2008-05-16 03:35+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
@@ -1185,7 +1185,7 @@ msgid_plural "(for %s)"
 msgstr[0] "(理由: %s)"
 
 #: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
-#: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
+#: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2436
 msgid "Provides"
 msgstr "提供"
 
@@ -1571,39 +1571,39 @@ msgstr ""
 "さい。そのアクションが、引数に指定したパッケージすべてに適用されます。以下の"
 "アクションが利用可能です:"
 
-#: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:205
+#: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:204
 msgid "'+' to install packages"
 msgstr "'+': パッケージをインストール"
 
-#: src/cmdline/cmdline_prompt.cc:1033 src/cmdline/cmdline_resolver.cc:207
+#: src/cmdline/cmdline_prompt.cc:1033 src/cmdline/cmdline_resolver.cc:206
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M': パッケージをインストールし、「自動的にインストールされた」フラグを直ち"
 "に添付"
 
-#: src/cmdline/cmdline_prompt.cc:1035 src/cmdline/cmdline_resolver.cc:209
+#: src/cmdline/cmdline_prompt.cc:1035 src/cmdline/cmdline_resolver.cc:208
 msgid "'-' to remove packages"
 msgstr "'-': パッケージを削除"
 
-#: src/cmdline/cmdline_prompt.cc:1037 src/cmdline/cmdline_resolver.cc:211
+#: src/cmdline/cmdline_prompt.cc:1037 src/cmdline/cmdline_resolver.cc:210
 msgid "'_' to purge packages"
 msgstr "'_': パッケージを完全削除"
 
-#: src/cmdline/cmdline_prompt.cc:1039 src/cmdline/cmdline_resolver.cc:213
+#: src/cmdline/cmdline_prompt.cc:1039 src/cmdline/cmdline_resolver.cc:212
 msgid "'=' to place packages on hold"
 msgstr "'=': パッケージを固定"
 
-#: src/cmdline/cmdline_prompt.cc:1041 src/cmdline/cmdline_resolver.cc:215
+#: src/cmdline/cmdline_prompt.cc:1041 src/cmdline/cmdline_resolver.cc:214
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "':': パッケージを完全に固定することなく現在の状態に一時的に固定"
 
-#: src/cmdline/cmdline_prompt.cc:1043 src/cmdline/cmdline_resolver.cc:217
+#: src/cmdline/cmdline_prompt.cc:1043 src/cmdline/cmdline_resolver.cc:216
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M': 自動的にインストールされたという印をパッケージに添付"
 
-#: src/cmdline/cmdline_prompt.cc:1045 src/cmdline/cmdline_resolver.cc:219
+#: src/cmdline/cmdline_prompt.cc:1045 src/cmdline/cmdline_resolver.cc:218
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m': 手動でインストールされたという印をパッケージに添付"
 
@@ -1712,18 +1712,18 @@ msgstr ""
 "サイズの変化を表示しません。\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:716
+#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:715
 #: src/generic/apt/apt.cc:275
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "%s を書き込み可能な状態で開けません"
 
-#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:721
+#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:720
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "依存関係解決器の状態を %s に書き込む際にエラーが生じました"
 
-#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:723
+#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:722
 msgid "Resolver state successfully written!"
 msgstr "依存関係解決器の状態の書き込みに成功しました!"
 
@@ -1792,8 +1792,7 @@ msgstr ""
 
 # * Case: 'a'
 # TRANSLATION-FIXME: ' (' is not necessary
-#. ForTranslators: "(;" is ...???? A smiley?
-#: src/cmdline/cmdline_resolver.cc:201
+#: src/cmdline/cmdline_resolver.cc:200
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package."
@@ -1803,93 +1802,93 @@ msgstr ""
 "わりに UNINST を指定してください。"
 
 # * Case: '<ACTION>'
-#: src/cmdline/cmdline_resolver.cc:203
+#: src/cmdline/cmdline_resolver.cc:202
 msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr "一連のパッケージの状態を調整します。アクションは以下のいずれかです:"
 
-#: src/cmdline/cmdline_resolver.cc:221
+#: src/cmdline/cmdline_resolver.cc:220
 msgid ""
 "Adjustments will cause the current solution to be discarded and recalculated "
 "as necessary."
 msgstr "調整では、必要に応じて現在の解決方法の廃棄や再計算がおこなわれます。"
 
-#: src/cmdline/cmdline_resolver.cc:235
+#: src/cmdline/cmdline_resolver.cc:234
 #, c-format
 msgid "The version %s is available in the following archives:"
 msgstr "バージョン %s は以下のアーカイブで利用可能です:"
 
-#: src/cmdline/cmdline_resolver.cc:243
+#: src/cmdline/cmdline_resolver.cc:242
 #, c-format
 msgid "Select the version of %s that should be used: "
 msgstr "利用する %s のバージョンを選んでください:"
 
-#: src/cmdline/cmdline_resolver.cc:250
+#: src/cmdline/cmdline_resolver.cc:249
 #, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
 msgstr "応答が不正です。1 から %d までの整数を入力してください。"
 
-#: src/cmdline/cmdline_resolver.cc:265
+#: src/cmdline/cmdline_resolver.cc:264
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
 msgstr ""
 "'%c' に続けて少なくとも 1 つのパッケージあるいはバージョンを入力してください"
 
-#: src/cmdline/cmdline_resolver.cc:279
+#: src/cmdline/cmdline_resolver.cc:278
 #, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
 msgstr "\"%2$s\" の後にバージョンまたは \"%1$s\" を入力してください"
 
-#: src/cmdline/cmdline_resolver.cc:289
+#: src/cmdline/cmdline_resolver.cc:288
 #, c-format
 msgid "No such package \"%s\""
 msgstr "そのようなパッケージはありません: \"%s\""
 
-#: src/cmdline/cmdline_resolver.cc:305
+#: src/cmdline/cmdline_resolver.cc:304
 #, c-format
 msgid "%s has no version named \"%s\""
 msgstr "%s には \"%s\" というバージョンはありません"
 
-#: src/cmdline/cmdline_resolver.cc:322
+#: src/cmdline/cmdline_resolver.cc:321
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr "%s の削除を許可しています"
 
-#: src/cmdline/cmdline_resolver.cc:325
+#: src/cmdline/cmdline_resolver.cc:324
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr "%s バージョン %s (%s) のインストールを許可しています"
 
-#: src/cmdline/cmdline_resolver.cc:335
+#: src/cmdline/cmdline_resolver.cc:334
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr "%s の削除を拒否しています"
 
-#: src/cmdline/cmdline_resolver.cc:338
+#: src/cmdline/cmdline_resolver.cc:337
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr "%s バージョン %s (%s) のインストールを拒否しています"
 
-#: src/cmdline/cmdline_resolver.cc:351
+#: src/cmdline/cmdline_resolver.cc:350
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr "%s の削除はもはや必須ではありません"
 
-#: src/cmdline/cmdline_resolver.cc:354
+#: src/cmdline/cmdline_resolver.cc:353
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr "%s バージョン %s (%s) のインストールはもはや必須ではありません"
 
-#: src/cmdline/cmdline_resolver.cc:363
+#: src/cmdline/cmdline_resolver.cc:362
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr "%s の削除を必須としています"
 
-#: src/cmdline/cmdline_resolver.cc:366
+#: src/cmdline/cmdline_resolver.cc:365
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "%s バージョン %s (%s) のインストールを必須としています"
 
-#: src/cmdline/cmdline_resolver.cc:508
+#: src/cmdline/cmdline_resolver.cc:507
 #, c-format
 msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
@@ -1898,68 +1897,68 @@ msgstr ""
 "依存関係を解決したいのですが、依存関係解決機能が無効になっています。\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 
-#: src/cmdline/cmdline_resolver.cc:517
+#: src/cmdline/cmdline_resolver.cc:516
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr "依存関係を解決したいのですが、依存関係解決器が作成されていません。"
 
-#: src/cmdline/cmdline_resolver.cc:531 src/solution_dialog.cc:127
+#: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
 #: src/solution_screen.cc:519
 msgid "Resolving dependencies..."
 msgstr "依存関係を解決中..."
 
-#: src/cmdline/cmdline_resolver.cc:563
+#: src/cmdline/cmdline_resolver.cc:562
 #, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "未解決: %zd; 解決済み: %zd; 保留: %zd; 競合: %zd"
 
-#: src/cmdline/cmdline_resolver.cc:616
+#: src/cmdline/cmdline_resolver.cc:615
 msgid "The following actions will resolve these dependencies:"
 msgstr "以下のアクションでこれらの依存関係の問題は解決されます:"
 
-#: src/cmdline/cmdline_resolver.cc:633
+#: src/cmdline/cmdline_resolver.cc:632
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "この解決方法を受け入れますか? [Y/n/q/?]"
 
-#: src/cmdline/cmdline_resolver.cc:660 src/cmdline/cmdline_resolver.cc:767
+#: src/cmdline/cmdline_resolver.cc:659 src/cmdline/cmdline_resolver.cc:766
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "これらの依存関係の問題を解決するための努力をすべて放棄します。"
 
-#: src/cmdline/cmdline_resolver.cc:663
+#: src/cmdline/cmdline_resolver.cc:662
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr "依存関係の自動解決を放棄し、手動での解決に戻します。"
 
-#: src/cmdline/cmdline_resolver.cc:693
+#: src/cmdline/cmdline_resolver.cc:692
 msgid "The following commands are available:"
 msgstr "以下のコマンドが利用可能です:"
 
-#: src/cmdline/cmdline_resolver.cc:713
+#: src/cmdline/cmdline_resolver.cc:712
 msgid "File to write resolver state to: "
 msgstr "依存関係解決器の状態を書き込む出力ファイル: "
 
-#: src/cmdline/cmdline_resolver.cc:728
+#: src/cmdline/cmdline_resolver.cc:727
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "応答が不正です。以下のコマンドから一つを選択して入力してください:"
 
-#: src/cmdline/cmdline_resolver.cc:741
+#: src/cmdline/cmdline_resolver.cc:740
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "与えられた時間内に解決方法が見つかりませんでした。再挑戦しますか? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:770
+#: src/cmdline/cmdline_resolver.cc:769
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "応答が不正です。'y' か 'n' を入力してください。"
 
-#: src/cmdline/cmdline_resolver.cc:779
+#: src/cmdline/cmdline_resolver.cc:778
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "依存関係を解決できません! 諦めています..."
 
-#: src/cmdline/cmdline_resolver.cc:785
+#: src/cmdline/cmdline_resolver.cc:784
 msgid "*** No more solutions available ***"
 msgstr "*** 利用可能な解決方法がこれ以上ありません。 ***"
 
-#: src/cmdline/cmdline_resolver.cc:804
+#: src/cmdline/cmdline_resolver.cc:803
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
@@ -1967,7 +1966,7 @@ msgstr ""
 "*** エラー: 致命的な例外が発生して検索が中断しました。検索を続行する\n"
 "            ことは可能ですが、一部の解決方法には到達できません。"
 
-#: src/cmdline/cmdline_resolver.cc:964
+#: src/cmdline/cmdline_resolver.cc:963
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
@@ -1975,19 +1974,19 @@ msgstr ""
 "依存関係解決器が、解決方法の生成後にタイムアウトになりました。一部の更新が実"
 "行されなかった可能性があります。"
 
-#: src/cmdline/cmdline_resolver.cc:971
+#: src/cmdline/cmdline_resolver.cc:970
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
 "更新のための依存関係の解決ができません (依存関係解決器がタイムアウトになりま"
 "した)。"
 
-#: src/cmdline/cmdline_resolver.cc:985
+#: src/cmdline/cmdline_resolver.cc:984
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr ""
 "更新のための依存関係の解決ができません (解決方法が見つかりませんでした)。"
 
-#: src/cmdline/cmdline_resolver.cc:994
+#: src/cmdline/cmdline_resolver.cc:993
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
@@ -1996,7 +1995,7 @@ msgstr ""
 "依存関係の解決が不完全です (%s)。一部の更新が実行されなかった可能性がありま"
 "す。"
 
-#: src/cmdline/cmdline_resolver.cc:1000
+#: src/cmdline/cmdline_resolver.cc:999
 #, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "更新のための依存関係の解決ができません (%s)。"
@@ -2123,7 +2122,7 @@ msgid "State"
 msgstr "状態"
 
 #: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:436
-#: src/generic/apt/matchers.cc:2488
+#: src/generic/apt/matchers.cc:2490
 msgid "Provided by"
 msgstr "提供元"
 
@@ -2376,7 +2375,7 @@ msgstr "現在"
 msgid "Candidate"
 msgstr "候補"
 
-#: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
+#: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1597
 msgid "Install"
 msgstr "インストール"
 
@@ -2829,15 +2828,13 @@ msgstr ""
 "debtags 更新プロセス (%s update %s) がシグナル %d に kill されました%s。"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#. PS: indentation sucks!
-#. PS2: Daniel, please unfuzzy such translations (added "update") yourself!
-#: src/generic/apt/download_update_manager.cc:393
+#: src/generic/apt/download_update_manager.cc:391
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr "debtags 更新プロセス (%s update %s) が異常終了しました (コード: %d)。"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:400
+#: src/generic/apt/download_update_manager.cc:398
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
@@ -2847,7 +2844,7 @@ msgstr ""
 "ス: %d)。"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:406
+#: src/generic/apt/download_update_manager.cc:404
 #, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
@@ -2994,133 +2991,133 @@ msgstr ""
 "\n"
 "ログ完了。\n"
 
-#: src/generic/apt/matchers.cc:1344
+#: src/generic/apt/matchers.cc:1346
 msgid "Automatically Installed"
 msgstr "自動的にインストールされた"
 
-#: src/generic/apt/matchers.cc:1372 src/generic/apt/matchers.cc:1579
+#: src/generic/apt/matchers.cc:1374 src/generic/apt/matchers.cc:1581
 msgid "Broken"
 msgstr "依存関係破損"
 
-#: src/generic/apt/matchers.cc:1577
+#: src/generic/apt/matchers.cc:1579
 msgid "Unchanged"
 msgstr "変更なし"
 
-#: src/generic/apt/matchers.cc:1581
+#: src/generic/apt/matchers.cc:1583
 msgid "Remove [unused]"
 msgstr "削除 [不使用]"
 
-#: src/generic/apt/matchers.cc:1583
+#: src/generic/apt/matchers.cc:1585
 msgid "Hold [auto]"
 msgstr "固定 [自動]"
 
-#: src/generic/apt/matchers.cc:1585
+#: src/generic/apt/matchers.cc:1587
 msgid "Install [auto]"
 msgstr "インストール [自動]"
 
-#: src/generic/apt/matchers.cc:1587
+#: src/generic/apt/matchers.cc:1589
 msgid "Remove [auto]"
 msgstr "削除 [自動]"
 
-#: src/generic/apt/matchers.cc:1589
+#: src/generic/apt/matchers.cc:1591
 msgid "Downgrade"
 msgstr "ダウングレード"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1593
 msgid "Hold"
 msgstr "固定"
 
-#: src/generic/apt/matchers.cc:1593
+#: src/generic/apt/matchers.cc:1595
 msgid "Reinstall"
 msgstr "再インストール"
 
-#: src/generic/apt/matchers.cc:1597
+#: src/generic/apt/matchers.cc:1599
 msgid "Remove"
 msgstr "削除"
 
-#: src/generic/apt/matchers.cc:1599
+#: src/generic/apt/matchers.cc:1601
 msgid "Upgrade"
 msgstr "更新"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1627
 msgid "Keep"
 msgstr "一時固定"
 
-#: src/generic/apt/matchers.cc:1657
+#: src/generic/apt/matchers.cc:1659
 msgid "Virtual"
 msgstr "仮想"
 
-#: src/generic/apt/matchers.cc:1684
+#: src/generic/apt/matchers.cc:1686
 msgid "Installed"
 msgstr "インストール済み"
 
-#: src/generic/apt/matchers.cc:1712
+#: src/generic/apt/matchers.cc:1714
 msgid "Essential"
 msgstr "必須"
 
-#: src/generic/apt/matchers.cc:1737
+#: src/generic/apt/matchers.cc:1739
 msgid "Config Files Remain"
 msgstr "設定ファイル残存"
 
-#: src/generic/apt/matchers.cc:2174
+#: src/generic/apt/matchers.cc:2176
 msgid "Garbage"
 msgstr "ゴミ"
 
-#: src/generic/apt/matchers.cc:2543
+#: src/generic/apt/matchers.cc:2545
 msgid "No reverse dependencies"
 msgstr "逆依存はありません"
 
-#: src/generic/apt/matchers.cc:2621
+#: src/generic/apt/matchers.cc:2623
 msgid "New Package"
 msgstr "新規パッケージ"
 
-#: src/generic/apt/matchers.cc:2646
+#: src/generic/apt/matchers.cc:2648
 msgid "Upgradable"
 msgstr "更新可能"
 
-#: src/generic/apt/matchers.cc:2671
+#: src/generic/apt/matchers.cc:2673
 msgid "Obsolete"
 msgstr "廃止"
 
-#: src/generic/apt/matchers.cc:3110
+#: src/generic/apt/matchers.cc:3112
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "アクションの種類が不明です: %s"
 
-#: src/generic/apt/matchers.cc:3151
+#: src/generic/apt/matchers.cc:3153
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "%s の後に終端文字のないリテラル文字列があります"
 
-#: src/generic/apt/matchers.cc:3248
+#: src/generic/apt/matchers.cc:3250
 #, c-format
 msgid "Unknown priority %s"
 msgstr "優先度が不明です: %s"
 
-#: src/generic/apt/matchers.cc:3267
+#: src/generic/apt/matchers.cc:3269
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr "マッチパターンが想定外のかたちで終わっています ('%c' が期待されます)。"
 
-#: src/generic/apt/matchers.cc:3270
+#: src/generic/apt/matchers.cc:3272
 #, c-format
 msgid "Expected '%c', got '%c'."
 msgstr "'%c' を期待しましたが '%c' が与えられました。"
 
-#: src/generic/apt/matchers.cc:3577 src/generic/apt/matchers.cc:4015
-#: src/generic/apt/matchers.cc:4058
+#: src/generic/apt/matchers.cc:3579 src/generic/apt/matchers.cc:4019
+#: src/generic/apt/matchers.cc:4062
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "依存関係の種類が不明です: %s"
 
-#: src/generic/apt/matchers.cc:3631
+#: src/generic/apt/matchers.cc:3633
 #, c-format
 msgid "Unknown matcher type: \"%s\"."
 msgstr "マッチャの種類が不明です: \"%s\""
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
-#: src/generic/apt/matchers.cc:3642 src/generic/apt/matchers.cc:3651
+#: src/generic/apt/matchers.cc:3644 src/generic/apt/matchers.cc:3653
 #, c-format
 msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
@@ -3129,32 +3126,32 @@ msgstr ""
 "?%s マッチャは、「広い」コンテキスト (トップレベルのコンテキスト、または ?%s "
 "で囲まれたコンテキスト) で用いられなければなりません。"
 
-#: src/generic/apt/matchers.cc:3868
+#: src/generic/apt/matchers.cc:3872
 msgid "Unmatched '('"
 msgstr "対応する '(' がありません"
 
-#: src/generic/apt/matchers.cc:4021
+#: src/generic/apt/matchers.cc:4025
 msgid "Provides: cannot be broken"
 msgstr "Provides: が壊れることはありません"
 
-#: src/generic/apt/matchers.cc:4084
+#: src/generic/apt/matchers.cc:4088
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "パターンの種類が不明です: %c"
 
-#: src/generic/apt/matchers.cc:4107
+#: src/generic/apt/matchers.cc:4111
 msgid "Can't search for \"\""
 msgstr "\"\" は検索できません"
 
-#: src/generic/apt/matchers.cc:4139
+#: src/generic/apt/matchers.cc:4143
 msgid "Unexpected empty expression"
 msgstr "想定外の空の式です"
 
-#: src/generic/apt/matchers.cc:4172
+#: src/generic/apt/matchers.cc:4176
 msgid "Badly formed expression"
 msgstr "不正な書式です"
 
-#: src/generic/apt/matchers.cc:4211
+#: src/generic/apt/matchers.cc:4215
 msgid "Unexpected ')'"
 msgstr "想定外の ')' です"
 

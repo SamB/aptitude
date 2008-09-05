@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11.2-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-03 09:15-0700\n"
+"POT-Creation-Date: 2008-09-05 16:05+0200\n"
 "PO-Revision-Date: 2008-04-20 17:30+0200\n"
 "Last-Translator: Morten Bo Johansen <mbj@spamcop.net>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -1012,7 +1012,7 @@ msgstr[0] "(til %s)"
 msgstr[1] "(til %s)"
 
 #: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
-#: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
+#: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2436
 msgid "Provides"
 msgstr "Giver"
 
@@ -1380,40 +1380,40 @@ msgstr ""
 "eller flere pakkenavne (eller mønstre). Handlingen vil så blive anvendt på "
 "alle de pakker du anfører. Følgende handlinger kan bruges:"
 
-#: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:205
+#: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:204
 msgid "'+' to install packages"
 msgstr "'+' for at installere pakker"
 
-#: src/cmdline/cmdline_prompt.cc:1033 src/cmdline/cmdline_resolver.cc:207
+#: src/cmdline/cmdline_prompt.cc:1033 src/cmdline/cmdline_resolver.cc:206
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' for at installere pakker samtidig med at de markeres automatisk "
 "installeret"
 
-#: src/cmdline/cmdline_prompt.cc:1035 src/cmdline/cmdline_resolver.cc:209
+#: src/cmdline/cmdline_prompt.cc:1035 src/cmdline/cmdline_resolver.cc:208
 msgid "'-' to remove packages"
 msgstr "'-' for at afinstallere pakker"
 
-#: src/cmdline/cmdline_prompt.cc:1037 src/cmdline/cmdline_resolver.cc:211
+#: src/cmdline/cmdline_prompt.cc:1037 src/cmdline/cmdline_resolver.cc:210
 msgid "'_' to purge packages"
 msgstr "'_' for at udrense pakker"
 
-#: src/cmdline/cmdline_prompt.cc:1039 src/cmdline/cmdline_resolver.cc:213
+#: src/cmdline/cmdline_prompt.cc:1039 src/cmdline/cmdline_resolver.cc:212
 msgid "'=' to place packages on hold"
 msgstr "'=' for at tilbageholde pakker"
 
-#: src/cmdline/cmdline_prompt.cc:1041 src/cmdline/cmdline_resolver.cc:215
+#: src/cmdline/cmdline_prompt.cc:1041 src/cmdline/cmdline_resolver.cc:214
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 "':' for at bevare pakker i deres nuværende tilstand, uden at tilbageholde dem"
 
-#: src/cmdline/cmdline_prompt.cc:1043 src/cmdline/cmdline_resolver.cc:217
+#: src/cmdline/cmdline_prompt.cc:1043 src/cmdline/cmdline_resolver.cc:216
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' for at markere pakker som automatisk installerede"
 
-#: src/cmdline/cmdline_prompt.cc:1045 src/cmdline/cmdline_resolver.cc:219
+#: src/cmdline/cmdline_prompt.cc:1045 src/cmdline/cmdline_resolver.cc:218
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' for at markere pakker som manuelt installerede"
 
@@ -1520,18 +1520,18 @@ msgstr ""
 "Størrelsesændringer vil ikke blive vist.\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:716
+#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:715
 #: src/generic/apt/apt.cc:275
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Kunne ikke åbne %s til skrivning"
 
-#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:721
+#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:720
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Kunne ikke skrive status for afhængighedsudreder til %s"
 
-#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:723
+#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:722
 msgid "Resolver state successfully written!"
 msgstr "Status for afhængighedsudreder gemt!"
 
@@ -1591,8 +1591,7 @@ msgstr ""
 "forekommer. Indtast \"UNINST\" i stedet for en version for at afvise "
 "afinstallering af pakken."
 
-#. ForTranslators: "(;" is ...???? A smiley?
-#: src/cmdline/cmdline_resolver.cc:201
+#: src/cmdline/cmdline_resolver.cc:200
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package."
@@ -1601,11 +1600,11 @@ msgstr ""
 "Indtast \"UNINST\" i stedet for en version for at godkende afinstallering af "
 "pakken."
 
-#: src/cmdline/cmdline_resolver.cc:203
+#: src/cmdline/cmdline_resolver.cc:202
 msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr "Justér status på oplistede pakker hvor HANDLING er en af:"
 
-#: src/cmdline/cmdline_resolver.cc:221
+#: src/cmdline/cmdline_resolver.cc:220
 msgid ""
 "Adjustments will cause the current solution to be discarded and recalculated "
 "as necessary."
@@ -1613,82 +1612,82 @@ msgstr ""
 "Justeringer vil medføre at den nuværende løsning forkastes og genberegnes "
 "omnødvendigt."
 
-#: src/cmdline/cmdline_resolver.cc:235
+#: src/cmdline/cmdline_resolver.cc:234
 #, c-format
 msgid "The version %s is available in the following archives:"
 msgstr "Versionen %s er tilgængelig i de følgende arkiver:"
 
-#: src/cmdline/cmdline_resolver.cc:243
+#: src/cmdline/cmdline_resolver.cc:242
 #, c-format
 msgid "Select the version of %s that should be used: "
 msgstr "Vælg versionen af %s som skal bruges: "
 
-#: src/cmdline/cmdline_resolver.cc:250
+#: src/cmdline/cmdline_resolver.cc:249
 #, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
 msgstr "Ugyldigt svar. Anfør venligst et heltal mellem 1 og %d."
 
-#: src/cmdline/cmdline_resolver.cc:265
+#: src/cmdline/cmdline_resolver.cc:264
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
 msgstr "Forventede mindst én angivelse af pakke og version efter \"%c\""
 
-#: src/cmdline/cmdline_resolver.cc:279
+#: src/cmdline/cmdline_resolver.cc:278
 #, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
 msgstr "Forventede et versionsnummer eller \"%s\" efter \"%s\""
 
-#: src/cmdline/cmdline_resolver.cc:289
+#: src/cmdline/cmdline_resolver.cc:288
 #, c-format
 msgid "No such package \"%s\""
 msgstr "Ingen sådan pakke \"%s\""
 
-#: src/cmdline/cmdline_resolver.cc:305
+#: src/cmdline/cmdline_resolver.cc:304
 #, c-format
 msgid "%s has no version named \"%s\""
 msgstr "%s har ingen version ved navn \"%s"
 
-#: src/cmdline/cmdline_resolver.cc:322
+#: src/cmdline/cmdline_resolver.cc:321
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr "Tillader afinstallering af %s"
 
-#: src/cmdline/cmdline_resolver.cc:325
+#: src/cmdline/cmdline_resolver.cc:324
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr "Tillader installeringen af %s version %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:335
+#: src/cmdline/cmdline_resolver.cc:334
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr "Afviser afinstallering af %s"
 
-#: src/cmdline/cmdline_resolver.cc:338
+#: src/cmdline/cmdline_resolver.cc:337
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr "Afviser installeringen af %s version %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:351
+#: src/cmdline/cmdline_resolver.cc:350
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr "Kræver ikke længere %s afinstalleret"
 
-#: src/cmdline/cmdline_resolver.cc:354
+#: src/cmdline/cmdline_resolver.cc:353
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr "Kræver ikke længere %s version %s (%s) installeret"
 
-#: src/cmdline/cmdline_resolver.cc:363
+#: src/cmdline/cmdline_resolver.cc:362
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr "Kræver %s afinstalleret"
 
-#: src/cmdline/cmdline_resolver.cc:366
+#: src/cmdline/cmdline_resolver.cc:365
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "Kræver installering af %s version %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:508
+#: src/cmdline/cmdline_resolver.cc:507
 #, c-format
 msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
@@ -1697,36 +1696,36 @@ msgstr ""
 "Forsøgte at udrede afhængigheder, men afhængighedsudredning er slået fra..\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 
-#: src/cmdline/cmdline_resolver.cc:517
+#: src/cmdline/cmdline_resolver.cc:516
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
 "Afhængigheder ønskes udredt, men der er ikke oprettet nogen "
 "afhængighedsudreder for disse."
 
-#: src/cmdline/cmdline_resolver.cc:531 src/solution_dialog.cc:127
+#: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
 #: src/solution_screen.cc:519
 msgid "Resolving dependencies..."
 msgstr "Udreder afhængigheder ..."
 
 # Er i tvivl om "defer" -MBJ
-#: src/cmdline/cmdline_resolver.cc:563
+#: src/cmdline/cmdline_resolver.cc:562
 #, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "åbne: %zd; lukkede: %zd; afviste: %zd; konflikter: %zd"
 
-#: src/cmdline/cmdline_resolver.cc:616
+#: src/cmdline/cmdline_resolver.cc:615
 msgid "The following actions will resolve these dependencies:"
 msgstr "De følgende handlinger vil udrede disse afhængigheder:"
 
-#: src/cmdline/cmdline_resolver.cc:633
+#: src/cmdline/cmdline_resolver.cc:632
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Godkend denne løsning? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:660 src/cmdline/cmdline_resolver.cc:767
+#: src/cmdline/cmdline_resolver.cc:659 src/cmdline/cmdline_resolver.cc:766
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Opgiver alle forsøg på at udrede disse afhængigheder."
 
-#: src/cmdline/cmdline_resolver.cc:663
+#: src/cmdline/cmdline_resolver.cc:662
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
@@ -1734,36 +1733,36 @@ msgstr ""
 "Opgiver automatisk afhængighedsudredning og falder tilbage til manuel "
 "udredning."
 
-#: src/cmdline/cmdline_resolver.cc:693
+#: src/cmdline/cmdline_resolver.cc:692
 msgid "The following commands are available:"
 msgstr "De følgende kommandoer er tilgængelige:"
 
-#: src/cmdline/cmdline_resolver.cc:713
+#: src/cmdline/cmdline_resolver.cc:712
 msgid "File to write resolver state to: "
 msgstr "Fil som status for afhængighedsudreder skrives til: "
 
-#: src/cmdline/cmdline_resolver.cc:728
+#: src/cmdline/cmdline_resolver.cc:727
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Ugyldigt svar. Anfør en af følgende kommandoer:"
 
-#: src/cmdline/cmdline_resolver.cc:741
+#: src/cmdline/cmdline_resolver.cc:740
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Ingen løsning fundet indenfor den fastsatte tid. Prøv mere ihærdigt? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:770
+#: src/cmdline/cmdline_resolver.cc:769
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Ugyldigt svar; anfør venligst 'y' eller 'n'."
 
-#: src/cmdline/cmdline_resolver.cc:779
+#: src/cmdline/cmdline_resolver.cc:778
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Kunne ikke udrede afhængigheder! Opgiver ..."
 
-#: src/cmdline/cmdline_resolver.cc:785
+#: src/cmdline/cmdline_resolver.cc:784
 msgid "*** No more solutions available ***"
 msgstr "*** Ikke flere tilgængelige løsninger ***"
 
-#: src/cmdline/cmdline_resolver.cc:804
+#: src/cmdline/cmdline_resolver.cc:803
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
@@ -1771,7 +1770,7 @@ msgstr ""
 "*** FEJL: søgning afbrudt pga. en kritisk undtagelse. Du kan fortsætte\n"
 "          søgningen, men visse løsninger vil være utilgængelige.."
 
-#: src/cmdline/cmdline_resolver.cc:964
+#: src/cmdline/cmdline_resolver.cc:963
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
@@ -1779,19 +1778,19 @@ msgstr ""
 "Afhængighedsudrederen overskred tidsfrist efter at være fremkommet med en "
 "løsning. Visse opgraderinger bliver måske ikke udført."
 
-#: src/cmdline/cmdline_resolver.cc:971
+#: src/cmdline/cmdline_resolver.cc:970
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
 "Opgraderingens afhængigheder kunne ikke udredes (tidsudløb på "
 "afhængighedsudreder)."
 
-#: src/cmdline/cmdline_resolver.cc:985
+#: src/cmdline/cmdline_resolver.cc:984
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr ""
 "Kunne ikke udrede afhængigheder for opgradering (ingen løsning fundet)."
 
-#: src/cmdline/cmdline_resolver.cc:994
+#: src/cmdline/cmdline_resolver.cc:993
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
@@ -1800,7 +1799,7 @@ msgstr ""
 "Afhængighedsudredning ufuldstændig (%s). Visse mulige opgraderinger vil "
 "måske ikke blive gennemført."
 
-#: src/cmdline/cmdline_resolver.cc:1000
+#: src/cmdline/cmdline_resolver.cc:999
 #, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Kunne ikke udrede afhængigheder for opgraderingen (%s)."
@@ -1927,7 +1926,7 @@ msgid "State"
 msgstr "Status"
 
 #: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:436
-#: src/generic/apt/matchers.cc:2488
+#: src/generic/apt/matchers.cc:2490
 msgid "Provided by"
 msgstr "Givet af"
 
@@ -2181,7 +2180,7 @@ msgstr "Aktuel"
 msgid "Candidate"
 msgstr "Kandidat"
 
-#: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
+#: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1597
 msgid "Install"
 msgstr "Installér"
 
@@ -2621,9 +2620,7 @@ msgstr ""
 "Opdateringsprocessen for debtags (%s update %s) blev dræbt ved signal %d%s."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#. PS: indentation sucks!
-#. PS2: Daniel, please unfuzzy such translations (added "update") yourself!
-#: src/generic/apt/download_update_manager.cc:393
+#: src/generic/apt/download_update_manager.cc:391
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
@@ -2631,7 +2628,7 @@ msgstr ""
 "d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:400
+#: src/generic/apt/download_update_manager.cc:398
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
@@ -2641,7 +2638,7 @@ msgstr ""
 "(status %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:406
+#: src/generic/apt/download_update_manager.cc:404
 #, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
@@ -2764,133 +2761,133 @@ msgstr ""
 "\n"
 "Log færdig.\n"
 
-#: src/generic/apt/matchers.cc:1344
+#: src/generic/apt/matchers.cc:1346
 msgid "Automatically Installed"
 msgstr "Automatisk installeret"
 
-#: src/generic/apt/matchers.cc:1372 src/generic/apt/matchers.cc:1579
+#: src/generic/apt/matchers.cc:1374 src/generic/apt/matchers.cc:1581
 msgid "Broken"
 msgstr "Brudte"
 
-#: src/generic/apt/matchers.cc:1577
+#: src/generic/apt/matchers.cc:1579
 msgid "Unchanged"
 msgstr "Uændret"
 
-#: src/generic/apt/matchers.cc:1581
+#: src/generic/apt/matchers.cc:1583
 msgid "Remove [unused]"
 msgstr "Afinstallér [ubrugte]"
 
-#: src/generic/apt/matchers.cc:1583
+#: src/generic/apt/matchers.cc:1585
 msgid "Hold [auto]"
 msgstr "Tilbagehold [auto]"
 
-#: src/generic/apt/matchers.cc:1585
+#: src/generic/apt/matchers.cc:1587
 msgid "Install [auto]"
 msgstr "Installér [auto]"
 
-#: src/generic/apt/matchers.cc:1587
+#: src/generic/apt/matchers.cc:1589
 msgid "Remove [auto]"
 msgstr "Afinstallér [auto]"
 
-#: src/generic/apt/matchers.cc:1589
+#: src/generic/apt/matchers.cc:1591
 msgid "Downgrade"
 msgstr "Nedgradèr"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1593
 msgid "Hold"
 msgstr "Tilbagehold"
 
-#: src/generic/apt/matchers.cc:1593
+#: src/generic/apt/matchers.cc:1595
 msgid "Reinstall"
 msgstr "Geninstallér"
 
-#: src/generic/apt/matchers.cc:1597
+#: src/generic/apt/matchers.cc:1599
 msgid "Remove"
 msgstr "Afinstallér"
 
-#: src/generic/apt/matchers.cc:1599
+#: src/generic/apt/matchers.cc:1601
 msgid "Upgrade"
 msgstr "Opgradér"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1627
 msgid "Keep"
 msgstr "Behold"
 
-#: src/generic/apt/matchers.cc:1657
+#: src/generic/apt/matchers.cc:1659
 msgid "Virtual"
 msgstr "Virtuel"
 
-#: src/generic/apt/matchers.cc:1684
+#: src/generic/apt/matchers.cc:1686
 msgid "Installed"
 msgstr "Installeret"
 
-#: src/generic/apt/matchers.cc:1712
+#: src/generic/apt/matchers.cc:1714
 msgid "Essential"
 msgstr "Essentiel"
 
-#: src/generic/apt/matchers.cc:1737
+#: src/generic/apt/matchers.cc:1739
 msgid "Config Files Remain"
 msgstr "Efterladte opsætningsfiler"
 
-#: src/generic/apt/matchers.cc:2174
+#: src/generic/apt/matchers.cc:2176
 msgid "Garbage"
 msgstr "Spild"
 
-#: src/generic/apt/matchers.cc:2543
+#: src/generic/apt/matchers.cc:2545
 msgid "No reverse dependencies"
 msgstr "Ingen omvendte afhængigheder"
 
-#: src/generic/apt/matchers.cc:2621
+#: src/generic/apt/matchers.cc:2623
 msgid "New Package"
 msgstr "Ny pakke"
 
-#: src/generic/apt/matchers.cc:2646
+#: src/generic/apt/matchers.cc:2648
 msgid "Upgradable"
 msgstr "Kan opgraderes"
 
-#: src/generic/apt/matchers.cc:2671
+#: src/generic/apt/matchers.cc:2673
 msgid "Obsolete"
 msgstr "Forældet"
 
-#: src/generic/apt/matchers.cc:3110
+#: src/generic/apt/matchers.cc:3112
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Ukendt handlingstype: %s"
 
-#: src/generic/apt/matchers.cc:3151
+#: src/generic/apt/matchers.cc:3153
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "Ubestemt tekststreng efter %s"
 
-#: src/generic/apt/matchers.cc:3248
+#: src/generic/apt/matchers.cc:3250
 #, c-format
 msgid "Unknown priority %s"
 msgstr "Ukendt prioritetstype: %s"
 
-#: src/generic/apt/matchers.cc:3267
+#: src/generic/apt/matchers.cc:3269
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr "Sammenligningsmønster forkert afsluttet (forventede '%c')."
 
-#: src/generic/apt/matchers.cc:3270
+#: src/generic/apt/matchers.cc:3272
 #, c-format
 msgid "Expected '%c', got '%c'."
 msgstr "Forventede '%c', modtog '%c'."
 
-#: src/generic/apt/matchers.cc:3577 src/generic/apt/matchers.cc:4015
-#: src/generic/apt/matchers.cc:4058
+#: src/generic/apt/matchers.cc:3579 src/generic/apt/matchers.cc:4019
+#: src/generic/apt/matchers.cc:4062
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Ukendt afhængighedstype: %s"
 
-#: src/generic/apt/matchers.cc:3631
+#: src/generic/apt/matchers.cc:3633
 #, c-format
 msgid "Unknown matcher type: \"%s\"."
 msgstr "Ukendt type af mønstersammenligner: \"%s\"."
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
-#: src/generic/apt/matchers.cc:3642 src/generic/apt/matchers.cc:3651
+#: src/generic/apt/matchers.cc:3644 src/generic/apt/matchers.cc:3653
 #, c-format
 msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
@@ -2899,32 +2896,32 @@ msgstr ""
 "Mønstersammenligneren ?%s skal bruges i en \"bred\" sammenhæng (en "
 "sammenhæng fra topniveau eller en sammenhæng omgivet at ?%s)."
 
-#: src/generic/apt/matchers.cc:3868
+#: src/generic/apt/matchers.cc:3872
 msgid "Unmatched '('"
 msgstr "Ubalanceret '('"
 
-#: src/generic/apt/matchers.cc:4021
+#: src/generic/apt/matchers.cc:4025
 msgid "Provides: cannot be broken"
 msgstr "Giver: kan ikke være brudt"
 
-#: src/generic/apt/matchers.cc:4084
+#: src/generic/apt/matchers.cc:4088
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Ukendt mønstertype: %c"
 
-#: src/generic/apt/matchers.cc:4107
+#: src/generic/apt/matchers.cc:4111
 msgid "Can't search for \"\""
 msgstr "Kan ikke søge efter \"\""
 
-#: src/generic/apt/matchers.cc:4139
+#: src/generic/apt/matchers.cc:4143
 msgid "Unexpected empty expression"
 msgstr "Uventet tomt udtryk"
 
-#: src/generic/apt/matchers.cc:4172
+#: src/generic/apt/matchers.cc:4176
 msgid "Badly formed expression"
 msgstr "Forkert udformet udtryk"
 
-#: src/generic/apt/matchers.cc:4211
+#: src/generic/apt/matchers.cc:4215
 msgid "Unexpected ')'"
 msgstr "Uventet ')'"
 

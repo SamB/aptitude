@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-03 09:15-0700\n"
+"POT-Creation-Date: 2008-09-05 16:05+0200\n"
 "PO-Revision-Date: 2006-10-18 02:07+0300\n"
 "Last-Translator: Erçin EKER <ercin.eker@linux.org.tr>\n"
 "Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -885,7 +885,7 @@ msgid_plural "(for %s)"
 msgstr[0] ""
 
 #: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
-#: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2434
+#: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2436
 msgid "Provides"
 msgstr "Sağladığı"
 
@@ -1256,38 +1256,38 @@ msgstr ""
 "daha fazla paket isminden (veya parçası) sonra bir eylem karakteri girin. "
 "Eylem belirttiğiniz paketler üstünde işleme sokulacaktır. Mevcut eylemler: "
 
-#: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:205
+#: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:204
 msgid "'+' to install packages"
 msgstr "Paket kurmak için '+'"
 
-#: src/cmdline/cmdline_prompt.cc:1033 src/cmdline/cmdline_resolver.cc:207
+#: src/cmdline/cmdline_prompt.cc:1033 src/cmdline/cmdline_resolver.cc:206
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "Paketleri kurmak ve hemen otomatik kuruldu olarak işaretlemek için '+M'"
 
-#: src/cmdline/cmdline_prompt.cc:1035 src/cmdline/cmdline_resolver.cc:209
+#: src/cmdline/cmdline_prompt.cc:1035 src/cmdline/cmdline_resolver.cc:208
 msgid "'-' to remove packages"
 msgstr "Paket kaldırmak için '-'"
 
-#: src/cmdline/cmdline_prompt.cc:1037 src/cmdline/cmdline_resolver.cc:211
+#: src/cmdline/cmdline_prompt.cc:1037 src/cmdline/cmdline_resolver.cc:210
 msgid "'_' to purge packages"
 msgstr "Paketi temizlemek için '_'"
 
-#: src/cmdline/cmdline_prompt.cc:1039 src/cmdline/cmdline_resolver.cc:213
+#: src/cmdline/cmdline_prompt.cc:1039 src/cmdline/cmdline_resolver.cc:212
 msgid "'=' to place packages on hold"
 msgstr "Paketi tutmak için '='"
 
-#: src/cmdline/cmdline_prompt.cc:1041 src/cmdline/cmdline_resolver.cc:215
+#: src/cmdline/cmdline_prompt.cc:1041 src/cmdline/cmdline_resolver.cc:214
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "paketleri mevcut duruma sabitlemek için ':'"
 
-#: src/cmdline/cmdline_prompt.cc:1043 src/cmdline/cmdline_resolver.cc:217
+#: src/cmdline/cmdline_prompt.cc:1043 src/cmdline/cmdline_resolver.cc:216
 msgid "'&M' to mark packages as automatically installed"
 msgstr "Paketi otomatik kurulmuş olarak işaretlemek için'&M'"
 
-#: src/cmdline/cmdline_prompt.cc:1045 src/cmdline/cmdline_resolver.cc:219
+#: src/cmdline/cmdline_prompt.cc:1045 src/cmdline/cmdline_resolver.cc:218
 msgid "'&m' to mark packages as manually installed"
 msgstr "Paketleri elle kurulmuş olarak işaretlemek için '&m'"
 
@@ -1390,18 +1390,18 @@ msgstr ""
 "Boyut değişiklikleri gösterilmeyecek.\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:716
+#: src/cmdline/cmdline_resolver.cc:91 src/cmdline/cmdline_resolver.cc:715
 #: src/generic/apt/apt.cc:275
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "%s yazmak için açılamıyor"
 
-#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:721
+#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:720
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "%s'e çözümleyici durumu yazmadan hata"
 
-#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:723
+#: src/cmdline/cmdline_resolver.cc:99 src/cmdline/cmdline_resolver.cc:722
 msgid "Resolver state successfully written!"
 msgstr "Çözümleyici durumu başarıyla yazıldı!"
 
@@ -1456,19 +1456,18 @@ msgid ""
 "occur.  Enter UNINST instead of a version to reject removing the package."
 msgstr "belirtilen paket sürümlerini reddet; bulunan çözümleri gösterme."
 
-#. ForTranslators: "(;" is ...???? A smiley?
-#: src/cmdline/cmdline_resolver.cc:201
+#: src/cmdline/cmdline_resolver.cc:200
 #, fuzzy
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package."
 msgstr "belirtilen paket sürümlerini kabul et; bulunan çözümleri göster."
 
-#: src/cmdline/cmdline_resolver.cc:203
+#: src/cmdline/cmdline_resolver.cc:202
 msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr "listelenen paketlerin durumunu ayarla, EYLEM:"
 
-#: src/cmdline/cmdline_resolver.cc:221
+#: src/cmdline/cmdline_resolver.cc:220
 msgid ""
 "Adjustments will cause the current solution to be discarded and recalculated "
 "as necessary."
@@ -1476,180 +1475,180 @@ msgstr ""
 "Ayarlamalar şu an ki çözümün göz ardı edilmesine neden olacak ve gerekli "
 "olursa yeniden hesaplanacak."
 
-#: src/cmdline/cmdline_resolver.cc:235
+#: src/cmdline/cmdline_resolver.cc:234
 #, c-format
 msgid "The version %s is available in the following archives:"
 msgstr "%s sürümü şu arşivlerde bulunuyor:"
 
-#: src/cmdline/cmdline_resolver.cc:243
+#: src/cmdline/cmdline_resolver.cc:242
 #, c-format
 msgid "Select the version of %s that should be used: "
 msgstr "Kullanılacak %s sürümünü seçin: "
 
-#: src/cmdline/cmdline_resolver.cc:250
+#: src/cmdline/cmdline_resolver.cc:249
 #, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
 msgstr "Geçersiz yanıt. Lütfen 1 ile %d arasında bir tam sayı girin."
 
-#: src/cmdline/cmdline_resolver.cc:265
+#: src/cmdline/cmdline_resolver.cc:264
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
 msgstr "'%c'yi takiben en az bir paket/sürüm çifti gerekli"
 
-#: src/cmdline/cmdline_resolver.cc:279
+#: src/cmdline/cmdline_resolver.cc:278
 #, fuzzy, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
 msgstr "\"%s\"den sonra sürüm gerekiyor"
 
-#: src/cmdline/cmdline_resolver.cc:289
+#: src/cmdline/cmdline_resolver.cc:288
 #, c-format
 msgid "No such package \"%s\""
 msgstr "\"%s\" diye bir paket yok "
 
-#: src/cmdline/cmdline_resolver.cc:305
+#: src/cmdline/cmdline_resolver.cc:304
 #, c-format
 msgid "%s has no version named \"%s\""
 msgstr "%s'in \"%s\" sürümü bulunmuyor"
 
-#: src/cmdline/cmdline_resolver.cc:322
+#: src/cmdline/cmdline_resolver.cc:321
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr "%s'in kaldırılmasına izin veriliyor"
 
-#: src/cmdline/cmdline_resolver.cc:325
+#: src/cmdline/cmdline_resolver.cc:324
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr "%s'in %s (%s) sürümünün kurulumuna izin veriliyor"
 
-#: src/cmdline/cmdline_resolver.cc:335
+#: src/cmdline/cmdline_resolver.cc:334
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr "%s'in kaldırılması redediliyor"
 
-#: src/cmdline/cmdline_resolver.cc:338
+#: src/cmdline/cmdline_resolver.cc:337
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr "%s'in %s (%s) sürümünün kurulumu redediliyor"
 
-#: src/cmdline/cmdline_resolver.cc:351
+#: src/cmdline/cmdline_resolver.cc:350
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr "Artık %s'in kaldırılması gerekmiyor"
 
-#: src/cmdline/cmdline_resolver.cc:354
+#: src/cmdline/cmdline_resolver.cc:353
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr "%s'in %s (%s) sürümünün kurulumu artık gerekli değil"
 
-#: src/cmdline/cmdline_resolver.cc:363
+#: src/cmdline/cmdline_resolver.cc:362
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr "%s'in kaldırılması gerekiyor"
 
-#: src/cmdline/cmdline_resolver.cc:366
+#: src/cmdline/cmdline_resolver.cc:365
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "%s'in %s (%s) sürümünün kurulması gerekiyor"
 
-#: src/cmdline/cmdline_resolver.cc:508
+#: src/cmdline/cmdline_resolver.cc:507
 #, c-format
 msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:517
+#: src/cmdline/cmdline_resolver.cc:516
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:531 src/solution_dialog.cc:127
+#: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
 #: src/solution_screen.cc:519
 msgid "Resolving dependencies..."
 msgstr "Bağımlılıklar çözüleniyor..."
 
-#: src/cmdline/cmdline_resolver.cc:563
+#: src/cmdline/cmdline_resolver.cc:562
 #, fuzzy, c-format
 #| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "açık: %d; kapalı: %d; ertele: %d; çakışma: %d"
 
-#: src/cmdline/cmdline_resolver.cc:616
+#: src/cmdline/cmdline_resolver.cc:615
 msgid "The following actions will resolve these dependencies:"
 msgstr "Aşağıdaki paketler bu bağımlılıkları karşılayacak:"
 
-#: src/cmdline/cmdline_resolver.cc:633
+#: src/cmdline/cmdline_resolver.cc:632
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Çözümü kabul et? [E/h/i/?]"
 
-#: src/cmdline/cmdline_resolver.cc:660 src/cmdline/cmdline_resolver.cc:767
+#: src/cmdline/cmdline_resolver.cc:659 src/cmdline/cmdline_resolver.cc:766
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Bağımlılıkları çözmek için yapılan işlemler iptal ediliyor."
 
-#: src/cmdline/cmdline_resolver.cc:663
+#: src/cmdline/cmdline_resolver.cc:662
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:693
+#: src/cmdline/cmdline_resolver.cc:692
 msgid "The following commands are available:"
 msgstr "Şu komutlar mevcut:"
 
-#: src/cmdline/cmdline_resolver.cc:713
+#: src/cmdline/cmdline_resolver.cc:712
 msgid "File to write resolver state to: "
 msgstr "Çözümleyici durumunu dosyaya yaz:"
 
-#: src/cmdline/cmdline_resolver.cc:728
+#: src/cmdline/cmdline_resolver.cc:727
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Geçersiz yanıt. Lütfen şu komutları kullanın: "
 
-#: src/cmdline/cmdline_resolver.cc:741
+#: src/cmdline/cmdline_resolver.cc:740
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "Belirlenmiş sürede çözüm bulunamadı. Denemeye devam et? [E/h]"
 
-#: src/cmdline/cmdline_resolver.cc:770
+#: src/cmdline/cmdline_resolver.cc:769
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Geçersiz yanıt. lütfen 'e' veya 'h' girin."
 
-#: src/cmdline/cmdline_resolver.cc:779
+#: src/cmdline/cmdline_resolver.cc:778
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Başımlılık çözülemiyor! Vazgeçiliyor..."
 
-#: src/cmdline/cmdline_resolver.cc:785
+#: src/cmdline/cmdline_resolver.cc:784
 msgid "*** No more solutions available ***"
 msgstr "*** Başka bir çözüm mevcut değil ***"
 
-#: src/cmdline/cmdline_resolver.cc:804
+#: src/cmdline/cmdline_resolver.cc:803
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:964
+#: src/cmdline/cmdline_resolver.cc:963
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:971
+#: src/cmdline/cmdline_resolver.cc:970
 #, fuzzy
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr "Başımlılık çözülemiyor! Vazgeçiliyor..."
 
-#: src/cmdline/cmdline_resolver.cc:985
+#: src/cmdline/cmdline_resolver.cc:984
 #, fuzzy
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr "Başımlılık çözülemiyor! Vazgeçiliyor..."
 
-#: src/cmdline/cmdline_resolver.cc:994
+#: src/cmdline/cmdline_resolver.cc:993
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
 "performed."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:1000
+#: src/cmdline/cmdline_resolver.cc:999
 #, fuzzy, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Bağımlılıklar çözülemiytor."
@@ -1777,7 +1776,7 @@ msgid "State"
 msgstr "Durum"
 
 #: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:436
-#: src/generic/apt/matchers.cc:2488
+#: src/generic/apt/matchers.cc:2490
 msgid "Provided by"
 msgstr "Sağlayıcı"
 
@@ -2029,7 +2028,7 @@ msgstr ""
 msgid "Candidate"
 msgstr "AdaySür"
 
-#: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1595
+#: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1597
 msgid "Install"
 msgstr "Kur"
 
@@ -2469,15 +2468,13 @@ msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr ""
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#. PS: indentation sucks!
-#. PS2: Daniel, please unfuzzy such translations (added "update") yourself!
-#: src/generic/apt/download_update_manager.cc:393
+#: src/generic/apt/download_update_manager.cc:391
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:400
+#: src/generic/apt/download_update_manager.cc:398
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
@@ -2485,7 +2482,7 @@ msgid ""
 msgstr ""
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:406
+#: src/generic/apt/download_update_manager.cc:404
 #, fuzzy, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
@@ -2606,166 +2603,166 @@ msgstr ""
 "\n"
 "Günlük tamamlandı.\n"
 
-#: src/generic/apt/matchers.cc:1344
+#: src/generic/apt/matchers.cc:1346
 msgid "Automatically Installed"
 msgstr "Otomatik Olarak Kuruldu"
 
-#: src/generic/apt/matchers.cc:1372 src/generic/apt/matchers.cc:1579
+#: src/generic/apt/matchers.cc:1374 src/generic/apt/matchers.cc:1581
 msgid "Broken"
 msgstr "Kırık"
 
-#: src/generic/apt/matchers.cc:1577
+#: src/generic/apt/matchers.cc:1579
 msgid "Unchanged"
 msgstr "Değiştirilmemiş"
 
-#: src/generic/apt/matchers.cc:1581
+#: src/generic/apt/matchers.cc:1583
 msgid "Remove [unused]"
 msgstr "Kaldır [kullanılmayan]"
 
-#: src/generic/apt/matchers.cc:1583
+#: src/generic/apt/matchers.cc:1585
 msgid "Hold [auto]"
 msgstr "Tut [oto]"
 
-#: src/generic/apt/matchers.cc:1585
+#: src/generic/apt/matchers.cc:1587
 msgid "Install [auto]"
 msgstr "Kur [oto]"
 
-#: src/generic/apt/matchers.cc:1587
+#: src/generic/apt/matchers.cc:1589
 msgid "Remove [auto]"
 msgstr "Kaldır [oto]"
 
-#: src/generic/apt/matchers.cc:1589
+#: src/generic/apt/matchers.cc:1591
 msgid "Downgrade"
 msgstr "Eski sürümü kur"
 
-#: src/generic/apt/matchers.cc:1591
+#: src/generic/apt/matchers.cc:1593
 msgid "Hold"
 msgstr "Tut"
 
-#: src/generic/apt/matchers.cc:1593
+#: src/generic/apt/matchers.cc:1595
 msgid "Reinstall"
 msgstr "Tekrar kur"
 
-#: src/generic/apt/matchers.cc:1597
+#: src/generic/apt/matchers.cc:1599
 msgid "Remove"
 msgstr "Kaldır"
 
-#: src/generic/apt/matchers.cc:1599
+#: src/generic/apt/matchers.cc:1601
 msgid "Upgrade"
 msgstr "Yükselt"
 
-#: src/generic/apt/matchers.cc:1625
+#: src/generic/apt/matchers.cc:1627
 msgid "Keep"
 msgstr "Koru"
 
-#: src/generic/apt/matchers.cc:1657
+#: src/generic/apt/matchers.cc:1659
 msgid "Virtual"
 msgstr "Sanal"
 
-#: src/generic/apt/matchers.cc:1684
+#: src/generic/apt/matchers.cc:1686
 msgid "Installed"
 msgstr "Kurulu"
 
-#: src/generic/apt/matchers.cc:1712
+#: src/generic/apt/matchers.cc:1714
 msgid "Essential"
 msgstr "Temel"
 
-#: src/generic/apt/matchers.cc:1737
+#: src/generic/apt/matchers.cc:1739
 msgid "Config Files Remain"
 msgstr "Yapılandırma Dosyası Kalan"
 
-#: src/generic/apt/matchers.cc:2174
+#: src/generic/apt/matchers.cc:2176
 msgid "Garbage"
 msgstr "Çöp"
 
-#: src/generic/apt/matchers.cc:2543
+#: src/generic/apt/matchers.cc:2545
 msgid "No reverse dependencies"
 msgstr "Ters bağımlılık yok"
 
-#: src/generic/apt/matchers.cc:2621
+#: src/generic/apt/matchers.cc:2623
 msgid "New Package"
 msgstr "Yeni Paket"
 
-#: src/generic/apt/matchers.cc:2646
+#: src/generic/apt/matchers.cc:2648
 msgid "Upgradable"
 msgstr "Yükseltilebilir"
 
-#: src/generic/apt/matchers.cc:2671
+#: src/generic/apt/matchers.cc:2673
 #, fuzzy
 msgid "Obsolete"
 msgstr "Eskiyenler"
 
-#: src/generic/apt/matchers.cc:3110
+#: src/generic/apt/matchers.cc:3112
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Bilinmeyen eylem tipi: %s"
 
-#: src/generic/apt/matchers.cc:3151
+#: src/generic/apt/matchers.cc:3153
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "%s'den sonra sonlandırılmamış yalın dizi"
 
-#: src/generic/apt/matchers.cc:3248
+#: src/generic/apt/matchers.cc:3250
 #, c-format
 msgid "Unknown priority %s"
 msgstr "Bilinmeyen öncelik: %s"
 
-#: src/generic/apt/matchers.cc:3267
+#: src/generic/apt/matchers.cc:3269
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr ""
 
-#: src/generic/apt/matchers.cc:3270
+#: src/generic/apt/matchers.cc:3272
 #, fuzzy, c-format
 msgid "Expected '%c', got '%c'."
 msgstr "',' ya da '(' gerekli, '%c' değil"
 
-#: src/generic/apt/matchers.cc:3577 src/generic/apt/matchers.cc:4015
-#: src/generic/apt/matchers.cc:4058
+#: src/generic/apt/matchers.cc:3579 src/generic/apt/matchers.cc:4019
+#: src/generic/apt/matchers.cc:4062
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Bilinmeyen bağımlılık tipi: %s"
 
-#: src/generic/apt/matchers.cc:3631
+#: src/generic/apt/matchers.cc:3633
 #, fuzzy, c-format
 msgid "Unknown matcher type: \"%s\"."
 msgstr "Bilinmeyen kalıp tipi: %c"
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
-#: src/generic/apt/matchers.cc:3642 src/generic/apt/matchers.cc:3651
+#: src/generic/apt/matchers.cc:3644 src/generic/apt/matchers.cc:3653
 #, c-format
 msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
 "a context enclosed by ?%s)."
 msgstr ""
 
-#: src/generic/apt/matchers.cc:3868
+#: src/generic/apt/matchers.cc:3872
 msgid "Unmatched '('"
 msgstr "Eşleşmeyen '('"
 
-#: src/generic/apt/matchers.cc:4021
+#: src/generic/apt/matchers.cc:4025
 msgid "Provides: cannot be broken"
 msgstr "Sunar: bozuk olamaz"
 
-#: src/generic/apt/matchers.cc:4084
+#: src/generic/apt/matchers.cc:4088
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Bilinmeyen kalıp tipi: %c"
 
-#: src/generic/apt/matchers.cc:4107
+#: src/generic/apt/matchers.cc:4111
 msgid "Can't search for \"\""
 msgstr "\"\" aranamıyor"
 
-#: src/generic/apt/matchers.cc:4139
+#: src/generic/apt/matchers.cc:4143
 msgid "Unexpected empty expression"
 msgstr "Beklenmeyen boş ifade"
 
-#: src/generic/apt/matchers.cc:4172
+#: src/generic/apt/matchers.cc:4176
 msgid "Badly formed expression"
 msgstr "Kötü biçimli ifade"
 
-#: src/generic/apt/matchers.cc:4211
+#: src/generic/apt/matchers.cc:4215
 msgid "Unexpected ')'"
 msgstr "Beklenmeyen ')'"
 
