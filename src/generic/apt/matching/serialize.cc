@@ -318,6 +318,7 @@ namespace aptitude
 	    out += p->get_for_variable_name();
 	    out += ": ";
 	    serialize_pattern(p->get_for_pattern(), out);
+	    break;
 
 	  case pattern::garbage:
 	    out += "?garbage";
