@@ -62,11 +62,11 @@ namespace
     { "?for x: ?=x ?for y: ?depends(?depends(?=y) ?depends(?=x))",
       "?for x: ?=x ?for y: ?depends(?depends(?=y) ?depends(?=x))",
       pattern::make_for("x",
-			pattern::make_and(pattern::make_equal(0, "x"),
+			pattern::make_and(pattern::make_equal(0),
 					  pattern::make_for("y",
 							    pattern::make_depends(pkgCache::Dep::Depends, false,
-										  pattern::make_and(pattern::make_depends(pkgCache::Dep::Depends, false, pattern::make_equal(1, "y")),
-												    pattern::make_depends(pkgCache::Dep::Depends, false, pattern::make_equal(0, "x"))))))) },
+										  pattern::make_and(pattern::make_depends(pkgCache::Dep::Depends, false, pattern::make_equal(1)),
+												    pattern::make_depends(pkgCache::Dep::Depends, false, pattern::make_equal(0))))))) },
 
     { "?not(!~nfoo)", "!(!?name(\"foo\"))",
       pattern::make_not(pattern::make_not(pattern::make_name("foo"))) },
@@ -154,7 +154,7 @@ namespace
 			pattern::make_depends(pkgCache::Dep::Depends,
 					      false,
 					      pattern::make_for("y",
-								pattern::make_bind("y", 1, pattern::make_source_package("argle~"))))) },
+								pattern::make_bind(1, pattern::make_source_package("argle~"))))) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);

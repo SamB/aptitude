@@ -27,6 +27,12 @@ namespace aptitude
 {
   namespace matching
   {
+    void serialize_pattern(const ref_ptr<pattern> &p,
+			   std::string &out,
+			   // Used to serialize variable names when
+			   // we encounter them.
+			   std::vector<std::string> &variable_name_stack);
+
     namespace
     {
       void serialize_string(const std::string &s,
@@ -76,17 +82,19 @@ namespace aptitude
 
       void serialize_pattern_term(const std::string &name,
 				  const ref_ptr<pattern> &p,
-				  std::string &out)
+				  std::string &out,
+				  std::vector<std::string> &variable_name_stack)
       {
 	out.push_back('?');
 	out += name;
 	out.push_back('(');
-	serialize_pattern(p, out);
+	serialize_pattern(p, out, variable_name_stack);
 	out.push_back(')');
       }
 
       void serialize_pattern_list(const std::vector<ref_ptr<pattern> > &patterns,
-				  std::string &out)
+				  std::string &out,
+				  std::vector<std::string> &variable_name_stack)
       {
 	bool first = true;
 	for(std::vector<ref_ptr<pattern> >::const_iterator it =
@@ -97,7 +105,7 @@ namespace aptitude
 	    else
 	      out += ", ";
 
-	    serialize_pattern(*it, out);
+	    serialize_pattern(*it, out, variable_name_stack);
 	  }
       }
 
@@ -169,7 +177,8 @@ namespace aptitude
 
       void serialize_term(const ref_ptr<pattern> &p,
 			  std::string &out,
-			  int precedence)
+			  int precedence,
+			  std::vector<std::string> &variable_name_stack)
       {
 	const int local_precedence = term_precedence(p);
 	if(local_precedence <= precedence)
@@ -226,13 +235,15 @@ namespace aptitude
 	  case pattern::all_versions:
 	    serialize_pattern_term("all-versions",
 				   p->get_all_versions_pattern(),
-				   out);
+				   out,
+				   variable_name_stack);
 	    break;
 
 	  case pattern::any_version:
 	    serialize_pattern_term("any-version",
 				   p->get_any_version_pattern(),
-				   out);
+				   out,
+				   variable_name_stack);
 	    break;
 
 	  case pattern::automatic:
@@ -252,16 +263,18 @@ namespace aptitude
 		  else
 		    out.push_back(' ');
 
-		  serialize_term(*it, out, and_precedence);
+		  serialize_term(*it, out, and_precedence, variable_name_stack);
 		}
 	    }
 	    break;
 
 	  case pattern::bind:
 	    out += "?bind(";
-	    out += p->get_bind_variable_name();
+	    eassert(p->get_bind_variable_index() >= 0 &&
+		    p->get_bind_variable_index() < variable_name_stack.size());
+	    out += variable_name_stack[p->get_bind_variable_index()];
 	    out += ", ";
-	    serialize_pattern(p->get_bind_pattern(), out);
+	    serialize_pattern(p->get_bind_pattern(), out, variable_name_stack);
 	    out.push_back(')');
 	    break;
 
@@ -292,7 +305,7 @@ namespace aptitude
 	      out += "broken-";
 	    serialize_deptype(p->get_depends_depends_type(), out);
 	    out.push_back('(');
-	    serialize_pattern(p->get_depends_pattern(), out);
+	    serialize_pattern(p->get_depends_pattern(), out, variable_name_stack);
 	    out.push_back(')');
 	    break;
 
@@ -308,7 +321,9 @@ namespace aptitude
 
 	  case pattern::equal:
 	    out += "?=";
-	    out += p->get_equal_variable_name();
+	    eassert(p->get_equal_stack_position() >= 0);
+	    eassert(p->get_equal_stack_position() < variable_name_stack.size());
+	    out += variable_name_stack[p->get_equal_stack_position()];
 	    break;
 
 	  case pattern::false_tp:
@@ -319,7 +334,10 @@ namespace aptitude
 	    out += "?for ";
 	    out += p->get_for_variable_name();
 	    out += ": ";
-	    serialize_pattern(p->get_for_pattern(), out);
+	    variable_name_stack.push_back(p->get_for_variable_name());
+	    serialize_pattern(p->get_for_pattern(), out,
+			      variable_name_stack);
+	    variable_name_stack.pop_back();
 	    break;
 
 	  case pattern::garbage:
@@ -348,7 +366,7 @@ namespace aptitude
 
 	  case pattern::narrow:
 	    out += "?narrow(";
-	    serialize_pattern(p, out);
+	    serialize_pattern(p, out, variable_name_stack);
 	    out.push_back(')');
 	    break;
 
@@ -358,7 +376,7 @@ namespace aptitude
 
 	  case pattern::not_tp:
 	    out.push_back('!');
-	    serialize_term(p->get_not_pattern(), out, not_precedence);
+	    serialize_term(p->get_not_pattern(), out, not_precedence, variable_name_stack);
 	    break;
 
 	  case pattern::obsolete:
@@ -378,7 +396,7 @@ namespace aptitude
 		  else
 		    out += " | ";
 
-		  serialize_term(*it, out, or_precedence);
+		  serialize_term(*it, out, or_precedence, variable_name_stack);
 		}
 	    }
 	    break;
@@ -417,7 +435,8 @@ namespace aptitude
 
 	  case pattern::provides:
 	    out += "?provides(";
-	    serialize_pattern(p->get_provides_pattern(), out);
+	    serialize_pattern(p->get_provides_pattern(), out,
+			      variable_name_stack);
 	    out.push_back(')');
 	    break;
 
@@ -428,13 +447,15 @@ namespace aptitude
 	    out += "reverse-";
 	    serialize_deptype(p->get_depends_depends_type(), out);
 	    out.push_back('(');
-	    serialize_pattern(p->get_depends_pattern(), out);
+	    serialize_pattern(p->get_depends_pattern(), out,
+			      variable_name_stack);
 	    out.push_back(')');
 	    break;
 
 	  case pattern::reverse_provides:
 	    out += "?reverse-provides(";
-	    serialize_pattern(p->get_reverse_provides_pattern(), out);
+	    serialize_pattern(p->get_reverse_provides_pattern(), out,
+			      variable_name_stack);
 	    out.push_back(')');
 	    break;
 
@@ -503,9 +524,17 @@ namespace aptitude
     }
 
     void serialize_pattern(const ref_ptr<pattern> &p,
+			   std::string &out,
+			   std::vector<std::string> &variable_name_stack)
+    {
+      serialize_term(p, out, default_precedence, variable_name_stack);
+    }
+
+    void serialize_pattern(const ref_ptr<pattern> &p,
 			   std::string &out)
     {
-      serialize_term(p, out, default_precedence);
+      std::vector<std::string> variable_name_stack;
+      serialize_pattern(p, out, variable_name_stack);
     }
   }
 }

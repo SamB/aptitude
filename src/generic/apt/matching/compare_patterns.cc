@@ -107,7 +107,7 @@ namespace aptitude
 
 	  case pattern::bind:
 	    {
-	      const int name_cmp = p1->get_bind_variable_name().compare(p2->get_bind_variable_name());
+	      const int name_cmp = compare_int(p1->get_bind_variable_index(), p2->get_bind_variable_index());
 
 	      if(name_cmp != 0)
 		return name_cmp;

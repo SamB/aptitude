@@ -254,7 +254,7 @@ namespace aptitude
 	   *
 	   *  Matches if PATTERN matches the value of X.
 	   *
-	   *  Fields: variable_name, pattern.
+	   *  Fields: pattern, variable_index.
 	   */
 	  bind,
 	  /** \brief ?broken
@@ -311,7 +311,7 @@ namespace aptitude
 	   *
 	   *  Matches packages/versions that equal the given stack position.
 	   *
-	   *  Fields: variable_name, stack_position.
+	   *  Fields: stack_position.
 	   */
 	  equal,
 	  /** \brief ?false
@@ -711,9 +711,8 @@ namespace aptitude
       }
 
       // Allocate a pattern that has stack position information.
-      pattern(type _tp, size_t _stack_position,
-	      const std::string &_string_info)
-	: tp(_tp), string_info(_string_info)
+      pattern(type _tp, size_t _stack_position)
+	: tp(_tp)
       {
 	info.stack_position = _stack_position;
       }
@@ -721,9 +720,8 @@ namespace aptitude
       // Allocate a pattern that has stack position information
       // and a pattern.
       pattern(type _tp, size_t _stack_position,
-	      const std::string &_string_info,
 	      const cwidget::util::ref_ptr<pattern> &p)
-	: tp(_tp), string_info(_string_info)
+	: tp(_tp)
       {
 	info.stack_position = _stack_position;
 	sub_patterns.push_back(p);
@@ -926,26 +924,24 @@ namespace aptitude
 
       /** \brief Create a ?bind term.
        *
-       *  \param variable_name     The variable name to bind.
        *  \param p                 The pattern in which to
        *                           bind this variable.
        *  \param variable_index    The index on the stack of the
        *                           bound variable.
        */
       static cwidget::util::ref_ptr<pattern>
-      make_bind(const std::string &variable_name,
-		size_t variable_index,
+      make_bind(size_t variable_index,
 		const cwidget::util::ref_ptr<pattern> &p)
       {
-	return new pattern(bind, variable_index, variable_name, p);
+	return new pattern(bind, variable_index, p);
       }
 
-      /** \brief Retrieve the variable name of a ?bind term. */
-      const std::string &get_bind_variable_name() const
+      /** \brief Retrieve the variable index of a ?bind term. */
+      size_t get_bind_variable_index() const
       {
 	eassert(tp == bind);
 
-	return string_info;
+	return info.stack_position;
       }
 
       /** \brief Retrieve the sub-pattern of a ?bind term. */
@@ -1124,10 +1120,9 @@ namespace aptitude
       // @{
 
       /** \brief Create a ?= term. */
-      static cwidget::util::ref_ptr<pattern> make_equal(size_t stack_position,
-							const std::string &variable_name)
+      static cwidget::util::ref_ptr<pattern> make_equal(size_t stack_position)
       {
-	return new pattern(equal, stack_position, variable_name);
+	return new pattern(equal, stack_position);
       }
 
       /** \brief Retrieve the stack position of a ?= term. */
@@ -1136,14 +1131,6 @@ namespace aptitude
 	eassert(tp == equal);
 
 	return info.stack_position;
-      }
-
-      /** \brief Retrieve the variable name of a ?= term. */
-      const std::string &get_equal_variable_name() const
-      {
-	eassert(tp == equal);
-
-	return string_info;
       }
 
       // @}

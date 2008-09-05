@@ -732,8 +732,7 @@ ref_ptr<pattern> maybe_bind(const string &bound_variable,
   if(bound_variable.empty())
     return term;
   else
-    return pattern::make_bind(bound_variable,
-			      get_variable_index(bound_variable,
+    return pattern::make_bind(get_variable_index(bound_variable,
 						 name_context),
 			      term);
 }
@@ -914,7 +913,7 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
 	parse_whitespace(start, end);
 	parse_close_paren(start, end);
 
-	return pattern::make_bind(variable_name, idx, p);
+	return pattern::make_bind(idx, p);
       }
     case term_type_broken:
       return pattern::make_broken();
@@ -1021,8 +1020,7 @@ ref_ptr<pattern> parse_function_style_term_tail(string::const_iterator &start,
 					 bound_variable.c_str()));
       else
 	return pattern::make_equal(get_variable_index(bound_variable,
-						      name_context),
-				   bound_variable);
+						      name_context));
     }
 
   // The name is considered to be the next sequence of non-whitespace
