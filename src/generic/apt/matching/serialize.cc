@@ -388,7 +388,7 @@ namespace aptitude
 	  case pattern::or_tp:
 	    {
 	      bool first = true;
-	      const std::vector<ref_ptr<pattern> > &patterns = p->get_and_patterns();
+	      const std::vector<ref_ptr<pattern> > &patterns = p->get_or_patterns();
 
 	      for(std::vector<ref_ptr<pattern> >::const_iterator it =
 		    patterns.begin(); it != patterns.end(); ++it)
