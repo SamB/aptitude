@@ -249,6 +249,11 @@ namespace
 
     // Test short forms.
 
+    { "~D ?true", "?depends(?true)",
+      pattern::make_depends(pkgCache::Dep::Depends,
+			    false,
+			    pattern::make_true()) },
+
     { "~Ddepends: ?true", "?depends(?true)",
       pattern::make_depends(pkgCache::Dep::Depends,
 			    false,
@@ -327,6 +332,11 @@ namespace
 			    pattern::make_true()) },
 
     // Test ~DB forms.
+
+    { "~DB ?true", "?broken-depends(?true)",
+      pattern::make_depends(pkgCache::Dep::Depends,
+			    true,
+			    pattern::make_true()) },
 
     { "~DBdepends: ?true", "?broken-depends(?true)",
       pattern::make_depends(pkgCache::Dep::Depends,
