@@ -516,7 +516,10 @@ namespace aptitude
 	    break;
 
 	  case pattern::widen:
-	    out += "?widen";
+	    out += "?widen(";
+	    serialize_pattern(p->get_widen_pattern(), out,
+			      variable_name_stack);
+	    out.push_back(')');
 	    break;
 	  }
 
