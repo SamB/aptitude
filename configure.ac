@@ -38,7 +38,7 @@ AC_CHECK_LIB(pthread, main,
 	HAVE_LIBPTHREAD=1
 	, [AC_MSG_ERROR([Can't find the POSIX thread libraries])])
 
-ALL_LINGUAS="ar bs ca cs da de el es eu fi fr gl hu it ja km ku lt mr nb nl nn pl pt pt_BR ro ru sk sv tl tr vi zh_CN zh_TW"
+ALL_LINGUAS="ar bs ca cs da de dz el es eu fi fr gl hu it ja km ku lt mr nb ne nl nn pl pt pt_BR ro ru sk sv th tl tr uk vi zh_CN zh_TW"
 AM_GNU_GETTEXT([external])
 
 HAVE_EPT=
