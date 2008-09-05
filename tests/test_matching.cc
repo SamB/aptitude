@@ -66,7 +66,7 @@ namespace
 										  pattern::make_and(pattern::make_depends(pkgCache::Dep::Depends, false, pattern::make_equal(1, "y")),
 												    pattern::make_depends(pkgCache::Dep::Depends, false, pattern::make_equal(0, "x"))))))) },
 
-    { "?not(!~nfoo)", "?not(?not(?name(\"foo\")))",
+    { "?not(!~nfoo)", "!(!?name(\"foo\"))",
       pattern::make_not(pattern::make_not(pattern::make_name("foo"))) },
 
 
