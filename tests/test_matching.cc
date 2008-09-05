@@ -188,6 +188,12 @@ namespace
       "?narrow(?broken, ?version(\"5\\\\.43\\\\.2\"))",
       pattern::make_narrow(pattern::make_broken(),
 			   pattern::make_version("5\\.43\\.2")) },
+
+    { "?name(elsi nore)", "?name(\"elsi nore\")",
+      pattern::make_name("elsi nore") },
+
+    { "~nelsi~ nore", "?name(\"elsi nore\")",
+      pattern::make_name("elsi nore") },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
