@@ -57,6 +57,16 @@ namespace
   };
 
   pattern_test test_patterns[] = {
+    { "?for x: ?=x ?for y: ?depends(?depends(?=y) ?depends(?=x))",
+      "?for x: ?=x ?for y: ?depends(?depends(?=y) ?depends(?=x))",
+      pattern::make_for("x",
+			pattern::make_and(pattern::make_equal(0, "x"),
+					  pattern::make_for("y",
+							    pattern::make_depends(pkgCache::Dep::Depends, false,
+										  pattern::make_and(pattern::make_depends(pkgCache::Dep::Depends, false, pattern::make_equal(1, "y")),
+												    pattern::make_depends(pkgCache::Dep::Depends, false, pattern::make_equal(0, "x"))))))) },
+										  
+
     { "?archive(^asdf.*asdf$)", "?archive(\"^asdf.*asdf$\")",
       pattern::make_archive("^asdf.*asdf$") },
 
