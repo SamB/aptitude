@@ -123,19 +123,19 @@ namespace
     { "?all-versions(~nelba~|a~\"ble)", "?all-versions(?name(\"elba|a\\\"ble\"))",
       pattern::make_all_versions(pattern::make_name("elba|a\"ble")) },
 
-    { "?archive(^asdf.*asdf$)", "?archive(\"^asdf.*asdf$\")",
-      pattern::make_archive("^asdf.*asdf$") },
-
-    { "?any-version(~Tasdf)", "?any-version(?true ?name(\"asdf\"))",
-      pattern::make_any_version(pattern::make_and(pattern::make_true(),
-						  pattern::make_name("asdf"))) },
-
     { "?and(?maintainer(xyz), ?broken ?broken-depends, ?archive(stable))",
       "?maintainer(\"xyz\") (?broken ?broken-depends) ?archive(\"stable\")",
       pattern::make_and(pattern::make_maintainer("xyz"),
 			pattern::make_and(pattern::make_broken(),
 					  pattern::make_broken_type(pkgCache::Dep::Depends)),
-			pattern::make_archive("stable")) }
+			pattern::make_archive("stable")) },
+
+    { "?any-version(~Tasdf)", "?any-version(?true ?name(\"asdf\"))",
+      pattern::make_any_version(pattern::make_and(pattern::make_true(),
+						  pattern::make_name("asdf"))) },
+
+    { "?archive(^asdf.*asdf$)", "?archive(\"^asdf.*asdf$\")",
+      pattern::make_archive("^asdf.*asdf$") },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
