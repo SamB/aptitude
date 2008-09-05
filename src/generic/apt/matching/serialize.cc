@@ -444,12 +444,12 @@ namespace aptitude
 
 	  case pattern::reverse_depends:
 	    out.push_back('?');
-	    if(p->get_depends_broken())
+	    if(p->get_reverse_depends_broken())
 	      out += "broken-";
 	    out += "reverse-";
-	    serialize_deptype(p->get_depends_depends_type(), out);
+	    serialize_deptype(p->get_reverse_depends_depends_type(), out);
 	    out.push_back('(');
-	    serialize_pattern(p->get_depends_pattern(), out,
+	    serialize_pattern(p->get_reverse_depends_pattern(), out,
 			      variable_name_stack);
 	    out.push_back(')');
 	    break;
