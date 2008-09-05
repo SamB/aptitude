@@ -65,10 +65,10 @@ namespace
 							    pattern::make_depends(pkgCache::Dep::Depends, false,
 										  pattern::make_and(pattern::make_depends(pkgCache::Dep::Depends, false, pattern::make_equal(1, "y")),
 												    pattern::make_depends(pkgCache::Dep::Depends, false, pattern::make_equal(0, "x"))))))) },
-										  
 
-    { "?archive(^asdf.*asdf$)", "?archive(\"^asdf.*asdf$\")",
-      pattern::make_archive("^asdf.*asdf$") },
+    { "?not(!~nfoo)", "?not(?not(?name(\"foo\")))",
+      pattern::make_not(pattern::make_not(pattern::make_name("foo"))) },
+
 
     { "?action(install)", "?action(install)",
       pattern::make_action(pattern::action_install) },
@@ -94,8 +94,35 @@ namespace
     { "?action(keep)", "?action(keep)",
       pattern::make_action(pattern::action_keep) },
 
+    { "~ainstall", "?action(install)",
+      pattern::make_action(pattern::action_install) },
+
+    { "~aupgrade", "?action(upgrade)",
+      pattern::make_action(pattern::action_upgrade) },
+
+    { "~adowngrade", "?action(downgrade)",
+      pattern::make_action(pattern::action_downgrade) },
+
+    { "~aremove", "?action(remove)",
+      pattern::make_action(pattern::action_remove) },
+
+    { "~apurge", "?action(purge)",
+      pattern::make_action(pattern::action_purge) },
+
+    { "~areinstall", "?action(reinstall)",
+      pattern::make_action(pattern::action_reinstall) },
+
+    { "~ahold", "?action(hold)",
+      pattern::make_action(pattern::action_hold) },
+
+    { "~akeep", "?action(keep)",
+      pattern::make_action(pattern::action_keep) },
+
     { "?all-versions(~nelba~|a~\"ble)", "?all-versions(?name(\"elba|a\\\"ble\"))",
       pattern::make_all_versions(pattern::make_name("elba|a\"ble")) },
+
+    { "?archive(^asdf.*asdf$)", "?archive(\"^asdf.*asdf$\")",
+      pattern::make_archive("^asdf.*asdf$") },
 
     { "?any-version(~Tasdf)", "?any-version(?true ?name(\"asdf\"))",
       pattern::make_any_version(pattern::make_and(pattern::make_true(),
