@@ -743,6 +743,12 @@ namespace
 
     { "?source-version(\"fdsa\")", "?source-version(\"fdsa\")",
       pattern::make_source_version("fdsa") },
+
+    { "?tag(type::foo)", "?tag(\"type::foo\")",
+      pattern::make_tag("type::foo") },
+
+    { "?tag(type::bar)", "?tag(\"type::bar\")",
+      pattern::make_tag("type::bar") },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
