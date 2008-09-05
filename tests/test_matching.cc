@@ -241,6 +241,12 @@ namespace
 			    false,
 			    pattern::make_true()) },
 
+    // ?conflicts is handled below, with ?depends.
+
+    { "?config-files", "?config-files", pattern::make_config_files() },
+
+    { "~c", "?config-files", pattern::make_config_files() },
+
     // Test short forms.
 
     { "~Ddepends: ?true", "?depends(?true)",
