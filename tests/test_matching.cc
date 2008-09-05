@@ -216,6 +216,12 @@ namespace
     { "~nasdf  |  ?new", "?name(\"asdf\") | ?new",
       pattern::make_or(pattern::make_name("asdf"),
 		       pattern::make_new()) },
+
+    { "?origin(Debian)", "?origin(\"Debian\")",
+      pattern::make_origin("Debian") },
+
+    { "~O Debian", "?origin(\"Debian\")",
+      pattern::make_origin("Debian") },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
