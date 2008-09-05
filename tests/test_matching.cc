@@ -211,6 +211,13 @@ namespace
 			    false,
 			    pattern::make_true()) },
 
+    // Repeated so we can test that just changing the sub-pattern
+    // causes a mismatch.
+    { "?depends(?false)", "?depends(?false)",
+      pattern::make_depends(pkgCache::Dep::Depends,
+			    false,
+			    pattern::make_false()) },
+
     { "?predepends(?true)", "?predepends(?true)",
       pattern::make_depends(pkgCache::Dep::PreDepends,
 			    false,
@@ -501,6 +508,12 @@ namespace
       pattern::make_reverse_depends(pkgCache::Dep::Depends,
 				    false,
 				    pattern::make_true()) },
+
+    // Test that changing the sub-pattern gives us an inequal result.
+    { "?reverse-depends(?false)", "?reverse-depends(?false)",
+      pattern::make_reverse_depends(pkgCache::Dep::Depends,
+				    false,
+				    pattern::make_false()) },
 
     { "?reverse-predepends(?true)", "?reverse-predepends(?true)",
       pattern::make_reverse_depends(pkgCache::Dep::PreDepends,
