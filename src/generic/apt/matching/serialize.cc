@@ -356,7 +356,7 @@ namespace aptitude
 
 	  case pattern::not_tp:
 	    out.push_back('!');
-	    serialize_term(p, out, not_precedence);
+	    serialize_term(p->get_not_pattern(), out, not_precedence);
 	    break;
 
 	  case pattern::obsolete:
