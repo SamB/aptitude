@@ -505,7 +505,7 @@ namespace aptitude
 
 	  case pattern::version:
 	    serialize_regexp_term("version",
-				  p->get_user_tag_regex_info(),
+				  p->get_version_regex_info(),
 				  out);
 	    break;
 
