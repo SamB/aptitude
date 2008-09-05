@@ -194,6 +194,14 @@ namespace
 
     { "~nelsi~ nore", "?name(\"elsi nore\")",
       pattern::make_name("elsi nore") },
+
+    { "?new FOO", "?new ?name(\"FOO\")",
+      pattern::make_and(pattern::make_new(),
+			pattern::make_name("FOO")) },
+
+    { "~N FOO", "?new ?name(\"FOO\")",
+      pattern::make_and(pattern::make_new(),
+			pattern::make_name("FOO")) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
