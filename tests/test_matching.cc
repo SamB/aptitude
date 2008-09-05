@@ -163,6 +163,14 @@ namespace
     { "~g asdf", "?garbage ?name(\"asdf\")",
       pattern::make_and(pattern::make_garbage(),
 			pattern::make_name("asdf")) },
+
+    { "?installed asdf", "?installed ?name(\"asdf\")",
+      pattern::make_and(pattern::make_installed(),
+			pattern::make_name("asdf")) },
+
+    { "~i asdf", "?installed ?name(\"asdf\")",
+      pattern::make_and(pattern::make_installed(),
+			pattern::make_name("asdf")) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
