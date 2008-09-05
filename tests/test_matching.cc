@@ -26,6 +26,8 @@
 
 #include <cwidget/generic/util/ssprintf.h>
 
+#include <apt-pkg/error.h>
+
 using namespace aptitude::matching;
 using cwidget::util::ref_ptr;
 using cwidget::util::ssprintf;
@@ -261,6 +263,7 @@ public:
 	const pattern_test &test(test_patterns[i]);
 
 	ref_ptr<pattern> parsed(parse(test.input_pattern));
+	_error->DumpErrors();
 	CPPUNIT_ASSERT(parsed.valid());
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE(ssprintf("Comparing %s to %s",
@@ -278,6 +281,7 @@ public:
 	const pattern_test &test(test_patterns[i]);
 
 	ref_ptr<pattern> parsed(parse(test.input_pattern));
+	_error->DumpErrors();
 	CPPUNIT_ASSERT(parsed.valid());
 
 	std::string serialized(serialize_pattern(parsed));
@@ -307,6 +311,7 @@ public:
 	const pattern_test &test(test_patterns[i]);
 
 	ref_ptr<pattern> parsed(parse(test.expected_serialization));
+	_error->DumpErrors();
 	CPPUNIT_ASSERT(parsed.valid());
 
 	CPPUNIT_ASSERT_EQUAL_MESSAGE(ssprintf("Comparing %s and %s",
