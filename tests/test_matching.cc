@@ -363,6 +363,14 @@ namespace
 			    true,
 			    pattern::make_true()) },
 
+    { "?description(All the news that's fit to print)",
+      "?description(\"All the news that's fit to print\")",
+      pattern::make_description("All the news that's fit to print") },
+
+    { "~d \"All the news that's fit to print\"",
+      "?description(\"All the news that's fit to print\")",
+      pattern::make_description("All the news that's fit to print") },
+
     { "?garbage asdf", "?garbage ?name(\"asdf\")",
       pattern::make_and(pattern::make_garbage(),
 			pattern::make_name("asdf")) },
