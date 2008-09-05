@@ -180,12 +180,12 @@ namespace
 			pattern::make_name("asdf")) },
 
     { "?narrow(?broken, ?version(5\\.43\\.2))",
-      "?narrow(?broken, ?version(\"5\\\\.43\\\\.2))",
+      "?narrow(?broken, ?version(\"5\\\\.43\\\\.2\"))",
       pattern::make_narrow(pattern::make_broken(),
 			   pattern::make_version("5\\.43\\.2")) },
 
     { "~S  ?broken   ((?version(5\\.43\\.2)))",
-      "?narrow(?broken, ?version(\"5\\\\.43\\\\.2))",
+      "?narrow(?broken, ?version(\"5\\\\.43\\\\.2\"))",
       pattern::make_narrow(pattern::make_broken(),
 			   pattern::make_version("5\\.43\\.2")) },
   };
