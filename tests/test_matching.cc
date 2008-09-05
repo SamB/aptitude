@@ -134,6 +134,9 @@ namespace
       pattern::make_any_version(pattern::make_and(pattern::make_true(),
 						  pattern::make_name("asdf"))) },
 
+    { "~A \"^asdf.*asdf$\"", "?archive(\"^asdf.*asdf$\")",
+      pattern::make_archive("^asdf.*asdf$") },
+
     { "?archive(^asdf.*asdf$)", "?archive(\"^asdf.*asdf$\")",
       pattern::make_archive("^asdf.*asdf$") },
   };
