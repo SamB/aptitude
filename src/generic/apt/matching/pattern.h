@@ -876,6 +876,22 @@ namespace aptitude
 	return new pattern(and_tp, container.begin(), container.end());
       }
 
+      /** \brief Create a binary ?and term.
+       *
+       *  \param p1  The first sub-term of the ?and.
+       *  \param p2  The second sub-term of the ?and.
+       */
+      static cwidget::util::ref_ptr<pattern>
+      make_and(const cwidget::util::ref_ptr<pattern> &p1,
+	       const cwidget::util::ref_ptr<pattern> &p2)
+      {
+	std::vector<cwidget::util::ref_ptr<pattern> > patterns;
+	patterns.push_back(p1);
+	patterns.push_back(p2);
+
+	return new pattern(and_tp, patterns.begin(), patterns.end());
+      }
+
       /** \brief Retrieve the sub-patterns of an ?and term. */
       const std::vector<cwidget::util::ref_ptr<pattern> > &get_and_patterns() const
       {
