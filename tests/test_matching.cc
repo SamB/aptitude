@@ -171,6 +171,13 @@ namespace
     { "~i asdf", "?installed ?name(\"asdf\")",
       pattern::make_and(pattern::make_installed(),
 			pattern::make_name("asdf")) },
+
+    { "?maintainer(dburrows@debian.org)", "?maintainer(\"dburrows@debian.org\")",
+      pattern::make_maintainer("dburrows@debian.org") },
+
+    { "~m\tdburrows@debian.org asdf", "?maintainer(\"dburrows@debian.org\") ?name(\"asdf\")",
+      pattern::make_and(pattern::make_maintainer("dburrows@debian.org"),
+			pattern::make_name("asdf")) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
