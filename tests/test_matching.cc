@@ -689,6 +689,12 @@ namespace
       pattern::make_reverse_depends(pkgCache::Dep::DpkgBreaks,
 				    true,
 				    pattern::make_true()) },
+
+    { "?section(main)", "?section(\"main\")",
+      pattern::make_section("main") },
+
+    { "~smain", "?section(\"main\")",
+      pattern::make_section("main") },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
