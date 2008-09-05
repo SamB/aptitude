@@ -749,6 +749,8 @@ namespace
 
     { "?tag(type::bar)", "?tag(\"type::bar\")",
       pattern::make_tag("type::bar") },
+
+    { "?true", "?true", pattern::make_true() },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
