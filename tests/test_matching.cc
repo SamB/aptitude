@@ -123,6 +123,9 @@ namespace
     { "?all-versions(~nelba~|a~\"ble)", "?all-versions(?name(\"elba|a\\\"ble\"))",
       pattern::make_all_versions(pattern::make_name("elba|a\"ble")) },
 
+    { "?all-versions(~c)", "?all-versions(?config-files)",
+      pattern::make_all_versions(pattern::make_config_files()) },
+
     { "?and(?maintainer(xyz), ?broken ?broken-depends, ?archive(stable))",
       "?maintainer(\"xyz\") (?broken ?broken-depends) ?archive(\"stable\")",
       pattern::make_and(pattern::make_maintainer("xyz"),
@@ -133,6 +136,9 @@ namespace
     { "?any-version(~Tasdf)", "?any-version(?true ?name(\"asdf\"))",
       pattern::make_any_version(pattern::make_and(pattern::make_true(),
 						  pattern::make_name("asdf"))) },
+
+    { "?any-version(~i)", "?any-version(?installed)",
+      pattern::make_any_version(pattern::make_installed()) },
 
     { "~A \"^asdf.*asdf$\"", "?archive(\"^asdf.*asdf$\")",
       pattern::make_archive("^asdf.*asdf$") },
@@ -155,6 +161,20 @@ namespace
 					      false,
 					      pattern::make_for("y",
 								pattern::make_bind(1, pattern::make_source_package("argle~"))))) },
+
+    { "?for x: ?depends(?for y: ?bind(y, ?source-version(argle~~)))",
+      "?for x: ?depends(?for y: ?bind(y, ?source-version(\"argle~\")))",
+      pattern::make_for("x",
+			pattern::make_depends(pkgCache::Dep::Depends,
+					      false,
+					      pattern::make_for("y",
+								pattern::make_bind(1, pattern::make_source_version("argle~"))))) },
+
+    { "?for x: ?true", "?for x: ?true",
+      pattern::make_for("x", pattern::make_true()) },
+
+    { "?for x: ?false", "?for x: ?false",
+      pattern::make_for("x", pattern::make_false()) },
 
     { "?broken", "?broken", pattern::make_broken() },
 
@@ -426,10 +446,10 @@ namespace
       pattern::make_narrow(pattern::make_broken(),
 			   pattern::make_version("5\\.43\\.2")) },
 
-    { "~S  ?broken   ((?version(5\\.43\\.2)))",
-      "?narrow(?broken, ?version(\"5\\\\.43\\\\.2\"))",
+    { "~S  ?broken   ((?version(999)))",
+      "?narrow(?broken, ?version(\"999\"))",
       pattern::make_narrow(pattern::make_broken(),
-			   pattern::make_version("5\\.43\\.2")) },
+			   pattern::make_version("999")) },
 
     { "?name(elsi nore)", "?name(\"elsi nore\")",
       pattern::make_name("elsi nore") },
@@ -455,8 +475,8 @@ namespace
       pattern::make_or(pattern::make_name("asdf"),
 		       pattern::make_new()) },
 
-    { "~nasdf  |  ?new", "?name(\"asdf\") | ?new",
-      pattern::make_or(pattern::make_name("asdf"),
+    { "~nfdsa  |  ?new", "?name(\"fdsa\") | ?new",
+      pattern::make_or(pattern::make_name("fdsa"),
 		       pattern::make_new()) },
 
     { "?origin(Debian)", "?origin(\"Debian\")",
@@ -468,8 +488,8 @@ namespace
     { "?provides(?true)", "?provides(?true)",
       pattern::make_provides(pattern::make_true()) },
 
-    { "~P ?true", "?provides(?true)",
-      pattern::make_provides(pattern::make_true()) },
+    { "~P ?false", "?provides(?false)",
+      pattern::make_provides(pattern::make_false()) },
 
     { "?priority(important)", "?priority(important)",
       pattern::make_priority(pkgCache::State::Important) },
