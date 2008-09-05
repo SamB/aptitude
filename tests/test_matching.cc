@@ -128,7 +128,14 @@ namespace
 
     { "?any-version(~Tasdf)", "?any-version(?true ?name(\"asdf\"))",
       pattern::make_any_version(pattern::make_and(pattern::make_true(),
-						  pattern::make_name("asdf"))) }
+						  pattern::make_name("asdf"))) },
+
+    { "?and(?maintainer(xyz), ?broken ?broken-depends, ?archive(stable))",
+      "?maintainer(\"xyz\") (?broken ?broken-depends) ?archive(\"stable\")",
+      pattern::make_and(pattern::make_maintainer("xyz"),
+			pattern::make_and(pattern::make_broken(),
+					  pattern::make_broken_type(pkgCache::Dep::Depends)),
+			pattern::make_archive("stable")) }
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
