@@ -771,6 +771,8 @@ namespace
 
     { "~V2.0", "?version(\"2.0\")",
       pattern::make_version("2.0") },
+
+    { "~v" , "?virtual", pattern::make_virtual() },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
