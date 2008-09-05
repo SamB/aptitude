@@ -147,6 +147,14 @@ namespace
     { "~M test", "?automatic ?name(\"test\")",
       pattern::make_and(pattern::make_automatic(),
 			pattern::make_name("test")) },
+
+    { "?for x: ?depends(?for y: ?bind(y, ?source-package(argle~~)))",
+      "?for x: ?depends(?for y: ?bind(y, ?source-package(\"argle~\")))",
+      pattern::make_for("x",
+			pattern::make_depends(pkgCache::Dep::Depends,
+					      false,
+					      pattern::make_for("y",
+								pattern::make_bind("y", 1, pattern::make_source_package("argle~"))))) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
