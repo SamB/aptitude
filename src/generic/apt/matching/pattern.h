@@ -1365,6 +1365,41 @@ namespace aptitude
 	return new pattern(or_tp, begin, end);
       }
 
+      /** \brief Create a binary ?or term.
+       *
+       *  \param p1  The first term in the ?or.
+       *  \param p2  The second term in the ?or.
+       */
+      static cwidget::util::ref_ptr<pattern>
+      make_or(const cwidget::util::ref_ptr<pattern> &p1,
+	      const cwidget::util::ref_ptr<pattern> &p2)
+      {
+	std::vector<cwidget::util::ref_ptr<pattern> > patterns;
+
+	patterns.push_back(p1);
+	patterns.push_back(p2);
+	return make_or(patterns);
+      }
+
+      /** \brief Create a binary ?or term.
+       *
+       *  \param p1  The first term in the ?or.
+       *  \param p2  The second term in the ?or.
+       *  \param p3  The third term in the ?or.
+       */
+      static cwidget::util::ref_ptr<pattern>
+      make_or(const cwidget::util::ref_ptr<pattern> &p1,
+	      const cwidget::util::ref_ptr<pattern> &p2,
+	      const cwidget::util::ref_ptr<pattern> &p3)
+      {
+	std::vector<cwidget::util::ref_ptr<pattern> > patterns;
+
+	patterns.push_back(p1);
+	patterns.push_back(p2);
+	patterns.push_back(p3);
+	return make_or(patterns);
+      }
+
       /** \brief Create an ?or term.
        *
        *  \param container  An STL container holding the
