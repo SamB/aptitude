@@ -379,6 +379,8 @@ namespace
 
     { "~F", "?false", pattern::make_false() },
 
+    // No test for ?for; it was tested above.
+
     { "?garbage asdf", "?garbage ?name(\"asdf\")",
       pattern::make_and(pattern::make_garbage(),
 			pattern::make_name("asdf")) },
@@ -445,6 +447,12 @@ namespace
 
     { "~O Debian", "?origin(\"Debian\")",
       pattern::make_origin("Debian") },
+
+    { "?provides(?true)", "?provides(?true)",
+      pattern::make_provides(pattern::make_true()) },
+
+    { "~P ?true", "?provides(?true)",
+      pattern::make_provides(pattern::make_true()) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
