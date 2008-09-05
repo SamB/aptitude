@@ -1399,7 +1399,10 @@ namespace aptitude
        *
        *  \param s  The name of the priority to select.
        */
-      static cwidget::util::ref_ptr<pattern> make_priority(const std::string &s);
+      static cwidget::util::ref_ptr<pattern> make_priority(pkgCache::State::VerPriority priority)
+      {
+	return new pattern(pattern::priority, priority);
+      }
 
       /** \brief Retrieve the priority field of a ?priority term. */
       pkgCache::State::VerPriority get_priority_priority() const
@@ -1407,15 +1410,6 @@ namespace aptitude
 	eassert(tp == priority);
 
 	return info.priority;
-      }
-
-      /** \brief Retrieve the priority_name field of a ?priority term. */
-      const std::string &get_priority_priority_name() const
-
-      {
-	eassert(tp == priority);
-
-	return string_info;
       }
 
       // @}

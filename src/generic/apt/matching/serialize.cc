@@ -388,7 +388,27 @@ namespace aptitude
 
 	  case pattern::priority:
 	    out += "?priority(";
-	    out += p->get_priority_priority_name();
+	    switch(p->get_priority_priority())
+	      {
+	      case pkgCache::State::Important:
+		out += "important";
+		break;
+
+	      case pkgCache::State::Required:
+		out += "required";
+		break;
+
+	      case pkgCache::State::Standard:
+		out += "standard";
+		break;
+
+	      case pkgCache::State::Optional:
+		out += "optional";
+		break;
+
+	      case pkgCache::State::Extra:
+		out += "extra";
+	      }
 	    out.push_back(')');
 	    break;
 

@@ -76,35 +76,5 @@ namespace aptitude
     {
       return new pattern(action, act);
     }
-
-    cwidget::util::ref_ptr<pattern>
-    pattern::make_priority(const string &priority_str)
-    {
-      const char *s = priority_str.c_str();
-
-      if(strcasecmp(s, "important") == 0 ||
-	 (apt_cache_file &&
-	  strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Important)) == 0))
-	return new pattern(priority, pkgCache::State::Important, s);
-      else if(strcasecmp(s, "required") == 0 ||
-	      (apt_cache_file &&
-	       strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Required)) == 0))
-	return new pattern(priority, pkgCache::State::Required, s);
-      else if(strcasecmp(s, "standard") == 0 ||
-	      (apt_cache_file &&
-	       strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Standard)) == 0))
-	return new pattern(priority, pkgCache::State::Standard, s);
-      else if(strcasecmp(s, "optional") == 0 ||
-	      (apt_cache_file &&
-	       strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Optional)) == 0))
-	return new pattern(priority, pkgCache::State::Optional, s);
-      else if(strcasecmp(s, "extra") == 0 ||
-	      (apt_cache_file &&
-	       strcasecmp(s, (*apt_cache_file)->GetCache().Priority(pkgCache::State::Extra)) == 0))
-	return new pattern(priority, pkgCache::State::Extra, s);
-      else
-	throw MatchingException(ssprintf(_("Unknown priority %s"),
-					 s));
-    }
   }
 }

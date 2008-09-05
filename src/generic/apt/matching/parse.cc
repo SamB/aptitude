@@ -949,7 +949,7 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
     case term_type_origin:
       return pattern::make_origin(parse_string_match_args(start, end));
     case term_type_priority:
-      return pattern::make_priority(parse_string_match_args(start, end));
+      return pattern::make_priority(parse_priority(parse_string_match_args(start, end)));
     case term_type_provides:
       return parse_unary_term<ref_ptr<pattern> >(start, end, terminators, search_descriptions, false, name_context, &pattern::make_provides);
     case term_type_section:
@@ -1312,7 +1312,7 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 		    case 'O':
 		      return pattern::make_origin(substr);
 		    case 'p':
-		      return pattern::make_priority(substr);
+		      return pattern::make_priority(parse_priority(substr));
 		    case 's':
 		      return pattern::make_section(substr);
 		    case 't':
