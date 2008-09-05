@@ -731,6 +731,18 @@ namespace
 
     { "~smain", "?section(\"main\")",
       pattern::make_section("main") },
+
+    { "?source-package(\"asdf\")", "?source-package(\"asdf\")",
+      pattern::make_source_package("asdf") },
+
+    { "?source-package(\"fdsa\")", "?source-package(\"fdsa\")",
+      pattern::make_source_package("fdsa") },
+
+    { "?source-version(\"asdf\")", "?source-version(\"asdf\")",
+      pattern::make_source_version("asdf") },
+
+    { "?source-version(\"fdsa\")", "?source-version(\"fdsa\")",
+      pattern::make_source_version("fdsa") },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
