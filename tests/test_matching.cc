@@ -71,6 +71,9 @@ namespace
     { "?not(!~nfoo)", "!(!?name(\"foo\"))",
       pattern::make_not(pattern::make_not(pattern::make_name("foo"))) },
 
+    { "?not(?false)", "!?false",
+      pattern::make_not(pattern::make_false()) },
+
 
     { "?action(install)", "?action(install)",
       pattern::make_action(pattern::action_install) },
