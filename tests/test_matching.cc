@@ -747,10 +747,20 @@ namespace
     { "?tag(type::foo)", "?tag(\"type::foo\")",
       pattern::make_tag("type::foo") },
 
-    { "?tag(type::bar)", "?tag(\"type::bar\")",
+    { "~G type::bar", "?tag(\"type::bar\")",
       pattern::make_tag("type::bar") },
 
     { "?true", "?true", pattern::make_true() },
+
+    { "?task(desktop)", "?task(\"desktop\")",
+      pattern::make_task("desktop") },
+
+    { "~t gnome", "?task(\"gnome\")",
+      pattern::make_task("gnome") },
+
+    { "?upgradable", "?upgradable", pattern::make_upgradable() },
+
+    { "~U", "?upgradable", pattern::make_upgradable() },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
