@@ -773,6 +773,12 @@ namespace
       pattern::make_version("2.0") },
 
     { "~v" , "?virtual", pattern::make_virtual() },
+
+    { "?widen(?true)", "?widen(?true)",
+      pattern::make_widen(pattern::make_true()) },
+
+    { "?widen(?false)", "?widen(?false)",
+      pattern::make_widen(pattern::make_false()) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
