@@ -493,6 +493,202 @@ namespace
 
     { "~p  extra", "?priority(extra)",
       pattern::make_priority(pkgCache::State::Extra) },
+
+
+    // Test that all the broken and dependency-type variations work.
+
+    { "?reverse-depends(?true)", "?reverse-depends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Depends,
+				    false,
+				    pattern::make_true()) },
+
+    { "?reverse-predepends(?true)", "?reverse-predepends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::PreDepends,
+				    false,
+				    pattern::make_true()) },
+
+    { "?reverse-suggests(?true)", "?reverse-suggests(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Suggests,
+				    false,
+				    pattern::make_true()) },
+
+    { "?reverse-recommends(?true)", "?reverse-recommends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Recommends,
+				    false,
+				    pattern::make_true()) },
+
+    { "?reverse-conflicts(?true)", "?reverse-conflicts(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Conflicts,
+				    false,
+				    pattern::make_true()) },
+
+    { "?reverse-replaces(?true)", "?reverse-replaces(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Replaces,
+				    false,
+				    pattern::make_true()) },
+
+    { "?reverse-breaks(?true)", "?reverse-breaks(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::DpkgBreaks,
+				    false,
+				    pattern::make_true()) },
+
+    // Test short forms.
+
+    { "~Rdepends: ?true", "?reverse-depends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Depends,
+				    false,
+				    pattern::make_true()) },
+
+    { "~R ?true", "?reverse-depends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Depends,
+				    false,
+				    pattern::make_true()) },
+
+    { "~Rpredepends: ?true", "?reverse-predepends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::PreDepends,
+				    false,
+				    pattern::make_true()) },
+
+    { "~Rsuggests: ?true", "?reverse-suggests(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Suggests,
+				    false,
+				    pattern::make_true()) },
+
+    { "~Rrecommends: ?true", "?reverse-recommends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Recommends,
+				    false,
+				    pattern::make_true()) },
+
+    { "~Rconflicts: ?true", "?reverse-conflicts(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Conflicts,
+				    false,
+				    pattern::make_true()) },
+
+    { "~Rreplaces: ?true", "?reverse-replaces(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Replaces,
+				    false,
+				    pattern::make_true()) },
+
+    { "~Rbreaks: ?true", "?reverse-breaks(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::DpkgBreaks,
+				    false,
+				    pattern::make_true()) },
+
+    // Test ?broken-reverse-* forms.
+
+    { "?broken-reverse-depends(?true)", "?broken-reverse-depends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Depends,
+				    true,
+				    pattern::make_true()) },
+
+    { "?broken-reverse-predepends(?true)", "?broken-reverse-predepends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::PreDepends,
+				    true,
+				    pattern::make_true()) },
+
+    { "?broken-reverse-suggests(?true)", "?broken-reverse-suggests(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Suggests,
+				    true,
+				    pattern::make_true()) },
+
+    { "?broken-reverse-recommends(?true)", "?broken-reverse-recommends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Recommends,
+				    true,
+				    pattern::make_true()) },
+
+    { "?broken-reverse-conflicts(?true)", "?broken-reverse-conflicts(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Conflicts,
+				    true,
+				    pattern::make_true()) },
+
+    { "?broken-reverse-replaces(?true)", "?broken-reverse-replaces(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Replaces,
+				    true,
+				    pattern::make_true()) },
+
+    { "?broken-reverse-breaks(?true)", "?broken-reverse-breaks(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::DpkgBreaks,
+				    true,
+				    pattern::make_true()) },
+
+    // Test ?reverse-broken-* forms.
+
+    { "?reverse-broken-depends(?true)", "?broken-reverse-depends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Depends,
+				    true,
+				    pattern::make_true()) },
+
+    { "?reverse-broken-predepends(?true)", "?broken-reverse-predepends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::PreDepends,
+				    true,
+				    pattern::make_true()) },
+
+    { "?reverse-broken-suggests(?true)", "?broken-reverse-suggests(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Suggests,
+				    true,
+				    pattern::make_true()) },
+
+    { "?reverse-broken-recommends(?true)", "?broken-reverse-recommends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Recommends,
+				    true,
+				    pattern::make_true()) },
+
+    { "?reverse-broken-conflicts(?true)", "?broken-reverse-conflicts(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Conflicts,
+				    true,
+				    pattern::make_true()) },
+
+    { "?reverse-broken-replaces(?true)", "?broken-reverse-replaces(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Replaces,
+				    true,
+				    pattern::make_true()) },
+
+    { "?reverse-broken-breaks(?true)", "?broken-reverse-breaks(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::DpkgBreaks,
+				    true,
+				    pattern::make_true()) },
+
+    // Test ~RB forms.
+
+    { "~RB ?true", "?broken-reverse-depends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Depends,
+				    true,
+				    pattern::make_true()) },
+
+    { "~RBdepends: ?true", "?broken-reverse-depends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Depends,
+				    true,
+				    pattern::make_true()) },
+
+    { "~RBpredepends: ?true", "?broken-reverse-predepends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::PreDepends,
+				    true,
+				    pattern::make_true()) },
+
+    { "~RBsuggests: ?true", "?broken-reverse-suggests(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Suggests,
+				    true,
+				    pattern::make_true()) },
+
+    { "~RBrecommends: ?true", "?broken-reverse-recommends(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Recommends,
+				    true,
+				    pattern::make_true()) },
+
+    { "~RBconflicts: ?true", "?broken-reverse-conflicts(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Conflicts,
+				    true,
+				    pattern::make_true()) },
+
+    { "~RBreplaces: ?true", "?broken-reverse-replaces(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::Replaces,
+				    true,
+				    pattern::make_true()) },
+
+    { "~RBbreaks: ?true", "?broken-reverse-breaks(?true)",
+      pattern::make_reverse_depends(pkgCache::Dep::DpkgBreaks,
+				    true,
+				    pattern::make_true()) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
