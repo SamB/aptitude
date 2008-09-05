@@ -202,6 +202,12 @@ namespace
     { "~N FOO", "?new ?name(\"FOO\")",
       pattern::make_and(pattern::make_new(),
 			pattern::make_name("FOO")) },
+
+    { "?obsolete", "?obsolete", pattern::make_obsolete() },
+
+    { "~o~o", "?obsolete ?obsolete",
+      pattern::make_and(pattern::make_obsolete(),
+			pattern::make_obsolete()) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
