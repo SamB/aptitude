@@ -156,6 +156,159 @@ namespace
 					      pattern::make_for("y",
 								pattern::make_bind(1, pattern::make_source_package("argle~"))))) },
 
+    // Test that all the broken and dependency-type variations work.
+
+    { "?depends(?true)", "?depends(?true)",
+      pattern::make_depends(pkgCache::Dep::Depends,
+			    false,
+			    pattern::make_true()) },
+
+    { "?predepends(?true)", "?predepends(?true)",
+      pattern::make_depends(pkgCache::Dep::PreDepends,
+			    false,
+			    pattern::make_true()) },
+
+    { "?suggests(?true)", "?suggests(?true)",
+      pattern::make_depends(pkgCache::Dep::Suggests,
+			    false,
+			    pattern::make_true()) },
+
+    { "?recommends(?true)", "?recommends(?true)",
+      pattern::make_depends(pkgCache::Dep::Recommends,
+			    false,
+			    pattern::make_true()) },
+
+    { "?conflicts(?true)", "?conflicts(?true)",
+      pattern::make_depends(pkgCache::Dep::Conflicts,
+			    false,
+			    pattern::make_true()) },
+
+    { "?replaces(?true)", "?replaces(?true)",
+      pattern::make_depends(pkgCache::Dep::Replaces,
+			    false,
+			    pattern::make_true()) },
+
+    { "?breaks(?true)", "?breaks(?true)",
+      pattern::make_depends(pkgCache::Dep::DpkgBreaks,
+			    false,
+			    pattern::make_true()) },
+
+    // Test short forms.
+
+    { "~Ddepends: ?true", "?depends(?true)",
+      pattern::make_depends(pkgCache::Dep::Depends,
+			    false,
+			    pattern::make_true()) },
+
+    { "~Dpredepends: ?true", "?predepends(?true)",
+      pattern::make_depends(pkgCache::Dep::PreDepends,
+			    false,
+			    pattern::make_true()) },
+
+    { "~Dsuggests: ?true", "?suggests(?true)",
+      pattern::make_depends(pkgCache::Dep::Suggests,
+			    false,
+			    pattern::make_true()) },
+
+    { "~Drecommends: ?true", "?recommends(?true)",
+      pattern::make_depends(pkgCache::Dep::Recommends,
+			    false,
+			    pattern::make_true()) },
+
+    { "~Dconflicts: ?true", "?conflicts(?true)",
+      pattern::make_depends(pkgCache::Dep::Conflicts,
+			    false,
+			    pattern::make_true()) },
+
+    { "~C~T", "?conflicts(?true)",
+      pattern::make_depends(pkgCache::Dep::Conflicts,
+			    false,
+			    pattern::make_true()) },
+
+    { "~Dreplaces: ?true", "?replaces(?true)",
+      pattern::make_depends(pkgCache::Dep::Replaces,
+			    false,
+			    pattern::make_true()) },
+
+    { "~Dbreaks: ?true", "?breaks(?true)",
+      pattern::make_depends(pkgCache::Dep::DpkgBreaks,
+			    false,
+			    pattern::make_true()) },
+
+    // Test ?broken-* forms.
+
+    { "?broken-depends(?true)", "?broken-depends(?true)",
+      pattern::make_depends(pkgCache::Dep::Depends,
+			    true,
+			    pattern::make_true()) },
+
+    { "?broken-predepends(?true)", "?broken-predepends(?true)",
+      pattern::make_depends(pkgCache::Dep::PreDepends,
+			    true,
+			    pattern::make_true()) },
+
+    { "?broken-suggests(?true)", "?broken-suggests(?true)",
+      pattern::make_depends(pkgCache::Dep::Suggests,
+			    true,
+			    pattern::make_true()) },
+
+    { "?broken-recommends(?true)", "?broken-recommends(?true)",
+      pattern::make_depends(pkgCache::Dep::Recommends,
+			    true,
+			    pattern::make_true()) },
+
+    { "?broken-conflicts(?true)", "?broken-conflicts(?true)",
+      pattern::make_depends(pkgCache::Dep::Conflicts,
+			    true,
+			    pattern::make_true()) },
+
+    { "?broken-replaces(?true)", "?broken-replaces(?true)",
+      pattern::make_depends(pkgCache::Dep::Replaces,
+			    true,
+			    pattern::make_true()) },
+
+    { "?broken-breaks(?true)", "?broken-breaks(?true)",
+      pattern::make_depends(pkgCache::Dep::DpkgBreaks,
+			    true,
+			    pattern::make_true()) },
+
+    // Test ~DB forms.
+
+    { "~DBdepends: ?true", "?broken-depends(?true)",
+      pattern::make_depends(pkgCache::Dep::Depends,
+			    true,
+			    pattern::make_true()) },
+
+    { "~DBpredepends: ?true", "?broken-predepends(?true)",
+      pattern::make_depends(pkgCache::Dep::PreDepends,
+			    true,
+			    pattern::make_true()) },
+
+    { "~DBsuggests: ?true", "?broken-suggests(?true)",
+      pattern::make_depends(pkgCache::Dep::Suggests,
+			    true,
+			    pattern::make_true()) },
+
+    { "~DBrecommends: ?true", "?broken-recommends(?true)",
+      pattern::make_depends(pkgCache::Dep::Recommends,
+			    true,
+			    pattern::make_true()) },
+
+    { "~DBconflicts: ?true", "?broken-conflicts(?true)",
+      pattern::make_depends(pkgCache::Dep::Conflicts,
+			    true,
+			    pattern::make_true()) },
+
+    { "~DBreplaces: ?true", "?broken-replaces(?true)",
+      pattern::make_depends(pkgCache::Dep::Replaces,
+			    true,
+			    pattern::make_true()) },
+
+    { "~DBbreaks: ?true", "?broken-breaks(?true)",
+      pattern::make_depends(pkgCache::Dep::DpkgBreaks,
+			    true,
+			    pattern::make_true()) },
+
     { "?garbage asdf", "?garbage ?name(\"asdf\")",
       pattern::make_and(pattern::make_garbage(),
 			pattern::make_name("asdf")) },
