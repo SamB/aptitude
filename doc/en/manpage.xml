@@ -966,9 +966,9 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    was passed or <link
 	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
 	    is set to <literal>true</literal>), allow the dependency
-	    resolver to install upgrades for packages even if <link
-	    linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></link>
-	    is set.
+	    resolver to install upgrades for packages regardless of
+	    the value of <link
+	    linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></link>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -987,9 +987,8 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
 	    is set to <literal>true</literal>), allow the dependency
 	    resolver to install new packages.  This option takes
-	    effect even if <link
-	    linkend='configSafe-Resolver-No-New-Installs'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
-	    is set.
+	    effect regardless of the value of <link
+	    linkend='configSafe-Resolver-No-New-Installs'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1176,9 +1175,9 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	    was passed or <link
 	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
 	    is set to <literal>true</literal>), allow the dependency
-	    resolver to install new packages even if <link
-	    linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
-	    is set.
+	    resolver to install new packages regardless of the value
+	    of <link
+	    linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1199,9 +1198,8 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
 	    is set to <literal>true</literal>), forbid the dependency
 	    resolver from installing new packages.  This option takes
-	    effect even if <link
-	    linkend='configSafe-Resolver-No-New-Installs'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>
-	    is set.
+	    effect regardless of the value of <link
+	    linkend='configSafe-Resolver-No-New-Installs'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>.
 	  </para>
 
 	  <para>

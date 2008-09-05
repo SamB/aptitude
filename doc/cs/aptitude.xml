@@ -4152,7 +4152,7 @@ jejichž jména odpovídají regulárnímu výrazu
 
 Zadávání vyhledávacích vzorů bez úvodního <quote>?</quote> (nebo
 <quote>~</quote>) je poskytováno z historických důvodů pro
-zjednodušení interaktivního používání a může být v budoucnu
+zjednodušení interaktivního používání a bude v budoucnu
 odstraněno. Pokud voláte &aptitude; z různých skriptů a jiných
 programů, měli byste vždy používat doporučenou formu hledání:
 <quote><literal>&Sname;(emacs)</literal></quote> nebo
@@ -4171,7 +4171,12 @@ být zadány jak s, tak bez dvojitých uvozovek
 (<quote><literal>"<!-- " --></literal></quote>), takže
 <quote><literal>&Sname;(scorch)</literal></quote> a
 <quote><literal>&Sname;("scorch")</literal></quote> jsou zcela
-ekvivalentní.
+ekvivalentní. Potřebujete-li použít uvozovky uvnitř řetězce
+obklopeného uvozovkami, můžete těsně před ně umístit zpětné lomítko
+(<quote><literal>\</literal></quote>). Například
+<quote><literal>&Sdescription;("\"easy\"")</literal></quote>
+se bude shodovat se všemi balíky, které ve svém popisu obsahují
+řetězec <quote><literal>"easy"</literal></quote>.
 
 </para><para>
 
@@ -4196,36 +4201,57 @@ speciální význam.
 
 Chcete-li odstranit speciální význam těchto znaků, můžete před ně
 umístit vlnku (<quote><literal>~</literal></quote>). Například term
-<literal>&Sdescription;(etc))</literal> by způsobil syntaktickou
-chybu, protože první uzavírací závorka ukončí term &Sdescription; a
-druhá závorka se již neshoduje s ničím. Oproti tomu výraz
-<literal>&Sdescription;(etc~))</literal> se shoduje se všemi balíky,
-které obsahují ve svém popisu text <quote><literal>etc)</literal></quote>.
-Použití vlnky však přináší další komplikace v případě, že používáte
-zkrácenou formu termů (viz kapitola <xref linkend="secSearchShorthand"/>).
+<quote><literal>&Sdescription;(etc))</literal></quote> by způsobil
+syntaktickou chybu, protože první uzavírací závorka ukončí term
+&Sdescription; a druhá závorka již nemá odpovídající párovou závorku.
+Oproti tomu výraz <literal>&Sdescription;(etc~))</literal> se shoduje
+se všemi balíky, které obsahují ve svém popisu text
+<quote><literal>etc)</literal></quote>. Použití vlnky však přináší
+další komplikace v případě, že používáte zkrácenou formu termů (viz
+kapitola <xref linkend="secSearchShorthand"/>).
 
 </para><para>
 
 Většina textových hledání (v názvech balíků, popisech, atd.) probíhá
 pomocí <ulink url="http://sitescooper.org/tao_regexps.html">regulárních
-výrazů</ulink> (velikost písmen se ignoruje). To znamená, že musíte
-před řídící znaky regulárních výrazů psát zpětná lomítka.
-<footnote><para>
+výrazů</ulink> (velikost písmen se ignoruje). Regulární výraz se
+shoduje s polem, pokud část pole odpovídá regulárnímu výrazu.
+Například <quote><literal>ogg[0-9]</literal></quote> se shoduje
+s <quote><literal>libogg5</literal></quote>,
+<quote><literal>ogg123</literal></quote>
+i <quote><literal>theogg4u</literal></quote>. Uvnitř regulárních
+výrazů mají některé znaky speciální význam.<footnote><para>
 
 Řídící znaky regulárních výrazů zahrnují:
-<quote>+</quote>, <quote>-</quote>, <quote>.</quote>,
-<quote>(</quote>, <quote>)</quote>, <quote>|</quote>,
-<quote>[</quote>, <quote>]</quote>, <quote>^</quote>,
-<quote>$</quote> a <quote>?</quote>.
+<quote><literal>+</literal></quote>, <quote><literal>-</literal></quote>,
+<quote><literal>.</literal></quote>, <quote><literal>(</literal></quote>,
+<quote><literal>)</literal></quote>, <quote><literal>|</literal></quote>,
+<quote><literal>[</literal></quote>, <quote><literal>]</literal></quote>,
+<quote><literal>^</literal></quote>, <quote><literal>$</literal></quote>
+a <quote><literal>?</literal></quote>.
 
 Některé z těchto znaků jsou zároveň i řídícími znaky pro
-&aptitude;. Chcete-li například napsat literál <quote>|</quote>, musíte
-jej uvodit dvakrát: <quote><literal>\~|</literal></quote>.
+&aptitude;. Chcete-li například napsat literál
+<quote><literal>|</literal></quote>, musíte jej uvodit
+dvakrát: <quote><literal>&Sdescription;(\~|)</literal></quote>
+se shoduje s balíky, jejich popis obsahuje znak
+(<quote><literal>|</literal></quote>).
 
-</para></footnote>
+</para></footnote> To znamená, že pokud chcete tyto znaky vyhledat,
+musíte před ně psát zpětná lomítka. Například pro nalezení
+<quote>g++</quote> byste měli použít vzor <quote>g\+\+</quote>.
 
-(Například pro nalezení <quote>g++</quote> byste měli použít vzor
-<quote>g\+\+</quote>.)
+</para><para>
+
+Pro &aptitude; mají speciální význam také znaky
+<quote><literal>!</literal></quote> a <quote><literal>|</literal></quote>.
+Pokud chcete tyto znaky použít v řetězci neobklopeném uvozovkami,
+musíte před ně umístit vlnku (<quote><literal>~</literal></quote>).
+Například pro vyhledání balíků, jejichž popis obsahuje
+<quote>grand</quote> nebo <quote>oblique</quote>, můžete použít vzor
+<quote><literal>&Sdescription;(grand~|oblique)</literal></quote>.
+v takovývh případech je však pohodlnější použít řetězec v uvozovkách:
+<quote><literal>&Sdescription;("grand|oblique")</literal></quote>.
 
 </para>
   </section>
@@ -4298,7 +4324,7 @@ zkrácené formy vyhledávacích termů.
 <para>
 
 Implicitně se vyhledávací vzor shoduje s balíkem, pokud vzoru vyhovuje
-libovolná verze balíku. Některé vzory omezují své podtermy pouze na
+libovolná verze balíku. Některé vzory omezují své podvzory pouze na
 některé verze balíku. Například vyhledávací term
 <literal>&Sdepends;(<replaceable>vzor</replaceable>)</literal>
 vybere libovolný balík, který závisí na balíku odpovídajícímu vzoru
@@ -4336,7 +4362,7 @@ případě se každý term vzoru porovnává vůči balíku, tzn. vyhledávací
 vzor jako celek se bude shodovat v případě, že se každý jeho podterm
 bude shodovat s <emphasis>některou</emphasis> z verzí balíku.
 Oproti tomu ve druhém případě se celý vzor porovnává vůči každé verzi
-balíku, což znamená, že aby byl úspěšný, musí se všechny podtermy
+balíku, což znamená, že aby byl úspěšný, musí se všechny termy
 vzoru shodovat vůči <emphasis>stejné</emphasis> verzi balíku.
 
 </para><para>
@@ -4528,14 +4554,14 @@ Vybere balíky, jejichž verze se shodují se <replaceable>vzorem</replaceable>.
 
   <row>
     <entry>
-      <literal>&Sand;(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>
+      <literal>&Sand;(<replaceable>vzor1</replaceable>, <replaceable>vzor2</replaceable>)</literal>
     </entry>
-    <entry><replaceable>term1</replaceable> <replaceable>term2</replaceable></entry>
+    <entry><replaceable>vzor1</replaceable> <replaceable>vzor2</replaceable></entry>
     <entry>
 
 Vybere balíky, které se shodují jak
-s <replaceable>term1</replaceable>, tak
-s <replaceable>term2</replaceable>.
+se <replaceable>vzor1</replaceable>, tak
+se <replaceable>vzor2</replaceable>.
 
     </entry>
   </row>
@@ -4790,13 +4816,12 @@ Vybere nainstalované balíky, které již nelze stáhnout.
   </row>
 
   <row>
-    <entry><literal>&Sor;(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal></entry>
-    <entry><literal><replaceable>term1</replaceable> | <replaceable>term2</replaceable></literal></entry>
+    <entry><literal>&Sor;(<replaceable>vzor1</replaceable>, <replaceable>vzor2</replaceable>)</literal></entry>
+    <entry><literal><replaceable>vzor1</replaceable> | <replaceable>vzor2</replaceable></literal></entry>
     <entry>
 
-Vybere balíky, které se shodují buď
-s <replaceable>term1</replaceable> nebo
-s <replaceable>term2</replaceable>.
+Vybere balíky, které se shodují se <replaceable>vzor1</replaceable>,
+<replaceable>vzor2</replaceable>, případně s oběma.
 
     </entry>
   </row>
@@ -4991,7 +5016,10 @@ režim hledání a používá se pro vzory, které nezačínají vlnkou
 
 Pro vyhledání balíků, jejichž názvy obsahují několik různých podřetězců,
 použijte term &Sname; (bude popsán níže); například
-<quote><literal>&Sname;(apti)&Sname;(tude)</literal></quote>.
+<quote><literal>&Sname;(apti)&Sname;(tude)</literal></quote> se bude
+shodovat s libovolným balíkem, který obsahuje jak
+<quote><literal>apti</literal></quote>, tak
+<quote><literal>tude</literal></quote>.
 
   </para></note></listitem>
 </varlistentry>
@@ -5034,7 +5062,7 @@ Více naleznete v kapitole <xref linkend="secExplicitMatchers"/>.
 
   <listitem><para>
 
-Shoduje se s balíky, které se <emphasis>neshodují</emphasis> s termem
+Shoduje se s balíky, které se <emphasis>neshodují</emphasis> se vzorem
 <replaceable>vzor</replaceable>. Například
 <quote><literal>?not(&Sbroken;)</literal></quote> vybere balíky, které
 nejsou <quote>porušené</quote>.
@@ -5043,31 +5071,32 @@ nejsou <quote>porušené</quote>.
 
 Chcete-li zahrnout znak <quote>!</quote> do regulárního výrazu, musíte
 ošetřit, aby jej &aptitude; nepovažovala za negaci termu:
-<quote><literal>~!</literal></quote>.
+<quote><literal>~!</literal></quote>. Například pro výběr balíků,
+jejichž popis obsahuje <quote><literal>extra!</literal></quote>,
+můžete použít <quote><literal>&Sdescription;(extra~!)</literal></quote>.
 
   </para></note></listitem>
 </varlistentry>
 
 <varlistentry id="searchAnd">
-  <term><literal>?and(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>, <replaceable>term1</replaceable> <replaceable>term2</replaceable></term>
+  <term><literal>?and(<replaceable>vzor1</replaceable>, <replaceable>vzor2</replaceable>)</literal>, <replaceable>vzor1</replaceable> <replaceable>vzor2</replaceable></term>
 
   <listitem><para>
 
 Shoduje se s balíky, které se shodují jak
-s <replaceable>term1</replaceable>, tak
-s <replaceable>term2</replaceable>.
+se <replaceable>vzor1</replaceable>, tak
+se <replaceable>vzor2</replaceable>.
 
   </para></listitem>
 </varlistentry>
 
 <varlistentry id="searchOr">
-  <term><literal>?or(<replaceable>term1</replaceable>, <replaceable>term2</replaceable>)</literal>, <literal><replaceable>term1</replaceable> | <replaceable>term2</replaceable></literal></term>
+  <term><literal>?or(<replaceable>vzor1</replaceable>, <replaceable>vzor2</replaceable>)</literal>, <literal><replaceable>vzor1</replaceable> | <replaceable>vzor2</replaceable></literal></term>
 
   <listitem><para>
 
-Shoduje se s balíky, které se shodují buď
-s <replaceable>term1</replaceable> nebo
-s <replaceable>term2</replaceable>.
+Shoduje se s balíky, které se shodují se <replaceable>vzor1</replaceable>,
+<replaceable>vzor2</replaceable>, případně s oběma.
 
   </para><note><para>
 
@@ -5158,10 +5187,10 @@ ho však kdykoliv použít uvnitř &Swiden;.
   </para><note><para>
 
 Tento term je úzce spjat s termem &Snarrow;. Ve skutečnosti je
-<literal>?any-version(<replaceable>term1</replaceable>
-<replaceable>term2</replaceable>)</literal> ekvivalentní s
-<literal>&Snarrow;(<replaceable>term1</replaceable>,
-<replaceable>term2</replaceable>)</literal>.
+<literal>?any-version(<replaceable>vzor1</replaceable>
+<replaceable>vzor2</replaceable>)</literal> ekvivalentní s
+<literal>&Snarrow;(<replaceable>vzor1</replaceable>,
+<replaceable>vzor2</replaceable>)</literal>.
 
   </para></note></listitem>
 </varlistentry>
@@ -5202,26 +5231,31 @@ Shoduje se s balíkem nebo verzí, pokud se daný
 na <replaceable>proměnnou</replaceable>, která je definována
 v obklopujícím termu &Sfor;.
 
-  </para><para>
-
-Například následující výraz se shoduje se všemi balíky
-<literal>x</literal> takovými, že <literal>x</literal> závisí na balíku
-<literal>y</literal>, který závisí na balíku <literal>z</literal>
-takovém, že <literal>x</literal> také závisí na <literal>z</literal>
-přímo.
-
   </para>
   <example id="exampleSearchBind">
     <title>Použití termu <literal>?bind</literal></title>
 
-    <para><literal>
+    <para>
 
-    &Sfor; x: &Sdepends;(&Sdepends;(&Sfor; z: ?x:<link linkend="searchDep">depends</link>(&Sequal;z)))
+<literal>&Sfor; x: &Sdepends;(&Sdepends;(&Sfor; z: ?bind(x, &Sdepends;(&Sequal;z))))</literal>
 
-    </literal></para>
+    </para><para>
+
+<literal>&Sfor; x: &Sdepends;(&Sdepends;(&Sfor; z: ?x:<link linkend="searchDep">depends</link>(&Sequal;z)))</literal>
+
+    </para>
   </example>
 
   <para>
+
+Oba výrazy v předchozím příkladu se shodují se všemi balíky
+<literal>x</literal> takovými, že <literal>x</literal> závisí na balíku
+<literal>y</literal>, který závisí na balíku <literal>z</literal>
+takovém, že <literal>x</literal> také závisí na <literal>z</literal>
+přímo. První vzor používá <literal>?bind</literal> přímo, zatímco
+druhý využívá zkrácenou formu.
+
+  </para><para>
 
 Více naleznete v kapitole <xref linkend="secExplicitMatchers"/>.
 
@@ -5479,7 +5513,9 @@ budou nejrůznější knihovny.
 
   <listitem><para>
 
-Shoduje se s <quote>novými</quote> balíky.
+Shoduje se s <quote>novými</quote> balíky. Tyto byly do archivu
+přidány od posledního spuštění &actions-forget; (resp. příkazu
+<literal><link linkend="cmdlineForgetNew">forget-new</link></literal>).
 
   </para></listitem>
 </varlistentry>
@@ -12075,7 +12111,7 @@ příznaky pro instalaci, odstranění nebo aktualizaci.
     </para></listitem>
   </varlistentry>
 
-  <varlistentry>
+  <varlistentry id="cmdlineForgetNew">
     <term><literal>forget-new</literal></term>
 
     <listitem><para>

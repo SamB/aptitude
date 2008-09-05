@@ -645,12 +645,13 @@ static bool prompt_essential()
     {
       printf(_("WARNING: Performing this action will probably cause your system to break!\n         Do NOT continue unless you know EXACTLY what you are doing!\n"));
 
-      string prompt=_("I am aware that this is a very bad idea");
+      string untranslated_prompt = N_("I am aware that this is a very bad idea");
+      string prompt = _(untranslated_prompt.c_str());
       char buf[1024];
 
       printf(_("To continue, type the phrase \"%s\":\n"), prompt.c_str());
       cin.getline(buf, 1023);
-      bool rval=(prompt==buf);
+      bool rval = (prompt == buf || untranslated_prompt == buf);
 
       while(!cin && !cin.eof())
 	cin.getline(buf, 1023);

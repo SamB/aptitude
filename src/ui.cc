@@ -199,6 +199,8 @@ sigc::signal1<void, bool> update_finished;
 const char *default_pkgstatusdisplay="%d";
 const char *default_pkgheaderdisplay="%N %n #%B %u %o";
 const char *default_grpstr="task,status,section(subdirs,passthrough),section(topdir)";
+const char *confirm_delete_essential_str=N_("Yes, I am aware this is a very bad idea");
+
 
 void ui_start_download(bool hide_preview)
 {
@@ -1235,7 +1237,10 @@ static void check_package_trust()
     install_or_remove_packages();
 }
 
-static void actually_do_package_run();
+namespace
+{
+  void actually_do_package_run();
+}
 
 static void reset_preview()
 {
@@ -1380,7 +1385,7 @@ static void auto_fix_broken()
 // thing IMO, though, would be to somehow allow particular widgets to override
 // the meaning of global commands.  This needs a little thought, though.  (fake
 // keys?  BLEACH)
-static void actually_do_package_run()
+static void actually_do_package_run_post_essential_check()
 {
   if(apt_cache_file)
     {
@@ -1417,6 +1422,94 @@ static void actually_do_package_run()
       else
 	show_message(_("A package-list update or install run is already taking place."), NULL, cw::get_style("Error"));
     }
+}
+
+namespace
+{
+  void actually_do_package_run_finish_delete_essential(const std::wstring &response)
+  {
+    if(response == cw::util::transcode(_(confirm_delete_essential_str)) ||
+       response == cw::util::transcode(confirm_delete_essential_str))
+      actually_do_package_run_post_essential_check();
+  }
+
+  void actually_do_package_run()
+  {
+    if(apt_cache_file)
+      {
+	// Failsafe check to ensure that we aren't deleting any
+	// Essential packages.
+	//
+	// \todo We should remember which ones the user already
+	// confirmed and not ask twice.
+	std::vector<pkgCache::PkgIterator> deleted_essential, broken_essential;
+
+	for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin();
+	    !pkg.end(); ++pkg)
+	  {
+	    if(pkg->Flags & pkgCache::Flag::Essential)
+	      {
+		pkgDepCache::StateCache &state = (*apt_cache_file)[pkg];
+
+		if(state.Delete())
+		  deleted_essential.push_back(pkg);
+		if(state.InstBroken())
+		  broken_essential.push_back(pkg);
+	      }
+	  }
+
+	if(deleted_essential.empty() && broken_essential.empty())
+	  actually_do_package_run_post_essential_check();
+	else
+	  {
+	    // We reuse the command line's strings here so that
+	    // translators don't need to add new translations.
+	    std::vector<cw::fragment *> fragments;
+	    if(!deleted_essential.empty())
+	      {
+		fragments.push_back(wrapbox(cw::text_fragment(_("The following ESSENTIAL packages will be REMOVED!\n"))));
+
+		for(std::vector<pkgCache::PkgIterator>::const_iterator it =
+		      deleted_essential.begin(); it != deleted_essential.end(); ++it)
+		  {
+		    fragments.push_back(cw::fragf("  %S*%N %s%n",
+						  "Bullet",
+						  it->Name()));
+		  }
+
+		fragments.push_back(cw::newline_fragment());
+	      }
+
+	    if(!broken_essential.empty())
+	      {
+		fragments.push_back(cw::text_fragment(_("The following ESSENTIAL packages will be BROKEN by this action:\n")));
+
+		for(std::vector<pkgCache::PkgIterator>::const_iterator it =
+		      broken_essential.begin(); it != broken_essential.end(); ++it)
+		  {
+		    fragments.push_back(cw::fragf("  %S*%N %s%n",
+						  "Bullet",
+						  it->Name()));
+		  }
+
+		fragments.push_back(cw::newline_fragment());
+	      }
+
+	    fragments.push_back(wrapbox(cw::text_fragment(_("WARNING: Performing this action will probably cause your system to break!\n         Do NOT continue unless you know EXACTLY what you are doing!\n"))));
+	    fragments.push_back(wrapbox(cw::fragf(_("To continue, type the phrase \"%s\":\n"), confirm_delete_essential_str)));
+
+	    cw::widget_ref w = cw::dialogs::string(cw::sequence_fragment(fragments),
+						   L"",
+						   cw::util::arg(sigc::ptr_fun(&actually_do_package_run_finish_delete_essential)),
+						   NULL,
+						   NULL,
+						   NULL,
+						   cw::style_attrs_flip(A_REVERSE));
+	    w->show_all();
+	    popup_widget(w);
+	  }
+      }
+  }
 }
 
 void do_package_run_or_show_preview()
