@@ -388,9 +388,7 @@ download_update_manager::finish(pkgAcquire::RunResult res,
 	    {
 	      if(WEXITSTATUS(status) != 0)
 	      // ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-				// PS: indentation sucks!
-				// PS2: Daniel, please unfuzzy such translations (added "update") yourself!
-		_error->Warning(_("The debtags update process (%s update %s) exited abnormally (code %d)."),
+		      _error->Warning(_("The debtags update process (%s update %s) exited abnormally (code %d)."),
 				debtags.c_str(), debtags_options.c_str(), WEXITSTATUS(status));
 	    }
 	  else

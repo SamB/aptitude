@@ -197,8 +197,7 @@ static void resolver_help(ostream &out)
 			      flowindentbox(0, 15,
 					    cw::fragf(_("reject the given package versions; don't display any solutions in which they occur.  Enter UNINST instead of a version to reject removing the package."))),
 			      flowindentbox(0, 15,
-							// ForTranslators: "(;" is ...???? A smiley?
-					    cw::fragf(_("accept the given package versions (; display only solutions in which they occur.  Enter UNINST instead of a version to accept removing the package."))),
+					    cw::fragf(_("accept the given package versions; display only solutions in which they occur.  Enter UNINST instead of a version to accept removing the package."))),
 			      flowindentbox(0, 3,
 					    cw::fragf(_("adjust the state of the listed packages, where ACTION is one of:"))),
 			      flowindentbox(0, 4,
