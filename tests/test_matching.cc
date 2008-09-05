@@ -155,6 +155,14 @@ namespace
 					      false,
 					      pattern::make_for("y",
 								pattern::make_bind(1, pattern::make_source_package("argle~"))))) },
+
+    { "?garbage asdf", "?garbage ?name(\"asdf\")",
+      pattern::make_and(pattern::make_garbage(),
+			pattern::make_name("asdf")) },
+
+    { "~g asdf", "?garbage ?name(\"asdf\")",
+      pattern::make_and(pattern::make_garbage(),
+			pattern::make_name("asdf")) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
