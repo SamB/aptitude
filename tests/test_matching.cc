@@ -761,6 +761,10 @@ namespace
     { "?upgradable", "?upgradable", pattern::make_upgradable() },
 
     { "~U", "?upgradable", pattern::make_upgradable() },
+
+    { "?user-tag(asdf)", "?user-tag(\"asdf\")", pattern::make_user_tag("asdf") },
+
+    { "?user-tag(fdsa)", "?user-tag(\"fdsa\")", pattern::make_user_tag("fdsa") }
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
