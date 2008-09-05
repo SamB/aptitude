@@ -1171,10 +1171,14 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 		  return pattern::make_installed();
 		case 'E':
 		  return pattern::make_essential();
+		case 'F':
+		  return pattern::make_false();
 		case 'M':
 		  return pattern::make_automatic();
 		case 'N':
 		  return pattern::make_new();
+		case 'T':
+		  return pattern::make_true();
 		case 'U':
 		  return pattern::make_upgradable();
 		case 'o':
@@ -1303,8 +1307,6 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 		      return pattern::make_description(substr);
 		    case 'G':
 		      return pattern::make_tag(substr);
-		    case 'F':
-		      return pattern::make_false();
 		    case 'm':
 		      return pattern::make_maintainer(substr);
 		    case 'n':
@@ -1317,8 +1319,6 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 		      return pattern::make_section(substr);
 		    case 't':
 		      return pattern::make_task(substr);
-		    case 'T':
-		      return pattern::make_true();
 		    case 'V':
 		      return pattern::make_version(substr);
 		    default:
