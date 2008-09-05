@@ -371,6 +371,10 @@ namespace
       "?description(\"All the news that's fit to print\")",
       pattern::make_description("All the news that's fit to print") },
 
+    { "?essential", "?essential", pattern::make_essential() },
+
+    { "~E", "?essential", pattern::make_essential() },
+
     { "?garbage asdf", "?garbage ?name(\"asdf\")",
       pattern::make_and(pattern::make_garbage(),
 			pattern::make_name("asdf")) },
