@@ -139,6 +139,14 @@ namespace
 
     { "?archive(^asdf.*asdf$)", "?archive(\"^asdf.*asdf$\")",
       pattern::make_archive("^asdf.*asdf$") },
+
+    { "?automatic test", "?automatic ?name(\"test\")",
+      pattern::make_and(pattern::make_automatic(),
+			pattern::make_name("test")) },
+
+    { "~M test", "?automatic ?name(\"test\")",
+      pattern::make_and(pattern::make_automatic(),
+			pattern::make_name("test")) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
