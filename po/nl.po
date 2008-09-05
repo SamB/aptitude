@@ -1,13 +1,13 @@
-# translation of aptitude_0.4.11.4-1_nl.merged.po to Dutch
+# translation of aptitude to Dutch
 #
 # Luk Claes <luk@debian.org>, 2005, 2006.
 # Frans Pop <elendil@planet.nl>, 2006, 2007, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude_0.4.11.4-1_nl.merged\n"
+"Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-09-05 16:05+0200\n"
-"PO-Revision-Date: 2008-06-19 11:21+0200\n"
+"PO-Revision-Date: 2008-09-05 23:04+0200\n"
 "Last-Translator: Frans Pop <elendil@planet.nl>\n"
 "Language-Team: Dutch <debian-l10n-dutch@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -49,7 +49,7 @@ msgstr "%BWaarde:%b   "
 #: src/apt_config_treeitems.cc:279
 #, c-format
 msgid "Editing \"%ls\""
-msgstr ""
+msgstr "Bezig met wijzigen van \"%ls\""
 
 #: src/apt_config_treeitems.cc:401
 msgid "%BChoice:%b  "
@@ -1522,7 +1522,6 @@ msgstr ""
 "Voer 'UNINST' in in plaats van een versie om verwijdering van het pakket te "
 "verwerpen."
 
-# FJP: typo in original
 #: src/cmdline/cmdline_resolver.cc:200
 msgid ""
 "accept the given package versions; display only solutions in which they "
@@ -1636,10 +1635,9 @@ msgid "Resolving dependencies..."
 msgstr "Bezig met het oplossen van afhankelijkheden..."
 
 #: src/cmdline/cmdline_resolver.cc:562
-#, fuzzy, c-format
-#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
-msgstr "open: %d; gesloten: %d; uitgesteld: %d; conflicten: %d"
+msgstr "open: %zd; gesloten: %zd; uitgesteld: %zd; conflicten: %zd"
 
 #: src/cmdline/cmdline_resolver.cc:615
 msgid "The following actions will resolve these dependencies:"
@@ -2447,7 +2445,7 @@ msgstr ""
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
 #: src/generic/apt/apt.cc:174
 msgid "Localized defaults|"
-msgstr ""
+msgstr "Gelocaliseerde standaardwaarden|"
 
 #: src/generic/apt/apt.cc:247
 #, c-format
