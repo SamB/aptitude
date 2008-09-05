@@ -85,7 +85,11 @@ namespace
       pattern::make_action(pattern::action_keep) },
 
     { "?all-versions(~nelba~|a~\"ble)", "?all-versions(?name(\"elba|a\\\"ble\"))",
-      pattern::make_all_versions(pattern::make_name("elba|a\"ble")) }
+      pattern::make_all_versions(pattern::make_name("elba|a\"ble")) },
+
+    { "?any-version(~Tasdf)", "?any-version(?true ?name(\"asdf\"))",
+      pattern::make_any_version(pattern::make_and(pattern::make_true(),
+						  pattern::make_name("asdf"))) }
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
