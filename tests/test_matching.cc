@@ -156,6 +156,54 @@ namespace
 					      pattern::make_for("y",
 								pattern::make_bind(1, pattern::make_source_package("argle~"))))) },
 
+    { "?broken", "?broken", pattern::make_broken() },
+
+    { "~basdf", "?broken ?name(\"asdf\")",
+      pattern::make_and(pattern::make_broken(),
+			pattern::make_name("asdf")) },
+
+    { "?broken-depends", "?broken-depends",
+      pattern::make_broken_type(pkgCache::Dep::Depends) },
+
+    { "?broken-predepends", "?broken-predepends",
+      pattern::make_broken_type(pkgCache::Dep::PreDepends) },
+
+    { "?broken-recommends", "?broken-recommends",
+      pattern::make_broken_type(pkgCache::Dep::Recommends) },
+
+    { "?broken-suggests", "?broken-suggests",
+      pattern::make_broken_type(pkgCache::Dep::Suggests) },
+
+    { "?broken-breaks", "?broken-breaks",
+      pattern::make_broken_type(pkgCache::Dep::DpkgBreaks) },
+
+    { "?broken-conflicts", "?broken-conflicts",
+      pattern::make_broken_type(pkgCache::Dep::Conflicts) },
+
+    { "?broken-replaces", "?broken-replaces",
+      pattern::make_broken_type(pkgCache::Dep::Replaces) },
+
+    { "~Bdepends", "?broken-depends",
+      pattern::make_broken_type(pkgCache::Dep::Depends) },
+
+    { "~Bpredepends", "?broken-predepends",
+      pattern::make_broken_type(pkgCache::Dep::PreDepends) },
+
+    { "~Brecommends", "?broken-recommends",
+      pattern::make_broken_type(pkgCache::Dep::Recommends) },
+
+    { "~Bsuggests", "?broken-suggests",
+      pattern::make_broken_type(pkgCache::Dep::Suggests) },
+
+    { "~Bbreaks", "?broken-breaks",
+      pattern::make_broken_type(pkgCache::Dep::DpkgBreaks) },
+
+    { "~Bconflicts", "?broken-conflicts",
+      pattern::make_broken_type(pkgCache::Dep::Conflicts) },
+
+    { "~Breplaces", "?broken-replaces",
+      pattern::make_broken_type(pkgCache::Dep::Replaces) },
+
     // Test that all the broken and dependency-type variations work.
 
     { "?depends(?true)", "?depends(?true)",
