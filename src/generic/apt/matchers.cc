@@ -354,6 +354,7 @@ namespace
       matcher_type_source_package,
       matcher_type_source_version,
       matcher_type_tag,
+      matcher_type_task,
       matcher_type_true,
       matcher_type_upgradable,
       matcher_type_user_tag,
@@ -408,6 +409,7 @@ namespace
     { "source-package", matcher_type_source_package },
     { "source-version", matcher_type_source_version },
     { "tag", matcher_type_tag },
+    { "task", matcher_type_task },
     { "true", matcher_type_true },
     { "upgradable", matcher_type_upgradable },
     { "user-tag", matcher_type_user_tag },
@@ -3728,6 +3730,8 @@ pkg_matcher_real *parse_matcher_args(const string &matcher_name,
       return new pkg_source_version_matcher(parse_string_match_args(start, end));
     case matcher_type_tag:
       return new pkg_tag_matcher(parse_string_match_args(start, end));
+    case matcher_type_task:
+      return new pkg_task_matcher(parse_string_match_args(start, end));
     case matcher_type_true:
       return new pkg_true_matcher;
     case matcher_type_upgradable:
