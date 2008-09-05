@@ -208,6 +208,14 @@ namespace
     { "~o~o", "?obsolete ?obsolete",
       pattern::make_and(pattern::make_obsolete(),
 			pattern::make_obsolete()) },
+
+    { "?or(~nasdf,   ?new)", "?name(\"asdf\") | ?new",
+      pattern::make_or(pattern::make_name("asdf"),
+		       pattern::make_new()) },
+
+    { "~nasdf  |  ?new", "?name(\"asdf\") | ?new",
+      pattern::make_or(pattern::make_name("asdf"),
+		       pattern::make_new()) },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
