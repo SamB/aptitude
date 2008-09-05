@@ -1167,7 +1167,7 @@ namespace aptitude
 
       const cwidget::util::ref_ptr<pattern> &get_for_pattern() const
       {
-	eassert(tp == for_tp && sub_patterns.size() == 0);
+	eassert(tp == for_tp && sub_patterns.size() == 1);
 
 	return sub_patterns.front();
       }
