@@ -764,7 +764,13 @@ namespace
 
     { "?user-tag(asdf)", "?user-tag(\"asdf\")", pattern::make_user_tag("asdf") },
 
-    { "?user-tag(fdsa)", "?user-tag(\"fdsa\")", pattern::make_user_tag("fdsa") }
+    { "?user-tag(fdsa)", "?user-tag(\"fdsa\")", pattern::make_user_tag("fdsa") },
+
+    { "?version(1.0)", "?version(\"1.0\")",
+      pattern::make_version("1.0") },
+
+    { "~V2.0", "?version(\"2.0\")",
+      pattern::make_version("2.0") },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
