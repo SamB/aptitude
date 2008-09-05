@@ -260,6 +260,8 @@ namespace aptitude
 	  case pattern::bind:
 	    out += "?bind(";
 	    out += p->get_bind_variable_name();
+	    out += ", ";
+	    serialize_pattern(p->get_bind_pattern(), out);
 	    out.push_back(')');
 	    break;
 
