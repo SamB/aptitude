@@ -143,7 +143,7 @@ namespace aptitude
       // Precedence levels are used to determine where to insert parens.
       // You need parens if something with a lower precedence is inside
       // something with a higher precedence.
-      const int default_precedence = 0;
+      const int default_precedence = -1;
       const int and_precedence = 0;
       const int or_precedence = 1;
       const int not_precedence = 2;
