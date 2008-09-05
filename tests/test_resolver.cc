@@ -321,7 +321,8 @@ private:
 
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
     dummy_resolver r(10, -300, -100, 10000000, 500, u);
-    r.set_debug(true);
+    // Disable this to debug the resolver test.
+    //r.set_debug(true);
     // Score the combination of b, v1 and a, v2 highly.
     package a = u.find_package("a");
     package b = u.find_package("b");
