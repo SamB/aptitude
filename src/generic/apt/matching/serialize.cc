@@ -366,7 +366,9 @@ namespace aptitude
 
 	  case pattern::narrow:
 	    out += "?narrow(";
-	    serialize_pattern(p, out, variable_name_stack);
+	    serialize_pattern(p->get_narrow_filter(), out, variable_name_stack);
+	    out += ", ";
+	    serialize_pattern(p->get_narrow_pattern(), out, variable_name_stack);
 	    out.push_back(')');
 	    break;
 
