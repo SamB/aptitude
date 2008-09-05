@@ -375,6 +375,10 @@ namespace
 
     { "~E", "?essential", pattern::make_essential() },
 
+    { "?false", "?false", pattern::make_false() },
+
+    { "~F", "?false", pattern::make_false() },
+
     { "?garbage asdf", "?garbage ?name(\"asdf\")",
       pattern::make_and(pattern::make_garbage(),
 			pattern::make_name("asdf")) },
