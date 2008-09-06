@@ -1,3 +1,50 @@
+[9/5/2008]
+Version 0.4.11.10                           "Upon the empty winds of time"
+
+- Bug fixes:
+
+  + Serious bugs:
+
+    * Never, ever remove an Essential package from the curses UI
+      without asking the user first.  I chose a very simple
+      implementation for this patch because of the pending release of
+      lenny, and so users who are removing Essential packages will get
+      prompted twice.  But I feel this is better than occasionally not
+      prompting at all; it will be cleanup up later, once lenny is
+      out.
+
+  + Minor bugs:
+
+    * Fix displaying the section descriptions in non-UTF-8 locales.
+      (Closes: #483464)
+
+    * Add the ?task search term, which was documented in some areas
+      but not others, and wasn't actually implemented due to an
+      oversight.
+
+- Documentation bugs:
+
+  + A whole pile of minor improvements suggested by "jidanni".
+    (Closes: #497374, #497340, #496726, #471347, #496719, #496729,
+    #496732, #497333, #497336, #497726, #497969)
+
+  + Give the right name for the preview limit configuration option:
+    it's Aptitude::UI::Preview-Limit, not Aptitude::Preview-Limit.
+
+  + Generate the HTML documentation in a UTF-8 encoding.
+
+- Translation fixes:
+
+  + Brazilian Portuguese (Closes: #496613)
+  + Czech (Closes: #497287)
+  + Dutch (Closes: #497965)
+  + Kurdish
+  + Japanese (Closes: #494816)
+  + Lithuanian (Closes: #496504)
+  + Norwegian Bokmål
+  + Simplified Chinese (Closes: #497550)
+  + Ukranian
+
 [8/3/2008]
 Version 0.4.11.9                            "This message brought to you
                                              courtesy of the Friends of
