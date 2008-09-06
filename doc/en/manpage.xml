@@ -147,7 +147,7 @@
 	<arg choice='plain'>why-not</arg>
       </group>
 
-      <arg choice='plain' rep='repeat'><replaceable>patterns</replaceable></arg>
+      <arg choice='opt' rep='repeat'><replaceable>patterns</replaceable></arg>
 
       <arg choice='plain'><replaceable>package</replaceable></arg>
     </cmdsynopsis>
@@ -722,7 +722,7 @@ i A ocamlweb            Depends   tetex-extra | texlive-latex-extra
 i A texlive-latex-extra Conflicts textopo</screen>
 
 	  <para>
-	    If one or more <replaceable>patterns</replaceable> are
+	    If one or more <replaceable>pattern</replaceable>s are
 	    present, then aptitude will begin its search at these
 	    patterns; that is, the first package in the chain it
 	    prints will be a package matching the pattern in question.
