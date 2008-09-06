@@ -1953,8 +1953,9 @@ The following packages will be REMOVED:
 
 	<listitem>
 	  <para>
-	    Display a list of the files and directories that will be
-	    included in the bundle.
+	    Instead of creating a bundle, display a list of the files
+	    and directories that the program would include if it
+	    generated a bundle.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -2056,7 +2057,7 @@ The following packages will be REMOVED:
 
       <arg choice='plain'><replaceable>input-file</replaceable></arg>
 
-      <arg choice='opt' rep='repeat'><replaceable>program-arguments</replaceable></arg>
+      <arg choice='opt'> <replaceable>program</replaceable> <arg choice='opt' rep='repeat'><replaceable>arguments</replaceable></arg></arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -2069,9 +2070,9 @@ The following packages will be REMOVED:
       <citerefentry><refentrytitle>aptitude-create-state-bundle</refentrytitle><manvolnum>1</manvolnum></citerefentry>
       to a temporary directory, invokes
       <replaceable>program</replaceable> on it with the supplied
-      arguments, and removes the temporary directory afterwards.  If
-      <replaceable>program</replaceable> is not supplied, it defaults
-      to
+      <replaceable>arguments</replaceable>, and removes the temporary
+      directory afterwards.  If <replaceable>program</replaceable> is
+      not supplied, it defaults to
       <citerefentry><refentrytitle>aptitude</refentrytitle><manvolnum>8</manvolnum></citerefentry>.
     </para>
   </refsect1>
