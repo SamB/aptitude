@@ -1165,23 +1165,6 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	</listitem>
       </varlistentry>
 
-      <varlistentry>
-	<term><literal>--no-new-upgrades</literal></term>
-
-	<listitem>
-	  <para>
-	    When the safe resolver is being used (i.e., <link
-	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
-	    was passed or <link
-	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
-	    is set to <literal>true</literal>), allow the dependency
-	    resolver to install new packages regardless of the value
-	    of <link
-	    linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>.
-	  </para>
-	</listitem>
-      </varlistentry>
-
       <varlistentry id='cmdlineOptionSafeUpgradeNoNewInstalls'>
 	<term>
 	  <literal>--no-new-installs</literal>
@@ -1216,14 +1199,48 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
       </varlistentry>
 
       <varlistentry>
-	<term><literal>--purge-unused</literal></term>
+	<term><literal>--no-new-upgrades</literal></term>
 
 	<listitem>
 	  <para>
-	    Purge packages that are no longer required by any
-	    installed package.  This is equivalent to passing
-	    <quote><literal>-o <link linkend='configPurge-Unused'>Aptitude::Purge-Unused=true</link></literal></quote>
-	    as a command-line argument.
+	    When the safe resolver is being used (i.e., <link
+	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+	    was passed or <link
+	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
+	    is set to <literal>true</literal>), allow the dependency
+	    resolver to install new packages regardless of the value
+	    of <link
+	    linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-O</literal> <replaceable>order</replaceable>, <literal>--sort</literal> <replaceable>order</replaceable></term>
+
+	<listitem>
+	  <para>
+	    Specify the order in which output from the <literal>search</literal>
+	    command should be displayed.  For instance, passing <quote><literal>installsize</literal></quote>
+	    for <replaceable>order</replaceable> will list packages in
+	    order according to their size when installed (see the section <quote><link linkend='secSortingPolicy'>Customizing how packages are sorted</link></quote> in the &aptitude; reference manual for more information).
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-o</literal> <replaceable>key</replaceable><literal>=</literal><replaceable>value</replaceable></term>
+
+	<listitem>
+	  <para>
+	    Set a configuration file option directly; for
+	    instance, use <literal>-o
+	    Aptitude::Log=/tmp/my-log</literal> to log &aptitude;'s
+	    actions to <filename>/tmp/my-log</filename>.  For more
+	    information on configuration file options, see the
+	    section <quote><link
+	    linkend='secConfigFile'>Configuration file
+	    reference</link></quote> in the &aptitude; reference manual.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1240,6 +1257,43 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	  <para>
 	    This corresponds to the configuration option <literal><link
 	    linkend='configCmdLine-Always-Prompt'>Aptitude::CmdLine::Always-Prompt</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--purge-unused</literal></term>
+
+	<listitem>
+	  <para>
+	    Purge packages that are no longer required by any
+	    installed package.  This is equivalent to passing
+	    <quote><literal>-o <link linkend='configPurge-Unused'>Aptitude::Purge-Unused=true</link></literal></quote>
+	    as a command-line argument.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-q<optional>=<replaceable>n</replaceable></optional></literal>, <literal>--quiet<optional>=<replaceable>n</replaceable></optional></literal></term>
+
+	<listitem>
+	  <para>
+	    Suppress all incremental progress indicators, thus making
+	    the output loggable.  This may be supplied multiple times
+	    to make the program quieter, but unlike &apt-get;,
+	    &aptitude; does not enable <literal>-y</literal> when <literal>-q</literal>
+	    is supplied more than once.
+	  </para>
+
+
+	  <para>
+	    The optional <literal>=<replaceable>n</replaceable></literal>
+	    may be used to directly set the amount of quietness (for
+	    instance, to override a setting in <filename>/etc/apt/apt.conf</filename>);
+	    it causes the program to behave as if <literal>-q</literal>
+	    had been passed exactly <replaceable>n</replaceable>
+	    times.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1275,26 +1329,6 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	  </para>
 	</listitem>
       </varlistentry>
-
-      <varlistentry>
-	<term><literal>-s</literal>, <literal>--simulate</literal></term>
-
-	<listitem>
-	  <para>
-	    In command-line mode, print the actions that would
-	    normally be performed, but don't actually perform them.
-	    This does not require &root; privileges.  In the visual
-	    interface, always open the cache in read-only mode
-	    regardless of whether you are &root;.
-	  </para>
-
-	  <para>
-	    This corresponds to the configuration option <literal><link
-	    linkend='configSimulate'>Aptitude::Simulate</link></literal>.
-	  </para>
-	</listitem>
-      </varlistentry>
-
 
       <varlistentry>
 	<term><literal>--remove-user-tag <replaceable>tag</replaceable></literal></term>
@@ -1348,6 +1382,25 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	    the <link
 	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
 	    command is able to upgrade.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>-s</literal>, <literal>--simulate</literal></term>
+
+	<listitem>
+	  <para>
+	    In command-line mode, print the actions that would
+	    normally be performed, but don't actually perform them.
+	    This does not require &root; privileges.  In the visual
+	    interface, always open the cache in read-only mode
+	    regardless of whether you are &root;.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link
+	    linkend='configSimulate'>Aptitude::Simulate</link></literal>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1427,60 +1480,6 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
       </varlistentry>
 
       <varlistentry>
-	<term><literal>-O</literal> <replaceable>order</replaceable>, <literal>--sort</literal> <replaceable>order</replaceable></term>
-
-	<listitem>
-	  <para>
-	    Specify the order in which output from the <literal>search</literal>
-	    command should be displayed.  For instance, passing <quote><literal>installsize</literal></quote>
-	    for <replaceable>order</replaceable> will list packages in
-	    order according to their size when installed (see the section <quote><link linkend='secSortingPolicy'>Customizing how packages are sorted</link></quote> in the &aptitude; reference manual for more information).
-	  </para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><literal>-o</literal> <replaceable>key</replaceable><literal>=</literal><replaceable>value</replaceable></term>
-
-	<listitem>
-	  <para>
-	    Set a configuration file option directly; for
-	    instance, use <literal>-o
-	    Aptitude::Log=/tmp/my-log</literal> to log &aptitude;'s
-	    actions to <filename>/tmp/my-log</filename>.  For more
-	    information on configuration file options, see the
-	    section <quote><link
-	    linkend='secConfigFile'>Configuration file
-	    reference</link></quote> in the &aptitude; reference manual.
-	  </para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><literal>-q<optional>=<replaceable>n</replaceable></optional></literal>, <literal>--quiet<optional>=<replaceable>n</replaceable></optional></literal></term>
-
-	<listitem>
-	  <para>
-	    Suppress all incremental progress indicators, thus making
-	    the output loggable.  This may be supplied multiple times
-	    to make the program quieter, but unlike &apt-get;,
-	    &aptitude; does not enable <literal>-y</literal> when <literal>-q</literal>
-	    is supplied more than once.
-	  </para>
-
-
-	  <para>
-	    The optional <literal>=<replaceable>n</replaceable></literal>
-	    may be used to directly set the amount of quietness (for
-	    instance, to override a setting in <filename>/etc/apt/apt.conf</filename>);
-	    it causes the program to behave as if <literal>-q</literal>
-	    had been passed exactly <replaceable>n</replaceable>
-	    times.
-	  </para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
 	<term><literal>-V</literal>, <literal>--show-versions</literal></term>
 
 	<listitem>
@@ -1493,6 +1492,44 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	  </para>
 	</listitem>
       </varlistentry>
+
+      <varlistentry>
+	<term><literal>-v</literal>, <literal>--verbose</literal></term>
+
+	<listitem>
+	  <para>
+	    Causes some commands (for instance, <literal>show</literal>) to display extra information.  This may be supplied multiple times to get more and more information.
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Verbose'>Aptitude::CmdLine::Verbose</link></literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--version</literal></term>
+
+	<listitem>
+	  <para>
+	    Display the version of &aptitude; and some information
+	    about how it was compiled.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--visual-preview</literal></term>
+
+	<listitem>
+	  <para>
+	    When installing or removing packages from the command
+	    line, instead of displaying the usual prompt, start up the
+	    visual interface and display its preview screen.
+	  </para>
+	</listitem>
+      </varlistentry>
+
 
       <varlistentry>
 	<term><literal>-W</literal>, <literal>--show-why</literal></term>
@@ -1540,43 +1577,6 @@ The following packages will be REMOVED:
 	    and displays the same information that is computed by
 	    <literal>aptitude why</literal> and <literal>aptitude
 	    why-not</literal>.
-	  </para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><literal>-v</literal>, <literal>--verbose</literal></term>
-
-	<listitem>
-	  <para>
-	    Causes some commands (for instance, <literal>show</literal>) to display extra information.  This may be supplied multiple times to get more and more information.
-	  </para>
-
-	  <para>
-	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Verbose'>Aptitude::CmdLine::Verbose</link></literal>.
-	  </para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><literal>--version</literal></term>
-
-	<listitem>
-	  <para>
-	    Display the version of &aptitude; and some information
-	    about how it was compiled.
-	  </para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><literal>--visual-preview</literal></term>
-
-	<listitem>
-	  <para>
-	    When installing or removing packages from the command
-	    line, instead of displaying the usual prompt, start up the
-	    visual interface and display its preview screen.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1641,6 +1641,19 @@ The following packages will be REMOVED:
 
     <variablelist>
       <varlistentry>
+	<term><literal>-i</literal></term>
+
+	<listitem>
+	  <para>
+	    Displays a download preview when the program starts
+	    (equivalent to starting the program and immediately
+	    pressing <quote><keycap>g</keycap></quote>).  You
+	    cannot use this option and <quote><literal>-u</literal></quote> at the same time.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
 	<term><literal>-S</literal> <replaceable>fname</replaceable></term>
 
 	<listitem>
@@ -1658,19 +1671,6 @@ The following packages will be REMOVED:
 	  <para>
 	    Begins updating the package lists as soon as the
 	    program starts.  You cannot use this option and <literal>-i</literal> at the same time.
-	  </para>
-	</listitem>
-      </varlistentry>
-
-      <varlistentry>
-	<term><literal>-i</literal></term>
-
-	<listitem>
-	  <para>
-	    Displays a download preview when the program starts
-	    (equivalent to starting the program and immediately
-	    pressing <quote><keycap>g</keycap></quote>).  You
-	    cannot use this option and <quote><literal>-u</literal></quote> at the same time.
 	  </para>
 	</listitem>
       </varlistentry>
