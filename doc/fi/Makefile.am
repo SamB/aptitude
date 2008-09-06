@@ -44,7 +44,7 @@ $(MANPAGE): aptitude.xml manpage.xml $(srcdir)/../aptitude-man.xsl
 $(README): aptitude.xml manpage.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
 	-rm -fr output-txt/
 	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl $(srcdir)/aptitude.xml
-	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | sed 's/&#8220;/"/g;s/&#8221;/"/g;s/&#8212;/--/g;s/&#381;/Zh/g;s/&#353;/sh/g' > $(README)
+	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | $(srcdir)/../fixup-text > $(README)
 
 doc-css-stamp: doc-html-stamp $(srcdir)/../aptitude.css
 	rm -f output-html/aptitude.css

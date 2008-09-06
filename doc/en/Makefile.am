@@ -45,7 +45,7 @@ aptitude.8 aptitude-create-state-bundle.1 aptitude-run-state-bundle.1: man-stamp
 $(README): $(srcdir)/aptitude.xml $(srcdir)/manpage.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
 	-rm -fr output-txt/
 	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl $(srcdir)/aptitude.xml
-	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | sed 's/&#8212/--/g' > $(README)
+	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | $(srcdir)/../fixup-text > $(README)
 
 doc-db2latex-stamp: output-db2latex/aptitude.tex $(IMAGES)
 	ln -s ../images output-db2latex/images
