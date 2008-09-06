@@ -910,6 +910,7 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	<listitem>
 	  <para>
 	    For <literal>full-upgrade</literal>,
+	    <literal>safe-upgrade</literal>,
 	    <literal>forbid-version</literal>,
 	    <literal>hold</literal>, <literal>install</literal>,
 	    <literal>keep-all</literal>, <literal>markauto</literal>,
@@ -931,7 +932,7 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
 	<listitem>
 	  <para>
-	    For <literal>full-upgrade</literal>,
+	    For <literal>full-upgrade</literal>, <literal>safe-upgrade</literal>
 	    <literal>forbid-version</literal>,
 	    <literal>hold</literal>, <literal>install</literal>,
 	    <literal>keep-all</literal>, <literal>markauto</literal>,
@@ -950,7 +951,7 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
 	  <para>
 	    For instance, <literal>aptitude safe-upgrade
-	    --add-user-tag-to "new-installs,?action(install)</literal>
+	    --add-user-tag-to "new-installs,?action(install)"</literal>
 	    will add the tag <literal>new-installs</literal> to all
 	    the packages installed by the <link
 	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
@@ -1340,6 +1341,7 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	<listitem>
 	  <para>
 	    For <literal>full-upgrade</literal>,
+	    <literal>safe-upgrade</literal>
 	    <literal>forbid-version</literal>,
 	    <literal>hold</literal>, <literal>install</literal>,
 	    <literal>keep-all</literal>, <literal>markauto</literal>,
@@ -1362,6 +1364,7 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	<listitem>
 	  <para>
 	    For <literal>full-upgrade</literal>,
+	    <literal>safe-upgrade</literal>
 	    <literal>forbid-version</literal>,
 	    <literal>hold</literal>, <literal>install</literal>,
 	    <literal>keep-all</literal>, <literal>markauto</literal>,
@@ -1369,8 +1372,9 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	    <literal>reinstall</literal>, <literal>remove</literal>,
 	    <literal>unhold</literal>, and
 	    <literal>unmarkauto</literal>: remove the user tag
-	    <replaceable>tag</replaceable> from all packages that match
-	    <replaceable>pattern</replaceable> as if with the <link
+	    <replaceable>tag</replaceable> from all packages that
+	    match <replaceable>pattern</replaceable> as if with the
+	    <link
 	    linkend='cmdlineAddOrRemoveUserTags'><literal>remove-user-tag</literal></link>
 	    command.  The pattern is a search pattern as described in
 	    the section <quote><link
