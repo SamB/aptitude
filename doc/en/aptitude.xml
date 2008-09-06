@@ -9461,6 +9461,16 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configAuto-Fix-Broken'>
+	      <seg><literal>Aptitude::Auto-Fix-Broken</literal></seg>
+	      <seg><literal>true</literal></seg>
+	      <seg>
+		If this option is <literal>false</literal>,
+		&aptitude; will ask for permission before
+		attempting to fix any broken packages.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configAuto-Install'>
 	      <seg><literal>Aptitude::Auto-Install</literal></seg>
 	      <seg><literal>true</literal></seg>
@@ -9469,16 +9479,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		&aptitude; will automatically attempt to fulfill
 		the dependencies of a package when you select it
 		for installation.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configAuto-Fix-Broken'>
-	      <seg><literal>Aptitude::Auto-Fix-Broken</literal></seg>
-	      <seg><literal>true</literal></seg>
-	      <seg>
-		If this option is <literal>false</literal>,
-		&aptitude; will ask for permission before
-		attempting to fix any broken packages.
 	      </seg>
 	    </seglistitem>
 
@@ -9719,37 +9719,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configSafe-Resolver-No-New-Installs'>
-	      <seg><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></seg>
-	      <seg><literal>false</literal></seg>
-	      <seg>
-		If this option is <literal>true</literal>, then when
-		the <quote>safe</quote> dependency resolver has been
-		activated via <link
-		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
-		the resolver will not be allowed to install packages
-		that are not currently installed.  This is similar to
-		<link
-		linkend='configCmdLine-Safe-Upgrade-No-New-Installs'><literal>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</literal></link>,
-		but applies only to command-line actions other than
-		<link
-		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configSafe-Resolver-No-New-Upgrades'>
-	      <seg><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></seg>
-	      <seg><literal>false</literal></seg>
-	      <seg>
-		If this option is enabled, then when the
-		<quote>safe</quote> dependency resolver has been
-		activated via <link
-		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
-		the resolver will not be allowed to resolve
-		dependencies by upgrading packages.
-	      </seg>
-	    </seglistitem>
-
 	    <seglistitem id='configCmdLine-Simulate'>
 	      <seg><literal>Aptitude::CmdLine::Simulate</literal></seg>
 	      <seg><literal>false</literal></seg>
@@ -9916,6 +9885,25 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configIgnore-Old-Tmp'>
+	      <seg><literal>Aptitude::Ignore-Old-Tmp</literal></seg>
+
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		Old versions of &aptitude; created a directory
+		<filename>~/.aptitude/.tmp</filename> which is no
+		longer necessary.  If the directory exists and
+		<literal>Aptitude::Ignore-Old-Tmp</literal> is
+		<literal>true</literal>, &aptitude; will ask you
+		whether to remove this directory.  This option is
+		automatically set to <literal>true</literal> after you
+		reply.  On the other hand, if the directory does not
+		exist, this option is set to <literal>false</literal>
+		so that you will be notified if it reappears.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configIgnore-Recommends-Important'>
 	      <seg><literal>Aptitude::Ignore-Recommends-Important</literal></seg>
 
@@ -9936,25 +9924,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		to <literal>false</literal> and set
 		<literal>Aptitude::Ignore-Recommends-Important</literal>
 		to <literal>true</literal> on startup.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configIgnore-Old-Tmp'>
-	      <seg><literal>Aptitude::Ignore-Old-Tmp</literal></seg>
-
-	      <seg><literal>false</literal></seg>
-
-	      <seg>
-		Old versions of &aptitude; created a directory
-		<filename>~/.aptitude/.tmp</filename> which is no
-		longer necessary.  If the directory exists and
-		<literal>Aptitude::Ignore-Old-Tmp</literal> is
-		<literal>true</literal>, &aptitude; will ask you
-		whether to remove this directory.  This option is
-		automatically set to <literal>true</literal> after you
-		reply.  On the other hand, if the directory does not
-		exist, this option is set to <literal>false</literal>
-		so that you will be notified if it reappears.
 	      </seg>
 	    </seglistitem>
 
@@ -10454,27 +10423,34 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configTop-Sections'>
-	      <seg><literal>Aptitude::Sections::Top-Sections</literal></seg>
-	      <seg><literal>"main"; "contrib"; "non-free"; "non-US";</literal></seg>
+	    <seglistitem id='configSafe-Resolver-No-New-Installs'>
+	      <seg><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></seg>
+	      <seg><literal>false</literal></seg>
 	      <seg>
-		A configuration group whose elements are the names of
-		the top-level archive sections.  The
-		<quote><literal>topdir</literal></quote>,
-		<quote><literal>subdir</literal></quote>, and
-		<quote><literal>subdirs</literal></quote> grouping
-		policies use this list to interpret Section fields: if
-		the first path element of a package's Section is
-		<emphasis>not</emphasis> contained in this list, or if
-		its Section has only one element, then the package
-		will be grouped using the first member of this list as
-		its first path element.  For example, if the first
-		member of <literal>Top-Sections</literal> is
-		<quote><literal>main</literal></quote>, then a package
-		whose Section is
-		<quote><literal>games</literal></quote> will be
-		treated as if its Section field were
-		<quote><literal>games/arcade</literal></quote>.
+		If this option is <literal>true</literal>, then when
+		the <quote>safe</quote> dependency resolver has been
+		activated via <link
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
+		the resolver will not be allowed to install packages
+		that are not currently installed.  This is similar to
+		<link
+		linkend='configCmdLine-Safe-Upgrade-No-New-Installs'><literal>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</literal></link>,
+		but applies only to command-line actions other than
+		<link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configSafe-Resolver-No-New-Upgrades'>
+	      <seg><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		If this option is enabled, then when the
+		<quote>safe</quote> dependency resolver has been
+		activated via <link
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
+		the resolver will not be allowed to resolve
+		dependencies by upgrading packages.
 	      </seg>
 	    </seglistitem>
 
@@ -10498,6 +10474,30 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		by a line-break, and the string
 		<quote><literal>''</literal></quote> will be replaced
 		by a double-quote character.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configTop-Sections'>
+	      <seg><literal>Aptitude::Sections::Top-Sections</literal></seg>
+	      <seg><literal>"main"; "contrib"; "non-free"; "non-US";</literal></seg>
+	      <seg>
+		A configuration group whose elements are the names of
+		the top-level archive sections.  The
+		<quote><literal>topdir</literal></quote>,
+		<quote><literal>subdir</literal></quote>, and
+		<quote><literal>subdirs</literal></quote> grouping
+		policies use this list to interpret Section fields: if
+		the first path element of a package's Section is
+		<emphasis>not</emphasis> contained in this list, or if
+		its Section has only one element, then the package
+		will be grouped using the first member of this list as
+		its first path element.  For example, if the first
+		member of <literal>Top-Sections</literal> is
+		<quote><literal>main</literal></quote>, then a package
+		whose Section is
+		<quote><literal>games</literal></quote> will be
+		treated as if its Section field were
+		<quote><literal>games/arcade</literal></quote>.
 	      </seg>
 	    </seglistitem>
 
