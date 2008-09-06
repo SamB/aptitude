@@ -5950,7 +5950,9 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	  <para>
 	    This section describes how to configure the contents and
-	    format of the package list, status line, and header line.
+	    format of the package list, status line, and header line,
+	    as well as the output of <literal><link
+	    linkend='cmdlineSearch'>aptitude search</link></literal>.
 	  </para>
 
 	  <para>
@@ -6018,7 +6020,11 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    linkend='configPackage-Header-Format'>Aptitude::UI::Package-Header-Format</link></literal>
 	    define the default formats the package list, the header at
 	    the top of the package list, and the status line below the
-	    package list respectively.
+	    package list respectively.  To change how the results of
+	    an <literal><link linkend='cmdlineSearch'>aptitude
+	    search</link></literal> command are displayed, use the
+	    <literal><link
+	    linkend='cmdlineOptionFormat'>-F</link></literal> option.
 	  </para>
 
 	  <para>
@@ -6744,10 +6750,12 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  <title>Customizing how packages are sorted</title>
 
 	  <para>
-	    By default, packages in the package list are sorted by
-	    name.  However, it is often useful to sort them according
-	    to different criteria (for instance, package size), and
-	    &aptitude; allows you to do just that by modifying the
+	    By default, packages in the package list or in the output
+	    of <literal><link linkend='cmdlineSearch'>aptitude
+	    search</link></literal> are sorted by name.  However, it
+	    is often useful to sort them according to different
+	    criteria (for instance, package size), and &aptitude;
+	    allows you to do just that by modifying the
 	    <firstterm>sorting policy</firstterm>.
 	  </para>
 
@@ -6767,7 +6775,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
 	  <para>
 	    To change the sorting policy for an active package list,
-	    press <keycap>S</keycap>.
+	    press <keycap>S</keycap>.  To change the default sorting
+	    for all package lists, set the configuration option
+	    <literal><link
+	    linkend='configDefault-Sorting'>Aptitude::UI::Default-Sorting</link></literal>.
+	    To change the sorting policy for <literal><link
+	    linkend='cmdlineSearch'>aptitude search</link></literal>,
+	    use the <literal><link
+	    linkend='cmdlineOptionSort'>--sort</link></literal>
+	    command-line option.
 	  </para>
 
 	  <para>

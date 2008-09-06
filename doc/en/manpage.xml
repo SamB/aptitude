@@ -539,7 +539,7 @@
 	</listitem>
       </varlistentry>
 
-      <varlistentry>
+      <varlistentry id='cmdlineSearch'>
 	<term><literal>search</literal></term>
 
 	<listitem>
@@ -593,7 +593,12 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 	    flags, see the section <quote><link
 	    linkend='secAccessingPackageInformation'>Accessing Package
 	    Information</link></quote> in the &aptitude; reference
-	    guide.
+	    guide.  To customize the output of
+	    <literal>search</literal>, see the command-line options
+	    <link
+	    linkend='cmdlineOptionFormat'><literal>-F</literal></link>
+	    and <link
+	    linkend='cmdlineOptionSort'><literal>--sort</literal></link>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1219,12 +1224,12 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	</listitem>
       </varlistentry>
 
-      <varlistentry>
+      <varlistentry id='cmdlineOptionSort'>
 	<term><literal>-O</literal> <replaceable>order</replaceable>, <literal>--sort</literal> <replaceable>order</replaceable></term>
 
 	<listitem>
 	  <para>
-	    Specify the order in which output from the <literal>search</literal>
+	    Specify the order in which output from the <link linkend='cmdlineSearch'><literal>search</literal></link>
 	    command should be displayed.  For instance, passing <quote><literal>installsize</literal></quote>
 	    for <replaceable>order</replaceable> will list packages in
 	    order according to their size when installed (see the section <quote><link linkend='secSortingPolicy'>Customizing how packages are sorted</link></quote> in the &aptitude; reference manual for more information).
