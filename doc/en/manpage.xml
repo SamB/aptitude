@@ -857,15 +857,18 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
 	<listitem>
 	  <para>
-	    Extract a subset of the package cache to the specified
-	    directory.  If no packages are listed, the entire package
-	    cache is copied; otherwise only the entries corresponding
-	    to the named packages are copied.  Each package name may
-	    be a search pattern, and all the packages matching that
-	    pattern will be selected (see the section <quote><link
+	    Copy the apt configuration directory
+	    (<literal>/etc/apt</literal>) and a subset of the package
+	    database to the specified directory.  If no packages are
+	    listed, the entire package database is copied; otherwise
+	    only the entries corresponding to the named packages are
+	    copied.  Each package name may be a search pattern, and
+	    all the packages matching that pattern will be selected
+	    (see the section <quote><link
 	    linkend='secSearchPatterns'>Search Patterns</link></quote>
 	    in the &aptitude; reference manual).  Any existing package
-	    lists in the output directory will be overwritten.
+	    database files in the output directory will be
+	    overwritten.
 	  </para>
 
 	  <para>
