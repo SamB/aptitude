@@ -10,6 +10,8 @@ noinst_LIBRARIES = libgeneric-matching.a
 libgeneric_matching_a_SOURCES = \
 	compare_patterns.cc	\
 	compare_patterns.h	\
+	match.cc                \
+	match.h                 \
 	parse.cc		\
 	parse.h			\
 	pattern.cc		\
