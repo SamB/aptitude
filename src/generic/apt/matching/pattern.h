@@ -221,7 +221,7 @@ namespace aptitude
 	   *
 	   *  Matches packages by their action flag.
 	   *
-	   *  Fields: action_type, action_string.
+	   *  Fields: action_type.
 	   */
 	  action,
 	  /** \brief ?all-versions(PATTERN)
