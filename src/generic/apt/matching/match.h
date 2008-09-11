@@ -28,7 +28,13 @@
 
 #include <vector>
 
+#include <regex.h>
+#include <sys/types.h>
+
 #include "pattern.h"
+
+class aptitudeDepCache;
+class pkgRecords;
 
 namespace aptitude
 {
@@ -102,6 +108,11 @@ namespace aptitude
 	{
 	}
 
+	regexp_match(const regmatch_t &match)
+	  : start(match.rm_so), end(match.rm_eo)
+	{
+	}
+
 	int get_start() const { return start; }
 	int get_end() const { return end; }
       };
@@ -169,14 +180,15 @@ namespace aptitude
        */
       template<typename RegexpMatchIter>
       static cwidget::util::ref_ptr<match> make_regexp(const cwidget::util::ref_ptr<pattern> &p,
-					RegexpMatchIter regexp_matches_begin,
-					RegexpMatchIter regexp_matches_end)
+						       RegexpMatchIter regexp_matches_begin,
+						       RegexpMatchIter regexp_matches_end)
       {
 	return new match(regexp, p,
 			 pkgCache::DepIterator(),
 			 pkgCache::VerIterator(),
 			 regexp_matches_begin, regexp_matches_end,
-			 (cwidget::util::ref_ptr<match> *)0, 0);
+			 (cwidget::util::ref_ptr<match> *)0,
+			 (cwidget::util::ref_ptr<match> *)0);
       }
 
       /** \brief Create a new match through a dependency.
@@ -191,10 +203,10 @@ namespace aptitude
        */
       template<typename SubMatchIter>
       static cwidget::util::ref_ptr<match> make_dependency(const cwidget::util::ref_ptr<pattern> &p,
-					    const pkgCache::DepIterator &dep,
-					    const pkgCache::VerIterator &ver,
-					    SubMatchIter sub_matches_begin,
-					    SubMatchIter sub_matches_end)
+							   const pkgCache::DepIterator &dep,
+							   const pkgCache::VerIterator &ver,
+							   SubMatchIter sub_matches_begin,
+							   SubMatchIter sub_matches_end)
       {
 	return new match(dependency, p,
 			 dep,
@@ -215,8 +227,8 @@ namespace aptitude
        */
       template<typename SubMatchIter>
       static cwidget::util::ref_ptr<match> make_sub_pattern_list(const cwidget::util::ref_ptr<pattern> &p,
-						  SubMatchIter sub_matches_begin,
-						  SubMatchIter sub_matches_end)
+								 SubMatchIter sub_matches_begin,
+								 SubMatchIter sub_matches_end)
       {
 	return new match(sub_pattern_list, p,
 			 pkgCache::DepIterator(),
@@ -277,6 +289,43 @@ namespace aptitude
 	return sub_matches;
       }
     };
+
+    /** \brief Test a version of a package against a pattern.
+     *
+     *  \param p   The pattern to execute.
+     *  \param pkg The package to compare.
+     *  \param ver The version of pkg to compare, or an end iterator to match the
+     *             package itself.
+     *  \param cache   The cache in which to search.
+     *  \param records The package records with which to perform the match.
+     *
+     *  \return A match object describing the match, or \b NULL if the
+     *  package does not match.
+     */
+    cwidget::util::ref_ptr<match> get_match(const cwidget::util::ref_ptr<pattern> &p,
+					    const pkgCache::PkgIterator &pkg,
+					    const pkgCache::VerIterator &ver,
+					    aptitudeDepCache &cache,
+					    pkgRecords &records);
+
+
+    /** \brief Test a package against a pattern.
+     *
+     *  This tests the package as a package, not as a version.
+     *
+     *  \param p   The pattern to execute.
+     *  \param pkg The package to compare.
+     *  \param cache   The cache in which to search.
+     *  \param records The package records with which to perform the match.
+     *
+     *  \return A match object describing the match, or \b NULL if the
+     *  package does not match.
+     */
+    cwidget::util::ref_ptr<match> get_match(const cwidget::util::ref_ptr<pattern> &p,
+					    const pkgCache::PkgIterator &pkg,
+					    const pkgCache::VerIterator &ver,
+					    aptitudeDepCache &cache,
+					    pkgRecords &records);
   }
 }
 
