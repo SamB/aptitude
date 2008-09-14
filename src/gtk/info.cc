@@ -489,6 +489,7 @@ namespace gui
   : Tab(Info, label, Gnome::Glade::Xml::create(glade_main_file, "main_info_hpaned"), "main_info_hpaned")
   {
     get_xml()->get_widget("main_info_textview", textview);
+    get_xml()->get_widget("main_info_notebook", notebook);
     get_widget()->show();
     cache_closed.connect(sigc::mem_fun(*this, &InfoTab::do_cache_closed));
     cache_reloaded.connect(sigc::mem_fun(*this, &InfoTab::do_cache_reloaded));

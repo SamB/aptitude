@@ -41,6 +41,7 @@ namespace gui
       Gtk::TextView * textview;
       cwidget::util::ref_ptr<EntityView> pVersionsView;
       cwidget::util::ref_ptr<EntityView> pDependsView;
+      Gtk::Notebook * notebook;
       ChangeLogView * changelogview;
 
       std::string package_name;
