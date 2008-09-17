@@ -31,50 +31,6 @@ namespace aptitude
   {
     namespace
     {
-      /** \brief A value stored on the match stack. */
-      class stack_value
-      {
-      public:
-	/** \brief The type of value that this represents. */
-	enum type
-	  {
-	    /** \brief A package without version information. */
-	    package,
-	    /** \brief A specific version of a package. */
-	    version
-	  };
-
-      private:
-	type tp;
-	pkgCache::PkgIterator pkg;
-	pkgCache::VerIterator ver;
-
-	stack_value(type _tp, const pkgCache::PkgIterator &_pkg, const pkgCache::VerIterator &_ver)
-	  : tp(_tp), pkg(_pkg), ver(_ver)
-	{
-	}
-
-      public:
-	static stack_value make_package(const pkgCache::PkgIterator &pkg)
-	{
-	  return stack_value(package, pkg, pkgCache::VerIterator(*const_cast<pkgCache::PkgIterator &>(pkg).Cache()));
-	}
-
-	static stack_value make_version(const pkgCache::PkgIterator &pkg,
-					const pkgCache::VerIterator &ver)
-	{
-	  return stack_value(version, pkg, ver);
-	}
-
-	type get_type() const
-	{
-	  return tp;
-	}
-
-	const pkgCache::PkgIterator &get_pkg() const { return pkg; }
-	const pkgCache::VerIterator &get_ver() const { return ver; }
-      };
-
       /** \brief Evaluate any regular expression-based pattern.
        *
        *  \param p      The pattern to evaluate.
@@ -90,92 +46,82 @@ namespace aptitude
        */
       ref_ptr<match> evaluate_regexp(const ref_ptr<pattern> &p,
 				     const pattern::regex_info &inf,
-				     const char *s,
-				     bool invert)
+				     const char *s)
       {
-	if(!invert)
+	// Unfortunately, regexec() seems to require a hard limit to
+	// the number of matches that can be returned. :-(
+	regmatch_t matches[30];
+	const int num_matches = sizeof(matches) / sizeof(regmatch_t);
+
+	bool matched = inf.get_regex_group()->exec(s,
+						   matches,
+						   num_matches);
+
+	if(matched)
 	  {
-	    // Unfortunately, regexec() seems to require a hard limit to
-	    // the number of matches that can be returned. :-(
-	    regmatch_t matches[30];
-	    const int num_matches = sizeof(matches) / sizeof(regmatch_t);
+	    int matches_found = 0;
+	    while(matches_found < 30 && matches[matches_found].rm_so >= 0)
+	      ++matches_found;
 
-	    bool matched = inf.get_regex_group()->exec(s,
-						       matches,
-						       num_matches);
-
-	    if(matched)
-	      {
-		int matches_found = 0;
-		while(matches_found < 30 && matches[matches_found].rm_so >= 0)
-		  ++matches_found;
-
-		return match::make_regexp(p, matches, matches + matches_found);
-	      }
-	    else
-	      return NULL;
+	    return match::make_regexp(p, matches, matches + matches_found);
 	  }
 	else
-	  {
-	    bool matched = inf.get_regex_nogroup()->exec(s);
-
-	    if(matched)
-	      {
-		match::regexp_match m(0, strlen(s));
-		return match::make_regexp(p, &m, (&m) + 1);
-	      }
-	    else
-	      return NULL;
-	  }
+	  return NULL;
       }
 
-      ref_ptr<match> evaluate(const ref_ptr<pattern> &p,
-			      const pkgCache::PkgIterator &pkg,
-			      const pkgCache::VerIterator &ver,
-			      aptitudeDepCache &cache,
-			      pkgRecords &records,
-			      bool invert)
+      // Match an atomic expression against one matchable.
+      ref_ptr<match> evaluate_atomic(const ref_ptr<pattern> &p,
+				     const matchable &target,
+				     aptitudeDepCache &cache,
+				     pkgRecords &records)
       {
 	switch(p->get_type())
 	  {
-	    // ?archive
+	    // Structural matchers:
+
+	  case pattern::all_versions:
+	  case pattern::and_tp:
+	  case pattern::any_version:
+	  case pattern::narrow:
+	  case pattern::not_tp:
+	  case pattern::or_tp:
+	  case pattern::widen:
+	    throw MatchingException("Internal error: evaluate_atomic() invoked on a non-leaf node.");
+	    break;
+
+	    // Atomic matchers:
 	  case pattern::archive:
-	    if(ver.end() || ver.FileList().end())
+	    if(!target.get_has_version())
 	      return NULL;
 
+	    {
+	      pkgCache::VerIterator ver(target.get_version_iterator(cache));
 
-	    for(pkgCache::VerFileIterator f = ver.FileList(); !f.end(); ++f)
-	      {
-		pkgCache::PkgFileIterator cur = f.File();
 
-		if(!cur.end() && cur.Archive())
-		  {
-		    ref_ptr<match> m = evaluate_regexp(p,
-						       p->get_archive_regex_info(),
-						       cur.Archive(),
-						       invert);
+	      for(pkgCache::VerFileIterator f = ver.FileList(); !f.end(); ++f)
+		{
+		  pkgCache::PkgFileIterator cur = f.File();
 
-		    if(!invert)
-		      {
-			if(m.valid())
-			  return m;
-		      }
-		    else
-		      {
-			if(!m.valid())
-			  return m;
-		      }
-		  }
-	      }
+		  if(!cur.end() && cur.Archive())
+		    {
+		      ref_ptr<match> m = evaluate_regexp(p,
+							 p->get_archive_regex_info(),
+							 cur.Archive());
+
+		      if(m.valid())
+			return m;
+		    }
+		}
+	    }
 
 	    return NULL;
 	    break;
 
-	    // ?action
 	  case pattern::action:
 	    {
 	      bool matches = false;
 	      pattern::action_type type = p->get_action_action_type();
+	      pkgCache::PkgIterator pkg = target.get_package_iterator(cache);
 
 	      // Install, purge, and remove states all match more than
 	      // one find_pkg_state return value.
@@ -236,19 +182,7 @@ namespace aptitude
 
 	    break;
 
-	  case pattern::all_versions:
-	    return NULL;
-	    break;
-
-	  case pattern::any_version:
-	    return NULL;
-	    break;
-
 	  case pattern::automatic:
-	    return NULL;
-	    break;
-
-	  case pattern::and_tp:
 	    return NULL;
 	    break;
 
@@ -320,23 +254,11 @@ namespace aptitude
 	    return NULL;
 	    break;
 
-	  case pattern::narrow:
-	    return NULL;
-	    break;
-
 	  case pattern::new_tp:
 	    return NULL;
 	    break;
 
-	  case pattern::not_tp:
-	    return NULL;
-	    break;
-
 	  case pattern::obsolete:
-	    return NULL;
-	    break;
-
-	  case pattern::or_tp:
 	    return NULL;
 	    break;
 
@@ -400,8 +322,139 @@ namespace aptitude
 	    return NULL;
 	    break;
 
+	  default:
+	    throw MatchingException("Internal error: unhandled pattern type in evaluate()");
+	  }
+      }
+
+      /** \brief Describes how version-by-version matching is carried
+       *  out.
+       */
+      enum structural_eval_mode
+	{
+	  /** \brief All the versions in the current pool must match. */
+	  structural_eval_all,
+
+	  /** \brief Any one of the versions in the current pool can match. */
+	  structural_eval_any
+	};
+
+      ref_ptr<structural_match> evaluate_structural(structural_eval_mode mode,
+						    const ref_ptr<pattern> &p,
+						    const std::vector<matchable> &pool,
+						    aptitudeDepCache &cache,
+						    pkgRecords &records)
+      {
+	switch(p->get_type())
+	  {
+	    // Structural matchers:
+
+	  case pattern::all_versions:
+	    return NULL;
+	    break;
+
+	  case pattern::and_tp:
+	    return NULL;
+	    break;
+
+	  case pattern::any_version:
+	    return NULL;
+	    break;
+
+	  case pattern::narrow:
+	    return NULL;
+	    break;
+
+	  case pattern::not_tp:
+	    return NULL;
+	    break;
+
+	  case pattern::or_tp:
+	    return NULL;
+	    break;
+
 	  case pattern::widen:
 	    return NULL;
+	    break;
+
+	    // Atomic matchers:
+
+	  case pattern::archive:
+	  case pattern::action:
+	  case pattern::automatic:
+	  case pattern::bind:
+	  case pattern::broken:
+	  case pattern::broken_type:
+	  case pattern::candidate_version:
+	  case pattern::config_files:
+	  case pattern::current_version:
+	  case pattern::depends:
+	  case pattern::description:
+	  case pattern::essential:
+	  case pattern::equal:
+	  case pattern::false_tp:
+	  case pattern::for_tp:
+	  case pattern::garbage:
+	  case pattern::install_version:
+	  case pattern::installed:
+	  case pattern::maintainer:
+	  case pattern::name:
+	  case pattern::new_tp:
+	  case pattern::obsolete:
+	  case pattern::origin:
+	  case pattern::priority:
+	  case pattern::provides:
+	  case pattern::reverse_depends:
+	  case pattern::reverse_provides:
+	  case pattern::section:
+	  case pattern::source_package:
+	  case pattern::source_version:
+	  case pattern::tag:
+	  case pattern::task:
+	  case pattern::true_tp:
+	  case pattern::upgradable:
+	  case pattern::user_tag:
+	  case pattern::version:
+	  case pattern::virtual_tp:
+	    switch(mode)
+	      {
+	      case structural_eval_all:
+		{
+		  std::vector<std::pair<matchable, ref_ptr<match> > > matches;
+		  for(std::vector<matchable>::const_iterator it =
+			pool.begin(); it != pool.end(); ++it)
+		    {
+		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, cache, records));
+		      if(!m.valid())
+			return NULL;
+		      else
+			matches.push_back(std::make_pair(*it, m));
+		    }
+
+		  return structural_match::make_leaf(p, matches.begin(), matches.end());
+		}
+		break;
+
+	      case structural_eval_any:
+		{
+		  std::vector<std::pair<matchable, ref_ptr<match> > > matches;
+		  for(std::vector<matchable>::const_iterator it =
+			pool.begin(); it != pool.end(); ++it)
+		    {
+		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, cache, records));
+		      if(m.valid())
+			// TODO: short-circuit?
+			matches.push_back(std::make_pair(*it, m));
+		    }
+
+		  return structural_match::make_leaf(p, matches.begin(), matches.end());
+		}
+		break;
+
+	      default:
+		throw MatchingException("Internal error: unhandled structural match mode.");
+	      }
+
 	    break;
 
 	  default:
