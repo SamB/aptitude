@@ -98,6 +98,8 @@ namespace aptitude
       }
     };
 
+    class match;
+
     /** \brief A match for a node that is "atomic" at the level of
      *  matches against a particular pool of possibilities.
      *
@@ -157,7 +159,7 @@ namespace aptitude
       type tp;
 
       // The corresponding pattern node.
-      cwidget::util::ref_ptr<pattern> pattern;
+      cwidget::util::ref_ptr<pattern> p;
 
       // The list of structural sub-matches, if any.  Each corresponds
       // to a different sub-pattern (e.g., the list of immediate
@@ -235,6 +237,35 @@ namespace aptitude
 				    atomic_matches_begin,
 				    atomic_matches_end);
       }
+
+      /** \brief Get the type of this node. */
+      type get_type() const { return tp; }
+
+      /** \brief Get the corresponding pattern node. */
+      const cwidget::util::ref_ptr<pattern> &get_pattern() const
+      {
+	return p;
+      }
+
+      /** \brief Get the list of sub-matches, if this is an internal
+       *  match.
+       */
+      const std::vector<cwidget::util::ref_ptr<structural_match> > &get_sub_matches() const
+      {
+	eassert(tp == internal);
+
+	return sub_matches;
+      }
+
+      /** \brief Get the atomic matches contained in this node, if
+       *  this is an atomic match node.
+       */
+      const std::vector<std::pair<matchable, cwidget::util::ref_ptr<match> > > &get_atomic_matches() const
+      {
+	eassert(tp == atomic);
+
+	return atomic_matches;
+      }
     };
 
     /** \brief Represents information about how a package was matched.
@@ -280,7 +311,15 @@ namespace aptitude
 	   *  representing how the sub-expression matched, along with
 	   *  the dependency that was followed.
 	   */
-	  dependency
+	  dependency,
+
+	  /** \brief A match that was made via a Provides.
+	   *
+	   *  The attached information is a structural matcher
+	   *  representing how the sub-expression matched, along with
+	   *  the Provides that was followed.
+	   */
+	  provides
 	};
 
       /** \brief Represents a match of a regular expression against a string.
@@ -318,6 +357,9 @@ namespace aptitude
       // The dependency that was followed, if any.
       pkgCache::DepIterator dep;
 
+      // The Provides that was followed, if any.
+      pkgCache::PrvIterator prv;
+
       // The string regions matched by the regular expression, if any.
       std::vector<regexp_match> regexp_matches;
 
@@ -325,23 +367,19 @@ namespace aptitude
       cwidget::util::ref_ptr<structural_match> sub_match;
 
       // NB: maybe I should avoid 
-      template<typename RegexpMatchIter,
-	       typename SubMatchIter>
+      template<typename RegexpMatchIter>
       match(type _tp,
 	    const cwidget::util::ref_ptr<pattern> &_p,
 	    const cwidget::util::ref_ptr<structural_match> &_sub_match,
-	    pkgCache::DepIterator _dep,
+	    const pkgCache::DepIterator &_dep,
+	    const pkgCache::PrvIterator &_prv,
 	    RegexpMatchIter regexp_matches_begin,
-	    RegexpMatchIter regexp_matches_end,
-	    SubMatchIter sub_matches_begin,
-	    SubMatchIter sub_matches_end)
+	    RegexpMatchIter regexp_matches_end)
 	: tp(_tp), p(_p),
-	  match_targets(_match_targets),
-	  dep(_dep),
+	  dep(_dep), prv(_prv),
 	  regexp_matches(regexp_matches_begin,
 			 regexp_matches_end),
-	  sub_matches(sub_matches_begin,
-		      sub_matches_end)
+	  sub_match(_sub_match)
       {
       }
 
@@ -355,8 +393,8 @@ namespace aptitude
 	return new match(atomic, p,
 			 cwidget::util::ref_ptr<structural_match>(),
 			 pkgCache::DepIterator(),
-			 (regexp_match *)0, (regexp_match *)0,
-			 (cwidget::util::ref_ptr<match> *)0, (cwidget::util::ref_ptr<match> *)0);
+			 pkgCache::PrvIterator(),
+			 (regexp_match *)0, (regexp_match *)0);
       }
 
       /** \brief Create a new regular expression match.
@@ -377,9 +415,8 @@ namespace aptitude
 	return new match(regexp, p,
 			 cwidget::util::ref_ptr<structural_match>(),
 			 pkgCache::DepIterator(),
-			 regexp_matches_begin, regexp_matches_end,
-			 (cwidget::util::ref_ptr<match> *)0,
-			 (cwidget::util::ref_ptr<match> *)0);
+			 pkgCache::PrvIterator(),
+			 regexp_matches_begin, regexp_matches_end);
       }
 
       /** \brief Create a new match through a dependency.
@@ -391,44 +428,40 @@ namespace aptitude
        *  \param sub_matches_end     The end of the range
        *                             of sub-matches.
        */
-      template<typename SubMatchIter>
       static cwidget::util::ref_ptr<match> make_dependency(const cwidget::util::ref_ptr<pattern> &p,
 							   const cwidget::util::ref_ptr<structural_match> &m,
 							   const pkgCache::DepIterator &dep,
-							   const pkgCache::VerIterator &ver,
-							   SubMatchIter sub_matches_begin,
-							   SubMatchIter sub_matches_end)
+							   const pkgCache::VerIterator &ver)
       {
 	return new match(dependency, p,
 			 m,
 			 dep,
-			 (regexp_match *)0, 0,
-			 sub_matches_begin,
-			 sub_matches_end);
+			 pkgCache::PrvIterator(),
+			 (regexp_match *)0, (regexp_match *)0);
       }
 
 
-      /** \brief Create a new match using a list of
-       *         sub-matchers.
+      /** \brief Create a new match through a Provides.
        *
        *  \param p   The pattern that produced this match.
+       *  \param prv The Provides that was followed.
        *  \param sub_matches_begin   The beginning of the
        *                             range of sub-matches.
        *  \param sub_matches_end     The end of the range
        *                             of sub-matches.
        */
-      template<typename SubMatchIter>
-      static cwidget::util::ref_ptr<match> make_sub_pattern_list(const cwidget::util::ref_ptr<pattern> &p,
-								 SubMatchIter sub_matches_begin,
-								 SubMatchIter sub_matches_end)
+      static cwidget::util::ref_ptr<match> make_provides(const cwidget::util::ref_ptr<pattern> &p,
+							 const cwidget::util::ref_ptr<structural_match> &m,
+							 const pkgCache::PrvIterator &prv,
+							 const pkgCache::VerIterator &ver)
       {
-	return new match(sub_pattern_list, p,
-			 cwidget::util::ref_ptr<structural_match>(),
+	return new match(dependency, p,
+			 m,
 			 pkgCache::DepIterator(),
-			 (regexp_match *)0, 0,
-			 sub_matches_begin,
-			 sub_matches_end);
+			 prv,
+			 (regexp_match *)0, (regexp_match *)0);
       }
+
 
       /** \brief Retrieve the type of this match. */
       type get_type() const { return tp; }
@@ -441,12 +474,14 @@ namespace aptitude
 	return p;
       }
 
-      /** \brief Retrieve the objects that were the target
-       *  of this match.
+      /** \brief For dependency and provides matches, return the
+       *  object describing the sub-match.
        */
-      const cwidget::util::ref_ptr<matchable_list> &get_match_targets() const
+      const cwidget::util::ref_ptr<structural_match> &get_sub_matches() const
       {
-	return match_targets;
+	eassert(tp == dependency || tp == provides);
+
+	return sub_match;
       }
 
       /** \brief For regular expression matches, retrieve the list of
@@ -469,14 +504,14 @@ namespace aptitude
 	return dep;
       }
 
-      /** \brief For dependency matches or sub-matches, return the
-       *  list of sub-matches.
+      /** \brief For provides matches, retrieve the Provides
+       *  that was followed.
        */
-      const std::vector<cwidget::util::ref_ptr<match> > &get_sub_matches() const
+      const pkgCache::PrvIterator &get_prv() const
       {
-	eassert(tp == dependency || tp == sub_pattern_list);
+	eassert(tp == provides);
 
-	return sub_matches;
+	return prv;
       }
     };
 
