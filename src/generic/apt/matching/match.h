@@ -54,6 +54,10 @@ namespace aptitude
       pkgCache::Version *ver;
 
     public:
+      matchable()
+      {
+      }
+
       matchable(pkgCache::Package *_pkg,
 		pkgCache::Version *_ver)
 	: pkg(_pkg), ver(_ver)
