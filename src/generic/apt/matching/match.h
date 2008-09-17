@@ -177,12 +177,12 @@ namespace aptitude
       template<typename StructuralMatchIter,
 	       typename AtomicMatchIter>
       structural_match(type _tp,
-		       const cwidget::util::ref_ptr<pattern> &_pattern,
+		       const cwidget::util::ref_ptr<pattern> &_p,
 		       StructuralMatchIter _sub_matches_begin,
 		       StructuralMatchIter _sub_matches_end,
 		       AtomicMatchIter _atomic_matches_begin,
 		       AtomicMatchIter _atomic_matches_end)
-	: tp(_tp), pattern(_pattern),
+	: tp(_tp), p(_p),
 	  sub_matches(_sub_matches_begin, _sub_matches_end),
 	  atomic_matches(_atomic_matches_begin, _atomic_matches_end)
       {
