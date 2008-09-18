@@ -183,7 +183,15 @@ namespace aptitude
 	    break;
 
 	  case pattern::automatic:
-	    return NULL;
+	    {
+	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+
+	      if(  (!pkg.CurrentVer().end() || cache[pkg].Install()) &&
+		   (cache[pkg].Flags & pkgCache::Flag::Auto)  )
+		return match::make_atomic(p);
+	      else
+		return NULL;
+	    }
 	    break;
 
 	  case pattern::bind:
