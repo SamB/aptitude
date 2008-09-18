@@ -254,7 +254,10 @@ namespace aptitude
 	    break;
 
 	  case pattern::config_files:
-	    return NULL;
+	    if(target.get_pkg()->CurrentState == pkgCache::State::ConfigFiles)
+	      return match::make_atomic(p);
+	    else
+	      return NULL;
 	    break;
 
 	  case pattern::current_version:
