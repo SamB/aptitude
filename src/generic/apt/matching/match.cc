@@ -214,7 +214,28 @@ namespace aptitude
 	    break;
 
 	  case pattern::broken_type:
-	    return NULL;
+	    if(!target.get_has_version())
+	      return NULL;
+	    else
+	      {
+		pkgCache::VerIterator ver(target.get_version_iterator(cache));
+		pkgCache::DepIterator dep(ver.DependsList());
+
+		while(!dep.end())
+		  {
+		    while(dep->CompareOp & pkgCache::Dep::Or)
+		      ++dep;
+
+		    if(dep->Type == p->get_broken_type_depends_type() &&
+		       !(cache[dep] & pkgDepCache::DepGInstall))
+		      // Oops, it's broken..
+		      return match::make_atomic(p);
+
+		    ++dep;
+		  }
+
+		return NULL;
+	      }
 	    break;
 
 	  case pattern::candidate_version:
