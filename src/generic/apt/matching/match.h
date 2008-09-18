@@ -64,6 +64,17 @@ namespace aptitude
       {
       }
 
+      matchable(pkgCache::PkgIterator _pkg,
+		pkgCache::VerIterator _ver)
+	: pkg(_pkg), ver(_ver)
+      {
+      }
+
+      matchable(pkgCache::PkgIterator _pkg)
+	: pkg(_pkg), ver(0)
+      {
+      }
+
       pkgCache::Package *get_pkg() const { return pkg; }
       pkgCache::Version *get_ver() const { return ver; }
 
@@ -531,12 +542,12 @@ namespace aptitude
      *  \return A match object describing the match, or \b NULL if the
      *  package does not match.
      */
-    cwidget::util::ref_ptr<match> get_match(const cwidget::util::ref_ptr<pattern> &p,
-					    const pkgCache::PkgIterator &pkg,
-					    const pkgCache::VerIterator &ver,
-					    aptitudeDepCache &cache,
-					    pkgRecords &records);
-
+    cwidget::util::ref_ptr<structural_match>
+    get_match(const cwidget::util::ref_ptr<pattern> &p,
+	      const pkgCache::PkgIterator &pkg,
+	      const pkgCache::VerIterator &ver,
+	      aptitudeDepCache &cache,
+	      pkgRecords &records);
 
     /** \brief Test a package against a pattern.
      *
@@ -550,11 +561,11 @@ namespace aptitude
      *  \return A match object describing the match, or \b NULL if the
      *  package does not match.
      */
-    cwidget::util::ref_ptr<match> get_match(const cwidget::util::ref_ptr<pattern> &p,
-					    const pkgCache::PkgIterator &pkg,
-					    const pkgCache::VerIterator &ver,
-					    aptitudeDepCache &cache,
-					    pkgRecords &records);
+    cwidget::util::ref_ptr<structural_match>
+    get_match(const cwidget::util::ref_ptr<pattern> &p,
+	      const pkgCache::PkgIterator &pkg,
+	      aptitudeDepCache &cache,
+	      pkgRecords &records);
   }
 }
 

@@ -462,6 +462,50 @@ namespace aptitude
 	  }
       }
     }
+
+    ref_ptr<structural_match>
+    get_match(const ref_ptr<pattern> &p,
+	      const pkgCache::PkgIterator &pkg,
+	      const pkgCache::VerIterator &ver,
+	      aptitudeDepCache &cache,
+	      pkgRecords &records)
+    {
+      std::vector<matchable> initial_pool;
+
+      if(pkg.VersionList().end())
+	initial_pool.push_back(matchable(pkg));
+      else if(ver.end())
+	{
+	  for(pkgCache::VerIterator ver2 = pkg.VersionList();
+	      !ver2.end(); ++ver2)
+	    {
+	      initial_pool.push_back(matchable(pkg, ver2));
+	    }
+	}
+      else
+	{
+	  eassert(ver.ParentPkg() == pkg);
+
+	  initial_pool.push_back(matchable(pkg, ver));
+	}
+
+      return evaluate_structural(structural_eval_any,
+				 p,
+				 initial_pool,
+				 cache,
+				 records);
+    }
+
+    ref_ptr<structural_match>
+    get_match(const ref_ptr<pattern> &p,
+	      const pkgCache::PkgIterator &pkg,
+	      aptitudeDepCache &cache,
+	      pkgRecords &records)
+    {
+      return get_match(p, pkg,
+		       pkgCache::VerIterator(cache),
+		       cache, records);
+    }
   }
 }
 
