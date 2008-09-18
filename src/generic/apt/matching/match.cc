@@ -261,7 +261,19 @@ namespace aptitude
 	    break;
 
 	  case pattern::current_version:
-	    return NULL;
+	    if(!target.get_has_version())
+	      return NULL;
+	    else
+	      {
+		pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+
+		pkgCache::VerIterator ver(target.get_version_iterator(cache));
+
+		if(ver == pkg.CurrentVer())
+		  return match::make_atomic(p);
+		else
+		  return NULL;
+	      }
 	    break;
 
 	  case pattern::depends:
