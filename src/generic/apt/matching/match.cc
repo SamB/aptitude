@@ -199,7 +199,18 @@ namespace aptitude
 	    break;
 
 	  case pattern::broken:
-	    return NULL;
+	    if(!target.get_has_version())
+	      return NULL;
+	    else
+	      {
+		pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+		aptitudeDepCache::StateCache &state = cache[pkg];
+
+		if(state.NowBroken() || state.InstBroken())
+		  return match::make_atomic(p);
+		else
+		  return NULL;
+	      }
 	    break;
 
 	  case pattern::broken_type:
