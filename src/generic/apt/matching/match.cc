@@ -431,7 +431,10 @@ namespace aptitude
 			matches.push_back(std::make_pair(*it, m));
 		    }
 
-		  return structural_match::make_leaf(p, matches.begin(), matches.end());
+		  if(matches.size() == 0)
+		    return NULL;
+		  else
+		    return structural_match::make_leaf(p, matches.begin(), matches.end());
 		}
 		break;
 
@@ -447,7 +450,10 @@ namespace aptitude
 			matches.push_back(std::make_pair(*it, m));
 		    }
 
-		  return structural_match::make_leaf(p, matches.begin(), matches.end());
+		  if(matches.size() == 0)
+		    return NULL;
+		  else
+		    return structural_match::make_leaf(p, matches.begin(), matches.end());
 		}
 		break;
 
