@@ -353,7 +353,11 @@ namespace aptitude
 			    while(d2->CompareOp & pkgCache::Dep::Or)
 			      ++d2;
 			    if(cache[d2] & pkgDepCache::DepGInstall)
-			      continue;
+			      {
+				dep = d2;
+				++dep;
+				continue;
+			      }
 			  }
 
 			std::vector<matchable> new_pool;
