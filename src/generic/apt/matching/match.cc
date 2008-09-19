@@ -25,6 +25,9 @@
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
 
+#include <cwidget/generic/util/transcode.h>
+
+using cwidget::util::transcode;
 using cwidget::util::ref_ptr;
 
 namespace aptitude
@@ -400,7 +403,15 @@ namespace aptitude
 	    break;
 
 	  case pattern::description:
-	    return NULL;
+	    if(!target.get_has_version())
+	      return NULL;
+	    else
+	      {
+		pkgCache::VerIterator ver(target.get_version_iterator(cache));
+		return evaluate_regexp(p,
+				       p->get_description_regex_info(),
+				       transcode(get_long_description(ver, &records)).c_str());
+	      }
 	    break;
 
 	  case pattern::essential:
