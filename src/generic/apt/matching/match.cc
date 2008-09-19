@@ -415,7 +415,15 @@ namespace aptitude
 	    break;
 
 	  case pattern::essential:
-	    return NULL;
+	    {
+	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+
+	      if(  ((pkg->Flags & pkgCache::Flag::Essential) == pkgCache::Flag::Essential) ||
+		   ((pkg->Flags & pkgCache::Flag::Important) == pkgCache::Flag::Important)  )
+		  return match::make_atomic(p);
+	      else
+		return NULL;
+	    }
 	    break;
 
 	  case pattern::equal:
