@@ -1,15 +1,16 @@
 # aptitude translation to Catalan.
-# Copyright (C) 2006 Free Software Foundation, Inc.
+# Copyright © 2005, 2006, 2008 Free Software Foundation, Inc.
 # Aleix Badia i Bosch <a.badia@callusdigital.org>, 2005,2006.
 # Josep Monés i Teixidor <jmones@puntbarra.com>, 2004.
-# Jordi Mallach <jordi@debian.org>, 2004.
+# Jordi Mallach <jordi@debian.org>, 2004, 2008.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude_0.2.13-2\n"
+"Project-Id-Version: aptitude 0.4.11.9\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-09-05 16:05+0200\n"
-"PO-Revision-Date: 2006-04-20 08:19+0200\n"
-"Last-Translator: Aleix Badia i Bosch <a.badia@callusdigital.org>\n"
+"PO-Revision-Date: 2008-09-19 00:45+0200\n"
+"Last-Translator: Jordi Mallach <jordi@debian.org>\n"
 "Language-Team: Catalan <debian-l10n-catalan@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,37 +23,38 @@ msgid ""
 "%BDefault:%b %s\n"
 "%BValue:%b   %s\n"
 msgstr ""
+"%BOpció:%b         %s\n"
+"%BPredeterminat:%b %s\n"
+"%BValor:%b         %s\n"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
 msgid "True"
-msgstr ""
+msgstr "Cert"
 
 #: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
-#, fuzzy
 msgid "False"
-msgstr "Tanca"
+msgstr "Fals"
 
 #: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:393
-#, fuzzy
 msgid "%BOption:%b  "
-msgstr "Opcions"
+msgstr "%BOpció:%b         "
 
 #: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:395
 msgid "%BDefault:%b "
-msgstr ""
+msgstr "%BPredeterminat:%b "
 
 #: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:397
 msgid "%BValue:%b   "
-msgstr ""
+msgstr "%BValor:%b         "
 
 #: src/apt_config_treeitems.cc:279
 #, c-format
 msgid "Editing \"%ls\""
-msgstr ""
+msgstr "S'està editant «%ls»"
 
 #: src/apt_config_treeitems.cc:401
 msgid "%BChoice:%b  "
-msgstr ""
+msgstr "%BSelecció:%b  "
 
 #: src/apt_options.cc:160
 msgid "Display some available commands at the top of the screen"
@@ -65,7 +67,6 @@ msgid ""
 msgstr ""
 
 #: src/apt_options.cc:165
-#, fuzzy
 msgid "Hide the menu bar when it is not being used"
 msgstr "Amaga la barra de menú quan no s'estigui utilitzant"
 
@@ -172,9 +173,8 @@ msgid ""
 msgstr ""
 
 #: src/apt_options.cc:211
-#, fuzzy
 msgid "Display the information area by default"
-msgstr "Mostra per defecte l'àrea de descripció estesa"
+msgstr "Mostra per defecte l'àrea d'informació"
 
 #: src/apt_options.cc:212
 msgid ""
@@ -184,9 +184,8 @@ msgid ""
 msgstr ""
 
 #: src/apt_options.cc:217
-#, fuzzy
 msgid "Display tabs for the available views"
-msgstr "El format de visualització per a les vistes de paquets"
+msgstr "Mostra pestanyes per a les visualitzacions disponibles"
 
 #: src/apt_options.cc:218
 msgid ""
@@ -195,9 +194,8 @@ msgid ""
 msgstr ""
 
 #: src/apt_options.cc:221
-#, fuzzy
 msgid "Display tabs for the information area"
-msgstr "Mostra més informació dels paquets seleccionats"
+msgstr "Mostra pestanyes per a l'àrea d'informació"
 
 #: src/apt_options.cc:222
 msgid ""
@@ -219,7 +217,7 @@ msgstr ""
 
 #: src/apt_options.cc:233
 msgid "Automatically show why packages are broken"
-msgstr "Mostra automàticament la causa dels errors dels paquets"
+msgstr "Mostra automàticament perquè són trencats els paquets"
 
 #: src/apt_options.cc:234
 msgid ""
@@ -410,7 +408,7 @@ msgstr ""
 msgid "Automatically fix broken packages before installing or removing"
 msgstr ""
 "Abans d'iniciar la instal·lació o supressió arregla automàticament els "
-"paquets amb errors. "
+"paquets trencats."
 
 #: src/apt_options.cc:355
 msgid ""
@@ -421,7 +419,6 @@ msgid ""
 msgstr ""
 
 #: src/apt_options.cc:362
-#, fuzzy
 msgid "Install recommended packages automatically"
 msgstr "Instal·la automàticament els paquets recomanats"
 
@@ -465,6 +462,7 @@ msgstr ""
 #: src/apt_options.cc:393
 msgid "Allow dependency resolutions that break holds or forbids"
 msgstr ""
+"Permet resolucions de dependències que trenquin retencions o prohibicions"
 
 #: src/apt_options.cc:394
 msgid ""
@@ -480,42 +478,40 @@ msgid ""
 msgstr ""
 
 #: src/apt_options.cc:520
-#, fuzzy
 msgid "UI options"
-msgstr "Opcions de l'I^U"
+msgstr "Opcions de l'IU"
 
 #: src/apt_options.cc:522
-#, fuzzy
 msgid "Dependency handling"
-msgstr "Gestió de les ^dependències"
+msgstr "Gestió de les dependències"
 
 #: src/apt_options.cc:524 src/pkg_grouppolicy.cc:1018
 msgid "Miscellaneous"
 msgstr "Variat"
 
 #: src/broken_indicator.cc:126
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Examine"
-msgstr "%s: Examina"
+msgstr "%ls: Examina"
 
 #: src/broken_indicator.cc:135
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Apply"
-msgstr "%s: Aplica"
+msgstr "%ls: Aplica"
 
 #: src/broken_indicator.cc:140
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Next"
-msgstr "%s: Següent"
+msgstr "%ls: Següent"
 
 #: src/broken_indicator.cc:146
-#, fuzzy, c-format
+#, c-format
 msgid "%ls: Previous"
-msgstr "%s: Anterior"
+msgstr "%ls: Anterior"
 
 #: src/broken_indicator.cc:241
 msgid "Dependency resolution disabled."
-msgstr ""
+msgstr "Resolució de dependències inhabilitada."
 
 #: src/broken_indicator.cc:252
 msgid "Unable to resolve dependencies."
@@ -523,7 +519,7 @@ msgstr "No s'han pogut resoldre les dependències."
 
 #: src/broken_indicator.cc:263
 msgid "Fatal error in resolver"
-msgstr ""
+msgstr "S'ha produït un error fatal al sistema de resolució"
 
 #: src/broken_indicator.cc:275
 #, c-format
@@ -536,9 +532,8 @@ msgid "Internal error: unexpected null solution."
 msgstr "S'ha produït un error intern: solució nul·la no esperada."
 
 #: src/broken_indicator.cc:366
-#, fuzzy
 msgid "Suggest keeping all packages at their current version."
-msgstr "Manté la versió actual dels següents paquets:"
+msgstr "Suggereix mantenir tots els paquets a la seva versió actual."
 
 #: src/broken_indicator.cc:374
 #, c-format
@@ -584,14 +579,14 @@ msgid "Suggest %F"
 msgstr "Suggereix %F"
 
 #: src/cmdline/cmdline_action.cc:48
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find the source package for \"%s\".\n"
-msgstr "No s'ha pogut trobar l'arxiu \"%s\" del paquet \"%s\"\n"
+msgstr "No s'ha pogut trobar el paquet font per a «%s».\n"
 
 #: src/cmdline/cmdline_action.cc:202
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to satisfy the build-depends: %s."
-msgstr "No s'ha pogut llistar els fitxers de \"%s\""
+msgstr "No s'ha pogut satisfer les dependències de construcció: %s."
 
 #: src/cmdline/cmdline_action.cc:238
 #, c-format
@@ -749,9 +744,9 @@ msgid "Couldn't find a changelog for %s"
 msgstr "No s'ha pogut trobar un registre de modificacions de %s"
 
 #: src/cmdline/cmdline_clean.cc:29
-#, fuzzy, c-format
+#, c-format
 msgid "E: The clean command takes no arguments\n"
-msgstr "E: l'ordre d'actualització no necessita cap argument\n"
+msgstr "E: L'ordre de neteja no admet cap argument\n"
 
 #: src/cmdline/cmdline_clean.cc:58
 #, c-format
@@ -764,19 +759,19 @@ msgid "Del %s %s [%sB]\n"
 msgstr "Suprimeix %s %s [%sB]\n"
 
 #: src/cmdline/cmdline_clean.cc:111
-#, fuzzy, c-format
+#, c-format
 msgid "E: The autoclean command takes no arguments\n"
-msgstr "E: l'ordre d'actualització no necessita cap argument\n"
+msgstr "E: L'ordre de neteja automàtica no admet cap argument\n"
 
 #: src/cmdline/cmdline_clean.cc:148
 #, c-format
 msgid "Would free %sB of disk space\n"
-msgstr "S'alliberaran %sB de l'espai de disc\n"
+msgstr "S'alliberaran %sB d'espai en disc\n"
 
 #: src/cmdline/cmdline_clean.cc:151
 #, c-format
 msgid "Freed %sB of disk space\n"
-msgstr "S'ha alliberat %sB de l'espai de disc\n"
+msgstr "S'ha alliberat %sB d'espai en disc\n"
 
 #: src/cmdline/cmdline_do_action.cc:83
 #, c-format
@@ -788,16 +783,18 @@ msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Hi ha un argument del patró inesperat a continuació de \"keep-all\""
 
 #: src/cmdline/cmdline_do_action.cc:266
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
-msgstr "No s'han pogut resoldre les dependències."
+msgstr ""
+"No s'ha pogut resoldre les dependències de forma segura, proveu a executar-"
+"ho amb --full-resolver.\n"
 
 #: src/cmdline/cmdline_do_action.cc:304 src/cmdline/cmdline_simulate.cc:35
 #: src/cmdline/cmdline_upgrade.cc:163 src/main.cc:711
 #, c-format
 msgid "Abort.\n"
-msgstr "Abandona.\n"
+msgstr "Avorta.\n"
 
 #: src/cmdline/cmdline_download.cc:31
 #, c-format
@@ -832,9 +829,9 @@ msgstr ""
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:77
 #: src/cmdline/cmdline_user_tag.cc:116
-#, fuzzy, c-format
+#, c-format
 msgid "No such package \"%s\".\n"
-msgstr "El paquet \"%s\" no existeix"
+msgstr "El paquet «%s» no existeix.\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:115
 #, c-format
@@ -842,9 +839,9 @@ msgid "No packages were selected by the given search pattern; nothing to do.\n"
 msgstr ""
 
 #: src/cmdline/cmdline_forget_new.cc:25
-#, fuzzy, c-format
+#, c-format
 msgid "E: The forget-new command takes no arguments\n"
-msgstr "E: l'ordre d'actualització no necessita cap argument\n"
+msgstr "E: L'ordre forget-new no admet cap argument\n"
 
 #: src/cmdline/cmdline_forget_new.cc:52
 #, c-format
@@ -859,7 +856,7 @@ msgstr "Aquest programa no té ous de Pasqua.\n"
 #: src/cmdline/cmdline_moo.cc:19
 #, c-format
 msgid "There really are no Easter Eggs in this program.\n"
-msgstr "Aquest programa no té cap ou de Pasqua.\n"
+msgstr "No, aquest programa no té cap ou de Pasqua.\n"
 
 #: src/cmdline/cmdline_moo.cc:22
 #, c-format
@@ -870,12 +867,12 @@ msgstr "No us he dit que no hi havia cap ou de Pasqua en aquest programa?\n"
 #: src/cmdline/cmdline_moo.cc:25
 #, c-format
 msgid "Stop it!\n"
-msgstr "Atura-ho\n"
+msgstr "Atura-ho!\n"
 
 #: src/cmdline/cmdline_moo.cc:28
 #, c-format
 msgid "Okay, okay, if I give you an Easter Egg, will you go away?\n"
-msgstr "D'acord, d'acord us donaré un ou de Pasqua, marxareu?\n"
+msgstr "D'acord, d'acord... si us dono un ou de Pasqua, marxareu?\n"
 
 #: src/cmdline/cmdline_moo.cc:31
 #, c-format
@@ -902,8 +899,8 @@ msgstr "No s'ha pogut llegir la llista de fonts"
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(per a %s)"
+msgstr[1] "(per a %s)"
 
 #: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
 #: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2436
@@ -911,9 +908,8 @@ msgid "Provides"
 msgstr "Proporciona"
 
 #: src/cmdline/cmdline_prompt.cc:426
-#, fuzzy
 msgid "Config files"
-msgstr "fitxers de configuració"
+msgstr "Fitxers de configuració"
 
 #: src/cmdline/cmdline_prompt.cc:530 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
@@ -959,7 +955,7 @@ msgstr "Els paquets següents s'han apartat automàticament:"
 
 #: src/cmdline/cmdline_prompt.cc:564
 msgid "The following NEW packages will be automatically installed:"
-msgstr "Els paquets nous següents s'instal·laran automàticament:<"
+msgstr "Els paquets nous següents s'instal·laran automàticament:"
 
 #: src/cmdline/cmdline_prompt.cc:565
 msgid "The following packages will be automatically REMOVED:"
@@ -990,9 +986,8 @@ msgid "The following packages will be upgraded:"
 msgstr "Els paquets següents s'actualitzaran:"
 
 #: src/cmdline/cmdline_prompt.cc:572
-#, fuzzy
 msgid "The following partially installed packages will be configured:"
-msgstr "Els paquets següents s'actualitzaran:"
+msgstr "Els paquets parcialment instal·lats següents es configuraran:"
 
 #: src/cmdline/cmdline_prompt.cc:627 src/ui.cc:1465
 #, c-format
@@ -1046,17 +1041,16 @@ msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
 msgstr ""
-"*** Avís ***   S'estan ignorant les violacions de fiabilitat perquè\n"
-"              %s::CmdLine::Ignore-Trust-Violations és 'cert'.\n"
+"*** Avís ***   S'estan ignorant les violacions de confiança perquè\n"
+"              %s::CmdLine::Ignore-Trust-Violations és «cert».\n"
 
 #: src/cmdline/cmdline_prompt.cc:715
-#, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
-"*** Avís ***   S'estan ignorant les violacions de fiabilitat perquè\n"
-"              %s::CmdLine::Ignore-Trust-Violations és 'cert'.\n"
+"*** Avís ***   S'estan ignorant aquestes violacions de confiança perquè\n"
+"               Apt::Get::AllowUnauthenticated és «cert».\n"
 
 #: src/cmdline/cmdline_prompt.cc:721
 msgid "Yes"
@@ -1299,12 +1293,12 @@ msgstr "'_' per purgar els paquets"
 
 #: src/cmdline/cmdline_prompt.cc:1039 src/cmdline/cmdline_resolver.cc:212
 msgid "'=' to place packages on hold"
-msgstr "'=' per congelar els paquets"
+msgstr "'=' per a retenir els paquets"
 
 #: src/cmdline/cmdline_prompt.cc:1041 src/cmdline/cmdline_resolver.cc:214
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
-msgstr "':' per mantenir l'estat actual dels paquets sense congelar-los"
+msgstr "':' per mantenir l'estat actual dels paquets sense retenir-los"
 
 #: src/cmdline/cmdline_prompt.cc:1043 src/cmdline/cmdline_resolver.cc:216
 msgid "'&M' to mark packages as automatically installed"
@@ -1316,7 +1310,7 @@ msgstr "'&m' marca els paquets com a instal·lats manualment"
 
 #: src/cmdline/cmdline_prompt.cc:1047
 msgid "'&BD' to install the build-dependencies of a package."
-msgstr ""
+msgstr "«&BD» per a instal·lar les dependències de construcció d'un paquet."
 
 #: src/cmdline/cmdline_prompt.cc:1051
 msgid "Commands:"
@@ -1430,12 +1424,12 @@ msgid "Resolver state successfully written!"
 msgstr "L'estat del sistema de resolució s'ha desat correctament!"
 
 #: src/cmdline/cmdline_resolver.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
-"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACCIÓ> pkg... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:182
@@ -1524,14 +1518,14 @@ msgid "Expected at least one package/version pair following '%c'"
 msgstr "S'espera un o més parells paquet/versió a continuació de '%c'"
 
 #: src/cmdline/cmdline_resolver.cc:278
-#, fuzzy, c-format
+#, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
-msgstr "S'esperava una versió a continuació de \"%s\""
+msgstr "S'esperava una versió o «%s» a continuació de «%s»"
 
 #: src/cmdline/cmdline_resolver.cc:288
 #, c-format
 msgid "No such package \"%s\""
-msgstr "El paquet \"%s\" no existeix"
+msgstr "El paquet «%s» no existeix"
 
 #: src/cmdline/cmdline_resolver.cc:304
 #, c-format
@@ -1595,10 +1589,9 @@ msgid "Resolving dependencies..."
 msgstr "S'estan resolent les dependències..."
 
 #: src/cmdline/cmdline_resolver.cc:562
-#, fuzzy, c-format
-#| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+#, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
-msgstr "oberts: %d; tancats: %d; aplaçats: %d; amb conflictes: %d"
+msgstr "oberts: %zd; tancats: %zd; aplaçats: %zd; amb conflictes: %zd"
 
 #: src/cmdline/cmdline_resolver.cc:615
 msgid "The following actions will resolve these dependencies:"
@@ -1679,9 +1672,9 @@ msgid ""
 msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:999
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
-msgstr "No s'han pogut resoldre les dependències."
+msgstr "No s'han pogut resoldre les dependències per a l'actualització (%s)."
 
 #: src/cmdline/cmdline_search.cc:125
 #, c-format
@@ -1773,7 +1766,7 @@ msgstr "no és un paquet real"
 
 #: src/cmdline/cmdline_show.cc:283
 msgid " [held]"
-msgstr " [congela]"
+msgstr " [retingut]"
 
 #: src/cmdline/cmdline_show.cc:297
 #, c-format
@@ -1947,22 +1940,22 @@ msgstr "S'estan suprimint els fitxers baixats obsolets\n"
 #: src/cmdline/cmdline_update.cc:41
 #, c-format
 msgid "E: The update command takes no arguments\n"
-msgstr "E: l'ordre d'actualització no necessita cap argument\n"
+msgstr "E: L'ordre d'actualització no admet cap argument\n"
 
 #: src/cmdline/cmdline_upgrade.cc:50
-#, fuzzy, c-format
+#, c-format
 msgid "E: The %s command takes no arguments\n"
-msgstr "E: l'ordre d'actualització no necessita cap argument\n"
+msgstr "E: L'ordre %s no admet cap argument\n"
 
 #: src/cmdline/cmdline_user_tag.cc:52
-#, fuzzy, c-format
+#, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
-msgstr "No s'ha pogut trobar la versió \"%s\" del paquet \"%s\"\n"
+msgstr "S'està afegint l'etiqueta d'usuari «%s» al paquet «%s».\n"
 
 #: src/cmdline/cmdline_user_tag.cc:59
-#, fuzzy, c-format
+#, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
-msgstr "No s'ha pogut trobar la versió \"%s\" del paquet \"%s\"\n"
+msgstr "S'està suprimint l'etiqueta d'usuari «%s» del paquet «%s».\n"
 
 #: src/cmdline/cmdline_user_tag.cc:89
 #, c-format
@@ -2005,27 +1998,27 @@ msgstr "No podeu especificar un arxiu i una versió per a un paquet\n"
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d trencat [%+d]"
+msgstr[1] "%d trencats [%+d]"
 
 #: src/cmdline/cmdline_util.cc:306
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d actualització [%+d]"
+msgstr[1] "%d actualitzacions [%+d]"
 
 #: src/cmdline/cmdline_util.cc:320
 #, c-format
 msgid "%d new [%+d]"
 msgid_plural "%d new [%+d]"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d nou [%+d]"
+msgstr[1] "%d nous [%+d]"
 
 #: src/cmdline/cmdline_util.cc:331
 #, c-format
 msgid "Current status: %F."
-msgstr ""
+msgstr "Estat actual: %F."
 
 #: src/cmdline/cmdline_util.cc:342
 #, c-format
@@ -2042,69 +2035,64 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: src/cmdline/cmdline_why.cc:252
-#, fuzzy
 msgid "dep_level"
-msgstr "suprimeix"
+msgstr "nivell_dep"
 
 #: src/cmdline/cmdline_why.cc:258
-#, fuzzy
 msgid "DependsOnly"
-msgstr "Depèn"
+msgstr "NomésDepèn"
 
 #: src/cmdline/cmdline_why.cc:272
 msgid "version_selection"
-msgstr ""
+msgstr "selecció_versió"
 
 #: src/cmdline/cmdline_why.cc:277
 msgid "Current"
-msgstr ""
+msgstr "Actual"
 
 #: src/cmdline/cmdline_why.cc:280
-#, fuzzy
 msgid "Candidate"
-msgstr "VerCand"
+msgstr "Candidat"
 
 #: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1597
 msgid "Install"
 msgstr "Instal·la"
 
 #: src/cmdline/cmdline_why.cc:286
-#, fuzzy
 msgid "InstallNotCurrent"
-msgstr "Instal·lat"
+msgstr "Instal·latNoActual"
 
 #: src/cmdline/cmdline_why.cc:294
 msgid "allow_choices"
-msgstr ""
+msgstr "permet_opcions"
 
 #: src/cmdline/cmdline_why.cc:297
 msgid "true"
-msgstr ""
+msgstr "cert"
 
 #: src/cmdline/cmdline_why.cc:299
-#, fuzzy
 msgid "false"
-msgstr "Tanca"
+msgstr "fals"
 
 #: src/cmdline/cmdline_why.cc:353
-#, fuzzy, c-format
+#, c-format
 msgid "Install(%s)"
-msgstr "Instal·la"
+msgstr "Instal·la(%s)"
 
 #: src/cmdline/cmdline_why.cc:355
-#, fuzzy, c-format
+#, c-format
 msgid "Remove(%s)"
-msgstr "Suprimeix"
+msgstr "Suprimeix(%s)"
 
 #: src/cmdline/cmdline_why.cc:357
-#, fuzzy, c-format
+#, c-format
 msgid "Install(%s provides %s)"
-msgstr "S'està instal·lant %s %s (%s)"
+msgstr "Instal·la(%s proveeix %s)"
 
 #: src/cmdline/cmdline_why.cc:361
-#, fuzzy, c-format
+#, c-format
 msgid "Remove(%s provides %s)"
-msgstr "Suprimeix %F [%s (%s)]"
+msgstr "Suprimeix(%s proveeix %s)"
 
 #: src/cmdline/cmdline_why.cc:419
 #, c-format
@@ -2154,34 +2142,34 @@ msgid "Skipping this solution, I've already seen it.\n"
 msgstr ""
 
 #: src/cmdline/cmdline_why.cc:973
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to remove %s.\n"
-msgstr "No s'ha trobat una solució a aplicar."
+msgstr "No s'ha trobat una raó per a suprimir %s.\n"
 
 #: src/cmdline/cmdline_why.cc:975
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to find a reason to install %s.\n"
-msgstr "No s'ha trobat una solució a aplicar."
+msgstr "No s'ha trobat una raó per a instal·lar %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
 #: src/cmdline/cmdline_why.cc:1108
-#, fuzzy, c-format
+#, c-format
 msgid "No package named \"%s\" exists."
-msgstr "No es pot trobar un paquet anomenat \"%s\""
+msgstr "No existeix cap paquet anomenat «%s»."
 
 #: src/cmdline/cmdline_why.cc:1054
-#, fuzzy
 msgid "Unable to parse some match patterns."
-msgstr "No s'ha pogut analitzar el patró %s"
+msgstr "No s'ha pogut analitzar alguns patrons de coincidència."
 
 #: src/cmdline/cmdline_why.cc:1081
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""
+"%s: aquesta ordre requereix almenys un argument (el paquet a consultar)."
 
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
-msgstr "No resoltes"
+msgstr "No satisfetes"
 
 #: src/dep_item.cc:148 src/reason_fragment.cc:256
 msgid "UNAVAILABLE"
@@ -2192,9 +2180,8 @@ msgid "Tags"
 msgstr "Marcadors"
 
 #: src/desc_parse.cc:334
-#, fuzzy
 msgid "User Tags"
-msgstr "Marcadors"
+msgstr "Marcadors d'usuari"
 
 #: src/download_item.cc:80 src/download_item.cc:84 src/download_item.cc:106
 #: src/generic/apt/acqprogress.cc:248
@@ -2248,9 +2235,8 @@ msgid " [ %i%% ]"
 msgstr " [ %i%% ]"
 
 #: src/download_list.cc:266
-#, fuzzy
 msgid "Downloading... "
-msgstr "S'està baixant..."
+msgstr "S'està baixant... "
 
 #: src/download_list.cc:342
 #, c-format
@@ -2259,7 +2245,7 @@ msgstr "Introduïu el disc etiquetat com a \"%s\" a la unitat \"%s\""
 
 #: src/download_list.cc:349
 msgid "Abort"
-msgstr "Abandona"
+msgstr "Avorta"
 
 #: src/download_list.cc:407
 msgid "[IGNORED]"
@@ -2303,16 +2289,16 @@ msgstr "Err "
 #: src/generic/apt/acqprogress.cc:148
 #, c-format
 msgid "Fetched %sB in %s (%sB/s)\n"
-msgstr "S'han recollit %sB en %s (%sB/s)\n"
+msgstr "S'han obtingut %sB en %s (%sB/s)\n"
 
 #: src/generic/apt/acqprogress.cc:296
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
 "press [Enter].\n"
 msgstr ""
-"Canvi del mitjà: introduïu el disc amb l'etiqueta '%s' a la unitat '%s' i "
-"cliqueu retorn\n"
+"Canvi del medi: introduïu el disc amb l'etiqueta «%s» a la unitat «%s» i feu "
+"clic en [Retorn].\n"
 
 #: src/generic/apt/aptcache.cc:266
 #, c-format
@@ -2322,9 +2308,9 @@ msgid ""
 msgstr ""
 
 #: src/generic/apt/aptcache.cc:283
-#, fuzzy, c-format
+#, c-format
 msgid "Unterminated '\"' in the user-tags list of the package %s."
-msgstr "Cadena literal inacabada a continuació de %s"
+msgstr "«\\\"» inacabat a la llista d'etiquetes d'usuari del paquet %s."
 
 #: src/generic/apt/aptcache.cc:387
 msgid "Can't open Aptitude extended state file"
@@ -2426,7 +2412,7 @@ msgid ""
 "tool is already installing packages.  Opening in read-only mode; any changes "
 "you make to the states of packages will NOT be preserved!"
 msgstr ""
-"No s'ha pogut bloquejar el fitxer cau. S'està obrint en mode només-lectura; "
+"No s'ha pogut blocar el fitxer cau. S'està obrint en mode només-lectura; "
 "qualsevol modificació dels estats dels paquets NO es desarà!"
 
 #: src/generic/apt/download_install_manager.cc:56
@@ -2448,9 +2434,9 @@ msgstr ""
 "baixar"
 
 #: src/generic/apt/download_install_manager.cc:123
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to fetch %s: %s"
-msgstr "s'ha produït un error en renombrar %s a %s"
+msgstr "No s'ha pogut obtenir %s: %s"
 
 #: src/generic/apt/download_install_manager.cc:129
 msgid "Unable to correct for unavailable packages"
@@ -2505,9 +2491,8 @@ msgid "The debtags command (%s) cannot be executed: %s"
 msgstr ""
 
 #: src/generic/apt/download_update_manager.cc:363
-#, fuzzy
 msgid "Updating debtags database..."
-msgstr "S'està generant la base de dades de marcadors"
+msgstr "S'està actualitzant la base de dades dels marcadors..."
 
 #: src/generic/apt/download_update_manager.cc:380
 msgid "(core dumped)"
@@ -2581,12 +2566,12 @@ msgstr "S'instal·laran %li paquets i se'n suprimiran %li.\n"
 #: src/generic/apt/log.cc:76
 #, c-format
 msgid "%sB of disk space will be used\n"
-msgstr "s'utilitzarà una espai de disc de %sB\n"
+msgstr "s'utilitzarà %sB d'espai en disc\n"
 
 #: src/generic/apt/log.cc:79
 #, c-format
 msgid "%sB of disk space will be freed\n"
-msgstr "se suprimirà una espai de disc de %sB\n"
+msgstr "s'alliberarà %sB d'espai en disc\n"
 
 #: src/generic/apt/log.cc:89
 #, c-format
@@ -2612,11 +2597,11 @@ msgstr "Reinstal·la"
 
 #: src/generic/apt/log.cc:115
 msgid "HOLD"
-msgstr "Congelat"
+msgstr "Retingut"
 
 #: src/generic/apt/log.cc:118
 msgid "BROKEN"
-msgstr "Amb errors"
+msgstr "Trencats"
 
 #: src/generic/apt/log.cc:121
 msgid "REMOVE, NOT USED"
@@ -2632,11 +2617,11 @@ msgstr "Instal·la, dependències"
 
 #: src/generic/apt/log.cc:130
 msgid "HOLD, DEPENDENCIES"
-msgstr "Congela, dependències"
+msgstr "Retingut, dependències"
 
 #: src/generic/apt/log.cc:133
 msgid "UNCONFIGURED"
-msgstr ""
+msgstr "No configurat"
 
 #: src/generic/apt/log.cc:136
 msgid "????????"
@@ -2664,7 +2649,7 @@ msgstr "Instal·lat automàticament"
 
 #: src/generic/apt/matchers.cc:1374 src/generic/apt/matchers.cc:1581
 msgid "Broken"
-msgstr "Amb errors"
+msgstr "Trencat"
 
 #: src/generic/apt/matchers.cc:1579
 msgid "Unchanged"
@@ -2676,7 +2661,7 @@ msgstr "Suprimeix [no utilitzat]"
 
 #: src/generic/apt/matchers.cc:1585
 msgid "Hold [auto]"
-msgstr "Congela [auto]"
+msgstr "Retín [auto]"
 
 #: src/generic/apt/matchers.cc:1587
 msgid "Install [auto]"
@@ -2692,7 +2677,7 @@ msgstr "Desactualitza"
 
 #: src/generic/apt/matchers.cc:1593
 msgid "Hold"
-msgstr "Congela"
+msgstr "Retín"
 
 #: src/generic/apt/matchers.cc:1595
 msgid "Reinstall"
@@ -2708,7 +2693,7 @@ msgstr "Actualitza"
 
 #: src/generic/apt/matchers.cc:1627
 msgid "Keep"
-msgstr "Manté"
+msgstr "Mantín"
 
 #: src/generic/apt/matchers.cc:1659
 msgid "Virtual"
@@ -2736,14 +2721,13 @@ msgstr "No hi ha dependències inverses"
 
 #: src/generic/apt/matchers.cc:2623
 msgid "New Package"
-msgstr "Nou paquet"
+msgstr "Paquet nou"
 
 #: src/generic/apt/matchers.cc:2648
 msgid "Upgradable"
 msgstr "Actualitzable"
 
 #: src/generic/apt/matchers.cc:2673
-#, fuzzy
 msgid "Obsolete"
 msgstr "Obsolet"
 
@@ -2768,9 +2752,9 @@ msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr ""
 
 #: src/generic/apt/matchers.cc:3272
-#, fuzzy, c-format
+#, c-format
 msgid "Expected '%c', got '%c'."
-msgstr "S'esperava ',' o '(', s'ha obtingut '%c'"
+msgstr "S'esperava «%c», s'ha obtingut «%c»."
 
 #: src/generic/apt/matchers.cc:3579 src/generic/apt/matchers.cc:4019
 #: src/generic/apt/matchers.cc:4062
@@ -2779,9 +2763,9 @@ msgid "Unknown dependency type: %s"
 msgstr "El tipus de dependència és desconegut: %s"
 
 #: src/generic/apt/matchers.cc:3633
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown matcher type: \"%s\"."
-msgstr "El tipus de patró és desconegut: %c"
+msgstr "El tipus de coincidència és desconegut: «%s»."
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
@@ -2794,7 +2778,7 @@ msgstr ""
 
 #: src/generic/apt/matchers.cc:3872
 msgid "Unmatched '('"
-msgstr "'(' no està tancada"
+msgstr "«(» no emparellat"
 
 #: src/generic/apt/matchers.cc:4025
 msgid "Provides: cannot be broken"
@@ -2897,9 +2881,9 @@ msgstr ""
 "No s'ha pogut crear el directori temporal a partir de la plantilla \"%s\": %s"
 
 #: src/generic/util/temp.cc:99
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to delete temporary directory \"%s\""
-msgstr "No s'ha pogut suprimir el directori \"%s\""
+msgstr "No s'ha pogut suprimir el directori temporal «%s»"
 
 #: src/generic/util/temp.cc:145
 msgid "Unknown error"
@@ -2941,22 +2925,21 @@ msgid "Unrecognized attribute name \"%s\""
 msgstr "No es reconeix el nom de l'atribut \"%s\""
 
 #: src/load_config.cc:113
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid entry in style definition group: \"%s\""
-msgstr "El registre no és vàlid en el grup de definició d'estil: \"%s\""
+msgstr "El registre no és vàlid en el grup de definició d'estil: «%s»"
 
 #: src/load_config.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid tagless entry in style definition group: \"%s\""
-msgstr ""
-"Registre sense marcador no vàlid en el grup de definició d'estil: \"%s\""
+msgstr "Registre sense marcador no vàlid en el grup de definició d'estil: «%s»"
 
 #: src/load_config.cc:127
 msgid "The default color may only be used as a background."
 msgstr "El color predeterminat únicament s'hauria d'utilitzar com a fons."
 
 #: src/load_config.cc:144
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown style attribute %s"
 msgstr "L'atribut d'estil %s no és conegut"
 
@@ -2968,22 +2951,22 @@ msgstr "El registre no és vàlid en el grup de vinculació de tecles: \"%s\""
 #: src/load_config.cc:184
 #, c-format
 msgid "Ignoring invalid keybinding \"%s\" -> \"%s\""
-msgstr "S'ignora la vinculació de tecles no vàlida \"%s\" -> \"%s\""
+msgstr "S'omet la vinculació de tecles no vàlida «%s» -> «%s»"
 
 #: src/load_grouppolicy.cc:258
 #, c-format
 msgid "Expected policy identifier, got '%c'"
-msgstr "S'esperava un identificador de política, s'ha obtingut '%c'"
+msgstr "S'esperava un identificador de política, s'ha obtingut «%c»"
 
 #: src/load_grouppolicy.cc:270
 #, c-format
 msgid "Expected ',' or '(', got '%c'"
-msgstr "S'esperava ',' o '(', s'ha obtingut '%c'"
+msgstr "S'esperava «,» o «(», s'ha obtingut «%c»"
 
 #: src/load_grouppolicy.cc:277
 #, c-format
 msgid "Unknown grouping policy \"%s\""
-msgstr "Es desconeix la polític d'agrupació \"%s\""
+msgstr "Es desconeix la polític d'agrupació «%s»"
 
 #: src/load_grouppolicy.cc:284
 #, c-format
@@ -2991,15 +2974,14 @@ msgid "Terminal policy \"%s\" should be the last policy in the list"
 msgstr "La política del terminal %s hauria de ser l'última de la llista"
 
 #: src/load_grouppolicy.cc:371
-#, fuzzy, c-format
+#, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
-msgstr "El nom de secció '%s' és erroni (utilitzeu 'none','topdir' o 'subdir')"
+msgstr "El nom de secció «%s» és erroni (utilitzeu «none»,«subdir» o «subdirs»)"
 
 #: src/load_grouppolicy.cc:381
 #, c-format
 msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
-msgstr ""
-"Paràmetres temporal '%s' erroni (utilitza 'passthrough' o 'nopassthrough')"
+msgstr "Paràmetre temporal «%s» erroni (utilitza «passthrough» o «nopassthrough»)"
 
 #: src/load_grouppolicy.cc:386
 msgid "Too many arguments to by-section grouping policy"
@@ -3072,9 +3054,9 @@ msgid "Unexpectedly empty tree title after \"%s\""
 msgstr "Títol de l'arbre buit a continuació de \"%s\""
 
 #: src/load_grouppolicy.cc:654
-#, fuzzy, c-format
+#, c-format
 msgid "Expected ',' or ')' following '||', got '%s'"
-msgstr "S'esperava ',' o '(', s'ha obtingut '%c'"
+msgstr "S'esperava «,» o «(» després de «||», s'ha obtingut «%s»"
 
 #: src/load_grouppolicy.cc:666
 msgid "Unmatched '(' in pattern grouping policy"
@@ -3170,71 +3152,61 @@ msgid "Compiler: g++ %s\n"
 msgstr "Compilador: g++ %s\n"
 
 #: src/main.cc:111
-#, fuzzy
 msgid "Compiled against:\n"
-msgstr "Compilador: g++ %s\n"
+msgstr "Compilat contra:\n"
 
 #: src/main.cc:112
-#, fuzzy, c-format
+#, c-format
 msgid "  apt version %d.%d.%d\n"
-msgstr "Manté %F a la versió %s (%s)"
+msgstr "  apt versió %d.%d.%d\n"
 
 #: src/main.cc:115
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: Unknown\n"
-msgstr ""
-"\n"
-"Versió de les NCurses: %s\n"
+msgstr "  NCurses versió: desconeguda\n"
 
 #: src/main.cc:117
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version %s\n"
-msgstr ""
-"\n"
-"Versió de les NCurses: %s\n"
+msgstr "  NCurses versió: %s\n"
 
 #: src/main.cc:119
-#, fuzzy, c-format
+#, c-format
 msgid "  libsigc++ version: %s\n"
-msgstr "versió de la libsigc++: %s\n"
+msgstr "  libsigc++ versió: %s\n"
 
 #: src/main.cc:121
 #, c-format
 msgid "  Ept support enabled.\n"
-msgstr ""
+msgstr "  Suport d'ept habilitat\n"
 
 #: src/main.cc:123
 #, c-format
 msgid "  Ept support disabled.\n"
-msgstr ""
+msgstr "  Suport d'ept inhabilitat\n"
 
 #: src/main.cc:126
-#, fuzzy
 msgid ""
 "\n"
 "Current library versions:\n"
 msgstr ""
 "\n"
-"Versió de les Curses: %s\n"
+"Versions actuals de les biblioteques:\n"
 
 #: src/main.cc:127
-#, fuzzy, c-format
+#, c-format
 msgid "  NCurses version: %s\n"
-msgstr ""
-"\n"
-"Versió de les NCurses: %s\n"
+msgstr "  Versió de les NCurses: %s\n"
 
 #: src/main.cc:128
-#, fuzzy, c-format
+#, c-format
 msgid "  cwidget version: %s\n"
-msgstr "versió de la libsigc++: %s\n"
+msgstr "  Versió de les cwidget: %s\n"
 
 #: src/main.cc:129
-#, fuzzy, c-format
+#, c-format
 msgid "  Apt version: %s\n"
-msgstr ""
-"\n"
-"Versió de les Curses: %s\n"
+msgstr "  Versió de l'apt: %s\n"
 
 #: src/main.cc:135
 #, c-format
@@ -3244,7 +3216,7 @@ msgstr "Utilització: aptitude [-S nomfitxer] [-u|-i]"
 #: src/main.cc:137
 #, c-format
 msgid "       aptitude [options] <action> ..."
-msgstr "      aptitude [opcions] <acció> ..."
+msgstr "       aptitude [opcions] <acció> ..."
 
 #: src/main.cc:139
 #, c-format
@@ -3252,46 +3224,45 @@ msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
 "\n"
 msgstr ""
-" Accions (si no s'han especificat, l'aptitude s'executarà en mode "
-"interactiu):\n"
+" Accions (si no s'han especificat, l'aptitude entrarà en mode interactiu):\n"
 "\n"
 
 #: src/main.cc:140
 #, c-format
 msgid " install      - Install/upgrade packages\n"
-msgstr " install       - Instal·la/actualitza els paquets\n"
+msgstr " install      - Instal·la/actualitza els paquets\n"
 
 #: src/main.cc:141
 #, c-format
 msgid " remove       - Remove packages\n"
-msgstr " remove        - Suprimeix els paquets\n"
+msgstr " remove       - Suprimeix els paquets\n"
 
 #: src/main.cc:142
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr ""
-" purge          - Suprimeix els paquets i els corresponents fitxers de "
+" purge        - Suprimeix els paquets i els corresponents fitxers de "
 "configuració\n"
 
 #: src/main.cc:143
 #, c-format
 msgid " hold         - Place packages on hold\n"
-msgstr " hold          - Deixa els paquets congelats\n"
+msgstr " hold         - Deixa els paquets retinguts\n"
 
 #: src/main.cc:144
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
-msgstr " unhold        - Cancel·la l'ordre de congelació d'un paquet\n"
+msgstr " unhold       - Cancel·la l'ordre de retenció d'un paquet\n"
 
 #: src/main.cc:145
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
-msgstr " markauto      - Marca els paquets com a instal·lats automàticament\n"
+msgstr " markauto     - Marca els paquets com a instal·lats automàticament\n"
 
 #: src/main.cc:146
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
-msgstr " unmarkauto    - Marca els paquets com a instal·lats manualment\n"
+msgstr " unmarkauto   - Marca els paquets com a instal·lats manualment\n"
 
 #: src/main.cc:147
 #, c-format
@@ -3305,56 +3276,56 @@ msgstr ""
 #: src/main.cc:148
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
-msgstr " update        - Baixa les llistes dels paquets nous/actualitzables\n"
+msgstr " update       - Baixa les llistes dels paquets nous/actualitzables\n"
 
 #: src/main.cc:149
-#, fuzzy, c-format
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
-msgstr " upgrades      - Realitza una actualització segura\n"
+msgstr " safe-upgrade - Realitza una actualització segura\n"
 
 #: src/main.cc:150
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr ""
-" dist-upgrade  - Realitza una actualització, probablement instal·lant i "
+" full-upgrade - Realitza una actualització, probablement instal·lant i "
 "suprimint paquets\n"
 
 #: src/main.cc:151
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
-msgstr " forget-new     - Oblida quins paquets són \"nous\"\n"
+msgstr " forget-new   - Oblida quins paquets són \"nous\"\n"
 
 #: src/main.cc:152
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
-msgstr " search        - Cerca un paquet pel seu nom i/o expressió\n"
+msgstr " search       - Cerca un paquet pel seu nom i/o expressió\n"
 
 #: src/main.cc:153
 #, c-format
 msgid " show         - Display detailed information about a package\n"
-msgstr " mostra        - Mostra informació detallada d'un paquet\n"
+msgstr " mostra       - Mostra informació detallada d'un paquet\n"
 
 #: src/main.cc:154
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
-msgstr " clean         - Suprimeix els fitxers dels paquets baixats\n"
+msgstr " clean        - Suprimeix els fitxers dels paquets baixats\n"
 
 #: src/main.cc:155
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
-msgstr " autoclean     - Suprimeix els fitxers dels paquets baixats antics\n"
+msgstr " autoclean    - Suprimeix els fitxers dels paquets baixats antics\n"
 
 #: src/main.cc:156
 #, c-format
 msgid " changelog    - View a package's changelog\n"
-msgstr " changelog    - Visualitza un registre de modificacions d'un paquet\n"
+msgstr " changelog    - Visualitza un registre de canvis d'un paquet\n"
 
 #: src/main.cc:157
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
-msgstr " download      - Baixa el fitxer .deb d'un paquet\n"
+msgstr " download     - Baixa el fitxer .deb d'un paquet\n"
 
 #: src/main.cc:158
 #, c-format
@@ -3362,8 +3333,8 @@ msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
 msgstr ""
-" torna a instal·lar     - Descarrega i (possiblament) torna a instal·lar un "
-"paquet ja instal·lat\n"
+" reinstall    - Descarrega i (possiblament) torna a instal·lar un paquet ja "
+"instal·lat\n"
 
 #: src/main.cc:159
 #, fuzzy, c-format
@@ -3371,7 +3342,10 @@ msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package\n"
-msgstr " -Z     Mostra els canvis de la mida instal·lada per a cada paquet.\n"
+msgstr ""
+" why          - Mostra els paquets instal·lats manualment que requereix un\n"
+"                paquet, o per què un o més paquets requeriria el paquet "
+"donat\n"
 
 #: src/main.cc:161
 #, c-format
@@ -3593,7 +3567,7 @@ msgstr "Cerca: "
 
 #: src/menu_text_layout.cc:75 src/menu_tree.cc:237 src/view_changelog.cc:72
 msgid "Search backwards for: "
-msgstr "Cerca endarrere: "
+msgstr "Cerca cap enrere: "
 
 #: src/mine/cmine.cc:114 src/mine/cmine.cc:156 src/ui.cc:1644
 msgid "Minesweeper"
@@ -3762,7 +3736,7 @@ msgstr "polimorf"
 
 #: src/mine/cmine.cc:542
 msgid "magic missile"
-msgstr "misil màgic"
+msgstr "míssil màgic"
 
 #: src/mine/cmine.cc:545
 msgid "secret door detection"
@@ -3779,7 +3753,7 @@ msgstr "fred"
 #: src/mine/cmine.cc:557
 #, c-format
 msgid "Your wand of %s breaks apart and explodes!  --More--"
-msgstr "La vostra vareta de %s es trenca i explota!  --Més--"
+msgstr "La vostra vareta de %s es trenca i esclata!  --Més--"
 
 #: src/mine/cmine.cc:563
 msgid "You are jolted by a surge of electricity!  --More--"
@@ -3875,7 +3849,7 @@ msgstr "VerProg"
 
 #: src/pkg_columnizer.cc:108
 msgid "#Broken"
-msgstr "#amb errors"
+msgstr "#Trencat"
 
 #: src/pkg_columnizer.cc:109
 msgid "DiskUsage"
@@ -3928,7 +3902,7 @@ msgstr "ERROR"
 
 #: src/pkg_columnizer.cc:312 src/pkg_ver_item.cc:300
 msgid "hold"
-msgstr "congela"
+msgstr "retín"
 
 #: src/pkg_columnizer.cc:315
 msgid "forbidden upgrade"
@@ -3944,7 +3918,7 @@ msgstr "suprimeix"
 
 #: src/pkg_columnizer.cc:319 src/pkg_ver_item.cc:222 src/pkg_ver_item.cc:306
 msgid "broken"
-msgstr "amb errors"
+msgstr "trencat"
 
 #: src/pkg_columnizer.cc:321 src/pkg_ver_item.cc:310 src/pkg_ver_item.cc:317
 #: src/pkg_ver_item.cc:326
@@ -3979,12 +3953,12 @@ msgstr "Imp"
 #. ForTranslators: Req = Required
 #: src/pkg_columnizer.cc:363 src/pkg_ver_item.cc:362
 msgid "Req"
-msgstr "Nec"
+msgstr "Req"
 
 #. ForTranslators: Std = Standard
 #: src/pkg_columnizer.cc:365 src/pkg_ver_item.cc:365
 msgid "Std"
-msgstr "Sta"
+msgstr "Est"
 
 #. ForTranslators: Opt = Optional
 #: src/pkg_columnizer.cc:367 src/pkg_ver_item.cc:368
@@ -4003,17 +3977,17 @@ msgstr "Err"
 #: src/pkg_columnizer.cc:393
 #, c-format
 msgid "#Broken: %ld"
-msgstr "#Amb errors: %ld"
+msgstr "#Trencats: %ld"
 
 #: src/pkg_columnizer.cc:408
 #, c-format
 msgid "Will use %sB of disk space"
-msgstr "S'utilitzaran %sB de l'espai de disc"
+msgstr "S'utilitzaran %sB d'espai en disc"
 
 #: src/pkg_columnizer.cc:416
 #, c-format
 msgid "Will free %sB of disk space"
-msgstr "S'alliberaran %sB de l'espai de disc"
+msgstr "S'alliberaran %sB d'espai en disc"
 
 #: src/pkg_columnizer.cc:430
 #, c-format
@@ -4171,8 +4145,8 @@ msgid ""
 " These packages could be upgraded, but they have been kept in their current "
 "state to avoid breaking dependencies."
 msgstr ""
-"Paquets a congelar automàticament en el seu estat actual\n"
-" Aquesta paquets es podrien actualitzar, però s'han congelat en el seu estat "
+"Paquets que s'estan retenint automàticament en el seu estat actual\n"
+" Aquests paquets es podrien actualitzar, però s'han retingut en el seu estat "
 "actual per evitar provocar errors amb les dependències."
 
 #: src/pkg_grouppolicy.cc:636
@@ -4182,7 +4156,7 @@ msgid ""
 "package you have chosen for installation."
 msgstr ""
 "Paquets a instal·lar automàticament per resoldre les dependències\n"
-" Aquesta paquets s'instal·len per arran de la necessitats d'un altre paquet "
+" Aquests paquets s'instal·len per arran de la necessitats d'un altre paquet "
 "a instal·lar."
 
 #: src/pkg_grouppolicy.cc:637
@@ -4192,7 +4166,7 @@ msgid ""
 "is no longer available, or because another package conflicts with them."
 msgstr ""
 "Paquets a suprimir arran de l'incompliment de les dependències\n"
-" Aquesta paquets se suprimeixen arran de la impossibilitat de resoldre una o "
+" Aquests paquets se suprimeixen arran de la impossibilitat de resoldre una o "
 "diverses dependències, o perquè un altre paquet hi entra en conflicte."
 
 #: src/pkg_grouppolicy.cc:638
@@ -4210,8 +4184,8 @@ msgid ""
 " These packages could be upgraded, but you have asked for them to be held at "
 "their current version."
 msgstr ""
-"Paquets congelats\n"
-" Aquests paquets es podrien actualitzar, però heu escollit congelar-los a la "
+"Paquets retinguts\n"
+" Aquests paquets es podrien actualitzar, però heu demanat retenir-los a la "
 "versió actual."
 
 #: src/pkg_grouppolicy.cc:640
@@ -4248,15 +4222,14 @@ msgstr ""
 " Aquests paquets s'actualitzaran a una nova versió."
 
 #: src/pkg_grouppolicy.cc:644
-#, fuzzy
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
 "made to complete their installation."
 msgstr ""
-"Paquets a instal·lar automàticament per resoldre les dependències\n"
-" Aquesta paquets s'instal·len per arran de la necessitats d'un altre paquet "
-"a instal·lar."
+"Paquets que estan parcialment instal·lats\n"
+" Aquests paquets no s'han instal·lat i configurat completament, es farà un "
+"intent per a completar la seua instal·lació."
 
 #: src/pkg_grouppolicy.cc:761
 msgid "unknown"
@@ -4359,9 +4332,9 @@ msgid "Packages which depend on %s"
 msgstr "Paquets dels qual depèn el %s"
 
 #: src/pkg_info_screen.cc:162
-#, fuzzy, c-format
+#, c-format
 msgid "Versions of %s"
-msgstr "Versions"
+msgstr "Versions de %s"
 
 #: src/pkg_item.cc:85
 #, c-format
@@ -4449,8 +4422,8 @@ msgstr "Editor de jerarquies"
 #, c-format
 msgid "This group contains %d package."
 msgid_plural "This group contains %d packages."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Aquest grup conté %d paquet."
+msgstr[1] "Aquest grup conté %d paquets."
 
 #: src/pkg_tree.cc:175
 msgid "All Packages"
@@ -4482,9 +4455,8 @@ msgstr ""
 "visualització: "
 
 #: src/pkg_view.cc:161
-#, fuzzy
 msgid "Couldn't cw::util::transcode column definition"
-msgstr "No s'ha pogut transcodificar la definició de la columna"
+msgstr "No s'ha pogut fer cw::util::transcode de la definició de la columna"
 
 #: src/pkg_view.cc:168
 msgid "Couldn't parse column definition"
@@ -4514,12 +4486,11 @@ msgstr ""
 #: src/pkg_view.cc:678
 #, fuzzy
 msgid "Related Dependencies"
-msgstr "Resol les dependències"
+msgstr "Dependències relacionades"
 
 #: src/pkg_view.cc:681
-#, fuzzy
 msgid "Why Installed"
-msgstr "Instal·lat"
+msgstr "Per què instal·lat"
 
 #: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
@@ -4553,7 +4524,7 @@ msgstr "entra en conflicte amb"
 
 #: src/reason_fragment.cc:41
 msgid "breaks"
-msgstr ""
+msgstr "trenca"
 
 #: src/reason_fragment.cc:43
 msgid "replaces"
@@ -4606,15 +4577,15 @@ msgid ""
 "%B%s%b cannot be upgraded now, but if it could be, it would still be held at "
 "version %B%s%b."
 msgstr ""
-"El paquet %B%s%b es podria actualitzar a la versió %B%s%b, però es deixa "
-"congelat a la versió %B%s%b."
+"El paquet %B%s%b no es pot actualitzar ara mateix, però si fora possible, "
+"estaria retingut a la versió %B%s%b."
 
 #: src/reason_fragment.cc:387
 msgid ""
 "%B%s%b will not be upgraded to version %B%s%b, to avoid breaking the "
 "following dependencies:"
 msgstr ""
-"El%B%s%b no s'actualitzarà a la versió %B%s%b per evitar els errors amb les "
+"El%B%s%b no s'actualitzarà a la versió %B%s%b per evitar trencar les "
 "dependències següents:"
 
 #: src/reason_fragment.cc:399
@@ -4642,8 +4613,8 @@ msgid ""
 "%B%s%b could be upgraded to version %B%s%b, but it is being held at version %"
 "B%s%b."
 msgstr ""
-"El paquet %B%s%b es podria actualitzar a la versió %B%s%b, però es deixa "
-"congelat a la versió %B%s%b."
+"El paquet %B%s%b es podria actualitzar a la versió %B%s%b, però està "
+"retingut a la versió %B%s%b."
 
 #: src/reason_fragment.cc:435
 msgid "%B%s%b will be re-installed."
@@ -4663,9 +4634,10 @@ msgstr ""
 "S'actualitzarà el paquet %B%s%b de la versió %B%s%b a la versió %B%s%b."
 
 #: src/reason_fragment.cc:455
-#, fuzzy
 msgid "%B%s%b is only partly installed; its installation will be completed."
-msgstr "El paquet %s no està instal·lat, no es tornarà a instal·lar.\n"
+msgstr ""
+"El paquet %B%s%b només està instal·lat parcialment, es completarà la seua "
+"instal·lació."
 
 #: src/reason_fragment.cc:487
 msgid ""
@@ -4762,7 +4734,7 @@ msgstr "La memòria cau de paquets no està disponible."
 
 #: src/solution_dialog.cc:105
 msgid "No packages are broken."
-msgstr "No hi ha cap paquet amb errors."
+msgstr "No hi ha cap paquet trencat."
 
 #: src/solution_dialog.cc:114 src/solution_screen.cc:501
 msgid "No resolution found."
@@ -4810,9 +4782,9 @@ msgid "%s conflicts with %s"
 msgstr "%s entra en conflicte amb %s"
 
 #: src/solution_fragment.cc:121
-#, fuzzy, c-format
+#, c-format
 msgid "%s breaks %s"
-msgstr "%s substitueix %s"
+msgstr "%s trenca %s"
 
 #: src/solution_fragment.cc:124
 #, c-format
@@ -4849,7 +4821,7 @@ msgstr "%BInstal·la%b els següents paquets:%n"
 
 #: src/solution_fragment.cc:244
 msgid "%BKeep%b the following packages at their current version:%n"
-msgstr "%BManté%b la versió actual dels següents paquets:%n"
+msgstr "%BMantín%b la versió actual dels següents paquets:%n"
 
 #: src/solution_fragment.cc:251
 msgid "Not Installed"
@@ -4896,7 +4868,7 @@ msgstr "Cancel·la la supressió de %F"
 #: src/solution_item.cc:117
 #, c-format
 msgid "Keep %F at version %s (%s)"
-msgstr "Manté %F a la versió %s (%s)"
+msgstr "Mantín %F a la versió %s (%s)"
 
 #: src/solution_item.cc:125
 #, c-format
@@ -4923,7 +4895,7 @@ msgstr "Suprimeix els següents paquets:"
 
 #: src/solution_screen.cc:259
 msgid "Keep the following packages at their current version:"
-msgstr "Manté la versió actual dels següents paquets:"
+msgstr "Mantín la versió actual dels següents paquets:"
 
 #: src/solution_screen.cc:270
 msgid "Install the following packages:"
@@ -4943,7 +4915,7 @@ msgstr "Deixa per resoldre les recomanacions següents:"
 
 #: src/solution_screen.cc:485
 msgid "No broken packages."
-msgstr "No hi ha cap paquet amb errors."
+msgstr "No hi ha cap paquet trencat."
 
 #: src/solution_screen.cc:515
 #, c-format
@@ -4966,7 +4938,7 @@ msgstr ""
 
 #: src/ui.cc:202
 msgid "Yes, I am aware this is a very bad idea"
-msgstr "Sí, soc conscient que no és una bona idea"
+msgstr "Sí, sóc conscient que no és una bona idea"
 
 #: src/ui.cc:229
 msgid "Er, there aren't any errors, this shouldn't have happened.."
@@ -5033,13 +5005,12 @@ msgid "Really quit Aptitude?"
 msgstr "Esteu segur de voler sortir de l'Aptitude?"
 
 #: src/ui.cc:695 src/ui.cc:697
-#, fuzzy
 msgid "Preferences"
-msgstr "PreDepèn"
+msgstr "Preferències"
 
 #: src/ui.cc:696 src/ui.cc:2382
 msgid "Change the behavior of aptitude"
-msgstr ""
+msgstr "Canvia el comportament de l'aptitude"
 
 #: src/ui.cc:732
 msgid "Really discard your personal settings and reload the defaults?"
@@ -5069,29 +5040,25 @@ msgid "Recommendations"
 msgstr "Recomanacions"
 
 #: src/ui.cc:972
-#, fuzzy
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
 "is free software, and you are welcome to redistribute it under certain "
 "conditions; see 'license' for details."
 msgstr ""
-"Aptitude %s%n%nCopyright 2000-2005 Daniel Burrows.%n%nL'aptitude es "
-"distribueix %bsense cap tipus de garantia%b, per a més informació feu un cop "
-"d'ull a 'llicència' del menú Ajuda.\n"
-"Aquest programari es distribueix sota llicència de programari lliure, i el "
-"podeu redistribuir acceptant una seguit de termes dels quals podeu trobar "
-"més informació a 'llicència'."
+"Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%nL'aptitude es "
+"distribueix %bSENSE CAP GARANTIA%b; per a obtenir-ne més informació vegeu "
+"«llicència» al menú Ajuda. Això és programari lliure, i el podeu redistribuir "
+"sota algunes condicions; vegeu «llicència» per a obtenir-ne més detalls."
 
 #: src/ui.cc:1022 src/ui.cc:1024
-#, fuzzy
 msgid "License"
-msgstr "^Llicència"
+msgstr "Llicència"
 
 #: src/ui.cc:1023 src/ui.cc:2474
-#, fuzzy
 msgid "View the terms under which you may copy and distribute aptitude"
-msgstr "Mostra les condicions sota les quals podeu copiar el programa"
+msgstr ""
+"Mostra les condicions sota les quals podeu copiar i distribuir el programa"
 
 #: src/ui.cc:1037
 msgid "help.txt"
@@ -5103,11 +5070,11 @@ msgstr "Codificació del help.txt|UTF-8"
 
 #: src/ui.cc:1050
 msgid "Online Help"
-msgstr ""
+msgstr "Ajuda en línia"
 
 #: src/ui.cc:1051
 msgid "View a brief introduction to aptitude"
-msgstr ""
+msgstr "Visualitza una breu introducció a l'aptitude"
 
 #: src/ui.cc:1052 src/ui.cc:2621
 msgid "Help"
@@ -5134,23 +5101,21 @@ msgid "Manual"
 msgstr "Manual"
 
 #: src/ui.cc:1081 src/ui.cc:1083
-#, fuzzy
 msgid "FAQ"
-msgstr "PM^F"
+msgstr "PMF"
 
 #: src/ui.cc:1082 src/ui.cc:2466
 msgid "View a list of frequently asked questions"
 msgstr "Mostra una llista de les preguntes més freqüents"
 
 #: src/ui.cc:1091 src/ui.cc:1093
-#, fuzzy
 msgid "News"
-msgstr "^Notícies"
+msgstr "Notícies"
 
 #: src/ui.cc:1092
-#, fuzzy, c-format
+#, c-format
 msgid "View the important changes made in each version of %s"
-msgstr "Mostra les modificacions realitzades importants en cada versió de "
+msgstr "Mostra els canvis importants realitzats en cada versió de %s"
 
 #: src/ui.cc:1099
 #, c-format
@@ -5232,7 +5197,7 @@ msgstr "Previsualització"
 
 #: src/ui.cc:1348
 msgid "Some packages were broken and have been fixed:"
-msgstr "Alguns paquets contenien errors i s'han arreglat:"
+msgstr "Alguns paquets estaven trencats i s'han arreglat:"
 
 #: src/ui.cc:1356
 msgid "No solution to these dependency problems exists!"
@@ -5336,7 +5301,7 @@ msgid ""
 "space."
 msgstr ""
 "S'han suprimit els fitxers obsolets dels paquets descarregats, s'està "
-"alliberant %sB espai de disc."
+"alliberant %sB d'espai en disc."
 
 #: src/ui.cc:1831
 msgid "No more solutions."
@@ -5394,7 +5359,7 @@ msgstr "Marca com a ^actualitzable"
 #: src/ui.cc:2192
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr ""
-"Marca tots els paquets actualitzables que no estiguin congelats per a "
+"Marca tots els paquets actualitzables que no estiguin retinguts per a "
 "l'actualització"
 
 #: src/ui.cc:2196
@@ -5412,7 +5377,7 @@ msgstr "Canc^el·la pes accions pendents"
 #: src/ui.cc:2201
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr ""
-"Cancel·la totes les instal·lacions, supressions, congelacions i "
+"Cancel·la totes les instal·lacions, supressions, retencions i "
 "actualitzacions pendents."
 
 #: src/ui.cc:2204
@@ -5502,7 +5467,7 @@ msgstr ""
 
 #: src/ui.cc:2256
 msgid "^Keep"
-msgstr "Man^té"
+msgstr "^Mantín"
 
 #: src/ui.cc:2257
 msgid "Cancel any action on the selected package"
@@ -5510,7 +5475,7 @@ msgstr "Cancel·la qualsevol acció al paquet seleccionat"
 
 #: src/ui.cc:2260
 msgid "^Hold"
-msgstr "Con^gela"
+msgstr "Re^tín"
 
 #: src/ui.cc:2261
 msgid ""
@@ -5522,7 +5487,7 @@ msgstr ""
 
 #: src/ui.cc:2264
 msgid "Mark ^Auto"
-msgstr "Marca ^Automàtic"
+msgstr "Marca ^automàtic"
 
 #: src/ui.cc:2265
 msgid ""
@@ -5534,7 +5499,7 @@ msgstr ""
 
 #: src/ui.cc:2268
 msgid "Mark ^Manual"
-msgstr "Marca ^Manual"
+msgstr "Marca ^manual"
 
 #: src/ui.cc:2269
 msgid ""
@@ -5566,7 +5531,7 @@ msgstr "Mostra més informació dels paquets seleccionats"
 
 #: src/ui.cc:2281
 msgid "C^ycle Package Information"
-msgstr ""
+msgstr "Comm^uta la informació dels paquets"
 
 #: src/ui.cc:2282
 msgid ""
@@ -5594,7 +5559,7 @@ msgstr "Examina la solució seleccionada per als problemes de dependències."
 
 #: src/ui.cc:2297
 msgid "Apply ^Solution"
-msgstr "Aplica la ^Solució"
+msgstr "Aplica la ^solució"
 
 #: src/ui.cc:2298
 msgid "Perform the actions contained in the currently selected solution."
@@ -5602,7 +5567,7 @@ msgstr "Executa les accions definides en la solució seleccionada."
 
 #: src/ui.cc:2301
 msgid "^Next Solution"
-msgstr "Solució Següe^nt"
+msgstr "Solució següe^nt"
 
 #: src/ui.cc:2302
 msgid "Select the next solution to the dependency problems."
@@ -5610,7 +5575,7 @@ msgstr "Selecciona la següent solució dels problemes de dependències."
 
 #: src/ui.cc:2305
 msgid "^Previous Solution"
-msgstr "Solució ^Anterior"
+msgstr "Solució ^anterior"
 
 #: src/ui.cc:2306
 msgid "Select the previous solution to the dependency problems."
@@ -5626,7 +5591,7 @@ msgstr "Selecciona la primera solució dels problemes de dependències."
 
 #: src/ui.cc:2313
 msgid "^Last Solution"
-msgstr "^Última Solució"
+msgstr "^Última solució"
 
 #: src/ui.cc:2314
 msgid ""
@@ -5638,7 +5603,7 @@ msgstr ""
 
 #: src/ui.cc:2320
 msgid "Toggle ^Rejected"
-msgstr "Commuta ^Rebutjat"
+msgstr "Commuta ^rebutjat"
 
 #: src/ui.cc:2321
 msgid "Toggle whether the currently selected action is rejected."
@@ -5646,7 +5611,7 @@ msgstr "Commuta per rebutjar l'acció seleccionada."
 
 #: src/ui.cc:2325
 msgid "Toggle ^Approved"
-msgstr "Commuta ^Aprovat"
+msgstr "Commuta ^aprovat"
 
 #: src/ui.cc:2326
 msgid "Toggle whether the currently selected action is approved."
@@ -5662,13 +5627,15 @@ msgstr "Mostra el paquet que es veurà afectat per a l'acció seleccionada"
 
 #: src/ui.cc:2337
 msgid "Reject Breaking ^Holds"
-msgstr ""
+msgstr "Rebutja trencar ^retinguts"
 
 #: src/ui.cc:2339
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
 msgstr ""
+"Rebutja totes les accions que canviarien l'estat de paquets retinguts o "
+"instal·larien versions prohibides"
 
 #: src/ui.cc:2347
 msgid "^Find"
@@ -5680,11 +5647,11 @@ msgstr "Cerca endavant"
 
 #: src/ui.cc:2351
 msgid "^Find Backwards"
-msgstr "C^erca endarrere"
+msgstr "C^erca enrere"
 
 #: src/ui.cc:2352
 msgid "Search backwards"
-msgstr "Cerca endarrere:"
+msgstr "Cerca enrere:"
 
 #: src/ui.cc:2355
 msgid "Find ^Again"
@@ -5695,14 +5662,12 @@ msgid "Repeat the last search"
 msgstr "Repeteix l'última cerca"
 
 #: src/ui.cc:2359
-#, fuzzy
 msgid "Find Again ^Backwards"
-msgstr "C^erca endarrere"
+msgstr "Cerca de nou cap enrere"
 
 #: src/ui.cc:2360
-#, fuzzy
 msgid "Repeat the last search in the opposite direction"
-msgstr "Repeteix l'última cerca"
+msgstr "Repeteix l'última cerca en la direcció inversa"
 
 #: src/ui.cc:2364
 msgid "^Limit Display"
@@ -5714,7 +5679,7 @@ msgstr "Aplica un filtre a la llista de paquets"
 
 #: src/ui.cc:2368
 msgid "^Un-Limit Display"
-msgstr "No limits la vis^ualització"
+msgstr "No limitis la vis^ualització"
 
 #: src/ui.cc:2369
 msgid "Remove the filter from the package list"
@@ -5722,16 +5687,15 @@ msgstr "Suprimeix el filtre de la llista de paquets"
 
 #: src/ui.cc:2373
 msgid "Find ^Broken"
-msgstr "C^erca els que tenen errors"
+msgstr "C^erca els trencats"
 
 #: src/ui.cc:2374
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "Cerca el següent paquet amb dependències no resoltes"
 
 #: src/ui.cc:2381
-#, fuzzy
 msgid "^Preferences"
-msgstr "PreDepèn"
+msgstr "^Preferències"
 
 #: src/ui.cc:2386
 msgid "^UI options"
@@ -5777,7 +5741,7 @@ msgstr "Mostra la visualització següent"
 
 #: src/ui.cc:2417
 msgid "^Prev"
-msgstr "^Ante"
+msgstr "^Anterior"
 
 #: src/ui.cc:2418
 msgid "View previous display"
@@ -5801,7 +5765,7 @@ msgstr "Crea una nova vista de paquets predeterminada"
 
 #: src/ui.cc:2431
 msgid "Audit ^Recommendations"
-msgstr "Audita les ^Recomanacions"
+msgstr "Audita les ^recomanacions"
 
 #: src/ui.cc:2432
 msgid ""
@@ -5813,7 +5777,7 @@ msgstr ""
 
 #: src/ui.cc:2435
 msgid "New ^Flat Package List"
-msgstr "Nova ^llista de paquets"
+msgstr "^Llista de paquets plana nova"
 
 #: src/ui.cc:2436
 msgid "View all the packages on the system in a single uncategorized list"
@@ -5822,7 +5786,7 @@ msgstr ""
 
 #: src/ui.cc:2439
 msgid "New ^Debtags Browser"
-msgstr "Nou marcador de ^Debtags"
+msgstr "Marcador de ^Debtags nou"
 
 #: src/ui.cc:2441
 msgid "Browse packages using Debtags data"
@@ -5830,7 +5794,7 @@ msgstr "Navega pels paquets utilitzant les dades dels Debtags"
 
 #: src/ui.cc:2444
 msgid "New Categorical ^Browser"
-msgstr "Nou na^vegador per categories"
+msgstr "Na^vegador per categories nou"
 
 #: src/ui.cc:2446
 msgid "Browse packages by category"
@@ -5869,9 +5833,8 @@ msgid "^News"
 msgstr "^Notícies"
 
 #: src/ui.cc:2470
-#, fuzzy
 msgid "View the important changes made in each version of "
-msgstr "Mostra les modificacions realitzades importants en cada versió de "
+msgstr "Mostra els canvis més importants introduïts en cada versió de "
 
 #: src/ui.cc:2473
 msgid "^License"
@@ -5904,11 +5867,11 @@ msgid ""
 "Pkgs"
 msgstr ""
 "%ls: Menú  %ls: Ajuda  %ls: Surt  %ls: Actualitza  %ls: Descarrega/Instal·la/"
-"Suprimeix Paquets"
+"Suprimeix"
 
 #: src/ui.cc:3031
 msgid "yes_key"
-msgstr "y"
+msgstr "s"
 
 #: src/ui.cc:3032
 msgid "no_key"
@@ -5921,22 +5884,21 @@ msgstr "%s modificacions"
 
 #: src/view_changelog.cc:166
 msgid "View the list of changes made to this Debian package."
-msgstr ""
-"Mostra les modificions realitzades importants en aquest paquet de Debian."
+msgstr "Mostra els canvis realitzats en aquest paquet de Debian."
 
 #: src/view_changelog.cc:230
 msgid "You can only view changelogs of official Debian packages."
 msgstr ""
-"Només podeu visualitzar els registres de modificacions dels paquets oficials "
-"de Debian."
+"Només podeu visualitzar els registres de cavis dels paquets oficials de "
+"Debian."
 
 #: src/view_changelog.cc:240
 msgid "Downloading Changelog"
-msgstr "S'està baixant el registre de modificacions"
+msgstr "S'està baixant el registre de canvis"
 
 #: src/view_changelog.cc:242
 msgid "Download Changelog"
-msgstr "Descarrega el registre de modificacions"
+msgstr "Descarrega el registre de canvis"
 
 #, fuzzy
 #~ msgid "The package \"%s\" is manually installed.\n"
@@ -5945,7 +5907,11 @@ msgstr "Descarrega el registre de modificacions"
 #, fuzzy
 #~ msgid ""
 #~ "              - why one or more packages would require the given package\n"
-#~ msgstr " -V           Mostra les versions dels programes a instal·lar.\n"
+#~ msgstr ""
+#~ " why          - Mostra els paquets instal·lats manualment que requereix "
+#~ "un\n"
+#~ "                paquet, o per què un o més paquets requeriria el paquet "
+#~ "donat\n"
 
 #, fuzzy
 #~ msgid ""
@@ -5964,7 +5930,7 @@ msgstr "Descarrega el registre de modificacions"
 
 #, fuzzy
 #~ msgid "Downloading..."
-#~ msgstr "S'està baixant..."
+#~ msgstr "S'està baixant... "
 
 #~ msgid "Downloaded %sB in %ss (%sB/s)."
 #~ msgstr "Baixats %sB en %ss (%sB/s)."
@@ -6583,7 +6549,9 @@ msgstr "Descarrega el registre de modificacions"
 #, fuzzy
 #~ msgid ""
 #~ "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fw: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F%F"
-#~ msgstr "y: %Fn: %Fi: %Fc: %Fd: %Fs: %Fv: %Fe: %F%n%F%n%F%F%F%F%F%F%F%F"
+#~ msgstr ""
+#~ "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: "
+#~ "%F%n<ACCIÓ> pkg... : %F%n%F%F%F%F%F%F%F%F"
 
 #~ msgid "view an explanation of the changes in the solution"
 #~ msgstr "visualitza una explicació de les modificacions de la solució"
@@ -6601,16 +6569,17 @@ msgstr "Descarrega el registre de modificacions"
 
 #, fuzzy
 #~ msgid "1 downgrade"
-#~ msgstr "desactualitzat"
+#~ msgstr "$d desactualitzat"
 
 #, fuzzy
 #~ msgid "Encoding error in long description."
 #~ msgstr ""
-#~ "La descripció de la política d'ordenació conté un '(' que no està tancat"
+#~ "No s'ha pogut analitzar el format: hi ha un error de codificació en la "
+#~ "descripció de la columna"
 
 #, fuzzy
 #~ msgid "Search backwards for:"
-#~ msgstr "Cerca: "
+#~ msgstr "Cerca cap enrere: "
 
 #~ msgid "Happy?"
 #~ msgstr "Esteu content?"
@@ -6629,7 +6598,7 @@ msgstr "Descarrega el registre de modificacions"
 
 #, fuzzy
 #~ msgid "Search backwards for a package"
-#~ msgstr "Cerca un paquet"
+#~ msgstr "Cerca cap enrere: "
 
 #~ msgid "Bad filter type '%s' (valid types are: 'missing')"
 #~ msgstr "El tipus '%s' del filtre és erroni (els tipus vàlids són: 'falten')"
@@ -6650,8 +6619,9 @@ msgstr "Descarrega el registre de modificacions"
 #~ msgid "Invalid grouping policy type '%s'"
 #~ msgstr "Tipus de política d'agrupació '%s' invàlid"
 
+#, fuzzy
 #~ msgid "%sB bytes of disk space will be freed\n"
-#~ msgstr "S'alliberaran %sB bytes d'espai de disc\n"
+#~ msgstr "s'alliberarà %sB d'espai en disc\n"
 
 #~ msgid "Warning: could not lock the cache file.  Opening in read-only mode"
 #~ msgstr ""
@@ -6689,7 +6659,7 @@ msgstr "Descarrega el registre de modificacions"
 #~ msgstr ""
 #~ "Ordres:\n"
 #~ "  y: continua la instal·lació\n"
-#~ "  n: abandona i surt\n"
+#~ "  n: avorta i surt\n"
 #~ "  i: mostra informació sobre un o més paquets;\n"
 #~ "     els noms dels paquets han d'anar seguint la 'i'\n"
 #~ "  c: mostra els registres de modificació de Debian d'un o més paquets;\n"
@@ -6710,7 +6680,7 @@ msgstr "Descarrega el registre de modificacions"
 #~ "  + : instal·la\n"
 #~ "  - : suprimeix\n"
 #~ "  _ : purga\n"
-#~ "  = : congela\n"
+#~ "  = : retín\n"
 
 #~ msgid ""
 #~ "Some packages had unmet dependencies.  This may mean that you have\n"
@@ -6925,11 +6895,11 @@ msgstr "Descarrega el registre de modificacions"
 
 #, fuzzy
 #~ msgid "  This will use %sB of disk space."
-#~ msgstr "S'utilitzaran %sB de l'espai de disc"
+#~ msgstr "S'utilitzaran %sB d'espai en disc"
 
 #, fuzzy
 #~ msgid "  This will free %sB of disk space."
-#~ msgstr "S'alliberaran %sB de l'espai de disc"
+#~ msgstr "S'alliberaran %sB d'espai en disc"
 
 #~ msgid "Use new (idempotent) package command behavior"
 #~ msgstr "Utilitza el nou comportament (idempotent) d'ordres per a paquets"
