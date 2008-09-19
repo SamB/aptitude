@@ -22,6 +22,8 @@
 #include <generic/apt/apt.h>
 
 #include <apt-pkg/pkgrecords.h>
+#include <apt-pkg/pkgsystem.h>
+#include <apt-pkg/version.h>
 
 using cwidget::util::ref_ptr;
 
@@ -324,7 +326,77 @@ namespace aptitude
 	    break;
 
 	  case pattern::depends:
-	    return NULL;
+	    if(!target.get_has_version())
+	      return NULL;
+	    else
+	      {
+		const pkgCache::VerIterator ver(target.get_version_iterator(cache));
+
+		const pkgCache::Dep::DepType depends_type = p->get_depends_depends_type();
+		const bool broken = p->get_depends_broken();
+
+		pkgCache::DepIterator dep = ver.DependsList();
+		while(!dep.end())
+		  {
+		    pkgCache::DepIterator or_group_start = dep;
+
+		    if( (depends_type == dep->Type) ||
+			(depends_type == pkgCache::Dep::Depends &&
+			 dep->Type == pkgCache::Dep::PreDepends))
+		      {
+			if(broken)
+			  {
+			    pkgCache::DepIterator d2(cache, &*dep);
+			    while(d2->CompareOp & pkgCache::Dep::Or)
+			      ++d2;
+			    if(cache[d2] & pkgDepCache::DepGInstall)
+			      continue;
+			  }
+
+			std::vector<matchable> new_pool;
+
+			// See if a versionless match works.
+			while(1)
+			  {
+			    pkgCache::PkgIterator pkg(dep.TargetPkg());
+			    if(pkg.VersionList().end())
+			      new_pool.push_back(matchable(pkg));
+			    else
+			      {
+				for(pkgCache::VerIterator i=pkg.VersionList(); !i.end(); i++)
+				  if(_system->VS->CheckDep(i.VerStr(), dep->CompareOp, dep.TargetVer()))
+				    new_pool.push_back(matchable(pkg, i));
+			      }
+
+			    if((dep->CompareOp & pkgCache::Dep::Or) == 0)
+			      break;
+			    else
+			      ++dep;
+			  }
+
+			if(!new_pool.empty())
+			  {
+			    ref_ptr<structural_match> m =
+			      evaluate_structural(structural_eval_any,
+						  p->get_depends_pattern(),
+						  the_stack,
+						  new_pool,
+						  cache,
+						  records);
+
+			    // Note: the dependency that we return is
+			    // just the head of the OR group.
+			    if(m.valid())
+			      return match::make_dependency(p, m,
+							    or_group_start);
+			  }
+		      }
+
+		    ++dep;
+		  }
+
+		return NULL;
+	      }
 	    break;
 
 	  case pattern::description:
