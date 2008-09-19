@@ -364,7 +364,9 @@ namespace aptitude
 	    break;
 
 	  case pattern::name:
-	    return NULL;
+	    return evaluate_regexp(p,
+				   p->get_name_regex_info(),
+				   target.get_package_iterator(cache).Name());
 	    break;
 
 	  case pattern::new_tp:
