@@ -320,6 +320,16 @@ namespace aptitude
 	   */
 	  regexp,
 
+	  /** \brief A match with a sub-match and no other
+	   *  information.
+	   *
+	   *  e.g., ?bind.
+	   *
+	   *  The attached information is the structural matcher
+	   *  representing how the sub-expression matched.
+	   */
+	  with_sub_match,
+
 	  /** \brief A match that was made via a dependency.
 	   *
 	   *  The attached information is a structural matcher
@@ -418,7 +428,7 @@ namespace aptitude
        *  \param regexp_matches_begin  The beginning of the
        *                               range of regular
        *                               expression matches.
-       *  \param regexp_matcheS_end    The end of the range
+       *  \param regexp_matches_end    The end of the range
        *                               of regular expression
        *                               matches.
        */
@@ -434,14 +444,25 @@ namespace aptitude
 			 regexp_matches_begin, regexp_matches_end);
       }
 
+      /** \brief Create a new match with a sub-match.
+       *
+       *  \param p   The pattern that producd this match.
+       *  \param m   The sub-match.
+       */
+      static cwidget::util::ref_ptr<match> make_with_sub_match(const cwidget::util::ref_ptr<pattern> &p,
+							  const cwidget::util::ref_ptr<structural_match> &m)
+      {
+	return new match(with_sub_match, p, m,
+			 pkgCache::DepIterator(),
+			 pkgCache::PrvIterator(),
+			 (regexp_match *)0, (regexp_match *)0);
+      }
+
       /** \brief Create a new match through a dependency.
        *
        *  \param p   The pattern that produced this match.
+       *  \param m   The sub-match.
        *  \param dep The dependency that was followed.
-       *  \param sub_matches_begin   The beginning of the
-       *                             range of sub-matches.
-       *  \param sub_matches_end     The end of the range
-       *                             of sub-matches.
        */
       static cwidget::util::ref_ptr<match> make_dependency(const cwidget::util::ref_ptr<pattern> &p,
 							   const cwidget::util::ref_ptr<structural_match> &m,
@@ -459,11 +480,8 @@ namespace aptitude
       /** \brief Create a new match through a Provides.
        *
        *  \param p   The pattern that produced this match.
+       *  \param m   The sub-match.
        *  \param prv The Provides that was followed.
-       *  \param sub_matches_begin   The beginning of the
-       *                             range of sub-matches.
-       *  \param sub_matches_end     The end of the range
-       *                             of sub-matches.
        */
       static cwidget::util::ref_ptr<match> make_provides(const cwidget::util::ref_ptr<pattern> &p,
 							 const cwidget::util::ref_ptr<structural_match> &m,
@@ -494,7 +512,7 @@ namespace aptitude
        */
       const cwidget::util::ref_ptr<structural_match> &get_sub_matches() const
       {
-	eassert(tp == dependency || tp == provides);
+	eassert(tp == with_sub_match || tp == dependency || tp == provides);
 
 	return sub_match;
       }

@@ -31,6 +31,38 @@ namespace aptitude
   {
     namespace
     {
+      /** \brief Describes how version-by-version matching is carried
+       *  out.
+       */
+      enum structural_eval_mode
+	{
+	  /** \brief All the versions in the current pool must match. */
+	  structural_eval_all,
+
+	  /** \brief Any one of the versions in the current pool can match. */
+	  structural_eval_any
+	};
+
+
+      // The evaluation stack holds references to pools.
+      //
+      // NB: this is safe only because references to captured
+      // variables can't escape (because you can't, e.g., get a handle
+      // to a lambda and return it -- the only naming construct forces
+      // the variables to be referred to in the dynamic scope of the
+      // construct).  If this weren't the case, we'd need to
+      // reference-count the values on the stack -- and if lambdas
+      // could end up on the stack themselves, we'd have to fall back
+      // to full garbage-collection (e.g., mark-and-sweep).
+      typedef std::vector<std::vector<matchable> *> stack;
+
+      ref_ptr<structural_match> evaluate_structural(structural_eval_mode mode,
+						    const ref_ptr<pattern> &p,
+						    stack &the_stack,
+						    const std::vector<matchable> &pool,
+						    aptitudeDepCache &cache,
+						    pkgRecords &records);
+
       /** \brief Evaluate any regular expression-based pattern.
        *
        *  \param p      The pattern to evaluate.
@@ -72,6 +104,7 @@ namespace aptitude
       // Match an atomic expression against one matchable.
       ref_ptr<match> evaluate_atomic(const ref_ptr<pattern> &p,
 				     const matchable &target,
+				     stack &the_stack,
 				     aptitudeDepCache &cache,
 				     pkgRecords &records)
       {
@@ -195,7 +228,21 @@ namespace aptitude
 	    break;
 
 	  case pattern::bind:
-	    return NULL;
+	    // If this assert fails, something went wrong internally.
+	    {
+	      const std::size_t variable_index = p->get_bind_variable_index();
+	      eassert(variable_index >= 0 && variable_index < the_stack.size());
+
+	      ref_ptr<structural_match>
+		sub_match(evaluate_structural(structural_eval_any,
+					      p->get_bind_pattern(),
+					      the_stack,
+					      *the_stack[variable_index],
+					      cache,
+					      records));
+
+	      return match::make_with_sub_match(p, sub_match);
+	    }
 	    break;
 
 	  case pattern::broken:
@@ -393,20 +440,9 @@ namespace aptitude
 	  }
       }
 
-      /** \brief Describes how version-by-version matching is carried
-       *  out.
-       */
-      enum structural_eval_mode
-	{
-	  /** \brief All the versions in the current pool must match. */
-	  structural_eval_all,
-
-	  /** \brief Any one of the versions in the current pool can match. */
-	  structural_eval_any
-	};
-
       ref_ptr<structural_match> evaluate_structural(structural_eval_mode mode,
 						    const ref_ptr<pattern> &p,
+						    stack &the_stack,
 						    const std::vector<matchable> &pool,
 						    aptitudeDepCache &cache,
 						    pkgRecords &records)
@@ -490,7 +526,7 @@ namespace aptitude
 		  for(std::vector<matchable>::const_iterator it =
 			pool.begin(); it != pool.end(); ++it)
 		    {
-		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, cache, records));
+		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, the_stack, cache, records));
 		      if(!m.valid())
 			return NULL;
 		      else
@@ -510,7 +546,7 @@ namespace aptitude
 		  for(std::vector<matchable>::const_iterator it =
 			pool.begin(); it != pool.end(); ++it)
 		    {
-		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, cache, records));
+		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, the_stack, cache, records));
 		      if(m.valid())
 			// TODO: short-circuit?
 			matches.push_back(std::make_pair(*it, m));
@@ -561,8 +597,12 @@ namespace aptitude
 	  initial_pool.push_back(matchable(pkg, ver));
 	}
 
+      stack st;
+      st.push_back(&initial_pool);
+
       return evaluate_structural(structural_eval_any,
 				 p,
+				 st,
 				 initial_pool,
 				 cache,
 				 records);
