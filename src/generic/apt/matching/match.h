@@ -466,8 +466,7 @@ namespace aptitude
        */
       static cwidget::util::ref_ptr<match> make_dependency(const cwidget::util::ref_ptr<pattern> &p,
 							   const cwidget::util::ref_ptr<structural_match> &m,
-							   const pkgCache::DepIterator &dep,
-							   const pkgCache::VerIterator &ver)
+							   const pkgCache::DepIterator &dep)
       {
 	return new match(dependency, p,
 			 m,
@@ -485,8 +484,7 @@ namespace aptitude
        */
       static cwidget::util::ref_ptr<match> make_provides(const cwidget::util::ref_ptr<pattern> &p,
 							 const cwidget::util::ref_ptr<structural_match> &m,
-							 const pkgCache::PrvIterator &prv,
-							 const pkgCache::VerIterator &ver)
+							 const pkgCache::PrvIterator &prv)
       {
 	return new match(dependency, p,
 			 m,
