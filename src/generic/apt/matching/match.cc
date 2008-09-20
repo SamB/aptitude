@@ -553,7 +553,28 @@ namespace aptitude
 	    break;
 
 	  case pattern::and_tp:
-	    return NULL;
+	    {
+	      const std::vector<ref_ptr<pattern> > &sub_patterns(p->get_and_patterns());
+	      std::vector<ref_ptr<structural_match> > sub_matches;
+
+	      for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		    sub_patterns.begin(); it != sub_patterns.end(); ++it)
+		{
+		  ref_ptr<structural_match> m(evaluate_structural(mode,
+								  (*it),
+								  the_stack,
+								  pool,
+								  cache,
+								  records));
+
+		  if(!m.valid())
+		    return NULL;
+
+		  sub_matches.push_back(m);
+		}
+
+	      return structural_match::make_branch(p, sub_matches.begin(), sub_matches.end());
+	    }
 	    break;
 
 	  case pattern::any_version:
