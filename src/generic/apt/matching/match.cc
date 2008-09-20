@@ -586,7 +586,25 @@ namespace aptitude
 	    break;
 
 	  case pattern::not_tp:
-	    return NULL;
+	    {
+	      ref_ptr<structural_match> m(evaluate_structural(mode,
+							      p->get_not_pattern(),
+							      the_stack,
+							      pool,
+							      cache,
+							      records));
+
+	      if(!m.valid())
+		// Report a structural match with no sub-parts.  This
+		// will lose doubly-negated information.  For now that's
+		// just too bad; we can try to recover it later.
+		return structural_match::make_branch(p,
+						     (ref_ptr<structural_match> *)0,
+						     (ref_ptr<structural_match> *)0);
+	      else
+		return NULL;
+	    }
+
 	    break;
 
 	  case pattern::or_tp:
