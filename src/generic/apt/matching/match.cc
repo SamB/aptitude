@@ -590,7 +590,32 @@ namespace aptitude
 	    break;
 
 	  case pattern::or_tp:
-	    return NULL;
+	    {
+	      const std::vector<ref_ptr<pattern> > &sub_patterns(p->get_or_patterns());
+	      std::vector<ref_ptr<structural_match> > sub_matches;
+
+	      // Note: we do *not* short-circuit, in order to allow
+	      // the caller to see as much information as possible
+	      // about the match.
+	      for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		    sub_patterns.begin(); it != sub_patterns.end(); ++it)
+		{
+		  ref_ptr<structural_match> m(evaluate_structural(mode,
+								  (*it),
+								  the_stack,
+								  pool,
+								  cache,
+								  records));
+
+		  if(m.valid())
+		    sub_matches.push_back(m);
+		}
+
+	      if(sub_matches.empty())
+		return NULL;
+	      else
+		return structural_match::make_branch(p, sub_matches.begin(), sub_matches.end());
+	    }
 	    break;
 
 	  case pattern::widen:
