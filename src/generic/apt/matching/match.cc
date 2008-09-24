@@ -900,7 +900,7 @@ namespace aptitude
 		m(evaluate_structural(mode,
 				      p->get_widen_pattern(),
 				      the_stack,
-				      pool,
+				      new_pool,
 				      cache,
 				      records,
 				      debug));
