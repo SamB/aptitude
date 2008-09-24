@@ -139,6 +139,7 @@ namespace aptitude
      *   - ?not
      *   - ?any
      *   - ?all
+     *   - ?for
      *   - ?widen
      *   - ?narrow
      *

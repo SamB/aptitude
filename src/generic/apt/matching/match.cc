@@ -59,7 +59,7 @@ namespace aptitude
       // reference-count the values on the stack -- and if lambdas
       // could end up on the stack themselves, we'd have to fall back
       // to full garbage-collection (e.g., mark-and-sweep).
-      typedef std::vector<std::vector<matchable> *> stack;
+      typedef std::vector<const std::vector<matchable> *> stack;
 
       ref_ptr<structural_match> evaluate_structural(structural_eval_mode mode,
 						    const ref_ptr<pattern> &p,
@@ -120,6 +120,7 @@ namespace aptitude
 	  case pattern::all_versions:
 	  case pattern::and_tp:
 	  case pattern::any_version:
+	  case pattern::for_tp:
 	  case pattern::narrow:
 	  case pattern::not_tp:
 	  case pattern::or_tp:
@@ -438,10 +439,6 @@ namespace aptitude
 	    return NULL;
 	    break;
 
-	  case pattern::for_tp:
-	    return NULL;
-	    break;
-
 	  case pattern::garbage:
 	    return NULL;
 	    break;
@@ -581,6 +578,25 @@ namespace aptitude
 	    return NULL;
 	    break;
 
+	  case pattern::for_tp:
+	    {
+	      the_stack.push_back(&pool);
+
+	      const ref_ptr<structural_match>
+		m(evaluate_structural(mode,
+				      p->get_for_pattern(),
+				      the_stack,
+				      pool,
+				      cache,
+				      records));
+
+	      if(m.valid())
+		return structural_match::make_branch(p, &m, (&m) + 1);
+	      else
+		return NULL;
+	    }
+	    break;
+
 	  case pattern::narrow:
 	    return NULL;
 	    break;
@@ -656,7 +672,6 @@ namespace aptitude
 	  case pattern::essential:
 	  case pattern::equal:
 	  case pattern::false_tp:
-	  case pattern::for_tp:
 	  case pattern::garbage:
 	  case pattern::install_version:
 	  case pattern::installed:
