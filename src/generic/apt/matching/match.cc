@@ -610,7 +610,33 @@ namespace aptitude
 	    break;
 
 	  case pattern::any_version:
-	    return NULL;
+	    {
+	      std::vector<matchable> new_pool;
+	      new_pool.push_back(matchable());
+
+	      std::vector<ref_ptr<structural_match> > sub_matches;
+	      for(std::vector<matchable>::const_iterator it =
+		    pool.begin(); it != pool.end(); ++it)
+		{
+		  new_pool[0] = *it;
+
+		  ref_ptr<structural_match>
+		    m(evaluate_structural(mode,
+					  p->get_any_version_pattern(),
+					  the_stack,
+					  new_pool,
+					  cache,
+					  records));
+
+		  if(m.valid())
+		    sub_matches.push_back(m);
+		}
+
+	      if(sub_matches.empty())
+		return NULL;
+	      else
+		return structural_match::make_branch(p, sub_matches.begin(), sub_matches.end());
+	    }
 	    break;
 
 	  case pattern::for_tp:
