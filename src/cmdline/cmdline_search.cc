@@ -95,7 +95,7 @@ public:
 // FIXME: apt-cache does lots of tricks to make this fast.  Should I?
 int cmdline_search(int argc, char *argv[], const char *status_fname,
 		   string display_format, string width, string sort,
-		   bool disable_columns)
+		   bool disable_columns, bool debug)
 {
   int real_width=-1;
 
@@ -186,7 +186,8 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
 	  ref_ptr<structural_match> r =
 	    aptitude::matching::get_match(*m, pkg,
 					  *apt_cache_file,
-					  *apt_package_records);
+					  *apt_package_records,
+					  debug);
 
 	  if(r.valid())
 	    output.push_back(pair<pkgCache::PkgIterator, ref_ptr<structural_match> >(pkg, r));

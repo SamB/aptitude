@@ -578,6 +578,8 @@ int main(int argc, char *argv[])
 	}
     }
 
+  const bool debug_search = aptcfg->FindB(PACKAGE "::CmdLine::Debug-Search", false);
+
   int curr_quiet = aptcfg->FindI("quiet", 0);
   if(seen_quiet)
     aptcfg->SetNoUser("quiet", quiet);
@@ -642,7 +644,8 @@ int main(int argc, char *argv[])
 				  status_fname,
 				  display_format, width,
 				  sort_policy,
-				  disable_columns);
+				  disable_columns,
+				  debug_search);
 	  else if(!strcasecmp(argv[optind], "why"))
 	    return cmdline_why(argc - optind, argv + optind,
 			       status_fname, verbose, false);
