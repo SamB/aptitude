@@ -568,7 +568,20 @@ namespace aptitude
 	    // Structural matchers:
 
 	  case pattern::all_versions:
-	    return NULL;
+	    {
+	      ref_ptr<structural_match>
+		m(evaluate_structural(structural_eval_all,
+				      p->get_all_versions_pattern(),
+				      the_stack,
+				      pool,
+				      cache,
+				      records));
+
+	      if(!m.valid())
+		return NULL;
+	      else
+		return structural_match::make_branch(p, &m, (&m) + 1);
+	    }
 	    break;
 
 	  case pattern::and_tp:
