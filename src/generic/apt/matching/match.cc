@@ -661,7 +661,48 @@ namespace aptitude
 	    break;
 
 	  case pattern::narrow:
-	    return NULL;
+	    // Match each entry in the pool against the filter
+	    // separately.  Then match the main pattern against a
+	    // pool formed from values that passed the filter.
+	    {
+	      std::vector<matchable> singleton_pool;
+	      std::vector<matchable> new_pool;
+	      singleton_pool.push_back(matchable());
+
+	      // \todo we should perhaps store the filter matches in a
+	      // separate list.
+	      for(std::vector<matchable>::const_iterator it =
+		    pool.begin(); it != pool.end(); ++it)
+		{
+		  singleton_pool[0] = *it;
+
+		  if(evaluate_structural(mode,
+					 p->get_narrow_filter(),
+					 the_stack,
+					 singleton_pool,
+					 cache,
+					 records).valid())
+		    new_pool.push_back(*it);
+		}
+
+	      if(new_pool.empty())
+		return NULL;
+	      else
+		{
+		  ref_ptr<structural_match>
+		    m(evaluate_structural(mode,
+					  p->get_narrow_pattern(),
+					  the_stack,
+					  new_pool,
+					  cache,
+					  records));
+
+		  if(!m.valid())
+		    return NULL;
+		  else
+		    return structural_match::make_branch(p, &m, (&m) + 1);
+		}
+	    }
 	    break;
 
 	  case pattern::not_tp:
