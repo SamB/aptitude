@@ -29,6 +29,8 @@
 
 #include <algorithm>
 
+#include "serialize.h"
+
 using cwidget::util::transcode;
 using cwidget::util::ref_ptr;
 
@@ -50,6 +52,33 @@ namespace aptitude
 	  structural_eval_any
 	};
 
+      void print_matchable(std::ostream &out,
+			   const matchable &matchable,
+			   aptitudeDepCache &cache)
+      {
+	out << matchable.get_package_iterator(cache).Name();
+	if(matchable.get_has_version())
+	  {
+	    out << " "
+		<< matchable.get_version_iterator(cache).VerStr();
+	  }
+      }
+
+      void print_pool(std::ostream &out,
+		      const std::vector<matchable> &pool,
+		      aptitudeDepCache &cache)
+      {
+	out << "{";
+	for(std::vector<matchable>::const_iterator it =
+	      pool.begin(); it != pool.end(); ++it)
+	  {
+	    if(it != pool.begin())
+	      out << ", ";
+
+	    print_matchable(out, *it, cache);
+	  }
+	out << "}";
+      }
 
       // The evaluation stack holds references to pools (sorted lists
       // of matchables).
@@ -64,12 +93,29 @@ namespace aptitude
       // to full garbage-collection (e.g., mark-and-sweep).
       typedef std::vector<const std::vector<matchable> *> stack;
 
+      void print_stack(std::ostream &out,
+		       const stack &stack,
+		       aptitudeDepCache &cache)
+      {
+	out << "[";
+	for(stack::const_reverse_iterator it =
+	      stack.rbegin(); it != stack.rend(); ++it)
+	  {
+	    if(it != stack.rbegin())
+	      out << " | ";
+
+	    print_pool(out, **it, cache);
+	  }
+	out << "]";
+      }
+
       ref_ptr<structural_match> evaluate_structural(structural_eval_mode mode,
 						    const ref_ptr<pattern> &p,
 						    stack &the_stack,
 						    const std::vector<matchable> &pool,
 						    aptitudeDepCache &cache,
-						    pkgRecords &records);
+						    pkgRecords &records,
+						    bool debug);
 
       /** \brief Evaluate any regular expression-based pattern.
        *
@@ -86,7 +132,8 @@ namespace aptitude
        */
       ref_ptr<match> evaluate_regexp(const ref_ptr<pattern> &p,
 				     const pattern::regex_info &inf,
-				     const char *s)
+				     const char *s,
+				     bool debug)
       {
 	// Unfortunately, regexec() seems to require a hard limit to
 	// the number of matches that can be returned. :-(
@@ -114,8 +161,19 @@ namespace aptitude
 				     const matchable &target,
 				     stack &the_stack,
 				     aptitudeDepCache &cache,
-				     pkgRecords &records)
+				     pkgRecords &records,
+				     bool debug)
       {
+	if(debug)
+	  {
+	    std::cout << "Matching " << serialize_pattern(p)
+		      << " against the target ";
+	    print_matchable(std::cout, target, cache);
+	    std::cout << " with stack ";
+	    print_stack(std::cout, the_stack, cache);
+	    std::cout << std::endl;
+	  }
+
 	switch(p->get_type())
 	  {
 	    // Structural matchers:
@@ -148,7 +206,8 @@ namespace aptitude
 		    {
 		      ref_ptr<match> m = evaluate_regexp(p,
 							 p->get_archive_regex_info(),
-							 cur.Archive());
+							 cur.Archive(),
+							 debug);
 
 		      if(m.valid())
 			return m;
@@ -248,7 +307,8 @@ namespace aptitude
 					      the_stack,
 					      *the_stack[variable_index],
 					      cache,
-					      records));
+					      records,
+					      debug));
 
 	      if(sub_match.valid())
 		return match::make_with_sub_match(p, sub_match);
@@ -398,7 +458,8 @@ namespace aptitude
 						  the_stack,
 						  new_pool,
 						  cache,
-						  records);
+						  records,
+						  debug);
 
 			    // Note: the dependency that we return is
 			    // just the head of the OR group.
@@ -423,7 +484,8 @@ namespace aptitude
 		pkgCache::VerIterator ver(target.get_version_iterator(cache));
 		return evaluate_regexp(p,
 				       p->get_description_regex_info(),
-				       transcode(get_long_description(ver, &records)).c_str());
+				       transcode(get_long_description(ver, &records)).c_str(),
+				       debug);
 	      }
 	    break;
 
@@ -480,7 +542,8 @@ namespace aptitude
 	  case pattern::name:
 	    return evaluate_regexp(p,
 				   p->get_name_regex_info(),
-				   target.get_package_iterator(cache).Name());
+				   target.get_package_iterator(cache).Name(),
+				   debug);
 	    break;
 
 	  case pattern::new_tp:
@@ -549,7 +612,8 @@ namespace aptitude
 
 	    return evaluate_regexp(p,
 				   p->get_version_regex_info(),
-				   target.get_version_iterator(cache).VerStr());
+				   target.get_version_iterator(cache).VerStr(),
+				   debug);
 	    break;
 
 	  case pattern::virtual_tp:
@@ -566,8 +630,30 @@ namespace aptitude
 						    stack &the_stack,
 						    const std::vector<matchable> &pool,
 						    aptitudeDepCache &cache,
-						    pkgRecords &records)
+						    pkgRecords &records,
+						    bool debug)
       {
+	if(debug)
+	  {
+	    std::cout << "Matching " << serialize_pattern(p)
+		      << " against the pool ";
+	    print_pool(std::cout, pool, cache);
+	    std::cout << " with stack ";
+	    print_stack(std::cout, the_stack, cache);
+	    std::cout << " (mode=";
+	    switch(mode)
+	      {
+	      case structural_eval_all:
+		std::cout << "all";
+		break;
+
+	      case structural_eval_any:
+		std::cout << "any";
+		break;
+	      }
+	    std::cout << ")" << std::endl;
+	  }
+
 	switch(p->get_type())
 	  {
 	    // Structural matchers:
@@ -580,7 +666,8 @@ namespace aptitude
 				      the_stack,
 				      pool,
 				      cache,
-				      records));
+				      records,
+				      debug));
 
 	      if(!m.valid())
 		return NULL;
@@ -602,7 +689,8 @@ namespace aptitude
 								  the_stack,
 								  pool,
 								  cache,
-								  records));
+								  records,
+								  debug));
 
 		  if(!m.valid())
 		    return NULL;
@@ -631,7 +719,8 @@ namespace aptitude
 					  the_stack,
 					  new_pool,
 					  cache,
-					  records));
+					  records,
+					  debug));
 
 		  if(m.valid())
 		    sub_matches.push_back(m);
@@ -654,7 +743,8 @@ namespace aptitude
 				      the_stack,
 				      pool,
 				      cache,
-				      records));
+				      records,
+				      debug));
 
 	      if(m.valid())
 		return structural_match::make_branch(p, &m, (&m) + 1);
@@ -684,7 +774,8 @@ namespace aptitude
 					 the_stack,
 					 singleton_pool,
 					 cache,
-					 records).valid())
+					 records,
+					 debug).valid())
 		    new_pool.push_back(*it);
 		}
 
@@ -698,7 +789,8 @@ namespace aptitude
 					  the_stack,
 					  new_pool,
 					  cache,
-					  records));
+					  records,
+					  debug));
 
 		  if(!m.valid())
 		    return NULL;
@@ -715,7 +807,8 @@ namespace aptitude
 							      the_stack,
 							      pool,
 							      cache,
-							      records));
+							      records,
+							      debug));
 
 	      if(!m.valid())
 		// Report a structural match with no sub-parts.  This
@@ -746,7 +839,8 @@ namespace aptitude
 								  the_stack,
 								  pool,
 								  cache,
-								  records));
+								  records,
+								  debug));
 
 		  if(m.valid())
 		    sub_matches.push_back(m);
@@ -808,7 +902,8 @@ namespace aptitude
 				      the_stack,
 				      pool,
 				      cache,
-				      records));
+				      records,
+				      debug));
 	      if(!m.valid())
 		return NULL;
 	      else
@@ -862,9 +957,17 @@ namespace aptitude
 		  for(std::vector<matchable>::const_iterator it =
 			pool.begin(); it != pool.end(); ++it)
 		    {
-		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, the_stack, cache, records));
+		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, the_stack, cache, records, debug));
 		      if(!m.valid())
-			return NULL;
+			{
+			  if(debug)
+			    {
+			      std::cout << "Failed to match: ";
+			      print_matchable(std::cout, *it, cache);
+			      std::cout << std::endl;
+			    }
+			  return NULL;
+			}
 		      else
 			matches.push_back(std::make_pair(*it, m));
 		    }
@@ -882,10 +985,18 @@ namespace aptitude
 		  for(std::vector<matchable>::const_iterator it =
 			pool.begin(); it != pool.end(); ++it)
 		    {
-		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, the_stack, cache, records));
+		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, the_stack, cache, records, debug));
 		      if(m.valid())
-			// TODO: short-circuit?
-			matches.push_back(std::make_pair(*it, m));
+			{
+			  if(debug)
+			    {
+			      std::cout << "Matched: ";
+			      print_matchable(std::cout, *it, cache);
+			      std::cout << std::endl;
+			    }
+			  // TODO: short-circuit?
+			  matches.push_back(std::make_pair(*it, m));
+			}
 		    }
 
 		  if(matches.size() == 0)
@@ -912,7 +1023,8 @@ namespace aptitude
 	      const pkgCache::PkgIterator &pkg,
 	      const pkgCache::VerIterator &ver,
 	      aptitudeDepCache &cache,
-	      pkgRecords &records)
+	      pkgRecords &records,
+	      bool debug)
     {
       std::vector<matchable> initial_pool;
 
@@ -943,18 +1055,20 @@ namespace aptitude
 				 st,
 				 initial_pool,
 				 cache,
-				 records);
+				 records,
+				 debug);
     }
 
     ref_ptr<structural_match>
     get_match(const ref_ptr<pattern> &p,
 	      const pkgCache::PkgIterator &pkg,
 	      aptitudeDepCache &cache,
-	      pkgRecords &records)
+	      pkgRecords &records,
+	      bool debug)
     {
       return get_match(p, pkg,
 		       pkgCache::VerIterator(cache),
-		       cache, records);
+		       cache, records, debug);
     }
   }
 }

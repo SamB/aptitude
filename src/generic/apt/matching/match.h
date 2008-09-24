@@ -555,6 +555,8 @@ namespace aptitude
      *             package itself.
      *  \param cache   The cache in which to search.
      *  \param records The package records with which to perform the match.
+     *  \param debug   If \b true, information about the search process
+     *                 will be printed to standard output.
      *
      *  \return A match object describing the match, or \b NULL if the
      *  package does not match.
@@ -564,7 +566,8 @@ namespace aptitude
 	      const pkgCache::PkgIterator &pkg,
 	      const pkgCache::VerIterator &ver,
 	      aptitudeDepCache &cache,
-	      pkgRecords &records);
+	      pkgRecords &records,
+	      bool debug = false);
 
     /** \brief Test a package against a pattern.
      *
@@ -574,6 +577,8 @@ namespace aptitude
      *  \param pkg The package to compare.
      *  \param cache   The cache in which to search.
      *  \param records The package records with which to perform the match.
+     *  \param debug   If \b true, information about the search process
+     *                 will be printed to standard output.
      *
      *  \return A match object describing the match, or \b NULL if the
      *  package does not match.
@@ -582,7 +587,8 @@ namespace aptitude
     get_match(const cwidget::util::ref_ptr<pattern> &p,
 	      const pkgCache::PkgIterator &pkg,
 	      aptitudeDepCache &cache,
-	      pkgRecords &records);
+	      pkgRecords &records,
+	      bool debug = false);
   }
 }
 
