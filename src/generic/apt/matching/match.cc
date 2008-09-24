@@ -27,6 +27,8 @@
 
 #include <cwidget/generic/util/transcode.h>
 
+#include <algorithm>
+
 using cwidget::util::transcode;
 using cwidget::util::ref_ptr;
 
@@ -49,7 +51,8 @@ namespace aptitude
 	};
 
 
-      // The evaluation stack holds references to pools.
+      // The evaluation stack holds references to pools (sorted lists
+      // of matchables).
       //
       // NB: this is safe only because references to captured
       // variables can't escape (because you can't, e.g., get a handle
@@ -247,7 +250,10 @@ namespace aptitude
 					      cache,
 					      records));
 
-	      return match::make_with_sub_match(p, sub_match);
+	      if(sub_match.valid())
+		return match::make_with_sub_match(p, sub_match);
+	      else
+		return NULL;
 	    }
 	    break;
 
@@ -384,6 +390,8 @@ namespace aptitude
 
 			if(!new_pool.empty())
 			  {
+			    std::sort(new_pool.begin(), new_pool.end());
+
 			    ref_ptr<structural_match> m =
 			      evaluate_structural(structural_eval_any,
 						  p->get_depends_pattern(),
@@ -432,7 +440,21 @@ namespace aptitude
 	    break;
 
 	  case pattern::equal:
-	    return NULL;
+	    {
+	      const std::size_t variable_index = p->get_equal_stack_position();
+	      eassert(variable_index >= 0 && variable_index < the_stack.size());
+
+	      // Search for the incoming package/version in the pool
+	      // referenced by this pattern.
+	      const std::vector<matchable> &pool(*the_stack[variable_index]);
+
+	      if(std::binary_search(pool.begin(), pool.end(),
+				    target))
+		return match::make_atomic(p);
+	      else
+		return NULL;
+	    }
+
 	    break;
 
 	  case pattern::false_tp:
@@ -772,6 +794,8 @@ namespace aptitude
 
 	  initial_pool.push_back(matchable(pkg, ver));
 	}
+
+      std::sort(initial_pool.begin(), initial_pool.end());
 
       stack st;
       st.push_back(&initial_pool);
