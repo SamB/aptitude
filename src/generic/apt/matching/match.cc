@@ -760,7 +760,60 @@ namespace aptitude
 	    break;
 
 	  case pattern::widen:
-	    return NULL;
+	    // NB: to make this fast I rely on the sort order of
+	    // matchables.
+	    //
+	    // \todo Perhaps this pattern should be redefined to allow
+	    // us to inject arbitrary stuff into the pool?  Right now
+	    // it just expands the pool to include all the versions of
+	    // each package that it includes.
+	    {
+	      std::vector<matchable> new_pool;
+
+	      for(std::vector<matchable>::const_iterator it
+		    = pool.begin(); it != pool.end(); ++it)
+		{
+		  // If we've already seen this package it'll be at
+		  // the back of the new pool (due to processing
+		  // inputs in the pool in sort order).
+		  if(!new_pool.empty() &&
+		     new_pool.back().get_pkg() == it->get_pkg())
+		    continue;
+
+		  // Virtual packages aren't touched by ?widen.
+		  if(!it->get_has_version())
+		    {
+		      new_pool.push_back(*it);
+		      continue;
+		    }
+
+		  pkgCache::PkgIterator pkg =
+		    it->get_package_iterator(cache);
+		  if(pkg.VersionList().end())
+		    new_pool.push_back(*it);
+		  else
+		    {
+		      for(pkgCache::VerIterator ver = pkg.VersionList();
+			  !ver.end(); ++ver)
+			{
+			  new_pool.push_back(matchable(pkg, ver));
+			}
+		    }
+		}
+
+	      std::sort(new_pool.begin(), new_pool.end());
+	      ref_ptr<structural_match>
+		m(evaluate_structural(mode,
+				      p->get_widen_pattern(),
+				      the_stack,
+				      pool,
+				      cache,
+				      records));
+	      if(!m.valid())
+		return NULL;
+	      else
+		return structural_match::make_branch(p, &m, (&m) + 1);
+	    }
 	    break;
 
 	    // Atomic matchers:
