@@ -544,6 +544,9 @@ namespace aptitude
 	    break;
 
 	  case pattern::version:
+	    if(!target.get_has_version())
+	      return NULL;
+
 	    return evaluate_regexp(p,
 				   p->get_version_regex_info(),
 				   target.get_version_iterator(cache).VerStr());
