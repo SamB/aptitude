@@ -544,7 +544,9 @@ namespace aptitude
 	    break;
 
 	  case pattern::version:
-	    return NULL;
+	    return evaluate_regexp(p,
+				   p->get_version_regex_info(),
+				   target.get_version_iterator(cache).VerStr());
 	    break;
 
 	  case pattern::virtual_tp:
