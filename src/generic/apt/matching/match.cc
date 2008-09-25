@@ -617,7 +617,12 @@ namespace aptitude
 	    break;
 
 	  case pattern::priority:
-	    return NULL;
+	    if(!target.get_has_version())
+	      return NULL;
+	    else if(target.get_ver()->Priority != p->get_priority_priority())
+	      return NULL;
+	    else
+	      return match::make_atomic(p);
 	    break;
 
 	  case pattern::provides:
