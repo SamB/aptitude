@@ -524,7 +524,12 @@ namespace aptitude
 	    break;
 
 	  case pattern::garbage:
-	    return NULL;
+	    if(!target.get_has_version())
+	      return NULL;
+	    else if(!cache[target.get_package_iterator(cache)].Garbage)
+	      return NULL;
+	    else
+	      return match::make_atomic(p);
 	    break;
 
 	  case pattern::install_version:
