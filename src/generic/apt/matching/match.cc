@@ -533,7 +533,11 @@ namespace aptitude
 	    break;
 
 	  case pattern::install_version:
-	    return NULL;
+	    if(target.get_has_version() &&
+	       target.get_ver() == cache[target.get_package_iterator(cache)].InstallVer)
+	      return match::make_atomic(p);
+	    else
+	      return NULL;
 	    break;
 
 	  case pattern::installed:
