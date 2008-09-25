@@ -587,7 +587,33 @@ namespace aptitude
 	    break;
 
 	  case pattern::origin:
-	    return NULL;
+	    if(!target.get_has_version())
+	      return NULL;
+	    {
+	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+	      pkgCache::VerIterator ver(target.get_version_iterator(cache));
+
+	      for(pkgCache::VerFileIterator f = ver.FileList(); !f.end(); ++f)
+		{
+		  pkgCache::PkgFileIterator cur = f.File();
+		  const char *origin = cur.Origin();
+
+		  if(!cur.end() && origin != NULL)
+		    {
+		      ref_ptr<match>
+			m(evaluate_regexp(p,
+					  p->get_origin_regex_info(),
+					  origin,
+					  debug));
+
+		      if(m.valid())
+			return m;
+		    }
+		}
+
+	      return NULL;
+	    }
+
 	    break;
 
 	  case pattern::priority:
