@@ -580,7 +580,10 @@ namespace aptitude
 	    break;
 
 	  case pattern::obsolete:
-	    return NULL;
+	    if(pkg_obsolete(target.get_package_iterator(cache)))
+	      return match::make_atomic(p);
+	    else
+	      return NULL;
 	    break;
 
 	  case pattern::origin:
