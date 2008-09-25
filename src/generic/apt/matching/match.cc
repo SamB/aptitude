@@ -670,7 +670,104 @@ namespace aptitude
 	    break;
 
 	  case pattern::reverse_depends:
-	    return NULL;
+	    {
+	      pkgCache::PkgIterator pkg = target.get_package_iterator(cache);
+	      pkgCache::VerIterator ver;
+	      if(target.get_has_version())
+		ver = target.get_version_iterator(cache);
+	      const bool broken = p->get_reverse_depends_broken();
+	      pkgCache::Dep::DepType type = p->get_reverse_depends_depends_type();
+
+	      std::vector<matchable> revdep_pool;
+
+	      for(pkgCache::DepIterator d = pkg.RevDependsList();
+		  !d.end(); ++d)
+		{
+		  if(broken)
+		    {
+		      // Find the corresponding forward dependency and
+		      // check whether it's broken.
+		      pkgCache::DepIterator d2(cache, &*d);
+		      while(d2->CompareOp & pkgCache::Dep::Or)
+			++d2;
+		      if(cache[d2] & pkgDepCache::DepGInstall)
+			continue;
+		    }
+
+		  if(  (d->Type == type ||
+			(type == pkgCache::Dep::Depends && d->Type == pkgCache::Dep::PreDepends)) &&
+		       (!d.TargetVer() || (target.get_has_version() &&
+					   _system->VS->CheckDep(ver.VerStr(), d->CompareOp, d.TargetVer())))   )
+		    {
+		      matchable m(d.ParentPkg(), d.ParentVer());
+		      if(revdep_pool.empty())
+			revdep_pool.push_back(m);
+		      else
+			revdep_pool[0] = m;
+
+
+		      ref_ptr<structural_match>
+			rval(evaluate_structural(structural_eval_any,
+						 p->get_reverse_depends_pattern(),
+						 the_stack,
+						 revdep_pool,
+						 cache,
+						 records,
+						 debug));
+
+		      if(rval.valid())
+			return match::make_dependency(p, rval, d);
+		    }
+		}
+
+	      // Check dependencies through virtual packages.
+	      if(target.get_has_version())
+		{
+		  for(pkgCache::PrvIterator prv = ver.ProvidesList();
+		      !prv.end(); ++prv)
+		    {
+		      for(pkgCache::DepIterator d = prv.ParentPkg().RevDependsList();
+			  !d.end(); ++d)
+			{
+			  if(broken)
+			    {
+			      pkgCache::DepIterator d2(cache, &*d);
+			      while(d2->CompareOp & pkgCache::Dep::Or)
+				++d2;
+			      if(cache[d2] & pkgDepCache::DepGInstall)
+				continue;
+			    }
+
+			  if(d->Type == type &&
+			     (d.TargetVer() == NULL ||
+			      (  prv.ProvideVersion() != NULL &&
+			         _system->VS->CheckDep(ver.VerStr(), d->CompareOp, d.TargetVer())  )))
+			    {
+			      matchable m(d.ParentPkg(), d.ParentVer());
+			      if(revdep_pool.empty())
+				revdep_pool.push_back(m);
+			      else
+				revdep_pool[0] = m;
+
+
+			      ref_ptr<structural_match>
+				rval(evaluate_structural(structural_eval_any,
+							 p->get_reverse_depends_pattern(),
+							 the_stack,
+							 revdep_pool,
+							 cache,
+							 records,
+							 debug));
+
+			      if(rval.valid())
+				return match::make_dependency(p, rval, d);
+			    }
+			}
+		    }
+		}
+
+	      return NULL;
+	    }
 	    break;
 
 	  case pattern::reverse_provides:
