@@ -680,7 +680,10 @@ namespace aptitude
 	    break;
 
 	  case pattern::virtual_tp:
-	    return NULL;
+	    if(!target.get_package_iterator(cache).VersionList().end())
+	      return NULL;
+	    else
+	      return match::make_atomic(p);
 	    break;
 
 	  default:
