@@ -549,7 +549,18 @@ namespace aptitude
 	    break;
 
 	  case pattern::maintainer:
-	    return NULL;
+	    if(!target.get_has_version())
+	      return NULL;
+	    else
+	      {
+		pkgCache::VerIterator ver(target.get_version_iterator(cache));
+		pkgRecords::Parser &rec(records.Lookup(ver.FileList()));
+
+		return evaluate_regexp(p,
+				       p->get_maintainer_regex_info(),
+				       rec.Maintainer().c_str(),
+				       debug);
+	      }
 	    break;
 
 	  case pattern::name:
