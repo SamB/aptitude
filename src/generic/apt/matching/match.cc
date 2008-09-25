@@ -775,7 +775,35 @@ namespace aptitude
 	    break;
 
 	  case pattern::section:
-	    return NULL;
+	    if(target.get_has_version())
+	      {
+		pkgCache::VerIterator ver(target.get_version_iterator(cache));
+		const char *ver_section = ver.Section();
+		if(ver_section != NULL)
+		  {
+		    ref_ptr<match>
+		      m(evaluate_regexp(p,
+					p->get_section_regex_info(),
+					ver_section,
+					debug));
+
+		    if(m.valid())
+		      return m;
+		  }
+	      }
+
+	    {
+	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+	      const char *pkg_section = pkg.Section();
+
+	      if(pkg_section != NULL)
+		return evaluate_regexp(p,
+				       p->get_section_regex_info(),
+				       pkg_section,
+				       debug);
+	      else
+		return NULL;
+	    }
 	    break;
 
 	  case pattern::source_package:
