@@ -571,7 +571,12 @@ namespace aptitude
 	    break;
 
 	  case pattern::new_tp:
-	    return NULL;
+	    if(!target.get_has_version())
+	      return NULL;
+	    else if(!cache.get_ext_state(target.get_package_iterator(cache)).new_package)
+	      return NULL;
+	    else
+	      return match::make_atomic(p);
 	    break;
 
 	  case pattern::obsolete:
