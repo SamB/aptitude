@@ -626,6 +626,46 @@ namespace aptitude
 	    break;
 
 	  case pattern::provides:
+	    if(!target.get_has_version())
+	      return NULL;
+	    else
+	      {
+		pkgCache::VerIterator ver(target.get_version_iterator(cache));
+
+		std::vector<matchable> new_pool;
+
+		for(pkgCache::PrvIterator prv = ver.ProvidesList();
+		    !prv.end(); ++prv)
+		  {
+		    // Add all versions of each provided package to
+		    // the pool.  I chose this because it seems least
+		    // surprising (?provides(?description(blah))
+		    // should behave as expected), but if versioned
+		    // Provides happen this might cause problems with
+		    // matching only the versions that are actually
+		    // provided.
+		    pkgCache::PkgIterator provided_pkg = prv.ParentPkg();
+		    if(provided_pkg.VersionList().end())
+		      new_pool.push_back(matchable(provided_pkg));
+		    else
+		      for(pkgCache::VerIterator ver = provided_pkg.VersionList();
+			  !ver.end(); ++ver)
+			new_pool.push_back(matchable(provided_pkg, ver));
+
+		    ref_ptr<structural_match>
+		      m(evaluate_structural(structural_eval_any,
+					    p->get_provides_pattern(),
+					    the_stack,
+					    new_pool,
+					    cache,
+					    records,
+					    debug));
+
+		    if(m.valid())
+		      return match::make_provides(p, m, prv);
+		  }
+	      }
+
 	    return NULL;
 	    break;
 
