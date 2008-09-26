@@ -20,6 +20,7 @@
 #include "match.h"
 
 #include <generic/apt/apt.h>
+#include <generic/apt/tags.h>
 
 #include <apt-pkg/pkgrecords.h>
 #include <apt-pkg/pkgsystem.h>
@@ -928,7 +929,43 @@ namespace aptitude
 	    break;
 
 	  case pattern::tag:
-	    return NULL;
+	    {
+	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+
+#ifdef HAVE_EPT
+	      typedef ept::debtags::Tag tag;
+	      using aptitude::apt::get_tags;
+#endif
+
+#ifdef HAVE_EPT
+	      const std::set<tag> realTags(get_tags(pkg));
+	      const std::set<tag> * const tags(&realTags);
+#else
+	      const std::set<tag> * const tags(get_tags(pkg));
+#endif
+
+	      if(tags == NULL)
+		return false;
+
+	      for(std::set<tag>::const_iterator i=tags->begin(); i!=tags->end(); ++i)
+		{
+#ifdef HAVE_EPT
+		  std::string name(i->fullname());
+#else
+		  const std::string name = i->str().c_str();
+#endif
+		  ref_ptr<match> rval =
+		    evaluate_regexp(p,
+				    p->get_tag_regex_info(),
+				    name.c_str(),
+				    debug);
+
+		  if(rval.valid())
+		    return rval;
+		}
+
+	      return NULL;
+	    }
 	    break;
 
 	  case pattern::task:
