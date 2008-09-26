@@ -21,6 +21,7 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/tags.h>
+#include <generic/apt/tasks.h>
 
 #include <apt-pkg/pkgrecords.h>
 #include <apt-pkg/pkgsystem.h>
@@ -969,7 +970,30 @@ namespace aptitude
 	    break;
 
 	  case pattern::task:
-	    return NULL;
+	    {
+	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+
+	      std::set<string> *l = get_tasks(pkg);
+
+	      if(!l)
+		return NULL;
+
+	      for(std::set<string>::iterator i = l->begin();
+		  i != l->end();
+		  ++i)
+		{
+		  ref_ptr<match> m =
+		    evaluate_regexp(p,
+				    p->get_task_regex_info(),
+				    i->c_str(),
+				    debug);
+
+		  if(m.valid())
+		    return m;
+		}
+
+	      return NULL;
+	    }
 	    break;
 
 	  case pattern::true_tp:
