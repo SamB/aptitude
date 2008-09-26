@@ -997,7 +997,7 @@ namespace aptitude
 	    break;
 
 	  case pattern::true_tp:
-	    return NULL;
+	    return match::make_atomic(p);
 	    break;
 
 	  case pattern::upgradable:
