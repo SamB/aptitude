@@ -771,7 +771,36 @@ namespace aptitude
 	    break;
 
 	  case pattern::reverse_provides:
-	    return NULL;
+	    {
+	      std::vector<matchable> revprv_pool;
+	      pkgCache::PkgIterator pkg = target.get_package_iterator(cache);
+
+	      // Hm, it would be nice if we could do this in a way that
+	      // allowed users to ask to match all the reverse provides.
+	      for(pkgCache::PrvIterator prv = pkg.ProvidesList();
+		  !prv.end(); ++prv)
+		{
+		  if(revprv_pool.empty())
+		    revprv_pool.push_back(matchable(prv.OwnerPkg(), prv.OwnerVer()));
+		  else
+		    revprv_pool[0] = matchable(prv.OwnerPkg(), prv.OwnerVer());
+
+		  ref_ptr<structural_match>
+		    m(evaluate_structural(structural_eval_any,
+					  p->get_reverse_provides_pattern(),
+					  the_stack,
+					  revprv_pool,
+					  cache,
+					  records,
+					  debug));
+
+		  if(m.valid())
+		    return match::make_provides(p, m, prv);
+		}
+
+	      return NULL;
+	    }
+
 	    break;
 
 	  case pattern::section:
