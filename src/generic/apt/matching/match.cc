@@ -1001,7 +1001,16 @@ namespace aptitude
 	    break;
 
 	  case pattern::upgradable:
-	    return NULL;
+	    {
+	      pkgCache::PkgIterator pkg =
+		target.get_package_iterator(cache);
+
+	      if(!pkg.CurrentVer().end() &&
+		 cache[pkg].Upgradable())
+		return match::make_atomic(p);
+	      else
+		return NULL;
+	    }
 	    break;
 
 	  case pattern::user_tag:
