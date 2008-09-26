@@ -836,7 +836,49 @@ namespace aptitude
 	    break;
 
 	  case pattern::source_package:
-	    return NULL;
+	    {
+	      if(!target.get_has_version())
+		return NULL;
+
+	      bool checked_real_package = false;
+
+	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+	      pkgCache::VerIterator ver(target.get_version_iterator(cache));
+
+	      for(pkgCache::VerFileIterator vf = ver.FileList();
+		  !vf.end(); ++vf)
+		{
+		  pkgRecords::Parser &rec = records.Lookup(vf);
+
+		  if(rec.SourcePkg().empty())
+		    {
+		      if(!checked_real_package)
+			{
+			  ref_ptr<match> rval =
+			    evaluate_regexp(p,
+					    p->get_source_package_regex_info(),
+					    pkg.Name(),
+					    debug);
+
+			  if(rval.valid())
+			    return rval;
+			}
+		    }
+		  else
+		    {
+		      ref_ptr<match> rval =
+			evaluate_regexp(p,
+					p->get_source_package_regex_info(),
+					rec.SourcePkg().c_str(),
+					debug);
+
+		      if(rval.valid())
+			return rval;
+		    }
+		}
+
+	      return NULL;
+	    }
 	    break;
 
 	  case pattern::source_version:
