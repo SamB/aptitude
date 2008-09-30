@@ -133,6 +133,7 @@ namespace
       term_type_source_version,
       term_type_tag,
       term_type_task,
+      term_type_term,
       term_type_true,
       term_type_upgradable,
       term_type_user_tag,
@@ -188,6 +189,7 @@ namespace
     { "source-version", term_type_source_version },
     { "tag", term_type_tag },
     { "task", term_type_task },
+    { "term", term_type_term },
     { "true", term_type_true },
     { "upgradable", term_type_upgradable },
     { "user-tag", term_type_user_tag },
@@ -963,6 +965,8 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
       return pattern::make_tag(parse_string_match_args(start, end));
     case term_type_task:
       return pattern::make_task(parse_string_match_args(start, end));
+    case term_type_term:
+      return pattern::make_term(parse_string_match_args(start, end));
     case term_type_true:
       return pattern::make_true();
     case term_type_upgradable:

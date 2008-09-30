@@ -491,6 +491,12 @@ namespace aptitude
 				  out);
 	    break;
 
+	  case pattern::term:
+	    out += "?term(";
+	    serialize_string(p->get_term_term(), out);
+	    out.push_back(')');
+	    break;
+
 	  case pattern::true_tp:
 	    out += "?true";
 	    break;

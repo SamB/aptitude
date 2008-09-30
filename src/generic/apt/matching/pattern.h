@@ -463,6 +463,13 @@ namespace aptitude
 	   *  Fields: regex_info.
 	   */
 	  task,
+	  /** \brief ?term(TERM)
+	   *
+	   *  Matches a package using a full-text keyword search.
+	   *
+	   *  Fields: term.
+	   */
+	  term,
 	  /** \brief ?true
 	   *
 	   *  Matches everything.
@@ -1688,6 +1695,30 @@ namespace aptitude
 	eassert(tp == task);
 
 	return regex_information;
+      }
+
+      // @}
+
+      /** \name ?term term constructor and accessors */
+
+      // @{
+
+      /** \brief Create a ?term term.
+       *
+       *  \param s  The keyword to search for.
+       */
+      static cwidget::util::ref_ptr<pattern>
+      make_term(const std::string &s)
+      {
+	return new pattern(term, s);
+      }
+
+      /** \brief Retrieve the term field of a ?term term. */
+      const std::string &get_term_term() const
+      {
+	eassert(tp == term);
+
+	return string_info;
       }
 
       // @}

@@ -758,6 +758,9 @@ namespace
     { "~t gnome", "?task(\"gnome\")",
       pattern::make_task("gnome") },
 
+    { "?term(development)", "?term(\"development\")",
+      pattern::make_term("development") },
+
     { "?upgradable", "?upgradable", pattern::make_upgradable() },
 
     { "~U", "?upgradable", pattern::make_upgradable() },
