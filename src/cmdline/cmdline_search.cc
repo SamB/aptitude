@@ -173,6 +173,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
     }
 
   vector<pair<pkgCache::PkgIterator, ref_ptr<structural_match> > > output;
+  ref_ptr<search_cache> search_info(search_cache::create());
   for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin();
       !pkg.end(); ++pkg)
     {
@@ -185,6 +186,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
 	{
 	  ref_ptr<structural_match> r =
 	    aptitude::matching::get_match(*m, pkg,
+					  search_info,
 					  *apt_cache_file,
 					  *apt_package_records,
 					  debug);

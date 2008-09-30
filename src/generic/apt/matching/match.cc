@@ -40,6 +40,33 @@ namespace aptitude
 {
   namespace matching
   {
+    // We could try a fancy scheme where arbitrary values are attached
+    // to each pattern and downcase using dynamic_cast, but I opted
+    // for just explicitly listing all the possible caches in one
+    // place.  This fits better with the architecture of the match
+    // language, means that all the caching information is collected
+    // in one place, and also cleanly handles things like the fact
+    // that there isn't a separate Xapian object for each pattern
+    // node.
+    struct search_cache::search_cache_real : public search_cache
+    {
+      std::map<aptitudeDepCache::user_tag,
+	       ref_ptr<match> > user_tag_matches;
+
+      search_cache_real()
+      {
+      }
+    };
+
+    search_cache::search_cache()
+    {
+    }
+
+    ref_ptr<search_cache> search_cache::create()
+    {
+      return new search_cache_real;
+    }
+
     namespace
     {
       /** \brief Describes how version-by-version matching is carried
@@ -114,6 +141,7 @@ namespace aptitude
       ref_ptr<structural_match> evaluate_structural(structural_eval_mode mode,
 						    const ref_ptr<pattern> &p,
 						    stack &the_stack,
+						    const cwidget::util::ref_ptr<search_cache> &search_info,
 						    const std::vector<matchable> &pool,
 						    aptitudeDepCache &cache,
 						    pkgRecords &records,
@@ -135,6 +163,7 @@ namespace aptitude
       ref_ptr<match> evaluate_regexp(const ref_ptr<pattern> &p,
 				     const pattern::regex_info &inf,
 				     const char *s,
+				     const cwidget::util::ref_ptr<search_cache> &search_info,
 				     bool debug)
       {
 	// Unfortunately, regexec() seems to require a hard limit to
@@ -162,6 +191,7 @@ namespace aptitude
       ref_ptr<match> evaluate_atomic(const ref_ptr<pattern> &p,
 				     const matchable &target,
 				     stack &the_stack,
+				     const cwidget::util::ref_ptr<search_cache> &search_info,
 				     aptitudeDepCache &cache,
 				     pkgRecords &records,
 				     bool debug)
@@ -209,6 +239,7 @@ namespace aptitude
 		      ref_ptr<match> m = evaluate_regexp(p,
 							 p->get_archive_regex_info(),
 							 cur.Archive(),
+							 search_info,
 							 debug);
 
 		      if(m.valid())
@@ -307,6 +338,7 @@ namespace aptitude
 		sub_match(evaluate_structural(structural_eval_any,
 					      p->get_bind_pattern(),
 					      the_stack,
+					      search_info,
 					      *the_stack[variable_index],
 					      cache,
 					      records,
@@ -458,6 +490,7 @@ namespace aptitude
 			      evaluate_structural(structural_eval_any,
 						  p->get_depends_pattern(),
 						  the_stack,
+						  search_info,
 						  new_pool,
 						  cache,
 						  records,
@@ -487,6 +520,7 @@ namespace aptitude
 		return evaluate_regexp(p,
 				       p->get_description_regex_info(),
 				       transcode(get_long_description(ver, &records)).c_str(),
+				       search_info,
 				       debug);
 	      }
 	    break;
@@ -561,6 +595,7 @@ namespace aptitude
 		return evaluate_regexp(p,
 				       p->get_maintainer_regex_info(),
 				       rec.Maintainer().c_str(),
+				       search_info,
 				       debug);
 	      }
 	    break;
@@ -569,6 +604,7 @@ namespace aptitude
 	    return evaluate_regexp(p,
 				   p->get_name_regex_info(),
 				   target.get_package_iterator(cache).Name(),
+				   search_info,
 				   debug);
 	    break;
 
@@ -606,6 +642,7 @@ namespace aptitude
 			m(evaluate_regexp(p,
 					  p->get_origin_regex_info(),
 					  origin,
+					  search_info,
 					  debug));
 
 		      if(m.valid())
@@ -658,6 +695,7 @@ namespace aptitude
 		      m(evaluate_structural(structural_eval_any,
 					    p->get_provides_pattern(),
 					    the_stack,
+					    search_info,
 					    new_pool,
 					    cache,
 					    records,
@@ -712,6 +750,7 @@ namespace aptitude
 			rval(evaluate_structural(structural_eval_any,
 						 p->get_reverse_depends_pattern(),
 						 the_stack,
+						 search_info,
 						 revdep_pool,
 						 cache,
 						 records,
@@ -756,6 +795,7 @@ namespace aptitude
 				rval(evaluate_structural(structural_eval_any,
 							 p->get_reverse_depends_pattern(),
 							 the_stack,
+							 search_info,
 							 revdep_pool,
 							 cache,
 							 records,
@@ -791,6 +831,7 @@ namespace aptitude
 		    m(evaluate_structural(structural_eval_any,
 					  p->get_reverse_provides_pattern(),
 					  the_stack,
+					  search_info,
 					  revprv_pool,
 					  cache,
 					  records,
@@ -816,6 +857,7 @@ namespace aptitude
 		      m(evaluate_regexp(p,
 					p->get_section_regex_info(),
 					ver_section,
+					search_info,
 					debug));
 
 		    if(m.valid())
@@ -831,6 +873,7 @@ namespace aptitude
 		return evaluate_regexp(p,
 				       p->get_section_regex_info(),
 				       pkg_section,
+				       search_info,
 				       debug);
 	      else
 		return NULL;
@@ -860,6 +903,7 @@ namespace aptitude
 			    evaluate_regexp(p,
 					    p->get_source_package_regex_info(),
 					    pkg.Name(),
+					    search_info,
 					    debug);
 
 			  if(rval.valid())
@@ -872,6 +916,7 @@ namespace aptitude
 			evaluate_regexp(p,
 					p->get_source_package_regex_info(),
 					rec.SourcePkg().c_str(),
+					search_info,
 					debug);
 
 		      if(rval.valid())
@@ -906,6 +951,7 @@ namespace aptitude
 			    evaluate_regexp(p,
 					    p->get_source_version_regex_info(),
 					    ver.VerStr(),
+					    search_info,
 					    debug);
 
 			  if(rval.valid())
@@ -918,6 +964,7 @@ namespace aptitude
 			evaluate_regexp(p,
 					p->get_source_version_regex_info(),
 					rec.SourceVer().c_str(),
+					search_info,
 					debug);
 
 		      if(rval.valid())
@@ -959,6 +1006,7 @@ namespace aptitude
 		    evaluate_regexp(p,
 				    p->get_tag_regex_info(),
 				    name.c_str(),
+				    search_info,
 				    debug);
 
 		  if(rval.valid())
@@ -986,6 +1034,7 @@ namespace aptitude
 		    evaluate_regexp(p,
 				    p->get_task_regex_info(),
 				    i->c_str(),
+				    search_info,
 				    debug);
 
 		  if(m.valid())
@@ -1024,6 +1073,7 @@ namespace aptitude
 	    return evaluate_regexp(p,
 				   p->get_version_regex_info(),
 				   target.get_version_iterator(cache).VerStr(),
+				   search_info,
 				   debug);
 	    break;
 
@@ -1042,6 +1092,7 @@ namespace aptitude
       ref_ptr<structural_match> evaluate_structural(structural_eval_mode mode,
 						    const ref_ptr<pattern> &p,
 						    stack &the_stack,
+						    const cwidget::util::ref_ptr<search_cache> &search_info,
 						    const std::vector<matchable> &pool,
 						    aptitudeDepCache &cache,
 						    pkgRecords &records,
@@ -1078,6 +1129,7 @@ namespace aptitude
 		m(evaluate_structural(structural_eval_all,
 				      p->get_all_versions_pattern(),
 				      the_stack,
+				      search_info,
 				      pool,
 				      cache,
 				      records,
@@ -1101,6 +1153,7 @@ namespace aptitude
 		  ref_ptr<structural_match> m(evaluate_structural(mode,
 								  (*it),
 								  the_stack,
+								  search_info,
 								  pool,
 								  cache,
 								  records,
@@ -1131,6 +1184,7 @@ namespace aptitude
 		    m(evaluate_structural(mode,
 					  p->get_any_version_pattern(),
 					  the_stack,
+					  search_info,
 					  new_pool,
 					  cache,
 					  records,
@@ -1155,6 +1209,7 @@ namespace aptitude
 		m(evaluate_structural(mode,
 				      p->get_for_pattern(),
 				      the_stack,
+				      search_info,
 				      pool,
 				      cache,
 				      records,
@@ -1186,6 +1241,7 @@ namespace aptitude
 		  if(evaluate_structural(mode,
 					 p->get_narrow_filter(),
 					 the_stack,
+					 search_info,
 					 singleton_pool,
 					 cache,
 					 records,
@@ -1201,6 +1257,7 @@ namespace aptitude
 		    m(evaluate_structural(mode,
 					  p->get_narrow_pattern(),
 					  the_stack,
+					  search_info,
 					  new_pool,
 					  cache,
 					  records,
@@ -1219,6 +1276,7 @@ namespace aptitude
 	      ref_ptr<structural_match> m(evaluate_structural(mode,
 							      p->get_not_pattern(),
 							      the_stack,
+							      search_info,
 							      pool,
 							      cache,
 							      records,
@@ -1251,6 +1309,7 @@ namespace aptitude
 		  ref_ptr<structural_match> m(evaluate_structural(mode,
 								  (*it),
 								  the_stack,
+								  search_info,
 								  pool,
 								  cache,
 								  records,
@@ -1314,6 +1373,7 @@ namespace aptitude
 		m(evaluate_structural(mode,
 				      p->get_widen_pattern(),
 				      the_stack,
+				      search_info,
 				      new_pool,
 				      cache,
 				      records,
@@ -1371,7 +1431,7 @@ namespace aptitude
 		  for(std::vector<matchable>::const_iterator it =
 			pool.begin(); it != pool.end(); ++it)
 		    {
-		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, the_stack, cache, records, debug));
+		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, the_stack, search_info, cache, records, debug));
 		      if(!m.valid())
 			{
 			  if(debug)
@@ -1399,7 +1459,7 @@ namespace aptitude
 		  for(std::vector<matchable>::const_iterator it =
 			pool.begin(); it != pool.end(); ++it)
 		    {
-		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, the_stack, cache, records, debug));
+		      cwidget::util::ref_ptr<match> m(evaluate_atomic(p, *it, the_stack, search_info, cache, records, debug));
 		      if(m.valid())
 			{
 			  if(debug)
@@ -1436,6 +1496,7 @@ namespace aptitude
     get_match(const ref_ptr<pattern> &p,
 	      const pkgCache::PkgIterator &pkg,
 	      const pkgCache::VerIterator &ver,
+	      const cwidget::util::ref_ptr<search_cache> &search_info,
 	      aptitudeDepCache &cache,
 	      pkgRecords &records,
 	      bool debug)
@@ -1467,6 +1528,7 @@ namespace aptitude
       return evaluate_structural(structural_eval_any,
 				 p,
 				 st,
+				 search_info,
 				 initial_pool,
 				 cache,
 				 records,
@@ -1476,13 +1538,14 @@ namespace aptitude
     ref_ptr<structural_match>
     get_match(const ref_ptr<pattern> &p,
 	      const pkgCache::PkgIterator &pkg,
+	      const cwidget::util::ref_ptr<search_cache> &search_info,
 	      aptitudeDepCache &cache,
 	      pkgRecords &records,
 	      bool debug)
     {
       return get_match(p, pkg,
 		       pkgCache::VerIterator(cache),
-		       cache, records, debug);
+		       search_info, cache, records, debug);
     }
   }
 }

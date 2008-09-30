@@ -547,12 +547,39 @@ namespace aptitude
       }
     };
 
+    /** \brief Used to attach information to individual patterns in
+     *  the course of a search.
+     *
+     *  This is used to store information that should be computed
+     *  once, up-front, and never afterwards.
+     */
+    class search_cache : public util::refcounted_base
+    {
+      // The implementation details are hidden in search_cache_real.
+      // You can only create a search_cache through create(), which
+      // really creates a search_cache_real.
+      //
+      // I assume implicitly in various places that all search_cache
+      // pointers are search_cache_real pointers; this is enforced by
+      // making sure that nothing else can construct them.
+      class search_cache_real;
+      friend class search_cache_real;
+      search_cache();
+      search_cache(const search_cache &other);
+
+    public:
+      /** \brief Construct a new search cache. */
+      static cwidget::util::ref_ptr<search_cache> create();
+    };
+
     /** \brief Test a version of a package against a pattern.
      *
      *  \param p   The pattern to execute.
      *  \param pkg The package to compare.
      *  \param ver The version of pkg to compare, or an end iterator to match the
      *             package itself.
+     *  \param search_info  Where to store "side information"
+     *                      associated with this search.
      *  \param cache   The cache in which to search.
      *  \param records The package records with which to perform the match.
      *  \param debug   If \b true, information about the search process
@@ -565,6 +592,7 @@ namespace aptitude
     get_match(const cwidget::util::ref_ptr<pattern> &p,
 	      const pkgCache::PkgIterator &pkg,
 	      const pkgCache::VerIterator &ver,
+	      const cwidget::util::ref_ptr<search_cache> &search_info,
 	      aptitudeDepCache &cache,
 	      pkgRecords &records,
 	      bool debug = false);
@@ -575,7 +603,9 @@ namespace aptitude
      *
      *  \param p   The pattern to execute.
      *  \param pkg The package to compare.
-     *  \param cache   The cache in which to search.
+     *  \param search_info  Where to store "side information"
+     *                      associated with this search.
+     *  \param cache   The package cache in which to search.
      *  \param records The package records with which to perform the match.
      *  \param debug   If \b true, information about the search process
      *                 will be printed to standard output.
@@ -586,6 +616,7 @@ namespace aptitude
     cwidget::util::ref_ptr<structural_match>
     get_match(const cwidget::util::ref_ptr<pattern> &p,
 	      const pkgCache::PkgIterator &pkg,
+	      const cwidget::util::ref_ptr<search_cache> &search_info,
 	      aptitudeDepCache &cache,
 	      pkgRecords &records,
 	      bool debug = false);
