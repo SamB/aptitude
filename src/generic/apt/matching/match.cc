@@ -48,12 +48,12 @@ namespace aptitude
     // in one place, and also cleanly handles things like the fact
     // that there isn't a separate Xapian object for each pattern
     // node.
-    struct search_cache::search_cache_real : public search_cache
+    struct search_cache::implementation : public search_cache
     {
       std::map<aptitudeDepCache::user_tag,
 	       ref_ptr<match> > user_tag_matches;
 
-      search_cache_real()
+      implementation()
       {
       }
     };
@@ -64,7 +64,7 @@ namespace aptitude
 
     ref_ptr<search_cache> search_cache::create()
     {
-      return new search_cache_real;
+      return new implementation;
     }
 
     namespace
@@ -1063,7 +1063,46 @@ namespace aptitude
 	    break;
 
 	  case pattern::user_tag:
-	    return NULL;
+	    {
+	      // Don't dyn_downcast to avoid the cost (is there really
+	      // much?).
+	      search_cache::implementation &info = *(search_cache::implementation *)search_info.unsafe_get_ref();
+	      pkgCache::PkgIterator pkg =
+		target.get_package_iterator(cache);
+
+	      const std::set<aptitudeDepCache::user_tag> &user_tags =
+		cache.get_ext_state(pkg).user_tags;
+
+	      for(std::set<aptitudeDepCache::user_tag>::const_iterator it =
+		    user_tags.begin(); it != user_tags.end(); ++it)
+		{
+		  aptitudeDepCache::user_tag tag(*it);
+
+		  // NB: this currently short-circuits (as does, e.g.,
+		  // ?task); for highlighting purposes we might want
+		  // to return all matches.
+		  std::map<aptitudeDepCache::user_tag, ref_ptr<match> >::const_iterator
+		    found = info.user_tag_matches.find(tag);
+
+
+		  if(found != info.user_tag_matches.end() && found->second.valid())
+		    return found->second;
+		  else if(found == info.user_tag_matches.end())
+		    {
+		      ref_ptr<match> rval(evaluate_regexp(p,
+							  p->get_user_tag_regex_info(),
+							  cache.deref_user_tag(*it).c_str(),
+							  search_info,
+							  debug));
+
+		      info.user_tag_matches[tag] = rval;
+		      if(rval.valid())
+			return rval;
+		    }
+		}
+
+	      return NULL;
+	    }
 	    break;
 
 	  case pattern::version:

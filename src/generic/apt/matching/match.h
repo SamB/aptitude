@@ -551,19 +551,24 @@ namespace aptitude
      *  the course of a search.
      *
      *  This is used to store information that should be computed
-     *  once, up-front, and never afterwards.
+     *  only once during a search.
      */
     class search_cache : public util::refcounted_base
     {
-      // The implementation details are hidden in search_cache_real.
-      // You can only create a search_cache through create(), which
-      // really creates a search_cache_real.
+      // The implementation details are hidden in
+      // search_cache::implementation.  You can only create a
+      // search_cache through create(), which really creates
+      // search_cache::implementation.
       //
       // I assume implicitly in various places that all search_cache
       // pointers are search_cache_real pointers; this is enforced by
       // making sure that nothing else can construct them.
-      class search_cache_real;
-      friend class search_cache_real;
+
+    public:
+      class implementation;
+      friend class implementation;
+
+    private:
       search_cache();
       search_cache(const search_cache &other);
 
