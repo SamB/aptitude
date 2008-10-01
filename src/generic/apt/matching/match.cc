@@ -29,6 +29,9 @@
 
 #include <cwidget/generic/util/transcode.h>
 
+#include <ept/textsearch/textsearch.h>
+#include <xapian/enquire.h>
+
 #include <algorithm>
 
 #include "serialize.h"
@@ -53,11 +56,52 @@ namespace aptitude
       std::map<aptitudeDepCache::user_tag,
 	       ref_ptr<match> > user_tag_matches;
 
+      ept::textsearch::TextSearch db;
+      Xapian::Enquire enquire;
+      // When the Xapian search has been run, ran_xapian_search is set
+      // to true; until then, "matches" and "matched_terms" are
+      // meaninglessly empty.
+      bool ran_xapian_search;
+      Xapian::MSet matches;
+      // Maps package names to the set of terms that matched that
+      // package in the Xapian search.
+      std::map<std::string, std::set<std::string> > matched_terms;
+
       implementation()
+	: user_tag_matches(),
+	  db(),
+	  enquire(db.db()),
+	  ran_xapian_search(false),
+	  matches()
       {
       }
-    };
 
+      /** \brief If the Xapian search hasn't been run yet, invoke it.
+       */
+      void ensure_xapian_search()
+      {
+	// This will need to be done in a different way if we have
+	// support for interactively updating a search.  Maybe.
+	if(!ran_xapian_search)
+	  {
+	    matches = enquire.get_mset(0, 1000);
+	    // Cache which terms matched each package in the match
+	    // set.
+	    matched_terms.clear();
+	    for(Xapian::MSetIterator it = matches.begin();
+		it != matches.end(); ++it)
+	      {
+		std::set<std::string> terms(enquire.get_matching_terms_begin(it),
+					    enquire.get_matching_terms_end(it));
+		// We use here our magic knowledge that the document
+		// data is the package name.
+		matched_terms[it.get_document().get_data()] = terms;
+	      }
+	    ran_xapian_search = true;
+	  }
+      }
+    };
+ 
     search_cache::search_cache()
     {
     }
@@ -1045,6 +1089,21 @@ namespace aptitude
 	    }
 	    break;
 
+	  case pattern::term:
+	    {
+	      search_cache::implementation &info = *(search_cache::implementation *)search_info.unsafe_get_ref();
+	      info.ensure_xapian_search();
+	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+	      const std::set<std::string> &terms(info.matched_terms[pkg.Name()]);
+
+	      if(terms.find(p->get_term_term()) != terms.end())
+		// TODO: how do I represent the match region?
+		return match::make_atomic(p);
+	      else
+		return NULL;
+	    }
+	    break;
+
 	  case pattern::true_tp:
 	    return match::make_atomic(p);
 	    break;
@@ -1457,6 +1516,7 @@ namespace aptitude
 	  case pattern::source_version:
 	  case pattern::tag:
 	  case pattern::task:
+	  case pattern::term:
 	  case pattern::true_tp:
 	  case pattern::upgradable:
 	  case pattern::user_tag:
@@ -1527,6 +1587,206 @@ namespace aptitude
 
 	  default:
 	    throw MatchingException("Internal error: unhandled pattern type in evaluate()");
+	  }
+      }
+
+      // Adjusts the incoming pattern for the purposes of computing
+      // the Xapian query.
+      //
+      // Specifically, this pushes NOTs out of OR expressions to the
+      // top structural level (the top-level of the pattern, or the
+      // top-level of a term like ?depends that has a sub-pattern).
+      // Also throws away some structural patterns that are irrelevant
+      // for Xapian, like all_versions.
+      //
+      // xapian_dependent is set to true if a Xapian search using the
+      // returned query will correctly overestimate the match set --
+      // or underestimate for ?not.  This is always true for AND terms
+      // that have a dependent term, but might not be true for OR.
+      // e.g., ?or(?term(game), ?installed) -> matches any installed
+      // package even if it doesn't match "game".
+      cwidget::util::ref_ptr<pattern> normalize_pattern(const cwidget::util::ref_ptr<pattern> &p,
+							bool &xapian_dependent)
+      {
+	switch(p->get_type())
+	  {
+	  case pattern::all_versions:
+	    return normalize_pattern(p->get_all_versions_pattern(),
+				     xapian_dependent);
+
+	  case pattern::and_tp:
+	    {
+	      const std::vector<ref_ptr<pattern> > &
+		sub_patterns(p->get_and_patterns());
+
+	      // First, normalize the sub-parts:
+	      std::vector<ref_ptr<pattern> >
+		normalized_sub_patterns;
+	      normalized_sub_patterns.reserve(sub_patterns.size());
+
+	      // The AND is fine if it has at least one positive
+	      // Xapian-dependent term.  If it isn't, but it has a
+	      // Xapian-dependent term (i.e., all the Xapian terms are
+	      // negative), we invert it and turn it into a
+	      // Xapian-dependent OR.  If that fails too, it's not
+	      // Xapian-dependent.
+	      bool has_xapian_dependent_sub_term = false;
+	      bool has_positive_xapian_dependent_sub_term = false;
+	      for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		    sub_patterns.begin(); it != sub_patterns.end(); ++it)
+		{
+		  bool sub_xapian_dependent = false;
+		  ref_ptr<pattern> sub_normalized(normalize_pattern(*it, sub_xapian_dependent));
+
+		  if(sub_xapian_dependent)
+		    {
+		      has_xapian_dependent_sub_term = true;
+		      if(sub_normalized->get_type() != pattern::not_tp)
+			has_positive_xapian_dependent_sub_term = true;
+
+		      normalized_sub_patterns.push_back(sub_normalized);
+		    }
+		}
+
+	      if(has_positive_xapian_dependent_sub_term)
+		return pattern::make_and(normalized_sub_patterns);
+	      else if(has_xapian_dependent_sub_term)
+		{
+		  std::vector<ref_ptr<pattern> > negative_sub_normalized;
+		  negative_sub_normalized.reserve(normalized_sub_patterns.size());
+
+		  for(std::vector<ref_ptr<pattern> >::const_iterator it =
+			normalized_sub_patterns.begin(); it != normalized_sub_patterns.end(); ++it)
+		    negative_sub_normalized.push_back(pattern::make_not(*it));
+
+		  return pattern::make_not(pattern::make_or(negative_sub_normalized));
+		}
+	    }
+
+	  case pattern::any_version:
+	  case pattern::for_tp:
+	  case pattern::narrow:
+	  case pattern::not_tp:
+	  case pattern::or_tp:
+	  case pattern::widen:
+
+	  case pattern::archive:
+	  case pattern::action:
+	  case pattern::automatic:
+	  case pattern::bind:
+	  case pattern::broken:
+	  case pattern::broken_type:
+	  case pattern::candidate_version:
+	  case pattern::config_files:
+	  case pattern::current_version:
+	  case pattern::depends:
+	  case pattern::description:
+	  case pattern::essential:
+	  case pattern::equal:
+	  case pattern::false_tp:
+	  case pattern::garbage:
+	  case pattern::install_version:
+	  case pattern::installed:
+	  case pattern::maintainer:
+	  case pattern::name:
+	  case pattern::new_tp:
+	  case pattern::obsolete:
+	  case pattern::origin:
+	  case pattern::priority:
+	  case pattern::provides:
+	  case pattern::reverse_depends:
+	  case pattern::reverse_provides:
+	  case pattern::section:
+	  case pattern::source_package:
+	  case pattern::source_version:
+	  case pattern::tag:
+	  case pattern::task:
+	  case pattern::term:
+	  case pattern::true_tp:
+	  case pattern::upgradable:
+	  case pattern::user_tag:
+	  case pattern::version:
+	  case pattern::virtual_tp:
+	    return NULL;
+	  default:
+	    throw MatchingException("Internal error: unhandled pattern type in normalize_pattern()");
+	  }
+      }
+
+      // Note: the incoming expression must be Xapian-normalized as
+      // with normalize_pattern().
+      //
+      // Builds a query for the Xapian-relevant part of the search.
+      //
+      // Analyzes the incoming expression in an attempt to prove that
+      // any matching expression will match at least one Xapian term.
+      // If this can be proven, builds a Xapian query that
+      // overapproximates the match set.  Otherwise we can't constrain
+      // the set of matched terms or determine relevance meaningfully,
+      // so this just builds a big OR of all the terms that occur.
+      //
+      // Returns the new query, or an empty query if there's no
+      // Xapian-dependence.
+      Xapian::Query build_xapian_query(const cwidget::util::ref_ptr<pattern> &p)
+      {
+	switch(p->get_type())
+	  {
+	    // For the purposes of the Xapian approximation, we ignore
+	    // pool-manipulating patterns.  The Xapian overapproximation
+	    // is always an overapproximation regardless.  (NB: I don't
+	    // 100% believe this; we might need to fall back to exhaustive
+	    // searches in those cases?)
+	  case pattern::all_versions:
+	    return build_xapian_query(p->get_all_versions_pattern());
+
+	  case pattern::and_tp:
+	  case pattern::any_version:
+	  case pattern::for_tp:
+	  case pattern::narrow:
+	  case pattern::not_tp:
+	  case pattern::or_tp:
+	  case pattern::widen:
+
+	  case pattern::archive:
+	  case pattern::action:
+	  case pattern::automatic:
+	  case pattern::bind:
+	  case pattern::broken:
+	  case pattern::broken_type:
+	  case pattern::candidate_version:
+	  case pattern::config_files:
+	  case pattern::current_version:
+	  case pattern::depends:
+	  case pattern::description:
+	  case pattern::essential:
+	  case pattern::equal:
+	  case pattern::false_tp:
+	  case pattern::garbage:
+	  case pattern::install_version:
+	  case pattern::installed:
+	  case pattern::maintainer:
+	  case pattern::name:
+	  case pattern::new_tp:
+	  case pattern::obsolete:
+	  case pattern::origin:
+	  case pattern::priority:
+	  case pattern::provides:
+	  case pattern::reverse_depends:
+	  case pattern::reverse_provides:
+	  case pattern::section:
+	  case pattern::source_package:
+	  case pattern::source_version:
+	  case pattern::tag:
+	  case pattern::task:
+	  case pattern::term:
+	  case pattern::true_tp:
+	  case pattern::upgradable:
+	  case pattern::user_tag:
+	  case pattern::version:
+	  case pattern::virtual_tp:
+	    return Xapian::Query();
+	  default:
+	    throw MatchingException("Internal error: unhandled pattern type in build_xapian_query()");
 	  }
       }
     }
