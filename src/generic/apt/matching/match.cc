@@ -1772,9 +1772,9 @@ namespace aptitude
 		      has_xapian_dependent_sub_term = true;
 		      if(sub_normalized->get_type() != pattern::not_tp)
 			has_positive_xapian_dependent_sub_term = true;
-
-		      normalized_sub_patterns.push_back(sub_normalized);
 		    }
+
+		  normalized_sub_patterns.push_back(sub_normalized);
 		}
 
 	      if(has_positive_xapian_dependent_sub_term)
@@ -1850,13 +1850,11 @@ namespace aptitude
 		{
 		  ref_ptr<pattern> sub_normalized(normalize_pattern(*it));
 
-		  if(is_xapian_dependent(sub_normalized))
-		    {
-		      if(sub_normalized->get_type() == pattern::not_tp)
-			has_negative_xapian_dependent_sub_term = true;
+		  if(is_xapian_dependent(sub_normalized) &&
+		     sub_normalized->get_type() == pattern::not_tp)
+		    has_negative_xapian_dependent_sub_term = true;
 
-		      normalized_sub_patterns.push_back(sub_normalized);
-		    }
+		  normalized_sub_patterns.push_back(sub_normalized);
 		}
 
 	      if(has_negative_xapian_dependent_sub_term)
