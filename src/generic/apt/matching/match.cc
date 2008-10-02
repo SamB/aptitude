@@ -1091,6 +1091,12 @@ namespace aptitude
 
 	  case pattern::term:
 	    {
+	      // We try stemming everything as if it were English.
+	      //
+	      // TODO: guess which language to use for stemming somehow
+	      // (how? the locale isn't reliable; we care about the
+	      // language of the package descriptions).
+
 	      search_cache::implementation &info = *(search_cache::implementation *)search_info.unsafe_get_ref();
 	      info.ensure_xapian_search();
 	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
@@ -1098,6 +1104,8 @@ namespace aptitude
 
 	      if(terms.find(p->get_term_term()) != terms.end())
 		// TODO: how do I represent the match region?
+		return match::make_atomic(p);
+	      else if(terms.find(Xapian::Stem("en")(p->get_term_term())) != terms.end())
 		return match::make_atomic(p);
 	      else
 		return NULL;
@@ -2064,7 +2072,14 @@ namespace aptitude
 	    return build_xapian_query(p->get_widen_pattern());
 
 	  case pattern::term:
-	    return Xapian::Query(p->get_term_term());
+	    // We try stemming everything as if it were English.
+	    //
+	    // TODO: guess which language to use for stemming somehow
+	    // (how? the locale isn't reliable; we care about the
+	    // language of the package descriptions).
+	    return Xapian::Query(Xapian::Query::OP_OR,
+				 Xapian::Query(p->get_term_term()),
+				 Xapian::Stem("en")(p->get_term_term()));
 
 	  case pattern::archive:
 	  case pattern::action:
