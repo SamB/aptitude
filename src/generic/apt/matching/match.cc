@@ -1950,14 +1950,14 @@ namespace aptitude
 	    {
 	      // We make ?and right-associative:
 	      // ?and(a, b, c) => a AND (b AND c).
+	      //
+	      // Hm, maybe this should be the other way around?  That
+	      // would make handling AND_NOT and AND_MAYBE cleaner.
 
 	      const std::vector<ref_ptr<pattern> > &sub_patterns =
 		p->get_and_patterns();
 
-	      Xapian::Query tail;
-	      // Set to true if the first positive term should emit an
-	      // AND_NOT.
-	      bool trailing_and_not = false;
+	      Xapian::Query and_not_tail;
 	      // First build all the negative terms for insertion into
 	      // an AND_NOT.  (of course, to collect them under a
 	      // single ?not, we need to make them use OR and we need
@@ -1965,6 +1965,10 @@ namespace aptitude
 	      for(std::vector<ref_ptr<pattern> >::const_reverse_iterator it =
 		    sub_patterns.rbegin(); it != sub_patterns.rend(); ++it)
 		{
+		  // \todo If the sub-term isn't exact (i.e., it has
+		  // non-Xapian terms), this isn't right.  Should we
+		  // maybe just blow it up in order to get an
+		  // overestimate?
 		  if((*it)->get_type() == pattern::not_tp)
 		    {
 		      Xapian::Query q(build_xapian_query((*it)->get_not_pattern()));
@@ -1974,48 +1978,100 @@ namespace aptitude
 		      // tree.
 		      if(!q.empty())
 			{
-			  trailing_and_not = true;
-
-			  if(tail.empty())
-			    tail = q;
+			  if(and_not_tail.empty())
+			    and_not_tail = q;
 			  else
-			    tail = Xapian::Query(Xapian::Query::OP_OR,
-						 q,
-						 tail);
+			    and_not_tail = Xapian::Query(Xapian::Query::OP_OR,
+							 q,
+							 and_not_tail);
 			}
 		    }
 		}
 
-	      // Now build in the positive terms.
+	      Xapian::Query and_maybe_tail;
+	      // Build in positive, non-Xapian-dependent terms.  These
+	      // are added to the expression using AND_MAYBE to make
+	      // sure that the terms are indexed and their scores
+	      // considered, but they don't constrain the search
+	      // (because the Xapian query might be false when the
+	      // aptitude one is true).
+	      //
+	      // Q: will this work when the AND is inside a NOT?
 	      for(std::vector<ref_ptr<pattern> >::const_reverse_iterator it =
 		    sub_patterns.rbegin(); it != sub_patterns.rend(); ++it)
 		{
-		  if((*it)->get_type() != pattern::not_tp)
+		  if((*it)->get_type() != pattern::not_tp &&
+		     !is_xapian_dependent(*it))
+		    {
+		      Xapian::Query q(build_xapian_query(*it));
+
+		      if(and_maybe_tail.empty())
+			and_maybe_tail = q;
+		      else
+			and_maybe_tail = Xapian::Query(Xapian::Query::OP_AND_MAYBE,
+						       q,
+						       and_maybe_tail);
+		    }
+		}
+
+	      Xapian::Query and_tail;
+	      // Now build in the positive, Xapian-dependent terms.
+	      for(std::vector<ref_ptr<pattern> >::const_reverse_iterator it =
+		    sub_patterns.rbegin(); it != sub_patterns.rend(); ++it)
+		{
+		  if((*it)->get_type() != pattern::not_tp &&
+		     is_xapian_dependent(*it))
 		    {
 		      Xapian::Query q(build_xapian_query(*it));
 
 		      if(!q.empty())
 			{
-			  if(tail.empty())
-			    tail = q;
-			  else if(trailing_and_not)
-			    {
-			      tail = Xapian::Query(Xapian::Query::OP_AND_NOT,
-						   q,
-						   tail);
-			      trailing_and_not = false;
-			    }
+			  if(and_tail.empty())
+			    and_tail = q;
 			  else
-			    tail = Xapian::Query(Xapian::Query::OP_AND,
-						 q,
-						 tail);
+			    and_tail = Xapian::Query(Xapian::Query::OP_AND,
+						     q,
+						     and_tail);
 			}
 		    }
 		}
 
-	      // If there wasn't anything that was relevant, tail will
-	      // be empty, and that's just what we want.
-	      return tail;
+	      if(and_tail.empty())
+		return and_tail;
+	      else
+		{
+		  // If we have negative and independent terms, we
+		  // don't want this:
+		  //
+		  //   (a AND NOT (b AND MAYBE c))
+		  //
+		  // or this:
+		  //
+		  //   (a AND MAYBE (c AND NOT b))
+		  //
+		  // What we want is this:
+		  //
+		  //   (a AND NOT b) AND MAYBE c
+		  const bool and_not_empty = and_not_tail.empty();
+		  const bool and_maybe_empty = and_maybe_tail.empty();
+
+		  if(and_not_empty && and_maybe_empty)
+		    return and_tail;
+		  else if(!and_not_empty && and_maybe_empty)
+		    return Xapian::Query(Xapian::Query::OP_AND_NOT,
+					 and_tail,
+					 and_not_tail);
+		  else if(and_not_empty && !and_maybe_empty)
+		    return Xapian::Query(Xapian::Query::OP_AND_MAYBE,
+					 and_tail,
+					 and_maybe_tail);
+		  else // if(!and_not_empty && !and_maybe_empty)
+		    return Xapian::Query(Xapian::Query::OP_AND_MAYBE,
+					 Xapian::Query(Xapian::Query::OP_AND_NOT,
+						       and_tail,
+						       and_not_tail),
+					 and_maybe_tail);
+		}
 	    }
 
 	  case pattern::any_version:
