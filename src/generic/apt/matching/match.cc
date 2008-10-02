@@ -2191,8 +2191,8 @@ namespace aptitude
       ref_ptr<pattern> normalized(normalize_pattern(p));
 
       if(debug)
-	std::cout << "Pattern Xapian-normalized to: " << serialize_pattern(p)
-		  << (is_xapian_dependent(p) ? " [Xapian-dependent]" : " [not Xapian-dependent]")
+	std::cout << "Pattern Xapian-normalized to: " << serialize_pattern(normalized)
+		  << (is_xapian_dependent(normalized) ? " [Xapian-dependent]" : " [not Xapian-dependent]")
 		  << std::endl;
 
       Xapian::Query q(build_xapian_query(normalized));
