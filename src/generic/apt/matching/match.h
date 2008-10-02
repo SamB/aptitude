@@ -625,6 +625,27 @@ namespace aptitude
 	      aptitudeDepCache &cache,
 	      pkgRecords &records,
 	      bool debug = false);
+
+    /** \brief Retrieve all the packages matching the given pattern.
+     *
+     *  This may use Xapian or other indices to accelerate the search
+     *  at the cost of exactness, depending on the query that was
+     *  passed in.
+     *
+     *  \param p            The pattern to match against.
+     *  \param search_info  Where to store "side information"
+     *                      associated with this search.
+     *  \param cache        The package cache in which to search.
+     *  \param records      The package records in which to perform the match.
+     *  \param debug        If \b true, information about the search
+     *                      process will be printed to standard output.
+     */
+    void search(const cwidget::util::ref_ptr<pattern> &p,
+		const cwidget::util::ref_ptr<search_cache> &search_info,
+		std::vector<std::pair<pkgCache::PkgIterator, cwidget::util::ref_ptr<structural_match> > > &matches,
+		aptitudeDepCache &cache,
+		pkgRecords &records,
+		bool debug = false);
   }
 }
 

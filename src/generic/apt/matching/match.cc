@@ -1590,6 +1590,137 @@ namespace aptitude
 	  }
       }
 
+      // is_xapian_dependent returns "true" if we can always identify
+      // a Xapian term that must match for the pattern to match.
+      bool is_xapian_dependent(const ref_ptr<pattern> &p)
+      {
+	switch(p->get_type())
+	  {
+	  case pattern::all_versions:
+	    return is_xapian_dependent(p->get_all_versions_pattern());
+
+	  case pattern::and_tp:
+	    {
+	      const std::vector<ref_ptr<pattern> > &
+		sub_patterns(p->get_and_patterns());
+
+	      if(sub_patterns.size() == 0)
+		return false;
+
+	      // The AND is fine if it has at least one positive
+	      // Xapian-dependent term.  NB: since negative terms are
+	      // not Xapian-dependent, this is redundant, so we just
+	      // check the first condition.
+	      for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		    sub_patterns.begin(); it != sub_patterns.end(); ++it)
+		{
+		  if(is_xapian_dependent(*it))
+		    return true;
+		}
+
+	      return false;
+	    }
+
+	  case pattern::any_version:
+	    return is_xapian_dependent(p->get_any_version_pattern());
+
+	  case pattern::for_tp:
+	    return is_xapian_dependent(p->get_for_pattern());
+
+	  case pattern::narrow:
+	    return is_xapian_dependent(p->get_narrow_pattern());
+
+	  case pattern::not_tp:
+	    return false;
+
+	  case pattern::or_tp:
+	    // OR terms are Xapian-dependent if all of their sub-terms
+	    // are.
+	    {
+	      const std::vector<ref_ptr<pattern> > &
+		sub_patterns(p->get_and_patterns());
+
+	      if(sub_patterns.size() == 0)
+		return false;
+
+	      for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		    sub_patterns.begin(); it != sub_patterns.end(); ++it)
+		{
+		  if(!is_xapian_dependent(*it))
+		    return false;
+		}
+
+	      return true;
+	    }
+
+	  case pattern::widen:
+	    return is_xapian_dependent(p->get_widen_pattern());
+
+	  case pattern::term:
+	    return true;
+
+	    // Various non-dependent terms.  All of these return
+	    // false.  Some have internal matchers, but they are
+	    // separate searches.
+
+	  case pattern::archive:
+	  case pattern::action:
+	  case pattern::automatic:
+	  case pattern::bind:
+	    // TODO: in order to ensure that ?term terms inside a
+	    // ?bind be matched properly, we should search for them
+	    // and put them inside a top-level term (maybe "foo AND
+	    // NOT foo").
+	    //
+	    // Right now we just treat this as a non-Xapian pattern.
+	  case pattern::broken:
+	  case pattern::broken_type:
+	    // TODO: we also should lift internal ?terms to top-level
+	    // here.
+	  case pattern::candidate_version:
+	  case pattern::config_files:
+	  case pattern::current_version:
+	  case pattern::depends:
+	  case pattern::description:
+	  case pattern::essential:
+	  case pattern::equal:
+	  case pattern::false_tp:
+	  case pattern::garbage:
+	  case pattern::install_version:
+	  case pattern::installed:
+	  case pattern::maintainer:
+	  case pattern::name:
+	  case pattern::new_tp:
+	  case pattern::obsolete:
+	  case pattern::origin:
+	  case pattern::priority:
+	  case pattern::provides:
+	  case pattern::reverse_depends:
+	  case pattern::reverse_provides:
+	  case pattern::section:
+	  case pattern::source_package:
+	  case pattern::source_version:
+	  case pattern::tag:
+	  case pattern::task:
+	  case pattern::true_tp:
+	  case pattern::upgradable:
+	  case pattern::user_tag:
+	  case pattern::version:
+	  case pattern::virtual_tp:
+	    return false;
+	  default:
+	    throw MatchingException("Internal error: unhandled pattern type in is_xapian_dependent()");
+	  }
+      }
+
+      ref_ptr<pattern> negate_pattern(const ref_ptr<pattern> &p)
+      {
+	if(p->get_type() == pattern::not_tp)
+	  return p->get_not_pattern();
+	else
+	  return pattern::make_not(p);
+      }
+
       // Adjusts the incoming pattern for the purposes of computing
       // the Xapian query.
       //
@@ -1598,21 +1729,12 @@ namespace aptitude
       // top-level of a term like ?depends that has a sub-pattern).
       // Also throws away some structural patterns that are irrelevant
       // for Xapian, like all_versions.
-      //
-      // xapian_dependent is set to true if a Xapian search using the
-      // returned query will correctly overestimate the match set --
-      // or underestimate for ?not.  This is always true for AND terms
-      // that have a dependent term, but might not be true for OR.
-      // e.g., ?or(?term(game), ?installed) -> matches any installed
-      // package even if it doesn't match "game".
-      cwidget::util::ref_ptr<pattern> normalize_pattern(const cwidget::util::ref_ptr<pattern> &p,
-							bool &xapian_dependent)
+      cwidget::util::ref_ptr<pattern> normalize_pattern(const cwidget::util::ref_ptr<pattern> &p)
       {
 	switch(p->get_type())
 	  {
 	  case pattern::all_versions:
-	    return normalize_pattern(p->get_all_versions_pattern(),
-				     xapian_dependent);
+	    return normalize_pattern(p->get_all_versions_pattern());
 
 	  case pattern::and_tp:
 	    {
@@ -1635,10 +1757,9 @@ namespace aptitude
 	      for(std::vector<ref_ptr<pattern> >::const_iterator it =
 		    sub_patterns.begin(); it != sub_patterns.end(); ++it)
 		{
-		  bool sub_xapian_dependent = false;
-		  ref_ptr<pattern> sub_normalized(normalize_pattern(*it, sub_xapian_dependent));
+		  ref_ptr<pattern> sub_normalized(normalize_pattern(*it));
 
-		  if(sub_xapian_dependent)
+		  if(is_xapian_dependent(sub_normalized))
 		    {
 		      has_xapian_dependent_sub_term = true;
 		      if(sub_normalized->get_type() != pattern::not_tp)
@@ -1657,23 +1778,108 @@ namespace aptitude
 
 		  for(std::vector<ref_ptr<pattern> >::const_iterator it =
 			normalized_sub_patterns.begin(); it != normalized_sub_patterns.end(); ++it)
-		    negative_sub_normalized.push_back(pattern::make_not(*it));
+		    negative_sub_normalized.push_back(negate_pattern(*it));
 
 		  return pattern::make_not(pattern::make_or(negative_sub_normalized));
 		}
+	      else
+		// No Xapian-dependent terms at all, so
+		// just muddle through.
+		return pattern::make_and(normalized_sub_patterns);
 	    }
 
 	  case pattern::any_version:
-	  case pattern::for_tp:
-	  case pattern::narrow:
-	  case pattern::not_tp:
-	  case pattern::or_tp:
-	  case pattern::widen:
+	    return normalize_pattern(p->get_any_version_pattern());
 
+	  case pattern::for_tp:
+	    // Don't eliminate the ?for or its captured variables
+	    // won't make sense.  (useful for printing purposes)
+	    //
+	    // However, we need to reach through it and lift the ?not,
+	    // if any, out so that it's visible at top-level.
+	    {
+	      ref_ptr<pattern> sub_normalized =
+		normalize_pattern(p->get_for_pattern());
+
+	      // Note: because the normalization lifts ?not terms to
+	      // the top level and eliminates double ?nots, we don't
+	      // need to handle double ?nots here.
+	      if(sub_normalized->get_type() == pattern::not_tp)
+		return pattern::make_not(pattern::make_for(p->get_for_variable_name(),
+							   sub_normalized->get_not_pattern()));
+	      else
+		return pattern::make_for(p->get_for_variable_name(),
+					 sub_normalized);
+	    }
+
+	  case pattern::narrow:
+	    return normalize_pattern(p->get_narrow_pattern());
+
+	  case pattern::not_tp:
+	    {
+	      ref_ptr<pattern> sub_normalized =
+		normalize_pattern(p->get_not_pattern());
+
+	      // Eliminate double ?nots.
+	      if(sub_normalized->get_type() == pattern::not_tp)
+		return sub_normalized->get_not_pattern();
+	      else
+		return pattern::make_not(sub_normalized);
+	    }
+
+	  case pattern::or_tp:
+	    {
+	      const std::vector<ref_ptr<pattern> > &
+		sub_patterns(p->get_and_patterns());
+
+	      std::vector<ref_ptr<pattern> >
+		normalized_sub_patterns;
+	      normalized_sub_patterns.reserve(sub_patterns.size());
+
+	      bool has_negative_xapian_dependent_sub_term = false;
+	      for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		    sub_patterns.begin(); it != sub_patterns.end(); ++it)
+		{
+		  ref_ptr<pattern> sub_normalized(normalize_pattern(*it));
+
+		  if(is_xapian_dependent(sub_normalized))
+		    {
+		      if(sub_normalized->get_type() == pattern::not_tp)
+			has_negative_xapian_dependent_sub_term = true;
+
+		      normalized_sub_patterns.push_back(sub_normalized);
+		    }
+		}
+
+	      if(has_negative_xapian_dependent_sub_term)
+		{
+		  std::vector<ref_ptr<pattern> > negative_sub_normalized;
+		  for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		      normalized_sub_patterns.begin(); it != normalized_sub_patterns.end(); ++it)
+		    negative_sub_normalized.push_back(negate_pattern(*it));
+
+		  return pattern::make_not(pattern::make_and(negative_sub_normalized));
+		}
+	      else
+		return pattern::make_or(normalized_sub_patterns);
+	    }
+
+	  case pattern::widen:
+	    return normalize_pattern(p->get_widen_pattern());
+
+	    // Various non-Xapian patterns, along with ?term.
 	  case pattern::archive:
 	  case pattern::action:
 	  case pattern::automatic:
 	  case pattern::bind:
+	    // TODO: in order to ensure that ?term terms inside a
+	    // ?bind be matched properly, we should search for them
+	    // and put them inside a top-level term (maybe "foo AND
+	    // NOT foo").
+	    //
+	    // Right now we just treat this as a non-Xapian pattern.
+	    //
+	    // The same goes for "depends", etc.
 	  case pattern::broken:
 	  case pattern::broken_type:
 	  case pattern::candidate_version:
@@ -1707,7 +1913,7 @@ namespace aptitude
 	  case pattern::user_tag:
 	  case pattern::version:
 	  case pattern::virtual_tp:
-	    return NULL;
+	    return p;
 	  default:
 	    throw MatchingException("Internal error: unhandled pattern type in normalize_pattern()");
 	  }
@@ -1731,21 +1937,134 @@ namespace aptitude
       {
 	switch(p->get_type())
 	  {
-	    // For the purposes of the Xapian approximation, we ignore
-	    // pool-manipulating patterns.  The Xapian overapproximation
-	    // is always an overapproximation regardless.  (NB: I don't
-	    // 100% believe this; we might need to fall back to exhaustive
-	    // searches in those cases?)
 	  case pattern::all_versions:
 	    return build_xapian_query(p->get_all_versions_pattern());
 
 	  case pattern::and_tp:
+	    {
+	      // We make ?and right-associative:
+	      // ?and(a, b, c) => a AND (b AND c).
+
+	      const std::vector<ref_ptr<pattern> > &sub_patterns =
+		p->get_and_patterns();
+
+	      Xapian::Query tail;
+	      // Set to true if the first positive term should emit an
+	      // AND_NOT.
+	      bool trailing_and_not = false;
+	      // First build all the negative terms for insertion into
+	      // an AND_NOT.  (of course, to collect them under a
+	      // single ?not, we need to make them use OR and we need
+	      // to drop the leading ?not)
+	      for(std::vector<ref_ptr<pattern> >::const_reverse_iterator it =
+		    sub_patterns.rbegin(); it != sub_patterns.rend(); ++it)
+		{
+		  if((*it)->get_type() == pattern::not_tp)
+		    {
+		      Xapian::Query q(build_xapian_query((*it)->get_not_pattern()));
+
+		      // Ignore empty queries; they signify that the
+		      // entry should be pruned from the generated
+		      // tree.
+		      if(!q.empty())
+			{
+			  trailing_and_not = true;
+
+			  if(tail.empty())
+			    tail = q;
+			  else
+			    tail = Xapian::Query(Xapian::Query::OP_OR,
+						 q,
+						 tail);
+			}
+		    }
+		}
+
+	      // Now build in the positive terms.
+	      for(std::vector<ref_ptr<pattern> >::const_reverse_iterator it =
+		    sub_patterns.rbegin(); it != sub_patterns.rend(); ++it)
+		{
+		  if((*it)->get_type() != pattern::not_tp)
+		    {
+		      Xapian::Query q(build_xapian_query(*it));
+
+		      if(!q.empty())
+			{
+			  if(tail.empty())
+			    tail = q;
+			  else if(trailing_and_not)
+			    {
+			      tail = Xapian::Query(Xapian::Query::OP_AND_NOT,
+						   q,
+						   tail);
+			      trailing_and_not = false;
+			    }
+			  else
+			    tail = Xapian::Query(Xapian::Query::OP_AND,
+						 q,
+						 tail);
+			}
+		    }
+		}
+
+	      // If there wasn't anything that was relevant, tail will
+	      // be empty, and that's just what we want.
+	      return tail;
+	    }
+
 	  case pattern::any_version:
+	    return build_xapian_query(p->get_any_version_pattern());
+
 	  case pattern::for_tp:
+	    return build_xapian_query(p->get_for_pattern());
+
 	  case pattern::narrow:
+	    return build_xapian_query(p->get_narrow_pattern());
+
 	  case pattern::not_tp:
+	    // D'oh!  Should I assert-fail here?
+	    //
+	    // "not" is handled very specially; normalization should
+	    // mean it only occurs inside "and" or at the top level.
+	    // So I assume that this is a top-level expression; if
+	    // "not" occurs at the top-level, we just can't do
+	    // anything.
+	    return Xapian::Query();
+
 	  case pattern::or_tp:
+	    {
+	      const std::vector<ref_ptr<pattern> > &sub_patterns =
+		p->get_and_patterns();
+
+	      Xapian::Query tail;
+
+	      for(std::vector<ref_ptr<pattern> >::const_reverse_iterator it =
+		    sub_patterns.rbegin(); it != sub_patterns.rend(); ++it)
+		{
+		  if((*it)->get_type() != pattern::not_tp)
+		    {
+		      Xapian::Query q(build_xapian_query(*it));
+
+		      if(!q.empty())
+			{
+			  if(tail.empty())
+			    tail = q;
+			  else
+			    tail = Xapian::Query(Xapian::Query::OP_OR,
+						 q,
+						 tail);
+			}
+		    }
+		}
+
+	      return tail;
+	    }
+
 	  case pattern::widen:
+	    return build_xapian_query(p->get_widen_pattern());
+
+	  case pattern::term:
+	    return Xapian::Query(p->get_term_term());
 
 	  case pattern::archive:
 	  case pattern::action:
@@ -1778,7 +2097,6 @@ namespace aptitude
 	  case pattern::source_version:
 	  case pattern::tag:
 	  case pattern::task:
-	  case pattern::term:
 	  case pattern::true_tp:
 	  case pattern::upgradable:
 	  case pattern::user_tag:
@@ -1845,6 +2163,87 @@ namespace aptitude
       return get_match(p, pkg,
 		       pkgCache::VerIterator(cache),
 		       search_info, cache, records, debug);
+    }
+
+    void search(const ref_ptr<pattern> &p,
+		const ref_ptr<search_cache> &search_info,
+		std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > > &matches,
+		aptitudeDepCache &cache,
+		pkgRecords &records,
+		bool debug)
+    {
+      if(debug)
+	std::cout << "Searching for " << serialize_pattern(p) << std::endl;
+
+      ref_ptr<pattern> normalized(normalize_pattern(p));
+
+      if(debug)
+	std::cout << "Pattern Xapian-normalized to: " << serialize_pattern(p)
+		  << (is_xapian_dependent(p) ? " [Xapian-dependent]" : " [not Xapian-dependent]")
+		  << std::endl;
+
+      Xapian::Query q(build_xapian_query(normalized));
+
+      if(debug)
+	std::cout << "Xapian query built: " << q.get_description() << std::endl;
+
+      if(q.empty())
+	{
+	  // TODO: I should make sure to do a dummy Xapian search
+	  // (e.g., "a AND NOT a") so I know which documents each
+	  // ?term matches.
+	  for(pkgCache::PkgIterator pkg = cache.PkgBegin();
+	      !pkg.end(); ++pkg)
+	    {
+	      if(pkg.VersionList().end() && pkg.ProvidesList().end())
+		continue;
+
+	      ref_ptr<structural_match> m(get_match(p, pkg,
+						    search_info,
+						    cache,
+						    records,
+						    debug));
+
+	      if(m.valid())
+		matches.push_back(std::make_pair(pkg, m));
+	    }
+	}
+      else
+	{
+	  search_cache::implementation &info = *(search_cache::implementation *)search_info.unsafe_get_ref();
+	  info.enquire.set_query(q);
+	  info.ran_xapian_search = false;
+	  info.ensure_xapian_search();
+
+	  for(Xapian::MSetIterator it = info.matches.begin();
+	      it != info.matches.end(); ++it)
+	    {
+	      std::string name(it.get_document().get_data());
+
+	      if(debug)
+		std::cout << "HIT: " << name
+			  << " (score " << it.get_weight() << ")" << std::endl;
+
+	      pkgCache::PkgIterator pkg(cache.FindPkg(name));
+	      if(pkg.end())
+		{
+		  if(debug)
+		    std::cout << "W: unable to find the package " << name
+			      << std::endl;
+		}
+	      else if(!(pkg.VersionList().end() && pkg.ProvidesList().end()))
+		{
+		  ref_ptr<structural_match> m(get_match(p, pkg,
+							search_info,
+							cache,
+							records,
+							debug));
+
+		  if(m.valid())
+		    matches.push_back(std::make_pair(pkg, m));
+		}
+	    }
+	}
     }
   }
 }
