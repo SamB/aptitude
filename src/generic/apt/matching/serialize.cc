@@ -153,9 +153,9 @@ namespace aptitude
       // something with a higher precedence.
       const int default_precedence = -1;
       const int and_precedence = 0;
-      const int or_precedence = 1;
-      const int not_precedence = 2;
-      const int atomic_precedence = 3;
+      const int or_precedence = 0;
+      const int not_precedence = 1;
+      const int atomic_precedence = 2;
 
       int term_precedence(const ref_ptr<pattern> &p)
       {
