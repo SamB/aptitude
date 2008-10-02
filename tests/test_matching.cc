@@ -474,6 +474,18 @@ namespace
       pattern::make_and(pattern::make_obsolete(),
 			pattern::make_obsolete()) },
 
+    { "?and(?term(apt), ?or(?term(gui), ?installed))",
+      "?term(\"apt\") (?term(\"gui\") | ?installed)",
+      pattern::make_and(pattern::make_term("apt"),
+			pattern::make_or(pattern::make_term("gui"),
+					 pattern::make_installed())) },
+
+    { "?and(?or(?term(gui), ?installed), ?term(apt))",
+      "(?term(\"gui\") | ?installed) ?term(\"apt\")",
+      pattern::make_and(pattern::make_or(pattern::make_term("gui"),
+					 pattern::make_installed()),
+			pattern::make_term("apt")) },
+
     { "?or(~nasdf,   ?new)", "?name(\"asdf\") | ?new",
       pattern::make_or(pattern::make_name("asdf"),
 		       pattern::make_new()) },
