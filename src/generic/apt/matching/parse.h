@@ -44,10 +44,6 @@ namespace aptitude
      *  \param terminators  A list of strings whose (unescaped)
      *                      presence at the top syntactic level
      *                      signals the end of a search pattern.
-     *  \param search_descriptions  If \b true, unadorned strings
-     *                              will generate ?description
-     *                              terms in addition to ?name
-     *                              terms.
      *  \param flag_errors  If \b true, apt errors (in _error)
      *                      will be generated for any parsing
      *                      errors that are encountered.
@@ -63,7 +59,6 @@ namespace aptitude
       parse(std::string::const_iterator &start,
 	    const std::string::const_iterator &end,
 	    const std::vector<const char *> &terminators,
-	    bool search_descriptions,
 	    bool flag_errors,
 	    bool require_full_parse);
 
@@ -78,10 +73,6 @@ namespace aptitude
      *  \param terminators  A list of strings whose (unescaped)
      *                      presence at the top syntactic level
      *                      signals the end of a search pattern.
-     *  \param search_descriptions  If \b true, unadorned strings
-     *                              will generate ?description
-     *                              terms in addition to ?name
-     *                              terms.
      *  \param flag_errors  If \b true, apt errors (in _error)
      *                      will be generated for any parsing
      *                      errors that are encountered.
@@ -95,14 +86,12 @@ namespace aptitude
     inline cwidget::util::ref_ptr<pattern>
       parse(const std::string &s,
 	    const std::vector<const char *> &terminators,
-	    bool search_descriptions,
 	    bool flag_errors,
 	    bool require_full_parse)
     {
       std::string::const_iterator start = s.begin();
       return parse(start, s.end(),
 		   terminators,
-		   search_descriptions,
 		   flag_errors,
 		   require_full_parse);
     }
@@ -110,21 +99,18 @@ namespace aptitude
     /** \brief Parse a string as a search pattern. */
     inline cwidget::util::ref_ptr<pattern>
       parse(const std::string &s,
-	    bool search_descriptions,
 	    bool flag_errors,
 	    bool require_full_parse)
     {
       return parse(s, std::vector<const char *>(),
-		   search_descriptions,
 		   flag_errors,
 		   require_full_parse);
     }
 
     /** \brief Parse a string as a search pattern.
      *
-     *  Bare strings only match names, errors will be flagged by
-     *  generating apt errors, and it is an error if part of the input
-     *  string is left over after parsing.
+     *  Errors will be flagged by generating apt errors, and it is an
+     *  error if part of the input string is left over after parsing.
      *
      *  \param s       The string to parse.
      *
@@ -134,7 +120,7 @@ namespace aptitude
     inline cwidget::util::ref_ptr<pattern>
       parse(const std::string &s)
     {
-      return parse(s, false, true, true);
+      return parse(s, true, true);
     }
   }
 }

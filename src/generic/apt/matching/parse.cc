@@ -205,7 +205,6 @@ typedef imm::map<std::string, int> parse_environment;
 ref_ptr<pattern> parse_condition_list(string::const_iterator &start,
 				      const string::const_iterator &end,
 				      const vector<const char *> &terminators,
-				      bool search_descriptions,
 				      bool wide_context,
 				      const parse_environment &name_context);
 
@@ -494,7 +493,6 @@ struct parse_method<string>
   string operator()(string::const_iterator &start,
 		    const string::const_iterator &end,
 		    const std::vector<const char *> &terminators,
-		    bool search_descriptions,
 		    bool wide_context) const
   {
     return parse_substr(start, end, std::vector<const char *>(), false);
@@ -507,11 +505,10 @@ struct parse_method<ref_ptr<pattern> >
   ref_ptr<pattern> operator()(string::const_iterator &start,
 			      const string::const_iterator &end,
 			      const std::vector<const char *> &terminators,
-			      bool search_descriptions,
 			      bool wide_context,
 			      const parse_environment &name_context) const
   {
-    return parse_condition_list(start, end, terminators, search_descriptions, wide_context, name_context);
+    return parse_condition_list(start, end, terminators, wide_context, name_context);
   }
 };
 
@@ -520,14 +517,13 @@ ref_ptr<pattern>
 parse_unary_term(string::const_iterator &start,
 		 const string::const_iterator &end,
 		 const std::vector<const char *> &terminators,
-		 bool search_descriptions,
 		 bool wide_context,
 		 const parse_environment &name_context,
 		 ref_ptr<pattern> (*k)(const A1 &),
 		 const parse_method<A1> &parse1 = parse_method<A1>())
 {
   parse_open_paren(start, end);
-  A1 a1(parse1(start, end, terminators, search_descriptions, wide_context, name_context));
+  A1 a1(parse1(start, end, terminators, wide_context, name_context));
   parse_close_paren(start, end);
 
   return k(a1);
@@ -551,7 +547,6 @@ ref_ptr<pattern>
 parse_binary_term(string::const_iterator &start,
 		  const string::const_iterator &end,
 		  const std::vector<const char *> &terminators,
-		  bool search_descriptions,
 		  bool wide_context,
 		  const parse_environment &name_context,
 		  ref_ptr<pattern> (*k)(const A1 &, const A2 &),
@@ -562,9 +557,9 @@ parse_binary_term(string::const_iterator &start,
   add_new_terminator(",", terminators_plus_comma);
 
   parse_open_paren(start, end);
-  A1 a1(parse1(start, end, terminators_plus_comma, search_descriptions, wide_context, name_context));
+  A1 a1(parse1(start, end, terminators_plus_comma, wide_context, name_context));
   parse_comma(start, end);
-  A2 a2(parse2(start, end, terminators, search_descriptions, wide_context, name_context));
+  A2 a2(parse2(start, end, terminators, wide_context, name_context));
   parse_close_paren(start, end);
 
   return k(a1, a2);
@@ -575,7 +570,6 @@ ref_ptr<pattern>
 parse_nary_term(string::const_iterator &start,
 		const string::const_iterator &end,
 		const std::vector<const char *> &terminators,
-		bool search_descriptions,
 		bool wide_context,
 		const parse_environment &name_context,
 		ref_ptr<pattern> (*k)(const std::vector<A> &),
@@ -597,7 +591,7 @@ parse_nary_term(string::const_iterator &start,
 	parse_comma(start, end);
 
       A a(parse(start, end, terminators_plus_comma,
-		search_descriptions, wide_context, name_context));
+		wide_context, name_context));
 
       rval.push_back(a);
     }
@@ -619,11 +613,11 @@ string parse_string_match_args(string::const_iterator &start,
 ref_ptr<pattern> parse_term_args(string::const_iterator &start,
 				 const string::const_iterator &end,
 				 const std::vector<const char *> &terminators,
-				 bool search_descriptions, bool wide_context,
+				 bool wide_context,
 				 const parse_environment &name_context)
 {
   parse_open_paren(start, end);
-  ref_ptr<pattern> p(parse_condition_list(start, end, terminators, search_descriptions, wide_context, name_context));
+  ref_ptr<pattern> p(parse_condition_list(start, end, terminators, wide_context, name_context));
   parse_close_paren(start, end);
 
   return p;
@@ -632,7 +626,6 @@ ref_ptr<pattern> parse_term_args(string::const_iterator &start,
 ref_ptr<pattern> parse_optional_term_args(string::const_iterator &start,
 					  const string::const_iterator &end,
 					  const std::vector<const char *> terminators,
-					  bool search_descriptions,
 					  bool wide_context,
 					  const parse_environment &name_context)
 {
@@ -640,7 +633,7 @@ ref_ptr<pattern> parse_optional_term_args(string::const_iterator &start,
     ++start;
 
   if(start != end && *start == '(')
-    return parse_term_args(start, end, terminators, search_descriptions, wide_context, name_context);
+    return parse_term_args(start, end, terminators, wide_context, name_context);
   else
     return NULL;
 }
@@ -672,7 +665,6 @@ ref_ptr<pattern> parse_explicit_term(const std::string &term_name,
 				     string::const_iterator &start,
 				     const string::const_iterator &end,
 				     const std::vector<const char *> &terminators,
-				     bool search_descriptions,
 				     bool wide_context,
 				     const parse_environment &name_context)
 {
@@ -714,7 +706,6 @@ ref_ptr<pattern> parse_explicit_term(const std::string &term_name,
 							  name_context.size()));
   ref_ptr<pattern> p(parse_condition_list(start, end,
 					  terminators,
-					  search_descriptions,
 					  wide_context,
 					  name_context2));
 
@@ -745,7 +736,6 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
 				 string::const_iterator &start,
 				 const string::const_iterator &end,
 				 const vector<const char *> &terminators,
-				 bool search_descriptions,
 				 bool wide_context,
 				 const parse_environment &name_context)
 {
@@ -804,7 +794,6 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
 	if(reverse && suffix == "provides")
 	  return pattern::make_reverse_provides(parse_term_args(start, end,
 								terminators,
-								search_descriptions,
 								false,
 								name_context));
 	else if(broken || reverse)
@@ -821,7 +810,6 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
 	    // broken-reverse-TYPE(term) and reverse-broken-TYPE(term)
 	    ref_ptr<pattern> p(parse_term_args(start, end,
 					       terminators,
-					       search_descriptions,
 					       false,
 					       name_context));
 
@@ -832,8 +820,8 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
 	    // broken-TYPE and broken-TYPE(term) in the first branch,
 	    // TYPE(term) in the second.
 	    ref_ptr<pattern> p(broken
-			       ? parse_optional_term_args(start, end, terminators, search_descriptions, false, name_context)
-			       : parse_term_args(start, end, terminators, search_descriptions, false, name_context));
+			       ? parse_optional_term_args(start, end, terminators, false, name_context)
+			       : parse_term_args(start, end, terminators, false, name_context));
 
 	    if(p.valid())
 	      return pattern::make_depends(deptype, broken, p);
@@ -880,16 +868,16 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
 					 term_name.c_str(),
 					 "widen"));
       else
-	return pattern::make_all_versions(parse_term_args(start, end, terminators, search_descriptions, false, name_context));
+	return pattern::make_all_versions(parse_term_args(start, end, terminators, false, name_context));
     case term_type_and:
-      return parse_nary_term<ref_ptr<pattern> >(start, end, terminators, search_descriptions, wide_context, name_context, &pattern::make_and);
+      return parse_nary_term<ref_ptr<pattern> >(start, end, terminators, wide_context, name_context, &pattern::make_and);
     case term_type_any:
       if(!wide_context)
 	throw MatchingException(ssprintf(_("The ?%s term must be used in a \"wide\" context (a top-level context, or a context enclosed by ?%s)."),
 					 term_name.c_str(),
 					 "widen"));
       else
-	return pattern::make_any_version(parse_term_args(start, end, terminators, search_descriptions, false, name_context));
+	return pattern::make_any_version(parse_term_args(start, end, terminators, false, name_context));
     case term_type_archive:
       return pattern::make_archive(parse_string_match_args(start, end));
     case term_type_automatic:
@@ -913,7 +901,7 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
 	// it's no longer a terminator.
 	new_terminators.pop_back();
 
-	ref_ptr<pattern> p = parse_condition_list(start, end, new_terminators, search_descriptions, wide_context, name_context);
+	ref_ptr<pattern> p = parse_condition_list(start, end, new_terminators, wide_context, name_context);
 	parse_whitespace(start, end);
 	parse_close_paren(start, end);
 
@@ -930,7 +918,7 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
     case term_type_false:
       return pattern::make_false();
     case term_type_for:
-      return parse_explicit_term(term_name, start, end, terminators, search_descriptions, wide_context, name_context);
+      return parse_explicit_term(term_name, start, end, terminators, wide_context, name_context);
     case term_type_garbage:
       return pattern::make_garbage();
     case term_type_installed:
@@ -940,21 +928,21 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
     case term_type_name:
       return pattern::make_name(parse_string_match_args(start, end));
     case term_type_narrow:
-      return parse_binary_term<ref_ptr<pattern>, ref_ptr<pattern> >(start, end, terminators, search_descriptions, false, name_context, &pattern::make_narrow);
+      return parse_binary_term<ref_ptr<pattern>, ref_ptr<pattern> >(start, end, terminators, false, name_context, &pattern::make_narrow);
     case term_type_new:
       return pattern::make_new();
     case term_type_not:
-      return pattern::make_not(parse_term_args(start, end, terminators, search_descriptions, wide_context, name_context));
+      return pattern::make_not(parse_term_args(start, end, terminators, wide_context, name_context));
     case term_type_obsolete:
       return pattern::make_obsolete();
     case term_type_or:
-      return parse_nary_term<ref_ptr<pattern> >(start, end, terminators, search_descriptions, wide_context, name_context, &pattern::make_or);
+      return parse_nary_term<ref_ptr<pattern> >(start, end, terminators, wide_context, name_context, &pattern::make_or);
     case term_type_origin:
       return pattern::make_origin(parse_string_match_args(start, end));
     case term_type_priority:
       return pattern::make_priority(parse_priority(parse_string_match_args(start, end)));
     case term_type_provides:
-      return parse_unary_term<ref_ptr<pattern> >(start, end, terminators, search_descriptions, false, name_context, &pattern::make_provides);
+      return parse_unary_term<ref_ptr<pattern> >(start, end, terminators, false, name_context, &pattern::make_provides);
     case term_type_section:
       return pattern::make_section(parse_string_match_args(start, end));
     case term_type_source_package:
@@ -986,7 +974,7 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
 	  return pattern::make_version(version);
       }
     case term_type_widen:
-      return pattern::make_widen(parse_term_args(start, end, terminators, search_descriptions, true, name_context));
+      return pattern::make_widen(parse_term_args(start, end, terminators, true, name_context));
     case term_type_virtual:
       return pattern::make_virtual();
     default:
@@ -1002,7 +990,6 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
 ref_ptr<pattern> parse_function_style_term_tail(string::const_iterator &start,
 						const string::const_iterator &end,
 						const vector<const char *> &terminators,
-						bool search_descriptions,
 						bool wide_context,
 						const parse_environment &name_context)
 {
@@ -1073,7 +1060,6 @@ ref_ptr<pattern> parse_function_style_term_tail(string::const_iterator &start,
 				    start,
 				    end,
 				    terminators,
-				    search_descriptions,
 				    wide_context,
 				    name_context),
 		    name_context);
@@ -1082,7 +1068,6 @@ ref_ptr<pattern> parse_function_style_term_tail(string::const_iterator &start,
 ref_ptr<pattern> parse_atom(string::const_iterator &start,
 			    const string::const_iterator &end,
 			    const vector<const char *> &terminators,
-			    bool search_descriptions,
 			    bool wide_context,
 			    const parse_environment &name_context)
 {
@@ -1098,7 +1083,6 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 	{
 	  ++start;
 	  return pattern::make_not(parse_atom(start, end, terminators,
-					      search_descriptions,
 					      wide_context,
 					      name_context));
 	}
@@ -1109,7 +1093,6 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 	  ++start;
 	  ref_ptr<pattern> lst(parse_condition_list(start, end,
 						    vector<const char *>(),
-						    search_descriptions,
 						    wide_context,
 						    name_context));
 
@@ -1124,7 +1107,7 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
       else if(*start == '?')
 	{
 	  ++start;
-	  return parse_function_style_term_tail(start, end, terminators, search_descriptions,
+	  return parse_function_style_term_tail(start, end, terminators,
 						wide_context, name_context);
 	}
       else if(*start == '~')
@@ -1135,16 +1118,7 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 
 	  if(start == end)
 	    {
-	      if(!search_descriptions)
-		return pattern::make_name("~");
-	      else
-		{
-		  std::vector<ref_ptr<pattern> > patterns;
-		  patterns.push_back(pattern::make_name("~"));
-		  patterns.push_back(pattern::make_description("~"));
-
-		  return pattern::make_or(patterns);
-		}
+	      return pattern::make_term("~");
 	    }
 	  else
 	    {
@@ -1196,7 +1170,6 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 		    ref_ptr<pattern> p(parse_atom(start,
 						  end,
 						  terminators,
-						  search_descriptions,
 						  search_flag == 'W',
 						  name_context));
 
@@ -1215,14 +1188,12 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 		    ref_ptr<pattern> filter(parse_atom(start,
 						       end,
 						       terminators,
-						       search_descriptions,
 						       false,
 						       name_context));
 
 		    ref_ptr<pattern> p(parse_atom(start,
 						  end,
 						  terminators,
-						  search_descriptions,
 						  false,
 						  name_context));
 
@@ -1274,7 +1245,6 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 		      throw MatchingException(_("Provides: cannot be broken"));
 
 		    ref_ptr<pattern> p(parse_atom(start, end, terminators,
-						  search_descriptions,
 						  false, name_context));
 
 		    switch(search_flag)
@@ -1335,18 +1305,9 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 	}
       else
 	{
-	  if(!search_descriptions)
-	    return pattern::make_name(parse_substr(start, end,
-						   terminators, true));
-	  else
-	    {
-	      substr = parse_substr(start, end, terminators, true);
-	      std::vector<ref_ptr<pattern> > patterns;
-	      patterns.push_back(pattern::make_name(substr));
-	      patterns.push_back(pattern::make_description(substr));
-
-	      return pattern::make_or(patterns);
-	    }
+	  return pattern::make_term(parse_substr(start, end,
+						 terminators,
+						 true));
 	}
     }
 
@@ -1357,7 +1318,6 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 ref_ptr<pattern> parse_and_group(string::const_iterator &start,
 				 const string::const_iterator &end,
 				 const vector<const char *> &terminators,
-				 bool search_descriptions,
 				 bool wide_context,
 				 const parse_environment &name_context)
 {
@@ -1369,7 +1329,6 @@ ref_ptr<pattern> parse_and_group(string::const_iterator &start,
 	!terminate(start, end, terminators))
     {
       ref_ptr<pattern> atom(parse_atom(start, end, terminators,
-				       search_descriptions,
 				       wide_context,
 				       name_context));
 
@@ -1391,7 +1350,6 @@ ref_ptr<pattern> parse_and_group(string::const_iterator &start,
 ref_ptr<pattern> parse_condition_list(string::const_iterator &start,
 				      const string::const_iterator &end,
 				      const vector<const char *> &terminators,
-				      bool search_descriptions,
 				      bool wide_context,
 				      const parse_environment &name_context)
 {
@@ -1416,7 +1374,6 @@ ref_ptr<pattern> parse_condition_list(string::const_iterator &start,
 
 
       grp.push_back(parse_and_group(start, end, terminators,
-				    search_descriptions,
 				    wide_context,
 				    name_context));
 
@@ -1432,7 +1389,6 @@ ref_ptr<pattern> parse_condition_list(string::const_iterator &start,
 ref_ptr<pattern> parse(string::const_iterator &start,
 		       const string::const_iterator &end,
 		       const std::vector<const char *> &terminators,
-		       bool search_descriptions,
 		       bool flag_errors,
 		       bool require_full_parse)
 {
@@ -1446,7 +1402,6 @@ ref_ptr<pattern> parse(string::const_iterator &start,
   try
     {
       ref_ptr<pattern> rval(parse_condition_list(start, end, terminators,
-						 search_descriptions,
 						 true,
 						 parse_environment()));
 
