@@ -1646,7 +1646,7 @@ namespace aptitude
 	    // are.
 	    {
 	      const std::vector<ref_ptr<pattern> > &
-		sub_patterns(p->get_and_patterns());
+		sub_patterns(p->get_or_patterns());
 
 	      if(sub_patterns.size() == 0)
 		return false;
@@ -1838,7 +1838,7 @@ namespace aptitude
 	  case pattern::or_tp:
 	    {
 	      const std::vector<ref_ptr<pattern> > &
-		sub_patterns(p->get_and_patterns());
+		sub_patterns(p->get_or_patterns());
 
 	      std::vector<ref_ptr<pattern> >
 		normalized_sub_patterns;
@@ -2042,7 +2042,7 @@ namespace aptitude
 	  case pattern::or_tp:
 	    {
 	      const std::vector<ref_ptr<pattern> > &sub_patterns =
-		p->get_and_patterns();
+		p->get_or_patterns();
 
 	      Xapian::Query tail;
 
