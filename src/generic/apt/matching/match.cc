@@ -1600,6 +1600,127 @@ namespace aptitude
 	  }
       }
 
+
+      // is_pure_xapian returns "true" if we can identify a Xapian
+      // term that matches if AND ONLY IF the pattern matches.  In
+      // other words: it contains only structural patterns combined
+      // with Boolean operators (and version-manipulation operators,
+      // which we ignore).
+      bool is_pure_xapian(const ref_ptr<pattern> &p)
+      {
+	switch(p->get_type())
+	  {
+	  case pattern::all_versions:
+	    return is_pure_xapian(p->get_all_versions_pattern());
+
+	  case pattern::and_tp:
+	    {
+	      const std::vector<ref_ptr<pattern> > &
+		sub_patterns(p->get_and_patterns());
+
+	      if(sub_patterns.size() == 0)
+		return true;
+
+	      // The AND is fine if it has at least one positive
+	      // Xapian-dependent term.  NB: since negative terms are
+	      // not Xapian-dependent, this is redundant, so we just
+	      // check the first condition.
+	      for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		    sub_patterns.begin(); it != sub_patterns.end(); ++it)
+		{
+		  if(!is_pure_xapian(*it))
+		    return false;
+		}
+
+	      return true;
+	    }
+
+	  case pattern::any_version:
+	    return is_pure_xapian(p->get_any_version_pattern());
+
+	  case pattern::for_tp:
+	    return is_pure_xapian(p->get_for_pattern());
+
+	  case pattern::narrow:
+	    return
+	      is_pure_xapian(p->get_narrow_filter()) &&
+	      is_pure_xapian(p->get_narrow_pattern());
+
+	  case pattern::not_tp:
+	    return is_pure_xapian(p->get_not_pattern());
+
+	  case pattern::or_tp:
+	    // OR terms are Xapian-dependent if all of their sub-terms
+	    // are.
+	    {
+	      const std::vector<ref_ptr<pattern> > &
+		sub_patterns(p->get_or_patterns());
+
+	      if(sub_patterns.size() == 0)
+		return true;
+
+	      for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		    sub_patterns.begin(); it != sub_patterns.end(); ++it)
+		{
+		  if(!is_pure_xapian(*it))
+		    return false;
+		}
+
+	      return true;
+	    }
+
+	  case pattern::widen:
+	    return is_pure_xapian(p->get_widen_pattern());
+
+	  case pattern::term:
+	    return true;
+
+	    // Various non-dependent terms.  All of these return
+	    // false.  Some have internal matchers, but they are
+	    // separate searches.
+
+	  case pattern::archive:
+	  case pattern::action:
+	  case pattern::automatic:
+	  case pattern::bind:
+	  case pattern::broken:
+	  case pattern::broken_type:
+	  case pattern::candidate_version:
+	  case pattern::config_files:
+	  case pattern::current_version:
+	  case pattern::depends:
+	  case pattern::description:
+	  case pattern::essential:
+	  case pattern::equal:
+	  case pattern::false_tp:
+	  case pattern::garbage:
+	  case pattern::install_version:
+	  case pattern::installed:
+	  case pattern::maintainer:
+	  case pattern::name:
+	  case pattern::new_tp:
+	  case pattern::obsolete:
+	  case pattern::origin:
+	  case pattern::priority:
+	  case pattern::provides:
+	  case pattern::reverse_depends:
+	  case pattern::reverse_provides:
+	  case pattern::section:
+	  case pattern::source_package:
+	  case pattern::source_version:
+	  case pattern::tag:
+	  case pattern::task:
+	  case pattern::true_tp:
+	  case pattern::upgradable:
+	  case pattern::user_tag:
+	  case pattern::version:
+	  case pattern::virtual_tp:
+	    return false;
+	  default:
+	    throw MatchingException("Internal error: unhandled pattern type in is_pure_xapian()");
+	  }
+      }
+
       // is_xapian_dependent returns "true" if we can always identify
       // a Xapian term that must match for the pattern to match.
       bool is_xapian_dependent(const ref_ptr<pattern> &p)
@@ -1951,11 +2072,15 @@ namespace aptitude
 	      for(std::vector<ref_ptr<pattern> >::const_reverse_iterator it =
 		    sub_patterns.rbegin(); it != sub_patterns.rend(); ++it)
 		{
-		  // \todo If the sub-term isn't exact (i.e., it has
-		  // non-Xapian terms), this isn't right.  Should we
-		  // maybe just blow it up in order to get an
-		  // overestimate?
-		  if((*it)->get_type() == pattern::not_tp)
+		  // If the sub-pattern has non-Xapian pieces, we need
+		  // to just throw it away (which results in the
+		  // overestimate we promise) because the
+		  // transformation will be an overestimate, so
+		  // negating it produces an UNDERestimate and the
+		  // world explodes.  This shouldn't affect scores or
+		  // our ability to index, so I think it's just fine.
+		  if((*it)->get_type() == pattern::not_tp &&
+		     is_pure_xapian((*it)->get_not_pattern()))
 		    {
 		      Xapian::Query q(build_xapian_query((*it)->get_not_pattern()));
 
@@ -1980,9 +2105,9 @@ namespace aptitude
 	      // sure that the terms are indexed and their scores
 	      // considered, but they don't constrain the search
 	      // (because the Xapian query might be false when the
-	      // aptitude one is true).
-	      //
-	      // Q: will this work when the AND is inside a NOT?
+	      // aptitude one is true).  This would be wrong inside a
+	      // NOT, but we avoid that with the check above for pure
+	      // Xapian expressions.
 	      for(std::vector<ref_ptr<pattern> >::const_reverse_iterator it =
 		    sub_patterns.rbegin(); it != sub_patterns.rend(); ++it)
 		{
