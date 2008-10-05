@@ -44,7 +44,7 @@ namespace aptitude
   namespace matching
   {
     // We could try a fancy scheme where arbitrary values are attached
-    // to each pattern and downcase using dynamic_cast, but I opted
+    // to each pattern and downcast using dynamic_cast, but I opted
     // for just explicitly listing all the possible caches in one
     // place.  This fits better with the architecture of the match
     // language, means that all the caching information is collected
@@ -76,28 +76,20 @@ namespace aptitude
       {
       }
 
-      /** \brief If the Xapian search hasn't been run yet, invoke it.
-       */
-      void ensure_xapian_search()
+      void record_hits(Xapian::Enquire enq,
+		       Xapian::MSet mset)
       {
-	// This will need to be done in a different way if we have
-	// support for interactively updating a search.  Maybe.
-	if(!ran_xapian_search)
+	for(Xapian::MSetIterator it = mset.begin();
+	    it != mset.end(); ++it)
 	  {
-	    matches = enquire.get_mset(0, 1000);
-	    // Cache which terms matched each package in the match
-	    // set.
-	    matched_terms.clear();
-	    for(Xapian::MSetIterator it = matches.begin();
-		it != matches.end(); ++it)
-	      {
-		std::set<std::string> terms(enquire.get_matching_terms_begin(it),
-					    enquire.get_matching_terms_end(it));
-		// We use here our magic knowledge that the document
-		// data is the package name.
-		matched_terms[it.get_document().get_data()] = terms;
-	      }
-	    ran_xapian_search = true;
+	    // For each package name, add the associated terms to its
+	    // term set.
+	    const std::string package_name =
+	      it.get_document().get_data();
+	    std::set<std::string> &terms(matched_terms[package_name]);
+
+	    terms.insert(enq.get_matching_terms_begin(it),
+			 enq.get_matching_terms_end(it));
 	  }
       }
     };
@@ -113,6 +105,13 @@ namespace aptitude
 
     namespace
     {
+      Xapian::Query stem_term(const std::string &term)
+      {
+	return Xapian::Query(Xapian::Query::OP_OR,
+			     Xapian::Query(term),
+			     Xapian::Stem("en")(term));
+      }
+
       /** \brief Describes how version-by-version matching is carried
        *  out.
        */
@@ -1098,9 +1097,12 @@ namespace aptitude
 	      // language of the package descriptions).
 
 	      search_cache::implementation &info = *(search_cache::implementation *)search_info.unsafe_get_ref();
-	      info.ensure_xapian_search();
 	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
-	      const std::set<std::string> &terms(info.matched_terms[pkg.Name()]);
+	      std::map<std::string, std::set<std::string> >::const_iterator found(info.matched_terms.find(pkg.Name()));
+	      if(found == info.matched_terms.end())
+		return NULL;
+
+	      const std::set<std::string> &terms(found->second);
 
 	      if(terms.find(p->get_term_term()) != terms.end())
 		// TODO: how do I represent the match region?
@@ -1675,16 +1677,8 @@ namespace aptitude
 	  case pattern::action:
 	  case pattern::automatic:
 	  case pattern::bind:
-	    // TODO: in order to ensure that ?term terms inside a
-	    // ?bind be matched properly, we should search for them
-	    // and put them inside a top-level term (maybe "foo AND
-	    // NOT foo").
-	    //
-	    // Right now we just treat this as a non-Xapian pattern.
 	  case pattern::broken:
 	  case pattern::broken_type:
-	    // TODO: we also should lift internal ?terms to top-level
-	    // here.
 	  case pattern::candidate_version:
 	  case pattern::config_files:
 	  case pattern::current_version:
@@ -1878,14 +1872,6 @@ namespace aptitude
 	  case pattern::action:
 	  case pattern::automatic:
 	  case pattern::bind:
-	    // TODO: in order to ensure that ?term terms inside a
-	    // ?bind be matched properly, we should search for them
-	    // and put them inside a top-level term (maybe "foo AND
-	    // NOT foo").
-	    //
-	    // Right now we just treat this as a non-Xapian pattern.
-	    //
-	    // The same goes for "depends", etc.
 	  case pattern::broken:
 	  case pattern::broken_type:
 	  case pattern::candidate_version:
@@ -2131,9 +2117,7 @@ namespace aptitude
 	    // TODO: guess which language to use for stemming somehow
 	    // (how? the locale isn't reliable; we care about the
 	    // language of the package descriptions).
-	    return Xapian::Query(Xapian::Query::OP_OR,
-				 Xapian::Query(p->get_term_term()),
-				 Xapian::Stem("en")(p->get_term_term()));
+	    return stem_term(p->get_term_term());
 
 	  case pattern::archive:
 	  case pattern::action:
@@ -2176,6 +2160,290 @@ namespace aptitude
 	    throw MatchingException("Internal error: unhandled pattern type in build_xapian_query()");
 	  }
       }
+    }
+
+    /** \brief Get all the terms used inside ?term in the given
+     *  pattern.
+     *
+     *  \param p   The pattern to analyze.
+     *
+     *  \param output  A set into which the terms will be
+     *                 placed;
+     */
+    void get_terms(const ref_ptr<pattern> &p,
+		   std::set<std::string> &output)
+    {
+      switch(p->get_type())
+	{
+	  // Structural patterns:
+	case pattern::all_versions:
+	  get_terms(p->get_all_versions_pattern(),
+		    output);
+	  break;
+
+	case pattern::and_tp:
+	  for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		p->get_and_patterns().begin();
+	      it != p->get_and_patterns().end(); ++it)
+	    get_terms(*it, output);
+	  break;
+
+	case pattern::any_version:
+	  get_terms(p->get_any_version_pattern(),
+		    output);
+	  break;
+
+	case pattern::for_tp:
+	  get_terms(p->get_for_pattern(),
+		    output);
+	  break;
+
+	case pattern::narrow:
+	  get_terms(p->get_narrow_filter(),
+		    output);
+	  get_terms(p->get_narrow_pattern(),
+		    output);
+	  break;
+
+	case pattern::not_tp:
+	  get_terms(p->get_not_pattern(),
+		    output);
+	  break;
+
+	case pattern::or_tp:
+	  for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		p->get_or_patterns().begin();
+	      it != p->get_or_patterns().end(); ++it)
+	    get_terms(*it, output);
+	  break;
+
+	case pattern::widen:
+	  get_terms(p->get_widen_pattern(),
+		    output);
+	  break;
+
+	  // Atomic patterns with sub-patterns:
+	case pattern::bind:
+	  get_terms(p->get_bind_pattern(),
+		    output);
+	  break;
+
+	case pattern::depends:
+	  get_terms(p->get_depends_pattern(),
+		    output);
+	  break;
+
+	case pattern::provides:
+	  get_terms(p->get_provides_pattern(),
+		    output);
+	  break;
+
+	case pattern::reverse_depends:
+	  get_terms(p->get_reverse_depends_pattern(),
+		    output);
+	  break;
+
+	case pattern::reverse_provides:
+	  get_terms(p->get_reverse_provides_pattern(),
+		    output);
+	  break;
+
+	  // Terms themselves:
+	case pattern::term:
+	  output.insert(p->get_term_term());
+	  break;
+
+	  // Atomic patterns with no sub-patterns:
+	case pattern::archive:
+	case pattern::action:
+	case pattern::automatic:
+	case pattern::broken:
+	case pattern::broken_type:
+	case pattern::candidate_version:
+	case pattern::config_files:
+	case pattern::current_version:
+	case pattern::description:
+	case pattern::essential:
+	case pattern::equal:
+	case pattern::false_tp:
+	case pattern::garbage:
+	case pattern::install_version:
+	case pattern::installed:
+	case pattern::maintainer:
+	case pattern::name:
+	case pattern::new_tp:
+	case pattern::obsolete:
+	case pattern::origin:
+	case pattern::priority:
+	case pattern::section:
+	case pattern::source_package:
+	case pattern::source_version:
+	case pattern::tag:
+	case pattern::task:
+	case pattern::true_tp:
+	case pattern::upgradable:
+	case pattern::user_tag:
+	case pattern::version:
+	case pattern::virtual_tp:
+	  // Nothing to do; they won't have sub-terms.
+	  break;
+
+	default:
+	  throw MatchingException(std::string("Internal error: unhandled pattern type in ") + __func__);
+	}
+    }
+
+    /** \brief Return all the "obscured" terms in the
+     *  given pattern.
+     *
+     *  Obscured terms are terms hidden inside constructs like ?bind
+     *  and ?depends that we can't generate a sensible Xapian query
+     *  for.
+     *
+     *  \param p   The pattern to analyze
+     *  \param output   The set into which the obscured terms
+     *                  will be placed.
+     *  \param top_level_obscured   Normally false; if true,
+     *                              terms at the top level
+     *                              will be treated as if
+     *                              they are obscured.
+     */
+    void find_obscured_terms(const ref_ptr<pattern> &p,
+			     std::set<std::string> &output,
+			     bool top_level_obscured)
+    {
+      switch(p->get_type())
+	{
+	  // Structural patterns:
+	case pattern::all_versions:
+	  find_obscured_terms(p->get_all_versions_pattern(),
+			      output,
+			      top_level_obscured);
+	  break;
+
+	case pattern::and_tp:
+	  for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		p->get_and_patterns().begin();
+	      it != p->get_and_patterns().end(); ++it)
+	    find_obscured_terms(*it, output,
+				top_level_obscured);
+	  break;
+
+	case pattern::any_version:
+	  find_obscured_terms(p->get_any_version_pattern(),
+			      output,
+			      top_level_obscured);
+	  break;
+
+	case pattern::for_tp:
+	  find_obscured_terms(p->get_for_pattern(),
+			      output,
+			      top_level_obscured);
+	  break;
+
+	case pattern::narrow:
+	  find_obscured_terms(p->get_narrow_filter(),
+			      output,
+			      top_level_obscured);
+	  find_obscured_terms(p->get_narrow_pattern(),
+			      output,
+			      top_level_obscured);
+	  break;
+
+	case pattern::not_tp:
+	  find_obscured_terms(p->get_not_pattern(),
+			      output,
+			      top_level_obscured);
+	  break;
+
+	case pattern::or_tp:
+	  for(std::vector<ref_ptr<pattern> >::const_iterator it =
+		p->get_or_patterns().begin();
+	      it != p->get_or_patterns().end(); ++it)
+	    find_obscured_terms(*it, output,
+				top_level_obscured);
+	  break;
+
+	case pattern::widen:
+	  find_obscured_terms(p->get_widen_pattern(),
+			      output,
+			      top_level_obscured);
+	  break;
+
+	  // Atomic patterns with sub-patterns:
+	case pattern::bind:
+	  find_obscured_terms(p->get_bind_pattern(),
+			      output,
+			      true);
+	  break;
+
+	case pattern::depends:
+	  find_obscured_terms(p->get_depends_pattern(),
+			      output,
+			      true);
+	  break;
+
+	case pattern::provides:
+	  find_obscured_terms(p->get_provides_pattern(),
+			      output,
+			      true);
+	  break;
+
+	case pattern::reverse_depends:
+	  find_obscured_terms(p->get_reverse_depends_pattern(),
+			      output,
+			      true);
+	  break;
+
+	case pattern::reverse_provides:
+	  find_obscured_terms(p->get_reverse_provides_pattern(),
+			      output,
+			      true);
+	  break;
+
+	  // Terms themselves:
+	case pattern::term:
+	  if(top_level_obscured)
+	    output.insert(p->get_term_term());
+	  break;
+
+	  // Atomic patterns with no sub-patterns:
+	case pattern::archive:
+	case pattern::action:
+	case pattern::automatic:
+	case pattern::broken:
+	case pattern::broken_type:
+	case pattern::candidate_version:
+	case pattern::config_files:
+	case pattern::current_version:
+	case pattern::description:
+	case pattern::essential:
+	case pattern::equal:
+	case pattern::false_tp:
+	case pattern::garbage:
+	case pattern::install_version:
+	case pattern::installed:
+	case pattern::maintainer:
+	case pattern::name:
+	case pattern::new_tp:
+	case pattern::obsolete:
+	case pattern::origin:
+	case pattern::priority:
+	case pattern::section:
+	case pattern::source_package:
+	case pattern::source_version:
+	case pattern::tag:
+	case pattern::task:
+	case pattern::true_tp:
+	case pattern::upgradable:
+	case pattern::user_tag:
+	case pattern::version:
+	case pattern::virtual_tp:
+	  break;
+
+	default:
+	  throw MatchingException(std::string("Internal error: unhandled pattern type in ") + __func__);
+	}
     }
 
     ref_ptr<structural_match>
@@ -2241,6 +2509,10 @@ namespace aptitude
 		pkgRecords &records,
 		bool debug)
     {
+      // \todo Ideally we should avoid building a big std::set that
+      // duplicates what Xapian knows; maybe instead I should
+      // associate an Enquire object with each pattern and use
+      // find_matched_terms()?
       if(debug)
 	std::cout << "Searching for " << serialize_pattern(p) << std::endl;
 
@@ -2253,14 +2525,31 @@ namespace aptitude
 
       Xapian::Query q(build_xapian_query(normalized));
 
-      if(debug)
-	std::cout << "Xapian query built: " << q.get_description() << std::endl;
+      search_cache::implementation &info = *(search_cache::implementation *)search_info.unsafe_get_ref();
 
       if(q.empty())
 	{
-	  // TODO: I should make sure to do a dummy Xapian search
-	  // (e.g., "a AND NOT a") so I know which documents each
-	  // ?term matches.
+	  if(debug)
+	    std::cout << "Can't build a Xapian query for this search." << std::endl
+		      << "Falling back to testing each package." << std::endl;
+
+	  // Figure out the match for each term.
+	  std::set<std::string> terms;
+	  get_terms(p, terms);
+	  if(debug && terms.size() > 0)
+	    std::cout << "Retrieving hits for individual terms:" << std::endl;
+	  for(std::set<std::string>::const_iterator it =
+		terms.begin(); it != terms.end(); ++it)
+	    {
+	      Xapian::Enquire enq(info.db.db());
+	      Xapian::Query q(stem_term(*it));
+	      enq.set_query(q);
+	      Xapian::MSet mset(enq.get_mset(0, 100000));
+	      if(debug)
+		std::cout << "  " << *it << " (" << mset.size() << " hits)" << std::endl;
+	      info.record_hits(enq, mset);
+	    }
+
 	  for(pkgCache::PkgIterator pkg = cache.PkgBegin();
 	      !pkg.end(); ++pkg)
 	    {
@@ -2279,10 +2568,35 @@ namespace aptitude
 	}
       else
 	{
-	  search_cache::implementation &info = *(search_cache::implementation *)search_info.unsafe_get_ref();
-	  info.enquire.set_query(q);
-	  info.ran_xapian_search = false;
-	  info.ensure_xapian_search();
+	  if(debug)
+	    std::cout << "Xapian query built: " << q.get_description() << std::endl;
+
+	  {
+	    Xapian::Enquire enq(info.db.db());
+	    enq.set_query(q);
+	    Xapian::MSet mset(enq.get_mset(0, 100000));
+	    if(debug)
+	      std::cout << "  (" << mset.size() << " hits)"
+			<< std::endl;
+	    info.record_hits(enq, mset);
+	  }
+
+	  // Add match information for any obscured terms.
+	  std::set<std::string> terms;
+	  find_obscured_terms(p, terms, false);
+	  if(debug && terms.size() > 0)
+	    std::cout << "Retrieving hits for obscured terms:" << std::endl;
+	  for(std::set<std::string>::const_iterator it =
+		terms.begin(); it != terms.end(); ++it)
+	    {
+	      Xapian::Enquire enq(info.db.db());
+	      Xapian::Query q2(stem_term(*it));
+	      enq.set_query(q2);
+	      Xapian::MSet mset(enq.get_mset(0, 100000));
+	      if(debug)
+		std::cout << "  " << *it << " (" << mset.size() << " hits)" << std::endl;
+	      info.record_hits(enq, mset);
+	    }
 
 	  for(Xapian::MSetIterator it = info.matches.begin();
 	      it != info.matches.end(); ++it)
