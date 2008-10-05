@@ -1619,10 +1619,6 @@ namespace aptitude
 	      if(sub_patterns.size() == 0)
 		return true;
 
-	      // The AND is fine if it has at least one positive
-	      // Xapian-dependent term.  NB: since negative terms are
-	      // not Xapian-dependent, this is redundant, so we just
-	      // check the first condition.
 	      for(std::vector<ref_ptr<pattern> >::const_iterator it =
 		    sub_patterns.begin(); it != sub_patterns.end(); ++it)
 		{
@@ -1648,8 +1644,6 @@ namespace aptitude
 	    return is_pure_xapian(p->get_not_pattern());
 
 	  case pattern::or_tp:
-	    // OR terms are Xapian-dependent if all of their sub-terms
-	    // are.
 	    {
 	      const std::vector<ref_ptr<pattern> > &
 		sub_patterns(p->get_or_patterns());
@@ -1673,9 +1667,7 @@ namespace aptitude
 	  case pattern::term:
 	    return true;
 
-	    // Various non-dependent terms.  All of these return
-	    // false.  Some have internal matchers, but they are
-	    // separate searches.
+	    // Various non-Xapian terms.  All of these return false.
 
 	  case pattern::archive:
 	  case pattern::action:
@@ -1738,8 +1730,9 @@ namespace aptitude
 
 	      // The AND is fine if it has at least one positive
 	      // Xapian-dependent term.  NB: since negative terms are
-	      // not Xapian-dependent, this is redundant, so we just
-	      // check the first condition.
+	      // not Xapian-dependent, checking both conditions is
+	      // redundant, so we just check that each sub-term is
+	      // Xapian-dependent.
 	      for(std::vector<ref_ptr<pattern> >::const_iterator it =
 		    sub_patterns.begin(); it != sub_patterns.end(); ++it)
 		{
@@ -2038,9 +2031,8 @@ namespace aptitude
       // Analyzes the incoming expression in an attempt to prove that
       // any matching expression will match at least one Xapian term.
       // If this can be proven, builds a Xapian query that
-      // overapproximates the match set.  Otherwise we can't constrain
-      // the set of matched terms or determine relevance meaningfully,
-      // so this just builds a big OR of all the terms that occur.
+      // overapproximates the match set.  Otherwise, bails and returns
+      // the empty query.
       //
       // Returns the new query, or an empty query if there's no
       // Xapian-dependence.
