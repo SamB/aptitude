@@ -62,7 +62,6 @@ namespace aptitude
       // to true; until then, "matches" and "matched_terms" are
       // meaninglessly empty.
       bool ran_xapian_search;
-      Xapian::MSet matches;
       // Maps package names to the set of terms that matched that
       // package in the Xapian search.
       std::map<std::string, std::set<std::string> > matched_terms;
@@ -71,8 +70,7 @@ namespace aptitude
 	: user_tag_matches(),
 	  db(),
 	  enquire(db.db()),
-	  ran_xapian_search(false),
-	  matches()
+	  ran_xapian_search(false)
       {
       }
 
@@ -2696,15 +2694,13 @@ namespace aptitude
 	  if(debug)
 	    std::cout << "Xapian query built: " << q.get_description() << std::endl;
 
-	  {
-	    Xapian::Enquire enq(info.db.db());
-	    enq.set_query(q);
-	    Xapian::MSet mset(enq.get_mset(0, 100000));
-	    if(debug)
-	      std::cout << "  (" << mset.size() << " hits)"
-			<< std::endl;
-	    info.record_hits(enq, mset);
-	  }
+	  Xapian::Enquire enq(info.db.db());
+	  enq.set_query(q);
+	  Xapian::MSet xapian_matches(enq.get_mset(0, 100000));
+	  if(debug)
+	    std::cout << "  (" << xapian_matches.size() << " hits)"
+		      << std::endl;
+	  info.record_hits(enq, xapian_matches);
 
 	  // Add match information for any obscured terms.
 	  std::set<std::string> terms;
@@ -2723,8 +2719,8 @@ namespace aptitude
 	      info.record_hits(enq, mset);
 	    }
 
-	  for(Xapian::MSetIterator it = info.matches.begin();
-	      it != info.matches.end(); ++it)
+	  for(Xapian::MSetIterator it = xapian_matches.begin();
+	      it != xapian_matches.end(); ++it)
 	    {
 	      std::string name(it.get_document().get_data());
 
