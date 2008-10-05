@@ -78,3 +78,63 @@ namespace aptitude
     }
   }
 }
+
+#if 0
+// A template switch statement that can be copied&pasted as the
+// skeleton for a new pattern-processing function.
+
+switch(p->get_type())
+  {
+    // Structural patterns:
+  case pattern::all_versions:
+  case pattern::and_tp:
+  case pattern::any_version:
+  case pattern::for_tp:
+  case pattern::narrow:
+  case pattern::not_tp:
+  case pattern::or_tp:
+  case pattern::widen:
+
+    // Atomic patterns:
+  case pattern::archive:
+  case pattern::action:
+  case pattern::automatic:
+  case pattern::bind:
+  case pattern::broken:
+  case pattern::broken_type:
+  case pattern::candidate_version:
+  case pattern::config_files:
+  case pattern::current_version:
+  case pattern::depends:
+  case pattern::description:
+  case pattern::essential:
+  case pattern::equal:
+  case pattern::false_tp:
+  case pattern::garbage:
+  case pattern::install_version:
+  case pattern::installed:
+  case pattern::maintainer:
+  case pattern::name:
+  case pattern::new_tp:
+  case pattern::obsolete:
+  case pattern::origin:
+  case pattern::priority:
+  case pattern::provides:
+  case pattern::reverse_depends:
+  case pattern::reverse_provides:
+  case pattern::section:
+  case pattern::source_package:
+  case pattern::source_version:
+  case pattern::tag:
+  case pattern::task:
+  case pattern::term:
+  case pattern::true_tp:
+  case pattern::upgradable:
+  case pattern::user_tag:
+  case pattern::version:
+  case pattern::virtual_tp:
+
+  default:
+    throw MatchingException(std::string("Internal error: unhandled pattern type in ") + __FUNC__);
+  }
+#endif
