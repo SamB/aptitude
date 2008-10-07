@@ -30,7 +30,9 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/apt_undo_group.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <gtk/gui.h>
 #include <gtk/info.h>
@@ -336,37 +338,41 @@ namespace gui
 
   void PkgViewBase::rebuild_store()
   {
+    using namespace aptitude::matching;
+    using cwidget::util::ref_ptr;
+
     store_reloading();
     std::auto_ptr<PkgTreeModelGenerator> generator(generatorK(get_columns()));
 
     guiOpProgress * p = gen_progress_bar();
 
-    int num=0;
-    int total=(*apt_cache_file)->Head().PackageCount;
     bool limited = false;
-    aptitude::matching::pkg_matcher * limiter = NULL;
+    cwidget::util::ref_ptr<pattern> filter;
     if (limit != "")
     {
-      limiter = aptitude::matching::parse_pattern(limit);
-      limited = (limiter != NULL);
+      filter = parse(limit);
+      limited = (filter.valid());
     }
 
-    for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin(); !pkg.end(); pkg++)
-      {
-        p->OverallProgress(num, total, 1, _("Building view"));
+    std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > > matches;
+    ref_ptr<search_cache> search_info(search_cache::create());
+    search(filter, search_info, matches, *apt_cache_file, *apt_package_records);	   
 
-        ++num;
+    {
+      int num = 0;
+      const int total = static_cast<int>(matches.size());
 
-        // Filter useless packages up-front.
-        if(pkg.VersionList().end() && pkg.ProvidesList().end())
-          continue;
-        if (!limited || aptitude::matching::apply_matcher(limiter, pkg, *apt_cache_file, *apt_package_records))
-        {
-	  generator->add(pkg);
-        }
-      }
+      for(std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >::const_iterator
+	    it = matches.begin(); it != matches.end(); ++it)
+	{
+	  p->OverallProgress(num, total, 1, _("Building view"));
 
-    p->OverallProgress(total, total, 1,  _("Finalizing view"));
+	  ++num;
+	  generator->add(it->first);
+	}
+
+      p->OverallProgress(total, total, 1,  _("Finalizing view"));
+    }
 
     Glib::Thread * sort_thread = Glib::Thread::create(sigc::mem_fun(*generator, &PkgTreeModelGenerator::finish), true);
     while(!generator->finished)

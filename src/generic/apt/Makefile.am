@@ -45,8 +45,6 @@ libgeneric_apt_a_SOURCES = \
         infer_reason.h      \
 	log.cc		    \
 	log.h		    \
-        matchers.cc         \
-        matchers.h          \
         pkg_acqfile.cc      \
         pkg_acqfile.h       \
         pkg_changelog.cc    \

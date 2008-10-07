@@ -34,7 +34,9 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <generic/problemresolver/exceptions.h>
 
@@ -532,17 +534,19 @@ int main(int argc, char *argv[])
 		  {
 		    const std::string patternstr(arg, splitloc + 1);
 		    const std::vector<const char *> terminators;
-		    aptitude::matching::pkg_matcher *m =
-		      aptitude::matching::parse_pattern(patternstr,
-							terminators);
+		    cwidget::util::ref_ptr<aptitude::matching::pattern> p =
+		      aptitude::matching::parse(patternstr,
+						terminators,
+						true,
+						false);
 
-		    if(m == NULL)
+		    if(!p.valid())
 		      {
 			_error->DumpErrors();
 			return -1;
 		      }
 
-		    user_tags.push_back(tag_application(is_add, optarg, m));
+		    user_tags.push_back(tag_application(is_add, optarg, p));
 		  }
 	      }
 	    case OPTION_NOT_ARCH_ONLY:

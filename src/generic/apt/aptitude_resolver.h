@@ -27,6 +27,7 @@
 
 #include "aptitude_resolver_universe.h"
 
+#include <generic/apt/matching/pattern.h>
 #include <generic/problemresolver/problemresolver.h>
 
 #include <generic/util/immset.h>
@@ -50,7 +51,7 @@ namespace aptitude
 {
   namespace matching
   {
-    class pkg_matcher;
+    class pattern;
   }
 }
 
@@ -88,11 +89,11 @@ public:
   private:
     hint_type type;
     int score;
-    aptitude::matching::pkg_matcher *target;
+    cwidget::util::ref_ptr<aptitude::matching::pattern> target;
     std::string version;
 
     resolver_hint(hint_type _type, int _score,
-		  aptitude::matching::pkg_matcher *_target,
+		  const cwidget::util::ref_ptr<aptitude::matching::pattern> &_target,
 		  const std::string &_version)
       : type(_type), score(_score), target(_target), version(_version)
     {
@@ -107,21 +108,21 @@ public:
     ~resolver_hint();
 
     /** \brief Create a hint that rejects a version or versions of a package. */
-    static resolver_hint make_reject(aptitude::matching::pkg_matcher *target,
+    static resolver_hint make_reject(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 				     const std::string &version)
     {
       return resolver_hint(reject, 0, target, version);
     }
 
     /** \brief Create a hint that mandates a version or versions of a package. */
-    static resolver_hint make_mandate(aptitude::matching::pkg_matcher *target,
+    static resolver_hint make_mandate(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 				      const std::string &version)
     {
       return resolver_hint(mandate, 0, target, version);
     }
 
     /** \brief Create a hint that adjust the score of a package. */
-    static resolver_hint make_tweak_score(aptitude::matching::pkg_matcher *target,
+    static resolver_hint make_tweak_score(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 					  const std::string &version,
 					  int score)
     {
@@ -161,7 +162,8 @@ public:
     /** \brief Return the pattern identifying the package or packages
      *  to be adjusted.
      */
-    aptitude::matching::pkg_matcher *get_target() const { return target; }
+    const cwidget::util::ref_ptr<aptitude::matching::pattern> &
+    get_target() const { return target; }
 
     /** \brief Return the version selected by this hint.
      *

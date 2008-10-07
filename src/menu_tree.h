@@ -27,18 +27,12 @@
 
 #include <cwidget/widgets/tree.h>
 
+#include <generic/apt/matching/pattern.h>
+
 /** \brief A cwidget::widgets::tree augmented with the ability to act as a menu redirector.
  * 
  *  \file menu_tree.h
  */
-
-namespace aptitude
-{
-  namespace matching
-  {
-    class pkg_matcher;
-  }
-}
 
 class pkg_tree_node;
 class solution_item;
@@ -70,10 +64,10 @@ class menu_tree:public cwidget::widgets::tree, public menu_redirect
    */
   solution_item *solution_selection();
 
-  /** A precompiled matcher representing the last search that was performed. */
-  aptitude::matching::pkg_matcher *last_search_matcher;
+  /** A precompiled pattern representing the last search that was performed. */
+  cwidget::util::ref_ptr<aptitude::matching::pattern> last_search_pattern;
 
-  /** The string that was compiled to produce the above matcher. */
+  /** The string that was compiled to produce the above pattern. */
   std::wstring last_search_term;
 
   /** If \b true, the last search was a backwards search. */

@@ -12,7 +12,9 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <cwidget/fragment.h>
 #include <cwidget/generic/util/transcode.h>
@@ -549,22 +551,29 @@ bool do_cmdline_show(string s, int verbose)
   else if(is_pattern)
     {
       using namespace aptitude::matching;
+      using cwidget::util::ref_ptr;
 
-      std::auto_ptr<pkg_matcher> m(parse_pattern(name));
+      ref_ptr<pattern> p(parse(name));
 
-      if(m.get() == NULL)
+      if(!p.valid())
 	{
 	  _error->Error(_("Unable to parse pattern %s"), name.c_str());
 	  return false;
 	}
 
-      for(pkgCache::PkgIterator P=(*apt_cache_file)->PkgBegin();
-	  !P.end(); ++P)
-	if(apply_matcher(m.get(), P, *apt_cache_file, *apt_package_records))
-	  {
-	    if(!do_cmdline_show_target(P, source, sourcestr, verbose, has_explicit_source))
-	      return false;
-	  }
+      std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > > matches;
+      ref_ptr<search_cache> search_info(search_cache::create());
+      search(p, search_info,
+	     matches,
+	     *apt_cache_file,
+	     *apt_package_records);
+
+      for(std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >::const_iterator
+	    it = matches.begin(); it != matches.end(); ++it)
+	{
+	  if(!do_cmdline_show_target(it->first, source, sourcestr, verbose, has_explicit_source))
+	    return false;
+	}
     }
   else
     ; // TODO: print an error message -- Christian will kill me if I

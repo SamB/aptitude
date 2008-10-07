@@ -16,7 +16,9 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_manager.h>
 #include <generic/apt/download_signal_log.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <cwidget/fragment.h>
 #include <cwidget/toplevel.h>
@@ -648,6 +650,7 @@ namespace aptitude
     void apply_user_tags(const std::vector<tag_application> &user_tags)
     {
       using namespace matching;
+      cwidget::util::ref_ptr<search_cache> search_info(search_cache::create());
       for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin();
 	  !pkg.end(); ++pkg)
 	{
@@ -655,11 +658,13 @@ namespace aptitude
 		user_tags.begin(); it != user_tags.end(); ++it)
 	    {
 	      bool applicable = false;
-	      if(it->get_matcher() != NULL)
+	      if(it->get_pattern().valid())
 		{
-		  if(matching::apply_matcher(it->get_matcher(), pkg,
-				   *apt_cache_file,
-				   *apt_package_records))
+		  if(matching::get_match(it->get_pattern(),
+					 pkg,
+					 search_info,
+					 *apt_cache_file,
+					 *apt_package_records).valid())
 		    applicable = true;
 		}
 	      else

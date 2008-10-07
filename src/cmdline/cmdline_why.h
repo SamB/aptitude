@@ -32,6 +32,7 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/aptcache.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <generic/util/immset.h>
 
@@ -72,11 +73,6 @@ namespace cwidget
 }
 namespace aptitude
 {
-  namespace matching
-  {
-    class pkg_matcher;
-  }
-
   namespace why
   {
     class justification;
@@ -383,7 +379,7 @@ namespace aptitude
     /** \brief Search for a justification for an action.
      *
      *  \param target    the action to justify.
-     *  \param leaves    matchers selecting the packages to build a
+     *  \param leaves    patterns selecting the packages to build a
      *                   justification from.
      *  \param params    the parameters of the search.
      *  \param output    where the justification is stored.
@@ -392,14 +388,14 @@ namespace aptitude
      *          \b false otherwise.
      */
     bool find_justification(const target &target,
-			    const std::vector<aptitude::matching::pkg_matcher *> leaves,
+			    const std::vector<cwidget::util::ref_ptr<aptitude::matching::pattern> > leaves,
 			    const search_params &params,
 			    bool find_all,
 			    std::vector<std::vector<action> > &output);
   }
 }
 
-cwidget::fragment *do_why(const std::vector<aptitude::matching::pkg_matcher *> &leaves,
+cwidget::fragment *do_why(const std::vector<cwidget::util::ref_ptr<aptitude::matching::pattern> > &leaves,
 			  const pkgCache::PkgIterator &root,
 			  bool find_all,
 			  bool root_is_removal,

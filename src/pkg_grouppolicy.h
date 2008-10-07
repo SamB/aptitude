@@ -26,6 +26,8 @@
 
 #include <vector>
 
+#include <generic/apt/matching/pattern.h>
+
 /** \brief Provides a flexible way to group and filter packages
  *
  * 
@@ -68,13 +70,6 @@ typedef sigc::signal2<void,
 typedef sigc::signal1<void, std::wstring> desc_signal;
 
 class pkg_subtree;
-namespace aptitude
-{
-  namespace matching
-  {
-    class pkg_matcher;
-  }
-}
 
 class pkg_grouppolicy
 {
@@ -194,9 +189,9 @@ class pkg_grouppolicy_filter_factory:public pkg_grouppolicy_factory
 {
   pkg_grouppolicy_factory *chain;
 
-  aptitude::matching::pkg_matcher *filter;
+  cwidget::util::ref_ptr<aptitude::matching::pattern> filter;
 public:
-  pkg_grouppolicy_filter_factory(aptitude::matching::pkg_matcher *_filter,
+  pkg_grouppolicy_filter_factory(const cwidget::util::ref_ptr<aptitude::matching::pattern> &_filter,
 				 pkg_grouppolicy_factory *_chain)
     :chain(_chain), filter(_filter) {}
 
@@ -298,18 +293,18 @@ public:
   virtual ~pkg_grouppolicy_task_factory();
 };
 
-/** \brief Groups packages using the given list of matchers/tree names.
+/** \brief Groups packages using the given list of patterns/tree names.
  *
  *  Match results can be substituted into tree names using \N
  *  notation.  Each branch of the tree can have its own policy chain;
  *  if none is specified, the default chain will be used.
  */
-class pkg_grouppolicy_matchers_factory:public pkg_grouppolicy_factory
+class pkg_grouppolicy_patterns_factory:public pkg_grouppolicy_factory
 {
 public:
   struct match_entry
   {
-    aptitude::matching::pkg_matcher *matcher;
+    cwidget::util::ref_ptr<aptitude::matching::pattern> pattern;
     /** \brief A pointer to the specialized sub-factory for
      *  this entry, or NULL to use the default chain.
      */
@@ -317,11 +312,11 @@ public:
     std::wstring tree_name;
     bool passthrough;
 
-    match_entry(aptitude::matching::pkg_matcher *_matcher,
+    match_entry(const cwidget::util::ref_ptr<aptitude::matching::pattern> &_pattern,
 		pkg_grouppolicy_factory *_chain,
 		const std::wstring &_tree_name,
 		bool _passthrough)
-      : matcher(_matcher),
+      : pattern(_pattern),
 	chain(_chain),
         tree_name(_tree_name),
 	passthrough(_passthrough)
@@ -335,7 +330,7 @@ private:
   std::vector<match_entry> subgroups;
 public:
 
-  pkg_grouppolicy_matchers_factory(const std::vector<match_entry> &_subgroups,
+  pkg_grouppolicy_patterns_factory(const std::vector<match_entry> &_subgroups,
 				   pkg_grouppolicy_factory *_chain)
     :chain(_chain), subgroups(_subgroups)
   {
@@ -344,7 +339,7 @@ public:
   pkg_grouppolicy *instantiate(pkg_signal *sig,
 			       desc_signal *_desc_sig);
 
-  ~pkg_grouppolicy_matchers_factory();
+  ~pkg_grouppolicy_patterns_factory();
 };
 
 /** Groups packages by their tags within a single facet. */
