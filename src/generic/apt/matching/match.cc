@@ -2570,6 +2570,9 @@ namespace aptitude
 	      pkgRecords &records,
 	      bool debug)
     {
+      eassert(p.valid());
+      eassert(search_info.valid());
+
       std::vector<matchable> initial_pool;
 
       if(pkg.VersionList().end())
@@ -2624,6 +2627,9 @@ namespace aptitude
 		pkgRecords &records,
 		bool debug)
     {
+      eassert(p.valid());
+      eassert(search_info.valid());
+
       // \todo Ideally we should avoid building a big std::set that
       // duplicates what Xapian knows; maybe instead I should
       // associate an Enquire object with each pattern and use
