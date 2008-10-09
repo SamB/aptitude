@@ -43,52 +43,201 @@ namespace aptitude
 {
   namespace matching
   {
+    namespace
+    {
+      // Information on the Xapian compilation of a top-level term.
+      // Note that for correct results in the presence of variable
+      // binding constructs, we rely on the fact that those constructs
+      // never interact with the Xapian-level search (so it's safe to
+      // search once and save the results).
+      class xapian_info
+      {
+      private:
+	// Read out the hits in the given MSet into the matched_terms
+	// list.
+	void record_hits(Xapian::Enquire enq,
+			 Xapian::MSet mset);
+
+	// If true, the term was compiled to a Xapian query whose
+	// results are stored in matched_packages; only packages in
+	// that set could possibly match the pattern.  If false, we'll
+	// have to examine all possible packages to find a match.
+	bool matched_packages_valid;
+
+	// The actual match set.
+	Xapian::MSet xapian_match;
+
+	// The match set resolved to package iterators and sorted for
+	// fast access.  (using a flat list instead of std::set
+	// because this will be hit a lot during a search and is
+	// potentially large)
+	std::vector<Xapian::docid> matched_packages;
+
+      public:
+	/** \brief Return \b true if this pattern can be used to
+	 *  constrain the set of packages to search.
+	 */
+	bool get_matched_packages_valid() const
+	{
+	  return matched_packages_valid;
+	}
+
+	const Xapian::MSet get_xapian_match() const
+	{
+	  return xapian_match;
+	}
+
+	/** \brief Return the set of packages matched by the top-level
+	 *  search (makes no sense if get_matched_packages_valid() is
+	 *  false).
+	 *
+	 *  \todo Should really use a vector that projects through a
+	 *  "look up the docid" function.
+	 */
+	const std::vector<Xapian::docid> &get_matched_packages() const
+	{
+	  return matched_packages;
+	}
+
+	/** \brief Return \b true if the given package might be
+	 *  matched by this pattern.
+	 */
+	bool maybe_contains_package(const pkgCache::PkgIterator &pkg,
+				    const ept::textsearch::TextSearch &db) const
+	{
+	  if(!matched_packages_valid)
+	    return true;
+	  else
+	    return std::binary_search(matched_packages.begin(),
+				      matched_packages.end(),
+				      db.docidByName(pkg.Name()));
+	}
+
+	xapian_info()
+	  : matched_packages_valid(false)
+	{
+	}
+
+	/** \brief Compile a Xapian query from the given
+	 *  pattern and execute it.
+	 */
+	void setup(const Xapian::Database &db,
+		   const ref_ptr<pattern> &pattern,
+		   bool debug);
+      };
+    }
+
     // We could try a fancy scheme where arbitrary values are attached
     // to each pattern and downcast using dynamic_cast, but I opted
     // for just explicitly listing all the possible caches in one
     // place.  This fits better with the architecture of the match
-    // language, means that all the caching information is collected
-    // in one place, and also cleanly handles things like the fact
-    // that there isn't a separate Xapian object for each pattern
-    // node.
-    struct search_cache::implementation : public search_cache
+    // language and means that all the caching information is
+    // collected in one place.
+    class search_cache::implementation : public search_cache
     {
+      // \todo this is wrong; it should be indexed by pattern like
+      // toplevel_xapian_info.
       std::map<aptitudeDepCache::user_tag,
 	       ref_ptr<match> > user_tag_matches;
 
       ept::textsearch::TextSearch db;
-      Xapian::Enquire enquire;
-      // When the Xapian search has been run, ran_xapian_search is set
-      // to true; until then, "matches" and "matched_terms" are
-      // meaninglessly empty.
-      bool ran_xapian_search;
-      // Maps package names to the set of terms that matched that
-      // package in the Xapian search.
-      std::map<std::string, std::set<std::string> > matched_terms;
 
+      // Maps "top-level" patterns to their Xapian information (that
+      // is, the corresponding query and/or query results).  Term hit
+      // lists are stored in matched_terms.  The information for a
+      // top-level term is filled in the first time it's encountered.
+      std::map<ref_ptr<pattern>, xapian_info> toplevel_xapian_info;
+
+      // Maps each term that has been looked up to a sorted list of
+      // the packages it matches.
+      std::map<std::string, std::vector<Xapian::docid> > matched_terms;
+
+    public:
       implementation()
-	: user_tag_matches(),
-	  db(),
-	  enquire(db.db()),
-	  ran_xapian_search(false)
       {
       }
 
-      void record_hits(Xapian::Enquire enq,
-		       Xapian::MSet mset)
+      // TODO: this is all wrong and needs to be fixed.
+      std::map<aptitudeDepCache::user_tag, ref_ptr<match> > &get_user_tag_matches()
       {
-	for(Xapian::MSetIterator it = mset.begin();
-	    it != mset.end(); ++it)
-	  {
-	    // For each package name, add the associated terms to its
-	    // term set.
-	    const std::string package_name =
-	      it.get_document().get_data();
-	    std::set<std::string> &terms(matched_terms[package_name]);
+	return user_tag_matches;
+      }
+			    
 
-	    terms.insert(enq.get_matching_terms_begin(it),
-			 enq.get_matching_terms_end(it));
+      bool term_matches(const pkgCache::PkgIterator &pkg,
+			const std::string &term,
+			bool debug)
+      {
+	Xapian::docid pkg_docid(db.docidByName(pkg.Name()));
+
+	const std::map<std::string, std::vector<Xapian::docid> >::iterator
+	  found = matched_terms.find(term);
+
+	if(found != matched_terms.end())
+	  return std::binary_search(found->second.begin(),
+				    found->second.end(),
+				    pkg_docid);
+	else
+	  {
+	    if(debug)
+	      std::cout << "Retrieving the hits for " << term << std::endl;
+
+	    std::map<std::string, std::vector<Xapian::docid> >::iterator
+	      inserted = matched_terms.insert(found, std::make_pair(term, std::vector<Xapian::docid>()));
+	    std::vector<Xapian::docid> &matches(inserted->second);
+
+	    // Index the stemmed version of the term too.
+	    std::string termStemmed = Xapian::Stem("en")(term);
+	    const std::string *terms[2] = { &term, &termStemmed };
+	    const int numTerms = sizeof(terms) / sizeof(terms[0]);
+
+	    for(const std::string **termIt = terms; termIt < terms + numTerms; ++termIt)
+	      {
+		const std::string &currTerm(**termIt);
+
+		Xapian::Database xapian_db(db.db());
+
+		Xapian::PostingIterator
+		  postingsBegin = xapian_db.postlist_begin(currTerm),
+		  postingsEnd   = xapian_db.postlist_end(currTerm);
+
+		for(Xapian::PostingIterator it = postingsBegin;
+		    it != postingsEnd; ++it)
+		  matches.push_back(*it);
+	      }
+
+	    std::sort(matches.begin(), matches.end());
+	    matches.erase(std::unique(matches.begin(), matches.end()),
+			  matches.end());
+
+	    if(debug)
+	      std::cout << "  (" << matches.size() << " hits)" << std::endl;
+
+	    // Now that the hit list is initialized, we can search it
+	    // for a match.
+	    return std::binary_search(matches.begin(),
+				      matches.end(),
+				      pkg_docid);
 	  }
+      }
+
+      const xapian_info &get_toplevel_xapian_info(const ref_ptr<pattern> &toplevel,
+						  bool debug)
+      {
+	std::map<ref_ptr<pattern>, xapian_info>::iterator found =
+	  toplevel_xapian_info.find(toplevel);
+
+	if(found == toplevel_xapian_info.end())
+	  {
+	    std::map<ref_ptr<pattern>, xapian_info>::iterator inserted =
+	      toplevel_xapian_info.insert(found, std::make_pair(toplevel, xapian_info()));
+	    xapian_info &rval(inserted->second);
+	    rval.setup(db.db(), toplevel, debug);
+
+	    return rval;
+	  }
+	else
+	  return found->second;
       }
     };
  
@@ -182,7 +331,7 @@ namespace aptitude
       ref_ptr<structural_match> evaluate_structural(structural_eval_mode mode,
 						    const ref_ptr<pattern> &p,
 						    stack &the_stack,
-						    const cwidget::util::ref_ptr<search_cache> &search_info,
+						    const ref_ptr<search_cache::implementation> &search_info,
 						    const std::vector<matchable> &pool,
 						    aptitudeDepCache &cache,
 						    pkgRecords &records,
@@ -204,7 +353,7 @@ namespace aptitude
       ref_ptr<match> evaluate_regexp(const ref_ptr<pattern> &p,
 				     const pattern::regex_info &inf,
 				     const char *s,
-				     const cwidget::util::ref_ptr<search_cache> &search_info,
+				     const ref_ptr<search_cache::implementation> &search_info,
 				     bool debug)
       {
 	// Unfortunately, regexec() seems to require a hard limit to
@@ -232,7 +381,7 @@ namespace aptitude
       ref_ptr<match> evaluate_atomic(const ref_ptr<pattern> &p,
 				     const matchable &target,
 				     stack &the_stack,
-				     const cwidget::util::ref_ptr<search_cache> &search_info,
+				     const ref_ptr<search_cache::implementation> &search_info,
 				     aptitudeDepCache &cache,
 				     pkgRecords &records,
 				     bool debug)
@@ -1088,24 +1237,9 @@ namespace aptitude
 
 	  case pattern::term:
 	    {
-	      // We try stemming everything as if it were English.
-	      //
-	      // TODO: guess which language to use for stemming somehow
-	      // (how? the locale isn't reliable; we care about the
-	      // language of the package descriptions).
-
-	      search_cache::implementation &info = *(search_cache::implementation *)search_info.unsafe_get_ref();
 	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
-	      std::map<std::string, std::set<std::string> >::const_iterator found(info.matched_terms.find(pkg.Name()));
-	      if(found == info.matched_terms.end())
-		return NULL;
 
-	      const std::set<std::string> &terms(found->second);
-
-	      if(terms.find(p->get_term_term()) != terms.end())
-		// TODO: how do I represent the match region?
-		return match::make_atomic(p);
-	      else if(terms.find(Xapian::Stem("en")(p->get_term_term())) != terms.end())
+	      if(search_info->term_matches(pkg, p->get_term_term(), debug))
 		return match::make_atomic(p);
 	      else
 		return NULL;
@@ -1131,9 +1265,6 @@ namespace aptitude
 
 	  case pattern::user_tag:
 	    {
-	      // Don't dyn_downcast to avoid the cost (is there really
-	      // much?).
-	      search_cache::implementation &info = *(search_cache::implementation *)search_info.unsafe_get_ref();
 	      pkgCache::PkgIterator pkg =
 		target.get_package_iterator(cache);
 
@@ -1148,13 +1279,14 @@ namespace aptitude
 		  // NB: this currently short-circuits (as does, e.g.,
 		  // ?task); for highlighting purposes we might want
 		  // to return all matches.
+		  std::map<aptitudeDepCache::user_tag, ref_ptr<match> > &user_tag_matches(search_info->get_user_tag_matches());
 		  std::map<aptitudeDepCache::user_tag, ref_ptr<match> >::const_iterator
-		    found = info.user_tag_matches.find(tag);
+		    found = user_tag_matches.find(tag);
 
 
-		  if(found != info.user_tag_matches.end() && found->second.valid())
+		  if(found != user_tag_matches.end() && found->second.valid())
 		    return found->second;
-		  else if(found == info.user_tag_matches.end())
+		  else if(found == user_tag_matches.end())
 		    {
 		      ref_ptr<match> rval(evaluate_regexp(p,
 							  p->get_user_tag_regex_info(),
@@ -1162,7 +1294,7 @@ namespace aptitude
 							  search_info,
 							  debug));
 
-		      info.user_tag_matches[tag] = rval;
+		      user_tag_matches[tag] = rval;
 		      if(rval.valid())
 			return rval;
 		    }
@@ -1198,7 +1330,7 @@ namespace aptitude
       ref_ptr<structural_match> evaluate_structural(structural_eval_mode mode,
 						    const ref_ptr<pattern> &p,
 						    stack &the_stack,
-						    const cwidget::util::ref_ptr<search_cache> &search_info,
+						    const ref_ptr<search_cache::implementation> &search_info,
 						    const std::vector<matchable> &pool,
 						    aptitudeDepCache &cache,
 						    pkgRecords &records,
@@ -2597,10 +2729,14 @@ namespace aptitude
       stack st;
       st.push_back(&initial_pool);
 
+      ref_ptr<search_cache::implementation> search_info_imp =
+	search_info.dyn_downcast<search_cache::implementation>();
+      eassert(search_info_imp.valid());
+
       return evaluate_structural(structural_eval_any,
 				 p,
 				 st,
-				 search_info,
+				 search_info_imp,
 				 initial_pool,
 				 cache,
 				 records,
@@ -2620,6 +2756,57 @@ namespace aptitude
 		       search_info, cache, records, debug);
     }
 
+    void xapian_info::setup(const Xapian::Database &db,
+			    const ref_ptr<pattern> &p,
+			    bool debug)
+    {
+      matched_packages_valid = false;
+
+      if(debug)
+	std::cout << "Finding Xapian hits for " << serialize_pattern(p) << std::endl;
+
+      ref_ptr<pattern> normalized(normalize_pattern(p));
+
+      if(debug)
+	std::cout << "Pattern Xapian-normalized to: " << serialize_pattern(normalized)
+		  << (is_xapian_dependent(normalized) ? " [Xapian-dependent]" : " [not Xapian-dependent]")
+		  << std::endl;
+
+
+      Xapian::Query q(build_xapian_query(normalized));
+
+      if(q.empty())
+	{
+	  if(debug)
+	    std::cout << "Can't build a Xapian query for this search." << std::endl
+		      << "Each incoming package will be tested separately." << std::endl;
+	}
+      else
+	{
+	  if(debug)
+	    std::cout << "Xapian query built: " << q.get_description() << std::endl;
+
+	  Xapian::Enquire enq(db);
+	  enq.set_query(q);
+
+	  xapian_match = enq.get_mset(0, 100000);
+
+	  if(debug)
+	    std::cout << "  (" << xapian_match.size() << " hits)"
+		      << std::endl;
+
+	  // Read off the matches and stuff them into the list of
+	  // matched packages for future reference.
+	  for(Xapian::MSetIterator it = xapian_match.begin();
+	      it != xapian_match.end(); ++it)
+	    matched_packages.push_back(*it);
+
+	  std::sort(matched_packages.begin(), matched_packages.end());
+
+	  matched_packages_valid = true;
+	}
+    }
+
     void search(const ref_ptr<pattern> &p,
 		const ref_ptr<search_cache> &search_info,
 		std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > > &matches,
@@ -2630,46 +2817,16 @@ namespace aptitude
       eassert(p.valid());
       eassert(search_info.valid());
 
-      // \todo Ideally we should avoid building a big std::set that
-      // duplicates what Xapian knows; maybe instead I should
-      // associate an Enquire object with each pattern and use
-      // find_matched_terms()?
-      if(debug)
-	std::cout << "Searching for " << serialize_pattern(p) << std::endl;
+      const ref_ptr<search_cache::implementation> info = search_info.dyn_downcast<search_cache::implementation>();
+      eassert(info.valid());
 
-      ref_ptr<pattern> normalized(normalize_pattern(p));
+      const xapian_info &xapian_results(info->get_toplevel_xapian_info(p, debug));
 
-      if(debug)
-	std::cout << "Pattern Xapian-normalized to: " << serialize_pattern(normalized)
-		  << (is_xapian_dependent(normalized) ? " [Xapian-dependent]" : " [not Xapian-dependent]")
-		  << std::endl;
-
-      Xapian::Query q(build_xapian_query(normalized));
-
-      search_cache::implementation &info = *(search_cache::implementation *)search_info.unsafe_get_ref();
-
-      if(q.empty())
+      if(!xapian_results.get_matched_packages_valid())
 	{
 	  if(debug)
-	    std::cout << "Can't build a Xapian query for this search." << std::endl
+	    std::cout << "Failed to build a Xapian query for this search." << std::endl
 		      << "Falling back to testing each package." << std::endl;
-
-	  // Figure out the match for each term.
-	  std::set<std::string> terms;
-	  get_terms(p, terms);
-	  if(debug && terms.size() > 0)
-	    std::cout << "Retrieving hits for individual terms:" << std::endl;
-	  for(std::set<std::string>::const_iterator it =
-		terms.begin(); it != terms.end(); ++it)
-	    {
-	      Xapian::Enquire enq(info.db.db());
-	      Xapian::Query q(stem_term(*it));
-	      enq.set_query(q);
-	      Xapian::MSet mset(enq.get_mset(0, 100000));
-	      if(debug)
-		std::cout << "  " << *it << " (" << mset.size() << " hits)" << std::endl;
-	      info.record_hits(enq, mset);
-	    }
 
 	  for(pkgCache::PkgIterator pkg = cache.PkgBegin();
 	      !pkg.end(); ++pkg)
@@ -2677,8 +2834,15 @@ namespace aptitude
 	      if(pkg.VersionList().end() && pkg.ProvidesList().end())
 		continue;
 
+	      // TODO: how do I make sure the sub-patterns are
+	      // searched using the right xapian_info?  I could thread
+	      // the current top-level or the current xapian_info
+	      // through, I suppose.  Or I could use a global list of
+	      // term postings and only store match sets on a
+	      // per-toplevel basis (that might work, actually?).
+
 	      ref_ptr<structural_match> m(get_match(p, pkg,
-						    search_info,
+						    info,
 						    cache,
 						    records,
 						    debug));
@@ -2689,36 +2853,9 @@ namespace aptitude
 	}
       else
 	{
-	  if(debug)
-	    std::cout << "Xapian query built: " << q.get_description() << std::endl;
-
-	  Xapian::Enquire enq(info.db.db());
-	  enq.set_query(q);
-	  Xapian::MSet xapian_matches(enq.get_mset(0, 100000));
-	  if(debug)
-	    std::cout << "  (" << xapian_matches.size() << " hits)"
-		      << std::endl;
-	  info.record_hits(enq, xapian_matches);
-
-	  // Add match information for any obscured terms.
-	  std::set<std::string> terms;
-	  find_obscured_terms(p, terms, false);
-	  if(debug && terms.size() > 0)
-	    std::cout << "Retrieving hits for obscured terms:" << std::endl;
-	  for(std::set<std::string>::const_iterator it =
-		terms.begin(); it != terms.end(); ++it)
-	    {
-	      Xapian::Enquire enq(info.db.db());
-	      Xapian::Query q2(stem_term(*it));
-	      enq.set_query(q2);
-	      Xapian::MSet mset(enq.get_mset(0, 100000));
-	      if(debug)
-		std::cout << "  " << *it << " (" << mset.size() << " hits)" << std::endl;
-	      info.record_hits(enq, mset);
-	    }
-
-	  for(Xapian::MSetIterator it = xapian_matches.begin();
-	      it != xapian_matches.end(); ++it)
+	  Xapian::MSet mset(xapian_results.get_xapian_match());
+	  for(Xapian::MSetIterator it = mset.begin();
+	      it != mset.end(); ++it)
 	    {
 	      std::string name(it.get_document().get_data());
 
@@ -2736,7 +2873,7 @@ namespace aptitude
 	      else if(!(pkg.VersionList().end() && pkg.ProvidesList().end()))
 		{
 		  ref_ptr<structural_match> m(get_match(p, pkg,
-							search_info,
+							info,
 							cache,
 							records,
 							debug));
