@@ -157,6 +157,11 @@ namespace aptitude
       {
       }
 
+      const ept::textsearch::TextSearch &get_db() const
+      {
+	return db;
+      }
+
       // TODO: this is all wrong and needs to be fixed.
       std::map<aptitudeDepCache::user_tag, ref_ptr<match> > &get_user_tag_matches()
       {
@@ -328,14 +333,17 @@ namespace aptitude
 	out << "]";
       }
 
-      ref_ptr<structural_match> evaluate_structural(structural_eval_mode mode,
-						    const ref_ptr<pattern> &p,
-						    stack &the_stack,
-						    const ref_ptr<search_cache::implementation> &search_info,
-						    const std::vector<matchable> &pool,
-						    aptitudeDepCache &cache,
-						    pkgRecords &records,
-						    bool debug);
+      /** \brief Like evaluate_structural, but filters the input using
+       *  Xapian first.
+       */
+      ref_ptr<structural_match> evaluate_toplevel(structural_eval_mode mode,
+						  const ref_ptr<pattern> &p,
+						  stack &the_stack,
+						  const ref_ptr<search_cache::implementation> &search_info,
+						  const std::vector<matchable> &pool,
+						  aptitudeDepCache &cache,
+						  pkgRecords &records,
+						  bool debug);
 
       /** \brief Evaluate any regular expression-based pattern.
        *
@@ -525,14 +533,14 @@ namespace aptitude
 	      eassert(variable_index >= 0 && variable_index < the_stack.size());
 
 	      ref_ptr<structural_match>
-		sub_match(evaluate_structural(structural_eval_any,
-					      p->get_bind_pattern(),
-					      the_stack,
-					      search_info,
-					      *the_stack[variable_index],
-					      cache,
-					      records,
-					      debug));
+		sub_match(evaluate_toplevel(structural_eval_any,
+					    p->get_bind_pattern(),
+					    the_stack,
+					    search_info,
+					    *the_stack[variable_index],
+					    cache,
+					    records,
+					    debug));
 
 	      if(sub_match.valid())
 		return match::make_with_sub_match(p, sub_match);
@@ -677,14 +685,14 @@ namespace aptitude
 			    std::sort(new_pool.begin(), new_pool.end());
 
 			    ref_ptr<structural_match> m =
-			      evaluate_structural(structural_eval_any,
-						  p->get_depends_pattern(),
-						  the_stack,
-						  search_info,
-						  new_pool,
-						  cache,
-						  records,
-						  debug);
+			      evaluate_toplevel(structural_eval_any,
+						p->get_depends_pattern(),
+						the_stack,
+						search_info,
+						new_pool,
+						cache,
+						records,
+						debug);
 
 			    // Note: the dependency that we return is
 			    // just the head of the OR group.
@@ -882,14 +890,14 @@ namespace aptitude
 			new_pool.push_back(matchable(provided_pkg, ver));
 
 		    ref_ptr<structural_match>
-		      m(evaluate_structural(structural_eval_any,
-					    p->get_provides_pattern(),
-					    the_stack,
-					    search_info,
-					    new_pool,
-					    cache,
-					    records,
-					    debug));
+		      m(evaluate_toplevel(structural_eval_any,
+					  p->get_provides_pattern(),
+					  the_stack,
+					  search_info,
+					  new_pool,
+					  cache,
+					  records,
+					  debug));
 
 		    if(m.valid())
 		      return match::make_provides(p, m, prv);
@@ -937,14 +945,14 @@ namespace aptitude
 
 
 		      ref_ptr<structural_match>
-			rval(evaluate_structural(structural_eval_any,
-						 p->get_reverse_depends_pattern(),
-						 the_stack,
-						 search_info,
-						 revdep_pool,
-						 cache,
-						 records,
-						 debug));
+			rval(evaluate_toplevel(structural_eval_any,
+					       p->get_reverse_depends_pattern(),
+					       the_stack,
+					       search_info,
+					       revdep_pool,
+					       cache,
+					       records,
+					       debug));
 
 		      if(rval.valid())
 			return match::make_dependency(p, rval, d);
@@ -982,14 +990,14 @@ namespace aptitude
 
 
 			      ref_ptr<structural_match>
-				rval(evaluate_structural(structural_eval_any,
-							 p->get_reverse_depends_pattern(),
-							 the_stack,
-							 search_info,
-							 revdep_pool,
-							 cache,
-							 records,
-							 debug));
+				rval(evaluate_toplevel(structural_eval_any,
+						       p->get_reverse_depends_pattern(),
+						       the_stack,
+						       search_info,
+						       revdep_pool,
+						       cache,
+						       records,
+						       debug));
 
 			      if(rval.valid())
 				return match::make_dependency(p, rval, d);
@@ -1018,14 +1026,14 @@ namespace aptitude
 		    revprv_pool[0] = matchable(prv.OwnerPkg(), prv.OwnerVer());
 
 		  ref_ptr<structural_match>
-		    m(evaluate_structural(structural_eval_any,
-					  p->get_reverse_provides_pattern(),
-					  the_stack,
-					  search_info,
-					  revprv_pool,
-					  cache,
-					  records,
-					  debug));
+		    m(evaluate_toplevel(structural_eval_any,
+					p->get_reverse_provides_pattern(),
+					the_stack,
+					search_info,
+					revprv_pool,
+					cache,
+					records,
+					debug));
 
 		  if(m.valid())
 		    return match::make_provides(p, m, prv);
@@ -1730,6 +1738,30 @@ namespace aptitude
 	  }
       }
 
+      ref_ptr<structural_match> evaluate_toplevel(structural_eval_mode mode,
+						  const ref_ptr<pattern> &p,
+						  stack &the_stack,
+						  const ref_ptr<search_cache::implementation> &search_info,
+						  const std::vector<matchable> &pool,
+						  aptitudeDepCache &cache,
+						  pkgRecords &records,
+						  bool debug)
+      {
+	const xapian_info &xapian_match(search_info->get_toplevel_xapian_info(p, debug));
+
+	// This may be an efficiency problem.
+	std::vector<matchable> filtered_pool;
+	filtered_pool.reserve(pool.size());
+	for(std::vector<matchable>::const_iterator it = pool.begin();
+	    it != pool.end(); ++it)
+	  {
+	    if(xapian_match.maybe_contains_package(it->get_package_iterator(cache), search_info->get_db()))
+	      filtered_pool.push_back(*it);
+	  }
+
+	return evaluate_structural(mode, p, the_stack, search_info,
+				   filtered_pool, cache, records, debug);
+      }
 
       // is_pure_xapian returns "true" if we can identify a Xapian
       // term that matches if AND ONLY IF the pattern matches.  In
