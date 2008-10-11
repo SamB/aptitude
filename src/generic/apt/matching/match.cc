@@ -45,6 +45,46 @@ namespace aptitude
   {
     namespace
     {
+
+      /** \brief Evaluate any regular expression-based pattern.
+       *
+       *  \param p      The pattern to evaluate.
+       *  \param inf    The regular expression to apply.
+       *  \param s      The string to test the regular expression against.
+       *  \param invert \b true if this match is inverted (i.e., in a NOT
+       *                context).  For inverted matches, we only return
+       *                a match if the regex does \e not match, and the
+       *                match region is the whole string.
+       *
+       *  \return     A match object corresponding to the regexp,
+       *              or \b NULL if the match failed.
+       */
+      ref_ptr<match> evaluate_regexp(const ref_ptr<pattern> &p,
+				     const pattern::regex_info &inf,
+				     const char *s,
+				     bool debug)
+      {
+	// Unfortunately, regexec() seems to require a hard limit to
+	// the number of matches that can be returned. :-(
+	regmatch_t matches[30];
+	const int num_matches = sizeof(matches) / sizeof(regmatch_t);
+
+	bool matched = inf.get_regex_group()->exec(s,
+						   matches,
+						   num_matches);
+
+	if(matched)
+	  {
+	    int matches_found = 0;
+	    while(matches_found < 30 && matches[matches_found].rm_so >= 0)
+	      ++matches_found;
+
+	    return match::make_regexp(p, matches, matches + matches_found);
+	  }
+	else
+	  return NULL;
+      }
+
       // Information on the Xapian compilation of a top-level term.
       // Note that for correct results in the presence of variable
       // binding constructs, we rely on the fact that those constructs
@@ -135,10 +175,18 @@ namespace aptitude
     // collected in one place.
     class search_cache::implementation : public search_cache
     {
-      // \todo this is wrong; it should be indexed by pattern like
-      // toplevel_xapian_info.
-      std::map<aptitudeDepCache::user_tag,
-	       ref_ptr<match> > user_tag_matches;
+      typedef std::map<std::pair<ref_ptr<pattern>, aptitudeDepCache::user_tag>, ref_ptr<match> > user_tag_match_map;
+
+      user_tag_match_map user_tag_matches;
+
+      struct compare_user_tag_match_by_tag
+      {
+	bool operator()(const std::pair<aptitudeDepCache::user_tag, ref_ptr<match> > &p1,
+			const std::pair<aptitudeDepCache::user_tag, ref_ptr<match> > &p2) const
+	{
+	  return p1.first < p2.first;
+	}
+      };
 
       ept::textsearch::TextSearch db;
 
@@ -162,12 +210,32 @@ namespace aptitude
 	return db;
       }
 
-      // TODO: this is all wrong and needs to be fixed.
-      std::map<aptitudeDepCache::user_tag, ref_ptr<match> > &get_user_tag_matches()
+      // Return a match of the given user tag to the given pattern,
+      // which must be a ?user-tag pattern.  If possible, this looks
+      // the match up using the internal cache; otherwise, it creates
+      // a new cache entry for the given pattern and tag.
+      ref_ptr<match> find_user_tag_match(const ref_ptr<pattern> &p,
+					 aptitudeDepCache::user_tag tag,
+					 const aptitudeDepCache &cache,
+					 bool debug)
       {
-	return user_tag_matches;
+	std::pair<ref_ptr<pattern>, aptitudeDepCache::user_tag>
+	  key(std::make_pair(p, tag));
+	user_tag_match_map::iterator cached_match(user_tag_matches.find(key));
+
+	if(cached_match == user_tag_matches.end())
+	  {
+	    ref_ptr<match> m = evaluate_regexp(p,
+					       p->get_user_tag_regex_info(),
+					       cache.deref_user_tag(tag).c_str(),
+					       debug);
+
+	    user_tag_matches[key] = m;
+	    return m;
+	  }
+	else
+	  return cached_match->second;
       }
-			    
 
       bool term_matches(const pkgCache::PkgIterator &pkg,
 			const std::string &term,
@@ -345,46 +413,6 @@ namespace aptitude
 						  pkgRecords &records,
 						  bool debug);
 
-      /** \brief Evaluate any regular expression-based pattern.
-       *
-       *  \param p      The pattern to evaluate.
-       *  \param inf    The regular expression to apply.
-       *  \param s      The string to test the regular expression against.
-       *  \param invert \b true if this match is inverted (i.e., in a NOT
-       *                context).  For inverted matches, we only return
-       *                a match if the regex does \e not match, and the
-       *                match region is the whole string.
-       *
-       *  \return     A match object corresponding to the regexp,
-       *              or \b NULL if the match failed.
-       */
-      ref_ptr<match> evaluate_regexp(const ref_ptr<pattern> &p,
-				     const pattern::regex_info &inf,
-				     const char *s,
-				     const ref_ptr<search_cache::implementation> &search_info,
-				     bool debug)
-      {
-	// Unfortunately, regexec() seems to require a hard limit to
-	// the number of matches that can be returned. :-(
-	regmatch_t matches[30];
-	const int num_matches = sizeof(matches) / sizeof(regmatch_t);
-
-	bool matched = inf.get_regex_group()->exec(s,
-						   matches,
-						   num_matches);
-
-	if(matched)
-	  {
-	    int matches_found = 0;
-	    while(matches_found < 30 && matches[matches_found].rm_so >= 0)
-	      ++matches_found;
-
-	    return match::make_regexp(p, matches, matches + matches_found);
-	  }
-	else
-	  return NULL;
-      }
-
       // Match an atomic expression against one matchable.
       ref_ptr<match> evaluate_atomic(const ref_ptr<pattern> &p,
 				     const matchable &target,
@@ -437,7 +465,6 @@ namespace aptitude
 		      ref_ptr<match> m = evaluate_regexp(p,
 							 p->get_archive_regex_info(),
 							 cur.Archive(),
-							 search_info,
 							 debug);
 
 		      if(m.valid())
@@ -718,7 +745,6 @@ namespace aptitude
 		return evaluate_regexp(p,
 				       p->get_description_regex_info(),
 				       transcode(get_long_description(ver, &records)).c_str(),
-				       search_info,
 				       debug);
 	      }
 	    break;
@@ -793,7 +819,6 @@ namespace aptitude
 		return evaluate_regexp(p,
 				       p->get_maintainer_regex_info(),
 				       rec.Maintainer().c_str(),
-				       search_info,
 				       debug);
 	      }
 	    break;
@@ -802,7 +827,6 @@ namespace aptitude
 	    return evaluate_regexp(p,
 				   p->get_name_regex_info(),
 				   target.get_package_iterator(cache).Name(),
-				   search_info,
 				   debug);
 	    break;
 
@@ -840,7 +864,6 @@ namespace aptitude
 			m(evaluate_regexp(p,
 					  p->get_origin_regex_info(),
 					  origin,
-					  search_info,
 					  debug));
 
 		      if(m.valid())
@@ -1055,7 +1078,6 @@ namespace aptitude
 		      m(evaluate_regexp(p,
 					p->get_section_regex_info(),
 					ver_section,
-					search_info,
 					debug));
 
 		    if(m.valid())
@@ -1071,7 +1093,6 @@ namespace aptitude
 		return evaluate_regexp(p,
 				       p->get_section_regex_info(),
 				       pkg_section,
-				       search_info,
 				       debug);
 	      else
 		return NULL;
@@ -1101,7 +1122,6 @@ namespace aptitude
 			    evaluate_regexp(p,
 					    p->get_source_package_regex_info(),
 					    pkg.Name(),
-					    search_info,
 					    debug);
 
 			  if(rval.valid())
@@ -1114,7 +1134,6 @@ namespace aptitude
 			evaluate_regexp(p,
 					p->get_source_package_regex_info(),
 					rec.SourcePkg().c_str(),
-					search_info,
 					debug);
 
 		      if(rval.valid())
@@ -1149,7 +1168,6 @@ namespace aptitude
 			    evaluate_regexp(p,
 					    p->get_source_version_regex_info(),
 					    ver.VerStr(),
-					    search_info,
 					    debug);
 
 			  if(rval.valid())
@@ -1162,7 +1180,6 @@ namespace aptitude
 			evaluate_regexp(p,
 					p->get_source_version_regex_info(),
 					rec.SourceVer().c_str(),
-					search_info,
 					debug);
 
 		      if(rval.valid())
@@ -1204,7 +1221,6 @@ namespace aptitude
 		    evaluate_regexp(p,
 				    p->get_tag_regex_info(),
 				    name.c_str(),
-				    search_info,
 				    debug);
 
 		  if(rval.valid())
@@ -1232,7 +1248,6 @@ namespace aptitude
 		    evaluate_regexp(p,
 				    p->get_task_regex_info(),
 				    i->c_str(),
-				    search_info,
 				    debug);
 
 		  if(m.valid())
@@ -1284,28 +1299,16 @@ namespace aptitude
 		{
 		  aptitudeDepCache::user_tag tag(*it);
 
+		  ref_ptr<match> m(search_info->find_user_tag_match(p,
+								    tag,
+								    cache,
+								    debug));
+
 		  // NB: this currently short-circuits (as does, e.g.,
 		  // ?task); for highlighting purposes we might want
 		  // to return all matches.
-		  std::map<aptitudeDepCache::user_tag, ref_ptr<match> > &user_tag_matches(search_info->get_user_tag_matches());
-		  std::map<aptitudeDepCache::user_tag, ref_ptr<match> >::const_iterator
-		    found = user_tag_matches.find(tag);
-
-
-		  if(found != user_tag_matches.end() && found->second.valid())
-		    return found->second;
-		  else if(found == user_tag_matches.end())
-		    {
-		      ref_ptr<match> rval(evaluate_regexp(p,
-							  p->get_user_tag_regex_info(),
-							  cache.deref_user_tag(*it).c_str(),
-							  search_info,
-							  debug));
-
-		      user_tag_matches[tag] = rval;
-		      if(rval.valid())
-			return rval;
-		    }
+		  if(m.valid())
+		    return m;
 		}
 
 	      return NULL;
@@ -1319,7 +1322,6 @@ namespace aptitude
 	    return evaluate_regexp(p,
 				   p->get_version_regex_info(),
 				   target.get_version_iterator(cache).VerStr(),
-				   search_info,
 				   debug);
 	    break;
 
