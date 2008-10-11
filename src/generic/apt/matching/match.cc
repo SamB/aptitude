@@ -256,7 +256,7 @@ namespace aptitude
 	      std::cout << "Retrieving the hits for " << term << std::endl;
 
 	    std::map<std::string, std::vector<Xapian::docid> >::iterator
-	      inserted = matched_terms.insert(found, std::make_pair(term, std::vector<Xapian::docid>()));
+	      inserted = matched_terms.insert(std::make_pair(term, std::vector<Xapian::docid>())).first;
 	    std::vector<Xapian::docid> &matches(inserted->second);
 
 	    // Index the stemmed version of the term too.
@@ -303,7 +303,7 @@ namespace aptitude
 	if(found == toplevel_xapian_info.end())
 	  {
 	    std::map<ref_ptr<pattern>, xapian_info>::iterator inserted =
-	      toplevel_xapian_info.insert(found, std::make_pair(toplevel, xapian_info()));
+	      toplevel_xapian_info.insert(std::make_pair(toplevel, xapian_info())).first;
 	    xapian_info &rval(inserted->second);
 	    rval.setup(db.db(), toplevel, debug);
 
