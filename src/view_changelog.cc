@@ -19,19 +19,20 @@
 
 #include <cwidget/config/colors.h>
 #include <cwidget/config/keybindings.h>
+#include <cwidget/fragment.h>
 #include <cwidget/generic/util/transcode.h>
 #include <cwidget/widgets/pager.h>
 #include <cwidget/widgets/scrollbar.h>
 #include <cwidget/widgets/table.h>
 #include <cwidget/widgets/text_layout.h>
 
-#include "changelog_parse.h"
 #include "menu_redirect.h"
 #include "menu_text_layout.h"
 #include "ui.h"
 #include "ui_download_manager.h"
 
 #include <generic/apt/apt.h>
+#include <generic/apt/changelog_parse.h>
 #include <generic/apt/pkg_changelog.h>
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_signal_log.h>
@@ -41,12 +42,114 @@
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/mem_fun.h>
 
+#include <apt-pkg/pkgsystem.h>
+#include <apt-pkg/version.h>
+
 using namespace std;
 
 namespace cw = cwidget;
 namespace cwidget
 {
   using namespace widgets;
+}
+
+
+static
+cw::fragment *change_text_fragment(const std::string &s)
+{
+  std::vector<cw::fragment *> lines;
+
+  std::string::size_type start = 0;
+  std::string::size_type next_nl;
+
+  do
+    {
+      next_nl = s.find('\n', start);
+
+      if(s[start] == ' ')
+	++start;
+
+      if(next_nl == start + 1 && s[start] == '.')
+	{
+	  lines.push_back(cw::newline_fragment());
+	  start = next_nl + 1;
+	  continue;
+	}
+
+      std::string this_line;
+      if(next_nl != std::string::npos)
+	this_line.assign(s, start, next_nl - start);
+      else
+	this_line.assign(s, start, std::string::npos);
+
+      size_t first_nonspace = 0;
+      while(first_nonspace < this_line.size() && isspace(this_line[first_nonspace]))
+	++first_nonspace;
+
+      bool has_bullet = false;
+      if(first_nonspace < this_line.size())
+	switch(this_line[first_nonspace])
+	  {
+	  case '*':
+	  case '+':
+	  case '-':
+	    has_bullet = true;
+	    break;
+	  }
+
+      if(has_bullet)
+	{
+	  cw::fragment *item =
+	    cw::fragf("%s%F%s%n",
+		      std::string(this_line, 0, first_nonspace).c_str(),
+		      cw::text_fragment(std::string(this_line, first_nonspace, 1).c_str(),
+					cw::get_style("Bullet")),
+		      std::string(this_line, first_nonspace + 1).c_str());
+	  lines.push_back(cw::hardwrapbox(item));
+	}
+      else
+	lines.push_back(cw::hardwrapbox(cw::fragf("%s%n", this_line.c_str())));
+
+      start = next_nl + 1;
+    } while(next_nl != std::string::npos);
+
+  return cw::sequence_fragment(lines);
+}
+
+static
+cw::fragment *render_changelog(const cw::util::ref_ptr<aptitude::apt::changelog> &cl,
+			       const std::string &curver)
+{
+  bool first = true;
+
+  std::vector<cw::fragment *> fragments;
+
+  for(aptitude::apt::changelog::const_iterator it = cl->begin();
+      it != cl->end(); ++it)
+    {
+      const aptitude::apt::changelog_entry &ent(*it);
+
+      cw::fragment *taglineFrag =
+	cw::hardwrapbox(cw::fragf("%n -- %s  %s",
+				  ent.get_maintainer().c_str(),
+				  ent.get_date_str().c_str()));
+      cw::fragment *f =
+	cw::fragf(first ? "%F%F" : "%n%F%F",
+		  change_text_fragment(ent.get_changes()),
+		  taglineFrag);
+
+      first = false;
+
+      if(!curver.empty() && _system->VS->CmpVersion(ent.get_version(), curver) > 0)
+	{
+	  cw::style s = cw::get_style("ChangelogNewerVersion");
+	  fragments.push_back(cw::style_fragment(f, s));
+	}
+      else
+	fragments.push_back(f);
+    }
+
+  return cw::sequence_fragment(fragments);
 }
 
 class pkg_changelog_screen : public cw::file_pager, public menu_redirect
@@ -165,7 +268,8 @@ static void do_view_changelog(temp::name n,
   string tablabel = ssprintf(_("%s changes"), pkgname.c_str());
   string desclabel = _("View the list of changes made to this Debian package.");
 
-  cw::fragment *f = make_changelog_fragment(n, curverstr);
+  cw::util::ref_ptr<aptitude::apt::changelog> changelog(aptitude::apt::parse_changelog(n));
+  cw::fragment *f = changelog.valid() ? render_changelog(changelog, curverstr) : NULL;
 
   cw::table_ref           t = cw::table::create();
   if(f != NULL)
