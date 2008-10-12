@@ -44,11 +44,17 @@ namespace gui
       Gtk::Notebook * notebook;
       ChangeLogView * changelogview;
 
+      bool changelog_loaded;
+
       std::string package_name;
       std::string version_name;
 
+      pkgCache::VerIterator current_version;
+
       void do_cache_closed();
       void do_cache_reloaded();
+
+      void notebook_switch_handler(GtkNotebookPage * page, guint page_num);
     public:
       InfoTab(const Glib::ustring &label);
       void disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);

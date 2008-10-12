@@ -530,8 +530,20 @@ namespace gui
     disp_package(pkg, found_ver);
   }
 
+  void InfoTab::notebook_switch_handler(GtkNotebookPage * page, guint page_num)
+  {
+    if (page_num == 1 && !changelog_loaded)
+      {
+        changelogview->load_version(current_version);
+	changelog_loaded = true;
+      }
+  }
+
   void InfoTab::disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
+    changelog_loaded = false;
+    current_version = ver;
+
     package_name = pkg.end() ? "" : pkg.Name();
     version_name = ver.end() ? "" : ver.VerStr();
 
@@ -612,9 +624,8 @@ namespace gui
 	pDependsView->get_treeview()->expand_row(path, false);
       }
 
-    // FIXME: This should only be processed when displayed
     changelogview = new ChangeLogView(get_xml(), "main_info_changelogview");
-    changelogview->load_version(ver);
+    notebook->signal_switch_page().connect(sigc::mem_fun(*this, &InfoTab::notebook_switch_handler));
   }
 
   void InfoTab::show_tab(const pkgCache::PkgIterator &pkg,
