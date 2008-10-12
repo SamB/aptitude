@@ -38,7 +38,9 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/apt_undo_group.h>
 #include <generic/apt/config_signal.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
@@ -483,9 +485,16 @@ void pkg_item::dispatch_mouse(short id, int x, mmask_t bstate, cw::tree *owner)
 
 bool pkg_item::matches(const string &s) const
 {
-  return aptitude::matching::pkg_matches(s, package, visible_version(),
-					 *apt_cache_file,
-					 *apt_package_records);
+  cw::util::ref_ptr<aptitude::matching::pattern> p =
+    aptitude::matching::parse(s);
+
+  cw::util::ref_ptr<aptitude::matching::search_cache> info =
+    aptitude::matching::search_cache::create();
+
+  return aptitude::matching::get_match(p, package, visible_version(),
+				       info,
+				       *apt_cache_file,
+				       *apt_package_records).valid();
 }
 
 pkgCache::VerIterator pkg_item::visible_version(const pkgCache::PkgIterator &pkg)

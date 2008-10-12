@@ -221,7 +221,7 @@ namespace aptitude
 	   *
 	   *  Matches packages by their action flag.
 	   *
-	   *  Fields: action_type, action_string.
+	   *  Fields: action_type.
 	   */
 	  action,
 	  /** \brief ?all-versions(PATTERN)
@@ -463,6 +463,13 @@ namespace aptitude
 	   *  Fields: regex_info.
 	   */
 	  task,
+	  /** \brief ?term(TERM)
+	   *
+	   *  Matches a package using a full-text keyword search.
+	   *
+	   *  Fields: term.
+	   */
+	  term,
 	  /** \brief ?true
 	   *
 	   *  Matches everything.
@@ -541,13 +548,15 @@ namespace aptitude
 	/** \brief Compile the given regular expression.
 	 *
 	 *  \param _regex_string  The text of the regular expression.
+	 *                        If it is the empty string, the
+	 *                        regular expression will match anything.
 	 *
 	 *  \throw MatchingException if the regular expression cannot be
 	 *  compiled.
 	 */
 	regex_info(const std::string &_regex_string)
-	  : regex_group(new regex(_regex_string, REG_ICASE|REG_EXTENDED)),
-	    regex_nogroup(new regex(_regex_string, REG_ICASE|REG_EXTENDED|REG_NOSUB)),
+	  : regex_group(new regex(_regex_string.empty() ? ".*" : _regex_string, REG_ICASE|REG_EXTENDED)),
+	    regex_nogroup(new regex(_regex_string.empty() ? ".*" : _regex_string, REG_ICASE|REG_EXTENDED|REG_NOSUB)),
 	    regex_string(_regex_string)
 	{
 	}
@@ -1686,6 +1695,30 @@ namespace aptitude
 	eassert(tp == task);
 
 	return regex_information;
+      }
+
+      // @}
+
+      /** \name ?term term constructor and accessors */
+
+      // @{
+
+      /** \brief Create a ?term term.
+       *
+       *  \param s  The keyword to search for.
+       */
+      static cwidget::util::ref_ptr<pattern>
+      make_term(const std::string &s)
+      {
+	return new pattern(term, s);
+      }
+
+      /** \brief Retrieve the term field of a ?term term. */
+      const std::string &get_term_term() const
+      {
+	eassert(tp == term);
+
+	return string_info;
       }
 
       // @}

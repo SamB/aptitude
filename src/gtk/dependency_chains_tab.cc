@@ -32,8 +32,6 @@
 
 #include <cwidget/generic/util/ssprintf.h>
 
-#include <generic/apt/matchers.h>
-
 namespace gui
 {
   // \todo let the user adjust the parameters of the search
@@ -169,6 +167,7 @@ namespace gui
   Glib::RefPtr<Gtk::TreeModel> DependencyChainsTab::get_results()
   {
     using namespace aptitude;
+    using cwidget::util::ref_ptr;
 
     Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*results_view->get_columns());
 
@@ -204,7 +203,7 @@ namespace gui
     if(target.end())
       return store;
 
-    std::vector<matching::pkg_matcher *> leaves;
+    std::vector<ref_ptr<matching::pattern> > leaves;
     for(Gtk::TreeSelection::ListHandle_Path::const_iterator
 	  it = start_rows.begin(); it != start_rows.end(); ++it)
       {
@@ -212,7 +211,7 @@ namespace gui
 							    *start_package_view->get_columns(),
 							    *it);
 	if(!leaf.end())
-	  leaves.push_back(matching::make_const_matcher(leaf));
+	  leaves.push_back(matching::pattern::make_name(cwidget::util::ssprintf("^%s$", leaf.Name())));
       }
 
     if(leaves.empty())

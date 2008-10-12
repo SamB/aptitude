@@ -25,7 +25,9 @@
 #include "aptitude_resolver_universe.h"
 #include "aptitudepolicy.h"
 #include "config_signal.h"
-#include "matchers.h"
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 #include <generic/problemresolver/solution.h>
 #include <generic/util/undo.h>
 
@@ -1883,20 +1885,25 @@ class AptitudeInRootSetFunc : public pkgDepCache::InRootSetFunc
   /** \brief A pointer to the cache in which we're matching. */
   aptitudeDepCache &cache;
 
-  /** A matcher if one could be created; otherwise NULL. */
-  aptitude::matching::pkg_matcher *m;
+  /** A pattern if one could be created; otherwise NULL. */
+  cwidget::util::ref_ptr<aptitude::matching::pattern> p;
+
+  /** \brief The search cache to use in applying this function. */
+  cwidget::util::ref_ptr<aptitude::matching::search_cache> search_info;
 
   /** \b true if the package was successfully constructed. */
   bool constructedSuccessfully;
 
-  /** The secondary test to apply.  Only set if creating the
-   *  matcher succeeds.
+  /** The secondary test to apply.  Only set if creating the match
+   *  succeeds.
    */
   pkgDepCache::InRootSetFunc *chain;
 public:
   AptitudeInRootSetFunc(pkgDepCache::InRootSetFunc *_chain,
 			aptitudeDepCache &_cache)
-    : cache(_cache), m(NULL), constructedSuccessfully(false), chain(NULL)
+    : cache(_cache), p(NULL),
+      search_info(aptitude::matching::search_cache::create()),
+      constructedSuccessfully(false), chain(NULL)
   {
     std::string matchterm = aptcfg->Find(PACKAGE "::Keep-Unused-Pattern", "~nlinux-image-.*");
     if(matchterm.empty()) // Bug-compatibility with old versions.
@@ -1906,8 +1913,8 @@ public:
       constructedSuccessfully = true;
     else
       {
-	m = aptitude::matching::parse_pattern(matchterm);
-	if(m != NULL)
+	p = aptitude::matching::parse(matchterm);
+	if(p.valid())
 	  constructedSuccessfully = true;
       }
 
@@ -1923,7 +1930,7 @@ public:
   bool InRootSet(const pkgCache::PkgIterator &pkg)
   {
     pkgRecords &records(cache.get_records());
-    if(m != NULL && aptitude::matching::apply_matcher(m, pkg, cache, records))
+    if(p.valid() && aptitude::matching::get_match(p, pkg, search_info, cache, records).valid())
       return true;
     else
       return chain != NULL && chain->InRootSet(pkg);
@@ -1931,7 +1938,6 @@ public:
 
   ~AptitudeInRootSetFunc()
   {
-    delete m;
     delete chain;
   }
 };

@@ -272,6 +272,9 @@ namespace aptitude
 	    return compare_regex_info(p1->get_task_regex_info(),
 				      p2->get_task_regex_info());
 
+	  case pattern::term:
+	    return p1->get_term_term().compare(p2->get_term_term());
+
 	  case pattern::true_tp:
 	    return 0;
 

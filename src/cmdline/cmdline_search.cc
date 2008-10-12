@@ -14,7 +14,9 @@
 #include <pkg_sortpolicy.h>
 
 #include <generic/apt/apt.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <cwidget/config/column_definition.h>
 #include <cwidget/generic/util/transcode.h>
@@ -26,32 +28,31 @@
 
 using namespace std;
 namespace cw = cwidget;
+using cwidget::util::ref_ptr;
 using cwidget::util::transcode;
 using namespace aptitude::matching;
 using namespace cwidget::config;
 
+/// \todo search_result_parameters currently acts as an empty list; it
+/// should parse the match result and return the groups it contains.
 class search_result_parameters : public column_parameters
 {
-  pkg_match_result *r;
+  ref_ptr<structural_match> r;
+
 public:
-  search_result_parameters(pkg_match_result *_r)
+  search_result_parameters(const ref_ptr<structural_match> &_r)
     :r(_r)
   {
   }
 
-  ~search_result_parameters()
-  {
-    delete r;
-  }
-
   int param_count()
   {
-    return r->num_groups();
+    return 0;
   }
 
   wstring get_param(int n)
   {
-    return cw::util::transcode(r->group(n));
+    return wstring();
   }
 };
 
@@ -62,8 +63,8 @@ class compare
 public:
   compare(pkg_sortpolicy *_s):s(_s) {}
 
-  bool operator()(const pair<pkgCache::PkgIterator, pkg_match_result *> &a,
-		  const pair<pkgCache::PkgIterator, pkg_match_result *> &b)
+  bool operator()(const pair<pkgCache::PkgIterator, ref_ptr<structural_match> > &a,
+		  const pair<pkgCache::PkgIterator, ref_ptr<structural_match> > &b)
   {
     pkgCache::VerIterator av=(*apt_cache_file)[a.first].CandidateVerIter(*apt_cache_file);
     pkgCache::VerIterator bv=(*apt_cache_file)[b.first].CandidateVerIter(*apt_cache_file);
@@ -79,8 +80,8 @@ class result_equality
 public:
   result_equality(pkg_sortpolicy *_s):s(_s) {}
 
-  bool operator()(const pair<pkgCache::PkgIterator, pkg_match_result *> &a,
-		  const pair<pkgCache::PkgIterator, pkg_match_result *> &b)
+  bool operator()(const pair<pkgCache::PkgIterator, ref_ptr<structural_match> > &a,
+		  const pair<pkgCache::PkgIterator, ref_ptr<structural_match> > &b)
   {
     pkgCache::VerIterator av =
       (*apt_cache_file)[a.first].CandidateVerIter(*apt_cache_file);
@@ -94,7 +95,7 @@ public:
 // FIXME: apt-cache does lots of tricks to make this fast.  Should I?
 int cmdline_search(int argc, char *argv[], const char *status_fname,
 		   string display_format, string width, string sort,
-		   bool disable_columns)
+		   bool disable_columns, bool debug)
 {
   int real_width=-1;
 
@@ -155,19 +156,13 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
       return -1;
     }
 
-  vector<pkg_matcher *> matchers;
+  vector<ref_ptr<pattern> > matchers;
 
   for(int i=1; i<argc; ++i)
     {
-      pkg_matcher *m=parse_pattern(argv[i]);
-      if(!m)
+      ref_ptr<pattern> m = parse(argv[i]);
+      if(!m.valid())
 	{
-	  while(!matchers.empty())
-	    {
-	      delete matchers.back();
-	      matchers.pop_back();
-	    }
-
 	  _error->DumpErrors();
 
 	  delete columns;
@@ -177,31 +172,25 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
       matchers.push_back(m);
     }
 
-  vector<pair<pkgCache::PkgIterator, pkg_match_result *> > output;
-  for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin();
-      !pkg.end(); ++pkg)
+  vector<pair<pkgCache::PkgIterator, ref_ptr<structural_match> > > output;
+  ref_ptr<search_cache> search_info(search_cache::create());
+  for(vector<ref_ptr<pattern> >::iterator m=matchers.begin();
+      m!=matchers.end(); ++m)
     {
-      // Ignore packages that exist only due to dependencies.
-      if(pkg.VersionList().end() && pkg.ProvidesList().end())
-	continue;
-
-      for(vector<pkg_matcher *>::iterator m=matchers.begin();
-	  m!=matchers.end(); ++m)
-	{
-	  pkg_match_result *r = get_match(*m, pkg,
-					  *apt_cache_file,
-					  *apt_package_records);
-
-	  if(r != NULL)
-	    output.push_back(pair<pkgCache::PkgIterator, pkg_match_result *>(pkg, r));
-	}
+      // Q: should I just wrap an ?or around them all?
+      aptitude::matching::search(*m,
+				 search_info,
+				 output,
+				 *apt_cache_file,
+				 *apt_package_records,
+				 debug);
     }
 
   std::sort(output.begin(), output.end(), compare(s));
   output.erase(std::unique(output.begin(), output.end(), result_equality(s)),
 	       output.end());
 
-  for(vector<pair<pkgCache::PkgIterator, pkg_match_result *> >::iterator i=output.begin();
+  for(vector<pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >::iterator i=output.begin();
       i!=output.end(); ++i)
     {
       column_parameters *p =

@@ -24,7 +24,7 @@
 #include <apt-pkg/error.h>
 
 #include <aptitude.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/pattern.h>
 
 aptitude_resolver::resolver_hint aptitude_resolver::resolver_hint::parse(const std::string &hint)
 {
@@ -48,7 +48,6 @@ aptitude_resolver::resolver_hint aptitude_resolver::resolver_hint::parse(const s
 
 aptitude_resolver::resolver_hint::~resolver_hint()
 {
-  delete target;
 }
 
 aptitude_resolver::aptitude_resolver(int step_score,
@@ -60,8 +59,10 @@ aptitude_resolver::aptitude_resolver(int step_score,
 				     aptitudeDepCache *cache)
   :generic_problem_resolver<aptitude_universe>(step_score, broken_score, unfixed_soft_score, infinity, resolution_score, aptitude_universe(cache))
 {
-  using aptitude::matching::pkg_matcher;
-  std::vector<pkg_matcher *> hint_matchers;
+  using cwidget::util::ref_ptr;
+  using aptitude::matching::pattern;
+
+  std::vector<ref_ptr<pattern> > hint_matchers;
   for(std::vector<resolver_hint>::const_iterator it = hints.begin();
       it != hints.end(); ++it)
     {

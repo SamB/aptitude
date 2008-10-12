@@ -29,7 +29,8 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/pattern.h>
 #include <generic/apt/pkg_hier.h>
 #include <generic/apt/tags.h>
 #include <generic/apt/tasks.h>
@@ -52,7 +53,8 @@ using namespace std;
 
 namespace cw = cwidget;
 
-namespace match = aptitude::matching;
+namespace matching = aptitude::matching;
+using cw::util::ref_ptr;
 
 pkg_grouppolicy_factory::~pkg_grouppolicy_factory()
 {
@@ -499,21 +501,24 @@ void pkg_grouppolicy_status::add_package(const pkgCache::PkgIterator &pkg,
 /*****************************************************************************/
 class pkg_grouppolicy_filter:public pkg_grouppolicy
 {
-  match::pkg_matcher *filter;
+  ref_ptr<matching::pattern> filter;
+  ref_ptr<matching::search_cache> search_info;
 
   pkg_grouppolicy *chain;
 public:
-  pkg_grouppolicy_filter(pkg_grouppolicy_factory *_chain, match::pkg_matcher *_filter,
+  pkg_grouppolicy_filter(pkg_grouppolicy_factory *_chain,
+			 const ref_ptr<matching::pattern> &_filter,
 			 pkg_signal *_sig, desc_signal *_desc_sig)
     :pkg_grouppolicy(_sig, _desc_sig),
      filter(_filter),
+     search_info(matching::search_cache::create()),
      chain(_chain->instantiate(_sig, _desc_sig))
   {
   }
 
   virtual void add_package(const pkgCache::PkgIterator &pkg, pkg_subtree *root)
   {
-    if(match::apply_matcher(filter, pkg, *apt_cache_file, *apt_package_records))
+    if(matching::get_match(filter, pkg, search_info, *apt_cache_file, *apt_package_records).valid())
       chain->add_package(pkg, root);
   }
 
@@ -529,7 +534,6 @@ pkg_grouppolicy *pkg_grouppolicy_filter_factory::instantiate(pkg_signal *_sig,
 pkg_grouppolicy_filter_factory::~pkg_grouppolicy_filter_factory()
 {
   delete chain;
-  delete filter;
 }
 
 /*****************************************************************************/
@@ -1132,10 +1136,10 @@ pkg_grouppolicy_task_factory::~pkg_grouppolicy_task_factory()
 }
 
 
-class pkg_grouppolicy_matchers : public pkg_grouppolicy
+class pkg_grouppolicy_patterns : public pkg_grouppolicy
 {
 public:
-  typedef pkg_grouppolicy_matchers_factory::match_entry match_entry;
+  typedef pkg_grouppolicy_patterns_factory::match_entry match_entry;
 
   struct subtree_pair
   {
@@ -1154,12 +1158,13 @@ public:
 private:
   pkg_grouppolicy_factory *chain;
   pkg_grouppolicy *passthrough_policy;
+  ref_ptr<matching::search_cache> search_info;
   const vector<match_entry> &subgroups;
   typedef map<wstring, subtree_pair> subtree_map;
   subtree_map subtrees;
 
   wstring substitute(const wstring &s,
-		     match::pkg_match_result *res)
+		     const ref_ptr<matching::structural_match> &res)
   {
     wstring rval;
 
@@ -1215,14 +1220,16 @@ private:
 
 		--val;
 
-		if(val >= res->num_groups())
+		// TODO: extend the match structure so we can have
+		// working group information.
+		if(val >= 0 /*res->num_groups()*/)
 		  {
 		    string group_values;
-		    for(unsigned int i = 0; i<res->num_groups(); ++i)
+		    for(unsigned int i = 0; i < 0 /*res->num_groups()*/; ++i)
 		      {
 			if(i > 0)
 			  group_values += ",";
-			group_values += res->group(i);
+			group_values += "" /*res->group(i)*/;
 		      }
 
 		    wchar_t buf[1024];
@@ -1232,7 +1239,7 @@ private:
 		    return buf;
 		  }
 
-		rval += cw::util::transcode(res->group(val));
+		rval += cw::util::transcode(""/*res->group(val)*/);
 	      }
 	  }
       }
@@ -1240,7 +1247,7 @@ private:
     return rval;
   }
 public:
-  pkg_grouppolicy_matchers(pkg_grouppolicy_factory *_chain,
+  pkg_grouppolicy_patterns(pkg_grouppolicy_factory *_chain,
 			   pkg_signal *_sig, desc_signal *_desc_sig,
 			   const vector<match_entry> &_subgroups)
         :pkg_grouppolicy(_sig, _desc_sig),
@@ -1249,7 +1256,7 @@ public:
   {
   }
 
-  ~pkg_grouppolicy_matchers()
+  ~pkg_grouppolicy_patterns()
   {
     for(subtree_map::const_iterator i = subtrees.begin();
 	i != subtrees.end(); ++i)
@@ -1263,8 +1270,8 @@ public:
     for(vector<match_entry>::const_iterator i = subgroups.begin();
 	i != subgroups.end(); ++i)
 	{
-	  match::pkg_match_result *res = match::get_match(i->matcher, pkg, *apt_cache_file, *apt_package_records);
-	  if(res != NULL)
+	  ref_ptr<matching::structural_match> res(matching::get_match(i->pattern, pkg, search_info, *apt_cache_file, *apt_package_records));
+	  if(res.valid())
 	    {
 	      pkg_grouppolicy_factory * const local_chain =
 		i->chain != NULL ? i->chain : chain;
@@ -1279,7 +1286,6 @@ public:
 		}
 
 	      wstring title = substitute(i->tree_name, res);
-	      delete res;
 
 	      subtree_map::const_iterator found =
 		subtrees.find(title);
@@ -1305,18 +1311,17 @@ public:
   }
 };
 
-pkg_grouppolicy *pkg_grouppolicy_matchers_factory :: instantiate(pkg_signal *sig,
+pkg_grouppolicy *pkg_grouppolicy_patterns_factory :: instantiate(pkg_signal *sig,
 								 desc_signal *_desc_sig)
 {
-  return new pkg_grouppolicy_matchers(chain, sig, _desc_sig, subgroups);
+  return new pkg_grouppolicy_patterns(chain, sig, _desc_sig, subgroups);
 }
 
-pkg_grouppolicy_matchers_factory :: ~pkg_grouppolicy_matchers_factory()
+pkg_grouppolicy_patterns_factory :: ~pkg_grouppolicy_patterns_factory()
 {
   for(std::vector<match_entry>::const_iterator i = subgroups.begin();
       i != subgroups.end(); ++i)
     {
-      delete i->matcher;
       delete i->chain;
     }
   delete chain;

@@ -26,6 +26,8 @@
 
 #include <apt-pkg/pkgcache.h>
 
+#include <generic/apt/matching/pattern.h>
+
 /** \brief Uses the cwidget::widgets::tree classes to display a tree containing packages
  *
  * 
@@ -55,7 +57,7 @@ class pkg_tree:public apt_undo_tree
   std::string groupingstr;
   pkg_sortpolicy *sorting;
 
-  aptitude::matching::pkg_matcher *limit;
+  cwidget::util::ref_ptr<aptitude::matching::pattern> limit;
   std::wstring limitstr;
   // Defines the limits on the display (what packages will be allowed
   // to be displayed)  This could be a grouping policy, but hardcoding the
