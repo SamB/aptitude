@@ -34,8 +34,6 @@ aptitude_SOURCES= 	\
 	apt_undo_tree.h \
 	broken_indicator.cc\
 	broken_indicator.h\
-	changelog_parse.cc \
-	changelog_parse.h  \
 	defaults.cc	\
 	defaults.h	\
 	dep_item.cc	\

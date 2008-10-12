@@ -1,6 +1,6 @@
 // pkg_changelog.h    -*-c++-*-
 //
-//  Copyright 2000, 2005 Daniel Burrows
+//  Copyright 2000, 2005, 2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,13 +37,25 @@
 
 class download_manager;
 
-/** Generate a download process object that retrieves the given
- *  package version's changelog.  When the download is complete, the
- *  given slot will be invoked with the file to which the changelog
- *  was downloaded as an argument.
+/** Generate a download process object that retrieves changelogs for
+ *  the given package versions.  When the download is complete for a
+ *  version, the corresponding slot will be invoked with the file to
+ *  which the changelog was downloaded as an argument.
+ *
+ *  If one of the entries in the vector is an end iterator or has no
+ *  file lists, it will be silently dropped from the list.
  */
-download_manager *get_changelog(pkgCache::VerIterator ver,
-				const sigc::slot1<void, temp::name> &k);
+download_manager *get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > &versions);
+
+inline
+download_manager *get_changelog(const pkgCache::VerIterator &ver,
+				const sigc::slot1<void, temp::name> &k)
+{
+  std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > versions;
+  versions.push_back(std::make_pair(ver, k));
+
+  return get_changelogs(versions);
+}
 
 /** Generate a download process object that retrieves a changelog for
  *  the given source package.

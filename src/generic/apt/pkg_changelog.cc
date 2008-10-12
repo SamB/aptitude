@@ -44,57 +44,74 @@ using namespace std;
 
 class download_changelog_manager : public download_manager
 {
-  string srcpkg;
-  string ver;
-  string section;
-  string name;
-  string uri;
+public:
+  // TODO: maybe I should have two callbacks, one for success and one
+  // for failure?
+  class entry
+  {
+    string srcpkg;
+    string ver;
+    string section;
+    string name;
+    sigc::slot1<void, temp::name> k;
+    temp::name tempname;
 
-  sigc::slot1<void, temp::name> k;
+  public:
+    entry(const string &_srcpkg,
+	  const string &_ver,
+	  const string &_section,
+	  const string &_name,
+	  const temp::name &_tempname,
+	  const sigc::slot1<void, temp::name> &_k)
+      : srcpkg(_srcpkg),
+	ver(_ver),
+	section(_section),
+	name(_name),
+	k(_k),
+	tempname(_tempname)
+    {
+    }
+
+    const string &get_srcpkg() const { return srcpkg; }
+    const string &get_ver() const { return ver; }
+    const string &get_section() const { return section; }
+    const string &get_name() const { return name; }
+    const sigc::slot1<void, temp::name> &get_k() const { return k; }
+    const temp::name &get_tempname() const { return tempname; }
+  };
+
+private:
+  std::vector<entry> entries;
 
   download_signal_log *log;
 
-  /** The name of the file into which the changelog is downloaded. */
-  temp::name tempname;
-
-  bool failed;
-
-
-  /** HACK: This just overrides the failure method to catch 404s. */
-  class AcqWithFail:public pkgAcqFile
+  class AcqForEntry : public pkgAcqFile
   {
-    bool &failed;
+    entry ent;
+    string real_uri;
   public:
-    AcqWithFail(pkgAcquire *Owner,
+    AcqForEntry(pkgAcquire *Owner,
 		const string &URI,
 		const string &MD5,
 		unsigned long Size,
 		const string &Description,
 		const string &ShortDesc,
 		const string &filename,
-		bool &_failed):
+		const entry &_ent):
       pkgAcqFile(Owner, URI, MD5, Size, Description, ShortDesc, "", filename),
-      failed(_failed)
+      ent(_ent),
+      real_uri(URI)
     {
-      failed=false;
     }
 
-    void Failed(string Message, pkgAcquire::MethodConfig *Cnf)
-    {
-      failed=true;
-    }
-
-    void get_failed();
+    const entry &get_entry() const { return ent; }
+    const string &get_real_uri() const { return real_uri; }
   };
 
 public:
-  download_changelog_manager(const string &_srcpkg,
-			     const string &_ver,
-			     const string &_section,
-			     const string &_name,
-			     const sigc::slot1<void, temp::name> &_k)
-    : srcpkg(_srcpkg), ver(_ver), section(_section), name(_name),
-      k(_k), log(NULL), failed(false)
+  template<typename Iter>
+  download_changelog_manager(Iter begin, Iter end)
+    : entries(begin, end), log(NULL)
   {
   }
 
@@ -104,61 +121,56 @@ public:
   {
     log = signallog;
 
-    temp::dir tempdir;
-
-    try
-      {
-	tempdir = temp::dir("aptitude");
-	tempname = temp::name(tempdir, "changelog");
-      }
-    catch(temp::TemporaryCreationFailure e)
-      {
-	_error->Error("%s", e.errmsg().c_str());
-	return false;
-      }
-
-    string realsection;
-
-    if(section.find('/') != section.npos)
-      realsection.assign(section, 0, section.find('/'));
-    else
-      realsection.assign("main");
-
-    string prefix;
-
-    if(srcpkg.size() > 3 &&
-       srcpkg[0] == 'l' && srcpkg[1] == 'i' && srcpkg[2] == 'b')
-      prefix = std::string("lib") + srcpkg[3];
-    else
-      prefix = srcpkg[0];
-
-    string realver;
-
-    if(ver.find(':') != ver.npos)
-      realver.assign(ver, ver.find(':')+1, ver.npos);
-    else
-      realver = ver;
-
-    uri = ssprintf("http://packages.debian.org/changelogs/pool/%s/%s/%s/%s_%s/changelog",
-		   realsection.c_str(),
-		   prefix.c_str(),
-		   srcpkg.c_str(),
-		   srcpkg.c_str(),
-		   realver.c_str());
-
     fetcher = new pkgAcquire(&acqlog);
 
-    string title = ssprintf(_("ChangeLog of %s"), name.c_str());
+    for(std::vector<entry>::const_iterator it = entries.begin();
+	it != entries.end(); ++it)
+      {
+	const string srcpkg(it->get_srcpkg());
+	const string ver(it->get_ver());
+	const string section(it->get_section());
+	const string name(it->get_name());
 
-    failed = false;
-    new AcqWithFail(fetcher,
-		    uri,
-		    "",
-		    0,
-		    title,
-		    title,
-		    tempname.get_name().c_str(),
-		    failed);
+	string realsection;
+
+	if(section.find('/') != section.npos)
+	  realsection.assign(section, 0, section.find('/'));
+	else
+	  realsection.assign("main");
+
+	string prefix;
+
+	if(srcpkg.size() > 3 &&
+	   srcpkg[0] == 'l' && srcpkg[1] == 'i' && srcpkg[2] == 'b')
+	  prefix = std::string("lib") + srcpkg[3];
+	else
+	  prefix = srcpkg[0];
+
+	string realver;
+
+	if(ver.find(':') != ver.npos)
+	  realver.assign(ver, ver.find(':')+1, ver.npos);
+	else
+	  realver = ver;
+
+	string uri = ssprintf("http://packages.debian.org/changelogs/pool/%s/%s/%s/%s_%s/changelog",
+			      realsection.c_str(),
+			      prefix.c_str(),
+			      srcpkg.c_str(),
+			      srcpkg.c_str(),
+			      realver.c_str());
+
+	string title = ssprintf(_("ChangeLog of %s"), name.c_str());
+
+	new AcqForEntry(fetcher,
+			uri,
+			"",
+			0,
+			title,
+			title,
+			it->get_tempname().get_name().c_str(),
+			*it);
+      }
 
     return true;
   }
@@ -166,43 +178,84 @@ public:
   result finish(pkgAcquire::RunResult res,
 		OpProgress &progress)
   {
-    if(res != pkgAcquire::Continue || failed)
+    if(fetcher != NULL)
       {
-	_error->Error("Couldn't fetch URL %s", uri.c_str());
+	result rval = success;
 
-	return failure;
+	for(pkgAcquire::ItemIterator it = fetcher->ItemsBegin();
+	    it != fetcher->ItemsEnd(); ++it)
+	  {
+	    AcqForEntry *item(dynamic_cast<AcqForEntry *>(*it));
+	    if(item != NULL)
+	      {
+		if(res != pkgAcquire::Continue || (*it)->Status != pkgAcquire::Item::StatDone)
+		  {
+		    _error->Error("Failed to fetch the description of %s from the URI %s: %s",
+				  item->get_entry().get_srcpkg().c_str(),
+				  item->get_real_uri().c_str(),
+				  item->ErrorText.c_str());
+
+		    rval = failure;
+		  }
+		else
+		  {
+		    const entry &ent(item->get_entry());
+
+		    ent.get_k()(ent.get_tempname());
+		  }
+	      }
+	  }
+
+	return rval;
       }
     else
-      {
-	k(tempname);
-
-	return success;
-      }
+      return failure;
   }
 };
 
-download_manager *get_changelog(pkgCache::VerIterator ver,
-				const sigc::slot1<void, temp::name> &k)
+download_manager *get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > &versions)
 {
-  if(ver.end())
-    return NULL;
+  std::vector<download_changelog_manager::entry> entries;
 
-  if(ver.FileList().end())
-    return NULL;
+  for(std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > >::const_iterator
+	it = versions.begin(); it != versions.end(); ++it)
+    {
+      pkgCache::VerIterator ver(it->first);
+      const sigc::slot1<void, temp::name> &k(it->second);
 
-  // Look up the source package.
-  pkgRecords::Parser &rec =
-    apt_package_records->Lookup(ver.FileList());
-  string srcpkg =
-    rec.SourcePkg().empty() ? ver.ParentPkg().Name() : rec.SourcePkg();
+      if(ver.end())
+	continue;
 
-  const string sourcever =
-    rec.SourceVer().empty() ? ver.VerStr() : rec.SourceVer();
+      if(ver.FileList().end())
+	continue;
 
-  return get_changelog_from_source(srcpkg, sourcever,
-				   ver.Section(),
-				   ver.ParentPkg().Name(),
-				   k);
+      // Look up the source package.
+      pkgRecords::Parser &rec =
+	apt_package_records->Lookup(ver.FileList());
+      string srcpkg =
+	rec.SourcePkg().empty() ? ver.ParentPkg().Name() : rec.SourcePkg();
+
+      const string sourcever =
+	rec.SourceVer().empty() ? ver.VerStr() : rec.SourceVer();
+
+      temp::dir tempdir;
+      temp::name tempname;
+
+      try
+	{
+	  tempdir = temp::dir("aptitude");
+	  tempname = temp::name(tempdir, "changelog");
+	}
+      catch(temp::TemporaryCreationFailure e)
+	{
+	  _error->Error("%s", e.errmsg().c_str());
+	  continue;
+	}
+
+      entries.push_back(download_changelog_manager::entry(srcpkg, sourcever, ver.Section(), ver.ParentPkg().Name(), tempname, k));
+    }
+
+  return new download_changelog_manager(entries.begin(), entries.end());
 }
 
 download_manager *get_changelog_from_source(const string &srcpkg,
@@ -211,5 +264,22 @@ download_manager *get_changelog_from_source(const string &srcpkg,
 					    const string &name,
 					    const sigc::slot1<void, temp::name> &k)
 {
-  return new download_changelog_manager(srcpkg, ver, section, name, k);
+  temp::dir tempdir;
+  temp::name tempname;
+
+  try
+    {
+      tempdir = temp::dir("aptitude");
+      tempname = temp::name(tempdir, "changelog");
+    }
+  catch(temp::TemporaryCreationFailure e)
+    {
+      _error->Error("%s", e.errmsg().c_str());
+      return false;
+    }
+
+  std::vector<download_changelog_manager::entry> entries;
+  entries.push_back(download_changelog_manager::entry(srcpkg, ver, section, name, tempname, k));
+
+  return new download_changelog_manager(entries.begin(), entries.end());
 }
