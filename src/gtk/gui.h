@@ -171,6 +171,9 @@ namespace gui
 
     /** \brief Open a list of currently broken packages. */
     void do_show_broken();
+
+    /** \brief Open a new Packages tab to search for the given pattern. */
+    void add_packages_tab(const std::string &pattern);
   };
 
   void main(int argc, char *argv[]);

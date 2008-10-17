@@ -357,6 +357,14 @@ namespace gui
     tab_add(tab);
   }
 
+  void AptitudeWindow::add_packages_tab(const std::string &pattern)
+  {
+    PackagesTab *tab = new PackagesTab("Packages " + pattern);
+    tab_add(tab);
+    tab->get_limit_entry()->set_text(pattern);
+    tab->get_pkg_view()->set_limit(pattern);
+  }
+
   namespace
   {
     bool do_hyperlink_callback(const Glib::RefPtr<Glib::Object> &event_object,
@@ -623,10 +631,7 @@ namespace gui
   {
     void make_debtags_tab(const std::string &tag)
     {
-      PackagesTab *tab = new PackagesTab("Packages: ?tag(^" + tag + "$)");
-      tab_add(tab);
-      tab->get_limit_entry()->set_text("?tag(^" + tag + "$)");
-      tab->get_pkg_view()->set_limit("?tag(^" + tag + "$)");
+      pMainWindow->add_packages_tab(tag);
     }
   }
 
