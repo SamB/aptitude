@@ -166,6 +166,11 @@ namespace gui
      */
     void do_resolver();
 
+    /** \brief Open a dashboard tab, as if it had been triggered by
+     *  pushing the toolbar button.
+     */
+    void do_dashboard();
+
     /** \brief Open a preview tab, as if it had been triggered from the menu. */
     void do_preview();
 

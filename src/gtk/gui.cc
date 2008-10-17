@@ -91,6 +91,8 @@ namespace gui
   static bool active_download;
   bool want_to_quit = false;
 
+  void do_mark_upgradable();
+
   namespace
   {
     // The Glib::dispatch mechanism only allows us to wake the main
@@ -130,13 +132,69 @@ namespace gui
 
   class DashboardTab : public Tab
   {
+    cwidget::util::ref_ptr<PkgView> upgrades_pkg_view;
+    Gtk::TextView *upgrades_changelog_view;
+
+    Gtk::Entry *search_entry;
+    Gtk::Button *search_button;
+
+    Gtk::Button *upgrade_button;
+
+    void do_search()
+    {
+      pMainWindow->add_packages_tab(search_entry->get_text());
+    }
+
+    void do_upgrade()
+    {
+      do_mark_upgradable();
+      // TODO: run a "safe-upgrade" here first, and if it fails
+      // display a notification saying "unable to upgrade everything,
+      // try harder?" that falls back to this (full upgrade) logic.
+      pMainWindow->do_preview();
+    }
+
     public:
       DashboardTab(Glib::ustring label)
         : Tab(Dashboard, label,
-              Gnome::Glade::Xml::create(glade_main_file, "label1"),
-              "label1")
+              Gnome::Glade::Xml::create(glade_main_file, "dashboard_main"),
+              "dashboard_main")
       {
-        get_widget()->show();
+	get_xml()->get_widget("dashboard_upgrades_textview",
+			      upgrades_changelog_view);
+	get_xml()->get_widget("dashboard_search_entry",
+			      search_entry);
+	get_xml()->get_widget("dashboard_search_button",
+			      search_button);
+	get_xml()->get_widget("dashboard_upgrade_button",
+			      upgrade_button);
+
+	upgrades_pkg_view = cwidget::util::ref_ptr<PkgView>(new PkgView(get_xml(), "dashboard_upgrades_treeview"));
+
+	cache_closed.connect(sigc::bind(sigc::mem_fun(*upgrade_button, &Gtk::Widget::set_sensitive),
+					false));
+	cache_reloaded.connect(sigc::bind(sigc::mem_fun(*upgrade_button, &Gtk::Widget::set_sensitive),
+					  true));
+
+	search_entry->signal_activate().connect(sigc::mem_fun(*this, &DashboardTab::do_search));
+	search_button->signal_clicked().connect(sigc::mem_fun(*this, &DashboardTab::do_search));
+
+	upgrades_pkg_view->set_limit("?upgradable");
+
+	upgrade_button->set_image(*manage(new Gtk::Image(Gtk::Stock::GO_UP, Gtk::ICON_SIZE_BUTTON)));
+	upgrade_button->signal_clicked().connect(sigc::mem_fun(*this, &DashboardTab::do_upgrade));
+
+        get_widget()->show_all();
+
+	upgrade_button->set_sensitive(apt_cache_file != NULL);
+
+	// TODO: start an "update" when the program starts, or not?
+
+	// TODO: start downloading changelogs and display them when
+	// packages are selected.
+
+	// TODO: customize the displayed columns to display version /
+	// size / archive information.
       }
   };
 
@@ -684,11 +742,6 @@ namespace gui
     return where;
   }
 
-  void do_dashboard()
-  {
-    tab_add(new DashboardTab(_("Dashboard:")));
-  }
-
   void do_update()
   {
     UpdateTab * tab = new UpdateTab(_("Update"));
@@ -730,7 +783,7 @@ namespace gui
     refGlade->get_widget_derived("main_notebook", pNotebook);
 
     refGlade->get_widget("main_toolbutton_dashboard", pToolButtonDashboard);
-    pToolButtonDashboard->signal_clicked().connect(&do_dashboard);
+    pToolButtonDashboard->signal_clicked().connect(sigc::mem_fun(*this, &AptitudeWindow::do_dashboard));
 
     refGlade->get_widget("main_toolbutton_update", pToolButtonUpdate);
     pToolButtonUpdate->signal_clicked().connect(&do_update);
@@ -808,6 +861,13 @@ namespace gui
     // When the cache is reloaded, attach to the new resolver-manager.
     cache_reloaded.connect(sigc::mem_fun(*this, &AptitudeWindow::update_resolver_sensitivity_callback));
     update_resolver_sensitivity_callback();
+
+    tab_add(new DashboardTab(_("Dashboard:")));
+  }
+
+  void AptitudeWindow::do_dashboard()
+  {
+    tab_add(new DashboardTab(_("Dashboard:")));
   }
 
   void AptitudeWindow::update_resolver_sensitivity_callback()
