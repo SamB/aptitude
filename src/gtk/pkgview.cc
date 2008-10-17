@@ -359,23 +359,40 @@ namespace gui
 
     std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > > matches;
     ref_ptr<search_cache> search_info(search_cache::create());
-    search(filter, search_info, matches, *apt_cache_file, *apt_package_records);	   
+    if(limited)
+      {
+	search(filter, search_info, matches, *apt_cache_file, *apt_package_records);	   
 
-    {
-      int num = 0;
-      const int total = static_cast<int>(matches.size());
+	int num = 0;
+	const int total = static_cast<int>(matches.size());
 
-      for(std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >::const_iterator
-	    it = matches.begin(); it != matches.end(); ++it)
-	{
-	  p->OverallProgress(num, total, 1, _("Building view"));
+	for(std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >::const_iterator
+	      it = matches.begin(); it != matches.end(); ++it)
+	  {
+	    p->OverallProgress(num, total, 1, _("Building view"));
 
-	  ++num;
-	  generator->add(it->first);
-	}
+	    ++num;
+	    generator->add(it->first);
+	  }
 
-      p->OverallProgress(total, total, 1,  _("Finalizing view"));
-    }
+	p->OverallProgress(total, total, 1,  _("Finalizing view"));
+      }
+    else
+      {
+	int num = 0;
+	const int total = (int)(*apt_cache_file)->Head().PackageCount;
+
+	for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin();
+	    !pkg.end(); ++pkg)
+	  {
+	    p->OverallProgress(num, total, 1, _("Building view"));
+
+	    ++num;
+	    generator->add(pkg);
+	  }
+
+	p->OverallProgress(total, total, 1, _("Finalizing view"));
+      }
 
     Glib::Thread * sort_thread = Glib::Thread::create(sigc::mem_fun(*generator, &PkgTreeModelGenerator::finish), true);
     while(!generator->finished)
