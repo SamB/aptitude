@@ -341,6 +341,9 @@ namespace gui
     using namespace aptitude::matching;
     using cwidget::util::ref_ptr;
 
+    if(apt_cache_file == NULL)
+      return; // We'll try again when it's loaded.
+
     store_reloading();
     std::auto_ptr<PkgTreeModelGenerator> generator(generatorK(get_columns()));
 
