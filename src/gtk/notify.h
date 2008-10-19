@@ -32,6 +32,12 @@ namespace gui
    *
    *  \note This derives from EventBox so that it can support changing
    *  the color of the widget (you need a GdkWindow to do that).
+   *
+   *  \todo The setup procedure could be more robust; right now we
+   *  depend on the user invoking methods in the "right order".
+   *  Ideally we would just take some collections as arguments to the
+   *  constructor, eliminating all the "create an object and twiddle
+   *  it" stuff.
    */
   class Notification : public Gtk::EventBox
   {
@@ -53,13 +59,28 @@ namespace gui
       Notification(const Glib::ustring &text, bool onetimeuse);
       bool is_onetimeuse() { return onetimeuse; };
       void add_button(Gtk::Button *);
+      /** \brief Set the text displayed in this notification.
+       *
+       *  \param buffer   The text buffer to display; if it is
+       *                  empty, the text view contained in this
+       *                  notification will be completely hidden.
+       */
       void set_buffer(const Glib::RefPtr<Gtk::TextBuffer> &buffer);
+      /** \brief Add an arbitrary widget to the notification, to the
+       *  left of the text.
+       *
+       *  \param w The widget to add; will be set to managed mode so
+       *  it gets destroyed when the notification is destroyed.
+       */
+      void prepend_widget(Gtk::Widget *w);
       /** \brief Change the background color of this notification. */
       void set_color(const Gdk::Color &color);
       /** \brief Add the elements of the notification that should appear to the
        *  right-hand side of the text it displays.
        *
-       *  For instance, this adds the close button.
+       *  For instance, this adds the close button.  finalize() should
+       *  be invoked after all the desired widgets and buttons have
+       *  been added to the notification.
        */
       void finalize();
       sigc::signal0<void> close_clicked;

@@ -54,9 +54,16 @@ namespace gui
     hbox->pack_start(*manage(button), false, true);
   }
 
+  void Notification::prepend_widget(Gtk::Widget * widget)
+  {
+    widget->show();
+    hbox->pack_start(*manage(widget));
+  }
+
   void Notification::finalize()
   {
-    textview->show();
+    if(textview->get_buffer()->size() > 0)
+      textview->show();
     Gtk::Button * close_button = manage(new Gtk::Button());
     Gtk::Image * close_button_image = manage(new Gtk::Image(Gtk::Stock::CLOSE, Gtk::ICON_SIZE_MENU));
     close_button->property_image() = close_button_image;
@@ -68,6 +75,7 @@ namespace gui
   void Notification::set_buffer(const Glib::RefPtr<Gtk::TextBuffer> &buffer)
   {
     textview->set_buffer(buffer);
+    textview->property_visible() = buffer->size() > 0;
   }
 
   void Notification::set_color(const Gdk::Color &color)
