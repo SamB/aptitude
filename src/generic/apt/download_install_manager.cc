@@ -1,6 +1,6 @@
 // download_install_manager.cc
 //
-//   Copyright (C) 2005-2007 Daniel Burrows
+//   Copyright (C) 2005-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -35,8 +35,10 @@
 
 using namespace std;
 
-download_install_manager::download_install_manager(bool _download_only)
-  : log(NULL), download_only(_download_only), pm(new pkgDPkgPM(*apt_cache_file))
+download_install_manager::download_install_manager(bool _download_only,
+						   const run_dpkg_in_terminal_func &_run_dpkg_in_terminal)
+  : log(NULL), download_only(_download_only), pm(new pkgDPkgPM(*apt_cache_file)),
+    run_dpkg_in_terminal(_run_dpkg_in_terminal)
 {
 }
 
@@ -100,6 +102,36 @@ bool download_install_manager::prepare(OpProgress &progress,
   return true;
 }
 
+pkgPackageManager::OrderResult download_install_manager::run_dpkg()
+{
+  sigset_t allsignals;
+  sigset_t oldsignals;
+  sigfillset(&allsignals);
+
+  pthread_sigmask(SIG_UNBLOCK, &allsignals, &oldsignals);
+  pkgPackageManager::OrderResult pmres = pm->DoInstallPostFork(aptcfg->FindI("APT::Status-Fd", -1));
+
+  switch(pmres)
+    {
+    case pkgPackageManager::Failed:
+      _error->DumpErrors();
+      cerr << _("A package failed to install.  Trying to recover:") << endl;
+      system("DPKG_NO_TSTP=1 dpkg --configure -a");
+      _error->Discard();
+      
+      break;
+    case pkgPackageManager::Completed:
+      break;
+
+    case pkgPackageManager::Incomplete:
+      break;
+    }
+
+  pthread_sigmask(SIG_SETMASK, &oldsignals, NULL);
+
+  return pmres;
+}
+
 download_manager::result download_install_manager::execute_install_run(pkgAcquire::RunResult res,
 								       OpProgress &progress)
 {
@@ -132,8 +164,6 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
 
   log_changes();
 
-  pre_install_hook();
-
   // Note that someone could grab the lock before dpkg takes it;
   // without a more complicated synchronization protocol (and I don't
   // control the code at dpkg's end), them's the breaks.
@@ -141,19 +171,22 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
 
   result rval = success;
 
-  sigset_t allsignals;
-  sigset_t oldsignals;
-  sigfillset(&allsignals);
+  const pkgPackageManager::OrderResult pre_fork_result =
+    pm->DoInstallPreFork();
 
-  pthread_sigmask(SIG_UNBLOCK, &allsignals, &oldsignals);
-  pkgPackageManager::OrderResult pmres = pm->DoInstall(aptcfg->FindI("APT::Status-Fd", -1));
+  if(pre_fork_result == pkgPackageManager::Failed)
+    rval = failure;
+
+  pkgPackageManager::OrderResult pmres;
+  if(rval == success)
+    pmres = run_dpkg_in_terminal(sigc::mem_fun(*this, &download_install_manager::run_dpkg));
+  else
+    pmres = pkgPackageManager::Failed;
+
 
   switch(pmres)
     {
     case pkgPackageManager::Failed:
-      _error->DumpErrors();
-      cerr << _("A package failed to install.  Trying to recover:") << endl;
-      system("DPKG_NO_TSTP=1 dpkg --configure -a");
       _error->Discard();
       
       rval = failure;
@@ -165,9 +198,6 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
       rval = do_again;
       break;
     }
-
-  pthread_sigmask(SIG_SETMASK, &oldsignals, NULL);
-  post_install_hook(pmres);
 
   fetcher->Shutdown();
 

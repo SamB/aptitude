@@ -25,6 +25,14 @@
 
 using namespace std;
 
+namespace
+{
+  pkgPackageManager::OrderResult run_dpkg_directly(sigc::slot0<pkgPackageManager::OrderResult> f)
+  {
+    return f();
+  }
+}
+
 // TODO: add an option to obey sticky states even if it wasn't
 //      explicitly requested.
 //
@@ -307,7 +315,8 @@ int cmdline_do_action(int argc, char *argv[],
 
       aptitude::cmdline::apply_user_tags(user_tags);
 
-      download_install_manager m(download_only);
+      download_install_manager m(download_only,
+				 sigc::ptr_fun(&run_dpkg_directly));
 
       int rval =
 	(cmdline_do_download(&m, verbose) == download_manager::success ? 0 : -1);

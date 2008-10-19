@@ -1146,31 +1146,36 @@ static void maybe_show_old_tmpdir_message()
 // (er, can I disentangle this by rearranging the routines?  I think maybe I
 //  can to some degree)
 
-
-static void finish_install_run(pkgPackageManager::OrderResult res)
+namespace
 {
-  if(res != pkgPackageManager::Incomplete)
-    {
-      cerr << _("Press return to continue.\n");
-      int c = getchar();
+  pkgPackageManager::OrderResult run_dpkg_with_cwidget_suspended(sigc::slot0<pkgPackageManager::OrderResult> f)
+  {
+    cw::toplevel::suspend();
+    pkgPackageManager::OrderResult rval = f();
+    
+    if(rval != pkgPackageManager::Incomplete)
+      {
+	cerr << _("Press return to continue.\n");
+	int c = getchar();
 
-      while(c != '\n'  && c != EOF)
-	c = getchar();
-    }
+	while(c != '\n'  && c != EOF)
+	  c = getchar();
+      }
 
-  // libapt-pkg likes to stomp on SIGINT and SIGQUIT.  Restore them
-  // here in the simplest possible way.
-  cw::toplevel::install_sighandlers();
+    // libapt-pkg likes to stomp on SIGINT and SIGQUIT.  Restore them
+    // here in the simplest possible way.
+    cw::toplevel::install_sighandlers();
 
-  cw::toplevel::resume();
+    cw::toplevel::resume();
+
+    return rval;
+  }
 }
 
 void install_or_remove_packages()
 {
-  download_install_manager *m = new download_install_manager(false);
+  download_install_manager *m = new download_install_manager(false, sigc::ptr_fun(&run_dpkg_with_cwidget_suspended));
 
-  m->pre_install_hook.connect(sigc::ptr_fun(&cw::toplevel::suspend));
-  m->post_install_hook.connect(sigc::ptr_fun(&finish_install_run));
   m->post_forget_new_hook.connect(package_states_changed.make_slot());
 
   ui_download_manager *uim =

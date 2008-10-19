@@ -57,6 +57,15 @@
 
 namespace cw = cwidget;
 
+// \todo Run in a vte widget.
+namespace
+{
+  pkgPackageManager::OrderResult run_dpkg_directly(sigc::slot0<pkgPackageManager::OrderResult> f)
+  {
+    return f();
+  }
+}
+
 namespace gui
 {
   // \todo Some of these icon choices suck.
@@ -281,10 +290,13 @@ namespace gui
   namespace
   {
     // Scary callback functions.  This needs to be cleaned up.
-    void handle_install_remove_result(pkgPackageManager::OrderResult result,
-				      pkgPackageManager::OrderResult *set_loc)
+    pkgPackageManager::OrderResult
+    gui_run_dpkg(sigc::slot0<pkgPackageManager::OrderResult> f,
+		 pkgPackageManager::OrderResult *set_loc)
     {
+      pkgPackageManager::OrderResult result = f();
       *set_loc = result;
+      return result;
     }
 
     void handle_install(download_install_manager *m, OpProgress &progress,
@@ -316,7 +328,8 @@ namespace gui
 	}
 
       download_scope scope;
-      download_install_manager *m = new download_install_manager(false);
+      pkgPackageManager::OrderResult result = pkgPackageManager::Incomplete;
+      download_install_manager *m = new download_install_manager(false, sigc::bind(sigc::ptr_fun(&gui_run_dpkg), &result));
 
       guiOpProgress progress;
       cw::util::ref_ptr<guiPkgAcquireStatus> acqlog(guiPkgAcquireStatus::create());
@@ -331,14 +344,12 @@ namespace gui
       acqlog->MorePulses = true;
       // FIXME: Hack while finding a nonblocking thread join or something else.
 
-      pkgPackageManager::OrderResult result = pkgPackageManager::Incomplete;
       bool in_dpkg = false;
       bool finished = false;
 
       pMainWindow->get_progress_bar()->set_text(_("Installing / removing packages..."));
       Glib::Thread * install_thread =
 	Glib::Thread::create(sigc::bind(sigc::ptr_fun(&handle_install), m, progress, &in_dpkg, &finished), true);
-      m->post_install_hook.connect(sigc::bind(sigc::ptr_fun(*&handle_install_remove_result), &result));
       while(!finished)
         {
           if (in_dpkg)

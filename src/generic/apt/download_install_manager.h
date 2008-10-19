@@ -1,6 +1,6 @@
 // download_install_manager.h                          -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -36,6 +36,12 @@
 /** \file download_install_manager.h
  */
 
+// The type of a function that runs a nullary function in a terminal
+// (possibly the current controlling terminal) and returns its result.
+// The function may be invoked in a sub-process, but the status file
+// descriptor (if one is defined) must be preserved.
+typedef sigc::slot1<pkgPackageManager::OrderResult, sigc::slot0<pkgPackageManager::OrderResult> > run_dpkg_in_terminal_func;
+
 /** Manages downloading and installing packages. */
 class download_install_manager : public download_manager
 {
@@ -51,6 +57,14 @@ class download_install_manager : public download_manager
   /** The list of sources from which to download. */
   pkgSourceList src_list;
 
+  /** How to run the actual install process. */
+  run_dpkg_in_terminal_func run_dpkg_in_terminal;
+
+  /** Actually run dpkg; this is the part of the installation
+   *  that might run in a sub-process.
+   */
+  pkgPackageManager::OrderResult run_dpkg();
+
   /** Actually perform the installation/removal of packages and tell
    *  the caller what happened.
    */
@@ -61,7 +75,8 @@ public:
    *  stop after downloading files (i.e., it won't run the package
    *  manager).
    */
-  download_install_manager(bool _download_only);
+  download_install_manager(bool _download_only,
+			   const run_dpkg_in_terminal_func &_run_dpkg_in_terminal);
   ~download_install_manager();
 
   /** Set up an install run.  Does not take ownership of any of the
@@ -88,14 +103,6 @@ public:
    *  or remove packages. */
   result finish(pkgAcquire::RunResult result,
 		OpProgress &progress);
-
-  /** Invoked prior to actually performing the install run. */
-  sigc::signal0<void> pre_install_hook;
-
-  /** Invoked right after performing the install run.  Takes the
-   *  result of the run as an argument.
-   */
-  sigc::signal1<void, pkgPackageManager::OrderResult> post_install_hook;
 
   /** Invoked after an automatic 'forget new' operation. */
   sigc::signal0<void> post_forget_new_hook;
