@@ -41,24 +41,8 @@ AC_CHECK_LIB(pthread, main,
 ALL_LINGUAS="ar bs ca cs da de el es eu fi fr gl hu it ja km ku lt mr nb nl nn pl pt pt_BR ro ru sk sv tl tr vi zh_CN zh_TW"
 AM_GNU_GETTEXT([external])
 
-HAVE_EPT=
-AC_ARG_WITH(ept,
-	AS_HELP_STRING(--with-ept, [compile against the ept library (enables debtags and xapian-index support)]),
-	[if test x$withval = xyes
-	 then
-	    HAVE_EPT=1
-	 fi])
-
-PKG_CHECK_MODULES(ept, libept, [], [HAVE_EPT=])
-
-if test x$HAVE_EPT = x1
-then
-  AC_DEFINE(HAVE_EPT, 1, [Define if the ept package information library is available.])
-else
-  # Force the program not to link against ept.
-  ept_CFLAGS=
-  ept_LIBS=
-fi
+PKG_CHECK_MODULES(ept, libept, [], [AC_MSG_ERROR([Can't find the ept library -- please install libept-dev])])
+AC_DEFINE(HAVE_EPT)
 
 PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 
