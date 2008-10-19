@@ -42,7 +42,7 @@ ALL_LINGUAS="ar bs ca cs da de el es eu fi fr gl hu it ja km ku lt mr nb nl nn p
 AM_GNU_GETTEXT([external])
 
 PKG_CHECK_MODULES(ept, libept, [], [AC_MSG_ERROR([Can't find the ept library -- please install libept-dev])])
-AC_DEFINE(HAVE_EPT)
+AC_DEFINE([HAVE_EPT], [], [Backwards compatibility symbol; must always be defined.])
 
 PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 
