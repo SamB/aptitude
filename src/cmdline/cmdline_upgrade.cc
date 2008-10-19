@@ -178,7 +178,8 @@ int cmdline_upgrade(int argc, char *argv[],
       aptitude::cmdline::apply_user_tags(user_tags);
 
       download_install_manager m(download_only,
-				 sigc::ptr_fun(&run_dpkg_directly));
+				 sigc::ptr_fun(&run_dpkg_directly),
+				 aptcfg->FindI("APT::Status-Fd", -1));
       int rval =
 	(cmdline_do_download(&m, verbose) == download_manager::success ? 0 : -1);
 

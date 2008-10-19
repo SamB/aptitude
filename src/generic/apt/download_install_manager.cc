@@ -36,8 +36,10 @@
 using namespace std;
 
 download_install_manager::download_install_manager(bool _download_only,
-						   const run_dpkg_in_terminal_func &_run_dpkg_in_terminal)
+						   const run_dpkg_in_terminal_func &_run_dpkg_in_terminal,
+						   int _status_fd)
   : log(NULL), download_only(_download_only), pm(new pkgDPkgPM(*apt_cache_file)),
+    status_fd(_status_fd),
     run_dpkg_in_terminal(_run_dpkg_in_terminal)
 {
 }
@@ -109,7 +111,7 @@ pkgPackageManager::OrderResult download_install_manager::run_dpkg()
   sigfillset(&allsignals);
 
   pthread_sigmask(SIG_UNBLOCK, &allsignals, &oldsignals);
-  pkgPackageManager::OrderResult pmres = pm->DoInstallPostFork(aptcfg->FindI("APT::Status-Fd", -1));
+  pkgPackageManager::OrderResult pmres = pm->DoInstallPostFork(status_fd);
 
   switch(pmres)
     {

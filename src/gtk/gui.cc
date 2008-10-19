@@ -329,7 +329,11 @@ namespace gui
 
       download_scope scope;
       pkgPackageManager::OrderResult result = pkgPackageManager::Incomplete;
-      download_install_manager *m = new download_install_manager(false, sigc::bind(sigc::ptr_fun(&gui_run_dpkg), &result));
+      download_install_manager *m =
+	new download_install_manager(false,
+				     sigc::bind(sigc::ptr_fun(&gui_run_dpkg),
+						&result),
+				     -1);
 
       guiOpProgress progress;
       cw::util::ref_ptr<guiPkgAcquireStatus> acqlog(guiPkgAcquireStatus::create());

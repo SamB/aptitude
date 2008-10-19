@@ -1174,7 +1174,7 @@ namespace
 
 void install_or_remove_packages()
 {
-  download_install_manager *m = new download_install_manager(false, sigc::ptr_fun(&run_dpkg_with_cwidget_suspended));
+  download_install_manager *m = new download_install_manager(false, sigc::ptr_fun(&run_dpkg_with_cwidget_suspended), -1);
 
   m->post_forget_new_hook.connect(package_states_changed.make_slot());
 

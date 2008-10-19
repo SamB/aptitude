@@ -57,6 +57,9 @@ class download_install_manager : public download_manager
   /** The list of sources from which to download. */
   pkgSourceList src_list;
 
+  /** The apt status file descriptor. */
+  int status_fd;
+
   /** How to run the actual install process. */
   run_dpkg_in_terminal_func run_dpkg_in_terminal;
 
@@ -74,9 +77,16 @@ public:
   /** \param _download_only if \b true, this download process will
    *  stop after downloading files (i.e., it won't run the package
    *  manager).
+   *
+   *  \param _run_dpkg_in_terminal  how to set up the terminal for dpkg.
+   *
+   *  \param _status_fd  the file descriptor on which to print
+   *                     status information, or -1 to not print
+   *                     status information.
    */
   download_install_manager(bool _download_only,
-			   const run_dpkg_in_terminal_func &_run_dpkg_in_terminal);
+			   const run_dpkg_in_terminal_func &_run_dpkg_in_terminal,
+			   int _status_fd);
   ~download_install_manager();
 
   /** Set up an install run.  Does not take ownership of any of the
