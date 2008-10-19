@@ -36,6 +36,7 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/apt_undo_group.h>
+#include <generic/apt/config_signal.h>
 #include <generic/apt/download_install_manager.h>
 #include <generic/apt/download_update_manager.h>
 #include <generic/apt/tags.h>
@@ -958,8 +959,13 @@ namespace gui
   {
     void do_apt_init()
     {
-      std::auto_ptr<guiOpProgress> p(gen_progress_bar());
-      apt_init(p.get(), true, NULL);
+      {
+	std::auto_ptr<guiOpProgress> p(gen_progress_bar());
+	apt_init(p.get(), true, NULL);
+      }
+
+      if(getuid() == 0 && aptcfg->FindB(PACKAGE "::Update-On-Startup", true))
+	do_update();
     }
   }
 
