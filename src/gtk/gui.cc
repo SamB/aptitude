@@ -54,6 +54,8 @@
 #include <gtk/resolver.h>
 #include <gtk/tab.h>
 
+namespace cw = cwidget;
+
 namespace gui
 {
   // \todo Some of these icon choices suck.
@@ -198,132 +200,158 @@ namespace gui
       }
   };
 
-  class UpdateTab : public DownloadTab
+  struct download_scope
   {
-    private:
-    void really_do_update_lists()
+    download_scope()
     {
-      download_update_manager *m = new download_update_manager;
-
-      // downloading now I suppose ?
-      guiOpProgress progress;
-      guiPkgAcquireStatus acqlog(this);
-      acqlog.Update = true;
-      acqlog.MorePulses = true;
-      if (!m->prepare(progress, acqlog, NULL))
-        return;
-      acqlog.Update = true;
-      acqlog.MorePulses = true;
-      download_manager::result result = download_manager::do_again;
-      while (result == download_manager::do_again)
-      {
-        m->do_download(100);
-        result = m->finish(pkgAcquire::Continue, progress);
-      }
-      guiOpProgress * p = gen_progress_bar();
-      apt_load_cache(p, true, NULL);
-      delete p;
+      active_download = true;
     }
-    public:
-      UpdateTab(const Glib::ustring &label)
-      : DownloadTab(label)
-      {
-        ;;
-      }
-    void do_update_lists()
+
+    ~download_scope()
     {
-      if (!active_download)
-        {
-          if (getuid()==0)
-            {
-              pMainWindow->get_progress_bar()->set_text("Updating..");
-              pMainWindow->get_progress_bar()->set_fraction(0);
-              download_store->clear();
-              really_do_update_lists();
-              pMainWindow->get_progress_bar()->set_fraction(0);
-              pMainWindow->get_status_bar()->pop(0);
-            }
-          else
-            {
-              Gtk::MessageDialog dialog(*pMainWindow,
-                  "There's a problem with you not being root...", false,
-                  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
-              dialog.set_secondary_text("You're supposed to be a super-user to be allowed to break stuff you know ?");
-
-              dialog.run();
-            }
-        }
-      else
-      {
-        Gtk::MessageDialog dialog(*pMainWindow,
-            "Na...", false,
-            Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
-        dialog.set_secondary_text("A package-list update or install run is already taking place.");
-
-        dialog.run();
-      }
+      active_download = false;
     }
   };
 
-  class InstallRemoveTab : public DownloadTab
+  // \todo make this use the threaded download system.
+  void really_do_update_lists()
   {
-    // FIXME: Hack while finding a nonblocking thread join or something else.
-    bool finished;
-    bool in_dpkg;
-    pkgPackageManager::OrderResult result;
-    public:
-      InstallRemoveTab(const Glib::ustring &label)
-      : DownloadTab(label)
+    std::auto_ptr<download_update_manager> m(new download_update_manager);
+
+    download_scope scope;
+
+    guiOpProgress progress;
+    cw::util::ref_ptr<guiPkgAcquireStatus> acqlog(guiPkgAcquireStatus::create());
+    pMainWindow->get_notifyview()->add_notification(make_download_notification(_("Checking for updates"), true, acqlog));
+    // \todo Why do we set Update and MorePulses?
+    acqlog->Update = true;
+    acqlog->MorePulses = true;
+    if (!m->prepare(progress, *acqlog.unsafe_get_ref(), NULL))
+      return;
+    // \todo Why do we set Update and MorePulses?
+    acqlog->Update = true;
+    acqlog->MorePulses = true;
+    download_manager::result result = download_manager::do_again;
+    while (result == download_manager::do_again)
       {
-        // FIXME: Hack while finding a nonblocking thread join or something else.
-        finished = false;
-        in_dpkg = false;
+        m->do_download(1000);
+        result = m->finish(pkgAcquire::Continue, progress);
       }
-      void handle_result(pkgPackageManager::OrderResult result)
+    guiOpProgress * p = gen_progress_bar();
+    apt_load_cache(p, true, NULL);
+    delete p;
+
+    active_download = false;
+  }
+
+  void do_update_lists()
+  {
+    if (!active_download)
       {
-        this->result = result;
+	// \todo We should offer to become root here.
+	if (getuid()==0)
+	  really_do_update_lists();
+	else
+	  {
+	    Gtk::MessageDialog dialog(*pMainWindow,
+				      _("Insufficient privileges."),
+				      false,
+				      Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+	    dialog.set_secondary_text(_("You must be root to update the package lists."));
+
+	    dialog.run();
+	  }
       }
-      void handle_install(download_install_manager *m, OpProgress &progress)
+    else
       {
-        download_manager::result result = download_manager::do_again;
-        while (result == download_manager::do_again)
+        Gtk::MessageDialog dialog(*pMainWindow,
+				  _("Download already running."), false,
+				  Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+        dialog.set_secondary_text(_("A package-list update or install run is already taking place."));
+
+        dialog.run();
+      }
+  }
+
+  // \todo Push the download into a background thread.
+  //
+  // \todo Use a terminal widget to display the progress of the
+  // installation.
+  namespace
+  {
+    // Scary callback functions.  This needs to be cleaned up.
+    void handle_install_remove_result(pkgPackageManager::OrderResult result,
+				      pkgPackageManager::OrderResult *set_loc)
+    {
+      *set_loc = result;
+    }
+
+    void handle_install(download_install_manager *m, OpProgress &progress,
+			bool *in_dpkg, bool *finished)
+    {
+      download_manager::result result = download_manager::do_again;
+      while (result == download_manager::do_again)
         {
           m->do_download(100);
-          in_dpkg = true;
+          *in_dpkg = true;
           result = m->finish(pkgAcquire::Continue, progress);
-          in_dpkg = false;
+          *in_dpkg = false;
         }
-        finished = true;
-      }
-      void install_or_remove_packages()
-      {
-        download_install_manager *m = new download_install_manager(false);
+      *finished = true;
+    }
 
-        guiOpProgress progress;
-        guiPkgAcquireStatus acqlog(this);
-        acqlog.Update = true;
-        acqlog.MorePulses = true;
-        if (!m->prepare(progress, acqlog, NULL))
-          return;
-        acqlog.Update = true;
-        acqlog.MorePulses = true;
-        download_store->clear();
-        // FIXME: Hack while finding a nonblocking thread join or something else.
-        Glib::Thread * install_thread =
-          Glib::Thread::create(sigc::bind(sigc::mem_fun(*this, &InstallRemoveTab::handle_install), m, progress), true);
-        m->post_install_hook.connect(sigc::mem_fun(*this, &InstallRemoveTab::handle_result));
-        while(!finished)
+    void install_or_remove_packages()
+    {
+      if(active_download)
+	{
+	  Gtk::MessageDialog dialog(*pMainWindow,
+				    _("Download already running."), false,
+				    Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+	  dialog.set_secondary_text(_("A package-list update or install run is already taking place."));
+
+	  dialog.run();
+
+	  return;
+	}
+
+      download_scope scope;
+      download_install_manager *m = new download_install_manager(false);
+
+      guiOpProgress progress;
+      cw::util::ref_ptr<guiPkgAcquireStatus> acqlog(guiPkgAcquireStatus::create());
+      pMainWindow->get_notifyview()->add_notification(Gtk::manage(make_download_notification(_("Downloading packages"), false, acqlog)));
+      // \todo Why do we set Update and MorePulses here?
+      acqlog->Update = true;
+      acqlog->MorePulses = true;
+      if (!m->prepare(progress, *acqlog.unsafe_get_ref(), NULL))
+	return;
+      // \todo Why do we set Update and MorePulses here?
+      acqlog->Update = true;
+      acqlog->MorePulses = true;
+      // FIXME: Hack while finding a nonblocking thread join or something else.
+
+      pkgPackageManager::OrderResult result = pkgPackageManager::Incomplete;
+      bool in_dpkg = false;
+      bool finished = false;
+
+      pMainWindow->get_progress_bar()->set_text(_("Installing / removing packages..."));
+      Glib::Thread * install_thread =
+	Glib::Thread::create(sigc::bind(sigc::ptr_fun(&handle_install), m, progress, &in_dpkg, &finished), true);
+      m->post_install_hook.connect(sigc::bind(sigc::ptr_fun(*&handle_install_remove_result), &result));
+      while(!finished)
         {
           if (in_dpkg)
             pMainWindow->get_progress_bar()->pulse();
           gtk_update();
           Glib::usleep(100000);
         }
-        install_thread->join();
+      install_thread->join();
 
-        Gtk::MessageDialog dialog(*pMainWindow, "Install run finished",
-            false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
-        switch(result)
+      pMainWindow->get_progress_bar()->set_text("");
+
+      Gtk::MessageDialog dialog(*pMainWindow, "Install run finished",
+				false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+      switch(result)
         {
         case pkgPackageManager::Completed:
           dialog.set_secondary_text("Successfully completed!");
@@ -335,14 +363,13 @@ namespace gui
           dialog.set_secondary_text("Failed!");
           break;
         }
-        dialog.run();
+      dialog.run();
 
-        (*apt_cache_file)->package_state_changed();
+      (*apt_cache_file)->package_state_changed();
 
-        //m->finish(pkgAcquire::Continue, progress);
-      }
-  };
-
+      //m->finish(pkgAcquire::Continue, progress);
+    }
+  }
 
   void do_mark_upgradable()
   {
@@ -744,9 +771,7 @@ namespace gui
 
   void do_update()
   {
-    UpdateTab * tab = new UpdateTab(_("Update"));
-    tab_add(tab);
-    tab->do_update_lists();
+    do_update_lists();
   }
 
   void do_packages()
@@ -756,9 +781,7 @@ namespace gui
 
   void do_installremove()
   {
-    InstallRemoveTab * tab = new InstallRemoveTab(_("Install/Remove:"));
-    tab_add(tab);
-    tab->install_or_remove_packages();
+    install_or_remove_packages();
   }
 
   void do_sweep()
