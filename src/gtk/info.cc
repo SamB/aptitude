@@ -277,9 +277,10 @@ namespace gui
 
     class DependencyEntity : public HeaderEntity
     {
+      pkgCache::DepIterator firstdep;
     public:
       DependencyEntity(pkgCache::DepIterator dep)
-	: HeaderEntity("")
+	: HeaderEntity(""),firstdep(dep)
       {
 	Glib::ustring text = dep.DepType();
 	text += ": ";
@@ -305,13 +306,37 @@ namespace gui
 	set_text(text);
       }
 
+      bool is_broken()
+      {
+        pkgCache::DepIterator dep=firstdep;
+
+        // Ok, here's the story: we need to check the DepGInstall dependency flag
+        // for the whole `or' group.  HOWEVER, this is only set for the LAST member
+        // of an `or' group.  SO, we need to find the last item in the group in order
+        // to do this.
+        //
+        // Alles klar? :)
+        while(dep->CompareOp & pkgCache::Dep::Or)
+          ++dep;
+
+        // Showing "Replaces" dependencies as broken is weird.
+        return ((firstdep.IsCritical() ||
+                 firstdep->Type==pkgCache::Dep::Recommends ||
+                 firstdep->Type==pkgCache::Dep::Suggests) &&
+                !((*apt_cache_file)[dep]&pkgDepCache::DepGInstall));
+      }
+
       void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row)
       {
 	HeaderEntity::fill_row(columns, row);
 	row[columns->SelectedStatusIcon] = Gtk::Stock::YES.id;
-	// TODO: set the color according to whether the dependency is
-	// broken.  Need backend support for detecting changes to
-	// dependency state first.
+	// TODO: Need backend support for detecting changes to
+	// dependency state. The state is not updated if
+	// the dependency is met after fill_row is executed.
+	if(is_broken()) {
+	  row[columns->BgSet] = true;
+	  row[columns->BgColor] = "orange red";
+	}
       }
     };
 
