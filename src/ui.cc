@@ -1148,10 +1148,10 @@ static void maybe_show_old_tmpdir_message()
 
 namespace
 {
-  pkgPackageManager::OrderResult run_dpkg_with_cwidget_suspended(sigc::slot0<pkgPackageManager::OrderResult> f)
+  pkgPackageManager::OrderResult run_dpkg_with_cwidget_suspended(sigc::slot1<pkgPackageManager::OrderResult, int> f)
   {
     cw::toplevel::suspend();
-    pkgPackageManager::OrderResult rval = f();
+    pkgPackageManager::OrderResult rval = f(-1);
     
     if(rval != pkgPackageManager::Incomplete)
       {
@@ -1174,7 +1174,7 @@ namespace
 
 void install_or_remove_packages()
 {
-  download_install_manager *m = new download_install_manager(false, sigc::ptr_fun(&run_dpkg_with_cwidget_suspended), -1);
+  download_install_manager *m = new download_install_manager(false, sigc::ptr_fun(&run_dpkg_with_cwidget_suspended));
 
   m->post_forget_new_hook.connect(package_states_changed.make_slot());
 

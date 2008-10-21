@@ -57,15 +57,6 @@
 
 namespace cw = cwidget;
 
-// \todo Run in a vte widget.
-namespace
-{
-  pkgPackageManager::OrderResult run_dpkg_directly(sigc::slot0<pkgPackageManager::OrderResult> f)
-  {
-    return f();
-  }
-}
-
 namespace gui
 {
   // \todo Some of these icon choices suck.
@@ -291,10 +282,10 @@ namespace gui
   {
     // Scary callback functions.  This needs to be cleaned up.
     pkgPackageManager::OrderResult
-    gui_run_dpkg(sigc::slot0<pkgPackageManager::OrderResult> f,
+    gui_run_dpkg(sigc::slot1<pkgPackageManager::OrderResult, int> f,
 		 pkgPackageManager::OrderResult *set_loc)
     {
-      pkgPackageManager::OrderResult result = f();
+      pkgPackageManager::OrderResult result = f(-1);
       *set_loc = result;
       return result;
     }
@@ -332,8 +323,7 @@ namespace gui
       download_install_manager *m =
 	new download_install_manager(false,
 				     sigc::bind(sigc::ptr_fun(&gui_run_dpkg),
-						&result),
-				     -1);
+						&result));
 
       guiOpProgress progress;
       cw::util::ref_ptr<guiPkgAcquireStatus> acqlog(guiPkgAcquireStatus::create());

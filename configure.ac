@@ -48,6 +48,8 @@ PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 
 PKG_CHECK_MODULES(CWIDGET, cwidget)
 
+PKG_CHECK_MODULES(VTE, vte)
+
 HAVE_GTK=1
 AC_ARG_ENABLE(gtk,
 	AS_HELP_STRING(--disable-gtk, [don't compile the GTK+/gtkmm frontend even if the appropriate libraries are available]),
