@@ -9,6 +9,8 @@ libgtk_a_SOURCES=\
 	dependency_chains_tab.h \
 	download.cc \
 	download.h \
+	dpkg_terminal.cc \
+	dpkg_terminal.h \
 	entityview.cc \
 	entityview.h \
 	errortab.cc \

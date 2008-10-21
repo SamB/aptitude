@@ -48,6 +48,7 @@
 
 #include <gtk/dependency_chains_tab.h>
 #include <gtk/download.h>
+#include <gtk/dpkg_terminal.h>
 #include <gtk/info.h>
 #include <gtk/packagestab.h>
 #include <gtk/previewtab.h>
@@ -280,24 +281,65 @@ namespace gui
   // installation.
   namespace
   {
+    class DpkgTerminalTab : public Tab
+    {
+      Gtk::ScrolledWindow *terminal_scrolled_window;
+
+    public:
+      DpkgTerminalTab(Gtk::Widget *term)
+	: Tab(DpkgTerminal, "Applying changes",
+	      Gnome::Glade::Xml::create(glade_main_file, "main_apply_changes_scrolledwindow"),
+	      "main_apply_changes_scrolledwindow")
+      {
+	get_xml()->get_widget("main_apply_changes_scrolledwindow",
+			      terminal_scrolled_window);
+	terminal_scrolled_window->remove();
+	terminal_scrolled_window->add(*Gtk::manage(term));
+
+	get_widget()->show_all();
+      }
+    };
+
     // Scary callback functions.  This needs to be cleaned up.
+
+    void register_dpkg_terminal(Gtk::Widget *w)
+    {
+      tab_add(new DpkgTerminalTab(w));
+    }
+
+    // Callback for running dpkg from a background thread.
     pkgPackageManager::OrderResult
     gui_run_dpkg(sigc::slot1<pkgPackageManager::OrderResult, int> f,
 		 pkgPackageManager::OrderResult *set_loc)
     {
-      pkgPackageManager::OrderResult result = f(-1);
+      // \todo We should change the download notification to tell the
+      // user that they can click to obtain a terminal; this is just a
+      // proof-of-concept.
+      pkgPackageManager::OrderResult result = run_dpkg_in_terminal(f, sigc::ptr_fun(&register_dpkg_terminal));
       *set_loc = result;
       return result;
     }
 
-    void handle_install(download_install_manager *m, OpProgress &progress,
+    void handle_install(download_install_manager *m,
 			bool *in_dpkg, bool *finished)
     {
+      OpProgress progress;
+
       download_manager::result result = download_manager::do_again;
       while (result == download_manager::do_again)
         {
           m->do_download(100);
           *in_dpkg = true;
+	  // \todo Calling finish() from a background thread will
+	  // crash because it invokes callbacks that ultimately end up
+	  // calling GTK+ functions.  finish() should be split up into
+	  // a part that runs before invoking dpkg and a part that
+	  // runs afterwards, the same way that it's split around the
+	  // download process.  In fact, the whole business of
+	  // downloading could be viewed as being a series of
+	  // background actions whose results are passed to a
+	  // suspended continuation.  There may be something to chew
+	  // on there...
           result = m->finish(pkgAcquire::Continue, progress);
           *in_dpkg = false;
         }
@@ -343,7 +385,7 @@ namespace gui
 
       pMainWindow->get_progress_bar()->set_text(_("Installing / removing packages..."));
       Glib::Thread * install_thread =
-	Glib::Thread::create(sigc::bind(sigc::ptr_fun(&handle_install), m, progress, &in_dpkg, &finished), true);
+	Glib::Thread::create(sigc::bind(sigc::ptr_fun(&handle_install), m, &in_dpkg, &finished), true);
       while(!finished)
         {
           if (in_dpkg)

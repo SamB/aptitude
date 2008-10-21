@@ -41,7 +41,12 @@ namespace gui
      *  chains linking two groups of packages.
      */
     DependencyChains,
-    Download, Packages, Info, Preview, Resolver, InstallRemove, Error
+    Download, Packages, Info, Preview, Resolver, InstallRemove,
+    /** \brief A tab that shows the terminal output produced by a dpkg
+     *	invocation.
+     */
+    DpkgTerminal,
+    Error
   };
 
   /**
