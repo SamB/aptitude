@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Oct 19 11:33:41 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Oct 19 15:11:00 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="width_request">800</property>
@@ -1495,12 +1495,32 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <widget class="GtkScrolledWindow" id="main_apply_changes_scrolledwindow">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <child>
+                  <widget class="GtkTextView" id="textview1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="text" translatable="yes">A terminal running dpkg will appear here.</property>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">8</property>
+              </packing>
             </child>
             <child>
-              <placeholder/>
+              <widget class="GtkLabel" id="label16">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Applying Changes</property>
+              </widget>
               <packing>
                 <property name="type">tab</property>
+                <property name="position">8</property>
+                <property name="tab_fill">False</property>
               </packing>
             </child>
           </widget>

@@ -36,10 +36,8 @@
 using namespace std;
 
 download_install_manager::download_install_manager(bool _download_only,
-						   const run_dpkg_in_terminal_func &_run_dpkg_in_terminal,
-						   int _status_fd)
+						   const run_dpkg_in_terminal_func &_run_dpkg_in_terminal)
   : log(NULL), download_only(_download_only), pm(new pkgDPkgPM(*apt_cache_file)),
-    status_fd(_status_fd),
     run_dpkg_in_terminal(_run_dpkg_in_terminal)
 {
 }
@@ -104,7 +102,7 @@ bool download_install_manager::prepare(OpProgress &progress,
   return true;
 }
 
-pkgPackageManager::OrderResult download_install_manager::run_dpkg()
+pkgPackageManager::OrderResult download_install_manager::run_dpkg(int status_fd)
 {
   sigset_t allsignals;
   sigset_t oldsignals;

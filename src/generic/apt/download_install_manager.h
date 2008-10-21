@@ -36,11 +36,11 @@
 /** \file download_install_manager.h
  */
 
-// The type of a function that runs a nullary function in a terminal
-// (possibly the current controlling terminal) and returns its result.
-// The function may be invoked in a sub-process, but the status file
-// descriptor (if one is defined) must be preserved.
-typedef sigc::slot1<pkgPackageManager::OrderResult, sigc::slot0<pkgPackageManager::OrderResult> > run_dpkg_in_terminal_func;
+// The type of a function that runs dpkg in a terminal.  It's passed a
+// function that invokes dpkg as currently appropriate, given the
+// status file descriptor on which to invoke it (or -1 to discard
+// status messages).  This may be invoked in a sub-process.
+typedef sigc::slot1<pkgPackageManager::OrderResult, sigc::slot1<pkgPackageManager::OrderResult, int> > run_dpkg_in_terminal_func;
 
 /** Manages downloading and installing packages. */
 class download_install_manager : public download_manager
@@ -57,16 +57,13 @@ class download_install_manager : public download_manager
   /** The list of sources from which to download. */
   pkgSourceList src_list;
 
-  /** The apt status file descriptor. */
-  int status_fd;
-
   /** How to run the actual install process. */
   run_dpkg_in_terminal_func run_dpkg_in_terminal;
 
   /** Actually run dpkg; this is the part of the installation
    *  that might run in a sub-process.
    */
-  pkgPackageManager::OrderResult run_dpkg();
+  pkgPackageManager::OrderResult run_dpkg(int status_fd);
 
   /** Actually perform the installation/removal of packages and tell
    *  the caller what happened.
@@ -85,8 +82,7 @@ public:
    *                     status information.
    */
   download_install_manager(bool _download_only,
-			   const run_dpkg_in_terminal_func &_run_dpkg_in_terminal,
-			   int _status_fd);
+			   const run_dpkg_in_terminal_func &_run_dpkg_in_terminal);
   ~download_install_manager();
 
   /** Set up an install run.  Does not take ownership of any of the
