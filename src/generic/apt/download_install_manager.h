@@ -36,10 +36,14 @@
 /** \file download_install_manager.h
  */
 
+// This complex slot-based mechanism is used so that we can still have
+// a generic downloading framework (e.g., ui_download_manager).
+
 // The type of a function that runs dpkg in a terminal.  It's passed a
 // function that invokes dpkg as currently appropriate, given the
 // status file descriptor on which to invoke it (or -1 to discard
-// status messages).  This may be invoked in a sub-process.
+// status messages).  The slot that's passed in can be invoked in a
+// background thread or a sub-process.
 typedef sigc::slot1<pkgPackageManager::OrderResult, sigc::slot1<pkgPackageManager::OrderResult, int> > run_dpkg_in_terminal_func;
 
 /** Manages downloading and installing packages. */
@@ -76,10 +80,6 @@ public:
    *  manager).
    *
    *  \param _run_dpkg_in_terminal  how to set up the terminal for dpkg.
-   *
-   *  \param _status_fd  the file descriptor on which to print
-   *                     status information, or -1 to not print
-   *                     status information.
    */
   download_install_manager(bool _download_only,
 			   const run_dpkg_in_terminal_func &_run_dpkg_in_terminal);
@@ -106,9 +106,48 @@ public:
 	       download_signal_log *signallog);
 
   /** If download_only is false, call the package manager to install
-   *  or remove packages. */
+   *  or remove packages.
+   *
+   *  The status file descriptor will be set 
+   */
   result finish(pkgAcquire::RunResult result,
 		OpProgress &progress);
+
+  /** \brief Invoke the part of finish() that runs before dpkg.
+   *
+   *  This function must be invoked in the foreground thread.
+   *
+   *  \param result   The return value of do_download().
+   *
+   *  \return success or failure; if success is returned, you may
+   *  proceed to invoke finish_run_dpkg().  Otherwise,
+   *  finish_post_dpkg() should be invoked with
+   *  pkgPackageManager::Failed.
+   */
+  result finish_pre_dpkg(pkgAcquire::RunResult result);
+
+  /** \brief Actually run dpkg.
+   *
+   *  This function may be invoked in a background thread or even in a
+   *  sub-process; it will use the callback passed to the constructor
+   *  to wrap the actual invocation of dpkg.  Its return value should
+   *  be passed to finish_post_dpkg().
+   */
+  pkgPackageManager::OrderResult finish_run_dpkg();
+
+  /** \brief Invoke the part of finish() that runs after dpkg.
+   *
+   *  This function must be invoked in the foreground thread.
+   *
+   *  \param dpkg_result   The return value of finish_run_dpkg().
+   *  \param progress      An object to use in displaying the
+   *                       progress when reloading.
+   *
+   *  \return the result of the install process; if do_again, then the
+   *  caller should repeat the process beginning with do_download().
+   */
+  result finish_post_dpkg(pkgPackageManager::OrderResult dpkg_result,
+			  OpProgress &progress);
 
   /** Invoked after an automatic 'forget new' operation. */
   sigc::signal0<void> post_forget_new_hook;

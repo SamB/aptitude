@@ -102,38 +102,7 @@ bool download_install_manager::prepare(OpProgress &progress,
   return true;
 }
 
-pkgPackageManager::OrderResult download_install_manager::run_dpkg(int status_fd)
-{
-  sigset_t allsignals;
-  sigset_t oldsignals;
-  sigfillset(&allsignals);
-
-  pthread_sigmask(SIG_UNBLOCK, &allsignals, &oldsignals);
-  pkgPackageManager::OrderResult pmres = pm->DoInstallPostFork(status_fd);
-
-  switch(pmres)
-    {
-    case pkgPackageManager::Failed:
-      _error->DumpErrors();
-      cerr << _("A package failed to install.  Trying to recover:") << endl;
-      system("DPKG_NO_TSTP=1 dpkg --configure -a");
-      _error->Discard();
-      
-      break;
-    case pkgPackageManager::Completed:
-      break;
-
-    case pkgPackageManager::Incomplete:
-      break;
-    }
-
-  pthread_sigmask(SIG_SETMASK, &oldsignals, NULL);
-
-  return pmres;
-}
-
-download_manager::result download_install_manager::execute_install_run(pkgAcquire::RunResult res,
-								       OpProgress &progress)
+download_manager::result download_install_manager::finish_pre_dpkg(pkgAcquire::RunResult res)
 {
   if(res != pkgAcquire::Continue)
     return failure;
@@ -177,18 +146,54 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
   if(pre_fork_result == pkgPackageManager::Failed)
     rval = failure;
 
-  pkgPackageManager::OrderResult pmres;
-  if(rval == success)
-    pmres = run_dpkg_in_terminal(sigc::mem_fun(*this, &download_install_manager::run_dpkg));
-  else
-    pmres = pkgPackageManager::Failed;
+  return rval;
+}
 
+pkgPackageManager::OrderResult download_install_manager::run_dpkg(int status_fd)
+{
+  sigset_t allsignals;
+  sigset_t oldsignals;
+  sigfillset(&allsignals);
+
+  pthread_sigmask(SIG_UNBLOCK, &allsignals, &oldsignals);
+  pkgPackageManager::OrderResult pmres = pm->DoInstallPostFork(status_fd);
 
   switch(pmres)
     {
     case pkgPackageManager::Failed:
+      _error->DumpErrors();
+      cerr << _("A package failed to install.  Trying to recover:") << endl;
+      system("DPKG_NO_TSTP=1 dpkg --configure -a");
       _error->Discard();
       
+      break;
+    case pkgPackageManager::Completed:
+      break;
+
+    case pkgPackageManager::Incomplete:
+      break;
+    }
+
+  pthread_sigmask(SIG_SETMASK, &oldsignals, NULL);
+
+  return pmres;
+}
+
+pkgPackageManager::OrderResult download_install_manager::finish_run_dpkg()
+{
+  return run_dpkg_in_terminal(sigc::mem_fun(*this, &download_install_manager::run_dpkg));
+}
+
+download_manager::result download_install_manager::finish_post_dpkg(pkgPackageManager::OrderResult dpkg_result,
+								    OpProgress &progress)
+{
+  result rval = success;
+
+  switch(dpkg_result)
+    {
+    case pkgPackageManager::Failed:
+      _error->Discard();
+
       rval = failure;
       break;
     case pkgPackageManager::Completed:
@@ -202,24 +207,15 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
   fetcher->Shutdown();
 
   if(!pm->GetArchives(fetcher, &src_list, apt_package_records))
-    return failure;
-
-  if(!apt_cache_file->GainLock())
+    rval = failure;
+  else if(!apt_cache_file->GainLock())
     // This really shouldn't happen.
     {
       _error->Error(_("Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"));
-      return failure;
+      rval = failure;
     }
 
-  return rval;
-}
-
-download_manager::result download_install_manager::finish(pkgAcquire::RunResult res,
-							  OpProgress &progress)
-{
-  result run_res = execute_install_run(res, progress);
-
-  if(run_res != do_again)
+  if(rval != do_again)
     {
       apt_close_cache();
 
@@ -245,5 +241,19 @@ download_manager::result download_install_manager::finish(pkgAcquire::RunResult 
 	}
     }
 
-  return run_res;
+  return rval;
+}
+
+download_manager::result download_install_manager::finish(pkgAcquire::RunResult result,
+							  OpProgress &progress)
+{
+  const download_manager::result pre_res = finish_pre_dpkg(result);
+
+  pkgPackageManager::OrderResult dpkg_res;
+  if(pre_res == success)
+    dpkg_res = finish_run_dpkg();
+  else
+    dpkg_res = pkgPackageManager::Failed;
+
+  return finish_post_dpkg(dpkg_res, progress);
 }
