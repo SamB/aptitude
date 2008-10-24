@@ -328,7 +328,8 @@ namespace gui
       download_manager::result result = download_manager::do_again;
       while (result == download_manager::do_again)
         {
-          m->do_download(100);
+	  pkgAcquire::RunResult download_result = m->do_download(100);
+
           *in_dpkg = true;
 	  // \todo Calling finish() from a background thread will
 	  // crash because it invokes callbacks that ultimately end up
@@ -340,7 +341,7 @@ namespace gui
 	  // background actions whose results are passed to a
 	  // suspended continuation.  There may be something to chew
 	  // on there...
-          result = m->finish(pkgAcquire::Continue, progress);
+          result = m->finish(download_result, progress);
           *in_dpkg = false;
         }
       *finished = true;
