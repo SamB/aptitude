@@ -1159,10 +1159,18 @@
             <child>
               <widget class="GtkVBox" id="main_resolver_vbox">
                 <child>
-                  <widget class="GtkTreeView" id="main_resolver_treeview">
+                  <widget class="GtkScrolledWindow" id="scrolledwindow14">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="headers_clickable">True</property>
+                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <child>
+                      <widget class="GtkTreeView" id="main_resolver_treeview">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="headers_clickable">True</property>
+                      </widget>
+                    </child>
                   </widget>
                 </child>
                 <child>
