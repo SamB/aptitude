@@ -23,6 +23,7 @@
 #include <generic/apt/tags.h>
 #include <generic/apt/tasks.h>
 
+#include <apt-pkg/error.h>
 #include <apt-pkg/pkgrecords.h>
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
@@ -2848,64 +2849,35 @@ namespace aptitude
 		pkgRecords &records,
 		bool debug)
     {
-      eassert(p.valid());
-      eassert(search_info.valid());
-
-      const ref_ptr<search_cache::implementation> info = search_info.dyn_downcast<search_cache::implementation>();
-      eassert(info.valid());
-
-      const xapian_info &xapian_results(info->get_toplevel_xapian_info(p, debug));
-
-      if(!xapian_results.get_matched_packages_valid())
+      try
 	{
-	  if(debug)
-	    std::cout << "Failed to build a Xapian query for this search." << std::endl
-		      << "Falling back to testing each package." << std::endl;
+	  eassert(p.valid());
+	  eassert(search_info.valid());
 
-	  for(pkgCache::PkgIterator pkg = cache.PkgBegin();
-	      !pkg.end(); ++pkg)
+	  const ref_ptr<search_cache::implementation> info = search_info.dyn_downcast<search_cache::implementation>();
+	  eassert(info.valid());
+
+	  const xapian_info &xapian_results(info->get_toplevel_xapian_info(p, debug));
+
+	  if(!xapian_results.get_matched_packages_valid())
 	    {
-	      if(pkg.VersionList().end() && pkg.ProvidesList().end())
-		continue;
-
-	      // TODO: how do I make sure the sub-patterns are
-	      // searched using the right xapian_info?  I could thread
-	      // the current top-level or the current xapian_info
-	      // through, I suppose.  Or I could use a global list of
-	      // term postings and only store match sets on a
-	      // per-toplevel basis (that might work, actually?).
-
-	      ref_ptr<structural_match> m(get_match(p, pkg,
-						    info,
-						    cache,
-						    records,
-						    debug));
-
-	      if(m.valid())
-		matches.push_back(std::make_pair(pkg, m));
-	    }
-	}
-      else
-	{
-	  Xapian::MSet mset(xapian_results.get_xapian_match());
-	  for(Xapian::MSetIterator it = mset.begin();
-	      it != mset.end(); ++it)
-	    {
-	      std::string name(it.get_document().get_data());
-
 	      if(debug)
-		std::cout << "HIT: " << name
-			  << " (score " << it.get_weight() << ")" << std::endl;
+		std::cout << "Failed to build a Xapian query for this search." << std::endl
+			  << "Falling back to testing each package." << std::endl;
 
-	      pkgCache::PkgIterator pkg(cache.FindPkg(name));
-	      if(pkg.end())
+	      for(pkgCache::PkgIterator pkg = cache.PkgBegin();
+		  !pkg.end(); ++pkg)
 		{
-		  if(debug)
-		    std::cout << "W: unable to find the package " << name
-			      << std::endl;
-		}
-	      else if(!(pkg.VersionList().end() && pkg.ProvidesList().end()))
-		{
+		  if(pkg.VersionList().end() && pkg.ProvidesList().end())
+		    continue;
+
+		  // TODO: how do I make sure the sub-patterns are
+		  // searched using the right xapian_info?  I could thread
+		  // the current top-level or the current xapian_info
+		  // through, I suppose.  Or I could use a global list of
+		  // term postings and only store match sets on a
+		  // per-toplevel basis (that might work, actually?).
+
 		  ref_ptr<structural_match> m(get_match(p, pkg,
 							info,
 							cache,
@@ -2916,6 +2888,50 @@ namespace aptitude
 		    matches.push_back(std::make_pair(pkg, m));
 		}
 	    }
+	  else
+	    {
+	      Xapian::MSet mset(xapian_results.get_xapian_match());
+	      for(Xapian::MSetIterator it = mset.begin();
+		  it != mset.end(); ++it)
+		{
+		  std::string name(it.get_document().get_data());
+
+		  if(debug)
+		    std::cout << "HIT: " << name
+			      << " (score " << it.get_weight() << ")" << std::endl;
+
+		  pkgCache::PkgIterator pkg(cache.FindPkg(name));
+		  if(pkg.end())
+		    {
+		      if(debug)
+			std::cout << "W: unable to find the package " << name
+				  << std::endl;
+		    }
+		  else if(!(pkg.VersionList().end() && pkg.ProvidesList().end()))
+		    {
+		      ref_ptr<structural_match> m(get_match(p, pkg,
+							    info,
+							    cache,
+							    records,
+							    debug));
+
+		      if(m.valid())
+			matches.push_back(std::make_pair(pkg, m));
+		    }
+		}
+	    }
+	}
+      catch(cwidget::util::Exception &e)
+	{
+	  _error->Error("%s", e.errmsg().c_str());
+	}
+      catch(std::exception &e)
+	{
+	  _error->Error("%s", e.what());
+	}
+      catch(Xapian::Error &e)
+	{
+	  _error->Error("%s", e.get_msg().c_str());
 	}
     }
   }
