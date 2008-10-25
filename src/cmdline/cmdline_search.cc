@@ -186,6 +186,8 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
 				 debug);
     }
 
+  _error->DumpErrors();
+
   std::sort(output.begin(), output.end(), compare(s));
   output.erase(std::unique(output.begin(), output.end(), result_equality(s)),
 	       output.end());
