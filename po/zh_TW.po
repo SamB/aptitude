@@ -2,13 +2,16 @@
 # Copyright (C) 2004 Free Software Foundation, Inc.
 # This file is distributed under the same license as the Aptitude package.
 # Rex Tsai <chihchun@linux.org.tw>, 2004-2005
+# Asho Yeh <ashoyeh@gmail.com>, 2008
+#
+# TODO: Use one style of quotes only, currently used: \"...\", '...', “...” 
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-09-05 16:05+0200\n"
-"PO-Revision-Date: 2008-10-22 22:59+0800\n"
+"PO-Revision-Date: 2008-10-26 21:02+0100\n"
 "Last-Translator: Asho Yeh <ashoyeh@gmail.com>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
@@ -2157,11 +2160,11 @@ msgstr "未能找到安裝%s套件的理由。\n"
 #: src/cmdline/cmdline_why.cc:1108
 #, c-format
 msgid "No package named \"%s\" exists."
-msgstr "套件\"%s\"不存在。"
+msgstr "套件“%s”不存在。"
 
 #: src/cmdline/cmdline_why.cc:1054
 msgid "Unable to parse some match patterns."
-msgstr "無法解析匹配的模式。\""
+msgstr "無法解析匹配的模式。"
 
 #: src/cmdline/cmdline_why.cc:1081
 #, c-format
@@ -4841,7 +4844,7 @@ msgstr "不要再顯示此信息。"
 #: src/ui.cc:385
 msgid ""
 "You may not modify the state of any package while a download is underway."
-msgstr "\"在下載還在繼續的時候，您不能修改任何套件的狀態。\""
+msgstr "在下載還在繼續的時候，您不能修改任何套件的狀態。"
 
 #: src/ui.cc:416
 msgid "You already are root!"
@@ -4849,7 +4852,7 @@ msgstr "您已經是 root 了！"
 
 #: src/ui.cc:431
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
-msgstr "非法的取得 Root 指令；應該從 su 或 sudo 開始："
+msgstr "非法的取得 root 權限指令；應該從 su 或 sudo 開始："
 
 #: src/ui.cc:438
 #, c-format
@@ -5381,7 +5384,7 @@ msgstr "檢查解決方案(^E)"
 
 #: src/ui.cc:2294
 msgid "Examine the currently selected solution to the dependency problems."
-msgstr "\"檢查當前選擇的處理相依問題的解決方案\""
+msgstr "檢查當前選擇的處理相依問題的解決方案"
 
 #: src/ui.cc:2297
 msgid "Apply ^Solution"
