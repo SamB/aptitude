@@ -25,20 +25,32 @@
 
 #include <apt-pkg/progress.h>
 
+#include "../ui_download_manager.h" // For refcounted_progress.
+
 namespace gui
 {
 
-  class guiOpProgress : public OpProgress
+  class guiOpProgress : public refcounted_progress
   { // must derive to read protected member..
-    private:
-      double sanitizePercentFraction(float percent);
-    public:
-      ~guiOpProgress();
-      void Update();
+  private:
+    double sanitizePercentFraction(float percent);
+
+    bool destroyed;
+
+    guiOpProgress();
+  public:
+    ~guiOpProgress();
+
+    static cwidget::util::ref_ptr<guiOpProgress> create()
+    {
+      return new guiOpProgress;
+    }
+
+    void Update();
+
+    // Clear out the progress bar.
+    void destroy();
   };
-
-  guiOpProgress * gen_progress_bar();
-
 }
 
 #endif /* PROGRESS_H_ */

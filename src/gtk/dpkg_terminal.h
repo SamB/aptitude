@@ -37,20 +37,18 @@ namespace gui
   /** \brief Run dpkg in a terminal, blocking this thread until it
    *  completes.
    *
-   *  Note that this *must* be invoked in a background thread, or it
-   *  will deadlock itself!
+   *  This may be invoked in either a foreground thread or a
+   *  background thread.
    *
    *  \param f The function to invoke when we want to run dpkg.
    *
    *  \param register_terminal A function to invoke to register the
    *  terminal (e.g., to store it in a variable or to add it to a new
    *  tab).  This function assumes ownership of the terminal widget.
-   *
-   *  register_terminal is invoked in the same thread that called
-   *  run_dpkg_in_terminal().
    */
-  pkgPackageManager::OrderResult run_dpkg_in_terminal(const sigc::slot1<pkgPackageManager::OrderResult, int> &f,
-						      const sigc::slot1<void, Gtk::Widget *> &register_terminal);
+  void run_dpkg_in_terminal(const sigc::slot1<pkgPackageManager::OrderResult, int> &f,
+			    const sigc::slot1<void, Gtk::Widget *> &register_terminal,
+			    const sigc::slot1<void, pkgPackageManager::OrderResult> &k);
 }
 
 #endif

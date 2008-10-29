@@ -53,23 +53,24 @@ namespace gui
     bool process_data_from_dpkg_socket(Glib::IOCondition condition,
 				       int fd)
     {
-      switch(condition)
+      if(condition & Glib::IO_IN)
 	{
-	case Glib::IO_IN:
-	  {
-	    char c;
-	    while(recv(fd, &c, 1, MSG_DONTWAIT) > 0)
-	      ; // Just snarf all the data in a lame way for now.
-	    return true;
-	  }
-	case Glib::IO_NVAL:
-	case Glib::IO_ERR:
-	case Glib::IO_HUP:
-	  return false;
-
-	default:
-	  return true; // ??
+	  char c;
+	  // If we can't read anything, assume we got EOF and stop
+	  // listening to this FD.
+	  bool read_anything = false;
+	  while(recv(fd, &c, 1, MSG_DONTWAIT) > 0)
+	    read_anything = true; // Just snarf all the data in a lame way for now.
+	  return read_anything;
 	}
+
+      else if( (condition & Glib::IO_NVAL) ||
+	       (condition & Glib::IO_ERR) ||
+	       (condition & Glib::IO_HUP) )
+	return false;
+
+      _error->Warning("Unexpected IO condition %d", condition);
+      return false;
     }
 
     int open_unix_socket()
@@ -94,15 +95,15 @@ namespace gui
       // The PID of the child to monitor.
       pid_t pid;
 
-      // The box to place the child's result in.
-      cw::threads::box<pkgPackageManager::OrderResult> *result_box;
+      // The continuation of the child.
+      sigc::slot1<void, pkgPackageManager::OrderResult> k;
 
       gulong handler_id;
 
       child_exited_info(pid_t _pid,
-			cw::threads::box<pkgPackageManager::OrderResult> *_result_box)
+			const sigc::slot1<void, pkgPackageManager::OrderResult> &_k)
 	: pid(_pid),
-	  result_box(_result_box)
+	  k(_k)
       {
       }
     };
@@ -127,21 +128,19 @@ namespace gui
       if(WIFEXITED(status))
 	result = (pkgPackageManager::OrderResult) WEXITSTATUS(status);
 
-      // TODO: we'll leave the background thread running forever if an
-      // exception gets thrown somehow.  But I don't think we can
-      // avoid this.
-      info->result_box->put(pkgPackageManager::Failed);
+      info->k(pkgPackageManager::Failed);
 
       g_signal_handler_disconnect(vte_reaper_get(),
 				  info->handler_id);
     }
 
     void connect_dpkg_result(pid_t pid,
-			     cw::threads::box<pkgPackageManager::OrderResult> *result_box)
+			     sigc::slot1<void, pkgPackageManager::OrderResult> k)
     {
-      child_exited_info *info = new child_exited_info(pid, result_box);
-      // We use implicit locking here to know that the signal won't be
-      // triggered before handler_id is set.
+      child_exited_info *info = new child_exited_info(pid, k);
+      // We use implicit locking here (plus the fact that we are
+      // running in the foreground thread) to know that the signal
+      // won't be triggered before handler_id is set.
       info->handler_id =
 	g_signal_connect_data(vte_reaper_get(),
 			      "child-exited",
@@ -151,13 +150,10 @@ namespace gui
 			      (GConnectFlags)0);
     }
 
-    // The dpkg stuff is actually run from the main loop.  Why?
-    // Because we want to be able to connect signals safely, and to
-    // avoid racing with the VTE reaper (which seems to be somewhat
-    // hard to eliminate) or threads accessing _error.
+    // This should always run from the foreground thread.
     void do_run_dpkg(const sigc::slot1<pkgPackageManager::OrderResult, int> f,
 		     const sigc::slot1<void, Gtk::Widget *> register_terminal,
-		     cw::threads::box<pkgPackageManager::OrderResult> *result_box)
+		     const sigc::slot1<void, pkgPackageManager::OrderResult> k)
     {
       GtkWidget *vte = vte_terminal_new();
 
@@ -175,7 +171,8 @@ namespace gui
       int listen_sock = open_unix_socket();
       if(listen_sock == -1)
 	{
-	  result_box->put(pkgPackageManager::Failed);
+	  k(pkgPackageManager::Failed);
+	  return;
 	}
 
       // Ensure that the socket is always closed when this routine
@@ -189,7 +186,8 @@ namespace gui
       if(socketname.get_name().size() > max_socket_name)
 	{
 	  _error->Error("Internal error: the temporary socket name is too long!");
-	  result_box->put(pkgPackageManager::Failed);
+	  k(pkgPackageManager::Failed);
+	  return;
 	}
 
       sa.sun_family = AF_UNIX;
@@ -201,7 +199,8 @@ namespace gui
 	  _error->Error("%s: Unable to bind to the temporary socket: %s",
 			__PRETTY_FUNCTION__,
 			err.c_str());
-	  result_box->put(pkgPackageManager::Failed);
+	  k(pkgPackageManager::Failed);
+	  return;
 	}
 
       if(listen(listen_sock, 1) != 0)
@@ -211,7 +210,8 @@ namespace gui
 	  _error->Error("%s: Unable to listen on the temporary socket: %s",
 			__PRETTY_FUNCTION__,
 			err.c_str());
-	  result_box->put(pkgPackageManager::Failed);
+	  k(pkgPackageManager::Failed);
+	  return;
 	}
 
       pid_t pid = vte_terminal_forkpty(VTE_TERMINAL(vte),
@@ -278,28 +278,22 @@ namespace gui
 	  // can connect to it because its signal executions go through
 	  // the main loop, and this function call is blocking the main
 	  // loop.
-	  connect_dpkg_result(pid, result_box);
+	  connect_dpkg_result(pid, k);
 
 	  vte_reaper_add_child(pid);
 	}
     }
   }
 
-  pkgPackageManager::OrderResult run_dpkg_in_terminal(const sigc::slot1<pkgPackageManager::OrderResult, int> &f,
-						      const sigc::slot1<void, Gtk::Widget *> &register_terminal)
+  void run_dpkg_in_terminal(const sigc::slot1<pkgPackageManager::OrderResult, int> &f,
+			    const sigc::slot1<void, Gtk::Widget *> &register_terminal,
+			    const sigc::slot1<void, pkgPackageManager::OrderResult> &k)
   {
-    cw::threads::box<pkgPackageManager::OrderResult> result_box;
-
-    // Ask the main thread to start the dpkg run and store the result
-    // in result_box.
+    // Ask the main thread to start the dpkg run and to invoke the
+    // continuation.
     post_event(sigc::bind(sigc::ptr_fun(&do_run_dpkg),
 			  f,
 			  register_terminal,
-			  &result_box));
-
-    // Once the result-box is filled in, we're done.  Correctness here
-    // relies on the fact that no-one accesses the box after put()-ing
-    // into it.
-    return result_box.take();
+			  k));
   }
 }

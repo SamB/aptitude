@@ -175,8 +175,9 @@ public:
     return true;
   }
 
-  result finish(pkgAcquire::RunResult res,
-		OpProgress &progress)
+  void finish(pkgAcquire::RunResult res,
+	      OpProgress *progress,
+	      const sigc::slot1<void, result> &k)
   {
     if(fetcher != NULL)
       {
@@ -206,10 +207,14 @@ public:
 	      }
 	  }
 
-	return rval;
+	k(rval);
+	return;
       }
     else
-      return failure;
+      {
+	k(failure);
+	return;
+      }
   }
 };
 

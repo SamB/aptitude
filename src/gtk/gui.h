@@ -36,6 +36,8 @@
 #include <gtk/errortab.h>
 #include <gtk/notify.h>
 
+class download_manager;
+
 namespace gui
 {
   // Local forward declarations:
@@ -180,6 +182,37 @@ namespace gui
     /** \brief Open a new Packages tab to search for the given pattern. */
     void add_packages_tab(const std::string &pattern);
   };
+
+
+  /** \brief Start a new download, creating the appropriate GUI
+   *  elements.
+   *
+   *  \param manager The download manager defining the download
+   *                 process to run.
+   *
+   *  \param title   A string describing the download.
+   *
+   *  \param pulse   If \b true, a pulsing progress bar will be
+   *                 displayed instead of a percentage-based one.
+   *
+   *  \param view    The notification view in which to place the
+   *                 notification corresponding to this download.
+   *
+   *  \param download_starts_slot   A slot to be invoked in the
+   *                                foreground thread when the
+   *                                download is about to start.
+   *
+   *  \param download_stops_slot    A slot to be invoked in the
+   *                                background thread after the
+   *                                download and post-download
+   *                                actions complete.
+   */
+  void start_download(download_manager *manager,
+		      const std::string &title,
+		      bool pulse,
+		      NotifyView *view,
+		      const sigc::slot0<void> &download_starts_slot = sigc::slot0<void>(),
+		      const sigc::slot0<void> &download_stops_slot = sigc::slot0<void>());
 
   void main(int argc, char *argv[]);
 

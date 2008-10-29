@@ -39,7 +39,7 @@ namespace cw = cwidget;
 
 namespace gui
 {
-  void guiPkgAcquireStatus::update_workers(pkgAcquire *Owner)
+  void download_list_model::update_workers(pkgAcquire *Owner)
   {
     pkgAcquire::Worker *serf = Owner->WorkersBegin();
     while (serf)
@@ -58,7 +58,7 @@ namespace gui
     }
   }
 
-  void guiPkgAcquireStatus::update_item(string URI, int progress, string status)
+  void download_list_model::update_item(string URI, int progress, string status)
   {
     std::map<string, Gtk::TreeModel::iterator>::iterator item_iter = item_map.find(URI);
     if (item_iter == item_map.end())
@@ -68,7 +68,7 @@ namespace gui
     row[download_columns.Status] = status;
   }
 
-  void guiPkgAcquireStatus::maybe_new_item(pkgAcquire::ItemDesc &Itm)
+  void download_list_model::maybe_new_item(pkgAcquire::ItemDesc &Itm)
   {
     if (item_map.find(Itm.URI) == item_map.end())
     {
@@ -81,66 +81,41 @@ namespace gui
     }
   }
 
-  guiPkgAcquireStatus::guiPkgAcquireStatus()
+  download_list_model::download_list_model()
     : download_columns(),
       download_store(Gtk::ListStore::create(download_columns)),
-      cancelled(false),
       failed(false)
   {
   }
 
-  bool guiPkgAcquireStatus::Pulse(pkgAcquire *Owner)
+  void download_list_model::connect(download_signal_log *log)
   {
-    if(cancelled)
-      return false;
+    log->IMSHit_sig.connect(sigc::mem_fun(*this, &download_list_model::IMSHit));
+    log->Fetch_sig.connect(sigc::mem_fun(*this, &download_list_model::Fetch));
+    log->Done_sig.connect(sigc::mem_fun(*this, &download_list_model::Done));
+    log->Fail_sig.connect(sigc::mem_fun(*this, &download_list_model::Fail));
+    log->Pulse_sig.connect(sigc::mem_fun(*this, &download_list_model::Pulse));
+    log->Start_sig.connect(sigc::mem_fun(*this, &download_list_model::Start));
+  }
 
-    pkgAcquireStatus::Pulse(Owner);
-    double fraction = 0;
-    if (TotalItems != 0)
-      fraction = ((double)(CurrentBytes+CurrentItems))/((double)(TotalBytes+TotalItems));
+  void download_list_model::Start(download_signal_log &manager)
+  {
+    Gtk::TreeModel::iterator store_iter = download_store->append();
+    Gtk::TreeModel::Row row = *store_iter;
+    row[download_columns.URI] = "";
+    row[download_columns.ShortDesc] = "";
+    row[download_columns.Description] = "Download started";
+  }
 
-    std::string rate_string;
-    if(CurrentBytes > 0 || CurrentItems > 0)
-      rate_string = ssprintf(_("%sB/s"),
-			     SizeToStr(CurrentCPS).c_str());
-
-    std::string progress_string;
-    if(CurrentCPS > 0)
-      progress_string = ssprintf(_("%sB of %sB at %sB/s, %s remaining"),
-				 SizeToStr(CurrentBytes).c_str(),
-				 SizeToStr(TotalBytes).c_str(),
-				 SizeToStr(CurrentCPS).c_str(),
-				 TimeToStr(((TotalBytes - CurrentBytes)/CurrentCPS)).c_str());
-    else if(CurrentBytes > 0 || CurrentItems > 0)
-      progress_string = ssprintf(_("%sB of %sB, stalled"),
-				 SizeToStr(CurrentBytes).c_str(),
-				 SizeToStr(TotalBytes).c_str());
-
-    progress(fraction);
-    progress_rate(rate_string);
-    progress_rate_and_estimate(progress_string);
-
+  void download_list_model::Pulse(pkgAcquire *Owner,
+				  download_signal_log &manager,
+				  const sigc::slot1<void, bool> &k)
+  {
     update_workers(Owner);
-    gtk_update();
-    return !want_to_quit;
   }
 
-  bool guiPkgAcquireStatus::MediaChange(string media, string drive)
-  {
-    if(cancelled)
-      return false;
-
-    const Glib::ustring msg = _("Change media");
-    Gtk::Dialog dialog(msg, *pMainWindow, true, true);
-    Gtk::Label label(ssprintf(_("Please insert the disc labeled \"%s\" into the drive \"%s\""),
-        media.c_str(), drive.c_str()));
-    dialog.get_vbox()->pack_end(label, true, true, 0);
-    dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
-    dialog.add_button(_("Abort"), Gtk::RESPONSE_CANCEL);
-    return dialog.run() == Gtk::RESPONSE_OK;
-  }
-
-  void guiPkgAcquireStatus::Fail(pkgAcquire::ItemDesc &Itm)
+  void download_list_model::Fail(pkgAcquire::ItemDesc &Itm,
+				 download_signal_log &log)
   {
     switch(Itm.Owner->Status)
       {
@@ -161,26 +136,24 @@ namespace gui
       }
   }
 
-  void guiPkgAcquireStatus::Fetch(pkgAcquire::ItemDesc &Itm)
+  void download_list_model::IMSHit(pkgAcquire::ItemDesc &Itm,
+				   download_signal_log &manager)
+  {
+    maybe_new_item(Itm);
+    update_item(Itm.URI, 100, _("Already downloaded"));
+  }
+
+  void download_list_model::Fetch(pkgAcquire::ItemDesc &Itm,
+				  download_signal_log &manager)
   {
     maybe_new_item(Itm);
     update_item(Itm.URI, 100, _("Fetch"));
   }
 
-  void guiPkgAcquireStatus::Done(pkgAcquire::ItemDesc &Itm)
+  void download_list_model::Done(pkgAcquire::ItemDesc &Itm,
+				 download_signal_log &manager)
   {
     update_item(Itm.URI, 100, _("Done"));
-  }
-
-  void guiPkgAcquireStatus::Stop()
-  {
-    done(!failed);
-    //pMainWindow->get_progress_bar()->set_text("Download done");
-  }
-
-  void guiPkgAcquireStatus::cancel()
-  {
-    cancelled = true;
   }
 
   DownloadColumns::DownloadColumns()
@@ -208,7 +181,7 @@ namespace gui
   }
 
   DownloadTab::DownloadTab(const Glib::ustring &label,
-			   const cw::util::ref_ptr<guiPkgAcquireStatus> &status)
+			   const cw::util::ref_ptr<download_list_model> &status)
     : Tab(Download, label,
           Gnome::Glade::Xml::create(glade_main_file, "main_download_scrolledwindow"),
           "main_download_scrolledwindow")
@@ -244,16 +217,28 @@ namespace gui
 
   namespace
   {
+    // This is the main class that's responsible for managing a GUI
+    // download.
     class DownloadNotification : public Notification
     {
-      cw::util::ref_ptr<guiPkgAcquireStatus> status;
+      cw::util::ref_ptr<download_list_model> status;
       DownloadTab *tab;
       Gtk::ProgressBar *progress;
       const std::string title;
+      // True if we should use a pulse-style progress bar instead of a
+      // percent-based one.
+      bool pulse;
+      bool cancelled;
+      bool success;
 
       void tab_destroyed()
       {
 	tab = NULL;
+      }
+
+      void cancel()
+      {
+	cancelled = true;
       }
 
       void view_details()
@@ -281,18 +266,128 @@ namespace gui
 	progress->set_tooltip_text(progress_text);
       }
 
-      void handle_done(bool success)
+      static void finishMediaChange(int response_id,
+				    sigc::slot1<void, bool> k)
       {
-	string s = aptcfg->Find(PACKAGE "::UI::Pause-After-Download", "OnlyIfError");
+	k(response_id == Gtk::RESPONSE_OK);
+      }
 
-	bool keep_summary = false;
+      void do_pulse()
+      {
+	progress->pulse();
+      }
 
-	if(s == "OnlyIfError")
-	  keep_summary = !success;
-	else if(StringToBool(s, 0))
-	  keep_summary = true;
+    public:
+      DownloadNotification(const std::string &_title,
+			   bool _pulse,
+			   const cw::util::ref_ptr<download_list_model> &_status)
+	: Notification(true),
+	  status(_status),
+	  tab(NULL),
+	  progress(new Gtk::ProgressBar),
+	  title(_title),
+	  pulse(_pulse),
+	  cancelled(false),
+	  success(false)
+      {
+	progress->set_text(title);
+	progress->set_pulse_step(0.1);
+	progress->set_ellipsize(Pango::ELLIPSIZE_END);
+	progress->show();
+	prepend_widget(progress);
 
-	if(keep_summary)
+	Gtk::Button *view_details_button = new Gtk::Button(_("View Details"));
+	view_details_button->signal_clicked().connect(sigc::mem_fun(*this, &DownloadNotification::view_details));
+	view_details_button->show();
+	add_button(view_details_button);
+
+	close_clicked.connect(sigc::mem_fun(*this, &DownloadNotification::cancel));
+
+	if(pulse)
+	  Glib::signal_timeout().connect(sigc::bind_return(sigc::mem_fun(*this, &DownloadNotification::do_pulse),
+							   true),
+					 100);
+
+	finalize();
+	show();
+      }
+
+      void connect(download_signal_log *log)
+      {
+	log->MediaChange_sig.connect(sigc::mem_fun(*this,
+						   &DownloadNotification::MediaChange));
+
+	log->Pulse_sig.connect(sigc::mem_fun(*this,
+					     &DownloadNotification::Pulse));
+
+	log->Stop_sig.connect(sigc::mem_fun(*this,
+					    &DownloadNotification::Stop));
+      }
+
+      void Fail(pkgAcquire::ItemDesc &Itm,
+		download_signal_log &log)
+      {
+	success = false;
+      }
+
+      void MediaChange(string media, string drive,
+		       download_signal_log &manager,
+		       const sigc::slot1<void, bool> &k)
+      {
+	const Glib::ustring msg = _("Change media");
+	Gtk::Dialog dialog(msg, *pMainWindow, true, true);
+	Gtk::Label label(ssprintf(_("Please insert the disc labeled \"%s\" into the drive \"%s\""),
+				  media.c_str(), drive.c_str()));
+	dialog.get_vbox()->pack_end(label, true, true, 0);
+	dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
+	dialog.add_button(_("Abort"), Gtk::RESPONSE_CANCEL);
+	dialog.signal_response().connect(sigc::bind(sigc::ptr_fun(&finishMediaChange), k));
+	dialog.show();
+      }
+
+      void Pulse(pkgAcquire *Owner,
+		 download_signal_log &manager,
+		 const sigc::slot1<void, bool> &k)
+      {
+	if(pulse)
+	  {
+	    std::string rate_string;
+	    if(manager.get_current_bytes() > 0 || manager.get_current_items() > 0)
+	      rate_string = ssprintf(_("%sB/s"),
+				     SizeToStr(manager.get_currentCPS()).c_str());
+
+	    progress->set_text(rate_string);
+	  }
+	else
+	  {
+	    double fraction = 0;
+	    if (manager.get_total_items() != 0)
+	      fraction = ((double)(manager.get_current_bytes() + manager.get_current_items())) / ((double)(manager.get_total_bytes() + manager.get_total_items()));
+
+	    progress->set_fraction(fraction);
+
+	    std::string progress_string;
+	    if(manager.get_currentCPS() > 0)
+	      progress_string = ssprintf(_("%sB of %sB at %sB/s, %s remaining"),
+					 SizeToStr(manager.get_current_bytes()).c_str(),
+					 SizeToStr(manager.get_total_bytes()).c_str(),
+					 SizeToStr(manager.get_currentCPS()).c_str(),
+					 TimeToStr(((manager.get_total_bytes() - manager.get_current_bytes()) / manager.get_currentCPS())).c_str());
+	    else if(manager.get_current_bytes() > 0 || manager.get_current_items() > 0)
+	      progress_string = ssprintf(_("%sB of %sB, stalled"),
+					 SizeToStr(manager.get_current_bytes()).c_str(),
+					 SizeToStr(manager.get_total_bytes()).c_str());
+
+	    progress->set_text(progress_string);
+	  }
+
+	k(!cancelled);
+      }
+
+      void Stop(download_signal_log &manager, const sigc::slot0<void> &k)
+      {
+	// \todo Maybe use some other condition here?
+	if(!success)
 	  {
 	    if(!success)
 	      // \todo The "error" color is copied around; it should
@@ -308,59 +403,19 @@ namespace gui
 	      buffer->set_text(title + ": " + _("Completed with errors"));
 	    set_buffer(buffer);
 	  }
-	else
-	  close_clicked();
-      }
 
-    public:
-      DownloadNotification(const std::string &_title,
-			   bool pulse,
-			   const cw::util::ref_ptr<guiPkgAcquireStatus> &_status)
-	: Notification(true),
-	  status(_status),
-	  tab(NULL),
-	  progress(new Gtk::ProgressBar),
-	  title(_title)
-      {
-	progress->set_text(title);
-	// It seems like we pulse about 100 times a second; this is
-	// probably too fast!
-	progress->set_pulse_step(0.02);
-	progress->set_ellipsize(Pango::ELLIPSIZE_END);
-	if(pulse)
-	  {
-	    status->progress.connect(sigc::hide(sigc::mem_fun(*progress,
-							      &Gtk::ProgressBar::pulse)));
-	    status->progress_rate.connect(sigc::mem_fun(*this, &DownloadNotification::set_progress_text));
-	  }
-	else
-	  {
-	    status->progress.connect(sigc::mem_fun(*progress,
-						   &Gtk::ProgressBar::set_fraction));
-	    status->progress_rate_and_estimate.connect(sigc::mem_fun(*this, &DownloadNotification::set_progress_text));
-	  }
-	progress->show();
-	prepend_widget(progress);
-
-	Gtk::Button *view_details_button = new Gtk::Button(_("View Details"));
-	view_details_button->signal_clicked().connect(sigc::mem_fun(*this, &DownloadNotification::view_details));
-	view_details_button->show();
-	add_button(view_details_button);
-
-	close_clicked.connect(sigc::mem_fun(status.unsafe_get_ref(), &guiPkgAcquireStatus::cancel));
-
-	status->done.connect(sigc::mem_fun(*this, &DownloadNotification::handle_done));
-
-	finalize();
-	show();
+	k();
       }
     };
   }
 
   Notification *make_download_notification(const std::string &title,
 					   bool pulse,
-					   const cw::util::ref_ptr<guiPkgAcquireStatus> &status)
+					   const cw::util::ref_ptr<download_list_model> &status,
+					   download_signal_log *log)
   {
-    return new DownloadNotification(title, pulse, status);
+    DownloadNotification *rval = new DownloadNotification(title, pulse, status);
+    rval->connect(log);
+    return rval;
   }
 }

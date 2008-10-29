@@ -1,6 +1,6 @@
 // download_thread                              -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -44,6 +44,8 @@ class download_signal_log;
 class background_status : public pkgAcquireStatus
 {
   download_signal_log *real_status;
+  sigc::slot1<void, sigc::slot0<void> > post_thunk;
+
 public:
   void Fetched(unsigned long Size, unsigned long ResumePoint);
   bool MediaChange(std::string Media, std::string Drive);
@@ -56,8 +58,10 @@ public:
   void Stop();
   void Complete();
 
-  background_status(download_signal_log *_real_status)
-    :real_status(_real_status)
+  background_status(download_signal_log *_real_status,
+		    const sigc::slot1<void, sigc::slot0<void> > &_post_thunk)
+    : real_status(_real_status),
+      post_thunk(_post_thunk)
   {
   }
 };
@@ -66,6 +70,9 @@ public:
 class download_thread
 {
   cwidget::threads::box<bool> cancelled;
+
+  /** A callback that posts thunks to be run in the main thread. */
+  sigc::slot1<void, sigc::slot0<void> > post_thunk;
 
   /** The bundled download_manager object.  It should have been
    *  initialized using a background_status wrapper as above, and you
@@ -87,8 +94,10 @@ class download_thread
   download_thread &operator=(const download_thread &other);
 public:
   download_thread(download_manager *manager,
+		  const sigc::slot1<void, sigc::slot0<void> > &_post_thunk,
 		  const sigc::slot2<void, download_thread *, pkgAcquire::RunResult> &_continuation)
-    : cancelled(false), m(manager), continuation(_continuation), t(NULL)
+    : cancelled(false), post_thunk(_post_thunk),
+      m(manager), continuation(_continuation), t(NULL)
   {
   }
 

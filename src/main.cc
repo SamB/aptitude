@@ -787,7 +787,7 @@ int main(int argc, char *argv[])
           // since we have to get information about what to install from
           // somewhere...
           if(!update_only)
-            apt_init(p.unsafe_get_ref(), true, status_fname);
+            apt_init(p->get_progress().unsafe_get_ref(), true, status_fname);
           if(status_fname)
             free(status_fname);
           check_apt_errors();
@@ -801,9 +801,9 @@ int main(int argc, char *argv[])
             }
 
 	  if(!aptcfg->FindB(PACKAGE "::UI::Flat-View-As-First-View", false))
-	    do_new_package_view(*p.unsafe_get_ref());
+	    do_new_package_view(*p->get_progress().unsafe_get_ref());
 	  else
-	    do_new_flat_view(*p.unsafe_get_ref());
+	    do_new_flat_view(*p->get_progress().unsafe_get_ref());
 
           p->destroy();
           p = NULL;

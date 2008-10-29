@@ -1,6 +1,6 @@
 // ui_download_manager.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -37,62 +37,49 @@ namespace cwidget
   using namespace widgets;
 }
 
-ui_download_manager::ui_download_manager(download_manager *_manager,
-					 bool force_noninvasive,
-					 bool list_update,
-					 bool hide_preview,
-					 const std::string &title,
-					 const std::string &longtitle,
-					 const std::string &tablabel)
-  : manager(_manager),
-    t(NULL)
-{
-  std::pair<download_signal_log *, cw::widget_ref> progpair =
-    gen_download_progress(force_noninvasive, list_update,
-			  title, longtitle, tablabel,
-			  cw::util::arg(sigc::mem_fun(abort_state,
-						      &aborter::abort)));
-
-  log             = progpair.first;
-  download_status = progpair.second;
-  st              = new background_status(log);
-
-  ui_start_download(hide_preview);
-}
-
 ui_download_manager::~ui_download_manager()
 {
   log->Complete();
 
   delete manager;
 
-  ui_stop_download();
+  download_stops();
 
   abort_state.abort();
 
-  delete t;
   delete log;
   delete st;
 }
 
 void ui_download_manager::done(download_thread *, pkgAcquire::RunResult res)
 {
-  progress_ref p = gen_progress_bar();
-
-  download_manager::result run_res = download_manager::failure;
+  progress_with_destructor pair = make_progress_bar();
+  done_progress = pair.first;
+  done_progress_destructor = pair.second;
 
   if(!abort_state.get_aborted())
-    run_res = manager->finish(res, *p.unsafe_get_ref());
+    {
+      manager->finish(res, done_progress.unsafe_get_ref(),
+		      sigc::mem_fun(*this, &ui_download_manager::finish_done));
+      return;
+    }
+  else
+    {
+      finish_done(download_manager::failure);
+      return;
+    }
+}
 
-  apt_load_cache(p.unsafe_get_ref(), true);
+void ui_download_manager::finish_done(download_manager::result run_res)
+{
+  apt_load_cache(done_progress.unsafe_get_ref(), true);
 
-  p->destroy();
-
-  delete t;
-  t = NULL;
+  done_progress_destructor();
+  done_progress = NULL;
 
   if(run_res == download_manager::do_again && !abort_state.get_aborted())
     (new download_thread(manager,
+			 post_thunk,
 			 sigc::mem_fun(this,
 				       &ui_download_manager::done)))->start();
   else
@@ -104,14 +91,19 @@ void ui_download_manager::done(download_thread *, pkgAcquire::RunResult res)
 
 void ui_download_manager::start()
 {
-  progress_ref p = gen_progress_bar();
+  download_starts();
+
+  progress_with_destructor pair = make_progress_bar();
+  refcounted_progress_ref p = pair.first;
+  sigc::slot0<void> p_destructor = pair.second;
 
   bool ok = manager->prepare(*p.unsafe_get_ref(), *st, log);
 
-  p->destroy();
+  p_destructor();
 
   if(ok)
     (new download_thread(manager,
+			 post_thunk,
 			 sigc::mem_fun(this,
 				       &ui_download_manager::done)))->start();
   else

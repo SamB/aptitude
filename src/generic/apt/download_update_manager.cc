@@ -267,9 +267,9 @@ namespace
   }
 }
 
-download_manager::result
-download_update_manager::finish(pkgAcquire::RunResult res,
-				OpProgress &progress)
+void download_update_manager::finish(pkgAcquire::RunResult res,
+				     OpProgress *progress,
+				     const sigc::slot1<void, result> &k)
 {
   if(log != NULL)
     log->Complete();
@@ -277,7 +277,10 @@ download_update_manager::finish(pkgAcquire::RunResult res,
   apt_close_cache();
 
   if(res != pkgAcquire::Continue)
-    return failure;
+    {
+      k(failure);
+      return;
+    }
 
   bool transientNetworkFailure = true;
   result rval = success;
@@ -312,7 +315,8 @@ download_update_manager::finish(pkgAcquire::RunResult res,
       fetcher->Clean(aptcfg->FindDir("Dir::State::lists")+"partial/") == false))
     {
       _error->Error(_("Couldn't clean out list directories"));
-      return failure;
+      k(failure);
+      return;
     }
 
   // Rebuild the apt caches as done in apt-get.  cachefile is scoped
@@ -321,10 +325,11 @@ download_update_manager::finish(pkgAcquire::RunResult res,
   // redundant work at the command-line.
   {
     pkgCacheFile cachefile;
-    if(!cachefile.BuildCaches(progress, true))
+    if(!cachefile.BuildCaches(*progress, true))
       {
 	_error->Error(_("Couldn't rebuild package cache"));
-	return failure;
+	k(failure);
+	return;
       }
   }
 
@@ -360,7 +365,7 @@ download_update_manager::finish(pkgAcquire::RunResult res,
     }
   else
     {
-      progress.OverallProgress(0, 0, 1, _("Updating debtags database..."));
+      progress->OverallProgress(0, 0, 1, _("Updating debtags database..."));
 
       std::string debtags_options = aptcfg->Find(PACKAGE "::Debtags-Update-Options", "--local");
 
@@ -407,13 +412,13 @@ download_update_manager::finish(pkgAcquire::RunResult res,
 			  debtags.c_str(), debtags_options.c_str(), e.errmsg().c_str());
 	}
 
-      progress.Progress(1);
-      progress.Done();
+      progress->Progress(1);
+      progress->Done();
     }
 #endif
 
   if(need_forget_new || need_autoclean)
-    apt_load_cache(&progress, true);
+    apt_load_cache(progress, true);
 
   if(apt_cache_file != NULL && need_forget_new)
     {
@@ -433,6 +438,7 @@ download_update_manager::finish(pkgAcquire::RunResult res,
       post_autoclean_hook();
     }
 
-  return rval;
+  k(rval);
+  return;
 }
 

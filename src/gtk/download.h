@@ -59,67 +59,44 @@ namespace gui
    *  situations where the status object doesn't belong to any
    *  particular scope can be handled cleanly and safely.
    */
-  class guiPkgAcquireStatus : public pkgAcquireStatus,
-			      public aptitude::util::refcounted_base
+  class download_list_model : public aptitude::util::refcounted_base
   {
-    private:
-      DownloadColumns download_columns;
-      Glib::RefPtr<Gtk::ListStore> download_store;
-      bool cancelled;
-      bool failed; // True if an item failed to download.
+  private:
+    DownloadColumns download_columns;
+    Glib::RefPtr<Gtk::ListStore> download_store;
+    bool failed; // True if an item failed to download.
 
-      std::map<string, Gtk::TreeModel::iterator> item_map;
-      void update_workers(pkgAcquire *Owner);
-      void update_item(string URI, int progress, string status);
-      void maybe_new_item(pkgAcquire::ItemDesc &Itm);
+    std::map<string, Gtk::TreeModel::iterator> item_map;
+    void update_workers(pkgAcquire *Owner);
+    void update_item(string URI, int progress, string status);
+    void maybe_new_item(pkgAcquire::ItemDesc &Itm);
 
-      // Noncopyable.
-      guiPkgAcquireStatus(const guiPkgAcquireStatus &);
+    // Noncopyable.
+    download_list_model(const download_list_model &);
 
-      guiPkgAcquireStatus();
+    download_list_model();
 
-    public:
-      static cwidget::util::ref_ptr<guiPkgAcquireStatus> create()
-      {
-	return new guiPkgAcquireStatus;
-      }
+  public:
+    static cwidget::util::ref_ptr<download_list_model> create()
+    {
+      return new download_list_model;
+    }
 
-      bool Pulse(pkgAcquire *Owner);
-      bool MediaChange(string media, string drive);
-      void Fail(pkgAcquire::ItemDesc &Itm);
-      void Fetch(pkgAcquire::ItemDesc &Itm);
-      void Done(pkgAcquire::ItemDesc &Itm);
-      void Stop();
+    /** \brief Convenience routine to connect the signals
+     *  from log to appropriate slots in this object.
+     */
+    void connect(download_signal_log *log);
 
-      const DownloadColumns &get_columns() const { return download_columns; }
-      Glib::RefPtr<Gtk::TreeModel> get_model() const { return download_store; }
-      /** \brief Cancel the download by returning "false" from the
-       *  next Pulse or MediaChange.
-       */
-      void cancel();
+    void IMSHit(pkgAcquire::ItemDesc &itemdesc, download_signal_log &manager);
+    void Fetch(pkgAcquire::ItemDesc &Itm, download_signal_log &manager);
+    void Done(pkgAcquire::ItemDesc &Itm, download_signal_log &manager);
+    void Fail(pkgAcquire::ItemDesc &Itm, download_signal_log &manager);
+    void Pulse(pkgAcquire *Owner, download_signal_log &manager,
+	       const sigc::slot1<void, bool> &k);
+    void Start(download_signal_log &manager);
 
-      /** \brief Emitted when the download completes.
-       *
-       *  The parameter is "true" if the download succeeded and
-       *  "false" if something failed to download.
-       */
-      sigc::signal1<void, bool> done;
-
-      /** \brief Signal emitted when any overall progress bar should
-       *  be updated.
-       */
-      sigc::signal1<void, double> progress;
-
-      /** \brief Signal emitted when the progress bar text should
-       *  change to indicate the current download rate.
-       */
-      sigc::signal1<void, std::string> progress_rate;
-
-      /** \brief Signal emitted when the progress bar text should change
-       *  to indicate the current download rate and an estimate of the
-       *  time remaining.
-       */
-      sigc::signal1<void, std::string> progress_rate_and_estimate;
+    const DownloadColumns &get_columns() const { return download_columns; }
+    Glib::RefPtr<Gtk::TreeModel> get_model() const { return download_store; }
   };
 
   class DownloadTab : public Tab
@@ -141,7 +118,7 @@ namespace gui
 
     public:
       DownloadTab(const Glib::ustring &label,
-		  const cwidget::util::ref_ptr<guiPkgAcquireStatus> &status);
+		  const cwidget::util::ref_ptr<download_list_model> &status);
 
       Gtk::TreeView * get_treeview() { return treeview; };
   };
@@ -166,12 +143,18 @@ namespace gui
    *                               meaningful, so we don't try to
    *                               use it.
    *
-   *  \param guiPkgAcquireStatus   The GUI status object that
+   *  \param download_list_model   The GUI status object that
    *                               this notification will track.
+   *
+   *  \param log                   The go-between to deliver download
+   *                               status notifications from the
+   *                               background thread.  This pointer
+   *                               is owned by the returned notification.
    */
   Notification *make_download_notification(const std::string &title,
 					   bool pulse,
-					   const cwidget::util::ref_ptr<guiPkgAcquireStatus> &status);
+					   const cwidget::util::ref_ptr<download_list_model> &status,
+					   download_signal_log *log);
 }
 
 #endif /* DOWNLOAD_H_ */

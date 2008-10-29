@@ -1,6 +1,6 @@
 // cw::progress.cc
 //
-//  Copyright 2000, 2004-2007 Daniel Burrows
+//  Copyright 2000, 2004-2008 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License as
@@ -32,10 +32,6 @@ namespace cwidget
   using namespace widgets;
 }
 
-progress::progress()
-{
-}
-
 namespace
 {
   // Converts a percentage between 0 and 100 to an integer for
@@ -57,15 +53,15 @@ void progress::paint(const cw::style &st)
 {
   int width=getmaxx();
 
-  if(!Op.empty())
+  if(!p->Op.empty())
     {
-      int truncPercent = convertPercent(Percent);
+      int truncPercent = convertPercent(p->Percent);
 
       std::ostringstream percentstream;
       percentstream << " " << truncPercent << "%";
       std::string percentstr = percentstream.str();
 
-      mvaddstr(0, 0, cw::util::transcode(Op));
+      mvaddstr(0, 0, cw::util::transcode(p->Op));
       mvaddstr(0, width - percentstr.size(), cw::util::transcode(percentstr));
     }
   else
@@ -79,7 +75,7 @@ bool progress::get_cursorvisible()
 
 cw::point progress::get_cursorloc()
 {
-  double xd = (Percent * getmaxx()) / 100.0;
+  double xd = (p->Percent * getmaxx()) / 100.0;
   int x     = static_cast<int>(xd);
   int maxx  = getmaxx();
 
@@ -92,7 +88,7 @@ void progress::Update()
 {
   show();
 
-  if(CheckChange(0.25))
+  if(p->CheckChange(0.25))
     {
       cw::toplevel::update();
       cw::toplevel::updatecursor();
@@ -116,4 +112,21 @@ int progress::width_request()
 int progress::height_request(int w)
 {
   return 1;
+}
+
+progress::progress()
+  : p(progress_progress::create())
+{
+  p->Update_sig.connect(sigc::mem_fun(*this, &progress::Update));
+  p->Done_sig.connect(sigc::mem_fun(*this, &progress::Done));
+}
+
+void progress::progress_progress::Update()
+{
+  Update_sig();
+}
+
+void progress::progress_progress::Done()
+{
+  Done_sig();
 }

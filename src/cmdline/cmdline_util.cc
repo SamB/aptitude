@@ -75,7 +75,7 @@ void ui_solution_screen()
   file_quit.connect(sigc::ptr_fun(cwidget::toplevel::exitmain));
 
   progress_ref p = gen_progress_bar();
-  do_new_package_view(*p.unsafe_get_ref());
+  do_new_package_view(*p->get_progress().unsafe_get_ref());
 
   do_examine_solution();
   ui_main();
@@ -371,6 +371,15 @@ namespace
   }
 }
 
+namespace
+{
+  template<typename T>
+  void assign(const T &val, T *target)
+  {
+    *target = val;
+  }
+}
+
 download_manager::result cmdline_do_download(download_manager *m,
 					     int verbose)
 {
@@ -403,7 +412,9 @@ download_manager::result cmdline_do_download(download_manager *m,
   do
     {
       pkgAcquire::RunResult download_res = m->do_download();
-      finish_res = m->finish(download_res, progress);
+      m->finish(download_res, &progress,
+		sigc::bind(sigc::ptr_fun(&assign<download_manager::result>),
+			   &finish_res));
     }
   while(finish_res == download_manager::do_again);
 

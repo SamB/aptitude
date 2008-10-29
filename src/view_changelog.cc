@@ -21,11 +21,13 @@
 #include <cwidget/config/keybindings.h>
 #include <cwidget/fragment.h>
 #include <cwidget/generic/util/transcode.h>
+#include <cwidget/toplevel.h>
 #include <cwidget/widgets/pager.h>
 #include <cwidget/widgets/scrollbar.h>
 #include <cwidget/widgets/table.h>
 #include <cwidget/widgets/text_layout.h>
 
+#include "download_list.h"
 #include "menu_redirect.h"
 #include "menu_text_layout.h"
 #include "ui.h"
@@ -311,6 +313,20 @@ static void do_view_changelog(temp::name n,
   insert_main_widget(t, menulabel, desclabel, tablabel);
 }
 
+namespace
+{
+  // \todo This should only be defined in one place.
+
+  // Note that this is only safe if it's OK to copy the thunk in a
+  // background thread (i.e., it won't be invalidated by an object being
+  // destroyed in another thread).  In the special cases where we use
+  // this it should be all right.
+  void do_post_thunk(const sigc::slot0<void> &thunk)
+  {
+    cw::toplevel::post_event(new cw::toplevel::slot_event(thunk));
+  }
+}
+
 void view_changelog(pkgCache::VerIterator ver)
 {
   bool in_debian=false;
@@ -340,8 +356,20 @@ void view_changelog(pkgCache::VerIterator ver)
 					    sigc::bind(sigc::ptr_fun(&do_view_changelog), pkgname, curverstr));
 
   if(manager != NULL)
-    (new ui_download_manager(manager, true, false, false,
-			     _("Downloading Changelog"),
-			     "",
-			     _("Download Changelog")))->start();
+    {
+      std::pair<download_signal_log *, download_list_ref>
+	download_log_pair = gen_download_progress(true, false,
+						  _("Downloading Changelog"),
+						  "",
+						  _("Download Changelog"));
+
+      ui_download_manager *uim =
+	new ui_download_manager(manager,
+				download_log_pair.first,
+				download_log_pair.second,
+				sigc::ptr_fun(&refcounted_progress::make),
+				sigc::ptr_fun(&do_post_thunk));
+
+      uim->start();
+    }
 }

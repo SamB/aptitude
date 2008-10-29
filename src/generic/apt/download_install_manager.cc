@@ -30,6 +30,8 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/sourcelist.h>
 
+#include <sigc++/bind.h>
+
 #include <pthread.h>
 #include <signal.h>
 
@@ -179,13 +181,9 @@ pkgPackageManager::OrderResult download_install_manager::run_dpkg(int status_fd)
   return pmres;
 }
 
-pkgPackageManager::OrderResult download_install_manager::finish_run_dpkg()
-{
-  return run_dpkg_in_terminal(sigc::mem_fun(*this, &download_install_manager::run_dpkg));
-}
-
-download_manager::result download_install_manager::finish_post_dpkg(pkgPackageManager::OrderResult dpkg_result,
-								    OpProgress &progress)
+void download_install_manager::finish_post_dpkg(pkgPackageManager::OrderResult dpkg_result,
+						OpProgress *progress,
+						const sigc::slot1<void, result> &k)
 {
   result rval = success;
 
@@ -228,32 +226,41 @@ download_manager::result download_install_manager::finish_post_dpkg(pkgPackageMa
       // world.
       //
       // This implicitly updates the package state file on disk.
-      apt_load_cache(&progress, true);
+      apt_load_cache(progress, true);
 
       if(aptcfg->FindB(PACKAGE "::Forget-New-On-Install", false))
 	{
 	  if(apt_cache_file != NULL)
 	    {
 	      (*apt_cache_file)->forget_new(NULL);
-	      (*apt_cache_file)->save_selection_list(progress);
+	      (*apt_cache_file)->save_selection_list(*progress);
 	      post_forget_new_hook();
 	    }
 	}
     }
 
-  return rval;
+  k(rval);
 }
 
-download_manager::result download_install_manager::finish(pkgAcquire::RunResult result,
-							  OpProgress &progress)
+void download_install_manager::finish(pkgAcquire::RunResult result,
+				      OpProgress *progress,
+				      const sigc::slot1<void, result> &k)
 {
   const download_manager::result pre_res = finish_pre_dpkg(result);
 
-  pkgPackageManager::OrderResult dpkg_res;
   if(pre_res == success)
-    dpkg_res = finish_run_dpkg();
+    {
+      run_dpkg_in_terminal(sigc::mem_fun(*this, &download_install_manager::run_dpkg),
+			   sigc::bind(sigc::mem_fun(*this, &download_install_manager::finish_post_dpkg),
+				      progress,
+				      k));
+      return;
+    }
   else
-    dpkg_res = pkgPackageManager::Failed;
-
-  return finish_post_dpkg(dpkg_res, progress);
+    {
+      finish_post_dpkg(pkgPackageManager::Failed,
+		       progress,
+		       k);
+      return;
+    }
 }

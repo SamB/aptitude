@@ -34,6 +34,7 @@
 #include <generic/apt/download_manager.h>
 #include <generic/apt/pkg_changelog.h>
 
+#include <gtk/gui.h>
 #include <gtk/progress.h>
 
 namespace gui
@@ -225,20 +226,11 @@ namespace gui
         return;
       }
 
-    download_manager *manager = get_changelog(ver,
-                                              sigc::bind(sigc::mem_fun(*this, &ChangeLogView::do_view_changelog), pkgname, curverstr));
+    std::auto_ptr<download_manager> manager(get_changelog(ver, sigc::bind(sigc::mem_fun(*this, &ChangeLogView::do_view_changelog), pkgname, curverstr)));
 
-    guiOpProgress progress;
-    dummyPkgAcquireStatus acqlog;
-    if (!manager->prepare(progress, acqlog, NULL))
-      return;
-    download_manager::result result = download_manager::do_again;
-    while (result == download_manager::do_again)
-    {
-      manager->do_download(100);
-      result = manager->finish(pkgAcquire::Continue, progress);
-    }
-
+    start_download(manager.release(),
+		   _("Downloading changelogs"),
+		   false,
+		   pMainWindow->get_notifyview());
   }
-
 }

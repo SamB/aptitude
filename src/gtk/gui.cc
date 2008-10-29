@@ -41,6 +41,8 @@
 #include <generic/apt/download_update_manager.h>
 #include <generic/apt/tags.h>
 
+#include <generic/util/refcounted_wrapper.h>
+
 #include <sigc++/signal.h>
 
 #include <cwidget/generic/threads/event_queue.h>
@@ -55,6 +57,9 @@
 #include <gtk/progress.h>
 #include <gtk/resolver.h>
 #include <gtk/tab.h>
+
+// \todo ui_download_manager should live in generic/.
+#include "../ui_download_manager.h"
 
 namespace cw = cwidget;
 
@@ -202,48 +207,70 @@ namespace gui
       }
   };
 
-  struct download_scope
+  progress_with_destructor make_gui_progress()
   {
-    download_scope()
-    {
-      active_download = true;
-    }
+    cw::util::ref_ptr<guiOpProgress> rval =
+      guiOpProgress::create();
+    return std::make_pair(rval,
+			  sigc::mem_fun(*rval.unsafe_get_ref(),
+					&guiOpProgress::destroy));
+  }
 
-    ~download_scope()
-    {
-      active_download = false;
-    }
-  };
+  void start_download(download_manager *manager,
+		      const std::string &title,
+		      bool pulse,
+		      NotifyView *view,
+		      const sigc::slot0<void> &download_starts_slot,
+		      const sigc::slot0<void> &download_stops_slot)
+  {
+    cw::util::ref_ptr<download_list_model> model(download_list_model::create());
+    download_signal_log *log = new download_signal_log;
+    model->connect(log);
+
+    Notification *n = make_download_notification(title,
+						 pulse,
+						 model,
+						 log);
+
+    view->add_notification(n);
+
+    using aptitude::util::refcounted_wrapper;
+    cwidget::util::ref_ptr<refcounted_wrapper<Notification> >
+      n_wrapper(new refcounted_wrapper<Notification>(n));
+
+    ui_download_manager *uim =
+      new ui_download_manager(manager,
+			      log,
+			      n_wrapper,
+			      sigc::ptr_fun(&make_gui_progress),
+			      sigc::ptr_fun(&post_event));
+
+    uim->download_starts.connect(download_starts_slot);
+    uim->download_stops.connect(download_stops_slot);
+
+    uim->start();
+  }
+
+  void gui_finish_download()
+  {
+    active_download = false;
+    // Update indicators that expect to know something about arbitrary
+    // package states (e.g., the count of broken packages).
+    (*apt_cache_file)->package_state_changed();
+  }
 
   // \todo make this use the threaded download system.
   void really_do_update_lists()
   {
     std::auto_ptr<download_update_manager> m(new download_update_manager);
 
-    download_scope scope;
+    active_download = true;
 
-    guiOpProgress progress;
-    cw::util::ref_ptr<guiPkgAcquireStatus> acqlog(guiPkgAcquireStatus::create());
-    pMainWindow->get_notifyview()->add_notification(make_download_notification(_("Checking for updates"), true, acqlog));
-    // \todo Why do we set Update and MorePulses?
-    acqlog->Update = true;
-    acqlog->MorePulses = true;
-    if (!m->prepare(progress, *acqlog.unsafe_get_ref(), NULL))
-      return;
-    // \todo Why do we set Update and MorePulses?
-    acqlog->Update = true;
-    acqlog->MorePulses = true;
-    download_manager::result result = download_manager::do_again;
-    while (result == download_manager::do_again)
-      {
-        m->do_download(1000);
-        result = m->finish(pkgAcquire::Continue, progress);
-      }
-    guiOpProgress * p = gen_progress_bar();
-    apt_load_cache(p, true, NULL);
-    delete p;
-
-    active_download = false;
+    start_download(m.release(),
+		   _("Checking for updates"),
+		   true,
+		   pMainWindow->get_notifyview(),
+		   sigc::ptr_fun(&gui_finish_download));
   }
 
   void do_update_lists()
@@ -307,44 +334,25 @@ namespace gui
       tab_add(new DpkgTerminalTab(w));
     }
 
-    // Callback for running dpkg from a background thread.
-    pkgPackageManager::OrderResult
-    gui_run_dpkg(sigc::slot1<pkgPackageManager::OrderResult, int> f,
-		 pkgPackageManager::OrderResult *set_loc)
+    // Asynchronously post the outcome of a dpkg run to the main
+    // thread.
+    void finish_gui_run_dpkg(pkgPackageManager::OrderResult res,
+			     sigc::slot1<void, pkgPackageManager::OrderResult> k)
+    {
+      post_event(sigc::bind(k, res));
+    }
+
+    // Callback that kicks off a dpkg run.
+    void gui_run_dpkg(sigc::slot1<pkgPackageManager::OrderResult, int> f,
+		      sigc::slot1<void, pkgPackageManager::OrderResult> k)
     {
       // \todo We should change the download notification to tell the
       // user that they can click to obtain a terminal; this is just a
       // proof-of-concept.
-      pkgPackageManager::OrderResult result = run_dpkg_in_terminal(f, sigc::ptr_fun(&register_dpkg_terminal));
-      *set_loc = result;
-      return result;
-    }
-
-    void handle_install(download_install_manager *m,
-			bool *in_dpkg, bool *finished)
-    {
-      OpProgress progress;
-
-      download_manager::result result = download_manager::do_again;
-      while (result == download_manager::do_again)
-        {
-	  pkgAcquire::RunResult download_result = m->do_download(100);
-
-          *in_dpkg = true;
-	  // \todo Calling finish() from a background thread will
-	  // crash because it invokes callbacks that ultimately end up
-	  // calling GTK+ functions.  finish() should be split up into
-	  // a part that runs before invoking dpkg and a part that
-	  // runs afterwards, the same way that it's split around the
-	  // download process.  In fact, the whole business of
-	  // downloading could be viewed as being a series of
-	  // background actions whose results are passed to a
-	  // suspended continuation.  There may be something to chew
-	  // on there...
-          result = m->finish(download_result, progress);
-          *in_dpkg = false;
-        }
-      *finished = true;
+      run_dpkg_in_terminal(f,
+			   sigc::ptr_fun(&register_dpkg_terminal),
+			   sigc::bind(sigc::ptr_fun(&finish_gui_run_dpkg),
+				      k));
     }
 
     void install_or_remove_packages()
@@ -361,62 +369,18 @@ namespace gui
 	  return;
 	}
 
-      download_scope scope;
-      pkgPackageManager::OrderResult result = pkgPackageManager::Incomplete;
+      active_download = true;
+
       download_install_manager *m =
 	new download_install_manager(false,
-				     sigc::bind(sigc::ptr_fun(&gui_run_dpkg),
-						&result));
+				     sigc::ptr_fun(&gui_run_dpkg));
 
-      guiOpProgress progress;
-      cw::util::ref_ptr<guiPkgAcquireStatus> acqlog(guiPkgAcquireStatus::create());
-      pMainWindow->get_notifyview()->add_notification(Gtk::manage(make_download_notification(_("Downloading packages"), false, acqlog)));
-      // \todo Why do we set Update and MorePulses here?
-      acqlog->Update = true;
-      acqlog->MorePulses = true;
-      if (!m->prepare(progress, *acqlog.unsafe_get_ref(), NULL))
-	return;
-      // \todo Why do we set Update and MorePulses here?
-      acqlog->Update = true;
-      acqlog->MorePulses = true;
-      // FIXME: Hack while finding a nonblocking thread join or something else.
-
-      bool in_dpkg = false;
-      bool finished = false;
-
-      pMainWindow->get_progress_bar()->set_text(_("Installing / removing packages..."));
-      Glib::Thread * install_thread =
-	Glib::Thread::create(sigc::bind(sigc::ptr_fun(&handle_install), m, &in_dpkg, &finished), true);
-      while(!finished)
-        {
-          if (in_dpkg)
-            pMainWindow->get_progress_bar()->pulse();
-          gtk_update();
-          Glib::usleep(100000);
-        }
-      install_thread->join();
-
-      pMainWindow->get_progress_bar()->set_text("");
-
-      Gtk::MessageDialog dialog(*pMainWindow, "Install run finished",
-				false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
-      switch(result)
-        {
-        case pkgPackageManager::Completed:
-          dialog.set_secondary_text("Successfully completed!");
-          break;
-        case pkgPackageManager::Incomplete:
-          dialog.set_secondary_text("Partially completed!");
-          break;
-        case pkgPackageManager::Failed:
-          dialog.set_secondary_text("Failed!");
-          break;
-        }
-      dialog.run();
-
-      (*apt_cache_file)->package_state_changed();
-
-      //m->finish(pkgAcquire::Continue, progress);
+      start_download(m,
+		     _("Downloading packages"),
+		     false,
+		     pMainWindow->get_notifyview(),
+		     sigc::slot0<void>(),
+		     sigc::ptr_fun(&gui_finish_download));
     }
   }
 
@@ -1008,8 +972,8 @@ namespace gui
     void do_apt_init()
     {
       {
-	std::auto_ptr<guiOpProgress> p(gen_progress_bar());
-	apt_init(p.get(), true, NULL);
+	cwidget::util::ref_ptr<guiOpProgress> p(guiOpProgress::create());
+	apt_init(p.unsafe_get_ref(), true, NULL);
       }
 
       if(getuid() == 0 && aptcfg->FindB(PACKAGE "::Update-On-Startup", true))

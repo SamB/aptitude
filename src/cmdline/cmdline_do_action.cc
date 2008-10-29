@@ -27,9 +27,10 @@ using namespace std;
 
 namespace
 {
-  pkgPackageManager::OrderResult run_dpkg_directly(sigc::slot1<pkgPackageManager::OrderResult, int> f)
+  void run_dpkg_directly(sigc::slot1<pkgPackageManager::OrderResult, int> f,
+			 sigc::slot1<void, pkgPackageManager::OrderResult> k)
   {
-    return f(aptcfg->FindI("APT::Status-Fd", -1));
+    k(f(aptcfg->FindI("APT::Status-Fd", -1)));
   }
 }
 

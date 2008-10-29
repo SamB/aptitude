@@ -453,7 +453,7 @@ bool pkg_item::dispatch_key(const cw::config::key &k, cw::tree *owner)
 	    }
 
 	  progress_ref p = gen_progress_bar();
-	  apt_reload_cache(p.unsafe_get_ref(), true);
+	  apt_reload_cache(p->get_progress().unsafe_get_ref(), true);
 	  p->destroy();
 	}
     }

@@ -258,7 +258,7 @@ bool pkg_tree::build_tree(OpProgress &progress)
 bool pkg_tree::build_tree()
 {
   progress_ref p=gen_progress_bar();
-  bool rval=build_tree(*p.unsafe_get_ref());
+  bool rval=build_tree(*p->get_progress().unsafe_get_ref());
   p->destroy();
 
   return rval;

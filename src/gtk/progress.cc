@@ -35,10 +35,14 @@ namespace gui
     return rval;
   }
 
+  guiOpProgress::guiOpProgress()
+    : destroyed(false)
+  {
+  }
+
   guiOpProgress::~guiOpProgress()
   {
-    pMainWindow->get_progress_bar()->set_text("");
-    pMainWindow->get_progress_bar()->set_fraction(0);
+    destroy();
   }
 
   void guiOpProgress::Update()
@@ -51,10 +55,13 @@ namespace gui
     }
   }
 
-  // TODO: The use of this function should be deprecated.
-  guiOpProgress * gen_progress_bar()
+  void guiOpProgress::destroy()
   {
-    return new guiOpProgress;
+    if(!destroyed)
+      {
+	destroyed = true;
+	pMainWindow->get_progress_bar()->set_text("");
+	pMainWindow->get_progress_bar()->set_fraction(0);
+      }
   }
-
 }

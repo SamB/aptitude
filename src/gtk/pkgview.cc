@@ -347,7 +347,8 @@ namespace gui
     store_reloading();
     std::auto_ptr<PkgTreeModelGenerator> generator(generatorK(get_columns()));
 
-    guiOpProgress * p = gen_progress_bar();
+    cwidget::util::ref_ptr<guiOpProgress> p =
+      guiOpProgress::create();
 
     bool limited = false;
     cwidget::util::ref_ptr<pattern> filter;
@@ -403,7 +404,9 @@ namespace gui
     }
     sort_thread->join();
 
-    delete p;
+    // Erase our reference to the progress bar (it should be deleted
+    // when we do).
+    p = NULL;
 
     set_model(generator->get_model());
     store_reloaded();
