@@ -228,6 +228,11 @@ namespace gui
         return;
       }
 
+    // \todo It would be uber-cool to have a progress bar for the
+    // particular changelog being downloaded, but we need more
+    // information from the download backend to do that.
+    textview->get_buffer()->set_text(_("Downloading changelog; please wait..."));
+
     std::auto_ptr<download_manager> manager(global_changelog_cache.get_changelog(ver, sigc::bind(sigc::mem_fun(*this, &ChangeLogView::do_view_changelog), pkgname, curverstr)));
 
     start_download(manager.release(),
