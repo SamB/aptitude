@@ -31,6 +31,7 @@
 #include <apt-pkg/tagfile.h>
 #include <apt-pkg/version.h>
 
+#include <generic/apt/changelog_parse.h>
 #include <generic/apt/download_manager.h>
 #include <generic/apt/pkg_changelog.h>
 
@@ -41,134 +42,6 @@ using aptitude::apt::global_changelog_cache;
 
 namespace gui
 {
-  dummyPkgAcquireStatus::dummyPkgAcquireStatus()
-  {
-    ;;
-  }
-
-  bool dummyPkgAcquireStatus::MediaChange(std::string, std::string)
-  {
-    return true;
-  }
-
-  string change_text_fragment(const std::string &s)
-  {
-    string lines;
-
-    std::string::size_type start = 0;
-    std::string::size_type next_nl;
-
-    do
-      {
-        next_nl = s.find('\n', start);
-
-        if(s[start] == ' ')
-          ++start;
-
-        if(next_nl == start + 1 && s[start] == '.')
-          {
-            lines += "\n";
-            start = next_nl + 1;
-            continue;
-          }
-
-        std::string this_line;
-        if(next_nl != std::string::npos)
-          this_line.assign(s, start, next_nl - start);
-        else
-          this_line.assign(s, start, std::string::npos);
-
-        size_t first_nonspace = 0;
-        while(first_nonspace < this_line.size() && isspace(this_line[first_nonspace]))
-          ++first_nonspace;
-
-        bool has_bullet = false;
-        if(first_nonspace < this_line.size())
-          switch(this_line[first_nonspace])
-            {
-            case '*':
-            case '+':
-            case '-':
-              has_bullet = true;
-              break;
-            }
-
-        if(has_bullet)
-          {
-            string item =
-              ssprintf("%s %s%s\n",
-                        std::string(this_line, 0, first_nonspace).c_str(),
-                        std::string(this_line, first_nonspace, 1).c_str(),
-                        std::string(this_line, first_nonspace + 1).c_str());
-            lines += item;
-          }
-        else
-          lines += ssprintf("%s\n", this_line.c_str());
-
-        start = next_nl + 1;
-      } while(next_nl != std::string::npos);
-
-    return lines;
-  }
-
-  void ChangeLogView::parse_predigested_changelog(const temp::name &digest,
-                                            const std::string &curver)
-  {
-    FileFd digestfd(digest.get_name(), FileFd::ReadOnly);
-
-    if(digestfd.IsOpen())
-      {
-        pkgTagFile tagfile(&digestfd);
-
-        pkgTagSection sec;
-
-        bool first = true;
-
-        while(tagfile.Step(sec))
-          {
-            std::string version(sec.FindS("Version"));
-            std::string changes(sec.FindS("Changes"));
-            std::string maintainer(sec.FindS("Maintainer"));
-            std::string date(sec.FindS("Date"));
-
-            textBuffer->insert(textBuffer->end(), "\n");
-
-            textBuffer->insert(textBuffer->end(), ssprintf("\n -- %s  %s",
-                                        maintainer.c_str(),
-                                        date.c_str()));
-
-            if (!first)
-              textBuffer->insert(textBuffer->end(), "\n");
-
-            textBuffer->insert(textBuffer->end(), change_text_fragment(changes));
-
-            first = false;
-
-            /*
-            if(!curver.empty() && _system->VS->CmpVersion(version, curver) > 0)
-              {
-                cw::style s = cw::get_style("ChangelogNewerVersion");
-                fragments.push_back(cw::style_fragment(f, s));
-              }
-            else
-              fragments.push_back(f);
-            */
-          }
-      }
-  }
-
-  temp::name ChangeLogView::digest_changelog(const temp::name &changelog)
-  {
-    temp::name rval(changelog.get_parent(), "parsedchangelog");
-
-    if(system(ssprintf("parsechangelog --all --format rfc822 -l %s > %s 2> /dev/null",
-                       changelog.get_name().c_str(),
-                       rval.get_name().c_str()).c_str()) == 0)
-      return rval;
-    else
-      return temp::name();
-  }
-
   void ChangeLogView::do_view_changelog(temp::name n,
                                 string pkgname,
                                 string curverstr)
@@ -182,13 +55,106 @@ namespace gui
     textview->set_buffer(textBuffer);
   }
 
+
+  void append_change_text(const std::string &s,
+			  const Glib::RefPtr<Gtk::TextBuffer> &buffer)
+  {
+    std::string::size_type start = 0;
+    std::string::size_type next_nl;
+
+    Glib::RefPtr<Gtk::TextBuffer::Tag> bold_tag = buffer->create_tag();
+    bold_tag->property_weight() = Pango::WEIGHT_BOLD;
+
+    do
+      {
+        next_nl = s.find('\n', start);
+
+        if(s[start] == ' ')
+          ++start;
+
+        if(next_nl == start + 1 && s[start] == '.')
+          {
+	    buffer->insert(buffer->end(), "\n");
+            start = next_nl + 1;
+            continue;
+          }
+
+	std::pair<const char *, const char *> this_line;
+        if(next_nl != std::string::npos)
+          this_line = std::make_pair(s.c_str() + start,
+				     s.c_str() + next_nl);
+        else
+          this_line = std::make_pair(s.c_str() + start,
+				     s.c_str() + s.size());
+
+        size_t first_nonspace = 0;
+        while((signed)first_nonspace < this_line.second - this_line.first &&
+	      isspace(this_line.first[first_nonspace]))
+          ++first_nonspace;
+
+        bool has_bullet = false;
+        if((signed)first_nonspace < this_line.second - this_line.first)
+          switch(this_line.first[first_nonspace])
+            {
+            case '*':
+            case '+':
+            case '-':
+              has_bullet = true;
+              break;
+            }
+
+        if(has_bullet)
+          {
+	    buffer->insert(buffer->end(),
+			   this_line.first,
+			   this_line.first + first_nonspace);
+
+	    buffer->insert_with_tag(buffer->end(),
+				    this_line.first + first_nonspace,
+				    this_line.first + first_nonspace + 1,
+				    bold_tag);
+
+	    buffer->insert(buffer->end(),
+			   this_line.first + first_nonspace + 1,
+			   this_line.second);
+
+	    buffer->insert(buffer->end(), "\n");
+          }
+        else
+	  {
+	    buffer->insert(buffer->end(), this_line.first, this_line.second);
+	    buffer->insert(buffer->end(), "\n");
+	  }
+
+        start = next_nl + 1;
+      } while(next_nl != std::string::npos);
+  }
+
   void ChangeLogView::add_changelog_buffer(const temp::name &file,
                                         const std::string &curver)
   {
-    temp::name digested = digest_changelog(file);
+    using aptitude::apt::changelog;
+    cwidget::util::ref_ptr<changelog> cl =
+      aptitude::apt::parse_changelog(file);
 
-    if (digested.valid())
-      parse_predigested_changelog(digested, curver);
+    if(cl.valid())
+      {
+	for(changelog::const_iterator it = cl->begin(); it != cl->end(); ++it)
+	  {
+	    if(it != cl->begin())
+	      textBuffer->insert(textBuffer->end(), "\n\n");
+
+	    append_change_text(it->get_changes(), textBuffer);
+
+	    textBuffer->insert(textBuffer->end(), "\n");
+	    textBuffer->insert(textBuffer->end(), " -- ");
+	    textBuffer->insert(textBuffer->end(), it->get_maintainer());
+	    textBuffer->insert(textBuffer->end(), " ");
+	    textBuffer->insert(textBuffer->end(), it->get_date_str());
+	  }
+      }
+    // \todo Offer to install libparse-debianchangelog-perl if we
+    // can't parse the changelog because it's missing.
   }
 
   ChangeLogView::ChangeLogView(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
