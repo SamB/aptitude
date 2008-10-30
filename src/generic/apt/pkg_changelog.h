@@ -29,6 +29,7 @@
 
 #include <apt-pkg/pkgcache.h>
 
+#include <sigc++/signal.h>
 #include <sigc++/slot.h>
 
 /** \brief Routines to download a Debian changelog for a given package.
@@ -42,17 +43,29 @@ namespace aptitude
 {
   namespace apt
   {
+    /** \brief A cache storing changelogs that have been downloaded
+     *  from the Debian servers.
+     *
+     *  This should only be accessed from the foreground
+     *  thread.
+     */
     class changelog_cache
     {
       // Maps (source-package, version) to the corresponding
       // changelog.
       std::map<std::pair<std::string, std::string>, temp::name> cache;
 
+      // Maps each in-progress download to its completion signal.
+      //
+      // Used to avoid spawning extra downloads when we can piggyback
+      // off of an existing one.
+      std::map<std::pair<std::string, std::string>,
+	       sigc::signal<void, temp::name> > pending_downloads;
+
       // Registers a new cache entry, then invokes a callback.
       void register_changelog(const temp::name &n,
 			      const std::string &package,
-			      const std::string &version,
-			      sigc::slot1<void, temp::name> k);
+			      const std::string &version);
 
     public:
       changelog_cache();
