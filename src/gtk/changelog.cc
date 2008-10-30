@@ -37,6 +37,8 @@
 #include <gtk/gui.h>
 #include <gtk/progress.h>
 
+using aptitude::apt::global_changelog_cache;
+
 namespace gui
 {
   dummyPkgAcquireStatus::dummyPkgAcquireStatus()
@@ -226,7 +228,7 @@ namespace gui
         return;
       }
 
-    std::auto_ptr<download_manager> manager(get_changelog(ver, sigc::bind(sigc::mem_fun(*this, &ChangeLogView::do_view_changelog), pkgname, curverstr)));
+    std::auto_ptr<download_manager> manager(global_changelog_cache.get_changelog(ver, sigc::bind(sigc::mem_fun(*this, &ChangeLogView::do_view_changelog), pkgname, curverstr)));
 
     start_download(manager.release(),
 		   _("Downloading changelogs"),

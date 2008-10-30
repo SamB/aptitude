@@ -40,7 +40,17 @@
 #include <apt-pkg/acquire-item.h>
 #include <apt-pkg/strutl.h>
 
+#include <sigc++/bind.h>
+
 using namespace std;
+
+namespace aptitude
+{
+  namespace apt
+  {
+    changelog_cache::changelog_cache()
+    {
+    }
 
 class download_changelog_manager : public download_manager
 {
@@ -218,7 +228,16 @@ public:
   }
 };
 
-download_manager *get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > &versions)
+void changelog_cache::register_changelog(const temp::name &n,
+					 const std::string &package,
+					 const std::string &version,
+					 sigc::slot1<void, temp::name> k)
+{
+  cache[std::make_pair(package, version)] = n;
+  k(n);
+}
+
+download_manager *changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > &versions)
 {
   std::vector<download_changelog_manager::entry> entries;
 
@@ -226,7 +245,6 @@ download_manager *get_changelogs(const std::vector<std::pair<pkgCache::VerIterat
 	it = versions.begin(); it != versions.end(); ++it)
     {
       pkgCache::VerIterator ver(it->first);
-      const sigc::slot1<void, temp::name> &k(it->second);
 
       if(ver.end())
 	continue;
@@ -257,17 +275,39 @@ download_manager *get_changelogs(const std::vector<std::pair<pkgCache::VerIterat
 	  continue;
 	}
 
-      entries.push_back(download_changelog_manager::entry(srcpkg, sourcever, ver.Section(), ver.ParentPkg().Name(), tempname, k));
+      const std::map<std::pair<std::string, std::string>, temp::name>::const_iterator
+	found = cache.find(std::make_pair(srcpkg, sourcever));
+
+      if(found != cache.end())
+	it->second(found->second);
+      else
+	{
+	  sigc::slot1<void, temp::name> k(sigc::bind(sigc::mem_fun(*this, &changelog_cache::register_changelog),
+						     srcpkg,
+						     sourcever,
+						     it->second));
+
+	  entries.push_back(download_changelog_manager::entry(srcpkg, sourcever, ver.Section(), ver.ParentPkg().Name(), tempname, k));
+	}
     }
 
   return new download_changelog_manager(entries.begin(), entries.end());
 }
 
-download_manager *get_changelog_from_source(const string &srcpkg,
-					    const string &ver,
-					    const string &section,
-					    const string &name,
-					    const sigc::slot1<void, temp::name> &k)
+download_manager *changelog_cache::get_changelog(const pkgCache::VerIterator &ver,
+						 const sigc::slot1<void, temp::name> &k)
+{
+  std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > versions;
+  versions.push_back(std::make_pair(ver, k));
+
+  return get_changelogs(versions);
+}
+
+download_manager *changelog_cache::get_changelog_from_source(const string &srcpkg,
+							     const string &ver,
+							     const string &section,
+							     const string &name,
+							     const sigc::slot1<void, temp::name> &k)
 {
   temp::dir tempdir;
   temp::name tempname;
@@ -283,8 +323,27 @@ download_manager *get_changelog_from_source(const string &srcpkg,
       return false;
     }
 
+
+  const std::map<std::pair<std::string, std::string>, temp::name>::const_iterator
+    found = cache.find(std::make_pair(srcpkg, ver));
+
   std::vector<download_changelog_manager::entry> entries;
-  entries.push_back(download_changelog_manager::entry(srcpkg, ver, section, name, tempname, k));
+  if(found != cache.end())
+    k(found->second);
+  else
+    {
+      sigc::slot1<void, temp::name>
+	register_and_return(sigc::bind(sigc::mem_fun(*this, &changelog_cache::register_changelog),
+				       srcpkg,
+				       ver,
+				       k));
+
+      entries.push_back(download_changelog_manager::entry(srcpkg, ver, section, name, tempname, register_and_return));
+    }
 
   return new download_changelog_manager(entries.begin(), entries.end());
+}
+
+    changelog_cache global_changelog_cache;
+  }
 }

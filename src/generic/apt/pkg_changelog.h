@@ -22,6 +22,7 @@
 #ifndef PKG_CHANGELOG_H
 #define PKG_CHANGELOG_H
 
+#include <map>
 #include <string>
 
 #include <generic/util/temp.h>
@@ -37,40 +38,66 @@
 
 class download_manager;
 
-/** Generate a download process object that retrieves changelogs for
- *  the given package versions.  When the download is complete for a
- *  version, the corresponding slot will be invoked with the file to
- *  which the changelog was downloaded as an argument.
- *
- *  If one of the entries in the vector is an end iterator or has no
- *  file lists, it will be silently dropped from the list.
- */
-download_manager *get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > &versions);
-
-inline
-download_manager *get_changelog(const pkgCache::VerIterator &ver,
-				const sigc::slot1<void, temp::name> &k)
+namespace aptitude
 {
-  std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > versions;
-  versions.push_back(std::make_pair(ver, k));
+  namespace apt
+  {
+    class changelog_cache
+    {
+      // Maps (source-package, version) to the corresponding
+      // changelog.
+      std::map<std::pair<std::string, std::string>, temp::name> cache;
 
-  return get_changelogs(versions);
+      // Registers a new cache entry, then invokes a callback.
+      void register_changelog(const temp::name &n,
+			      const std::string &package,
+			      const std::string &version,
+			      sigc::slot1<void, temp::name> k);
+
+    public:
+      changelog_cache();
+
+      /** \brief Retrieve the name corresponding to the given
+       *  package/version pair from the cache, or an invalid name if
+       *  the changelog isn't cached.
+       */
+      temp::name get_from_cache(const std::string &package, const std::string &name);
+
+      /** Generate a download process object that retrieves changelogs
+       *  for the given package versions from the cache or the
+       *  network.  When the download is complete for a version, the
+       *  corresponding slot will be invoked with the file to which
+       *  the changelog was downloaded as an argument.  If the
+       *  changelog is already present in the cache, the callback will
+       *  be invoked immediately.
+       *
+       *  If one of the entries in the vector is an end iterator or has no
+       *  file lists, it will be silently dropped from the list.
+       */
+      download_manager *get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > &versions);
+
+      download_manager *get_changelog(const pkgCache::VerIterator &ver,
+				      const sigc::slot1<void, temp::name> &k);
+
+      /** Generate a download process object that retrieves a changelog for
+       *  the given source package.
+       *
+       *  \param srcpkg the source package name
+       *  \param ver the version of the source package
+       *  \param section the section of the source package
+       *  \param name the name of the package that the user provided
+       *              (e.g., the binary package that the changelog command
+       *               was executed on)
+       */
+      download_manager *get_changelog_from_source(const std::string &srcpkg,
+						  const std::string &ver,
+						  const std::string &section,
+						  const std::string &name,
+						  const sigc::slot1<void, temp::name> &k);
+    };
+
+    extern changelog_cache global_changelog_cache;
+  }
 }
-
-/** Generate a download process object that retrieves a changelog for
- *  the given source package.
- *
- *  \param srcpkg the source package name
- *  \param ver the version of the source package
- *  \param section the section of the source package
- *  \param name the name of the package that the user provided
- *              (e.g., the binary package that the changelog command
- *               was executed on)
- */
-download_manager *get_changelog_from_source(const std::string &srcpkg,
-					    const std::string &ver,
-					    const std::string &section,
-					    const std::string &name,
-					    const sigc::slot1<void, temp::name> &k);
 
 #endif

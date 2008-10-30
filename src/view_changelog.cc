@@ -352,8 +352,10 @@ void view_changelog(pkgCache::VerIterator ver)
       return;
     }
 
-  download_manager *manager = get_changelog(ver,
-					    sigc::bind(sigc::ptr_fun(&do_view_changelog), pkgname, curverstr));
+  using aptitude::apt::global_changelog_cache;
+  download_manager *manager =
+    global_changelog_cache.get_changelog(ver,
+					 sigc::bind(sigc::ptr_fun(&do_view_changelog), pkgname, curverstr));
 
   if(manager != NULL)
     {
