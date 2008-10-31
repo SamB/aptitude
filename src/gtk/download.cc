@@ -288,7 +288,7 @@ namespace gui
 	  title(_title),
 	  pulse(_pulse),
 	  cancelled(false),
-	  success(false)
+	  success(true)
       {
 	progress->set_text(title);
 	progress->set_pulse_step(0.1);
