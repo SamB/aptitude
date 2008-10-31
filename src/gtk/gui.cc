@@ -39,6 +39,7 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_install_manager.h>
 #include <generic/apt/download_update_manager.h>
+#include <generic/apt/pkg_changelog.h>
 #include <generic/apt/tags.h>
 
 #include <generic/util/refcounted_wrapper.h>
@@ -165,6 +166,46 @@ namespace gui
       pMainWindow->do_preview();
     }
 
+    void preload_changelogs()
+    {
+      if(apt_cache_file == NULL)
+	return;
+
+      std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > >
+	entries;
+
+      cwidget::util::ref_ptr<guiOpProgress> p(guiOpProgress::create());
+
+      int i = 0;
+      p->OverallProgress(i, (*apt_cache_file)->Head().PackageCount, 1,
+			 _("Preparing to preload changelogs"));
+
+      for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin();
+	  !pkg.end(); ++pkg)
+	{
+	  if(pkg->CurrentState == pkgCache::State::Installed &&
+	     (*apt_cache_file)[pkg].Upgradable())
+	    {
+	      pkgCache::VerIterator candver = (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
+
+	      entries.push_back(std::make_pair(candver, sigc::slot1<void, temp::name>()));
+	    }
+
+	  ++i;
+	  p->Progress(i);
+	}
+
+      p->Done();
+
+      using aptitude::apt::global_changelog_cache;
+      download_manager *m = global_changelog_cache.get_changelogs(entries);
+
+      start_download(m,
+		     _("Downloading changelogs"),
+		     false,
+		     pMainWindow->get_notifyview());
+    }
+
     public:
       DashboardTab(Glib::ustring label)
         : Tab(Dashboard, label,
@@ -194,6 +235,9 @@ namespace gui
 	search_button->signal_clicked().connect(sigc::mem_fun(*this, &DashboardTab::do_search));
 
 	upgrades_pkg_view->set_limit("?upgradable");
+
+	cache_reloaded.connect(sigc::mem_fun(*this, &DashboardTab::preload_changelogs));
+	preload_changelogs();
 
 	upgrade_button->set_image(*manage(new Gtk::Image(Gtk::Stock::GO_UP, Gtk::ICON_SIZE_BUTTON)));
 	upgrade_button->signal_clicked().connect(sigc::mem_fun(*this, &DashboardTab::do_upgrade));
