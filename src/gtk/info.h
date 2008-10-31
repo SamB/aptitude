@@ -42,7 +42,7 @@ namespace gui
       cwidget::util::ref_ptr<EntityView> pVersionsView;
       cwidget::util::ref_ptr<EntityView> pDependsView;
       Gtk::Notebook * notebook;
-      ChangeLogView * changelogview;
+      cwidget::util::ref_ptr<ChangeLogView> changelogview;
 
       bool changelog_loaded;
 

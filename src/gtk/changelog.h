@@ -28,6 +28,9 @@
 #include <apt-pkg/pkgcache.h>
 #include <apt-pkg/acquire.h>
 
+#include <cwidget/generic/util/ref_ptr.h>
+
+#include <generic/util/refcounted_base.h>
 #include <generic/util/temp.h>
 #include <generic/util/util.h>
 
@@ -40,7 +43,7 @@ namespace gui
       bool MediaChange(std::string, std::string);
   };
 
-  class ChangeLogView
+  class ChangeLogView : public aptitude::util::refcounted_base
   {
     private:
       Gtk::TextView * textview;
@@ -49,7 +52,7 @@ namespace gui
       temp::name digest_changelog(const temp::name &changelog);
       void do_view_changelog(temp::name n, string pkgname, string curverstr);
       void add_changelog_buffer(const temp::name &file, const std::string &curver);
-    public:
+
       /** \brief Construct a new changelog view.
        *
        *  \param refGlade    The XML tree containing
@@ -58,6 +61,14 @@ namespace gui
        */
       ChangeLogView(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
                     Glib::ustring gladename);
+
+    public:
+      static cwidget::util::ref_ptr<ChangeLogView> create(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
+							  Glib::ustring gladename)
+      {
+	return new ChangeLogView(refGlade, gladename);
+      }
+
       virtual ~ChangeLogView();
 
       void load_version(pkgCache::VerIterator ver);

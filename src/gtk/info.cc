@@ -649,7 +649,7 @@ namespace gui
 	pDependsView->get_treeview()->expand_row(path, false);
       }
 
-    changelogview = new ChangeLogView(get_xml(), "main_info_changelogview");
+    changelogview = ChangeLogView::create(get_xml(), "main_info_changelogview");
     notebook->signal_switch_page().connect(sigc::mem_fun(*this, &InfoTab::notebook_switch_handler));
   }
 
