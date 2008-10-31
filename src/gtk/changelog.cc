@@ -157,10 +157,9 @@ namespace gui
     // can't parse the changelog because it's missing.
   }
 
-  ChangeLogView::ChangeLogView(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
-                               Glib::ustring gladename)
+  ChangeLogView::ChangeLogView(Gtk::TextView *_textview)
+    : textview(_textview)
   {
-    refGlade->get_widget(gladename, textview);
   }
 
   ChangeLogView::~ChangeLogView()

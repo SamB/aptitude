@@ -55,18 +55,14 @@ namespace gui
 
       /** \brief Construct a new changelog view.
        *
-       *  \param refGlade    The XML tree containing
-       *                     the widgets for this view.
-       *  \param gladename   The Glade name of the widget.
+       *  \param textview   The text-view to attach to.
        */
-      ChangeLogView(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
-                    Glib::ustring gladename);
+      ChangeLogView(Gtk::TextView *textview);
 
     public:
-      static cwidget::util::ref_ptr<ChangeLogView> create(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
-							  Glib::ustring gladename)
+      static cwidget::util::ref_ptr<ChangeLogView> create(Gtk::TextView *textview)
       {
-	return new ChangeLogView(refGlade, gladename);
+	return new ChangeLogView(textview);
       }
 
       virtual ~ChangeLogView();

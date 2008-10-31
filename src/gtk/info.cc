@@ -649,7 +649,9 @@ namespace gui
 	pDependsView->get_treeview()->expand_row(path, false);
       }
 
-    changelogview = ChangeLogView::create(get_xml(), "main_info_changelogview");
+    Gtk::TextView *changelog_textview;
+    get_xml()->get_widget("main_info_changelogview", changelog_textview);
+    changelogview = ChangeLogView::create(changelog_textview);
     notebook->signal_switch_page().connect(sigc::mem_fun(*this, &InfoTab::notebook_switch_handler));
   }
 
