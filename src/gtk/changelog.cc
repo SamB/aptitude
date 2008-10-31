@@ -51,6 +51,8 @@ namespace gui
     string tablabel = ssprintf(_("%s changes"), pkgname.c_str());
     string desclabel = _("View the list of changes made to this Debian package.");
 
+    // Create a new text buffer to ensure that we have a blank state.
+    textBuffer = Gtk::TextBuffer::create();
     add_changelog_buffer(n, curverstr);
     textview->set_buffer(textBuffer);
   }
@@ -189,14 +191,16 @@ namespace gui
 
     if(!in_debian)
       {
-        textview->get_buffer()->set_text(_("You can only view changelogs of official Debian packages."));
+        textBuffer->set_text(_("You can only view changelogs of official Debian packages."));
         return;
       }
 
     // \todo It would be uber-cool to have a progress bar for the
     // particular changelog being downloaded, but we need more
     // information from the download backend to do that.
-    textview->get_buffer()->set_text(_("Downloading changelog; please wait..."));
+    textBuffer->set_text(_("Downloading changelog; please wait..."));
+
+    textview->set_buffer(textBuffer);
 
     std::auto_ptr<download_manager> manager(global_changelog_cache.get_changelog(ver, sigc::bind(sigc::mem_fun(*this, &ChangeLogView::do_view_changelog), pkgname, curverstr)));
 
