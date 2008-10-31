@@ -149,6 +149,8 @@ namespace gui
 
     Gtk::Button *upgrade_button;
 
+    cwidget::util::ref_ptr<ChangeLogView> changelog_view;
+
     void do_search()
     {
       pMainWindow->add_packages_tab(search_entry->get_text());
@@ -171,6 +173,7 @@ namespace gui
       {
 	get_xml()->get_widget("dashboard_upgrades_textview",
 			      upgrades_changelog_view);
+	changelog_view = ChangeLogView::create(upgrades_changelog_view);
 	get_xml()->get_widget("dashboard_search_entry",
 			      search_entry);
 	get_xml()->get_widget("dashboard_search_button",
@@ -179,6 +182,8 @@ namespace gui
 			      upgrade_button);
 
 	upgrades_pkg_view = cwidget::util::ref_ptr<PkgView>(new PkgView(get_xml(), "dashboard_upgrades_treeview"));
+	upgrades_pkg_view->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &DashboardTab::activated_upgrade_package_handler));
+	upgrades_pkg_view->get_treeview()->signal_cursor_changed().connect(sigc::mem_fun(*this, &DashboardTab::activated_upgrade_package_handler));
 
 	cache_closed.connect(sigc::bind(sigc::mem_fun(*upgrade_button, &Gtk::Widget::set_sensitive),
 					false));
@@ -205,6 +210,35 @@ namespace gui
 	// TODO: customize the displayed columns to display version /
 	// size / archive information.
       }
+
+    void activated_upgrade_package_handler()
+    {
+      if(apt_cache_file == NULL)
+	{
+	  upgrades_changelog_view->get_buffer()->set_text("");
+	  return;
+	}
+
+      Gtk::TreeModel::Path path;
+      Gtk::TreeViewColumn * focus_column;
+      upgrades_pkg_view->get_treeview()->get_cursor(path, focus_column);
+      if (upgrades_pkg_view->get_treeview()->get_selection()->is_selected(path))
+	{
+	  Gtk::TreeModel::iterator iter = upgrades_pkg_view->get_model()->get_iter(path);
+	  using cwidget::util::ref_ptr;
+	  ref_ptr<Entity> ent = (*iter)[upgrades_pkg_view->get_columns()->EntObject];
+	  ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
+
+	  pkgCache::PkgIterator pkg = pkg_ent->get_pkg();
+	  pkgCache::VerIterator candver = (*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
+
+	  changelog_view->load_version(candver);
+	}
+      else
+	{
+	  upgrades_changelog_view->get_buffer()->set_text("");
+	}
+    }
   };
 
   progress_with_destructor make_gui_progress()

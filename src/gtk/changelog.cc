@@ -172,6 +172,7 @@ namespace gui
   void ChangeLogView::load_version(pkgCache::VerIterator ver)
   {
     textBuffer = Gtk::TextBuffer::create();
+    textview->set_buffer(textBuffer);
 
     bool in_debian=false;
 
@@ -199,8 +200,6 @@ namespace gui
     // particular changelog being downloaded, but we need more
     // information from the download backend to do that.
     textBuffer->set_text(_("Downloading changelog; please wait..."));
-
-    textview->set_buffer(textBuffer);
 
     std::auto_ptr<download_manager> manager(global_changelog_cache.get_changelog(ver, sigc::bind(sigc::mem_fun(*this, &ChangeLogView::do_view_changelog), pkgname, curverstr)));
 
