@@ -230,7 +230,7 @@ namespace gui
 	  ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
 
 	  pkgCache::PkgIterator pkg = pkg_ent->get_pkg();
-	  pkgCache::VerIterator candver = (*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
+	  pkgCache::VerIterator candver = (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
 
 	  changelog_view->load_version(candver);
 	}
