@@ -129,20 +129,20 @@ cw::fragment *render_changelog(const cw::util::ref_ptr<aptitude::apt::changelog>
   for(aptitude::apt::changelog::const_iterator it = cl->begin();
       it != cl->end(); ++it)
     {
-      const aptitude::apt::changelog_entry &ent(*it);
+      const cw::util::ref_ptr<aptitude::apt::changelog_entry>ent(*it);
 
       cw::fragment *taglineFrag =
 	cw::hardwrapbox(cw::fragf("%n -- %s  %s",
-				  ent.get_maintainer().c_str(),
-				  ent.get_date_str().c_str()));
+				  ent->get_maintainer().c_str(),
+				  ent->get_date_str().c_str()));
       cw::fragment *f =
 	cw::fragf(first ? "%F%F" : "%n%F%F",
-		  change_text_fragment(ent.get_changes()),
+		  change_text_fragment(ent->get_changes()),
 		  taglineFrag);
 
       first = false;
 
-      if(!curver.empty() && _system->VS->CmpVersion(ent.get_version(), curver) > 0)
+      if(!curver.empty() && _system->VS->CmpVersion(ent->get_version(), curver) > 0)
 	{
 	  cw::style s = cw::get_style("ChangelogNewerVersion");
 	  fragments.push_back(cw::style_fragment(f, s));

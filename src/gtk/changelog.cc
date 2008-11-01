@@ -31,6 +31,8 @@
 #include <apt-pkg/tagfile.h>
 #include <apt-pkg/version.h>
 
+#include <cwidget/generic/util/ssprintf.h>
+
 #include <generic/apt/changelog_parse.h>
 #include <generic/apt/download_manager.h>
 #include <generic/apt/pkg_changelog.h>
@@ -39,6 +41,8 @@
 #include <gtk/progress.h>
 
 using aptitude::apt::global_changelog_cache;
+
+namespace cw = cwidget;
 
 namespace gui
 {
@@ -57,84 +61,59 @@ namespace gui
     textview->set_buffer(textBuffer);
   }
 
-
-  void append_change_text(const std::string &s,
-			  const Glib::RefPtr<Gtk::TextBuffer> &buffer)
+  namespace
   {
-    std::string::size_type start = 0;
-    std::string::size_type next_nl;
+    void view_bug(const std::string &bug_number)
+    {
+      std::string URL = cw::util::ssprintf("http://bugs.debian.org/%s", bug_number.c_str());
 
-    Glib::RefPtr<Gtk::TextBuffer::Tag> bold_tag = buffer->create_tag();
-    bold_tag->property_weight() = Pango::WEIGHT_BOLD;
-    bold_tag->property_weight_set() = true;
+      std::vector<std::string> arguments;
+      arguments.push_back("/usr/bin/sensible-browser");
+      arguments.push_back(URL);
 
-    // The first line is generated mechanically before we get here, so skip it.
-    next_nl = s.find('\n', start);
-    if(next_nl != std::string::npos)
-      start = next_nl + 1;
+      Glib::spawn_async(".", arguments);
+    }
+  }
 
-    while(next_nl != std::string::npos)
+  using aptitude::apt::changelog_element_list;
+  using aptitude::apt::changelog_element;
+  void render_change_elements(const std::string &text,
+			      const std::vector<changelog_element> &elements,
+			      const Glib::RefPtr<Gtk::TextBuffer> &buffer)
+  {
+    std::vector<changelog_element>::const_iterator elements_end = elements.end();
+
+    Glib::RefPtr<Gtk::TextBuffer::Tag> bullet_tag = buffer->create_tag();
+    bullet_tag->property_weight() = Pango::WEIGHT_BOLD;
+    bullet_tag->property_weight_set() = true;
+
+    for(std::vector<changelog_element>::const_iterator it =
+	  elements.begin(); it != elements_end; ++it)
       {
-        next_nl = s.find('\n', start);
-
-        if(s[start] == ' ')
-          ++start;
-
-        if(next_nl == start + 1 && s[start] == '.')
-          {
-	    buffer->insert(buffer->end(), "\n");
-            start = next_nl + 1;
-            continue;
-          }
-
-	std::pair<const char *, const char *> this_line;
-        if(next_nl != std::string::npos)
-          this_line = std::make_pair(s.c_str() + start,
-				     s.c_str() + next_nl);
-        else
-          this_line = std::make_pair(s.c_str() + start,
-				     s.c_str() + s.size());
-
-        size_t first_nonspace = 0;
-        while((signed)first_nonspace < this_line.second - this_line.first &&
-	      isspace(this_line.first[first_nonspace]))
-          ++first_nonspace;
-
-        bool has_bullet = false;
-        if((signed)first_nonspace < this_line.second - this_line.first)
-          switch(this_line.first[first_nonspace])
-            {
-            case '*':
-            case '+':
-            case '-':
-              has_bullet = true;
-              break;
-            }
-
-        if(has_bullet)
-          {
-	    buffer->insert(buffer->end(),
-			   this_line.first,
-			   this_line.first + first_nonspace);
-
-	    buffer->insert_with_tag(buffer->end(),
-				    this_line.first + first_nonspace,
-				    this_line.first + first_nonspace + 1,
-				    bold_tag);
-
-	    buffer->insert(buffer->end(),
-			   this_line.first + first_nonspace + 1,
-			   this_line.second);
-
-	    buffer->insert(buffer->end(), "\n");
-          }
-        else
+	switch(it->get_type())
 	  {
-	    buffer->insert(buffer->end(), this_line.first, this_line.second);
-	    buffer->insert(buffer->end(), "\n");
-	  }
+	  case changelog_element::text_type:
+	    buffer->insert(buffer->end(),
+			   text.c_str() + it->get_begin(),
+			   text.c_str() + it->get_end());
+	    break;
 
-        start = next_nl + 1;
+	  case changelog_element::bullet_type:
+	    buffer->insert_with_tag(buffer->end(),
+				    text.c_str() + it->get_begin(),
+				    text.c_str() + it->get_end(),
+				    bullet_tag);
+	    break;
+
+	  case changelog_element::closes_type:
+	    {
+	      const std::string bug_number(text, it->get_begin(), it->get_end() - it->get_begin());
+	      add_hyperlink(buffer, buffer->end(),
+			    bug_number,
+			    sigc::bind(sigc::ptr_fun(&view_bug),
+				       bug_number));
+	    }
+	  }
       }
   }
 
@@ -142,7 +121,7 @@ namespace gui
                                         const std::string &curver)
   {
     using aptitude::apt::changelog;
-    cwidget::util::ref_ptr<changelog> cl =
+    cw::util::ref_ptr<changelog> cl =
       aptitude::apt::parse_changelog(file);
 
     if(cl.valid())
@@ -179,7 +158,9 @@ namespace gui
 
 	for(changelog::const_iterator it = cl->begin(); it != cl->end(); ++it)
 	  {
-	    bool newer = !curver.empty() && _system->VS->CmpVersion(it->get_version(), curver) > 0;
+	    cw::util::ref_ptr<aptitude::apt::changelog_entry> ent(*it);
+
+	    bool newer = !curver.empty() && _system->VS->CmpVersion(ent->get_version(), curver) > 0;
 
 	    if(it != cl->begin())
 	      textBuffer->insert(textBuffer->end(), "\n\n");
@@ -190,16 +171,16 @@ namespace gui
 
 	    // Can't hyperlink to the package name because it's a
 	    // source package name.  Plus, it might not exist.
-	    textBuffer->insert(textBuffer->end(), it->get_source());
+	    textBuffer->insert(textBuffer->end(), ent->get_source());
 	    textBuffer->insert(textBuffer->end(), " (");
 	    textBuffer->insert_with_tag(textBuffer->end(),
-					it->get_version(),
+					ent->get_version(),
 					number_tag);
 	    textBuffer->insert(textBuffer->end(), ") ");
-	    textBuffer->insert(textBuffer->end(), it->get_distribution());
+	    textBuffer->insert(textBuffer->end(), ent->get_distribution());
 	    textBuffer->insert(textBuffer->end(), "; urgency=");
 	    Glib::RefPtr<Gtk::TextBuffer::Tag> urgency_tag;
-	    const std::string &urgency = it->get_urgency();
+	    const std::string &urgency = ent->get_urgency();
 	    if(urgency == "low")
 	      urgency_tag = urgency_low_tag;
 	    else if(urgency == "medium")
@@ -216,13 +197,13 @@ namespace gui
 
 	    textBuffer->insert(textBuffer->end(), "\n");
 
-	    append_change_text(it->get_changes(), textBuffer);
+	    render_change_elements(ent->get_changes(), ent->get_elements()->get_elements(), textBuffer);
 
 	    textBuffer->insert(textBuffer->end(), "\n");
 	    textBuffer->insert(textBuffer->end(), " -- ");
-	    textBuffer->insert(textBuffer->end(), it->get_maintainer());
+	    textBuffer->insert(textBuffer->end(), ent->get_maintainer());
 	    textBuffer->insert(textBuffer->end(), " ");
-	    textBuffer->insert_with_tag(textBuffer->end(), it->get_date_str(), date_tag);
+	    textBuffer->insert_with_tag(textBuffer->end(), ent->get_date_str(), date_tag);
 
 	    if(newer)
 	      {

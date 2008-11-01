@@ -47,6 +47,7 @@ namespace aptitude
 				     const std::string &_distribution,
 				     const std::string &_urgency,
 				     const std::string &_changes,
+				     const cw::util::ref_ptr<changelog_element_list> &_elements,
 				     const std::string &_maintainer,
 				     const std::string &_date)
       : source(_source),
@@ -54,6 +55,7 @@ namespace aptitude
 	distribution(_distribution),
 	urgency(_urgency),
 	changes(_changes),
+	elements(_elements),
 	maintainer(_maintainer),
 	date_str(_date),
 	could_parse_date(false),
@@ -62,6 +64,201 @@ namespace aptitude
       // I use StrToTime instead of strptime because strptime is
       // locale-dependent.
       could_parse_date = StrToTime(date_str, date);
+    }
+
+    // Skips over whitespace in a text element, spilling elements as
+    // needed to handle newline conditions.
+    void skip_text_whitespace(const std::string &s,
+			      std::string::size_type &start,
+			      std::string::size_type &curr,
+			      std::vector<changelog_element> &elements)
+    {
+      while(curr < s.size() && isspace(s[curr]))
+	{
+	  if(s[curr] != '\n')
+	    ++curr;
+	  else
+	    {
+	      ++curr;
+
+	      elements.push_back(changelog_element(changelog_element::text_type,
+						   start, curr));
+
+	      if(curr < s.size() && s[curr] == ' ')
+		++curr;
+
+	      if(curr < s.size() && s[curr] == '.' &&
+
+		 curr + 1 < s.size() && s[curr + 1] == '\n')
+		++curr;
+
+	      start = curr;
+	    }
+	}
+    }
+
+    cw::util::ref_ptr<changelog_element_list>
+    parse_changes(const std::string &s)
+    {
+      std::vector<changelog_element> elements;
+
+      std::string::size_type curr = 0;
+
+      // The first line is generated mechanically before we get here, so skip it.
+      {
+	std::string::size_type first_nl = s.find('\n', 0);
+	if(first_nl != std::string::npos)
+	  curr = first_nl + 1;
+	else
+	  curr = s.size();
+      }
+
+      // Manually handle the start-of-line special casing here.
+      if(curr < s.size() && s[curr] == ' ')
+	++curr;
+      if(curr < s.size() && s[curr] == '.' &&
+	 curr + 1 < s.size() && s[curr + 1] == '\n')
+	++curr;
+
+      std::string::size_type start = curr;
+
+      while(curr < s.size())
+	{
+	  const char c = s[curr];
+	  switch(c)
+	    {
+	    case '\n':
+	      {
+		// Skipping whitespace might skip past several blank
+		// lines, but that's OK (they don't contain bullets,
+		// obviously).
+		skip_text_whitespace(s, start, curr, elements);
+
+		if(curr < s.size())
+		  {
+		    switch(s[curr])
+		      {
+		      case '*':
+		      case '+':
+		      case '-':
+			if(curr != start)
+			  elements.push_back(changelog_element(changelog_element::text_type,
+							       start, curr));
+
+			elements.push_back(changelog_element(changelog_element::bullet_type,
+							     curr, curr + 1));
+
+			++curr;
+			start = curr;
+			break;
+		      }
+		  }
+	      }
+
+	    case 'c':
+	    case 'C':
+	      {
+		// Look for "closes:".
+		++curr;
+		if(!(curr < s.size() && (s[curr] == 'l' || s[curr] == 'L')))
+		  break;
+
+		++curr;
+		if(!(curr < s.size() && (s[curr] == 'o' || s[curr] == 'O')))
+		  break;
+
+		++curr;
+		if(!(curr < s.size() && (s[curr] == 's' || s[curr] == 'S')))
+		  break;
+
+		++curr;
+		if(!(curr < s.size() && (s[curr] == 'e' || s[curr] == 'E')))
+		  break;
+
+		++curr;
+		if(!(curr < s.size() && (s[curr] == 's' || s[curr] == 'S')))
+		  break;
+
+		++curr;
+		if(!(curr < s.size() && s[curr] == ':'))
+		  break;
+
+		++curr;
+
+		// Glom onto all the bug numbers we can find.
+		bool done = false;
+		while(!done)
+		  {
+		    skip_text_whitespace(s, start, curr, elements);
+
+		    if(curr < s.size() && (s[curr] == 'b' || s[curr] == 'B'))
+		      {
+			++curr;
+			if(!(curr < s.size() && (s[curr] == 'u' || s[curr] == 'U')))
+			  break;
+
+			++curr;
+			if(!(curr < s.size() && (s[curr] == 'g' || s[curr] == 'G')))
+			  break;
+
+			++curr;
+			skip_text_whitespace(s, start, curr, elements);
+		      }
+
+		    if(curr < s.size() && s[curr] == '#')
+		      {
+			++curr;
+
+			skip_text_whitespace(s, start, curr, elements);
+		      }
+
+		    if(curr < s.size() && isdigit(s[curr]))
+		      {
+			// We have a digit for sure.  Spit out the
+			// preceding text...
+			elements.push_back(changelog_element(changelog_element::text_type,
+							     start, curr));
+			// Update the start pointer...
+			start = curr;
+
+			// Find the whole number...
+			while(curr < s.size() && isdigit(s[curr]))
+			  ++curr;
+
+			// Put it onto the element list...
+			elements.push_back(changelog_element(changelog_element::closes_type,
+							     start, curr));
+
+			// Move the start pointer past the number....
+			start = curr;
+
+			// Now see if there's a continuation (i.e., a
+			// comma).  If there is we look for another
+			// bug number; otherwise we stop.
+			skip_text_whitespace(s, start, curr, elements);
+
+			if(curr < s.size() && s[curr] == ',')
+			  ++curr;
+			else
+			  done = true;
+		      }
+		    else // If there wasn't a digit, this isn't part of a Closes.
+		      done = true;
+		  }
+	      }
+	      break;
+
+	    default:
+	      ++curr;
+	      break;
+	    }
+	}
+
+      if(curr != start)
+	elements.push_back(changelog_element(changelog_element::text_type,
+					     start, curr));
+
+      return changelog_element_list::create(elements);
     }
 
     changelog::changelog(FileFd &digest)
@@ -84,13 +281,17 @@ namespace aptitude
 	      std::string maintainer(sec.FindS("Maintainer"));
 	      std::string date(sec.FindS("Date"));
 
-	      entries.push_back(changelog_entry(source,
-						version,
-						distribution,
-						urgency,
-						changes,
-						maintainer,
-						date));
+	      cw::util::ref_ptr<changelog_element_list> changelog_elements =
+		parse_changes(changes);
+
+	      entries.push_back(changelog_entry::create(source,
+							version,
+							distribution,
+							urgency,
+							changes,
+							changelog_elements,
+							maintainer,
+							date));
 	    }
 	}
     }

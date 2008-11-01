@@ -45,37 +45,123 @@ namespace aptitude
 {
   namespace apt
   {
+    class changelog_element
+    {
+    public:
+      /** \brief The type of a changelog text element. */
+      enum type
+	{
+	  /** \brief Some text that should be displayed literally. */
+	  text_type,
+
+	  /** \brief A beginning-of-the-line bullet. */
+	  bullet_type,
+
+	  /** \brief A Closes entry.
+	   *
+	   *  In this case, the text will be the bug number.
+	   */
+	  closes_type
+	};
+
+    private:
+      /** \brief Where this element begins. */
+      std::string::size_type begin;
+
+      /** \brief Where this element ends. */
+      std::string::size_type end;
+
+      type tp;
+
+    public:
+      changelog_element(type _tp,
+			std::string::size_type _begin,
+			std::string::size_type _end)
+	: begin(_begin), end(_end), tp(_tp)
+      {
+      }
+
+      std::string::size_type get_begin() const { return begin; }
+      std::string::size_type get_end() const { return end; }
+      type get_type() const { return tp; }
+    };
+
+
+    /** \brief Represents a reference-counted vector of changelog text
+     * 	elements.
+     */
+    class changelog_element_list : public util::refcounted_base
+    {
+      std::vector<changelog_element> elements;
+
+      changelog_element_list(const std::vector<changelog_element> &_elements)
+	: elements(_elements)
+      {
+      }
+    public:
+      static cwidget::util::ref_ptr<changelog_element_list>
+      create(const std::vector<changelog_element> &elements)
+      {
+	return new changelog_element_list(elements);
+      }
+
+      const std::vector<changelog_element> &get_elements() const { return elements; }
+    };
+
     /** \brief Represents a single entry in a Debian changelog. */
-    class changelog_entry
+    class changelog_entry : public util::refcounted_base
     {
       std::string source;
       std::string version;
       std::string distribution;
       std::string urgency;
       std::string changes;
+      cwidget::util::ref_ptr<changelog_element_list> elements;
       std::string maintainer;
       std::string date_str;
       bool could_parse_date;
       time_t date;
 
-    public:
-      /** \brief Create a new changelog entry.
-       *
-       *  \param _source       The source package of the entry.
-       *  \param _version      The version number of the entry.
-       *  \param _distribution The distribution of the entry.
-       *  \param _urgency      The urgency of the entry.
-       *  \param _changes      The text of the entry.
-       *  \param _maintainer   The maintainer field of the entry.
-       *  \param _date         The date of the entry.
-       */
       changelog_entry(const std::string &_source,
 		      const std::string &_version,
 		      const std::string &_distribution,
 		      const std::string &_urgency,
 		      const std::string &_changes,
+		      const cwidget::util::ref_ptr<changelog_element_list> &_elements,
 		      const std::string &_maintainer,
 		      const std::string &_date);
+
+    public:
+      /** \brief Create a new changelog entry.
+       *
+       *  \param source       The source package of the entry.
+       *  \param version      The version number of the entry.
+       *  \param distribution The distribution of the entry.
+       *  \param urgency      The urgency of the entry.
+       *  \param changes      The text of the entry.
+       *  \param elements     The parsed elements of the entry.
+       *  \param maintainer   The maintainer field of the entry.
+       *  \param date         The date of the entry.
+       */
+      static cwidget::util::ref_ptr<changelog_entry>
+      create(const std::string &source,
+	     const std::string &version,
+	     const std::string &distribution,
+	     const std::string &urgency,
+	     const std::string &changes,
+	     const cwidget::util::ref_ptr<changelog_element_list> &elements,
+	     const std::string &maintainer,
+	     const std::string &date)
+      {
+	return new changelog_entry(source,
+				   version,
+				   distribution,
+				   urgency,
+				   changes,
+				   elements,
+				   maintainer,
+				   date);
+      }
 
       /** \return the source package name of the changelog entry. */
       const std::string &get_source() const { return source; }
@@ -87,6 +173,13 @@ namespace aptitude
       const std::string &get_urgency() const { return urgency; }
       /** \return the text of the changelog entry. */
       const std::string &get_changes() const { return changes; }
+      /** \return the elements of the changelog entry text.
+       *
+       *  This excludes the first line, which can be programmatically
+       *  generated from the other fields.
+       */
+      const cwidget::util::ref_ptr<changelog_element_list> &
+      get_elements() const { return elements; }
       /** \return the maintainer field of the changelog entry. */
       const std::string &get_maintainer() const { return maintainer; }
       /** \return the date string of the changelog entry. */
@@ -109,7 +202,7 @@ namespace aptitude
      */
     class changelog : public util::refcounted_base
     {
-      std::vector<changelog_entry> entries;
+      std::vector<cwidget::util::ref_ptr<changelog_entry> > entries;
 
       changelog(FileFd &file);
 
@@ -120,8 +213,8 @@ namespace aptitude
       }
 
       /** \brief The type of an iterator over this changelog. */
-      typedef std::vector<changelog_entry>::const_iterator const_iterator;
-      typedef std::vector<changelog_entry>::size_type size_type;
+      typedef std::vector<cwidget::util::ref_ptr<changelog_entry> >::const_iterator const_iterator;
+      typedef std::vector<cwidget::util::ref_ptr<changelog_entry> >::size_type size_type;
 
       size_type size() const { return entries.size(); }
       const_iterator begin() const { return entries.begin(); }
