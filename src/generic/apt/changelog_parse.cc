@@ -42,11 +42,17 @@ namespace aptitude
 {
   namespace apt
   {
-    changelog_entry::changelog_entry(const std::string &_version,
+    changelog_entry::changelog_entry(const std::string &_source,
+				     const std::string &_version,
+				     const std::string &_distribution,
+				     const std::string &_urgency,
 				     const std::string &_changes,
 				     const std::string &_maintainer,
 				     const std::string &_date)
-      : version(_version),
+      : source(_source),
+	version(_version),
+	distribution(_distribution),
+	urgency(_urgency),
 	changes(_changes),
 	maintainer(_maintainer),
 	date_str(_date),
@@ -70,12 +76,18 @@ namespace aptitude
 
 	  while(tagfile.Step(sec))
 	    {
+	      std::string source(sec.FindS("Source"));
 	      std::string version(sec.FindS("Version"));
+	      std::string distribution(sec.FindS("Distribution"));
+	      std::string urgency(sec.FindS("Urgency"));
 	      std::string changes(sec.FindS("Changes"));
 	      std::string maintainer(sec.FindS("Maintainer"));
 	      std::string date(sec.FindS("Date"));
 
-	      entries.push_back(changelog_entry(version,
+	      entries.push_back(changelog_entry(source,
+						version,
+						distribution,
+						urgency,
 						changes,
 						maintainer,
 						date));

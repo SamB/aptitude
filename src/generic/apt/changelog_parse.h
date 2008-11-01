@@ -48,7 +48,10 @@ namespace aptitude
     /** \brief Represents a single entry in a Debian changelog. */
     class changelog_entry
     {
+      std::string source;
       std::string version;
+      std::string distribution;
+      std::string urgency;
       std::string changes;
       std::string maintainer;
       std::string date_str;
@@ -58,18 +61,30 @@ namespace aptitude
     public:
       /** \brief Create a new changelog entry.
        *
+       *  \param _source       The source package of the entry.
        *  \param _version      The version number of the entry.
+       *  \param _distribution The distribution of the entry.
+       *  \param _urgency      The urgency of the entry.
        *  \param _changes      The text of the entry.
        *  \param _maintainer   The maintainer field of the entry.
        *  \param _date         The date of the entry.
        */
-      changelog_entry(const std::string &_version,
+      changelog_entry(const std::string &_source,
+		      const std::string &_version,
+		      const std::string &_distribution,
+		      const std::string &_urgency,
 		      const std::string &_changes,
 		      const std::string &_maintainer,
 		      const std::string &_date);
 
+      /** \return the source package name of the changelog entry. */
+      const std::string &get_source() const { return source; }
       /** \return the version number of the changelog entry. */
       const std::string &get_version() const { return version; }
+      /** \return the distribution of the changelog entry. */
+      const std::string &get_distribution() const { return distribution; }
+      /** \return the urgency of the changelog entry. */
+      const std::string &get_urgency() const { return urgency; }
       /** \return the text of the changelog entry. */
       const std::string &get_changes() const { return changes; }
       /** \return the maintainer field of the changelog entry. */
