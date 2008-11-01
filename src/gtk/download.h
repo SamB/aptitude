@@ -30,6 +30,7 @@
 
 #include <apt-pkg/acquire.h>
 
+#include <gtk/gui.h>
 #include <gtk/tab.h>
 #include <generic/apt/download_signal_log.h>
 #include <generic/util/refcounted_base.h>
@@ -135,13 +136,7 @@ namespace gui
    *  \param title                 A description of the download.
    *                               For instance, "Downloading packages"
    *
-   *  \param pulse                 If true, a "pulsing" progress bar
-   *                               will be used instead of one that
-   *                               shows progress.  For instance,
-   *                               when updating the package lists,
-   *                               the progress percentage is not
-   *                               meaningful, so we don't try to
-   *                               use it.
+   *  \param progress_mode         What to show with the main progress bar.
    *
    *  \param download_list_model   The GUI status object that
    *                               this notification will track.
@@ -152,7 +147,7 @@ namespace gui
    *                               is owned by the returned notification.
    */
   Notification *make_download_notification(const std::string &title,
-					   bool pulse,
+					   download_progress_mode progress_mode,
 					   const cwidget::util::ref_ptr<download_list_model> &status,
 					   download_signal_log *log);
 }

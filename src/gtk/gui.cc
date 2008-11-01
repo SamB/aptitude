@@ -202,7 +202,7 @@ namespace gui
 
       start_download(m,
 		     _("Downloading changelogs"),
-		     false,
+		     download_progress_item_count,
 		     pMainWindow->get_notifyview());
     }
 
@@ -296,7 +296,7 @@ namespace gui
 
   void start_download(download_manager *manager,
 		      const std::string &title,
-		      bool pulse,
+		      download_progress_mode progress_mode,
 		      NotifyView *view,
 		      const sigc::slot0<void> &download_starts_slot,
 		      const sigc::slot0<void> &download_stops_slot)
@@ -306,7 +306,7 @@ namespace gui
     model->connect(log);
 
     Notification *n = make_download_notification(title,
-						 pulse,
+						 progress_mode,
 						 model,
 						 log);
 
@@ -346,7 +346,7 @@ namespace gui
 
     start_download(m.release(),
 		   _("Checking for updates"),
-		   true,
+		   download_progress_pulse,
 		   pMainWindow->get_notifyview(),
 		   sigc::ptr_fun(&gui_finish_download));
   }
@@ -455,7 +455,7 @@ namespace gui
 
       start_download(m,
 		     _("Downloading packages"),
-		     false,
+		     download_progress_size,
 		     pMainWindow->get_notifyview(),
 		     sigc::slot0<void>(),
 		     sigc::ptr_fun(&gui_finish_download));

@@ -225,9 +225,7 @@ namespace gui
       DownloadTab *tab;
       Gtk::ProgressBar *progress;
       const std::string title;
-      // True if we should use a pulse-style progress bar instead of a
-      // percent-based one.
-      bool pulse;
+      download_progress_mode progress_mode;
       bool cancelled;
       bool success;
 
@@ -279,14 +277,14 @@ namespace gui
 
     public:
       DownloadNotification(const std::string &_title,
-			   bool _pulse,
+			   download_progress_mode _progress_mode,
 			   const cw::util::ref_ptr<download_list_model> &_status)
 	: Notification(true),
 	  status(_status),
 	  tab(NULL),
 	  progress(new Gtk::ProgressBar),
 	  title(_title),
-	  pulse(_pulse),
+	  progress_mode(_progress_mode),
 	  cancelled(false),
 	  success(true)
       {
@@ -303,7 +301,7 @@ namespace gui
 
 	close_clicked.connect(sigc::mem_fun(*this, &DownloadNotification::cancel));
 
-	if(pulse)
+	if(progress_mode == download_progress_pulse)
 	  Glib::signal_timeout().connect(sigc::bind_return(sigc::mem_fun(*this, &DownloadNotification::do_pulse),
 							   true),
 					 100);
@@ -349,36 +347,65 @@ namespace gui
 		 download_signal_log &manager,
 		 const sigc::slot1<void, bool> &k)
       {
-	if(pulse)
+	switch(progress_mode)
 	  {
-	    std::string rate_string;
-	    if(manager.get_current_bytes() > 0 || manager.get_current_items() > 0)
-	      rate_string = ssprintf(_("%sB/s"),
-				     SizeToStr(manager.get_currentCPS()).c_str());
+	  case download_progress_pulse:
+	    {
+	      std::string rate_string;
+	      if(manager.get_current_bytes() > 0 || manager.get_current_items() > 0)
+		rate_string = ssprintf(_("%sB/s"),
+				       SizeToStr(manager.get_currentCPS()).c_str());
 
-	    progress->set_text(rate_string);
-	  }
-	else
-	  {
-	    double fraction = 0;
-	    if (manager.get_total_items() != 0)
-	      fraction = ((double)(manager.get_current_bytes() + manager.get_current_items())) / ((double)(manager.get_total_bytes() + manager.get_total_items()));
+	      progress->set_text(rate_string);
+	    }
+	    break;
 
-	    progress->set_fraction(fraction);
+	  case download_progress_item_count:
+	    {
+	      double fraction = 0;
+	      if(manager.get_total_items() != 0)
+		fraction = ((double)manager.get_current_items()) / ((double)manager.get_total_items());
 
-	    std::string progress_string;
-	    if(manager.get_currentCPS() > 0)
-	      progress_string = ssprintf(_("%sB of %sB at %sB/s, %s remaining"),
-					 SizeToStr(manager.get_current_bytes()).c_str(),
-					 SizeToStr(manager.get_total_bytes()).c_str(),
-					 SizeToStr(manager.get_currentCPS()).c_str(),
-					 TimeToStr(((manager.get_total_bytes() - manager.get_current_bytes()) / manager.get_currentCPS())).c_str());
-	    else if(manager.get_current_bytes() > 0 || manager.get_current_items() > 0)
-	      progress_string = ssprintf(_("%sB of %sB, stalled"),
-					 SizeToStr(manager.get_current_bytes()).c_str(),
-					 SizeToStr(manager.get_total_bytes()).c_str());
+	      progress->set_fraction(fraction);
 
-	    progress->set_text(progress_string);
+	      std::string progress_string;
+	      if(manager.get_currentCPS() > 0)
+		progress_string = ssprintf(_("%lu/%lu, %sB/s"),
+					   manager.get_current_items(),
+					   manager.get_total_items(),
+					   SizeToStr(manager.get_currentCPS()).c_str());
+	      else if(manager.get_current_bytes() > 0)
+		progress_string = ssprintf(_("%lu/%lu, stalled"),
+					   manager.get_current_items(),
+					   manager.get_total_items());
+
+	      progress->set_text(progress_string);
+	    }
+	    break;
+
+	  case download_progress_size:
+	    {
+	      double fraction = 0;
+	      if(manager.get_total_items() != 0)
+		fraction = ((double)(manager.get_current_bytes() + manager.get_current_items())) / ((double)(manager.get_total_bytes() + manager.get_total_items()));
+
+	      progress->set_fraction(fraction);
+
+	      std::string progress_string;
+	      if(manager.get_currentCPS() > 0)
+		progress_string = ssprintf(_("%sB of %sB at %sB/s, %s remaining"),
+					   SizeToStr(manager.get_current_bytes()).c_str(),
+					   SizeToStr(manager.get_total_bytes()).c_str(),
+					   SizeToStr(manager.get_currentCPS()).c_str(),
+					   TimeToStr(((manager.get_total_bytes() - manager.get_current_bytes()) / manager.get_currentCPS())).c_str());
+	      else if(manager.get_current_bytes() > 0 || manager.get_current_items() > 0)
+		progress_string = ssprintf(_("%sB of %sB, stalled"),
+					   SizeToStr(manager.get_current_bytes()).c_str(),
+					   SizeToStr(manager.get_total_bytes()).c_str());
+
+	      progress->set_text(progress_string);
+	    }
+	    break;
 	  }
 
 	k(!cancelled);
@@ -410,11 +437,11 @@ namespace gui
   }
 
   Notification *make_download_notification(const std::string &title,
-					   bool pulse,
+					   download_progress_mode progress_mode,
 					   const cw::util::ref_ptr<download_list_model> &status,
 					   download_signal_log *log)
   {
-    DownloadNotification *rval = new DownloadNotification(title, pulse, status);
+    DownloadNotification *rval = new DownloadNotification(title, progress_mode, status);
     rval->connect(log);
     return rval;
   }

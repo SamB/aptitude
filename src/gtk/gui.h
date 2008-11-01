@@ -51,6 +51,28 @@ namespace gui
   extern std::string glade_main_file;
   extern bool want_to_quit;
 
+  /** \brief Used to control how the main download progress bar is
+   *  displayed.
+   *
+   *  This lets us adapt to the vagaries of the various download
+   *  processes.
+   */
+  enum download_progress_mode
+    {
+      /** \brief Only pulse the download bar. */
+      download_progress_pulse,
+
+      /** \brief Display the progress based only on the number of
+       *  items downloaded.
+       */
+      download_progress_item_count,
+
+      /** \brief Display progress based on the number of bytes
+       *  downloaded.
+       */
+      download_progress_size
+    };
+
   /** \brief Dispatch the given thunk to the main loop. */
   void post_event(const sigc::slot0<void> &thunk);
 
@@ -192,8 +214,7 @@ namespace gui
    *
    *  \param title   A string describing the download.
    *
-   *  \param pulse   If \b true, a pulsing progress bar will be
-   *                 displayed instead of a percentage-based one.
+   *  \param download_progress  How to display the download progress.
    *
    *  \param view    The notification view in which to place the
    *                 notification corresponding to this download.
@@ -209,7 +230,7 @@ namespace gui
    */
   void start_download(download_manager *manager,
 		      const std::string &title,
-		      bool pulse,
+		      download_progress_mode download_progress,
 		      NotifyView *view,
 		      const sigc::slot0<void> &download_starts_slot = sigc::slot0<void>(),
 		      const sigc::slot0<void> &download_stops_slot = sigc::slot0<void>());
