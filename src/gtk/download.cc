@@ -353,8 +353,11 @@ namespace gui
 	    {
 	      std::string rate_string;
 	      if(manager.get_current_bytes() > 0 || manager.get_current_items() > 0)
-		rate_string = ssprintf(_("%sB/s"),
+		rate_string = ssprintf(_("%s: %sB/s"),
+				       title.c_str(),
 				       SizeToStr(manager.get_currentCPS()).c_str());
+	      else
+		rate_string = title + "...";
 
 	      progress->set_text(rate_string);
 	    }
@@ -370,14 +373,18 @@ namespace gui
 
 	      std::string progress_string;
 	      if(manager.get_currentCPS() > 0)
-		progress_string = ssprintf(_("%lu/%lu, %sB/s"),
+		progress_string = ssprintf(_("%s: %lu/%lu, %sB/s"),
+					   title.c_str(),
 					   manager.get_current_items(),
 					   manager.get_total_items(),
 					   SizeToStr(manager.get_currentCPS()).c_str());
 	      else if(manager.get_current_bytes() > 0)
-		progress_string = ssprintf(_("%lu/%lu, stalled"),
+		progress_string = ssprintf(_("%s: %lu/%lu, stalled"),
+					   title.c_str(),
 					   manager.get_current_items(),
 					   manager.get_total_items());
+	      else
+		progress_string = title + "...";
 
 	      progress->set_text(progress_string);
 	    }
@@ -393,15 +400,19 @@ namespace gui
 
 	      std::string progress_string;
 	      if(manager.get_currentCPS() > 0)
-		progress_string = ssprintf(_("%sB of %sB at %sB/s, %s remaining"),
+		progress_string = ssprintf(_("%s: %sB of %sB at %sB/s, %s remaining"),
+					   title.c_str(),
 					   SizeToStr(manager.get_current_bytes()).c_str(),
 					   SizeToStr(manager.get_total_bytes()).c_str(),
 					   SizeToStr(manager.get_currentCPS()).c_str(),
 					   TimeToStr(((manager.get_total_bytes() - manager.get_current_bytes()) / manager.get_currentCPS())).c_str());
 	      else if(manager.get_current_bytes() > 0 || manager.get_current_items() > 0)
-		progress_string = ssprintf(_("%sB of %sB, stalled"),
+		progress_string = ssprintf(_("%s: %sB of %sB, stalled"),
+					   title.c_str(),
 					   SizeToStr(manager.get_current_bytes()).c_str(),
 					   SizeToStr(manager.get_total_bytes()).c_str());
+	      else
+		progress_string = title + "...";
 
 	      progress->set_text(progress_string);
 	    }
