@@ -66,6 +66,7 @@ namespace gui
 
     Glib::RefPtr<Gtk::TextBuffer::Tag> bold_tag = buffer->create_tag();
     bold_tag->property_weight() = Pango::WEIGHT_BOLD;
+    bold_tag->property_weight_set() = true;
 
     do
       {
@@ -141,10 +142,19 @@ namespace gui
 
     if(cl.valid())
       {
+	Glib::RefPtr<Gtk::TextBuffer::Tag> newer_tag(textBuffer->create_tag());
+	newer_tag->property_weight() = Pango::WEIGHT_SEMIBOLD;
+	newer_tag->property_weight_set() = true;
 	for(changelog::const_iterator it = cl->begin(); it != cl->end(); ++it)
 	  {
+	    bool newer = !curver.empty() && _system->VS->CmpVersion(it->get_version(), curver) > 0;
+
 	    if(it != cl->begin())
 	      textBuffer->insert(textBuffer->end(), "\n\n");
+
+	    Glib::RefPtr<Gtk::TextBuffer::Mark> changelog_entry_mark;
+	    if(newer)
+	      changelog_entry_mark = textBuffer->create_mark(textBuffer->end());
 
 	    append_change_text(it->get_changes(), textBuffer);
 
@@ -153,6 +163,12 @@ namespace gui
 	    textBuffer->insert(textBuffer->end(), it->get_maintainer());
 	    textBuffer->insert(textBuffer->end(), " ");
 	    textBuffer->insert(textBuffer->end(), it->get_date_str());
+
+	    if(newer)
+	      {
+		Gtk::TextBuffer::iterator start = textBuffer->get_iter_at_mark(changelog_entry_mark);
+		textBuffer->apply_tag(newer_tag, start, textBuffer->end());
+	      }
 	  }
       }
     // \todo Offer to install libparse-debianchangelog-perl if we
