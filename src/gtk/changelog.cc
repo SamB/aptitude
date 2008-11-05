@@ -212,8 +212,19 @@ namespace gui
 	      }
 	  }
       }
-    // \todo Offer to install libparse-debianchangelog-perl if we
-    // can't parse the changelog because it's missing.
+    else
+      {
+        Glib::RefPtr<Gtk::TextBuffer::Tag> warning_tag = textBuffer->create_tag();
+        warning_tag->property_weight() = Pango::WEIGHT_BOLD;
+        warning_tag->property_weight_set() = true;
+        warning_tag->property_foreground() = "#FF0000";
+        warning_tag->property_foreground_set() = true;
+        textBuffer->insert_with_tag(textBuffer->end(),
+            "Can't parse changelog, did you install the libparse-debianchangelog-perl package ?", warning_tag);
+        // \todo Offer to install libparse-debianchangelog-perl if we
+        // can't parse the changelog because it's missing.
+        // Maybe we could add an action button that does that ?
+      }
   }
 
   ChangeLogView::ChangeLogView(Gtk::TextView *_textview)
