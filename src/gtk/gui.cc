@@ -115,20 +115,20 @@ namespace gui
     // from the sigc++ code, it looks like they get passed by value, not
     // by reference.  Once the slot is safely stuck into the list,
     // everything should be OK.
-    cwidget::threads::event_queue<sigc::slot0<void> > background_events;
+    cwidget::threads::event_queue<safe_slot0<void> > background_events;
     Glib::Dispatcher background_events_dispatcher;
 
     void run_background_events()
     {
-      sigc::slot0<void> f;
+      safe_slot0<void> f;
       while(background_events.try_get(f))
 	{
-	  f();
+	  f.get_slot()();
 	}
     }
   }
 
-  void post_event(const sigc::slot0<void> &event)
+  void post_event(const safe_slot0<void> &event)
   {
     background_events.put(event);
     background_events_dispatcher();
@@ -321,7 +321,7 @@ namespace gui
 			      log,
 			      n_wrapper,
 			      sigc::ptr_fun(&make_gui_progress),
-			      sigc::ptr_fun(&post_event));
+			      &post_event);
 
     uim->download_starts.connect(download_starts_slot);
     uim->download_stops.connect(download_stops_slot);
@@ -415,22 +415,27 @@ namespace gui
     // Asynchronously post the outcome of a dpkg run to the main
     // thread.
     void finish_gui_run_dpkg(pkgPackageManager::OrderResult res,
-			     sigc::slot1<void, pkgPackageManager::OrderResult> k)
+			     safe_slot1<void, pkgPackageManager::OrderResult> k)
     {
-      post_event(sigc::bind(k, res));
+      post_event(safe_bind(k, res));
     }
 
     // Callback that kicks off a dpkg run.
     void gui_run_dpkg(sigc::slot1<pkgPackageManager::OrderResult, int> f,
 		      sigc::slot1<void, pkgPackageManager::OrderResult> k)
     {
+      sigc::slot1<void, Gtk::Widget *> register_terminal_slot =
+	sigc::ptr_fun(&register_dpkg_terminal);
+      sigc::slot1<void, pkgPackageManager::OrderResult>
+	finish_slot(sigc::bind(sigc::ptr_fun(&finish_gui_run_dpkg),
+			       make_safe_slot(k)));
+
       // \todo We should change the download notification to tell the
       // user that they can click to obtain a terminal; this is just a
       // proof-of-concept.
-      run_dpkg_in_terminal(f,
-			   sigc::ptr_fun(&register_dpkg_terminal),
-			   sigc::bind(sigc::ptr_fun(&finish_gui_run_dpkg),
-				      k));
+      run_dpkg_in_terminal(make_safe_slot(f),
+			   make_safe_slot(register_terminal_slot),
+			   make_safe_slot(finish_slot));
     }
 
     void install_or_remove_packages()

@@ -69,12 +69,16 @@ namespace gui
       void success(const aptitude_solution &sol)
       {
 	// Tell the main loop to pretend the state changed.
-	post_event(manager->state_changed.make_slot());
+	sigc::slot0<void> state_changed =
+	  manager->state_changed.make_slot();
+	post_event(make_safe_slot(state_changed));
       }
 
       void no_more_solutions()
       {
-	post_event(manager->state_changed.make_slot());
+	sigc::slot0<void> state_changed =
+	  manager->state_changed.make_slot();
+	post_event(make_safe_slot(state_changed));
       }
 
       void no_more_time()
@@ -84,13 +88,17 @@ namespace gui
 
       void interrupted()
       {
-	post_event(manager->state_changed.make_slot());
+	sigc::slot0<void> state_changed =
+	  manager->state_changed.make_slot();
+	post_event(make_safe_slot(state_changed));
       }
 
       void aborted(const cwidget::util::Exception &e)
       {
-	post_event(sigc::bind(sigc::ptr_fun(&gui_resolver_continuation::do_error),
-			      e.errmsg(), sigc::ref(*manager)));
+	sigc::slot0<void> do_error_slot =
+	  sigc::bind(sigc::ptr_fun(&gui_resolver_continuation::do_error),
+		     e.errmsg(), sigc::ref(*manager));
+	post_event(make_safe_slot(do_error_slot));
       }
     };
 

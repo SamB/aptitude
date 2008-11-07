@@ -96,12 +96,12 @@ namespace gui
       pid_t pid;
 
       // The continuation of the child.
-      sigc::slot1<void, pkgPackageManager::OrderResult> k;
+      safe_slot1<void, pkgPackageManager::OrderResult> k;
 
       gulong handler_id;
 
       child_exited_info(pid_t _pid,
-			const sigc::slot1<void, pkgPackageManager::OrderResult> &_k)
+			const safe_slot1<void, pkgPackageManager::OrderResult> &_k)
 	: pid(_pid),
 	  k(_k)
       {
@@ -128,14 +128,14 @@ namespace gui
       if(WIFEXITED(status))
 	result = (pkgPackageManager::OrderResult) WEXITSTATUS(status);
 
-      info->k(pkgPackageManager::Failed);
+      info->k.get_slot()(pkgPackageManager::Failed);
 
       g_signal_handler_disconnect(vte_reaper_get(),
 				  info->handler_id);
     }
 
     void connect_dpkg_result(pid_t pid,
-			     sigc::slot1<void, pkgPackageManager::OrderResult> k)
+			     safe_slot1<void, pkgPackageManager::OrderResult> k)
     {
       child_exited_info *info = new child_exited_info(pid, k);
       // We use implicit locking here (plus the fact that we are
@@ -151,15 +151,15 @@ namespace gui
     }
 
     // This should always run from the foreground thread.
-    void do_run_dpkg(const sigc::slot1<pkgPackageManager::OrderResult, int> f,
-		     const sigc::slot1<void, Gtk::Widget *> register_terminal,
-		     const sigc::slot1<void, pkgPackageManager::OrderResult> k)
+    void do_run_dpkg(safe_slot1<pkgPackageManager::OrderResult, int> f,
+		     safe_slot1<void, Gtk::Widget *> register_terminal,
+		     safe_slot1<void, pkgPackageManager::OrderResult> k)
     {
       GtkWidget *vte = vte_terminal_new();
 
       Gtk::Widget *w(Glib::wrap(vte, false));
 
-      register_terminal(w);
+      register_terminal.get_slot()(w);
 
       // Create a temporary UNIX-domain socket to pass status
       // information to the parent.
@@ -171,7 +171,7 @@ namespace gui
       int listen_sock = open_unix_socket();
       if(listen_sock == -1)
 	{
-	  k(pkgPackageManager::Failed);
+	  k.get_slot()(pkgPackageManager::Failed);
 	  return;
 	}
 
@@ -186,7 +186,7 @@ namespace gui
       if(socketname.get_name().size() > max_socket_name)
 	{
 	  _error->Error("Internal error: the temporary socket name is too long!");
-	  k(pkgPackageManager::Failed);
+	  k.get_slot()(pkgPackageManager::Failed);
 	  return;
 	}
 
@@ -199,7 +199,7 @@ namespace gui
 	  _error->Error("%s: Unable to bind to the temporary socket: %s",
 			__PRETTY_FUNCTION__,
 			err.c_str());
-	  k(pkgPackageManager::Failed);
+	  k.get_slot()(pkgPackageManager::Failed);
 	  return;
 	}
 
@@ -210,7 +210,7 @@ namespace gui
 	  _error->Error("%s: Unable to listen on the temporary socket: %s",
 			__PRETTY_FUNCTION__,
 			err.c_str());
-	  k(pkgPackageManager::Failed);
+	  k.get_slot()(pkgPackageManager::Failed);
 	  return;
 	}
 
@@ -245,7 +245,7 @@ namespace gui
 	      _exit(pkgPackageManager::Failed);
 	    }
 
-	  pkgPackageManager::OrderResult result = f(write_sock);
+	  pkgPackageManager::OrderResult result = f.get_slot()(write_sock);
 
 	  // Make sure errors appear somewhere (we really ought to push
 	  // them down the FIFO).
@@ -285,15 +285,17 @@ namespace gui
     }
   }
 
-  void run_dpkg_in_terminal(const sigc::slot1<pkgPackageManager::OrderResult, int> &f,
-			    const sigc::slot1<void, Gtk::Widget *> &register_terminal,
-			    const sigc::slot1<void, pkgPackageManager::OrderResult> &k)
+  void run_dpkg_in_terminal(const safe_slot1<pkgPackageManager::OrderResult, int> &f,
+			    const safe_slot1<void, Gtk::Widget *> &register_terminal,
+			    const safe_slot1<void, pkgPackageManager::OrderResult> &k)
   {
     // Ask the main thread to start the dpkg run and to invoke the
     // continuation.
-    post_event(sigc::bind(sigc::ptr_fun(&do_run_dpkg),
-			  f,
-			  register_terminal,
-			  k));
+    sigc::slot0<void> run_dpkg_event =
+      sigc::bind(sigc::ptr_fun(&do_run_dpkg),
+		 f,
+		 register_terminal,
+		 k);
+    post_event(make_safe_slot(run_dpkg_event));
   }
 }

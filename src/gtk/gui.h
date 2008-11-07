@@ -33,6 +33,8 @@
 
 #include <apt-pkg/pkgcache.h>
 
+#include <generic/util/safe_slot.h>
+
 #include <gtk/errortab.h>
 #include <gtk/notify.h>
 
@@ -74,7 +76,7 @@ namespace gui
     };
 
   /** \brief Dispatch the given thunk to the main loop. */
-  void post_event(const sigc::slot0<void> &thunk);
+  void post_event(const safe_slot0<void> &thunk);
 
   void gtk_update();
 

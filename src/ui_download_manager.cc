@@ -78,10 +78,13 @@ void ui_download_manager::finish_done(download_manager::result run_res)
   done_progress = NULL;
 
   if(run_res == download_manager::do_again && !abort_state.get_aborted())
-    (new download_thread(manager,
-			 post_thunk,
-			 sigc::mem_fun(this,
-				       &ui_download_manager::done)))->start();
+    {
+      sigc::slot2<void, download_thread *, pkgAcquire::RunResult>
+	done_slot = sigc::mem_fun(this, &ui_download_manager::done);
+      (new download_thread(manager,
+			   post_thunk,
+			   make_safe_slot(done_slot)))->start();
+    }
   else
     {
       download_complete(run_res == download_manager::success);
@@ -102,10 +105,13 @@ void ui_download_manager::start()
   p_destructor();
 
   if(ok)
-    (new download_thread(manager,
-			 post_thunk,
-			 sigc::mem_fun(this,
-				       &ui_download_manager::done)))->start();
+    {
+      sigc::slot2<void, download_thread *, pkgAcquire::RunResult>
+	done_slot = sigc::mem_fun(this, &ui_download_manager::done);
+      (new download_thread(manager,
+			   post_thunk,
+			   make_safe_slot(done_slot)))->start();
+    }
   else
     delete this;
 }

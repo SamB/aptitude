@@ -137,7 +137,7 @@ class ui_download_manager : public sigc::trackable
   make_refcounted_progress_slot make_progress_bar;
 
   // How to post a thunk to the main thread.
-  sigc::slot1<void, sigc::slot0<void> > post_thunk;
+  post_thunk_func post_thunk;
 
   // Wrapper so we can use generic refcounted stuff.
   //
@@ -218,7 +218,7 @@ public:
 		      download_signal_log *_log,
 		      const cwidget::util::ref_ptr<T> &_download_status,
 		      const make_refcounted_progress_slot &_make_progress_bar,
-		      const sigc::slot1<void, sigc::slot0<void> > &_post_thunk)
+		      post_thunk_func _post_thunk)
     : manager(_manager),
       abort_state(),
       log(_log),

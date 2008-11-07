@@ -45,18 +45,26 @@ void background_execute<void>(sigc::slot0<void> slot,
   return_box->put();
 }
 
+// Note: all these do_foreground_execute() overloads are thread-safe
+// only because C is download_signal_log and that's not a trackable
+// object.  Furthermore, they're safe only under the assumption that
+// the signal log is not deleted 
+
 /** Run the given method call in the foreground and return its value. */
 template<typename C, typename RVal>
 static
 RVal do_foreground_execute(C *inst,
 			   RVal (C::* fun) (),
-			   const sigc::slot1<void, sigc::slot0<void> > &post_thunk)
+			   post_thunk_func post_thunk)
 {
   cw::threads::box<RVal> return_box;
 
-  post_thunk(sigc::bind(sigc::ptr_fun(&background_execute<RVal>),
-			sigc::mem_fun(inst, fun),
-			&return_box));
+  sigc::slot0<void> background_execute_slot =
+    sigc::bind(sigc::ptr_fun(&background_execute<RVal>),
+	       sigc::mem_fun(inst, fun),
+	       &return_box);
+
+  post_thunk(make_safe_slot(background_execute_slot));
 
   return return_box.take();
 }
@@ -67,13 +75,16 @@ static
 RVal do_foreground_execute(C *inst,
 			   Arg0 arg0,
 			   RVal (C::* fun) (Arg0),
-			   const sigc::slot1<void, sigc::slot0<void> > &post_thunk)
+			   post_thunk_func post_thunk)
 {
   cw::threads::box<RVal> return_box;
 
-  post_thunk(sigc::bind(sigc::ptr_fun(&background_execute<RVal>),
-			sigc::bind(sigc::mem_fun(inst, fun), arg0),
-			&return_box));
+  sigc::slot0<void> background_execute_slot =
+    sigc::bind(sigc::ptr_fun(&background_execute<RVal>),
+	       sigc::bind(sigc::mem_fun(inst, fun), arg0),
+	       &return_box);
+
+  post_thunk(make_safe_slot(background_execute_slot));
 
   return return_box.take();
 }
@@ -85,13 +96,16 @@ RVal do_foreground_execute(C *inst,
 			   Arg0 arg0,
 			   Arg1 arg1,
 			   RVal (C::* fun) (Arg0, Arg1),
-			   const sigc::slot1<void, sigc::slot0<void> > &post_thunk)
+			   post_thunk_func post_thunk)
 {
   cw::threads::box<RVal> return_box;
 
-  post_thunk(sigc::bind(sigc::ptr_fun(&background_execute<RVal>),
-			sigc::bind(sigc::mem_fun(inst, fun), arg0, arg1),
-			&return_box));
+  sigc::slot0<void> background_execute_slot =
+    sigc::bind(sigc::ptr_fun(&background_execute<RVal>),
+	       sigc::bind(sigc::mem_fun(inst, fun), arg0, arg1),
+	       &return_box);
+
+  post_thunk(make_safe_slot(background_execute_slot));
 
   return return_box.take();
 }
@@ -104,13 +118,16 @@ RVal do_foreground_execute(C *inst,
 			   Arg1 arg1,
 			   Arg2 arg2,
 			   RVal (C::* fun) (Arg0, Arg1, Arg2),
-			   const sigc::slot1<void, sigc::slot0<void> > &post_thunk)
+			   post_thunk_func post_thunk)
 {
   cw::threads::box<RVal> return_box;
 
-  post_thunk(sigc::bind(sigc::ptr_fun(&background_execute<RVal>),
-			sigc::bind(sigc::mem_fun(inst, fun), arg0, arg1, arg2),
-			&return_box));
+  sigc::slot0<void> background_execute_slot =
+    sigc::bind(sigc::ptr_fun(&background_execute<RVal>),
+	       sigc::bind(sigc::mem_fun(inst, fun), arg0, arg1, arg2),
+	       &return_box);
+
+  post_thunk(make_safe_slot(background_execute_slot));
 
   return return_box.take();
 }
@@ -197,10 +214,10 @@ namespace
 {
   void do_download_complete(download_thread *t,
 			    pkgAcquire::RunResult res,
-			    sigc::slot2<void, download_thread *, pkgAcquire::RunResult> &continuation)
+			    safe_slot2<void, download_thread *, pkgAcquire::RunResult> continuation)
   {
     t->join();
-    continuation(t, res);
+    continuation.get_slot()(t, res);
   }
 }
 
@@ -208,7 +225,9 @@ void download_thread::operator()()
 {
   pkgAcquire::RunResult res = m->do_download();
 
-  post_thunk(sigc::bind(sigc::ptr_fun(&do_download_complete),
-			this, res,
-			continuation));
+  sigc::slot0<void> download_complete_slot =
+    sigc::bind(sigc::ptr_fun(&do_download_complete),
+	       this, res,
+	       continuation);
+  post_thunk(make_safe_slot(download_complete_slot));
 }

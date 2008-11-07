@@ -26,6 +26,8 @@
 
 #include <apt-pkg/packagemanager.h>
 
+#include <generic/util/safe_slot.h>
+
 /** \brief Support for creating a GUI terminal in which dpkg can be
  *  invoked.
  *
@@ -46,9 +48,9 @@ namespace gui
    *  terminal (e.g., to store it in a variable or to add it to a new
    *  tab).  This function assumes ownership of the terminal widget.
    */
-  void run_dpkg_in_terminal(const sigc::slot1<pkgPackageManager::OrderResult, int> &f,
-			    const sigc::slot1<void, Gtk::Widget *> &register_terminal,
-			    const sigc::slot1<void, pkgPackageManager::OrderResult> &k);
+  void run_dpkg_in_terminal(const safe_slot1<pkgPackageManager::OrderResult, int> &f,
+			    const safe_slot1<void, Gtk::Widget *> &register_terminal,
+			    const safe_slot1<void, pkgPackageManager::OrderResult> &k);
 }
 
 #endif

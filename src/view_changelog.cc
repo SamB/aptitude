@@ -317,13 +317,29 @@ namespace
 {
   // \todo This should only be defined in one place.
 
+  class safe_slot_event : public cw::toplevel::event
+  {
+    safe_slot0<void> slot;
+
+  public:
+    safe_slot_event(const safe_slot0<void> &_slot)
+      : slot(_slot)
+    {
+    }
+
+    void dispatch()
+    {
+      slot.get_slot()();
+    }
+  };
+
   // Note that this is only safe if it's OK to copy the thunk in a
   // background thread (i.e., it won't be invalidated by an object being
   // destroyed in another thread).  In the special cases where we use
   // this it should be all right.
-  void do_post_thunk(const sigc::slot0<void> &thunk)
+  void do_post_thunk(const safe_slot0<void> &thunk)
   {
-    cw::toplevel::post_event(new cw::toplevel::slot_event(thunk));
+    cw::toplevel::post_event(new safe_slot_event(thunk));
   }
 }
 
@@ -370,7 +386,7 @@ void view_changelog(pkgCache::VerIterator ver)
 				download_log_pair.first,
 				download_log_pair.second,
 				sigc::ptr_fun(&refcounted_progress::make),
-				sigc::ptr_fun(&do_post_thunk));
+				&do_post_thunk);
 
       uim->start();
     }
