@@ -48,6 +48,7 @@ namespace gui
 {
   FilesColumns::FilesColumns()
   {
+    add(Type);
     add(File);
   }
 
@@ -124,6 +125,7 @@ namespace gui
     store = Gtk::ListStore::create(cols);
     // FIXME: There's an issue here when the cache is reloaded (eg. after an update).
     //        A duplicate "Files" column is appended and the TreeView is wrecked.
+    tree->append_column("Type", cols.Type);
     tree->append_column("Files", cols.File);
     tree->set_model(store);
   }
@@ -167,11 +169,9 @@ namespace gui
     }
   }
 
-  void FilesView::add_action(Glib::ustring filename, std::set<FilesAction> &actions)
+  void FilesView::add_action(Glib::ustring type, Glib::ustring filename, std::set<FilesAction> &actions)
   {
-    // FIXME: This test doesn't actually work because directories aren't "/"-terminated
-    //        in the .list files... Need to figure out a way.
-    if (filename.substr(filename.length() - 1, 1) == "/")
+    if (type == "d")
     {
       actions.insert(ViewDirectory);
     }
@@ -244,8 +244,9 @@ namespace gui
              path != selected_rows.end(); ++path)
           {
             Gtk::TreeModel::iterator iter = model->get_iter(*path);
+            Glib::ustring type = (*iter)[cols.Type];
             Glib::ustring filename = (*iter)[cols.File];
-            add_action(filename, actions);
+            add_action(type, filename, actions);
           }
 
         if(!actions.empty())
@@ -296,6 +297,14 @@ namespace gui
     {
       Gtk::TreeModel::iterator iter = store->append();
       Gtk::TreeModel::Row row = *iter;
+      if (Glib::file_test(filename, Glib::FILE_TEST_IS_DIR))
+      {
+        row[cols.Type] = "d";
+      }
+      else
+      {
+        row[cols.Type] = "f";
+      }
       row[cols.File] = filename;
     }
   }
