@@ -15,6 +15,8 @@ libgtk_a_SOURCES=\
 	entityview.h \
 	errortab.cc \
 	errortab.h \
+	filesview.cc \
+	filesview.h \
 	gui.cc \
 	gui.h \
 	info.cc \

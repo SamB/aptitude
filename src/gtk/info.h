@@ -28,6 +28,7 @@
 
 #include <gtk/tab.h>
 #include <gtk/changelog.h>
+#include <gtk/filesview.h>
 
 #include <cwidget/generic/util/ref_ptr.h>
 
@@ -45,6 +46,9 @@ namespace gui
       cwidget::util::ref_ptr<ChangeLogView> changelogview;
 
       bool changelog_loaded;
+
+      cwidget::util::ref_ptr<FilesView> filesview;
+      bool filesview_loaded;
 
       std::string package_name;
       std::string version_name;

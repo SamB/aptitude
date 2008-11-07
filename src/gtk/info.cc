@@ -560,13 +560,19 @@ namespace gui
     if (page_num == 1 && !changelog_loaded)
       {
         changelogview->load_version(current_version);
-	changelog_loaded = true;
+        changelog_loaded = true;
+      }
+    else if (page_num == 2 && !filesview_loaded)
+      {
+        filesview->load_version(current_version);
+        filesview_loaded = true;
       }
   }
 
   void InfoTab::disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver)
   {
     changelog_loaded = false;
+    filesview_loaded = false;
     current_version = ver;
 
     package_name = pkg.end() ? "" : pkg.Name();
@@ -652,6 +658,9 @@ namespace gui
     Gtk::TextView *changelog_textview;
     get_xml()->get_widget("main_info_changelogview", changelog_textview);
     changelogview = ChangeLogView::create(changelog_textview);
+
+    filesview = new FilesView(get_xml(), "main_info_filesview");
+
     notebook->signal_switch_page().connect(sigc::mem_fun(*this, &InfoTab::notebook_switch_handler));
   }
 
