@@ -46,6 +46,7 @@ namespace gui
   class FilesColumns : public Gtk::TreeModel::ColumnRecord
   {
     public:
+      Gtk::TreeModelColumn<Glib::ustring> Type;
       Gtk::TreeModelColumn<Glib::ustring> File;
 
       FilesColumns();
@@ -70,6 +71,7 @@ namespace gui
       void init(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
                 Glib::ustring gladename);
 
+      Gtk::TreeViewColumn * Type;
       Gtk::TreeViewColumn * File;
 
       /** \brief Construct a new files view.
@@ -85,7 +87,7 @@ namespace gui
       void apply_action_to_selected(FilesAction action);
 
       void dispatch_action(Glib::ustring filename, FilesAction action);
-      void add_action(Glib::ustring filename, std::set<FilesAction> &actions);
+      void add_action(Glib::ustring type, Glib::ustring filename, std::set<FilesAction> &actions);
 
       void context_menu_handler(GdkEventButton * event);
       /** \brief Enforces constraints on column order. */
