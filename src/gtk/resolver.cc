@@ -557,13 +557,9 @@ namespace gui
 
   void ResolverTab::do_previous_solution()
   {
-    if (!do_previous_solution_enabled())
-      //beep();
-      std::cout << "beep!" << std::endl;
-    else
+    if (do_previous_solution_enabled())
       {
 	resman->select_previous_solution();
-	std::cout << "Resolver: previous selected" << std::endl;
       }
   }
 
@@ -585,16 +581,12 @@ namespace gui
 
   void ResolverTab::do_next_solution()
   {
-    if (!do_next_solution_enabled())
-      //beep();
-      std::cout << "beep!" << std::endl;
-    else
+    if (do_next_solution_enabled())
     {
       // If an error was encountered, pressing "next solution"
       // skips it.
       resman->discard_error_information();
       resman->select_next_solution();
-      std::cout << "Resolver: next selected" << std::endl;
     }
   }
 
@@ -613,20 +605,13 @@ namespace gui
 
     resolver_manager::state state = resman->state_snapshot();
 
-    if (!do_apply_solution_enabled_from_state(state))
-    {
-      //beep();
-      std::cout << "beep!" << std::endl;
-      return;
-    }
-    else
+    if (do_apply_solution_enabled_from_state(state))
     {
       undo_group *undo = new apt_undo_group;
       try
       {
 	aptitudeDepCache::action_group group(*apt_cache_file, NULL);
 	(*apt_cache_file)->apply_solution(resman->get_solution(state.selected_solution, 0), undo);
-        std::cout << "Resolver: selected solution applied" << std::endl;
       }
       catch (NoMoreSolutions)
       {
