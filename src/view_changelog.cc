@@ -343,10 +343,19 @@ void view_changelog(pkgCache::VerIterator ver)
 
   string pkgname = ver.ParentPkg().Name();
 
+
   pkgCache::VerIterator curver = ver.ParentPkg().CurrentVer();
-  string curverstr;
-  if(!curver.end() && curver.VerStr() != NULL)
-    curverstr = curver.VerStr();
+  std::string current_source_ver;
+  if(!curver.end())
+    {
+      pkgRecords::Parser &current_source_rec =
+	apt_package_records->Lookup(curver.FileList());
+
+      current_source_ver =
+	current_source_rec.SourceVer().empty()
+	? (curver.VerStr() == NULL ? "" : curver.VerStr())
+	: current_source_rec.SourceVer();
+    }
 
   // TODO: add a configurable association between origins and changelog URLs.
   for(pkgCache::VerFileIterator vf=ver.FileList();
@@ -366,7 +375,7 @@ void view_changelog(pkgCache::VerIterator ver)
   // function, which packages up a cwidget-style event in order to
   // alert the main thread.
   sigc::slot1<void, temp::name> k(sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
-					     pkgname, curverstr));
+					     pkgname, current_source_ver));
 
   using aptitude::apt::global_changelog_cache;
   download_manager *manager =
