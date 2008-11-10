@@ -72,33 +72,73 @@ namespace gui
 		   const std::string &current_version,
 		   Gtk::TextBuffer::iterator where);
 
-  class ChangeLogView : public aptitude::util::refcounted_base
+  /** \brief Parse a changelog and render it into a buffer.
+   *
+   *  \param file   The raw changelog text.
+   *  \param textBuffer        The text buffer in which to store
+   *                           the rendered text.
+   *  \param current_version   The currently installed source
+   *                           version of the package whose
+   *                           changelog this is (used to
+   *                           determine which versions are
+   *                           newer).
+   *  \param where             The buffer location at which to render
+   *                           the changelog.
+   *
+   *  \return A new iterator to the end of the rendered text.
+   *
+   *  If the changelog can't be parsed, a hopefully appropriate
+   *  error message is displayed.
+   */
+  Gtk::TextBuffer::iterator
+  parse_and_render_changelog(const temp::name &file,
+			     const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
+			     const std::string &current_version,
+			     Gtk::TextBuffer::iterator where);
+
+  /** \brief A changelog job says to download the changelog of a
+   *  binary package version at the given buffer location.
+   */
+  class changelog_download_job
   {
-    private:
-      Gtk::TextView * textview;
-      Glib::RefPtr<Gtk::TextBuffer> textBuffer;
-      void parse_predigested_changelog(const temp::name &digest, const std::string &curver);
-      temp::name digest_changelog(const temp::name &changelog);
-      void do_view_changelog(temp::name n, string pkgname, string curverstr);
-      void add_changelog_buffer(const temp::name &file, const std::string &curver);
+    Glib::RefPtr<Gtk::TextBuffer::Mark> begin;
+    Glib::RefPtr<Gtk::TextBuffer> text_buffer;
+    pkgCache::VerIterator ver;
 
-      /** \brief Construct a new changelog view.
-       *
-       *  \param textview   The text-view to attach to.
-       */
-      ChangeLogView(Gtk::TextView *textview);
+  public:
+    changelog_download_job(const Glib::RefPtr<Gtk::TextBuffer::Mark> &_begin,
+			   const Glib::RefPtr<Gtk::TextBuffer> &_text_buffer,
+			   const pkgCache::VerIterator &_ver)
+      : begin(_begin), text_buffer(_text_buffer), ver(_ver)
+    {
+    }
 
-    public:
-      static cwidget::util::ref_ptr<ChangeLogView> create(Gtk::TextView *textview)
-      {
-	return new ChangeLogView(textview);
-      }
-
-      virtual ~ChangeLogView();
-
-      void load_version(pkgCache::VerIterator ver);
+    const Glib::RefPtr<Gtk::TextBuffer::Mark> &get_begin() const { return begin; }
+    const Glib::RefPtr<Gtk::TextBuffer> &get_text_buffer() const { return text_buffer; }
+    const pkgCache::VerIterator &get_ver() const { return ver; }
   };
 
+  /** \brief Start downloading changelogs for the given package
+   *  versions and insert them into the corresponding buffers.
+   *
+   *  \param changelogs   The versions whose changelogs should
+   *                      be downloaded and where to put them.
+   */
+  void fetch_and_show_changelogs(const std::vector<changelog_download_job> &changelogs);
+
+  /** \brief Start downloading a changelog for a single version,
+   *  inserting it at the given location in the given buffer.
+   *
+   *  \param ver   The version whose changelog should be downloaded.
+   *  \param text_buffer  The text buffer in which to display the changelog.
+   *  \param where  The location in text_buffer where the changelog
+   *                should appear.
+   *
+   *  This is a convenience wrapper for fetch_and_show_changelogs.
+   */
+  void fetch_and_show_changelog(const pkgCache::VerIterator &ver,
+				const Glib::RefPtr<Gtk::TextBuffer> &text_buffer,
+				const Gtk::TextBuffer::iterator &where);
 }
 
 #endif /* CHANGELOG_H_ */

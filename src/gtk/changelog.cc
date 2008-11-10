@@ -48,21 +48,6 @@ namespace cw = cwidget;
 
 namespace gui
 {
-  void ChangeLogView::do_view_changelog(temp::name n,
-					string pkgname,
-					string curverstr)
-  {
-    string menulabel =
-      ssprintf(_("ChangeLog of %s"), pkgname.c_str());
-    string tablabel = ssprintf(_("%s changes"), pkgname.c_str());
-    string desclabel = _("View the list of changes made to this Debian package.");
-
-    // Create a new text buffer to ensure that we have a blank state.
-    textBuffer = Gtk::TextBuffer::create();
-    add_changelog_buffer(n, curverstr);
-    textview->set_buffer(textBuffer);
-  }
-
   namespace
   {
     void view_bug(const std::string &bug_number)
@@ -228,14 +213,17 @@ namespace gui
     return where;
   }
 
-  void ChangeLogView::add_changelog_buffer(const temp::name &file,
-					   const std::string &curver)
+  Gtk::TextBuffer::iterator
+  parse_and_render_changelog(const temp::name &file,
+			     const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
+			     const std::string &current_version,
+			     Gtk::TextBuffer::iterator where)
   {
     cw::util::ref_ptr<aptitude::apt::changelog> cl =
       aptitude::apt::parse_changelog(file);
 
     if(cl.valid())
-      render_changelog(cl, textBuffer, curver, textBuffer->end());
+      return render_changelog(cl, textBuffer, current_version, where);
     else
       {
         Glib::RefPtr<Gtk::TextBuffer::Tag> warning_tag = textBuffer->create_tag();
@@ -243,26 +231,61 @@ namespace gui
         warning_tag->property_weight_set() = true;
         warning_tag->property_foreground() = "#FF0000";
         warning_tag->property_foreground_set() = true;
-        textBuffer->insert_with_tag(textBuffer->end(),
-            "Can't parse changelog, did you install the libparse-debianchangelog-perl package ?", warning_tag);
+        return textBuffer->insert_with_tag(where,
+					   "Can't parse changelog, did you install the libparse-debianchangelog-perl package ?", warning_tag);
         // \todo Offer to install libparse-debianchangelog-perl if we
         // can't parse the changelog because it's missing.
         // Maybe we could add an action button that does that ?
       }
   }
 
-  ChangeLogView::ChangeLogView(Gtk::TextView *_textview)
-    : textview(_textview)
-  {
-  }
-
-  ChangeLogView::~ChangeLogView()
-  {
-    // TODO Auto-generated destructor stub
-  }
-
   namespace
   {
+    // Value type carrying information for the helper below.  It says
+    // which region of the buffer should be replaced with the
+    // changelog text.
+    struct finish_changelog_download_info
+    {
+      Glib::RefPtr<Gtk::TextBuffer::Mark> begin, end;
+      Glib::RefPtr<Gtk::TextBuffer> text_buffer;
+      std::string current_version;
+
+      finish_changelog_download_info(const Glib::RefPtr<Gtk::TextBuffer::Mark> &_begin,
+				     const Glib::RefPtr<Gtk::TextBuffer::Mark> &_end,
+				     const Glib::RefPtr<Gtk::TextBuffer> &_text_buffer,
+				     const std::string &_current_version)
+	: begin(_begin),
+	  end(_end),
+	  text_buffer(_text_buffer),
+	  current_version(_current_version)
+      {
+      }
+    };
+
+    // Deletes a range between two marks, inserting a changelog parsed
+    // from the given file in the gap.
+    //
+    // This is invoked in the main thread (via the trampoline
+    // do_view_changelog_trampoline) when a changelog is finished
+    // downloading.  WARNING: the binding is only thread-safe because
+    // it's bound up as a "safe" slot from the main thread, so the
+    // RefPtrs are't copied in a background thread!
+    void finish_changelog_download(temp::name name,
+				   finish_changelog_download_info download_info)
+    {
+      const Gtk::TextBuffer::iterator begin = download_info.text_buffer->get_iter_at_mark(download_info.begin);
+      const Gtk::TextBuffer::iterator end = download_info.text_buffer->get_iter_at_mark(download_info.end);
+
+      // Zap the old text.
+      const Gtk::TextBuffer::iterator where = download_info.text_buffer->erase(begin, end);
+
+      // Now insert the changelog.
+      parse_and_render_changelog(name,
+				 download_info.text_buffer,
+				 download_info.current_version,
+				 where);
+    }
+
     // Helper function to post the "changelog download complete" event
     // to the main thread.
     void do_view_changelog_trampoline(temp::name name,
@@ -270,61 +293,116 @@ namespace gui
     {
       post_event(safe_bind(slot, name));
     }
+
+    void process_changelog_job(const changelog_download_job &entry,
+			       std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > &output_jobs)
+    {
+      Glib::RefPtr<Gtk::TextBuffer> textBuffer = entry.get_text_buffer();
+      pkgCache::VerIterator ver = entry.get_ver();
+
+      bool in_debian = false;
+
+      string pkgname = ver.ParentPkg().Name();
+
+      pkgCache::VerIterator curver = ver.ParentPkg().CurrentVer();
+      std::string current_source_ver;
+      if(!curver.end())
+	{
+	  pkgRecords::Parser &current_source_rec =
+	    apt_package_records->Lookup(curver.FileList());
+
+	  current_source_ver =
+	    current_source_rec.SourceVer().empty()
+	    ? (curver.VerStr() == NULL ? "" : curver.VerStr())
+	    : current_source_rec.SourceVer();
+	}
+
+      // TODO: add a configurable association between origins and changelog URLs.
+      for(pkgCache::VerFileIterator vf=ver.FileList();
+	  !vf.end() && !in_debian; ++vf)
+	if(!vf.File().end() && vf.File().Origin()!=NULL &&
+	   strcmp(vf.File().Origin(), "Debian")==0)
+	  in_debian=true;
+
+      if(!in_debian)
+	textBuffer->set_text(_("You can only view changelogs of official Debian packages."));
+      else
+	{
+	  // \todo It would be uber-cool to have a progress bar for
+	  // the particular changelog being downloaded, but we need
+	  // more information from the download backend to do that.
+
+	  // Insert a temporary message telling the user that we're
+	  // downloading a changelog, and store sticky anchors
+	  // pointing to its beginning and end.
+	  Glib::RefPtr<Gtk::TextBuffer::Mark> begin = entry.get_begin();
+	  Glib::RefPtr<Gtk::TextBuffer::Mark> end;
+
+	  {
+	    const Gtk::TextBuffer::iterator begin_iter =
+	      textBuffer->get_iter_at_mark(begin);
+	    const Gtk::TextBuffer::iterator end_iter =
+	      textBuffer->insert(begin_iter,
+				 _("Downloading changelog; please wait..."));
+
+	    end = textBuffer->create_mark(end_iter);
+	  }
+
+	  // Bind up the buffer location, the buffer pointer, and the
+	  // source version with the finalization code (so we can
+	  // invoke it when the changelog downloads).
+	  //
+	  // The changelog continuation is triggered in the background
+	  // thread, so we need to safely wrap it and post it to the
+	  // main thread.
+	  finish_changelog_download_info
+	    download_info(begin, end, textBuffer, current_source_ver);
+
+	  const sigc::slot1<void, temp::name> finish_changelog_download_slot =
+	    sigc::bind(sigc::ptr_fun(&finish_changelog_download),
+		       download_info);
+
+	  const safe_slot1<void, temp::name> finish_changelog_download_safe_slot =
+	    make_safe_slot(finish_changelog_download_slot);
+
+	  const sigc::slot1<void, temp::name> finish_changelog_download_trampoline =
+	    sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
+		       finish_changelog_download_safe_slot);
+
+	  output_jobs.push_back(std::make_pair(ver, finish_changelog_download_trampoline));
+	}
+    }
   }
 
-  void ChangeLogView::load_version(pkgCache::VerIterator ver)
+  void fetch_and_show_changelogs(const std::vector<changelog_download_job> &changelogs)
   {
-    textBuffer = Gtk::TextBuffer::create();
-    textview->set_buffer(textBuffer);
+    std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > jobs;
 
-    bool in_debian=false;
+    for(std::vector<changelog_download_job>::const_iterator it = changelogs.begin();
+	it != changelogs.end(); ++it)
+      // If the job can be downloaded, insert it into the queue.
+      process_changelog_job(*it, jobs);
 
-    string pkgname = ver.ParentPkg().Name();
-
-    pkgCache::VerIterator curver = ver.ParentPkg().CurrentVer();
-    std::string current_source_ver;
-    if(!curver.end())
-      {
-	pkgRecords::Parser &current_source_rec =
-	  apt_package_records->Lookup(curver.FileList());
-
-	current_source_ver =
-	  current_source_rec.SourceVer().empty()
-	  ? (curver.VerStr() == NULL ? "" : curver.VerStr())
-	  : current_source_rec.SourceVer();
-      }
-
-    // TODO: add a configurable association between origins and changelog URLs.
-    for(pkgCache::VerFileIterator vf=ver.FileList();
-        !vf.end() && !in_debian; ++vf)
-      if(!vf.File().end() && vf.File().Origin()!=NULL &&
-         strcmp(vf.File().Origin(), "Debian")==0)
-        in_debian=true;
-
-    if(!in_debian)
-      {
-        textBuffer->set_text(_("You can only view changelogs of official Debian packages."));
-        return;
-      }
-
-    // \todo It would be uber-cool to have a progress bar for the
-    // particular changelog being downloaded, but we need more
-    // information from the download backend to do that.
-    textBuffer->set_text(_("Downloading changelog; please wait..."));
-
-    // The changelog continuation is triggered in the background
-    // thread, so we need to safely wrap it and post it to the main
-    // thread.
-    sigc::slot1<void, temp::name> k(sigc::bind(sigc::mem_fun(*this, &ChangeLogView::do_view_changelog),
-					       pkgname, current_source_ver));
-    safe_slot1<void, temp::name>  k_safe(make_safe_slot(k));
-    sigc::slot1<void, temp::name> k_trampoline(sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
-							  k_safe));
-    std::auto_ptr<download_manager> manager(global_changelog_cache.get_changelog(ver, k_trampoline));
+    std::auto_ptr<download_manager> manager(global_changelog_cache.get_changelogs(jobs));
 
     start_download(manager.release(),
 		   _("Downloading changelogs"),
 		   download_progress_item_count,
 		   pMainWindow->get_notifyview());
+  }
+
+  void fetch_and_show_changelog(const pkgCache::VerIterator &ver,
+				const Glib::RefPtr<Gtk::TextBuffer> &text_buffer,
+				const Gtk::TextBuffer::iterator &where)
+  {
+    Glib::RefPtr<Gtk::TextBuffer::Mark> where_mark =
+      text_buffer->create_mark(where);
+
+    changelog_download_job job(where_mark, text_buffer, ver);
+
+    std::vector<changelog_download_job> changelogs;
+    changelogs.push_back(job);
+
+    fetch_and_show_changelogs(changelogs);
   }
 }

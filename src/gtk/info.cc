@@ -559,7 +559,12 @@ namespace gui
   {
     if (page_num == 1 && !changelog_loaded)
       {
-        changelogview->load_version(current_version);
+	Glib::RefPtr<Gtk::TextBuffer> text_buffer = Gtk::TextBuffer::create();
+
+	changelog_textview->set_buffer(text_buffer);
+	fetch_and_show_changelog(current_version,
+				 text_buffer,
+				 text_buffer->end());
         changelog_loaded = true;
       }
     else if (page_num == 2 && !filesview_loaded)
@@ -655,9 +660,7 @@ namespace gui
 	pDependsView->get_treeview()->expand_row(path, false);
       }
 
-    Gtk::TextView *changelog_textview;
     get_xml()->get_widget("main_info_changelogview", changelog_textview);
-    changelogview = ChangeLogView::create(changelog_textview);
 
     filesview = new FilesView(get_xml(), "main_info_filesview");
 

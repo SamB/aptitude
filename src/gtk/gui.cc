@@ -153,8 +153,6 @@ namespace gui
 
     Gtk::Label *available_upgrades_label;
 
-    cwidget::util::ref_ptr<ChangeLogView> changelog_view;
-
     void do_search()
     {
       pMainWindow->add_packages_tab(search_entry->get_text());
@@ -236,7 +234,6 @@ namespace gui
       {
 	get_xml()->get_widget("dashboard_upgrades_selected_package_textview",
 			      upgrades_changelog_view);
-	changelog_view = ChangeLogView::create(upgrades_changelog_view);
 	get_xml()->get_widget("dashboard_search_entry",
 			      search_entry);
 	get_xml()->get_widget("dashboard_search_button",
@@ -294,6 +291,13 @@ namespace gui
       Gtk::TreeModel::Path path;
       Gtk::TreeViewColumn * focus_column;
       upgrades_pkg_view->get_treeview()->get_cursor(path, focus_column);
+      // It's important that we create a new buffer in each case,
+      // because it prevents any stale downloads from corrupting the
+      // changelog display.  \todo if the user clicks on several
+      // packages while downloads are in process, we'll render some
+      // extra changelogs and throw the renders away; ideally, we
+      // would just disconnect the rendering job completely, but that
+      // will require some changes to how changelogs are downloaded.
       if (upgrades_pkg_view->get_treeview()->get_selection()->is_selected(path))
 	{
 	  Gtk::TreeModel::iterator iter = upgrades_pkg_view->get_model()->get_iter(path);
@@ -303,12 +307,16 @@ namespace gui
 
 	  pkgCache::PkgIterator pkg = pkg_ent->get_pkg();
 	  pkgCache::VerIterator candver = (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
+	  const Glib::RefPtr<Gtk::TextBuffer> buffer =
+	    Gtk::TextBuffer::create();
 
-	  changelog_view->load_version(candver);
+	  upgrades_changelog_view->set_buffer(buffer);
+
+	  fetch_and_show_changelog(candver, buffer, buffer->end());
 	}
       else
 	{
-	  upgrades_changelog_view->get_buffer()->set_text("");
+	  upgrades_changelog_view->set_buffer(Gtk::TextBuffer::create());
 	}
     }
   };
