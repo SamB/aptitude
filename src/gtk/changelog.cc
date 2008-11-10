@@ -27,12 +27,14 @@
 #include <gtkmm.h>
 
 #include <apt-pkg/fileutl.h>
+#include <apt-pkg/pkgrecords.h>
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/tagfile.h>
 #include <apt-pkg/version.h>
 
 #include <cwidget/generic/util/ssprintf.h>
 
+#include <generic/apt/apt.h>
 #include <generic/apt/changelog_parse.h>
 #include <generic/apt/download_manager.h>
 #include <generic/apt/pkg_changelog.h>
@@ -280,9 +282,17 @@ namespace gui
     string pkgname = ver.ParentPkg().Name();
 
     pkgCache::VerIterator curver = ver.ParentPkg().CurrentVer();
-    string curverstr;
-    if(!curver.end() && curver.VerStr() != NULL)
-      curverstr = curver.VerStr();
+    std::string current_source_ver;
+    if(!curver.end())
+      {
+	pkgRecords::Parser &current_source_rec =
+	  apt_package_records->Lookup(curver.FileList());
+
+	current_source_ver =
+	  current_source_rec.SourceVer().empty()
+	  ? (curver.VerStr() == NULL ? "" : curver.VerStr())
+	  : current_source_rec.SourceVer();
+      }
 
     // TODO: add a configurable association between origins and changelog URLs.
     for(pkgCache::VerFileIterator vf=ver.FileList();
@@ -306,7 +316,7 @@ namespace gui
     // thread, so we need to safely wrap it and post it to the main
     // thread.
     sigc::slot1<void, temp::name> k(sigc::bind(sigc::mem_fun(*this, &ChangeLogView::do_view_changelog),
-					       pkgname, curverstr));
+					       pkgname, current_source_ver));
     safe_slot1<void, temp::name>  k_safe(make_safe_slot(k));
     sigc::slot1<void, temp::name> k_trampoline(sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
 							  k_safe));
