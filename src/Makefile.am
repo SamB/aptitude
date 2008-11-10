@@ -85,6 +85,7 @@ aptitude_SOURCES= 	\
 	progress.h	\
 	reason_fragment.cc\
 	reason_fragment.h\
+	safe_slot_event.h\
 	solution_dialog.cc\
 	solution_dialog.h\
 	solution_fragment.cc\

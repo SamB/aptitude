@@ -30,6 +30,7 @@
 #include "download_list.h"
 #include "menu_redirect.h"
 #include "menu_text_layout.h"
+#include "safe_slot_event.h"
 #include "ui.h"
 #include "ui_download_manager.h"
 
@@ -315,31 +316,13 @@ static void do_view_changelog(temp::name n,
 
 namespace
 {
-  // \todo This should only be defined in one place.
-
-  class safe_slot_event : public cw::toplevel::event
-  {
-    safe_slot0<void> slot;
-
-  public:
-    safe_slot_event(const safe_slot0<void> &_slot)
-      : slot(_slot)
-    {
-    }
-
-    void dispatch()
-    {
-      slot.get_slot()();
-    }
-  };
-
   // Note that this is only safe if it's OK to copy the thunk in a
   // background thread (i.e., it won't be invalidated by an object being
   // destroyed in another thread).  In the special cases where we use
   // this it should be all right.
   void do_post_thunk(const safe_slot0<void> &thunk)
   {
-    cw::toplevel::post_event(new safe_slot_event(thunk));
+    cw::toplevel::post_event(new aptitude::safe_slot_event(thunk));
   }
 }
 
