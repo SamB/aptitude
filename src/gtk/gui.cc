@@ -212,7 +212,7 @@ namespace gui
               Gnome::Glade::Xml::create(glade_main_file, "dashboard_main"),
               "dashboard_main")
       {
-	get_xml()->get_widget("dashboard_upgrades_textview",
+	get_xml()->get_widget("dashboard_upgrades_selected_package_textview",
 			      upgrades_changelog_view);
 	changelog_view = ChangeLogView::create(upgrades_changelog_view);
 	get_xml()->get_widget("dashboard_search_entry",

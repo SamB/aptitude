@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Fri Nov  7 00:49:11 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Nov  9 18:10:26 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="width_request">800</property>
@@ -609,18 +609,62 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkScrolledWindow" id="scrolledwindow13">
+                                  <widget class="GtkNotebook" id="notebook1">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                                     <child>
-                                      <widget class="GtkTextView" id="dashboard_upgrades_textview">
+                                      <widget class="GtkScrolledWindow" id="scrolledwindow13">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="editable">False</property>
-                                        <property name="wrap_mode">GTK_WRAP_WORD_CHAR</property>
+                                        <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                                        <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                                        <child>
+                                          <widget class="GtkTextView" id="dashboard_upgrades_summary_textview">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                          </widget>
+                                        </child>
                                       </widget>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkLabel" id="label17">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">Upgrade Summary</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="type">tab</property>
+                                        <property name="tab_fill">False</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkScrolledWindow" id="scrolledwindow15">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                                        <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                                        <child>
+                                          <widget class="GtkTextView" id="dashboard_upgrades_selected_package_textview">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="editable">False</property>
+                                            <property name="wrap_mode">GTK_WRAP_WORD_CHAR</property>
+                                          </widget>
+                                        </child>
+                                      </widget>
+                                      <packing>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkLabel" id="label18">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">Selected Package</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="type">tab</property>
+                                        <property name="position">1</property>
+                                        <property name="tab_fill">False</property>
+                                      </packing>
                                     </child>
                                   </widget>
                                   <packing>
