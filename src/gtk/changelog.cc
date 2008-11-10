@@ -210,7 +210,7 @@ namespace gui
 
 	where = render_change_elements(ent->get_changes(), ent->get_elements()->get_elements(), textBuffer, where);
 
-	where = textBuffer->insert(where, "\n");
+	where = textBuffer->insert(where, "\n\n");
 	where = textBuffer->insert(where, " -- ");
 	where = textBuffer->insert(where, ent->get_maintainer());
 	where = textBuffer->insert(where, " ");
