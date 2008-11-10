@@ -117,101 +117,115 @@ namespace gui
       }
   }
 
+  // \todo Maybe support hiding older versions by default, with a
+  // clickable link at the end saying "show older versions...".
+  //
+  // NB: some changelogs aren't monotonically increasing, so that
+  // support should put a link wherever the "newness state" goes from
+  // newer to not-newer.
+  void render_changelog(const cwidget::util::ref_ptr<aptitude::apt::changelog> &cl,
+			const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
+			const std::string &current_version)
+  {
+    using aptitude::apt::changelog;
+
+    Glib::RefPtr<Gtk::TextBuffer::Tag> newer_tag(textBuffer->create_tag());
+    newer_tag->property_weight() = Pango::WEIGHT_SEMIBOLD;
+    newer_tag->property_weight_set() = true;
+
+    Glib::RefPtr<Gtk::TextBuffer::Tag> number_tag = textBuffer->create_tag();
+    number_tag->property_scale() = Pango::SCALE_LARGE;
+
+    Glib::RefPtr<Gtk::TextBuffer::Tag> urgency_low_tag = textBuffer->create_tag();
+
+    Glib::RefPtr<Gtk::TextBuffer::Tag> urgency_medium_tag = textBuffer->create_tag();
+    urgency_medium_tag->property_weight() = Pango::WEIGHT_BOLD;
+    urgency_medium_tag->property_weight_set() = true;
+
+    Glib::RefPtr<Gtk::TextBuffer::Tag> urgency_high_tag = textBuffer->create_tag();
+    urgency_high_tag->property_weight() = Pango::WEIGHT_BOLD;
+    urgency_high_tag->property_weight_set() = true;
+    urgency_high_tag->property_foreground() = "#FF0000";
+    urgency_high_tag->property_foreground_set() = true;
+
+    // NB: "emergency" and "critical" are the same; thus saith
+    // Policy.
+    Glib::RefPtr<Gtk::TextBuffer::Tag> urgency_critical_tag = textBuffer->create_tag();
+    urgency_critical_tag->property_weight() = Pango::WEIGHT_BOLD;
+    urgency_critical_tag->property_weight_set() = true;
+    urgency_critical_tag->property_scale() = Pango::SCALE_LARGE;
+    urgency_critical_tag->property_foreground() = "#FF0000";
+    urgency_critical_tag->property_foreground_set() = true;
+
+    Glib::RefPtr<Gtk::TextBuffer::Tag> date_tag = textBuffer->create_tag();
+
+    for(changelog::const_iterator it = cl->begin(); it != cl->end(); ++it)
+      {
+	cw::util::ref_ptr<aptitude::apt::changelog_entry> ent(*it);
+
+	bool newer =
+	  !current_version.empty() &&
+	  _system->VS->CmpVersion(ent->get_version(), current_version) > 0;
+
+	if(it != cl->begin())
+	  textBuffer->insert(textBuffer->end(), "\n\n");
+
+	Glib::RefPtr<Gtk::TextBuffer::Mark> changelog_entry_mark;
+	if(newer)
+	  changelog_entry_mark = textBuffer->create_mark(textBuffer->end());
+
+	// Can't hyperlink to the package name because it's a
+	// source package name.  Plus, it might not exist.
+	textBuffer->insert(textBuffer->end(), ent->get_source());
+	textBuffer->insert(textBuffer->end(), " (");
+	textBuffer->insert_with_tag(textBuffer->end(),
+				    ent->get_version(),
+				    number_tag);
+	textBuffer->insert(textBuffer->end(), ") ");
+	textBuffer->insert(textBuffer->end(), ent->get_distribution());
+	textBuffer->insert(textBuffer->end(), "; urgency=");
+	Glib::RefPtr<Gtk::TextBuffer::Tag> urgency_tag;
+	const std::string &urgency = ent->get_urgency();
+	if(urgency == "low")
+	  urgency_tag = urgency_low_tag;
+	else if(urgency == "medium")
+	  urgency_tag = urgency_medium_tag;
+	else if(urgency == "high")
+	  urgency_tag = urgency_high_tag;
+	else if(urgency == "critical" || urgency == "emergency")
+	  urgency_tag = urgency_critical_tag;
+
+	if(urgency_tag)
+	  textBuffer->insert_with_tag(textBuffer->end(), urgency, urgency_tag);
+	else
+	  textBuffer->insert(textBuffer->end(), urgency);
+
+	textBuffer->insert(textBuffer->end(), "\n");
+
+	render_change_elements(ent->get_changes(), ent->get_elements()->get_elements(), textBuffer);
+
+	textBuffer->insert(textBuffer->end(), "\n");
+	textBuffer->insert(textBuffer->end(), " -- ");
+	textBuffer->insert(textBuffer->end(), ent->get_maintainer());
+	textBuffer->insert(textBuffer->end(), " ");
+	textBuffer->insert_with_tag(textBuffer->end(), ent->get_date_str(), date_tag);
+
+	if(newer)
+	  {
+	    Gtk::TextBuffer::iterator start = textBuffer->get_iter_at_mark(changelog_entry_mark);
+	    textBuffer->apply_tag(newer_tag, start, textBuffer->end());
+	  }
+      }
+  }
+
   void ChangeLogView::add_changelog_buffer(const temp::name &file,
 					   const std::string &curver)
   {
-    using aptitude::apt::changelog;
-    cw::util::ref_ptr<changelog> cl =
+    cw::util::ref_ptr<aptitude::apt::changelog> cl =
       aptitude::apt::parse_changelog(file);
 
     if(cl.valid())
-      {
-	Glib::RefPtr<Gtk::TextBuffer::Tag> newer_tag(textBuffer->create_tag());
-	newer_tag->property_weight() = Pango::WEIGHT_SEMIBOLD;
-	newer_tag->property_weight_set() = true;
-
-	Glib::RefPtr<Gtk::TextBuffer::Tag> number_tag = textBuffer->create_tag();
-	number_tag->property_scale() = Pango::SCALE_LARGE;
-
-	Glib::RefPtr<Gtk::TextBuffer::Tag> urgency_low_tag = textBuffer->create_tag();
-
-	Glib::RefPtr<Gtk::TextBuffer::Tag> urgency_medium_tag = textBuffer->create_tag();
-	urgency_medium_tag->property_weight() = Pango::WEIGHT_BOLD;
-	urgency_medium_tag->property_weight_set() = true;
-
-	Glib::RefPtr<Gtk::TextBuffer::Tag> urgency_high_tag = textBuffer->create_tag();
-	urgency_high_tag->property_weight() = Pango::WEIGHT_BOLD;
-	urgency_high_tag->property_weight_set() = true;
-	urgency_high_tag->property_foreground() = "#FF0000";
-	urgency_high_tag->property_foreground_set() = true;
-
-	// NB: "emergency" and "critical" are the same; thus saith
-	// Policy.
-	Glib::RefPtr<Gtk::TextBuffer::Tag> urgency_critical_tag = textBuffer->create_tag();
-	urgency_critical_tag->property_weight() = Pango::WEIGHT_BOLD;
-	urgency_critical_tag->property_weight_set() = true;
-	urgency_critical_tag->property_scale() = Pango::SCALE_LARGE;
-	urgency_critical_tag->property_foreground() = "#FF0000";
-	urgency_critical_tag->property_foreground_set() = true;
-
-	Glib::RefPtr<Gtk::TextBuffer::Tag> date_tag = textBuffer->create_tag();
-
-	for(changelog::const_iterator it = cl->begin(); it != cl->end(); ++it)
-	  {
-	    cw::util::ref_ptr<aptitude::apt::changelog_entry> ent(*it);
-
-	    bool newer = !curver.empty() && _system->VS->CmpVersion(ent->get_version(), curver) > 0;
-
-	    if(it != cl->begin())
-	      textBuffer->insert(textBuffer->end(), "\n\n");
-
-	    Glib::RefPtr<Gtk::TextBuffer::Mark> changelog_entry_mark;
-	    if(newer)
-	      changelog_entry_mark = textBuffer->create_mark(textBuffer->end());
-
-	    // Can't hyperlink to the package name because it's a
-	    // source package name.  Plus, it might not exist.
-	    textBuffer->insert(textBuffer->end(), ent->get_source());
-	    textBuffer->insert(textBuffer->end(), " (");
-	    textBuffer->insert_with_tag(textBuffer->end(),
-					ent->get_version(),
-					number_tag);
-	    textBuffer->insert(textBuffer->end(), ") ");
-	    textBuffer->insert(textBuffer->end(), ent->get_distribution());
-	    textBuffer->insert(textBuffer->end(), "; urgency=");
-	    Glib::RefPtr<Gtk::TextBuffer::Tag> urgency_tag;
-	    const std::string &urgency = ent->get_urgency();
-	    if(urgency == "low")
-	      urgency_tag = urgency_low_tag;
-	    else if(urgency == "medium")
-	      urgency_tag = urgency_medium_tag;
-	    else if(urgency == "high")
-	      urgency_tag = urgency_high_tag;
-	    else if(urgency == "critical" || urgency == "emergency")
-	      urgency_tag = urgency_critical_tag;
-
-	    if(urgency_tag)
-	      textBuffer->insert_with_tag(textBuffer->end(), urgency, urgency_tag);
-	    else
-	      textBuffer->insert(textBuffer->end(), urgency);
-
-	    textBuffer->insert(textBuffer->end(), "\n");
-
-	    render_change_elements(ent->get_changes(), ent->get_elements()->get_elements(), textBuffer);
-
-	    textBuffer->insert(textBuffer->end(), "\n");
-	    textBuffer->insert(textBuffer->end(), " -- ");
-	    textBuffer->insert(textBuffer->end(), ent->get_maintainer());
-	    textBuffer->insert(textBuffer->end(), " ");
-	    textBuffer->insert_with_tag(textBuffer->end(), ent->get_date_str(), date_tag);
-
-	    if(newer)
-	      {
-		Gtk::TextBuffer::iterator start = textBuffer->get_iter_at_mark(changelog_entry_mark);
-		textBuffer->apply_tag(newer_tag, start, textBuffer->end());
-	      }
-	  }
-      }
+      render_changelog(cl, textBuffer, curver);
     else
       {
         Glib::RefPtr<Gtk::TextBuffer::Tag> warning_tag = textBuffer->create_tag();

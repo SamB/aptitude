@@ -34,6 +34,14 @@
 #include <generic/util/temp.h>
 #include <generic/util/util.h>
 
+namespace aptitude
+{
+  namespace apt
+  {
+    class changelog;
+  }
+}
+
 namespace gui
 {
   class dummyPkgAcquireStatus : public pkgAcquireStatus
@@ -42,6 +50,21 @@ namespace gui
       dummyPkgAcquireStatus();
       bool MediaChange(std::string, std::string);
   };
+
+  /** \brief Render a changelog object into a buffer.
+   *
+   *  \param cl                The changelog to render.
+   *  \param textBuffer        The text buffer in which to store
+   *                           the rendered text.
+   *  \param current_version   The currently installed source
+   *                           version of the package whose
+   *                           changelog this is (used to
+   *                           determine which versions are
+   *                           newer).
+   */
+  void render_changelog(const cwidget::util::ref_ptr<aptitude::apt::changelog> &cl,
+			const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
+			const std::string &current_version);
 
   class ChangeLogView : public aptitude::util::refcounted_base
   {
