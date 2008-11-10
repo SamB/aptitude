@@ -168,6 +168,16 @@ namespace gui
       pMainWindow->do_preview();
     }
 
+    struct sort_versions_by_package_name
+    {
+      bool operator()(const pkgCache::VerIterator &v1,
+		      const pkgCache::VerIterator &v2)
+      {
+	return strcmp(v1.ParentPkg().Name(),
+		      v2.ParentPkg().Name()) < 0;
+      }
+    };
+
     // Download all the changelogs and show the new entries.
     void create_upgrade_summary()
     {
@@ -208,6 +218,9 @@ namespace gui
 
 	p->Done();
       }
+
+      std::sort(versions.begin(), versions.end(),
+		sort_versions_by_package_name());
 
       std::vector<changelog_download_job> changelogs;
       for(std::vector<pkgCache::VerIterator>::const_iterator it =
