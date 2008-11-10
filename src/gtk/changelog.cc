@@ -108,6 +108,26 @@ namespace gui
     return where;
   }
 
+  namespace
+  {
+    class TextBufferUserAction
+    {
+      Glib::RefPtr<Gtk::TextBuffer> buffer;
+
+    public:
+      TextBufferUserAction(const Glib::RefPtr<Gtk::TextBuffer> &_buffer)
+	: buffer(_buffer)
+      {
+	buffer->begin_user_action();
+      }
+
+      ~TextBufferUserAction()
+      {
+	buffer->end_user_action();
+      }
+    };
+  }
+
   // \todo Maybe support hiding older versions by default, with a
   // clickable link at the end saying "show older versions...".
   //
@@ -121,6 +141,9 @@ namespace gui
 		   Gtk::TextBuffer::iterator where)
   {
     using aptitude::apt::changelog;
+
+    // Don't update the display until we finish everything.
+    TextBufferUserAction text_buffer_user_action_scope(textBuffer);
 
     Glib::RefPtr<Gtk::TextBuffer::Tag> newer_tag(textBuffer->create_tag());
     newer_tag->property_weight() = Pango::WEIGHT_SEMIBOLD;
