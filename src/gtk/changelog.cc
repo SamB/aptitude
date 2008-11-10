@@ -138,7 +138,8 @@ namespace gui
   render_changelog(const cwidget::util::ref_ptr<aptitude::apt::changelog> &cl,
 		   const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
 		   const std::string &current_version,
-		   Gtk::TextBuffer::iterator where)
+		   Gtk::TextBuffer::iterator where,
+		   bool only_new)
   {
     using aptitude::apt::changelog;
 
@@ -183,11 +184,16 @@ namespace gui
 	  !current_version.empty() &&
 	  _system->VS->CmpVersion(ent->get_version(), current_version) > 0;
 
+	if(only_new && !newer)
+	  continue;
+
+	const bool use_newer_tag = !only_new && newer;
+
 	if(it != cl->begin())
 	  where = textBuffer->insert(where, "\n\n");
 
 	Glib::RefPtr<Gtk::TextBuffer::Mark> changelog_entry_mark;
-	if(newer)
+	if(use_newer_tag)
 	  changelog_entry_mark = textBuffer->create_mark(where);
 
 	// Can't hyperlink to the package name because it's a
@@ -226,7 +232,7 @@ namespace gui
 	where = textBuffer->insert(where, " ");
 	where = textBuffer->insert_with_tag(where, ent->get_date_str(), date_tag);
 
-	if(newer)
+	if(use_newer_tag)
 	  {
 	    Gtk::TextBuffer::iterator start = textBuffer->get_iter_at_mark(changelog_entry_mark);
 	    textBuffer->apply_tag(newer_tag, start, where);
@@ -240,13 +246,14 @@ namespace gui
   parse_and_render_changelog(const temp::name &file,
 			     const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
 			     const std::string &current_version,
-			     Gtk::TextBuffer::iterator where)
+			     Gtk::TextBuffer::iterator where,
+			     bool only_new)
   {
     cw::util::ref_ptr<aptitude::apt::changelog> cl =
       aptitude::apt::parse_changelog(file);
 
     if(cl.valid())
-      return render_changelog(cl, textBuffer, current_version, where);
+      return render_changelog(cl, textBuffer, current_version, where, only_new);
     else
       {
         Glib::RefPtr<Gtk::TextBuffer::Tag> warning_tag = textBuffer->create_tag();
@@ -272,15 +279,18 @@ namespace gui
       Glib::RefPtr<Gtk::TextBuffer::Mark> begin, end;
       Glib::RefPtr<Gtk::TextBuffer> text_buffer;
       std::string current_version;
+      bool only_new;
 
       finish_changelog_download_info(const Glib::RefPtr<Gtk::TextBuffer::Mark> &_begin,
 				     const Glib::RefPtr<Gtk::TextBuffer::Mark> &_end,
 				     const Glib::RefPtr<Gtk::TextBuffer> &_text_buffer,
-				     const std::string &_current_version)
+				     const std::string &_current_version,
+				     bool _only_new)
 	: begin(_begin),
 	  end(_end),
 	  text_buffer(_text_buffer),
-	  current_version(_current_version)
+	  current_version(_current_version),
+	  only_new(_only_new)
       {
       }
     };
@@ -302,11 +312,14 @@ namespace gui
       // Zap the old text.
       const Gtk::TextBuffer::iterator where = download_info.text_buffer->erase(begin, end);
 
+      const bool only_new = download_info.only_new;
+
       // Now insert the changelog.
       parse_and_render_changelog(name,
 				 download_info.text_buffer,
 				 download_info.current_version,
-				 where);
+				 where,
+				 only_new);
     }
 
     // Helper function to post the "changelog download complete" event
@@ -383,8 +396,9 @@ namespace gui
 	  // The changelog continuation is triggered in the background
 	  // thread, so we need to safely wrap it and post it to the
 	  // main thread.
+	  const bool only_new = entry.get_only_new();
 	  finish_changelog_download_info
-	    download_info(begin, end, textBuffer, current_source_ver);
+	    download_info(begin, end, textBuffer, current_source_ver, only_new);
 
 	  const sigc::slot1<void, temp::name> finish_changelog_download_slot =
 	    sigc::bind(sigc::ptr_fun(&finish_changelog_download),
@@ -426,7 +440,7 @@ namespace gui
     Glib::RefPtr<Gtk::TextBuffer::Mark> where_mark =
       text_buffer->create_mark(where);
 
-    changelog_download_job job(where_mark, text_buffer, ver);
+    changelog_download_job job(where_mark, text_buffer, ver, false);
 
     std::vector<changelog_download_job> changelogs;
     changelogs.push_back(job);

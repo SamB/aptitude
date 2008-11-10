@@ -63,6 +63,8 @@ namespace gui
    *                           newer).
    *  \param where             The buffer location at which to render
    *                           the changelog.
+   *  \param only_new          Set to \b true to only show entries that
+   *                           are newer than current_version.
    *
    *  \return A new iterator to the end of the rendered text.
    */
@@ -70,7 +72,8 @@ namespace gui
   render_changelog(const cwidget::util::ref_ptr<aptitude::apt::changelog> &cl,
 		   const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
 		   const std::string &current_version,
-		   Gtk::TextBuffer::iterator where);
+		   Gtk::TextBuffer::iterator where,
+		   bool only_new);
 
   /** \brief Parse a changelog and render it into a buffer.
    *
@@ -84,6 +87,8 @@ namespace gui
    *                           newer).
    *  \param where             The buffer location at which to render
    *                           the changelog.
+   *  \param only_new          Set to \b true to only show entries that
+   *                           are newer than current_version.
    *
    *  \return A new iterator to the end of the rendered text.
    *
@@ -94,7 +99,8 @@ namespace gui
   parse_and_render_changelog(const temp::name &file,
 			     const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
 			     const std::string &current_version,
-			     Gtk::TextBuffer::iterator where);
+			     Gtk::TextBuffer::iterator where,
+			     bool only_new);
 
   /** \brief A changelog job says to download the changelog of a
    *  binary package version at the given buffer location.
@@ -104,18 +110,31 @@ namespace gui
     Glib::RefPtr<Gtk::TextBuffer::Mark> begin;
     Glib::RefPtr<Gtk::TextBuffer> text_buffer;
     pkgCache::VerIterator ver;
+    bool only_new;
 
   public:
+    /** \brief Create a new changelog download job.
+     *
+     *  \param _begin   The buffer location where the changelog should be inserted.
+     *  \param _text_buffer  The text buffer in which to insert the changelog.
+     *  \param _ver     The version whose changelog should be downloaded.
+     *  \param _only_new  If \b true, only new entries will be displayed.
+     */
     changelog_download_job(const Glib::RefPtr<Gtk::TextBuffer::Mark> &_begin,
 			   const Glib::RefPtr<Gtk::TextBuffer> &_text_buffer,
-			   const pkgCache::VerIterator &_ver)
-      : begin(_begin), text_buffer(_text_buffer), ver(_ver)
+			   const pkgCache::VerIterator &_ver,
+			   bool _only_new)
+      : begin(_begin),
+	text_buffer(_text_buffer),
+	ver(_ver),
+	only_new(_only_new)
     {
     }
 
     const Glib::RefPtr<Gtk::TextBuffer::Mark> &get_begin() const { return begin; }
     const Glib::RefPtr<Gtk::TextBuffer> &get_text_buffer() const { return text_buffer; }
     const pkgCache::VerIterator &get_ver() const { return ver; }
+    bool get_only_new() const { return only_new; }
   };
 
   /** \brief Start downloading changelogs for the given package
