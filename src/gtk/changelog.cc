@@ -325,7 +325,12 @@ namespace gui
 	  in_debian=true;
 
       if(!in_debian)
-	textBuffer->set_text(_("You can only view changelogs of official Debian packages."));
+	{
+	  const Glib::RefPtr<Gtk::TextBuffer::Mark> begin = entry.get_begin();
+	  const Gtk::TextBuffer::iterator begin_iter =
+	    textBuffer->get_iter_at_mark(begin);
+	  textBuffer->insert(begin_iter, _("You can only view changelogs of official Debian packages."));
+	}
       else
 	{
 	  // \todo It would be uber-cool to have a progress bar for
