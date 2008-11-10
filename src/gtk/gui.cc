@@ -145,6 +145,7 @@ namespace gui
   {
     cwidget::util::ref_ptr<PkgView> upgrades_pkg_view;
     Gtk::TextView *upgrades_changelog_view;
+    Gtk::TextView *upgrades_summary_textview;
 
     Gtk::Entry *search_entry;
     Gtk::Button *search_button;
@@ -167,44 +168,105 @@ namespace gui
       pMainWindow->do_preview();
     }
 
-    void preload_changelogs()
+    // Download all the changelogs and show the new entries.
+    void create_upgrade_summary()
     {
       if(apt_cache_file == NULL)
 	return;
 
-      std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > >
-	entries;
+      Glib::RefPtr<Gtk::TextBuffer> text_buffer = Gtk::TextBuffer::create();
+
+      Glib::RefPtr<Gtk::TextBuffer::Tag> header_tag = text_buffer->create_tag();
+      header_tag->property_weight() = Pango::WEIGHT_BOLD;
+      header_tag->property_weight_set() = true;
+      header_tag->property_scale() = Pango::SCALE_X_LARGE;
+      header_tag->property_scale_set() = true;
 
       cwidget::util::ref_ptr<guiOpProgress> p(guiOpProgress::create());
 
-      int i = 0;
-      p->OverallProgress(i, (*apt_cache_file)->Head().PackageCount, 1,
-			 _("Preparing to preload changelogs"));
+      std::vector<pkgCache::VerIterator> versions;
 
-      for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin();
-	  !pkg.end(); ++pkg)
+      {
+	int i = 0;
+	p->OverallProgress(i, (*apt_cache_file)->Head().PackageCount, 1,
+			   _("Preparing to download changelogs"));
+
+	for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin();
+	    !pkg.end(); ++pkg)
+	  {
+	    if(pkg->CurrentState == pkgCache::State::Installed &&
+	       (*apt_cache_file)[pkg].Upgradable())
+	      {
+		pkgCache::VerIterator candver = (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
+
+		versions.push_back(candver);
+	      }
+
+	    ++i;
+	    p->Progress(i);
+	  }
+
+	p->Done();
+      }
+
+      std::vector<changelog_download_job> changelogs;
+      for(std::vector<pkgCache::VerIterator>::const_iterator it =
+	    versions.begin(); it != versions.end(); ++it)
 	{
-	  if(pkg->CurrentState == pkgCache::State::Installed &&
-	     (*apt_cache_file)[pkg].Upgradable())
-	    {
-	      pkgCache::VerIterator candver = (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
+	  // Write out the header: PACKAGE: VERSION -> VERSION
+	  pkgCache::VerIterator candver = *it;
+	  Gtk::TextBuffer::iterator where = text_buffer->end();
 
-	      entries.push_back(std::make_pair(candver, sigc::slot1<void, temp::name>()));
-	    }
+	  Glib::RefPtr<Gtk::TextBuffer::Mark> header_begin_mark =
+	    text_buffer->create_mark(where);
 
-	  ++i;
-	  p->Progress(i);
+	  where = text_buffer->insert(where,
+				      candver.ParentPkg().Name());
+
+	  where = text_buffer->insert(where, " ");
+
+	  pkgCache::VerIterator currver = candver.ParentPkg().CurrentVer();
+	  if(currver.end() ||
+	     currver.VerStr() == NULL) // Just defensive; should never happen.
+	    where = text_buffer->insert(where, "???");
+	  else
+	    where = add_hyperlink(text_buffer, where,
+				  currver.VerStr(),
+				  sigc::bind(sigc::ptr_fun(&InfoTab::show_tab),
+					     currver.ParentPkg(), currver));
+
+	  where = text_buffer->insert(where, " -> ");
+
+	  where = add_hyperlink(text_buffer, where,
+				candver.VerStr(),
+				sigc::bind(sigc::ptr_fun(&InfoTab::show_tab),
+					   candver.ParentPkg(), candver));
+
+	  where = text_buffer->insert(where, "\n");
+
+	  const Gtk::TextBuffer::iterator header_begin =
+	    text_buffer->get_iter_at_mark(header_begin_mark);
+	  text_buffer->apply_tag(header_tag, header_begin, where);
+
+	  where = text_buffer->insert(where, "\n");
+
+	  const Gtk::TextBuffer::iterator changelog_begin_iter = where;
+	  const Glib::RefPtr<Gtk::TextBuffer::Mark> changelog_begin =
+	    text_buffer->create_mark(changelog_begin_iter);
+
+	  changelog_download_job job(changelog_begin,
+				     text_buffer,
+				     candver,
+				     true);
+
+	  changelogs.push_back(job);
+
+	  where = text_buffer->insert(where, "\n\n");
 	}
 
-      p->Done();
+      upgrades_summary_textview->set_buffer(text_buffer);
 
-      using aptitude::apt::global_changelog_cache;
-      download_manager *m = global_changelog_cache.get_changelogs(entries);
-
-      start_download(m,
-		     _("Downloading changelogs"),
-		     download_progress_item_count,
-		     pMainWindow->get_notifyview());
+      fetch_and_show_changelogs(changelogs);
     }
 
     void handle_cache_closed()
@@ -242,6 +304,8 @@ namespace gui
 			      upgrade_button);
 	get_xml()->get_widget("dashboard_available_upgrades_label",
 			      available_upgrades_label);
+	get_xml()->get_widget("dashboard_upgrades_summary_textview",
+			      upgrades_summary_textview);
 
 	upgrades_pkg_view = cwidget::util::ref_ptr<PkgView>(new PkgView(get_xml(), "dashboard_upgrades_treeview"));
 	upgrades_pkg_view->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &DashboardTab::activated_upgrade_package_handler));
@@ -261,8 +325,8 @@ namespace gui
 
 	upgrades_pkg_view->set_limit("?upgradable");
 
-	cache_reloaded.connect(sigc::mem_fun(*this, &DashboardTab::preload_changelogs));
-	preload_changelogs();
+	cache_reloaded.connect(sigc::mem_fun(*this, &DashboardTab::create_upgrade_summary));
+	create_upgrade_summary();
 
 	upgrade_button->set_image(*manage(new Gtk::Image(Gtk::Stock::GO_UP, Gtk::ICON_SIZE_BUTTON)));
 	upgrade_button->signal_clicked().connect(sigc::mem_fun(*this, &DashboardTab::do_upgrade));
