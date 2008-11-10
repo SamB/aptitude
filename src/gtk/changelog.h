@@ -61,10 +61,16 @@ namespace gui
    *                           changelog this is (used to
    *                           determine which versions are
    *                           newer).
+   *  \param where             The buffer location at which to render
+   *                           the changelog.
+   *
+   *  \return A new iterator to the end of the rendered text.
    */
-  void render_changelog(const cwidget::util::ref_ptr<aptitude::apt::changelog> &cl,
-			const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
-			const std::string &current_version);
+  Gtk::TextBuffer::iterator
+  render_changelog(const cwidget::util::ref_ptr<aptitude::apt::changelog> &cl,
+		   const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
+		   const std::string &current_version,
+		   Gtk::TextBuffer::iterator where);
 
   class ChangeLogView : public aptitude::util::refcounted_base
   {

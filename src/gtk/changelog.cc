@@ -77,9 +77,11 @@ namespace gui
 
   using aptitude::apt::changelog_element_list;
   using aptitude::apt::changelog_element;
-  void render_change_elements(const std::string &text,
-			      const std::vector<changelog_element> &elements,
-			      const Glib::RefPtr<Gtk::TextBuffer> &buffer)
+  Gtk::TextBuffer::iterator
+  render_change_elements(const std::string &text,
+			 const std::vector<changelog_element> &elements,
+			 const Glib::RefPtr<Gtk::TextBuffer> &buffer,
+			 Gtk::TextBuffer::iterator where)
   {
     std::vector<changelog_element>::const_iterator elements_end = elements.end();
 
@@ -93,28 +95,30 @@ namespace gui
 	switch(it->get_type())
 	  {
 	  case changelog_element::text_type:
-	    buffer->insert(buffer->end(),
-			   text.c_str() + it->get_begin(),
-			   text.c_str() + it->get_end());
+	    where = buffer->insert(where,
+				   text.c_str() + it->get_begin(),
+				   text.c_str() + it->get_end());
 	    break;
 
 	  case changelog_element::bullet_type:
-	    buffer->insert_with_tag(buffer->end(),
-				    text.c_str() + it->get_begin(),
-				    text.c_str() + it->get_end(),
-				    bullet_tag);
+	    where = buffer->insert_with_tag(where,
+					    text.c_str() + it->get_begin(),
+					    text.c_str() + it->get_end(),
+					    bullet_tag);
 	    break;
 
 	  case changelog_element::closes_type:
 	    {
 	      const std::string bug_number(text, it->get_begin(), it->get_end() - it->get_begin());
-	      add_hyperlink(buffer, buffer->end(),
-			    bug_number,
-			    sigc::bind(sigc::ptr_fun(&view_bug),
-				       bug_number));
+	      where = add_hyperlink(buffer, where,
+				    bug_number,
+				    sigc::bind(sigc::ptr_fun(&view_bug),
+					       bug_number));
 	    }
 	  }
       }
+
+    return where;
   }
 
   // \todo Maybe support hiding older versions by default, with a
@@ -123,9 +127,11 @@ namespace gui
   // NB: some changelogs aren't monotonically increasing, so that
   // support should put a link wherever the "newness state" goes from
   // newer to not-newer.
-  void render_changelog(const cwidget::util::ref_ptr<aptitude::apt::changelog> &cl,
-			const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
-			const std::string &current_version)
+  Gtk::TextBuffer::iterator
+  render_changelog(const cwidget::util::ref_ptr<aptitude::apt::changelog> &cl,
+		   const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
+		   const std::string &current_version,
+		   Gtk::TextBuffer::iterator where)
   {
     using aptitude::apt::changelog;
 
@@ -168,22 +174,22 @@ namespace gui
 	  _system->VS->CmpVersion(ent->get_version(), current_version) > 0;
 
 	if(it != cl->begin())
-	  textBuffer->insert(textBuffer->end(), "\n\n");
+	  where = textBuffer->insert(where, "\n\n");
 
 	Glib::RefPtr<Gtk::TextBuffer::Mark> changelog_entry_mark;
 	if(newer)
-	  changelog_entry_mark = textBuffer->create_mark(textBuffer->end());
+	  changelog_entry_mark = textBuffer->create_mark(where);
 
 	// Can't hyperlink to the package name because it's a
 	// source package name.  Plus, it might not exist.
-	textBuffer->insert(textBuffer->end(), ent->get_source());
-	textBuffer->insert(textBuffer->end(), " (");
-	textBuffer->insert_with_tag(textBuffer->end(),
-				    ent->get_version(),
-				    number_tag);
-	textBuffer->insert(textBuffer->end(), ") ");
-	textBuffer->insert(textBuffer->end(), ent->get_distribution());
-	textBuffer->insert(textBuffer->end(), "; urgency=");
+	where = textBuffer->insert(where, ent->get_source());
+	where = textBuffer->insert(where, " (");
+	where = textBuffer->insert_with_tag(where,
+					    ent->get_version(),
+					    number_tag);
+	where = textBuffer->insert(where, ") ");
+	where = textBuffer->insert(where, ent->get_distribution());
+	where = textBuffer->insert(where, "; urgency=");
 	Glib::RefPtr<Gtk::TextBuffer::Tag> urgency_tag;
 	const std::string &urgency = ent->get_urgency();
 	if(urgency == "low")
@@ -196,26 +202,28 @@ namespace gui
 	  urgency_tag = urgency_critical_tag;
 
 	if(urgency_tag)
-	  textBuffer->insert_with_tag(textBuffer->end(), urgency, urgency_tag);
+	  where = textBuffer->insert_with_tag(where, urgency, urgency_tag);
 	else
-	  textBuffer->insert(textBuffer->end(), urgency);
+	  where = textBuffer->insert(where, urgency);
 
-	textBuffer->insert(textBuffer->end(), "\n");
+	where = textBuffer->insert(where, "\n");
 
-	render_change_elements(ent->get_changes(), ent->get_elements()->get_elements(), textBuffer);
+	where = render_change_elements(ent->get_changes(), ent->get_elements()->get_elements(), textBuffer, where);
 
-	textBuffer->insert(textBuffer->end(), "\n");
-	textBuffer->insert(textBuffer->end(), " -- ");
-	textBuffer->insert(textBuffer->end(), ent->get_maintainer());
-	textBuffer->insert(textBuffer->end(), " ");
-	textBuffer->insert_with_tag(textBuffer->end(), ent->get_date_str(), date_tag);
+	where = textBuffer->insert(where, "\n");
+	where = textBuffer->insert(where, " -- ");
+	where = textBuffer->insert(where, ent->get_maintainer());
+	where = textBuffer->insert(where, " ");
+	where = textBuffer->insert_with_tag(where, ent->get_date_str(), date_tag);
 
 	if(newer)
 	  {
 	    Gtk::TextBuffer::iterator start = textBuffer->get_iter_at_mark(changelog_entry_mark);
-	    textBuffer->apply_tag(newer_tag, start, textBuffer->end());
+	    textBuffer->apply_tag(newer_tag, start, where);
 	  }
       }
+
+    return where;
   }
 
   void ChangeLogView::add_changelog_buffer(const temp::name &file,
@@ -225,7 +233,7 @@ namespace gui
       aptitude::apt::parse_changelog(file);
 
     if(cl.valid())
-      render_changelog(cl, textBuffer, curver);
+      render_changelog(cl, textBuffer, curver, textBuffer->end());
     else
       {
         Glib::RefPtr<Gtk::TextBuffer::Tag> warning_tag = textBuffer->create_tag();
