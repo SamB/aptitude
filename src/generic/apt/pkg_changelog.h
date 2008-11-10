@@ -82,7 +82,13 @@ namespace aptitude
        *  corresponding slot will be invoked with the file to which
        *  the changelog was downloaded as an argument.  If the
        *  changelog is already present in the cache, the callback will
-       *  be invoked immediately.
+       *  be invoked immediately.  If the callback is invoked during
+       *  the download, it will be invoked in whichever thread called
+       *  do_download().  If do_download might be invoked from a
+       *  background thread, the slot must be safe to copy and to call
+       *  from another thread.  (ideally, it should point to a
+       *  function, possibly with some bound arguments that are passed
+       *  by value)
        *
        *  If one of the entries in the vector is an end iterator or has no
        *  file lists, it will be silently dropped from the list.

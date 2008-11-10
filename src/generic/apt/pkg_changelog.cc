@@ -116,6 +116,22 @@ private:
 
     const entry &get_entry() const { return ent; }
     const string &get_real_uri() const { return real_uri; }
+
+    void Done(std::string Message,
+	      unsigned long Size,
+	      std::string CalcHash,
+	      pkgAcquire::MethodConfig *Cnf)
+    {
+      pkgAcqFile::Done(Message, Size, CalcHash, Cnf);
+
+      if(Status != pkgAcquire::Item::StatDone)
+	_error->Error("Failed to fetch the description of %s from the URI %s: %s",
+		      ent.get_srcpkg().c_str(),
+		      real_uri.c_str(),
+		      ErrorText.c_str());
+      else
+	ent.get_k()(ent.get_tempname());
+    }
   };
 
 public:
@@ -193,29 +209,32 @@ public:
       {
 	result rval = success;
 
-	for(pkgAcquire::ItemIterator it = fetcher->ItemsBegin();
-	    it != fetcher->ItemsEnd(); ++it)
-	  {
-	    AcqForEntry *item(dynamic_cast<AcqForEntry *>(*it));
-	    if(item != NULL)
-	      {
-		if(res != pkgAcquire::Continue || (*it)->Status != pkgAcquire::Item::StatDone)
-		  {
-		    _error->Error("Failed to fetch the description of %s from the URI %s: %s",
-				  item->get_entry().get_srcpkg().c_str(),
-				  item->get_real_uri().c_str(),
-				  item->ErrorText.c_str());
+	if(res != pkgAcquire::Continue)
+	  rval = failure;
+	else
+	  for(pkgAcquire::ItemIterator it = fetcher->ItemsBegin();
+	      it != fetcher->ItemsEnd(); ++it)
+	    {
+	      AcqForEntry *item(dynamic_cast<AcqForEntry *>(*it));
+	      if(item != NULL)
+		{
+		  if(item->Status != pkgAcquire::Item::StatDone)
+		    {
+		      _error->Error("Failed to fetch the description of %s from the URI %s: %s",
+				    item->get_entry().get_srcpkg().c_str(),
+				    item->get_real_uri().c_str(),
+				    item->ErrorText.c_str());
 
-		    rval = failure;
-		  }
-		else
-		  {
-		    const entry &ent(item->get_entry());
+		      rval = failure;
+		    }
+		  else
+		    {
+		      const entry &ent(item->get_entry());
 
-		    ent.get_k()(ent.get_tempname());
-		  }
-	      }
-	  }
+		      ent.get_k()(ent.get_tempname());
+		    }
+		}
+	    }
 
 	k(rval);
 	return;

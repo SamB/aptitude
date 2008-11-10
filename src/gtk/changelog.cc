@@ -47,8 +47,8 @@ namespace cw = cwidget;
 namespace gui
 {
   void ChangeLogView::do_view_changelog(temp::name n,
-                                string pkgname,
-                                string curverstr)
+					string pkgname,
+					string curverstr)
   {
     string menulabel =
       ssprintf(_("ChangeLog of %s"), pkgname.c_str());
@@ -118,7 +118,7 @@ namespace gui
   }
 
   void ChangeLogView::add_changelog_buffer(const temp::name &file,
-                                        const std::string &curver)
+					   const std::string &curver)
   {
     using aptitude::apt::changelog;
     cw::util::ref_ptr<changelog> cl =
@@ -237,6 +237,17 @@ namespace gui
     // TODO Auto-generated destructor stub
   }
 
+  namespace
+  {
+    // Helper function to post the "changelog download complete" event
+    // to the main thread.
+    void do_view_changelog_trampoline(temp::name name,
+				      safe_slot1<void, temp::name> slot)
+    {
+      post_event(safe_bind(slot, name));
+    }
+  }
+
   void ChangeLogView::load_version(pkgCache::VerIterator ver)
   {
     textBuffer = Gtk::TextBuffer::create();
@@ -269,7 +280,15 @@ namespace gui
     // information from the download backend to do that.
     textBuffer->set_text(_("Downloading changelog; please wait..."));
 
-    std::auto_ptr<download_manager> manager(global_changelog_cache.get_changelog(ver, sigc::bind(sigc::mem_fun(*this, &ChangeLogView::do_view_changelog), pkgname, curverstr)));
+    // The changelog continuation is triggered in the background
+    // thread, so we need to safely wrap it and post it to the main
+    // thread.
+    sigc::slot1<void, temp::name> k(sigc::bind(sigc::mem_fun(*this, &ChangeLogView::do_view_changelog),
+					       pkgname, curverstr));
+    safe_slot1<void, temp::name>  k_safe(make_safe_slot(k));
+    sigc::slot1<void, temp::name> k_trampoline(sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
+							  k_safe));
+    std::auto_ptr<download_manager> manager(global_changelog_cache.get_changelog(ver, k_trampoline));
 
     start_download(manager.release(),
 		   _("Downloading changelogs"),

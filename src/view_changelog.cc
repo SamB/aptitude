@@ -324,6 +324,17 @@ namespace
   {
     cw::toplevel::post_event(new aptitude::safe_slot_event(thunk));
   }
+
+  // Helper routine to safely run do_view_changelog in the main
+  // thread.
+  void do_view_changelog_trampoline(temp::name n,
+				    string pkgname,
+				    string curverstr)
+  {
+    sigc::slot0<void> slot(sigc::bind(sigc::ptr_fun(&do_view_changelog),
+				      n, pkgname, curverstr));
+    do_post_thunk(make_safe_slot(slot));
+  }
 }
 
 void view_changelog(pkgCache::VerIterator ver)
@@ -351,10 +362,15 @@ void view_changelog(pkgCache::VerIterator ver)
       return;
     }
 
+  // When the download completes, we'll invoke the trampoline
+  // function, which packages up a cwidget-style event in order to
+  // alert the main thread.
+  sigc::slot1<void, temp::name> k(sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
+					     pkgname, curverstr));
+
   using aptitude::apt::global_changelog_cache;
   download_manager *manager =
-    global_changelog_cache.get_changelog(ver,
-					 sigc::bind(sigc::ptr_fun(&do_view_changelog), pkgname, curverstr));
+    global_changelog_cache.get_changelog(ver, k);
 
   if(manager != NULL)
     {
