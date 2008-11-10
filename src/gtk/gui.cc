@@ -47,6 +47,7 @@
 #include <sigc++/signal.h>
 
 #include <cwidget/generic/threads/event_queue.h>
+#include <cwidget/generic/util/ssprintf.h>
 #include <cwidget/generic/util/transcode.h>
 
 #include <gtk/dependency_chains_tab.h>
@@ -150,6 +151,8 @@ namespace gui
 
     Gtk::Button *upgrade_button;
 
+    Gtk::Label *available_upgrades_label;
+
     cwidget::util::ref_ptr<ChangeLogView> changelog_view;
 
     void do_search()
@@ -206,6 +209,25 @@ namespace gui
 		     pMainWindow->get_notifyview());
     }
 
+    void handle_cache_closed()
+    {
+      available_upgrades_label->set_text("Available upgrades:");
+    }
+
+    void handle_upgrades_store_reloaded()
+    {
+      // Slightly lame: we know that the upgrade view will have as
+      // many rows as there are upgrades, so just count the number of
+      // rows (rather than re-calculating that and maybe being slow or
+      // inconsistent).
+      int num_upgrades = upgrades_pkg_view->get_model()->children().size();
+      const char *text(ngettext("%d available upgrade:",
+				"%d available upgrades:",
+				num_upgrades));
+      std::string formatted_text = cw::util::ssprintf(text, num_upgrades);
+      available_upgrades_label->set_text(formatted_text);
+    }
+
     public:
       DashboardTab(Glib::ustring label)
         : Tab(Dashboard, label,
@@ -221,6 +243,8 @@ namespace gui
 			      search_button);
 	get_xml()->get_widget("dashboard_upgrade_button",
 			      upgrade_button);
+	get_xml()->get_widget("dashboard_available_upgrades_label",
+			      available_upgrades_label);
 
 	upgrades_pkg_view = cwidget::util::ref_ptr<PkgView>(new PkgView(get_xml(), "dashboard_upgrades_treeview"));
 	upgrades_pkg_view->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &DashboardTab::activated_upgrade_package_handler));
@@ -228,8 +252,12 @@ namespace gui
 
 	cache_closed.connect(sigc::bind(sigc::mem_fun(*upgrade_button, &Gtk::Widget::set_sensitive),
 					false));
+	cache_closed.connect(sigc::mem_fun(*this,
+					   &DashboardTab::handle_cache_closed));
 	cache_reloaded.connect(sigc::bind(sigc::mem_fun(*upgrade_button, &Gtk::Widget::set_sensitive),
 					  true));
+	upgrades_pkg_view->store_reloaded.connect(sigc::mem_fun(*this,
+								&DashboardTab::handle_upgrades_store_reloaded));
 
 	search_entry->signal_activate().connect(sigc::mem_fun(*this, &DashboardTab::do_search));
 	search_button->signal_clicked().connect(sigc::mem_fun(*this, &DashboardTab::do_search));
