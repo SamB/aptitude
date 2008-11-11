@@ -25,7 +25,9 @@
 #include "aptitude_resolver_universe.h"
 #include "aptitudepolicy.h"
 #include "config_signal.h"
-#include "matchers.h"
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 #include <generic/problemresolver/solution.h>
 #include <generic/util/undo.h>
 
@@ -170,7 +172,8 @@ public:
   }
 };
 
-aptitudeDepCache::action_group::action_group(aptitudeDepCache &cache, undo_group *group)
+aptitudeDepCache::action_group::action_group(aptitudeDepCache &cache,
+					     undo_group *group)
   : parent_group(new pkgDepCache::ActionGroup(cache)),
     cache(cache), group(group)
 {
@@ -933,7 +936,9 @@ undoable *aptitudeDepCache::state_restorer(PkgIterator pkg, StateCache &state, a
 			ext_state.forbidver, this);
 }
 
-void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickies)
+void aptitudeDepCache::cleanup_after_change(undo_group *undo,
+					    std::set<pkgCache::PkgIterator> *changed_packages,
+					    bool alter_stickies)
   // Finds any packages whose states have changed and: (a) updates the
   // selected_state if it's not already updated; (b) adds an item to the
   // undo group.
@@ -941,7 +946,8 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
   // We get here with NULL backup_state in certain very early failures
   // (e.g., when someone else is holding a lock).  In this case we
   // don't know what the previous state was, so we can't possibly
-  // build a collection of undoers to return to it.
+  // build a collection of undoers to return to it or find out which
+  // packages changed relative to it.
   if(backup_state.PkgState == NULL ||
      backup_state.DepState == NULL ||
      backup_state.AptitudeState == NULL)
@@ -949,6 +955,10 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
 
   for(pkgCache::PkgIterator pkg=PkgBegin(); !pkg.end(); pkg++)
     {
+      // Set to true if we should signal that this package's visible
+      // state changed.
+      bool visibly_changed = false;
+
       if(PkgState[pkg->ID].Mode!=backup_state.PkgState[pkg->ID].Mode ||
 	 (PkgState[pkg->ID].Flags & pkgCache::Flag::Auto) != (backup_state.PkgState[pkg->ID].Flags & pkgCache::Flag::Auto) ||
 	 package_states[pkg->ID].selection_state!=backup_state.AptitudeState[pkg->ID].selection_state ||
@@ -1007,11 +1017,27 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
 		}
 	    }
 
+	  visibly_changed = true;
+
 	  if(undo)
 	    undo->add_item(state_restorer(pkg,
 					  backup_state.PkgState[pkg->ID],
 					  backup_state.AptitudeState[pkg->ID]));
 	}
+      // Detect things like broken-ness and other changes that
+      // shouldn't trigger undo but might trigger updating the
+      // package's display.
+      else if(PkgState[pkg->ID].Flags != backup_state.PkgState[pkg->ID].Flags ||
+	      PkgState[pkg->ID].DepState != backup_state.PkgState[pkg->ID].DepState ||
+	      PkgState[pkg->ID].CandidateVer != backup_state.PkgState[pkg->ID].CandidateVer ||
+	      PkgState[pkg->ID].Marked != backup_state.PkgState[pkg->ID].Marked ||
+	      PkgState[pkg->ID].Garbage != backup_state.PkgState[pkg->ID].Garbage ||
+	      package_states[pkg->ID].user_tags != backup_state.AptitudeState[pkg->ID].user_tags ||
+	      package_states[pkg->ID].new_package != backup_state.AptitudeState[pkg->ID].new_package)
+	visibly_changed = true;
+
+      if(visibly_changed && changed_packages != NULL)
+	changed_packages->insert(pkg);
     }
 }
 
@@ -1627,6 +1653,8 @@ void aptitudeDepCache::begin_action_group()
 
 void aptitudeDepCache::end_action_group(undo_group *undo)
 {
+  std::set<pkgCache::PkgIterator> changed_packages;
+
   eassert(group_level>0);
 
   if(group_level==1)
@@ -1642,11 +1670,12 @@ void aptitudeDepCache::end_action_group(undo_group *undo)
 
       sweep();
 
-      cleanup_after_change(undo);
+      cleanup_after_change(undo, &changed_packages);
 
       duplicate_cache(&backup_state);
 
       package_state_changed();
+      package_states_changed(&changed_packages);
     }
 
   group_level--;
@@ -1856,20 +1885,25 @@ class AptitudeInRootSetFunc : public pkgDepCache::InRootSetFunc
   /** \brief A pointer to the cache in which we're matching. */
   aptitudeDepCache &cache;
 
-  /** A matcher if one could be created; otherwise NULL. */
-  aptitude::matching::pkg_matcher *m;
+  /** A pattern if one could be created; otherwise NULL. */
+  cwidget::util::ref_ptr<aptitude::matching::pattern> p;
+
+  /** \brief The search cache to use in applying this function. */
+  cwidget::util::ref_ptr<aptitude::matching::search_cache> search_info;
 
   /** \b true if the package was successfully constructed. */
   bool constructedSuccessfully;
 
-  /** The secondary test to apply.  Only set if creating the
-   *  matcher succeeds.
+  /** The secondary test to apply.  Only set if creating the match
+   *  succeeds.
    */
   pkgDepCache::InRootSetFunc *chain;
 public:
   AptitudeInRootSetFunc(pkgDepCache::InRootSetFunc *_chain,
 			aptitudeDepCache &_cache)
-    : cache(_cache), m(NULL), constructedSuccessfully(false), chain(NULL)
+    : cache(_cache), p(NULL),
+      search_info(aptitude::matching::search_cache::create()),
+      constructedSuccessfully(false), chain(NULL)
   {
     std::string matchterm = aptcfg->Find(PACKAGE "::Keep-Unused-Pattern", "~nlinux-image-.*");
     if(matchterm.empty()) // Bug-compatibility with old versions.
@@ -1879,8 +1913,8 @@ public:
       constructedSuccessfully = true;
     else
       {
-	m = aptitude::matching::parse_pattern(matchterm);
-	if(m != NULL)
+	p = aptitude::matching::parse(matchterm);
+	if(p.valid())
 	  constructedSuccessfully = true;
       }
 
@@ -1896,7 +1930,7 @@ public:
   bool InRootSet(const pkgCache::PkgIterator &pkg)
   {
     pkgRecords &records(cache.get_records());
-    if(m != NULL && aptitude::matching::apply_matcher(m, pkg, cache, records))
+    if(p.valid() && aptitude::matching::get_match(p, pkg, search_info, cache, records).valid())
       return true;
     else
       return chain != NULL && chain->InRootSet(pkg);
@@ -1904,7 +1938,6 @@ public:
 
   ~AptitudeInRootSetFunc()
   {
-    delete m;
     delete chain;
   }
 };

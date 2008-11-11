@@ -12,6 +12,6 @@
 
 int cmdline_search(int argc, char *argv[], const char *status_fname,
 		   std::string display_format, std::string width, std::string sort,
-		   bool disable_columns);
+		   bool disable_columns, bool debug);
 
 #endif // CMDLINE_SEARCH_H

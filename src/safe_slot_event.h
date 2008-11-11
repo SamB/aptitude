@@ -1,6 +1,6 @@
-// changelog_parse.h                        -*-c++-*-
+// safe_slot_event.h               -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -17,29 +17,29 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
-#ifndef CHANGELOG_PARSE_H
-#define CHANGELOG_PARSE_H
+#ifndef SAFE_SLOT_EVENT_H
+#define SAFE_SLOT_EVENT_H
 
-#include <apt-pkg/pkgcache.h>
+#include <generic/util/safe_slot.h>
+#include <cwidget/toplevel.h>
 
-/** \file changelog_parse.h
- */
-
-namespace cwidget
+namespace aptitude
 {
-  class fragment;
+  class safe_slot_event : public cwidget::toplevel::event
+  {
+    safe_slot0<void> slot;
+
+  public:
+    safe_slot_event(const safe_slot0<void> &_slot)
+      : slot(_slot)
+    {
+    }
+
+    void dispatch()
+    {
+      slot.get_slot()();
+    }
+  };
 }
-namespace temp {class name;}
 
-/** Parse the contents of the given file as a Debian changelog.  If
- *  for some reason the file cannot be parsed, returns \b NULL.
- *
- *  \param file a temporary file object containing the changelog.
- *  \param verstr the name of the currently installed version of
- *                this package (empty if there is no installed
- *                version)
- */
-cwidget::fragment *make_changelog_fragment(const temp::name &file,
-					   const std::string &curver);
-
-#endif
+#endif // SAFE_SLOT_EVENT_H

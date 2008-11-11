@@ -41,31 +41,59 @@ AC_CHECK_LIB(pthread, main,
 ALL_LINGUAS="ar bs ca cs da de dz el es eu fi fr gl hu it ja km ku lt mr nb ne nl nn pl pt pt_BR ro ru sk sv th tl tr uk vi zh_CN zh_TW"
 AM_GNU_GETTEXT([external])
 
-HAVE_EPT=
-AC_ARG_WITH(ept,
-	AS_HELP_STRING(--with-ept, [compile against the ept library (enables debtags and xapian-index support)]),
-	[if test x$withval = xyes
-	 then
-	    HAVE_EPT=1
-	 fi])
-
-PKG_CHECK_MODULES(ept, libept, [], [HAVE_EPT=])
-
-if test x$HAVE_EPT = x1
-then
-  AC_DEFINE(HAVE_EPT, 1, [Define if the ept package information library is available.])
-else
-  # Force the program not to link against ept.
-  ept_CFLAGS=
-  ept_LIBS=
-fi
+PKG_CHECK_MODULES(ept, libept, [], [AC_MSG_ERROR([Can't find the ept library -- please install libept-dev])])
+AC_DEFINE([HAVE_EPT], [], [Backwards compatibility symbol; must always be defined.])
 
 PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 
 PKG_CHECK_MODULES(CWIDGET, cwidget)
 
-CXXFLAGS="$CXXFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS $ept_CFLAGS"
-LIBS="$LIBS $SIGC_LIBS $CWIDGET_LIBS $ept_LIBS"
+PKG_CHECK_MODULES(VTE, vte)
+
+HAVE_GTK=1
+AC_ARG_ENABLE(gtk,
+	AS_HELP_STRING(--disable-gtk, [don't compile the GTK+/gtkmm frontend even if the appropriate libraries are available]),
+	[if test x$withval = xyes
+	 then
+	     HAVE_GTK=1
+	 else
+	     HAVE_GTK=
+	 fi])
+
+WANT_HAVE_GTK=$HAVE_GTK
+
+dnl We always test all the libraries so that the user gets to see
+dnl which libraries are needed for GTK+.
+if test x$HAVE_GTK = x1
+then
+  AC_MSG_NOTICE([Testing for the libraries needed to build the GTK+ frontend.])
+
+  PKG_CHECK_MODULES(GLIBMM, glibmm-2.4,,[HAVE_GTK=])
+  PKG_CHECK_MODULES(GTHREAD, gthread-2.0,,[HAVE_GTK=])
+  PKG_CHECK_MODULES(GTKMM, gtkmm-2.4,,[HAVE_GTK=])
+  PKG_CHECK_MODULES(LIBGLADEMM, libglademm-2.4,,[HAVE_GTK=])
+else
+  AC_MSG_NOTICE([Disabling the GTK+ frontend at your request (--disable-gtk).])
+fi
+
+if test x$WANT_HAVE_GTK = x1 && test x$HAVE_GTK != x1
+then
+  AC_MSG_WARN([Unable to find the necessary GTK+ libraries; disabling GTK+ support.])
+fi
+
+if test x$HAVE_GTK = x1
+then
+  AC_MSG_NOTICE([The GTK+ frontend will be built.])
+fi
+
+AM_CONDITIONAL([BUILD_GTK], [test x$HAVE_GTK = x1])
+if test x$HAVE_GTK = x1
+then
+  AC_DEFINE([HAVE_GTK], [], [Define if the GTK+ frontend is included in the build.])
+fi
+
+CXXFLAGS="$CXXFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS $GLIBMM_CFLAGS $GTHREAD_CFLAGS $GTKMM_CFLAGS $LIBGLADEMM_CFLAGS $VTE_CFLAGS $ept_CFLAGS"
+LIBS="$LIBS $SIGC_LIBS $CWIDGET_LIBS $GLIBMM_LIBS $GTHREAD_LIBS $GTKMM_LIBS $LIBGLADEMM_LIBS $VTE_LIBS $ept_LIBS"
 AC_DEFINE_UNQUOTED(SIGC_VERSION, ["$(pkg-config --modversion sigc++-2.0)"], [The version of libsigc++ with which the program was compiled])
 
 dnl Checks for header files.
@@ -211,6 +239,14 @@ fi
 
 WERROR="-Werror"
 
+AC_ARG_ENABLE(private-glade-file,
+	AS_HELP_STRING([--disable-private-glade-file], [Always read the .glade file from \$datadir instead of reading one in ".".  This can be useful when installing aptitude globally, to avoid accidentally picking up the wrong version of the .glade file.]),
+	[if test x$enableval = xno
+	 then
+	   AC_DEFINE([DISABLE_PRIVATE_GLADE_FILE], [], [Define to disable the use of a .glade file found relative to the current working directory.])
+	 fi]
+	)
+
 AC_ARG_ENABLE(dynamic-backtrace,
 	AS_HELP_STRING([--enable-dynamic-backtrace], [Modify the executable so that it can generate a backtrace for uncaught exceptions.  Will double the size of the stripped binary.]),
 	[if test x$enableval = xyes
@@ -324,9 +360,11 @@ AC_CONFIG_FILES([
 	m4/Makefile
 	po/Makefile.in
 	src/Makefile
+	src/gtk/Makefile
 	src/cmdline/Makefile
 	src/generic/Makefile
 	src/generic/apt/Makefile
+	src/generic/apt/matching/Makefile
 	src/generic/problemresolver/Makefile
 	src/generic/util/Makefile
 	src/mine/Makefile

@@ -6508,7 +6508,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    </varlistentry>
 
 	    <varlistentry>
-	      <term><synopsis>pattern(<replaceable>pattern</replaceable> <optional>=> <replaceable>title</replaceable></optional><optional>, ...</optional>)</synopsis></term>
+	      <term><synopsis>pattern(<replaceable>pattern</replaceable> <optional>=> <replaceable>title</replaceable></optional> <optional>{ <replaceable>policy</replaceable> }</optional> <optional>, ...</optional>)</synopsis></term>
 
 	      <listitem>
 		<para>
@@ -6523,13 +6523,23 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <replaceable>title</replaceable> will be replaced by
 		  the Nth result of the match.  If
 		  <replaceable>title</replaceable> is not present, it
-		  is assumed to be <literal>\1</literal>.
+		  is assumed to be <literal>\1</literal>.  Note that
+		  packages which do not match any
+		  <replaceable>pattern</replaceable>s will not appear
+		  in the tree at all.
 		</para>
 
+		<example>
+		  <title>Use of <literal>pattern</literal> to group packages by their maintainer</title>
+
+		  <para>
+		    <literal>pattern(&Smaintainer;() => \1)</literal>
+		  </para>
+		</example>
+
 		<para>
-		  For instance, <literal>pattern(&Smaintainer;() =>
-		  \1)</literal> will group packages according to their
-		  Maintainer field.  The policy
+		  The example above will group packages according to
+		  their Maintainer field.  The policy
 		  <literal>pattern(&Smaintainer;())</literal> will do
 		  the same thing, as the absent
 		  <replaceable>title</replaceable> defaults to
@@ -6544,14 +6554,83 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <replaceable>pattern</replaceable> will be inserted
 		  into the tree at the same level as the
 		  <literal>pattern</literal> grouping, rather than
-		  being placed in subtrees.  For instance,
-		  <literal>pattern(&Saction;(remove) => Packages Being
-		  Removed, &Strue; ||)</literal> will place packages
-		  that are being removed into a subtree, and place all
-		  the other packages at the current level.  Any later
-		  grouping policies will apply to both sets of
-		  packages, of course.
+		  being placed in subtrees.
 		</para>
+
+		<example>
+		  <title>
+		    Use of <literal>pattern</literal> with some
+		    packages placed at the top level
+		  </title>
+
+		  <para>
+		    <literal>pattern(&Saction;(remove) => Packages
+		    Being Removed, &Strue; ||)</literal>
+		  </para>
+		</example>
+
+		<para>
+		  The example above will place packages that are being
+		  removed into a subtree, and place all the other
+		  packages at the current level, grouped according to
+		  the policies that follow <literal>pattern</literal>.
+		</para>
+
+		<para>
+		  By default, all the packages that match each pattern
+		  are grouped according to the rules that follow the
+		  <literal>pattern</literal> policy.  To specify a
+		  different policy for some packages, write the policy
+		  in braces (<literal>{}</literal>) after the title of
+		  the group, after the <literal>||</literal>, or after
+		  the pattern if neither is present.  For instance:
+		</para>
+
+		<example id='examplePatternGroupingPolicyWithSubPolicies'>
+		  <title>
+		    Use of the <literal>pattern</literal> grouping policy with sub-policies
+		  </title>
+
+		  <para>
+		    <literal>pattern(&Saction;(remove) => Packages
+		    Being Removed {}, &Saction;(install) => Packages
+		    Being Installed, &Strue; || {status})</literal>
+		  </para>
+		</example>
+
+		<para>
+		  The policy in the above example has the following
+		  effects:
+		</para>
+
+		<itemizedlist>
+		  <listitem>
+		    <para>
+		      Packages that are being removed are placed into
+		      a subtree labeled <quote>Packages Being
+		      Removed</quote>; the grouping policy for this
+		      subtree is empty, so the packages are placed
+		      into a flat list.
+		    </para>
+		  </listitem>
+
+		  <listitem>
+		    <para>
+		      Packages that are being installed are placed
+		      into a subtree labeled <literal>Packages Being
+		      Installed</literal> and grouped according to the
+		      policies that follow <literal>pattern</literal>.
+		    </para>
+		  </listitem>
+
+		  <listitem>
+		    <para>
+		      All remaining packages are placed at the top
+		      level of the tree, grouped according to their
+		      status.
+		    </para>
+		  </listitem>
+		</itemizedlist>
 
 		<para>
 		  See <xref linkend='secSearchPatterns'/>
@@ -9669,7 +9748,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg>
 		In command-line mode, if this option is
 		<literal>true</literal>, the <link
-		linkend='safeUpgrade'><literal>safe-upgrade</literal></link>
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
 		command will not attempt to resolve dependencies by
 		installing new packages.  If upgrading package
 		<replaceable>A</replaceable> would require package
@@ -9678,6 +9757,23 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		upgraded.  This corresponds to the command-line option
 		<literal><link
 		linkend='cmdlineOptionSafeUpgradeNoNewInstalls'>--no-new-installs</link></literal>.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configCmdLine-Safe-Upgrade-Show-Resolver-Actions'>
+	      <seg><literal>Aptitude::CmdLine::Safe-Upgrade::Show-Resolver-Actions</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		If this option is enabled, the <link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+		command will display an explanation of the actions
+		taken by the resolver before showing the installation
+		preview.  This option is similar to <link
+		linkend='configSafe-Resolver-Show-Resolver-Actions'><literal>Aptitude::Safe-Resolver::Show-Resolver-Actions</literal></link>,
+		but only applies to the <link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+		command.  Equivalent to the command-line option <link
+		linkend='cmdlineOptionShowResolverActions'><literal>--show-resolver-actions</literal></link>.
 	      </seg>
 	    </seglistitem>
 
@@ -9732,6 +9828,26 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		displays the same information you can access via
 		<literal>aptitude why</literal> or by pressing
 		<keycap>i</keycap> in a package list.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configSafe-Resolver-Show-Resolver-Actions'>
+	      <seg><literal>Aptitude::Safe-Resolver::Show-Resolver-Actions</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		If this option is enabled, then when the
+		<quote>safe</quote> dependency resolver has been
+		activated via <link
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
+		it will display a summary of the actions taken by the
+		resolver before showing the installation preview.
+		This option is similar to <link
+		linkend='configCmdLine-Safe-Upgrade-Show-Resolver-Actions'><literal>Aptitude::Safe-Upgrade::Show-Resolver-Actions</literal></link>,
+		but only applies to command-line actions other than
+		<link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>.
+		Equivalent to the command-line option <link
+		linkend='cmdlineOptionShowResolverActions'><literal>--show-resolver-actions</literal></link>.
 	      </seg>
 	    </seglistitem>
 
@@ -10180,23 +10296,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		keeping a package in its current state, if that
 		package is not already going to be kept in its current
 		state.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configProblemResolver-MaxSuccessors'>
-	      <seg><literal>Aptitude::ProblemResolver::Max-Successors</literal></seg>
-	      <seg><literal>0</literal></seg>
-	      <seg>
-		When new possible solutions are being generated, this
-		value controls how long the generation procedure
-		lasts.  Successors are generated in discrete bundles,
-		and as soon as at least one and at most
-		<replaceable>Max-Successors</replaceable> nodes have
-		been generated, successor generation terminates.
-		Turning this value up might cause the first few
-		generated solutions to have higher scores; on the
-		other hand, it might cause each resolver
-		<quote>step</quote> to take a long time.
 	      </seg>
 	    </seglistitem>
 
@@ -10718,6 +10817,18 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		If this option is <literal>true</literal>,
 		&aptitude; will format descriptions so that each
 		line is exactly the width of the screen.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configFlat-View-As-First-View'>
+	      <seg><literal>Aptitude::UI::Flat-View-As-First-View</literal></seg>
+
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		If this option is <literal>true</literal>,
+		&aptitude; will display a flat view on startup
+		instead of the default view.
 	      </seg>
 	    </seglistitem>
 

@@ -889,9 +889,23 @@ namespace aptitude
       }
     }
 
+    // Implements the --show-resolver-actions command-line parameters.
+    void show_resolver_actions(const generic_solution<aptitude_universe> &solution)
+    {
+      if(!solution.get_actions().empty() ||
+	 !solution.get_unresolved_soft_deps().empty())
+	{
+	  // The previous line will say "resolving dependencies...";
+	  // separate the solution from this message..
+	  std::cout << std::endl;
+	  std::auto_ptr<cw::fragment> story(solution_story(solution));
+	  std::cout << story->layout(screen_width, screen_width, cwidget::style());
+	}
+    }
+
     // Take the first solution we can compute, returning false if we
     // failed to find a solution.
-    bool safe_resolve_deps(int verbose, bool no_new_installs, bool no_new_upgrades)
+    bool safe_resolve_deps(int verbose, bool no_new_installs, bool no_new_upgrades, bool show_story)
     {
       if(!resman->resolver_exists())
 	return true;
@@ -953,6 +967,9 @@ namespace aptitude
 	  sol.dump(std::cout, true);
 	  std::cout << std::endl;
 
+	  if(show_story)
+	    show_resolver_actions(last_sol);
+
 	  (*apt_cache_file)->apply_solution(last_sol, NULL);
 	}
       // If anything goes wrong, we give up (silently if verbosity is disabled).
@@ -960,6 +977,9 @@ namespace aptitude
 	{
 	  if(last_sol)
 	    {
+	      if(show_story)
+		show_resolver_actions(last_sol);
+
 	      std::cout << _("The resolver timed out after producing a solution; some possible upgrades might not be performed.");
 	      (*apt_cache_file)->apply_solution(last_sol, NULL);
 	      return true;
@@ -975,6 +995,9 @@ namespace aptitude
 	{
 	  if(last_sol)
 	    {
+	      if(show_story)
+		show_resolver_actions(last_sol);
+
 	      (*apt_cache_file)->apply_solution(last_sol, NULL);
 	      return true;
 	    }
@@ -989,6 +1012,9 @@ namespace aptitude
 	{
 	  if(last_sol)
 	    {
+	      if(show_story)
+		show_resolver_actions(last_sol);
+
 	      (*apt_cache_file)->apply_solution(last_sol, NULL);
 	      std::cout << cw::util::ssprintf(_("Dependency resolution incomplete (%s); some possible upgrades might not be performed."), e.errmsg().c_str());
 	      return true;

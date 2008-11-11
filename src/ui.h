@@ -49,6 +49,9 @@ namespace cwidget
   }
 }
 
+class download_list;
+typedef cwidget::util::ref_ptr<download_list> download_list_ref;
+
 class progress;
 typedef cwidget::util::ref_ptr<progress> progress_ref;
 /******************************************************************************
@@ -250,18 +253,16 @@ cwidget::fragment *wrapbox(cwidget::fragment *contents);
  *                           used as its title; it will be cwidget::util::transcoded.
  *  \param longtitle         if a new view is generated, this string is
  *                           used as its long title; it will be cwidget::util::transcoded.
- *  \param abortslot         the slot to trigger if the download is aborted.
  *
  *  \return the new download manager and the download status widget.
  */
 std::pair<download_signal_log *,
-	  cwidget::widgets::widget_ref>
+	  download_list_ref>
 gen_download_progress(bool force_noninvasive,
 		      bool list_update,
 		      const std::string &title,
 		      const std::string &longtitle,
-		      const std::string &tablabel,
-		      cwidget::util::slot0arg abortslot);
+		      const std::string &tablabel);
 
 // Asks the user for simple input (the question will appear in a "minibuffer"
 // or in a dialog according to preferences)
@@ -355,6 +356,9 @@ void do_examine_solution();
 
 void do_new_package_view(OpProgress &progress);
 // Displays a new package-view.
+
+void do_new_flat_view(OpProgress &progress);
+// Displays a new flat-view.
 
 void do_package_run_or_show_preview();
 // Shows a preview if previews are enabled (and why would you disable them?),

@@ -26,6 +26,8 @@
 
 using namespace std;
 
+using aptitude::apt::global_changelog_cache;
+
 namespace
 {
 void set_name(temp::name n, temp::name *target)
@@ -49,9 +51,10 @@ temp::name changelog_by_version(const std::string &pkg,
   temp::name rval;
   download_manager::result res = download_manager::failure;
 
-  download_manager *m = get_changelog_from_source(pkg, ver, "", pkg,
-						  sigc::bind(sigc::ptr_fun(set_name),
-							     &rval));
+  download_manager *m =
+    global_changelog_cache.get_changelog_from_source(pkg, ver, "", pkg,
+						     sigc::bind(sigc::ptr_fun(set_name),
+								&rval));
   if(m != NULL)
     {
       res = cmdline_do_download(m, 0);
@@ -60,8 +63,8 @@ temp::name changelog_by_version(const std::string &pkg,
 
   if(res != download_manager::success || !rval.valid())
     {
-      m = get_changelog_from_source(pkg, ver, "contrib/foo", pkg,
-				    sigc::bind(sigc::ptr_fun(set_name), &rval));
+      m = global_changelog_cache.get_changelog_from_source(pkg, ver, "contrib/foo", pkg,
+							   sigc::bind(sigc::ptr_fun(set_name), &rval));
       if(m != NULL)
 	{
 	  res = cmdline_do_download(m, 0);
@@ -71,8 +74,8 @@ temp::name changelog_by_version(const std::string &pkg,
 
   if(res != download_manager::success || !rval.valid())
     {
-      m = get_changelog_from_source(pkg, ver, "non-free/foo", pkg,
-				    sigc::bind(sigc::ptr_fun(set_name), &rval));
+      m = global_changelog_cache.get_changelog_from_source(pkg, ver, "non-free/foo", pkg,
+							   sigc::bind(sigc::ptr_fun(set_name), &rval));
       if(m != NULL)
 	{
 	  res = cmdline_do_download(m, 0);
@@ -166,11 +169,11 @@ void do_cmdline_changelog(const vector<string> &packages)
 	  download_manager *m = NULL;
 	  if(p.valid())
 	    {
-	      m = get_changelog_from_source(p.get_package(),
-					    p.get_version(),
-					    p.get_section(),
-					    pkg.Name(),
-					    sigc::bind(sigc::ptr_fun(&set_name), &filename));
+	      m = global_changelog_cache.get_changelog_from_source(p.get_package(),
+								   p.get_version(),
+								   p.get_section(),
+								   pkg.Name(),
+								   sigc::bind(sigc::ptr_fun(&set_name), &filename));
 	    }
 	  else
 	    {
@@ -178,8 +181,8 @@ void do_cmdline_changelog(const vector<string> &packages)
 	      if(ver.end() && source == cmdline_version_version)
 		filename = changelog_by_version(package, sourcestr);
 	      else
-		m = get_changelog(ver,
-				  sigc::bind(sigc::ptr_fun(&set_name), &filename));
+		m = global_changelog_cache.get_changelog(ver,
+							 sigc::bind(sigc::ptr_fun(&set_name), &filename));
 	    }
 
 	  if(m != NULL)
@@ -198,11 +201,11 @@ void do_cmdline_changelog(const vector<string> &packages)
 	  download_manager *m = NULL;
 
 	  if(p.valid())
-	    m = get_changelog_from_source(p.get_package(),
-					  p.get_version(),
-					  p.get_section(),
-					  p.get_package(),
-					  sigc::bind(sigc::ptr_fun(&set_name), &filename));
+	    m = global_changelog_cache.get_changelog_from_source(p.get_package(),
+								 p.get_version(),
+								 p.get_section(),
+								 p.get_package(),
+								 sigc::bind(sigc::ptr_fun(&set_name), &filename));
 	  else
 	    {
 	      // We couldn't find a real or source package with the

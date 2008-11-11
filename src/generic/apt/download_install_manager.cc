@@ -1,6 +1,6 @@
 // download_install_manager.cc
 //
-//   Copyright (C) 2005-2007 Daniel Burrows
+//   Copyright (C) 2005-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -30,13 +30,17 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/sourcelist.h>
 
+#include <sigc++/bind.h>
+
 #include <pthread.h>
 #include <signal.h>
 
 using namespace std;
 
-download_install_manager::download_install_manager(bool _download_only)
-  : log(NULL), download_only(_download_only), pm(new pkgDPkgPM(*apt_cache_file))
+download_install_manager::download_install_manager(bool _download_only,
+						   const run_dpkg_in_terminal_func &_run_dpkg_in_terminal)
+  : log(NULL), download_only(_download_only), pm(new pkgDPkgPM(*apt_cache_file)),
+    run_dpkg_in_terminal(_run_dpkg_in_terminal)
 {
 }
 
@@ -100,8 +104,7 @@ bool download_install_manager::prepare(OpProgress &progress,
   return true;
 }
 
-download_manager::result download_install_manager::execute_install_run(pkgAcquire::RunResult res,
-								       OpProgress &progress)
+download_manager::result download_install_manager::finish_pre_dpkg(pkgAcquire::RunResult res)
 {
   if(res != pkgAcquire::Continue)
     return failure;
@@ -132,8 +135,6 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
 
   log_changes();
 
-  pre_install_hook();
-
   // Note that someone could grab the lock before dpkg takes it;
   // without a more complicated synchronization protocol (and I don't
   // control the code at dpkg's end), them's the breaks.
@@ -141,12 +142,23 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
 
   result rval = success;
 
+  const pkgPackageManager::OrderResult pre_fork_result =
+    pm->DoInstallPreFork();
+
+  if(pre_fork_result == pkgPackageManager::Failed)
+    rval = failure;
+
+  return rval;
+}
+
+pkgPackageManager::OrderResult download_install_manager::run_dpkg(int status_fd)
+{
   sigset_t allsignals;
   sigset_t oldsignals;
   sigfillset(&allsignals);
 
   pthread_sigmask(SIG_UNBLOCK, &allsignals, &oldsignals);
-  pkgPackageManager::OrderResult pmres = pm->DoInstall(aptcfg->FindI("APT::Status-Fd", -1));
+  pkgPackageManager::OrderResult pmres = pm->DoInstallPostFork(status_fd);
 
   switch(pmres)
     {
@@ -156,6 +168,30 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
       system("DPKG_NO_TSTP=1 dpkg --configure -a");
       _error->Discard();
       
+      break;
+    case pkgPackageManager::Completed:
+      break;
+
+    case pkgPackageManager::Incomplete:
+      break;
+    }
+
+  pthread_sigmask(SIG_SETMASK, &oldsignals, NULL);
+
+  return pmres;
+}
+
+void download_install_manager::finish_post_dpkg(pkgPackageManager::OrderResult dpkg_result,
+						OpProgress *progress,
+						const sigc::slot1<void, result> &k)
+{
+  result rval = success;
+
+  switch(dpkg_result)
+    {
+    case pkgPackageManager::Failed:
+      _error->Discard();
+
       rval = failure;
       break;
     case pkgPackageManager::Completed:
@@ -166,30 +202,18 @@ download_manager::result download_install_manager::execute_install_run(pkgAcquir
       break;
     }
 
-  pthread_sigmask(SIG_SETMASK, &oldsignals, NULL);
-  post_install_hook(pmres);
-
   fetcher->Shutdown();
 
   if(!pm->GetArchives(fetcher, &src_list, apt_package_records))
-    return failure;
-
-  if(!apt_cache_file->GainLock())
+    rval = failure;
+  else if(!apt_cache_file->GainLock())
     // This really shouldn't happen.
     {
       _error->Error(_("Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"));
-      return failure;
+      rval = failure;
     }
 
-  return rval;
-}
-
-download_manager::result download_install_manager::finish(pkgAcquire::RunResult res,
-							  OpProgress &progress)
-{
-  result run_res = execute_install_run(res, progress);
-
-  if(run_res != do_again)
+  if(rval != do_again)
     {
       apt_close_cache();
 
@@ -202,18 +226,41 @@ download_manager::result download_install_manager::finish(pkgAcquire::RunResult 
       // world.
       //
       // This implicitly updates the package state file on disk.
-      apt_load_cache(&progress, true);
+      apt_load_cache(progress, true);
 
       if(aptcfg->FindB(PACKAGE "::Forget-New-On-Install", false))
 	{
 	  if(apt_cache_file != NULL)
 	    {
 	      (*apt_cache_file)->forget_new(NULL);
-	      (*apt_cache_file)->save_selection_list(progress);
+	      (*apt_cache_file)->save_selection_list(*progress);
 	      post_forget_new_hook();
 	    }
 	}
     }
 
-  return run_res;
+  k(rval);
+}
+
+void download_install_manager::finish(pkgAcquire::RunResult result,
+				      OpProgress *progress,
+				      const sigc::slot1<void, result> &k)
+{
+  const download_manager::result pre_res = finish_pre_dpkg(result);
+
+  if(pre_res == success)
+    {
+      run_dpkg_in_terminal(sigc::mem_fun(*this, &download_install_manager::run_dpkg),
+			   sigc::bind(sigc::mem_fun(*this, &download_install_manager::finish_post_dpkg),
+				      progress,
+				      k));
+      return;
+    }
+  else
+    {
+      finish_post_dpkg(pkgPackageManager::Failed,
+		       progress,
+		       k);
+      return;
+    }
 }

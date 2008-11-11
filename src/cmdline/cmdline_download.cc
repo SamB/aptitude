@@ -13,7 +13,9 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_signal_log.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 #include <generic/apt/pkg_acqfile.h>
 
 #include <apt-pkg/acquire.h>
@@ -78,19 +80,24 @@ int cmdline_download(int argc, char *argv[])
       else
 	{
 	  using namespace aptitude::matching;
-	  std::auto_ptr<pkg_matcher> m(parse_pattern(name.c_str()));
-	  if(m.get() == NULL)
+	  using cwidget::util::ref_ptr;
+	  ref_ptr<pattern> p(parse(name.c_str()));
+	  if(!p.valid())
 	    {
 	      _error->DumpErrors();
 	      return false;
 	    }
 
-	  for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin();
-	      !pkg.end(); ++pkg)
-	    {
-	      if(apply_matcher(m.get(), pkg, *apt_cache_file, *apt_package_records))
-		packages.push_back(pkg);
-	    }
+	  std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > > matches;
+	  ref_ptr<search_cache> search_info(search_cache::create());
+	  search(p, search_info,
+		 matches,
+		 *apt_cache_file,
+		 *apt_package_records);
+
+	  for(std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >::const_iterator
+		it = matches.begin(); it != matches.end(); ++it)
+	    packages.push_back(it->first);
 
 	  // Maybe there should be a warning here if packages is
 	  // empty?  TODO: think about it again when the string freeze

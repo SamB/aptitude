@@ -733,8 +733,8 @@ void resolver_manager::create_resolver()
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::BrokenScore", -100),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::UnfixedSoftScore", -200),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::Infinity", 1000000),
-				 aptcfg->FindI(PACKAGE "::ProblemResolver::Max-Successors", 0),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::ResolutionScore", 50),
+				 std::vector<aptitude_resolver::resolver_hint>(),
 				 cache);
 
   resolver->add_action_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::PreserveManualScore", 60),
@@ -1437,10 +1437,38 @@ void resolver_manager::dump(ostream &out)
       << resolver->get_broken_score() << " "
       << resolver->get_unresolved_soft_dep_score() << " "
       << resolver->get_infinity() << " "
-      << resolver->get_max_successors() << " "
       << resolver->get_full_solution_score() << " ";
 
   resolver->dump_scores(out);
 
   out << "EXPECT ( " << aptcfg->FindI(PACKAGE "::Resolver::StepLimit", 5000) << " ANY )" << std::endl;
+}
+
+void resolver_manager::maybe_start_solution_calculation(bool blocking,
+							background_continuation *k)
+{
+  state st = state_snapshot();
+
+  if(st.resolver_exists &&
+     st.selected_solution == st.generated_solutions &&
+     !st.solutions_exhausted &&
+     !st.background_thread_active &&
+     !st.background_thread_aborted)
+    {
+      const int selected = st.selected_solution;
+      const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
+      const int wait_steps = aptcfg->FindI(PACKAGE "::ProblemResolver::WaitSteps", 50);
+
+      if(limit > 0)
+	{
+	  if(blocking)
+	    resman->get_solution_background_blocking(selected, limit, wait_steps, k);
+	  else
+	    resman->get_solution_background(selected, limit, k);
+	}
+      else
+	delete k;
+    }
+  else
+    delete k;
 }

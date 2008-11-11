@@ -1,5 +1,7 @@
 MAINTAINERCLEANFILES = Makefile.in
 
+SUBDIRS = matching
+
 localedir = $(datadir)/locale
 INCLUDES = -I$(top_builddir) -I$(srcdir) -I$(top_srcdir) -I$(top_srcdir)/src
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
@@ -25,8 +27,12 @@ libgeneric_apt_a_SOURCES = \
         aptitude_resolver_universe.h \
         apt_undo_group.cc   \
         apt_undo_group.h    \
+	changelog_parse.cc  \
+	changelog_parse.h   \
         config_signal.cc    \
         config_signal.h     \
+	desc_parse.cc       \
+	desc_parse.h        \
 	download_manager.cc \
 	download_manager.h  \
 	download_install_manager.cc \
@@ -41,8 +47,6 @@ libgeneric_apt_a_SOURCES = \
         infer_reason.h      \
 	log.cc		    \
 	log.h		    \
-        matchers.cc         \
-        matchers.h          \
         pkg_acqfile.cc      \
         pkg_acqfile.h       \
         pkg_changelog.cc    \

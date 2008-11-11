@@ -189,6 +189,12 @@ public:
 
     action_group(const action_group &other);
   public:
+    /** \brief Create a new action group.
+     *
+     *  \param cache  The package cache on which to act.
+     *  \param group  The undo group to add changes to, or NULL to not remember
+     *                changes.
+     */
     action_group(aptitudeDepCache &cache, undo_group *group = NULL);
 
     ~action_group();
@@ -304,7 +310,9 @@ private:
   // This makes the **ASSUMPTION** that if the target's tables aren't
   // NULL, they're properly sized..
 
-  void cleanup_after_change(undo_group *undo, bool alter_stickies=true);
+  void cleanup_after_change(undo_group *undo,
+			    std::set<pkgCache::PkgIterator> *changed_packages,
+			    bool alter_stickies=true);
   // Finds anything that magically changed and creates an undo item for it..
   // If alter_stickies is false, sticky states will be left alone.  (hack :( )
 
@@ -501,6 +509,11 @@ public:
    *  changed.
    */
   sigc::signal0<void> package_state_changed;
+
+  /** \brief This signal is emitted when any changes to a package's state
+   *  that might need to trigger a redraw of that package take place.
+   */
+  sigc::signal1<void, const std::set<pkgCache::PkgIterator> *> package_states_changed;
 
   // Emitted when a package's categorization is potentially changed.
   // (in particular, when package "new" states are forgotten)

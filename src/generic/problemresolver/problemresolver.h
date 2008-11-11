@@ -628,35 +628,6 @@ private:
    */
   int minimum_score;
 
-  /** The "maximum" number of successors to generate for any given
-   *  node.  Note, however, that a full set of successors will always
-   *  be generated for each broken dependency, so this is not exact.
-   *
-   *  The theoretical justification is that in order to cover all
-   *  solutions, it's sufficient to generate all successors for a
-   *  single broken dependency.  This avoids the problem that when a
-   *  large number of packages are broken, or when a single package
-   *  version with a large number of reverse dependencies is broken,
-   *  you can end up searching way too many successor nodes, even if
-   *  all the successors are discarded outright.
-   *
-   *  Unfortunately, only generating one successor has its own
-   *  problem: solutions might be generated out-of-order (i.e., worse
-   *  solutions before better).  This variable allows you to seek a
-   *  "happy medium" by generating a reasonable number of successors,
-   *  but not too many.  If a single package breaks a large number of
-   *  other packages, then any attempt to fix those packages should
-   *  generate the correct successor (which will then pop to the top
-   *  of the queue and likely stay there), while if a large number of
-   *  unrelated packages are broken, it doesn't matter which successor
-   *  goes first.
-   *
-   *  Note that in practice, turning this up is very likely to result
-   *  in dreadful performance; the option to do so may very well be
-   *  removed in the future.
-   */
-  unsigned int max_successors;
-
   /** The universe in which we are solving problems. */
   const PackageUniverse universe;
 
@@ -2207,6 +2178,11 @@ private:
     // Set to \b true if this search node is untenable.
     bool dead_end = false;
 
+    int num_least_successors_user_impinging = -1;
+    dep least_successors_user_impinging;
+    int num_least_successors = -1;
+    dep least_successors;
+
     // This loop attempts to generate all the successors of a
     // solution.  However, if a "forced" dependency arises, it
     // re-verifies all the dependencies of the solution.
@@ -2283,6 +2259,22 @@ private:
 				null_generator(num_successors),
 				visited_packages);
 
+	    if(impinges_user_constraint(*bi))
+	      {
+		if(num_least_successors_user_impinging == -1 ||
+		   num_successors < num_least_successors_user_impinging)
+		  {
+		    num_least_successors_user_impinging = num_successors;
+		    least_successors_user_impinging = *bi;
+		  }
+	      }
+
+	    if(num_least_successors == -1 ||
+	       num_successors < num_least_successors)
+	      {
+		num_least_successors = num_successors;
+		least_successors = *bi;
+	      }
 
 
 	    if(num_successors == 0)
@@ -2317,6 +2309,9 @@ private:
 
 		curr = v.back();
 		done = false;
+
+		num_least_successors_user_impinging = -1;
+		num_least_successors = -1;
 	      }
 	  }
       }
@@ -2339,41 +2334,36 @@ private:
 
     // First try to enqueue stuff related to a dependency that the
     // user constrained; then just go for a free-for-all.
-    for(typename imm::set<dep>::const_iterator bi=curr.get_broken().begin();
-	bi!=curr.get_broken().end() && (nsols == 0 ||
-					nsols < max_successors); ++bi)
-
-      if(impinges_user_constraint(*bi))
-	{
-	  // Is it possible to take this out somehow?
-	  imm::map<package, action> conflict;
-
-	  if(debug)
-	    std::cout << "Generating successors for " << *bi
-		      << std::endl;
-
-	  std::vector<solution> v;
-	  generate_successors(curr, *bi, conflict,
-			      real_generator(v, visited_packages),
-			      visited_packages);
-	  try_enqueue(v);
-	  nsols += v.size();
-	}
-
-    for(typename imm::set<dep>::const_iterator bi=curr.get_broken().begin();
-	bi!=curr.get_broken().end() && (nsols == 0 ||
-					nsols < max_successors); ++bi)
+    if(num_least_successors_user_impinging != -1)
       {
-	// Is it possible to take this out somehow?
 	imm::map<package, action> conflict;
 
 	if(debug)
-	  std::cout << "Generating successors for " << *bi
+	  std::cout << "Generating successors for "
+		    << least_successors_user_impinging
 		    << std::endl;
 
 	std::vector<solution> v;
-	generate_successors(curr, *bi, conflict,
-			    real_generator(v, visited_packages),
+	generate_successors(curr, least_successors_user_impinging,
+			    conflict, real_generator(v, visited_packages),
+			    visited_packages);
+	try_enqueue(v);
+	nsols += v.size();
+      }
+
+    // Should never happen unless we have no broken dependencies.
+    if(num_least_successors != -1)
+      {
+	imm::map<package, action> conflict;
+
+	if(debug)
+	  std::cout << "Generating successors for "
+		    << least_successors
+		    << std::endl;
+
+	std::vector<solution> v;
+	generate_successors(curr, least_successors,
+			    conflict, real_generator(v, visited_packages),
 			    visited_packages);
 	try_enqueue(v);
 	nsols += v.size();
@@ -2394,12 +2384,12 @@ public:
    */
   generic_problem_resolver(int _step_score, int _broken_score,
 			   int _unfixed_soft_score,
-			   int infinity, unsigned int _max_successors,
+			   int infinity,
 			   int _full_solution_score,
 			   const PackageUniverse &_universe)
     :weights(_step_score, _broken_score, _unfixed_soft_score,
 	     _full_solution_score, _universe.get_version_count()),
-     minimum_score(-infinity), max_successors(_max_successors),
+     minimum_score(-infinity),
      universe(_universe), finished(false), deferred_dirty(false),
      debug(false), remove_stupid(true),
      solver_executing(false), solver_cancelled(false),
@@ -2433,7 +2423,6 @@ public:
   int get_broken_score() {return weights.broken_score;}
   int get_unresolved_soft_dep_score() {return weights.unfixed_soft_score;}
   int get_infinity() {return -minimum_score;}
-  int get_max_successors() {return max_successors;}
   int get_full_solution_score() {return weights.full_solution_score;}
 
   /** Enables or disables debugging.  Debugging is initially

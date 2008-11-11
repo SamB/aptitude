@@ -1,4 +1,4 @@
-// main.cc  (neé testscr.cc)
+// main.cc  (neÃ© testscr.cc)
 //
 //  Copyright 1999-2008 Daniel Burrows
 //
@@ -34,7 +34,9 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <generic/problemresolver/exceptions.h>
 
@@ -66,12 +68,15 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/init.h>
 
-#include "ui.h"
+#ifdef HAVE_GTK
+#include "gtk/gui.h"
+#endif
 
 #include "progress.h"
 #include "pkg_columnizer.h"
 #include "pkg_grouppolicy.h"
 #include "pkg_view.h"
+#include "ui.h"
 
 namespace cw = cwidget;
 
@@ -206,9 +211,13 @@ enum {
   OPTION_REMOVE_USER_TAG_FROM,
   OPTION_SAFE_RESOLVER,
   OPTION_FULL_RESOLVER,
+  OPTION_SHOW_RESOLVER_ACTIONS,
+  OPTION_NO_SHOW_RESOLVER_ACTIONS,
   OPTION_ARCH_ONLY,
   OPTION_NOT_ARCH_ONLY,
-  OPTION_DISABLE_COLUMNS
+  OPTION_DISABLE_COLUMNS,
+  OPTION_GUI,
+  OPTION_NO_GUI
 };
 int getopt_result;
 
@@ -238,6 +247,8 @@ option opts[]={
   {"allow-new-upgrades", 0, &getopt_result, OPTION_ALLOW_NEW_UPGRADES},
   {"safe-resolver", 0, &getopt_result, OPTION_SAFE_RESOLVER},
   {"full-resolver", 0, &getopt_result, OPTION_FULL_RESOLVER},
+  {"show-resolver-actions", 0, &getopt_result, OPTION_SHOW_RESOLVER_ACTIONS},
+  {"no-show-resolver-actions", 0, &getopt_result, OPTION_NO_SHOW_RESOLVER_ACTIONS},
   {"visual-preview", 0, &getopt_result, OPTION_VISUAL_PREVIEW},
   {"schedule-only", 0, &getopt_result, OPTION_QUEUE_ONLY},
   {"purge-unused", 0, &getopt_result, OPTION_PURGE_UNUSED},
@@ -247,6 +258,10 @@ option opts[]={
   {"remove-user-tag-from", 1, &getopt_result, OPTION_REMOVE_USER_TAG_FROM},
   {"arch-only", 0, &getopt_result, OPTION_ARCH_ONLY},
   {"not-arch-only", 0, &getopt_result, OPTION_NOT_ARCH_ONLY},
+#ifdef HAVE_GTK
+  {"gui", 0, &getopt_result, OPTION_GUI},
+  {"no-gui", 0, &getopt_result, OPTION_NO_GUI},
+#endif
   {0,0,0,0}
 };
 
@@ -281,8 +296,10 @@ int main(int argc, char *argv[])
   bool assume_yes=aptcfg->FindB(PACKAGE "::CmdLine::Assume-Yes", false);
   bool fix_broken=aptcfg->FindB(PACKAGE "::CmdLine::Fix-Broken", false);
   bool safe_upgrade_no_new_installs = aptcfg->FindB(PACKAGE "::CmdLine::Safe-Upgrade::No-New-Installs", false);
+  bool safe_upgrade_show_resolver_actions = aptcfg->FindB(PACKAGE "::CmdLine::Safe-Upgrade::Show-Resolver-Actions", false);
   bool safe_resolver_no_new_installs = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Installs", false);
   bool safe_resolver_no_new_upgrades = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Upgrades", false);
+  bool safe_resolver_show_resolver_actions = aptcfg->FindB(PACKAGE "::Safe-Resolver::Show-Resolver-Actions", false);
   bool always_use_safe_resolver = aptcfg->FindB(PACKAGE "::Always-Use-Safe-Resolver", false);
   bool disable_columns = aptcfg->FindB(PACKAGE "::CmdLine::Disable-Columns", false);
   bool safe_resolver_option = false;
@@ -305,6 +322,11 @@ int main(int argc, char *argv[])
   bool seen_quiet = false;
   int quiet = 0;
   std::vector<aptitude::cmdline::tag_application> user_tags;
+
+#ifdef HAVE_GTK
+  // TODO: this should be a configuration option.
+  bool gui = true;
+#endif
 
   int curopt;
   // The last option seen
@@ -445,6 +467,14 @@ int main(int argc, char *argv[])
 	    case OPTION_ALLOW_UNTRUSTED:
 	      aptcfg->Set(PACKAGE "::CmdLine::Ignore-Trust-Violations", true);
 	      break;
+	    case OPTION_SHOW_RESOLVER_ACTIONS:
+	      safe_resolver_show_resolver_actions = true;
+	      safe_upgrade_show_resolver_actions = true;
+	      break;
+	    case OPTION_NO_SHOW_RESOLVER_ACTIONS:
+	      safe_resolver_show_resolver_actions = false;
+	      safe_upgrade_show_resolver_actions = false;
+	      break;
 	    case OPTION_NO_NEW_INSTALLS:
 	      safe_upgrade_no_new_installs = true;
 	      safe_resolver_no_new_installs = true;
@@ -472,7 +502,7 @@ int main(int argc, char *argv[])
 	      full_resolver_option = true;
 	      break;
 	    case OPTION_VISUAL_PREVIEW:
-	      visual_preview=true;	      
+	      visual_preview=true;
 	      break;
 	    case OPTION_QUEUE_ONLY:
 	      queue_only=true;
@@ -504,17 +534,19 @@ int main(int argc, char *argv[])
 		  {
 		    const std::string patternstr(arg, splitloc + 1);
 		    const std::vector<const char *> terminators;
-		    aptitude::matching::pkg_matcher *m =
-		      aptitude::matching::parse_pattern(patternstr,
-							terminators);
+		    cwidget::util::ref_ptr<aptitude::matching::pattern> p =
+		      aptitude::matching::parse(patternstr,
+						terminators,
+						true,
+						false);
 
-		    if(m == NULL)
+		    if(!p.valid())
 		      {
 			_error->DumpErrors();
 			return -1;
 		      }
 
-		    user_tags.push_back(tag_application(is_add, optarg, m));
+		    user_tags.push_back(tag_application(is_add, optarg, p));
 		  }
 	      }
 	    case OPTION_NOT_ARCH_ONLY:
@@ -526,6 +558,14 @@ int main(int argc, char *argv[])
 	    case OPTION_DISABLE_COLUMNS:
 	      disable_columns = true;
 	      break;
+#ifdef HAVE_GTK
+	    case OPTION_GUI:
+	      gui = true;
+	      break;
+	    case OPTION_NO_GUI:
+	      gui = false;
+	      break;
+#endif
 	    default:
 	      fprintf(stderr, "%s",
 		      _("WEIRDNESS: unknown option code received\n"));
@@ -541,6 +581,8 @@ int main(int argc, char *argv[])
 	  break;
 	}
     }
+
+  const bool debug_search = aptcfg->FindB(PACKAGE "::CmdLine::Debug-Search", false);
 
   int curr_quiet = aptcfg->FindI("quiet", 0);
   if(seen_quiet)
@@ -606,7 +648,8 @@ int main(int argc, char *argv[])
 				  status_fname,
 				  display_format, width,
 				  sort_policy,
-				  disable_columns);
+				  disable_columns,
+				  debug_search);
 	  else if(!strcasecmp(argv[optind], "why"))
 	    return cmdline_why(argc - optind, argv + optind,
 			       status_fname, verbose, false);
@@ -635,7 +678,7 @@ int main(int argc, char *argv[])
 				       fix_broken, showvers, showdeps,
 				       showsize, showwhy,
 				       visual_preview, always_prompt,
-				       always_use_safe_resolver,
+				       always_use_safe_resolver, safe_resolver_show_resolver_actions,
 				       safe_resolver_no_new_installs, safe_resolver_no_new_upgrades,
 				       user_tags,
 				       arch_only, queue_only, verbose);
@@ -653,6 +696,7 @@ int main(int argc, char *argv[])
 	      return cmdline_upgrade(argc-optind, argv+optind,
 				     status_fname, simulate,
 				     safe_upgrade_no_new_installs,
+				     safe_upgrade_show_resolver_actions,
 				     assume_yes, download_only,
 				     showvers, showdeps,
 				     showsize, showwhy,
@@ -722,53 +766,70 @@ int main(int argc, char *argv[])
 	}
     }
 
-  ui_init();
-
-  try
+#ifdef HAVE_GTK
+  if(gui)
     {
-      progress_ref p=gen_progress_bar();
-      // We can avoid reading in the package lists in the case that
-      // we're about to update them (since they'd be closed and
-      // reloaded anyway).  Obviously we still need them for installs,
-      // since we have to get information about what to install from
-      // somewhere...
-      if(!update_only)
-	apt_init(p.unsafe_get_ref(), true, status_fname);
-      if(status_fname)
-	free(status_fname);
-      check_apt_errors();
-
-      file_quit.connect(sigc::ptr_fun(cw::toplevel::exitmain));
-
-      if(apt_cache_file)
-	{
-	  (*apt_cache_file)->package_state_changed.connect(sigc::ptr_fun(cw::toplevel::update));
-	  (*apt_cache_file)->package_category_changed.connect(sigc::ptr_fun(cw::toplevel::update));
-	}
-
-      do_new_package_view(*p.unsafe_get_ref());
-      p->destroy();
-      p = NULL;
-
-      if(update_only)
-	do_update_lists();
-      else if(install_only)
-	do_package_run_or_show_preview();
-      //install_or_remove_packages();
-
-      ui_main();
+      if(gui::main(argc, argv))
+	return 0;
+      // Otherwise, fall back to trying to start a curses interface
+      // (assume that we can't contact the X server, or maybe that we
+      // can't load the UI definition)
     }
-  catch(const cwidget::util::Exception &e)
+#endif
+
     {
-      cw::toplevel::shutdown();
+      ui_init();
 
-      fprintf(stderr, _("Uncaught exception: %s\n"), e.errmsg().c_str());
+      try
+        {
+          progress_ref p=gen_progress_bar();
+          // We can avoid reading in the package lists in the case that
+          // we're about to update them (since they'd be closed and
+          // reloaded anyway).  Obviously we still need them for installs,
+          // since we have to get information about what to install from
+          // somewhere...
+          if(!update_only)
+            apt_init(p->get_progress().unsafe_get_ref(), true, status_fname);
+          if(status_fname)
+            free(status_fname);
+          check_apt_errors();
 
-      std::string backtrace = e.get_backtrace();
-      if(!backtrace.empty())
-	fprintf(stderr, _("Backtrace:\n%s\n"), backtrace.c_str());
-      return -1;
+          file_quit.connect(sigc::ptr_fun(cw::toplevel::exitmain));
+
+          if(apt_cache_file)
+            {
+              (*apt_cache_file)->package_state_changed.connect(sigc::ptr_fun(cw::toplevel::update));
+              (*apt_cache_file)->package_category_changed.connect(sigc::ptr_fun(cw::toplevel::update));
+            }
+
+	  if(!aptcfg->FindB(PACKAGE "::UI::Flat-View-As-First-View", false))
+	    do_new_package_view(*p->get_progress().unsafe_get_ref());
+	  else
+	    do_new_flat_view(*p->get_progress().unsafe_get_ref());
+
+          p->destroy();
+          p = NULL;
+
+          if(update_only)
+            do_update_lists();
+          else if(install_only)
+            do_package_run_or_show_preview();
+          //install_or_remove_packages();
+
+          ui_main();
+        }
+      catch(const cwidget::util::Exception &e)
+        {
+          cw::toplevel::shutdown();
+
+          fprintf(stderr, _("Uncaught exception: %s\n"), e.errmsg().c_str());
+
+          std::string backtrace = e.get_backtrace();
+          if(!backtrace.empty())
+            fprintf(stderr, _("Backtrace:\n%s\n"), backtrace.c_str());
+          return -1;
+        }
+
+      return 0;
     }
-
-  return 0;
 }

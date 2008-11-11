@@ -1223,6 +1223,19 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	</listitem>
       </varlistentry>
 
+      <varlistentry id='cmdlineOptionNoShowResolverActions'>
+	<term><literal>--no-show-resolver-actions</literal></term>
+
+	<listitem>
+	  <para>
+	    Do not display the actions performed by the
+	    <quote>safe</quote> resolver, overriding any configuration
+	    option or earlier
+	    <link linkend='cmdlineOptionShowResolverActions'><literal>--show-resolver-actions</literal></link>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
       <varlistentry id='cmdlineOptionSort'>
 	<term><literal>-O</literal> <replaceable>order</replaceable>, <literal>--sort</literal> <replaceable>order</replaceable></term>
 
@@ -1469,6 +1482,17 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	</listitem>
       </varlistentry>
 
+      <varlistentry id='cmdlineOptionShowResolverActions'>
+	<term><literal>--show-resolver-actions</literal></term>
+
+	<listitem>
+	  <para>
+	    Display the actions performed by the <quote>safe</quote>
+	    resolver.
+	  </para>
+	</listitem>
+      </varlistentry>
+
       <varlistentry>
 	<term><literal>-t</literal> <replaceable>release</replaceable>, <literal>--target-release</literal> <replaceable>release</replaceable></term>
 
@@ -1526,6 +1550,16 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	  <para>
 	    Display the version of &aptitude; and some information
 	    about how it was compiled.
+	  </para>
+
+	  <para>
+	    When executing the command <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    or when the option <link
+	    linkend='cmdlineSafeResolver'>--safe-resolver</link> is
+	    present, &aptitude; will display a summary of the actions
+	    performed by the resolver before printing the installation
+	    preview.  This is equivalent to the configuration options <link linkend='configCmdLine-Safe-Upgrade-Show-Resolver-Actions'><literal>Aptitude::CmdLine::Safe-Upgrade::Show-Resolver-Actions</literal></link> and <link linkend='configSafe-Resolver-Show-Resolver-Actions'><literal>Aptitude::Safe-Resolver::Show-Resolver-Actions</literal></link>.
 	  </para>
 	</listitem>
       </varlistentry>

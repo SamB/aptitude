@@ -14,7 +14,7 @@
 
 int cmdline_upgrade(int argc, char *argv[],
 		    const char *status_fname, bool simulate,
-		    bool no_new_installs,
+		    bool no_new_installs, bool show_resolver_actions,
 		    bool assume_yes, bool download_only,
 		    bool showvers, bool showdeps,
 		    bool showsize, bool showwhy,

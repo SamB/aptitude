@@ -107,6 +107,7 @@
 #include "pkg_tree.h"
 #include "pkg_ver_item.h"
 #include "pkg_view.h"
+#include "safe_slot_event.h"
 #include "ui_download_manager.h"
 #include "progress.h"
 
@@ -564,7 +565,7 @@ static void do_su_to_root(string args)
 	  // We have to clear these out or the cache won't reload properly (?)
 
 	  progress_ref p = gen_progress_bar();
-	  apt_reload_cache(p.unsafe_get_ref(), true, statusname.get_name().c_str());
+	  apt_reload_cache(p->get_progress().unsafe_get_ref(), true, statusname.get_name().c_str());
 	  p->destroy();
 	}
       else
@@ -844,7 +845,7 @@ void do_new_package_view(OpProgress &progress)
 static void do_new_package_view_with_new_bar()
 {
   progress_ref p = gen_progress_bar();
-  do_new_package_view(*p.unsafe_get_ref());
+  do_new_package_view(*p->get_progress().unsafe_get_ref());
   p->destroy();
 }
 
@@ -867,26 +868,31 @@ static void do_new_recommendations_view()
 		  _("View packages that it is recommended that you install"),
 		  _("Recommendations"));
 
-  tree->build_tree(*p.unsafe_get_ref());
+  tree->build_tree(*p->get_progress().unsafe_get_ref());
   p->destroy();
 }
 
-static void do_new_flat_view_with_new_bar()
+void do_new_flat_view(OpProgress &progress)
 {
-  progress_ref p = gen_progress_bar();
-
   pkg_grouppolicy_factory *grp = new pkg_grouppolicy_end_factory;
   pkg_tree_ref tree = pkg_tree::create("", grp);
   tree->set_limit(cw::util::transcode("!~v"));
 
   add_main_widget(make_default_view(tree,
-				    &tree->selected_signal,
-				    &tree->selected_desc_signal),
-		  _("Packages"),
-		  _("View available packages and choose actions to perform"),
-		  _("Packages"));
+                                    &tree->selected_signal,
+                                    &tree->selected_desc_signal),
+                  _("Packages"),
+                  _("View available packages and choose actions to perform"),
+                  _("Packages"));
 
-  tree->build_tree(*p.unsafe_get_ref());
+  tree->build_tree(progress);
+}
+
+// For signal connections.
+static void do_new_flat_view_with_new_bar()
+{
+  progress_ref p = gen_progress_bar();
+  do_new_flat_view(*p->get_progress().unsafe_get_ref());
   p->destroy();
 }
 
@@ -907,7 +913,7 @@ static void do_new_tag_view_with_new_bar()
 		  _("View available packages and choose actions to perform"),
 		  _("Packages"));
 
-  tree->build_tree(*p.unsafe_get_ref());
+  tree->build_tree(*p->get_progress().unsafe_get_ref());
   p->destroy();
 }
 
@@ -936,7 +942,7 @@ void do_new_hier_view(OpProgress &progress)
 static void do_new_hier_view_with_new_bar()
 {
   progress_ref p=gen_progress_bar();
-  do_new_hier_view(*p.unsafe_get_ref());
+  do_new_hier_view(*p->get_progress().unsafe_get_ref());
   p->destroy();
 }
 
@@ -1141,38 +1147,76 @@ static void maybe_show_old_tmpdir_message()
 // (er, can I disentangle this by rearranging the routines?  I think maybe I
 //  can to some degree)
 
-
-static void finish_install_run(pkgPackageManager::OrderResult res)
+namespace
 {
-  if(res != pkgPackageManager::Incomplete)
-    {
-      cerr << _("Press return to continue.\n");
-      int c = getchar();
+  void run_dpkg_with_cwidget_suspended(sigc::slot1<pkgPackageManager::OrderResult, int> f,
+				       sigc::slot1<void, pkgPackageManager::OrderResult> k)
+  {
+    cw::toplevel::suspend();
+    pkgPackageManager::OrderResult rval = f(-1);
+    
+    if(rval != pkgPackageManager::Incomplete)
+      {
+	cerr << _("Press return to continue.\n");
+	int c = getchar();
 
-      while(c != '\n'  && c != EOF)
-	c = getchar();
-    }
+	while(c != '\n'  && c != EOF)
+	  c = getchar();
+      }
 
-  // libapt-pkg likes to stomp on SIGINT and SIGQUIT.  Restore them
-  // here in the simplest possible way.
-  cw::toplevel::install_sighandlers();
+    // libapt-pkg likes to stomp on SIGINT and SIGQUIT.  Restore them
+    // here in the simplest possible way.
+    cw::toplevel::install_sighandlers();
 
-  cw::toplevel::resume();
+    cw::toplevel::resume();
+
+    k(rval);
+    return;
+  }
+}
+
+namespace
+{
+  // Note that this is only safe if it's OK to copy the thunk in a
+  // background thread (i.e., it won't be invalidated by an object being
+  // destroyed in another thread).  In the special cases where we use
+  // this it should be all right.
+  void do_post_thunk(const safe_slot0<void> &thunk)
+  {
+    cw::toplevel::post_event(new aptitude::safe_slot_event(thunk));
+  }
+
+  progress_with_destructor make_progress_bar()
+  {
+    progress_ref rval = gen_progress_bar();
+    return std::make_pair(rval->get_progress(),
+			  sigc::mem_fun(*rval.unsafe_get_ref(),
+					&progress::destroy));
+  }
 }
 
 void install_or_remove_packages()
 {
-  download_install_manager *m = new download_install_manager(false);
+  download_install_manager *m = new download_install_manager(false, sigc::ptr_fun(&run_dpkg_with_cwidget_suspended));
 
-  m->pre_install_hook.connect(sigc::ptr_fun(&cw::toplevel::suspend));
-  m->post_install_hook.connect(sigc::ptr_fun(&finish_install_run));
   m->post_forget_new_hook.connect(package_states_changed.make_slot());
 
-  ui_download_manager *uim =
-    new ui_download_manager(m, false, false, true,
-			    _("Downloading packages"),
-			    _("View the progress of the package download"),
-			    _("Package Download"));
+  std::pair<download_signal_log *, download_list_ref>
+    download_log_pair = gen_download_progress(false, false,
+					      _("Downloading packages"),
+					      _("View the progress of the package download"),
+					      _("Package Download"));
+
+  ui_download_manager *uim = new ui_download_manager(m,
+						     download_log_pair.first,
+						     download_log_pair.second,
+						     sigc::ptr_fun(&make_progress_bar),
+						     &do_post_thunk);
+
+  download_log_pair.second->cancelled.connect(sigc::mem_fun(*uim, &ui_download_manager::aborted));
+
+  uim->download_starts.connect(sigc::bind(sigc::ptr_fun(&ui_start_download), true));
+  uim->download_stops.connect(sigc::ptr_fun(&ui_stop_download));
 
   uim->download_complete.connect(install_finished.make_slot());
   uim->start();
@@ -1292,7 +1336,7 @@ static void do_show_preview()
 		      _("Preview"));
 
       progress_ref p=gen_progress_bar();
-      active_preview_tree->build_tree(*p.unsafe_get_ref());
+      active_preview_tree->build_tree(*p->get_progress().unsafe_get_ref());
       p->destroy();
     }
   else
@@ -1608,11 +1652,23 @@ void really_do_update_lists()
   m->pre_autoclean_hook.connect(sigc::bind(sigc::ptr_fun(lists_autoclean_msg),
 					   m));
   m->post_forget_new_hook.connect(package_states_changed.make_slot());
-  ui_download_manager *uim =
-    new ui_download_manager(m, false, true, false,
-			    _("Updating package lists"),
-			    _("View the progress of the package list update"),
-			    _("List Update"));
+
+  std::pair<download_signal_log *, download_list_ref>
+    download_log_pair = gen_download_progress(false, true,
+					      _("Updating package lists"),
+					      _("View the progress of the package list update"),
+					      _("List Update"));
+
+  ui_download_manager *uim = new ui_download_manager(m,
+						     download_log_pair.first,
+						     download_log_pair.second,
+						     sigc::ptr_fun(&make_progress_bar),
+						     &do_post_thunk);
+
+  download_log_pair.second->cancelled.connect(sigc::mem_fun(*uim, &ui_download_manager::aborted));
+
+  uim->download_starts.connect(sigc::bind(sigc::ptr_fun(&ui_start_download), false));
+  uim->download_stops.connect(sigc::ptr_fun(&ui_stop_download));
 
   uim->download_complete.connect(update_finished.make_slot());
   uim->start();
@@ -1783,7 +1839,7 @@ void do_forget_new()
 static void do_reload_cache()
 {
   progress_ref p = gen_progress_bar();
-  apt_reload_cache(p.unsafe_get_ref(), true);
+  apt_reload_cache(p->get_progress().unsafe_get_ref(), true);
   p->destroy();
 }
 #endif
@@ -1896,28 +1952,7 @@ public:
 // BACKGROUND THREAD THIS WILL DEADLOCK IF BLOCKING IS TRUE! (see above for such a case)
 static void start_solution_calculation(bool blocking)
 {
-  resolver_manager::state state = resman->state_snapshot();
-
-  if(state.resolver_exists &&
-     state.selected_solution == state.generated_solutions &&
-     !state.solutions_exhausted &&
-     !state.background_thread_active &&
-     !state.background_thread_aborted)
-    {
-      const int selected = state.selected_solution;
-      const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
-      const int wait_steps = aptcfg->FindI(PACKAGE "::ProblemResolver::WaitSteps", 50);
-
-      if(limit > 0)
-	{
-	  interactive_continuation * const k = new interactive_continuation(resman);
-
-	  if(blocking)
-	    resman->get_solution_background_blocking(selected, limit, wait_steps, k);
-	  else
-	    resman->get_solution_background(selected, limit, k);
-	}
-    }
+  resman->maybe_start_solution_calculation(blocking, new interactive_continuation(resman));
 }
 
 static void do_connect_resolver_callback()
@@ -2757,7 +2792,7 @@ void ui_main()
      apt_cache_file->is_locked())
     {
       progress_ref p=gen_progress_bar();
-      (*apt_cache_file)->save_selection_list(*p.unsafe_get_ref());
+      (*apt_cache_file)->save_selection_list(*p->get_progress().unsafe_get_ref());
       p->destroy();
     }
 
@@ -2865,13 +2900,12 @@ static void reset_status_download()
 }
 
 std::pair<download_signal_log *,
-	  cw::widget_ref>
+	  download_list_ref>
 gen_download_progress(bool force_noninvasive,
 		      bool list_update,
 		      const wstring &title,
 		      const wstring &longtitle,
-		      const wstring &tablabel,
-		      cw::util::slot0arg abortslot)
+		      const wstring &tablabel)
 {
   download_signal_log *m=new download_signal_log;
   download_list_ref w=NULL;
@@ -2879,14 +2913,14 @@ gen_download_progress(bool force_noninvasive,
   if(force_noninvasive ||
      aptcfg->FindB(PACKAGE "::UI::Minibuf-Download-Bar", false))
     {
-      w=download_list::create(abortslot, false, !list_update);
+      w = download_list::create(false, !list_update);
       main_status_multiplex->add_visible_widget(w, true);
       active_status_download=w;
       w->destroyed.connect(sigc::ptr_fun(&reset_status_download));
     }
   else
     {
-      w=download_list::create(abortslot, true, !list_update);
+      w = download_list::create(true, !list_update);
       add_main_widget(w, title, longtitle, tablabel);
     }
 
@@ -2916,7 +2950,7 @@ gen_download_progress(bool force_noninvasive,
   m->Complete_sig.connect(sigc::mem_fun(w.unsafe_get_ref(),
 					&download_list::Complete));
 
-  return std::pair<download_signal_log *, cw::widget_ref>(m, w);
+  return std::make_pair(m, w);
 }
 
 static void do_prompt_string(const wstring &s,
@@ -2927,20 +2961,18 @@ static void do_prompt_string(const wstring &s,
   realslot();
 }
 
-std::pair<download_signal_log *, cw::widget_ref>
+std::pair<download_signal_log *, download_list_ref>
 gen_download_progress(bool force_noninvasive,
 		      bool list_update,
 		      const string &title,
 		      const string &longtitle,
-		      const string &tablabel,
-		      cw::util::slot0arg abortslot)
+		      const string &tablabel)
 {
   return gen_download_progress(force_noninvasive,
 			       list_update,
 			       cw::util::transcode(title),
 			       cw::util::transcode(longtitle),
-			       cw::util::transcode(tablabel),
-			       abortslot);
+			       cw::util::transcode(tablabel));
 }
 
 void prompt_string(const std::wstring &prompt,

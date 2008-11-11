@@ -27,9 +27,18 @@
 #include <apt-pkg/policy.h>
 #include <apt-pkg/progress.h>
 
+namespace
+{
+  void run_dpkg_directly(sigc::slot1<pkgPackageManager::OrderResult, int> f,
+			 sigc::slot1<void, pkgPackageManager::OrderResult> k)
+  {
+    k(f(aptcfg->FindI("APT::Status-Fd", -1)));
+  }
+}
+
 int cmdline_upgrade(int argc, char *argv[],
 		    const char *status_fname, bool simulate,
-		    bool no_new_installs,
+		    bool no_new_installs, bool show_resolver_actions,
 		    bool assume_yes, bool download_only,
 		    bool showvers, bool showdeps,
 		    bool showsize, bool showwhy,
@@ -104,7 +113,7 @@ int cmdline_upgrade(int argc, char *argv[],
       show_broken();
     }
 
-  if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, true))
+  if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, true, show_resolver_actions))
     {
       {
 	aptitudeDepCache::action_group action_group(*apt_cache_file);
@@ -112,7 +121,10 @@ int cmdline_upgrade(int argc, char *argv[],
 	// Reset all the package states.
 	for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin();
 	    !i.end(); ++i)
-	  (*apt_cache_file)->mark_keep(i, false, false, NULL);
+	  {
+	    bool held = (*apt_cache_file)->get_ext_state(i).selection_state == pkgCache::State::Hold;
+	    (*apt_cache_file)->mark_keep(i, false, held, NULL);
+	  }
       }
 
       // Use the apt 'upgrade' algorithm as a fallback against, e.g.,
@@ -166,7 +178,8 @@ int cmdline_upgrade(int argc, char *argv[],
 
       aptitude::cmdline::apply_user_tags(user_tags);
 
-      download_install_manager m(download_only);
+      download_install_manager m(download_only,
+				 sigc::ptr_fun(&run_dpkg_directly));
       int rval =
 	(cmdline_do_download(&m, verbose) == download_manager::success ? 0 : -1);
 

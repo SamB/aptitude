@@ -38,7 +38,9 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/apt_undo_group.h>
 #include <generic/apt/config_signal.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
@@ -58,6 +60,9 @@ namespace cwidget
   using namespace widgets;
 }
 
+// ForTranslators: This string is a confirmation message, which users
+// (especially CJK users) should be able to input without input
+// methods.  Please include nothing but ASCII characters.
 static void try_delete_essential(wstring s,
 				 const pkgCache::PkgIterator pkg,
 				 bool purge)
@@ -448,7 +453,7 @@ bool pkg_item::dispatch_key(const cw::config::key &k, cw::tree *owner)
 	    }
 
 	  progress_ref p = gen_progress_bar();
-	  apt_reload_cache(p.unsafe_get_ref(), true);
+	  apt_reload_cache(p->get_progress().unsafe_get_ref(), true);
 	  p->destroy();
 	}
     }
@@ -480,9 +485,16 @@ void pkg_item::dispatch_mouse(short id, int x, mmask_t bstate, cw::tree *owner)
 
 bool pkg_item::matches(const string &s) const
 {
-  return aptitude::matching::pkg_matches(s, package, visible_version(),
-					 *apt_cache_file,
-					 *apt_package_records);
+  cw::util::ref_ptr<aptitude::matching::pattern> p =
+    aptitude::matching::parse(s);
+
+  cw::util::ref_ptr<aptitude::matching::search_cache> info =
+    aptitude::matching::search_cache::create();
+
+  return aptitude::matching::get_match(p, package, visible_version(),
+				       info,
+				       *apt_cache_file,
+				       *apt_package_records).valid();
 }
 
 pkgCache::VerIterator pkg_item::visible_version(const pkgCache::PkgIterator &pkg)

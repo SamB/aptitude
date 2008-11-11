@@ -39,7 +39,9 @@
 #include <apt-pkg/version.h>
 
 #include <generic/apt/apt.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <generic/util/immset.h>
 #include <generic/util/util.h>
@@ -564,7 +566,9 @@ namespace aptitude
     // from the front.
     std::deque<justification> q;
 
-    std::vector<pkg_matcher *> leaves;
+    std::vector<cwidget::util::ref_ptr<pattern> > leaves;
+
+    cwidget::util::ref_ptr<search_cache> search_info;
 
     search_params params;
 
@@ -595,11 +599,12 @@ namespace aptitude
      *                or the inst ver, and whether to consider
      *                suggests/recommends to be important.
      */
-    justification_search(const std::vector<pkg_matcher *> &_leaves,
+    justification_search(const std::vector<cwidget::util::ref_ptr<pattern> > &_leaves,
 			 const target &root,
 			 const search_params &_params,
 			 int _verbosity)
       : leaves(_leaves),
+	search_info(aptitude::matching::search_cache::create()),
 	params(_params),
 	seen_packages(NULL),
 	first_iteration(true),
@@ -682,6 +687,8 @@ namespace aptitude
 
       while(!q.empty() && !reached_leaf)
 	{
+	  using cwidget::util::ref_ptr;
+
 	  // NB: could avoid this copy, but I'd have to move the
 	  // pop_front() into all execution branches.  Not worth it.
 	  const justification front(q.front());
@@ -720,13 +727,14 @@ namespace aptitude
 	  // we'll keep looking past it).
 	  pkgCache::VerIterator frontver = params.selected_version(frontpkg);
 	  if(!frontver.end() && !front.get_actions().empty())
-	    for(std::vector<pkg_matcher *>::const_iterator it = leaves.begin();
+	    for(std::vector<ref_ptr<pattern> >::const_iterator it = leaves.begin();
 		!reached_leaf && it != leaves.end(); ++it)
 	      {
-		if(apply_matcher((*it),
-				 frontpkg, frontver,
-				 *apt_cache_file,
-				 *apt_package_records))
+		if(get_match((*it),
+			     frontpkg, frontver,
+			     search_info,
+			     *apt_cache_file,
+			     *apt_package_records).valid())
 		  reached_leaf = true;
 	      }
 	  if(reached_leaf)
@@ -748,7 +756,7 @@ namespace aptitude
     }
 
     bool find_justification(const target &target,
-			    const std::vector<aptitude::matching::pkg_matcher *> leaves,
+			    const std::vector<cwidget::util::ref_ptr<pattern> > leaves,
 			    const search_params &params,
 			    bool find_all,
 			    std::vector<std::vector<action> > &output)
@@ -777,7 +785,7 @@ namespace aptitude
   }
 }
 
-cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
+cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 		 const pkgCache::PkgIterator &root,
 		 int verbosity,
 		 bool root_is_removal,
@@ -978,14 +986,14 @@ cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
     return cw::sequence_fragment(rval);
 }
 
-int do_why(const std::vector<pkg_matcher *> &leaves,
+int do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 	   const pkgCache::PkgIterator &root,
 	   int verbosity,
 	   bool root_is_removal)
 {
   bool success = false;
   std::auto_ptr<cw::fragment> f(do_why(leaves, root, verbosity, root_is_removal,
-				   success));
+				       success));
   update_screen_width();
   // TODO: display each result as we find it.
   std::cout << f->layout(screen_width, screen_width, cw::style());
@@ -993,7 +1001,7 @@ int do_why(const std::vector<pkg_matcher *> &leaves,
   return success ? 0 : 1;
 }
 
-cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
+cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 		 const pkgCache::PkgIterator &root,
 		 bool find_all,
 		 bool root_is_removal,
@@ -1004,7 +1012,7 @@ cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
 }
 
 bool interpret_why_args(const std::vector<std::string> &args,
-			std::vector<pkg_matcher *> &output)
+			std::vector<cwidget::util::ref_ptr<pattern> > &output)
 {
   bool parsing_arguments_failed = false;
 
@@ -1012,22 +1020,22 @@ bool interpret_why_args(const std::vector<std::string> &args,
       it != args.end(); ++it)
     {
       // If there isn't a tilde, treat it as an exact package name.
-      pkg_matcher *m = NULL;
+      cwidget::util::ref_ptr<pattern> p;
       if(!cmdline_is_search_pattern(*it))
 	{
 	  pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*it);
 	  if(pkg.end())
 	    _error->Error(_("No package named \"%s\" exists."), it->c_str());
 	  else
-	    m = make_const_matcher(pkg);
+	    p = pattern::make_name(ssprintf("^%s$", pkg.Name()));
 	}
       else
-	m = parse_pattern(*it);
+	p = parse(*it);
 
-      if(m == NULL)
+      if(!p.valid())
 	parsing_arguments_failed = true;
       else
-	output.push_back(m);
+	output.push_back(p);
     }
 
   return !parsing_arguments_failed;
@@ -1045,19 +1053,12 @@ cw::fragment *do_why(const std::vector<std::string> &arguments,
   if(pkg.end())
     return cw::fragf(_("No package named \"%s\" exists."), root.c_str());
 
-  std::vector<pkg_matcher *> matchers;
+  std::vector<cwidget::util::ref_ptr<pattern> > matchers;
   if(!interpret_why_args(arguments, matchers))
-    {
-      for(std::vector<pkg_matcher *>::const_iterator it = matchers.begin();
-	  it != matchers.end(); ++it)
-	delete *it;
-      return cw::text_fragment(_("Unable to parse some match patterns."));
-    }
+    return cw::text_fragment(_("Unable to parse some match patterns."));
 
   cw::fragment *rval = do_why(matchers, pkg, verbosity, root_is_removal, success);
-  for(std::vector<pkg_matcher *>::const_iterator it = matchers.begin();
-      it != matchers.end(); ++it)
-    delete *it;
+
   return rval;
 }
 
@@ -1112,17 +1113,19 @@ int cmdline_why(int argc, char *argv[],
   std::vector<std::string> arguments;
   for(int i = 1; i + 1 < argc; ++i)
     arguments.push_back(argv[i]);
-  std::vector<pkg_matcher *> matchers;
+  std::vector<cwidget::util::ref_ptr<pattern> > matchers;
   if(!interpret_why_args(arguments, matchers))
     parsing_arguments_failed = true;
 
   if(matchers.empty())
     {
-      pkg_matcher *m = parse_pattern("~i!~M");
-      if(m == NULL)
+      cwidget::util::ref_ptr<pattern> p =
+	pattern::make_and(pattern::make_installed(),
+			  pattern::make_not(pattern::make_automatic()));
+      if(!p.valid())
 	parsing_arguments_failed = true;
       else
-	matchers.push_back(m);
+	matchers.push_back(p);
     }
 
 
@@ -1135,8 +1138,5 @@ int cmdline_why(int argc, char *argv[],
   else
     rval = do_why(matchers, pkg, verbosity, is_removal);
 
-  for(std::vector<pkg_matcher *>::const_iterator it = matchers.begin();
-      it != matchers.end(); ++it)
-    delete *it;
   return rval;
 }

@@ -18,7 +18,9 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_signal_log.h>
 #include <generic/apt/infer_reason.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <generic/util/util.h>
 
@@ -131,6 +133,9 @@ namespace
   std::string roots_string(const pkgCache::PkgIterator &pkg,
 			   int verbose)
   {
+    using namespace aptitude::matching;
+    using cw::util::ref_ptr;
+
     using namespace aptitude::why;
     pkgDepCache::StateCache &state((*apt_cache_file)[pkg]);
 
@@ -141,8 +146,8 @@ namespace
       return "";
 
     target t(state.Install() ? target::Install(pkg) : target::Remove(pkg));
-    std::vector<aptitude::matching::pkg_matcher *> leaves;
-    leaves.push_back(aptitude::matching::parse_pattern("?not(?automatic)"));
+    std::vector<ref_ptr<pattern> > leaves;
+    leaves.push_back(parse("?not(?automatic)"));
 
     std::vector<std::vector<action> > reasons;
 
@@ -718,7 +723,18 @@ static bool prompt_trust()
 	}
 
 
-      const string okstr=_("Yes"), abortstr=_("No");
+      // ForTranslators: This string is a confirmation message, which
+      // users (especially CJK users) should be able to input without
+      // input methods.  Please include nothing but ASCII characters.
+      // The text preceding the pipe character (|) will be ignored and
+      // can be removed from your translation.
+      const string okstr    = P_("Go ahead and ignore the warning|Yes");
+      // ForTranslators: This string is a confirmation message, which
+      // users (especially CJK users) should be able to input without
+      // input methods.  Please include nothing but ASCII characters.
+      // The text preceding the pipe character (|) will be ignored and
+      // can be removed from your translation.
+      const string abortstr = P_("Abort instead of overriding the warning|No");
 
       // These strings are used to compare in a translation-invariant
       // way, so that "yes" and "no" are always valid inputs; if the

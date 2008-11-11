@@ -1,6 +1,6 @@
 // download_manager.h                             -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -24,6 +24,7 @@
 // For RunResult
 #include <apt-pkg/acquire.h>
 
+#include <sigc++/slot.h>
 #include <sigc++/trackable.h>
 
 /** \brief An abstract interface for download processes, and two implementations.
@@ -88,15 +89,31 @@ public:
    *
    *  \param result the result of do_download().
    *
-   *  \param progress a progress bar that may be used by the
-   *                  finishing process.
+   *  \param progress a progress bar that may be used by the finishing
+   *                  process.  This should not be destroyed until the
+   *                  continuation is invoked.
    *
-   *  \return the result of the post-download operations; if this is
-   *  do_again, then the frontend code is expected to repeat the
-   *  download and post-download tasks (as many times as needed).
+   *  \param k a continuation to invoke when the post-download
+   *  operations are complete; it is passed the result of finish().
+   *  If the argument is do_again, the frontend should repeat the
+   *  download and post-download tasks.  The download manager may
+   *  arrange for finish() to complete early while a long-running task
+   *  executes in a background thread, as long as k() is later invoked
+   *  in a foreground thread.
+   *
+   *  The reason for passing a continuation is that some download
+   *  managers need to run even more stuff in a background thread;
+   *  this gives them room to do so.  The main example of this is the
+   *  download_install_manager.  By building this support into the
+   *  download_manager interface, we support generic install harnesses
+   *  like ui_download_manager.
+   *
+   *  \note Why is prepare() not built using continuations?  Simple:
+   *  none of the managers seem to need that.
    */
-  virtual result finish(pkgAcquire::RunResult result,
-			OpProgress &progress) = 0;
+  virtual void finish(pkgAcquire::RunResult result,
+		      OpProgress *progress,
+		      const sigc::slot1<void, result> &k) = 0;
 };
 
 #endif

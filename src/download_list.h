@@ -76,12 +76,10 @@ class download_list:public cwidget::widgets::widget
   bool sticky_end;
 
   // Set to true if the user asks to cancel the download
-  bool cancelled;
+  bool was_cancelled;
 
   // Set to true if an item failed.
   bool failed;
-
-  cwidget::util::slot0arg abortslot;
 
   // Will we display things other than the current workers?
   bool display_messages;
@@ -125,15 +123,13 @@ protected:
   void paint(const cwidget::style &st);
   bool handle_key(const cwidget::config::key &k);
 
-  download_list(cwidget::util::slot0arg _abortslot = NULL,
-		bool _display_messages = true,
+  download_list(bool _display_messages = true,
 		bool _display_cumulative_progress = true);
 public:
-  static cwidget::util::ref_ptr<download_list> create(cwidget::util::slot0arg abortslot = NULL,
-						      bool display_messages = true,
+  static cwidget::util::ref_ptr<download_list> create(bool display_messages = true,
 						      bool display_cumulative_progress = true)
   {
-    cwidget::util::ref_ptr<download_list> rval(new download_list(abortslot, display_messages, display_cumulative_progress));
+    cwidget::util::ref_ptr<download_list> rval(new download_list(display_messages, display_cumulative_progress));
     rval->decref();
     return rval;
   }
@@ -157,6 +153,8 @@ public:
   bool get_cursorvisible() {return false;}
   cwidget::widgets::point get_cursorloc() { return cwidget::widgets::point(0,0); }
   bool focus_me() {return true;}
+
+  sigc::signal<void> cancelled;
 
   // FIXME: overriding this is a terrible hack.  A cancel() hook should be
   // used instead.
