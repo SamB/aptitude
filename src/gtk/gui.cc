@@ -888,15 +888,15 @@ namespace gui
 	    // "You should never _need_ to dereference a RefPtr"
 	    //   -- Murray Cumming, glibmm designer
 	    //
-	    // The following horrible hack is here because I need to
-	    // pass a reference to the text_view into
+	    // The following hack is here because I need to pass a
+	    // reference to the text_view into
 	    // text_view_motion_notify.  For some reason that I don't
 	    // understand, gtkmm hides the self pointer (which GTK+
 	    // provides!) when invoking this signal.  I can't pass a
 	    // RefPtr because then the text view will never be
 	    // destroyed due to circular references.  But I can't get
-	    // a bare pointer from the RefPtr, due to the above
-	    // mindset.  And unlike cwidget, glibmm doesn't provide
+	    // a bare pointer from the RefPtr, due to the above design
+	    // decision.  And unlike cwidget, glibmm doesn't provide
 	    // any way of getting a sigc++ weak reference from a
 	    // RefPtr.  Hence the following scary stuff.
 	    //
@@ -1305,13 +1305,10 @@ namespace gui
 
   bool main(int argc, char *argv[])
   {
-    // gtkmm is utter crack.  GTK+ provides a perfectly good routine,
-    // gtk_init_check(), to initialize GTK+ *and report whether the
-    // initialization succeeded*.  That's nice if you, oh, say, want
-    // to FALL BACK TO A NON-GTK+ INTERFACE.  Since no-one would ever
-    // want to do this, the designers of gtkmm kindly decided not to
-    // wrap it.  But it doesn't hurt to initialize GTK+ twice, so
-    // we'll just do that instead...
+    // GTK+ provides a perfectly good routine, gtk_init_check(), to
+    // initialize GTK+ *and report whether the initialization
+    // succeeded*.  gtkmm doesn't wrap it.  But initializing GTK+
+    // twice won't hurt, so we do that.
     if(!gtk_init_check(&argc, &argv))
       return false;
 
