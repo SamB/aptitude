@@ -6,6 +6,7 @@
 # Convenzioni usate, per rendere più semplice la loro individuazione ed
 # eventuale sostituzione (cfr. traduzioni di dpkg e apt):
 #
+# “Breaks”............: «Rende difettoso:» (vedere “broken”)
 # “broken”............: «difettoso» (dpkg)
 #       Peggiore di «errato», ma migliore di «rotto» (apt).
 # “cache file”........: «file cache»
@@ -43,7 +44,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.11.10\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2008-09-05 16:05+0200\n"
-"PO-Revision-Date: 2008-11-01 23:18+0100\n"
+"PO-Revision-Date: 2008-11-10 23:50+0100\n"
 "Last-Translator: Danilo Piazzalunga <danilopiazza@gmail.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -84,7 +85,7 @@ msgstr "%BValore:%b  "
 #: src/apt_config_treeitems.cc:279
 #, c-format
 msgid "Editing \"%ls\""
-msgstr "Modifica di \"%ls\""
+msgstr "Modifica di «%ls»"
 
 #: src/apt_config_treeitems.cc:401
 msgid "%BChoice:%b  "
@@ -546,12 +547,12 @@ msgid ""
 "enabled, packages that are recommended by an installed package will not be "
 "automatically removed."
 msgstr ""
-"Se sia questa opzione sia \"Risolvere le dipendenze quando un pacchetto "
-"viene selezionato\" sono abilitate, aptitude cerca di installare, oltre alle "
+"Se sia questa opzione sia «Risolvere le dipendenze quando un pacchetto "
+"viene selezionato» sono abilitate, aptitude cerca di installare, oltre alle "
 "dipendenze vere e proprie dei pacchetti da installare, anche i pacchetti "
 "raccomandati. Quelli consigliati non vengono installati automaticamente.\n"
-"Se sia questa opzione sia \"Rimuovere automaticamente i pacchetti "
-"inutilizzati\" sono abilitate, i pacchetti raccomandati da un pacchetto "
+"Se sia questa opzione sia «Rimuovere automaticamente i pacchetti "
+"inutilizzati» sono abilitate, i pacchetti raccomandati da un pacchetto "
 "installato non vengono rimossi automaticamente."
 
 #: src/apt_options.cc:375
@@ -572,8 +573,8 @@ msgstr ""
 "cui nessun pacchetto installato manualmente dipende vengono rimossi dal "
 "sistema. Annullare la rimozione segna il pacchetto come installato "
 "manualmente.\n"
-"Se sia questa opzione sia \"Installare automaticamente i pacchetti "
-"raccomandati\" sono abilitate, i pacchetti installati automaticamente non "
+"Se sia questa opzione sia «Installare automaticamente i pacchetti "
+"raccomandati» sono abilitate, i pacchetti installati automaticamente non "
 "vengono rimossi se un pacchetto installato li raccomanda."
 
 #: src/apt_options.cc:387
@@ -2058,7 +2059,7 @@ msgstr "Va in conflitto"
 
 #: src/cmdline/cmdline_show.cc:429
 msgid "Breaks"
-msgstr ""
+msgstr "Rende difettoso"
 
 #: src/cmdline/cmdline_show.cc:431
 msgid "Replaces"
@@ -2944,7 +2945,7 @@ msgstr "Dipendenza «%s» sconosciuta"
 #: src/generic/apt/matchers.cc:3633
 #, c-format
 msgid "Unknown matcher type: \"%s\"."
-msgstr ""
+msgstr "Tipo di matcher «%s» sconosciuto."
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
@@ -2954,6 +2955,7 @@ msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
 "a context enclosed by ?%s)."
 msgstr ""
+"Il matcher «?%s» va usato in un contesto «ampio» (un contesto di primo livello o racchiuso da ?%s)."
 
 #: src/generic/apt/matchers.cc:3872
 msgid "Unmatched '('"
@@ -4627,8 +4629,8 @@ msgstr "Editor della gerarchia"
 #, c-format
 msgid "This group contains %d package."
 msgid_plural "This group contains %d packages."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Questo gruppo contiene %d pacchetto."
+msgstr[1] "Questo gruppo contiene %d pacchetti."
 
 #: src/pkg_tree.cc:175
 msgid "All Packages"
@@ -4720,7 +4722,7 @@ msgstr "è in conflitto con"
 
 #: src/reason_fragment.cc:41
 msgid "breaks"
-msgstr ""
+msgstr "rende difettoso"
 
 #: src/reason_fragment.cc:43
 msgid "replaces"
@@ -4984,7 +4986,7 @@ msgstr "%s è in conflitto con %s"
 #: src/solution_fragment.cc:121
 #, c-format
 msgid "%s breaks %s"
-msgstr ""
+msgstr "%s rende difettoso %s"
 
 #: src/solution_fragment.cc:124
 #, c-format
@@ -5188,7 +5190,7 @@ msgstr "Get-Root-Command non valido: deve iniziare con su: o sudo:"
 #: src/ui.cc:438
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
-msgstr "Get-Root-Command non valido: deve iniziare con su: o sudo:, non %s"
+msgstr "Get-Root-Command non valido: deve iniziare con su: o sudo:, non %s:"
 
 #: src/ui.cc:561
 msgid ""
@@ -5569,12 +5571,12 @@ msgstr "Dimentica quali pacchetti sono «nuovi»"
 
 #: src/ui.cc:2200
 msgid "Canc^el pending actions"
-msgstr "Cance^llare azioni pendenti"
+msgstr "Annu^lla azioni in attesa"
 
 #: src/ui.cc:2201
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr ""
-"Cancella tutte le installazioni, rimozioni, blocchi, aggiornamenti pendenti."
+"Annulla tutte le installazioni, rimozioni, blocchi e aggiornamenti in attesa."
 
 #: src/ui.cc:2204
 msgid "^Clean package cache"
