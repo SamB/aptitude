@@ -1157,7 +1157,7 @@ namespace gui
     else
       argv0_path = '.';
 
-    glade_main_file = argv0_path + "/gtk/ui-main.glade";
+    glade_main_file = argv0_path + "/gtk/aptitude.glade";
 
     //Loading the .glade file and widgets
     refXml = Gnome::Glade::Xml::create(glade_main_file);
