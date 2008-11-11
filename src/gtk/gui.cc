@@ -1141,6 +1141,7 @@ namespace gui
 
   void init_glade(int argc, char *argv[])
   {
+#ifndef DISABLE_PRIVATE_GLADE_FILE
     // Use the basename of argv0 to find the Glade file.
     // TODO: note that the .glade file will ultimately
     //       go to /usr/share/aptitude/glawith referede or something,
@@ -1161,6 +1162,7 @@ namespace gui
 
     //Loading the .glade file and widgets
     refXml = Gnome::Glade::Xml::create(glade_main_file);
+#endif
   }
 
   namespace

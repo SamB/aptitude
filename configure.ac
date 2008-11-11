@@ -239,6 +239,14 @@ fi
 
 WERROR="-Werror"
 
+AC_ARG_ENABLE(private-glade-file,
+	AS_HELP_STRING([--disable-private-glade-file], [Always read the .glade file from \$datadir instead of reading one in ".".  This can be useful when installing aptitude globally, to avoid accidentally picking up the wrong version of the .glade file.]),
+	[if test x$enableval = xno
+	 then
+	   AC_DEFINE([DISABLE_PRIVATE_GLADE_FILE], [], [Define to disable the use of a .glade file found relative to the current working directory.])
+	 fi]
+	)
+
 AC_ARG_ENABLE(dynamic-backtrace,
 	AS_HELP_STRING([--enable-dynamic-backtrace], [Modify the executable so that it can generate a backtrace for uncaught exceptions.  Will double the size of the stripped binary.]),
 	[if test x$enableval = xyes
