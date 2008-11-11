@@ -1142,27 +1142,46 @@ namespace gui
   void init_glade(int argc, char *argv[])
   {
 #ifndef DISABLE_PRIVATE_GLADE_FILE
-    // Use the basename of argv0 to find the Glade file.
-    // TODO: note that the .glade file will ultimately
-    //       go to /usr/share/aptitude/glawith referede or something,
-    //       so a more general solution will be needed.
-    std::string argv0(argv[0]);
-    std::string argv0_path;
-    std::string::size_type last_slash = argv0.rfind('/');
-    if(last_slash != std::string::npos)
-      {
-        while(last_slash > 0 && argv0[last_slash - 1] == '/')
-          --last_slash;
-        argv0_path = std::string(argv0, 0, last_slash);
-      }
-    else
-      argv0_path = '.';
+    {
+      // Use the basename of argv0 to find the Glade file.
+      std::string argv0(argv[0]);
+      std::string argv0_path;
+      std::string::size_type last_slash = argv0.rfind('/');
+      if(last_slash != std::string::npos)
+	{
+	  while(last_slash > 0 && argv0[last_slash - 1] == '/')
+	    --last_slash;
+	  argv0_path = std::string(argv0, 0, last_slash);
+	}
+      else
+	argv0_path = '.';
 
-    glade_main_file = argv0_path + "/gtk/aptitude.glade";
+      glade_main_file = argv0_path + "/gtk/aptitude.glade";
 
-    //Loading the .glade file and widgets
-    refXml = Gnome::Glade::Xml::create(glade_main_file);
+      //Loading the .glade file and widgets
+      try
+	{
+	  refXml = Gnome::Glade::Xml::create(glade_main_file);
+	}
+      catch(Gnome::Glade::XmlError &)
+	{
+	}
+    }
 #endif
+
+    if(!refXml)
+      {
+	glade_main_file = PKGDATADIR;
+	glade_main_file += "/aptitude.glade";
+
+	try
+	  {
+	    refXml = Gnome::Glade::Xml::create(glade_main_file);
+	  }
+	catch(Gnome::Glade::XmlError &)
+	  {
+	  }
+      }
   }
 
   namespace
@@ -1189,6 +1208,13 @@ namespace gui
     pKit = new Gtk::Main(argc, argv);
     Gtk::Main::signal_quit().connect(&do_want_quit);
     init_glade(argc, argv);
+
+    if(!refXml)
+      {
+	_error->Error(_("Unable to load the user interface definition file."));
+	_error->DumpErrors();
+	exit(-1);
+      }
 
     // Set up the resolver-triggering signals.
     init_resolver();
