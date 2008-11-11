@@ -176,6 +176,9 @@ namespace gui
 
     Glib::RefPtr<Gtk::TextBuffer::Tag> date_tag = textBuffer->create_tag();
 
+    // Remember whether we added any changelog entries, so we can do 
+    bool added_at_least_one = false;
+
     for(changelog::const_iterator it = cl->begin(); it != cl->end(); ++it)
       {
 	cw::util::ref_ptr<aptitude::apt::changelog_entry> ent(*it);
@@ -186,6 +189,8 @@ namespace gui
 
 	if(only_new && !newer)
 	  continue;
+
+	added_at_least_one = true;
 
 	const bool use_newer_tag = !only_new && newer;
 
@@ -237,6 +242,16 @@ namespace gui
 	    Gtk::TextBuffer::iterator start = textBuffer->get_iter_at_mark(changelog_entry_mark);
 	    textBuffer->apply_tag(newer_tag, start, where);
 	  }
+      }
+
+    if(!added_at_least_one)
+      {
+	if(cl->size() == 0)
+	  where = textBuffer->insert(where, _("The changelog is empty."));
+	else if((*cl->begin())->get_version() == current_version)
+	  where = textBuffer->insert(where, _("No new changelog entries; it looks like you installed a locally compiled version of this package."));
+	else
+	  where = textBuffer->insert(where, _("No new changelog entries; this is likely due to a binary-only upload of this package."));
       }
 
     return where;
