@@ -237,7 +237,11 @@ namespace gui
 		      const sigc::slot0<void> &download_starts_slot = sigc::slot0<void>(),
 		      const sigc::slot0<void> &download_stops_slot = sigc::slot0<void>());
 
-  void main(int argc, char *argv[]);
+  /** \brief Try to start up the user interface.
+   *
+   *  \return \b true if the interface was successfully started.
+   */
+  bool main(int argc, char *argv[]);
 
   /** \brief Start an install/remove run, as if it had been triggered
    *  from the menu.

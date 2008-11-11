@@ -769,12 +769,14 @@ int main(int argc, char *argv[])
 #ifdef HAVE_GTK
   if(gui)
     {
-      gui::main(argc, argv);
-      return 0;
-      fprintf(stderr, "Internal error: the non-GTK+ build should never try to activate the GUI.");
+      if(gui::main(argc, argv))
+	return 0;
+      // Otherwise, fall back to trying to start a curses interface
+      // (assume that we can't contact the X server, or maybe that we
+      // can't load the UI definition)
     }
-  else
 #endif
+
     {
       ui_init();
 

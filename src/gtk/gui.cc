@@ -1198,8 +1198,18 @@ namespace gui
     }
   }
 
-  void main(int argc, char *argv[])
+  bool main(int argc, char *argv[])
   {
+    // gtkmm is utter crack.  GTK+ provides a perfectly good routine,
+    // gtk_init_check(), to initialize GTK+ *and report whether the
+    // initialization succeeded*.  That's nice if you, oh, say, want
+    // to FALL BACK TO A NON-GTK+ INTERFACE.  Since no-one would ever
+    // want to do this, the designers of gtkmm kindly decided not to
+    // wrap it.  But it doesn't hurt to initialize GTK+ twice, so
+    // we'll just do that instead...
+    if(!gtk_init_check(&argc, &argv))
+      return false;
+
     Glib::init();
     Glib::thread_init();
 
@@ -1211,9 +1221,12 @@ namespace gui
 
     if(!refXml)
       {
-	_error->Error(_("Unable to load the user interface definition file."));
-	_error->DumpErrors();
-	exit(-1);
+	_error->Error(_("Unable to load the user interface definition file %s/aptitude.glade."),
+		      PKGDATADIR);
+
+	delete pKit;
+
+	return false;
       }
 
     // Set up the resolver-triggering signals.
@@ -1231,5 +1244,7 @@ namespace gui
 
     delete pMainWindow;
     delete pKit;
+
+    return true;
   }
 }
