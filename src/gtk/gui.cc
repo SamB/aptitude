@@ -659,31 +659,6 @@ namespace gui
     tab->get_pkg_view()->set_limit(pattern);
   }
 
-  namespace
-  {
-    bool do_hyperlink_callback(const Glib::RefPtr<Glib::Object> &event_object,
-			       GdkEvent *event,
-			       const Gtk::TextBuffer::iterator &iter,
-			       sigc::slot0<void> link_action)
-    {
-      // TODO: draw a nice "box" / change the style on
-      // GDK_BUTTON_PRESS.
-      switch(event->type)
-	{
-	case GDK_BUTTON_RELEASE:
-	  {
-	    if(event->button.button == 1)
-	      link_action();
-	  }
-	default:
-	  break;
-	}
-
-      return false;
-    }
-  }
-
-
   class BrokenPackagesNotification : public Notification
   {
   private:
@@ -898,6 +873,51 @@ namespace gui
     }
   };
 
+  namespace
+  {
+    class HyperlinkTag : public Gtk::TextBuffer::Tag
+    {
+      bool do_event(const Glib::RefPtr<Glib::Object> &event_object,
+		    GdkEvent *event,
+		    const Gtk::TextBuffer::iterator &iter)
+      {
+	// TODO: draw a nice "box" / change the style on
+	// GDK_BUTTON_PRESS.
+	switch(event->type)
+	  {
+	  case GDK_BUTTON_RELEASE:
+	    {
+	      if(event->button.button == 1)
+		link_action();
+	    }
+	  default:
+	    break;
+	  }
+
+	return false;
+      }
+
+      sigc::slot0<void> link_action;
+
+      HyperlinkTag(const sigc::slot0<void> &_link_action)
+	: Gtk::TextBuffer::Tag(),
+	  link_action(_link_action)
+      {
+	signal_event().connect(sigc::mem_fun(*this, &HyperlinkTag::do_event));
+
+	property_foreground() = "#3030FF";
+	property_underline() = Pango::UNDERLINE_SINGLE;
+      }
+
+    public:
+      /** \brief Create a tag that hyperlinks to the given action. */
+      static Glib::RefPtr<HyperlinkTag> create(const sigc::slot0<void> &link_action)
+      {
+	return Glib::RefPtr<HyperlinkTag>(new HyperlinkTag(link_action));
+      }
+    };
+  }
+
   // TODO: make the mouse cursor change on hyperlinks.  The only
   // advice I can find on how to do this is to connect a signal to the
   // TextView that examines all the tags under the mouse and sets the
@@ -911,12 +931,8 @@ namespace gui
 					  const Glib::ustring &link_text,
 					  const sigc::slot0<void> &link_action)
   {
-    Glib::RefPtr<Gtk::TextBuffer::Tag> tag = buffer->create_tag();
-
-    tag->property_foreground() = "#3030FF";
-    tag->property_underline() = Pango::UNDERLINE_SINGLE;
-    tag->signal_event().connect(sigc::bind(sigc::ptr_fun(do_hyperlink_callback),
-					   link_action));
+    Glib::RefPtr<HyperlinkTag> tag = HyperlinkTag::create(link_action);
+    buffer->get_tag_table()->add(tag);
 
     return buffer->insert_with_tag(where, link_text, tag);
   }
