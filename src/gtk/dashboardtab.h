@@ -26,10 +26,13 @@
 
 #include "tab.h"
 
+/** \file dashboardtab.h */
+
 namespace gui
 {
   class PkgView;
 
+  /** \brief The main dashboard tab. */
   class DashboardTab : public Tab
   {
     cwidget::util::ref_ptr<PkgView> upgrades_pkg_view;
