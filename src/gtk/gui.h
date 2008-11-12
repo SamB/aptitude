@@ -80,6 +80,9 @@ namespace gui
 
   void gtk_update();
 
+  /** \brief Display a "Not implemented, yet." message. */
+  void do_notimplemented_message();
+
   /** \brief Invoke tab_add on pMainWindow. */
   void tab_add(Tab *tab);
 

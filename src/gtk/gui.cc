@@ -702,6 +702,16 @@ namespace gui
     pKit->quit();
   }
 
+  void do_notimplemented_message()
+  {
+    Gtk::MessageDialog dialog(*pMainWindow,
+                              _("Not implemented"),
+                              false,
+                              Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+    dialog.set_secondary_text(_("This feature is not implemented, yet."));
+    dialog.run();
+  }
+
   AptitudeWindow::AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::Window(cobject)
   {
     refGlade->get_widget_derived("main_notebook", pNotebook);
