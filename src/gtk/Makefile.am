@@ -6,6 +6,8 @@ pkgdatadir=$(datadir)/$(PACKAGE)
 
 pkgdata_DATA = aptitude.glade
 
+EXTRA_DIST = aptitude.glade
+
 libgtk_a_SOURCES=\
 	changelog.cc \
 	changelog.h \
