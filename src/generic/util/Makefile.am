@@ -12,6 +12,7 @@ libgeneric_util_a_SOURCES = \
 	mut_fun.h \
 	refcounted_base.cc \
 	refcounted_base.h \
+	refcounted_wrapper.h \
 	safe_slot.h \
 	setset.h \
 	temp.cc \
