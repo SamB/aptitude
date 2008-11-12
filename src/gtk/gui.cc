@@ -702,6 +702,16 @@ namespace gui
     pKit->quit();
   }
 
+  void do_notimplemented_message()
+  {
+    Gtk::MessageDialog dialog(*pMainWindow,
+                              _("Not implemented"),
+                              false,
+                              Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+    dialog.set_secondary_text(_("This feature is not implemented, yet."));
+    dialog.run();
+  }
+
   AptitudeWindow::AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::Window(cobject)
   {
     refGlade->get_widget_derived("main_notebook", pNotebook);
@@ -724,14 +734,42 @@ namespace gui
     refGlade->get_widget("main_toolbutton_installremove", pToolButtonInstallRemove);
     pToolButtonInstallRemove->signal_clicked().connect(&do_installremove);
 
+    // Not implemented menu item placeholder
+    refGlade->get_widget("menu_do_package_run", pMenuFilePackageRun);
+    pMenuFilePackageRun->signal_activate().connect(&do_notimplemented_message);
+
+    // Not implemented menu item placeholder
+    refGlade->get_widget("menu_do_update_lists", pMenuFileUpdateLists);
+    pMenuFileUpdateLists->signal_activate().connect(&do_notimplemented_message);
+
     refGlade->get_widget("menu_do_mark_upgradable", pMenuFileMarkUpgradable);
     pMenuFileMarkUpgradable->signal_activate().connect(&do_mark_upgradable);
+
+    // Not implemented menu item placeholder
+    refGlade->get_widget("menu_do_update_lists", pMenuFileForgetNew);
+    pMenuFileForgetNew->signal_activate().connect(&do_notimplemented_message);
 
     refGlade->get_widget("menu_do_keep_all", pMenuFileKeepAll);
     pMenuFileKeepAll->signal_activate().connect(&do_keep_all);
 
+    // Not implemented menu item placeholder
+    refGlade->get_widget("menu_do_clean", pMenuFileClean);
+    pMenuFileClean->signal_activate().connect(&do_notimplemented_message);
+
+    // Not implemented menu item placeholder
+    refGlade->get_widget("menu_do_autoclean", pMenuFileAutoclean);
+    pMenuFileAutoclean->signal_activate().connect(&do_notimplemented_message);
+
+    // Not implemented menu item placeholder
+    refGlade->get_widget("menu_do_reload_cache", pMenuFileReloadCache);
+    pMenuFileReloadCache->signal_activate().connect(&do_notimplemented_message);
+
     refGlade->get_widget("menu_do_sweep", pMenuFileSweep);
     pMenuFileSweep->signal_activate().connect(&do_sweep);
+
+    // Not implemented menu item placeholder
+    refGlade->get_widget("menu_do_su_to_root", pMenuFileSuToRoot);
+    pMenuFileSuToRoot->signal_activate().connect(&do_notimplemented_message);
 
     refGlade->get_widget("menu_do_quit", pMenuFileExit);
     pMenuFileExit->signal_activate().connect(&do_quit);
