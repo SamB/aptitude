@@ -325,7 +325,7 @@ int main(int argc, char *argv[])
 
 #ifdef HAVE_GTK
   // TODO: this should be a configuration option.
-  bool gui = true;
+  bool gui = aptcfg->FindB(PACKAGE "::Start-Gui", true);
 #endif
 
   int curopt;
