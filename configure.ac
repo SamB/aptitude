@@ -62,8 +62,8 @@ AC_ARG_ENABLE(gtk,
 
 WANT_HAVE_GTK=$HAVE_GTK
 
-dnl We always test all the libraries so that the user gets to see
-dnl which libraries are needed for GTK+.
+dnl We always test all the libraries, even if some of them fail, so
+dnl that the user gets to see which libraries are needed for GTK+.
 if test x$HAVE_GTK = x1
 then
   AC_MSG_NOTICE([Testing for the libraries needed to build the GTK+ frontend.])
