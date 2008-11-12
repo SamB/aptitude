@@ -25,6 +25,8 @@ libgtk_a_SOURCES=\
 	filesview.h \
 	gui.cc \
 	gui.h \
+	hyperlink.cc \
+	hyperlink.h \
 	info.cc \
 	info.h \
 	notify.cc \

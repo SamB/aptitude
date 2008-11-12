@@ -86,21 +86,6 @@ namespace gui
   /** \brief Invoke tab_del on pMainWindow. */
   void tab_del(Tab *tab);
 
-  /** \brief Add a hyperlink to a Gtk::TextBuffer.
-   *
-   *  \param buffer      The buffer to which the link should be added.
-   *  \param where       The location in the buffer at which the link should be added.
-   *  \param link_text   The text that the user will see (will be
-   *                     displayed in a standard "link style").
-   *  \param link_action A callback invoked when the user clicks the link.
-   *
-   *  \return an iterator pointing to the end of the newly inserted text.
-   */
-  Gtk::TextBuffer::iterator add_hyperlink(const Glib::RefPtr<Gtk::TextBuffer> &buffer,
-					  Gtk::TextBuffer::iterator where,
-					  const Glib::ustring &link_text,
-					  const sigc::slot0<void> &link_action);
-
   /** \brief Insert the tags of the given package into a TextBuffer.
    *
    *  Each tag will be a link that pops up a new packages view.

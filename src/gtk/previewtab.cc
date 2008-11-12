@@ -28,6 +28,7 @@
 
 #include <generic/util/util.h>
 
+#include <gtk/hyperlink.h>
 #include <gtk/gui.h>
 #include <gtk/info.h>
 #include <gtk/packageinformation.h>

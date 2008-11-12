@@ -39,6 +39,7 @@
 #include <generic/apt/download_manager.h>
 #include <generic/apt/pkg_changelog.h>
 
+#include <gtk/hyperlink.h>
 #include <gtk/gui.h>
 #include <gtk/progress.h>
 

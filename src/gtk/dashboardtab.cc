@@ -21,6 +21,7 @@
 #include "dashboardtab.h"
 
 #include "changelog.h"
+#include "hyperlink.h"
 #include "info.h"
 #include "pkgview.h"
 #include "progress.h"
