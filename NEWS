@@ -21,17 +21,17 @@ that need improvement, and it is certainly incomplete.
     search the apt Xapian database built by Enrico Zini.  There is
     also a new search term ?term that does the same thing.
 
-    This support comes with some caveats: aptitude doesn't currently
-    ensure that apt-xapian-index is installed and set up correctly, so
-    you may encounter problems searching for packages until you do
-    that manually.
+  + Added the command-line option "--show-resolver-actions" to display
+    why aptitude made the decisions it did in "aptitude safe-upgrade".
 
 - Known Regressions:
 
   + Incremental searching in the curses frontend is made much less
     useful by introducing Xapian.  It still works, but because Xapian
     searches don't find substrings, the search will fail to match
-    anything until
+    anything until you finish typing the entire search string.
+
+  + Documentation for the GTK+ frontend has not yet been written.
 
 [9/5/2008]
 Version 0.4.11.10                           "Upon the empty winds of time"
