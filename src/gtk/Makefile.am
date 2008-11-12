@@ -9,6 +9,8 @@ pkgdata_DATA = aptitude.glade
 libgtk_a_SOURCES=\
 	changelog.cc \
 	changelog.h \
+	dashboardtab.cc \
+	dashboardtab.h \
 	dependency_chains_tab.cc \
 	dependency_chains_tab.h \
 	download.cc \

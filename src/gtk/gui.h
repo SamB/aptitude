@@ -255,6 +255,11 @@ namespace gui
    */
   void do_update();
 
+  /** \brief Schedule all possible upgrades, as if "Mark Upgradable"
+   *  had been selected from the menu or toolbar.
+   */
+  void do_mark_upgradable();
+
   /** @{
    *  Constants giving the textual and iconic representation of the
    *  current and selected states of packages.

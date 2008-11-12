@@ -1,3 +1,38 @@
+[11/10/2008]
+Version 0.5.0                               "Wheee!"
+
+This version introduces the GTK+ frontend.  Thanks are due to Obey
+"Arthur" Liu for providing code, ideas and energy to the project, and
+to Google for funding his project through their Summer of Code program
+in 2008.
+
+This is an EXPERIMENTAL, DEVELOPMENT release.  It can be used for
+package management, but there may be bugs, there are probably places
+that need improvement, and it is certainly incomplete.
+
+- New features:
+
+  + Integrated the GTK+ frontend written by Obey "Arthur" Liu for the
+    2008 Google Summer of Code.  To manually suppress the GUI, run
+    "aptitude --no-gui" or set the option "Aptitude::Start-Gui" to
+    false.
+
+  + Added Xapian support.  Unadorned strings in search patterns now
+    search the apt Xapian database built by Enrico Zini.  There is
+    also a new search term ?term that does the same thing.
+
+    This support comes with some caveats: aptitude doesn't currently
+    ensure that apt-xapian-index is installed and set up correctly, so
+    you may encounter problems searching for packages until you do
+    that manually.
+
+- Known Regressions:
+
+  + Incremental searching in the curses frontend is made much less
+    useful by introducing Xapian.  It still works, but because Xapian
+    searches don't find substrings, the search will fail to match
+    anything until
+
 [9/5/2008]
 Version 0.4.11.10                           "Upon the empty winds of time"
 
