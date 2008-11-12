@@ -169,6 +169,8 @@ static void usage()
   printf("\n");
   printf(_("  Options:\n"));
   printf(_(" -h             This help text\n"));
+  printf(_(" --gui          Use the GTK GUI even if disabled in the configuration.\n"));
+  printf(_(" --no-gui       Do not use the GTK GUI even if available.\n"));
   printf(_(" -s             Simulate actions, but do not actually perform them.\n"));
   printf(_(" -d             Only download packages, do not install or remove anything.\n"));
   printf(_(" -P             Always prompt for confirmation or actions\n"));
