@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-05 16:05+0200\n"
+"POT-Creation-Date: 2008-11-11 19:42-0800\n"
 "PO-Revision-Date: 2008-07-14 21:03+0200\n"
 "Last-Translator: Martin Bagge <brother@bsnet.se>\n"
 "Language-Team: Swedish <debian-l10n-swedish@lists.debian.org>\n"
@@ -269,10 +269,26 @@ msgstr ""
 "paket att visas automatiskt i den nedre delen av skärmen."
 
 #: src/apt_options.cc:240
+msgid "Display flat view instead of default view on startup"
+msgstr ""
+
+#: src/apt_options.cc:241
+#, fuzzy
+#| msgid ""
+#| "If this option is enabled, the menu bar will only appear when it has been "
+#| "activated by pressing the menu key."
+msgid ""
+"If this option is enabled, then the first view displayed on startup will be "
+"a flat view instead of the default view."
+msgstr ""
+"Om det  här atlernativet väljs visas meny-raden endast när den aktiverats "
+"via meny-tangenten."
+
+#: src/apt_options.cc:245
 msgid "The default grouping method for package views"
 msgstr "Standardmetod för gruppindelning för paketvyer"
 
-#: src/apt_options.cc:241
+#: src/apt_options.cc:246
 msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
@@ -280,11 +296,11 @@ msgstr ""
 "Det här alternativet anger hur aptitude organiserar paketlistan. Läs vidare "
 "i aptitudes användarmanual för information om hur du anger en gruppindelning."
 
-#: src/apt_options.cc:245
+#: src/apt_options.cc:250
 msgid "The default display-limit for package views"
 msgstr "Standardvisningsgräns för paketvyer"
 
-#: src/apt_options.cc:246
+#: src/apt_options.cc:251
 msgid ""
 "By default, the limit of each package view will be set to the value "
 "specified by this option.  See the aptitude user's manual for detailed "
@@ -293,11 +309,11 @@ msgstr ""
 "Visningsgränsen för paketvyerna sätts till detta värde som standard. Läse "
 "mer i aptitudes användarmanual för detaljerad information om sökningar."
 
-#: src/apt_options.cc:251
+#: src/apt_options.cc:256
 msgid "The display format for package views"
 msgstr "Visningsformatet för paketvyer"
 
-#: src/apt_options.cc:252
+#: src/apt_options.cc:257
 msgid ""
 "This option controls how aptitude formats lines of the package list.  See "
 "the aptitude user's manual for information on how to specify a display "
@@ -307,11 +323,11 @@ msgstr ""
 "mer i aptitudes användarmanual för information om hur du anger "
 "visningsformat."
 
-#: src/apt_options.cc:258
+#: src/apt_options.cc:263
 msgid "The display format for the status line"
 msgstr "Visningsformatet för statusraden"
 
-#: src/apt_options.cc:259
+#: src/apt_options.cc:264
 msgid ""
 "This option controls how aptitude formats the status line (the line between "
 "the package list and the lower pane).  See the aptitude user's manual for "
@@ -321,11 +337,11 @@ msgstr ""
 "paketlistan och den nedre ytan). Läs mer i aptitudes användarmanual om hur "
 "du anger ett visningsformat."
 
-#: src/apt_options.cc:266
+#: src/apt_options.cc:271
 msgid "The display format for the header line"
 msgstr "Visningsformatet för huvudraden"
 
-#: src/apt_options.cc:267
+#: src/apt_options.cc:272
 msgid ""
 "This option controls how aptitude formats the header line (the line above "
 "the package list).  See the aptitude user's manual for information on how to "
@@ -335,11 +351,11 @@ msgstr ""
 "paketlistan). Läs mer i aptitudes användarmanual om hur du anger ett "
 "visningsformat."
 
-#: src/apt_options.cc:277
+#: src/apt_options.cc:282
 msgid "Automatically upgrade installed packages"
 msgstr "Uppgradera automatiskt installerade paket"
 
-#: src/apt_options.cc:278
+#: src/apt_options.cc:283
 msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
@@ -347,11 +363,11 @@ msgstr ""
 "Om det här alternativet väljs kommer aptitude autoamtiskt vid uppstart ange "
 "att uppgraderingsbara paket ska uppgraderas."
 
-#: src/apt_options.cc:282
+#: src/apt_options.cc:287
 msgid "Remove obsolete package files after downloading new package lists"
 msgstr "Ta bort föråldrade paketfiler efter hämtning av nya paketlistor"
 
-#: src/apt_options.cc:283
+#: src/apt_options.cc:288
 msgid ""
 "If this option is enabled, then after every install run, aptitude will "
 "delete from the package cache any package files that can no longer be "
@@ -361,11 +377,11 @@ msgstr ""
 "paketfiler från arkivet som inte kan laddas hem från någon av källorna i "
 "sources.list,"
 
-#: src/apt_options.cc:288
+#: src/apt_options.cc:293
 msgid "URL to use to download changelogs"
 msgstr "URL att använda för att hämta ändringsloggar"
 
-#: src/apt_options.cc:289
+#: src/apt_options.cc:294
 msgid ""
 "This option controls the template that's used to download changelogs from "
 "the Debian Web site.  You should only need to change this if the changelogs "
@@ -374,11 +390,11 @@ msgstr ""
 "Det här alternativet styr utseendet på adressen för att hämta Debians "
 "ändringsloggar. Du ska vanligen inte behöva ändra detta."
 
-#: src/apt_options.cc:295
+#: src/apt_options.cc:300
 msgid "Display a preview of what will be done before doing it"
 msgstr "Visa en förhandsgranskning av vad som kommer att göras innan det sker"
 
-#: src/apt_options.cc:296
+#: src/apt_options.cc:301
 msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
@@ -386,12 +402,12 @@ msgstr ""
 "Om det här alternativet väljs kommer aptitude först att visa en "
 "förhandsgranskning av de åtgärder som kommer att utföras."
 
-#: src/apt_options.cc:302
+#: src/apt_options.cc:307
 msgid ""
 "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr "Glöm vilka paket som är \"nya\" när paketlistan blir uppdaterad"
 
-#: src/apt_options.cc:303
+#: src/apt_options.cc:308
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
@@ -399,12 +415,12 @@ msgstr ""
 "Om det här alternativet väljs kommer aptitude att rensa listan över nya "
 "paket om du väljer att uppdatera paketlistan (t.ex. genom att trycka 'u')."
 
-#: src/apt_options.cc:308
+#: src/apt_options.cc:313
 msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr "Glöm vilka paket som är \"nya\" när paket installeras eller tas bort"
 
-#: src/apt_options.cc:309
+#: src/apt_options.cc:314
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you perform an install run or install or remove packages from the "
@@ -414,12 +430,12 @@ msgstr ""
 "efter att du genomfört en installation eller avinstallation av ett paket "
 "från kommandoraden."
 
-#: src/apt_options.cc:315
+#: src/apt_options.cc:320
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr "Visa inte en varning när den första ändringen sker i skrivskyddat läge"
 
-#: src/apt_options.cc:316
+#: src/apt_options.cc:321
 msgid ""
 "If this option is %Bnot%b enabled, aptitude will display a warning when you "
 "modify the state of a package if you do not have permissions to apply the "
@@ -429,12 +445,12 @@ msgstr ""
 "när du förändrar tillståndet för ett paket och inte har tillåtelse att "
 "genomföra förändringar i systemet."
 
-#: src/apt_options.cc:322
+#: src/apt_options.cc:327
 msgid "Warn when attempting to perform a privileged action as a non-root user"
 msgstr ""
 "Varna vid försök att göra en priviligierad åtgärd som en icke-rootanvändare"
 
-#: src/apt_options.cc:323
+#: src/apt_options.cc:328
 msgid ""
 "If this option is enabled, aptitude will warn you when you attempt to "
 "perform an action which you do not have permission to do: for instance, "
@@ -447,11 +463,11 @@ msgstr ""
 "erbjudas möjligheten att logga in som root och genomföra åtgärden med "
 "priviligierade rättigheter."
 
-#: src/apt_options.cc:332
+#: src/apt_options.cc:337
 msgid "File to log actions into"
 msgstr "Fil att skriva åtgärdslogg till"
 
-#: src/apt_options.cc:333
+#: src/apt_options.cc:338
 msgid ""
 "When you install or remove packages, a summary of what aptitude does will be "
 "written to this file.  If the first character of the file name is a pipe "
@@ -463,11 +479,11 @@ msgstr ""
 "pipe (%B|%B) kommer resterande del av filnamnet att tolkas som ett skal-"
 "kommando som tar emot loggen på standard input."
 
-#: src/apt_options.cc:345
+#: src/apt_options.cc:350
 msgid "Automatically resolve dependencies of a package when it is selected"
 msgstr "Lös automatiskt beroendeproblem för ett paket när det väljs"
 
-#: src/apt_options.cc:346
+#: src/apt_options.cc:351
 msgid ""
 "If this option is enabled, aptitude will use a simple heuristic to "
 "immediately resolve the dependencies of each package you flag for "
@@ -479,12 +495,12 @@ msgstr ""
 "Detta går mycket fortare än den inbyggda beroendelösaren men kan å andra "
 "sidan leda till ooptimala  val i vissa fall."
 
-#: src/apt_options.cc:354
+#: src/apt_options.cc:359
 msgid "Automatically fix broken packages before installing or removing"
 msgstr ""
 "Rätta automatiskt till trasiga paket innan installation eller borttagning"
 
-#: src/apt_options.cc:355
+#: src/apt_options.cc:360
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
@@ -496,11 +512,11 @@ msgstr ""
 "från beroendelösaren. Annars kommer aptitude fråga hur du vill lösa de "
 "trasiga beroendena."
 
-#: src/apt_options.cc:362
+#: src/apt_options.cc:367
 msgid "Install recommended packages automatically"
 msgstr "Installera rekommenderade paket automatiskt"
 
-#: src/apt_options.cc:363
+#: src/apt_options.cc:368
 msgid ""
 "If this option is enabled and \"automatically resolve dependencies\" is also "
 "enabled, aptitude will attempt to install the recommendations of newly "
@@ -518,11 +534,11 @@ msgstr ""
 "\"också är aktiverat kommer paket som är rekomenderade av ett annat "
 "installerat paket inte att tas bort automatiskt."
 
-#: src/apt_options.cc:375
+#: src/apt_options.cc:380
 msgid "Remove unused packages automatically"
 msgstr "Ta automatiskt bort oanvända paket"
 
-#: src/apt_options.cc:376
+#: src/apt_options.cc:381
 msgid ""
 "If this option is enabled, packages that are automatically installed and "
 "that no manually installed package depends on will be removed from the "
@@ -540,11 +556,11 @@ msgstr ""
 "är aktiverat kommer automatiskt installerade paket inte tas bort om något "
 "annat installerat paket rekomenderar dem."
 
-#: src/apt_options.cc:387
+#: src/apt_options.cc:392
 msgid "Packages that should never be automatically removed"
 msgstr "Paket som aldrig ska tas bort automatiskt."
 
-#: src/apt_options.cc:388
+#: src/apt_options.cc:393
 msgid ""
 "Packages matching this search pattern will always be treated as if an "
 "installed package depends on them: they will never be targeted for removal "
@@ -554,12 +570,12 @@ msgstr ""
 "installerat paket beror på dem. De kommer aldrig att bli borttaget som ett "
 "oanvänt paket."
 
-#: src/apt_options.cc:393
+#: src/apt_options.cc:398
 msgid "Allow dependency resolutions that break holds or forbids"
 msgstr ""
 "Tillåt förslag på beroendelösning som bryter mot 'håll kvar' och 'förbjud'"
 
-#: src/apt_options.cc:394
+#: src/apt_options.cc:399
 msgid ""
 "If this option is enabled, then whenever aptitude solves a dependency "
 "problem, it will consider modifying held packages, or installing forbidden "
@@ -580,15 +596,15 @@ msgstr ""
 "just har markerats för installation eller uppgradering, se vidare bugg "
 "#470035."
 
-#: src/apt_options.cc:520
+#: src/apt_options.cc:525
 msgid "UI options"
 msgstr "Gränssnitt"
 
-#: src/apt_options.cc:522
+#: src/apt_options.cc:527
 msgid "Dependency handling"
 msgstr "Beroendehantering"
 
-#: src/apt_options.cc:524 src/pkg_grouppolicy.cc:1018
+#: src/apt_options.cc:529 src/pkg_grouppolicy.cc:1022
 msgid "Miscellaneous"
 msgstr "Diverse"
 
@@ -629,8 +645,8 @@ msgstr "Ödesdigert fel i problemlösaren"
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] Löser bereoenden"
 
-#: src/broken_indicator.cc:311 src/solution_dialog.cc:140
-#: src/solution_screen.cc:542
+#: src/broken_indicator.cc:311 src/gtk/resolver.cc:345
+#: src/solution_dialog.cc:140 src/solution_screen.cc:542
 msgid "Internal error: unexpected null solution."
 msgstr "Internt fel: oväntad noll-lösning."
 
@@ -681,17 +697,17 @@ msgstr[1] "%d att nedgradera"
 msgid "Suggest %F"
 msgstr "Föreslår %F"
 
-#: src/cmdline/cmdline_action.cc:48
+#: src/cmdline/cmdline_action.cc:50
 #, c-format
 msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Kunde inte hitta källpaket för \"%s\".\n"
 
-#: src/cmdline/cmdline_action.cc:202
+#: src/cmdline/cmdline_action.cc:204
 #, c-format
 msgid "Unable to satisfy the build-depends: %s."
 msgstr "Beroenden för att köra byggnation av källan saknas: \"%s\"."
 
-#: src/cmdline/cmdline_action.cc:238
+#: src/cmdline/cmdline_action.cc:240
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -700,7 +716,7 @@ msgstr ""
 "Notera: \"%s\", tillhandahåller det virtuella paketet\n"
 "      \"%s\", är redan installerad.\n"
 
-#: src/cmdline/cmdline_action.cc:245
+#: src/cmdline/cmdline_action.cc:247
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -709,7 +725,7 @@ msgstr ""
 "Notera: \"%s\", tillhandahåller det virtuella paketet\n"
 "      \"%s\", är redan på väg att installeras.\n"
 
-#: src/cmdline/cmdline_action.cc:267
+#: src/cmdline/cmdline_action.cc:269
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -718,17 +734,17 @@ msgstr ""
 "\"%s\" finns i paketdatabasen men det är inte\n"
 "ett riktigt paket och inget paket tillhandahåller det.\n"
 
-#: src/cmdline/cmdline_action.cc:275
+#: src/cmdline/cmdline_action.cc:277
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" är ett virtuellt paket som tillhandahålls av:\n"
 
-#: src/cmdline/cmdline_action.cc:278
+#: src/cmdline/cmdline_action.cc:280
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Du måste välja en att installera.\n"
 
-#: src/cmdline/cmdline_action.cc:286
+#: src/cmdline/cmdline_action.cc:288
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -737,42 +753,42 @@ msgstr ""
 "Notera: väljer \"%s\" istället för det\n"
 "      virtuella paketet \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:305
+#: src/cmdline/cmdline_action.cc:307
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s är redan installerat med den begärda versionen (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:311
+#: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr ""
 "%s är för tillfället inte installerat så det kommer inte att installeras "
 "om.\n"
 
-#: src/cmdline/cmdline_action.cc:318 src/cmdline/cmdline_action.cc:324
+#: src/cmdline/cmdline_action.cc:320 src/cmdline/cmdline_action.cc:326
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Paketet %s är inte installerat så det kommer inte att tas bort\n"
 
-#: src/cmdline/cmdline_action.cc:342
+#: src/cmdline/cmdline_action.cc:344
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr ""
 "Paketet %s är inte installerat, kan därför inte förbjuda en uppgradering\n"
 
-#: src/cmdline/cmdline_action.cc:344
+#: src/cmdline/cmdline_action.cc:346
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr ""
 "Paketet %s är inte uppgraderingsbart, kan därför inte förbjuda en "
 "uppgradering\n"
 
-#: src/cmdline/cmdline_action.cc:438
+#: src/cmdline/cmdline_action.cc:440
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Notera: väljer funktionen \"%s: %s\" för installation\n"
 
-#: src/cmdline/cmdline_action.cc:472
+#: src/cmdline/cmdline_action.cc:474
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -781,12 +797,12 @@ msgstr ""
 "Du kan endast ange en paketversion med ett \"install\"-kommando eller ett "
 "\"forbid-version\"-kommando.\n"
 
-#: src/cmdline/cmdline_action.cc:481
+#: src/cmdline/cmdline_action.cc:483
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "Du kan endast ange ett paketarkiv med ett \"install\"-kommando.\n"
 
-#: src/cmdline/cmdline_action.cc:518
+#: src/cmdline/cmdline_action.cc:520
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -795,7 +811,7 @@ msgstr ""
 "Kunde inte hitta paketet \"%s\" och mer än 40\n"
 "paket innehåller \"%s\" i sina namn.\n"
 
-#: src/cmdline/cmdline_action.cc:521
+#: src/cmdline/cmdline_action.cc:523
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -804,13 +820,13 @@ msgstr ""
 "Kunde inte hitta paketet \"%s\".  Dock så innehåller\n"
 "följande paket \"%s\" i sina namn:\n"
 
-#: src/cmdline/cmdline_action.cc:543
+#: src/cmdline/cmdline_action.cc:545
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "Kunde inte hitta några paket vars namn eller beskrivning matchade \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:545
+#: src/cmdline/cmdline_action.cc:547
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -819,7 +835,7 @@ msgstr ""
 "Kunde inte hitta några paket som matchade \"%s\", och mer än\n"
 "40 paket innehåller \"%s\" i sina beskrivningar.\n"
 
-#: src/cmdline/cmdline_action.cc:548
+#: src/cmdline/cmdline_action.cc:550
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -828,22 +844,22 @@ msgstr ""
 "Kunde inte hitta några paket som matchade \"%s\".  Dock innehåller\n"
 "följande paket \"%s\" i sina beskrivningar:\n"
 
-#: src/cmdline/cmdline_action.cc:686
+#: src/cmdline/cmdline_action.cc:689
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Felaktigt åtgärdstecken \"%c\"\n"
 
-#: src/cmdline/cmdline_changelog.cc:96
+#: src/cmdline/cmdline_changelog.cc:99
 msgid "Can't execute sensible-pager, is this a working Debian system?"
 msgstr "Kan inte köra sensible-pager, är detta ett fungerande Debiansystem?"
 
-#: src/cmdline/cmdline_changelog.cc:154
+#: src/cmdline/cmdline_changelog.cc:157
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr ""
 "%s är inte ett officiellt Debianpaket, kan inte visa dess ändringslogg."
 
-#: src/cmdline/cmdline_changelog.cc:243
+#: src/cmdline/cmdline_changelog.cc:246
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Kunde inte hitta ändringsloggen för %s"
@@ -878,16 +894,16 @@ msgstr "Kommer ta %sB mindre plats\n"
 msgid "Freed %sB of disk space\n"
 msgstr "Frigjorde %sB diskplats\n"
 
-#: src/cmdline/cmdline_do_action.cc:83
+#: src/cmdline/cmdline_do_action.cc:92
 #, c-format
 msgid "Invalid operation %s"
 msgstr "Ogiltig åtgärd %s"
 
-#: src/cmdline/cmdline_do_action.cc:159
+#: src/cmdline/cmdline_do_action.cc:168
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Oväntat mönsterargument följt efter \"keep-all\""
 
-#: src/cmdline/cmdline_do_action.cc:266
+#: src/cmdline/cmdline_do_action.cc:275
 #, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
@@ -895,30 +911,30 @@ msgstr ""
 "Kunde inte lösa beroenden på ett säkert sått, försök använda växeln --full-"
 "resolver.\n"
 
-#: src/cmdline/cmdline_do_action.cc:304 src/cmdline/cmdline_simulate.cc:35
-#: src/cmdline/cmdline_upgrade.cc:163 src/main.cc:711
+#: src/cmdline/cmdline_do_action.cc:313 src/cmdline/cmdline_simulate.cc:35
+#: src/cmdline/cmdline_upgrade.cc:175 src/main.cc:755
 #, c-format
 msgid "Abort.\n"
 msgstr "Avbryt.\n"
 
-#: src/cmdline/cmdline_download.cc:31
+#: src/cmdline/cmdline_download.cc:33
 #, c-format
 msgid "download: you must specify at least one package to download\n"
 msgstr "hämtning: du måste åtminstone ange ett paket att hämta\n"
 
-#: src/cmdline/cmdline_download.cc:43
-#: src/generic/apt/download_install_manager.cc:83
+#: src/cmdline/cmdline_download.cc:45
+#: src/generic/apt/download_install_manager.cc:87
 msgid "Couldn't read source list"
 msgstr "Kunde inte läsa källistan"
 
-#: src/cmdline/cmdline_download.cc:72
+#: src/cmdline/cmdline_download.cc:74
 #, c-format
 msgid "Can't find a package named \"%s\""
 msgstr "Kunde inte hitta ett paket med namnet \"%s\""
 
 # Kbabel marked this one as faulty, poedit
 # shows no error however. maybe it's correct?
-#: src/cmdline/cmdline_download.cc:111
+#: src/cmdline/cmdline_download.cc:118
 #, c-format
 msgid ""
 "No downloadable files for %s version %s; perhaps it is a local or obsolete "
@@ -927,7 +943,7 @@ msgstr ""
 "Inga hämtningsbaa filer för %s version %s; kanske är det ett lokalt eller "
 "ett föråldrat paket?"
 
-#: src/cmdline/cmdline_extract_cache_subset.cc:43
+#: src/cmdline/cmdline_extract_cache_subset.cc:45
 #, c-format
 msgid ""
 "extract-cache-entries: at least one argument is required (the directory\n"
@@ -936,13 +952,13 @@ msgstr ""
 "uppackning av buffert-delar: åtminstone ett argument krävs (sökvägen för "
 "skrivning).\n"
 
-#: src/cmdline/cmdline_extract_cache_subset.cc:77
-#: src/cmdline/cmdline_user_tag.cc:116
+#: src/cmdline/cmdline_extract_cache_subset.cc:79
+#: src/cmdline/cmdline_user_tag.cc:118
 #, c-format
 msgid "No such package \"%s\".\n"
 msgstr "Inget sådant paket \"%s\".\n"
 
-#: src/cmdline/cmdline_extract_cache_subset.cc:115
+#: src/cmdline/cmdline_extract_cache_subset.cc:119
 #, c-format
 msgid "No packages were selected by the given search pattern; nothing to do.\n"
 msgstr "Inga paket hittades med den angivna sökningen, inget att göra.\n"
@@ -995,121 +1011,121 @@ msgstr "Okej då, du vinner.\n"
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr "Vad är det?  Det är en elefant som blir uppäten av en orm, så klart.\n"
 
-#: src/cmdline/cmdline_prompt.cc:42
+#: src/cmdline/cmdline_prompt.cc:44
 msgid "Unexpected end-of-file on standard input"
 msgstr "Oväntat filslut från standard in"
 
-#: src/cmdline/cmdline_prompt.cc:66
+#: src/cmdline/cmdline_prompt.cc:68
 msgid "Couldn't read list of sources"
 msgstr "Kunde inte läsa källistan"
 
 #. ForTranslators: %s is replaced with a comma-delimited list
 #. of package names.
-#: src/cmdline/cmdline_prompt.cc:218
+#: src/cmdline/cmdline_prompt.cc:223
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
 msgstr[0] "(för %s)"
 msgstr[1] "(för %s)"
 
-#: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
-#: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2436
+#: src/cmdline/cmdline_prompt.cc:298 src/cmdline/cmdline_show.cc:437
+#: src/cmdline/cmdline_why.cc:194 src/gtk/dependency_chains_tab.cc:158
 msgid "Provides"
 msgstr "Tillhandahåller"
 
-#: src/cmdline/cmdline_prompt.cc:426
+#: src/cmdline/cmdline_prompt.cc:431
 msgid "Config files"
 msgstr "Konfigurationsfiler"
 
-#: src/cmdline/cmdline_prompt.cc:530 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:535 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "men %s kommer att installeras."
 
-#: src/cmdline/cmdline_prompt.cc:533 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:538 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "men %s är installerat och hålls tillbaka."
 
-#: src/cmdline/cmdline_prompt.cc:536 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:541 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "men %s är installerat."
 
-#: src/cmdline/cmdline_prompt.cc:540 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:545 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "men det är inte installerbart"
 
-#: src/cmdline/cmdline_prompt.cc:544 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:549 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " som är ett virtuellt paket."
 
-#: src/cmdline/cmdline_prompt.cc:547 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:552 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " eller"
 
-#: src/cmdline/cmdline_prompt.cc:561
+#: src/cmdline/cmdline_prompt.cc:566
 msgid "The following packages are BROKEN:"
 msgstr "Följande paket är TRASIGA:"
 
-#: src/cmdline/cmdline_prompt.cc:562
+#: src/cmdline/cmdline_prompt.cc:567
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Följande paket är oanvända och kommer att TAS BORT:"
 
-#: src/cmdline/cmdline_prompt.cc:563
+#: src/cmdline/cmdline_prompt.cc:568
 msgid "The following packages have been automatically kept back:"
 msgstr "Följande paket hålls automatiskt tillbaka:"
 
-#: src/cmdline/cmdline_prompt.cc:564
+#: src/cmdline/cmdline_prompt.cc:569
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Följande NYA paket kommer automatiskt att bli installerade:"
 
-#: src/cmdline/cmdline_prompt.cc:565
+#: src/cmdline/cmdline_prompt.cc:570
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Följande paket kommer automatiskt bli BORTTAGNA:"
 
-#: src/cmdline/cmdline_prompt.cc:566
+#: src/cmdline/cmdline_prompt.cc:571
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Följande paket kommer att bli NEDGRADERADE:"
 
-#: src/cmdline/cmdline_prompt.cc:567
+#: src/cmdline/cmdline_prompt.cc:572
 msgid "The following packages have been kept back:"
 msgstr "Följande paket har blivit tillbakahållna:"
 
-#: src/cmdline/cmdline_prompt.cc:568
+#: src/cmdline/cmdline_prompt.cc:573
 msgid "The following packages will be REINSTALLED:"
 msgstr "Följande paket kommer att bli OMINSTALLERADE:"
 
-#: src/cmdline/cmdline_prompt.cc:569
+#: src/cmdline/cmdline_prompt.cc:574
 msgid "The following NEW packages will be installed:"
 msgstr "Följande NYA paket kommer att bli installerade:"
 
-#: src/cmdline/cmdline_prompt.cc:570
+#: src/cmdline/cmdline_prompt.cc:575
 msgid "The following packages will be REMOVED:"
 msgstr "Följande paket kommer att TAS BORT:"
 
-#: src/cmdline/cmdline_prompt.cc:571
+#: src/cmdline/cmdline_prompt.cc:576
 msgid "The following packages will be upgraded:"
 msgstr "Följande paket kommer att bli uppgraderade:"
 
-#: src/cmdline/cmdline_prompt.cc:572
+#: src/cmdline/cmdline_prompt.cc:577
 msgid "The following partially installed packages will be configured:"
 msgstr "Följande delvis installerade paket kommer att konfigureras:"
 
-#: src/cmdline/cmdline_prompt.cc:627 src/ui.cc:1465
+#: src/cmdline/cmdline_prompt.cc:632 src/ui.cc:1509
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Följande SYSTEMKRITISKA paket kommer att TAS BORT!\n"
 
-#: src/cmdline/cmdline_prompt.cc:636 src/ui.cc:1480
+#: src/cmdline/cmdline_prompt.cc:641 src/ui.cc:1524
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "Följande SYSTEMKRITISKA paket kommer bli TRASIGA av denna åtgärd:\n"
 
-#: src/cmdline/cmdline_prompt.cc:646 src/ui.cc:1493
+#: src/cmdline/cmdline_prompt.cc:651 src/ui.cc:1537
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1118,16 +1134,16 @@ msgstr ""
 "VARNING: Denna åtgärd kan möjligen skada ditt system!\n"
 "         Fortsätt INTE om du inte vet EXAKT vad du gör!\n"
 
-#: src/cmdline/cmdline_prompt.cc:648
+#: src/cmdline/cmdline_prompt.cc:653
 msgid "I am aware that this is a very bad idea"
 msgstr "Jag vet att det är en mycket dålig ide"
 
-#: src/cmdline/cmdline_prompt.cc:652 src/ui.cc:1494
+#: src/cmdline/cmdline_prompt.cc:657 src/ui.cc:1538
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "För att fortsätta, skriv in frasen \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:694
+#: src/cmdline/cmdline_prompt.cc:699
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1145,7 +1161,7 @@ msgstr ""
 "detta är vad du vill göra.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:706
+#: src/cmdline/cmdline_prompt.cc:711
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1154,7 +1170,7 @@ msgstr ""
 "*** VARNING ***   Ignorerar dessa tillitsöverträdelser för att\n"
 "                  %s::CmdLine::Ignore-Trust-Violations är \"true\"!\n"
 
-#: src/cmdline/cmdline_prompt.cc:715
+#: src/cmdline/cmdline_prompt.cc:720
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
@@ -1162,103 +1178,113 @@ msgstr ""
 "*** VARNING ***   Ignorerar dessa tillitsöverträdelser för att\n"
 "                  Apt::Get::AllowUnauthenticated är \"true\"!\n"
 
-#: src/cmdline/cmdline_prompt.cc:721
-msgid "Yes"
-msgstr "Ja"
+#. ForTranslators: This string is a confirmation message, which
+#. users (especially CJK users) should be able to input without
+#. input methods.  Please include nothing but ASCII characters.
+#. The text preceding the pipe character (|) will be ignored and
+#. can be removed from your translation.
+#: src/cmdline/cmdline_prompt.cc:731
+msgid "Go ahead and ignore the warning|Yes"
+msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:721
-msgid "No"
-msgstr "Nej"
+#. ForTranslators: This string is a confirmation message, which
+#. users (especially CJK users) should be able to input without
+#. input methods.  Please include nothing but ASCII characters.
+#. The text preceding the pipe character (|) will be ignored and
+#. can be removed from your translation.
+#: src/cmdline/cmdline_prompt.cc:737
+msgid "Abort instead of overriding the warning|No"
+msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:732
+#: src/cmdline/cmdline_prompt.cc:748
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Vill du ignorera denna varning och fortsätta ändå?\n"
 
-#: src/cmdline/cmdline_prompt.cc:733
+#: src/cmdline/cmdline_prompt.cc:749
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "För att fortsätta, ange \"%s\"; för att avbryta, ange \"%s\": "
 
-#: src/cmdline/cmdline_prompt.cc:750
+#: src/cmdline/cmdline_prompt.cc:766
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Okänd inmatning.  Ange antingen \"%s\" eller \"%s\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:865
+#: src/cmdline/cmdline_prompt.cc:881
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Följande paket är REKOMMENDERADE men kommer INTE att installeras:\n"
 
-#: src/cmdline/cmdline_prompt.cc:871
+#: src/cmdline/cmdline_prompt.cc:887
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Följande paket är FÖRESLAGNA men kommer INTE att installeras:\n"
 
-#: src/cmdline/cmdline_prompt.cc:876
+#: src/cmdline/cmdline_prompt.cc:892
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Inga paket kommer att installeras, uppgraderas eller tas bort.\n"
 
-#: src/cmdline/cmdline_prompt.cc:878
+#: src/cmdline/cmdline_prompt.cc:894
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu paket uppgraderade, %lu nyinstallerade. "
 
-#: src/cmdline/cmdline_prompt.cc:882
+#: src/cmdline/cmdline_prompt.cc:898
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu ominstallerade, "
 
-#: src/cmdline/cmdline_prompt.cc:884
+#: src/cmdline/cmdline_prompt.cc:900
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu nedgraderade, "
 
-#: src/cmdline/cmdline_prompt.cc:886
+#: src/cmdline/cmdline_prompt.cc:902
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu att ta bort och %lu inte uppgraderade.\n"
 
-#: src/cmdline/cmdline_prompt.cc:893
+#: src/cmdline/cmdline_prompt.cc:909
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Behöver hämta %sB/%sB arkiv. "
 
-#: src/cmdline/cmdline_prompt.cc:896
+#: src/cmdline/cmdline_prompt.cc:912
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Behöver hämta %sB arkiv. "
 
-#: src/cmdline/cmdline_prompt.cc:903
+#: src/cmdline/cmdline_prompt.cc:919
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Efter uppackning kommer %sB diskplats att användas.\n"
 
-#: src/cmdline/cmdline_prompt.cc:906
+#: src/cmdline/cmdline_prompt.cc:922
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Efter uppackning kommer %sB diskplats att frigöras.\n"
 
-#: src/cmdline/cmdline_prompt.cc:927
+#: src/cmdline/cmdline_prompt.cc:943
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "Inga paket att visa -- ange paketnamnen på raden efter \"i\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:933
+#: src/cmdline/cmdline_prompt.cc:949
 msgid "Press Return to continue."
 msgstr "Tryck på Return för att fortsätta."
 
-#: src/cmdline/cmdline_prompt.cc:944
+#: src/cmdline/cmdline_prompt.cc:960
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "Inga paket hittades -- ange paketnamnen på raden efter \"c\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:948
+#: src/cmdline/cmdline_prompt.cc:964
 msgid "Press Return to continue"
 msgstr "Tryck på Retur för att fortsätta"
 
-#: src/cmdline/cmdline_prompt.cc:958
+#: src/cmdline/cmdline_prompt.cc:974
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
@@ -1267,42 +1293,42 @@ msgstr ""
 "Inga paket hittades -- ange noll eller fler rötter för sökningen efter "
 "paketet för att korrigera.\n"
 
-#: src/cmdline/cmdline_prompt.cc:981
+#: src/cmdline/cmdline_prompt.cc:997
 #, c-format
 msgid "y: %F"
 msgstr "y: %F"
 
-#: src/cmdline/cmdline_prompt.cc:983
+#: src/cmdline/cmdline_prompt.cc:999
 msgid "continue with the installation"
 msgstr "fortsätt med installationen"
 
-#: src/cmdline/cmdline_prompt.cc:985
+#: src/cmdline/cmdline_prompt.cc:1001
 #, c-format
 msgid "n: %F"
 msgstr "n: %F"
 
-#: src/cmdline/cmdline_prompt.cc:987
+#: src/cmdline/cmdline_prompt.cc:1003
 msgid "abort and quit"
 msgstr "avbryt och avsluta"
 
-#: src/cmdline/cmdline_prompt.cc:989
+#: src/cmdline/cmdline_prompt.cc:1005
 #, c-format
 msgid "i: %F"
 msgstr "i: %F"
 
-#: src/cmdline/cmdline_prompt.cc:991
+#: src/cmdline/cmdline_prompt.cc:1007
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
 msgstr ""
 "visa information om ett eller flera paket, paketnamnen bör anges efter \"i\""
 
-#: src/cmdline/cmdline_prompt.cc:993
+#: src/cmdline/cmdline_prompt.cc:1009
 #, c-format
 msgid "c: %F"
 msgstr "c: %F"
 
-#: src/cmdline/cmdline_prompt.cc:995
+#: src/cmdline/cmdline_prompt.cc:1011
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1310,39 +1336,39 @@ msgstr ""
 "visa Debians ändringslogg för ett eller flera paket, paketnamnen bör anges "
 "efter \"c\""
 
-#: src/cmdline/cmdline_prompt.cc:997
+#: src/cmdline/cmdline_prompt.cc:1013
 #, c-format
 msgid "d: %F"
 msgstr "d: %F"
 
-#: src/cmdline/cmdline_prompt.cc:999
+#: src/cmdline/cmdline_prompt.cc:1015
 msgid "toggle the display of dependency information"
 msgstr "växla visningen av beroendeinformation"
 
-#: src/cmdline/cmdline_prompt.cc:1001
+#: src/cmdline/cmdline_prompt.cc:1017
 #, c-format
 msgid "s: %F"
 msgstr "s: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1003
+#: src/cmdline/cmdline_prompt.cc:1019
 msgid "toggle the display of changes in package sizes"
 msgstr "växla visningen av ändringar i paketstorlekar"
 
-#: src/cmdline/cmdline_prompt.cc:1005
+#: src/cmdline/cmdline_prompt.cc:1021
 #, c-format
 msgid "v: %F"
 msgstr "v: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1007
+#: src/cmdline/cmdline_prompt.cc:1023
 msgid "toggle the display of version numbers"
 msgstr "växla visningen av versionsnummer"
 
-#: src/cmdline/cmdline_prompt.cc:1009
+#: src/cmdline/cmdline_prompt.cc:1025
 #, c-format
 msgid "w: %F"
 msgstr "w: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1011
+#: src/cmdline/cmdline_prompt.cc:1027
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
@@ -1350,25 +1376,25 @@ msgstr ""
 "försök hitta en anledning att installera ett ensamt paket eller förklara "
 "varför installation av ett paket leder till att ett annat paket."
 
-#: src/cmdline/cmdline_prompt.cc:1014
+#: src/cmdline/cmdline_prompt.cc:1030
 #, c-format
 msgid "r: %F"
 msgstr "r: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1016
+#: src/cmdline/cmdline_prompt.cc:1032
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr "kör den automatiska beroendelösaren för att laga trasiga beroenden."
 
-#: src/cmdline/cmdline_prompt.cc:1018
+#: src/cmdline/cmdline_prompt.cc:1034
 #, c-format
 msgid "e: %F"
 msgstr "e: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1020
+#: src/cmdline/cmdline_prompt.cc:1036
 msgid "enter the full visual interface"
 msgstr "gå över till fullständigt visuellt läge"
 
-#: src/cmdline/cmdline_prompt.cc:1023
+#: src/cmdline/cmdline_prompt.cc:1039
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1380,53 +1406,53 @@ msgstr ""
 "mönster).  Åtgärden kommer att verkställas på alla paket som du listar.  "
 "Följande åtgärder finns tillgängliga:"
 
-#: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:204
+#: src/cmdline/cmdline_prompt.cc:1046 src/cmdline/cmdline_resolver.cc:204
 msgid "'+' to install packages"
 msgstr "\"+\" för att installera paket"
 
-#: src/cmdline/cmdline_prompt.cc:1033 src/cmdline/cmdline_resolver.cc:206
+#: src/cmdline/cmdline_prompt.cc:1049 src/cmdline/cmdline_resolver.cc:206
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "\"+M\" för att installera paket och omedelbart flagga dem som automatiskt "
 "installerade"
 
-#: src/cmdline/cmdline_prompt.cc:1035 src/cmdline/cmdline_resolver.cc:208
+#: src/cmdline/cmdline_prompt.cc:1051 src/cmdline/cmdline_resolver.cc:208
 msgid "'-' to remove packages"
 msgstr "\"-\" för att ta bort paket"
 
-#: src/cmdline/cmdline_prompt.cc:1037 src/cmdline/cmdline_resolver.cc:210
+#: src/cmdline/cmdline_prompt.cc:1053 src/cmdline/cmdline_resolver.cc:210
 msgid "'_' to purge packages"
 msgstr "\"_\" för att rensa paket"
 
-#: src/cmdline/cmdline_prompt.cc:1039 src/cmdline/cmdline_resolver.cc:212
+#: src/cmdline/cmdline_prompt.cc:1055 src/cmdline/cmdline_resolver.cc:212
 msgid "'=' to place packages on hold"
 msgstr "\"=\" för att hålla tillbaka paket"
 
-#: src/cmdline/cmdline_prompt.cc:1041 src/cmdline/cmdline_resolver.cc:214
+#: src/cmdline/cmdline_prompt.cc:1057 src/cmdline/cmdline_resolver.cc:214
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 "\":\" för att behålla paketen i sitt nuvarande tillstånd utan att hålla dem "
 "tillbaka"
 
-#: src/cmdline/cmdline_prompt.cc:1043 src/cmdline/cmdline_resolver.cc:216
+#: src/cmdline/cmdline_prompt.cc:1059 src/cmdline/cmdline_resolver.cc:216
 msgid "'&M' to mark packages as automatically installed"
 msgstr "\"&M\" för att markera paket som automatiskt installerade"
 
-#: src/cmdline/cmdline_prompt.cc:1045 src/cmdline/cmdline_resolver.cc:218
+#: src/cmdline/cmdline_prompt.cc:1061 src/cmdline/cmdline_resolver.cc:218
 msgid "'&m' to mark packages as manually installed"
 msgstr "\"&m\" för att markera paket som manuellt installerade"
 
-#: src/cmdline/cmdline_prompt.cc:1047
+#: src/cmdline/cmdline_prompt.cc:1063
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr "\"&BD\" för att installera bygg-beroenden för ett paket."
 
-#: src/cmdline/cmdline_prompt.cc:1051
+#: src/cmdline/cmdline_prompt.cc:1067
 msgid "Commands:"
 msgstr "Kommandon:"
 
-#: src/cmdline/cmdline_prompt.cc:1160
+#: src/cmdline/cmdline_prompt.cc:1176
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
@@ -1434,19 +1460,19 @@ msgstr ""
 "aptitude kunde inte hitta en lösning för dessa beroenden. DU kan lösa de "
 "själv manuellt eller trycka 'n' för att avsluta."
 
-#: src/cmdline/cmdline_prompt.cc:1178
+#: src/cmdline/cmdline_prompt.cc:1194
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Vill du fortsätta? [J/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1179
+#: src/cmdline/cmdline_prompt.cc:1195
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr "Lösa dessaberoenden manuellt? [N/+/-/_/:/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1197
+#: src/cmdline/cmdline_prompt.cc:1213
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "Ogiltigt svar.  Ange ett giltigt kommando eller \"?\" för hjälp.\n"
 
-#: src/cmdline/cmdline_prompt.cc:1203
+#: src/cmdline/cmdline_prompt.cc:1219
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
@@ -1455,7 +1481,7 @@ msgstr ""
 "paket), 'R' för att försöka automatisk beroendelösning eller 'N' för att "
 "avbryta."
 
-#: src/cmdline/cmdline_prompt.cc:1234
+#: src/cmdline/cmdline_prompt.cc:1250
 #, c-format
 msgid ""
 "\n"
@@ -1466,7 +1492,7 @@ msgstr ""
 "Information om beroenden kommer att visas.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1236
+#: src/cmdline/cmdline_prompt.cc:1252
 #, c-format
 msgid ""
 "\n"
@@ -1477,7 +1503,7 @@ msgstr ""
 "Information om beroenden kommer inte att visas.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1242
+#: src/cmdline/cmdline_prompt.cc:1258
 #, c-format
 msgid ""
 "\n"
@@ -1488,7 +1514,7 @@ msgstr ""
 "Versioner kommer att visas.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1244
+#: src/cmdline/cmdline_prompt.cc:1260
 #, c-format
 msgid ""
 "\n"
@@ -1499,7 +1525,7 @@ msgstr ""
 "Versioner kommer inte att visas.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1249
+#: src/cmdline/cmdline_prompt.cc:1265
 #, c-format
 msgid ""
 "\n"
@@ -1510,7 +1536,7 @@ msgstr ""
 "Storleksändringar kommer att visas.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1251
+#: src/cmdline/cmdline_prompt.cc:1267
 #, c-format
 msgid ""
 "\n"
@@ -1696,8 +1722,8 @@ msgstr ""
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr "Jag vill lösa beroendekonflikter men det finns ingen beroendelösare."
 
-#: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
-#: src/solution_screen.cc:519
+#: src/cmdline/cmdline_resolver.cc:530 src/gtk/resolver.cc:317
+#: src/solution_dialog.cc:127 src/solution_screen.cc:519
 msgid "Resolving dependencies..."
 msgstr "Löser beroenden..."
 
@@ -1762,7 +1788,7 @@ msgstr ""
 "*** FEL: sökningen avbröts av ett ödesdigert undantag.  Du kan\n"
 "           fortsätta sökningen men några lösningar kommer inte vara nåbara."
 
-#: src/cmdline/cmdline_resolver.cc:963
+#: src/cmdline/cmdline_resolver.cc:983
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
@@ -1771,16 +1797,16 @@ msgstr ""
 "försöken avbröts, detta kan innebära att några uppgraderingar inte "
 "genomfördes."
 
-#: src/cmdline/cmdline_resolver.cc:970
+#: src/cmdline/cmdline_resolver.cc:990
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr "Kunde inte lösa beroenden! Ger upp... (tog för lång tid)"
 
-#: src/cmdline/cmdline_resolver.cc:984
+#: src/cmdline/cmdline_resolver.cc:1007
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr "Kunde inte lösa beroenden! Ger upp... (lösning saknas)"
 
-#: src/cmdline/cmdline_resolver.cc:993
+#: src/cmdline/cmdline_resolver.cc:1019
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
@@ -1789,17 +1815,17 @@ msgstr ""
 "Beroendelösning inkomplett (%s); detta kan innebära att några uppgraderingar "
 "inte genomfördes."
 
-#: src/cmdline/cmdline_resolver.cc:999
+#: src/cmdline/cmdline_resolver.cc:1025
 #, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Kunde inte lösa beroenden (%s)."
 
-#: src/cmdline/cmdline_search.cc:125
+#: src/cmdline/cmdline_search.cc:126
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr "iconv för %s misslyckades.\n"
 
-#: src/cmdline/cmdline_search.cc:142
+#: src/cmdline/cmdline_search.cc:143
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr "sökning: Du måste ange åtminstone en sökterm\n"
@@ -1809,234 +1835,236 @@ msgstr "sökning: Du måste ange åtminstone en sökterm\n"
 msgid "The following packages have unmet dependencies:\n"
 msgstr "Följande paket har otillfredsställda beroenden:\n"
 
-#: src/cmdline/cmdline_show.cc:170 src/cmdline/cmdline_show.cc:414
-#: src/solution_fragment.cc:58
+#: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
+#: src/gtk/resolver.cc:208 src/solution_fragment.cc:58
 msgid "<NULL>"
 msgstr "<NOLL>"
 
-#: src/cmdline/cmdline_show.cc:187 src/cmdline/cmdline_show.cc:192
+#: src/cmdline/cmdline_show.cc:189 src/cmdline/cmdline_show.cc:194
 msgid "not installed"
 msgstr "inte installerat"
 
-#: src/cmdline/cmdline_show.cc:194 src/pkg_columnizer.cc:249
+#: src/cmdline/cmdline_show.cc:196 src/pkg_columnizer.cc:249
 #: src/pkg_ver_item.cc:232
 msgid "unpacked"
 msgstr "uppackat"
 
-#: src/cmdline/cmdline_show.cc:196
+#: src/cmdline/cmdline_show.cc:198
 msgid "partially configured"
 msgstr "delvis konfigurerat"
 
-#: src/cmdline/cmdline_show.cc:198
+#: src/cmdline/cmdline_show.cc:200
 msgid "partially installed"
 msgstr "delvis installerat"
 
-#: src/cmdline/cmdline_show.cc:200
+#: src/cmdline/cmdline_show.cc:202
 msgid "not installed (configuration files remain)"
 msgstr "inte installerat (konfigurationsfilerna kvarstår)"
 
-#: src/cmdline/cmdline_show.cc:203
+#: src/cmdline/cmdline_show.cc:205
 msgid "awaiting trigger processing by other package(s)"
 msgstr "väntar på bearbetning av utlösare för andra paket"
 
-#: src/cmdline/cmdline_show.cc:205
+#: src/cmdline/cmdline_show.cc:207
 msgid "awaiting trigger processing"
 msgstr "väntar på bearbetning av utlösare"
 
-#: src/cmdline/cmdline_show.cc:208 src/pkg_columnizer.cc:257
+#: src/cmdline/cmdline_show.cc:210 src/pkg_columnizer.cc:257
 #: src/pkg_ver_item.cc:240
 msgid "installed"
 msgstr "installerat"
 
-#: src/cmdline/cmdline_show.cc:231
+#: src/cmdline/cmdline_show.cc:233
 #, c-format
 msgid "%s; will be purged because nothing depends on it"
 msgstr "%s; kommer att rensas för att inget är beroende av det"
 
-#: src/cmdline/cmdline_show.cc:233 src/cmdline/cmdline_show.cc:329
+#: src/cmdline/cmdline_show.cc:235 src/cmdline/cmdline_show.cc:331
 #, c-format
 msgid "%s; will be purged"
 msgstr "%s; kommer att rensas"
 
-#: src/cmdline/cmdline_show.cc:238
+#: src/cmdline/cmdline_show.cc:240
 #, c-format
 msgid "%s; will be removed because nothing depends on it"
 msgstr "%s; kommer att tas bort för att inget är beroende av det"
 
-#: src/cmdline/cmdline_show.cc:240
+#: src/cmdline/cmdline_show.cc:242
 #, c-format
 msgid "%s; will be removed"
 msgstr "%s; kommer att tas bort"
 
-#: src/cmdline/cmdline_show.cc:258
+#: src/cmdline/cmdline_show.cc:260
 #, c-format
 msgid "%s%s; will be downgraded [%s -> %s]"
 msgstr "%s%s; kommer att nedgraderas [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:261
+#: src/cmdline/cmdline_show.cc:263
 #, c-format
 msgid "%s%s; will be upgraded [%s -> %s]"
 msgstr "%s%s; kommer att uppgraderas [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:272
 msgid "not a real package"
 msgstr "inte ett riktigt paket"
 
-#: src/cmdline/cmdline_show.cc:283
+#: src/cmdline/cmdline_show.cc:285
 msgid " [held]"
 msgstr " [kvarhålls]"
 
-#: src/cmdline/cmdline_show.cc:297
+#: src/cmdline/cmdline_show.cc:299
 #, c-format
 msgid "%s; will be installed"
 msgstr "%s; kommer att installeras"
 
-#: src/cmdline/cmdline_show.cc:299
+#: src/cmdline/cmdline_show.cc:301
 #, c-format
 msgid "%s; will be installed automatically"
 msgstr "%s; kommer att installeras automatiskt"
 
-#: src/cmdline/cmdline_show.cc:319
+#: src/cmdline/cmdline_show.cc:321
 #, c-format
 msgid "%s; version %s will be installed"
 msgstr "%s; version %s kommer att installeras"
 
-#: src/cmdline/cmdline_show.cc:323
+#: src/cmdline/cmdline_show.cc:325
 #, c-format
 msgid "%s; version %s will be installed automatically"
 msgstr "%s; version %s kommer att installeras automatiskt"
 
-#: src/cmdline/cmdline_show.cc:348 src/cmdline/cmdline_show.cc:370
+#: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:372
 msgid "Package: "
 msgstr "Paket: "
 
-#: src/cmdline/cmdline_show.cc:349 src/cmdline/cmdline_show.cc:378
+#: src/cmdline/cmdline_show.cc:351 src/cmdline/cmdline_show.cc:380
 #: src/pkg_columnizer.cc:91
 msgid "State"
 msgstr "Tillstånd"
 
-#: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:436
-#: src/generic/apt/matchers.cc:2490
+#: src/cmdline/cmdline_show.cc:352 src/cmdline/cmdline_show.cc:438
 msgid "Provided by"
 msgstr "Tillhandahålls av"
 
-#: src/cmdline/cmdline_show.cc:372 src/pkg_info_screen.cc:120
+#: src/cmdline/cmdline_show.cc:374 src/pkg_info_screen.cc:120
 msgid "Essential: "
 msgstr "Systemkritisk: "
 
-#: src/cmdline/cmdline_show.cc:372 src/cmdline/cmdline_show.cc:376
-#: src/cmdline/cmdline_show.cc:387 src/pkg_info_screen.cc:120
+#: src/cmdline/cmdline_show.cc:374 src/cmdline/cmdline_show.cc:378
+#: src/cmdline/cmdline_show.cc:389 src/pkg_info_screen.cc:120
 msgid "yes"
 msgstr "ja"
 
-#: src/cmdline/cmdline_show.cc:376
+#: src/cmdline/cmdline_show.cc:378
 msgid "New"
 msgstr "Ny"
 
-#: src/cmdline/cmdline_show.cc:381
+#: src/cmdline/cmdline_show.cc:383 src/gtk/gui.cc:89
 msgid "Forbidden version"
 msgstr "Förbjuden version"
 
-#: src/cmdline/cmdline_show.cc:385
+#: src/cmdline/cmdline_show.cc:387
 msgid "Automatically installed"
 msgstr "Automatiskt installerade"
 
-#: src/cmdline/cmdline_show.cc:387
+#: src/cmdline/cmdline_show.cc:389
 msgid "no"
 msgstr "nej"
 
-#: src/cmdline/cmdline_show.cc:389
+#: src/cmdline/cmdline_show.cc:391 src/gtk/packagestab.cc:414
+#: src/gtk/previewtab.cc:215
 msgid "Version: "
 msgstr "Version: "
 
-#: src/cmdline/cmdline_show.cc:390 src/pkg_info_screen.cc:128
+#: src/cmdline/cmdline_show.cc:392 src/pkg_info_screen.cc:128
 msgid "Priority: "
 msgstr "Prioritet: "
 
-#: src/cmdline/cmdline_show.cc:391 src/cmdline/cmdline_show.cc:393
-#: src/cmdline/cmdline_show.cc:402
+#: src/cmdline/cmdline_show.cc:393 src/cmdline/cmdline_show.cc:395
+#: src/cmdline/cmdline_show.cc:404
 msgid "N/A"
 msgstr "-"
 
-#: src/cmdline/cmdline_show.cc:392 src/pkg_info_screen.cc:129
+#: src/cmdline/cmdline_show.cc:394 src/pkg_info_screen.cc:129
 msgid "Section: "
 msgstr "Sektion: "
 
-#: src/cmdline/cmdline_show.cc:394 src/pkg_info_screen.cc:130
+#: src/cmdline/cmdline_show.cc:396 src/pkg_info_screen.cc:130
 msgid "Maintainer: "
 msgstr "Underhållare: "
 
-#: src/cmdline/cmdline_show.cc:397
+#: src/cmdline/cmdline_show.cc:399
 msgid "Uncompressed Size: "
 msgstr "Uppackad storlek: "
 
-#: src/cmdline/cmdline_show.cc:401
+#: src/cmdline/cmdline_show.cc:403
 msgid "Architecture: "
 msgstr "Arkitektur: "
 
-#: src/cmdline/cmdline_show.cc:403
+#: src/cmdline/cmdline_show.cc:405
 msgid "Compressed Size: "
 msgstr "Komprimerad storlek: "
 
-#: src/cmdline/cmdline_show.cc:405
+#: src/cmdline/cmdline_show.cc:407
 msgid "Filename: "
 msgstr "Filnamn: "
 
-#: src/cmdline/cmdline_show.cc:407
+#: src/cmdline/cmdline_show.cc:409
 msgid "MD5sum: "
 msgstr "Kontrollsumma: "
 
-#: src/cmdline/cmdline_show.cc:411 src/cmdline/cmdline_show.cc:414
+#: src/cmdline/cmdline_show.cc:413 src/cmdline/cmdline_show.cc:416
 msgid "Archive"
 msgstr "Arkiv"
 
-#: src/cmdline/cmdline_show.cc:419
+#: src/cmdline/cmdline_show.cc:421
 msgid "Depends"
 msgstr "Beroende"
 
-#: src/cmdline/cmdline_show.cc:421
+#: src/cmdline/cmdline_show.cc:423
 msgid "PreDepends"
 msgstr "FörBeroende"
 
-#: src/cmdline/cmdline_show.cc:423 src/cmdline/cmdline_why.cc:261
+#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:263
 msgid "Recommends"
 msgstr "Rekommenderar"
 
-#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:264
+#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:266
 msgid "Suggests"
 msgstr "Föreslår"
 
-#: src/cmdline/cmdline_show.cc:427
+#: src/cmdline/cmdline_show.cc:429
 msgid "Conflicts"
 msgstr "Konfliktar"
 
-#: src/cmdline/cmdline_show.cc:429
+#: src/cmdline/cmdline_show.cc:431
 msgid "Breaks"
 msgstr "Bryter mot"
 
-#: src/cmdline/cmdline_show.cc:431
+#: src/cmdline/cmdline_show.cc:433
 msgid "Replaces"
 msgstr "Ersätter"
 
-#: src/cmdline/cmdline_show.cc:433
+#: src/cmdline/cmdline_show.cc:435
 msgid "Obsoletes"
 msgstr "Föråldrar"
 
-#: src/cmdline/cmdline_show.cc:439 src/pkg_info_screen.cc:102
+#: src/cmdline/cmdline_show.cc:441 src/gtk/info.cc:624
+#: src/gtk/packagestab.cc:422 src/gtk/previewtab.cc:223
+#: src/pkg_info_screen.cc:102
 msgid "Description: "
 msgstr "Beskrivning: "
 
-#: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:259
+#: src/cmdline/cmdline_show.cc:447 src/pkg_info_screen.cc:107
+#: src/pkg_view.cc:255
 msgid "Homepage: "
 msgstr "Webbplats:"
 
-#: src/cmdline/cmdline_show.cc:542
+#: src/cmdline/cmdline_show.cc:544
 #, c-format
 msgid "Unable to locate package %s"
 msgstr "Kunde inte hitta paketet %s"
 
-#: src/cmdline/cmdline_show.cc:557
+#: src/cmdline/cmdline_show.cc:560
 #, c-format
 msgid "Unable to parse pattern %s"
 msgstr "Kunde inte tolka mönstret %s"
@@ -2060,92 +2088,92 @@ msgstr "Tar bort hämtade och föråldrade filer\n"
 msgid "E: The update command takes no arguments\n"
 msgstr "F: Uppdateringskommandot tar inte några argument\n"
 
-#: src/cmdline/cmdline_upgrade.cc:50
+#: src/cmdline/cmdline_upgrade.cc:59
 #, c-format
 msgid "E: The %s command takes no arguments\n"
 msgstr "F: %s-kommandot tar inga argument\n"
 
-#: src/cmdline/cmdline_user_tag.cc:52
+#: src/cmdline/cmdline_user_tag.cc:54
 #, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
 msgstr "Lägger till användarettiketten \"%s\" till paketet \"%s\".\n"
 
-#: src/cmdline/cmdline_user_tag.cc:59
+#: src/cmdline/cmdline_user_tag.cc:61
 #, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
 msgstr "Tar bort användarettiketten \"%s\" från paketet \"%s\".\n"
 
-#: src/cmdline/cmdline_user_tag.cc:89
+#: src/cmdline/cmdline_user_tag.cc:91
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
 msgstr ""
 "%s: felaktigt antal argument; borde varit åtminstone ett namn på en ettikett "
 "och ett paket.\n"
 
-#: src/cmdline/cmdline_util.cc:131
+#: src/cmdline/cmdline_util.cc:133
 #, c-format
 msgid "No candidate version found for %s\n"
 msgstr "Ingen kandidatversion hittades för %s\n"
 
-#: src/cmdline/cmdline_util.cc:133
+#: src/cmdline/cmdline_util.cc:135
 #, c-format
 msgid "No current or candidate version found for %s\n"
 msgstr "Ingen aktuell eller kandidatversion hittades för %s\n"
 
-#: src/cmdline/cmdline_util.cc:148
+#: src/cmdline/cmdline_util.cc:150
 #, c-format
 msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
 msgstr "Kunde inte hitta arkivet \"%s\" för paketet \"%s\"\n"
 
-#: src/cmdline/cmdline_util.cc:158
+#: src/cmdline/cmdline_util.cc:160
 #, c-format
 msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
 msgstr "Kunde inte hitta versionen \"%s\" av paketet \"%s\"\n"
 
-#: src/cmdline/cmdline_util.cc:164
+#: src/cmdline/cmdline_util.cc:166
 #, c-format
 msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
 msgstr "Internt fel: ogiltiga värdet %i skickades till cmdline_find_ver!\n"
 
-#: src/cmdline/cmdline_util.cc:194
+#: src/cmdline/cmdline_util.cc:196
 #, c-format
 msgid "You cannot specify both an archive and a version for a package\n"
 msgstr "Du kan inte ange både ett arkiv och en version för ett paket\n"
 
-#: src/cmdline/cmdline_util.cc:292
+#: src/cmdline/cmdline_util.cc:294
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
 msgstr[0] "%d trasig [%+d]"
 msgstr[1] "%d trasiga [%+d]"
 
-#: src/cmdline/cmdline_util.cc:306
+#: src/cmdline/cmdline_util.cc:308
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
 msgstr[0] "%d uppdatera [%+d]"
 msgstr[1] "%d uppdaterar [%+d]"
 
-#: src/cmdline/cmdline_util.cc:320
+#: src/cmdline/cmdline_util.cc:322
 #, c-format
 msgid "%d new [%+d]"
 msgid_plural "%d new [%+d]"
 msgstr[0] "%d ny [%+d]"
 msgstr[1] "%d nya [%+d]"
 
-#: src/cmdline/cmdline_util.cc:331
+#: src/cmdline/cmdline_util.cc:333
 #, c-format
 msgid "Current status: %F."
 msgstr "Nuvarande status: %F."
 
-#: src/cmdline/cmdline_util.cc:342
+#: src/cmdline/cmdline_util.cc:344
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
 msgstr[0] "Det finns %d nytt inaktuellt paket."
 msgstr[1] "Det finns %d nya inaktuella paket."
 
-#: src/cmdline/cmdline_util.cc:354
+#: src/cmdline/cmdline_util.cc:356
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
@@ -2153,136 +2181,137 @@ msgstr[0] "Det finns %d nytt inaktuellt paket."
 msgstr[1] "Det finns %d nya inaktuella paket."
 
 # baserat på hur tyskarna gjorde sin översättning. helt konstigt
-#: src/cmdline/cmdline_why.cc:252
+#: src/cmdline/cmdline_why.cc:254
 msgid "dep_level"
 msgstr "Ber_Nivå"
 
-#: src/cmdline/cmdline_why.cc:258
+#: src/cmdline/cmdline_why.cc:260
 msgid "DependsOnly"
 msgstr "Beroende"
 
-#: src/cmdline/cmdline_why.cc:272
+#: src/cmdline/cmdline_why.cc:274
 msgid "version_selection"
 msgstr "version_selection"
 
-#: src/cmdline/cmdline_why.cc:277
+#: src/cmdline/cmdline_why.cc:279
 msgid "Current"
 msgstr "Aktuell"
 
-#: src/cmdline/cmdline_why.cc:280
+#: src/cmdline/cmdline_why.cc:282
 msgid "Candidate"
 msgstr "Kandidat"
 
-#: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1597
+#: src/cmdline/cmdline_why.cc:285 src/gtk/aptitude.glade:1630
+#: src/gtk/gui.cc:82
 msgid "Install"
 msgstr "Installera"
 
-#: src/cmdline/cmdline_why.cc:286
+#: src/cmdline/cmdline_why.cc:288
 msgid "InstallNotCurrent"
 msgstr "Installera inte nuvarande"
 
-#: src/cmdline/cmdline_why.cc:294
+#: src/cmdline/cmdline_why.cc:296
 msgid "allow_choices"
 msgstr "Tillåtna val"
 
-#: src/cmdline/cmdline_why.cc:297
+#: src/cmdline/cmdline_why.cc:299
 msgid "true"
 msgstr "Sant"
 
-#: src/cmdline/cmdline_why.cc:299
+#: src/cmdline/cmdline_why.cc:301
 msgid "false"
 msgstr "Falskt"
 
-#: src/cmdline/cmdline_why.cc:353
+#: src/cmdline/cmdline_why.cc:355
 #, c-format
 msgid "Install(%s)"
 msgstr "Installera (%s)"
 
-#: src/cmdline/cmdline_why.cc:355
+#: src/cmdline/cmdline_why.cc:357
 #, c-format
 msgid "Remove(%s)"
 msgstr "Ta bort (%s)"
 
-#: src/cmdline/cmdline_why.cc:357
+#: src/cmdline/cmdline_why.cc:359
 #, c-format
 msgid "Install(%s provides %s)"
 msgstr "Installera (%s tillhandahåller %s)"
 
-#: src/cmdline/cmdline_why.cc:361
+#: src/cmdline/cmdline_why.cc:363
 #, c-format
 msgid "Remove(%s provides %s)"
 msgstr "Ta bort (%s tillhandahåller %s)"
 
-#: src/cmdline/cmdline_why.cc:419
+#: src/cmdline/cmdline_why.cc:421
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr "    ++ Undersöker %F\n"
 
-#: src/cmdline/cmdline_why.cc:429
+#: src/cmdline/cmdline_why.cc:431
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr "    ++   --> bortser ifrån, ingen konflikt\n"
 
-#: src/cmdline/cmdline_why.cc:439
+#: src/cmdline/cmdline_why.cc:441
 msgid "    ++   --> skipping conflict\n"
 msgstr "    ++   --> bortser ifrån konflikt\n"
 
-#: src/cmdline/cmdline_why.cc:447
+#: src/cmdline/cmdline_why.cc:449
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr "    ++   --> bortser ifrån, inte relevant enligt parametrar\n"
 
-#: src/cmdline/cmdline_why.cc:454
+#: src/cmdline/cmdline_why.cc:456
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> bortser från, förälder inte i vald version\n"
 
-#: src/cmdline/cmdline_why.cc:494
+#: src/cmdline/cmdline_why.cc:496
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr ""
 "    ++   --> bortsser ifrån, beroendet är inte uppfyllt i den nuvarande "
 "versionen\n"
 
-#: src/cmdline/cmdline_why.cc:524
+#: src/cmdline/cmdline_why.cc:526
 msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> KÖAR\n"
 
-#: src/cmdline/cmdline_why.cc:531
+#: src/cmdline/cmdline_why.cc:533
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> bortser ifrån, versionskontroll misslyckades\n"
 
-#: src/cmdline/cmdline_why.cc:549
+#: src/cmdline/cmdline_why.cc:551
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr "    ++   --> KÖAR %s tillhandahåller %s\n"
 
-#: src/cmdline/cmdline_why.cc:678
+#: src/cmdline/cmdline_why.cc:683
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "Påbörjar sökning med paramertrar %ls\n"
 
-#: src/cmdline/cmdline_why.cc:898
+#: src/cmdline/cmdline_why.cc:906
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Bortser ifrån denna lösning, den har redan provats.\n"
 
-#: src/cmdline/cmdline_why.cc:973
+#: src/cmdline/cmdline_why.cc:981
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Kunde inte hitta anledning att ta bort %s.\n"
 
-#: src/cmdline/cmdline_why.cc:975
+#: src/cmdline/cmdline_why.cc:983
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Kunde inte hitta anledning för att installera %s.\n"
 
-#: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
-#: src/cmdline/cmdline_why.cc:1108
+#: src/cmdline/cmdline_why.cc:1028 src/cmdline/cmdline_why.cc:1054
+#: src/cmdline/cmdline_why.cc:1109
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Kunde inte hitta ett paket med namnet \"%s\"."
 
-#: src/cmdline/cmdline_why.cc:1054
+#: src/cmdline/cmdline_why.cc:1058
 msgid "Unable to parse some match patterns."
 msgstr "Kunde inte tolka sökmönstret."
 
-#: src/cmdline/cmdline_why.cc:1081
+#: src/cmdline/cmdline_why.cc:1082
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""
@@ -2297,11 +2326,11 @@ msgstr "OTILLFREDSSTÄLLT"
 msgid "UNAVAILABLE"
 msgstr "OTILLGÄNGLIGT"
 
-#: src/desc_parse.cc:314
+#: src/desc_render.cc:133 src/gtk/aptitude.glade:1114
 msgid "Tags"
 msgstr "Taggar"
 
-#: src/desc_parse.cc:334
+#: src/desc_render.cc:153
 msgid "User Tags"
 msgstr "Användarettiketter"
 
@@ -2311,11 +2340,11 @@ msgstr "Användarettiketter"
 msgid " [Working]"
 msgstr " [Arbetar]"
 
-#: src/download_item.cc:110 src/download_list.cc:363
+#: src/download_item.cc:110 src/download_list.cc:361
 msgid "[Hit]"
 msgstr "[Träff]"
 
-#: src/download_item.cc:110 src/download_list.cc:385
+#: src/download_item.cc:110 src/download_list.cc:383
 msgid "[Downloaded]"
 msgstr "[Hämtat]"
 
@@ -2329,7 +2358,7 @@ msgstr "Hämtade %sB på %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nVissa filer kunde inte hämtas."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:345 src/gtk/download.cc:340
 msgid "Continue"
 msgstr "Fortsätt"
 
@@ -2337,43 +2366,43 @@ msgstr "Fortsätt"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:214
 msgid "Total Progress: "
 msgstr "Totalt förlopp: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:242
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, %s återstår)"
 
-#: src/download_list.cc:246
+#: src/download_list.cc:244
 #, c-format
 msgid " [ %i%% ] (stalled)"
 msgstr " [ %i%% ] (försenad)"
 
-#: src/download_list.cc:248
+#: src/download_list.cc:246
 #, c-format
 msgid " [ %i%% ]"
 msgstr " [ %i%% ]"
 
-#: src/download_list.cc:266
+#: src/download_list.cc:264
 msgid "Downloading... "
 msgstr "Hämtar..."
 
-#: src/download_list.cc:342
+#: src/download_list.cc:340 src/gtk/download.cc:337
 #, c-format
 msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
 msgstr "Mata in skivan med etiketten \"%s\" in enheten \"%s\""
 
-#: src/download_list.cc:349
+#: src/download_list.cc:347 src/gtk/download.cc:341
 msgid "Abort"
 msgstr "Avbryt"
 
-#: src/download_list.cc:407
+#: src/download_list.cc:405
 msgid "[IGNORED]"
 msgstr "[IGNORERAS]"
 
-#: src/download_list.cc:413
+#: src/download_list.cc:411
 msgid "[ERROR]"
 msgstr "[FEL]"
 
@@ -2420,7 +2449,7 @@ msgstr ""
 "Mediabyte: Mata in skivan med etiketten \"%s\" i enheten \"%s\" och tryck på "
 "[Enter].\n"
 
-#: src/generic/apt/aptcache.cc:266
+#: src/generic/apt/aptcache.cc:269
 #, c-format
 msgid ""
 "Error parsing a user-tag for the package %s: unexpected end-of-line "
@@ -2429,70 +2458,70 @@ msgstr ""
 "Fel vid läsning av användarettikett för paketet %s: oväntat slut på raden "
 "efter %s."
 
-#: src/generic/apt/aptcache.cc:283
+#: src/generic/apt/aptcache.cc:286
 #, c-format
 msgid "Unterminated '\"' in the user-tags list of the package %s."
 msgstr "Oavslutad '\"' i paketets (%s) lista med användarettiketter."
 
-#: src/generic/apt/aptcache.cc:387
+#: src/generic/apt/aptcache.cc:390
 msgid "Can't open Aptitude extended state file"
 msgstr "Kan inte öppna Aptitudes utökade tillståndsfil"
 
-#: src/generic/apt/aptcache.cc:401 src/generic/apt/aptcache.cc:489
-#: src/generic/apt/aptcache.cc:491
+#: src/generic/apt/aptcache.cc:404 src/generic/apt/aptcache.cc:492
+#: src/generic/apt/aptcache.cc:494
 msgid "Reading extended state information"
 msgstr "Läser utökad tillståndsinformation"
 
-#: src/generic/apt/aptcache.cc:496 src/generic/apt/aptcache.cc:578
-#: src/generic/apt/aptcache.cc:581
+#: src/generic/apt/aptcache.cc:499 src/generic/apt/aptcache.cc:581
+#: src/generic/apt/aptcache.cc:584
 msgid "Initializing package states"
 msgstr "Initierar pakettillstånd"
 
-#: src/generic/apt/aptcache.cc:709
+#: src/generic/apt/aptcache.cc:712
 msgid "Cannot open Aptitude state file"
 msgstr "Kan inte öppna Aptitudes tillståndsfil"
 
-#: src/generic/apt/aptcache.cc:713 src/generic/apt/aptcache.cc:819
-#: src/generic/apt/aptcache.cc:822
+#: src/generic/apt/aptcache.cc:716 src/generic/apt/aptcache.cc:822
+#: src/generic/apt/aptcache.cc:825
 msgid "Writing extended state information"
 msgstr "Skriver utökad tillståndsinformation"
 
-#: src/generic/apt/aptcache.cc:810
+#: src/generic/apt/aptcache.cc:813
 msgid "Couldn't write state file"
 msgstr "Kunde inte skriva tillståndsfil"
 
-#: src/generic/apt/aptcache.cc:827
+#: src/generic/apt/aptcache.cc:830
 msgid "Error writing state file"
 msgstr "Fel vid skrivning av tillståndsfil"
 
-#: src/generic/apt/aptcache.cc:845
+#: src/generic/apt/aptcache.cc:848
 #, c-format
 msgid "failed to remove %s"
 msgstr "misslyckades med att ta bort %s"
 
-#: src/generic/apt/aptcache.cc:852
+#: src/generic/apt/aptcache.cc:855
 #, c-format
 msgid "failed to rename %s to %s"
 msgstr "misslyckades med att byta namn på %s till %s"
 
-#: src/generic/apt/aptcache.cc:860
+#: src/generic/apt/aptcache.cc:863
 #, c-format
 msgid "couldn't replace %s with %s"
 msgstr "kunde inte ersätta %s med %s"
 
-#: src/generic/apt/aptcache.cc:1457
+#: src/generic/apt/aptcache.cc:1483
 msgid "Unable to correct dependencies, some packages cannot be installed"
 msgstr "Kunde inte rätta till beroenden, vissa paket kan inte installeras"
 
-#: src/generic/apt/aptcache.cc:1773
+#: src/generic/apt/aptcache.cc:1802
 msgid "The list of sources could not be read."
 msgstr "Listan över källor kunde inte läsas."
 
-#: src/generic/apt/aptcache.cc:1780
+#: src/generic/apt/aptcache.cc:1809
 msgid "The package lists or status file could not be parsed or opened."
 msgstr "Paketlistorna eller statusfilen kunde inte tolkas eller öppnas."
 
-#: src/generic/apt/aptcache.cc:1783
+#: src/generic/apt/aptcache.cc:1812
 msgid "You may want to update the package lists to correct these missing files"
 msgstr ""
 "Du kanske vill uppdatera paketlistan för att rätta till dessa saknade filer"
@@ -2532,35 +2561,39 @@ msgstr ""
 "apt-verktyg redan installerar paket.  Öppnar i skrivskyddat läge, eventuella "
 "ändringar du gör med tillståndet på paketen kommer INTE att behållas!"
 
-#: src/generic/apt/download_install_manager.cc:56
+#: src/generic/apt/aptitude_resolver.cc:39
+msgid "Invalid hint: expected an action, but found nothing."
+msgstr ""
+
+#: src/generic/apt/download_install_manager.cc:60
 msgid ""
 "The package cache is not available; unable to download and install packages."
 msgstr ""
 "Paketcachen finns inte tillgänglig, kan inte hämta och installera paket."
 
-#: src/generic/apt/download_install_manager.cc:76
+#: src/generic/apt/download_install_manager.cc:80
 #: src/generic/apt/download_update_manager.cc:92
 msgid "Couldn't lock list directory..are you root?"
 msgstr "Kunde inte låsa listkatalogen.. är du root?"
 
-#: src/generic/apt/download_install_manager.cc:93
+#: src/generic/apt/download_install_manager.cc:97
 msgid "Internal error: couldn't generate list of packages to download"
 msgstr "Internt fel: kunde inte generera lista på paket för hämtning"
 
-#: src/generic/apt/download_install_manager.cc:123
+#: src/generic/apt/download_install_manager.cc:126
 #, c-format
 msgid "Failed to fetch %s: %s"
 msgstr "Misslyckades med att hämta %s: %s"
 
-#: src/generic/apt/download_install_manager.cc:129
+#: src/generic/apt/download_install_manager.cc:132
 msgid "Unable to correct for unavailable packages"
 msgstr "Kunde inte rätta till för otillgängliga paket"
 
-#: src/generic/apt/download_install_manager.cc:155
+#: src/generic/apt/download_install_manager.cc:167
 msgid "A package failed to install.  Trying to recover:"
 msgstr "En paketinstallation misslyckades.  Försöker att återhämta:"
 
-#: src/generic/apt/download_install_manager.cc:180
+#: src/generic/apt/download_install_manager.cc:212
 msgid ""
 "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr ""
@@ -2580,51 +2613,51 @@ msgstr "fork() kunde inte utföras: %s"
 msgid "waitpid() failed: %s"
 msgstr "waitpid() kunde inte utföras: %s"
 
-#: src/generic/apt/download_update_manager.cc:314
+#: src/generic/apt/download_update_manager.cc:317
 msgid "Couldn't clean out list directories"
 msgstr "Kunde inte rensa ut listkataloger"
 
-#: src/generic/apt/download_update_manager.cc:326
+#: src/generic/apt/download_update_manager.cc:330
 msgid "Couldn't rebuild package cache"
 msgstr "Kunde inte bygga om paketcachen"
 
-#: src/generic/apt/download_update_manager.cc:341
+#: src/generic/apt/download_update_manager.cc:346
 msgid "The debtags command must not be an empty string."
 msgstr "Kommandot debtags kan inte vara tomt."
 
-#: src/generic/apt/download_update_manager.cc:345
+#: src/generic/apt/download_update_manager.cc:350
 msgid "The debtags command must be an absolute path."
 msgstr "Kommandot debtags måste vara en absolut sökväg."
 
-#: src/generic/apt/download_update_manager.cc:358
+#: src/generic/apt/download_update_manager.cc:363
 #, c-format
 msgid "The debtags command (%s) cannot be executed: %s"
 msgstr "Kommandot debtags (%s) kunde inte utföras: %s"
 
-#: src/generic/apt/download_update_manager.cc:363
+#: src/generic/apt/download_update_manager.cc:368
 msgid "Updating debtags database..."
 msgstr "Bygger databas för ettiketter (debtags)..."
 
 # okej. kunde fan inte låta bli
-#: src/generic/apt/download_update_manager.cc:380
+#: src/generic/apt/download_update_manager.cc:385
 msgid "(core dumped)"
 msgstr "(härdsmälta, dumpar kossor - core dump)"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:383
+#: src/generic/apt/download_update_manager.cc:388
 #, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr "Uppdateringen av debtags (%s update %s) avbröts med signalen %d%s."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:391
+#: src/generic/apt/download_update_manager.cc:396
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
 "Uppdateringen av debtags (%s update %s) avbröts onaturligt (felkod %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:398
+#: src/generic/apt/download_update_manager.cc:403
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
@@ -2632,7 +2665,7 @@ msgid ""
 msgstr "Uppdateringen av debtags (%s update %s) avbröts oväntat (status %d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:404
+#: src/generic/apt/download_update_manager.cc:409
 #, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
@@ -2756,167 +2789,86 @@ msgstr ""
 "\n"
 "Logg färdig.\n"
 
-#: src/generic/apt/matchers.cc:1346
-msgid "Automatically Installed"
-msgstr "Automatiskt installerat"
-
-#: src/generic/apt/matchers.cc:1374 src/generic/apt/matchers.cc:1581
-msgid "Broken"
-msgstr "Trasig"
-
-#: src/generic/apt/matchers.cc:1579
-msgid "Unchanged"
-msgstr "Oförändrad"
-
-#: src/generic/apt/matchers.cc:1583
-msgid "Remove [unused]"
-msgstr "Ta bort [oanvända]"
-
-#: src/generic/apt/matchers.cc:1585
-msgid "Hold [auto]"
-msgstr "Håll kvar [auto]"
-
-#: src/generic/apt/matchers.cc:1587
-msgid "Install [auto]"
-msgstr "Installera [auto]"
-
-#: src/generic/apt/matchers.cc:1589
-msgid "Remove [auto]"
-msgstr "Ta bort [auto]"
-
-#: src/generic/apt/matchers.cc:1591
-msgid "Downgrade"
-msgstr "Nedgradera"
-
-#: src/generic/apt/matchers.cc:1593
-msgid "Hold"
-msgstr "Håll kvar"
-
-#: src/generic/apt/matchers.cc:1595
-msgid "Reinstall"
-msgstr "Installera om"
-
-#: src/generic/apt/matchers.cc:1599
-msgid "Remove"
-msgstr "Ta bort"
-
-#: src/generic/apt/matchers.cc:1601
-msgid "Upgrade"
-msgstr "Uppgradera"
-
-#: src/generic/apt/matchers.cc:1627
-msgid "Keep"
-msgstr "Behåll"
-
-#: src/generic/apt/matchers.cc:1659
-msgid "Virtual"
-msgstr "Virtuell"
-
-#: src/generic/apt/matchers.cc:1686
-msgid "Installed"
-msgstr "Installerat"
-
-#: src/generic/apt/matchers.cc:1714
-msgid "Essential"
-msgstr "Systemkritiskt"
-
-#: src/generic/apt/matchers.cc:1739
-msgid "Config Files Remain"
-msgstr "Konfigurationsfiler återstår"
-
-#: src/generic/apt/matchers.cc:2176
-msgid "Garbage"
-msgstr "Skräp"
-
-#: src/generic/apt/matchers.cc:2545
-msgid "No reverse dependencies"
-msgstr "Inga omvända beroenden"
-
-#: src/generic/apt/matchers.cc:2623
-msgid "New Package"
-msgstr "Nytt paket"
-
-#: src/generic/apt/matchers.cc:2648
-msgid "Upgradable"
-msgstr "Uppgraderingsbart"
-
-#: src/generic/apt/matchers.cc:2673
-msgid "Obsolete"
-msgstr "Föråldrat"
-
-#: src/generic/apt/matchers.cc:3112
+#: src/generic/apt/matching/parse.cc:303
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Okänd åtgärdstyp: %s"
 
-#: src/generic/apt/matchers.cc:3153
+#: src/generic/apt/matching/parse.cc:344
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "Ej avslutande bokstavlig sträng efter %s"
 
-#: src/generic/apt/matchers.cc:3250
+#: src/generic/apt/matching/parse.cc:441
 #, c-format
 msgid "Unknown priority %s"
 msgstr "Okänd prioritet %s"
 
-#: src/generic/apt/matchers.cc:3269
+#: src/generic/apt/matching/parse.cc:460
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr "Sökmönster slutar oväntat (förväntade '%c')."
 
-#: src/generic/apt/matchers.cc:3272
+#: src/generic/apt/matching/parse.cc:463
 #, c-format
 msgid "Expected '%c', got '%c'."
 msgstr "Förväntade \"%c\" men fick \"%c\"."
 
-#: src/generic/apt/matchers.cc:3579 src/generic/apt/matchers.cc:4019
-#: src/generic/apt/matchers.cc:4062
+#: src/generic/apt/matching/parse.cc:800
+#: src/generic/apt/matching/parse.cc:1239
+#: src/generic/apt/matching/parse.cc:1279
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Okänd beroendetyp: %s"
 
-#: src/generic/apt/matchers.cc:3633
-#, c-format
-msgid "Unknown matcher type: \"%s\"."
+#: src/generic/apt/matching/parse.cc:853
+#, fuzzy, c-format
+#| msgid "Unknown matcher type: \"%s\"."
+msgid "Unknown term type: \"%s\"."
 msgstr "Okänd mönstertyp: %s."
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
-#: src/generic/apt/matchers.cc:3644 src/generic/apt/matchers.cc:3653
-#, c-format
+#: src/generic/apt/matching/parse.cc:867 src/generic/apt/matching/parse.cc:876
+#, fuzzy, c-format
+#| msgid ""
+#| "The ?%s matcher must be used in a \"wide\" context (a top-level context, "
+#| "or a context enclosed by ?%s)."
 msgid ""
-"The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
-"a context enclosed by ?%s)."
+"The ?%s term must be used in a \"wide\" context (a top-level context, or a "
+"context enclosed by ?%s)."
 msgstr ""
 "Sökfunktionen ?%s måste användas \"brett\" (i huvudgruppen eller omgärdad "
 "av ?%s)."
 
-#: src/generic/apt/matchers.cc:3872
+#: src/generic/apt/matching/parse.cc:1100
 msgid "Unmatched '('"
 msgstr "Omatchat \"(\""
 
-#: src/generic/apt/matchers.cc:4025
+#: src/generic/apt/matching/parse.cc:1245
 msgid "Provides: cannot be broken"
 msgstr "Tillhandahåller: kan inte vara trasigt"
 
-#: src/generic/apt/matchers.cc:4088
+#: src/generic/apt/matching/parse.cc:1301
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Okänd mönstertyp: %c"
 
-#: src/generic/apt/matchers.cc:4111
+#: src/generic/apt/matching/parse.cc:1315
 msgid "Can't search for \"\""
 msgstr "Kan inte söka efter \"\""
 
-#: src/generic/apt/matchers.cc:4143
+#: src/generic/apt/matching/parse.cc:1342
 msgid "Unexpected empty expression"
 msgstr "Oväntat tomt uttryck"
 
-#: src/generic/apt/matchers.cc:4176
-msgid "Badly formed expression"
+#: src/generic/apt/matching/parse.cc:1371
+#, fuzzy, c-format
+#| msgid "Badly formed expression"
+msgid "Badly formed expression: expected '|', got '%c'"
 msgstr "Felaktigt formulerat uttryck"
 
-#: src/generic/apt/matchers.cc:4215
+#: src/generic/apt/matching/parse.cc:1412
 msgid "Unexpected ')'"
 msgstr "Oväntat \")\""
 
@@ -2935,7 +2887,7 @@ msgid ""
 "The package index files are corrupted. No Filename: field for package %s."
 msgstr "Paketindex är skadat. Inget \"Filename:\"-fält för paketet %s."
 
-#: src/generic/apt/pkg_changelog.cc:151 src/view_changelog.cc:164
+#: src/generic/apt/pkg_changelog.cc:189 src/view_changelog.cc:270
 #, c-format
 msgid "ChangeLog of %s"
 msgstr "Ändringslogg för %s"
@@ -3023,6 +2975,1284 @@ msgstr "Kunde inte stänga katalogen \"%s\""
 msgid "Unable to remove directory \"%s\""
 msgstr "Kunde inte ta  bort katalogen \"%s\""
 
+#: src/gtk/aptitude.glade:17
+#, fuzzy
+#| msgid "False"
+msgid "_File"
+msgstr "Falskt"
+
+#: src/gtk/aptitude.glade:25 src/ui.cc:2219
+msgid "Perform all pending installs and removals"
+msgstr "Genomför alla väntande installationer och borttagningar"
+
+#: src/gtk/aptitude.glade:26
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/remove packages"
+msgstr "^Installera/Ta bort paket"
+
+#: src/gtk/aptitude.glade:39 src/ui.cc:2222
+msgid "Check for new versions of packages"
+msgstr "Leta efter nya versioner av paket"
+
+#: src/gtk/aptitude.glade:40
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update package list"
+msgstr "^Uppdatera paketlista"
+
+#: src/gtk/aptitude.glade:58 src/ui.cc:2227
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr ""
+"Markera alla uppgraderingsbara paket som inte hålls kvar för uppgradering"
+
+#: src/gtk/aptitude.glade:59
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "Markera upp^graderingsbar"
+
+#: src/gtk/aptitude.glade:72 src/ui.cc:2232
+msgid "Forget which packages are \"new\""
+msgstr "Glöm vilka paket som är \"nya\""
+
+#: src/gtk/aptitude.glade:73
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget new packages"
+msgstr "^Glöm nya paket"
+
+#: src/gtk/aptitude.glade:86 src/ui.cc:2236
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr ""
+"Avbryt alla väntande installationer, borttagningar, tillbakahållningar och "
+"uppgraderingar."
+
+#: src/gtk/aptitude.glade:87
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el pending actions"
+msgstr "Avbry^t väntande åtgärder"
+
+#: src/gtk/aptitude.glade:100 src/ui.cc:2240
+msgid "Delete package files which were previously downloaded"
+msgstr "Ta bort paketfiler som tidigare har hämtats"
+
+#: src/gtk/aptitude.glade:101
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "_Clean package cache"
+msgstr "^Rensa paketcachen"
+
+#: src/gtk/aptitude.glade:114 src/ui.cc:2244
+msgid "Delete package files which can no longer be downloaded"
+msgstr "Ta bort paketfiler som inte längre kan hämtas"
+
+#: src/gtk/aptitude.glade:115
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _obsolete files"
+msgstr "Rensa föråldra^de filer"
+
+#: src/gtk/aptitude.glade:133 src/ui.cc:2251
+msgid "Reload the package cache"
+msgstr "Läs om paketcachen"
+
+#: src/gtk/aptitude.glade:134
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload package cache"
+msgstr "^Läs om paketcache"
+
+#: src/gtk/aptitude.glade:147 src/ui.cc:1700 src/ui.cc:2256
+msgid "Waste time trying to find mines"
+msgstr "Slösa bort tid med att leta minor"
+
+#: src/gtk/aptitude.glade:148
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "^Spela Minröj"
+
+#: src/gtk/aptitude.glade:166 src/ui.cc:2261
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"Kör \"su\" för att bli root, detta kommer att starta om programmet men dina "
+"inställningar kommer att bevaras"
+
+#: src/gtk/aptitude.glade:167
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become root"
+msgstr "Bli root"
+
+#: src/gtk/aptitude.glade:180 src/ui.cc:2264
+msgid "Exit the program"
+msgstr "Avsluta programmet"
+
+#: src/gtk/aptitude.glade:181
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "A^vsluta"
+
+#: src/gtk/aptitude.glade:197
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/aptitude.glade:205 src/ui.cc:2271
+msgid "Undo the last package operation or group of operations"
+msgstr "Ångra den senaste paketåtgärden eller gruppoperationer"
+
+#: src/gtk/aptitude.glade:206 src/ui.cc:2270 src/ui.cc:2650
+msgid "Undo"
+msgstr "Ångra"
+
+#: src/gtk/aptitude.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/aptitude.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/aptitude.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/aptitude.glade:248
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "radera"
+
+#: src/gtk/aptitude.glade:260
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "Paket"
+
+#: src/gtk/aptitude.glade:268 src/ui.cc:2280
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "Flagga det valda paketet för installation eller uppgradering"
+
+#: src/gtk/aptitude.glade:269
+#, fuzzy
+#| msgid "Install"
+msgid "_Install"
+msgstr "Installera"
+
+#: src/gtk/aptitude.glade:282 src/ui.cc:2284
+msgid "Flag the currently selected package for removal"
+msgstr "Flagga det valda paketet för borttagning"
+
+#: src/gtk/aptitude.glade:283
+#, fuzzy
+#| msgid "Remove"
+msgid "_Remove"
+msgstr "Ta bort"
+
+#: src/gtk/aptitude.glade:296 src/ui.cc:2288
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr "Flagga det valda paketet och dess konfigurationsfiler för borttagning"
+
+#: src/gtk/aptitude.glade:297
+#, fuzzy
+#| msgid "^Purge"
+msgid "_Purge"
+msgstr "^Rensa"
+
+#: src/gtk/aptitude.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/aptitude.glade:311
+#, fuzzy
+#| msgid "Keep"
+msgid "_Keep"
+msgstr "Behåll"
+
+#: src/gtk/aptitude.glade:324 src/ui.cc:2296
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr ""
+"Avbryt alla åtgärder för det valda paketet och skydda det från framtida "
+"uppgraderingar"
+
+#: src/gtk/aptitude.glade:325
+#, fuzzy
+#| msgid "Hold"
+msgid "_Hold"
+msgstr "Håll kvar"
+
+#: src/gtk/aptitude.glade:338 src/ui.cc:2300
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"Markera det valda paketet som om det har installerats automatiskt, det "
+"kommer automatiskt tas bort om inga andra paket är beroende av det"
+
+#: src/gtk/aptitude.glade:339
+#, fuzzy
+#| msgid "Mark ^Auto"
+msgid "Mark _Auto"
+msgstr "Markera ^automatiskt"
+
+#: src/gtk/aptitude.glade:352 src/ui.cc:2304
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+"Markera det valda paketet som om det blivit manuellt installerat, det kommer "
+"inte att tas bort om inte du manuellt tar bort det"
+
+#: src/gtk/aptitude.glade:353
+#, fuzzy
+#| msgid "Mark ^Manual"
+msgid "Mark _Manual"
+msgstr "Markera ^manuell"
+
+#: src/gtk/aptitude.glade:366 src/ui.cc:2308
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"Förbjud den kandidatversionen av det valda paketet från att bli installerad, "
+"nyare versioner av paketet kommer att installeras som vanligt"
+
+#: src/gtk/aptitude.glade:367
+#, fuzzy
+#| msgid "^Forbid Version"
+msgid "_Forbid Version"
+msgstr "^Förbjud version"
+
+#: src/gtk/aptitude.glade:384
+#, fuzzy
+#| msgid "Views"
+msgid "_Views"
+msgstr "Vyer"
+
+#: src/gtk/aptitude.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/aptitude.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/aptitude.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/aptitude.glade:401
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Find _Dependency Chains"
+msgstr "Beroendehantering"
+
+#: src/gtk/aptitude.glade:412
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "Hjälp"
+
+#: src/gtk/aptitude.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/aptitude.glade:440 src/gtk/aptitude.glade:723
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/aptitude.glade:459
+#, fuzzy
+#| msgid "List Update"
+msgid "Update"
+msgstr "Listuppdatering"
+
+#: src/gtk/aptitude.glade:469 src/gtk/aptitude.glade:890 src/ui.cc:837
+#: src/ui.cc:839 src/ui.cc:884 src/ui.cc:886 src/ui.cc:912 src/ui.cc:914
+#: src/ui.cc:935 src/ui.cc:937
+msgid "Packages"
+msgstr "Paket"
+
+#: src/gtk/aptitude.glade:479 src/gtk/aptitude.glade:1195 src/ui.cc:1336
+msgid "Preview"
+msgstr "Förhandsvisning"
+
+#: src/gtk/aptitude.glade:489 src/gtk/aptitude.glade:1289 src/ui.cc:2652
+msgid "Resolver"
+msgstr "Problemlösaren"
+
+#: src/gtk/aptitude.glade:499
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "Installerat"
+
+#: src/gtk/aptitude.glade:529 src/gtk/aptitude.glade:798
+#: src/gtk/aptitude.glade:1352 src/gtk/aptitude.glade:1445
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "Sök"
+
+#: src/gtk/aptitude.glade:549 src/gtk/aptitude.glade:818
+#: src/gtk/aptitude.glade:1372 src/gtk/aptitude.glade:1465
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/aptitude.glade:632
+#, fuzzy
+#| msgid "Upgrade"
+msgid "Upgrade Summary"
+msgstr "Uppgradera"
+
+#: src/gtk/aptitude.glade:661
+#, fuzzy
+#| msgid "Source Package: "
+msgid "Selected Package"
+msgstr "Källpaket: "
+
+#: src/gtk/aptitude.glade:689 src/gtk/gui.cc:84
+msgid "Upgrade"
+msgstr "Uppgradera"
+
+#: src/gtk/aptitude.glade:706
+msgid "<b>Available Upgrades:</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:754
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr "[Hämtat]"
+
+#: src/gtk/aptitude.glade:954
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1015
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "Beroenden för %s"
+
+#: src/gtk/aptitude.glade:1045
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr "^Ändringslogg"
+
+#: src/gtk/aptitude.glade:1074
+#, fuzzy
+#| msgid "False"
+msgid "Files"
+msgstr "Falskt"
+
+#: src/gtk/aptitude.glade:1085
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1094
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1105
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "Taggar"
+
+#: src/gtk/aptitude.glade:1136
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "nej"
+
+#: src/gtk/aptitude.glade:1227 src/gtk/download.cc:200
+#, fuzzy
+#| msgid "State"
+msgid "Status"
+msgstr "Tillstånd"
+
+#: src/gtk/aptitude.glade:1236
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1251
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1266
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1318
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "Fel"
+
+#: src/gtk/aptitude.glade:1413
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1506
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1544
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Dependency Chain"
+msgstr "Beroendehantering"
+
+#: src/gtk/aptitude.glade:1561
+msgid "A terminal running dpkg will appear here."
+msgstr ""
+
+#: src/gtk/aptitude.glade:1572
+msgid "Applying Changes"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1643 src/gtk/gui.cc:86
+msgid "Remove"
+msgstr "Ta bort"
+
+#: src/gtk/aptitude.glade:1656
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "^Rensa"
+
+#: src/gtk/aptitude.glade:1669
+msgid "Keep"
+msgstr "Behåll"
+
+#: src/gtk/aptitude.glade:1682
+msgid "Hold"
+msgstr "Håll kvar"
+
+#: src/gtk/changelog.cc:251
+msgid "The changelog is empty."
+msgstr ""
+
+#: src/gtk/changelog.cc:253
+msgid ""
+"No new changelog entries; it looks like you installed a locally compiled "
+"version of this package."
+msgstr ""
+
+#: src/gtk/changelog.cc:255
+msgid ""
+"No new changelog entries; this is likely due to a binary-only upload of this "
+"package."
+msgstr ""
+
+#: src/gtk/changelog.cc:384 src/view_changelog.cc:369
+msgid "You can only view changelogs of official Debian packages."
+msgstr "Du kan endast se ändringsloggar från officiella Debianpaket."
+
+#: src/gtk/changelog.cc:403
+#, fuzzy
+#| msgid "Downloading Changelog"
+msgid "Downloading changelog; please wait..."
+msgstr "Hämtar ändringslogg"
+
+#: src/gtk/changelog.cc:447
+#, fuzzy
+#| msgid "Downloading Changelog"
+msgid "Downloading changelogs"
+msgstr "Hämtar ändringslogg"
+
+#: src/gtk/dashboardtab.cc:87
+#, fuzzy
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download changelogs"
+msgstr "URL att använda för att hämta ändringsloggar"
+
+#: src/gtk/dashboardtab.cc:172
+msgid "Available upgrades:"
+msgstr ""
+
+#: src/gtk/dashboardtab.cc:182
+#, fuzzy, c-format
+#| msgid "%d upgrade"
+#| msgid_plural "%d upgrades"
+msgid "%d available upgrade:"
+msgid_plural "%d available upgrades:"
+msgstr[0] "%d att uppgradera"
+msgstr[1] "%d att uppgradera"
+
+#: src/gtk/dependency_chains_tab.cc:179
+msgid "Select one or more starting packages and an ending package to search."
+msgstr ""
+
+#: src/gtk/dependency_chains_tab.cc:239
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "No dependency chain found."
+msgstr "Beroendehantering"
+
+#: src/gtk/download.cc:127
+msgid "Ignored"
+msgstr ""
+
+#: src/gtk/download.cc:134
+#, fuzzy
+#| msgid "False"
+msgid "Failed"
+msgstr "Falskt"
+
+#: src/gtk/download.cc:143
+#, fuzzy
+#| msgid "Deleting downloaded files"
+msgid "Already downloaded"
+msgstr "Tar bort hämtade filer"
+
+#: src/gtk/download.cc:150
+#, fuzzy
+#| msgid "death"
+msgid "Fetch"
+msgstr "död"
+
+#: src/gtk/download.cc:156
+#, fuzzy
+#| msgid "none"
+msgid "Done"
+msgstr "ingen"
+
+#: src/gtk/download.cc:199
+msgid "URI"
+msgstr ""
+
+#: src/gtk/download.cc:205
+#, fuzzy
+#| msgid "Total Progress: "
+msgid "Progress"
+msgstr "Totalt förlopp: "
+
+#: src/gtk/download.cc:212
+#, fuzzy
+#| msgid "Description"
+msgid "Short Description"
+msgstr "Beskrivning"
+
+#: src/gtk/download.cc:213 src/pkg_columnizer.cc:93 src/pkg_view.cc:671
+msgid "Description"
+msgstr "Beskrivning"
+
+#: src/gtk/download.cc:297
+#, fuzzy
+#| msgid "View next display"
+msgid "View Details"
+msgstr "Visa nästa vy"
+
+#: src/gtk/download.cc:335
+msgid "Change media"
+msgstr ""
+
+#: src/gtk/download.cc:356
+#, c-format
+msgid "%s: %sB/s"
+msgstr ""
+
+#: src/gtk/download.cc:376
+#, c-format
+msgid "%s: %lu/%lu, %sB/s"
+msgstr ""
+
+#: src/gtk/download.cc:382
+#, fuzzy, c-format
+#| msgid "%s; will be installed"
+msgid "%s: %lu/%lu, stalled"
+msgstr "%s; kommer att installeras"
+
+#: src/gtk/download.cc:403
+#, fuzzy, c-format
+#| msgid " [ %i%% ] (%sB/s, %s remaining)"
+msgid "%s: %sB of %sB at %sB/s, %s remaining"
+msgstr " [ %i%% ] (%sB/s, %s återstår)"
+
+#: src/gtk/download.cc:410
+#, fuzzy, c-format
+#| msgid "but %s is to be installed."
+msgid "%s: %sB of %sB, stalled"
+msgstr "men %s kommer att installeras."
+
+#: src/gtk/download.cc:439
+msgid "Completed"
+msgstr ""
+
+#: src/gtk/download.cc:441
+msgid "Completed with errors"
+msgstr ""
+
+#: src/gtk/dpkg_terminal.cc:83
+#, fuzzy, c-format
+#| msgid "Unable to locate package %s"
+msgid "%s: Unable to create a Unix-domain socket: %s"
+msgstr "Kunde inte hitta paketet %s"
+
+#: src/gtk/dpkg_terminal.cc:263
+#, fuzzy, c-format
+#| msgid "Unable to create temporary directory from template \"%s\": %s"
+msgid "%s: Unable to accept a connection from the subprocess: %s"
+msgstr "Kunde inte skapa temporärkatalog från mallen \"%s\": %s"
+
+#: src/gtk/entityview.cc:192 src/gtk/resolver.cc:155
+#, fuzzy
+#| msgid "ProgName"
+msgid "Name"
+msgstr "ProgNamn"
+
+#: src/gtk/entityview.cc:207
+#, fuzzy
+#| msgid "Version: "
+msgid "Version"
+msgstr "Version: "
+
+#: src/gtk/gui.cc:71
+#, fuzzy
+#| msgid "not installed"
+msgid "Not installed"
+msgstr "inte installerat"
+
+#: src/gtk/gui.cc:72
+msgid "Virtual"
+msgstr "Virtuell"
+
+#: src/gtk/gui.cc:73
+#, fuzzy
+#| msgid "unpacked"
+msgid "Unpacked"
+msgstr "uppackat"
+
+#: src/gtk/gui.cc:74
+#, fuzzy
+#| msgid "half-config"
+msgid "Half-configured"
+msgstr "halvt konfigurerat"
+
+#: src/gtk/gui.cc:75
+#, fuzzy
+#| msgid "half-install"
+msgid "Half-installed"
+msgstr "halvt installerat"
+
+#: src/gtk/gui.cc:76
+#, fuzzy
+#| msgid "not installed (configuration files remain)"
+msgid "Configuration files and data remain"
+msgstr "inte installerat (konfigurationsfilerna kvarstår)"
+
+#: src/gtk/gui.cc:77
+#, fuzzy
+#| msgid "triggers-awaited"
+msgid "Triggers awaited"
+msgstr "utlösare förväntas"
+
+#: src/gtk/gui.cc:78
+#, fuzzy
+#| msgid "triggers-pending"
+msgid "Triggers pending"
+msgstr "utlösare att genomföra"
+
+#: src/gtk/gui.cc:79
+msgid "Installed"
+msgstr "Installerat"
+
+#: src/gtk/gui.cc:83
+msgid "Reinstall"
+msgstr "Installera om"
+
+#: src/gtk/gui.cc:85
+msgid "Downgrade"
+msgstr "Nedgradera"
+
+#: src/gtk/gui.cc:87
+msgid "Remove and purge configuration/data"
+msgstr ""
+
+#: src/gtk/gui.cc:88
+msgid "Hold (don't uprgade)"
+msgstr ""
+
+#: src/gtk/gui.cc:90
+#, fuzzy
+#| msgid "Related Dependencies"
+msgid "Unsatisfied dependencies"
+msgstr "Lös beroenden"
+
+#: src/gtk/gui.cc:201
+msgid "Checking for updates"
+msgstr ""
+
+#: src/gtk/gui.cc:217
+msgid "Insufficient privileges."
+msgstr ""
+
+#: src/gtk/gui.cc:220
+#, fuzzy
+#| msgid "Apply a filter to the package list"
+msgid "You must be root to update the package lists."
+msgstr "Aktivera ett filter på paketlistan"
+
+#: src/gtk/gui.cc:228 src/gtk/gui.cc:299
+#, fuzzy
+msgid "Download already running."
+msgstr "Hämtar..."
+
+#: src/gtk/gui.cc:230 src/gtk/gui.cc:301 src/ui.cc:1462 src/ui.cc:1695
+msgid "A package-list update or install run is already taking place."
+msgstr ""
+"En uppdatering av paketlistan eller en installationskörning sker just nu."
+
+#: src/gtk/gui.cc:315 src/ui.cc:1206
+msgid "Downloading packages"
+msgstr "Hämtar paket"
+
+#: src/gtk/gui.cc:379
+#, fuzzy
+#| msgid "Resolver"
+msgid "Resolver:"
+msgstr "Problemlösaren"
+
+#: src/gtk/gui.cc:384
+#, fuzzy
+#| msgid "Preview"
+msgid "Preview:"
+msgstr "Förhandsvisning"
+
+#: src/gtk/gui.cc:389
+#, fuzzy
+#| msgid "No broken packages."
+msgid "Broken packages"
+msgstr "Inga trasiga paket."
+
+#: src/gtk/gui.cc:423
+#, fuzzy
+#| msgid "No broken packages."
+msgid "Show broken packages"
+msgstr "Inga trasiga paket."
+
+#: src/gtk/gui.cc:427
+#, fuzzy
+#| msgid "Resolve Dependencies"
+msgid "Resolve dependencies"
+msgstr "Lös beroenden"
+
+#: src/gtk/gui.cc:455
+#, fuzzy, c-format
+#| msgid "No packages are broken."
+msgid "%d package is broken"
+msgstr "Inga paket är trasiga."
+
+#: src/gtk/gui.cc:456
+#, fuzzy, c-format
+#| msgid "No packages are broken."
+msgid "%d packages are broken."
+msgstr "Inga paket är trasiga."
+
+#: src/gtk/gui.cc:499
+#, fuzzy
+#| msgid "%s changes"
+msgid "View changes"
+msgstr "%s ändrar"
+
+#: src/gtk/gui.cc:503
+#, fuzzy
+#| msgid "%s changes"
+msgid "Apply changes"
+msgstr "%s ändrar"
+
+#. ForTranslators: any numbers in this
+#. string will be displayed in a larger
+#. font.
+#: src/gtk/gui.cc:542
+#, fuzzy, c-format
+#| msgid "%d install"
+#| msgid_plural "%d installs"
+msgid "%d package to install"
+msgstr "%d att installera"
+
+#: src/gtk/gui.cc:543
+#, fuzzy, c-format
+#| msgid "%d install"
+#| msgid_plural "%d installs"
+msgid "%d packages to install"
+msgstr "%d att installera"
+
+#. ForTranslators: any numbers in this
+#. string will be displayed in a larger
+#. font.
+#: src/gtk/gui.cc:557
+#, fuzzy, c-format
+#| msgid "failed to remove %s"
+msgid "%d package to remove"
+msgstr "misslyckades med att ta bort %s"
+
+#: src/gtk/gui.cc:558
+#, fuzzy, c-format
+#| msgid "No packages are broken."
+msgid "%d packages to remove"
+msgstr "Inga paket är trasiga."
+
+#: src/gtk/gui.cc:596
+#, fuzzy, c-format
+#| msgid "DownloadSize"
+msgid "Download size: %sB."
+msgstr "HämtStorlek"
+
+#: src/gtk/gui.cc:646
+#, c-format
+msgid "Tags of %s:\n"
+msgstr ""
+
+#: src/gtk/gui.cc:680
+#, fuzzy
+#| msgid "Packages"
+msgid "Packages:"
+msgstr "Paket"
+
+#: src/gtk/gui.cc:789 src/gtk/gui.cc:794
+msgid "Dashboard:"
+msgstr ""
+
+#: src/gtk/gui.cc:913
+#, c-format
+msgid "Unable to load the user interface definition file %s/aptitude.glade."
+msgstr ""
+
+#: src/gtk/info.cc:157 src/gtk/pkgview.cc:162
+#, fuzzy
+#| msgid "Current status: %F."
+msgid "Current status"
+msgstr "Nuvarande status: %F."
+
+#: src/gtk/info.cc:159 src/gtk/pkgview.cc:164
+msgid "Selected status"
+msgstr ""
+
+#: src/gtk/info.cc:482
+#, fuzzy
+#| msgid "Not Installed"
+msgid "Not available"
+msgstr "Inte installerat"
+
+#: src/gtk/info.cc:528
+msgid "Please wait; reloading cache..."
+msgstr ""
+
+#: src/gtk/info.cc:673
+msgid "Info:"
+msgstr ""
+
+#: src/gtk/packageinformation.cc:104 src/gtk/packageinformation.cc:106
+#: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
+#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:270
+#: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
+#: src/pkg_ver_item.cc:350 src/pkg_ver_item.cc:384
+msgid "Unknown"
+msgstr "Okänd"
+
+#: src/gtk/packagestab.cc:57
+#, fuzzy, c-format
+#| msgid "No packages matched the pattern \"%ls\"."
+msgid "No packages matched \"%s\"."
+msgstr "Inga paket matchade mönstret \"%ls\"."
+
+#: src/gtk/packagestab.cc:88
+msgid "Enter a search and click \"Find\" to display packages."
+msgstr ""
+
+#: src/gtk/packagestab.cc:142
+#, fuzzy
+#| msgid "Package: "
+msgid "Packages: "
+msgstr "Paket: "
+
+#: src/gtk/packagestab.cc:202
+#, fuzzy, c-format
+#| msgid "%s versions"
+msgid "Upgrade to %s version %s"
+msgstr "%s versioner"
+
+#: src/gtk/packagestab.cc:210
+#, fuzzy, c-format
+#| msgid "Install(%s provides %s)"
+msgid "Install %s version %s"
+msgstr "Installera (%s tillhandahåller %s)"
+
+#: src/gtk/packagestab.cc:218
+#, fuzzy, c-format
+#| msgid "  cwidget version: %s\n"
+msgid "Downgrade to %s version %s"
+msgstr "  cwidget-version: %s\n"
+
+#: src/gtk/packagestab.cc:229
+#, fuzzy, c-format
+#| msgid "Keep the following packages at their current version:"
+msgid "Don't hold %s at its current version."
+msgstr "Behåll följande paket vid deras nuvarande version:"
+
+#: src/gtk/packagestab.cc:232 src/gtk/packagestab.cc:252
+#: src/gtk/packagestab.cc:255
+#, fuzzy, c-format
+#| msgid "Canc^el pending actions"
+msgid "Cancel any actions on %s."
+msgstr "Avbry^t väntande åtgärder"
+
+#: src/gtk/packagestab.cc:237
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the purge of %s."
+msgstr "Avbryt borttagningen av %F"
+
+#: src/gtk/packagestab.cc:239
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the removal of %s."
+msgstr "Avbryt borttagningen av %F"
+
+#: src/gtk/packagestab.cc:244
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the upgrade of %s."
+msgstr "Avbryt borttagningen av %F"
+
+#: src/gtk/packagestab.cc:246
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %F"
+msgid "Cancel the installation of %s."
+msgstr "Avbryt installationen av %F"
+
+#: src/gtk/packagestab.cc:248
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the downgrade of %s."
+msgstr "Avbryt borttagningen av %F"
+
+#: src/gtk/packagestab.cc:250
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %F"
+msgid "Cancel the reinstallation of %s."
+msgstr "Avbryt installationen av %F"
+
+#: src/gtk/packagestab.cc:335
+#, fuzzy, c-format
+#| msgid "\"%s\" is a virtual package provided by:\n"
+msgid "%s is a virtual package provided by:\n"
+msgstr "\"%s\" är ett virtuellt paket som tillhandahålls av:\n"
+
+#: src/gtk/packagestab.cc:399 src/gtk/previewtab.cc:200
+msgid "(more info...)"
+msgstr ""
+
+#: src/gtk/packagestab.cc:452
+#, fuzzy, c-format
+#| msgid "Remove(%s)"
+msgid "Remove %s"
+msgstr "Ta bort (%s)"
+
+#: src/gtk/packagestab.cc:456
+#, fuzzy, c-format
+#| msgid "^Purge"
+msgid "Purge %s"
+msgstr "^Rensa"
+
+#: src/gtk/packagestab.cc:464
+#, c-format
+msgid "Hold %s at its current version."
+msgstr ""
+
+#: src/gtk/pkgview.cc:335
+msgid "Cache reloading, please wait..."
+msgstr ""
+
+#: src/gtk/pkgview.cc:373 src/gtk/pkgview.cc:389 src/pkg_tree.cc:204
+#: src/pkg_tree.cc:215 src/pkg_tree.cc:226 src/pkg_tree.cc:238
+msgid "Building view"
+msgstr "Bygger vy"
+
+#: src/gtk/pkgview.cc:379 src/gtk/pkgview.cc:395
+#, fuzzy
+#| msgid "Building view"
+msgid "Finalizing view"
+msgstr "Bygger vy"
+
+#: src/gtk/previewtab.cc:95 src/pkg_grouppolicy.cc:637
+msgid ""
+"Packages with unsatisfied dependencies\n"
+" The dependency requirements of these packages will be unmet after the "
+"install is complete.\n"
+" .\n"
+" The presence of this tree probably indicates that something is broken, "
+"either on your system or in the Debian archive."
+msgstr ""
+"Paket med otillfredsställda beroenden\n"
+" Beroendekraven för dessa paket kommer inte att tillfredsställas efter att "
+"installationen är klar.\n"
+" .\n"
+" Skälet för att detta träd finns här nu indikerar att någonting är trasigt, "
+"antingen på ditt system eller i Debian-arkivet."
+
+#: src/gtk/previewtab.cc:96 src/pkg_grouppolicy.cc:638
+msgid ""
+"Packages being removed because they are no longer used\n"
+" These packages are being deleted because they were automatically installed "
+"to fulfill dependencies, and the planned action will result in no installed "
+"package declaring an 'important' dependency on them.\n"
+msgstr ""
+"Paket som kommer bli borttagna för att de inte längre används\n"
+" Dessa paket kommer att tas bort för att de blev automatiskt installerade "
+"för att uppfylla beroenden och den planerade åtgärden kommer att visa att "
+"inga installerade paket tillkännager ett \"important\"-beroende för dom.\n"
+
+#: src/gtk/previewtab.cc:97 src/pkg_grouppolicy.cc:639
+msgid ""
+"Packages being automatically held in their current state\n"
+" These packages could be upgraded, but they have been kept in their current "
+"state to avoid breaking dependencies."
+msgstr ""
+"Paket som automatiskt kommer att hållas kvar i sitt nuvarande tillstånd\n"
+" Dessa paket kan uppgraderas men de har hållits tillbaka i sitt nuvarande "
+"tillstånd för att undvika att bryta beroenden."
+
+#: src/gtk/previewtab.cc:98 src/pkg_grouppolicy.cc:640
+msgid ""
+"Packages being automatically installed to satisfy dependencies\n"
+" These packages are being installed because they are required by another "
+"package you have chosen for installation."
+msgstr ""
+"Paket som automatiskt kommer att installeras för att tillfredsställa "
+"beroenden\n"
+" Dessa paket kommer att installeras för att de krävs av andra paket som du "
+"har valt att installera."
+
+#: src/gtk/previewtab.cc:99 src/pkg_grouppolicy.cc:641
+msgid ""
+"Packages being deleted due to unsatisfied dependencies\n"
+" These packages are being deleted because one or more of their dependencies "
+"is no longer available, or because another package conflicts with them."
+msgstr ""
+"Paket som kommer att tas bort på grund av otillfredställda beroenden\n"
+" Dessa paket kommer att tas bort för att ett eller flera av deras beroenden "
+"inte längre är tillgängliga eller för att andra paket är i konflikt med dem."
+
+#: src/gtk/previewtab.cc:100 src/pkg_grouppolicy.cc:642
+msgid ""
+"Packages to be downgraded\n"
+" An older version of these packages than is currently installed will be "
+"installed."
+msgstr ""
+"Paket som kommer att nedgraderas\n"
+" En äldre version av dessa paket som är installerade för närvarande kommer "
+"att installeras."
+
+#: src/gtk/previewtab.cc:101 src/pkg_grouppolicy.cc:643
+msgid ""
+"Packages being held back\n"
+" These packages could be upgraded, but you have asked for them to be held at "
+"their current version."
+msgstr ""
+"Paket som kommer att hållas tillbaka\n"
+" Dessa paket kan uppgraderas men du har valt att hålla dem kvar i sina "
+"nuvarande version."
+
+#: src/gtk/previewtab.cc:102 src/pkg_grouppolicy.cc:644
+msgid ""
+"Packages to be reinstalled\n"
+" These packages will be reinstalled."
+msgstr ""
+"Paket som kommer att installeras om\n"
+" Dessa paket kommer att installeras om."
+
+#: src/gtk/previewtab.cc:103 src/pkg_grouppolicy.cc:645
+msgid ""
+"Packages to be installed\n"
+" These packages have been manually selected for installation on your "
+"computer."
+msgstr ""
+"Paket som kommer att installeras\n"
+" Dessa paket har manuellt blivit valda för installation på din dator."
+
+#: src/gtk/previewtab.cc:104 src/pkg_grouppolicy.cc:646
+msgid ""
+"Packages to be removed\n"
+" These packages have been manually selected for removal."
+msgstr ""
+"Paket som kommer att tas bort\n"
+" Dessa paket har blivit manuellt valda för borttagning."
+
+#: src/gtk/previewtab.cc:105 src/pkg_grouppolicy.cc:647
+msgid ""
+"Packages to be upgraded\n"
+" These packages will be upgraded to a newer version."
+msgstr ""
+"Paket som kommer att uppgraderas\n"
+" Dessa paket kommer att uppgraderas till en nyare version."
+
+#: src/gtk/previewtab.cc:106 src/pkg_grouppolicy.cc:648
+msgid ""
+"Packages that are partially installed\n"
+" These packages are not fully installed and configured; an attempt will be "
+"made to complete their installation."
+msgstr ""
+"Paket som som är delvis installerade\n"
+" Dessa paket är inte helt installerade och konfigurerade; ett försök kommer "
+"att göras för att installera dem helt."
+
+#: src/gtk/previewtab.cc:164
+#, fuzzy
+#| msgid "Preview"
+msgid "Preview: "
+msgstr "Förhandsvisning"
+
+#: src/gtk/resolver.cc:53
+#, fuzzy, c-format
+#| msgid "Error while dumping resolver state"
+msgid "Error in dependency resolver: %s"
+msgstr "Fel vid dumpning av problemlösarens tillstånd"
+
+#: src/gtk/resolver.cc:56
+#, c-format
+msgid ""
+"Fatal error in dependency resolver.  You can continue searching, but some "
+"solutions might be impossible to generate.\n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/gtk/resolver.cc:156 src/pkg_columnizer.cc:92
+msgid "Action"
+msgstr "Åtgärd"
+
+#: src/gtk/resolver.cc:256 src/solution_fragment.cc:106
+#, c-format
+msgid "%s depends upon %s"
+msgstr "%s är beroende av %s"
+
+#: src/gtk/resolver.cc:259 src/solution_fragment.cc:109
+#, c-format
+msgid "%s pre-depends upon %s"
+msgstr "%s är förberoende av %s"
+
+#: src/gtk/resolver.cc:262 src/solution_fragment.cc:112
+#, c-format
+msgid "%s suggests %s"
+msgstr "%s föreslår %s"
+
+#: src/gtk/resolver.cc:265 src/solution_fragment.cc:115
+#: src/solution_item.cc:602
+#, c-format
+msgid "%s recommends %s"
+msgstr "%s rekommenderar %s"
+
+#: src/gtk/resolver.cc:268 src/solution_fragment.cc:118
+#, c-format
+msgid "%s conflicts with %s"
+msgstr "%s står i konflikt med %s"
+
+#: src/gtk/resolver.cc:271 src/solution_fragment.cc:121
+#, c-format
+msgid "%s breaks %s"
+msgstr "%s gör %s oanvändbar"
+
+#: src/gtk/resolver.cc:274 src/solution_fragment.cc:124
+#, c-format
+msgid "%s replaces %s"
+msgstr "%s ersätter %s"
+
+#: src/gtk/resolver.cc:277 src/solution_fragment.cc:127
+#, c-format
+msgid "%s obsoletes %s"
+msgstr "%s föråldrar %s"
+
+#: src/gtk/resolver.cc:292
+#, fuzzy
+#| msgid "No broken packages."
+msgid "Nothing to do: there are no broken packages."
+msgstr "Inga trasiga paket."
+
+#: src/gtk/resolver.cc:299
+#, fuzzy
+#| msgid "No resolution found."
+msgid "No resolutions found."
+msgstr "Ingen lösning hittades."
+
+#: src/gtk/resolver.cc:314 src/solution_screen.cc:515
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr "öppna: %d; stängda: %d; framskjutna: %d; konflikter: %d"
+
+#: src/gtk/resolver.cc:405 src/solution_screen.cc:248
+msgid "Remove the following packages:"
+msgstr "Ta bort följande paket:"
+
+#: src/gtk/resolver.cc:420 src/solution_screen.cc:270
+msgid "Install the following packages:"
+msgstr "Installera följande paket:"
+
+#: src/gtk/resolver.cc:437
+#, fuzzy
+#| msgid "Remove the following packages:"
+msgid "Keep the following packages:"
+msgstr "Ta bort följande paket:"
+
+#: src/gtk/resolver.cc:447 src/solution_fragment.cc:251
+msgid "Not Installed"
+msgstr "Inte installerat"
+
+#: src/gtk/resolver.cc:463 src/solution_screen.cc:281
+msgid "Upgrade the following packages:"
+msgstr "Uppgradera följande paket:"
+
+#: src/gtk/resolver.cc:482 src/solution_screen.cc:292
+msgid "Downgrade the following packages:"
+msgstr "Nedgradera följande paket:"
+
+#: src/gtk/resolver.cc:503
+#, fuzzy
+#| msgid "Leave the following dependencies unresolved:%n"
+msgid "Leave the following dependencies unresolved:"
+msgstr "Lämna följande beroenden olösta:%n"
+
+#: src/gtk/resolver.cc:522
+#, fuzzy
+#| msgid "No more solutions."
+msgid "No solutions."
+msgstr "Inga fler lösningar."
+
+#: src/gtk/resolver.cc:522
+#, fuzzy
+#| msgid "No more solutions."
+msgid "No solutions yet."
+msgstr "Inga fler lösningar."
+
+#: src/gtk/resolver.cc:524
+#, c-format
+msgid "Solution %d of %d (score: %d)"
+msgstr ""
+
+#: src/gtk/resolver.cc:618 src/ui.cc:2093
+msgid "Unable to find a solution to apply."
+msgstr "Kunde inte hitta en lösning att verkställa."
+
+#: src/gtk/resolver.cc:623 src/ui.cc:2099
+msgid "Ran out of time while trying to find a solution."
+msgstr "Fick slut på tid under försöket att hitta en lösning."
+
 #: src/load_config.cc:48
 #, c-format
 msgid "Unrecognized color name \"%s\""
@@ -3062,116 +4292,123 @@ msgstr "Ogiltig post i tangentmappningsgrupp: \"%s\""
 msgid "Ignoring invalid keybinding \"%s\" -> \"%s\""
 msgstr "Ignorerar ogiltig tangentmappning \"%s\" -> \"%s\""
 
-#: src/load_grouppolicy.cc:258
+#: src/load_grouppolicy.cc:289
 #, c-format
 msgid "Expected policy identifier, got '%c'"
 msgstr "Förväntade policyidentifierare, fick \"%c\""
 
-#: src/load_grouppolicy.cc:270
+#: src/load_grouppolicy.cc:305
+#, fuzzy, c-format
+#| msgid "Expected ',' or '(', got '%c'"
+msgid "Expected ',', '%c', or '('; got '%c'"
+msgstr "Förväntade \",\" eller \"(\" men fick \"%c\""
+
+#: src/load_grouppolicy.cc:309
 #, c-format
 msgid "Expected ',' or '(', got '%c'"
 msgstr "Förväntade \",\" eller \"(\" men fick \"%c\""
 
-#: src/load_grouppolicy.cc:277
+#: src/load_grouppolicy.cc:317
 #, c-format
 msgid "Unknown grouping policy \"%s\""
 msgstr "Okänd grupperingspolicy \"%s\""
 
-#: src/load_grouppolicy.cc:284
+#: src/load_grouppolicy.cc:324
 #, c-format
 msgid "Terminal policy \"%s\" should be the last policy in the list"
 msgstr "Terminalpolicyn \"%s\" bör vara den sista policyn i listan"
 
-#: src/load_grouppolicy.cc:371
+#: src/load_grouppolicy.cc:385 src/load_grouppolicy.cc:739
+msgid "Unmatched '(' in pattern grouping policy"
+msgstr "Omatchad \"(\" i mönstergrupperingspolicyn"
+
+#: src/load_grouppolicy.cc:413
 #, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
 msgstr ""
 "Felaktigt sektionsnamn \"%s\" (använd \"none\", \"topdir\", \"subdir\" eller "
 "\"subdirs\")"
 
-#: src/load_grouppolicy.cc:381
+#: src/load_grouppolicy.cc:423
 #, c-format
 msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
 msgstr ""
 "Felaktig genomgående inställning \"%s\" (använd \"passthrough\" eller "
 "\"nopassthrough\")"
 
-#: src/load_grouppolicy.cc:386
+#: src/load_grouppolicy.cc:428
 msgid "Too many arguments to by-section grouping policy"
 msgstr "För många argument till grupperingspolicyn \"by-section\""
 
-#: src/load_grouppolicy.cc:399
+#: src/load_grouppolicy.cc:441
 msgid "By-status grouping policies take no arguments"
 msgstr "Grupperingspolicyn \"by-status\" tar inga argument"
 
-#: src/load_grouppolicy.cc:416
+#: src/load_grouppolicy.cc:460
 msgid "Expected '(' after 'filter'"
 msgstr "Förväntade \"(\" efter \"filter\""
 
-#: src/load_grouppolicy.cc:453
+#: src/load_grouppolicy.cc:497
 #, c-format
 msgid "Unable to parse pattern at '%s'"
 msgstr "Kunde inte tolka mönster vid \"%s\""
 
-#: src/load_grouppolicy.cc:458
+#: src/load_grouppolicy.cc:502
 msgid "Exactly one filter must be provided as an argument to a filter policy"
 msgstr ""
 "Exakt ett filter måste tillhandahållas som ett argument till en filterpolicy"
 
-#: src/load_grouppolicy.cc:477
+#: src/load_grouppolicy.cc:521
 msgid "By-mode grouping policies take no arguments"
 msgstr "Grupperingspolicy \"by-mode\" tar inga argument"
 
-#: src/load_grouppolicy.cc:488
+#: src/load_grouppolicy.cc:532
 msgid "First-character grouping policies take no arguments"
 msgstr "Grupperingspolicy \"first-character\" tar inga argument"
 
-#: src/load_grouppolicy.cc:500
+#: src/load_grouppolicy.cc:544
 msgid "Version-generating grouping policies take no arguments"
 msgstr "Grupperingspolicy \"version-generated\" tar inga argument"
 
-#: src/load_grouppolicy.cc:511
+#: src/load_grouppolicy.cc:555
 msgid "Dep-generating grouping policies take no arguments"
 msgstr "Grupperingspolicy \"dep-generering\" tar inga argument"
 
-#: src/load_grouppolicy.cc:522
+#: src/load_grouppolicy.cc:566
 msgid "By-priority grouping policies take no arguments"
 msgstr "Grupperingspolicy \"by-priority\" tar inga argument"
 
-#: src/load_grouppolicy.cc:553
+#: src/load_grouppolicy.cc:597
 msgid "Task grouping policies take no arguments"
 msgstr "Grupperingspolicy för funktioner tar inga argument"
 
-#: src/load_grouppolicy.cc:566
+#: src/load_grouppolicy.cc:610
 msgid "Expected no more than one argument to a tag grouping policy"
 msgstr "Förväntade inte fler än ett argument till en taggrupperingspolicy"
 
-#: src/load_grouppolicy.cc:581
+#: src/load_grouppolicy.cc:625
 msgid "Expected '(' after 'pattern'"
 msgstr "Förväntade \"(\" efter \"pattern\""
 
-#: src/load_grouppolicy.cc:589
+#: src/load_grouppolicy.cc:633
 msgid "Missing arguments to 'pattern'"
 msgstr "Saknar argument till \"pattern\""
 
-#: src/load_grouppolicy.cc:613
+#: src/load_grouppolicy.cc:656
 #, c-format
 msgid "Unable to parse pattern after \"%s\""
 msgstr "Kunde inte tolka mönster efter \"%s\""
 
-#: src/load_grouppolicy.cc:635
+#: src/load_grouppolicy.cc:694
 #, c-format
 msgid "Unexpectedly empty tree title after \"%s\""
 msgstr "Oväntad tom trädtitel efter \"%s\""
 
-#: src/load_grouppolicy.cc:654
-#, c-format
-msgid "Expected ',' or ')' following '||', got '%s'"
+#: src/load_grouppolicy.cc:713
+#, fuzzy, c-format
+#| msgid "Expected ',' or ')' following '||', got '%s'"
+msgid "Expected '{', ')', or ',' following '||', got '%s'"
 msgstr "Förväntade ',' eller ')' efter '||' men fick '%s'"
-
-#: src/load_grouppolicy.cc:666
-msgid "Unmatched '(' in pattern grouping policy"
-msgstr "Omatchad \"(\" i mönstergrupperingspolicyn"
 
 #: src/load_pkgview.cc:64
 msgid "Couldn't parse layout: No column format specified for static item"
@@ -3232,61 +4469,61 @@ msgstr "Omatchad \"(\" i sorteringspolicybeskrivning"
 msgid "Invalid sorting policy type '%s'"
 msgstr "Ogiltig sorteringspolicytyp \"%s\""
 
-#: src/main.cc:89
+#: src/main.cc:94
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr "Kan inte avkoda flerbytesträng efter \"%ls\""
 
-#: src/main.cc:98
+#: src/main.cc:103
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr "Kan inte avkoda bredteckensträng efter \"%s\""
 
-#: src/main.cc:106
+#: src/main.cc:111
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr "%s %s byggd den %s %s\n"
 
-#: src/main.cc:109
+#: src/main.cc:114
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr "Kompilator: g++ %s\n"
 
-#: src/main.cc:111
+#: src/main.cc:116
 msgid "Compiled against:\n"
 msgstr "Kompilerad mot:\n"
 
-#: src/main.cc:112
+#: src/main.cc:117
 #, c-format
 msgid "  apt version %d.%d.%d\n"
 msgstr "  apt-version %d.%d.%d\n"
 
-#: src/main.cc:115
+#: src/main.cc:120
 #, c-format
 msgid "  NCurses version: Unknown\n"
 msgstr "  NCurses-version: Okänd\n"
 
-#: src/main.cc:117
+#: src/main.cc:122
 #, c-format
 msgid "  NCurses version %s\n"
 msgstr "  NCurses-version: %s\n"
 
-#: src/main.cc:119
+#: src/main.cc:124
 #, c-format
 msgid "  libsigc++ version: %s\n"
 msgstr "  libsigc++-version: %s\n"
 
-#: src/main.cc:121
+#: src/main.cc:126
 #, c-format
 msgid "  Ept support enabled.\n"
 msgstr "  Stöd för Ept aktiverat.\n"
 
-#: src/main.cc:123
+#: src/main.cc:128
 #, c-format
 msgid "  Ept support disabled.\n"
 msgstr "  Stöd för Ept avaktiverat.\n"
 
-#: src/main.cc:126
+#: src/main.cc:131
 msgid ""
 "\n"
 "Current library versions:\n"
@@ -3294,32 +4531,32 @@ msgstr ""
 "\n"
 "Nuvarande version på bibliotek:\n"
 
-#: src/main.cc:127
+#: src/main.cc:132
 #, c-format
 msgid "  NCurses version: %s\n"
 msgstr "  NCurses-version: %s\n"
 
-#: src/main.cc:128
+#: src/main.cc:133
 #, c-format
 msgid "  cwidget version: %s\n"
 msgstr "  cwidget-version: %s\n"
 
-#: src/main.cc:129
+#: src/main.cc:134
 #, c-format
 msgid "  Apt version: %s\n"
 msgstr "  Apt-version: %s\n"
 
-#: src/main.cc:135
+#: src/main.cc:140
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "Användning: aptitude [-S filnamn] [-u|-i]"
 
-#: src/main.cc:137
+#: src/main.cc:142
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "       aptitude [flaggor] <åtgärd> ..."
 
-#: src/main.cc:139
+#: src/main.cc:144
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -3328,42 +4565,42 @@ msgstr ""
 "  Åtgärder (om ingen anges kommer aptitude and gå in i interaktivt läge):\n"
 "\n"
 
-#: src/main.cc:140
+#: src/main.cc:145
 #, c-format
 msgid " install      - Install/upgrade packages\n"
 msgstr " install      - Installera/uppgradera paket\n"
 
-#: src/main.cc:141
+#: src/main.cc:146
 #, c-format
 msgid " remove       - Remove packages\n"
 msgstr " remove       - Ta bort paket\n"
 
-#: src/main.cc:142
+#: src/main.cc:147
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr " purge        - Rensa paket och deras konfigurationsfiler\n"
 
-#: src/main.cc:143
+#: src/main.cc:148
 #, c-format
 msgid " hold         - Place packages on hold\n"
 msgstr " hold         - Ställ in paket till att hållas tillbaka\n"
 
-#: src/main.cc:144
+#: src/main.cc:149
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
 msgstr " unhold       - Avbryt tillbakahållning av ett paket\n"
 
-#: src/main.cc:145
+#: src/main.cc:150
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
 msgstr " markauto     - Markera paket som de vore automatiskt installerade\n"
 
-#: src/main.cc:146
+#: src/main.cc:151
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr " unmarkauto   - Markera paket som de vore manuellt installerade\n"
 
-#: src/main.cc:147
+#: src/main.cc:152
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
@@ -3372,17 +4609,17 @@ msgstr ""
 " forbid-version - Förbjud aptitude att uppgradera till en specifik "
 "paketversion.\n"
 
-#: src/main.cc:148
+#: src/main.cc:153
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - Hämta listor på nya/uppgraderingsbara paket\n"
 
-#: src/main.cc:149
+#: src/main.cc:154
 #, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr " safe-upgrade - Genomför en säker uppgradering\n"
 
-#: src/main.cc:150
+#: src/main.cc:155
 #, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
@@ -3391,42 +4628,42 @@ msgstr ""
 " full-upgrade - Genomför en uppgradering och om möjligt installera och ta "
 "bort paket\n"
 
-#: src/main.cc:151
+#: src/main.cc:156
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr " forget-new   - Glöm vilka paket som är \"nya\"\n"
 
-#: src/main.cc:152
+#: src/main.cc:157
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr " search       - Sök efter ett paket efter namn och/eller uttryck\n"
 
-#: src/main.cc:153
+#: src/main.cc:158
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr " show         - Visa detaljerad information om ett paket\n"
 
-#: src/main.cc:154
+#: src/main.cc:159
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr " clean        - Radera hämtade paketfiler\n"
 
-#: src/main.cc:155
+#: src/main.cc:160
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr " autoclean    - Radera gamla hämtade paketfiler\n"
 
-#: src/main.cc:156
+#: src/main.cc:161
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr " changelog    - Visa ändringsloggen för ett paket\n"
 
-#: src/main.cc:157
+#: src/main.cc:162
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr " download     - Hämta .deb-filen för ett paket\n"
 
-#: src/main.cc:158
+#: src/main.cc:163
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -3435,7 +4672,7 @@ msgstr ""
 " reinstall    - Hämta och (eventuellt) installera om ett för närvarande "
 "installerat paket\n"
 
-#: src/main.cc:159
+#: src/main.cc:164
 #, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
@@ -3448,7 +4685,7 @@ msgstr ""
 "aktuella paketet\n"
 
 # if I ever meet the person who choose this layout... /Martin
-#: src/main.cc:161
+#: src/main.cc:166
 #, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
@@ -3462,22 +4699,22 @@ msgstr ""
 "kan\n"
 "                skapa en konflikt med det givna paketet om det installeras.\n"
 
-#: src/main.cc:165
+#: src/main.cc:170
 #, c-format
 msgid "  Options:\n"
 msgstr "  Flaggor:\n"
 
-#: src/main.cc:166
+#: src/main.cc:171
 #, c-format
 msgid " -h             This help text\n"
 msgstr " -h             Denna hjälptext\n"
 
-#: src/main.cc:167
+#: src/main.cc:172
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr " -s             Simulera åtgärder utan att faktiskt genomföra dem.\n"
 
-#: src/main.cc:168
+#: src/main.cc:173
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
@@ -3485,18 +4722,18 @@ msgstr ""
 " -d             Hämta endast paket, installera inte eller ta bort "
 "någonting.\n"
 
-#: src/main.cc:169
+#: src/main.cc:174
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr " -P             Fråga alltid efter bekräftelse eller åtgärder\n"
 
-#: src/main.cc:170
+#: src/main.cc:175
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr " -y             Anta att svaret på enkla ja/nej-frågor är \"ja\"\n"
 
-#: src/main.cc:171
+#: src/main.cc:176
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
@@ -3504,52 +4741,52 @@ msgid ""
 msgstr ""
 " -F format      Ange ett format för visning av sökresultat; se manualen\n"
 
-#: src/main.cc:172
+#: src/main.cc:177
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr " -O sortering   Ange hur sökresultat ska sorteras; se manualen\n"
 
-#: src/main.cc:173
+#: src/main.cc:178
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr " -w bredd       Ange visningsbredd för att formatera sökresultat\n"
 
-#: src/main.cc:174
+#: src/main.cc:179
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr " -f             Försök aggressivt att rätta till trasiga paket.\n"
 
-#: src/main.cc:175
+#: src/main.cc:180
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             Visa vilka versioner av paketen som ska installeras.\n"
 
-#: src/main.cc:176
+#: src/main.cc:181
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D             Visa beroenden för automatiskt ändrade paket.\n"
 
-#: src/main.cc:177
+#: src/main.cc:182
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    Visa ändring av installationsstorlek för varje paket.\n"
 
-#: src/main.cc:178
+#: src/main.cc:183
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr " -v             Visa extra information. (kan anges flera gånger)\n"
 
-#: src/main.cc:179
+#: src/main.cc:184
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
 msgstr " -t [utgåva]    Ange utgåvan för vilken paketen ska installeras\n"
 
-#: src/main.cc:180
+#: src/main.cc:185
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
@@ -3558,14 +4795,14 @@ msgstr ""
 " -q             I kommandoradsläge, tysta ner den inkrementella "
 "förloppsindikatorn.\n"
 
-#: src/main.cc:182
+#: src/main.cc:187
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr ""
 " -o nyckel=värde   Ställ direkt in en konfigurationsinställning med namnet "
 "\"nyckel\"\n"
 
-#: src/main.cc:183
+#: src/main.cc:188
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -3574,65 +4811,65 @@ msgstr ""
 " --with(out)-recommends\tFastställ huruvida rekommendationer ska behandlas\n"
 "                som starka beroenden\n"
 
-#: src/main.cc:185
+#: src/main.cc:190
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr " -S filnamn: Läs aptitudes utökade statusinformation från filnamn.\n"
 
-#: src/main.cc:186
+#: src/main.cc:191
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             Hämta nya paketlistor vid uppstart.\n"
 
-#: src/main.cc:187
+#: src/main.cc:192
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             Genomför en installationskörning vid uppstart.\n"
 
-#: src/main.cc:189
+#: src/main.cc:194
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  Denna aptitude har inte Super-Ko-Krafter.\n"
 
-#: src/main.cc:375
+#: src/main.cc:397
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "Förväntade ett nummer efter -q=\n"
 
-#: src/main.cc:384
+#: src/main.cc:406
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "Förväntade ett nummer efter -q=, fick %s\n"
 
-#: src/main.cc:408
+#: src/main.cc:430
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o kräver ett argument i formatet nyckel=värde, fick %s\n"
 
-#: src/main.cc:500
+#: src/main.cc:530
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr "Saknade komma efter ettikettnamnet \"%s\".\n"
 
-#: src/main.cc:531 src/main.cc:540
+#: src/main.cc:571 src/main.cc:580
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "SKUMT: okänd flaggkod mottagen\n"
 
-#: src/main.cc:558
+#: src/main.cc:600
 msgid "Only one of -u and -i may be specified\n"
 msgstr "Endast en av -u och -i får anges\n"
 
-#: src/main.cc:566
+#: src/main.cc:608
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
 "-u och -i får inte anges i kommandoradsläget (exempelvis, med \"install\")"
 
-#: src/main.cc:587
+#: src/main.cc:629
 msgid "-u and -i may not be specified with a command"
 msgstr "-u och -i får inte anges med ett kommando"
 
-#: src/main.cc:648
+#: src/main.cc:691
 #, c-format
 msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
@@ -3641,17 +4878,17 @@ msgstr ""
 "Alternativen --safe-resolver och --full-resolver är inte meningsfulla\n"
 "för %s, som alltid använder enkel lösare (--safe-resolver).\n"
 
-#: src/main.cc:704
+#: src/main.cc:748
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Okänt kommando \"%s\"\n"
 
-#: src/main.cc:716 src/main.cc:765
+#: src/main.cc:760 src/main.cc:825
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Ofångat undantag: %s\n"
 
-#: src/main.cc:720 src/main.cc:769
+#: src/main.cc:764 src/main.cc:829
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -3660,15 +4897,15 @@ msgstr ""
 "Bakåtspårning:\n"
 "%s\n"
 
-#: src/menu_text_layout.cc:43 src/menu_tree.cc:220 src/view_changelog.cc:60
+#: src/menu_text_layout.cc:43 src/menu_tree.cc:227 src/view_changelog.cc:166
 msgid "Search for: "
 msgstr "Sök efter: "
 
-#: src/menu_text_layout.cc:75 src/menu_tree.cc:237 src/view_changelog.cc:72
+#: src/menu_text_layout.cc:75 src/menu_tree.cc:244 src/view_changelog.cc:178
 msgid "Search backwards for: "
 msgstr "Sök bakåt efter: "
 
-#: src/mine/cmine.cc:114 src/mine/cmine.cc:156 src/ui.cc:1644
+#: src/mine/cmine.cc:114 src/mine/cmine.cc:156 src/ui.cc:1700
 msgid "Minesweeper"
 msgstr "Minröj"
 
@@ -3736,7 +4973,7 @@ msgstr "Brädans bredd: "
 msgid "Number of mines: "
 msgstr "Antal minor: "
 
-#: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:284 src/ui.cc:356
+#: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:285 src/ui.cc:357
 msgid "Ok"
 msgstr "OK"
 
@@ -3878,7 +5115,7 @@ msgstr "UTF-8"
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 
-#: src/pkg_columnizer.cc:88 src/ui.cc:2616
+#: src/pkg_columnizer.cc:88 src/ui.cc:2651
 msgid "Package"
 msgstr "Paket"
 
@@ -3889,14 +5126,6 @@ msgstr "InstSt"
 #: src/pkg_columnizer.cc:90
 msgid "DebSz"
 msgstr "DebSt"
-
-#: src/pkg_columnizer.cc:92
-msgid "Action"
-msgstr "Åtgärd"
-
-#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
-msgid "Description"
-msgstr "Beskrivning"
 
 #: src/pkg_columnizer.cc:94
 msgid "InstVer"
@@ -3967,7 +5196,7 @@ msgstr "-"
 msgid "<none>"
 msgstr "<ingen>"
 
-#: src/pkg_columnizer.cc:237 src/pkg_grouppolicy.cc:262
+#: src/pkg_columnizer.cc:237 src/pkg_grouppolicy.cc:264
 msgid "virtual"
 msgstr "virtuell"
 
@@ -4037,13 +5266,6 @@ msgstr "uppgradera"
 msgid "none"
 msgstr "ingen"
 
-#: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
-#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:268
-#: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
-#: src/pkg_ver_item.cc:350 src/pkg_ver_item.cc:384
-msgid "Unknown"
-msgstr "Okänd"
-
 #. ForTranslators: Imp = Important
 #: src/pkg_columnizer.cc:361 src/pkg_ver_item.cc:359
 msgid "Imp"
@@ -4107,15 +5329,15 @@ msgstr "Kunde inte omkoda paketvisningsformatet efter \"%ls\""
 msgid "Internal error: Default column string is unparsable"
 msgstr "Internt fel: Standardkolumnsträng är inte tolkningsbar"
 
-#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1070
+#: src/pkg_grouppolicy.cc:259 src/pkg_grouppolicy.cc:1074
 msgid "Tasks"
 msgstr "Funktioner"
 
-#: src/pkg_grouppolicy.cc:283
+#: src/pkg_grouppolicy.cc:285
 msgid "main"
 msgstr "main"
 
-#: src/pkg_grouppolicy.cc:425
+#: src/pkg_grouppolicy.cc:427
 msgid ""
 "Security Updates\n"
 " Security updates for these packages are available from security.debian.org."
@@ -4124,7 +5346,7 @@ msgstr ""
 " Säkerhetsuppdateringar för dessa paket finns tillgängliga från security."
 "debian.org."
 
-#: src/pkg_grouppolicy.cc:426
+#: src/pkg_grouppolicy.cc:428
 msgid ""
 "Upgradable Packages\n"
 " A newer version of these packages is available."
@@ -4132,7 +5354,7 @@ msgstr ""
 "Uppgraderingsbara paket\n"
 " En nyare version av dessa paket finns tillgängliga."
 
-#: src/pkg_grouppolicy.cc:427
+#: src/pkg_grouppolicy.cc:429
 msgid ""
 "New Packages\n"
 " These packages have been added to Debian since the last time you cleared "
@@ -4144,7 +5366,7 @@ msgstr ""
 "\"nya\" paket. (välj \"Glöm nya paket\" från Åtgärdsmenyn för att tömma "
 "denna lista)."
 
-#: src/pkg_grouppolicy.cc:428
+#: src/pkg_grouppolicy.cc:430
 msgid ""
 "Installed Packages\n"
 " These packages are currently installed on your computer."
@@ -4152,7 +5374,7 @@ msgstr ""
 "Installerade paket\n"
 " Dessa paket är för närvarande installerade på din dator."
 
-#: src/pkg_grouppolicy.cc:429
+#: src/pkg_grouppolicy.cc:431
 msgid ""
 "Not Installed Packages\n"
 " These packages are not installed on your computer."
@@ -4160,7 +5382,7 @@ msgstr ""
 "Inte installerade paket\n"
 " Dessa paket är inte installerade på din dator."
 
-#: src/pkg_grouppolicy.cc:430
+#: src/pkg_grouppolicy.cc:432
 msgid ""
 "Obsolete and Locally Created Packages\n"
 " These packages are currently installed on your computer, but they are not "
@@ -4172,7 +5394,7 @@ msgstr ""
 "tillgängliga från någon apt-källa.  De kan vara föråldrade och borttagna "
 "från arkivet eller kanske du har byggt en privat version av dem."
 
-#: src/pkg_grouppolicy.cc:431
+#: src/pkg_grouppolicy.cc:433
 msgid ""
 "Virtual Packages\n"
 " These packages do not exist; they are names other packages use to require "
@@ -4182,7 +5404,7 @@ msgstr ""
 " Dessa paket finns inte; de är namn som andra paket använder för att kräva "
 "eller tillhandahålla funktionalitet."
 
-#: src/pkg_grouppolicy.cc:584
+#: src/pkg_grouppolicy.cc:588
 msgid ""
 "Packages which are recommended by other packages\n"
 " These packages are not strictly required, but they may be necessary to "
@@ -4194,7 +5416,7 @@ msgstr ""
 "tillhandahålla full funktionalitet i vissa andra program som du ska "
 "installera eller uppgradera till."
 
-#: src/pkg_grouppolicy.cc:605
+#: src/pkg_grouppolicy.cc:609
 msgid ""
 "Packages which are suggested by other packages\n"
 " These packages are not required in order to make your system function "
@@ -4206,166 +5428,44 @@ msgstr ""
 "tillhandahålla utökad funktionalitet för vissa program som du för närvarande "
 "installerar."
 
-#: src/pkg_grouppolicy.cc:633
-msgid ""
-"Packages with unsatisfied dependencies\n"
-" The dependency requirements of these packages will be unmet after the "
-"install is complete.\n"
-" .\n"
-" The presence of this tree probably indicates that something is broken, "
-"either on your system or in the Debian archive."
-msgstr ""
-"Paket med otillfredsställda beroenden\n"
-" Beroendekraven för dessa paket kommer inte att tillfredsställas efter att "
-"installationen är klar.\n"
-" .\n"
-" Skälet för att detta träd finns här nu indikerar att någonting är trasigt, "
-"antingen på ditt system eller i Debian-arkivet."
-
-#: src/pkg_grouppolicy.cc:634
-msgid ""
-"Packages being removed because they are no longer used\n"
-" These packages are being deleted because they were automatically installed "
-"to fulfill dependencies, and the planned action will result in no installed "
-"package declaring an 'important' dependency on them.\n"
-msgstr ""
-"Paket som kommer bli borttagna för att de inte längre används\n"
-" Dessa paket kommer att tas bort för att de blev automatiskt installerade "
-"för att uppfylla beroenden och den planerade åtgärden kommer att visa att "
-"inga installerade paket tillkännager ett \"important\"-beroende för dom.\n"
-
-#: src/pkg_grouppolicy.cc:635
-msgid ""
-"Packages being automatically held in their current state\n"
-" These packages could be upgraded, but they have been kept in their current "
-"state to avoid breaking dependencies."
-msgstr ""
-"Paket som automatiskt kommer att hållas kvar i sitt nuvarande tillstånd\n"
-" Dessa paket kan uppgraderas men de har hållits tillbaka i sitt nuvarande "
-"tillstånd för att undvika att bryta beroenden."
-
-#: src/pkg_grouppolicy.cc:636
-msgid ""
-"Packages being automatically installed to satisfy dependencies\n"
-" These packages are being installed because they are required by another "
-"package you have chosen for installation."
-msgstr ""
-"Paket som automatiskt kommer att installeras för att tillfredsställa "
-"beroenden\n"
-" Dessa paket kommer att installeras för att de krävs av andra paket som du "
-"har valt att installera."
-
-#: src/pkg_grouppolicy.cc:637
-msgid ""
-"Packages being deleted due to unsatisfied dependencies\n"
-" These packages are being deleted because one or more of their dependencies "
-"is no longer available, or because another package conflicts with them."
-msgstr ""
-"Paket som kommer att tas bort på grund av otillfredställda beroenden\n"
-" Dessa paket kommer att tas bort för att ett eller flera av deras beroenden "
-"inte längre är tillgängliga eller för att andra paket är i konflikt med dem."
-
-#: src/pkg_grouppolicy.cc:638
-msgid ""
-"Packages to be downgraded\n"
-" An older version of these packages than is currently installed will be "
-"installed."
-msgstr ""
-"Paket som kommer att nedgraderas\n"
-" En äldre version av dessa paket som är installerade för närvarande kommer "
-"att installeras."
-
-#: src/pkg_grouppolicy.cc:639
-msgid ""
-"Packages being held back\n"
-" These packages could be upgraded, but you have asked for them to be held at "
-"their current version."
-msgstr ""
-"Paket som kommer att hållas tillbaka\n"
-" Dessa paket kan uppgraderas men du har valt att hålla dem kvar i sina "
-"nuvarande version."
-
-#: src/pkg_grouppolicy.cc:640
-msgid ""
-"Packages to be reinstalled\n"
-" These packages will be reinstalled."
-msgstr ""
-"Paket som kommer att installeras om\n"
-" Dessa paket kommer att installeras om."
-
-#: src/pkg_grouppolicy.cc:641
-msgid ""
-"Packages to be installed\n"
-" These packages have been manually selected for installation on your "
-"computer."
-msgstr ""
-"Paket som kommer att installeras\n"
-" Dessa paket har manuellt blivit valda för installation på din dator."
-
-#: src/pkg_grouppolicy.cc:642
-msgid ""
-"Packages to be removed\n"
-" These packages have been manually selected for removal."
-msgstr ""
-"Paket som kommer att tas bort\n"
-" Dessa paket har blivit manuellt valda för borttagning."
-
-#: src/pkg_grouppolicy.cc:643
-msgid ""
-"Packages to be upgraded\n"
-" These packages will be upgraded to a newer version."
-msgstr ""
-"Paket som kommer att uppgraderas\n"
-" Dessa paket kommer att uppgraderas till en nyare version."
-
-#: src/pkg_grouppolicy.cc:644
-msgid ""
-"Packages that are partially installed\n"
-" These packages are not fully installed and configured; an attempt will be "
-"made to complete their installation."
-msgstr ""
-"Paket som som är delvis installerade\n"
-" Dessa paket är inte helt installerade och konfigurerade; ett försök kommer "
-"att göras för att installera dem helt."
-
-#: src/pkg_grouppolicy.cc:761
+#: src/pkg_grouppolicy.cc:765
 msgid "unknown"
 msgstr "okänd"
 
-#: src/pkg_grouppolicy.cc:772
+#: src/pkg_grouppolicy.cc:776
 #, c-format
 msgid "Priority %s"
 msgstr "Prioritet %s"
 
-#: src/pkg_grouppolicy.cc:886
+#: src/pkg_grouppolicy.cc:890
 msgid "UNCATEGORIZED"
 msgstr "OKATEGORISERAD"
 
-#: src/pkg_grouppolicy.cc:1013
+#: src/pkg_grouppolicy.cc:1017
 msgid "End-user"
 msgstr "Slutanvändare"
 
-#: src/pkg_grouppolicy.cc:1014
+#: src/pkg_grouppolicy.cc:1018
 msgid "Servers"
 msgstr "Servrar"
 
-#: src/pkg_grouppolicy.cc:1015
+#: src/pkg_grouppolicy.cc:1019
 msgid "Development"
 msgstr "Utveckling"
 
-#: src/pkg_grouppolicy.cc:1016
+#: src/pkg_grouppolicy.cc:1020
 msgid "Localization"
 msgstr "Lokalanpassning"
 
-#: src/pkg_grouppolicy.cc:1017
+#: src/pkg_grouppolicy.cc:1021
 msgid "Hardware Support"
 msgstr "Hårdvarusupport"
 
-#: src/pkg_grouppolicy.cc:1019
+#: src/pkg_grouppolicy.cc:1023
 msgid "Unrecognized tasks"
 msgstr "Okända funktioner"
 
-#: src/pkg_grouppolicy.cc:1071
+#: src/pkg_grouppolicy.cc:1075
 msgid ""
 "\n"
 " Tasks are groups of packages which provide an easy way to select a "
@@ -4375,26 +5475,26 @@ msgstr ""
 " Funktioner är grupper av paket som ger ett lätt sätt att välja en "
 "fördefinierat uppsättning av paket för ett särskilt syfte."
 
-#: src/pkg_grouppolicy.cc:1202
+#: src/pkg_grouppolicy.cc:1207
 #, c-format
 msgid "Bad number in format string: %ls"
 msgstr "Felaktigt nummer i formatsträng: %ls"
 
-#: src/pkg_grouppolicy.cc:1211
+#: src/pkg_grouppolicy.cc:1216
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
 msgstr "Matchindex måste vara 1 eller större, inte \"%s\""
 
-#: src/pkg_grouppolicy.cc:1229
+#: src/pkg_grouppolicy.cc:1236
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
 msgstr "Matchindex %ls är för stort, tillgängliga grupper är (%s)"
 
-#: src/pkg_grouppolicy.cc:1502
+#: src/pkg_grouppolicy.cc:1513
 msgid "TAGLESS PACKAGES"
 msgstr "TAGGLÖSA PAKET"
 
-#: src/pkg_grouppolicy.cc:1503
+#: src/pkg_grouppolicy.cc:1514
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags, or the debtags "
@@ -4404,7 +5504,7 @@ msgstr ""
 " Dessa paket har ännu inte blivit klassificerade i debtags eller så saknas "
 "debtags-databasen (om du installerar debtags så kanske problemet löser sig)."
 
-#: src/pkg_grouppolicy.cc:1537
+#: src/pkg_grouppolicy.cc:1548
 msgid "MISSING TAG"
 msgstr "SAKNAR TAGG"
 
@@ -4435,7 +5535,7 @@ msgstr "Paket som är beroende av %s"
 msgid "Versions of %s"
 msgstr "Versioner för %s"
 
-#: src/pkg_item.cc:85
+#: src/pkg_item.cc:90
 #, c-format
 msgid ""
 "%s is an essential package!%n%nAre you sure you want to remove it?%nType '%"
@@ -4444,52 +5544,52 @@ msgstr ""
 "%s är ett systemkritiskt paket!%n%nÄr du säker att du vill ta bort det?%"
 "nSkriv in \"%s\" om du är säker."
 
-#: src/pkg_item.cc:228 src/pkg_ver_item.cc:683 src/solution_item.cc:298
+#: src/pkg_item.cc:233 src/pkg_ver_item.cc:683 src/solution_item.cc:298
 #, c-format
 msgid "Information about %s"
 msgstr "Information om %s"
 
-#: src/pkg_item.cc:230 src/pkg_ver_item.cc:685 src/solution_item.cc:296
+#: src/pkg_item.cc:235 src/pkg_ver_item.cc:685 src/solution_item.cc:296
 #, c-format
 msgid "%s info"
 msgstr "%s info"
 
-#: src/pkg_item.cc:326
+#: src/pkg_item.cc:331
 #, c-format
 msgid "Available versions of %s"
 msgstr "Tillgängliga versioner av %s"
 
-#: src/pkg_item.cc:329
+#: src/pkg_item.cc:334
 #, c-format
 msgid "%s versions"
 msgstr "%s versioner"
 
-#: src/pkg_item.cc:341 src/pkg_ver_item.cc:713
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:713
 #, c-format
 msgid "Dependencies of %s"
 msgstr "Beroenden för %s"
 
-#: src/pkg_item.cc:343 src/pkg_ver_item.cc:715
+#: src/pkg_item.cc:348 src/pkg_ver_item.cc:715
 #, c-format
 msgid "%s deps"
 msgstr "%s beroenden"
 
-#: src/pkg_item.cc:354 src/pkg_ver_item.cc:725
+#: src/pkg_item.cc:359 src/pkg_ver_item.cc:725
 #, c-format
 msgid "Packages depending on %s"
 msgstr "Paketen är beroende av %s"
 
-#: src/pkg_item.cc:356 src/pkg_ver_item.cc:727
+#: src/pkg_item.cc:361 src/pkg_ver_item.cc:727
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s omvända beroenden"
 
-#: src/pkg_item.cc:406 src/pkg_ver_item.cc:775
+#: src/pkg_item.cc:411 src/pkg_ver_item.cc:775
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "Rapporterar ett fel i %s:\n"
 
-#: src/pkg_item.cc:426
+#: src/pkg_item.cc:431
 msgid ""
 "You are not root and I cannot find any way to become root.  To reconfigure "
 "this package, install the menu package, the login package, or run aptitude "
@@ -4499,20 +5599,20 @@ msgstr ""
 "konfigurera om detta paket, installera paketen \"menu\" och \"login\" eller "
 "kör aptitude som root."
 
-#: src/pkg_item.cc:434
+#: src/pkg_item.cc:439
 #, c-format
 msgid "Reconfiguring %s\n"
 msgstr "Konfigurerar om %s\n"
 
-#: src/pkg_item.cc:444 src/ui.cc:1149
+#: src/pkg_item.cc:449 src/ui.cc:1160
 msgid "Press return to continue.\n"
 msgstr "Tryck på Return för att fortsätta.\n"
 
-#: src/pkg_item.cc:461
+#: src/pkg_item.cc:466
 msgid "Hierarchy editor"
 msgstr "Hierarkiredigerare"
 
-#: src/pkg_item.cc:461 src/pkg_view.cc:673
+#: src/pkg_item.cc:466 src/pkg_view.cc:669
 msgid "Hierarchy Editor"
 msgstr "Hierarkiredigerare"
 
@@ -4523,41 +5623,37 @@ msgid_plural "This group contains %d packages."
 msgstr[0] "Denna grupp innehåller %d paket."
 msgstr[1] "Denna grupp innehåller %d paket."
 
-#: src/pkg_tree.cc:175
+#: src/pkg_tree.cc:178
 msgid "All Packages"
 msgstr "Alla paket"
 
-#: src/pkg_tree.cc:188 src/pkg_tree.cc:203
-msgid "Building view"
-msgstr "Bygger vy"
-
-#: src/pkg_tree.cc:246
+#: src/pkg_tree.cc:282
 #, c-format
 msgid "No packages matched the pattern \"%ls\"."
 msgstr "Inga paket matchade mönstret \"%ls\"."
 
-#: src/pkg_tree.cc:268
+#: src/pkg_tree.cc:301
 msgid "Enter the new package tree limit: "
 msgstr "Ange gräns för trädstruktur för nya paket: "
 
-#: src/pkg_tree.cc:302
+#: src/pkg_tree.cc:334
 msgid "Enter the new package grouping mechanism for this display: "
 msgstr "Ange en ny mekanism för paketgruppering för denna vy: "
 
-#: src/pkg_tree.cc:310
+#: src/pkg_tree.cc:342
 msgid "Enter the new package sorting mechanism for this display: "
 msgstr "Ange en ny mekanism för paketsortering för denna vy: "
 
 # OBS!
-#: src/pkg_view.cc:161
+#: src/pkg_view.cc:163
 msgid "Couldn't cw::util::transcode column definition"
 msgstr "Kunde inte omkoda kolumndefinitionen med cw::util::transcode"
 
-#: src/pkg_view.cc:168
+#: src/pkg_view.cc:170
 msgid "Couldn't parse column definition"
 msgstr "Kunde inte tolka kolumndefinitionen"
 
-#: src/pkg_view.cc:223
+#: src/pkg_view.cc:219
 msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
@@ -4565,30 +5661,30 @@ msgstr ""
 "Om du väljer ett paket kommer en förklaring på varför det ska installeras "
 "eller tas bort att visas här."
 
-#: src/pkg_view.cc:575
+#: src/pkg_view.cc:571
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: fel i argumenten -- två huvudwidgets??"
 
-#: src/pkg_view.cc:581
+#: src/pkg_view.cc:577
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: fel i argumenten -- felaktig kolumnlista för statiska "
 "poster"
 
-#: src/pkg_view.cc:678
+#: src/pkg_view.cc:674
 msgid "Related Dependencies"
 msgstr "Lös beroenden"
 
-#: src/pkg_view.cc:681
+#: src/pkg_view.cc:677
 msgid "Why Installed"
 msgstr "Varför installerat"
 
-#: src/pkg_view.cc:700
+#: src/pkg_view.cc:696
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: felaktigt argument!"
 
-#: src/pkg_view.cc:752
+#: src/pkg_view.cc:748
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: ingen huvudwidget hittades"
 
@@ -4846,46 +5942,6 @@ msgstr "Verkställ"
 msgid "Close"
 msgstr "Stäng"
 
-#: src/solution_fragment.cc:106
-#, c-format
-msgid "%s depends upon %s"
-msgstr "%s är beroende av %s"
-
-#: src/solution_fragment.cc:109
-#, c-format
-msgid "%s pre-depends upon %s"
-msgstr "%s är förberoende av %s"
-
-#: src/solution_fragment.cc:112
-#, c-format
-msgid "%s suggests %s"
-msgstr "%s föreslår %s"
-
-#: src/solution_fragment.cc:115 src/solution_item.cc:602
-#, c-format
-msgid "%s recommends %s"
-msgstr "%s rekommenderar %s"
-
-#: src/solution_fragment.cc:118
-#, c-format
-msgid "%s conflicts with %s"
-msgstr "%s står i konflikt med %s"
-
-#: src/solution_fragment.cc:121
-#, c-format
-msgid "%s breaks %s"
-msgstr "%s gör %s oanvändbar"
-
-#: src/solution_fragment.cc:124
-#, c-format
-msgid "%s replaces %s"
-msgstr "%s ersätter %s"
-
-#: src/solution_fragment.cc:127
-#, c-format
-msgid "%s obsoletes %s"
-msgstr "%s föråldrar %s"
-
 #: src/solution_fragment.cc:140
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
@@ -4912,10 +5968,6 @@ msgstr "%BInstallera%b följande paket:%n"
 #: src/solution_fragment.cc:244
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr "%BBehåll%b följande paket vid deras nuvarande version: %n"
-
-#: src/solution_fragment.cc:251
-msgid "Not Installed"
-msgstr "Inte installerat"
 
 #: src/solution_fragment.cc:264
 msgid "%BUpgrade%b the following packages:%n"
@@ -4979,25 +6031,9 @@ msgstr "-> Lämna beroendet \"%s rekommenderar %s\" olöst."
 msgid "The following actions will resolve this dependency:"
 msgstr "Följande åtgärder kommer att lösa detta beroende:"
 
-#: src/solution_screen.cc:248
-msgid "Remove the following packages:"
-msgstr "Ta bort följande paket:"
-
 #: src/solution_screen.cc:259
 msgid "Keep the following packages at their current version:"
 msgstr "Behåll följande paket vid deras nuvarande version:"
-
-#: src/solution_screen.cc:270
-msgid "Install the following packages:"
-msgstr "Installera följande paket:"
-
-#: src/solution_screen.cc:281
-msgid "Upgrade the following packages:"
-msgstr "Uppgradera följande paket:"
-
-#: src/solution_screen.cc:292
-msgid "Downgrade the following packages:"
-msgstr "Nedgradera följande paket:"
 
 #: src/solution_screen.cc:305
 msgid "Leave the following recommendations unresolved:"
@@ -5006,11 +6042,6 @@ msgstr "Lämna följande rekommendationer utan åtgärd:"
 #: src/solution_screen.cc:485
 msgid "No broken packages."
 msgstr "Inga trasiga paket."
-
-#: src/solution_screen.cc:515
-#, c-format
-msgid "open: %d; closed: %d; defer: %d; conflict: %d"
-msgstr "öppna: %d; stängda: %d; framskjutna: %d; konflikter: %d"
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"
@@ -5026,27 +6057,27 @@ msgstr ""
 "detta paket kan göra att en illasinnad person kan skada eller ta kontroll "
 "över ditt system."
 
-#: src/ui.cc:202
+#: src/ui.cc:203
 msgid "Yes, I am aware this is a very bad idea"
 msgstr "Ja, jag vet att detta är en väldigt dålig idé"
 
-#: src/ui.cc:229
+#: src/ui.cc:230
 msgid "Er, there aren't any errors, this shouldn't have happened.."
 msgstr "Hmm, det är inga fel och detta borde inte hända.."
 
-#: src/ui.cc:235
+#: src/ui.cc:236
 msgid "E:"
 msgstr "F:"
 
-#: src/ui.cc:237
+#: src/ui.cc:238
 msgid "W:"
 msgstr "V:"
 
-#: src/ui.cc:251
+#: src/ui.cc:252
 msgid "Search for:"
 msgstr "Sök efter:"
 
-#: src/ui.cc:333
+#: src/ui.cc:334
 msgid ""
 "WARNING: the package cache is opened in read-only mode!  This change and all "
 "subsequent changes will not be saved unless you stop all other running apt-"
@@ -5056,79 +6087,74 @@ msgstr ""
 "liknande ändringar kommer inte att sparas om du inte stoppar alla andra "
 "körande apt-baserade program och väljer \"Bli root\" från Åtgärds-menyn."
 
-#: src/ui.cc:339
+#: src/ui.cc:340
 msgid "Never display this message again."
 msgstr "Visa inte detta meddelande igen."
 
-#: src/ui.cc:385
+#: src/ui.cc:386
 msgid ""
 "You may not modify the state of any package while a download is underway."
 msgstr ""
 "Du får inte ändra tillståndet för något paket under tiden en hämtning pågår."
 
-#: src/ui.cc:416
+#: src/ui.cc:417
 msgid "You already are root!"
 msgstr "Du är redan root!"
 
-#: src/ui.cc:431
+#: src/ui.cc:432
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
 msgstr "Invalid Get-Root-Command; den ska börja med su: eller sudo:"
 
-#: src/ui.cc:438
+#: src/ui.cc:439
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr "Invalid Get-Root-Command; den ska börja med su: eller sudo:, inte %s:"
 
-#: src/ui.cc:561
+#: src/ui.cc:562
 msgid ""
 "Subprocess exited with an error -- did you type your password correctly?"
 msgstr ""
 "Underprocessen avslutades med ett fel -- skriv du in lösenordet korrekt?"
 
-#: src/ui.cc:600
+#: src/ui.cc:601
 msgid "Loading cache"
 msgstr "Läser in cache"
 
-#: src/ui.cc:642
+#: src/ui.cc:643
 msgid "Really quit Aptitude?"
 msgstr "Verkligen avsluta Aptitude?"
 
-#: src/ui.cc:695 src/ui.cc:697
+#: src/ui.cc:696 src/ui.cc:698
 msgid "Preferences"
 msgstr "Egenskaper"
 
-#: src/ui.cc:696 src/ui.cc:2382
+#: src/ui.cc:697 src/ui.cc:2417
 msgid "Change the behavior of aptitude"
 msgstr "Ändra hur aptitude fungerar"
 
-#: src/ui.cc:732
+#: src/ui.cc:733
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr ""
 "Verkligen förkasta dina personliga inställningar och läsa in "
 "standardinställningarna?"
 
-#: src/ui.cc:836 src/ui.cc:838 src/ui.cc:885 src/ui.cc:887 src/ui.cc:906
-#: src/ui.cc:908 src/ui.cc:929 src/ui.cc:931
-msgid "Packages"
-msgstr "Paket"
-
-#: src/ui.cc:837 src/ui.cc:886 src/ui.cc:907 src/ui.cc:930
+#: src/ui.cc:838 src/ui.cc:885 src/ui.cc:913 src/ui.cc:936
 msgid "View available packages and choose actions to perform"
 msgstr "Visa tillgängliga paket och välj att genomföra åtgärder"
 
-#: src/ui.cc:866
+#: src/ui.cc:867
 msgid "Recommended Packages"
 msgstr "Rekommenderade paket"
 
-#: src/ui.cc:867
+#: src/ui.cc:868
 msgid "View packages that it is recommended that you install"
 msgstr "Visa paket som rekommenderas att du installerar"
 
-#: src/ui.cc:868
+#: src/ui.cc:869
 msgid "Recommendations"
 msgstr "Rekommendationer"
 
-#: src/ui.cc:972
+#: src/ui.cc:978
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
@@ -5140,80 +6166,80 @@ msgstr ""
 "fri programvara och du är välkommen att distribuera den under särskilda "
 "villkor, se \"licens\" för detaljer."
 
-#: src/ui.cc:1022 src/ui.cc:1024
+#: src/ui.cc:1028 src/ui.cc:1030
 msgid "License"
 msgstr "Licens"
 
-#: src/ui.cc:1023 src/ui.cc:2474
+#: src/ui.cc:1029 src/ui.cc:2509
 msgid "View the terms under which you may copy and distribute aptitude"
 msgstr ""
 "Visa villkoren för kopiering och distribution som gäller för programmet"
 
-#: src/ui.cc:1037
+#: src/ui.cc:1043
 msgid "help.txt"
 msgstr "help-sv.txt"
 
-#: src/ui.cc:1039
+#: src/ui.cc:1045
 msgid "Encoding of help.txt|UTF-8"
 msgstr "UTF-8"
 
-#: src/ui.cc:1050
+#: src/ui.cc:1056
 msgid "Online Help"
 msgstr "Direkthjälp"
 
-#: src/ui.cc:1051
+#: src/ui.cc:1057
 msgid "View a brief introduction to aptitude"
 msgstr "Visa en enkel introduktion till aptitude"
 
-#: src/ui.cc:1052 src/ui.cc:2621
+#: src/ui.cc:1058 src/ui.cc:2656
 msgid "Help"
 msgstr "Hjälp"
 
-#: src/ui.cc:1060
+#: src/ui.cc:1066
 msgid "README"
 msgstr "README.sv"
 
-#: src/ui.cc:1061
+#: src/ui.cc:1067
 msgid "Encoding of README|ISO_8859-1"
 msgstr "UTF-8"
 
-#: src/ui.cc:1072
+#: src/ui.cc:1078
 msgid "User's Manual"
 msgstr "Användarhandbok"
 
-#: src/ui.cc:1073
+#: src/ui.cc:1079
 msgid "Read the full user's manual of aptitude"
 msgstr "Läs hela användarhandboken för aptitude"
 
-#: src/ui.cc:1074
+#: src/ui.cc:1080
 msgid "Manual"
 msgstr "Handbok"
 
-#: src/ui.cc:1081 src/ui.cc:1083
+#: src/ui.cc:1087 src/ui.cc:1089
 msgid "FAQ"
 msgstr "Vanliga frågor"
 
-#: src/ui.cc:1082 src/ui.cc:2466
+#: src/ui.cc:1088 src/ui.cc:2501
 msgid "View a list of frequently asked questions"
 msgstr "Visa en lista med vanliga frågor med svar"
 
-#: src/ui.cc:1091 src/ui.cc:1093
+#: src/ui.cc:1097 src/ui.cc:1099
 msgid "News"
 msgstr "Nyheter"
 
-#: src/ui.cc:1092
+#: src/ui.cc:1098
 #, c-format
 msgid "View the important changes made in each version of %s"
 msgstr "Visa de viktiga ändringarna som gjorts i varje version av %s"
 
-#: src/ui.cc:1099
+#: src/ui.cc:1105
 #, c-format
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr ""
 "Kunde inte ta bort den gamla temporärkatalogen, du bör ta bort %s för hand."
 
-#: src/ui.cc:1104
+#: src/ui.cc:1110
 #, c-format
 msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
@@ -5222,7 +6248,7 @@ msgstr ""
 "Kommer inte att ta bort %s, du bör undersöka filerna i den och ta bort dem "
 "för hand."
 
-#: src/ui.cc:1130
+#: src/ui.cc:1136
 #, c-format
 msgid ""
 "It appears that a previous version of aptitude left files behind in %s.  "
@@ -5235,19 +6261,15 @@ msgstr ""
 "ta bort denna katalog och dess innehåll? Om du väljer \"Nej\" kommer du inte "
 "få se detta meddelande igen."
 
-#: src/ui.cc:1173
-msgid "Downloading packages"
-msgstr "Hämtar paket"
-
-#: src/ui.cc:1174
+#: src/ui.cc:1207
 msgid "View the progress of the package download"
 msgstr "Visa förloppet för pakethämtning"
 
-#: src/ui.cc:1175
+#: src/ui.cc:1208
 msgid "Package Download"
 msgstr "Pakethämtning"
 
-#: src/ui.cc:1211
+#: src/ui.cc:1255
 msgid ""
 "%BWARNING%b: untrusted versions of the following packages will be installed!%"
 "n%nUntrusted packages could %Bcompromise your system's security%b.  You "
@@ -5259,39 +6281,35 @@ msgstr ""
 "på ditt system%b.  Du bör endast fortsätta med installationen om du är säker "
 "på att detta är det du vill göra. %n%n"
 
-#: src/ui.cc:1217
+#: src/ui.cc:1261
 msgid "  %S*%N %s [version %s]%n"
 msgstr "  %S*%N %s [version %s]%n"
 
-#: src/ui.cc:1223
+#: src/ui.cc:1267
 msgid "Really Continue"
 msgstr "Verkligen fortsätta"
 
-#: src/ui.cc:1225
+#: src/ui.cc:1269
 msgid "Abort Installation"
 msgstr "Avbryt installation"
 
-#: src/ui.cc:1290
+#: src/ui.cc:1334
 msgid "Preview of package installation"
 msgstr "Förhandsgranska paketinstallationen"
 
-#: src/ui.cc:1291
+#: src/ui.cc:1335
 msgid "View and/or adjust the actions that will be performed"
 msgstr "Visa och/eller justera åtgärderna som ska genomföras"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "Förhandsvisning"
-
-#: src/ui.cc:1348
+#: src/ui.cc:1392
 msgid "Some packages were broken and have been fixed:"
 msgstr "Vissa paket var trasiga och har rättats till:"
 
-#: src/ui.cc:1356
+#: src/ui.cc:1400
 msgid "No solution to these dependency problems exists!"
 msgstr "Ingen lösning till dessa beroendeproblem finns!"
 
-#: src/ui.cc:1362
+#: src/ui.cc:1406
 #, c-format
 msgid ""
 "Ran out of time while trying to resolve dependencies (press \"%s\" to try "
@@ -5300,7 +6318,7 @@ msgstr ""
 "Fick slut på tid under försöket att lösa beroendeproblemen (tryck \"%s\" för "
 "att försöka hårdare)"
 
-#: src/ui.cc:1408
+#: src/ui.cc:1452
 msgid ""
 "Installing/removing packages requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
@@ -5308,25 +6326,20 @@ msgstr ""
 "Installation/borttagning av paket kräver administrativa rättigheter som du "
 "för närvarande inte har.  Vill du byta till root-kontot?"
 
-#: src/ui.cc:1411 src/ui.cc:1632
+#: src/ui.cc:1455 src/ui.cc:1688
 msgid "Become root"
 msgstr "Bli root"
 
-#: src/ui.cc:1413 src/ui.cc:1634
+#: src/ui.cc:1457 src/ui.cc:1690
 msgid "Don't become root"
 msgstr "Bli inte root"
 
-#: src/ui.cc:1418 src/ui.cc:1639
-msgid "A package-list update or install run is already taking place."
-msgstr ""
-"En uppdatering av paketlistan eller en installationskörning sker just nu."
-
-#: src/ui.cc:1533
+#: src/ui.cc:1577
 msgid "No packages are scheduled to be installed, removed, or upgraded."
 msgstr ""
 "Inga paket är schemalagda för installation, borttagning eller uppgradering."
 
-#: src/ui.cc:1539
+#: src/ui.cc:1583
 msgid ""
 "No packages will be installed, removed or upgraded.  Some packages could be "
 "upgraded, but you have not chosen to upgrade them.  Type \"U\" to prepare an "
@@ -5336,23 +6349,23 @@ msgstr ""
 "kunde uppgraderas men du har inte valt att uppgradera dem. Tryck \"U\" för "
 "att förbereda en uppgradering."
 
-#: src/ui.cc:1597 src/ui.cc:1714
+#: src/ui.cc:1641 src/ui.cc:1770
 msgid "Deleting obsolete downloaded files"
 msgstr "Tar bort hämtade och föråldrade filer"
 
-#: src/ui.cc:1613
+#: src/ui.cc:1658
 msgid "Updating package lists"
 msgstr "Uppdaterar paketlistor"
 
-#: src/ui.cc:1614
+#: src/ui.cc:1659
 msgid "View the progress of the package list update"
 msgstr "Visa förloppet för uppdateringen av paketlistan"
 
-#: src/ui.cc:1615
+#: src/ui.cc:1660
 msgid "List Update"
 msgstr "Listuppdatering"
 
-#: src/ui.cc:1629
+#: src/ui.cc:1685
 msgid ""
 "Updating the package lists requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
@@ -5360,27 +6373,23 @@ msgstr ""
 "Uppdatering av paketlistan kräver att du har administrativa rättigheter "
 "vilket du inte har för tillfället. Vill du byta till root-kontot?"
 
-#: src/ui.cc:1644 src/ui.cc:2221
-msgid "Waste time trying to find mines"
-msgstr "Slösa bort tid med att leta minor"
-
-#: src/ui.cc:1651 src/ui.cc:1711
+#: src/ui.cc:1707 src/ui.cc:1767
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "Rensning under tiden en hämtning pågår är inte tillåtet"
 
-#: src/ui.cc:1654
+#: src/ui.cc:1710
 msgid "Deleting downloaded files"
 msgstr "Tar bort hämtade filer"
 
-#: src/ui.cc:1668
+#: src/ui.cc:1724
 msgid "Downloaded package files have been deleted"
 msgstr "Hämtade paketfiler har tagits bort"
 
-#: src/ui.cc:1708
+#: src/ui.cc:1764
 msgid "The apt cache file is not available; cannot auto-clean."
 msgstr "Cachefilen för apt är inte tillgänglig, kan inte rensa automatiskt."
 
-#: src/ui.cc:1734
+#: src/ui.cc:1790
 #, c-format
 msgid ""
 "Obsolete downloaded package files have been deleted, freeing %sB of disk "
@@ -5388,232 +6397,124 @@ msgid ""
 msgstr ""
 "Föråldrade hämtade paketfiler har tagits bort, frigjorde %sB diskplats."
 
-#: src/ui.cc:1831
+#: src/ui.cc:1887
 msgid "No more solutions."
 msgstr "Inga fler lösningar."
 
-#: src/ui.cc:2058
-msgid "Unable to find a solution to apply."
-msgstr "Kunde inte hitta en lösning att verkställa."
-
-#: src/ui.cc:2064
-msgid "Ran out of time while trying to find a solution."
-msgstr "Fick slut på tid under försöket att hitta en lösning."
-
-#: src/ui.cc:2124 src/ui.cc:2126
+#: src/ui.cc:2159 src/ui.cc:2161
 msgid "Resolve Dependencies"
 msgstr "Lös beroenden"
 
-#: src/ui.cc:2125
+#: src/ui.cc:2160
 msgid "Search for solutions to unsatisfied dependencies"
 msgstr "Sök efter lösningar för otillfredsställda beroenden"
 
-#: src/ui.cc:2137
+#: src/ui.cc:2172
 #, c-format
 msgid "Unable to open %ls"
 msgstr "Kunde inte öppna %ls"
 
-#: src/ui.cc:2143
+#: src/ui.cc:2178
 msgid "Error while dumping resolver state"
 msgstr "Fel vid dumpning av problemlösarens tillstånd"
 
-#: src/ui.cc:2153
+#: src/ui.cc:2188
 msgid "File to which the resolver state should be dumped:"
 msgstr "Fil i vilken problemlösaren ska dumpa sitt tillstånd:"
 
-#: src/ui.cc:2183
+#: src/ui.cc:2218
 msgid "^Install/remove packages"
 msgstr "^Installera/Ta bort paket"
 
-#: src/ui.cc:2184
-msgid "Perform all pending installs and removals"
-msgstr "Genomför alla väntande installationer och borttagningar"
-
-#: src/ui.cc:2186
+#: src/ui.cc:2221
 msgid "^Update package list"
 msgstr "^Uppdatera paketlista"
 
-#: src/ui.cc:2187
-msgid "Check for new versions of packages"
-msgstr "Leta efter nya versioner av paket"
-
-#: src/ui.cc:2191
+#: src/ui.cc:2226
 msgid "Mark Up^gradable"
 msgstr "Markera upp^graderingsbar"
 
-#: src/ui.cc:2192
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr ""
-"Markera alla uppgraderingsbara paket som inte hålls kvar för uppgradering"
-
-#: src/ui.cc:2196
+#: src/ui.cc:2231
 msgid "^Forget new packages"
 msgstr "^Glöm nya paket"
 
-#: src/ui.cc:2197
-msgid "Forget which packages are \"new\""
-msgstr "Glöm vilka paket som är \"nya\""
-
-#: src/ui.cc:2200
+#: src/ui.cc:2235
 msgid "Canc^el pending actions"
 msgstr "Avbry^t väntande åtgärder"
 
-#: src/ui.cc:2201
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr ""
-"Avbryt alla väntande installationer, borttagningar, tillbakahållningar och "
-"uppgraderingar."
-
-#: src/ui.cc:2204
+#: src/ui.cc:2239
 msgid "^Clean package cache"
 msgstr "^Rensa paketcachen"
 
-#: src/ui.cc:2205
-msgid "Delete package files which were previously downloaded"
-msgstr "Ta bort paketfiler som tidigare har hämtats"
-
-#: src/ui.cc:2208
+#: src/ui.cc:2243
 msgid "Clean ^obsolete files"
 msgstr "Rensa föråldra^de filer"
 
-#: src/ui.cc:2209
-msgid "Delete package files which can no longer be downloaded"
-msgstr "Ta bort paketfiler som inte längre kan hämtas"
-
-#: src/ui.cc:2215
+#: src/ui.cc:2250
 msgid "^Reload package cache"
 msgstr "^Läs om paketcache"
 
-#: src/ui.cc:2216
-msgid "Reload the package cache"
-msgstr "Läs om paketcachen"
-
-#: src/ui.cc:2220
+#: src/ui.cc:2255
 msgid "^Play Minesweeper"
 msgstr "^Spela Minröj"
 
-#: src/ui.cc:2225
+#: src/ui.cc:2260
 msgid "^Become root"
 msgstr "^Bli root"
 
-#: src/ui.cc:2226
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-"Kör \"su\" för att bli root, detta kommer att starta om programmet men dina "
-"inställningar kommer att bevaras"
-
-#: src/ui.cc:2228
+#: src/ui.cc:2263
 msgid "^Quit"
 msgstr "A^vsluta"
 
-#: src/ui.cc:2229
-msgid "Exit the program"
-msgstr "Avsluta programmet"
-
-#: src/ui.cc:2235 src/ui.cc:2615
-msgid "Undo"
-msgstr "Ångra"
-
-#: src/ui.cc:2236
-msgid "Undo the last package operation or group of operations"
-msgstr "Ångra den senaste paketåtgärden eller gruppoperationer"
-
-#: src/ui.cc:2244
+#: src/ui.cc:2279
 msgid "^Install"
 msgstr "^Installera"
 
-#: src/ui.cc:2245
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr "Flagga det valda paketet för installation eller uppgradering"
-
-#: src/ui.cc:2248
+#: src/ui.cc:2283
 msgid "^Remove"
 msgstr "^Ta bort"
 
-#: src/ui.cc:2249
-msgid "Flag the currently selected package for removal"
-msgstr "Flagga det valda paketet för borttagning"
-
-#: src/ui.cc:2252
+#: src/ui.cc:2287
 msgid "^Purge"
 msgstr "^Rensa"
 
-#: src/ui.cc:2253
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr "Flagga det valda paketet och dess konfigurationsfiler för borttagning"
-
-#: src/ui.cc:2256
+#: src/ui.cc:2291
 msgid "^Keep"
 msgstr "^Behåll"
 
-#: src/ui.cc:2257
+#: src/ui.cc:2292
 msgid "Cancel any action on the selected package"
 msgstr "Avbryt alla åtgärder för det valda paketet"
 
-#: src/ui.cc:2260
+#: src/ui.cc:2295
 msgid "^Hold"
 msgstr "^Håll kvar"
 
-#: src/ui.cc:2261
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr ""
-"Avbryt alla åtgärder för det valda paketet och skydda det från framtida "
-"uppgraderingar"
-
-#: src/ui.cc:2264
+#: src/ui.cc:2299
 msgid "Mark ^Auto"
 msgstr "Markera ^automatiskt"
 
-#: src/ui.cc:2265
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
-msgstr ""
-"Markera det valda paketet som om det har installerats automatiskt, det "
-"kommer automatiskt tas bort om inga andra paket är beroende av det"
-
-#: src/ui.cc:2268
+#: src/ui.cc:2303
 msgid "Mark ^Manual"
 msgstr "Markera ^manuell"
 
-#: src/ui.cc:2269
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr ""
-"Markera det valda paketet som om det blivit manuellt installerat, det kommer "
-"inte att tas bort om inte du manuellt tar bort det"
-
-#: src/ui.cc:2272
+#: src/ui.cc:2307
 msgid "^Forbid Version"
 msgstr "^Förbjud version"
 
-#: src/ui.cc:2273
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
-msgstr ""
-"Förbjud den kandidatversionen av det valda paketet från att bli installerad, "
-"nyare versioner av paketet kommer att installeras som vanligt"
-
-#: src/ui.cc:2277
+#: src/ui.cc:2312
 msgid "I^nformation"
 msgstr "I^nformation"
 
-#: src/ui.cc:2278
+#: src/ui.cc:2313
 msgid "Display more information about the selected package"
 msgstr "Visa ytterligare information om det valda paketet"
 
-#: src/ui.cc:2281
+#: src/ui.cc:2316
 msgid "C^ycle Package Information"
 msgstr "Cirk^ulera paketinformation"
 
-#: src/ui.cc:2282
+#: src/ui.cc:2317
 msgid ""
 "Cycle through the modes of the package information area: it can show the "
 "package's long description, a summary of its dependency status, or an "
@@ -5623,59 +6524,59 @@ msgstr ""
 "beskrivning, en  summerad beskrivning av beroendestatusen eller en analys av "
 "varför paketet behövs."
 
-#: src/ui.cc:2285
+#: src/ui.cc:2320
 msgid "^Changelog"
 msgstr "^Ändringslogg"
 
-#: src/ui.cc:2286
+#: src/ui.cc:2321
 msgid "Display the Debian changelog of the selected package"
 msgstr "Visa Debians ändringslogg för det valda paketet"
 
-#: src/ui.cc:2293
+#: src/ui.cc:2328
 msgid "^Examine Solution"
 msgstr "Und^ersök lösning"
 
-#: src/ui.cc:2294
+#: src/ui.cc:2329
 msgid "Examine the currently selected solution to the dependency problems."
 msgstr "Undersök den nuvarande valda lösningen till beroendeproblemen."
 
-#: src/ui.cc:2297
+#: src/ui.cc:2332
 msgid "Apply ^Solution"
 msgstr "Genomför lö^sning"
 
-#: src/ui.cc:2298
+#: src/ui.cc:2333
 msgid "Perform the actions contained in the currently selected solution."
 msgstr "Genomför åtgärderna som nuvarande lösning innebär."
 
-#: src/ui.cc:2301
+#: src/ui.cc:2336
 msgid "^Next Solution"
 msgstr "^Nästa lösning"
 
-#: src/ui.cc:2302
+#: src/ui.cc:2337
 msgid "Select the next solution to the dependency problems."
 msgstr "Välj nästa lösning till beroendeproblemen."
 
-#: src/ui.cc:2305
+#: src/ui.cc:2340
 msgid "^Previous Solution"
 msgstr "Föregåe^nde lösning"
 
-#: src/ui.cc:2306
+#: src/ui.cc:2341
 msgid "Select the previous solution to the dependency problems."
 msgstr "Välj föregående lösning till beroendeproblemen."
 
-#: src/ui.cc:2309
+#: src/ui.cc:2344
 msgid "^First Solution"
 msgstr "^Första lösningen"
 
-#: src/ui.cc:2310
+#: src/ui.cc:2345
 msgid "Select the first solution to the dependency problems."
 msgstr "Välj den första lösningen för beroendeproblemen."
 
-#: src/ui.cc:2313
+#: src/ui.cc:2348
 msgid "^Last Solution"
 msgstr "Sista ^lösningen"
 
-#: src/ui.cc:2314
+#: src/ui.cc:2349
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
@@ -5683,35 +6584,35 @@ msgstr ""
 "Välj den sista lösningen för beroendeproblemen som än så länge har "
 "genererats."
 
-#: src/ui.cc:2320
+#: src/ui.cc:2355
 msgid "Toggle ^Rejected"
 msgstr "Växla väg^rad"
 
-#: src/ui.cc:2321
+#: src/ui.cc:2356
 msgid "Toggle whether the currently selected action is rejected."
 msgstr "Växla om den nuvarande valda åtgärden är icke godkänd."
 
-#: src/ui.cc:2325
+#: src/ui.cc:2360
 msgid "Toggle ^Approved"
 msgstr "Växl^a godkänd"
 
-#: src/ui.cc:2326
+#: src/ui.cc:2361
 msgid "Toggle whether the currently selected action is approved."
 msgstr "Växla om den nuvarande valda åtgärden är godkänd."
 
-#: src/ui.cc:2330
+#: src/ui.cc:2365
 msgid "^View Target"
 msgstr "^Visa mål"
 
-#: src/ui.cc:2331
+#: src/ui.cc:2366
 msgid "View the package which will be affected by the selected action"
 msgstr "Visa de paket som kommer att påverkas av den valda åtgärden"
 
-#: src/ui.cc:2337
+#: src/ui.cc:2372
 msgid "Reject Breaking ^Holds"
 msgstr "Avvisa brott mot ^Hold"
 
-#: src/ui.cc:2339
+#: src/ui.cc:2374
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
@@ -5719,135 +6620,135 @@ msgstr ""
 "Avvisa alla åtgärder som skulle innebära förändringar på tillbakahållna "
 "paket eller kräva installation av förbjudna versioner"
 
-#: src/ui.cc:2347
+#: src/ui.cc:2382
 msgid "^Find"
 msgstr "^Sök"
 
-#: src/ui.cc:2348
+#: src/ui.cc:2383
 msgid "Search forwards"
 msgstr "Sök framåt"
 
-#: src/ui.cc:2351
+#: src/ui.cc:2386
 msgid "^Find Backwards"
 msgstr "Sök ^baklänges"
 
-#: src/ui.cc:2352
+#: src/ui.cc:2387
 msgid "Search backwards"
 msgstr "Sök bakåt"
 
-#: src/ui.cc:2355
+#: src/ui.cc:2390
 msgid "Find ^Again"
 msgstr "Sök ^igen"
 
-#: src/ui.cc:2356
+#: src/ui.cc:2391
 msgid "Repeat the last search"
 msgstr "Upprepa senaste sökningen"
 
-#: src/ui.cc:2359
+#: src/ui.cc:2394
 msgid "Find Again ^Backwards"
 msgstr "Sök igen ^baklänges"
 
-#: src/ui.cc:2360
+#: src/ui.cc:2395
 msgid "Repeat the last search in the opposite direction"
 msgstr "Upprepa senaste sökningen i motstående riktning"
 
-#: src/ui.cc:2364
+#: src/ui.cc:2399
 msgid "^Limit Display"
 msgstr "^Begränsa visning"
 
-#: src/ui.cc:2365
+#: src/ui.cc:2400
 msgid "Apply a filter to the package list"
 msgstr "Aktivera ett filter på paketlistan"
 
-#: src/ui.cc:2368
+#: src/ui.cc:2403
 msgid "^Un-Limit Display"
 msgstr "^Ta bort begränsning"
 
-#: src/ui.cc:2369
+#: src/ui.cc:2404
 msgid "Remove the filter from the package list"
 msgstr "Ta bort filtret från paketlistan"
 
-#: src/ui.cc:2373
+#: src/ui.cc:2408
 msgid "Find ^Broken"
 msgstr "Sök ^trasiga"
 
-#: src/ui.cc:2374
+#: src/ui.cc:2409
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "Hitta nästa paket med otillfredsställda beroenden"
 
-#: src/ui.cc:2381
+#: src/ui.cc:2416
 msgid "^Preferences"
 msgstr "^Egenskaper"
 
-#: src/ui.cc:2386
+#: src/ui.cc:2421
 msgid "^UI options"
 msgstr "^Gränssnitt"
 
-#: src/ui.cc:2387
+#: src/ui.cc:2422
 msgid "Change the settings which affect the user interface"
 msgstr "Ändra inställningar som påverkar användargränssnittet"
 
-#: src/ui.cc:2390
+#: src/ui.cc:2425
 msgid "^Dependency handling"
 msgstr "^Beroendehantering"
 
-#: src/ui.cc:2391
+#: src/ui.cc:2426
 msgid "Change the settings which affect how package dependencies are handled"
 msgstr "Ändra inställningar som påverkar hur paketberoenden hanteras"
 
-#: src/ui.cc:2394
+#: src/ui.cc:2429
 msgid "^Miscellaneous"
 msgstr "^Diverse"
 
-#: src/ui.cc:2395
+#: src/ui.cc:2430
 msgid "Change miscellaneous program settings"
 msgstr "Ändra diverse programinställningar"
 
-#: src/ui.cc:2401
+#: src/ui.cc:2436
 msgid "^Revert options"
 msgstr "^Återställ"
 
-#: src/ui.cc:2402
+#: src/ui.cc:2437
 msgid "Reset all settings to the system defaults"
 msgstr "Återställ alla inställningar till systemets standard"
 
-#: src/ui.cc:2413
+#: src/ui.cc:2448
 msgid "^Next"
 msgstr "^Nästa"
 
-#: src/ui.cc:2414
+#: src/ui.cc:2449
 msgid "View next display"
 msgstr "Visa nästa vy"
 
-#: src/ui.cc:2417
+#: src/ui.cc:2452
 msgid "^Prev"
 msgstr "^Föregående"
 
-#: src/ui.cc:2418
+#: src/ui.cc:2453
 msgid "View previous display"
 msgstr "Visa föregående vy"
 
-#: src/ui.cc:2421
+#: src/ui.cc:2456
 msgid "^Close"
 msgstr "^Stäng"
 
-#: src/ui.cc:2422
+#: src/ui.cc:2457
 msgid "Close this display"
 msgstr "Stäng denna vy"
 
-#: src/ui.cc:2427
+#: src/ui.cc:2462
 msgid "New Package ^View"
 msgstr "^Vy för nya paket"
 
-#: src/ui.cc:2428
+#: src/ui.cc:2463
 msgid "Create a new default package view"
 msgstr "Skapa en ny standardpaketvy"
 
-#: src/ui.cc:2431
+#: src/ui.cc:2466
 msgid "Audit ^Recommendations"
 msgstr "Granska ^rekommendationer"
 
-#: src/ui.cc:2432
+#: src/ui.cc:2467
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
@@ -5855,91 +6756,87 @@ msgstr ""
 "Visa paket som det rekommenderas att du installerar men som för närvarande "
 "inte är installerade."
 
-#: src/ui.cc:2435
+#: src/ui.cc:2470
 msgid "New ^Flat Package List"
 msgstr "Ny ^flat paketlista"
 
-#: src/ui.cc:2436
+#: src/ui.cc:2471
 msgid "View all the packages on the system in a single uncategorized list"
 msgstr "Visa alla paket på systemet i en okategoriserad lista"
 
-#: src/ui.cc:2439
+#: src/ui.cc:2474
 msgid "New ^Debtags Browser"
 msgstr "Bläddra bland nya ^debtaggar"
 
-#: src/ui.cc:2441
+#: src/ui.cc:2476
 msgid "Browse packages using Debtags data"
 msgstr "Bläddra bland paket med Debtags-data"
 
-#: src/ui.cc:2444
+#: src/ui.cc:2479
 msgid "New Categorical ^Browser"
 msgstr "^Bläddra bland nya kategorier"
 
-#: src/ui.cc:2446
+#: src/ui.cc:2481
 msgid "Browse packages by category"
 msgstr "Bläddra bland paket efter kategori"
 
-#: src/ui.cc:2454
+#: src/ui.cc:2489
 msgid "^About"
 msgstr "^Om"
 
-#: src/ui.cc:2455
+#: src/ui.cc:2490
 msgid "View information about this program"
 msgstr "Visa information om detta program"
 
-#: src/ui.cc:2458
+#: src/ui.cc:2493
 msgid "^Help"
 msgstr "^Hjälp"
 
-#: src/ui.cc:2459
+#: src/ui.cc:2494
 msgid "View the on-line help"
 msgstr "Visa hjälp på nätet"
 
-#: src/ui.cc:2461
+#: src/ui.cc:2496
 msgid "User's ^Manual"
 msgstr "Användar^handbok"
 
-#: src/ui.cc:2462
+#: src/ui.cc:2497
 msgid "View the detailed program manual"
 msgstr "Visa den detaljerade programhandboken"
 
-#: src/ui.cc:2465
+#: src/ui.cc:2500
 msgid "^FAQ"
 msgstr "^Vanliga frågor"
 
-#: src/ui.cc:2469
+#: src/ui.cc:2504
 msgid "^News"
 msgstr "^Nyheter"
 
-#: src/ui.cc:2470
+#: src/ui.cc:2505
 msgid "View the important changes made in each version of "
 msgstr "Visa de viktiga ändringarna som gjorts i varje version av "
 
-#: src/ui.cc:2473
+#: src/ui.cc:2508
 msgid "^License"
 msgstr "^Licens"
 
-#: src/ui.cc:2614
+#: src/ui.cc:2649
 msgid "Actions"
 msgstr "Åtgärder"
 
-#: src/ui.cc:2617
-msgid "Resolver"
-msgstr "Problemlösaren"
-
-#: src/ui.cc:2618
+#: src/ui.cc:2653
 msgid "Search"
 msgstr "Sök"
 
-#: src/ui.cc:2619
+#: src/ui.cc:2654
 msgid "Options"
 msgstr "Inställningar"
 
-#: src/ui.cc:2620
+#: src/ui.cc:2655
 msgid "Views"
 msgstr "Vyer"
 
-#: src/ui.cc:2686
+#: src/ui.cc:2721
 #, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
@@ -5948,34 +6845,78 @@ msgstr ""
 "%ls: Meny  %ls: Hjälp  %ls: Avsluta  %ls: Uppdatera  %ls: Hämta/Installera/"
 "Ta bort"
 
-#: src/ui.cc:3031
+#: src/ui.cc:3063
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:3032
+#: src/ui.cc:3064
 msgid "no_key"
 msgstr "n"
 
-#: src/view_changelog.cc:165
+#: src/view_changelog.cc:271
 #, c-format
 msgid "%s changes"
 msgstr "%s ändrar"
 
-#: src/view_changelog.cc:166
+#: src/view_changelog.cc:272
 msgid "View the list of changes made to this Debian package."
 msgstr "Visa listan av ändringar gjorda i detta Debian-paket."
 
-#: src/view_changelog.cc:230
-msgid "You can only view changelogs of official Debian packages."
-msgstr "Du kan endast se ändringsloggar från officiella Debianpaket."
-
-#: src/view_changelog.cc:240
+#: src/view_changelog.cc:388
 msgid "Downloading Changelog"
 msgstr "Hämtar ändringslogg"
 
-#: src/view_changelog.cc:242
+#: src/view_changelog.cc:390
 msgid "Download Changelog"
 msgstr "Hämta ändringslogg"
+
+#~ msgid "Yes"
+#~ msgstr "Ja"
+
+#~ msgid "No"
+#~ msgstr "Nej"
+
+#~ msgid "Automatically Installed"
+#~ msgstr "Automatiskt installerat"
+
+#~ msgid "Broken"
+#~ msgstr "Trasig"
+
+#~ msgid "Unchanged"
+#~ msgstr "Oförändrad"
+
+#~ msgid "Remove [unused]"
+#~ msgstr "Ta bort [oanvända]"
+
+#~ msgid "Hold [auto]"
+#~ msgstr "Håll kvar [auto]"
+
+#~ msgid "Install [auto]"
+#~ msgstr "Installera [auto]"
+
+#~ msgid "Remove [auto]"
+#~ msgstr "Ta bort [auto]"
+
+#~ msgid "Essential"
+#~ msgstr "Systemkritiskt"
+
+#~ msgid "Config Files Remain"
+#~ msgstr "Konfigurationsfiler återstår"
+
+#~ msgid "Garbage"
+#~ msgstr "Skräp"
+
+#~ msgid "No reverse dependencies"
+#~ msgstr "Inga omvända beroenden"
+
+#~ msgid "New Package"
+#~ msgstr "Nytt paket"
+
+#~ msgid "Upgradable"
+#~ msgstr "Uppgraderingsbart"
+
+#~ msgid "Obsolete"
+#~ msgstr "Föråldrat"
 
 #~ msgid "Got "
 #~ msgstr "Läs "
@@ -6560,10 +7501,6 @@ msgstr "Hämta ändringslogg"
 
 #, fuzzy
 #~ msgid "Downloading "
-#~ msgstr "Hämtar..."
-
-#, fuzzy
-#~ msgid "Downloading..."
 #~ msgstr "Hämtar..."
 
 #, fuzzy

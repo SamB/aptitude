@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_eu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-05 16:05+0200\n"
+"POT-Creation-Date: 2008-11-11 19:42-0800\n"
 "PO-Revision-Date: 2008-05-05 22:00+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -264,10 +264,26 @@ msgstr ""
 "behekaldeko panelean."
 
 #: src/apt_options.cc:240
+msgid "Display flat view instead of default view on startup"
+msgstr ""
+
+#: src/apt_options.cc:241
+#, fuzzy
+#| msgid ""
+#| "If this option is enabled, the menu bar will only appear when it has been "
+#| "activated by pressing the menu key."
+msgid ""
+"If this option is enabled, then the first view displayed on startup will be "
+"a flat view instead of the default view."
+msgstr ""
+"Aukera hau gaiturik badago menu-barra menu botoia sakatuaz deitzean bakarrik "
+"agertuko da."
+
+#: src/apt_options.cc:245
 msgid "The default grouping method for package views"
 msgstr "Pakete-ikuspegietako taldekatze-metodo lehenetsia"
 
-#: src/apt_options.cc:241
+#: src/apt_options.cc:246
 msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
@@ -276,11 +292,11 @@ msgstr ""
 "du.   Begiratu aptitude erabiltzaile manuala bilaketei buruzko xehetasun "
 "gehiagorako."
 
-#: src/apt_options.cc:245
+#: src/apt_options.cc:250
 msgid "The default display-limit for package views"
 msgstr "Pakete-ikuspegietako bistaratze-muga lehenetsia"
 
-#: src/apt_options.cc:246
+#: src/apt_options.cc:251
 msgid ""
 "By default, the limit of each package view will be set to the value "
 "specified by this option.  See the aptitude user's manual for detailed "
@@ -290,11 +306,11 @@ msgstr ""
 "baliora ezarriko da.  Begiratu aptitude erabiltzaile manuala bilaketei "
 "buruzko xehetasun gehiagorako."
 
-#: src/apt_options.cc:251
+#: src/apt_options.cc:256
 msgid "The display format for package views"
 msgstr "Pakete-ikuspegietako bistaratze-formatua"
 
-#: src/apt_options.cc:252
+#: src/apt_options.cc:257
 msgid ""
 "This option controls how aptitude formats lines of the package list.  See "
 "the aptitude user's manual for information on how to specify a display "
@@ -304,11 +320,11 @@ msgstr ""
 "dituen kontrolatzen du.   Begiratu aptitude erabiltzaile manuala bistaratze "
 "formatu bat nola ezartzean xehetasun gehiagorako."
 
-#: src/apt_options.cc:258
+#: src/apt_options.cc:263
 msgid "The display format for the status line"
 msgstr "Egoera-lerroaren bistaratze-formatua"
 
-#: src/apt_options.cc:259
+#: src/apt_options.cc:264
 msgid ""
 "This option controls how aptitude formats the status line (the line between "
 "the package list and the lower pane).  See the aptitude user's manual for "
@@ -319,11 +335,11 @@ msgstr ""
 "aptitude erabiltzaile manuala bistaratze formatu bat nola ezartzean "
 "xehetasun gehiagorako."
 
-#: src/apt_options.cc:266
+#: src/apt_options.cc:271
 msgid "The display format for the header line"
 msgstr "Goiburu-lerroaren bistaratze-formatua"
 
-#: src/apt_options.cc:267
+#: src/apt_options.cc:272
 msgid ""
 "This option controls how aptitude formats the header line (the line above "
 "the package list).  See the aptitude user's manual for information on how to "
@@ -333,11 +349,11 @@ msgstr ""
 "formatutan bistaraziko duen kontrolatzen du.  Begiratu aptitude erabiltzaile "
 "manuala bistaratze formatu bat nola ezartzean xehetasun gehiagorako."
 
-#: src/apt_options.cc:277
+#: src/apt_options.cc:282
 msgid "Automatically upgrade installed packages"
 msgstr "Automatikoki bertsio-berritu instalatutako paketeak"
 
-#: src/apt_options.cc:278
+#: src/apt_options.cc:283
 msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
@@ -345,12 +361,12 @@ msgstr ""
 "Aukera hau gaiturik dagoenean, abiaraztean aptitudek bertsio-berritu "
 "daitezkeen pakete guztiak hautatuko ditu bertsio-berritzeko."
 
-#: src/apt_options.cc:282
+#: src/apt_options.cc:287
 msgid "Remove obsolete package files after downloading new package lists"
 msgstr ""
 "Kendu pakete-fitxategi zaharkituak pakete-zerrenda berriak deskargatutakoan"
 
-#: src/apt_options.cc:283
+#: src/apt_options.cc:288
 msgid ""
 "If this option is enabled, then after every install run, aptitude will "
 "delete from the package cache any package files that can no longer be "
@@ -360,11 +376,11 @@ msgstr ""
 "aptitudek soruces-list zerrendako fitxategietan aurkitu ezin den edozien "
 "pakete ezabatuko du."
 
-#: src/apt_options.cc:288
+#: src/apt_options.cc:293
 msgid "URL to use to download changelogs"
 msgstr "Aldaketen egunkariak deskargatzeko erabiliko den URLa"
 
-#: src/apt_options.cc:289
+#: src/apt_options.cc:294
 msgid ""
 "This option controls the template that's used to download changelogs from "
 "the Debian Web site.  You should only need to change this if the changelogs "
@@ -374,11 +390,11 @@ msgstr ""
 "kontrolatzen du.  Aldaketa erregistroak URL ezberdin batetara mugitzen "
 "badira bakarrik aldatu beharko zenuke."
 
-#: src/apt_options.cc:295
+#: src/apt_options.cc:300
 msgid "Display a preview of what will be done before doing it"
 msgstr "Egin aurretik, erakutsi zer egingo den"
 
-#: src/apt_options.cc:296
+#: src/apt_options.cc:301
 msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
@@ -386,13 +402,13 @@ msgstr ""
 "Aukera hau gaiturik dagoenean, aptituderi instalazio bat egitea eskatzean, "
 "lehenik egingo dituen ekintzen laburpen bat bistaraziko du."
 
-#: src/apt_options.cc:302
+#: src/apt_options.cc:307
 msgid ""
 "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr ""
 "Ahaztu zein pakete diren \"berriak\" pakete-zerrendak eguneratzen direnean"
 
-#: src/apt_options.cc:303
+#: src/apt_options.cc:308
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
@@ -400,14 +416,14 @@ msgstr ""
 "Aukera hau gaiturik dagoenean, aptitudek pakete berrien zerrenda garbituko "
 "du pakete zerrenda eguneratu ondoren (adibidez 'u' sakatuaz)."
 
-#: src/apt_options.cc:308
+#: src/apt_options.cc:313
 msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr ""
 "Ahaztu zein pakete diren \"berriak\", paketeak instalatzen edo kentzen "
 "direnean"
 
-#: src/apt_options.cc:309
+#: src/apt_options.cc:314
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you perform an install run or install or remove packages from the "
@@ -417,13 +433,13 @@ msgstr ""
 "zuk komando-lerrotik instalazioa abiarazi edo paketeak instalatu edo "
 "kentzean."
 
-#: src/apt_options.cc:315
+#: src/apt_options.cc:320
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 "Ez erakutsi abisua aurreneko aldaketa irakurtzeko soilik moduan egitean"
 
-#: src/apt_options.cc:316
+#: src/apt_options.cc:321
 msgid ""
 "If this option is %Bnot%b enabled, aptitude will display a warning when you "
 "modify the state of a package if you do not have permissions to apply the "
@@ -433,13 +449,13 @@ msgstr ""
 "sistema eraldatzeko baimenik izan ez arren pakete egoera bat aldatzen "
 "duzunean."
 
-#: src/apt_options.cc:322
+#: src/apt_options.cc:327
 msgid "Warn when attempting to perform a privileged action as a non-root user"
 msgstr ""
 "Abisatu root ez den erabiltzaile gisa ekintza pribilegiatu bat egiten "
 "saiatzean"
 
-#: src/apt_options.cc:323
+#: src/apt_options.cc:328
 msgid ""
 "If this option is enabled, aptitude will warn you when you attempt to "
 "perform an action which you do not have permission to do: for instance, "
@@ -451,11 +467,11 @@ msgstr ""
 "instalatzen saiatu root ez den erabiltzaile batez.  Root bezala saioa hasi "
 "eta ekintzak root baimenez burutzeko aukera emango dizu."
 
-#: src/apt_options.cc:332
+#: src/apt_options.cc:337
 msgid "File to log actions into"
 msgstr "Ekintzak erregistratzeko fitxategia"
 
-#: src/apt_options.cc:333
+#: src/apt_options.cc:338
 msgid ""
 "When you install or remove packages, a summary of what aptitude does will be "
 "written to this file.  If the first character of the file name is a pipe "
@@ -467,11 +483,11 @@ msgstr ""
 "karakterea ('%B|%b'), izenaren ondorengoa sarrera estandarretik erregistroa "
 "jasoko duen shell komando bat bezala interpretatuko da."
 
-#: src/apt_options.cc:345
+#: src/apt_options.cc:350
 msgid "Automatically resolve dependencies of a package when it is selected"
 msgstr "Automatikoki ebatzi pakete baten mendekotasunak hautatuta dagoenean"
 
-#: src/apt_options.cc:346
+#: src/apt_options.cc:351
 msgid ""
 "If this option is enabled, aptitude will use a simple heuristic to "
 "immediately resolve the dependencies of each package you flag for "
@@ -484,12 +500,12 @@ msgstr ""
 "azkarragoa da baina hoberenak ez diren emaitzak eman edo zuzenean huts egin "
 "dezake egoera batzuetan."
 
-#: src/apt_options.cc:354
+#: src/apt_options.cc:359
 msgid "Automatically fix broken packages before installing or removing"
 msgstr ""
 "Automatikoki konpondu hautsitako paketeak, instalatu edo konpondu aurretik"
 
-#: src/apt_options.cc:355
+#: src/apt_options.cc:360
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
@@ -501,11 +517,11 @@ msgstr ""
 "arazoa konpontzeko duen gomendioa.  Bestela aptitudek zuri galdetuko dizu "
 "apurturiko mendekotasun arazoa konpontzeko modua."
 
-#: src/apt_options.cc:362
+#: src/apt_options.cc:367
 msgid "Install recommended packages automatically"
 msgstr "Automatikoki instalatu gomendatutako paketeak"
 
-#: src/apt_options.cc:363
+#: src/apt_options.cc:368
 msgid ""
 "If this option is enabled and \"automatically resolve dependencies\" is also "
 "enabled, aptitude will attempt to install the recommendations of newly "
@@ -523,11 +539,11 @@ msgstr ""
 "paketeak\" aukera ere gaiturik badago instalaturiko pakete batek "
 "gomendatutako paketeak ez dira automatikoki ezabatuko."
 
-#: src/apt_options.cc:375
+#: src/apt_options.cc:380
 msgid "Remove unused packages automatically"
 msgstr "Automatikoki kendu erabili gabeko paketeak"
 
-#: src/apt_options.cc:376
+#: src/apt_options.cc:381
 msgid ""
 "If this option is enabled, packages that are automatically installed and "
 "that no manually installed package depends on will be removed from the "
@@ -544,11 +560,11 @@ msgstr ""
 "\" ere gaiturik badago automatikoki instalaturiko paketeak ez dira kenduko "
 "instalaturiko edozein paketek gomendatzen baditu."
 
-#: src/apt_options.cc:387
+#: src/apt_options.cc:392
 msgid "Packages that should never be automatically removed"
 msgstr "Automatikoki inoiz kendu behar ez diren paketeak"
 
-#: src/apt_options.cc:388
+#: src/apt_options.cc:393
 msgid ""
 "Packages matching this search pattern will always be treated as if an "
 "installed package depends on them: they will never be targeted for removal "
@@ -558,13 +574,13 @@ msgstr ""
 "bere beharra balu bezala erabiliko dira: inoiz ez dira erabiltzen ez "
 "direlako kentzeko bezala markatuko."
 
-#: src/apt_options.cc:393
+#: src/apt_options.cc:398
 msgid "Allow dependency resolutions that break holds or forbids"
 msgstr ""
 "Baimendu mantenimenduak edo debekuak apurtzen dituzten mendekotasun "
 "bereizmenak"
 
-#: src/apt_options.cc:394
+#: src/apt_options.cc:399
 msgid ""
 "If this option is enabled, then whenever aptitude solves a dependency "
 "problem, it will consider modifying held packages, or installing forbidden "
@@ -586,15 +602,15 @@ msgstr ""
 "instalatzeko hautatu den pakete baten mendekotasunak automatikoki "
 "instalatzean (470035. akatsaren ondorioz)."
 
-#: src/apt_options.cc:520
+#: src/apt_options.cc:525
 msgid "UI options"
 msgstr "UI aukerak"
 
-#: src/apt_options.cc:522
+#: src/apt_options.cc:527
 msgid "Dependency handling"
 msgstr "Mendekotasun kudeaketa"
 
-#: src/apt_options.cc:524 src/pkg_grouppolicy.cc:1018
+#: src/apt_options.cc:529 src/pkg_grouppolicy.cc:1022
 msgid "Miscellaneous"
 msgstr "Bestelakoak"
 
@@ -635,8 +651,8 @@ msgstr "Errore konponezina atzitzean"
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] Mendekotasunak ebaztea"
 
-#: src/broken_indicator.cc:311 src/solution_dialog.cc:140
-#: src/solution_screen.cc:542
+#: src/broken_indicator.cc:311 src/gtk/resolver.cc:345
+#: src/solution_dialog.cc:140 src/solution_screen.cc:542
 msgid "Internal error: unexpected null solution."
 msgstr "Barne-errorea: ustegabeko 'null' emaitza."
 
@@ -687,17 +703,17 @@ msgstr[1] "%d aurreko bertsiora itzuli"
 msgid "Suggest %F"
 msgstr "%F iradokitzen du"
 
-#: src/cmdline/cmdline_action.cc:48
+#: src/cmdline/cmdline_action.cc:50
 #, c-format
 msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Ezin da \"%s\"-(r)en iturburuko paketea aurkitu.\n"
 
-#: src/cmdline/cmdline_action.cc:202
+#: src/cmdline/cmdline_action.cc:204
 #, c-format
 msgid "Unable to satisfy the build-depends: %s."
 msgstr "Ezin da eraikitze-mendekotasuna bete: %s."
 
-#: src/cmdline/cmdline_action.cc:238
+#: src/cmdline/cmdline_action.cc:240
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -706,7 +722,7 @@ msgstr ""
 "Oharra: \"%s\",  pakete birtuala hornitzen duena\n"
 "       \"%s\", jada instalatuta dago.\n"
 
-#: src/cmdline/cmdline_action.cc:245
+#: src/cmdline/cmdline_action.cc:247
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -715,7 +731,7 @@ msgstr ""
 "Oharra: \"%s\", pakete birtuala hornitzen duena\n"
 "        \"%s\", instalatzera doa jada.\n"
 
-#: src/cmdline/cmdline_action.cc:267
+#: src/cmdline/cmdline_action.cc:269
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -724,17 +740,17 @@ msgstr ""
 "\"%s\" badago paketeen datu-basean, baina ez da pakete\n"
 "erreala, eta pakete batek ere ez du hornitzen.\n"
 
-#: src/cmdline/cmdline_action.cc:275
+#: src/cmdline/cmdline_action.cc:277
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" pakete birtual bat da, honek hornitua:\n"
 
-#: src/cmdline/cmdline_action.cc:278
+#: src/cmdline/cmdline_action.cc:280
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Bat aukeratu behar duzu instalatzeko.\n"
 
-#: src/cmdline/cmdline_action.cc:286
+#: src/cmdline/cmdline_action.cc:288
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -743,39 +759,39 @@ msgstr ""
 "Oharra: \"%s\" hautatzen \"%s\" \n"
 "       pakete birtualaren ordez\n"
 
-#: src/cmdline/cmdline_action.cc:305
+#: src/cmdline/cmdline_action.cc:307
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s dagoeneko instalatuta dago eskatutako bertsioan (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:311
+#: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s ez dago instalatuta, eta, beraz, ez da berrinstalatuko.\n"
 
-#: src/cmdline/cmdline_action.cc:318 src/cmdline/cmdline_action.cc:324
+#: src/cmdline/cmdline_action.cc:320 src/cmdline/cmdline_action.cc:326
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "%s paketea ez dago instalatuta, eta, beraz, ez da kenduko\n"
 
-#: src/cmdline/cmdline_action.cc:342
+#: src/cmdline/cmdline_action.cc:344
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "%s paketea ez dago instalatuta; ezin da bertsio-berritzea eragotzi\n"
 
-#: src/cmdline/cmdline_action.cc:344
+#: src/cmdline/cmdline_action.cc:346
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr ""
 "%s paketea ez da bertsio-berritzeko modukoa; ezin da bertsio-berritzea "
 "eragotzi\n"
 
-#: src/cmdline/cmdline_action.cc:438
+#: src/cmdline/cmdline_action.cc:440
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Oharra: \"%s: %s\" ataza hautatzen instalatzeko\n"
 
-#: src/cmdline/cmdline_action.cc:472
+#: src/cmdline/cmdline_action.cc:474
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -784,13 +800,13 @@ msgstr ""
 "'install' edo 'forbid-version' komando batekin bakarrik zehatz daiteke "
 "pakete-bertsioa.\n"
 
-#: src/cmdline/cmdline_action.cc:481
+#: src/cmdline/cmdline_action.cc:483
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr ""
 "'install' komando batekin bakarrik zehatz daiteke pakete-artxibo bat.\n"
 
-#: src/cmdline/cmdline_action.cc:518
+#: src/cmdline/cmdline_action.cc:520
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -799,7 +815,7 @@ msgstr ""
 "Ezin izan da \"%s\" paketea aurkitu; 40 paketek\n"
 "baino gehiagok dute \"%s\" euren izenean.\n"
 
-#: src/cmdline/cmdline_action.cc:521
+#: src/cmdline/cmdline_action.cc:523
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -808,12 +824,12 @@ msgstr ""
 "Ezin izan da \"%s\" paketea aurkitu. Baina pakete hauek\n"
 "\"%s\" dute euren izenean:\n"
 
-#: src/cmdline/cmdline_action.cc:543
+#: src/cmdline/cmdline_action.cc:545
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr "Ezin izan da aurkitu izenean edo azalpenean \"%s\" duen paketerik.\n"
 
-#: src/cmdline/cmdline_action.cc:545
+#: src/cmdline/cmdline_action.cc:547
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -822,7 +838,7 @@ msgstr ""
 "Ezin izan da aurkitu \"%s\"rekin bat datorren paketerik; baina\n"
 "40 paketek baino gehiagok dute \"%s\" azalpenean.\n"
 
-#: src/cmdline/cmdline_action.cc:548
+#: src/cmdline/cmdline_action.cc:550
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -831,24 +847,24 @@ msgstr ""
 "Ezin izan da aurkitu \"%s\"(r)ekin bat datorren paketerik. Baina\n"
 "pakete hauek \"%s\" dute azalpenean:\n"
 
-#: src/cmdline/cmdline_action.cc:686
+#: src/cmdline/cmdline_action.cc:689
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Okerreko ekintza-karakterea: '%c'\n"
 
-#: src/cmdline/cmdline_changelog.cc:96
+#: src/cmdline/cmdline_changelog.cc:99
 msgid "Can't execute sensible-pager, is this a working Debian system?"
 msgstr ""
 "Ezin da 'sensible-pager' exekutatu, funtzionatzen duen Debian sistema da?"
 
-#: src/cmdline/cmdline_changelog.cc:154
+#: src/cmdline/cmdline_changelog.cc:157
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr ""
 "%s ez da Debianeko pakete ofiziala, ezin da bere 'changelog' (aldaketen "
 "erregistroa) bistaratu."
 
-#: src/cmdline/cmdline_changelog.cc:243
+#: src/cmdline/cmdline_changelog.cc:246
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Ezin izan da %s(r)e 'changelog'a aurkitu"
@@ -883,16 +899,16 @@ msgstr "Diskoan %sB libratuko dira.\n"
 msgid "Freed %sB of disk space\n"
 msgstr "Diskoan %sB libratu ditu\n"
 
-#: src/cmdline/cmdline_do_action.cc:83
+#: src/cmdline/cmdline_do_action.cc:92
 #, c-format
 msgid "Invalid operation %s"
 msgstr "Eragiketa baliogabea: %s"
 
-#: src/cmdline/cmdline_do_action.cc:159
+#: src/cmdline/cmdline_do_action.cc:168
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Ustegabeko eredu-argumentua \"keep-all\"en ondoren"
 
-#: src/cmdline/cmdline_do_action.cc:266
+#: src/cmdline/cmdline_do_action.cc:275
 #, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
@@ -900,28 +916,28 @@ msgstr ""
 "Ezin da mendekotasunak segurtasunez ebatzi, saiatu --full-resolver  "
 "aukerarekin.\n"
 
-#: src/cmdline/cmdline_do_action.cc:304 src/cmdline/cmdline_simulate.cc:35
-#: src/cmdline/cmdline_upgrade.cc:163 src/main.cc:711
+#: src/cmdline/cmdline_do_action.cc:313 src/cmdline/cmdline_simulate.cc:35
+#: src/cmdline/cmdline_upgrade.cc:175 src/main.cc:755
 #, c-format
 msgid "Abort.\n"
 msgstr "Abortatu.\n"
 
-#: src/cmdline/cmdline_download.cc:31
+#: src/cmdline/cmdline_download.cc:33
 #, c-format
 msgid "download: you must specify at least one package to download\n"
 msgstr "deskargatu: gutxienez pakete bat zehaztu behar duzu deskargatzeko\n"
 
-#: src/cmdline/cmdline_download.cc:43
-#: src/generic/apt/download_install_manager.cc:83
+#: src/cmdline/cmdline_download.cc:45
+#: src/generic/apt/download_install_manager.cc:87
 msgid "Couldn't read source list"
 msgstr "Ezin izan da iturburu-zerrenda irakurri"
 
-#: src/cmdline/cmdline_download.cc:72
+#: src/cmdline/cmdline_download.cc:74
 #, c-format
 msgid "Can't find a package named \"%s\""
 msgstr "Ezin izan da \"%s\" izeneko paketea aurkitu"
 
-#: src/cmdline/cmdline_download.cc:111
+#: src/cmdline/cmdline_download.cc:118
 #, c-format
 msgid ""
 "No downloadable files for %s version %s; perhaps it is a local or obsolete "
@@ -930,7 +946,7 @@ msgstr ""
 "Ez dago %s(r)en %s bertsioko deskarga daitezkeen fitxategirik, agian pakete "
 "lokala edo zaharkitua izango da?"
 
-#: src/cmdline/cmdline_extract_cache_subset.cc:43
+#: src/cmdline/cmdline_extract_cache_subset.cc:45
 #, c-format
 msgid ""
 "extract-cache-entries: at least one argument is required (the directory\n"
@@ -939,13 +955,13 @@ msgstr ""
 "extract-cache-entries: gutxienez argumentu bat behar da\n"
 "(fitxategiak gordeko diren direktorioak).\n"
 
-#: src/cmdline/cmdline_extract_cache_subset.cc:77
-#: src/cmdline/cmdline_user_tag.cc:116
+#: src/cmdline/cmdline_extract_cache_subset.cc:79
+#: src/cmdline/cmdline_user_tag.cc:118
 #, c-format
 msgid "No such package \"%s\".\n"
 msgstr "Ez dago \"%s\" bezalako paketerik.\n"
 
-#: src/cmdline/cmdline_extract_cache_subset.cc:115
+#: src/cmdline/cmdline_extract_cache_subset.cc:119
 #, c-format
 msgid "No packages were selected by the given search pattern; nothing to do.\n"
 msgstr ""
@@ -997,121 +1013,121 @@ msgstr "Ondo da, zuk irabazi duzu.\n"
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr "Zer da hau? Suge bat elefante bat jaten, noski.\n"
 
-#: src/cmdline/cmdline_prompt.cc:42
+#: src/cmdline/cmdline_prompt.cc:44
 msgid "Unexpected end-of-file on standard input"
 msgstr "Ustegabeko fitxategi-amaiera (EOF) sarrera estandarrean"
 
-#: src/cmdline/cmdline_prompt.cc:66
+#: src/cmdline/cmdline_prompt.cc:68
 msgid "Couldn't read list of sources"
 msgstr "Ezin izan da iturburu-zerrenda irakurri"
 
 #. ForTranslators: %s is replaced with a comma-delimited list
 #. of package names.
-#: src/cmdline/cmdline_prompt.cc:218
+#: src/cmdline/cmdline_prompt.cc:223
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
 msgstr[0] "(%s)"
 msgstr[1] "(%s)"
 
-#: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
-#: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2436
+#: src/cmdline/cmdline_prompt.cc:298 src/cmdline/cmdline_show.cc:437
+#: src/cmdline/cmdline_why.cc:194 src/gtk/dependency_chains_tab.cc:158
 msgid "Provides"
 msgstr "Hornitzen du:"
 
-#: src/cmdline/cmdline_prompt.cc:426
+#: src/cmdline/cmdline_prompt.cc:431
 msgid "Config files"
 msgstr "Konfigurazio fitxategiak"
 
-#: src/cmdline/cmdline_prompt.cc:530 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:535 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "baina %s instalatu egingo da."
 
-#: src/cmdline/cmdline_prompt.cc:533 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:538 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "baina %s instalatuta dago, eta mantendu egin da."
 
-#: src/cmdline/cmdline_prompt.cc:536 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:541 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "baina %s instalatuta dago."
 
-#: src/cmdline/cmdline_prompt.cc:540 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:545 src/cmdline/cmdline_show_broken.cc:83
 #, c-format
 msgid "but it is not installable"
 msgstr "baina ez da instalagarria"
 
-#: src/cmdline/cmdline_prompt.cc:544 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:549 src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid " which is a virtual package."
 msgstr " ; paketea birtuala da"
 
-#: src/cmdline/cmdline_prompt.cc:547 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:552 src/cmdline/cmdline_show_broken.cc:90
 #, c-format
 msgid " or"
 msgstr " edo"
 
-#: src/cmdline/cmdline_prompt.cc:561
+#: src/cmdline/cmdline_prompt.cc:566
 msgid "The following packages are BROKEN:"
 msgstr "Ondorengo paketeak HAUTSITA daude:"
 
-#: src/cmdline/cmdline_prompt.cc:562
+#: src/cmdline/cmdline_prompt.cc:567
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Ondorengo paketeak erabili gabe daude, eta KENDU egingo dira:"
 
-#: src/cmdline/cmdline_prompt.cc:563
+#: src/cmdline/cmdline_prompt.cc:568
 msgid "The following packages have been automatically kept back:"
 msgstr "Ondorengo paketeak automatikoki mantendu dira:"
 
-#: src/cmdline/cmdline_prompt.cc:564
+#: src/cmdline/cmdline_prompt.cc:569
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Ondorengo pakete BERRIAK automatikoki instalatuko dira:"
 
-#: src/cmdline/cmdline_prompt.cc:565
+#: src/cmdline/cmdline_prompt.cc:570
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Ondorengo paketeak automatikoki KENDUKO dira:"
 
-#: src/cmdline/cmdline_prompt.cc:566
+#: src/cmdline/cmdline_prompt.cc:571
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Ondorengo paketeak AURREKO BERTSIORA itzuliko dira:"
 
-#: src/cmdline/cmdline_prompt.cc:567
+#: src/cmdline/cmdline_prompt.cc:572
 msgid "The following packages have been kept back:"
 msgstr "Ondorengo paketeak mantendu egin dira:"
 
-#: src/cmdline/cmdline_prompt.cc:568
+#: src/cmdline/cmdline_prompt.cc:573
 msgid "The following packages will be REINSTALLED:"
 msgstr "Ondorengo paketeak BERRINSTALATUKO dira:"
 
-#: src/cmdline/cmdline_prompt.cc:569
+#: src/cmdline/cmdline_prompt.cc:574
 msgid "The following NEW packages will be installed:"
 msgstr "Ondorengo pakete BERRIAK instalatuko dira:"
 
-#: src/cmdline/cmdline_prompt.cc:570
+#: src/cmdline/cmdline_prompt.cc:575
 msgid "The following packages will be REMOVED:"
 msgstr "Ondorengo paketeak KENDUKO dira:"
 
-#: src/cmdline/cmdline_prompt.cc:571
+#: src/cmdline/cmdline_prompt.cc:576
 msgid "The following packages will be upgraded:"
 msgstr "Ondorengo paketeak BERTSIO-BERRITUKO dira:"
 
-#: src/cmdline/cmdline_prompt.cc:572
+#: src/cmdline/cmdline_prompt.cc:577
 msgid "The following partially installed packages will be configured:"
 msgstr "Ondorengo erdi instalaturiko paketeak konfiguratuko dira:"
 
-#: src/cmdline/cmdline_prompt.cc:627 src/ui.cc:1465
+#: src/cmdline/cmdline_prompt.cc:632 src/ui.cc:1509
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Ondorengo FUNTSEZKO paketeak KENDU egingo dira!\n"
 
-#: src/cmdline/cmdline_prompt.cc:636 src/ui.cc:1480
+#: src/cmdline/cmdline_prompt.cc:641 src/ui.cc:1524
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "Ondorengo FUNTSEZKO paketeak HAUTSI egingo dira ekintza honekin:\n"
 
-#: src/cmdline/cmdline_prompt.cc:646 src/ui.cc:1493
+#: src/cmdline/cmdline_prompt.cc:651 src/ui.cc:1537
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1120,16 +1136,16 @@ msgstr ""
 "KONTUZ: ekintza hau egitean, beharbada sistema hondatu egingo da!\n"
 "         Ez baldin badakizu ZEHAZKI zer egiten ari zaren, EZ jarraitu!\n"
 
-#: src/cmdline/cmdline_prompt.cc:648
+#: src/cmdline/cmdline_prompt.cc:653
 msgid "I am aware that this is a very bad idea"
 msgstr "Badakit oso ideia txarra dela"
 
-#: src/cmdline/cmdline_prompt.cc:652 src/ui.cc:1494
+#: src/cmdline/cmdline_prompt.cc:657 src/ui.cc:1538
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Jarraitzeko, idatzi esaldi hau: \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:694
+#: src/cmdline/cmdline_prompt.cc:699
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1146,7 +1162,7 @@ msgstr ""
 "Instalazioarekin jarraitu zertan ari zaren ziur bazaude bakarrik.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:706
+#: src/cmdline/cmdline_prompt.cc:711
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1155,7 +1171,7 @@ msgstr ""
 "*** ABISUA ***   Fidagarritasun-bortxaketei ez ikusi egiten. Zergatia:\n"
 "                  %s::CmdLine::Ignore-Trust-Violations 'egia' baita!\n"
 
-#: src/cmdline/cmdline_prompt.cc:715
+#: src/cmdline/cmdline_prompt.cc:720
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
@@ -1163,106 +1179,116 @@ msgstr ""
 "*** ABISUA ***   Fidagarritasun-bortxaketei ez ikusi egiten. Zergatia:\n"
 "                  Apt::Get::AllowUnauthenticated 'egia' baita!\n"
 
-#: src/cmdline/cmdline_prompt.cc:721
-msgid "Yes"
-msgstr "Bai"
+#. ForTranslators: This string is a confirmation message, which
+#. users (especially CJK users) should be able to input without
+#. input methods.  Please include nothing but ASCII characters.
+#. The text preceding the pipe character (|) will be ignored and
+#. can be removed from your translation.
+#: src/cmdline/cmdline_prompt.cc:731
+msgid "Go ahead and ignore the warning|Yes"
+msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:721
-msgid "No"
-msgstr "Ez"
+#. ForTranslators: This string is a confirmation message, which
+#. users (especially CJK users) should be able to input without
+#. input methods.  Please include nothing but ASCII characters.
+#. The text preceding the pipe character (|) will be ignored and
+#. can be removed from your translation.
+#: src/cmdline/cmdline_prompt.cc:737
+msgid "Abort instead of overriding the warning|No"
+msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:732
+#: src/cmdline/cmdline_prompt.cc:748
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Ez ikusi egin abisuari eta jarraitu hala ere?\n"
 
-#: src/cmdline/cmdline_prompt.cc:733
+#: src/cmdline/cmdline_prompt.cc:749
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "Jarraitzeko, sartu \"%s\"; bertan behera uzteko sartu \"%s\":"
 
-#: src/cmdline/cmdline_prompt.cc:750
+#: src/cmdline/cmdline_prompt.cc:766
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Sarrera ezezaguna. Sartu \"%s\" edo \"%s\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:865
+#: src/cmdline/cmdline_prompt.cc:881
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Ondorengo paketeak GOMENDATUTAKOAK dira, baina EZ dira instalatuko:\n"
 
-#: src/cmdline/cmdline_prompt.cc:871
+#: src/cmdline/cmdline_prompt.cc:887
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Ondorengo paketeak IRADOKITAKOAK dira, baina EZ dira instalatuko: \n"
 
-#: src/cmdline/cmdline_prompt.cc:876
+#: src/cmdline/cmdline_prompt.cc:892
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Ez da paketerik instalatuko, bertsio-berrituko edo kenduko.\n"
 
-#: src/cmdline/cmdline_prompt.cc:878
+#: src/cmdline/cmdline_prompt.cc:894
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu pakete bertsio-berrituta, %lu berriki instalatuta, "
 
-#: src/cmdline/cmdline_prompt.cc:882
+#: src/cmdline/cmdline_prompt.cc:898
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu berrinstalatuta, "
 
-#: src/cmdline/cmdline_prompt.cc:884
+#: src/cmdline/cmdline_prompt.cc:900
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu aurreko bertsiora itzulita, "
 
-#: src/cmdline/cmdline_prompt.cc:886
+#: src/cmdline/cmdline_prompt.cc:902
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu kentzeko, eta %lu bertsio-berritu gabe.\n"
 
-#: src/cmdline/cmdline_prompt.cc:893
+#: src/cmdline/cmdline_prompt.cc:909
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Artxiboetako %sB/%sB eskuratu behar dira. "
 
-#: src/cmdline/cmdline_prompt.cc:896
+#: src/cmdline/cmdline_prompt.cc:912
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Artxiboetako %sB eskuratu behar dira. "
 
-#: src/cmdline/cmdline_prompt.cc:903
+#: src/cmdline/cmdline_prompt.cc:919
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Deskonprimitu ondoren, %sB erabiliko dira.\n"
 
-#: src/cmdline/cmdline_prompt.cc:906
+#: src/cmdline/cmdline_prompt.cc:922
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Deskonprimitu ondoren, %sB libratuko dira.\n"
 
-#: src/cmdline/cmdline_prompt.cc:927
+#: src/cmdline/cmdline_prompt.cc:943
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr ""
 "Ez dago paketerik erakusteko -- sartu paketearen izena 'i'-ren azpiko "
 "lerroan.\n"
 
-#: src/cmdline/cmdline_prompt.cc:933
+#: src/cmdline/cmdline_prompt.cc:949
 msgid "Press Return to continue."
 msgstr "Jarraitzeko, sakatu 'Sartu' tekla."
 
-#: src/cmdline/cmdline_prompt.cc:944
+#: src/cmdline/cmdline_prompt.cc:960
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr ""
 "Ez da paketerik aurkitu -- sartu paketeen izenak 'c'-ren azpiko lerroan.\n"
 
-#: src/cmdline/cmdline_prompt.cc:948
+#: src/cmdline/cmdline_prompt.cc:964
 msgid "Press Return to continue"
 msgstr "Jarraitzeko , sakatu 'Sartu' tekla"
 
-#: src/cmdline/cmdline_prompt.cc:958
+#: src/cmdline/cmdline_prompt.cc:974
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
@@ -1271,30 +1297,30 @@ msgstr ""
 "Ez da paketerik aurkitu -- bilaketa erro bat edo gehigo idatzi justifikatu "
 "beharreko paketeaz jarraiturik.\n"
 
-#: src/cmdline/cmdline_prompt.cc:981
+#: src/cmdline/cmdline_prompt.cc:997
 #, c-format
 msgid "y: %F"
 msgstr "y: %F"
 
-#: src/cmdline/cmdline_prompt.cc:983
+#: src/cmdline/cmdline_prompt.cc:999
 msgid "continue with the installation"
 msgstr "jarraitu instalazioarekin"
 
-#: src/cmdline/cmdline_prompt.cc:985
+#: src/cmdline/cmdline_prompt.cc:1001
 #, c-format
 msgid "n: %F"
 msgstr "n: %F"
 
-#: src/cmdline/cmdline_prompt.cc:987
+#: src/cmdline/cmdline_prompt.cc:1003
 msgid "abort and quit"
 msgstr "bertan behera utzi eta irten"
 
-#: src/cmdline/cmdline_prompt.cc:989
+#: src/cmdline/cmdline_prompt.cc:1005
 #, c-format
 msgid "i: %F"
 msgstr "i: %F"
 
-#: src/cmdline/cmdline_prompt.cc:991
+#: src/cmdline/cmdline_prompt.cc:1007
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -1302,12 +1328,12 @@ msgstr ""
 "erakutsi pakete baten edo gehiagoren informazioa, paketeen izenak 'i'-ren "
 "ondoren egon behar dute"
 
-#: src/cmdline/cmdline_prompt.cc:993
+#: src/cmdline/cmdline_prompt.cc:1009
 #, c-format
 msgid "c: %F"
 msgstr "c: %F"
 
-#: src/cmdline/cmdline_prompt.cc:995
+#: src/cmdline/cmdline_prompt.cc:1011
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1315,39 +1341,39 @@ msgstr ""
 "erakutsi pakete baten edo gehiagoren Debian-eko aldaketen egunkaria, "
 "paketeen izenak 'c'-ren ondoren egon behar dute"
 
-#: src/cmdline/cmdline_prompt.cc:997
+#: src/cmdline/cmdline_prompt.cc:1013
 #, c-format
 msgid "d: %F"
 msgstr "d: %F"
 
-#: src/cmdline/cmdline_prompt.cc:999
+#: src/cmdline/cmdline_prompt.cc:1015
 msgid "toggle the display of dependency information"
 msgstr "erakutsi/ezkutatu mendekotasun-informazioa"
 
-#: src/cmdline/cmdline_prompt.cc:1001
+#: src/cmdline/cmdline_prompt.cc:1017
 #, c-format
 msgid "s: %F"
 msgstr "s: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1003
+#: src/cmdline/cmdline_prompt.cc:1019
 msgid "toggle the display of changes in package sizes"
 msgstr "erakutsi/ezkutatu pakete tamainen aldaketak"
 
-#: src/cmdline/cmdline_prompt.cc:1005
+#: src/cmdline/cmdline_prompt.cc:1021
 #, c-format
 msgid "v: %F"
 msgstr "v: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1007
+#: src/cmdline/cmdline_prompt.cc:1023
 msgid "toggle the display of version numbers"
 msgstr "erakutsi/ezkutatu bertsioa"
 
-#: src/cmdline/cmdline_prompt.cc:1009
+#: src/cmdline/cmdline_prompt.cc:1025
 #, c-format
 msgid "w: %F"
 msgstr "w: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1011
+#: src/cmdline/cmdline_prompt.cc:1027
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
@@ -1355,27 +1381,27 @@ msgstr ""
 "pakete soil bat instalatzeko arrazoia bilatzen saiatu, edo argitu zergatik "
 "pakete bat instalatzeak zergatik eramaten duen beste bat instalatzea."
 
-#: src/cmdline/cmdline_prompt.cc:1014
+#: src/cmdline/cmdline_prompt.cc:1030
 #, c-format
 msgid "r: %F"
 msgstr "r: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1016
+#: src/cmdline/cmdline_prompt.cc:1032
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 "exekutatu mendekotasun konpontzaile automatikoa apurtutako mendekotasunak "
 "konpontzeko"
 
-#: src/cmdline/cmdline_prompt.cc:1018
+#: src/cmdline/cmdline_prompt.cc:1034
 #, c-format
 msgid "e: %F"
 msgstr "e: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1020
+#: src/cmdline/cmdline_prompt.cc:1036
 msgid "enter the full visual interface"
 msgstr "sartu interfaze bisual osoan"
 
-#: src/cmdline/cmdline_prompt.cc:1023
+#: src/cmdline/cmdline_prompt.cc:1039
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1386,51 +1412,51 @@ msgstr ""
 "ekintza-karaktere bat, eta jarraian pakete izen edo -eredu bat edo gehiago. "
 "Ekintza pakete guztiei aplikatuko zaie. Ekintza erabilgarriak:"
 
-#: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:204
+#: src/cmdline/cmdline_prompt.cc:1046 src/cmdline/cmdline_resolver.cc:204
 msgid "'+' to install packages"
 msgstr "'+' paketeak instalatzeko"
 
-#: src/cmdline/cmdline_prompt.cc:1033 src/cmdline/cmdline_resolver.cc:206
+#: src/cmdline/cmdline_prompt.cc:1049 src/cmdline/cmdline_resolver.cc:206
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' paketeak instalatzeko eta jarri bandera pakete hauek automatikoki "
 "instalatu direla adierazteko"
 
-#: src/cmdline/cmdline_prompt.cc:1035 src/cmdline/cmdline_resolver.cc:208
+#: src/cmdline/cmdline_prompt.cc:1051 src/cmdline/cmdline_resolver.cc:208
 msgid "'-' to remove packages"
 msgstr "'-' paketeak kentzeko"
 
-#: src/cmdline/cmdline_prompt.cc:1037 src/cmdline/cmdline_resolver.cc:210
+#: src/cmdline/cmdline_prompt.cc:1053 src/cmdline/cmdline_resolver.cc:210
 msgid "'_' to purge packages"
 msgstr "'_' paketeak purgatzeko"
 
-#: src/cmdline/cmdline_prompt.cc:1039 src/cmdline/cmdline_resolver.cc:212
+#: src/cmdline/cmdline_prompt.cc:1055 src/cmdline/cmdline_resolver.cc:212
 msgid "'=' to place packages on hold"
 msgstr "'=' paketeak atxikitzeko"
 
-#: src/cmdline/cmdline_prompt.cc:1041 src/cmdline/cmdline_resolver.cc:214
+#: src/cmdline/cmdline_prompt.cc:1057 src/cmdline/cmdline_resolver.cc:214
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "':' paketeak beraien uneko egoeran mantentzeko, atxikitu gabe"
 
-#: src/cmdline/cmdline_prompt.cc:1043 src/cmdline/cmdline_resolver.cc:216
+#: src/cmdline/cmdline_prompt.cc:1059 src/cmdline/cmdline_resolver.cc:216
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' markatu automatikoki instalatu izan diren paketeak"
 
-#: src/cmdline/cmdline_prompt.cc:1045 src/cmdline/cmdline_resolver.cc:218
+#: src/cmdline/cmdline_prompt.cc:1061 src/cmdline/cmdline_resolver.cc:218
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' markatu eskuz instalaturik izan diren paketeak"
 
-#: src/cmdline/cmdline_prompt.cc:1047
+#: src/cmdline/cmdline_prompt.cc:1063
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr "'&BD' pakete baten eraikitzeko mendekotasunak instalatzeko."
 
-#: src/cmdline/cmdline_prompt.cc:1051
+#: src/cmdline/cmdline_prompt.cc:1067
 msgid "Commands:"
 msgstr "Komandoak:"
 
-#: src/cmdline/cmdline_prompt.cc:1160
+#: src/cmdline/cmdline_prompt.cc:1176
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
@@ -1438,20 +1464,20 @@ msgstr ""
 "Aptitudek huts egin mendekotasuna hauei konponbide bat bilatzean.  Eskuz "
 "konpondu ditzakezu edo 'n' sakatu ateratzeko."
 
-#: src/cmdline/cmdline_prompt.cc:1178
+#: src/cmdline/cmdline_prompt.cc:1194
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Jarraitu nahi duzu? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1179
+#: src/cmdline/cmdline_prompt.cc:1195
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr "Dependentzi hauek eskuz konpondu? [E/+/-/_:/?) "
 
-#: src/cmdline/cmdline_prompt.cc:1197
+#: src/cmdline/cmdline_prompt.cc:1213
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Erantzun baliogabea. Sartu baliozko komando bat, edo '?' laguntza ikusteko.\n"
 
-#: src/cmdline/cmdline_prompt.cc:1203
+#: src/cmdline/cmdline_prompt.cc:1219
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
@@ -1459,7 +1485,7 @@ msgstr ""
 "Sar pakete kudeaketa komando bat (adibidez '+ paketea' pakete bat "
 "instalatzeko), 'R' mendekotasuna osatze automatikoa saiatzeko edo 'N' uzteko."
 
-#: src/cmdline/cmdline_prompt.cc:1234
+#: src/cmdline/cmdline_prompt.cc:1250
 #, c-format
 msgid ""
 "\n"
@@ -1470,7 +1496,7 @@ msgstr ""
 "Mendekotasun-informazioa erakutsiko da.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1236
+#: src/cmdline/cmdline_prompt.cc:1252
 #, c-format
 msgid ""
 "\n"
@@ -1481,7 +1507,7 @@ msgstr ""
 "Mendekotasun-informazioa ez da erakutsiko.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1242
+#: src/cmdline/cmdline_prompt.cc:1258
 #, c-format
 msgid ""
 "\n"
@@ -1492,7 +1518,7 @@ msgstr ""
 "Bertsioak erakutsiko dira.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1244
+#: src/cmdline/cmdline_prompt.cc:1260
 #, c-format
 msgid ""
 "\n"
@@ -1503,7 +1529,7 @@ msgstr ""
 "Bertsiorik ez da erakutsiko.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1249
+#: src/cmdline/cmdline_prompt.cc:1265
 #, c-format
 msgid ""
 "\n"
@@ -1514,7 +1540,7 @@ msgstr ""
 "Tamaina aldaketak erakutsiko dira.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1251
+#: src/cmdline/cmdline_prompt.cc:1267
 #, c-format
 msgid ""
 "\n"
@@ -1705,8 +1731,8 @@ msgstr ""
 "Dependentziak konpondu nahi ditut, baina ez zen mendekotasun konpontzailerik "
 "sortu."
 
-#: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
-#: src/solution_screen.cc:519
+#: src/cmdline/cmdline_resolver.cc:530 src/gtk/resolver.cc:317
+#: src/solution_dialog.cc:127 src/solution_screen.cc:519
 msgid "Resolving dependencies..."
 msgstr "Mendekotasunak ebazten..."
 
@@ -1771,7 +1797,7 @@ msgstr ""
 "*** ERROREA: bilaketa huts konponezin bat dela eta utzi egin da.  Bilatzen\n"
 "           jarraitu dezakezu, baina zenbait emaitza ezingo dira eskuratu."
 
-#: src/cmdline/cmdline_resolver.cc:963
+#: src/cmdline/cmdline_resolver.cc:983
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
@@ -1779,20 +1805,20 @@ msgstr ""
 "Ebazpenaren denbora-muga iraungituta; zenbait bertsio-berritzea ez dira "
 "landuko."
 
-#: src/cmdline/cmdline_resolver.cc:970
+#: src/cmdline/cmdline_resolver.cc:990
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
 "Ezin dira bertsio-berritzeko mendekotasunak ebatzi (ebaztea denboraz kanpo "
 "geratu da)"
 
-#: src/cmdline/cmdline_resolver.cc:984
+#: src/cmdline/cmdline_resolver.cc:1007
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr ""
 "Ezin dira bertsio-berritzerako mendekotasunak ebatzi (ez da konponbiderik "
 "aurkitu)"
 
-#: src/cmdline/cmdline_resolver.cc:993
+#: src/cmdline/cmdline_resolver.cc:1019
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
@@ -1801,17 +1827,17 @@ msgstr ""
 "Mendekotasunaren ebazpena osatu gabea (%s); baliteke bertsio-berritze batzuk "
 "ez lantzea."
 
-#: src/cmdline/cmdline_resolver.cc:999
+#: src/cmdline/cmdline_resolver.cc:1025
 #, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Ezin dira bertsio-berritzerako mendekotasunak ebatzi (%s)."
 
-#: src/cmdline/cmdline_search.cc:125
+#: src/cmdline/cmdline_search.cc:126
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr "%s(r)en iconv-ek huts egin du.\n"
 
-#: src/cmdline/cmdline_search.cc:142
+#: src/cmdline/cmdline_search.cc:143
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr "bilatu: bilaketa-termino bat eman behar duzu gutxienez\n"
@@ -1821,234 +1847,236 @@ msgstr "bilatu: bilaketa-termino bat eman behar duzu gutxienez\n"
 msgid "The following packages have unmet dependencies:\n"
 msgstr "Ondorengo paketeetan bete gabeko mendekotasunak daude:\n"
 
-#: src/cmdline/cmdline_show.cc:170 src/cmdline/cmdline_show.cc:414
-#: src/solution_fragment.cc:58
+#: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
+#: src/gtk/resolver.cc:208 src/solution_fragment.cc:58
 msgid "<NULL>"
 msgstr "<NULL>"
 
-#: src/cmdline/cmdline_show.cc:187 src/cmdline/cmdline_show.cc:192
+#: src/cmdline/cmdline_show.cc:189 src/cmdline/cmdline_show.cc:194
 msgid "not installed"
 msgstr "ez dago instalatuta"
 
-#: src/cmdline/cmdline_show.cc:194 src/pkg_columnizer.cc:249
+#: src/cmdline/cmdline_show.cc:196 src/pkg_columnizer.cc:249
 #: src/pkg_ver_item.cc:232
 msgid "unpacked"
 msgstr "deskonprimituta"
 
-#: src/cmdline/cmdline_show.cc:196
+#: src/cmdline/cmdline_show.cc:198
 msgid "partially configured"
 msgstr "erdizka konfiguratuta"
 
-#: src/cmdline/cmdline_show.cc:198
+#: src/cmdline/cmdline_show.cc:200
 msgid "partially installed"
 msgstr "erdizka instalatuta"
 
-#: src/cmdline/cmdline_show.cc:200
+#: src/cmdline/cmdline_show.cc:202
 msgid "not installed (configuration files remain)"
 msgstr "ez dago instalatuta (konfigurazio-fitxategiak daude)"
 
-#: src/cmdline/cmdline_show.cc:203
+#: src/cmdline/cmdline_show.cc:205
 msgid "awaiting trigger processing by other package(s)"
 msgstr "beste pakete(ek) exekutatutako abiarazlea prozesatzea itxoiten "
 
-#: src/cmdline/cmdline_show.cc:205
+#: src/cmdline/cmdline_show.cc:207
 msgid "awaiting trigger processing"
 msgstr "abiarazle prozesatzea itxoiten"
 
-#: src/cmdline/cmdline_show.cc:208 src/pkg_columnizer.cc:257
+#: src/cmdline/cmdline_show.cc:210 src/pkg_columnizer.cc:257
 #: src/pkg_ver_item.cc:240
 msgid "installed"
 msgstr "instalatuta"
 
-#: src/cmdline/cmdline_show.cc:231
+#: src/cmdline/cmdline_show.cc:233
 #, c-format
 msgid "%s; will be purged because nothing depends on it"
 msgstr "%s; purgatu egingo da, inork ez baitauka honekiko mendekotasunik."
 
-#: src/cmdline/cmdline_show.cc:233 src/cmdline/cmdline_show.cc:329
+#: src/cmdline/cmdline_show.cc:235 src/cmdline/cmdline_show.cc:331
 #, c-format
 msgid "%s; will be purged"
 msgstr "%s; purgatu egingo da"
 
-#: src/cmdline/cmdline_show.cc:238
+#: src/cmdline/cmdline_show.cc:240
 #, c-format
 msgid "%s; will be removed because nothing depends on it"
 msgstr "%s; kendu egingo da, inork ez baitauka honekiko mendekotasunik."
 
-#: src/cmdline/cmdline_show.cc:240
+#: src/cmdline/cmdline_show.cc:242
 #, c-format
 msgid "%s; will be removed"
 msgstr "%s; kendu egingo da"
 
-#: src/cmdline/cmdline_show.cc:258
+#: src/cmdline/cmdline_show.cc:260
 #, c-format
 msgid "%s%s; will be downgraded [%s -> %s]"
 msgstr "%s%s; aurreko bertsiora itzuliko da [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:261
+#: src/cmdline/cmdline_show.cc:263
 #, c-format
 msgid "%s%s; will be upgraded [%s -> %s]"
 msgstr "%s%s; bertsio-berrituko da [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:272
 msgid "not a real package"
 msgstr "ez da benetako paketea"
 
-#: src/cmdline/cmdline_show.cc:283
+#: src/cmdline/cmdline_show.cc:285
 msgid " [held]"
 msgstr " [mantenduta]"
 
-#: src/cmdline/cmdline_show.cc:297
+#: src/cmdline/cmdline_show.cc:299
 #, c-format
 msgid "%s; will be installed"
 msgstr "%s, instalatu egingo da."
 
-#: src/cmdline/cmdline_show.cc:299
+#: src/cmdline/cmdline_show.cc:301
 #, c-format
 msgid "%s; will be installed automatically"
 msgstr "%s; automatikoki instalatu egingo da"
 
-#: src/cmdline/cmdline_show.cc:319
+#: src/cmdline/cmdline_show.cc:321
 #, c-format
 msgid "%s; version %s will be installed"
 msgstr "%s; %s bertsioa instalatu egingo da"
 
-#: src/cmdline/cmdline_show.cc:323
+#: src/cmdline/cmdline_show.cc:325
 #, c-format
 msgid "%s; version %s will be installed automatically"
 msgstr "%s; %s bertsioa automatikoki instalatu egingo da"
 
-#: src/cmdline/cmdline_show.cc:348 src/cmdline/cmdline_show.cc:370
+#: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:372
 msgid "Package: "
 msgstr "Paketea: "
 
-#: src/cmdline/cmdline_show.cc:349 src/cmdline/cmdline_show.cc:378
+#: src/cmdline/cmdline_show.cc:351 src/cmdline/cmdline_show.cc:380
 #: src/pkg_columnizer.cc:91
 msgid "State"
 msgstr "Egoera"
 
-#: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:436
-#: src/generic/apt/matchers.cc:2490
+#: src/cmdline/cmdline_show.cc:352 src/cmdline/cmdline_show.cc:438
 msgid "Provided by"
 msgstr "Honek hornitua:"
 
-#: src/cmdline/cmdline_show.cc:372 src/pkg_info_screen.cc:120
+#: src/cmdline/cmdline_show.cc:374 src/pkg_info_screen.cc:120
 msgid "Essential: "
 msgstr "Funtsezkoa: "
 
-#: src/cmdline/cmdline_show.cc:372 src/cmdline/cmdline_show.cc:376
-#: src/cmdline/cmdline_show.cc:387 src/pkg_info_screen.cc:120
+#: src/cmdline/cmdline_show.cc:374 src/cmdline/cmdline_show.cc:378
+#: src/cmdline/cmdline_show.cc:389 src/pkg_info_screen.cc:120
 msgid "yes"
 msgstr "bai"
 
-#: src/cmdline/cmdline_show.cc:376
+#: src/cmdline/cmdline_show.cc:378
 msgid "New"
 msgstr "Berria"
 
-#: src/cmdline/cmdline_show.cc:381
+#: src/cmdline/cmdline_show.cc:383 src/gtk/gui.cc:89
 msgid "Forbidden version"
 msgstr "Debekatutako bertsioa"
 
-#: src/cmdline/cmdline_show.cc:385
+#: src/cmdline/cmdline_show.cc:387
 msgid "Automatically installed"
 msgstr "Automatikoki instalatuta"
 
-#: src/cmdline/cmdline_show.cc:387
+#: src/cmdline/cmdline_show.cc:389
 msgid "no"
 msgstr "ez"
 
-#: src/cmdline/cmdline_show.cc:389
+#: src/cmdline/cmdline_show.cc:391 src/gtk/packagestab.cc:414
+#: src/gtk/previewtab.cc:215
 msgid "Version: "
 msgstr "Bertsioa: "
 
-#: src/cmdline/cmdline_show.cc:390 src/pkg_info_screen.cc:128
+#: src/cmdline/cmdline_show.cc:392 src/pkg_info_screen.cc:128
 msgid "Priority: "
 msgstr "Lehentasuna: "
 
-#: src/cmdline/cmdline_show.cc:391 src/cmdline/cmdline_show.cc:393
-#: src/cmdline/cmdline_show.cc:402
+#: src/cmdline/cmdline_show.cc:393 src/cmdline/cmdline_show.cc:395
+#: src/cmdline/cmdline_show.cc:404
 msgid "N/A"
 msgstr "E/E"
 
-#: src/cmdline/cmdline_show.cc:392 src/pkg_info_screen.cc:129
+#: src/cmdline/cmdline_show.cc:394 src/pkg_info_screen.cc:129
 msgid "Section: "
 msgstr "Sekzioa: "
 
-#: src/cmdline/cmdline_show.cc:394 src/pkg_info_screen.cc:130
+#: src/cmdline/cmdline_show.cc:396 src/pkg_info_screen.cc:130
 msgid "Maintainer: "
 msgstr "Mantentzailea: "
 
-#: src/cmdline/cmdline_show.cc:397
+#: src/cmdline/cmdline_show.cc:399
 msgid "Uncompressed Size: "
 msgstr "Konprimitu gabeko tamaina: "
 
-#: src/cmdline/cmdline_show.cc:401
+#: src/cmdline/cmdline_show.cc:403
 msgid "Architecture: "
 msgstr "Arkitektura: "
 
-#: src/cmdline/cmdline_show.cc:403
+#: src/cmdline/cmdline_show.cc:405
 msgid "Compressed Size: "
 msgstr "Konprimitutako tamaina: "
 
-#: src/cmdline/cmdline_show.cc:405
+#: src/cmdline/cmdline_show.cc:407
 msgid "Filename: "
 msgstr "Fitxategi-izena: "
 
-#: src/cmdline/cmdline_show.cc:407
+#: src/cmdline/cmdline_show.cc:409
 msgid "MD5sum: "
 msgstr "MD5 batura: "
 
-#: src/cmdline/cmdline_show.cc:411 src/cmdline/cmdline_show.cc:414
+#: src/cmdline/cmdline_show.cc:413 src/cmdline/cmdline_show.cc:416
 msgid "Archive"
 msgstr "Artxiboa"
 
-#: src/cmdline/cmdline_show.cc:419
+#: src/cmdline/cmdline_show.cc:421
 msgid "Depends"
 msgstr "Mendekotasuna:"
 
-#: src/cmdline/cmdline_show.cc:421
+#: src/cmdline/cmdline_show.cc:423
 msgid "PreDepends"
 msgstr "Aurremendekotasuna:"
 
-#: src/cmdline/cmdline_show.cc:423 src/cmdline/cmdline_why.cc:261
+#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:263
 msgid "Recommends"
 msgstr "Gomendioa:"
 
-#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:264
+#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:266
 msgid "Suggests"
 msgstr "Iradokizuna:"
 
-#: src/cmdline/cmdline_show.cc:427
+#: src/cmdline/cmdline_show.cc:429
 msgid "Conflicts"
 msgstr "Gatazka:"
 
-#: src/cmdline/cmdline_show.cc:429
+#: src/cmdline/cmdline_show.cc:431
 msgid "Breaks"
 msgstr "Apurtzen du:"
 
-#: src/cmdline/cmdline_show.cc:431
+#: src/cmdline/cmdline_show.cc:433
 msgid "Replaces"
 msgstr "Ordezten du:"
 
-#: src/cmdline/cmdline_show.cc:433
+#: src/cmdline/cmdline_show.cc:435
 msgid "Obsoletes"
 msgstr "Zaharkitzea:"
 
-#: src/cmdline/cmdline_show.cc:439 src/pkg_info_screen.cc:102
+#: src/cmdline/cmdline_show.cc:441 src/gtk/info.cc:624
+#: src/gtk/packagestab.cc:422 src/gtk/previewtab.cc:223
+#: src/pkg_info_screen.cc:102
 msgid "Description: "
 msgstr "Azalpena: "
 
-#: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:259
+#: src/cmdline/cmdline_show.cc:447 src/pkg_info_screen.cc:107
+#: src/pkg_view.cc:255
 msgid "Homepage: "
 msgstr "Etxe orria "
 
-#: src/cmdline/cmdline_show.cc:542
+#: src/cmdline/cmdline_show.cc:544
 #, c-format
 msgid "Unable to locate package %s"
 msgstr "Ezin da %s paketea aurkitu"
 
-#: src/cmdline/cmdline_show.cc:557
+#: src/cmdline/cmdline_show.cc:560
 #, c-format
 msgid "Unable to parse pattern %s"
 msgstr "Ezin da %s eredua analizatu"
@@ -2072,226 +2100,227 @@ msgstr "Zaharkitutako deskargatutako fitxategiak ezabatzen\n"
 msgid "E: The update command takes no arguments\n"
 msgstr "E: Eguneratzeko komandoak ez du argumenturik hartzen\n"
 
-#: src/cmdline/cmdline_upgrade.cc:50
+#: src/cmdline/cmdline_upgrade.cc:59
 #, c-format
 msgid "E: The %s command takes no arguments\n"
 msgstr "E: %s komandoak ez du argumenturik hartzen\n"
 
-#: src/cmdline/cmdline_user_tag.cc:52
+#: src/cmdline/cmdline_user_tag.cc:54
 #, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
 msgstr "Erabiltzailearen \"%s\" etiketa \"%s\" paketeari gehitzen.\n"
 
-#: src/cmdline/cmdline_user_tag.cc:59
+#: src/cmdline/cmdline_user_tag.cc:61
 #, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
 msgstr "Erabiltzailearen \"%s\" etiketa \"%s\" paketetik kentzen.\n"
 
-#: src/cmdline/cmdline_user_tag.cc:89
+#: src/cmdline/cmdline_user_tag.cc:91
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
 msgstr ""
 "%s: argumentu gutxiegi; gutxienez izenaren etiketa eta pakete bat espero "
 "ziren.\n"
 
-#: src/cmdline/cmdline_util.cc:131
+#: src/cmdline/cmdline_util.cc:133
 #, c-format
 msgid "No candidate version found for %s\n"
 msgstr "Ez da %s(r)en bertsio hautagairik aurkitu\n"
 
-#: src/cmdline/cmdline_util.cc:133
+#: src/cmdline/cmdline_util.cc:135
 #, c-format
 msgid "No current or candidate version found for %s\n"
 msgstr "Ez da %s(r)en ez uneko ez bertsio hautagairik aurkitu\n"
 
-#: src/cmdline/cmdline_util.cc:148
+#: src/cmdline/cmdline_util.cc:150
 #, c-format
 msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
 msgstr "Ezin da aurkitu \"%s\" artxiboa, \"%s\" paketearentzat\n"
 
-#: src/cmdline/cmdline_util.cc:158
+#: src/cmdline/cmdline_util.cc:160
 #, c-format
 msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
 msgstr "Ezin da aurkitu \"%s\" bertsioa, \"%s\" paketearentzat\n"
 
-#: src/cmdline/cmdline_util.cc:164
+#: src/cmdline/cmdline_util.cc:166
 #, c-format
 msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
 msgstr "Barne-errorea: %i balio baliogabea pasatu da hona: cmdline_find_ver!\n"
 
-#: src/cmdline/cmdline_util.cc:194
+#: src/cmdline/cmdline_util.cc:196
 #, c-format
 msgid "You cannot specify both an archive and a version for a package\n"
 msgstr "Ezin dira bai artxiboa eta bai bertsioa zehaztu pakete batentzat\n"
 
-#: src/cmdline/cmdline_util.cc:292
+#: src/cmdline/cmdline_util.cc:294
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
 msgstr[0] "Hautsitako %d [%+d]"
 msgstr[1] "%d hautsitak [%+d]"
 
-#: src/cmdline/cmdline_util.cc:306
+#: src/cmdline/cmdline_util.cc:308
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
 msgstr[0] "bertsio-berritze %d [%+d]"
 msgstr[1] "%d bertsio-berritze [%+d]"
 
-#: src/cmdline/cmdline_util.cc:320
+#: src/cmdline/cmdline_util.cc:322
 #, c-format
 msgid "%d new [%+d]"
 msgid_plural "%d new [%+d]"
 msgstr[0] "berri %d [%+d]"
 msgstr[1] "%d berri [%+d]"
 
-#: src/cmdline/cmdline_util.cc:331
+#: src/cmdline/cmdline_util.cc:333
 #, c-format
 msgid "Current status: %F."
 msgstr "Uneko egoera: %F."
 
-#: src/cmdline/cmdline_util.cc:342
+#: src/cmdline/cmdline_util.cc:344
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
 msgstr[0] "Zaharkitu berri den pakete %d dago."
 msgstr[1] "Zaharkitu berri diren %d pakete daude."
 
-#: src/cmdline/cmdline_util.cc:354
+#: src/cmdline/cmdline_util.cc:356
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] "Zaharkitu berri den pakete %d dago: "
 msgstr[1] "Zaharkitu berri diren %d pakete daude: "
 
-#: src/cmdline/cmdline_why.cc:252
+#: src/cmdline/cmdline_why.cc:254
 msgid "dep_level"
 msgstr "men_maila"
 
-#: src/cmdline/cmdline_why.cc:258
+#: src/cmdline/cmdline_why.cc:260
 msgid "DependsOnly"
 msgstr "MendekoakBakarrik"
 
-#: src/cmdline/cmdline_why.cc:272
+#: src/cmdline/cmdline_why.cc:274
 msgid "version_selection"
 msgstr "bertsioa_hautaketa"
 
-#: src/cmdline/cmdline_why.cc:277
+#: src/cmdline/cmdline_why.cc:279
 msgid "Current"
 msgstr "Unekoa"
 
-#: src/cmdline/cmdline_why.cc:280
+#: src/cmdline/cmdline_why.cc:282
 msgid "Candidate"
 msgstr "Hautagarria"
 
-#: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1597
+#: src/cmdline/cmdline_why.cc:285 src/gtk/aptitude.glade:1630
+#: src/gtk/gui.cc:82
 msgid "Install"
 msgstr "Instalatu"
 
-#: src/cmdline/cmdline_why.cc:286
+#: src/cmdline/cmdline_why.cc:288
 msgid "InstallNotCurrent"
 msgstr "InstalatuEzUnekoa"
 
-#: src/cmdline/cmdline_why.cc:294
+#: src/cmdline/cmdline_why.cc:296
 msgid "allow_choices"
 msgstr "onartu_aukerak"
 
-#: src/cmdline/cmdline_why.cc:297
+#: src/cmdline/cmdline_why.cc:299
 msgid "true"
 msgstr "egia"
 
-#: src/cmdline/cmdline_why.cc:299
+#: src/cmdline/cmdline_why.cc:301
 msgid "false"
 msgstr "faltsua"
 
-#: src/cmdline/cmdline_why.cc:353
+#: src/cmdline/cmdline_why.cc:355
 #, c-format
 msgid "Install(%s)"
 msgstr "Instalatu(%s)"
 
-#: src/cmdline/cmdline_why.cc:355
+#: src/cmdline/cmdline_why.cc:357
 #, c-format
 msgid "Remove(%s)"
 msgstr "Kendu(%s)"
 
-#: src/cmdline/cmdline_why.cc:357
+#: src/cmdline/cmdline_why.cc:359
 #, c-format
 msgid "Install(%s provides %s)"
 msgstr "Instalatu: (%s-ek  %s hornitzen du)"
 
-#: src/cmdline/cmdline_why.cc:361
+#: src/cmdline/cmdline_why.cc:363
 #, c-format
 msgid "Remove(%s provides %s)"
 msgstr "Kendu: (%s-ek  %s hornitzen du)"
 
-#: src/cmdline/cmdline_why.cc:419
+#: src/cmdline/cmdline_why.cc:421
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr "    ++ %F aztertzen\n"
 
-#: src/cmdline/cmdline_why.cc:429
+#: src/cmdline/cmdline_why.cc:431
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr "    ++   --> alde batetara uzten, ez dago gatazkan\n"
 
-#: src/cmdline/cmdline_why.cc:439
+#: src/cmdline/cmdline_why.cc:441
 msgid "    ++   --> skipping conflict\n"
 msgstr "    ++   --> gatazka alde batetara uzten\n"
 
-#: src/cmdline/cmdline_why.cc:447
+#: src/cmdline/cmdline_why.cc:449
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr "    ++   --> baztertzen, ez da beharrezkoa parametroen arabera\n"
 
-#: src/cmdline/cmdline_why.cc:454
+#: src/cmdline/cmdline_why.cc:456
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> baztertzen, parent ez da hautatutako bertsioa\n"
 
-#: src/cmdline/cmdline_why.cc:494
+#: src/cmdline/cmdline_why.cc:496
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr "    ++   --> saltatzen, mend. uneko bertsioan beteta\n"
 
-#: src/cmdline/cmdline_why.cc:524
+#: src/cmdline/cmdline_why.cc:526
 msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> HILARAN_IPINTZEN\n"
 
-#: src/cmdline/cmdline_why.cc:531
+#: src/cmdline/cmdline_why.cc:533
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> alde batera uzten, bertsio egiaztapenak huts egin du\n"
 
-#: src/cmdline/cmdline_why.cc:549
+#: src/cmdline/cmdline_why.cc:551
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr "    ++   --> %s HILARAN IPINTZEN %s hornitzen du\n"
 
-#: src/cmdline/cmdline_why.cc:678
+#: src/cmdline/cmdline_why.cc:683
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "Bilaketa %ls parametroez hasten\n"
 
-#: src/cmdline/cmdline_why.cc:898
+#: src/cmdline/cmdline_why.cc:906
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Konponbidea alde batetara uzten. Dagoeneko ikusi dut.\n"
 
-#: src/cmdline/cmdline_why.cc:973
+#: src/cmdline/cmdline_why.cc:981
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Ezin da arrazoirik aurkitu %s kentzeko.\n"
 
-#: src/cmdline/cmdline_why.cc:975
+#: src/cmdline/cmdline_why.cc:983
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Ezin da arrazoirik aurkitu %s instalatzeko.\n"
 
-#: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
-#: src/cmdline/cmdline_why.cc:1108
+#: src/cmdline/cmdline_why.cc:1028 src/cmdline/cmdline_why.cc:1054
+#: src/cmdline/cmdline_why.cc:1109
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Ez dago \"%s\" izeneko paketerik."
 
-#: src/cmdline/cmdline_why.cc:1054
+#: src/cmdline/cmdline_why.cc:1058
 msgid "Unable to parse some match patterns."
 msgstr "Ezin dira analizatu aurkitutako parekatze batzuek."
 
-#: src/cmdline/cmdline_why.cc:1081
+#: src/cmdline/cmdline_why.cc:1082
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr ""
@@ -2305,11 +2334,11 @@ msgstr "BETEGABEA"
 msgid "UNAVAILABLE"
 msgstr "EZ ERABILGARRIA"
 
-#: src/desc_parse.cc:314
+#: src/desc_render.cc:133 src/gtk/aptitude.glade:1114
 msgid "Tags"
 msgstr "Etiketak"
 
-#: src/desc_parse.cc:334
+#: src/desc_render.cc:153
 msgid "User Tags"
 msgstr "Erabiltzailearen etiketak"
 
@@ -2319,11 +2348,11 @@ msgstr "Erabiltzailearen etiketak"
 msgid " [Working]"
 msgstr " [Lanean]"
 
-#: src/download_item.cc:110 src/download_list.cc:363
+#: src/download_item.cc:110 src/download_list.cc:361
 msgid "[Hit]"
 msgstr "[Atzituta]"
 
-#: src/download_item.cc:110 src/download_list.cc:385
+#: src/download_item.cc:110 src/download_list.cc:383
 msgid "[Downloaded]"
 msgstr "[Deskargatuta]"
 
@@ -2337,7 +2366,7 @@ msgstr "%sB deskargatuta - %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nFitxategi batzuk ez dira ongi deskargatu."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:345 src/gtk/download.cc:340
 msgid "Continue"
 msgstr "Jarraitu"
 
@@ -2345,43 +2374,43 @@ msgstr "Jarraitu"
 msgid "Cancel"
 msgstr "Utzi"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:214
 msgid "Total Progress: "
 msgstr "Progresioa guztira: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:242
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %% %i ] (%sB/s, %s falta)"
 
-#: src/download_list.cc:246
+#: src/download_list.cc:244
 #, c-format
 msgid " [ %i%% ] (stalled)"
 msgstr " [ %% %i ] (trabatuta)"
 
-#: src/download_list.cc:248
+#: src/download_list.cc:246
 #, c-format
 msgid " [ %i%% ]"
 msgstr " [ %% %i ]"
 
-#: src/download_list.cc:266
+#: src/download_list.cc:264
 msgid "Downloading... "
 msgstr "Deskargatzen..."
 
-#: src/download_list.cc:342
+#: src/download_list.cc:340 src/gtk/download.cc:337
 #, c-format
 msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
 msgstr "Sartu \"%s\" etiketadun diskoa \"%s\" unitatean"
 
-#: src/download_list.cc:349
+#: src/download_list.cc:347 src/gtk/download.cc:341
 msgid "Abort"
 msgstr "Abortatu"
 
-#: src/download_list.cc:407
+#: src/download_list.cc:405
 msgid "[IGNORED]"
 msgstr "[EZ IKUSI EGINDA]"
 
-#: src/download_list.cc:413
+#: src/download_list.cc:411
 msgid "[ERROR]"
 msgstr "[ERROREA]"
 
@@ -2428,7 +2457,7 @@ msgstr ""
 "Euskarri-aldaketa: sartu '%s' etiketadun diskoa '%s' unitatean, eta sakatu "
 "[Sartu].\n"
 
-#: src/generic/apt/aptcache.cc:266
+#: src/generic/apt/aptcache.cc:269
 #, c-format
 msgid ""
 "Error parsing a user-tag for the package %s: unexpected end-of-line "
@@ -2437,73 +2466,73 @@ msgstr ""
 "Errorea %s paketearen erabiltzailearen etiketa analizatzean: ustegabeko "
 "lerro amaiera %s-rekin."
 
-#: src/generic/apt/aptcache.cc:283
+#: src/generic/apt/aptcache.cc:286
 #, c-format
 msgid "Unterminated '\"' in the user-tags list of the package %s."
 msgstr ""
 "Amaitu gabeko komatxoa '\"' %s paketearen erabiltzailearen etiketen "
 "zerrendan."
 
-#: src/generic/apt/aptcache.cc:387
+#: src/generic/apt/aptcache.cc:390
 msgid "Can't open Aptitude extended state file"
 msgstr "Ezin da ireki Aptitude egoera-fitxategi hedatua"
 
-#: src/generic/apt/aptcache.cc:401 src/generic/apt/aptcache.cc:489
-#: src/generic/apt/aptcache.cc:491
+#: src/generic/apt/aptcache.cc:404 src/generic/apt/aptcache.cc:492
+#: src/generic/apt/aptcache.cc:494
 msgid "Reading extended state information"
 msgstr "Egoera-informazio hedatua irakurtzen"
 
-#: src/generic/apt/aptcache.cc:496 src/generic/apt/aptcache.cc:578
-#: src/generic/apt/aptcache.cc:581
+#: src/generic/apt/aptcache.cc:499 src/generic/apt/aptcache.cc:581
+#: src/generic/apt/aptcache.cc:584
 msgid "Initializing package states"
 msgstr "Pakete-egoerak hasieratzen"
 
-#: src/generic/apt/aptcache.cc:709
+#: src/generic/apt/aptcache.cc:712
 msgid "Cannot open Aptitude state file"
 msgstr "Ezin da Aptitude egoera-fitxategia ireki"
 
-#: src/generic/apt/aptcache.cc:713 src/generic/apt/aptcache.cc:819
-#: src/generic/apt/aptcache.cc:822
+#: src/generic/apt/aptcache.cc:716 src/generic/apt/aptcache.cc:822
+#: src/generic/apt/aptcache.cc:825
 msgid "Writing extended state information"
 msgstr "Egoera-informazio hedatua idazten"
 
-#: src/generic/apt/aptcache.cc:810
+#: src/generic/apt/aptcache.cc:813
 msgid "Couldn't write state file"
 msgstr "Ezin izan da egoera-fitxategia idatzi"
 
-#: src/generic/apt/aptcache.cc:827
+#: src/generic/apt/aptcache.cc:830
 msgid "Error writing state file"
 msgstr "Errorea egoera-fitxategia idaztean"
 
-#: src/generic/apt/aptcache.cc:845
+#: src/generic/apt/aptcache.cc:848
 #, c-format
 msgid "failed to remove %s"
 msgstr "huts egin du %s kentzean"
 
-#: src/generic/apt/aptcache.cc:852
+#: src/generic/apt/aptcache.cc:855
 #, c-format
 msgid "failed to rename %s to %s"
 msgstr "huts egin du izenez aldatzean: %s  -> %s"
 
-#: src/generic/apt/aptcache.cc:860
+#: src/generic/apt/aptcache.cc:863
 #, c-format
 msgid "couldn't replace %s with %s"
 msgstr "ezin izan da %s %s(e)kin ordeztu"
 
-#: src/generic/apt/aptcache.cc:1457
+#: src/generic/apt/aptcache.cc:1483
 msgid "Unable to correct dependencies, some packages cannot be installed"
 msgstr ""
 "Ezin izan dira mendekotasunak zuzendu; pakete batzuk ezin dira instalatu"
 
-#: src/generic/apt/aptcache.cc:1773
+#: src/generic/apt/aptcache.cc:1802
 msgid "The list of sources could not be read."
 msgstr "Ezin izan da iturburu-zerrenda irakurri."
 
-#: src/generic/apt/aptcache.cc:1780
+#: src/generic/apt/aptcache.cc:1809
 msgid "The package lists or status file could not be parsed or opened."
 msgstr "Pakete-zerrendak edo egoera-fitxategia ezin dira analizatu edo ireki."
 
-#: src/generic/apt/aptcache.cc:1783
+#: src/generic/apt/aptcache.cc:1812
 msgid "You may want to update the package lists to correct these missing files"
 msgstr ""
 "Beharbada pakete-zerrendak eguneratu nahiko dituzu, falta diren fitxategiak "
@@ -2545,36 +2574,40 @@ msgstr ""
 "lanabes bat paketeak instalatzen dagoela esan nahi du. Irakurtzeko soilik "
 "irekiko da; paketeen egoeran egindako edozein aldaketa EZ dira gordeko."
 
-#: src/generic/apt/download_install_manager.cc:56
+#: src/generic/apt/aptitude_resolver.cc:39
+msgid "Invalid hint: expected an action, but found nothing."
+msgstr ""
+
+#: src/generic/apt/download_install_manager.cc:60
 msgid ""
 "The package cache is not available; unable to download and install packages."
 msgstr ""
 "Pakete-cachea ez dago eskuragarri. ezin da paketeak deskargatu eta instalatu"
 
-#: src/generic/apt/download_install_manager.cc:76
+#: src/generic/apt/download_install_manager.cc:80
 #: src/generic/apt/download_update_manager.cc:92
 msgid "Couldn't lock list directory..are you root?"
 msgstr "Ezin izan da zerrenda-direktorioa blokeatu. root zara?"
 
-#: src/generic/apt/download_install_manager.cc:93
+#: src/generic/apt/download_install_manager.cc:97
 msgid "Internal error: couldn't generate list of packages to download"
 msgstr "Barne-errorea: ezin izan da deskargatzeko paketeen zerrenda sortu"
 
-#: src/generic/apt/download_install_manager.cc:123
+#: src/generic/apt/download_install_manager.cc:126
 #, c-format
 msgid "Failed to fetch %s: %s"
 msgstr "Huts egin du %s eskuratzean: %s"
 
-#: src/generic/apt/download_install_manager.cc:129
+#: src/generic/apt/download_install_manager.cc:132
 msgid "Unable to correct for unavailable packages"
 msgstr "Ezin izan dira erabilgarri ez dauden paketeak zuzendu"
 
-#: src/generic/apt/download_install_manager.cc:155
+#: src/generic/apt/download_install_manager.cc:167
 msgid "A package failed to install.  Trying to recover:"
 msgstr ""
 "Arazoren bat gertatu da pakete bat instalatzean. Berreskuratzen saiatuko da:"
 
-#: src/generic/apt/download_install_manager.cc:180
+#: src/generic/apt/download_install_manager.cc:212
 msgid ""
 "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr ""
@@ -2595,43 +2628,43 @@ msgstr "fork()-ek huts egin du: %s"
 msgid "waitpid() failed: %s"
 msgstr "waitpid()-ek huts egin du: %s"
 
-#: src/generic/apt/download_update_manager.cc:314
+#: src/generic/apt/download_update_manager.cc:317
 msgid "Couldn't clean out list directories"
 msgstr "Ezin izan dira zerrenda-direktorioak garbitu"
 
-#: src/generic/apt/download_update_manager.cc:326
+#: src/generic/apt/download_update_manager.cc:330
 msgid "Couldn't rebuild package cache"
 msgstr "Ezin izan da pakete katxea birsortu"
 
-#: src/generic/apt/download_update_manager.cc:341
+#: src/generic/apt/download_update_manager.cc:346
 msgid "The debtags command must not be an empty string."
 msgstr "debtags komandoa ezin da kate huts batetan egon."
 
-#: src/generic/apt/download_update_manager.cc:345
+#: src/generic/apt/download_update_manager.cc:350
 msgid "The debtags command must be an absolute path."
 msgstr "debtags komandoak bide oso bat behar du."
 
-#: src/generic/apt/download_update_manager.cc:358
+#: src/generic/apt/download_update_manager.cc:363
 #, c-format
 msgid "The debtags command (%s) cannot be executed: %s"
 msgstr "debtags komandoa (%s) ezin da exekutatu: %s"
 
-#: src/generic/apt/download_update_manager.cc:363
+#: src/generic/apt/download_update_manager.cc:368
 msgid "Updating debtags database..."
 msgstr "debtags datubasea eguneratzen..."
 
-#: src/generic/apt/download_update_manager.cc:380
+#: src/generic/apt/download_update_manager.cc:385
 msgid "(core dumped)"
 msgstr "(core-a iraulia)"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:383
+#: src/generic/apt/download_update_manager.cc:388
 #, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr "Debtags eguneratze prozesua (%s update %s) %d%s seinaleak akabatu du."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:391
+#: src/generic/apt/download_update_manager.cc:396
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
@@ -2639,7 +2672,7 @@ msgstr ""
 "kodea)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:398
+#: src/generic/apt/download_update_manager.cc:403
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
@@ -2648,7 +2681,7 @@ msgstr ""
 "Debtags eguneratze prozesua (%s update %s) ustegabean irten da (%d egoera)"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:404
+#: src/generic/apt/download_update_manager.cc:409
 #, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
@@ -2772,167 +2805,86 @@ msgstr ""
 "\n"
 "Egunkarian erregistratzea egin da.\n"
 
-#: src/generic/apt/matchers.cc:1346
-msgid "Automatically Installed"
-msgstr "Automatikoki instalatuta"
-
-#: src/generic/apt/matchers.cc:1374 src/generic/apt/matchers.cc:1581
-msgid "Broken"
-msgstr "Hautsita"
-
-#: src/generic/apt/matchers.cc:1579
-msgid "Unchanged"
-msgstr "Aldatu gabea"
-
-#: src/generic/apt/matchers.cc:1583
-msgid "Remove [unused]"
-msgstr "Kendu [erabili gabea]"
-
-#: src/generic/apt/matchers.cc:1585
-msgid "Hold [auto]"
-msgstr "Heldu [auto]"
-
-#: src/generic/apt/matchers.cc:1587
-msgid "Install [auto]"
-msgstr "Instalatu [auto]"
-
-#: src/generic/apt/matchers.cc:1589
-msgid "Remove [auto]"
-msgstr "Kendu [auto]"
-
-#: src/generic/apt/matchers.cc:1591
-msgid "Downgrade"
-msgstr "Itzuli aurreko bertsiora"
-
-#: src/generic/apt/matchers.cc:1593
-msgid "Hold"
-msgstr "Heldu"
-
-#: src/generic/apt/matchers.cc:1595
-msgid "Reinstall"
-msgstr "Berrinstalatu"
-
-#: src/generic/apt/matchers.cc:1599
-msgid "Remove"
-msgstr "Kendu"
-
-#: src/generic/apt/matchers.cc:1601
-msgid "Upgrade"
-msgstr "Bertsio-berritu"
-
-#: src/generic/apt/matchers.cc:1627
-msgid "Keep"
-msgstr "Mantendu"
-
-#: src/generic/apt/matchers.cc:1659
-msgid "Virtual"
-msgstr "Birtuala"
-
-#: src/generic/apt/matchers.cc:1686
-msgid "Installed"
-msgstr "Instalatuta"
-
-#: src/generic/apt/matchers.cc:1714
-msgid "Essential"
-msgstr "Funtsezkoa"
-
-#: src/generic/apt/matchers.cc:1739
-msgid "Config Files Remain"
-msgstr "Konfigurazio-fitxategiak mantendu"
-
-#: src/generic/apt/matchers.cc:2176
-msgid "Garbage"
-msgstr "Zaborra"
-
-#: src/generic/apt/matchers.cc:2545
-msgid "No reverse dependencies"
-msgstr "Ez dago alderantzizko mendekotasunik"
-
-#: src/generic/apt/matchers.cc:2623
-msgid "New Package"
-msgstr "Pakete berria"
-
-#: src/generic/apt/matchers.cc:2648
-msgid "Upgradable"
-msgstr "Berritu daitekeena"
-
-#: src/generic/apt/matchers.cc:2673
-msgid "Obsolete"
-msgstr "Zaharkituta"
-
-#: src/generic/apt/matchers.cc:3112
+#: src/generic/apt/matching/parse.cc:303
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Ekintza mota ezezaguna: %s"
 
-#: src/generic/apt/matchers.cc:3153
+#: src/generic/apt/matching/parse.cc:344
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "Amaitu gabeko kate literala %s(r)en ondoren"
 
-#: src/generic/apt/matchers.cc:3250
+#: src/generic/apt/matching/parse.cc:441
 #, c-format
 msgid "Unknown priority %s"
 msgstr "%s lehentasun ezezaguna"
 
-#: src/generic/apt/matchers.cc:3269
+#: src/generic/apt/matching/parse.cc:460
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr "Parekatze patroia espero gabe amaitzen da ('%c' espero zen)."
 
-#: src/generic/apt/matchers.cc:3272
+#: src/generic/apt/matching/parse.cc:463
 #, c-format
 msgid "Expected '%c', got '%c'."
 msgstr "'%c' espero zen, '%c' eskuratua."
 
-#: src/generic/apt/matchers.cc:3579 src/generic/apt/matchers.cc:4019
-#: src/generic/apt/matchers.cc:4062
+#: src/generic/apt/matching/parse.cc:800
+#: src/generic/apt/matching/parse.cc:1239
+#: src/generic/apt/matching/parse.cc:1279
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Mendekotasun mota ezezaguna: %s"
 
-#: src/generic/apt/matchers.cc:3633
-#, c-format
-msgid "Unknown matcher type: \"%s\"."
+#: src/generic/apt/matching/parse.cc:853
+#, fuzzy, c-format
+#| msgid "Unknown matcher type: \"%s\"."
+msgid "Unknown term type: \"%s\"."
 msgstr "Eredu mota ezezaguna: \"%s\"."
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
-#: src/generic/apt/matchers.cc:3644 src/generic/apt/matchers.cc:3653
-#, c-format
+#: src/generic/apt/matching/parse.cc:867 src/generic/apt/matching/parse.cc:876
+#, fuzzy, c-format
+#| msgid ""
+#| "The ?%s matcher must be used in a \"wide\" context (a top-level context, "
+#| "or a context enclosed by ?%s)."
 msgid ""
-"The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
-"a context enclosed by ?%s)."
+"The ?%s term must be used in a \"wide\" context (a top-level context, or a "
+"context enclosed by ?%s)."
 msgstr ""
 "?%s eredua kontestu \"zabal\"batetan etabili behar da (maila altueneko "
 "kontestua edo ?%s artean)."
 
-#: src/generic/apt/matchers.cc:3872
+#: src/generic/apt/matching/parse.cc:1100
 msgid "Unmatched '('"
 msgstr "Itxi gabeko '('"
 
-#: src/generic/apt/matchers.cc:4025
+#: src/generic/apt/matching/parse.cc:1245
 msgid "Provides: cannot be broken"
 msgstr "Hornitzea: ezin da hondaturik egon"
 
-#: src/generic/apt/matchers.cc:4088
+#: src/generic/apt/matching/parse.cc:1301
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Eredu-mota ezezaguna: %c"
 
-#: src/generic/apt/matchers.cc:4111
+#: src/generic/apt/matching/parse.cc:1315
 msgid "Can't search for \"\""
 msgstr "Ezin da \"\" bilatu"
 
-#: src/generic/apt/matchers.cc:4143
+#: src/generic/apt/matching/parse.cc:1342
 msgid "Unexpected empty expression"
 msgstr "Espero gabeko adierazpen hutsa"
 
-#: src/generic/apt/matchers.cc:4176
-msgid "Badly formed expression"
+#: src/generic/apt/matching/parse.cc:1371
+#, fuzzy, c-format
+#| msgid "Badly formed expression"
+msgid "Badly formed expression: expected '|', got '%c'"
 msgstr "Gaizki osatutako adierazpena"
 
-#: src/generic/apt/matchers.cc:4215
+#: src/generic/apt/matching/parse.cc:1412
 msgid "Unexpected ')'"
 msgstr "Espero ez zen ')'"
 
@@ -2953,7 +2905,7 @@ msgstr ""
 "Paketearen indize-fitxategiak hondatuta daude. 'Filename:' eremurik ez %s "
 "paketearentzat."
 
-#: src/generic/apt/pkg_changelog.cc:151 src/view_changelog.cc:164
+#: src/generic/apt/pkg_changelog.cc:189 src/view_changelog.cc:270
 #, c-format
 msgid "ChangeLog of %s"
 msgstr "%s aldaketen egunkaria"
@@ -3045,6 +2997,1288 @@ msgstr "Huts egin du \"%s\" direktorioa ixtean"
 msgid "Unable to remove directory \"%s\""
 msgstr "Ezin da \"%s\" direktorioa kendu"
 
+#: src/gtk/aptitude.glade:17
+#, fuzzy
+#| msgid "False"
+msgid "_File"
+msgstr "Faltsua"
+
+#: src/gtk/aptitude.glade:25 src/ui.cc:2219
+msgid "Perform all pending installs and removals"
+msgstr "Instalatzeko/kentzeko dauden pakete guztiak instalatu/kendu"
+
+#: src/gtk/aptitude.glade:26
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/remove packages"
+msgstr "^Instalatu/kendu paketeak"
+
+#: src/gtk/aptitude.glade:39 src/ui.cc:2222
+msgid "Check for new versions of packages"
+msgstr "Paketeen bertsio berririk dagoen begiratu"
+
+#: src/gtk/aptitude.glade:40
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update package list"
+msgstr "^Eguneratu pakete-zerrenda"
+
+#: src/gtk/aptitude.glade:58 src/ui.cc:2227
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr "Bertsio-berritu daitezkeen paketeak, atxikita ez daudenak, markatu"
+
+#: src/gtk/aptitude.glade:59
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "Markatu ^Berritu daitekeena"
+
+#: src/gtk/aptitude.glade:72 src/ui.cc:2232
+msgid "Forget which packages are \"new\""
+msgstr "Ahaztu zein diren pakete \"berriak\""
+
+#: src/gtk/aptitude.glade:73
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget new packages"
+msgstr "^Ahaztu pakete berriak"
+
+#: src/gtk/aptitude.glade:86 src/ui.cc:2236
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr ""
+"Instalatzeko, kentzeko, hizozteko edo bertsio berritzeko  dauden pakete "
+"guztiak utzi."
+
+#: src/gtk/aptitude.glade:87
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el pending actions"
+msgstr "Egiteko dauden ekintzak utzi"
+
+#: src/gtk/aptitude.glade:100 src/ui.cc:2240
+msgid "Delete package files which were previously downloaded"
+msgstr "Lehen deskargatutako pakete-fitxategiak ezabatu"
+
+#: src/gtk/aptitude.glade:101
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "_Clean package cache"
+msgstr "^Garbitu paketeen cachea"
+
+#: src/gtk/aptitude.glade:114 src/ui.cc:2244
+msgid "Delete package files which can no longer be downloaded"
+msgstr "Jada deskargatu ezin diren pakete-fitxategiak ezabatu"
+
+#: src/gtk/aptitude.glade:115
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _obsolete files"
+msgstr "Garbitu fitxategi ^zaharkituak"
+
+#: src/gtk/aptitude.glade:133 src/ui.cc:2251
+msgid "Reload the package cache"
+msgstr "Paketeen cachea birkargatu."
+
+#: src/gtk/aptitude.glade:134
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload package cache"
+msgstr "^Birkargatu pakete-cachea"
+
+#: src/gtk/aptitude.glade:147 src/ui.cc:1700 src/ui.cc:2256
+msgid "Waste time trying to find mines"
+msgstr "Denbora pasa mina bila"
+
+#: src/gtk/aptitude.glade:148
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "^Jokatu mina-aurkitzailean"
+
+#: src/gtk/aptitude.glade:166 src/ui.cc:2261
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"Root bihurtzeko, exekutatu 'su'. Horrela programa berrabiaraziko da, baina "
+"zure ezarpenak mantenduta."
+
+#: src/gtk/aptitude.glade:167
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become root"
+msgstr "Root bihurtu"
+
+#: src/gtk/aptitude.glade:180 src/ui.cc:2264
+msgid "Exit the program"
+msgstr "Irten programatik"
+
+#: src/gtk/aptitude.glade:181
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "^Irten"
+
+#: src/gtk/aptitude.glade:197
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/aptitude.glade:205 src/ui.cc:2271
+msgid "Undo the last package operation or group of operations"
+msgstr "Azken pakete-eragiketa edo eragiketa-multzoa desegin"
+
+#: src/gtk/aptitude.glade:206 src/ui.cc:2270 src/ui.cc:2650
+msgid "Undo"
+msgstr "Desegin"
+
+#: src/gtk/aptitude.glade:224
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/aptitude.glade:232
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/aptitude.glade:240
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/aptitude.glade:248
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "ezabatu"
+
+#: src/gtk/aptitude.glade:260
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "Paketea"
+
+#: src/gtk/aptitude.glade:268 src/ui.cc:2280
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr ""
+"Jarri bandera unean hautatutako paketeei, instalatzeko edo bertsio-berritzeko"
+
+#: src/gtk/aptitude.glade:269
+#, fuzzy
+#| msgid "Install"
+msgid "_Install"
+msgstr "Instalatu"
+
+#: src/gtk/aptitude.glade:282 src/ui.cc:2284
+msgid "Flag the currently selected package for removal"
+msgstr "Jarri bandera unean hautatutako paketeei, kentzeko"
+
+#: src/gtk/aptitude.glade:283
+#, fuzzy
+#| msgid "Remove"
+msgid "_Remove"
+msgstr "Kendu"
+
+#: src/gtk/aptitude.glade:296 src/ui.cc:2288
+msgid ""
+"Flag the currently selected package and its configuration files for removal"
+msgstr ""
+"Jarri bandera unean hautatutako paketeei eta beraien konfigurazioko "
+"fitxategiei, kentzeko"
+
+#: src/gtk/aptitude.glade:297
+#, fuzzy
+#| msgid "^Purge"
+msgid "_Purge"
+msgstr "^Purgatu"
+
+#: src/gtk/aptitude.glade:310
+msgid ""
+"Cancel any pending installation, upgrade, or removal of the currently "
+"selected package, and remove any hold that was set on the package"
+msgstr ""
+
+#: src/gtk/aptitude.glade:311
+#, fuzzy
+#| msgid "Keep"
+msgid "_Keep"
+msgstr "Mantendu"
+
+#: src/gtk/aptitude.glade:324 src/ui.cc:2296
+msgid ""
+"Cancel any action on the selected package, and protect it from future "
+"upgrades"
+msgstr ""
+"Bertan behera utzi hautatutako paketearen ekintza, eta babestu etorkizuneko "
+"bertsio-berritzetik."
+
+#: src/gtk/aptitude.glade:325
+#, fuzzy
+#| msgid "Hold"
+msgid "_Hold"
+msgstr "Heldu"
+
+#: src/gtk/aptitude.glade:338 src/ui.cc:2300
+msgid ""
+"Mark the selected package as having been automatically installed; it will "
+"automatically be removed if no other packages depend on it"
+msgstr ""
+"Markatu hautatutako paketea automatikoki instalatu balitz bezala;beste "
+"paketerik behar ez duenean automatikoki ezabatua izango da"
+
+#: src/gtk/aptitude.glade:339
+#, fuzzy
+#| msgid "Mark ^Auto"
+msgid "Mark _Auto"
+msgstr "Markatu ^Auto"
+
+#: src/gtk/aptitude.glade:352 src/ui.cc:2304
+msgid ""
+"Mark the selected package as having been manually installed; it will not be "
+"removed unless you manually remove it"
+msgstr ""
+"Markatu hautatutako paketea eskuz instalatua izan balitz bezala; ez da "
+"ezabatuko zuk eskuz ezabatu arte"
+
+#: src/gtk/aptitude.glade:353
+#, fuzzy
+#| msgid "Mark ^Manual"
+msgid "Mark _Manual"
+msgstr "Markatu ^Eskuz"
+
+#: src/gtk/aptitude.glade:366 src/ui.cc:2308
+msgid ""
+"Forbid the candidate version of the selected package from being installed; "
+"newer versions of the package will be installed as usual"
+msgstr ""
+"Debekatu hautatutako paketearen bertsioa instalatzea;bertsio berriagoak era "
+"arruntean kudeatuko dira"
+
+#: src/gtk/aptitude.glade:367
+#, fuzzy
+#| msgid "^Forbid Version"
+msgid "_Forbid Version"
+msgstr "^Debekatutako bertsioa"
+
+#: src/gtk/aptitude.glade:384
+#, fuzzy
+#| msgid "Views"
+msgid "_Views"
+msgstr "Ikuspegiak"
+
+#: src/gtk/aptitude.glade:392
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/aptitude.glade:393
+msgid "View apt _errors"
+msgstr ""
+
+#: src/gtk/aptitude.glade:400
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/aptitude.glade:401
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Find _Dependency Chains"
+msgstr "Mendekotasun kudeaketa"
+
+#: src/gtk/aptitude.glade:412
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "Laguntza"
+
+#: src/gtk/aptitude.glade:420
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/aptitude.glade:440 src/gtk/aptitude.glade:723
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/aptitude.glade:459
+#, fuzzy
+#| msgid "List Update"
+msgid "Update"
+msgstr "Zerrendaren eguneraketa"
+
+#: src/gtk/aptitude.glade:469 src/gtk/aptitude.glade:890 src/ui.cc:837
+#: src/ui.cc:839 src/ui.cc:884 src/ui.cc:886 src/ui.cc:912 src/ui.cc:914
+#: src/ui.cc:935 src/ui.cc:937
+msgid "Packages"
+msgstr "Paketeak"
+
+#: src/gtk/aptitude.glade:479 src/gtk/aptitude.glade:1195 src/ui.cc:1336
+msgid "Preview"
+msgstr "Aurrebista"
+
+#: src/gtk/aptitude.glade:489 src/gtk/aptitude.glade:1289 src/ui.cc:2652
+msgid "Resolver"
+msgstr "Ebatzi"
+
+#: src/gtk/aptitude.glade:499
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "Instalatuta"
+
+#: src/gtk/aptitude.glade:529 src/gtk/aptitude.glade:798
+#: src/gtk/aptitude.glade:1352 src/gtk/aptitude.glade:1445
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "Bilatu"
+
+#: src/gtk/aptitude.glade:549 src/gtk/aptitude.glade:818
+#: src/gtk/aptitude.glade:1372 src/gtk/aptitude.glade:1465
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/aptitude.glade:632
+#, fuzzy
+#| msgid "Upgrade"
+msgid "Upgrade Summary"
+msgstr "Bertsio-berritu"
+
+#: src/gtk/aptitude.glade:661
+#, fuzzy
+#| msgid "Source Package: "
+msgid "Selected Package"
+msgstr "Iturburu-paketea: "
+
+#: src/gtk/aptitude.glade:689 src/gtk/gui.cc:84
+msgid "Upgrade"
+msgstr "Bertsio-berritu"
+
+#: src/gtk/aptitude.glade:706
+msgid "<b>Available Upgrades:</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:754
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr "[Deskargatuta]"
+
+#: src/gtk/aptitude.glade:954
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1015
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "%s - mendekotasunak"
+
+#: src/gtk/aptitude.glade:1045
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr "^Aldaketa-egunkaria"
+
+#: src/gtk/aptitude.glade:1074
+#, fuzzy
+#| msgid "False"
+msgid "Files"
+msgstr "Faltsua"
+
+#: src/gtk/aptitude.glade:1085
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1094
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1105
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "Etiketak"
+
+#: src/gtk/aptitude.glade:1136
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "ez"
+
+#: src/gtk/aptitude.glade:1227 src/gtk/download.cc:200
+#, fuzzy
+#| msgid "State"
+msgid "Status"
+msgstr "Egoera"
+
+#: src/gtk/aptitude.glade:1236
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1251
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1266
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1318
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "Err "
+
+#: src/gtk/aptitude.glade:1413
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1506
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1544
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Dependency Chain"
+msgstr "Mendekotasun kudeaketa"
+
+#: src/gtk/aptitude.glade:1561
+msgid "A terminal running dpkg will appear here."
+msgstr ""
+
+#: src/gtk/aptitude.glade:1572
+msgid "Applying Changes"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1643 src/gtk/gui.cc:86
+msgid "Remove"
+msgstr "Kendu"
+
+#: src/gtk/aptitude.glade:1656
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "^Purgatu"
+
+#: src/gtk/aptitude.glade:1669
+msgid "Keep"
+msgstr "Mantendu"
+
+#: src/gtk/aptitude.glade:1682
+msgid "Hold"
+msgstr "Heldu"
+
+#: src/gtk/changelog.cc:251
+msgid "The changelog is empty."
+msgstr ""
+
+#: src/gtk/changelog.cc:253
+msgid ""
+"No new changelog entries; it looks like you installed a locally compiled "
+"version of this package."
+msgstr ""
+
+#: src/gtk/changelog.cc:255
+msgid ""
+"No new changelog entries; this is likely due to a binary-only upload of this "
+"package."
+msgstr ""
+
+#: src/gtk/changelog.cc:384 src/view_changelog.cc:369
+msgid "You can only view changelogs of official Debian packages."
+msgstr ""
+"Debian-eko pakete ofizialen aldaketen erregistroak bakarrik ikus ditzakezu."
+
+#: src/gtk/changelog.cc:403
+#, fuzzy
+#| msgid "Downloading Changelog"
+msgid "Downloading changelog; please wait..."
+msgstr "Aldaketen egunkaria deskargatzen"
+
+#: src/gtk/changelog.cc:447
+#, fuzzy
+#| msgid "Downloading Changelog"
+msgid "Downloading changelogs"
+msgstr "Aldaketen egunkaria deskargatzen"
+
+#: src/gtk/dashboardtab.cc:87
+#, fuzzy
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download changelogs"
+msgstr "Aldaketen egunkariak deskargatzeko erabiliko den URLa"
+
+#: src/gtk/dashboardtab.cc:172
+msgid "Available upgrades:"
+msgstr ""
+
+#: src/gtk/dashboardtab.cc:182
+#, fuzzy, c-format
+#| msgid "%d upgrade"
+#| msgid_plural "%d upgrades"
+msgid "%d available upgrade:"
+msgid_plural "%d available upgrades:"
+msgstr[0] "%d eguneratu"
+msgstr[1] "%d eguneratu"
+
+#: src/gtk/dependency_chains_tab.cc:179
+msgid "Select one or more starting packages and an ending package to search."
+msgstr ""
+
+#: src/gtk/dependency_chains_tab.cc:239
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "No dependency chain found."
+msgstr "Mendekotasun kudeaketa"
+
+#: src/gtk/download.cc:127
+msgid "Ignored"
+msgstr ""
+
+#: src/gtk/download.cc:134
+#, fuzzy
+#| msgid "False"
+msgid "Failed"
+msgstr "Faltsua"
+
+#: src/gtk/download.cc:143
+#, fuzzy
+#| msgid "Deleting downloaded files"
+msgid "Already downloaded"
+msgstr "Deskargatutako fitxategiak ezabatzen"
+
+#: src/gtk/download.cc:150
+#, fuzzy
+#| msgid "death"
+msgid "Fetch"
+msgstr "heriotza"
+
+#: src/gtk/download.cc:156
+#, fuzzy
+#| msgid "none"
+msgid "Done"
+msgstr "bat ere ez"
+
+#: src/gtk/download.cc:199
+msgid "URI"
+msgstr ""
+
+#: src/gtk/download.cc:205
+#, fuzzy
+#| msgid "Total Progress: "
+msgid "Progress"
+msgstr "Progresioa guztira: "
+
+#: src/gtk/download.cc:212
+#, fuzzy
+#| msgid "Description"
+msgid "Short Description"
+msgstr "Azalpena"
+
+#: src/gtk/download.cc:213 src/pkg_columnizer.cc:93 src/pkg_view.cc:671
+msgid "Description"
+msgstr "Azalpena"
+
+#: src/gtk/download.cc:297
+#, fuzzy
+#| msgid "View next display"
+msgid "View Details"
+msgstr "Hurrengo pantaila ikusi"
+
+#: src/gtk/download.cc:335
+msgid "Change media"
+msgstr ""
+
+#: src/gtk/download.cc:356
+#, c-format
+msgid "%s: %sB/s"
+msgstr ""
+
+#: src/gtk/download.cc:376
+#, c-format
+msgid "%s: %lu/%lu, %sB/s"
+msgstr ""
+
+#: src/gtk/download.cc:382
+#, fuzzy, c-format
+#| msgid "%s; will be installed"
+msgid "%s: %lu/%lu, stalled"
+msgstr "%s, instalatu egingo da."
+
+#: src/gtk/download.cc:403
+#, fuzzy, c-format
+#| msgid " [ %i%% ] (%sB/s, %s remaining)"
+msgid "%s: %sB of %sB at %sB/s, %s remaining"
+msgstr " [ %% %i ] (%sB/s, %s falta)"
+
+#: src/gtk/download.cc:410
+#, fuzzy, c-format
+#| msgid "but %s is to be installed."
+msgid "%s: %sB of %sB, stalled"
+msgstr "baina %s instalatu egingo da."
+
+#: src/gtk/download.cc:439
+msgid "Completed"
+msgstr ""
+
+#: src/gtk/download.cc:441
+msgid "Completed with errors"
+msgstr ""
+
+#: src/gtk/dpkg_terminal.cc:83
+#, fuzzy, c-format
+#| msgid "Unable to locate package %s"
+msgid "%s: Unable to create a Unix-domain socket: %s"
+msgstr "Ezin da %s paketea aurkitu"
+
+#: src/gtk/dpkg_terminal.cc:263
+#, fuzzy, c-format
+#| msgid "Unable to create temporary directory from template \"%s\": %s"
+msgid "%s: Unable to accept a connection from the subprocess: %s"
+msgstr "Ezin da aldi baterako direktorioa \"%s\" txantiloitik sortu: %s"
+
+#: src/gtk/entityview.cc:192 src/gtk/resolver.cc:155
+#, fuzzy
+#| msgid "ProgName"
+msgid "Name"
+msgstr "ProgIzena"
+
+#: src/gtk/entityview.cc:207
+#, fuzzy
+#| msgid "Version: "
+msgid "Version"
+msgstr "Bertsioa: "
+
+#: src/gtk/gui.cc:71
+#, fuzzy
+#| msgid "not installed"
+msgid "Not installed"
+msgstr "ez dago instalatuta"
+
+#: src/gtk/gui.cc:72
+msgid "Virtual"
+msgstr "Birtuala"
+
+#: src/gtk/gui.cc:73
+#, fuzzy
+#| msgid "unpacked"
+msgid "Unpacked"
+msgstr "deskonprimituta"
+
+#: src/gtk/gui.cc:74
+#, fuzzy
+#| msgid "half-config"
+msgid "Half-configured"
+msgstr "erdi-konfiguratuta"
+
+#: src/gtk/gui.cc:75
+#, fuzzy
+#| msgid "half-install"
+msgid "Half-installed"
+msgstr "erdi-instalatuta"
+
+#: src/gtk/gui.cc:76
+#, fuzzy
+#| msgid "not installed (configuration files remain)"
+msgid "Configuration files and data remain"
+msgstr "ez dago instalatuta (konfigurazio-fitxategiak daude)"
+
+#: src/gtk/gui.cc:77
+#, fuzzy
+#| msgid "triggers-awaited"
+msgid "Triggers awaited"
+msgstr "abiarazlea-itxoiten"
+
+#: src/gtk/gui.cc:78
+#, fuzzy
+#| msgid "triggers-pending"
+msgid "Triggers pending"
+msgstr "abiarazlea-faltan"
+
+#: src/gtk/gui.cc:79
+msgid "Installed"
+msgstr "Instalatuta"
+
+#: src/gtk/gui.cc:83
+msgid "Reinstall"
+msgstr "Berrinstalatu"
+
+#: src/gtk/gui.cc:85
+msgid "Downgrade"
+msgstr "Itzuli aurreko bertsiora"
+
+#: src/gtk/gui.cc:87
+msgid "Remove and purge configuration/data"
+msgstr ""
+
+#: src/gtk/gui.cc:88
+msgid "Hold (don't uprgade)"
+msgstr ""
+
+#: src/gtk/gui.cc:90
+#, fuzzy
+#| msgid "Related Dependencies"
+msgid "Unsatisfied dependencies"
+msgstr "Zerikusia duten mendekotasunak"
+
+#: src/gtk/gui.cc:201
+msgid "Checking for updates"
+msgstr ""
+
+#: src/gtk/gui.cc:217
+msgid "Insufficient privileges."
+msgstr ""
+
+#: src/gtk/gui.cc:220
+#, fuzzy
+#| msgid "Apply a filter to the package list"
+msgid "You must be root to update the package lists."
+msgstr "Ezarri iragazkia pakete-zerrendari"
+
+#: src/gtk/gui.cc:228 src/gtk/gui.cc:299
+#, fuzzy
+#| msgid "Downloading... "
+msgid "Download already running."
+msgstr "Deskargatzen..."
+
+#: src/gtk/gui.cc:230 src/gtk/gui.cc:301 src/ui.cc:1462 src/ui.cc:1695
+msgid "A package-list update or install run is already taking place."
+msgstr ""
+"Pakete-zerrenda baten eguneratzea edo instalazioa dagoeneko egiten ari da."
+
+#: src/gtk/gui.cc:315 src/ui.cc:1206
+msgid "Downloading packages"
+msgstr "Paketeak deskargatzen"
+
+#: src/gtk/gui.cc:379
+#, fuzzy
+#| msgid "Resolver"
+msgid "Resolver:"
+msgstr "Ebatzi"
+
+#: src/gtk/gui.cc:384
+#, fuzzy
+#| msgid "Preview"
+msgid "Preview:"
+msgstr "Aurrebista"
+
+#: src/gtk/gui.cc:389
+#, fuzzy
+#| msgid "No broken packages."
+msgid "Broken packages"
+msgstr "Ez dago hautsitako paketerik."
+
+#: src/gtk/gui.cc:423
+#, fuzzy
+#| msgid "No broken packages."
+msgid "Show broken packages"
+msgstr "Ez dago hautsitako paketerik."
+
+#: src/gtk/gui.cc:427
+#, fuzzy
+#| msgid "Resolve Dependencies"
+msgid "Resolve dependencies"
+msgstr "Ebatzi mendekotasunak"
+
+#: src/gtk/gui.cc:455
+#, fuzzy, c-format
+#| msgid "No packages are broken."
+msgid "%d package is broken"
+msgstr "Ez dago hautsitako paketerik."
+
+#: src/gtk/gui.cc:456
+#, fuzzy, c-format
+#| msgid "No packages are broken."
+msgid "%d packages are broken."
+msgstr "Ez dago hautsitako paketerik."
+
+#: src/gtk/gui.cc:499
+#, fuzzy
+#| msgid "%s changes"
+msgid "View changes"
+msgstr "%s aldaketa"
+
+#: src/gtk/gui.cc:503
+#, fuzzy
+#| msgid "%s changes"
+msgid "Apply changes"
+msgstr "%s aldaketa"
+
+#. ForTranslators: any numbers in this
+#. string will be displayed in a larger
+#. font.
+#: src/gtk/gui.cc:542
+#, fuzzy, c-format
+#| msgid "%d install"
+#| msgid_plural "%d installs"
+msgid "%d package to install"
+msgstr "%d instalatu"
+
+#: src/gtk/gui.cc:543
+#, fuzzy, c-format
+#| msgid "%d install"
+#| msgid_plural "%d installs"
+msgid "%d packages to install"
+msgstr "%d instalatu"
+
+#. ForTranslators: any numbers in this
+#. string will be displayed in a larger
+#. font.
+#: src/gtk/gui.cc:557
+#, fuzzy, c-format
+#| msgid "failed to remove %s"
+msgid "%d package to remove"
+msgstr "huts egin du %s kentzean"
+
+#: src/gtk/gui.cc:558
+#, fuzzy, c-format
+#| msgid "No packages are broken."
+msgid "%d packages to remove"
+msgstr "Ez dago hautsitako paketerik."
+
+#: src/gtk/gui.cc:596
+#, fuzzy, c-format
+#| msgid "DownloadSize"
+msgid "Download size: %sB."
+msgstr "Deskarga-tamaina"
+
+#: src/gtk/gui.cc:646
+#, c-format
+msgid "Tags of %s:\n"
+msgstr ""
+
+#: src/gtk/gui.cc:680
+#, fuzzy
+#| msgid "Packages"
+msgid "Packages:"
+msgstr "Paketeak"
+
+#: src/gtk/gui.cc:789 src/gtk/gui.cc:794
+msgid "Dashboard:"
+msgstr ""
+
+#: src/gtk/gui.cc:913
+#, c-format
+msgid "Unable to load the user interface definition file %s/aptitude.glade."
+msgstr ""
+
+#: src/gtk/info.cc:157 src/gtk/pkgview.cc:162
+#, fuzzy
+#| msgid "Current status: %F."
+msgid "Current status"
+msgstr "Uneko egoera: %F."
+
+#: src/gtk/info.cc:159 src/gtk/pkgview.cc:164
+msgid "Selected status"
+msgstr ""
+
+#: src/gtk/info.cc:482
+#, fuzzy
+#| msgid "Not Installed"
+msgid "Not available"
+msgstr "Ez dago instalatuta"
+
+#: src/gtk/info.cc:528
+msgid "Please wait; reloading cache..."
+msgstr ""
+
+#: src/gtk/info.cc:673
+msgid "Info:"
+msgstr ""
+
+#: src/gtk/packageinformation.cc:104 src/gtk/packageinformation.cc:106
+#: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
+#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:270
+#: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
+#: src/pkg_ver_item.cc:350 src/pkg_ver_item.cc:384
+msgid "Unknown"
+msgstr "Ezezaguna"
+
+#: src/gtk/packagestab.cc:57
+#, fuzzy, c-format
+#| msgid "No packages matched the pattern \"%ls\"."
+msgid "No packages matched \"%s\"."
+msgstr "Ez dago \"%ls\" patroia betetzen duen paketerik."
+
+#: src/gtk/packagestab.cc:88
+msgid "Enter a search and click \"Find\" to display packages."
+msgstr ""
+
+#: src/gtk/packagestab.cc:142
+#, fuzzy
+#| msgid "Package: "
+msgid "Packages: "
+msgstr "Paketea: "
+
+#: src/gtk/packagestab.cc:202
+#, fuzzy, c-format
+#| msgid "%s versions"
+msgid "Upgrade to %s version %s"
+msgstr "%s - bertsioak"
+
+#: src/gtk/packagestab.cc:210
+#, fuzzy, c-format
+#| msgid "Install(%s provides %s)"
+msgid "Install %s version %s"
+msgstr "Instalatu: (%s-ek  %s hornitzen du)"
+
+#: src/gtk/packagestab.cc:218
+#, fuzzy, c-format
+#| msgid "  cwidget version: %s\n"
+msgid "Downgrade to %s version %s"
+msgstr "  cwidget bertsioa: %s\n"
+
+#: src/gtk/packagestab.cc:229
+#, fuzzy, c-format
+#| msgid "Keep the following packages at their current version:"
+msgid "Don't hold %s at its current version."
+msgstr "Mantendu hurrengo paketeak dauden bezala:"
+
+#: src/gtk/packagestab.cc:232 src/gtk/packagestab.cc:252
+#: src/gtk/packagestab.cc:255
+#, fuzzy, c-format
+#| msgid "Canc^el pending actions"
+msgid "Cancel any actions on %s."
+msgstr "Egiteko dauden ekintzak utzi"
+
+#: src/gtk/packagestab.cc:237
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the purge of %s."
+msgstr "Bertanb behera utzi %F kentzea"
+
+#: src/gtk/packagestab.cc:239
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the removal of %s."
+msgstr "Bertanb behera utzi %F kentzea"
+
+#: src/gtk/packagestab.cc:244
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the upgrade of %s."
+msgstr "Bertanb behera utzi %F kentzea"
+
+#: src/gtk/packagestab.cc:246
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %F"
+msgid "Cancel the installation of %s."
+msgstr "Bertan behera utzi %F(r)en instalazioa"
+
+#: src/gtk/packagestab.cc:248
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the downgrade of %s."
+msgstr "Bertanb behera utzi %F kentzea"
+
+#: src/gtk/packagestab.cc:250
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %F"
+msgid "Cancel the reinstallation of %s."
+msgstr "Bertan behera utzi %F(r)en instalazioa"
+
+#: src/gtk/packagestab.cc:335
+#, fuzzy, c-format
+#| msgid "\"%s\" is a virtual package provided by:\n"
+msgid "%s is a virtual package provided by:\n"
+msgstr "\"%s\" pakete birtual bat da, honek hornitua:\n"
+
+#: src/gtk/packagestab.cc:399 src/gtk/previewtab.cc:200
+msgid "(more info...)"
+msgstr ""
+
+#: src/gtk/packagestab.cc:452
+#, fuzzy, c-format
+#| msgid "Remove(%s)"
+msgid "Remove %s"
+msgstr "Kendu(%s)"
+
+#: src/gtk/packagestab.cc:456
+#, fuzzy, c-format
+#| msgid "^Purge"
+msgid "Purge %s"
+msgstr "^Purgatu"
+
+#: src/gtk/packagestab.cc:464
+#, c-format
+msgid "Hold %s at its current version."
+msgstr ""
+
+#: src/gtk/pkgview.cc:335
+msgid "Cache reloading, please wait..."
+msgstr ""
+
+#: src/gtk/pkgview.cc:373 src/gtk/pkgview.cc:389 src/pkg_tree.cc:204
+#: src/pkg_tree.cc:215 src/pkg_tree.cc:226 src/pkg_tree.cc:238
+msgid "Building view"
+msgstr "Ikuspegi-eraikitzea"
+
+#: src/gtk/pkgview.cc:379 src/gtk/pkgview.cc:395
+#, fuzzy
+#| msgid "Building view"
+msgid "Finalizing view"
+msgstr "Ikuspegi-eraikitzea"
+
+#: src/gtk/previewtab.cc:95 src/pkg_grouppolicy.cc:637
+msgid ""
+"Packages with unsatisfied dependencies\n"
+" The dependency requirements of these packages will be unmet after the "
+"install is complete.\n"
+" .\n"
+" The presence of this tree probably indicates that something is broken, "
+"either on your system or in the Debian archive."
+msgstr ""
+"Bete gabeko mendekotasunak dituzten paketeak\n"
+" Pakete hauen mendekotasun-eskakizunak bete gabe geratuko dira instalazioa "
+"amaitutakoan.\n"
+" .\n"
+" Zuhaitz hau agertzeak seguru asko esan nahi izango du, zerbait hautsita "
+"dagoela zure sisteman edo Debian artxiboan."
+
+#: src/gtk/previewtab.cc:96 src/pkg_grouppolicy.cc:638
+msgid ""
+"Packages being removed because they are no longer used\n"
+" These packages are being deleted because they were automatically installed "
+"to fulfill dependencies, and the planned action will result in no installed "
+"package declaring an 'important' dependency on them.\n"
+msgstr ""
+"Jada erabiltzen ez direlako kenduko diren paketeak\n"
+" Pakete hauek ezabatu egingo dira; izan ere, automatikoki instalatu ziren "
+"mendekotasunak betetzeko, eta egin nahi den ekintzaren ondorioz, ez da "
+"instalatutako pakete bat ere geratuko horien mendekotasun "
+"'garrantzitsua'duenik.\n"
+
+#: src/gtk/previewtab.cc:97 src/pkg_grouppolicy.cc:639
+msgid ""
+"Packages being automatically held in their current state\n"
+" These packages could be upgraded, but they have been kept in their current "
+"state to avoid breaking dependencies."
+msgstr ""
+"Automatikoki uneko egoeran atxikiko diren paketeak\n"
+" Pakete hauek bertsio-berritu litezke, baina uneko egoeran mantenduko dira, "
+"mendekotasunik ez hausteko."
+
+#: src/gtk/previewtab.cc:98 src/pkg_grouppolicy.cc:640
+msgid ""
+"Packages being automatically installed to satisfy dependencies\n"
+" These packages are being installed because they are required by another "
+"package you have chosen for installation."
+msgstr ""
+"Mendekotasunak betetzeko automatikoki instalatuko diren paketeak\n"
+" Instalatzeko aukeratu duzun beste pakete batek behar dituelako instalatuko "
+"dira pakete hauek."
+
+#: src/gtk/previewtab.cc:99 src/pkg_grouppolicy.cc:641
+msgid ""
+"Packages being deleted due to unsatisfied dependencies\n"
+" These packages are being deleted because one or more of their dependencies "
+"is no longer available, or because another package conflicts with them."
+msgstr ""
+"Mendekotasunak ez betetzeagatik ezabatuko diren paketeak\n"
+" Euren mendekotasun bat edo gehiago jada erabilgarri ez dagoelako, edo beste "
+"pakete batekin gatazka dutelako ezabatuko dira pakete hauek."
+
+#: src/gtk/previewtab.cc:100 src/pkg_grouppolicy.cc:642
+msgid ""
+"Packages to be downgraded\n"
+" An older version of these packages than is currently installed will be "
+"installed."
+msgstr ""
+"Aurreko bertsiora itzultzeko paketeak\n"
+" Une honetan instalatutakoa baino bertsio zaharrago batera itzuliko dira "
+"pakete hauek."
+
+#: src/gtk/previewtab.cc:101 src/pkg_grouppolicy.cc:643
+msgid ""
+"Packages being held back\n"
+" These packages could be upgraded, but you have asked for them to be held at "
+"their current version."
+msgstr ""
+"Atxikitako paketeak\n"
+" Pakete hauek bertsio-berritu daitezke, baina uneko bertsioan mantentzea "
+"eskatu duzu."
+
+#: src/gtk/previewtab.cc:102 src/pkg_grouppolicy.cc:644
+msgid ""
+"Packages to be reinstalled\n"
+" These packages will be reinstalled."
+msgstr ""
+"Berrinstalatzeko paketeak\n"
+" Pakete hauek berriro instalatuko dira."
+
+#: src/gtk/previewtab.cc:103 src/pkg_grouppolicy.cc:645
+msgid ""
+"Packages to be installed\n"
+" These packages have been manually selected for installation on your "
+"computer."
+msgstr ""
+"Instalatzeko paketeak\n"
+" Pakete hauek eskuz hautatu dituzu, ordenagailuan instalatzeko."
+
+#: src/gtk/previewtab.cc:104 src/pkg_grouppolicy.cc:646
+msgid ""
+"Packages to be removed\n"
+" These packages have been manually selected for removal."
+msgstr ""
+"Kentzeko paketeak\n"
+" Pakete hauek eskuz hautatu dituzu kentzeko."
+
+#: src/gtk/previewtab.cc:105 src/pkg_grouppolicy.cc:647
+msgid ""
+"Packages to be upgraded\n"
+" These packages will be upgraded to a newer version."
+msgstr ""
+"Bertsio-berritzeko paketeak\n"
+" Pakete hauek bertsio-berritu egingo dira."
+
+#: src/gtk/previewtab.cc:106 src/pkg_grouppolicy.cc:648
+msgid ""
+"Packages that are partially installed\n"
+" These packages are not fully installed and configured; an attempt will be "
+"made to complete their installation."
+msgstr ""
+"Erdi instalaturik dauden paketeak.\n"
+" Pakete hauek ez daude guztiz instalatu eta konfiguraturik, instalazio hau "
+"burutzeko saiakera bat egingo da orain."
+
+#: src/gtk/previewtab.cc:164
+#, fuzzy
+#| msgid "Preview"
+msgid "Preview: "
+msgstr "Aurrebista"
+
+#: src/gtk/resolver.cc:53
+#, fuzzy, c-format
+#| msgid "Error while dumping resolver state"
+msgid "Error in dependency resolver: %s"
+msgstr "Errorea ebazpen-egoera iraultzean"
+
+#: src/gtk/resolver.cc:56
+#, c-format
+msgid ""
+"Fatal error in dependency resolver.  You can continue searching, but some "
+"solutions might be impossible to generate.\n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/gtk/resolver.cc:156 src/pkg_columnizer.cc:92
+msgid "Action"
+msgstr "Ekintza"
+
+#: src/gtk/resolver.cc:256 src/solution_fragment.cc:106
+#, c-format
+msgid "%s depends upon %s"
+msgstr "%s-ek %s-ren mendekotasuna du."
+
+#: src/gtk/resolver.cc:259 src/solution_fragment.cc:109
+#, c-format
+msgid "%s pre-depends upon %s"
+msgstr "%s-ek %s-ren aurre-mendekotasuna du."
+
+#: src/gtk/resolver.cc:262 src/solution_fragment.cc:112
+#, c-format
+msgid "%s suggests %s"
+msgstr "%s-ek %s iradokitzen du"
+
+#: src/gtk/resolver.cc:265 src/solution_fragment.cc:115
+#: src/solution_item.cc:602
+#, c-format
+msgid "%s recommends %s"
+msgstr "%s-ek %s gomendatzen du"
+
+#: src/gtk/resolver.cc:268 src/solution_fragment.cc:118
+#, c-format
+msgid "%s conflicts with %s"
+msgstr "%s-ek %s-rekin elkar-jotzen du"
+
+#: src/gtk/resolver.cc:271 src/solution_fragment.cc:121
+#, c-format
+msgid "%s breaks %s"
+msgstr "%s-ek %s hausten du"
+
+#: src/gtk/resolver.cc:274 src/solution_fragment.cc:124
+#, c-format
+msgid "%s replaces %s"
+msgstr "%s-ek %s ordezkatzen du"
+
+#: src/gtk/resolver.cc:277 src/solution_fragment.cc:127
+#, c-format
+msgid "%s obsoletes %s"
+msgstr "%s-ek %s zaharkiturik uzten du"
+
+#: src/gtk/resolver.cc:292
+#, fuzzy
+#| msgid "No broken packages."
+msgid "Nothing to do: there are no broken packages."
+msgstr "Ez dago hautsitako paketerik."
+
+#: src/gtk/resolver.cc:299
+#, fuzzy
+#| msgid "No resolution found."
+msgid "No resolutions found."
+msgstr "Ez da bereizmenik aurkitu."
+
+#: src/gtk/resolver.cc:314 src/solution_screen.cc:515
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr "ireki: %d; itxita: %d; geroratua: %d; gatazka: %d"
+
+#: src/gtk/resolver.cc:405 src/solution_screen.cc:248
+msgid "Remove the following packages:"
+msgstr "Kendu hurrengo paketeak:"
+
+#: src/gtk/resolver.cc:420 src/solution_screen.cc:270
+msgid "Install the following packages:"
+msgstr "Instalatu hurrengo bertsio-beritzeak:"
+
+#: src/gtk/resolver.cc:437
+#, fuzzy
+#| msgid "Remove the following packages:"
+msgid "Keep the following packages:"
+msgstr "Kendu hurrengo paketeak:"
+
+#: src/gtk/resolver.cc:447 src/solution_fragment.cc:251
+msgid "Not Installed"
+msgstr "Ez dago instalatuta"
+
+#: src/gtk/resolver.cc:463 src/solution_screen.cc:281
+msgid "Upgrade the following packages:"
+msgstr "Bertsio-berritu hurrengo paketeak:"
+
+#: src/gtk/resolver.cc:482 src/solution_screen.cc:292
+msgid "Downgrade the following packages:"
+msgstr "Bertsioa atzeratu hurrengo paketeetan:"
+
+#: src/gtk/resolver.cc:503
+#, fuzzy
+#| msgid "Leave the following dependencies unresolved:%n"
+msgid "Leave the following dependencies unresolved:"
+msgstr "Utzi honako mendekotasunak ebatzi gabe:%n"
+
+#: src/gtk/resolver.cc:522
+#, fuzzy
+#| msgid "No more solutions."
+msgid "No solutions."
+msgstr "Ez dago irtenbide gehiagorik."
+
+#: src/gtk/resolver.cc:522
+#, fuzzy
+#| msgid "No more solutions."
+msgid "No solutions yet."
+msgstr "Ez dago irtenbide gehiagorik."
+
+#: src/gtk/resolver.cc:524
+#, c-format
+msgid "Solution %d of %d (score: %d)"
+msgstr ""
+
+#: src/gtk/resolver.cc:618 src/ui.cc:2093
+msgid "Unable to find a solution to apply."
+msgstr "Ezin izan da irtenbiderik aurkitu aplikatzeko."
+
+#: src/gtk/resolver.cc:623 src/ui.cc:2099
+msgid "Ran out of time while trying to find a solution."
+msgstr "Denboraz kanpo irtenbide bat bilatzen saiatzean."
+
 #: src/load_config.cc:48
 #, c-format
 msgid "Unrecognized color name \"%s\""
@@ -3084,116 +4318,123 @@ msgstr "Sarrera baliogabea laster-teklen taldean: \"%s\""
 msgid "Ignoring invalid keybinding \"%s\" -> \"%s\""
 msgstr "Laster-tekla baliogabeari ez ikusi egiten: \"%s\" -> \"%s\""
 
-#: src/load_grouppolicy.cc:258
+#: src/load_grouppolicy.cc:289
 #, c-format
 msgid "Expected policy identifier, got '%c'"
 msgstr "Identifikatzaile-araua espero zen, '%c' lortu da"
 
-#: src/load_grouppolicy.cc:270
+#: src/load_grouppolicy.cc:305
+#, fuzzy, c-format
+#| msgid "Expected ',' or '(', got '%c'"
+msgid "Expected ',', '%c', or '('; got '%c'"
+msgstr "',' edo '(' espero zen, baina '%c' eskuratu da"
+
+#: src/load_grouppolicy.cc:309
 #, c-format
 msgid "Expected ',' or '(', got '%c'"
 msgstr "',' edo '(' espero zen, baina '%c' eskuratu da"
 
-#: src/load_grouppolicy.cc:277
+#: src/load_grouppolicy.cc:317
 #, c-format
 msgid "Unknown grouping policy \"%s\""
 msgstr "\"%s\"  taldekatze-arau ezezaguna"
 
-#: src/load_grouppolicy.cc:284
+#: src/load_grouppolicy.cc:324
 #, c-format
 msgid "Terminal policy \"%s\" should be the last policy in the list"
 msgstr "\"%s\" arau-terminala zerrendako azken araua izan beharko luke"
 
-#: src/load_grouppolicy.cc:371
+#: src/load_grouppolicy.cc:385 src/load_grouppolicy.cc:739
+msgid "Unmatched '(' in pattern grouping policy"
+msgstr "Itxi gabeko '(' taldekatze-arauaren ereduan"
+
+#: src/load_grouppolicy.cc:413
 #, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
 msgstr ""
 "Okerreko'%s' atal izena ('none', 'topdir', 'subdir', edo 'subdirs' erabili)"
 
-#: src/load_grouppolicy.cc:381
+#: src/load_grouppolicy.cc:423
 #, c-format
 msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
 msgstr ""
 "Okerreko passthrough ezarpena: '%s' ('passthrough' edo 'nopassthrough' "
 "erabili)"
 
-#: src/load_grouppolicy.cc:386
+#: src/load_grouppolicy.cc:428
 msgid "Too many arguments to by-section grouping policy"
 msgstr "Argumentu gehiegi sekzioaren arabera taldekatzeko"
 
-#: src/load_grouppolicy.cc:399
+#: src/load_grouppolicy.cc:441
 msgid "By-status grouping policies take no arguments"
 msgstr "Egoeraren arabera taldekatzeko arauek ez dute argumenturik hartzen"
 
-#: src/load_grouppolicy.cc:416
+#: src/load_grouppolicy.cc:460
 msgid "Expected '(' after 'filter'"
 msgstr "'(' espero zen 'filter' ondoren"
 
-#: src/load_grouppolicy.cc:453
+#: src/load_grouppolicy.cc:497
 #, c-format
 msgid "Unable to parse pattern at '%s'"
 msgstr "Ezin da %s(e)n eredua analizatu"
 
-#: src/load_grouppolicy.cc:458
+#: src/load_grouppolicy.cc:502
 msgid "Exactly one filter must be provided as an argument to a filter policy"
 msgstr ""
 "Zehazki iragazki-izen bat eman behar da iragazki-arauaren argumentu gisa"
 
-#: src/load_grouppolicy.cc:477
+#: src/load_grouppolicy.cc:521
 msgid "By-mode grouping policies take no arguments"
 msgstr "Moduaren arabera taldekatzeko arauek ez dute argumenturik hartzen"
 
-#: src/load_grouppolicy.cc:488
+#: src/load_grouppolicy.cc:532
 msgid "First-character grouping policies take no arguments"
 msgstr "Lehen karakterearen taldekatze-arauek ez dute argumenturik hartzen"
 
-#: src/load_grouppolicy.cc:500
+#: src/load_grouppolicy.cc:544
 msgid "Version-generating grouping policies take no arguments"
 msgstr "Bertsio-sorrerako taldekatze-arauek ez dute argumenturik hartzen"
 
-#: src/load_grouppolicy.cc:511
+#: src/load_grouppolicy.cc:555
 msgid "Dep-generating grouping policies take no arguments"
 msgstr "Mendekotasun-sorrerako taldekatze-arauek ez dute argumenturik hartzen"
 
-#: src/load_grouppolicy.cc:522
+#: src/load_grouppolicy.cc:566
 msgid "By-priority grouping policies take no arguments"
 msgstr ""
 "Lehentasunaren arabera taldekatzeko arauek ez dute argumenturik hartzen"
 
-#: src/load_grouppolicy.cc:553
+#: src/load_grouppolicy.cc:597
 msgid "Task grouping policies take no arguments"
 msgstr "Atazak taldekatzeko arauek ez dute argumenturik hartzen"
 
-#: src/load_grouppolicy.cc:566
+#: src/load_grouppolicy.cc:610
 msgid "Expected no more than one argument to a tag grouping policy"
 msgstr "Argumentu bakarra espero zen taldekatze-arauaren etiketan"
 
-#: src/load_grouppolicy.cc:581
+#: src/load_grouppolicy.cc:625
 msgid "Expected '(' after 'pattern'"
 msgstr "'(' espero zen 'pattern' ondoren"
 
-#: src/load_grouppolicy.cc:589
+#: src/load_grouppolicy.cc:633
 msgid "Missing arguments to 'pattern'"
 msgstr "'pattern'-en argumentuak falta dira"
 
-#: src/load_grouppolicy.cc:613
+#: src/load_grouppolicy.cc:656
 #, c-format
 msgid "Unable to parse pattern after \"%s\""
 msgstr "Ezin da \"%s\" ondorengo eredua analizatu"
 
-#: src/load_grouppolicy.cc:635
+#: src/load_grouppolicy.cc:694
 #, c-format
 msgid "Unexpectedly empty tree title after \"%s\""
 msgstr "Ustelgabeko titulu-zuhaitz hutsa \"%s\" ondoren"
 
-#: src/load_grouppolicy.cc:654
-#, c-format
-msgid "Expected ',' or ')' following '||', got '%s'"
+#: src/load_grouppolicy.cc:713
+#, fuzzy, c-format
+#| msgid "Expected ',' or ')' following '||', got '%s'"
+msgid "Expected '{', ')', or ',' following '||', got '%s'"
 msgstr "',' edo ')' espero zen '||' ondoren, '%s' eskuratu da"
-
-#: src/load_grouppolicy.cc:666
-msgid "Unmatched '(' in pattern grouping policy"
-msgstr "Itxi gabeko '(' taldekatze-arauaren ereduan"
 
 #: src/load_pkgview.cc:64
 msgid "Couldn't parse layout: No column format specified for static item"
@@ -3260,61 +4501,61 @@ msgstr "Itxi gabeko '(' ordenatze-arauaren azalpenean"
 msgid "Invalid sorting policy type '%s'"
 msgstr "Taldekatze-arau mota baliogabea: '%s'"
 
-#: src/main.cc:89
+#: src/main.cc:94
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr "Ezin da  deskodetu \"%ls\" ondorengo byte-anitzeko katea"
 
-#: src/main.cc:98
+#: src/main.cc:103
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr "Ezin da dekodetu \"%s\" ondorengo karaktere-handidun katea"
 
-#: src/main.cc:106
+#: src/main.cc:111
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr "%s %s konpilatua -> %s %s\n"
 
-#: src/main.cc:109
+#: src/main.cc:114
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr "Konpilatzailea: g++ %s\n"
 
-#: src/main.cc:111
+#: src/main.cc:116
 msgid "Compiled against:\n"
 msgstr "Honekin konpilatuta:\n"
 
-#: src/main.cc:112
+#: src/main.cc:117
 #, c-format
 msgid "  apt version %d.%d.%d\n"
 msgstr "  apt bertsioa %d.%d.%d\n"
 
-#: src/main.cc:115
+#: src/main.cc:120
 #, c-format
 msgid "  NCurses version: Unknown\n"
 msgstr "  Ncurses bertsioa: ezezaguna\n"
 
-#: src/main.cc:117
+#: src/main.cc:122
 #, c-format
 msgid "  NCurses version %s\n"
 msgstr "  Ncurses bertsioa: %s\n"
 
-#: src/main.cc:119
+#: src/main.cc:124
 #, c-format
 msgid "  libsigc++ version: %s\n"
 msgstr "  libsigc++ bertsioa: %s\n"
 
-#: src/main.cc:121
+#: src/main.cc:126
 #, c-format
 msgid "  Ept support enabled.\n"
 msgstr "  Ept euskarria gaituta\n"
 
-#: src/main.cc:123
+#: src/main.cc:128
 #, c-format
 msgid "  Ept support disabled.\n"
 msgstr "  Ept euskarria desgaituta\n"
 
-#: src/main.cc:126
+#: src/main.cc:131
 msgid ""
 "\n"
 "Current library versions:\n"
@@ -3322,32 +4563,32 @@ msgstr ""
 "\n"
 "Uneko liburutegien bertsioak:\n"
 
-#: src/main.cc:127
+#: src/main.cc:132
 #, c-format
 msgid "  NCurses version: %s\n"
 msgstr "  Ncurses bertsioa: %s\n"
 
-#: src/main.cc:128
+#: src/main.cc:133
 #, c-format
 msgid "  cwidget version: %s\n"
 msgstr "  cwidget bertsioa: %s\n"
 
-#: src/main.cc:129
+#: src/main.cc:134
 #, c-format
 msgid "  Apt version: %s\n"
 msgstr "  Apt bertsioa: %s\n"
 
-#: src/main.cc:135
+#: src/main.cc:140
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "Erabilera: aptitude [-S fname] [-u|-i]"
 
-#: src/main.cc:137
+#: src/main.cc:142
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "       aptitude [aukerak] <ekintza> ..."
 
-#: src/main.cc:139
+#: src/main.cc:144
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -3357,42 +4598,42 @@ msgstr ""
 "da):\n"
 "\n"
 
-#: src/main.cc:140
+#: src/main.cc:145
 #, c-format
 msgid " install      - Install/upgrade packages\n"
 msgstr " install      - Instalatu/bertsio-berritu paketeak\n"
 
-#: src/main.cc:141
+#: src/main.cc:146
 #, c-format
 msgid " remove       - Remove packages\n"
 msgstr " remove       - Kendu paketeak\n"
 
-#: src/main.cc:142
+#: src/main.cc:147
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr " purge        - Kendu paketeak eta konfigurazio-fitxategiak\n"
 
-#: src/main.cc:143
+#: src/main.cc:148
 #, c-format
 msgid " hold         - Place packages on hold\n"
 msgstr " hold         - Atxiki paketeak\n"
 
-#: src/main.cc:144
+#: src/main.cc:149
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
 msgstr " unhold       - Utzi paketea atxikitzeari\n"
 
-#: src/main.cc:145
+#: src/main.cc:150
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
 msgstr " markauto     - Markatu paketeak automatikoki instalatutako gisa\n"
 
-#: src/main.cc:146
+#: src/main.cc:151
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr " unmarkauto   - Markatu paketeak eskuz instalatutako gisa\n"
 
-#: src/main.cc:147
+#: src/main.cc:152
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
@@ -3401,19 +4642,19 @@ msgstr ""
 " forbid-version - Eragotzi aptitude-ri pakete-bertsio jakin batera "
 "berritzea.\n"
 
-#: src/main.cc:148
+#: src/main.cc:153
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr ""
 " update       - Deskargatu pakete berrien edo bertsio-berritzeko "
 "modukoenzerrendak\n"
 
-#: src/main.cc:149
+#: src/main.cc:154
 #, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr " safe-upgrade - Egin bertsio-berritze segurua\n"
 
-#: src/main.cc:150
+#: src/main.cc:155
 #, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
@@ -3422,43 +4663,43 @@ msgstr ""
 " full-upgrade - Egin eguneratze bat, seguru asko paketeak instalatuz eta "
 "kenduz\n"
 
-#: src/main.cc:151
+#: src/main.cc:156
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr " forget-new   - Ahaztu zein pakete diren \"berriak\"\n"
 
-#: src/main.cc:152
+#: src/main.cc:157
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr ""
 " search       - Bilatu pakete bat izenaren eta/edo adierazpenaren arabera\n"
 
-#: src/main.cc:153
+#: src/main.cc:158
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr " show         - Bistaratu pakete bati buruzko informazio xehea\n"
 
-#: src/main.cc:154
+#: src/main.cc:159
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr " clean        - Ezabatu deskargatutako pakete-fitxategiak\n"
 
-#: src/main.cc:155
+#: src/main.cc:160
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr " autoclean    - Ezabatu deskargatutako pakete-fitxategi zaharrak\n"
 
-#: src/main.cc:156
+#: src/main.cc:161
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr " changelog   - Ikusi paketearen aldaketa egunkaria\n"
 
-#: src/main.cc:157
+#: src/main.cc:162
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr " download     - Deskargatu pakete baten .deb fitxategia\n"
 
-#: src/main.cc:158
+#: src/main.cc:163
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -3467,7 +4708,7 @@ msgstr ""
 " reinstall - Instalaturik dagoen paketea deskargatu eta (posibleki) "
 "berrinstalatu\n"
 
-#: src/main.cc:159
+#: src/main.cc:164
 #, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
@@ -3479,7 +4720,7 @@ msgstr ""
 "                zergatik pakete batek edo gehiagok behar duten emandako "
 "paketea\n"
 
-#: src/main.cc:161
+#: src/main.cc:166
 #, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
@@ -3493,41 +4734,41 @@ msgstr ""
 "                     diren emandako paketearekin (azken hau instalatzen "
 "bada)\n"
 
-#: src/main.cc:165
+#: src/main.cc:170
 #, c-format
 msgid "  Options:\n"
 msgstr "  Aukerak:\n"
 
-#: src/main.cc:166
+#: src/main.cc:171
 #, c-format
 msgid " -h             This help text\n"
 msgstr " -h             Laguntza-testu hau\n"
 
-#: src/main.cc:167
+#: src/main.cc:172
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr " -s             Simulatu ekintzak, baina ez burutu.\n"
 
-#: src/main.cc:168
+#: src/main.cc:173
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
 " -d             Soilik deskargatu paketeak; ez instalatu edo kendu ezer.\n"
 
-#: src/main.cc:169
+#: src/main.cc:174
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr " -P             Beti eskatu berrespena\n"
 
-#: src/main.cc:170
+#: src/main.cc:175
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr ""
 " -y             Bai/ez erantzuneko galdera soilen erantzuna 'bai' izango da\n"
 
-#: src/main.cc:171
+#: src/main.cc:176
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
@@ -3536,7 +4777,7 @@ msgstr ""
 " -F format      Zehaztu bilaketa-emaitzak bistaratzeko formatu bat; ikus "
 "eskuliburua\n"
 
-#: src/main.cc:172
+#: src/main.cc:177
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
@@ -3544,36 +4785,36 @@ msgstr ""
 " -O order       Zehaztu bilaketa-emaitzak nola ordenatuko diren; ikus "
 "eskuliburua\n"
 
-#: src/main.cc:173
+#: src/main.cc:178
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr " -w width       Zehaztu bilaketa-emaitzak erakusteko zabalera\n"
 
-#: src/main.cc:174
+#: src/main.cc:179
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr " -f             Agresiboki saiatu hautsitako paketeak konpontzen.\n"
 
-#: src/main.cc:175
+#: src/main.cc:180
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             Erakutsi paketeen zein bertsio instalatuko diren.\n"
 
-#: src/main.cc:176
+#: src/main.cc:181
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr ""
 " -D             Erakutsi automatikoki aldatutako paketeen mendekotasunak.\n"
 
-#: src/main.cc:177
+#: src/main.cc:182
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr ""
 " -Z\t\t    Erakutsi pakete bakoitzaren instalatutako tamainaren aldaketa.\n"
 
-#: src/main.cc:178
+#: src/main.cc:183
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
@@ -3581,13 +4822,13 @@ msgstr ""
 " -v             Bistaratu informazio gehigarria. (hainbat aldiz eman "
 "daiteke)\n"
 
-#: src/main.cc:179
+#: src/main.cc:184
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
 msgstr " -t [release]   Ezarri zein banaketatatik instalatuko diren paketeak\n"
 
-#: src/main.cc:180
+#: src/main.cc:185
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
@@ -3596,12 +4837,12 @@ msgstr ""
 " -q             Komando-lerro moduan, progresio-gehikuntzaren adierazlea\n"
 "                 kentzen du.\n"
 
-#: src/main.cc:182
+#: src/main.cc:187
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr " -o key=balioa  'key' aukeraren konfigurazioa ezartzen du zuzenean\n"
 
-#: src/main.cc:183
+#: src/main.cc:188
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -3611,66 +4852,66 @@ msgstr ""
 "sendotzat\n"
 "                joko diren ala ez\n"
 
-#: src/main.cc:185
+#: src/main.cc:190
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr ""
 " -S fname       Irakurri aptitude-ren egoera-informazio hedatua fname-tik.\n"
 
-#: src/main.cc:186
+#: src/main.cc:191
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             Deskargatu pakete-zerrenda berriak abioan.\n"
 
-#: src/main.cc:187
+#: src/main.cc:192
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             Burutu instalazio-exekuzioa abioan.\n"
 
-#: src/main.cc:189
+#: src/main.cc:194
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  Aptitude honek ez dauka Superbehiaren ahalmenik.\n"
 
-#: src/main.cc:375
+#: src/main.cc:397
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "-q= -ren ondoren zenbaki bat espero da\n"
 
-#: src/main.cc:384
+#: src/main.cc:406
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "q= -ren ondoren zenbaki bat espero zen, %s eskuratu da\n"
 
-#: src/main.cc:408
+#: src/main.cc:430
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o aukerak gakoa=balioa formako argumentua behar du, %s lortu da\n"
 
-#: src/main.cc:500
+#: src/main.cc:530
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr "Ez dago komarik \"%s\" etiketa-izenaren ostean.\n"
 
-#: src/main.cc:531 src/main.cc:540
+#: src/main.cc:571 src/main.cc:580
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "ARRAROA: aukera-kode ezezaguna jaso da\n"
 
-#: src/main.cc:558
+#: src/main.cc:600
 msgid "Only one of -u and -i may be specified\n"
 msgstr "-u edo -i, bietako bat bakarrik zehatz daiteke\n"
 
-#: src/main.cc:566
+#: src/main.cc:608
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr ""
 "-u eta -i ezin dira zehaztu komando-lerroaren moduan (adib. 'install'ekin)"
 
-#: src/main.cc:587
+#: src/main.cc:629
 msgid "-u and -i may not be specified with a command"
 msgstr "-u eta -i ezin dira zehaztu komando batekin"
 
-#: src/main.cc:648
+#: src/main.cc:691
 #, c-format
 msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
@@ -3679,17 +4920,17 @@ msgstr ""
 "--safe-resolver eta --full-resolver aukerak ez dira esanguratsuak\n"
 "%s-(e)ntzako, ebazpen segurua erabiltzen duelako beti.\n"
 
-#: src/main.cc:704
+#: src/main.cc:748
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Komando ezezaguna: \"%s\"\n"
 
-#: src/main.cc:716 src/main.cc:765
+#: src/main.cc:760 src/main.cc:825
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Salbuespena: %s\n"
 
-#: src/main.cc:720 src/main.cc:769
+#: src/main.cc:764 src/main.cc:829
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -3698,15 +4939,15 @@ msgstr ""
 "Aztarna:\n"
 "%s\n"
 
-#: src/menu_text_layout.cc:43 src/menu_tree.cc:220 src/view_changelog.cc:60
+#: src/menu_text_layout.cc:43 src/menu_tree.cc:227 src/view_changelog.cc:166
 msgid "Search for: "
 msgstr "Bilatu hau: "
 
-#: src/menu_text_layout.cc:75 src/menu_tree.cc:237 src/view_changelog.cc:72
+#: src/menu_text_layout.cc:75 src/menu_tree.cc:244 src/view_changelog.cc:178
 msgid "Search backwards for: "
 msgstr "Bilatu atzerantz: "
 
-#: src/mine/cmine.cc:114 src/mine/cmine.cc:156 src/ui.cc:1644
+#: src/mine/cmine.cc:114 src/mine/cmine.cc:156 src/ui.cc:1700
 msgid "Minesweeper"
 msgstr "Mina-aurkitzailea"
 
@@ -3774,7 +5015,7 @@ msgstr "Taularen zabalera: "
 msgid "Number of mines: "
 msgstr "Mina kopurua: "
 
-#: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:284 src/ui.cc:356
+#: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:285 src/ui.cc:357
 msgid "Ok"
 msgstr "Ados"
 
@@ -3915,7 +5156,7 @@ msgstr "'mime-help.txt'-ren kodeketa|UTF-8"
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 
-#: src/pkg_columnizer.cc:88 src/ui.cc:2616
+#: src/pkg_columnizer.cc:88 src/ui.cc:2651
 msgid "Package"
 msgstr "Paketea"
 
@@ -3926,14 +5167,6 @@ msgstr "InstTam"
 #: src/pkg_columnizer.cc:90
 msgid "DebSz"
 msgstr "DebTam"
-
-#: src/pkg_columnizer.cc:92
-msgid "Action"
-msgstr "Ekintza"
-
-#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
-msgid "Description"
-msgstr "Azalpena"
 
 #: src/pkg_columnizer.cc:94
 msgid "InstVer"
@@ -4004,7 +5237,7 @@ msgstr "<E/E>"
 msgid "<none>"
 msgstr "<bat ere ez>"
 
-#: src/pkg_columnizer.cc:237 src/pkg_grouppolicy.cc:262
+#: src/pkg_columnizer.cc:237 src/pkg_grouppolicy.cc:264
 msgid "virtual"
 msgstr "birtuala"
 
@@ -4074,13 +5307,6 @@ msgstr "bertsio-berritu"
 msgid "none"
 msgstr "bat ere ez"
 
-#: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
-#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:268
-#: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
-#: src/pkg_ver_item.cc:350 src/pkg_ver_item.cc:384
-msgid "Unknown"
-msgstr "Ezezaguna"
-
 #. ForTranslators: Imp = Important
 #: src/pkg_columnizer.cc:361 src/pkg_ver_item.cc:359
 msgid "Imp"
@@ -4146,15 +5372,15 @@ msgstr ""
 msgid "Internal error: Default column string is unparsable"
 msgstr "Barne-errorea: zutabe-kate lehenetsia ez da analizagarria"
 
-#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1070
+#: src/pkg_grouppolicy.cc:259 src/pkg_grouppolicy.cc:1074
 msgid "Tasks"
 msgstr "Atazak"
 
-#: src/pkg_grouppolicy.cc:283
+#: src/pkg_grouppolicy.cc:285
 msgid "main"
 msgstr "nagusia"
 
-#: src/pkg_grouppolicy.cc:425
+#: src/pkg_grouppolicy.cc:427
 msgid ""
 "Security Updates\n"
 " Security updates for these packages are available from security.debian.org."
@@ -4163,7 +5389,7 @@ msgstr ""
 " Pakete hauen segurtasun-eguneratzeak security.debian.org gunean aurkituko "
 "dituzu."
 
-#: src/pkg_grouppolicy.cc:426
+#: src/pkg_grouppolicy.cc:428
 msgid ""
 "Upgradable Packages\n"
 " A newer version of these packages is available."
@@ -4171,7 +5397,7 @@ msgstr ""
 "Bertsio-berritu daitezkeen paketeak\n"
 " Pakete hauen bertsio berriago bat erabilgarri dago."
 
-#: src/pkg_grouppolicy.cc:427
+#: src/pkg_grouppolicy.cc:429
 msgid ""
 "New Packages\n"
 " These packages have been added to Debian since the last time you cleared "
@@ -4183,7 +5409,7 @@ msgstr ""
 "garbitu zenuenetik (aukeratu \"Ahaztu pakete berriak\" Ekintza menutik "
 "zerrenda garbitzeko)"
 
-#: src/pkg_grouppolicy.cc:428
+#: src/pkg_grouppolicy.cc:430
 msgid ""
 "Installed Packages\n"
 " These packages are currently installed on your computer."
@@ -4191,7 +5417,7 @@ msgstr ""
 "Instalatutako paketeak\n"
 " Pakete hauek instalatuta dituzu ordenagailuan."
 
-#: src/pkg_grouppolicy.cc:429
+#: src/pkg_grouppolicy.cc:431
 msgid ""
 "Not Installed Packages\n"
 " These packages are not installed on your computer."
@@ -4199,7 +5425,7 @@ msgstr ""
 "Instalatu gabeko paketeak\n"
 " Pakete hauek ez dituzu instalatuta ordenagailuan."
 
-#: src/pkg_grouppolicy.cc:430
+#: src/pkg_grouppolicy.cc:432
 msgid ""
 "Obsolete and Locally Created Packages\n"
 " These packages are currently installed on your computer, but they are not "
@@ -4211,7 +5437,7 @@ msgstr ""
 "erabilgarri ezein apt iturburutatik. Beharbada zaharkituta egongo dira eta "
 "artxibotik kenduko ziren, edo euren bertsio pribatu bat konpilatuko zenuen."
 
-#: src/pkg_grouppolicy.cc:431
+#: src/pkg_grouppolicy.cc:433
 msgid ""
 "Virtual Packages\n"
 " These packages do not exist; they are names other packages use to require "
@@ -4222,7 +5448,7 @@ msgstr ""
 "funtzionalitateren bat eskatzeko edo eskaintzeko erabiltzen dituzte izen "
 "horiek."
 
-#: src/pkg_grouppolicy.cc:584
+#: src/pkg_grouppolicy.cc:588
 msgid ""
 "Packages which are recommended by other packages\n"
 " These packages are not strictly required, but they may be necessary to "
@@ -4234,7 +5460,7 @@ msgstr ""
 "funtzionatzeko, baina instalatzen ari zaren programa batzuen "
 "funtzionalitatea hobetu dezakete."
 
-#: src/pkg_grouppolicy.cc:605
+#: src/pkg_grouppolicy.cc:609
 msgid ""
 "Packages which are suggested by other packages\n"
 " These packages are not required in order to make your system function "
@@ -4246,166 +5472,44 @@ msgstr ""
 "funtzionatzeko, baina instalatzen ari zaren programa batzuen "
 "funtzionalitatea hobetu dezakete."
 
-#: src/pkg_grouppolicy.cc:633
-msgid ""
-"Packages with unsatisfied dependencies\n"
-" The dependency requirements of these packages will be unmet after the "
-"install is complete.\n"
-" .\n"
-" The presence of this tree probably indicates that something is broken, "
-"either on your system or in the Debian archive."
-msgstr ""
-"Bete gabeko mendekotasunak dituzten paketeak\n"
-" Pakete hauen mendekotasun-eskakizunak bete gabe geratuko dira instalazioa "
-"amaitutakoan.\n"
-" .\n"
-" Zuhaitz hau agertzeak seguru asko esan nahi izango du, zerbait hautsita "
-"dagoela zure sisteman edo Debian artxiboan."
-
-#: src/pkg_grouppolicy.cc:634
-msgid ""
-"Packages being removed because they are no longer used\n"
-" These packages are being deleted because they were automatically installed "
-"to fulfill dependencies, and the planned action will result in no installed "
-"package declaring an 'important' dependency on them.\n"
-msgstr ""
-"Jada erabiltzen ez direlako kenduko diren paketeak\n"
-" Pakete hauek ezabatu egingo dira; izan ere, automatikoki instalatu ziren "
-"mendekotasunak betetzeko, eta egin nahi den ekintzaren ondorioz, ez da "
-"instalatutako pakete bat ere geratuko horien mendekotasun "
-"'garrantzitsua'duenik.\n"
-
-#: src/pkg_grouppolicy.cc:635
-msgid ""
-"Packages being automatically held in their current state\n"
-" These packages could be upgraded, but they have been kept in their current "
-"state to avoid breaking dependencies."
-msgstr ""
-"Automatikoki uneko egoeran atxikiko diren paketeak\n"
-" Pakete hauek bertsio-berritu litezke, baina uneko egoeran mantenduko dira, "
-"mendekotasunik ez hausteko."
-
-#: src/pkg_grouppolicy.cc:636
-msgid ""
-"Packages being automatically installed to satisfy dependencies\n"
-" These packages are being installed because they are required by another "
-"package you have chosen for installation."
-msgstr ""
-"Mendekotasunak betetzeko automatikoki instalatuko diren paketeak\n"
-" Instalatzeko aukeratu duzun beste pakete batek behar dituelako instalatuko "
-"dira pakete hauek."
-
-#: src/pkg_grouppolicy.cc:637
-msgid ""
-"Packages being deleted due to unsatisfied dependencies\n"
-" These packages are being deleted because one or more of their dependencies "
-"is no longer available, or because another package conflicts with them."
-msgstr ""
-"Mendekotasunak ez betetzeagatik ezabatuko diren paketeak\n"
-" Euren mendekotasun bat edo gehiago jada erabilgarri ez dagoelako, edo beste "
-"pakete batekin gatazka dutelako ezabatuko dira pakete hauek."
-
-#: src/pkg_grouppolicy.cc:638
-msgid ""
-"Packages to be downgraded\n"
-" An older version of these packages than is currently installed will be "
-"installed."
-msgstr ""
-"Aurreko bertsiora itzultzeko paketeak\n"
-" Une honetan instalatutakoa baino bertsio zaharrago batera itzuliko dira "
-"pakete hauek."
-
-#: src/pkg_grouppolicy.cc:639
-msgid ""
-"Packages being held back\n"
-" These packages could be upgraded, but you have asked for them to be held at "
-"their current version."
-msgstr ""
-"Atxikitako paketeak\n"
-" Pakete hauek bertsio-berritu daitezke, baina uneko bertsioan mantentzea "
-"eskatu duzu."
-
-#: src/pkg_grouppolicy.cc:640
-msgid ""
-"Packages to be reinstalled\n"
-" These packages will be reinstalled."
-msgstr ""
-"Berrinstalatzeko paketeak\n"
-" Pakete hauek berriro instalatuko dira."
-
-#: src/pkg_grouppolicy.cc:641
-msgid ""
-"Packages to be installed\n"
-" These packages have been manually selected for installation on your "
-"computer."
-msgstr ""
-"Instalatzeko paketeak\n"
-" Pakete hauek eskuz hautatu dituzu, ordenagailuan instalatzeko."
-
-#: src/pkg_grouppolicy.cc:642
-msgid ""
-"Packages to be removed\n"
-" These packages have been manually selected for removal."
-msgstr ""
-"Kentzeko paketeak\n"
-" Pakete hauek eskuz hautatu dituzu kentzeko."
-
-#: src/pkg_grouppolicy.cc:643
-msgid ""
-"Packages to be upgraded\n"
-" These packages will be upgraded to a newer version."
-msgstr ""
-"Bertsio-berritzeko paketeak\n"
-" Pakete hauek bertsio-berritu egingo dira."
-
-#: src/pkg_grouppolicy.cc:644
-msgid ""
-"Packages that are partially installed\n"
-" These packages are not fully installed and configured; an attempt will be "
-"made to complete their installation."
-msgstr ""
-"Erdi instalaturik dauden paketeak.\n"
-" Pakete hauek ez daude guztiz instalatu eta konfiguraturik, instalazio hau "
-"burutzeko saiakera bat egingo da orain."
-
-#: src/pkg_grouppolicy.cc:761
+#: src/pkg_grouppolicy.cc:765
 msgid "unknown"
 msgstr "ezezaguna"
 
-#: src/pkg_grouppolicy.cc:772
+#: src/pkg_grouppolicy.cc:776
 #, c-format
 msgid "Priority %s"
 msgstr "Lehentasuna: %s"
 
-#: src/pkg_grouppolicy.cc:886
+#: src/pkg_grouppolicy.cc:890
 msgid "UNCATEGORIZED"
 msgstr "KATEGORIGABEA"
 
-#: src/pkg_grouppolicy.cc:1013
+#: src/pkg_grouppolicy.cc:1017
 msgid "End-user"
 msgstr "Bukaerako erabitzailea"
 
-#: src/pkg_grouppolicy.cc:1014
+#: src/pkg_grouppolicy.cc:1018
 msgid "Servers"
 msgstr "Zerbitzariak"
 
-#: src/pkg_grouppolicy.cc:1015
+#: src/pkg_grouppolicy.cc:1019
 msgid "Development"
 msgstr "Garapena"
 
-#: src/pkg_grouppolicy.cc:1016
+#: src/pkg_grouppolicy.cc:1020
 msgid "Localization"
 msgstr "Itzulpengintza"
 
-#: src/pkg_grouppolicy.cc:1017
+#: src/pkg_grouppolicy.cc:1021
 msgid "Hardware Support"
 msgstr "Hardware onarpena"
 
-#: src/pkg_grouppolicy.cc:1019
+#: src/pkg_grouppolicy.cc:1023
 msgid "Unrecognized tasks"
 msgstr "Ataza ezezagunak"
 
-#: src/pkg_grouppolicy.cc:1071
+#: src/pkg_grouppolicy.cc:1075
 msgid ""
 "\n"
 " Tasks are groups of packages which provide an easy way to select a "
@@ -4415,26 +5519,26 @@ msgstr ""
 " Xede jakin baterako aurrez definitutako pakete-multzo bat erraz hautatzeko "
 "modua ematen duten pakete-multzoak dira atazak."
 
-#: src/pkg_grouppolicy.cc:1202
+#: src/pkg_grouppolicy.cc:1207
 #, c-format
 msgid "Bad number in format string: %ls"
 msgstr "Okerreko zenbakia formatu katean: %ls"
 
-#: src/pkg_grouppolicy.cc:1211
+#: src/pkg_grouppolicy.cc:1216
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
 msgstr "Parekatze indizea 1 edo handiago izan behar da; ezin da \"%s\" izan"
 
-#: src/pkg_grouppolicy.cc:1229
+#: src/pkg_grouppolicy.cc:1236
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
 msgstr "%ls parekatze indizea luzeegia da; talde erabilgarriak (%s)"
 
-#: src/pkg_grouppolicy.cc:1502
+#: src/pkg_grouppolicy.cc:1513
 msgid "TAGLESS PACKAGES"
 msgstr "ETIKETA-GABEKO PAKETEAK"
 
-#: src/pkg_grouppolicy.cc:1503
+#: src/pkg_grouppolicy.cc:1514
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags, or the debtags "
@@ -4445,7 +5549,7 @@ msgstr ""
 "datubasea ez da aurkitzen (debtags instalatzeak arazo hau konpondu beharko "
 "luke)."
 
-#: src/pkg_grouppolicy.cc:1537
+#: src/pkg_grouppolicy.cc:1548
 msgid "MISSING TAG"
 msgstr "ETIKETA FALTA"
 
@@ -4476,7 +5580,7 @@ msgstr "Honen mendeko paketeak: %s"
 msgid "Versions of %s"
 msgstr "%s(r)en bertsioak"
 
-#: src/pkg_item.cc:85
+#: src/pkg_item.cc:90
 #, c-format
 msgid ""
 "%s is an essential package!%n%nAre you sure you want to remove it?%nType '%"
@@ -4485,52 +5589,52 @@ msgstr ""
 "%s beharrezko pakete bat da. %n%nZiur zaude ezabatu nahi duzula?%nZiur "
 "bazaude, idatzi %s."
 
-#: src/pkg_item.cc:228 src/pkg_ver_item.cc:683 src/solution_item.cc:298
+#: src/pkg_item.cc:233 src/pkg_ver_item.cc:683 src/solution_item.cc:298
 #, c-format
 msgid "Information about %s"
 msgstr "Honi buruzko informazioa: %s"
 
-#: src/pkg_item.cc:230 src/pkg_ver_item.cc:685 src/solution_item.cc:296
+#: src/pkg_item.cc:235 src/pkg_ver_item.cc:685 src/solution_item.cc:296
 #, c-format
 msgid "%s info"
 msgstr "%s info"
 
-#: src/pkg_item.cc:326
+#: src/pkg_item.cc:331
 #, c-format
 msgid "Available versions of %s"
 msgstr "%s(r)en bertsio erabilgarriak"
 
-#: src/pkg_item.cc:329
+#: src/pkg_item.cc:334
 #, c-format
 msgid "%s versions"
 msgstr "%s - bertsioak"
 
-#: src/pkg_item.cc:341 src/pkg_ver_item.cc:713
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:713
 #, c-format
 msgid "Dependencies of %s"
 msgstr "%s - mendekotasunak"
 
-#: src/pkg_item.cc:343 src/pkg_ver_item.cc:715
+#: src/pkg_item.cc:348 src/pkg_ver_item.cc:715
 #, c-format
 msgid "%s deps"
 msgstr "%s - mend."
 
-#: src/pkg_item.cc:354 src/pkg_ver_item.cc:725
+#: src/pkg_item.cc:359 src/pkg_ver_item.cc:725
 #, c-format
 msgid "Packages depending on %s"
 msgstr "Honen mendeko paketeak: %s"
 
-#: src/pkg_item.cc:356 src/pkg_ver_item.cc:727
+#: src/pkg_item.cc:361 src/pkg_ver_item.cc:727
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s - alderantziko mend."
 
-#: src/pkg_item.cc:406 src/pkg_ver_item.cc:775
+#: src/pkg_item.cc:411 src/pkg_ver_item.cc:775
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "%s(e)ko erroreen berri ematen:\n"
 
-#: src/pkg_item.cc:426
+#: src/pkg_item.cc:431
 msgid ""
 "You are not root and I cannot find any way to become root.  To reconfigure "
 "this package, install the menu package, the login package, or run aptitude "
@@ -4540,20 +5644,20 @@ msgstr ""
 "birkonfiguratzeko, instalatu 'menu' paketea, 'login' paketea, edo exekutatu "
 "aptitude root gisa."
 
-#: src/pkg_item.cc:434
+#: src/pkg_item.cc:439
 #, c-format
 msgid "Reconfiguring %s\n"
 msgstr "%s birkonfiguratzen\n"
 
-#: src/pkg_item.cc:444 src/ui.cc:1149
+#: src/pkg_item.cc:449 src/ui.cc:1160
 msgid "Press return to continue.\n"
 msgstr "Jarraitzeko, sakatu Sartu tekla.\n"
 
-#: src/pkg_item.cc:461
+#: src/pkg_item.cc:466
 msgid "Hierarchy editor"
 msgstr "Hierarkia-editorea"
 
-#: src/pkg_item.cc:461 src/pkg_view.cc:673
+#: src/pkg_item.cc:466 src/pkg_view.cc:669
 msgid "Hierarchy Editor"
 msgstr "Hierarkia-editorea"
 
@@ -4564,40 +5668,36 @@ msgid_plural "This group contains %d packages."
 msgstr[0] "Talde honek pakete %d du."
 msgstr[1] "Talde honek %d pakete ditu."
 
-#: src/pkg_tree.cc:175
+#: src/pkg_tree.cc:178
 msgid "All Packages"
 msgstr "Pakete guztiak"
 
-#: src/pkg_tree.cc:188 src/pkg_tree.cc:203
-msgid "Building view"
-msgstr "Ikuspegi-eraikitzea"
-
-#: src/pkg_tree.cc:246
+#: src/pkg_tree.cc:282
 #, c-format
 msgid "No packages matched the pattern \"%ls\"."
 msgstr "Ez dago \"%ls\" patroia betetzen duen paketerik."
 
-#: src/pkg_tree.cc:268
+#: src/pkg_tree.cc:301
 msgid "Enter the new package tree limit: "
 msgstr "Sartu pakete-zuhaitzaren muga berria: "
 
-#: src/pkg_tree.cc:302
+#: src/pkg_tree.cc:334
 msgid "Enter the new package grouping mechanism for this display: "
 msgstr "Sartu ikuspegi honetan paketeak taldekatzeko mekanismo berria: "
 
-#: src/pkg_tree.cc:310
+#: src/pkg_tree.cc:342
 msgid "Enter the new package sorting mechanism for this display: "
 msgstr "Sartu ikuspegi honetan paketeak ordenatzeko mekanismo berria: "
 
-#: src/pkg_view.cc:161
+#: src/pkg_view.cc:163
 msgid "Couldn't cw::util::transcode column definition"
 msgstr "Ezin izan da cw::util::transcode zutabea aldatu"
 
-#: src/pkg_view.cc:168
+#: src/pkg_view.cc:170
 msgid "Couldn't parse column definition"
 msgstr "Ezin izan da analizatu zutabearen definizioa"
 
-#: src/pkg_view.cc:223
+#: src/pkg_view.cc:219
 msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
@@ -4605,30 +5705,30 @@ msgstr ""
 "Pakete bat hautatzen baduzu, zergatik instalatu edo kendu behar den buruzko "
 "azalpena agertuko da leku honetan."
 
-#: src/pkg_view.cc:575
+#: src/pkg_view.cc:571
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: errorea argumentuetan - bi trepeta nagusi??"
 
-#: src/pkg_view.cc:581
+#: src/pkg_view.cc:577
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: errorea argumentuetan - zutabe-zerrenda okerra elementu "
 "estatikoarentzat"
 
-#: src/pkg_view.cc:678
+#: src/pkg_view.cc:674
 msgid "Related Dependencies"
 msgstr "Zerikusia duten mendekotasunak"
 
-#: src/pkg_view.cc:681
+#: src/pkg_view.cc:677
 msgid "Why Installed"
 msgstr "Zergatik instalatuta"
 
-#: src/pkg_view.cc:700
+#: src/pkg_view.cc:696
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: okerreko argumentua!"
 
-#: src/pkg_view.cc:752
+#: src/pkg_view.cc:748
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: ez da trepeta nagusirik aurkitu"
 
@@ -4881,46 +5981,6 @@ msgstr "Aplikatu"
 msgid "Close"
 msgstr "Itxi"
 
-#: src/solution_fragment.cc:106
-#, c-format
-msgid "%s depends upon %s"
-msgstr "%s-ek %s-ren mendekotasuna du."
-
-#: src/solution_fragment.cc:109
-#, c-format
-msgid "%s pre-depends upon %s"
-msgstr "%s-ek %s-ren aurre-mendekotasuna du."
-
-#: src/solution_fragment.cc:112
-#, c-format
-msgid "%s suggests %s"
-msgstr "%s-ek %s iradokitzen du"
-
-#: src/solution_fragment.cc:115 src/solution_item.cc:602
-#, c-format
-msgid "%s recommends %s"
-msgstr "%s-ek %s gomendatzen du"
-
-#: src/solution_fragment.cc:118
-#, c-format
-msgid "%s conflicts with %s"
-msgstr "%s-ek %s-rekin elkar-jotzen du"
-
-#: src/solution_fragment.cc:121
-#, c-format
-msgid "%s breaks %s"
-msgstr "%s-ek %s hausten du"
-
-#: src/solution_fragment.cc:124
-#, c-format
-msgid "%s replaces %s"
-msgstr "%s-ek %s ordezkatzen du"
-
-#: src/solution_fragment.cc:127
-#, c-format
-msgid "%s obsoletes %s"
-msgstr "%s-ek %s zaharkiturik uzten du"
-
 #: src/solution_fragment.cc:140
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
@@ -4947,10 +6007,6 @@ msgstr "%BInstalatu%b honako paketeak:%n"
 #: src/solution_fragment.cc:244
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr "%BMantendu%b honako paketeak beraien uneko bertsioan:%n"
-
-#: src/solution_fragment.cc:251
-msgid "Not Installed"
-msgstr "Ez dago instalatuta"
 
 #: src/solution_fragment.cc:264
 msgid "%BUpgrade%b the following packages:%n"
@@ -5014,25 +6070,9 @@ msgstr "-> Utzi mendekotasun \"%s gomendioak %s\" konpondu gabe."
 msgid "The following actions will resolve this dependency:"
 msgstr "Hurrengo ekintzak mendekotasun hau konpontzen du:"
 
-#: src/solution_screen.cc:248
-msgid "Remove the following packages:"
-msgstr "Kendu hurrengo paketeak:"
-
 #: src/solution_screen.cc:259
 msgid "Keep the following packages at their current version:"
 msgstr "Mantendu hurrengo paketeak dauden bezala:"
-
-#: src/solution_screen.cc:270
-msgid "Install the following packages:"
-msgstr "Instalatu hurrengo bertsio-beritzeak:"
-
-#: src/solution_screen.cc:281
-msgid "Upgrade the following packages:"
-msgstr "Bertsio-berritu hurrengo paketeak:"
-
-#: src/solution_screen.cc:292
-msgid "Downgrade the following packages:"
-msgstr "Bertsioa atzeratu hurrengo paketeetan:"
 
 #: src/solution_screen.cc:305
 msgid "Leave the following recommendations unresolved:"
@@ -5041,11 +6081,6 @@ msgstr "Utzi hurrengo gomendioak konpondu gabe:"
 #: src/solution_screen.cc:485
 msgid "No broken packages."
 msgstr "Ez dago hautsitako paketerik."
-
-#: src/solution_screen.cc:515
-#, c-format
-msgid "open: %d; closed: %d; defer: %d; conflict: %d"
-msgstr "ireki: %d; itxita: %d; geroratua: %d; gatazka: %d"
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"
@@ -5061,27 +6096,27 @@ msgstr ""
 "hau instalatuz sisteman izugarrizko kalteak edo beraren kontrolaz jabetzea "
 "baimendu dezake."
 
-#: src/ui.cc:202
+#: src/ui.cc:203
 msgid "Yes, I am aware this is a very bad idea"
 msgstr "Bai, badakit oso ideia txarra dela"
 
-#: src/ui.cc:229
+#: src/ui.cc:230
 msgid "Er, there aren't any errors, this shouldn't have happened.."
 msgstr "Ez dago errorerik. Horrelakorik ez zuen gertatu behar..."
 
-#: src/ui.cc:235
+#: src/ui.cc:236
 msgid "E:"
 msgstr "E:"
 
-#: src/ui.cc:237
+#: src/ui.cc:238
 msgid "W:"
 msgstr "A:"
 
-#: src/ui.cc:251
+#: src/ui.cc:252
 msgid "Search for:"
 msgstr "Bilatu hau:"
 
-#: src/ui.cc:333
+#: src/ui.cc:334
 msgid ""
 "WARNING: the package cache is opened in read-only mode!  This change and all "
 "subsequent changes will not be saved unless you stop all other running apt-"
@@ -5092,78 +6127,73 @@ msgstr ""
 "beste tresna guztiak geldiarazten ez dituzun bitartean eta Ekintza menuan "
 "\"Bihurtu root\"hautatu arte"
 
-#: src/ui.cc:339
+#: src/ui.cc:340
 msgid "Never display this message again."
 msgstr "Ez erakutsi mezu hau gehiago."
 
-#: src/ui.cc:385
+#: src/ui.cc:386
 msgid ""
 "You may not modify the state of any package while a download is underway."
 msgstr "Ezin duzu paketeen egoera aldatu deskargatzen ari diren bitartean."
 
-#: src/ui.cc:416
+#: src/ui.cc:417
 msgid "You already are root!"
 msgstr "Dagoeneko root zara!"
 
-#: src/ui.cc:431
+#: src/ui.cc:432
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
 msgstr "ROOT-Eskuratze-Komando okerra su: edo sudo:-rekin hasi behako zen"
 
-#: src/ui.cc:438
+#: src/ui.cc:439
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr ""
 "ROOT-Eskuratze-Komando okerra su: edo sudo:-rekin hasi behako zen, ez %s:"
 
-#: src/ui.cc:561
+#: src/ui.cc:562
 msgid ""
 "Subprocess exited with an error -- did you type your password correctly?"
 msgstr "Azpiprozesua errore batekin amaitu da - Ondo idatzi duzu pasahitza?"
 
-#: src/ui.cc:600
+#: src/ui.cc:601
 msgid "Loading cache"
 msgstr "Cachea kargatzen"
 
-#: src/ui.cc:642
+#: src/ui.cc:643
 msgid "Really quit Aptitude?"
 msgstr "Ziur zaude Aptitude-tik irten nahi duzula?"
 
-#: src/ui.cc:695 src/ui.cc:697
+#: src/ui.cc:696 src/ui.cc:698
 msgid "Preferences"
 msgstr "Hobespenak"
 
-#: src/ui.cc:696 src/ui.cc:2382
+#: src/ui.cc:697 src/ui.cc:2417
 msgid "Change the behavior of aptitude"
 msgstr "Aldatu aptituderen portaera"
 
-#: src/ui.cc:732
+#: src/ui.cc:733
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr ""
 "Ziur zaude ezarpen pertsonalak baztertu eta lehenetsiak birkargatu nahi "
 "dituzula?"
 
-#: src/ui.cc:836 src/ui.cc:838 src/ui.cc:885 src/ui.cc:887 src/ui.cc:906
-#: src/ui.cc:908 src/ui.cc:929 src/ui.cc:931
-msgid "Packages"
-msgstr "Paketeak"
-
-#: src/ui.cc:837 src/ui.cc:886 src/ui.cc:907 src/ui.cc:930
+#: src/ui.cc:838 src/ui.cc:885 src/ui.cc:913 src/ui.cc:936
 msgid "View available packages and choose actions to perform"
 msgstr "Ikusi pakete erabilgarriak, eta aukeratu egin nahi dituzun ekintzak"
 
-#: src/ui.cc:866
+#: src/ui.cc:867
 msgid "Recommended Packages"
 msgstr "Gomendaturiko paketeak:"
 
-#: src/ui.cc:867
+#: src/ui.cc:868
 msgid "View packages that it is recommended that you install"
 msgstr "Instalatzea gomendatzen diren paketeak bistarazi"
 
-#: src/ui.cc:868
+#: src/ui.cc:869
 msgid "Recommendations"
 msgstr "Gomendioak:"
 
-#: src/ui.cc:972
+#: src/ui.cc:978
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
@@ -5175,79 +6205,79 @@ msgstr ""
 "Hau Software librea da eta zenbait egoeratan (lizentzia ikusi "
 "xehetasunetarako) banatzeko aukera duzu."
 
-#: src/ui.cc:1022 src/ui.cc:1024
+#: src/ui.cc:1028 src/ui.cc:1030
 msgid "License"
 msgstr "Lizentzia"
 
-#: src/ui.cc:1023 src/ui.cc:2474
+#: src/ui.cc:1029 src/ui.cc:2509
 msgid "View the terms under which you may copy and distribute aptitude"
 msgstr "Ikusi aptitde kopiatu eta zabaltzeko baldintzak"
 
-#: src/ui.cc:1037
+#: src/ui.cc:1043
 msgid "help.txt"
 msgstr "help.txt"
 
-#: src/ui.cc:1039
+#: src/ui.cc:1045
 msgid "Encoding of help.txt|UTF-8"
 msgstr "help.txt-ren kodeketa|UTF-8"
 
-#: src/ui.cc:1050
+#: src/ui.cc:1056
 msgid "Online Help"
 msgstr "Laguntza linean"
 
-#: src/ui.cc:1051
+#: src/ui.cc:1057
 msgid "View a brief introduction to aptitude"
 msgstr "Ikusi aptituderen laburpen txiki bat"
 
-#: src/ui.cc:1052 src/ui.cc:2621
+#: src/ui.cc:1058 src/ui.cc:2656
 msgid "Help"
 msgstr "Laguntza"
 
-#: src/ui.cc:1060
+#: src/ui.cc:1066
 msgid "README"
 msgstr "README"
 
-#: src/ui.cc:1061
+#: src/ui.cc:1067
 msgid "Encoding of README|ISO_8859-1"
 msgstr "READMEren kodeketa|ISO_8859-1"
 
-#: src/ui.cc:1072
+#: src/ui.cc:1078
 msgid "User's Manual"
 msgstr "Erabiltzailearen eskuliburua"
 
-#: src/ui.cc:1073
+#: src/ui.cc:1079
 msgid "Read the full user's manual of aptitude"
 msgstr "Irakurri aptituderen erabiltzailearen eskuliburu osoa"
 
-#: src/ui.cc:1074
+#: src/ui.cc:1080
 msgid "Manual"
 msgstr "Eskuliburua"
 
-#: src/ui.cc:1081 src/ui.cc:1083
+#: src/ui.cc:1087 src/ui.cc:1089
 msgid "FAQ"
 msgstr "FAQ"
 
-#: src/ui.cc:1082 src/ui.cc:2466
+#: src/ui.cc:1088 src/ui.cc:2501
 msgid "View a list of frequently asked questions"
 msgstr "Maiz egiten diren galderen zerrenda bat ikusi"
 
-#: src/ui.cc:1091 src/ui.cc:1093
+#: src/ui.cc:1097 src/ui.cc:1099
 msgid "News"
 msgstr "Berriak"
 
-#: src/ui.cc:1092
+#: src/ui.cc:1098
 #, c-format
 msgid "View the important changes made in each version of %s"
 msgstr "Ikusi %s-ren bertsio bakoitzean eginiko aldaketa garrantzitsuak."
 
-#: src/ui.cc:1099
+#: src/ui.cc:1105
 #, c-format
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
 msgstr ""
 "Ezin da aldi baterako direktorio zaharra kendu. Kendu eskuz %s direktorioa."
 
-#: src/ui.cc:1104
+#: src/ui.cc:1110
 #, c-format
 msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
@@ -5256,7 +6286,7 @@ msgstr ""
 "Ezin izango da %s kendu. Bertako fitxategiak aztertu eta eskuz kendu beharko "
 "dituzu."
 
-#: src/ui.cc:1130
+#: src/ui.cc:1136
 #, c-format
 msgid ""
 "It appears that a previous version of aptitude left files behind in %s.  "
@@ -5269,19 +6299,15 @@ msgstr ""
 "izatea. %n%nNahi duzu direktorio hau eta bere eduki guztia ezabatzea? \"Ez\" "
 "hautatzen baduzu ez duzu mezu hau berriro ikusiko."
 
-#: src/ui.cc:1173
-msgid "Downloading packages"
-msgstr "Paketeak deskargatzen"
-
-#: src/ui.cc:1174
+#: src/ui.cc:1207
 msgid "View the progress of the package download"
 msgstr "Ikusi paketearen deskargaren progresioa"
 
-#: src/ui.cc:1175
+#: src/ui.cc:1208
 msgid "Package Download"
 msgstr "Pakete-deskarga"
 
-#: src/ui.cc:1211
+#: src/ui.cc:1255
 msgid ""
 "%BWARNING%b: untrusted versions of the following packages will be installed!%"
 "n%nUntrusted packages could %Bcompromise your system's security%b.  You "
@@ -5293,39 +6319,35 @@ msgstr ""
 "dezakete%b. Jarraitu instalazioarekin baldin eta zer egiten ari zaren ziur "
 "bazaude bakarrik .%n%n"
 
-#: src/ui.cc:1217
+#: src/ui.cc:1261
 msgid "  %S*%N %s [version %s]%n"
 msgstr "  %S*%N %s [%s bertsioa]%n"
 
-#: src/ui.cc:1223
+#: src/ui.cc:1267
 msgid "Really Continue"
 msgstr "Jarraitu benetan"
 
-#: src/ui.cc:1225
+#: src/ui.cc:1269
 msgid "Abort Installation"
 msgstr "Abortatu instalazioa"
 
-#: src/ui.cc:1290
+#: src/ui.cc:1334
 msgid "Preview of package installation"
 msgstr "Pakete-instalazioaren aurrebista"
 
-#: src/ui.cc:1291
+#: src/ui.cc:1335
 msgid "View and/or adjust the actions that will be performed"
 msgstr "Ikusi edota egokitu landuko diren ekintzak"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "Aurrebista"
-
-#: src/ui.cc:1348
+#: src/ui.cc:1392
 msgid "Some packages were broken and have been fixed:"
 msgstr "Zenbait pakete hautsita zeuden eta konpondu egin dira:"
 
-#: src/ui.cc:1356
+#: src/ui.cc:1400
 msgid "No solution to these dependency problems exists!"
 msgstr "Ez dago irtenbiderik mendekotasun arazoari aurre egiteko."
 
-#: src/ui.cc:1362
+#: src/ui.cc:1406
 #, c-format
 msgid ""
 "Ran out of time while trying to resolve dependencies (press \"%s\" to try "
@@ -5334,7 +6356,7 @@ msgstr ""
 "Denboraz kanpo mendekotasunak ebazten saiatzean (sakatu \"%s\" sakonago "
 "saiatzeko)"
 
-#: src/ui.cc:1408
+#: src/ui.cc:1452
 msgid ""
 "Installing/removing packages requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
@@ -5342,24 +6364,19 @@ msgstr ""
 "Paketeak instalatu/kendu ahal izateko, administratzaile-pribilegioak behar "
 "dira, eta zuk ez daukazu horrelakorik. Root kontura aldatu nahi duzu?"
 
-#: src/ui.cc:1411 src/ui.cc:1632
+#: src/ui.cc:1455 src/ui.cc:1688
 msgid "Become root"
 msgstr "Root bihurtu"
 
-#: src/ui.cc:1413 src/ui.cc:1634
+#: src/ui.cc:1457 src/ui.cc:1690
 msgid "Don't become root"
 msgstr "Ez bihurtu root"
 
-#: src/ui.cc:1418 src/ui.cc:1639
-msgid "A package-list update or install run is already taking place."
-msgstr ""
-"Pakete-zerrenda baten eguneratzea edo instalazioa dagoeneko egiten ari da."
-
-#: src/ui.cc:1533
+#: src/ui.cc:1577
 msgid "No packages are scheduled to be installed, removed, or upgraded."
 msgstr "Ez dago instalatzeko, kentzeko edo bertsio-berritzeko paketerik."
 
-#: src/ui.cc:1539
+#: src/ui.cc:1583
 msgid ""
 "No packages will be installed, removed or upgraded.  Some packages could be "
 "upgraded, but you have not chosen to upgrade them.  Type \"U\" to prepare an "
@@ -5369,23 +6386,23 @@ msgstr ""
 "bertsio-berri daitezke, baina ez duzu berritzea aukeratu. Bertsio-berritze "
 "bat prestatzeko, idatzi \"U\"."
 
-#: src/ui.cc:1597 src/ui.cc:1714
+#: src/ui.cc:1641 src/ui.cc:1770
 msgid "Deleting obsolete downloaded files"
 msgstr "Zaharkitutako deskargatutako fitxategiak ezabatzen"
 
-#: src/ui.cc:1613
+#: src/ui.cc:1658
 msgid "Updating package lists"
 msgstr "Pakete-zerrendak eguneratzen"
 
-#: src/ui.cc:1614
+#: src/ui.cc:1659
 msgid "View the progress of the package list update"
 msgstr "Ikusi pakete-zerrendaren eguneraketaren progresioa"
 
-#: src/ui.cc:1615
+#: src/ui.cc:1660
 msgid "List Update"
 msgstr "Zerrendaren eguneraketa"
 
-#: src/ui.cc:1629
+#: src/ui.cc:1685
 msgid ""
 "Updating the package lists requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
@@ -5393,28 +6410,24 @@ msgstr ""
 "Pakete-zerrendak eguneratzeko, administratzaile-pribilegioak behar dira, eta "
 "zuk ez daukazu horrelakorik. Root kontura aldatu nahi duzu?"
 
-#: src/ui.cc:1644 src/ui.cc:2221
-msgid "Waste time trying to find mines"
-msgstr "Denbora pasa mina bila"
-
-#: src/ui.cc:1651 src/ui.cc:1711
+#: src/ui.cc:1707 src/ui.cc:1767
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "Deskarga bat egiten ari den bitartean ezin da garbitu"
 
-#: src/ui.cc:1654
+#: src/ui.cc:1710
 msgid "Deleting downloaded files"
 msgstr "Deskargatutako fitxategiak ezabatzen"
 
-#: src/ui.cc:1668
+#: src/ui.cc:1724
 msgid "Downloaded package files have been deleted"
 msgstr "Deskargatutako pakete-fitxategiak ezabatu egin dira"
 
-#: src/ui.cc:1708
+#: src/ui.cc:1764
 msgid "The apt cache file is not available; cannot auto-clean."
 msgstr ""
 "Apt-ren fitxategi-cachea ez dago eskuragarri. Ezin da automatikoki garbitu"
 
-#: src/ui.cc:1734
+#: src/ui.cc:1790
 #, c-format
 msgid ""
 "Obsolete downloaded package files have been deleted, freeing %sB of disk "
@@ -5423,234 +6436,124 @@ msgstr ""
 "Deskargatutako pakete-fitxategi zaharkituak ezabatu egin dira, diskotik %sB "
 "libre uzten."
 
-#: src/ui.cc:1831
+#: src/ui.cc:1887
 msgid "No more solutions."
 msgstr "Ez dago irtenbide gehiagorik."
 
-#: src/ui.cc:2058
-msgid "Unable to find a solution to apply."
-msgstr "Ezin izan da irtenbiderik aurkitu aplikatzeko."
-
-#: src/ui.cc:2064
-msgid "Ran out of time while trying to find a solution."
-msgstr "Denboraz kanpo irtenbide bat bilatzen saiatzean."
-
-#: src/ui.cc:2124 src/ui.cc:2126
+#: src/ui.cc:2159 src/ui.cc:2161
 msgid "Resolve Dependencies"
 msgstr "Ebatzi mendekotasunak"
 
-#: src/ui.cc:2125
+#: src/ui.cc:2160
 msgid "Search for solutions to unsatisfied dependencies"
 msgstr "Bilatu bete gabeko mendekotasunen irtenbideak"
 
-#: src/ui.cc:2137
+#: src/ui.cc:2172
 #, c-format
 msgid "Unable to open %ls"
 msgstr "Ezin izan da %ls ireki"
 
-#: src/ui.cc:2143
+#: src/ui.cc:2178
 msgid "Error while dumping resolver state"
 msgstr "Errorea ebazpen-egoera iraultzean"
 
-#: src/ui.cc:2153
+#: src/ui.cc:2188
 msgid "File to which the resolver state should be dumped:"
 msgstr "Fitxategia ebazpen-egoera iraultzeko:"
 
-#: src/ui.cc:2183
+#: src/ui.cc:2218
 msgid "^Install/remove packages"
 msgstr "^Instalatu/kendu paketeak"
 
-#: src/ui.cc:2184
-msgid "Perform all pending installs and removals"
-msgstr "Instalatzeko/kentzeko dauden pakete guztiak instalatu/kendu"
-
-#: src/ui.cc:2186
+#: src/ui.cc:2221
 msgid "^Update package list"
 msgstr "^Eguneratu pakete-zerrenda"
 
-#: src/ui.cc:2187
-msgid "Check for new versions of packages"
-msgstr "Paketeen bertsio berririk dagoen begiratu"
-
-#: src/ui.cc:2191
+#: src/ui.cc:2226
 msgid "Mark Up^gradable"
 msgstr "Markatu ^Berritu daitekeena"
 
-#: src/ui.cc:2192
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr "Bertsio-berritu daitezkeen paketeak, atxikita ez daudenak, markatu"
-
-#: src/ui.cc:2196
+#: src/ui.cc:2231
 msgid "^Forget new packages"
 msgstr "^Ahaztu pakete berriak"
 
-#: src/ui.cc:2197
-msgid "Forget which packages are \"new\""
-msgstr "Ahaztu zein diren pakete \"berriak\""
-
-#: src/ui.cc:2200
+#: src/ui.cc:2235
 msgid "Canc^el pending actions"
 msgstr "Egiteko dauden ekintzak utzi"
 
-#: src/ui.cc:2201
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr ""
-"Instalatzeko, kentzeko, hizozteko edo bertsio berritzeko  dauden pakete "
-"guztiak utzi."
-
-#: src/ui.cc:2204
+#: src/ui.cc:2239
 msgid "^Clean package cache"
 msgstr "^Garbitu paketeen cachea"
 
-#: src/ui.cc:2205
-msgid "Delete package files which were previously downloaded"
-msgstr "Lehen deskargatutako pakete-fitxategiak ezabatu"
-
-#: src/ui.cc:2208
+#: src/ui.cc:2243
 msgid "Clean ^obsolete files"
 msgstr "Garbitu fitxategi ^zaharkituak"
 
-#: src/ui.cc:2209
-msgid "Delete package files which can no longer be downloaded"
-msgstr "Jada deskargatu ezin diren pakete-fitxategiak ezabatu"
-
-#: src/ui.cc:2215
+#: src/ui.cc:2250
 msgid "^Reload package cache"
 msgstr "^Birkargatu pakete-cachea"
 
-#: src/ui.cc:2216
-msgid "Reload the package cache"
-msgstr "Paketeen cachea birkargatu."
-
-#: src/ui.cc:2220
+#: src/ui.cc:2255
 msgid "^Play Minesweeper"
 msgstr "^Jokatu mina-aurkitzailean"
 
-#: src/ui.cc:2225
+#: src/ui.cc:2260
 msgid "^Become root"
 msgstr "^Root bihurtu"
 
-#: src/ui.cc:2226
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-"Root bihurtzeko, exekutatu 'su'. Horrela programa berrabiaraziko da, baina "
-"zure ezarpenak mantenduta."
-
-#: src/ui.cc:2228
+#: src/ui.cc:2263
 msgid "^Quit"
 msgstr "^Irten"
 
-#: src/ui.cc:2229
-msgid "Exit the program"
-msgstr "Irten programatik"
-
-#: src/ui.cc:2235 src/ui.cc:2615
-msgid "Undo"
-msgstr "Desegin"
-
-#: src/ui.cc:2236
-msgid "Undo the last package operation or group of operations"
-msgstr "Azken pakete-eragiketa edo eragiketa-multzoa desegin"
-
-#: src/ui.cc:2244
+#: src/ui.cc:2279
 msgid "^Install"
 msgstr "^Instalatu"
 
-#: src/ui.cc:2245
-msgid "Flag the currently selected package for installation or upgrade"
-msgstr ""
-"Jarri bandera unean hautatutako paketeei, instalatzeko edo bertsio-berritzeko"
-
-#: src/ui.cc:2248
+#: src/ui.cc:2283
 msgid "^Remove"
 msgstr "^Kendu"
 
-#: src/ui.cc:2249
-msgid "Flag the currently selected package for removal"
-msgstr "Jarri bandera unean hautatutako paketeei, kentzeko"
-
-#: src/ui.cc:2252
+#: src/ui.cc:2287
 msgid "^Purge"
 msgstr "^Purgatu"
 
-#: src/ui.cc:2253
-msgid ""
-"Flag the currently selected package and its configuration files for removal"
-msgstr ""
-"Jarri bandera unean hautatutako paketeei eta beraien konfigurazioko "
-"fitxategiei, kentzeko"
-
-#: src/ui.cc:2256
+#: src/ui.cc:2291
 msgid "^Keep"
 msgstr "^Mantendu"
 
-#: src/ui.cc:2257
+#: src/ui.cc:2292
 msgid "Cancel any action on the selected package"
 msgstr "Bertan behera utzi hautatutako paketeen ekintza"
 
-#: src/ui.cc:2260
+#: src/ui.cc:2295
 msgid "^Hold"
 msgstr "^Heldu"
 
-#: src/ui.cc:2261
-msgid ""
-"Cancel any action on the selected package, and protect it from future "
-"upgrades"
-msgstr ""
-"Bertan behera utzi hautatutako paketearen ekintza, eta babestu etorkizuneko "
-"bertsio-berritzetik."
-
-#: src/ui.cc:2264
+#: src/ui.cc:2299
 msgid "Mark ^Auto"
 msgstr "Markatu ^Auto"
 
-#: src/ui.cc:2265
-msgid ""
-"Mark the selected package as having been automatically installed; it will "
-"automatically be removed if no other packages depend on it"
-msgstr ""
-"Markatu hautatutako paketea automatikoki instalatu balitz bezala;beste "
-"paketerik behar ez duenean automatikoki ezabatua izango da"
-
-#: src/ui.cc:2268
+#: src/ui.cc:2303
 msgid "Mark ^Manual"
 msgstr "Markatu ^Eskuz"
 
-#: src/ui.cc:2269
-msgid ""
-"Mark the selected package as having been manually installed; it will not be "
-"removed unless you manually remove it"
-msgstr ""
-"Markatu hautatutako paketea eskuz instalatua izan balitz bezala; ez da "
-"ezabatuko zuk eskuz ezabatu arte"
-
-#: src/ui.cc:2272
+#: src/ui.cc:2307
 msgid "^Forbid Version"
 msgstr "^Debekatutako bertsioa"
 
-#: src/ui.cc:2273
-msgid ""
-"Forbid the candidate version of the selected package from being installed; "
-"newer versions of the package will be installed as usual"
-msgstr ""
-"Debekatu hautatutako paketearen bertsioa instalatzea;bertsio berriagoak era "
-"arruntean kudeatuko dira"
-
-#: src/ui.cc:2277
+#: src/ui.cc:2312
 msgid "I^nformation"
 msgstr "I^nformazioa"
 
-#: src/ui.cc:2278
+#: src/ui.cc:2313
 msgid "Display more information about the selected package"
 msgstr "Bistaratu hautatutako paketeari buruzko informazio xehea"
 
-#: src/ui.cc:2281
+#: src/ui.cc:2316
 msgid "C^ycle Package Information"
 msgstr "Paketearen informazioaren ^begizta"
 
-#: src/ui.cc:2282
+#: src/ui.cc:2317
 msgid ""
 "Cycle through the modes of the package information area: it can show the "
 "package's long description, a summary of its dependency status, or an "
@@ -5660,93 +6563,93 @@ msgstr ""
 "azalpen luzea erakutsi dezake, bere mendekotasun egoeraren laburpena, edo "
 "paketea zergatik den beharrezkoa."
 
-#: src/ui.cc:2285
+#: src/ui.cc:2320
 msgid "^Changelog"
 msgstr "^Aldaketa-egunkaria"
 
-#: src/ui.cc:2286
+#: src/ui.cc:2321
 msgid "Display the Debian changelog of the selected package"
 msgstr "Bistaratu hautatutako paketearen Debian-eko aldakaten egunkaria"
 
-#: src/ui.cc:2293
+#: src/ui.cc:2328
 msgid "^Examine Solution"
 msgstr "^Aztertu irtenbidea"
 
-#: src/ui.cc:2294
+#: src/ui.cc:2329
 msgid "Examine the currently selected solution to the dependency problems."
 msgstr "Aztertu mendekotasun arazoaren irtenbideen uneko hautapena."
 
-#: src/ui.cc:2297
+#: src/ui.cc:2332
 msgid "Apply ^Solution"
 msgstr "Aplikatu ^irtenbidea"
 
-#: src/ui.cc:2298
+#: src/ui.cc:2333
 msgid "Perform the actions contained in the currently selected solution."
 msgstr "Landu ekintzak (irtenbidearen uneko hautapenean daudenak)."
 
-#: src/ui.cc:2301
+#: src/ui.cc:2336
 msgid "^Next Solution"
 msgstr "^Hurrengo irtenbidea"
 
-#: src/ui.cc:2302
+#: src/ui.cc:2337
 msgid "Select the next solution to the dependency problems."
 msgstr "Hautatu hurrengo irtenbidea (mendekotasun arazoarena)."
 
-#: src/ui.cc:2305
+#: src/ui.cc:2340
 msgid "^Previous Solution"
 msgstr "^Aurreko irtenbidera"
 
-#: src/ui.cc:2306
+#: src/ui.cc:2341
 msgid "Select the previous solution to the dependency problems."
 msgstr "Hautatu aurreko irtenbidea (mendekotasun arazoarena)."
 
-#: src/ui.cc:2309
+#: src/ui.cc:2344
 msgid "^First Solution"
 msgstr "^Aurreneko irtenbidea"
 
-#: src/ui.cc:2310
+#: src/ui.cc:2345
 msgid "Select the first solution to the dependency problems."
 msgstr "Hautatu aurreneko irtenbidea (mendekotasun arazoarena)."
 
-#: src/ui.cc:2313
+#: src/ui.cc:2348
 msgid "^Last Solution"
 msgstr "^Azkenengo irtenbidea"
 
-#: src/ui.cc:2314
+#: src/ui.cc:2349
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
 msgstr "Hautatu azkenengo irtenbidea (mendekotasun arazoarena)."
 
-#: src/ui.cc:2320
+#: src/ui.cc:2355
 msgid "Toggle ^Rejected"
 msgstr "Txandakatu ^baztertutakoa"
 
-#: src/ui.cc:2321
+#: src/ui.cc:2356
 msgid "Toggle whether the currently selected action is rejected."
 msgstr "Txandakatu unean hautatutako ekintza baztertzen den edo ez."
 
-#: src/ui.cc:2325
+#: src/ui.cc:2360
 msgid "Toggle ^Approved"
 msgstr "Txandakatu ^onartutakoa"
 
-#: src/ui.cc:2326
+#: src/ui.cc:2361
 msgid "Toggle whether the currently selected action is approved."
 msgstr "Txandakatu unean hautatutako ekintza onartzen den edo ez."
 
-#: src/ui.cc:2330
+#: src/ui.cc:2365
 msgid "^View Target"
 msgstr "^Ikusi helburua"
 
-#: src/ui.cc:2331
+#: src/ui.cc:2366
 msgid "View the package which will be affected by the selected action"
 msgstr "Ikusi paketea hautatutako ekintzak eragingo diona"
 
-#: src/ui.cc:2337
+#: src/ui.cc:2372
 msgid "Reject Breaking ^Holds"
 msgstr "Ezetsi hondatutako ^mantendutakoak"
 
-#: src/ui.cc:2339
+#: src/ui.cc:2374
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
@@ -5754,136 +6657,136 @@ msgstr ""
 "Ezetsi mantendutako paketeen egoera aldatuko luketen edo debekatutako "
 "bertsioak instalatuko lituzketen ekintza guztiak."
 
-#: src/ui.cc:2347
+#: src/ui.cc:2382
 msgid "^Find"
 msgstr "^Bilatu"
 
-#: src/ui.cc:2348
+#: src/ui.cc:2383
 msgid "Search forwards"
 msgstr "Bilatu aurrerantz"
 
-#: src/ui.cc:2351
+#: src/ui.cc:2386
 msgid "^Find Backwards"
 msgstr "^Bilatu atzerantz"
 
-#: src/ui.cc:2352
+#: src/ui.cc:2387
 msgid "Search backwards"
 msgstr "Bilatu atzerantz"
 
-#: src/ui.cc:2355
+#: src/ui.cc:2390
 msgid "Find ^Again"
 msgstr "Bilatu be^rriro"
 
-#: src/ui.cc:2356
+#: src/ui.cc:2391
 msgid "Repeat the last search"
 msgstr "Errepikatu azken bilaketa"
 
-#: src/ui.cc:2359
+#: src/ui.cc:2394
 msgid "Find Again ^Backwards"
 msgstr "^Bilatu Berriz Atzerantz"
 
-#: src/ui.cc:2360
+#: src/ui.cc:2395
 msgid "Repeat the last search in the opposite direction"
 msgstr "Errepikatu azken bilaketa alderantzizko zentzuan"
 
-#: src/ui.cc:2364
+#: src/ui.cc:2399
 msgid "^Limit Display"
 msgstr "M^ugatu bistaratzea"
 
-#: src/ui.cc:2365
+#: src/ui.cc:2400
 msgid "Apply a filter to the package list"
 msgstr "Ezarri iragazkia pakete-zerrendari"
 
-#: src/ui.cc:2368
+#: src/ui.cc:2403
 msgid "^Un-Limit Display"
 msgstr "^Garbitu bistaratzea"
 
-#: src/ui.cc:2369
+#: src/ui.cc:2404
 msgid "Remove the filter from the package list"
 msgstr "Kendu iragazkia pakete-zerrendari"
 
-#: src/ui.cc:2373
+#: src/ui.cc:2408
 msgid "Find ^Broken"
 msgstr "Bilatu ^hautsitakoa"
 
-#: src/ui.cc:2374
+#: src/ui.cc:2409
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "Bilatu hurrengo paketea, bete gabeko mendekotasunak dituena"
 
-#: src/ui.cc:2381
+#: src/ui.cc:2416
 msgid "^Preferences"
 msgstr "^Hobespenak"
 
-#: src/ui.cc:2386
+#: src/ui.cc:2421
 msgid "^UI options"
 msgstr "^UI aukerak"
 
-#: src/ui.cc:2387
+#: src/ui.cc:2422
 msgid "Change the settings which affect the user interface"
 msgstr "Erabiltzaile-interfazean eragina duten ezarpenak aldatu"
 
-#: src/ui.cc:2390
+#: src/ui.cc:2425
 msgid "^Dependency handling"
 msgstr "^Mendekotasunak maneiatzea"
 
-#: src/ui.cc:2391
+#: src/ui.cc:2426
 msgid "Change the settings which affect how package dependencies are handled"
 msgstr ""
 "Pakete-mendekotasunak maneiatzeko moduan eragina duten ezarpenak aldatu"
 
-#: src/ui.cc:2394
+#: src/ui.cc:2429
 msgid "^Miscellaneous"
 msgstr "^Hainbat"
 
-#: src/ui.cc:2395
+#: src/ui.cc:2430
 msgid "Change miscellaneous program settings"
 msgstr "Hainbat programa-ezarpen aldatu"
 
-#: src/ui.cc:2401
+#: src/ui.cc:2436
 msgid "^Revert options"
 msgstr "^Desegin aukerak"
 
-#: src/ui.cc:2402
+#: src/ui.cc:2437
 msgid "Reset all settings to the system defaults"
 msgstr "Leheneratu ezarpen guztiak sistemaren lehenespenetara"
 
-#: src/ui.cc:2413
+#: src/ui.cc:2448
 msgid "^Next"
 msgstr "^Hurrengoa"
 
-#: src/ui.cc:2414
+#: src/ui.cc:2449
 msgid "View next display"
 msgstr "Hurrengo pantaila ikusi"
 
-#: src/ui.cc:2417
+#: src/ui.cc:2452
 msgid "^Prev"
 msgstr "^Aurrekoa"
 
-#: src/ui.cc:2418
+#: src/ui.cc:2453
 msgid "View previous display"
 msgstr "Aurreko pantaila ikusi"
 
-#: src/ui.cc:2421
+#: src/ui.cc:2456
 msgid "^Close"
 msgstr "^Itxi"
 
-#: src/ui.cc:2422
+#: src/ui.cc:2457
 msgid "Close this display"
 msgstr "Pantaila hau itxi"
 
-#: src/ui.cc:2427
+#: src/ui.cc:2462
 msgid "New Package ^View"
 msgstr "Pakete ^Ikuspegi berria"
 
-#: src/ui.cc:2428
+#: src/ui.cc:2463
 msgid "Create a new default package view"
 msgstr "Pakete-ikuspegi lehenetsi berri bat sortu"
 
-#: src/ui.cc:2431
+#: src/ui.cc:2466
 msgid "Audit ^Recommendations"
 msgstr "^Gomendioak Auditatu:"
 
-#: src/ui.cc:2432
+#: src/ui.cc:2467
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
@@ -5891,91 +6794,87 @@ msgstr ""
 "Instalatzea gomendatzen diren baina instalaturik ez dauden paketeak "
 "bistarazi."
 
-#: src/ui.cc:2435
+#: src/ui.cc:2470
 msgid "New ^Flat Package List"
 msgstr "Pakete-zerrenda ^lau berria"
 
-#: src/ui.cc:2436
+#: src/ui.cc:2471
 msgid "View all the packages on the system in a single uncategorized list"
 msgstr "Ikusi sistemako pakete guztiak kategoriarik gabeko zerrenda bakarrean"
 
-#: src/ui.cc:2439
+#: src/ui.cc:2474
 msgid "New ^Debtags Browser"
 msgstr "^Debtags arakatzaile berria"
 
-#: src/ui.cc:2441
+#: src/ui.cc:2476
 msgid "Browse packages using Debtags data"
 msgstr "Arakatu paketeak Debtags datuak erabiliz"
 
-#: src/ui.cc:2444
+#: src/ui.cc:2479
 msgid "New Categorical ^Browser"
 msgstr "Kategoria ^Arakatzaile berri bat"
 
-#: src/ui.cc:2446
+#: src/ui.cc:2481
 msgid "Browse packages by category"
 msgstr "Paketeak kategoriaka arakatu"
 
-#: src/ui.cc:2454
+#: src/ui.cc:2489
 msgid "^About"
 msgstr "^Honi buruz..."
 
-#: src/ui.cc:2455
+#: src/ui.cc:2490
 msgid "View information about this program"
 msgstr "Programa honi buruzko informazioa ikusi"
 
-#: src/ui.cc:2458
+#: src/ui.cc:2493
 msgid "^Help"
 msgstr "^Laguntza"
 
-#: src/ui.cc:2459
+#: src/ui.cc:2494
 msgid "View the on-line help"
 msgstr "Lineako laguntza ikusi"
 
-#: src/ui.cc:2461
+#: src/ui.cc:2496
 msgid "User's ^Manual"
 msgstr "Erabiltzailearen ^Eskuliburua"
 
-#: src/ui.cc:2462
+#: src/ui.cc:2497
 msgid "View the detailed program manual"
 msgstr "Programaren eskuliburu xehatua ikusi"
 
-#: src/ui.cc:2465
+#: src/ui.cc:2500
 msgid "^FAQ"
 msgstr "^FAQ"
 
-#: src/ui.cc:2469
+#: src/ui.cc:2504
 msgid "^News"
 msgstr "^Berriak"
 
-#: src/ui.cc:2470
+#: src/ui.cc:2505
 msgid "View the important changes made in each version of "
 msgstr "Ikusi honakoaren bertsio bakoitzean eginiko aldaketa garrantzitsuak"
 
-#: src/ui.cc:2473
+#: src/ui.cc:2508
 msgid "^License"
 msgstr "^Lizentzia"
 
-#: src/ui.cc:2614
+#: src/ui.cc:2649
 msgid "Actions"
 msgstr "Ekintzak"
 
-#: src/ui.cc:2617
-msgid "Resolver"
-msgstr "Ebatzi"
-
-#: src/ui.cc:2618
+#: src/ui.cc:2653
 msgid "Search"
 msgstr "Bilatu"
 
-#: src/ui.cc:2619
+#: src/ui.cc:2654
 msgid "Options"
 msgstr "Aukerak"
 
-#: src/ui.cc:2620
+#: src/ui.cc:2655
 msgid "Views"
 msgstr "Ikuspegiak"
 
-#: src/ui.cc:2686
+#: src/ui.cc:2721
 #, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
@@ -5984,35 +6883,78 @@ msgstr ""
 "%ls: Menua  %ls:  Laguntza  %ls: Irten %ls:  Eguneratu  %ls:  Deskargatu/"
 "Instalatu/Kendu paketeak"
 
-#: src/ui.cc:3031
+#: src/ui.cc:3063
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:3032
+#: src/ui.cc:3064
 msgid "no_key"
 msgstr "n"
 
-#: src/view_changelog.cc:165
+#: src/view_changelog.cc:271
 #, c-format
 msgid "%s changes"
 msgstr "%s aldaketa"
 
-#: src/view_changelog.cc:166
+#: src/view_changelog.cc:272
 msgid "View the list of changes made to this Debian package."
 msgstr "Ikusi Debian-eko paketean egindako aldaketa-zerrenda."
 
-#: src/view_changelog.cc:230
-msgid "You can only view changelogs of official Debian packages."
-msgstr ""
-"Debian-eko pakete ofizialen aldaketen erregistroak bakarrik ikus ditzakezu."
-
-#: src/view_changelog.cc:240
+#: src/view_changelog.cc:388
 msgid "Downloading Changelog"
 msgstr "Aldaketen egunkaria deskargatzen"
 
-#: src/view_changelog.cc:242
+#: src/view_changelog.cc:390
 msgid "Download Changelog"
 msgstr "Deskargatu erregistro aldaketak"
+
+#~ msgid "Yes"
+#~ msgstr "Bai"
+
+#~ msgid "No"
+#~ msgstr "Ez"
+
+#~ msgid "Automatically Installed"
+#~ msgstr "Automatikoki instalatuta"
+
+#~ msgid "Broken"
+#~ msgstr "Hautsita"
+
+#~ msgid "Unchanged"
+#~ msgstr "Aldatu gabea"
+
+#~ msgid "Remove [unused]"
+#~ msgstr "Kendu [erabili gabea]"
+
+#~ msgid "Hold [auto]"
+#~ msgstr "Heldu [auto]"
+
+#~ msgid "Install [auto]"
+#~ msgstr "Instalatu [auto]"
+
+#~ msgid "Remove [auto]"
+#~ msgstr "Kendu [auto]"
+
+#~ msgid "Essential"
+#~ msgstr "Funtsezkoa"
+
+#~ msgid "Config Files Remain"
+#~ msgstr "Konfigurazio-fitxategiak mantendu"
+
+#~ msgid "Garbage"
+#~ msgstr "Zaborra"
+
+#~ msgid "No reverse dependencies"
+#~ msgstr "Ez dago alderantzizko mendekotasunik"
+
+#~ msgid "New Package"
+#~ msgstr "Pakete berria"
+
+#~ msgid "Upgradable"
+#~ msgstr "Berritu daitekeena"
+
+#~ msgid "Obsolete"
+#~ msgstr "Zaharkituta"
 
 #~ msgid "The package \"%s\" is a starting point of the search.\n"
 #~ msgstr "\"%s\" paketea bilaketaren hasiera puntua da.\n"
