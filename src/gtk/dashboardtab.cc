@@ -1,5 +1,6 @@
 // dashboardtab.cc
 //
+//   Copyright (C) 2008 Obey Arthur Liu
 //   Copyright (C) 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
