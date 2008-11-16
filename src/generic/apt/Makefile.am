@@ -47,6 +47,8 @@ libgeneric_apt_a_SOURCES = \
         infer_reason.h      \
 	log.cc		    \
 	log.h		    \
+	parse_dpkg_status.cc\
+	parse_dpkg_status.h \
         pkg_acqfile.cc      \
         pkg_acqfile.h       \
         pkg_changelog.cc    \
