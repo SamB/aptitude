@@ -193,6 +193,10 @@ namespace gui
 				  info->handler_id);
     }
 
+    // Connect to the child-exited signal so we know when dpkg exits.
+    // We can't use a sigc++ connection because there's no C++ wrapper
+    // for VTE, and just using an old-school GTK+ binding is easier
+    // than writing a C++ wrapper.
     void connect_dpkg_result(pid_t pid,
 			     safe_slot1<void, pkgPackageManager::OrderResult> k)
     {
@@ -208,169 +212,162 @@ namespace gui
 			      &destroy_child_exited_info,
 			      (GConnectFlags)0);
     }
-
-    // This should always run from the foreground thread.
-    void do_run_dpkg(safe_slot1<pkgPackageManager::OrderResult, int> f,
-		     safe_slot1<void, Gtk::Widget *> register_terminal,
-		     safe_slot1<void, pkgPackageManager::OrderResult> k,
-		     safe_slot1<void, aptitude::apt::dpkg_status_message> report_message)
-    {
-      GtkWidget *vte = vte_terminal_new();
-
-      Gtk::Widget *w(Glib::wrap(vte, false));
-
-      register_terminal.get_slot()(w);
-
-      // Create a temporary UNIX-domain socket to pass status
-      // information to the parent.
-      temp::dir tempdir("aptitude");
-      temp::name socketname(tempdir, "commsocket");
-
-      // To avoid races, we bind the receive end of the socket first and
-      // start accepting connections.
-      int listen_sock = open_unix_socket();
-      if(listen_sock == -1)
-	{
-	  k.get_slot()(pkgPackageManager::Failed);
-	  return;
-	}
-
-      // Ensure that the socket is always closed when this routine
-      // exits.
-      FileFd sock_fd(listen_sock);
-
-      struct sockaddr_un sa;
-
-      const size_t max_socket_name = sizeof(sa.sun_path);
-
-      if(socketname.get_name().size() > max_socket_name)
-	{
-	  _error->Error("Internal error: the temporary socket name is too long!");
-	  k.get_slot()(pkgPackageManager::Failed);
-	  return;
-	}
-
-      sa.sun_family = AF_UNIX;
-      strncpy(sa.sun_path, socketname.get_name().c_str(), max_socket_name);
-      if(bind(listen_sock, (struct sockaddr *)&sa, sizeof(sa)) != 0)
-	{
-	  int errnum = errno;
-	  std::string err = cw::util::sstrerror(errnum);
-	  _error->Error("%s: Unable to bind to the temporary socket: %s",
-			__PRETTY_FUNCTION__,
-			err.c_str());
-	  k.get_slot()(pkgPackageManager::Failed);
-	  return;
-	}
-
-      if(listen(listen_sock, 1) != 0)
-	{
-	  int errnum = errno;
-	  std::string err = cw::util::sstrerror(errnum);
-	  _error->Error("%s: Unable to listen on the temporary socket: %s",
-			__PRETTY_FUNCTION__,
-			err.c_str());
-	  k.get_slot()(pkgPackageManager::Failed);
-	  return;
-	}
-
-      pid_t pid = vte_terminal_forkpty(VTE_TERMINAL(vte),
-				       NULL, NULL,
-				       FALSE, FALSE, FALSE);
-
-      if(pid == 0)
-	{
-	  // The child process.  It passes status information to the
-	  // parent process and uses its *return code* to indicate the
-	  // success / failure state.
-
-	  // NB: we should close the listen side here, but I don't
-	  // because of my magic knowledge that vte will.
-
-	  int write_sock = open_unix_socket();
-	  if(write_sock == -1)
-	    {
-	      _error->DumpErrors();
-	      _exit(pkgPackageManager::Failed);
-	    }
-
-	  if(connect(write_sock, (struct sockaddr *)&sa, sizeof(sa)) != 0)
-	    {
-	      int errnum = errno;
-	      std::string err = cw::util::sstrerror(errnum);
-	      _error->Error("%s: Unable to bind to the temporary socket: %s",
-			    __PRETTY_FUNCTION__,
-			    err.c_str());
-	      _error->DumpErrors();
-	      _exit(pkgPackageManager::Failed);
-	    }
-
-	  pkgPackageManager::OrderResult result = f.get_slot()(write_sock);
-
-	  // Make sure errors appear somewhere (we really ought to push
-	  // them down the FIFO).
-	  _error->DumpErrors();
-
-	  _exit(result);
-	}
-      else
-	{
-	  int read_sock = accept(listen_sock, NULL, NULL);
-	  if(read_sock == -1)
-	    {
-	      int errnum = errno;
-	      std::string errmsg = cw::util::sstrerror(errnum);
-	      _error->Error(_("%s: Unable to accept a connection from the subprocess: %s"),
-			    __PRETTY_FUNCTION__,
-			    errmsg.c_str());
-	    }
-
-	  // Catch status output from the install process.
-	  dpkg_socket_data_processor *data_processor = new dpkg_socket_data_processor(read_sock, report_message);
-	  Glib::signal_io().connect(sigc::mem_fun(*data_processor, &dpkg_socket_data_processor::process_data_from_dpkg_socket),
-				    read_sock,
-				    Glib::IO_IN | Glib::IO_ERR | Glib::IO_HUP | Glib::IO_NVAL);
-
-	  // The parent process.  Here we just wait for the reaper to
-	  // tell us that the child finished, then return the result.
-	  // We use implicit locking here to avoid a race condition that
-	  // could occur: we know that the reaper won't fire before we
-	  // can connect to it because its signal executions go through
-	  // the main loop, and this function call is blocking the main
-	  // loop.
-	  connect_dpkg_result(pid, k);
-
-	  vte_reaper_add_child(pid);
-	}
-    }
   }
 
-  void run_dpkg_in_terminal(const safe_slot1<pkgPackageManager::OrderResult, int> &f,
-			    const safe_slot1<void, Gtk::Widget *> &register_terminal,
-			    const safe_slot1<void, pkgPackageManager::OrderResult> &k,
-			    const safe_slot1<void, aptitude::apt::dpkg_status_message> &report_message)
+  DpkgTerminal::DpkgTerminal()
+    : sent_finished_signal(false)
   {
-    // Ask the main thread to start the dpkg run and to invoke the
-    // continuation.
-    sigc::slot0<void> run_dpkg_event =
-      sigc::bind(sigc::ptr_fun(&do_run_dpkg),
-		 f,
-		 register_terminal,
-		 k,
-		 report_message);
-    post_event(make_safe_slot(run_dpkg_event));
+    GtkWidget *vte = vte_terminal_new();
+    terminal = (Glib::wrap(vte, false));
   }
 
-  void inject_yes_into_dpkg_terminal(Gtk::Widget &w)
+  DpkgTerminal::~DpkgTerminal()
   {
-    VteTerminal *vte = VTE_TERMINAL(w.gobj());
+    if(!sent_finished_signal)
+      finished(pkgPackageManager::Incomplete);
+    delete terminal;
+  }
+
+  void DpkgTerminal::run(const safe_slot1<pkgPackageManager::OrderResult, int> &f)
+  {
+    // Create a temporary UNIX-domain socket to pass status
+    // information to the parent.
+    temp::dir tempdir("aptitude");
+    temp::name socketname(tempdir, "commsocket");
+
+    // To avoid races, we bind the receive end of the socket first and
+    // start accepting connections.
+    int listen_sock = open_unix_socket();
+    if(listen_sock == -1)
+      {
+	finished(pkgPackageManager::Failed);
+	return;
+      }
+
+    // Ensure that the socket is always closed when this routine
+    // exits.
+    FileFd sock_fd(listen_sock);
+
+    struct sockaddr_un sa;
+
+    const size_t max_socket_name = sizeof(sa.sun_path);
+
+    if(socketname.get_name().size() > max_socket_name)
+      {
+	_error->Error("Internal error: the temporary socket name is too long!");
+	finished(pkgPackageManager::Failed);
+	return;
+      }
+
+    sa.sun_family = AF_UNIX;
+    strncpy(sa.sun_path, socketname.get_name().c_str(), max_socket_name);
+    if(bind(listen_sock, (struct sockaddr *)&sa, sizeof(sa)) != 0)
+      {
+	int errnum = errno;
+	std::string err = cw::util::sstrerror(errnum);
+	_error->Error("%s: Unable to bind to the temporary socket: %s",
+		      __PRETTY_FUNCTION__,
+		      err.c_str());
+	finished(pkgPackageManager::Failed);
+	return;
+      }
+
+    if(listen(listen_sock, 1) != 0)
+      {
+	int errnum = errno;
+	std::string err = cw::util::sstrerror(errnum);
+	_error->Error("%s: Unable to listen on the temporary socket: %s",
+		      __PRETTY_FUNCTION__,
+		      err.c_str());
+	finished(pkgPackageManager::Failed);
+	return;
+      }
+
+    GtkWidget *vte = terminal->gobj();
+    pid_t pid = vte_terminal_forkpty(VTE_TERMINAL(vte),
+				     NULL, NULL,
+				     FALSE, FALSE, FALSE);
+
+    if(pid == 0)
+      {
+	// The child process.  It passes status information to the
+	// parent process and uses its *return code* to indicate the
+	// success / failure state.
+
+	// NB: we should close the listen side here, but I don't
+	// because of my magic knowledge that vte will.
+
+	int write_sock = open_unix_socket();
+	if(write_sock == -1)
+	  {
+	    _error->DumpErrors();
+	    _exit(pkgPackageManager::Failed);
+	  }
+
+	if(connect(write_sock, (struct sockaddr *)&sa, sizeof(sa)) != 0)
+	  {
+	    int errnum = errno;
+	    std::string err = cw::util::sstrerror(errnum);
+	    _error->Error("%s: Unable to bind to the temporary socket: %s",
+			  __PRETTY_FUNCTION__,
+			  err.c_str());
+	    _error->DumpErrors();
+	    _exit(pkgPackageManager::Failed);
+	  }
+
+	pkgPackageManager::OrderResult result = f.get_slot()(write_sock);
+
+	// Make sure errors appear somewhere (we really ought to push
+	// them down the FIFO).
+	_error->DumpErrors();
+
+	_exit(result);
+      }
+    else
+      {
+	int read_sock = accept(listen_sock, NULL, NULL);
+	if(read_sock == -1)
+	  {
+	    int errnum = errno;
+	    std::string errmsg = cw::util::sstrerror(errnum);
+	    _error->Error(_("%s: Unable to accept a connection from the subprocess: %s"),
+			  __PRETTY_FUNCTION__,
+			  errmsg.c_str());
+	  }
+
+	// Catch status output from the install process.
+	sigc::slot1<void, aptitude::apt::dpkg_status_message>
+	  report_message_slot(status_message.make_slot());
+	dpkg_socket_data_processor *data_processor = new dpkg_socket_data_processor(read_sock, make_safe_slot(report_message_slot));
+	Glib::signal_io().connect(sigc::mem_fun(*data_processor, &dpkg_socket_data_processor::process_data_from_dpkg_socket),
+				  read_sock,
+				  Glib::IO_IN | Glib::IO_ERR | Glib::IO_HUP | Glib::IO_NVAL);
+
+	// The parent process.  Here we just wait for the reaper to
+	// tell us that the child finished, then return the result.
+	// We use implicit locking here to avoid a race condition that
+	// could occur: we know that the reaper won't fire before we
+	// can connect to it because its signal executions go through
+	// the main loop, and this function call is blocking the main
+	// loop.
+	sigc::slot1<void, pkgPackageManager::OrderResult> finished_slot =
+	  finished.make_slot();
+	connect_dpkg_result(pid, make_safe_slot(finished_slot));
+
+	vte_reaper_add_child(pid);
+      }
+  }
+
+  void DpkgTerminal::inject_yes()
+  {
+    VteTerminal *vte = VTE_TERMINAL(terminal->gobj());
 
     vte_terminal_feed_child(vte, "y\n", 2);
   }
 
-  void inject_no_into_dpkg_terminal(Gtk::Widget &w)
+  void DpkgTerminal::inject_no()
   {
-    VteTerminal *vte = VTE_TERMINAL(w.gobj());
+    VteTerminal *vte = VTE_TERMINAL(terminal->gobj());
 
     vte_terminal_feed_child(vte, "n\n", 2);
   }

@@ -37,41 +37,62 @@
 
 namespace gui
 {
-  /** \brief Run dpkg in a terminal, blocking this thread until it
-   *  completes.
-   *
-   *  This may be invoked in either a foreground thread or a
-   *  background thread.
-   *
-   *  \param f The function to invoke when we want to run dpkg.
-   *
-   *  \param register_terminal A function to invoke to register the
-   *  terminal (e.g., to store it in a variable or to add it to a new
-   *  tab).  This function assumes ownership of the terminal widget.
-   *
-   *  \param k   A function to invoke after the package manager is
-   *             finished running.
-   *
-   *  \param report_message   A function to invoke when a message is
-   *                          received on the dpkg status file
-   *                          descriptor.
+  /** \brief This object manages setting up and destroying the dpkg
+   *  terminal.
    */
-  void run_dpkg_in_terminal(const safe_slot1<pkgPackageManager::OrderResult, int> &f,
-			    const safe_slot1<void, Gtk::Widget *> &register_terminal,
-			    const safe_slot1<void, pkgPackageManager::OrderResult> &k,
-			    const safe_slot1<void, aptitude::apt::dpkg_status_message> &report_message);
+  class DpkgTerminal : public sigc::trackable
+  {
+    Gtk::Widget *terminal;
+    bool sent_finished_signal;
 
-  /** \brief Send "yes" in reply to a "replace this conffile?" message.
-   *
-   *  \todo This API needs to be redesigned.
-   */
-  void inject_yes_into_dpkg_terminal(Gtk::Widget &w);
+    // Forbid copying.
+    DpkgTerminal(const DpkgTerminal &);
 
-  /** \brief Send "no" in reply to a "replace this conffile?" message.
-   *
-   *  \todo This API needs to be redesigned.
-   */
-  void inject_no_into_dpkg_terminal(Gtk::Widget &w);
+  public:
+    /** \brief Initialize a new terminal. */
+    DpkgTerminal();
+
+    ~DpkgTerminal();
+
+    /** \brief Return a wrapper around the terminal object.
+     *
+     *  The wrapper is owned by this DpkgTerminal.
+     */
+    Gtk::Widget *get_widget() const { return terminal; }
+
+    /** \brief A signal that triggers in the main thread when dpkg
+     *	finishes running.
+     */
+    sigc::signal1<void, pkgPackageManager::OrderResult> finished; 
+
+    /** \brief A signal that triggers in the main thread when a
+     *  message is received on the dpkg status pipe.
+     */
+    sigc::signal1<void, aptitude::apt::dpkg_status_message> status_message;
+
+    /** \brief Start running dpkg in the encapsulated terminal.
+     *
+     *  This may be invoked in either a foreground thread or a
+     *  background thread.
+     *
+     *  \param f The function that actually invokes dpkg.
+     */
+    void run(const safe_slot1<pkgPackageManager::OrderResult, int> &f);
+
+    // It would be somewhat nicer to just pass around slots to say
+    // "yes" or "no" (so only something that read a
+    // conffile-replacement message would have a token that could
+    // invoke these).
+
+    /** \brief Send "yes" in reply to a "replace this conffile?"
+     *  message.
+     */
+    void inject_yes();
+
+    /** \brief Send "no" in reply to a "replace this conffile?" message.
+     */
+    void inject_no();
+  };
 }
 
 #endif

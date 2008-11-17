@@ -466,7 +466,9 @@ namespace gui
       Gtk::ProgressBar *progress;
       // The active terminal information tab, or NULL if none.
       DpkgTerminalTab *tab;
-      Gtk::Widget *terminal;
+      DpkgTerminal *terminal;
+      // Invoked as an idle callback after dpkg finishes running.
+      safe_slot1<void, pkgPackageManager::OrderResult> k;
 
       void abort()
       {
@@ -479,17 +481,31 @@ namespace gui
 	tab = NULL;
       }
 
+      void finish_dpkg_run(pkgPackageManager::OrderResult res)
+      {
+	// Invoking this as an idle callback is a bit of a holdover
+	// from when I tried (disastrously) to run the download
+	// manager's finish() in a background thread.  Nonetheless, it
+	// avoids any nasty surprises because of single-thread
+	// reentrancy.
+	post_event(safe_bind(k, res));
+      }
+
     public:
-      DpkgTerminalNotification()
+	DpkgTerminalNotification(const safe_slot1<void, pkgPackageManager::OrderResult> &_k)
 	: Notification(true),
 	  progress(new Gtk::ProgressBar),
 	  tab(NULL),
-	  terminal(NULL)
+	  terminal(new DpkgTerminal),
+	  k(_k)
       {
 	progress->set_text(_("Applying changes..."));
 	progress->set_ellipsize(Pango::ELLIPSIZE_END);
 	progress->show();
 	prepend_widget(progress);
+
+	terminal->finished.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::finish_dpkg_run));
+	terminal->status_message.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::process_dpkg_message));
 
 	Gtk::Button *view_details_button = new Gtk::Button(_("View Details"));
 	view_details_button->signal_clicked().connect(sigc::mem_fun(*this, &DpkgTerminalNotification::view_details));
@@ -505,38 +521,18 @@ namespace gui
 	show();
       }
 
-      // Needed because of signal connection ick.  We want to connect
-      // a slot from run_dpkg_in_terminal to the status message
-      // processing function in this class.  But the slot has to be
-      // created before we actually create the dpkg terminal (mostly
-      // because I want to hide the details of creating the terminal
-      // in dpkg_terminal.cc).  One alternative would be a two-step
-      // process where you first create the terminal, then call
-      // another routine to actually run dpkg (passing the message
-      // reporting slot only to the second routine).  This might be a
-      // cleaner design eventually, but for the time being I decided
-      // to just backpatch the terminal pointer.
-      //
-      // \todo Apply the redesign suggested above.
-      void set_terminal(Gtk::Widget *new_terminal)
+      void run_dpkg(const safe_slot1<pkgPackageManager::OrderResult, int> &f)
       {
-	if(tab != NULL)
-	  {
-	    delete tab;
-	    tab = NULL;
-	  }
-	if(terminal != NULL)
-	  delete terminal;
-	terminal = new_terminal;
+	terminal->run(f);
       }
 
       void view_details()
       {
 	if(tab != NULL)
 	  tab->get_widget()->show();
-	else if(terminal != NULL)
+	else
 	  {
-	    tab = new DpkgTerminalTab(terminal);
+	    tab = new DpkgTerminalTab(terminal->get_widget());
 	    tab->closed.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::tab_destroyed));
 	    tab_add(tab);
 	  }
@@ -567,10 +563,10 @@ namespace gui
 
 	      if(terminal != NULL)
 		{
-		  tab->yes_clicked.connect(sigc::bind(sigc::ptr_fun(&inject_yes_into_dpkg_terminal),
-						      sigc::ref(*terminal)));
-		  tab->no_clicked.connect(sigc::bind(sigc::ptr_fun(&inject_no_into_dpkg_terminal),
-						     sigc::ref(*terminal)));
+		  tab->yes_clicked.connect(sigc::mem_fun(*terminal,
+							 &DpkgTerminal::inject_yes));
+		  tab->no_clicked.connect(sigc::mem_fun(*terminal,
+							&DpkgTerminal::inject_no));
 		}
 
 	      tab->yes_clicked.connect(tab->close_clicked.make_slot());
@@ -599,43 +595,15 @@ namespace gui
       }
     };
 
-    // Scary callback functions.  This needs to be cleaned up.
-
-    void register_dpkg_terminal(Gtk::Widget *w,
-				DpkgTerminalNotification &n)
-    {
-      n.set_terminal(w);
-    }
-
-    // Asynchronously post the outcome of a dpkg run to the main
-    // thread.
-    void finish_gui_run_dpkg(pkgPackageManager::OrderResult res,
-			     safe_slot1<void, pkgPackageManager::OrderResult> k)
-    {
-      post_event(safe_bind(k, res));
-    }
-
     // Callback that kicks off a dpkg run.
     void gui_run_dpkg(sigc::slot1<pkgPackageManager::OrderResult, int> f,
 		      sigc::slot1<void, pkgPackageManager::OrderResult> k)
     {
-      DpkgTerminalNotification *n = new DpkgTerminalNotification;
-
-      sigc::slot1<void, Gtk::Widget *> register_terminal_slot =
-	sigc::bind(sigc::ptr_fun(&register_dpkg_terminal),
-		   sigc::ref(*n));
-      sigc::slot1<void, pkgPackageManager::OrderResult>
-	finish_slot(sigc::bind(sigc::ptr_fun(&finish_gui_run_dpkg),
-			       make_safe_slot(k)));
-      sigc::slot1<void, aptitude::apt::dpkg_status_message> process_dpkg_message_slot =
-	sigc::mem_fun(*n, &DpkgTerminalNotification::process_dpkg_message);
+      DpkgTerminalNotification *n = new DpkgTerminalNotification(make_safe_slot(k));
 
       pMainWindow->get_notifyview()->add_notification(n);
 
-      run_dpkg_in_terminal(make_safe_slot(f),
-			   make_safe_slot(register_terminal_slot),
-			   make_safe_slot(finish_slot),
-			   make_safe_slot(process_dpkg_message_slot));
+      n->run_dpkg(make_safe_slot(f));
     }
 
     void install_or_remove_packages()
