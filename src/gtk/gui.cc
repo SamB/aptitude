@@ -481,6 +481,16 @@ namespace gui
 	tab = NULL;
       }
 
+      void do_finish_dpkg_run(pkgPackageManager::OrderResult res)
+      {
+	progress->hide();
+	Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
+	buffer->set_text(_("Done applying changes!"));
+	set_buffer(buffer);
+
+	k.get_slot()(res);
+      }
+
       void finish_dpkg_run(pkgPackageManager::OrderResult res)
       {
 	// Invoking this as an idle callback is a bit of a holdover
@@ -488,7 +498,8 @@ namespace gui
 	// manager's finish() in a background thread.  Nonetheless, it
 	// avoids any nasty surprises because of single-thread
 	// reentrancy.
-	post_event(safe_bind(k, res));
+	sigc::slot1<void, pkgPackageManager::OrderResult> do_finish_dpkg_run_slot(sigc::mem_fun(*this, &DpkgTerminalNotification::do_finish_dpkg_run));
+	post_event(safe_bind(make_safe_slot(do_finish_dpkg_run_slot), res));
       }
 
     public:
