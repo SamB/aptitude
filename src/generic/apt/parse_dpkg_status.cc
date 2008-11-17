@@ -211,6 +211,7 @@ namespace aptitude
 
 	  msg.append(begin, where);
 	  pending_messages.push_back(dpkg_status_message::parse(msg.c_str(), msg.size()));
+	  msg.clear();
 
 	  if(where < end)
 	    ++where;
