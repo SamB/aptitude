@@ -37,7 +37,7 @@ namespace aptitude
       const char *parse_whitespace(const char * &start,
 				   const char * const end)
       {
-	while(start != end && isspace(*start))
+	while(start < end && isspace(*start))
 	  ++start;
 
 	return start;
@@ -49,11 +49,11 @@ namespace aptitude
       {
 	const char * const begin = parse_whitespace(start, end);
 
-	while(start != end && *start != ':')
+	while(start < end && *start != ':')
 	  ++start;
 
 	const char *last = start;
-	if(start != end)
+	if(start < end)
 	  ++start;
 
 	while(last != begin && isspace(last[-1]))
@@ -73,10 +73,10 @@ namespace aptitude
 
 	++start;
 	const char * const rval_begin = start;
-	while(start != end && *start != '\'')
+	while(start < end && *start != '\'')
 	  ++start;
 
-	if(start == end)
+	if(start >= end)
 	  return _("<aptitude: internal parse error: missing terminal apostrophe>");
 
 	const char * const rval_end = start;
@@ -204,15 +204,15 @@ namespace aptitude
 
       const char *where = begin;
 
-      while(begin != end)
+      while(where < end)
 	{
-	  while(where != end && *where != '\n')
+	  while(where < end && *where != '\n')
 	    ++where;
 
 	  msg.append(begin, where);
 	  pending_messages.push_back(dpkg_status_message::parse(msg.c_str(), msg.size()));
 
-	  if(where != end)
+	  if(where < end)
 	    ++where;
 
 	  begin = where;
