@@ -248,7 +248,7 @@ namespace gui
        *  in another tab later.  See DpkgTerminalNotification.
        */
       DpkgTerminalTab(Gtk::Widget *term)
-	: Tab(DpkgTerminal, "Applying changes",
+	: Tab(DpkgTerminalTabType, "Applying changes",
 	      Gnome::Glade::Xml::create(glade_main_file, "main_apply_changes_scrolledwindow"),
 	      "main_apply_changes_scrolledwindow")
       {

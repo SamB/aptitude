@@ -49,7 +49,7 @@ namespace gui
     /** \brief A tab that shows the terminal output produced by a dpkg
      *	invocation.
      */
-    DpkgTerminal,
+    DpkgTerminalTabType,
     Error
   };
 
