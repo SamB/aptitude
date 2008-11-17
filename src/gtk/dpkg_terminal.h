@@ -26,6 +26,7 @@
 
 #include <apt-pkg/packagemanager.h>
 
+#include <generic/apt/parse_dpkg_status.h>
 #include <generic/util/safe_slot.h>
 
 /** \brief Support for creating a GUI terminal in which dpkg can be
@@ -47,10 +48,30 @@ namespace gui
    *  \param register_terminal A function to invoke to register the
    *  terminal (e.g., to store it in a variable or to add it to a new
    *  tab).  This function assumes ownership of the terminal widget.
+   *
+   *  \param k   A function to invoke after the package manager is
+   *             finished running.
+   *
+   *  \param report_message   A function to invoke when a message is
+   *                          received on the dpkg status file
+   *                          descriptor.
    */
   void run_dpkg_in_terminal(const safe_slot1<pkgPackageManager::OrderResult, int> &f,
 			    const safe_slot1<void, Gtk::Widget *> &register_terminal,
-			    const safe_slot1<void, pkgPackageManager::OrderResult> &k);
+			    const safe_slot1<void, pkgPackageManager::OrderResult> &k,
+			    const safe_slot1<void, aptitude::apt::dpkg_status_message> &report_message);
+
+  /** \brief Send "yes" in reply to a "replace this conffile?" message.
+   *
+   *  \todo This API needs to be redesigned.
+   */
+  void inject_yes_into_dpkg_terminal(Gtk::Widget &w);
+
+  /** \brief Send "no" in reply to a "replace this conffile?" message.
+   *
+   *  \todo This API needs to be redesigned.
+   */
+  void inject_no_into_dpkg_terminal(Gtk::Widget &w);
 }
 
 #endif

@@ -36,6 +36,10 @@ namespace gui
    */
   enum TabType
   {
+    /** \brief A tab that asks the user to view the difference between
+     *  two versions of a conffile.
+     */
+    ConffileDiff,
     Dashboard,
     /** \brief A tab that provides support for finding dependency
      *  chains linking two groups of packages.

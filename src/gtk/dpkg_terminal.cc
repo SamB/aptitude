@@ -35,6 +35,9 @@
 
 #include <aptitude.h>
 
+#include <generic/apt/apt.h>
+#include <generic/apt/config_signal.h>
+
 #include "gui.h"
 
 namespace cw = cwidget;
@@ -48,30 +51,86 @@ namespace gui
     // I expect that it'll be perfectly acceptable to handle dpkg
     // status messages from the main loop.
     //
-    // \todo actually parse the messages and emit some sort of signal
-    // for them.
-    bool process_data_from_dpkg_socket(Glib::IOCondition condition,
-				       int fd)
+    // The main reason for this class is that we need to store the
+    // dpkg status fd parser somewhere.  It also makes me feel a
+    // little better about copying slots around.
+    //
+    // This is a self-deleting class: it kills itself when it hits
+    // EOF on the socket.
+    class dpkg_socket_data_processor : public sigc::trackable
     {
-      if(condition & Glib::IO_IN)
-	{
-	  char c;
-	  // If we can't read anything, assume we got EOF and stop
-	  // listening to this FD.
-	  bool read_anything = false;
-	  while(recv(fd, &c, 1, MSG_DONTWAIT) > 0)
-	    read_anything = true; // Just snarf all the data in a lame way for now.
-	  return read_anything;
-	}
+      int fd;
+      safe_slot1<void, aptitude::apt::dpkg_status_message> report_message;
+      aptitude::apt::dpkg_status_parser parser;
 
-      else if( (condition & Glib::IO_NVAL) ||
-	       (condition & Glib::IO_ERR) ||
-	       (condition & Glib::IO_HUP) )
-	return false;
+      static void delete_socket_data_processor(dpkg_socket_data_processor *processor)
+      {
+	delete processor;
+      }
 
-      _error->Warning("Unexpected IO condition %d", condition);
-      return false;
-    }
+    public:
+      dpkg_socket_data_processor(int _fd,
+				 const safe_slot1<void, aptitude::apt::dpkg_status_message> &_report_message)
+	: fd(_fd), report_message(_report_message)
+      {
+      }
+
+      bool process_data_from_dpkg_socket(Glib::IOCondition condition)
+      {
+	bool rval = false;
+
+	if(condition & Glib::IO_IN)
+	  {
+	    char buf[1024];
+	    const int buf_len = sizeof(buf);
+	    int amt;
+	    bool read_anything = false;
+	    do
+	      {
+		amt = recv(fd, buf, buf_len, MSG_DONTWAIT);
+		parser.process_input(buf, amt);
+
+		if(aptcfg->FindB("Debug::Aptitude::Dpkg-Status-Fd", false))
+		  write(1, buf, amt);
+
+		while(parser.has_pending_message())
+		  {
+		    aptitude::apt::dpkg_status_message
+		      msg(parser.pop_message());
+		    report_message.get_slot()(msg);
+		  }
+
+		if(amt > 0)
+		  read_anything = true;
+	      }
+	    while(amt > 0);
+
+	    rval = read_anything;
+	  }
+	else if( (condition & Glib::IO_NVAL) ||
+		 (condition & Glib::IO_ERR) ||
+		 (condition & Glib::IO_HUP) )
+	  rval = false;
+	else
+	  {
+	    _error->Warning("Unexpected IO condition %d", condition);
+	    rval = false;
+	  }
+
+	if(!rval)
+	  // We could probably just "delete this" right here, but I feel
+	  // a little nervous about deleting something that's actively
+	  // involved in signal delivery.
+	  {
+	    sigc::slot0<void> delete_this =
+	      sigc::bind(sigc::ptr_fun(&dpkg_socket_data_processor::delete_socket_data_processor),
+			 this);
+	    post_event(make_safe_slot(delete_this));
+	  }
+
+	return rval;
+      }
+    };
 
     int open_unix_socket()
     {
@@ -153,7 +212,8 @@ namespace gui
     // This should always run from the foreground thread.
     void do_run_dpkg(safe_slot1<pkgPackageManager::OrderResult, int> f,
 		     safe_slot1<void, Gtk::Widget *> register_terminal,
-		     safe_slot1<void, pkgPackageManager::OrderResult> k)
+		     safe_slot1<void, pkgPackageManager::OrderResult> k,
+		     safe_slot1<void, aptitude::apt::dpkg_status_message> report_message)
     {
       GtkWidget *vte = vte_terminal_new();
 
@@ -266,8 +326,8 @@ namespace gui
 	    }
 
 	  // Catch status output from the install process.
-	  Glib::signal_io().connect(sigc::bind(sigc::ptr_fun(&process_data_from_dpkg_socket),
-					       read_sock),
+	  dpkg_socket_data_processor *data_processor = new dpkg_socket_data_processor(read_sock, report_message);
+	  Glib::signal_io().connect(sigc::mem_fun(*data_processor, &dpkg_socket_data_processor::process_data_from_dpkg_socket),
 				    read_sock,
 				    Glib::IO_IN | Glib::IO_ERR | Glib::IO_HUP | Glib::IO_NVAL);
 
@@ -287,7 +347,8 @@ namespace gui
 
   void run_dpkg_in_terminal(const safe_slot1<pkgPackageManager::OrderResult, int> &f,
 			    const safe_slot1<void, Gtk::Widget *> &register_terminal,
-			    const safe_slot1<void, pkgPackageManager::OrderResult> &k)
+			    const safe_slot1<void, pkgPackageManager::OrderResult> &k,
+			    const safe_slot1<void, aptitude::apt::dpkg_status_message> &report_message)
   {
     // Ask the main thread to start the dpkg run and to invoke the
     // continuation.
@@ -295,7 +356,22 @@ namespace gui
       sigc::bind(sigc::ptr_fun(&do_run_dpkg),
 		 f,
 		 register_terminal,
-		 k);
+		 k,
+		 report_message);
     post_event(make_safe_slot(run_dpkg_event));
+  }
+
+  void inject_yes_into_dpkg_terminal(Gtk::Widget &w)
+  {
+    VteTerminal *vte = VTE_TERMINAL(w.gobj());
+
+    vte_terminal_feed_child(vte, "y\n", 2);
+  }
+
+  void inject_no_into_dpkg_terminal(Gtk::Widget &w)
+  {
+    VteTerminal *vte = VTE_TERMINAL(w.gobj());
+
+    vte_terminal_feed_child(vte, "n\n", 2);
   }
 }

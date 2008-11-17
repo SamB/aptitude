@@ -39,6 +39,7 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_install_manager.h>
 #include <generic/apt/download_update_manager.h>
+#include <generic/apt/parse_dpkg_status.h>
 #include <generic/apt/tags.h>
 
 #include <generic/util/refcounted_wrapper.h>
@@ -233,10 +234,6 @@ namespace gui
       }
   }
 
-  // \todo Push the download into a background thread.
-  //
-  // \todo Use a terminal widget to display the progress of the
-  // installation.
   namespace
   {
     class DpkgTerminalTab : public Tab
@@ -244,6 +241,12 @@ namespace gui
       Gtk::ScrolledWindow *terminal_scrolled_window;
 
     public:
+      /** \brief Create a new dpkg terminal tab.
+       *
+       *  \param term The terminal widget; the tab does NOT take
+       *  ownership of this widget, in order to allow it to be reused
+       *  in another tab later.  See DpkgTerminalNotification.
+       */
       DpkgTerminalTab(Gtk::Widget *term)
 	: Tab(DpkgTerminal, "Applying changes",
 	      Gnome::Glade::Xml::create(glade_main_file, "main_apply_changes_scrolledwindow"),
@@ -252,17 +255,356 @@ namespace gui
 	get_xml()->get_widget("main_apply_changes_scrolledwindow",
 			      terminal_scrolled_window);
 	terminal_scrolled_window->remove();
-	terminal_scrolled_window->add(*Gtk::manage(term));
+	terminal_scrolled_window->add(*term);
 
 	get_widget()->show_all();
       }
     };
 
+    /** \brief A tab that displays a diff between two conffiles and
+     *  allows the user to choose whether to install a new version.
+     *
+     *  Making this be a tab may be a bit borderline.  On the other
+     *  hand, I kind of like keeping popups to an absolute minimum.
+     */
+    class ConffileDiffTab : public Tab
+    {
+      int child_output_fd;
+
+      bool saw_any_output;
+
+      Glib::RefPtr<Gtk::TextBuffer> diff_buffer;
+
+      Glib::RefPtr<Gtk::TextBuffer::Tag> deleted_tag, inserted_tag;
+
+      // We only output whole lines, so that we can apply tags to each
+      // one.
+      std::string current_line;
+
+    public:
+      ConffileDiffTab(const std::string &conffile,
+		      const std::string &existing_file,
+		      const std::string &new_file)
+	: Tab(ConffileDiff,
+	      cw::util::ssprintf(_("Update %s?"),
+				 conffile.c_str()),
+	      Gnome::Glade::Xml::create(glade_main_file, "main_conffile_diff_tab"),
+	      "main_conffile_diff_tab"),
+	  saw_any_output(false)
+      {
+	std::vector<std::string> arguments;
+	arguments.push_back("/usr/bin/diff");
+	arguments.push_back("-u");
+	arguments.push_back(existing_file);
+	arguments.push_back(new_file);
+
+	Gtk::Label *explanation_label, *expander_label;
+	Gtk::TextView *diff_view;
+	Gtk::Button *yes_button, *no_button;
+
+	get_xml()->get_widget("main_conffile_explanation_label", explanation_label);
+	get_xml()->get_widget("main_conffile_expander_label", expander_label);
+	get_xml()->get_widget("main_conffile_diff_view", diff_view);
+	get_xml()->get_widget("main_conffile_yes_button", yes_button);
+	get_xml()->get_widget("main_conffile_no_button", no_button);
+
+	// Language shamelessly stolen from Synaptic, all hail mvo.
+	//
+	//   -- dburrows 2008-11-16.
+	const std::string header =
+	  ssprintf(_("Replace configuration file\n'%s'?"),
+		   conffile.c_str());
+
+	const std::string detail =
+	  ssprintf(_("The configuration file %s was modified (by "
+		     "you or by a script). An updated version is shipped "
+		     "in this package. If you want to keep your current "
+		     "version, choose 'No'. Do you want to replace the "
+		     "current file and install the new package "
+		     "maintainers version? "),
+		   conffile.c_str());
+
+	const std::string markup =
+	  ssprintf("<span weight=\"bold\" size=\"larger\">%s</span>\n\n%s",
+		   Glib::Markup::escape_text(header).c_str(),
+		   Glib::Markup::escape_text(detail).c_str());
+
+	explanation_label->set_markup(markup);
+
+	// \todo Maybe add a button / option to run a custom diffing
+	// tool?
+
+	Pango::FontDescription monospace("monospace");
+	diff_view->modify_font(monospace);
+	diff_buffer = diff_view->get_buffer();
+
+	yes_button->signal_clicked().connect(yes_clicked.make_slot());
+	no_button->signal_clicked().connect(no_clicked.make_slot());
+
+	// Add some placeholder text that will appear while we wait
+	// for diff to run.
+	diff_buffer->insert(diff_buffer->end(),
+			    cw::util::ssprintf(_("Comparing %s to %s..."),
+					       existing_file.c_str(), new_file.c_str()));
+
+	deleted_tag = diff_buffer->create_tag();
+	deleted_tag->property_foreground() = "#330000";
+
+	inserted_tag = diff_buffer->create_tag();
+	inserted_tag->property_foreground() = "#003300";
+
+	Glib::spawn_async_with_pipes(".",
+				     arguments,
+				     Glib::SpawnFlags(0),
+				     sigc::slot0<void>(),
+				     NULL,
+				     NULL,
+				     &child_output_fd,
+				     NULL);
+
+	Glib::signal_io().connect(sigc::mem_fun(*this, &ConffileDiffTab::handle_diff_output),
+				  child_output_fd,
+				  Glib::IO_IN | Glib::IO_ERR | Glib::IO_HUP | Glib::IO_NVAL);
+
+	// \todo Connect up to the yes/no signals, maybe provide our
+	// own signals, etc.
+      }
+
+      sigc::signal0<void> yes_clicked;
+      sigc::signal0<void> no_clicked;
+
+      void process_diff_output(const char *buf, int len)
+      {
+	if(!saw_any_output)
+	  {
+	    // Throw away the placeholder message.
+	    diff_buffer->erase(diff_buffer->begin(), diff_buffer->end());
+	    saw_any_output = true;
+	  }
+
+	const char *where = buf;
+	const char * const end = buf + len;
+
+	while(where != end)
+	  {
+	    const char * const begin = where;
+
+	    while(where != end && *where != '\n')
+	      ++where;
+
+	    current_line.append(begin, where);
+
+	    if(where != end)
+	      {
+		++where;
+
+		if(current_line.size() > 0)
+		  {
+		    switch(current_line[0])
+		      {
+		      case '+':
+			diff_buffer->insert_with_tag(diff_buffer->end(),
+						     current_line,
+						     inserted_tag);
+			break;
+
+		      case '-':
+			diff_buffer->insert_with_tag(diff_buffer->end(),
+						     current_line,
+						     deleted_tag);
+			break;
+
+		      default:
+			diff_buffer->insert(diff_buffer->end(), current_line);
+			break;
+		      }
+		  }
+
+		diff_buffer->insert(diff_buffer->end(), "\n");
+		current_line.clear();
+	      }
+	  }
+      }
+
+      bool handle_diff_output(Glib::IOCondition condition)
+      {
+	bool rval = false;
+
+	if(condition & Glib::IO_IN)
+	  {
+	    char buf[1024];
+	    const int buf_len = sizeof(buf);
+
+	    int amt;
+	    bool read_anything = false;
+	    do
+	      {
+		amt = read(child_output_fd, buf, buf_len);
+		process_diff_output(buf, amt);
+		if(amt > 0)
+		  read_anything = true;
+	      } while(amt > 0);
+
+	    rval = read_anything;
+	  }
+	else if( (condition & Glib::IO_NVAL) ||
+		 (condition & Glib::IO_ERR) ||
+		 (condition & Glib::IO_HUP) )
+	  rval = false;
+	else
+	  {
+	    _error->Warning("Unexpected IO condition %d", condition);
+	    rval = false;
+	  }
+
+	return rval;
+      }
+    };
+
+    class DpkgTerminalNotification : public Notification
+    {
+      Gtk::ProgressBar *progress;
+      // The active terminal information tab, or NULL if none.
+      DpkgTerminalTab *tab;
+      Gtk::Widget *terminal;
+
+      void abort()
+      {
+	delete terminal;
+	terminal = NULL;
+      }
+
+      void tab_destroyed()
+      {
+	tab = NULL;
+      }
+
+    public:
+      DpkgTerminalNotification()
+	: Notification(true),
+	  progress(new Gtk::ProgressBar),
+	  tab(NULL),
+	  terminal(NULL)
+      {
+	progress->set_text(_("Applying changes..."));
+	progress->set_ellipsize(Pango::ELLIPSIZE_END);
+	progress->show();
+	prepend_widget(progress);
+
+	Gtk::Button *view_details_button = new Gtk::Button(_("View Details"));
+	view_details_button->signal_clicked().connect(sigc::mem_fun(*this, &DpkgTerminalNotification::view_details));
+	view_details_button->show();
+	add_button(view_details_button);
+
+	// TODO: we should warn the user and let them decide whether
+	// to really abort.  That means we should have some way of
+	// interrupting the close procedure and resuming it later...
+	close_clicked.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::abort));
+
+	finalize();
+	show();
+      }
+
+      // Needed because of signal connection ick.  We want to connect
+      // a slot from run_dpkg_in_terminal to the status message
+      // processing function in this class.  But the slot has to be
+      // created before we actually create the dpkg terminal (mostly
+      // because I want to hide the details of creating the terminal
+      // in dpkg_terminal.cc).  One alternative would be a two-step
+      // process where you first create the terminal, then call
+      // another routine to actually run dpkg (passing the message
+      // reporting slot only to the second routine).  This might be a
+      // cleaner design eventually, but for the time being I decided
+      // to just backpatch the terminal pointer.
+      //
+      // \todo Apply the redesign suggested above.
+      void set_terminal(Gtk::Widget *new_terminal)
+      {
+	if(tab != NULL)
+	  {
+	    delete tab;
+	    tab = NULL;
+	  }
+	if(terminal != NULL)
+	  delete terminal;
+	terminal = new_terminal;
+      }
+
+      void view_details()
+      {
+	if(tab != NULL)
+	  tab->get_widget()->show();
+	else if(terminal != NULL)
+	  {
+	    tab = new DpkgTerminalTab(terminal);
+	    tab->closed.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::tab_destroyed));
+	    tab_add(tab);
+	  }
+      }
+
+      void process_dpkg_message(aptitude::apt::dpkg_status_message msg)
+      {
+	using aptitude::apt::dpkg_status_message;
+	switch(msg.get_type())
+	  {
+	  case dpkg_status_message::error:
+	    _error->Error(_("%s: %s"),
+			  msg.get_package().c_str(),
+			  msg.get_text().c_str());
+	    progress->set_text(cw::util::ssprintf(_("Error in package %s"),
+						  msg.get_package().c_str()));
+	    break;
+
+	  case dpkg_status_message::conffile:
+	    // \todo Instead of always popping up the conffile prompt,
+	    // should we show "yes" / "no" / "view details" buttons in
+	    // the notification?
+	    {
+	      ConffileDiffTab *tab =
+		new ConffileDiffTab(msg.get_text(),
+				    msg.get_existing_filename(),
+				    msg.get_new_filename());
+
+	      if(terminal != NULL)
+		{
+		  tab->yes_clicked.connect(sigc::bind(sigc::ptr_fun(&inject_yes_into_dpkg_terminal),
+						      sigc::ref(*terminal)));
+		  tab->no_clicked.connect(sigc::bind(sigc::ptr_fun(&inject_no_into_dpkg_terminal),
+						     sigc::ref(*terminal)));
+		}
+
+	      tab->yes_clicked.connect(tab->close_clicked.make_slot());
+	      tab->no_clicked.connect(tab->close_clicked.make_slot());
+
+	      tab_add(tab);
+	      tab->get_widget()->show();
+
+	      progress->set_text(cw::util::ssprintf(_("Asking whether to replace the configuration file %s"),
+						    msg.get_text().c_str()));
+	    }
+	    break;
+
+	  case dpkg_status_message::status:
+	    progress->set_text(msg.get_text());
+	    break;
+	  }
+
+	progress->set_fraction(msg.get_percent() / 100.0);
+      }
+
+      ~DpkgTerminalNotification()
+      {
+	delete tab;
+	delete terminal;
+      }
+    };
+
     // Scary callback functions.  This needs to be cleaned up.
 
-    void register_dpkg_terminal(Gtk::Widget *w)
+    void register_dpkg_terminal(Gtk::Widget *w,
+				DpkgTerminalNotification &n)
     {
-      tab_add(new DpkgTerminalTab(w));
+      n.set_terminal(w);
     }
 
     // Asynchronously post the outcome of a dpkg run to the main
@@ -277,18 +619,23 @@ namespace gui
     void gui_run_dpkg(sigc::slot1<pkgPackageManager::OrderResult, int> f,
 		      sigc::slot1<void, pkgPackageManager::OrderResult> k)
     {
+      DpkgTerminalNotification *n = new DpkgTerminalNotification;
+
       sigc::slot1<void, Gtk::Widget *> register_terminal_slot =
-	sigc::ptr_fun(&register_dpkg_terminal);
+	sigc::bind(sigc::ptr_fun(&register_dpkg_terminal),
+		   sigc::ref(*n));
       sigc::slot1<void, pkgPackageManager::OrderResult>
 	finish_slot(sigc::bind(sigc::ptr_fun(&finish_gui_run_dpkg),
 			       make_safe_slot(k)));
+      sigc::slot1<void, aptitude::apt::dpkg_status_message> process_dpkg_message_slot =
+	sigc::mem_fun(*n, &DpkgTerminalNotification::process_dpkg_message);
 
-      // \todo We should change the download notification to tell the
-      // user that they can click to obtain a terminal; this is just a
-      // proof-of-concept.
+      pMainWindow->get_notifyview()->add_notification(n);
+
       run_dpkg_in_terminal(make_safe_slot(f),
 			   make_safe_slot(register_terminal_slot),
-			   make_safe_slot(finish_slot));
+			   make_safe_slot(finish_slot),
+			   make_safe_slot(process_dpkg_message_slot));
     }
 
     void install_or_remove_packages()
