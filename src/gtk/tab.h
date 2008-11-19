@@ -71,6 +71,7 @@ namespace gui
       Gtk::Widget * label_widget;
       Gtk::Widget * widget;
       NotifyView * notifyview;
+      bool autodestroy;
 
       /** \brief Tabs are not copy-constructible.
        *
@@ -86,13 +87,18 @@ namespace gui
        *               of the new tab.
        *  \param widgetName  The name of the new tab's associated
        *                     widget within the given XML tree.
+       *  \param _autodestroy If \b true, the tab will be destroyed
+       *                      when it is closed; otherwise it will
+       *                      be hidden.
        */
       Tab(TabType _type, const Glib::ustring &_label,
-          const Glib::RefPtr<Gnome::Glade::Xml> &_xml, const std::string &widgetName);
+          const Glib::RefPtr<Gnome::Glade::Xml> &_xml, const std::string &widgetName,
+	  bool _autodestroy = true);
       virtual ~Tab();
       Glib::ustring get_label() { return label; }
       Gtk::Widget * get_label_widget() { return label_widget; }
       Gtk::Button * get_label_button() { return label_button; }
+      bool get_autodestroy() const { return autodestroy; }
       void set_label(Glib::ustring);
       TabType get_type() { return type; }
       Gtk::Widget * get_widget() const { return widget; }
@@ -138,6 +144,8 @@ namespace gui
       void do_switch_page(GtkNotebookPage *page, guint page_idx);
 
       void do_status_button_changed(Tab *tab);
+
+      void maybe_close_page(Tab &tab);
     public:
       /**
        * Glade::Xml derived widget constructor.

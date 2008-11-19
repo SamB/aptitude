@@ -41,9 +41,11 @@ namespace gui
   }
 
   Tab::Tab(TabType _type, const Glib::ustring &_label,
-           const Glib::RefPtr<Gnome::Glade::Xml> &_xml, const std::string &widgetName)
+           const Glib::RefPtr<Gnome::Glade::Xml> &_xml, const std::string &widgetName,
+	   bool _autodestroy)
     : type(_type), label(_label),
-      xml(_xml), widget(NULL)
+      xml(_xml), widget(NULL),
+      autodestroy(_autodestroy)
   {
     // This is a hack to reparent the tab widget into a VBox along with a NotifyView
     Gtk::VBox * vbox = manage(new Gtk::VBox());
@@ -130,10 +132,18 @@ namespace gui
       rval = insert_page(*(tab.get_widget()), *(tab.get_label_widget()), next_position(tab.get_type()));
       }
 
-    tab.close_clicked.connect(sigc::bind(sigc::mem_fun(*this, (void (Gtk::Notebook::*)(Gtk::Widget&))&Gtk::Notebook::remove_page),
-					 sigc::ref(*tab.get_widget())));
+    tab.close_clicked.connect(sigc::bind(sigc::mem_fun(*this, &TabsManager::maybe_close_page),
+					 sigc::ref(tab)));
 
     return rval;
+  }
+
+  void TabsManager::maybe_close_page(Tab &tab)
+  {
+    if(tab.get_autodestroy())
+      remove_page(tab);
+    else
+      tab.get_widget()->hide();
   }
 
   void TabsManager::remove_page(Tab &tab)
