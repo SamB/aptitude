@@ -250,7 +250,8 @@ namespace gui
       DpkgTerminalTab(Gtk::Widget *term)
 	: Tab(DpkgTerminalTabType, "Applying changes",
 	      Gnome::Glade::Xml::create(glade_main_file, "main_apply_changes_scrolledwindow"),
-	      "main_apply_changes_scrolledwindow")
+	      "main_apply_changes_scrolledwindow",
+	      false)
       {
 	get_xml()->get_widget("main_apply_changes_scrolledwindow",
 			      terminal_scrolled_window);
@@ -476,11 +477,6 @@ namespace gui
 	terminal = NULL;
       }
 
-      void tab_destroyed()
-      {
-	tab = NULL;
-      }
-
       void do_finish_dpkg_run(pkgPackageManager::OrderResult res)
       {
 	progress->hide();
@@ -544,7 +540,6 @@ namespace gui
 	else
 	  {
 	    tab = new DpkgTerminalTab(terminal->get_widget());
-	    tab->closed.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::tab_destroyed));
 	    tab_add(tab);
 	  }
       }
