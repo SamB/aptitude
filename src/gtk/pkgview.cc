@@ -316,7 +316,7 @@ namespace gui
     : EntityView(refGlade, gladename)
   {
     generatorK = _generatorK;
-    limit = _limit;
+    limit = aptitude::matching::parse(_limit);
     cache_closed.connect(sigc::mem_fun(*this, &PkgViewBase::do_cache_closed));
     cache_reloaded.connect(sigc::mem_fun(*this, &PkgViewBase::rebuild_store));
 
@@ -350,19 +350,13 @@ namespace gui
     cwidget::util::ref_ptr<guiOpProgress> p =
       guiOpProgress::create();
 
-    bool limited = false;
-    cwidget::util::ref_ptr<pattern> filter;
-    if (limit != "")
-    {
-      filter = parse(limit);
-      limited = (filter.valid());
-    }
+    bool limited = limit.valid();
 
     std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > > matches;
     ref_ptr<search_cache> search_info(search_cache::create());
     if(limited)
       {
-	search(filter, search_info, matches, *apt_cache_file, *apt_package_records);	   
+	search(limit, search_info, matches, *apt_cache_file, *apt_package_records);	   
 
 	int num = 0;
 	const int total = static_cast<int>(matches.size());
@@ -413,6 +407,11 @@ namespace gui
   }
 
   void PkgViewBase::set_limit(const Glib::ustring &_limit)
+  {
+    set_limit(aptitude::matching::parse(_limit));
+  }
+
+  void PkgViewBase::set_limit(const cwidget::util::ref_ptr<aptitude::matching::pattern> &_limit)
   {
     limit = _limit;
     rebuild_store();

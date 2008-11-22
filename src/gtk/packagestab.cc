@@ -28,6 +28,10 @@
 
 #include <apt-pkg/strutl.h>
 
+#include <generic/apt/config_signal.h>
+#include <generic/apt/matching/compare_patterns.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 #include <generic/util/util.h>
 
 #include <gtk/hyperlink.h>
@@ -41,12 +45,75 @@ namespace gui
 {
   namespace
   {
+    class limit_combobox_columns : public Gtk::TreeModel::ColumnRecord
+    {
+    public:
+      Gtk::TreeModelColumn<Glib::ustring> name;
+      Gtk::TreeModelColumn<cwidget::util::ref_ptr<aptitude::matching::pattern> > pattern;
+
+      limit_combobox_columns()
+      {
+	add(name);
+	add(pattern);
+      }
+    };
+
+    // Stuff to manage the property.
+    Glib::Quark limit_combobox_columns_property("aptitude-packages-tab-limit-combobox-columns");
+
+    void limit_columns_destructor(gpointer limit_columns_void)
+    {
+      limit_combobox_columns *cols =
+	static_cast<limit_combobox_columns *>(limit_columns_void);
+
+      delete cols;
+    }
+
+    limit_combobox_columns *get_combobox_limit_columns(Gtk::ComboBox *combo)
+    {
+      return static_cast<limit_combobox_columns *>(combo->get_data(limit_combobox_columns_property));
+    }
+
+    void set_combobox_limit_columns(Gtk::ComboBox *combo,
+				    limit_combobox_columns *limit_columns)
+    {
+      combo->set_data(limit_combobox_columns_property, limit_columns,
+		      &limit_columns_destructor);
+    }
+
+
+
     void repopulate_searchable_view(PkgView &packages_view,
 				    Gtk::Entry &search_entry,
+				    Gtk::ComboBox &limit_combobox,
 				    const sigc::slot0<void> &after_repopulate_hook)
     {
+      limit_combobox_columns *limit_columns =
+	get_combobox_limit_columns(&limit_combobox);
+      if(limit_columns == NULL)
+	{
+	  limit_columns = new limit_combobox_columns;
+	  set_combobox_limit_columns(&limit_combobox, limit_columns);
+	}
       std::string search_term = search_entry.get_text();
-      packages_view.set_limit(search_term);
+      const cwidget::util::ref_ptr<aptitude::matching::pattern> p(aptitude::matching::parse(search_term));
+      cwidget::util::ref_ptr<aptitude::matching::pattern> final_pattern;
+
+      Gtk::TreeModel::const_iterator active_limit_iter = limit_combobox.get_active();
+      if(!active_limit_iter)
+	final_pattern = p;
+      else if(p.valid())
+	{
+	  Gtk::TreeModel::Row active_limit_row = *active_limit_iter;
+	  cwidget::util::ref_ptr<aptitude::matching::pattern> active_limit_pattern =
+	    active_limit_row[limit_columns->pattern];
+
+	  if(active_limit_pattern.valid())
+	    final_pattern = aptitude::matching::pattern::make_and(p, active_limit_pattern);
+	  else
+	    final_pattern = p;
+	}
+      packages_view.set_limit(final_pattern);
 
       if(packages_view.get_model()->children().size() == 0)
 	{
@@ -61,20 +128,106 @@ namespace gui
 
       after_repopulate_hook();
     }
+
+    // By convention, a blank string for a name means that a row is a
+    // separator.
+    bool row_is_separator(const Glib::RefPtr<Gtk::TreeModel> &model,
+			  const Gtk::TreeModel::iterator &iterator,
+			  const limit_combobox_columns *limit_columns)
+    {
+      Gtk::TreeModel::Row row = *iterator;
+      Glib::ustring name = row[limit_columns->name];
+      return name.empty();
+    }
   }
 
   void setup_searchable_view(Gtk::Entry *search_entry,
 			     Gtk::Button *search_button,
+			     Gtk::ComboBox *limit_combobox,
 			     const cwidget::util::ref_ptr<PkgView> packages_view,
 			     const sigc::slot0<void> &after_repopulate_hook)
   {
+    using aptitude::matching::pattern;
+    using cwidget::util::ref_ptr;
+
+    limit_combobox_columns *limit_columns = new limit_combobox_columns;
+
+    set_combobox_limit_columns(limit_combobox, limit_columns);
+
     sigc::slot0<void> repopulate_hook = sigc::bind(sigc::ptr_fun(&repopulate_searchable_view),
 						   packages_view.weak_ref(),
 						   sigc::ref(*search_entry),
+						   sigc::ref(*limit_combobox),
 						   after_repopulate_hook);
 
     search_entry->signal_activate().connect(repopulate_hook);
     search_button->signal_clicked().connect(repopulate_hook);
+
+    Glib::RefPtr<Gtk::ListStore> limit_model = Gtk::ListStore::create(*limit_columns);
+    // The "All Packages" option is always there.
+    {
+      Gtk::TreeModel::iterator all_packages_iter = limit_model->append();
+      Gtk::TreeModel::Row all_packages_row = *all_packages_iter;
+      all_packages_row[limit_columns->name] = "All Packages";
+      all_packages_row[limit_columns->pattern] = pattern::make_true();
+    }
+
+    std::map<std::string, ref_ptr<pattern> > limits;
+    // Patterns that exist by default.
+    //
+    // \todo This is a mess for i18n.  How can I do this so that it
+    // gets translated by default, but can still be overridden?  Maybe
+    // I should make the name a property of the group rather than the
+    // tag?
+    limits["Installed Packages"] = aptitude::matching::parse("?installed");
+    limits["Not Installed Packages"] = aptitude::matching::parse("?not(?installed)");
+    limits["New Packages"] = aptitude::matching::parse("?new");
+    limits["Virtual Packages"] = aptitude::matching::parse("?virtual");
+    // Add in all the entries in the "Aptitude::Limits" group.
+    for(const Configuration::Item *it = aptcfg->Tree(PACKAGE "::Limits");
+	it != NULL; it = it->Next)
+      {
+	ref_ptr<pattern> p =
+	  aptitude::matching::parse(it->Tag);
+
+	limits[it->Tag] = p;
+      }
+
+    for(std::map<std::string, ref_ptr<pattern> >::const_iterator
+	  it = limits.begin(); it != limits.end(); ++it)
+      {
+	if(it->second.valid())
+	  {
+	    // Output an hrule to separate the limits from "All
+	    // Packages" if this is the first limit.
+	    if(it == limits.begin())
+	      {
+		Gtk::TreeModel::iterator pattern_iter = limit_model->append();
+		Gtk::TreeModel::Row pattern_row = *pattern_iter;
+		pattern_row[limit_columns->name] = "";
+		pattern_row[limit_columns->pattern] = ref_ptr<pattern>();
+	      }
+
+	    Gtk::TreeModel::iterator pattern_iter = limit_model->append();
+	    Gtk::TreeModel::Row pattern_row = *pattern_iter;
+	    pattern_row[limit_columns->name] = it->first;
+	    pattern_row[limit_columns->pattern] = it->second;
+	  }
+      }
+
+    limit_combobox->set_row_separator_func(sigc::bind(sigc::ptr_fun(&row_is_separator),
+						      limit_columns));
+    limit_combobox->pack_start(limit_columns->name);
+    if(limit_combobox->get_cells().begin() != limit_combobox->get_cells().end())
+    {
+      Gtk::CellRenderer *renderer = *limit_combobox->get_cells().begin();
+      Gtk::CellRendererText *renderer_text = dynamic_cast<Gtk::CellRendererText *>(renderer);
+      renderer_text->property_ellipsize() = Pango::ELLIPSIZE_END;
+    }
+    limit_combobox->set_model(limit_model);
+    limit_combobox->set_active(0);
+
+    limit_combobox->signal_changed().connect(repopulate_hook);
 
     // Ask the user to enter a search pattern.
     //
@@ -97,6 +250,7 @@ namespace gui
     get_xml()->get_widget("main_packages_textview", pPackagesTextView);
     get_xml()->get_widget("main_notebook_packages_limit_entry", pLimitEntry);
     get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
+    get_xml()->get_widget("main_notebook_packages_show_only_combo_box", pLimitComboBox);
 
     using cwidget::util::ref_ptr;
     pPkgView = ref_ptr<PkgView>(new PkgView(get_xml(), "main_packages_treeview"));
@@ -106,7 +260,7 @@ namespace gui
     pPkgView->store_reloading.connect(sigc::bind(sigc::mem_fun(*get_label_button(), &Gtk::Widget::set_sensitive), false));
     pPkgView->store_reloaded.connect(sigc::bind(sigc::mem_fun(*get_label_button(), &Gtk::Widget::set_sensitive), true));
 
-    setup_searchable_view(pLimitEntry, pLimitButton, pPkgView,
+    setup_searchable_view(pLimitEntry, pLimitButton, pLimitComboBox, pPkgView,
 			  sigc::mem_fun(this, &PackagesTab::after_repopulate_model));
 
     pPkgView->get_treeview()->set_fixed_height_mode(true);

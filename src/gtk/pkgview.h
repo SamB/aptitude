@@ -27,6 +27,7 @@
 #include <gtkmm.h>
 
 #include <generic/apt/apt.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <gtk/entityview.h>
 
@@ -122,7 +123,7 @@ namespace gui
    */
   class PkgViewBase : public EntityView
   {
-    Glib::ustring limit;
+    cwidget::util::ref_ptr<aptitude::matching::pattern> limit;
     sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> generatorK;
 
     void do_cache_closed();
@@ -142,6 +143,9 @@ namespace gui
 
     /** \brief Change this view's limit to the given string. */
     void set_limit(const Glib::ustring &limit);
+
+    /** \brief Change this view's limit to the given pattern. */
+    void set_limit(const cwidget::util::ref_ptr<aptitude::matching::pattern> &limit);
   };
 
   /** \brief A view that displays an unorganized list of packages. */

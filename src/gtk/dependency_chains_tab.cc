@@ -55,6 +55,14 @@ namespace gui
     get_xml()->get_widget("dependency_path_end_find_button",
 			  end_search_button);
 
+    Gtk::ComboBox *start_limit_combo_box;
+    Gtk::ComboBox *end_limit_combo_box;
+
+    get_xml()->get_widget("dependency_path_start_show_only_combo_box",
+			  start_limit_combo_box);
+    get_xml()->get_widget("dependency_path_end_show_only_combo_box",
+			  end_limit_combo_box);
+
     using cwidget::util::ref_ptr;
     start_package_view = ref_ptr<PkgView>(new PkgView(get_xml(), "dependency_path_start_packages_treeview"));
     end_package_view = ref_ptr<PkgView>(new PkgView(get_xml(), "dependency_path_end_packages_treeview"));
@@ -67,10 +75,10 @@ namespace gui
     end_package_view->get_treeview()->get_selection()->signal_changed()
       .connect(sigc::mem_fun(this, &DependencyChainsTab::selection_changed));
 
-    setup_searchable_view(start_package_entry, start_search_button, start_package_view,
-			  sigc::slot0<void>());
-    setup_searchable_view(end_package_entry, end_search_button, end_package_view,
-			  sigc::slot0<void>());
+    setup_searchable_view(start_package_entry, start_search_button, start_limit_combo_box,
+			  start_package_view, sigc::slot0<void>());
+    setup_searchable_view(end_package_entry, end_search_button, end_limit_combo_box,
+			  end_package_view, sigc::slot0<void>());
 
     results_view->get_version_column()->set_visible(false);
     selection_changed();

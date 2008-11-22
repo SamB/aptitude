@@ -44,6 +44,7 @@ namespace gui
       Gtk::TextView * pPackagesTextView;
       Gtk::Entry * pLimitEntry;
       Gtk::Button * pLimitButton;
+      Gtk::ComboBox * pLimitComboBox;
 
       void after_repopulate_model();
     public:
@@ -62,6 +63,8 @@ namespace gui
    *
    *  \param search_entry   The text entry where the user enters search terms.
    *  \param search_button  The button the user presses to immediately search.
+   *  \param limit_combo_box  A combo-box used to select an auxiliary limit (e.g.,
+   *                          "Installed packages").
    *  \param packages_view  The package list to manage; will initially be
    *                        set to only contain a message asking the
    *                        user to enter a search term.
@@ -70,6 +73,7 @@ namespace gui
    */
   void setup_searchable_view(Gtk::Entry *search_entry,
 			     Gtk::Button *search_button,
+			     Gtk::ComboBox *limit_combo_box,
 			     const cwidget::util::ref_ptr<PkgView> packages_view,
 			     const sigc::slot0<void> &after_repopulate_hook);
 
