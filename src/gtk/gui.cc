@@ -773,8 +773,8 @@ namespace gui
       broken_tag->property_weight() = Pango::WEIGHT_BOLD;
 
       buffer->insert_with_tag(buffer->end(),
-			      ssprintf(ngettext(_("%d package is broken"),
-						_("%d packages are broken."),
+			      ssprintf(ngettext("%d package is broken",
+						"%d packages are broken.",
 						broken_count),
 				       broken_count),
 			      broken_tag);
@@ -860,8 +860,8 @@ namespace gui
 			     // ForTranslators: any numbers in this
 			     // string will be displayed in a larger
 			     // font.
-			     ssprintf(ngettext(_("%d package to install"),
-					       _("%d packages to install"),
+			     ssprintf(ngettext("%d package to install",
+					       "%d packages to install",
 					       install_count),
 				      install_count));
 
@@ -875,8 +875,8 @@ namespace gui
 			     // ForTranslators: any numbers in this
 			     // string will be displayed in a larger
 			     // font.
-			     ssprintf(ngettext(_("%d package to remove"),
-					       _("%d packages to remove"),
+			     ssprintf(ngettext("%d package to remove",
+					       "%d packages to remove",
 					       remove_count),
 				      remove_count));
 
