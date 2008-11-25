@@ -86,7 +86,7 @@ namespace gui
   const entity_state_info downgrade_columns("u", N_("Downgrade"), Gtk::Stock::GO_DOWN);
   const entity_state_info remove_columns("d", N_("Remove"), Gtk::Stock::REMOVE);
   const entity_state_info purge_columns("p", N_("Remove and purge configuration/data"), Gtk::Stock::CLEAR);
-  const entity_state_info hold_columns("h", N_("Hold (don't uprgade)"), Gtk::Stock::MEDIA_PAUSE);
+  const entity_state_info hold_columns("h", N_("Hold (don't upgrade)"), Gtk::Stock::MEDIA_PAUSE);
   const entity_state_info forbid_columns("F", N_("Forbidden version"), Gtk::Stock::STOP);
   const entity_state_info broken_columns("B", N_("Unsatisfied dependencies"), Gtk::Stock::DIALOG_ERROR);
 
