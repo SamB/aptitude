@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Fri Nov 21 23:01:02 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Nov 30 01:50:35 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="default_width">800</property>
@@ -248,130 +248,6 @@
                         <property name="label" translatable="yes">gtk-delete</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                      </widget>
-                    </child>
-                  </widget>
-                </child>
-              </widget>
-            </child>
-            <child>
-              <widget class="GtkMenuItem" id="menuitem5">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">_Package</property>
-                <property name="use_underline">True</property>
-                <child>
-                  <widget class="GtkMenu" id="menu4">
-                    <property name="visible">True</property>
-                    <child>
-                      <widget class="GtkImageMenuItem" id="menu_do_install">
-                        <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Flag the currently selected package for installation or upgrade</property>
-                        <property name="label" translatable="yes">_Install</property>
-                        <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image18">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-add</property>
-                          </widget>
-                        </child>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkImageMenuItem" id="menu_do_remove">
-                        <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Flag the currently selected package for removal</property>
-                        <property name="label" translatable="yes">_Remove</property>
-                        <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image19">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-remove</property>
-                          </widget>
-                        </child>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkImageMenuItem" id="menu_do_purge">
-                        <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Flag the currently selected package and its configuration files for removal</property>
-                        <property name="label" translatable="yes">_Purge</property>
-                        <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image20">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-clear</property>
-                          </widget>
-                        </child>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkImageMenuItem" id="menu_do_keep">
-                        <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Cancel any pending installation, upgrade, or removal of the currently selected package, and remove any hold that was set on the package</property>
-                        <property name="label" translatable="yes">_Keep</property>
-                        <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image21">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-media-rewind</property>
-                          </widget>
-                        </child>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkImageMenuItem" id="menu_do_hold">
-                        <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Cancel any action on the selected package, and protect it from future upgrades</property>
-                        <property name="label" translatable="yes">_Hold</property>
-                        <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image22">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-media-pause</property>
-                          </widget>
-                        </child>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkImageMenuItem" id="menu_do_set_auto">
-                        <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Mark the selected package as having been automatically installed; it will automatically be removed if no other packages depend on it</property>
-                        <property name="label" translatable="yes">Mark _Auto</property>
-                        <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image23">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-execute</property>
-                          </widget>
-                        </child>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkImageMenuItem" id="menu_do_clear_auto">
-                        <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Mark the selected package as having been manually installed; it will not be removed unless you manually remove it</property>
-                        <property name="label" translatable="yes">Mark _Manual</property>
-                        <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image24">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-select-color</property>
-                          </widget>
-                        </child>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkImageMenuItem" id="menu_do_forbid">
-                        <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Forbid the candidate version of the selected package from being installed; newer versions of the package will be installed as usual</property>
-                        <property name="label" translatable="yes">_Forbid Version</property>
-                        <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image31">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-dialog-error</property>
-                          </widget>
-                        </child>
                       </widget>
                     </child>
                   </widget>
