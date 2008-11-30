@@ -130,6 +130,8 @@ namespace gui
       Gtk::ImageMenuItem * pMenuFileSuToRoot;
       Gtk::ImageMenuItem * pMenuFileExit;
 
+      Gtk::Menu * pMenuPackage;
+
       Gtk::ProgressBar * pProgressBar;
       Gtk::Statusbar * pStatusBar;
       NotifyView * pNotifyView;
@@ -165,6 +167,7 @@ namespace gui
      */
     void show_apt_errors();
 
+    Gtk::Menu * get_menu_package() const { return pMenuPackage; }
     Gtk::ProgressBar * get_progress_bar() const { return pProgressBar; }
     Gtk::Statusbar * get_status_bar() const { return pStatusBar; }
     NotifyView *get_notifyview() const { return pNotifyView; }

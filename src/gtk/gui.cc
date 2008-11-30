@@ -1095,6 +1095,8 @@ namespace gui
     refGlade->get_widget("menu_do_quit", pMenuFileExit);
     pMenuFileExit->signal_activate().connect(&do_quit);
 
+    refGlade->get_widget("menu_package", pMenuPackage);
+
     {
       Gtk::MenuItem *menu_view_apt_errors;
       refGlade->get_widget("menu_view_apt_errors", menu_view_apt_errors);

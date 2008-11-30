@@ -145,8 +145,10 @@ namespace gui
     public:
       EntityTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
       bool on_button_press_event(GdkEventButton* event);
+      void on_cursor_changed();
       sigc::signal<void, GdkEventButton*> signal_context_menu;
       sigc::signal<void> signal_selection;
+      sigc::signal<void> signal_selection_change;
   };
 
   class EntityView : public aptitude::util::refcounted_base
@@ -190,12 +192,15 @@ namespace gui
 				  const Gtk::TreeModel::iterator &row2);
 
       /** \brief Build a menu of package actions. */
-      Gtk::Menu * get_menu(const std::set<PackagesAction> &actions, const sigc::slot1<void, PackagesAction> &callback) const;
+      Gtk::Menu * get_menu(const std::set<PackagesAction> &actions,
+                           const sigc::slot1<void, PackagesAction> &callback,
+                           Gtk::Menu * rval = 0) const;
 
       /** \brief Apply the given action to all the currently selected packages. */
       void apply_action_to_selected(PackagesAction action);
 
       void context_menu_handler(GdkEventButton * event);
+      void package_menu_handler();
       /** \brief Enforces constraints on column order. */
       bool column_drop_handler(Gtk::TreeView *self, Gtk::TreeViewColumn *column,
 			       Gtk::TreeViewColumn *prev_column,
