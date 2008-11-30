@@ -26,6 +26,7 @@
 
 #include <generic/apt/apt_undo_group.h>
 
+#include <gtk/gui.h>
 #include <gtk/info.h>
 
 #include <apt-pkg/pkgsystem.h>
@@ -147,6 +148,15 @@ namespace gui
     return return_value;
   }
 
+  void EntityTreeView::on_cursor_changed()
+  {
+    // TODO: we might plan to do some more elaborate filtering
+    //       based on which tab is being active. If not, we may
+    //       as well revert to a simple signal instead of this
+    //       virtual function.
+    signal_selection_change();
+  }
+
   void EntityView::init(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
                         Glib::ustring gladename)
   {
@@ -154,6 +164,7 @@ namespace gui
 
     tree->signal_context_menu.connect(sigc::mem_fun(*this, &EntityView::context_menu_handler));
     tree->signal_row_activated().connect(sigc::mem_fun(*this, &EntityView::row_activated_handler));
+    tree->signal_selection_change.connect(sigc::mem_fun(*this, &EntityView::package_menu_handler));
     tree->set_column_drag_function(sigc::mem_fun(*this, &EntityView::column_drop_handler));
     if(apt_cache_file != NULL)
       (*apt_cache_file)->package_states_changed.connect(sigc::mem_fun(*this, &EntityView::refresh_view));
@@ -383,9 +394,13 @@ namespace gui
 
   Gtk::Menu *
   EntityView::get_menu(const std::set<PackagesAction> &actions,
-		       const sigc::slot1<void, PackagesAction> &callback) const
+		       const sigc::slot1<void, PackagesAction> &callback,
+		       Gtk::Menu * rval) const
   {
-    Gtk::Menu *rval(manage(new Gtk::Menu));
+    if (rval == 0)
+    {
+      rval = manage(new Gtk::Menu);
+    }
 
     if(actions.find(Upgrade) != actions.end())
       {
@@ -445,6 +460,41 @@ namespace gui
           {
             get_menu(actions, sigc::mem_fun(this, &EntityView::apply_action_to_selected))
               ->popup(event->button, event->time);
+          }
+      }
+  }
+
+  void EntityView::package_menu_handler()
+  {
+    Glib::RefPtr<Gtk::TreeModel> model = get_model();
+    Glib::RefPtr<Gtk::TreeView::Selection> selected = tree->get_selection();
+    if(selected)
+      {
+        std::set<PackagesAction> actions;
+        std::set<pkgCache::PkgIterator> packages;
+
+        Gtk::TreeSelection::ListHandle_Path selected_rows = selected->get_selected_rows();
+        for (Gtk::TreeSelection::ListHandle_Path::iterator path = selected_rows.begin();
+             path != selected_rows.end(); ++path)
+          {
+            Gtk::TreeModel::iterator iter = model->get_iter(*path);
+            cwidget::util::ref_ptr<Entity> ent = (*iter)[cols.EntObject];
+            ent->add_actions(actions);
+            ent->add_packages(packages);
+          }
+
+        std::cout << "package menu handler : ";
+        for (std::set<pkgCache::PkgIterator>::iterator it = packages.begin();
+        it != packages.end(); ++it)
+        {
+          std::cout << " " << it->Name();
+        }
+
+        std::cout << std::endl;
+
+        if(!actions.empty())
+          {
+            get_menu(actions, sigc::mem_fun(this, &EntityView::apply_action_to_selected), pMainWindow->get_menu_package());
           }
       }
   }
