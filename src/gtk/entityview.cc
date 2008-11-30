@@ -494,6 +494,7 @@ namespace gui
 
         if(!actions.empty())
           {
+            pMainWindow->get_menu_package()->items().clear();
             get_menu(actions, sigc::mem_fun(this, &EntityView::apply_action_to_selected), pMainWindow->get_menu_package());
           }
       }
