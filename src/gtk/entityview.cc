@@ -164,7 +164,7 @@ namespace gui
 
     tree->signal_context_menu.connect(sigc::mem_fun(*this, &EntityView::context_menu_handler));
     tree->signal_row_activated().connect(sigc::mem_fun(*this, &EntityView::row_activated_handler));
-    tree->signal_selection_change.connect(sigc::mem_fun(*this, &EntityView::package_menu_handler));
+    tree->signal_selection_change.connect(sigc::mem_fun(*this, &EntityView::build_package_menu));
     tree->set_column_drag_function(sigc::mem_fun(*this, &EntityView::column_drop_handler));
     if(apt_cache_file != NULL)
       (*apt_cache_file)->package_states_changed.connect(sigc::mem_fun(*this, &EntityView::refresh_view));
@@ -457,7 +457,7 @@ namespace gui
       }
   }
 
-  void EntityView::package_menu_handler()
+  void EntityView::build_package_menu()
   {
     Glib::RefPtr<Gtk::TreeModel> model = get_model();
     Glib::RefPtr<Gtk::TreeView::Selection> selected = tree->get_selection();

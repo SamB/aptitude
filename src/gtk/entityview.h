@@ -208,7 +208,11 @@ namespace gui
       void apply_action_to_selected(PackagesAction action);
 
       void context_menu_handler(GdkEventButton * event);
-      void package_menu_handler();
+
+      /** \brief Build the global package menu based on the selected packages
+       *  in this view.
+       */
+      void build_package_menu();
       /** \brief Enforces constraints on column order. */
       bool column_drop_handler(Gtk::TreeView *self, Gtk::TreeViewColumn *column,
 			       Gtk::TreeViewColumn *prev_column,
