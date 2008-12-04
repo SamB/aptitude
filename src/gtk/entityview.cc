@@ -487,8 +487,9 @@ namespace gui
 
         if(!actions.empty())
           {
-            pMainWindow->get_menu_package()->items().clear();
-            fill_menu(actions, sigc::mem_fun(this, &EntityView::apply_action_to_selected), pMainWindow->get_menu_package());
+	    Gtk::Menu * const menu_package = pMainWindow->get_menu_package();
+            menu_package->items().clear();
+            fill_menu(actions, sigc::mem_fun(this, &EntityView::apply_action_to_selected), menu_package);
           }
       }
   }
