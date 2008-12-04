@@ -464,7 +464,6 @@ namespace gui
     if(selected)
       {
         std::set<PackagesAction> actions;
-        std::set<pkgCache::PkgIterator> packages;
 
         Gtk::TreeSelection::ListHandle_Path selected_rows = selected->get_selected_rows();
         for (Gtk::TreeSelection::ListHandle_Path::iterator path = selected_rows.begin();
@@ -473,15 +472,7 @@ namespace gui
             Gtk::TreeModel::iterator iter = model->get_iter(*path);
             cwidget::util::ref_ptr<Entity> ent = (*iter)[cols.EntObject];
             ent->add_actions(actions);
-            ent->add_packages(packages);
           }
-
-        std::cout << "package menu handler : ";
-        for (std::set<pkgCache::PkgIterator>::iterator it = packages.begin();
-        it != packages.end(); ++it)
-        {
-          std::cout << " " << it->Name();
-        }
 
         std::cout << std::endl;
 
