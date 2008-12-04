@@ -81,6 +81,12 @@ namespace gui
   {
   }
 
+  void Tab::set_active(bool now_active)
+  {
+    active = now_active;
+    active_changed();
+  }
+
   void Tab::set_label(Glib::ustring label)
   {
     this->label_label->set_text(label);
@@ -175,11 +181,17 @@ namespace gui
 
   void TabsManager::do_switch_page(GtkNotebookPage *page, guint page_idx)
   {
+    Tab *current = get_current_tab();
+    if(current != NULL)
+      current->set_active(false);
+
     Tab *tab = NULL;
     Widget *next = get_nth_page(page_idx);
     if(next != NULL)
       tab = (Tab *)next->get_data(tab_property);
 
+    if(tab != NULL)
+      tab->set_active(true);
     tab_status_button_changed(tab);
   }
 }

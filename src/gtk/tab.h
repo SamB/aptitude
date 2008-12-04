@@ -53,6 +53,7 @@ namespace gui
     Error
   };
 
+  class TabsManager;
   /**
    * \brief A Tab contains a widget and some metadata for inserting into the notebook.
    *
@@ -72,12 +73,18 @@ namespace gui
       Gtk::Widget * widget;
       NotifyView * notifyview;
       bool autodestroy;
+      // True if this is the currently active tab.
+      bool active;
 
       /** \brief Tabs are not copy-constructible.
        *
        *  Copy-constructing a tab could lead to confusion when it's deleted.
        */
       Tab(const Tab &);
+
+      friend class TabsManager; // So it can activate us.
+      /** \brief Change whether this tab is active. */
+      void set_active(bool now_active);
     public:
       /** \brief Construct a new tab.
        *
@@ -104,6 +111,10 @@ namespace gui
       Gtk::Widget * get_widget() const { return widget; }
       NotifyView * get_notifyview() const { return notifyview; }
       const Glib::RefPtr<Gnome::Glade::Xml> &get_xml() { return xml; }
+      bool get_active() const { return active; }
+
+      /** \brief A signal invoked when the tab becomes or ceases to be the active tab. */
+      sigc::signal0<void> active_changed;
 
       /** \brief A signal invoked when the tab's "close" button is clicked.
        *
