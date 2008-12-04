@@ -167,7 +167,10 @@ namespace gui
     tree->signal_selection_change.connect(sigc::mem_fun(*this, &EntityView::build_package_menu));
     tree->set_column_drag_function(sigc::mem_fun(*this, &EntityView::column_drop_handler));
     if(apt_cache_file != NULL)
-      (*apt_cache_file)->package_states_changed.connect(sigc::mem_fun(*this, &EntityView::refresh_view));
+      {
+	(*apt_cache_file)->package_states_changed.connect(sigc::mem_fun(*this, &EntityView::refresh_view));
+	(*apt_cache_file)->package_states_changed.connect(sigc::hide(sigc::mem_fun(*this, &EntityView::build_package_menu)));
+      }
     cache_closed.connect(sigc::mem_fun(*this, &EntityView::on_cache_closed));
     cache_reloaded.connect(sigc::mem_fun(*this, &EntityView::on_cache_reloaded));
 
