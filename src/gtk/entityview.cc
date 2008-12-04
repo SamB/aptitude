@@ -477,8 +477,6 @@ namespace gui
             ent->add_actions(actions);
           }
 
-        std::cout << std::endl;
-
         if(!actions.empty())
           {
 	    Gtk::Menu * const menu_package = pMainWindow->get_menu_package();
