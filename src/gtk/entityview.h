@@ -191,10 +191,18 @@ namespace gui
       int compare_rows_by_version(const Gtk::TreeModel::iterator &row1,
 				  const Gtk::TreeModel::iterator &row2);
 
-      /** \brief Build a menu of package actions. */
-      Gtk::Menu * get_menu(const std::set<PackagesAction> &actions,
-                           const sigc::slot1<void, PackagesAction> &callback,
-                           Gtk::Menu * rval = 0) const;
+      /** \brief Add package actions to a menu.
+       *
+       *  \param actions    The actions to include in the menu.
+       *  \param callback   The callback to invoke when the actions are selected.
+       *  \param menu       The menu in which to place the actions.
+       *
+       *  The actions are added to the end of the menu in a standard
+       *  order.
+       */
+      void fill_menu(const std::set<PackagesAction> &actions,
+		     const sigc::slot1<void, PackagesAction> &callback,
+		     Gtk::Menu * menu) const;
 
       /** \brief Apply the given action to all the currently selected packages. */
       void apply_action_to_selected(PackagesAction action);

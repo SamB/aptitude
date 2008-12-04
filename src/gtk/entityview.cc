@@ -392,51 +392,43 @@ namespace gui
     }
   }
 
-  Gtk::Menu *
-  EntityView::get_menu(const std::set<PackagesAction> &actions,
-		       const sigc::slot1<void, PackagesAction> &callback,
-		       Gtk::Menu * rval) const
+  void EntityView::fill_menu(const std::set<PackagesAction> &actions,
+			     const sigc::slot1<void, PackagesAction> &callback,
+			     Gtk::Menu * menu) const
   {
-    if (rval == 0)
-    {
-      rval = manage(new Gtk::Menu);
-    }
-
     if(actions.find(Upgrade) != actions.end())
       {
 	if(actions.find(Install) != actions.end())
-	  add_menu_item(rval, "Install/Upgrade", Gtk::Stock::ADD,
+	  add_menu_item(menu, "Install/Upgrade", Gtk::Stock::ADD,
 			sigc::bind(callback, Install));
 	else
-	  add_menu_item(rval, "Upgrade", Gtk::Stock::GO_UP,
+	  add_menu_item(menu, "Upgrade", Gtk::Stock::GO_UP,
 			sigc::bind(callback, Install));
       }
     else if(actions.find(Downgrade) != actions.end())
-      add_menu_item(rval, "Downgrade", Gtk::Stock::GO_DOWN,
+      add_menu_item(menu, "Downgrade", Gtk::Stock::GO_DOWN,
                     sigc::bind(callback, Install));
     else if(actions.find(Install) != actions.end())
-      add_menu_item(rval, "Install", Gtk::Stock::ADD,
+      add_menu_item(menu, "Install", Gtk::Stock::ADD,
                     sigc::bind(callback, Install));
     else
-      add_menu_item(rval, "Install/Upgrade", Gtk::Stock::ADD); // Insensitive
+      add_menu_item(menu, "Install/Upgrade", Gtk::Stock::ADD); // Insensitive
 
-    add_menu_item(rval, "Remove", Gtk::Stock::REMOVE,
+    add_menu_item(menu, "Remove", Gtk::Stock::REMOVE,
                   sigc::bind(callback, Remove),
                   actions.find(Remove) != actions.end());
 
-    add_menu_item(rval, "Purge", Gtk::Stock::CLEAR,
+    add_menu_item(menu, "Purge", Gtk::Stock::CLEAR,
                   sigc::bind(callback, Purge),
                   actions.find(Purge) != actions.end());
 
-    add_menu_item(rval, "Keep", Gtk::Stock::MEDIA_REWIND,
+    add_menu_item(menu, "Keep", Gtk::Stock::MEDIA_REWIND,
                   sigc::bind(callback, Keep),
                   actions.find(Keep) != actions.end());
 
-    add_menu_item(rval, "Hold", Gtk::Stock::MEDIA_PAUSE,
+    add_menu_item(menu, "Hold", Gtk::Stock::MEDIA_PAUSE,
                   sigc::bind(callback, Hold),
                   actions.find(Hold) != actions.end());
-
-    return rval;
   }
 
   void EntityView::context_menu_handler(GdkEventButton * event)
@@ -458,8 +450,9 @@ namespace gui
 
         if(!actions.empty())
           {
-            get_menu(actions, sigc::mem_fun(this, &EntityView::apply_action_to_selected))
-              ->popup(event->button, event->time);
+	    Gtk::Menu *menu(manage(new Gtk::Menu));
+            fill_menu(actions, sigc::mem_fun(this, &EntityView::apply_action_to_selected), menu);
+	    menu->popup(event->button, event->time);
           }
       }
   }
@@ -495,7 +488,7 @@ namespace gui
         if(!actions.empty())
           {
             pMainWindow->get_menu_package()->items().clear();
-            get_menu(actions, sigc::mem_fun(this, &EntityView::apply_action_to_selected), pMainWindow->get_menu_package());
+            fill_menu(actions, sigc::mem_fun(this, &EntityView::apply_action_to_selected), pMainWindow->get_menu_package());
           }
       }
   }
