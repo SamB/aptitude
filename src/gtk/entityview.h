@@ -32,19 +32,10 @@
 
 #include <cwidget/generic/util/ref_ptr.h>
 
+#include "gui.h" // For PackagesAction.
+
 namespace gui
 {
-  enum PackagesAction
-  {
-    /** \brief A synonym for Install.
-     *
-     *  This is used when building menus to decide whether to label
-     *  the Install menu item "Install", "Upgrade", or
-     *  "Install/Upgrade".
-     */
-    Upgrade, Downgrade, Install, Remove, Purge, Keep, Hold
-  };
-
   class EntityView;
   class EntityColumns;
 
@@ -190,19 +181,6 @@ namespace gui
        */
       int compare_rows_by_version(const Gtk::TreeModel::iterator &row1,
 				  const Gtk::TreeModel::iterator &row2);
-
-      /** \brief Add package actions to a menu.
-       *
-       *  \param actions    The actions to include in the menu.
-       *  \param callback   The callback to invoke when the actions are selected.
-       *  \param menu       The menu in which to place the actions.
-       *
-       *  The actions are added to the end of the menu in a standard
-       *  order.
-       */
-      void fill_menu(const std::set<PackagesAction> &actions,
-		     const sigc::slot1<void, PackagesAction> &callback,
-		     Gtk::Menu * menu) const;
 
       /** \brief Apply the given action to all the currently selected packages. */
       void apply_action_to_selected(PackagesAction action);

@@ -42,6 +42,20 @@ class download_manager;
 
 namespace gui
 {
+  /** \brief The actions that can be performed on a package-type
+   *  entity (from the Package menu, for instance).
+   */
+  enum PackagesAction
+  {
+    /** \brief A synonym for Install.
+     *
+     *  This is used when building menus to decide whether to label
+     *  the Install menu item "Install", "Upgrade", or
+     *  "Install/Upgrade".
+     */
+    Upgrade, Downgrade, Install, Remove, Purge, Keep, Hold
+  };
+
   // Local forward declarations:
   class AptitudeWindow;
   class TabsManager;
@@ -227,6 +241,20 @@ namespace gui
 		      NotifyView *view,
 		      const sigc::slot0<void> &download_starts_slot = sigc::slot0<void>(),
 		      const sigc::slot0<void> &download_stops_slot = sigc::slot0<void>());
+
+
+  /** \brief Add package actions to a menu.
+   *
+   *  \param actions    The actions to include in the menu.
+   *  \param callback   The callback to invoke when the actions are selected.
+   *  \param menu       The menu in which to place the actions.
+   *
+   *  The actions are added to the end of the menu in a standard
+   *  order.
+   */
+  void fill_package_menu(const std::set<PackagesAction> &actions,
+			 const sigc::slot1<void, PackagesAction> &callback,
+			 Gtk::Menu * menu);
 
   /** \brief Try to start up the user interface.
    *

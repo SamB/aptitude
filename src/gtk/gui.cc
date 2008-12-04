@@ -1033,6 +1033,74 @@ namespace gui
     dialog.run();
   }
 
+  namespace
+  {
+    void add_menu_item(Gtk::Menu *menu,
+                       Glib::ustring label,
+                       Gtk::StockID icon,
+                       sigc::slot0<void> callback,
+                       bool sensitive = true)
+    {
+      Gtk::Image *image = manage(new Gtk::Image(icon, Gtk::ICON_SIZE_MENU));
+      Gtk::MenuItem *item = manage(new Gtk::ImageMenuItem(*image, label));
+      menu->append(*item);
+
+      if (sensitive)
+        item->signal_activate().connect(callback);
+      else
+        item->set_sensitive(false);
+
+      item->show_all();
+    }
+
+    // for convenience
+    void add_menu_item(Gtk::Menu *menu,
+                       Glib::ustring label,
+                       Gtk::StockID icon)
+    {
+      add_menu_item(menu, label, icon, sigc::slot0<void>(), false);
+    }
+  }
+
+  void fill_package_menu(const std::set<PackagesAction> &actions,
+			 const sigc::slot1<void, PackagesAction> &callback,
+			 Gtk::Menu * menu)
+  {
+    if(actions.find(Upgrade) != actions.end())
+      {
+	if(actions.find(Install) != actions.end())
+	  add_menu_item(menu, "Install/Upgrade", Gtk::Stock::ADD,
+			sigc::bind(callback, Install));
+	else
+	  add_menu_item(menu, "Upgrade", Gtk::Stock::GO_UP,
+			sigc::bind(callback, Install));
+      }
+    else if(actions.find(Downgrade) != actions.end())
+      add_menu_item(menu, "Downgrade", Gtk::Stock::GO_DOWN,
+                    sigc::bind(callback, Install));
+    else if(actions.find(Install) != actions.end())
+      add_menu_item(menu, "Install", Gtk::Stock::ADD,
+                    sigc::bind(callback, Install));
+    else
+      add_menu_item(menu, "Install/Upgrade", Gtk::Stock::ADD); // Insensitive
+
+    add_menu_item(menu, "Remove", Gtk::Stock::REMOVE,
+                  sigc::bind(callback, Remove),
+                  actions.find(Remove) != actions.end());
+
+    add_menu_item(menu, "Purge", Gtk::Stock::CLEAR,
+                  sigc::bind(callback, Purge),
+                  actions.find(Purge) != actions.end());
+
+    add_menu_item(menu, "Keep", Gtk::Stock::MEDIA_REWIND,
+                  sigc::bind(callback, Keep),
+                  actions.find(Keep) != actions.end());
+
+    add_menu_item(menu, "Hold", Gtk::Stock::MEDIA_PAUSE,
+                  sigc::bind(callback, Hold),
+                  actions.find(Hold) != actions.end());
+  }
+
   AptitudeWindow::AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::Window(cobject)
   {
     refGlade->get_widget_derived("main_notebook", pNotebook);
