@@ -348,15 +348,21 @@ namespace gui
       {
         iter_list.push_back(model->get_iter(*path));
       }
-      aptitudeDepCache::action_group group(*apt_cache_file, NULL);
-      while (!iter_list.empty())
-        {
-          Gtk::TreeModel::iterator iter = iter_list.front();
-	  cwidget::util::ref_ptr<Entity> ent = (*iter)[cols.EntObject];
-          ent->dispatch_action(action);
 
-          iter_list.pop_front();
-        }
+      std::auto_ptr<undo_group> undo(new undo_group);
+      {
+	aptitudeDepCache::action_group group(*apt_cache_file, undo.get());
+	while (!iter_list.empty())
+	  {
+	    Gtk::TreeModel::iterator iter = iter_list.front();
+	    cwidget::util::ref_ptr<Entity> ent = (*iter)[cols.EntObject];
+	    ent->dispatch_action(action);
+
+	    iter_list.pop_front();
+	  }
+      }
+      if(!undo.get()->empty())
+	apt_undos->add_item(undo.release());
     }
   }
 
