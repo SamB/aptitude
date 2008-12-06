@@ -297,9 +297,17 @@ namespace gui
     set_label(_("Packages: ") + pLimitEntry->get_text());
   }
 
-  namespace
+  class InfoTabButtons : public Gtk::VButtonBox
   {
-    void do_dispatch_action(Entity &e, PackagesAction action)
+    Entity &e;
+
+    Gtk::Button installButton;
+    Gtk::Button removeButton;
+    Gtk::Button purgeButton;
+    Gtk::Button keepButton;
+    Gtk::Button holdButton;
+
+    void do_dispatch_action(PackagesAction action)
     {
       std::auto_ptr<undo_group> undo(new undo_group);
       {
@@ -311,33 +319,23 @@ namespace gui
 	apt_undos->add_item(undo.release());
     }
 
-    Gtk::Button *insert_button(Gtk::Container *parent,
-			       const Glib::ustring &buttonText,
-			       Gtk::StockID stockId,
-			       const cwidget::util::ref_ptr<Entity> &entity,
-			       PackagesAction action)
+    void insert_button(Gtk::Button *button,
+		       const Glib::ustring &buttonText,
+		       Gtk::StockID stockId,
+		       PackagesAction action)
     {
-      Gtk::Button *button = manage(new Gtk::Button(buttonText));
       button->set_image(*manage(new Gtk::Image(stockId, Gtk::ICON_SIZE_BUTTON)));
-      button->signal_clicked().connect(sigc::bind(sigc::ptr_fun(&do_dispatch_action),
-						  entity.weak_ref(),
+      button->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &InfoTabButtons::do_dispatch_action),
 						  action));
+      button->set_label(buttonText);
 
-      parent->add(*button);
-      return button;
+      add(*button);
     }
 
-    void update_package_button_states(Entity &entBare,
-				      // Covers installation, upgrades, and
-				      // downgrades.
-				      Gtk::Button &installButton,
-				      Gtk::Button &removeButton,
-				      Gtk::Button &purgeButton,
-				      Gtk::Button &keepButton,
-				      Gtk::Button &holdButton)
+    void update_package_button_states(const std::set<pkgCache::PkgIterator> *changed_packages)
     {
       using cwidget::util::ssprintf;
-      cwidget::util::ref_ptr<Entity> ent(&entBare);
+      cwidget::util::ref_ptr<Entity> ent(&e);
       cwidget::util::ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
       pkgCache::PkgIterator pkg;
       pkgCache::VerIterator ver;
@@ -349,6 +347,9 @@ namespace gui
 	}
 
       if(!pkg_ent.valid() || pkg.end())
+	return;
+
+      if(changed_packages->find(pkg) == changed_packages->end())
 	return;
 
       std::set<PackagesAction> actions;
@@ -439,35 +440,48 @@ namespace gui
       holdButton.property_sensitive() = (actions.find(Hold) != actions.end());
     }
 
-    // TODO: it would be nice to fold the arguments into a single
-    // parameter.  The reason this isn't done is that I want the
-    // connection to "go away" when the buttons are destroyed; in
-    // order for that to work I have to bind directly to the pointers
-    // (sigc++ will detect that they implement sigc::trackable).
-    void maybe_update_package_button_states(const std::set<pkgCache::PkgIterator> *changed_packages,
-					    Entity &entBare,
-					    // Covers installation, upgrades, and
-					    // downgrades.
-					    Gtk::Button &installButton,
-					    Gtk::Button &removeButton,
-					    Gtk::Button &purgeButton,
-					    Gtk::Button &keepButton,
-					    Gtk::Button &holdButton)
+  public:
+    InfoTabButtons(const cwidget::util::ref_ptr<PkgEntity> &_e)
+      : e(*_e.unsafe_get_ref())
     {
-      cwidget::util::ref_ptr<Entity> ent(&entBare);
-      cwidget::util::ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
+      (*apt_cache_file)->package_states_changed.connect(sigc::mem_fun(*this, &InfoTabButtons::update_package_button_states));
 
-      if(pkg_ent.valid() &&
-	 changed_packages != NULL &&
-	 changed_packages->find(pkg_ent->get_pkg()) != changed_packages->end())
-	update_package_button_states(entBare,
-				     installButton,
-				     removeButton,
-				     purgeButton,
-				     keepButton,
-				     holdButton);
+      std::string name(!_e->get_pkg().end()
+		       ? _e->get_pkg().Name()
+		       : "??");
+
+      insert_button(&installButton,
+		    "The user should never see this text.", Gtk::Stock::DIALOG_ERROR,
+		    Install);
+      insert_button(&removeButton,
+		    ssprintf(_("Remove %s"), name.c_str()),
+		    Gtk::Stock::REMOVE,
+		    Remove);
+      insert_button(&purgeButton,
+		    ssprintf(_("Purge %s"), name.c_str()),
+		    Gtk::Stock::CLEAR,
+		    Purge);
+      insert_button(&keepButton,
+		    "The user should not see this text.",
+		    Gtk::Stock::MEDIA_REWIND,
+		    Keep);
+      insert_button(&holdButton,
+		    ssprintf(_("Hold %s at its current version."),
+			     name.c_str()),
+		    Gtk::Stock::MEDIA_PAUSE,
+		    Hold);
+
+      installButton.show();
+      removeButton.show();
+      purgeButton.show();
+      keepButton.show();
+      holdButton.show();
+
+      std::set<pkgCache::PkgIterator> dummy;
+      dummy.insert(_e->get_pkg());
+      update_package_button_states(&dummy);
     }
-  }
+  };
 
   struct compare_provider_lists_by_name
   {
@@ -605,48 +619,20 @@ namespace gui
     // This all has to be done after we set the buffer anyway.
     //
     // TODO: better layout is probably good.  Is it?
-    if(!pkg.end())
+    if(pkg_ent.valid())
       {
 	textBuffer->insert(textBuffer->end(), "\n\n");
 	Glib::RefPtr<Gtk::TextBuffer::ChildAnchor> button_box_anchor =
 	  textBuffer->create_child_anchor(textBuffer->end());
 
-	Gtk::ButtonBox *button_box = manage(new Gtk::VButtonBox);
+	Gtk::ButtonBox *button_box = manage(new InfoTabButtons(pkg_ent));
 
-	Gtk::Button *installButton = insert_button(button_box,
-						   "The user should never see this text.", Gtk::Stock::DIALOG_ERROR,
-						   ent, Install);
-	Gtk::Button *removeButton = insert_button(button_box,
-						  ssprintf(_("Remove %s"), pkg.Name()),
-						  Gtk::Stock::REMOVE,
-						  ent, Remove);
-	Gtk::Button *purgeButton = insert_button(button_box,
-						 ssprintf(_("Purge %s"), pkg.Name()),
-						 Gtk::Stock::CLEAR,
-						 ent, Purge);
-	Gtk::Button *keepButton = insert_button(button_box,
-						"The user should not see this text.",
-						Gtk::Stock::MEDIA_REWIND,
-						ent, Keep);
-	Gtk::Button *holdButton = insert_button(button_box,
-						ssprintf(_("Hold %s at its current version."),
-							 pkg.Name()),
-						Gtk::Stock::MEDIA_PAUSE,
-						ent, Hold);
-
-	button_box->show_all();
-	update_package_button_states(*ent.unsafe_get_ref(),
-				     *installButton,
-				     *removeButton,
-				     *purgeButton,
-				     *keepButton,
-				     *holdButton);
+	button_box->show();
 
 	pPackagesTextView->add_child_at_anchor(*button_box, button_box_anchor);
 
 	// Note the use of sigc::ref / ent.weak_ref() to ensure this
 	// connection is removed when the buttons are destroyed.
-	(*apt_cache_file)->package_states_changed.connect(sigc::bind(sigc::ptr_fun(&maybe_update_package_button_states), ent.weak_ref(), sigc::ref(*installButton), sigc::ref(*removeButton), sigc::ref(*purgeButton), sigc::ref(*keepButton), sigc::ref(*holdButton)));
       }
   }
 
