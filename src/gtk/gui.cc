@@ -1177,6 +1177,8 @@ namespace gui
     pMenuFileExit->signal_activate().connect(&do_quit);
 
     refGlade->get_widget("menu_package", pMenuPackage);
+    fill_package_menu(std::set<PackagesAction>(), sigc::slot1<void, PackagesAction>(),
+		      pMenuPackage);
 
     {
       Gtk::MenuItem *menu_view_apt_errors;
