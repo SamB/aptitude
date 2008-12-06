@@ -1069,42 +1069,42 @@ namespace gui
     if(actions.find(Upgrade) != actions.end())
       {
 	if(actions.find(Install) != actions.end())
-	  add_menu_item(menu, "Install/Upgrade", Gtk::Stock::ADD,
+	  add_menu_item(menu, _("Install/Upgrade"), Gtk::Stock::ADD,
 			sigc::bind(callback, Install));
 	else
-	  add_menu_item(menu, "Upgrade", Gtk::Stock::GO_UP,
+	  add_menu_item(menu, _("Upgrade"), Gtk::Stock::GO_UP,
 			sigc::bind(callback, Install));
       }
     else if(actions.find(Downgrade) != actions.end())
-      add_menu_item(menu, "Downgrade", Gtk::Stock::GO_DOWN,
+      add_menu_item(menu, _("Downgrade"), Gtk::Stock::GO_DOWN,
                     sigc::bind(callback, Install));
     else if(actions.find(Install) != actions.end())
-      add_menu_item(menu, "Install", Gtk::Stock::ADD,
+      add_menu_item(menu, _("Install"), Gtk::Stock::ADD,
                     sigc::bind(callback, Install));
     else
-      add_menu_item(menu, "Install/Upgrade", Gtk::Stock::ADD); // Insensitive
+      add_menu_item(menu, _("Install/Upgrade"), Gtk::Stock::ADD); // Insensitive
 
-    add_menu_item(menu, "Remove", Gtk::Stock::REMOVE,
+    add_menu_item(menu, _("Remove"), Gtk::Stock::REMOVE,
                   sigc::bind(callback, Remove),
                   actions.find(Remove) != actions.end());
 
-    add_menu_item(menu, "Purge", Gtk::Stock::CLEAR,
+    add_menu_item(menu, _("Purge"), Gtk::Stock::CLEAR,
                   sigc::bind(callback, Purge),
                   actions.find(Purge) != actions.end());
 
-    add_menu_item(menu, "Keep", Gtk::Stock::MEDIA_REWIND,
+    add_menu_item(menu, _("Keep"), Gtk::Stock::MEDIA_REWIND,
                   sigc::bind(callback, Keep),
                   actions.find(Keep) != actions.end());
 
-    add_menu_item(menu, "Hold", Gtk::Stock::MEDIA_PAUSE,
+    add_menu_item(menu, _("Hold"), Gtk::Stock::MEDIA_PAUSE,
                   sigc::bind(callback, Hold),
                   actions.find(Hold) != actions.end());
 
-    add_menu_item(menu, "Set as automatic", Gtk::StockID(),
+    add_menu_item(menu, _("Set as automatic"), Gtk::StockID(),
 		  sigc::bind(callback, MakeAutomatic),
 		  actions.find(MakeAutomatic) != actions.end());
 
-    add_menu_item(menu, "Set as manual", Gtk::StockID(),
+    add_menu_item(menu, _("Set as manual"), Gtk::StockID(),
 		  sigc::bind(callback, MakeManual),
 		  actions.find(MakeManual) != actions.end());
   }
