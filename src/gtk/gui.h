@@ -53,7 +53,11 @@ namespace gui
      *  the Install menu item "Install", "Upgrade", or
      *  "Install/Upgrade".
      */
-    Upgrade, Downgrade, Install, Remove, Purge, Keep, Hold
+    Upgrade, Downgrade, Install, Remove, Purge, Keep, Hold,
+    /** \brief Mark the package as automatically installed. */
+    MakeAutomatic,
+    /** \brief Mark the package as manually installed. */
+    MakeManual
   };
 
   // Local forward declarations:

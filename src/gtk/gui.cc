@@ -1099,6 +1099,14 @@ namespace gui
     add_menu_item(menu, "Hold", Gtk::Stock::MEDIA_PAUSE,
                   sigc::bind(callback, Hold),
                   actions.find(Hold) != actions.end());
+
+    add_menu_item(menu, "Set as automatic", Gtk::StockID(),
+		  sigc::bind(callback, MakeAutomatic),
+		  actions.find(MakeAutomatic) != actions.end());
+
+    add_menu_item(menu, "Set as manual", Gtk::StockID(),
+		  sigc::bind(callback, MakeManual),
+		  actions.find(MakeManual) != actions.end());
   }
 
   AptitudeWindow::AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::Window(cobject)

@@ -306,6 +306,8 @@ namespace gui
     Gtk::Button purgeButton;
     Gtk::Button keepButton;
     Gtk::Button holdButton;
+    Gtk::Button autoButton;
+    Gtk::Button manualButton;
 
     void do_dispatch_action(PackagesAction action)
     {
@@ -330,6 +332,7 @@ namespace gui
       button->set_label(buttonText);
 
       add(*button);
+      button->show();
     }
 
     void update_package_button_states(const std::set<pkgCache::PkgIterator> *changed_packages)
@@ -436,6 +439,9 @@ namespace gui
       purgeButton.property_sensitive() = (actions.find(Purge) != actions.end());
       keepButton.property_sensitive() = (actions.find(Keep) != actions.end());
       holdButton.property_sensitive() = (actions.find(Hold) != actions.end());
+
+      autoButton.property_visible() = (actions.find(MakeAutomatic) != actions.end());
+      manualButton.property_visible() = (actions.find(MakeManual) != actions.end());
     }
 
   public:
@@ -468,12 +474,16 @@ namespace gui
 			     name.c_str()),
 		    Gtk::Stock::MEDIA_PAUSE,
 		    Hold);
-
-      installButton.show();
-      removeButton.show();
-      purgeButton.show();
-      keepButton.show();
-      holdButton.show();
+      insert_button(&autoButton,
+		    ssprintf(_("Mark %s as automatically installed."),
+			     name.c_str()),
+		    Gtk::StockID(),
+		    MakeAutomatic);
+      insert_button(&manualButton,
+		    ssprintf(_("Mark %s as manually installed."),
+			     name.c_str()),
+		    Gtk::StockID(),
+		    MakeManual);
 
       std::set<pkgCache::PkgIterator> dummy;
       dummy.insert(e->get_pkg());

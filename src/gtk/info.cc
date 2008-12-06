@@ -226,6 +226,12 @@ namespace gui
         case Hold:
           (*apt_cache_file)->mark_delete(ver.ParentPkg(), false, (*apt_cache_file)->get_ext_state(ver.ParentPkg()).selection_state!=pkgCache::State::Hold, undo);
           break;
+	case MakeAutomatic:
+	  (*apt_cache_file)->mark_auto_installed(ver.ParentPkg(), true, undo);
+	  break;
+	case MakeManual:
+	  (*apt_cache_file)->mark_auto_installed(ver.ParentPkg(), false, undo);
+	  break;
         default:
           break;
         }

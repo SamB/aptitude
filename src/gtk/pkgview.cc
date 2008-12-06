@@ -282,6 +282,14 @@ namespace gui
       actions.insert(Keep);
     else
       actions.insert(Hold);
+
+    if(state.Status != 2)
+      {
+	if(state.Flags & pkgCache::Flag::Auto)
+	  actions.insert(MakeManual);
+	else
+	  actions.insert(MakeAutomatic);
+      }
   }
 
   void PkgEntity::dispatch_action(PackagesAction action, bool first_pass)
@@ -309,6 +317,12 @@ namespace gui
       case Hold:
         (*apt_cache_file)->mark_delete(pkg, false, true, undo);
         break;
+      case MakeAutomatic:
+	(*apt_cache_file)->mark_auto_installed(pkg, true, undo);
+	break;
+      case MakeManual:
+	(*apt_cache_file)->mark_auto_installed(pkg, false, undo);
+	break;
       default:
         break;
       }
