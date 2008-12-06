@@ -211,10 +211,10 @@ namespace gui
       if(is_auto)
 	{
 	  if(is_installed)
-	    row[cols->AutomaticallyInstalledTooltip] = ssprintf(_("%s was installed automatically (click to mark it as manually installed)."),
+	    row[cols->AutomaticallyInstalledTooltip] = ssprintf(_("%s was installed automatically."),
 								pkg.Name());
 	  else if(state.Install())
-	    row[cols->AutomaticallyInstalledTooltip] = ssprintf(_("%s is being installed automatically (click to mark it as automatically installed)."),
+	    row[cols->AutomaticallyInstalledTooltip] = ssprintf(_("%s is being installed automatically."),
 								pkg.Name());
 	  else
 	    row[cols->AutomaticallyInstalledTooltip] = "";
@@ -222,10 +222,10 @@ namespace gui
       else
 	{
 	  if(is_installed)
-	    row[cols->AutomaticallyInstalledTooltip] = ssprintf(_("%s was installed manually (click to mark it as automatically installed)."),
+	    row[cols->AutomaticallyInstalledTooltip] = ssprintf(_("%s was installed manually."),
 								pkg.Name());
 	  else if(state.Install())
-	    row[cols->AutomaticallyInstalledTooltip] = ssprintf(_("%s is being installed manually (click to mark it as automatically installed)."),
+	    row[cols->AutomaticallyInstalledTooltip] = ssprintf(_("%s is being installed manually."),
 								pkg.Name());
 	  else
 	    row[cols->AutomaticallyInstalledTooltip] = "";
