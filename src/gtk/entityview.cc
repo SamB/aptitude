@@ -74,7 +74,7 @@ namespace gui
   {
   }
 
-  void HeaderEntity::dispatch_action(PackagesAction action)
+  void HeaderEntity::dispatch_action(PackagesAction action, bool first_pass)
   {
   }
 
@@ -352,13 +352,14 @@ namespace gui
       std::auto_ptr<undo_group> undo(new undo_group);
       {
 	aptitudeDepCache::action_group group(*apt_cache_file, undo.get());
-	while (!iter_list.empty())
+	for(int pass = 0; pass < 2; ++pass)
 	  {
-	    Gtk::TreeModel::iterator iter = iter_list.front();
-	    cwidget::util::ref_ptr<Entity> ent = (*iter)[cols.EntObject];
-	    ent->dispatch_action(action);
-
-	    iter_list.pop_front();
+	    for(std::list<Gtk::TreeModel::iterator>::const_iterator iter =
+		  iter_list.begin(); iter != iter_list.end(); ++iter)
+	      {
+		cwidget::util::ref_ptr<Entity> ent = (**iter)[cols.EntObject];
+		ent->dispatch_action(action, pass == 0);
+	      }
 	  }
       }
       if(!undo.get()->empty())

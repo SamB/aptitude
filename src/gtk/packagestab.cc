@@ -32,6 +32,7 @@
 #include <generic/apt/matching/compare_patterns.h>
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
+#include <generic/util/undo.h>
 #include <generic/util/util.h>
 
 #include <gtk/hyperlink.h>
@@ -298,6 +299,18 @@ namespace gui
 
   namespace
   {
+    void do_dispatch_action(Entity &e, PackagesAction action)
+    {
+      std::auto_ptr<undo_group> undo(new undo_group);
+      {
+	aptitudeDepCache::action_group group(*apt_cache_file, undo.get());
+	e.dispatch_action(action, true);
+	e.dispatch_action(action, false);
+      }
+      if(!undo.get()->empty())
+	apt_undos->add_item(undo.release());
+    }
+
     Gtk::Button *insert_button(Gtk::Container *parent,
 			       const Glib::ustring &buttonText,
 			       Gtk::StockID stockId,
@@ -306,7 +319,8 @@ namespace gui
     {
       Gtk::Button *button = manage(new Gtk::Button(buttonText));
       button->set_image(*manage(new Gtk::Image(stockId, Gtk::ICON_SIZE_BUTTON)));
-      button->signal_clicked().connect(sigc::bind(sigc::mem_fun(entity.unsafe_get_ref(), &Entity::dispatch_action),
+      button->signal_clicked().connect(sigc::bind(sigc::ptr_fun(&do_dispatch_action),
+						  entity.weak_ref(),
 						  action));
 
       parent->add(*button);

@@ -74,7 +74,17 @@ namespace gui
 
       virtual void add_actions(std::set<PackagesAction> &actions) = 0;
 
-      virtual void dispatch_action(PackagesAction action) = 0;
+      /** \brief Apply an action to this entity.
+       *
+       *  \param action       The action to apply.
+       *  \param first_pass   True if this is the first pass of dispatches.
+       *                      Actions are dispatched to each entity twice
+       *                      so that the autoinst code produces better
+       *                      results: it works a lot better if you flag
+       *                      all the packages being modified before you
+       *                      engage it.
+       */
+      virtual void dispatch_action(PackagesAction action, bool first_pass) = 0;
   };
   typedef cwidget::util::ref_ptr<Entity> EntityRef;
 
@@ -91,7 +101,7 @@ namespace gui
 		   const Gtk::TreeViewColumn *column,
 		   const EntityView *view);
     void add_actions(std::set<PackagesAction> &actions);
-    void dispatch_action(PackagesAction action);
+    void dispatch_action(PackagesAction action, bool first_pass);
 
     void set_text(const Glib::ustring &_text) { text = _text; }
   };

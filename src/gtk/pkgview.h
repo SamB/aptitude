@@ -65,7 +65,7 @@ namespace gui
       void fill_row(const EntityColumns *columns, Gtk::TreeModel::Row &row);
       void add_packages(std::set<pkgCache::PkgIterator> &packages);
       void add_actions(std::set<PackagesAction> &actions);
-      void dispatch_action(PackagesAction action);
+      void dispatch_action(PackagesAction action, bool first_pass);
 
       pkgCache::PkgIterator get_pkg() { return pkg; }
       /** \brief Get the version, if any, that should be displayed. */

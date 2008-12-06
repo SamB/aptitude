@@ -203,7 +203,7 @@ namespace gui
           }
       }
 
-      void dispatch_action(PackagesAction action)
+      void dispatch_action(PackagesAction action, bool first_pass)
       {
         undo_group *undo = new undo_group;
         switch(action)
@@ -212,7 +212,7 @@ namespace gui
         case Upgrade:
         case Downgrade:
           (*apt_cache_file)->set_candidate_version(ver, undo);
-          (*apt_cache_file)->mark_install(ver.ParentPkg(), true, false, undo);
+          (*apt_cache_file)->mark_install(ver.ParentPkg(), !first_pass, false, undo);
           break;
         case Remove:
           (*apt_cache_file)->mark_delete(ver.ParentPkg(), false, false, undo);
@@ -270,7 +270,7 @@ namespace gui
       {
       }
 
-      void dispatch_action(PackagesAction action)
+      void dispatch_action(PackagesAction action, bool first_pass)
       {
       }
     };

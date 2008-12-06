@@ -252,7 +252,7 @@ namespace gui
       actions.insert(Hold);
   }
 
-  void PkgEntity::dispatch_action(PackagesAction action)
+  void PkgEntity::dispatch_action(PackagesAction action, bool first_pass)
   {
     undo_group *undo = new undo_group;
     pkgCache::VerIterator ver = get_ver();
@@ -263,7 +263,7 @@ namespace gui
       case Install:
       case Upgrade:
       case Downgrade:
-        (*apt_cache_file)->mark_install(pkg, true, false, undo);
+        (*apt_cache_file)->mark_install(pkg, !first_pass, false, undo);
         break;
       case Remove:
         (*apt_cache_file)->mark_delete(pkg, false, false, undo);
