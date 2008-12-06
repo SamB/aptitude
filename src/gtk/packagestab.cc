@@ -299,7 +299,7 @@ namespace gui
 
   class InfoTabButtons : public Gtk::VButtonBox
   {
-    Entity &e;
+    cwidget::util::ref_ptr<PkgEntity> e;
 
     Gtk::Button installButton;
     Gtk::Button removeButton;
@@ -312,8 +312,8 @@ namespace gui
       std::auto_ptr<undo_group> undo(new undo_group);
       {
 	aptitudeDepCache::action_group group(*apt_cache_file, undo.get());
-	e.dispatch_action(action, true);
-	e.dispatch_action(action, false);
+	e->dispatch_action(action, true);
+	e->dispatch_action(action, false);
       }
       if(!undo.get()->empty())
 	apt_undos->add_item(undo.release());
@@ -335,25 +335,23 @@ namespace gui
     void update_package_button_states(const std::set<pkgCache::PkgIterator> *changed_packages)
     {
       using cwidget::util::ssprintf;
-      cwidget::util::ref_ptr<Entity> ent(&e);
-      cwidget::util::ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
       pkgCache::PkgIterator pkg;
       pkgCache::VerIterator ver;
 
-      if(pkg_ent.valid())
+      if(e.valid())
 	{
-	  pkg = pkg_ent->get_pkg();
-	  ver = pkg_ent->get_ver();
+	  pkg = e->get_pkg();
+	  ver = e->get_ver();
 	}
 
-      if(!pkg_ent.valid() || pkg.end())
+      if(!e.valid() || pkg.end())
 	return;
 
       if(changed_packages->find(pkg) == changed_packages->end())
 	return;
 
       std::set<PackagesAction> actions;
-      ent->add_actions(actions);
+      e->add_actions(actions);
 
       pkgDepCache::StateCache &state = (*apt_cache_file)[pkg];
       pkgCache::VerIterator candver = state.CandidateVerIter(*apt_cache_file);
@@ -442,12 +440,12 @@ namespace gui
 
   public:
     InfoTabButtons(const cwidget::util::ref_ptr<PkgEntity> &_e)
-      : e(*_e.unsafe_get_ref())
+      : e(_e)
     {
       (*apt_cache_file)->package_states_changed.connect(sigc::mem_fun(*this, &InfoTabButtons::update_package_button_states));
 
-      std::string name(!_e->get_pkg().end()
-		       ? _e->get_pkg().Name()
+      std::string name(!e->get_pkg().end()
+		       ? e->get_pkg().Name()
 		       : "??");
 
       insert_button(&installButton,
@@ -478,7 +476,7 @@ namespace gui
       holdButton.show();
 
       std::set<pkgCache::PkgIterator> dummy;
-      dummy.insert(_e->get_pkg());
+      dummy.insert(e->get_pkg());
       update_package_button_states(&dummy);
     }
   };
