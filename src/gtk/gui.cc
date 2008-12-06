@@ -1100,13 +1100,18 @@ namespace gui
                   sigc::bind(callback, Hold),
                   actions.find(Hold) != actions.end());
 
-    add_menu_item(menu, _("Set as automatic"), Gtk::StockID(),
-		  sigc::bind(callback, MakeAutomatic),
-		  actions.find(MakeAutomatic) != actions.end());
-
-    add_menu_item(menu, _("Set as manual"), Gtk::StockID(),
-		  sigc::bind(callback, MakeManual),
-		  actions.find(MakeManual) != actions.end());
+    if(actions.find(MakeAutomatic) != actions.end())
+      add_menu_item(menu, _("Set as automatic"), Gtk::StockID(),
+		    sigc::bind(callback, MakeAutomatic),
+		    true);
+    else if(actions.find(MakeManual) != actions.end())
+      add_menu_item(menu, _("Set as manual"), Gtk::StockID(),
+		    sigc::bind(callback, MakeManual),
+		    true);
+    else
+      add_menu_item(menu, _("Toggle automatic status"), Gtk::StockID(),
+		    sigc::bind(callback, MakeManual),
+		    false);
   }
 
   AptitudeWindow::AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::Window(cobject)
