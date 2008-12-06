@@ -145,6 +145,8 @@ namespace gui
     using cwidget::util::ssprintf;
     using cwidget::util::transcode;
 
+    aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
+
     pkgCache::VerIterator ver = get_ver();
 
     row[cols->EntObject] = this;
@@ -192,7 +194,6 @@ namespace gui
     if (!ver.end())
     {
       row[cols->VersionMarkup] = Glib::Markup::escape_text(ver.VerStr());
-      aptitudeDepCache::StateCache &state=(*apt_cache_file)[pkg];
       pkgCache::VerIterator candver=state.CandidateVerIter(*apt_cache_file);
       if (state.Upgrade() || state.Downgrade())
         row[cols->VersionMarkup] = row[cols->VersionMarkup] + "\n<i>" + Glib::Markup::escape_text(candver.VerStr()) + "</i>";
@@ -202,6 +203,37 @@ namespace gui
 
     row[cols->Name] = pkg.end() ? "" : pkg.Name();
     row[cols->Version] = ver.end() ? "" : ver.VerStr();
+
+    {
+      const bool is_auto = (state.Flags & pkgCache::Flag::Auto) != 0;
+      const bool is_installed = (!pkg.CurrentVer().end() &&
+				 pkg->CurrentState != pkgCache::State::ConfigFiles);
+      if(is_auto)
+	{
+	  if(is_installed)
+	    row[cols->AutomaticallyInstalledTooltip] = ssprintf(_("%s was installed automatically (click to mark it as manually installed)."),
+								pkg.Name());
+	  else if(state.Install())
+	    row[cols->AutomaticallyInstalledTooltip] = ssprintf(_("%s is being installed automatically (click to mark it as automatically installed)."),
+								pkg.Name());
+	  else
+	    row[cols->AutomaticallyInstalledTooltip] = "";
+	}
+      else
+	{
+	  if(is_installed)
+	    row[cols->AutomaticallyInstalledTooltip] = ssprintf(_("%s was installed manually (click to mark it as automatically installed)."),
+								pkg.Name());
+	  else if(state.Install())
+	    row[cols->AutomaticallyInstalledTooltip] = ssprintf(_("%s is being installed manually (click to mark it as automatically installed)."),
+								pkg.Name());
+	  else
+	    row[cols->AutomaticallyInstalledTooltip] = "";
+	}
+      row[cols->AutomaticallyInstalled] =
+	is_auto && (is_installed || state.Install());
+    }
+    row[cols->AutomaticallyInstalledVisible] = true;
   }
 
   void PkgEntity::activated(const Gtk::TreeModel::Path &path,

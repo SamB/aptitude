@@ -138,6 +138,15 @@ namespace gui
        */
       Gtk::TreeModelColumn<Glib::ustring> StatusDescriptionMarkup;
 
+      /** \brief Indicates whether the entity is automatically installed. */
+      Gtk::TreeModelColumn<bool> AutomaticallyInstalled;
+
+      /** \brief Text to display as the tooltip for the automatically installed column. */
+      Gtk::TreeModelColumn<Glib::ustring> AutomaticallyInstalledTooltip;
+
+      /** \brief Indicates whether to display the AutomaticallyInstalled column. */
+      Gtk::TreeModelColumn<bool> AutomaticallyInstalledVisible;
+
       EntityColumns();
   };
 
@@ -167,6 +176,7 @@ namespace gui
 
       Gtk::TreeViewColumn * Expander;
       Gtk::TreeViewColumn * Status;
+      Gtk::TreeViewColumn * AutomaticallyInstalled;
       Gtk::TreeViewColumn * Name;
       Gtk::TreeViewColumn * Version;
 

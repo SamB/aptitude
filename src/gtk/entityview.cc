@@ -91,6 +91,9 @@ namespace gui
     add(Version);
     add(Description);
     add(StatusDescriptionMarkup);
+    add(AutomaticallyInstalled);
+    add(AutomaticallyInstalledTooltip);
+    add(AutomaticallyInstalledVisible);
   }
 
   EntityTreeView::EntityTreeView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -202,6 +205,19 @@ namespace gui
       tree->append_column(*Status);
     }
     set_markup_tooltip(tree, Status, cols.StatusDescriptionMarkup);
+
+    {
+      Gtk::CellRendererToggle *automatically_installed_renderer = manage(new Gtk::CellRendererToggle);
+      automatically_installed_renderer->property_activatable() = false;
+      AutomaticallyInstalled = manage(new Gtk::TreeViewColumn(_("Auto"), *automatically_installed_renderer));
+      AutomaticallyInstalled->add_attribute(automatically_installed_renderer->property_active(),
+					    cols.AutomaticallyInstalled);
+      AutomaticallyInstalled->add_attribute(automatically_installed_renderer->property_visible(),
+					    cols.AutomaticallyInstalledVisible);
+      setup_column_properties(AutomaticallyInstalled, 48);
+      tree->append_column(*AutomaticallyInstalled);
+      set_text_tooltip(tree, AutomaticallyInstalled, cols.AutomaticallyInstalledTooltip);
+    }
 
     append_markup_column(Glib::ustring(_("Name")), Name, cols.NameMarkup, 350);
     set_text_tooltip(tree, Name, cols.Description);
