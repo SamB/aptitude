@@ -1229,8 +1229,6 @@ namespace gui
     // When the cache is reloaded, attach to the new resolver-manager.
     cache_reloaded.connect(sigc::mem_fun(*this, &AptitudeWindow::update_resolver_sensitivity_callback));
     update_resolver_sensitivity_callback();
-
-    tab_add(new DashboardTab(_("Dashboard:")));
   }
 
   void AptitudeWindow::do_dashboard()
@@ -1371,6 +1369,9 @@ namespace gui
 						  false));
 
     refXml->get_widget_derived("main_window", pMainWindow);
+
+    pMainWindow->tab_add(new DashboardTab(_("Dashboard:")));
+
 
     //This is the loop
     Gtk::Main::run(*pMainWindow);
