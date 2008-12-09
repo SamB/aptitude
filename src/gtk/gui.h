@@ -38,28 +38,12 @@
 #include <gtk/errortab.h>
 #include <gtk/notify.h>
 
+#include "constants.h"
+
 class download_manager;
 
 namespace gui
 {
-  /** \brief The actions that can be performed on a package-type
-   *  entity (from the Package menu, for instance).
-   */
-  enum PackagesAction
-  {
-    /** \brief A synonym for Install.
-     *
-     *  This is used when building menus to decide whether to label
-     *  the Install menu item "Install", "Upgrade", or
-     *  "Install/Upgrade".
-     */
-    Upgrade, Downgrade, Install, Remove, Purge, Keep, Hold,
-    /** \brief Mark the package as automatically installed. */
-    MakeAutomatic,
-    /** \brief Mark the package as manually installed. */
-    MakeManual
-  };
-
   // Local forward declarations:
   class AptitudeWindow;
   class TabsManager;

@@ -11,6 +11,7 @@ EXTRA_DIST = aptitude.glade
 libgtk_a_SOURCES=\
 	changelog.cc \
 	changelog.h \
+	constants.h \
 	dashboardtab.cc \
 	dashboardtab.h \
 	dependency_chains_tab.cc \
