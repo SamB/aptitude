@@ -156,6 +156,11 @@ namespace gui
       // Update the resolver sensistivity.
       void update_resolver_sensitivity();
 
+      /** \brief Update the Package menu by querying the currently
+       *  visible tab.
+       */
+      void update_package_menu();
+
     public:
       /**
        * Glade::Xml derived widget constructor.

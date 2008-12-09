@@ -269,6 +269,8 @@ namespace gui
     pPkgView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
     pPkgView->get_treeview()->signal_cursor_changed().connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
 
+    pPkgView->package_menu_actions_changed.connect(package_menu_actions_changed.make_slot());
+
     get_widget()->show();
   }
 
@@ -644,4 +646,13 @@ namespace gui
       }
   }
 
+  std::set<PackagesAction> PackagesTab::get_package_menu_actions()
+  {
+    return pPkgView->get_package_menu_actions();
+  }
+
+  void PackagesTab::dispatch_package_menu_action(PackagesAction action)
+  {
+    pPkgView->apply_action_to_selected(action);
+  }
 }

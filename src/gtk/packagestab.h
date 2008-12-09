@@ -53,6 +53,9 @@ namespace gui
       void display_desc(const cwidget::util::ref_ptr<Entity> &ent);
       Gtk::Entry * get_limit_entry() const { return pLimitEntry; }
       const cwidget::util::ref_ptr<PkgView> &get_pkg_view() const { return pPkgView; }
+
+      std::set<PackagesAction> get_package_menu_actions();
+      void dispatch_package_menu_action(PackagesAction action);
   };
 
   /** \brief Set up a package view to be searchable.

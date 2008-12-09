@@ -1117,6 +1117,7 @@ namespace gui
   AptitudeWindow::AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::Window(cobject)
   {
     refGlade->get_widget_derived("main_notebook", pNotebook);
+    pNotebook->package_menu_actions_changed.connect(sigc::mem_fun(*this, &AptitudeWindow::update_package_menu));
 
     refGlade->get_widget("main_toolbutton_dashboard", pToolButtonDashboard);
     pToolButtonDashboard->signal_clicked().connect(sigc::mem_fun(*this, &AptitudeWindow::do_dashboard));
@@ -1234,6 +1235,20 @@ namespace gui
   void AptitudeWindow::do_dashboard()
   {
     tab_add(new DashboardTab(_("Dashboard:")));
+  }
+
+  void AptitudeWindow::update_package_menu()
+  {
+    Tab *tab = pNotebook->get_current_tab();
+    std::set<PackagesAction> actions;
+    if(tab != NULL)
+      actions = tab->get_package_menu_actions();
+
+    Gtk::Menu *menu_package = pMenuPackage;
+    menu_package->items().clear();
+    fill_package_menu(actions,
+		      sigc::mem_fun(*tab, &Tab::dispatch_package_menu_action),
+		      menu_package);
   }
 
   void AptitudeWindow::update_resolver_sensitivity_callback()

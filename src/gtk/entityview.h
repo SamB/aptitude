@@ -202,15 +202,8 @@ namespace gui
       int compare_rows_by_version(const Gtk::TreeModel::iterator &row1,
 				  const Gtk::TreeModel::iterator &row2);
 
-      /** \brief Apply the given action to all the currently selected packages. */
-      void apply_action_to_selected(PackagesAction action);
-
       void context_menu_handler(GdkEventButton * event);
 
-      /** \brief Build the global package menu based on the selected packages
-       *  in this view.
-       */
-      void build_package_menu();
       /** \brief Enforces constraints on column order. */
       bool column_drop_handler(Gtk::TreeView *self, Gtk::TreeViewColumn *column,
 			       Gtk::TreeViewColumn *prev_column,
@@ -256,6 +249,22 @@ namespace gui
        *  sorting versions according to Debian policy).
        */
       void set_model(const Glib::RefPtr<Gtk::TreeModel> &model);
+
+
+      /** \brief Return the Package menu actions that are currently
+       *  allowed on the selection.
+       */
+      std::set<PackagesAction> get_package_menu_actions() const;
+
+      /** \brief Apply the given action to all the currently selected
+       *  packages.
+       */
+      void apply_action_to_selected(PackagesAction action);
+
+      /** \brief A signal indicating that the allowed package actions
+       *  have changed.
+       */
+      sigc::signal0<void> package_menu_actions_changed;
   };
 
 }

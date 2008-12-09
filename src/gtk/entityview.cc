@@ -167,12 +167,12 @@ namespace gui
 
     tree->signal_context_menu.connect(sigc::mem_fun(*this, &EntityView::context_menu_handler));
     tree->signal_row_activated().connect(sigc::mem_fun(*this, &EntityView::row_activated_handler));
-    tree->signal_selection_change.connect(sigc::mem_fun(*this, &EntityView::build_package_menu));
+    tree->signal_selection_change.connect(package_menu_actions_changed.make_slot());
     tree->set_column_drag_function(sigc::mem_fun(*this, &EntityView::column_drop_handler));
     if(apt_cache_file != NULL)
       {
 	(*apt_cache_file)->package_states_changed.connect(sigc::mem_fun(*this, &EntityView::refresh_view));
-	(*apt_cache_file)->package_states_changed.connect(sigc::hide(sigc::mem_fun(*this, &EntityView::build_package_menu)));
+	(*apt_cache_file)->package_states_changed.connect(sigc::hide(package_menu_actions_changed.make_slot()));
       }
     cache_closed.connect(sigc::mem_fun(*this, &EntityView::on_cache_closed));
     cache_reloaded.connect(sigc::mem_fun(*this, &EntityView::on_cache_reloaded));
@@ -415,14 +415,14 @@ namespace gui
       }
   }
 
-  void EntityView::build_package_menu()
+  std::set<PackagesAction> EntityView::get_package_menu_actions() const
   {
     Glib::RefPtr<Gtk::TreeModel> model = get_model();
     Glib::RefPtr<Gtk::TreeView::Selection> selected = tree->get_selection();
+    std::set<PackagesAction> actions;
+
     if(selected)
       {
-        std::set<PackagesAction> actions;
-
         Gtk::TreeSelection::ListHandle_Path selected_rows = selected->get_selected_rows();
         for (Gtk::TreeSelection::ListHandle_Path::iterator path = selected_rows.begin();
              path != selected_rows.end(); ++path)
@@ -431,14 +431,9 @@ namespace gui
             cwidget::util::ref_ptr<Entity> ent = (*iter)[cols.EntObject];
             ent->add_actions(actions);
           }
-
-        if(!actions.empty())
-          {
-	    Gtk::Menu * const menu_package = pMainWindow->get_menu_package();
-            menu_package->items().clear();
-            fill_package_menu(actions, sigc::mem_fun(this, &EntityView::apply_action_to_selected), menu_package);
-          }
       }
+
+    return actions;
   }
 
   EntityView::~EntityView()

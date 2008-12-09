@@ -27,6 +27,10 @@
 #include <gtkmm.h>
 #include <libglademm/xml.h>
 
+#include "constants.h" // For PackagesAction
+
+#include <set>
+
 namespace gui
 {
   class NotifyView;
@@ -113,6 +117,20 @@ namespace gui
       const Glib::RefPtr<Gnome::Glade::Xml> &get_xml() { return xml; }
       bool get_active() const { return active; }
 
+      /** \brief Get the actions that should be activated in the Package menu.
+       *
+       *  The default implementation returns an empty set.
+       */
+      virtual std::set<PackagesAction> get_package_menu_actions();
+
+      /** \brief Perform a Package menu action.
+       *
+       *  The default implementation does nothing.
+       *
+       *  \param action   The action to perform.
+       */
+      virtual void dispatch_package_menu_action(PackagesAction action);
+
       /** \brief A signal invoked when the tab becomes or ceases to be the active tab. */
       sigc::signal0<void> active_changed;
 
@@ -124,6 +142,11 @@ namespace gui
 
       /** \brief A signal invoked when the tab is closed in the notebook. */
       sigc::signal0<void> closed;
+
+      /** \brief A signal invoked when the packages menu of the tab
+       *  (the result of get_package_menu_actions()) changes.
+       */
+      sigc::signal0<void> package_menu_actions_changed;
   };
 
   /**
@@ -132,6 +155,18 @@ namespace gui
   class TabsManager : public Gtk::Notebook
   {
     private:
+      /** \brief The connection, if any, that listens to the currently
+       *  active tab's Tab::package_menu_actions_changed signal.
+       *
+       *  This is disconnected when we switch away from the tab.
+       */
+      sigc::connection package_menu_actions_changed_connection;
+
+      /** \brief Use the currently displayed tab to update
+       *  the package menu.
+       */
+      void update_package_menu();
+
       /**
        * Gives the position for the next tab of given type
        * @param type type of tab
@@ -181,6 +216,12 @@ namespace gui
        *  current tab's status button changes.
        */
       sigc::signal1<void, Tab *> tab_status_button_changed;
+
+
+      /** \brief Emitted when the Package menu contents of the active
+       *  tab might have changed.
+       */
+      sigc::signal0<void> package_menu_actions_changed;
   };
 
 }

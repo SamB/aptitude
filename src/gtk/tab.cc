@@ -114,6 +114,15 @@ namespace gui
     return count;
   }
 
+  std::set<PackagesAction> Tab::get_package_menu_actions()
+  {
+    return std::set<PackagesAction>();
+  }
+
+  void Tab::dispatch_package_menu_action(PackagesAction action)
+  {
+  }
+
   TabsManager::TabsManager(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) :
     Gtk::Notebook(cobject)
   {
@@ -181,6 +190,8 @@ namespace gui
 
   void TabsManager::do_switch_page(GtkNotebookPage *page, guint page_idx)
   {
+    package_menu_actions_changed_connection.disconnect();
+
     Tab *current = get_current_tab();
     if(current != NULL)
       current->set_active(false);
@@ -188,10 +199,16 @@ namespace gui
     Tab *tab = NULL;
     Widget *next = get_nth_page(page_idx);
     if(next != NULL)
-      tab = (Tab *)next->get_data(tab_property);
+      {
+	tab = (Tab *)next->get_data(tab_property);
+	package_menu_actions_changed_connection =
+	  tab->package_menu_actions_changed.connect(package_menu_actions_changed.make_slot());
+      }
 
     if(tab != NULL)
       tab->set_active(true);
     tab_status_button_changed(tab);
+
+    package_menu_actions_changed();
   }
 }
