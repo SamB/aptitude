@@ -123,6 +123,15 @@ namespace gui
   {
   }
 
+  bool Tab::get_undo_available()
+  {
+    return false;
+  }
+
+  void Tab::dispatch_undo()
+  {
+  }
+
   TabsManager::TabsManager(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) :
     Gtk::Notebook(cobject)
   {
@@ -191,6 +200,7 @@ namespace gui
   void TabsManager::do_switch_page(GtkNotebookPage *page, guint page_idx)
   {
     package_menu_actions_changed_connection.disconnect();
+    undo_available_changed_connection.disconnect();
 
     Tab *current = get_current_tab();
     if(current != NULL)
@@ -203,6 +213,8 @@ namespace gui
 	tab = (Tab *)next->get_data(tab_property);
 	package_menu_actions_changed_connection =
 	  tab->package_menu_actions_changed.connect(package_menu_actions_changed.make_slot());
+	undo_available_changed_connection =
+	  tab->undo_available_changed.connect(undo_available_changed.make_slot());
       }
 
     if(tab != NULL)
@@ -210,5 +222,6 @@ namespace gui
     tab_status_button_changed(tab);
 
     package_menu_actions_changed();
+    undo_available_changed();
   }
 }

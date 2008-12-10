@@ -131,6 +131,18 @@ namespace gui
        */
       virtual void dispatch_package_menu_action(PackagesAction action);
 
+      /** \brief Returns \b true if the Undo action is available on this tab.
+       *
+       *  The default implementation always returns \b false.
+       */
+      virtual bool get_undo_available();
+
+      /** \brief Invoke the Undo menu action on this tab.
+       *
+       *  The default implementation does nothing.
+       */
+      virtual void dispatch_undo();
+
       /** \brief A signal invoked when the tab becomes or ceases to be the active tab. */
       sigc::signal0<void> active_changed;
 
@@ -147,6 +159,9 @@ namespace gui
        *  (the result of get_package_menu_actions()) changes.
        */
       sigc::signal0<void> package_menu_actions_changed;
+
+      /** \brief A signal invoked when whether undo is available changes. */
+      sigc::signal0<void> undo_available_changed;
   };
 
   /**
@@ -161,6 +176,13 @@ namespace gui
        *  This is disconnected when we switch away from the tab.
        */
       sigc::connection package_menu_actions_changed_connection;
+
+      /** \brief The connection, if any, that listens to the currently
+       *  active tab's Tab::undo_available_changed signal.
+       *
+       *  This is disconnected when we switch away from the tab.
+       */
+      sigc::connection undo_available_changed_connection;
 
       /** \brief Use the currently displayed tab to update
        *  the package menu.
@@ -222,6 +244,11 @@ namespace gui
        *  tab might have changed.
        */
       sigc::signal0<void> package_menu_actions_changed;
+
+      /** \brief Emitted when whether undo is available might have
+       *  changed.
+       */
+      sigc::signal0<void> undo_available_changed;
   };
 
 }
