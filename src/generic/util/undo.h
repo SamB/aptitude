@@ -9,6 +9,8 @@
 
 #include <list>
 
+#include <sigc++/signal.h>
+
 /** \brief A generic structure for undo information.
  * 
  *  \file undo.h
@@ -65,6 +67,7 @@ public:
     // Inserts an item into the stack of undoable actions
   {
     items.push_front(item);
+    changed();
   }
 
   void clear_items();
@@ -78,6 +81,11 @@ public:
 
   void push_floor(unsigned int floor);
   void pop_floor();
+
+  /** \brief Emitted after a new entry is added to the list and after
+   *  an entry is removed from the list.
+   */
+  sigc::signal0<void> changed;
 
   virtual ~undo_list()
   {
