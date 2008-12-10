@@ -1118,6 +1118,7 @@ namespace gui
   {
     refGlade->get_widget_derived("main_notebook", pNotebook);
     pNotebook->package_menu_actions_changed.connect(sigc::mem_fun(*this, &AptitudeWindow::update_package_menu));
+    pNotebook->undo_available_changed.connect(sigc::mem_fun(*this, &AptitudeWindow::update_undo_sensitivity));
 
     refGlade->get_widget("main_toolbutton_dashboard", pToolButtonDashboard);
     pToolButtonDashboard->signal_clicked().connect(sigc::mem_fun(*this, &AptitudeWindow::do_dashboard));
@@ -1193,6 +1194,9 @@ namespace gui
       menu_view_dependency_chains->signal_activate().connect(sigc::mem_fun(this, &AptitudeWindow::show_dependency_chains_tab));
     }
 
+    refGlade->get_widget("menu_undo_undo", menu_undo_undo);
+    menu_undo_undo->signal_activate().connect(sigc::mem_fun(this, &AptitudeWindow::do_undo));
+
     refGlade->get_widget_derived("main_notify_rows", pNotifyView);
 
     pNotifyView->add_notification(Gtk::manage(new BrokenPackagesNotification(this)));
@@ -1249,6 +1253,19 @@ namespace gui
     fill_package_menu(actions,
 		      sigc::mem_fun(*tab, &Tab::dispatch_package_menu_action),
 		      menu_package);
+  }
+
+  void AptitudeWindow::update_undo_sensitivity()
+  {
+    Tab *tab = pNotebook->get_current_tab();
+    menu_undo_undo->property_sensitive() = tab != NULL && tab->get_undo_available();
+  }
+
+  void AptitudeWindow::do_undo()
+  {
+    Tab *tab = pNotebook->get_current_tab();
+    if(tab != NULL)
+      tab->dispatch_undo();
   }
 
   void AptitudeWindow::update_resolver_sensitivity_callback()

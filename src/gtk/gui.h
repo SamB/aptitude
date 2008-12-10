@@ -133,6 +133,7 @@ namespace gui
       Gtk::ImageMenuItem * pMenuFileExit;
 
       Gtk::Menu * pMenuPackage;
+      Gtk::MenuItem *menu_undo_undo;
 
       Gtk::ProgressBar * pProgressBar;
       Gtk::Statusbar * pStatusBar;
@@ -161,6 +162,9 @@ namespace gui
        */
       void update_package_menu();
 
+      /** \brief Update whether the Undo menu item is sensitive. */
+      void update_undo_sensitivity();
+
     public:
       /**
        * Glade::Xml derived widget constructor.
@@ -185,6 +189,11 @@ namespace gui
 
     /** \brief Remove a tab from the main notebook of this window. */
     void tab_del(Tab *tab);
+
+    /** \brief Undo the last action in the visible tab, as if Undo had
+     *  been triggered from the Edit menu.
+     */
+    void do_undo();
 
     /** \brief Open a resolver tab, as if it had been triggered from the menu.
      */
