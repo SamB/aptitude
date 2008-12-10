@@ -56,6 +56,8 @@ namespace gui
 
       std::set<PackagesAction> get_package_menu_actions();
       void dispatch_package_menu_action(PackagesAction action);
+      bool get_undo_available();
+      void dispatch_undo();
   };
 
   /** \brief Set up a package view to be searchable.

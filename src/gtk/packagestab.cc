@@ -270,8 +270,19 @@ namespace gui
     pPkgView->get_treeview()->signal_cursor_changed().connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
 
     pPkgView->package_menu_actions_changed.connect(package_menu_actions_changed.make_slot());
+    apt_undos->changed.connect(undo_available_changed.make_slot());
 
     get_widget()->show();
+  }
+
+  bool PackagesTab::get_undo_available()
+  {
+    return apt_undos->size() > 0;
+  }
+
+  void PackagesTab::dispatch_undo()
+  {
+    apt_undos->undo();
   }
 
   // TODO: Should be moved into PackagesView for use with PackagesView::signal_on_package_selection.
