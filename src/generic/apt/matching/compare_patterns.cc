@@ -275,6 +275,9 @@ namespace aptitude
 	  case pattern::term:
 	    return p1->get_term_term().compare(p2->get_term_term());
 
+	  case pattern::term_prefix:
+	    return p1->get_term_prefix_term().compare(p2->get_term_prefix_term());
+
 	  case pattern::true_tp:
 	    return 0;
 

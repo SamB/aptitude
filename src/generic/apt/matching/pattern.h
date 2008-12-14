@@ -470,6 +470,12 @@ namespace aptitude
 	   *  Fields: term.
 	   */
 	  term,
+	  /** \brief ?term-prefix(TERM)
+	   *
+	   *  Matches a package using a full-text keyword search against
+	   *  a prefix (so "apt" will match both "apt" and "aptitude").
+	   */
+	  term_prefix,
 	  /** \brief ?true
 	   *
 	   *  Matches everything.
@@ -1717,6 +1723,29 @@ namespace aptitude
       const std::string &get_term_term() const
       {
 	eassert(tp == term);
+
+	return string_info;
+      }
+
+      // @}
+
+
+      // @{
+
+      /** \brief Create a ?term-prefix term.
+       *
+       *  \param s  The keyword to search for.
+       */
+      static cwidget::util::ref_ptr<pattern>
+      make_term_prefix(const std::string &s)
+      {
+	return new pattern(term_prefix, s);
+      }
+
+      /** \brief Retrieve the term field of a ?term term. */
+      const std::string &get_term_prefix_term() const
+      {
+	eassert(tp == term_prefix);
 
 	return string_info;
       }

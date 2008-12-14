@@ -491,7 +491,7 @@ public:
 	terminators.push_back(")");
 
 	ref_ptr<matching::pattern> p(matching::parse(begin, end, terminators,
-						     true, false));
+						     true, false, false));
 
 	if(!p.valid())
 	  throw GroupParseException(_("Unable to parse pattern at '%s'"),
@@ -647,7 +647,7 @@ class pattern_policy_parser : public group_policy_parser
 
 	cw::util::ref_ptr<matching::pattern> pattern(matching::parse(begin, end,
 								     terminators,
-								     true, false));
+								     true, false, false));
 
 	bool passthrough = false;
 	std::auto_ptr<pkg_grouppolicy_factory> chain;

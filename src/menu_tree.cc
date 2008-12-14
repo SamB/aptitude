@@ -377,7 +377,7 @@ void menu_tree::do_incsearch(std::wstring s, bool backward)
       pre_incsearch_selected=get_selection();
     }
 
-  ref_ptr<matching::pattern> p = matching::parse(cw::util::transcode(s), false, true);
+  ref_ptr<matching::pattern> p = matching::parse(cw::util::transcode(s), false, true, true);
 
   set_selection(pre_incsearch_selected);
 

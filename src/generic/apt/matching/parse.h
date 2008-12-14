@@ -51,6 +51,10 @@ namespace aptitude
      *                             signalled if part of the region
      *                             is left after parsing (i.e.,
      *                             if start != end).
+     *  \param partial      If \b true, if the last word is an
+     *                      unadorned Xapian term, it will be
+     *                      treated as a wildcard representing
+     *                      all the terms in the database.
      *
      *  \return  The parsed expression, or NULL if an
      *  error occurred or if the input range was empty.
@@ -60,7 +64,8 @@ namespace aptitude
 	    const std::string::const_iterator &end,
 	    const std::vector<const char *> &terminators,
 	    bool flag_errors,
-	    bool require_full_parse);
+	    bool require_full_parse,
+	    bool partial);
 
 
     /** \brief Parse a string as a search pattern.
@@ -93,7 +98,23 @@ namespace aptitude
       return parse(start, s.end(),
 		   terminators,
 		   flag_errors,
-		   require_full_parse);
+		   require_full_parse,
+		   false);
+    }
+
+    inline cwidget::util::ref_ptr<pattern>
+      parse(const std::string &s,
+	    const std::vector<const char *> &terminators,
+	    bool flag_errors,
+	    bool require_full_parse,
+	    bool partial)
+    {
+      std::string::const_iterator start = s.begin();
+      return parse(start, s.end(),
+		   terminators,
+		   flag_errors,
+		   require_full_parse,
+		   partial);
     }
 
     /** \brief Parse a string as a search pattern. */
@@ -105,6 +126,19 @@ namespace aptitude
       return parse(s, std::vector<const char *>(),
 		   flag_errors,
 		   require_full_parse);
+    }
+
+    /** \brief Parse a string as a search pattern. */
+    inline cwidget::util::ref_ptr<pattern>
+      parse(const std::string &s,
+	    bool flag_errors,
+	    bool require_full_parse,
+	    bool partial)
+    {
+      return parse(s, std::vector<const char *>(),
+		   flag_errors,
+		   require_full_parse,
+		   partial);
     }
 
     /** \brief Parse a string as a search pattern.
@@ -121,6 +155,22 @@ namespace aptitude
       parse(const std::string &s)
     {
       return parse(s, true, true);
+    }
+
+    /** \brief Parse a string as a possibly incomplete search pattern.
+     *
+     *  Errors will be flagged by generating apt errors, and it is an
+     *  error if part of the input string is left over after parsing.
+     *
+     *  \param s       The string to parse.
+     *
+     *  \return  The parsed expression, or NULL if an
+     *  error occurred or if the input string was empty.
+     */
+    inline cwidget::util::ref_ptr<pattern>
+      parse_with_extension(const std::string &s)
+    {
+      return parse(s, true, true, true);
     }
   }
 }

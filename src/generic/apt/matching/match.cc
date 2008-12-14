@@ -201,6 +201,10 @@ namespace aptitude
       // the packages it matches.
       std::map<std::string, std::vector<Xapian::docid> > matched_terms;
 
+      // Maps each term that has been looked up as a prefix to a
+      // sorted list of the packages it matches.
+      std::map<std::string, std::vector<Xapian::docid> > matched_term_prefixes;
+
     public:
       implementation()
       {
@@ -236,6 +240,76 @@ namespace aptitude
 	  }
 	else
 	  return cached_match->second;
+      }
+
+      bool term_prefix_matches(const pkgCache::PkgIterator &pkg,
+			       const std::string &prefix,
+			       bool debug)
+      {
+	if(debug)
+	  std::cout << "Searching for " << prefix << " as a term pefix." << std::endl;
+
+	Xapian::docid pkg_docid(db.docidByName(pkg.Name()));
+	const Xapian::Database xapian_db(db.db());
+
+
+	const std::map<std::string, std::vector<Xapian::docid> >::iterator
+	  found = matched_term_prefixes.find(prefix);
+
+	if(found != matched_term_prefixes.end())
+	  return std::binary_search(found->second.begin(),
+				    found->second.end(),
+				    pkg_docid);
+	else
+	  {
+	    if(debug)
+	      std::cout << "Retrieving the prefix hits for " << prefix << std::endl;
+
+	    const std::map<std::string, std::vector<Xapian::docid> >::iterator
+	      inserted = matched_term_prefixes.insert(std::make_pair(prefix, std::vector<Xapian::docid>())).first;
+
+	    std::vector<Xapian::docid> &matches(inserted->second);
+
+	    Xapian::TermIterator prefix_list_end = xapian_db.allterms_end(prefix);
+	    for(Xapian::TermIterator extensionIt = xapian_db.allterms_begin(prefix);
+		extensionIt != prefix_list_end; ++extensionIt)
+	      {
+		// Both this string and its stemmed version are
+		// possible continuations, so index both of them.
+		const std::string extension(*extensionIt);
+		const std::string extensionStemmed(Xapian::Stem("en")(extension));
+
+		const std::string *terms[2] = { &extension, &extensionStemmed };
+		const int numTerms = sizeof(terms) / sizeof(terms[0]);
+
+		for(const std::string **termIt = terms;
+		    termIt < terms + numTerms; ++termIt)
+		  {
+		    const std::string &currTerm(**termIt);
+
+		    Xapian::PostingIterator
+		      postingsBegin = xapian_db.postlist_begin(currTerm),
+		      postingsEnd   = xapian_db.postlist_end(currTerm);
+
+		    for(Xapian::PostingIterator it = postingsBegin;
+			it != postingsEnd; ++it)
+		      matches.push_back(*it);
+		  }
+	      }
+
+	    std::sort(matches.begin(), matches.end());
+	    matches.erase(std::unique(matches.begin(), matches.end()),
+			  matches.end());
+
+	    if(debug)
+	      std::cout << "  (" << matches.size() << " hits)" << std::endl;
+
+	    // Now that the hit list is initialized, we can search it
+	    // for a match.
+	    return std::binary_search(matches.begin(),
+				      matches.end(),
+				      pkg_docid);
+	  }
       }
 
       bool term_matches(const pkgCache::PkgIterator &pkg,
@@ -1270,6 +1344,17 @@ namespace aptitude
 	    }
 	    break;
 
+	  case pattern::term_prefix:
+	    {
+	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+
+	      if(search_info->term_prefix_matches(pkg, p->get_term_prefix_term(), debug))
+		return match::make_atomic(p);
+	      else
+		return NULL;
+	    }
+	    break;
+
 	  case pattern::true_tp:
 	    return match::make_atomic(p);
 	    break;
@@ -1668,6 +1753,7 @@ namespace aptitude
 	  case pattern::tag:
 	  case pattern::task:
 	  case pattern::term:
+	  case pattern::term_prefix:
 	  case pattern::true_tp:
 	  case pattern::upgradable:
 	  case pattern::user_tag:
@@ -1834,6 +1920,9 @@ namespace aptitude
 	  case pattern::term:
 	    return true;
 
+	  case pattern::term_prefix:
+	    return true;
+
 	    // Various non-Xapian terms.  All of these return false.
 
 	  case pattern::archive:
@@ -1946,6 +2035,9 @@ namespace aptitude
 	    return is_xapian_dependent(p->get_widen_pattern());
 
 	  case pattern::term:
+	    return true;
+
+	  case pattern::term_prefix:
 	    return true;
 
 	    // Various non-dependent terms.  All of these return
@@ -2179,6 +2271,7 @@ namespace aptitude
 	  case pattern::tag:
 	  case pattern::task:
 	  case pattern::term:
+	  case pattern::term_prefix:
 	  case pattern::true_tp:
 	  case pattern::upgradable:
 	  case pattern::user_tag:
@@ -2203,12 +2296,14 @@ namespace aptitude
       //
       // Returns the new query, or an empty query if there's no
       // Xapian-dependence.
-      Xapian::Query build_xapian_query(const cwidget::util::ref_ptr<pattern> &p)
+      Xapian::Query build_xapian_query(const cwidget::util::ref_ptr<pattern> &p,
+				       const Xapian::Database &db)
       {
 	switch(p->get_type())
 	  {
 	  case pattern::all_versions:
-	    return build_xapian_query(p->get_all_versions_pattern());
+	    return build_xapian_query(p->get_all_versions_pattern(),
+				      db);
 
 	  case pattern::and_tp:
 	    {
@@ -2239,7 +2334,8 @@ namespace aptitude
 		  if((*it)->get_type() == pattern::not_tp &&
 		     is_pure_xapian((*it)->get_not_pattern()))
 		    {
-		      Xapian::Query q(build_xapian_query((*it)->get_not_pattern()));
+		      Xapian::Query q(build_xapian_query((*it)->get_not_pattern(),
+							 db));
 
 		      // Ignore empty queries; they signify that the
 		      // entry should be pruned from the generated
@@ -2271,7 +2367,8 @@ namespace aptitude
 		  if((*it)->get_type() != pattern::not_tp &&
 		     !is_xapian_dependent(*it))
 		    {
-		      Xapian::Query q(build_xapian_query(*it));
+		      Xapian::Query q(build_xapian_query(*it,
+							 db));
 
 		      if(and_maybe_tail.empty())
 			and_maybe_tail = q;
@@ -2290,7 +2387,8 @@ namespace aptitude
 		  if((*it)->get_type() != pattern::not_tp &&
 		     is_xapian_dependent(*it))
 		    {
-		      Xapian::Query q(build_xapian_query(*it));
+		      Xapian::Query q(build_xapian_query(*it,
+							 db));
 
 		      if(!q.empty())
 			{
@@ -2343,13 +2441,16 @@ namespace aptitude
 	    }
 
 	  case pattern::any_version:
-	    return build_xapian_query(p->get_any_version_pattern());
+	    return build_xapian_query(p->get_any_version_pattern(),
+				      db);
 
 	  case pattern::for_tp:
-	    return build_xapian_query(p->get_for_pattern());
+	    return build_xapian_query(p->get_for_pattern(),
+				      db);
 
 	  case pattern::narrow:
-	    return build_xapian_query(p->get_narrow_pattern());
+	    return build_xapian_query(p->get_narrow_pattern(),
+				      db);
 
 	  case pattern::not_tp:
 	    // D'oh!  Should I assert-fail here?
@@ -2373,7 +2474,8 @@ namespace aptitude
 		{
 		  if((*it)->get_type() != pattern::not_tp)
 		    {
-		      Xapian::Query q(build_xapian_query(*it));
+		      Xapian::Query q(build_xapian_query(*it,
+							 db));
 
 		      if(!q.empty())
 			{
@@ -2391,7 +2493,8 @@ namespace aptitude
 	    }
 
 	  case pattern::widen:
-	    return build_xapian_query(p->get_widen_pattern());
+	    return build_xapian_query(p->get_widen_pattern(),
+				      db);
 
 	  case pattern::term:
 	    // We try stemming everything as if it were English.
@@ -2400,6 +2503,25 @@ namespace aptitude
 	    // (how? the locale isn't reliable; we care about the
 	    // language of the package descriptions).
 	    return stem_term(p->get_term_term());
+
+	  case pattern::term_prefix:
+	    {
+	      Xapian::Stem stemmer("en");
+	      std::vector<Xapian::Query> subqueries;
+
+	      Xapian::TermIterator prefix_list_end = db.allterms_end(p->get_term_prefix_term());
+	      for(Xapian::TermIterator extensionIt = db.allterms_begin(p->get_term_prefix_term());
+		  extensionIt != prefix_list_end; ++extensionIt)
+		{
+		  const std::string extension(*extensionIt);
+		  subqueries.push_back(Xapian::Query(extension));
+		  subqueries.push_back(Xapian::Query(stemmer(extension)));
+		}
+
+	      return Xapian::Query(Xapian::Query::OP_OR,
+				   subqueries.begin(),
+				   subqueries.end());
+	    }
 
 	  case pattern::archive:
 	  case pattern::action:
@@ -2524,7 +2646,7 @@ namespace aptitude
 		  << std::endl;
 
 
-      Xapian::Query q(build_xapian_query(normalized));
+      Xapian::Query q(build_xapian_query(normalized, db));
 
       if(q.empty())
 	{
