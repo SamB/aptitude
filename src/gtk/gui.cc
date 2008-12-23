@@ -1039,16 +1039,25 @@ namespace gui
                        Glib::ustring label,
                        Gtk::StockID icon,
                        sigc::slot0<void> callback,
-                       bool sensitive = true)
+                       bool sensitive = true,
+                       int accel_key = 0,
+                       Gdk::ModifierType accel_mods = Gdk::MODIFIER_MASK)
     {
       Gtk::Image *image = manage(new Gtk::Image(icon, Gtk::ICON_SIZE_MENU));
       Gtk::MenuItem *item = manage(new Gtk::ImageMenuItem(*image, label));
-      menu->append(*item);
 
       if (sensitive)
+      {
         item->signal_activate().connect(callback);
+        if (accel_key || accel_mods)
+        {
+          item->add_accelerator("activate", pMainWindow->get_accel_group(), accel_key, accel_mods, Gtk::ACCEL_VISIBLE);
+        }
+      }
       else
         item->set_sensitive(false);
+
+      menu->append(*item);
 
       item->show_all();
     }
@@ -1070,44 +1079,53 @@ namespace gui
       {
 	if(actions.find(Install) != actions.end())
 	  add_menu_item(menu, _("Install/Upgrade"), Gtk::Stock::ADD,
-			sigc::bind(callback, Install));
+			sigc::bind(callback, Install),
+	                  GDK_i, Gdk::CONTROL_MASK);
 	else
 	  add_menu_item(menu, _("Upgrade"), Gtk::Stock::GO_UP,
-			sigc::bind(callback, Install));
+			sigc::bind(callback, Install),
+	                  GDK_i, Gdk::CONTROL_MASK);
       }
     else if(actions.find(Downgrade) != actions.end())
       add_menu_item(menu, _("Downgrade"), Gtk::Stock::GO_DOWN,
                     sigc::bind(callback, Install));
     else if(actions.find(Install) != actions.end())
       add_menu_item(menu, _("Install"), Gtk::Stock::ADD,
-                    sigc::bind(callback, Install));
+                    sigc::bind(callback, Install),
+                    GDK_i, Gdk::CONTROL_MASK);
     else
       add_menu_item(menu, _("Install/Upgrade"), Gtk::Stock::ADD); // Insensitive
 
     add_menu_item(menu, _("Remove"), Gtk::Stock::REMOVE,
                   sigc::bind(callback, Remove),
-                  actions.find(Remove) != actions.end());
+                  actions.find(Remove) != actions.end(),
+                  GDK_minus, Gdk::CONTROL_MASK);
 
     add_menu_item(menu, _("Purge"), Gtk::Stock::CLEAR,
                   sigc::bind(callback, Purge),
-                  actions.find(Purge) != actions.end());
+                  actions.find(Purge) != actions.end(),
+                  GDK_underscore, Gdk::CONTROL_MASK);
 
     add_menu_item(menu, _("Keep"), Gtk::Stock::MEDIA_REWIND,
                   sigc::bind(callback, Keep),
-                  actions.find(Keep) != actions.end());
+                  actions.find(Keep) != actions.end(),
+                  GDK_colon, Gdk::CONTROL_MASK);
 
     add_menu_item(menu, _("Hold"), Gtk::Stock::MEDIA_PAUSE,
                   sigc::bind(callback, Hold),
-                  actions.find(Hold) != actions.end());
+                  actions.find(Hold) != actions.end(),
+                  GDK_h, Gdk::CONTROL_MASK);
 
     if(actions.find(MakeAutomatic) != actions.end())
       add_menu_item(menu, _("Set as automatic"), Gtk::StockID(),
 		    sigc::bind(callback, MakeAutomatic),
-		    true);
+		    true,
+	            GDK_M, Gdk::CONTROL_MASK|Gdk::SHIFT_MASK);
     else if(actions.find(MakeManual) != actions.end())
       add_menu_item(menu, _("Set as manual"), Gtk::StockID(),
 		    sigc::bind(callback, MakeManual),
-		    true);
+		    true,
+                    GDK_m, Gdk::CONTROL_MASK);
     else
       add_menu_item(menu, _("Toggle automatic status"), Gtk::StockID(),
 		    sigc::bind(callback, MakeManual),
