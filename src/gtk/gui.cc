@@ -1080,11 +1080,13 @@ namespace gui
 	if(actions.find(Install) != actions.end())
 	  add_menu_item(menu, _("Install/Upgrade"), Gtk::Stock::ADD,
 			sigc::bind(callback, Install),
-	                  GDK_i, Gdk::CONTROL_MASK);
+			true,
+	                GDK_i, Gdk::CONTROL_MASK);
 	else
 	  add_menu_item(menu, _("Upgrade"), Gtk::Stock::GO_UP,
 			sigc::bind(callback, Install),
-	                  GDK_i, Gdk::CONTROL_MASK);
+                        true,
+	                GDK_i, Gdk::CONTROL_MASK);
       }
     else if(actions.find(Downgrade) != actions.end())
       add_menu_item(menu, _("Downgrade"), Gtk::Stock::GO_DOWN,
@@ -1092,6 +1094,7 @@ namespace gui
     else if(actions.find(Install) != actions.end())
       add_menu_item(menu, _("Install"), Gtk::Stock::ADD,
                     sigc::bind(callback, Install),
+                    true,
                     GDK_i, Gdk::CONTROL_MASK);
     else
       add_menu_item(menu, _("Install/Upgrade"), Gtk::Stock::ADD); // Insensitive
