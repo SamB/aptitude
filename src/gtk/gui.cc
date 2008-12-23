@@ -1159,19 +1159,17 @@ namespace gui
     refGlade->get_widget("main_toolbutton_installremove", pToolButtonInstallRemove);
     pToolButtonInstallRemove->signal_clicked().connect(&do_installremove);
 
-    // Not implemented menu item placeholder
     refGlade->get_widget("menu_do_package_run", pMenuFilePackageRun);
-    pMenuFilePackageRun->signal_activate().connect(&do_notimplemented_message);
+    pMenuFilePackageRun->signal_activate().connect(&do_installremove);
 
-    // Not implemented menu item placeholder
     refGlade->get_widget("menu_do_update_lists", pMenuFileUpdateLists);
-    pMenuFileUpdateLists->signal_activate().connect(&do_notimplemented_message);
+    pMenuFileUpdateLists->signal_activate().connect(&do_update);
 
     refGlade->get_widget("menu_do_mark_upgradable", pMenuFileMarkUpgradable);
     pMenuFileMarkUpgradable->signal_activate().connect(&do_mark_upgradable);
 
     // Not implemented menu item placeholder
-    refGlade->get_widget("menu_do_update_lists", pMenuFileForgetNew);
+    refGlade->get_widget("menu_do_forget_new", pMenuFileForgetNew);
     pMenuFileForgetNew->signal_activate().connect(&do_notimplemented_message);
 
     refGlade->get_widget("menu_do_keep_all", pMenuFileKeepAll);
