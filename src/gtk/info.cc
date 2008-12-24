@@ -676,7 +676,7 @@ namespace gui
   void InfoTab::show_tab(const pkgCache::PkgIterator &pkg,
 			 const pkgCache::VerIterator &ver)
   {
-    InfoTab * infotab = new InfoTab(_("Info:"));
+    InfoTab * infotab = new InfoTab(_("Info"));
     tab_add(infotab);
     infotab->disp_package(pkg, ver);
   }
