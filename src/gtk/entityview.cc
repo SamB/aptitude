@@ -174,8 +174,10 @@ namespace gui
    * \todo Support checking whether the current selections are equal
    * to the configured default, and change the default if not.  (also
    * save settings when we do?)
+   *
+   * \todo This should be lifted into its own .h/.cc files.
    */
-  class EntityView::VisibleColumnsDialog : public Gtk::Dialog
+  class EntityView::EditColumnsDialog : public Gtk::Dialog
   {
     static const Glib::Quark lock_visibility_property;
     static const Glib::Quark description_property;
@@ -359,7 +361,7 @@ namespace gui
     }
 
   public:
-    VisibleColumnsDialog(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+    EditColumnsDialog(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
       : Gtk::Dialog(cobject),
 	header_label(NULL),
 	main_treeview(NULL),
@@ -382,7 +384,7 @@ namespace gui
       {
 	Gtk::TreeViewColumn * const visible_column = manage(new Gtk::TreeViewColumn(_("Visible?")));
 	Gtk::CellRendererToggle * const toggle_renderer = manage(new Gtk::CellRendererToggle);
-	toggle_renderer->signal_toggled().connect(sigc::mem_fun(*this, &VisibleColumnsDialog::toggle_visible));
+	toggle_renderer->signal_toggled().connect(sigc::mem_fun(*this, &EditColumnsDialog::toggle_visible));
 	toggle_renderer->property_activatable() = true;
 	toggle_renderer->property_visible() = true;
 
@@ -395,7 +397,7 @@ namespace gui
       const int description_idx = main_treeview->append_column(_("Description"), model_columns.description) - 1;
       main_treeview->get_column(description_idx)->set_sort_column(model_columns.description);
 
-      signal_response().connect(sigc::mem_fun(*this, &VisibleColumnsDialog::handle_response));
+      signal_response().connect(sigc::mem_fun(*this, &EditColumnsDialog::handle_response));
     }
 
     /** \brief Update the "header" label in this window using the
@@ -442,7 +444,7 @@ namespace gui
       // corresponding entry in the tree.  NB: this relies on the
       // fact that iterators are stable in ListStore!
       col->property_visible().signal_changed()
-	.connect(sigc::bind(sigc::mem_fun(*this, &VisibleColumnsDialog::update_visible),
+	.connect(sigc::bind(sigc::mem_fun(*this, &EditColumnsDialog::update_visible),
 			    col, iter));
     }
 
@@ -460,9 +462,9 @@ namespace gui
     sigc::signal0<void> closed;
   };
 
-  const Glib::Quark EntityView::VisibleColumnsDialog::lock_visibility_property("aptitude-visible-columns-editor-lock-visibility");
-  const Glib::Quark EntityView::VisibleColumnsDialog::description_property("aptitude-visible-columns-editor-column-description-property");
-  const Glib::Quark EntityView::VisibleColumnsDialog::edit_name_property("aptitude-visible-columns-editor-column-edit-name-property");
+  const Glib::Quark EntityView::EditColumnsDialog::lock_visibility_property("aptitude-visible-columns-editor-lock-visibility");
+  const Glib::Quark EntityView::EditColumnsDialog::description_property("aptitude-visible-columns-editor-column-description-property");
+  const Glib::Quark EntityView::EditColumnsDialog::edit_name_property("aptitude-visible-columns-editor-column-edit-name-property");
 
   // \todo Perhaps "Edit Columns..." should be available without going
   // through the menu, so it's useful in tabs that have more than one
@@ -543,8 +545,8 @@ namespace gui
 
       Status->add_attribute(selected_status_icon_renderer->property_stock_id(),
 				   cols.SelectedStatusIcon);
-      VisibleColumnsDialog::set_edit_name(Status, _("Status"));
-      VisibleColumnsDialog::set_description(Status, _("Icons showing the current and future status of this package."));
+      EditColumnsDialog::set_edit_name(Status, _("Status"));
+      EditColumnsDialog::set_description(Status, _("Icons showing the current and future status of this package."));
 
       setup_column_properties(Status, 48);
       // Needs to be GROW_ONLY because otherwise it gets clipped in
@@ -563,13 +565,13 @@ namespace gui
       AutomaticallyInstalled->add_attribute(automatically_installed_renderer->property_visible(),
 					    cols.AutomaticallyInstalledVisible);
       setup_column_properties(AutomaticallyInstalled, 48);
-      VisibleColumnsDialog::set_description(AutomaticallyInstalled, _("Whether the package is automatically installed."));
+      EditColumnsDialog::set_description(AutomaticallyInstalled, _("Whether the package is automatically installed."));
       tree->append_column(*AutomaticallyInstalled);
       set_text_tooltip(tree, AutomaticallyInstalled, cols.AutomaticallyInstalledTooltip);
     }
 
     append_markup_column(Glib::ustring(_("Name")), Name, cols.NameMarkup, 350);
-    VisibleColumnsDialog::set_description(Name, _("The name and description of the package."));
+    EditColumnsDialog::set_description(Name, _("The name and description of the package."));
     set_text_tooltip(tree, Name, cols.Description);
     {
       Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
@@ -585,7 +587,7 @@ namespace gui
         }
     }
     append_markup_column(Glib::ustring(_("Version")), Version, cols.VersionMarkup, 80);
-    VisibleColumnsDialog::set_description(Version, _("The version number of the package."));
+    EditColumnsDialog::set_description(Version, _("The version number of the package."));
     {
       Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
       if(renderer == NULL)

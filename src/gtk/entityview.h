@@ -165,11 +165,11 @@ namespace gui
   {
     private:
       /** \brief Used to let the user control which columns are visible. */
-      class VisibleColumnsDialog;
+      class EditColumnsDialog;
 
       EntityTreeView * tree;
       EntityColumns cols;
-      VisibleColumnsDialog *visible_columns_dialog;
+      EditColumnsDialog *visible_columns_dialog;
 
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> revstore;
       void init(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
