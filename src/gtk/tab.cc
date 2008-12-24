@@ -57,7 +57,6 @@ namespace gui
     widget->show();
     widget = vbox;
 
-    Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_notebook_download_label_hbox");
     label_widget = manage(new Gtk::HBox());
     label_widget->set_spacing(6);
     label_widget->show();
