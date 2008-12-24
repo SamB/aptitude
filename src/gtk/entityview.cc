@@ -179,43 +179,9 @@ namespace gui
    */
   class EntityView::EditColumnsDialog : public Gtk::Dialog
   {
-    static const Glib::Quark lock_visibility_property;
     static const Glib::Quark description_property;
     static const Glib::Quark edit_name_property;
 
-  public:
-    /** \brief Set whether the given column is hidden in the "edit
-     *  columns" dialog box.
-     *
-     *  \param col              The column to modify.
-     *  \param lock_visibility  \b true to prevent the column from appearing in
-     *                          the "edit columns" dialog box, \b false to allow
-     *                          it to appear.
-     */
-    static void set_lock_visibility(Gtk::TreeViewColumn *col,
-				    bool lock_visibility)
-    {
-      col->set_data(lock_visibility_property,
-		    (gpointer)(lock_visibility ? 1 : 0), NULL);
-    }
-
-    /** \brief Get whether the given column is hidden in the "edit
-     *  columns" dialog box.
-     *
-     *  \param col  The column to test.
-     *
-     *  \return \b true if the column will be hidden in the "edit
-     *  columns" dialog box, \b false otherwise.  The default is \b
-     *  false.
-     *
-     *  \sa set_lock_visibility()
-     */
-    static bool get_lock_visibility(Gtk::TreeViewColumn *col)
-    {
-      return col->get_data(lock_visibility_property) != 0;
-    }
-
-  private:
     static void ustring_destroy_notify(gpointer data)
     {
       Glib::ustring *str =
@@ -415,14 +381,11 @@ namespace gui
     /** \brief Add a tree-view column to the list of columns being
      * edited.
      *
-     *  If the column has locked visibility or an empty name, this
-     *  routine does nothing.
+     *  If the column has an empty edit name, this routine does
+     *  nothing.
      */
     void add_column_to_list(Gtk::TreeViewColumn * col) const
     {
-      if(get_lock_visibility(col))
-	return;
-
       Glib::ustring name = get_edit_name(col);
       if(name.empty())
 	name = col->get_title();
@@ -462,7 +425,6 @@ namespace gui
     sigc::signal0<void> closed;
   };
 
-  const Glib::Quark EntityView::EditColumnsDialog::lock_visibility_property("aptitude-visible-columns-editor-lock-visibility");
   const Glib::Quark EntityView::EditColumnsDialog::description_property("aptitude-visible-columns-editor-column-description-property");
   const Glib::Quark EntityView::EditColumnsDialog::edit_name_property("aptitude-visible-columns-editor-column-edit-name-property");
 
