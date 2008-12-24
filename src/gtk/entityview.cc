@@ -544,6 +544,7 @@ namespace gui
       Status->add_attribute(selected_status_icon_renderer->property_stock_id(),
 				   cols.SelectedStatusIcon);
       VisibleColumnsDialog::set_edit_name(Status, _("Status"));
+      VisibleColumnsDialog::set_description(Status, _("Icons showing the current and future status of this package."));
 
       setup_column_properties(Status, 48);
       // Needs to be GROW_ONLY because otherwise it gets clipped in
@@ -562,11 +563,13 @@ namespace gui
       AutomaticallyInstalled->add_attribute(automatically_installed_renderer->property_visible(),
 					    cols.AutomaticallyInstalledVisible);
       setup_column_properties(AutomaticallyInstalled, 48);
+      VisibleColumnsDialog::set_description(AutomaticallyInstalled, _("Whether the package is automatically installed."));
       tree->append_column(*AutomaticallyInstalled);
       set_text_tooltip(tree, AutomaticallyInstalled, cols.AutomaticallyInstalledTooltip);
     }
 
     append_markup_column(Glib::ustring(_("Name")), Name, cols.NameMarkup, 350);
+    VisibleColumnsDialog::set_description(Name, _("The name and description of the package."));
     set_text_tooltip(tree, Name, cols.Description);
     {
       Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
@@ -582,6 +585,7 @@ namespace gui
         }
     }
     append_markup_column(Glib::ustring(_("Version")), Version, cols.VersionMarkup, 80);
+    VisibleColumnsDialog::set_description(Version, _("The version number of the package."));
     {
       Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
       if(renderer == NULL)
