@@ -1386,6 +1386,19 @@ namespace gui
       }
   }
 
+  void init_style(void)
+  {
+    Gtk::RC::parse_string (
+"style \"tiny-button-style\""
+"{"
+"  GtkWidget::focus-padding = 0"
+"  xthickness = 0"
+"  ythickness = 0"
+"}"
+"widget \"*.main_notebook_packages_close\" style \"tiny-button-style\""
+"widget \"*.main_notebook_download_close\" style \"tiny-button-style\"");
+  }
+
   namespace
   {
     void do_apt_init()
@@ -1427,6 +1440,9 @@ namespace gui
 
 	return false;
       }
+
+    // Set up the style for GTK+ widgets.
+    init_style();
 
     // Set up the resolver-triggering signals.
     init_resolver();
