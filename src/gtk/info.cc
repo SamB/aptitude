@@ -590,7 +590,7 @@ namespace gui
     version_name = ver.end() ? "" : ver.VerStr();
 
     Glib::RefPtr<Gtk::TextBuffer> textBuffer = Gtk::TextBuffer::create();
-    set_label("Info: " + Glib::ustring(pkg.Name()));
+    set_label("Info on " + Glib::ustring(pkg.Name()));
 
     PackageInformation info(pkg, ver);
 

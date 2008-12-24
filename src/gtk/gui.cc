@@ -697,12 +697,12 @@ namespace gui
 
   void AptitudeWindow::do_resolver()
   {
-    tab_add(new ResolverTab(_("Resolver:")));
+    tab_add(new ResolverTab(_("Resolver")));
   }
 
   void AptitudeWindow::do_preview()
   {
-    tab_add(new PreviewTab(_("Preview:")));
+    tab_add(new PreviewTab(_("Preview")));
   }
 
   void AptitudeWindow::do_show_broken()
@@ -998,7 +998,7 @@ namespace gui
 
   void do_packages()
   {
-    tab_add(new PackagesTab(_("Packages:")));
+    tab_add(new PackagesTab(_("Packages")));
   }
 
   void do_installremove()
@@ -1261,7 +1261,7 @@ namespace gui
 
   void AptitudeWindow::do_dashboard()
   {
-    tab_add(new DashboardTab(_("Dashboard:")));
+    tab_add(new DashboardTab(_("Dashboard")));
   }
 
   void AptitudeWindow::update_package_menu()
@@ -1438,7 +1438,7 @@ namespace gui
 
     refXml->get_widget_derived("main_window", pMainWindow);
 
-    pMainWindow->tab_add(new DashboardTab(_("Dashboard:")));
+    pMainWindow->tab_add(new DashboardTab(_("Dashboard")));
 
 
     //This is the loop
