@@ -1140,6 +1140,7 @@ namespace gui
     refGlade->get_widget_derived("main_notebook", pNotebook);
     pNotebook->package_menu_actions_changed.connect(sigc::mem_fun(*this, &AptitudeWindow::update_package_menu));
     pNotebook->undo_available_changed.connect(sigc::mem_fun(*this, &AptitudeWindow::update_undo_sensitivity));
+    pNotebook->edit_columns_available_changed.connect(sigc::mem_fun(*this, &AptitudeWindow::update_edit_columns_sensitivity));
 
     refGlade->get_widget("main_toolbutton_dashboard", pToolButtonDashboard);
     pToolButtonDashboard->signal_clicked().connect(sigc::mem_fun(*this, &AptitudeWindow::do_dashboard));
@@ -1216,6 +1217,9 @@ namespace gui
     refGlade->get_widget("menu_undo_undo", menu_undo_undo);
     menu_undo_undo->signal_activate().connect(sigc::mem_fun(this, &AptitudeWindow::do_undo));
 
+    refGlade->get_widget("menu_view_edit_columns", menu_view_edit_columns);
+    menu_view_edit_columns->signal_activate().connect(sigc::mem_fun(this, &AptitudeWindow::do_edit_columns));
+
     refGlade->get_widget_derived("main_notify_rows", pNotifyView);
 
     pNotifyView->add_notification(Gtk::manage(new BrokenPackagesNotification(this)));
@@ -1285,6 +1289,19 @@ namespace gui
     Tab *tab = pNotebook->get_current_tab();
     if(tab != NULL)
       tab->dispatch_undo();
+  }
+
+  void AptitudeWindow::update_edit_columns_sensitivity()
+  {
+    Tab *tab = pNotebook->get_current_tab();
+    menu_view_edit_columns->property_sensitive() = tab != NULL && tab->get_edit_columns_available();
+  }
+
+  void AptitudeWindow::do_edit_columns()
+  {
+    Tab *tab = pNotebook->get_current_tab();
+    if(tab != NULL)
+      tab->dispatch_edit_columns();
   }
 
   void AptitudeWindow::update_resolver_sensitivity_callback()

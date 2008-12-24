@@ -50,6 +50,16 @@ namespace gui
     pMainWindow->do_preview();
   }
 
+  bool DashboardTab::get_edit_columns_available()
+  {
+    return true;
+  }
+
+  void DashboardTab::dispatch_edit_columns()
+  {
+    upgrades_pkg_view->show_edit_columns_dialog(_("Dashboard"));
+  }
+
   namespace
   {
     struct sort_versions_by_package_name

@@ -164,8 +164,12 @@ namespace gui
   class EntityView : public aptitude::util::refcounted_base
   {
     private:
+      /** \brief Used to let the user control which columns are visible. */
+      class VisibleColumnsDialog;
+
       EntityTreeView * tree;
       EntityColumns cols;
+      VisibleColumnsDialog *visible_columns_dialog;
 
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> revstore;
       void init(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
@@ -209,6 +213,7 @@ namespace gui
 			       Gtk::TreeViewColumn *prev_column,
 			       Gtk::TreeViewColumn *next_column);
       void row_activated_handler(const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*);
+
     public:
       /** \brief Construct a new packages view.
        *
@@ -227,6 +232,26 @@ namespace gui
       // I'd like to wait on doing this.  Also, handling reloads
       // properly could involve tab-level coordination anyway.  --
       // dburrows 2008-08-05
+
+      /** \brief Display a dialog that allows the user to modify which
+       *  columns are visible in this view.
+       *
+       *  \param parent_title  The title of the parent tab,
+       *                       used to inform the user which
+       *                       tab is being modified.  Invoke
+       *                       visible_columns_dialog_parent_title_changed()
+       *                       when this changes.
+       */
+      void show_edit_columns_dialog(const Glib::ustring &parent_title);
+
+      /** \brief Update the column editor with the given parent
+       *         tab title.
+       *
+       *  \param parent_title  The title of the parent tab,
+       *                       used to inform the user which
+       *                       tab is being modified.
+       */
+      void edit_columns_dialog_parent_title_changed(const Glib::ustring &parent_title);
 
       void refresh_view(const std::set<pkgCache::PkgIterator> *changed_packages);
       EntityTreeView * get_treeview() const { return tree; };

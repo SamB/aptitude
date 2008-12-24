@@ -58,6 +58,9 @@ namespace gui
       void dispatch_package_menu_action(PackagesAction action);
       bool get_undo_available();
       void dispatch_undo();
+
+      bool get_edit_columns_available();
+      void dispatch_edit_columns();
   };
 
   /** \brief Set up a package view to be searchable.

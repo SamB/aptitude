@@ -132,6 +132,15 @@ namespace gui
   {
   }
 
+  bool Tab::get_edit_columns_available()
+  {
+    return false;
+  }
+
+  void Tab::dispatch_edit_columns()
+  {
+  }
+
   TabsManager::TabsManager(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) :
     Gtk::Notebook(cobject)
   {
@@ -201,6 +210,7 @@ namespace gui
   {
     package_menu_actions_changed_connection.disconnect();
     undo_available_changed_connection.disconnect();
+    edit_columns_available_changed_connection.disconnect();
 
     Tab *current = get_current_tab();
     if(current != NULL)
@@ -215,6 +225,8 @@ namespace gui
 	  tab->package_menu_actions_changed.connect(package_menu_actions_changed.make_slot());
 	undo_available_changed_connection =
 	  tab->undo_available_changed.connect(undo_available_changed.make_slot());
+	edit_columns_available_changed_connection =
+	  tab->edit_columns_available_changed.connect(edit_columns_available_changed.make_slot());
       }
 
     if(tab != NULL)
@@ -223,5 +235,6 @@ namespace gui
 
     package_menu_actions_changed();
     undo_available_changed();
+    edit_columns_available_changed();
   }
 }

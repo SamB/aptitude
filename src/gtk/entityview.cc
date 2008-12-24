@@ -29,8 +29,11 @@
 #include <gtk/gui.h>
 #include <gtk/info.h>
 
+#include <apt-pkg/error.h>
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
+
+#include <cwidget/generic/util/ssprintf.h>
 
 #include "treeview_cell_tooltips.h"
 
@@ -160,6 +163,349 @@ namespace gui
     signal_selection_change();
   }
 
+  /** \brief A popup dialog that allows the user to change which of
+   *  the columns in a TreeView are currently visible.
+   *
+   * \todo Maybe handle reordering here too, like Nautilus does.
+   *
+   * \todo Support applying the "visible columns" settings to all
+   * active views.
+   *
+   * \todo Support checking whether the current selections are equal
+   * to the configured default, and change the default if not.  (also
+   * save settings when we do?)
+   */
+  class EntityView::VisibleColumnsDialog : public Gtk::Dialog
+  {
+    static const Glib::Quark lock_visibility_property;
+    static const Glib::Quark description_property;
+    static const Glib::Quark edit_name_property;
+
+  public:
+    /** \brief Set whether the given column is hidden in the "edit
+     *  columns" dialog box.
+     *
+     *  \param col              The column to modify.
+     *  \param lock_visibility  \b true to prevent the column from appearing in
+     *                          the "edit columns" dialog box, \b false to allow
+     *                          it to appear.
+     */
+    static void set_lock_visibility(Gtk::TreeViewColumn *col,
+				    bool lock_visibility)
+    {
+      col->set_data(lock_visibility_property,
+		    (gpointer)(lock_visibility ? 1 : 0), NULL);
+    }
+
+    /** \brief Get whether the given column is hidden in the "edit
+     *  columns" dialog box.
+     *
+     *  \param col  The column to test.
+     *
+     *  \return \b true if the column will be hidden in the "edit
+     *  columns" dialog box, \b false otherwise.  The default is \b
+     *  false.
+     *
+     *  \sa set_lock_visibility()
+     */
+    static bool get_lock_visibility(Gtk::TreeViewColumn *col)
+    {
+      return col->get_data(lock_visibility_property) != 0;
+    }
+
+  private:
+    static void ustring_destroy_notify(gpointer data)
+    {
+      Glib::ustring *str =
+	static_cast<Glib::ustring *>(data);
+
+      delete str;
+    }
+
+  public:
+    /** \brief Set the description of a column.
+     *
+     *  The description will be displayed in the "edit columns" dialog
+     *  box.
+     *
+     *  \param col            The column to modify.
+     *  \param description    The new description of the column.
+     */
+    static void set_description(Gtk::TreeViewColumn *col,
+				const Glib::ustring &description)
+    {
+      col->set_data(description_property, new Glib::ustring(description),
+		    &ustring_destroy_notify);
+    }
+
+    /** \brief Retrieve the description of a column that was set by
+     *  set_description().
+     *
+     *  \param col  The column whose description should be retrieved.
+     *
+     *  \return The description of col, if one was set using
+     *  set_description(), and the empty string otherwise.
+     */
+    static Glib::ustring get_description(Gtk::TreeViewColumn *col)
+    {
+      gpointer rval = col->get_data(description_property);
+
+      if(rval == NULL)
+	return Glib::ustring();
+      else
+	return *static_cast<Glib::ustring *>(rval);
+    }
+
+
+    /** \brief Set the edit-name of a column.
+     *
+     *  The name will be displayed in the "edit columns" dialog box,
+     *  overriding the name of the column that is displayed in its
+     *  header.
+     *
+     *  \param col       The column to modify.
+     *  \param edit_name The new edit-name of the column.
+     */
+    static void set_edit_name(Gtk::TreeViewColumn *col,
+			      const Glib::ustring &edit_name)
+    {
+      col->set_data(edit_name_property, new Glib::ustring(edit_name),
+		    &ustring_destroy_notify);
+    }
+
+    /** \brief Retrieve the edit-name of a column that was set by
+     * set_edit_name().
+     *
+     *  \param col  The column whose edit-name should be retrieved.
+     *
+     *  \return The edit-name of col, if one was set using
+     *  set_edit_name(), and the empty string otherwise.
+     */
+    static Glib::ustring get_edit_name(Gtk::TreeViewColumn *col)
+    {
+      gpointer rval = col->get_data(edit_name_property);
+
+      if(rval == NULL)
+	return Glib::ustring();
+      else
+	return *static_cast<Glib::ustring *>(rval);
+    }
+
+
+
+    class ModelColumns : public Gtk::TreeModel::ColumnRecord
+    {
+    public:
+      Gtk::TreeModelColumn<Glib::ustring> name;
+      Gtk::TreeModelColumn<Glib::ustring> description;
+      Gtk::TreeModelColumn<bool> visible;
+      Gtk::TreeModelColumn<Gtk::TreeViewColumn *> column;
+
+      ModelColumns()
+      {
+	add(name);
+	add(description);
+	add(visible);
+	add(column);
+      }
+    };
+
+    Gtk::Label *header_label;
+    Gtk::TreeView *main_treeview;
+    ModelColumns model_columns;
+    Glib::RefPtr<Gtk::ListStore> main_treeview_model;
+
+    // Set the column's visibility from the tree model entry's visibility.
+    void toggle_visible(const Glib::ustring &path) const
+    {
+      Gtk::TreeModel::iterator iter(main_treeview->get_model()->get_iter(path));
+      if(iter)
+	{
+	  const Gtk::TreeRow &r(*iter);
+	  // The check box hasn't been changed yet, so its current
+	  // state is the old value.  When we update the actual
+	  // column's visibility, a callback will modify the row's
+	  // "visible" flag.
+	  const bool old_visible = r[model_columns.visible];
+	  const bool new_visible = !old_visible;
+	  Gtk::TreeViewColumn * const col = r[model_columns.column];
+
+	  col->property_visible() = new_visible;
+	}
+    }
+
+    // Set the tree model entry from the column's visibility.
+    void update_visible(const Gtk::TreeViewColumn *col, const Gtk::TreeModel::iterator iter) const
+    {
+      if(iter)
+	{
+	  Gtk::TreeRow r(*iter);
+	  r[model_columns.visible] = col->get_visible();
+	}
+    }
+
+    void handle_response(int response_id)
+    {
+      switch(response_id)
+	{
+	case Gtk::RESPONSE_CLOSE:
+	  closed();
+	  break;
+
+	default:
+	  // Should we complain that something weird happened?
+	  break;
+	}
+    }
+
+  public:
+    VisibleColumnsDialog(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+      : Gtk::Dialog(cobject),
+	header_label(NULL),
+	main_treeview(NULL),
+	model_columns(),
+	main_treeview_model(Gtk::ListStore::create(model_columns))
+    {
+      refGlade->get_widget("edit_package_columns_label", header_label);
+      refGlade->get_widget("edit_package_columns_treeview", main_treeview);
+
+      if(header_label == NULL ||
+	 main_treeview == NULL)
+	return;
+
+      main_treeview_model->set_sort_column(model_columns.name, Gtk::SORT_ASCENDING);
+      main_treeview->set_model(main_treeview_model);
+
+      const int name_idx = main_treeview->append_column(_("Name"), model_columns.name) - 1;
+      main_treeview->get_column(name_idx)->set_sort_column(model_columns.name);
+
+      {
+	Gtk::TreeViewColumn * const visible_column = manage(new Gtk::TreeViewColumn(_("Visible?")));
+	Gtk::CellRendererToggle * const toggle_renderer = manage(new Gtk::CellRendererToggle);
+	toggle_renderer->signal_toggled().connect(sigc::mem_fun(*this, &VisibleColumnsDialog::toggle_visible));
+	toggle_renderer->property_activatable() = true;
+	toggle_renderer->property_visible() = true;
+
+	visible_column->pack_end(*toggle_renderer);
+	visible_column->add_attribute(toggle_renderer->property_active(), model_columns.visible);
+	visible_column->set_sort_column(model_columns.visible);
+	main_treeview->append_column(*visible_column);
+      }
+
+      const int description_idx = main_treeview->append_column(_("Description"), model_columns.description) - 1;
+      main_treeview->get_column(description_idx)->set_sort_column(model_columns.description);
+
+      signal_response().connect(sigc::mem_fun(*this, &VisibleColumnsDialog::handle_response));
+    }
+
+    /** \brief Update the "header" label in this window using the
+     *  given string as the name of the tab being modified.
+     *
+     *  \param s   A brief description of the parent tab, such as
+     *             "Packages: wesnoth" or "Dashboard".
+     */
+    void set_parent_title(const std::string &s)
+    {
+      header_label->set_text(cwidget::util::ssprintf(_("Columns of \"%s\":"), s.c_str()));
+      set_title(cwidget::util::ssprintf(_("Editing the columns of \"%s\""), s.c_str()));
+    }
+
+    /** \brief Add a tree-view column to the list of columns being
+     * edited.
+     *
+     *  If the column has locked visibility or an empty name, this
+     *  routine does nothing.
+     */
+    void add_column_to_list(Gtk::TreeViewColumn * col) const
+    {
+      if(get_lock_visibility(col))
+	return;
+
+      Glib::ustring name = get_edit_name(col);
+      if(name.empty())
+	name = col->get_title();
+
+      if(name.empty())
+	return;
+
+      Gtk::TreeModel::iterator iter(main_treeview_model->append());
+      Gtk::TreeRow r(*iter);
+
+      Glib::ustring path(main_treeview_model->get_path(iter).to_string());
+
+      r[model_columns.name] = name;
+      r[model_columns.description] = get_description(col);
+      r[model_columns.visible] = col->property_visible();
+      r[model_columns.column] = col;
+
+      // Whenever the column is hidden or shown, toggle the
+      // corresponding entry in the tree.  NB: this relies on the
+      // fact that iterators are stable in ListStore!
+      col->property_visible().signal_changed()
+	.connect(sigc::bind(sigc::mem_fun(*this, &VisibleColumnsDialog::update_visible),
+			    col, iter));
+    }
+
+    /** \brief Add all the columns of the given tree-view to the list of columns being edited. */
+    void add_columns_to_list(Gtk::TreeView * treeview) const
+    {
+      Glib::ListHandle<Gtk::TreeViewColumn *> columns(treeview->get_columns());
+      for(Glib::ListHandle<Gtk::TreeViewColumn *>::const_iterator it = columns.begin();
+	  it != columns.end(); ++it)
+	{
+	  add_column_to_list(*it);
+	}
+    }
+
+    sigc::signal0<void> closed;
+  };
+
+  const Glib::Quark EntityView::VisibleColumnsDialog::lock_visibility_property("aptitude-visible-columns-editor-lock-visibility");
+  const Glib::Quark EntityView::VisibleColumnsDialog::description_property("aptitude-visible-columns-editor-column-description-property");
+  const Glib::Quark EntityView::VisibleColumnsDialog::edit_name_property("aptitude-visible-columns-editor-column-edit-name-property");
+
+  // \todo Perhaps "Edit Columns..." should be available without going
+  // through the menu, so it's useful in tabs that have more than one
+  // package list.  For instance, we could add an extra,
+  // always-visible column with a title of "..." that pops up the
+  // dialog when its header is clicked.
+  void EntityView::show_edit_columns_dialog(const Glib::ustring &parent_title)
+  {
+    if(visible_columns_dialog == NULL)
+      {
+	Glib::RefPtr<Gnome::Glade::Xml> glade_xml =
+	  Gnome::Glade::Xml::create(glade_main_file, "edit_package_columns_dialog");
+	glade_xml->get_widget_derived("edit_package_columns_dialog", visible_columns_dialog);
+	if(visible_columns_dialog)
+	  {
+	    Gtk::Container *toplevel_container = tree->get_toplevel();
+	    Gtk::Window *toplevel_window = dynamic_cast<Gtk::Window *>(toplevel_container);
+	    if(toplevel_window == NULL)
+	      // Should never happen, but make sure we have
+	      // *something* set as the transient parent.
+	      toplevel_window = pMainWindow;
+	    visible_columns_dialog->set_transient_for(*toplevel_window);
+
+	    visible_columns_dialog->closed.connect(sigc::mem_fun(*visible_columns_dialog,
+								 &Gtk::Widget::hide));
+	    visible_columns_dialog->add_columns_to_list(tree);
+	    visible_columns_dialog->set_parent_title(parent_title);
+	    visible_columns_dialog->set_accept_focus(true);
+	  }
+      }
+
+    if(visible_columns_dialog == NULL)
+      _error->Error("Unable to create the visible columns dialog.");
+    else
+      visible_columns_dialog->show();
+  }
+
+  void EntityView::edit_columns_dialog_parent_title_changed(const Glib::ustring &parent_title)
+  {
+    if(visible_columns_dialog != NULL)
+      visible_columns_dialog->set_parent_title(parent_title);
+  }
+
   void EntityView::init(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
                         Glib::ustring gladename)
   {
@@ -197,6 +543,7 @@ namespace gui
 
       Status->add_attribute(selected_status_icon_renderer->property_stock_id(),
 				   cols.SelectedStatusIcon);
+      VisibleColumnsDialog::set_edit_name(Status, _("Status"));
 
       setup_column_properties(Status, 48);
       // Needs to be GROW_ONLY because otherwise it gets clipped in
@@ -385,6 +732,7 @@ namespace gui
 
   EntityView::EntityView(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
 			 Glib::ustring gladename)
+    : visible_columns_dialog(NULL)
   {
     init(refGlade, gladename);
   }
@@ -438,6 +786,8 @@ namespace gui
 
   EntityView::~EntityView()
   {
+    delete visible_columns_dialog;
+    visible_columns_dialog = NULL;
   }
 
   bool EntityView::column_drop_handler(Gtk::TreeView *self, Gtk::TreeViewColumn *column,

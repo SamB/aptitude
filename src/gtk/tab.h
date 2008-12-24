@@ -143,6 +143,18 @@ namespace gui
        */
       virtual void dispatch_undo();
 
+      /** \brief Returns \b true if the "Edit Columns..." action is available on this tab.
+       *
+       *  The default implementation always returns \b false.
+       */
+      virtual bool get_edit_columns_available();
+
+      /** \brief Invoke the "Edit Columns..." action on this tab.
+       *
+       *  The default implementation does nothing.
+       */
+      virtual void dispatch_edit_columns();
+
       /** \brief A signal invoked when the tab becomes or ceases to be the active tab. */
       sigc::signal0<void> active_changed;
 
@@ -162,6 +174,9 @@ namespace gui
 
       /** \brief A signal invoked when whether undo is available changes. */
       sigc::signal0<void> undo_available_changed;
+
+      /** \brief A signal invoked when whether "Edit Columns..." is available changes. */
+      sigc::signal0<void> edit_columns_available_changed;
   };
 
   /**
@@ -183,6 +198,13 @@ namespace gui
        *  This is disconnected when we switch away from the tab.
        */
       sigc::connection undo_available_changed_connection;
+
+      /** \brief The connection, if any, that listens to the currently
+       *  active tab's Tab::edit_columns_available_changed signal.
+       *
+       *  This is disconnected when we switch away from the tab.
+       */
+      sigc::connection edit_columns_available_changed_connection;
 
       /** \brief Use the currently displayed tab to update
        *  the package menu.
@@ -249,6 +271,11 @@ namespace gui
        *  changed.
        */
       sigc::signal0<void> undo_available_changed;
+
+      /** \brief Emitted when whether "Edit Columns..." is available
+       *  might have changed.
+       */
+      sigc::signal0<void> edit_columns_available_changed;
   };
 
 }

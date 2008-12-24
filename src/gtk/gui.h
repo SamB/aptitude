@@ -134,6 +134,7 @@ namespace gui
 
       Gtk::Menu * pMenuPackage;
       Gtk::MenuItem *menu_undo_undo;
+      Gtk::MenuItem *menu_view_edit_columns;
 
       Gtk::ProgressBar * pProgressBar;
       Gtk::Statusbar * pStatusBar;
@@ -165,6 +166,9 @@ namespace gui
       /** \brief Update whether the Undo menu item is sensitive. */
       void update_undo_sensitivity();
 
+      /** \brief Update whether the "Edit Columns..." menu item is sensitive. */
+      void update_edit_columns_sensitivity();
+
     public:
       /**
        * Glade::Xml derived widget constructor.
@@ -194,6 +198,12 @@ namespace gui
      *  been triggered from the Edit menu.
      */
     void do_undo();
+
+    /** \brief Edit the visible columns of the main package list in
+     *  the current tab, as if "Edit Columns..." had been triggered
+     *  from the View menu.
+     */
+    void do_edit_columns();
 
     /** \brief Open a resolver tab, as if it had been triggered from the menu.
      */

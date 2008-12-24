@@ -62,6 +62,9 @@ namespace gui
 
   public:
     DashboardTab(Glib::ustring label);
+
+    bool get_edit_columns_available();
+    void dispatch_edit_columns();
   };
 }
 

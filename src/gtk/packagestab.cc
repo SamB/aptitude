@@ -285,6 +285,16 @@ namespace gui
     apt_undos->undo();
   }
 
+  bool PackagesTab::get_edit_columns_available()
+  {
+    return true;
+  }
+
+  void PackagesTab::dispatch_edit_columns()
+  {
+    pPkgView->show_edit_columns_dialog(get_label());
+  }
+
   // TODO: Should be moved into PackagesView for use with PackagesView::signal_on_package_selection.
   void PackagesTab::activated_package_handler()
   {
@@ -307,7 +317,9 @@ namespace gui
 
   void PackagesTab::after_repopulate_model()
   {
-    set_label(_("Packages: ") + pLimitEntry->get_text());
+    const std::string title = _("Packages: ") + pLimitEntry->get_text();
+    set_label(title);
+    pPkgView->edit_columns_dialog_parent_title_changed(title);
   }
 
   class InfoTabButtons : public Gtk::VButtonBox
