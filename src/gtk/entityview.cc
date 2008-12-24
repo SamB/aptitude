@@ -459,7 +459,7 @@ namespace gui
       }
 
     if(visible_columns_dialog == NULL)
-      _error->Error("Unable to create the visible columns dialog.");
+      _error->Error("Unable to create the edit columns dialog.");
     else
       visible_columns_dialog->show();
   }
