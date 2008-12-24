@@ -83,6 +83,17 @@ namespace gui
     results_view->get_version_column()->set_visible(false);
     selection_changed();
 
+    Glib::RefPtr<Gtk::SizeGroup> size_group = Gtk::SizeGroup::create(Gtk::SIZE_GROUP_HORIZONTAL);
+    Gtk::Label *path_label;
+    get_xml()->get_widget("dependency_path_start_limit_label", path_label);
+    size_group->add_widget (*path_label);
+    get_xml()->get_widget("dependency_path_start_show_only_label", path_label);
+    size_group->add_widget (*path_label);
+    get_xml()->get_widget("dependency_path_end_limit_label", path_label);
+    size_group->add_widget (*path_label);
+    get_xml()->get_widget("dependency_path_end_show_only_label", path_label);
+    size_group->add_widget (*path_label);
+
     // \todo do something sensible on "closed".
     cache_reloaded.connect(sigc::mem_fun(this, &DependencyChainsTab::selection_changed));
   }

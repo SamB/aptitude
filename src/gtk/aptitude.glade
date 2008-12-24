@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Dec 24 14:32:06 2008 -->
+<!--Generated with glade3 3.4.5 on Wed Dec 24 15:19:39 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Aptitude Package Manager</property>
@@ -428,7 +428,7 @@
                   <widget class="GtkHBox" id="hbox7">
                     <property name="height_request">32</property>
                     <property name="visible">True</property>
-                    <property name="spacing">5</property>
+                    <property name="spacing">6</property>
                     <child>
                       <widget class="GtkLabel" id="label1">
                         <property name="visible">True</property>
@@ -655,6 +655,7 @@
             <child>
               <widget class="GtkHBox" id="main_notebook_download_label_hbox">
                 <property name="visible">True</property>
+                <property name="spacing">6</property>
                 <child>
                   <widget class="GtkLabel" id="main_notebook_download_label">
                     <property name="visible">True</property>
@@ -700,9 +701,9 @@
                       <widget class="GtkHBox" id="hbox2">
                         <property name="height_request">32</property>
                         <property name="visible">True</property>
-                        <property name="spacing">5</property>
+                        <property name="spacing">6</property>
                         <child>
-                          <widget class="GtkLabel" id="label2">
+                          <widget class="GtkLabel" id="main_notebook_packages_limit_label">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes">Search:</property>
                           </widget>
@@ -741,9 +742,11 @@
                     <child>
                       <widget class="GtkHBox" id="hbox8">
                         <property name="visible">True</property>
+                        <property name="spacing">6</property>
                         <child>
-                          <widget class="GtkLabel" id="label19">
+                          <widget class="GtkLabel" id="main_notebook_packages_show_only_label">
                             <property name="visible">True</property>
+                            <property name="xalign">0</property>
                             <property name="label" translatable="yes">Show </property>
                           </widget>
                           <packing>
@@ -820,6 +823,7 @@
             <child>
               <widget class="GtkHBox" id="main_notebook_packages_label_hbox">
                 <property name="visible">True</property>
+                <property name="spacing">6</property>
                 <child>
                   <widget class="GtkLabel" id="main_notebook_label_packages">
                     <property name="visible">True</property>
@@ -1289,9 +1293,9 @@
                                   <widget class="GtkHBox" id="hbox4">
                                     <property name="height_request">32</property>
                                     <property name="visible">True</property>
-                                    <property name="spacing">5</property>
+                                    <property name="spacing">6</property>
                                     <child>
-                                      <widget class="GtkLabel" id="label13">
+                                      <widget class="GtkLabel" id="dependency_path_start_limit_label">
                                         <property name="visible">True</property>
                                         <property name="label" translatable="yes">Search:</property>
                                       </widget>
@@ -1330,9 +1334,11 @@
                                 <child>
                                   <widget class="GtkHBox" id="hbox9">
                                     <property name="visible">True</property>
+                                    <property name="spacing">6</property>
                                     <child>
-                                      <widget class="GtkLabel" id="label20">
+                                      <widget class="GtkLabel" id="dependency_path_start_show_only_label">
                                         <property name="visible">True</property>
+                                        <property name="xalign">0</property>
                                         <property name="label" translatable="yes">Show </property>
                                       </widget>
                                       <packing>
@@ -1411,9 +1417,9 @@
                                   <widget class="GtkHBox" id="hbox5">
                                     <property name="height_request">32</property>
                                     <property name="visible">True</property>
-                                    <property name="spacing">5</property>
+                                    <property name="spacing">6</property>
                                     <child>
-                                      <widget class="GtkLabel" id="label12">
+                                      <widget class="GtkLabel" id="dependency_path_end_limit_label">
                                         <property name="visible">True</property>
                                         <property name="label" translatable="yes">Search:</property>
                                       </widget>
@@ -1452,9 +1458,11 @@
                                 <child>
                                   <widget class="GtkHBox" id="hbox10">
                                     <property name="visible">True</property>
+                                    <property name="spacing">6</property>
                                     <child>
-                                      <widget class="GtkLabel" id="label21">
+                                      <widget class="GtkLabel" id="dependency_path_end_show_only_label">
                                         <property name="visible">True</property>
+                                        <property name="xalign">0</property>
                                         <property name="label" translatable="yes">Show </property>
                                       </widget>
                                       <packing>

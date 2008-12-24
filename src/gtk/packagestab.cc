@@ -272,6 +272,13 @@ namespace gui
     pPkgView->package_menu_actions_changed.connect(package_menu_actions_changed.make_slot());
     apt_undos->changed.connect(undo_available_changed.make_slot());
 
+    Glib::RefPtr<Gtk::SizeGroup> size_group = Gtk::SizeGroup::create(Gtk::SIZE_GROUP_HORIZONTAL);
+    Gtk::Label *path_label;
+    get_xml()->get_widget("dependency_path_start_limit_label", path_label);
+    size_group->add_widget (*path_label);
+    get_xml()->get_widget("dependency_path_start_show_only_label", path_label);
+    size_group->add_widget (*path_label);
+
     get_widget()->show();
   }
 
