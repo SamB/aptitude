@@ -57,11 +57,29 @@ namespace gui
     widget->show();
     widget = vbox;
 
-    // TODO: Should do something about this. Create a dedicated toplevel for these widgets.
     Glib::RefPtr<Gnome::Glade::Xml> refGlade = Gnome::Glade::Xml::create(glade_main_file, "main_notebook_download_label_hbox");
-    refGlade->get_widget("main_notebook_download_label_hbox", label_widget);
-    refGlade->get_widget("main_notebook_download_label", label_label);
-    refGlade->get_widget("main_notebook_download_close", label_button);
+    label_widget = manage(new Gtk::HBox());
+    label_widget->set_spacing(6);
+    label_widget->show();
+
+    label_label = manage(new Gtk::Label(_("Download")));
+    label_label->show();
+    label_widget->pack_start(*label_label);
+
+    label_button = manage(new Gtk::Button());
+    {
+      Gtk::Image *label_button_image = manage(new Gtk::Image(Gtk::Stock::CLOSE,
+							     Gtk::ICON_SIZE_MENU));
+      label_button_image->show();
+      label_button->add(*label_button_image);
+    }
+
+    label_button->show();
+    label_button->property_can_focus() = true;
+    label_button->property_receives_default() = true;
+    label_button->set_relief(Gtk::RELIEF_NONE);
+    label_widget->pack_start(*label_button);
+
     // Maybe we should create a close() method on the Tab so it can clean itself up or make a destructor.
     label_button->signal_clicked().connect(close_clicked.make_slot());
 

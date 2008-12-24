@@ -73,7 +73,7 @@ namespace gui
       Glib::RefPtr<Gnome::Glade::Xml> xml;
       Gtk::Label * label_label;
       Gtk::Button * label_button;
-      Gtk::Widget * label_widget;
+      Gtk::HBox * label_widget;
       Gtk::Widget * widget;
       NotifyView * notifyview;
       bool autodestroy;
