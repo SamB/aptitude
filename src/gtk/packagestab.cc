@@ -274,9 +274,9 @@ namespace gui
 
     Glib::RefPtr<Gtk::SizeGroup> size_group = Gtk::SizeGroup::create(Gtk::SIZE_GROUP_HORIZONTAL);
     Gtk::Label *path_label;
-    get_xml()->get_widget("dependency_path_start_limit_label", path_label);
+    get_xml()->get_widget("main_notebook_packages_limit_label", path_label);
     size_group->add_widget (*path_label);
-    get_xml()->get_widget("dependency_path_start_show_only_label", path_label);
+    get_xml()->get_widget("main_notebook_packages_show_only_label", path_label);
     size_group->add_widget (*path_label);
 
     get_widget()->show();
