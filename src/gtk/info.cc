@@ -635,7 +635,8 @@ namespace gui
 
     using cwidget::util::ref_ptr;
     pVersionsView = ref_ptr<EntityView>(new EntityView(get_xml(),
-						       "main_info_versionsview"));
+						       "main_info_versionsview",
+						       _("Package information: version list")));
     pVersionsView->set_model(make_version_list(pVersionsView->get_columns(), pkg));
     pVersionsView->get_name_column()->set_fixed_width(154);
     pVersionsView->get_treeview()->get_selection()->set_mode(Gtk::SELECTION_BROWSE);
@@ -652,7 +653,8 @@ namespace gui
 	}
     }
 
-    pDependsView = ref_ptr<EntityView>(new EntityView(get_xml(), "main_info_dependsview"));
+    pDependsView = ref_ptr<EntityView>(new EntityView(get_xml(), "main_info_dependsview",
+						      _("Package information: dependency list")));
     pDependsView->set_model(make_depends_tree(pDependsView->get_columns(), ver));
     pDependsView->get_expander_column()->set_fixed_width(48);
     pDependsView->get_name_column()->set_fixed_width(280);

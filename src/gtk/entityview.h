@@ -170,6 +170,7 @@ namespace gui
       EntityTreeView * tree;
       EntityColumns cols;
       EditColumnsDialog *visible_columns_dialog;
+      Glib::ustring visible_columns_dialog_parent_title;
 
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> revstore;
       void init(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
@@ -220,9 +221,15 @@ namespace gui
        *  \param refGlade    The XML tree containing
        *                     the widgets for this view.
        *  \param gladename   The Glade name of the widget.
+       *
+       *  \param parent_title  A string by which we should refer to the
+       *                       parent widget or location of this view.
+       *                       Mainly used to generate the "edit columns"
+       *                       dialog box.
        */
       EntityView(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
-                 Glib::ustring gladename);
+                 Glib::ustring gladename,
+		 const Glib::ustring &parent_title);
       virtual ~EntityView();
 
       // TODO: perhaps rebuild_store() should be a virtual function
@@ -235,17 +242,10 @@ namespace gui
 
       /** \brief Display a dialog that allows the user to modify which
        *  columns are visible in this view.
-       *
-       *  \param parent_title  The title of the parent tab,
-       *                       used to inform the user which
-       *                       tab is being modified.  Invoke
-       *                       visible_columns_dialog_parent_title_changed()
-       *                       when this changes.
        */
-      void show_edit_columns_dialog(const Glib::ustring &parent_title);
+      void show_edit_columns_dialog();
 
-      /** \brief Update the column editor with the given parent
-       *         tab title.
+      /** \brief Set the parent tab title used to display the column editor.
        *
        *  \param parent_title  The title of the parent tab,
        *                       used to inform the user which

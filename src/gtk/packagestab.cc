@@ -254,7 +254,8 @@ namespace gui
     get_xml()->get_widget("main_notebook_packages_show_only_combo_box", pLimitComboBox);
 
     using cwidget::util::ref_ptr;
-    pPkgView = ref_ptr<PkgView>(new PkgView(get_xml(), "main_packages_treeview"));
+    pPkgView = ref_ptr<PkgView>(new PkgView(get_xml(), "main_packages_treeview",
+					    get_label(), ""));
 
     // TODO: We prevent the tab from closing itself, but we should rather make closing
     //       the tab gracefully stop the generator from doing whatever it's doing
@@ -299,7 +300,7 @@ namespace gui
 
   void PackagesTab::dispatch_edit_columns()
   {
-    pPkgView->show_edit_columns_dialog(get_label());
+    pPkgView->show_edit_columns_dialog();
   }
 
   // TODO: Should be moved into PackagesView for use with PackagesView::signal_on_package_selection.
@@ -326,7 +327,7 @@ namespace gui
   {
     const std::string title = _("Packages: ") + pLimitEntry->get_text();
     set_label(title);
-    pPkgView->edit_columns_dialog_parent_title_changed(title);
+    pPkgView->edit_columns_dialog_parent_title_changed(get_label());
   }
 
   class InfoTabButtons : public Gtk::VButtonBox

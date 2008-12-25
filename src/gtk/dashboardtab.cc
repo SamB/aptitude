@@ -57,7 +57,7 @@ namespace gui
 
   void DashboardTab::dispatch_edit_columns()
   {
-    upgrades_pkg_view->show_edit_columns_dialog(_("Dashboard"));
+    upgrades_pkg_view->show_edit_columns_dialog();
   }
 
   namespace
@@ -214,7 +214,8 @@ namespace gui
     get_xml()->get_widget("dashboard_upgrades_summary_textview",
 			  upgrades_summary_textview);
 
-    upgrades_pkg_view = cwidget::util::ref_ptr<PkgView>(new PkgView(get_xml(), "dashboard_upgrades_treeview"));
+    upgrades_pkg_view = cwidget::util::ref_ptr<PkgView>(new PkgView(get_xml(), "dashboard_upgrades_treeview",
+								    _("Dashboard"), ""));
     upgrades_pkg_view->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &DashboardTab::activated_upgrade_package_handler));
     upgrades_pkg_view->get_treeview()->signal_cursor_changed().connect(sigc::mem_fun(*this, &DashboardTab::activated_upgrade_package_handler));
 

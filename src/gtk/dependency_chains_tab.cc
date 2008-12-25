@@ -64,9 +64,12 @@ namespace gui
 			  end_limit_combo_box);
 
     using cwidget::util::ref_ptr;
-    start_package_view = ref_ptr<PkgView>(new PkgView(get_xml(), "dependency_path_start_packages_treeview"));
-    end_package_view = ref_ptr<PkgView>(new PkgView(get_xml(), "dependency_path_end_packages_treeview"));
-    results_view = ref_ptr<EntityView>(new EntityView(get_xml(), "dependency_path_results_treeview"));
+    start_package_view = ref_ptr<PkgView>(new PkgView(get_xml(), "dependency_path_start_packages_treeview",
+						      _("Find dependency chains: start"), ""));
+    end_package_view = ref_ptr<PkgView>(new PkgView(get_xml(), "dependency_path_end_packages_treeview",
+						    _("Find dependency chains: end"), ""));
+    results_view = ref_ptr<EntityView>(new EntityView(get_xml(), "dependency_path_results_treeview",
+						      _("Find dependency chains: results")));
 
     end_package_view->get_treeview()->get_selection()->set_mode(Gtk::SELECTION_BROWSE);
 

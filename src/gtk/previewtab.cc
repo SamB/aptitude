@@ -112,6 +112,7 @@ namespace gui
     : PkgViewBase(sigc::ptr_fun(&Generator::create),
 		  refGlade,
 		  gladename,
+		  _("Preview"),
 		  limit)
   {
   }

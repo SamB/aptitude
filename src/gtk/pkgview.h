@@ -131,10 +131,22 @@ namespace gui
   public:
     sigc::signal<void> store_reloading;
     sigc::signal<void> store_reloaded;
+    /** \brief Create a new PkgViewBase.
+     *
+     *  \param _generatorK   A function that takes the columns of this PkgView and
+     *                       returns a PkgTreeModelGenerator object, which is used
+     *                       to build the contents of the list displayed in this view.
+     *  \param refGlade      The Glade XML tree from which to load this PkgView's contents.
+     *  \param gladename     The name of the package view's TreeView in the Glade XML tree.
+     *  \param parent_title  A string used to identify this view when the "edit columns"
+     *                       dialog box is popped up.
+     *  \param limit         The initial limit (or the empty string to ask the user to search).
+     */
     PkgViewBase(const sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> _generatorK,
 		const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 		const Glib::ustring &gladename,
-		const Glib::ustring &limit = "");
+		const Glib::ustring &parent_title,
+		const Glib::ustring &limit);
 
     virtual ~PkgViewBase();
 
@@ -166,9 +178,18 @@ namespace gui
       Glib::RefPtr<Gtk::TreeModel> get_model();
     };
 
+    /** \brief Create a new PkgView.
+     *
+     *  \param refGlade      The Glade XML tree from which to load this PkgView's contents.
+     *  \param gladename     The name of the package view's TreeView in the Glade XML tree.
+     *  \param parent_title  A string used to identify this view when the "edit columns"
+     *                       dialog box is popped up.
+     *  \param limit         The initial limit (or the empty string to ask the user to search).
+     */
     PkgView(const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 	    const Glib::ustring &gladename,
-	    const Glib::ustring &limit = "");
+	    const Glib::ustring &parent_title,
+	    const Glib::ustring &limit);
   };
 }
 

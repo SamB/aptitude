@@ -358,8 +358,9 @@ namespace gui
   PkgViewBase::PkgViewBase(const sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> _generatorK,
 			   const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 			   const Glib::ustring &gladename,
+			   const Glib::ustring &parent_title,
 			   const Glib::ustring &_limit)
-    : EntityView(refGlade, gladename)
+    : EntityView(refGlade, gladename, parent_title)
   {
     generatorK = _generatorK;
     limit = aptitude::matching::parse(_limit);
@@ -496,10 +497,12 @@ namespace gui
 
   PkgView::PkgView(const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 		   const Glib::ustring &gladename,
+		   const Glib::ustring &parent_title,
 		   const Glib::ustring &limit)
     : PkgViewBase(sigc::ptr_fun(&Generator::create),
 		  refGlade,
 		  gladename,
+		  parent_title,
 		  limit)
   {
   }

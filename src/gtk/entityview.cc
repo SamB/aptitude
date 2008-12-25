@@ -433,7 +433,7 @@ namespace gui
   // package list.  For instance, we could add an extra,
   // always-visible column with a title of "..." that pops up the
   // dialog when its header is clicked.
-  void EntityView::show_edit_columns_dialog(const Glib::ustring &parent_title)
+  void EntityView::show_edit_columns_dialog()
   {
     if(visible_columns_dialog == NULL)
       {
@@ -453,7 +453,7 @@ namespace gui
 	    visible_columns_dialog->closed.connect(sigc::mem_fun(*visible_columns_dialog,
 								 &Gtk::Widget::hide));
 	    visible_columns_dialog->add_columns_to_list(tree);
-	    visible_columns_dialog->set_parent_title(parent_title);
+	    visible_columns_dialog->set_parent_title(visible_columns_dialog_parent_title);
 	    visible_columns_dialog->set_accept_focus(true);
 	  }
       }
@@ -466,6 +466,7 @@ namespace gui
 
   void EntityView::edit_columns_dialog_parent_title_changed(const Glib::ustring &parent_title)
   {
+    visible_columns_dialog_parent_title = parent_title;
     if(visible_columns_dialog != NULL)
       visible_columns_dialog->set_parent_title(parent_title);
   }
@@ -486,6 +487,15 @@ namespace gui
       }
     cache_closed.connect(sigc::mem_fun(*this, &EntityView::on_cache_closed));
     cache_reloaded.connect(sigc::mem_fun(*this, &EntityView::on_cache_reloaded));
+
+    {
+      Gtk::TreeViewColumn *EditColumnsColumn = new Gtk::TreeViewColumn("...");
+      EditColumnsColumn->signal_clicked().connect(sigc::mem_fun(*this, &EntityView::show_edit_columns_dialog));
+      EditColumnsColumn->set_clickable(true);
+      // Don't let the properties of this column be edited.
+      EditColumnsDialog::set_edit_name(EditColumnsColumn, "");
+      tree->append_column(*EditColumnsColumn);
+    }
 
     // Put in a dummy column for the expanders, so everything else
     // lines up.
@@ -699,8 +709,10 @@ namespace gui
   }
 
   EntityView::EntityView(Glib::RefPtr<Gnome::Glade::Xml> refGlade,
-			 Glib::ustring gladename)
-    : visible_columns_dialog(NULL)
+			 Glib::ustring gladename,
+			 const Glib::ustring &parent_title)
+    : visible_columns_dialog(NULL),
+      visible_columns_dialog_parent_title(parent_title)
   {
     init(refGlade, gladename);
   }
