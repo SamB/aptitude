@@ -392,6 +392,25 @@ namespace aptitude
 			    const search_params &params,
 			    bool find_all,
 			    std::vector<std::vector<action> > &output);
+
+    /** \brief Find the shortest strongest justification for the given
+     *  goal starting at the given set of leaves.
+     *
+     *  \param leaves     The packages at which the search should terminate.
+     *  \param goal       The target of the search.
+     *  \param find_all   If \b true, return all the possible justifications
+     *                    rather than just the first one.
+     *  \param verbosity  How verbose the search should be (if set to a value
+     *                    greater than zero, various trace information will be
+
+     *                    written to standard output).
+     *  \param output     A vector in which to store the results of the search.
+     */
+    void find_best_justification(const std::vector<cwidget::util::ref_ptr<aptitude::matching::pattern> > &leaves,
+				 const target &goal,
+				 bool find_all,
+				 int verbosity,
+				 std::vector<std::vector<action> > &output);
   }
 }
 

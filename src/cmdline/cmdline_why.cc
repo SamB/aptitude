@@ -782,6 +782,131 @@ namespace aptitude
       else
 	return false;
     }
+
+
+    void find_best_justification(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
+				 const target &goal,
+				 bool find_all,
+				 int verbosity,
+				 std::vector<std::vector<action> > &output)
+    {
+      std::vector<search_params> searches;
+
+      // The priority of searches goes like this:
+      // (1) install version, depends only
+      // (2) current version, depends only
+      // (3) install version, recommends or depends
+      // (4) current version, recommends or depends
+      // (5) install version, recommends or depends or suggests
+      // (6) current version, recommends or depends or suggests
+      searches.push_back(search_params(search_params::Install,
+				       search_params::DependsOnly,
+				       false));
+      searches.push_back(search_params(search_params::Current,
+				       search_params::DependsOnly,
+				       false));
+
+      searches.push_back(search_params(search_params::Install,
+				       search_params::DependsOnly,
+				       true));
+      searches.push_back(search_params(search_params::Current,
+				       search_params::DependsOnly,
+				       true));
+
+
+
+      searches.push_back(search_params(search_params::Install,
+				       search_params::Recommends,
+				       false));
+      searches.push_back(search_params(search_params::Current,
+				       search_params::Recommends,
+				       false));
+
+      searches.push_back(search_params(search_params::Install,
+				       search_params::Recommends,
+				       true));
+      searches.push_back(search_params(search_params::Current,
+				       search_params::Recommends,
+				       true));
+
+
+
+
+
+      searches.push_back(search_params(search_params::Install,
+				       search_params::Suggests,
+				       false));
+
+      searches.push_back(search_params(search_params::Current,
+				       search_params::Suggests,
+				       false));
+
+      searches.push_back(search_params(search_params::Install,
+				       search_params::Suggests,
+				       true));
+
+      searches.push_back(search_params(search_params::Current,
+				       search_params::Suggests,
+				       true));
+
+
+
+
+      // As a last-ditch thing, run searches against candidate versions.
+      // We prefer *any* match that sticks to current/future installed versions
+      // to this, though.
+      searches.push_back(search_params(search_params::Candidate,
+				       search_params::DependsOnly,
+				       false));
+      searches.push_back(search_params(search_params::Candidate,
+				       search_params::DependsOnly,
+				       true));
+
+
+      searches.push_back(search_params(search_params::Candidate,
+				       search_params::Recommends,
+				       false));
+      searches.push_back(search_params(search_params::Candidate,
+				       search_params::Recommends,
+				       true));
+
+      searches.push_back(search_params(search_params::Candidate,
+				       search_params::Suggests,
+				       false));
+      searches.push_back(search_params(search_params::Candidate,
+				       search_params::Suggests,
+				       true));
+
+
+      // Throw out completely identical search results.  (note that this
+      // might not perfectly eliminate results that appear identical if
+      // multiple versions of something are available; needs more work to
+      // do that)
+      std::set<std::vector<action> > seen_results;
+      std::vector<action> results;
+
+      for(std::vector<search_params>::const_iterator it = searches.begin();
+	  it != searches.end(); ++it)
+	{
+	  justification_search search(leaves, goal, *it, verbosity);
+
+	  while(search.next(results))
+	    {
+	      if(seen_results.find(results) != seen_results.end())
+		{
+		  if(verbosity > 1)
+		    std::cout << ssprintf(_("Skipping this solution, I've already seen it.\n"));
+		}
+	      else
+		{
+		  seen_results.insert(results);
+
+		  if(!results.empty())
+		    output.push_back(results);
+		}
+	    }
+	}
+    }
   }
 }
 
@@ -796,180 +921,74 @@ cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves
   std::vector<cw::fragment *> rval;
   success = true;
 
-  std::vector<search_params> searches;
+  std::vector<std::vector<action> > solutions;
+  target goal = root_is_removal ? target::Remove(root) : target::Install(root);
 
-  // The priority of searches goes like this:
-  // (1) install version, depends only
-  // (2) current version, depends only
-  // (3) install version, recommends or depends
-  // (4) current version, recommends or depends
-  // (5) install version, recommends or depends or suggests
-  // (6) current version, recommends or depends or suggests
-  searches.push_back(search_params(search_params::Install,
-				   search_params::DependsOnly,
-				   false));
-  searches.push_back(search_params(search_params::Current,
-				   search_params::DependsOnly,
-				   false));
+  find_best_justification(leaves, goal,
+			  verbosity >= 1,
+			  verbosity,
+			  solutions);
 
-  searches.push_back(search_params(search_params::Install,
-				   search_params::DependsOnly,
-				   true));
-  searches.push_back(search_params(search_params::Current,
-				   search_params::DependsOnly,
-				   true));
-
-
-
-  searches.push_back(search_params(search_params::Install,
-				   search_params::Recommends,
-				   false));
-  searches.push_back(search_params(search_params::Current,
-				   search_params::Recommends,
-				   false));
-
-  searches.push_back(search_params(search_params::Install,
-				   search_params::Recommends,
-				   true));
-  searches.push_back(search_params(search_params::Current,
-				   search_params::Recommends,
-				   true));
-
-
-
-
-
-  searches.push_back(search_params(search_params::Install,
-				   search_params::Suggests,
-				   false));
-
-  searches.push_back(search_params(search_params::Current,
-				   search_params::Suggests,
-				   false));
-
-  searches.push_back(search_params(search_params::Install,
-				   search_params::Suggests,
-				   true));
-
-  searches.push_back(search_params(search_params::Current,
-				   search_params::Suggests,
-				   true));
-
-
-
-
-  // As a last-ditch thing, run searches against candidate versions.
-  // We prefer *any* match that sticks to current/future installed versions
-  // to this, though.
-  searches.push_back(search_params(search_params::Candidate,
-				   search_params::DependsOnly,
-				   false));
-  searches.push_back(search_params(search_params::Candidate,
-				   search_params::DependsOnly,
-				   true));
-
-
-  searches.push_back(search_params(search_params::Candidate,
-				   search_params::Recommends,
-				   false));
-  searches.push_back(search_params(search_params::Candidate,
-				   search_params::Recommends,
-				   true));
-
-  searches.push_back(search_params(search_params::Candidate,
-				   search_params::Suggests,
-				   false));
-  searches.push_back(search_params(search_params::Candidate,
-				   search_params::Suggests,
-				   true));
-
-
-  // Throw out completely identical search results.  (note that this
-  // might not perfectly eliminate results that appear identical if
-  // multiple versions of something are available; needs more work to
-  // do that)
-  std::set<std::vector<action> > seen_results;
-  std::vector<action> results;
   bool first = true;
-
-  for(std::vector<search_params>::const_iterator it = searches.begin();
-      it != searches.end(); ++it)
+  for(std::vector<std::vector<action> >::const_iterator solutionIt = solutions.begin();
+      solutionIt != solutions.end(); ++solutionIt)
     {
-      target goal = root_is_removal ? target::Remove(root) : target::Install(root);
-      justification_search search(leaves, goal, *it, verbosity);
+      const std::vector<action> &results(*solutionIt);
 
-      while(search.next(results))
+      for(std::vector<action>::const_iterator actionIt = results.begin();
+	  actionIt != results.end(); ++actionIt)
 	{
-	  if(seen_results.find(results) != seen_results.end())
-	    {
-	      if(verbosity > 1)
-		std::cout << ssprintf(_("Skipping this solution, I've already seen it.\n"));
-	      continue;
-	    }
+	  if(first)
+	    first = false;
 	  else
-	    seen_results.insert(results);
+	    rval.push_back(cw::newline_fragment());
 
-	  if(results.empty())
-	    // This is a starting point of the search, but just keep
-	    // going and try to find other people who depend on it.
-	    // NB: this shouldn't be necessary (the search itself
-	    // should filter out empty results) but it's left in for
-	    // the sake of defensive programming.
-	    continue;
-	  else
+	  std::vector<cw::fragment *> col1_entries, col2_entries, col3_entries;
+	  for(std::vector<action>::const_iterator it = results.begin();
+	      it != results.end(); ++it)
 	    {
-	      if(first)
-		first = false;
-	      else
-		rval.push_back(cw::newline_fragment());
-
-	      std::vector<cw::fragment *> col1_entries, col2_entries, col3_entries;
-	      for(std::vector<action>::const_iterator it = results.begin();
-		  it != results.end(); ++it)
-		{
-		  col1_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column1_fragment()),
+	      col1_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column1_fragment()),
 									it->get_style())));
-		  col2_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column2_fragment()),
+	      col2_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column2_fragment()),
 									it->get_style())));
-		  col3_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column3_fragment()),
+	      col3_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column3_fragment()),
 									it->get_style())));
-		}
-
-	      using cw::fragment_column_entry;
-
-	      std::vector<fragment_column_entry> columns;
-	      columns.push_back(fragment_column_entry(false,
-						      true,
-						      0,
-						      fragment_column_entry::top,
-						      col1_entries));
-	      columns.push_back(fragment_column_entry(false,
-						      false,
-						      1,
-						      fragment_column_entry::top,
-						      NULL));
-	      columns.push_back(fragment_column_entry(false,
-						      true,
-						      0,
-						      fragment_column_entry::top,
-						      col2_entries));
-	      columns.push_back(fragment_column_entry(false,
-						      false,
-						      1,
-						      fragment_column_entry::top,
-						      NULL));
-	      columns.push_back(fragment_column_entry(false,
-						      true,
-						      0,
-						      fragment_column_entry::top,
-						      col3_entries));
-	      cw::fragment *solution_fragment(cw::fragment_columns(columns));
-
-	      if(verbosity < 1)
-		return solution_fragment;
-	      else
-		rval.push_back(solution_fragment);
 	    }
+
+	  using cw::fragment_column_entry;
+
+	  std::vector<fragment_column_entry> columns;
+	  columns.push_back(fragment_column_entry(false,
+						  true,
+						  0,
+						  fragment_column_entry::top,
+						  col1_entries));
+	  columns.push_back(fragment_column_entry(false,
+						  false,
+						  1,
+						  fragment_column_entry::top,
+						  NULL));
+	  columns.push_back(fragment_column_entry(false,
+						  true,
+						  0,
+						  fragment_column_entry::top,
+						  col2_entries));
+	  columns.push_back(fragment_column_entry(false,
+						  false,
+						  1,
+						  fragment_column_entry::top,
+						  NULL));
+	  columns.push_back(fragment_column_entry(false,
+						  true,
+						  0,
+						  fragment_column_entry::top,
+						  col3_entries));
+	  cw::fragment *solution_fragment(cw::fragment_columns(columns));
+
+	  if(verbosity < 1)
+	    return solution_fragment;
+	  else
+	    rval.push_back(solution_fragment);
 	}
     }
 
