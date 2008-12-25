@@ -1395,8 +1395,7 @@ namespace gui
 "  xthickness = 0"
 "  ythickness = 0"
 "}"
-"widget \"*.main_notebook_packages_close\" style \"tiny-button-style\""
-"widget \"*.main_notebook_download_close\" style \"tiny-button-style\"");
+"widget \"*.notebook_close_button\" style \"tiny-button-style\"");
   }
 
   namespace

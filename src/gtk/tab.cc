@@ -73,10 +73,11 @@ namespace gui
       label_button->add(*label_button_image);
     }
 
-    label_button->show();
+    label_button->set_name("notebook_close_button");
     label_button->property_can_focus() = true;
     label_button->property_receives_default() = true;
     label_button->set_relief(Gtk::RELIEF_NONE);
+    label_button->show();
     label_widget->pack_start(*label_button);
 
     // Maybe we should create a close() method on the Tab so it can clean itself up or make a destructor.
