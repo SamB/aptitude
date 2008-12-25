@@ -369,6 +369,7 @@ AC_CONFIG_FILES([
 	po/Makefile.in
 	src/Makefile
 	src/gtk/Makefile
+	src/gtk/util/Makefile
 	src/cmdline/Makefile
 	src/generic/Makefile
 	src/generic/apt/Makefile

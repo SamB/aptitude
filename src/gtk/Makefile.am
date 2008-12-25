@@ -1,5 +1,7 @@
 INCLUDES=-I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/intl
 
+SUBDIRS=util
+
 noinst_LIBRARIES=libgtk.a
 
 pkgdatadir=$(datadir)/$(PACKAGE)
