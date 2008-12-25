@@ -78,6 +78,7 @@ namespace gui
       row[download_columns.URI] = Itm.URI;
       row[download_columns.ShortDesc] = Itm.ShortDesc;
       row[download_columns.Description] = Itm.Description;
+      row[download_columns.ProgressVisible] = true;
     }
   }
 
@@ -104,6 +105,7 @@ namespace gui
     Gtk::TreeModel::Row row = *store_iter;
     row[download_columns.URI] = "";
     row[download_columns.ShortDesc] = "";
+    row[download_columns.ProgressVisible] = false;
     row[download_columns.Description] = "Download started";
   }
 
@@ -161,6 +163,7 @@ namespace gui
     add(URI);
     add(Status);
     add(ProgressPerc);
+    add(ProgressVisible);
     add(ShortDesc);
     add(Description);
   }
@@ -206,6 +209,7 @@ namespace gui
       ProgressPerc->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
       ProgressPerc->set_fixed_width(100);
       ProgressPerc->add_attribute(progress_renderer->property_value(), download_columns.ProgressPerc);
+      ProgressPerc->add_attribute(progress_renderer->property_visible(), download_columns.ProgressVisible);
       treeview->append_column(*ProgressPerc);
     }
 

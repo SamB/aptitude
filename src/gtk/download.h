@@ -47,6 +47,7 @@ namespace gui
       Gtk::TreeModelColumn<Glib::ustring> URI;
       Gtk::TreeModelColumn<Glib::ustring> Status;
       Gtk::TreeModelColumn<int> ProgressPerc;
+      Gtk::TreeModelColumn<bool> ProgressVisible;
       Gtk::TreeModelColumn<Glib::ustring> Description;
       Gtk::TreeModelColumn<Glib::ustring> ShortDesc;
 
