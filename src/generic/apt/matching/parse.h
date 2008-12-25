@@ -190,6 +190,27 @@ namespace aptitude
       return parse(s, true, true);
     }
 
+    /** \brief Parse a string as a search pattern.
+     *
+     *  It is an error if part of the input string is left over after
+     *  parsing.
+     *
+     *  \throw MatchingException if the pattern cannot be parsed.
+     *
+     *  \param s       The string to parse.
+     *
+     *  \return  The parsed expression, or NULL if an
+     *  error occurred or if the input string was empty.
+     */
+    inline cwidget::util::ref_ptr<pattern>
+      parse_with_errors(const std::string &s)
+    {
+      std::string::const_iterator begin(s.begin());
+      return parse_with_errors(begin, s.end(),
+			       std::vector<const char *>(),
+			       true, false);
+    }
+
     /** \brief Parse a string as a possibly incomplete search pattern.
      *
      *  Errors will be flagged by generating apt errors, and it is an
