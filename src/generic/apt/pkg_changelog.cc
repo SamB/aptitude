@@ -95,6 +95,13 @@ private:
 
   download_signal_log *log;
 
+  /** \brief An acquire item that fetches a file for a changelog entry,
+   *  invoking the entry's callback when it's finished.
+   *
+   *  \todo Instead of just one URI, use a list of fallback URIs (so we
+   *  can try fetching a local copy, but grab a network copy instead if
+   *  available).
+   */
   class AcqForEntry : public pkgAcqFile
   {
     entry ent;
@@ -156,6 +163,94 @@ public:
 	const string ver(it->get_ver());
 	const string section(it->get_section());
 	const string name(it->get_name());
+	const string title = ssprintf(_("ChangeLog of %s"), name.c_str());
+
+	// Try to find a changelog that's already on the system,
+	// first.  Check each binary package in the source package;
+	// for any package that's unpacked, check that the version on
+	// the system corresponds to the requested source version, and
+	// if it passes look for a changelog.
+	pkgSrcRecords source_records(*apt_source_list);
+	source_records.Restart();
+	pkgSrcRecords::Parser *source_rec = source_records.Find(srcpkg.c_str());
+
+	// \todo instead of having this cutoff, support falling back
+	// from one URL to another, properly.
+	bool found_local = false;
+	if(source_rec != NULL)
+	  for(const char **binaryIt = source_rec->Binaries();
+	      *binaryIt != NULL && !found_local; ++binaryIt)
+	    {
+	      pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*binaryIt);
+	      if(!pkg.end() &&
+		 !pkg.CurrentVer().end() &&
+		 !pkg.CurrentVer().FileList().end() &&
+		 pkg->CurrentState != pkgCache::State::NotInstalled &&
+		 pkg->CurrentState != pkgCache::State::ConfigFiles)
+		{
+		  pkgRecords::Parser &rec(apt_package_records->Lookup(pkg.CurrentVer().FileList()));
+		  std::string rec_sourcepkg = rec.SourcePkg();
+		  if(rec_sourcepkg.empty())
+		    rec_sourcepkg = pkg.Name();
+		  std::string rec_sourcever = rec.SourceVer();
+		  if(rec_sourcever.empty())
+		    rec_sourcever = pkg.CurrentVer().VerStr();
+
+		  if(rec_sourcepkg == srcpkg &&
+		     rec_sourcever == ver)
+		    {
+		      // Everything passed.  Now test to see whether
+		      // the changelog exists by trying to stat it.
+		      struct stat buf;
+
+		      std::string changelog_file = "/usr/share/doc/";
+		      changelog_file += pkg.Name();
+		      changelog_file += "/changelog.Debian";
+
+		      if(stat(changelog_file.c_str(), &buf) == 0)
+			{
+			  // Queue up that file and jump to the next entry.
+			  new AcqForEntry(fetcher,
+					  "file://" + changelog_file,
+					  "",
+					  0,
+					  title,
+					  title,
+					  it->get_tempname().get_name().c_str(),
+					  *it);
+			  found_local = true;
+			}
+		      else
+			{
+			  changelog_file += ".gz";
+
+			  if(stat(changelog_file.c_str(), &buf) == 0)
+			    {
+			      // Queue up that file and jump to the next entry.
+			      new AcqForEntry(fetcher,
+					      "gzip://" + changelog_file,
+					      "",
+					      0,
+					      title,
+					      title,
+					      it->get_tempname().get_name().c_str(),
+					      *it);
+			      found_local = true;
+			    }
+			}
+
+		      // No changelog found for this binary package,
+		      // try the next one.
+
+		      // \todo we should fall back to reading off the
+		      // network if something goes wrong with the
+		      // local copy of the changelog.
+		    }
+		}
+	    }
+
+	if(found_local)
+	  continue;
 
 	string realsection;
 
@@ -185,8 +280,6 @@ public:
 			      srcpkg.c_str(),
 			      srcpkg.c_str(),
 			      realver.c_str());
-
-	string title = ssprintf(_("ChangeLog of %s"), name.c_str());
 
 	new AcqForEntry(fetcher,
 			uri,
