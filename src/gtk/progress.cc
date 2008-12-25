@@ -38,6 +38,7 @@ namespace gui
   guiOpProgress::guiOpProgress()
     : destroyed(false)
   {
+    pMainWindow->get_progress_bar()->show();
   }
 
   guiOpProgress::~guiOpProgress()
@@ -62,6 +63,7 @@ namespace gui
 	destroyed = true;
 	pMainWindow->get_progress_bar()->set_text("");
 	pMainWindow->get_progress_bar()->set_fraction(0);
+	pMainWindow->get_progress_bar()->hide();
       }
   }
 }
