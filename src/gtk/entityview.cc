@@ -506,7 +506,7 @@ namespace gui
 
     {
       // \todo should the selected status icon have a dropdown menu?
-      // And how best to acheive that?
+      // And how best to achieve that?
       Gtk::CellRendererPixbuf *current_status_icon_renderer = manage(new Gtk::CellRendererPixbuf);
       Gtk::CellRendererPixbuf *selected_status_icon_renderer = manage(new Gtk::CellRendererPixbuf);
       Status = manage(new Gtk::TreeViewColumn("", *current_status_icon_renderer));
