@@ -38,6 +38,39 @@ namespace aptitude
      *  ending the parse if they are encountered at the top syntactic
      *  level.
      *
+     *  \throw MatchingException if the parse fails.
+     *
+     *  \param start   The beginning of the range to parse.
+     *                 Will be moved past the parsed expression.
+     *  \param end     The end of the range to parse.
+     *  \param terminators  A list of strings whose (unescaped)
+     *                      presence at the top syntactic level
+     *                      signals the end of a search pattern.
+     *  \param require_full_parse  If \b true, an error will be
+     *                             signalled if part of the region
+     *                             is left after parsing (i.e.,
+     *                             if start != end).
+     *  \param partial      If \b true, if the last word is an
+     *                      unadorned Xapian term, it will be
+     *                      treated as a wildcard representing
+     *                      all the terms in the database.
+     *
+     *  \return  The parsed expression, or NULL if an
+     *  error occurred or if the input range was empty.
+     */
+    cwidget::util::ref_ptr<pattern>
+      parse_with_errors(std::string::const_iterator &start,
+			const std::string::const_iterator &end,
+			const std::vector<const char *> &terminators,
+			bool require_full_parse,
+			bool partial);
+
+    /** \brief Parse a string region as a search pattern.
+     *
+     *  Parses [start, end), treating strings from terminators as
+     *  ending the parse if they are encountered at the top syntactic
+     *  level.
+     *
      *  \param start   The beginning of the range to parse.
      *                 Will be moved past the parsed expression.
      *  \param end     The end of the range to parse.
