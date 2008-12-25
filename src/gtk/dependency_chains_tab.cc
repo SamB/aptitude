@@ -45,6 +45,11 @@ namespace gui
     get_xml()->get_widget("dependency_path_end_search_pattern",
 			  end_package_entry);
 
+    get_xml()->get_widget("dependency_path_start_search_errors",
+			  start_errors);
+    get_xml()->get_widget("dependency_path_end_search_errors",
+			  end_errors);
+
     get_widget()->show();
 
     Gtk::Button *start_search_button;
@@ -78,9 +83,11 @@ namespace gui
     end_package_view->get_treeview()->get_selection()->signal_changed()
       .connect(sigc::mem_fun(this, &DependencyChainsTab::selection_changed));
 
-    setup_searchable_view(start_package_entry, start_search_button, start_limit_combo_box,
+    setup_searchable_view(start_package_entry, start_errors,
+			  start_search_button, start_limit_combo_box,
 			  start_package_view, sigc::slot0<void>());
-    setup_searchable_view(end_package_entry, end_search_button, end_limit_combo_box,
+    setup_searchable_view(end_package_entry, end_errors,
+			  end_search_button, end_limit_combo_box,
 			  end_package_view, sigc::slot0<void>());
 
     results_view->get_version_column()->set_visible(false);

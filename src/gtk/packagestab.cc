@@ -39,6 +39,7 @@
 #include <gtk/gui.h>
 #include <gtk/packageinformation.h>
 #include <gtk/pkgview.h>
+#include <gtk/util/property.h>
 
 #include <cwidget/generic/util/ssprintf.h>
 
@@ -86,6 +87,7 @@ namespace gui
 
     void repopulate_searchable_view(PkgView &packages_view,
 				    Gtk::Entry &search_entry,
+				    Gtk::Label &errors_label,
 				    Gtk::ComboBox &limit_combobox,
 				    const sigc::slot0<void> &after_repopulate_hook)
     {
@@ -97,7 +99,24 @@ namespace gui
 	  set_combobox_limit_columns(&limit_combobox, limit_columns);
 	}
       std::string search_term = search_entry.get_text();
-      const cwidget::util::ref_ptr<aptitude::matching::pattern> p(aptitude::matching::parse(search_term));
+      cwidget::util::ref_ptr<aptitude::matching::pattern> p;
+      try
+	{
+	  p = aptitude::matching::parse_with_errors(search_term);
+	}
+      catch(aptitude::matching::MatchingException &ex)
+	{
+	  // Show the user what's wrong and don't update the list.
+	  std::string markup(cwidget::util::ssprintf("<span size=\"smaller\" color=\"red\">%s: %s</span>",
+						     Glib::Markup::escape_text(_("Parse error")).c_str(),
+						     Glib::Markup::escape_text(ex.errmsg()).c_str()));
+	  errors_label.set_markup(markup);
+	  errors_label.show();
+	  return;
+	}
+
+      errors_label.hide();
+
       cwidget::util::ref_ptr<aptitude::matching::pattern> final_pattern;
 
       Gtk::TreeModel::const_iterator active_limit_iter = limit_combobox.get_active();
@@ -142,7 +161,28 @@ namespace gui
     }
   }
 
+  void limit_edited(Gtk::Entry &search_entry)
+  {
+    const Glib::ustring limit(search_entry.get_text());
+    bool valid;
+    try
+      {
+	aptitude::matching::parse_with_errors(limit);
+	valid = true;
+      }
+    catch(aptitude::matching::MatchingException &)
+      {
+	valid = false;
+      }
+
+    if(valid)
+      search_entry.unset_base(Gtk::STATE_NORMAL);
+    else
+      search_entry.modify_base(Gtk::STATE_NORMAL, Gdk::Color("#FFD0D0"));
+  }
+
   void setup_searchable_view(Gtk::Entry *search_entry,
+			     Gtk::Label *search_label,
 			     Gtk::Button *search_button,
 			     Gtk::ComboBox *limit_combobox,
 			     const cwidget::util::ref_ptr<PkgView> packages_view,
@@ -158,9 +198,12 @@ namespace gui
     sigc::slot0<void> repopulate_hook = sigc::bind(sigc::ptr_fun(&repopulate_searchable_view),
 						   packages_view.weak_ref(),
 						   sigc::ref(*search_entry),
+						   sigc::ref(*search_label),
 						   sigc::ref(*limit_combobox),
 						   after_repopulate_hook);
 
+    search_entry->signal_changed().connect(sigc::bind(sigc::ptr_fun(&limit_edited),
+						      sigc::ref(*search_entry)));
     search_entry->signal_activate().connect(repopulate_hook);
     search_button->signal_clicked().connect(repopulate_hook);
 
@@ -250,6 +293,7 @@ namespace gui
   {
     get_xml()->get_widget("main_packages_textview", pPackagesTextView);
     get_xml()->get_widget("main_notebook_packages_limit_entry", pLimitEntry);
+    get_xml()->get_widget("main_notebook_packages_limit_errors", pLimitErrorLabel);
     get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
     get_xml()->get_widget("main_notebook_packages_show_only_combo_box", pLimitComboBox);
 
@@ -262,7 +306,8 @@ namespace gui
     pPkgView->store_reloading.connect(sigc::bind(sigc::mem_fun(*get_label_button(), &Gtk::Widget::set_sensitive), false));
     pPkgView->store_reloaded.connect(sigc::bind(sigc::mem_fun(*get_label_button(), &Gtk::Widget::set_sensitive), true));
 
-    setup_searchable_view(pLimitEntry, pLimitButton, pLimitComboBox, pPkgView,
+    setup_searchable_view(pLimitEntry, pLimitErrorLabel, pLimitButton,
+			  pLimitComboBox, pPkgView,
 			  sigc::mem_fun(this, &PackagesTab::after_repopulate_model));
 
     pPkgView->get_treeview()->set_fixed_height_mode(true);
@@ -291,6 +336,28 @@ namespace gui
   void PackagesTab::dispatch_undo()
   {
     apt_undos->undo();
+  }
+
+  void PackagesTab::set_limit(const std::string &limit)
+  {
+    cwidget::util::ref_ptr<aptitude::matching::pattern> parsed;
+    pLimitEntry->set_text(limit);
+    try
+      {
+	parsed = aptitude::matching::parse_with_errors(limit);
+      }
+    catch(aptitude::matching::MatchingException &ex)
+      {
+	std::string markup(cwidget::util::ssprintf("<span size=\"smaller\" color=\"red\">%s: %s</span>",
+						   Glib::Markup::escape_text(_("Parse error")).c_str(),
+						   Glib::Markup::escape_text(ex.errmsg()).c_str()));
+	pLimitErrorLabel->set_markup(markup);
+	pLimitErrorLabel->show();
+	return;
+      }
+
+    pLimitErrorLabel->hide();
+    pPkgView->set_limit(parsed);
   }
 
   bool PackagesTab::get_edit_columns_available()

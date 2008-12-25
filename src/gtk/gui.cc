@@ -39,6 +39,7 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_install_manager.h>
 #include <generic/apt/download_update_manager.h>
+#include <generic/apt/matching/pattern.h>
 #include <generic/apt/parse_dpkg_status.h>
 #include <generic/apt/tags.h>
 
@@ -708,7 +709,7 @@ namespace gui
   void AptitudeWindow::do_show_broken()
   {
     PackagesTab *tab = new PackagesTab(_("Broken packages"));
-    tab->get_pkg_view()->set_limit("?broken");
+    tab->get_pkg_view()->set_limit(aptitude::matching::pattern::make_broken());
     tab_add(tab);
   }
 
@@ -716,8 +717,7 @@ namespace gui
   {
     PackagesTab *tab = new PackagesTab("Packages " + pattern);
     tab_add(tab);
-    tab->get_limit_entry()->set_text(pattern);
-    tab->get_pkg_view()->set_limit(pattern);
+    tab->set_limit(pattern);
   }
 
   class BrokenPackagesNotification : public Notification

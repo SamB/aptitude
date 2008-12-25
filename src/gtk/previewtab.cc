@@ -160,9 +160,9 @@ namespace gui
 
   void PreviewTab::repopulate_model()
   {
-    pPkgView->set_limit(pLimitEntry->get_text());
+    /*pPkgView->set_limit(pLimitEntry->get_text());
     pPkgView->get_treeview()->expand_all();
-    set_label(_("Preview: ") + pLimitEntry->get_text());
+    set_label(_("Preview: ") + pLimitEntry->get_text());*/
   }
 
   void PreviewTab::display_desc(const cwidget::util::ref_ptr<Entity> &ent)

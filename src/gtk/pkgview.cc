@@ -453,11 +453,6 @@ namespace gui
     store_reloaded();
   }
 
-  void PkgViewBase::set_limit(const Glib::ustring &_limit)
-  {
-    set_limit(aptitude::matching::parse(_limit));
-  }
-
   void PkgViewBase::set_limit(const cwidget::util::ref_ptr<aptitude::matching::pattern> &_limit)
   {
     limit = _limit;

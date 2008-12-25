@@ -46,6 +46,9 @@ namespace gui
     Gtk::Entry *start_package_entry;
     Gtk::Entry *end_package_entry;
 
+    Gtk::Label *start_errors;
+    Gtk::Label *end_errors;
+
     // Gets the TreeModel for the results view.
     Glib::RefPtr<Gtk::TreeModel> get_results();
 

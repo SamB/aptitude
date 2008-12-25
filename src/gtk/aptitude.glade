@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Dec 24 14:47:42 2008 -->
+<!--Generated with glade3 3.4.5 on Wed Dec 24 16:51:29 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Aptitude Package Manager</property>
@@ -740,6 +740,19 @@
                       </packing>
                     </child>
                     <child>
+                      <widget class="GtkLabel" id="main_notebook_packages_limit_errors">
+                        <property name="xalign">0</property>
+                        <property name="xpad">10</property>
+                        <property name="label" translatable="yes">Errors</property>
+                        <property name="use_markup">True</property>
+                        <property name="wrap">True</property>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
                       <widget class="GtkHBox" id="hbox8">
                         <property name="visible">True</property>
                         <property name="spacing">6</property>
@@ -764,7 +777,7 @@
                       </widget>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="position">1</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                     <child>
@@ -785,7 +798,7 @@
                         </child>
                       </widget>
                       <packing>
-                        <property name="position">2</property>
+                        <property name="position">3</property>
                       </packing>
                     </child>
                   </widget>
@@ -1332,6 +1345,19 @@
                                   </packing>
                                 </child>
                                 <child>
+                                  <widget class="GtkLabel" id="dependency_path_start_search_errors">
+                                    <property name="xalign">0</property>
+                                    <property name="xpad">10</property>
+                                    <property name="label" translatable="yes">Errors</property>
+                                    <property name="use_markup">True</property>
+                                    <property name="wrap">True</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
                                   <widget class="GtkHBox" id="hbox9">
                                     <property name="visible">True</property>
                                     <property name="spacing">6</property>
@@ -1356,7 +1382,7 @@
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="position">1</property>
+                                    <property name="position">2</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -1377,7 +1403,7 @@
                                     </child>
                                   </widget>
                                   <packing>
-                                    <property name="position">2</property>
+                                    <property name="position">3</property>
                                   </packing>
                                 </child>
                               </widget>
@@ -1456,6 +1482,19 @@
                                   </packing>
                                 </child>
                                 <child>
+                                  <widget class="GtkLabel" id="dependency_path_end_search_errors">
+                                    <property name="xalign">0</property>
+                                    <property name="xpad">10</property>
+                                    <property name="label" translatable="yes">Errors</property>
+                                    <property name="use_markup">True</property>
+                                    <property name="wrap">True</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
                                   <widget class="GtkHBox" id="hbox10">
                                     <property name="visible">True</property>
                                     <property name="spacing">6</property>
@@ -1480,7 +1519,7 @@
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="position">1</property>
+                                    <property name="position">2</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -1501,7 +1540,7 @@
                                     </child>
                                   </widget>
                                   <packing>
-                                    <property name="position">2</property>
+                                    <property name="position">3</property>
                                   </packing>
                                 </child>
                               </widget>

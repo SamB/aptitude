@@ -29,6 +29,7 @@
 #include <aptitude.h>
 
 #include <generic/apt/apt.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <cwidget/generic/util/ssprintf.h>
 
@@ -231,7 +232,7 @@ namespace gui
     search_entry->signal_activate().connect(sigc::mem_fun(*this, &DashboardTab::do_search));
     search_button->signal_clicked().connect(sigc::mem_fun(*this, &DashboardTab::do_search));
 
-    upgrades_pkg_view->set_limit("?upgradable");
+    upgrades_pkg_view->set_limit(aptitude::matching::pattern::make_upgradable());
 
     cache_reloaded.connect(sigc::mem_fun(*this, &DashboardTab::create_upgrade_summary));
     create_upgrade_summary();

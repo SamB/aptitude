@@ -153,9 +153,6 @@ namespace gui
     /** \brief Rebuild the store using the currently set limit. */
     virtual void rebuild_store();
 
-    /** \brief Change this view's limit to the given string. */
-    void set_limit(const Glib::ustring &limit);
-
     /** \brief Change this view's limit to the given pattern. */
     void set_limit(const cwidget::util::ref_ptr<aptitude::matching::pattern> &limit);
   };

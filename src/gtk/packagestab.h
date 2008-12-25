@@ -43,6 +43,7 @@ namespace gui
       cwidget::util::ref_ptr<PkgView> pPkgView;
       Gtk::TextView * pPackagesTextView;
       Gtk::Entry * pLimitEntry;
+      Gtk::Label * pLimitErrorLabel;
       Gtk::Button * pLimitButton;
       Gtk::ComboBox * pLimitComboBox;
 
@@ -58,6 +59,7 @@ namespace gui
       void dispatch_package_menu_action(PackagesAction action);
       bool get_undo_available();
       void dispatch_undo();
+      void set_limit(const std::string &limit);
 
       bool get_edit_columns_available();
       void dispatch_edit_columns();
@@ -70,6 +72,7 @@ namespace gui
    *  displayed in a package view.
    *
    *  \param search_entry   The text entry where the user enters search terms.
+   *  \param search_error_label   A label that will be used to display error messages.
    *  \param search_button  The button the user presses to immediately search.
    *  \param limit_combo_box  A combo-box used to select an auxiliary limit (e.g.,
    *                          "Installed packages").
@@ -80,6 +83,7 @@ namespace gui
    *                                 when the user enters a new search term.
    */
   void setup_searchable_view(Gtk::Entry *search_entry,
+			     Gtk::Label *search_error_label,
 			     Gtk::Button *search_button,
 			     Gtk::ComboBox *limit_combo_box,
 			     const cwidget::util::ref_ptr<PkgView> packages_view,
