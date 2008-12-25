@@ -250,18 +250,13 @@ namespace gui
     store->clear();
 
     // Now we run the "why" algorithm.
-    //
-    // TODO: hoist the "strongest tightest narrowest" logic out of
-    // cmdline_why and expose it to this code, then use it.
     std::vector<std::vector<why::action> > results;
-    if(!why::find_justification(why::target::Install(target),
-				leaves,
-				why::search_params(why::search_params::Install,
-						   why::search_params::Recommends,
-						   true),
-				false,
-				results) ||
-       results.empty() || results[0].empty())
+    why::find_best_justification(leaves,
+				 why::target::Install(target),
+				 false,
+				 0,
+				 results);
+    if(results.empty() || results.front().empty())
       {
 	Gtk::TreeModel::iterator iter = store->append();
 	Gtk::TreeModel::Row row = *iter;
