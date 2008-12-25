@@ -105,24 +105,74 @@ private:
   class AcqForEntry : public pkgAcqFile
   {
     entry ent;
-    string real_uri;
+    vector<string> uris;
+    vector<string>::const_iterator current_uri;
+    // Stores the description and short description of this item; used
+    // to requeue it after a failure. (the pkgAcqFile constructor
+    // enqueues it to start with)
+    pkgAcquire::ItemDesc desc;
+
+    int Retries;
   public:
     AcqForEntry(pkgAcquire *Owner,
-		const string &URI,
+		// Must contain at least one entry.
+		const vector<string> URIs,
 		const string &MD5,
 		unsigned long Size,
 		const string &Description,
 		const string &ShortDesc,
 		const string &filename,
 		const entry &_ent):
-      pkgAcqFile(Owner, URI, MD5, Size, Description, ShortDesc, "", filename),
+      pkgAcqFile(Owner, URIs.front(), MD5, Size, Description, ShortDesc, "", filename),
       ent(_ent),
-      real_uri(URI)
+      uris(URIs),
+      current_uri(uris.begin())
     {
+      Retries = _config->FindI("Acquire::Retries", 0);
+
+      desc.URI = URIs.front();
+      desc.Description = Description;
+      desc.Owner = this;
+      desc.ShortDesc = ShortDesc;
     }
 
     const entry &get_entry() const { return ent; }
-    const string &get_real_uri() const { return real_uri; }
+    // The URI that is representative of all the URIs in this entry
+    // (\todo this is used to display error messages, but we should do
+    // something more complete).
+    const string &get_real_uri() const { return uris.back(); }
+
+    void Failed(string Message, pkgAcquire::MethodConfig *Cnf)
+    {
+      // We do what pkgAcqFile would do, except that we only give up
+      // for good if we've run out of URIs.
+
+      ErrorText = LookupTag(Message,"Message");
+
+      // This is the retry counter
+      if (Retries != 0 &&
+	  Cnf->LocalOnly == false &&
+	  StringToBool(LookupTag(Message,"Transient-Failure"),false) == true)
+	{
+	  Retries--;
+	  QueueURI(desc);
+	  return;
+	}
+
+      if(current_uri < uris.end())
+	{
+	  ++current_uri;
+	  if(current_uri < uris.end())
+	    {
+	      Retries = _config->FindI("Acquire::Retries",0);
+	      desc.URI = *current_uri;
+	      QueueURI(desc);
+	      return;
+	    }
+	}
+
+      Item::Failed(Message, Cnf);
+    }
 
     void Done(std::string Message,
 	      unsigned long Size,
@@ -134,7 +184,7 @@ private:
       if(Status != pkgAcquire::Item::StatDone)
 	_error->Error("Failed to fetch the description of %s from the URI %s: %s",
 		      ent.get_srcpkg().c_str(),
-		      real_uri.c_str(),
+		      desc.URI.c_str(),
 		      ErrorText.c_str());
       else
 	ent.get_k()(ent.get_tempname());
@@ -174,12 +224,11 @@ public:
 	source_records.Restart();
 	pkgSrcRecords::Parser *source_rec = source_records.Find(srcpkg.c_str());
 
-	// \todo instead of having this cutoff, support falling back
-	// from one URL to another, properly.
-	bool found_local = false;
+	std::vector<std::string> changelog_uris;
+
 	if(source_rec != NULL)
 	  for(const char **binaryIt = source_rec->Binaries();
-	      *binaryIt != NULL && !found_local; ++binaryIt)
+	      *binaryIt != NULL; ++binaryIt)
 	    {
 	      pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*binaryIt);
 	      if(!pkg.end() &&
@@ -208,49 +257,21 @@ public:
 		      changelog_file += "/changelog.Debian";
 
 		      if(stat(changelog_file.c_str(), &buf) == 0)
-			{
-			  // Queue up that file and jump to the next entry.
-			  new AcqForEntry(fetcher,
-					  "file://" + changelog_file,
-					  "",
-					  0,
-					  title,
-					  title,
-					  it->get_tempname().get_name().c_str(),
-					  *it);
-			  found_local = true;
-			}
-		      else
-			{
-			  changelog_file += ".gz";
+			changelog_uris.push_back("file://" + changelog_file);
 
-			  if(stat(changelog_file.c_str(), &buf) == 0)
-			    {
-			      // Queue up that file and jump to the next entry.
-			      new AcqForEntry(fetcher,
-					      "gzip://" + changelog_file,
-					      "",
-					      0,
-					      title,
-					      title,
-					      it->get_tempname().get_name().c_str(),
-					      *it);
-			      found_local = true;
-			    }
-			}
+		      changelog_file += ".gz";
 
-		      // No changelog found for this binary package,
-		      // try the next one.
+		      if(stat(changelog_file.c_str(), &buf) == 0)
+			changelog_uris.push_back("gzip://" + changelog_file);
 
-		      // \todo we should fall back to reading off the
-		      // network if something goes wrong with the
-		      // local copy of the changelog.
+		      // Beware the races here -- ideally we should
+		      // parse the returned changelog and check that
+		      // the first version it contains is what we
+		      // expect.  This should be reliable in *most*
+		      // cases, though.
 		    }
 		}
 	    }
-
-	if(found_local)
-	  continue;
 
 	string realsection;
 
@@ -281,8 +302,10 @@ public:
 			      srcpkg.c_str(),
 			      realver.c_str());
 
+	changelog_uris.push_back(uri);
+
 	new AcqForEntry(fetcher,
-			uri,
+			changelog_uris,
 			"",
 			0,
 			title,
