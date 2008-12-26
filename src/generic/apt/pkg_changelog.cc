@@ -55,15 +55,13 @@ namespace aptitude
 class download_changelog_manager : public download_manager
 {
 public:
-  // TODO: maybe I should have two callbacks, one for success and one
-  // for failure?
   class entry
   {
     string srcpkg;
     string ver;
     string section;
     string name;
-    sigc::slot1<void, temp::name> k;
+    changelog_cache::download_callbacks callbacks;
     temp::name tempname;
 
   public:
@@ -72,12 +70,12 @@ public:
 	  const string &_section,
 	  const string &_name,
 	  const temp::name &_tempname,
-	  const sigc::slot1<void, temp::name> &_k)
+	  const changelog_cache::download_callbacks &_callbacks)
       : srcpkg(_srcpkg),
 	ver(_ver),
 	section(_section),
 	name(_name),
-	k(_k),
+	callbacks(_callbacks),
 	tempname(_tempname)
     {
     }
@@ -86,7 +84,7 @@ public:
     const string &get_ver() const { return ver; }
     const string &get_section() const { return section; }
     const string &get_name() const { return name; }
-    const sigc::slot1<void, temp::name> &get_k() const { return k; }
+    const changelog_cache::download_callbacks &get_callbacks() const { return callbacks; }
     const temp::name &get_tempname() const { return tempname; }
   };
 
@@ -172,6 +170,7 @@ private:
 	}
 
       Item::Failed(Message, Cnf);
+      ent.get_callbacks().get_failure()(ErrorText);
     }
 
     void Done(std::string Message,
@@ -187,7 +186,7 @@ private:
 		      desc.URI.c_str(),
 		      ErrorText.c_str());
       else
-	ent.get_k()(ent.get_tempname());
+	ent.get_callbacks().get_success()(ent.get_tempname());
     }
   };
 
@@ -347,7 +346,7 @@ public:
 		    {
 		      const entry &ent(item->get_entry());
 
-		      ent.get_k()(ent.get_tempname());
+		      ent.get_callbacks().get_success()(ent.get_tempname());
 		    }
 		}
 	    }
@@ -368,15 +367,29 @@ void changelog_cache::register_changelog(const temp::name &n,
 					 const std::string &version)
 {
   cache[std::make_pair(package, version)] = n;
-  pending_downloads[std::make_pair(package, version)](n);
+  pending_downloads[std::make_pair(package, version)].get_success()(n);
   pending_downloads.erase(std::make_pair(package, version));
 }
 
-download_manager *changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > &versions)
+void changelog_cache::changelog_failed(const std::string &errmsg,
+				       const std::string &package,
+				       const std::string &version)
+{
+  const std::pair<std::string, std::string> key(package, version);
+
+  sigc::slot<void, std::string> failure_slot =
+    pending_downloads[key].get_failure();
+
+  pending_downloads.erase(key);
+
+  failure_slot(errmsg);
+}
+
+download_manager *changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, changelog_cache::download_callbacks> > &versions)
 {
   std::vector<download_changelog_manager::entry> entries;
 
-  for(std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > >::const_iterator
+  for(std::vector<std::pair<pkgCache::VerIterator, download_callbacks> >::const_iterator
 	it = versions.begin(); it != versions.end(); ++it)
     {
       pkgCache::VerIterator ver(it->first);
@@ -410,30 +423,42 @@ download_manager *changelog_cache::get_changelogs(const std::vector<std::pair<pk
 	  continue;
 	}
 
-      const sigc::slot1<void, temp::name> &k(it->second);
+      const download_callbacks &callbacks(it->second);
 
-      const std::map<std::pair<std::string, std::string>, sigc::signal<void, temp::name> >::iterator
+      const std::map<std::pair<std::string, std::string>, download_signals>::iterator
 	pending_found = pending_downloads.find(std::make_pair(srcpkg, sourcever));
 
       if(pending_found != pending_downloads.end())
-	pending_found->second.connect(k);
+	{
+	  pending_found->second.get_success().connect(callbacks.get_success());
+	  pending_found->second.get_failure().connect(callbacks.get_failure());
+	}
       else
 	{
 	  const std::map<std::pair<std::string, std::string>, temp::name>::const_iterator
 	    found = cache.find(std::make_pair(srcpkg, sourcever));
 
 	  if(found != cache.end())
-	    k(found->second);
+	    callbacks.get_success()(found->second);
 	  else
 	    {
-	      pending_downloads[std::make_pair(srcpkg, sourcever)].connect(k);
+	      download_signals &signals(pending_downloads[std::make_pair(srcpkg, sourcever)]);
+	      signals.get_success().connect(callbacks.get_success());
+	      signals.get_failure().connect(callbacks.get_failure());
 
 	      const sigc::slot1<void, temp::name> register_slot =
 		sigc::bind(sigc::mem_fun(*this, &changelog_cache::register_changelog),
 			   srcpkg,
 			   sourcever);
+	      const sigc::slot1<void, std::string> failure_slot =
+		sigc::bind(sigc::mem_fun(*this, &changelog_cache::changelog_failed),
+			   srcpkg, sourcever);
 
-	      entries.push_back(download_changelog_manager::entry(srcpkg, sourcever, ver.Section(), ver.ParentPkg().Name(), tempname, register_slot));
+	      changelog_cache::download_callbacks
+		callbacks(register_slot, failure_slot);
+
+	      entries.push_back(download_changelog_manager::entry(srcpkg, sourcever, ver.Section(), ver.ParentPkg().Name(),
+								  tempname, callbacks));
 	    }
 	}
     }
@@ -442,10 +467,11 @@ download_manager *changelog_cache::get_changelogs(const std::vector<std::pair<pk
 }
 
 download_manager *changelog_cache::get_changelog(const pkgCache::VerIterator &ver,
-						 const sigc::slot1<void, temp::name> &k)
+						 const sigc::slot<void, temp::name> &success,
+						 const sigc::slot<void, std::string> &failure)
 {
-  std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > versions;
-  versions.push_back(std::make_pair(ver, k));
+  std::vector<std::pair<pkgCache::VerIterator, download_callbacks> > versions;
+  versions.push_back(std::make_pair(ver, download_callbacks(success, failure)));
 
   return get_changelogs(versions);
 }
@@ -454,7 +480,8 @@ download_manager *changelog_cache::get_changelog_from_source(const string &srcpk
 							     const string &ver,
 							     const string &section,
 							     const string &name,
-							     const sigc::slot1<void, temp::name> &k)
+							     const sigc::slot<void, temp::name> &success,
+							     const sigc::slot<void, std::string> &failure)
 {
   temp::dir tempdir;
   temp::name tempname;
@@ -470,30 +497,41 @@ download_manager *changelog_cache::get_changelog_from_source(const string &srcpk
       return false;
     }
 
-  const std::map<std::pair<std::string, std::string>, sigc::signal<void, temp::name> >::iterator
+  const std::map<std::pair<std::string, std::string>, download_signals>::iterator
     pending_found = pending_downloads.find(std::make_pair(srcpkg, ver));
 
   std::vector<download_changelog_manager::entry> entries;
 
   if(pending_found != pending_downloads.end())
-    pending_found->second.connect(k);
+    {
+      pending_found->second.get_success().connect(success);
+      pending_found->second.get_failure().connect(failure);
+    }
   else
     {
       const std::map<std::pair<std::string, std::string>, temp::name>::const_iterator
 	found = cache.find(std::make_pair(srcpkg, ver));
 
       if(found != cache.end())
-	k(found->second);
+	success(found->second);
       else
 	{
-	  pending_downloads[std::make_pair(srcpkg, ver)].connect(k);
+	  download_signals &signals(pending_downloads[std::make_pair(srcpkg, ver)]);
+	  signals.get_success().connect(success);
+	  signals.get_failure().connect(failure);
 
 	  sigc::slot1<void, temp::name>
 	    register_and_return(sigc::bind(sigc::mem_fun(*this, &changelog_cache::register_changelog),
 					   srcpkg,
 					   ver));
+	  const sigc::slot1<void, std::string>
+	    fail_and_return(sigc::bind(sigc::mem_fun(*this, &changelog_cache::changelog_failed),
+				       srcpkg, ver));
 
-	  entries.push_back(download_changelog_manager::entry(srcpkg, ver, section, name, tempname, register_and_return));
+	  changelog_cache::download_callbacks
+	    callbacks(register_and_return, fail_and_return);
+
+	  entries.push_back(download_changelog_manager::entry(srcpkg, ver, section, name, tempname, callbacks));
 	}
     }
 

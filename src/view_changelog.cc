@@ -373,13 +373,14 @@ void view_changelog(pkgCache::VerIterator ver)
 
   // When the download completes, we'll invoke the trampoline
   // function, which packages up a cwidget-style event in order to
-  // alert the main thread.
-  sigc::slot1<void, temp::name> k(sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
-					     pkgname, current_source_ver));
-
+  // alert the main thread.  Errors are ignored (although I expect
+  // that they should show up in the apt error stack).
   using aptitude::apt::global_changelog_cache;
   download_manager *manager =
-    global_changelog_cache.get_changelog(ver, k);
+    global_changelog_cache.get_changelog(ver,
+					 sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
+						    pkgname, current_source_ver),
+					 sigc::slot<void, std::string>());
 
   if(manager != NULL)
     {
