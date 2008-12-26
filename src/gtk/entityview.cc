@@ -181,6 +181,7 @@ namespace gui
   {
     static const Glib::Quark description_property;
     static const Glib::Quark edit_name_property;
+    static const Glib::Quark hidden_property;
 
     static void ustring_destroy_notify(gpointer data)
     {
@@ -260,6 +261,36 @@ namespace gui
     }
 
 
+    /** \brief Do not add the column to the editor.
+     *
+     *  The column will not be displayed in the "edit columns" dialog box.
+     *
+     *  \param col            The column to modify.
+     *  \param hidden         true to hide the column from the columns editor, false otherwise.
+     */
+    static void set_hidden(Gtk::TreeViewColumn *col,
+                           bool hidden)
+    {
+      col->set_data(hidden_property, reinterpret_cast<gpointer>(hidden));
+    }
+
+    /** \brief Retrieve the hiding of a column that was set by set_hidden(),
+     *  and false otherwise.
+     *
+     *  \param col  The column whose description should be retrieved.
+     *
+     *  \return The hiding of col, if one was set using
+     *  set_hidden(), and false otherwise.
+     */
+    static bool get_hidden(Gtk::TreeViewColumn *col)
+    {
+      gpointer rval = col->get_data(hidden_property);
+
+      if(rval == NULL)
+	return false;
+      else
+	return reinterpret_cast<glong>(rval);
+    }
 
     class ModelColumns : public Gtk::TreeModel::ColumnRecord
     {
@@ -386,6 +417,9 @@ namespace gui
      */
     void add_column_to_list(Gtk::TreeViewColumn * col) const
     {
+      if (get_hidden(col))
+        return;
+
       Glib::ustring name = get_edit_name(col);
       if(name.empty())
 	name = col->get_title();
@@ -427,6 +461,7 @@ namespace gui
 
   const Glib::Quark EntityView::EditColumnsDialog::description_property("aptitude-visible-columns-editor-column-description-property");
   const Glib::Quark EntityView::EditColumnsDialog::edit_name_property("aptitude-visible-columns-editor-column-edit-name-property");
+  const Glib::Quark EntityView::EditColumnsDialog::hidden_property("aptitude-visible-columns-editor-column-hidden-property");
 
   // \todo Perhaps "Edit Columns..." should be available without going
   // through the menu, so it's useful in tabs that have more than one
@@ -489,20 +524,13 @@ namespace gui
     cache_reloaded.connect(sigc::mem_fun(*this, &EntityView::on_cache_reloaded));
 
     {
-      Gtk::TreeViewColumn *EditColumnsColumn = new Gtk::TreeViewColumn("...");
-      EditColumnsColumn->signal_clicked().connect(sigc::mem_fun(*this, &EntityView::show_edit_columns_dialog));
-      EditColumnsColumn->set_clickable(true);
+      EditColumns = manage(new Gtk::TreeViewColumn("..."));
+      EditColumns->signal_clicked().connect(sigc::mem_fun(*this, &EntityView::show_edit_columns_dialog));
+      EditColumns->set_clickable(true);
       // Don't let the properties of this column be edited.
-      EditColumnsDialog::set_edit_name(EditColumnsColumn, "");
-      tree->append_column(*EditColumnsColumn);
+      EditColumnsDialog::set_hidden(EditColumns, true);
+      tree->append_column(*EditColumns);
     }
-
-    // Put in a dummy column for the expanders, so everything else
-    // lines up.
-    Expander = manage(new Gtk::TreeViewColumn(""));
-    setup_column_properties(Expander, 24);
-    Expander->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
-    tree->append_column(*Expander);
 
     {
       // \todo should the selected status icon have a dropdown menu?
@@ -775,7 +803,7 @@ namespace gui
 				       Gtk::TreeViewColumn *next_column)
   {
     // Ensure that the expander column is always first.
-    if(column == Expander || next_column == Expander)
+    if(column == EditColumns || next_column == EditColumns)
       return false;
 
     return true;
@@ -820,13 +848,6 @@ namespace gui
 			    sigc::mem_fun(this, &EntityView::compare_rows_by_version));
 
     revstore.clear();
-    bool has_expandable_rows = false;
-    model->foreach_iter(sigc::bind(sigc::ptr_fun(post_process_model),
-				   model,
-				   get_columns(),
-				   get_reverse_store(),
-				   &has_expandable_rows));
-    Expander->set_visible(has_expandable_rows);
     get_treeview()->set_model(model);
   }
 }

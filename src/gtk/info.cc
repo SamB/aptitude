@@ -657,7 +657,6 @@ namespace gui
     pDependsView = ref_ptr<EntityView>(new EntityView(get_xml(), "main_info_dependsview",
 						      _("Package information: dependency list")));
     pDependsView->set_model(make_depends_tree(pDependsView->get_columns(), ver));
-    pDependsView->get_expander_column()->set_fixed_width(48);
     pDependsView->get_name_column()->set_fixed_width(280);
     pDependsView->get_automatically_installed_column()->set_visible(false);
     Gtk::TreeModel::Children dependsChildren = pDependsView->get_treeview()->get_model()->children();
