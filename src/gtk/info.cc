@@ -639,6 +639,7 @@ namespace gui
 						       _("Package information: version list")));
     pVersionsView->set_model(make_version_list(pVersionsView->get_columns(), pkg));
     pVersionsView->get_name_column()->set_fixed_width(154);
+    pVersionsView->get_automatically_installed_column()->set_visible(false);
     pVersionsView->get_treeview()->get_selection()->set_mode(Gtk::SELECTION_BROWSE);
     {
       Gtk::TreeModel::Children entries = pVersionsView->get_treeview()->get_model()->children();
@@ -658,6 +659,7 @@ namespace gui
     pDependsView->set_model(make_depends_tree(pDependsView->get_columns(), ver));
     pDependsView->get_expander_column()->set_fixed_width(48);
     pDependsView->get_name_column()->set_fixed_width(280);
+    pDependsView->get_automatically_installed_column()->set_visible(false);
     Gtk::TreeModel::Children dependsChildren = pDependsView->get_treeview()->get_model()->children();
     for(Gtk::TreeModel::iterator it = dependsChildren.begin();
 	it != dependsChildren.end(); ++it)

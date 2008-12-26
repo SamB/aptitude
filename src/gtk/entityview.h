@@ -144,7 +144,7 @@ namespace gui
       /** \brief Text to display as the tooltip for the automatically installed column. */
       Gtk::TreeModelColumn<Glib::ustring> AutomaticallyInstalledTooltip;
 
-      /** \brief Indicates whether to display the AutomaticallyInstalled column. */
+      /** \brief Indicates whether to display the AutomaticallyInstalled renderer. */
       Gtk::TreeModelColumn<bool> AutomaticallyInstalledVisible;
 
       EntityColumns();
@@ -260,6 +260,7 @@ namespace gui
       Gtk::TreeViewColumn *get_status_column() const { return Status; }
       Gtk::TreeViewColumn *get_name_column() const { return Name; }
       Gtk::TreeViewColumn *get_version_column() const { return Version; }
+      Gtk::TreeViewColumn *get_automatically_installed_column() const { return AutomaticallyInstalled; }
       Glib::RefPtr<Gtk::TreeModel> get_model() const { return get_treeview()->get_model(); };
       const std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_store() const { return &revstore; };
       std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_store() { return &revstore; };
