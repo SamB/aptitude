@@ -709,7 +709,7 @@ namespace gui
   void AptitudeWindow::do_show_broken()
   {
     PackagesTab *tab = new PackagesTab(_("Broken packages"));
-    tab->get_pkg_view()->set_limit(aptitude::matching::pattern::make_broken());
+    tab->set_limit("?broken");
     tab_add(tab);
   }
 
