@@ -548,9 +548,10 @@ namespace gui
       EditColumnsDialog::set_edit_name(Status, _("Status"));
       EditColumnsDialog::set_description(Status, _("Icons showing the current and future status of this package."));
 
-      setup_column_properties(Status, -1);
+      setup_column_properties(Status, 48);
       // Needs to be GROW_ONLY because otherwise it gets clipped in
       // the preview display.
+      Status->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
       tree->append_column(*Status);
     }
     set_markup_tooltip(tree, Status, cols.StatusDescriptionMarkup);
@@ -631,14 +632,9 @@ namespace gui
 	treeview_column->add_attribute((*it)->property_cell_background_set(), cols.BgSet);
 	treeview_column->add_attribute((*it)->property_cell_background(), cols.BgColor);
       }
-    if (size < 0)
-      treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_AUTOSIZE);
-    else
-      {
-        treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
-        treeview_column->set_fixed_width(size);
-        treeview_column->set_resizable(true);
-      }
+    treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
+    treeview_column->set_fixed_width(size);
+    treeview_column->set_resizable(true);
     treeview_column->set_reorderable(true);
   }
 
