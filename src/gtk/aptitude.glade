@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Jan  3 21:20:22 2009 -->
+<!--Generated with glade3 3.4.5 on Sat Jan  3 21:21:28 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Aptitude Package Manager</property>
@@ -218,14 +218,9 @@
                       <widget class="GtkImageMenuItem" id="menu_undo_undo">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Undo the last package operation or group of operations</property>
-                        <property name="label" translatable="yes">Undo</property>
+                        <property name="label" translatable="yes">gtk-undo</property>
                         <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image17">
-                            <property name="stock">gtk-undo</property>
-                            <property name="icon_size">1</property>
-                          </widget>
-                        </child>
+                        <property name="use_stock">True</property>
                       </widget>
                     </child>
                     <child>
