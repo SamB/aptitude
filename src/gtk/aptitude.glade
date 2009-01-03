@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Jan  3 21:04:49 2009 -->
+<!--Generated with glade3 3.4.5 on Sat Jan  3 21:10:30 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Aptitude Package Manager</property>
@@ -290,11 +290,18 @@
                   <widget class="GtkMenu" id="menu5">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkMenuItem" id="menu_view_edit_columns">
+                      <widget class="GtkImageMenuItem" id="menu_view_edit_columns">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Change which columns are visible in the currently active view.</property>
                         <property name="label" translatable="yes">_Edit Columns...</property>
                         <property name="use_underline">True</property>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="menu-item-image23">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-edit</property>
+                            <property name="icon_size">1</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
@@ -303,19 +310,33 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkMenuItem" id="menu_view_apt_errors">
+                      <widget class="GtkImageMenuItem" id="menu_view_apt_errors">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">View errors that have occurred in the apt system since the program was started.</property>
                         <property name="label" translatable="yes">View apt _errors</property>
                         <property name="use_underline">True</property>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="menu-item-image25">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-dialog-error</property>
+                            <property name="icon_size">1</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkMenuItem" id="menu_item_find_dependency_paths">
+                      <widget class="GtkImageMenuItem" id="menu_item_find_dependency_paths">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Find chains of dependencies linking one package to another.</property>
                         <property name="label" translatable="yes">Find _Dependency Chains</property>
                         <property name="use_underline">True</property>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="menu-item-image24">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-find</property>
+                            <property name="icon_size">1</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                   </widget>
