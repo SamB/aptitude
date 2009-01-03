@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Jan  3 21:10:30 2009 -->
+<!--Generated with glade3 3.4.5 on Sat Jan  3 21:20:22 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Aptitude Package Manager</property>
@@ -24,7 +24,7 @@
                       <widget class="GtkImageMenuItem" id="menu_do_package_run">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Perform all pending installs and removals</property>
-                        <property name="label" translatable="yes">_Install/remove packages</property>
+                        <property name="label" translatable="yes">_Install/Remove Packages</property>
                         <property name="use_underline">True</property>
                         <accelerator key="G" modifiers="GDK_CONTROL_MASK" signal="activate"/>
                         <child internal-child="image">
@@ -40,7 +40,7 @@
                       <widget class="GtkImageMenuItem" id="menu_do_update_lists">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Check for new versions of packages</property>
-                        <property name="label" translatable="yes">_Update package list</property>
+                        <property name="label" translatable="yes">_Update Package List</property>
                         <property name="use_underline">True</property>
                         <accelerator key="U" modifiers="GDK_CONTROL_MASK" signal="activate"/>
                         <child internal-child="image">
@@ -77,7 +77,7 @@
                       <widget class="GtkImageMenuItem" id="menu_do_forget_new">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Forget which packages are "new"</property>
-                        <property name="label" translatable="yes">_Forget new packages</property>
+                        <property name="label" translatable="yes">_Forget New Packages</property>
                         <property name="use_underline">True</property>
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image9">
@@ -92,7 +92,7 @@
                       <widget class="GtkImageMenuItem" id="menu_do_keep_all">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Cancel all pending installations, removals, holds, and upgrades.</property>
-                        <property name="label" translatable="yes">Canc_el pending actions</property>
+                        <property name="label" translatable="yes">Canc_el Pending Actions</property>
                         <property name="use_underline">True</property>
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image10">
@@ -107,7 +107,7 @@
                       <widget class="GtkImageMenuItem" id="menu_do_clean">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Delete package files which were previously downloaded</property>
-                        <property name="label" translatable="yes">C_lean package cache</property>
+                        <property name="label" translatable="yes">C_lean Package Cache</property>
                         <property name="use_underline">True</property>
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image11">
@@ -122,7 +122,7 @@
                       <widget class="GtkImageMenuItem" id="menu_do_autoclean">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Delete package files which can no longer be downloaded</property>
-                        <property name="label" translatable="yes">Clean _obsolete files</property>
+                        <property name="label" translatable="yes">Clean _Obsolete Files</property>
                         <property name="use_underline">True</property>
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image12">
@@ -142,7 +142,7 @@
                       <widget class="GtkImageMenuItem" id="menu_do_reload_cache">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Reload the package cache</property>
-                        <property name="label" translatable="yes">_Reload package cache</property>
+                        <property name="label" translatable="yes">_Reload Package Cache</property>
                         <property name="use_underline">True</property>
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image14">
@@ -177,7 +177,7 @@
                       <widget class="GtkImageMenuItem" id="menu_do_su_to_root">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Run 'su' to become root; this will restart the program, but your settings will be preserved</property>
-                        <property name="label" translatable="yes">_Become root</property>
+                        <property name="label" translatable="yes">_Become Root</property>
                         <property name="use_underline">True</property>
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image16">
@@ -313,7 +313,7 @@
                       <widget class="GtkImageMenuItem" id="menu_view_apt_errors">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">View errors that have occurred in the apt system since the program was started.</property>
-                        <property name="label" translatable="yes">View apt _errors</property>
+                        <property name="label" translatable="yes">View Apt _Errors</property>
                         <property name="use_underline">True</property>
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image25">
