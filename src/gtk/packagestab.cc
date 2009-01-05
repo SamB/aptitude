@@ -310,8 +310,6 @@ namespace gui
 			  pLimitComboBox, pPkgView,
 			  sigc::mem_fun(this, &PackagesTab::after_repopulate_model));
 
-    pPkgView->get_treeview()->set_fixed_height_mode(true);
-
     pPkgView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
     pPkgView->get_treeview()->signal_cursor_changed().connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
 
