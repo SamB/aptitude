@@ -1,6 +1,6 @@
 // previewtab.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -32,6 +32,7 @@
 #include <gtk/gui.h>
 #include <gtk/info.h>
 #include <gtk/packageinformation.h>
+#include <gtk/packagestab.h> // For PackageSearchEntry.
 #include <gtk/pkgview.h>
 #include <gtk/notify.h>
 
@@ -120,19 +121,27 @@ namespace gui
   PreviewTab::PreviewTab(const Glib::ustring &label) :
     Tab(Preview, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_hpaned"), "main_packages_hpaned")
   {
+    Gtk::Entry *pLimitEntry;
+    Gtk::Button *pLimitButton;
+    Gtk::Label *pLimitErrors;
+
     get_xml()->get_widget("main_packages_textview", pPackagesTextView);
     get_xml()->get_widget("main_notebook_packages_limit_entry", pLimitEntry);
-    pLimitEntry->signal_activate().connect(sigc::mem_fun(*this, &PreviewTab::repopulate_model));
+    get_xml()->get_widget("main_notebook_packages_limit_errors", pLimitErrors);
     get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
-    pLimitButton->signal_clicked().connect(sigc::mem_fun(*this, &PreviewTab::repopulate_model));
+
+    pSearchEntry = PackageSearchEntry::create(pLimitEntry,
+					      pLimitErrors,
+					      pLimitButton);
+    pSearchEntry->activated.connect(sigc::mem_fun(*this, &PreviewTab::limit_changed));
 
     using cwidget::util::ref_ptr;
     pPkgView = ref_ptr<PreviewView>(new PreviewView(get_xml(), "main_packages_treeview"));
 
     pPkgView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PreviewTab::activated_package_handler));
 
-    // A PreviewTab should be fully populated by default
-    repopulate_model();
+    // Start out with no limit.
+    limit_changed(aptitude::matching::pattern::make_true());
 
     pPkgView->get_treeview()->expand_all();
 
@@ -158,11 +167,11 @@ namespace gui
     }
   }
 
-  void PreviewTab::repopulate_model()
+  void PreviewTab::limit_changed(const cwidget::util::ref_ptr<aptitude::matching::pattern> &limit)
   {
-    /*pPkgView->set_limit(pLimitEntry->get_text());
+    pPkgView->set_limit(limit);
     pPkgView->get_treeview()->expand_all();
-    set_label(_("Preview: ") + pLimitEntry->get_text());*/
+    set_label(_("Preview: ") + pSearchEntry->get_text());
   }
 
   void PreviewTab::display_desc(const cwidget::util::ref_ptr<Entity> &ent)
