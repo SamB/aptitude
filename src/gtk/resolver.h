@@ -78,6 +78,9 @@ namespace gui
       Gtk::Button * pResolverNext;
       Gtk::Button * pResolverApply;
 
+    Gtk::RadioButton * pButtonGroupByAction;
+    Gtk::RadioButton * pButtonShowExplanation;
+
       // The last solution that was displayed, or invalid if there
       // was no last solution.
       //
@@ -112,16 +115,25 @@ namespace gui
       bool do_apply_solution_enabled_from_state(const resolver_manager::state &state);
       void do_apply_solution();
 
-      /** \brief Updates the tab with the given resolver state. */
-      void update_from_state(const resolver_manager::state &state);
+      /** \brief Updates the tab with the given resolver state.
+       *
+       *  \param force_update if \b true, the tree is rebuilt even if
+       *  the current solution hasn't changed.
+       */
+    void update_from_state(const resolver_manager::state &state,
+			   bool force_update);
+
       /** \brief Updates the tab with the current resolver state.
        *
        *  This is connected to the global state-changed signal; in
        *  functions that check or read the state before triggering an
        *  update, invoke update(state) instead to ensure
        *  consistency.
+       *
+       *  \param force_update if \b true, the tree is rebuilt even if
+       *  the current solution hasn't changed.
        */
-      void update();
+      void update(bool force_update);
     public:
       ResolverTab(const Glib::ustring &label);
       ResolverView * get_packages_view() { return pResolverView; };

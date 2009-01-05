@@ -172,19 +172,30 @@ namespace gui
     get_xml()->get_widget("main_resolver_apply", pResolverApply);
     pResolverApply->signal_clicked().connect(sigc::mem_fun(*this, &ResolverTab::do_apply_solution));
 
+    get_xml()->get_widget("resolver_group_by_action", pButtonGroupByAction);
+    get_xml()->get_widget("resolver_show_explanation", pButtonShowExplanation);
+
+    // TODO: ideally, instead of rereading the state, we should
+    // trigger an update using the last seen state.
+    pButtonGroupByAction->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
+							      true));
+    pButtonShowExplanation->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
+								true));
+
     get_xml()->get_widget_derived("main_resolver_treeview", pResolverView);
 
-    update();
+    update(true);
 
     get_widget()->show();
 
-    resman->state_changed.connect(sigc::mem_fun(*this, &ResolverTab::update));
+    resman->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
+					     false));
   }
 
-  void ResolverTab::update()
+  void ResolverTab::update(bool force_update)
   {
     resolver_manager::state state = resman->state_snapshot();
-    update_from_state(state);
+    update_from_state(state, force_update);
   }
 
   string ResolverTab::archives_text(const pkgCache::VerIterator &ver)
@@ -565,7 +576,8 @@ namespace gui
     return store;
   }
 
-  void ResolverTab::update_from_state(const resolver_manager::state &state)
+  void ResolverTab::update_from_state(const resolver_manager::state &state,
+				      bool force_update)
   {
     Glib::RefPtr<Gtk::TreeStore> store = Gtk::TreeStore::create(pResolverView->resolver_columns);
 
@@ -617,12 +629,15 @@ namespace gui
 
 	// Break out without doing anything if the current solution
 	// isn't changed.
-	if(sol == last_sol)
+	if(!force_update && sol == last_sol)
 	  return;
 
 	last_sol = sol;
 
-	store = render_as_explanation(sol);
+	if(pButtonShowExplanation->get_active())
+	  store = render_as_explanation(sol);
+	else
+	  store = render_as_action_groups(sol);
       }
 
     pResolverView->set_model(store);
