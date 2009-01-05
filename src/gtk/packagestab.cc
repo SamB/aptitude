@@ -1,6 +1,6 @@
 // packagestab.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -91,6 +91,7 @@ namespace gui
   void PackageSearchEntry::set_text(const Glib::ustring &text)
   {
     search_entry->set_text(text);
+    do_search();
   }
 
   PackageSearchEntry::PackageSearchEntry(Gtk::Entry *_search_entry,
