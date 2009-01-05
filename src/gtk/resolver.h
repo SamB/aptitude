@@ -89,10 +89,16 @@ namespace gui
      *  for the resolver view.
      */
     Glib::RefPtr<Gtk::TreeStore> createstore();
-    /** \brief Create a new tree store and populate it with thge given
+    /** \brief Create a new tree store and populate it with the given
      *  solution, rendered with actions collected by type.
      */
     Glib::RefPtr<Gtk::TreeStore> render_as_action_groups(const aptitude_solution &sol);
+
+    /** \brief Create a new tree store and populate it with
+     *  the given solution, rendered as a chronological explanation
+     *  of each action.
+     */
+    Glib::RefPtr<Gtk::TreeStore> render_as_explanation(const aptitude_solution &sol);
 
       std::string archives_text(const pkgCache::VerIterator &ver);
       std::string dep_targets(const pkgCache::DepIterator &start);

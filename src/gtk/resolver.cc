@@ -28,10 +28,15 @@
 
 #include <apt-pkg/error.h>
 
+#include <solution_fragment.h> // For archives_text.
+#include <solution_item.h> // For action_type.
+
 #include <generic/apt/apt_undo_group.h>
 #include <generic/problemresolver/exceptions.h>
 
 #include <gui.h>
+
+#include <cwidget/generic/util/ssprintf.h>
 
 namespace gui
 {
@@ -460,6 +465,106 @@ namespace gui
     return store;
   }
 
+  Glib::RefPtr<Gtk::TreeStore> ResolverTab::render_as_explanation(const aptitude_solution &sol)
+  {
+    Glib::RefPtr<Gtk::TreeStore> store(createstore());
+
+    if(sol.get_actions().empty())
+      {
+	Gtk::TreeModel::iterator iter = store->append();
+	Gtk::TreeModel::Row row = *iter;
+	row[pResolverView->resolver_columns.Name] = _("Internal error: unexpected null solution.");
+      }
+    else
+      {
+	std::vector<aptitude_solution::action> actions;
+
+	for(imm::map<aptitude_universe::package, aptitude_solution::action>::const_iterator
+	      it = sol.get_actions().begin();
+	    it != sol.get_actions().end(); ++it)
+	  actions.push_back(it->second);
+
+	std::sort(actions.begin(), actions.end(),
+		  aptitude_solution::action_id_compare());
+
+	for(std::vector<aptitude_solution::action>::const_iterator
+	      it = actions.begin(); it != actions.end(); ++it)
+	  {
+	    Gtk::TreeModel::iterator parent_iter = store->append();
+	    Gtk::TreeModel::Row parent_row = *parent_iter;
+
+	    parent_row[pResolverView->resolver_columns.Name] = cwidget::util::transcode(dep_text((*it).d.get_dep()), "UTF-8");
+
+	    Gtk::TreeModel::iterator iter = store->append(parent_row.children());
+	    Gtk::TreeModel::Row row = *iter;
+	    Glib::ustring name;
+
+	    aptitude_resolver_version ver((*it).ver);
+	    pkgCache::PkgIterator pkg = ver.get_pkg();
+	    action_type action(analyze_action(ver));
+
+	    using cwidget::util::ssprintf;
+
+	    switch(action)
+	      {
+	      case action_remove:
+		name = ssprintf(_("Remove %s [%s (%s)]"),
+				pkg.Name(),
+				pkg.CurrentVer().VerStr(),
+				archives_text(pkg.CurrentVer()).c_str());
+		break;
+
+	      case action_install:
+		name = ssprintf(_("Install %s [%s (%s)]"),
+				pkg.Name(),
+				ver.get_ver().VerStr(),
+				archives_text(ver.get_ver()).c_str());
+		break;
+
+	      case action_keep:
+		if(ver.get_ver().end())
+		  name = ssprintf(_("Cancel the installation of %s"),
+				  pkg.Name());
+		else if(ver.get_package().current_version().get_ver().end())
+		  name = ssprintf(_("Cancel the removal of %s"),
+				  pkg.Name());
+		else
+		  name = ssprintf(_("Keep %s at version %s (%s)"),
+				  pkg.Name(), 
+				  ver.get_ver().VerStr(),
+				  archives_text(ver.get_ver()).c_str());
+		break;
+
+	      case action_upgrade:
+		name = ssprintf(_("Upgrade %s [%s (%s) -> %s (%s)]"),
+				pkg.Name(),
+				pkg.CurrentVer().VerStr(),
+				archives_text(pkg.CurrentVer()).c_str(),
+				ver.get_ver().VerStr(),
+				archives_text(ver.get_ver()).c_str());
+		break;
+
+	      case action_downgrade:
+		name = ssprintf(_("Downgrade %s [%s (%s) -> %s (%s)]"),
+				pkg.Name(),
+				pkg.CurrentVer().VerStr(),
+				archives_text(pkg.CurrentVer()).c_str(),
+				ver.get_ver().VerStr(),
+				archives_text(ver.get_ver()).c_str());
+		break;
+
+	      default:
+		name = "Internal error: bad action type";
+		break;
+	      }
+
+	    row[pResolverView->resolver_columns.Name] = name;
+	  }
+      }
+
+    return store;
+  }
+
   void ResolverTab::update_from_state(const resolver_manager::state &state)
   {
     Glib::RefPtr<Gtk::TreeStore> store = Gtk::TreeStore::create(pResolverView->resolver_columns);
@@ -517,7 +622,7 @@ namespace gui
 
 	last_sol = sol;
 
-	store = render_as_action_groups(sol);
+	store = render_as_explanation(sol);
       }
 
     pResolverView->set_model(store);
