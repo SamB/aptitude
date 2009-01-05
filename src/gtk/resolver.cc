@@ -176,7 +176,8 @@ namespace gui
     get_xml()->get_widget("resolver_show_explanation", pButtonShowExplanation);
 
     // TODO: ideally, instead of rereading the state, we should
-    // trigger an update using the last seen state.
+    // trigger an update using the last seen state.  Or maybe buildtwo
+    // models and swap between them.
     pButtonGroupByAction->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
 							      true));
     pButtonShowExplanation->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
