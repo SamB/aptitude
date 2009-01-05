@@ -1,6 +1,6 @@
 // packagestab.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -45,125 +45,32 @@
 
 namespace gui
 {
-  namespace
+  void PackageSearchEntry::do_search()
   {
-    class limit_combobox_columns : public Gtk::TreeModel::ColumnRecord
-    {
-    public:
-      Gtk::TreeModelColumn<Glib::ustring> name;
-      Gtk::TreeModelColumn<cwidget::util::ref_ptr<aptitude::matching::pattern> > pattern;
-
-      limit_combobox_columns()
+    std::string search_term(search_entry->get_text());
+    cwidget::util::ref_ptr<aptitude::matching::pattern> p;
+    try
       {
-	add(name);
-	add(pattern);
+	p = aptitude::matching::parse_with_errors(search_term);
       }
-    };
+    catch(aptitude::matching::MatchingException &ex)
+      {
+	// Show the user what's wrong and don't update the list.
+	std::string markup(cwidget::util::ssprintf("<span size=\"smaller\" color=\"red\">%s: %s</span>",
+						   Glib::Markup::escape_text(_("Parse error")).c_str(),
+						   Glib::Markup::escape_text(ex.errmsg()).c_str()));
+	error_label->set_markup(markup);
+	error_label->show();
+	return;
+      }
 
-    // Stuff to manage the property.
-    Glib::Quark limit_combobox_columns_property("aptitude-packages-tab-limit-combobox-columns");
-
-    void limit_columns_destructor(gpointer limit_columns_void)
-    {
-      limit_combobox_columns *cols =
-	static_cast<limit_combobox_columns *>(limit_columns_void);
-
-      delete cols;
-    }
-
-    limit_combobox_columns *get_combobox_limit_columns(Gtk::ComboBox *combo)
-    {
-      return static_cast<limit_combobox_columns *>(combo->get_data(limit_combobox_columns_property));
-    }
-
-    void set_combobox_limit_columns(Gtk::ComboBox *combo,
-				    limit_combobox_columns *limit_columns)
-    {
-      combo->set_data(limit_combobox_columns_property, limit_columns,
-		      &limit_columns_destructor);
-    }
-
-
-
-    void repopulate_searchable_view(PkgView &packages_view,
-				    Gtk::Entry &search_entry,
-				    Gtk::Label &errors_label,
-				    Gtk::ComboBox &limit_combobox,
-				    const sigc::slot0<void> &after_repopulate_hook)
-    {
-      limit_combobox_columns *limit_columns =
-	get_combobox_limit_columns(&limit_combobox);
-      if(limit_columns == NULL)
-	{
-	  limit_columns = new limit_combobox_columns;
-	  set_combobox_limit_columns(&limit_combobox, limit_columns);
-	}
-      std::string search_term = search_entry.get_text();
-      cwidget::util::ref_ptr<aptitude::matching::pattern> p;
-      try
-	{
-	  p = aptitude::matching::parse_with_errors(search_term);
-	}
-      catch(aptitude::matching::MatchingException &ex)
-	{
-	  // Show the user what's wrong and don't update the list.
-	  std::string markup(cwidget::util::ssprintf("<span size=\"smaller\" color=\"red\">%s: %s</span>",
-						     Glib::Markup::escape_text(_("Parse error")).c_str(),
-						     Glib::Markup::escape_text(ex.errmsg()).c_str()));
-	  errors_label.set_markup(markup);
-	  errors_label.show();
-	  return;
-	}
-
-      errors_label.hide();
-
-      cwidget::util::ref_ptr<aptitude::matching::pattern> final_pattern;
-
-      Gtk::TreeModel::const_iterator active_limit_iter = limit_combobox.get_active();
-      if(!active_limit_iter)
-	final_pattern = p;
-      else if(p.valid())
-	{
-	  Gtk::TreeModel::Row active_limit_row = *active_limit_iter;
-	  cwidget::util::ref_ptr<aptitude::matching::pattern> active_limit_pattern =
-	    active_limit_row[limit_columns->pattern];
-
-	  if(active_limit_pattern.valid())
-	    final_pattern = aptitude::matching::pattern::make_and(p, active_limit_pattern);
-	  else
-	    final_pattern = p;
-	}
-      packages_view.set_limit(final_pattern);
-
-      if(packages_view.get_model()->children().size() == 0)
-	{
-	  Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*packages_view.get_columns());
-
-	  Gtk::TreeModel::iterator iter = store->append();
-	  Gtk::TreeModel::Row row = *iter;
-	  (new HeaderEntity(ssprintf(_("No packages matched \"%s\"."), search_term.c_str())))->fill_row(packages_view.get_columns(), row);
-
-	  packages_view.set_model(store);
-	}
-
-      after_repopulate_hook();
-    }
-
-    // By convention, a blank string for a name means that a row is a
-    // separator.
-    bool row_is_separator(const Glib::RefPtr<Gtk::TreeModel> &model,
-			  const Gtk::TreeModel::iterator &iterator,
-			  const limit_combobox_columns *limit_columns)
-    {
-      Gtk::TreeModel::Row row = *iterator;
-      Glib::ustring name = row[limit_columns->name];
-      return name.empty();
-    }
+    error_label->hide();
+    activated(p);
   }
 
-  void limit_edited(Gtk::Entry &search_entry)
+  void PackageSearchEntry::search_entry_changed()
   {
-    const Glib::ustring limit(search_entry.get_text());
+    const Glib::ustring limit(search_entry->get_text());
     bool valid;
     try
       {
@@ -176,121 +83,192 @@ namespace gui
       }
 
     if(valid)
-      search_entry.unset_base(Gtk::STATE_NORMAL);
+      search_entry->unset_base(Gtk::STATE_NORMAL);
     else
-      search_entry.modify_base(Gtk::STATE_NORMAL, Gdk::Color("#FFD0D0"));
+      search_entry->modify_base(Gtk::STATE_NORMAL, Gdk::Color("#FFD0D0"));
   }
 
-  void setup_searchable_view(Gtk::Entry *search_entry,
-			     Gtk::Label *search_label,
-			     Gtk::Button *search_button,
-			     Gtk::ComboBox *limit_combobox,
-			     const cwidget::util::ref_ptr<PkgView> packages_view,
-			     const sigc::slot0<void> &after_repopulate_hook)
+  void PackageSearchEntry::set_text(const Glib::ustring &text)
+  {
+    search_entry->set_text(text);
+    do_search();
+  }
+
+  PackageSearchEntry::PackageSearchEntry(Gtk::Entry *_search_entry,
+					 Gtk::Label *_error_label,
+					 Gtk::Button *_find_button)
+    : search_entry(_search_entry),
+      error_label(_error_label),
+      find_button(_find_button)
+  {
+    search_entry->signal_activate().connect(sigc::mem_fun(*this, &PackageSearchEntry::do_search));
+    find_button->signal_clicked().connect(sigc::mem_fun(*this, &PackageSearchEntry::do_search));
+
+    search_entry->signal_changed().connect(sigc::mem_fun(*this, &PackageSearchEntry::search_entry_changed));
+  }
+
+
+
+
+  PackageSearchList::filter_combobox_columns::filter_combobox_columns()
+  {
+    add(name);
+    add(pattern);
+  }
+
+  void PackageSearchList::repopulate()
+  {
+    using cwidget::util::ref_ptr;
+
+    cwidget::util::ref_ptr<aptitude::matching::pattern> final_pattern;
+
+    Gtk::TreeModel::const_iterator active_filter_iter = filter_combobox->get_active();
+    if(!active_filter_iter)
+      final_pattern = current_search;
+    else if(current_search.valid())
+      {
+	Gtk::TreeModel::Row active_filter_row = *active_filter_iter;
+	cwidget::util::ref_ptr<aptitude::matching::pattern> active_filter_pattern =
+	  active_filter_row[filter_columns.pattern];
+
+	if(active_filter_pattern.valid())
+	  final_pattern = aptitude::matching::pattern::make_and(current_search, active_filter_pattern);
+	else
+	  final_pattern = current_search;
+      }
+    package_list->set_limit(final_pattern);
+
+    if(package_list->get_model()->children().size() == 0)
+      {
+	Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*package_list->get_columns());
+
+	Gtk::TreeModel::iterator iter = store->append();
+	Gtk::TreeModel::Row row = *iter;
+	Glib::ustring search_term(search_entry->get_text());
+	(new HeaderEntity(ssprintf(_("No packages matched \"%s\"."), search_term.c_str())))->fill_row(package_list->get_columns(), row);
+
+	package_list->set_model(store);
+      }
+
+    after_repopulate_hook();
+  }
+
+  void PackageSearchList::do_search_entry_activated(const cwidget::util::ref_ptr<aptitude::matching::pattern> &p)
+  {
+    current_search = p;
+    repopulate();
+  }
+
+  // By convention, a blank string for a name means that a row is a
+  // separator.
+  bool PackageSearchList::filter_row_is_separator(const Glib::RefPtr<Gtk::TreeModel> &model,
+						  const Gtk::TreeModel::iterator &iterator)
+  {
+    Gtk::TreeModel::Row row = *iterator;
+    Glib::ustring name = row[filter_columns.name];
+    return name.empty();
+  }
+
+
+  PackageSearchList::PackageSearchList(const cwidget::util::ref_ptr<PackageSearchEntry> &_search_entry,
+				       Gtk::ComboBox *_filter_combobox,
+				       const cwidget::util::ref_ptr<PkgView> &_package_list,
+				       const sigc::slot<void> &_after_repopulate_hook)
+    : search_entry(_search_entry),
+      filter_combobox(_filter_combobox),
+      package_list(_package_list),
+      after_repopulate_hook(_after_repopulate_hook)
   {
     using aptitude::matching::pattern;
     using cwidget::util::ref_ptr;
 
-    limit_combobox_columns *limit_columns = new limit_combobox_columns;
+    search_entry->activated.connect(sigc::mem_fun(*this, &PackageSearchList::do_search_entry_activated));
 
-    set_combobox_limit_columns(limit_combobox, limit_columns);
-
-    sigc::slot0<void> repopulate_hook = sigc::bind(sigc::ptr_fun(&repopulate_searchable_view),
-						   packages_view.weak_ref(),
-						   sigc::ref(*search_entry),
-						   sigc::ref(*search_label),
-						   sigc::ref(*limit_combobox),
-						   after_repopulate_hook);
-
-    search_entry->signal_changed().connect(sigc::bind(sigc::ptr_fun(&limit_edited),
-						      sigc::ref(*search_entry)));
-    search_entry->signal_activate().connect(repopulate_hook);
-    search_button->signal_clicked().connect(repopulate_hook);
-
-    Glib::RefPtr<Gtk::ListStore> limit_model = Gtk::ListStore::create(*limit_columns);
+    Glib::RefPtr<Gtk::ListStore> filter_model = Gtk::ListStore::create(filter_columns);
     // The "All Packages" option is always there.
     {
-      Gtk::TreeModel::iterator all_packages_iter = limit_model->append();
+      Gtk::TreeModel::iterator all_packages_iter = filter_model->append();
       Gtk::TreeModel::Row all_packages_row = *all_packages_iter;
-      all_packages_row[limit_columns->name] = "All Packages";
-      all_packages_row[limit_columns->pattern] = pattern::make_true();
+      all_packages_row[filter_columns.name] = "All Packages";
+      all_packages_row[filter_columns.pattern] = pattern::make_true();
     }
 
-    std::map<std::string, ref_ptr<pattern> > limits;
+    std::map<std::string, ref_ptr<pattern> > filters;
     // Patterns that exist by default.
     //
     // \todo This is a mess for i18n.  How can I do this so that it
     // gets translated by default, but can still be overridden?  Maybe
     // I should make the name a property of the group rather than the
     // tag?
-    limits["Installed Packages"] = aptitude::matching::parse("?installed");
-    limits["Not Installed Packages"] = aptitude::matching::parse("?not(?installed)");
-    limits["New Packages"] = aptitude::matching::parse("?new");
-    limits["Virtual Packages"] = aptitude::matching::parse("?virtual");
-    // Add in all the entries in the "Aptitude::Limits" group.
-    for(const Configuration::Item *it = aptcfg->Tree(PACKAGE "::Limits");
+    filters["Installed Packages"] = aptitude::matching::parse("?installed");
+    filters["Not Installed Packages"] = aptitude::matching::parse("?not(?installed)");
+    filters["New Packages"] = aptitude::matching::parse("?new");
+    filters["Virtual Packages"] = aptitude::matching::parse("?virtual");
+    // Add in all the entries in the "Aptitude::Filters" group.
+    for(const Configuration::Item *it = aptcfg->Tree(PACKAGE "::Filters");
 	it != NULL; it = it->Next)
       {
 	ref_ptr<pattern> p =
 	  aptitude::matching::parse(it->Tag);
 
-	limits[it->Tag] = p;
+	filters[it->Tag] = p;
       }
 
     for(std::map<std::string, ref_ptr<pattern> >::const_iterator
-	  it = limits.begin(); it != limits.end(); ++it)
+	  it = filters.begin(); it != filters.end(); ++it)
       {
 	if(it->second.valid())
 	  {
-	    // Output an hrule to separate the limits from "All
-	    // Packages" if this is the first limit.
-	    if(it == limits.begin())
+	    // Output an hrule to separate the filters from "All
+	    // Packages" if this is the first filter.
+	    if(it == filters.begin())
 	      {
-		Gtk::TreeModel::iterator pattern_iter = limit_model->append();
+		Gtk::TreeModel::iterator pattern_iter = filter_model->append();
 		Gtk::TreeModel::Row pattern_row = *pattern_iter;
-		pattern_row[limit_columns->name] = "";
-		pattern_row[limit_columns->pattern] = ref_ptr<pattern>();
+		pattern_row[filter_columns.name] = "";
+		pattern_row[filter_columns.pattern] = ref_ptr<pattern>();
 	      }
 
-	    Gtk::TreeModel::iterator pattern_iter = limit_model->append();
+	    Gtk::TreeModel::iterator pattern_iter = filter_model->append();
 	    Gtk::TreeModel::Row pattern_row = *pattern_iter;
-	    pattern_row[limit_columns->name] = it->first;
-	    pattern_row[limit_columns->pattern] = it->second;
+	    pattern_row[filter_columns.name] = it->first;
+	    pattern_row[filter_columns.pattern] = it->second;
 	  }
       }
 
-    limit_combobox->set_row_separator_func(sigc::bind(sigc::ptr_fun(&row_is_separator),
-						      limit_columns));
-    limit_combobox->pack_start(limit_columns->name);
-    if(limit_combobox->get_cells().begin() != limit_combobox->get_cells().end())
+    filter_combobox->set_row_separator_func(sigc::mem_fun(*this, &PackageSearchList::filter_row_is_separator));
+    filter_combobox->pack_start(filter_columns.name);
+    if(filter_combobox->get_cells().begin() != filter_combobox->get_cells().end())
     {
-      Gtk::CellRenderer *renderer = *limit_combobox->get_cells().begin();
+      Gtk::CellRenderer *renderer = *filter_combobox->get_cells().begin();
       Gtk::CellRendererText *renderer_text = dynamic_cast<Gtk::CellRendererText *>(renderer);
       renderer_text->property_ellipsize() = Pango::ELLIPSIZE_END;
     }
-    limit_combobox->set_model(limit_model);
-    limit_combobox->set_active(0);
+    filter_combobox->set_model(filter_model);
+    filter_combobox->set_active(0);
 
-    limit_combobox->signal_changed().connect(repopulate_hook);
+    filter_combobox->signal_changed().connect(sigc::mem_fun(*this, &PackageSearchList::repopulate));
 
     // Ask the user to enter a search pattern.
-    //
-    // TODO: a similar message should appear when a search produces no
-    // matches.
     {
-      Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*packages_view->get_columns());
+      Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*package_list->get_columns());
 
       Gtk::TreeModel::iterator iter = store->append();
       Gtk::TreeModel::Row row = *iter;
-      (new HeaderEntity(_("Enter a search and click \"Find\" to display packages.")))->fill_row(packages_view->get_columns(), row);
+      (new HeaderEntity(_("Enter a search and click \"Find\" to display packages.")))->fill_row(package_list->get_columns(), row);
 
-      packages_view->set_model(store);
+      package_list->set_model(store);
     }
   }
 
   PackagesTab::PackagesTab(const Glib::ustring &label) :
     Tab(Packages, label, Gnome::Glade::Xml::create(glade_main_file, "main_packages_hpaned"), "main_packages_hpaned")
   {
+    Gtk::Entry *pLimitEntry;
+    Gtk::Label *pLimitErrorLabel;
+    Gtk::ComboBox *pLimitComboBox;
+    Gtk::Button *pLimitButton;
+
     get_xml()->get_widget("main_packages_textview", pPackagesTextView);
     get_xml()->get_widget("main_notebook_packages_limit_entry", pLimitEntry);
     get_xml()->get_widget("main_notebook_packages_limit_errors", pLimitErrorLabel);
@@ -298,17 +276,17 @@ namespace gui
     get_xml()->get_widget("main_notebook_packages_show_only_combo_box", pLimitComboBox);
 
     using cwidget::util::ref_ptr;
-    pPkgView = ref_ptr<PkgView>(new PkgView(get_xml(), "main_packages_treeview",
-					    get_label(), ""));
+    ref_ptr<PkgView> pPkgView(new PkgView(get_xml(), "main_packages_treeview",
+					  get_label(), ""));
 
     // TODO: We prevent the tab from closing itself, but we should rather make closing
     //       the tab gracefully stop the generator from doing whatever it's doing
     pPkgView->store_reloading.connect(sigc::bind(sigc::mem_fun(*get_label_button(), &Gtk::Widget::set_sensitive), false));
     pPkgView->store_reloaded.connect(sigc::bind(sigc::mem_fun(*get_label_button(), &Gtk::Widget::set_sensitive), true));
 
-    setup_searchable_view(pLimitEntry, pLimitErrorLabel, pLimitButton,
-			  pLimitComboBox, pPkgView,
-			  sigc::mem_fun(this, &PackagesTab::after_repopulate_model));
+    pSearchList = PackageSearchList::create(PackageSearchEntry::create(pLimitEntry, pLimitErrorLabel, pLimitButton),
+					    pLimitComboBox, pPkgView,
+					    sigc::mem_fun(this, &PackagesTab::after_repopulate_model));
 
     pPkgView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
     pPkgView->get_treeview()->signal_cursor_changed().connect(sigc::mem_fun(*this, &PackagesTab::activated_package_handler));
@@ -338,24 +316,7 @@ namespace gui
 
   void PackagesTab::set_limit(const std::string &limit)
   {
-    cwidget::util::ref_ptr<aptitude::matching::pattern> parsed;
-    pLimitEntry->set_text(limit);
-    try
-      {
-	parsed = aptitude::matching::parse_with_errors(limit);
-      }
-    catch(aptitude::matching::MatchingException &ex)
-      {
-	std::string markup(cwidget::util::ssprintf("<span size=\"smaller\" color=\"red\">%s: %s</span>",
-						   Glib::Markup::escape_text(_("Parse error")).c_str(),
-						   Glib::Markup::escape_text(ex.errmsg()).c_str()));
-	pLimitErrorLabel->set_markup(markup);
-	pLimitErrorLabel->show();
-	return;
-      }
-
-    pLimitErrorLabel->hide();
-    pPkgView->set_limit(parsed);
+    pSearchList->get_search_entry()->set_text(limit);
   }
 
   bool PackagesTab::get_edit_columns_available()
@@ -365,7 +326,7 @@ namespace gui
 
   void PackagesTab::dispatch_edit_columns()
   {
-    pPkgView->show_edit_columns_dialog();
+    pSearchList->get_package_list()->show_edit_columns_dialog();
   }
 
   // TODO: Should be moved into PackagesView for use with PackagesView::signal_on_package_selection.
@@ -373,12 +334,14 @@ namespace gui
   {
     Gtk::TreeModel::Path path;
     Gtk::TreeViewColumn * focus_column;
-    pPkgView->get_treeview()->get_cursor(path, focus_column);
-    if (pPkgView->get_treeview()->get_selection()->is_selected(path))
+    const cwidget::util::ref_ptr<PkgView>
+      package_list(pSearchList->get_package_list());
+    package_list->get_treeview()->get_cursor(path, focus_column);
+    if (package_list->get_treeview()->get_selection()->is_selected(path))
     {
-      Gtk::TreeModel::iterator iter = pPkgView->get_model()->get_iter(path);
+      Gtk::TreeModel::iterator iter = package_list->get_model()->get_iter(path);
       using cwidget::util::ref_ptr;
-      ref_ptr<Entity> ent = (*iter)[pPkgView->get_columns()->EntObject];
+      ref_ptr<Entity> ent = (*iter)[package_list->get_columns()->EntObject];
       ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
       display_desc(ent);
     }
@@ -390,9 +353,9 @@ namespace gui
 
   void PackagesTab::after_repopulate_model()
   {
-    const std::string title = _("Packages: ") + pLimitEntry->get_text();
+    const std::string title = _("Packages: ") + pSearchList->get_search_entry()->get_text();
     set_label(title);
-    pPkgView->edit_columns_dialog_parent_title_changed(get_label());
+    pSearchList->get_package_list()->edit_columns_dialog_parent_title_changed(get_label());
   }
 
   class InfoTabButtons : public Gtk::VButtonBox
@@ -744,11 +707,11 @@ namespace gui
 
   std::set<PackagesAction> PackagesTab::get_package_menu_actions()
   {
-    return pPkgView->get_package_menu_actions();
+    return pSearchList->get_package_list()->get_package_menu_actions();
   }
 
   void PackagesTab::dispatch_package_menu_action(PackagesAction action)
   {
-    pPkgView->apply_action_to_selected(action);
+    pSearchList->get_package_list()->apply_action_to_selected(action);
   }
 }

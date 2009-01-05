@@ -40,11 +40,15 @@ namespace gui
   DependencyChainsTab::DependencyChainsTab(const Glib::ustring &label)
     : Tab(DependencyChains, label, Gnome::Glade::Xml::create(glade_main_file, "dependency_path_main"), "dependency_path_main")
   {
+    Gtk::Entry *start_package_entry;
+    Gtk::Entry *end_package_entry;
     get_xml()->get_widget("dependency_path_start_search_pattern",
 			  start_package_entry);
     get_xml()->get_widget("dependency_path_end_search_pattern",
 			  end_package_entry);
 
+    Gtk::Label *start_errors;
+    Gtk::Label *end_errors;
     get_xml()->get_widget("dependency_path_start_search_errors",
 			  start_errors);
     get_xml()->get_widget("dependency_path_end_search_errors",
@@ -69,26 +73,34 @@ namespace gui
 			  end_limit_combo_box);
 
     using cwidget::util::ref_ptr;
-    start_package_view = ref_ptr<PkgView>(new PkgView(get_xml(), "dependency_path_start_packages_treeview",
-						      _("Find dependency chains: start"), ""));
-    end_package_view = ref_ptr<PkgView>(new PkgView(get_xml(), "dependency_path_end_packages_treeview",
-						    _("Find dependency chains: end"), ""));
+    ref_ptr<PkgView> start_package_view(new PkgView(get_xml(), "dependency_path_start_packages_treeview",
+						    _("Find dependency chains: start"), ""));
+    ref_ptr<PkgView> end_package_view(new PkgView(get_xml(), "dependency_path_end_packages_treeview",
+						  _("Find dependency chains: end"), ""));
     results_view = ref_ptr<EntityView>(new EntityView(get_xml(), "dependency_path_results_treeview",
 						      _("Find dependency chains: results")));
 
     end_package_view->get_treeview()->get_selection()->set_mode(Gtk::SELECTION_BROWSE);
 
+    start_search_list =
+      PackageSearchList::create(PackageSearchEntry::create(start_package_entry,
+							   start_errors,
+							   start_search_button),
+				start_limit_combo_box,
+				start_package_view,
+				sigc::slot<void>());
+    end_search_list =
+      PackageSearchList::create(PackageSearchEntry::create(end_package_entry,
+							   end_errors,
+							   end_search_button),
+				end_limit_combo_box,
+				end_package_view,
+				sigc::slot<void>());
+
     start_package_view->get_treeview()->get_selection()->signal_changed()
       .connect(sigc::mem_fun(this, &DependencyChainsTab::selection_changed));
     end_package_view->get_treeview()->get_selection()->signal_changed()
       .connect(sigc::mem_fun(this, &DependencyChainsTab::selection_changed));
-
-    setup_searchable_view(start_package_entry, start_errors,
-			  start_search_button, start_limit_combo_box,
-			  start_package_view, sigc::slot0<void>());
-    setup_searchable_view(end_package_entry, end_errors,
-			  end_search_button, end_limit_combo_box,
-			  end_package_view, sigc::slot0<void>());
 
     results_view->get_version_column()->set_visible(false);
     selection_changed();
@@ -209,9 +221,9 @@ namespace gui
     }
 
     Glib::RefPtr<Gtk::TreeView::Selection> start_selection =
-      start_package_view->get_treeview()->get_selection();
+      start_search_list->get_package_list()->get_treeview()->get_selection();
     Glib::RefPtr<Gtk::TreeView::Selection> end_selection =
-      end_package_view->get_treeview()->get_selection();
+      start_search_list->get_package_list()->get_treeview()->get_selection();
 
     if(!start_selection || !end_selection)
       return store;
@@ -226,8 +238,8 @@ namespace gui
       end_rows.begin();
     if(end_begin == end_rows.end())
       return store;
-    const pkgCache::PkgIterator target = get_path_package(end_package_view->get_model(),
-							  *end_package_view->get_columns(),
+    const pkgCache::PkgIterator target = get_path_package(end_search_list->get_package_list()->get_model(),
+							  *end_search_list->get_package_list()->get_columns(),
 							  *end_begin);
     if(target.end())
       return store;
@@ -236,8 +248,8 @@ namespace gui
     for(Gtk::TreeSelection::ListHandle_Path::const_iterator
 	  it = start_rows.begin(); it != start_rows.end(); ++it)
       {
-	const pkgCache::PkgIterator leaf = get_path_package(start_package_view->get_model(),
-							    *start_package_view->get_columns(),
+	const pkgCache::PkgIterator leaf = get_path_package(start_search_list->get_package_list()->get_model(),
+							    *start_search_list->get_package_list()->get_columns(),
 							    *it);
 	if(!leaf.end())
 	  leaves.push_back(matching::pattern::make_name(cwidget::util::ssprintf("^%s$", leaf.Name())));
@@ -250,18 +262,13 @@ namespace gui
     store->clear();
 
     // Now we run the "why" algorithm.
-    //
-    // TODO: hoist the "strongest tightest narrowest" logic out of
-    // cmdline_why and expose it to this code, then use it.
     std::vector<std::vector<why::action> > results;
-    if(!why::find_justification(why::target::Install(target),
-				leaves,
-				why::search_params(why::search_params::Install,
-						   why::search_params::Recommends,
-						   true),
-				false,
-				results) ||
-       results.empty() || results[0].empty())
+    why::find_best_justification(leaves,
+				 why::target::Install(target),
+				 false,
+				 0,
+				 results);
+    if(results.empty() || results.front().empty())
       {
 	Gtk::TreeModel::iterator iter = store->append();
 	Gtk::TreeModel::Row row = *iter;

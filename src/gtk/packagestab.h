@@ -2,7 +2,7 @@
 
 // packagestab.h
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -32,28 +32,167 @@
 
 #include <cwidget/generic/util/ref_ptr.h>
 
+#include <generic/apt/matching/pattern.h>
+#include <generic/util/refcounted_base.h>
+
 namespace gui
 {
   class PkgView;
   class Entity;
 
+  /** \brief A class that handles managing a collection of widgets
+   *  where package searches are entered.
+   *
+   *  This sets up signals to provide user feedback about search
+   *  syntax, and to perform a search when the user finishes entering
+   *  it.  It isn't a GTK+ container to provide more flexibility to
+   *  client code: the widgets can be arranged whatever way is
+   *  convenient.
+   */
+  class PackageSearchEntry : public aptitude::util::refcounted_base
+  {
+    Gtk::Entry *search_entry;
+    Gtk::Label *error_label;
+    Gtk::Button *find_button;
+
+    // Parse the current entry and emit the activated() signal if it's
+    // valid (otherwise show the error).
+    void do_search();
+
+    // Invoked when the search entry's text changes.
+    void search_entry_changed();
+
+    PackageSearchEntry(Gtk::Entry *_search_entry,
+		       Gtk::Label *_error_label,
+		       Gtk::Button *_find_button);
+
+  public:
+    /** \brief Create a new PackageSearchEntry.
+     *
+     *  \param search_entry The text entry to manage.
+     *  \param error_label  The label in which to display error messages.
+     *  \param find_button  A button that the user can use to perform a search.
+     *
+     *  \return A reference-counting wrapper around the new package
+     *  search entry.
+     */
+    static cwidget::util::ref_ptr<PackageSearchEntry>
+    create(Gtk::Entry *search_entry,
+	   Gtk::Label *error_label,
+	   Gtk::Button *find_button)
+    {
+      return new PackageSearchEntry(search_entry, error_label, find_button);
+    }
+
+    Glib::ustring get_text() const
+    {
+      return search_entry->get_text();
+    }
+
+    /** \brief Set the text of the entry and act as if the user had
+     *	pressed Enter.
+     */
+    void set_text(const Glib::ustring &text);
+
+    /** \brief A signal emitted when the user searches for a package. */
+    sigc::signal<void, cwidget::util::ref_ptr<aptitude::matching::pattern> > activated;
+  };
+
+  /** \brief A searchable list of packages. */
+  class PackageSearchList : public aptitude::util::refcounted_base
+  {
+    /** \brief The columns used in the filter combobox. */
+    class filter_combobox_columns : public Gtk::TreeModel::ColumnRecord
+    {
+    public:
+      Gtk::TreeModelColumn<Glib::ustring> name;
+      Gtk::TreeModelColumn<cwidget::util::ref_ptr<aptitude::matching::pattern> > pattern;
+
+      filter_combobox_columns();
+    };
+
+    // The last search that was successfully entered into the search
+    // entry.  This is combined with the filter to produce the actual
+    // search.
+    cwidget::util::ref_ptr<aptitude::matching::pattern> current_search;
+
+    // The search-entry aggregate associated with this view.
+    cwidget::util::ref_ptr<PackageSearchEntry> search_entry;
+
+    // The drop-down menu used to pick a filter.
+    Gtk::ComboBox *filter_combobox;
+
+    filter_combobox_columns filter_columns;
+
+    // The actual package list that we encapsulate.
+    cwidget::util::ref_ptr<PkgView> package_list;
+
+    // A hook invoked whenever the model is rebuilt for whatever
+    // reason.
+    sigc::slot<void> after_repopulate_hook;
+
+    // Builds the search list from the current selections.
+    void repopulate();
+
+    // Invoked when the user edits the pattern in the search entry.
+    void do_search_entry_activated(const cwidget::util::ref_ptr<aptitude::matching::pattern> &p);
+
+    // Used to test whether a row in the filter combobox is a
+    // separator.
+    bool filter_row_is_separator(const Glib::RefPtr<Gtk::TreeModel> &model,
+				 const Gtk::TreeModel::iterator &iterator);
+
+    PackageSearchList(const cwidget::util::ref_ptr<PackageSearchEntry> &_search_entry,
+		      Gtk::ComboBox *_filter_combobox,
+		      const cwidget::util::ref_ptr<PkgView> &_package_list,
+		      const sigc::slot<void> &_after_repopulate_hook);
+  public:
+    /** \brief Create a new PackageSearchlist.
+     *
+     *  \param search_entry       The search-entry-widget aggregate
+     *                            used to enter searches for this package list.
+     *  \param filter_combobox    The drop-down box for picking
+     *                            a filter for the package list.
+     *  \param package_list       The package list managed by the new
+     *                            object.
+     *  \param after_repopulate_hook   A slot to invoke every time the
+     *                                 list is rebuilt.
+     */
+    static cwidget::util::ref_ptr<PackageSearchList>
+    create(const cwidget::util::ref_ptr<PackageSearchEntry> &search_entry,
+						     Gtk::ComboBox *filter_combobox,
+						     const cwidget::util::ref_ptr<PkgView> &package_list,
+						     const sigc::slot<void> &after_repopulate_hook)
+    {
+      return new PackageSearchList(search_entry,
+				   filter_combobox,
+				   package_list,
+				   after_repopulate_hook);
+    }
+
+    const cwidget::util::ref_ptr<PackageSearchEntry> &get_search_entry() const
+    {
+      return search_entry;
+    }
+
+    const cwidget::util::ref_ptr<PkgView> &get_package_list() const
+    {
+      return package_list;
+    }
+  };
+
   class PackagesTab : public Tab
   {
     private:
-      cwidget::util::ref_ptr<PkgView> pPkgView;
+      cwidget::util::ref_ptr<PackageSearchList> pSearchList;
       Gtk::TextView * pPackagesTextView;
-      Gtk::Entry * pLimitEntry;
-      Gtk::Label * pLimitErrorLabel;
-      Gtk::Button * pLimitButton;
-      Gtk::ComboBox * pLimitComboBox;
 
       void after_repopulate_model();
     public:
       PackagesTab(const Glib::ustring &label);
       void activated_package_handler();
       void display_desc(const cwidget::util::ref_ptr<Entity> &ent);
-      Gtk::Entry * get_limit_entry() const { return pLimitEntry; }
-      const cwidget::util::ref_ptr<PkgView> &get_pkg_view() const { return pPkgView; }
+      const cwidget::util::ref_ptr<PackageSearchList> &get_search_list() const { return pSearchList; }
 
       std::set<PackagesAction> get_package_menu_actions();
       void dispatch_package_menu_action(PackagesAction action);
@@ -64,31 +203,7 @@ namespace gui
       bool get_edit_columns_available();
       void dispatch_edit_columns();
   };
-
-  /** \brief Set up a package view to be searchable.
-   *
-   *  Sets up signal connections so that the user can enter search
-   *  terms into a search entry to control the list of packages
-   *  displayed in a package view.
-   *
-   *  \param search_entry   The text entry where the user enters search terms.
-   *  \param search_error_label   A label that will be used to display error messages.
-   *  \param search_button  The button the user presses to immediately search.
-   *  \param limit_combo_box  A combo-box used to select an auxiliary limit (e.g.,
-   *                          "Installed packages").
-   *  \param packages_view  The package list to manage; will initially be
-   *                        set to only contain a message asking the
-   *                        user to enter a search term.
-   *  \param after_repopulate_hook   A callback invoked after the tree is rebuilt
-   *                                 when the user enters a new search term.
-   */
-  void setup_searchable_view(Gtk::Entry *search_entry,
-			     Gtk::Label *search_error_label,
-			     Gtk::Button *search_button,
-			     Gtk::ComboBox *limit_combo_box,
-			     const cwidget::util::ref_ptr<PkgView> packages_view,
-			     const sigc::slot0<void> &after_repopulate_hook);
-
 }
+
 
 #endif /* PACKAGESTAB_H_ */

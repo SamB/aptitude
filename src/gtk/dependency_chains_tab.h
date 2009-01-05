@@ -28,6 +28,8 @@
 
 #include "tab.h"
 
+#include "packagestab.h" // For PackageSearchList.
+
 #include <gtkmm/entry.h>
 #include <gtkmm/treemodel.h>
 
@@ -39,15 +41,10 @@ namespace gui
   class DependencyChainsTab : public Tab
   {
   private:
-    cwidget::util::ref_ptr<PkgView> start_package_view;
-    cwidget::util::ref_ptr<PkgView> end_package_view;
+    cwidget::util::ref_ptr<PackageSearchList> start_search_list;
+    cwidget::util::ref_ptr<PackageSearchList> end_search_list;
+
     cwidget::util::ref_ptr<EntityView> results_view;
-
-    Gtk::Entry *start_package_entry;
-    Gtk::Entry *end_package_entry;
-
-    Gtk::Label *start_errors;
-    Gtk::Label *end_errors;
 
     // Gets the TreeModel for the results view.
     Glib::RefPtr<Gtk::TreeModel> get_results();

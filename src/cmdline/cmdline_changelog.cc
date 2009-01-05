@@ -26,6 +26,7 @@
 
 using namespace std;
 
+using aptitude::apt::changelog_cache;
 using aptitude::apt::global_changelog_cache;
 
 namespace
@@ -53,8 +54,8 @@ temp::name changelog_by_version(const std::string &pkg,
 
   download_manager *m =
     global_changelog_cache.get_changelog_from_source(pkg, ver, "", pkg,
-						     sigc::bind(sigc::ptr_fun(set_name),
-								&rval));
+						     sigc::bind(sigc::ptr_fun(&set_name), &rval),
+						     sigc::slot<void, std::string>());
   if(m != NULL)
     {
       res = cmdline_do_download(m, 0);
@@ -64,7 +65,8 @@ temp::name changelog_by_version(const std::string &pkg,
   if(res != download_manager::success || !rval.valid())
     {
       m = global_changelog_cache.get_changelog_from_source(pkg, ver, "contrib/foo", pkg,
-							   sigc::bind(sigc::ptr_fun(set_name), &rval));
+							   sigc::bind(sigc::ptr_fun(set_name), &rval),
+							   sigc::slot<void, std::string>());
       if(m != NULL)
 	{
 	  res = cmdline_do_download(m, 0);
@@ -75,7 +77,8 @@ temp::name changelog_by_version(const std::string &pkg,
   if(res != download_manager::success || !rval.valid())
     {
       m = global_changelog_cache.get_changelog_from_source(pkg, ver, "non-free/foo", pkg,
-							   sigc::bind(sigc::ptr_fun(set_name), &rval));
+							   sigc::bind(sigc::ptr_fun(set_name), &rval),
+							   sigc::slot<void, std::string>());
       if(m != NULL)
 	{
 	  res = cmdline_do_download(m, 0);
@@ -173,7 +176,8 @@ void do_cmdline_changelog(const vector<string> &packages)
 								   p.get_version(),
 								   p.get_section(),
 								   pkg.Name(),
-								   sigc::bind(sigc::ptr_fun(&set_name), &filename));
+								   sigc::bind(sigc::ptr_fun(&set_name), &filename),
+								   sigc::slot<void, std::string>());
 	    }
 	  else
 	    {
@@ -181,8 +185,11 @@ void do_cmdline_changelog(const vector<string> &packages)
 	      if(ver.end() && source == cmdline_version_version)
 		filename = changelog_by_version(package, sourcestr);
 	      else
-		m = global_changelog_cache.get_changelog(ver,
-							 sigc::bind(sigc::ptr_fun(&set_name), &filename));
+		{
+		  m = global_changelog_cache.get_changelog(ver,
+							   sigc::bind(sigc::ptr_fun(&set_name), &filename),
+							   sigc::slot<void, std::string>());
+		}
 	    }
 
 	  if(m != NULL)
@@ -201,11 +208,14 @@ void do_cmdline_changelog(const vector<string> &packages)
 	  download_manager *m = NULL;
 
 	  if(p.valid())
-	    m = global_changelog_cache.get_changelog_from_source(p.get_package(),
-								 p.get_version(),
-								 p.get_section(),
-								 p.get_package(),
-								 sigc::bind(sigc::ptr_fun(&set_name), &filename));
+	    {
+	      m = global_changelog_cache.get_changelog_from_source(p.get_package(),
+								   p.get_version(),
+								   p.get_section(),
+								   p.get_package(),
+								   sigc::bind(sigc::ptr_fun(&set_name), &filename),
+								   sigc::slot<void, std::string>());
+	    }
 	  else
 	    {
 	      // We couldn't find a real or source package with the

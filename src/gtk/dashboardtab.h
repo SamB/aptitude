@@ -1,6 +1,6 @@
 // dashboardtab.h            -*-c++-*-
 //
-//   Copyright (C) 2008 Obey Arthur Liu
+//   Copyright (C) 2008-2009 Obey Arthur Liu
 //   Copyright (C) 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
@@ -29,9 +29,18 @@
 
 /** \file dashboardtab.h */
 
+namespace aptitude
+{
+  namespace matching
+  {
+    class pattern;
+  };
+}
+
 namespace gui
 {
   class PkgView;
+  class PackageSearchEntry;
 
   /** \brief The main dashboard tab. */
   class DashboardTab : public Tab
@@ -40,8 +49,7 @@ namespace gui
     Gtk::TextView *upgrades_changelog_view;
     Gtk::TextView *upgrades_summary_textview;
 
-    Gtk::Entry *search_entry;
-    Gtk::Button *search_button;
+    cwidget::util::ref_ptr<PackageSearchEntry> package_search_entry;
 
     Gtk::Button *upgrade_button;
 

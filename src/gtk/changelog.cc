@@ -43,6 +43,7 @@
 #include <gtk/gui.h>
 #include <gtk/progress.h>
 
+using aptitude::apt::changelog_cache;
 using aptitude::apt::global_changelog_cache;
 
 namespace cw = cwidget;
@@ -338,6 +339,19 @@ namespace gui
 				 only_new);
     }
 
+    void changelog_download_error(const std::string &error,
+				  finish_changelog_download_info download_info)
+    {
+      const Gtk::TextBuffer::iterator begin = download_info.text_buffer->get_iter_at_mark(download_info.begin);
+      const Gtk::TextBuffer::iterator end = download_info.text_buffer->get_iter_at_mark(download_info.end);
+
+      // Zap the old text.
+      const Gtk::TextBuffer::iterator where = download_info.text_buffer->erase(begin, end);
+
+      download_info.text_buffer->insert(where,
+				       ssprintf(_("Failed to download the changelog: %s"), error.c_str()));
+    }
+
     // Helper function to post the "changelog download complete" event
     // to the main thread.
     void do_view_changelog_trampoline(temp::name name,
@@ -345,9 +359,14 @@ namespace gui
     {
       post_event(safe_bind(slot, name));
     }
+    void do_changelog_download_error_trampoline(const std::string &error,
+						safe_slot1<void, std::string> slot)
+    {
+      post_event(safe_bind(slot, error));
+    }
 
     void process_changelog_job(const changelog_download_job &entry,
-			       std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > &output_jobs)
+			       std::vector<std::pair<pkgCache::VerIterator, changelog_cache::download_callbacks> > &output_jobs)
     {
       Glib::RefPtr<Gtk::TextBuffer> textBuffer = entry.get_text_buffer();
       pkgCache::VerIterator ver = entry.get_ver();
@@ -427,14 +446,29 @@ namespace gui
 	    sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
 		       finish_changelog_download_safe_slot);
 
-	  output_jobs.push_back(std::make_pair(ver, finish_changelog_download_trampoline));
+	  const sigc::slot1<void, std::string> changelog_download_error_slot =
+	    sigc::bind(sigc::ptr_fun(&changelog_download_error),
+		       download_info);
+
+	  const safe_slot1<void, std::string> changelog_download_error_safe_slot =
+	    make_safe_slot(changelog_download_error_slot);
+
+	  const sigc::slot1<void, std::string> changelog_download_error_trampoline =
+	    sigc::bind(sigc::ptr_fun(&do_changelog_download_error_trampoline),
+		       changelog_download_error_safe_slot);
+
+	  const changelog_cache::download_callbacks
+	    callbacks(finish_changelog_download_trampoline,
+		      changelog_download_error_trampoline);
+
+	  output_jobs.push_back(std::make_pair(ver, callbacks));
 	}
     }
   }
 
   void fetch_and_show_changelogs(const std::vector<changelog_download_job> &changelogs)
   {
-    std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > jobs;
+    std::vector<std::pair<pkgCache::VerIterator, changelog_cache::download_callbacks> > jobs;
 
     for(std::vector<changelog_download_job>::const_iterator it = changelogs.begin();
 	it != changelogs.end(); ++it)

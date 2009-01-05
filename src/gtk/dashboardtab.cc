@@ -1,6 +1,6 @@
 // dashboardtab.cc
 //
-//   Copyright (C) 2008 Obey Arthur Liu
+//   Copyright (C) 2008-2009 Obey Arthur Liu
 //   Copyright (C) 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #include "changelog.h"
 #include "hyperlink.h"
 #include "info.h"
+#include "packagestab.h" // For PackageSearchEntry.
 #include "pkgview.h"
 #include "progress.h"
 
@@ -39,7 +40,7 @@ namespace gui
 {
   void DashboardTab::do_search()
   {
-    pMainWindow->add_packages_tab(search_entry->get_text());
+    pMainWindow->add_packages_tab(package_search_entry->get_text());
   }
 
   void DashboardTab::do_upgrade()
@@ -204,16 +205,29 @@ namespace gui
   {
     get_xml()->get_widget("dashboard_upgrades_selected_package_textview",
 			  upgrades_changelog_view);
+
+    Gtk::Entry *search_entry;
+    Gtk::Button *search_button;
+    Gtk::Label *search_errors;
+
     get_xml()->get_widget("dashboard_search_entry",
 			  search_entry);
     get_xml()->get_widget("dashboard_search_button",
 			  search_button);
+    get_xml()->get_widget("dashboard_search_errors",
+			  search_errors);
+
     get_xml()->get_widget("dashboard_upgrade_button",
 			  upgrade_button);
     get_xml()->get_widget("dashboard_available_upgrades_label",
 			  available_upgrades_label);
     get_xml()->get_widget("dashboard_upgrades_summary_textview",
 			  upgrades_summary_textview);
+
+    package_search_entry = PackageSearchEntry::create(search_entry,
+						      search_errors,
+						      search_button);
+    package_search_entry->activated.connect(sigc::hide(sigc::mem_fun(*this, &DashboardTab::do_search)));
 
     upgrades_pkg_view = cwidget::util::ref_ptr<PkgView>(new PkgView(get_xml(), "dashboard_upgrades_treeview",
 								    _("Dashboard"), ""));
@@ -229,8 +243,6 @@ namespace gui
     upgrades_pkg_view->store_reloaded.connect(sigc::mem_fun(*this,
 							    &DashboardTab::handle_upgrades_store_reloaded));
 
-    search_entry->signal_activate().connect(sigc::mem_fun(*this, &DashboardTab::do_search));
-    search_button->signal_clicked().connect(sigc::mem_fun(*this, &DashboardTab::do_search));
 
     upgrades_pkg_view->set_limit(aptitude::matching::pattern::make_upgradable());
 

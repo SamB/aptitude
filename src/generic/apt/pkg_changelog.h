@@ -51,6 +51,57 @@ namespace aptitude
      */
     class changelog_cache
     {
+    public:
+      /** \brief The callbacks associated with a download.
+       *
+       *  Used to pass the callbacks to get_changelogs().
+       */
+      class download_callbacks
+      {
+	sigc::slot<void, temp::name> success;
+	sigc::slot<void, std::string> failure;
+
+      public:
+	/** \brief Create a new pair of download callbacks.
+	 *
+	 *  \param _success A slot that will be invoked with the name
+	 *                  of the downloaded file when the download
+	 *                  succeeds.
+	 *
+	 *  \param _failure A slot that will be invoked with an error
+	 *                  message when the download fails.
+	 */
+	download_callbacks(const sigc::slot<void, temp::name> &_success,
+			   const sigc::slot<void, std::string> &_failure)
+	  : success(_success),
+	    failure(_failure)
+	{
+	}
+
+	const sigc::slot<void, temp::name> &get_success() const { return success; }
+	const sigc::slot<void, std::string> &get_failure() const { return failure; }
+      };
+
+      /** \brief The signals associated with a download. */
+      class download_signals
+      {
+	sigc::signal<void, temp::name> success;
+	sigc::signal<void, std::string> failure;
+
+      public:
+	/** \brief Create a new pair of download signals. */
+	download_signals()
+	{
+	}
+
+	const sigc::signal<void, temp::name> &get_success() const { return success; }
+	sigc::signal<void, temp::name> &get_success() { return success; }
+
+	const sigc::signal<void, std::string> &get_failure() const { return failure; }
+	sigc::signal<void, std::string> &get_failure() { return failure; } 
+      };
+
+    private:
       // Maps (source-package, version) to the corresponding
       // changelog.
       std::map<std::pair<std::string, std::string>, temp::name> cache;
@@ -60,12 +111,16 @@ namespace aptitude
       // Used to avoid spawning extra downloads when we can piggyback
       // off of an existing one.
       std::map<std::pair<std::string, std::string>,
-	       sigc::signal<void, temp::name> > pending_downloads;
+	       download_signals> pending_downloads;
 
       // Registers a new cache entry, then invokes a callback.
       void register_changelog(const temp::name &n,
 			      const std::string &package,
 			      const std::string &version);
+
+      void changelog_failed(const std::string &errmsg,
+			    const std::string &package,
+			    const std::string &version);
 
     public:
       changelog_cache();
@@ -93,10 +148,11 @@ namespace aptitude
        *  If one of the entries in the vector is an end iterator or has no
        *  file lists, it will be silently dropped from the list.
        */
-      download_manager *get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, sigc::slot1<void, temp::name> > > &versions);
+      download_manager *get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, download_callbacks> > &versions);
 
       download_manager *get_changelog(const pkgCache::VerIterator &ver,
-				      const sigc::slot1<void, temp::name> &k);
+				      const sigc::slot<void, temp::name> &success,
+				      const sigc::slot<void, std::string> &failure);
 
       /** Generate a download process object that retrieves a changelog for
        *  the given source package.
@@ -107,12 +163,15 @@ namespace aptitude
        *  \param name the name of the package that the user provided
        *              (e.g., the binary package that the changelog command
        *               was executed on)
+       *  \param success the callback to invoke if the download completes successfully.
+       *  \param failure the callback to invoke if the download fails.
        */
       download_manager *get_changelog_from_source(const std::string &srcpkg,
 						  const std::string &ver,
 						  const std::string &section,
 						  const std::string &name,
-						  const sigc::slot1<void, temp::name> &k);
+						  const sigc::slot<void, temp::name> &success,
+						  const sigc::slot<void, std::string> &failure);
     };
 
     extern changelog_cache global_changelog_cache;
