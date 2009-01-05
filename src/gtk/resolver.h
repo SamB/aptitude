@@ -2,7 +2,7 @@
 
 // resolver.h
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -59,12 +59,12 @@ namespace gui
           Gtk::TreeViewColumn * treeview_column,
           Gtk::TreeModelColumn<ColumnType>& model_column,
           int size);
+
     public:
       Glib::RefPtr<Gtk::TreeStore> resolver_store;
       ResolverColumns resolver_columns;
 
       ResolverView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-      void createstore();
   };
 
   class ResolverTab : public Tab
@@ -84,6 +84,15 @@ namespace gui
       // The sole purpose of this member is to avoid destroying and
       // rebuilding the tree if the solution didn't actually change.
       aptitude_solution last_sol;
+
+    /** \brief Create a new, empty tree store with the correct columns
+     *  for the resolver view.
+     */
+    Glib::RefPtr<Gtk::TreeStore> createstore();
+    /** \brief Create a new tree store and populate it with thge given
+     *  solution, rendered with actions collected by type.
+     */
+    Glib::RefPtr<Gtk::TreeStore> render_as_action_groups(const aptitude_solution &sol);
 
       std::string archives_text(const pkgCache::VerIterator &ver);
       std::string dep_targets(const pkgCache::DepIterator &start);
