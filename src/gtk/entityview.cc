@@ -1,6 +1,6 @@
 // entityview.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -821,14 +821,11 @@ namespace gui
     bool post_process_model(const Gtk::TreeModel::iterator &iter,
 			    const Glib::RefPtr<Gtk::TreeModel> &model,
 			    const EntityColumns *columns,
-			    std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> *revstore,
-			    bool *has_expandable_rows)
+			    std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> *revstore)
     {
       std::set<pkgCache::PkgIterator> packages;
 
       const Gtk::TreeModel::Row &row = *iter;
-
-      *has_expandable_rows = (*has_expandable_rows) || !row.children().empty();
 
       cwidget::util::ref_ptr<Entity> ent = row[columns->EntObject];
       ent->add_packages(packages);
@@ -848,6 +845,10 @@ namespace gui
 			    sigc::mem_fun(this, &EntityView::compare_rows_by_version));
 
     revstore.clear();
+    model->foreach_iter(sigc::bind(sigc::ptr_fun(&post_process_model),
+				   model,
+				   get_columns(),
+				   get_reverse_store()));
     get_treeview()->set_model(model);
   }
 }
