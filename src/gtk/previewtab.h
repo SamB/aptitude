@@ -2,7 +2,7 @@
 
 // previewtab.h
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -37,6 +37,7 @@
 namespace gui
 {
   class Notification;
+  class PackageSearchEntry;
 
   /** \brief A tree-view that displays a preview of which actions are
    *  to be performed.
@@ -73,14 +74,15 @@ namespace gui
     private:
       cwidget::util::ref_ptr<PreviewView> pPkgView;
       Gtk::TextView * pPackagesTextView;
-      Gtk::Entry * pLimitEntry;
-      Gtk::Button * pLimitButton;
+
+      cwidget::util::ref_ptr<PackageSearchEntry> pSearchEntry;
+
+    void limit_changed(const cwidget::util::ref_ptr<aptitude::matching::pattern> &limit);
 
     public:
       PreviewTab(const Glib::ustring &label);
 
       void activated_package_handler();
-      void repopulate_model();
       void display_desc(const cwidget::util::ref_ptr<Entity> &ent);
       const cwidget::util::ref_ptr<PreviewView> &get_pkg_view() const { return pPkgView; };
   };

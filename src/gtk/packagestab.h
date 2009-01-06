@@ -2,7 +2,7 @@
 
 // packagestab.h
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -89,6 +89,9 @@ namespace gui
       return search_entry->get_text();
     }
 
+    /** \brief Set the text of the entry and act as if the user had
+     *	pressed Enter.
+     */
     void set_text(const Glib::ustring &text);
 
     /** \brief A signal emitted when the user searches for a package. */

@@ -1,6 +1,6 @@
 // entityview.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -548,10 +548,9 @@ namespace gui
       EditColumnsDialog::set_edit_name(Status, _("Status"));
       EditColumnsDialog::set_description(Status, _("Icons showing the current and future status of this package."));
 
-      setup_column_properties(Status, 48);
+      setup_column_properties(Status, -1);
       // Needs to be GROW_ONLY because otherwise it gets clipped in
       // the preview display.
-      Status->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
       tree->append_column(*Status);
     }
     set_markup_tooltip(tree, Status, cols.StatusDescriptionMarkup);
@@ -632,9 +631,14 @@ namespace gui
 	treeview_column->add_attribute((*it)->property_cell_background_set(), cols.BgSet);
 	treeview_column->add_attribute((*it)->property_cell_background(), cols.BgColor);
       }
-    treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
-    treeview_column->set_fixed_width(size);
-    treeview_column->set_resizable(true);
+    if (size < 0)
+      treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_AUTOSIZE);
+    else
+      {
+        treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
+        treeview_column->set_fixed_width(size);
+        treeview_column->set_resizable(true);
+      }
     treeview_column->set_reorderable(true);
   }
 
@@ -821,14 +825,11 @@ namespace gui
     bool post_process_model(const Gtk::TreeModel::iterator &iter,
 			    const Glib::RefPtr<Gtk::TreeModel> &model,
 			    const EntityColumns *columns,
-			    std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> *revstore,
-			    bool *has_expandable_rows)
+			    std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> *revstore)
     {
       std::set<pkgCache::PkgIterator> packages;
 
       const Gtk::TreeModel::Row &row = *iter;
-
-      *has_expandable_rows = (*has_expandable_rows) || !row.children().empty();
 
       cwidget::util::ref_ptr<Entity> ent = row[columns->EntObject];
       ent->add_packages(packages);
@@ -848,6 +849,10 @@ namespace gui
 			    sigc::mem_fun(this, &EntityView::compare_rows_by_version));
 
     revstore.clear();
+    model->foreach_iter(sigc::bind(sigc::ptr_fun(&post_process_model),
+				   model,
+				   get_columns(),
+				   get_reverse_store()));
     get_treeview()->set_model(model);
   }
 }

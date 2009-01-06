@@ -1,6 +1,6 @@
 // history_entry.h         -*-c++-*-
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -24,6 +24,8 @@
 
 #include <apt-pkg/pkgcache.h> // For enumerations.
 
+#include <cwidget/generic/util/exception.h>
+
 namespace aptitude
 {
   /** \brief Interfaces dedicated to storing the history of the user's actions. */
@@ -35,6 +37,22 @@ namespace aptitude
     // this becomes a problem.  In fact, a generic interning framework
     // might be in order; it would be useful to be able to intern
     // dependency objects, for instance.
+
+    /** \brief An exception related to the history code. */
+    class HistoryException : public cwidget::util::Exception
+    {
+      std::string msg;
+
+    public:
+      /** \brief Create a history exception.
+       *
+       *  \param _msg  The error message associated with this exception.
+       */
+      HistoryException(const std::string &_msg);
+
+      /** \brief Retrieve the error message associated with this exception. */
+      std::string errmsg() const;
+    };
 
     /** \brief A dependency as known to the history system.
      *
@@ -91,7 +109,7 @@ namespace aptitude
 	 *  If there is no comparison operation, will return
 	 *  pkgCache::Dep::NoOp.
 	 */
-	pkgCache::Dep::DepCompareOp get_compare_op() const { return op & ~pkgCache::Dep::Or; }
+	pkgCache::Dep::DepCompareOp get_compare_op() const { return static_cast<pkgCache::Dep::DepCompareOp>(op & ~pkgCache::Dep::Or); }
 
 	/** \brief Check whether this is the last target in the
 	 *  current OR group.
@@ -121,7 +139,7 @@ namespace aptitude
        */
       dep(const std::string &_source, pkgCache::Dep::DepType _type,
 	  const std::vector<target> &_targets)
-	: source(_source), type(_type), targets(_targets)
+	: type(_type), source(_source), targets(_targets)
       {
       }
 
@@ -333,7 +351,7 @@ namespace aptitude
     class entry
     {
     public:
-      /** \name Entry types */
+      /** \name Enumerations */
 
       // @{
 
@@ -361,10 +379,20 @@ namespace aptitude
 	   *
 	   *  dpkg-change <package> <oldselectedstate> <oldcurrentstate> -> <selectedstate> <currentstate>
 	   *
-	   *  This are generated on startup, when the cache is
+	   *  These are generated on startup, when the cache is
 	   *  initially loaded.
 	   */
 	  dpkg_change,
+
+	  /** \brief A package's planned state was changed in response
+	   *  to a change in its actual dpkg status.
+	   *
+	   *  dpkg-sync-change <package> <oldstate> <oldflags> -> <newstate> <newflags>
+	   *
+	   *  These are generated on startup, when the cache is
+	   *  initially loaded.
+	   */
+	  dpkg_sync_change,
 
 	  /** \brief One or more history entries, grouped together
 	   * because they were performed as a single action.
@@ -477,6 +505,47 @@ namespace aptitude
 	   */
 	  unused_remove,
 	};
+
+      /** \brief Represents the aptitude selection state of a package.
+       *
+       *  A separate enum is used here in case the legal values
+       *  change, and also so we can distinguish between "keep" and
+       *  "hold".
+       *
+       *  \todo This is broken: I need to think more about how the
+       *  selection state is stored in history lists.  The problem is
+       *  this: saving an "install" state normally means "install
+       *  whatever the current candidate is, if it's not the current
+       *  version".  My notes above about installing a particular
+       *  version are normally wrong (the exception being the case
+       *  where the user selected a non-default version).  The various
+       *  actions like "select" that change states need to distinguish
+       *  between "install the candidate version" and "install version
+       *  (x)".  OTOH, rolling back an actual upgrade should probably
+       *  reverse the upgrade, not deselect or hold the package.  This
+       *  needs more thought.  We might even want to track the last
+       *  seen candidate version.
+       */
+      enum selection_state
+	{
+	  select_install,
+	  select_delete,
+	  select_purge,
+	  select_keep,
+	};
+
+      // @}
+
+    private:
+      type tp;
+
+      std::string package;
+
+      /** \name change constructor and accessors. */
+
+      // @{
+
+      /** \brief Create a change */
     };
   }
 }

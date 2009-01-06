@@ -2,7 +2,7 @@
 
 // resolver.h
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -59,12 +59,12 @@ namespace gui
           Gtk::TreeViewColumn * treeview_column,
           Gtk::TreeModelColumn<ColumnType>& model_column,
           int size);
+
     public:
       Glib::RefPtr<Gtk::TreeStore> resolver_store;
       ResolverColumns resolver_columns;
 
       ResolverView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-      void createstore();
   };
 
   class ResolverTab : public Tab
@@ -78,12 +78,30 @@ namespace gui
       Gtk::Button * pResolverNext;
       Gtk::Button * pResolverApply;
 
+    Gtk::RadioButton * pButtonGroupByAction;
+    Gtk::RadioButton * pButtonShowExplanation;
+
       // The last solution that was displayed, or invalid if there
       // was no last solution.
       //
       // The sole purpose of this member is to avoid destroying and
       // rebuilding the tree if the solution didn't actually change.
       aptitude_solution last_sol;
+
+    /** \brief Create a new, empty tree store with the correct columns
+     *  for the resolver view.
+     */
+    Glib::RefPtr<Gtk::TreeStore> createstore();
+    /** \brief Create a new tree store and populate it with the given
+     *  solution, rendered with actions collected by type.
+     */
+    Glib::RefPtr<Gtk::TreeStore> render_as_action_groups(const aptitude_solution &sol);
+
+    /** \brief Create a new tree store and populate it with
+     *  the given solution, rendered as a chronological explanation
+     *  of each action.
+     */
+    Glib::RefPtr<Gtk::TreeStore> render_as_explanation(const aptitude_solution &sol);
 
       std::string archives_text(const pkgCache::VerIterator &ver);
       std::string dep_targets(const pkgCache::DepIterator &start);
@@ -97,16 +115,25 @@ namespace gui
       bool do_apply_solution_enabled_from_state(const resolver_manager::state &state);
       void do_apply_solution();
 
-      /** \brief Updates the tab with the given resolver state. */
-      void update_from_state(const resolver_manager::state &state);
+      /** \brief Updates the tab with the given resolver state.
+       *
+       *  \param force_update if \b true, the tree is rebuilt even if
+       *  the current solution hasn't changed.
+       */
+    void update_from_state(const resolver_manager::state &state,
+			   bool force_update);
+
       /** \brief Updates the tab with the current resolver state.
        *
        *  This is connected to the global state-changed signal; in
        *  functions that check or read the state before triggering an
        *  update, invoke update(state) instead to ensure
        *  consistency.
+       *
+       *  \param force_update if \b true, the tree is rebuilt even if
+       *  the current solution hasn't changed.
        */
-      void update();
+      void update(bool force_update);
     public:
       ResolverTab(const Glib::ustring &label);
       ResolverView * get_packages_view() { return pResolverView; };

@@ -1,6 +1,6 @@
 // resolver.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -28,10 +28,15 @@
 
 #include <apt-pkg/error.h>
 
+#include <solution_fragment.h> // For archives_text.
+#include <solution_item.h> // For action_type.
+
 #include <generic/apt/apt_undo_group.h>
 #include <generic/problemresolver/exceptions.h>
 
 #include <gui.h>
+
+#include <cwidget/generic/util/ssprintf.h>
 
 namespace gui
 {
@@ -151,15 +156,8 @@ namespace gui
   ResolverView::ResolverView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
   : Gtk::TreeView(cobject) //Calls the base class constructor
   {
-    createstore();
     append_column(Glib::ustring(_("Name")), Name, resolver_columns.Name, 200);
     append_column(Glib::ustring(_("Action")), Section, resolver_columns.Action, 200);
-  }
-
-  void ResolverView::createstore()
-  {
-    resolver_store = Gtk::TreeStore::create(resolver_columns);
-    set_model(resolver_store);
     set_search_column(resolver_columns.Name);
   }
 
@@ -174,19 +172,31 @@ namespace gui
     get_xml()->get_widget("main_resolver_apply", pResolverApply);
     pResolverApply->signal_clicked().connect(sigc::mem_fun(*this, &ResolverTab::do_apply_solution));
 
+    get_xml()->get_widget("resolver_group_by_action", pButtonGroupByAction);
+    get_xml()->get_widget("resolver_show_explanation", pButtonShowExplanation);
+
+    // TODO: ideally, instead of rereading the state, we should
+    // trigger an update using the last seen state.  Or maybe buildtwo
+    // models and swap between them.
+    pButtonGroupByAction->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
+							      true));
+    pButtonShowExplanation->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
+								true));
+
     get_xml()->get_widget_derived("main_resolver_treeview", pResolverView);
 
-    update();
+    update(true);
 
     get_widget()->show();
 
-    resman->state_changed.connect(sigc::mem_fun(*this, &ResolverTab::update));
+    resman->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
+					     false));
   }
 
-  void ResolverTab::update()
+  void ResolverTab::update(bool force_update)
   {
     resolver_manager::state state = resman->state_snapshot();
-    update_from_state(state);
+    update_from_state(state, force_update);
   }
 
   string ResolverTab::archives_text(const pkgCache::VerIterator &ver)
@@ -281,7 +291,294 @@ namespace gui
       }
   }
 
-  void ResolverTab::update_from_state(const resolver_manager::state &state)
+  Glib::RefPtr<Gtk::TreeStore> ResolverTab::createstore()
+  {
+    return Gtk::TreeStore::create(pResolverView->resolver_columns);
+  }
+
+  Glib::RefPtr<Gtk::TreeStore> ResolverTab::render_as_action_groups(const aptitude_solution &sol)
+  {
+    Glib::RefPtr<Gtk::TreeStore> store(createstore());
+
+    if(sol.get_actions().empty())
+      {
+	Gtk::TreeModel::iterator iter = store->append();
+	Gtk::TreeModel::Row row = *iter;
+	row[pResolverView->resolver_columns.Name] = _("Internal error: unexpected null solution.");
+      }
+    else
+      {
+	// Bin packages according to what will happen to them.
+	vector<pkgCache::PkgIterator> remove_packages;
+	vector<pkgCache::PkgIterator> keep_packages;
+	vector<pkgCache::VerIterator> install_packages;
+	vector<pkgCache::VerIterator> downgrade_packages;
+	vector<pkgCache::VerIterator> upgrade_packages;
+
+	for(imm::map<aptitude_universe::package,
+	      generic_solution<aptitude_universe>::action>::const_iterator i=sol.get_actions().begin();
+	    i!=sol.get_actions().end(); ++i)
+	  {
+	    pkgCache::PkgIterator pkg=i->first.get_pkg();
+	    pkgCache::VerIterator curver=pkg.CurrentVer();
+	    pkgCache::VerIterator newver=i->second.ver.get_ver();
+
+	    if(curver.end())
+	      {
+		if(newver.end())
+		  keep_packages.push_back(pkg);
+		else
+		  install_packages.push_back(newver);
+	      }
+	    else if(newver.end())
+	      remove_packages.push_back(pkg);
+	    else if(newver == curver)
+	      keep_packages.push_back(pkg);
+	    else
+	      {
+		int cmp=_system->VS->CmpVersion(curver.VerStr(),
+						newver.VerStr());
+
+		// The versions shouldn't be equal -- otherwise
+		// something is majorly wrong.
+		// eassert(cmp!=0);
+		//
+		// The above is not true: consider, eg, the case of a
+		// locally compiled package and a standard package.
+
+		/** \todo indicate "sidegrades" separately? */
+		if(cmp<=0)
+		  upgrade_packages.push_back(newver);
+		else if(cmp>0)
+		  downgrade_packages.push_back(newver);
+	      }
+	  }
+
+	sort(remove_packages.begin(), remove_packages.end(), pkg_name_lt());
+	sort(keep_packages.begin(), keep_packages.end(), pkg_name_lt());
+	sort(install_packages.begin(), install_packages.end(), ver_name_lt());
+	sort(downgrade_packages.begin(), downgrade_packages.end(), ver_name_lt());
+	sort(upgrade_packages.begin(), upgrade_packages.end(), ver_name_lt());
+
+	if(!remove_packages.empty())
+	  {
+	    Gtk::TreeModel::iterator parent_iter = store->append();
+	    Gtk::TreeModel::Row parent_row = *parent_iter;
+	    parent_row[pResolverView->resolver_columns.Name] = _("Remove the following packages:");
+	    for(vector<pkgCache::PkgIterator>::const_iterator i=remove_packages.begin();
+		i!=remove_packages.end(); ++i)
+	      {
+		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
+		Gtk::TreeModel::Row row = *iter;
+		row[pResolverView->resolver_columns.Name] = i->Name();
+		row[pResolverView->resolver_columns.Action] = "";
+	      }
+	  }
+
+	if(!install_packages.empty())
+	  {
+	    Gtk::TreeModel::iterator parent_iter = store->append();
+	    Gtk::TreeModel::Row parent_row = *parent_iter;
+	    parent_row[pResolverView->resolver_columns.Name] = _("Install the following packages:");
+	    for(vector<pkgCache::VerIterator>::const_iterator i=install_packages.begin();
+		i!=install_packages.end(); ++i)
+	      {
+		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
+		Gtk::TreeModel::Row row = *iter;
+		row[pResolverView->resolver_columns.Name] = i->ParentPkg().Name();
+		row[pResolverView->resolver_columns.Action] = ssprintf("[%s (%s)]",
+								       i->VerStr(),
+								       archives_text(*i).c_str());
+	      }
+	  }
+
+	if(!keep_packages.empty())
+	  {
+	    Gtk::TreeModel::iterator parent_iter = store->append();
+	    Gtk::TreeModel::Row parent_row = *parent_iter;
+	    parent_row[pResolverView->resolver_columns.Name] = _("Keep the following packages:");
+	    for(vector<pkgCache::PkgIterator>::const_iterator i=keep_packages.begin();
+		i!=keep_packages.end(); ++i)
+	      {
+		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
+		Gtk::TreeModel::Row row = *iter;
+		if(i->CurrentVer().end())
+		  {
+		    row[pResolverView->resolver_columns.Name] = i->Name();
+		    row[pResolverView->resolver_columns.Action] = ssprintf("[%s]",
+									   _("Not Installed"));
+		  }
+		else
+		  {
+		    row[pResolverView->resolver_columns.Name] = i->Name();
+		    row[pResolverView->resolver_columns.Action] = ssprintf("[%s (%s)]",
+									   i->CurrentVer().VerStr(),
+									   archives_text(i->CurrentVer()).c_str());
+		  }
+	      }
+	  }
+
+	if(!upgrade_packages.empty())
+	  {
+	    Gtk::TreeModel::iterator parent_iter = store->append();
+	    Gtk::TreeModel::Row parent_row = *parent_iter;
+	    parent_row[pResolverView->resolver_columns.Name] = _("Upgrade the following packages:");
+	    for(vector<pkgCache::VerIterator>::const_iterator i=upgrade_packages.begin();
+		i!=upgrade_packages.end(); ++i)
+	      {
+		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
+		Gtk::TreeModel::Row row = *iter;
+		row[pResolverView->resolver_columns.Name] = i->ParentPkg().Name();
+		row[pResolverView->resolver_columns.Action] = ssprintf("[%s (%s) -> %s (%s)]",
+								       i->ParentPkg().CurrentVer().VerStr(),
+								       archives_text(i->ParentPkg().CurrentVer()).c_str(),
+								       i->VerStr(),
+								       archives_text(*i).c_str());
+	      }
+	  }
+
+	if(!downgrade_packages.empty())
+	  {
+	    Gtk::TreeModel::iterator parent_iter = store->append();
+	    Gtk::TreeModel::Row parent_row = *parent_iter;
+	    parent_row[pResolverView->resolver_columns.Name] = _("Downgrade the following packages:");
+	    for(vector<pkgCache::VerIterator>::const_iterator i=downgrade_packages.begin();
+		i!=downgrade_packages.end(); ++i)
+	      {
+		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
+		Gtk::TreeModel::Row row = *iter;
+		row[pResolverView->resolver_columns.Name] = i->ParentPkg().Name();
+		row[pResolverView->resolver_columns.Action] = ssprintf("[%s (%s) -> %s (%s)]",
+								       i->ParentPkg().CurrentVer().VerStr(),
+								       archives_text(i->ParentPkg().CurrentVer()).c_str(),
+								       i->VerStr(),
+								       archives_text(*i).c_str());
+	      }
+	  }
+
+	const imm::set<aptitude_universe::dep> &unresolved = sol.get_unresolved_soft_deps();
+
+	if(!unresolved.empty())
+	  {
+	    Gtk::TreeModel::iterator parent_iter = store->append();
+	    Gtk::TreeModel::Row parent_row = *parent_iter;
+	    parent_row[pResolverView->resolver_columns.Name] = _("Leave the following dependencies unresolved:");
+	    for(imm::set<aptitude_universe::dep>::const_iterator i = unresolved.begin();
+		i != unresolved.end(); ++i)
+	      {
+		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
+		Gtk::TreeModel::Row row = *iter;
+		row[pResolverView->resolver_columns.Name] = cwidget::util::transcode(dep_text((*i).get_dep()).c_str(), "UTF-8");
+		row[pResolverView->resolver_columns.Action] = "";
+	      }
+	  }
+      }
+
+    return store;
+  }
+
+  Glib::RefPtr<Gtk::TreeStore> ResolverTab::render_as_explanation(const aptitude_solution &sol)
+  {
+    Glib::RefPtr<Gtk::TreeStore> store(createstore());
+
+    if(sol.get_actions().empty())
+      {
+	Gtk::TreeModel::iterator iter = store->append();
+	Gtk::TreeModel::Row row = *iter;
+	row[pResolverView->resolver_columns.Name] = _("Internal error: unexpected null solution.");
+      }
+    else
+      {
+	std::vector<aptitude_solution::action> actions;
+
+	for(imm::map<aptitude_universe::package, aptitude_solution::action>::const_iterator
+	      it = sol.get_actions().begin();
+	    it != sol.get_actions().end(); ++it)
+	  actions.push_back(it->second);
+
+	std::sort(actions.begin(), actions.end(),
+		  aptitude_solution::action_id_compare());
+
+	for(std::vector<aptitude_solution::action>::const_iterator
+	      it = actions.begin(); it != actions.end(); ++it)
+	  {
+	    Gtk::TreeModel::iterator parent_iter = store->append();
+	    Gtk::TreeModel::Row parent_row = *parent_iter;
+
+	    parent_row[pResolverView->resolver_columns.Name] = cwidget::util::transcode(dep_text((*it).d.get_dep()), "UTF-8");
+
+	    Gtk::TreeModel::iterator iter = store->append(parent_row.children());
+	    Gtk::TreeModel::Row row = *iter;
+	    Glib::ustring name;
+
+	    aptitude_resolver_version ver((*it).ver);
+	    pkgCache::PkgIterator pkg = ver.get_pkg();
+	    action_type action(analyze_action(ver));
+
+	    using cwidget::util::ssprintf;
+
+	    switch(action)
+	      {
+	      case action_remove:
+		name = ssprintf(_("Remove %s [%s (%s)]"),
+				pkg.Name(),
+				pkg.CurrentVer().VerStr(),
+				archives_text(pkg.CurrentVer()).c_str());
+		break;
+
+	      case action_install:
+		name = ssprintf(_("Install %s [%s (%s)]"),
+				pkg.Name(),
+				ver.get_ver().VerStr(),
+				archives_text(ver.get_ver()).c_str());
+		break;
+
+	      case action_keep:
+		if(ver.get_ver().end())
+		  name = ssprintf(_("Cancel the installation of %s"),
+				  pkg.Name());
+		else if(ver.get_package().current_version().get_ver().end())
+		  name = ssprintf(_("Cancel the removal of %s"),
+				  pkg.Name());
+		else
+		  name = ssprintf(_("Keep %s at version %s (%s)"),
+				  pkg.Name(), 
+				  ver.get_ver().VerStr(),
+				  archives_text(ver.get_ver()).c_str());
+		break;
+
+	      case action_upgrade:
+		name = ssprintf(_("Upgrade %s [%s (%s) -> %s (%s)]"),
+				pkg.Name(),
+				pkg.CurrentVer().VerStr(),
+				archives_text(pkg.CurrentVer()).c_str(),
+				ver.get_ver().VerStr(),
+				archives_text(ver.get_ver()).c_str());
+		break;
+
+	      case action_downgrade:
+		name = ssprintf(_("Downgrade %s [%s (%s) -> %s (%s)]"),
+				pkg.Name(),
+				pkg.CurrentVer().VerStr(),
+				archives_text(pkg.CurrentVer()).c_str(),
+				ver.get_ver().VerStr(),
+				archives_text(ver.get_ver()).c_str());
+		break;
+
+	      default:
+		name = "Internal error: bad action type";
+		break;
+	      }
+
+	    row[pResolverView->resolver_columns.Name] = name;
+	  }
+      }
+
+    return store;
+  }
+
+  void ResolverTab::update_from_state(const resolver_manager::state &state,
+				      bool force_update)
   {
     Glib::RefPtr<Gtk::TreeStore> store = Gtk::TreeStore::create(pResolverView->resolver_columns);
 
@@ -333,184 +630,15 @@ namespace gui
 
 	// Break out without doing anything if the current solution
 	// isn't changed.
-	if(sol == last_sol)
+	if(!force_update && sol == last_sol)
 	  return;
 
 	last_sol = sol;
 
-	if(sol.get_actions().empty())
-	  {
-	    Gtk::TreeModel::iterator iter = store->append();
-	    Gtk::TreeModel::Row row = *iter;
-	    row[pResolverView->resolver_columns.Name] = _("Internal error: unexpected null solution.");
-	  }
+	if(pButtonShowExplanation->get_active())
+	  store = render_as_explanation(sol);
 	else
-	  {
-	    // Bin packages according to what will happen to them.
-	    vector<pkgCache::PkgIterator> remove_packages;
-	    vector<pkgCache::PkgIterator> keep_packages;
-	    vector<pkgCache::VerIterator> install_packages;
-	    vector<pkgCache::VerIterator> downgrade_packages;
-	    vector<pkgCache::VerIterator> upgrade_packages;
-
-	    for(imm::map<aptitude_universe::package,
-		  generic_solution<aptitude_universe>::action>::const_iterator i=sol.get_actions().begin();
-		i!=sol.get_actions().end(); ++i)
-	      {
-		pkgCache::PkgIterator pkg=i->first.get_pkg();
-		pkgCache::VerIterator curver=pkg.CurrentVer();
-		pkgCache::VerIterator newver=i->second.ver.get_ver();
-
-		if(curver.end())
-		  {
-		    if(newver.end())
-		      keep_packages.push_back(pkg);
-		    else
-		      install_packages.push_back(newver);
-		  }
-		else if(newver.end())
-		  remove_packages.push_back(pkg);
-		else if(newver == curver)
-		  keep_packages.push_back(pkg);
-		else
-		  {
-		    int cmp=_system->VS->CmpVersion(curver.VerStr(),
-						    newver.VerStr());
-
-		    // The versions shouldn't be equal -- otherwise
-		    // something is majorly wrong.
-		    // eassert(cmp!=0);
-		    //
-		    // The above is not true: consider, eg, the case of a
-		    // locally compiled package and a standard package.
-
-		    /** \todo indicate "sidegrades" separately? */
-		    if(cmp<=0)
-		      upgrade_packages.push_back(newver);
-		    else if(cmp>0)
-		      downgrade_packages.push_back(newver);
-		  }
-	      }
-
-	    sort(remove_packages.begin(), remove_packages.end(), pkg_name_lt());
-	    sort(keep_packages.begin(), keep_packages.end(), pkg_name_lt());
-	    sort(install_packages.begin(), install_packages.end(), ver_name_lt());
-	    sort(downgrade_packages.begin(), downgrade_packages.end(), ver_name_lt());
-	    sort(upgrade_packages.begin(), upgrade_packages.end(), ver_name_lt());
-
-	    if(!remove_packages.empty())
-	      {
-		Gtk::TreeModel::iterator parent_iter = store->append();
-		Gtk::TreeModel::Row parent_row = *parent_iter;
-		parent_row[pResolverView->resolver_columns.Name] = _("Remove the following packages:");
-		for(vector<pkgCache::PkgIterator>::const_iterator i=remove_packages.begin();
-		    i!=remove_packages.end(); ++i)
-		  {
-		    Gtk::TreeModel::iterator iter = store->append(parent_row.children());
-		    Gtk::TreeModel::Row row = *iter;
-		    row[pResolverView->resolver_columns.Name] = i->Name();
-		    row[pResolverView->resolver_columns.Action] = "";
-		  }
-	      }
-
-	    if(!install_packages.empty())
-	      {
-		Gtk::TreeModel::iterator parent_iter = store->append();
-		Gtk::TreeModel::Row parent_row = *parent_iter;
-		parent_row[pResolverView->resolver_columns.Name] = _("Install the following packages:");
-		for(vector<pkgCache::VerIterator>::const_iterator i=install_packages.begin();
-		    i!=install_packages.end(); ++i)
-		  {
-		    Gtk::TreeModel::iterator iter = store->append(parent_row.children());
-		    Gtk::TreeModel::Row row = *iter;
-		    row[pResolverView->resolver_columns.Name] = i->ParentPkg().Name();
-		    row[pResolverView->resolver_columns.Action] = ssprintf("[%s (%s)]",
-									   i->VerStr(),
-									   archives_text(*i).c_str());
-		  }
-	      }
-
-	    if(!keep_packages.empty())
-	      {
-		Gtk::TreeModel::iterator parent_iter = store->append();
-		Gtk::TreeModel::Row parent_row = *parent_iter;
-		parent_row[pResolverView->resolver_columns.Name] = _("Keep the following packages:");
-		for(vector<pkgCache::PkgIterator>::const_iterator i=keep_packages.begin();
-		    i!=keep_packages.end(); ++i)
-		  {
-		    Gtk::TreeModel::iterator iter = store->append(parent_row.children());
-		    Gtk::TreeModel::Row row = *iter;
-		    if(i->CurrentVer().end())
-		      {
-			row[pResolverView->resolver_columns.Name] = i->Name();
-			row[pResolverView->resolver_columns.Action] = ssprintf("[%s]",
-									       _("Not Installed"));
-		      }
-		    else
-		      {
-			row[pResolverView->resolver_columns.Name] = i->Name();
-			row[pResolverView->resolver_columns.Action] = ssprintf("[%s (%s)]",
-									       i->CurrentVer().VerStr(),
-									       archives_text(i->CurrentVer()).c_str());
-		      }
-		  }
-	      }
-
-	    if(!upgrade_packages.empty())
-	      {
-		Gtk::TreeModel::iterator parent_iter = store->append();
-		Gtk::TreeModel::Row parent_row = *parent_iter;
-		parent_row[pResolverView->resolver_columns.Name] = _("Upgrade the following packages:");
-		for(vector<pkgCache::VerIterator>::const_iterator i=upgrade_packages.begin();
-		    i!=upgrade_packages.end(); ++i)
-		  {
-		    Gtk::TreeModel::iterator iter = store->append(parent_row.children());
-		    Gtk::TreeModel::Row row = *iter;
-		    row[pResolverView->resolver_columns.Name] = i->ParentPkg().Name();
-		    row[pResolverView->resolver_columns.Action] = ssprintf("[%s (%s) -> %s (%s)]",
-									   i->ParentPkg().CurrentVer().VerStr(),
-									   archives_text(i->ParentPkg().CurrentVer()).c_str(),
-									   i->VerStr(),
-									   archives_text(*i).c_str());
-		  }
-	      }
-
-	    if(!downgrade_packages.empty())
-	      {
-		Gtk::TreeModel::iterator parent_iter = store->append();
-		Gtk::TreeModel::Row parent_row = *parent_iter;
-		parent_row[pResolverView->resolver_columns.Name] = _("Downgrade the following packages:");
-		for(vector<pkgCache::VerIterator>::const_iterator i=downgrade_packages.begin();
-		    i!=downgrade_packages.end(); ++i)
-		  {
-		    Gtk::TreeModel::iterator iter = store->append(parent_row.children());
-		    Gtk::TreeModel::Row row = *iter;
-		    row[pResolverView->resolver_columns.Name] = i->ParentPkg().Name();
-		    row[pResolverView->resolver_columns.Action] = ssprintf("[%s (%s) -> %s (%s)]",
-									   i->ParentPkg().CurrentVer().VerStr(),
-									   archives_text(i->ParentPkg().CurrentVer()).c_str(),
-									   i->VerStr(),
-									   archives_text(*i).c_str());
-		  }
-	      }
-
-	    const imm::set<aptitude_universe::dep> &unresolved = sol.get_unresolved_soft_deps();
-
-	    if(!unresolved.empty())
-	      {
-		Gtk::TreeModel::iterator parent_iter = store->append();
-		Gtk::TreeModel::Row parent_row = *parent_iter;
-		parent_row[pResolverView->resolver_columns.Name] = _("Leave the following dependencies unresolved:");
-		for(imm::set<aptitude_universe::dep>::const_iterator i = unresolved.begin();
-		    i != unresolved.end(); ++i)
-		  {
-		    Gtk::TreeModel::iterator iter = store->append(parent_row.children());
-		    Gtk::TreeModel::Row row = *iter;
-		    row[pResolverView->resolver_columns.Name] = cwidget::util::transcode(dep_text((*i).get_dep()).c_str(), "UTF-8");
-		    row[pResolverView->resolver_columns.Action] = "";
-		  }
-	      }
-	  }
+	  store = render_as_action_groups(sol);
       }
 
     pResolverView->set_model(store);
