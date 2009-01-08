@@ -327,26 +327,48 @@ namespace aptitude
      *
      *  History entries use some common concepts:
      *
-     *   * Selection state: the action that will be performed on a
-     *     package.  Can be "install", "delete", "purge", "keep" or
-     *     "hold".  For "install", a version number is also included.
-     *     For "remove", the reason is included (one of "manual",
-     *     "unused", and "automatic").
+     *   - aptitude state: the current extended aptitude state of a
+     *     package.  This consists of several components: the
+     *     selection state, the chosen candidate version (if any), the
+     *     forbidden version (if any), the reason the package was
+     *     marked for removal if it's being removed, whether the
+     *     package is flagged for upgrade, and whether the package is
+     *     being reinstalled.
      *
-     *   * Flags: extra information about the selection state.
-     *     Includes "Auto", indicating that the package was
-     *     automatically installed.  Flags are enclosed in
-     *     parentheses, and are always optional.
+     *     User tags are deliberately omitted: they are conceptually
+     *     different from the state information, and repeating them
+     *     all the time would take up a lot of space if they were used
+     *     much.
      *
-     *   * Dpkg selected state: the "future state" recorded by
+     *     aptitude states are serialized like this:
+     *
+     *       selection-state =CANDVER !FORBIDVER
+     *
+     *     where selection-state is "install", "upgrade", "reinstall",
+     *     "delete", "purge", "keep", or "hold", CANDVER is the
+     *     selected candidate version number (missing if none) and
+     *     FORBIDVER is the forbidden version number (missing if
+     *     none).  If the selection-state is "purge" or "delete", the
+     *     next word will be either "manual", "user-automatic",
+     *     "libapt", "from-resolver", or "unused".
+     *
+     *   - Dpkg selected state: the "future state" recorded by
      *     dselect.  One of Unknown, Install, Hold, DeInstall, and
-     *     Purge.
+     *     Purge.  We detect changes here by recording the last seen
+     *     state in /var/lib/aptitude/pkgstates.
      *
-     *   * Dpkg current state: the current status of this package in
+     *   - Dpkg current state: the current status of this package in
      *     the dpkg database.  One of NotInstalled, UnPacked,
      *     HalfConfigured, HalfInstalled, ConfigFiles, Installed,
      *     TriggersAwaited, and TriggersPending.  All states except
-     *     NotInstalled have an attached version.
+     *     NotInstalled have an attached version.  We detect changes
+     *     by recording the last seen state in
+     *     /var/lib/aptitude/pkgstates.
+     *
+     *  \todo Changes to the "auto" flag between aptitude runs won't
+     *  be picked up with this system because we don't know the
+     *  last-seen value.  Perhaps that should be stored in the
+     *  extended states file too?
      */
     class entry
     {
@@ -358,22 +380,22 @@ namespace aptitude
       /** \brief Represents the type of a history entry. */
       enum type
 	{
-	  /** \brief A package's selection state was changed by an
-	   * unknown process.
+	  /** \brief A package's aptitude state was changed.
 	   *
-	   *  This is generated whenever we can't determine the source
-	   *  of a change.  Hopefully the number of these entries will
-	   *  decrease over time.
+	   *  change <reason> <oldaptitudestate> -> <newaptitudestate>
 	   *
-	   *  change <package> <oldstate> <oldflags> -> <newstate> <newflags>
+	   *  Valid <reason>s are:
+	   *
+	   *   - dep <dep>
+	   *   - dpkg-sync
+	   *   - select
+	   *   - unknown
+	   *   - unused {set-of-requiring-packages}
+	   *
+	   *  \todo what about selected upgrades?  Should we note what
+	   *  version the user is trying to upgrade to/from?
 	   */
 	  change,
-
-	  /** \brief A package's selection state was changed by the autoresolver.
-	   *
-	   *  dep-change <dep> <package> <oldversion> <oldstate> <oldflags> -> <newversion> <newstate> <newflags>
-	   */
-	  dep_change,
 
 	  /** \brief A package's actual status was changed by dpkg.
 	   *
@@ -383,16 +405,6 @@ namespace aptitude
 	   *  initially loaded.
 	   */
 	  dpkg_change,
-
-	  /** \brief A package's planned state was changed in response
-	   *  to a change in its actual dpkg status.
-	   *
-	   *  dpkg-sync-change <package> <oldstate> <oldflags> -> <newstate> <newflags>
-	   *
-	   *  These are generated on startup, when the cache is
-	   *  initially loaded.
-	   */
-	  dpkg_sync_change,
 
 	  /** \brief One or more history entries, grouped together
 	   * because they were performed as a single action.
@@ -412,6 +424,14 @@ namespace aptitude
 	   *  the group.
 	   */
 	  group,
+
+	  /** \brief The "new" flag of the package was changed.
+	   *
+	   *  new-changed package old_new -> new_new
+	   *
+	   *  old_ and new_new are "Y" or "N".
+	   */
+	  new_changed,
 
 	  /** \brief aptitude is about to run dpkg.
 	   *
@@ -443,6 +463,10 @@ namespace aptitude
 	   *  preserved, including the dependency attached to each
 	   *  action.  Actions are written in the order they were
 	   *  inserted into the solution.
+	   *
+	   *  \todo We also need the actual changes, not just the
+	   *  solution object.  Maybe include a series of solution
+	   *  lines, then the actual changes?
 	   */
 	  resolver_apply,
 
@@ -465,12 +489,6 @@ namespace aptitude
 	   */
 	  rollback,
 
-	  /** \brief A package's selection state was changed by the user.
-	   *
-	   *  select <package> <oldstate> <oldflags> -> <newstate> <newflags>
-	   */
-	  select,
-
 	  /** \brief One or more actions were undone.
 	   *
 	   *  The actions stored here are the actions that were
@@ -482,28 +500,11 @@ namespace aptitude
 	   */
 	  undo,
 
-	  /** \brief A package is unused and will be removed.
+	  /** \brief The package's user tags were changed.
 	   *
-	   *  unused-remove <package> <oldstate> <oldflags> -> <newstate> <newflags> [<list-of-depending-packages>]
-	   *
-	   *  Here <list-of-depending-packages> is a purely
-	   *  informational list of the packages that require
-	   *  <package> and are being removed; e.g., "[frozen-bubble,
-	   *  rrootage]".  If missing from the textual representation,
-	   *  the list is empty.  \todo I don't know how to
-	   *  (efficiently) generate this list in a meaningful way
-	   *  right now, I'm just leaving room in the syntax for it
-	   *  once I figure it out.  Maybe just hijacking the
-	   *  "aptitude why" logic will work, but I'd rather compute
-	   *  it more exactly.  What we really want is the package or
-	   *  packages that actually triggered the removal of this
-	   *  package; that is, the packages that dominate it in the
-	   *  dependency graph of installed packages.  (in the
-	   *  presence of cycles, this will of course require an
-	   *  arbitrary choice; otherwise, there should always be a
-	   *  well-defined answer)
+	   *  user-tags {old-tags} -> {new-tags}
 	   */
-	  unused_remove,
+	  user_tags
 	};
 
       /** \brief Represents the aptitude selection state of a package.
