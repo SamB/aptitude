@@ -99,9 +99,6 @@ public:
     pkgCache::State::PkgSelectedState selection_state;
 
     /** Stores the version, if any, that the user explicitly selected.
-     *  This is not written to the global state file, although it is
-     *  used to pass information to the child during the "su-to-root"
-     *  operation.
      */
     std::string candver;
 
