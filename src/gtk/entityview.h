@@ -119,10 +119,14 @@ namespace gui
       Gtk::TreeModelColumn<Glib::ustring> NameMarkup;
       /** \brief The markup that's displayed in the "version" column. */
       Gtk::TreeModelColumn<Glib::ustring> VersionMarkup;
+      /** \brief The markup that's displayed in the "archive" column. */
+      Gtk::TreeModelColumn<Glib::ustring> ArchiveMarkup;
       /** \brief The string that the "name" column should be sorted on. */
       Gtk::TreeModelColumn<Glib::ustring> Name;
       /** \brief The string that the "version" column should be sorted on. */
       Gtk::TreeModelColumn<Glib::ustring> Version;
+      /** \brief The string that the "archive" column should be sorted on. */
+      Gtk::TreeModelColumn<Glib::ustring> Archive;
       /** \brief The text used to display the name column's "description" tooltip.
        *
        *  \todo I'm tired, so this is just a proof-of-concept; it
@@ -184,6 +188,7 @@ namespace gui
       Gtk::TreeViewColumn * AutomaticallyInstalled;
       Gtk::TreeViewColumn * Name;
       Gtk::TreeViewColumn * Version;
+      Gtk::TreeViewColumn * Archive;
 
       /** \brief Sets up generic column properties that don't have to do
        *  with creating the renderer.
@@ -259,6 +264,7 @@ namespace gui
       Gtk::TreeViewColumn *get_status_column() const { return Status; }
       Gtk::TreeViewColumn *get_name_column() const { return Name; }
       Gtk::TreeViewColumn *get_version_column() const { return Version; }
+      Gtk::TreeViewColumn *get_archive_column() const { return Archive; }
       Gtk::TreeViewColumn *get_automatically_installed_column() const { return AutomaticallyInstalled; }
       Glib::RefPtr<Gtk::TreeModel> get_model() const { return get_treeview()->get_model(); };
       const std::multimap<pkgCache::PkgIterator, Gtk::TreeModel::iterator> * get_reverse_store() const { return &revstore; };

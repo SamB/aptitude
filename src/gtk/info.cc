@@ -35,6 +35,8 @@
 #include <generic/apt/apt.h>
 #include <generic/util/undo.h>
 
+#include <solution_fragment.h>
+
 #include <gtk/gui.h>
 #include <gtk/entityview.h>
 #include <gtk/packageinformation.h>
@@ -161,8 +163,10 @@ namespace gui
 
 	row[columns->NameMarkup] = Glib::Markup::escape_text(ver.ParentPkg().Name());
 	row[columns->VersionMarkup] = Glib::Markup::escape_text(ver.VerStr());
+	row[columns->ArchiveMarkup] = Glib::Markup::escape_text(archives_text(ver));
 	row[columns->Name] = ver.ParentPkg().Name();
 	row[columns->Version] = ver.VerStr();
+	row[columns->Archive] = archives_text(ver);
       }
 
       void add_packages(std::set<pkgCache::PkgIterator> &packages)
@@ -258,8 +262,10 @@ namespace gui
 	row[columns->SelectedStatusIcon] = "";
 	row[columns->NameMarkup] = text;
 	row[columns->VersionMarkup] = "";
+	row[columns->ArchiveMarkup] = "";
 	row[columns->Name] = text;
-	row[columns->Version];
+	row[columns->Version] = "";
+	row[columns->Archive] = "";
       }
 
       void add_packages(std::set<pkgCache::PkgIterator> &packages)

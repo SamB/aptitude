@@ -61,6 +61,7 @@ namespace gui
 
     row[cols->Name] = text;
     row[cols->Version] = "";
+    row[cols->Archive] = "";
   }
 
   void HeaderEntity::activated(const Gtk::TreeModel::Path &path,
@@ -90,8 +91,10 @@ namespace gui
     add(SelectedStatusIcon);
     add(NameMarkup);
     add(VersionMarkup);
+    add(ArchiveMarkup);
     add(Name);
     add(Version);
+    add(Archive);
     add(Description);
     add(StatusDescriptionMarkup);
     add(AutomaticallyInstalled);
@@ -587,6 +590,21 @@ namespace gui
     }
     append_markup_column(Glib::ustring(_("Version")), Version, cols.VersionMarkup, 80);
     EditColumnsDialog::set_description(Version, _("The version number of the package."));
+    {
+      Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
+      if(renderer == NULL)
+        std::cerr << "Why don't I have a renderer when I just added one?" << std::endl;
+      else
+        {
+          Gtk::CellRendererText *renderer_text = dynamic_cast<Gtk::CellRendererText *>(renderer);
+          if(renderer_text == NULL)
+            std::cerr << "Why don't I have a text renderer when I just added one?" << std::endl;
+          else
+            renderer_text->property_ellipsize() = Pango::ELLIPSIZE_END;
+        }
+    }
+    append_markup_column(Glib::ustring(_("Archive")), Archive, cols.ArchiveMarkup, 80);
+    EditColumnsDialog::set_description(Archive, _("The archives having this version."));
     {
       Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
       if(renderer == NULL)

@@ -34,6 +34,8 @@
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
 
+#include <solution_fragment.h>
+
 #include <gtk/gui.h>
 #include <gtk/info.h>
 #include <gtk/progress.h>
@@ -197,12 +199,17 @@ namespace gui
       pkgCache::VerIterator candver=state.CandidateVerIter(*apt_cache_file);
       if (state.Upgrade() || state.Downgrade())
         row[cols->VersionMarkup] = row[cols->VersionMarkup] + "\n<i>" + Glib::Markup::escape_text(candver.VerStr()) + "</i>";
+      row[cols->ArchiveMarkup] = archives_text(ver);
     }
     else
+    {
       row[cols->VersionMarkup] = "";
+      row[cols->ArchiveMarkup] = "";
+    }
 
     row[cols->Name] = pkg.end() ? "" : pkg.Name();
     row[cols->Version] = ver.end() ? "" : ver.VerStr();
+    row[cols->Archive] = ver.end() ? "" : archives_text(ver);
 
     {
       const bool is_auto = (state.Flags & pkgCache::Flag::Auto) != 0;
@@ -368,6 +375,7 @@ namespace gui
     cache_reloaded.connect(sigc::mem_fun(*this, &PkgViewBase::rebuild_store));
 
     get_version_column()->set_visible(false);
+    get_archive_column()->set_visible(false);
   }
 
   PkgViewBase::~PkgViewBase()
@@ -403,7 +411,7 @@ namespace gui
     ref_ptr<search_cache> search_info(search_cache::create());
     if(limited)
       {
-	search(limit, search_info, matches, *apt_cache_file, *apt_package_records);	   
+	search(limit, search_info, matches, *apt_cache_file, *apt_package_records);
 
 	int num = 0;
 	const int total = static_cast<int>(matches.size());
