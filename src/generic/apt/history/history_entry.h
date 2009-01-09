@@ -24,7 +24,10 @@
 
 #include <apt-pkg/pkgcache.h> // For enumerations.
 
+#include <generic/apt/aptcache.h>
+
 #include <cwidget/generic/util/exception.h>
+#include <cwidget/generic/util/ref_ptr.h>
 
 namespace aptitude
 {
@@ -349,20 +352,22 @@ namespace aptitude
      *     selected candidate version number (missing if none) and
      *     FORBIDVER is the forbidden version number (missing if
      *     none).  If the selection-state is "purge" or "delete", the
-     *     next word will be either "manual", "user-automatic",
-     *     "libapt", "from-resolver", or "unused".
+     *     next word will be either "manual", "libapt",
+     *     "from-resolver", or "unused".  Note that we could infer the
+     *     *new* remove reason from the type of change being made, but
+     *     not the old one.
      *
      *   - Dpkg selected state: the "future state" recorded by
-     *     dselect.  One of Unknown, Install, Hold, DeInstall, and
-     *     Purge.  We detect changes here by recording the last seen
-     *     state in /var/lib/aptitude/pkgstates.
+     *     dselect.  One of "unknown", "install", "hold", "deinstall",
+     *     and "purge".  We detect changes here by recording the last
+     *     seen state in /var/lib/aptitude/pkgstates.
      *
      *   - Dpkg current state: the current status of this package in
-     *     the dpkg database.  One of NotInstalled, UnPacked,
-     *     HalfConfigured, HalfInstalled, ConfigFiles, Installed,
-     *     TriggersAwaited, and TriggersPending.  All states except
-     *     NotInstalled have an attached version.  We detect changes
-     *     by recording the last seen state in
+     *     the dpkg database.  One of "notinstalled", "unpacked",
+     *     "halfconfigured", "halfinstalled", "configfiles",
+     *     "installed", "triggersawaited", and "triggerspending".  All
+     *     states except "notinstalled" have an attached version.  We
+     *     detect changes by recording the last seen state in
      *     /var/lib/aptitude/pkgstates.
      *
      *  \todo Changes to the "auto" flag between aptitude runs won't
@@ -382,7 +387,7 @@ namespace aptitude
 	{
 	  /** \brief A package's aptitude state was changed.
 	   *
-	   *  change <reason> <oldaptitudestate> -> <newaptitudestate>
+	   *  change <package> <reason> <oldaptitudestate> -> <newaptitudestate>
 	   *
 	   *  Valid <reason>s are:
 	   *
@@ -427,7 +432,7 @@ namespace aptitude
 
 	  /** \brief The "new" flag of the package was changed.
 	   *
-	   *  new-changed package old_new -> new_new
+	   *  new-changed <package> <old_new> -> <new_new>
 	   *
 	   *  old_ and new_new are "Y" or "N".
 	   */
@@ -454,9 +459,9 @@ namespace aptitude
 	  /** \brief A resolver solution was applied.
 	   *
 	   *  resolver-apply:
-	   *  # install <pkg> ([<version> ->] <version>) for <dep>
-	   *  # keep <pkg> ([<version> ->] <version) for <dep>
-	   *  # remove <pkg> (<version>) for <dep>
+	   *  # install <package> ([<version> ->] <version>) for <dep>
+	   *  # keep <package> ([<version> ->] <version) for <dep>
+	   *  # remove <package> (<version>) for <dep>
 	   *  # unresolved <dep>
 	   *
 	   *  The solution is serialized with all information
@@ -464,9 +469,16 @@ namespace aptitude
 	   *  action.  Actions are written in the order they were
 	   *  inserted into the solution.
 	   *
-	   *  \todo We also need the actual changes, not just the
-	   *  solution object.  Maybe include a series of solution
-	   *  lines, then the actual changes?
+	   *  \todo Still need to figure out whether this is enough
+	   *  information -- probably the aptitude-state-change needs
+	   *  to be included too.  Do I try to associate changes with
+	   *  deps?  I think so.  What about just including the
+	   *  resolver information in the normal change message,
+	   *  instead of having a special "resolver-apply" entry?  But
+	   *  then I couldn't group together changes from the same
+	   *  solution, not so great.  (unless I used "group", but
+	   *  that doesn't provide the semantic information that it's
+	   *  a resolver application)
 	   */
 	  resolver_apply,
 
@@ -507,33 +519,100 @@ namespace aptitude
 	  user_tags
 	};
 
+      /** \brief Represents the reason a change was made. */
+      enum change_reason_enum
+	{
+	  change_dep,
+	  change_dpkg_sync,
+	  change_select,
+	  change_unknown,
+	  change_unused
+	};
+
       /** \brief Represents the aptitude selection state of a package.
        *
        *  A separate enum is used here in case the legal values
        *  change, and also so we can distinguish between "keep" and
        *  "hold".
-       *
-       *  \todo This is broken: I need to think more about how the
-       *  selection state is stored in history lists.  The problem is
-       *  this: saving an "install" state normally means "install
-       *  whatever the current candidate is, if it's not the current
-       *  version".  My notes above about installing a particular
-       *  version are normally wrong (the exception being the case
-       *  where the user selected a non-default version).  The various
-       *  actions like "select" that change states need to distinguish
-       *  between "install the candidate version" and "install version
-       *  (x)".  OTOH, rolling back an actual upgrade should probably
-       *  reverse the upgrade, not deselect or hold the package.  This
-       *  needs more thought.  We might even want to track the last
-       *  seen candidate version.
        */
-      enum selection_state
+      enum selection_state_enum
 	{
-	  select_install,
 	  select_delete,
-	  select_purge,
+	  select_hold,
+	  select_install,
 	  select_keep,
+	  select_purge,
+	  select_reinstall,
+	  select_upgrade,
 	};
+
+      /** \brief Represents why a package was removed.
+       *
+       *  As before, a separate enum is used for future-proofing:
+       *  someday the set of recognized values in aptcache.h might
+       *  change and we'll still want to be able to parse old logs.
+       */
+      enum remove_reason_enum
+	{
+	  remove_from_resolver,
+	  remove_libapt,
+	  remove_manual,
+	  remove_unused,
+	};
+
+      /** \brief Represents the dpkg selected state. */
+      enum dpkg_selection_state_enum
+	{
+	  dpkg_select_deinstall,
+	  dpkg_select_hold,
+	  dpkg_select_install,
+	  dpkg_select_purge,
+	  dpkg_select_unknown,
+	};
+
+      /** \brief Represents the dpkg current state. */
+      enum dpkg_current_state_enum
+	{
+	  dpkg_current_notinstalled,
+	  dpkg_current_unpacked,
+	  dpkg_current_halfconfigured,
+	  dpkg_current_halfinstalled,
+	  dpkg_current_configfiles,
+	  dpkg_current_installed,
+	  dpkg_current_triggersawaited,
+	  dpkg_current_triggerspending,
+	};
+
+      // @}
+
+      /** \brief Auxiliary structures. */
+
+      // @{
+
+      class aptitude_state
+      {
+	selection_state_enum selection_state;
+	std::string candver; // Empty if none.
+	std::string forbidver; // Empty if none.
+	remove_reason_enum remove_reason;
+
+      public:
+	aptitude_state(selection_state_enum _selection_state,
+		       const std::string &_candver,
+		       const std::string &_forbidver,
+		       remove_reason_enum _remove_reason)
+	  : selection_state(_selection_state),
+	    candver(_candver),
+	    forbidver(_forbidver),
+	    remove_reason(_remove_reason)
+	{
+	}
+
+	selection_state_enum get_selection_state() const { return selection_state; }
+	const std::string &get_candver() const { return candver; }
+	const std::string &get_forbidver() const { return forbidver; }
+	remove_reason_enum get_remove_reason() const { return remove_reason; }
+      };
 
       // @}
 
@@ -542,11 +621,33 @@ namespace aptitude
 
       std::string package;
 
+      // Used to store the reason for a change.
+      change_reason_enum change_reason;
+
+      // Stores the previous aptitude state.
+      aptitude_state former_aptitude_state;
+
+      // Stores the new aptitude state.
+      aptitude_state next_aptitude_state;
+
+      dpkg_selection_state_enum old_dpkg_selection_state, new_dpkg_selection_state;
+
+      dpkg_current_state_enum old_dpkg_current_state, new_dpkg_current_state;
+
+      bool old_new_flag : 1, new_new_flag : 1;
+
+      std::vector<resolver_action> resolver_actions;
+
+      std::set<aptitudeDepCache::user_tag> old_user_tags, new_user_tags;
+
+      std::vector<cwidget::util::ref_ptr<entry> > sub_entries;
+
       /** \name change constructor and accessors. */
 
       // @{
 
       /** \brief Create a change */
+      
     };
   }
 }
