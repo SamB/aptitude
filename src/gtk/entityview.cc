@@ -604,7 +604,7 @@ namespace gui
         }
     }
     append_markup_column(Glib::ustring(_("Archive")), Archive, cols.ArchiveMarkup, 80);
-    EditColumnsDialog::set_description(Archive, _("The archives having this version."));
+    EditColumnsDialog::set_description(Archive, _("The package archives that contain this version."));
     {
       Gtk::CellRenderer *renderer = tree->get_column_cell_renderer(tree->get_columns().size() - 1);
       if(renderer == NULL)
