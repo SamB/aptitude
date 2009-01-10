@@ -2,7 +2,7 @@
 
 // changelog.cpp
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -389,18 +389,41 @@ namespace gui
 	}
 
       // TODO: add a configurable association between origins and changelog URLs.
+      std::set<std::string> origins;
       for(pkgCache::VerFileIterator vf=ver.FileList();
 	  !vf.end() && !in_debian; ++vf)
-	if(!vf.File().end() && vf.File().Origin()!=NULL &&
-	   strcmp(vf.File().Origin(), "Debian")==0)
-	  in_debian=true;
-
-      if(!in_debian)
 	{
+	  if(!vf.File().end() && vf.File().Origin() != NULL)
+	    origins.insert(vf.File().Origin());
+	}
+
+      if(origins.find("Debian") == origins.end())
+	{
+	  std::string origins_str;
+	  for(std::set<std::string>::const_iterator it = origins.begin();
+	      it != origins.end(); ++it)
+	    {
+	      if(it->empty())
+		continue;
+
+	      if(!origins_str.empty())
+		origins_str += ", ";
+	      origins_str += "\"";
+	      origins_str += *it;
+	      origins_str += "\"";
+	    }
+
 	  const Glib::RefPtr<Gtk::TextBuffer::Mark> begin = entry.get_begin();
 	  const Gtk::TextBuffer::iterator begin_iter =
 	    textBuffer->get_iter_at_mark(begin);
-	  textBuffer->insert(begin_iter, _("You can only view changelogs of official Debian packages."));
+	  if(origins_str.empty())
+	    textBuffer->insert(begin_iter,
+			       ssprintf(_("You can only view changelogs of official Debian packages; the origin of %s is unknown."),
+					pkgname.c_str()));
+	  else
+	    textBuffer->insert(begin_iter,
+			       ssprintf(_("You can only view changelogs of official Debian packages; %s is from %s."),
+					pkgname.c_str(), origins_str.c_str()));
 	}
       else
 	{
