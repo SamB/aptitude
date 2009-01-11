@@ -280,6 +280,21 @@ namespace gui
   {
     store->clear();
 
+    if(ver.end())
+       // Assume this means, e.g. a virtual package with no files.
+      return;
+
+    if(ver != ver.ParentPkg().CurrentVer())
+      {
+	Gtk::TreeModel::iterator iter = store->append();
+	Gtk::TreeModel::Row row = *iter;
+	using cwidget::util::ssprintf;
+	row[cols.File] =
+	  ssprintf(_("This file list pertains to the currently installed version \"%s\", not the selected version \"%s\"."),
+		   ver.ParentPkg().CurrentVer().VerStr(),
+		   ver.VerStr());
+      }
+
     Glib::ustring fileslistname = Glib::ustring("/var/lib/dpkg/info/")
     + Glib::ustring(ver.ParentPkg().Name()) + Glib::ustring(".list");
 
