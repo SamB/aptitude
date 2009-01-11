@@ -1,6 +1,6 @@
 // info.h             -*-c++-*-
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -58,7 +58,11 @@ namespace gui
       void do_cache_closed();
       void do_cache_reloaded();
 
-      void notebook_switch_handler(GtkNotebookPage * page, guint page_num);
+      void notebook_switch_handler(guint page_num);
+ 
+
+      void show_selected_version(const Gtk::TreeModel::iterator &iter);
+      void selected_version_changed();
     public:
       InfoTab(const Glib::ustring &label);
       void disp_package(pkgCache::PkgIterator pkg, pkgCache::VerIterator ver);

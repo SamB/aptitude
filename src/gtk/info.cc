@@ -2,7 +2,7 @@
 
 // info.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -28,6 +28,7 @@
 
 #include <cwidget/generic/util/ssprintf.h>
 
+#include <apt-pkg/error.h>
 #include <apt-pkg/pkgcache.h>
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
@@ -526,10 +527,61 @@ namespace gui
   : Tab(Info, label, Gnome::Glade::Xml::create(glade_main_file, "main_info_hpaned"), "main_info_hpaned")
   {
     get_xml()->get_widget("main_info_textview", textview);
+
     get_xml()->get_widget("main_info_notebook", notebook);
-    get_widget()->show();
+    notebook->signal_switch_page().connect(sigc::hide<0>(sigc::mem_fun(*this, &InfoTab::notebook_switch_handler)));
+
     cache_closed.connect(sigc::mem_fun(*this, &InfoTab::do_cache_closed));
     cache_reloaded.connect(sigc::mem_fun(*this, &InfoTab::do_cache_reloaded));
+
+    using cwidget::util::ref_ptr;
+    pVersionsView = ref_ptr<EntityView>(new EntityView(get_xml(),
+						       "main_info_versionsview",
+						       _("Package information: version list")));
+    Glib::RefPtr<Gtk::TreeView::Selection> selection =
+      pVersionsView->get_treeview()->get_selection();
+    selection->signal_changed().connect(sigc::mem_fun(*this, &InfoTab::selected_version_changed));
+    selection->set_mode(Gtk::SELECTION_BROWSE);
+
+    pVersionsView->get_name_column()->set_fixed_width(154);
+    pVersionsView->get_automatically_installed_column()->set_visible(false);
+
+    pDependsView = ref_ptr<EntityView>(new EntityView(get_xml(), "main_info_dependsview",
+						      _("Package information: dependency list")));
+    pDependsView->get_name_column()->set_fixed_width(280);
+    pDependsView->get_automatically_installed_column()->set_visible(false);
+
+    get_xml()->get_widget("main_info_changelogview", changelog_textview);
+
+    filesview = new FilesView(get_xml(), "main_info_filesview");
+
+    get_widget()->show();
+  }
+
+  void InfoTab::show_selected_version(const Gtk::TreeModel::iterator &iter)
+  {
+    Gtk::TreeModel::Row r(*iter);
+    using cwidget::util::ref_ptr;
+    ref_ptr<Entity> ent = r[pVersionsView->get_columns()->EntObject];
+    ref_ptr<VersionEntity> ver_ent = ent.dyn_downcast<VersionEntity>();
+    if(!ver_ent.valid())
+      {
+	_error->Error("Internal error: an entity in a version list wasn't a version.");
+	return;
+      }
+
+    pkgCache::VerIterator selected_version = ver_ent->get_ver();
+    if(selected_version != current_version)
+      disp_package(selected_version.ParentPkg(), selected_version);
+  }
+
+  void InfoTab::selected_version_changed()
+  {
+    // This would do the wrong thing if several versions could be
+    // selected -- but the list is set to only allow one.
+    Glib::RefPtr<Gtk::TreeView::Selection> selection =
+      pVersionsView->get_treeview()->get_selection();
+    selection->selected_foreach_iter(sigc::mem_fun(*this, &InfoTab::show_selected_version));
   }
 
   void InfoTab::do_cache_closed()
@@ -567,7 +619,7 @@ namespace gui
     disp_package(pkg, found_ver);
   }
 
-  void InfoTab::notebook_switch_handler(GtkNotebookPage * page, guint page_num)
+  void InfoTab::notebook_switch_handler(guint page_num)
   {
     if (page_num == 1 && !changelog_loaded)
       {
@@ -591,6 +643,10 @@ namespace gui
     changelog_loaded = false;
     filesview_loaded = false;
     current_version = ver;
+
+    // Redisplay the current notebook page if necessary.  e.g.,
+    // download the changelog for the newly selected package version.
+    notebook_switch_handler(notebook->get_current_page());
 
     package_name = pkg.end() ? "" : pkg.Name();
     version_name = ver.end() ? "" : ver.VerStr();
@@ -639,14 +695,7 @@ namespace gui
 
     textview->set_buffer(textBuffer);
 
-    using cwidget::util::ref_ptr;
-    pVersionsView = ref_ptr<EntityView>(new EntityView(get_xml(),
-						       "main_info_versionsview",
-						       _("Package information: version list")));
     pVersionsView->set_model(make_version_list(pVersionsView->get_columns(), pkg));
-    pVersionsView->get_name_column()->set_fixed_width(154);
-    pVersionsView->get_automatically_installed_column()->set_visible(false);
-    pVersionsView->get_treeview()->get_selection()->set_mode(Gtk::SELECTION_BROWSE);
     {
       Gtk::TreeModel::Children entries = pVersionsView->get_treeview()->get_model()->children();
       for(Gtk::TreeModel::Children::const_iterator it = entries.begin();
@@ -660,11 +709,7 @@ namespace gui
 	}
     }
 
-    pDependsView = ref_ptr<EntityView>(new EntityView(get_xml(), "main_info_dependsview",
-						      _("Package information: dependency list")));
     pDependsView->set_model(make_depends_tree(pDependsView->get_columns(), ver));
-    pDependsView->get_name_column()->set_fixed_width(280);
-    pDependsView->get_automatically_installed_column()->set_visible(false);
     Gtk::TreeModel::Children dependsChildren = pDependsView->get_treeview()->get_model()->children();
     for(Gtk::TreeModel::iterator it = dependsChildren.begin();
 	it != dependsChildren.end(); ++it)
@@ -674,12 +719,6 @@ namespace gui
 	Gtk::TreeModel::Path path = pDependsView->get_treeview()->get_model()->get_path(it);
 	pDependsView->get_treeview()->expand_row(path, false);
       }
-
-    get_xml()->get_widget("main_info_changelogview", changelog_textview);
-
-    filesview = new FilesView(get_xml(), "main_info_filesview");
-
-    notebook->signal_switch_page().connect(sigc::mem_fun(*this, &InfoTab::notebook_switch_handler));
   }
 
   void InfoTab::show_tab(const pkgCache::PkgIterator &pkg,
