@@ -2,7 +2,7 @@
 
 // filesview.cpp
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -278,6 +278,8 @@ namespace gui
 
   void FilesView::load_version(pkgCache::VerIterator ver)
   {
+    store->clear();
+
     Glib::ustring fileslistname = Glib::ustring("/var/lib/dpkg/info/")
     + Glib::ustring(ver.ParentPkg().Name()) + Glib::ustring(".list");
 
