@@ -289,7 +289,7 @@ namespace gui
     {
       Gtk::TreeModel::iterator iter = store->append();
       Gtk::TreeModel::Row row = *iter;
-      row[cols.File] = "Files list is only available for installed packages.";
+      row[cols.File] = _("Files list is only available for installed packages.");
       return;
     }
 
