@@ -1,6 +1,6 @@
 // cmdline_why.cc                                -*-c++-*-
 //
-//   Copyright (C) 2007-2008 Daniel Burrows
+//   Copyright (C) 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -618,7 +618,8 @@ namespace aptitude
       : q(other.q),
 	leaves(other.leaves),
 	params(other.params),
-	first_iteration(other.first_iteration)
+	first_iteration(other.first_iteration),
+	verbosity(other.verbosity)
     {
       if(other.seen_packages == NULL)
 	seen_packages = NULL;
