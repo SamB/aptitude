@@ -22,7 +22,12 @@ private:
   bool keys_present_cache;
   bool keys_present_cache_stale;
 public:
-  task():keys_present_cache(false), keys_present_cache_stale(true) {}
+  task()
+    : keys_present_cache(false),
+      keys_present_cache_stale(true),
+      relevance(0)
+  {
+  }
 
   std::string name;
   std::string section;
