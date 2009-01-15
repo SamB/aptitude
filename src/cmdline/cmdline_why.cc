@@ -505,7 +505,10 @@ namespace aptitude
 	  {
 	    pkgCache::VerIterator candver =
 	      (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
-	    ver_to_check = candver.VerStr();
+	    if(candver.end())
+	      ver_to_check = NULL;
+	    else
+	      ver_to_check = candver.VerStr();
 	  }
 	else
 	  {
