@@ -25,7 +25,12 @@
 
 #include <aptitude.h>
 #include <generic/apt/matching/compare_patterns.h>
+#include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
+
+#include <cwidget/generic/util/ssprintf.h>
+
+using cwidget::util::ssprintf;
 
 int aptitude_resolver::resolver_hint::version_selection::compare(const version_selection &other) const
 {
@@ -149,9 +154,8 @@ int aptitude_resolver::resolver_hint::compare(const resolver_hint &other) const
     }
 }
 
-aptitude_resolver::resolver_hint aptitude_resolver::resolver_hint::parse(const std::string &hint)
+bool aptitude_resolver::resolver_hint::parse(const std::string &hint, resolver_hint &out)
 {
-  std::string action;
   std::string::const_iterator start = hint.begin();
 
   while(start != hint.end() && isspace(*start))
@@ -159,14 +163,148 @@ aptitude_resolver::resolver_hint aptitude_resolver::resolver_hint::parse(const s
 
   if(start == hint.end())
     {
-      _error->Error(_("Invalid hint: expected an action, but found nothing."));
-      // Return what?
+      _error->Error(_("Invalid hint \"%s\": expected an action, but found nothing."),
+		    hint.c_str());
+      return false;
     }
 
+  std::string action;
   while(start != hint.end() && !isspace(*start))
-    break;
+    {
+      action.push_back(*start);
+      ++start;
+    }
 
-  return resolver_hint();
+  while(start != hint.end() && isspace(*start))
+    ++start;
+
+
+  if(start == hint.end())
+    {
+      _error->Error(_("Invalid hint \"%s\": expected a target, but found nothing."),
+		    hint.c_str());
+      return false;
+    }
+
+  std::string target_str;
+  while(start != hint.end() && !isspace(*start))
+    {
+      target_str.push_back(*start);
+      ++start;
+    }
+
+  while(start != hint.end() && isspace(*start))
+    ++start;
+
+  cwidget::util::ref_ptr<aptitude::matching::pattern> target;
+  if(!aptitude::matching::is_pattern(target_str))
+    target = aptitude::matching::pattern::make_name(target_str);
+  else
+    try
+      {
+	target = aptitude::matching::parse_with_errors(target_str);
+      }
+    catch(aptitude::matching::MatchingException &ex)
+      {
+	_error->Error(_("Invalid hint \"%s\": invalid target: %s"),
+		      hint.c_str(), ex.errmsg().c_str());
+	return false;
+      }
+
+
+  std::string version;
+  while(start != hint.end() && !isspace(*start))
+    {
+      version.push_back(*start);
+      ++start;
+    }
+
+  while(start != hint.end() && isspace(*start))
+    ++start;
+
+  if(start != hint.end())
+    {
+      _error->Error(_("Invalid hint \"%s\": trailing junk after the version."),
+		    hint.c_str());
+      return false;
+    }
+
+  version_selection selection;
+  if(version.empty())
+    selection = version_selection::make_inst();
+  else if(version == ":UNINST")
+    selection = version_selection::make_uninst();
+  else if(version[0] == '/')
+    selection = version_selection::make_archive(std::string(version, 1));
+  else
+  {
+    // We must have a version selection.  Parse out the operator and
+    // the string.
+
+    version_selection::compare_op_type op;
+    std::string version_str;
+
+    std::string::const_iterator vstart = version.begin();
+    const std::string::const_iterator vend = version.end();
+
+    eassert(vstart != vend); // Should be true since version is nonempty.
+    switch(*vstart)
+      {
+      case '<':
+	++vstart;
+
+	if(vstart != vend && *vstart == '=')
+	  {
+	    ++vstart;
+	    op = version_selection::less_than_or_equal_to;
+	  }
+	else
+	  op = version_selection::less_than;
+	break;
+
+      case '>':
+	if(vstart != vend && *vstart == '=')
+	  {
+	    ++vstart;
+	    op = version_selection::greater_than_or_equal_to;
+	  }
+	else
+	  op = version_selection::greater_than;
+	break;
+
+      case '=':
+	++vstart;
+	op = version_selection::equal_to;
+	break;
+
+      default:
+	op = version_selection::equal_to;
+	break;
+      }
+
+    version_str = std::string(vstart, vend);
+
+    selection = version_selection::make_version(op, version_str);
+  }
+
+  if(action == "reject")
+    out = make_reject(target, selection);
+  else if(action == "accept")
+    out = make_mandate(target, selection);
+  else
+    {
+      unsigned long score_tweak = 0;
+      if(!StrToNum(action.c_str(), score_tweak, action.size()))
+	{
+	  _error->Error(_("Invalid hint: the action \"%s\" should be \"accept\", \"reject\", or a number."),
+			action.c_str());
+	  return false;
+	}
+
+      out = make_tweak_score(target, selection, (int)score_tweak);
+    }
+
+  return true;
 }
 
 aptitude_resolver::resolver_hint::~resolver_hint()

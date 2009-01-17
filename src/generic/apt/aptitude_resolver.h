@@ -320,8 +320,14 @@ public:
      *  "<>VERSION2" to only apply the hint to versions of the package
      *  that compare accordingly to the version string.  (obviously
      *  "=VERSION2" is redundant, but it is included for completeness)
+     *
+     *  \param definition   The text of the hint definition.
+     *  \param out  A location in which to store the parsed hint.
+     *
+     *  \return \b true if the hint was parsed successfully, \b false
+     *  otherwise.
      */
-    static resolver_hint parse(const std::string &definition);
+    static bool parse(const std::string &definition, resolver_hint &out);
 
     /** \brief Compare this hint to another hint.
      *
