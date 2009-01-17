@@ -271,6 +271,8 @@ bool aptitude_resolver::resolver_hint::parse(const std::string &hint, resolver_h
 	break;
 
       case '>':
+	++vstart;
+
 	if(vstart != vend && *vstart == '=')
 	  {
 	    ++vstart;
