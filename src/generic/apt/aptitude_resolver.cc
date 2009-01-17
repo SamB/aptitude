@@ -105,16 +105,16 @@ bool aptitude_resolver::resolver_hint::version_selection::matches(const aptitude
 	  case less_than:
 	    return comparison < 0;
 
-	  case less_than_or_equal:
+	  case less_than_or_equal_to:
 	    return comparison <= 0;
 
-	  case equal:
+	  case equal_to:
 	    return comparison == 0;
 
 	  case greater_than:
 	    return comparison > 0;
 
-	  case greater_than_or_equal:
+	  case greater_than_or_equal_to:
 	    return comparison >= 0;
 
 	  default:
