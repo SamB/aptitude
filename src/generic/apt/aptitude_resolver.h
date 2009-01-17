@@ -374,7 +374,6 @@ public:
 		    int unfixed_soft_score,
 		    int infinity,
 		    int resolution_score,
-		    const std::vector<resolver_hint> &hints,
 		    aptitudeDepCache *cache);
 
   /** \brief Return \b true if the given version will break a hold or
@@ -385,6 +384,11 @@ public:
   /** Assign scores to all packages and all package versions according
    *  to its arguments.  All scores are assigned with add_score, so
    *  this can be easily combined with other policies.
+   *
+   *  Note: hints are folded into this routine for efficiency
+   *  (minimizing the number of passes over the cache.  We should
+   *  probably fold everything into one enormous monster "set all the
+   *  aptitude scores up" routine.
    *
    * \param preserve_score the score to assign to the version that the
    * user selected.
@@ -435,7 +439,8 @@ public:
 			 int full_replacement_score,
 			 int undo_full_replacement_score,
 			 int break_hold_score,
-			 bool allow_break_holds_and_forbids);
+			 bool allow_break_holds_and_forbids,
+			 const std::vector<resolver_hint> &hints);
 
   /** Score packages/versions according to their priorities.  Normally
    *  you want important>=required>=standard>=optional>=extra.

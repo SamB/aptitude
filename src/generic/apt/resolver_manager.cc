@@ -1,6 +1,6 @@
 // resolver_manager.cc
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -715,6 +715,25 @@ void resolver_manager::create_resolver()
   cwidget::threads::mutex::lock l(mutex);
   eassert(resolver == NULL);
 
+  // \todo We should parse these once on startup to avoid duplicate
+  // error messages, support modifying the list dynamically (for the
+  // sake of GUI users), etc.
+  std::vector<aptitude_resolver::resolver_hint> hints;
+
+  const Configuration::Item * const root =
+    aptcfg->Tree(PACKAGE "::ProblemResolver::Hints");
+
+  if(root != NULL)
+    {
+      for(const Configuration::Item *itm = root->Child;
+	  itm != NULL; itm = itm -> Next)
+	{
+	  aptitude_resolver::resolver_hint hint;
+	  if(aptitude_resolver::resolver_hint::parse(itm->Value, hint))
+	    hints.push_back(hint);
+	}
+    }
+
   // NOTE: the performance of the resolver is highly sensitive to
   // these settings; choosing bad ones can result in hitting
   // exponential cases in practical situations.  In general,
@@ -734,7 +753,6 @@ void resolver_manager::create_resolver()
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::UnfixedSoftScore", -200),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::Infinity", 1000000),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::ResolutionScore", 50),
-				 std::vector<aptitude_resolver::resolver_hint>(),
 				 cache);
 
   resolver->add_action_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::PreserveManualScore", 60),
@@ -748,7 +766,8 @@ void resolver_manager::create_resolver()
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::FullReplacementScore", 500),
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::UndoFullReplacementScore", -500),
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::BreakHoldScore", -300),
-			      aptcfg->FindB(PACKAGE "::ProblemResolver::Allow-Break-Holds", false));
+			      aptcfg->FindB(PACKAGE "::ProblemResolver::Allow-Break-Holds", false),
+			      hints);
 
   resolver->add_priority_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::ImportantScore", 5),
 				aptcfg->FindI(PACKAGE "::ProblemResolver::RequiredScore", 4),

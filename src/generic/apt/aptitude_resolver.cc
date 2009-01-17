@@ -25,6 +25,7 @@
 
 #include <aptitude.h>
 #include <generic/apt/matching/compare_patterns.h>
+#include <generic/apt/matching/match.h>
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
 
@@ -326,20 +327,11 @@ aptitude_resolver::aptitude_resolver(int step_score,
 				     int unfixed_soft_score,
 				     int infinity,
 				     int resolution_score,
-				     const std::vector<resolver_hint> &hints,
 				     aptitudeDepCache *cache)
   :generic_problem_resolver<aptitude_universe>(step_score, broken_score, unfixed_soft_score, infinity, resolution_score, aptitude_universe(cache))
 {
   using cwidget::util::ref_ptr;
   using aptitude::matching::pattern;
-
-  std::vector<ref_ptr<pattern> > hint_matchers;
-  for(std::vector<resolver_hint>::const_iterator it = hints.begin();
-      it != hints.end(); ++it)
-    {
-      //const aptitude::matching::pkg_matcher *pattern = it->get_target();
-
-    }
 
   set_remove_stupid(aptcfg->FindB(PACKAGE "::ProblemResolver::Remove-Stupid-Pairs", true));
 
@@ -546,8 +538,13 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 					  int full_replacement_score,
 					  int undo_full_replacement_score,
 					  int break_hold_score,
-					  bool allow_break_holds_and_forbids)
+					  bool allow_break_holds_and_forbids,
+					  const std::vector<resolver_hint> &hints)
 {
+  cwidget::util::ref_ptr<aptitude::matching::search_cache>
+    search_info(aptitude::matching::search_cache::create());
+  pkgRecords records(*get_universe().get_cache());
+
   // Should I stick with APT iterators instead?  This is a bit more
   // convenient, though..
   for(aptitude_universe::package_iterator pi = get_universe().packages_begin();
@@ -571,6 +568,56 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	{
 	  aptitude_universe::version v=*vi;
 	  pkgCache::VerIterator apt_ver(v.get_ver());
+
+	  // Apply resolver hints.
+	  for(std::vector<resolver_hint>::const_iterator it = hints.begin();
+	      it != hints.end(); ++it)
+	    {
+	      const resolver_hint &h(*it);
+
+	      using aptitude::matching::get_match;
+
+	      // Check the version selection.  This is quicker than
+	      // the target test, so we do it first.
+	      if(!h.get_version_selection().matches(v))
+		continue;
+
+	      // Now check the target.
+	      if(apt_ver.end())
+		{
+		  if(!get_match(h.get_target(), p.get_pkg(),
+				search_info, *get_universe().get_cache(),
+				records).valid())
+		    continue;
+		}
+	      else
+		{
+		  if(!get_match(h.get_target(), p.get_pkg(), v.get_ver(),
+				search_info, *get_universe().get_cache(),
+				records).valid())
+		    continue;
+		}
+
+	      // OK, apply the hint.
+	      switch(h.get_type())
+		{
+		case resolver_hint::reject:
+		  reject_version(v);
+		  break;
+
+		case resolver_hint::mandate:
+		  mandate_version(v);
+		  break;
+
+		case resolver_hint::tweak_score:
+		  add_version_score(v, h.get_score());
+		  break;
+
+		default:
+		  _error->Error("Bad resolver hint type %d.", h.get_type());
+		  break;
+		}
+	    }
 
 	  // Remember, the "current version" is the InstVer.
 	  if(v==p.current_version())
