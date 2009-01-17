@@ -1,6 +1,6 @@
 // pattern.cc
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -75,6 +75,11 @@ namespace aptitude
     pattern::make_action(const action_type act)
     {
       return new pattern(action, act);
+    }
+
+    bool is_pattern(const std::string &s)
+    {
+      return s.find_first_of("~?") != s.npos;
     }
   }
 }

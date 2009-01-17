@@ -1,6 +1,6 @@
 // pattern.h      -*-c++-*-
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -1863,6 +1863,20 @@ namespace aptitude
 
       // @}
     };
+
+    /** \brief Test whether a string looks like a search pattern.
+     *
+     *  \param s  the string to test.
+     *
+     *  This is used in situations where it would be counterintuitive
+     *  for all strings to be treated as search patterns, but where we
+     *  want search patterns to be available.  Strings are considered
+     *  to be seach patterns if they contain a tilde (~) or a question
+     *  mark (?).
+     *
+     *  \return \b true if the string qualifies as a search pattern.
+     */
+    bool is_pattern(const std::string &s);
   }
 }
 

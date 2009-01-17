@@ -1,6 +1,6 @@
 // cmdline_extract_cache_subset.cc
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -71,7 +71,7 @@ namespace aptitude
 	    {
 	      std::string arg(argv[i]);
 
-	      if(!cmdline_is_search_pattern(arg))
+	      if(!aptitude::matching::is_pattern(arg))
 		{
 		  pkgCache::PkgIterator pIt = (*apt_cache_file)->FindPkg(arg);
 		  if(pIt.end())

@@ -66,7 +66,7 @@ int cmdline_download(int argc, char *argv[])
 
       std::vector<pkgCache::PkgIterator> packages;
 
-      if(!cmdline_is_search_pattern(name))
+      if(!aptitude::matching::is_pattern(name))
 	{
 	  pkgCache::PkgIterator pkg=(*apt_cache_file)->FindPkg(name);
 	  if(pkg.end())

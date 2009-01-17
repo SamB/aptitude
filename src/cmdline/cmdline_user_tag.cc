@@ -1,6 +1,6 @@
 // cmdline_user_tag.cc
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -109,7 +109,7 @@ namespace aptitude
       bool all_ok = true;
       for(int i = 2; i < argc; ++i)
 	{
-	  if(!cmdline_is_search_pattern(argv[i]))
+	  if(!aptitude::matching::is_pattern(argv[i]))
 	    {
 	      pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(argv[i]);
 	      if(pkg.end())

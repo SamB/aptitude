@@ -1045,7 +1045,7 @@ bool interpret_why_args(const std::vector<std::string> &args,
     {
       // If there isn't a tilde, treat it as an exact package name.
       cwidget::util::ref_ptr<pattern> p;
-      if(!cmdline_is_search_pattern(*it))
+      if(!aptitude::matching::is_pattern(*it))
 	{
 	  pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*it);
 	  if(pkg.end())

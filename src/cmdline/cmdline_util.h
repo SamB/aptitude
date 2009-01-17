@@ -71,16 +71,6 @@ bool cmdline_parse_source(const string &input,
 download_manager::result cmdline_do_download(download_manager *m,
 					     int verbose);
 
-/** \brief Test whether a string looks like a search pattern.
- *
- *  \param s  the string to test.
- *
- *  Looks for tildes and question marks.
- *
- *  \return \b true if the string qualifies as a search pattern.
- */
-bool cmdline_is_search_pattern(const std::string &s);
-
 namespace aptitude
 {
   namespace cmdline

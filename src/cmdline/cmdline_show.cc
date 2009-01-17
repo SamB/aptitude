@@ -532,7 +532,7 @@ bool do_cmdline_show(string s, int verbose)
       sourcestr = default_release;
     }
 
-  bool is_pattern = cmdline_is_search_pattern(name);
+  bool is_pattern = aptitude::matching::is_pattern(name);
   pkgCache::PkgIterator pkg;
 
   if(!is_pattern)
