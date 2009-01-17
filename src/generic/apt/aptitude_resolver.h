@@ -227,6 +227,7 @@ public:
       bool operator<(const version_selection &other) const { return compare(other) < 0; }
       bool operator<=(const version_selection &other) const { return compare(other) <= 0; }
       bool operator==(const version_selection &other) const { return compare(other) == 0; }
+      bool operator!=(const version_selection &other) const { return compare(other) != 0; }
       bool operator>=(const version_selection &other) const { return compare(other) >= 0; }
       bool operator>(const version_selection &other) const { return compare(other) > 0; }
 
@@ -344,6 +345,7 @@ public:
     bool operator<(const resolver_hint &other) const { return compare(other) < 0; }
     bool operator<=(const resolver_hint &other) const { return compare(other) <= 0; }
     bool operator==(const resolver_hint &other) const { return compare(other) == 0; }
+    bool operator!=(const resolver_hint &other) const { return compare(other) != 0; }
     bool operator>=(const resolver_hint &other) const { return compare(other) >= 0; }
     bool operator>(const resolver_hint &other) const { return compare(other) > 0; }
 
