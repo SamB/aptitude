@@ -1,6 +1,6 @@
 // aptitude_resolver.cc
 //
-//   Copyright (C) 2005, 2008 Daniel Burrows
+//   Copyright (C) 2005, 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -24,7 +24,118 @@
 #include <apt-pkg/error.h>
 
 #include <aptitude.h>
+#include <generic/apt/matching/compare_patterns.h>
 #include <generic/apt/matching/pattern.h>
+
+int aptitude_resolver::resolver_hint::version_selection::compare(const version_selection &other) const
+{
+  if(type < other.type)
+    return -1;
+  else if(type > other.type)
+    return 1;
+  else switch(type)
+	 {
+	 case select_by_archive:
+	   return version_selection_string.compare(other.version_selection_string);
+
+	 case select_uninst:
+	   return 0;
+
+	 case select_by_version:
+	   if(compare_op < other.compare_op)
+	     return -1;
+	   else if(compare_op > other.compare_op)
+	     return 1;
+	   else
+	     return version_selection_string.compare(other.version_selection_string);
+
+	 default:
+	   eassert(!"Internal error: we should never get here.");
+	   return 0;
+	 }
+}
+
+bool aptitude_resolver::resolver_hint::version_selection::matches(const aptitude_resolver_version &ver) const
+{
+  switch(type)
+    {
+    case select_by_archive:
+      if(ver.get_ver().end())
+	return false;
+
+      for(pkgCache::VerFileIterator vf = ver.get_ver().FileList();
+	  !vf.end(); ++vf)
+	{
+	  for(pkgCache::PkgFileIterator pf = vf.File();
+	      !pf.end(); ++pf)
+	    {
+	      if(pf.Archive() == version_selection_string)
+		return true;
+	    }
+	}
+
+      return false;
+
+    case select_uninst:
+      return ver.get_ver().end();
+
+    case select_by_version:
+      {
+	pkgCache::VerIterator real_ver(ver.get_ver());
+	if(real_ver.end())
+	  return false;
+
+	int comparison =
+	  _system->VS->CmpVersion(real_ver.VerStr(), version_selection_string);
+
+	switch(compare_op)
+	  {
+	  case less_than:
+	    return comparison < 0;
+
+	  case less_than_or_equal:
+	    return comparison <= 0;
+
+	  case equal:
+	    return comparison == 0;
+
+	  case greater_than:
+	    return comparison > 0;
+
+	  case greater_than_or_equal:
+	    return comparison >= 0;
+
+	  default:
+	   eassert(!"Internal error: we should never get here.");
+	   return 0;
+	  }
+      }
+
+    default:
+      eassert(!"Internal error: we should never get here.");
+      return 0;
+    }
+}
+
+int aptitude_resolver::resolver_hint::compare(const resolver_hint &other) const
+{
+  if(type < other.type)
+    return -1;
+  else if(type > other.type)
+    return 1;
+  else if(score < other.score)
+    return -1;
+  else if(score > other.score)
+    return 1;
+  else
+    {
+      const int selection_compare = selection.compare(other.selection);
+      if(selection_compare != 0)
+	return selection_compare;
+
+      return aptitude::matching::compare_patterns(target, other.target);
+    }
+}
 
 aptitude_resolver::resolver_hint aptitude_resolver::resolver_hint::parse(const std::string &hint)
 {

@@ -1,7 +1,7 @@
 // aptitude_resolver.h                  -*-c++-*-
 //
 // 
-//   Copyright (C) 2005, 2008 Daniel Burrows
+//   Copyright (C) 2005, 2008-2009 Daniel Burrows
 
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -86,22 +86,169 @@ public:
 	tweak_score
       };
 
+    /** \brief Describes which versions are selected by a hint. */
+    class version_selection
+    {
+    public:
+      /** \brief Describes what sort of version selection is in use. */
+      enum version_selection_type
+	{
+	  /** \brief Versions are selected by archive.
+	   *
+	   *  Any version contained in an archive that equals the
+	   *  version selection string will be selected.
+	   */
+	  select_by_archive,
+
+	  /** \brief The non-installed version of the package will be
+	   *  matched.
+	   */
+	  select_uninst,
+
+	  /** \brief Versions are selected by version string.
+	   *
+	   *  Any version contained in an archive that compares
+	   *  correctly to the version selection string (according to
+	   *  the comparison operator) will be selected.
+	   */
+	  select_by_version
+	};
+
+      /** \brief Lists the comparison operations that are allowed. */
+      enum compare_op_type
+	{
+	  less_than,
+	  less_than_or_equal,
+	  equal,
+	  greater_than,
+	  greater_than_or_equal
+	};
+
+    private:
+      version_selection_type type;
+      compare_op_type compare_op;
+      std::string version_selection_string;
+
+      version_selection(version_selection_type _type,
+			compare_op_type _compare_op,
+			const std::string &_version_selection_string)
+	: type(_type), compare_op(_compare_op),
+	  version_selection_string(_version_selection_string)
+      {
+      }
+
+    public:
+      version_selection()
+	: type((version_selection_type)-1),
+	  compare_op((compare_op_type)-1),
+	  version_selection_string()
+      {
+      }
+
+      /** \brief Create a version selection that selects versions by
+       *  their archive.
+       *
+       *  \param archive   The archive to match; only versions that are
+       *                   contained in this archive will be selected.
+       */
+      static version_selection make_archive(const std::string &archive)
+      {
+	return version_selection(select_by_archive, (compare_op_type)-1, archive);
+      }
+
+      /** \brief Create a version selection that selects not-installed
+       *  versions.
+       */
+      static version_selection make_uninst()
+      {
+	return version_selection(select_uninst, (compare_op_type)-1, std::string());
+      }
+
+      /** \brief Create a version selection that selects versions by
+       *  version number.
+       *
+       *  \param   The version number to compare against.
+       *  \param   The operation to use in comparison.  For instance,
+       *           use pkgCache::Dep::Less to select only versions
+       *           less than the given version.
+       */
+      static version_selection make_version(const std::string &version,
+					    compare_op_type compare_op)
+      {
+	return version_selection(select_by_version, compare_op, version);
+      }
+
+      /** \brief Test a version against this selector.
+       *
+       *  \param v   The version to test.
+       *
+       *  \return \b true if v is matched by this selector.
+       */
+      bool matches(const aptitude_resolver_version &v) const;
+
+      /** \brief Compare two version selectors.
+       *
+       *  \param other   The version selector to compare against.
+       *
+       *  Selectors are arbitrarily arranged in a total ordering.
+       *
+       *  \return a number less than zero if this selector is less
+       *  than the other selector, a number greater than zero if the
+       *  other selector is greater than this selector, and zero if
+       *  the two selectors are equal.
+       */
+      int compare(const version_selection &other) const;
+
+      bool operator<(const version_selection &other) const { return compare(other) < 0; }
+      bool operator<=(const version_selection &other) const { return compare(other) <= 0; }
+      bool operator==(const version_selection &other) const { return compare(other) == 0; }
+      bool operator>=(const version_selection &other) const { return compare(other) >= 0; }
+      bool operator>(const version_selection &other) const { return compare(other) > 0; }
+
+      /** \brief Get the type of this selection. */
+      version_selection_type get_type() const { return type; }
+
+      /** \brief Get the version selection string of this selection.
+       *
+       *  Only valid for select_by_archive and select_by_version
+       *  selections.
+       */
+      const std::string &get_version_selection_string() const
+      {
+	eassert(type == select_by_archive || type == select_by_version);
+
+	return version_selection_string;
+      }
+
+      /** \brief Get the comparison operation of this selection.
+       *
+       *  Only valid for select_by_version selections.
+       */
+      compare_op_type get_version_comparison_operator() const
+      {
+	eassert(type == select_by_version);
+
+	return compare_op;
+      }
+    };
+
   private:
     hint_type type;
     int score;
     cwidget::util::ref_ptr<aptitude::matching::pattern> target;
-    std::string version;
+    version_selection selection;
 
     resolver_hint(hint_type _type, int _score,
 		  const cwidget::util::ref_ptr<aptitude::matching::pattern> &_target,
-		  const std::string &_version)
-      : type(_type), score(_score), target(_target), version(_version)
+		  version_selection _selection)
+      : type(_type), score(_score), target(_target),
+	selection(_selection)
     {
     }
 
   public:
     resolver_hint()
-      : type((hint_type)-1), score(-1), target(NULL), version()
+      : type((hint_type)-1), score(-1), target(NULL), selection()
     {
     }
 
@@ -109,24 +256,24 @@ public:
 
     /** \brief Create a hint that rejects a version or versions of a package. */
     static resolver_hint make_reject(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
-				     const std::string &version)
+				     const version_selection &selection)
     {
-      return resolver_hint(reject, 0, target, version);
+      return resolver_hint(reject, 0, target, selection);
     }
 
     /** \brief Create a hint that mandates a version or versions of a package. */
     static resolver_hint make_mandate(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
-				      const std::string &version)
+				      const version_selection &selection)
     {
-      return resolver_hint(mandate, 0, target, version);
+      return resolver_hint(mandate, 0, target, selection);
     }
 
     /** \brief Create a hint that adjust the score of a package. */
     static resolver_hint make_tweak_score(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
-					  const std::string &version,
+					  const version_selection &selection,
 					  int score)
     {
-      return resolver_hint(tweak_score, score, target, version);
+      return resolver_hint(tweak_score, score, target, selection);
     }
 
     /** \brief Parse a resolver hint definition.
@@ -143,10 +290,31 @@ public:
      *  the removal version) that match TARGET will be selected.  If
      *  VERSION has the form "/<archive>" then the version of the
      *  package from that archive will be selected.  If VERSION is
-     *  ":UNINST" then the not-installed version of the package will be
-     *  selected.
+     *  ":UNINST" then the not-installed version of the package will
+     *  be selected.  Finally, VERSION may be ">VERSION2",
+     *  "=VERSION2", ">=VERSION2", "<VERSION2", "<=VERSION2", or
+     *  "<>VERSION2" to only apply the hint to versions of the package
+     *  that compare accordingly to the version string.  (obviously
+     *  "=VERSION2" is redundant, but it is included for completeness)
      */
     static resolver_hint parse(const std::string &definition);
+
+    /** \brief Compare this hint to another hint.
+     *
+     *  \param other  The hint to which this is to be compared.
+     *
+     *  \return -1 if this is less than other, 0 if the two hints are
+     *  equal, and 1 if this is more than other.
+     *
+     *  Hints exist in an arbitrary total ordering.
+     */
+    int compare(const resolver_hint &other) const;
+
+    bool operator<(const resolver_hint &other) const { return compare(other) < 0; }
+    bool operator<=(const resolver_hint &other) const { return compare(other) <= 0; }
+    bool operator==(const resolver_hint &other) const { return compare(other) == 0; }
+    bool operator>=(const resolver_hint &other) const { return compare(other) >= 0; }
+    bool operator>(const resolver_hint &other) const { return compare(other) > 0; }
 
     /** \brief Get the type of this hint.
      *
@@ -165,12 +333,8 @@ public:
     const cwidget::util::ref_ptr<aptitude::matching::pattern> &
     get_target() const { return target; }
 
-    /** \brief Return the version selected by this hint.
-     *
-     *  \todo Perhaps this should just test whether a version matches
-     *  instead?
-     */
-    const std::string &get_version() const { return version; }
+    /** \brief Return the version selection rule for this hint. */
+    const version_selection &get_version_selection() const { return selection; }
   };
 
   aptitude_resolver(int step_score, int broken_score,
