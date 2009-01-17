@@ -131,6 +131,7 @@ public:
 	  less_than,
 	  less_than_or_equal_to,
 	  equal_to,
+	  not_equal_to,
 	  greater_than,
 	  greater_than_or_equal_to
 	};

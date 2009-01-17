@@ -116,6 +116,9 @@ bool aptitude_resolver::resolver_hint::version_selection::matches(const aptitude
 	  case equal_to:
 	    return comparison == 0;
 
+	  case not_equal_to:
+	    return comparison == 0;
+
 	  case greater_than:
 	    return comparison > 0;
 
@@ -257,6 +260,11 @@ bool aptitude_resolver::resolver_hint::parse(const std::string &hint, resolver_h
 	  {
 	    ++vstart;
 	    op = version_selection::less_than_or_equal_to;
+	  }
+	else if(vstart != vend && *vstart == '>')
+	  {
+	    ++vstart;
+	    op = version_selection::not_equal_to;
 	  }
 	else
 	  op = version_selection::less_than;
