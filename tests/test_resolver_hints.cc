@@ -119,6 +119,12 @@ public:
 	hint h(resolver_tests[i].h);
 
 	CPPUNIT_ASSERT_MESSAGE("Testing copy constructor: ", h == resolver_tests[i].h);
+
+	hint h2;
+	h2 = resolver_tests[i].h;
+
+	CPPUNIT_ASSERT_MESSAGE("Testing operator=: ", h2 == resolver_tests[i].h);
+	CPPUNIT_ASSERT_MESSAGE("Testing operator= and copy constructor: ", h == h2);
       }
   }
 
