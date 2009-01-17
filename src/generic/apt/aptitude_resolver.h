@@ -106,6 +106,11 @@ public:
 	   */
 	  select_by_archive,
 
+	  /** \brief All versions of a package except the
+	   *  not-installed version will be matched.
+	   */
+	  select_inst,
+
 	  /** \brief The non-installed version of the package will be
 	   *  matched.
 	   */
@@ -165,6 +170,14 @@ public:
       static version_selection make_archive(const std::string &archive)
       {
 	return version_selection(select_by_archive, (compare_op_type)-1, archive);
+      }
+
+      /** \brief Create a version selection that selects all versions
+       *  except the not-installed version.
+       */
+      static version_selection make_inst()
+      {
+	return version_selection(select_inst, (compare_op_type)-1, std::string());
       }
 
       /** \brief Create a version selection that selects not-installed

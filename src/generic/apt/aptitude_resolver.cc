@@ -41,6 +41,9 @@ int aptitude_resolver::resolver_hint::version_selection::compare(const version_s
 	 case select_by_archive:
 	   return version_selection_string.compare(other.version_selection_string);
 
+	 case select_inst:
+	   return 0;
+
 	 case select_uninst:
 	   return 0;
 
@@ -81,6 +84,9 @@ bool aptitude_resolver::resolver_hint::version_selection::matches(const aptitude
 	}
 
       return false;
+
+    case select_inst:
+      return !ver.get_ver().end();
 
     case select_uninst:
       return ver.get_ver().end();
