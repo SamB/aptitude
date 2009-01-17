@@ -305,14 +305,14 @@ bool aptitude_resolver::resolver_hint::parse(const std::string &hint, resolver_h
 
   if(action == "reject")
     out = make_reject(target, selection);
-  else if(action == "accept")
+  else if(action == "approve")
     out = make_mandate(target, selection);
   else
     {
       unsigned long score_tweak = 0;
       if(!StrToNum(action.c_str(), score_tweak, action.size()))
 	{
-	  _error->Error(_("Invalid hint: the action \"%s\" should be \"accept\", \"reject\", or a number."),
+	  _error->Error(_("Invalid hint: the action \"%s\" should be \"approve\", \"reject\", or a number."),
 			action.c_str());
 	  return false;
 	}

@@ -57,10 +57,10 @@ namespace
       test("reject libc6 <=0.5.0", hint::make_reject(pattern::make_name("libc6"),
 						     hint::version_selection::make_version(hint::version_selection::less_than_or_equal_to,
 											   "0.5.0"))),
-      test("accept entropy =0", hint::make_mandate(pattern::make_name("entropy"),
+      test("approve entropy =0", hint::make_mandate(pattern::make_name("entropy"),
 						   hint::version_selection::make_version(hint::version_selection::equal_to,
 											 "0"))),
-      test("accept entropy 1", hint::make_mandate(pattern::make_name("entropy"),
+      test("approve entropy 1", hint::make_mandate(pattern::make_name("entropy"),
 						  hint::version_selection::make_version(hint::version_selection::equal_to,
 											"1"))),
 
@@ -69,7 +69,7 @@ namespace
       test("+29387 xmonad >=5.4.3.2.1", hint::make_tweak_score(pattern::make_name("xmonad"),
 							       hint::version_selection::make_version(hint::version_selection::greater_than_or_equal_to, "5.4.3.2.1"),
 							       29387)),
-      test("accept dc >1", hint::make_mandate(pattern::make_name("dc"),
+      test("approve dc >1", hint::make_mandate(pattern::make_name("dc"),
 					      hint::version_selection::make_version(hint::version_selection::greater_than, "1"))),
       test("reject ?task(desktop) <>4.0", hint::make_reject(pattern::make_task("desktop"),
 							    hint::version_selection::make_version(hint::version_selection::not_equal_to, "4.0")))
@@ -108,8 +108,8 @@ public:
     CPPUNIT_ASSERT(!hint::parse("", dummy));
     CPPUNIT_ASSERT(!hint::parse("823", dummy));
     CPPUNIT_ASSERT(!hint::parse("badact target", dummy));
-    CPPUNIT_ASSERT(!hint::parse("accept ?version(423 1234)", dummy));
-    CPPUNIT_ASSERT(!hint::parse("accept ?version(3425", dummy));
+    CPPUNIT_ASSERT(!hint::parse("approve ?version(423 1234)", dummy));
+    CPPUNIT_ASSERT(!hint::parse("approve ?version(3425", dummy));
   }
 
   void testHintCopy()

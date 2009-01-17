@@ -307,7 +307,7 @@ public:
      *  Definitions have the form ACTION TARGET [VERSION].  ACTION is
      *  either a number (which will be added to the score of the
      *  selected version), or the special strings "reject" or
-     *  "accept".  If TARGET is a match pattern (specifically, if the
+     *  "approve".  If TARGET is a match pattern (specifically, if the
      *  portion of the remaining string that parses as a match pattern
      *  includes a question mark or tilde), then it will be treated as
      *  such; otherwise it is the name of the package to match.
