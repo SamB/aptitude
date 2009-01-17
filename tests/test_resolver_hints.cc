@@ -83,6 +83,7 @@ class ResolverHintsTest : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE(ResolverHintsTest);
 
   CPPUNIT_TEST(testHintParse);
+  CPPUNIT_TEST(testHintCopy);
   CPPUNIT_TEST(testHintOrdering);
 
   CPPUNIT_TEST_SUITE_END();
@@ -109,6 +110,16 @@ public:
     CPPUNIT_ASSERT(!hint::parse("badact target", dummy));
     CPPUNIT_ASSERT(!hint::parse("accept ?version(423 1234)", dummy));
     CPPUNIT_ASSERT(!hint::parse("accept ?version(3425", dummy));
+  }
+
+  void testHintCopy()
+  {
+    for(int i = 0; i < num_resolver_tests; ++i)
+      {
+	hint h(resolver_tests[i].h);
+
+	CPPUNIT_ASSERT_MESSAGE("Testing copy constructor: ", h == resolver_tests[i].h);
+      }
   }
 
   void testHintOrdering()
