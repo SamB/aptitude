@@ -93,6 +93,12 @@ public:
       /** \brief Describes what sort of version selection is in use. */
       enum version_selection_type
 	{
+	  /** \brief All versions.
+	   *
+	   *  Matches any version.  This is equivalent to not providing a version string.
+	   */
+	  select_all,
+
 	  /** \brief Versions are selected by archive.
 	   *
 	   *  Any version contained in an archive that equals the
@@ -143,6 +149,11 @@ public:
 	  compare_op((compare_op_type)-1),
 	  version_selection_string()
       {
+      }
+
+      static version_selection make_all()
+      {
+	return version_selection(select_all, (compare_op_type)-1, std::string());
       }
 
       /** \brief Create a version selection that selects versions by

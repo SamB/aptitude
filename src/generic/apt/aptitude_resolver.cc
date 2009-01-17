@@ -35,6 +35,9 @@ int aptitude_resolver::resolver_hint::version_selection::compare(const version_s
     return 1;
   else switch(type)
 	 {
+	 case select_all:
+	   return 0;
+
 	 case select_by_archive:
 	   return version_selection_string.compare(other.version_selection_string);
 
@@ -59,6 +62,9 @@ bool aptitude_resolver::resolver_hint::version_selection::matches(const aptitude
 {
   switch(type)
     {
+    case select_all:
+      return true;
+
     case select_by_archive:
       if(ver.get_ver().end())
 	return false;
