@@ -570,6 +570,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
       for(aptitude_universe::package::version_iterator vi=p.versions_begin(); !vi.end(); ++vi)
 	{
 	  aptitude_universe::version v=*vi;
+	  pkgCache::VerIterator apt_ver(v.get_ver());
 
 	  // Remember, the "current version" is the InstVer.
 	  if(v==p.current_version())
@@ -580,17 +581,17 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		add_version_score(v, auto_score);
 	    }
 	  // Ok, if this version is selected it'll be a change.
-	  else if(v.get_ver()==p.get_pkg().CurrentVer())
+	  else if(apt_ver == p.get_pkg().CurrentVer())
 	    {
 	      if(manual)
 		add_version_score(v, keep_score);
 	    }
-	  else if(v.get_ver().end())
+	  else if(apt_ver.end())
 	    {
 	      if(manual)
 		add_version_score(v, remove_score);
 	    }
-	  else if(v.get_ver()==(*get_universe().get_cache())[p.get_pkg()].CandidateVerIter(*get_universe().get_cache()))
+	  else if(apt_ver == (*get_universe().get_cache())[p.get_pkg()].CandidateVerIter(*get_universe().get_cache()))
 	    {
 	      if(manual)
 		{
@@ -622,17 +623,17 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	  // In addition, add the essential-removal score:
 	  if((p.get_pkg()->Flags & (pkgCache::Flag::Essential |
 				    pkgCache::Flag::Important)) &&
-	     v.get_ver().end())
+	     apt_ver.end())
 	    {
 	      add_version_score(v, essential_remove);
 	      reject_version(v);
 	    }
 
 	  // Look for a conflicts/provides/replaces.
-	  if(!v.get_ver().end())
+	  if(!apt_ver.end())
 	    {
 	      std::set<pkgCache::PkgIterator> replaced_packages;
-	      for(pkgCache::DepIterator dep = v.get_ver().DependsList();
+	      for(pkgCache::DepIterator dep = apt_ver.DependsList();
 		  !dep.end(); ++dep)
 		{
 		  if((dep->Type & ~pkgCache::Dep::Or) == pkgCache::Dep::Replaces &&
@@ -644,7 +645,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		      if(replaced_packages.find(target) == replaced_packages.end())
 			{
 			  replaced_packages.insert(target);
-			  add_full_replacement_score(v.get_ver(),
+			  add_full_replacement_score(apt_ver,
 						     target,
 						     pkgCache::VerIterator(*get_universe().get_cache()),
 						     full_replacement_score,
@@ -663,7 +664,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			  if(replaced_packages.find(provider.ParentPkg()) == replaced_packages.end())
 			    {
 			      replaced_packages.insert(provider.ParentPkg());
-			      add_full_replacement_score(v.get_ver(),
+			      add_full_replacement_score(apt_ver,
 							 target,
 							 provider,
 							 full_replacement_score,
