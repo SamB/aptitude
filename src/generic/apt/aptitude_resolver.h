@@ -196,8 +196,8 @@ public:
        *           use pkgCache::Dep::Less to select only versions
        *           less than the given version.
        */
-      static version_selection make_version(const std::string &version,
-					    compare_op_type compare_op)
+      static version_selection make_version(compare_op_type compare_op,
+					    const std::string &version)
       {
 	return version_selection(select_by_version, compare_op, version);
       }
