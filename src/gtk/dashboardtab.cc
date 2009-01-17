@@ -106,7 +106,8 @@ namespace gui
 	    {
 	      pkgCache::VerIterator candver = (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
 
-	      versions.push_back(candver);
+	      if(!candver.end())
+		versions.push_back(candver);
 	    }
 
 	  ++i;
