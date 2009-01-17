@@ -23,6 +23,7 @@ test_SOURCES = \
 	test_matching.cc \
 	test_misc.cc \
 	test_resolver.cc \
+	test_resolver_hints.cc \
 	test_setset.cc \
 	test_tags.cc \
 	test_temp.cc \
