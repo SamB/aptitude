@@ -202,6 +202,11 @@ bool aptitude_resolver::resolver_hint::parse(const std::string &hint, resolver_h
 
   cwidget::util::ref_ptr<aptitude::matching::pattern> target;
   if(!aptitude::matching::is_pattern(target_str))
+    // \todo This should match only the *exact* name; currently, eg,
+    // "rpm" will match "librpm1".
+    //
+    // Doing that requires backslash-escaping any regex metacharacters
+    // in the string, or maybe just writing a new pattern type.
     target = aptitude::matching::pattern::make_name(target_str);
   else
     try
