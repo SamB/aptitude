@@ -248,6 +248,9 @@ namespace gui
 	    cancel_ok = true;
 	    close();
 	  }
+
+	if(close_ok_prompt != NULL)
+	  close_ok_prompt->hide();
       }
 
       bool prompt_cancel_ok()
