@@ -80,7 +80,13 @@ static void show_broken_deps(pkgCache::PkgIterator pkg)
 			       target.CurrentVer().VerStr());
 		    }
 		  else
-		    printf(_("but it is not installable"));
+		    {
+		      pkgCache::VerIterator cand = (*apt_cache_file)[target].CandidateVerIter(*apt_cache_file);
+		      if(cand.end())
+			printf(_("but it is not installable."));
+		      else
+			printf(_("but it is not going to be installed."));
+		    }
 		}
 	      else
 		// FIXME: do something sensible here!
