@@ -234,25 +234,38 @@ namespace gui
       bool cancel_ok;
       bool cancelled;
       bool success;
+      Gtk::MessageDialog *close_ok_prompt;
 
       void tab_destroyed()
       {
 	tab = NULL;
       }
 
+      void finish_prompt_cancel_ok(int response)
+      {
+	if(response == Gtk::RESPONSE_YES)
+	  {
+	    cancel_ok = true;
+	    close();
+	  }
+      }
+
       bool prompt_cancel_ok()
       {
 	if(!finished && !cancel_ok)
 	  {
-	    // Should 
+	    if(close_ok_prompt == NULL)
+	      {
+		// \todo We should find the real ultimate parent window of
+		// the notification instead of assuming it's pMainWindow.
+		close_ok_prompt = new Gtk::MessageDialog(*pMainWindow, _("The download is still in progress.  Should it be canceled?"),
+							 false, Gtk::MESSAGE_QUESTION,
+							 Gtk::BUTTONS_YES_NO, true);
+		close_ok_prompt->signal_response().connect(sigc::mem_fun(*this, &DownloadNotification::finish_prompt_cancel_ok));
+	      }
 
-	    // \todo We should find the real ultimate parent window of
-	    // the notification instead of assuming it's pMainWindow.
-	    Gtk::MessageDialog dlg(*pMainWindow, _("The download is still in progress.  Should it be canceled?"),
-				   false, Gtk::MESSAGE_QUESTION,
-				   Gtk::BUTTONS_YES_NO, true);
-
-	    return (dlg.run() == Gtk::RESPONSE_YES);
+	    close_ok_prompt->show();
+	    return false;
 	  }
 	else
 	  return true;
@@ -312,7 +325,8 @@ namespace gui
 	  finished(false),
 	  cancel_ok(false),
 	  cancelled(false),
-	  success(true)
+	  success(true),
+	  close_ok_prompt(NULL)
       {
 	progress->set_text(title);
 	progress->set_pulse_step(0.1);
@@ -335,6 +349,11 @@ namespace gui
 
 	finalize();
 	show();
+      }
+
+      ~DownloadNotification()
+      {
+	delete close_ok_prompt;
       }
 
       void connect(download_signal_log *log)
