@@ -105,14 +105,12 @@ namespace gui
   void NotifyView::notification_close_clicked(Notification * notification)
   {
     if(notification->closing())
-      {
-	notification->closed();
-	remove_notification(notification);
-      }
+      remove_notification(notification);
   }
 
   void NotifyView::remove_notification(Notification * notification)
   {
+    notification->closed();
     if (notification->is_onetimeuse())
       {
         remove(*notification);
