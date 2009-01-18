@@ -1138,9 +1138,6 @@ namespace gui
   AptitudeWindow::AptitudeWindow(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::Window(cobject)
   {
     refGlade->get_widget_derived("main_notebook", pNotebook);
-    pNotebook->package_menu_actions_changed.connect(sigc::mem_fun(*this, &AptitudeWindow::update_package_menu));
-    pNotebook->undo_available_changed.connect(sigc::mem_fun(*this, &AptitudeWindow::update_undo_sensitivity));
-    pNotebook->edit_columns_available_changed.connect(sigc::mem_fun(*this, &AptitudeWindow::update_edit_columns_sensitivity));
 
     refGlade->get_widget("main_toolbutton_dashboard", pToolButtonDashboard);
     pToolButtonDashboard->signal_clicked().connect(sigc::mem_fun(*this, &AptitudeWindow::do_dashboard));
@@ -1257,6 +1254,16 @@ namespace gui
     // When the cache is reloaded, attach to the new resolver-manager.
     cache_reloaded.connect(sigc::mem_fun(*this, &AptitudeWindow::update_resolver_sensitivity_callback));
     update_resolver_sensitivity_callback();
+
+    pNotebook->package_menu_actions_changed.connect(sigc::bind(sigc::ptr_fun(&AptitudeWindow::update_package_menu),
+							       sigc::ref(*pNotebook),
+							       sigc::ref(*pMenuPackage)));
+    pNotebook->undo_available_changed.connect(sigc::bind(sigc::ptr_fun(&AptitudeWindow::update_undo_sensitivity),
+							 sigc::ref(*pNotebook),
+							 sigc::ref(*menu_undo_undo)));
+    pNotebook->edit_columns_available_changed.connect(sigc::bind(sigc::ptr_fun(&AptitudeWindow::update_edit_columns_sensitivity),
+								 sigc::ref(*pNotebook),
+								 sigc::ref(*menu_view_edit_columns)));
   }
 
   void AptitudeWindow::do_dashboard()
@@ -1264,24 +1271,23 @@ namespace gui
     tab_add(new DashboardTab(_("Dashboard")));
   }
 
-  void AptitudeWindow::update_package_menu()
+  void AptitudeWindow::update_package_menu(TabsManager &notebook, Gtk::Menu &menu)
   {
-    Tab *tab = pNotebook->get_current_tab();
+    Tab *tab = notebook.get_current_tab();
     std::set<PackagesAction> actions;
     if(tab != NULL)
       actions = tab->get_package_menu_actions();
 
-    Gtk::Menu *menu_package = pMenuPackage;
-    menu_package->items().clear();
+    menu.items().clear();
     fill_package_menu(actions,
 		      sigc::mem_fun(*tab, &Tab::dispatch_package_menu_action),
-		      menu_package);
+		      &menu);
   }
 
-  void AptitudeWindow::update_undo_sensitivity()
+  void AptitudeWindow::update_undo_sensitivity(TabsManager &notebook, Gtk::Widget &menu_undo_undo)
   {
-    Tab *tab = pNotebook->get_current_tab();
-    menu_undo_undo->property_sensitive() = tab != NULL && tab->get_undo_available();
+    Tab *tab = notebook.get_current_tab();
+    menu_undo_undo.property_sensitive() = tab != NULL && tab->get_undo_available();
   }
 
   void AptitudeWindow::do_undo()
@@ -1291,10 +1297,10 @@ namespace gui
       tab->dispatch_undo();
   }
 
-  void AptitudeWindow::update_edit_columns_sensitivity()
+  void AptitudeWindow::update_edit_columns_sensitivity(TabsManager &notebook, Gtk::Widget &menu_view_edit_columns)
   {
-    Tab *tab = pNotebook->get_current_tab();
-    menu_view_edit_columns->property_sensitive() = tab != NULL && tab->get_edit_columns_available();
+    Tab *tab = notebook.get_current_tab();
+    menu_view_edit_columns.property_sensitive() = tab != NULL && tab->get_edit_columns_available();
   }
 
   void AptitudeWindow::do_edit_columns()

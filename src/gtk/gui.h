@@ -2,7 +2,7 @@
 
 // gui.h
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -160,14 +160,22 @@ namespace gui
 
       /** \brief Update the Package menu by querying the currently
        *  visible tab.
+       *
+       *  \param notebook  The notebook whose tabs should be examined.
+       *
+       *  \param packageMenu  The menu to update.
+       *
+       *  The parameters are passed mostly to ensure that the signal
+       *  auto-disconnects when the menu and/or notebook are
+       *  destroyed.
        */
-      void update_package_menu();
+      static void update_package_menu(TabsManager &notebook, Gtk::Menu &package_menu);
 
       /** \brief Update whether the Undo menu item is sensitive. */
-      void update_undo_sensitivity();
+      static void update_undo_sensitivity(TabsManager &notebook, Gtk::Widget &menu_undo_undo);
 
       /** \brief Update whether the "Edit Columns..." menu item is sensitive. */
-      void update_edit_columns_sensitivity();
+      static void update_edit_columns_sensitivity(TabsManager &notebook, Gtk::Widget &menu_view_edit_columns);
 
     public:
       /**
