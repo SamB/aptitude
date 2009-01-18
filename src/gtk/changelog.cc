@@ -180,17 +180,35 @@ namespace gui
 
     // Remember whether we added any changelog entries, so we can do 
     bool added_at_least_one = false;
+    std::string last_version;
 
     for(changelog::const_iterator it = cl->begin(); it != cl->end(); ++it)
       {
 	cw::util::ref_ptr<aptitude::apt::changelog_entry> ent(*it);
 
+	if(only_new)
+	  {
+	    // Check whether the version numbers in the changelog are
+	    // out-of-order.  We start with the most recent changelog
+	    // entry, so they should be decreasing.  If they aren't in
+	    // order, stop generating output.
+	    const bool retrograde =
+	      !last_version.empty() &&
+	      _system->VS->CmpVersion(ent->get_version(), last_version) > 0;
+	    if(retrograde)
+	      break;
+	    last_version = ent->get_version();
+	  }
+
 	bool newer =
 	  !current_version.empty() &&
 	  _system->VS->CmpVersion(ent->get_version(), current_version) > 0;
 
+	// If the current entry isn't newer, we would have to have
+	// out-of-order entries in order to see a newer one, so stop
+	// scanning the changelog at that point.
 	if(only_new && !newer)
-	  continue;
+	  break;
 
 	added_at_least_one = true;
 

@@ -1,6 +1,6 @@
 // changelog.h             -*-c++-*-
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -64,7 +64,12 @@ namespace gui
    *  \param where             The buffer location at which to render
    *                           the changelog.
    *  \param only_new          Set to \b true to only show entries that
-   *                           are newer than current_version.
+   *                           are newer than current_version.  If this
+   *                           is set, the changelog will be truncated
+   *                           if version numbers that are out of order
+   *                           are encountered.  (this avoids displaying
+   *                           the whole changelog for packages where a
+   *                           past version "reset" the version number)
    *
    *  \return A new iterator to the end of the rendered text.
    */
