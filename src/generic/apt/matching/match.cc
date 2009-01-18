@@ -1,6 +1,6 @@
 // match.cc
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -1365,6 +1365,7 @@ namespace aptitude
 		target.get_package_iterator(cache);
 
 	      if(!pkg.CurrentVer().end() &&
+		 cache[pkg].CandidateVer != NULL &&
 		 cache[pkg].Upgradable())
 		return match::make_atomic(p);
 	      else
