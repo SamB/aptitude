@@ -298,7 +298,11 @@ namespace gui
 
 	upgrades_changelog_view->set_buffer(buffer);
 
-	fetch_and_show_changelog(candver, buffer, buffer->end());
+	if(candver.end())
+	  buffer->set_text(ssprintf(_("The package %s has no candidate version and will not be upgraded; unable to show its changelog."),
+				    pkg.Name()));
+	else
+	  fetch_and_show_changelog(candver, buffer, buffer->end());
       }
     else
       {
