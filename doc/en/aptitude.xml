@@ -127,6 +127,7 @@
   <!ENTITY Ssource-version "<literal><link linkend='searchSourceVersion'>?source-version</link></literal>">
   <!ENTITY Stag "<literal><link linkend='searchTag'>?tag</link></literal>">
   <!ENTITY Sterm "<literal><link linkend='searchTerm'>?term</link></literal>">
+  <!ENTITY Sterm-prefix "<literal><link linkend='searchTermPrefix'>?term-prefix</link></literal>">
   <!ENTITY Strue "<literal><link linkend='searchTrue'>?true</link></literal>">
   <!ENTITY Stask "<literal><link linkend='searchTask'>?task</link></literal>">
   <!ENTITY Supgradable "<literal><link linkend='searchUpgradable'>?upgradable</link></literal>">
@@ -2559,7 +2560,7 @@ Abort.</screen>
 		   </entry>
 		  </row>
 
-		  <row>
+		  <row id='menuSearchLimit'>
 		    <entry>&search-limit;</entry>
 
 		    <entry>
@@ -4585,20 +4586,18 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 
       <note>
 	<para>
-	  Text with no leading <quote>?</quote> can also form a search
-	  pattern: &aptitude; will attempt to match it against package
-	  names.  However, because <quote>?</quote> is a regular
-	  expression metacharacter, &aptitude; will
-	  <emphasis>not</emphasis> recognize question marks as
-	  terminators for these <quote>bare</quote> strings.  For
-	  instance, the search pattern
-	  <quote><literal>apt?name(python)</literal></quote> will not
-	  search for packages whose name contains both
-	  <quote><literal>apt</literal></quote> and
-	  <quote><literal>python</literal></quote>; instead, it will
-	  search for packages whose name matches the regular
-	  expression
-	  <quote><literal>apt?name(python)</literal></quote>.
+	  Text with no leading <quote>?</quote> also forms a search
+	  pattern: &aptitude; will treat each word (or quoted string)
+	  as the argument to a &Sterm; pattern, which performs a
+	  full-text search against the package
+	  database.<footnote><para>Previous versions of &aptitude;
+	  would instead treat text with no leading <quote>?</quote> as
+	  a &Sname; pattern.</para></footnote> For instance, the
+	  search pattern <quote><literal>algebra</literal></quote>
+	  will match any package that contains the keyword
+	  <literal>algebra</literal>, producing the same effect as the
+	  search pattern
+	  <quote><literal>&Sterm;(algebra)</literal></quote>.
 	</para>
       </note>
 
@@ -4610,9 +4609,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  future releases; scripts that invoke
 	  <literal>aptitude</literal> should explicitly name the
 	  search strategy they want to use.  That is, scripts should
-	  search for <quote><literal>&Sname;(coq)</literal></quote> or
-	  <quote><literal><link
-	  linkend='searchTermName'>~ncoq</link></literal></quote>
+	  search for <quote><literal>&Sterm;(coq)</literal></quote>
 	  rather than <quote><literal>coq</literal></quote>).
 	</para>
       </warning>
@@ -5387,6 +5384,25 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		<entry>
 		  Select packages that have the given debtags
 		  <replaceable>tag</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal>&Sterm;(<replaceable>keyword</replaceable>)</literal></entry>
+		<entry/>
+		<entry>
+		  Full-text search for packages that contain the given
+		  <replaceable>keyword</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal>&Sterm-prefix;(<replaceable>keyword</replaceable>)</literal></entry>
+		<entry/>
+		<entry>
+		  Full-text search for packages that contain a keyword
+		  that begins with the given
+		  <replaceable>keyword</replaceable>.
 		</entry>
 	      </row>
 
@@ -6230,6 +6246,62 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      matches the regular expression
 	      <replaceable>task</replaceable>.
 	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry id='searchTerm'>
+	  <term>
+	    <literal>?term(<replaceable>keyword</replaceable>)</literal>
+	  </term>
+
+	  <listitem>
+	    <para>
+	      This term performs a full-text search for
+	      <replaceable>keyword</replaceable> in the apt package
+	      cache.  When used with <quote><literal>aptitude
+	      search</literal></quote>, <link
+	      linkend='menuSearchLimit'>&search-limit;</link> in the
+	      curses front-end, or typed into a package search box in
+	      the GTK+ front-end, this term will allow &aptitude; to
+	      accelerate the search using a Xapian index.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry id='searchTermPrefix'>
+	  <term>
+	    <literal>?term-prefix(<replaceable>keyword</replaceable>)</literal>
+	  </term>
+
+	  <listitem>
+	    <para>
+	      This term performs a full-text search for any keyword
+	      beginning with <replaceable>keyword</replaceable> in the
+	      apt package cache.  When used with
+	      <quote><literal>aptitude search</literal></quote>, <link
+	      linkend='menuSearchLimit'>&search-limit;</link> in the
+	      curses front-end, or typed into a package search box in
+	      the GTK+ front-end, this term will allow &aptitude; to
+	      accelerate the search using a Xapian index.
+	    </para>
+
+	    <para>
+	      This is similar to &Sterm;, but matches extensions of
+	      the <replaceable>keyword</replaceable>.  For instance,
+	      the following search pattern will match any package
+	      indexed under the keywords <literal>hour</literal>,
+	      <literal>hourglass</literal>, <literal>hourly</literal>,
+	      and so on:
+	    </para>
+
+	    <example id='exampleTermPrefix'>
+	      <title>Use of the <literal>?term-prefix</literal> term</title>
+	      <para>
+		<literal>
+		  ?term-prefix(hour)
+		</literal>
+	      </para>
+	    </example>
 	  </listitem>
 	</varlistentry>
 
