@@ -230,12 +230,32 @@ namespace gui
       Gtk::ProgressBar *progress;
       const std::string title;
       download_progress_mode progress_mode;
+      bool finished;
+      bool cancel_ok;
       bool cancelled;
       bool success;
 
       void tab_destroyed()
       {
 	tab = NULL;
+      }
+
+      bool prompt_cancel_ok()
+      {
+	if(!finished && !cancel_ok)
+	  {
+	    // Should 
+
+	    // \todo We should find the real ultimate parent window of
+	    // the notification instead of assuming it's pMainWindow.
+	    Gtk::MessageDialog dlg(*pMainWindow, _("The download is still in progress.  Should it be canceled?"),
+				   false, Gtk::MESSAGE_QUESTION,
+				   Gtk::BUTTONS_YES_NO, true);
+
+	    return (dlg.run() == Gtk::RESPONSE_YES);
+	  }
+	else
+	  return true;
       }
 
       void cancel()
@@ -289,6 +309,8 @@ namespace gui
 	  progress(new Gtk::ProgressBar),
 	  title(_title),
 	  progress_mode(_progress_mode),
+	  finished(false),
+	  cancel_ok(false),
 	  cancelled(false),
 	  success(true)
       {
@@ -303,6 +325,7 @@ namespace gui
 	view_details_button->show();
 	add_button(view_details_button);
 
+	closing.connect(sigc::mem_fun(*this, &DownloadNotification::prompt_cancel_ok));
 	closed.connect(sigc::mem_fun(*this, &DownloadNotification::cancel));
 
 	if(progress_mode == download_progress_pulse)
@@ -445,6 +468,8 @@ namespace gui
 	      buffer->set_text(title + ": " + _("Completed with errors"));
 	    set_buffer(buffer);
 	  }
+
+	finished = true;
 
 	k();
       }
