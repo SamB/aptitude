@@ -472,6 +472,52 @@ namespace gui
       // Invoked as an idle callback after dpkg finishes running.
       safe_slot1<void, pkgPackageManager::OrderResult> k;
 
+      bool finished;
+      bool abort_ok;
+      Gtk::MessageDialog *abort_ok_prompt;
+
+      void finish_prompt_abort_ok(int response)
+      {
+	if(response == Gtk::RESPONSE_YES)
+	  {
+	    abort_ok = true;
+	    close();
+	  }
+
+	if(abort_ok_prompt != NULL)
+	  abort_ok_prompt->hide();
+      }
+
+      // \todo We should perhaps also prompt on delete_event() and
+      // when the program quits.  I don't think delete_event() should
+      // ask all active notifications to prompt, though (or should it?
+      // I don't know -- it would be easy enough to arrange for that
+      // to happen).
+      bool prompt_abort_ok()
+      {
+	if(!finished && !abort_ok)
+	  {
+	    if(abort_ok_prompt == NULL)
+	      {
+		// Hopefully this message is scary enough to make
+		// people click "No" unless they really mean it. ;-) I
+		// think the wording could be improved, though.
+
+		// \todo We should find the real ultimate parent window of
+		// the notification instead of assuming it's pMainWindow.
+		abort_ok_prompt = new Gtk::MessageDialog(*pMainWindow, _("Interrupting this process could leave your system in an inconsistent state.  Are you sure you want to stop applying your changes?"),
+							 false, Gtk::MESSAGE_QUESTION,
+							 Gtk::BUTTONS_YES_NO, true);
+		abort_ok_prompt->signal_response().connect(sigc::mem_fun(*this, &DpkgTerminalNotification::finish_prompt_abort_ok));
+	      }
+
+	    abort_ok_prompt->show();
+	    return false;
+	  }
+	else
+	  return true;
+      }
+
       void abort()
       {
 	delete terminal;
@@ -480,6 +526,7 @@ namespace gui
 
       void do_finish_dpkg_run(pkgPackageManager::OrderResult res)
       {
+	finished = true;
 	progress->hide();
 	Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
 	buffer->set_text(_("Done applying changes!"));
@@ -505,7 +552,10 @@ namespace gui
 	  progress(new Gtk::ProgressBar),
 	  tab(NULL),
 	  terminal(new DpkgTerminal),
-	  k(_k)
+	  k(_k),
+	  finished(false),
+	  abort_ok(false),
+	  abort_ok_prompt(NULL)
       {
 	progress->set_text(_("Applying changes..."));
 	progress->set_ellipsize(Pango::ELLIPSIZE_END);
@@ -520,9 +570,7 @@ namespace gui
 	view_details_button->show();
 	add_button(view_details_button);
 
-	// TODO: we should warn the user and let them decide whether
-	// to really abort.  That means we should have some way of
-	// interrupting the close procedure and resuming it later...
+	closing.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::prompt_abort_ok));
 	closed.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::abort));
 
 	finalize();
@@ -597,6 +645,7 @@ namespace gui
 
       ~DpkgTerminalNotification()
       {
+	delete abort_ok_prompt;
 	delete tab;
 	delete terminal;
       }
