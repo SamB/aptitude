@@ -2,7 +2,7 @@
 
 // notify.h
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -98,8 +98,17 @@ namespace gui
 
   void NotifyView::add_notification(Notification * notification)
   {
-    notification->close_clicked.connect(sigc::bind(sigc::mem_fun(*this, &NotifyView::remove_notification), notification));
+    notification->close_clicked.connect(sigc::bind(sigc::mem_fun(*this, &NotifyView::notification_close_clicked), notification));
     rows->pack_start(*notification);
+  }
+
+  void NotifyView::notification_close_clicked(Notification * notification)
+  {
+    if(notification->closing())
+      {
+	notification->closed();
+	remove_notification(notification);
+      }
   }
 
   void NotifyView::remove_notification(Notification * notification)

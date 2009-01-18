@@ -1,6 +1,6 @@
 // download.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -303,7 +303,7 @@ namespace gui
 	view_details_button->show();
 	add_button(view_details_button);
 
-	close_clicked.connect(sigc::mem_fun(*this, &DownloadNotification::cancel));
+	closed.connect(sigc::mem_fun(*this, &DownloadNotification::cancel));
 
 	if(progress_mode == download_progress_pulse)
 	  Glib::signal_timeout().connect(sigc::bind_return(sigc::mem_fun(*this, &DownloadNotification::do_pulse),

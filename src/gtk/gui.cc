@@ -1,6 +1,6 @@
 // gui.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -523,7 +523,7 @@ namespace gui
 	// TODO: we should warn the user and let them decide whether
 	// to really abort.  That means we should have some way of
 	// interrupting the close procedure and resuming it later...
-	close_clicked.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::abort));
+	closed.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::abort));
 
 	finalize();
 	show();

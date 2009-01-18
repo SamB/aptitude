@@ -1,6 +1,6 @@
 // notify.h             -*-c++-*-
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -25,6 +25,8 @@
 #include <gtkmm.h>
 
 #include <gtk/tab.h>
+
+#include <cwidget/generic/util/bool_accumulate.h>
 
 namespace gui
 {
@@ -83,7 +85,38 @@ namespace gui
        *  been added to the notification.
        */
       void finalize();
-      sigc::signal0<void> close_clicked;
+
+    /** \brief A signal emitted when the "close" button is clicked.
+     *  Used internally to signal NotifyView that this notification
+     *  was closed.
+     */
+  private:
+    sigc::signal<void> close_clicked;
+    friend class NotifyView;
+
+  public:
+    /** \brief A signal emitted when the user has asked to close the
+     *  notification.
+     *
+     *  The return value will be \b true if every object connected to
+     *  the signal returns \b true.  If the signal returns \b false
+     *  (that is, if any object returns \b false), then the
+     *  notification will not be closed.
+     *
+     *  For multi-use notifications, this signal is emitted when the
+     *  notification is hiding; for single-use notification, it is
+     *  emitted when the notification is being destroyed.
+     */
+    sigc::signal0<bool, cwidget::util::accumulate_and> closing;
+
+    /** \brief A signal emitted when the notification is going to
+     *  close.
+     *
+     *  For multi-use notifications, this signal is emitted when the
+     *  notification is hiding; for single-use notification, it is
+     *  emitted when the notification is being destroyed.
+     */
+    sigc::signal<void> closed;
   };
 
   /** \brief Stores a stack of global and tab-local notifications.
@@ -94,6 +127,8 @@ namespace gui
   {
     private:
       Gtk::VBox * rows;
+
+    void notification_close_clicked(Notification *notification);
     public:
       NotifyView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
       ~NotifyView();
