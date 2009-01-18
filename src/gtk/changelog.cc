@@ -192,6 +192,11 @@ namespace gui
 	    // out-of-order.  We start with the most recent changelog
 	    // entry, so they should be decreasing.  If they aren't in
 	    // order, stop generating output.
+	    //
+	    // This is necessary because in practice, some package
+	    // changelogs contain many entries that are "newer" than
+	    // the most recent entry.  Including those entries
+	    // produces output that is both excessive and wrong.
 	    const bool retrograde =
 	      !last_version.empty() &&
 	      _system->VS->CmpVersion(ent->get_version(), last_version) > 0;
