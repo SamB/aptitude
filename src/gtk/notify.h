@@ -136,7 +136,7 @@ namespace gui
     private:
       Gtk::VBox * rows;
 
-    void notification_close_clicked(Notification *notification);
+    void notification_close_clicked(Notification &notification);
     public:
       NotifyView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
       ~NotifyView();

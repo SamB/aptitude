@@ -103,14 +103,14 @@ namespace gui
 
   void NotifyView::add_notification(Notification * notification)
   {
-    notification->close_clicked.connect(sigc::bind(sigc::mem_fun(*this, &NotifyView::notification_close_clicked), notification));
+    notification->close_clicked.connect(sigc::bind(sigc::mem_fun(*this, &NotifyView::notification_close_clicked), sigc::ref(*notification)));
     rows->pack_start(*notification);
   }
 
-  void NotifyView::notification_close_clicked(Notification * notification)
+  void NotifyView::notification_close_clicked(Notification & notification)
   {
-    if(notification->closing())
-      remove_notification(notification);
+    if(notification.closing())
+      remove_notification(&notification);
   }
 
   void NotifyView::remove_notification(Notification * notification)
