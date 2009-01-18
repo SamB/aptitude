@@ -178,7 +178,8 @@ namespace gui
 
     Glib::RefPtr<Gtk::TextBuffer::Tag> date_tag = textBuffer->create_tag();
 
-    // Remember whether we added any changelog entries, so we can do 
+    // Remember whether we added any changelog entries, so we can show
+    // a message if there aren't any.
     bool added_at_least_one = false;
     std::string last_version;
 
