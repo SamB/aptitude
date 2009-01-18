@@ -314,6 +314,13 @@ namespace aptitude
 	   *  Fields: stack_position.
 	   */
 	  equal,
+	  /** \brief ?exact-name(NAME)
+	   *
+	   *  Matches packages whose name is exactly NAME.
+	   *
+	   *  Fields: name.
+	   */
+	  exact_name,
 	  /** \brief ?false
 	   *
 	   *  Matches nothing.
@@ -1146,6 +1153,24 @@ namespace aptitude
 	eassert(tp == equal);
 
 	return info.stack_position;
+      }
+
+      // @}
+
+      /** \name exact_name term constructor and accessors */
+
+      // @{
+
+      static cwidget::util::ref_ptr<pattern> make_exact_name(const std::string &name)
+      {
+	return new pattern(exact_name, name);
+      }
+
+      const std::string &get_exact_name_name() const
+      {
+	eassert(tp == exact_name);
+
+	return string_info;
       }
 
       // @}

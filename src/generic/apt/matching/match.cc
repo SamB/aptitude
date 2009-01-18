@@ -854,6 +854,12 @@ namespace aptitude
 
 	    break;
 
+	  case pattern::exact_name:
+	    if(p->get_exact_name_name() == target.get_package_iterator(cache).Name())
+	      return match::make_atomic(p);
+	    else
+	      return NULL;
+
 	  case pattern::false_tp:
 	    return NULL;
 	    break;
@@ -1735,6 +1741,7 @@ namespace aptitude
 	  case pattern::description:
 	  case pattern::essential:
 	  case pattern::equal:
+	  case pattern::exact_name:
 	  case pattern::false_tp:
 	  case pattern::garbage:
 	  case pattern::install_version:
@@ -1886,6 +1893,11 @@ namespace aptitude
 	  case pattern::any_version:
 	    return is_pure_xapian(p->get_any_version_pattern());
 
+	  case pattern::exact_name:
+	    // Names are indexed by apt-xapian-index under the prefix
+	    // "XP".
+	    return true;
+
 	  case pattern::for_tp:
 	    return is_pure_xapian(p->get_for_pattern());
 
@@ -2034,6 +2046,9 @@ namespace aptitude
 
 	  case pattern::widen:
 	    return is_xapian_dependent(p->get_widen_pattern());
+
+	  case pattern::exact_name:
+	    return true;
 
 	  case pattern::term:
 	    return true;
@@ -2253,6 +2268,7 @@ namespace aptitude
 	  case pattern::description:
 	  case pattern::essential:
 	  case pattern::equal:
+	  case pattern::exact_name:
 	  case pattern::false_tp:
 	  case pattern::garbage:
 	  case pattern::install_version:
@@ -2496,6 +2512,9 @@ namespace aptitude
 	  case pattern::widen:
 	    return build_xapian_query(p->get_widen_pattern(),
 				      db);
+
+	  case pattern::exact_name:
+	    return Xapian::Query("XP" + p->get_exact_name_name());
 
 	  case pattern::term:
 	    // We try stemming everything as if it were English.

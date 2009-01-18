@@ -1,6 +1,6 @@
 // compare_patterns.cc    -*-c++-*-
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -158,6 +158,9 @@ namespace aptitude
 	  case pattern::equal:
 	    return compare_int(p1->get_equal_stack_position(),
 			       p2->get_equal_stack_position());
+
+	  case pattern::exact_name:
+	    return p1->get_exact_name_name().compare(p2->get_exact_name_name());
 
 	  case pattern::false_tp:
 	    return 0;

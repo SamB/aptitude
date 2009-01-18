@@ -1,6 +1,6 @@
 // serialize.cc       -*-c++-*-
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -324,6 +324,12 @@ namespace aptitude
 	    eassert(p->get_equal_stack_position() >= 0);
 	    eassert(p->get_equal_stack_position() < variable_name_stack.size());
 	    out += variable_name_stack[p->get_equal_stack_position()];
+	    break;
+
+	  case pattern::exact_name:
+	    out += "?exact-name(";
+	    serialize_string(p->get_exact_name_name(), out);
+	    out.push_back(')');
 	    break;
 
 	  case pattern::false_tp:

@@ -1,6 +1,6 @@
 // test_matching.cc
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -414,6 +414,9 @@ namespace
     { "?essential", "?essential", pattern::make_essential() },
 
     { "~E", "?essential", pattern::make_essential() },
+
+    { "?exact-name( foo)", "?exact-name(\"foo\")",
+      pattern::make_exact_name("foo") },
 
     { "?false", "?false", pattern::make_false() },
 

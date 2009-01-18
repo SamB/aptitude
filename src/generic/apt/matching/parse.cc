@@ -1,6 +1,6 @@
 // parse.cc
 //
-//  Copyright 2000-2005, 2007-2008 Daniel Burrows
+//  Copyright 2000-2005, 2007-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -114,6 +114,7 @@ namespace
       term_type_config_files,
       term_type_description,
       term_type_essential,
+      term_type_exact_name,
       term_type_false,
       term_type_for,
       term_type_garbage,
@@ -166,6 +167,7 @@ namespace
     { "config-files", term_type_config_files },
     { "description", term_type_description },
     { "essential", term_type_essential },
+    { "exact-name", term_type_exact_name },
     { "false", term_type_false },
     // ForTranslators: As in the sentence "for x = 5, do BLAH".
     { "for", term_type_for },
@@ -920,6 +922,8 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
       return pattern::make_description(parse_string_match_args(start, end));
     case term_type_essential:
       return pattern::make_essential();
+    case term_type_exact_name:
+      return pattern::make_exact_name(parse_string_match_args(start, end));
     case term_type_false:
       return pattern::make_false();
     case term_type_for:

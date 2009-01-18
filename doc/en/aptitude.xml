@@ -102,6 +102,7 @@
 
   <!ENTITY Sdescription "<literal><link linkend='searchDescription'>?description</link></literal>">
   <!ENTITY Sessential "<literal><link linkend='searchEssential'>?essential</link></literal>">
+  <!ENTITY Sexact-name "<literal><link linkend='searchExactName'>?exact-name</link></literal>">
   <!ENTITY Sfalse "<literal><link linkend='searchFalse'>?false</link></literal>">
   <!ENTITY Sfor "<literal><link linkend='searchFor'>?for</link></literal>">
   <!ENTITY Sgarbage "<literal><link linkend='searchGarbage'>?garbage</link></literal>">
@@ -125,6 +126,7 @@
   <!ENTITY Ssource-package "<literal><link linkend='searchSourcePackage'>?source-package</link></literal>">
   <!ENTITY Ssource-version "<literal><link linkend='searchSourceVersion'>?source-version</link></literal>">
   <!ENTITY Stag "<literal><link linkend='searchTag'>?tag</link></literal>">
+  <!ENTITY Sterm "<literal><link linkend='searchTerm'>?term</link></literal>">
   <!ENTITY Strue "<literal><link linkend='searchTrue'>?true</link></literal>">
   <!ENTITY Stask "<literal><link linkend='searchTask'>?task</link></literal>">
   <!ENTITY Supgradable "<literal><link linkend='searchUpgradable'>?upgradable</link></literal>">
@@ -5208,6 +5210,15 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </row>
 
 	      <row>
+		<entry><literal>&Sexact-name;(<replaceable>name</replaceable>)</literal></entry>
+		<entry/>
+		<entry>
+		  Select packages named
+		  <replaceable>name</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
 		<entry><literal>&Sfalse;</literal></entry>
 		<entry><literal>~F</literal></entry>
 		<entry>
@@ -5864,6 +5875,29 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	    <para>
 	      Matches Essential packages.
 	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry id='searchExactName'>
+	  <term><literal>?exact-name(<replaceable>name</replaceable>)</literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches packages named <replaceable>name</replaceable>.
+	      This is similar to &Sname;, but the name must match
+	      exactly.  For instance, the following pattern will match
+	      only the package <systemitem>apt</systemitem>; with
+	      &Sname;, it would also match
+	      <systemitem>aptitude</systemitem>,
+	      <systemitem>uvccapture</systemitem>, etc.
+	    </para>
+
+	    <example id='idSearchExactName'>
+	      <title>Use of the <literal>?exact-name</literal> term</title>
+	      <para>
+		<literal>?exact-name(apt)</literal>
+	      </para>
+	    </example>
 	  </listitem>
 	</varlistentry>
 
