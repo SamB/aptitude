@@ -48,6 +48,11 @@ namespace gui
     finalize();
   }
 
+  void Notification::close()
+  {
+    close_clicked();
+  }
+
   void Notification::add_button(Gtk::Button * button)
   {
     button->show();

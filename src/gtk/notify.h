@@ -117,6 +117,14 @@ namespace gui
      *  emitted when the notification is being destroyed.
      */
     sigc::signal<void> closed;
+
+    /** \brief Try to close this notification, exactly as if the user
+     *  had clicked the "close" button.
+     *
+     *  This will invoke "closing" first to see whether it's OK to
+     *  close the notification.
+     */
+    void close();
   };
 
   /** \brief Stores a stack of global and tab-local notifications.
