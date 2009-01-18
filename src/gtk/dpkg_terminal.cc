@@ -1,6 +1,6 @@
 // dpkg_terminal.cc
 //
-//  Copyright 2008 Daniel Burrows
+//  Copyright 2008-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -297,6 +297,15 @@ namespace gui
 	// NB: we should close the listen side here, but I don't
 	// because of my magic knowledge that vte will.
 
+	char timebuf[512] = "";
+
+	const time_t start_time = time(0);
+	struct tm start_local_time;
+	localtime_r(&start_time, &start_local_time);
+	if(strftime(timebuf, sizeof(timebuf), "%c", &start_local_time) == 0)
+	  strcpy(timebuf, "ERR");
+	printf(_("[%s] dpkg process starting...\n"), timebuf);
+
 	int write_sock = open_unix_socket();
 	if(write_sock == -1)
 	  {
@@ -320,6 +329,30 @@ namespace gui
 	// Make sure errors appear somewhere (we really ought to push
 	// them down the FIFO).
 	_error->DumpErrors();
+
+	const time_t end_time = time(0);
+	struct tm end_local_time;
+	localtime_r(&end_time, &end_local_time);
+	if(strftime(timebuf, sizeof(timebuf), "%c", &end_local_time) == 0)
+	  strcpy(timebuf, "ERR");
+
+	switch(result)
+	  {
+	  case pkgPackageManager::Completed:
+	    printf(_("[%s] dpkg process complete.\n"), timebuf);
+	    break;
+	  case pkgPackageManager::Failed:
+	    printf(_("[%s] dpkg process failed.\n"), timebuf);
+	    break;
+	  case pkgPackageManager::Incomplete:
+	    printf(_("[%s] dpkg process complete; there are more packages left to process.\n"),
+		   timebuf);
+	    break;
+	  default:
+	    printf("[%s] dpkg process complete; internal error: bad result code (%d).\n",
+		   timebuf, result);
+	    break;
+	  }
 
 	_exit(result);
       }
