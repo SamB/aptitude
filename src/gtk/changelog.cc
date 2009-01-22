@@ -291,7 +291,8 @@ namespace gui
 			     bool only_new)
   {
     cw::util::ref_ptr<aptitude::apt::changelog> cl =
-      aptitude::apt::parse_changelog(file);
+      aptitude::apt::parse_changelog(file,
+				     only_new ? current_version : "");
 
     if(cl.valid())
       return render_changelog(cl, textBuffer, current_version, where, only_new);
