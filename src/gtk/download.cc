@@ -245,8 +245,7 @@ namespace gui
       = &Gtk::TreeView::scroll_to_row;
     download_store->signal_row_inserted().connect(sigc::hide(sigc::mem_fun(*treeview, scroll_to_row)));
 
-    append_column(Glib::ustring(_("URI")), URI, download_columns.URI, 250);
-    append_column(Glib::ustring(_("Status")), Status, download_columns.Status, 100);
+    append_column(Glib::ustring(_("Description")), Description, download_columns.Description, 400);
 
     {
       // Custom renderer to show a percentage progress bar
@@ -259,8 +258,18 @@ namespace gui
       treeview->append_column(*ProgressPerc);
     }
 
-    append_column(Glib::ustring(_("Short Description")), ShortDesc, download_columns.ShortDesc, 100);
-    append_column(Glib::ustring(_("Description")), Description, download_columns.Description, 200);
+    append_column(Glib::ustring(_("Status")), Status, download_columns.Status, 150);
+
+    {
+      int shortDescIdx = append_column(Glib::ustring(_("Short Description")), ShortDesc, download_columns.ShortDesc, 100);
+      Gtk::TreeViewColumn *col = treeview->get_column(shortDescIdx - 1);
+      if(col == NULL)
+	std::cerr << "Internal error: the column I just added to the download view is missing." << std::endl;
+      else
+	col->set_visible(false);
+    }
+
+    append_column(Glib::ustring(_("URI")), URI, download_columns.URI, 250);
 
     get_widget()->show();
   }
