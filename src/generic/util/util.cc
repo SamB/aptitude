@@ -1,6 +1,6 @@
 // util.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -38,6 +38,24 @@
 #include <cwidget/generic/util/eassert.h>
 
 using namespace std;
+
+std::string backslash_escape_nonalnum(const std::string &s)
+{
+  std::string rval;
+  for(std::string::const_iterator it = s.begin();
+      it != s.end(); ++it)
+    {
+      if(isalnum(*it))
+	rval.push_back(*it);
+      else
+	{
+	  rval.push_back('\\');
+	  rval.push_back(*it);
+	}
+    }
+
+  return rval;
+}
 
 void stripws(string &s)
 {
