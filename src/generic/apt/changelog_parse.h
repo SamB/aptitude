@@ -1,6 +1,6 @@
 // changelog_parse.h                        -*-c++-*-
 //
-//   Copyright (C) 2005, 2008 Daniel Burrows
+//   Copyright (C) 2005, 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -228,9 +228,14 @@ namespace aptitude
      *         second temporary file will be created in the parent
      *         directory of this file, in which an intermediate form of
      *         the changelog will be stored.
-
+     *
+     *  \param from   a string giving the earlier version
+     *                that is to be included in the changelog.
+     *                If non-empty, nothing earlier than this version
+     *                will be returned.
      */
-    cwidget::util::ref_ptr<changelog> parse_changelog(const temp::name &file);
+    cwidget::util::ref_ptr<changelog> parse_changelog(const temp::name &file,
+						      const std::string &from = "");
   }
 }
 

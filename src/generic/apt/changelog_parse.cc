@@ -1,6 +1,6 @@
 // changelog_parse.cc
 //
-//   Copyright (C) 2005, 2008 Daniel Burrows
+//   Copyright (C) 2005, 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -35,6 +35,8 @@
 #include <cwidget/fragment.h>
 #include <cwidget/generic/util/ssprintf.h>
 #include <cwidget/generic/util/transcode.h>
+
+#include <generic/util/util.h>
 
 namespace cw = cwidget;
 
@@ -298,22 +300,39 @@ namespace aptitude
 
     namespace
     {
-      temp::name digest_changelog(const temp::name &changelog)
+      temp::name digest_changelog(const temp::name &changelog,
+				  const std::string &from)
       {
 	temp::name rval(changelog.get_parent(), "parsedchangelog");
-    
-	if(system(cw::util::ssprintf("/usr/bin/parsechangelog --all --format rfc822 -l %s > %s 2> /dev/null",
-				     changelog.get_name().c_str(),
-				     rval.get_name().c_str()).c_str()) == 0)
+
+	std::string version_fragment;
+	if(from.empty())
+	  version_fragment = "--all";
+	else
+	  {
+	    version_fragment = "-f ";
+	    // Note that escaping the version is *critical*, because
+	    // it is untrusted data.
+	    version_fragment += backslash_escape_nonalnum(from);
+	  }
+
+	std::string cmd =
+	  cw::util::ssprintf("/usr/bin/parsechangelog --format rfc822 %s -l %s > %s 2> /dev/null",
+			     version_fragment.c_str(),
+			     changelog.get_name().c_str(),
+			     rval.get_name().c_str());
+
+	if(system(cmd.c_str()) == 0)
 	  return rval;
 	else
 	  return temp::name();
       }
     }
 
-    cw::util::ref_ptr<changelog> parse_changelog(const temp::name &file)
+    cw::util::ref_ptr<changelog> parse_changelog(const temp::name &file,
+						 const std::string &from)
     {
-      temp::name digested = digest_changelog(file);
+      temp::name digested = digest_changelog(file, from);
 
       if(!digested.valid())
 	return NULL;
