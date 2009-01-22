@@ -2,7 +2,7 @@
 
 // download.h
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -68,10 +68,11 @@ namespace gui
     Glib::RefPtr<Gtk::ListStore> download_store;
     bool failed; // True if an item failed to download.
 
-    std::map<string, Gtk::TreeModel::iterator> item_map;
+    Gtk::TreeModel::iterator last_not_worker_iter;
+
+    std::map<pkgAcquire::Worker *, Gtk::TreeModel::iterator> worker_map;
     void update_workers(pkgAcquire *Owner);
-    void update_item(string URI, int progress, string status);
-    void maybe_new_item(pkgAcquire::ItemDesc &Itm);
+    void finish_item(const pkgAcquire::ItemDesc &Itm, string status);
 
     // Noncopyable.
     download_list_model(const download_list_model &);
@@ -96,6 +97,7 @@ namespace gui
     void Pulse(pkgAcquire *Owner, download_signal_log &manager,
 	       const sigc::slot1<void, bool> &k);
     void Start(download_signal_log &manager);
+    void Stop(download_signal_log &manager);
 
     const DownloadColumns &get_columns() const { return download_columns; }
     Glib::RefPtr<Gtk::TreeModel> get_model() const { return download_store; }

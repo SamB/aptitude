@@ -41,45 +41,94 @@ namespace gui
 {
   void download_list_model::update_workers(pkgAcquire *Owner)
   {
-    pkgAcquire::Worker *serf = Owner->WorkersBegin();
-    while (serf)
+    // Remove any workers that don't appear in the owner's list of
+    // active workers.  First compute the set of workers that we
+    // "remember" from before, then remove any workers that are
+    // active, and the ones that are left over will be the inactive
+    // ones.
+    std::set<pkgAcquire::Worker *> inactive_workers;
+    for(std::map<pkgAcquire::Worker *, Gtk::TreeModel::iterator>::const_iterator it =
+	  worker_map.begin(); it != worker_map.end(); ++it)
+      inactive_workers.insert(it->first);
+
+    for(pkgAcquire::Worker *serf = Owner->WorkersBegin();
+	serf != NULL; serf = Owner->WorkerStep(serf))
     {
+      inactive_workers.erase(serf);
+
+      std::map<pkgAcquire::Worker *, Gtk::TreeModel::iterator>::iterator
+	found = worker_map.find(serf);
+
       if (serf->CurrentItem)
+	{
+	  pkgAcquire::ItemDesc *Item = serf->CurrentItem;
+
+	  Gtk::TreeModel::iterator iter;
+	  if(found == worker_map.end())
+	    {
+	      iter = download_store->append();
+	      worker_map[serf] = iter;
+	    }
+	  else
+	    iter = found->second;
+
+	  Gtk::TreeModel::Row row = *iter;
+	  row[download_columns.URI] = Item->URI;
+	  row[download_columns.ShortDesc] = Item->ShortDesc;
+	  row[download_columns.Description] = Item->Description;
+	  row[download_columns.ProgressVisible] = true;
+
+	  // TODO: We should use convertPercent from progress.cc
+	  if (serf->TotalSize != 0)
+	    row[download_columns.ProgressPerc] = 100 * serf->CurrentSize / serf->TotalSize;
+	  else
+	    row[download_columns.ProgressPerc] = 0;
+	  row[download_columns.Status] = serf->Status;
+	}
+      else
+	{
+	  if(found != worker_map.end())
+	    {
+	      download_store->erase(found->second);
+	      worker_map.erase(found);
+	    }
+	}
+    }
+
+    for(std::set<pkgAcquire::Worker *>::const_iterator it =
+	  inactive_workers.begin();
+	it != inactive_workers.end(); ++it)
       {
-        pkgAcquire::ItemDesc * Item = serf->CurrentItem;
-        maybe_new_item(*Item);
-        // TODO: We should use convertPercent from progress.cc
-        if (serf->TotalSize != 0)
-          update_item(serf->CurrentItem->URI, 100 * serf->CurrentSize / serf->TotalSize, serf->Status);
-        else
-          update_item(serf->CurrentItem->URI, 0, serf->Status);
+	std::map<pkgAcquire::Worker *, Gtk::TreeModel::iterator>::iterator
+	  found = worker_map.find(*it);
+
+	if(found == worker_map.end())
+	  std::cerr << "Weirdness: a worker that should be in the map isn't." << std::endl;
+	else
+	  {
+	    download_store->erase(found->second);
+	    worker_map.erase(found);
+	  }
       }
-      serf=Owner->WorkerStep(serf);
-    }
   }
 
-  void download_list_model::update_item(string URI, int progress, string status)
+  void download_list_model::finish_item(const pkgAcquire::ItemDesc &Itm, std::string status)
   {
-    std::map<string, Gtk::TreeModel::iterator>::iterator item_iter = item_map.find(URI);
-    if (item_iter == item_map.end())
-      std::cout << "oops!"  << URI << std::endl;
-    Gtk::TreeModel::Row row = *(item_iter->second);
-    row[download_columns.ProgressPerc] = progress;
+    if(last_not_worker_iter)
+      last_not_worker_iter = download_store->insert_after(last_not_worker_iter);
+    else
+      last_not_worker_iter = download_store->prepend();
+
+    Gtk::TreeModel::iterator item_iter = last_not_worker_iter;
+
+    Gtk::TreeModel::Row row = *item_iter;
+
+    row[download_columns.URI] = Itm.URI;
+    row[download_columns.ShortDesc] = Itm.ShortDesc;
+    row[download_columns.Description] = Itm.Description;
+    row[download_columns.ProgressVisible] = false;
+    row[download_columns.ProgressPerc] = 100;
     row[download_columns.Status] = status;
-  }
-
-  void download_list_model::maybe_new_item(pkgAcquire::ItemDesc &Itm)
-  {
-    if (item_map.find(Itm.URI) == item_map.end())
-    {
-      Gtk::TreeModel::iterator store_iter = download_store->append();
-      Gtk::TreeModel::Row row = *store_iter;
-      item_map.insert(std::make_pair(Itm.URI, store_iter));
-      row[download_columns.URI] = Itm.URI;
-      row[download_columns.ShortDesc] = Itm.ShortDesc;
-      row[download_columns.Description] = Itm.Description;
-      row[download_columns.ProgressVisible] = true;
-    }
   }
 
   download_list_model::download_list_model()
@@ -101,12 +150,14 @@ namespace gui
 
   void download_list_model::Start(download_signal_log &manager)
   {
-    Gtk::TreeModel::iterator store_iter = download_store->append();
-    Gtk::TreeModel::Row row = *store_iter;
-    row[download_columns.URI] = "";
-    row[download_columns.ShortDesc] = "";
-    row[download_columns.ProgressVisible] = false;
-    row[download_columns.Description] = "Download started";
+  }
+
+  void download_list_model::Stop(download_signal_log &manager)
+  {
+    for(std::map<pkgAcquire::Worker *, Gtk::TreeModel::iterator>::iterator it =
+	  worker_map.begin(); it != worker_map.end(); ++it)
+      download_store->erase(it->second);
+    worker_map.clear();
   }
 
   void download_list_model::Pulse(pkgAcquire *Owner,
@@ -125,15 +176,13 @@ namespace gui
 	break;
 
       case pkgAcquire::Item::StatDone:
-	maybe_new_item(Itm);
-	update_item(Itm.URI, 100, _("Ignored"));
+	finish_item(Itm, _("Ignored"));
 	break;
 
       default:
 	// \todo Display an error icon and shade the row.
 	failed = true;
-	maybe_new_item(Itm);
-	update_item(Itm.URI, 100, _("Failed"));
+	finish_item(Itm, _("Failed"));
 	break;
       }
   }
@@ -141,21 +190,18 @@ namespace gui
   void download_list_model::IMSHit(pkgAcquire::ItemDesc &Itm,
 				   download_signal_log &manager)
   {
-    maybe_new_item(Itm);
-    update_item(Itm.URI, 100, _("Already downloaded"));
+    finish_item(Itm, _("Already downloaded"));
   }
 
   void download_list_model::Fetch(pkgAcquire::ItemDesc &Itm,
 				  download_signal_log &manager)
   {
-    maybe_new_item(Itm);
-    update_item(Itm.URI, 100, _("Fetch"));
   }
 
   void download_list_model::Done(pkgAcquire::ItemDesc &Itm,
 				 download_signal_log &manager)
   {
-    update_item(Itm.URI, 100, _("Done"));
+    finish_item(Itm, _("Done"));
   }
 
   DownloadColumns::DownloadColumns()
