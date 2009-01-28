@@ -1288,10 +1288,19 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 
 	<listitem>
 	  <para>
-	    Purge packages that are no longer required by any
-	    installed package.  This is equivalent to passing
-	    <quote><literal>-o <link linkend='configPurge-Unused'>Aptitude::Purge-Unused=true</link></literal></quote>
-	    as a command-line argument.
+	    If <quote><literal><link
+	    linkend='configDelete-Unused'>Aptitude::Delete-Unused</link></literal></quote>
+	    is set to <quote><literal>true</literal></quote> (its
+	    default), then in addition to removing each package that
+	    is no longer required by any installed package, &aptitude;
+	    will also purge them, removing their configuration files
+	    and perhaps other important data.  For more information
+	    about which packages are considered to be
+	    <quote>unused</quote>, see the section <quote><link
+	    linkend='secAutoInstall'>Managing Automatically Installed
+	    Packages</link></quote> in the &aptitude; reference
+	    manual.  <emphasis>THIS OPTION CAN CAUSE DATA LOSS!  DO
+	    NOT USE IT UNLESS YOU KNOW WHAT YOU ARE DOING!</emphasis>
 	  </para>
 	</listitem>
       </varlistentry>
