@@ -1288,8 +1288,8 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 
 	<listitem>
 	  <para>
-	    If <quote><literal><link
-	    linkend='configDelete-Unused'>Aptitude::Delete-Unused</link></literal></quote>
+	    If <literal><link
+	    linkend='configDelete-Unused'>Aptitude::Delete-Unused</link></literal>
 	    is set to <quote><literal>true</literal></quote> (its
 	    default), then in addition to removing each package that
 	    is no longer required by any installed package, &aptitude;
@@ -1301,6 +1301,12 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	    Packages</link></quote> in the &aptitude; reference
 	    manual.  <emphasis>THIS OPTION CAN CAUSE DATA LOSS!  DO
 	    NOT USE IT UNLESS YOU KNOW WHAT YOU ARE DOING!</emphasis>
+	  </para>
+
+	  <para>
+	    This corresponds to the configuration option
+	    <literal><link
+	    linkend='configPurge-Unused'>Aptitude::Purge-Unused</link></literal>.
 	  </para>
 	</listitem>
       </varlistentry>
