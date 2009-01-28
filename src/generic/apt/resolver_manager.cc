@@ -286,7 +286,7 @@ void resolver_manager::write_test_control_file(const std::string &outDir,
       if(visited_packages.find(p) == visited_packages.end())
 	continue;
 
-      pkg_action_state action = find_pkg_state(p.get_pkg(), *apt_cache_file);
+      pkg_action_state action = find_pkg_state(p.get_pkg(), *cache);
       std::string actionstr;
       switch(action)
 	{
@@ -301,7 +301,7 @@ void resolver_manager::write_test_control_file(const std::string &outDir,
 	case pkg_install:
 	case pkg_upgrade:
 	  actionstr = std::string("install ") +
-	    (*apt_cache_file)[p.get_pkg()].InstVerIter(*apt_cache_file).VerStr();
+	    (*cache)[p.get_pkg()].InstVerIter(*cache).VerStr();
 	  break;
 
 	default:
