@@ -1,6 +1,6 @@
 // pkgview.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -164,9 +164,9 @@ namespace gui
     row[cols->StatusDescriptionMarkup] =
       ssprintf("<b>%s:</b> %s\n<b>%s:</b> %s",
 	       _("Current status"),
-	       _(current_state.get_description().c_str()),
+	       Glib::Markup::escape_text(_(current_state.get_description().c_str())).c_str(),
 	       _("Selected status"),
-	       _(selected_state.get_description().c_str()));
+	       Glib::Markup::escape_text(_(selected_state.get_description().c_str())).c_str());
 
     Glib::ustring safe_name = Glib::Markup::escape_text(pkg.Name());
     if(ver.end())
@@ -199,7 +199,7 @@ namespace gui
       pkgCache::VerIterator candver=state.CandidateVerIter(*apt_cache_file);
       if (state.Upgrade() || state.Downgrade())
         row[cols->VersionMarkup] = row[cols->VersionMarkup] + "\n<i>" + Glib::Markup::escape_text(candver.VerStr()) + "</i>";
-      row[cols->ArchiveMarkup] = archives_text(ver);
+      row[cols->ArchiveMarkup] = Glib::Markup::escape_text(archives_text(ver));
     }
     else
     {
