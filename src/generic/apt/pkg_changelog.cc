@@ -1,6 +1,6 @@
 // pkg_changelog.cc
 //
-//  Copyright 2000, 2004-2005, 2008 Daniel Burrows
+//  Copyright 2000, 2004-2005, 2008-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -227,7 +227,7 @@ public:
 
 	if(source_rec != NULL)
 	  for(const char **binaryIt = source_rec->Binaries();
-	      *binaryIt != NULL; ++binaryIt)
+	      binaryIt != NULL && *binaryIt != NULL; ++binaryIt)
 	    {
 	      pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*binaryIt);
 	      if(!pkg.end() &&
