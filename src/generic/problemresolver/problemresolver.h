@@ -1,6 +1,6 @@
 // problemresolver.h                  -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -49,6 +49,10 @@
 #include "exceptions.h"
 #include "solution.h"
 #include "resolver_undo.h"
+
+#include "log4cxx/consoleappender.h"
+#include "log4cxx/logger.h"
+#include "log4cxx/patternlayout.h"
 
 #include <cwidget/generic/threads/threads.h>
 #include <cwidget/generic/util/eassert.h>
@@ -523,6 +527,9 @@ public:
   };
 
 private:
+  log4cxx::LoggerPtr logger;
+  log4cxx::AppenderPtr appender; // Used for the "default" appending behavior.
+
   /** Hash function for packages: */
   struct ExtractPackageId
   {
@@ -638,9 +645,6 @@ private:
    *  no longer "forbidden".
    */
   bool deferred_dirty:1;
-
-  /** If \b true, debugging messages will be sent to stdout. */
-  bool debug:1;
 
   /** If \b true, so-called "stupid" pairs of actions will be
    *  eliminated from solutions. (see paper)
@@ -834,13 +838,17 @@ private:
       found = find_matching_conflict(s.get_actions());
     bool rval = (found != conflicts.end());
 
-    if(debug && rval)
+    if(rval && logger->isTraceEnabled())
       {
-	std::cout << "The conflict ";
-	dump_conflict(std::cout, *found);
-	std::cout << " is triggered by the solution ";
-	s.dump(std::cout);
-	std::cout << std::endl;
+	// \todo Eliminate this intermediate stream.
+	std::ostringstream tmp;
+
+	tmp << "The conflict ";
+	dump_conflict(tmp, *found);
+	tmp << " is triggered by the solution ";
+	s.dump(tmp);
+
+	LOG4CXX_TRACE(logger, tmp.str());
       }
 
     return rval;
@@ -870,17 +878,21 @@ private:
     typename std::set<std::map<package, act_conflict> >::const_iterator
       result = subsumes_any_conflict(m);
 
-    if(debug && result != conflicts.end())
+    if(result != conflicts.end() && logger->isTraceEnabled())
       {
-	std::cout << "Adding " << p.get_name() << " "
-		  << a.ver.get_name();
+	// \todo Eliminate this intermediate stream.
+	std::ostringstream tmp;
+
+	tmp << "Adding " << p.get_name() << " "
+	    << a.ver.get_name();
 
 	if(a.from_dep_source)
-	  std::cout << " due to " << a.d;
+	  tmp << " due to " << a.d;
 
-	std::cout << " will trigger conflict ";
-	dump(std::cout, *result);
-	std::cout << std::endl;
+	tmp << " will trigger conflict ";
+	dump(tmp, *result);
+
+	LOG4CXX_TRACE(logger, tmp.str());
       }
 
     return result;
@@ -1361,10 +1373,9 @@ private:
 	eassert_on_ver(output_actions.find(solver.get_package()) == output_actions.end(), solver);
 	eassert_on_ver(solver != solver.get_package().current_version(), solver);
 
-	if(debug)
-	  std::cout << "Filter: resolving " << d << " with "
-		    << solver.get_package().get_name() << ":"
-		    << solver.get_name() << std::endl; 
+	LOG4CXX_TRACE("Filter: resolving " << d << " with "
+		      << solver.get_package().get_name() << ":"
+		      << solver.get_name());
 
 	action act(solver, d, output_actions.size());
 
@@ -1420,11 +1431,14 @@ private:
 
     while(!stupid_pairs.empty())
       {
-	if(debug)
+	if(logger->isTraceEnabled())
 	  {
-	    std::cout << "Eliminating stupid pairs from ";
-	    rval.dump(std::cout);
-	    std::cout << std::endl;
+	    // \todo Eliminate this intermediate stream.
+	    std::ostringstream tmp;
+
+	    tmp << "Eliminating stupid pairs from ";
+	    rval.dump(tmp);
+	    LOG4CXX_TRACE(logger, tmp.str());
 	  }
 
 	// The pair to eliminate; picked (sorta) arbitrarily.
@@ -1436,23 +1450,22 @@ private:
 	if(rval.get_actions().find(victim.first.get_package()) == rval.get_actions().end() ||
 	   rval.get_actions().find(victim.second.get_package()) == rval.get_actions().end())
 	  {
-	    if(debug)
-	      std::cout << "Dropping invalidated stupid pair("
-			<< victim.first.get_package().get_name()
-			<< ":" << victim.first.get_name() << ","
-			<< victim.second.get_package().get_name()
-			<< ":" << victim.second.get_name() << ")"
-			<< std::endl;
+	    LOG_TRACE(logger,
+		      "Dropping invalidated stupid pair("
+		      << victim.first.get_package().get_name()
+		      << ":" << victim.first.get_name() << ","
+		      << victim.second.get_package().get_name()
+		      << ":" << victim.second.get_name() << ")");
 
 	    continue;
 	  }
 
-	if(debug)
-	  std::cout << "Examining stupid pair ("
-		    << victim.first.get_package().get_name()
-		    << ":" << victim.first.get_name() << ","
-		    << victim.second.get_package().get_name()
-		    << ":" << victim.second.get_name() << ")" << std::endl;
+	LOG_TRACE(logger,
+		  "Examining stupid pair ("
+		  << victim.first.get_package().get_name()
+		  << ":" << victim.first.get_name() << ","
+		  << victim.second.get_package().get_name()
+		  << ":" << victim.second.get_name() << ")");
 
 	// Suppose we drop the second element in favor of the first.
 	// Will that produce a valid solution?
@@ -1463,12 +1476,12 @@ private:
 	// for the first action.
 	if(broken_by_drop(rval, victim.first, first_broken))
 	  {
-	    if(debug)
-	      std::cout << "Unable to drop "
-			<< victim.first.get_package().get_name()
-			<< ":" << victim.first.get_name()
-			<< ", changing justification to "
-			<< first_broken << std::endl;
+	    LOG_TRACE(logger,
+		      "Unable to drop "
+		      << victim.first.get_package().get_name()
+		      << ":" << victim.first.get_name()
+		      << ", changing justification to "
+		      << first_broken);
 
 	    typename std::map<package, action>::const_iterator found = rval.get_actions().find(victim.first.get_package());
 	    eassert(found != rval.get_actions().end());
@@ -1498,12 +1511,10 @@ private:
 	  }
 	else
 	  {
-	    if(debug)
-	      std::cout << "Dropping "
-			<< victim.first.get_package().get_name()
-			<< ":" << victim.first.get_name()
-			<< " and filtering unnecessary installations."
-			<< std::endl;
+	    LOG4CXX_TRACE("Dropping "
+			  << victim.first.get_package().get_name()
+			  << ":" << victim.first.get_name()
+			  << " and filtering unnecessary installations.");
 	    // Ok, it's safe.
 	    //
 	    // Generate a node by dropping the second element and
@@ -1527,20 +1538,22 @@ private:
 	  }
       }
 
-    if(debug)
+    if(logger->IsTraceEnabled())
       {
+	// \todo Eliminate this intermediate stream.
+	std::ostringstream tmp;
 	if(contained_stupid)
 	  {
-	    std::cout << "Done eliminating stupid pairs, result is ";
-	    rval.dump(std::cout);
-	    std::cout << std::endl;
+	    tmp << "Done eliminating stupid pairs, result is ";
+	    rval.dump(tmp);
 	  }
 	else
 	  {
-	    std::cout << "No stupid pairs in ";
-	    rval.dump(std::cout);
-	    std::cout << std::endl;
+	    tmp "No stupid pairs in ";
+	    rval.dump(tmp);
 	  }
+
+	LOG4CXX_TRACE(logger, tmp.str());
       }
 
     eassert(rval.get_broken().empty());
@@ -1551,8 +1564,7 @@ private:
 
   solution eliminate_stupid(const solution &s) const
   {
-    if(debug)
-      std::cout << "Would eliminate stupid, but stupid elimination is disabled." << std::endl;
+    LOG4CXX_TRACE(logger, "Would eliminate stupid, but stupid elimination is disabled.");
 
     return s;
   }
@@ -1570,10 +1582,10 @@ private:
 
 	if(found.isValid() && found.getVal().second.ver == *uri)
 	  {
-	    if(debug)
-	      std::cout << "Rejected version " << found.getVal().first.get_name()
-			<< " " << found.getVal().second.ver.get_name()
-			<< " detected." << std::endl;
+	    LOG4CXX_TRACE(logger,
+			  "Rejected version " << found.getVal().first.get_name()
+			  << " " << found.getVal().second.ver.get_name()
+			  << " detected.");
 
 	    return true;
 	  }
@@ -1598,9 +1610,9 @@ private:
       {
 	if(*uh_iter == *su_iter)
 	  {
-	    if(debug)
-	      std::cout << "Broken hardened dependency " << *uh_iter
-			<< " detected." << std::endl;
+	    LOG4CXX_TRACE(logger,
+			  "Broken hardened dependency " << *uh_iter
+			  << " detected.");
 
 	    return true;
 	  }
@@ -1646,11 +1658,15 @@ private:
 	  if(si->second.d.solved_by(*ai) &&
 	     user_mandated.find(si->second.ver) == user_mandated.end())
 	    {
-	      if(debug)
+	      if(logger->isTraceEnabled())
 		{
-		  std::cout << ai->get_package().get_name() << " version " << ai->get_name() << " is avoided (when resolving " << si->second.d << ") by the solution:" << std::endl;
-		  s.dump(std::cout);
-		  std::cout << std::endl;
+		  // \todo Eliminate this intermediate stream.
+		  std::ostringstream tmp;
+
+		  tmp << ai->get_package().get_name() << " version " << ai->get_name() << " is avoided (when resolving " << si->second.d << ") by the solution: ";
+		  s.dump(tmp);
+
+		  LOG4CXX_TRACE(logger, tmp.str());
 		}
 
 	      return true;
@@ -1668,11 +1684,15 @@ private:
 	      user_approved_broken.find(ud) != user_approved_broken.end();
 	    if(!is_approved_broken && ud.solved_by(*ai))
 	      {
-		if(debug)
+		if(logger->isTraceEnabled())
 		  {
-		    std::cout << ai->get_package().get_name() << " version " << ai->get_name() << " is avoided (by leaving " << ud << " unresolved) by the solution:" << std::endl;
-		    s.dump(std::cout);
-		    std::cout << std::endl;
+		    // \todo Eliminate this intermediate stream.
+		    std::ostringstream tmp;
+
+		    tmp << ai->get_package().get_name() << " version " << ai->get_name() << " is avoided (by leaving " << ud << " unresolved) by the solution: ";
+		    s.dump(tmp);
+
+		    LOG4CXX_TRACE(logger, tmp.str());
 		  }
 
 		return true;
@@ -1776,8 +1796,7 @@ private:
 
     if(s.get_score() < minimum_score)
       {
-	if(debug)
-	  std::cout << "Not generating solution (infinite badness " << s.get_score() << "<" << minimum_score << ")" << std::endl;
+	LOG4CXX_TRACE(logger, "Not generating solution (infinite badness " << s.get_score() << "<" << minimum_score << ")");
 	return true;
       }
 
@@ -1792,22 +1811,30 @@ private:
   {
     if(irrelevant(s))
       {
-	if(debug)
+	if(logger->isTraceEnabled())
 	  {
-	    std::cout << "Dropping irrelevant solution ";
-	    s.dump(std::cout);
-	    std::cout << std::endl;
+	    // \todo Eliminate this intermediate stream.
+	    std::ostringstream tmp;
+
+	    tmp << "Dropping irrelevant solution ";
+	    s.dump(tmp);
+
+	    LOG4CXX_TRACE(logger, tmp.str());
 	  }
 
 	return false;
       }
     else if(should_defer(s))
       {
-	if(debug)
+	if(logger->isTraceEnabled())
 	  {
-	    std::cout << "Deferring rejected solution ";
-	    s.dump(std::cout);
-	    std::cout << std::endl;
+	    // \todo Eliminate this intermediate stream.
+	    std::ostringstream tmp;
+
+	    tmp << "Deferring rejected solution ";
+	    s.dump(tmp);
+
+	    LOG4CXX_TRACE(logger, tmp.str());
 	  }
 
 	deferred.insert(s);
@@ -1815,11 +1842,15 @@ private:
       }
     else
       {
-	if(debug)
+	if(logger->isTraceEnabled())
 	  {
-	    std::cout << "Enqueuing ";
-	    s.dump(std::cout);
-	    std::cout << std::endl;
+	    // \todo Eliminate this intermediate stream.
+	    std::ostringstream tmp;
+
+	    tmp << "Enqueuing ";
+	    s.dump(tmp);
+
+	    LOG4CXX_TRACE(logger, tmp.str());
 	  }
 
 	open.push(s);
@@ -1849,10 +1880,9 @@ private:
 
     if(inst != cur)
       {
-	if(debug)
-	  std::cout << "Discarding " << p.get_name() << " "
-		    << v.get_name() << ": monotonicity violation"
-		    << std::endl;
+	LOG4CXX_TRACE(logger,
+		      "Discarding " << p.get_name() << " "
+		      << v.get_name() << ": monotonicity violation");
 
 	out_act.ver = inst;
 	out_act.from_dep_source = false;
@@ -1871,10 +1901,11 @@ private:
 	  {
 	    const dep &found_d = found.getVal().second;
 
-	    if(debug)
-	      std::cout << "Discarding " << p.get_name() << " "
-			<< v.get_name() << ": forbidden by the resolution of "
-			<< found_d << std::endl;
+	    if(logger->isTraceEnabled())
+	      LOG4CXX_TRACE(logger,
+			    "Discarding " << p.get_name() << " "
+			    << v.get_name() << ": forbidden by the resolution of "
+			    << found_d);
 
 	    out_act.ver = s.version_of(found_d.get_source().get_package());
 	    out_act.d   = found_d;
@@ -2023,16 +2054,11 @@ private:
 
     action conflictor;
 
-    if(debug)
-      {
-	std::cout << "Trying to resolve " << d << " by installing "
+    LOG4CXX_TRACE(logger,
+		  "Trying to resolve " << d << " by installing "
 		  << v.get_package().get_name() << " "
-		  << v.get_name();
-	if(from_dep_source)
-	  std::cout << " from the dependency source";
-
-	std::cout << std::endl;
-      }
+		  << v.get_name()
+		  << (from_dep_source ? " from the dependency source" : ""));
 
     const int newid = s.get_actions().size();
 
@@ -2060,12 +2086,16 @@ private:
 				   universe, weights);
 	else
 	  {
-	    if(debug)
+	    if(logger->isTraceEnabled())
 	      {
-		std::cout << "Discarding " << v.get_package().get_name()
-			  << " " << v.get_name() << " due to conflict ";
-		dump_conflict(std::cout, *found);
-		std::cout << std::endl;
+		// \todo Eliminate this intermediate stream.
+		std::ostringstream tmp;
+
+		tmp << "Discarding " << v.get_package().get_name()
+		    << " " << v.get_name() << " due to conflict ";
+		dump_conflict(tmp, *found);
+
+		LOG4CXX_TRACE(logger, tmp.str());
 	      }
 
 	    imm::map<package, action> m = *found;
@@ -2189,11 +2219,15 @@ private:
     bool done = false;
     while(!done)
       {
-	if(debug)
+	if(logger->isDebugEnabled())
 	  {
-	    std::cout << "Processing ";
-	    curr.dump(std::cout);
-	    std::cout << std::endl;
+	    // \todo Eliminate this intermediate stream.
+	    std::ostringstream tmp;
+
+	    tmp << "Processing ";
+	    curr.dump(tmp);
+
+	    LOG4CXX_DEBUG(logger, tmp);
 	  }
 
 	done = true;
@@ -2232,23 +2266,28 @@ private:
 		msg << ":" << std::endl;
 
 		msg << "Unexpectedly non-broken dependency "
-		    << *bi << "!" << std::endl;
+		    << *bi << "!";
 
 		version source = (*bi).get_source();
 
 		if(curr.version_of(source.get_package()) != source)
 		  msg << "  (" << source.get_package().get_name()
 		      << " " << source.get_name()
-		      << " is not installed)" << std::endl;
+		      << " is not installed)";
 
 		for(typename dep::solver_iterator si = (*bi).solvers_begin();
 		    !si.end(); ++si)
 		  if(curr.version_of((*si).get_package()) == *si)
 		    msg << "  (" << (*si).get_package().get_name()
 			<< " " << (*si).get_name()
-			<< " is installed)" << std::endl;
+			<< " is installed)";
 
-		throw ResolverInternalErrorException(msg.str());
+		std::string msgstr;
+		msg.str(msgstr);
+
+		LOG4CXX_FATAL(logger, msgstr);
+
+		throw ResolverInternalErrorException(msgstr);
 	      }
 
 	    imm::map<package, action> conflict;
@@ -2279,14 +2318,17 @@ private:
 
 	    if(num_successors == 0)
 	      {
-		if(debug)
+		if(logger->isDebugEnabled())
 		  {
-		    std::cout << "Discarding solution; unresolvable dependency "
-			      << *bi << " with conflict ";
+		    // \todo Eliminate this intermediate stream.
+		    std::ostringstream tmp;
 
-		    dump_conflict(std::cout, conflict);
+		    tmp << "Discarding solution; unresolvable dependency "
+			<< *bi << " with conflict ";
 
-		    std::cout << std::endl;
+		    dump_conflict(tmp, conflict);
+
+		    LOG4CXX_DEBUG(logger, tmp.str());
 		  }
 
 		add_conflict(conflict);
@@ -2295,8 +2337,7 @@ private:
 	      }
 	    else if(num_successors == 1)
 	      {
-		if(debug)
-		  std::cout << "Forced resolution of " << *bi << std::endl;
+		LOG4CXX_TRACE(logger, "Forced resolution of " << *bi);
 
 		std::vector<solution> v;
 		real_generator g(v, visited_packages);
@@ -2338,10 +2379,9 @@ private:
       {
 	imm::map<package, action> conflict;
 
-	if(debug)
-	  std::cout << "Generating successors for "
-		    << least_successors_user_impinging
-		    << std::endl;
+	LOG4CXX_TRACE(logger,
+		      "Generating successors for "
+		      << least_successors_user_impinging);
 
 	std::vector<solution> v;
 	generate_successors(curr, least_successors_user_impinging,
@@ -2356,10 +2396,9 @@ private:
       {
 	imm::map<package, action> conflict;
 
-	if(debug)
-	  std::cout << "Generating successors for "
-		    << least_successors
-		    << std::endl;
+	LOG4CXX_TRACE(logger,
+		      "Generating successors for "
+		      << least_successors);
 
 	std::vector<solution> v;
 	generate_successors(curr, least_successors,
@@ -2387,11 +2426,13 @@ public:
 			   int infinity,
 			   int _full_solution_score,
 			   const PackageUniverse &_universe)
-    :weights(_step_score, _broken_score, _unfixed_soft_score,
+    :logger(log4cxx::Logger::getLogger("aptitude.resolver")),
+     appender(new log4cxx::ConsoleAppender(new log4cxx::PatternLayout("%m%n"))),
+     weights(_step_score, _broken_score, _unfixed_soft_score,
 	     _full_solution_score, _universe.get_version_count()),
      minimum_score(-infinity),
      universe(_universe), finished(false), deferred_dirty(false),
-     debug(false), remove_stupid(true),
+     remove_stupid(true),
      solver_executing(false), solver_cancelled(false),
      conflicts(_universe.get_package_count())
   {
@@ -2427,10 +2468,24 @@ public:
 
   /** Enables or disables debugging.  Debugging is initially
    *  disabled.
+   *
+   *  This is a backwards-compatibility hook; in the future, the
+   *  log4cxx framework should be used to enable debugging.  This
+   *  function enables all possible debug messages by setting the
+   *  level for all resolver domains to TRACE.
    */
   void set_debug(bool new_debug)
   {
-    debug=new_debug;
+    if(new_debug)
+      {
+	logger->setLevel(log4cxx::Level::getTrace());
+	logger->addAppender(appender);
+      }
+    else
+      {
+	logger->setLevel(NULL);
+	logger->removeAppender(appender);
+      }
   }
 
   /** Enables or disables the removal of "stupid pairs".  Initially
@@ -2678,22 +2733,30 @@ public:
 
     if(found != conflicts.end())
       {
-	if(debug)
+	if(logger->isTraceEnabled())
 	  {
-	    std::cout << "Dropping conflict ";
-	    dump_conflict(std::cout, conflict);
-	    std::cout << " because it is redundant with ";
-	    dump_conflict(std::cout, *found);
-	    std::cout << std::endl;
+	    // \todo Eliminate this intermediate stream.
+	    std::ostringstream tmp;
+
+	    tmp << "Dropping conflict ";
+	    dump_conflict(tmp, conflict);
+	    tmp << " because it is redundant with ";
+	    dump_conflict(tmp, *found);
+
+	    LOG4CXX_TRACE(logger, tmp.str());
 	  }
       }
     else
       {
-	if(debug)
+	if(logger->isTraceEnabled())
 	  {
-	    std::cout << "Inserting conflict ";
-	    dump_conflict(std::cout, conflict);
-	    std::cout << std::endl;
+	    // \todo Eliminate this intermediate stream.
+	    std::ostringstream tmp;
+
+	    tmp << "Inserting conflict ";
+	    dump_conflict(tmp, conflict);
+
+	    LOG4CXX_TRACE(logger, tmp.str());
 	  }
 	// TODO: drop conflicts of which this is a subset.  Needs work
 	// at the setset level.
@@ -2848,22 +2911,29 @@ public:
 
 	if(irrelevant(s))
 	  {
-	    if(debug)
+	    if(logger->isDebugEnabled())
 	      {
-		std::cout << "Dropping irrelevant solution ";
-		s.dump(std::cout);
-		std::cout << std::endl;
+		// \todo Eliminate this intermediate stream.
+		std::ostringstream tmp;
+
+		tmp << "Dropping irrelevant solution ";
+		s.dump(tmp);
+
+		LOG4CXX_DEBUG(logger, tmp.str());
 	      }
 	    continue;
 	  }
 
 	if(should_defer(s))
 	  {
-	    if(debug)
+	    if(logger->isDebugEnabled())
 	      {
-		std::cout << "Deferring rejected solution ";
-		s.dump(std::cout);
-		std::cout << std::endl;
+		std::ostringstream tmp;
+
+		tmp << "Deferring rejected solution ";
+		s.dump(tmp);
+
+		LOG4CXX_DEBUG(logger, tmp.str());
 	      }
 
 	    deferred.insert(s);
@@ -2875,11 +2945,15 @@ public:
 	// If all dependencies are satisfied, we found a solution.
 	if(s.is_full_solution())
 	  {
-	    if(debug)
+	    if(logger->isInfoEnabled())
 	      {
-		std::cout << " --- Found solution ";
-		s.dump(std::cout);
-		std::cout << std::endl;
+		// \todo Eliminate this intermediate stream.
+		std::ostringstream tmp;
+
+		tmp << " --- Found solution ";
+		s.dump(tmp);
+
+		LOG4CXX_INFO(logger, tmp.str());
 	      }
 
 	    // Set it here too in case the last tentative solution is
@@ -2900,8 +2974,7 @@ public:
 	      {
 		// Make it fend for itself! (although I expect it to
 		// come up again immediately; hrm)
-		if(debug)
-		  std::cout << " --- Placing de-stupidified solution back on the open queue" << std::endl;
+		LOG4CXX_TRACE(logger, " --- Placing de-stupidified solution back on the open queue");
 		finished = false;
 		open.push(minimized);
 	      }
@@ -2920,16 +2993,12 @@ public:
 		else
 		  generated_solutions.push_back(minimized);
 
-		if(debug)
-		  {
-		    std::cout << " *** Converged after " << odometer << " steps." << std::endl;
-		    std::cout << " *** open: " << open.size()
-			      << "; closed: " << closed.size()
-			      << "; conflicts: " << conflicts.size()
-			      << "; deferred: " << deferred.size()
-			      << "; generated solutions: " << generated_solutions.size()
-			      << std::endl;
-		  }
+		LOG4CXX_INFO(logger, " *** Converged after " << odometer << " steps.");
+		LOG4CXX_INFO(logger, " *** open: " << open.size()
+			     << "; closed: " << closed.size()
+			     << "; conflicts: " << conflicts.size()
+			     << "; deferred: " << deferred.size()
+			     << "; generated solutions: " << generated_solutions.size());
 
 		update_counts_cache();
 
@@ -2940,8 +3009,7 @@ public:
 	else
 	  process_solution(s, visited_packages);
 
-	if(debug)
-	  std::cout << "Done generating successors." << std::endl;
+	LOG4CXX_TRACE(logger, "Done generating successors.");
 
 	--max_steps;
       }
@@ -2957,16 +3025,13 @@ public:
 
     update_counts_cache();
 
-    if(debug)
-      {
-	std::cout << " *** Out of solutions after " << odometer << " steps." << std::endl;
-	std::cout << " *** open: " << open.size()
-		  << "; closed: " << closed.size()
-		  << "; conflicts: " << conflicts.size()
-		  << "; deferred: " << deferred.size()
-		  << "; generated solutions: " << generated_solutions.size()
-		  << std::endl;
-      }
+    LOG4CXX_INFO(logger, " *** Out of solutions after " << odometer << " steps.");
+    LOG4CXX_INFO(logger ,
+		 " *** open: " << open.size()
+		 << "; closed: " << closed.size()
+		 << "; conflicts: " << conflicts.size()
+		 << "; deferred: " << deferred.size()
+		 << "; generated solutions: " << generated_solutions.size());
 
     throw NoMoreSolutions();
   }
