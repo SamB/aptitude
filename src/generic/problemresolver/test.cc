@@ -1,6 +1,6 @@
 // test.cc
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -39,6 +39,13 @@
 using namespace std;
 
 namespace cw = cwidget;
+
+// This is a gross hack; without defining this here, we'd have to
+// somehow link in a higher-level library.
+log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolver()
+{
+  return log4cxx::Logger::getLogger("aptitude.resolver");
+}
 
 // To make things easier, the tests are specified as plaintext files.
 // The syntax is quite simple: it consists of whitespace-separated

@@ -54,6 +54,8 @@
 #include "log4cxx/logger.h"
 #include "log4cxx/patternlayout.h"
 
+#include <loggers.h>
+
 #include <cwidget/generic/threads/threads.h>
 #include <cwidget/generic/util/eassert.h>
 
@@ -2426,7 +2428,7 @@ public:
 			   int infinity,
 			   int _full_solution_score,
 			   const PackageUniverse &_universe)
-    :logger(log4cxx::Logger::getLogger("aptitude.resolver")),
+    :logger(aptitude::Loggers::getAptitudeResolver()),
      appender(new log4cxx::ConsoleAppender(new log4cxx::PatternLayout("%m%n"))),
      weights(_step_score, _broken_score, _unfixed_soft_score,
 	     _full_solution_score, _universe.get_version_count()),
