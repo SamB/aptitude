@@ -1,6 +1,6 @@
 // ui.cc
 //
-//   Copyright 2000-2008 Daniel Burrows <dburrows@debian.org>
+//   Copyright 2000-2009 Daniel Burrows <dburrows@debian.org>
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -1486,10 +1486,11 @@ namespace
 	for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin();
 	    !pkg.end(); ++pkg)
 	  {
-	    if(pkg->Flags & pkgCache::Flag::Essential)
-	      {
-		pkgDepCache::StateCache &state = (*apt_cache_file)[pkg];
+	    pkgDepCache::StateCache &state = (*apt_cache_file)[pkg];
 
+	    if((pkg->Flags & pkgCache::Flag::Essential) &&
+	       state.Status != 2)
+	      {
 		if(state.Delete())
 		  deleted_essential.push_back(pkg);
 		if(state.InstBroken())

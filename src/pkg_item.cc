@@ -1,6 +1,6 @@
 // pkg_item.cc
 //
-// Copyright 1999-2005, 2007-2008 Daniel Burrows
+// Copyright 1999-2005, 2007-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -172,8 +172,9 @@ void pkg_item::keep(undo_group *undo)
 
 void pkg_item::do_remove(undo_group *undo)
 {
-  if((package->Flags&pkgCache::Flag::Essential)==pkgCache::Flag::Essential ||
-     (package->Flags&pkgCache::Flag::Important)==pkgCache::Flag::Important)
+  if(((package->Flags&pkgCache::Flag::Essential)==pkgCache::Flag::Essential ||
+      (package->Flags&pkgCache::Flag::Important)==pkgCache::Flag::Important) &&
+     (*apt_cache_file)[package].Status != 2)
     confirm_delete_essential(package, false);
   else
     (*apt_cache_file)->mark_delete(package, false, false, undo);
@@ -197,8 +198,9 @@ void pkg_item::remove(undo_group *undo)
 // No "do_purge" because purge was always idempotent.
 void pkg_item::purge(undo_group *undo)
 {
-  if((package->Flags&pkgCache::Flag::Essential)==pkgCache::Flag::Essential ||
-     (package->Flags&pkgCache::Flag::Important)==pkgCache::Flag::Important)
+  if(((package->Flags&pkgCache::Flag::Essential)==pkgCache::Flag::Essential ||
+      (package->Flags&pkgCache::Flag::Important)==pkgCache::Flag::Important) &&
+     (*apt_cache_file)[package].Status != 2)
     confirm_delete_essential(package, false);
   else
     (*apt_cache_file)->mark_delete(package, true, false, undo);
