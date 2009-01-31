@@ -54,6 +54,8 @@ aptitude_SOURCES= 	\
 	load_pkgview.h	\
 	load_sortpolicy.cc\
 	load_sortpolicy.h\
+	loggers.cc\
+	loggers.h\
 	menu_redirect.cc\
 	menu_redirect.h\
 	menu_text_layout.cc \
