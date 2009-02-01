@@ -591,6 +591,19 @@ std::ostream &operator<<(std::ostream &out, const generic_solution<PackageUniver
   return out;
 }
 
+/** \brief Write out a single action by writing out the version that
+ *  is to be installed, and the associated dep if any.
+ */
+template<typename PackageUniverse>
+std::ostream &operator<<(std::ostream &out, const generic_action<PackageUniverse> &act)
+{
+  out << act.ver;
+  if(act.from_dep_source)
+    out << " [" << act.d << "]";
+
+  return out;
+}
+
 
 /** Represents the current score weights for a resolver.  Used to
  *  calculate scores at the time a solution is instantiated.
