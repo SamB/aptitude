@@ -1,6 +1,6 @@
 // immset.h                                     -*-c++-*-
 //
-//   Copyright (C) 2005-2006, 2008 Daniel Burrows
+//   Copyright (C) 2005-2006, 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -817,6 +817,42 @@ namespace imm
     }
   };
 
+  /** \brief Write a set to a stream as a set (values are written with
+   *  operator<<).
+   */
+  template<typename Val, typename Compare, int w>
+  std::ostream &operator<<(std::ostream &out, const set<Val, Compare, w> &s)
+  {
+    struct write_action
+    {
+      std::ostream &out;
+      mutable bool first;
+
+      write_action(std::ostream &_out)
+	: out(_out), first(true)
+      {
+      }
+
+      void operator()(const Val &v) const
+      {
+	if(first)
+	  first = false;
+	else
+	  out << ", ";
+
+	out << v;
+      }
+    };
+
+    out.put('{');
+    write_action act(out);
+    s.for_each(act);
+    out.put('}');
+
+    return out;
+  }
+
+
   /** Compare two sets.  Will produce strange results unless the two
    *  sets have the same comparison *object*; you are responsible for
    *  ensuring that this is the case. (i.e., if the comparator has
@@ -1062,6 +1098,44 @@ namespace imm
       return map(contents.clone());
     }
   };
+
+  template<typename Key, typename Val, typename Compare>
+  struct write_action
+  {
+    std::ostream &out;
+    mutable bool first;
+
+    write_action(std::ostream &_out)
+      : out(_out), first(true)
+    {
+    }
+
+    void operator()(const typename map<Key, Val, Compare>::binding_type &entry) const
+    {
+      if(first)
+	first = false;
+      else
+	out << ", ";
+
+      out << entry.first << " := " << entry.second;
+    }
+  };
+
+
+  /** \brief Write a map to a stream as a map (values are written with
+   *  operator<<).
+   */
+  template<typename Key, typename Val, typename Compare>
+  std::ostream &operator<<(std::ostream &out, const map<Key, Val, Compare> &m)
+  {
+
+    out.put('{');
+    write_action<Key, Val, Compare> act(out);
+    m.for_each(act);
+    out.put('}');
+
+    return out;
+  }
 };
 
 #endif
