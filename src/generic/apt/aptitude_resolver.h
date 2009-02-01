@@ -95,7 +95,7 @@ public:
 	{
 	  /** \brief All versions.
 	   *
-	   *  Matches any version.  This is equivalent to not providing a version string.
+	   *  Matches any version.
 	   */
 	  select_all,
 
@@ -108,6 +108,8 @@ public:
 
 	  /** \brief All versions of a package except the
 	   *  not-installed version will be matched.
+	   *
+	   *  This is equivalent to not providing a version string.
 	   */
 	  select_inst,
 
