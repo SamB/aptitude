@@ -1,6 +1,6 @@
 // serialize.h      -*-c++-*-
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -24,6 +24,9 @@
 
 #include <cwidget/generic/util/ref_ptr.h>
 
+#include <iostream>
+#include <string>
+
 namespace aptitude
 {
   namespace matching
@@ -40,17 +43,26 @@ namespace aptitude
     void serialize_pattern(const cwidget::util::ref_ptr<pattern> &p,
 			   std::string &out);
 
+    /** \brief Output a string that will parse to the given
+     *  pattern.
+     *
+     *  \param p   The pattern to serialize.
+     *  \param out Where to write the serialized string.
+     */
+    void serialize_pattern(const cwidget::util::ref_ptr<pattern> &p,
+			   std::ostream &out);
+
+    inline std::ostream &operator<<(std::ostream &out, const cwidget::util::ref_ptr<pattern> &p)
+    {
+      serialize_pattern(p, out);
+      return out;
+    }
+
     /** \brief Return a string that will parse to the given pattern.
      *
      *  \param p   The pattern to serialize.
      */
-    inline
-    std::string serialize_pattern(const cwidget::util::ref_ptr<pattern> &p)
-    {
-      std::string rval;
-      serialize_pattern(p, rval);
-      return rval;
-    }
+    std::string serialize_pattern(const cwidget::util::ref_ptr<pattern> &p);
   }
 }
 
