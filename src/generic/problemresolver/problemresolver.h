@@ -700,6 +700,7 @@ private:
 
   typedef dense_mapset<package, action, ExtractPackageId> conflictset;
 
+
   /** Stores conflicts: sets of installations that have been
    *  determined to be mutually incompatible.
    */
@@ -840,18 +841,12 @@ private:
       found = find_matching_conflict(s.get_actions());
     bool rval = (found != conflicts.end());
 
-    if(rval && logger->isTraceEnabled())
-      {
-	// \todo Eliminate this intermediate stream.
-	std::ostringstream tmp;
-
-	tmp << "The conflict ";
-	dump_conflict(tmp, *found);
-	tmp << " is triggered by the solution ";
-	s.dump(tmp);
-
-	LOG_TRACE(logger, tmp.str());
-      }
+    if(rval)
+      LOG_TRACE(logger,
+		"The conflict "
+		<< *found
+		<< " is triggered by the solution "
+		<< s);
 
     return rval;
   }
@@ -880,21 +875,19 @@ private:
     typename std::set<std::map<package, act_conflict> >::const_iterator
       result = subsumes_any_conflict(m);
 
-    if(result != conflicts.end() && logger->isTraceEnabled())
+    if(result != conflicts.end())
       {
-	// \todo Eliminate this intermediate stream.
-	std::ostringstream tmp;
-
-	tmp << "Adding " << p.get_name() << " "
-	    << a.ver.get_name();
-
 	if(a.from_dep_source)
-	  tmp << " due to " << a.d;
-
-	tmp << " will trigger conflict ";
-	dump(tmp, *result);
-
-	LOG_TRACE(logger, tmp.str());
+	  LOG_TRACE(logger,
+		    "Adding " << a.ver
+		    << " due to " << a.d
+		    << " will trigger conflict "
+		    << *result);
+	else
+	  LOG_TRACE(logger,
+		    "Adding " << a.ver
+		    << " will trigger conflict "
+		    << *result);
       }
 
     return result;
@@ -1376,8 +1369,7 @@ private:
 	eassert_on_ver(solver != solver.get_package().current_version(), solver);
 
 	LOG_TRACE("Filter: resolving " << d << " with "
-		  << solver.get_package().get_name() << ":"
-		  << solver.get_name());
+		  << solver);
 
 	action act(solver, d, output_actions.size());
 
@@ -1433,15 +1425,7 @@ private:
 
     while(!stupid_pairs.empty())
       {
-	if(logger->isTraceEnabled())
-	  {
-	    // \todo Eliminate this intermediate stream.
-	    std::ostringstream tmp;
-
-	    tmp << "Eliminating stupid pairs from ";
-	    rval.dump(tmp);
-	    LOG_TRACE(logger, tmp.str());
-	  }
+	LOG_TRACE(logger, "Eliminating stupid pairs from " << tmp);
 
 	// The pair to eliminate; picked (sorta) arbitrarily.
 	const typename std::pair<version, version> &victim = *stupid_pairs.begin();
@@ -1454,20 +1438,16 @@ private:
 	  {
 	    LOG_TRACE(logger,
 		      "Dropping invalidated stupid pair("
-		      << victim.first.get_package().get_name()
-		      << ":" << victim.first.get_name() << ","
-		      << victim.second.get_package().get_name()
-		      << ":" << victim.second.get_name() << ")");
+		      << victim.first << ", "
+		      << victim.second << ")");
 
 	    continue;
 	  }
 
 	LOG_TRACE(logger,
 		  "Examining stupid pair ("
-		  << victim.first.get_package().get_name()
-		  << ":" << victim.first.get_name() << ","
-		  << victim.second.get_package().get_name()
-		  << ":" << victim.second.get_name() << ")");
+		  << victim.first << ", "
+		  << victim.second << ")");
 
 	// Suppose we drop the second element in favor of the first.
 	// Will that produce a valid solution?
@@ -1480,8 +1460,7 @@ private:
 	  {
 	    LOG_TRACE(logger,
 		      "Unable to drop "
-		      << victim.first.get_package().get_name()
-		      << ":" << victim.first.get_name()
+		      << victim.first
 		      << ", changing justification to "
 		      << first_broken);
 
@@ -1514,8 +1493,7 @@ private:
 	else
 	  {
 	    LOG_TRACE("Dropping "
-		      << victim.first.get_package().get_name()
-		      << ":" << victim.first.get_name()
+		      << victim.first
 		      << " and filtering unnecessary installations.");
 	    // Ok, it's safe.
 	    //
@@ -1540,23 +1518,11 @@ private:
 	  }
       }
 
-    if(logger->IsTraceEnabled())
-      {
-	// \todo Eliminate this intermediate stream.
-	std::ostringstream tmp;
-	if(contained_stupid)
-	  {
-	    tmp << "Done eliminating stupid pairs, result is ";
-	    rval.dump(tmp);
-	  }
-	else
-	  {
-	    tmp "No stupid pairs in ";
-	    rval.dump(tmp);
-	  }
-
-	LOG_TRACE(logger, tmp.str());
-      }
+    LOG_TRACE(logger,
+	      (contained_stupid
+	       ? "Done eliminating stupid pairs, result is "
+	       : "No stupid pairs in ")
+	      << tmp);
 
     eassert(rval.get_broken().empty());
 
@@ -1585,8 +1551,7 @@ private:
 	if(found.isValid() && found.getVal().second.ver == *uri)
 	  {
 	    LOG_TRACE(logger,
-		      "Rejected version " << found.getVal().first.get_name()
-		      << " " << found.getVal().second.ver.get_name()
+		      "Rejected version " << found.getVal().second.ver
 		      << " detected.");
 
 	    return true;
@@ -1660,16 +1625,9 @@ private:
 	  if(si->second.d.solved_by(*ai) &&
 	     user_mandated.find(si->second.ver) == user_mandated.end())
 	    {
-	      if(logger->isTraceEnabled())
-		{
-		  // \todo Eliminate this intermediate stream.
-		  std::ostringstream tmp;
-
-		  tmp << ai->get_package().get_name() << " version " << ai->get_name() << " is avoided (when resolving " << si->second.d << ") by the solution: ";
-		  s.dump(tmp);
-
-		  LOG_TRACE(logger, tmp.str());
-		}
+	      LOG_TRACE(logger,
+			*ai << " is avoided (when resolving "
+			<< si->second.d << ") by the solution: " << s);
 
 	      return true;
 	    }
@@ -1686,16 +1644,9 @@ private:
 	      user_approved_broken.find(ud) != user_approved_broken.end();
 	    if(!is_approved_broken && ud.solved_by(*ai))
 	      {
-		if(logger->isTraceEnabled())
-		  {
-		    // \todo Eliminate this intermediate stream.
-		    std::ostringstream tmp;
-
-		    tmp << ai->get_package().get_name() << " version " << ai->get_name() << " is avoided (by leaving " << ud << " unresolved) by the solution: ";
-		    s.dump(tmp);
-
-		    LOG_TRACE(logger, tmp.str());
-		  }
+		LOG_TRACE(logger,
+			  *ai << " is avoided (by leaving " << ud
+			  << " unresolved) by the solution: " << s);
 
 		return true;
 	      }
@@ -1813,47 +1764,20 @@ private:
   {
     if(irrelevant(s))
       {
-	if(logger->isTraceEnabled())
-	  {
-	    // \todo Eliminate this intermediate stream.
-	    std::ostringstream tmp;
-
-	    tmp << "Dropping irrelevant solution ";
-	    s.dump(tmp);
-
-	    LOG_TRACE(logger, tmp.str());
-	  }
+	LOG_TRACE(logger, "Dropping irrelevant solution " << s);
 
 	return false;
       }
     else if(should_defer(s))
       {
-	if(logger->isTraceEnabled())
-	  {
-	    // \todo Eliminate this intermediate stream.
-	    std::ostringstream tmp;
-
-	    tmp << "Deferring rejected solution ";
-	    s.dump(tmp);
-
-	    LOG_TRACE(logger, tmp.str());
-	  }
+	LOG_TRACE(logger, "Deferring rejected solution " << s);
 
 	deferred.insert(s);
 	return false;
       }
     else
       {
-	if(logger->isTraceEnabled())
-	  {
-	    // \todo Eliminate this intermediate stream.
-	    std::ostringstream tmp;
-
-	    tmp << "Enqueuing ";
-	    s.dump(tmp);
-
-	    LOG_TRACE(logger, tmp.str());
-	  }
+	LOG_TRACE(logger, "Enqueuing " << s);
 
 	open.push(s);
 
@@ -1883,8 +1807,8 @@ private:
     if(inst != cur)
       {
 	LOG_TRACE(logger,
-		  "Discarding " << p.get_name() << " "
-		  << v.get_name() << ": monotonicity violation");
+		  "Discarding " << v
+		  << ": monotonicity violation");
 
 	out_act.ver = inst;
 	out_act.from_dep_source = false;
@@ -1903,11 +1827,9 @@ private:
 	  {
 	    const dep &found_d = found.getVal().second;
 
-	    if(logger->isTraceEnabled())
-	      LOG_TRACE(logger,
-			"Discarding " << p.get_name() << " "
-			<< v.get_name() << ": forbidden by the resolution of "
-			<< found_d);
+	    LOG_TRACE(logger,
+		      "Discarding " << v
+		      << ": forbidden by the resolution of " << found_d);
 
 	    out_act.ver = s.version_of(found_d.get_source().get_package());
 	    out_act.d   = found_d;
@@ -2088,17 +2010,9 @@ private:
 				   universe, weights);
 	else
 	  {
-	    if(logger->isTraceEnabled())
-	      {
-		// \todo Eliminate this intermediate stream.
-		std::ostringstream tmp;
-
-		tmp << "Discarding " << v.get_package().get_name()
-		    << " " << v.get_name() << " due to conflict ";
-		dump_conflict(tmp, *found);
-
-		LOG_TRACE(logger, tmp.str());
-	      }
+	    LOG_TRACE(logger,
+		      "Discarding " << v << " due to conflict "
+		      << *found);
 
 	    imm::map<package, action> m = *found;
 
@@ -2221,16 +2135,7 @@ private:
     bool done = false;
     while(!done)
       {
-	if(logger->isDebugEnabled())
-	  {
-	    // \todo Eliminate this intermediate stream.
-	    std::ostringstream tmp;
-
-	    tmp << "Processing ";
-	    curr.dump(tmp);
-
-	    LOG_DEBUG(logger, tmp);
-	  }
+	LOG_DEBUG(logger, "Processing " << curr);
 
 	done = true;
 
@@ -2320,18 +2225,10 @@ private:
 
 	    if(num_successors == 0)
 	      {
-		if(logger->isDebugEnabled())
-		  {
-		    // \todo Eliminate this intermediate stream.
-		    std::ostringstream tmp;
-
-		    tmp << "Discarding solution; unresolvable dependency "
-			<< *bi << " with conflict ";
-
-		    dump_conflict(tmp, conflict);
-
-		    LOG_DEBUG(logger, tmp.str());
-		  }
+		LOG_DEBUG(logger,
+			  "Discarding solution; unresolvable dependency "
+			  << *bi << " with conflict "
+			  << conflict);
 
 		add_conflict(conflict);
 
@@ -2734,32 +2631,12 @@ public:
       found = find_matching_conflict(conflict);
 
     if(found != conflicts.end())
-      {
-	if(logger->isTraceEnabled())
-	  {
-	    // \todo Eliminate this intermediate stream.
-	    std::ostringstream tmp;
-
-	    tmp << "Dropping conflict ";
-	    dump_conflict(tmp, conflict);
-	    tmp << " because it is redundant with ";
-	    dump_conflict(tmp, *found);
-
-	    LOG_TRACE(logger, tmp.str());
-	  }
-      }
+      LOG_TRACE(logger,
+		"Dropping conflict " << conflict
+		<< " because it is redundant with " << *found);
     else
       {
-	if(logger->isTraceEnabled())
-	  {
-	    // \todo Eliminate this intermediate stream.
-	    std::ostringstream tmp;
-
-	    tmp << "Inserting conflict ";
-	    dump_conflict(tmp, conflict);
-
-	    LOG_TRACE(logger, tmp.str());
-	  }
+	LOG_TRACE(logger, "Inserting conflict " << conflict);
 	// TODO: drop conflicts of which this is a subset.  Needs work
 	// at the setset level.
 	conflicts.insert(conflict);
@@ -2913,30 +2790,13 @@ public:
 
 	if(irrelevant(s))
 	  {
-	    if(logger->isDebugEnabled())
-	      {
-		// \todo Eliminate this intermediate stream.
-		std::ostringstream tmp;
-
-		tmp << "Dropping irrelevant solution ";
-		s.dump(tmp);
-
-		LOG_DEBUG(logger, tmp.str());
-	      }
+	    LOG_DEBUG(logger, "Dropping irrelevant solution " << s);
 	    continue;
 	  }
 
 	if(should_defer(s))
 	  {
-	    if(logger->isDebugEnabled())
-	      {
-		std::ostringstream tmp;
-
-		tmp << "Deferring rejected solution ";
-		s.dump(tmp);
-
-		LOG_DEBUG(logger, tmp.str());
-	      }
+	    LOG_DEBUG(logger, "Deferring rejected solution " << s);
 
 	    deferred.insert(s);
 	    continue;
@@ -2947,16 +2807,7 @@ public:
 	// If all dependencies are satisfied, we found a solution.
 	if(s.is_full_solution())
 	  {
-	    if(logger->isInfoEnabled())
-	      {
-		// \todo Eliminate this intermediate stream.
-		std::ostringstream tmp;
-
-		tmp << " --- Found solution ";
-		s.dump(tmp);
-
-		LOG_INFO(logger, tmp.str());
-	      }
+	    LOG_INFO(logger, " --- Found solution " << s);
 
 	    // Set it here too in case the last tentative solution is
 	    // really a solution.
