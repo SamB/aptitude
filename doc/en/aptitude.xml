@@ -10654,6 +10654,92 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configLoggingConfigFile'>
+	      <seg><literal>Aptitude::Logging::Config-File</literal></seg>
+	      <seg><filename>/etc/apt/aptitude-log.conf</filename></seg>
+	      <seg>
+		<!-- TODO: the logging system needs its own
+		     configuration section, with documentation of the
+		     file format, not a link to the library's home
+		     page.
+		-->
+		If this is set to a nonempty string, &aptitude; will
+		read it to configure the logging system; it should be
+		a file in the format of <ulink
+		linkend='http://logging.apache.org/log4cxx/'><literal>log4cxx</literal></ulink>.
+		&aptitude; will periodically re-read the file to see
+		whether any settings have been changed.  This differs
+		from the setting <link
+		linkend='configLog'><literal>Aptitude::Log</literal></link>:
+		that file is used to log installations and removals,
+		whereas the logging configured by this file is used to
+		log program events, errors, and debugging messages.
+		This option is equivalent to the command-line argument
+		<link
+		linkend='cmdlineOptionLogConfigFile'><literal>--log-config-file</literal></link>.
+		The options <link
+		linkend='configLoggingFile'><literal>Aptitude::Logging::File</literal></link>
+		and <link
+		linkend='configLoggingLevels'><literal>Aptitude::Logging::Levels</literal></link>
+		provide a simpler, but less flexible, way of
+		configuring logging; they override any settings made
+		in this configuration file.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configLoggingFile'>
+	      <seg><literal>Aptitude::Logging::File</literal></seg>
+	      <seg><filename></filename></seg>
+
+	      <seg>
+		If this is set to a nonempty string, &aptitude; will
+		write logging messages to it; setting it to
+		<quote><literal>-</literal></quote> causes logging
+		messages to be printed to standard output.  This
+		differs from the setting <link
+		linkend='configLog'><literal>Aptitude::Log</literal></link>:
+		that file is used to log installations and removals,
+		whereas this file is used to log program events,
+		errors, and debugging messages (if enabled).  This
+		option is equivalent to the command-line argument
+		<link
+		linkend='cmdlineOptionLogFile'><literal>--log-file</literal></link>.
+		See also <link
+		linkend='configLoggingLevels'><literal>Aptitude::Logging::Levels</literal></link>
+		and <link
+		linkend='configLoggingConfigFile'><literal>Aptitude::Logging::Config-File</literal></link>.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configLoggingLevels'>
+	      <seg><literal>Aptitude::Logging::Levels</literal></seg>
+	      <seg>(empty)</seg>
+	      <seg>
+		This option is a group whose members control which log
+		messages are written.  Each entry is either
+		<quote><replaceable>level</replaceable></quote>, to
+		set the global log level (the log level of the root
+		logger) to the given <replaceable>level</replaceable>,
+		or
+		<quote><literal><replaceable>category</replaceable>:<replaceable>level</replaceable></literal></quote>,
+		where <replaceable>category</replaceable> is the
+		category of messages to modify (such as
+		<literal>aptitude.resolver.hints.match</literal>) and
+		<replaceable>level</replaceable> is the lowest log
+		level of messages in that category that should be
+		displayed.  Valid log levels are
+		<quote><literal>fatal</literal></quote>,
+		<quote><literal>error</literal></quote>,
+		<quote><literal>warn</literal></quote>,
+		<quote><literal>info</literal></quote>,
+		<quote><literal>debug</literal></quote>, and
+		<quote><literal>trace</literal></quote>.  The
+		command-line option <link
+		linkend='cmdlineOptionLogLevel'><literal>--log-level</literal></link>
+		can be used to set or override any log level.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configParseDescriptionBullets'>
 	      <seg><literal>Aptitude::Parse-Description-Bullets</literal></seg>
 

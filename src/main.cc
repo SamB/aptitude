@@ -1,6 +1,6 @@
 // main.cc  (neé testscr.cc)
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -67,6 +67,14 @@
 
 #include <apt-pkg/error.h>
 #include <apt-pkg/init.h>
+
+#include <log4cxx/basicconfigurator.h>
+#include <log4cxx/consoleappender.h>
+#include <log4cxx/fileappender.h>
+#include <log4cxx/logger.h>
+#include <log4cxx/patternlayout.h>
+#include <log4cxx/propertyconfigurator.h>
+#include <log4cxx/simplelayout.h>
 
 #ifdef HAVE_GTK
 #include "gtk/gui.h"
@@ -219,7 +227,10 @@ enum {
   OPTION_NOT_ARCH_ONLY,
   OPTION_DISABLE_COLUMNS,
   OPTION_GUI,
-  OPTION_NO_GUI
+  OPTION_NO_GUI,
+  OPTION_LOG_LEVEL,
+  OPTION_LOG_FILE,
+  OPTION_LOG_CONFIG_FILE
 };
 int getopt_result;
 
@@ -264,14 +275,173 @@ option opts[]={
   {"gui", 0, &getopt_result, OPTION_GUI},
   {"no-gui", 0, &getopt_result, OPTION_NO_GUI},
 #endif
+  {"log-level", 1, &getopt_result, OPTION_LOG_LEVEL},
+  {"log-file", 1, &getopt_result, OPTION_LOG_FILE},
+  {"log-config-file", 1, &getopt_result, OPTION_LOG_CONFIG_FILE},
   {0,0,0,0}
 };
 
 const char *argv0;
 
+namespace
+{
+  bool strncase_eq_with_translation(const std::string &s1, const char *s2)
+  {
+    if(strcasecmp(s1.c_str(), s2) == 0)
+      return true;
+    else if(strcasecmp(s1.c_str(), _(s2)) == 0)
+      return true;
+    else
+      return false;
+  }
+
+  class log_level_map
+  {
+    std::map<std::string, log4cxx::LevelPtr> levels;
+
+    void add_level(const std::string &s, log4cxx::LevelPtr level)
+    {
+      std::string tmp;
+      for(std::string::const_iterator it = s.begin(); it != s.end(); ++it)
+	tmp.push_back(toupper(*it));
+
+      levels[tmp] = level;
+    }
+
+  public:
+    log_level_map()
+    {
+      using namespace log4cxx;
+
+      // ForTranslators: This is a log level that the user can pass on
+      // the command-line or set in the configuration file.
+      add_level(N_("trace"), Level::getTrace());
+      // ForTranslators: This is a log level that the user can pass on
+      // the command-line or set in the configuration file.
+      add_level(N_("debug"), Level::getDebug());
+      // ForTranslators: This is a log level that the user can pass on
+      // the command-line or set in the configuration file.
+      add_level(N_("info"), Level::getInfo());
+      // ForTranslators: This is a log level that the user can pass on
+      // the command-line or set in the configuration file.
+      add_level(N_("warn"), Level::getWarn());
+      // ForTranslators: This is a log level that the user can pass on
+      // the command-line or set in the configuration file.
+      add_level(N_("error"), Level::getError());
+      // ForTranslators: This is a log level that the user can pass on
+      // the command-line or set in the configuration file.
+      add_level(N_("fatal"), Level::getFatal());
+      // ForTranslators: This is a log level that the user can pass on
+      // the command-line or set in the configuration file.
+      add_level(N_("off"), Level::getOff());
+
+      std::vector<std::pair<std::string, LevelPtr> >
+	tmp(levels.begin(), levels.end());
+
+      for(std::vector<std::pair<std::string, LevelPtr> >::const_iterator
+	    it = tmp.begin(); it != tmp.end(); ++it)
+	{
+	  // Make sure that the untranslated entries always override
+	  // the translated ones so that instructions in English
+	  // always work.
+	  std::map<std::string, LevelPtr>::const_iterator found =
+	    levels.find(it->first);
+
+	  if(found == levels.end())
+	    add_level(_(it->first.c_str()), it->second);
+	}
+    }
+
+    typedef std::map<std::string, log4cxx::LevelPtr>::const_iterator const_iterator;
+
+    const_iterator find(const std::string &s) const
+    {
+      std::string tmp;
+      for(std::string::const_iterator it = s.begin(); it != s.end(); ++it)
+	tmp.push_back(toupper(*it));
+
+      return levels.find(tmp);
+    }
+
+    const_iterator end() const
+    {
+      return levels.end();
+    }
+  };
+
+  log_level_map log_levels;
+
+  /** \brief Parse a logging level.
+   *
+   *  Logging levels have the form [<logger>:]level, where
+   *  <logger> is an optional logger name.
+   */
+  void apply_logging_level(const std::string &s)
+  {
+    using namespace log4cxx;
+
+    std::string::size_type colon_loc = s.rfind(':');
+    std::string level_name;
+    std::string logger_name;
+
+    if(colon_loc == std::string::npos)
+      level_name = s;
+    else
+      {
+	level_name = std::string(s, colon_loc + 1);
+	logger_name = std::string(s, 0, colon_loc);
+      }
+
+    LevelPtr level;
+
+    log_level_map::const_iterator found =
+      log_levels.find(level_name);
+    if(found != log_levels.end())
+      level = found->second;
+
+    if(!level)
+      {
+	// ForTranslators: both the translated and the untranslated
+	// log level names are accepted here.
+	_error->Error(_("Unknown log level name \"%s\" (expected \"trace\", \"debug\", \"info\", \"warn\", \"error\", \"fatal\", or \"off\")."),
+		      level_name.c_str());
+	return;
+      }
+
+    LoggerPtr targetLogger;
+    if(logger_name.empty())
+      targetLogger = Logger::getRootLogger();
+    else
+      targetLogger = Logger::getLogger(logger_name);
+
+    if(!targetLogger)
+      {
+	_error->Error(_("Invalid logger name \"%s\"."),
+		      logger_name.c_str());
+	return;
+      }
+
+    targetLogger->setLevel(level);
+  }
+
+  /** \brief Apply logging levels from the configuration file. */
+  void apply_config_file_logging_levels(Configuration *config)
+  {
+    const Configuration::Item *tree = config->Tree(PACKAGE "::Logging::Levels");
+    if(tree == NULL)
+      return;
+
+    for(Configuration::Item *item = tree->Child; item != NULL;
+	item = item->Next)
+      apply_logging_level(item->Value);
+  }
+}
+
 int main(int argc, char *argv[])
 {
   srandom(time(0));
+
+  using namespace log4cxx;
 
   // See earlier note
   //
@@ -289,6 +459,12 @@ int main(int argc, char *argv[])
   string display_format=aptcfg->Find(PACKAGE "::CmdLine::Package-Display-Format", "%c%a%M %p# - %d#");
   string sort_policy="name";
   string width=aptcfg->Find(PACKAGE "::CmdLine::Package-Display-Width", "");
+  // Set to a non-empty string to enable logging simplistically; set
+  // to "-" to log to stdout.
+  string log_file = aptcfg->Find(PACKAGE "::Logging::File", "");
+  // Set to a non-empty string to read a log4cxx config file to enable
+  // logging.
+  string log_config_file = aptcfg->Find(PACKAGE "::Logging::Config-File", "/etc/apt/aptitude-log.conf");
   bool simulate = aptcfg->FindB(PACKAGE "::CmdLine::Simulate", false) ||
     aptcfg->FindB(PACKAGE "::Simulate", false);
   bool download_only=aptcfg->FindB(PACKAGE "::CmdLine::Download-Only", false);;
@@ -567,7 +743,14 @@ int main(int argc, char *argv[])
 	    case OPTION_NO_GUI:
 	      gui = false;
 	      break;
+
 #endif
+	    case OPTION_LOG_LEVEL:
+	      apply_logging_level(optarg);
+	      break;
+	    case OPTION_LOG_FILE:
+	      log_file = optarg;
+	      break;
 	    default:
 	      fprintf(stderr, "%s",
 		      _("WEIRDNESS: unknown option code received\n"));
@@ -582,6 +765,26 @@ int main(int argc, char *argv[])
 		  _("WEIRDNESS: unknown option code received\n"));
 	  break;
 	}
+    }
+
+  // By default don't log anything below WARN.
+  Logger::getRootLogger()->setLevel(Level::getWarn());
+
+  if(!log_config_file.empty())
+    PropertyConfigurator::configureAndWatch(log_config_file);
+  else
+  {
+    BasicConfigurator::configure();
+    Logger::getRootLogger()->removeAllAppenders();
+  }
+
+  if(!log_file.empty())
+    {
+      if(log_file == "-")
+	Logger::getRootLogger()->addAppender(new ConsoleAppender(new PatternLayout("%-5p %c - %m%n")));
+      else
+	Logger::getRootLogger()->addAppender(new FileAppender(new PatternLayout("%-5p %c - %m%n"),
+							      log_file));
     }
 
   const bool debug_search = aptcfg->FindB(PACKAGE "::CmdLine::Debug-Search", false);
