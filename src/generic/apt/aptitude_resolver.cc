@@ -1114,7 +1114,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	      for(pkgCache::DepIterator dep = apt_ver.DependsList();
 		  !dep.end(); ++dep)
 		{
-		  if((dep->Type & ~pkgCache::Dep::Or) == pkgCache::Dep::Replaces &&
+		  if(dep->Type == pkgCache::Dep::Replaces &&
 		     aptitude::apt::is_full_replacement(dep))
 		    {
 		      pkgCache::PkgIterator target = dep.TargetPkg();
