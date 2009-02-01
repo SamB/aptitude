@@ -1,6 +1,6 @@
 // test_dense_setset.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -22,42 +22,6 @@
 #include <generic/util/dense_setset.h>
 
 #include <iostream>
-
-template<typename Key, typename Val, typename Compare>
-inline
-std::ostream &operator<<(std::ostream &out, const imm::map<Key, Val, Compare> &s)
-{
-  out << "{";
-
-  for(typename imm::map<Key, Val, Compare>::const_iterator i = s.begin(); i != s.end(); ++i)
-    {
-      if(i != s.begin())
-	out << ", ";
-      out << i->first << " => " << i->second;
-    }
-
-  out << "}";
-
-  return out;
-}
-
-template<typename T, typename Compare>
-inline
-std::ostream &operator<<(std::ostream &out, const imm::set<T, Compare> &s)
-{
-  out << "{";
-
-  for(typename imm::set<T, Compare>::const_iterator i = s.begin(); i != s.end(); ++i)
-    {
-      if(i != s.begin())
-	out << ", ";
-      out << *i;
-    }
-
-  out << "}";
-
-  return out;
-}
 
 class Dense_SetsetTest : public CppUnit::TestFixture
 {
