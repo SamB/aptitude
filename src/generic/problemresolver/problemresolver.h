@@ -850,7 +850,7 @@ private:
 	tmp << " is triggered by the solution ";
 	s.dump(tmp);
 
-	LOG4CXX_TRACE(logger, tmp.str());
+	LOG_TRACE(logger, tmp.str());
       }
 
     return rval;
@@ -894,7 +894,7 @@ private:
 	tmp << " will trigger conflict ";
 	dump(tmp, *result);
 
-	LOG4CXX_TRACE(logger, tmp.str());
+	LOG_TRACE(logger, tmp.str());
       }
 
     return result;
@@ -1375,9 +1375,9 @@ private:
 	eassert_on_ver(output_actions.find(solver.get_package()) == output_actions.end(), solver);
 	eassert_on_ver(solver != solver.get_package().current_version(), solver);
 
-	LOG4CXX_TRACE("Filter: resolving " << d << " with "
-		      << solver.get_package().get_name() << ":"
-		      << solver.get_name());
+	LOG_TRACE("Filter: resolving " << d << " with "
+		  << solver.get_package().get_name() << ":"
+		  << solver.get_name());
 
 	action act(solver, d, output_actions.size());
 
@@ -1440,7 +1440,7 @@ private:
 
 	    tmp << "Eliminating stupid pairs from ";
 	    rval.dump(tmp);
-	    LOG4CXX_TRACE(logger, tmp.str());
+	    LOG_TRACE(logger, tmp.str());
 	  }
 
 	// The pair to eliminate; picked (sorta) arbitrarily.
@@ -1513,10 +1513,10 @@ private:
 	  }
 	else
 	  {
-	    LOG4CXX_TRACE("Dropping "
-			  << victim.first.get_package().get_name()
-			  << ":" << victim.first.get_name()
-			  << " and filtering unnecessary installations.");
+	    LOG_TRACE("Dropping "
+		      << victim.first.get_package().get_name()
+		      << ":" << victim.first.get_name()
+		      << " and filtering unnecessary installations.");
 	    // Ok, it's safe.
 	    //
 	    // Generate a node by dropping the second element and
@@ -1555,7 +1555,7 @@ private:
 	    rval.dump(tmp);
 	  }
 
-	LOG4CXX_TRACE(logger, tmp.str());
+	LOG_TRACE(logger, tmp.str());
       }
 
     eassert(rval.get_broken().empty());
@@ -1566,7 +1566,7 @@ private:
 
   solution eliminate_stupid(const solution &s) const
   {
-    LOG4CXX_TRACE(logger, "Would eliminate stupid, but stupid elimination is disabled.");
+    LOG_TRACE(logger, "Would eliminate stupid, but stupid elimination is disabled.");
 
     return s;
   }
@@ -1584,10 +1584,10 @@ private:
 
 	if(found.isValid() && found.getVal().second.ver == *uri)
 	  {
-	    LOG4CXX_TRACE(logger,
-			  "Rejected version " << found.getVal().first.get_name()
-			  << " " << found.getVal().second.ver.get_name()
-			  << " detected.");
+	    LOG_TRACE(logger,
+		      "Rejected version " << found.getVal().first.get_name()
+		      << " " << found.getVal().second.ver.get_name()
+		      << " detected.");
 
 	    return true;
 	  }
@@ -1612,9 +1612,9 @@ private:
       {
 	if(*uh_iter == *su_iter)
 	  {
-	    LOG4CXX_TRACE(logger,
-			  "Broken hardened dependency " << *uh_iter
-			  << " detected.");
+	    LOG_TRACE(logger,
+		      "Broken hardened dependency " << *uh_iter
+		      << " detected.");
 
 	    return true;
 	  }
@@ -1668,7 +1668,7 @@ private:
 		  tmp << ai->get_package().get_name() << " version " << ai->get_name() << " is avoided (when resolving " << si->second.d << ") by the solution: ";
 		  s.dump(tmp);
 
-		  LOG4CXX_TRACE(logger, tmp.str());
+		  LOG_TRACE(logger, tmp.str());
 		}
 
 	      return true;
@@ -1694,7 +1694,7 @@ private:
 		    tmp << ai->get_package().get_name() << " version " << ai->get_name() << " is avoided (by leaving " << ud << " unresolved) by the solution: ";
 		    s.dump(tmp);
 
-		    LOG4CXX_TRACE(logger, tmp.str());
+		    LOG_TRACE(logger, tmp.str());
 		  }
 
 		return true;
@@ -1798,7 +1798,7 @@ private:
 
     if(s.get_score() < minimum_score)
       {
-	LOG4CXX_TRACE(logger, "Not generating solution (infinite badness " << s.get_score() << "<" << minimum_score << ")");
+	LOG_TRACE(logger, "Not generating solution (infinite badness " << s.get_score() << "<" << minimum_score << ")");
 	return true;
       }
 
@@ -1821,7 +1821,7 @@ private:
 	    tmp << "Dropping irrelevant solution ";
 	    s.dump(tmp);
 
-	    LOG4CXX_TRACE(logger, tmp.str());
+	    LOG_TRACE(logger, tmp.str());
 	  }
 
 	return false;
@@ -1836,7 +1836,7 @@ private:
 	    tmp << "Deferring rejected solution ";
 	    s.dump(tmp);
 
-	    LOG4CXX_TRACE(logger, tmp.str());
+	    LOG_TRACE(logger, tmp.str());
 	  }
 
 	deferred.insert(s);
@@ -1852,7 +1852,7 @@ private:
 	    tmp << "Enqueuing ";
 	    s.dump(tmp);
 
-	    LOG4CXX_TRACE(logger, tmp.str());
+	    LOG_TRACE(logger, tmp.str());
 	  }
 
 	open.push(s);
@@ -1882,9 +1882,9 @@ private:
 
     if(inst != cur)
       {
-	LOG4CXX_TRACE(logger,
-		      "Discarding " << p.get_name() << " "
-		      << v.get_name() << ": monotonicity violation");
+	LOG_TRACE(logger,
+		  "Discarding " << p.get_name() << " "
+		  << v.get_name() << ": monotonicity violation");
 
 	out_act.ver = inst;
 	out_act.from_dep_source = false;
@@ -1904,10 +1904,10 @@ private:
 	    const dep &found_d = found.getVal().second;
 
 	    if(logger->isTraceEnabled())
-	      LOG4CXX_TRACE(logger,
-			    "Discarding " << p.get_name() << " "
-			    << v.get_name() << ": forbidden by the resolution of "
-			    << found_d);
+	      LOG_TRACE(logger,
+			"Discarding " << p.get_name() << " "
+			<< v.get_name() << ": forbidden by the resolution of "
+			<< found_d);
 
 	    out_act.ver = s.version_of(found_d.get_source().get_package());
 	    out_act.d   = found_d;
@@ -2056,11 +2056,11 @@ private:
 
     action conflictor;
 
-    LOG4CXX_TRACE(logger,
-		  "Trying to resolve " << d << " by installing "
-		  << v.get_package().get_name() << " "
-		  << v.get_name()
-		  << (from_dep_source ? " from the dependency source" : ""));
+    LOG_TRACE(logger,
+	      "Trying to resolve " << d << " by installing "
+	      << v.get_package().get_name() << " "
+	      << v.get_name()
+	      << (from_dep_source ? " from the dependency source" : ""));
 
     const int newid = s.get_actions().size();
 
@@ -2097,7 +2097,7 @@ private:
 		    << " " << v.get_name() << " due to conflict ";
 		dump_conflict(tmp, *found);
 
-		LOG4CXX_TRACE(logger, tmp.str());
+		LOG_TRACE(logger, tmp.str());
 	      }
 
 	    imm::map<package, action> m = *found;
@@ -2229,7 +2229,7 @@ private:
 	    tmp << "Processing ";
 	    curr.dump(tmp);
 
-	    LOG4CXX_DEBUG(logger, tmp);
+	    LOG_DEBUG(logger, tmp);
 	  }
 
 	done = true;
@@ -2287,7 +2287,7 @@ private:
 		std::string msgstr;
 		msg.str(msgstr);
 
-		LOG4CXX_FATAL(logger, msgstr);
+		LOG_FATAL(logger, msgstr);
 
 		throw ResolverInternalErrorException(msgstr);
 	      }
@@ -2330,7 +2330,7 @@ private:
 
 		    dump_conflict(tmp, conflict);
 
-		    LOG4CXX_DEBUG(logger, tmp.str());
+		    LOG_DEBUG(logger, tmp.str());
 		  }
 
 		add_conflict(conflict);
@@ -2339,7 +2339,7 @@ private:
 	      }
 	    else if(num_successors == 1)
 	      {
-		LOG4CXX_TRACE(logger, "Forced resolution of " << *bi);
+		LOG_TRACE(logger, "Forced resolution of " << *bi);
 
 		std::vector<solution> v;
 		real_generator g(v, visited_packages);
@@ -2381,9 +2381,9 @@ private:
       {
 	imm::map<package, action> conflict;
 
-	LOG4CXX_TRACE(logger,
-		      "Generating successors for "
-		      << least_successors_user_impinging);
+	LOG_TRACE(logger,
+		  "Generating successors for "
+		  << least_successors_user_impinging);
 
 	std::vector<solution> v;
 	generate_successors(curr, least_successors_user_impinging,
@@ -2398,9 +2398,9 @@ private:
       {
 	imm::map<package, action> conflict;
 
-	LOG4CXX_TRACE(logger,
-		      "Generating successors for "
-		      << least_successors);
+	LOG_TRACE(logger,
+		  "Generating successors for "
+		  << least_successors);
 
 	std::vector<solution> v;
 	generate_successors(curr, least_successors,
@@ -2745,7 +2745,7 @@ public:
 	    tmp << " because it is redundant with ";
 	    dump_conflict(tmp, *found);
 
-	    LOG4CXX_TRACE(logger, tmp.str());
+	    LOG_TRACE(logger, tmp.str());
 	  }
       }
     else
@@ -2758,7 +2758,7 @@ public:
 	    tmp << "Inserting conflict ";
 	    dump_conflict(tmp, conflict);
 
-	    LOG4CXX_TRACE(logger, tmp.str());
+	    LOG_TRACE(logger, tmp.str());
 	  }
 	// TODO: drop conflicts of which this is a subset.  Needs work
 	// at the setset level.
@@ -2921,7 +2921,7 @@ public:
 		tmp << "Dropping irrelevant solution ";
 		s.dump(tmp);
 
-		LOG4CXX_DEBUG(logger, tmp.str());
+		LOG_DEBUG(logger, tmp.str());
 	      }
 	    continue;
 	  }
@@ -2935,7 +2935,7 @@ public:
 		tmp << "Deferring rejected solution ";
 		s.dump(tmp);
 
-		LOG4CXX_DEBUG(logger, tmp.str());
+		LOG_DEBUG(logger, tmp.str());
 	      }
 
 	    deferred.insert(s);
@@ -2955,7 +2955,7 @@ public:
 		tmp << " --- Found solution ";
 		s.dump(tmp);
 
-		LOG4CXX_INFO(logger, tmp.str());
+		LOG_INFO(logger, tmp.str());
 	      }
 
 	    // Set it here too in case the last tentative solution is
@@ -2976,7 +2976,7 @@ public:
 	      {
 		// Make it fend for itself! (although I expect it to
 		// come up again immediately; hrm)
-		LOG4CXX_TRACE(logger, " --- Placing de-stupidified solution back on the open queue");
+		LOG_TRACE(logger, " --- Placing de-stupidified solution back on the open queue");
 		finished = false;
 		open.push(minimized);
 	      }
@@ -2995,12 +2995,12 @@ public:
 		else
 		  generated_solutions.push_back(minimized);
 
-		LOG4CXX_INFO(logger, " *** Converged after " << odometer << " steps.");
-		LOG4CXX_INFO(logger, " *** open: " << open.size()
-			     << "; closed: " << closed.size()
-			     << "; conflicts: " << conflicts.size()
-			     << "; deferred: " << deferred.size()
-			     << "; generated solutions: " << generated_solutions.size());
+		LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
+		LOG_INFO(logger, " *** open: " << open.size()
+			 << "; closed: " << closed.size()
+			 << "; conflicts: " << conflicts.size()
+			 << "; deferred: " << deferred.size()
+			 << "; generated solutions: " << generated_solutions.size());
 
 		update_counts_cache();
 
@@ -3011,7 +3011,7 @@ public:
 	else
 	  process_solution(s, visited_packages);
 
-	LOG4CXX_TRACE(logger, "Done generating successors.");
+	LOG_TRACE(logger, "Done generating successors.");
 
 	--max_steps;
       }
@@ -3027,13 +3027,13 @@ public:
 
     update_counts_cache();
 
-    LOG4CXX_INFO(logger, " *** Out of solutions after " << odometer << " steps.");
-    LOG4CXX_INFO(logger ,
-		 " *** open: " << open.size()
-		 << "; closed: " << closed.size()
-		 << "; conflicts: " << conflicts.size()
-		 << "; deferred: " << deferred.size()
-		 << "; generated solutions: " << generated_solutions.size());
+    LOG_INFO(logger, " *** Out of solutions after " << odometer << " steps.");
+    LOG_INFO(logger ,
+	     " *** open: " << open.size()
+	     << "; closed: " << closed.size()
+	     << "; conflicts: " << conflicts.size()
+	     << "; deferred: " << deferred.size()
+	     << "; generated solutions: " << generated_solutions.size());
 
     throw NoMoreSolutions();
   }
