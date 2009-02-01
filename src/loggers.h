@@ -23,6 +23,16 @@
 
 #include <log4cxx/logger.h>
 
+// Safe logging macros -- unlike the log4cxx macros, these expand to
+// statements needing a semicolon, so you can write them like function
+// calls with no surprises.  They also save a few keystrokes.
+#define LOG_TRACE(logger, args) do { LOG4CXX_TRACE(logger, args); } while(0)
+#define LOG_DEBUG(logger, args) do { LOG4CXX_DEBUG(logger, args); } while(0)
+#define LOG_INFO(logger, args) do { LOG4CXX_INFO(logger, args); } while(0)
+#define LOG_WARN(logger, args) do { LOG4CXX_WARN(logger, args); } while(0)
+#define LOG_ERROR(logger, args) do { LOG4CXX_ERROR(logger, args); } while(0)
+#define LOG_FATAL(logger, args) do { LOG4CXX_FATAL(logger, args); } while(0)
+
 namespace aptitude
 {
   /** \brief A global repository for the loggers used in aptitude.
