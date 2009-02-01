@@ -718,7 +718,7 @@ void resolver_manager::create_resolver()
   // \todo We should parse these once on startup to avoid duplicate
   // error messages, support modifying the list dynamically (for the
   // sake of GUI users), etc.
-  std::vector<aptitude_resolver::resolver_hint> hints;
+  std::vector<aptitude_resolver::hint> hints;
 
   const Configuration::Item * const root =
     aptcfg->Tree(PACKAGE "::ProblemResolver::Hints");
@@ -728,8 +728,8 @@ void resolver_manager::create_resolver()
       for(const Configuration::Item *itm = root->Child;
 	  itm != NULL; itm = itm -> Next)
 	{
-	  aptitude_resolver::resolver_hint hint;
-	  if(aptitude_resolver::resolver_hint::parse(itm->Value, hint))
+	  aptitude_resolver::hint hint;
+	  if(aptitude_resolver::hint::parse(itm->Value, hint))
 	    hints.push_back(hint);
 	}
     }

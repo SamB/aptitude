@@ -72,7 +72,7 @@ class aptitude_resolver:public generic_problem_resolver<aptitude_universe>
   void add_default_resolution_score(const pkgCache::DepIterator &dep,
 				    int default_resolution_score);
 public:
-  class resolver_hint
+  class hint
   {
   public:
     /** \brief The type of hint represented by this object. */
@@ -272,42 +272,42 @@ public:
     cwidget::util::ref_ptr<aptitude::matching::pattern> target;
     version_selection selection;
 
-    resolver_hint(hint_type _type, int _score,
-		  const cwidget::util::ref_ptr<aptitude::matching::pattern> &_target,
-		  version_selection _selection)
+    hint(hint_type _type, int _score,
+	 const cwidget::util::ref_ptr<aptitude::matching::pattern> &_target,
+	 version_selection _selection)
       : type(_type), score(_score), target(_target),
 	selection(_selection)
     {
     }
 
   public:
-    resolver_hint()
+    hint()
       : type((hint_type)-1), score(-1), target(NULL), selection()
     {
     }
 
-    ~resolver_hint();
+    ~hint();
 
     /** \brief Create a hint that rejects a version or versions of a package. */
-    static resolver_hint make_reject(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
+    static hint make_reject(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 				     const version_selection &selection)
     {
-      return resolver_hint(reject, 0, target, selection);
+      return hint(reject, 0, target, selection);
     }
 
     /** \brief Create a hint that mandates a version or versions of a package. */
-    static resolver_hint make_mandate(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
+    static hint make_mandate(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 				      const version_selection &selection)
     {
-      return resolver_hint(mandate, 0, target, selection);
+      return hint(mandate, 0, target, selection);
     }
 
     /** \brief Create a hint that adjust the score of a package. */
-    static resolver_hint make_tweak_score(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
+    static hint make_tweak_score(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 					  const version_selection &selection,
 					  int score)
     {
-      return resolver_hint(tweak_score, score, target, selection);
+      return hint(tweak_score, score, target, selection);
     }
 
     /** \brief Parse a resolver hint definition.
@@ -337,7 +337,7 @@ public:
      *  \return \b true if the hint was parsed successfully, \b false
      *  otherwise.
      */
-    static bool parse(const std::string &definition, resolver_hint &out);
+    static bool parse(const std::string &definition, hint &out);
 
     /** \brief Compare this hint to another hint.
      *
@@ -348,14 +348,14 @@ public:
      *
      *  Hints exist in an arbitrary total ordering.
      */
-    int compare(const resolver_hint &other) const;
+    int compare(const hint &other) const;
 
-    bool operator<(const resolver_hint &other) const { return compare(other) < 0; }
-    bool operator<=(const resolver_hint &other) const { return compare(other) <= 0; }
-    bool operator==(const resolver_hint &other) const { return compare(other) == 0; }
-    bool operator!=(const resolver_hint &other) const { return compare(other) != 0; }
-    bool operator>=(const resolver_hint &other) const { return compare(other) >= 0; }
-    bool operator>(const resolver_hint &other) const { return compare(other) > 0; }
+    bool operator<(const hint &other) const { return compare(other) < 0; }
+    bool operator<=(const hint &other) const { return compare(other) <= 0; }
+    bool operator==(const hint &other) const { return compare(other) == 0; }
+    bool operator!=(const hint &other) const { return compare(other) != 0; }
+    bool operator>=(const hint &other) const { return compare(other) >= 0; }
+    bool operator>(const hint &other) const { return compare(other) > 0; }
 
     /** \brief Get the type of this hint.
      *
@@ -455,7 +455,7 @@ public:
 			 int break_hold_score,
 			 bool allow_break_holds_and_forbids,
 			 int default_resolution_score,
-			 const std::vector<resolver_hint> &hints);
+			 const std::vector<hint> &hints);
 
   /** Score packages/versions according to their priorities.  Normally
    *  you want important>=required>=standard>=optional>=extra.

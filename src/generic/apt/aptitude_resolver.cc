@@ -88,46 +88,46 @@ std::ostream &operator<<(std::ostream &out, const pkgCache::DepIterator &dep)
 // Should version selections be logged the way they're written?
 // That's a little awkward since the syntax is hairy and some of them
 // output nothing at all (!)
-std::ostream &operator<<(std::ostream &out, const aptitude_resolver::resolver_hint::version_selection &sel)
+std::ostream &operator<<(std::ostream &out, const aptitude_resolver::hint::version_selection &sel)
 {
   switch(sel .get_type())
     {
-    case aptitude_resolver::resolver_hint::version_selection::select_all:
+    case aptitude_resolver::hint::version_selection::select_all:
       return out << "all";
 
-    case aptitude_resolver::resolver_hint::version_selection::select_by_archive:
+    case aptitude_resolver::hint::version_selection::select_by_archive:
       return out << "archive(" << sel.get_version_selection_string() << ")";
 
-    case aptitude_resolver::resolver_hint::version_selection::select_inst:
+    case aptitude_resolver::hint::version_selection::select_inst:
       return out << "installed";
 
-    case aptitude_resolver::resolver_hint::version_selection::select_uninst:
+    case aptitude_resolver::hint::version_selection::select_uninst:
       return out << "uninstall";
 
-    case aptitude_resolver::resolver_hint::version_selection::select_by_version:
+    case aptitude_resolver::hint::version_selection::select_by_version:
       switch(sel.get_version_comparison_operator())
 	{
-	case aptitude_resolver::resolver_hint::version_selection::less_than:
+	case aptitude_resolver::hint::version_selection::less_than:
 	  out << "<";
 	  break;
 
-	case aptitude_resolver::resolver_hint::version_selection::less_than_or_equal_to:
+	case aptitude_resolver::hint::version_selection::less_than_or_equal_to:
 	  out << "<=";
 	  break;
 
-	case aptitude_resolver::resolver_hint::version_selection::equal_to:
+	case aptitude_resolver::hint::version_selection::equal_to:
 	  out << "=";
 	  break;
 
-	case aptitude_resolver::resolver_hint::version_selection::not_equal_to:
+	case aptitude_resolver::hint::version_selection::not_equal_to:
 	  out << "<>";
 	  break;
 
-	case aptitude_resolver::resolver_hint::version_selection::greater_than:
+	case aptitude_resolver::hint::version_selection::greater_than:
 	  out << ">";
 	  break;
 
-	case aptitude_resolver::resolver_hint::version_selection::greater_than_or_equal_to:
+	case aptitude_resolver::hint::version_selection::greater_than_or_equal_to:
 	  out << ">=";
 	  break;
 
@@ -145,19 +145,19 @@ std::ostream &operator<<(std::ostream &out, const aptitude_resolver::resolver_hi
     }
 }
 
-std::ostream &operator<<(std::ostream &out, const aptitude_resolver::resolver_hint &hint)
+std::ostream &operator<<(std::ostream &out, const aptitude_resolver::hint &hint)
 {
   switch(hint.get_type())
     {
-    case aptitude_resolver::resolver_hint::reject:
+    case aptitude_resolver::hint::reject:
       out << "reject";
       break;
 
-    case aptitude_resolver::resolver_hint::mandate:
+    case aptitude_resolver::hint::mandate:
       out << "mandate";
       break;
 
-    case aptitude_resolver::resolver_hint::tweak_score:
+    case aptitude_resolver::hint::tweak_score:
       out << "tweak(" << hint.get_score() << ")";
       break;
 
@@ -200,7 +200,7 @@ struct write_action
 #define TRACE_HINTS_EQUAL() TRACE_EQUAL(loggerHintsCompare, *this, other)
 #define TRACE_HINTS_INEQUAL(result, why) TRACE_INEQUAL(loggerHintsCompare, result, why, *this, other)
 
-int aptitude_resolver::resolver_hint::version_selection::compare(const version_selection &other) const
+int aptitude_resolver::hint::version_selection::compare(const version_selection &other) const
 {
   if(type < other.type)
     {
@@ -264,7 +264,7 @@ int aptitude_resolver::resolver_hint::version_selection::compare(const version_s
 	 }
 }
 
-bool aptitude_resolver::resolver_hint::version_selection::matches(const aptitude_resolver_version &ver) const
+bool aptitude_resolver::hint::version_selection::matches(const aptitude_resolver_version &ver) const
 {
   LOG_TRACE(loggerHintsMatch, "matching " << *this << " against " << ver);
   switch(type)
@@ -380,7 +380,7 @@ bool aptitude_resolver::resolver_hint::version_selection::matches(const aptitude
     }
 }
 
-int aptitude_resolver::resolver_hint::compare(const resolver_hint &other) const
+int aptitude_resolver::hint::compare(const hint &other) const
 {
   if(type < other.type)
     {
@@ -425,7 +425,7 @@ int aptitude_resolver::resolver_hint::compare(const resolver_hint &other) const
     }
 }
 
-bool aptitude_resolver::resolver_hint::parse(const std::string &hint, resolver_hint &out)
+bool aptitude_resolver::hint::parse(const std::string &hint, hint &out)
 {
   LOG_TRACE(loggerHintsParse, "Parsing " << hint);
   std::string::const_iterator start = hint.begin();
@@ -599,7 +599,7 @@ bool aptitude_resolver::resolver_hint::parse(const std::string &hint, resolver_h
   return true;
 }
 
-aptitude_resolver::resolver_hint::~resolver_hint()
+aptitude_resolver::hint::~hint()
 {
 }
 
@@ -1035,7 +1035,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 					  int break_hold_score,
 					  bool allow_break_holds_and_forbids,
 					  int default_resolution_score,
-					  const std::vector<resolver_hint> &hints)
+					  const std::vector<hint> &hints)
 {
   cwidget::util::ref_ptr<aptitude::matching::search_cache>
     search_info(aptitude::matching::search_cache::create());
@@ -1069,10 +1069,10 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	  pkgCache::VerIterator apt_ver(v.get_ver());
 
 	  // Apply resolver hints.
-	  for(std::vector<resolver_hint>::const_iterator it = hints.begin();
+	  for(std::vector<hint>::const_iterator it = hints.begin();
 	      it != hints.end(); ++it)
 	    {
-	      const resolver_hint &h(*it);
+	      const hint &h(*it);
 
 	      using aptitude::matching::get_match;
 
@@ -1100,17 +1100,17 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	      // OK, apply the hint.
 	      switch(h.get_type())
 		{
-		case resolver_hint::reject:
+		case hint::reject:
 		  LOG_DEBUG(loggerScores, "** Rejecting " << v << " due to the hint " << h);
 		  reject_version(v);
 		  break;
 
-		case resolver_hint::mandate:
+		case hint::mandate:
 		  LOG_DEBUG(loggerScores, "** Mandating " << v << " due to the hint " << h);
 		  mandate_version(v);
 		  break;
 
-		case resolver_hint::tweak_score:
+		case hint::tweak_score:
 		  LOG_DEBUG(loggerScores, "** Score: " << std::showpos << h.get_score() << std::noshowpos << " for " << v << " due to the hint " << h);
 		  add_version_score(v, h.get_score());
 		  break;
