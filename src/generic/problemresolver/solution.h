@@ -35,6 +35,58 @@
 template<typename PackageUniverse>
 class solution_weights;
 
+/** Represents a single action taken by the resolver: the
+ *  installation of a particular version of a package.  The
+ *  *identity* of an action (in terms of operator< and operator==)
+ *  is based solely on the version it installs, although additional
+ *  information is provided to "tag" it.
+ */
+template<typename PackageUniverse>
+struct generic_action
+{
+  typedef typename PackageUniverse::package package;
+  typedef typename PackageUniverse::version version;
+  typedef typename PackageUniverse::dep dep;
+
+  version ver;
+
+  /** The dependency that triggered this action. */
+  dep d;
+
+  /** If \b true, this action was triggered by removing the source
+   *	of the dependency d.
+   */
+  bool from_dep_source:1;
+
+  /** The order in which this action should be placed.  Used when
+   *  presenting a "story" about a solution.
+   */
+  int id:31;
+
+  generic_action() {}
+
+  generic_action(const version &_ver,
+		 const dep &_d,
+		 bool _from_dep_source,
+		 int _id)
+    : ver(_ver), d(_d),
+      from_dep_source(_from_dep_source), id(_id)
+  {
+  }
+
+  bool operator<(const generic_action &other) const {return ver<other.ver;}
+
+  bool operator==(const generic_action &other) const
+  {
+    return ver == other.ver;
+  }
+
+  bool operator!=(const generic_action &other) const
+  {
+    return ver != other.ver;
+  }
+};
+
 /** Represents a partial or complete solution to a dependency
  *  problem.  Solutions are transparently refcounted to save on
  *  memory and avoid copies.
@@ -54,53 +106,7 @@ public:
   typedef typename PackageUniverse::package package;
   typedef typename PackageUniverse::version version;
   typedef typename PackageUniverse::dep dep;
-
-  /** Represents a single action taken by the resolver: the
-   *  installation of a particular version of a package.  The
-   *  *identity* of an action (in terms of operator< and operator==)
-   *  is based solely on the version it installs, although additional
-   *  information is provided to "tag" it.
-   */
-  struct action
-  {
-    version ver;
-
-    /** The dependency that triggered this action. */
-    dep d;
-
-    /** If \b true, this action was triggered by removing the source
-     *	of the dependency d.
-     */
-    bool from_dep_source:1;
-
-    /** The order in which this action should be placed.  Used when
-     *  presenting a "story" about a solution.
-     */
-    int id:31;
-
-    action() {}
-
-    action(const version &_ver,
-	   const dep &_d,
-	   bool _from_dep_source,
-	   int _id)
-      : ver(_ver), d(_d),
-	from_dep_source(_from_dep_source), id(_id)
-    {
-    }
-
-    bool operator<(const action &other) const {return ver<other.ver;}
-
-    bool operator==(const action &other) const
-    {
-      return ver == other.ver;
-    }
-
-    bool operator!=(const action &other) const
-    {
-      return ver != other.ver;
-    }
-  };
+  typedef generic_action<PackageUniverse> action;
 
 private:
   /** Hide this, it's meaningless. */
