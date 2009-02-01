@@ -63,6 +63,26 @@ namespace imm
   template<typename Val, const int w = 4>
   class wtree_node
   {
+    // Type hack to let us dump trees containing pairs without
+    // operator<< (needed for map bindings).
+    template<typename T>
+    struct dumper
+    {
+      static void dump(std::ostream &out, const T &t)
+      {
+	out << t;
+      }
+    };
+
+    template<typename A, typename B>
+    struct dumper<std::pair<A, B> >
+    {
+      static void dump(std::ostream &out, const std::pair<A, B> &pair)
+      {
+	out << "(" << pair.first << ", " << pair.second << ")";
+      }
+    };
+
     class impl
     {
       typedef unsigned int size_type;
@@ -363,7 +383,8 @@ namespace imm
       else if(mode == 1)
 	out << "R-> ";
 
-      out << getVal() << std::endl;
+      dumper<Val>::dump(out, getVal());
+      out << std::endl;
 
       getLeft().dump(out, indent, level+1, 0);
       getRight().dump(out, indent, level+1, 1);
@@ -817,35 +838,36 @@ namespace imm
     }
   };
 
+  template<typename Val>
+  struct set_write_action
+  {
+    std::ostream &out;
+    mutable bool first;
+
+    set_write_action(std::ostream &_out)
+      : out(_out), first(true)
+    {
+    }
+
+    void operator()(const Val &v) const
+    {
+      if(first)
+	first = false;
+      else
+	out << ", ";
+
+      out << v;
+    }
+  };
+
   /** \brief Write a set to a stream as a set (values are written with
    *  operator<<).
    */
   template<typename Val, typename Compare, int w>
   std::ostream &operator<<(std::ostream &out, const set<Val, Compare, w> &s)
   {
-    struct write_action
-    {
-      std::ostream &out;
-      mutable bool first;
-
-      write_action(std::ostream &_out)
-	: out(_out), first(true)
-      {
-      }
-
-      void operator()(const Val &v) const
-      {
-	if(first)
-	  first = false;
-	else
-	  out << ", ";
-
-	out << v;
-      }
-    };
-
     out.put('{');
-    write_action act(out);
+    set_write_action<Val> act(out);
     s.for_each(act);
     out.put('}');
 
@@ -1099,18 +1121,18 @@ namespace imm
     }
   };
 
-  template<typename Key, typename Val, typename Compare>
-  struct write_action
+  template<typename Key, typename Val>
+  struct map_write_action
   {
     std::ostream &out;
     mutable bool first;
 
-    write_action(std::ostream &_out)
+    map_write_action(std::ostream &_out)
       : out(_out), first(true)
     {
     }
 
-    void operator()(const typename map<Key, Val, Compare>::binding_type &entry) const
+    void operator()(const std::pair<Key, Val> &entry) const
     {
       if(first)
 	first = false;
@@ -1130,7 +1152,7 @@ namespace imm
   {
 
     out.put('{');
-    write_action<Key, Val, Compare> act(out);
+    map_write_action<Key, Val> act(out);
     m.for_each(act);
     out.put('}');
 
