@@ -1,7 +1,7 @@
 MAINTAINERCLEANFILES = Makefile.in
 
 INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(srcdir)
-LDADD = $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a $(top_builddir)/src/generic/apt/libgeneric-apt.a $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a $(top_builddir)/src/generic/problemresolver/dummy_universe.o $(top_builddir)/src/generic/util/libgeneric-util.a -lcppunit
+LDADD = $(top_builddir)/src/loggers.o $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a $(top_builddir)/src/generic/apt/libgeneric-apt.a $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a $(top_builddir)/src/generic/problemresolver/dummy_universe.o $(top_builddir)/src/generic/util/libgeneric-util.a -lcppunit
 
 check_PROGRAMS = test
 

@@ -51,6 +51,39 @@ namespace aptitude
      *  Name: aptitude.resolver
      */
     static log4cxx::LoggerPtr getAptitudeResolver();
+
+
+    /** \brief The logger for resolver hints.
+     *
+     *  Name: aptitude.resolver.hints
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverHints();
+
+    /** \brief The logger for comparing resolver hints.
+     *
+     *  Name: aptitude.resolver.hints.compare
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverHintsCompare();
+
+    /** \brief The logger for matching resolver hints against
+     * packages.
+     *
+     *  Name: aptitude.resolver.hints.match
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverHintsMatch();
+
+    /** \brief The logger for parsing resolver hints.
+     *
+     *  Name: aptitude.resolver.hints.parse
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverHintsParse();
+
+    /** \brief The logger for setting up scores for the dependency
+     *  resolver.
+     *
+     *  Name: aptitude.resolver.scores
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverScores();
   };
 }
 

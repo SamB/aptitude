@@ -23,13 +23,33 @@ using namespace log4cxx;
 
 namespace aptitude
 {
-  namespace
-  {
-    LoggerPtr loggerAptitudeResolver(Logger::getLogger("aptitude.resolver"));
-  }
-
   LoggerPtr Loggers::getAptitudeResolver()
   {
-    return loggerAptitudeResolver;
+    return Logger::getLogger("aptitude.resolver");
+  }
+
+  LoggerPtr Loggers::getAptitudeResolverHints()
+  {
+    return Logger::getLogger("aptitude.resolver.hints");
+  }
+
+  LoggerPtr Loggers::getAptitudeResolverHintsCompare()
+  {
+    return Logger::getLogger("aptitude.resolver.hints.compare");
+  }
+
+  LoggerPtr Loggers::getAptitudeResolverHintsMatch()
+  {
+    return Logger::getLogger("aptitude.resolver.hints.match");
+  }
+
+  LoggerPtr Loggers::getAptitudeResolverHintsParse()
+  {
+    return Logger::getLogger("aptitude.resolver.hints.parse");
+  }
+ 
+  LoggerPtr Loggers::getAptitudeResolverScores()
+  {
+    return Logger::getLogger("aptitude.resolver.scores");
   }
 }
