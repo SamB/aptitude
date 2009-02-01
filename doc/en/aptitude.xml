@@ -10810,6 +10810,23 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configProblemResolver-DefaultResolutionScore'>
+	      <seg><literal>Aptitude::ProblemResolver::DefaultResolutionScore</literal></seg>
+	      <seg><literal>400</literal></seg>
+	      <seg>
+		How much to reward or penalize prospective solutions
+		based on how many <quote>default</quote> resolutions
+		for currently unsatisfied dependencies they install.
+		The default resolution is the resolution that
+		<quote><literal>apt-get install</literal></quote> or
+		the <quote><link
+		linkend='secImmediateResolution'>immediate dependency
+		resolver</link></quote> would pick.  The score is only
+		applied for dependencies and recommendations whose
+		targets are not currently installed.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configProblemResolver-DiscardNullSolution'>
 	      <seg><literal>Aptitude::ProblemResolver::Discard-Null-Solution</literal></seg>
 	      <seg><literal>true</literal></seg>

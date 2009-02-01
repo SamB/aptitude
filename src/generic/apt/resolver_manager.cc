@@ -767,6 +767,7 @@ void resolver_manager::create_resolver()
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::UndoFullReplacementScore", -500),
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::BreakHoldScore", -300),
 			      aptcfg->FindB(PACKAGE "::ProblemResolver::Allow-Break-Holds", false),
+			      aptcfg->FindI(PACKAGE "::ProblemResolver::DefaultResolutionScore", 400),
 			      hints);
 
   resolver->add_priority_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::ImportantScore", 5),

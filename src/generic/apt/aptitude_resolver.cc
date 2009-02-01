@@ -21,7 +21,9 @@
 
 #include "config_signal.h"
 
+#include <apt-pkg/algorithms.h>
 #include <apt-pkg/error.h>
+#include <apt-pkg/sptr.h>
 
 #include <aptitude.h>
 #include <generic/apt/matching/compare_patterns.h>
@@ -46,7 +48,43 @@ namespace
 }
 
 // Logging operators.
-//
+std::ostream &operator<<(std::ostream &out, const pkgCache::DepIterator &dep)
+{
+  pkgCache::DepIterator d = dep;
+  bool first = true;
+
+  while(true)
+    {
+      if(first)
+	first = false;
+      else
+	out << " | ";
+
+      out << const_cast<pkgCache::DepIterator &>(dep).ParentPkg().Name()
+	  << " " << const_cast<pkgCache::DepIterator &>(dep).ParentVer().VerStr()
+	  << " " << const_cast<pkgCache::DepIterator &>(dep).DepType()
+	  << " " << const_cast<pkgCache::DepIterator &>(dep).TargetPkg().Name();
+
+      if((dep->CompareOp & ~pkgCache::Dep::Or) != pkgCache::Dep::NoOp &&
+	 dep.TargetVer() != NULL)
+	{
+	  out << " (" << const_cast<pkgCache::DepIterator &>(dep).CompType()
+	      << " " << dep.TargetVer()
+	      << ")";
+	}
+
+      if((d->CompareOp & pkgCache::Dep::Or) == 0)
+	break;
+
+      ++d;
+
+      if(d.end())
+	break; // Shouldn't happen.
+    }
+
+  return out;
+}
+
 // Should version selections be logged the way they're written?
 // That's a little awkward since the syntax is hairy and some of them
 // output nothing at all (!)
@@ -898,6 +936,96 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
     }
 }
 
+void aptitude_resolver::add_default_resolution_score(const pkgCache::DepIterator &dep,
+						     int default_resolution_score)
+{
+  // This code is duplicated from MarkInstall(), since that's what
+  // package authors expect.  We look at all the targets of the dep
+  // (AllTargets() doesn't walk ORs, so we just get the first entry)
+  // and pick the one from the highest-priority source.
+  SPtrArray<pkgCache::Version *> list = const_cast<pkgCache::DepIterator &>(dep).AllTargets();
+  pkgCache::Version ** curr = list;
+  pkgCache::PkgIterator p = const_cast<pkgCache::DepIterator &>(dep).TargetPkg();
+  aptitudeDepCache *cache(get_universe().get_cache());
+  pkgCache::VerIterator instVer(*cache, NULL);
+
+  // See if we have a match that's not through a Provides.
+  for( ; *curr != NULL && (*curr)->ParentPkg == p.Index(); ++curr)
+    {
+      pkgCache::PkgIterator currPkg(*cache, cache->GetCache().PkgP + (*curr)->ParentPkg);
+      if((*cache)[currPkg].CandidateVer != *curr)
+	{
+	  LOG_TRACE(loggerScores,
+		    "Skipping " << currPkg.Name()
+		    << " " << pkgCache::VerIterator(cache->GetCache(), *curr).VerStr()
+		    << ": it is not the candidate version.");
+	  continue;
+	}
+      instVer = pkgCache::VerIterator(cache->GetCache(), *curr);
+      break;
+    }
+
+  if(instVer.end())
+    {
+      pkgPrioSortList(*cache, curr);
+      for( ; *curr != NULL; ++curr)
+	{
+	  pkgCache::PkgIterator currPkg(*cache, cache->GetCache().PkgP + (*curr)->ParentPkg);
+	  if((*cache)[currPkg].CandidateVer != *curr)
+	    {
+	      LOG_TRACE(loggerScores,
+			"Skipping " << currPkg.Name()
+			<< " " << pkgCache::VerIterator(cache->GetCache(), *curr).VerStr()
+			<< ": it is not the candidate version.");
+	      continue;
+	    }
+	  instVer = pkgCache::VerIterator(cache->GetCache(), *curr);
+	  break;
+	}
+    }
+
+  if(!instVer.end())
+    {
+      // Here MarkInstall would install, so we bias the resolver in
+      // favor of using this as a solution.
+      aptitude_resolver_version source_ver(const_cast<pkgCache::DepIterator &>(dep).ParentPkg(),
+					   const_cast<pkgCache::DepIterator &>(dep).ParentVer(),
+					   cache);
+      aptitude_resolver_version target_ver(instVer.ParentPkg(),
+					   instVer,
+					   cache);
+
+      // If the source of the dependency is currently installed, apply
+      // the score only to the target; otherwise, apply it to the pair
+      // (the target can't be installed, or we would not jave invoked
+      // this routine).
+      if(source_ver.get_package().current_version() == source_ver)
+	{
+	  LOG_DEBUG(loggerScores,
+		    "** Score: " << std::showpos << default_resolution_score
+		    << std::noshowpos << " for installing "
+		    << target_ver
+		    << "; it is the default apt resolution to the dependency \""
+		    << dep << "\" (" << source_ver << " is already installed)");
+	  add_version_score(source_ver, default_resolution_score);
+	}
+      else
+	{
+	  LOG_DEBUG(loggerScores,
+		    "** Score: " << std::showpos << default_resolution_score
+		    << std::noshowpos << " for installing "
+		    << source_ver << " and " << target_ver
+		    << " simultaneously; the latter is the default apt resolution to the dependency \""
+		    << dep << "\"");
+
+	  imm::set<aptitude_universe::version> s;
+	  s.insert(source_ver);
+	  s.insert(target_ver);
+	  add_joint_score(s, default_resolution_score);
+	}
+    }
+}
+
 void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 					  int remove_score, int keep_score,
 					  int install_score, int upgrade_score,
@@ -906,6 +1034,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 					  int undo_full_replacement_score,
 					  int break_hold_score,
 					  bool allow_break_holds_and_forbids,
+					  int default_resolution_score,
 					  const std::vector<resolver_hint> &hints)
 {
   cwidget::util::ref_ptr<aptitude::matching::search_cache>
@@ -1111,9 +1240,40 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	  if(!apt_ver.end())
 	    {
 	      std::set<pkgCache::PkgIterator> replaced_packages;
+	      // Set to true if we're at the first entry in an OR
+	      // group.
+	      bool is_or_head = true;
 	      for(pkgCache::DepIterator dep = apt_ver.DependsList();
 		  !dep.end(); ++dep)
 		{
+		  if(default_resolution_score != 0 &&
+		     is_or_head && (dep->Type == pkgCache::Dep::Depends ||
+				    dep->Type == pkgCache::Dep::Recommends))
+		    {
+		      // Scan ahead to see if any of the dependencies
+		      // are satisfied by the current installation.
+		      pkgCache::DepIterator endDep = dep;
+		      while(!endDep.end() && (endDep->CompareOp & pkgCache::Dep::Or) != 0)
+			++endDep;
+		      if(!endDep.end() &&
+			 ((*apt_cache_file)[endDep] & pkgDepCache::DepGInstall) == 0)
+			{
+			  LOG_TRACE(loggerScores,
+				    "Adjusting scores to promote a default resolution for \"" << dep << "\"");
+			  // If they aren't satisfied, then give a
+			  // bonus to having the depender and the
+			  // candidate version of the first entry in
+			  // the OR on the system at the same time.
+			  add_default_resolution_score(dep,
+						       default_resolution_score);
+			}
+		      else
+			{
+			  LOG_TRACE(loggerScores,
+				    "Not adjusting scores to promote a default resolution for \"" << dep << "\": it is already satisfied.");
+			}
+		    }
+
 		  if(dep->Type == pkgCache::Dep::Replaces &&
 		     aptitude::apt::is_full_replacement(dep))
 		    {
@@ -1150,6 +1310,9 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			    }
 			}
 		    }
+
+		  // The next entry is an OR head iff this one terminates the OR list.
+		  is_or_head = (dep->CompareOp & pkgCache::Dep::Or) == 0;
 		}
 	    }
 	}

@@ -65,6 +65,12 @@ class aptitude_resolver:public generic_problem_resolver<aptitude_universe>
 				  int full_replacement_score,
 				  int undo_full_replacement_score);
 
+  /** \brief Given the first dependency in an OR group, add scores to
+   *  bias the resolver in favor of the default candidate that
+   *  MarkInstall would pick.
+   */
+  void add_default_resolution_score(const pkgCache::DepIterator &dep,
+				    int default_resolution_score);
 public:
   class resolver_hint
   {
@@ -433,6 +439,12 @@ public:
    * \param allow_break_holds_and_forbids   if false, versions that
    * would break a package hold or install a forbidden version are
    * rejected up-front.
+   *
+   * \param default_resolution_score   the score for installing a
+   * package and also resolving a dependency in the way that
+   * MarkInstall would, if the dependency isn't current resolved.
+   * (this is arguably not quite right: it ought to be cancelled
+   * whenever the dependency is resolved by a partial solution)
    */
   void add_action_scores(int preserve_score, int auto_score,
 			 int remove_score, int keep_score,
@@ -442,6 +454,7 @@ public:
 			 int undo_full_replacement_score,
 			 int break_hold_score,
 			 bool allow_break_holds_and_forbids,
+			 int default_resolution_score,
 			 const std::vector<resolver_hint> &hints);
 
   /** Score packages/versions according to their priorities.  Normally
