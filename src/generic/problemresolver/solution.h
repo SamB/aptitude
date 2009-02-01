@@ -1,6 +1,6 @@
 // solution.h                                             -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -576,6 +576,14 @@ public:
     }
   };
 }; // End solution wrapper
+
+/** \brief Dump a solution without showing the order of the entries. */
+template<typename PackageUniverse>
+std::ostream &operator<<(std::ostream &out, const generic_solution<PackageUniverse> &sol)
+{
+  sol.dump(out);
+  return out;
+}
 
 
 /** Represents the current score weights for a resolver.  Used to
