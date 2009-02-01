@@ -27,7 +27,7 @@ using namespace aptitude::matching;
 
 namespace
 {
-  typedef aptitude_resolver::resolver_hint hint;
+  typedef aptitude_resolver::hint hint;
 
   struct test
   {
@@ -35,7 +35,7 @@ namespace
     std::string text;
 
     // The resolver hint.
-    aptitude_resolver::resolver_hint h;
+    aptitude_resolver::hint h;
 
     test(const std::string &_text, const hint &_h)
       : text(_text), h(_h)
