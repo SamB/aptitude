@@ -856,7 +856,7 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 	      for(pkgCache::VerIterator target_ver = target.VersionList();
 		  !target_ver.end(); ++target_ver)
 		{
-		  if(version_provides(target_ver, real_target))
+		  if(!version_provides(target_ver, real_target))
 		    {
 		      LOG_DEBUG(loggerScores,
 				"** Score: " << std::showpos << full_replacement_score << std::noshowpos
@@ -908,7 +908,7 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 	      for(pkgCache::VerIterator target_ver = target.VersionList();
 		  !target_ver.end(); ++target_ver)
 		{
-		  if(version_provides(target_ver, real_target))
+		  if(!version_provides(target_ver, real_target))
 		    {
 		      imm::set<aptitude_universe::version> s;
 
