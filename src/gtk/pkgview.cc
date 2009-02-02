@@ -163,9 +163,9 @@ namespace gui
     row[cols->SelectedStatusIcon] = selected_state.get_icon().get_string();
     row[cols->StatusDescriptionMarkup] =
       ssprintf("<b>%s:</b> %s\n<b>%s:</b> %s",
-	       _("Current status"),
+	       Glib::Markup::escape_text(_("Current status")).c_str(),
 	       Glib::Markup::escape_text(_(current_state.get_description().c_str())).c_str(),
-	       _("Selected status"),
+	       Glib::Markup::escape_text(_("Selected status")).c_str(),
 	       Glib::Markup::escape_text(_(selected_state.get_description().c_str())).c_str());
 
     Glib::ustring safe_name = Glib::Markup::escape_text(pkg.Name());
