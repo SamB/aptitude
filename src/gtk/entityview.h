@@ -2,7 +2,7 @@
 
 // entityview.h
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -39,7 +39,7 @@ namespace gui
   class EntityView;
   class EntityColumns;
 
-  class Entity : public aptitude::util::refcounted_base
+  class Entity : public aptitude::util::refcounted_base_threadsafe
   {
     public:
       virtual ~Entity();
@@ -165,7 +165,7 @@ namespace gui
       sigc::signal<void> signal_selection_change;
   };
 
-  class EntityView : public aptitude::util::refcounted_base
+  class EntityView : public aptitude::util::refcounted_base_threadsafe
   {
     private:
       /** \brief Used to let the user control which columns are visible. */

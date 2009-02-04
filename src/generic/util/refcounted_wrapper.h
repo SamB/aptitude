@@ -1,6 +1,6 @@
 // refcounted_wrapper.h                     -*-c++-*-
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -31,7 +31,7 @@ namespace aptitude
      *  with ref_ptr.
      */
     template<typename T>
-    class refcounted_wrapper : public refcounted_base
+    class refcounted_wrapper : public refcounted_base_threadsafe
     {
       T *p;
 

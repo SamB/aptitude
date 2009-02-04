@@ -1,7 +1,7 @@
 
 // ui_download_manager.h                           -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -58,7 +58,7 @@ namespace cwidget
  *  get a NOP progress object.
  */
 class refcounted_progress : public OpProgress,
-			    virtual public aptitude::util::refcounted_base
+			    virtual public aptitude::util::refcounted_base_threadsafe
 {
 protected:
   refcounted_progress()
@@ -147,7 +147,7 @@ class ui_download_manager : public sigc::trackable
   // This seems a little icky; it seems like there should be a better
   // way of handling these lifetime issues.
   template<typename T>
-  class generic_refcounted : public aptitude::util::refcounted_base
+  class generic_refcounted : public aptitude::util::refcounted_base_threadsafe
   {
     cwidget::util::ref_ptr<T> ptr;
 
@@ -161,7 +161,7 @@ class ui_download_manager : public sigc::trackable
   /** Used to keep the download status widget alive until the download
    *  completes.
    */
-  cwidget::util::ref_ptr<aptitude::util::refcounted_base> download_status;
+  cwidget::util::ref_ptr<aptitude::util::refcounted_base_threadsafe> download_status;
 
   /** \brief A progress object, used to display progrss in done().
    *

@@ -1,6 +1,6 @@
 // match.h    -*-c++-*-
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -154,7 +154,7 @@ namespace aptitude
      *  match using one of the above patterns) or an atomic node (a
      *  match to one of the other patterns).
      */
-    class structural_match : public util::refcounted_base
+    class structural_match : public util::refcounted_base_threadsafe
     {
     public:
       /** \brief The type of this structural match node. */
@@ -295,7 +295,7 @@ namespace aptitude
      *  This means that if the user of a match needs information that
      *  will last across depCache changes, it must be copied.
      */
-    class match : public util::refcounted_base
+    class match : public util::refcounted_base_threadsafe
     {
     public:
       class dependency_match_info
@@ -553,7 +553,7 @@ namespace aptitude
      *  This is used to store information that should be computed
      *  only once during a search.
      */
-    class search_cache : public util::refcounted_base
+    class search_cache : public util::refcounted_base_threadsafe
     {
       // The implementation details are hidden in
       // search_cache::implementation.  You can only create a

@@ -49,7 +49,7 @@ namespace gui
    *  client code: the widgets can be arranged whatever way is
    *  convenient.
    */
-  class PackageSearchEntry : public aptitude::util::refcounted_base
+  class PackageSearchEntry : public aptitude::util::refcounted_base_threadsafe
   {
     Gtk::Entry *search_entry;
     Gtk::Label *error_label;
@@ -99,7 +99,7 @@ namespace gui
   };
 
   /** \brief A searchable list of packages. */
-  class PackageSearchList : public aptitude::util::refcounted_base
+  class PackageSearchList : public aptitude::util::refcounted_base_threadsafe
   {
     /** \brief The columns used in the filter combobox. */
     class filter_combobox_columns : public Gtk::TreeModel::ColumnRecord

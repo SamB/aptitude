@@ -61,7 +61,7 @@ namespace gui
    *  situations where the status object doesn't belong to any
    *  particular scope can be handled cleanly and safely.
    */
-  class download_list_model : public aptitude::util::refcounted_base
+  class download_list_model : public aptitude::util::refcounted_base_threadsafe
   {
   private:
     DownloadColumns download_columns;

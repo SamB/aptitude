@@ -1,6 +1,6 @@
 // filesview.h             -*-c++-*-
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -61,7 +61,7 @@ namespace gui
       sigc::signal<void> signal_selection;
   };
 
-  class FilesView : public aptitude::util::refcounted_base
+  class FilesView : public aptitude::util::refcounted_base_threadsafe
   {
     private:
       Glib::RefPtr<Gtk::ListStore> store;

@@ -90,7 +90,7 @@ namespace aptitude
     /** \brief Represents a reference-counted vector of changelog text
      * 	elements.
      */
-    class changelog_element_list : public util::refcounted_base
+    class changelog_element_list : public util::refcounted_base_threadsafe
     {
       std::vector<changelog_element> elements;
 
@@ -109,7 +109,7 @@ namespace aptitude
     };
 
     /** \brief Represents a single entry in a Debian changelog. */
-    class changelog_entry : public util::refcounted_base
+    class changelog_entry : public util::refcounted_base_threadsafe
     {
       std::string source;
       std::string version;
@@ -200,7 +200,7 @@ namespace aptitude
      *  entries are stored in the same order that they appear in the
      *  original changelog.
      */
-    class changelog : public util::refcounted_base
+    class changelog : public util::refcounted_base_threadsafe
     {
       std::vector<cwidget::util::ref_ptr<changelog_entry> > entries;
 

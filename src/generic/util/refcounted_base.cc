@@ -1,6 +1,6 @@
 // refcounted_base.cc   -*-c++-*-
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -23,7 +23,11 @@ namespace aptitude
 {
   namespace util
   {
-    refcounted_base::~refcounted_base()
+    refcounted_base_not_threadsafe::~refcounted_base_not_threadsafe()
+    {
+    }
+
+    refcounted_base_threadsafe::~refcounted_base_threadsafe()
     {
     }
   }

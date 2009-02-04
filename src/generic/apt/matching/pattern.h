@@ -60,7 +60,7 @@ namespace aptitude
      *  This class turns compilation errors into exceptions and
      *  handles safely disposing of the pattern when it's destroyed.
      */
-    class regex : public util::refcounted_base
+    class regex : public util::refcounted_base_threadsafe
     {
       regex_t r;
 
@@ -195,7 +195,7 @@ namespace aptitude
      *
      *  \nosubgrouping
      */
-    class pattern : public util::refcounted_base
+    class pattern : public util::refcounted_base_threadsafe
     {
     public:
       /** \name Term types */
