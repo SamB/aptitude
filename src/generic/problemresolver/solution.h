@@ -52,7 +52,8 @@ class resolver_initial_state
   //
   // If NULL, all packages have their real current version.
   int *overridden_versions;
-  // Only set if overridden_versions is NULL;
+  // The size that the version array has / will have (depending on
+  // whether the array is NULL).
   int num_overridden_versions;
 
   // Stores the versions that have been overridden;
@@ -61,15 +62,13 @@ class resolver_initial_state
 
   /** \brief Override p (if necessary) to the version v. */
   void map_package(const typename PackageUniverse::package &p,
-		   const typename PackageUniverse::version &v,
-		   const PackageUniverse &universe)
+		   const typename PackageUniverse::version &v)
   {
     if(overridden_versions == NULL)
       {
 	if(p.current_version() == v)
 	  return;
 
-	num_overridden_versions = universe.get_package_count();
 	overridden_versions = new int[num_overridden_versions];
 	for(int i = 0; i < num_overridden_versions; ++i)
 	  overridden_versions[i] = -1;
@@ -96,30 +95,35 @@ class resolver_initial_state
   struct do_map_package
   {
     resolver_initial_state &state;
-    const PackageUniverse &universe;
 
-    do_map_package(resolver_initial_state &_state,
-		   const PackageUniverse &_universe)
-      : state(_state), universe(_universe)
+    do_map_package(resolver_initial_state &_state)
+      : state(_state)
     {
     }
 
     void operator()(const std::pair<typename PackageUniverse::package, typename PackageUniverse::version> &pair) const
     {
-      state.map_package(pair.first, pair.second, universe);
+      state.map_package(pair.first, pair.second);
     }
   };
 
 public:
   /** \brief Create a new initial state that sets the given packages
    *  to the given versions.
+   *
+   *  \param mappings   Each package in this map will be treated as
+   *                    "starting at" the version it is mapped to.
+   *
+   *  \param package_count The number of packages in the universe;
+   *                          used to allocate space for internal
+   *                          structures.
    */
   resolver_initial_state(const imm::map<typename PackageUniverse::package, typename PackageUniverse::version> &mappings,
-			 const PackageUniverse &universe)
+			 int package_count)
     : overridden_versions(NULL),
-      num_overridden_versions(NULL)
+      num_overridden_versions(package_count)
   {
-    mappings.for_each(do_map_package(*this, universe));
+    mappings.for_each(do_map_package(*this));
   }
 
   bool empty()

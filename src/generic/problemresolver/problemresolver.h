@@ -2320,7 +2320,7 @@ public:
 			   const PackageUniverse &_universe)
     :logger(aptitude::Loggers::getAptitudeResolver()),
      appender(new log4cxx::ConsoleAppender(new log4cxx::PatternLayout("%m%n"))),
-     initial_state(_initial_state, universe),
+     initial_state(_initial_state, _universe.get_package_count()),
      weights(_step_score, _broken_score, _unfixed_soft_score,
 	     _full_solution_score, _universe.get_version_count(),
 	     initial_state),

@@ -359,7 +359,7 @@ void sanity_check_universe(const PackageUniverse &universe)
     }
 
   resolver_initial_state<PackageUniverse>
-    initial_state(imm::map<package, version>(), universe);
+    initial_state(imm::map<package, version>(), universe.get_package_count());
   generic_solution<PackageUniverse> empty_solution
     = generic_solution<PackageUniverse>::root_node(imm::set<dep>(),
 						   universe,
