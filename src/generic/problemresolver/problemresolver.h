@@ -262,14 +262,6 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *  - <b>dep_iterator</b>: an iterator over the list of all the \ref
  *  universe_dep "dependencies" in this universe.
  *
- *  - <b>broken_dep_iterator</b>: an iterator over the list of all
- *  "currently broken" \ref universe_dep "dependencies" in this
- *  universe (i.e., all dependencies that are broken if the "current"
- *  \ref universe_version "version" of each \ref universe_package
- *  "package", as given by \ref universe_package "package"::\ref
- *  universe_package_current_version "current_version()", is
- *  installed).
- *
  *  - <b>get_package_count()</b>: returns the number of \ref
  *  universe_package "package"s in the universe.
  *
@@ -283,10 +275,6 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *  - <b>deps_begin()</b>: returns a \b dep_iterator pointing at the
  *  first \ref universe_dep "dependency" (in an arbitrary ordering) in
  *  the universe.
- *
- *  - <b>broken_begin()</b>: returns a \b broken_dep_iterator pointing
- *  at the first broken \ref universe_dep "dependency" (in an
- *  arbitrary ordering) in the universe.
  *
  *  \page universe_package Package concept
  *
@@ -2343,18 +2331,21 @@ public:
      conflicts(_universe.get_package_count())
   {
     // Find all the broken deps.
-    for(typename PackageUniverse::broken_dep_iterator bi=universe.broken_begin();
-	!bi.end(); ++bi)
+    for(typename PackageUniverse::dep_iterator di = universe.deps_begin();
+	!di.end(); ++di)
       {
-	dep bd(*bi);
+	dep d(*di);
 
-	solution empty_solution(solution::root_node(initial_broken,
-						    universe,
-						    weights,
-						    initial_state));
-	eassert_on_dep(bd.broken_under(empty_solution), empty_solution, bd);
+	if(d.broken_under(initial_state))
+	  {
+	    solution empty_solution(solution::root_node(initial_broken,
+							universe,
+							weights,
+							initial_state));
+	    eassert_on_dep(d.broken_under(empty_solution), empty_solution, d);
 
-	initial_broken.insert(bd);
+	    initial_broken.insert(d);
+	  }
       }
   }
 
