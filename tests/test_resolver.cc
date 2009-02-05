@@ -348,7 +348,7 @@ private:
 		     u);
 
     CPPUNIT_ASSERT_EQUAL(r.get_initial_state().version_of(a), av2);
-    CPPUNIT_ASSERT_EQUAL(r.get_initial_state().version_of(a), cv2);
+    CPPUNIT_ASSERT_EQUAL(r.get_initial_state().version_of(c), cv2);
 
     try
       {
