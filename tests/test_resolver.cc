@@ -186,7 +186,7 @@ private:
     CPPUNIT_ASSERT(!di.end());
     dummy_universe::dep d2 = *di;
 
-    resolver_initial_state<dummy_universe_ref> initial_state(imm::map<dummy_universe::package, dummy_universe::version>(), u);
+    resolver_initial_state<dummy_universe_ref> initial_state(imm::map<dummy_universe::package, dummy_universe::version>(), u.get_package_count());
 
     solution_weights<dummy_universe_ref> weights(0, 0, 0, 0, u.get_version_count(),
 						 initial_state);
