@@ -1044,7 +1044,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 {
   cwidget::util::ref_ptr<aptitude::matching::search_cache>
     search_info(aptitude::matching::search_cache::create());
-  pkgRecords records(*get_universe().get_cache());
+  aptitudeDepCache *cache(get_universe().get_cache());
+  pkgRecords records(*cache);
   const resolver_initial_state<aptitude_universe> &initial_state(get_initial_state());
 
   // Should I stick with APT iterators instead?  This is a bit more
@@ -1053,8 +1054,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
       !pi.end(); ++pi)
     {
       const aptitude_universe::package &p=*pi;
-      aptitudeDepCache::aptitude_state &state=get_universe().get_cache()->get_ext_state(p.get_pkg());
-      pkgDepCache::StateCache &apt_state = (*get_universe().get_cache())[p.get_pkg()];
+      aptitudeDepCache::aptitude_state &state=cache->get_ext_state(p.get_pkg());
+      pkgDepCache::StateCache &apt_state = (*cache)[p.get_pkg()];
 
       // Packages are considered "manual" either if they were manually
       // installed, or if they are currently installed and were
@@ -1103,14 +1104,14 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	      if(apt_ver.end())
 		{
 		  if(!get_match(h.get_target(), p.get_pkg(),
-				search_info, *get_universe().get_cache(),
+				search_info, *cache,
 				records).valid())
 		    continue;
 		}
 	      else
 		{
 		  if(!get_match(h.get_target(), p.get_pkg(), v.get_ver(),
-				search_info, *get_universe().get_cache(),
+				search_info, *cache,
 				records).valid())
 		    continue;
 		}
@@ -1183,7 +1184,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		  add_version_score(v, remove_score);
 		}
 	    }
-	  else if(apt_ver == (*get_universe().get_cache())[p.get_pkg()].CandidateVerIter(*get_universe().get_cache()))
+	  else if(apt_ver == (*cache)[p.get_pkg()].CandidateVerIter(*cache))
 	    {
 	      if(manual)
 		{
@@ -1269,9 +1270,9 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 				    dep->Type == pkgCache::Dep::Recommends))
 		    {
 		      aptitude_resolver_dep d(dep,
-					      pkgCache::PrvIterator(*get_universe().get_cache(),
+					      pkgCache::PrvIterator(*cache,
 								    0, (pkgCache::Version *) 0),
-					      get_universe().get_cache());
+					      cache);
 
 		      if(d.broken_under(initial_state))
 			{
@@ -1302,7 +1303,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			  replaced_packages.insert(target);
 			  add_full_replacement_score(apt_ver,
 						     target,
-						     pkgCache::VerIterator(*get_universe().get_cache()),
+						     pkgCache::VerIterator(*cache),
 						     full_replacement_score,
 						     undo_full_replacement_score);
 			}
